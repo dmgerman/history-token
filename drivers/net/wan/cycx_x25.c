@@ -2,14 +2,15 @@ multiline_comment|/*&n;* cycx_x25.c&t;Cyclom 2X WAN Link Driver.  X.25 module.&n
 DECL|macro|CYCLOMX_X25_DEBUG
 mdefine_line|#define CYCLOMX_X25_DEBUG 1
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;&t;/* printk(), and other useful stuff */
-macro_line|#include &lt;linux/stddef.h&gt;&t;/* offsetof(), etc. */
 macro_line|#include &lt;linux/errno.h&gt;&t;/* return codes */
+macro_line|#include &lt;linux/if_arp.h&gt;       /* ARPHRD_HWX25 */
+macro_line|#include &lt;linux/kernel.h&gt;&t;/* printk(), and other useful stuff */
+macro_line|#include &lt;linux/module.h&gt;&t;/* SET_MODULE_OWNER */
 macro_line|#include &lt;linux/string.h&gt;&t;/* inline memset(), etc. */
-macro_line|#include &lt;linux/slab.h&gt;&t;/* kmalloc(), kfree() */
+macro_line|#include &lt;linux/slab.h&gt;&t;&t;/* kmalloc(), kfree() */
+macro_line|#include &lt;linux/stddef.h&gt;&t;/* offsetof(), etc. */
 macro_line|#include &lt;linux/wanrouter.h&gt;&t;/* WAN router definitions */
 macro_line|#include &lt;asm/byteorder.h&gt;&t;/* htons(), etc. */
-macro_line|#include &lt;linux/if_arp.h&gt;       /* ARPHRD_HWX25 */
 macro_line|#include &lt;linux/cyclomx.h&gt;&t;/* Cyclom 2X common user API definitions */
 macro_line|#include &lt;linux/cycx_x25.h&gt;&t;/* X.25 firmware API definitions */
 multiline_comment|/* Defines &amp; Macros */
@@ -1758,6 +1759,7 @@ DECL|function|if_init
 r_static
 r_int
 id|if_init
+c_func
 (paren
 r_struct
 id|net_device
@@ -1894,6 +1896,12 @@ id|dev-&gt;tx_queue_len
 op_assign
 l_int|10
 suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* Initialize socket buffers */
 id|set_chan_state
 c_func
@@ -1912,6 +1920,7 @@ DECL|function|if_open
 r_static
 r_int
 id|if_open
+c_func
 (paren
 r_struct
 id|net_device
@@ -1919,19 +1928,6 @@ op_star
 id|dev
 )paren
 (brace
-id|x25_channel_t
-op_star
-id|chan
-op_assign
-id|dev-&gt;priv
-suffix:semicolon
-r_struct
-id|cycx_device
-op_star
-id|card
-op_assign
-id|chan-&gt;card
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1952,12 +1948,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|cyclomx_mod_inc_use_count
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1967,6 +1957,7 @@ DECL|function|if_close
 r_static
 r_int
 id|if_close
+c_func
 (paren
 r_struct
 id|net_device
@@ -1979,13 +1970,6 @@ op_star
 id|chan
 op_assign
 id|dev-&gt;priv
-suffix:semicolon
-r_struct
-id|cycx_device
-op_star
-id|card
-op_assign
-id|chan-&gt;card
 suffix:semicolon
 id|netif_stop_queue
 c_func
@@ -2008,12 +1992,6 @@ id|chan_disconnect
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-id|cyclomx_mod_dec_use_count
-c_func
-(paren
-id|card
 )paren
 suffix:semicolon
 r_return
