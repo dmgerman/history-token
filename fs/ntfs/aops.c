@@ -4548,7 +4548,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Attribute is resident, implying it is not compressed, encrypted, or&n;&t; * mst protected.&n;&t; */
+multiline_comment|/*&n;&t; * Attribute is resident, implying it is not compressed, encrypted,&n;&t; * sparse, or mst protected.&n;&t; */
 id|BUG_ON
 c_func
 (paren
@@ -4825,7 +4825,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Here, we don&squot;t need to zero the out of bounds area everytime because&n;&t; * the below memcpy() already takes care of the mmap-at-end-of-file&n;&t; * requirements. If the file is converted to a non-resident one, then&n;&t; * the code path use is switched to the non-resident one where the&n;&t; * zeroing happens on each ntfs_writepage() invocation.&n;&t; *&n;&t; * The above also applies nicely when i_size is decreased.&n;&t; *&n;&t; * When i_size is increased, the memory between the old and new i_size&n;&t; * _must_ be zeroed (or overwritten with new data). Otherwise we will&n;&t; * expose data to userspace/disk which should never have been exposed.&n;&t; *&n;&t; * FIXME: Ensure that i_size increases do the zeroing/overwriting and&n;&t; * if we cannot guarantee that, then enable the zeroing below.  If the&n;&t; * zeroing below is enabled, we MUST move the unlock_page() from above&n;&t; * to after the kunmap_atomic(), i.e. just before the&n;&t; * end_page_writeback().&n;&t; */
+multiline_comment|/*&n;&t; * Here, we don&squot;t need to zero the out of bounds area everytime because&n;&t; * the below memcpy() already takes care of the mmap-at-end-of-file&n;&t; * requirements. If the file is converted to a non-resident one, then&n;&t; * the code path use is switched to the non-resident one where the&n;&t; * zeroing happens on each ntfs_writepage() invocation.&n;&t; *&n;&t; * The above also applies nicely when i_size is decreased.&n;&t; *&n;&t; * When i_size is increased, the memory between the old and new i_size&n;&t; * _must_ be zeroed (or overwritten with new data). Otherwise we will&n;&t; * expose data to userspace/disk which should never have been exposed.&n;&t; *&n;&t; * FIXME: Ensure that i_size increases do the zeroing/overwriting and&n;&t; * if we cannot guarantee that, then enable the zeroing below.  If the&n;&t; * zeroing below is enabled, we MUST move the unlock_page() from above&n;&t; * to after the kunmap_atomic(), i.e. just before the&n;&t; * end_page_writeback().&n;&t; * UPDATE: ntfs_prepare/commit_write() do the zeroing on i_size&n;&t; * increases for resident attributes so those are ok.&n;&t; * TODO: ntfs_truncate(), others?&n;&t; */
 id|kaddr
 op_assign
 id|kmap_atomic
@@ -5151,16 +5151,6 @@ c_func
 (paren
 op_logical_neg
 id|NInoNonResident
-c_func
-(paren
-id|ni
-)paren
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-id|NInoMstProtected
 c_func
 (paren
 id|ni
@@ -6183,7 +6173,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_prepare_write - prepare a page for receiving data&n; *&n; * This is called from generic_file_write() with i_sem held on the inode&n; * (@page-&gt;mapping-&gt;host). The @page is locked and kmap()ped so page_address()&n; * can simply be used. The source data has not yet been copied into the @page.&n; *&n; * Need to extend the attribute/fill in holes if necessary, create blocks and&n; * make partially overwritten blocks uptodate,&n; *&n; * i_size is not to be modified yet.&n; *&n; * Return 0 on success or -errno on error.&n; *&n; * Should be using block_prepare_write() [support for sparse files] or&n; * cont_prepare_write() [no support for sparse files]. Can&squot;t do that due to&n; * ntfs specifics but can look at them for implementation guidancea.&n; *&n; * Note: In the range, @from is inclusive and @to is exclusive, i.e. @from is&n; * the first byte in the page that will be written to and @to is the first byte&n; * after the last byte that will be written to.&n; */
+multiline_comment|/**&n; * ntfs_prepare_write - prepare a page for receiving data&n; *&n; * This is called from generic_file_write() with i_sem held on the inode&n; * (@page-&gt;mapping-&gt;host).  The @page is locked but not kmap()ped.  The source&n; * data has not yet been copied into the @page.&n; *&n; * Need to extend the attribute/fill in holes if necessary, create blocks and&n; * make partially overwritten blocks uptodate,&n; *&n; * i_size is not to be modified yet.&n; *&n; * Return 0 on success or -errno on error.&n; *&n; * Should be using block_prepare_write() [support for sparse files] or&n; * cont_prepare_write() [no support for sparse files].  Cannot do that due to&n; * ntfs specifics but can look at them for implementation guidance.&n; *&n; * Note: In the range, @from is inclusive and @to is exclusive, i.e. @from is&n; * the first byte in the page that will be written to and @to is the first byte&n; * after the last byte that will be written to.&n; */
 DECL|function|ntfs_prepare_write
 r_static
 r_int
@@ -6207,6 +6197,9 @@ r_int
 id|to
 )paren
 (brace
+id|s64
+id|new_size
+suffix:semicolon
 r_struct
 id|inode
 op_star
@@ -6216,6 +6209,11 @@ id|page-&gt;mapping-&gt;host
 suffix:semicolon
 id|ntfs_inode
 op_star
+id|base_ni
+op_assign
+l_int|NULL
+comma
+op_star
 id|ni
 op_assign
 id|NTFS_I
@@ -6223,6 +6221,38 @@ c_func
 (paren
 id|vi
 )paren
+suffix:semicolon
+id|ntfs_volume
+op_star
+id|vol
+op_assign
+id|ni-&gt;vol
+suffix:semicolon
+id|ntfs_attr_search_ctx
+op_star
+id|ctx
+op_assign
+l_int|NULL
+suffix:semicolon
+id|MFT_RECORD
+op_star
+id|m
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ATTR_RECORD
+op_star
+id|a
+suffix:semicolon
+id|u8
+op_star
+id|kaddr
+suffix:semicolon
+id|u32
+id|attr_len
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -6276,6 +6306,82 @@ OG
 id|to
 )paren
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|NInoMstProtected
+c_func
+(paren
+id|ni
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * If a previous ntfs_truncate() failed, repeat it and abort if it&n;&t; * fails again.&n;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|NInoTruncateFailed
+c_func
+(paren
+id|ni
+)paren
+)paren
+)paren
+(brace
+id|down_write
+c_func
+(paren
+op_amp
+id|vi-&gt;i_alloc_sem
+)paren
+suffix:semicolon
+id|err
+op_assign
+id|ntfs_truncate
+c_func
+(paren
+id|vi
+)paren
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|vi-&gt;i_alloc_sem
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_logical_or
+id|NInoTruncateFailed
+c_func
+(paren
+id|ni
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|err
+)paren
+id|err
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+r_goto
+id|err_out
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* If the attribute is not resident, deal with it elsewhere. */
 r_if
 c_cond
 (paren
@@ -6375,32 +6481,6 @@ id|EOPNOTSUPP
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// TODO: Implement and remove this check.
-r_if
-c_cond
-(paren
-id|NInoMstProtected
-c_func
-(paren
-id|ni
-)paren
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-id|vi-&gt;i_sb
-comma
-l_string|&quot;Writing to MST protected &quot;
-l_string|&quot;attributes is not supported yet. &quot;
-l_string|&quot;Sorry.&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EOPNOTSUPP
-suffix:semicolon
-)brace
 multiline_comment|/* Normal data stream. */
 r_return
 id|ntfs_prepare_nonresident_write
@@ -6414,7 +6494,7 @@ id|to
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Attribute is resident, implying it is not compressed, encrypted, or&n;&t; * mst protected.&n;&t; */
+multiline_comment|/*&n;&t; * Attribute is resident, implying it is not compressed, encrypted, or&n;&t; * sparse.&n;&t; */
 id|BUG_ON
 c_func
 (paren
@@ -6425,10 +6505,8 @@ id|page
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Do we need to resize the attribute? */
-r_if
-c_cond
-(paren
+id|new_size
+op_assign
 (paren
 (paren
 id|s64
@@ -6439,26 +6517,433 @@ id|PAGE_CACHE_SHIFT
 )paren
 op_plus
 id|to
-OG
+suffix:semicolon
+multiline_comment|/* If we do not need to resize the attribute allocation we are done. */
+r_if
+c_cond
+(paren
+id|new_size
+op_le
 id|vi-&gt;i_size
 )paren
+r_goto
+id|done
+suffix:semicolon
+multiline_comment|/* Map, pin, and lock the (base) mft record. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|NInoAttr
+c_func
+(paren
+id|ni
+)paren
+)paren
+id|base_ni
+op_assign
+id|ni
+suffix:semicolon
+r_else
+id|base_ni
+op_assign
+id|ni-&gt;ext.base_ntfs_ino
+suffix:semicolon
+id|m
+op_assign
+id|map_mft_record
+c_func
+(paren
+id|base_ni
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|m
+)paren
+)paren
 (brace
-singleline_comment|// TODO: Implement resize...
+id|err
+op_assign
+id|PTR_ERR
+c_func
+(paren
+id|m
+)paren
+suffix:semicolon
+id|m
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ctx
+op_assign
+l_int|NULL
+suffix:semicolon
+r_goto
+id|err_out
+suffix:semicolon
+)brace
+id|ctx
+op_assign
+id|ntfs_attr_get_search_ctx
+c_func
+(paren
+id|base_ni
+comma
+id|m
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+op_logical_neg
+id|ctx
+)paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|err_out
+suffix:semicolon
+)brace
+id|err
+op_assign
+id|ntfs_attr_lookup
+c_func
+(paren
+id|ni-&gt;type
+comma
+id|ni-&gt;name
+comma
+id|ni-&gt;name_len
+comma
+id|CASE_SENSITIVE
+comma
+l_int|0
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+id|ctx
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
+)paren
+id|err
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+r_goto
+id|err_out
+suffix:semicolon
+)brace
+id|m
+op_assign
+id|ctx-&gt;mrec
+suffix:semicolon
+id|a
+op_assign
+id|ctx-&gt;attr
+suffix:semicolon
+multiline_comment|/* The total length of the attribute value. */
+id|attr_len
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|a-&gt;data.resident.value_length
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|vi-&gt;i_size
+op_ne
+id|attr_len
+)paren
+suffix:semicolon
+multiline_comment|/* Check if new size is allowed in $AttrDef. */
+id|err
+op_assign
+id|ntfs_attr_size_bounds_check
+c_func
+(paren
+id|vol
+comma
+id|ni-&gt;type
+comma
+id|new_size
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ERANGE
+)paren
+(brace
 id|ntfs_error
 c_func
 (paren
-id|vi-&gt;i_sb
+id|vol-&gt;sb
 comma
-l_string|&quot;Writing beyond the existing file size is &quot;
-l_string|&quot;not supported yet. Sorry.&quot;
+l_string|&quot;Write would cause the inode &quot;
+l_string|&quot;0x%lx to exceed the maximum size for &quot;
+l_string|&quot;its attribute type (0x%x).  Aborting &quot;
+l_string|&quot;write.&quot;
+comma
+id|vi-&gt;i_ino
+comma
+id|le32_to_cpu
+c_func
+(paren
+id|ni-&gt;type
+)paren
 )paren
 suffix:semicolon
-r_return
+)brace
+r_else
+(brace
+id|ntfs_error
+c_func
+(paren
+id|vol-&gt;sb
+comma
+l_string|&quot;Inode 0x%lx has unknown &quot;
+l_string|&quot;attribute type 0x%x.  Aborting &quot;
+l_string|&quot;write.&quot;
+comma
+id|vi-&gt;i_ino
+comma
+id|le32_to_cpu
+c_func
+(paren
+id|ni-&gt;type
+)paren
+)paren
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+r_goto
+id|err_out2
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Extend the attribute record to be able to store the new attribute&n;&t; * size.&n;&t; */
+r_if
+c_cond
+(paren
+id|new_size
+op_ge
+id|vol-&gt;mft_record_size
+op_logical_or
+id|ntfs_attr_record_resize
+c_func
+(paren
+id|m
+comma
+id|a
+comma
+id|le16_to_cpu
+c_func
+(paren
+id|a-&gt;data.resident.value_offset
+)paren
+op_plus
+id|new_size
+)paren
+)paren
+(brace
+multiline_comment|/* Not enough space in the mft record. */
+id|ntfs_error
+c_func
+(paren
+id|vol-&gt;sb
+comma
+l_string|&quot;Not enough space in the mft record for &quot;
+l_string|&quot;the resized attribute value.  This is not &quot;
+l_string|&quot;supported yet.  Aborting write.&quot;
+)paren
+suffix:semicolon
+id|err
+op_assign
 op_minus
 id|EOPNOTSUPP
 suffix:semicolon
+r_goto
+id|err_out2
+suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Because resident attributes are handled by memcpy() to/from the&n;&t; * corresponding MFT record, and because this form of i/o is byte&n;&t; * aligned rather than block aligned, there is no need to bring the&n;&t; * page uptodate here as in the non-resident case where we need to&n;&t; * bring the buffers straddled by the write uptodate before&n;&t; * generic_file_write() does the copying from userspace.&n;&t; *&n;&t; * We thus defer the uptodate bringing of the page region outside the&n;&t; * region written to to ntfs_commit_write(). The reason for doing this&n;&t; * is that we save one round of:&n;&t; *&t;map_mft_record(), ntfs_attr_get_search_ctx(),&n;&t; *&t;ntfs_attr_lookup(), kmap_atomic(), kunmap_atomic(),&n;&t; *&t;ntfs_attr_put_search_ctx(), unmap_mft_record().&n;&t; * Which is obviously a very worthwhile save.&n;&t; *&n;&t; * Thus we just return success now...&n;&t; */
+multiline_comment|/*&n;&t; * We have enough space in the mft record to fit the write.  This&n;&t; * implies the attribute is smaller than the mft record and hence the&n;&t; * attribute must be in a single page and hence page-&gt;index must be 0.&n;&t; */
+id|BUG_ON
+c_func
+(paren
+id|page-&gt;index
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * If the beginning of the write is past the old size, enlarge the&n;&t; * attribute value up to the beginning of the write and fill it with&n;&t; * zeroes.&n;&t; */
+r_if
+c_cond
+(paren
+id|from
+OG
+id|attr_len
+)paren
+(brace
+id|memset
+c_func
+(paren
+(paren
+id|u8
+op_star
+)paren
+id|a
+op_plus
+id|le16_to_cpu
+c_func
+(paren
+id|a-&gt;data.resident.value_offset
+)paren
+op_plus
+id|attr_len
+comma
+l_int|0
+comma
+id|from
+op_minus
+id|attr_len
+)paren
+suffix:semicolon
+id|a-&gt;data.resident.value_length
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|from
+)paren
+suffix:semicolon
+multiline_comment|/* Zero the corresponding area in the page as well. */
+r_if
+c_cond
+(paren
+id|PageUptodate
+c_func
+(paren
+id|page
+)paren
+)paren
+(brace
+id|kaddr
+op_assign
+id|kmap_atomic
+c_func
+(paren
+id|page
+comma
+id|KM_USER0
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|kaddr
+op_plus
+id|attr_len
+comma
+l_int|0
+comma
+id|from
+op_minus
+id|attr_len
+)paren
+suffix:semicolon
+id|kunmap_atomic
+c_func
+(paren
+id|kaddr
+comma
+id|KM_USER0
+)paren
+suffix:semicolon
+id|flush_dcache_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
+)brace
+id|flush_dcache_mft_record_page
+c_func
+(paren
+id|ctx-&gt;ntfs_ino
+)paren
+suffix:semicolon
+id|mark_mft_record_dirty
+c_func
+(paren
+id|ctx-&gt;ntfs_ino
+)paren
+suffix:semicolon
+id|ntfs_attr_put_search_ctx
+c_func
+(paren
+id|ctx
+)paren
+suffix:semicolon
+id|unmap_mft_record
+c_func
+(paren
+id|base_ni
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Because resident attributes are handled by memcpy() to/from the&n;&t; * corresponding MFT record, and because this form of i/o is byte&n;&t; * aligned rather than block aligned, there is no need to bring the&n;&t; * page uptodate here as in the non-resident case where we need to&n;&t; * bring the buffers straddled by the write uptodate before&n;&t; * generic_file_write() does the copying from userspace.&n;&t; *&n;&t; * We thus defer the uptodate bringing of the page region outside the&n;&t; * region written to to ntfs_commit_write(), which makes the code&n;&t; * simpler and saves one atomic kmap which is good.&n;&t; */
+id|done
+suffix:colon
 id|ntfs_debug
 c_func
 (paren
@@ -6468,8 +6953,79 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|err_out
+suffix:colon
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOMEM
+)paren
+id|ntfs_warning
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+l_string|&quot;Error allocating memory required to &quot;
+l_string|&quot;prepare the write.&quot;
+)paren
+suffix:semicolon
+r_else
+(brace
+id|ntfs_error
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+l_string|&quot;Resident attribute prepare write failed &quot;
+l_string|&quot;with error %i.&quot;
+comma
+id|err
+)paren
+suffix:semicolon
+id|NVolSetErrors
+c_func
+(paren
+id|vol
+)paren
+suffix:semicolon
+id|make_bad_inode
+c_func
+(paren
+id|vi
+)paren
+suffix:semicolon
 )brace
-multiline_comment|/*&n; * NOTES: There is a disparity between the apparent need to extend the&n; * attribute in prepare write but to update i_size only in commit write.&n; * Need to make sure i_sem protection is sufficient. And if not will need to&n; * handle this in some way or another.&n; */
+id|err_out2
+suffix:colon
+r_if
+c_cond
+(paren
+id|ctx
+)paren
+id|ntfs_attr_put_search_ctx
+c_func
+(paren
+id|ctx
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|m
+)paren
+id|unmap_mft_record
+c_func
+(paren
+id|base_ni
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * ntfs_commit_nonresident_write -&n; *&n; */
 DECL|function|ntfs_commit_nonresident_write
 r_static
@@ -6507,6 +7063,8 @@ r_struct
 id|inode
 op_star
 id|vi
+op_assign
+id|page-&gt;mapping-&gt;host
 suffix:semicolon
 r_struct
 id|buffer_head
@@ -6526,10 +7084,6 @@ id|blocksize
 suffix:semicolon
 id|BOOL
 id|partial
-suffix:semicolon
-id|vi
-op_assign
-id|page-&gt;mapping-&gt;host
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -6560,11 +7114,11 @@ l_int|1
 op_lshift
 id|vi-&gt;i_blkbits
 suffix:semicolon
-singleline_comment|// FIXME: We need a whole slew of special cases in here for MST
-singleline_comment|// protected attributes for example. For compressed files, too...
+singleline_comment|// FIXME: We need a whole slew of special cases in here for compressed
+singleline_comment|// files for example...
 singleline_comment|// For now, we know ntfs_prepare_write() would have failed so we can&squot;t
 singleline_comment|// get here in any of the cases which we have to special case, so we
-singleline_comment|// are just a ripped off unrolled generic_commit_write() at present.
+singleline_comment|// are just a ripped off, unrolled generic_commit_write().
 id|bh
 op_assign
 id|head
@@ -6650,7 +7204,7 @@ op_ne
 id|head
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If this is a partial write which happened to make all buffers&n;&t; * uptodate then we can optimize away a bogus -&gt;readpage() for the next&n;&t; * read(). Here we &squot;discover&squot; whether the page went uptodate as a&n;&t; * result of this (potentially partial) write.&n;&t; */
+multiline_comment|/*&n;&t; * If this is a partial write which happened to make all buffers&n;&t; * uptodate then we can optimize away a bogus -&gt;readpage() for the next&n;&t; * read().  Here we &squot;discover&squot; whether the page went uptodate as a&n;&t; * result of this (potentially partial) write.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6663,7 +7217,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Not convinced about this at all. See disparity comment above. For&n;&t; * now we know ntfs_prepare_write() would have failed in the write&n;&t; * exceeds i_size case, so this will never trigger which is fine.&n;&t; */
+multiline_comment|/*&n;&t; * Not convinced about this at all.  See disparity comment above.  For&n;&t; * now we know ntfs_prepare_write() would have failed in the write&n;&t; * exceeds i_size case, so this will never trigger which is fine.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6678,7 +7232,7 @@ c_func
 id|vi-&gt;i_sb
 comma
 l_string|&quot;Writing beyond the existing file size is &quot;
-l_string|&quot;not supported yet. Sorry.&quot;
+l_string|&quot;not supported yet.  Sorry.&quot;
 )paren
 suffix:semicolon
 r_return
@@ -6698,7 +7252,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_commit_write - commit the received data&n; *&n; * This is called from generic_file_write() with i_sem held on the inode&n; * (@page-&gt;mapping-&gt;host). The @page is locked and kmap()ped so page_address()&n; * can simply be used. The source data has already been copied into the @page.&n; *&n; * Need to mark modified blocks dirty so they get written out later when&n; * ntfs_writepage() is invoked by the VM.&n; *&n; * Return 0 on success or -errno on error.&n; *&n; * Should be using generic_commit_write(). This marks buffers uptodate and&n; * dirty, sets the page uptodate if all buffers in the page are uptodate, and&n; * updates i_size if the end of io is beyond i_size. In that case, it also&n; * marks the inode dirty. - We could still use this (obviously except for&n; * NInoMstProtected() attributes, where we will need to duplicate the core code&n; * because we need our own async_io completion handler) but we could just do&n; * the i_size update in prepare write, when we resize the attribute. Then&n; * we would avoid the i_size update and mark_inode_dirty() happening here.&n; *&n; * Can&squot;t use generic_commit_write() due to ntfs specialities but can look at&n; * it for implementation guidance.&n; *&n; * If things have gone as outlined in ntfs_prepare_write(), then we do not&n; * need to do any page content modifications here at all, except in the write&n; * to resident attribute case, where we need to do the uptodate bringing here&n; * which we combine with the copying into the mft record which means we only&n; * need to map the mft record and find the attribute record in it only once.&n; */
+multiline_comment|/**&n; * ntfs_commit_write - commit the received data&n; *&n; * This is called from generic_file_write() with i_sem held on the inode&n; * (@page-&gt;mapping-&gt;host).  The @page is locked but not kmap()ped.  The source&n; * data has already been copied into the @page.  ntfs_prepare_write() has been&n; * called before the data copied and it returned success so we can take the&n; * results of various BUG checks and some error handling for granted.&n; *&n; * Need to mark modified blocks dirty so they get written out later when&n; * ntfs_writepage() is invoked by the VM.&n; *&n; * Return 0 on success or -errno on error.&n; *&n; * Should be using generic_commit_write().  This marks buffers uptodate and&n; * dirty, sets the page uptodate if all buffers in the page are uptodate, and&n; * updates i_size if the end of io is beyond i_size.  In that case, it also&n; * marks the inode dirty.&n; *&n; * Cannot use generic_commit_write() due to ntfs specialities but can look at&n; * it for implementation guidance.&n; *&n; * If things have gone as outlined in ntfs_prepare_write(), then we do not&n; * need to do any page content modifications here at all, except in the write&n; * to resident attribute case, where we need to do the uptodate bringing here&n; * which we combine with the copying into the mft record which means we save&n; * one atomic kmap.&n; */
 DECL|function|ntfs_commit_write
 r_static
 r_int
@@ -6722,20 +7276,25 @@ r_int
 id|to
 )paren
 (brace
-id|s64
-id|attr_pos
-suffix:semicolon
 r_struct
 id|inode
 op_star
 id|vi
+op_assign
+id|page-&gt;mapping-&gt;host
 suffix:semicolon
 id|ntfs_inode
 op_star
-id|ni
+id|base_ni
 comma
 op_star
-id|base_ni
+id|ni
+op_assign
+id|NTFS_I
+c_func
+(paren
+id|vi
+)paren
 suffix:semicolon
 r_char
 op_star
@@ -6752,25 +7311,15 @@ id|MFT_RECORD
 op_star
 id|m
 suffix:semicolon
+id|ATTR_RECORD
+op_star
+id|a
+suffix:semicolon
 id|u32
 id|attr_len
-comma
-id|bytes
 suffix:semicolon
 r_int
 id|err
-suffix:semicolon
-id|vi
-op_assign
-id|page-&gt;mapping-&gt;host
-suffix:semicolon
-id|ni
-op_assign
-id|NTFS_I
-c_func
-(paren
-id|vi
-)paren
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -6789,6 +7338,7 @@ comma
 id|to
 )paren
 suffix:semicolon
+multiline_comment|/* If the attribute is not resident, deal with it elsewhere. */
 r_if
 c_cond
 (paren
@@ -6799,7 +7349,7 @@ id|ni
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Only unnamed $DATA attributes can be compressed, encrypted,&n;&t;&t; * and/or sparse.&n;&t;&t; */
+multiline_comment|/* Only unnamed $DATA attributes can be compressed/encrypted. */
 r_if
 c_cond
 (paren
@@ -6811,7 +7361,7 @@ op_logical_neg
 id|ni-&gt;name_len
 )paren
 (brace
-multiline_comment|/* If file is encrypted, deny access, just like NT4. */
+multiline_comment|/* Encrypted files need separate handling. */
 r_if
 c_cond
 (paren
@@ -6822,17 +7372,11 @@ id|ni
 )paren
 )paren
 (brace
-singleline_comment|// Should never get here!
-id|ntfs_debug
+singleline_comment|// We never get here at present!
+id|BUG
 c_func
 (paren
-l_string|&quot;Denying write access to encrypted &quot;
-l_string|&quot;file.&quot;
 )paren
-suffix:semicolon
-r_return
-op_minus
-id|EACCES
 suffix:semicolon
 )brace
 multiline_comment|/* Compressed data streams are handled in compress.c. */
@@ -6846,77 +7390,15 @@ id|ni
 )paren
 )paren
 (brace
-singleline_comment|// TODO: Implement and replace this check with
+singleline_comment|// TODO: Implement this!
 singleline_comment|// return ntfs_write_compressed_block(page);
-singleline_comment|// Should never get here!
-id|ntfs_error
+singleline_comment|// We never get here at present!
+id|BUG
 c_func
 (paren
-id|vi-&gt;i_sb
-comma
-l_string|&quot;Writing to compressed &quot;
-l_string|&quot;files is not supported yet. &quot;
-l_string|&quot;Sorry.&quot;
 )paren
-suffix:semicolon
-r_return
-op_minus
-id|EOPNOTSUPP
 suffix:semicolon
 )brace
-singleline_comment|// TODO: Implement and remove this check.
-r_if
-c_cond
-(paren
-id|NInoSparse
-c_func
-(paren
-id|ni
-)paren
-)paren
-(brace
-singleline_comment|// Should never get here!
-id|ntfs_error
-c_func
-(paren
-id|vi-&gt;i_sb
-comma
-l_string|&quot;Writing to sparse files &quot;
-l_string|&quot;is not supported yet. Sorry.&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EOPNOTSUPP
-suffix:semicolon
-)brace
-)brace
-singleline_comment|// TODO: Implement and remove this check.
-r_if
-c_cond
-(paren
-id|NInoMstProtected
-c_func
-(paren
-id|ni
-)paren
-)paren
-(brace
-singleline_comment|// Should never get here!
-id|ntfs_error
-c_func
-(paren
-id|vi-&gt;i_sb
-comma
-l_string|&quot;Writing to MST protected &quot;
-l_string|&quot;attributes is not supported yet. &quot;
-l_string|&quot;Sorry.&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EOPNOTSUPP
-suffix:semicolon
 )brace
 multiline_comment|/* Normal data stream. */
 r_return
@@ -6931,44 +7413,7 @@ id|to
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Attribute is resident, implying it is not compressed, encrypted, or&n;&t; * mst protected.&n;&t; */
-multiline_comment|/* Do we need to resize the attribute? */
-r_if
-c_cond
-(paren
-(paren
-(paren
-id|s64
-)paren
-id|page-&gt;index
-op_lshift
-id|PAGE_CACHE_SHIFT
-)paren
-op_plus
-id|to
-OG
-id|vi-&gt;i_size
-)paren
-(brace
-singleline_comment|// TODO: Implement resize...
-singleline_comment|// pos = ((s64)page-&gt;index &lt;&lt; PAGE_CACHE_SHIFT) + to;
-singleline_comment|// vi-&gt;i_size = pos;
-singleline_comment|// mark_inode_dirty(vi);
-singleline_comment|// Should never get here!
-id|ntfs_error
-c_func
-(paren
-id|vi-&gt;i_sb
-comma
-l_string|&quot;Writing beyond the existing file size is &quot;
-l_string|&quot;not supported yet. Sorry.&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EOPNOTSUPP
-suffix:semicolon
-)brace
+multiline_comment|/*&n;&t; * Attribute is resident, implying it is not compressed, encrypted, or&n;&t; * sparse.&n;&t; */
 r_if
 c_cond
 (paren
@@ -7088,15 +7533,27 @@ c_func
 id|err
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
+)paren
+id|err
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
 r_goto
 id|err_out
 suffix:semicolon
-multiline_comment|/* Starting position of the page within the attribute value. */
-id|attr_pos
+)brace
+id|a
 op_assign
-id|page-&gt;index
-op_lshift
-id|PAGE_CACHE_SHIFT
+id|ctx-&gt;attr
 suffix:semicolon
 multiline_comment|/* The total length of the attribute value. */
 id|attr_len
@@ -7104,119 +7561,30 @@ op_assign
 id|le32_to_cpu
 c_func
 (paren
-id|ctx-&gt;attr-&gt;data.resident.value_length
+id|a-&gt;data.resident.value_length
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
+id|BUG_ON
 c_func
 (paren
-id|vi-&gt;i_size
-op_ne
-id|attr_len
-)paren
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-id|vi-&gt;i_sb
-comma
-l_string|&quot;BUG()! i_size (0x%llx) doesn&squot;t match &quot;
-l_string|&quot;attr_len (0x%x). Aborting write.&quot;
-comma
-id|vi-&gt;i_size
-comma
-id|attr_len
-)paren
-suffix:semicolon
-id|err
-op_assign
-op_minus
-id|EIO
-suffix:semicolon
-r_goto
-id|err_out
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|attr_pos
-op_ge
-id|attr_len
-)paren
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-id|vi-&gt;i_sb
-comma
-l_string|&quot;BUG()! attr_pos (0x%llx) &gt; attr_len &quot;
-l_string|&quot;(0x%x). Aborting write.&quot;
-comma
-(paren
-r_int
-r_int
-r_int
-)paren
-id|attr_pos
-comma
-id|attr_len
-)paren
-suffix:semicolon
-id|err
-op_assign
-op_minus
-id|EIO
-suffix:semicolon
-r_goto
-id|err_out
-suffix:semicolon
-)brace
-id|bytes
-op_assign
-id|attr_len
-op_minus
-id|attr_pos
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|bytes
+id|from
 OG
-id|PAGE_CACHE_SIZE
+id|attr_len
 )paren
-)paren
-id|bytes
-op_assign
-id|PAGE_CACHE_SIZE
 suffix:semicolon
-multiline_comment|/*&n;&t; * Calculate the address of the attribute value corresponding to the&n;&t; * beginning of the current data @page.&n;&t; */
 id|kattr
 op_assign
 (paren
 id|u8
 op_star
 )paren
-id|ctx-&gt;attr
+id|a
 op_plus
 id|le16_to_cpu
 c_func
 (paren
-id|ctx-&gt;attr-&gt;data.resident.value_offset
+id|a-&gt;data.resident.value_offset
 )paren
-op_plus
-id|attr_pos
 suffix:semicolon
 id|kaddr
 op_assign
@@ -7245,12 +7613,29 @@ op_minus
 id|from
 )paren
 suffix:semicolon
-id|flush_dcache_mft_record_page
+multiline_comment|/* Update the attribute length if necessary. */
+r_if
+c_cond
+(paren
+id|to
+OG
+id|attr_len
+)paren
+(brace
+id|attr_len
+op_assign
+id|to
+suffix:semicolon
+id|a-&gt;data.resident.value_length
+op_assign
+id|cpu_to_le32
 c_func
 (paren
-id|ctx-&gt;ntfs_ino
+id|attr_len
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * If the page is not uptodate, bring the out of bounds area(s)&n;&t; * uptodate by copying data from the mft record to the page.&n;&t; */
 r_if
 c_cond
 (paren
@@ -7262,7 +7647,6 @@ id|page
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Bring the out of bounds area(s) uptodate by copying data&n;&t;&t; * from the mft record to the page.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -7285,7 +7669,7 @@ c_cond
 (paren
 id|to
 OL
-id|bytes
+id|attr_len
 )paren
 id|memcpy
 c_func
@@ -7298,7 +7682,7 @@ id|kattr
 op_plus
 id|to
 comma
-id|bytes
+id|attr_len
 op_minus
 id|to
 )paren
@@ -7307,26 +7691,22 @@ multiline_comment|/* Zero the region outside the end of the attribute value. */
 r_if
 c_cond
 (paren
-id|likely
-c_func
-(paren
-id|bytes
+id|attr_len
 OL
 id|PAGE_CACHE_SIZE
-)paren
 )paren
 id|memset
 c_func
 (paren
 id|kaddr
 op_plus
-id|bytes
+id|attr_len
 comma
 l_int|0
 comma
 id|PAGE_CACHE_SIZE
 op_minus
-id|bytes
+id|attr_len
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * The probability of not having done any of the above is&n;&t;&t; * extremely small, so we just flush unconditionally.&n;&t;&t; */
@@ -7351,7 +7731,37 @@ comma
 id|KM_USER0
 )paren
 suffix:semicolon
+multiline_comment|/* Update i_size if necessary. */
+r_if
+c_cond
+(paren
+id|vi-&gt;i_size
+OL
+id|attr_len
+)paren
+(brace
+id|ni-&gt;allocated_size
+op_assign
+id|ni-&gt;initialized_size
+op_assign
+id|attr_len
+suffix:semicolon
+id|i_size_write
+c_func
+(paren
+id|vi
+comma
+id|attr_len
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Mark the mft record dirty, so it gets written back. */
+id|flush_dcache_mft_record_page
+c_func
+(paren
+id|ctx-&gt;ntfs_ino
+)paren
+suffix:semicolon
 id|mark_mft_record_dirty
 c_func
 (paren
@@ -7419,7 +7829,7 @@ l_string|&quot;dirty so the write will be retried &quot;
 l_string|&quot;later on by the VM.&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Put the page on mapping-&gt;dirty_pages, but leave its&n;&t;&t;&t; * buffer&squot;s dirty state as-is.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Put the page on mapping-&gt;dirty_pages, but leave its&n;&t;&t;&t; * buffers&squot; dirty state as-is.&n;&t;&t;&t; */
 id|__set_page_dirty_nobuffers
 c_func
 (paren
@@ -7437,8 +7847,8 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;Page is not uptodate. Written &quot;
-l_string|&quot;data has been lost. )-:&quot;
+l_string|&quot;Page is not uptodate.  Written &quot;
+l_string|&quot;data has been lost.&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7449,17 +7859,22 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;Resident attribute write failed with &quot;
-l_string|&quot;error %i. Setting page error flag.&quot;
+l_string|&quot;Resident attribute commit write failed &quot;
+l_string|&quot;with error %i.&quot;
 comma
-op_minus
 id|err
 )paren
 suffix:semicolon
-id|SetPageError
+id|NVolSetErrors
 c_func
 (paren
-id|page
+id|ni-&gt;vol
+)paren
+suffix:semicolon
+id|make_bad_inode
+c_func
+(paren
+id|vi
 )paren
 suffix:semicolon
 )brace
