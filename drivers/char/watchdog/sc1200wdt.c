@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;National Semiconductor PC87307/PC97307 (ala SC1200) WDT driver&n; *&t;(c) Copyright 2002 Zwane Mwaikambo &lt;zwane@commfireservices.com&gt;,&n; *&t;&t;&t;All Rights Reserved.&n; *&t;Based on wdt.c and wdt977.c by Alan Cox and Woody Suwalski respectively.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;The author(s) of this software shall not be held liable for damages&n; *&t;of any nature resulting due to the use of this software. This&n; *&t;software is provided AS-IS with no warranties.&n; *&n; *&t;Changelog:&n; *&t;20020220 Zwane Mwaikambo&t;Code based on datasheet, no hardware.&n; *&t;20020221 Zwane Mwaikambo&t;Cleanups as suggested by Jeff Garzik and Alan Cox.&n; *&t;20020222 Zwane Mwaikambo&t;Added probing.&n; *&t;20020225 Zwane Mwaikambo&t;Added ISAPNP support.&n; *&t;20020412 Rob Radez&t;&t;Broke out start/stop functions&n; *&t;&t; &lt;rob@osinvestor.com&gt;&t;Return proper status instead of temperature warning&n; *&t;&t;&t;&t;&t;Add WDIOC_GETBOOTSTATUS and WDIOC_SETOPTIONS ioctls&n; *&t;&t;&t;&t;&t;Fix CONFIG_WATCHDOG_NOWAYOUT&n; */
+multiline_comment|/*&n; *&t;National Semiconductor PC87307/PC97307 (ala SC1200) WDT driver&n; *&t;(c) Copyright 2002 Zwane Mwaikambo &lt;zwane@commfireservices.com&gt;,&n; *&t;&t;&t;All Rights Reserved.&n; *&t;Based on wdt.c and wdt977.c by Alan Cox and Woody Suwalski respectively.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;The author(s) of this software shall not be held liable for damages&n; *&t;of any nature resulting due to the use of this software. This&n; *&t;software is provided AS-IS with no warranties.&n; *&n; *&t;Changelog:&n; *&t;20020220 Zwane Mwaikambo&t;Code based on datasheet, no hardware.&n; *&t;20020221 Zwane Mwaikambo&t;Cleanups as suggested by Jeff Garzik and Alan Cox.&n; *&t;20020222 Zwane Mwaikambo&t;Added probing.&n; *&t;20020225 Zwane Mwaikambo&t;Added ISAPNP support.&n; *&t;20020412 Rob Radez&t;&t;Broke out start/stop functions&n; *&t;&t; &lt;rob@osinvestor.com&gt;&t;Return proper status instead of temperature warning&n; *&t;&t;&t;&t;&t;Add WDIOC_GETBOOTSTATUS and WDIOC_SETOPTIONS ioctls&n; *&t;&t;&t;&t;&t;Fix CONFIG_WATCHDOG_NOWAYOUT&n; *&t;20020530 Joel Becker&t;&t;Add Matt Domsch&squot;s nowayout module option&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 DECL|macro|SC1200_MODULE_VER
 mdefine_line|#define SC1200_MODULE_VER&t;&quot;build 20020303&quot;
 DECL|macro|SC1200_MODULE_NAME
@@ -165,6 +166,39 @@ c_func
 id|timeout
 comma
 l_string|&quot;range is 0-255 minutes, default is 1&quot;
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+id|MODULE_PARM
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_NOWAYOUT)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Read from Data Register */
@@ -471,18 +505,23 @@ id|watchdog_info
 id|ident
 op_assign
 (brace
+dot
 id|options
-suffix:colon
+op_assign
 id|WDIOF_KEEPALIVEPING
 op_or
 id|WDIOF_SETTIMEOUT
+op_or
+id|WDIOF_MAGICCLOSE
 comma
+dot
 id|firmware_version
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|identity
-suffix:colon
+op_assign
 l_string|&quot;PC87307/PC97307&quot;
 )brace
 suffix:semicolon
@@ -837,7 +876,13 @@ c_cond
 id|len
 )paren
 (brace
-macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nowayout
+)paren
+(brace
 r_int
 id|i
 suffix:semicolon
@@ -876,12 +921,10 @@ op_plus
 id|i
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -894,7 +937,7 @@ op_assign
 l_int|42
 suffix:semicolon
 )brace
-macro_line|#endif
+)brace
 id|sc1200wdt_write_data
 c_func
 (paren
