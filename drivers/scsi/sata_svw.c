@@ -536,50 +536,6 @@ id|ap-&gt;ioaddr.status_addr
 )paren
 suffix:semicolon
 )brace
-DECL|function|k2_sata_set_piomode
-r_static
-r_void
-id|k2_sata_set_piomode
-(paren
-r_struct
-id|ata_port
-op_star
-id|ap
-comma
-r_struct
-id|ata_device
-op_star
-id|adev
-comma
-r_int
-r_int
-id|pio
-)paren
-(brace
-multiline_comment|/* We need empty implementation, the core doesn&squot;t test for NULL&n;&t; * function pointer&n;&t; */
-)brace
-DECL|function|k2_sata_set_udmamode
-r_static
-r_void
-id|k2_sata_set_udmamode
-(paren
-r_struct
-id|ata_port
-op_star
-id|ap
-comma
-r_struct
-id|ata_device
-op_star
-id|adev
-comma
-r_int
-r_int
-id|udma
-)paren
-(brace
-multiline_comment|/* We need empty implementation, the core doesn&squot;t test for NULL&n;&t; * function pointer&n;&t; */
-)brace
 macro_line|#ifdef CONFIG_PPC_OF
 multiline_comment|/*&n; * k2_sata_proc_info&n; * inout : decides on the direction of the dataflow and the meaning of the&n; *&t;   variables&n; * buffer: If inout==FALSE data is being written to it else read from it&n; * *start: If inout==FALSE start of the valid data in the buffer&n; * offset: If inout==FALSE offset from the beginning of the imaginary file&n; *&t;   from which we start writing into the buffer&n; * length: If inout==FALSE max number of bytes to be written into the buffer&n; *&t;   else number of bytes in the buffer&n; */
 DECL|function|k2_sata_proc_info
@@ -868,16 +824,6 @@ dot
 id|port_disable
 op_assign
 id|ata_port_disable
-comma
-dot
-id|set_piomode
-op_assign
-id|k2_sata_set_piomode
-comma
-dot
-id|set_udmamode
-op_assign
-id|k2_sata_set_udmamode
 comma
 dot
 id|tf_load

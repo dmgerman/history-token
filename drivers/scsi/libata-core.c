@@ -5046,6 +5046,11 @@ id|XFER_PIO_3
 suffix:colon
 id|XFER_PIO_4
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ap-&gt;ops-&gt;set_piomode
+)paren
 id|ap-&gt;ops
 op_member_access_from_pointer
 id|set_piomode
@@ -5360,6 +5365,11 @@ id|udma_mode
 op_assign
 id|udma_mode
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ap-&gt;ops-&gt;set_udmamode
+)paren
 id|ap-&gt;ops
 op_member_access_from_pointer
 id|set_udmamode
