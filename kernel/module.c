@@ -1605,13 +1605,18 @@ id|out
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* If it has an init func, it must have an exit func to unload */
 r_if
 c_cond
 (paren
+(paren
+id|mod-&gt;init
+op_logical_and
 op_logical_neg
 id|mod
 op_member_access_from_pointer
 m_exit
+)paren
 op_logical_or
 id|mod-&gt;unsafe
 )paren
@@ -1909,6 +1914,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|mod-&gt;init
+op_logical_and
 op_logical_neg
 id|mod
 op_member_access_from_pointer
