@@ -3619,7 +3619,15 @@ id|prot
 (brace
 r_int
 r_int
+id|base
+comma
 id|end
+suffix:semicolon
+id|base
+op_assign
+id|address
+op_amp
+id|PGDIR_MASK
 suffix:semicolon
 id|address
 op_and_assign
@@ -3656,6 +3664,8 @@ id|mm
 comma
 id|pmd
 comma
+id|base
+op_plus
 id|address
 )paren
 suffix:semicolon
@@ -3674,6 +3684,8 @@ c_func
 (paren
 id|pte
 comma
+id|base
+op_plus
 id|address
 comma
 id|end
