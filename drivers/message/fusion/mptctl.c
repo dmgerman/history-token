@@ -1514,7 +1514,7 @@ id|flags
 suffix:semicolon
 id|hd-&gt;tmState
 op_assign
-id|TM_STATE_ERROR
+id|TM_STATE_NONE
 suffix:semicolon
 id|hd-&gt;tmPending
 op_assign
@@ -8252,6 +8252,16 @@ op_eq
 id|MPI_FUNCTION_SCSI_TASK_MGMT
 )paren
 (brace
+id|DBG_DUMP_TM_REQUEST_FRAME
+c_func
+(paren
+(paren
+id|u32
+op_star
+)paren
+id|mf
+)paren
+suffix:semicolon
 id|rc
 op_assign
 id|mpt_send_handshake_request
@@ -11101,6 +11111,7 @@ comma
 suffix:semicolon
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 DECL|function|mptctl_init
+r_static
 r_int
 id|__init
 id|mptctl_init
@@ -11665,6 +11676,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 DECL|function|mptctl_exit
+r_static
 r_void
 id|mptctl_exit
 c_func

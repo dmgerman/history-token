@@ -30,9 +30,9 @@ DECL|macro|COPYRIGHT
 mdefine_line|#define COPYRIGHT&t;&quot;Copyright (c) 1999-2004 &quot; MODULEAUTHOR
 macro_line|#endif
 DECL|macro|MPT_LINUX_VERSION_COMMON
-mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.01.15&quot;
+mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.01.16&quot;
 DECL|macro|MPT_LINUX_PACKAGE_NAME
-mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.01.15&quot;
+mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.01.16&quot;
 DECL|macro|WHAT_MAGIC_STRING
 mdefine_line|#define WHAT_MAGIC_STRING&t;&t;&quot;@&quot; &quot;(&quot; &quot;#&quot; &quot;)&quot;
 DECL|macro|show_mptmod_ver
@@ -504,51 +504,6 @@ suffix:semicolon
 DECL|typedef|Q_TRACKER
 )brace
 id|Q_TRACKER
-suffix:semicolon
-DECL|struct|_MPT_DONE_Q
-r_typedef
-r_struct
-id|_MPT_DONE_Q
-(brace
-DECL|member|forw
-r_struct
-id|_MPT_DONE_Q
-op_star
-id|forw
-suffix:semicolon
-DECL|member|back
-r_struct
-id|_MPT_DONE_Q
-op_star
-id|back
-suffix:semicolon
-DECL|member|argp
-r_void
-op_star
-id|argp
-suffix:semicolon
-DECL|typedef|MPT_DONE_Q
-)brace
-id|MPT_DONE_Q
-suffix:semicolon
-DECL|struct|_DONE_Q_TRACKER
-r_typedef
-r_struct
-id|_DONE_Q_TRACKER
-(brace
-DECL|member|head
-id|MPT_DONE_Q
-op_star
-id|head
-suffix:semicolon
-DECL|member|tail
-id|MPT_DONE_Q
-op_star
-id|tail
-suffix:semicolon
-DECL|typedef|DONE_Q_TRACKER
-)brace
-id|DONE_Q_TRACKER
 suffix:semicolon
 multiline_comment|/*&n; *  Chip-specific stuff... FC929 delineates break between&n; *  FC and Parallel SCSI parts. Do NOT re-order.&n; */
 r_typedef
@@ -2020,7 +1975,7 @@ macro_line|#ifdef MPT_DEBUG_TM
 DECL|macro|dtmprintk
 mdefine_line|#define dtmprintk(x) printk x
 DECL|macro|DBG_DUMP_TM_REQUEST_FRAME
-mdefine_line|#define DBG_DUMP_TM_REQUEST_FRAME(mfp) &bslash;&n;&t;{&t;u32 *m = (u32 *)(mfp);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int  i, n = 12;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;TM_REQUEST:&bslash;n&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;for (i=0; i&lt;n; i++) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;if (i &amp;&amp; ((i%8)==0))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;printk(&quot;&bslash;n&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(&quot;%08x &quot;, le32_to_cpu(m[i]));&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;&bslash;n&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
+mdefine_line|#define DBG_DUMP_TM_REQUEST_FRAME(mfp) &bslash;&n;&t;{&t;u32 *m = (u32 *)(mfp);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int  i, n = 13;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;TM_REQUEST:&bslash;n&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;for (i=0; i&lt;n; i++) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;if (i &amp;&amp; ((i%8)==0))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;printk(&quot;&bslash;n&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(&quot;%08x &quot;, le32_to_cpu(m[i]));&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;&bslash;n&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
 DECL|macro|DBG_DUMP_TM_REPLY_FRAME
 mdefine_line|#define DBG_DUMP_TM_REPLY_FRAME(mfp) &bslash;&n;&t;{&t;u32 *m = (u32 *)(mfp);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int  i, n = (le32_to_cpu(m[0]) &amp; 0x00FF0000) &gt;&gt; 16;&t;&bslash;&n;&t;&t;printk(&quot;TM_REPLY MessageLength=%d:&bslash;n&quot;, n);&t;&t;&bslash;&n;&t;&t;for (i=0; i&lt;n; i++) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;if (i &amp;&amp; ((i%8)==0))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;printk(&quot;&bslash;n&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(&quot; %08x&quot;, le32_to_cpu(m[i]));&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;&bslash;n&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
 macro_line|#else
@@ -2212,34 +2167,11 @@ id|TMtimer
 suffix:semicolon
 multiline_comment|/* Timer for TM commands ONLY */
 multiline_comment|/* Pool of memory for holding SCpnts before doing&n;&t;&t; * OS callbacks. freeQ is the free pool.&n;&t;&t; */
-DECL|member|memQ
-id|u8
-op_star
-id|memQ
-suffix:semicolon
-DECL|member|freeQ
-id|DONE_Q_TRACKER
-id|freeQ
-suffix:semicolon
-DECL|member|doneQ
-id|DONE_Q_TRACKER
-id|doneQ
-suffix:semicolon
-multiline_comment|/* Holds Linux formmatted requests */
-DECL|member|pendingQ
-id|DONE_Q_TRACKER
-id|pendingQ
-suffix:semicolon
-multiline_comment|/* Holds MPI formmatted requests */
 DECL|member|taskQ
 id|MPT_Q_TRACKER
 id|taskQ
 suffix:semicolon
 multiline_comment|/* TM request Q */
-DECL|member|freedoneQlock
-id|spinlock_t
-id|freedoneQlock
-suffix:semicolon
 DECL|member|taskQcnt
 r_int
 id|taskQcnt

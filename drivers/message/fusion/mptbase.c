@@ -12846,6 +12846,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; *&t;initChainBuffers - Allocate memory for and initialize&n; *&t;chain buffers, chain buffer control arrays and spinlock.&n; *&t;@hd: Pointer to MPT_SCSI_HOST structure&n; *&t;@init: If set, initialize the spin lock.&n; */
+r_static
 r_int
 DECL|function|initChainBuffers
 id|initChainBuffers
