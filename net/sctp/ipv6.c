@@ -758,7 +758,8 @@ op_star
 id|saddr
 )paren
 (brace
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 suffix:semicolon

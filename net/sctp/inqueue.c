@@ -102,7 +102,8 @@ op_star
 id|queue
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon
@@ -114,7 +115,8 @@ c_loop
 id|chunk
 op_assign
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 )paren
 id|skb_dequeue
@@ -125,7 +127,7 @@ id|queue-&gt;in
 )paren
 )paren
 )paren
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -137,7 +139,7 @@ c_cond
 (paren
 id|queue-&gt;in_progress
 )paren
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|queue-&gt;in_progress
@@ -169,7 +171,8 @@ id|sctp_inq
 op_star
 id|q
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|packet
 )paren
@@ -203,7 +206,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Extract a chunk from an SCTP inqueue.&n; *&n; * WARNING:  If you need to put the chunk on another queue, you need to&n; * make a shallow copy (clone) of it.&n; */
 DECL|function|sctp_inq_pop
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_inq_pop
 c_func
@@ -214,7 +218,8 @@ op_star
 id|queue
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon
@@ -246,7 +251,7 @@ op_logical_or
 id|chunk-&gt;pdiscard
 )paren
 (brace
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -310,7 +315,8 @@ op_assign
 id|queue-&gt;in_progress
 op_assign
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 )paren
 id|skb_dequeue

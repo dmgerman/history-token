@@ -73,18 +73,6 @@ suffix:semicolon
 r_struct
 id|sctp_ssnmap
 suffix:semicolon
-DECL|typedef|sctp_chunk_t
-r_typedef
-r_struct
-id|sctp_chunk
-id|sctp_chunk_t
-suffix:semicolon
-DECL|typedef|sctp_bind_addr_t
-r_typedef
-r_struct
-id|sctp_bind_addr
-id|sctp_bind_addr_t
-suffix:semicolon
 macro_line|#include &lt;net/sctp/tsnmap.h&gt;
 macro_line|#include &lt;net/sctp/ulpevent.h&gt;
 macro_line|#include &lt;net/sctp/ulpqueue.h&gt;
@@ -1276,6 +1264,116 @@ id|id
 op_increment
 suffix:semicolon
 )brace
+multiline_comment|/* Structure to track chunk fragments that have been acked, but peer&n; * fragments of the same message have not.  &n; */
+DECL|struct|sctp_datamsg
+r_struct
+id|sctp_datamsg
+(brace
+multiline_comment|/* Chunks waiting to be submitted to lower layer. */
+DECL|member|chunks
+r_struct
+id|list_head
+id|chunks
+suffix:semicolon
+multiline_comment|/* Chunks that have been transmitted. */
+DECL|member|track
+r_struct
+id|list_head
+id|track
+suffix:semicolon
+multiline_comment|/* Reference counting. */
+DECL|member|refcnt
+id|atomic_t
+id|refcnt
+suffix:semicolon
+multiline_comment|/* Have the SEND_FAILED notifications been done. */
+DECL|member|notify_done
+id|__u8
+id|notify_done
+suffix:semicolon
+)brace
+suffix:semicolon
+r_struct
+id|sctp_datamsg
+op_star
+id|sctp_datamsg_from_user
+c_func
+(paren
+r_struct
+id|sctp_association
+op_star
+comma
+r_struct
+id|sctp_sndrcvinfo
+op_star
+comma
+r_struct
+id|msghdr
+op_star
+comma
+r_int
+id|len
+)paren
+suffix:semicolon
+r_struct
+id|sctp_datamsg
+op_star
+id|sctp_datamsg_new
+c_func
+(paren
+r_int
+id|gfp
+)paren
+suffix:semicolon
+r_void
+id|sctp_datamsg_put
+c_func
+(paren
+r_struct
+id|sctp_datamsg
+op_star
+)paren
+suffix:semicolon
+r_void
+id|sctp_datamsg_hold
+c_func
+(paren
+r_struct
+id|sctp_datamsg
+op_star
+)paren
+suffix:semicolon
+r_void
+id|sctp_datamsg_free
+c_func
+(paren
+r_struct
+id|sctp_datamsg
+op_star
+)paren
+suffix:semicolon
+r_void
+id|sctp_datamsg_track
+c_func
+(paren
+r_struct
+id|sctp_chunk
+op_star
+)paren
+suffix:semicolon
+r_void
+id|sctp_datamsg_assign
+c_func
+(paren
+r_struct
+id|sctp_datamsg
+op_star
+comma
+r_struct
+id|sctp_chunk
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* RFC2960 1.4 Key Terms&n; *&n; * o Chunk: A unit of information within an SCTP packet, consisting of&n; * a chunk header and chunk-specific content.&n; *&n; * As a matter of convenience, we remember the SCTP common header for&n; * each chunk as well as a few other header pointers...&n; */
 DECL|struct|sctp_chunk
 r_struct
@@ -1283,12 +1381,14 @@ id|sctp_chunk
 (brace
 multiline_comment|/* These first three elements MUST PRECISELY match the first&n;&t; * three elements of struct sk_buff.  This allows us to reuse&n;&t; * all the skb_* queue management functions.&n;&t; */
 DECL|member|next
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|next
 suffix:semicolon
 DECL|member|prev
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|prev
 suffix:semicolon
@@ -1297,6 +1397,10 @@ r_struct
 id|sk_buff_head
 op_star
 id|list
+suffix:semicolon
+DECL|member|refcnt
+id|atomic_t
+id|refcnt
 suffix:semicolon
 multiline_comment|/* This is our link to the per-transport transmitted list.  */
 DECL|member|transmitted_list
@@ -1431,11 +1535,11 @@ id|__u8
 id|rtt_in_progress
 suffix:semicolon
 multiline_comment|/* Is this chunk used for RTT calculation? */
-DECL|member|num_times_sent
+DECL|member|resent
 id|__u8
-id|num_times_sent
+id|resent
 suffix:semicolon
-multiline_comment|/* How man times did we send this? */
+multiline_comment|/* Has this chunk ever been retransmitted. */
 DECL|member|has_tsn
 id|__u8
 id|has_tsn
@@ -1493,6 +1597,13 @@ r_union
 id|sctp_addr
 id|dest
 suffix:semicolon
+multiline_comment|/* For outbound message, track all fragments for SEND_FAILED. */
+DECL|member|msg
+r_struct
+id|sctp_datamsg
+op_star
+id|msg
+suffix:semicolon
 multiline_comment|/* For an inbound chunk, this tells us where it came from.&n;&t; * For an outbound chunk, it tells us where we&squot;d like it to&n;&t; * go.  It is NULL if we have no preference.&n;&t; */
 DECL|member|transport
 r_struct
@@ -1502,7 +1613,47 @@ id|transport
 suffix:semicolon
 )brace
 suffix:semicolon
-id|sctp_chunk_t
+r_void
+id|sctp_chunk_hold
+c_func
+(paren
+r_struct
+id|sctp_chunk
+op_star
+)paren
+suffix:semicolon
+r_void
+id|sctp_chunk_put
+c_func
+(paren
+r_struct
+id|sctp_chunk
+op_star
+)paren
+suffix:semicolon
+r_int
+id|sctp_user_addto_chunk
+c_func
+(paren
+r_struct
+id|sctp_chunk
+op_star
+id|chunk
+comma
+r_int
+id|off
+comma
+r_int
+id|len
+comma
+r_struct
+id|iovec
+op_star
+id|data
+)paren
+suffix:semicolon
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_chunk
 c_func
@@ -1523,10 +1674,11 @@ id|size
 )paren
 suffix:semicolon
 r_void
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 )paren
 suffix:semicolon
@@ -1535,9 +1687,9 @@ op_star
 id|sctp_addto_chunk
 c_func
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
-id|chunk
 comma
 r_int
 id|len
@@ -1548,7 +1700,8 @@ op_star
 id|data
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_chunkify
 c_func
@@ -1571,7 +1724,8 @@ r_void
 id|sctp_init_addrs
 c_func
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 comma
 r_union
@@ -1591,7 +1745,8 @@ id|sctp_source
 c_func
 (paren
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 )paren
@@ -1616,7 +1771,8 @@ suffix:semicolon
 suffix:semicolon
 DECL|typedef|sctp_packet_phandler_t
 r_typedef
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 (paren
 id|sctp_packet_phandler_t
@@ -1781,7 +1937,8 @@ r_struct
 id|sctp_packet
 op_star
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 )paren
 suffix:semicolon
@@ -2200,7 +2357,8 @@ id|in
 suffix:semicolon
 multiline_comment|/* This is the packet which is currently off the in queue and is&n;&t; * being worked on through the inbound chunk processing.&n;&t; */
 DECL|member|in_progress
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|in_progress
 suffix:semicolon
@@ -2252,7 +2410,8 @@ r_struct
 id|sctp_inq
 op_star
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|packet
 )paren
@@ -2427,7 +2586,8 @@ r_struct
 id|sctp_outq
 op_star
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 )paren
@@ -2551,7 +2711,8 @@ suffix:semicolon
 multiline_comment|/* Are we kfree()able?  */
 )brace
 suffix:semicolon
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|sctp_bind_addr_new
 c_func
@@ -2564,7 +2725,8 @@ r_void
 id|sctp_bind_addr_init
 c_func
 (paren
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 comma
 id|__u16
@@ -2575,7 +2737,8 @@ r_void
 id|sctp_bind_addr_free
 c_func
 (paren
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 )paren
 suffix:semicolon
@@ -2583,12 +2746,14 @@ r_int
 id|sctp_bind_addr_copy
 c_func
 (paren
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|dest
 comma
 r_const
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|src
 comma
@@ -2606,7 +2771,8 @@ r_int
 id|sctp_add_bind_addr
 c_func
 (paren
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 comma
 r_union
@@ -2621,7 +2787,8 @@ r_int
 id|sctp_del_bind_addr
 c_func
 (paren
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 comma
 r_union
@@ -2633,7 +2800,8 @@ r_int
 id|sctp_bind_addr_match
 c_func
 (paren
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 comma
 r_const
@@ -2805,7 +2973,8 @@ id|inqueue
 suffix:semicolon
 multiline_comment|/* This substructure includes the defining parameters of the&n;&t; * endpoint:&n;&t; * bind_addr.port is our shared port number.&n;&t; * bind_addr.address_list is our set of local IP addresses.&n;&t; */
 DECL|member|bind_addr
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 id|bind_addr
 suffix:semicolon
 multiline_comment|/* Protection during address list comparisons. */
@@ -3544,13 +3713,15 @@ id|addip_enable
 suffix:semicolon
 multiline_comment|/* ADDIP Section 4.1.1 Congestion Control of ASCONF Chunks&n;&t; *&n;&t; * R1) One and only one ASCONF Chunk MAY be in transit and&n;&t; * unacknowledged at any one time.  If a sender, after sending&n;&t; * an ASCONF chunk, decides it needs to transfer another&n;&t; * ASCONF Chunk, it MUST wait until the ASCONF-ACK Chunk&n;&t; * returns from the previous ASCONF Chunk before sending a&n;&t; * subsequent ASCONF. Note this restriction binds each side,&n;&t; * so at any time two ASCONF may be in-transit on any given&n;&t; * association (one sent from each endpoint).&n;&t; *&n;&t; * [This is our one-and-only-one ASCONF in flight.  If we do&n;&t; * not have an ASCONF in flight, this is NULL.]&n;&t; */
 DECL|member|addip_last_asconf
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|addip_last_asconf
 suffix:semicolon
 multiline_comment|/* ADDIP Section 4.2 Upon reception of an ASCONF Chunk.&n;&t; *&n;&t; * IMPLEMENTATION NOTE: As an optimization a receiver may wish&n;&t; * to save the last ASCONF-ACK for some predetermined period&n;&t; * of time and instead of re-processing the ASCONF (with the&n;&t; * same serial number) it may just re-transmit the&n;&t; * ASCONF-ACK. It may wish to use the arrival of a new serial&n;&t; * number to discard the previously saved ASCONF-ACK or any&n;&t; * other means it may choose to expire the saved ASCONF-ACK.&n;&t; *&n;&t; * [This is our saved ASCONF-ACK.  We invalidate it when a new&n;&t; * ASCONF serial number arrives.]&n;&t; */
 DECL|member|addip_last_asconf_ack
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|addip_last_asconf_ack
 suffix:semicolon
@@ -3942,7 +4113,8 @@ op_star
 id|ss2
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_get_ecne_prepend
 c_func
@@ -3953,7 +4125,8 @@ op_star
 id|asoc
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_get_no_prepend
 c_func

@@ -310,7 +310,8 @@ id|sctp_ulpq
 op_star
 id|ulpq
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma

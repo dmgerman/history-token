@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This file is part of the implementation of the add-IP extension,&n; * based on &lt;draft-ietf-tsvwg-addip-sctp-02.txt&gt; June 29, 2001,&n; * for the SCTP kernel reference Implementation.&n; *&n; * These are definitions needed by the state machine.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email addresses:&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; *    Xingang Guo &lt;xingang.guo@intel.com&gt;&n; *    Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; *    Dajiang Zhang &lt;dajiang.zhang@nokia.com&gt;&n; *    Sridhar Samudrala &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang &lt;daisyc@us.ibm.com&gt;&n; *    Ardelle Fan &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These are definitions needed by the state machine.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email addresses:&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; *    Xingang Guo &lt;xingang.guo@intel.com&gt;&n; *    Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; *    Dajiang Zhang &lt;dajiang.zhang@nokia.com&gt;&n; *    Sridhar Samudrala &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang &lt;daisyc@us.ibm.com&gt;&n; *    Ardelle Fan &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -513,7 +513,8 @@ id|hisTag
 )paren
 suffix:semicolon
 multiline_comment|/* Prototypes for chunk-building functions.  */
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_init
 c_func
@@ -524,7 +525,8 @@ id|sctp_association
 op_star
 comma
 r_const
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 comma
 r_int
@@ -534,7 +536,8 @@ r_int
 id|vparam_len
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_init_ack
 c_func
@@ -545,7 +548,8 @@ id|sctp_association
 op_star
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 comma
 r_const
@@ -557,7 +561,8 @@ r_int
 id|unkparam_len
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_cookie_echo
 c_func
@@ -568,11 +573,13 @@ id|sctp_association
 op_star
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_cookie_ack
 c_func
@@ -583,11 +590,13 @@ id|sctp_association
 op_star
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_cwr
 c_func
@@ -602,11 +611,13 @@ id|__u32
 id|lowest_tsn
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_datafrag
 c_func
@@ -636,7 +647,8 @@ id|__u16
 id|ssn
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_datafrag_empty
 c_func
@@ -662,7 +674,8 @@ id|__u16
 id|ssn
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_data
 c_func
@@ -686,7 +699,8 @@ op_star
 id|data
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_data_empty
 c_func
@@ -704,7 +718,8 @@ r_int
 id|len
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_ecne
 c_func
@@ -718,7 +733,8 @@ r_const
 id|__u32
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_sack
 c_func
@@ -729,7 +745,8 @@ id|sctp_association
 op_star
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_shutdown
 c_func
@@ -741,7 +758,8 @@ op_star
 id|asoc
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_shutdown_ack
 c_func
@@ -753,11 +771,13 @@ op_star
 id|asoc
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_shutdown_complete
 c_func
@@ -768,7 +788,8 @@ id|sctp_association
 op_star
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 )paren
 suffix:semicolon
@@ -776,7 +797,8 @@ r_void
 id|sctp_init_cause
 c_func
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 comma
 id|__u16
@@ -789,7 +811,8 @@ comma
 r_int
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_abort
 c_func
@@ -800,7 +823,8 @@ id|sctp_association
 op_star
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 comma
 r_const
@@ -808,7 +832,8 @@ r_int
 id|hint
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_abort_no_data
 c_func
@@ -819,14 +844,16 @@ id|sctp_association
 op_star
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 comma
 id|__u32
 id|tsn
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_abort_user
 c_func
@@ -837,7 +864,8 @@ id|sctp_association
 op_star
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 comma
 r_const
@@ -846,7 +874,8 @@ id|msghdr
 op_star
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_heartbeat
 c_func
@@ -871,7 +900,8 @@ r_int
 id|paylen
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_heartbeat_ack
 c_func
@@ -882,7 +912,8 @@ id|sctp_association
 op_star
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 comma
 r_const
@@ -895,7 +926,8 @@ r_int
 id|paylen
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_op_error
 c_func
@@ -906,7 +938,8 @@ id|sctp_association
 op_star
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
@@ -926,7 +959,8 @@ r_void
 id|sctp_chunk_assign_tsn
 c_func
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 )paren
 suffix:semicolon
@@ -934,32 +968,8 @@ r_void
 id|sctp_chunk_assign_ssn
 c_func
 (paren
-id|sctp_chunk_t
-op_star
-)paren
-suffix:semicolon
-r_int
-id|sctp_datachunks_from_user
-c_func
-(paren
 r_struct
-id|sctp_association
-op_star
-comma
-r_const
-r_struct
-id|sctp_sndrcvinfo
-op_star
-comma
-r_struct
-id|msghdr
-op_star
-comma
-r_int
-id|len
-comma
-r_struct
-id|sk_buff_head
+id|sctp_chunk
 op_star
 )paren
 suffix:semicolon
@@ -1093,7 +1103,8 @@ r_struct
 id|sctp_association
 op_star
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 comma
 r_int
@@ -1123,7 +1134,8 @@ op_star
 id|sctp_sm_pull_sack
 c_func
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 )paren
 suffix:semicolon
@@ -1231,7 +1243,8 @@ r_struct
 id|sctp_association
 op_star
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 comma
 r_int
@@ -1241,7 +1254,8 @@ r_int
 op_star
 id|err
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 op_star
 id|err_chk_p
@@ -1281,7 +1295,8 @@ op_star
 id|asoc
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
@@ -1289,7 +1304,8 @@ id|sctp_cmd_seq_t
 op_star
 id|commands
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|err_chunk
 )paren
@@ -1419,7 +1435,8 @@ id|__u16
 id|sctp_data_size
 c_func
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 )paren
@@ -1671,7 +1688,8 @@ id|sctp_vtag_verify_either
 c_func
 (paren
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma

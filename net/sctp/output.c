@@ -234,7 +234,7 @@ id|packet-&gt;chunks
 )paren
 )paren
 )paren
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -997,13 +997,6 @@ id|packet-&gt;chunks
 )paren
 )paren
 (brace
-id|chunk-&gt;num_times_sent
-op_increment
-suffix:semicolon
-id|chunk-&gt;sent_at
-op_assign
-id|jiffies
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1012,6 +1005,13 @@ c_func
 (paren
 id|chunk
 )paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|chunk-&gt;has_tsn
 )paren
 (brace
 id|sctp_chunk_assign_tsn
@@ -1024,16 +1024,8 @@ multiline_comment|/* 6.3.1 C4) When data is in flight and when allowed&n;&t;&t;&
 r_if
 c_cond
 (paren
-(paren
-l_int|1
-op_eq
-id|chunk-&gt;num_times_sent
-)paren
-op_logical_and
-(paren
 op_logical_neg
 id|tp-&gt;rto_pending
-)paren
 )paren
 (brace
 id|chunk-&gt;rtt_in_progress
@@ -1045,6 +1037,22 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+id|sctp_datamsg_track
+c_func
+(paren
+id|chunk
+)paren
+suffix:semicolon
+)brace
+r_else
+id|chunk-&gt;resent
+op_assign
+l_int|1
+suffix:semicolon
+id|chunk-&gt;sent_at
+op_assign
+id|jiffies
+suffix:semicolon
 id|has_data
 op_assign
 l_int|1
@@ -1104,8 +1112,7 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;%s %p[%s] %s 0x%x, %s %d, %s %d, %s %d, &quot;
-l_string|&quot;%s %d&bslash;n&quot;
+l_string|&quot;%s %p[%s] %s 0x%x, %s %d, %s %d, %s %d&bslash;n&quot;
 comma
 l_string|&quot;*** Chunk&quot;
 comma
@@ -1151,10 +1158,6 @@ l_string|&quot;chunk-&gt;skb-&gt;len&quot;
 comma
 id|chunk-&gt;skb-&gt;len
 comma
-l_string|&quot;num_times_sent&quot;
-comma
-id|chunk-&gt;num_times_sent
-comma
 l_string|&quot;rtt_in_progress&quot;
 comma
 id|chunk-&gt;rtt_in_progress
@@ -1171,7 +1174,7 @@ c_func
 id|chunk
 )paren
 )paren
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk

@@ -398,7 +398,8 @@ comma
 op_star
 id|temp
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon
@@ -452,7 +453,8 @@ c_func
 (paren
 id|lchunk
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 comma
 id|transmitted_list
 )paren
@@ -488,7 +490,7 @@ comma
 id|ev
 )paren
 suffix:semicolon
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -521,12 +523,13 @@ c_func
 (paren
 id|lchunk
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 comma
 id|transmitted_list
 )paren
 suffix:semicolon
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -558,12 +561,13 @@ c_func
 (paren
 id|lchunk
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 comma
 id|transmitted_list
 )paren
 suffix:semicolon
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -616,7 +620,7 @@ comma
 id|ev
 )paren
 suffix:semicolon
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -635,7 +639,8 @@ c_loop
 id|chunk
 op_assign
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 )paren
 id|skb_dequeue
@@ -646,7 +651,7 @@ id|q-&gt;control
 )paren
 )paren
 )paren
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -696,7 +701,8 @@ id|sctp_outq
 op_star
 id|q
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 )paren
@@ -911,7 +917,8 @@ id|list_head
 op_star
 id|rlchunk
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|tchunk
 comma
@@ -935,7 +942,8 @@ c_func
 (paren
 id|tlchunk
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 comma
 id|transmitted_list
 )paren
@@ -964,7 +972,8 @@ c_func
 (paren
 id|rlchunk
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 comma
 id|transmitted_list
 )paren
@@ -1051,7 +1060,8 @@ comma
 op_star
 id|ltemp
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon
@@ -1074,7 +1084,8 @@ c_func
 (paren
 id|lchunk
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 comma
 id|transmitted_list
 )paren
@@ -1349,7 +1360,8 @@ suffix:semicolon
 id|sctp_xmit_t
 id|status
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon
@@ -1394,7 +1406,8 @@ c_func
 (paren
 id|lchunk
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 comma
 id|transmitted_list
 )paren
@@ -1871,7 +1884,8 @@ id|sctp_packet
 op_star
 id|pkt
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|frag
 )paren
@@ -1984,7 +1998,8 @@ c_func
 (paren
 id|lfrag
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 comma
 id|frag_list
 )paren
@@ -2008,12 +2023,14 @@ suffix:semicolon
 )brace
 multiline_comment|/* This routine breaks the given chunk into &squot;max_frag_data_len&squot; size&n; * fragments.  It returns the first fragment with the frag_list field holding&n; * the remaining fragments.&n; */
 DECL|function|sctp_fragment_chunk
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_fragment_chunk
 c_func
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
@@ -2060,7 +2077,8 @@ c_func
 id|chunk-&gt;subh.data_hdr-&gt;ssn
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|first_frag
 comma
@@ -2161,6 +2179,14 @@ id|first_frag
 r_goto
 id|err
 suffix:semicolon
+id|sctp_datamsg_assign
+c_func
+(paren
+id|chunk-&gt;msg
+comma
+id|first_frag
+)paren
+suffix:semicolon
 id|first_frag-&gt;has_ssn
 op_assign
 l_int|1
@@ -2214,6 +2240,14 @@ id|frag
 )paren
 r_goto
 id|err
+suffix:semicolon
+id|sctp_datamsg_assign
+c_func
+(paren
+id|chunk-&gt;msg
+comma
+id|frag
+)paren
 suffix:semicolon
 id|frag-&gt;has_ssn
 op_assign
@@ -2282,6 +2316,14 @@ id|frag
 r_goto
 id|err
 suffix:semicolon
+id|sctp_datamsg_assign
+c_func
+(paren
+id|chunk-&gt;msg
+comma
+id|frag
+)paren
+suffix:semicolon
 id|frag-&gt;has_ssn
 op_assign
 l_int|1
@@ -2297,7 +2339,7 @@ id|frag_list
 )paren
 suffix:semicolon
 multiline_comment|/* Free the original chunk. */
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -2352,12 +2394,13 @@ c_func
 (paren
 id|lfrag
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 comma
 id|frag_list
 )paren
 suffix:semicolon
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|frag
@@ -2365,7 +2408,7 @@ id|frag
 suffix:semicolon
 )brace
 multiline_comment|/* Free the first fragment. */
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|first_frag
@@ -2457,7 +2500,8 @@ id|sctp_transport
 op_star
 id|new_transport
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon
@@ -2525,7 +2569,8 @@ c_loop
 id|chunk
 op_assign
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 )paren
 id|skb_dequeue
@@ -3016,7 +3061,7 @@ id|ev
 )paren
 suffix:semicolon
 multiline_comment|/* Free the chunk. */
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -3228,7 +3273,8 @@ r_case
 id|SCTP_XMIT_MUST_FRAG
 suffix:colon
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|frag
 suffix:semicolon
@@ -3250,7 +3296,7 @@ id|frag
 )paren
 (brace
 multiline_comment|/* We could not fragment due to out of&n;&t;&t;&t;&t;&t; * memory condition. Free the original&n;&t;&t;&t;&t;&t; * chunk and return ENOMEM.&n;&t;&t;&t;&t;&t; */
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -3582,7 +3628,8 @@ id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon
@@ -3644,7 +3691,8 @@ c_func
 (paren
 id|lchunk
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 comma
 id|transmitted_list
 )paren
@@ -3717,7 +3765,8 @@ id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|tchunk
 suffix:semicolon
@@ -3949,7 +3998,8 @@ c_func
 (paren
 id|lchunk
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 comma
 id|transmitted_list
 )paren
@@ -3978,7 +4028,7 @@ id|lchunk
 op_assign
 id|lchunk-&gt;prev
 suffix:semicolon
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|tchunk
@@ -4152,7 +4202,8 @@ id|list_head
 op_star
 id|lchunk
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|tchunk
 suffix:semicolon
@@ -4257,7 +4308,8 @@ c_func
 (paren
 id|lchunk
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 comma
 id|transmitted_list
 )paren
@@ -4293,20 +4345,13 @@ multiline_comment|/* If this chunk is being used for RTT&n;&t;&t;&t;&t; * measur
 r_if
 c_cond
 (paren
-(paren
 op_logical_neg
 id|tchunk-&gt;tsn_gap_acked
-)paren
 op_logical_and
-(paren
-l_int|1
-op_eq
-id|tchunk-&gt;num_times_sent
-)paren
+op_logical_neg
+id|tchunk-&gt;resent
 op_logical_and
-(paren
 id|tchunk-&gt;rtt_in_progress
-)paren
 )paren
 (brace
 id|rtt
@@ -4808,20 +4853,15 @@ multiline_comment|/* RFC 2960 6.1, sctpimpguide-06 2.15.2&n;&t;&t;&t; * When a s
 r_if
 c_cond
 (paren
-(paren
-l_int|0
-op_eq
+op_logical_neg
 id|q-&gt;asoc-&gt;peer.rwnd
-)paren
 op_logical_and
-(paren
 op_logical_neg
 id|list_empty
 c_func
 (paren
 op_amp
 id|tlist
-)paren
 )paren
 op_logical_and
 (paren
@@ -4943,7 +4983,8 @@ c_func
 (paren
 id|lchunk
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 comma
 id|transmitted_list
 )paren
