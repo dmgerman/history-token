@@ -21,6 +21,13 @@ id|using_apic_timer
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|__initdata
+r_int
+id|dont_enable_local_apic
+id|__initdata
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|prof_multiplier
 r_int
 id|prof_multiplier
@@ -325,6 +332,7 @@ id|maxlvt
 OG
 l_int|3
 )paren
+multiline_comment|/* Due to Pentium errata 3AP and 11AP. */
 id|apic_write
 c_func
 (paren
@@ -1251,7 +1259,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ESR value before enabling vector: %08lx&bslash;n&quot;
+l_string|&quot;ESR value before enabling vector: %08x&bslash;n&quot;
 comma
 id|value
 )paren
@@ -1296,7 +1304,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ESR value after enabling vector: %08lx&bslash;n&quot;
+l_string|&quot;ESR value after enabling vector: %08x&bslash;n&quot;
 comma
 id|value
 )paren
@@ -1415,6 +1423,11 @@ DECL|member|apic_tdcr
 r_int
 r_int
 id|apic_tdcr
+suffix:semicolon
+DECL|member|apic_thmr
+r_int
+r_int
+id|apic_thmr
 suffix:semicolon
 DECL|variable|apic_pm_state
 )brace
@@ -1550,6 +1563,14 @@ id|apic_read
 c_func
 (paren
 id|APIC_TDCR
+)paren
+suffix:semicolon
+id|apic_pm_state.apic_thmr
+op_assign
+id|apic_read
+c_func
+(paren
+id|APIC_LVTTHMR
 )paren
 suffix:semicolon
 id|__save_flags
@@ -1727,6 +1748,14 @@ c_func
 id|APIC_LVT1
 comma
 id|apic_pm_state.apic_lvt1
+)paren
+suffix:semicolon
+id|apic_write
+c_func
+(paren
+id|APIC_LVTTHMR
+comma
+id|apic_pm_state.apic_thmr
 )paren
 suffix:semicolon
 id|apic_write
@@ -2106,11 +2135,6 @@ id|l
 comma
 id|features
 suffix:semicolon
-r_int
-id|needs_pm
-op_assign
-l_int|0
-suffix:semicolon
 r_extern
 r_void
 id|get_cpu_vendor
@@ -2247,10 +2271,6 @@ comma
 id|h
 )paren
 suffix:semicolon
-id|needs_pm
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; * The APIC feature bit should now be enabled&n;&t; * in `cpuid&squot;&n;&t; */
@@ -2293,7 +2313,6 @@ c_func
 (paren
 id|X86_FEATURE_APIC
 comma
-op_amp
 id|boot_cpu_data.x86_capability
 )paren
 suffix:semicolon
@@ -2320,16 +2339,6 @@ id|printk
 c_func
 (paren
 l_string|&quot;Found and enabled local APIC!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|needs_pm
-)paren
-id|apic_pm_init1
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
@@ -2802,7 +2811,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;cpu: %d, clocks: %lu, slice: %lu&bslash;n&quot;
+l_string|&quot;cpu: %d, clocks: %d, slice: %d&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
@@ -2933,7 +2942,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;CPU%d&lt;T0:%lu,T1:%lu,D:%d,S:%lu,C:%lu&gt;&bslash;n&quot;
+l_string|&quot;CPU%d&lt;T0:%u,T1:%u,D:%d,S:%u,C:%u&gt;&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
@@ -2968,7 +2977,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
 r_int
 r_int
 id|t1
@@ -3089,6 +3097,20 @@ id|APIC_DIVISOR
 op_div
 id|LOOPS
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;t1 = %ld t2 = %ld tt1 = %d tt2 = %d&bslash;n&quot;
+comma
+id|t1
+comma
+id|t2
+comma
+id|tt1
+comma
+id|tt2
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3097,7 +3119,7 @@ id|cpu_has_tsc
 id|printk
 c_func
 (paren
-l_string|&quot;..... CPU clock speed is %ld.%04ld MHz.&bslash;n&quot;
+l_string|&quot;..... CPU clock speed is %d.%04d MHz.&bslash;n&quot;
 comma
 (paren
 (paren
@@ -3141,7 +3163,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;..... host bus clock speed is %ld.%04ld MHz.&bslash;n&quot;
+l_string|&quot;..... host bus clock speed is %d.%04d MHz.&bslash;n&quot;
 comma
 id|result
 op_div
@@ -3208,6 +3230,9 @@ c_func
 r_void
 op_star
 )paren
+(paren
+id|u64
+)paren
 id|calibration_result
 )paren
 suffix:semicolon
@@ -3225,6 +3250,9 @@ comma
 (paren
 r_void
 op_star
+)paren
+(paren
+id|u64
 )paren
 id|calibration_result
 comma
@@ -3504,6 +3532,7 @@ c_func
 (paren
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -3540,7 +3569,6 @@ suffix:semicolon
 id|smp_local_timer_interrupt
 c_func
 (paren
-op_amp
 id|regs
 )paren
 suffix:semicolon
@@ -3580,6 +3608,16 @@ r_void
 r_int
 r_int
 id|v
+suffix:semicolon
+r_static
+r_int
+r_int
+id|last_warning
+suffix:semicolon
+r_static
+r_int
+r_int
+id|skipped
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check if this really is a spurious interrupt and ACK it&n;&t; * if it is a vectored one.  Just in case...&n;&t; * Spurious interrupts should not be ACKed.&n;&t; */
 id|v
@@ -3622,18 +3660,43 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* see sw-dev-man vol 3, chapter 7.4.13.5 */
+r_if
+c_cond
+(paren
+id|last_warning
+op_plus
+l_int|30
+op_star
+id|HZ
+OL
+id|jiffies
+)paren
+(brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;spurious APIC interrupt on CPU#%d, should never happen.&bslash;n&quot;
+l_string|&quot;spurious APIC interrupt on CPU#%d, %ld skipped.&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
 (paren
 )paren
+comma
+id|skipped
 )paren
 suffix:semicolon
+id|last_warning
+op_assign
+id|jiffies
+suffix:semicolon
+)brace
+r_else
+(brace
+id|skipped
+op_increment
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * This interrupt should never happen with our APIC/SMP architecture&n; */
 DECL|function|smp_error_interrupt
@@ -3692,7 +3755,7 @@ multiline_comment|/* Here is what the APIC error bits mean:&n;&t;   0: Send CS e
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;APIC error on CPU%d: %02lx(%02lx)&bslash;n&quot;
+l_string|&quot;APIC error on CPU%d: %02x(%02x)&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func

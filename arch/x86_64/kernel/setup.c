@@ -36,6 +36,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/bootsetup.h&gt;
+macro_line|#include &lt;asm/smp.h&gt;
 multiline_comment|/*&n; * Machine setup..&n; */
 r_extern
 r_void
@@ -48,11 +49,14 @@ op_star
 id|c
 )paren
 suffix:semicolon
-DECL|variable|ignore_irq13
-r_char
-id|ignore_irq13
+r_extern
+r_void
+id|init_memory_mapping
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
-multiline_comment|/* set if exception 16 works */
 DECL|variable|boot_cpu_data
 r_struct
 id|cpuinfo_x86
@@ -114,11 +118,6 @@ r_struct
 id|screen_info
 id|screen_info
 suffix:semicolon
-DECL|variable|apm_info
-r_struct
-id|apm_info
-id|apm_info
-suffix:semicolon
 DECL|struct|sys_desc_table_struct
 r_struct
 id|sys_desc_table_struct
@@ -161,11 +160,6 @@ comma
 id|_edata
 comma
 id|_end
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|cpu_khz
 suffix:semicolon
 DECL|variable|__initdata
 r_static
@@ -895,12 +889,8 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;type %lu&bslash;n&quot;
+l_string|&quot;type %u&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|e820.map
 (braket
 id|i
@@ -2241,6 +2231,14 @@ l_string|&quot;user&quot;
 suffix:semicolon
 )brace
 )brace
+DECL|variable|start_pfn
+DECL|variable|end_pfn
+r_int
+r_int
+id|start_pfn
+comma
+id|end_pfn
+suffix:semicolon
 DECL|function|setup_arch
 r_void
 id|__init
@@ -2260,14 +2258,6 @@ comma
 id|low_mem_size
 suffix:semicolon
 r_int
-r_int
-id|start_pfn
-comma
-id|max_pfn
-comma
-id|max_low_pfn
-suffix:semicolon
-r_int
 id|i
 suffix:semicolon
 id|ROOT_DEV
@@ -2285,10 +2275,6 @@ suffix:semicolon
 id|screen_info
 op_assign
 id|SCREEN_INFO
-suffix:semicolon
-id|apm_info.bios
-op_assign
-id|APM_BIOS_INFO
 suffix:semicolon
 id|aux_device_present
 op_assign
@@ -2430,19 +2416,19 @@ DECL|macro|PFN_DOWN
 mdefine_line|#define PFN_DOWN(x)&t;((x) &gt;&gt; PAGE_SHIFT)
 DECL|macro|PFN_PHYS
 mdefine_line|#define PFN_PHYS(x)&t;((x) &lt;&lt; PAGE_SHIFT)
-DECL|macro|VMALLOC_RESERVE
-mdefine_line|#define VMALLOC_RESERVE&t;(unsigned long)(4096 &lt;&lt; 20)
 DECL|macro|MAXMEM
-mdefine_line|#define MAXMEM&t;&t;(unsigned long)(-PAGE_OFFSET-VMALLOC_RESERVE)
+mdefine_line|#define MAXMEM&t;&t;(120UL * 1024 * 1024 * 1024 * 1024)  /* 120TB */ 
 DECL|macro|MAXMEM_PFN
 mdefine_line|#define MAXMEM_PFN&t;PFN_DOWN(MAXMEM)
+DECL|macro|MAX_NONPAE_PFN
+mdefine_line|#define MAX_NONPAE_PFN&t;(1 &lt;&lt; 20)
 multiline_comment|/*&n;&t; * partially used pages are not usable - thus&n;&t; * we are rounding upwards:&n;&t; */
 id|start_pfn
 op_assign
 id|PFN_UP
 c_func
 (paren
-id|__pa
+id|__pa_symbol
 c_func
 (paren
 op_amp
@@ -2451,7 +2437,7 @@ id|_end
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Find the highest page frame number we have available&n;&t; */
-id|max_pfn
+id|end_pfn
 op_assign
 l_int|0
 suffix:semicolon
@@ -2538,31 +2524,31 @@ c_cond
 (paren
 id|end
 OG
-id|max_pfn
+id|end_pfn
 )paren
-id|max_pfn
+id|end_pfn
 op_assign
 id|end
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Determine low and high memory ranges:&n;&t; */
-id|max_low_pfn
-op_assign
-id|max_pfn
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|max_low_pfn
+id|end_pfn
 OG
 id|MAXMEM_PFN
 )paren
 (brace
-id|max_low_pfn
+id|end_pfn
 op_assign
 id|MAXMEM_PFN
 suffix:semicolon
 )brace
+id|init_memory_mapping
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize the boot-time allocator (with low memory only):&n;&t; */
 id|bootmap_size
 op_assign
@@ -2571,7 +2557,7 @@ c_func
 (paren
 id|start_pfn
 comma
-id|max_low_pfn
+id|end_pfn
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Register fully available low RAM pages with the bootmem allocator.&n;&t; */
@@ -2632,7 +2618,7 @@ c_cond
 (paren
 id|curr_pfn
 op_ge
-id|max_low_pfn
+id|end_pfn
 )paren
 r_continue
 suffix:semicolon
@@ -2662,11 +2648,11 @@ c_cond
 (paren
 id|last_pfn
 OG
-id|max_low_pfn
+id|end_pfn
 )paren
 id|last_pfn
 op_assign
-id|max_low_pfn
+id|end_pfn
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * .. finally, did all the rounding and playing&n;&t;&t; * around just make the area go away?&n;&t;&t; */
 r_if
@@ -2743,6 +2729,14 @@ c_func
 id|PAGE_SIZE
 comma
 id|PAGE_SIZE
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_ACPI_SLEEP
+multiline_comment|/*&n;        * Reserve low memory region for sleep support.&n;        */
+id|acpi_reserve_bootmem
+c_func
+(paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2854,6 +2848,16 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_BOOT
+multiline_comment|/*&n;        * Initialize the ACPI boot-time table parser (gets the RSDP and SDT).&n;        * Must do this after paging_init (due to reliance on fixmap, and thus&n;        * the bootmem allocator) but before get_smp_config (to allow parsing&n;        * of MADT).&n;        */
+id|acpi_boot_init
+c_func
+(paren
+op_star
+id|cmdline_p
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 multiline_comment|/*&n;&t; * get boot-time SMP configuration:&n;&t; */
 r_if
@@ -3084,6 +3088,7 @@ id|i
 )paren
 suffix:semicolon
 multiline_comment|/* Tell the PCI layer not to allocate too close to the RAM area.. */
+multiline_comment|/* ??? move this up on x86-64 */
 id|low_mem_size
 op_assign
 (paren
@@ -3476,6 +3481,35 @@ c_func
 id|c
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|r
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|c-&gt;x86
+)paren
+(brace
+r_case
+l_int|15
+suffix:colon
+multiline_comment|/* Should distingush Models here, but this is only&n;&t;&t;&t;   a fallback anyways. */
+id|strcpy
+c_func
+(paren
+id|c-&gt;x86_model_id
+comma
+l_string|&quot;Hammer&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
 id|display_cacheinfo
 c_func
 (paren
@@ -4144,13 +4178,6 @@ id|c
 op_assign
 id|v
 suffix:semicolon
-r_int
-id|index
-op_assign
-id|c
-op_minus
-id|cpu_data
-suffix:semicolon
 multiline_comment|/* &n;&t; * These flag bits must match the definitions in &lt;asm/cpufeature.h&gt;.&n;&t; * NULL means this bit is undefined or reserved; either way it doesn&squot;t&n;&t; * have meaning as far as Linux is concerned.  Note that it&squot;s important&n;&t; * to realize there is a difference between this table and CPUID -- if&n;&t; * applications want to get the raw CPUID data, they should access&n;&t; * /dev/cpu/&lt;cpu_nr&gt;/cpuid instead.&n;&t; */
 r_static
 r_char
@@ -4266,7 +4293,7 @@ l_int|NULL
 comma
 l_int|NULL
 comma
-l_int|NULL
+l_string|&quot;nx&quot;
 comma
 l_int|NULL
 comma
@@ -4450,13 +4477,20 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;processor&bslash;t: %d&bslash;n&quot;
+l_string|&quot;processor&bslash;t: %u&bslash;n&quot;
 l_string|&quot;vendor_id&bslash;t: %s&bslash;n&quot;
 l_string|&quot;cpu family&bslash;t: %d&bslash;n&quot;
 l_string|&quot;model&bslash;t&bslash;t: %d&bslash;n&quot;
 l_string|&quot;model name&bslash;t: %s&bslash;n&quot;
 comma
-id|index
+(paren
+r_int
+)paren
+(paren
+id|c
+op_minus
+id|cpu_data
+)paren
 comma
 id|c-&gt;x86_vendor_id
 (braket
@@ -4470,6 +4504,9 @@ l_string|&quot;unknown&quot;
 comma
 id|c-&gt;x86
 comma
+(paren
+r_int
+)paren
 id|c-&gt;x86_model
 comma
 id|c-&gt;x86_model_id
@@ -4529,7 +4566,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;cpu MHz&bslash;t&bslash;t: %lu.%03lu&bslash;n&quot;
+l_string|&quot;cpu MHz&bslash;t&bslash;t: %u.%03u&bslash;n&quot;
 comma
 id|cpu_khz
 op_div

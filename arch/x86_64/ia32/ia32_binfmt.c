@@ -1,12 +1,18 @@
-multiline_comment|/* &n; * Written 2000 by Andi Kleen. &n; * &n; * Losely based on the sparc64 and IA64 32bit emulation loaders.&n; */
+multiline_comment|/* &n; * Written 2000,2002 by Andi Kleen. &n; * &n; * Losely based on the sparc64 and IA64 32bit emulation loaders.&n; * This tricks binfmt_elf.c into loading 32bit binaries using lots &n; * of ugly preprocessor tricks. Talk about very very poor man&squot;s inheritance.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt; 
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/segment.h&gt; 
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/user32.h&gt;
+macro_line|#include &lt;asm/sigcontext32.h&gt;
+macro_line|#include &lt;asm/fpu32.h&gt;
+macro_line|#include &lt;asm/i387.h&gt;
 r_struct
 id|file
 suffix:semicolon
@@ -31,25 +37,229 @@ DECL|macro|ELF_CLASS
 mdefine_line|#define ELF_CLASS ELFCLASS32
 DECL|macro|ELF_DATA
 mdefine_line|#define ELF_DATA&t;ELFDATA2LSB
-singleline_comment|//#define USE_ELF_CORE_DUMP
-DECL|macro|__ASM_X86_64_ELF_H
-mdefine_line|#define __ASM_X86_64_ELF_H 1
-macro_line|#include &lt;asm/ia32.h&gt;
-macro_line|#include &lt;linux/elf.h&gt;
+DECL|macro|USE_ELF_CORE_DUMP
+mdefine_line|#define USE_ELF_CORE_DUMP 1
+multiline_comment|/* Overwrite elfcore.h */
+DECL|macro|_LINUX_ELFCORE_H
+mdefine_line|#define _LINUX_ELFCORE_H 1
 DECL|typedef|elf_greg_t
 r_typedef
-id|__u32
+r_int
+r_int
 id|elf_greg_t
 suffix:semicolon
+DECL|macro|ELF_NGREG
+mdefine_line|#define ELF_NGREG (sizeof (struct user_regs_struct32) / sizeof(elf_greg_t))
 DECL|typedef|elf_gregset_t
 r_typedef
 id|elf_greg_t
 id|elf_gregset_t
 (braket
-l_int|8
+id|ELF_NGREG
 )braket
 suffix:semicolon
-multiline_comment|/* FIXME -- wrong */
+DECL|struct|elf_siginfo
+r_struct
+id|elf_siginfo
+(brace
+DECL|member|si_signo
+r_int
+id|si_signo
+suffix:semicolon
+multiline_comment|/* signal number */
+DECL|member|si_code
+r_int
+id|si_code
+suffix:semicolon
+multiline_comment|/* extra code */
+DECL|member|si_errno
+r_int
+id|si_errno
+suffix:semicolon
+multiline_comment|/* errno */
+)brace
+suffix:semicolon
+DECL|struct|timeval32
+r_struct
+id|timeval32
+(brace
+DECL|member|tv_sec
+DECL|member|tv_usec
+r_int
+id|tv_sec
+comma
+id|tv_usec
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|elf_prstatus
+r_struct
+id|elf_prstatus
+(brace
+DECL|member|pr_info
+r_struct
+id|elf_siginfo
+id|pr_info
+suffix:semicolon
+multiline_comment|/* Info associated with signal */
+DECL|member|pr_cursig
+r_int
+id|pr_cursig
+suffix:semicolon
+multiline_comment|/* Current signal */
+DECL|member|pr_sigpend
+r_int
+r_int
+id|pr_sigpend
+suffix:semicolon
+multiline_comment|/* Set of pending signals */
+DECL|member|pr_sighold
+r_int
+r_int
+id|pr_sighold
+suffix:semicolon
+multiline_comment|/* Set of held signals */
+DECL|member|pr_pid
+id|pid_t
+id|pr_pid
+suffix:semicolon
+DECL|member|pr_ppid
+id|pid_t
+id|pr_ppid
+suffix:semicolon
+DECL|member|pr_pgrp
+id|pid_t
+id|pr_pgrp
+suffix:semicolon
+DECL|member|pr_sid
+id|pid_t
+id|pr_sid
+suffix:semicolon
+DECL|member|pr_utime
+r_struct
+id|timeval32
+id|pr_utime
+suffix:semicolon
+multiline_comment|/* User time */
+DECL|member|pr_stime
+r_struct
+id|timeval32
+id|pr_stime
+suffix:semicolon
+multiline_comment|/* System time */
+DECL|member|pr_cutime
+r_struct
+id|timeval32
+id|pr_cutime
+suffix:semicolon
+multiline_comment|/* Cumulative user time */
+DECL|member|pr_cstime
+r_struct
+id|timeval32
+id|pr_cstime
+suffix:semicolon
+multiline_comment|/* Cumulative system time */
+DECL|member|pr_reg
+id|elf_gregset_t
+id|pr_reg
+suffix:semicolon
+multiline_comment|/* GP registers */
+DECL|member|pr_fpvalid
+r_int
+id|pr_fpvalid
+suffix:semicolon
+multiline_comment|/* True if math co-processor being used.  */
+)brace
+suffix:semicolon
+DECL|macro|ELF_PRARGSZ
+mdefine_line|#define ELF_PRARGSZ&t;(80)&t;/* Number of chars for args */
+DECL|struct|elf_prpsinfo
+r_struct
+id|elf_prpsinfo
+(brace
+DECL|member|pr_state
+r_char
+id|pr_state
+suffix:semicolon
+multiline_comment|/* numeric process state */
+DECL|member|pr_sname
+r_char
+id|pr_sname
+suffix:semicolon
+multiline_comment|/* char for pr_state */
+DECL|member|pr_zomb
+r_char
+id|pr_zomb
+suffix:semicolon
+multiline_comment|/* zombie */
+DECL|member|pr_nice
+r_char
+id|pr_nice
+suffix:semicolon
+multiline_comment|/* nice val */
+DECL|member|pr_flag
+r_int
+r_int
+id|pr_flag
+suffix:semicolon
+multiline_comment|/* flags */
+DECL|member|pr_uid
+id|__u16
+id|pr_uid
+suffix:semicolon
+DECL|member|pr_gid
+id|__u16
+id|pr_gid
+suffix:semicolon
+DECL|member|pr_pid
+DECL|member|pr_ppid
+DECL|member|pr_pgrp
+DECL|member|pr_sid
+id|pid_t
+id|pr_pid
+comma
+id|pr_ppid
+comma
+id|pr_pgrp
+comma
+id|pr_sid
+suffix:semicolon
+multiline_comment|/* Lots missing */
+DECL|member|pr_fname
+r_char
+id|pr_fname
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* filename of executable */
+DECL|member|pr_psargs
+r_char
+id|pr_psargs
+(braket
+id|ELF_PRARGSZ
+)braket
+suffix:semicolon
+multiline_comment|/* initial part of arg list */
+)brace
+suffix:semicolon
+DECL|macro|__STR
+mdefine_line|#define __STR(x) #x
+DECL|macro|STR
+mdefine_line|#define STR(x) __STR(x)
+DECL|macro|_GET_SEG
+mdefine_line|#define _GET_SEG(x) &bslash;&n;&t;({ __u32 seg; asm(&quot;movl %%&quot; STR(x) &quot;,%0&quot; : &quot;=r&quot;(seg)); seg; })
+multiline_comment|/* Assumes current==process to be dumped */
+DECL|macro|ELF_CORE_COPY_REGS
+mdefine_line|#define ELF_CORE_COPY_REGS(pr_reg, regs)       &t;&t;&bslash;&n;&t;pr_reg[0] = regs-&gt;rbx;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[1] = regs-&gt;rcx;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[2] = regs-&gt;rdx;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[3] = regs-&gt;rsi;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[4] = regs-&gt;rdi;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[5] = regs-&gt;rbp;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[6] = regs-&gt;rax;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[7] = _GET_SEG(ds);   &t;&t;&t;&bslash;&n;&t;pr_reg[8] = _GET_SEG(es);&t;&t;&t;&bslash;&n;&t;pr_reg[9] = _GET_SEG(fs);&t;&t;&t;&bslash;&n;&t;pr_reg[10] = _GET_SEG(gs);&t;&t;&t;&bslash;&n;&t;pr_reg[11] = regs-&gt;orig_rax;&t;&t;&t;&bslash;&n;&t;pr_reg[12] = regs-&gt;rip;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[13] = regs-&gt;cs;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[14] = regs-&gt;eflags;&t;&t;&t;&bslash;&n;&t;pr_reg[15] = regs-&gt;rsp;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[16] = regs-&gt;ss;
+DECL|macro|user
+mdefine_line|#define user user32
+DECL|macro|dump_fpu
+mdefine_line|#define dump_fpu dump_fpu_ia32
+DECL|macro|__ASM_X86_64_ELF_H
+mdefine_line|#define __ASM_X86_64_ELF_H 1
+macro_line|#include &lt;asm/ia32.h&gt;
+macro_line|#include &lt;linux/elf.h&gt;
 DECL|typedef|elf_fpregset_t
 r_typedef
 r_struct
@@ -59,7 +269,7 @@ suffix:semicolon
 DECL|typedef|elf_fpxregset_t
 r_typedef
 r_struct
-id|user_i387_struct
+id|user32_fxsr_struct
 id|elf_fpxregset_t
 suffix:semicolon
 DECL|macro|elf_check_arch
@@ -481,6 +691,17 @@ id|me
 op_assign
 id|current
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|prot
+op_amp
+id|PROT_READ
+)paren
+id|prot
+op_or_assign
+id|PROT_EXEC
+suffix:semicolon
 id|down_write
 c_func
 (paren
@@ -533,6 +754,119 @@ id|me-&gt;mm-&gt;mmap_sem
 suffix:semicolon
 r_return
 id|map_addr
+suffix:semicolon
+)brace
+DECL|function|dump_fpu_ia32
+r_int
+id|dump_fpu_ia32
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+id|elf_fpregset_t
+op_star
+id|fp
+)paren
+(brace
+r_struct
+id|_fpstate_ia32
+op_star
+id|fpu
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|fp
+suffix:semicolon
+r_struct
+id|task_struct
+op_star
+id|tsk
+op_assign
+id|current
+suffix:semicolon
+id|mm_segment_t
+id|oldfs
+op_assign
+id|get_fs
+c_func
+(paren
+)paren
+suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tsk-&gt;used_math
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|test_thread_flag
+c_func
+(paren
+id|TIF_IA32
+)paren
+)paren
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+id|unlazy_fpu
+c_func
+(paren
+id|tsk
+)paren
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|KERNEL_DS
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|save_i387_ia32
+c_func
+(paren
+id|current
+comma
+id|fpu
+comma
+id|regs
+comma
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* Correct for i386 bug. It puts the fop into the upper 16bits of &n;&t;   the tag word (like FXSAVE), not into the fcs*/
+id|fpu-&gt;cssel
+op_or_assign
+id|fpu-&gt;tag
+op_amp
+l_int|0xffff0000
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|oldfs
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 eof

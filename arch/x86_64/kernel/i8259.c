@@ -25,10 +25,6 @@ macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 multiline_comment|/* When we have things working, we can switch to always use&n;   IOAPIC. --pavel */
 multiline_comment|/*&n; * Common place to define all x86 IRQ vectors&n; *&n; * This builds up the IRQ handler stubs using some ugly macros in irq.h&n; *&n; * These macros create the low-level assembly IRQ routines that save&n; * register context and call do_IRQ(). do_IRQ() then does all the&n; * operations that are needed to keep the AT (or SMP IOAPIC)&n; * interrupt-controller happy.&n; */
-id|BUILD_COMMON_IRQ
-c_func
-(paren
-)paren
 DECL|macro|BI
 mdefine_line|#define BI(x,y) &bslash;&n;&t;BUILD_IRQ(x##y)
 DECL|macro|BUILD_16_IRQS
@@ -39,7 +35,7 @@ c_func
 (paren
 l_int|0x0
 )paren
-macro_line|#ifdef CONFIG_X86_IO_APIC
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 multiline_comment|/*&n; * The IO-APIC gives us many more interrupt sources. Most of these &n; * are unused but an SMP system is supposed to have enough memory ...&n; * sometimes (mostly wrt. hw bugs) we get corrupted vectors all&n; * across the spectrum, so we really want to be prepared to get all&n; * of these. Plus, more powerful systems might have more than 64&n; * IO-APIC registers.&n; *&n; * (these are usually mapped into the 0x30-0xff vector range)&n; */
 id|BUILD_16_IRQS
 c_func
@@ -111,68 +107,6 @@ DECL|macro|BUILD_16_IRQS
 macro_line|#undef BUILD_16_IRQS
 DECL|macro|BI
 macro_line|#undef BI
-multiline_comment|/*&n; * The following vectors are part of the Linux architecture, there&n; * is no hardware IRQ pin equivalent for them, they are triggered&n; * through the ICC by us (IPIs)&n; */
-macro_line|#ifdef CONFIG_SMP
-id|BUILD_SMP_INTERRUPT
-c_func
-(paren
-id|task_migration_interrupt
-comma
-id|TASK_MIGRATION_VECTOR
-)paren
-suffix:semicolon
-id|BUILD_SMP_INTERRUPT
-c_func
-(paren
-id|reschedule_interrupt
-comma
-id|RESCHEDULE_VECTOR
-)paren
-suffix:semicolon
-id|BUILD_SMP_INTERRUPT
-c_func
-(paren
-id|invalidate_interrupt
-comma
-id|INVALIDATE_TLB_VECTOR
-)paren
-suffix:semicolon
-id|BUILD_SMP_INTERRUPT
-c_func
-(paren
-id|call_function_interrupt
-comma
-id|CALL_FUNCTION_VECTOR
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n; * every pentium local APIC has two &squot;local interrupts&squot;, with a&n; * soft-definable vector attached to both interrupts, one of&n; * which is a timer interrupt, the other one is error counter&n; * overflow. Linux uses the local APIC timer interrupt to get&n; * a much simpler SMP time architecture:&n; */
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-id|BUILD_SMP_INTERRUPT
-c_func
-(paren
-id|apic_timer_interrupt
-comma
-id|LOCAL_TIMER_VECTOR
-)paren
-suffix:semicolon
-id|BUILD_SMP_INTERRUPT
-c_func
-(paren
-id|error_interrupt
-comma
-id|ERROR_APIC_VECTOR
-)paren
-suffix:semicolon
-id|BUILD_SMP_INTERRUPT
-c_func
-(paren
-id|spurious_interrupt
-comma
-id|SPURIOUS_APIC_VECTOR
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|macro|IRQ
 mdefine_line|#define IRQ(x,y) &bslash;&n;&t;IRQ##x##y##_interrupt
 DECL|macro|IRQLIST_16
@@ -299,6 +233,40 @@ r_int
 id|irq
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|irq
+OG
+l_int|256
+)paren
+(brace
+r_char
+id|var
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;return %p stack %p ti %p&bslash;n&quot;
+comma
+id|__builtin_return_address
+c_func
+(paren
+l_int|0
+)paren
+comma
+op_amp
+id|var
+comma
+id|current-&gt;thread_info
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1145,7 +1113,6 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * IRQ2 is cascade interrupt to second interrupt controller&n; */
-macro_line|#ifndef CONFIG_VISWS
 DECL|variable|irq2
 r_static
 r_struct
@@ -1166,7 +1133,6 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
-macro_line|#endif
 DECL|function|init_ISA_irqs
 r_void
 id|__init
@@ -1269,6 +1235,48 @@ suffix:semicolon
 )brace
 )brace
 )brace
+r_void
+id|apic_timer_interrupt
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|spurious_interrupt
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|error_interrupt
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|reschedule_interrupt
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|call_function_interrupt
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|invalidate_interrupt
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|init_IRQ
 r_void
 id|__init
@@ -1281,19 +1289,11 @@ r_void
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifndef CONFIG_X86_VISWS_APIC
 id|init_ISA_irqs
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#else
-id|init_VISWS_APIC_irqs
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Cover the whole vector space, no vector can escape&n;&t; * us. (some of these will be overridden and become&n;&t; * &squot;special&squot; SMP interrupts)&n;&t; */
 r_for
 c_loop
@@ -1323,7 +1323,12 @@ c_cond
 id|vector
 op_ne
 id|IA32_SYSCALL_VECTOR
+op_logical_and
+id|vector
+op_ne
+id|KDB_VECTOR
 )paren
+(brace
 id|set_intr_gate
 c_func
 (paren
@@ -1335,6 +1340,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
+)brace
 )brace
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n;&t; * IRQ0 must be given a fixed assignment and initialized,&n;&t; * because it&squot;s used before the IO-APIC is set up.&n;&t; */
@@ -1356,15 +1362,6 @@ c_func
 id|RESCHEDULE_VECTOR
 comma
 id|reschedule_interrupt
-)paren
-suffix:semicolon
-multiline_comment|/* IPI for task migration */
-id|set_intr_gate
-c_func
-(paren
-id|TASK_MIGRATION_VECTOR
-comma
-id|task_migration_interrupt
 )paren
 suffix:semicolon
 multiline_comment|/* IPI for invalidation */
@@ -1446,7 +1443,6 @@ l_int|0x40
 )paren
 suffix:semicolon
 multiline_comment|/* MSB */
-macro_line|#ifndef CONFIG_VISWS
 id|setup_irq
 c_func
 (paren
@@ -1456,6 +1452,5 @@ op_amp
 id|irq2
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 eof

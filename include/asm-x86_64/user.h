@@ -4,9 +4,9 @@ mdefine_line|#define _X86_64_USER_H
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
-multiline_comment|/* Core file format: The core file is written in such a way that gdb&n;   can understand it and provide useful information to the user (under&n;   linux we use the &squot;trad-core&squot; bfd).  There are quite a number of&n;   obstacles to being able to view the contents of the floating point&n;   registers, and until these are solved you will not be able to view the&n;   contents of them.  Actually, you can read in the core file and look at&n;   the contents of the user struct to find out what the floating point&n;   registers contain.&n;   The actual file contents are as follows:&n;   UPAGE: 1 page consisting of a user struct that tells gdb what is present&n;   in the file.  Directly after this is a copy of the task_struct, which&n;   is currently not used by gdb, but it may come in useful at some point.&n;   All of the registers are stored as part of the upage.  The upage should&n;   always be only one page.&n;   DATA: The data area is stored.  We use current-&gt;end_text to&n;   current-&gt;brk to pick up all of the user variables, plus any memory&n;   that may have been malloced.  No attempt is made to determine if a page&n;   is demand-zero or if a page is totally unused, we just cover the entire&n;   range.  All of the addresses are rounded in such a way that an integral&n;   number of pages is written.&n;   STACK: We need the stack information in order to get a meaningful&n;   backtrace.  We need to write the data from (esp) to&n;   current-&gt;start_stack, so we round each of these off in order to be able&n;   to write an integer number of pages.&n;   The minimum core file size is 3 pages, or 12288 bytes.&n;*/
-multiline_comment|/* This is not neccessary in first phase. It will have to be&n;   synchronized with gdb later. */
-multiline_comment|/*&n; * Pentium III FXSR, SSE support&n; *&t;Gareth Hughes &lt;gareth@valinux.com&gt;, May 2000&n; *&n; * Provide support for the GDB 5.0+ PTRACE_{GET|SET}FPXREGS requests for&n; * interacting with the FXSR-format floating point environment.  Floating&n; * point data can be accessed in the regular format in the usual manner,&n; * and both the standard and SIMD floating point data can be accessed via&n; * the new ptrace requests.  In either case, changes to the FPU environment&n; * will be reflected in the task&squot;s state as expected.&n; */
+multiline_comment|/* Core file format: The core file is written in such a way that gdb&n;   can understand it and provide useful information to the user.&n;   There are quite a number of obstacles to being able to view the&n;   contents of the floating point registers, and until these are&n;   solved you will not be able to view the contents of them.&n;   Actually, you can read in the core file and look at the contents of&n;   the user struct to find out what the floating point registers&n;   contain.&n;&n;   The actual file contents are as follows:&n;   UPAGE: 1 page consisting of a user struct that tells gdb what is present&n;   in the file.  Directly after this is a copy of the task_struct, which&n;   is currently not used by gdb, but it may come in useful at some point.&n;   All of the registers are stored as part of the upage.  The upage should&n;   always be only one page.&n;   DATA: The data area is stored.  We use current-&gt;end_text to&n;   current-&gt;brk to pick up all of the user variables, plus any memory&n;   that may have been malloced.  No attempt is made to determine if a page&n;   is demand-zero or if a page is totally unused, we just cover the entire&n;   range.  All of the addresses are rounded in such a way that an integral&n;   number of pages is written.&n;   STACK: We need the stack information in order to get a meaningful&n;   backtrace.  We need to write the data from (esp) to&n;   current-&gt;start_stack, so we round each of these off in order to be able&n;   to write an integer number of pages.&n;   The minimum core file size is 3 pages, or 12288 bytes.  */
+multiline_comment|/*&n; * Pentium III FXSR, SSE support&n; *&t;Gareth Hughes &lt;gareth@valinux.com&gt;, May 2000&n; *&n; * Provide support for the GDB 5.0+ PTRACE_{GET|SET}FPXREGS requests for&n; * interacting with the FXSR-format floating point environment.  Floating&n; * point data can be accessed in the regular format in the usual manner,&n; * and both the standard and SIMD floating point data can be accessed via&n; * the new ptrace requests.  In either case, changes to the FPU environment&n; * will be reflected in the task&squot;s state as expected.&n; * &n; * x86-64 support by Andi Kleen.&n; */
+multiline_comment|/* This matches the 64bit FXSAVE format as defined by AMD. It is the same&n;   as the 32bit format defined by Intel, except that the selector:offset pairs for&n;   data and eip are replaced with flat 64bit pointers. */
 DECL|struct|user_i387_struct
 r_struct
 id|user_i387_struct
@@ -26,34 +26,27 @@ r_int
 r_int
 id|twd
 suffix:semicolon
+multiline_comment|/* Note this is not the same as the 32bit/x87/FSAVE twd */
 DECL|member|fop
 r_int
 r_int
 id|fop
 suffix:semicolon
-DECL|member|fip
-id|u32
-id|fip
+DECL|member|rip
+id|u64
+id|rip
 suffix:semicolon
-DECL|member|fcs
-id|u32
-id|fcs
-suffix:semicolon
-DECL|member|foo
-id|u32
-id|foo
-suffix:semicolon
-DECL|member|fos
-id|u32
-id|fos
+DECL|member|rdp
+id|u64
+id|rdp
 suffix:semicolon
 DECL|member|mxcsr
 id|u32
 id|mxcsr
 suffix:semicolon
-DECL|member|reserved
+DECL|member|mxcsr_mask
 id|u32
-id|reserved
+id|mxcsr_mask
 suffix:semicolon
 DECL|member|st_space
 id|u32
@@ -67,20 +60,20 @@ DECL|member|xmm_space
 id|u32
 id|xmm_space
 (braket
-l_int|32
+l_int|64
 )braket
 suffix:semicolon
-multiline_comment|/* 8*16 bytes for each XMM-reg = 128 bytes */
+multiline_comment|/* 16*16 bytes for each XMM-reg = 256 bytes */
 DECL|member|padding
 id|u32
 id|padding
 (braket
-l_int|56
+l_int|24
 )braket
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * This is copy of the layout of &quot;struct pt_regs&quot;, and&n; * is still the layout used by user mode (the new&n; * pt_regs doesn&squot;t have all registers as the kernel&n; * doesn&squot;t use the extra segment registers)&n; */
+multiline_comment|/*&n; * Segment register layout in coredumps.&n; */
 DECL|struct|user_regs_struct
 r_struct
 id|user_regs_struct
@@ -157,12 +150,26 @@ comma
 id|ss
 suffix:semicolon
 DECL|member|fs_base
-DECL|member|kernel_gs_base
+DECL|member|gs_base
 r_int
 r_int
 id|fs_base
 comma
-id|kernel_gs_base
+id|gs_base
+suffix:semicolon
+DECL|member|ds
+DECL|member|es
+DECL|member|fs
+DECL|member|gs
+r_int
+r_int
+id|ds
+comma
+id|es
+comma
+id|fs
+comma
+id|gs
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -266,6 +273,7 @@ l_int|32
 suffix:semicolon
 multiline_comment|/* User command that was responsible */
 DECL|member|u_debugreg
+r_int
 r_int
 id|u_debugreg
 (braket

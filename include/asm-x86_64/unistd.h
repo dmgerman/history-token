@@ -284,7 +284,7 @@ c_func
 (paren
 id|__NR_shmat
 comma
-id|sys_shmat
+id|wrap_sys_shmat
 )paren
 DECL|macro|__NR_shmctl
 mdefine_line|#define __NR_shmctl                             31
@@ -608,7 +608,7 @@ c_func
 (paren
 id|__NR_semctl
 comma
-id|sys_semctl
+id|wrap_sys_semctl
 )paren
 DECL|macro|__NR_shmdt
 mdefine_line|#define __NR_shmdt                              67
@@ -1817,10 +1817,46 @@ id|__NR_tkill
 comma
 id|sys_tkill
 )paren
+DECL|macro|__NR_time
+mdefine_line|#define __NR_time      201
+id|__SYSCALL
+c_func
+(paren
+id|__NR_time
+comma
+id|sys_time
+)paren
+DECL|macro|__NR_futex
+mdefine_line|#define __NR_futex     202
+id|__SYSCALL
+c_func
+(paren
+id|__NR_futex
+comma
+id|sys_futex
+)paren
+DECL|macro|__NR_sched_setaffinity
+mdefine_line|#define __NR_sched_setaffinity    203
+id|__SYSCALL
+c_func
+(paren
+id|__NR_sched_setaffinity
+comma
+id|sys_sched_setaffinity
+)paren
+DECL|macro|__NR_sched_getaffinity
+mdefine_line|#define __NR_sched_getaffinity     204
+id|__SYSCALL
+c_func
+(paren
+id|__NR_sched_getaffinity
+comma
+id|sys_sched_getaffinity
+)paren
 DECL|macro|__NR_syscall_max
-mdefine_line|#define __NR_syscall_max __NR_tkill
+mdefine_line|#define __NR_syscall_max __NR_sched_getaffinity
 macro_line|#ifndef __NO_STUBS
-multiline_comment|/* user-visible error numbers are in the range -1 - -124: see &lt;asm-i386/errno.h&gt; */
+multiline_comment|/* user-visible error numbers are in the range -1 - -4095 */
 DECL|macro|__syscall_clobber
 mdefine_line|#define __syscall_clobber &quot;r11&quot;,&quot;rcx&quot;,&quot;memory&quot; 
 DECL|macro|__syscall_return

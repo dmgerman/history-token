@@ -1,7 +1,10 @@
+DECL|macro|printk
+mdefine_line|#define printk real_printk
 macro_line|#include &lt;asm/io.h&gt;
-multiline_comment|/* This is &quot;wrong&quot; address to access it, we should access it using&n;   0xffff8000000b8000ul; but 0xffff8000000b8000ul is not available&n;   early at boot. */
+DECL|macro|printk
+macro_line|#undef printk
 DECL|macro|VGABASE
-mdefine_line|#define VGABASE&t;&t;0xffffffff800b8000ul&t;
+mdefine_line|#define VGABASE&t;&t;0xffffffff800b8000ul&t;/* This is &quot;wrong&quot; address to access it, we should access it using 0xffff8000000b8000ul; but 0xffff8000000b8000ul is not available early at boot. */
 DECL|macro|MAX_YPOS
 mdefine_line|#define MAX_YPOS&t;25
 DECL|macro|MAX_XPOS
@@ -334,6 +337,31 @@ id|buf
 (braket
 l_int|1024
 )braket
+suffix:semicolon
+r_int
+id|printk
+c_func
+(paren
+r_const
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
+id|__attribute__
+c_func
+(paren
+(paren
+id|alias
+c_func
+(paren
+l_string|&quot;early_printk&quot;
+)paren
+)paren
+)paren
 suffix:semicolon
 DECL|function|early_printk
 r_int

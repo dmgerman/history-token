@@ -58,8 +58,6 @@ mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
 DECL|macro|init_stack
 mdefine_line|#define init_stack&t;&t;(init_thread_union.stack)
 multiline_comment|/* how to get the thread information struct from C */
-macro_line|#ifdef CONFIG_PREEMPT 
-multiline_comment|/* Preemptive kernels need to access this from interrupt context too. */
 DECL|function|current_thread_info
 r_static
 r_inline
@@ -97,15 +95,13 @@ r_return
 id|ti
 suffix:semicolon
 )brace
-macro_line|#else
-multiline_comment|/* On others go for a minimally cheaper way. */
-DECL|function|current_thread_info
+DECL|function|stack_thread_info
 r_static
 r_inline
 r_struct
 id|thread_info
 op_star
-id|current_thread_info
+id|stack_thread_info
 c_func
 (paren
 r_void
@@ -137,7 +133,6 @@ r_return
 id|ti
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* thread information allocation */
 DECL|macro|THREAD_SIZE
 mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
@@ -164,7 +159,7 @@ mdefine_line|#define TIF_SIGPENDING&t;&t;2&t;/* signal pending */
 DECL|macro|TIF_NEED_RESCHED
 mdefine_line|#define TIF_NEED_RESCHED&t;3&t;/* rescheduling necessary */
 DECL|macro|TIF_USEDFPU
-mdefine_line|#define TIF_USEDFPU&t;&t;16&t;/* FPU was used by this task this quantum (SMP) */
+mdefine_line|#define TIF_USEDFPU&t;&t;16&t;/* FPU was used by this task this quantum */
 DECL|macro|TIF_POLLING_NRFLAG
 mdefine_line|#define TIF_POLLING_NRFLAG&t;17&t;/* true if poll_idle() is polling TIF_NEED_RESCHED */
 DECL|macro|TIF_IA32
@@ -187,6 +182,8 @@ DECL|macro|_TIF_WORK_MASK
 mdefine_line|#define _TIF_WORK_MASK&t;&t;0x0000FFFE&t;/* work to do on interrupt/exception return */
 DECL|macro|_TIF_ALLWORK_MASK
 mdefine_line|#define _TIF_ALLWORK_MASK&t;0x0000FFFF&t;/* work to do on any return to u-space */
+DECL|macro|PREEMPT_ACTIVE
+mdefine_line|#define PREEMPT_ACTIVE     0x4000000
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_THREAD_INFO_H */
 eof
