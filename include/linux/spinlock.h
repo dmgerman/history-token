@@ -1092,5 +1092,8 @@ DECL|macro|DEFINE_SPINLOCK
 mdefine_line|#define DEFINE_SPINLOCK(x) spinlock_t x = SPIN_LOCK_UNLOCKED
 DECL|macro|DEFINE_RWLOCK
 mdefine_line|#define DEFINE_RWLOCK(x) rwlock_t x = RW_LOCK_UNLOCKED
+multiline_comment|/**&n; * spin_can_lock - would spin_trylock() succeed?&n; * @lock: the spinlock in question.&n; */
+DECL|macro|spin_can_lock
+mdefine_line|#define spin_can_lock(lock)&t;&t;(!spin_is_locked(lock))
 macro_line|#endif /* __LINUX_SPINLOCK_H */
 eof
