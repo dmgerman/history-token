@@ -50,7 +50,7 @@ mdefine_line|#define DRIVER_AUTHOR&t;&quot;Johan Verrept, Duncan Sands &lt;dunca
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION&t;&quot;1.8&quot;
 DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC&t;&quot;Alcatel SpeedTouch USB driver version &quot; DRIVER_VERSION
+mdefine_line|#define DRIVER_DESC&t;&quot;Generic USB ATM/DSL I/O, version &quot; DRIVER_VERSION
 DECL|variable|num_rcv_urbs
 r_static
 r_int
@@ -1571,27 +1571,6 @@ id|ne
 r_goto
 id|out
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|instance-&gt;snd_padding
-)paren
-(brace
-id|memset
-c_func
-(paren
-id|target
-comma
-l_int|0
-comma
-id|instance-&gt;snd_padding
-)paren
-suffix:semicolon
-id|target
-op_add_assign
-id|instance-&gt;snd_padding
-suffix:semicolon
-)brace
 id|udsl_fill_cell_header
 c_func
 (paren
@@ -1663,6 +1642,27 @@ id|ATM_AAL5_TRAILER
 suffix:semicolon
 r_goto
 id|out
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|instance-&gt;snd_padding
+)paren
+(brace
+id|memset
+c_func
+(paren
+id|target
+comma
+l_int|0
+comma
+id|instance-&gt;snd_padding
+)paren
+suffix:semicolon
+id|target
+op_add_assign
+id|instance-&gt;snd_padding
 suffix:semicolon
 )brace
 id|udsl_fill_cell_header
