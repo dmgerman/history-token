@@ -40,11 +40,11 @@ id|ibm44x_clocks
 id|clocks
 id|__initdata
 suffix:semicolon
-multiline_comment|/*&n; * Ebony IRQ triggering/polarity settings&n; */
+multiline_comment|/*&n; * Ebony external IRQ triggering/polarity settings&n; */
 DECL|variable|__initdata
-r_static
-id|u_char
-id|ebony_IRQ_initsenses
+r_int
+r_char
+id|ppc4xx_uic_ext_irq_cfg
 (braket
 )braket
 id|__initdata
@@ -53,451 +53,94 @@ op_assign
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
-id|IRQ_POLARITY_POSITIVE
+id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 0: UART 0 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 1: UART 1 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 2: IIC 0 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 3: IIC 1 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 4: PCI Inb Mess */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 5: PCI Cmd Wrt */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 6: PCI PM */
-(paren
-id|IRQ_SENSE_EDGE
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 7: PCI MSI 0 */
-(paren
-id|IRQ_SENSE_EDGE
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 8: PCI MSI 1 */
-(paren
-id|IRQ_SENSE_EDGE
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 9: PCI MSI 2 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 10: MAL TX EOB */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 11: MAL RX EOB */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 12: DMA Chan 0 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 13: DMA Chan 1 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 14: DMA Chan 2 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 15: DMA Chan 3 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 16: Reserved */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 17: Reserved */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 18: GPT Timer 0 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 19: GPT Timer 1 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 20: GPT Timer 2 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 21: GPT Timer 3 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 22: GPT Timer 4 */
+multiline_comment|/* IRQ0: PCI slot 0 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 23: Ext Int 0 */
+multiline_comment|/* IRQ1: PCI slot 1 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 24: Ext Int 1 */
+multiline_comment|/* IRQ2: PCI slot 2 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 25: Ext Int 2 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_NEGATIVE
-)paren
-comma
-multiline_comment|/* 26: Ext Int 3 */
+multiline_comment|/* IRQ3: PCI slot 3 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
-multiline_comment|/* 27: Ext Int 4 */
+multiline_comment|/* IRQ4: IRDA */
 (paren
 id|IRQ_SENSE_EDGE
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 28: Ext Int 5 */
+multiline_comment|/* IRQ5: SMI pushbutton */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 29: Ext Int 6 */
+multiline_comment|/* IRQ6: PHYs */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
-multiline_comment|/* 30: UIC1 NC Int */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 31: UIC1 Crit Int */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 32: MAL SERR */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 33: MAL TXDE */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 34: MAL RXDE */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 35: ECC Unc Err */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 36: ECC Corr Err */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 37: Ext Bus Ctrl */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 38: Ext Bus Mstr */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 39: OPB-&gt;PLB */
-(paren
-id|IRQ_SENSE_EDGE
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 40: PCI MSI 3 */
-(paren
-id|IRQ_SENSE_EDGE
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 41: PCI MSI 4 */
-(paren
-id|IRQ_SENSE_EDGE
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 42: PCI MSI 5 */
-(paren
-id|IRQ_SENSE_EDGE
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 43: PCI MSI 6 */
-(paren
-id|IRQ_SENSE_EDGE
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 44: PCI MSI 7 */
-(paren
-id|IRQ_SENSE_EDGE
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 45: PCI MSI 8 */
-(paren
-id|IRQ_SENSE_EDGE
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 46: PCI MSI 9 */
-(paren
-id|IRQ_SENSE_EDGE
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 47: PCI MSI 10 */
-(paren
-id|IRQ_SENSE_EDGE
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 48: PCI MSI 11 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 49: PLB Perf Mon */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 50: Ext Int 7 */
+multiline_comment|/* IRQ7: AUX */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 51: Ext Int 8 */
+multiline_comment|/* IRQ8: EXT */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 52: Ext Int 9 */
+multiline_comment|/* IRQ9: EXT */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 53: Ext Int 10 */
+multiline_comment|/* IRQ10: EXT */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 54: Ext Int 11 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_NEGATIVE
-)paren
-comma
-multiline_comment|/* 55: Ext Int 12 */
+multiline_comment|/* IRQ11: EXT */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_POSITIVE
 )paren
 comma
-multiline_comment|/* 56: Ser ROM Err */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 57: Reserved */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 58: Reserved */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 59: PCI Async Err */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 60: EMAC 0 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 61: EMAC 0 WOL */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 62: EMAC 1 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 63: EMAC 1 WOL */
+multiline_comment|/* IRQ12: EXT */
 )brace
 suffix:semicolon
 r_static
@@ -1330,17 +973,6 @@ macro_line|#endif
 id|ebony_early_serial_map
 c_func
 (paren
-)paren
-suffix:semicolon
-id|ibm4xxPIC_InitSenses
-op_assign
-id|ebony_IRQ_initsenses
-suffix:semicolon
-id|ibm4xxPIC_NumInitSenses
-op_assign
-r_sizeof
-(paren
-id|ebony_IRQ_initsenses
 )paren
 suffix:semicolon
 multiline_comment|/* Identify the system */

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;platforms/4xx/ibm405gp.h&gt;
 macro_line|#include &lt;asm/ibm4xx.h&gt;
 macro_line|#include &lt;asm/ocp.h&gt;
+macro_line|#include &lt;asm/ppc4xx_pic.h&gt;
 DECL|variable|ibm405gp_emac0_def
 r_static
 r_struct
@@ -422,6 +423,36 @@ dot
 id|vendor
 op_assign
 id|OCP_VENDOR_INVALID
+)brace
+)brace
+suffix:semicolon
+multiline_comment|/* Polarity and triggering settings for internal interrupt sources */
+DECL|variable|__initdata
+r_struct
+id|ppc4xx_uic_settings
+id|ppc4xx_core_uic_cfg
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+(brace
+dot
+id|polarity
+op_assign
+l_int|0xffffff80
+comma
+dot
+id|triggering
+op_assign
+l_int|0x10000000
+comma
+dot
+id|ext_irq_mask
+op_assign
+l_int|0x0000007f
+comma
+multiline_comment|/* IRQ0 - IRQ6 */
 )brace
 )brace
 suffix:semicolon

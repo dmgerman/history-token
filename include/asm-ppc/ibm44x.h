@@ -201,9 +201,7 @@ mdefine_line|#define DCRN_UIC_VR(base)       (base + 0x7)
 DECL|macro|DCRN_UIC_VCR
 mdefine_line|#define DCRN_UIC_VCR(base)      (base + 0x8)
 DECL|macro|UIC0_UIC1NC
-mdefine_line|#define UIC0_UIC1NC&t;&t;30&t;/* UIC1 non-critical interrupt */
-DECL|macro|UIC0_UIC1CR
-mdefine_line|#define UIC0_UIC1CR      &t;31&t;/* UIC1 critical interrupt */
+mdefine_line|#define UIC0_UIC1NC      &t;0x00000002
 DECL|macro|UICB_UIC0NC
 mdefine_line|#define UICB_UIC0NC&t;&t;0x40000000
 DECL|macro|UICB_UIC1NC
@@ -846,8 +844,6 @@ macro_line|#else
 DECL|macro|NR_UICS
 mdefine_line|#define NR_UICS 2
 macro_line|#endif
-DECL|macro|UIC_CASCADE_MASK
-mdefine_line|#define UIC_CASCADE_MASK&t;0x0003&t;&t;/* bits 30 &amp; 31 */
 DECL|macro|BD_EMAC_ADDR
 mdefine_line|#define BD_EMAC_ADDR(e,i) bi_enetaddr[e][i]
 macro_line|#include &lt;asm/ibm4xx.h&gt;

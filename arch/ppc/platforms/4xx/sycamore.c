@@ -41,11 +41,11 @@ r_void
 op_star
 id|sycamore_rtc_base
 suffix:semicolon
-multiline_comment|/*&n; * Define all of the IRQ senses and polarities.&n; */
+multiline_comment|/*&n; * Define external IRQ senses and polarities.&n; */
 DECL|variable|__initdata
-r_static
-id|u_char
-id|Sycamore_IRQ_initsenses
+r_int
+r_char
+id|ppc4xx_uic_ext_irq_cfg
 (braket
 )braket
 id|__initdata
@@ -54,227 +54,94 @@ op_assign
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
-id|IRQ_POLARITY_POSITIVE
+id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 0: Uart 0*/
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 1: Uart 1*/
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 2: IIC */
-(paren
-id|IRQ_SENSE_EDGE
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 3: External Master */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 4: PCI ext cmd write*/
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 5: DMA Chan 0 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 6: DMA Chan 1 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 7: DMA Chan 2 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 8: DMA Chan 3 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 9: Ethernet wakeup (WOL)*/
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 10: Mal (SEER) */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 11: Mal TXEOB */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 12: Mal RXEOB */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 13: Mal TXDE*/
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 14: Mal RXDE*/
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 15: Ethernet */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 16: Ext PCI SERR */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 17: ECC */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 18: PCI PM*/
+multiline_comment|/* Ext Int 7 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 19: Ext Int 7 */
+multiline_comment|/* Ext Int 8 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 20: Ext Int 8 */
+multiline_comment|/* Ext Int 9 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 21: Ext Int 9 */
+multiline_comment|/* Ext Int 10 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 22: Ext Int 10 */
+multiline_comment|/* Ext Int 11 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 23: Ext Int 11 */
+multiline_comment|/* Ext Int 12 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 24: Ext Int 12 */
+multiline_comment|/* Ext Int 0 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 25: Ext Int 0 */
+multiline_comment|/* Ext Int 1 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 26: Ext Int 1 */
+multiline_comment|/* Ext Int 2 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 27: Ext Int 2 */
+multiline_comment|/* Ext Int 3 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 28: Ext Int 3 */
+multiline_comment|/* Ext Int 4 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 29: Ext Int 4 */
+multiline_comment|/* Ext Int 5 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 30: Ext Int 5 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_NEGATIVE
-)paren
-comma
-multiline_comment|/* 31: Ext Int 6 */
+multiline_comment|/* Ext Int 6 */
 )brace
 suffix:semicolon
 multiline_comment|/* Some IRQs unique to Sycamore.&n; * Used by the generic 405 PCI setup functions in ppc4xx_pci.c&n; */
@@ -574,17 +441,6 @@ comma
 id|sycamore_rtc_base
 comma
 l_int|8
-)paren
-suffix:semicolon
-id|ibm4xxPIC_InitSenses
-op_assign
-id|Sycamore_IRQ_initsenses
-suffix:semicolon
-id|ibm4xxPIC_NumInitSenses
-op_assign
-r_sizeof
-(paren
-id|Sycamore_IRQ_initsenses
 )paren
 suffix:semicolon
 multiline_comment|/* Identify the system */
