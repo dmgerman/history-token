@@ -678,7 +678,7 @@ c_func
 id|current
 comma
 op_minus
-l_int|10
+l_int|5
 )paren
 suffix:semicolon
 multiline_comment|/* Block and flush all signals */
