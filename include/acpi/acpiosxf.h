@@ -236,7 +236,7 @@ id|acpi_status
 id|acpi_os_install_interrupt_handler
 (paren
 id|u32
-id|interrupt_number
+id|gsi
 comma
 id|OSD_HANDLER
 id|service_routine
