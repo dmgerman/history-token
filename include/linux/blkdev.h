@@ -12,6 +12,8 @@ macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 r_struct
 id|request_queue
@@ -2428,5 +2430,9 @@ macro_line|#else
 DECL|macro|sector_div
 macro_line|# define sector_div(n, b)( &bslash;&n;{ &bslash;&n;&t;int _res; &bslash;&n;&t;_res = (n) % (b); &bslash;&n;&t;(n) /= (b); &bslash;&n;&t;_res; &bslash;&n;} &bslash;&n;)
 macro_line|#endif 
+DECL|macro|MODULE_ALIAS_BLOCKDEV
+mdefine_line|#define MODULE_ALIAS_BLOCKDEV(major,minor) &bslash;&n;&t;MODULE_ALIAS(&quot;block-major-&quot; __stringify(major) &quot;-&quot; __stringify(minor))
+DECL|macro|MODULE_ALIAS_BLOCKDEV_MAJOR
+mdefine_line|#define MODULE_ALIAS_BLOCKDEV_MAJOR(major) &bslash;&n;&t;MODULE_ALIAS(&quot;block-major-&quot; __stringify(major) &quot;-*&quot;)
 macro_line|#endif
 eof
