@@ -26,16 +26,18 @@ suffix:semicolon
 DECL|variable|pcspkr_name
 r_static
 r_char
-op_star
 id|pcspkr_name
+(braket
+)braket
 op_assign
 l_string|&quot;PC Speaker&quot;
 suffix:semicolon
 DECL|variable|pcspkr_phys
 r_static
 r_char
-op_star
 id|pcspkr_phys
+(braket
+)braket
 op_assign
 l_string|&quot;isa0061/input0&quot;
 suffix:semicolon

@@ -29,6 +29,38 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|function|q40kbd_open
+r_static
+r_int
+id|q40kbd_open
+c_func
+(paren
+r_struct
+id|serio
+op_star
+id|port
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|q40kbd_close
+r_static
+r_void
+id|q40kbd_close
+c_func
+(paren
+r_struct
+id|serio
+op_star
+id|port
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|variable|q40kbd_port
 r_static
 r_struct
@@ -42,19 +74,29 @@ op_assign
 id|SERIO_8042
 comma
 dot
+id|name
+op_assign
+l_string|&quot;Q40 kbd port&quot;
+comma
+dot
+id|phys
+op_assign
+l_string|&quot;Q40&quot;
+comma
+dot
 id|write
 op_assign
 l_int|NULL
 comma
 dot
-id|name
+id|open
 op_assign
-l_string|&quot;Q40 PS/2 kbd port&quot;
+id|q40kbd_open
 comma
 dot
-id|phys
+id|close
 op_assign
-l_string|&quot;isa0060/serio0&quot;
+id|q40kbd_close
 comma
 )brace
 suffix:semicolon
@@ -138,17 +180,6 @@ id|maxread
 op_assign
 l_int|100
 suffix:semicolon
-multiline_comment|/* Get the keyboard controller registers (incomplete decode) */
-id|request_region
-c_func
-(paren
-l_int|0x60
-comma
-l_int|16
-comma
-l_string|&quot;q40kbd&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* allocate the IRQ */
 id|request_irq
 c_func
@@ -164,7 +195,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* flush any pending input. */
+multiline_comment|/* flush any pending input */
 r_while
 c_loop
 (paren
@@ -205,7 +236,7 @@ comma
 id|KEY_IRQ_ENABLE_REG
 )paren
 suffix:semicolon
-id|register_serio_port
+id|serio_register_port
 c_func
 (paren
 op_amp
@@ -216,9 +247,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;serio: Q40 PS/2 kbd port irq %d&bslash;n&quot;
-comma
-id|Q40_IRQ_KEYBOARD
+l_string|&quot;serio: Q40 kbd registered&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -231,7 +260,24 @@ c_func
 r_void
 )paren
 (brace
-id|unregister_serio_port
+id|master_outb
+c_func
+(paren
+l_int|0
+comma
+id|KEY_IRQ_ENABLE_REG
+)paren
+suffix:semicolon
+id|master_outb
+c_func
+(paren
+op_minus
+l_int|1
+comma
+id|KEYBOARD_UNLOCK_REG
+)paren
+suffix:semicolon
+id|serio_unregister_port
 c_func
 (paren
 op_amp
@@ -244,14 +290,6 @@ c_func
 id|Q40_IRQ_KEYBOARD
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-id|release_region
-c_func
-(paren
-l_int|0x60
-comma
-l_int|16
 )paren
 suffix:semicolon
 )brace
