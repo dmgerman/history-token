@@ -1188,7 +1188,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* in the non-PAE case, clear_page_tables() clears user pgd entries */
+multiline_comment|/* in the non-PAE case, clear_page_range() clears user pgd entries */
 id|kmem_cache_free
 c_func
 (paren

@@ -1405,7 +1405,7 @@ op_star
 )paren
 suffix:semicolon
 r_void
-id|clear_page_tables
+id|clear_page_range
 c_func
 (paren
 r_struct
@@ -1415,10 +1415,11 @@ id|tlb
 comma
 r_int
 r_int
-id|first
+id|addr
 comma
 r_int
-id|nr
+r_int
+id|end
 )paren
 suffix:semicolon
 r_int
