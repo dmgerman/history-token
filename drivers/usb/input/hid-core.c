@@ -8388,7 +8388,7 @@ id|dev-&gt;descriptor.iProduct
 comma
 id|buf
 comma
-l_int|128
+l_int|64
 )paren
 OG
 l_int|0
