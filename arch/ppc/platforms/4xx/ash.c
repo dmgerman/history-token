@@ -6,6 +6,8 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/ocp.h&gt;
+macro_line|#include &lt;asm/ibm_ocp_pci.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#ifdef DEBUG
 DECL|macro|DBG
@@ -124,16 +126,17 @@ c_func
 r_void
 )paren
 (brace
-id|bd_t
-op_star
-id|bip
-op_assign
-op_amp
-id|__res
-suffix:semicolon
 id|ppc4xx_setup_arch
 c_func
 (paren
+)paren
+suffix:semicolon
+id|ibm_ocp_set_emac
+c_func
+(paren
+l_int|0
+comma
+l_int|3
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_BRINGUP
@@ -386,12 +389,6 @@ op_star
 id|pcip
 )paren
 (brace
-r_int
-r_int
-id|bar_response
-comma
-id|bar
-suffix:semicolon
 multiline_comment|/*&n;&t; * Expected PCI mapping:&n;&t; *&n;&t; *  PLB addr             PCI memory addr&n;&t; *  ---------------------       ---------------------&n;&t; *  0000&squot;0000 - 7fff&squot;ffff &lt;---  0000&squot;0000 - 7fff&squot;ffff&n;&t; *  8000&squot;0000 - Bfff&squot;ffff ---&gt;  8000&squot;0000 - Bfff&squot;ffff&n;&t; *&n;&t; *  PLB addr             PCI io addr&n;&t; *  ---------------------       ---------------------&n;&t; *  e800&squot;0000 - e800&squot;ffff ---&gt;  0000&squot;0000 - 0001&squot;0000&n;&t; *&n;&t; * The following code is simplified by assuming that the bootrom&n;&t; * has been well behaved in following this mapping.&n;&t; */
 macro_line|#ifdef DEBUG
 r_int

@@ -26,22 +26,21 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
+macro_line|#include &lt;asm/ocp.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/ppc4xx_pic.h&gt;
+macro_line|#include &lt;syslib/ibm440gx_common.h&gt;
+multiline_comment|/*&n; * This is a horrible kludge, we eventually need to abstract this&n; * generic PHY stuff, so the  standard phy mode defines can be&n; * easily used from arch code.&n; */
+macro_line|#include &quot;../../../../drivers/net/ibm_emac/ibm_emac_phy.h&quot;
 r_extern
 r_void
 m_abort
 (paren
 r_void
 )paren
-suffix:semicolon
-multiline_comment|/* Global Variables */
-DECL|variable|__res
-id|bd_t
-id|__res
 suffix:semicolon
 r_static
 r_void
@@ -598,7 +597,11 @@ DECL|function|ocotea_early_serial_map
 id|ocotea_early_serial_map
 c_func
 (paren
-r_void
+r_const
+r_struct
+id|ibm44x_clocks
+op_star
+id|clks
 )paren
 (brace
 r_struct
@@ -632,13 +635,11 @@ l_int|8
 suffix:semicolon
 id|port.irq
 op_assign
-l_int|0
+id|UART0_INT
 suffix:semicolon
 id|port.uartclk
 op_assign
-id|BASE_BAUD
-op_star
-l_int|16
+id|clks-&gt;uart0
 suffix:semicolon
 id|port.regshift
 op_assign
@@ -690,7 +691,11 @@ l_int|8
 suffix:semicolon
 id|port.irq
 op_assign
-l_int|1
+id|UART1_INT
+suffix:semicolon
+id|port.uartclk
+op_assign
+id|clks-&gt;uart1
 suffix:semicolon
 id|port.line
 op_assign
@@ -737,7 +742,25 @@ r_int
 r_int
 id|mac64
 suffix:semicolon
-multiline_comment|/* Retrieve MAC addresses from flash */
+r_struct
+id|ocp_def
+op_star
+id|def
+suffix:semicolon
+r_struct
+id|ocp_func_emac_data
+op_star
+id|emacdata
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_struct
+id|ibm44x_clocks
+id|clocks
+suffix:semicolon
+multiline_comment|/*&n;&t; * Note: Current rev. board only operates in Group 4a&n;&t; * mode, so we always set EMAC0-1 for SMII and EMAC2-3&n;&t; * for RGMII (though these could run in RTBI just the same).&n;&t; *&n;&t; * The FPGA reg 3 information isn&squot;t even suitable for&n;&t; * determining the phy_mode, so if the board becomes&n;&t; * usable in !4a, it will be necessary to parse an environment&n;&t; * variable from the firmware or similar to properly configure&n;&t; * the phy_map/phy_mode.&n;&t; */
+multiline_comment|/* Set phy_map, phy_mode, and mac_addr for each EMAC */
 id|addr
 op_assign
 id|ioremap64
@@ -748,25 +771,87 @@ comma
 id|OCOTEA_MAC_SIZE
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|4
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 id|mac64
 op_assign
 id|simple_strtoull
 c_func
 (paren
 id|addr
+op_plus
+id|OCOTEA_MAC_OFFSET
+op_star
+id|i
 comma
 l_int|0
 comma
 l_int|16
 )paren
 suffix:semicolon
+id|def
+op_assign
+id|ocp_get_one_device
+c_func
+(paren
+id|OCP_VENDOR_IBM
+comma
+id|OCP_FUNC_EMAC
+comma
+id|i
+)paren
+suffix:semicolon
+id|emacdata
+op_assign
+id|def-&gt;additions
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+OL
+l_int|2
+)paren
+(brace
+id|emacdata-&gt;phy_map
+op_assign
+l_int|0x00000001
+suffix:semicolon
+multiline_comment|/* Skip 0x00 */
+id|emacdata-&gt;phy_mode
+op_assign
+id|PHY_MODE_SMII
+suffix:semicolon
+)brace
+r_else
+(brace
+id|emacdata-&gt;phy_map
+op_assign
+l_int|0x0000ffff
+suffix:semicolon
+multiline_comment|/* Skip 0x00-0x0f */
+id|emacdata-&gt;phy_mode
+op_assign
+id|PHY_MODE_RGMII
+suffix:semicolon
+)brace
 id|memcpy
 c_func
 (paren
-id|__res.bi_enetaddr
-(braket
-l_int|0
-)braket
+id|emacdata-&gt;mac_addr
 comma
 (paren
 r_char
@@ -780,44 +865,16 @@ comma
 l_int|6
 )paren
 suffix:semicolon
-id|mac64
-op_assign
-id|simple_strtoull
-c_func
-(paren
-id|addr
-op_plus
-id|OCOTEA_MAC1_OFFSET
-comma
-l_int|0
-comma
-l_int|16
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|__res.bi_enetaddr
-(braket
-l_int|1
-)braket
-comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|mac64
-op_plus
-l_int|2
-comma
-l_int|6
-)paren
-suffix:semicolon
+)brace
 id|iounmap
 c_func
 (paren
 id|addr
+)paren
+suffix:semicolon
+id|ibm440gx_tah_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 macro_line|#if !defined(CONFIG_BDI_SWITCH)
@@ -835,6 +892,24 @@ id|DBCR0_IDM
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n;&t; * Determine various clocks.&n;&t; * To be completely correct we should get SysClk&n;&t; * from FPGA, because it can be changed by on-board switches&n;&t; * --ebs&n;&t; */
+id|ibm440gx_get_clocks
+c_func
+(paren
+op_amp
+id|clocks
+comma
+l_int|33333333
+comma
+l_int|6
+op_star
+l_int|1843200
+)paren
+suffix:semicolon
+id|ocp_sys_info.opb_bus_freq
+op_assign
+id|clocks.opb
+suffix:semicolon
 multiline_comment|/* Setup TODC access */
 id|TODC_INIT
 c_func
@@ -902,6 +977,8 @@ macro_line|#endif
 id|ocotea_early_serial_map
 c_func
 (paren
+op_amp
+id|clocks
 )paren
 suffix:semicolon
 multiline_comment|/* Identify the system */
@@ -1188,21 +1265,6 @@ r_void
 (brace
 r_int
 id|i
-suffix:semicolon
-multiline_comment|/* Enable PPC440GP interrupt compatibility mode */
-id|SDR_WRITE
-c_func
-(paren
-id|DCRN_SDR_MFR
-comma
-id|SDR_READ
-c_func
-(paren
-id|DCRN_SDR_MFR
-)paren
-op_or
-id|DCRN_SDR_MFR_PCM
-)paren
 suffix:semicolon
 id|ppc4xx_pic_init
 c_func
@@ -1495,6 +1557,12 @@ id|r3
 op_plus
 id|KERNELBASE
 )paren
+)paren
+suffix:semicolon
+multiline_comment|/* Disable L2-Cache due to hardware issues */
+id|ibm440gx_l2c_disable
+c_func
+(paren
 )paren
 suffix:semicolon
 id|ppc_md.setup_arch
