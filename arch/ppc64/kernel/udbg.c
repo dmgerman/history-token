@@ -1177,8 +1177,10 @@ id|sp
 suffix:semicolon
 )brace
 )brace
-r_void
+DECL|macro|UDBG_BUFSIZE
+mdefine_line|#define UDBG_BUFSIZE 256
 DECL|function|udbg_printf
+r_void
 id|udbg_printf
 c_func
 (paren
@@ -1196,7 +1198,7 @@ r_int
 r_char
 id|buf
 (braket
-l_int|256
+id|UDBG_BUFSIZE
 )braket
 suffix:semicolon
 id|va_list
@@ -1210,10 +1212,12 @@ comma
 id|fmt
 )paren
 suffix:semicolon
-id|vsprintf
+id|vsnprintf
 c_func
 (paren
 id|buf
+comma
+id|UDBG_BUFSIZE
 comma
 id|fmt
 comma
@@ -1274,7 +1278,7 @@ r_int
 r_char
 id|buf
 (braket
-l_int|256
+id|UDBG_BUFSIZE
 )braket
 suffix:semicolon
 r_int
@@ -1343,10 +1347,12 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|buf
+comma
+id|UDBG_BUFSIZE
 comma
 l_string|&quot; [%s]: &quot;
 comma
@@ -1393,10 +1399,12 @@ comma
 id|fmt
 )paren
 suffix:semicolon
-id|vsprintf
+id|vsnprintf
 c_func
 (paren
 id|buf
+comma
+id|UDBG_BUFSIZE
 comma
 id|fmt
 comma
