@@ -584,6 +584,12 @@ l_int|129
 )braket
 suffix:semicolon
 multiline_comment|/* Password cannot be longer than 128 characters */
+r_if
+c_cond
+(paren
+id|passwd
+)paren
+(brace
 id|len
 op_assign
 id|strlen
@@ -603,10 +609,12 @@ id|len
 OG
 l_int|128
 )paren
+(brace
 id|len
 op_assign
 l_int|128
 suffix:semicolon
+)brace
 multiline_comment|/* Password must be converted to NT unicode */
 id|_my_mbstowcs
 c_func
@@ -617,6 +625,12 @@ id|passwd
 comma
 id|len
 )paren
+suffix:semicolon
+)brace
+r_else
+id|len
+op_assign
+l_int|0
 suffix:semicolon
 id|wpwd
 (braket
