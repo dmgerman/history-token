@@ -939,8 +939,12 @@ c_cond
 (paren
 id|iomapp-&gt;iomap_offset
 op_plus
+(paren
 id|iomapp-&gt;iomap_bsize
-OG
+op_minus
+l_int|1
+)paren
+op_ge
 id|full_offset
 )paren
 r_return
