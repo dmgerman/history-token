@@ -67,7 +67,6 @@ macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
-macro_line|#include &lt;asm/offsets.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/percpu.h&gt;
 macro_line|#include &lt;asm/rse.h&gt;
