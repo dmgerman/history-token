@@ -6135,6 +6135,11 @@ id|inode
 op_star
 id|inode
 comma
+r_struct
+id|block_device
+op_star
+id|bdev
+comma
 r_const
 r_struct
 id|iovec
