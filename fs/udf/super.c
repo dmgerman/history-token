@@ -482,6 +482,11 @@ id|SLAB_CTOR_CONSTRUCTOR
 op_eq
 id|SLAB_CTOR_CONSTRUCTOR
 )paren
+(brace
+id|ei-&gt;i_ext.i_data
+op_assign
+l_int|NULL
+suffix:semicolon
 id|inode_init_once
 c_func
 (paren
@@ -489,6 +494,7 @@ op_amp
 id|ei-&gt;vfs_inode
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|init_inodecache
 r_static
