@@ -4541,8 +4541,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|down
 c_func
 (paren
@@ -4667,8 +4665,6 @@ c_func
 op_amp
 id|isapnp_cfg_mutex
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
