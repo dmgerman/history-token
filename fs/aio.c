@@ -3912,6 +3912,10 @@ id|req-&gt;ki_user_data
 op_assign
 id|iocb-&gt;aio_data
 suffix:semicolon
+id|req-&gt;ki_pos
+op_assign
+id|iocb-&gt;aio_offset
+suffix:semicolon
 id|buf
 op_assign
 (paren
@@ -4004,7 +4008,7 @@ id|buf
 comma
 id|iocb-&gt;aio_nbytes
 comma
-id|iocb-&gt;aio_offset
+id|req-&gt;ki_pos
 )paren
 suffix:semicolon
 r_break
@@ -4083,7 +4087,7 @@ id|buf
 comma
 id|iocb-&gt;aio_nbytes
 comma
-id|iocb-&gt;aio_offset
+id|req-&gt;ki_pos
 )paren
 suffix:semicolon
 r_break
