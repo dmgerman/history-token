@@ -7,12 +7,8 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-multiline_comment|/* FIXME: remove this, when the definitions are upstream */
-DECL|macro|DMA_32BIT_MASK
-mdefine_line|#define DMA_32BIT_MASK 0xffffffffULL
-DECL|macro|DMA_64BIT_MASK
-mdefine_line|#define DMA_64BIT_MASK 0xffffffffffffffffULL
 DECL|macro|RTL8169_VERSION
 mdefine_line|#define RTL8169_VERSION &quot;1.2&quot;
 DECL|macro|MODULENAME
