@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Locks for smp ppc&n; *&n; * Written by Cort Dougan (co
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/ppc_asm.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
