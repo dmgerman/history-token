@@ -1060,6 +1060,10 @@ l_int|3
 )braket
 suffix:semicolon
 multiline_comment|/* AC97 register cache for Aureon */
+DECL|struct|aureon_spec
+r_struct
+id|aureon_spec
+(brace
 DECL|member|stac9744
 r_int
 r_int
@@ -1067,6 +1071,26 @@ id|stac9744
 (braket
 l_int|64
 )braket
+suffix:semicolon
+DECL|member|master
+r_int
+r_int
+id|master
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|vol
+r_int
+r_int
+id|vol
+(braket
+l_int|8
+)braket
+suffix:semicolon
+DECL|member|aureon
+)brace
+id|aureon
 suffix:semicolon
 multiline_comment|/* Hoontech-specific setting */
 DECL|struct|hoontech_spec

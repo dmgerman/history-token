@@ -1831,9 +1831,17 @@ suffix:semicolon
 r_case
 id|ICE1712_SUBDEVICE_EWS88D
 suffix:colon
+multiline_comment|/* Note: not analog but ADAT I/O */
+id|ice-&gt;num_total_dacs
+op_assign
+l_int|8
+suffix:semicolon
+id|ice-&gt;num_total_adcs
+op_assign
+l_int|8
+suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* no analog */
 r_case
 id|ICE1712_SUBDEVICE_DMX6FIRE
 suffix:colon
