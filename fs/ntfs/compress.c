@@ -898,7 +898,6 @@ op_star
 id|cb
 op_increment
 suffix:semicolon
-singleline_comment|//ntfs_debug(&quot;Found tag = 0x%x.&quot;, tag);
 multiline_comment|/* Parse the eight tokens described by the tag. */
 r_for
 c_loop
@@ -963,8 +962,6 @@ op_eq
 id|NTFS_SYMBOL_TOKEN
 )paren
 (brace
-singleline_comment|//ntfs_debug(&quot;Found symbol token = %c (0x%x).&quot;, *cb,
-singleline_comment|//&t;&t;*cb);
 multiline_comment|/*&n;&t;&t;&t; * We have a symbol token, copy the symbol across, and&n;&t;&t;&t; * advance the source and destination positions.&n;&t;&t;&t; */
 op_star
 id|dp_addr
@@ -982,7 +979,6 @@ multiline_comment|/* Continue with the next token. */
 r_continue
 suffix:semicolon
 )brace
-singleline_comment|//ntfs_debug(&quot;Found phrase token = 0x%x.&quot;, le16_to_cpup(cb));
 multiline_comment|/* &n;&t;&t; * We have a phrase token. Make sure it is not the first tag in&n;&t;&t; * the sb as this is illegal and would confuse the code below.&n;&t;&t; */
 r_if
 c_cond
@@ -1073,36 +1069,6 @@ id|lg
 op_plus
 l_int|3
 suffix:semicolon
-macro_line|#if 0
-id|ntfs_debug
-c_func
-(paren
-l_string|&quot;starting position = 0x%x, back pointer = 0x%x, &quot;
-l_string|&quot;length = 0x%x.&quot;
-comma
-op_star
-id|dest_ofs
-op_minus
-id|do_sb_start
-op_minus
-l_int|1
-comma
-(paren
-id|pt
-op_rshift
-(paren
-l_int|12
-op_minus
-id|lg
-)paren
-)paren
-op_plus
-l_int|1
-comma
-id|length
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Advance destination position and verify it is in range. */
 op_star
 id|dest_ofs
@@ -1135,7 +1101,6 @@ op_le
 id|max_non_overlap
 )paren
 (brace
-singleline_comment|//ntfs_debug(&quot;Found non-overlapping byte sequence.&quot;);
 multiline_comment|/* The byte sequence doesn&squot;t overlap, just copy it. */
 id|memcpy
 c_func
@@ -1155,7 +1120,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|//ntfs_debug(&quot;Found overlapping byte sequence.&quot;);
 multiline_comment|/*&n;&t;&t;&t; * The byte sequence does overlap, copy non-overlapping&n;&t;&t;&t; * part and then do a slow byte by byte copy for the&n;&t;&t;&t; * overlapping part. Also, advance the destination&n;&t;&t;&t; * pointer.&n;&t;&t;&t; */
 id|memcpy
 c_func
@@ -1218,7 +1182,7 @@ r_goto
 id|return_error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_file_read_compressed_block - read a compressed block into the page cache&n; * @page:&t;locked page in the compression block(s) we need to read&n; *&n; * When we are called the page has already been verified to be locked and the&n; * attribute is known to be non-resident, not encrypted, but compressed.&n; *&n; * 1. Determine which compression block(s) @page is in.&n; * 2. Get hold of all pages corresponding to this/these compression block(s).&n; * 3. Read the (first) compression block.&n; * 4. Decompress it into the corresponding pages.&n; * 5. Throw the compressed data away and proceed to 3. for the next compression&n; *    block or return success if no more compression blocks left.&n; *&n; * Warning: We have to be careful what we do about existing pages. They might&n; * have been written to so that we would lose data if we were to just overwrite&n; * them with the out-of-date uncompressed data.&n; *&n; * FIXME: For PAGE_CACHE_SIZE &gt; cb_size we are not doing the Right Thing(TM) at&n; * the end of the file I think. We need to detect this case and zero the out&n; * of bounds remainder of the page in question and mark it as handled. At the&n; * moment we would just return -EIO on such a page. This bug will only become&n; * apparent if pages are above 8kiB and the NTFS volume only uses 512 byte&n; * clusters so is probably not going to be seen by anyone. Still this should&n; * be fixed. (AIA)&n; *&n; * FIXME: Again for PAGE_CACHE_SIZE &gt; cb_size we are screwing up both in&n; * handling sparse and compressed cbs. (AIA)&n; */
+multiline_comment|/**&n; * ntfs_file_read_compressed_block - read a compressed block into the page cache&n; * @page:&t;locked page in the compression block(s) we need to read&n; *&n; * When we are called the page has already been verified to be locked and the&n; * attribute is known to be non-resident, not encrypted, but compressed.&n; *&n; * 1. Determine which compression block(s) @page is in.&n; * 2. Get hold of all pages corresponding to this/these compression block(s).&n; * 3. Read the (first) compression block.&n; * 4. Decompress it into the corresponding pages.&n; * 5. Throw the compressed data away and proceed to 3. for the next compression&n; *    block or return success if no more compression blocks left.&n; *&n; * Warning: We have to be careful what we do about existing pages. They might&n; * have been written to so that we would lose data if we were to just overwrite&n; * them with the out-of-date uncompressed data.&n; *&n; * FIXME: For PAGE_CACHE_SIZE &gt; cb_size we are not doing the Right Thing(TM) at&n; * the end of the file I think. We need to detect this case and zero the out&n; * of bounds remainder of the page in question and mark it as handled. At the&n; * moment we would just return -EIO on such a page. This bug will only become&n; * apparent if pages are above 8kiB and the NTFS volume only uses 512 byte&n; * clusters so is probably not going to be seen by anyone. Still this should&n; * be fixed. (AIA)&n; *&n; * FIXME: Again for PAGE_CACHE_SIZE &gt; cb_size we are screwing up both in&n; * handling sparse and compressed cbs. (AIA)&n; *&n; * FIXME: At the moment we don&squot;t do any zeroing out in the case that&n; * initialized_size is less than data_size. This should be safe because of the&n; * nature of the compression algorithm used. Just in case we check and output&n; * an error message in read inode if the two sizes are not equal for a&n; * compressed file.&n; */
 DECL|function|ntfs_file_read_compressed_block
 r_int
 id|ntfs_file_read_compressed_block
@@ -1462,18 +1426,6 @@ comma
 id|nr_pages
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Uncommenting the below line results in the compressed data being&n;&t; * read without any decompression. Compression blocks are padded with&n;&t; * zeroes in order to give them in their proper alignments. I am&n;&t; * leaving this here as it is a handy debugging / studying tool for&n;&t; * compressed data.&n;&t; */
-macro_line|#if 0
-r_return
-id|block_read_full_page
-c_func
-(paren
-id|page
-comma
-id|ntfs_file_get_block
-)paren
-suffix:semicolon
-macro_line|#endif
 id|pages
 op_assign
 id|kmalloc
@@ -1764,7 +1716,7 @@ id|nr_bhs
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Read all cb buffer heads one cluster run at a time. */
+multiline_comment|/* Read all cb buffer heads one cluster at a time. */
 r_for
 c_loop
 (paren
@@ -1791,20 +1743,6 @@ id|FALSE
 suffix:semicolon
 id|retry_remap
 suffix:colon
-multiline_comment|/* Make sure we are not overflowing the file limits. */
-r_if
-c_cond
-(paren
-id|vcn
-op_lshift
-id|vol-&gt;cluster_size_bits
-op_ge
-id|ni-&gt;initialized_size
-)paren
-(brace
-multiline_comment|/* Overflow, just zero this region. */
-singleline_comment|// TODO: AIA
-)brace
 multiline_comment|/* Find lcn of vcn and convert it into blocks. */
 id|down_read
 c_func
@@ -1923,7 +1861,6 @@ id|block_size_bits
 suffix:semicolon
 r_do
 (brace
-singleline_comment|// TODO: Need overflow checks here, too! (AIA)
 id|ntfs_debug
 c_func
 (paren
@@ -2999,6 +2936,13 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* We no longer need the list of pages. */
+id|kfree
+c_func
+(paren
+id|pages
+)paren
+suffix:semicolon
 multiline_comment|/* If we have completed the requested page, we return success. */
 r_if
 c_cond
@@ -3207,6 +3151,12 @@ id|page
 suffix:semicolon
 )brace
 )brace
+id|kfree
+c_func
+(paren
+id|pages
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EIO

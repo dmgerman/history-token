@@ -2167,57 +2167,6 @@ id|allocated_size
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Setup the run list. No need for locking as we have exclusive&n;&t;&t; * access to the inode at this time.&n;&t;&t; */
-id|ni-&gt;run_list.rl
-op_assign
-id|decompress_mapping_pairs
-c_func
-(paren
-id|vol
-comma
-id|ctx-&gt;attr
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_ERR
-c_func
-(paren
-id|ni-&gt;run_list.rl
-)paren
-)paren
-(brace
-id|err
-op_assign
-id|PTR_ERR
-c_func
-(paren
-id|ni-&gt;run_list.rl
-)paren
-suffix:semicolon
-id|ni-&gt;run_list.rl
-op_assign
-l_int|NULL
-suffix:semicolon
-id|ntfs_error
-c_func
-(paren
-id|vi-&gt;i_sb
-comma
-l_string|&quot;Mapping pairs decompression &quot;
-l_string|&quot;failed with error code %i.&quot;
-comma
-op_minus
-id|err
-)paren
-suffix:semicolon
-r_goto
-id|ec_put_unm_err_out
-suffix:semicolon
-)brace
 multiline_comment|/* Find bitmap attribute. */
 id|reinit_attr_search_ctx
 c_func
@@ -2941,72 +2890,6 @@ r_goto
 id|put_unm_err_out
 suffix:semicolon
 )brace
-multiline_comment|/* $MFT is special as we have the run_list already. */
-r_if
-c_cond
-(paren
-id|likely
-c_func
-(paren
-id|vi-&gt;i_ino
-op_ne
-id|FILE_MFT
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Setup the run list. No need for locking as&n;&t;&t;&t;&t; * we have exclusive access to the inode at&n;&t;&t;&t;&t; * this time.&n;&t;&t;&t;&t; */
-id|ni-&gt;run_list.rl
-op_assign
-id|decompress_mapping_pairs
-c_func
-(paren
-id|vol
-comma
-id|ctx-&gt;attr
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_ERR
-c_func
-(paren
-id|ni-&gt;run_list.rl
-)paren
-)paren
-(brace
-id|err
-op_assign
-id|PTR_ERR
-c_func
-(paren
-id|ni-&gt;run_list.rl
-)paren
-suffix:semicolon
-id|ni-&gt;run_list.rl
-op_assign
-l_int|NULL
-suffix:semicolon
-id|ntfs_error
-c_func
-(paren
-id|vi-&gt;i_sb
-comma
-l_string|&quot;Mapping pairs &quot;
-l_string|&quot;decompression failed &quot;
-l_string|&quot;with error code %i.&quot;
-comma
-op_minus
-id|err
-)paren
-suffix:semicolon
-r_goto
-id|ec_put_unm_err_out
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/* Setup all the sizes. */
 id|vi-&gt;i_size
 op_assign
@@ -3059,6 +2942,7 @@ c_func
 id|ni
 )paren
 )paren
+(brace
 id|ni
 op_member_access_from_pointer
 id|_ICF
@@ -3079,6 +2963,34 @@ id|compressed_size
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|vi-&gt;i_size
+op_ne
+id|ni-&gt;initialized_size
+)paren
+id|ntfs_warning
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+l_string|&quot;Compressed &quot;
+l_string|&quot;file with data_size &quot;
+l_string|&quot;unequal to &quot;
+l_string|&quot;initialized size &quot;
+l_string|&quot;found. This will &quot;
+l_string|&quot;probably cause &quot;
+l_string|&quot;problems when trying &quot;
+l_string|&quot;to access the file. &quot;
+l_string|&quot;Please notify &quot;
+l_string|&quot;linux-ntfs-dev@&quot;
+l_string|&quot;lists.sf.net that you&quot;
+l_string|&quot;saw this message.&quot;
+l_string|&quot;Thanks!&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
