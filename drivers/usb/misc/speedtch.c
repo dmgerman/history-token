@@ -3995,8 +3995,6 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|down
 (paren
 op_amp
@@ -4022,8 +4020,6 @@ id|up
 op_amp
 id|instance-&gt;serialize
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -4055,8 +4051,6 @@ id|up
 op_amp
 id|instance-&gt;serialize
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -4341,8 +4335,6 @@ id|up
 op_amp
 id|instance-&gt;serialize
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|dbg
 (paren
