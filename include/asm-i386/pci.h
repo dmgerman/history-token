@@ -116,40 +116,6 @@ DECL|macro|pci_unmap_len
 mdefine_line|#define pci_unmap_len(PTR, LEN_NAME)&t;&t;(0)
 DECL|macro|pci_unmap_len_set
 mdefine_line|#define pci_unmap_len_set(PTR, LEN_NAME, VAL)&t;do { } while (0)
-multiline_comment|/* Return whether the given PCI device DMA address mask can&n; * be supported properly.  For example, if your device can&n; * only drive the low 24-bits during PCI bus mastering, then&n; * you would pass 0x00ffffff as the mask to this function.&n; */
-DECL|function|pci_dma_supported
-r_static
-r_inline
-r_int
-id|pci_dma_supported
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|hwdev
-comma
-id|u64
-id|mask
-)paren
-(brace
-multiline_comment|/*&n;         * we fall back to GFP_DMA when the mask isn&squot;t all 1s,&n;         * so we can&squot;t guarantee allocations that must be&n;         * within a tighter range than GFP_DMA..&n;         */
-r_if
-c_cond
-(paren
-id|mask
-OL
-l_int|0x00ffffff
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/* This is always fine. */
 DECL|macro|pci_dac_dma_supported
 mdefine_line|#define pci_dac_dma_supported(pci_dev, mask)&t;(1)
