@@ -7056,6 +7056,11 @@ op_assign
 op_amp
 id|as_ktype
 comma
+dot
+id|elevator_name
+op_assign
+l_string|&quot;anticipatory scheduling&quot;
+comma
 )brace
 suffix:semicolon
 DECL|variable|iosched_as
