@@ -1331,29 +1331,19 @@ comma
 id|minor
 suffix:semicolon
 multiline_comment|/* TV card ??? */
-r_switch
+r_if
 c_cond
 (paren
-id|client-&gt;adapter-&gt;id
+op_logical_neg
+(paren
+id|client-&gt;adapter
+op_member_access_from_pointer
+r_class
+op_amp
+id|I2C_ADAP_CLASS_TV_ANALOG
+)paren
 )paren
 (brace
-r_case
-id|I2C_ALGO_BIT
-op_or
-id|I2C_HW_B_BT848
-suffix:colon
-r_case
-id|I2C_ALGO_BIT
-op_or
-id|I2C_HW_B_RIVA
-suffix:colon
-multiline_comment|/* ok, have a look ... */
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-(brace
-)brace
 multiline_comment|/* ignore that one */
 r_if
 c_cond

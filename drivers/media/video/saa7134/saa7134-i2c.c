@@ -1528,6 +1528,11 @@ op_assign
 id|I2C_ALGO_SAA7134
 comma
 dot
+r_class
+op_assign
+id|I2C_ADAP_CLASS_TV_ANALOG
+comma
+dot
 id|algo
 op_assign
 op_amp

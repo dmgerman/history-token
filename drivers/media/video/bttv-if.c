@@ -886,6 +886,11 @@ op_assign
 id|I2C_HW_B_BT848
 comma
 dot
+r_class
+op_assign
+id|I2C_ADAP_CLASS_TV_ANALOG
+comma
+dot
 id|client_register
 op_assign
 id|attach_inform
