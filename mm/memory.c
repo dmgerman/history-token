@@ -2998,7 +2998,6 @@ id|vma
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PREEMPT
-multiline_comment|/*&n; * It&squot;s not an issue to have a small zap block size - TLB flushes&n; * only happen once normally, due to the tlb-&gt;need_flush optimization.&n; */
 DECL|macro|ZAP_BLOCK_SIZE
 macro_line|# define ZAP_BLOCK_SIZE&t;(8 * PAGE_SIZE)
 macro_line|#else
@@ -3257,6 +3256,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
+id|zap_bytes
+OG
+l_int|0
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 id|atomic
 )paren
@@ -3305,18 +3316,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
-r_int
-)paren
-id|zap_bytes
-OG
-l_int|0
-)paren
-r_continue
-suffix:semicolon
 id|zap_bytes
 op_assign
 id|ZAP_BLOCK_SIZE
