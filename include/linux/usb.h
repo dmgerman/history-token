@@ -1469,6 +1469,17 @@ l_int|1
 suffix:semicolon
 )brace
 r_extern
+r_void
+id|usb_init_urb
+c_func
+(paren
+r_struct
+id|urb
+op_star
+id|urb
+)paren
+suffix:semicolon
+r_extern
 r_struct
 id|urb
 op_star
