@@ -2879,25 +2879,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if defined(MODULE) &amp;&amp; defined(CONFIG_SYSCTL)
-multiline_comment|/*&n; *&t;sysctl registration functions defined in sysctl_net_ipv6.c&n; */
-r_extern
-r_void
-id|ipv6_sysctl_register
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ipv6_sysctl_unregister
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|function|ipv6_packet_init
 r_void
 id|__init
@@ -2915,9 +2896,9 @@ id|ipv6_packet_type
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|function|ipv6_packet_cleanup
 r_void
+id|__exit
 id|ipv6_packet_cleanup
 c_func
 (paren
@@ -2932,5 +2913,4 @@ id|ipv6_packet_type
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 eof

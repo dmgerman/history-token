@@ -27,15 +27,6 @@ id|ether_table
 )braket
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_IPV6
-r_extern
-r_struct
-id|ctl_table
-id|ipv6_table
-(braket
-)braket
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_TR
 r_extern
 r_struct
@@ -122,31 +113,6 @@ dot
 id|child
 op_assign
 id|ipv4_table
-)brace
-comma
-macro_line|#endif
-macro_line|#ifdef CONFIG_IPV6
-(brace
-dot
-id|ctl_name
-op_assign
-id|NET_IPV6
-comma
-dot
-id|procname
-op_assign
-l_string|&quot;ipv6&quot;
-comma
-dot
-id|mode
-op_assign
-l_int|0555
-comma
-dot
-id|child
-op_assign
-id|ipv6_table
-comma
 )brace
 comma
 macro_line|#endif
