@@ -272,39 +272,6 @@ r_char
 id|val
 )paren
 suffix:semicolon
-multiline_comment|/* Tons of keyboard stuff. */
-DECL|member|kbd_translate
-r_int
-(paren
-op_star
-id|kbd_translate
-)paren
-(paren
-r_int
-r_char
-id|scancode
-comma
-r_int
-r_char
-op_star
-id|keycode
-comma
-r_char
-id|raw_mode
-)paren
-suffix:semicolon
-DECL|member|kbd_unexpected_up
-r_char
-(paren
-op_star
-id|kbd_unexpected_up
-)paren
-(paren
-r_int
-r_char
-id|keycode
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * optional PCI &quot;hooks&quot;&n;&t; */
 multiline_comment|/* Called after scanning the bus, before allocating resources */
 DECL|member|pcibios_fixup

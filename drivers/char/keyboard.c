@@ -764,7 +764,10 @@ op_assign
 id|U
 c_func
 (paren
-id|plain_map
+id|key_maps
+(braket
+l_int|0
+)braket
 (braket
 id|k
 )braket
