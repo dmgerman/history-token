@@ -9386,7 +9386,7 @@ l_int|2
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Frame is too small (len %d)&quot;
+l_string|&quot;Frame is too short (len %d)&quot;
 comma
 id|skb-&gt;len
 )paren
@@ -9414,16 +9414,6 @@ id|hdr-&gt;len
 op_plus
 id|L2CAP_HDR_SIZE
 suffix:semicolon
-id|BT_DBG
-c_func
-(paren
-l_string|&quot;Start: total len %d, frag len %d&quot;
-comma
-id|len
-comma
-id|skb-&gt;len
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9443,6 +9433,38 @@ id|skb
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+id|BT_DBG
+c_func
+(paren
+l_string|&quot;Start: total len %d, frag len %d&quot;
+comma
+id|len
+comma
+id|skb-&gt;len
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb-&gt;len
+OG
+id|len
+)paren
+(brace
+id|BT_ERR
+c_func
+(paren
+l_string|&quot;Frame is too long (len %d, expected len %d)&quot;
+comma
+id|skb-&gt;len
+comma
+id|len
+)paren
+suffix:semicolon
+r_goto
+id|drop
 suffix:semicolon
 )brace
 multiline_comment|/* Allocate skb for the complete frame (with header) */
@@ -9530,7 +9552,7 @@ id|conn-&gt;rx_len
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Fragment is too large (len %d, expect %d)&quot;
+l_string|&quot;Fragment is too long (len %d, expected %d)&quot;
 comma
 id|skb-&gt;len
 comma
