@@ -8,9 +8,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
-macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
@@ -86,6 +84,7 @@ comma
 l_string|&quot;S3200&quot;
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_IEEE1394_VERBOSEDEBUG
 DECL|function|dump_packet
 r_static
 r_void
@@ -148,11 +147,10 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|printk
 c_func
 (paren
-l_string|&quot; %8.8x&quot;
+l_string|&quot; %08x&quot;
 comma
 id|data
 (braket
@@ -160,7 +158,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
@@ -168,6 +165,10 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|macro|dump_packet
+mdefine_line|#define dump_packet(x,y,z)
+macro_line|#endif
 DECL|function|run_packet_complete
 r_static
 r_void
@@ -1488,8 +1489,7 @@ c_cond
 id|host-&gt;in_bus_reset
 )paren
 (brace
-macro_line|#ifdef CONFIG_IEEE1394_VERBOSEDEBUG
-id|HPSB_INFO
+id|HPSB_VERBOSE
 c_func
 (paren
 l_string|&quot;Including SelfID 0x%x&quot;
@@ -1497,7 +1497,6 @@ comma
 id|sid
 )paren
 suffix:semicolon
-macro_line|#endif
 id|host-&gt;topology_map
 (braket
 id|host-&gt;selfid_count
@@ -1621,10 +1620,18 @@ c_func
 l_string|&quot;Warning - topology map and speed map will not be valid&quot;
 )paren
 suffix:semicolon
+id|host-&gt;reset_retries
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 )brace
 r_else
 (brace
+id|host-&gt;reset_retries
+op_assign
+l_int|0
+suffix:semicolon
 id|build_speed_map
 c_func
 (paren
@@ -1634,8 +1641,7 @@ id|host-&gt;node_count
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_IEEE1394_VERBOSEDEBUG
-id|HPSB_INFO
+id|HPSB_VERBOSE
 c_func
 (paren
 l_string|&quot;selfid_complete called with successful SelfID stage &quot;
@@ -1646,7 +1652,6 @@ comma
 id|host-&gt;node_id
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* irm_id is kept up to date by check_selfids() */
 r_if
 c_cond
@@ -1837,11 +1842,15 @@ op_amp
 id|packet-&gt;state_change
 )paren
 suffix:semicolon
-id|schedule_work
+id|mod_timer
 c_func
 (paren
 op_amp
-id|host-&gt;timeout_tq
+id|host-&gt;timeout
+comma
+id|jiffies
+op_plus
+id|host-&gt;timeout_interval
 )paren
 suffix:semicolon
 )brace
@@ -2265,7 +2274,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifdef CONFIG_IEEE1394_VERBOSEDEBUG
 id|dump_packet
 c_func
 (paren
@@ -2276,7 +2284,6 @@ comma
 id|packet-&gt;header_size
 )paren
 suffix:semicolon
-macro_line|#endif
 id|hpsb_packet_sent
 c_func
 (paren
@@ -2346,7 +2353,6 @@ id|packet-&gt;node_id
 )braket
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_IEEE1394_VERBOSEDEBUG
 r_switch
 c_cond
 (paren
@@ -2396,7 +2402,6 @@ id|packet-&gt;header_size
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 r_return
 id|host-&gt;driver
 op_member_access_from_pointer
@@ -2568,7 +2573,7 @@ id|host-&gt;pending_packets
 id|HPSB_DEBUG
 c_func
 (paren
-l_string|&quot;unsolicited response packet received - np&quot;
+l_string|&quot;unsolicited response packet received - no tlabel match&quot;
 )paren
 suffix:semicolon
 id|dump_packet
@@ -2696,7 +2701,7 @@ l_int|16
 id|HPSB_INFO
 c_func
 (paren
-l_string|&quot;unsolicited response packet received&quot;
+l_string|&quot;unsolicited response packet received - tcode mismatch&quot;
 )paren
 suffix:semicolon
 id|dump_packet
@@ -4048,7 +4053,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_IEEE1394_VERBOSEDEBUG
 id|dump_packet
 c_func
 (paren
@@ -4059,7 +4063,6 @@ comma
 id|size
 )paren
 suffix:semicolon
-macro_line|#endif
 id|tcode
 op_assign
 (paren
@@ -4311,12 +4314,23 @@ r_void
 id|abort_timedouts
 c_func
 (paren
+r_int
+r_int
+id|__opaque
+)paren
+(brace
 r_struct
 id|hpsb_host
 op_star
 id|host
+op_assign
+(paren
+r_struct
+id|hpsb_host
+op_star
 )paren
-(brace
+id|__opaque
+suffix:semicolon
 r_int
 r_int
 id|flags
@@ -4334,9 +4348,6 @@ r_struct
 id|list_head
 op_star
 id|lh
-comma
-op_star
-id|next
 comma
 op_star
 id|tlh
@@ -4358,25 +4369,7 @@ id|flags
 suffix:semicolon
 id|expire
 op_assign
-(paren
-id|host-&gt;csr.split_timeout_hi
-op_star
-l_int|8000
-op_plus
-(paren
-id|host-&gt;csr.split_timeout_lo
-op_rshift
-l_int|19
-)paren
-)paren
-op_star
-id|HZ
-op_div
-l_int|8000
-suffix:semicolon
-multiline_comment|/* Avoid shortening of timeout due to rounding errors: */
-id|expire
-op_increment
+id|host-&gt;csr.expire
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -4396,21 +4389,15 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|list_for_each_safe
+c_func
 (paren
 id|lh
-op_assign
-id|host-&gt;pending_packets.next
-suffix:semicolon
-id|lh
-op_ne
+comma
+id|tlh
+comma
 op_amp
 id|host-&gt;pending_packets
-suffix:semicolon
-id|lh
-op_assign
-id|next
 )paren
 (brace
 id|packet
@@ -4425,10 +4412,6 @@ id|hpsb_packet
 comma
 id|list
 )paren
-suffix:semicolon
-id|next
-op_assign
-id|lh-&gt;next
 suffix:semicolon
 r_if
 c_cond
@@ -4474,11 +4457,15 @@ op_amp
 id|host-&gt;pending_packets
 )paren
 )paren
-id|schedule_work
+id|mod_timer
 c_func
 (paren
 op_amp
-id|host-&gt;timeout_tq
+id|host-&gt;timeout
+comma
+id|jiffies
+op_plus
+id|host-&gt;timeout_interval
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -5030,12 +5017,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|variable|ieee1394_procfs_entry
-r_struct
-id|proc_dir_entry
-op_star
-id|ieee1394_procfs_entry
-suffix:semicolon
 DECL|function|ieee1394_init
 r_static
 r_int
@@ -5108,56 +5089,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
-multiline_comment|/* Must be done before we start everything else, since the drivers&n;&t; * may use it.  */
-id|ieee1394_procfs_entry
-op_assign
-id|proc_mkdir
-c_func
-(paren
-l_string|&quot;ieee1394&quot;
-comma
-id|proc_bus
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ieee1394_procfs_entry
-op_eq
-l_int|NULL
-)paren
-(brace
-id|HPSB_ERR
-c_func
-(paren
-l_string|&quot;unable to create /proc/bus/ieee1394&bslash;n&quot;
-)paren
-suffix:semicolon
-id|unregister_chrdev
-c_func
-(paren
-id|IEEE1394_MAJOR
-comma
-l_string|&quot;ieee1394&quot;
-)paren
-suffix:semicolon
-id|devfs_remove
-c_func
-(paren
-l_string|&quot;ieee1394&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
-id|ieee1394_procfs_entry-&gt;owner
-op_assign
-id|THIS_MODULE
-suffix:semicolon
-macro_line|#endif
 id|init_hpsb_highlevel
 c_func
 (paren
@@ -5234,14 +5165,6 @@ id|devfs_remove
 c_func
 (paren
 l_string|&quot;ieee1394&quot;
-)paren
-suffix:semicolon
-id|remove_proc_entry
-c_func
-(paren
-l_string|&quot;ieee1394&quot;
-comma
-id|proc_bus
 )paren
 suffix:semicolon
 )brace
@@ -5393,13 +5316,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ieee1394_unregister_chardev
-)paren
-suffix:semicolon
-DECL|variable|ieee1394_procfs_entry
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ieee1394_procfs_entry
 )paren
 suffix:semicolon
 multiline_comment|/** ieee1394_transactions.c **/
@@ -5903,6 +5819,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|hpsb_iso_wake
+)paren
+suffix:semicolon
+DECL|variable|hpsb_iso_recv_flush
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hpsb_iso_recv_flush
 )paren
 suffix:semicolon
 eof

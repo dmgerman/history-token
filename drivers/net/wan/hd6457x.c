@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -1175,7 +1174,34 @@ id|card
 suffix:semicolon
 )brace
 )brace
+id|hdlc_set_carrier
+c_func
+(paren
+op_logical_neg
+(paren
+id|sca_in
+c_func
+(paren
+id|get_msci
+c_func
+(paren
+id|port
+)paren
+op_plus
+id|ST3
+comma
+id|card
+)paren
+op_amp
+id|ST3_DCD
+)paren
+comma
+op_amp
+id|port-&gt;hdlc
+)paren
+suffix:semicolon
 )brace
+macro_line|#ifdef NEED_SCA_MSCI_INTR
 multiline_comment|/* MSCI interrupt service */
 DECL|function|sca_msci_intr
 r_static
@@ -1222,14 +1248,17 @@ id|card
 )paren
 suffix:semicolon
 multiline_comment|/* read MSCI ST1 status */
-multiline_comment|/* printk(KERN_DEBUG &quot;MSCI INT: ST1=%02X ILAR=%02X&bslash;n&quot;,&n;&t;   stat, sca_in(ILAR, card)); */
-multiline_comment|/* Reset MSCI TX underrun status bit */
+multiline_comment|/* Reset MSCI TX underrun and CDCD status bit */
 id|sca_out
 c_func
 (paren
 id|stat
 op_amp
+(paren
 id|ST1_UDRN
+op_or
+id|ST1_CDCD
+)paren
 comma
 id|msci
 op_plus
@@ -1254,7 +1283,37 @@ id|port-&gt;hdlc.stats.tx_fifo_errors
 op_increment
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|ST1_CDCD
+)paren
+id|hdlc_set_carrier
+c_func
+(paren
+op_logical_neg
+(paren
+id|sca_in
+c_func
+(paren
+id|msci
+op_plus
+id|ST3
+comma
+id|card
+)paren
+op_amp
+id|ST3_DCD
+)paren
+comma
+op_amp
+id|port-&gt;hdlc
+)paren
+suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|sca_rx
 r_static
 r_inline
@@ -1468,7 +1527,7 @@ comma
 id|len
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_HDLC_DEBUG_PKT
+macro_line|#ifdef DEBUG_PKT
 id|printk
 c_func
 (paren
@@ -2926,13 +2985,36 @@ id|card
 suffix:semicolon
 multiline_comment|/* +1=TX DMA deactivation condition*/
 macro_line|#endif
-multiline_comment|/* We&squot;re using the following interrupts:&n;   - TXINT (DMAC completed all transmisions, underflow or CTS change)&n;   - all DMA interrupts&n;*/
+multiline_comment|/* We&squot;re using the following interrupts:&n;   - TXINT (DMAC completed all transmisions, underrun or DCD change)&n;   - all DMA interrupts&n;*/
+id|hdlc_set_carrier
+c_func
+(paren
+op_logical_neg
+(paren
+id|sca_in
+c_func
+(paren
+id|msci
+op_plus
+id|ST3
+comma
+id|card
+)paren
+op_amp
+id|ST3_DCD
+)paren
+comma
+id|hdlc
+)paren
+suffix:semicolon
 macro_line|#ifdef __HD64570_H
-multiline_comment|/* MSCI TX INT IRQ enable */
+multiline_comment|/* MSCI TX INT and RX INT A IRQ enable */
 id|sca_out
 c_func
 (paren
 id|IE0_TXINT
+op_or
+id|IE0_RXINTA
 comma
 id|msci
 op_plus
@@ -2945,6 +3027,8 @@ id|sca_out
 c_func
 (paren
 id|IE1_UDRN
+op_or
+id|IE1_CDCD
 comma
 id|msci
 op_plus
@@ -2953,7 +3037,6 @@ comma
 id|card
 )paren
 suffix:semicolon
-multiline_comment|/* TX underrun -&gt; TXINT */
 id|sca_out
 c_func
 (paren
@@ -2973,9 +3056,9 @@ id|port
 )paren
 ques
 c_cond
-l_int|0x80
+l_int|0xC0
 suffix:colon
-l_int|0x08
+l_int|0x0C
 )paren
 comma
 id|IER0
@@ -2983,7 +3066,8 @@ comma
 id|card
 )paren
 suffix:semicolon
-multiline_comment|/* DMA IRQ enable */
+multiline_comment|/* TXINT and RXINT */
+multiline_comment|/* enable DMA IRQ */
 id|sca_out
 c_func
 (paren
@@ -3014,13 +3098,17 @@ id|card
 )paren
 suffix:semicolon
 macro_line|#else
-multiline_comment|/* MSCI TX INT IRQ enable */
+multiline_comment|/* MSCI TXINT and RXINTA interrupt enable */
 id|sca_outl
 c_func
 (paren
 id|IE0_TXINT
 op_or
+id|IE0_RXINTA
+op_or
 id|IE0_UDRN
+op_or
+id|IE0_CDCD
 comma
 id|msci
 op_plus
@@ -3033,7 +3121,7 @@ multiline_comment|/* DMA &amp; MSCI IRQ enable */
 id|sca_outl
 c_func
 (paren
-id|sca_in
+id|sca_inl
 c_func
 (paren
 id|IER0
@@ -3049,9 +3137,9 @@ id|port
 )paren
 ques
 c_cond
-l_int|0x02006600
+l_int|0x0A006600
 suffix:colon
-l_int|0x00020066
+l_int|0x000A0066
 )paren
 comma
 id|IER0
@@ -3180,6 +3268,16 @@ c_func
 id|hdlc
 )paren
 suffix:semicolon
+id|card_t
+op_star
+id|card
+op_assign
+id|port_to_card
+c_func
+(paren
+id|port
+)paren
+suffix:semicolon
 multiline_comment|/* reset channel */
 id|netif_stop_queue
 c_func
@@ -3211,6 +3309,99 @@ id|port
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef __HD64570_H
+multiline_comment|/* disable MSCI interrupts */
+id|sca_out
+c_func
+(paren
+id|sca_in
+c_func
+(paren
+id|IER0
+comma
+id|card
+)paren
+op_amp
+(paren
+id|phy_node
+c_func
+(paren
+id|port
+)paren
+ques
+c_cond
+l_int|0x0F
+suffix:colon
+l_int|0xF0
+)paren
+comma
+id|IER0
+comma
+id|card
+)paren
+suffix:semicolon
+multiline_comment|/* disable DMA interrupts */
+id|sca_out
+c_func
+(paren
+id|sca_in
+c_func
+(paren
+id|IER1
+comma
+id|card
+)paren
+op_amp
+(paren
+id|phy_node
+c_func
+(paren
+id|port
+)paren
+ques
+c_cond
+l_int|0x0F
+suffix:colon
+l_int|0xF0
+)paren
+comma
+id|IER1
+comma
+id|card
+)paren
+suffix:semicolon
+macro_line|#else
+multiline_comment|/* disable DMA &amp; MSCI IRQ */
+id|sca_outl
+c_func
+(paren
+id|sca_inl
+c_func
+(paren
+id|IER0
+comma
+id|card
+)paren
+op_amp
+(paren
+id|phy_node
+c_func
+(paren
+id|port
+)paren
+ques
+c_cond
+l_int|0x00FF00FF
+suffix:colon
+l_int|0xFF00FF00
+)paren
+comma
+id|IER0
+comma
+id|card
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|sca_attach
 r_static
@@ -3316,7 +3507,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_HDLC_DEBUG_RINGS
+macro_line|#ifdef DEBUG_RINGS
 DECL|function|sca_dump_rings
 r_static
 r_void
@@ -3377,7 +3568,7 @@ macro_line|#endif
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_DEBUG
 l_string|&quot;RX ring: CDA=%u EDA=%u DSR=%02X in=%u %sactive&quot;
 comma
 id|sca_ina
@@ -3499,7 +3690,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;&bslash;n&quot;
-id|KERN_ERR
+id|KERN_DEBUG
 l_string|&quot;TX ring: CDA=%u EDA=%u DSR=%02X in=%u &quot;
 l_string|&quot;last=%u %sactive&quot;
 comma
@@ -3629,7 +3820,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_DEBUG
 l_string|&quot;MSCI: MD: %02x %02x %02x, &quot;
 l_string|&quot;ST: %02x %02x %02x %02x&quot;
 macro_line|#ifdef __HD64572_H
@@ -3798,13 +3989,61 @@ macro_line|#ifdef __HD64572_H
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;ILAR: %02x&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;ILAR: %02x ISR: %08x %08x&bslash;n&quot;
 comma
 id|sca_in
 c_func
 (paren
 id|ILAR
+comma
+id|card
+)paren
+comma
+id|sca_inl
+c_func
+(paren
+id|ISR0
+comma
+id|card
+)paren
+comma
+id|sca_inl
+c_func
+(paren
+id|ISR1
+comma
+id|card
+)paren
+)paren
+suffix:semicolon
+macro_line|#else
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;ISR: %02x %02x %02x&bslash;n&quot;
+comma
+id|sca_in
+c_func
+(paren
+id|ISR0
+comma
+id|card
+)paren
+comma
+id|sca_in
+c_func
+(paren
+id|ISR1
+comma
+id|card
+)paren
+comma
+id|sca_in
+c_func
+(paren
+id|ISR2
 comma
 id|card
 )paren
@@ -3823,7 +4062,7 @@ suffix:semicolon
 multiline_comment|/* Restore original page */
 macro_line|#endif
 )brace
-macro_line|#endif /* CONFIG_HDLC_DEBUG_RINGS */
+macro_line|#endif /* DEBUG_RINGS */
 DECL|function|sca_xmit
 r_static
 r_int
@@ -3922,7 +4161,7 @@ id|desc-&gt;stat
 (brace
 multiline_comment|/* allow 1 packet gap */
 multiline_comment|/* should never happen - previous xmit should stop queue */
-macro_line|#ifdef CONFIG_HDLC_DEBUG_PKT
+macro_line|#ifdef DEBUG_PKT
 id|printk
 c_func
 (paren
@@ -3951,7 +4190,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* request packet to be queued */
 )brace
-macro_line|#ifdef CONFIG_HDLC_DEBUG_PKT
+macro_line|#ifdef DEBUG_PKT
 id|printk
 c_func
 (paren
@@ -4527,17 +4766,6 @@ id|card
 )paren
 suffix:semicolon
 multiline_comment|/* DMA priority */
-id|sca_out
-c_func
-(paren
-l_int|0
-comma
-id|IER1
-comma
-id|card
-)paren
-suffix:semicolon
-multiline_comment|/* DMA interrupt disable */
 id|sca_out
 c_func
 (paren

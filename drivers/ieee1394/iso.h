@@ -416,6 +416,17 @@ r_int
 id|n_packets
 )paren
 suffix:semicolon
+multiline_comment|/* check for arrival of new packets immediately (even if irq_interval&n;   has not yet been reached) */
+r_int
+id|hpsb_iso_recv_flush
+c_func
+(paren
+r_struct
+id|hpsb_iso
+op_star
+id|iso
+)paren
+suffix:semicolon
 multiline_comment|/* returns # of packets ready to send or receive */
 r_int
 id|hpsb_iso_n_ready

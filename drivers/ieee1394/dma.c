@@ -603,8 +603,7 @@ id|rem
 op_assign
 id|off
 suffix:semicolon
-r_return
-id|i
+r_break
 suffix:semicolon
 )brace
 id|off
@@ -620,13 +619,16 @@ id|i
 )paren
 suffix:semicolon
 )brace
-id|panic
+id|BUG_ON
 c_func
 (paren
-l_string|&quot;dma_region_find: offset %lu beyond end of DMA mapping&bslash;n&quot;
-comma
-id|offset
+id|i
+op_ge
+id|dma-&gt;n_dma_pages
 )paren
+suffix:semicolon
+r_return
+id|i
 suffix:semicolon
 )brace
 DECL|function|dma_region_offset_to_bus

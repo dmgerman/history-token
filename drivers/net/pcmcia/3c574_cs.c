@@ -1119,6 +1119,13 @@ id|link-&gt;priv
 op_assign
 id|dev
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|lp-&gt;window_lock
+)paren
+suffix:semicolon
 id|init_timer
 c_func
 (paren

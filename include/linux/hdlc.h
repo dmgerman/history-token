@@ -50,183 +50,15 @@ DECL|macro|LMI_ANSI
 mdefine_line|#define LMI_ANSI&t;&t;2 /* ANSI Annex D */
 DECL|macro|LMI_CCITT
 mdefine_line|#define LMI_CCITT&t;&t;3 /* ITU-T Annex A */
+DECL|macro|HDLC_MAX_MTU
+mdefine_line|#define HDLC_MAX_MTU 1500&t;/* Ethernet 1500 bytes */
+DECL|macro|HDLC_MAX_MRU
+mdefine_line|#define HDLC_MAX_MRU (HDLC_MAX_MTU + 10 + 14 + 4) /* for ETH+VLAN over FR */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;net/syncppp.h&gt;
 macro_line|#include &lt;linux/hdlc/ioctl.h&gt;
-DECL|macro|HDLC_MAX_MTU
-mdefine_line|#define HDLC_MAX_MTU 1500&t;/* Ethernet 1500 bytes */
-DECL|macro|HDLC_MAX_MRU
-mdefine_line|#define HDLC_MAX_MRU (HDLC_MAX_MTU + 10 + 14 + 4) /* for ETH+VLAN over FR */
-DECL|macro|MAXLEN_LMISTAT
-mdefine_line|#define MAXLEN_LMISTAT  20&t;/* max size of status enquiry frame */
-DECL|macro|PVC_STATE_NEW
-mdefine_line|#define PVC_STATE_NEW       0x01
-DECL|macro|PVC_STATE_ACTIVE
-mdefine_line|#define PVC_STATE_ACTIVE    0x02
-DECL|macro|PVC_STATE_FECN
-mdefine_line|#define PVC_STATE_FECN&t;    0x08 /* FECN condition */
-DECL|macro|PVC_STATE_BECN
-mdefine_line|#define PVC_STATE_BECN      0x10 /* BECN condition */
-DECL|macro|FR_UI
-mdefine_line|#define FR_UI              0x03
-DECL|macro|FR_PAD
-mdefine_line|#define FR_PAD             0x00
-DECL|macro|NLPID_IP
-mdefine_line|#define NLPID_IP           0xCC
-DECL|macro|NLPID_IPV6
-mdefine_line|#define NLPID_IPV6         0x8E
-DECL|macro|NLPID_SNAP
-mdefine_line|#define NLPID_SNAP         0x80
-DECL|macro|NLPID_PAD
-mdefine_line|#define NLPID_PAD          0x00
-DECL|macro|NLPID_Q933
-mdefine_line|#define NLPID_Q933         0x08
-DECL|macro|LMI_DLCI
-mdefine_line|#define LMI_DLCI                   0 /* LMI DLCI */
-DECL|macro|LMI_PROTO
-mdefine_line|#define LMI_PROTO               0x08
-DECL|macro|LMI_CALLREF
-mdefine_line|#define LMI_CALLREF             0x00 /* Call Reference */
-DECL|macro|LMI_ANSI_LOCKSHIFT
-mdefine_line|#define LMI_ANSI_LOCKSHIFT      0x95 /* ANSI lockshift */
-DECL|macro|LMI_REPTYPE
-mdefine_line|#define LMI_REPTYPE                1 /* report type */
-DECL|macro|LMI_CCITT_REPTYPE
-mdefine_line|#define LMI_CCITT_REPTYPE       0x51
-DECL|macro|LMI_ALIVE
-mdefine_line|#define LMI_ALIVE                  3 /* keep alive */
-DECL|macro|LMI_CCITT_ALIVE
-mdefine_line|#define LMI_CCITT_ALIVE         0x53
-DECL|macro|LMI_PVCSTAT
-mdefine_line|#define LMI_PVCSTAT                7 /* pvc status */
-DECL|macro|LMI_CCITT_PVCSTAT
-mdefine_line|#define LMI_CCITT_PVCSTAT       0x57
-DECL|macro|LMI_FULLREP
-mdefine_line|#define LMI_FULLREP                0 /* full report  */
-DECL|macro|LMI_INTEGRITY
-mdefine_line|#define LMI_INTEGRITY              1 /* link integrity report */
-DECL|macro|LMI_SINGLE
-mdefine_line|#define LMI_SINGLE                 2 /* single pvc report */
-DECL|macro|LMI_STATUS_ENQUIRY
-mdefine_line|#define LMI_STATUS_ENQUIRY      0x75
-DECL|macro|LMI_STATUS
-mdefine_line|#define LMI_STATUS              0x7D /* reply */
-DECL|macro|LMI_REPT_LEN
-mdefine_line|#define LMI_REPT_LEN               1 /* report type element length */
-DECL|macro|LMI_INTEG_LEN
-mdefine_line|#define LMI_INTEG_LEN              2 /* link integrity element length */
-DECL|macro|LMI_LENGTH
-mdefine_line|#define LMI_LENGTH                13 /* standard LMI frame length */
-DECL|macro|LMI_ANSI_LENGTH
-mdefine_line|#define LMI_ANSI_LENGTH           14
-r_typedef
-r_struct
-(brace
-macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
-DECL|member|ea1
-r_int
-id|ea1
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|cr
-r_int
-id|cr
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|dlcih
-r_int
-id|dlcih
-suffix:colon
-l_int|6
-suffix:semicolon
-DECL|member|ea2
-r_int
-id|ea2
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|de
-r_int
-id|de
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|becn
-r_int
-id|becn
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|fecn
-r_int
-id|fecn
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|dlcil
-r_int
-id|dlcil
-suffix:colon
-l_int|4
-suffix:semicolon
-macro_line|#elif defined (__BIG_ENDIAN_BITFIELD)
-r_int
-id|dlcih
-suffix:colon
-l_int|6
-suffix:semicolon
-r_int
-id|cr
-suffix:colon
-l_int|1
-suffix:semicolon
-r_int
-id|ea1
-suffix:colon
-l_int|1
-suffix:semicolon
-r_int
-id|dlcil
-suffix:colon
-l_int|4
-suffix:semicolon
-r_int
-id|fecn
-suffix:colon
-l_int|1
-suffix:semicolon
-r_int
-id|becn
-suffix:colon
-l_int|1
-suffix:semicolon
-r_int
-id|de
-suffix:colon
-l_int|1
-suffix:semicolon
-r_int
-id|ea2
-suffix:colon
-l_int|1
-suffix:semicolon
-macro_line|#else
-macro_line|#error  &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
-macro_line|#endif
-DECL|typedef|fr_hdr
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-id|fr_hdr
-suffix:semicolon
 r_typedef
 r_struct
 (brace
@@ -442,27 +274,8 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Things below are for HDLC layer internal use only */
-DECL|member|ioctl
-r_int
-(paren
-op_star
-id|ioctl
-)paren
-(paren
 r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_struct
-id|ifreq
-op_star
-id|ifr
-comma
-r_int
-id|cmd
-)paren
-suffix:semicolon
+(brace
 DECL|member|open
 r_int
 (paren
@@ -476,6 +289,34 @@ op_star
 id|hdlc
 )paren
 suffix:semicolon
+DECL|member|close
+r_void
+(paren
+op_star
+id|close
+)paren
+(paren
+r_struct
+id|hdlc_device_struct
+op_star
+id|hdlc
+)paren
+suffix:semicolon
+multiline_comment|/* if open &amp; DCD */
+DECL|member|start
+r_void
+(paren
+op_star
+id|start
+)paren
+(paren
+r_struct
+id|hdlc_device_struct
+op_star
+id|hdlc
+)paren
+suffix:semicolon
+multiline_comment|/* if open &amp; !DCD */
 DECL|member|stop
 r_void
 (paren
@@ -489,11 +330,11 @@ op_star
 id|hdlc
 )paren
 suffix:semicolon
-DECL|member|proto_detach
+DECL|member|detach
 r_void
 (paren
 op_star
-id|proto_detach
+id|detach
 )paren
 (paren
 r_struct
@@ -534,11 +375,27 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-DECL|member|proto
+DECL|member|id
 r_int
-id|proto
+id|id
 suffix:semicolon
 multiline_comment|/* IF_PROTO_HDLC/CISCO/FR/etc. */
+DECL|member|proto
+)brace
+id|proto
+suffix:semicolon
+DECL|member|carrier
+r_int
+id|carrier
+suffix:semicolon
+DECL|member|open
+r_int
+id|open
+suffix:semicolon
+DECL|member|state_lock
+id|spinlock_t
+id|state_lock
+suffix:semicolon
 r_union
 (brace
 r_struct
@@ -898,92 +755,6 @@ op_member_access_from_pointer
 id|name
 suffix:semicolon
 )brace
-DECL|function|q922_to_dlci
-r_static
-id|__inline__
-id|u16
-id|q922_to_dlci
-c_func
-(paren
-id|u8
-op_star
-id|hdr
-)paren
-(brace
-r_return
-(paren
-(paren
-id|hdr
-(braket
-l_int|0
-)braket
-op_amp
-l_int|0xFC
-)paren
-op_lshift
-l_int|2
-)paren
-op_or
-(paren
-(paren
-id|hdr
-(braket
-l_int|1
-)braket
-op_amp
-l_int|0xF0
-)paren
-op_rshift
-l_int|4
-)paren
-suffix:semicolon
-)brace
-DECL|function|dlci_to_q922
-r_static
-id|__inline__
-r_void
-id|dlci_to_q922
-c_func
-(paren
-id|u8
-op_star
-id|hdr
-comma
-id|u16
-id|dlci
-)paren
-(brace
-id|hdr
-(braket
-l_int|0
-)braket
-op_assign
-(paren
-id|dlci
-op_rshift
-l_int|2
-)paren
-op_amp
-l_int|0xFC
-suffix:semicolon
-id|hdr
-(braket
-l_int|1
-)braket
-op_assign
-(paren
-(paren
-id|dlci
-op_lshift
-l_int|4
-)paren
-op_amp
-l_int|0xF0
-)paren
-op_or
-l_int|0x01
-suffix:semicolon
-)brace
 DECL|function|debug_frame
 r_static
 id|__inline__
@@ -1053,9 +824,6 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* Must be called by hardware driver when HDLC device is being opened */
-DECL|function|hdlc_open
-r_static
-id|__inline__
 r_int
 id|hdlc_open
 c_func
@@ -1064,42 +832,8 @@ id|hdlc_device
 op_star
 id|hdlc
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|hdlc-&gt;proto
-op_eq
-op_minus
-l_int|1
-)paren
-r_return
-op_minus
-id|ENOSYS
 suffix:semicolon
-multiline_comment|/* no protocol attached */
-r_if
-c_cond
-(paren
-id|hdlc-&gt;open
-)paren
-r_return
-id|hdlc
-op_member_access_from_pointer
-id|open
-c_func
-(paren
-id|hdlc
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* Must be called by hardware driver when HDLC device is being closed */
-DECL|function|hdlc_close
-r_static
-id|__inline__
 r_void
 id|hdlc_close
 c_func
@@ -1108,21 +842,20 @@ id|hdlc_device
 op_star
 id|hdlc
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|hdlc-&gt;stop
-)paren
-id|hdlc
-op_member_access_from_pointer
-id|stop
+suffix:semicolon
+multiline_comment|/* Called by hardware driver when DCD line level changes */
+r_void
+id|hdlc_set_carrier
 c_func
 (paren
+r_int
+id|on
+comma
+id|hdlc_device
+op_star
 id|hdlc
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* May be used by hardware driver to gain control over HDLC device */
 DECL|function|hdlc_proto_detach
 r_static
@@ -1139,17 +872,17 @@ id|hdlc
 r_if
 c_cond
 (paren
-id|hdlc-&gt;proto_detach
+id|hdlc-&gt;proto.detach
 )paren
-id|hdlc
-op_member_access_from_pointer
-id|proto_detach
+id|hdlc-&gt;proto
+dot
+id|detach
 c_func
 (paren
 id|hdlc
 )paren
 suffix:semicolon
-id|hdlc-&gt;proto_detach
+id|hdlc-&gt;proto.detach
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1186,11 +919,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hdlc-&gt;type_trans
+id|hdlc-&gt;proto.type_trans
 )paren
 r_return
-id|hdlc
-op_member_access_from_pointer
+id|hdlc-&gt;proto
+dot
 id|type_trans
 c_func
 (paren

@@ -589,8 +589,6 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -698,8 +696,6 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 (paren
 id|ret

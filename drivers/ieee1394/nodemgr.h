@@ -123,17 +123,21 @@ multiline_comment|/* Maximum packet size node can receive */
 )brace
 suffix:semicolon
 DECL|macro|UNIT_DIRECTORY_VENDOR_ID
-mdefine_line|#define UNIT_DIRECTORY_VENDOR_ID&t;0x01
+mdefine_line|#define UNIT_DIRECTORY_VENDOR_ID&t;&t;0x01
 DECL|macro|UNIT_DIRECTORY_MODEL_ID
-mdefine_line|#define UNIT_DIRECTORY_MODEL_ID&t;&t;0x02
+mdefine_line|#define UNIT_DIRECTORY_MODEL_ID&t;&t;&t;0x02
 DECL|macro|UNIT_DIRECTORY_SPECIFIER_ID
-mdefine_line|#define UNIT_DIRECTORY_SPECIFIER_ID&t;0x04
+mdefine_line|#define UNIT_DIRECTORY_SPECIFIER_ID&t;&t;0x04
 DECL|macro|UNIT_DIRECTORY_VERSION
-mdefine_line|#define UNIT_DIRECTORY_VERSION&t;&t;0x08
+mdefine_line|#define UNIT_DIRECTORY_VERSION&t;&t;&t;0x08
 DECL|macro|UNIT_DIRECTORY_VENDOR_TEXT
-mdefine_line|#define UNIT_DIRECTORY_VENDOR_TEXT&t;0x10
+mdefine_line|#define UNIT_DIRECTORY_VENDOR_TEXT&t;&t;0x10
 DECL|macro|UNIT_DIRECTORY_MODEL_TEXT
-mdefine_line|#define UNIT_DIRECTORY_MODEL_TEXT&t;0x20
+mdefine_line|#define UNIT_DIRECTORY_MODEL_TEXT&t;&t;0x20
+DECL|macro|UNIT_DIRECTORY_HAS_LUN_DIRECTORY
+mdefine_line|#define UNIT_DIRECTORY_HAS_LUN_DIRECTORY&t;0x40
+DECL|macro|UNIT_DIRECTORY_LUN_DIRECTORY
+mdefine_line|#define UNIT_DIRECTORY_LUN_DIRECTORY&t;&t;0x80
 multiline_comment|/*&n; * A unit directory corresponds to a protocol supported by the&n; * node. If a node supports eg. IP/1394 and AV/C, its config rom has a&n; * unit directory for each of these protocols.&n; */
 DECL|struct|unit_directory
 r_struct

@@ -5007,6 +5007,9 @@ r_struct
 id|net_device
 op_star
 id|dev
+comma
+r_int
+id|anycast
 )paren
 (brace
 r_struct
@@ -5108,6 +5111,16 @@ op_assign
 id|RTF_UP
 op_or
 id|RTF_NONEXTHOP
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|anycast
+)paren
+id|rt-&gt;rt6i_flags
+op_or_assign
+id|RTF_LOCAL
 suffix:semicolon
 id|rt-&gt;rt6i_nexthop
 op_assign

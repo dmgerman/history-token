@@ -2151,6 +2151,16 @@ c_func
 id|itf
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 id|error
 op_assign
 id|__vcc_connect

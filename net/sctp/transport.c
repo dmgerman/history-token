@@ -224,6 +224,19 @@ op_amp
 id|peer-&gt;transports
 )paren
 suffix:semicolon
+id|sctp_packet_init
+c_func
+(paren
+op_amp
+id|peer-&gt;packet
+comma
+id|peer
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/* Set up the retransmission timer.  */
 id|init_timer
 c_func

@@ -1188,6 +1188,11 @@ r_union
 id|sctp_addr
 op_star
 id|addr
+comma
+r_struct
+id|sctp_opt
+op_star
+id|sp
 )paren
 (brace
 multiline_comment|/* Is this a non-unicast address or a unusable SCTP address? */
@@ -1215,11 +1220,15 @@ r_int
 id|sctp_v4_available
 c_func
 (paren
-r_const
 r_union
 id|sctp_addr
 op_star
 id|addr
+comma
+r_struct
+id|sctp_opt
+op_star
+id|sp
 )paren
 (brace
 r_int
@@ -2026,6 +2035,26 @@ r_return
 id|newsk
 suffix:semicolon
 )brace
+multiline_comment|/* Map address, empty for v4 family */
+DECL|function|sctp_v4_addr_v4map
+r_static
+r_void
+id|sctp_v4_addr_v4map
+c_func
+(paren
+r_struct
+id|sctp_opt
+op_star
+id|sp
+comma
+r_union
+id|sctp_addr
+op_star
+id|addr
+)paren
+(brace
+multiline_comment|/* Empty */
+)brace
 multiline_comment|/* Dump the v4 addr to the seq file. */
 DECL|function|sctp_v4_seq_dump_addr
 r_static
@@ -2410,6 +2439,15 @@ c_cond
 id|msgname
 )paren
 (brace
+r_struct
+id|sctp_association
+op_star
+id|asoc
+suffix:semicolon
+id|asoc
+op_assign
+id|event-&gt;sndrcvinfo.sinfo_assoc_id
+suffix:semicolon
 id|sctp_inet_msgname
 c_func
 (paren
@@ -2430,14 +2468,14 @@ suffix:semicolon
 id|sinfrom
 op_assign
 op_amp
-id|event-&gt;asoc-&gt;peer.primary_addr.v4
+id|asoc-&gt;peer.primary_addr.v4
 suffix:semicolon
 id|sin-&gt;sin_port
 op_assign
 id|htons
 c_func
 (paren
-id|event-&gt;asoc-&gt;peer.port
+id|asoc-&gt;peer.port
 )paren
 suffix:semicolon
 id|sin-&gt;sin_addr.s_addr
@@ -2528,6 +2566,11 @@ c_func
 (paren
 id|sa_family_t
 id|family
+comma
+r_struct
+id|sctp_opt
+op_star
+id|sp
 )paren
 (brace
 multiline_comment|/* PF_INET only supports AF_INET addresses. */
@@ -2626,6 +2669,8 @@ id|sctp_v4_available
 c_func
 (paren
 id|addr
+comma
+id|opt
 )paren
 suffix:semicolon
 )brace
@@ -2812,6 +2857,11 @@ dot
 id|create_accept_sk
 op_assign
 id|sctp_v4_create_accept_sk
+comma
+dot
+id|addr_v4map
+op_assign
+id|sctp_v4_addr_v4map
 comma
 dot
 id|af

@@ -1280,6 +1280,22 @@ r_int
 id|count
 comma
 id|newmtu
+comma
+id|error
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|lp-&gt;hw.owner
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 id|BUGLVL
 c_func
@@ -1347,6 +1363,11 @@ l_string|&quot;arcnet_open: resetting card.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* try to put the card in a defined state - if it fails the first&n;&t; * time, actually reset it.&n;&t; */
+id|error
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1362,9 +1383,8 @@ c_func
 l_int|1
 )paren
 )paren
-r_return
-op_minus
-id|ENODEV
+r_goto
+id|out_module_put
 suffix:semicolon
 id|newmtu
 op_assign
@@ -1501,10 +1521,12 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* bring up the hardware driver */
-id|ARCOPEN
+id|lp-&gt;hw
+dot
+id|open
 c_func
 (paren
-l_int|1
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -1599,6 +1621,17 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|out_module_put
+suffix:colon
+id|module_put
+c_func
+(paren
+id|lp-&gt;hw.owner
+)paren
+suffix:semicolon
+r_return
+id|error
+suffix:semicolon
 )brace
 multiline_comment|/* The inverse routine to arcnet_open - shuts down the card. */
 DECL|function|arcnet_close
@@ -1659,10 +1692,18 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* shut down the card */
-id|ARCOPEN
+id|lp-&gt;hw
+dot
+id|close
 c_func
 (paren
-l_int|0
+id|dev
+)paren
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|lp-&gt;hw.owner
 )paren
 suffix:semicolon
 r_return

@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -46,7 +45,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 967 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 1010 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/*&n; * Module load parameter definitions&n; */
 multiline_comment|/*&n; * Change max_speed on module load if you have a bad IEEE-1394&n; * controller that has trouble running 2KB packets at 400mb.&n; *&n; * NOTE: On certain OHCI parts I have seen short packets on async transmit&n; * (probably due to PCI latency/throughput issues with the part). You can&n; * bump down the speed if you are running into problems.&n; */
@@ -1951,6 +1950,18 @@ id|unit_directory
 comma
 id|device
 )paren
+suffix:semicolon
+multiline_comment|/* Don&squot;t probe UD&squot;s that have the LUN flag. We&squot;ll probe the LUN(s)&n;&t; * instead. */
+r_if
+c_cond
+(paren
+id|ud-&gt;flags
+op_amp
+id|UNIT_DIRECTORY_HAS_LUN_DIRECTORY
+)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 multiline_comment|/* This will only add it if it doesn&squot;t exist */
 id|hi
@@ -3939,7 +3950,7 @@ id|scsi_id-&gt;query_logins_orb
 comma
 r_sizeof
 (paren
-id|stuct
+r_struct
 id|sbp2_query_logins_orb
 )paren
 comma
@@ -5654,6 +5665,8 @@ comma
 id|NODE_BUS_ARGS
 c_func
 (paren
+id|ud-&gt;ne-&gt;host
+comma
 id|ud-&gt;ne-&gt;nodeid
 )paren
 )paren
@@ -5712,6 +5725,8 @@ comma
 id|NODE_BUS_ARGS
 c_func
 (paren
+id|ud-&gt;ne-&gt;host
+comma
 id|ud-&gt;ne-&gt;nodeid
 )paren
 )paren
@@ -5725,7 +5740,43 @@ suffix:semicolon
 multiline_comment|/* No need to continue. */
 )brace
 )brace
-multiline_comment|/* If our list is empty, add a base scsi_id (happens in a normal&n;&t; * case where there is no logical_unit_number entry */
+multiline_comment|/* If this is a logical unit directory entry, process the parent&n;&t; * to get the common values. */
+r_if
+c_cond
+(paren
+id|ud-&gt;flags
+op_amp
+id|UNIT_DIRECTORY_LUN_DIRECTORY
+)paren
+(brace
+r_struct
+id|unit_directory
+op_star
+id|parent_ud
+op_assign
+id|container_of
+c_func
+(paren
+id|ud-&gt;device.parent
+comma
+r_struct
+id|unit_directory
+comma
+id|device
+)paren
+suffix:semicolon
+id|sbp2_parse_unit_directory
+c_func
+(paren
+id|scsi_group
+comma
+id|parent_ud
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* If our list is empty, add a base scsi_id (happens in a normal&n;&t;&t; * case where there is no logical_unit_number entry */
 r_if
 c_cond
 (paren
@@ -5844,6 +5895,7 @@ id|workarounds
 suffix:semicolon
 )brace
 )brace
+)brace
 multiline_comment|/*&n; * This function is called in order to determine the max speed and packet&n; * size we can use in our ORBs. Note, that we (the driver and host) only&n; * initiate the transaction. The SBP-2 device actually transfers the data&n; * (by reading from the DMA area we tell it). This means that the SBP-2&n; * device decides the actual maximum data it can transfer. We just tell it&n; * the speed that it needs to use, and the max_rec the host supports, and&n; * it takes care of the rest.&n; */
 DECL|function|sbp2_max_speed_and_size
 r_static
@@ -5954,13 +6006,15 @@ suffix:semicolon
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;Node[&quot;
+l_string|&quot;Node &quot;
 id|NODE_BUS_FMT
-l_string|&quot;]: Max speed [%s] - Max payload [%u]&quot;
+l_string|&quot;: Max speed [%s] - Max payload [%u]&quot;
 comma
 id|NODE_BUS_ARGS
 c_func
 (paren
+id|hi-&gt;host
+comma
 id|scsi_id-&gt;ne-&gt;nodeid
 )paren
 comma
@@ -9972,370 +10026,6 @@ r_return
 l_string|&quot;SCSI emulation for IEEE-1394 SBP-2 Devices&quot;
 suffix:semicolon
 )brace
-multiline_comment|/* Called for contents of procfs */
-DECL|macro|SPRINTF
-mdefine_line|#define SPRINTF(args...) &bslash;&n;        do { if (pos &lt; buffer+length) pos += sprintf(pos, ## args); } while (0)
-DECL|function|sbp2scsi_proc_info
-r_static
-r_int
-id|sbp2scsi_proc_info
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-id|scsi_host
-comma
-r_char
-op_star
-id|buffer
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|length
-comma
-r_int
-id|inout
-)paren
-(brace
-id|Scsi_Device
-op_star
-id|scd
-suffix:semicolon
-r_struct
-id|hpsb_host
-op_star
-id|host
-suffix:semicolon
-r_char
-op_star
-id|pos
-op_assign
-id|buffer
-suffix:semicolon
-multiline_comment|/* if someone is sending us data, just throw it away */
-r_if
-c_cond
-(paren
-id|inout
-)paren
-r_return
-id|length
-suffix:semicolon
-id|host
-op_assign
-id|hpsb_get_host_bykey
-c_func
-(paren
-op_amp
-id|sbp2_highlevel
-comma
-(paren
-r_int
-r_int
-)paren
-id|scsi_host
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|host
-)paren
-multiline_comment|/* shouldn&squot;t happen, but... */
-r_return
-op_minus
-id|ESRCH
-suffix:semicolon
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;Host scsi%d             : SBP-2 IEEE-1394 (%s)&bslash;n&quot;
-comma
-id|scsi_host-&gt;host_no
-comma
-id|host-&gt;driver-&gt;name
-)paren
-suffix:semicolon
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;Driver version         : %s&bslash;n&quot;
-comma
-id|version
-)paren
-suffix:semicolon
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;&bslash;nModule options         :&bslash;n&quot;
-)paren
-suffix:semicolon
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;  max_speed            : %s&bslash;n&quot;
-comma
-id|hpsb_speedto_str
-(braket
-id|max_speed
-)braket
-)paren
-suffix:semicolon
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;  max_sectors          : %d&bslash;n&quot;
-comma
-id|max_sectors
-)paren
-suffix:semicolon
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;  serialize_io         : %s&bslash;n&quot;
-comma
-id|serialize_io
-ques
-c_cond
-l_string|&quot;yes&quot;
-suffix:colon
-l_string|&quot;no&quot;
-)paren
-suffix:semicolon
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;  exclusive_login      : %s&bslash;n&quot;
-comma
-id|exclusive_login
-ques
-c_cond
-l_string|&quot;yes&quot;
-suffix:colon
-l_string|&quot;no&quot;
-)paren
-suffix:semicolon
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;&bslash;nAttached devices       : %s&bslash;n&quot;
-comma
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|scsi_host-&gt;my_devices
-)paren
-ques
-c_cond
-l_string|&quot;&quot;
-suffix:colon
-l_string|&quot;none&quot;
-)paren
-suffix:semicolon
-id|list_for_each_entry
-(paren
-id|scd
-comma
-op_amp
-id|scsi_host-&gt;my_devices
-comma
-id|siblings
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;  [Channel: %02d, Id: %02d, Lun: %02d]  &quot;
-comma
-id|scd-&gt;channel
-comma
-id|scd-&gt;id
-comma
-id|scd-&gt;lun
-)paren
-suffix:semicolon
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;%s &quot;
-comma
-(paren
-id|scd-&gt;type
-OL
-id|MAX_SCSI_DEVICE_CODE
-)paren
-ques
-c_cond
-id|scsi_device_types
-(braket
-(paren
-r_int
-)paren
-id|scd-&gt;type
-)braket
-suffix:colon
-l_string|&quot;Unknown device&quot;
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-(paren
-id|i
-OL
-l_int|8
-)paren
-op_logical_and
-(paren
-id|scd-&gt;vendor
-(braket
-id|i
-)braket
-op_ge
-l_int|0x20
-)paren
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;%c&quot;
-comma
-id|scd-&gt;vendor
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-id|SPRINTF
-c_func
-(paren
-l_string|&quot; &quot;
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-(paren
-id|i
-OL
-l_int|16
-)paren
-op_logical_and
-(paren
-id|scd-&gt;model
-(braket
-id|i
-)braket
-op_ge
-l_int|0x20
-)paren
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;%c&quot;
-comma
-id|scd-&gt;model
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Calculate start of next buffer, and return value. */
-op_star
-id|start
-op_assign
-id|buffer
-op_plus
-id|offset
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|pos
-op_minus
-id|buffer
-)paren
-OL
-id|offset
-)paren
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-(paren
-id|pos
-op_minus
-id|buffer
-op_minus
-id|offset
-)paren
-OL
-id|length
-)paren
-r_return
-(paren
-id|pos
-op_minus
-id|buffer
-op_minus
-id|offset
-)paren
-suffix:semicolon
-r_else
-r_return
-(paren
-id|length
-)paren
-suffix:semicolon
-)brace
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -10387,11 +10077,6 @@ dot
 id|info
 op_assign
 id|sbp2scsi_info
-comma
-dot
-id|proc_info
-op_assign
-id|sbp2scsi_proc_info
 comma
 dot
 id|queuecommand
@@ -10469,6 +10154,15 @@ id|SBP2_DEBUG
 c_func
 (paren
 l_string|&quot;sbp2_module_init&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sbp2: %s&bslash;n&quot;
+comma
+id|version
 )paren
 suffix:semicolon
 multiline_comment|/* Module load debug option to force one command at a time (serializing I/O) */
