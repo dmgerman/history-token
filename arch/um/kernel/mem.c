@@ -236,20 +236,6 @@ id|uml_physmem
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
-macro_line|#ifdef CONFIG_HIGHMEM
-id|highmem_start_page
-op_assign
-id|phys_page
-c_func
-(paren
-id|__pa
-c_func
-(paren
-id|high_physmem
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* clear the zero-page */
 id|memset
 c_func
