@@ -311,9 +311,7 @@ c_func
 (paren
 id|sdev-&gt;request_queue
 comma
-id|ATA_MAX_PRD
-op_div
-l_int|2
+id|LIBATA_MAX_PRD
 )paren
 suffix:semicolon
 r_return
