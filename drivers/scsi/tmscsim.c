@@ -890,6 +890,12 @@ c_func
 l_string|&quot;SCSI host adapter driver for Tekram DC390 and other AMD53C974A based PCI SCSI adapters&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren

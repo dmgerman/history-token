@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdnl1.h,v 2.9.6.2 2001/08/23 19:44:23 kai Exp $&n; *&n; * Layer 1 defines&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: isdnl1.h,v 2.9.6.3 2001/09/23 22:24:49 kai Exp $&n; *&n; * Layer 1 defines&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 DECL|macro|D_RCVBUFREADY
 mdefine_line|#define D_RCVBUFREADY&t;0
 DECL|macro|D_XMTBUFREADY

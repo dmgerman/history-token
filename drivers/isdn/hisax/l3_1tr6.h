@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: l3_1tr6.h,v 2.2.6.1 2001/02/16 16:43:27 kai Exp $&n; *&n; *  German 1TR6 D-channel protocol defines&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: l3_1tr6.h,v 2.2.6.2 2001/09/23 22:24:49 kai Exp $&n; *&n; * German 1TR6 D-channel protocol defines&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#ifndef l3_1tr6
 DECL|macro|l3_1tr6
 mdefine_line|#define l3_1tr6

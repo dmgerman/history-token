@@ -803,6 +803,12 @@ comma
 id|el3_isapnp_adapters
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|el3_isapnp_phys_addr
 r_static
 id|u16

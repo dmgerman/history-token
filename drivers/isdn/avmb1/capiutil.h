@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: capiutil.h,v 1.5.6.1 2001/05/17 20:41:51 kai Exp $&n; * &n; * CAPI 2.0 defines &amp; types&n; * &n; * From CAPI 2.0 Development Kit AVM 1995 (capi20.h)&n; * Rewritten for Linux 1996 by Carsten Paeth (calle@calle.in-berlin.de)&n; * &n; */
+multiline_comment|/* $Id: capiutil.h,v 1.5.6.2 2001/09/23 22:24:33 kai Exp $&n; *&n; * CAPI 2.0 defines &amp; types&n; *&n; * From CAPI 2.0 Development Kit AVM 1995 (msg.c)&n; * Rewritten for Linux 1996 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#ifndef __CAPIUTIL_H__
 DECL|macro|__CAPIUTIL_H__
 mdefine_line|#define __CAPIUTIL_H__

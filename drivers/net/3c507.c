@@ -166,6 +166,10 @@ DECL|member|tx_reap
 id|ushort
 id|tx_reap
 suffix:semicolon
+DECL|member|tx_pkts_in_ring
+id|ushort
+id|tx_pkts_in_ring
+suffix:semicolon
 DECL|member|lock
 id|spinlock_t
 id|lock
@@ -229,7 +233,7 @@ mdefine_line|#define DUMP_DATA&t;0x56&t;/* A 170 byte buffer for dump and Set-MC
 DECL|macro|TX_BUF_START
 mdefine_line|#define TX_BUF_START&t;0x0100
 DECL|macro|NUM_TX_BUFS
-mdefine_line|#define NUM_TX_BUFS &t;4
+mdefine_line|#define NUM_TX_BUFS &t;5
 DECL|macro|TX_BUF_SIZE
 mdefine_line|#define TX_BUF_SIZE &t;(1518+14+20+16) /* packet+header+TBD */
 DECL|macro|RX_BUF_START
@@ -1363,6 +1367,10 @@ id|init_82586_mem
 id|dev
 )paren
 suffix:semicolon
+id|lp-&gt;tx_pkts_in_ring
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -1677,9 +1685,7 @@ multiline_comment|/* Reap the Tx packet buffers. */
 r_while
 c_loop
 (paren
-id|lp-&gt;tx_reap
-op_ne
-id|lp-&gt;tx_head
+id|lp-&gt;tx_pkts_in_ring
 )paren
 (brace
 r_int
@@ -1697,9 +1703,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 id|tx_status
-op_eq
-l_int|0
+op_amp
+l_int|0x8000
+)paren
 )paren
 (brace
 r_if
@@ -1712,7 +1721,7 @@ l_int|5
 id|printk
 c_func
 (paren
-l_string|&quot;Couldn&squot;t reap %#x.&bslash;n&quot;
+l_string|&quot;Tx command incomplete (%#x).&bslash;n&quot;
 comma
 id|lp-&gt;tx_reap
 )paren
@@ -1720,31 +1729,23 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* Tx unsuccessful or some interesting status bit set. */
 r_if
 c_cond
+(paren
+op_logical_neg
 (paren
 id|tx_status
 op_amp
 l_int|0x2000
 )paren
-(brace
-id|lp-&gt;stats.tx_packets
-op_increment
-suffix:semicolon
-id|lp-&gt;stats.collisions
-op_add_assign
+op_logical_or
+(paren
 id|tx_status
 op_amp
-l_int|0xf
-suffix:semicolon
-id|netif_wake_queue
-c_func
-(paren
-id|dev
+l_int|0x0f3f
 )paren
-suffix:semicolon
-)brace
-r_else
+)paren
 (brace
 id|lp-&gt;stats.tx_errors
 op_increment
@@ -1792,7 +1793,16 @@ l_int|0x0020
 id|lp-&gt;stats.tx_aborted_errors
 op_increment
 suffix:semicolon
+id|lp-&gt;stats.collisions
+op_add_assign
+id|tx_status
+op_amp
+l_int|0xf
+suffix:semicolon
 )brace
+id|lp-&gt;stats.tx_packets
+op_increment
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1827,13 +1837,23 @@ id|lp-&gt;tx_reap
 op_assign
 id|TX_BUF_START
 suffix:semicolon
+id|lp-&gt;tx_pkts_in_ring
+op_decrement
+suffix:semicolon
+multiline_comment|/* There is always more space in the Tx ring buffer now. */
+id|netif_wake_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_increment
 id|boguscount
 OG
-l_int|4
+l_int|10
 )paren
 r_break
 suffix:semicolon
@@ -2931,12 +2951,14 @@ id|lp-&gt;tx_head
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Grimly block further packets if there has been insufficient reaping. */
 r_if
 c_cond
 (paren
-id|lp-&gt;tx_head
-op_ne
-id|lp-&gt;tx_reap
+op_increment
+id|lp-&gt;tx_pkts_in_ring
+OL
+id|NUM_TX_BUFS
 )paren
 id|netif_wake_queue
 c_func
@@ -3502,6 +3524,12 @@ id|EL16_IO_EXTENT
 suffix:semicolon
 )brace
 macro_line|#endif /* MODULE */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 "&f;"
 multiline_comment|/*&n; * Local variables:&n; *  compile-command: &quot;gcc -D__KERNEL__ -I/usr/src/linux/net/inet -I/usr/src/linux/drivers/net -Wall -Wstrict-prototypes -O6 -m486 -c 3c507.c&quot;&n; *  version-control: t&n; *  kept-new-versions: 5&n; *  tab-width: 4&n; *  c-indent-level: 4&n; * End:&n; */
 eof

@@ -1,24 +1,4 @@
-singleline_comment|// $Id: l3ni1.c,v 2.5.6.2 2001/02/16 16:43:28 kai Exp $
-singleline_comment|//
-singleline_comment|//-----------------------------------------------------------------------------
-singleline_comment|//
-singleline_comment|// NI1 D-channel protocol
-singleline_comment|//
-singleline_comment|// Authors:
-singleline_comment|// Matt Henderson &amp; Guy Ellis - Traverse Tecnologies Pty Ltd
-singleline_comment|// www.traverse.com.au
-singleline_comment|//
-singleline_comment|// 2000.6.6 Initial implementation of routines for US NI1 
-singleline_comment|// Layer 3 protocol based on the EURO/DSS1 D-channel protocol 
-singleline_comment|// driver written by Karsten Keil et al.  
-singleline_comment|// NI-1 Hall of Fame - Thanks to.... 
-singleline_comment|// Ragnar Paulson - for some handy code fragments
-singleline_comment|// Will Scales - beta tester extraordinaire
-singleline_comment|// Brett Whittacre - beta tester and remote devel system in Vegas
-singleline_comment|//
-singleline_comment|// This file is (c) under GNU General Public License
-singleline_comment|//
-singleline_comment|//-----------------------------------------------------------------------------
+multiline_comment|/* $Id: l3ni1.c,v 2.5.6.3 2001/09/23 22:24:50 kai Exp $&n; *&n; * NI1 D-channel protocol&n; *&n; * Author       Matt Henderson &amp; Guy Ellis&n; * Copyright    by Traverse Technologies Pty Ltd, www.travers.com.au&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * 2000.6.6 Initial implementation of routines for US NI1 &n; * Layer 3 protocol based on the EURO/DSS1 D-channel protocol &n; * driver written by Karsten Keil et al.  &n; * NI-1 Hall of Fame - Thanks to.... &n; * Ragnar Paulson - for some handy code fragments&n; * Will Scales - beta tester extraordinaire&n; * Brett Whittacre - beta tester and remote devel system in Vegas&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;hisax.h&quot;
@@ -43,7 +23,7 @@ r_char
 op_star
 id|ni1_revision
 op_assign
-l_string|&quot;$Revision: 2.5.6.2 $&quot;
+l_string|&quot;$Revision: 2.5.6.3 $&quot;
 suffix:semicolon
 DECL|macro|EXT_BEARER_CAPS
 mdefine_line|#define EXT_BEARER_CAPS 1
@@ -70,6 +50,7 @@ r_int
 r_char
 id|retval
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -218,6 +199,7 @@ r_char
 id|id
 )paren
 (brace
+r_int
 r_int
 id|flags
 suffix:semicolon

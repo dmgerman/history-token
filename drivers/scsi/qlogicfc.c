@@ -10662,6 +10662,12 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif&t;&t;&t;&t;/* DEBUG_ISP2x00 */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|driver_template
 r_static
 id|Scsi_Host_Template

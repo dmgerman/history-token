@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: capi.c,v 1.44.6.13 2001/08/13 07:46:15 kai Exp $&n; *&n; * CAPI 2.0 Interface for Linux&n; *&n; * Copyright 1996 by Carsten Paeth (calle@calle.in-berlin.de)&n; *&n; */
+multiline_comment|/* $Id: capi.c,v 1.44.6.15 2001/09/28 08:05:29 kai Exp $&n; *&n; * CAPI 2.0 Interface for Linux&n; *&n; * Copyright 1996 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -41,12 +41,24 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.44.6.13 $&quot;
+l_string|&quot;$Revision: 1.44.6.15 $&quot;
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;CAPI4Linux: Userspace /dev/capi20 interface&quot;
+)paren
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Carsten Paeth (calle@calle.in-berlin.de)&quot;
+l_string|&quot;Carsten Paeth&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|macro|_DEBUG_REFCOUNT
@@ -3559,7 +3571,8 @@ id|skb
 )paren
 suffix:semicolon
 r_return
-id|retval
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 id|mlen
@@ -5569,7 +5582,8 @@ id|skb
 )paren
 suffix:semicolon
 r_return
-id|retval
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 r_while
@@ -6428,7 +6442,8 @@ id|retval
 suffix:semicolon
 macro_line|#endif
 r_return
-id|retval
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 )brace

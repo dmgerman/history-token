@@ -5921,5 +5921,11 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif /* MODULE */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * END of ni65.c&n; */
 eof

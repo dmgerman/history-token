@@ -92,7 +92,7 @@ id|NLM_PROGRAM
 suffix:semicolon
 id|args.vers
 op_assign
-l_int|1
+id|host-&gt;h_version
 suffix:semicolon
 id|args.proc
 op_assign

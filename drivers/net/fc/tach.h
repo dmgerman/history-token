@@ -117,12 +117,12 @@ mdefine_line|#define SFSBQ_LENGTH&t;&t;8
 DECL|macro|SEST_LENGTH
 mdefine_line|#define SEST_LENGTH&t;&t;MY_PAGE_SIZE
 multiline_comment|/* Size of the various buffers.&n; */
-DECL|macro|FRAME_SIZE
-mdefine_line|#define FRAME_SIZE              2048
+DECL|macro|TACH_FRAME_SIZE
+mdefine_line|#define TACH_FRAME_SIZE         2048
 DECL|macro|MFS_BUFFER_SIZE
-mdefine_line|#define MFS_BUFFER_SIZE         FRAME_SIZE
+mdefine_line|#define MFS_BUFFER_SIZE         TACH_FRAME_SIZE
 DECL|macro|SFS_BUFFER_SIZE
-mdefine_line|#define SFS_BUFFER_SIZE         (FRAME_SIZE + TACHYON_HEADER_LEN)
+mdefine_line|#define SFS_BUFFER_SIZE         (TACH_FRAME_SIZE + TACHYON_HEADER_LEN)
 DECL|macro|SEST_BUFFER_SIZE
 mdefine_line|#define SEST_BUFFER_SIZE        512
 DECL|macro|TACH_HEADER_SIZE

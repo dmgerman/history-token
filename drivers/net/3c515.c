@@ -93,6 +93,12 @@ c_func
 l_string|&quot;3Com 3c515 Corkscrew driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -105,20 +111,6 @@ id|MODULE_PARM
 c_func
 (paren
 id|options
-comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-l_int|8
-)paren
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|full_duplex
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -159,14 +151,6 @@ c_func
 id|options
 comma
 l_string|&quot;3c515: Bits 0-2: media type, bit 3: full duplex, bit 4: bus mastering&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|full_duplex
-comma
-l_string|&quot;(ignored)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

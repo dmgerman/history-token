@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/net/iucv.h&n; *    IUCV base support.&n; *&n; *  S390 version&n; *    Copyright (C) 2000 IBM Corporation&n; *    Author(s):Alan Altmark (Alan_Altmark@us.ibm.com) &n; *&t;&t;Xenia Tkatschow (xenia@us.ibm.com)&n; *&n; *&n; * Linux Kernel IUCV will not support a machine with storage &gt; 2 GB. &n; *&n; * Functionality:&n; * To explore any of the IUCV functions, one must first register&n; * their program using iucv_register_program(). Once your program has&n; * successfully completed a register, it can exploit the other functions.&n; * For furthur reference on all IUCV functionality, refer to the&n; * CP Programming Services book, also available on the web&n; * thru www.ibm.com/s390/vm/pubs, manual # SC24-5760&n; *&n; *      Definition of Return Codes                                    &n; *      -All positive return codes including zero are reflected back  &n; *       from CP except for iucv_register_program. The definition of each &n; *       return code can be found in CP Programming Services book.    &n; *       Also available on the web thru www.ibm.com/s390/vm/pubs, manual # SC24-5760          &n; *      - Return Code of:         &n; *             (-EINVAL) Invalid value       &n; *             (-ENOMEM) storage allocation failed              &n; *&t;pgmask defined in iucv_register_program will be set depending on input&n; *&t;paramters. &n; *&t;&n; */
+multiline_comment|/*&n; *  drivers/s390/net/iucv.h&n; *    IUCV base support.&n; *&n; *  S390 version&n; *    Copyright (C) 2000 IBM Corporation&n; *    Author(s):Alan Altmark (Alan_Altmark@us.ibm.com) &n; *&t;&t;Xenia Tkatschow (xenia@us.ibm.com)&n; *&n; *&n; * Functionality:&n; * To explore any of the IUCV functions, one must first register&n; * their program using iucv_register_program(). Once your program has&n; * successfully completed a register, it can exploit the other functions.&n; * For furthur reference on all IUCV functionality, refer to the&n; * CP Programming Services book, also available on the web&n; * thru www.ibm.com/s390/vm/pubs, manual # SC24-5760&n; *&n; *      Definition of Return Codes                                    &n; *      -All positive return codes including zero are reflected back  &n; *       from CP except for iucv_register_program. The definition of each &n; *       return code can be found in CP Programming Services book.    &n; *       Also available on the web thru www.ibm.com/s390/vm/pubs, manual # SC24-5760          &n; *      - Return Code of:         &n; *             (-EINVAL) Invalid value       &n; *             (-ENOMEM) storage allocation failed              &n; *&t;pgmask defined in iucv_register_program will be set depending on input&n; *&t;paramters. &n; *&t;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 DECL|macro|uchar
 mdefine_line|#define uchar  unsigned char
@@ -714,11 +714,9 @@ comma
 id|u32
 id|srccls
 comma
-id|uchar
+id|__u32
+op_star
 id|audit
-(braket
-l_int|3
-)braket
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Name: iucv_query_maxconn&n; * Purpose: This function determines the maximum number of communication paths you&n; *&t;    may establish.&n; * Return:  maxconn - ulong, Maximum number of connection the virtual machine may&n; *          establish.&n;*/

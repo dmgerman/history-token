@@ -28,6 +28,7 @@ macro_line|#include &lt;net/psnap.h&gt;
 macro_line|#include &lt;linux/atalk.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 DECL|variable|sysctl_aarp_expiry_time
 r_int
 id|sysctl_aarp_expiry_time
@@ -4158,4 +4159,10 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#endif  /* CONFIG_ATALK || CONFIG_ATALK_MODULE */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

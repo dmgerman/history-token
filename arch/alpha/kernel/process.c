@@ -632,13 +632,18 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ps: %04lx pc: [&lt;%016lx&gt;] CPU %d&bslash;n&quot;
+l_string|&quot;ps: %04lx pc: [&lt;%016lx&gt;] CPU %d    %s&bslash;n&quot;
 comma
 id|regs-&gt;ps
 comma
 id|regs-&gt;pc
 comma
 id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+id|print_tainted
 c_func
 (paren
 )paren

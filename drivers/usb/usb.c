@@ -9477,6 +9477,13 @@ c_func
 id|usb_set_configuration
 )paren
 suffix:semicolon
+DECL|variable|usb_get_status
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usb_get_status
+)paren
+suffix:semicolon
 DECL|variable|usb_get_current_frame_number
 id|EXPORT_SYMBOL
 c_func

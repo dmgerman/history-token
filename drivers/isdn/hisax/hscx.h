@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hscx.h,v 1.6.6.1 2001/02/16 16:43:27 kai Exp $&n; *&n; * hscx.h   HSCX specific defines&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: hscx.h,v 1.6.6.2 2001/09/23 22:24:48 kai Exp $&n; *&n; * HSCX specific defines&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 multiline_comment|/* All Registers original Siemens Spec  */
 DECL|macro|HSCX_ISTA
 mdefine_line|#define HSCX_ISTA 0x20

@@ -14488,6 +14488,12 @@ c_func
 l_string|&quot;ES1371 AudioPCI97 Driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|struct|initvol
 r_static

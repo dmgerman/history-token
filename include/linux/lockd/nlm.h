@@ -99,6 +99,8 @@ DECL|macro|NLMPROC_UNLOCK_RES
 mdefine_line|#define NLMPROC_UNLOCK_RES&t;14
 DECL|macro|NLMPROC_GRANTED_RES
 mdefine_line|#define NLMPROC_GRANTED_RES&t;15
+DECL|macro|NLMPROC_NSM_NOTIFY
+mdefine_line|#define NLMPROC_NSM_NOTIFY&t;16&t;&t;/* statd callback */
 DECL|macro|NLMPROC_SHARE
 mdefine_line|#define NLMPROC_SHARE&t;&t;20
 DECL|macro|NLMPROC_UNSHARE
@@ -107,7 +109,5 @@ DECL|macro|NLMPROC_NM_LOCK
 mdefine_line|#define NLMPROC_NM_LOCK&t;&t;22
 DECL|macro|NLMPROC_FREE_ALL
 mdefine_line|#define NLMPROC_FREE_ALL&t;23
-DECL|macro|NLMPROC_NSM_NOTIFY
-mdefine_line|#define NLMPROC_NSM_NOTIFY&t;24&t;&t;/* statd callback */
 macro_line|#endif /* LINUX_LOCKD_NLM_H */
 eof

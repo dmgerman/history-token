@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: niccy.c,v 1.15.6.4 2001/02/16 16:43:28 kai Exp $&n; *&n; * niccy.c  low level stuff for Dr. Neuhaus NICCY PnP and NICCY PCI and&n; *          compatible (SAGEM cybermodem)&n; *&n; * Author   Karsten Keil&n; * &n; * Thanks to Dr. Neuhaus and SAGEM for informations&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: niccy.c,v 1.15.6.5 2001/09/23 22:24:50 kai Exp $&n; *&n; * low level stuff for Dr. Neuhaus NICCY PnP and NICCY PCI and&n; * compatible (SAGEM cybermodem)&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; * &n; * Thanks to Dr. Neuhaus and SAGEM for information&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
@@ -22,7 +22,7 @@ r_char
 op_star
 id|niccy_revision
 op_assign
-l_string|&quot;$Revision: 1.15.6.4 $&quot;
+l_string|&quot;$Revision: 1.15.6.5 $&quot;
 suffix:semicolon
 DECL|macro|byteout
 mdefine_line|#define byteout(addr,val) outb(val,addr)

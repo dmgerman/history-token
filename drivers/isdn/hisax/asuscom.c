@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: asuscom.c,v 1.11.6.2 2001/07/13 09:20:12 kai Exp $&n; *&n; * asuscom.c     low level stuff for ASUSCOM NETWORK INC. ISDNLink cards&n; *&n; * Author     Karsten Keil (keil@isdn4linux.de)&n; *&n; * Thanks to  ASUSCOM NETWORK INC. Taiwan and  Dynalink NL for informations&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: asuscom.c,v 1.11.6.3 2001/09/23 22:24:46 kai Exp $&n; *&n; * low level stuff for ASUSCOM NETWORK INC. ISDNLink cards&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Thanks to  ASUSCOM NETWORK INC. Taiwan and  Dynalink NL for information&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -21,7 +21,7 @@ r_char
 op_star
 id|Asuscom_revision
 op_assign
-l_string|&quot;$Revision: 1.11.6.2 $&quot;
+l_string|&quot;$Revision: 1.11.6.3 $&quot;
 suffix:semicolon
 DECL|macro|byteout
 mdefine_line|#define byteout(addr,val) outb(val,addr)

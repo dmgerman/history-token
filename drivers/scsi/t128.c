@@ -20,6 +20,7 @@ macro_line|#include &quot;constants.h&quot;
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 DECL|struct|override
 r_static
 r_struct
@@ -1149,6 +1150,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#include &quot;NCR5380.c&quot;
 multiline_comment|/* Eventually this will go into an include file, but this will be later */
 DECL|variable|driver_template

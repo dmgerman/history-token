@@ -198,6 +198,12 @@ c_func
 l_string|&quot;SMC 83c170 EPIC series Ethernet driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren

@@ -4628,4 +4628,10 @@ c_func
 id|cleanup_raw1394
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

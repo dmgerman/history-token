@@ -141,6 +141,12 @@ c_func
 l_string|&quot;Winbond w9966cf WebCam driver (0.32)&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#ifdef MODULE
 DECL|variable|pardev
 r_static

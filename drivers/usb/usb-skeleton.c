@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB Skeleton driver - 0.4&n; *&n; * Copyright (c) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation; either version 2 of&n; *&t;the License, or (at your option) any later version.&n; *&n; *&n; * This driver is to be used as a skeleton driver to be able to create a&n; * USB driver quickly.  The design of it is based on the usb-serial and&n; * dc2xx drivers.&n; *&n; * Thanks to Oliver Neukum and David Brownell for their help in debugging&n; * this driver.&n; *&n; * TODO:&n; *&t;- fix urb-&gt;status race condition in write sequence&n; *&t;- move minor_table to a dynamic list.&n; *&n; * History:&n; *&n; * 2001_08_21 - 0.4 - more small bug fixes.&n; * 2001_05_29 - 0.3 - more bug fixes based on review from linux-usb-devel&n; * 2001_05_24 - 0.2 - bug fixes based on review from linux-usb-devel people&n; * 2001_05_01 - 0.1 - first version&n; * &n; */
+multiline_comment|/*&n; * USB Skeleton driver - 0.5&n; *&n; * Copyright (c) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation; either version 2 of&n; *&t;the License, or (at your option) any later version.&n; *&n; *&n; * This driver is to be used as a skeleton driver to be able to create a&n; * USB driver quickly.  The design of it is based on the usb-serial and&n; * dc2xx drivers.&n; *&n; * Thanks to Oliver Neukum and David Brownell for their help in debugging&n; * this driver.&n; *&n; * TODO:&n; *&t;- fix urb-&gt;status race condition in write sequence&n; *&t;- move minor_table to a dynamic list.&n; *&n; * History:&n; *&n; * 2001_09_04 - 0.5 - fix devfs bug in skel_disconnect. Thanks to wim delvaux&n; * 2001_08_21 - 0.4 - more small bug fixes.&n; * 2001_05_29 - 0.3 - more bug fixes based on review from linux-usb-devel&n; * 2001_05_24 - 0.2 - bug fixes based on review from linux-usb-devel people&n; * 2001_05_01 - 0.1 - first version&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1983,6 +1983,13 @@ id|minor
 op_assign
 id|dev-&gt;minor
 suffix:semicolon
+multiline_comment|/* remove our devfs node */
+id|devfs_unregister
+c_func
+(paren
+id|dev-&gt;devfs
+)paren
+suffix:semicolon
 multiline_comment|/* if the device is not opened, then we clean up right now */
 r_if
 c_cond
@@ -2010,13 +2017,6 @@ id|dev-&gt;sem
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* remove our devfs node */
-id|devfs_unregister
-c_func
-(paren
-id|dev-&gt;devfs
-)paren
-suffix:semicolon
 id|info
 c_func
 (paren

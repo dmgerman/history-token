@@ -3537,4 +3537,10 @@ c_func
 id|bsdcomp_cleanup
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;BSD without advertising clause&quot;
+)paren
+suffix:semicolon
 eof

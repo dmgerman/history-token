@@ -4964,6 +4964,11 @@ id|EFAULT
 suffix:colon
 l_int|0
 suffix:semicolon
+r_else
+id|ret_val
+op_assign
+l_int|0
+suffix:semicolon
 id|done
 suffix:colon
 id|spin_unlock

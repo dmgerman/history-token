@@ -9022,5 +9022,11 @@ c_func
 id|exit_i82365
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual MPL/GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*====================================================================*/
 eof

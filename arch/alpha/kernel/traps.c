@@ -107,13 +107,18 @@ id|r9_15
 id|printk
 c_func
 (paren
-l_string|&quot;pc = [&lt;%016lx&gt;]  ra = [&lt;%016lx&gt;]  ps = %04lx&bslash;n&quot;
+l_string|&quot;pc = [&lt;%016lx&gt;]  ra = [&lt;%016lx&gt;]  ps = %04lx    %s&bslash;n&quot;
 comma
 id|regs-&gt;pc
 comma
 id|regs-&gt;r26
 comma
 id|regs-&gt;ps
+comma
+id|print_tainted
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|printk

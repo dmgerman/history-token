@@ -58,6 +58,12 @@ c_func
 l_string|&quot;RME9652/36 &bslash;&quot;Hammerfall&bslash;&quot; Driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#ifdef DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(x) printk(&quot;RME_DEBUG:&quot;);x

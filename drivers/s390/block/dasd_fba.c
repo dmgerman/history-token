@@ -185,6 +185,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|rc
 op_assign
 id|dasd_set_normalized_cda
@@ -199,6 +200,7 @@ comma
 id|cqr
 comma
 id|device
+)paren
 )paren
 )paren
 r_return

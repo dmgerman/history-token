@@ -1,12 +1,11 @@
-multiline_comment|/*&n; * Hardware specific macros, defines and structures&n; */
+multiline_comment|/*&n; * Hardware specific macros, defines and structures&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#ifndef HARDWARE_H
 DECL|macro|HARDWARE_H
 mdefine_line|#define HARDWARE_H
 macro_line|#include &lt;asm/param.h&gt;&t;&t;&t;/* For HZ */
 multiline_comment|/*&n; * General hardware parameters common to all ISA adapters&n; */
 DECL|macro|MAX_CARDS
-mdefine_line|#define MAX_CARDS&t;4&t;&t;/* The maximum number of cards to&n;&t;&t;&t;&t;&t;   control or probe for. If you change&n;&t;&t;&t;&t;&t;   this, you must also change the number&n;&t;&t;&t;&t;&t;   of elements in io, irq, and ram to&n;&t;&t;&t;&t;&t;   match. Initialized in init.c */
-multiline_comment|/*&n;extern unsigned int io[];&n;extern unsigned char irq[];&n;extern unsigned long ram[];&n;*/
+mdefine_line|#define MAX_CARDS&t;4&t;&t;/* The maximum number of cards to&n;&t;&t;&t;&t;&t;   control or probe for. */
 DECL|macro|SIGNATURE
 mdefine_line|#define SIGNATURE&t;0x87654321&t;/* Board reset signature */
 DECL|macro|SIG_OFFSET

@@ -2177,6 +2177,12 @@ c_func
 id|ac97_reset
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 "&f;"
 multiline_comment|/*&n; * Local variables:&n; *  c-basic-offset: 4&n; * End:&n; */
 eof

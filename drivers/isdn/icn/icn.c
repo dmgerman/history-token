@@ -1,6 +1,120 @@
-multiline_comment|/* $Id: icn.c,v 1.65.6.7 2001/08/17 12:34:27 kai Exp $&n;&n; * ISDN low-level module for the ICN active ISDN-Card.&n; *&n; * Copyright 1994,95,96 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: icn.c,v 1.65.6.8 2001/09/23 22:24:55 kai Exp $&n; *&n; * ISDN low-level module for the ICN active ISDN-Card.&n; *&n; * Copyright 1994,95,96 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &quot;icn.h&quot;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+DECL|variable|portbase
+r_static
+r_int
+id|portbase
+op_assign
+id|ICN_BASEADDR
+suffix:semicolon
+DECL|variable|membase
+r_static
+r_int
+r_int
+id|membase
+op_assign
+id|ICN_MEMADDR
+suffix:semicolon
+DECL|variable|icn_id
+r_static
+r_char
+op_star
+id|icn_id
+op_assign
+l_string|&quot;&bslash;0&quot;
+suffix:semicolon
+DECL|variable|icn_id2
+r_static
+r_char
+op_star
+id|icn_id2
+op_assign
+l_string|&quot;&bslash;0&quot;
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;ISDN4Linux: Driver for ICN active ISDN card&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Fritz Elfert&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|portbase
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|portbase
+comma
+l_string|&quot;Port address of first card&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|membase
+comma
+l_string|&quot;l&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|membase
+comma
+l_string|&quot;Shared memory address of all cards&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|icn_id
+comma
+l_string|&quot;s&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|icn_id
+comma
+l_string|&quot;ID-String of first card&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|icn_id2
+comma
+l_string|&quot;s&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|icn_id2
+comma
+l_string|&quot;ID-String of first card, second S0 (4B only)&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Verbose bootcode- and protocol-downloading.&n; */
 DECL|macro|BOOT_DEBUG
 macro_line|#undef BOOT_DEBUG
@@ -13,7 +127,7 @@ DECL|variable|revision
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.65.6.7 $&quot;
+l_string|&quot;$Revision: 1.65.6.8 $&quot;
 suffix:semicolon
 r_static
 r_int
@@ -2642,6 +2756,7 @@ suffix:semicolon
 r_int
 id|ch
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon

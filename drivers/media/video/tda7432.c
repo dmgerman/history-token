@@ -26,6 +26,12 @@ c_func
 l_string|&quot;bttv driver for the tda7432 audio processor chip&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: setup.c,v 1.66 2001/09/20 00:35:31 davem Exp $&n; *  linux/arch/sparc64/kernel/setup.c&n; *&n; *  Copyright (C) 1995,1996  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997       Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: setup.c,v 1.67 2001/09/21 03:17:06 kanoj Exp $&n; *  linux/arch/sparc64/kernel/setup.c&n; *&n; *  Copyright (C) 1995,1996  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997       Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -31,6 +31,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/idprom.h&gt;
 macro_line|#include &lt;asm/head.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
+macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#ifdef CONFIG_IP_PNP
 macro_line|#include &lt;net/ipconfig.h&gt;
 macro_line|#endif
@@ -226,6 +227,18 @@ l_int|0
 r_return
 op_minus
 l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t; * The callback can be invoked on the cpu that first dropped &n;&t; * into prom_cmdline after taking the serial interrupt, or on &n;&t; * a slave processor that was smp_captured() if the &n;&t; * administrator has done a switch-cpu inside obp. In either &n;&t; * case, the cpu is marked as in-interrupt. Drop IRQ locks.&n;&t; */
+id|irq_exit
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+l_int|0
+)paren
 suffix:semicolon
 id|save_and_cli
 c_func
@@ -1159,6 +1172,18 @@ id|restore_flags
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Restore in-interrupt status for a resume from obp.&n;&t; */
+id|irq_enter
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return

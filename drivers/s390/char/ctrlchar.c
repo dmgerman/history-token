@@ -83,6 +83,16 @@ l_int|0
 suffix:semicolon
 id|ctrlchar_tq.routine
 op_assign
+(paren
+r_void
+(paren
+op_star
+)paren
+(paren
+r_void
+op_star
+)paren
+)paren
 id|ctrlchar_handle_sysrq
 suffix:semicolon
 macro_line|#endif

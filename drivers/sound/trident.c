@@ -20377,6 +20377,12 @@ c_func
 l_string|&quot;Trident 4DWave/SiS 7018/ALi 5451 and Tvia/IGST CyberPro5050 PCI Audio Driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|TRIDENT_MODULE_NAME
 mdefine_line|#define TRIDENT_MODULE_NAME &quot;trident&quot;
 DECL|variable|trident_pci_driver

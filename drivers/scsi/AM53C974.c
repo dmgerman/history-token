@@ -10493,6 +10493,12 @@ comma
 l_string|&quot;1-32i&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|driver_template
 r_static
 id|Scsi_Host_Template

@@ -1427,4 +1427,10 @@ c_func
 id|ip_nat_delete_sack
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

@@ -793,7 +793,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;CPU:    %d&bslash;nEIP:    %04x:[&lt;%08lx&gt;]&bslash;nEFLAGS: %08lx&bslash;n&quot;
+l_string|&quot;CPU:    %d&bslash;nEIP:    %04x:[&lt;%08lx&gt;]    %s&bslash;nEFLAGS: %08lx&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
@@ -805,6 +805,11 @@ op_amp
 id|regs-&gt;xcs
 comma
 id|regs-&gt;eip
+comma
+id|print_tainted
+c_func
+(paren
+)paren
 comma
 id|regs-&gt;eflags
 )paren

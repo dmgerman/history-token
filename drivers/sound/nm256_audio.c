@@ -6101,6 +6101,12 @@ comma
 id|nm256_pci_tbl
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|nm256_pci_driver
 r_struct
 id|pci_driver

@@ -179,6 +179,12 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual MPL/GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*====================================================================*/
 DECL|struct|scsi_info_t
 r_typedef

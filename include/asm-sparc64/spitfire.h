@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: spitfire.h,v 1.15 2001/03/27 00:10:15 davem Exp $&n; * spitfire.h: SpitFire/BlackBird/Cheetah inline MMU operations.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: spitfire.h,v 1.16 2001/09/24 21:17:57 kanoj Exp $&n; * spitfire.h: SpitFire/BlackBird/Cheetah inline MMU operations.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#ifndef _SPARC64_SPITFIRE_H
 DECL|macro|_SPARC64_SPITFIRE_H
 mdefine_line|#define _SPARC64_SPITFIRE_H
@@ -60,6 +60,8 @@ DECL|macro|SPITFIRE_HIGHEST_LOCKED_TLBENT
 mdefine_line|#define SPITFIRE_HIGHEST_LOCKED_TLBENT&t;(64 - 1)
 DECL|macro|CHEETAH_HIGHEST_LOCKED_TLBENT
 mdefine_line|#define CHEETAH_HIGHEST_LOCKED_TLBENT&t;(16 - 1)
+DECL|macro|L1DCACHE_SIZE
+mdefine_line|#define L1DCACHE_SIZE&t;&t;0x4000
 DECL|macro|sparc64_highest_locked_tlbent
 mdefine_line|#define sparc64_highest_locked_tlbent()&t;&bslash;&n;&t;(tlb_type == spitfire ? &bslash;&n;&t; SPITFIRE_HIGHEST_LOCKED_TLBENT : &bslash;&n;&t; CHEETAH_HIGHEST_LOCKED_TLBENT)
 DECL|function|spitfire_get_isfsr

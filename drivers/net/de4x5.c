@@ -2940,6 +2940,12 @@ comma
 l_string|&quot;de4x5 full duplex and media type settings; see de4x5.c for details&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|# else
 DECL|variable|loading_module
 r_static

@@ -2601,4 +2601,10 @@ id|cls_tcindex_ops
 suffix:semicolon
 )brace
 macro_line|#endif
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

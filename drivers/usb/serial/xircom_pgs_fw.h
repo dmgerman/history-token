@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB Xircom PGS Firmware&n; *&n; * Copyright (c) 1999, 2000 Brian Warner        &lt;warner@lothar.com&gt;&n; * Copyright (c) 2001 Cristian M. Craciunescu&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; * Generated from xircom_pgs.S by ezusb_convert_x.pl&n; */
+multiline_comment|/*&n; * USB Xircom PGS Firmware&n; *&n; * Copyright (c) 1999, 2000 Brian Warner        &lt;warner@lothar.com&gt;&n; * Copyright (c) 2001 Cristian M. Craciunescu&t;&lt;cristi@dnt.ro&gt;&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; * Generated from xircom_pgs.S by ezusb_convert_x.pl&n; */
 DECL|variable|xircom_pgs_firmware
 r_static
 r_const

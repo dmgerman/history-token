@@ -1,8 +1,6 @@
 multiline_comment|/* NCR53C9x.c:  Generic SCSI driver code for NCR53C9x chips.&n; *&n; * Originally esp.c : EnhancedScsiProcessor Sun SCSI driver code.&n; *&n; * Copyright (C) 1995, 1998 David S. Miller (davem@caip.rutgers.edu)&n; *&n; * Most DMA dependencies put in driver specific files by &n; * Jesper Skov (jskov@cygnus.co.uk)&n; *&n; * Set up to use esp_read/esp_write (preprocessor macros in NCR53c9x.h) by&n; * Tymm Twillman (tymm@coe.missouri.edu)&n; */
 multiline_comment|/* TODO:&n; *&n; * 1) Maybe disable parity checking in config register one for SCSI1&n; *    targets.  (Gilmore says parity error on the SBus can lock up&n; *    old sun4c&squot;s)&n; * 2) Add support for DMA2 pipelining.&n; * 3) Add tagged queueing.&n; * 4) Maybe change use of &quot;esp&quot; to something more &quot;NCR&quot;&squot;ish.&n; */
-macro_line|#ifdef MODULE
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;

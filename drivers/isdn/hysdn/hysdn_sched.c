@@ -1,14 +1,11 @@
-multiline_comment|/* $Id: hysdn_sched.c,v 1.5.6.2 2001/04/20 02:42:00 keil Exp $&n;&n; * Linux driver for HYSDN cards, scheduler routines for handling exchange card &lt;-&gt; pc.&n; *&n; * written by Werner Cornelius (werner@titro.de) for Hypercope GmbH&n; *&n; * Copyright 1999  by Werner Cornelius (werner@titro.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
+multiline_comment|/* $Id: hysdn_sched.c,v 1.5.6.3 2001/09/23 22:24:54 kai Exp $&n; *&n; * Linux driver for HYSDN cards&n; * scheduler routines for handling exchange card &lt;-&gt; pc.&n; *&n; * Author    Werner Cornelius (werner@titro.de) for Hypercope GmbH&n; * Copyright 1999 by Werner Cornelius (werner@titro.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;hysdn_defs.h&quot;
 multiline_comment|/*****************************************************************************/
 multiline_comment|/* hysdn_sched_rx is called from the cards handler to announce new data is   */

@@ -11399,6 +11399,12 @@ c_func
 l_string|&quot;Driver for PCI OHCI IEEE-1394 controllers&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|ohci1394_remove_one
 r_static
 r_void

@@ -202,13 +202,13 @@ DECL|macro|SEMOPM
 mdefine_line|#define SEMOPM  32&t;        /* &lt;= 1 000 max num of ops per semop call */
 DECL|macro|SEMVMX
 mdefine_line|#define SEMVMX  32767           /* &lt;= 32767 semaphore maximum value */
+DECL|macro|SEMAEM
+mdefine_line|#define SEMAEM  SEMVMX          /* adjust on exit max value */
 multiline_comment|/* unused */
 DECL|macro|SEMUME
 mdefine_line|#define SEMUME  SEMOPM          /* max num of undo entries per process */
 DECL|macro|SEMMNU
 mdefine_line|#define SEMMNU  SEMMNS          /* num of undo structures system wide */
-DECL|macro|SEMAEM
-mdefine_line|#define SEMAEM  (SEMVMX &gt;&gt; 1)   /* adjust on exit max value */
 DECL|macro|SEMMAP
 mdefine_line|#define SEMMAP  SEMMNS          /* # of entries in semaphore map */
 DECL|macro|SEMUSZ

@@ -2512,5 +2512,11 @@ l_int|3
 suffix:semicolon
 )brace
 macro_line|#endif /* MODULE */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Local variables:&n; *  kernel-compile-command: &quot;gcc -D__KERNEL__ -Ilinux/include -I../../net/inet -Wall -Wstrict-prototypes -O2 -m486 -c de600.c&quot;&n; *  module-compile-command: &quot;gcc -D__KERNEL__ -DMODULE -Ilinux/include -I../../net/inet -Wall -Wstrict-prototypes -O2 -m486 -c de600.c&quot;&n; *  compile-command: &quot;gcc -D__KERNEL__ -DMODULE -Ilinux/include -I../../net/inet -Wall -Wstrict-prototypes -O2 -m486 -c de600.c&quot;&n; * End:&n; */
 eof

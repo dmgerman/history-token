@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdnl2.h,v 1.3.6.1 2001/02/16 16:43:27 kai Exp $&n; *&n; * Layer 2 defines&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: isdnl2.h,v 1.3.6.2 2001/09/23 22:24:49 kai Exp $&n; *&n; * Layer 2 defines&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 DECL|macro|RR
 mdefine_line|#define RR     0x01
 DECL|macro|RNR

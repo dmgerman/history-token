@@ -586,6 +586,12 @@ comma
 id|happymeal_pci_ids
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* NOTE: In the descriptor writes one _must_ write the address&n; *&t; member _first_.  The card must not be allowed to see&n; *&t; the updated descriptor flags until the address is&n; *&t; correct.  I&squot;ve added a write memory barrier between&n; *&t; the two stores so that I can sleep well at night... -DaveM&n; */
 macro_line|#if defined(CONFIG_SBUS) &amp;&amp; defined(CONFIG_PCI)

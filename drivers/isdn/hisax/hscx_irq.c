@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hscx_irq.c,v 1.16.6.1 2001/02/16 16:43:27 kai Exp $&n; *&n; * hscx_irq.c     low level b-channel stuff for Siemens HSCX&n; *&n; * Author     Karsten Keil (keil@isdn4linux.de)&n; *&n; * This is an include file for fast inline IRQ stuff&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: hscx_irq.c,v 1.16.6.2 2001/09/23 22:24:48 kai Exp $&n; *&n; * low level b-channel stuff for Siemens HSCX&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * This is an include file for fast inline IRQ stuff&n; *&n; */
 r_static
 r_inline
 r_void

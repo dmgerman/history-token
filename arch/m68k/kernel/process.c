@@ -296,7 +296,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Format %02x  Vector: %04x  PC: %08lx  Status: %04x&bslash;n&quot;
+l_string|&quot;Format %02x  Vector: %04x  PC: %08lx  Status: %04x    %s&bslash;n&quot;
 comma
 id|regs-&gt;format
 comma
@@ -305,6 +305,11 @@ comma
 id|regs-&gt;pc
 comma
 id|regs-&gt;sr
+comma
+id|print_tainted
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|printk

@@ -1148,7 +1148,7 @@ id|regs
 id|printk
 c_func
 (paren
-l_string|&quot;PSR: %08lx PC: %08lx NPC: %08lx Y: %08lx&bslash;n&quot;
+l_string|&quot;PSR: %08lx PC: %08lx NPC: %08lx Y: %08lx    %s&bslash;n&quot;
 comma
 id|regs-&gt;psr
 comma
@@ -1157,6 +1157,11 @@ comma
 id|regs-&gt;npc
 comma
 id|regs-&gt;y
+comma
+id|print_tainted
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|printk

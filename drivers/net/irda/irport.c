@@ -3662,6 +3662,12 @@ c_func
 l_string|&quot;Half duplex serial driver for IrDA SIR mode&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|cleanup_module
 r_void
 id|cleanup_module

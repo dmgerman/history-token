@@ -392,7 +392,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;pc : [&lt;%08lx&gt;]    lr : [&lt;%08lx&gt;]&bslash;n&quot;
+l_string|&quot;pc : [&lt;%08lx&gt;]    lr : [&lt;%08lx&gt;]    %s&bslash;n&quot;
 l_string|&quot;sp : %08lx  ip : %08lx  fp : %08lx&bslash;n&quot;
 comma
 id|instruction_pointer
@@ -402,6 +402,11 @@ id|regs
 )paren
 comma
 id|regs-&gt;ARM_lr
+comma
+id|print_tainted
+c_func
+(paren
+)paren
 comma
 id|regs-&gt;ARM_sp
 comma

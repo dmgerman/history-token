@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * BSD compression module&n; *&n; * Patched version for ISDN syncPPP written 1997/1998 by Michael Hipp&n; * The whole module is now SKB based.&n; *&n; * Compile with:&n; *  gcc -O2 -I/usr/src/linux/include -D__KERNEL__ -DMODULE -c isdn_bsdcomp.c&n; */
+multiline_comment|/*&n; * BSD compression module&n; *&n; * Patched version for ISDN syncPPP written 1997/1998 by Michael Hipp&n; * The whole module is now SKB based.&n; *&n; */
+multiline_comment|/*&n; * Update: The Berkeley copyright was changed, and the change &n; * is retroactive to all &quot;true&quot; BSD software (ie everything&n; * from UCB as opposed to other peoples code that just carried&n; * the same license). The new copyright doesn&squot;t clash with the&n; * GPL, so the module-only restriction has been removed..&n; */
 multiline_comment|/*&n; * Original copyright notice:&n; *&n; * Copyright (c) 1985, 1986 The Regents of the University of California.&n; * All rights reserved.&n; *&n; * This code is derived from software contributed to Berkeley by&n; * James A. Woods, derived from original work by Spencer Thomas&n; * and Joseph Orost.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions and the following disclaimer.&n; * 2. Redistributions in binary form must reproduce the above copyright&n; *    notice, this list of conditions and the following disclaimer in the&n; *    documentation and/or other materials provided with the distribution.&n; * 3. All advertising materials mentioning features or use of this software&n; *    must display the following acknowledgement:&n; *&t;This product includes software developed by the University of&n; *&t;California, Berkeley and its contributors.&n; * 4. Neither the name of the University nor the names of its contributors&n; *    may be used to endorse or promote products derived from this software&n; *    without specific prior written permission.&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE&n; * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -30,12 +31,23 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/ppp_defs.h&gt;
 macro_line|#include &lt;linux/isdn.h&gt;
 macro_line|#include &lt;linux/isdn_ppp.h&gt;
-multiline_comment|/* #include &lt;linux/netprotocol.h&gt; */
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/ppp-comp.h&gt;
 macro_line|#include &quot;isdn_ppp.h&quot;
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;ISDN4Linux: BSD Compression for PPP over ISDN&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual BSD/GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|BSD_VERSION
 mdefine_line|#define BSD_VERSION(x)&t;((x) &gt;&gt; 5)
 DECL|macro|BSD_NBITS

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgalloc.h,v 1.21 2001/08/22 22:16:56 kanoj Exp $ */
+multiline_comment|/* $Id: pgalloc.h,v 1.23 2001/09/25 20:21:48 kanoj Exp $ */
 macro_line|#ifndef _SPARC64_PGALLOC_H
 DECL|macro|_SPARC64_PGALLOC_H
 mdefine_line|#define _SPARC64_PGALLOC_H
@@ -6,6 +6,8 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/spitfire.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
 multiline_comment|/* Cache and TLB flush operations. */
 multiline_comment|/* These are the same regardless of whether this is an SMP kernel or not. */
 DECL|macro|flush_cache_mm
@@ -45,8 +47,22 @@ r_int
 id|flush_icache
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|__flush_icache_page
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;/* is there D$ aliasing problem */
 DECL|macro|flush_dcache_page
 mdefine_line|#define flush_dcache_page(page) &bslash;&n;do {&t;if ((page)-&gt;mapping &amp;&amp; &bslash;&n;&t;    !((page)-&gt;mapping-&gt;i_mmap) &amp;&amp; &bslash;&n;&t;    !((page)-&gt;mapping-&gt;i_mmap_shared)) &bslash;&n;&t;&t;set_bit(PG_dcache_dirty, &amp;(page)-&gt;flags); &bslash;&n;&t;else &bslash;&n;&t;&t;__flush_dcache_page((page)-&gt;virtual, &bslash;&n;&t;&t;&t;&t;    ((tlb_type == spitfire) &amp;&amp; &bslash;&n;&t;&t;&t;&t;     (page)-&gt;mapping != NULL)); &bslash;&n;} while(0)
+macro_line|#else /* L1DCACHE_SIZE &gt; PAGE_SIZE */
+DECL|macro|flush_dcache_page
+mdefine_line|#define flush_dcache_page(page) &bslash;&n;do {&t;if ((page)-&gt;mapping &amp;&amp; &bslash;&n;&t;    !((page)-&gt;mapping-&gt;i_mmap) &amp;&amp; &bslash;&n;&t;    !((page)-&gt;mapping-&gt;i_mmap_shared)) &bslash;&n;&t;&t;set_bit(PG_dcache_dirty, &amp;(page)-&gt;flags); &bslash;&n;&t;else &bslash;&n;&t;&t;if ((tlb_type == spitfire) &amp;&amp; &bslash;&n;&t;&t;    (page)-&gt;mapping != NULL) &bslash;&n;&t;&t;&t;__flush_icache_page(__get_phys((unsigned long)((page)-&gt;virtual))); &bslash;&n;} while(0)
+macro_line|#endif /* L1DCACHE_SIZE &gt; PAGE_SIZE */
 r_extern
 r_void
 id|__flush_dcache_range
@@ -828,6 +844,17 @@ id|pgd
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_SMP */
+macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;&t;/* is there D$ aliasing problem */
+DECL|macro|VPTE_COLOR
+mdefine_line|#define VPTE_COLOR(address)&t;&t;(((address) &gt;&gt; (PAGE_SHIFT + 10)) &amp; 1UL)
+DECL|macro|DCACHE_COLOR
+mdefine_line|#define DCACHE_COLOR(address)&t;&t;(((address) &gt;&gt; PAGE_SHIFT) &amp; 1UL)
+macro_line|#else
+DECL|macro|VPTE_COLOR
+mdefine_line|#define VPTE_COLOR(address)&t;&t;0
+DECL|macro|DCACHE_COLOR
+mdefine_line|#define DCACHE_COLOR(address)&t;&t;0
+macro_line|#endif
 DECL|macro|pgd_populate
 mdefine_line|#define pgd_populate(MM, PGD, PMD)&t;pgd_set(PGD, PMD)
 DECL|function|pmd_alloc_one
@@ -992,21 +1019,15 @@ id|pmd
 r_int
 r_int
 id|color
-suffix:semicolon
-id|color
 op_assign
-(paren
+id|DCACHE_COLOR
+c_func
 (paren
 (paren
 r_int
 r_int
 )paren
 id|pmd
-op_rshift
-id|PAGE_SHIFT
-)paren
-op_amp
-l_int|0x1UL
 )paren
 suffix:semicolon
 op_star
@@ -1105,17 +1126,11 @@ r_int
 r_int
 id|color
 op_assign
+id|VPTE_COLOR
+c_func
 (paren
 id|address
-op_rshift
-(paren
-id|PAGE_SHIFT
-op_plus
-l_int|10
 )paren
-)paren
-op_amp
-l_int|0x1UL
 suffix:semicolon
 r_int
 r_int
@@ -1192,18 +1207,14 @@ r_int
 r_int
 id|color
 op_assign
-(paren
+id|DCACHE_COLOR
+c_func
 (paren
 (paren
 r_int
 r_int
 )paren
 id|pte
-op_rshift
-id|PAGE_SHIFT
-)paren
-op_amp
-l_int|0x1
 )paren
 suffix:semicolon
 op_star

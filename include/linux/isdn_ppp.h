@@ -1,4 +1,4 @@
-multiline_comment|/* -*- mode: c; c-basic-offset: 2 -*- */
+multiline_comment|/*&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#ifndef _LINUX_ISDN_PPP_H
 DECL|macro|_LINUX_ISDN_PPP_H
 mdefine_line|#define _LINUX_ISDN_PPP_H

@@ -240,9 +240,8 @@ mdefine_line|#define&t;SERx4&t;8&t;/* SuperIO Chip supports 115,2 KBaud * 4=460,
 multiline_comment|/* These are the currently known SMC SuperIO chipsets */
 DECL|variable|fdc_chips_flat
 r_static
-r_const
 id|smc_chip_t
-id|__init
+id|__initdata
 id|fdc_chips_flat
 (braket
 )braket
@@ -362,9 +361,8 @@ l_int|NULL
 suffix:semicolon
 DECL|variable|fdc_chips_paged
 r_static
-r_const
 id|smc_chip_t
-id|__init
+id|__initdata
 id|fdc_chips_paged
 (braket
 )braket
@@ -560,9 +558,8 @@ l_int|NULL
 suffix:semicolon
 DECL|variable|lpc_chips_flat
 r_static
-r_const
 id|smc_chip_t
-id|__init
+id|__initdata
 id|lpc_chips_flat
 (braket
 )braket
@@ -604,9 +601,8 @@ l_int|NULL
 suffix:semicolon
 DECL|variable|lpc_chips_paged
 r_static
-r_const
 id|smc_chip_t
-id|__init
+id|__initdata
 id|lpc_chips_paged
 (braket
 )braket
@@ -5133,6 +5129,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;SMC IrCC controller driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM

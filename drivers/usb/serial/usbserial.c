@@ -35,7 +35,7 @@ macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;pl2303.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.3&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.4&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman, greg@kroah.com, http:
 singleline_comment|//www.kroah.com/linux-usb/&quot;
@@ -224,6 +224,11 @@ id|generic_shutdown
 comma
 )brace
 suffix:semicolon
+DECL|macro|if_generic_do
+mdefine_line|#define if_generic_do(x)&t;&t;&t;&t;&t;&bslash;&n;&t;if ((serial-&gt;dev-&gt;descriptor.idVendor == vendor) &amp;&amp;&t;&bslash;&n;&t;    (serial-&gt;dev-&gt;descriptor.idProduct == product))&t;&bslash;&n;&t;                x
+macro_line|#else
+DECL|macro|if_generic_do
+mdefine_line|#define if_generic_do(x)
 macro_line|#endif
 multiline_comment|/* local function prototypes */
 r_static
@@ -1039,8 +1044,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/* set up our port structure making the tty driver remember our port object, and us it */
 id|portNumber
 op_assign
@@ -1209,8 +1212,6 @@ id|filp
 )paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|serial_write
 r_static
@@ -2114,7 +2115,12 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+multiline_comment|/* only increment our usage count, if this device is _really_ a generic device */
+id|if_generic_do
+c_func
+(paren
 id|MOD_INC_USE_COUNT
+)paren
 suffix:semicolon
 id|dbg
 c_func
@@ -2310,7 +2316,12 @@ op_amp
 id|port-&gt;sem
 )paren
 suffix:semicolon
+multiline_comment|/* only decrement our usage count, if this device is _really_ a generic device */
+id|if_generic_do
+c_func
+(paren
 id|MOD_DEC_USE_COUNT
+)paren
 suffix:semicolon
 )brace
 DECL|function|generic_write

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: capidev.h,v 1.6.6.1 2001/05/17 20:41:51 kai Exp $&n; *&n; * CAPI 2.0 Interface for Linux&n; *&n; * (c) Copyright 1996 by Carsten Paeth (calle@calle.in-berlin.de)&n; *&n; */
+multiline_comment|/* $Id: capidev.h,v 1.6.6.2 2001/09/23 22:24:33 kai Exp $&n; *&n; * CAPI 2.0 Interface for Linux&n; *&n; * Copyright 1996 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 DECL|struct|capidev
 r_struct
 id|capidev

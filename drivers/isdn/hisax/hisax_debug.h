@@ -1,8 +1,8 @@
-multiline_comment|/*&n; * Common debugging macros for use with the hisax driver&n; *&n; * Author       Frode Isaksen&n; * Copyright    2001 by Frode Isaksen      &lt;fisaksen@bewan.com&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
-multiline_comment|/* &n; * How to use:&n; * &n; * Before including this file, you need to&n; *   #define __debug_variable my_debug&n; * where my_debug is a variable in your code which&n; * determines the debug bitmask.&n; *&n; * If CONFIG_HISAX_DEBUG is not set, all macros evaluate to nothing&n; */
+multiline_comment|/*&n; * Common debugging macros for use with the hisax driver&n; *&n; * Author       Frode Isaksen&n; * Copyright    2001 by Frode Isaksen      &lt;fisaksen@bewan.com&gt;&n; *              2001 by Kai Germaschewski  &lt;kai.germaschewski@gmx.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * How to use:&n; * &n; * Before including this file, you need to&n; *   #define __debug_variable my_debug&n; * where my_debug is a variable in your code which&n; * determines the debug bitmask.&n; *&n; * If CONFIG_HISAX_DEBUG is not set, all macros evaluate to nothing&n; *&n; */
 macro_line|#ifndef __HISAX_DEBUG_H__
 DECL|macro|__HISAX_DEBUG_H__
 mdefine_line|#define __HISAX_DEBUG_H__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_HISAX_DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(level, format, arg...) do { &bslash;&n;if (level &amp; __debug_variable) &bslash;&n;printk(KERN_DEBUG __FUNCTION__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg); &bslash;&n;} while (0)

@@ -5831,5 +5831,11 @@ c_func
 id|plip_cleanup_module
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Local variables:&n; * compile-command: &quot;gcc -DMODULE -DMODVERSIONS -D__KERNEL__ -Wall -Wstrict-prototypes -O2 -g -fomit-frame-pointer -pipe -c plip.c&quot;&n; * End:&n; */
 eof

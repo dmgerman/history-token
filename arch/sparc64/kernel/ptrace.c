@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/psrcompat.h&gt;
 macro_line|#include &lt;asm/visasm.h&gt;
+macro_line|#include &lt;asm/spitfire.h&gt;
 DECL|macro|MAGIC_CONSTANT
 mdefine_line|#define MAGIC_CONSTANT 0x80000000
 multiline_comment|/* Returning from ptrace is a bit tricky because the syscall return&n; * low level code assumes any value returned which is negative and&n; * is a valid errno will mean setting the condition codes to indicate&n; * an error return.  This doesn&squot;t work, so we have this hook.&n; */
@@ -3035,11 +3036,7 @@ l_int|0
 suffix:semicolon
 id|va
 OL
-(paren
-id|PAGE_SIZE
-op_lshift
-l_int|1
-)paren
+id|L1DCACHE_SIZE
 suffix:semicolon
 id|va
 op_add_assign

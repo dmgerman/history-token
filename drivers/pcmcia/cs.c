@@ -117,6 +117,12 @@ l_string|&quot;&bslash;n  options:&quot;
 id|OPTIONS
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual MPL/GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*====================================================================*/
 multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
 DECL|macro|INT_MODULE_PARM

@@ -11579,6 +11579,12 @@ l_string|&quot;Aironet MTU limit (256-2312)&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*EXPORT_SYMBOL(tx_queue_len);&n;EXPORT_SYMBOL(awc_debug);&n; */
 DECL|variable|awc_init
 id|EXPORT_SYMBOL

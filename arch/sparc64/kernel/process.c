@@ -1342,7 +1342,7 @@ macro_line|#endif
 id|printk
 c_func
 (paren
-l_string|&quot;TSTATE: %016lx TPC: %016lx TNPC: %016lx Y: %08x&bslash;n&quot;
+l_string|&quot;TSTATE: %016lx TPC: %016lx TNPC: %016lx Y: %08x    %s&bslash;n&quot;
 comma
 id|regs-&gt;tstate
 comma
@@ -1351,6 +1351,11 @@ comma
 id|regs-&gt;tnpc
 comma
 id|regs-&gt;y
+comma
+id|print_tainted
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|printk
@@ -1728,7 +1733,7 @@ id|regs
 id|printk
 c_func
 (paren
-l_string|&quot;PSR: %08x PC: %08x NPC: %08x Y: %08x&bslash;n&quot;
+l_string|&quot;PSR: %08x PC: %08x NPC: %08x Y: %08x    %s&bslash;n&quot;
 comma
 id|regs-&gt;psr
 comma
@@ -1737,6 +1742,11 @@ comma
 id|regs-&gt;npc
 comma
 id|regs-&gt;y
+comma
+id|print_tainted
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|printk

@@ -1,7 +1,7 @@
+multiline_comment|/*&n; * Linux driver for HYSDN cards&n; * common definitions for both sides of the bus:&n; * - conventions both spoolers must know&n; * - channel numbers agreed upon&n; *&n; * Author    M. Steinkopf&n; * Copyright 1999 by M. Steinkopf&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#ifndef __INCE1PC_H__
 DECL|macro|__INCE1PC_H__
 mdefine_line|#define __INCE1PC_H__
-multiline_comment|/****************************************************************************&n;&n;    FILE:       ince1pc.h&n;&n;    AUTHOR:     M.Steinkopf&n;&n;    PURPOSE:    common definitions for both sides of the bus:&n;&t;&t;- conventions both spoolers must know&n;&t;&t;- channel numbers agreed upon&n;&n;*****************************************************************************/
 multiline_comment|/*  basic scalar definitions have same meanning,&n; *  but their declaration location depends on environment&n; */
 multiline_comment|/*--------------------------------------channel numbers---------------------*/
 DECL|macro|CHAN_SYSTEM

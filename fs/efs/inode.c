@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * inode.c&n; *&n; * Copyright (c) 1999 Al Smith&n; *&n; * Portions derived from work (c) 1995,1996 Christian Vogelgsang,&n; *              and from work (c) 1998 Mike Shaver.&n; */
 macro_line|#include &lt;linux/efs_fs.h&gt;
 macro_line|#include &lt;linux/efs_fs_sb.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 r_extern
 r_int
 id|efs_get_block
@@ -1362,4 +1363,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

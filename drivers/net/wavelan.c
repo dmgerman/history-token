@@ -6196,12 +6196,6 @@ l_int|0
 op_logical_and
 (paren
 id|frequency-&gt;m
-op_ge
-l_int|0
-)paren
-op_logical_and
-(paren
-id|frequency-&gt;m
 OL
 id|BAND_NUM
 )paren
@@ -17035,5 +17029,11 @@ suffix:semicolon
 macro_line|#endif
 )brace
 macro_line|#endif&t;&t;&t;&t;/* MODULE */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This software may only be used and distributed&n; * according to the terms of the GNU General Public License.&n; *&n; * This software was developed as a component of the&n; * Linux operating system.&n; * It is based on other device drivers and information&n; * either written or supplied by:&n; *&t;Ajay Bakre (bakre@paul.rutgers.edu),&n; *&t;Donald Becker (becker@scyld.com),&n; *&t;Loeke Brederveld (Loeke.Brederveld@Utrecht.NCR.com),&n; *&t;Anders Klemets (klemets@it.kth.se),&n; *&t;Vladimir V. Kolpakov (w@stier.koenig.ru),&n; *&t;Marc Meertens (Marc.Meertens@Utrecht.NCR.com),&n; *&t;Pauline Middelink (middelin@polyware.iaf.nl),&n; *&t;Robert Morris (rtm@das.harvard.edu),&n; *&t;Jean Tourrilhes (jt@hplb.hpl.hp.com),&n; *&t;Girish Welling (welling@paul.rutgers.edu),&n; *&n; * Thanks go also to:&n; *&t;James Ashton (jaa101@syseng.anu.edu.au),&n; *&t;Alan Cox (alan@redhat.com),&n; *&t;Allan Creighton (allanc@cs.usyd.edu.au),&n; *&t;Matthew Geier (matthew@cs.usyd.edu.au),&n; *&t;Remo di Giovanni (remo@cs.usyd.edu.au),&n; *&t;Eckhard Grah (grah@wrcs1.urz.uni-wuppertal.de),&n; *&t;Vipul Gupta (vgupta@cs.binghamton.edu),&n; *&t;Mark Hagan (mhagan@wtcpost.daytonoh.NCR.COM),&n; *&t;Tim Nicholson (tim@cs.usyd.edu.au),&n; *&t;Ian Parkin (ian@cs.usyd.edu.au),&n; *&t;John Rosenberg (johnr@cs.usyd.edu.au),&n; *&t;George Rossi (george@phm.gov.au),&n; *&t;Arthur Scott (arthur@cs.usyd.edu.au),&n; *&t;Peter Storey,&n; * for their assistance and advice.&n; *&n; * Please send bug reports, updates, comments to:&n; *&n; * Bruce Janson                                    Email:  bruce@cs.usyd.edu.au&n; * Basser Department of Computer Science           Phone:  +61-2-9351-3423&n; * University of Sydney, N.S.W., 2006, AUSTRALIA   Fax:    +61-2-9351-3838&n; */
 eof

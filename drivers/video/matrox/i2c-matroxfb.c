@@ -1571,4 +1571,10 @@ id|i2c_matroxfb_exit
 )paren
 suffix:semicolon
 multiline_comment|/* no __setup required */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

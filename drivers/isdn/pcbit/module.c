@@ -1,5 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 1996 Universidade de Lisboa&n; * &n; * Written by Pedro Roque Marques (roque@di.fc.ul.pt)&n; *&n; * This software may be used and distributed according to the terms of &n; * the GNU General Public License, incorporated herein by reference.&n; */
-multiline_comment|/*        &n; *        PCBIT-D module support&n; */
+multiline_comment|/*&n; * PCBIT-D module support&n; *&n; * Copyright (C) 1996 Universidade de Lisboa&n; * &n; * Written by Pedro Roque Marques (roque@di.fc.ul.pt)&n; *&n; * This software may be used and distributed according to the terms of &n; * the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -9,6 +8,52 @@ macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/isdnif.h&gt;
 macro_line|#include &quot;pcbit.h&quot;
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;ISDN4Linux: Driver for PCBIT-T card&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Pedro Roque Marques&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|mem
+comma
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|MAX_PCBIT_CARDS
+)paren
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|MAX_PCBIT_CARDS
+)paren
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
 DECL|variable|mem
 r_static
 r_int
@@ -438,34 +483,6 @@ id|pcbit_setup
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MODULE_PARM
-c_func
-(paren
-id|mem
-comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|MAX_PCBIT_CARDS
-)paren
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|irq
-comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|MAX_PCBIT_CARDS
-)paren
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
 DECL|variable|pcbit_init
 id|module_init
 c_func

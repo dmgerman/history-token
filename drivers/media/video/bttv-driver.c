@@ -377,6 +377,12 @@ c_func
 l_string|&quot;Ralph  Metzler &amp; Marcus Metzler &amp; Gerd Knorr&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* kernel args */
 macro_line|#ifndef MODULE
 DECL|function|p_radio

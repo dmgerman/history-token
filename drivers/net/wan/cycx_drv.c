@@ -25,6 +25,12 @@ c_func
 l_string|&quot;Cyclom 2x Sync Card Driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Function Prototypes */
 multiline_comment|/* Module entry points. These are called by the OS and must be public. */
 r_int

@@ -40,6 +40,11 @@ op_star
 id|gp
 )paren
 (brace
+r_struct
+id|gendisk
+op_star
+id|sgp
+suffix:semicolon
 id|write_lock
 c_func
 (paren
@@ -47,6 +52,36 @@ op_amp
 id|gendisk_lock
 )paren
 suffix:semicolon
+multiline_comment|/*&n; &t; *&t;In 2.5 this will go away. Fix the drivers who rely on&n; &t; *&t;old behaviour.&n; &t; */
+r_for
+c_loop
+(paren
+id|sgp
+op_assign
+id|gendisk_head
+suffix:semicolon
+id|sgp
+suffix:semicolon
+id|sgp
+op_assign
+id|sgp-&gt;next
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|sgp
+op_eq
+id|gp
+)paren
+(brace
+singleline_comment|//&t;&t;&t;printk(KERN_ERR &quot;add_gendisk: device major %d is buggy and added a live gendisk!&bslash;n&quot;,
+singleline_comment|//&t;&t;&t;&t;sgp-&gt;major)
+r_goto
+id|out
+suffix:semicolon
+)brace
+)brace
 id|gp-&gt;next
 op_assign
 id|gendisk_head
@@ -55,6 +90,8 @@ id|gendisk_head
 op_assign
 id|gp
 suffix:semicolon
+id|out
+suffix:colon
 id|write_unlock
 c_func
 (paren

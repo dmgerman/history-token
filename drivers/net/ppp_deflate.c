@@ -2670,4 +2670,10 @@ c_func
 id|deflate_cleanup
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;BSD without advertisement clause&quot;
+)paren
+suffix:semicolon
 eof

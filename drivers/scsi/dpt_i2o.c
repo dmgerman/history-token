@@ -15618,4 +15618,10 @@ suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
 id|EXPORT_NO_SYMBOLS
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;BSD without advertising clause&quot;
+)paren
+suffix:semicolon
 eof

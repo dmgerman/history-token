@@ -142,6 +142,17 @@ c_func
 (paren
 l_int|0x04a5
 comma
+l_int|0x20c0
+)paren
+)brace
+comma
+multiline_comment|/* Prisa AcerScan 1240UT */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a5
+comma
 l_int|0x2022
 )paren
 )brace

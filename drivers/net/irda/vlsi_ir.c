@@ -25,6 +25,12 @@ c_func
 l_string|&quot;Martin Diehl &lt;info@mdiehl.de&gt;&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|drivername
 r_static
 multiline_comment|/* const */

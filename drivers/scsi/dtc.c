@@ -22,6 +22,7 @@ DECL|macro|rtrc
 mdefine_line|#define rtrc(i) {}
 macro_line|#endif
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
@@ -1340,6 +1341,12 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#include &quot;NCR5380.c&quot;
 multiline_comment|/* Eventually this will go into an include file, but this will be later */
 DECL|variable|driver_template

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: isdn_lzscomp.h,v 1.1 1998/07/08 16:52:33 hipp Exp $&n; *&n; * Header for isdn_lzscomp.c&n; * Concentrated here to not mess up half a dozen kernel headers with code&n; * snippets&n; *&n; */
+multiline_comment|/* $Id: isdn_lzscomp.h,v 1.1.10.1 2001/09/23 22:25:05 kai Exp $&n; *&n; * Header for isdn_lzscomp.c&n; * Concentrated here to not mess up half a dozen kernel headers with code&n; * snippets&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 DECL|macro|CI_LZS_COMPRESS
 mdefine_line|#define CI_LZS_COMPRESS&t;&t;17
 DECL|macro|CILEN_LZS_COMPRESS

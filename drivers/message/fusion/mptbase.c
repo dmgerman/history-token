@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/mptbase.c&n; *      High performance SCSI + LAN / Fibre Channel device drivers.&n; *      This is the Fusion MPT base driver which supports multiple&n; *      (SCSI + LAN) specialized protocol drivers.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      There are lots of people not mentioned below that deserve credit&n; *      and thanks but won&squot;t get it here - sorry in advance that you&n; *      got overlooked.&n; *&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A special thanks to Noah Romer (LSI Logic) for tons of work&n; *      and tough debugging on the LAN driver, especially early on;-)&n; *      And to Roger Hickerson (LSI Logic) for tirelessly supporting&n; *      this driver project.&n; *&n; *      All manner of help from Stephen Shirron (LSI Logic):&n; *      low-level FC analysis, debug + various fixes in FCxx firmware,&n; *      initial port to alpha platform, various driver code optimizations,&n; *      being a faithful sounding board on all sorts of issues &amp; ideas,&n; *      etc.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      Special thanks goes to the I2O LAN driver people at the&n; *      University of Helsinki, who, unbeknownst to them, provided&n; *      the inspiration and initial structure for this driver.&n; *&n; *      A really huge debt of gratitude is owed to Eddie C. Dost&n; *      for gobs of hard work fixing and optimizing LAN code.&n; *      THANK YOU!&n; *&n; *  Copyright (c) 1999-2001 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:Steve.Ralston@lsil.com)&n; *&n; *  $Id: mptbase.c,v 1.53.4.1 2001/08/24 20:07:05 sralston Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/mptbase.c&n; *      High performance SCSI + LAN / Fibre Channel device drivers.&n; *      This is the Fusion MPT base driver which supports multiple&n; *      (SCSI + LAN) specialized protocol drivers.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      There are lots of people not mentioned below that deserve credit&n; *      and thanks but won&squot;t get it here - sorry in advance that you&n; *      got overlooked.&n; *&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A special thanks to Noah Romer (LSI Logic) for tons of work&n; *      and tough debugging on the LAN driver, especially early on;-)&n; *      And to Roger Hickerson (LSI Logic) for tirelessly supporting&n; *      this driver project.&n; *&n; *      All manner of help from Stephen Shirron (LSI Logic):&n; *      low-level FC analysis, debug + various fixes in FCxx firmware,&n; *      initial port to alpha platform, various driver code optimizations,&n; *      being a faithful sounding board on all sorts of issues &amp; ideas,&n; *      etc.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      Special thanks goes to the I2O LAN driver people at the&n; *      University of Helsinki, who, unbeknownst to them, provided&n; *      the inspiration and initial structure for this driver.&n; *&n; *      A really huge debt of gratitude is owed to Eddie C. Dost&n; *      for gobs of hard work fixing and optimizing LAN code.&n; *      THANK YOU!&n; *&n; *  Copyright (c) 1999-2001 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:Steve.Ralston@lsil.com)&n; *&n; *  $Id: mptbase.c,v 1.53.4.3 2001/09/18 03:54:54 sralston Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -39,6 +39,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 id|my_NAME
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  cmd line parameters&n; */
@@ -5061,7 +5067,28 @@ l_int|NULL
 r_int
 id|sz
 suffix:semicolon
+id|u32
+id|state
+suffix:semicolon
 multiline_comment|/* Disable the FW */
+id|state
+op_assign
+id|GetIocState
+c_func
+(paren
+id|this
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|state
+op_eq
+id|MPI_IOC_STATE_OPERATIONAL
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -5086,6 +5113,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Disable adapter interrupts! */
 id|CHIPREG_WRITE32
 c_func

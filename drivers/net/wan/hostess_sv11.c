@@ -1,5 +1,3 @@
-DECL|macro|LINUX_21
-mdefine_line|#define LINUX_21
 multiline_comment|/*&n; *&t;Comtrol SV11 card driver&n; *&n; *&t;This is a slightly odd Z85230 synchronous driver. All you need to&n; *&t;know basically is&n; *&n; *&t;Its a genuine Z85230&n; *&n; *&t;It supports DMA using two DMA channels in SYNC mode. The driver doesn&squot;t&n; *&t;use these facilities&n; *&t;&n; *&t;The control port is at io+1, the data at io+3 and turning off the DMA&n; *&t;is done by writing 0 to io+4&n; *&n; *&t;The hardware does the bus handling to avoid the need for delays between&n; *&t;touching control registers.&n; *&n; *&t;Port B isnt wired (why - beats me)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -481,7 +479,6 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef LINUX_21
 DECL|function|hostess_neigh_setup
 r_static
 r_int
@@ -558,24 +555,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|return_0
-r_static
-r_int
-id|return_0
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|d
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n; *&t;Description block for a Comtrol Hostess SV11 card&n; */
 DECL|function|sv11_init
 r_static
@@ -1053,17 +1032,10 @@ id|d-&gt;do_ioctl
 op_assign
 id|hostess_ioctl
 suffix:semicolon
-macro_line|#ifdef LINUX_21&t;&t;&t;
 id|d-&gt;neigh_setup
 op_assign
 id|hostess_neigh_setup_dev
 suffix:semicolon
-macro_line|#else
-id|d-&gt;init
-op_assign
-id|return_0
-suffix:semicolon
-macro_line|#endif
 id|d-&gt;set_mac_address
 op_assign
 l_int|NULL
@@ -1369,7 +1341,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;(c) Copyright 1998, Building Number Three Ltd.&bslash;n&quot;
+l_string|&quot;(c) Copyright 2001, Red Hat Inc.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if

@@ -6938,6 +6938,12 @@ c_func
 l_string|&quot;Intel i82595 ISA EtherExpressPro10/10+ driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren

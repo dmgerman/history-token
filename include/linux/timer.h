@@ -36,12 +36,6 @@ r_int
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|typedef|timer_t
-r_typedef
-r_struct
-id|timer_list
-id|timer_t
-suffix:semicolon
 r_extern
 r_void
 id|add_timer

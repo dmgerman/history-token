@@ -30,4 +30,10 @@ mdefine_line|#define RSVP_ID&t;&t;&quot;rsvp&quot;
 DECL|macro|RSVP_OPS
 mdefine_line|#define RSVP_OPS&t;cls_rsvp_ops
 macro_line|#include &quot;cls_rsvp.h&quot;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: avmcard.h,v 1.8.6.3 2001/05/17 21:15:33 kai Exp $&n; *&n; * Copyright 1999 by Carsten Paeth (calle@calle.in-berlin.de)&n; *&n; */
+multiline_comment|/* $Id: avmcard.h,v 1.8.6.4 2001/09/23 22:24:33 kai Exp $&n; *&n; * Copyright 1999 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#ifndef _AVMCARD_H_
 DECL|macro|_AVMCARD_H_
 mdefine_line|#define _AVMCARD_H_

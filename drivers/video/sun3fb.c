@@ -2843,7 +2843,7 @@ suffix:semicolon
 multiline_comment|/*&n;     *  Initialisation&n;     */
 DECL|function|sun3fb_init_fb
 r_static
-r_void
+r_int
 id|__init
 id|sun3fb_init_fb
 c_func
@@ -3177,6 +3177,10 @@ op_logical_neg
 id|fb-&gt;color_map
 )paren
 (brace
+r_if
+c_cond
+(paren
+(paren
 id|fb-&gt;color_map
 op_assign
 id|kmalloc
@@ -3188,11 +3192,16 @@ l_int|3
 comma
 id|GFP_ATOMIC
 )paren
-suffix:semicolon
+)paren
+op_eq
+l_int|NULL
+)paren
+(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 )brace
 r_switch
 c_cond
@@ -3248,6 +3257,7 @@ c_func
 id|fb
 )paren
 suffix:semicolon
+r_return
 op_minus
 id|ENODEV
 suffix:semicolon

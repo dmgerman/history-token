@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: c4.c,v 1.20.6.10 2001/06/09 15:14:15 kai Exp $&n; * &n; * Module for AVM C4 &amp; C2 card.&n; * &n; * (c) Copyright 1999 by Carsten Paeth (calle@calle.in-berlin.de)&n; *&n; */
+multiline_comment|/* $Id: c4.c,v 1.20.6.11 2001/09/23 22:24:33 kai Exp $&n; * &n; * Module for AVM C4 &amp; C2 card.&n; * &n; * Copyright 1999 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -24,7 +24,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.20.6.10 $&quot;
+l_string|&quot;$Revision: 1.20.6.11 $&quot;
 suffix:semicolon
 DECL|macro|CONFIG_C4_DEBUG
 macro_line|#undef CONFIG_C4_DEBUG
@@ -79,10 +79,22 @@ comma
 id|c4_pci_tbl
 )paren
 suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;CAPI4Linux: Driver for AVM C2/C4 cards&quot;
+)paren
+suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Carsten Paeth &lt;calle@calle.in-berlin.de&gt;&quot;
+l_string|&quot;Carsten Paeth&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM

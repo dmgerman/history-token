@@ -6108,6 +6108,12 @@ l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 singleline_comment|// Debug stuff. FIXME!
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|mpt_lan_init
 id|module_init
 c_func

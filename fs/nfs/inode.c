@@ -1225,6 +1225,10 @@ id|data-&gt;acdirmax
 op_assign
 l_int|0
 suffix:semicolon
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_SYNCHRONOUS
+suffix:semicolon
 )brace
 id|server-&gt;acregmin
 op_assign

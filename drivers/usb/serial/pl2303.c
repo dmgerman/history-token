@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Prolific PL2303 USB to serial adaptor driver&n; *&n; * Copyright (C) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; * Original driver for 2.2.x by anonymous&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * 2001_Aug_30 gkh&n; *&t;fixed oops in write_bulk_callback.&n; *&n; * 2001_Aug_28 gkh&n; *&t;reworked buffer logic to be like other usb-serial drivers.  Hopefully&n; *&t;removing some reported problems.&n; *&n; * 2001_Jun_06 gkh&n; *&t;finished porting to 2.4 format.&n; * &n; */
+multiline_comment|/*&n; * Prolific PL2303 USB to serial adaptor driver&n; *&n; * Copyright (C) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; * Original driver for 2.2.x by anonymous&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * 2001_Sep_19 gkh&n; *&t;Added break support.&n; *&n; * 2001_Aug_30 gkh&n; *&t;fixed oops in write_bulk_callback.&n; *&n; * 2001_Aug_28 gkh&n; *&t;reworked buffer logic to be like other usb-serial drivers.  Hopefully&n; *&t;removing some reported problems.&n; *&n; * 2001_Jun_06 gkh&n; *&t;finished porting to 2.4 format.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -34,7 +34,7 @@ macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;pl2303.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.7&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.8&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;Prolific PL2303 USB to serial adaptor driver&quot;
 DECL|variable|id_table
@@ -79,6 +79,34 @@ comma
 id|id_table
 )paren
 suffix:semicolon
+DECL|macro|SET_LINE_REQUEST_TYPE
+mdefine_line|#define SET_LINE_REQUEST_TYPE&t;&t;0x21
+DECL|macro|SET_LINE_REQUEST
+mdefine_line|#define SET_LINE_REQUEST&t;&t;0x20
+DECL|macro|SET_CONTROL_REQUEST_TYPE
+mdefine_line|#define SET_CONTROL_REQUEST_TYPE&t;0x21
+DECL|macro|SET_CONTROL_REQUEST
+mdefine_line|#define SET_CONTROL_REQUEST&t;&t;0x22
+DECL|macro|BREAK_REQUEST_TYPE
+mdefine_line|#define BREAK_REQUEST_TYPE&t;&t;0x21
+DECL|macro|BREAK_REQUEST
+mdefine_line|#define BREAK_REQUEST&t;&t;&t;0x23&t;
+DECL|macro|BREAK_ON
+mdefine_line|#define BREAK_ON&t;&t;&t;0xffff
+DECL|macro|BREAK_OFF
+mdefine_line|#define BREAK_OFF&t;&t;&t;0x0000
+DECL|macro|GET_LINE_REQUEST_TYPE
+mdefine_line|#define GET_LINE_REQUEST_TYPE&t;&t;0xa1
+DECL|macro|GET_LINE_REQUEST
+mdefine_line|#define GET_LINE_REQUEST&t;&t;0x21
+DECL|macro|VENDOR_WRITE_REQUEST_TYPE
+mdefine_line|#define VENDOR_WRITE_REQUEST_TYPE&t;0x40
+DECL|macro|VENDOR_WRITE_REQUEST
+mdefine_line|#define VENDOR_WRITE_REQUEST&t;&t;0x01
+DECL|macro|VENDOR_READ_REQUEST_TYPE
+mdefine_line|#define VENDOR_READ_REQUEST_TYPE&t;0xc0
+DECL|macro|VENDOR_READ_REQUEST
+mdefine_line|#define VENDOR_READ_REQUEST&t;&t;0x01
 multiline_comment|/* function prototypes for a PL2303 serial converter */
 r_static
 r_int
@@ -214,6 +242,16 @@ r_int
 id|break_state
 )paren
 suffix:semicolon
+r_static
+r_void
+id|pl2303_shutdown
+(paren
+r_struct
+id|usb_serial
+op_star
+id|serial
+)paren
+suffix:semicolon
 multiline_comment|/* All of the device info needed for the PL2303 SIO serial converter */
 DECL|variable|pl2303_device
 r_static
@@ -296,6 +334,10 @@ comma
 id|write_bulk_callback
 suffix:colon
 id|pl2303_write_bulk_callback
+comma
+id|shutdown
+suffix:colon
+id|pl2303_shutdown
 comma
 )brace
 suffix:semicolon
@@ -468,9 +510,9 @@ r_return
 id|result
 suffix:semicolon
 )brace
+DECL|function|pl2303_set_termios
 r_static
 r_void
-DECL|function|pl2303_set_termios
 id|pl2303_set_termios
 (paren
 r_struct
@@ -484,7 +526,6 @@ op_star
 id|old_termios
 )paren
 (brace
-multiline_comment|/* pl2303_set_termios */
 r_struct
 id|usb_serial
 op_star
@@ -495,31 +536,11 @@ suffix:semicolon
 r_int
 r_int
 id|cflag
-op_assign
-id|port-&gt;tty-&gt;termios-&gt;c_cflag
 suffix:semicolon
 r_int
 r_char
+op_star
 id|buf
-(braket
-l_int|7
-)braket
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
 suffix:semicolon
 r_int
 id|baud
@@ -529,9 +550,115 @@ id|i
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;pl2303_set_termios port %d&quot;
+id|__FUNCTION__
+l_string|&quot; -  port %d&quot;
 comma
 id|port-&gt;number
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+op_logical_neg
+id|port-&gt;tty
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|port-&gt;tty-&gt;termios
+)paren
+)paren
+(brace
+id|dbg
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; - no tty structures&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|cflag
+op_assign
+id|port-&gt;tty-&gt;termios-&gt;c_cflag
+suffix:semicolon
+multiline_comment|/* check that they really want us to change something */
+r_if
+c_cond
+(paren
+id|old_termios
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|cflag
+op_eq
+id|old_termios-&gt;c_cflag
+)paren
+op_logical_and
+(paren
+id|RELEVANT_IFLAG
+c_func
+(paren
+id|port-&gt;tty-&gt;termios-&gt;c_iflag
+)paren
+op_eq
+id|RELEVANT_IFLAG
+c_func
+(paren
+id|old_termios-&gt;c_iflag
+)paren
+)paren
+)paren
+(brace
+id|dbg
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; - nothing to change...&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+)brace
+id|buf
+op_assign
+id|kmalloc
+(paren
+l_int|7
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buf
+)paren
+(brace
+id|err
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; - out of memory.&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|memset
+(paren
+id|buf
+comma
+l_int|0x00
+comma
+l_int|0x07
 )paren
 suffix:semicolon
 id|i
@@ -547,9 +674,9 @@ comma
 l_int|0
 )paren
 comma
-l_int|0x21
+id|GET_LINE_REQUEST
 comma
-l_int|0xa1
+id|GET_LINE_REQUEST_TYPE
 comma
 l_int|0
 comma
@@ -617,9 +744,9 @@ comma
 l_int|0
 )paren
 comma
-l_int|1
+id|VENDOR_WRITE_REQUEST
 comma
-l_int|0x40
+id|VENDOR_WRITE_REQUEST_TYPE
 comma
 l_int|0
 comma
@@ -665,11 +792,6 @@ l_int|6
 op_assign
 l_int|5
 suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;Setting CS5&quot;
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -681,11 +803,6 @@ l_int|6
 )braket
 op_assign
 l_int|6
-suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;Setting CS6&quot;
-)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -699,13 +816,10 @@ l_int|6
 op_assign
 l_int|7
 suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;Setting CS7&quot;
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
 r_case
 id|CS8
 suffix:colon
@@ -716,21 +830,20 @@ l_int|6
 op_assign
 l_int|8
 suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;Setting CS8&quot;
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
-r_default
-suffix:colon
-id|err
+)brace
+id|dbg
 (paren
-l_string|&quot;CSIZE was set but not CS5-CS8&quot;
+id|__FUNCTION__
+l_string|&quot; - data bits = %d&quot;
+comma
+id|buf
+(braket
+l_int|6
+)braket
 )paren
 suffix:semicolon
-)brace
 )brace
 id|baud
 op_assign
@@ -889,6 +1002,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|dbg
+(paren
+id|__FUNCTION__
+l_string|&quot; - baud = %d&quot;
+comma
+id|baud
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -962,6 +1083,30 @@ l_int|4
 op_assign
 l_int|2
 suffix:semicolon
+id|dbg
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; - stop bits = 2&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|buf
+(braket
+l_int|4
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|dbg
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; - stop bits = 1&quot;
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -991,6 +1136,13 @@ l_int|5
 op_assign
 l_int|1
 suffix:semicolon
+id|dbg
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; - parity = odd&quot;
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -1001,7 +1153,31 @@ l_int|5
 op_assign
 l_int|2
 suffix:semicolon
+id|dbg
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; - parity = even&quot;
+)paren
+suffix:semicolon
 )brace
+)brace
+r_else
+(brace
+id|buf
+(braket
+l_int|5
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|dbg
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; - parity = none&quot;
+)paren
+suffix:semicolon
 )brace
 id|i
 op_assign
@@ -1016,9 +1192,9 @@ comma
 l_int|0
 )paren
 comma
-l_int|0x20
+id|SET_LINE_REQUEST
 comma
-l_int|0x21
+id|SET_LINE_REQUEST_TYPE
 comma
 l_int|0
 comma
@@ -1051,9 +1227,45 @@ comma
 l_int|0
 )paren
 comma
-l_int|0x22
+id|SET_CONTROL_REQUEST
 comma
-l_int|0x21
+id|SET_CONTROL_REQUEST_TYPE
+comma
+l_int|1
+comma
+l_int|0
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+l_int|100
+)paren
+suffix:semicolon
+id|dbg
+(paren
+l_string|&quot;0x21:0x22:1:0  %d&quot;
+comma
+id|i
+)paren
+suffix:semicolon
+macro_line|#if 0
+id|i
+op_assign
+id|usb_control_msg
+(paren
+id|serial-&gt;dev
+comma
+id|usb_sndctrlpipe
+(paren
+id|serial-&gt;dev
+comma
+l_int|0
+)paren
+comma
+id|SET_CONTROL_REQUEST
+comma
+id|SET_CONTROL_REQUEST_TYPE
 comma
 l_int|1
 comma
@@ -1086,9 +1298,9 @@ comma
 l_int|0
 )paren
 comma
-l_int|0x22
+id|SET_CONTROL_REQUEST
 comma
-l_int|0x21
+id|SET_CONTROL_REQUEST_TYPE
 comma
 l_int|3
 comma
@@ -1108,6 +1320,7 @@ comma
 id|i
 )paren
 suffix:semicolon
+macro_line|#endif
 id|buf
 (braket
 l_int|0
@@ -1158,9 +1371,9 @@ comma
 l_int|0
 )paren
 comma
-l_int|0x21
+id|GET_LINE_REQUEST
 comma
-l_int|0xa1
+id|GET_LINE_REQUEST_TYPE
 comma
 l_int|0
 comma
@@ -1236,9 +1449,9 @@ comma
 l_int|0
 )paren
 comma
-l_int|0x01
+id|VENDOR_WRITE_REQUEST_TYPE
 comma
-l_int|0x40
+id|VENDOR_WRITE_REQUEST_TYPE
 comma
 l_int|0x0
 comma
@@ -1259,7 +1472,10 @@ id|i
 )paren
 suffix:semicolon
 )brace
-r_return
+id|kfree
+(paren
+id|buf
+)paren
 suffix:semicolon
 )brace
 DECL|function|pl2303_open
@@ -1316,7 +1532,7 @@ suffix:semicolon
 id|dbg
 (paren
 id|__FUNCTION__
-l_string|&quot;-  port %d&quot;
+l_string|&quot; -  port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1346,12 +1562,12 @@ suffix:semicolon
 DECL|macro|FISH
 mdefine_line|#define FISH(a,b,c,d)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;result=usb_control_msg(serial-&gt;dev, usb_rcvctrlpipe(serial-&gt;dev,0),&t;&bslash;&n;&t;&t;&t;&t;       b, a, c, d, buf, 1, 100);&t;&t;&t;&bslash;&n;&t;&t;dbg(&quot;0x%x:0x%x:0x%x:0x%x  %d - %x&quot;,a,b,c,d,result,buf[0]);
 DECL|macro|SOUP
-mdefine_line|#define SOUP(a,b,c,d)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;result=usb_control_msg(serial-&gt;dev, usb_sndctrlpipe(serial-&gt;dev,0),&t;&bslash;&n;&t;&t;&t;&t;       b, a, c , d, NULL, 0, 100);&t;&t;&t;&bslash;&n;&t;&t;dbg(&quot;0x%x:0x%x:0x%x:0x%x  %d&quot;,a,b,c,d,result);
+mdefine_line|#define SOUP(a,b,c,d)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;result=usb_control_msg(serial-&gt;dev, usb_sndctrlpipe(serial-&gt;dev,0),&t;&bslash;&n;&t;&t;&t;&t;       b, a, c, d, NULL, 0, 100);&t;&t;&t;&bslash;&n;&t;&t;dbg(&quot;0x%x:0x%x:0x%x:0x%x  %d&quot;,a,b,c,d,result);
 id|FISH
 (paren
-l_int|0xc0
+id|VENDOR_READ_REQUEST_TYPE
 comma
-l_int|1
+id|VENDOR_READ_REQUEST
 comma
 l_int|0x8484
 comma
@@ -1360,9 +1576,9 @@ l_int|0
 suffix:semicolon
 id|SOUP
 (paren
-l_int|0x40
+id|VENDOR_WRITE_REQUEST_TYPE
 comma
-l_int|1
+id|VENDOR_WRITE_REQUEST
 comma
 l_int|0x0404
 comma
@@ -1371,9 +1587,9 @@ l_int|0
 suffix:semicolon
 id|FISH
 (paren
-l_int|0xc0
+id|VENDOR_READ_REQUEST_TYPE
 comma
-l_int|1
+id|VENDOR_READ_REQUEST
 comma
 l_int|0x8484
 comma
@@ -1382,9 +1598,9 @@ l_int|0
 suffix:semicolon
 id|FISH
 (paren
-l_int|0xc0
+id|VENDOR_READ_REQUEST_TYPE
 comma
-l_int|1
+id|VENDOR_READ_REQUEST
 comma
 l_int|0x8383
 comma
@@ -1393,9 +1609,9 @@ l_int|0
 suffix:semicolon
 id|FISH
 (paren
-l_int|0xc0
+id|VENDOR_READ_REQUEST_TYPE
 comma
-l_int|1
+id|VENDOR_READ_REQUEST
 comma
 l_int|0x8484
 comma
@@ -1404,9 +1620,9 @@ l_int|0
 suffix:semicolon
 id|SOUP
 (paren
-l_int|0x40
+id|VENDOR_WRITE_REQUEST_TYPE
 comma
-l_int|1
+id|VENDOR_WRITE_REQUEST
 comma
 l_int|0x0404
 comma
@@ -1415,9 +1631,9 @@ l_int|1
 suffix:semicolon
 id|FISH
 (paren
-l_int|0xc0
+id|VENDOR_READ_REQUEST_TYPE
 comma
-l_int|1
+id|VENDOR_READ_REQUEST
 comma
 l_int|0x8484
 comma
@@ -1426,9 +1642,9 @@ l_int|0
 suffix:semicolon
 id|FISH
 (paren
-l_int|0xc0
+id|VENDOR_READ_REQUEST_TYPE
 comma
-l_int|1
+id|VENDOR_READ_REQUEST
 comma
 l_int|0x8383
 comma
@@ -1437,9 +1653,9 @@ l_int|0
 suffix:semicolon
 id|SOUP
 (paren
-l_int|0x40
+id|VENDOR_WRITE_REQUEST_TYPE
 comma
-l_int|1
+id|VENDOR_WRITE_REQUEST
 comma
 l_int|0
 comma
@@ -1448,9 +1664,9 @@ l_int|1
 suffix:semicolon
 id|SOUP
 (paren
-l_int|0x40
+id|VENDOR_WRITE_REQUEST_TYPE
 comma
-l_int|1
+id|VENDOR_WRITE_REQUEST
 comma
 l_int|1
 comma
@@ -1459,9 +1675,9 @@ l_int|0xc0
 suffix:semicolon
 id|SOUP
 (paren
-l_int|0x40
+id|VENDOR_WRITE_REQUEST_TYPE
 comma
-l_int|1
+id|VENDOR_WRITE_REQUEST
 comma
 l_int|2
 comma
@@ -1497,6 +1713,12 @@ id|tmp_termios
 )paren
 suffix:semicolon
 singleline_comment|//FIXME: need to assert RTS and DTR if CRTSCTS off
+id|dbg
+(paren
+id|__FUNCTION__
+l_string|&quot; - submitting read urb&quot;
+)paren
+suffix:semicolon
 id|port-&gt;read_urb-&gt;dev
 op_assign
 id|serial-&gt;dev
@@ -1541,6 +1763,12 @@ op_minus
 id|EPROTO
 suffix:semicolon
 )brace
+id|dbg
+(paren
+id|__FUNCTION__
+l_string|&quot; - submitting interrupt urb&quot;
+)paren
+suffix:semicolon
 id|port-&gt;interrupt_in_urb-&gt;dev
 op_assign
 id|serial-&gt;dev
@@ -1616,6 +1844,9 @@ r_int
 r_int
 id|c_cflag
 suffix:semicolon
+r_int
+id|result
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1669,19 +1900,70 @@ singleline_comment|//FIXME: Do drop DTR
 singleline_comment|//FIXME: Do drop RTS
 )brace
 multiline_comment|/* shutdown our urbs */
+id|dbg
+(paren
+id|__FUNCTION__
+l_string|&quot; - shutting down urbs&quot;
+)paren
+suffix:semicolon
+id|result
+op_assign
 id|usb_unlink_urb
 (paren
 id|port-&gt;write_urb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+)paren
+id|dbg
+(paren
+id|__FUNCTION__
+l_string|&quot; - usb_unlink_urb (write_urb) failed with reason: %d&quot;
+comma
+id|result
+)paren
+suffix:semicolon
+id|result
+op_assign
 id|usb_unlink_urb
 (paren
 id|port-&gt;read_urb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+)paren
+id|dbg
+(paren
+id|__FUNCTION__
+l_string|&quot; - usb_unlink_urb (read_urb) failed with reason: %d&quot;
+comma
+id|result
+)paren
+suffix:semicolon
+id|result
+op_assign
 id|usb_unlink_urb
 (paren
 id|port-&gt;interrupt_in_urb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+)paren
+id|dbg
+(paren
+id|__FUNCTION__
+l_string|&quot; - usb_unlink_urb (interrupt_in_urb) failed with reason: %d&quot;
+comma
+id|result
 )paren
 suffix:semicolon
 id|port-&gt;active
@@ -1699,10 +1981,12 @@ op_amp
 id|port-&gt;sem
 )paren
 suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
 )brace
+DECL|function|pl2303_ioctl
 r_static
 r_int
-DECL|function|pl2303_ioctl
 id|pl2303_ioctl
 (paren
 r_struct
@@ -1724,10 +2008,6 @@ r_int
 id|arg
 )paren
 (brace
-singleline_comment|// struct usb_serial *serial = port-&gt;serial;
-singleline_comment|// __u16 urb_value=0; /* Will hold the new flags */
-singleline_comment|// char buf[1];
-singleline_comment|// int  ret, mask;
 id|dbg
 (paren
 l_string|&quot;pl2303_sio ioctl 0x%04x&quot;
@@ -1794,21 +2074,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|dbg
-(paren
-l_string|&quot;pl2303_ioctl returning 0&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* pl2303_ioctl */
 DECL|function|pl2303_break_ctl
 r_static
 r_void
 id|pl2303_break_ctl
-c_func
 (paren
 r_struct
 id|usb_serial_port
@@ -1819,11 +2092,161 @@ r_int
 id|break_state
 )paren
 (brace
-singleline_comment|//FIXME
+r_struct
+id|usb_serial
+op_star
+id|serial
+op_assign
+id|port-&gt;serial
+suffix:semicolon
+id|u16
+id|state
+suffix:semicolon
+r_int
+id|result
+suffix:semicolon
+id|dbg
+(paren
+id|__FUNCTION__
+l_string|&quot; - port %d&quot;
+comma
+id|port-&gt;number
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|break_state
+op_eq
+l_int|0
+)paren
+id|state
+op_assign
+id|BREAK_OFF
+suffix:semicolon
+r_else
+id|state
+op_assign
+id|BREAK_ON
+suffix:semicolon
+id|dbg
+(paren
+id|__FUNCTION__
+l_string|&quot; - turning break %s&quot;
+comma
+id|state
+op_eq
+id|BREAK_OFF
+ques
+c_cond
+l_string|&quot;off&quot;
+suffix:colon
+l_string|&quot;on&quot;
+)paren
+suffix:semicolon
+id|result
+op_assign
+id|usb_control_msg
+(paren
+id|serial-&gt;dev
+comma
+id|usb_rcvctrlpipe
+(paren
+id|serial-&gt;dev
+comma
+l_int|0
+)paren
+comma
+id|BREAK_REQUEST
+comma
+id|BREAK_REQUEST_TYPE
+comma
+id|state
+comma
+l_int|0
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+l_int|100
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+)paren
+id|dbg
+(paren
+id|__FUNCTION__
+l_string|&quot; - error sending break = %d&quot;
+comma
+id|result
+)paren
+suffix:semicolon
 )brace
+DECL|function|pl2303_shutdown
 r_static
 r_void
+id|pl2303_shutdown
+(paren
+r_struct
+id|usb_serial
+op_star
+id|serial
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+id|dbg
+(paren
+id|__FUNCTION__
+)paren
+suffix:semicolon
+multiline_comment|/* stop everything on all ports */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|serial-&gt;num_ports
+suffix:semicolon
+op_increment
+id|i
+)paren
+r_while
+c_loop
+(paren
+id|serial-&gt;port
+(braket
+id|i
+)braket
+dot
+id|open_count
+OG
+l_int|0
+)paren
+id|pl2303_close
+(paren
+op_amp
+id|serial-&gt;port
+(braket
+id|i
+)braket
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
 DECL|function|pl2303_read_int_callback
+r_static
+r_void
 id|pl2303_read_int_callback
 (paren
 r_struct
@@ -1853,7 +2276,7 @@ id|get_usb_serial
 (paren
 id|port
 comma
-l_string|&quot;pl2303_read_int_callback&quot;
+id|__FUNCTION__
 )paren
 suffix:semicolon
 singleline_comment|//unsigned char *data = urb-&gt;transfer_buffer;
@@ -1990,13 +2413,52 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* PL2303 mysteriously fails with -EPROTO reschedule the read */
 r_if
 c_cond
 (paren
 id|urb-&gt;status
 )paren
 (brace
+id|dbg
+(paren
+id|__FUNCTION__
+l_string|&quot; - urb-&gt;status = %d&quot;
+comma
+id|urb-&gt;status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|port-&gt;active
+)paren
+(brace
+id|dbg
+(paren
+id|__FUNCTION__
+l_string|&quot; - port is closed, exiting.&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|urb-&gt;status
+op_eq
+op_minus
+id|EPROTO
+)paren
+(brace
+multiline_comment|/* PL2303 mysteriously fails with -EPROTO reschedule the read */
+id|dbg
+(paren
+id|__FUNCTION__
+l_string|&quot; - caught -EPROTO, resubmitting the urb&quot;
+)paren
+suffix:semicolon
 id|urb-&gt;status
 op_assign
 l_int|0
@@ -2025,6 +2487,15 @@ id|__FUNCTION__
 l_string|&quot; - failed resubmitting read urb, error %d&quot;
 comma
 id|result
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|dbg
+(paren
+id|__FUNCTION__
+l_string|&quot; - unable to handle the error, exiting.&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2100,7 +2571,13 @@ id|tty
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Schedule the next read*/
+multiline_comment|/* Schedule the next read _if_ we are still open */
+r_if
+c_cond
+(paren
+id|port-&gt;active
+)paren
+(brace
 id|urb-&gt;dev
 op_assign
 id|serial-&gt;dev
@@ -2127,6 +2604,7 @@ comma
 id|result
 )paren
 suffix:semicolon
+)brace
 r_return
 suffix:semicolon
 )brace

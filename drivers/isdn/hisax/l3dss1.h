@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: l3dss1.h,v 1.10.6.1 2001/02/16 16:43:28 kai Exp $&n; *&n; *  DSS1 (Euro) D-channel protocol defines&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: l3dss1.h,v 1.10.6.2 2001/09/23 22:24:50 kai Exp $&n; *&n; * DSS1 (Euro) D-channel protocol defines&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#ifndef l3dss1_process
 DECL|macro|T302
 mdefine_line|#define T302&t;15000

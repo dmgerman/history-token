@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Linux NET3:&t;IP/IP protocol decoder. &n; *&n; *&t;Version: $Id: ipip.c,v 1.47 2001/09/18 00:36:07 davem Exp $&n; *&n; *&t;Authors:&n; *&t;&t;Sam Lantinga (slouken@cs.ucdavis.edu)  02/01/95&n; *&n; *&t;Fixes:&n; *&t;&t;Alan Cox&t;:&t;Merged and made usable non modular (its so tiny its silly as&n; *&t;&t;&t;&t;&t;a module taking up 2 pages).&n; *&t;&t;Alan Cox&t;: &t;Fixed bug with 1.3.18 and IPIP not working (now needs to set skb-&gt;h.iph)&n; *&t;&t;&t;&t;&t;to keep ip_forward happy.&n; *&t;&t;Alan Cox&t;:&t;More fixes for 1.3.21, and firewall fix. Maybe this will work soon 8).&n; *&t;&t;Kai Schulte&t;:&t;Fixed #defines for IP_FIREWALL-&gt;FIREWALL&n; *              David Woodhouse :       Perform some basic ICMP handling.&n; *                                      IPIP Routing without decapsulation.&n; *              Carlos Picoto   :       GRE over IP support&n; *&t;&t;Alexey Kuznetsov:&t;Reworked. Really, now it is truncated version of ipv4/ip_gre.c.&n; *&t;&t;&t;&t;&t;I do not want to merge them together.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; */
+multiline_comment|/*&n; *&t;Linux NET3:&t;IP/IP protocol decoder. &n; *&n; *&t;Version: $Id: ipip.c,v 1.49 2001/09/25 22:35:47 davem Exp $&n; *&n; *&t;Authors:&n; *&t;&t;Sam Lantinga (slouken@cs.ucdavis.edu)  02/01/95&n; *&n; *&t;Fixes:&n; *&t;&t;Alan Cox&t;:&t;Merged and made usable non modular (its so tiny its silly as&n; *&t;&t;&t;&t;&t;a module taking up 2 pages).&n; *&t;&t;Alan Cox&t;: &t;Fixed bug with 1.3.18 and IPIP not working (now needs to set skb-&gt;h.iph)&n; *&t;&t;&t;&t;&t;to keep ip_forward happy.&n; *&t;&t;Alan Cox&t;:&t;More fixes for 1.3.21, and firewall fix. Maybe this will work soon 8).&n; *&t;&t;Kai Schulte&t;:&t;Fixed #defines for IP_FIREWALL-&gt;FIREWALL&n; *              David Woodhouse :       Perform some basic ICMP handling.&n; *                                      IPIP Routing without decapsulation.&n; *              Carlos Picoto   :       GRE over IP support&n; *&t;&t;Alexey Kuznetsov:&t;Reworked. Really, now it is truncated version of ipv4/ip_gre.c.&n; *&t;&t;&t;&t;&t;I do not want to merge them together.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; */
 multiline_comment|/* tunnel.c: an IP tunnel driver&n;&n;&t;The purpose of this driver is to provide an IP tunnel through&n;&t;which you can tunnel network traffic transparently across subnets.&n;&n;&t;This was written by looking at Nick Holloway&squot;s dummy driver&n;&t;Thanks for the great code!&n;&n;&t;&t;-Sam Lantinga&t;(slouken@cs.ucdavis.edu)  02/01/95&n;&t;&t;&n;&t;Minor tweaks:&n;&t;&t;Cleaned up the code a little and added some pre-1.3.0 tweaks.&n;&t;&t;dev-&gt;hard_header/hard_header_len changed to use no headers.&n;&t;&t;Comments/bracketing tweaked.&n;&t;&t;Made the tunnels use dev-&gt;name not tunnel: when error reporting.&n;&t;&t;Added tx_dropped stat&n;&t;&t;&n;&t;&t;-Alan Cox&t;(Alan.Cox@linux.org) 21 March 95&n;&n;&t;Reworked:&n;&t;&t;Changed to tunnel to destination gateway in addition to the&n;&t;&t;&t;tunnel&squot;s pointopoint address&n;&t;&t;Almost completely rewritten&n;&t;&t;Note:  There is currently no firewall or ICMP handling done.&n;&n;&t;&t;-Sam Lantinga&t;(slouken@cs.ucdavis.edu) 02/13/96&n;&t;&t;&n;*/
 multiline_comment|/* Things I wish I had known when writing the tunnel driver:&n;&n;&t;When the tunnel_xmit() function is called, the skb contains the&n;&t;packet to be sent (plus a great deal of extra info), and dev&n;&t;contains the tunnel device that _we_ are.&n;&n;&t;When we are passed a packet, we are expected to fill in the&n;&t;source address with our source IP address.&n;&n;&t;What is the proper way to allocate, copy and free a buffer?&n;&t;After you allocate it, it is a &quot;0 length&quot; chunk of memory&n;&t;starting at zero.  If you want to add headers to the buffer&n;&t;later, you&squot;ll have to call &quot;skb_reserve(skb, amount)&quot; with&n;&t;the amount of memory you want reserved.  Then, you call&n;&t;&quot;skb_put(skb, amount)&quot; with the amount of space you want in&n;&t;the buffer.  skb_put() returns a pointer to the top (#0) of&n;&t;that buffer.  skb-&gt;len is set to the amount of space you have&n;&t;&quot;allocated&quot; with skb_put().  You can then write up to skb-&gt;len&n;&t;bytes to that buffer.  If you need more, you can call skb_put()&n;&t;again with the additional amount of space you need.  You can&n;&t;find out how much more space you can allocate by calling &n;&t;&quot;skb_tailroom(skb)&quot;.&n;&t;Now, to add header space, call &quot;skb_push(skb, header_len)&quot;.&n;&t;This creates space at the beginning of the buffer and returns&n;&t;a pointer to this new space.  If later you need to strip a&n;&t;header from a buffer, call &quot;skb_pull(skb, header_len)&quot;.&n;&t;skb_headroom() will return how much space is left at the top&n;&t;of the buffer (before the main data).  Remember, this headroom&n;&t;space must be reserved before the skb_put() function is called.&n;&t;*/
 multiline_comment|/*&n;   This version of net/ipv4/ipip.c is cloned of net/ipv4/ip_gre.c&n;&n;   For comments look at net/ipv4/ip_gre.c --ANK&n; */
@@ -869,7 +869,7 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|parms-&gt;name
+id|nt-&gt;parms.name
 comma
 id|dev-&gt;name
 comma
@@ -3179,6 +3179,10 @@ id|ipip_fb_tunnel
 r_goto
 id|done
 suffix:semicolon
+id|dev
+op_assign
+id|t-&gt;dev
+suffix:semicolon
 )brace
 id|err
 op_assign
@@ -3768,6 +3772,12 @@ id|module_exit
 c_func
 (paren
 id|ipip_fini
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

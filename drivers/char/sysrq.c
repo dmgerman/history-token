@@ -90,7 +90,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%d&bslash;n&quot;
+l_string|&quot;Loglevel set to %d&bslash;n&quot;
 comma
 id|i
 )paren
@@ -117,7 +117,7 @@ l_string|&quot;loglevel0-8&quot;
 comma
 id|action_msg
 suffix:colon
-l_string|&quot;Loglevel set to &quot;
+l_string|&quot;Changing Loglevel&quot;
 comma
 )brace
 suffix:semicolon
@@ -183,7 +183,7 @@ l_string|&quot;saK&quot;
 comma
 id|action_msg
 suffix:colon
-l_string|&quot;SAK&bslash;n&quot;
+l_string|&quot;SAK&quot;
 comma
 )brace
 suffix:semicolon
@@ -241,7 +241,7 @@ l_string|&quot;unRaw&quot;
 comma
 id|action_msg
 suffix:colon
-l_string|&quot;Keyboard mode set to XLATE&bslash;n&quot;
+l_string|&quot;Keyboard mode set to XLATE&quot;
 comma
 )brace
 suffix:semicolon
@@ -295,7 +295,7 @@ l_string|&quot;reBoot&quot;
 comma
 id|action_msg
 suffix:colon
-l_string|&quot;Resetting&bslash;n&quot;
+l_string|&quot;Resetting&quot;
 comma
 )brace
 suffix:semicolon
@@ -865,7 +865,7 @@ l_string|&quot;Sync&quot;
 comma
 id|action_msg
 suffix:colon
-l_string|&quot;Emergency Sync&bslash;n&quot;
+l_string|&quot;Emergency Sync&quot;
 comma
 )brace
 suffix:semicolon
@@ -901,6 +901,7 @@ suffix:semicolon
 id|wakeup_bdflush
 c_func
 (paren
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -921,7 +922,7 @@ l_string|&quot;Unmount&quot;
 comma
 id|action_msg
 suffix:colon
-l_string|&quot;Emergency Remount R/0&bslash;n&quot;
+l_string|&quot;Emergency Remount R/0&quot;
 comma
 )brace
 suffix:semicolon
@@ -981,7 +982,7 @@ l_string|&quot;showPc&quot;
 comma
 id|action_msg
 suffix:colon
-l_string|&quot;Show Regs&bslash;n&quot;
+l_string|&quot;Show Regs&quot;
 comma
 )brace
 suffix:semicolon
@@ -1033,7 +1034,7 @@ l_string|&quot;showTasks&quot;
 comma
 id|action_msg
 suffix:colon
-l_string|&quot;Show State&bslash;n&quot;
+l_string|&quot;Show State&quot;
 comma
 )brace
 suffix:semicolon
@@ -1085,7 +1086,7 @@ l_string|&quot;showMem&quot;
 comma
 id|action_msg
 suffix:colon
-l_string|&quot;Show Memory&bslash;n&quot;
+l_string|&quot;Show Memory&quot;
 comma
 )brace
 suffix:semicolon
@@ -1210,7 +1211,7 @@ l_string|&quot;tErm&quot;
 comma
 id|action_msg
 suffix:colon
-l_string|&quot;Terminate All Tasks&bslash;n&quot;
+l_string|&quot;Terminate All Tasks&quot;
 comma
 )brace
 suffix:semicolon
@@ -1269,7 +1270,7 @@ l_string|&quot;kIll&quot;
 comma
 id|action_msg
 suffix:colon
-l_string|&quot;Kill All Tasks&bslash;n&quot;
+l_string|&quot;Kill All Tasks&quot;
 comma
 )brace
 suffix:semicolon
@@ -1328,7 +1329,7 @@ l_string|&quot;killalL&quot;
 comma
 id|action_msg
 suffix:colon
-l_string|&quot;Kill All Tasks (even init)&bslash;n&quot;
+l_string|&quot;Kill All Tasks (even init)&quot;
 comma
 )brace
 suffix:semicolon
@@ -1819,10 +1820,14 @@ id|op_p
 (brace
 id|printk
 (paren
-l_string|&quot;%s&quot;
+l_string|&quot;%s&bslash;n&quot;
 comma
 id|op_p-&gt;action_msg
 )paren
+suffix:semicolon
+id|console_loglevel
+op_assign
+id|orig_log_level
 suffix:semicolon
 id|op_p
 op_member_access_from_pointer
@@ -1917,11 +1922,11 @@ id|printk
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 id|console_loglevel
 op_assign
 id|orig_log_level
 suffix:semicolon
+)brace
 )brace
 DECL|variable|handle_sysrq
 id|EXPORT_SYMBOL

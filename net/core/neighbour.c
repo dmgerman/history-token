@@ -2996,7 +2996,7 @@ id|buff
 suffix:semicolon
 id|buff
 op_assign
-id|neigh-&gt;arp_queue.prev
+id|neigh-&gt;arp_queue.next
 suffix:semicolon
 id|__skb_unlink
 c_func
@@ -3014,7 +3014,7 @@ id|buff
 )paren
 suffix:semicolon
 )brace
-id|__skb_queue_head
+id|__skb_queue_tail
 c_func
 (paren
 op_amp

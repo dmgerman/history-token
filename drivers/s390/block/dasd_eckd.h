@@ -47,6 +47,8 @@ DECL|macro|DASD_ECKD_CCW_WRITE_CKD_MT
 mdefine_line|#define DASD_ECKD_CCW_WRITE_CKD_MT 0x9d
 DECL|macro|DASD_ECKD_CCW_RESERVE
 mdefine_line|#define DASD_ECKD_CCW_RESERVE 0xB4
+DECL|macro|DASD_ECKD_CCW_SLCK
+mdefine_line|#define DASD_ECKD_CCW_SLCK 0x14&t;/* steal lock - unconditional reserve */
 r_typedef
 DECL|struct|eckd_count_t
 r_struct

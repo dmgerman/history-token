@@ -622,13 +622,18 @@ multiline_comment|/*&n;&t; * Saved cp0 registers&n;&t; */
 id|printk
 c_func
 (paren
-l_string|&quot;epc  : %08lx&bslash;nStatus: %08x&bslash;nCause : %08x&bslash;n&quot;
+l_string|&quot;epc  : %08lx    %s&bslash;nStatus: %08x&bslash;nCause : %08x&bslash;n&quot;
 comma
 (paren
 r_int
 r_int
 )paren
 id|regs-&gt;cp0_epc
+comma
+id|print_tainted
+c_func
+(paren
+)paren
 comma
 (paren
 r_int

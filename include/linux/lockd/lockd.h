@@ -89,6 +89,11 @@ id|h_inuse
 suffix:colon
 l_int|1
 comma
+DECL|member|h_killed
+id|h_killed
+suffix:colon
+l_int|1
+comma
 DECL|member|h_monitored
 id|h_monitored
 suffix:colon
@@ -355,7 +360,6 @@ id|nlmsvc_procedures4
 suffix:semicolon
 macro_line|#endif
 r_extern
-r_int
 r_int
 id|nlmsvc_grace_period
 suffix:semicolon

@@ -2,9 +2,7 @@ multiline_comment|/*************************************************************
 macro_line|#ident &quot;$Id: gdth.c,v 1.57 2001/08/21 11:16:35 achim Exp $&quot; 
 multiline_comment|/* All GDT Disk Array Controllers are fully supported by this driver.&n; * This includes the PCI/EISA/ISA SCSI Disk Array Controllers and the&n; * PCI Fibre Channel Disk Array Controllers. See gdth.h for a complete&n; * list of all controller types.&n; * &n; * If you have one or more GDT3000/3020 EISA controllers with &n; * controller BIOS disabled, you have to set the IRQ values with the &n; * command line option &quot;gdth=irq1,irq2,...&quot;, where the irq1,irq2,... are&n; * the IRQ values for the EISA controllers.&n; * &n; * After the optional list of IRQ values, other possible &n; * command line options are:&n; * disable:Y                    disable driver&n; * disable:N                    enable driver&n; * reserve_mode:0               reserve no drives for the raw service&n; * reserve_mode:1               reserve all not init., removable drives&n; * reserve_mode:2               reserve all not init. drives&n; * reserve_list:h,b,t,l,h,b,t,l,...     reserve particular drive(s) with &n; *                              h- controller no., b- channel no., &n; *                              t- target ID, l- LUN&n; * reverse_scan:Y               reverse scan order for PCI controllers         &n; * reverse_scan:N               scan PCI controllers like BIOS&n; * max_ids:x                    x - target ID count per channel (1..MAXID)&n; * rescan:Y                     rescan all channels/IDs &n; * rescan:N                     use all devices found until now&n; * virt_ctr:Y                   map every channel to a virtual controller &n; * virt_ctr:N                   use multi channel support &n; * hdr_channel:x                x - number of virtual bus for host drives&n; * shared_access:Y              disable driver reserve/release protocol to &n; *                              access a shared resource from several nodes, &n; *                              appropiate controller firmware required&n; * shared_access:N              enable driver reserve/release protocol&n; *&n; * The default values are: &quot;gdth=disable:N,reserve_mode:1,reverse_scan:N,&n; *                          max_ids:127,rescan:N,virt_ctr:N,hdr_channel:0,&n; *                          shared_access:N&quot;.&n; * Here is another example: &quot;gdth=reserve_list:0,1,2,0,0,1,3,0,rescan:Y&quot;.&n; * &n; * When loading the gdth driver as a module, the same options are available. &n; * You can set the IRQs with &quot;IRQ=...&quot;. However, the syntax to specify the&n; * options changes slightly. You must replace all &squot;,&squot; between options &n; * with &squot; &squot; and all &squot;:&squot; with &squot;=&squot; and you must use &n; * &squot;1&squot; in place of &squot;Y&squot; and &squot;0&squot; in place of &squot;N&squot;.&n; * &n; * Default: &quot;modprobe gdth disable=0 reserve_mode=1 reverse_scan=0&n; *           max_ids=127 rescan=0 virt_ctr=0 hdr_channel=0 shared_access=0&quot;&n; * The other example: &quot;modprobe gdth reserve_list=0,1,2,0,0,1,3,0 rescan=1&quot;.&n; */
 multiline_comment|/* The meaning of the Scsi_Pointer members in this driver is as follows:&n; * ptr:                         Chaining&n; * this_residual:               Command priority&n; * buffer:                      Unused&n; * buffers_residual:            Timeout value&n; * Status:                      Command status (gdth_do_cmd())&n; * Message:                     Additional info (gdth_do_cmd())&n; * have_data_in:                Flag for gdth_wait_completion()&n; * sent_command:                Opcode special command&n; * phase:                       Service/parameter/return code special command&n; */
-macro_line|#ifdef MODULE
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -2267,6 +2265,12 @@ id|MODULE_AUTHOR
 c_func
 (paren
 l_string|&quot;Achim Leubner&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

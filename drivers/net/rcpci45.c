@@ -266,6 +266,12 @@ comma
 id|rcpci45_pci_table
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 r_static
 r_void
 id|__exit

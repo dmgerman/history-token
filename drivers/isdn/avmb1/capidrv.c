@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: capidrv.c,v 1.39.6.6 2001/05/17 20:41:51 kai Exp $&n; *&n; * ISDN4Linux Driver, using capi20 interface (kernelcapi)&n; *&n; * Copyright 1997 by Carsten Paeth (calle@calle.in-berlin.de)&n; *&n; */
+multiline_comment|/* $Id: capidrv.c,v 1.39.6.7 2001/09/23 22:24:33 kai Exp $&n; *&n; * ISDN4Linux Driver, using capi20 interface (kernelcapi)&n; *&n; * Copyright 1997 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -29,7 +29,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.39.6.6 $&quot;
+l_string|&quot;$Revision: 1.39.6.7 $&quot;
 suffix:semicolon
 DECL|variable|debugmode
 r_static
@@ -38,10 +38,22 @@ id|debugmode
 op_assign
 l_int|0
 suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;CAPI4Linux: Interface to ISDN4Linux&quot;
+)paren
+suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Carsten Paeth &lt;calle@calle.in-berlin.de&gt;&quot;
+l_string|&quot;Carsten Paeth&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: ipconfig.c,v 1.37 2001/04/30 18:54:12 davem Exp $&n; *&n; *  Automatic Configuration of IP -- use DHCP, BOOTP, RARP, or&n; *  user-supplied information to configure own IP address and routes.&n; *&n; *  Copyright (C) 1996-1998 Martin Mares &lt;mj@atrey.karlin.mff.cuni.cz&gt;&n; *&n; *  Derived from network configuration code in fs/nfs/nfsroot.c,&n; *  originally Copyright (C) 1995, 1996 Gero Kuhlmann and me.&n; *&n; *  BOOTP rewritten to construct and analyse packets itself instead&n; *  of misusing the IP layer. num_bugs_causing_wrong_arp_replies--;&n; *&t;&t;&t;&t;&t;     -- MJ, December 1998&n; *  &n; *  Fixed ip_auto_config_setup calling at startup in the new &quot;Linker Magic&quot;&n; *  initialization scheme.&n; *&t;- Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;, 08/11/1999&n; *&n; *  DHCP support added.  To users this looks like a whole separate&n; *  protocol, but we know it&squot;s just a bag on the side of BOOTP.&n; *&t;&t;-- Chip Salzenberg &lt;chip@valinux.com&gt;, May 2000&n; *&n; *  Ported DHCP support from 2.2.16 to 2.4.0-test4&n; *              -- Eric Biederman &lt;ebiederman@lnxi.com&gt;, 30 Aug 2000&n; *&n; *  Merged changes from 2.2.19 into 2.4.3&n; *              -- Eric Biederman &lt;ebiederman@lnxi.com&gt;, 22 April Aug 2001&n; */
+multiline_comment|/*&n; *  $Id: ipconfig.c,v 1.38 2001/09/25 23:23:07 davem Exp $&n; *&n; *  Automatic Configuration of IP -- use DHCP, BOOTP, RARP, or&n; *  user-supplied information to configure own IP address and routes.&n; *&n; *  Copyright (C) 1996-1998 Martin Mares &lt;mj@atrey.karlin.mff.cuni.cz&gt;&n; *&n; *  Derived from network configuration code in fs/nfs/nfsroot.c,&n; *  originally Copyright (C) 1995, 1996 Gero Kuhlmann and me.&n; *&n; *  BOOTP rewritten to construct and analyse packets itself instead&n; *  of misusing the IP layer. num_bugs_causing_wrong_arp_replies--;&n; *&t;&t;&t;&t;&t;     -- MJ, December 1998&n; *  &n; *  Fixed ip_auto_config_setup calling at startup in the new &quot;Linker Magic&quot;&n; *  initialization scheme.&n; *&t;- Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;, 08/11/1999&n; *&n; *  DHCP support added.  To users this looks like a whole separate&n; *  protocol, but we know it&squot;s just a bag on the side of BOOTP.&n; *&t;&t;-- Chip Salzenberg &lt;chip@valinux.com&gt;, May 2000&n; *&n; *  Ported DHCP support from 2.2.16 to 2.4.0-test4&n; *              -- Eric Biederman &lt;ebiederman@lnxi.com&gt;, 30 Aug 2000&n; *&n; *  Merged changes from 2.2.19 into 2.4.3&n; *              -- Eric Biederman &lt;ebiederman@lnxi.com&gt;, 22 April Aug 2001&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -3370,6 +3370,14 @@ op_star
 id|ext
 suffix:semicolon
 macro_line|#ifdef IPCONFIG_DHCP
+r_if
+c_cond
+(paren
+id|ic_proto_enabled
+op_amp
+id|IC_USE_DHCP
+)paren
+(brace
 id|u32
 id|server_id
 op_assign
@@ -3493,6 +3501,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+suffix:semicolon
 )brace
 macro_line|#ifdef IPCONFIG_DEBUG
 id|printk
@@ -3513,7 +3522,7 @@ id|mt
 r_case
 id|DHCPOFFER
 suffix:colon
-multiline_comment|/* While in the process of accepting one offer,&n;&t;&t;&t;   ignore all others. */
+multiline_comment|/* While in the process of accepting one offer,&n;&t;&t;&t;&t; * ignore all others.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3582,10 +3591,12 @@ r_goto
 id|drop
 suffix:semicolon
 )brace
+suffix:semicolon
 id|ic_dhcp_msgtype
 op_assign
 id|mt
 suffix:semicolon
+)brace
 macro_line|#endif /* IPCONFIG_DHCP */
 id|ext
 op_assign

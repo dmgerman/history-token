@@ -1,5 +1,4 @@
-multiline_comment|/* $Id: tpam_main.c,v 1.1.2.2 2001/07/11 12:22:59 kai Exp $&n; *&n; * Turbo PAM ISDN driver for Linux. (Kernel Driver - main routines)&n; *&n; * Copyright 2001 Stelian Pop &lt;stelian.pop@fr.alcove.com&gt;, Alc&#xfffd;ve&n; *&n; * For all support questions please contact: &lt;support@auvertech.fr&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/* $Id: tpam_main.c,v 1.1.2.3 2001/09/23 22:25:03 kai Exp $&n; *&n; * Turbo PAM ISDN driver for Linux. (Kernel Driver - main routines)&n; *&n; * Copyright 2001 Stelian Pop &lt;stelian.pop@fr.alcove.com&gt;, Alc&#xfffd;ve&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For all support questions please contact: &lt;support@auvertech.fr&gt;&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -90,19 +89,19 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Driver for TurboPAM cards&quot;
+l_string|&quot;ISDN4Linux: Driver for TurboPAM ISDN cards&quot;
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Stelian Pop, Alcove&quot;
+l_string|&quot;Stelian Pop&quot;
 )paren
 suffix:semicolon
-id|MODULE_SUPPORTED_DEVICE
+id|MODULE_LICENSE
 c_func
 (paren
-l_string|&quot;ISDN subsystem&quot;
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

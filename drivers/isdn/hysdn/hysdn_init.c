@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hysdn_init.c,v 1.6.6.5 2001/02/16 16:43:30 kai Exp $&n;&n; * Linux driver for HYSDN cards, init functions.&n; * written by Werner Cornelius (werner@titro.de) for Hypercope GmbH&n; *&n; * Copyright 1999  by Werner Cornelius (werner@titro.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: hysdn_init.c,v 1.6.6.6 2001/09/23 22:24:54 kai Exp $&n; *&n; * Linux driver for HYSDN cards, init functions.&n; *&n; * Author    Werner Cornelius (werner@titro.de) for Hypercope GmbH&n; * Copyright 1999 by Werner Cornelius (werner@titro.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -8,13 +8,94 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;hysdn_defs.h&quot;
+DECL|variable|__initdata
+r_static
+r_struct
+id|pci_device_id
+id|hysdn_pci_tbl
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+(brace
+id|PCI_VENDOR_ID_HYPERCOPE
+comma
+id|PCI_DEVICE_ID_HYPERCOPE_PLX
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_SUBDEVICE_ID_HYPERCOPE_METRO
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_HYPERCOPE
+comma
+id|PCI_DEVICE_ID_HYPERCOPE_PLX
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_SUBDEVICE_ID_HYPERCOPE_CHAMP2
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_HYPERCOPE
+comma
+id|PCI_DEVICE_ID_HYPERCOPE_PLX
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_SUBDEVICE_ID_HYPERCOPE_ERGO
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_HYPERCOPE
+comma
+id|PCI_DEVICE_ID_HYPERCOPE_PLX
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_SUBDEVICE_ID_HYPERCOPE_OLD_ERGO
+)brace
+comma
+(brace
+)brace
+multiline_comment|/* Terminating entry */
+)brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|hysdn_pci_tbl
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;ISDN4Linux: Driver for HYSDN cards&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Werner Cornelius&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|hysdn_init_revision
 r_static
 r_char
 op_star
 id|hysdn_init_revision
 op_assign
-l_string|&quot;$Revision: 1.6.6.5 $&quot;
+l_string|&quot;$Revision: 1.6.6.6 $&quot;
 suffix:semicolon
 DECL|variable|cardmax
 r_int
@@ -84,69 +165,6 @@ l_int|0
 )brace
 multiline_comment|/* terminating entry */
 )brace
-suffix:semicolon
-DECL|variable|__initdata
-r_static
-r_struct
-id|pci_device_id
-id|hysdn_pci_tbl
-(braket
-)braket
-id|__initdata
-op_assign
-(brace
-(brace
-id|PCI_VENDOR_ID_HYPERCOPE
-comma
-id|PCI_DEVICE_ID_HYPERCOPE_PLX
-comma
-id|PCI_ANY_ID
-comma
-id|PCI_SUBDEVICE_ID_HYPERCOPE_METRO
-)brace
-comma
-(brace
-id|PCI_VENDOR_ID_HYPERCOPE
-comma
-id|PCI_DEVICE_ID_HYPERCOPE_PLX
-comma
-id|PCI_ANY_ID
-comma
-id|PCI_SUBDEVICE_ID_HYPERCOPE_CHAMP2
-)brace
-comma
-(brace
-id|PCI_VENDOR_ID_HYPERCOPE
-comma
-id|PCI_DEVICE_ID_HYPERCOPE_PLX
-comma
-id|PCI_ANY_ID
-comma
-id|PCI_SUBDEVICE_ID_HYPERCOPE_ERGO
-)brace
-comma
-(brace
-id|PCI_VENDOR_ID_HYPERCOPE
-comma
-id|PCI_DEVICE_ID_HYPERCOPE_PLX
-comma
-id|PCI_ANY_ID
-comma
-id|PCI_SUBDEVICE_ID_HYPERCOPE_OLD_ERGO
-)brace
-comma
-(brace
-)brace
-multiline_comment|/* Terminating entry */
-)brace
-suffix:semicolon
-id|MODULE_DEVICE_TABLE
-c_func
-(paren
-id|pci
-comma
-id|hysdn_pci_tbl
-)paren
 suffix:semicolon
 multiline_comment|/*********************************************************************/
 multiline_comment|/* search_cards searches for available cards in the pci config data. */

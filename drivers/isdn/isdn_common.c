@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_common.c,v 1.114.6.14 2001/08/17 12:34:25 kai Exp $&n;&n; * Linux ISDN subsystem, common used functions (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: isdn_common.c,v 1.114.6.15 2001/09/23 22:24:31 kai Exp $&n; *&n; * Linux ISDN subsystem, common used functions (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -26,6 +26,24 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 multiline_comment|/* Debugflags */
 DECL|macro|ISDN_DEBUG_STATCALLB
 macro_line|#undef ISDN_DEBUG_STATCALLB
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;ISDN4Linux: link layer&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Fritz Elfert&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|dev
 id|isdn_dev
 op_star
@@ -37,7 +55,7 @@ r_char
 op_star
 id|isdn_revision
 op_assign
-l_string|&quot;$Revision: 1.114.6.14 $&quot;
+l_string|&quot;$Revision: 1.114.6.15 $&quot;
 suffix:semicolon
 r_extern
 r_char
@@ -1042,6 +1060,7 @@ id|tf
 )paren
 (brace
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|save_flags
@@ -1086,6 +1105,7 @@ r_int
 id|onoff
 )paren
 (brace
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -12276,6 +12296,7 @@ c_func
 r_void
 )paren
 (brace
+r_int
 r_int
 id|flags
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: eicon_pci.c,v 1.15.6.2 2001/02/16 09:09:50 armin Exp $&n; *&n; * ISDN low-level module for Eicon active ISDN-Cards.&n; * Hardware-specific code for PCI cards.&n; *&n; * Copyright 1998-2000 by Armin Schindler (mac@melware.de)&n; * Copyright 1999,2000 Cytronics &amp; Melware (info@melware.de)&n; *&n; * Thanks to&t;Eicon Networks for &n; *&t;&t;documents, informations and hardware. &n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; *&n; */
+multiline_comment|/* $Id: eicon_pci.c,v 1.15.6.3 2001/09/23 22:24:37 kai Exp $&n; *&n; * ISDN low-level module for Eicon active ISDN-Cards.&n; * Hardware-specific code for PCI cards.&n; *&n; * Copyright 1998-2000 by Armin Schindler (mac@melware.de)&n; * Copyright 1999,2000 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Thanks to&t;Eicon Networks for &n; *&t;&t;documents, informations and hardware. &n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;eicon.h&quot;
@@ -12,7 +12,7 @@ r_char
 op_star
 id|eicon_pci_revision
 op_assign
-l_string|&quot;$Revision: 1.15.6.2 $&quot;
+l_string|&quot;$Revision: 1.15.6.3 $&quot;
 suffix:semicolon
 macro_line|#if CONFIG_PCI&t;         /* intire stuff is only for PCI */
 macro_line|#ifdef CONFIG_ISDN_DRV_EICON_PCI

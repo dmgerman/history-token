@@ -2,6 +2,7 @@ multiline_comment|/* $Id: parport_share.c,v 1.15 1998/01/11 12:06:17 philip Exp 
 DECL|macro|PARPORT_DEBUG_SHARING
 macro_line|#undef PARPORT_DEBUG_SHARING&t;&t;/* undef for production */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
@@ -3488,4 +3489,10 @@ id|PARPORT_DMA_NOFIFO
 )paren
 suffix:semicolon
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

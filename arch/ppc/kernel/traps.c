@@ -727,13 +727,18 @@ id|regs
 id|printk
 c_func
 (paren
-l_string|&quot;Bad trap at PC: %lx, SR: %lx, vector=%lx&bslash;n&quot;
+l_string|&quot;Bad trap at PC: %lx, SR: %lx, vector=%lx    %s&bslash;n&quot;
 comma
 id|regs-&gt;nip
 comma
 id|regs-&gt;msr
 comma
 id|regs-&gt;trap
+comma
+id|print_tainted
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|_exception
@@ -1266,7 +1271,7 @@ id|regs
 id|printk
 c_func
 (paren
-l_string|&quot;Task: %p(%d), PC: %08lX/%08lX, Syscall: %3ld, Result: %s%ld&bslash;n&quot;
+l_string|&quot;Task: %p(%d), PC: %08lX/%08lX, Syscall: %3ld, Result: %s%ld    %s&bslash;n&quot;
 comma
 id|current
 comma
@@ -1294,6 +1299,11 @@ id|regs-&gt;gpr
 (braket
 l_int|3
 )braket
+comma
+id|print_tainted
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1442,13 +1452,18 @@ id|regs
 id|printk
 c_func
 (paren
-l_string|&quot;TAU trap at PC: %lx, SR: %lx, vector=%lx&bslash;n&quot;
+l_string|&quot;TAU trap at PC: %lx, SR: %lx, vector=%lx    %s&bslash;n&quot;
 comma
 id|regs-&gt;nip
 comma
 id|regs-&gt;msr
 comma
 id|regs-&gt;trap
+comma
+id|print_tainted
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 )brace

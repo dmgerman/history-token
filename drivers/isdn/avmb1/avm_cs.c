@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;    A PCMCIA client driver for AVM B1/M1/M2&n;&n;    Written by Carsten Paeth, calle@calle.in-berlin.de&n;    &n;======================================================================*/
+multiline_comment|/* $Id: avm_cs.c,v 1.4.6.3 2001/09/23 22:24:33 kai Exp $&n; *&n; * A PCMCIA client driver for AVM B1/M1/M2&n; *&n; * Copyright 1999 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -23,6 +23,25 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/capi.h&gt;
 macro_line|#include &lt;linux/b1lli.h&gt;
 macro_line|#include &lt;linux/b1pcmcia.h&gt;
+multiline_comment|/*====================================================================*/
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;CAPI4Linux: PCMCIA client driver for AVM B1/M1/M2&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Carsten Paeth&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*====================================================================*/
 multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
 multiline_comment|/* This means pick from 15, 12, 11, 10, 9, 7, 5, 4, and 3 */

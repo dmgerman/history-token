@@ -1,5 +1,5 @@
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; *    yam.c  -- YAM radio modem driver.&n; *&n; *      Copyright (C) 1998 Frederic Rible F1OAT (frible@teaser.fr)&n; *      Adapted from baycom.c driver written by Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *  Please note that the GPL allows you to use the driver, NOT the radio.&n; *  In order to use the radio, you need a license from the communications&n; *  authority of your country.&n; *&n; *&n; *  History:&n; *   0.0 F1OAT 06.06.98  Begin of work with baycom.c source code V 0.3&n; *   0.1 F1OAT 07.06.98  Add timer polling routine for channel arbitration&n; *   0.2 F6FBB 08.06.98  Added delay after FPGA programming&n; *   0.3 F6FBB 29.07.98  Delayed PTT implementation for dupmode=2&n; *   0.4 F6FBB 30.07.98  Added TxTail, Slottime and Persistance&n; *   0.5 F6FBB 01.08.98  Shared IRQs, /proc/net and network statistics&n; *   0.6 F6FBB 25.08.98  Added 1200Bds format&n; *   0.7 F6FBB 12.09.98  Added to the kernel configuration&n; *   0.8 F6FBB 14.10.98  Fixed slottime/persistance timing bug&n; */
+multiline_comment|/*&n; *    yam.c  -- YAM radio modem driver.&n; *&n; *      Copyright (C) 1998 Frederic Rible F1OAT (frible@teaser.fr)&n; *      Adapted from baycom.c driver written by Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *  Please note that the GPL allows you to use the driver, NOT the radio.&n; *  In order to use the radio, you need a license from the communications&n; *  authority of your country.&n; *&n; *&n; *  History:&n; *   0.0 F1OAT 06.06.98  Begin of work with baycom.c source code V 0.3&n; *   0.1 F1OAT 07.06.98  Add timer polling routine for channel arbitration&n; *   0.2 F6FBB 08.06.98  Added delay after FPGA programming&n; *   0.3 F6FBB 29.07.98  Delayed PTT implementation for dupmode=2&n; *   0.4 F6FBB 30.07.98  Added TxTail, Slottime and Persistance&n; *   0.5 F6FBB 01.08.98  Shared IRQs, /proc/net and network statistics&n; *   0.6 F6FBB 25.08.98  Added 1200Bds format&n; *   0.7 F6FBB 12.09.98  Added to the kernel configuration&n; *   0.8 F6FBB 14.10.98  Fixed slottime/persistance timing bug&n; *       OK1ZIA 2.09.01  Fixed &quot;kfree_skb on hard IRQ&quot; &n; *                       using dev_kfree_skb_any(). (important in 2.4 kernel)&n; *   &n; */
 multiline_comment|/*****************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -3351,7 +3351,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/*                              do_kiss_params(s, skb-&gt;data, skb-&gt;len); */
-id|dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
@@ -3379,7 +3379,7 @@ OL
 l_int|2
 )paren
 (brace
-id|dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
@@ -3400,7 +3400,7 @@ comma
 id|yp-&gt;tx_len
 )paren
 suffix:semicolon
-id|dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
@@ -4669,7 +4669,7 @@ id|SA_SHIRQ
 comma
 id|dev-&gt;name
 comma
-l_int|NULL
+id|dev
 )paren
 )paren
 (brace
@@ -4854,7 +4854,7 @@ c_func
 (paren
 id|dev-&gt;irq
 comma
-l_int|NULL
+id|dev
 )paren
 suffix:semicolon
 id|release_region

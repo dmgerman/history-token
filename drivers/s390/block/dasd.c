@@ -326,9 +326,26 @@ op_star
 suffix:semicolon
 r_static
 r_inline
+r_void
+id|dasd_destroy_partitions
+(paren
+id|dasd_device_t
+op_star
+)paren
+suffix:semicolon
+r_static
+r_inline
 r_int
 id|dasd_setup_blkdev
 c_func
+(paren
+id|dasd_device_t
+op_star
+)paren
+suffix:semicolon
+r_static
+r_void
+id|dasd_deactivate_queue
 (paren
 id|dasd_device_t
 op_star
@@ -587,7 +604,7 @@ id|printk
 (paren
 id|KERN_WARNING
 id|PRINTK_HEADER
-l_string|&quot;Adding device range %04X-%04X: range invalid, ignoring.&bslash;n&quot;
+l_string|&quot;Adding device range %04x-%04x: range invalid, ignoring.&bslash;n&quot;
 comma
 id|from
 comma
@@ -627,7 +644,7 @@ id|printk
 (paren
 id|KERN_WARNING
 id|PRINTK_HEADER
-l_string|&quot;device range %04X-%04X: device %04X is already in a range.&bslash;n&quot;
+l_string|&quot;device range %04x-%04x: device %04x is already in a range.&bslash;n&quot;
 comma
 id|from
 comma
@@ -1651,6 +1668,41 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
+id|temp
+(braket
+id|i
+)braket
+op_ne
+l_char|&squot;&bslash;0&squot;
+op_logical_and
+id|temp
+(braket
+id|i
+)braket
+op_ne
+l_char|&squot;(&squot;
+op_logical_and
+id|temp
+(braket
+id|i
+)braket
+op_ne
+l_char|&squot;-&squot;
+op_logical_and
+id|temp
+(braket
+id|i
+)braket
+op_ne
+l_char|&squot; &squot;
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|isxdigit
 c_func
 (paren
@@ -1659,10 +1711,8 @@ id|temp
 id|i
 )braket
 )paren
-suffix:semicolon
-id|i
-op_increment
 )paren
+(brace
 id|buffer
 (braket
 id|i
@@ -1673,6 +1723,15 @@ id|temp
 id|i
 )braket
 suffix:semicolon
+)brace
+r_else
+(brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+)brace
 id|buffer
 (braket
 id|i
@@ -1850,8 +1909,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * function: dasd_parse&n; * examines the strings given in the string array str and&n; * creates and adds the ranges to the apropriate lists&n; */
 r_static
-r_inline
-r_void
+r_int
 DECL|function|dasd_parse
 id|dasd_parse
 (paren
@@ -1872,6 +1930,11 @@ id|to
 suffix:semicolon
 r_int
 id|features
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|rc
 op_assign
 l_int|0
 suffix:semicolon
@@ -2017,6 +2080,30 @@ id|features
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|from
+op_eq
+op_minus
+id|EINVAL
+op_logical_or
+id|to
+op_eq
+op_minus
+id|EINVAL
+)paren
+(brace
+id|rc
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_else
+(brace
 id|dasd_add_range
 (paren
 id|from
@@ -2027,10 +2114,14 @@ id|features
 )paren
 suffix:semicolon
 )brace
+)brace
 id|str
 op_increment
 suffix:semicolon
 )brace
+r_return
+id|rc
+suffix:semicolon
 )brace
 multiline_comment|/* SECTION: Dealing with devices registered to multiple major numbers */
 DECL|variable|dasd_major_lock
@@ -4022,13 +4113,6 @@ id|rv
 op_assign
 l_int|NULL
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4206,7 +4290,8 @@ id|KERN_WARNING
 comma
 id|device
 comma
-l_string|&quot;Refusing emergency mem for request NULL, already in use at %p.&quot;
+l_string|&quot;Refusing emergency mem for request &quot;
+l_string|&quot;NULL, already in use at %p.&quot;
 comma
 id|device-&gt;lowmem_ccws
 )paren
@@ -4428,7 +4513,8 @@ id|KERN_WARNING
 comma
 id|device
 comma
-l_string|&quot;Refusing emergency idals for request %p, memory is already in use for request %p&quot;
+l_string|&quot;Refusing emergency idals for request %p, memory&quot;
+l_string|&quot; is already in use for request %p&quot;
 comma
 id|request
 comma
@@ -4632,6 +4718,69 @@ comma
 id|CQR_STATUS_QUEUED
 )paren
 suffix:semicolon
+multiline_comment|/* save profile information for non erp cqr */
+r_if
+c_cond
+(paren
+id|cqr-&gt;refers
+op_eq
+l_int|NULL
+)paren
+(brace
+r_int
+r_int
+id|counter
+op_assign
+l_int|0
+suffix:semicolon
+id|ccw_req_t
+op_star
+id|ptr
+suffix:semicolon
+id|dasd_device_t
+op_star
+id|device
+op_assign
+id|cqr-&gt;device
+suffix:semicolon
+multiline_comment|/* count the length of the chanq for statistics */
+r_for
+c_loop
+(paren
+id|ptr
+op_assign
+id|q-&gt;head
+suffix:semicolon
+id|ptr-&gt;next
+op_ne
+l_int|NULL
+op_logical_and
+id|counter
+op_le
+l_int|31
+suffix:semicolon
+id|ptr
+op_assign
+id|ptr-&gt;next
+)paren
+(brace
+id|counter
+op_increment
+suffix:semicolon
+)brace
+id|dasd_global_profile.dasd_io_nr_req
+(braket
+id|counter
+)braket
+op_increment
+suffix:semicolon
+id|device-&gt;profile.dasd_io_nr_req
+(braket
+id|counter
+)braket
+op_increment
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * function dasd_chanq_enq_head&n; * chains the cqr given as argument to the queue head&n; * has to be called with the queue lock (namely the s390_irq_lock) acquired&n; */
 r_inline
@@ -4782,7 +4931,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* SECTION: Managing the device queues etc. */
-multiline_comment|/*&n; * function dasd_start_IO&n; * attempts to start the IO and returns an appropriate return code&n; */
+multiline_comment|/*&n; * DASD_TERM_IO&n; *&n; * attempts to terminate the the current IO and set it to failed if termination&n; * was successful.&n; * returns an appropriate return code&n; */
 r_int
 DECL|function|dasd_term_IO
 id|dasd_term_IO
@@ -4851,8 +5000,8 @@ id|KERN_WARNING
 comma
 id|device
 comma
-l_string|&quot; ccw_req_t 0x%08X magic doesn&squot;t match&quot;
-l_string|&quot; discipline 0x%08X&bslash;n&quot;
+l_string|&quot; ccw_req_t 0x%08x magic doesn&squot;t match&quot;
+l_string|&quot; discipline 0x%08x&bslash;n&quot;
 comma
 id|cqr-&gt;magic
 comma
@@ -4873,9 +5022,17 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+(paren
 id|retries
 OL
 l_int|5
+)paren
+op_logical_and
+(paren
+id|cqr-&gt;status
+op_eq
+id|CQR_STATUS_IN_IO
+)paren
 )paren
 (brace
 r_if
@@ -4929,6 +5086,28 @@ id|rc
 r_case
 l_int|0
 suffix:colon
+multiline_comment|/* termination successful */
+id|check_then_set
+(paren
+op_amp
+id|cqr-&gt;status
+comma
+id|CQR_STATUS_IN_IO
+comma
+id|CQR_STATUS_FAILED
+)paren
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;STCK %0&quot;
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+id|cqr-&gt;stopclk
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -5000,38 +5179,6 @@ id|rc
 suffix:semicolon
 id|BUG
 (paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-l_int|0
-)paren
-(brace
-id|check_then_set
-(paren
-op_amp
-id|cqr-&gt;status
-comma
-id|CQR_STATUS_IN_IO
-comma
-id|CQR_STATUS_FAILED
-)paren
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;STCK %0&quot;
-suffix:colon
-l_string|&quot;=m&quot;
-(paren
-id|cqr-&gt;stopclk
-)paren
 )paren
 suffix:semicolon
 r_break
@@ -5114,8 +5261,8 @@ id|KERN_WARNING
 comma
 id|device
 comma
-l_string|&quot; ccw_req_t 0x%08X magic doesn&squot;t match&quot;
-l_string|&quot; discipline 0x%08X&bslash;n&quot;
+l_string|&quot; ccw_req_t 0x%08x magic doesn&squot;t match&quot;
+l_string|&quot; discipline 0x%08x&bslash;n&quot;
 comma
 id|cqr-&gt;magic
 comma
@@ -5144,6 +5291,10 @@ id|now
 )paren
 )paren
 suffix:semicolon
+id|cqr-&gt;startclk
+op_assign
+id|now
+suffix:semicolon
 id|rc
 op_assign
 id|do_IO
@@ -5171,12 +5322,27 @@ id|rc
 r_case
 l_int|0
 suffix:colon
-r_break
+r_if
+c_cond
+(paren
+id|cqr-&gt;options
+op_amp
+id|DOIO_WAIT_FOR_INTERRUPT
+)paren
+(brace
+multiline_comment|/* request already finished (synchronous IO) */
+id|DASD_MESSAGE
+(paren
+id|KERN_ERR
+comma
+id|device
+comma
+l_string|&quot;%s&quot;
+comma
+l_string|&quot; do_IO finished request... &quot;
+l_string|&quot;DOIO_WAIT_FOR_INTERRUPT was set&quot;
+)paren
 suffix:semicolon
-r_case
-op_minus
-id|ENODEV
-suffix:colon
 id|check_then_set
 (paren
 op_amp
@@ -5184,15 +5350,21 @@ id|cqr-&gt;status
 comma
 id|CQR_STATUS_QUEUED
 comma
-id|CQR_STATUS_FAILED
+id|CQR_STATUS_DONE
 )paren
 suffix:semicolon
-r_break
+id|cqr-&gt;stopclk
+op_assign
+id|now
 suffix:semicolon
-r_case
-op_minus
-id|EIO
-suffix:colon
+id|dasd_schedule_bh
+(paren
+id|device
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|check_then_set
 (paren
 op_amp
@@ -5200,9 +5372,10 @@ id|cqr-&gt;status
 comma
 id|CQR_STATUS_QUEUED
 comma
-id|CQR_STATUS_FAILED
+id|CQR_STATUS_IN_IO
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -5218,6 +5391,50 @@ comma
 l_string|&quot;%s&quot;
 comma
 l_string|&quot;device busy, retry later&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|ETIMEDOUT
+suffix:colon
+id|DASD_MESSAGE
+(paren
+id|KERN_WARNING
+comma
+id|device
+comma
+l_string|&quot;%s&quot;
+comma
+l_string|&quot;request timeout - terminated&bslash;n&quot;
+)paren
+suffix:semicolon
+r_case
+op_minus
+id|ENODEV
+suffix:colon
+r_case
+op_minus
+id|EIO
+suffix:colon
+id|check_then_set
+(paren
+op_amp
+id|cqr-&gt;status
+comma
+id|CQR_STATUS_QUEUED
+comma
+id|CQR_STATUS_FAILED
+)paren
+suffix:semicolon
+id|cqr-&gt;stopclk
+op_assign
+id|now
+suffix:semicolon
+id|dasd_schedule_bh
+(paren
+id|device
 )paren
 suffix:semicolon
 r_break
@@ -5243,29 +5460,6 @@ id|BUG
 )paren
 suffix:semicolon
 r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-l_int|0
-)paren
-(brace
-id|check_then_set
-(paren
-op_amp
-id|cqr-&gt;status
-comma
-id|CQR_STATUS_QUEUED
-comma
-id|CQR_STATUS_IN_IO
-)paren
-suffix:semicolon
-id|cqr-&gt;startclk
-op_assign
-id|now
 suffix:semicolon
 )brace
 r_return
@@ -5532,7 +5726,7 @@ r_return
 id|device-&gt;request_queue
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * function dasd_check_expire_time&n; * check the request given as argument for expiration&n; * and returns 0 if not yet expired, nonzero else&n; */
+multiline_comment|/*&n; * function dasd_check_expire_time&n; * check the request given as argument for expiration&n; * and returns 0 if not yet expired, EIO else&n; */
 r_static
 r_inline
 r_int
@@ -5615,6 +5809,11 @@ suffix:semicolon
 id|cqr-&gt;expires
 op_lshift_assign
 l_int|1
+suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 r_return
@@ -5869,6 +6068,17 @@ comma
 id|CQR_STATUS_ERROR
 comma
 id|CQR_STATUS_FAILED
+)paren
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;STCK %0&quot;
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+id|qp-&gt;head-&gt;stopclk
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -6372,6 +6582,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* end dasd_process_queues */
 multiline_comment|/*&n; * function dasd_run_bh&n; * acquires the locks needed and then runs the bh&n; */
 r_static
 r_void
@@ -6553,14 +6764,14 @@ id|printk
 id|KERN_DEBUG
 id|PRINTK_HEADER
 l_string|&quot;unable to find device for state change pending &quot;
-l_string|&quot;interrupt: devno%04X&bslash;n&quot;
+l_string|&quot;interrupt: devno%04x&bslash;n&quot;
 comma
 id|stat-&gt;devno
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
 )brace
-r_else
-(brace
 multiline_comment|/* re-activate first request in queue */
 id|cqr
 op_assign
@@ -6623,7 +6834,6 @@ id|device_addr
 suffix:semicolon
 )brace
 )brace
-)brace
 multiline_comment|/* end dasd_handle_state_change_pending */
 multiline_comment|/*&n; * function dasd_int_handler&n; * is the DASD driver&squot;s default interrupt handler for SSCH-IO&n; */
 r_void
@@ -6677,13 +6887,17 @@ id|ds
 suffix:semicolon
 id|DASD_DRIVER_DEBUG_EVENT
 (paren
-l_int|4
+l_int|6
 comma
 id|dasd_int_handler
 comma
-l_string|&quot;Interrupt: IRQ 0x%x&quot;
+l_string|&quot;Interrupt: IRQ %02x, stat %02x, devno %04x&quot;
 comma
 id|irq
+comma
+id|stat-&gt;dstat
+comma
+id|stat-&gt;devno
 )paren
 suffix:semicolon
 id|asm
@@ -6715,13 +6929,21 @@ multiline_comment|/* first of all check for state change pending interrupt */
 r_if
 c_cond
 (paren
+(paren
 id|stat-&gt;dstat
 op_amp
-(paren
 id|DEV_STAT_ATTENTION
-op_or
+)paren
+op_logical_and
+(paren
+id|stat-&gt;dstat
+op_amp
 id|DEV_STAT_DEV_END
-op_or
+)paren
+op_logical_and
+(paren
+id|stat-&gt;dstat
+op_amp
 id|DEV_STAT_UNIT_EXCEP
 )paren
 )paren
@@ -6732,7 +6954,7 @@ l_int|2
 comma
 id|dasd_int_handler
 comma
-l_string|&quot;State change Interrupt: %04X&quot;
+l_string|&quot;State change Interrupt: %04x&quot;
 comma
 id|stat-&gt;devno
 )paren
@@ -6742,7 +6964,8 @@ id|dasd_handle_state_change_pending
 id|stat
 )paren
 suffix:semicolon
-singleline_comment|//return; /* TBD */
+r_return
+suffix:semicolon
 )brace
 id|ip
 op_assign
@@ -6762,7 +6985,7 @@ l_int|2
 comma
 id|dasd_int_handler
 comma
-l_string|&quot;Unsolicited Interrupt: %04X&quot;
+l_string|&quot;Unsolicited Interrupt: %04x&quot;
 comma
 id|stat-&gt;devno
 )paren
@@ -6771,7 +6994,7 @@ id|printk
 (paren
 id|KERN_DEBUG
 id|PRINTK_HEADER
-l_string|&quot;unsolicited interrupt: irq0x%x devno%04X&bslash;n&quot;
+l_string|&quot;unsolicited interrupt: irq 0x%x devno %04x&bslash;n&quot;
 comma
 id|irq
 comma
@@ -6795,7 +7018,7 @@ l_int|2
 comma
 id|dasd_int_handler
 comma
-l_string|&quot;spurious Interrupt: %04X&quot;
+l_string|&quot;spurious Interrupt: %04x&quot;
 comma
 id|stat-&gt;devno
 )paren
@@ -6804,7 +7027,7 @@ id|printk
 (paren
 id|KERN_DEBUG
 id|PRINTK_HEADER
-l_string|&quot;spurious interrupt: irq0x%x devno%04X, parm %08x&bslash;n&quot;
+l_string|&quot;spurious interrupt: irq 0x%x devno %04x, parm %08x&bslash;n&quot;
 comma
 id|irq
 comma
@@ -6827,6 +7050,44 @@ r_int
 )paren
 id|ip
 suffix:semicolon
+multiline_comment|/* check status - the request might have been killed because of dyn dettach */
+r_if
+c_cond
+(paren
+id|cqr-&gt;status
+op_ne
+id|CQR_STATUS_IN_IO
+)paren
+(brace
+id|DASD_DRIVER_DEBUG_EVENT
+(paren
+l_int|2
+comma
+id|dasd_int_handler
+comma
+l_string|&quot;invalid status %02x on device %04x&quot;
+comma
+id|cqr-&gt;status
+comma
+id|stat-&gt;devno
+)paren
+suffix:semicolon
+id|printk
+(paren
+id|KERN_DEBUG
+id|PRINTK_HEADER
+l_string|&quot;invalid status: irq 0x%x devno %04x, status %02x&bslash;n&quot;
+comma
+id|irq
+comma
+id|stat-&gt;devno
+comma
+id|cqr-&gt;status
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|device
 op_assign
 (paren
@@ -6898,124 +7159,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef ERP_FAKE
-(brace
-r_static
-r_int
-id|counter
-op_assign
-l_int|0
-suffix:semicolon
-r_static
-r_int
-id|fake_count
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-op_increment
-id|counter
-op_mod
-l_int|937
-op_ge
-l_int|0
-)paren
-op_logical_and
-(paren
-id|counter
-op_mod
-l_int|937
-op_le
-l_int|10
-)paren
-op_logical_and
-(paren
-id|counter
-OL
-l_int|5000
-)paren
-op_logical_and
-(paren
-id|counter
-OG
-l_int|2000
-)paren
-)paren
-(brace
-r_char
-op_star
-id|sense
-op_assign
-id|stat-&gt;ii.sense.data
-suffix:semicolon
-id|printk
-(paren
-id|KERN_INFO
-id|PRINTK_HEADER
-l_string|&quot;***********************************************&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-(paren
-id|KERN_INFO
-id|PRINTK_HEADER
-l_string|&quot;Faking I/O error to recover from; cntr=%i / %02X&bslash;n&quot;
-comma
-id|counter
-comma
-op_increment
-id|fake_count
-)paren
-suffix:semicolon
-id|printk
-(paren
-id|KERN_INFO
-id|PRINTK_HEADER
-l_string|&quot;***********************************************&bslash;n&quot;
-)paren
-suffix:semicolon
-id|era
-op_assign
-id|dasd_era_recover
-suffix:semicolon
-id|stat-&gt;flag
-op_or_assign
-id|DEVSTAT_FLAG_SENSE_AVAIL
-suffix:semicolon
-id|stat-&gt;dstat
-op_or_assign
-l_int|0x02
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|sense
-comma
-l_int|0
-comma
-l_int|32
-)paren
-suffix:semicolon
-multiline_comment|/* 32 byte sense (byte 27 bit 1 = 0)*/
-id|sense
-(braket
-l_int|25
-)braket
-op_assign
-l_int|0x1D
-suffix:semicolon
-singleline_comment|//                        sense [25] = (fake_count % 256); //0x1B;
-multiline_comment|/* 24 byte sense (byte 27 bit 1 = 1)*/
-singleline_comment|//                        sense [0] = (counter % 0xFF); //0x1B;
-singleline_comment|//                        sense [1] = ((counter * 7) % 0xFF); //0x1B;
-singleline_comment|//                        sense [2] = (fake_count % 0xFF); //0x1B;
-singleline_comment|//                        sense [27] = 0x80;
-)brace
-)brace
-macro_line|#endif /* ERP_FAKE */
 multiline_comment|/* first of all lets try to find out the appropriate era_action */
 id|DASD_DEVICE_DEBUG_EVENT
 (paren
@@ -7023,7 +7166,7 @@ l_int|4
 comma
 id|device
 comma
-l_string|&quot; Int: CS/DS 0x%04X&quot;
+l_string|&quot; Int: CS/DS 0x%04x&quot;
 comma
 (paren
 (paren
@@ -7238,6 +7381,10 @@ comma
 id|CQR_STATUS_FAILED
 )paren
 suffix:semicolon
+id|cqr-&gt;stopclk
+op_assign
+id|now
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -7312,6 +7459,7 @@ id|device
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* end dasd_int_handler */
 multiline_comment|/* SECTION: Some stuff related to error recovery */
 multiline_comment|/*&n; * DEFAULT_ERP_ACTION&n; *&n; * DESCRIPTION&n; *   sets up the default-ERP ccw_req_t, namely one, which performs a TIC&n; *   to the original channel program with a retry counter of 16&n; *&n; * PARAMETER&n; *   cqr                failed CQR&n; *&n; * RETURN VALUES&n; *   erp                CQR performing the ERP&n; */
 id|ccw_req_t
@@ -7385,6 +7533,17 @@ comma
 id|CQR_STATUS_FAILED
 )paren
 suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;STCK %0&quot;
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+id|cqr-&gt;stopclk
+)paren
+)paren
+suffix:semicolon
 r_return
 id|cqr
 suffix:semicolon
@@ -7410,14 +7569,6 @@ id|dasd_default_erp_action
 suffix:semicolon
 id|erp-&gt;refers
 op_assign
-(paren
-r_int
-r_int
-)paren
-(paren
-r_int
-r_int
-)paren
 id|cqr
 suffix:semicolon
 id|erp-&gt;device
@@ -7448,6 +7599,7 @@ r_return
 id|erp
 suffix:semicolon
 )brace
+multiline_comment|/* end dasd_default_erp_action */
 multiline_comment|/*&n; * DEFAULT_ERP_POSTACTION&n; *&n; * DESCRIPTION&n; *   Frees all ERPs of the current ERP Chain and set the status&n; *   of the original CQR either to CQR_STATUS_DONE if ERP was successful&n; *   or to CQR_STATUS_FAILED if ERP was NOT successful.&n; *   NOTE: This function is only called if no discipline postaction&n; *         is available&n; *&n; * PARAMETER&n; *   erp                current erp_head&n; *&n; * RETURN VALUES&n; *   cqr                pointer to the original CQR&n; */
 id|ccw_req_t
 op_star
@@ -7580,6 +7732,17 @@ comma
 id|CQR_STATUS_ERROR
 comma
 id|CQR_STATUS_FAILED
+)paren
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;STCK %0&quot;
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+id|cqr-&gt;stopclk
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -7765,8 +7928,15 @@ c_func
 id|current
 )paren
 )paren
+(brace
+id|rc
+op_assign
+op_minus
+id|ERESTARTSYS
+suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 id|fdata-&gt;start_unit
 op_increment
 suffix:semicolon
@@ -8091,19 +8261,47 @@ id|major
 op_assign
 id|device-&gt;major_info-&gt;gendisk.major
 suffix:semicolon
-id|invalidate_device
-c_func
-(paren
+r_int
+id|minor
+op_assign
+id|start
+op_plus
+id|i
+suffix:semicolon
+id|kdev_t
+id|devi
+op_assign
 id|MKDEV
 (paren
 id|major
 comma
-id|start
-op_plus
-id|i
+id|minor
 )paren
-comma
-l_int|1
+suffix:semicolon
+r_struct
+id|super_block
+op_star
+id|sb
+op_assign
+id|get_super
+(paren
+id|devi
+)paren
+suffix:semicolon
+singleline_comment|//sync_dev (devi);
+r_if
+c_cond
+(paren
+id|sb
+)paren
+id|invalidate_inodes
+(paren
+id|sb
+)paren
+suffix:semicolon
+id|invalidate_buffers
+(paren
+id|devi
 )paren
 suffix:semicolon
 )brace
@@ -8228,7 +8426,7 @@ id|printk
 id|KERN_DEBUG
 id|PRINTK_HEADER
 l_string|&quot;ioctl 0x%08x %s&squot;0x%x&squot;%d(%d) on /dev/%s (%d:%d,&quot;
-l_string|&quot; devno 0x%04X on irq %d) with data %8lx&bslash;n&quot;
+l_string|&quot; devno 0x%04x on irq %d) with data %8lx&bslash;n&quot;
 comma
 id|no
 comma
@@ -8380,51 +8578,32 @@ l_int|1
 suffix:semicolon
 id|rc
 op_assign
-id|put_user
-c_func
+id|copy_to_user
 (paren
-id|blocks
-comma
 (paren
 r_int
 op_star
 )paren
-id|arg
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_case
-id|BLKGETSIZE64
-suffix:colon
-(brace
-id|u64
+id|data
+comma
+op_amp
 id|blocks
-op_assign
-id|major_info-&gt;gendisk.sizes
-(braket
-id|MINOR
+comma
+r_sizeof
 (paren
-id|inp-&gt;i_rdev
+r_int
 )paren
-)braket
+)paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
 id|rc
 op_assign
-id|put_user
-c_func
-(paren
-id|blocks
-op_lshift
-l_int|10
-comma
-(paren
-id|u64
-op_star
-)paren
-id|arg
-)paren
+op_minus
+id|EFAULT
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -8555,6 +8734,12 @@ OG
 id|DASD_STATE_ACCEPT
 )paren
 (brace
+id|dasd_deactivate_queue
+c_func
+(paren
+id|device
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8796,6 +8981,7 @@ r_case
 id|BIODASDPRRST
 suffix:colon
 (brace
+multiline_comment|/* reset device profile information */
 r_if
 c_cond
 (paren
@@ -8834,6 +9020,7 @@ r_case
 id|BIODASDPRRD
 suffix:colon
 (brace
+multiline_comment|/* retrun device profile information */
 id|rc
 op_assign
 id|copy_to_user
@@ -8875,6 +9062,7 @@ r_case
 id|BIODASDRSRV
 suffix:colon
 (brace
+multiline_comment|/* reserve */
 id|ccw_req_t
 op_star
 id|req
@@ -8925,6 +9113,7 @@ r_case
 id|BIODASDRLSE
 suffix:colon
 (brace
+multiline_comment|/* release */
 id|ccw_req_t
 op_star
 id|req
@@ -8975,11 +9164,48 @@ r_case
 id|BIODASDSLCK
 suffix:colon
 (brace
-id|printk
+multiline_comment|/* steal lock - unconditional reserve */
+id|ccw_req_t
+op_star
+id|req
+suffix:semicolon
+r_if
+c_cond
 (paren
-id|KERN_WARNING
-id|PRINTK_HEADER
-l_string|&quot;Unsupported ioctl BIODASDSLCK&bslash;n&quot;
+op_logical_neg
+id|capable
+(paren
+id|CAP_SYS_ADMIN
+)paren
+)paren
+(brace
+id|rc
+op_assign
+op_minus
+id|EACCES
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|req
+op_assign
+id|device-&gt;discipline-&gt;steal_lock
+(paren
+id|device
+)paren
+suffix:semicolon
+id|rc
+op_assign
+id|dasd_sleep_on_req
+(paren
+id|req
+)paren
+suffix:semicolon
+id|dasd_free_request
+(paren
+id|req
+comma
+id|device
 )paren
 suffix:semicolon
 r_break
@@ -9656,7 +9882,7 @@ r_if
 c_cond
 (paren
 id|device-&gt;level
-OL
+op_le
 id|DASD_STATE_ACCEPT
 )paren
 (brace
@@ -9733,6 +9959,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * DASD_RELEASE&n; *&n; * DESCRIPTION&n; */
 r_static
 r_int
 DECL|function|dasd_release
@@ -9853,6 +10080,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+singleline_comment|// fsync_dev (inp-&gt;i_rdev);&t;/* sync the device */
 id|count
 op_assign
 id|atomic_dec_return
@@ -10364,9 +10592,7 @@ l_int|NULL
 r_if
 c_cond
 (paren
-id|cqr
-op_member_access_from_pointer
-id|status
+id|cqr-&gt;status
 op_eq
 id|CQR_STATUS_IN_IO
 )paren
@@ -10390,6 +10616,17 @@ id|CQR_STATUS_FAILED
 id|cqr-&gt;status
 op_assign
 id|CQR_STATUS_FAILED
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;STCK %0&quot;
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+id|cqr-&gt;stopclk
+)paren
+)paren
 suffix:semicolon
 )brace
 id|dasd_schedule_bh
@@ -10543,9 +10780,6 @@ op_amp
 id|device-&gt;open_count
 )paren
 suffix:semicolon
-r_int
-id|part
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10570,6 +10804,12 @@ c_cond
 id|force
 )paren
 (brace
+id|dasd_deactivate_queue
+c_func
+(paren
+id|device
+)paren
+suffix:semicolon
 id|dasd_flush_chanq
 c_func
 (paren
@@ -10597,68 +10837,29 @@ op_assign
 id|DASD_STATE_DEL
 suffix:semicolon
 )brace
-macro_line|#if 0
-multiline_comment|/* unregister devfs entries */
-r_for
-c_loop
+multiline_comment|/* unregister partitions (&squot;ungrok_partitions&squot;) */
+id|devfs_register_partitions
+c_func
 (paren
-id|part
-op_assign
-l_int|0
-suffix:semicolon
-id|part
-OL
+op_amp
+id|device-&gt;major_info-&gt;gendisk
+comma
+id|MINOR
+c_func
 (paren
+id|device-&gt;kdev
+)paren
+comma
 l_int|1
-op_lshift
-id|DASD_PARTN_BITS
 )paren
 suffix:semicolon
-id|part
-op_increment
-)paren
-(brace
-id|devfs_unregister
-c_func
-(paren
-id|device-&gt;major_info-&gt;gendisk.part
-(braket
-id|MINOR
-c_func
-(paren
-id|device-&gt;kdev
-)paren
-op_plus
-id|part
-)braket
-dot
-id|de
-)paren
-suffix:semicolon
-id|device-&gt;major_info-&gt;gendisk.part
-(braket
-id|MINOR
-c_func
-(paren
-id|device-&gt;kdev
-)paren
-op_plus
-id|part
-)braket
-dot
-id|de
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-macro_line|#endif
 id|DASD_MESSAGE
 (paren
 id|KERN_WARNING
 comma
 id|device
 comma
-l_string|&quot;disabling device, target state:%d&quot;
+l_string|&quot;disabling device, target state: %d&quot;
 comma
 id|target
 )paren
@@ -11313,6 +11514,7 @@ id|range
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_DASD_DYNAMIC
+multiline_comment|/*&n; * DASD_NOT_OPER_HANDLER&n; *&n; * DESCRIPTION&n; *   handles leaving devices&n; */
 r_static
 r_void
 DECL|function|dasd_not_oper_handler
@@ -11426,6 +11628,17 @@ id|ENODEV
 r_break
 suffix:semicolon
 )brace
+id|DASD_DRIVER_DEBUG_EVENT
+(paren
+l_int|5
+comma
+id|dasd_not_oper_handler
+comma
+l_string|&quot;called for devno %04x&quot;
+comma
+id|devno
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -11438,7 +11651,7 @@ id|printk
 (paren
 id|KERN_WARNING
 id|PRINTK_HEADER
-l_string|&quot;not_oper_handler called on irq %d no devno!&bslash;n&quot;
+l_string|&quot;not_oper_handler called on irq 0x%04x no devno!&bslash;n&quot;
 comma
 id|irq
 )paren
@@ -11451,10 +11664,11 @@ c_func
 (paren
 id|device
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * DASD_OPER_HANDLER&n; *&n; * DESCRIPTION&n; *   called by the machine check handler to make an device operational&n; */
 r_int
 DECL|function|dasd_oper_handler
 id|dasd_oper_handler
@@ -11526,7 +11740,18 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* find out devno of leaving device: CIO has already deleted this information ! */
+id|DASD_DRIVER_DEBUG_EVENT
+(paren
+l_int|5
+comma
+id|dasd_oper_handler
+comma
+l_string|&quot;called for devno %04x&quot;
+comma
+id|devno
+)paren
+suffix:semicolon
+multiline_comment|/* find out devno of device */
 id|list_for_each
 (paren
 id|l
@@ -11729,7 +11954,7 @@ l_int|1
 comma
 id|dasd_find_device_addr
 comma
-l_string|&quot;devno %04X&quot;
+l_string|&quot;devno %04x&quot;
 comma
 id|devno
 )paren
@@ -11751,7 +11976,7 @@ l_int|1
 comma
 id|dasd_find_device_addr
 comma
-l_string|&quot;no dasd: devno %04X&quot;
+l_string|&quot;no dasd: devno %04x&quot;
 comma
 id|devno
 )paren
@@ -12283,6 +12508,19 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|DASD_DRIVER_DEBUG_EVENT
+(paren
+l_int|5
+comma
+id|dasd_state_new_to_known
+comma
+l_string|&quot;got devinfo CU-type %04x and dev-type %04x&quot;
+comma
+id|device-&gt;devinfo.sid_data.cu_type
+comma
+id|device-&gt;devinfo.sid_data.dev_type
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -12660,6 +12898,15 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+id|printk
+(paren
+id|KERN_ERR
+id|PRINTK_HEADER
+l_string|&quot;called dasd_state_accept_to_init for device %02x&bslash;n&quot;
+comma
+id|device-&gt;devinfo.devno
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -13201,6 +13448,67 @@ id|rc
 suffix:semicolon
 )brace
 r_static
+r_void
+DECL|function|dasd_deactivate_queue
+id|dasd_deactivate_queue
+(paren
+id|dasd_device_t
+op_star
+id|device
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_int
+id|major
+op_assign
+id|MAJOR
+c_func
+(paren
+id|device-&gt;kdev
+)paren
+suffix:semicolon
+r_int
+id|minor
+op_assign
+id|MINOR
+c_func
+(paren
+id|device-&gt;kdev
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+(paren
+l_int|1
+op_lshift
+id|DASD_PARTN_BITS
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|device-&gt;major_info-&gt;gendisk.sizes
+(braket
+id|minor
+op_plus
+id|i
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_static
 r_inline
 r_int
 DECL|function|dasd_disable_blkdev
@@ -13384,15 +13692,6 @@ id|device
 (brace
 r_int
 id|i
-suffix:semicolon
-r_int
-id|major
-op_assign
-id|MAJOR
-c_func
-(paren
-id|device-&gt;kdev
-)paren
 suffix:semicolon
 r_int
 id|minor
@@ -13582,6 +13881,21 @@ op_assign
 id|device-&gt;level
 suffix:semicolon
 )brace
+id|DASD_DRIVER_DEBUG_EVENT
+(paren
+l_int|3
+comma
+id|dasd_set_device_level
+comma
+l_string|&quot;devno %04x; from %i to %i&quot;
+comma
+id|devno
+comma
+id|from_state
+comma
+id|to_state
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13809,7 +14123,8 @@ id|printk
 (paren
 id|KERN_DEBUG
 id|PRINTK_HEADER
-l_string|&quot;failed to set device from state %d to %d at level %d rc %d. Reverting...&bslash;n&quot;
+l_string|&quot;failed to set device from state %d to %d at &quot;
+l_string|&quot;level %d rc %d. Reverting...&bslash;n&quot;
 comma
 id|from_state
 comma
@@ -14314,7 +14629,7 @@ id|info-&gt;data
 op_plus
 id|len
 comma
-l_string|&quot;%04X(%s) at (%3d:%3d) is %7s:&quot;
+l_string|&quot;%04x(%s) at (%3d:%3d) is %7s:&quot;
 comma
 id|device-&gt;devinfo.devno
 comma
@@ -14576,7 +14891,7 @@ id|info-&gt;data
 op_plus
 id|len
 comma
-l_string|&quot;%04X&quot;
+l_string|&quot;%04x&quot;
 comma
 id|devno
 )paren
@@ -15065,6 +15380,32 @@ id|features
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|range.from
+op_eq
+op_minus
+id|EINVAL
+op_logical_or
+id|range.to
+op_eq
+op_minus
+id|EINVAL
+)paren
+(brace
+id|printk
+(paren
+id|KERN_WARNING
+id|PRINTK_HEADER
+l_string|&quot;/proc/dasd/devices: parse error in &squot;%s&squot;&quot;
+comma
+id|buffer
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|off
 op_assign
 (paren
@@ -15210,6 +15551,7 @@ comma
 id|buffer
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 id|vfree
@@ -15447,6 +15789,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+multiline_comment|/* prevent couter &squot;ouverflow&squot; on output */
 r_for
 c_loop
 (paren
@@ -15460,7 +15803,7 @@ id|dasd_global_profile.dasd_io_reqs
 suffix:semicolon
 id|help
 OG
-l_int|8192
+l_int|9999999
 suffix:semicolon
 id|help
 op_assign
@@ -15504,7 +15847,10 @@ id|info-&gt;data
 op_plus
 id|len
 comma
-l_string|&quot;__&lt;4 ___8 __16 __32 __64 _128 _256 _512 __1k __2k __4k __8k _16k _32k _64k 128k&bslash;n&quot;
+l_string|&quot;   __&lt;4    ___8    __16    __32    __64 &quot;
+l_string|&quot;   _128    _256    _512    __1k    __2k &quot;
+l_string|&quot;   __4k    __8k    _16k    _32k    _64k &quot;
+l_string|&quot;   128k&bslash;n&quot;
 )paren
 suffix:semicolon
 id|len
@@ -15515,7 +15861,10 @@ id|info-&gt;data
 op_plus
 id|len
 comma
-l_string|&quot;_256 _512 __1M __2M __4M __8M _16M _32M _64M 128M 256M 512M __1G __2G __4G _&gt;4G&bslash;n&quot;
+l_string|&quot;   _256    _512    __1M    __2M    __4M &quot;
+l_string|&quot;   __8M    _16M    _32M    _64M    128M &quot;
+l_string|&quot;   256M    512M    __1G    __2G    __4G &quot;
+l_string|&quot;   _&gt;4G&bslash;n&quot;
 )paren
 suffix:semicolon
 id|len
@@ -15552,7 +15901,7 @@ id|info-&gt;data
 op_plus
 id|len
 comma
-l_string|&quot;%4d &quot;
+l_string|&quot;%7d &quot;
 comma
 id|dasd_global_profile.dasd_io_secs
 (braket
@@ -15608,7 +15957,7 @@ id|info-&gt;data
 op_plus
 id|len
 comma
-l_string|&quot;%4d &quot;
+l_string|&quot;%7d &quot;
 comma
 id|dasd_global_profile.dasd_io_times
 (braket
@@ -15650,7 +15999,7 @@ id|info-&gt;data
 op_plus
 id|len
 comma
-l_string|&quot;%4d &quot;
+l_string|&quot;%7d &quot;
 comma
 id|dasd_global_profile.dasd_io_times
 (braket
@@ -15706,7 +16055,7 @@ id|info-&gt;data
 op_plus
 id|len
 comma
-l_string|&quot;%4d &quot;
+l_string|&quot;%7d &quot;
 comma
 id|dasd_global_profile.dasd_io_timps
 (braket
@@ -15748,7 +16097,7 @@ id|info-&gt;data
 op_plus
 id|len
 comma
-l_string|&quot;%4d &quot;
+l_string|&quot;%7d &quot;
 comma
 id|dasd_global_profile.dasd_io_timps
 (braket
@@ -15804,7 +16153,7 @@ id|info-&gt;data
 op_plus
 id|len
 comma
-l_string|&quot;%4d &quot;
+l_string|&quot;%7d &quot;
 comma
 id|dasd_global_profile.dasd_io_time1
 (braket
@@ -15846,7 +16195,7 @@ id|info-&gt;data
 op_plus
 id|len
 comma
-l_string|&quot;%4d &quot;
+l_string|&quot;%7d &quot;
 comma
 id|dasd_global_profile.dasd_io_time1
 (braket
@@ -15902,7 +16251,7 @@ id|info-&gt;data
 op_plus
 id|len
 comma
-l_string|&quot;%4d &quot;
+l_string|&quot;%7d &quot;
 comma
 id|dasd_global_profile.dasd_io_time2
 (braket
@@ -15944,7 +16293,7 @@ id|info-&gt;data
 op_plus
 id|len
 comma
-l_string|&quot;%4d &quot;
+l_string|&quot;%7d &quot;
 comma
 id|dasd_global_profile.dasd_io_time2
 (braket
@@ -16000,7 +16349,7 @@ id|info-&gt;data
 op_plus
 id|len
 comma
-l_string|&quot;%4d &quot;
+l_string|&quot;%7d &quot;
 comma
 id|dasd_global_profile.dasd_io_time2ps
 (braket
@@ -16042,7 +16391,7 @@ id|info-&gt;data
 op_plus
 id|len
 comma
-l_string|&quot;%4d &quot;
+l_string|&quot;%7d &quot;
 comma
 id|dasd_global_profile.dasd_io_time2ps
 (braket
@@ -16098,7 +16447,7 @@ id|info-&gt;data
 op_plus
 id|len
 comma
-l_string|&quot;%4d &quot;
+l_string|&quot;%7d &quot;
 comma
 id|dasd_global_profile.dasd_io_time3
 (braket
@@ -16140,9 +16489,107 @@ id|info-&gt;data
 op_plus
 id|len
 comma
-l_string|&quot;%4d &quot;
+l_string|&quot;%7d &quot;
 comma
 id|dasd_global_profile.dasd_io_time3
+(braket
+id|i
+)braket
+op_rshift
+id|shift
+)paren
+suffix:semicolon
+)brace
+id|len
+op_add_assign
+id|sprintf
+(paren
+id|info-&gt;data
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+(paren
+id|info-&gt;data
+op_plus
+id|len
+comma
+l_string|&quot;# of req in chanq at enqueuing (1..32) &bslash;n&quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|16
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|len
+op_add_assign
+id|sprintf
+(paren
+id|info-&gt;data
+op_plus
+id|len
+comma
+l_string|&quot;%7d &quot;
+comma
+id|dasd_global_profile.dasd_io_nr_req
+(braket
+id|i
+)braket
+op_rshift
+id|shift
+)paren
+suffix:semicolon
+)brace
+id|len
+op_add_assign
+id|sprintf
+(paren
+id|info-&gt;data
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+suffix:semicolon
+id|i
+OL
+l_int|32
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|len
+op_add_assign
+id|sprintf
+(paren
+id|info-&gt;data
+op_plus
+id|len
+comma
+l_string|&quot;%7d &quot;
+comma
+id|dasd_global_profile.dasd_io_nr_req
 (braket
 id|i
 )braket
@@ -16579,7 +17026,7 @@ l_int|0
 comma
 l_int|2
 comma
-l_int|4
+l_int|5
 op_star
 r_sizeof
 (paren
@@ -16761,11 +17208,34 @@ id|dasd_parm_string
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* ! MODULE */
+id|rc
+op_assign
 id|dasd_parse
 (paren
 id|dasd
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|DASD_DRIVER_DEBUG_EVENT
+(paren
+l_int|1
+comma
+id|dasd_init
+comma
+l_string|&quot;%s&quot;
+comma
+l_string|&quot;invalid range found&quot;
+)paren
+suffix:semicolon
+r_goto
+id|failed
+suffix:semicolon
+)brace
 id|rc
 op_assign
 id|dasd_proc_init
@@ -16858,7 +17328,7 @@ l_int|2
 comma
 id|dasd_init
 comma
-l_string|&quot;add %04X to range&quot;
+l_string|&quot;add %04x to range&quot;
 comma
 id|devno
 )paren

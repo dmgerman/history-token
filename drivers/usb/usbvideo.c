@@ -5567,7 +5567,7 @@ l_int|0
 id|info
 c_func
 (paren
-l_string|&quot;%s: Creating /proc/%s/ filesystem entries.&quot;
+l_string|&quot;%s: Creating /proc/video/%s/ filesystem entries.&quot;
 comma
 id|proc
 comma
@@ -10973,4 +10973,10 @@ id|EINVAL
 suffix:semicolon
 )brace
 macro_line|#endif /* USES_PROC_FS */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

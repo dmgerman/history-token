@@ -2126,7 +2126,7 @@ id|nfs_fattr
 id|dir_attr
 suffix:semicolon
 r_struct
-id|nfs3_createargs
+id|nfs3_mkdirargs
 id|arg
 op_assign
 (brace
@@ -2141,14 +2141,6 @@ comma
 id|name-&gt;len
 comma
 id|sattr
-comma
-l_int|0
-comma
-(brace
-l_int|0
-comma
-l_int|0
-)brace
 )brace
 suffix:semicolon
 r_struct

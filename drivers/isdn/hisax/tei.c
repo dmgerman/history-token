@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: tei.c,v 2.17.6.2 2001/05/26 15:19:57 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
+multiline_comment|/* $Id: tei.c,v 2.17.6.3 2001/09/23 22:24:51 kai Exp $&n; *&n; * Author       Karsten Keil&n; *              based on the teles driver from Jan den Ouden&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;hisax.h&quot;
@@ -11,7 +11,7 @@ r_char
 op_star
 id|tei_revision
 op_assign
-l_string|&quot;$Revision: 2.17.6.2 $&quot;
+l_string|&quot;$Revision: 2.17.6.3 $&quot;
 suffix:semicolon
 DECL|macro|ID_REQUEST
 mdefine_line|#define ID_REQUEST&t;1

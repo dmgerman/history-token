@@ -32,6 +32,12 @@ id|ip_conntrack_module
 op_assign
 id|THIS_MODULE
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 r_static
 r_int
 r_int

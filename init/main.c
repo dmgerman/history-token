@@ -59,7 +59,7 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_X86_IO_APIC
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * Versions of gcc older than that listed below may actually compile&n; * and link okay, but the end product can have subtle run time bugs.&n; * To avoid associated bogus bug reports, we flatly refuse to compile&n; * with a gcc that is known to be too old from the very beginning.&n; */
@@ -2058,7 +2058,7 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
-macro_line|#ifdef CONFIG_X86_IO_APIC
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 DECL|function|smp_init
 r_static
 r_void

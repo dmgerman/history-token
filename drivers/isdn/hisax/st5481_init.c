@@ -1,21 +1,28 @@
 multiline_comment|/*&n; * Driver for ST5481 USB ISDN modem&n; *&n; * Author       Frode Isaksen&n; * Copyright    2001 by Frode Isaksen      &lt;fisaksen@bewan.com&gt;&n; *              2001 by Kai Germaschewski  &lt;kai.germaschewski@gmx.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 multiline_comment|/* &n; * TODO:&n; *&n; * b layer1 delay?&n; * hdlc as module&n; * hotplug / unregister issues&n; * mod_inc/dec_use_count&n; * unify parts of d/b channel usb handling&n; * file header&n; * avoid copy to isoc buffer?&n; * improve usb delay?&n; * merge l1 state machines?&n; * clean up debug&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &quot;st5481.h&quot;
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Frode Isaksen &lt;fisaksen@bewan.com&gt;&quot;
-)paren
-suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;ST5481 USB ISDN modem driver&quot;
+l_string|&quot;ISDN4Linux: driver for ST5481 USB ISDN adapter&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Frode Isaksen&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|protocol

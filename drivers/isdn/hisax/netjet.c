@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: netjet.c,v 1.24.6.5 2001/06/09 15:14:18 kai Exp $&n; *&n; * netjet.c     low level stuff for Traverse Technologie NETJet ISDN cards&n; *&n; * Author     Karsten Keil (keil@isdn4linux.de)&n; *&n; * Thanks to Traverse Technologie Australia for documents and informations&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: netjet.c,v 1.24.6.6 2001/09/23 22:24:50 kai Exp $&n; *&n; * low level stuff for Traverse Technologie NETJet ISDN cards&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Thanks to Traverse Technologie Australia for documents and information&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -17,7 +17,7 @@ r_char
 op_star
 id|NETjet_revision
 op_assign
-l_string|&quot;$Revision: 1.24.6.5 $&quot;
+l_string|&quot;$Revision: 1.24.6.6 $&quot;
 suffix:semicolon
 multiline_comment|/* Interface functions */
 id|u_char

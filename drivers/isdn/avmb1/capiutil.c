@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: capiutil.c,v 1.13.6.3 2001/05/17 20:41:51 kai Exp $&n; *&n; * CAPI 2.0 convert capi message to capi message struct&n; *&n; * From CAPI 2.0 Development Kit AVM 1995 (msg.c)&n; * Rewritten for Linux 1996 by Carsten Paeth (calle@calle.in-berlin.de)&n; *&n; */
+multiline_comment|/* $Id: capiutil.c,v 1.13.6.4 2001/09/23 22:24:33 kai Exp $&n; *&n; * CAPI 2.0 convert capi message to capi message struct&n; *&n; * From CAPI 2.0 Development Kit AVM 1995 (msg.c)&n; * Rewritten for Linux 1996 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
@@ -9,6 +9,24 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;capiutil.h&quot;
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;CAPI4Linux: CAPI message conversion support&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Carsten Paeth&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* from CAPI2.0 DDK AVM Berlin GmbH */
 macro_line|#ifndef CONFIG_ISDN_DRV_AVMB1_VERBOSE_REASON
 DECL|function|capi_info2str

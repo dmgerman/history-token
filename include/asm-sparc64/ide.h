@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ide.h,v 1.19 2000/05/27 00:49:37 davem Exp $&n; * ide.h: Ultra/PCI specific IDE glue.&n; *&n; * Copyright (C) 1997  David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998  Eddie C. Dost   (ecd@skynet.be)&n; */
+multiline_comment|/* $Id: ide.h,v 1.21 2001/09/25 20:21:48 kanoj Exp $&n; * ide.h: Ultra/PCI specific IDE glue.&n; *&n; * Copyright (C) 1997  David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998  Eddie C. Dost   (ecd@skynet.be)&n; */
 macro_line|#ifndef _SPARC64_IDE_H
 DECL|macro|_SPARC64_IDE_H
 mdefine_line|#define _SPARC64_IDE_H
@@ -7,6 +7,8 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hdreg.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/spitfire.h&gt;
 DECL|macro|MAX_HWIFS
 macro_line|#undef  MAX_HWIFS
 DECL|macro|MAX_HWIFS
@@ -535,6 +537,7 @@ r_int
 id|count
 )paren
 (brace
+macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;/* is there D$ aliasing problem */
 r_int
 r_int
 id|end
@@ -551,6 +554,7 @@ op_lshift
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#endif
 id|u16
 op_star
 id|ps
@@ -661,6 +665,7 @@ id|port
 )paren
 suffix:semicolon
 )brace
+macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;/* is there D$ aliasing problem */
 id|__flush_dcache_range
 c_func
 (paren
@@ -673,6 +678,7 @@ comma
 id|end
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|outw_be
 r_static
@@ -736,6 +742,7 @@ r_int
 id|count
 )paren
 (brace
+macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;/* is there D$ aliasing problem */
 r_int
 r_int
 id|end
@@ -752,6 +759,7 @@ op_lshift
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#endif
 r_const
 id|u16
 op_star
@@ -867,6 +875,7 @@ id|port
 )paren
 suffix:semicolon
 )brace
+macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;/* is there D$ aliasing problem */
 id|__flush_dcache_range
 c_func
 (paren
@@ -879,6 +888,7 @@ comma
 id|end
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|macro|T_CHAR
 mdefine_line|#define T_CHAR          (0x0000)        /* char:  don&squot;t touch  */

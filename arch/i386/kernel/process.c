@@ -1379,9 +1379,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; EFLAGS: %08lx&bslash;n&quot;
+l_string|&quot; EFLAGS: %08lx    %s&bslash;n&quot;
 comma
 id|regs-&gt;eflags
+comma
+id|print_tainted
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|printk

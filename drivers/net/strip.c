@@ -10998,6 +10998,12 @@ c_func
 l_string|&quot;Starmode Radio IP (STRIP) Device Driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;BSD without advertisement clause&quot;
+)paren
+suffix:semicolon
 id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: capifs.c,v 1.14.6.7 2001/05/24 08:29:08 kai Exp $&n; * &n; * (c) Copyright 2000 by Carsten Paeth (calle@calle.de)&n; *&n; * Heavily based on devpts filesystem from H. Peter Anvin&n; * &n; */
+multiline_comment|/* $Id: capifs.c,v 1.14.6.8 2001/09/23 22:24:33 kai Exp $&n; * &n; * Copyright 2000 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * Heavily based on devpts filesystem from H. Peter Anvin&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -17,10 +17,22 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;CAPI4Linux: /dev/capi/ filesystem&quot;
+)paren
+suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Carsten Paeth &lt;calle@calle.de&gt;&quot;
+l_string|&quot;Carsten Paeth&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|revision
@@ -29,7 +41,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.14.6.7 $&quot;
+l_string|&quot;$Revision: 1.14.6.8 $&quot;
 suffix:semicolon
 DECL|struct|capifs_ncci
 r_struct

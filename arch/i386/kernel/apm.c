@@ -1337,7 +1337,6 @@ id|APM_STATE_OFF
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 multiline_comment|/*&n; * Magic sysrq key and handler for the power off function&n; */
 DECL|function|handle_poweroff
 r_void
@@ -1387,7 +1386,6 @@ suffix:colon
 l_string|&quot;Power Off&bslash;n&quot;
 )brace
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_APM_DO_ENABLE
 DECL|function|apm_enable_power_management
 r_static
@@ -5716,7 +5714,7 @@ l_int|1
 )paren
 id|apm_info.disabled
 op_assign
-l_int|1
+id|apm_disabled
 suffix:semicolon
 multiline_comment|/*&n;&t; * Fix for the Compaq Contura 3/25c which reports BIOS version 0.1&n;&t; * but is reportedly a 1.0 BIOS.&n;&t; */
 r_if
@@ -5809,14 +5807,6 @@ c_cond
 id|apm_info.disabled
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|apm_disabled
-op_eq
-l_int|1
-)paren
-(brace
 id|printk
 c_func
 (paren
@@ -5824,7 +5814,6 @@ id|KERN_NOTICE
 l_string|&quot;apm: disabled on user request.&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 r_return
 op_minus
 id|ENODEV

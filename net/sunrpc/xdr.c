@@ -467,6 +467,10 @@ suffix:semicolon
 op_star
 id|sp
 op_assign
+(paren
+r_char
+op_star
+)paren
 id|p
 suffix:semicolon
 r_return

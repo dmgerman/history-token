@@ -10,6 +10,10 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
 macro_line|#include &quot;hwc_rw.h&quot;
 macro_line|#include &quot;hwc.h&quot;
+DECL|macro|CPI_RETRIES
+mdefine_line|#define CPI_RETRIES&t;&t;3
+DECL|macro|CPI_SLEEP_TICKS
+mdefine_line|#define CPI_SLEEP_TICKS&t;&t;50
 DECL|macro|CPI_LENGTH_SYSTEM_TYPE
 mdefine_line|#define CPI_LENGTH_SYSTEM_TYPE&t;8
 DECL|macro|CPI_LENGTH_SYSTEM_NAME
@@ -239,6 +243,9 @@ r_int
 id|sysplex_name_length
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+id|retries
 suffix:semicolon
 r_if
 c_cond
@@ -594,6 +601,19 @@ id|cpi_request.callback
 op_assign
 id|cpi_callback
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|retries
+op_assign
+id|CPI_RETRIES
+suffix:semicolon
+id|retries
+suffix:semicolon
+id|retries
+op_decrement
+)paren
+(brace
 id|retval
 op_assign
 id|hwc_send
@@ -608,17 +628,19 @@ c_cond
 id|retval
 )paren
 (brace
-id|printk
+id|set_current_state
 (paren
-l_string|&quot;cpi: failed (%i)&bslash;n&quot;
-comma
-id|retval
+id|TASK_INTERRUPTIBLE
 )paren
 suffix:semicolon
-r_goto
-id|free
+id|schedule_timeout
+(paren
+id|CPI_SLEEP_TICKS
+)paren
 suffix:semicolon
 )brace
+r_else
+(brace
 id|down
 (paren
 op_amp
@@ -651,6 +673,18 @@ id|cpi_hwcb-&gt;response_code
 )paren
 suffix:semicolon
 )brace
+r_goto
+id|free
+suffix:semicolon
+)brace
+)brace
+id|printk
+(paren
+l_string|&quot;cpi: failed (%i)&bslash;n&quot;
+comma
+id|retval
+)paren
+suffix:semicolon
 id|free
 suffix:colon
 id|kfree

@@ -1414,6 +1414,7 @@ id|bdev
 op_assign
 id|bdev
 suffix:semicolon
+multiline_comment|/* This is supposed to prevent others from stealing our underlying disks */
 multiline_comment|/* now blank the /proc/partitions table for the wrong partition table,&n;&t;&t;   so that scripts don&squot;t accidentally mount it and crash the kernel */
 multiline_comment|/* XXX: the 0 is an utter hack  --hch */
 id|gd
@@ -2182,6 +2183,12 @@ id|module_exit
 c_func
 (paren
 id|hptraid_exit
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

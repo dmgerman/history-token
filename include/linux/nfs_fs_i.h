@@ -161,5 +161,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Lock flag values&n; */
 DECL|macro|NFS_LCK_GRANTED
 mdefine_line|#define NFS_LCK_GRANTED&t;&t;0x0001&t;&t;/* lock has been granted */
+DECL|macro|NFS_LCK_RECLAIM
+mdefine_line|#define NFS_LCK_RECLAIM&t;&t;0x0002&t;&t;/* lock marked for reclaiming */
 macro_line|#endif
 eof

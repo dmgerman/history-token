@@ -960,7 +960,7 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|parms-&gt;name
+id|nt-&gt;parms.name
 comma
 id|dev-&gt;name
 comma
@@ -4528,6 +4528,10 @@ id|ipgre_fb_tunnel
 r_goto
 id|done
 suffix:semicolon
+id|dev
+op_assign
+id|t-&gt;dev
+suffix:semicolon
 )brace
 id|err
 op_assign
@@ -5622,4 +5626,10 @@ id|ipgre_fb_tunnel_dev
 suffix:semicolon
 )brace
 macro_line|#endif
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

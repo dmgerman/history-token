@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;adfs.h&quot;
 multiline_comment|/*&n; * Lookup/Create a block at offset &squot;block&squot; into &squot;inode&squot;.  We currently do&n; * not support creation of new blocks, so we return -EIO for this case.&n; */
 r_int
@@ -1273,4 +1274,10 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

@@ -478,6 +478,20 @@ r_int
 id|oops_in_progress
 suffix:semicolon
 multiline_comment|/* If set, an oops, panic(), BUG() or die() is in progress */
+r_extern
+r_int
+id|tainted
+suffix:semicolon
+r_extern
+r_const
+r_char
+op_star
+id|print_tainted
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#if DEBUG
 DECL|macro|pr_debug
 mdefine_line|#define pr_debug(fmt,arg...) &bslash;&n;&t;printk(KERN_DEBUG fmt,##arg)

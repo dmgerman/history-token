@@ -107,6 +107,12 @@ c_func
 l_string|&quot;RealTek RTL8002/8012 parallel port Ethernet driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren

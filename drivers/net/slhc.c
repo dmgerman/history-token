@@ -3152,4 +3152,10 @@ id|slhc_toss
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_INET */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;BSD without advertising clause&quot;
+)paren
+suffix:semicolon
 eof

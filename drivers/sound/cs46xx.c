@@ -23837,6 +23837,12 @@ c_func
 l_string|&quot;Crystal SoundFusion Audio Support&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|cs46xx_banner
 r_static
 r_const

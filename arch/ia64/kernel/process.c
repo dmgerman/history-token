@@ -191,13 +191,18 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;npsr : %016lx ifs : %016lx ip  : [&lt;%016lx&gt;]&bslash;n&quot;
+l_string|&quot;&bslash;npsr : %016lx ifs : %016lx ip  : [&lt;%016lx&gt;]    %s&bslash;n&quot;
 comma
 id|regs-&gt;cr_ipsr
 comma
 id|regs-&gt;cr_ifs
 comma
 id|ip
+comma
+id|print_tainted
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|printk

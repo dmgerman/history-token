@@ -539,6 +539,12 @@ comma
 l_string|&quot;1-4i&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------------------------&n;Function Prototypes&n;---------------------------------------------------------------------------- */
 r_static
 r_void

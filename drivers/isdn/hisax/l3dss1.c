@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: l3dss1.c,v 2.30.6.1 2001/02/16 16:43:27 kai Exp $&n; *&n; * EURO/DSS1 D-channel protocol&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
+multiline_comment|/* $Id: l3dss1.c,v 2.30.6.2 2001/09/23 22:24:49 kai Exp $&n; *&n; * EURO/DSS1 D-channel protocol&n; *&n; * German 1TR6 D-channel protocol&n; *&n; * Author       Karsten Keil&n; *              based on the teles driver from Jan den Ouden&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;hisax.h&quot;
@@ -24,7 +24,7 @@ r_char
 op_star
 id|dss1_revision
 op_assign
-l_string|&quot;$Revision: 2.30.6.1 $&quot;
+l_string|&quot;$Revision: 2.30.6.2 $&quot;
 suffix:semicolon
 DECL|macro|EXT_BEARER_CAPS
 mdefine_line|#define EXT_BEARER_CAPS 1
@@ -51,6 +51,7 @@ r_int
 r_char
 id|retval
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -199,6 +200,7 @@ r_char
 id|id
 )paren
 (brace
+r_int
 r_int
 id|flags
 suffix:semicolon

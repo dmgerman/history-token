@@ -3755,6 +3755,12 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#else
 DECL|function|do_NCR5380_setup
 r_static
@@ -4025,6 +4031,12 @@ c_func
 id|isapnp
 comma
 id|id_table
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

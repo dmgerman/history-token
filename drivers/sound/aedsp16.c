@@ -4159,6 +4159,12 @@ l_string|&quot;Audio Excel DSP 16 Driver Version &quot;
 id|VERSION
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|do_init_aedsp16
 r_static
 r_int

@@ -77,6 +77,12 @@ c_func
 l_string|&quot;Driver for TI ThunderLAN based ethernet PCI adapters&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -1547,7 +1553,7 @@ l_string|&quot;Starting PCI Probe....&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Use new style PCI probing. Now the kernel will&n;&t;   do most of this for us */
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp
@@ -1597,6 +1603,13 @@ op_eq
 l_int|0
 )paren
 (brace
+id|pci_unregister_driver
+c_func
+(paren
+op_amp
+id|tlan_driver
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -2294,11 +2307,6 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|tlan_have_pci
-)paren
 id|pci_unregister_driver
 c_func
 (paren

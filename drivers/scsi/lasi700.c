@@ -246,6 +246,8 @@ op_assign
 (brace
 id|LASI700_ID_TABLE
 comma
+id|LASI710_ID_TABLE
+comma
 (brace
 l_int|0
 )brace
@@ -343,6 +345,10 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+r_char
+op_star
+id|driver_name
+suffix:semicolon
 r_struct
 id|Scsi_Host
 op_star
@@ -368,6 +374,26 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|dev-&gt;id.sversion
+op_eq
+id|LASI_700_SVERSION
+)paren
+(brace
+id|driver_name
+op_assign
+l_string|&quot;lasi700&quot;
+suffix:semicolon
+)brace
+r_else
+(brace
+id|driver_name
+op_assign
+l_string|&quot;lasi710&quot;
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|hostdata
 op_eq
 l_int|NULL
@@ -377,7 +403,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;lasi700: Failed to allocate host data&bslash;n&quot;
+l_string|&quot;%s: Failed to allocate host data&bslash;n&quot;
+comma
+id|driver_name
 )paren
 suffix:semicolon
 r_return
@@ -408,7 +436,7 @@ id|base
 comma
 l_int|64
 comma
-l_string|&quot;lasi700&quot;
+id|driver_name
 )paren
 op_eq
 l_int|NULL
@@ -418,7 +446,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;lasi700: Failed to claim memory region&bslash;n&quot;
+l_string|&quot;%s: Failed to claim memory region&bslash;n&quot;
+comma
+id|driver_name
 )paren
 suffix:semicolon
 id|kfree
@@ -439,6 +469,14 @@ id|hostdata-&gt;differential
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;id.sversion
+op_eq
+id|LASI_700_SVERSION
+)paren
+(brace
 id|hostdata-&gt;clock
 op_assign
 id|LASI700_CLOCK
@@ -447,6 +485,26 @@ id|hostdata-&gt;force_le_on_be
 op_assign
 l_int|1
 suffix:semicolon
+)brace
+r_else
+(brace
+id|hostdata-&gt;clock
+op_assign
+id|LASI710_CLOCK
+suffix:semicolon
+id|hostdata-&gt;force_le_on_be
+op_assign
+l_int|0
+suffix:semicolon
+id|hostdata-&gt;chip710
+op_assign
+l_int|1
+suffix:semicolon
+id|hostdata-&gt;dmode_extra
+op_assign
+id|DMODE_FC2
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -499,7 +557,7 @@ id|NCR_700_intr
 comma
 id|SA_SHIRQ
 comma
-l_string|&quot;lasi700&quot;
+id|driver_name
 comma
 id|host
 )paren
@@ -509,7 +567,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;lasi700: irq problem, detatching&bslash;n&quot;
+l_string|&quot;%s: irq problem, detatching&bslash;n&quot;
+comma
+id|driver_name
 )paren
 suffix:semicolon
 id|scsi_unregister

@@ -1,22 +1,22 @@
-multiline_comment|/*&n;** hp100.c &n;** HP CASCADE Architecture Driver for 100VG-AnyLan Network Adapters&n;**&n;** $Id: hp100.c,v 1.57 1998/04/10 16:27:23 perex Exp perex $&n;**&n;** Based on the HP100 driver written by Jaroslav Kysela &lt;perex@jcu.cz&gt;&n;** Extended for new busmaster capable chipsets by &n;** Siegfried &quot;Frieder&quot; Loeffler (dg1sek) &lt;floeff@mathematik.uni-stuttgart.de&gt;&n;**&n;** Maintained by: Jaroslav Kysela &lt;perex@suse.cz&gt;&n;** &n;** This driver has only been tested with&n;** -- HP J2585B 10/100 Mbit/s PCI Busmaster&n;** -- HP J2585A 10/100 Mbit/s PCI &n;** -- HP J2970  10 Mbit/s PCI Combo 10base-T/BNC&n;** -- HP J2973  10 Mbit/s PCI 10base-T&n;** -- HP J2573  10/100 ISA&n;** -- Compex ReadyLink ENET100-VG4  10/100 Mbit/s PCI / EISA&n;** -- Compex FreedomLine 100/VG  10/100 Mbit/s ISA / EISA / PCI&n;** &n;** but it should also work with the other CASCADE based adapters.&n;**&n;** TODO:&n;**       -  J2573 seems to hang sometimes when in shared memory mode.&n;**       -  Mode for Priority TX&n;**       -  Check PCI registers, performance might be improved?&n;**       -  To reduce interrupt load in busmaster, one could switch off&n;**          the interrupts that are used to refill the queues whenever the&n;**          queues are filled up to more than a certain threshold.&n;**       -  some updates for EISA version of card&n;**&n;**&n;**   This code is free software; you can redistribute it and/or modify&n;**   it under the terms of the GNU General Public License as published by&n;**   the Free Software Foundation; either version 2 of the License, or&n;**   (at your option) any later version.&n;**&n;**   This code is distributed in the hope that it will be useful,&n;**   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;**   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;**   GNU General Public License for more details.&n;**&n;**   You should have received a copy of the GNU General Public License&n;**   along with this program; if not, write to the Free Software&n;**   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;**&n;** 1.57b -&gt; 1.57c - Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;**   - release resources on failure in init_module&n;**&n;** 1.57 -&gt; 1.57b - Jean II&n;**   - fix spinlocks, SMP is now working !&n;**&n;** 1.56 -&gt; 1.57&n;**   - updates for new PCI interface for 2.1 kernels&n;**&n;** 1.55 -&gt; 1.56&n;**   - removed printk in misc. interrupt and update statistics to allow&n;**     monitoring of card status&n;**   - timing changes in xmit routines, relogin to 100VG hub added when&n;**     driver does reset&n;**   - included fix for Compex FreedomLine PCI adapter&n;** &n;** 1.54 -&gt; 1.55&n;**   - fixed bad initialization in init_module&n;**   - added Compex FreedomLine adapter&n;**   - some fixes in card initialization&n;**&n;** 1.53 -&gt; 1.54&n;**   - added hardware multicast filter support (doesn&squot;t work)&n;**   - little changes in hp100_sense_lan routine &n;**     - added support for Coax and AUI (J2970)&n;**   - fix for multiple cards and hp100_mode parameter (insmod)&n;**   - fix for shared IRQ &n;**&n;** 1.52 -&gt; 1.53&n;**   - fixed bug in multicast support&n;**&n;*/
+multiline_comment|/*&n;** hp100.c &n;** HP CASCADE Architecture Driver for 100VG-AnyLan Network Adapters&n;**&n;** $Id: hp100.c,v 1.58 2001/09/24 18:03:01 perex Exp perex $&n;**&n;** Based on the HP100 driver written by Jaroslav Kysela &lt;perex@jcu.cz&gt;&n;** Extended for new busmaster capable chipsets by &n;** Siegfried &quot;Frieder&quot; Loeffler (dg1sek) &lt;floeff@mathematik.uni-stuttgart.de&gt;&n;**&n;** Maintained by: Jaroslav Kysela &lt;perex@suse.cz&gt;&n;** &n;** This driver has only been tested with&n;** -- HP J2585B 10/100 Mbit/s PCI Busmaster&n;** -- HP J2585A 10/100 Mbit/s PCI &n;** -- HP J2970  10 Mbit/s PCI Combo 10base-T/BNC&n;** -- HP J2973  10 Mbit/s PCI 10base-T&n;** -- HP J2573  10/100 ISA&n;** -- Compex ReadyLink ENET100-VG4  10/100 Mbit/s PCI / EISA&n;** -- Compex FreedomLine 100/VG  10/100 Mbit/s ISA / EISA / PCI&n;** &n;** but it should also work with the other CASCADE based adapters.&n;**&n;** TODO:&n;**       -  J2573 seems to hang sometimes when in shared memory mode.&n;**       -  Mode for Priority TX&n;**       -  Check PCI registers, performance might be improved?&n;**       -  To reduce interrupt load in busmaster, one could switch off&n;**          the interrupts that are used to refill the queues whenever the&n;**          queues are filled up to more than a certain threshold.&n;**       -  some updates for EISA version of card&n;**&n;**&n;**   This code is free software; you can redistribute it and/or modify&n;**   it under the terms of the GNU General Public License as published by&n;**   the Free Software Foundation; either version 2 of the License, or&n;**   (at your option) any later version.&n;**&n;**   This code is distributed in the hope that it will be useful,&n;**   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;**   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;**   GNU General Public License for more details.&n;**&n;**   You should have received a copy of the GNU General Public License&n;**   along with this program; if not, write to the Free Software&n;**   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;**&n;** 1.57c -&gt; 1.58&n;**   - used indent to change coding-style&n;**   - added KTI DP-200 EISA ID&n;**   - ioremap is also used for low (&lt;1MB) memory (multi-architecture support)&n;**&n;** 1.57b -&gt; 1.57c - Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;**   - release resources on failure in init_module&n;**&n;** 1.57 -&gt; 1.57b - Jean II&n;**   - fix spinlocks, SMP is now working !&n;**&n;** 1.56 -&gt; 1.57&n;**   - updates for new PCI interface for 2.1 kernels&n;**&n;** 1.55 -&gt; 1.56&n;**   - removed printk in misc. interrupt and update statistics to allow&n;**     monitoring of card status&n;**   - timing changes in xmit routines, relogin to 100VG hub added when&n;**     driver does reset&n;**   - included fix for Compex FreedomLine PCI adapter&n;** &n;** 1.54 -&gt; 1.55&n;**   - fixed bad initialization in init_module&n;**   - added Compex FreedomLine adapter&n;**   - some fixes in card initialization&n;**&n;** 1.53 -&gt; 1.54&n;**   - added hardware multicast filter support (doesn&squot;t work)&n;**   - little changes in hp100_sense_lan routine &n;**     - added support for Coax and AUI (J2970)&n;**   - fix for multiple cards and hp100_mode parameter (insmod)&n;**   - fix for shared IRQ &n;**&n;** 1.52 -&gt; 1.53&n;**   - fixed bug in multicast support&n;**&n;*/
 DECL|macro|HP100_DEFAULT_PRIORITY_TX
-mdefine_line|#define HP100_DEFAULT_PRIORITY_TX 0 
+mdefine_line|#define HP100_DEFAULT_PRIORITY_TX 0
 DECL|macro|HP100_DEBUG
 macro_line|#undef HP100_DEBUG
 DECL|macro|HP100_DEBUG_B
-macro_line|#undef HP100_DEBUG_B           /* Trace  */
+macro_line|#undef HP100_DEBUG_B&t;&t;/* Trace  */
 DECL|macro|HP100_DEBUG_BM
-macro_line|#undef HP100_DEBUG_BM          /* Debug busmaster code (PDL stuff) */
+macro_line|#undef HP100_DEBUG_BM&t;&t;/* Debug busmaster code (PDL stuff) */
 DECL|macro|HP100_DEBUG_TRAINING
-macro_line|#undef HP100_DEBUG_TRAINING    /* Debug login-to-hub procedure */
+macro_line|#undef HP100_DEBUG_TRAINING&t;/* Debug login-to-hub procedure */
 DECL|macro|HP100_DEBUG_TX
-macro_line|#undef HP100_DEBUG_TX   
+macro_line|#undef HP100_DEBUG_TX
 DECL|macro|HP100_DEBUG_IRQ
-macro_line|#undef HP100_DEBUG_IRQ 
+macro_line|#undef HP100_DEBUG_IRQ
 DECL|macro|HP100_DEBUG_RX
-macro_line|#undef HP100_DEBUG_RX 
+macro_line|#undef HP100_DEBUG_RX
 DECL|macro|HP100_MULTICAST_FILTER
-macro_line|#undef HP100_MULTICAST_FILTER  /* Need to be debugged... */
+macro_line|#undef HP100_MULTICAST_FILTER&t;/* Need to be debugged... */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -34,7 +34,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/config.h&gt;  /* for CONFIG_PCI */
+macro_line|#include &lt;linux/config.h&gt;&t;/* for CONFIG_PCI */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 DECL|macro|LINUX_2_1
@@ -76,7 +76,7 @@ DECL|macro|PCI_DEVICE_ID_COMPEX2_100VG
 mdefine_line|#define PCI_DEVICE_ID_COMPEX2_100VG 0x0005
 macro_line|#endif
 DECL|macro|HP100_REGION_SIZE
-mdefine_line|#define HP100_REGION_SIZE&t;0x20 /* for ioports */
+mdefine_line|#define HP100_REGION_SIZE&t;0x20&t;/* for ioports */
 DECL|macro|HP100_MAX_PACKET_SIZE
 mdefine_line|#define HP100_MAX_PACKET_SIZE&t;(1536+4)
 DECL|macro|HP100_MIN_PACKET_SIZE
@@ -401,7 +401,7 @@ comma
 id|HP100_BUS_EISA
 )brace
 comma
-multiline_comment|/* 10/100 PCI card from Compex - FreedomLine&n;   *&n;   * I think this card doesn&squot;t like aic7178 scsi controller, but&n;   * I haven&squot;t tested this much. It works fine on diskless machines.&n;   *                            Jacek Lipkowski &lt;sq5bpf@acid.ch.pw.edu.pl&gt;&n;   */
+multiline_comment|/* 10/100 PCI card from Compex - FreedomLine&n;&t; *&n;&t; * I think this card doesn&squot;t like aic7178 scsi controller, but&n;&t; * I haven&squot;t tested this much. It works fine on diskless machines.&n;&t; *                            Jacek Lipkowski &lt;sq5bpf@acid.ch.pw.edu.pl&gt;&n;&t; */
 (brace
 l_int|0x021211f6
 comma
@@ -415,6 +415,15 @@ multiline_comment|/* 10/100 PCI card from Compex (J2585A compatible) */
 l_int|0x011211f6
 comma
 l_string|&quot;ReadyLink ENET100-VG4&quot;
+comma
+id|HP100_BUS_PCI
+)brace
+comma
+multiline_comment|/* 10/100 PCI card from KTI */
+(brace
+l_int|0x40008e2e
+comma
+l_string|&quot;KTI DP-200&quot;
 comma
 id|HP100_BUS_PCI
 )brace
@@ -528,7 +537,7 @@ comma
 id|hp100_pci_tbl
 )paren
 suffix:semicolon
-macro_line|#endif /* LINUX_VERSION_CODE &gt;= 0x20400 */
+macro_line|#endif&t;&t;&t;&t;/* LINUX_VERSION_CODE &gt;= 0x20400 */
 DECL|variable|hp100_rx_ratio
 r_static
 r_int
@@ -638,6 +647,7 @@ suffix:semicolon
 r_static
 r_int
 id|hp100_start_xmit_bm
+c_func
 (paren
 r_struct
 id|sk_buff
@@ -981,9 +991,7 @@ op_assign
 id|dev
 ques
 c_cond
-id|dev
-op_member_access_from_pointer
-id|base_addr
+id|dev-&gt;base_addr
 suffix:colon
 l_int|0
 suffix:semicolon
@@ -1024,8 +1032,8 @@ id|base_addr
 OG
 l_int|0xff
 )paren
-multiline_comment|/* Check a single specified location. */
 (brace
+multiline_comment|/* Check a single specified location. */
 r_if
 c_cond
 (paren
@@ -1149,7 +1157,7 @@ r_return
 op_minus
 id|ENXIO
 suffix:semicolon
-multiline_comment|/* at first - scan PCI bus(es) */
+multiline_comment|/* First: scan PCI bus(es) */
 macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
@@ -1268,6 +1276,7 @@ multiline_comment|/* found... */
 id|ioaddr
 op_assign
 id|pci_resource_start
+c_func
 (paren
 id|pci_dev
 comma
@@ -1470,7 +1479,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Third Probe all ISA possible port regions */
+multiline_comment|/* Third: Probe all ISA possible port regions */
 r_for
 c_loop
 (paren
@@ -1526,7 +1535,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-"&f;"
 DECL|function|hp100_probe1
 r_static
 r_int
@@ -1730,7 +1738,7 @@ comma
 id|chip
 )paren
 suffix:semicolon
-macro_line|#endif 
+macro_line|#endif
 )brace
 id|dev-&gt;base_addr
 op_assign
@@ -1803,8 +1811,8 @@ id|uc
 op_ne
 l_int|0xff
 )paren
-multiline_comment|/* bad checksum? */
 (brace
+multiline_comment|/* bad checksum? */
 id|printk
 c_func
 (paren
@@ -1901,13 +1909,10 @@ id|HP100_EISA_IDS_SIZE
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;hp100_probe: %s: card at port 0x%x isn&squot;t known (id = 0x%x)&bslash;n&quot;
 comma
-id|dev
-op_member_access_from_pointer
-id|name
+id|dev-&gt;name
 comma
 id|ioaddr
 comma
@@ -2026,8 +2031,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;   * Determine driver operation mode&n;   *&n;   * Use the variable &quot;hp100_mode&quot; upon insmod or as kernel parameter to&n;   * force driver modes:&n;   * hp100_mode=1 -&gt; default, use busmaster mode if configured.&n;   * hp100_mode=2 -&gt; enable shared memory mode &n;   * hp100_mode=3 -&gt; force use of i/o mapped mode.&n;   * hp100_mode=4 -&gt; same as 1, but re-set the enable bit on the card.&n;   */
-multiline_comment|/*&n;   * LSW values:&n;   *   0x2278 -&gt; J2585B, PnP shared memory mode&n;   *   0x2270 -&gt; J2585B, shared memory mode, 0xdc000&n;   *   0xa23c -&gt; J2585B, I/O mapped mode&n;   *   0x2240 -&gt; EISA COMPEX, BusMaster (Shasta Chip)&n;   *   0x2220 -&gt; EISA HP, I/O (Shasta Chip)&n;   *   0x2260 -&gt; EISA HP, BusMaster (Shasta Chip)&n;   */
+multiline_comment|/*&n;&t; * Determine driver operation mode&n;&t; *&n;&t; * Use the variable &quot;hp100_mode&quot; upon insmod or as kernel parameter to&n;&t; * force driver modes:&n;&t; * hp100_mode=1 -&gt; default, use busmaster mode if configured.&n;&t; * hp100_mode=2 -&gt; enable shared memory mode &n;&t; * hp100_mode=3 -&gt; force use of i/o mapped mode.&n;&t; * hp100_mode=4 -&gt; same as 1, but re-set the enable bit on the card.&n;&t; */
+multiline_comment|/*&n;&t; * LSW values:&n;&t; *   0x2278 -&gt; J2585B, PnP shared memory mode&n;&t; *   0x2270 -&gt; J2585B, shared memory mode, 0xdc000&n;&t; *   0xa23c -&gt; J2585B, I/O mapped mode&n;&t; *   0x2240 -&gt; EISA COMPEX, BusMaster (Shasta Chip)&n;&t; *   0x2220 -&gt; EISA HP, I/O (Shasta Chip)&n;&t; *   0x2260 -&gt; EISA HP, BusMaster (Shasta Chip)&n;&t; */
 macro_line|#if 0
 id|local_mode
 op_assign
@@ -2248,8 +2253,8 @@ id|local_mode
 op_eq
 l_int|1
 )paren
-multiline_comment|/* default behaviour */
 (brace
+multiline_comment|/* default behaviour */
 id|lsw
 op_assign
 id|hp100_inw
@@ -2545,20 +2550,8 @@ id|local_mode
 op_ne
 l_int|1
 )paren
+(brace
 multiline_comment|/* = not busmaster */
-(brace
-r_if
-c_cond
-(paren
-id|bus
-op_eq
-id|HP100_BUS_PCI
-op_logical_and
-id|mem_ptr_phys
-op_ge
-l_int|0x100000
-)paren
-(brace
 multiline_comment|/* We try with smaller memory sizes, if ioremap fails */
 r_for
 c_loop
@@ -2641,8 +2634,8 @@ id|mem_ptr_virt
 op_eq
 l_int|NULL
 )paren
-multiline_comment|/* all ioremap tries failed */
 (brace
+multiline_comment|/* all ioremap tries failed */
 id|printk
 c_func
 (paren
@@ -2662,7 +2655,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-)brace
 r_if
 c_cond
 (paren
@@ -2670,8 +2662,8 @@ id|local_mode
 op_eq
 l_int|3
 )paren
-multiline_comment|/* io mapped forced */
 (brace
+multiline_comment|/* io mapped forced */
 id|mem_mapped
 op_assign
 l_int|0
@@ -2931,13 +2923,11 @@ id|lp-&gt;mode
 op_eq
 l_int|1
 )paren
-(brace
 multiline_comment|/* busmaster */
 id|dev-&gt;dma
 op_assign
 l_int|4
 suffix:semicolon
-)brace
 multiline_comment|/* Ask the card for its MAC address and store it for later use. */
 id|hp100_page
 c_func
@@ -2995,8 +2985,8 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* If busmaster mode is wanted, a dma-capable memory area is needed for&n;   * the rx and tx PDLs &n;   * PCI cards can access the whole PC memory. Therefore GFP_DMA is not&n;   * needed for the allocation of the memory area. &n;   */
-multiline_comment|/* TODO: We do not need this with old cards, where PDLs are stored&n;   * in the cards shared memory area. But currently, busmaster has been&n;   * implemented/tested only with the lassen chip anyway... */
+multiline_comment|/* If busmaster mode is wanted, a dma-capable memory area is needed for&n;&t; * the rx and tx PDLs &n;&t; * PCI cards can access the whole PC memory. Therefore GFP_DMA is not&n;&t; * needed for the allocation of the memory area. &n;&t; */
+multiline_comment|/* TODO: We do not need this with old cards, where PDLs are stored&n;&t; * in the cards shared memory area. But currently, busmaster has been&n;&t; * implemented/tested only with the lassen chip anyway... */
 r_if
 c_cond
 (paren
@@ -3004,8 +2994,8 @@ id|lp-&gt;mode
 op_eq
 l_int|1
 )paren
-multiline_comment|/* busmaster */
 (brace
+multiline_comment|/* busmaster */
 multiline_comment|/* Get physically continous memory for TX &amp; RX PDLs    */
 r_if
 c_cond
@@ -3120,7 +3110,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Initialise the card. */
-multiline_comment|/* (I&squot;m not really sure if it&squot;s a good idea to do this during probing, but &n;   * like this it&squot;s assured that the lan connection type can be sensed&n;   * correctly)&n;   */
+multiline_comment|/* (I&squot;m not really sure if it&squot;s a good idea to do this during probing, but &n;&t; * like this it&squot;s assured that the lan connection type can be sensed&n;&t; * correctly)&n;&t; */
 id|hp100_hwinit
 c_func
 (paren
@@ -3209,8 +3199,8 @@ id|lp-&gt;mode
 op_eq
 l_int|2
 )paren
-multiline_comment|/* memory mapped */
 (brace
+multiline_comment|/* memory mapped */
 id|printk
 c_func
 (paren
@@ -3336,7 +3326,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-"&f;"
 multiline_comment|/* This procedure puts the card into a stable init state */
 DECL|function|hp100_hwinit
 r_static
@@ -3578,8 +3567,8 @@ multiline_comment|/* registers had not been changed, a reload of the eeprom */
 multiline_comment|/* would move the adapter to the address stored in eeprom */
 multiline_comment|/* TODO: Code to implement. */
 multiline_comment|/* Until here it was code from HWdiscover procedure. */
-multiline_comment|/* Next comes code from mmuinit procedure of SCO BM driver which is&n;   * called from HWconfigure in the SCO driver.  */
-multiline_comment|/* Initialise MMU, eventually switch on Busmaster Mode, initialise &n;   * multicast filter...&n;   */
+multiline_comment|/* Next comes code from mmuinit procedure of SCO BM driver which is&n;&t; * called from HWconfigure in the SCO driver.  */
+multiline_comment|/* Initialise MMU, eventually switch on Busmaster Mode, initialise &n;&t; * multicast filter...&n;&t; */
 id|hp100_mmuinit
 c_func
 (paren
@@ -3611,7 +3600,6 @@ id|lp-&gt;lan_type
 op_ne
 id|HP100_LAN_10
 )paren
-(brace
 id|hp100_login_to_vg_hub
 c_func
 (paren
@@ -3620,7 +3608,6 @@ comma
 id|FALSE
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* relogin */
 )brace
 "&f;"
@@ -3729,7 +3716,7 @@ id|IRQ_STATUS
 )paren
 suffix:semicolon
 multiline_comment|/* ack IRQ */
-multiline_comment|/*&n;   * Enable Hardware &n;   * - Clear Debug En, Rx Hdr Pipe, EE En, I/O En, Fake Int and Intr En&n;   * - Set Tri-State Int, Bus Master Rd/Wr, and Mem Map Disable&n;   * - Clear Priority, Advance Pkt and Xmit Cmd&n;   */
+multiline_comment|/*&n;&t; * Enable Hardware &n;&t; * - Clear Debug En, Rx Hdr Pipe, EE En, I/O En, Fake Int and Intr En&n;&t; * - Set Tri-State Int, Bus Master Rd/Wr, and Mem Map Disable&n;&t; * - Clear Priority, Advance Pkt and Xmit Cmd&n;&t; */
 id|hp100_outw
 c_func
 (paren
@@ -3769,8 +3756,8 @@ id|lp-&gt;mode
 op_eq
 l_int|1
 )paren
-multiline_comment|/* busmaster */
 (brace
+multiline_comment|/* busmaster */
 id|hp100_outw
 c_func
 (paren
@@ -3794,8 +3781,8 @@ id|lp-&gt;mode
 op_eq
 l_int|2
 )paren
-multiline_comment|/* memory mapped */
 (brace
+multiline_comment|/* memory mapped */
 id|hp100_outw
 c_func
 (paren
@@ -3847,8 +3834,8 @@ id|lp-&gt;mode
 op_eq
 l_int|3
 )paren
-multiline_comment|/* i/o mapped mode */
 (brace
+multiline_comment|/* i/o mapped mode */
 id|hp100_outw
 c_func
 (paren
@@ -3886,7 +3873,7 @@ comma
 id|EARLYTXCFG
 )paren
 suffix:semicolon
-multiline_comment|/*&n;   * Enable Bus Master mode&n;   */
+multiline_comment|/*&n;&t; * Enable Bus Master mode&n;&t; */
 r_if
 c_cond
 (paren
@@ -3894,8 +3881,8 @@ id|lp-&gt;mode
 op_eq
 l_int|1
 )paren
-multiline_comment|/* busmaster */
 (brace
+multiline_comment|/* busmaster */
 multiline_comment|/* Experimental: Set some PCI configuration bits */
 id|hp100_page
 c_func
@@ -3976,7 +3963,6 @@ op_eq
 id|HP100_CHIPID_SHASTA
 )paren
 )paren
-(brace
 id|hp100_orb
 c_func
 (paren
@@ -3985,7 +3971,6 @@ comma
 id|BM
 )paren
 suffix:semicolon
-)brace
 id|hp100_orb
 c_func
 (paren
@@ -3996,8 +3981,8 @@ id|BM
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* not busmaster */
 (brace
+multiline_comment|/* not busmaster */
 id|hp100_page
 c_func
 (paren
@@ -4014,7 +3999,7 @@ id|BM
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   * Divide card memory into regions for Rx, Tx and, if non-ETR chip, PDLs&n;   */
+multiline_comment|/*&n;&t; * Divide card memory into regions for Rx, Tx and, if non-ETR chip, PDLs&n;&t; */
 id|hp100_page
 c_func
 (paren
@@ -4028,8 +4013,8 @@ id|lp-&gt;mode
 op_eq
 l_int|1
 )paren
-multiline_comment|/* only needed for Busmaster */
 (brace
+multiline_comment|/* only needed for Busmaster */
 r_int
 id|xmit_stop
 comma
@@ -4054,7 +4039,7 @@ id|HP100_CHIPID_SHASTA
 r_int
 id|pdl_stop
 suffix:semicolon
-multiline_comment|/*&n;           * Each pdl is 508 bytes long. (63 frags * 4 bytes for address and&n;           * 4 bytes for header). We will leave NUM_RXPDLS * 508 (rounded&n;           * to the next higher 1k boundary) bytes for the rx-pdl&squot;s&n;&t;   * Note: For non-etr chips the transmit stop register must be&n;&t;   * programmed on a 1k boundary, i.e. bits 9:0 must be zero. &n;&t;   */
+multiline_comment|/*&n;&t;&t;&t; * Each pdl is 508 bytes long. (63 frags * 4 bytes for address and&n;&t;&t;&t; * 4 bytes for header). We will leave NUM_RXPDLS * 508 (rounded&n;&t;&t;&t; * to the next higher 1k boundary) bytes for the rx-pdl&squot;s&n;&t;&t;&t; * Note: For non-etr chips the transmit stop register must be&n;&t;&t;&t; * programmed on a 1k boundary, i.e. bits 9:0 must be zero. &n;&t;&t;&t; */
 id|pdl_stop
 op_assign
 id|lp-&gt;memory_size
@@ -4123,8 +4108,8 @@ suffix:semicolon
 macro_line|#endif
 )brace
 r_else
-multiline_comment|/* ETR chip (Lassen) in busmaster mode */
 (brace
+multiline_comment|/* ETR chip (Lassen) in busmaster mode */
 id|xmit_stop
 op_assign
 (paren
@@ -4199,8 +4184,8 @@ suffix:semicolon
 macro_line|#endif
 )brace
 r_else
-multiline_comment|/* Slave modes (memory mapped and programmed io)  */
 (brace
+multiline_comment|/* Slave modes (memory mapped and programmed io)  */
 id|hp100_outw
 c_func
 (paren
@@ -4382,7 +4367,6 @@ c_cond
 (paren
 id|lp-&gt;priority_tx
 )paren
-(brace
 id|hp100_outb
 c_func
 (paren
@@ -4393,7 +4377,6 @@ comma
 id|OPTION_MSW
 )paren
 suffix:semicolon
-)brace
 r_else
 id|hp100_outb
 c_func
@@ -4425,14 +4408,12 @@ id|lp-&gt;mode
 op_eq
 l_int|1
 )paren
-(brace
 id|hp100_init_pdls
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Go to performance page and initalize isr and imr registers */
 id|hp100_page
 c_func
@@ -4459,7 +4440,6 @@ id|IRQ_STATUS
 suffix:semicolon
 multiline_comment|/* ack IRQ */
 )brace
-"&f;"
 multiline_comment|/*&n; *  open/close functions&n; */
 DECL|function|hp100_open
 r_static
@@ -4615,7 +4595,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-"&f;"
 multiline_comment|/* The close function is called when the interface is to be brought down */
 DECL|function|hp100_close
 r_static
@@ -4805,7 +4784,6 @@ l_int|0
 op_eq
 id|lp-&gt;page_vaddr_algn
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -4814,7 +4792,6 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-)brace
 r_else
 (brace
 multiline_comment|/* pageptr shall point into the DMA accessible memory region  */
@@ -4844,9 +4821,7 @@ id|ringptr
 op_assign
 id|lp-&gt;rxrhead
 op_assign
-id|lp
-op_member_access_from_pointer
-id|rxrtail
+id|lp-&gt;rxrtail
 op_assign
 op_amp
 (paren
@@ -5018,7 +4993,6 @@ op_amp
 l_int|0xf
 )paren
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -5032,7 +5006,6 @@ r_int
 id|pdlptr
 )paren
 suffix:semicolon
-)brace
 id|ringptr-&gt;pdl
 op_assign
 id|pdlptr
@@ -5057,7 +5030,7 @@ op_star
 )paren
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* &n;   * Write address and length of first PDL Fragment (which is used for&n;   * storing the RX-Header&n;   * We use the 4 bytes _before_ the PDH in the pdl memory area to &n;   * store this information. (PDH is at offset 0x04)&n;   */
+multiline_comment|/* &n;&t; * Write address and length of first PDL Fragment (which is used for&n;&t; * storing the RX-Header&n;&t; * We use the 4 bytes _before_ the PDH in the pdl memory area to &n;&t; * store this information. (PDH is at offset 0x04)&n;&t; */
 multiline_comment|/* Note that pdlptr+1 and not pdlptr is the pointer to the PDH */
 op_star
 (paren
@@ -5090,6 +5063,7 @@ r_return
 (paren
 (paren
 (paren
+(paren
 id|MAX_RX_FRAG
 op_star
 l_int|2
@@ -5104,6 +5078,7 @@ l_int|4
 )paren
 op_star
 l_int|4
+)paren
 suffix:semicolon
 )brace
 DECL|function|hp100_init_txpdl
@@ -5144,7 +5119,6 @@ op_amp
 l_int|0xf
 )paren
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -5158,7 +5132,6 @@ r_int
 id|pdlptr
 )paren
 suffix:semicolon
-)brace
 id|ringptr-&gt;pdl
 op_assign
 id|pdlptr
@@ -5185,6 +5158,7 @@ r_return
 (paren
 (paren
 (paren
+(paren
 id|MAX_TX_FRAG
 op_star
 l_int|2
@@ -5199,9 +5173,9 @@ l_int|4
 )paren
 op_star
 l_int|4
+)paren
 suffix:semicolon
 )brace
-"&f;"
 multiline_comment|/*&n; * hp100_build_rx_pdl allocates an skb_buff of maximum size plus two bytes &n; * for possible odd word alignment rounding up to next dword and set PDL&n; * address for fragment#2 &n; * Returns: 0 if unable to allocate skb_buff&n; *          1 if successful&n; */
 DECL|function|hp100_build_rx_pdl
 r_static
@@ -5251,7 +5225,7 @@ id|dev-&gt;name
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Allocate skb buffer of maximum size */
-multiline_comment|/* Note: This depends on the alloc_skb functions allocating more &n;   * space than requested, i.e. aligning to 16bytes */
+multiline_comment|/* Note: This depends on the alloc_skb functions allocating more &n;&t; * space than requested, i.e. aligning to 16bytes */
 id|ringptr-&gt;skb
 op_assign
 id|dev_alloc_skb
@@ -5280,7 +5254,7 @@ op_ne
 id|ringptr-&gt;skb
 )paren
 (brace
-multiline_comment|/* &n;       * Reserve 2 bytes at the head of the buffer to land the IP header&n;       * on a long word boundary (According to the Network Driver section&n;       * in the Linux KHG, this should help to increase performance.)&n;       */
+multiline_comment|/* &n;&t;&t; * Reserve 2 bytes at the head of the buffer to land the IP header&n;&t;&t; * on a long word boundary (According to the Network Driver section&n;&t;&t; * in the Linux KHG, this should help to increase performance.)&n;&t;&t; */
 id|skb_reserve
 c_func
 (paren
@@ -5308,7 +5282,7 @@ id|MAX_ETHER_SIZE
 )paren
 suffix:semicolon
 multiline_comment|/* ringptr-&gt;pdl points to the beginning of the PDL, i.e. the PDH */
-multiline_comment|/* Note: 1st Fragment is used for the 4 byte packet status&n;       * (receive header). Its PDL entries are set up by init_rxpdl. So &n;       * here we only have to set up the PDL fragment entries for the data&n;       * part. Those 4 bytes will be stored in the DMA memory region &n;       * directly before the PDL. &n;       */
+multiline_comment|/* Note: 1st Fragment is used for the 4 byte packet status&n;&t;&t; * (receive header). Its PDL entries are set up by init_rxpdl. So &n;&t;&t; * here we only have to set up the PDL fragment entries for the data&n;&t;&t; * part. Those 4 bytes will be stored in the DMA memory region &n;&t;&t; * directly before the PDL. &n;&t;&t; */
 macro_line|#ifdef HP100_DEBUG_BM
 id|printk
 c_func
@@ -5397,7 +5371,6 @@ suffix:semicolon
 id|p
 op_increment
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -5417,14 +5390,15 @@ op_star
 id|p
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* else: */
-multiline_comment|/* alloc_skb failed (no memory) -&gt; still can receive the header&n;   * fragment into PDL memory. make PDL safe by clearing msgptr and&n;   * making the PDL only 1 fragment (i.e. the 4 byte packet status)&n;   */
+multiline_comment|/* alloc_skb failed (no memory) -&gt; still can receive the header&n;&t; * fragment into PDL memory. make PDL safe by clearing msgptr and&n;&t; * making the PDL only 1 fragment (i.e. the 4 byte packet status)&n;&t; */
 macro_line|#ifdef HP100_DEBUG_BM
 id|printk
 c_func
@@ -5449,10 +5423,11 @@ l_int|0x00010000
 suffix:semicolon
 multiline_comment|/* PDH: Count=1 Fragment */
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
-"&f;"
 multiline_comment|/*&n; *  hp100_rxfill - attempt to fill the Rx Ring will empty skb&squot;s&n; *&n; * Makes assumption that skb&squot;s are always contiguous memory areas and&n; * therefore PDLs contain only 2 physical fragments.&n; * -  While the number of Rx PDLs with buffers is less than maximum&n; *      a.  Get a maximum packet size skb&n; *      b.  Put the physical address of the buffer into the PDL.&n; *      c.  Output physical address of PDL to adapter.&n; */
 DECL|function|hp100_rxfill
 r_static
@@ -5519,7 +5494,7 @@ OL
 id|MAX_RX_PDL
 )paren
 (brace
-multiline_comment|/*&n;      ** Attempt to get a buffer and build a Rx PDL.&n;      */
+multiline_comment|/*&n;&t;&t;   ** Attempt to get a buffer and build a Rx PDL.&n;&t;&t; */
 id|ringptr
 op_assign
 id|lp-&gt;rxrtail
@@ -5595,7 +5570,6 @@ id|ringptr-&gt;next
 suffix:semicolon
 )brace
 )brace
-"&f;"
 multiline_comment|/*&n; * BM_shutdown - shutdown bus mastering and leave chip in reset state&n; */
 DECL|function|hp100_BM_shutdown
 r_static
@@ -5721,7 +5695,7 @@ id|HP100_HW_RST
 )paren
 )paren
 (brace
-multiline_comment|/* Wait 1.3ms (10Mb max packet time) to ensure MAC is idle so&n;       * MMU pointers will not be reset out from underneath&n;       */
+multiline_comment|/* Wait 1.3ms (10Mb max packet time) to ensure MAC is idle so&n;&t;&t; * MMU pointers will not be reset out from underneath&n;&t;&t; */
 id|hp100_page
 c_func
 (paren
@@ -5766,10 +5740,8 @@ op_or
 id|HP100_RX_IDLE
 )paren
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Shutdown algorithm depends on the generation of Cascade */
 r_if
@@ -5835,7 +5807,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Shasta or Rainier Shutdown/Reset */
-multiline_comment|/* To ensure all bus master inloading activity has ceased,&n;           * wait for no Rx PDAs or no Rx packets on card. &n;           */
+multiline_comment|/* To ensure all bus master inloading activity has ceased,&n;&t;&t;&t; * wait for no Rx PDAs or no Rx packets on card. &n;&t;&t;&t; */
 id|hp100_page
 c_func
 (paren
@@ -5893,7 +5865,6 @@ id|time
 op_ge
 l_int|10000
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -5902,8 +5873,7 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* To ensure all bus master outloading activity has ceased,&n;           * wait until the Tx PDA count goes to zero or no more Tx space&n;           * available in the Tx region of the card. &n;           */
+multiline_comment|/* To ensure all bus master outloading activity has ceased,&n;&t;&t;&t; * wait until the Tx PDA count goes to zero or no more Tx space&n;&t;&t;&t; * available in the Tx region of the card. &n;&t;&t;&t; */
 multiline_comment|/* 100 ms timeout */
 r_for
 c_loop
@@ -5986,7 +5956,6 @@ suffix:semicolon
 multiline_comment|/* hp100_outw( HP100_BM_READ | HP100_BM_WRITE | HP100_RESET_HB, OPTION_LSW ); */
 multiline_comment|/* Busmaster mode should be shut down now. */
 )brace
-"&f;"
 multiline_comment|/* &n; *  transmit functions&n; */
 multiline_comment|/* tx function for busmaster mode */
 DECL|function|hp100_start_xmit_bm
@@ -6117,8 +6086,8 @@ id|lp-&gt;lan_type
 OL
 l_int|0
 )paren
-multiline_comment|/* no LAN type detected yet? */
 (brace
+multiline_comment|/* no LAN type detected yet? */
 id|hp100_stop_interface
 c_func
 (paren
@@ -6197,8 +6166,8 @@ id|lp-&gt;hub_status
 OL
 l_int|0
 )paren
-multiline_comment|/* we have a 100Mb/s adapter but it isn&squot;t connected to hub */
 (brace
+multiline_comment|/* we have a 100Mb/s adapter but it isn&squot;t connected to hub */
 id|printk
 c_func
 (paren
@@ -6233,6 +6202,7 @@ suffix:semicolon
 r_else
 (brace
 id|spin_lock_irqsave
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
@@ -6260,6 +6230,7 @@ c_func
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
@@ -6290,8 +6261,8 @@ id|lp-&gt;lan_type
 op_ne
 id|i
 )paren
-multiline_comment|/* cable change! */
 (brace
+multiline_comment|/* cable change! */
 multiline_comment|/* it&squot;s very hard - all network setting must be changed!!! */
 id|printk
 c_func
@@ -6385,8 +6356,9 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   * we have to turn int&squot;s off before modifying this, otherwise&n;   * a tx_pdl_cleanup could occur at the same time&n;   */
+multiline_comment|/*&n;&t; * we have to turn int&squot;s off before modifying this, otherwise&n;&t; * a tx_pdl_cleanup could occur at the same time&n;&t; */
 id|spin_lock_irqsave
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
@@ -6471,8 +6443,8 @@ id|i
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* Lassen */
 (brace
+multiline_comment|/* Lassen */
 multiline_comment|/* In the PDL, don&squot;t use the padded size but the real packet size: */
 id|ringptr-&gt;pdl
 (braket
@@ -6497,6 +6469,7 @@ id|lp-&gt;txrcommit
 op_increment
 suffix:semicolon
 id|spin_unlock_irqrestore
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
@@ -6593,7 +6566,6 @@ id|donecount
 OG
 id|MAX_TX_PDL
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -6602,7 +6574,6 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 r_for
 c_loop
@@ -6664,7 +6635,6 @@ op_decrement
 suffix:semicolon
 )brace
 )brace
-"&f;"
 multiline_comment|/* tx function for slave modes */
 DECL|function|hp100_start_xmit
 r_static
@@ -6759,8 +6729,8 @@ id|lp-&gt;lan_type
 OL
 l_int|0
 )paren
-multiline_comment|/* no LAN type detected yet? */
 (brace
+multiline_comment|/* no LAN type detected yet? */
 id|hp100_stop_interface
 c_func
 (paren
@@ -6921,8 +6891,8 @@ id|lp-&gt;hub_status
 OL
 l_int|0
 )paren
-multiline_comment|/* we have a 100Mb/s adapter but it isn&squot;t connected to hub */
 (brace
+multiline_comment|/* we have a 100Mb/s adapter but it isn&squot;t connected to hub */
 id|printk
 c_func
 (paren
@@ -6957,6 +6927,7 @@ suffix:semicolon
 r_else
 (brace
 id|spin_lock_irqsave
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
@@ -6984,6 +6955,7 @@ c_func
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
@@ -7014,8 +6986,8 @@ id|lp-&gt;lan_type
 op_ne
 id|i
 )paren
-multiline_comment|/* cable change! */
 (brace
+multiline_comment|/* cable change! */
 multiline_comment|/* it&squot;s very hard - all network setting must be changed!!! */
 id|printk
 c_func
@@ -7152,6 +7124,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 id|spin_lock_irqsave
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
@@ -7172,7 +7145,7 @@ c_func
 id|IRQ_STATUS
 )paren
 suffix:semicolon
-multiline_comment|/* Ack / clear the interrupt TX_COMPLETE interrupt - this interrupt is set&n;   * when the current packet being transmitted on the wire is completed. */
+multiline_comment|/* Ack / clear the interrupt TX_COMPLETE interrupt - this interrupt is set&n;&t; * when the current packet being transmitted on the wire is completed. */
 id|hp100_outw
 c_func
 (paren
@@ -7244,15 +7217,15 @@ id|lp-&gt;mode
 op_eq
 l_int|2
 )paren
-multiline_comment|/* memory mapped */
 (brace
+multiline_comment|/* memory mapped */
 r_if
 c_cond
 (paren
 id|lp-&gt;mem_ptr_virt
 )paren
-multiline_comment|/* high pci memory was remapped */
 (brace
+multiline_comment|/* high pci memory was remapped */
 multiline_comment|/* Note: The J2585B needs alignment to 32bits here!  */
 id|memcpy_toio
 c_func
@@ -7331,8 +7304,8 @@ suffix:semicolon
 )brace
 )brace
 r_else
-multiline_comment|/* programmed i/o */
 (brace
+multiline_comment|/* programmed i/o */
 id|outsl
 c_func
 (paren
@@ -7416,6 +7389,7 @@ c_func
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
@@ -7573,7 +7547,6 @@ op_increment
 (brace
 macro_line|#ifdef HP100_DEBUG_RX
 id|printk
-c_func
 (paren
 l_string|&quot;hp100: %s: rx: busy, remaining packets = %d&bslash;n&quot;
 comma
@@ -7582,7 +7555,7 @@ comma
 id|packets
 )paren
 suffix:semicolon
-macro_line|#endif    
+macro_line|#endif
 )brace
 multiline_comment|/* First we get the header, which contains information about the */
 multiline_comment|/* actual length of the received packet. */
@@ -7593,8 +7566,8 @@ id|lp-&gt;mode
 op_eq
 l_int|2
 )paren
-multiline_comment|/* memory mapped mode */
 (brace
+multiline_comment|/* memory mapped mode */
 r_if
 c_cond
 (paren
@@ -7690,8 +7663,8 @@ id|skb
 op_eq
 l_int|NULL
 )paren
-multiline_comment|/* Not enough memory-&gt;drop packet */
 (brace
+multiline_comment|/* Not enough memory-&gt;drop packet */
 macro_line|#ifdef HP100_DEBUG
 id|printk
 c_func
@@ -7709,8 +7682,8 @@ op_increment
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* skb successfully allocated */
 (brace
+multiline_comment|/* skb successfully allocated */
 id|u_char
 op_star
 id|ptr
@@ -7937,7 +7910,6 @@ id|dev-&gt;name
 suffix:semicolon
 macro_line|#endif
 )brace
-"&f;"
 multiline_comment|/* &n; * Receive Function for Busmaster Mode&n; */
 DECL|function|hp100_rx_bm
 r_static
@@ -8017,7 +7989,7 @@ r_return
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* RX_PKT_CNT states how many PDLs are currently formatted and available to &n;     * the cards BM engine */
+multiline_comment|/* RX_PKT_CNT states how many PDLs are currently formatted and available to &n;&t;&t; * the cards BM engine */
 r_if
 c_cond
 (paren
@@ -8070,7 +8042,7 @@ id|RX_PDL
 )paren
 )paren
 (brace
-multiline_comment|/*&n;       * The packet was received into the pdl pointed to by lp-&gt;rxrhead (&n;       * the oldest pdl in the ring &n;       */
+multiline_comment|/*&n;&t;&t; * The packet was received into the pdl pointed to by lp-&gt;rxrhead (&n;&t;&t; * the oldest pdl in the ring &n;&t;&t; */
 multiline_comment|/* First we get the header, which contains information about the */
 multiline_comment|/* actual length of the received packet. */
 id|ptr
@@ -8317,14 +8289,12 @@ id|ptr-&gt;skb
 op_ne
 l_int|NULL
 )paren
-(brace
 id|dev_kfree_skb_any
 c_func
 (paren
 id|ptr-&gt;skb
 )paren
 suffix:semicolon
-)brace
 id|lp-&gt;stats.rx_errors
 op_increment
 suffix:semicolon
@@ -8383,7 +8353,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-"&f;"
 multiline_comment|/*&n; *  statistics&n; */
 DECL|function|hp100_get_stats
 r_static
@@ -8430,6 +8399,7 @@ id|TRACE
 suffix:semicolon
 macro_line|#endif
 id|spin_lock_irqsave
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
@@ -8455,6 +8425,7 @@ c_func
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
@@ -8671,6 +8642,7 @@ id|dev-&gt;name
 suffix:semicolon
 macro_line|#endif
 id|spin_lock_irqsave
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
@@ -8710,6 +8682,7 @@ id|PERFORMANCE
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
@@ -8773,6 +8746,7 @@ id|dev-&gt;name
 suffix:semicolon
 macro_line|#endif
 id|spin_lock_irqsave
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
@@ -8858,13 +8832,11 @@ op_assign
 id|HP100_MAC1MODE5
 suffix:semicolon
 multiline_comment|/* me, broadcasts and all multicasts */
-macro_line|#ifdef HP100_MULTICAST_FILTER&t;&t;/* doesn&squot;t work!!! */
+macro_line|#ifdef HP100_MULTICAST_FILTER&t;/* doesn&squot;t work!!! */
 r_if
 c_cond
 (paren
-id|dev
-op_member_access_from_pointer
-id|flags
+id|dev-&gt;flags
 op_amp
 id|IFF_ALLMULTI
 )paren
@@ -8917,16 +8889,12 @@ c_func
 (paren
 l_string|&quot;hp100: %s: computing hash filter - mc_count = %i&bslash;n&quot;
 comma
-id|dev
-op_member_access_from_pointer
-id|name
+id|dev-&gt;name
 comma
-id|dev
-op_member_access_from_pointer
-id|mc_count
+id|dev-&gt;mc_count
 )paren
 suffix:semicolon
-macro_line|#endif 
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -8936,31 +8904,23 @@ l_int|0
 comma
 id|dmi
 op_assign
-id|dev
-op_member_access_from_pointer
-id|mc_list
+id|dev-&gt;mc_list
 suffix:semicolon
 id|i
 OL
-id|dev
-op_member_access_from_pointer
-id|mc_count
+id|dev-&gt;mc_count
 suffix:semicolon
 id|i
 op_increment
 comma
 id|dmi
 op_assign
-id|dmi
-op_member_access_from_pointer
-id|next
+id|dmi-&gt;next
 )paren
 (brace
 id|addrs
 op_assign
-id|dmi
-op_member_access_from_pointer
-id|dmi_addr
+id|dmi-&gt;dmi_addr
 suffix:semicolon
 r_if
 c_cond
@@ -8974,17 +8934,15 @@ l_int|0x01
 op_eq
 l_int|0x01
 )paren
-multiline_comment|/* multicast address? */
 (brace
+multiline_comment|/* multicast address? */
 macro_line|#ifdef HP100_DEBUG
 id|printk
 c_func
 (paren
 l_string|&quot;hp100: %s: multicast = %02x:%02x:%02x:%02x:%02x:%02x, &quot;
 comma
-id|dev
-op_member_access_from_pointer
-id|name
+id|dev-&gt;name
 comma
 id|addrs
 (braket
@@ -9017,7 +8975,7 @@ l_int|5
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif 
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -9263,7 +9221,7 @@ l_int|7
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif 
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9281,7 +9239,7 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif 
+macro_line|#endif
 id|lp-&gt;hub_status
 op_assign
 id|hp100_login_to_vg_hub
@@ -9430,7 +9388,7 @@ l_int|7
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif 
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9448,7 +9406,7 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif 
+macro_line|#endif
 id|lp-&gt;hub_status
 op_assign
 id|hp100_login_to_vg_hub
@@ -9497,6 +9455,7 @@ c_func
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
@@ -9505,7 +9464,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-"&f;"
 multiline_comment|/*&n; *  hardware interrupt handling&n; */
 DECL|function|hp100_interrupt
 r_static
@@ -9570,6 +9528,7 @@ op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
 id|spin_lock
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
@@ -9647,9 +9606,10 @@ id|val
 op_eq
 l_int|0
 )paren
-multiline_comment|/* might be a shared interrupt */
 (brace
+multiline_comment|/* might be a shared interrupt */
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
@@ -9665,7 +9625,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* We&squot;re only interested in those interrupts we really enabled. */
 multiline_comment|/* val &amp;= hp100_inw( IRQ_MASK ); */
-multiline_comment|/* &n;   * RX_PDL_FILL_COMPL is set whenever a RX_PDL has been executed. A RX_PDL &n;   * is considered executed whenever the RX_PDL data structure is no longer &n;   * needed.&n;   */
+multiline_comment|/* &n;&t; * RX_PDL_FILL_COMPL is set whenever a RX_PDL has been executed. A RX_PDL &n;&t; * is considered executed whenever the RX_PDL data structure is no longer &n;&t; * needed.&n;&t; */
 r_if
 c_cond
 (paren
@@ -9681,14 +9641,12 @@ id|lp-&gt;mode
 op_eq
 l_int|1
 )paren
-(brace
 id|hp100_rx_bm
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-)brace
 r_else
 (brace
 id|printk
@@ -9701,7 +9659,7 @@ id|dev-&gt;name
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* &n;   * The RX_PACKET interrupt is set, when the receive packet counter is&n;   * non zero. We use this interrupt for receiving in slave mode. In&n;   * busmaster mode, we use it to make sure we did not miss any rx_pdl_fill&n;   * interrupts. If rx_pdl_fill_compl is not set and rx_packet is set, then&n;   * we somehow have missed a rx_pdl_fill_compl interrupt.&n;   */
+multiline_comment|/* &n;&t; * The RX_PACKET interrupt is set, when the receive packet counter is&n;&t; * non zero. We use this interrupt for receiving in slave mode. In&n;&t; * busmaster mode, we use it to make sure we did not miss any rx_pdl_fill&n;&t; * interrupts. If rx_pdl_fill_compl is not set and rx_packet is set, then&n;&t; * we somehow have missed a rx_pdl_fill_compl interrupt.&n;&t; */
 r_if
 c_cond
 (paren
@@ -9709,8 +9667,8 @@ id|val
 op_amp
 id|HP100_RX_PACKET
 )paren
-multiline_comment|/* Receive Packet Counter is non zero */
 (brace
+multiline_comment|/* Receive Packet Counter is non zero */
 r_if
 c_cond
 (paren
@@ -9718,7 +9676,6 @@ id|lp-&gt;mode
 op_ne
 l_int|1
 )paren
-(brace
 multiline_comment|/* non busmaster */
 id|hp100_rx
 c_func
@@ -9726,7 +9683,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -9748,7 +9704,7 @@ id|dev
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;   * Ack. that we have noticed the interrupt and thereby allow next one.&n;   * Note that this is now done after the slave rx function, since first&n;   * acknowledging and then setting ADV_NXT_PKT caused an extra interrupt&n;   * on the J2573.&n;   */
+multiline_comment|/*&n;&t; * Ack. that we have noticed the interrupt and thereby allow next one.&n;&t; * Note that this is now done after the slave rx function, since first&n;&t; * acknowledging and then setting ADV_NXT_PKT caused an extra interrupt&n;&t; * on the J2573.&n;&t; */
 id|hp100_outw
 c_func
 (paren
@@ -9757,7 +9713,7 @@ comma
 id|IRQ_STATUS
 )paren
 suffix:semicolon
-multiline_comment|/*&n;   * RX_ERROR is set when a packet is dropped due to no memory resources on &n;   * the card or when a RCV_ERR occurs. &n;   * TX_ERROR is set when a TX_ABORT condition occurs in the MAC-&gt;exists  &n;   * only in the 802.3 MAC and happens when 16 collisions occur during a TX &n;   */
+multiline_comment|/*&n;&t; * RX_ERROR is set when a packet is dropped due to no memory resources on &n;&t; * the card or when a RCV_ERR occurs. &n;&t; * TX_ERROR is set when a TX_ABORT condition occurs in the MAC-&gt;exists  &n;&t; * only in the 802.3 MAC and happens when 16 collisions occur during a TX &n;&t; */
 r_if
 c_cond
 (paren
@@ -9808,7 +9764,7 @@ id|dev
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* &n;   * RX_PDA_ZERO is set when the PDA count goes from non-zero to zero. &n;   */
+multiline_comment|/* &n;&t; * RX_PDA_ZERO is set when the PDA count goes from non-zero to zero. &n;&t; */
 r_if
 c_cond
 (paren
@@ -9832,7 +9788,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* &n;   * HP100_TX_COMPLETE interrupt occurs when packet transmitted on wire &n;   * is completed &n;   */
+multiline_comment|/* &n;&t; * HP100_TX_COMPLETE interrupt occurs when packet transmitted on wire &n;&t; * is completed &n;&t; */
 r_if
 c_cond
 (paren
@@ -9856,7 +9812,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* &n;   * MISC_ERROR is set when either the LAN link goes down or a detected&n;   * bus error occurs.&n;   */
+multiline_comment|/* &n;&t; * MISC_ERROR is set when either the LAN link goes down or a detected&n;&t; * bus error occurs.&n;&t; */
 r_if
 c_cond
 (paren
@@ -9864,11 +9820,10 @@ id|val
 op_amp
 id|HP100_MISC_ERROR
 )paren
-multiline_comment|/* New for J2585B */
 (brace
+multiline_comment|/* New for J2585B */
 macro_line|#ifdef HP100_DEBUG_IRQ
 id|printk
-c_func
 (paren
 l_string|&quot;hp100: %s: Misc. Error Interrupt - Check cabling.&bslash;n&quot;
 comma
@@ -9905,6 +9860,7 @@ id|dev
 suffix:semicolon
 )brace
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
@@ -9916,7 +9872,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-"&f;"
 multiline_comment|/*&n; *  some misc functions&n; */
 DECL|function|hp100_start_interface
 r_static
@@ -9970,6 +9925,7 @@ id|dev-&gt;name
 suffix:semicolon
 macro_line|#endif
 id|spin_lock_irqsave
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
@@ -10109,8 +10065,8 @@ id|lp-&gt;mode
 op_eq
 l_int|1
 )paren
-multiline_comment|/* busmaster mode */
 (brace
+multiline_comment|/* busmaster mode */
 id|hp100_outw
 c_func
 (paren
@@ -10155,8 +10111,9 @@ id|IRQ_MASK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Note : before hp100_set_multicast_list(), because it will play with&n;   * spinlock itself... Jean II */
+multiline_comment|/* Note : before hp100_set_multicast_list(), because it will play with&n;&t; * spinlock itself... Jean II */
 id|spin_unlock_irqrestore
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
@@ -10172,7 +10129,6 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-"&f;"
 DECL|function|hp100_stop_interface
 r_static
 r_void
@@ -10359,7 +10315,6 @@ id|PERFORMANCE
 suffix:semicolon
 )brace
 )brace
-"&f;"
 DECL|function|hp100_load_eeprom
 r_static
 r_void
@@ -10462,7 +10417,6 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
-"&f;"
 multiline_comment|/*  Sense connection status.&n; *  return values: LAN_10  - Connected to 10Mbit/s network&n; *                 LAN_100 - Connected to 100Mbit/s network&n; *                 LAN_ERR - not connected or 100Mbit/s Hub down&n; */
 DECL|function|hp100_sense_lan
 r_static
@@ -10569,8 +10523,8 @@ id|val_10
 op_amp
 id|HP100_AUI_ST
 )paren
-multiline_comment|/* have we BNC or AUI onboard? */
 (brace
+multiline_comment|/* have we BNC or AUI onboard? */
 id|val_10
 op_or_assign
 id|HP100_AUI_SEL
@@ -10642,7 +10596,6 @@ r_return
 id|HP100_LAN_ERR
 suffix:semicolon
 )brace
-"&f;"
 DECL|function|hp100_down_vg_link
 r_static
 r_int
@@ -10730,6 +10683,29 @@ id|HP100_LINK_CABLE_ST
 )paren
 r_break
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 )brace
 r_while
 c_loop
@@ -10758,7 +10734,7 @@ multiline_comment|/* no signal-&gt;no logout */
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* Drop the VG Link by clearing the link up cmd and load addr.*/
+multiline_comment|/* Drop the VG Link by clearing the link up cmd and load addr. */
 id|hp100_andb
 c_func
 (paren
@@ -10809,6 +10785,29 @@ id|HP100_LINK_UP_ST
 )paren
 r_break
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 )brace
 r_while
 c_loop
@@ -10821,9 +10820,7 @@ comma
 id|jiffies
 )paren
 )paren
-(brace
 suffix:semicolon
-)brace
 macro_line|#ifdef HP100_DEBUG
 r_if
 c_cond
@@ -10979,8 +10976,29 @@ op_amp
 id|HP100_MAC_SEL_ST
 )paren
 )paren
-(brace
 r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -10995,9 +11013,7 @@ comma
 id|jiffies
 )paren
 )paren
-(brace
 suffix:semicolon
-)brace
 id|hp100_orb
 c_func
 (paren
@@ -11047,6 +11063,29 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 )brace
 r_while
 c_loop
@@ -11100,6 +11139,29 @@ suffix:semicolon
 multiline_comment|/* This seems to take a while.... */
 r_do
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 )brace
 r_while
 c_loop
@@ -11117,7 +11179,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-"&f;"
 DECL|function|hp100_login_to_vg_hub
 r_static
 r_int
@@ -11180,7 +11241,7 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Initiate a login sequence iff VG MAC is enabled and either Load Address&n;   * bit is zero or the force relogin flag is set (e.g. due to MAC address or&n;   * promiscuous mode change)&n;   */
+multiline_comment|/* Initiate a login sequence iff VG MAC is enabled and either Load Address&n;&t; * bit is zero or the force relogin flag is set (e.g. due to MAC address or&n;&t; * promiscuous mode change)&n;&t; */
 id|hp100_page
 c_func
 (paren
@@ -11225,7 +11286,7 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Ensure VG Reset bit is 1 (i.e., do not reset)*/
+multiline_comment|/* Ensure VG Reset bit is 1 (i.e., do not reset) */
 id|hp100_orb
 c_func
 (paren
@@ -11251,7 +11312,6 @@ op_amp
 id|HP100_LINK_CABLE_ST
 )paren
 )paren
-(brace
 id|hp100_andb
 c_func
 (paren
@@ -11262,7 +11322,6 @@ l_int|10
 id|_LAN_CFG_2
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Drop the VG link by zeroing Link Up Command and Load Address  */
 id|hp100_andb
 c_func
@@ -11315,6 +11374,29 @@ id|HP100_LINK_UP_ST
 )paren
 r_break
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 )brace
 r_while
 c_loop
@@ -11354,7 +11436,6 @@ id|lp-&gt;chip
 op_eq
 id|HP100_CHIPID_LASSEN
 )paren
-(brace
 id|hp100_orw
 c_func
 (paren
@@ -11363,7 +11444,6 @@ comma
 id|TRAIN_REQUEST
 )paren
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -11376,7 +11456,7 @@ comma
 id|VG_LAN_CFG_2
 )paren
 suffix:semicolon
-multiline_comment|/* For ETR parts we need to reset the prom. bit in the training&n;&t;   * register, otherwise promiscious mode won&squot;t be disabled.&n;&t;   */
+multiline_comment|/* For ETR parts we need to reset the prom. bit in the training&n;&t;&t;&t; * register, otherwise promiscious mode won&squot;t be disabled.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -11404,7 +11484,6 @@ id|lp-&gt;chip
 op_eq
 id|HP100_CHIPID_LASSEN
 )paren
-(brace
 id|hp100_orb
 c_func
 (paren
@@ -11413,7 +11492,6 @@ comma
 id|TRAIN_REQUEST
 )paren
 suffix:semicolon
-)brace
 id|hp100_orb
 c_func
 (paren
@@ -11463,6 +11541,29 @@ id|HP100_LINK_CABLE_ST
 )paren
 r_break
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 )brace
 r_while
 c_loop
@@ -11497,13 +11598,12 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif  
+macro_line|#endif
 )brace
 r_else
 (brace
 macro_line|#ifdef HP100_DEBUG_TRAINING
 id|printk
-c_func
 (paren
 l_string|&quot;hp100: %s: HUB tones detected. Trying to train.&bslash;n&quot;
 comma
@@ -11555,6 +11655,29 @@ id|dev-&gt;name
 suffix:semicolon
 macro_line|#endif
 r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -11836,7 +11959,9 @@ op_amp
 id|HP100_LINK_UP_ST
 )paren
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 multiline_comment|/* login was ok */
 r_else
@@ -11867,7 +11992,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-"&f;"
 DECL|function|hp100_cascade_reset
 r_static
 r_void
@@ -11899,9 +12023,6 @@ id|hp100_private
 op_star
 )paren
 id|dev-&gt;priv
-suffix:semicolon
-r_int
-id|i
 suffix:semicolon
 macro_line|#ifdef HP100_DEBUG_B
 id|hp100_outw
@@ -11974,19 +12095,10 @@ suffix:semicolon
 multiline_comment|/* Wait for min. 300 ns */
 multiline_comment|/* we cant use jiffies here, because it may be */
 multiline_comment|/* that we have disabled the timer... */
-r_for
-c_loop
+id|udelay
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|0xffff
-suffix:semicolon
-id|i
-op_increment
+l_int|400
 )paren
 suffix:semicolon
 id|hp100_andb
@@ -12019,19 +12131,10 @@ comma
 id|OPTION_LSW
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|udelay
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|0xffff
-suffix:semicolon
-id|i
-op_increment
+l_int|400
 )paren
 suffix:semicolon
 id|hp100_page
@@ -12042,7 +12145,7 @@ id|PERFORMANCE
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef HP100_DEBUG&t;&t;
+macro_line|#ifdef HP100_DEBUG
 DECL|function|hp100_RegisterDump
 r_void
 id|hp100_RegisterDump
@@ -12225,30 +12328,55 @@ id|PERFORMANCE
 suffix:semicolon
 )brace
 macro_line|#endif
-"&f;"
 multiline_comment|/*&n; *  module section&n; */
 macro_line|#ifdef MODULE
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Jaroslav Kysela &lt;perex@suse.cz&gt;, &quot;
+l_string|&quot;Siegfried &bslash;&quot;Frieder&bslash;&quot; Loeffler (dg1sek) &lt;floeff@mathematik.uni-stuttgart.de&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;HP CASCADE Architecture Driver for 100VG-AnyLan Network Adapters&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Note: if you have more than five 100vg cards in your pc, feel free to&n; * increase this value &n; */
+DECL|macro|HP100_DEVICES
+mdefine_line|#define HP100_DEVICES 5
+multiline_comment|/*&n; * Note: to register three eisa or pci devices, use:&n; * option hp100 hp100_port=0,0,0&n; *        to register one card at io 0x280 as eth239, use:&n; * option hp100 hp100_port=0x280 hp100_name=eth239&n; */
 multiline_comment|/* Parameters set by insmod */
 DECL|variable|hp100_port
 r_static
 r_int
 id|hp100_port
 (braket
-l_int|5
+id|HP100_DEVICES
 )braket
 op_assign
 (brace
 l_int|0
 comma
+(braket
+l_int|1
+dot
+dot
+dot
+(paren
+id|HP100_DEVICES
 op_minus
 l_int|1
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
+)paren
+)braket
+op_assign
 op_minus
 l_int|1
 )brace
@@ -12258,16 +12386,22 @@ c_func
 (paren
 id|hp100_port
 comma
-l_string|&quot;1-5i&quot;
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|HP100_DEVICES
+)paren
+l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Allocate 5 string of length IFNAMSIZ, one string for each device */
+multiline_comment|/* Allocate HP100_DEVICES strings of length IFNAMSIZ, one string for each device */
 DECL|variable|hp100_name
 r_static
 r_char
 id|hp100_name
 (braket
-l_int|5
+id|HP100_DEVICES
 )braket
 (braket
 id|IFNAMSIZ
@@ -12285,13 +12419,19 @@ comma
 l_string|&quot;&quot;
 )brace
 suffix:semicolon
-multiline_comment|/* Allow insmod to write those 5 strings individually */
+multiline_comment|/* Allow insmod to write those HP100_DEVICES strings individually */
 id|MODULE_PARM
 c_func
 (paren
 id|hp100_name
 comma
-l_string|&quot;1-5c&quot;
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|HP100_DEVICES
+)paren
+l_string|&quot;c&quot;
 id|__MODULE_STRING
 c_func
 (paren
@@ -12307,7 +12447,7 @@ id|net_device
 op_star
 id|hp100_devlist
 (braket
-l_int|5
+id|HP100_DEVICES
 )braket
 suffix:semicolon
 DECL|function|release_dev
@@ -12405,11 +12545,11 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Note: if you have more than five 100vg cards in your pc, feel free to&n; * increase this value &n; */
-multiline_comment|/*&n; * Note: to register three eisa or pci devices, use:&n; * option hp100 hp100_port=0,0,0&n; *        to register one card at io 0x280 as eth239, use:&n; * option hp100 hp100_port=0x280 hp100_name=eth239&n; */
-DECL|function|init_module
+DECL|function|hp100_module_init
+r_static
 r_int
-id|init_module
+id|__init
+id|hp100_module_init
 c_func
 (paren
 r_void
@@ -12469,7 +12609,7 @@ op_logical_and
 (paren
 id|i
 OL
-l_int|5
+id|HP100_DEVICES
 )paren
 )paren
 (brace
@@ -12553,7 +12693,7 @@ id|hp100_name
 id|i
 )braket
 suffix:semicolon
-macro_line|#endif /* LINUX_VERSION_CODE &gt;= 0x020362 */
+macro_line|#endif&t;&t;&t;&t;/* LINUX_VERSION_CODE &gt;= 0x020362 */
 id|hp100_devlist
 (braket
 id|i
@@ -12667,9 +12807,11 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
+DECL|function|hp100_module_exit
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|hp100_module_exit
 c_func
 (paren
 r_void
@@ -12688,7 +12830,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|5
+id|HP100_DEVICES
 suffix:semicolon
 id|i
 op_increment
@@ -12708,7 +12850,6 @@ op_star
 )paren
 l_int|NULL
 )paren
-(brace
 id|release_dev
 c_func
 (paren
@@ -12716,8 +12857,16 @@ id|i
 )paren
 suffix:semicolon
 )brace
-)brace
-macro_line|#endif&t;&t;/* MODULE */
-"&f;"
+id|module_init
+c_func
+(paren
+id|hp100_module_init
+)paren
+id|module_exit
+c_func
+(paren
+id|hp100_module_exit
+)paren
+macro_line|#endif&t;&t;&t;&t;/* MODULE */
 multiline_comment|/*&n; * Local variables:&n; *  compile-command: &quot;gcc -D__KERNEL__ -I/usr/src/linux/net/inet -Wall -Wstrict-prototypes -O6 -m486 -c hp100.c&quot;&n; *  c-indent-level: 2&n; *  tab-width: 8&n; * End:&n; */
 eof

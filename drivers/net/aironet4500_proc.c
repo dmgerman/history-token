@@ -4318,4 +4318,10 @@ id|aironet_proc_exit
 suffix:semicolon
 macro_line|#endif 
 singleline_comment|// whole proc system styff
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

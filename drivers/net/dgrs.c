@@ -83,6 +83,12 @@ comma
 id|dgrs_pci_tbl
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *&t;Firmware.  Compiled separately for local compilation,&n; *&t;but #included for Linux distribution.&n; */
 macro_line|#ifndef NOFW
 macro_line|#include &quot;dgrs_firmware.c&quot;

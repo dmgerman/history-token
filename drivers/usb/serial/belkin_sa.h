@@ -2,6 +2,10 @@ multiline_comment|/*&n; * Definitions for Belkin USB Serial Adapter Driver&n; *&
 macro_line|#ifndef __LINUX_USB_SERIAL_BSA_H
 DECL|macro|__LINUX_USB_SERIAL_BSA_H
 mdefine_line|#define __LINUX_USB_SERIAL_BSA_H
+DECL|macro|BELKIN_DOCKSTATION_VID
+mdefine_line|#define BELKIN_DOCKSTATION_VID&t;0x050d&t;/* Vendor Id */
+DECL|macro|BELKIN_DOCKSTATION_PID
+mdefine_line|#define BELKIN_DOCKSTATION_PID&t;0x1203&t;/* Product Id */
 DECL|macro|BELKIN_SA_VID
 mdefine_line|#define BELKIN_SA_VID&t;0x050d&t;/* Vendor Id */
 DECL|macro|BELKIN_SA_PID

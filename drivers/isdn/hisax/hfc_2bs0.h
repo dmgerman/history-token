@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hfc_2bs0.h,v 1.3.6.1 2001/02/16 16:43:27 kai Exp $&n; *&n; *  specific defines for CCD&squot;s HFC 2BS0&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: hfc_2bs0.h,v 1.3.6.2 2001/09/23 22:24:47 kai Exp $&n; *&n; * specific defines for CCD&squot;s HFC 2BS0&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 DECL|macro|HFC_CTMT
 mdefine_line|#define HFC_CTMT&t;0xe0
 DECL|macro|HFC_CIRM

@@ -1,9 +1,5 @@
-multiline_comment|/*&n; * Copyright (C) 1996 Universidade de Lisboa&n; * &n; * Written by Pedro Roque Marques (roque@di.fc.ul.pt)&n; *&n; * This software may be used and distributed according to the terms of &n; * the GNU General Public License, incorporated herein by reference.&n; */
-multiline_comment|/*        &n; *        callbacks for the FSM&n; */
+multiline_comment|/*&n; * Callbacks for the FSM&n; *&n; * Copyright (C) 1996 Universidade de Lisboa&n; * &n; * Written by Pedro Roque Marques (roque@di.fc.ul.pt)&n; *&n; * This software may be used and distributed according to the terms of &n; * the GNU General Public License, incorporated herein by reference.&n; */
 multiline_comment|/*&n; * Fix: 19981230 - Carlos Morgado &lt;chbm@techie.com&gt;&n; * Port of Nelson Escravana&squot;s &lt;nelson.escravana@usa.net&gt; fix to CalledPN &n; * NULL pointer dereference in cb_in_1 (originally fixed in 2.0)&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

@@ -174,6 +174,12 @@ comma
 l_string|&quot;ppp_async: interval between flagged packets (in clock ticks)&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Prototypes.&n; */
 r_static
 r_int

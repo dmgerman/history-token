@@ -1179,6 +1179,10 @@ id|host-&gt;h_expires
 op_assign
 l_int|0
 suffix:semicolon
+id|host-&gt;h_killed
+op_assign
+l_int|1
+suffix:semicolon
 id|nlm_release_host
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: l3_1tr6.c,v 2.13.6.1 2001/02/16 16:43:27 kai Exp $&n; *&n; *  German 1TR6 D-channel protocol&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; */
+multiline_comment|/* $Id: l3_1tr6.c,v 2.13.6.2 2001/09/23 22:24:49 kai Exp $&n; *&n; * German 1TR6 D-channel protocol&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;hisax.h&quot;
@@ -23,7 +23,7 @@ r_char
 op_star
 id|l3_1tr6_revision
 op_assign
-l_string|&quot;$Revision: 2.13.6.1 $&quot;
+l_string|&quot;$Revision: 2.13.6.2 $&quot;
 suffix:semicolon
 DECL|macro|MsgHead
 mdefine_line|#define MsgHead(ptr, cref, mty, dis) &bslash;&n;&t;*ptr++ = dis; &bslash;&n;&t;*ptr++ = 0x1; &bslash;&n;&t;*ptr++ = cref ^ 0x80; &bslash;&n;&t;*ptr++ = mty

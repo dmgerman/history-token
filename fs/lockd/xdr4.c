@@ -1903,15 +1903,12 @@ id|p
 op_increment
 )paren
 suffix:semicolon
+multiline_comment|/* Preserve the address in network byte order */
 id|argp-&gt;addr
 op_assign
-id|ntohl
-c_func
-(paren
 op_star
 id|p
 op_increment
-)paren
 suffix:semicolon
 r_return
 id|xdr_argsize_check

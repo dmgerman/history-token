@@ -7219,6 +7219,12 @@ c_func
 l_string|&quot;Driver for PCnet32 and PCnetPCI based ethercards&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* An additional parameter that may be passed in... */
 DECL|variable|debug
 r_static

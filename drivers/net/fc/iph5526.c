@@ -11018,7 +11018,7 @@ id|NOT_SCSI_XID
 suffix:semicolon
 id|fi-&gt;g.my_mtu
 op_assign
-id|FRAME_SIZE
+id|TACH_FRAME_SIZE
 suffix:semicolon
 multiline_comment|/* Implicitly LOGO with all logged-in nodes. &n;&t;&t; */
 r_if
@@ -16300,7 +16300,7 @@ op_assign
 id|htons
 c_func
 (paren
-id|FRAME_SIZE
+id|TACH_FRAME_SIZE
 )paren
 suffix:semicolon
 id|fi-&gt;g.login.n_port_total_conc_seq
@@ -16642,7 +16642,7 @@ op_assign
 id|htons
 c_func
 (paren
-id|FRAME_SIZE
+id|TACH_FRAME_SIZE
 )paren
 suffix:semicolon
 id|fi-&gt;g.login.c_of_s

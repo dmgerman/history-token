@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Driver for ST5481 USB ISDN modem&n; *&n; * Author     
 macro_line|#ifndef _ST5481_H_
 DECL|macro|_ST5481_H_
 mdefine_line|#define _ST5481_H_
+macro_line|#include &lt;linux/config.h&gt;
 singleline_comment|// USB IDs, the Product Id is in the range 0x4810-0x481F
 DECL|macro|ST_VENDOR_ID
 mdefine_line|#define ST_VENDOR_ID 0x0483

@@ -19,9 +19,7 @@ macro_line|#error &quot;AdvanSys driver supported only in 2.2 and 2.4 or greater
 macro_line|#endif
 multiline_comment|/*&n; * --- Linux Include Files&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef MODULE
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#endif /* MODULE */
 macro_line|#if defined(CONFIG_X86) &amp;&amp; !defined(CONFIG_ISA)
 DECL|macro|CONFIG_ISA
 mdefine_line|#define CONFIG_ISA
@@ -94781,4 +94779,10 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;BSD without advertising clause&quot;
+)paren
+suffix:semicolon
 eof

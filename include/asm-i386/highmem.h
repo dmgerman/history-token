@@ -8,9 +8,13 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/kmap_types.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-multiline_comment|/* undef for production */
+macro_line|#ifdef CONFIG_DEBUG_HIGHMEM
 DECL|macro|HIGHMEM_DEBUG
 mdefine_line|#define HIGHMEM_DEBUG 1
+macro_line|#else
+DECL|macro|HIGHMEM_DEBUG
+mdefine_line|#define HIGHMEM_DEBUG 0
+macro_line|#endif
 multiline_comment|/* declarations for highmem.c */
 r_extern
 r_int

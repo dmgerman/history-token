@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 multiline_comment|/*&n; * This ought to be moved into include/asm/dma.h&n; */
 macro_line|#ifndef valid_dma
 DECL|macro|valid_dma
@@ -3046,6 +3047,12 @@ id|module_exit
 c_func
 (paren
 id|oss_cleanup
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|function|sound_alloc_dma

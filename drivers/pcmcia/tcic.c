@@ -64,6 +64,12 @@ c_func
 l_string|&quot;Databook TCIC-2 PCMCIA socket driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual MPL/GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*====================================================================*/
 multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
 multiline_comment|/* The base port address of the TCIC-2 chip */

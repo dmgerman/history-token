@@ -3688,6 +3688,12 @@ l_int|3
 suffix:semicolon
 )brace
 macro_line|#endif /* MODULE */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 "&f;"
 multiline_comment|/*&n; * (add &squot;-DMODULE&squot; when compiling as loadable module)&n; *&n; * compile-command:&n; *&t;gcc -D__KERNEL__ -Wall -Wstrict-prototypes -O2 &bslash;&n; *&t; -fomit-frame-pointer -m486 &bslash;&n; *&t;-I/usr/src/linux/include -I../../net/inet -c de620.c&n;*/
 multiline_comment|/*&n; * Local variables:&n; *  kernel-compile-command: &quot;gcc -D__KERNEL__ -Ilinux/include -I../../net/inet -Wall -Wstrict-prototypes -O2 -m486 -c de620.c&quot;&n; *  module-compile-command: &quot;gcc -D__KERNEL__ -DMODULE -Ilinux/include -I../../net/inet -Wall -Wstrict-prototypes -O2 -m486 -c de620.c&quot;&n; *  compile-command: &quot;gcc -D__KERNEL__ -DMODULE -Ilinux/include -I../../net/inet -Wall -Wstrict-prototypes -O2 -m486 -c de620.c&quot;&n; * End:&n; */

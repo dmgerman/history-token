@@ -7552,6 +7552,12 @@ comma
 l_string|&quot;EtherExpress 16 IRQ number(s)&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Ideally the user would give us io=, irq= for every card.  If any parameters&n; * are specified, we verify and then use them.  If no parameters are given, we&n; * autoprobe for one card only.&n; */
 DECL|function|init_module
 r_int

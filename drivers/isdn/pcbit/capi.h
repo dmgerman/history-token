@@ -1,5 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 1996 Universidade de Lisboa&n; * &n; * Written by Pedro Roque Marques (roque@di.fc.ul.pt)&n; *&n; * This software may be used and distributed according to the terms of &n; * the GNU General Public License, incorporated herein by reference.&n; */
-multiline_comment|/*        &n; *        CAPI encode/decode prototypes and defines&n; */
+multiline_comment|/*&n; * CAPI encode/decode prototypes and defines&n; *&n; * Copyright (C) 1996 Universidade de Lisboa&n; * &n; * Written by Pedro Roque Marques (roque@di.fc.ul.pt)&n; *&n; * This software may be used and distributed according to the terms of &n; * the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#ifndef CAPI_H
 DECL|macro|CAPI_H
 mdefine_line|#define CAPI_H

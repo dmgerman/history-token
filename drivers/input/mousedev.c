@@ -1621,6 +1621,8 @@ l_int|1
 op_assign
 l_int|0
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 l_int|1
 suffix:colon
@@ -1631,6 +1633,8 @@ l_int|1
 op_assign
 l_int|3
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 l_int|2
 suffix:colon
@@ -1640,6 +1644,8 @@ l_int|1
 )braket
 op_assign
 l_int|4
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 id|list-&gt;bufsiz
@@ -2466,6 +2472,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Input driver to PS/2 or ImPS/2 device driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM

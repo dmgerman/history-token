@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: avm_a1.c,v 2.13.6.1 2001/02/16 16:43:25 kai Exp $&n; *&n; * avm_a1.c     low level stuff for AVM A1 (Fritz) isdn cards&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: avm_a1.c,v 2.13.6.2 2001/09/23 22:24:46 kai Exp $&n; *&n; * low level stuff for AVM A1 (Fritz) isdn cards&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -21,7 +21,7 @@ r_char
 op_star
 id|avm_revision
 op_assign
-l_string|&quot;$Revision: 2.13.6.1 $&quot;
+l_string|&quot;$Revision: 2.13.6.2 $&quot;
 suffix:semicolon
 DECL|macro|AVM_A1_STAT_ISAC
 mdefine_line|#define&t; AVM_A1_STAT_ISAC&t;0x01

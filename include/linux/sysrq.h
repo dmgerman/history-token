@@ -47,6 +47,7 @@ id|action_msg
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 multiline_comment|/* Generic SysRq interface -- you may call it from any device driver, supplying&n; * ASCII code of the key, pointer to registers and kbd/tty structs (if they&n; * are available -- else NULL&squot;s).&n; */
 r_void
 id|handle_sysrq
@@ -87,7 +88,6 @@ id|tty_struct
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 multiline_comment|/*&n; * Sysrq registration manipulation functions&n; */
 r_void
 id|__sysrq_lock_table
@@ -290,10 +290,25 @@ id|op_p
 suffix:semicolon
 )brace
 macro_line|#else
+DECL|function|__reterr
+r_static
+r_inline
+r_int
+id|__reterr
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 DECL|macro|register_sysrq_key
-mdefine_line|#define register_sysrq_key(a,b)&t;&t;do {} while(0)
+mdefine_line|#define register_sysrq_key(ig,nore) __reterr()
 DECL|macro|unregister_sysrq_key
-mdefine_line|#define unregister_sysrq_key(a,b)&t;do {} while(0)
+mdefine_line|#define unregister_sysrq_key(ig,nore) __reterr()
 macro_line|#endif
 multiline_comment|/* Deferred actions */
 r_extern

@@ -124,6 +124,12 @@ comma
 l_string|&quot;1-4i&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Operational parameter that usually are not changed. */
 multiline_comment|/* Time in jiffies before concluding Tx hung */
 DECL|macro|TX_TIMEOUT

@@ -2511,4 +2511,10 @@ c_func
 (paren
 id|exit_smb_fs
 )paren
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

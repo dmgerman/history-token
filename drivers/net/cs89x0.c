@@ -7547,6 +7547,12 @@ c_func
 l_string|&quot;Mike Cruse, Russwll Nelson &lt;nelson@crynwr.com&gt;, Andrew Morton &lt;andrewm@uow.edu.au&gt;&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 multiline_comment|/*&n;* media=t             - specify media type&n;   or media=2&n;   or media=aui&n;   or medai=auto&n;* duplex=0            - specify forced half/full/autonegotiate duplex&n;* debug=#             - debug level&n;&n;&n;* Default Chip Configuration:&n;  * DMA Burst = enabled&n;  * IOCHRDY Enabled = enabled&n;    * UseSA = enabled&n;    * CS8900 defaults to half-duplex if not specified on command-line&n;    * CS8920 defaults to autoneg if not specified on command-line&n;    * Use reset defaults for other config parameters&n;&n;* Assumptions:&n;  * media type specified is supported (circuitry is present)&n;  * if memory address is &gt; 1MB, then required mem decode hw is present&n;  * if 10B-2, then agent other than driver will enable DC/DC converter&n;    (hw or software util)&n;&n;&n;*/

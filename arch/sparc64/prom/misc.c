@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: misc.c,v 1.19 2000/06/30 10:18:38 davem Exp $&n; * misc.c:  Miscellaneous prom functions that don&squot;t belong&n; *          anywhere else.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996,1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: misc.c,v 1.20 2001/09/21 03:17:07 kanoj Exp $&n; * misc.c:  Miscellaneous prom functions that don&squot;t belong&n; *          anywhere else.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996,1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -165,34 +165,11 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* We always arrive here via a serial interrupt.&n;&t; * So in order for everything to work reliably, even&n;&t; * on SMP, we need to drop the IRQ locks we hold.&n;&t; */
 macro_line|#ifdef CONFIG_SMP
-id|irq_exit
-c_func
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|smp_capture
 c_func
 (paren
 )paren
-suffix:semicolon
-macro_line|#else
-id|local_irq_count
-c_func
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-)paren
-op_decrement
 suffix:semicolon
 macro_line|#endif
 id|p1275_cmd
@@ -214,17 +191,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|irq_enter
-c_func
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|spin_unlock_wait
 c_func
 (paren
@@ -236,17 +202,6 @@ id|BR_GLOBALIRQ_LOCK
 dot
 id|lock
 )paren
-suffix:semicolon
-macro_line|#else
-id|local_irq_count
-c_func
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-)paren
-op_increment
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SUN_CONSOLE

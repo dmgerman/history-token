@@ -2000,25 +2000,6 @@ c_func
 suffix:semicolon
 id|Fail2
 suffix:colon
-multiline_comment|/* We don&squot;t really need to report /sbin/hotplug not existing */
-r_if
-c_cond
-(paren
-id|retval
-op_ne
-op_minus
-id|ENOENT
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;chandev_exec_start_script failed retval=%d&bslash;n&quot;
-comma
-id|retval
-)paren
-suffix:semicolon
-)brace
 r_return
 id|retval
 suffix:semicolon
@@ -4744,6 +4725,10 @@ op_assign
 id|FALSE
 suffix:semicolon
 macro_line|#endif
+id|chandev_persistent
+op_assign
+l_int|0
+suffix:semicolon
 id|chandev_unlock
 c_func
 (paren
@@ -9586,7 +9571,7 @@ l_string|&quot;read_conf&quot;
 comma
 l_string|&quot;dont_read_conf&quot;
 comma
-l_string|&quot;persistent&quot;
+l_string|&quot;persist&quot;
 )brace
 suffix:semicolon
 r_typedef
@@ -9690,8 +9675,8 @@ comma
 DECL|enumerator|dont_read_conf_stridx
 id|dont_read_conf_stridx
 comma
-DECL|enumerator|persistent_stridx
-id|persistent_stridx
+DECL|enumerator|persist_stridx
+id|persist_stridx
 comma
 DECL|enumerator|last_stridx
 id|last_stridx
@@ -10136,6 +10121,9 @@ r_int
 id|chandev_setup
 c_func
 (paren
+r_int
+id|in_read_conf
+comma
 r_char
 op_star
 id|instr
@@ -12068,6 +12056,22 @@ id|read_conf_stridx
 op_star
 id|stridx_mult
 suffix:colon
+r_if
+c_cond
+(paren
+id|in_read_conf
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;attempt to recursively call read_conf&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|BadArgs
+suffix:semicolon
+)brace
 id|chandev_read_conf
 c_func
 (paren
@@ -12093,7 +12097,7 @@ r_break
 suffix:semicolon
 r_case
 (paren
-id|persistent_stridx
+id|persist_stridx
 op_star
 id|stridx_mult
 )paren
@@ -12340,6 +12344,8 @@ c_cond
 id|chandev_setup
 c_func
 (paren
+id|FALSE
+comma
 id|copystr
 comma
 l_string|&quot;at &quot;
@@ -12477,6 +12483,9 @@ r_int
 id|chandev_do_setup
 c_func
 (paren
+r_int
+id|in_read_conf
+comma
 r_char
 op_star
 id|buff
@@ -12673,6 +12682,8 @@ c_cond
 id|chandev_setup
 c_func
 (paren
+id|in_read_conf
+comma
 id|startline
 comma
 l_string|&quot; on line no&quot;
@@ -12895,6 +12906,8 @@ suffix:semicolon
 id|chandev_do_setup
 c_func
 (paren
+id|TRUE
+comma
 id|buff
 comma
 id|statbuf.st_size
@@ -13200,7 +13213,7 @@ c_func
 (paren
 id|chan_exit
 comma
-l_string|&quot;&bslash;nchandev_persistent = 0x%02x&bslash;n&quot;
+l_string|&quot;&bslash;npersist = 0x%02x&bslash;n&quot;
 comma
 id|chandev_persistent
 )paren
@@ -14412,6 +14425,8 @@ suffix:semicolon
 id|chandev_do_setup
 c_func
 (paren
+id|FALSE
+comma
 id|buff
 comma
 id|count
@@ -14628,6 +14643,9 @@ id|chan_type
 id|chandev_probelist
 op_star
 id|new_probe
+comma
+op_star
+id|curr_probe
 suffix:semicolon
 multiline_comment|/* Avoid chicked &amp; egg situations where we may be called before we */
 multiline_comment|/* are initialised. */
@@ -14658,6 +14676,56 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|chandev_lock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|for_each
+c_func
+(paren
+id|curr_probe
+comma
+id|chandev_probelist_head
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|curr_probe-&gt;probefunc
+op_eq
+id|probefunc
+)paren
+(brace
+id|chandev_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;chandev_register_and_probe detected duplicate probefunc %p&quot;
+l_string|&quot; for chan_type  0x%02x &bslash;n&quot;
+comma
+id|probefunc
+comma
+id|chan_type
+)paren
+suffix:semicolon
+r_return
+(paren
+op_minus
+id|EPERM
+)paren
+suffix:semicolon
+)brace
+)brace
+id|chandev_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -14721,7 +14789,8 @@ ques
 c_cond
 id|new_probe-&gt;devices_found
 suffix:colon
-l_int|0
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 DECL|function|chandev_unregister
@@ -14739,8 +14808,6 @@ id|call_shutdown
 id|chandev_probelist
 op_star
 id|curr_probe
-op_assign
-l_int|NULL
 suffix:semicolon
 id|chandev_activelist
 op_star

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200 and G400&n; *&n; * (c) 1998,1999,2000 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; */
+multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200, G400 and G450&n; *&n; * (c) 1998,1999,2000,2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; */
 macro_line|#ifndef __MATROXFB_H__
 DECL|macro|__MATROXFB_H__
 mdefine_line|#define __MATROXFB_H__
@@ -1813,6 +1813,10 @@ suffix:semicolon
 DECL|member|g450dac
 r_int
 id|g450dac
+suffix:semicolon
+DECL|member|dfp_type
+r_int
+id|dfp_type
 suffix:semicolon
 DECL|member|devflags
 )brace

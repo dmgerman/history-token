@@ -742,6 +742,12 @@ c_func
 l_string|&quot;Greenwich GIrBIL dongle driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function init_module (void)&n; *&n; *    Initialize Girbil module&n; *&n; */
 DECL|function|init_module
 r_int

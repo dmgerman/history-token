@@ -1,14 +1,4 @@
-singleline_comment|// $Id: netjet.h,v 2.5.6.2 2001/02/16 16:43:28 kai Exp $
-singleline_comment|//-----------------------------------------------------------------------------
-singleline_comment|//
-singleline_comment|// NETjet common header file
-singleline_comment|//
-singleline_comment|// Author       Kerstern Keil repackaged by
-singleline_comment|//              Matt Henderson - Traverse Technologies P/L www.traverse.com.au
-singleline_comment|//
-singleline_comment|// This file is (c) under GNU General Public License
-singleline_comment|//
-singleline_comment|//-----------------------------------------------------------------------------
+multiline_comment|/* $Id: netjet.h,v 2.5.6.3 2001/09/23 22:24:50 kai Exp $&n; *&n; * NETjet common header file&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; *              by Matt Henderson,&n; *                 Traverse Technologies P/L www.traverse.com.au&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 r_extern
 r_const
 r_char

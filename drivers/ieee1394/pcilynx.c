@@ -7535,6 +7535,12 @@ c_func
 l_string|&quot;driver for Texas Instruments PCI Lynx IEEE-1394 controller&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren

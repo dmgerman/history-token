@@ -309,7 +309,7 @@ c_func
 (paren
 id|buff
 comma
-l_string|&quot;%s PSW:    %016lx %016lx&bslash;n&quot;
+l_string|&quot;%s PSW:    %016lx %016lx    %s&bslash;n&quot;
 comma
 id|mode
 comma
@@ -324,6 +324,11 @@ r_int
 r_int
 )paren
 id|regs-&gt;psw.addr
+comma
+id|print_tainted
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 )brace

@@ -370,6 +370,8 @@ DECL|macro|VENDOR_SMC
 mdefine_line|#define&t;VENDOR_SMC&t;&t;0x0707
 DECL|macro|VENDOR_SOHOWARE
 mdefine_line|#define&t;VENDOR_SOHOWARE&t;&t;0x15e8
+DECL|macro|VENDOR_BELKIN
+mdefine_line|#define&t;VENDOR_BELKIN&t;&t;0x050d
 macro_line|#else&t;/* PEGASUS_DEV */
 id|PEGASUS_DEV
 c_func
@@ -904,6 +906,19 @@ comma
 l_int|0x9100
 comma
 id|DEFAULT_GPIO_RESET
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;Belkin F5D5050 USB Ethernet&quot;
+comma
+id|VENDOR_BELKIN
+comma
+l_int|0x0121
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
 )paren
 macro_line|#endif&t;/* PEGASUS_DEV */
 eof

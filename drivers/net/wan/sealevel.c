@@ -1,6 +1,4 @@
-DECL|macro|LINUX_21
-mdefine_line|#define LINUX_21
-multiline_comment|/*&n; *&t;Sealevel Systems 4021 driver.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;(c) Copyright 1999 Building Number Three Ltd&n; *&t;(c) Copyright 2001 Alan Cox.&n; *&n; */
+multiline_comment|/*&n; *&t;Sealevel Systems 4021 driver.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;(c) Copyright 1999, 2001 Alan Cox&n; *&t;(c) Copyright 2001 Red Hat Inc.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -462,7 +460,6 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef LINUX_21
 DECL|function|sealevel_neigh_setup
 r_static
 r_int
@@ -539,24 +536,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|return_0
-r_static
-r_int
-id|return_0
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|d
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n; *&t;Description block for a Comtrol Hostess SV11 card&n; */
 DECL|function|slvl_init
 r_static
@@ -1211,17 +1190,10 @@ id|d-&gt;do_ioctl
 op_assign
 id|sealevel_ioctl
 suffix:semicolon
-macro_line|#ifdef LINUX_21&t;&t;&t;
 id|d-&gt;neigh_setup
 op_assign
 id|sealevel_neigh_setup_dev
 suffix:semicolon
-macro_line|#else
-id|d-&gt;init
-op_assign
-id|return_0
-suffix:semicolon
-macro_line|#endif
 id|d-&gt;set_mac_address
 op_assign
 l_int|NULL
@@ -1504,7 +1476,6 @@ id|slow
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef LINUX_21
 id|MODULE_PARM
 c_func
 (paren
@@ -1603,7 +1574,6 @@ c_func
 l_string|&quot;Modular driver for the SeaLevel 4021&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|slvl_unit
 r_static
 r_struct

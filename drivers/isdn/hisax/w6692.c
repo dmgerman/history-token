@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: w6692.c,v 1.12.6.5 2001/06/09 15:14:18 kai Exp $&n; *&n; * w6692.c   Winbond W6692 specific routines&n; *&n; * Author       Petr Novak &lt;petr.novak@i.cz&gt;&n; *              (based on HiSax driver by Karsten Keil)&n; *&n; *              This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: w6692.c,v 1.12.6.6 2001/09/23 22:24:52 kai Exp $&n; *&n; * Winbond W6692 specific routines&n; *&n; * Author       Petr Novak&n; * Copyright    by Petr Novak        &lt;petr.novak@i.cz&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 DECL|macro|__NO_VERSION__
@@ -88,7 +88,7 @@ r_char
 op_star
 id|w6692_revision
 op_assign
-l_string|&quot;$Revision: 1.12.6.5 $&quot;
+l_string|&quot;$Revision: 1.12.6.6 $&quot;
 suffix:semicolon
 DECL|macro|DBUSY_TIMER_VALUE
 mdefine_line|#define DBUSY_TIMER_VALUE 80

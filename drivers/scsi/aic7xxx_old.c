@@ -46371,6 +46371,12 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#include &quot;aic7xxx_old/aic7xxx_proc.c&quot;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual BSD/GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Eventually this will go into an include file, but this will be later */
 DECL|variable|driver_template
 r_static

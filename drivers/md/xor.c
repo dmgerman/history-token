@@ -550,6 +550,12 @@ c_func
 id|xor_block
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|calibrate_xor_block
 id|module_init
 c_func

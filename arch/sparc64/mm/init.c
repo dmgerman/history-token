@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: init.c,v 1.189 2001/09/02 23:27:18 kanoj Exp $&n; *  arch/sparc64/mm/init.c&n; *&n; *  Copyright (C) 1996-1999 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997-1999 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: init.c,v 1.193 2001/09/25 22:47:35 davem Exp $&n; *  arch/sparc64/mm/init.c&n; *&n; *  Copyright (C) 1996-1999 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997-1999 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -23,6 +23,7 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
+macro_line|#include &lt;asm/spitfire.h&gt;
 DECL|variable|mmu_gathers
 id|mmu_gather_t
 id|mmu_gathers
@@ -435,6 +436,7 @@ id|page-&gt;flags
 )paren
 )paren
 (brace
+macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;&t;/* is there D$ aliasing problem */
 id|__flush_dcache_page
 c_func
 (paren
@@ -449,6 +451,34 @@ id|spitfire
 )paren
 )paren
 suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+id|tlb_type
+op_eq
+id|spitfire
+)paren
+multiline_comment|/* fix local I$ coherency */
+id|__flush_icache_page
+c_func
+(paren
+id|__get_phys
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+(paren
+id|page
+op_member_access_from_pointer
+r_virtual
+)paren
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|clear_bit
 c_func
 (paren
@@ -470,16 +500,6 @@ id|pte
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* In arch/sparc64/mm/ultra.S */
-r_extern
-r_void
-id|__flush_icache_page
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
 DECL|function|flush_icache_range
 r_void
 id|flush_icache_range
@@ -4350,7 +4370,14 @@ id|pgtable_cache_struct
 id|pgt_quicklists
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* OK, we have to color these pages. The page tables are accessed&n; * by non-Dcache enabled mapping in the VPTE area by the dtlb_backend.S&n; * code, as well as by PAGE_OFFSET range direct-mapped addresses by &n; * other parts of the kernel. By coloring, we make sure that the tlbmiss &n; * fast handlers do not get data from old/garbage dcache lines that &n; * correspond to an old/stale virtual address (user/kernel) that &n; * previously mapped the pagetable page while accessing vpte range &n; * addresses. The idea is that if the vpte color and PAGE_OFFSET range &n; * color is the same, then when the kernel initializes the pagetable &n; * using the later address range, accesses with the first address&n; * range will not see the newly initialized data rather than the&n; * garbage.&n; */
+multiline_comment|/* OK, we have to color these pages. The page tables are accessed&n; * by non-Dcache enabled mapping in the VPTE area by the dtlb_backend.S&n; * code, as well as by PAGE_OFFSET range direct-mapped addresses by &n; * other parts of the kernel. By coloring, we make sure that the tlbmiss &n; * fast handlers do not get data from old/garbage dcache lines that &n; * correspond to an old/stale virtual address (user/kernel) that &n; * previously mapped the pagetable page while accessing vpte range &n; * addresses. The idea is that if the vpte color and PAGE_OFFSET range &n; * color is the same, then when the kernel initializes the pagetable &n; * using the later address range, accesses with the first address&n; * range will see the newly initialized data rather than the garbage.&n; */
+macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;&t;/* is there D$ aliasing problem */
+DECL|macro|DC_ALIAS_SHIFT
+mdefine_line|#define DC_ALIAS_SHIFT&t;1
+macro_line|#else
+DECL|macro|DC_ALIAS_SHIFT
+mdefine_line|#define DC_ALIAS_SHIFT&t;0
+macro_line|#endif
 DECL|function|pte_alloc_one
 id|pte_t
 op_star
@@ -4377,25 +4404,17 @@ c_func
 (paren
 id|GFP_KERNEL
 comma
-l_int|1
+id|DC_ALIAS_SHIFT
 )paren
 suffix:semicolon
 r_int
 r_int
 id|color
 op_assign
-(paren
+id|VPTE_COLOR
+c_func
 (paren
 id|address
-op_rshift
-(paren
-id|PAGE_SHIFT
-op_plus
-l_int|10
-)paren
-)paren
-op_amp
-l_int|1UL
 )paren
 suffix:semicolon
 r_if
@@ -4417,6 +4436,7 @@ id|pte_t
 op_star
 id|pte
 suffix:semicolon
+macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;&t;/* is there D$ aliasing problem */
 id|set_page_count
 c_func
 (paren
@@ -4429,6 +4449,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#endif
 id|paddr
 op_assign
 (paren
@@ -4455,7 +4476,7 @@ comma
 (paren
 id|PAGE_SIZE
 op_lshift
-l_int|1
+id|DC_ALIAS_SHIFT
 )paren
 )paren
 suffix:semicolon
@@ -4512,6 +4533,7 @@ op_star
 id|paddr
 suffix:semicolon
 )brace
+macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;&t;/* is there D$ aliasing problem */
 multiline_comment|/* Now free the other one up, adjust cache size. */
 op_star
 id|to_free
@@ -4539,6 +4561,7 @@ suffix:semicolon
 id|pgtable_cache_size
 op_increment
 suffix:semicolon
+macro_line|#endif
 r_return
 id|pte
 suffix:semicolon

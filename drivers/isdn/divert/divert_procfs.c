@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: divert_procfs.c,v 1.11.6.1 2001/08/13 07:46:15 kai Exp $&n; *&n; * Filesystem handling for the diversion supplementary services.&n; *&n; * Copyright 1998       by Werner Cornelius (werner@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: divert_procfs.c,v 1.11.6.2 2001/09/23 22:24:36 kai Exp $&n; *&n; * Filesystem handling for the diversion supplementary services.&n; *&n; * Copyright 1998       by Werner Cornelius (werner@isdn4linux.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
@@ -66,6 +66,7 @@ id|divert_info
 op_star
 id|ib
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -523,6 +524,7 @@ id|filep
 )paren
 (brace
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|lock_kernel
@@ -618,6 +620,7 @@ id|divert_info
 op_star
 id|inf
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -745,6 +748,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon

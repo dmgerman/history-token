@@ -886,6 +886,12 @@ comma
 id|skfddi_pci_tbl
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 singleline_comment|// Define module-wide (static) variables
 DECL|variable|num_boards
 r_static

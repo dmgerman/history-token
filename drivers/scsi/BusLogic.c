@@ -16736,6 +16736,12 @@ id|BusLogic_Setup
 )paren
 suffix:semicolon
 multiline_comment|/*&n;  Get it all started&n;*/
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|driver_template
 r_static
 id|SCSI_Host_Template_T

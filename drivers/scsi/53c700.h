@@ -34,9 +34,8 @@ multiline_comment|/* magic byte identifying an internally generated REQUEST_SENS
 DECL|macro|NCR_700_INTERNAL_SENSE_MAGIC
 mdefine_line|#define NCR_700_INTERNAL_SENSE_MAGIC&t;0x42
 multiline_comment|/* WARNING: Leave this in for now: the dependency preprocessor doesn&squot;t&n; * pick up file specific flags, so must define here if they are not&n; * set */
-macro_line|#if !defined(IO_MAPPED) &amp;&amp; !defined(MEM_MAPPED)
-DECL|macro|IO_MAPPED
-mdefine_line|#define IO_MAPPED
+macro_line|#if !defined(CONFIG_53C700_IO_MAPPED) &amp;&amp; !defined(CONFIG_53C700_MEM_MAPPED)
+macro_line|#error &quot;Config.in must define either CONFIG_53C700_IO_MAPPED or CONFIG_53C700_MEM_MAPPED to use this scsi core.&quot;
 macro_line|#endif
 r_struct
 id|NCR_700_Host_Parameters
@@ -139,7 +138,8 @@ id|sxfer
 (brace
 (paren
 (paren
-id|__u32
+r_int
+r_int
 )paren
 id|SDp-&gt;hostdata
 )paren
@@ -148,7 +148,8 @@ l_int|0xffffff00
 suffix:semicolon
 (paren
 (paren
-id|__u32
+r_int
+r_int
 )paren
 id|SDp-&gt;hostdata
 )paren
@@ -174,7 +175,8 @@ r_return
 (paren
 (paren
 (paren
-id|__u32
+r_int
+r_int
 )paren
 id|SDp-&gt;hostdata
 )paren
@@ -200,7 +202,8 @@ id|depth
 (brace
 (paren
 (paren
-id|__u32
+r_int
+r_int
 )paren
 id|SDp-&gt;hostdata
 )paren
@@ -209,7 +212,8 @@ l_int|0xffff00ff
 suffix:semicolon
 (paren
 (paren
-id|__u32
+r_int
+r_int
 )paren
 id|SDp-&gt;hostdata
 )paren
@@ -242,7 +246,8 @@ r_return
 (paren
 (paren
 (paren
-id|__u32
+r_int
+r_int
 )paren
 id|SDp-&gt;hostdata
 )paren
@@ -273,7 +278,8 @@ r_return
 (paren
 (paren
 (paren
-id|__u32
+r_int
+r_int
 )paren
 id|SDp-&gt;hostdata
 )paren
@@ -303,7 +309,8 @@ r_return
 (paren
 (paren
 (paren
-id|__u32
+r_int
+r_int
 )paren
 id|SDp-&gt;hostdata
 )paren
@@ -331,7 +338,8 @@ id|flag
 (brace
 (paren
 (paren
-id|__u32
+r_int
+r_int
 )paren
 id|SDp-&gt;hostdata
 )paren
@@ -360,7 +368,8 @@ id|flag
 (brace
 (paren
 (paren
-id|__u32
+r_int
+r_int
 )paren
 id|SDp-&gt;hostdata
 )paren
@@ -447,6 +456,22 @@ DECL|struct|NCR_700_command_slot
 r_struct
 id|NCR_700_command_slot
 (brace
+DECL|member|SG
+r_struct
+id|NCR_700_SG_List
+id|SG
+(braket
+id|NCR_700_SG_SEGMENTS
+op_plus
+l_int|1
+)braket
+suffix:semicolon
+DECL|member|pSG
+r_struct
+id|NCR_700_SG_List
+op_star
+id|pSG
+suffix:semicolon
 DECL|macro|NCR_700_SLOT_MASK
 mdefine_line|#define NCR_700_SLOT_MASK 0xFC
 DECL|macro|NCR_700_SLOT_MAGIC
@@ -467,16 +492,6 @@ DECL|member|tag
 id|__u16
 id|tag
 suffix:semicolon
-DECL|member|SG
-r_struct
-id|NCR_700_SG_List
-id|SG
-(braket
-id|NCR_700_SG_SEGMENTS
-op_plus
-l_int|1
-)braket
-suffix:semicolon
 DECL|member|resume_offset
 id|__u32
 id|resume_offset
@@ -489,6 +504,11 @@ suffix:semicolon
 DECL|member|temp
 id|__u32
 id|temp
+suffix:semicolon
+multiline_comment|/* if this command is a pci_single mapping, holds the dma address&n;&t; * for later unmapping in the done routine */
+DECL|member|dma_handle
+id|dma_addr_t
+id|dma_handle
 suffix:semicolon
 multiline_comment|/* Doubly linked ITL/ITLQ list kept in strict time order&n;&t; * (latest at the back) */
 DECL|member|ITL_forw
@@ -532,6 +552,17 @@ id|__u32
 id|base
 suffix:semicolon
 multiline_comment|/* the base for the port (copied to host) */
+DECL|member|pci_dev
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+suffix:semicolon
+DECL|member|dmode_extra
+id|__u8
+id|dmode_extra
+suffix:semicolon
+multiline_comment|/* adjustable bus settings */
 DECL|member|differential
 id|__u8
 id|differential
@@ -539,7 +570,7 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* if we are differential */
-macro_line|#ifdef __hppa__
+macro_line|#ifdef CONFIG_53C700_LE_ON_BE
 multiline_comment|/* This option is for HP only.  Set it if your chip is wired for&n;&t; * little endian on this platform (which is big endian) */
 DECL|member|force_le_on_be
 id|__u8
@@ -548,6 +579,20 @@ suffix:colon
 l_int|1
 suffix:semicolon
 macro_line|#endif
+DECL|member|chip710
+id|__u8
+id|chip710
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* set if really a 710 not 700 */
+DECL|member|burst_disable
+id|__u8
+id|burst_disable
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* set to 1 to disable 710 bursting */
 multiline_comment|/* NOTHING BELOW HERE NEEDS ALTERING */
 DECL|member|fast
 id|__u8
@@ -590,25 +635,24 @@ id|cmd
 suffix:semicolon
 DECL|member|msgout
 id|__u8
+op_star
 id|msgout
-(braket
-l_int|8
-)braket
 suffix:semicolon
+DECL|macro|MSG_ARRAY_SIZE
+mdefine_line|#define&t;MSG_ARRAY_SIZE&t;16
 DECL|member|tag_negotiated
 id|__u8
 id|tag_negotiated
 suffix:semicolon
 DECL|member|status
 id|__u8
+op_star
 id|status
 suffix:semicolon
 DECL|member|msgin
 id|__u8
+op_star
 id|msgin
-(braket
-l_int|8
-)braket
 suffix:semicolon
 DECL|member|slots
 r_struct
@@ -682,7 +726,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;53C700 Register Interface - the offset from the Selected base&n; *&t;I/O address */
-macro_line|#ifdef __hppa__
+macro_line|#ifdef CONFIG_53C700_LE_ON_BE
 DECL|macro|bE
 mdefine_line|#define bE&t;(hostdata-&gt;force_le_on_be ? 0 : 3)
 DECL|macro|bSWAP
@@ -815,6 +859,8 @@ DECL|macro|SSTAT2_REG
 mdefine_line|#define SSTAT2_REG                      0x0F
 DECL|macro|CTEST0_REG
 mdefine_line|#define CTEST0_REG                      0x14
+DECL|macro|BTB_TIMER_DISABLE
+mdefine_line|#define&t;&t;BTB_TIMER_DISABLE&t;0x40
 DECL|macro|CTEST1_REG
 mdefine_line|#define CTEST1_REG                      0x15
 DECL|macro|CTEST2_REG
@@ -849,6 +895,10 @@ DECL|macro|DMA_DIRECTION
 mdefine_line|#define         DMA_DIRECTION           0x08
 DECL|macro|CTEST7_REG
 mdefine_line|#define CTEST7_REG                      0x1B
+DECL|macro|BURST_DISABLE
+mdefine_line|#define&t;&t;BURST_DISABLE&t;&t;0x80 /* 710 only */
+DECL|macro|SEL_TIMEOUT_DISABLE
+mdefine_line|#define&t;&t;SEL_TIMEOUT_DISABLE&t;0x10 /* 710 only */
 DECL|macro|DFP
 mdefine_line|#define         DFP                     0x08
 DECL|macro|EVP
@@ -869,6 +919,8 @@ DECL|macro|ISTAT_REG
 mdefine_line|#define&t;ISTAT_REG&t;&t;&t;0x21
 DECL|macro|ABORT_OPERATION
 mdefine_line|#define&t;&t;ABORT_OPERATION&t;&t;0x80
+DECL|macro|SOFTWARE_RESET_710
+mdefine_line|#define&t;&t;SOFTWARE_RESET_710&t;0x40
 DECL|macro|DMA_INT_PENDING
 mdefine_line|#define&t;&t;DMA_INT_PENDING&t;&t;0x01
 DECL|macro|SCSI_INT_PENDING
@@ -885,6 +937,10 @@ DECL|macro|ENABLE_ACTIVE_NEGATION
 mdefine_line|#define&t;&t;ENABLE_ACTIVE_NEGATION&t;0x10
 DECL|macro|GENERATE_RECEIVE_PARITY
 mdefine_line|#define&t;&t;GENERATE_RECEIVE_PARITY&t;0x20
+DECL|macro|CLR_FIFO_710
+mdefine_line|#define&t;&t;CLR_FIFO_710&t;&t;0x04
+DECL|macro|FLUSH_DMA_FIFO_710
+mdefine_line|#define&t;&t;FLUSH_DMA_FIFO_710&t;0x08
 DECL|macro|CTEST9_REG
 mdefine_line|#define CTEST9_REG                      0x23
 DECL|macro|DBC_REG
@@ -895,6 +951,8 @@ DECL|macro|DNAD_REG
 mdefine_line|#define&t;DNAD_REG&t;&t;&t;0x28
 DECL|macro|DIEN_REG
 mdefine_line|#define&t;DIEN_REG&t;&t;&t;0x39
+DECL|macro|BUS_FAULT
+mdefine_line|#define&t;&t;BUS_FAULT&t;&t;0x20
 DECL|macro|ABORT_INT
 mdefine_line|#define &t;ABORT_INT&t;&t;0x10
 DECL|macro|INT_INST_INT
@@ -907,18 +965,22 @@ DECL|macro|DCNTL_REG
 mdefine_line|#define&t;DCNTL_REG&t;&t;&t;0x3B
 DECL|macro|SOFTWARE_RESET
 mdefine_line|#define&t;&t;SOFTWARE_RESET&t;&t;0x01
+DECL|macro|COMPAT_700_MODE
+mdefine_line|#define&t;&t;COMPAT_700_MODE&t;&t;0x01
 DECL|macro|SCRPTS_16BITS
 mdefine_line|#define &t;SCRPTS_16BITS&t;&t;0x20
 DECL|macro|ASYNC_DIV_2_0
 mdefine_line|#define&t;&t;ASYNC_DIV_2_0&t;&t;0x00
 DECL|macro|ASYNC_DIV_1_5
-mdefine_line|#define&t;&t;ASYNC_DIV_1_5&t;&t;0x01
+mdefine_line|#define&t;&t;ASYNC_DIV_1_5&t;&t;0x40
 DECL|macro|ASYNC_DIV_1_0
-mdefine_line|#define&t;&t;ASYNC_DIV_1_0&t;&t;0x02
+mdefine_line|#define&t;&t;ASYNC_DIV_1_0&t;&t;0x80
 DECL|macro|ASYNC_DIV_3_0
-mdefine_line|#define&t;&t;ASYNC_DIV_3_0&t;&t;0x03
-DECL|macro|DMODE_REG
-mdefine_line|#define&t;DMODE_REG&t;&t;&t;0x34
+mdefine_line|#define&t;&t;ASYNC_DIV_3_0&t;&t;0xc0
+DECL|macro|DMODE_710_REG
+mdefine_line|#define DMODE_710_REG&t;&t;&t;0x38
+DECL|macro|DMODE_700_REG
+mdefine_line|#define&t;DMODE_700_REG&t;&t;&t;0x34
 DECL|macro|BURST_LENGTH_1
 mdefine_line|#define&t;&t;BURST_LENGTH_1&t;&t;0x00
 DECL|macro|BURST_LENGTH_2
@@ -927,6 +989,10 @@ DECL|macro|BURST_LENGTH_4
 mdefine_line|#define&t;&t;BURST_LENGTH_4&t;&t;0x80
 DECL|macro|BURST_LENGTH_8
 mdefine_line|#define&t;&t;BURST_LENGTH_8&t;&t;0xC0
+DECL|macro|DMODE_FC1
+mdefine_line|#define&t;&t;DMODE_FC1&t;&t;0x10
+DECL|macro|DMODE_FC2
+mdefine_line|#define&t;&t;DMODE_FC2&t;&t;0x20
 DECL|macro|BW16
 mdefine_line|#define &t;BW16&t;&t;&t;32 
 DECL|macro|MODE_286
@@ -942,8 +1008,13 @@ mdefine_line|#define DSPS_REG                        0x30
 multiline_comment|/* Parameters to begin SDTR negotiations.  Empirically, I find that&n; * the 53c700-66 cannot handle an offset &gt;8, so don&squot;t change this  */
 DECL|macro|NCR_700_MAX_OFFSET
 mdefine_line|#define NCR_700_MAX_OFFSET&t;8
+multiline_comment|/* Was hoping the max offset would be greater for the 710, but&n; * empirically it seems to be 8 also */
+DECL|macro|NCR_710_MAX_OFFSET
+mdefine_line|#define NCR_710_MAX_OFFSET&t;8
 DECL|macro|NCR_700_MIN_XFERP
 mdefine_line|#define NCR_700_MIN_XFERP&t;1
+DECL|macro|NCR_710_MIN_XFERP
+mdefine_line|#define NCR_710_MIN_XFERP&t;0
 DECL|macro|NCR_700_MIN_PERIOD
 mdefine_line|#define NCR_700_MIN_PERIOD&t;25 /* for SDTR message, 100ns */
 DECL|macro|script_patch_32
@@ -954,9 +1025,9 @@ multiline_comment|/* Used for patching the SCSI ID in the SELECT instruction */
 DECL|macro|script_patch_ID
 mdefine_line|#define script_patch_ID(script, symbol, value) &bslash;&n;{ &bslash;&n;&t;int i; &bslash;&n;&t;for(i=0; i&lt; (sizeof(A_##symbol##_used) / sizeof(__u32)); i++) { &bslash;&n;&t;&t;__u32 val = bS_to_cpu((script)[A_##symbol##_used[i]]); &bslash;&n;&t;&t;val &amp;= 0xff00ffff; &bslash;&n;&t;&t;val |= ((value) &amp; 0xff) &lt;&lt; 16; &bslash;&n;&t;&t;(script)[A_##symbol##_used[i]] = bS_to_host(val); &bslash;&n;&t;&t;dma_cache_wback((unsigned long)&amp;(script)[A_##symbol##_used[i]], 4); &bslash;&n;&t;&t;DEBUG((&quot; script, patching ID field %s at %d to 0x%x&bslash;n&quot;, &bslash;&n;&t;&t;       #symbol, A_##symbol##_used[i], val)); &bslash;&n;&t;} &bslash;&n;}
 DECL|macro|script_patch_16
-mdefine_line|#define script_patch_16(script, symbol, value) &bslash;&n;{ &bslash;&n;&t;int i; &bslash;&n;&t;for(i=0; i&lt; (sizeof(A_##symbol##_used) / sizeof(__u32)); i++) { &bslash;&n;&t;&t;__u32 val = bS_to_cpu((script)[A_##symbol##_used[i]]); &bslash;&n;&t;&t;val &amp;= 0xffff0000; &bslash;&n;&t;&t;val |= ((value) &amp; 0xffff); &bslash;&n;&t;&t;(script)[A_##symbol##_used[i]] = bS_to_host(val); &bslash;&n;&t;&t;dma_cache_wback((unsigned long)&amp;(script)[A_##symbol##_used[i]], 4); &bslash;&n;&t;&t;DEBUG((&quot; script, patching ID field %s at %d to 0x%x&bslash;n&quot;, &bslash;&n;&t;&t;       #symbol, A_##symbol##_used[i], val)); &bslash;&n;&t;} &bslash;&n;}
+mdefine_line|#define script_patch_16(script, symbol, value) &bslash;&n;{ &bslash;&n;&t;int i; &bslash;&n;&t;for(i=0; i&lt; (sizeof(A_##symbol##_used) / sizeof(__u32)); i++) { &bslash;&n;&t;&t;__u32 val = bS_to_cpu((script)[A_##symbol##_used[i]]); &bslash;&n;&t;&t;val &amp;= 0xffff0000; &bslash;&n;&t;&t;val |= ((value) &amp; 0xffff); &bslash;&n;&t;&t;(script)[A_##symbol##_used[i]] = bS_to_host(val); &bslash;&n;&t;&t;dma_cache_wback((unsigned long)&amp;(script)[A_##symbol##_used[i]], 4); &bslash;&n;&t;&t;DEBUG((&quot; script, patching short field %s at %d to 0x%x&bslash;n&quot;, &bslash;&n;&t;&t;       #symbol, A_##symbol##_used[i], val)); &bslash;&n;&t;} &bslash;&n;}
 macro_line|#endif
-macro_line|#ifdef MEM_MAPPED
+macro_line|#ifdef CONFIG_53C700_MEM_MAPPED
 r_static
 r_inline
 id|__u8
@@ -1224,7 +1295,7 @@ id|reg
 )paren
 suffix:semicolon
 )brace
-macro_line|#elif defined(IO_MAPPED)
+macro_line|#elif defined(CONFIG_53C700_IO_MAPPED)
 r_static
 r_inline
 id|__u8

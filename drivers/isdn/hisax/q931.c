@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: q931.c,v 1.10.6.2 2001/03/13 16:17:08 kai Exp $&n; *&n; * q931.c       code to decode ITU Q.931 call control messages&n; *&n; * Author       Jan den Ouden&n; *&n; * This file is (c) under GNU General Public License&n; *&n; * Changelog&n; *&n; * Pauline Middelink    general improvements&n; *&n; * Beat Doebeli         cause texts, display information element&n; *&n; * Karsten Keil         cause texts, display information element for 1TR6&n; *&n; */
+multiline_comment|/* $Id: q931.c,v 1.10.6.3 2001/09/23 22:24:50 kai Exp $&n; *&n; * code to decode ITU Q.931 call control messages&n; *&n; * Author       Jan den Ouden&n; * Copyright    by Jan den Ouden&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Changelog:&n; *&n; * Pauline Middelink    general improvements&n; * Beat Doebeli         cause texts, display information element&n; * Karsten Keil         cause texts, display information element for 1TR6&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;hisax.h&quot;

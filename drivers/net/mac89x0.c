@@ -2112,9 +2112,13 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|skb-&gt;len
-op_assign
+id|skb_put
+c_func
+(paren
+id|skb
+comma
 id|length
+)paren
 suffix:semicolon
 id|skb-&gt;dev
 op_assign

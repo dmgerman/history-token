@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;NET3&t;IP device support routines.&n; *&n; *&t;Version: $Id: devinet.c,v 1.42 2001/05/16 16:45:35 davem Exp $&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Derived from the IP parts of dev.c 1.0.19&n; * &t;&t;Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&n; *&t;Additional Authors:&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;Changes:&n; *&t;        Alexey Kuznetsov:&t;pa_* fields are replaced with ifaddr lists.&n; *&t;&t;Cyrus Durgin:&t;&t;updated for kmod&n; */
+multiline_comment|/*&n; *&t;NET3&t;IP device support routines.&n; *&n; *&t;Version: $Id: devinet.c,v 1.43 2001/09/26 22:52:58 davem Exp $&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Derived from the IP parts of dev.c 1.0.19&n; * &t;&t;Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&n; *&t;Additional Authors:&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;Changes:&n; *&t;        Alexey Kuznetsov:&t;pa_* fields are replaced with ifaddr lists.&n; *&t;&t;Cyrus Durgin:&t;&t;updated for kmod&n; *&t;&t;Matthias Andree:&t;in devinet_ioctl, compare label and &n; *&t;&t;&t;&t;&t;address (4.4BSD alias style support),&n; *&t;&t;&t;&t;&t;fall back to comparing just the label&n; *&t;&t;&t;&t;&t;if no match found.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -2091,6 +2091,10 @@ id|ifr
 suffix:semicolon
 r_struct
 id|sockaddr_in
+id|sin_orig
+suffix:semicolon
+r_struct
+id|sockaddr_in
 op_star
 id|sin
 op_assign
@@ -2136,6 +2140,11 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|tryaddrmatch
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Fetch the caller&squot;s info block into kernel space&n;&t; */
 r_if
 c_cond
@@ -2167,6 +2176,22 @@ l_int|1
 )braket
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* save original address for comparison */
+id|memcpy
+c_func
+(paren
+op_amp
+id|sin_orig
+comma
+id|sin
+comma
+r_sizeof
+(paren
+op_star
+id|sin
+)paren
+)paren
 suffix:semicolon
 id|colon
 op_assign
@@ -2218,7 +2243,15 @@ r_case
 id|SIOCGIFNETMASK
 suffix:colon
 multiline_comment|/* Get the netmask for the interface */
-multiline_comment|/* Note that this ioctls will not sleep,&n;&t;&t;   so that we do not impose a lock.&n;&t;&t;   One day we will be forced to put shlock here (I mean SMP)&n;&t;&t; */
+multiline_comment|/* Note that these ioctls will not sleep,&n;&t;&t;   so that we do not impose a lock.&n;&t;&t;   One day we will be forced to put shlock here (I mean SMP)&n;&t;&t; */
+id|tryaddrmatch
+op_assign
+(paren
+id|sin_orig.sin_family
+op_eq
+id|AF_INET
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -2369,6 +2402,75 @@ op_ne
 l_int|NULL
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|tryaddrmatch
+)paren
+(brace
+multiline_comment|/* Matthias Andree */
+multiline_comment|/* compare label and address (4.4BSD style) */
+multiline_comment|/* note: we only do this for a limited set of ioctls&n;&t;&t;&t;   and only if the original address family was AF_INET.&n;&t;&t;&t;   This is checked above. */
+r_for
+c_loop
+(paren
+id|ifap
+op_assign
+op_amp
+id|in_dev-&gt;ifa_list
+suffix:semicolon
+(paren
+id|ifa
+op_assign
+op_star
+id|ifap
+)paren
+op_ne
+l_int|NULL
+suffix:semicolon
+id|ifap
+op_assign
+op_amp
+id|ifa-&gt;ifa_next
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|strcmp
+c_func
+(paren
+id|ifr.ifr_name
+comma
+id|ifa-&gt;ifa_label
+)paren
+op_eq
+l_int|0
+)paren
+op_logical_and
+(paren
+id|sin_orig.sin_addr.s_addr
+op_eq
+id|ifa-&gt;ifa_address
+)paren
+)paren
+(brace
+r_break
+suffix:semicolon
+multiline_comment|/* found */
+)brace
+)brace
+)brace
+multiline_comment|/* we didn&squot;t get a match, maybe the application is&n;&t;&t;   4.3BSD-style and passed in junk so we fall back to &n;&t;&t;   comparing just the label */
+r_if
+c_cond
+(paren
+id|ifa
+op_eq
+l_int|NULL
+)paren
+(brace
 r_for
 c_loop
 (paren
@@ -2406,6 +2508,7 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond

@@ -1435,6 +1435,12 @@ c_func
 l_string|&quot;Radio driver for the Maestro PCI sound card radio.&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 DECL|function|maestro_radio_exit

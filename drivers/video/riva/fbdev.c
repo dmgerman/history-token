@@ -4302,6 +4302,8 @@ op_assign
 l_int|15
 suffix:semicolon
 multiline_comment|/* fix for 15 bpp depths on Riva 128 based cards */
+r_break
+suffix:semicolon
 r_case
 l_int|16
 suffix:colon
@@ -8583,6 +8585,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Framebuffer driver for nVidia Riva 128, TNT, TNT2&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

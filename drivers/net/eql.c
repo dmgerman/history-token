@@ -3608,5 +3608,11 @@ c_func
 id|eql_cleanup_module
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Local Variables: &n; * compile-command: &quot;gcc -D__KERNEL__ -I/usr/src/linux/net/inet -Wall -Wstrict-prototypes -O6 -m486 -c eql.c&quot;&n; * version-control: t&n; * kept-new-versions: 20&n; * End:&n; */
 eof

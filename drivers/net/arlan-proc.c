@@ -4702,4 +4702,10 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;
 singleline_comment|// MODULE
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

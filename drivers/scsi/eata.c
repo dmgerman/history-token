@@ -10127,4 +10127,10 @@ id|option_setup
 )paren
 suffix:semicolon
 macro_line|#endif /* end MODULE */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;BSD&quot;
+)paren
+suffix:semicolon
 eof

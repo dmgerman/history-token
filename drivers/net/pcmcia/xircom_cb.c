@@ -30,6 +30,12 @@ c_func
 l_string|&quot;Arjan van de Ven &lt;arjanv@redhat.com&gt;&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* IO registers on the card, offsets */
 DECL|macro|CSR0
 mdefine_line|#define CSR0&t;0x00

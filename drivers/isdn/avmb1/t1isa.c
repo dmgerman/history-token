@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: t1isa.c,v 1.16.6.6 2001/05/17 21:15:33 kai Exp $&n; * &n; * Module for AVM T1 HEMA-card.&n; * &n; * (c) Copyright 1999 by Carsten Paeth (calle@calle.in-berlin.de)&n; * &n; */
+multiline_comment|/* $Id: t1isa.c,v 1.16.6.7 2001/09/23 22:24:34 kai Exp $&n; * &n; * Module for AVM T1 HEMA-card.&n; * &n; * Copyright 1999 by Carsten Paeth &lt;calle@calle.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -20,13 +20,25 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.16.6.6 $&quot;
+l_string|&quot;$Revision: 1.16.6.7 $&quot;
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;CAPI4Linux: Driver for AVM T1 HEMA ISA card&quot;
+)paren
+suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Carsten Paeth &lt;calle@calle.in-berlin.de&gt;&quot;
+l_string|&quot;Carsten Paeth&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */

@@ -12,7 +12,7 @@ mdefine_line|#define module_unmap(x)&t;&t;ia64_module_unmap(x)
 DECL|macro|module_arch_init
 mdefine_line|#define module_arch_init(x)&t;ia64_module_init(x)
 DECL|macro|arch_init_modules
-mdefine_line|#define arch_init_modules(x)&t;do { } while (0)
+mdefine_line|#define arch_init_modules(x)&t;{ &t;static struct archdata archdata; &bslash;&n;&t;&t;&t;&t;&t;register char *kernel_gp asm (&quot;gp&quot;);&bslash;&n;&t;&t;&t;&t;&t;archdata.gp = kernel_gp; &bslash;&n;&t;&t;&t;&t;&t;kernel_module.archdata_start = (const char *) &amp;archdata; &bslash;&n;&t;&t;&t;&t;&t;kernel_module.archdata_end   = (const char *) (&amp;archdata + 1); &bslash;&n;&t;&t;&t;&t;}
 multiline_comment|/*&n; * This must match in size and layout the data created by&n; * modutils/obj/obj-ia64.c&n; */
 DECL|struct|archdata
 r_struct

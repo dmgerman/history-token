@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: capi.h,v 1.4 2000/06/12 09:20:20 kai Exp $&n; * &n; * CAPI 2.0 Interface for Linux&n; * &n; * Copyright 1997 by Carsten Paeth (calle@calle.in-berlin.de)&n; * &n; */
+multiline_comment|/* $Id: capi.h,v 1.4.6.1 2001/09/23 22:25:05 kai Exp $&n; * &n; * CAPI 2.0 Interface for Linux&n; * &n; * Copyright 1997 by Carsten Paeth (calle@calle.in-berlin.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#ifndef __LINUX_CAPI_H__
 DECL|macro|__LINUX_CAPI_H__
 mdefine_line|#define __LINUX_CAPI_H__

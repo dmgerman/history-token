@@ -49,7 +49,7 @@ id|rxdmacount
 multiline_comment|/* = 0 */
 suffix:semicolon
 multiline_comment|/* Set the copy breakpoint for the copy-only-tiny-buffer Rx method.&n;   Lower values use more memory, but are faster. */
-macro_line|#if defined(__alpha__) || defined(__sparc__) || defined(__arm__)
+macro_line|#if defined(__alpha__) || defined(__sparc__) || defined(__mips__) || &bslash;&n;    defined(__arm__)
 DECL|variable|rx_copybreak
 r_static
 r_int
@@ -201,6 +201,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -217,6 +218,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Intel i82557/i82558/i82559 PCI EtherExpressPro driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -451,6 +458,7 @@ DECL|macro|PCI_DEVICE_ID_INTEL_ID1030
 mdefine_line|#define PCI_DEVICE_ID_INTEL_ID1030 0x1030
 macro_line|#endif
 DECL|variable|speedo_debug
+r_static
 r_int
 id|speedo_debug
 op_assign
@@ -617,6 +625,11 @@ op_assign
 l_int|1000
 suffix:semicolon
 r_do
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -6320,7 +6333,6 @@ suffix:semicolon
 r_int
 id|entry
 suffix:semicolon
-(brace
 multiline_comment|/* Prevent interrupts from changing the Tx ring from underneath us. */
 r_int
 r_int
@@ -6538,6 +6550,42 @@ c_func
 id|skb-&gt;len
 )paren
 suffix:semicolon
+multiline_comment|/* workaround for hardware bug on 10 mbit half duplex */
+r_if
+c_cond
+(paren
+(paren
+id|sp-&gt;partner
+op_eq
+l_int|0
+)paren
+op_logical_and
+(paren
+id|sp-&gt;chip_id
+op_eq
+l_int|1
+)paren
+)paren
+(brace
+id|wait_for_cmd_done
+c_func
+(paren
+id|ioaddr
+op_plus
+id|SCBCmd
+)paren
+suffix:semicolon
+id|outb
+c_func
+(paren
+l_int|0
+comma
+id|ioaddr
+op_plus
+id|SCBCmd
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Trigger the command unit resume. */
 id|wait_for_cmd_done
 c_func
@@ -6553,7 +6601,7 @@ c_func
 id|sp-&gt;last_cmd
 )paren
 suffix:semicolon
-multiline_comment|/* We want the time window between clearing suspend flag on the previous&n;&t;&t;   command and resuming CU to be as small as possible.&n;&t;&t;   Interrupts in between are very undesired.  --SAW */
+multiline_comment|/* We want the time window between clearing suspend flag on the previous&n;&t;   command and resuming CU to be as small as possible.&n;&t;   Interrupts in between are very undesired.  --SAW */
 id|outb
 c_func
 (paren
@@ -6577,7 +6625,7 @@ id|sp-&gt;tx_ring
 id|entry
 )braket
 suffix:semicolon
-multiline_comment|/* Leave room for set_rx_mode(). If there is no more space than reserved&n;&t;&t;   for multicast filter mark the ring as full. */
+multiline_comment|/* Leave room for set_rx_mode(). If there is no more space than reserved&n;&t;   for multicast filter mark the ring as full. */
 r_if
 c_cond
 (paren
@@ -6613,7 +6661,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-)brace
 id|dev-&gt;trans_start
 op_assign
 id|jiffies
@@ -10874,6 +10921,12 @@ comma
 id|sp-&gt;tx_ring_dma
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -10896,6 +10949,17 @@ op_assign
 id|PCI_VENDOR_ID_INTEL
 comma
 id|PCI_DEVICE_ID_INTEL_82557
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_82562ET
 comma
 id|PCI_ANY_ID
 comma

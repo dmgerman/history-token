@@ -36,12 +36,20 @@ id|host
 suffix:semicolon
 DECL|macro|LASI700_SCSI
 mdefine_line|#define LASI700_SCSI {&t;&t;&t;&t;&bslash;&n;&t;name:&t;&t;&quot;LASI SCSI 53c700&quot;,&t;&bslash;&n;&t;proc_name:&t;&quot;lasi700&quot;,&t;&t;&bslash;&n;&t;detect:&t;&t;lasi700_detect,&t;&t;&bslash;&n;&t;release:&t;lasi700_release,&t;&bslash;&n;&t;this_id:&t;7,&t;&t;&t;&bslash;&n;}
+DECL|macro|LASI_710_SVERSION
+mdefine_line|#define LASI_710_SVERSION&t;0x082
+DECL|macro|LASI_700_SVERSION
+mdefine_line|#define LASI_700_SVERSION&t;0x071
 DECL|macro|LASI700_ID_TABLE
-mdefine_line|#define LASI700_ID_TABLE {&t;&t;&t;&bslash;&n;&t;hw_type:&t;HPHW_FIO,&t;&t;&bslash;&n;&t;sversion:&t;0x071,&t;&t;&t;&bslash;&n;&t;hversion:&t;HVERSION_ANY_ID,&t;&bslash;&n;&t;hversion_rev:&t;HVERSION_REV_ANY_ID,&t;&bslash;&n;}
+mdefine_line|#define LASI700_ID_TABLE {&t;&t;&t;&bslash;&n;&t;hw_type:&t;HPHW_FIO,&t;&t;&bslash;&n;&t;sversion:&t;LASI_700_SVERSION,&t;&bslash;&n;&t;hversion:&t;HVERSION_ANY_ID,&t;&bslash;&n;&t;hversion_rev:&t;HVERSION_REV_ANY_ID,&t;&bslash;&n;}
+DECL|macro|LASI710_ID_TABLE
+mdefine_line|#define LASI710_ID_TABLE {&t;&t;&t;&bslash;&n;&t;hw_type:&t;HPHW_FIO,&t;&t;&bslash;&n;&t;sversion:&t;LASI_710_SVERSION,&t;&bslash;&n;&t;hversion:&t;HVERSION_ANY_ID,&t;&bslash;&n;&t;hversion_rev:&t;HVERSION_REV_ANY_ID,&t;&bslash;&n;}
 DECL|macro|LASI700_DRIVER
 mdefine_line|#define LASI700_DRIVER {&t;&t;&t;&bslash;&n;&t;name:&t;&t;&quot;Lasi SCSI&quot;,&t;&t;&bslash;&n;&t;id_table:&t;lasi700_scsi_tbl,&t;&bslash;&n;&t;probe:&t;&t;lasi700_driver_callback,&bslash;&n;}
 DECL|macro|LASI700_CLOCK
 mdefine_line|#define LASI700_CLOCK&t;25
+DECL|macro|LASI710_CLOCK
+mdefine_line|#define LASI710_CLOCK&t;40
 DECL|macro|LASI_SCSI_CORE_OFFSET
 mdefine_line|#define LASI_SCSI_CORE_OFFSET 0x100
 macro_line|#endif

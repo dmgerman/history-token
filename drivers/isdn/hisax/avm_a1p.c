@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: avm_a1p.c,v 2.7.6.1 2001/02/16 16:43:25 kai Exp $&n; *&n; * avm_a1p.c    low level stuff for the following AVM cards:&n; *              A1 PCMCIA&n; *&t;&t;FRITZ!Card PCMCIA&n; *&t;&t;FRITZ!Card PCMCIA 2.0&n; *&n; * Author       Carsten Paeth (calle@calle.in-berlin.de)&n; *&n; *  This file is (c) under GNU General Public License&n; */
+multiline_comment|/* $Id: avm_a1p.c,v 2.7.6.2 2001/09/23 22:24:46 kai Exp $&n; *&n; * low level stuff for the following AVM cards:&n; * A1 PCMCIA&n; * FRITZ!Card PCMCIA&n; * FRITZ!Card PCMCIA 2.0&n; *&n; * Author       Carsten Paeth&n; * Copyright    by Carsten Paeth     &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -70,7 +70,7 @@ r_char
 op_star
 id|avm_revision
 op_assign
-l_string|&quot;$Revision: 2.7.6.1 $&quot;
+l_string|&quot;$Revision: 2.7.6.2 $&quot;
 suffix:semicolon
 r_static
 r_inline

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: diva.c,v 1.25.6.4 2001/02/16 16:43:25 kai Exp $&n; *&n; * diva.c     low level stuff for Eicon.Diehl Diva Family ISDN cards&n; *&n; * Author     Karsten Keil (keil@isdn4linux.de)&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to Eicon Technology for documents and informations&n; *&n; */
+multiline_comment|/* $Id: diva.c,v 1.25.6.5 2001/09/23 22:24:47 kai Exp $&n; *&n; * low level stuff for Eicon.Diehl Diva Family ISDN cards&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to Eicon Technology for documents and information&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -23,7 +23,7 @@ r_char
 op_star
 id|Diva_revision
 op_assign
-l_string|&quot;$Revision: 1.25.6.4 $&quot;
+l_string|&quot;$Revision: 1.25.6.5 $&quot;
 suffix:semicolon
 DECL|macro|byteout
 mdefine_line|#define byteout(addr,val) outb(val,addr)

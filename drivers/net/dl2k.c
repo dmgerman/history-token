@@ -75,6 +75,12 @@ id|MODULE_DESCRIPTION
 l_string|&quot;D-Link DL2000-based Gigabit Ethernet Adapter&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM
 (paren
 id|mtu

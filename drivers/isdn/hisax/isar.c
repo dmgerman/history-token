@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isar.c,v 1.17.6.4 2001/08/17 12:34:26 kai Exp $&n; *&n; * isar.c   ISAR (Siemens PSB 7110) specific routines&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: isar.c,v 1.17.6.5 2001/09/23 11:51:33 keil Exp $&n; *&n; * isar.c   ISAR (Siemens PSB 7110) specific routines&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -1662,20 +1662,21 @@ OG
 l_int|0
 )paren
 (brace
-id|noc
-op_assign
-id|left
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|noc
+id|left
 OG
 l_int|126
 )paren
 id|noc
 op_assign
 l_int|126
+suffix:semicolon
+r_else
+id|noc
+op_assign
+id|left
 suffix:semicolon
 id|nom
 op_assign
@@ -1769,11 +1770,13 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;isar: load %3d words at %04x&bslash;n&quot;
+l_string|&quot;isar: load %3d words at %04x left %d&bslash;n&quot;
 comma
 id|noc
 comma
 id|sadr
+comma
+id|left
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -841,7 +841,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;NIP: %08lX XER: %08lX LR: %08lX SP: %08lX REGS: %p TRAP: %04lx&bslash;n&quot;
+l_string|&quot;NIP: %08lX XER: %08lX LR: %08lX SP: %08lX REGS: %p TRAP: %04lx    %s&bslash;n&quot;
 comma
 id|regs-&gt;nip
 comma
@@ -857,6 +857,11 @@ comma
 id|regs
 comma
 id|regs-&gt;trap
+comma
+id|print_tainted
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|printk

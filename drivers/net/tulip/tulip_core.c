@@ -235,6 +235,12 @@ c_func
 l_string|&quot;Digital 21*4* Tulip ethernet driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -8133,12 +8139,6 @@ r_goto
 id|err_out_free_res
 suffix:semicolon
 macro_line|#endif
-id|pci_set_master
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
 id|pci_read_config_byte
 (paren
 id|pdev
@@ -8334,6 +8334,12 @@ id|tulip_stop_rxtx
 c_func
 (paren
 id|tp
+)paren
+suffix:semicolon
+id|pci_set_master
+c_func
+(paren
+id|pdev
 )paren
 suffix:semicolon
 multiline_comment|/* Clear the missed-packet counter. */

@@ -50,20 +50,5 @@ c_func
 id|nlmsvc_ops
 )paren
 suffix:semicolon
-multiline_comment|/* Configuration at insmod time */
-DECL|variable|nlmsvc_grace_period
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|nlmsvc_grace_period
-)paren
-suffix:semicolon
-DECL|variable|nlmsvc_timeout
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|nlmsvc_timeout
-)paren
-suffix:semicolon
 macro_line|#endif /* CONFIG_MODULES */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: teles3.c,v 2.17.6.1 2001/02/16 16:43:29 kai Exp $&n; *&n; * teles3.c     low level stuff for Teles 16.3 &amp; PNP isdn cards&n; *&n; *              based on the teles driver from Jan den Ouden&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *              Beat Doebeli&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: teles3.c,v 2.17.6.2 2001/09/23 22:24:52 kai Exp $&n; *&n; * low level stuff for Teles 16.3 &amp; PNP isdn cards&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *              Beat Doebeli&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -20,7 +20,7 @@ r_char
 op_star
 id|teles3_revision
 op_assign
-l_string|&quot;$Revision: 2.17.6.1 $&quot;
+l_string|&quot;$Revision: 2.17.6.2 $&quot;
 suffix:semicolon
 DECL|macro|byteout
 mdefine_line|#define byteout(addr,val) outb(val,addr)

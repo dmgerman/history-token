@@ -1849,6 +1849,12 @@ c_func
 l_string|&quot;Driver for common parallel+serial multi-I/O PCI cards&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|parport_serial_init
 id|module_init
 c_func

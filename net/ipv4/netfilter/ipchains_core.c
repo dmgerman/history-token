@@ -7195,4 +7195,10 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;BSD without advertisement clause&quot;
+)paren
+suffix:semicolon
 eof

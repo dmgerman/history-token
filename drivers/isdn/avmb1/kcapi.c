@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: kcapi.c,v 1.21.6.7 2001/06/09 15:14:15 kai Exp $&n; * &n; * Kernel CAPI 2.0 Module&n; * &n; * (c) Copyright 1999 by Carsten Paeth (calle@calle.in-berlin.de)&n; * &n; */
+multiline_comment|/* $Id: kcapi.c,v 1.21.6.8 2001/09/23 22:24:33 kai Exp $&n; * &n; * Kernel CAPI 2.0 Module&n; * &n; * Copyright 1999 by Carsten Paeth &lt;calle@calle.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 DECL|macro|CONFIG_AVMB1_COMPAT
 mdefine_line|#define CONFIG_AVMB1_COMPAT
 macro_line|#include &lt;linux/config.h&gt;
@@ -28,7 +28,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.21.6.7 $&quot;
+l_string|&quot;$Revision: 1.21.6.8 $&quot;
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
 DECL|macro|CARD_FREE
@@ -41,15 +41,28 @@ DECL|macro|CARD_RUNNING
 mdefine_line|#define CARD_RUNNING&t;3
 multiline_comment|/* ------------------------------------------------------------- */
 DECL|variable|showcapimsgs
+r_static
 r_int
 id|showcapimsgs
 op_assign
 l_int|0
 suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;CAPI4Linux: kernel CAPI layer&quot;
+)paren
+suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Carsten Paeth &lt;calle@calle.in-berlin.de&gt;&quot;
+l_string|&quot;Carsten Paeth&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -57,7 +70,7 @@ c_func
 (paren
 id|showcapimsgs
 comma
-l_string|&quot;0-4i&quot;
+l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */

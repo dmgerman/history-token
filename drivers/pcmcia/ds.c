@@ -65,6 +65,12 @@ l_string|&quot;PCMCIA Driver Services &quot;
 id|CS_RELEASE
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual MPL/GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*====================================================================*/
 DECL|struct|driver_info_t
 r_typedef
@@ -1613,10 +1619,15 @@ c_cond
 op_logical_neg
 id|b
 )paren
+(brace
+id|driver-&gt;use_count
+op_decrement
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 id|b-&gt;driver
 op_assign
 id|driver

@@ -1,7 +1,8 @@
-multiline_comment|/* $Id: module.c,v 1.14.6.3 2001/07/13 09:20:11 kai Exp $&n; *&n; * ISDN lowlevel-module for the IBM ISDN-S0 Active 2000.&n; *&n; * Copyright 1998 by Fritz Elfert (fritz@isdn4linux.de)&n; * Thanks to Friedemann Baitinger and IBM Germany&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; *&n; */
+multiline_comment|/* $Id: module.c,v 1.14.6.4 2001/09/23 22:24:32 kai Exp $&n; *&n; * ISDN lowlevel-module for the IBM ISDN-S0 Active 2000.&n; *&n; * Author       Fritz Elfert&n; * Copyright    by Fritz Elfert      &lt;fritz@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Thanks to Friedemann Baitinger and IBM Germany&n; *&n; */
 macro_line|#include &quot;act2000.h&quot;
 macro_line|#include &quot;act2000_isa.h&quot;
 macro_line|#include &quot;capi.h&quot;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 DECL|variable|act2000_isa_ports
 r_static
@@ -92,7 +93,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Driver for IBM Active 2000 ISDN card&quot;
+l_string|&quot;ISDN4Linux: Driver for IBM Active 2000 ISDN card&quot;
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -101,10 +102,10 @@ c_func
 l_string|&quot;Fritz Elfert&quot;
 )paren
 suffix:semicolon
-id|MODULE_SUPPORTED_DEVICE
+id|MODULE_LICENSE
 c_func
 (paren
-l_string|&quot;ISDN subsystem&quot;
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

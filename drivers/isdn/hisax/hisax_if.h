@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * Interface between low level (hardware) drivers and &n; * HiSax protocol stack&n; *&n; * Author       Kai Germaschewski&n; * Copyright    2001 by Kai Germaschewski  &lt;kai.germaschewski@gmx.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#ifndef __HISAX_IF_H__
 DECL|macro|__HISAX_IF_H__
 mdefine_line|#define __HISAX_IF_H__

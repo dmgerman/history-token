@@ -1,9 +1,5 @@
-multiline_comment|/* $Id: isdn_net.c,v 1.140.6.8 2001/08/14 14:04:21 kai Exp $&n;&n; * Linux ISDN subsystem, network interfaces and related functions (linklevel).&n; *&n; * Copyright 1994-1998  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
-multiline_comment|/* Jan 2001: fix CISCO HDLC      Bjoern A. Zeeb &lt;i4l@zabbadoz.net&gt;&n; *           for info on the protocol, see &n; *           http://i4l.zabbadoz.net/i4l/cisco-hdlc.txt&n; */
+multiline_comment|/* $Id: isdn_net.c,v 1.140.6.10 2001/09/28 08:05:29 kai Exp $&n; *&n; * Linux ISDN subsystem, network interfaces and related functions (linklevel).&n; *&n; * Copyright 1994-1998  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Jan 2001: fix CISCO HDLC      Bjoern A. Zeeb &lt;i4l@zabbadoz.net&gt;&n; *           for info on the protocol, see &n; *           http://i4l.zabbadoz.net/i4l/cisco-hdlc.txt&n; */
 macro_line|#include &lt;linux/config.h&gt;
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/isdn.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
@@ -436,7 +432,7 @@ r_char
 op_star
 id|isdn_net_revision
 op_assign
-l_string|&quot;$Revision: 1.140.6.8 $&quot;
+l_string|&quot;$Revision: 1.140.6.10 $&quot;
 suffix:semicolon
 multiline_comment|/*&n;  * Code for raw-networking over ISDN&n;  */
 r_static
@@ -1957,7 +1953,8 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|ulong
+r_int
+r_int
 id|flags
 suffix:semicolon
 id|isdn_ctrl
@@ -6673,20 +6670,23 @@ suffix:semicolon
 r_int
 id|period
 suffix:semicolon
-id|__u32
+id|u32
 id|code
 suffix:semicolon
-id|__u32
+id|u32
 id|my_seq
 comma
 id|addr
 suffix:semicolon
-id|__u32
+id|u32
 id|your_seq
 comma
 id|mask
 suffix:semicolon
-id|__u16
+id|u32
+id|local
+suffix:semicolon
+id|u16
 id|unused
 suffix:semicolon
 r_if
@@ -6737,61 +6737,131 @@ suffix:semicolon
 r_case
 id|CISCO_SLARP_REPLY
 suffix:colon
-multiline_comment|/* Ignore replies - at least for now */
+id|addr
+op_assign
+id|ntohl
+c_func
+(paren
+op_star
+(paren
+id|u32
+op_star
+)paren
+id|p
+)paren
+suffix:semicolon
+id|mask
+op_assign
+id|ntohl
+c_func
+(paren
+op_star
+(paren
+id|u32
+op_star
+)paren
+(paren
+id|p
+op_plus
+l_int|4
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|lp-&gt;cisco_debserint
-)paren
-(brace
-id|p
-op_add_assign
-id|get_u32
-c_func
-(paren
-id|p
-comma
-op_amp
-id|addr
-)paren
-suffix:semicolon
-id|p
-op_add_assign
-id|get_u32
-c_func
-(paren
-id|p
-comma
-op_amp
 id|mask
+op_ne
+l_int|0xfffffffc
 )paren
+r_goto
+id|slarp_reply_out
 suffix:semicolon
-id|p
-op_add_assign
-id|get_u16
-c_func
+r_if
+c_cond
 (paren
-id|p
-comma
+(paren
+id|addr
 op_amp
-id|unused
+l_int|3
 )paren
+op_eq
+l_int|0
+op_logical_or
+(paren
+id|addr
+op_amp
+l_int|3
+)paren
+op_eq
+l_int|3
+)paren
+r_goto
+id|slarp_reply_out
+suffix:semicolon
+id|local
+op_assign
+id|addr
+op_xor
+l_int|3
 suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;%s: got slarp reply (%ul/%ul) - &quot;
-l_string|&quot;ignored&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: got slarp reply: &quot;
+l_string|&quot;remote ip: %d.%d.%d.%d, &quot;
+l_string|&quot;local ip: %d.%d.%d.%d &quot;
+l_string|&quot;mask: %d.%d.%d.%d&bslash;n&quot;
 comma
 id|lp-&gt;name
 comma
+id|HIPQUAD
+c_func
+(paren
 id|addr
+)paren
 comma
+id|HIPQUAD
+c_func
+(paren
+id|local
+)paren
+comma
+id|HIPQUAD
+c_func
+(paren
 id|mask
 )paren
+)paren
 suffix:semicolon
-)brace
+r_break
+suffix:semicolon
+id|slarp_reply_out
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: got invalid slarp &quot;
+l_string|&quot;reply (%d.%d.%d.%d/%d.%d.%d.%d) &quot;
+l_string|&quot;- ignored&bslash;n&quot;
+comma
+id|lp-&gt;name
+comma
+id|HIPQUAD
+c_func
+(paren
+id|addr
+)paren
+comma
+id|HIPQUAD
+c_func
+(paren
+id|mask
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -6917,13 +6987,13 @@ r_char
 op_star
 id|p
 suffix:semicolon
-id|__u8
+id|u8
 id|addr
 suffix:semicolon
-id|__u8
+id|u8
 id|ctrl
 suffix:semicolon
-id|__u16
+id|u16
 id|type
 suffix:semicolon
 r_if
@@ -11327,7 +11397,8 @@ OG
 l_int|0
 )paren
 (brace
-id|ulong
+r_int
+r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* If binding is exclusive, try to grab the channel */
@@ -12557,7 +12628,8 @@ id|isdn_net_phone
 op_star
 id|m
 suffix:semicolon
-id|ulong
+r_int
+r_int
 id|flags
 suffix:semicolon
 r_if
@@ -12700,7 +12772,8 @@ id|isdn_net_phone
 op_star
 id|m
 suffix:semicolon
-id|ulong
+r_int
+r_int
 id|flags
 suffix:semicolon
 r_int
@@ -12888,7 +12961,8 @@ op_star
 id|q
 )paren
 (brace
-id|ulong
+r_int
+r_int
 id|flags
 suffix:semicolon
 id|save_flags
@@ -13266,7 +13340,8 @@ c_func
 r_void
 )paren
 (brace
-id|ulong
+r_int
+r_int
 id|flags
 suffix:semicolon
 r_int

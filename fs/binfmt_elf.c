@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/elfcore.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -1764,9 +1765,6 @@ id|ibcs2_interpreter
 op_assign
 l_int|0
 suffix:semicolon
-id|mm_segment_t
-id|old_fs
-suffix:semicolon
 r_int
 r_int
 id|error
@@ -2610,22 +2608,6 @@ op_assign
 id|bprm-&gt;p
 suffix:semicolon
 multiline_comment|/* Now we do a little grungy work by mmaping the ELF image into&n;&t;   the correct location in memory.  At this point, we assume that&n;&t;   the image should be loaded at fixed address, not at a variable&n;&t;   address. */
-id|old_fs
-op_assign
-id|get_fs
-c_func
-(paren
-)paren
-suffix:semicolon
-id|set_fs
-c_func
-(paren
-id|get_ds
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2668,6 +2650,84 @@ id|PT_LOAD
 )paren
 r_continue
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+(paren
+id|elf_brk
+OG
+id|elf_bss
+)paren
+)paren
+(brace
+r_int
+r_int
+id|nbyte
+suffix:semicolon
+multiline_comment|/* There was a PT_LOAD segment with p_memsz &gt; p_filesz&n;&t;&t;&t;   before this one. Map anonymous pages, if needed,&n;&t;&t;&t;   and clear the area.  */
+id|set_brk
+(paren
+id|elf_bss
+op_plus
+id|load_bias
+comma
+id|elf_brk
+op_plus
+id|load_bias
+)paren
+suffix:semicolon
+id|nbyte
+op_assign
+id|ELF_PAGEOFFSET
+c_func
+(paren
+id|elf_bss
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nbyte
+)paren
+(brace
+id|nbyte
+op_assign
+id|ELF_MIN_ALIGN
+op_minus
+id|nbyte
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nbyte
+OG
+id|elf_brk
+op_minus
+id|elf_bss
+)paren
+id|nbyte
+op_assign
+id|elf_brk
+op_minus
+id|elf_bss
+suffix:semicolon
+id|clear_user
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|elf_bss
+op_plus
+id|load_bias
+comma
+id|nbyte
+)paren
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
@@ -2901,12 +2961,6 @@ op_assign
 id|k
 suffix:semicolon
 )brace
-id|set_fs
-c_func
-(paren
-id|old_fs
-)paren
-suffix:semicolon
 id|elf_entry
 op_add_assign
 id|load_bias

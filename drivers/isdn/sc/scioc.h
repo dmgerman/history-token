@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 multiline_comment|/*&n; * IOCTL Command Codes&n; */
 DECL|macro|SCIOCLOAD
 mdefine_line|#define SCIOCLOAD&t;0x01&t;/* Load a firmware record */

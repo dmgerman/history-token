@@ -4145,6 +4145,12 @@ id|AT1700_IO_EXTENT
 suffix:semicolon
 )brace
 macro_line|#endif /* MODULE */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 "&f;"
 multiline_comment|/*&n; * Local variables:&n; *  compile-command: &quot;gcc -DMODULE -D__KERNEL__ -Wall -Wstrict-prototypes -O6 -c at1700.c&quot;&n; *  alt-compile-command: &quot;gcc -DMODVERSIONS -DMODULE -D__KERNEL__ -Wall -Wstrict-prototypes -O6 -c at1700.c&quot;&n; *  tab-width: 4&n; *  c-basic-offset: 4&n; *  c-indent-level: 4&n; * End:&n; */
 eof

@@ -3541,6 +3541,16 @@ op_star
 id|devc
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|devc-&gt;my_mixerdev
+op_eq
+op_minus
+l_int|1
+)paren
+r_return
+suffix:semicolon
 id|kfree
 c_func
 (paren

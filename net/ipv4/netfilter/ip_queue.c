@@ -2968,6 +2968,12 @@ c_func
 l_string|&quot;IPv4 packet queue handler&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|init
 id|module_init
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: capifs.h,v 1.2.6.1 2001/05/17 20:41:51 kai Exp $&n; * &n; * (c) Copyright 2000 by Carsten Paeth (calle@calle.de)&n; *&n; */
+multiline_comment|/* $Id: capifs.h,v 1.2.6.2 2001/09/23 22:24:33 kai Exp $&n; * &n; * Copyright 2000 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 r_void
 id|capifs_new_ncci
 c_func

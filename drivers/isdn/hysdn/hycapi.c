@@ -1,6 +1,4 @@
-multiline_comment|/* $Id: hycapi.c,v 1.8.6.3 2001/05/26 15:19:58 kai Exp $&n; *&n; * Linux driver for HYSDN cards, CAPI2.0-Interface.&n; * written by Ulrich Albrecht (u.albrecht@hypercope.de) for Hypercope GmbH&n; *&n; * Copyright 2000 by Hypercope GmbH&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
+multiline_comment|/* $Id: hycapi.c,v 1.8.6.4 2001/09/23 22:24:54 kai Exp $&n; *&n; * Linux driver for HYSDN cards, CAPI2.0-Interface.&n; *&n; * Author    Ulrich Albrecht &lt;u.albrecht@hypercope.de&gt; for Hypercope GmbH&n; * Copyright 2000 by Hypercope GmbH&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -31,7 +29,7 @@ id|hycapi_revision
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.8.6.3 $&quot;
+l_string|&quot;$Revision: 1.8.6.4 $&quot;
 suffix:semicolon
 DECL|variable|hycapi_enable
 r_int

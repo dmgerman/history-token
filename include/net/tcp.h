@@ -598,13 +598,13 @@ DECL|macro|MAX_TCP_HEADER
 mdefine_line|#define MAX_TCP_HEADER&t;(128 + MAX_HEADER)
 multiline_comment|/* &n; * Never offer a window over 32767 without using window scaling. Some&n; * poor stacks do signed 16bit maths! &n; */
 DECL|macro|MAX_TCP_WINDOW
-mdefine_line|#define MAX_TCP_WINDOW&t;&t;32767
+mdefine_line|#define MAX_TCP_WINDOW&t;&t;32767U
 multiline_comment|/* Minimal accepted MSS. It is (60+60+8) - (20+20). */
 DECL|macro|TCP_MIN_MSS
-mdefine_line|#define TCP_MIN_MSS&t;&t;88
+mdefine_line|#define TCP_MIN_MSS&t;&t;88U
 multiline_comment|/* Minimal RCV_MSS. */
 DECL|macro|TCP_MIN_RCVMSS
-mdefine_line|#define TCP_MIN_RCVMSS&t;&t;536
+mdefine_line|#define TCP_MIN_RCVMSS&t;&t;536U
 multiline_comment|/* After receiving this amount of duplicate ACKs fast retransmit starts. */
 DECL|macro|TCP_FASTRETRANS_THRESH
 mdefine_line|#define TCP_FASTRETRANS_THRESH 3
@@ -613,7 +613,7 @@ DECL|macro|TCP_MAX_REORDERING
 mdefine_line|#define TCP_MAX_REORDERING&t;127
 multiline_comment|/* Maximal number of ACKs sent quickly to accelerate slow-start. */
 DECL|macro|TCP_MAX_QUICKACKS
-mdefine_line|#define TCP_MAX_QUICKACKS&t;16
+mdefine_line|#define TCP_MAX_QUICKACKS&t;16U
 multiline_comment|/* urg_data states */
 DECL|macro|TCP_URG_VALID
 mdefine_line|#define TCP_URG_VALID&t;0x0100
@@ -637,26 +637,26 @@ DECL|macro|TCP_FIN_TIMEOUT
 mdefine_line|#define TCP_FIN_TIMEOUT&t;TCP_TIMEWAIT_LEN
 multiline_comment|/* BSD style FIN_WAIT2 deadlock breaker.&n;&t;&t;&t;&t;  * It used to be 3min, new value is 60sec,&n;&t;&t;&t;&t;  * to combine FIN-WAIT-2 timeout with&n;&t;&t;&t;&t;  * TIME-WAIT timer.&n;&t;&t;&t;&t;  */
 DECL|macro|TCP_DELACK_MAX
-mdefine_line|#define TCP_DELACK_MAX&t;(HZ/5)&t;/* maximal time to delay before sending an ACK */
+mdefine_line|#define TCP_DELACK_MAX&t;((unsigned)(HZ/5))&t;/* maximal time to delay before sending an ACK */
 macro_line|#if HZ &gt;= 100
 DECL|macro|TCP_DELACK_MIN
-mdefine_line|#define TCP_DELACK_MIN&t;(HZ/25)&t;/* minimal time to delay before sending an ACK */
+mdefine_line|#define TCP_DELACK_MIN&t;((unsigned)(HZ/25))&t;/* minimal time to delay before sending an ACK */
 DECL|macro|TCP_ATO_MIN
-mdefine_line|#define TCP_ATO_MIN&t;(HZ/25)
+mdefine_line|#define TCP_ATO_MIN&t;((unsigned)(HZ/25))
 macro_line|#else
 DECL|macro|TCP_DELACK_MIN
-mdefine_line|#define TCP_DELACK_MIN&t;4
+mdefine_line|#define TCP_DELACK_MIN&t;4U
 DECL|macro|TCP_ATO_MIN
-mdefine_line|#define TCP_ATO_MIN&t;4
+mdefine_line|#define TCP_ATO_MIN&t;4U
 macro_line|#endif
 DECL|macro|TCP_RTO_MAX
-mdefine_line|#define TCP_RTO_MAX&t;(120*HZ)
+mdefine_line|#define TCP_RTO_MAX&t;((unsigned)(120*HZ))
 DECL|macro|TCP_RTO_MIN
-mdefine_line|#define TCP_RTO_MIN&t;(HZ/5)
+mdefine_line|#define TCP_RTO_MIN&t;((unsigned)(HZ/5))
 DECL|macro|TCP_TIMEOUT_INIT
-mdefine_line|#define TCP_TIMEOUT_INIT (3*HZ)&t;/* RFC 1122 initial RTO value&t;*/
+mdefine_line|#define TCP_TIMEOUT_INIT ((unsigned)(3*HZ))&t;/* RFC 1122 initial RTO value&t;*/
 DECL|macro|TCP_RESOURCE_PROBE_INTERVAL
-mdefine_line|#define TCP_RESOURCE_PROBE_INTERVAL (HZ/2) /* Maximal interval between probes&n;&t;&t;&t;&t;&t;    * for local resources.&n;&t;&t;&t;&t;&t;    */
+mdefine_line|#define TCP_RESOURCE_PROBE_INTERVAL ((unsigned)(HZ/2U)) /* Maximal interval between probes&n;&t;&t;&t;&t;&t;                 * for local resources.&n;&t;&t;&t;&t;&t;                 */
 DECL|macro|TCP_KEEPALIVE_TIME
 mdefine_line|#define TCP_KEEPALIVE_TIME&t;(120*60*HZ)&t;/* two hours */
 DECL|macro|TCP_KEEPALIVE_PROBES
@@ -3097,12 +3097,9 @@ r_int
 r_int
 id|hint
 op_assign
-id|min_t
+id|min
 c_func
 (paren
-r_int
-r_int
-comma
 id|tp-&gt;advmss
 comma
 id|tp-&gt;mss_cache
@@ -3110,12 +3107,9 @@ id|tp-&gt;mss_cache
 suffix:semicolon
 id|hint
 op_assign
-id|min_t
+id|min
 c_func
 (paren
-r_int
-r_int
-comma
 id|hint
 comma
 id|tp-&gt;rcv_wnd
@@ -3123,27 +3117,29 @@ op_div
 l_int|2
 )paren
 suffix:semicolon
-id|tp-&gt;ack.rcv_mss
+id|hint
 op_assign
-id|max_t
+id|min
 c_func
 (paren
-r_int
-r_int
-comma
-id|min_t
-c_func
-(paren
-r_int
-r_int
-comma
 id|hint
 comma
 id|TCP_MIN_RCVMSS
 )paren
+suffix:semicolon
+id|hint
+op_assign
+id|max
+c_func
+(paren
+id|hint
 comma
 id|TCP_MIN_MSS
 )paren
+suffix:semicolon
+id|tp-&gt;ack.rcv_mss
+op_assign
+id|hint
 suffix:semicolon
 )brace
 DECL|function|__tcp_fast_path_on
@@ -3457,6 +3453,7 @@ DECL|function|tcp_packets_in_flight
 r_static
 id|__inline__
 r_int
+r_int
 id|tcp_packets_in_flight
 c_func
 (paren
@@ -3489,16 +3486,14 @@ id|tp
 )paren
 (brace
 r_return
-id|max_t
+id|max
 c_func
 (paren
-id|u32
-comma
 id|tp-&gt;snd_cwnd
 op_rshift
-l_int|1
+l_int|1U
 comma
-l_int|2
+l_int|2U
 )paren
 suffix:semicolon
 )brace
@@ -3536,11 +3531,9 @@ id|tp-&gt;snd_ssthresh
 suffix:semicolon
 r_else
 r_return
-id|max_t
+id|max
 c_func
 (paren
-id|u32
-comma
 id|tp-&gt;snd_ssthresh
 comma
 (paren
@@ -3708,11 +3701,9 @@ id|tp
 suffix:semicolon
 id|tp-&gt;snd_cwnd
 op_assign
-id|min_t
+id|min
 c_func
 (paren
-id|u32
-comma
 id|tp-&gt;snd_cwnd
 comma
 id|tcp_packets_in_flight
@@ -3721,7 +3712,7 @@ c_func
 id|tp
 )paren
 op_plus
-l_int|1
+l_int|1U
 )paren
 suffix:semicolon
 id|tp-&gt;snd_cwnd_cnt
@@ -5310,7 +5301,7 @@ id|tcp_select_initial_window
 c_func
 (paren
 r_int
-id|space
+id|__space
 comma
 id|__u32
 id|mss
@@ -5331,6 +5322,21 @@ op_star
 id|rcv_wscale
 )paren
 (brace
+r_int
+r_int
+id|space
+op_assign
+(paren
+id|__space
+OL
+l_int|0
+ques
+c_cond
+l_int|0
+suffix:colon
+id|__space
+)paren
+suffix:semicolon
 multiline_comment|/* If no clamp set the clamp to the max possible scaled window */
 r_if
 c_cond
@@ -5353,11 +5359,9 @@ l_int|14
 suffix:semicolon
 id|space
 op_assign
-id|min_t
+id|min
 c_func
 (paren
-id|u32
-comma
 op_star
 id|window_clamp
 comma
@@ -5388,11 +5392,9 @@ op_star
 id|rcv_wnd
 )paren
 op_assign
-id|min_t
+id|min
 c_func
 (paren
-r_int
-comma
 id|space
 comma
 id|MAX_TCP_WINDOW
@@ -5452,12 +5454,9 @@ id|mss
 op_logical_and
 id|space
 op_minus
-id|max_t
+id|max
 c_func
 (paren
-r_int
-r_int
-comma
 (paren
 id|space
 op_rshift
@@ -5549,12 +5548,10 @@ op_star
 id|window_clamp
 )paren
 op_assign
-id|min_t
+id|min
 c_func
 (paren
-id|u32
-comma
-l_int|65535
+l_int|65535U
 op_lshift
 (paren
 op_star
@@ -6302,11 +6299,9 @@ id|SOCK_SNDBUF_LOCK
 (brace
 id|sk-&gt;sndbuf
 op_assign
-id|min_t
+id|min
 c_func
 (paren
-r_int
-comma
 id|sk-&gt;sndbuf
 comma
 id|sk-&gt;wmem_queued
@@ -6316,11 +6311,9 @@ l_int|2
 suffix:semicolon
 id|sk-&gt;sndbuf
 op_assign
-id|max_t
+id|max
 c_func
 (paren
-r_int
-comma
 id|sk-&gt;sndbuf
 comma
 id|SOCK_MIN_SNDBUF

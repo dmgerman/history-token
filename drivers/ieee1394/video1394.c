@@ -8305,6 +8305,12 @@ c_func
 id|VIDEO1394_DRIVER_NAME
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|video1394_exit_module
 r_static
 r_void

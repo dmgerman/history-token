@@ -1,7 +1,4 @@
-singleline_comment|// $Id: nj_s.c,v 2.7.6.5 2001/07/18 16:25:12 kai Exp $
-singleline_comment|//
-singleline_comment|// This file is (c) under GNU General Public License
-singleline_comment|//
+multiline_comment|/* $Id: nj_s.c,v 2.7.6.6 2001/09/23 22:24:50 kai Exp $&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
@@ -19,7 +16,7 @@ r_char
 op_star
 id|NETjet_S_revision
 op_assign
-l_string|&quot;$Revision: 2.7.6.5 $&quot;
+l_string|&quot;$Revision: 2.7.6.6 $&quot;
 suffix:semicolon
 DECL|function|dummyrr
 r_static

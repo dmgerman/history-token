@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdnloop.h,v 1.5.6.2 2001/08/17 12:34:27 kai Exp $&n;&n; * Loopback lowlevel module for testing of linklevel.&n; *&n; * Copyright 1997 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: isdnloop.h,v 1.5.6.3 2001/09/23 22:24:56 kai Exp $&n; *&n; * Loopback lowlevel module for testing of linklevel.&n; *&n; * Copyright 1997 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#ifndef isdnloop_h
 DECL|macro|isdnloop_h
 mdefine_line|#define isdnloop_h
@@ -54,7 +54,6 @@ suffix:semicolon
 macro_line|#if defined(__KERNEL__) || defined(__DEBUGVAR__)
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* Kernel includes */
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -299,38 +298,6 @@ op_star
 )paren
 l_int|0
 suffix:semicolon
-DECL|variable|isdnloop_id
-r_static
-r_char
-op_star
-id|isdnloop_id
-op_assign
-l_string|&quot;&bslash;0&quot;
-suffix:semicolon
-macro_line|#ifdef MODULE
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Fritz Elfert&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|isdnloop_id
-comma
-l_string|&quot;s&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|isdnloop_id
-comma
-l_string|&quot;ID-String of first card&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif                          /* __KERNEL__ */
 multiline_comment|/* Utility-Macros */
 DECL|macro|CID

@@ -385,6 +385,12 @@ op_assign
 l_int|52
 comma
 multiline_comment|/* int: use core or core.%pid */
+DECL|enumerator|KERN_TAINTED
+id|KERN_TAINTED
+op_assign
+l_int|53
+comma
+multiline_comment|/* int: various kernel tainted flags */
 DECL|enumerator|KERN_CADPID
 id|KERN_CADPID
 op_assign

@@ -1488,9 +1488,14 @@ multiline_comment|/* Saved cp0 registers. */
 id|printk
 c_func
 (paren
-l_string|&quot;epc     : %016lx&bslash;nbadvaddr: %016lx&bslash;n&quot;
+l_string|&quot;epc     : %016lx    %s&bslash;nbadvaddr: %016lx&bslash;n&quot;
 comma
 id|regs-&gt;cp0_epc
+comma
+id|print_tainted
+c_func
+(paren
+)paren
 comma
 id|regs-&gt;cp0_badvaddr
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Resizable simple ram filesystem for Linux.&n; *&n; * Copyright (C) 2000 Linus Torvalds.&n; *               2000 Transmeta Corp.&n; *&n; * This file is released under the GPL.&n; */
+multiline_comment|/*&n; * Resizable simple ram filesystem for Linux.&n; *&n; * Copyright (C) 2000 Linus Torvalds.&n; *               2000 Transmeta Corp.&n; *&n; * Usage limits added by David Gibson, Linuxcare Australia.&n; * This file is released under the GPL.&n; */
 multiline_comment|/*&n; * NOTE! This filesystem is probably most useful&n; * not as a real filesystem, but as an example of&n; * how virtual filesystems can be written.&n; *&n; * It doesn&squot;t get much simpler than this. Consider&n; * that this file implements the full semantics of&n; * a POSIX-compliant read-write filesystem.&n; *&n; * Note in particular how the filesystem does not&n; * need to implement any data structures of its own&n; * to keep track of the virtual data: using the VFS&n; * caches is sufficient.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -1360,4 +1360,10 @@ c_func
 (paren
 id|exit_ramfs_fs
 )paren
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

@@ -30,6 +30,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;aironet4500.h&quot;
 DECL|macro|PCI_VENDOR_ID_AIRONET
 mdefine_line|#define PCI_VENDOR_ID_AIRONET &t;0x14b9
@@ -109,6 +110,12 @@ c_func
 id|pci
 comma
 id|aironet4500_card_pci_tbl
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|reverse_probe

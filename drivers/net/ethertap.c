@@ -1530,4 +1530,10 @@ suffix:semicolon
 multiline_comment|/* gets re-allocated by ethertap_probe */
 )brace
 macro_line|#endif /* MODULE */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

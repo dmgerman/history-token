@@ -16810,6 +16810,12 @@ l_string|&quot;atp870u: bad scsi host passed.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|driver_template
 r_static
 id|Scsi_Host_Template

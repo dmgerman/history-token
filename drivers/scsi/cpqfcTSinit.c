@@ -49,6 +49,12 @@ c_func
 l_string|&quot;Driver for Compaq 64-bit/66Mhz PCI Fibre Channel HBA&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 r_int
 id|cpqfcTS_TargetDeviceReset
 c_func

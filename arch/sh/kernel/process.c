@@ -221,7 +221,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;PC  : %08lx SP  : %08lx SR  : %08lx TEA : %08x&bslash;n&quot;
+l_string|&quot;PC  : %08lx SP  : %08lx SR  : %08lx TEA : %08x    %s&bslash;n&quot;
 comma
 id|regs-&gt;pc
 comma
@@ -236,6 +236,11 @@ id|ctrl_inl
 c_func
 (paren
 id|MMU_TEA
+)paren
+comma
+id|print_tainted
+c_func
+(paren
 )paren
 )paren
 suffix:semicolon

@@ -10,6 +10,12 @@ id|MODULE_DESCRIPTION
 l_string|&quot;3ware Storage Controller Linux Driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/time.h&gt;

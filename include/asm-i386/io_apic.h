@@ -51,7 +51,12 @@ comma
 DECL|member|__reserved_2
 id|__reserved_2
 suffix:colon
-l_int|8
+l_int|7
+comma
+DECL|member|PRQ
+id|PRQ
+suffix:colon
+l_int|1
 comma
 DECL|member|entries
 id|entries

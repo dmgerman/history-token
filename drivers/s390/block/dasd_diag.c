@@ -476,17 +476,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_if
-c_cond
-(paren
-id|cqr-&gt;expires
-)paren
-(brace
-id|cqr-&gt;expires
-op_add_assign
-id|cqr-&gt;startclk
-suffix:semicolon
-)brace
 id|check_then_set
 (paren
 op_amp
@@ -562,6 +551,10 @@ l_int|0
 suffix:semicolon
 r_int
 id|devno
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 id|irq_enter
 c_func
@@ -744,6 +737,14 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* get irq lock to modify request queue */
+id|s390irq_spin_lock_irqsave
+(paren
+id|device-&gt;devinfo.irq
+comma
+id|flags
+)paren
+suffix:semicolon
 id|asm
 r_volatile
 (paren
@@ -829,6 +830,13 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|s390irq_spin_unlock_irqrestore
+(paren
+id|device-&gt;devinfo.irq
+comma
+id|flags
+)paren
+suffix:semicolon
 id|wake_up
 (paren
 op_amp
