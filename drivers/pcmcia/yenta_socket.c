@@ -4722,7 +4722,11 @@ id|yenta_interrupt
 comma
 id|SA_SHIRQ
 comma
-id|socket-&gt;dev-&gt;dev.name
+id|pci_name
+c_func
+(paren
+id|socket-&gt;dev
+)paren
 comma
 id|socket
 )paren

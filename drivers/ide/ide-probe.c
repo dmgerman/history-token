@@ -2268,16 +2268,6 @@ comma
 id|BUS_ID_SIZE
 )paren
 suffix:semicolon
-id|snprintf
-c_func
-(paren
-id|hwif-&gt;gendev.name
-comma
-id|DEVICE_NAME_SIZE
-comma
-l_string|&quot;IDE Controller&quot;
-)paren
-suffix:semicolon
 id|hwif-&gt;gendev.driver_data
 op_assign
 id|hwif
@@ -4522,18 +4512,6 @@ comma
 id|hwif-&gt;index
 comma
 id|unit
-)paren
-suffix:semicolon
-id|snprintf
-c_func
-(paren
-id|drive-&gt;gendev.name
-comma
-id|DEVICE_NAME_SIZE
-comma
-l_string|&quot;%s&quot;
-comma
-l_string|&quot;IDE Drive&quot;
 )paren
 suffix:semicolon
 id|drive-&gt;gendev.parent

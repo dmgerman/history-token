@@ -253,6 +253,25 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Device &squot;%s&squot; does not have a release() function, &quot;
+l_string|&quot;it is broken and must be fixed.&bslash;n&quot;
+comma
+id|dev-&gt;bus_id
+)paren
+suffix:semicolon
+id|WARN_ON
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|variable|ktype_device
 r_static
@@ -713,11 +732,9 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;DEV: registering device: ID = &squot;%s&squot;, name = %s&bslash;n&quot;
+l_string|&quot;DEV: registering device: ID = &squot;%s&squot;&bslash;n&quot;
 comma
 id|dev-&gt;bus_id
-comma
-id|dev-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* first, register with generic layer. */
@@ -1018,11 +1035,9 @@ id|dev
 id|pr_debug
 c_func
 (paren
-l_string|&quot;DEV: Unregistering device. ID = &squot;%s&squot;, name = &squot;%s&squot;&bslash;n&quot;
+l_string|&quot;DEV: Unregistering device. ID = &squot;%s&squot;&bslash;n&quot;
 comma
 id|dev-&gt;bus_id
-comma
-id|dev-&gt;name
 )paren
 suffix:semicolon
 id|device_del
