@@ -12326,26 +12326,12 @@ id|info-&gt;rs485.delay_rts_before_send
 OG
 l_int|0
 )paren
-(brace
-id|set_current_state
+id|msleep
 c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
 (paren
 id|info-&gt;rs485.delay_rts_before_send
-op_star
-id|HZ
-)paren
-op_div
-l_int|1000
 )paren
 suffix:semicolon
-)brace
 )brace
 macro_line|#endif /* CONFIG_ETRAX_RS485 */
 id|count
