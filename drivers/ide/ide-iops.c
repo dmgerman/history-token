@@ -1,7 +1,5 @@
-multiline_comment|/*&n; * linux/drivers/ide/ide-iops.c&t;Version 0.33&t;April 11, 2002&n; *&n; *  Copyright (C) 2000-2002&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; *&n; */
+multiline_comment|/*&n; * linux/drivers/ide/ide-iops.c&t;Version 0.37&t;Mar 05, 2003&n; *&n; *  Copyright (C) 2000-2002&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *  Copyright (C) 2003&t;&t;Red Hat &lt;alan@redhat.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -116,6 +114,24 @@ id|port
 )paren
 (brace
 )brace
+DECL|function|ide_unplugged_outbsync
+r_static
+r_void
+id|ide_unplugged_outbsync
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+id|u8
+id|addr
+comma
+r_int
+r_int
+id|port
+)paren
+(brace
+)brace
 DECL|function|ide_unplugged_outw
 r_static
 r_void
@@ -195,7 +211,7 @@ id|ide_unplugged_outb
 suffix:semicolon
 id|hwif-&gt;OUTBSYNC
 op_assign
-id|ide_unplugged_outb
+id|ide_unplugged_outbsync
 suffix:semicolon
 id|hwif-&gt;OUTW
 op_assign
@@ -384,6 +400,32 @@ id|port
 )paren
 suffix:semicolon
 )brace
+DECL|function|ide_outbsync
+r_static
+r_void
+id|ide_outbsync
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+id|u8
+id|addr
+comma
+r_int
+r_int
+id|port
+)paren
+(brace
+id|outb
+c_func
+(paren
+id|addr
+comma
+id|port
+)paren
+suffix:semicolon
+)brace
 DECL|function|ide_outw
 r_static
 r_void
@@ -500,7 +542,7 @@ id|ide_outb
 suffix:semicolon
 id|hwif-&gt;OUTBSYNC
 op_assign
-id|ide_outb
+id|ide_outbsync
 suffix:semicolon
 id|hwif-&gt;OUTW
 op_assign
@@ -688,6 +730,32 @@ id|port
 )paren
 suffix:semicolon
 )brace
+DECL|function|ide_mm_outbsync
+r_static
+r_void
+id|ide_mm_outbsync
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+id|u8
+id|value
+comma
+r_int
+r_int
+id|port
+)paren
+(brace
+id|writeb
+c_func
+(paren
+id|value
+comma
+id|port
+)paren
+suffix:semicolon
+)brace
 DECL|function|ide_mm_outw
 r_static
 r_void
@@ -804,7 +872,7 @@ suffix:semicolon
 multiline_comment|/* Most systems will need to override OUTBSYNC, alas however&n;&t;   this one is controller specific! */
 id|hwif-&gt;OUTBSYNC
 op_assign
-id|ide_mm_outb
+id|ide_mm_outbsync
 suffix:semicolon
 id|hwif-&gt;OUTW
 op_assign
