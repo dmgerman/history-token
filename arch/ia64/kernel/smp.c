@@ -2,6 +2,7 @@ multiline_comment|/*&n; * SMP Support&n; *&n; * Copyright (C) 1999 Walt Drummond
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -604,6 +605,13 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|variable|smp_flush_tlb_all
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|smp_flush_tlb_all
+)paren
+suffix:semicolon
 r_void
 DECL|function|smp_flush_tlb_mm
 id|smp_flush_tlb_mm
@@ -864,6 +872,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|smp_call_function_single
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|smp_call_function_single
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * this function sends a &squot;generic call function&squot; IPI to all other CPUs&n; * in the system.&n; */
 multiline_comment|/*&n; *  [SUMMARY]&t;Run a function on all other CPUs.&n; *  &lt;func&gt;&t;The function to run. This must be fast and non-blocking.&n; *  &lt;info&gt;&t;An arbitrary pointer to pass to the function.&n; *  &lt;nonatomic&gt;&t;currently unused.&n; *  &lt;wait&gt;&t;If true, wait (atomically) until function has completed on other CPUs.&n; *  [RETURNS]   0 on success, else a negative status code.&n; *&n; * Does not return until remote CPUs are nearly ready to execute &lt;func&gt; or are or have&n; * executed.&n; *&n; * You must not call this function with disabled interrupts or from a&n; * hardware interrupt handler or from a bottom half handler.&n; */
 r_int
@@ -1029,6 +1044,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|smp_call_function
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|smp_call_function
+)paren
+suffix:semicolon
 r_void
 DECL|function|smp_do_timer
 id|smp_do_timer

@@ -61,6 +61,13 @@ id|vmalloc_end
 op_assign
 id|VMALLOC_END_INIT
 suffix:semicolon
+DECL|variable|vmalloc_end
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vmalloc_end
+)paren
+suffix:semicolon
 DECL|variable|vmem_map
 r_struct
 id|page
@@ -96,6 +103,13 @@ op_star
 id|zero_page_memmap_ptr
 suffix:semicolon
 multiline_comment|/* map entry for zero page */
+DECL|variable|zero_page_memmap_ptr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|zero_page_memmap_ptr
+)paren
+suffix:semicolon
 r_void
 DECL|function|check_pgt_cache
 id|check_pgt_cache
@@ -1855,6 +1869,13 @@ op_eq
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|ia64_pfn_valid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_pfn_valid
+)paren
+suffix:semicolon
 r_int
 DECL|function|find_largest_hole
 id|find_largest_hole

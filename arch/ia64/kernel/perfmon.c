@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * This file implements the perfmon-2 subsystem which is used&n; * to program the IA-64 Performance Monitoring Unit (PMU).&n; *&n; * The initial version of perfmon.c was written by&n; * Ganesh Venkitachalam, IBM Corp.&n; *&n; * Then it was modified for perfmon-1.x by Stephane Eranian and &n; * David Mosberger, Hewlett Packard Co.&n; * &n; * Version Perfmon-2.x is a rewrite of perfmon-1.x&n; * by Stephane Eranian, Hewlett Packard Co. &n; *&n; * Copyright (C) 1999-2003  Hewlett Packard Co&n; *               Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *               David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * More information about perfmon available at:&n; * &t;http://www.hpl.hp.com/research/linux/perfmon&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -4441,6 +4442,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|pfm_register_buffer_fmt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pfm_register_buffer_fmt
+)paren
+suffix:semicolon
 r_int
 DECL|function|pfm_unregister_buffer_fmt
 id|pfm_unregister_buffer_fmt
@@ -4526,6 +4534,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|pfm_unregister_buffer_fmt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pfm_unregister_buffer_fmt
+)paren
+suffix:semicolon
 r_static
 r_int
 DECL|function|pfm_reserve_session
@@ -11869,6 +11884,13 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+DECL|variable|pfm_mod_write_pmcs
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pfm_mod_write_pmcs
+)paren
+suffix:semicolon
 r_int
 DECL|function|pfm_mod_read_pmds
 id|pfm_mod_read_pmds
@@ -11961,6 +11983,13 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+DECL|variable|pfm_mod_read_pmds
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pfm_mod_read_pmds
+)paren
+suffix:semicolon
 r_int
 DECL|function|pfm_mod_fast_read_pmds
 id|pfm_mod_fast_read_pmds
@@ -12170,6 +12199,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|pfm_mod_fast_read_pmds
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pfm_mod_fast_read_pmds
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Only call this function when a process it trying to&n; * write the debug registers (reading is always allowed)&n; */
 r_int
 DECL|function|pfm_use_debug_registers
