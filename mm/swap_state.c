@@ -425,7 +425,7 @@ id|swp_entry_t
 id|entry
 suffix:semicolon
 r_int
-id|flags
+id|pf_flags
 suffix:semicolon
 r_if
 c_cond
@@ -466,7 +466,7 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* Radix-tree node allocations are performing&n;&t;&t; * GFP_ATOMIC allocations under PF_MEMALLOC.  &n;&t;&t; * They can completely exhaust the page allocator.  &n;&t;&t; *&n;&t;&t; * So PF_MEMALLOC is dropped here.  This causes the slab &n;&t;&t; * allocations to fail earlier, so radix-tree nodes will &n;&t;&t; * then be allocated from the mempool reserves.&n;&t;&t; *&n;&t;&t; * We&squot;re still using __GFP_HIGH for radix-tree node&n;&t;&t; * allocations, so some of the emergency pools are available,&n;&t;&t; * just not all of them.&n;&t;&t; */
-id|flags
+id|pf_flags
 op_assign
 id|current-&gt;flags
 suffix:semicolon
@@ -505,7 +505,7 @@ suffix:colon
 multiline_comment|/* Success */
 id|current-&gt;flags
 op_assign
-id|flags
+id|pf_flags
 suffix:semicolon
 id|SetPageUptodate
 c_func
@@ -535,7 +535,7 @@ suffix:colon
 multiline_comment|/* radix-tree allocation */
 id|current-&gt;flags
 op_assign
-id|flags
+id|pf_flags
 suffix:semicolon
 id|swap_free
 c_func
@@ -555,7 +555,7 @@ suffix:semicolon
 multiline_comment|/* Raced with &quot;speculative&quot; read_swap_cache_async */
 id|current-&gt;flags
 op_assign
-id|flags
+id|pf_flags
 suffix:semicolon
 id|swap_free
 c_func

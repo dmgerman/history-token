@@ -7749,6 +7749,9 @@ id|scatterlist
 op_star
 id|sgl
 suffix:semicolon
+r_int
+id|pf_flags
+suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -7839,6 +7842,10 @@ id|scsi_sg_pools
 op_plus
 id|SCpnt-&gt;sglist_len
 suffix:semicolon
+id|pf_flags
+op_assign
+id|current-&gt;flags
+suffix:semicolon
 id|current-&gt;flags
 op_or_assign
 id|PF_NOWARN
@@ -7854,9 +7861,8 @@ id|gfp_mask
 )paren
 suffix:semicolon
 id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_NOWARN
+op_assign
+id|pf_flags
 suffix:semicolon
 r_if
 c_cond
