@@ -1043,23 +1043,21 @@ id|cards
 id|i
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_ATM_NICSTAR_USE_IDT77105
 r_if
 c_cond
 (paren
-id|card-&gt;max_pcr
-op_eq
-id|ATM_25_PCR
+id|card-&gt;atmdev-&gt;phy
+op_logical_and
+id|card-&gt;atmdev-&gt;phy-&gt;stop
 )paren
-(brace
-id|idt77105_stop
+id|card-&gt;atmdev-&gt;phy
+op_member_access_from_pointer
+id|stop
 c_func
 (paren
 id|card-&gt;atmdev
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_ATM_NICSTAR_USE_IDT77105 */
 multiline_comment|/* Stop everything */
 id|writel
 c_func
@@ -4128,17 +4126,12 @@ id|card-&gt;max_pcr
 op_eq
 id|ATM_OC3_PCR
 )paren
-(brace
 id|suni_init
 c_func
 (paren
 id|card-&gt;atmdev
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-multiline_comment|/* Can&squot;t remove the nicstar driver or the suni driver would oops */
-)brace
 macro_line|#endif /* CONFIG_ATM_NICSTAR_USE_SUNI */
 macro_line|#ifdef CONFIG_ATM_NICSTAR_USE_IDT77105
 r_if
@@ -4148,15 +4141,12 @@ id|card-&gt;max_pcr
 op_eq
 id|ATM_25_PCR
 )paren
-(brace
 id|idt77105_init
 c_func
 (paren
 id|card-&gt;atmdev
 )paren
 suffix:semicolon
-multiline_comment|/* Note that for the IDT77105 PHY we don&squot;t need the awful&n;       * module count hack that the SUNI needs because we can&n;       * stop the &squot;105 when the nicstar module is cleaned up.&n;       */
-)brace
 macro_line|#endif /* CONFIG_ATM_NICSTAR_USE_IDT77105 */
 r_if
 c_cond
