@@ -66,7 +66,8 @@ id|ipaimap2
 op_assign
 id|sbi-&gt;ipaimap2
 suffix:semicolon
-id|log_t
+r_struct
+id|jfs_log
 op_star
 id|log
 suffix:semicolon
@@ -331,7 +332,8 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|log_t
+r_struct
+id|jfs_log
 op_star
 id|log
 op_assign

@@ -4,7 +4,6 @@ DECL|macro|_H_JFS_METAPAGE
 mdefine_line|#define _H_JFS_METAPAGE
 macro_line|#include &lt;linux/pagemap.h&gt;
 DECL|struct|metapage
-r_typedef
 r_struct
 id|metapage
 (brace
@@ -112,9 +111,7 @@ id|jfs_log
 op_star
 id|log
 suffix:semicolon
-DECL|typedef|metapage_t
 )brace
-id|metapage_t
 suffix:semicolon
 multiline_comment|/* metapage flag */
 DECL|macro|META_locked
@@ -135,7 +132,8 @@ DECL|macro|mark_metapage_dirty
 mdefine_line|#define mark_metapage_dirty(mp) set_bit(META_dirty, &amp;(mp)-&gt;flag)
 multiline_comment|/* function prototypes */
 r_extern
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|__get_metapage
 c_func
@@ -170,7 +168,8 @@ r_void
 id|release_metapage
 c_func
 (paren
-id|metapage_t
+r_struct
+id|metapage
 op_star
 )paren
 suffix:semicolon
@@ -179,7 +178,8 @@ r_void
 id|hold_metapage
 c_func
 (paren
-id|metapage_t
+r_struct
+id|metapage
 op_star
 comma
 r_int
@@ -192,7 +192,8 @@ r_void
 id|write_metapage
 c_func
 (paren
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 )paren
@@ -220,7 +221,8 @@ r_void
 id|flush_metapage
 c_func
 (paren
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 )paren
@@ -248,7 +250,8 @@ r_void
 id|discard_metapage
 c_func
 (paren
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 )paren

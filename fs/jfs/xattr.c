@@ -329,7 +329,8 @@ suffix:semicolon
 id|s32
 id|bytes_to_write
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
@@ -796,7 +797,8 @@ suffix:semicolon
 id|s32
 id|bytes_to_read
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
