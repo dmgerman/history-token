@@ -5000,10 +5000,6 @@ id|error
 r_return
 id|error
 suffix:semicolon
-id|dentry
-op_assign
-id|nd-&gt;dentry
-suffix:semicolon
 r_goto
 id|ok
 suffix:semicolon
