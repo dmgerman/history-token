@@ -1272,6 +1272,20 @@ id|irq
 )paren
 suffix:semicolon
 multiline_comment|/* Generic PCI functions used internally */
+r_extern
+r_struct
+id|pci_bus
+op_star
+id|pci_find_bus
+c_func
+(paren
+r_int
+id|domain
+comma
+r_int
+id|busnr
+)paren
+suffix:semicolon
 r_int
 id|pci_bus_exists
 c_func

@@ -1311,6 +1311,8 @@ op_assign
 id|pci_find_bus
 c_func
 (paren
+l_int|0
+comma
 id|max
 op_plus
 l_int|1

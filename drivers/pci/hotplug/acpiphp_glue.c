@@ -1386,6 +1386,8 @@ op_assign
 id|pci_find_bus
 c_func
 (paren
+id|seg
+comma
 id|bus
 )paren
 suffix:semicolon
