@@ -984,13 +984,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; --- wd:%d rd:%d nd:%d&bslash;n&quot;
+l_string|&quot; --- wd:%d rd:%d&bslash;n&quot;
 comma
 id|conf-&gt;working_disks
 comma
 id|conf-&gt;raid_disks
-comma
-id|conf-&gt;nr_disks
 )paren
 suffix:semicolon
 r_for
@@ -1126,9 +1124,6 @@ id|p-&gt;used_slot
 op_assign
 l_int|1
 suffix:semicolon
-id|conf-&gt;nr_disks
-op_increment
-suffix:semicolon
 id|conf-&gt;working_disks
 op_increment
 suffix:semicolon
@@ -1250,9 +1245,6 @@ suffix:semicolon
 id|p-&gt;used_slot
 op_assign
 l_int|0
-suffix:semicolon
-id|conf-&gt;nr_disks
-op_decrement
 suffix:semicolon
 id|err
 op_assign
@@ -1722,10 +1714,6 @@ suffix:semicolon
 id|conf-&gt;raid_disks
 op_assign
 id|sb-&gt;raid_disks
-op_assign
-id|num_rdevs
-suffix:semicolon
-id|conf-&gt;nr_disks
 op_assign
 id|num_rdevs
 suffix:semicolon

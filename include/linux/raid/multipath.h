@@ -49,10 +49,6 @@ id|multipaths
 id|MD_SB_DISKS
 )braket
 suffix:semicolon
-DECL|member|nr_disks
-r_int
-id|nr_disks
-suffix:semicolon
 DECL|member|raid_disks
 r_int
 id|raid_disks
