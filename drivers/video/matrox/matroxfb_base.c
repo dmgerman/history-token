@@ -13,7 +13,7 @@ macro_line|#include &quot;matroxfb_g450.h&quot;
 macro_line|#include &lt;linux/matroxfb.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 r_int
 r_char
 id|nvram_read_byte
@@ -9655,7 +9655,7 @@ id|pixclock
 suffix:semicolon
 )brace
 multiline_comment|/* FIXME: Where to move this?! */
-macro_line|#if defined(CONFIG_ALL_PPC)
+macro_line|#if defined(CONFIG_PPC_PMAC)
 macro_line|#ifndef MODULE
 r_if
 c_cond
@@ -9746,7 +9746,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* !MODULE */
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_PMAC */
 id|vesafb_defined.xres_virtual
 op_assign
 id|vesafb_defined.xres
@@ -13310,7 +13310,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 r_else
 r_if
 c_cond
@@ -14425,7 +14425,7 @@ comma
 l_string|&quot;Specifies DFP interface type (0 to 255) (default=read from hardware)&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 id|MODULE_PARM
 c_func
 (paren

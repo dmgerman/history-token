@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;net/flow.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|struct|flow_cache_entry

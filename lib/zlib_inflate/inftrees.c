@@ -24,11 +24,8 @@ mdefine_line|#define bits word.what.Bits
 id|local
 r_int
 id|huft_build
-id|OF
-c_func
 (paren
-(paren
-id|uIntf
+id|uInt
 op_star
 comma
 multiline_comment|/* code lengths in bits */
@@ -39,22 +36,21 @@ id|uInt
 comma
 multiline_comment|/* number of &quot;simple&quot; codes */
 r_const
-id|uIntf
+id|uInt
 op_star
 comma
 multiline_comment|/* list of base values for non-simple codes */
 r_const
-id|uIntf
+id|uInt
 op_star
 comma
 multiline_comment|/* list of extra bits for non-simple codes */
 id|inflate_huft
 op_star
-id|FAR
 op_star
 comma
 multiline_comment|/* result: starting table */
-id|uIntf
+id|uInt
 op_star
 comma
 multiline_comment|/* maximum lookup bits (returns actual) */
@@ -66,9 +62,8 @@ id|uInt
 op_star
 comma
 multiline_comment|/* hufts used in space */
-id|uIntf
+id|uInt
 op_star
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* space for values */
@@ -377,7 +372,7 @@ r_int
 id|huft_build
 c_func
 (paren
-id|uIntf
+id|uInt
 op_star
 id|b
 comma
@@ -391,25 +386,24 @@ id|s
 comma
 multiline_comment|/* number of simple-valued codes (0..s-1) */
 r_const
-id|uIntf
+id|uInt
 op_star
 id|d
 comma
 multiline_comment|/* list of base values for non-simple codes */
 r_const
-id|uIntf
+id|uInt
 op_star
 id|e
 comma
 multiline_comment|/* list of extra bits for non-simple codes */
 id|inflate_huft
 op_star
-id|FAR
 op_star
 id|t
 comma
 multiline_comment|/* result: starting table */
-id|uIntf
+id|uInt
 op_star
 id|m
 comma
@@ -424,7 +418,7 @@ op_star
 id|hn
 comma
 multiline_comment|/* hufts used in space */
-id|uIntf
+id|uInt
 op_star
 id|v
 multiline_comment|/* working area: values in order of bit length */
@@ -480,7 +474,7 @@ id|mask
 suffix:semicolon
 multiline_comment|/* (1 &lt;&lt; w) - 1, to avoid cc -O bug on HP */
 r_register
-id|uIntf
+id|uInt
 op_star
 id|p
 suffix:semicolon
@@ -517,7 +511,7 @@ l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* bit offsets, then code stack */
-id|uIntf
+id|uInt
 op_star
 id|xp
 suffix:semicolon
@@ -1410,19 +1404,18 @@ r_int
 id|zlib_inflate_trees_bits
 c_func
 (paren
-id|uIntf
+id|uInt
 op_star
 id|c
 comma
 multiline_comment|/* 19 code lengths */
-id|uIntf
+id|uInt
 op_star
 id|bb
 comma
 multiline_comment|/* bits tree desired/actual depth */
 id|inflate_huft
 op_star
-id|FAR
 op_star
 id|tb
 comma
@@ -1446,7 +1439,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* hufts used in space */
-id|uIntf
+id|uInt
 op_star
 id|v
 suffix:semicolon
@@ -1473,13 +1466,13 @@ comma
 l_int|19
 comma
 (paren
-id|uIntf
+id|uInt
 op_star
 )paren
 id|Z_NULL
 comma
 (paren
-id|uIntf
+id|uInt
 op_star
 )paren
 id|Z_NULL
@@ -1555,31 +1548,29 @@ id|uInt
 id|nd
 comma
 multiline_comment|/* number of distance codes */
-id|uIntf
+id|uInt
 op_star
 id|c
 comma
 multiline_comment|/* that many (total) code lengths */
-id|uIntf
+id|uInt
 op_star
 id|bl
 comma
 multiline_comment|/* literal desired/actual bit depth */
-id|uIntf
+id|uInt
 op_star
 id|bd
 comma
 multiline_comment|/* distance desired/actual bit depth */
 id|inflate_huft
 op_star
-id|FAR
 op_star
 id|tl
 comma
 multiline_comment|/* literal/length tree result */
 id|inflate_huft
 op_star
-id|FAR
 op_star
 id|td
 comma
@@ -1603,7 +1594,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* hufts used in space */
-id|uIntf
+id|uInt
 op_star
 id|v
 suffix:semicolon
@@ -1833,26 +1824,24 @@ r_int
 id|zlib_inflate_trees_fixed
 c_func
 (paren
-id|uIntf
+id|uInt
 op_star
 id|bl
 comma
 multiline_comment|/* literal desired/actual bit depth */
-id|uIntf
+id|uInt
 op_star
 id|bd
 comma
 multiline_comment|/* distance desired/actual bit depth */
 id|inflate_huft
 op_star
-id|FAR
 op_star
 id|tl
 comma
 multiline_comment|/* literal/length tree result */
 id|inflate_huft
 op_star
-id|FAR
 op_star
 id|td
 comma

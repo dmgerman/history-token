@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * xfrm4_input.c&n; *&n; * Changes:&n; *&t;YOSHIFUJI Hideaki @USAGI&n; *&t;&t;Split up af-specific portion&n; *&t;Derek Atkins &lt;derek@ihtfp.com&gt;&n; *&t;&t;Add Encapsulation support&n; * &t;&n; */
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 DECL|variable|secpath_cachep

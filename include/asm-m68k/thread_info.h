@@ -53,12 +53,12 @@ mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t
 multiline_comment|/* THREAD_SIZE should be 8k, so handle differently for 4k and 8k machines */
 macro_line|#if PAGE_SHIFT == 13 /* 8k machines */
 DECL|macro|alloc_thread_info
-mdefine_line|#define alloc_thread_info()   ((struct thread_info *)__get_free_pages(GFP_KERNEL,0))
+mdefine_line|#define alloc_thread_info(tsk)   ((struct thread_info *)__get_free_pages(GFP_KERNEL,0))
 DECL|macro|free_thread_info
 mdefine_line|#define free_thread_info(ti)  free_pages((unsigned long)(ti),0)
 macro_line|#else /* otherwise assume 4k pages */
 DECL|macro|alloc_thread_info
-mdefine_line|#define alloc_thread_info()   ((struct thread_info *)__get_free_pages(GFP_KERNEL,1))
+mdefine_line|#define alloc_thread_info(tsk)   ((struct thread_info *)__get_free_pages(GFP_KERNEL,1))
 DECL|macro|free_thread_info
 mdefine_line|#define free_thread_info(ti)  free_pages((unsigned long)(ti),1)
 macro_line|#endif /* PAGE_SHIFT == 13 */

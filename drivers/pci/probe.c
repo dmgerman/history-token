@@ -3067,13 +3067,6 @@ c_func
 id|pci_scan_bus_parented
 )paren
 suffix:semicolon
-DECL|variable|pci_devices
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pci_devices
-)paren
-suffix:semicolon
 DECL|variable|pci_root_buses
 id|EXPORT_SYMBOL
 c_func

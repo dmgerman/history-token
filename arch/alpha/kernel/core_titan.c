@@ -2831,6 +2831,7 @@ comma
 id|off_t
 id|pg_start
 comma
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -2872,6 +2873,7 @@ comma
 id|off_t
 id|pg_start
 comma
+r_struct
 id|agp_memory
 op_star
 id|mem

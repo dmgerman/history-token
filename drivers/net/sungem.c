@@ -32,7 +32,7 @@ macro_line|#include &lt;asm/openprom.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/pbm.h&gt;
 macro_line|#endif
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
@@ -6711,7 +6711,7 @@ op_plus
 id|MIF_CFG
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 r_if
 c_cond
 (paren
@@ -6843,7 +6843,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_PMAC */
 r_if
 c_cond
 (paren
@@ -8899,7 +8899,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 multiline_comment|/* Enable the chip&squot;s clock and make sure it&squot;s config space is&n; * setup properly. There appear to be no need to restore the&n; * base addresses.&n; */
 DECL|function|gem_apple_powerup
 r_static
@@ -9092,7 +9092,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_PMAC */
 multiline_comment|/* Must be invoked under gp-&gt;lock. */
 DECL|function|gem_stop_phy
 r_static
@@ -9392,7 +9392,7 @@ op_amp
 id|gp-&gt;lock
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 multiline_comment|/* Power down the chip */
 id|gem_apple_powerdown
 c_func
@@ -9400,7 +9400,7 @@ c_func
 id|gp
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_PMAC */
 )brace
 r_else
 (brace
@@ -9574,7 +9574,7 @@ op_logical_neg
 id|gp-&gt;hw_running
 )paren
 (brace
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 multiline_comment|/* First, we need to bring up the chip */
 r_if
 c_cond
@@ -9597,7 +9597,7 @@ id|gp
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_PMAC */
 multiline_comment|/* Reset the chip */
 id|spin_lock_irq
 c_func
@@ -9670,7 +9670,7 @@ comma
 id|gp-&gt;dev-&gt;name
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 r_if
 c_cond
 (paren
@@ -9687,7 +9687,7 @@ c_func
 id|gp
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_PMAC */
 multiline_comment|/* Fire the PM timer that will shut us down in about 10 seconds */
 id|gp-&gt;pm_timer.expires
 op_assign
@@ -10070,7 +10070,7 @@ c_cond
 id|gp-&gt;opened
 )paren
 (brace
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 multiline_comment|/* First, we need to bring up the chip */
 r_if
 c_cond
@@ -10093,7 +10093,7 @@ id|gp
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_PMAC */
 id|spin_lock_irq
 c_func
 (paren
@@ -11427,7 +11427,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-macro_line|#if (!defined(__sparc__) &amp;&amp; !defined(CONFIG_ALL_PPC))
+macro_line|#if (!defined(__sparc__) &amp;&amp; !defined(CONFIG_PPC))
 multiline_comment|/* Fetch MAC address from vital product data of PCI ROM. */
 DECL|function|find_eth_addr_in_vpd
 r_static
@@ -11793,7 +11793,7 @@ op_star
 id|gp
 )paren
 (brace
-macro_line|#if defined(__sparc__) || defined(CONFIG_ALL_PPC)
+macro_line|#if defined(__sparc__) || defined(CONFIG_PPC_PMAC)
 r_struct
 id|net_device
 op_star
@@ -11885,7 +11885,7 @@ comma
 l_int|6
 )paren
 suffix:semicolon
-macro_line|#elif defined(CONFIG_ALL_PPC)
+macro_line|#elif defined(CONFIG_PPC_PMAC)
 r_int
 r_char
 op_star
@@ -12395,7 +12395,7 @@ id|err_out_free_res
 suffix:semicolon
 )brace
 multiline_comment|/* On Apple, we power the chip up now in order for check&n;&t; * invariants to work, but also because the firmware might&n;&t; * not have properly shut down the PHY.&n;&t; */
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 r_if
 c_cond
 (paren
@@ -12503,7 +12503,7 @@ r_goto
 id|err_out_iounmap
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 id|gp-&gt;of_node
 op_assign
 id|pci_device_to_OF_node

@@ -1623,6 +1623,8 @@ comma
 id|j
 comma
 id|k
+comma
+id|err
 suffix:semicolon
 r_int
 r_char
@@ -1694,15 +1696,9 @@ op_star
 )paren
 id|__res
 suffix:semicolon
-multiline_comment|/* Allocate some private information.&n;&t;*/
-id|cep
+id|dev
 op_assign
-(paren
-r_struct
-id|scc_enet_private
-op_star
-)paren
-id|kmalloc
+id|alloc_etherdev
 c_func
 (paren
 r_sizeof
@@ -1710,49 +1706,27 @@ r_sizeof
 op_star
 id|cep
 )paren
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|cep
-op_eq
-l_int|NULL
+op_logical_neg
+id|dev
 )paren
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|__clear_user
-c_func
-(paren
 id|cep
-comma
-r_sizeof
-(paren
-op_star
-id|cep
-)paren
-)paren
+op_assign
+id|dev-&gt;priv
 suffix:semicolon
 id|spin_lock_init
 c_func
 (paren
 op_amp
 id|cep-&gt;lock
-)paren
-suffix:semicolon
-multiline_comment|/* Create an Ethernet device instance.&n;&t;*/
-id|dev
-op_assign
-id|init_etherdev
-c_func
-(paren
-l_int|0
-comma
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Get pointer to SCC area in parameter RAM.&n;&t;*/
@@ -2250,6 +2224,7 @@ op_amp
 id|mem_addr
 )paren
 suffix:semicolon
+multiline_comment|/* BUG: no check for failure */
 multiline_comment|/* Initialize the BD for every fragment in the page.&n;&t;&t;*/
 r_for
 c_loop
@@ -2526,10 +2501,6 @@ r_int
 )paren
 id|ep
 suffix:semicolon
-id|dev-&gt;priv
-op_assign
-id|cep
-suffix:semicolon
 macro_line|#if 0
 id|dev-&gt;name
 op_assign
@@ -2565,6 +2536,30 @@ id|dev-&gt;set_multicast_list
 op_assign
 id|set_multicast_list
 suffix:semicolon
+id|err
+op_assign
+id|register_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 multiline_comment|/* And last, enable the transmit and receive processing.&n;&t;*/
 id|sccp-&gt;scc_gsmrl
 op_or_assign
