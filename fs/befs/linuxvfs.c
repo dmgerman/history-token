@@ -1755,7 +1755,7 @@ id|inode-&gt;i_mode
 op_logical_and
 op_logical_neg
 (paren
-id|inode-&gt;i_flags
+id|befs_ino-&gt;i_flags
 op_amp
 id|BEFS_LONG_SYMLINK
 )paren
