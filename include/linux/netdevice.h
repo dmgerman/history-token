@@ -16,6 +16,9 @@ macro_line|#endif
 r_struct
 id|divert_blk
 suffix:semicolon
+r_struct
+id|vlan_group
+suffix:semicolon
 DECL|macro|HAVE_ALLOC_NETDEV
 mdefine_line|#define HAVE_ALLOC_NETDEV&t;&t;/* feature macro: alloc_xxxdev&n;&t;&t;&t;&t;&t;   functions are available. */
 DECL|macro|NET_XMIT_SUCCESS
@@ -820,6 +823,14 @@ DECL|macro|NETIF_F_HIGHDMA
 mdefine_line|#define NETIF_F_HIGHDMA&t;&t;32&t;/* Can DMA to high memory. */
 DECL|macro|NETIF_F_FRAGLIST
 mdefine_line|#define NETIF_F_FRAGLIST&t;64&t;/* Scatter/gather IO. */
+DECL|macro|NETIF_F_HW_VLAN_TX
+mdefine_line|#define NETIF_F_HW_VLAN_TX&t;128&t;/* Transmit VLAN hw acceleration */
+DECL|macro|NETIF_F_HW_VLAN_RX
+mdefine_line|#define NETIF_F_HW_VLAN_RX&t;256&t;/* Receive VLAN hw acceleration */
+DECL|macro|NETIF_F_HW_VLAN_FILTER
+mdefine_line|#define NETIF_F_HW_VLAN_FILTER&t;512&t;/* Receive filtering on VLAN */
+DECL|macro|NETIF_F_VLAN_CHALLENGED
+mdefine_line|#define NETIF_F_VLAN_CHALLENGED&t;1024&t;/* Device cannot handle VLAN packets */
 multiline_comment|/* Called after device is detached from network. */
 DECL|member|uninit
 r_void
@@ -1090,6 +1101,58 @@ r_struct
 id|net_device
 op_star
 id|dev
+)paren
+suffix:semicolon
+DECL|member|vlan_rx_register
+r_void
+(paren
+op_star
+id|vlan_rx_register
+)paren
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|vlan_group
+op_star
+id|grp
+)paren
+suffix:semicolon
+DECL|member|vlan_rx_add_vid
+r_void
+(paren
+op_star
+id|vlan_rx_add_vid
+)paren
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|vid
+)paren
+suffix:semicolon
+DECL|member|vlan_rx_kill_vid
+r_void
+(paren
+op_star
+id|vlan_rx_kill_vid
+)paren
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|vid
 )paren
 suffix:semicolon
 DECL|member|hard_header_parse
