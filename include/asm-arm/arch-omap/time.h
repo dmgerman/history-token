@@ -40,7 +40,7 @@ DECL|typedef|mputimer_regs_t
 id|mputimer_regs_t
 suffix:semicolon
 DECL|macro|mputimer_base
-mdefine_line|#define mputimer_base(n) &bslash;&n;    ((volatile mputimer_regs_t*)(OMAP_MPUTIMER_BASE + &bslash;&n;&t;&t;&t;&t; (n)*OMAP_MPUTIMER_OFF))
+mdefine_line|#define mputimer_base(n) &bslash;&n;    ((volatile mputimer_regs_t*)IO_ADDRESS(OMAP_MPUTIMER_BASE + &bslash;&n;&t;&t;&t;&t; (n)*OMAP_MPUTIMER_OFF))
 DECL|function|timer32k_read
 r_static
 r_inline
@@ -59,20 +59,12 @@ id|val
 suffix:semicolon
 id|val
 op_assign
-(paren
-id|inw
+id|omap_readw
 c_func
-(paren
-id|IO_ADDRESS
-c_func
-(paren
 (paren
 id|reg
-)paren
 op_plus
 id|OMAP_32kHz_TIMER_BASE
-)paren
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -93,24 +85,14 @@ r_int
 id|val
 )paren
 (brace
-id|outw
+id|omap_writew
 c_func
-(paren
 (paren
 id|val
-)paren
 comma
-(paren
-id|IO_ADDRESS
-c_func
-(paren
-(paren
 id|reg
-)paren
 op_plus
 id|OMAP_32kHz_TIMER_BASE
-)paren
-)paren
 )paren
 suffix:semicolon
 )brace

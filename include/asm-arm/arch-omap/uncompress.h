@@ -5,6 +5,8 @@ macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/arch/serial.h&gt;
+DECL|macro|UART_OMAP_MDR1
+mdefine_line|#define UART_OMAP_MDR1&t;&t;0x08&t;/* mode definition register */
 DECL|macro|check_port
 mdefine_line|#define check_port(base, shift) ((base[UART_OMAP_MDR1 &lt;&lt; shift] &amp; 7) == 0)
 r_static
@@ -37,7 +39,12 @@ r_do
 r_if
 c_cond
 (paren
-id|machine_is_innovator
+id|machine_is_omap_innovator
+c_func
+(paren
+)paren
+op_logical_or
+id|machine_is_omap_osk
 c_func
 (paren
 )paren
@@ -55,7 +62,33 @@ id|u8
 op_star
 )paren
 (paren
-id|OMAP1510_UART1_BASE
+id|OMAP_UART1_BASE
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|machine_is_omap_perseus2
+c_func
+(paren
+)paren
+)paren
+(brace
+id|shift
+op_assign
+l_int|0
+suffix:semicolon
+id|uart
+op_assign
+(paren
+r_volatile
+id|u8
+op_star
+)paren
+(paren
+id|OMAP_UART1_BASE
 )paren
 suffix:semicolon
 )brace

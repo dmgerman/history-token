@@ -184,7 +184,7 @@ suffix:semicolon
 r_return
 (paren
 (paren
-id|__raw_readl
+id|omap_readl
 c_func
 (paren
 id|reg
@@ -250,7 +250,7 @@ id|l
 suffix:semicolon
 id|l
 op_assign
-id|__raw_readl
+id|omap_readl
 c_func
 (paren
 id|reg
@@ -275,7 +275,7 @@ l_int|1
 op_lshift
 id|shift
 suffix:semicolon
-id|__raw_writel
+id|omap_writel
 c_func
 (paren
 id|l
@@ -321,7 +321,7 @@ id|i
 op_add_assign
 l_int|2
 )paren
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 l_int|0
@@ -358,7 +358,7 @@ id|w
 suffix:semicolon
 id|w
 op_assign
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP_DMA_CSDP_REG
@@ -377,7 +377,7 @@ id|w
 op_or_assign
 id|data_type
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|w
@@ -391,7 +391,7 @@ id|lch
 suffix:semicolon
 id|w
 op_assign
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP_DMA_CCR_REG
@@ -423,7 +423,7 @@ l_int|1
 op_lshift
 l_int|5
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|w
@@ -437,7 +437,7 @@ id|lch
 suffix:semicolon
 id|w
 op_assign
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP_DMA_CCR2_REG
@@ -469,7 +469,7 @@ l_int|1
 op_lshift
 l_int|2
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|w
@@ -481,7 +481,7 @@ id|lch
 )paren
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|elem_count
@@ -493,7 +493,7 @@ id|lch
 )paren
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|frame_count
@@ -530,7 +530,7 @@ id|w
 suffix:semicolon
 id|w
 op_assign
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP_DMA_CSDP_REG
@@ -555,7 +555,7 @@ id|src_port
 op_lshift
 l_int|2
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|w
@@ -569,7 +569,7 @@ id|lch
 suffix:semicolon
 id|w
 op_assign
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP_DMA_CCR_REG
@@ -594,7 +594,7 @@ id|src_amode
 op_lshift
 l_int|12
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|w
@@ -606,7 +606,7 @@ id|lch
 )paren
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|src_start
@@ -620,7 +620,7 @@ id|lch
 )paren
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|src_start
@@ -657,7 +657,7 @@ id|w
 suffix:semicolon
 id|w
 op_assign
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP_DMA_CSDP_REG
@@ -682,7 +682,7 @@ id|dest_port
 op_lshift
 l_int|9
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|w
@@ -696,7 +696,7 @@ id|lch
 suffix:semicolon
 id|w
 op_assign
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP_DMA_CCR_REG
@@ -721,7 +721,7 @@ id|dest_amode
 op_lshift
 l_int|14
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|w
@@ -733,7 +733,7 @@ id|lch
 )paren
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|dest_start
@@ -747,7 +747,7 @@ id|lch
 )paren
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|dest_start
@@ -775,7 +775,7 @@ suffix:semicolon
 multiline_comment|/* Read CSR to make sure it&squot;s cleared. */
 id|w
 op_assign
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP_DMA_CSR_REG
@@ -786,7 +786,7 @@ id|lch
 )paren
 suffix:semicolon
 multiline_comment|/* Enable some nice interrupts. */
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|dma_chan
@@ -805,7 +805,7 @@ id|lch
 suffix:semicolon
 id|w
 op_assign
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP_DMA_CCR_REG
@@ -819,7 +819,7 @@ id|w
 op_or_assign
 id|OMAP_DMA_CCR_EN
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|w
@@ -854,7 +854,7 @@ id|u16
 id|w
 suffix:semicolon
 multiline_comment|/* Disable all interrupts on the channel */
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 l_int|0
@@ -868,7 +868,7 @@ id|lch
 suffix:semicolon
 id|w
 op_assign
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP_DMA_CCR_REG
@@ -883,7 +883,7 @@ op_and_assign
 op_complement
 id|OMAP_DMA_CCR_EN
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|w
@@ -996,7 +996,7 @@ suffix:semicolon
 r_else
 id|csr
 op_assign
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP_DMA_CSR_REG
@@ -1521,6 +1521,11 @@ id|cpu_is_omap1610
 c_func
 (paren
 )paren
+op_logical_or
+id|cpu_is_omap5912
+c_func
+(paren
+)paren
 )paren
 (brace
 multiline_comment|/* If the sync device is set, configure it dynamically. */
@@ -1550,7 +1555,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Disable the 1510 compatibility mode and set the sync device&n;&t;&t; * id. */
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|dev_id
@@ -1571,7 +1576,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|dev_id
@@ -1669,7 +1674,7 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Disable all DMA interrupts for the channel. */
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 l_int|0
@@ -1682,7 +1687,7 @@ id|ch
 )paren
 suffix:semicolon
 multiline_comment|/* Make sure the DMA transfer is stopped. */
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 l_int|0
@@ -2015,7 +2020,7 @@ c_func
 )paren
 )paren
 (brace
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|top
@@ -2025,7 +2030,7 @@ comma
 id|OMAP1510_DMA_LCD_TOP_F1_U
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|top
@@ -2033,7 +2038,7 @@ comma
 id|OMAP1510_DMA_LCD_TOP_F1_L
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|bottom
@@ -2043,7 +2048,7 @@ comma
 id|OMAP1510_DMA_LCD_BOT_F1_U
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|bottom
@@ -2055,7 +2060,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* 1610 regs */
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|top
@@ -2065,7 +2070,7 @@ comma
 id|OMAP1610_DMA_LCD_TOP_B1_U
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|top
@@ -2073,7 +2078,7 @@ comma
 id|OMAP1610_DMA_LCD_TOP_B1_L
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|bottom
@@ -2083,7 +2088,7 @@ comma
 id|OMAP1610_DMA_LCD_BOT_B1_U
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|bottom
@@ -2091,7 +2096,7 @@ comma
 id|OMAP1610_DMA_LCD_BOT_B1_L
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|en
@@ -2099,7 +2104,7 @@ comma
 id|OMAP1610_DMA_LCD_SRC_EN_B1
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|fn
@@ -2109,7 +2114,7 @@ id|OMAP1610_DMA_LCD_SRC_FN_B1
 suffix:semicolon
 id|w
 op_assign
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP1610_DMA_LCD_CSDP
@@ -2124,7 +2129,7 @@ id|w
 op_or_assign
 id|lcd_dma.data_type
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|w
@@ -2143,7 +2148,7 @@ suffix:semicolon
 multiline_comment|/* Rotation stuff */
 id|l
 op_assign
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP1610_DMA_LCD_CSDP
@@ -2159,7 +2164,7 @@ op_lshift
 l_int|7
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|l
@@ -2169,7 +2174,7 @@ id|OMAP1610_DMA_LCD_CSDP
 suffix:semicolon
 id|l
 op_assign
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP1610_DMA_LCD_CCR
@@ -2184,7 +2189,7 @@ op_lshift
 l_int|12
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|l
@@ -2192,7 +2197,7 @@ comma
 id|OMAP1610_DMA_LCD_CCR
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|ei
@@ -2200,7 +2205,7 @@ comma
 id|OMAP1610_DMA_LCD_SRC_EI_B1
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|fi
@@ -2210,7 +2215,7 @@ comma
 id|OMAP1610_DMA_LCD_SRC_FI_B1_U
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|fi
@@ -2391,10 +2396,10 @@ c_cond
 op_logical_neg
 id|enable_1510_mode
 )paren
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP1610_DMA_LCD_CCR
@@ -2434,7 +2439,7 @@ id|enable_1510_mode
 )paren
 (brace
 multiline_comment|/* Set some reasonable defaults */
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 l_int|0x9102
@@ -2442,7 +2447,7 @@ comma
 id|OMAP1610_DMA_LCD_CSDP
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 l_int|0x0004
@@ -2450,7 +2455,7 @@ comma
 id|OMAP1610_DMA_LCD_LCH_CTRL
 )paren
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 l_int|0x5740
@@ -2470,10 +2475,10 @@ c_cond
 op_logical_neg
 id|enable_1510_mode
 )paren
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP1610_DMA_LCD_CCR
@@ -2499,10 +2504,10 @@ c_cond
 op_logical_neg
 id|enable_1510_mode
 )paren
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP1610_DMA_LCD_CCR
@@ -2563,6 +2568,11 @@ id|cpu_is_omap1610
 c_func
 (paren
 )paren
+op_logical_or
+id|cpu_is_omap5912
+c_func
+(paren
+)paren
 )paren
 (brace
 id|printk
@@ -2571,7 +2581,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;OMAP DMA hardware version %d&bslash;n&quot;
 comma
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP_DMA_HW_ID_REG
@@ -2585,7 +2595,7 @@ id|KERN_INFO
 l_string|&quot;DMA capabilities: %08x:%08x:%04x:%04x:%04x&bslash;n&quot;
 comma
 (paren
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP_DMA_CAPS_0_U_REG
@@ -2594,14 +2604,14 @@ op_lshift
 l_int|16
 )paren
 op_or
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP_DMA_CAPS_0_L_REG
 )paren
 comma
 (paren
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP_DMA_CAPS_1_U_REG
@@ -2610,25 +2620,25 @@ op_lshift
 l_int|16
 )paren
 op_or
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP_DMA_CAPS_1_L_REG
 )paren
 comma
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP_DMA_CAPS_2_REG
 )paren
 comma
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP_DMA_CAPS_3_REG
 )paren
 comma
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP_DMA_CAPS_4_REG
@@ -2648,7 +2658,7 @@ suffix:semicolon
 multiline_comment|/* Disable OMAP 3.0/3.1 compatibility mode. */
 id|w
 op_assign
-id|__raw_readw
+id|omap_readw
 c_func
 (paren
 id|OMAP_DMA_GSCR_REG
@@ -2660,7 +2670,7 @@ l_int|1
 op_lshift
 l_int|3
 suffix:semicolon
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 id|w

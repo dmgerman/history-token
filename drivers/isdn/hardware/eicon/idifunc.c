@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: idifunc.c,v 1.14 2004/03/21 18:13:43 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * User Mode IDI Interface &n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: idifunc.c,v 1.14.4.2 2004/05/09 16:42:20 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * User Mode IDI Interface &n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
 macro_line|#include &quot;divasync.h&quot;
@@ -540,11 +540,6 @@ id|udiva_card
 op_star
 id|card
 suffix:semicolon
-r_struct
-id|list_head
-op_star
-id|tmp
-suffix:semicolon
 id|diva_os_spin_lock_magic_t
 id|old_irql
 suffix:semicolon
@@ -562,13 +557,16 @@ comma
 l_string|&quot;remove all&quot;
 )paren
 suffix:semicolon
-id|list_for_each
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
 c_func
 (paren
-id|tmp
-comma
 op_amp
 id|cards
+)paren
 )paren
 (brace
 id|card
@@ -576,11 +574,18 @@ op_assign
 id|list_entry
 c_func
 (paren
-id|tmp
+id|cards.next
 comma
 id|udiva_card
 comma
 id|list
+)paren
+suffix:semicolon
+id|list_del
+c_func
+(paren
+op_amp
+id|card-&gt;list
 )paren
 suffix:semicolon
 id|diva_os_leave_spin_lock

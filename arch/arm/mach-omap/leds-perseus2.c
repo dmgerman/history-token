@@ -8,7 +8,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/arch/omap-perseus2.h&gt;
 macro_line|#include &quot;leds.h&quot;
 DECL|function|perseus2_leds_event
 r_void
@@ -184,7 +183,7 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *  Actually burn the LEDs&n;&t; */
-id|__raw_writew
+id|omap_writew
 c_func
 (paren
 op_complement

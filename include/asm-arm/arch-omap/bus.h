@@ -64,6 +64,11 @@ op_star
 id|dma_mask
 suffix:semicolon
 multiline_comment|/* Used by USB OHCI only */
+DECL|member|coherent_dma_mask
+id|u64
+id|coherent_dma_mask
+suffix:semicolon
+multiline_comment|/* Used by USB OHCI only */
 )brace
 suffix:semicolon
 DECL|macro|OMAP_DEV

@@ -384,5 +384,9 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * The definition of NR_IRQS is in board-specific header file, which is&n; * included via hardware.h&n; */
 macro_line|#include &lt;asm/arch/hardware.h&gt;
+macro_line|#ifndef NR_IRQS
+DECL|macro|NR_IRQS
+mdefine_line|#define NR_IRQS                 256
+macro_line|#endif
 macro_line|#endif
 eof

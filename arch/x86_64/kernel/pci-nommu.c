@@ -9,6 +9,24 @@ id|iommu_merge
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|iommu_merge
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iommu_merge
+)paren
+suffix:semicolon
+DECL|variable|bad_dma_address
+id|dma_addr_t
+id|bad_dma_address
+suffix:semicolon
+DECL|variable|bad_dma_address
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bad_dma_address
+)paren
+suffix:semicolon
 multiline_comment|/* &n; * Dummy IO MMU functions&n; */
 DECL|function|pci_alloc_consistent
 r_void

@@ -7952,6 +7952,27 @@ id|object.processor.pblk_address
 op_plus
 l_int|5
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * We don&squot;t care about error returns - we just try to mark&n;&t;&t; * these reserved so that nobody else is confused into thinking&n;&t;&t; * that this region might be unused..&n;&t;&t; *&n;&t;&t; * (In particular, allocating the IO range for Cardbus)&n;&t;&t; */
+id|request_region
+c_func
+(paren
+id|pr-&gt;throttling.address
+comma
+l_int|6
+comma
+l_string|&quot;ACPI CPU throttle&quot;
+)paren
+suffix:semicolon
+id|request_region
+c_func
+(paren
+id|acpi_fadt.xpm_tmr_blk.address
+comma
+l_int|4
+comma
+l_string|&quot;ACPI timer&quot;
+)paren
+suffix:semicolon
 )brace
 id|acpi_processor_get_power_info
 c_func

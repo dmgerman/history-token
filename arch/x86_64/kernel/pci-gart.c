@@ -2785,6 +2785,13 @@ c_func
 id|bad_dma_address
 )paren
 suffix:semicolon
+DECL|variable|iommu_merge
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iommu_merge
+)paren
+suffix:semicolon
 DECL|function|check_iommu_size
 r_static
 id|__init

@@ -8,13 +8,6 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 DECL|macro|__MUX_C__
 mdefine_line|#define __MUX_C__
 macro_line|#include &lt;asm/arch/mux.h&gt;
-DECL|variable|mux_spin_lock
-r_static
-id|spinlock_t
-id|mux_spin_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 multiline_comment|/*&n; * Sets the Omap MUX and PULL_DWN registers based on the table&n; */
 DECL|function|omap_cfg_reg
 r_int
@@ -27,6 +20,12 @@ id|reg_cfg
 )paren
 (brace
 macro_line|#ifdef CONFIG_OMAP_MUX
+r_static
+id|spinlock_t
+id|mux_spin_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 r_int
 r_int
 id|flags
@@ -88,7 +87,7 @@ id|cfg-&gt;mux_reg
 (brace
 id|reg_orig
 op_assign
-id|__raw_readl
+id|omap_readl
 c_func
 (paren
 id|cfg-&gt;mux_reg
@@ -114,7 +113,7 @@ op_lshift
 id|cfg-&gt;mask_offset
 )paren
 suffix:semicolon
-id|__raw_writel
+id|omap_writel
 c_func
 (paren
 id|reg
@@ -144,7 +143,7 @@ id|cfg-&gt;pull_val
 (brace
 id|pu_pd_orig
 op_assign
-id|__raw_readl
+id|omap_readl
 c_func
 (paren
 id|cfg-&gt;pu_pd_reg
@@ -183,7 +182,7 @@ id|cfg-&gt;pull_bit
 )paren
 suffix:semicolon
 )brace
-id|__raw_writel
+id|omap_writel
 c_func
 (paren
 id|pu_pd
@@ -202,7 +201,7 @@ id|cfg-&gt;pull_reg
 (brace
 id|pull_orig
 op_assign
-id|__raw_readl
+id|omap_readl
 c_func
 (paren
 id|cfg-&gt;pull_reg
@@ -241,7 +240,7 @@ id|cfg-&gt;pull_bit
 )paren
 suffix:semicolon
 )brace
-id|__raw_writel
+id|omap_writel
 c_func
 (paren
 id|pull
@@ -313,6 +312,11 @@ id|pu_pd
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|cfg-&gt;pull_reg
+)paren
 id|printk
 c_func
 (paren

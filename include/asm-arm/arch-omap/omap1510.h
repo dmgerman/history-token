@@ -4,25 +4,37 @@ DECL|macro|__ASM_ARCH_OMAP1510_H
 mdefine_line|#define __ASM_ARCH_OMAP1510_H
 multiline_comment|/*&n; * ----------------------------------------------------------------------------&n; * Base addresses&n; * ----------------------------------------------------------------------------&n; */
 multiline_comment|/* Syntax: XX_BASE = Virtual base address, XX_START = Physical base address */
-DECL|macro|OMAP_SRAM_BASE
-mdefine_line|#define OMAP_SRAM_BASE&t;&t;0xD0000000
-DECL|macro|OMAP_SRAM_SIZE
-mdefine_line|#define OMAP_SRAM_SIZE&t;&t;(SZ_128K + SZ_64K)
-DECL|macro|OMAP_SRAM_START
-mdefine_line|#define OMAP_SRAM_START&t;&t;0x20000000
-DECL|macro|OMAP_MCBSP1_BASE
-mdefine_line|#define OMAP_MCBSP1_BASE&t;0xE1011000
-DECL|macro|OMAP_MCBSP1_SIZE
-mdefine_line|#define OMAP_MCBSP1_SIZE&t;SZ_4K
-DECL|macro|OMAP_MCBSP1_START
-mdefine_line|#define OMAP_MCBSP1_START&t;0xE1011000
-DECL|macro|OMAP_MCBSP2_BASE
-mdefine_line|#define OMAP_MCBSP2_BASE&t;0xFFFB1000
-DECL|macro|OMAP_MCBSP3_BASE
-mdefine_line|#define OMAP_MCBSP3_BASE&t;0xE1017000
-DECL|macro|OMAP_MCBSP3_SIZE
-mdefine_line|#define OMAP_MCBSP3_SIZE&t;SZ_4K
-DECL|macro|OMAP_MCBSP3_START
-mdefine_line|#define OMAP_MCBSP3_START&t;0xE1017000
+DECL|macro|OMAP1510_SRAM_BASE
+mdefine_line|#define OMAP1510_SRAM_BASE&t;0xD0000000
+DECL|macro|OMAP1510_SRAM_SIZE
+mdefine_line|#define OMAP1510_SRAM_SIZE&t;(SZ_128K + SZ_64K)
+DECL|macro|OMAP1510_SRAM_START
+mdefine_line|#define OMAP1510_SRAM_START&t;0x20000000
+DECL|macro|OMAP1510_MCBSP1_BASE
+mdefine_line|#define OMAP1510_MCBSP1_BASE&t;0xE1011000
+DECL|macro|OMAP1510_MCBSP1_SIZE
+mdefine_line|#define OMAP1510_MCBSP1_SIZE&t;SZ_4K
+DECL|macro|OMAP1510_MCBSP1_START
+mdefine_line|#define OMAP1510_MCBSP1_START&t;0xE1011000
+DECL|macro|OMAP1510_MCBSP2_BASE
+mdefine_line|#define OMAP1510_MCBSP2_BASE&t;0xFFFB1000
+DECL|macro|OMAP1510_MCBSP3_BASE
+mdefine_line|#define OMAP1510_MCBSP3_BASE&t;0xE1017000
+DECL|macro|OMAP1510_MCBSP3_SIZE
+mdefine_line|#define OMAP1510_MCBSP3_SIZE&t;SZ_4K
+DECL|macro|OMAP1510_MCBSP3_START
+mdefine_line|#define OMAP1510_MCBSP3_START&t;0xE1017000
+DECL|macro|OMAP1510_DSP_BASE
+mdefine_line|#define OMAP1510_DSP_BASE&t;0xE0000000
+DECL|macro|OMAP1510_DSP_SIZE
+mdefine_line|#define OMAP1510_DSP_SIZE&t;0x28000
+DECL|macro|OMAP1510_DSP_START
+mdefine_line|#define OMAP1510_DSP_START&t;0xE0000000
+DECL|macro|OMAP1510_DSPREG_BASE
+mdefine_line|#define OMAP1510_DSPREG_BASE&t;0xE1000000
+DECL|macro|OMAP1510_DSPREG_SIZE
+mdefine_line|#define OMAP1510_DSPREG_SIZE&t;SZ_128K
+DECL|macro|OMAP1510_DSPREG_START
+mdefine_line|#define OMAP1510_DSPREG_START&t;0xE1000000
 macro_line|#endif /*  __ASM_ARCH_OMAP1510_H */
 eof
