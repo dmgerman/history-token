@@ -387,7 +387,7 @@ l_int|0x00FF0000
 )paren
 (brace
 r_case
-id|htonl
+id|__constant_htonl
 c_func
 (paren
 l_int|0x00010000
@@ -400,7 +400,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|htonl
+id|__constant_htonl
 c_func
 (paren
 l_int|0x00020000
@@ -413,7 +413,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|htonl
+id|__constant_htonl
 c_func
 (paren
 l_int|0x00050000
