@@ -96,44 +96,6 @@ macro_line|#include &quot;drm_context.h&quot;
 macro_line|#include &quot;drm_dma.h&quot;
 macro_line|#include &quot;drm_drawable.h&quot;
 macro_line|#include &quot;drm_drv.h&quot;
-macro_line|#ifndef MODULE
-multiline_comment|/* DRM(options) is called by the kernel to parse command-line options&n; * passed via the boot-loader (e.g., LILO).  It calls the insmod option&n; * routine, drm_parse_drm.&n; */
-multiline_comment|/* JH- We have to hand expand the string ourselves because of the cpp.  If&n; * anyone can think of a way that we can fit into the __setup macro without&n; * changing it, then please send the solution my way.&n; */
-DECL|function|tdfx_options
-r_static
-r_int
-id|__init
-id|tdfx_options
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-id|DRM
-c_func
-(paren
-id|parse_options
-)paren
-(paren
-id|str
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-id|DRIVER_NAME
-l_string|&quot;=&quot;
-comma
-id|tdfx_options
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#include &quot;drm_fops.h&quot;
 macro_line|#include &quot;drm_init.h&quot;
 macro_line|#include &quot;drm_ioctl.h&quot;

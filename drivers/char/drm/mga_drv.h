@@ -30,7 +30,6 @@ r_int
 id|space
 suffix:semicolon
 DECL|member|wrapped
-r_volatile
 r_int
 id|wrapped
 suffix:semicolon
@@ -51,10 +50,6 @@ suffix:semicolon
 DECL|member|high_mark
 id|u32
 id|high_mark
-suffix:semicolon
-DECL|member|list_lock
-id|spinlock_t
-id|list_lock
 suffix:semicolon
 DECL|typedef|drm_mga_primary_buffer_t
 )brace
@@ -263,23 +258,7 @@ r_int
 id|mga_dma_init
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -287,23 +266,7 @@ r_int
 id|mga_dma_flush
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -311,23 +274,7 @@ r_int
 id|mga_dma_reset
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -335,23 +282,7 @@ r_int
 id|mga_dma_buffers
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -454,23 +385,7 @@ r_int
 id|mga_dma_clear
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -478,23 +393,7 @@ r_int
 id|mga_dma_swap
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -502,23 +401,7 @@ r_int
 id|mga_dma_vertex
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -526,23 +409,7 @@ r_int
 id|mga_dma_indices
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -550,23 +417,7 @@ r_int
 id|mga_dma_iload
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -574,23 +425,7 @@ r_int
 id|mga_dma_blit
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 multiline_comment|/* mga_warp.c */
@@ -615,7 +450,7 @@ id|dev_priv
 )paren
 suffix:semicolon
 DECL|macro|mga_flush_write_combine
-mdefine_line|#define mga_flush_write_combine()&t;mb()
+mdefine_line|#define mga_flush_write_combine()&t;DRM_WRITEMEMORYBARRIER()
 DECL|macro|MGA_BASE
 mdefine_line|#define MGA_BASE( reg )&t;&t;((unsigned long)(dev_priv-&gt;mmio-&gt;handle))
 DECL|macro|MGA_ADDR
@@ -628,9 +463,9 @@ macro_line|#ifdef __alpha__
 DECL|macro|MGA_READ
 mdefine_line|#define MGA_READ( reg )&t;&t;(_MGA_READ((u32 *)MGA_ADDR(reg)))
 DECL|macro|MGA_WRITE
-mdefine_line|#define MGA_WRITE( reg, val )&t;do { wmb(); MGA_DEREF( reg ) = val; } while (0)
+mdefine_line|#define MGA_WRITE( reg, val )&t;do { DRM_WRITEMEMORYBARRIER(); MGA_DEREF( reg ) = val; } while (0)
 DECL|macro|MGA_WRITE8
-mdefine_line|#define MGA_WRITE8( reg, val )  do { wmb(); MGA_DEREF8( reg ) = val; } while (0)
+mdefine_line|#define MGA_WRITE8( reg, val )  do { DRM_WRITEMEMORYBARRIER(); MGA_DEREF8( reg ) = val; } while (0)
 DECL|function|_MGA_READ
 r_static
 r_inline
@@ -643,7 +478,7 @@ op_star
 id|addr
 )paren
 (brace
-id|mb
+id|DRM_READMEMORYBARRIER
 c_func
 (paren
 )paren
@@ -686,11 +521,11 @@ multiline_comment|/* ===========================================================
 DECL|macro|MGA_EMIT_STATE
 mdefine_line|#define MGA_EMIT_STATE( dev_priv, dirty )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( (dirty) &amp; ~MGA_UPLOAD_CLIPRECTS ) {&t;&t;&t;&bslash;&n;&t;&t;if ( dev_priv-&gt;chipset == MGA_CARD_TYPE_G400 ) {&t;&bslash;&n;&t;&t;&t;mga_g400_emit_state( dev_priv );&t;&t;&bslash;&n;&t;&t;} else {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;mga_g200_emit_state( dev_priv );&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|LOCK_TEST_WITH_RETURN
-mdefine_line|#define LOCK_TEST_WITH_RETURN( dev )&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( !_DRM_LOCK_IS_HELD( dev-&gt;lock.hw_lock-&gt;lock ) ||&t;&t;&bslash;&n;&t;     dev-&gt;lock.pid != current-&gt;pid ) {&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &quot;%s called without lock held&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;   __FUNCTION__ );&t;&t;&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define LOCK_TEST_WITH_RETURN( dev )&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( !_DRM_LOCK_IS_HELD( dev-&gt;lock.hw_lock-&gt;lock ) ||&t;&t;&bslash;&n;&t;     dev-&gt;lock.pid != DRM_CURRENTPID ) {&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &quot;%s called without lock held&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;   __func__ );&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return DRM_ERR(EINVAL);&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|WRAP_TEST_WITH_RETURN
-mdefine_line|#define WRAP_TEST_WITH_RETURN( dev_priv )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( test_bit( 0, &amp;dev_priv-&gt;prim.wrapped ) ) {&t;&t;&t;&bslash;&n;&t;&t;if ( mga_is_idle( dev_priv ) ) {&t;&t;&t;&bslash;&n;&t;&t;&t;mga_do_dma_wrap_end( dev_priv );&t;&t;&bslash;&n;&t;&t;} else if ( dev_priv-&gt;prim.space &lt;&t;&t;&t;&bslash;&n;&t;&t;&t;    dev_priv-&gt;prim.high_mark ) {&t;&t;&bslash;&n;&t;&t;&t;if ( MGA_DMA_DEBUG )&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;DRM_INFO( __FUNCTION__&quot;: wrap...&bslash;n&quot; );&t;&bslash;&n;&t;&t;&t;return -EBUSY;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define WRAP_TEST_WITH_RETURN( dev_priv )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( test_bit( 0, &amp;dev_priv-&gt;prim.wrapped ) ) {&t;&t;&t;&bslash;&n;&t;&t;if ( mga_is_idle( dev_priv ) ) {&t;&t;&t;&bslash;&n;&t;&t;&t;mga_do_dma_wrap_end( dev_priv );&t;&t;&bslash;&n;&t;&t;} else if ( dev_priv-&gt;prim.space &lt;&t;&t;&t;&bslash;&n;&t;&t;&t;    dev_priv-&gt;prim.high_mark ) {&t;&t;&bslash;&n;&t;&t;&t;if ( MGA_DMA_DEBUG )&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;DRM_INFO( &quot;%s: wrap...&bslash;n&quot;, __func__ );&t;&bslash;&n;&t;&t;&t;return DRM_ERR(EBUSY);&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|WRAP_WAIT_WITH_RETURN
-mdefine_line|#define WRAP_WAIT_WITH_RETURN( dev_priv )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( test_bit( 0, &amp;dev_priv-&gt;prim.wrapped ) ) {&t;&t;&t;&bslash;&n;&t;&t;if ( mga_do_wait_for_idle( dev_priv ) &lt; 0 ) {&t;&t;&bslash;&n;&t;&t;&t;if ( MGA_DMA_DEBUG )&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;DRM_INFO( __FUNCTION__&quot;: wrap...&bslash;n&quot; );&t;&bslash;&n;&t;&t;&t;return -EBUSY;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;mga_do_dma_wrap_end( dev_priv );&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define WRAP_WAIT_WITH_RETURN( dev_priv )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( test_bit( 0, &amp;dev_priv-&gt;prim.wrapped ) ) {&t;&t;&t;&bslash;&n;&t;&t;if ( mga_do_wait_for_idle( dev_priv ) &lt; 0 ) {&t;&t;&bslash;&n;&t;&t;&t;if ( MGA_DMA_DEBUG )&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;DRM_INFO( &quot;%s: wrap...&bslash;n&quot;, __func__ );&t;&bslash;&n;&t;&t;&t;return DRM_ERR(EBUSY);&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;mga_do_dma_wrap_end( dev_priv );&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* ================================================================&n; * Primary DMA command stream&n; */
 DECL|macro|MGA_VERBOSE
 mdefine_line|#define MGA_VERBOSE&t;0
@@ -699,13 +534,13 @@ mdefine_line|#define DMA_LOCALS&t;unsigned int write; volatile u8 *prim;
 DECL|macro|DMA_BLOCK_SIZE
 mdefine_line|#define DMA_BLOCK_SIZE&t;(5 * sizeof(u32))
 DECL|macro|BEGIN_DMA
-mdefine_line|#define BEGIN_DMA( n )&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( MGA_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;BEGIN_DMA( %d ) in %s&bslash;n&quot;,&t;&t;&t;&bslash;&n;&t;&t;&t;  (n), __FUNCTION__ );&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;   space=0x%x req=0x%x&bslash;n&quot;,&t;&t;&t;&bslash;&n;&t;&t;&t;  dev_priv-&gt;prim.space, (n) * DMA_BLOCK_SIZE );&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;prim = dev_priv-&gt;prim.start;&t;&t;&t;&t;&t;&bslash;&n;&t;write = dev_priv-&gt;prim.tail;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define BEGIN_DMA( n )&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( MGA_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;BEGIN_DMA( %d ) in %s&bslash;n&quot;,&t;&t;&t;&bslash;&n;&t;&t;&t;  (n), __func__ );&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;   space=0x%x req=0x%x&bslash;n&quot;,&t;&t;&t;&bslash;&n;&t;&t;&t;  dev_priv-&gt;prim.space, (n) * DMA_BLOCK_SIZE );&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;prim = dev_priv-&gt;prim.start;&t;&t;&t;&t;&t;&bslash;&n;&t;write = dev_priv-&gt;prim.tail;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|BEGIN_DMA_WRAP
-mdefine_line|#define BEGIN_DMA_WRAP()&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( MGA_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;BEGIN_DMA() in %s&bslash;n&quot;, __FUNCTION__ );&t;&bslash;&n;&t;&t;DRM_INFO( &quot;   space=0x%x&bslash;n&quot;, dev_priv-&gt;prim.space );&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;prim = dev_priv-&gt;prim.start;&t;&t;&t;&t;&t;&bslash;&n;&t;write = dev_priv-&gt;prim.tail;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define BEGIN_DMA_WRAP()&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( MGA_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;BEGIN_DMA() in %s&bslash;n&quot;, __func__ );&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;   space=0x%x&bslash;n&quot;, dev_priv-&gt;prim.space );&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;prim = dev_priv-&gt;prim.start;&t;&t;&t;&t;&t;&bslash;&n;&t;write = dev_priv-&gt;prim.tail;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|ADVANCE_DMA
 mdefine_line|#define ADVANCE_DMA()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;dev_priv-&gt;prim.tail = write;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( MGA_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;ADVANCE_DMA() tail=0x%05x sp=0x%x&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;  write, dev_priv-&gt;prim.space );&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|FLUSH_DMA
-mdefine_line|#define FLUSH_DMA()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( 0 ) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( __FUNCTION__ &quot;:&bslash;n&quot; );&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;   tail=0x%06x head=0x%06lx&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;  dev_priv-&gt;prim.tail,&t;&t;&t;&t;&bslash;&n;&t;&t;&t;  MGA_READ( MGA_PRIMADDRESS ) -&t;&t;&t;&bslash;&n;&t;&t;&t;  dev_priv-&gt;primary-&gt;offset );&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( !test_bit( 0, &amp;dev_priv-&gt;prim.wrapped ) ) {&t;&t;&bslash;&n;&t;&t;if ( dev_priv-&gt;prim.space &lt;&t;&t;&t;&t;&bslash;&n;&t;&t;     dev_priv-&gt;prim.high_mark ) {&t;&t;&t;&bslash;&n;&t;&t;&t;mga_do_dma_wrap_start( dev_priv );&t;&t;&bslash;&n;&t;&t;} else {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;mga_do_dma_flush( dev_priv );&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define FLUSH_DMA()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( 0 ) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;%s:&bslash;n&quot;, __func__ );&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;   tail=0x%06x head=0x%06lx&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;  dev_priv-&gt;prim.tail,&t;&t;&t;&t;&bslash;&n;&t;&t;&t;  MGA_READ( MGA_PRIMADDRESS ) -&t;&t;&t;&bslash;&n;&t;&t;&t;  dev_priv-&gt;primary-&gt;offset );&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( !test_bit( 0, &amp;dev_priv-&gt;prim.wrapped ) ) {&t;&t;&bslash;&n;&t;&t;if ( dev_priv-&gt;prim.space &lt;&t;&t;&t;&t;&bslash;&n;&t;&t;     dev_priv-&gt;prim.high_mark ) {&t;&t;&t;&bslash;&n;&t;&t;&t;mga_do_dma_wrap_start( dev_priv );&t;&t;&bslash;&n;&t;&t;} else {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;mga_do_dma_flush( dev_priv );&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* Never use this, always use DMA_BLOCK(...) for primary DMA output.&n; */
 DECL|macro|DMA_WRITE
 mdefine_line|#define DMA_WRITE( offset, val )&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( MGA_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;   DMA_WRITE( 0x%08x ) at 0x%04x&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;  (u32)(val), write + (offset) * sizeof(u32) );&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*(volatile u32 *)(prim + write + (offset) * sizeof(u32)) = val;&t;&bslash;&n;} while (0)
@@ -1184,7 +1019,7 @@ mdefine_line|#define MGA_DWGCTL_COPY&t;&t;(MGA_OPCOD_BITBLT |&t;&t;&t;&bslash;&n
 multiline_comment|/* Simple idle test.&n; */
 DECL|function|mga_is_idle
 r_static
-r_inline
+id|__inline__
 r_int
 id|mga_is_idle
 c_func

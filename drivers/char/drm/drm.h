@@ -6,11 +6,40 @@ macro_line|#if defined(__linux__)
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/ioctl.h&gt;&t;&t;/* For _IO* macros */
 DECL|macro|DRM_IOCTL_NR
-mdefine_line|#define DRM_IOCTL_NR(n)&t;     _IOC_NR(n)
-macro_line|#elif defined(__FreeBSD__)
+mdefine_line|#define DRM_IOCTL_NR(n)&t;&t;_IOC_NR(n)
+DECL|macro|DRM_IOC_VOID
+mdefine_line|#define DRM_IOC_VOID&t;&t;_IOC_NONE
+DECL|macro|DRM_IOC_READ
+mdefine_line|#define DRM_IOC_READ&t;&t;_IOC_READ
+DECL|macro|DRM_IOC_WRITE
+mdefine_line|#define DRM_IOC_WRITE&t;&t;_IOC_WRITE
+DECL|macro|DRM_IOC_READWRITE
+mdefine_line|#define DRM_IOC_READWRITE&t;_IOC_READ|_IOC_WRITE
+DECL|macro|DRM_IOC
+mdefine_line|#define DRM_IOC(dir, group, nr, size) _IOC(dir, group, nr, size)
+macro_line|#elif defined(__FreeBSD__) || defined(__NetBSD__)
+macro_line|#if defined(__FreeBSD__) &amp;&amp; defined(XFree86Server)
+multiline_comment|/* Prevent name collision when including sys/ioccom.h */
+DECL|macro|ioctl
+macro_line|#undef ioctl
 macro_line|#include &lt;sys/ioccom.h&gt;
+DECL|macro|ioctl
+mdefine_line|#define ioctl(a,b,c)&t;&t;xf86ioctl(a,b,c)
+macro_line|#else
+macro_line|#include &lt;sys/ioccom.h&gt;
+macro_line|#endif /* __FreeBSD__ &amp;&amp; xf86ioctl */
 DECL|macro|DRM_IOCTL_NR
-mdefine_line|#define DRM_IOCTL_NR(n)&t;     ((n) &amp; 0xff)
+mdefine_line|#define DRM_IOCTL_NR(n)&t;&t;((n) &amp; 0xff)
+DECL|macro|DRM_IOC_VOID
+mdefine_line|#define DRM_IOC_VOID&t;&t;IOC_VOID
+DECL|macro|DRM_IOC_READ
+mdefine_line|#define DRM_IOC_READ&t;&t;IOC_OUT
+DECL|macro|DRM_IOC_WRITE
+mdefine_line|#define DRM_IOC_WRITE&t;&t;IOC_IN
+DECL|macro|DRM_IOC_READWRITE
+mdefine_line|#define DRM_IOC_READWRITE&t;IOC_INOUT
+DECL|macro|DRM_IOC
+mdefine_line|#define DRM_IOC(dir, group, nr, size) _IOC(dir, group, nr, size)
 macro_line|#endif
 DECL|macro|XFREE86_VERSION
 mdefine_line|#define XFREE86_VERSION(major,minor,patch,snap) &bslash;&n;&t;&t;((major &lt;&lt; 16) | (minor &lt;&lt; 8) | patch)
@@ -1151,11 +1180,11 @@ mdefine_line|#define DRM_IOCTL_BASE&t;&t;&t;&squot;d&squot;
 DECL|macro|DRM_IO
 mdefine_line|#define DRM_IO(nr)&t;&t;&t;_IO(DRM_IOCTL_BASE,nr)
 DECL|macro|DRM_IOR
-mdefine_line|#define DRM_IOR(nr,size)&t;&t;_IOR(DRM_IOCTL_BASE,nr,size)
+mdefine_line|#define DRM_IOR(nr,type)&t;&t;_IOR(DRM_IOCTL_BASE,nr,type)
 DECL|macro|DRM_IOW
-mdefine_line|#define DRM_IOW(nr,size)&t;&t;_IOW(DRM_IOCTL_BASE,nr,size)
+mdefine_line|#define DRM_IOW(nr,type)&t;&t;_IOW(DRM_IOCTL_BASE,nr,type)
 DECL|macro|DRM_IOWR
-mdefine_line|#define DRM_IOWR(nr,size)&t;&t;_IOWR(DRM_IOCTL_BASE,nr,size)
+mdefine_line|#define DRM_IOWR(nr,type)&t;&t;_IOWR(DRM_IOCTL_BASE,nr,type)
 DECL|macro|DRM_IOCTL_VERSION
 mdefine_line|#define DRM_IOCTL_VERSION&t;&t;DRM_IOWR(0x00, drm_version_t)
 DECL|macro|DRM_IOCTL_GET_UNIQUE
