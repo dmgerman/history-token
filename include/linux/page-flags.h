@@ -2,7 +2,7 @@ multiline_comment|/*&n; * Macros for manipulating and testing page-&gt;flags&n; 
 macro_line|#ifndef PAGE_FLAGS_H
 DECL|macro|PAGE_FLAGS_H
 mdefine_line|#define PAGE_FLAGS_H
-multiline_comment|/*&n; * Various page-&gt;flags bits:&n; *&n; * PG_reserved is set for special pages, which can never be swapped out. Some&n; * of them might not even exist (eg empty_bad_page)...&n; *&n; * The PG_private bitflag is set if page-&gt;private contains a valid value.&n; *&n; * During disk I/O, PG_locked_dontuse is used. This bit is set before I/O and&n; * reset when I/O completes. page_waitqueue(page) is a wait queue of all tasks&n; * waiting for the I/O on this page to complete.&n; *&n; * PG_uptodate tells whether the page&squot;s contents is valid.  When a read&n; * completes, the page becomes uptodate, unless a disk I/O error happened.&n; *&n; * For choosing which pages to swap out, inode pages carry a PG_referenced bit,&n; * which is set any time the system accesses that page through the (mapping,&n; * index) hash table.  This referenced bit, together with the referenced bit&n; * in the page tables, is used to manipulate page-&gt;age and move the page across&n; * the active, inactive_dirty and inactive_clean lists.&n; *&n; * Note that the referenced bit, the page-&gt;lru list_head and the active,&n; * inactive_dirty and inactive_clean lists are protected by the&n; * pagemap_lru_lock, and *NOT* by the usual PG_locked_dontuse bit!&n; *&n; * PG_skip is used on sparc/sparc64 architectures to &quot;skip&quot; certain parts of&n; * the address space.&n; *&n; * PG_error is set to indicate that an I/O error occurred on this page.&n; *&n; * PG_arch_1 is an architecture specific page state bit.  The generic code&n; * guarantees that this bit is cleared for a page when it first is entered into&n; * the page cache.&n; *&n; * PG_highmem pages are not permanently mapped into the kernel virtual address&n; * space, they need to be kmapped separately for doing IO on the pages.  The&n; * struct page (these bits with information) are always mapped into kernel&n; * address space...&n; */
+multiline_comment|/*&n; * Various page-&gt;flags bits:&n; *&n; * PG_reserved is set for special pages, which can never be swapped out. Some&n; * of them might not even exist (eg empty_bad_page)...&n; *&n; * The PG_private bitflag is set if page-&gt;private contains a valid value.&n; *&n; * During disk I/O, PG_locked_dontuse is used. This bit is set before I/O and&n; * reset when I/O completes. page_waitqueue(page) is a wait queue of all tasks&n; * waiting for the I/O on this page to complete.&n; *&n; * PG_uptodate tells whether the page&squot;s contents is valid.  When a read&n; * completes, the page becomes uptodate, unless a disk I/O error happened.&n; *&n; * For choosing which pages to swap out, inode pages carry a PG_referenced bit,&n; * which is set any time the system accesses that page through the (mapping,&n; * index) hash table.  This referenced bit, together with the referenced bit&n; * in the page tables, is used to manipulate page-&gt;age and move the page across&n; * the active, inactive_dirty and inactive_clean lists.&n; *&n; * Note that the referenced bit, the page-&gt;lru list_head and the active,&n; * inactive_dirty and inactive_clean lists are protected by the&n; * pagemap_lru_lock, and *NOT* by the usual PG_locked_dontuse bit!&n; *&n; * PG_error is set to indicate that an I/O error occurred on this page.&n; *&n; * PG_arch_1 is an architecture specific page state bit.  The generic code&n; * guarantees that this bit is cleared for a page when it first is entered into&n; * the page cache.&n; *&n; * PG_highmem pages are not permanently mapped into the kernel virtual address&n; * space, they need to be kmapped separately for doing IO on the pages.  The&n; * struct page (these bits with information) are always mapped into kernel&n; * address space...&n; */
 multiline_comment|/*&n; * Don&squot;t use the *_dontuse flags.  Use the macros.  Otherwise you&squot;ll break&n; * locked- and dirty-page accounting.  The top eight bits of page-&gt;flags are&n; * used for page-&gt;zone, so putting flag bits there doesn&squot;t work.&n; */
 DECL|macro|PG_locked_dontuse
 mdefine_line|#define PG_locked_dontuse&t; 0&t;/* Page is locked. Don&squot;t touch. */
@@ -20,20 +20,18 @@ DECL|macro|PG_active
 mdefine_line|#define PG_active&t;&t; 6
 DECL|macro|PG_slab
 mdefine_line|#define PG_slab&t;&t;&t; 7&t;/* slab debug (Suparna wants this) */
-DECL|macro|PG_skip
-mdefine_line|#define PG_skip&t;&t;&t; 8&t;/* kill me now: obsolete */
 DECL|macro|PG_highmem
-mdefine_line|#define PG_highmem&t;&t; 9
+mdefine_line|#define PG_highmem&t;&t; 8
 DECL|macro|PG_checked
-mdefine_line|#define PG_checked&t;&t;10&t;/* kill me in 2.5.&lt;early&gt;. */
+mdefine_line|#define PG_checked&t;&t; 9&t;/* kill me in 2.5.&lt;early&gt;. */
 DECL|macro|PG_arch_1
-mdefine_line|#define PG_arch_1&t;&t;11
+mdefine_line|#define PG_arch_1&t;&t;10
 DECL|macro|PG_reserved
-mdefine_line|#define PG_reserved&t;&t;12
+mdefine_line|#define PG_reserved&t;&t;11
 DECL|macro|PG_launder
-mdefine_line|#define PG_launder&t;&t;13&t;/* written out by VM pressure.. */
+mdefine_line|#define PG_launder&t;&t;12&t;/* written out by VM pressure.. */
 DECL|macro|PG_private
-mdefine_line|#define PG_private&t;&t;14&t;/* Has something at -&gt;private */
+mdefine_line|#define PG_private&t;&t;13&t;/* Has something at -&gt;private */
 multiline_comment|/*&n; * Global page accounting.  One instance per CPU.&n; */
 DECL|struct|page_state
 r_extern

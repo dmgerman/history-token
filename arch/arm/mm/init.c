@@ -86,7 +86,6 @@ id|page
 op_star
 id|empty_zero_page
 suffix:semicolon
-multiline_comment|/* This is currently broken&n; * PG_skip is used on sparc/sparc64 architectures to &quot;skip&quot; certain&n; * parts of the address space.&n; *&n; * #define PG_skip&t;10&n; * #define PageSkip(page) (machine_is_riscpc() &amp;&amp; test_bit(PG_skip, &amp;(page)-&gt;flags))&n; *&t;&t;&t;if (PageSkip(page)) {&n; *&t;&t;&t;&t;page = page-&gt;next_hash;&n; *&t;&t;&t;&t;if (page == NULL)&n; *&t;&t;&t;&t;&t;break;&n; *&t;&t;&t;}&n; */
 DECL|function|show_mem
 r_void
 id|show_mem
