@@ -1324,6 +1324,7 @@ id|xlvl
 op_ge
 l_int|0x80000001
 )paren
+(brace
 id|c-&gt;x86_capability
 (braket
 l_int|1
@@ -1335,6 +1336,18 @@ c_func
 l_int|0x80000001
 )paren
 suffix:semicolon
+id|c-&gt;x86_capability
+(braket
+l_int|6
+)braket
+op_assign
+id|cpuid_ecx
+c_func
+(paren
+l_int|0x80000001
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
