@@ -2464,12 +2464,10 @@ r_void
 id|capi_signal
 c_func
 (paren
-id|u16
-id|applid
-comma
-r_void
+r_struct
+id|capi20_appl
 op_star
-id|param
+id|ap
 )paren
 (brace
 r_struct
@@ -2477,12 +2475,9 @@ id|capidev
 op_star
 id|cdev
 op_assign
-(paren
-r_struct
-id|capidev
-op_star
-)paren
-id|param
+id|ap
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_CAPI_MIDDLEWARE
 r_struct
@@ -3626,6 +3621,12 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+id|cdev-&gt;ap
+dot
+r_private
+op_assign
+id|cdev
+suffix:semicolon
 id|cdev-&gt;errcode
 op_assign
 id|capi20_register
@@ -3655,8 +3656,6 @@ c_func
 id|ap
 comma
 id|capi_signal
-comma
-id|cdev
 )paren
 suffix:semicolon
 )brace

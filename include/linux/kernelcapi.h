@@ -94,12 +94,12 @@ DECL|member|rparam
 id|capi_register_params
 id|rparam
 suffix:semicolon
-multiline_comment|/* internal to kernelcapi.o */
-DECL|member|param
+DECL|member|private
 r_void
 op_star
-id|param
+r_private
 suffix:semicolon
+multiline_comment|/* internal to kernelcapi.o */
 DECL|member|signal
 r_void
 (paren
@@ -107,12 +107,10 @@ op_star
 id|signal
 )paren
 (paren
-id|u16
-id|applid
-comma
-r_void
+r_struct
+id|capi20_appl
 op_star
-id|param
+id|ap
 )paren
 suffix:semicolon
 DECL|member|recv_queue
@@ -245,17 +243,11 @@ op_star
 id|signal
 )paren
 (paren
-id|u16
-id|applid
-comma
-r_void
+r_struct
+id|capi20_appl
 op_star
-id|param
+id|ap
 )paren
-comma
-r_void
-op_star
-id|param
 )paren
 suffix:semicolon
 id|u16

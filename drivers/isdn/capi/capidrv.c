@@ -6538,12 +6538,10 @@ r_void
 id|capidrv_signal
 c_func
 (paren
-id|u16
-id|applid
-comma
-r_void
+r_struct
+id|capi20_appl
 op_star
-id|dummy
+id|ap
 )paren
 (brace
 r_struct
@@ -6559,8 +6557,7 @@ c_loop
 id|capi20_get_message
 c_func
 (paren
-op_amp
-id|global.ap
+id|ap
 comma
 op_amp
 id|skb
@@ -6591,7 +6588,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;capidrv_signal: applid=%d %s&bslash;n&quot;
 comma
-id|applid
+id|ap-&gt;applid
 comma
 id|capi_cmsg2str
 c_func
@@ -11490,8 +11487,6 @@ op_amp
 id|global.ap
 comma
 id|capidrv_signal
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|ncontr
