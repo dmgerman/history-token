@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* &n; * Some useful ethtool_ops methods that&squot;re device independent.&n; * If we find that all drivers want to do the same thing here,&n; * we can turn these into dev_() function calls.&n; */
 DECL|function|ethtool_op_get_link
 id|u32
