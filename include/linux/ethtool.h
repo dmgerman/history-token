@@ -620,6 +620,10 @@ DECL|macro|ETHTOOL_PHYS_ID
 mdefine_line|#define ETHTOOL_PHYS_ID&t;&t;0x0000001c /* identify the NIC */
 DECL|macro|ETHTOOL_GSTATS
 mdefine_line|#define ETHTOOL_GSTATS&t;&t;0x0000001d /* get NIC-specific statistics */
+DECL|macro|ETHTOOL_GTSO
+mdefine_line|#define ETHTOOL_GTSO&t;&t;0x0000001e /* Get TSO enable (ethtool_value) */
+DECL|macro|ETHTOOL_STSO
+mdefine_line|#define ETHTOOL_STSO&t;&t;0x0000001f /* Set TSO enable (ethtool_value) */
 multiline_comment|/* compatibility with older code */
 DECL|macro|SPARC_ETH_GSET
 mdefine_line|#define SPARC_ETH_GSET&t;&t;ETHTOOL_GSET
