@@ -1918,21 +1918,10 @@ c_func
 id|year
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This will work up to Dec 31, 2069.&n; */
-r_if
-c_cond
-(paren
-(paren
+multiline_comment|/*&n; * x86-64 systems only exists since 2002.&n; * This will work up to Dec 31, 2100&n; */
 id|year
 op_add_assign
-l_int|1900
-)paren
-OL
-l_int|1970
-)paren
-id|year
-op_add_assign
-l_int|100
+l_int|2000
 suffix:semicolon
 r_return
 id|mktime
