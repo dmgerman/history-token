@@ -273,6 +273,7 @@ r_int
 id|netdev_fastroute_obstacles
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_SYSFS
 r_extern
 r_int
 id|netdev_sysfs_init
@@ -292,7 +293,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|netdev_unregister_sysfs
 c_func
 (paren
@@ -301,6 +302,14 @@ id|net_device
 op_star
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|netdev_sysfs_init
+mdefine_line|#define netdev_sysfs_init()&t; &t;(0)
+DECL|macro|netdev_register_sysfs
+mdefine_line|#define netdev_register_sysfs(dev)&t;(0)
+DECL|macro|netdev_unregister_sysfs
+mdefine_line|#define&t;netdev_unregister_sysfs(dev)&t;do { } while(0)
+macro_line|#endif
 multiline_comment|/*******************************************************************************&n;&n;&t;&t;Protocol management and registration routines&n;&n;*******************************************************************************/
 multiline_comment|/*&n; *&t;For efficiency&n; */
 DECL|variable|netdev_nit
@@ -9833,6 +9842,9 @@ c_func
 id|list
 )paren
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 multiline_comment|/* Safe outside mutex since we only care about entries that&n;&t; * this cpu put into queue while under RTNL.&n;&t; */
 r_if
 c_cond
@@ -9923,10 +9935,28 @@ id|dev-&gt;reg_state
 r_case
 id|NETREG_REGISTERING
 suffix:colon
+id|err
+op_assign
 id|netdev_register_sysfs
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: failed sysfs registration (%d)&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|err
 )paren
 suffix:semicolon
 id|dev-&gt;reg_state
@@ -10040,6 +10070,7 @@ op_star
 id|dev
 )paren
 (brace
+macro_line|#ifdef CONFIG_SYSFS
 multiline_comment|/*  Compatiablity with error handling in drivers */
 r_if
 c_cond
@@ -10084,6 +10115,20 @@ op_amp
 id|dev-&gt;class_dev
 )paren
 suffix:semicolon
+macro_line|#else
+id|kfree
+c_func
+(paren
+(paren
+r_char
+op_star
+)paren
+id|dev
+op_minus
+id|dev-&gt;padded
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* Synchronize with packet receive processing. */
 DECL|function|synchronize_net
