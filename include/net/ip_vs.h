@@ -699,6 +699,11 @@ id|NET_IPV4_VS_NAT_ICMP_SEND
 op_assign
 l_int|25
 comma
+DECL|enumerator|NET_IPV4_VS_EXPIRE_QUIESCENT_TEMPLATE
+id|NET_IPV4_VS_EXPIRE_QUIESCENT_TEMPLATE
+op_assign
+l_int|26
+comma
 DECL|enumerator|NET_IPV4_VS_LAST
 id|NET_IPV4_VS_LAST
 )brace
@@ -3033,6 +3038,10 @@ suffix:semicolon
 r_extern
 r_int
 id|sysctl_ip_vs_expire_nodest_conn
+suffix:semicolon
+r_extern
+r_int
+id|sysctl_ip_vs_expire_quiescent_template
 suffix:semicolon
 r_extern
 r_int
