@@ -29149,7 +29149,7 @@ id|rc
 suffix:semicolon
 )brace
 macro_line|#ifdef WIRELESS_EXT
-multiline_comment|/*&n; * Get the Wireless stats out of the driver&n; * Note : irq and spinlock protection will occur in the subroutines&n; *&n; * TODO :&n; *&t;o Check if work in Ad-Hoc mode (otherwise, use SPY, as in wvlan_cs)&n; *&t;o Find the noise level&n; *&n; * Jean&n; */
+multiline_comment|/*&n; * Get the Wireless stats out of the driver&n; * Note : irq and spinlock protection will occur in the subroutines&n; *&n; * TODO :&n; *&t;o Check if work in Ad-Hoc mode (otherwise, use SPY, as in wvlan_cs)&n; *&n; * Jean&n; */
 DECL|function|airo_get_wireless_stats
 r_struct
 id|iw_statistics
@@ -29242,6 +29242,27 @@ l_int|321
 op_div
 l_int|2
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|status_rid.len
+op_ge
+l_int|124
+)paren
+(brace
+id|local-&gt;wstats.qual.noise
+op_assign
+l_int|256
+op_minus
+id|status_rid.noisedBm
+suffix:semicolon
+id|local-&gt;wstats.qual.updated
+op_assign
+l_int|7
+suffix:semicolon
+)brace
+r_else
+(brace
 id|local-&gt;wstats.qual.noise
 op_assign
 l_int|0
@@ -29250,6 +29271,7 @@ id|local-&gt;wstats.qual.updated
 op_assign
 l_int|3
 suffix:semicolon
+)brace
 multiline_comment|/* Packets discarded in the wireless adapter due to wireless&n;&t; * specific problems */
 id|local-&gt;wstats.discard.nwid
 op_assign
