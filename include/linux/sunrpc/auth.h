@@ -9,6 +9,30 @@ macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/* size of the nodename buffer */
 DECL|macro|UNX_MAXNODENAME
 mdefine_line|#define UNX_MAXNODENAME&t;32
+multiline_comment|/* Work around the lack of a VFS credential */
+DECL|struct|auth_cred
+r_struct
+id|auth_cred
+(brace
+DECL|member|uid
+id|uid_t
+id|uid
+suffix:semicolon
+DECL|member|gid
+id|gid_t
+id|gid
+suffix:semicolon
+DECL|member|ngroups
+r_int
+id|ngroups
+suffix:semicolon
+DECL|member|groups
+id|gid_t
+op_star
+id|groups
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Client user credentials&n; */
 DECL|struct|rpc_cred
 r_struct
@@ -183,6 +207,10 @@ op_star
 id|crcreate
 )paren
 (paren
+r_struct
+id|auth_cred
+op_star
+comma
 r_int
 )paren
 suffix:semicolon
@@ -211,6 +239,10 @@ op_star
 id|crmatch
 )paren
 (paren
+r_struct
+id|auth_cred
+op_star
+comma
 r_struct
 id|rpc_cred
 op_star
