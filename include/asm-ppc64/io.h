@@ -27,28 +27,8 @@ suffix:semicolon
 r_extern
 r_int
 r_int
-id|isa_mem_base
-suffix:semicolon
-r_extern
-r_int
-r_int
 id|pci_io_base
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|pci_dram_offset
-suffix:semicolon
-r_extern
-r_int
-id|have_print
-suffix:semicolon
-DECL|macro|_IO_BASE
-mdefine_line|#define _IO_BASE&t;isa_io_base
-DECL|macro|_ISA_MEM_BASE
-mdefine_line|#define _ISA_MEM_BASE&t;isa_mem_base
-DECL|macro|PCI_DRAM_OFFSET
-mdefine_line|#define PCI_DRAM_OFFSET&t;pci_dram_offset
 macro_line|#ifdef CONFIG_PPC_ISERIES
 DECL|macro|readb
 mdefine_line|#define readb(addr)&t;&t;iSeries_Read_Byte((void*)(addr))  

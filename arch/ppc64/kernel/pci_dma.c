@@ -3446,6 +3446,7 @@ op_star
 id|newTceTable
 )paren
 (brace
+macro_line|#ifdef CONFIG_PPC_ISERIES
 r_struct
 id|list_head
 op_star
@@ -3537,6 +3538,7 @@ op_assign
 id|Device_Node_Ptr-&gt;next
 suffix:semicolon
 )brace
+macro_line|#endif
 r_return
 l_int|NULL
 suffix:semicolon
