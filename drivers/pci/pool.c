@@ -276,7 +276,7 @@ id|next
 comma
 id|size
 comma
-l_string|&quot;%-16s %4u %4u %4u %2u&bslash;n&quot;
+l_string|&quot;%-16s %4u %4Zu %4Zu %2u&bslash;n&quot;
 comma
 id|pool-&gt;name
 comma
