@@ -22,7 +22,6 @@ macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/smb_fs.h&gt;
 macro_line|#include &lt;linux/smb_mount.h&gt;
 macro_line|#include &lt;linux/ncp_fs.h&gt;
-macro_line|#include &lt;linux/quota.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
@@ -60,16 +59,7 @@ DECL|struct|sigregs32
 r_struct
 id|sigregs32
 (brace
-multiline_comment|/***********************************************************************/
-multiline_comment|/* the gp_regs array is 32 bit representation of the pt_regs structure */
-multiline_comment|/*  that was stored on the kernle stack during the system call that    */
-multiline_comment|/*  was interrupted for the signal.                                    */
-multiline_comment|/*                                                                     */
-multiline_comment|/* Note that the entire pt_regs regs structure will fit in the gp_regs */
-multiline_comment|/*   structure because the ELF_NREG value is 48 for PPC and the pt_regs*/
-multiline_comment|/*   structure contains 44 registers                                   */
-multiline_comment|/*                                                                     */
-multiline_comment|/***********************************************************************/
+multiline_comment|/*&n;&t; * the gp_regs array is 32 bit representation of the pt_regs&n;&t; * structure that was stored on the kernle stack during the&n;&t; * system call that was interrupted for the signal.&n;&t; *&n;&t; * Note that the entire pt_regs regs structure will fit in&n;&t; * the gp_regs structure because the ELF_NREG value is 48 for&n;&t; * PPC and the pt_regs structure contains 44 registers&n;&t; */
 DECL|member|gp_regs
 id|elf_gregset_t32
 id|gp_regs
@@ -89,7 +79,7 @@ id|tramp
 l_int|2
 )braket
 suffix:semicolon
-multiline_comment|/* Programs using the rs6000/xcoff abi can save up to 19 gp regs&n;&t;   and 18 fp regs below sp before decrementing it. */
+multiline_comment|/*&n;&t; * Programs using the rs6000/xcoff abi can save up to 19 gp&n;&t; * regs and 18 fp regs below sp before decrementing it.&n;&t; */
 DECL|member|abigap
 r_int
 id|abigap
@@ -103,19 +93,18 @@ DECL|struct|rt_sigframe_32
 r_struct
 id|rt_sigframe_32
 (brace
-multiline_comment|/* Unused space at start of frame to allow for storing of stack pointers */
+multiline_comment|/*&n;&t; * Unused space at start of frame to allow for storing of&n;&t; * stack pointers&n;&t; */
 DECL|member|_unused
 r_int
 r_int
 id|_unused
 suffix:semicolon
-multiline_comment|/* This is a 32 bit pointer in user address space &n;&t; *     it is a pointer to the siginfo stucture in the rt stack frame &n;&t; */
+multiline_comment|/*&n;&t; * This is a 32 bit pointer in user address space &n;&t; * it is a pointer to the siginfo stucture in the rt stack frame &n;&t; */
 DECL|member|pinfo
 id|u32
 id|pinfo
 suffix:semicolon
-multiline_comment|/* This is a 32 bit pointer in user address space */
-multiline_comment|/*     it is a pointer to the user context in the rt stack frame  */
+multiline_comment|/*&n;&t; * This is a 32 bit pointer in user address space&n;&t; * it is a pointer to the user context in the rt stack frame&n;&t; */
 DECL|member|puc
 id|u32
 id|puc
@@ -478,7 +467,7 @@ op_star
 id|oset
 )paren
 suffix:semicolon
-multiline_comment|/* Note: it is necessary to treat how as an unsigned int, &n; * with the corresponding cast to a signed int to insure that the &n; * proper conversion (sign extension) between the register representation of a signed int (msr in 32-bit mode)&n; * and the register representation of a signed int (msr in 64-bit mode) is performed.&n; */
+multiline_comment|/*&n; * Note: it is necessary to treat how as an unsigned int, with the&n; * corresponding cast to a signed int to insure that the proper&n; * conversion (sign extension) between the register representation&n; * of a signed int (msr in 32-bit mode) and the register representation&n; * of a signed int (msr in 64-bit mode) is performed.&n; */
 DECL|function|sys32_sigprocmask
 id|asmlinkage
 r_int
@@ -592,7 +581,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * When we have signals to deliver, we set up on the&n; * user stack, going down from the original stack pointer:&n; *&t;a sigregs struct&n; *&t;one or more sigcontext structs&n; *&t;a gap of __SIGNAL_FRAMESIZE32 bytes&n; *&n; * Each of these things must be a multiple of 16 bytes in size.&n; *&n;*/
+multiline_comment|/*&n; * When we have signals to deliver, we set up on the&n; * user stack, going down from the original stack pointer:&n; *&t;a sigregs struct&n; *&t;one or more sigcontext structs&n; *&t;a gap of __SIGNAL_FRAMESIZE32 bytes&n; *&n; * Each of these things must be a multiple of 16 bytes in size.&n; *&n; */
 multiline_comment|/*&n; * Do a signal return; undo the signal stack.&n; */
 DECL|function|sys32_sigreturn
 r_int
@@ -687,8 +676,7 @@ id|sigctx
 r_goto
 id|badframe
 suffix:semicolon
-multiline_comment|/* Note that PPC32 puts the upper 32 bits of the sigmask in the  */
-multiline_comment|/*   unused part of the signal stackframe                        */
+multiline_comment|/*&n;&t; * Note that PPC32 puts the upper 32 bits of the sigmask in the&n;&t; * unused part of the signal stackframe&n;&t; */
 id|set.sig
 (braket
 l_int|0
@@ -2838,12 +2826,7 @@ id|u32
 r_goto
 id|badframe
 suffix:semicolon
-multiline_comment|/*****************************************************************************/
-multiline_comment|/* Now copy the floating point registers onto the user stack                 */
-multiline_comment|/*                                                                           */
-multiline_comment|/* Also set up so on the completion of the signal handler, the sys_sigreturn */
-multiline_comment|/*   will get control to reset the stack                                     */
-multiline_comment|/*****************************************************************************/
+multiline_comment|/*&n;&t; * Now copy the floating point registers onto the user stack &n;&t; *&n;&t; * Also set up so on the completion of the signal handler, the&n;&t; * sys_sigreturn will get control to reset the stack&n;&t; */
 r_if
 c_cond
 (paren
@@ -2981,12 +2964,7 @@ id|newsp
 op_amp
 l_int|0xFFFFFFFF
 suffix:semicolon
-multiline_comment|/**************************************************************/
-multiline_comment|/* first parameter to the signal handler is the signal number */
-multiline_comment|/*  - the value is in gpr3                                    */
-multiline_comment|/* second parameter to the signal handler is the sigcontext   */
-multiline_comment|/*   - set the value into gpr4                                */
-multiline_comment|/**************************************************************/
+multiline_comment|/*&n;&t; * first parameter to the signal handler is the signal number&n;&t; *  - the value is in gpr3&n;&t; * second parameter to the signal handler is the sigcontext&n;&t; *   - set the value into gpr4&n;&t; */
 id|regs-&gt;gpr
 (braket
 l_int|4
@@ -3031,29 +3009,8 @@ id|SIGSEGV
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************/
-multiline_comment|/*  Start of RT signal support                                              */
-multiline_comment|/*                                                                          */
-multiline_comment|/*     sigset_t is 64 bits for rt signals                                   */
-multiline_comment|/*                                                                          */
-multiline_comment|/*  System Calls                                                            */
-multiline_comment|/*       sigaction                sys32_rt_sigaction                        */
-multiline_comment|/*       sigpending               sys32_rt_sigpending                       */
-multiline_comment|/*       sigprocmask              sys32_rt_sigprocmask                      */
-multiline_comment|/*       sigreturn                sys32_rt_sigreturn                        */
-multiline_comment|/*       sigtimedwait             sys32_rt_sigtimedwait                     */
-multiline_comment|/*       sigqueueinfo             sys32_rt_sigqueueinfo                     */
-multiline_comment|/*       sigsuspend               sys32_rt_sigsuspend                       */
-multiline_comment|/*                                                                          */
-multiline_comment|/*  Other routines                                                          */
-multiline_comment|/*        setup_rt_frame32                                                  */
-multiline_comment|/*        siginfo64to32                                                     */
-multiline_comment|/*        siginfo32to64                                                     */
-multiline_comment|/*                                                                          */
-multiline_comment|/*                                                                          */
-multiline_comment|/****************************************************************************/
-singleline_comment|// This code executes after the rt signal handler in 32 bit mode has completed and 
-singleline_comment|//  returned  
+multiline_comment|/*&n; *  Start of RT signal support&n; *&n; *     sigset_t is 64 bits for rt signals&n; *&n; *  System Calls&n; *       sigaction                sys32_rt_sigaction&n; *       sigpending               sys32_rt_sigpending&n; *       sigprocmask              sys32_rt_sigprocmask&n; *       sigreturn                sys32_rt_sigreturn&n; *       sigtimedwait             sys32_rt_sigtimedwait&n; *       sigqueueinfo             sys32_rt_sigqueueinfo&n; *       sigsuspend               sys32_rt_sigsuspend&n; *&n; *  Other routines&n; *        setup_rt_frame32&n; *        siginfo64to32&n; *        siginfo32to64&n; */
+multiline_comment|/*&n; * This code executes after the rt signal handler in 32 bit mode has&n; * completed and returned  &n; */
 DECL|function|sys32_rt_sigreturn
 r_int
 id|sys32_rt_sigreturn
@@ -3192,7 +3149,7 @@ r_goto
 id|badframe
 suffix:semicolon
 )brace
-multiline_comment|/* Unblock the signal that was processed &n;&t; *   After a signal handler runs - &n;&t; *     if the signal is blockable - the signal will be unblocked  &n;&t; *       ( sigkill and sigstop are not blockable)&n;&t; */
+multiline_comment|/*&n;&t; * Unblock the signal that was processed &n;&t; *   After a signal handler runs - &n;&t; *     if the signal is blockable - the signal will be unblocked  &n;&t; *       ( sigkill and sigstop are not blockable)&n;&t; */
 id|sigdelsetmask
 c_func
 (paren
@@ -3227,7 +3184,7 @@ op_amp
 id|current-&gt;sigmask_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Set to point to the next rt_sigframe - this is used to determine whether this &n;&t; *   is the last signal to process&n;&t; */
+multiline_comment|/*&n;&t; * Set to point to the next rt_sigframe - this is used to&n;&t; * determine whether this is the last signal to process&n;&t; */
 id|signalregs
 op_assign
 (paren
@@ -4445,7 +4402,7 @@ r_int
 id|sigsetsize
 )paren
 suffix:semicolon
-multiline_comment|/* Note: it is necessary to treat how as an unsigned int, &n; * with the corresponding cast to a signed int to insure that the &n; * proper conversion (sign extension) between the register representation of a signed int (msr in 32-bit mode)&n; * and the register representation of a signed int (msr in 64-bit mode) is performed.&n; */
+multiline_comment|/*&n; * Note: it is necessary to treat how as an unsigned int, with the&n; * corresponding cast to a signed int to insure that the proper&n; * conversion (sign extension) between the register representation&n; * of a signed int (msr in 32-bit mode) and the register representation&n; * of a signed int (msr in 64-bit mode) is performed.&n; */
 DECL|function|sys32_rt_sigprocmask
 id|asmlinkage
 r_int
@@ -5673,7 +5630,7 @@ op_star
 id|uinfo
 )paren
 suffix:semicolon
-multiline_comment|/* Note: it is necessary to treat pid and sig as unsigned ints,&n; * with the corresponding cast to a signed int to insure that the &n; * proper conversion (sign extension) between the register representation of a signed int (msr in 32-bit mode)&n; * and the register representation of a signed int (msr in 64-bit mode) is performed.&n; */
+multiline_comment|/*&n; * Note: it is necessary to treat pid and sig as unsigned ints, with the&n; * corresponding cast to a signed int to insure that the proper conversion&n; * (sign extension) between the register representation of a signed int&n; * (msr in 32-bit mode) and the register representation of a signed int&n; * (msr in 64-bit mode) is performed.&n; */
 DECL|function|sys32_rt_sigqueueinfo
 id|asmlinkage
 r_int
@@ -7323,12 +7280,7 @@ id|u32
 r_goto
 id|badframe
 suffix:semicolon
-multiline_comment|/*****************************************************************************/
-multiline_comment|/* Now copy the floating point registers onto the user stack                 */
-multiline_comment|/*                                                                           */
-multiline_comment|/* Also set up so on the completion of the signal handler, the sys_sigreturn */
-multiline_comment|/*   will get control to reset the stack                                     */
-multiline_comment|/*****************************************************************************/
+multiline_comment|/*&n;&t; * Now copy the floating point registers onto the user stack&n;&t; *&n;&t; * Also set up so on the completion of the signal handler, the&n;&t; * sys_sigreturn will get control to reset the stack&n;&t; */
 r_if
 c_cond
 (paren
@@ -7408,7 +7360,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* turn off all fp exceptions */
-multiline_comment|/* Retrieve rt_sigframe from stack and&n;&t;   set up registers for signal handler&n;&t;*/
+multiline_comment|/*&n;&t; * Retrieve rt_sigframe from stack and&n;&t; * set up registers for signal handler&n;&t; */
 id|newsp
 op_sub_assign
 id|__SIGNAL_FRAMESIZE32
@@ -7916,8 +7868,7 @@ id|sc
 r_goto
 id|badframe
 suffix:semicolon
-multiline_comment|/* Note the upper 32 bits of the signal mask are stored in the */
-multiline_comment|/*   unused part of the signal stack frame                     */
+multiline_comment|/*&n;&t;&t; * Note the upper 32 bits of the signal mask are stored&n;&t;&t; * in the unused part of the signal stack frame&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -8099,15 +8050,7 @@ id|SIGSEGV
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************/
-multiline_comment|/*  Start Alternate signal stack support                                    */
-multiline_comment|/*                                                                          */
-multiline_comment|/*                                                                          */
-multiline_comment|/*                                                                          */
-multiline_comment|/*  System Calls                                                            */
-multiline_comment|/*       sigaltatck               sys32_sigaltstack                         */
-multiline_comment|/*                                                                          */
-multiline_comment|/****************************************************************************/
+multiline_comment|/*&n; *  Start Alternate signal stack support&n; *&n; *  System Calls&n; *       sigaltatck               sys32_sigaltstack&n; */
 DECL|function|sys32_sigaltstack
 id|asmlinkage
 r_int
@@ -8153,8 +8096,7 @@ r_int
 r_int
 id|sp
 suffix:semicolon
-multiline_comment|/* set sp to the user stack on entry to the system call                  */
-multiline_comment|/*   the system call router sets R9 to the saved registers               */
+multiline_comment|/*&n;&t; * set sp to the user stack on entry to the system call&n;&t; * the system call router sets R9 to the saved registers&n;&t; */
 id|sp
 op_assign
 id|regs-&gt;gpr
@@ -8362,15 +8304,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************/
-multiline_comment|/*  Start of do_signal32 routine                                            */
-multiline_comment|/*                                                                          */
-multiline_comment|/*   This routine gets control when a pemding signal needs to be processed  */
-multiline_comment|/*     in the 32 bit target thread -                                        */
-multiline_comment|/*                                                                          */
-multiline_comment|/*   It handles both rt and non-rt signals                                  */
-multiline_comment|/*                                                                          */
-multiline_comment|/****************************************************************************/
+multiline_comment|/*&n; *  Start of do_signal32 routine&n; *&n; *   This routine gets control when a pemding signal needs to be processed&n; *     in the 32 bit target thread -&n; *&n; *   It handles both rt and non-rt signals&n; */
 multiline_comment|/*&n; * Note that &squot;init&squot; is a special process: it doesn&squot;t get signals it doesn&squot;t&n; * want to handle. Thus you cannot kill init even with a SIGKILL even by&n; * mistake.&n; */
 DECL|function|do_signal32
 r_int
