@@ -9090,10 +9090,15 @@ id|netdev-&gt;quota
 )paren
 suffix:semicolon
 r_int
+id|tx_cleaned
+suffix:semicolon
+r_int
 id|work_done
 op_assign
 l_int|0
 suffix:semicolon
+id|tx_cleaned
+op_assign
 id|e1000_clean_tx_irq
 c_func
 (paren
@@ -9120,12 +9125,18 @@ id|netdev-&gt;quota
 op_sub_assign
 id|work_done
 suffix:semicolon
+multiline_comment|/* if no Rx and Tx cleanup work was done, exit the polling mode */
 r_if
 c_cond
+(paren
+op_logical_neg
+id|tx_cleaned
+op_logical_or
 (paren
 id|work_done
 OL
 id|work_to_do
+)paren
 op_logical_or
 op_logical_neg
 id|netif_running
