@@ -1101,10 +1101,6 @@ DECL|struct|hscx_hw
 r_struct
 id|hscx_hw
 (brace
-DECL|member|hscx
-r_int
-id|hscx
-suffix:semicolon
 DECL|member|tsaxr0
 id|u8
 id|tsaxr0
@@ -1123,16 +1119,6 @@ DECL|member|bchan
 r_int
 id|bchan
 suffix:semicolon
-DECL|member|rcvidx
-r_int
-id|rcvidx
-suffix:semicolon
-DECL|member|rcvbuf
-id|u8
-op_star
-id|rcvbuf
-suffix:semicolon
-multiline_comment|/* B-Channel receive Buffer */
 )brace
 suffix:semicolon
 DECL|struct|isar_reg
@@ -1356,16 +1342,6 @@ DECL|member|stat
 id|u_int
 id|stat
 suffix:semicolon
-DECL|member|rcvidx
-r_int
-id|rcvidx
-suffix:semicolon
-DECL|member|rcvbuf
-id|u8
-op_star
-id|rcvbuf
-suffix:semicolon
-multiline_comment|/* B-Channel receive Buffer */
 )brace
 suffix:semicolon
 DECL|struct|hfcB_hw
@@ -1595,6 +1571,11 @@ id|IsdnCardState
 op_star
 id|cs
 suffix:semicolon
+DECL|member|unit
+r_int
+id|unit
+suffix:semicolon
+multiline_comment|/* first or second unit (e.g. HSCX) */
 DECL|member|rcvidx
 r_int
 id|rcvidx

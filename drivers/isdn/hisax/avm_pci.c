@@ -1722,7 +1722,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|bcs-&gt;hw.hdlc.rcvidx
+id|bcs-&gt;rcvidx
 op_assign
 l_int|0
 suffix:semicolon
@@ -1830,7 +1830,7 @@ comma
 id|stat
 )paren
 suffix:semicolon
-id|bcs-&gt;hw.hdlc.rcvidx
+id|bcs-&gt;rcvidx
 op_assign
 l_int|0
 suffix:semicolon
@@ -2352,16 +2352,16 @@ id|bcs-&gt;Flag
 r_if
 c_cond
 (paren
-id|bcs-&gt;hw.hdlc.rcvbuf
+id|bcs-&gt;rcvbuf
 )paren
 (brace
 id|kfree
 c_func
 (paren
-id|bcs-&gt;hw.hdlc.rcvbuf
+id|bcs-&gt;rcvbuf
 )paren
 suffix:semicolon
-id|bcs-&gt;hw.hdlc.rcvbuf
+id|bcs-&gt;rcvbuf
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2460,7 +2460,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|bcs-&gt;hw.hdlc.rcvbuf
+id|bcs-&gt;rcvbuf
 op_assign
 id|kmalloc
 c_func
@@ -2521,10 +2521,10 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|bcs-&gt;hw.hdlc.rcvbuf
+id|bcs-&gt;rcvbuf
 )paren
 suffix:semicolon
-id|bcs-&gt;hw.hdlc.rcvbuf
+id|bcs-&gt;rcvbuf
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2566,7 +2566,7 @@ id|bcs-&gt;event
 op_assign
 l_int|0
 suffix:semicolon
-id|bcs-&gt;hw.hdlc.rcvidx
+id|bcs-&gt;rcvidx
 op_assign
 l_int|0
 suffix:semicolon
@@ -2600,7 +2600,7 @@ id|bcs-&gt;channel
 op_assign
 id|st-&gt;l1.bc
 suffix:semicolon
-id|bcs-&gt;hw.hscx.hscx
+id|bcs-&gt;unit
 op_assign
 id|bcs-&gt;channel
 suffix:semicolon

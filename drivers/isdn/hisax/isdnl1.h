@@ -1671,7 +1671,7 @@ l_string|&quot;%s %c cnt %d&quot;
 comma
 id|__FUNCTION__
 comma
-id|bcs-&gt;hw.hscx.hscx
+id|bcs-&gt;unit
 ques
 c_cond
 l_char|&squot;B&squot;
@@ -1983,7 +1983,7 @@ c_func
 (paren
 id|cs
 comma
-id|bcs-&gt;hw.hscx.hscx
+id|bcs-&gt;unit
 comma
 id|p
 comma
@@ -2015,7 +2015,7 @@ l_string|&quot;%s %c cnt %d&quot;
 comma
 id|__FUNCTION__
 comma
-id|bcs-&gt;hw.hscx.hscx
+id|bcs-&gt;unit
 ques
 c_cond
 l_char|&squot;B&squot;

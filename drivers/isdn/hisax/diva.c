@@ -2204,7 +2204,7 @@ id|data
 r_int
 id|hscx
 op_assign
-id|bcs-&gt;hw.hscx.hscx
+id|bcs-&gt;unit
 suffix:semicolon
 id|MemwaitforCEC
 c_func
@@ -2334,7 +2334,7 @@ c_func
 (paren
 id|cs
 comma
-id|bcs-&gt;hw.hscx.hscx
+id|bcs-&gt;unit
 )paren
 suffix:semicolon
 r_while
@@ -2348,7 +2348,7 @@ c_func
 (paren
 id|cs-&gt;hw.diva.cfg_reg
 comma
-id|bcs-&gt;hw.hscx.hscx
+id|bcs-&gt;unit
 ques
 c_cond
 l_int|0x40

@@ -109,11 +109,6 @@ id|cs
 op_assign
 id|bcs-&gt;cs
 suffix:semicolon
-id|u8
-id|hscx
-op_assign
-id|bcs-&gt;hw.hscx.hscx
-suffix:semicolon
 id|cs-&gt;bc_hw_ops
 op_member_access_from_pointer
 id|write_fifo
@@ -121,7 +116,7 @@ c_func
 (paren
 id|cs
 comma
-id|hscx
+id|bcs-&gt;unit
 comma
 id|p
 comma
@@ -449,7 +444,7 @@ suffix:semicolon
 r_int
 id|jade
 op_assign
-id|bcs-&gt;hw.hscx.hscx
+id|bcs-&gt;unit
 suffix:semicolon
 r_if
 c_cond
@@ -1425,7 +1420,7 @@ id|cs-&gt;bcs
 l_int|0
 )braket
 dot
-id|hw.hscx.hscx
+id|unit
 op_assign
 l_int|0
 suffix:semicolon
@@ -1434,7 +1429,7 @@ id|cs-&gt;bcs
 l_int|1
 )braket
 dot
-id|hw.hscx.hscx
+id|unit
 op_assign
 l_int|1
 suffix:semicolon

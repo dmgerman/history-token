@@ -328,11 +328,6 @@ id|cs
 op_assign
 id|bcs-&gt;cs
 suffix:semicolon
-id|u8
-id|hscx
-op_assign
-id|bcs-&gt;hw.hscx.hscx
-suffix:semicolon
 r_return
 id|cs-&gt;bc_hw_ops
 op_member_access_from_pointer
@@ -341,7 +336,7 @@ c_func
 (paren
 id|cs
 comma
-id|hscx
+id|bcs-&gt;unit
 comma
 id|addr
 )paren
@@ -373,11 +368,6 @@ id|cs
 op_assign
 id|bcs-&gt;cs
 suffix:semicolon
-id|u8
-id|hscx
-op_assign
-id|bcs-&gt;hw.hscx.hscx
-suffix:semicolon
 id|cs-&gt;bc_hw_ops
 op_member_access_from_pointer
 id|write_reg
@@ -385,7 +375,7 @@ c_func
 (paren
 id|cs
 comma
-id|hscx
+id|bcs-&gt;unit
 comma
 id|addr
 comma
@@ -3071,7 +3061,7 @@ suffix:semicolon
 r_int
 id|hscx
 op_assign
-id|bcs-&gt;hw.hscx.hscx
+id|bcs-&gt;unit
 suffix:semicolon
 id|bc
 op_assign
@@ -3718,7 +3708,7 @@ id|cs-&gt;bcs
 id|hscx
 )braket
 dot
-id|hw.hscx.hscx
+id|unit
 op_assign
 id|hscx
 suffix:semicolon

@@ -117,7 +117,7 @@ id|data
 r_int
 id|jade
 op_assign
-id|bcs-&gt;hw.hscx.hscx
+id|bcs-&gt;unit
 suffix:semicolon
 id|waitforCEC
 c_func
