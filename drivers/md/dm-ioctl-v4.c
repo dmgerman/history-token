@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/dm-ioctl.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|DM_DRIVER_EMAIL
 mdefine_line|#define DM_DRIVER_EMAIL &quot;dm@uk.sistina.com&quot;
