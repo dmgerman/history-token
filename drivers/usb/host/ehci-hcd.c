@@ -27,12 +27,10 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
-singleline_comment|//#undef KERN_DEBUG
-singleline_comment|//#define KERN_DEBUG &quot;&quot;
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * EHCI hc_driver implementation ... experimental, incomplete.&n; * Based on the final 1.0 register interface specification.&n; *&n; * There are lots of things to help out with here ... notably&n; * everything &quot;periodic&quot;, and of course testing with all sorts&n; * of usb 2.0 devices and configurations.&n; *&n; * USB 2.0 shows up in upcoming www.pcmcia.org technology.&n; * First was PCMCIA, like ISA; then CardBus, which is PCI.&n; * Next comes &quot;CardBay&quot;, using USB 2.0 signals.&n; *&n; * Contains additional contributions by:&n; *&t;Brad Hards&n; *&t;Rory Bolt&n; *&t;...&n; *&n; * HISTORY:&n; *&n; * 2002-05-07&t;Some error path cleanups to report better errors; wmb();&n; *&t;use non-CVS version id; better iso bandwidth claim.&n; * 2002-04-19&t;Control/bulk/interrupt submit no longer uses giveback() on&n; *&t;errors in submit path.  Bugfixes to interrupt scheduling/processing.&n; * 2002-03-05&t;Initial high-speed ISO support; reduce ITD memory; shift&n; *&t;more checking to generic hcd framework (db).  Make it work with&n; *&t;Philips EHCI; reduce PCI traffic; shorten IRQ path (Rory Bolt).&n; * 2002-01-14&t;Minor cleanup; version synch.&n; * 2002-01-08&t;Fix roothub handoff of FS/LS to companion controllers.&n; * 2002-01-04&t;Control/Bulk queuing behaves.&n; *&n; * 2001-12-12&t;Initial patch version for Linux 2.5.1 kernel.&n; * 2001-June&t;Works with usb-storage and NEC EHCI on 2.4&n; */
+multiline_comment|/*&n; * EHCI hc_driver implementation ... experimental, incomplete.&n; * Based on the final 1.0 register interface specification.&n; *&n; * USB 2.0 shows up in upcoming www.pcmcia.org technology.&n; * First was PCMCIA, like ISA; then CardBus, which is PCI.&n; * Next comes &quot;CardBay&quot;, using USB 2.0 signals.&n; *&n; * Contains additional contributions by: Brad Hards, Rory Bolt, ...&n; *&n; * Special thanks to Intel and VIA for providing host controllers to&n; * test this driver on, and Cypress (including In-System Design) for&n; * providing early devices for those host controllers to talk to!&n; *&n; * HISTORY:&n; *&n; * 2002-05-11&t;Clear TT errors for FS/LS ctrl/bulk.  Fill in some other&n; *&t;missing pieces:  enabling 64bit dma, handoff from BIOS/SMM.&n; * 2002-05-07&t;Some error path cleanups to report better errors; wmb();&n; *&t;use non-CVS version id; better iso bandwidth claim.&n; * 2002-04-19&t;Control/bulk/interrupt submit no longer uses giveback() on&n; *&t;errors in submit path.  Bugfixes to interrupt scheduling/processing.&n; * 2002-03-05&t;Initial high-speed ISO support; reduce ITD memory; shift&n; *&t;more checking to generic hcd framework (db).  Make it work with&n; *&t;Philips EHCI; reduce PCI traffic; shorten IRQ path (Rory Bolt).&n; * 2002-01-14&t;Minor cleanup; version synch.&n; * 2002-01-08&t;Fix roothub handoff of FS/LS to companion controllers.&n; * 2002-01-04&t;Control/Bulk queuing behaves.&n; *&n; * 2001-12-12&t;Initial patch version for Linux 2.5.1 kernel.&n; * 2001-June&t;Works with usb-storage and NEC EHCI on 2.4&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;2002-May-07&quot;
+mdefine_line|#define DRIVER_VERSION &quot;2002-May-11&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;David Brownell&quot;
 DECL|macro|DRIVER_DESC
@@ -241,6 +239,137 @@ r_int
 id|param
 )paren
 suffix:semicolon
+multiline_comment|/* EHCI 0.96 (and later) section 5.1 says how to kick BIOS/SMM/...&n; * off the controller (maybe it can boot from highspeed USB disks).&n; */
+DECL|function|bios_handoff
+r_static
+r_int
+id|bios_handoff
+(paren
+r_struct
+id|ehci_hcd
+op_star
+id|ehci
+comma
+r_int
+id|where
+comma
+id|u32
+id|cap
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cap
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|16
+)paren
+)paren
+(brace
+r_int
+id|msec
+op_assign
+l_int|500
+suffix:semicolon
+multiline_comment|/* request handoff to OS */
+id|cap
+op_and_assign
+l_int|1
+op_lshift
+l_int|24
+suffix:semicolon
+id|pci_write_config_dword
+(paren
+id|ehci-&gt;hcd.pdev
+comma
+id|where
+comma
+id|cap
+)paren
+suffix:semicolon
+multiline_comment|/* and wait a while for it to happen */
+r_do
+(brace
+id|wait_ms
+(paren
+l_int|10
+)paren
+suffix:semicolon
+id|msec
+op_sub_assign
+l_int|10
+suffix:semicolon
+id|pci_read_config_dword
+(paren
+id|ehci-&gt;hcd.pdev
+comma
+id|where
+comma
+op_amp
+id|cap
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+(paren
+id|cap
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|16
+)paren
+)paren
+op_logical_and
+id|msec
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cap
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|16
+)paren
+)paren
+(brace
+id|info
+(paren
+l_string|&quot;BIOS handoff failed (%d, %04x)&quot;
+comma
+id|where
+comma
+id|cap
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|dbg
+(paren
+l_string|&quot;BIOS handoff succeeded&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+id|dbg
+(paren
+l_string|&quot;BIOS handoff not needed&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* called by khubd or root hub init threads */
 DECL|function|ehci_start
 r_static
@@ -280,9 +409,6 @@ suffix:semicolon
 id|u8
 id|tempbyte
 suffix:semicolon
-singleline_comment|// FIXME:  given EHCI 0.96 or later, and a controller with
-singleline_comment|// the USBLEGSUP/USBLEGCTLSTS extended capability, make sure
-singleline_comment|// the BIOS doesn&squot;t still own this controller.
 id|spin_lock_init
 (paren
 op_amp
@@ -325,6 +451,113 @@ comma
 l_string|&quot;ehci_start&quot;
 )paren
 suffix:semicolon
+id|hcc_params
+op_assign
+id|readl
+(paren
+op_amp
+id|ehci-&gt;caps-&gt;hcc_params
+)paren
+suffix:semicolon
+multiline_comment|/* EHCI 0.96 and later may have &quot;extended capabilities&quot; */
+id|temp
+op_assign
+id|HCC_EXT_CAPS
+(paren
+id|hcc_params
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|temp
+)paren
+(brace
+id|u32
+id|cap
+suffix:semicolon
+id|pci_read_config_dword
+(paren
+id|ehci-&gt;hcd.pdev
+comma
+id|temp
+comma
+op_amp
+id|cap
+)paren
+suffix:semicolon
+id|dbg
+(paren
+l_string|&quot;capability %04x at %02x&quot;
+comma
+id|cap
+comma
+id|temp
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|cap
+op_amp
+l_int|0xff
+)paren
+(brace
+r_case
+l_int|1
+suffix:colon
+multiline_comment|/* BIOS/SMM/... handoff */
+r_if
+c_cond
+(paren
+id|bios_handoff
+(paren
+id|ehci
+comma
+id|temp
+comma
+id|cap
+)paren
+op_ne
+l_int|0
+)paren
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* illegal reserved capability */
+id|warn
+(paren
+l_string|&quot;illegal capability!&quot;
+)paren
+suffix:semicolon
+id|cap
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* FALLTHROUGH */
+r_default
+suffix:colon
+multiline_comment|/* unknown */
+r_break
+suffix:semicolon
+)brace
+id|temp
+op_assign
+(paren
+id|cap
+op_rshift
+l_int|8
+)paren
+op_amp
+l_int|0xff
+suffix:semicolon
+)brace
 multiline_comment|/* cache this readonly data; minimize PCI reads */
 id|ehci-&gt;hcs_params
 op_assign
@@ -357,14 +590,6 @@ l_int|0
 )paren
 r_return
 id|retval
-suffix:semicolon
-id|hcc_params
-op_assign
-id|readl
-(paren
-op_amp
-id|ehci-&gt;caps-&gt;hcc_params
-)paren
 suffix:semicolon
 multiline_comment|/* controllers may cache some of the periodic schedule ... */
 r_if
@@ -428,7 +653,7 @@ op_amp
 id|ehci-&gt;regs-&gt;frame_list
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * hcc_params controls whether ehci-&gt;regs-&gt;segment must (!!!)&n;&t; * be used; it constrains QH/ITD/SITD and QTD locations.&n;&t; * pci_pool consistent memory always uses segment zero.&n;&t; */
+multiline_comment|/*&n;&t; * hcc_params controls whether ehci-&gt;regs-&gt;segment must (!!!)&n;&t; * be used; it constrains QH/ITD/SITD and QTD locations.&n;&t; * pci_pool consistent memory always uses segment zero.&n;&t; * streaming mappings for I/O buffers, like pci_map_single(),&n;&t; * can return segments above 4GB, if the device allows.&n;&t; *&n;&t; * NOTE:  layered drivers can&squot;t yet tell when we enable that,&n;&t; * so they can&squot;t pass this info along (like NETIF_F_HIGHDMA)&n;&t; */
 r_if
 c_cond
 (paren
@@ -446,10 +671,20 @@ op_amp
 id|ehci-&gt;regs-&gt;segment
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * FIXME Enlarge pci_set_dma_mask() when possible.  The DMA&n;&t;&t; * mapping API spec now says that&squot;ll affect only single shot&n;&t;&t; * mappings, and the pci_pool data will stay safe in seg 0.&n;&t;&t; * That&squot;s what we want:  no extra copies for USB transfers.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pci_set_dma_mask
+(paren
+id|ehci-&gt;hcd.pdev
+comma
+l_int|0xffffffffffffffffULL
+)paren
+)paren
 id|info
 (paren
-l_string|&quot;restricting 64bit DMA mappings to segment 0 ...&quot;
+l_string|&quot;enabled 64bit PCI DMA (DAC)&quot;
 )paren
 suffix:semicolon
 )brace
@@ -485,6 +720,7 @@ op_plus
 id|log2_irq_thresh
 )paren
 suffix:semicolon
+singleline_comment|// if hc can park (ehci &gt;= 0.96), default is 3 packets per async QH 
 singleline_comment|// keeping default periodic framelist size
 id|temp
 op_and_assign
@@ -1253,9 +1489,6 @@ id|scan_periodic
 id|ehci
 )paren
 suffix:semicolon
-singleline_comment|// FIXME:  when nothing is connected to the root hub,
-singleline_comment|// turn off the RUN bit so the host can enter C3 &quot;sleep&quot; power
-singleline_comment|// saving mode; make root hub code scan memory less often.
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|function|ehci_irq
