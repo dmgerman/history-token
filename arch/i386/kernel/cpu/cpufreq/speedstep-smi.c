@@ -178,7 +178,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * speedstep_smi_get_freqs - get SpeedStep preferred &amp; current freq.&n; *&n; */
+multiline_comment|/**&n; * speedstep_smi_get_freqs - get SpeedStep preferred &amp; current freq.&n; * Only available on later SpeedStep-enabled systems, returns false results or&n; * even hangs [cf. bugme.osdl.org # 1422] on earlier systems. Empirical testing&n; * shows that the latter occurs if !(ist_info.event &amp; 0xFFFF).&n; *&n; */
 DECL|function|speedstep_smi_get_freqs
 r_static
 r_int
@@ -215,6 +215,20 @@ id|u32
 id|function
 op_assign
 id|GET_SPEEDSTEP_FREQS
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|ist_info.event
+op_amp
+l_int|0xFFFF
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 id|command
 op_assign
