@@ -399,6 +399,10 @@ id|str
 suffix:semicolon
 r_int
 id|err
+comma
+id|pcm_dev
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -514,7 +518,8 @@ c_func
 (paren
 id|trident
 comma
-l_int|0
+id|pcm_dev
+op_increment
 comma
 l_int|NULL
 )paren
@@ -556,7 +561,8 @@ c_func
 (paren
 id|trident
 comma
-l_int|1
+id|pcm_dev
+op_increment
 comma
 l_int|NULL
 )paren
@@ -584,6 +590,10 @@ c_cond
 id|trident-&gt;device
 op_eq
 id|TRIDENT_DEVICE_ID_NX
+op_logical_or
+id|trident-&gt;device
+op_eq
+id|TRIDENT_DEVICE_ID_SI7018
 )paren
 (brace
 r_if
@@ -597,7 +607,8 @@ c_func
 (paren
 id|trident
 comma
-l_int|2
+id|pcm_dev
+op_increment
 comma
 l_int|NULL
 )paren
