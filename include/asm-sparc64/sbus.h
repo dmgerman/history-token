@@ -14,7 +14,7 @@ DECL|macro|SBUS_OFF_MASK
 mdefine_line|#define SBUS_OFF_MASK          0x0fffffff
 multiline_comment|/* These routines are used to calculate device address from slot&n; * numbers + offsets, and vice versa.&n; */
 DECL|function|sbus_devaddr
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -52,7 +52,7 @@ id|offset
 suffix:semicolon
 )brace
 DECL|function|sbus_dev_slot
-r_extern
+r_static
 id|__inline__
 r_int
 id|sbus_dev_slot

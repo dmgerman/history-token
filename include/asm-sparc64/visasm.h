@@ -17,7 +17,7 @@ DECL|macro|VISExitHalf
 mdefine_line|#define VISExitHalf&t;&t;&t;&t;&t;&bslash;&n;&t;wr&t;&t;%o5, 0, %fprs;
 macro_line|#ifndef __ASSEMBLY__&t;
 DECL|function|save_and_clear_fpu
-r_extern
+r_static
 id|__inline__
 r_void
 id|save_and_clear_fpu

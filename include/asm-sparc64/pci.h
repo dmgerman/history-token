@@ -14,7 +14,7 @@ mdefine_line|#define PCIBIOS_MIN_MEM&t;&t;0UL
 DECL|macro|PCI_IRQ_NONE
 mdefine_line|#define PCI_IRQ_NONE&t;&t;0xffffffff
 DECL|function|pcibios_set_master
-r_extern
+r_static
 r_inline
 r_void
 id|pcibios_set_master
@@ -29,7 +29,7 @@ id|dev
 multiline_comment|/* No special bus mastering setup handling */
 )brace
 DECL|function|pcibios_penalize_isa_irq
-r_extern
+r_static
 r_inline
 r_void
 id|pcibios_penalize_isa_irq

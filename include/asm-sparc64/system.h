@@ -203,7 +203,7 @@ multiline_comment|/* See what happens when you design the chip correctly?&n;&t; 
 DECL|macro|switch_to
 mdefine_line|#define switch_to(prev, next, last)&t;&t;&t;&t;&t;&bslash;&n;do {&t;if (test_thread_flag(TIF_PERFCTR)) {&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long __tmp;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;read_pcr(__tmp);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;current_thread_info()-&gt;pcr_reg = __tmp;&t;&t;&t;&bslash;&n;&t;&t;read_pic(__tmp);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;current_thread_info()-&gt;kernel_cntd0 += (unsigned int)(__tmp);&bslash;&n;&t;&t;current_thread_info()-&gt;kernel_cntd1 += ((__tmp) &gt;&gt; 32);&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;save_and_clear_fpu();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* If you are tempted to conditionalize the following */&t;&bslash;&n;&t;/* so that ASI is only written if it changes, think again. */&t;&bslash;&n;&t;__asm__ __volatile__(&quot;wr %%g0, %0, %%asi&quot;&t;&t;&t;&bslash;&n;&t;: : &quot;r&quot; (__thread_flag_byte_ptr(next-&gt;thread_info)[TI_FLAG_BYTE_CURRENT_DS]));&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mov&t;%%g4, %%g5&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;wrpr&t;%%g0, 0x95, %%pstate&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;stx&t;%%i6, [%%sp + 2047 + 0x70]&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;stx&t;%%i7, [%%sp + 2047 + 0x78]&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;rdpr&t;%%wstate, %%o5&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;stx&t;%%o6, [%%g6 + %3]&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;stb&t;%%o5, [%%g6 + %2]&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;rdpr&t;%%cwp, %%o5&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;stb&t;%%o5, [%%g6 + %5]&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mov&t;%1, %%g6&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ldub&t;[%1 + %5], %%g1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;wrpr&t;%%g1, %%cwp&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ldx&t;[%%g6 + %3], %%o6&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ldub&t;[%%g6 + %2], %%o5&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ldx&t;[%%g6 + %4], %%o7&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mov&t;%%g6, %%l2&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;wrpr&t;%%o5, 0x0, %%wstate&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;ldx&t;[%%sp + 2047 + 0x70], %%i6&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;ldx&t;[%%sp + 2047 + 0x78], %%i7&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;wrpr&t;%%g0, 0x94, %%pstate&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;mov&t;%%l2, %%g6&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ldx&t;[%%g6 + %7], %%g4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;wrpr&t;%%g0, 0x96, %%pstate&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;andcc&t;%%o7, %6, %%g0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;bne,pn&t;%%icc, ret_from_syscall&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot; mov&t;%%g5, %0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=&amp;r&quot; (last)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;0&quot; (next-&gt;thread_info),&t;&t;&t;&t;&t;&bslash;&n;&t;  &quot;i&quot; (TI_WSTATE), &quot;i&quot; (TI_KSP), &quot;i&quot; (TI_FLAGS), &quot;i&quot; (TI_CWP),&t;&bslash;&n;&t;  &quot;i&quot; (_TIF_NEWCHILD), &quot;i&quot; (TI_TASK)&t;&t;&t;&t;&bslash;&n;&t;: &quot;cc&quot;, &quot;g1&quot;, &quot;g2&quot;, &quot;g3&quot;, &quot;g5&quot;, &quot;g7&quot;,&t;&t;&t;&t;&bslash;&n;&t;  &quot;l2&quot;, &quot;l3&quot;, &quot;l4&quot;, &quot;l5&quot;, &quot;l6&quot;, &quot;l7&quot;,&t;&t;&t;&t;&bslash;&n;&t;  &quot;i0&quot;, &quot;i1&quot;, &quot;i2&quot;, &quot;i3&quot;, &quot;i4&quot;, &quot;i5&quot;,&t;&t;&t;&t;&bslash;&n;&t;  &quot;o0&quot;, &quot;o1&quot;, &quot;o2&quot;, &quot;o3&quot;, &quot;o4&quot;, &quot;o5&quot;, &quot;o7&quot;);&t;&t;&t;&bslash;&n;&t;/* If you fuck with this, update ret_from_syscall code too. */&t;&bslash;&n;&t;if (test_thread_flag(TIF_PERFCTR)) {&t;&t;&t;&t;&bslash;&n;&t;&t;write_pcr(current_thread_info()-&gt;pcr_reg);&t;&t;&bslash;&n;&t;&t;reset_pic();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
 DECL|function|xchg32
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -262,7 +262,7 @@ id|val
 suffix:semicolon
 )brace
 DECL|function|xchg64
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -418,7 +418,7 @@ suffix:semicolon
 multiline_comment|/* &n; * Atomic compare and exchange.  Compare OLD with MEM, if identical,&n; * store NEW in MEM.  Return the initial value in MEM.  Success is&n; * indicated by comparing RETURN with OLD.&n; */
 DECL|macro|__HAVE_ARCH_CMPXCHG
 mdefine_line|#define __HAVE_ARCH_CMPXCHG 1
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -472,7 +472,7 @@ r_return
 r_new
 suffix:semicolon
 )brace
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
