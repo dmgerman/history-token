@@ -6,6 +6,11 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/atalk.h&gt;
 macro_line|#ifdef CONFIG_PROC_FS
+r_extern
+r_struct
+id|file_operations
+id|atalk_seq_arp_fops
+suffix:semicolon
 DECL|function|atalk_get_interface_idx
 r_static
 id|__inline__
@@ -1295,6 +1300,32 @@ op_assign
 op_amp
 id|atalk_seq_socket_fops
 suffix:semicolon
+id|p
+op_assign
+id|create_proc_entry
+c_func
+(paren
+l_string|&quot;arp&quot;
+comma
+id|S_IRUGO
+comma
+id|atalk_proc_dir
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|p
+)paren
+r_goto
+id|out_arp
+suffix:semicolon
+id|p-&gt;proc_fops
+op_assign
+op_amp
+id|atalk_seq_arp_fops
+suffix:semicolon
 id|rc
 op_assign
 l_int|0
@@ -1303,6 +1334,16 @@ id|out
 suffix:colon
 r_return
 id|rc
+suffix:semicolon
+id|out_arp
+suffix:colon
+id|remove_proc_entry
+c_func
+(paren
+l_string|&quot;socket&quot;
+comma
+id|atalk_proc_dir
+)paren
 suffix:semicolon
 id|out_socket
 suffix:colon
@@ -1367,6 +1408,14 @@ id|remove_proc_entry
 c_func
 (paren
 l_string|&quot;socket&quot;
+comma
+id|atalk_proc_dir
+)paren
+suffix:semicolon
+id|remove_proc_entry
+c_func
+(paren
+l_string|&quot;arp&quot;
 comma
 id|atalk_proc_dir
 )paren

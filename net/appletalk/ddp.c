@@ -9,24 +9,6 @@ macro_line|#include &lt;net/psnap.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/route.h&gt;
 macro_line|#include &lt;linux/atalk.h&gt;
-macro_line|#ifdef CONFIG_PROC_FS
-r_extern
-r_void
-id|aarp_register_proc_fs
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|aarp_unregister_proc_fs
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_void
 id|aarp_cleanup_module
@@ -7091,13 +7073,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-id|aarp_register_proc_fs
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PROC_FS */
 id|atalk_register_sysctl
 c_func
 (paren
@@ -7143,13 +7118,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-id|aarp_unregister_proc_fs
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PROC_FS */
 id|aarp_cleanup_module
 c_func
 (paren
