@@ -19,8 +19,6 @@ macro_line|#include &lt;sound/ak4531_codec.h&gt;
 macro_line|#endif
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;sound/asoundef.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t ensoniq_t
 macro_line|#ifndef CHIP1371
 DECL|macro|CHIP1370
 macro_line|#undef CHIP1370
@@ -46,12 +44,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
 macro_line|#ifdef CHIP1370
 id|MODULE_DESCRIPTION
 c_func
@@ -59,7 +51,7 @@ c_func
 l_string|&quot;Ensoniq AudioPCI ES1370&quot;
 )paren
 suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Ensoniq,AudioPCI-97 ES1370},&quot;
@@ -74,7 +66,7 @@ c_func
 l_string|&quot;Ensoniq/Creative AudioPCI ES1371+&quot;
 )paren
 suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Ensoniq,AudioPCI ES1371/73},&quot;
@@ -170,14 +162,6 @@ comma
 l_string|&quot;Index value for Ensoniq AudioPCI soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -198,14 +182,6 @@ comma
 l_string|&quot;ID string for Ensoniq AudioPCI soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -224,14 +200,6 @@ c_func
 id|enable
 comma
 l_string|&quot;Enable Ensoniq AudioPCI soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
 macro_line|#ifdef SUPPORT_JOYSTICK
@@ -256,15 +224,6 @@ comma
 l_string|&quot;Joystick port address.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|joystick_port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0},{1},{0x200},{0x208},{0x210},{0x218}},dialog:list&quot;
-)paren
-suffix:semicolon
 macro_line|#else
 id|module_param_array
 c_func
@@ -284,16 +243,6 @@ c_func
 id|joystick
 comma
 l_string|&quot;Enable joystick.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|joystick
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_FALSE_DESC
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1700,15 +1649,7 @@ id|ensoniq_t
 op_star
 id|ensoniq
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|ensoniq_t
-comma
 id|ak4531-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 r_int
 r_int
@@ -1898,15 +1839,7 @@ id|ensoniq_t
 op_star
 id|ensoniq
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|ensoniq_t
-comma
 id|ac97-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 r_int
 r_int
@@ -2198,17 +2131,7 @@ id|ensoniq_t
 op_star
 id|ensoniq
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|ensoniq_t
-comma
 id|ac97-&gt;private_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_int
 r_int
@@ -5776,15 +5699,7 @@ id|ensoniq_t
 op_star
 id|ensoniq
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|ensoniq_t
-comma
 id|pcm-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|ensoniq-&gt;pcm1
 op_assign
@@ -6007,15 +5922,7 @@ id|ensoniq_t
 op_star
 id|ensoniq
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|ensoniq_t
-comma
 id|pcm-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|ensoniq-&gt;pcm2
 op_assign
@@ -7623,15 +7530,7 @@ id|ensoniq_t
 op_star
 id|ensoniq
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|ensoniq_t
-comma
 id|ac97-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|ensoniq-&gt;u.es1371.ac97
 op_assign
@@ -8423,15 +8322,7 @@ id|ensoniq_t
 op_star
 id|ensoniq
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|ensoniq_t
-comma
 id|ak4531-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|ensoniq-&gt;u.es1370.ak4531
 op_assign
@@ -8876,15 +8767,7 @@ id|ensoniq_t
 op_star
 id|ensoniq
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|ensoniq_t
-comma
 id|entry-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 macro_line|#ifdef CHIP1370
 id|snd_iprintf
@@ -9195,7 +9078,7 @@ op_star
 id|ensoniq
 )paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|ensoniq
@@ -9220,17 +9103,7 @@ id|ensoniq_t
 op_star
 id|ensoniq
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|ensoniq_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 id|snd_ensoniq_free
@@ -9534,12 +9407,16 @@ id|err
 suffix:semicolon
 id|ensoniq
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|ensoniq_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|ensoniq
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -10826,17 +10703,7 @@ id|ensoniq_t
 op_star
 id|ensoniq
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|ensoniq_t
-comma
 id|substream-&gt;rmidi-&gt;private_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -10949,17 +10816,7 @@ id|ensoniq_t
 op_star
 id|ensoniq
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|ensoniq_t
-comma
 id|substream-&gt;rmidi-&gt;private_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -11076,17 +10933,7 @@ id|ensoniq_t
 op_star
 id|ensoniq
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|ensoniq_t
-comma
 id|substream-&gt;rmidi-&gt;private_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -11199,17 +11046,7 @@ id|ensoniq_t
 op_star
 id|ensoniq
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|ensoniq_t
-comma
 id|substream-&gt;rmidi-&gt;private_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -11329,15 +11166,7 @@ id|ensoniq_t
 op_star
 id|ensoniq
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|ensoniq_t
-comma
 id|substream-&gt;rmidi-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 r_int
 id|idx
@@ -11479,15 +11308,7 @@ id|ensoniq_t
 op_star
 id|ensoniq
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|ensoniq_t
-comma
 id|substream-&gt;rmidi-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 r_int
 r_char
@@ -11866,16 +11687,7 @@ id|ensoniq_t
 op_star
 id|ensoniq
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|ensoniq_t
-comma
 id|dev_id
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 r_int
 r_int

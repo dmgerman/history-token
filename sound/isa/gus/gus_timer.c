@@ -3,8 +3,6 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/gus.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t snd_gus_card_t
 multiline_comment|/*&n; *  Timer 1 - 80us&n; */
 DECL|function|snd_gf1_timer1_start
 r_static
@@ -520,15 +518,7 @@ id|snd_gus_card_t
 op_star
 id|gus
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_gus_card_t
-comma
 id|timer-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|gus-&gt;gf1.timer1
 op_assign
@@ -550,15 +540,7 @@ id|snd_gus_card_t
 op_star
 id|gus
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_gus_card_t
-comma
 id|timer-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|gus-&gt;gf1.timer2
 op_assign

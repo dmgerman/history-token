@@ -31,13 +31,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Generic,USB Audio}}&quot;
@@ -169,14 +163,6 @@ comma
 l_string|&quot;Index value for the USB audio adapter.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -195,14 +181,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for the USB audio adapter.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -225,14 +203,6 @@ comma
 l_string|&quot;Enable USB audio adapter.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -251,15 +221,6 @@ c_func
 id|vid
 comma
 l_string|&quot;Vendor ID for the USB audio device.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|vid
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{-1,0xffff}},base:16&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -282,15 +243,6 @@ comma
 l_string|&quot;Product ID for the USB audio device.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|pid
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{-1,0xffff}},base:16&quot;
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -309,15 +261,6 @@ comma
 l_string|&quot;Max. number of packets per URB.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|nrpacks
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{1,10}}&quot;
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -334,14 +277,6 @@ c_func
 id|async_unlink
 comma
 l_string|&quot;Use async unlink mode.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|async_unlink
-comma
-id|SNDRV_BOOLEAN_TRUE_DESC
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * debug the h/w constraints&n; */
@@ -897,8 +832,6 @@ id|list
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|chip_t
-mdefine_line|#define chip_t snd_usb_stream_t
 multiline_comment|/*&n; * we keep the snd_usb_audio_t instances by ourselves for merging&n; * the all interfaces on the same card as one sound device.&n; */
 r_static
 id|DECLARE_MUTEX
@@ -5508,7 +5441,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_WARNING
 l_string|&quot;%d:%d:%d: cannot get freq at ep 0x%x&bslash;n&quot;
 comma
 id|dev-&gt;devnum
@@ -5521,8 +5454,9 @@ id|ep
 )paren
 suffix:semicolon
 r_return
-id|err
+l_int|0
 suffix:semicolon
+multiline_comment|/* some devices don&squot;t support reading */
 )brace
 id|crate
 op_assign
@@ -9623,15 +9557,7 @@ id|snd_usb_stream_t
 op_star
 id|stream
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_usb_stream_t
-comma
 id|entry-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|snd_iprintf
 c_func
@@ -10069,7 +9995,7 @@ op_amp
 id|stream-&gt;list
 )paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|stream
@@ -10320,12 +10246,14 @@ suffix:semicolon
 multiline_comment|/* create a new pcm */
 id|as
 op_assign
-id|snd_magic_kmalloc
+id|kmalloc
 c_func
 (paren
-id|snd_usb_stream_t
-comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|as
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -10407,7 +10335,7 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|as
@@ -10488,6 +10416,64 @@ c_func
 id|as
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * check if the device uses big-endian samples&n; */
+DECL|function|is_big_endian_format
+r_static
+r_int
+id|is_big_endian_format
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+comma
+r_struct
+id|audioformat
+op_star
+id|fp
+)paren
+(brace
+multiline_comment|/* M-Audio */
+r_if
+c_cond
+(paren
+id|dev-&gt;descriptor.idVendor
+op_eq
+l_int|0x0763
+)paren
+(brace
+multiline_comment|/* Quattro: captured data only */
+r_if
+c_cond
+(paren
+id|dev-&gt;descriptor.idProduct
+op_eq
+l_int|0x2001
+op_logical_and
+id|fp-&gt;endpoint
+op_amp
+id|USB_DIR_IN
+)paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* Audiophile USB */
+r_if
+c_cond
+(paren
+id|dev-&gt;descriptor.idProduct
+op_eq
+l_int|0x2003
+)paren
+r_return
+l_int|1
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -10623,17 +10609,16 @@ suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-multiline_comment|/* M-Audio audiophile USB workaround */
 r_if
 c_cond
 (paren
-id|dev-&gt;descriptor.idVendor
-op_eq
-l_int|0x0763
-op_logical_and
-id|dev-&gt;descriptor.idProduct
-op_eq
-l_int|0x2003
+id|is_big_endian_format
+c_func
+(paren
+id|dev
+comma
+id|fp
+)paren
 )paren
 id|pcm_format
 op_assign
@@ -10650,17 +10635,16 @@ suffix:semicolon
 r_case
 l_int|3
 suffix:colon
-multiline_comment|/* M-Audio audiophile USB workaround */
 r_if
 c_cond
 (paren
-id|dev-&gt;descriptor.idVendor
-op_eq
-l_int|0x0763
-op_logical_and
-id|dev-&gt;descriptor.idProduct
-op_eq
-l_int|0x2003
+id|is_big_endian_format
+c_func
+(paren
+id|dev
+comma
+id|fp
+)paren
 )paren
 id|pcm_format
 op_assign
@@ -14101,15 +14085,7 @@ id|snd_usb_audio_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_usb_audio_t
-comma
 id|entry-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -14149,15 +14125,7 @@ id|snd_usb_audio_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_usb_audio_t
-comma
 id|entry-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -14260,7 +14228,7 @@ op_star
 id|chip
 )paren
 (brace
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|chip
@@ -14285,17 +14253,7 @@ id|snd_usb_audio_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_usb_audio_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 id|snd_usb_audio_free
@@ -14449,12 +14407,16 @@ suffix:semicolon
 )brace
 id|chip
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|snd_usb_audio_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|chip
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -15359,15 +15321,7 @@ r_return
 suffix:semicolon
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_usb_audio_t
-comma
 id|ptr
-comma
-r_return
-)paren
 suffix:semicolon
 id|card
 op_assign

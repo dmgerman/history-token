@@ -4159,11 +4159,11 @@ suffix:semicolon
 )brace
 id|constrs-&gt;rules
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
 id|constrs-&gt;rules_all
-op_star
+comma
 r_sizeof
 (paren
 op_star

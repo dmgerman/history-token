@@ -34,12 +34,6 @@ c_func
 l_string|&quot;Massimo Piccioni &lt;dafastidio@libero.it&gt;&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
@@ -53,7 +47,7 @@ c_func
 l_string|&quot;OPTi93X&quot;
 )paren
 suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{OPTi,82C931/3}}&quot;
@@ -67,7 +61,7 @@ c_func
 l_string|&quot;OPTi92X - CS4231&quot;
 )paren
 suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{OPTi,82C924 (CS4231)},&quot;
@@ -81,7 +75,7 @@ c_func
 l_string|&quot;OPTi92X - AD1848&quot;
 )paren
 suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{OPTi,82C924 (AD1848)},&quot;
@@ -193,14 +187,6 @@ comma
 l_string|&quot;Index value for opti9xx based soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -219,17 +205,8 @@ comma
 l_string|&quot;ID string for opti9xx based soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
-)paren
-suffix:semicolon
 singleline_comment|//module_param(enable, bool, 0444);
 singleline_comment|//MODULE_PARM_DESC(enable, &quot;Enable opti9xx soundcard.&quot;);
-singleline_comment|//MODULE_PARM_SYNTAX(enable, SNDRV_ENABLE_DESC);
 id|module_param
 c_func
 (paren
@@ -246,14 +223,6 @@ c_func
 id|isapnp
 comma
 l_string|&quot;Enable ISA PnP detection for specified soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|isapnp
-comma
-id|SNDRV_ISAPNP_DESC
 )paren
 suffix:semicolon
 id|module_param
@@ -274,14 +243,6 @@ comma
 l_string|&quot;WSS port # for opti9xx driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|port
-comma
-id|SNDRV_PORT_DESC
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -298,14 +259,6 @@ c_func
 id|mpu_port
 comma
 l_string|&quot;MPU-401 port # for opti9xx driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|mpu_port
-comma
-id|SNDRV_PORT_DESC
 )paren
 suffix:semicolon
 id|module_param
@@ -326,14 +279,6 @@ comma
 l_string|&quot;FM port # for opti9xx driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|fm_port
-comma
-id|SNDRV_PORT_DESC
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -350,14 +295,6 @@ c_func
 id|irq
 comma
 l_string|&quot;WSS irq # for opti9xx driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|irq
-comma
-id|SNDRV_IRQ_DESC
 )paren
 suffix:semicolon
 id|module_param
@@ -378,14 +315,6 @@ comma
 l_string|&quot;MPU-401 irq # for opti9xx driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|mpu_irq
-comma
-id|SNDRV_IRQ_DESC
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -402,14 +331,6 @@ c_func
 id|dma1
 comma
 l_string|&quot;1st dma # for opti9xx driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma1
-comma
-id|SNDRV_DMA_DESC
 )paren
 suffix:semicolon
 macro_line|#if defined(CS4231) || defined(OPTi93X)
@@ -429,14 +350,6 @@ c_func
 id|dma2
 comma
 l_string|&quot;2nd dma # for opti9xx driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma2
-comma
-id|SNDRV_DMA_DESC
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* CS4231 || OPTi93X */
@@ -1637,10 +1550,6 @@ r_int
 r_char
 id|mpu_irq_bits
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -2209,15 +2118,6 @@ op_or_assign
 l_int|0x04
 suffix:semicolon
 macro_line|#endif&t;/* CS4231 || OPTi93X */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|chip-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 macro_line|#ifndef OPTi93X
 id|outb
 c_func
@@ -2253,15 +2153,6 @@ id|dma_bits
 )paren
 suffix:semicolon
 macro_line|#endif /* OPTi93X */
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|chip-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|__skip_resources
 suffix:colon
 r_if
@@ -2434,8 +2325,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef OPTi93X
-DECL|macro|chip_t
-mdefine_line|#define chip_t opti93x_t
 DECL|variable|snd_opti93x_default_image
 r_static
 r_int
@@ -2933,19 +2822,6 @@ r_int
 id|mute
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|chip-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|mute
 op_assign
 id|mute
@@ -2962,19 +2838,8 @@ id|chip-&gt;mute
 op_eq
 id|mute
 )paren
-(brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|chip-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 id|chip-&gt;mute
 op_assign
 id|mute
@@ -3155,15 +3020,6 @@ comma
 id|OPTi93X_OUT_RIGHT
 comma
 id|mute
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|chip-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -3500,21 +3356,8 @@ id|fmt
 )paren
 (brace
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 r_char
 id|mask
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|chip-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 id|snd_opti93x_mute
 c_func
@@ -3569,15 +3412,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|chip-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 DECL|function|snd_opti93x_capture_format
 r_static
@@ -3594,19 +3428,6 @@ r_char
 id|fmt
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|chip-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|snd_opti93x_mute
 c_func
 (paren
@@ -3675,15 +3496,6 @@ c_func
 id|chip
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|chip-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -4788,16 +4600,7 @@ id|opti93x_t
 op_star
 id|codec
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|opti93x_t
-comma
 id|dev_id
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 r_int
 r_char
@@ -5563,7 +5366,7 @@ id|chip
 )paren
 suffix:semicolon
 )brace
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|chip
@@ -5588,17 +5391,7 @@ id|opti93x_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|opti93x_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 id|snd_opti93x_free
@@ -5703,12 +5496,16 @@ l_int|NULL
 suffix:semicolon
 id|codec
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|opti93x_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|codec
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -6107,15 +5904,7 @@ id|opti93x_t
 op_star
 id|codec
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|opti93x_t
-comma
 id|pcm-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|codec-&gt;pcm
 op_assign

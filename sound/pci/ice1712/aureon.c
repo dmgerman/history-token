@@ -326,11 +326,11 @@ l_int|1
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * set the register value of WM codec and remember it&n; */
-DECL|function|wm_put
+multiline_comment|/*&n; * set the register value of WM codec&n; */
+DECL|function|wm_put_nocache
 r_static
 r_void
-id|wm_put
+id|wm_put_nocache
 c_func
 (paren
 id|ice1712_t
@@ -365,6 +365,36 @@ l_int|0x1ff
 )paren
 comma
 l_int|16
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * set the register value of WM codec and remember it&n; */
+DECL|function|wm_put
+r_static
+r_void
+id|wm_put
+c_func
+(paren
+id|ice1712_t
+op_star
+id|ice
+comma
+r_int
+id|reg
+comma
+r_int
+r_int
+id|val
+)paren
+(brace
+id|wm_put_nocache
+c_func
+(paren
+id|ice
+comma
+id|reg
+comma
+id|val
 )paren
 suffix:semicolon
 id|reg
@@ -713,16 +743,6 @@ op_amp
 id|ice-&gt;gpio_mutex
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|kcontrol-&gt;private_value
-)paren
-id|idx
-op_assign
-id|WM_DAC_MASTER_ATTEN
-suffix:semicolon
-r_else
 id|idx
 op_assign
 id|snd_ctl_get_ioffidx
@@ -826,16 +846,6 @@ c_func
 id|ice
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|kcontrol-&gt;private_value
-)paren
-id|idx
-op_assign
-id|WM_DAC_MASTER_ATTEN
-suffix:semicolon
-r_else
 id|idx
 op_assign
 id|snd_ctl_get_ioffidx
@@ -900,7 +910,21 @@ op_assign
 l_int|0
 suffix:semicolon
 r_else
+(brace
 id|wm_put
+c_func
+(paren
+id|ice
+comma
+id|idx
+comma
+id|nvol
+op_or
+l_int|0x80
+)paren
+suffix:semicolon
+multiline_comment|/* zero-detect, prelatch */
+id|wm_put_nocache
 c_func
 (paren
 id|ice
@@ -912,7 +936,8 @@ op_or
 l_int|0x180
 )paren
 suffix:semicolon
-multiline_comment|/* update on zero detect */
+multiline_comment|/* update */
+)brace
 )brace
 id|snd_ice1712_restore_gpio_status
 c_func
@@ -3074,7 +3099,7 @@ l_int|6
 suffix:semicolon
 id|ice-&gt;num_total_adcs
 op_assign
-l_int|6
+l_int|2
 suffix:semicolon
 )brace
 r_else
@@ -3086,15 +3111,17 @@ l_int|8
 suffix:semicolon
 id|ice-&gt;num_total_adcs
 op_assign
-l_int|8
+l_int|2
 suffix:semicolon
 )brace
 multiline_comment|/* to remeber the register values */
 id|ice-&gt;akm
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
 id|akm4xxx_t

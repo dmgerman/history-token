@@ -538,15 +538,7 @@ id|snd_gus_card_t
 op_star
 id|gus
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_gus_card_t
-comma
 id|private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|snd_gus_voice_t
 op_star

@@ -37,13 +37,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{ESS,Maestro3 PCI},&quot;
@@ -163,14 +157,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -193,14 +179,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -219,14 +197,6 @@ c_func
 id|enable
 comma
 l_string|&quot;Enable this soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -251,16 +221,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|external_amp
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_TRUE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -279,14 +239,6 @@ c_func
 id|amp_gpio
 comma
 l_string|&quot;GPIO pin number for external amp. (default = -1)&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|amp_gpio
-comma
-id|SNDRV_ENABLED
 )paren
 suffix:semicolon
 DECL|macro|MAX_PLAYBACKS
@@ -1402,8 +1354,6 @@ r_struct
 id|snd_m3
 id|m3_t
 suffix:semicolon
-DECL|macro|chip_t
-mdefine_line|#define chip_t m3_t
 multiline_comment|/* quirk lists */
 DECL|struct|m3_quirk
 r_struct
@@ -4819,14 +4769,7 @@ id|m3_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|m3_t
-comma
 id|dev_id
-comma
-)paren
 suffix:semicolon
 id|u8
 id|status
@@ -5979,17 +5922,7 @@ id|m3_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|m3_t
-comma
 id|ac97-&gt;private_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_int
 r_int
@@ -6098,15 +6031,7 @@ id|m3_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|m3_t
-comma
 id|ac97-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 r_int
 r_int
@@ -10626,7 +10551,7 @@ op_star
 id|chip
 )paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|chip
@@ -10657,17 +10582,7 @@ id|m3_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|m3_t
-comma
 id|card-&gt;pm_private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 r_int
 id|i
@@ -10826,17 +10741,7 @@ id|m3_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|m3_t
-comma
 id|card-&gt;pm_private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 r_int
 id|i
@@ -11026,17 +10931,7 @@ id|m3_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|m3_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 id|snd_m3_free
@@ -11161,12 +11056,16 @@ suffix:semicolon
 )brace
 id|chip
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|m3_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|chip
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -11367,7 +11266,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|chip

@@ -3827,17 +3827,7 @@ id|trident_t
 op_star
 id|trident
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|trident_t
-comma
 id|private_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_int
 id|size
@@ -4098,7 +4088,7 @@ r_int
 id|atomic
 )paren
 (brace
-singleline_comment|//trident_t *trident = snd_magic_cast(trident_t, private_data, return -ENXIO);
+singleline_comment|//trident_t *trident = private_data;
 r_int
 id|size
 op_assign
@@ -4178,17 +4168,7 @@ id|trident_t
 op_star
 id|trident
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|trident_t
-comma
 id|private_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_int
 id|size
@@ -5523,15 +5503,7 @@ id|trident_t
 op_star
 id|trident
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|trident_t
-comma
 id|private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|snd_trident_voice_t
 op_star

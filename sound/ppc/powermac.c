@@ -15,13 +15,7 @@ c_func
 l_string|&quot;PowerMac&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Apple,PowerMac}}&quot;
@@ -80,14 +74,6 @@ id|CHIP_NAME
 l_string|&quot; soundchip.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -108,46 +94,7 @@ id|CHIP_NAME
 l_string|&quot; soundchip.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
-)paren
-suffix:semicolon
-multiline_comment|/* module_param(enable, bool, 0444);&n;   MODULE_PARM_DESC(enable, &quot;Enable this soundchip.&quot;);&n;   MODULE_PARM_SYNTAX(enable, SNDRV_ENABLE_DESC); */
-macro_line|#ifdef PMAC_SUPPORT_PCM_BEEP
-id|module_param
-c_func
-(paren
-id|enable_beep
-comma
-r_bool
-comma
-l_int|0444
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|enable_beep
-comma
-l_string|&quot;Enable beep using PCM.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable_beep
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_TRUE_DESC
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n; * card entry&n; */
+multiline_comment|/* module_param(enable, bool, 0444);&n;   MODULE_PARM_DESC(enable, &quot;Enable this soundchip.&quot;);&n;#ifdef PMAC_SUPPORT_PCM_BEEP&n;module_param(enable_beep, bool, 0444);&n;MODULE_PARM_DESC(enable_beep, &quot;Enable beep using PCM.&quot;);&n;#endif&n;&n;&n;/*&n; * card entry&n; */
 DECL|variable|snd_pmac_card
 r_static
 id|snd_card_t

@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * Philips UDA1341 mixer device driver&n; * Copyright (c) 2002 Tomas Kasparek &lt;tomas.kasparek@seznam.cz&gt;&n; *&n; * Portions are Copyright (C) 2000 Lernout &amp; Hauspie Speech Products, N.V.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License.&n; *&n; * History:&n; *&n; * 2002-03-13   Tomas Kasparek  initial release - based on uda1341.c from OSS&n; * 2002-03-28   Tomas Kasparek  basic mixer is working (volume, bass, treble)&n; * 2002-03-30   Tomas Kasparek  proc filesystem support, complete mixer and DSP&n; *                              features support&n; * 2002-04-12&t;Tomas Kasparek&t;proc interface update, code cleanup&n; * 2002-05-12   Tomas Kasparek  another code cleanup&n; */
-multiline_comment|/* $Id: uda1341.c,v 1.10 2003/10/23 14:34:52 perex Exp $ */
+multiline_comment|/* $Id: uda1341.c,v 1.12 2004/07/01 08:33:42 tiwai Exp $ */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -353,8 +353,6 @@ r_struct
 id|l3_client
 id|l3_client_t
 suffix:semicolon
-DECL|macro|chip_t
-mdefine_line|#define chip_t l3_client_t      
 multiline_comment|/* transfer 8bit integer into string with binary representation */
 DECL|function|int2str_bin8
 r_void
@@ -1704,15 +1702,7 @@ id|l3_client
 op_star
 id|clnt
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|l3_client_t
-comma
 id|entry-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 r_struct
 id|uda1341
@@ -2347,15 +2337,7 @@ id|l3_client
 op_star
 id|clnt
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|l3_client_t
-comma
 id|entry-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 r_struct
 id|uda1341
@@ -3874,7 +3856,7 @@ id|uda1341
 )paren
 suffix:semicolon
 singleline_comment|// calls kfree for driver_data (uda1341_t)
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|uda1341
@@ -3897,15 +3879,7 @@ id|l3_client
 op_star
 id|clnt
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|l3_client_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|uda1341_free
 c_func
@@ -3970,12 +3944,16 @@ id|EINVAL
 suffix:semicolon
 id|uda1341
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|l3_client_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|uda1341
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -4162,10 +4140,16 @@ id|uda
 suffix:semicolon
 id|uda
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|uda1341_t
+l_int|1
+comma
+r_sizeof
+(paren
+op_star
+id|uda
+)paren
 comma
 l_int|0
 comma
@@ -4258,7 +4242,7 @@ c_cond
 (paren
 id|clnt-&gt;driver_data
 )paren
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|clnt-&gt;driver_data
@@ -4788,13 +4772,7 @@ c_func
 l_string|&quot;Philips UDA1341 CODEC driver for ALSA&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{UDA1341,UDA1341TS}}&quot;

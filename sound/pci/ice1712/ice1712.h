@@ -1109,8 +1109,6 @@ id|gpio_mutex
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|chip_t
-mdefine_line|#define chip_t ice1712_t
 multiline_comment|/*&n; * gpio access functions&n; */
 DECL|function|snd_ice1712_gpio_set_dir
 r_static

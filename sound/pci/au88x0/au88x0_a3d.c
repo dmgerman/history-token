@@ -3251,7 +3251,7 @@ c_func
 (paren
 id|v
 comma
-id|asXtalkGainsAllChan
+id|vortex_asXtalkGainsAllChan
 )paren
 suffix:semicolon
 r_switch

@@ -33,13 +33,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Aztech Systems,Sound Galaxy}}&quot;
@@ -148,14 +142,6 @@ comma
 l_string|&quot;Index value for Sound Galaxy soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -174,14 +160,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for Sound Galaxy soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -204,15 +182,6 @@ comma
 l_string|&quot;Port # for Sound Galaxy SB driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|sbport
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x220},{0x240}},dialog:list&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -231,15 +200,6 @@ c_func
 id|wssport
 comma
 l_string|&quot;Port # for Sound Galaxy WSS driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|wssport
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x530},{0xe80},{0xf40},{0x604}},dialog:list&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -262,15 +222,6 @@ comma
 l_string|&quot;IRQ # for Sound Galaxy driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|irq
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{7},{9},{10},{11}},dialog:list&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -289,14 +240,6 @@ c_func
 id|dma1
 comma
 l_string|&quot;DMA1 # for Sound Galaxy driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma1
-comma
-id|SNDRV_DMA8_DESC
 )paren
 suffix:semicolon
 DECL|macro|SGALAXY_AUXC_LEFT

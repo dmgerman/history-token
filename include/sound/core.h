@@ -819,6 +819,7 @@ id|private_data
 suffix:semicolon
 DECL|macro|snd_card_set_isa_pm_callback
 mdefine_line|#define snd_card_set_isa_pm_callback(card,suspend,resume,data) &bslash;&n;&t;snd_card_set_dev_pm_callback(card, PM_ISA_DEV, suspend, resume, data)
+macro_line|#ifdef CONFIG_PCI
 macro_line|#ifndef SND_PCI_PM_CALLBACKS
 r_int
 id|snd_card_pci_suspend
@@ -845,6 +846,7 @@ id|dev
 suffix:semicolon
 DECL|macro|SND_PCI_PM_CALLBACKS
 mdefine_line|#define SND_PCI_PM_CALLBACKS &bslash;&n;&t;.suspend = snd_card_pci_suspend,  .resume = snd_card_pci_resume
+macro_line|#endif
 macro_line|#endif
 macro_line|#else
 DECL|macro|snd_power_lock
@@ -886,8 +888,10 @@ DECL|macro|snd_card_set_dev_pm_callback
 mdefine_line|#define snd_card_set_dev_pm_callback(card,suspend,resume,data) -EINVAL
 DECL|macro|snd_card_set_isa_pm_callback
 mdefine_line|#define snd_card_set_isa_pm_callback(card,suspend,resume,data) -EINVAL
+macro_line|#ifdef CONFIG_PCI
 DECL|macro|SND_PCI_PM_CALLBACKS
 mdefine_line|#define SND_PCI_PM_CALLBACKS
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/* device.c */
 DECL|struct|_snd_minor
@@ -1121,6 +1125,21 @@ id|flags
 )paren
 suffix:semicolon
 r_void
+op_star
+id|snd_hidden_kcalloc
+c_func
+(paren
+r_int
+id|n
+comma
+r_int
+id|size
+comma
+r_int
+id|flags
+)paren
+suffix:semicolon
+r_void
 id|snd_hidden_kfree
 c_func
 (paren
@@ -1151,6 +1170,8 @@ id|obj
 suffix:semicolon
 DECL|macro|kmalloc
 mdefine_line|#define kmalloc(size, flags) snd_hidden_kmalloc(size, flags)
+DECL|macro|kcalloc
+mdefine_line|#define kcalloc(n, size, flags) snd_hidden_kcalloc(n, size, flags)
 DECL|macro|kfree
 mdefine_line|#define kfree(obj) snd_hidden_kfree(obj)
 DECL|macro|vmalloc
@@ -1183,18 +1204,6 @@ mdefine_line|#define kfree_nocheck(obj) kfree(obj)
 DECL|macro|vfree_nocheck
 mdefine_line|#define vfree_nocheck(obj) vfree(obj)
 macro_line|#endif
-r_void
-op_star
-id|snd_kcalloc
-c_func
-(paren
-r_int
-id|size
-comma
-r_int
-id|flags
-)paren
-suffix:semicolon
 r_char
 op_star
 id|snd_kmalloc_strdup

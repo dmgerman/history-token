@@ -35,13 +35,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{NeoMagic,NM256AV},&quot;
@@ -257,14 +251,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -287,14 +273,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -313,14 +291,6 @@ c_func
 id|enable
 comma
 l_string|&quot;Enable this soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -345,14 +315,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|playback_bufsize
-comma
-id|SNDRV_ENABLED
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -373,14 +335,6 @@ comma
 l_string|&quot;ADC frame size in kB for &quot;
 id|CARD_NAME
 l_string|&quot; soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|capture_bufsize
-comma
-id|SNDRV_ENABLED
 )paren
 suffix:semicolon
 id|module_param_array
@@ -405,16 +359,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|force_ac97
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_FALSE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -437,14 +381,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|buffer_top
-comma
-id|SNDRV_ENABLED
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -465,16 +401,6 @@ comma
 l_string|&quot;Enable the cache for coefficient table access.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|use_cache
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_FALSE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -493,16 +419,6 @@ c_func
 id|vaio_hack
 comma
 l_string|&quot;Enable workaround for Sony VAIO notebooks.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|vaio_hack
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_FALSE_DESC
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * hw definitions&n; */
@@ -638,8 +554,6 @@ r_struct
 id|snd_nm256_stream
 id|nm256_stream_t
 suffix:semicolon
-DECL|macro|chip_t
-mdefine_line|#define chip_t nm256_t
 DECL|struct|snd_nm256_stream
 r_struct
 id|snd_nm256_stream
@@ -2631,8 +2545,9 @@ id|curp
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Remapped I/O space can be accessible as pointer on i386 */
+multiline_comment|/* This might be changed in the future */
 macro_line|#ifndef __i386__
-multiline_comment|/* FIXME: I/O space is not accessible via pointers on all architectures */
 multiline_comment|/*&n; * silence / copy for playback&n; */
 r_static
 r_int
@@ -3013,12 +2928,12 @@ op_assign
 dot
 id|info
 op_assign
-macro_line|#ifdef __i386__
 id|SNDRV_PCM_INFO_MMAP
 op_or
 id|SNDRV_PCM_INFO_MMAP_VALID
 op_or
-macro_line|#endif
+id|SNDRV_PCM_INFO_MMAP_IOMEM
+op_or
 id|SNDRV_PCM_INFO_INTERLEAVED
 op_or
 multiline_comment|/*SNDRV_PCM_INFO_PAUSE |*/
@@ -3099,12 +3014,12 @@ op_assign
 dot
 id|info
 op_assign
-macro_line|#ifdef __i386__
 id|SNDRV_PCM_INFO_MMAP
 op_or
 id|SNDRV_PCM_INFO_MMAP_VALID
 op_or
-macro_line|#endif
+id|SNDRV_PCM_INFO_MMAP_IOMEM
+op_or
 id|SNDRV_PCM_INFO_INTERLEAVED
 op_or
 multiline_comment|/*SNDRV_PCM_INFO_PAUSE |*/
@@ -3795,16 +3710,7 @@ id|nm256_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|nm256_t
-comma
 id|dev_id
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 id|u16
 id|status
@@ -4080,16 +3986,7 @@ id|nm256_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|nm256_t
-comma
 id|dev_id
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 id|u32
 id|status
@@ -4425,17 +4322,7 @@ id|nm256_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|nm256_t
-comma
 id|ac97-&gt;private_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_int
 id|res
@@ -4510,15 +4397,7 @@ id|nm256_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|nm256_t
-comma
 id|ac97-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 r_int
 id|tries
@@ -4602,15 +4481,7 @@ id|nm256_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|nm256_t
-comma
 id|ac97-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 r_int
 r_int
@@ -4732,6 +4603,8 @@ comma
 id|AC97_MIC
 comma
 id|AC97_LINE
+comma
+id|AC97_CD
 comma
 id|AC97_VIDEO
 comma
@@ -5105,17 +4978,7 @@ id|nm256_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|nm256_t
-comma
 id|card-&gt;pm_private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 id|snd_pcm_suspend_all
 c_func
@@ -5164,17 +5027,7 @@ id|nm256_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|nm256_t
-comma
 id|card-&gt;pm_private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 multiline_comment|/* Perform a full reset on the hardware */
 id|pci_enable_device
@@ -5352,7 +5205,7 @@ op_star
 id|chip
 )paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|chip
@@ -5377,17 +5230,7 @@ id|nm256_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|nm256_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 id|snd_nm256_free
@@ -5470,12 +5313,16 @@ l_int|NULL
 suffix:semicolon
 id|chip
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|nm256_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|chip
+)paren
 comma
 id|GFP_KERNEL
 )paren

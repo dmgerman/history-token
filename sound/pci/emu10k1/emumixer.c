@@ -4,8 +4,6 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/emu10k1.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t emu10k1_t
 DECL|macro|AC97_ID_STAC9758
 mdefine_line|#define AC97_ID_STAC9758&t;0x83847658
 DECL|function|snd_emu10k1_spdif_info
@@ -2433,15 +2431,7 @@ id|emu10k1_t
 op_star
 id|emu
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|emu10k1_t
-comma
 id|ac97-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|emu-&gt;ac97
 op_assign
