@@ -10206,6 +10206,15 @@ id|unicode_size
 r_int
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unicode_size
+op_le
+l_int|0
+)paren
+r_return
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -10220,7 +10229,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|string
 (braket
 id|i
@@ -10240,7 +10248,6 @@ id|i
 )paren
 )paren
 suffix:semicolon
-)brace
 id|string
 (braket
 id|unicode_size
