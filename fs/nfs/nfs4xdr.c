@@ -38,137 +38,137 @@ mdefine_line|#define NFS4_MAXTAGLEN&t;&t;0
 macro_line|#endif
 multiline_comment|/* lock,open owner id: &n; * we currently use size 1 (u32) out of (NFS4_OPAQUE_LIMIT  &gt;&gt; 2)&n; */
 DECL|macro|owner_id_maxsz
-mdefine_line|#define owner_id_maxsz          1 + 1
+mdefine_line|#define owner_id_maxsz          (1 + 1)
 DECL|macro|compound_encode_hdr_maxsz
-mdefine_line|#define compound_encode_hdr_maxsz&t;3 + (NFS4_MAXTAGLEN &gt;&gt; 2)
+mdefine_line|#define compound_encode_hdr_maxsz&t;(3 + (NFS4_MAXTAGLEN &gt;&gt; 2))
 DECL|macro|compound_decode_hdr_maxsz
-mdefine_line|#define compound_decode_hdr_maxsz&t;2 + (NFS4_MAXTAGLEN &gt;&gt; 2)
+mdefine_line|#define compound_decode_hdr_maxsz&t;(3 + (NFS4_MAXTAGLEN &gt;&gt; 2))
 DECL|macro|op_encode_hdr_maxsz
-mdefine_line|#define op_encode_hdr_maxsz&t;1
+mdefine_line|#define op_encode_hdr_maxsz&t;(1)
 DECL|macro|op_decode_hdr_maxsz
-mdefine_line|#define op_decode_hdr_maxsz&t;2
+mdefine_line|#define op_decode_hdr_maxsz&t;(2)
 DECL|macro|encode_putfh_maxsz
-mdefine_line|#define encode_putfh_maxsz&t;op_encode_hdr_maxsz + 1 + &bslash;&n;&t;&t;&t;&t;(NFS4_FHSIZE &gt;&gt; 2)
+mdefine_line|#define encode_putfh_maxsz&t;(op_encode_hdr_maxsz + 1 + &bslash;&n;&t;&t;&t;&t;(NFS4_FHSIZE &gt;&gt; 2))
 DECL|macro|decode_putfh_maxsz
-mdefine_line|#define decode_putfh_maxsz&t;op_decode_hdr_maxsz
+mdefine_line|#define decode_putfh_maxsz&t;(op_decode_hdr_maxsz)
 DECL|macro|encode_putrootfh_maxsz
-mdefine_line|#define encode_putrootfh_maxsz&t;op_encode_hdr_maxsz
+mdefine_line|#define encode_putrootfh_maxsz&t;(op_encode_hdr_maxsz)
 DECL|macro|decode_putrootfh_maxsz
-mdefine_line|#define decode_putrootfh_maxsz&t;op_decode_hdr_maxsz
+mdefine_line|#define decode_putrootfh_maxsz&t;(op_decode_hdr_maxsz)
 DECL|macro|encode_getfh_maxsz
-mdefine_line|#define encode_getfh_maxsz      op_encode_hdr_maxsz
+mdefine_line|#define encode_getfh_maxsz      (op_encode_hdr_maxsz)
 DECL|macro|decode_getfh_maxsz
-mdefine_line|#define decode_getfh_maxsz      op_decode_hdr_maxsz + 1 + &bslash;&n;                                (NFS4_FHSIZE &gt;&gt; 2)
+mdefine_line|#define decode_getfh_maxsz      (op_decode_hdr_maxsz + 1 + &bslash;&n;                                (NFS4_FHSIZE &gt;&gt; 2))
 DECL|macro|encode_getattr_maxsz
-mdefine_line|#define encode_getattr_maxsz    op_encode_hdr_maxsz + 3
+mdefine_line|#define encode_getattr_maxsz    (op_encode_hdr_maxsz + 3)
 DECL|macro|nfs4_fattr_bitmap_maxsz
-mdefine_line|#define nfs4_fattr_bitmap_maxsz 26 + 2 * ((NFS4_MAXNAMLEN +1) &gt;&gt; 2)
+mdefine_line|#define nfs4_fattr_bitmap_maxsz (26 + 2 * ((NFS4_MAXNAMLEN +1) &gt;&gt; 2))
 DECL|macro|decode_getattr_maxsz
-mdefine_line|#define decode_getattr_maxsz    op_decode_hdr_maxsz + 3 + &bslash;&n;                                nfs4_fattr_bitmap_maxsz
+mdefine_line|#define decode_getattr_maxsz    (op_decode_hdr_maxsz + 3 + &bslash;&n;                                nfs4_fattr_bitmap_maxsz)
 DECL|macro|encode_savefh_maxsz
-mdefine_line|#define encode_savefh_maxsz     op_encode_hdr_maxsz
+mdefine_line|#define encode_savefh_maxsz     (op_encode_hdr_maxsz)
 DECL|macro|decode_savefh_maxsz
-mdefine_line|#define decode_savefh_maxsz     op_decode_hdr_maxsz
+mdefine_line|#define decode_savefh_maxsz     (op_decode_hdr_maxsz)
 DECL|macro|encode_restorefh_maxsz
-mdefine_line|#define encode_restorefh_maxsz  op_encode_hdr_maxsz
+mdefine_line|#define encode_restorefh_maxsz  (op_encode_hdr_maxsz)
 DECL|macro|decode_restorefh_maxsz
-mdefine_line|#define decode_restorefh_maxsz  op_decode_hdr_maxsz
+mdefine_line|#define decode_restorefh_maxsz  (op_decode_hdr_maxsz)
 DECL|macro|encode_read_getattr_maxsz
-mdefine_line|#define encode_read_getattr_maxsz&t;op_encode_hdr_maxsz + 2
+mdefine_line|#define encode_read_getattr_maxsz&t;(op_encode_hdr_maxsz + 2)
 DECL|macro|decode_read_getattr_maxsz
-mdefine_line|#define decode_read_getattr_maxsz&t;op_decode_hdr_maxsz + 8
+mdefine_line|#define decode_read_getattr_maxsz&t;(op_decode_hdr_maxsz + 8)
 DECL|macro|encode_pre_write_getattr_maxsz
-mdefine_line|#define encode_pre_write_getattr_maxsz&t;op_encode_hdr_maxsz + 2
+mdefine_line|#define encode_pre_write_getattr_maxsz&t;(op_encode_hdr_maxsz + 2)
 DECL|macro|decode_pre_write_getattr_maxsz
-mdefine_line|#define decode_pre_write_getattr_maxsz&t;op_decode_hdr_maxsz + 5
+mdefine_line|#define decode_pre_write_getattr_maxsz&t;(op_decode_hdr_maxsz + 5)
 DECL|macro|encode_post_write_getattr_maxsz
-mdefine_line|#define encode_post_write_getattr_maxsz&t;op_encode_hdr_maxsz + 2
+mdefine_line|#define encode_post_write_getattr_maxsz&t;(op_encode_hdr_maxsz + 2)
 DECL|macro|decode_post_write_getattr_maxsz
-mdefine_line|#define decode_post_write_getattr_maxsz&t;op_decode_hdr_maxsz + 13
+mdefine_line|#define decode_post_write_getattr_maxsz&t;(op_decode_hdr_maxsz + 13)
 DECL|macro|encode_fsinfo_maxsz
-mdefine_line|#define encode_fsinfo_maxsz&t;op_encode_hdr_maxsz + 2
+mdefine_line|#define encode_fsinfo_maxsz&t;(op_encode_hdr_maxsz + 2)
 DECL|macro|decode_fsinfo_maxsz
-mdefine_line|#define decode_fsinfo_maxsz&t;op_decode_hdr_maxsz + 11
+mdefine_line|#define decode_fsinfo_maxsz&t;(op_decode_hdr_maxsz + 11)
 DECL|macro|encode_renew_maxsz
-mdefine_line|#define encode_renew_maxsz&t;op_encode_hdr_maxsz + 3
+mdefine_line|#define encode_renew_maxsz&t;(op_encode_hdr_maxsz + 3)
 DECL|macro|decode_renew_maxsz
-mdefine_line|#define decode_renew_maxsz&t;op_decode_hdr_maxsz
+mdefine_line|#define decode_renew_maxsz&t;(op_decode_hdr_maxsz)
 DECL|macro|encode_setclientid_maxsz
-mdefine_line|#define encode_setclientid_maxsz &bslash;&n;&t;&t;&t;&t;op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;4 /*server-&gt;ip_addr*/ + &bslash;&n;&t;&t;&t;&t;1 /*Netid*/ + &bslash;&n;&t;&t;&t;&t;6 /*uaddr*/ + &bslash;&n;&t;&t;&t;&t;6 + (NFS4_VERIFIER_SIZE &gt;&gt; 2)
+mdefine_line|#define encode_setclientid_maxsz &bslash;&n;&t;&t;&t;&t;(op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;4 /*server-&gt;ip_addr*/ + &bslash;&n;&t;&t;&t;&t;1 /*Netid*/ + &bslash;&n;&t;&t;&t;&t;6 /*uaddr*/ + &bslash;&n;&t;&t;&t;&t;6 + (NFS4_VERIFIER_SIZE &gt;&gt; 2))
 DECL|macro|decode_setclientid_maxsz
-mdefine_line|#define decode_setclientid_maxsz &bslash;&n;&t;&t;&t;&t;op_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;2 + &bslash;&n;&t;&t;&t;&t;1024 /* large value for CLID_INUSE */
+mdefine_line|#define decode_setclientid_maxsz &bslash;&n;&t;&t;&t;&t;(op_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;2 + &bslash;&n;&t;&t;&t;&t;1024) /* large value for CLID_INUSE */
 DECL|macro|encode_setclientid_confirm_maxsz
-mdefine_line|#define encode_setclientid_confirm_maxsz &bslash;&n;&t;&t;&t;&t;op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;3 + (NFS4_VERIFIER_SIZE &gt;&gt; 2)
+mdefine_line|#define encode_setclientid_confirm_maxsz &bslash;&n;&t;&t;&t;&t;(op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;3 + (NFS4_VERIFIER_SIZE &gt;&gt; 2))
 DECL|macro|decode_setclientid_confirm_maxsz
-mdefine_line|#define decode_setclientid_confirm_maxsz &bslash;&n;&t;&t;&t;&t;op_decode_hdr_maxsz
+mdefine_line|#define decode_setclientid_confirm_maxsz &bslash;&n;&t;&t;&t;&t;(op_decode_hdr_maxsz)
 DECL|macro|NFS4_enc_compound_sz
-mdefine_line|#define NFS4_enc_compound_sz&t;1024  /* XXX: large enough? */
+mdefine_line|#define NFS4_enc_compound_sz&t;(1024)  /* XXX: large enough? */
 DECL|macro|NFS4_dec_compound_sz
-mdefine_line|#define NFS4_dec_compound_sz&t;1024  /* XXX: large enough? */
+mdefine_line|#define NFS4_dec_compound_sz&t;(1024)  /* XXX: large enough? */
 DECL|macro|NFS4_enc_read_sz
-mdefine_line|#define NFS4_enc_read_sz&t;compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_read_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_encode_hdr_maxsz + 7
+mdefine_line|#define NFS4_enc_read_sz&t;(compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_read_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_encode_hdr_maxsz + 7)
 DECL|macro|NFS4_dec_read_sz
-mdefine_line|#define NFS4_dec_read_sz&t;compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_read_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_decode_hdr_maxsz + 2
+mdefine_line|#define NFS4_dec_read_sz&t;(compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_read_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_decode_hdr_maxsz + 2)
 DECL|macro|NFS4_enc_write_sz
-mdefine_line|#define NFS4_enc_write_sz&t;compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_pre_write_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_encode_hdr_maxsz + 8 + &bslash;&n;&t;&t;&t;&t;encode_post_write_getattr_maxsz
+mdefine_line|#define NFS4_enc_write_sz&t;(compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_pre_write_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_encode_hdr_maxsz + 8 + &bslash;&n;&t;&t;&t;&t;encode_post_write_getattr_maxsz)
 DECL|macro|NFS4_dec_write_sz
-mdefine_line|#define NFS4_dec_write_sz&t;compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_pre_write_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_decode_hdr_maxsz + 4 + &bslash;&n;&t;&t;&t;&t;decode_post_write_getattr_maxsz
+mdefine_line|#define NFS4_dec_write_sz&t;(compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_pre_write_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_decode_hdr_maxsz + 4 + &bslash;&n;&t;&t;&t;&t;decode_post_write_getattr_maxsz)
 DECL|macro|NFS4_enc_commit_sz
-mdefine_line|#define NFS4_enc_commit_sz&t;compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_pre_write_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_encode_hdr_maxsz + 3 + &bslash;&n;&t;&t;&t;&t;encode_post_write_getattr_maxsz
+mdefine_line|#define NFS4_enc_commit_sz&t;(compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_pre_write_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_encode_hdr_maxsz + 3 + &bslash;&n;&t;&t;&t;&t;encode_post_write_getattr_maxsz)
 DECL|macro|NFS4_dec_commit_sz
-mdefine_line|#define NFS4_dec_commit_sz&t;compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_pre_write_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_decode_hdr_maxsz + 2 + &bslash;&n;&t;&t;&t;&t;decode_post_write_getattr_maxsz
+mdefine_line|#define NFS4_dec_commit_sz&t;(compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_pre_write_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_decode_hdr_maxsz + 2 + &bslash;&n;&t;&t;&t;&t;decode_post_write_getattr_maxsz)
 DECL|macro|NFS4_enc_open_sz
-mdefine_line|#define NFS4_enc_open_sz        compound_encode_hdr_maxsz + &bslash;&n;                                encode_putfh_maxsz + &bslash;&n;                                encode_savefh_maxsz + &bslash;&n;                                op_encode_hdr_maxsz + &bslash;&n;                                13 + 3 + 2 + 64 + &bslash;&n;                                encode_getattr_maxsz + &bslash;&n;                                encode_getfh_maxsz + &bslash;&n;                                encode_restorefh_maxsz + &bslash;&n;                                encode_getattr_maxsz
+mdefine_line|#define NFS4_enc_open_sz        (compound_encode_hdr_maxsz + &bslash;&n;                                encode_putfh_maxsz + &bslash;&n;                                encode_savefh_maxsz + &bslash;&n;                                op_encode_hdr_maxsz + &bslash;&n;                                13 + 3 + 2 + 64 + &bslash;&n;                                encode_getattr_maxsz + &bslash;&n;                                encode_getfh_maxsz + &bslash;&n;                                encode_restorefh_maxsz + &bslash;&n;                                encode_getattr_maxsz)
 DECL|macro|NFS4_dec_open_sz
-mdefine_line|#define NFS4_dec_open_sz        compound_decode_hdr_maxsz + &bslash;&n;                                decode_putfh_maxsz + &bslash;&n;                                decode_savefh_maxsz + &bslash;&n;                                op_decode_hdr_maxsz + 4 + 5 + 2 + 3 + &bslash;&n;                                decode_getattr_maxsz + &bslash;&n;                                decode_getfh_maxsz + &bslash;&n;                                decode_restorefh_maxsz + &bslash;&n;                                decode_getattr_maxsz
+mdefine_line|#define NFS4_dec_open_sz        (compound_decode_hdr_maxsz + &bslash;&n;                                decode_putfh_maxsz + &bslash;&n;                                decode_savefh_maxsz + &bslash;&n;                                op_decode_hdr_maxsz + 4 + 5 + 2 + 3 + &bslash;&n;                                decode_getattr_maxsz + &bslash;&n;                                decode_getfh_maxsz + &bslash;&n;                                decode_restorefh_maxsz + &bslash;&n;                                decode_getattr_maxsz)
 DECL|macro|NFS4_enc_open_confirm_sz
-mdefine_line|#define NFS4_enc_open_confirm_sz      &bslash;&n;                                compound_encode_hdr_maxsz + &bslash;&n;                                encode_putfh_maxsz + &bslash;&n;                                op_encode_hdr_maxsz + 5
+mdefine_line|#define NFS4_enc_open_confirm_sz      &bslash;&n;                                (compound_encode_hdr_maxsz + &bslash;&n;                                encode_putfh_maxsz + &bslash;&n;                                op_encode_hdr_maxsz + 5)
 DECL|macro|NFS4_dec_open_confirm_sz
-mdefine_line|#define NFS4_dec_open_confirm_sz        compound_decode_hdr_maxsz + &bslash;&n;                                        decode_putfh_maxsz + &bslash;&n;                                        op_decode_hdr_maxsz + 4
+mdefine_line|#define NFS4_dec_open_confirm_sz        (compound_decode_hdr_maxsz + &bslash;&n;                                        decode_putfh_maxsz + &bslash;&n;                                        op_decode_hdr_maxsz + 4)
 DECL|macro|NFS4_enc_open_reclaim_sz
-mdefine_line|#define NFS4_enc_open_reclaim_sz&t;compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;&t;op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;&t;11 + &bslash;&n;&t;&t;&t;&t;&t;encode_getattr_maxsz
+mdefine_line|#define NFS4_enc_open_reclaim_sz&t;(compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;&t;op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;&t;11 + &bslash;&n;&t;&t;&t;&t;&t;encode_getattr_maxsz)
 DECL|macro|NFS4_dec_open_reclaim_sz
-mdefine_line|#define NFS4_dec_open_reclaim_sz&t;compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;&t;op_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;&t;4 + 5 + 2 + 3 + &bslash;&n;&t;&t;&t;&t;&t;decode_getattr_maxsz
+mdefine_line|#define NFS4_dec_open_reclaim_sz&t;(compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;&t;op_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;&t;4 + 5 + 2 + 3 + &bslash;&n;&t;&t;&t;&t;&t;decode_getattr_maxsz)
 DECL|macro|NFS4_enc_open_downgrade_sz
-mdefine_line|#define NFS4_enc_open_downgrade_sz &bslash;&n;&t;&t;&t;&t;compound_encode_hdr_maxsz + &bslash;&n;                                encode_putfh_maxsz + &bslash;&n;                                op_encode_hdr_maxsz + 7
+mdefine_line|#define NFS4_enc_open_downgrade_sz &bslash;&n;&t;&t;&t;&t;(compound_encode_hdr_maxsz + &bslash;&n;                                encode_putfh_maxsz + &bslash;&n;                                op_encode_hdr_maxsz + 7)
 DECL|macro|NFS4_dec_open_downgrade_sz
-mdefine_line|#define NFS4_dec_open_downgrade_sz &bslash;&n;&t;&t;&t;&t;compound_decode_hdr_maxsz + &bslash;&n;                                decode_putfh_maxsz + &bslash;&n;                                op_decode_hdr_maxsz + 4
+mdefine_line|#define NFS4_dec_open_downgrade_sz &bslash;&n;&t;&t;&t;&t;(compound_decode_hdr_maxsz + &bslash;&n;                                decode_putfh_maxsz + &bslash;&n;                                op_decode_hdr_maxsz + 4)
 DECL|macro|NFS4_enc_close_sz
-mdefine_line|#define NFS4_enc_close_sz       compound_encode_hdr_maxsz + &bslash;&n;                                encode_putfh_maxsz + &bslash;&n;                                op_encode_hdr_maxsz + 5
+mdefine_line|#define NFS4_enc_close_sz       (compound_encode_hdr_maxsz + &bslash;&n;                                encode_putfh_maxsz + &bslash;&n;                                op_encode_hdr_maxsz + 5)
 DECL|macro|NFS4_dec_close_sz
-mdefine_line|#define NFS4_dec_close_sz       compound_decode_hdr_maxsz + &bslash;&n;                                decode_putfh_maxsz + &bslash;&n;                                op_decode_hdr_maxsz + 4
+mdefine_line|#define NFS4_dec_close_sz       (compound_decode_hdr_maxsz + &bslash;&n;                                decode_putfh_maxsz + &bslash;&n;                                op_decode_hdr_maxsz + 4)
 DECL|macro|NFS4_enc_setattr_sz
-mdefine_line|#define NFS4_enc_setattr_sz     compound_encode_hdr_maxsz + &bslash;&n;                                encode_putfh_maxsz + &bslash;&n;                                op_encode_hdr_maxsz + 4 + &bslash;&n;                                nfs4_fattr_bitmap_maxsz + &bslash;&n;                                encode_getattr_maxsz
+mdefine_line|#define NFS4_enc_setattr_sz     (compound_encode_hdr_maxsz + &bslash;&n;                                encode_putfh_maxsz + &bslash;&n;                                op_encode_hdr_maxsz + 4 + &bslash;&n;                                nfs4_fattr_bitmap_maxsz + &bslash;&n;                                encode_getattr_maxsz)
 DECL|macro|NFS4_dec_setattr_sz
-mdefine_line|#define NFS4_dec_setattr_sz     compound_decode_hdr_maxsz + &bslash;&n;                                decode_putfh_maxsz + &bslash;&n;                                op_decode_hdr_maxsz + 3
+mdefine_line|#define NFS4_dec_setattr_sz     (compound_decode_hdr_maxsz + &bslash;&n;                                decode_putfh_maxsz + &bslash;&n;                                op_decode_hdr_maxsz + 3)
 DECL|macro|NFS4_enc_fsinfo_sz
-mdefine_line|#define NFS4_enc_fsinfo_sz&t;compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_fsinfo_maxsz
+mdefine_line|#define NFS4_enc_fsinfo_sz&t;(compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_fsinfo_maxsz)
 DECL|macro|NFS4_dec_fsinfo_sz
-mdefine_line|#define NFS4_dec_fsinfo_sz&t;compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_fsinfo_maxsz
+mdefine_line|#define NFS4_dec_fsinfo_sz&t;(compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_fsinfo_maxsz)
 DECL|macro|NFS4_enc_renew_sz
-mdefine_line|#define NFS4_enc_renew_sz&t;compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_renew_maxsz
+mdefine_line|#define NFS4_enc_renew_sz&t;(compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_renew_maxsz)
 DECL|macro|NFS4_dec_renew_sz
-mdefine_line|#define NFS4_dec_renew_sz&t;compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_renew_maxsz
+mdefine_line|#define NFS4_dec_renew_sz&t;(compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_renew_maxsz)
 DECL|macro|NFS4_enc_setclientid_sz
-mdefine_line|#define NFS4_enc_setclientid_sz&t;compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_setclientid_maxsz
+mdefine_line|#define NFS4_enc_setclientid_sz&t;(compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_setclientid_maxsz)
 DECL|macro|NFS4_dec_setclientid_sz
-mdefine_line|#define NFS4_dec_setclientid_sz&t;compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_setclientid_maxsz
+mdefine_line|#define NFS4_dec_setclientid_sz&t;(compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_setclientid_maxsz)
 DECL|macro|NFS4_enc_setclientid_confirm_sz
-mdefine_line|#define NFS4_enc_setclientid_confirm_sz &bslash;&n;&t;&t;&t;&t;compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_setclientid_confirm_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putrootfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_fsinfo_maxsz
+mdefine_line|#define NFS4_enc_setclientid_confirm_sz &bslash;&n;&t;&t;&t;&t;(compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_setclientid_confirm_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putrootfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_fsinfo_maxsz)
 DECL|macro|NFS4_dec_setclientid_confirm_sz
-mdefine_line|#define NFS4_dec_setclientid_confirm_sz &bslash;&n;&t;&t;&t;&t;compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_setclientid_confirm_maxsz + &bslash;&n;&t;&t;&t;&t;decode_putrootfh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_fsinfo_maxsz
+mdefine_line|#define NFS4_dec_setclientid_confirm_sz &bslash;&n;&t;&t;&t;&t;(compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_setclientid_confirm_maxsz + &bslash;&n;&t;&t;&t;&t;decode_putrootfh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_fsinfo_maxsz)
 DECL|macro|NFS4_enc_lock_sz
-mdefine_line|#define NFS4_enc_lock_sz        compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;1 + 1 + 2 + 2 + &bslash;&n;&t;&t;&t;&t;1 + 4 + 1 + 2 + &bslash;&n;&t;&t;&t;&t;owner_id_maxsz
+mdefine_line|#define NFS4_enc_lock_sz        (compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;1 + 1 + 2 + 2 + &bslash;&n;&t;&t;&t;&t;1 + 4 + 1 + 2 + &bslash;&n;&t;&t;&t;&t;owner_id_maxsz)
 DECL|macro|NFS4_dec_lock_sz
-mdefine_line|#define NFS4_dec_lock_sz        compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;2 + 2 + 1 + 2 + &bslash;&n;&t;&t;&t;&t;owner_id_maxsz
+mdefine_line|#define NFS4_dec_lock_sz        (compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;2 + 2 + 1 + 2 + &bslash;&n;&t;&t;&t;&t;owner_id_maxsz)
 DECL|macro|NFS4_enc_lockt_sz
-mdefine_line|#define NFS4_enc_lockt_sz       compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;1 + 2 + 2 + 2 + &bslash;&n;&t;&t;&t;&t;owner_id_maxsz
+mdefine_line|#define NFS4_enc_lockt_sz       (compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;1 + 2 + 2 + 2 + &bslash;&n;&t;&t;&t;&t;owner_id_maxsz)
 DECL|macro|NFS4_dec_lockt_sz
-mdefine_line|#define NFS4_dec_lockt_sz       NFS4_dec_lock_sz
+mdefine_line|#define NFS4_dec_lockt_sz       (NFS4_dec_lock_sz)
 DECL|macro|NFS4_enc_locku_sz
-mdefine_line|#define NFS4_enc_locku_sz       compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;1 + 1 + 4 + 2 + 2
+mdefine_line|#define NFS4_enc_locku_sz       (compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;1 + 1 + 4 + 2 + 2)
 DECL|macro|NFS4_dec_locku_sz
-mdefine_line|#define NFS4_dec_locku_sz       compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_decode_hdr_maxsz + 4
+mdefine_line|#define NFS4_dec_locku_sz       (compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;op_decode_hdr_maxsz + 4)
 r_static
 r_struct
 (brace
@@ -13713,6 +13713,13 @@ id|EDEADLK
 )brace
 comma
 (brace
+id|NFS4ERR_WRONGSEC
+comma
+id|EPERM
+)brace
+comma
+multiline_comment|/* FIXME: this needs&n;&t;&t;&t;&t;&t;&t;    * to be handled by a&n;&t;&t;&t;&t;&t;&t;    * middle-layer.&n;&t;&t;&t;&t;&t;&t;    */
+(brace
 op_minus
 l_int|1
 comma
@@ -13774,6 +13781,19 @@ id|i
 )braket
 dot
 id|errno
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|stat
+OL
+l_int|0
+)paren
+(brace
+multiline_comment|/* The server is looney tunes. */
+r_return
+id|ESERVERFAULT
 suffix:semicolon
 )brace
 multiline_comment|/* If we cannot translate the error, the recovery routines should&n;&t; * handle it.&n;&t; * Note: remaining NFSv4 error codes have values &gt; 10000, so should&n;&t; * not conflict with native Linux error codes.&n;&t; */

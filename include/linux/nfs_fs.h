@@ -2314,7 +2314,7 @@ DECL|macro|ifdebug
 macro_line|# undef ifdebug
 macro_line|# ifdef NFS_DEBUG
 DECL|macro|ifdebug
-macro_line|#  define ifdebug(fac)&t;&t;if (nfs_debug &amp; NFSDBG_##fac)
+macro_line|#  define ifdebug(fac)&t;&t;if (unlikely(nfs_debug &amp; NFSDBG_##fac))
 macro_line|# else
 DECL|macro|ifdebug
 macro_line|#  define ifdebug(fac)&t;&t;if (0)

@@ -3500,7 +3500,7 @@ c_cond
 id|sp-&gt;so_generation
 op_minus
 id|generation
-op_le
+op_ge
 l_int|0
 )paren
 r_continue

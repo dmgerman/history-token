@@ -7608,7 +7608,7 @@ l_string|&quot;nfs warning: mount version %s than kernel&bslash;n&quot;
 comma
 id|data-&gt;version
 OL
-id|NFS_MOUNT_VERSION
+id|NFS4_MOUNT_VERSION
 ques
 c_cond
 l_string|&quot;older&quot;
