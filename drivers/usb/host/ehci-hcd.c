@@ -1,5 +1,12 @@
 multiline_comment|/*&n; * Copyright (c) 2000-2002 by David Brownell&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_USB_DEBUG
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG
+macro_line|#else
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -13,13 +20,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#ifdef CONFIG_USB_DEBUG
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
-macro_line|#else
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,32)
@@ -33,9 +33,9 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * EHCI hc_driver implementation ... experimental, incomplete.&n; * Based on the final 1.0 register interface specification.&n; *&n; * USB 2.0 shows up in upcoming www.pcmcia.org technology.&n; * First was PCMCIA, like ISA; then CardBus, which is PCI.&n; * Next comes &quot;CardBay&quot;, using USB 2.0 signals.&n; *&n; * Contains additional contributions by Brad Hards, Rory Bolt, and others.&n; * Special thanks to Intel and VIA for providing host controllers to&n; * test this driver on, and Cypress (including In-System Design) for&n; * providing early devices for those host controllers to talk to!&n; *&n; * HISTORY:&n; *&n; * 2002-08-06&t;Handling for bulk and interrupt transfers is mostly shared;&n; *&t;only scheduling is different, no arbitrary limitations.&n; * 2002-07-25&t;Sanity check PCI reads, mostly for better cardbus support,&n; * &t;clean up HC run state handshaking.&n; * 2002-05-24&t;Preliminary FS/LS interrupts, using scheduling shortcuts&n; * 2002-05-11&t;Clear TT errors for FS/LS ctrl/bulk.  Fill in some other&n; *&t;missing pieces:  enabling 64bit dma, handoff from BIOS/SMM.&n; * 2002-05-07&t;Some error path cleanups to report better errors; wmb();&n; *&t;use non-CVS version id; better iso bandwidth claim.&n; * 2002-04-19&t;Control/bulk/interrupt submit no longer uses giveback() on&n; *&t;errors in submit path.  Bugfixes to interrupt scheduling/processing.&n; * 2002-03-05&t;Initial high-speed ISO support; reduce ITD memory; shift&n; *&t;more checking to generic hcd framework (db).  Make it work with&n; *&t;Philips EHCI; reduce PCI traffic; shorten IRQ path (Rory Bolt).&n; * 2002-01-14&t;Minor cleanup; version synch.&n; * 2002-01-08&t;Fix roothub handoff of FS/LS to companion controllers.&n; * 2002-01-04&t;Control/Bulk queuing behaves.&n; *&n; * 2001-12-12&t;Initial patch version for Linux 2.5.1 kernel.&n; * 2001-June&t;Works with usb-storage and NEC EHCI on 2.4&n; */
+multiline_comment|/*&n; * EHCI hc_driver implementation ... experimental, incomplete.&n; * Based on the final 1.0 register interface specification.&n; *&n; * USB 2.0 shows up in upcoming www.pcmcia.org technology.&n; * First was PCMCIA, like ISA; then CardBus, which is PCI.&n; * Next comes &quot;CardBay&quot;, using USB 2.0 signals.&n; *&n; * Contains additional contributions by Brad Hards, Rory Bolt, and others.&n; * Special thanks to Intel and VIA for providing host controllers to&n; * test this driver on, and Cypress (including In-System Design) for&n; * providing early devices for those host controllers to talk to!&n; *&n; * HISTORY:&n; *&n; * 2002-11-29&t;Correct handling for hw async_next register.&n; * 2002-08-06&t;Handling for bulk and interrupt transfers is mostly shared;&n; *&t;only scheduling is different, no arbitrary limitations.&n; * 2002-07-25&t;Sanity check PCI reads, mostly for better cardbus support,&n; * &t;clean up HC run state handshaking.&n; * 2002-05-24&t;Preliminary FS/LS interrupts, using scheduling shortcuts&n; * 2002-05-11&t;Clear TT errors for FS/LS ctrl/bulk.  Fill in some other&n; *&t;missing pieces:  enabling 64bit dma, handoff from BIOS/SMM.&n; * 2002-05-07&t;Some error path cleanups to report better errors; wmb();&n; *&t;use non-CVS version id; better iso bandwidth claim.&n; * 2002-04-19&t;Control/bulk/interrupt submit no longer uses giveback() on&n; *&t;errors in submit path.  Bugfixes to interrupt scheduling/processing.&n; * 2002-03-05&t;Initial high-speed ISO support; reduce ITD memory; shift&n; *&t;more checking to generic hcd framework (db).  Make it work with&n; *&t;Philips EHCI; reduce PCI traffic; shorten IRQ path (Rory Bolt).&n; * 2002-01-14&t;Minor cleanup; version synch.&n; * 2002-01-08&t;Fix roothub handoff of FS/LS to companion controllers.&n; * 2002-01-04&t;Control/Bulk queuing behaves.&n; *&n; * 2001-12-12&t;Initial patch version for Linux 2.5.1 kernel.&n; * 2001-June&t;Works with usb-storage and NEC EHCI on 2.4&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;2002-Sep-23&quot;
+mdefine_line|#define DRIVER_VERSION &quot;2002-Nov-29&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;David Brownell&quot;
 DECL|macro|DRIVER_DESC
@@ -70,7 +70,7 @@ mdefine_line|#define&t;EHCI_TUNE_MULT_TT&t;1
 DECL|macro|EHCI_WATCHDOG_JIFFIES
 mdefine_line|#define EHCI_WATCHDOG_JIFFIES&t;(HZ/100)&t;/* arbitrary; ~10 msec */
 DECL|macro|EHCI_ASYNC_JIFFIES
-mdefine_line|#define EHCI_ASYNC_JIFFIES&t;(HZ/3)&t;&t;/* async idle timeout */
+mdefine_line|#define EHCI_ASYNC_JIFFIES&t;(HZ/20)&t;&t;/* async idle timeout */
 multiline_comment|/* Initial IRQ latency:  lower than default */
 DECL|variable|log2_irq_thresh
 r_static
@@ -377,7 +377,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ehci-&gt;async
+id|ehci-&gt;async-&gt;qh_next.qh
 )paren
 id|temp
 op_assign
@@ -981,10 +981,6 @@ id|HCC_ISOC_THRES
 id|hcc_params
 )paren
 suffix:semicolon
-id|ehci-&gt;async
-op_assign
-l_int|0
-suffix:semicolon
 id|ehci-&gt;reclaim
 op_assign
 l_int|0
@@ -1034,6 +1030,62 @@ id|ehci-&gt;periodic_dma
 comma
 op_amp
 id|ehci-&gt;regs-&gt;frame_list
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * dedicate a qh for the async ring head, since we couldn&squot;t unlink&n;&t; * a &squot;real&squot; qh without stopping the async schedule [4.8].  use it&n;&t; * as the &squot;reclamation list head&squot; too.&n;&t; */
+id|ehci-&gt;async-&gt;qh_next.qh
+op_assign
+l_int|0
+suffix:semicolon
+id|ehci-&gt;async-&gt;hw_next
+op_assign
+id|QH_NEXT
+(paren
+id|ehci-&gt;async-&gt;qh_dma
+)paren
+suffix:semicolon
+id|ehci-&gt;async-&gt;hw_info1
+op_assign
+id|cpu_to_le32
+(paren
+id|QH_HEAD
+)paren
+suffix:semicolon
+id|ehci-&gt;async-&gt;hw_token
+op_assign
+id|cpu_to_le32
+(paren
+id|QTD_STS_HALT
+)paren
+suffix:semicolon
+id|ehci-&gt;async-&gt;hw_qtd_next
+op_assign
+id|EHCI_LIST_END
+suffix:semicolon
+id|ehci-&gt;async-&gt;qh_state
+op_assign
+id|QH_STATE_LINKED
+suffix:semicolon
+id|ehci_qtd_free
+(paren
+id|ehci
+comma
+id|ehci-&gt;async-&gt;dummy
+)paren
+suffix:semicolon
+id|ehci-&gt;async-&gt;dummy
+op_assign
+l_int|0
+suffix:semicolon
+id|writel
+(paren
+(paren
+id|u32
+)paren
+id|ehci-&gt;async-&gt;qh_dma
+comma
+op_amp
+id|ehci-&gt;regs-&gt;async_next
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * hcc_params controls whether ehci-&gt;regs-&gt;segment must (!!!)&n;&t; * be used; it constrains QH/ITD/SITD and QTD locations.&n;&t; * pci_pool consistent memory always uses segment zero.&n;&t; * streaming mappings for I/O buffers, like pci_map_single(),&n;&t; * can return segments above 4GB, if the device allows.&n;&t; *&n;&t; * NOTE:  layered drivers can&squot;t yet tell when we enable that,&n;&t; * so they can&squot;t pass this info along (like NETIF_F_HIGHDMA)&n;&t; * (or like Scsi_Host.highmem_io) ... usb_bus.flags?&n;&t; */

@@ -1,5 +1,14 @@
 multiline_comment|/*&n; * Copyright (c) 2001-2002 by David Brownell&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* this file is part of ehci-hcd.c */
+DECL|macro|ehci_dbg
+mdefine_line|#define ehci_dbg(ehci, fmt, args...) &bslash;&n;&t;dev_dbg (*(ehci)-&gt;hcd.controller, fmt, ## args )
+macro_line|#ifdef EHCI_VERBOSE_DEBUG
+DECL|macro|ehci_vdbg
+mdefine_line|#define ehci_vdbg(ehci, fmt, args...) &bslash;&n;&t;dev_dbg (*(ehci)-&gt;hcd.controller, fmt, ## args )
+macro_line|#else
+DECL|macro|ehci_vdbg
+mdefine_line|#define ehci_vdbg(ehci, fmt, args...) do { } while (0)
+macro_line|#endif
 macro_line|#ifdef EHCI_VERBOSE_DEBUG
 DECL|macro|vdbg
 macro_line|#&t;define vdbg dbg
@@ -1776,18 +1785,19 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_if
-c_cond
+r_for
+c_loop
 (paren
-id|ehci-&gt;async
-)paren
-(brace
 id|qh
 op_assign
-id|ehci-&gt;async
+id|ehci-&gt;async-&gt;qh_next.qh
 suffix:semicolon
-r_do
-(brace
+id|qh
+suffix:semicolon
+id|qh
+op_assign
+id|qh-&gt;qh_next.qh
+)paren
 id|qh_lines
 (paren
 id|qh
@@ -1799,20 +1809,6 @@ op_amp
 id|size
 )paren
 suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-(paren
-id|qh
-op_assign
-id|qh-&gt;qh_next.qh
-)paren
-op_ne
-id|ehci-&gt;async
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
