@@ -5995,8 +5995,8 @@ DECL|macro|USB_DEVICE_ID_WACOM_INTUOS2
 mdefine_line|#define USB_DEVICE_ID_WACOM_INTUOS2&t;0x0040
 DECL|macro|USB_VENDOR_ID_AIPTEK
 mdefine_line|#define USB_VENDOR_ID_AIPTEK&t;&t;0x08ca
-DECL|macro|USB_VENDOR_ID_AIPTEK_6000
-mdefine_line|#define USB_VENDOR_ID_AIPTEK_6000&t;0x0020
+DECL|macro|USB_DEVICE_ID_AIPTEK_6000
+mdefine_line|#define USB_DEVICE_ID_AIPTEK_6000&t;0x0020
 DECL|macro|USB_VENDOR_ID_GRIFFIN
 mdefine_line|#define USB_VENDOR_ID_GRIFFIN&t;&t;0x077d
 DECL|macro|USB_DEVICE_ID_POWERMATE
@@ -6180,14 +6180,6 @@ comma
 id|USB_DEVICE_ID_WACOM_PL
 op_plus
 l_int|5
-comma
-id|HID_QUIRK_IGNORE
-)brace
-comma
-(brace
-id|USB_VENDOR_ID_WACOM
-comma
-id|USB_DEVICE_ID_WACOM_INTUOS2
 comma
 id|HID_QUIRK_IGNORE
 )brace
