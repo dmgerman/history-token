@@ -9548,7 +9548,7 @@ id|i
 )braket
 dot
 id|val
-op_assign
+op_add_assign
 l_int|1
 op_plus
 id|pmu_conf.perf_ovfl_val
