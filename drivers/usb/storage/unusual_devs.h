@@ -2070,7 +2070,7 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
-multiline_comment|/* Casio QV 2x00/3x00/4000/8000 digital still cameras are not conformant&n; * to the USB storage specification in two ways:&n; * - They tell us they are using transport protocol CBI. In reality they&n; *   are using transport protocol CB.&n; * - They don&squot;t like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; * - Some cameras with idProduct=0x1001 and bcdDevice=0x1000 have&n; *   bInterfaceProtocol=0x00 (US_PR_CBI) while others have 0x01 (US_PR_CB).&n; *   So don&squot;t remove the US_PR_CB override!&n; */
+multiline_comment|/* Casio QV 2x00/3x00/4000/8000 digital still cameras are not conformant&n; * to the USB storage specification in two ways:&n; * - They tell us they are using transport protocol CBI. In reality they&n; *   are using transport protocol CB.&n; * - They don&squot;t like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; * - Some cameras with idProduct=0x1001 and bcdDevice=0x1000 have&n; *   bInterfaceProtocol=0x00 (US_PR_CBI) while others have 0x01 (US_PR_CB).&n; *   So don&squot;t remove the US_PR_CB override!&n; * - Cameras with bcdDevice=0x9009 require the US_SC_8070 override.&n; */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -2080,13 +2080,13 @@ l_int|0x1001
 comma
 l_int|0x1000
 comma
-l_int|0x9009
+l_int|0x9999
 comma
 l_string|&quot;Casio&quot;
 comma
 l_string|&quot;QV DigitalCamera&quot;
 comma
-id|US_SC_DEVICE
+id|US_SC_8070
 comma
 id|US_PR_CB
 comma
@@ -2094,31 +2094,6 @@ l_int|NULL
 comma
 id|US_FL_NEED_OVERRIDE
 op_or
-id|US_FL_FIX_INQUIRY
-)paren
-comma
-multiline_comment|/* Later Casio cameras apparently tell the truth */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x07cf
-comma
-l_int|0x1001
-comma
-l_int|0x9010
-comma
-l_int|0x9999
-comma
-l_string|&quot;Casio&quot;
-comma
-l_string|&quot;QV DigitalCamera&quot;
-comma
-id|US_SC_DEVICE
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
