@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for sync_blockdev() */
 macro_line|#include &lt;linux/bio.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
 macro_line|#include &quot;jfs_metapage.h&quot;
@@ -6343,6 +6344,30 @@ id|log_redrive_lock
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+(brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|log_redrive_lock
+)paren
+suffix:semicolon
+id|refrigerator
+c_func
+(paren
+id|PF_IOTHREAD
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|add_wait_queue
 c_func
 (paren
@@ -6385,6 +6410,7 @@ op_amp
 id|wq
 )paren
 suffix:semicolon
+)brace
 )brace
 r_while
 c_loop
