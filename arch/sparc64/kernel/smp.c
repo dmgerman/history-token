@@ -4414,13 +4414,7 @@ op_eq
 id|boot_cpu_id
 )paren
 (brace
-id|kstat_cpu
-c_func
-(paren
-id|cpu
-)paren
-dot
-id|irqs
+id|kstat_this_cpu.irqs
 (braket
 l_int|0
 )braket
