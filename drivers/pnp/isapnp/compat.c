@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &quot;base.h&quot;
 DECL|function|pnp_convert_id
 r_static
 r_void
@@ -113,8 +112,6 @@ l_int|8
 op_amp
 l_int|0x0f
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|function|pnp_find_card
