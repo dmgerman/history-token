@@ -2640,7 +2640,6 @@ multiline_comment|/* Read a word from the EEPROM using the regular EEPROM access
 DECL|function|read_eeprom
 r_static
 id|ushort
-id|__init
 id|read_eeprom
 c_func
 (paren
