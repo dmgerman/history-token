@@ -2453,6 +2453,7 @@ op_star
 id|shp
 comma
 r_char
+id|__user
 op_star
 id|shmaddr
 comma
