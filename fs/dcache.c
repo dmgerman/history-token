@@ -4072,7 +4072,7 @@ id|dcache_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * d_path - return the path of a dentry&n; * @dentry: dentry to report&n; * @vfsmnt: vfsmnt to which the dentry belongs&n; * @root: root dentry&n; * @rootmnt: vfsmnt to which the root dentry belongs&n; * @buffer: buffer to return value in&n; * @buflen: buffer length&n; *&n; * Convert a dentry into an ASCII path name. If the entry has been deleted&n; * the string &quot; (deleted)&quot; is appended. Note that this is ambiguous. Returns&n; * the buffer.&n; *&n; * &quot;buflen&quot; should be positive. Caller holds the dcache_lock.&n; */
+multiline_comment|/**&n; * d_path - return the path of a dentry&n; * @dentry: dentry to report&n; * @vfsmnt: vfsmnt to which the dentry belongs&n; * @root: root dentry&n; * @rootmnt: vfsmnt to which the root dentry belongs&n; * @buffer: buffer to return value in&n; * @buflen: buffer length&n; *&n; * Convert a dentry into an ASCII path name. If the entry has been deleted&n; * the string &quot; (deleted)&quot; is appended. Note that this is ambiguous.&n; *&n; * Returns the buffer or an error code if the path was too long.&n; *&n; * &quot;buflen&quot; should be positive. Caller holds the dcache_lock.&n; */
 DECL|function|__d_path
 r_static
 r_char

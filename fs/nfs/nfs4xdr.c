@@ -996,8 +996,7 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
-id|out
-suffix:colon
+multiline_comment|/* out: */
 r_return
 id|status
 suffix:semicolon

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#ifdef CONFIG_PNP_DEBUG
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG

@@ -942,6 +942,7 @@ id|value
 op_or_assign
 id|APIC_SPIV_APIC_ENABLED
 suffix:semicolon
+multiline_comment|/* This bit is reserved on P4/Xeon and should be cleared */
 r_if
 c_cond
 (paren
