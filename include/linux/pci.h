@@ -2263,7 +2263,16 @@ op_star
 )paren
 suffix:semicolon
 r_void
-id|pci_remove_device
+id|pci_remove_bus_device
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+)paren
+suffix:semicolon
+r_void
+id|pci_remove_behind_bridge
 c_func
 (paren
 r_struct
