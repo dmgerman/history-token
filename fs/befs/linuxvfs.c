@@ -2929,6 +2929,7 @@ DECL|enumerator|Opt_uid
 DECL|enumerator|Opt_gid
 DECL|enumerator|Opt_charset
 DECL|enumerator|Opt_debug
+DECL|enumerator|Opt_err
 id|Opt_uid
 comma
 id|Opt_gid
@@ -2936,6 +2937,8 @@ comma
 id|Opt_charset
 comma
 id|Opt_debug
+comma
+id|Opt_err
 comma
 )brace
 suffix:semicolon
@@ -2967,6 +2970,12 @@ comma
 id|Opt_debug
 comma
 l_string|&quot;debug&quot;
+)brace
+comma
+(brace
+id|Opt_err
+comma
+l_int|NULL
 )brace
 )brace
 suffix:semicolon
