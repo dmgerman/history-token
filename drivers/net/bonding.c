@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * originally based on the dummy device.&n; *&n; * Copyright 1999, Thomas Davis, tadavis@lbl.gov.  &n; * Licensed under the GPL. Based on dummy.c, and eql.c devices.&n; *&n; * bonding.c: an Ethernet Bonding driver&n; *&n; * This is useful to talk to a Cisco EtherChannel compatible equipment:&n; *&t;Cisco 5500&n; *&t;Sun Trunking (Solaris)&n; *&t;Alteon AceDirector Trunks&n; *&t;Linux Bonding&n; *&t;and probably many L2 switches ...&n; *&n; * How it works:&n; *    ifconfig bond0 ipaddress netmask up&n; *      will setup a network device, with an ip address.  No mac address &n; *&t;will be assigned at this time.  The hw mac address will come from &n; *&t;the first slave bonded to the channel.  All slaves will then use &n; *&t;this hw mac address.&n; *&n; *    ifconfig bond0 down&n; *         will release all slaves, marking them as down.&n; *&n; *    ifenslave bond0 eth0&n; *&t;will attach eth0 to bond0 as a slave.  eth0 hw mac address will either&n; *&t;a: be used as initial mac address&n; *&t;b: if a hw mac address already is there, eth0&squot;s hw mac address &n; *&t;   will then be set from bond0.&n; *&n; * v0.1 - first working version.&n; * v0.2 - changed stats to be calculated by summing slaves stats.&n; *&n; * Changes:&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * - fix leaks on failure at bond_init&n; *&n; * 2000/09/30 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - added trivial code to release a slave device.&n; *     - fixed security bug (CAP_NET_ADMIN not checked)&n; *     - implemented MII link monitoring to disable dead links :&n; *       All MII capable slaves are checked every &lt;miimon&gt; milliseconds&n; *       (100 ms seems good). This value can be changed by passing it to&n; *       insmod. A value of zero disables the monitoring (default).&n; *     - fixed an infinite loop in bond_xmit_roundrobin() when there&squot;s no&n; *       good slave.&n; *     - made the code hopefully SMP safe&n; *&n; * 2000/10/03 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - optimized slave lists based on relevant suggestions from Thomas Davis&n; *     - implemented active-backup method to obtain HA with two switches:&n; *       stay as long as possible on the same active interface, while we&n; *       also monitor the backup one (MII link status) because we want to know&n; *       if we are able to switch at any time. ( pass &quot;mode=1&quot; to insmod )&n; *     - lots of stress testings because we need it to be more robust than the&n; *       wires ! :-&gt;&n; *&n; * 2000/10/09 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - added up and down delays after link state change.&n; *     - optimized the slaves chaining so that when we run forward, we never&n; *       repass through the bond itself, but we can find it by searching&n; *       backwards. Renders the deletion more difficult, but accelerates the&n; *       scan.&n; *     - smarter enslaving and releasing.&n; *     - finer and more robust SMP locking&n; *&n; * 2000/10/17 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - fixed two potential SMP race conditions&n; *&n; * 2000/10/18 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - small fixes to the monitoring FSM in case of zero delays&n; * 2000/11/01 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - fixed first slave not automatically used in trunk mode.&n; * 2000/11/10 : spelling of &quot;EtherChannel&quot; corrected.&n; * 2000/11/13 : fixed a race condition in case of concurrent accesses to ioctl().&n; * 2000/12/16 : fixed improper usage of rtnl_exlock_nowait().&n; *&n; * 2001/1/3 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - The bonding driver now simulates MII status monitoring, just like&n; *       a normal network device.  It will show that the link is down iff&n; *       every slave in the bond shows that their links are down.  If at least&n; *       one slave is up, the bond&squot;s MII status will appear as up.&n; *&n; * 2001/2/7 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Applications can now query the bond from user space to get&n; *       information which may be useful.  They do this by calling&n; *       the BOND_INFO_QUERY ioctl.  Once the app knows how many slaves&n; *       are in the bond, it can call the BOND_SLAVE_INFO_QUERY ioctl to&n; *       get slave specific information (# link failures, etc).  See&n; *       &lt;linux/if_bonding.h&gt; for more details.  The structs of interest&n; *       are ifbond and ifslave.&n; *&n; * 2001/4/5 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Ported to 2.4 Kernel&n; * &n; * 2001/5/2 - Jeffrey E. Mast &lt;jeff at mastfamily dot com&gt;&n; *     - When a device is detached from a bond, the slave device is no longer&n; *       left thinking that is has a master.&n; *&n; * 2001/5/16 - Jeffrey E. Mast &lt;jeff at mastfamily dot com&gt;&n; *     - memset did not appropriately initialized the bond rw_locks. Used &n; *       rwlock_init to initialize to unlocked state to prevent deadlock when &n; *       first attempting a lock&n; *     - Called SET_MODULE_OWNER for bond device&n; *&n; * 2001/5/17 - Tim Anderson &lt;tsa at mvista.com&gt;&n; *     - 2 paths for releasing for slave release; 1 through ioctl&n; *       and 2) through close. Both paths need to release the same way.&n; *     - the free slave in bond release is changing slave status before&n; *       the free. The netdev_set_master() is intended to change slave state&n; *       so it should not be done as part of the release process.&n; *     - Simple rule for slave state at release: only the active in A/B and&n; *       only one in the trunked case.&n; *&n; * 2001/6/01 - Tim Anderson &lt;tsa at mvista.com&gt;&n; *     - Now call dev_close when releasing a slave so it doesn&squot;t screw up&n; *       out routing table.&n; *&n; * 2001/6/01 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Added /proc support for getting bond and slave information.&n; *       Information is in /proc/net/&lt;bond device&gt;/info. &n; *     - Changed the locking when calling bond_close to prevent deadlock.&n; *&n; * 2001/8/05 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - correct problem where refcnt of slave is not incremented in bond_ioctl&n; *       so the system hangs when halting.&n; *     - correct locking problem when unable to malloc in bond_enslave.&n; *     - adding bond_xmit_xor logic.&n; *     - adding multiple bond device support.&n; *&n; * 2001/8/13 - Erik Habbinga &lt;erik_habbinga at hp dot com&gt;&n; *     - correct locking problem with rtnl_exlock_nowait&n; *&n; * 2001/8/23 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - bzero initial dev_bonds, to correct oops&n; *     - convert SIOCDEVPRIVATE to new MII ioctl calls&n; *&n; * 2001/9/13 - Takao Indoh &lt;indou dot takao at jp dot fujitsu dot com&gt;&n; *     - Add the BOND_CHANGE_ACTIVE ioctl implementation&n; *&n; * 2001/9/14 - Mark Huth &lt;mhuth at mvista dot com&gt;&n; *     - Change MII_LINK_READY to not check for end of auto-negotiation,&n; *       but only for an up link.&n; *&n; * 2001/9/20 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Add the device field to bonding_t.  Previously the net_device &n; *       corresponding to a bond wasn&squot;t available from the bonding_t &n; *       structure.&n; *&n; * 2001/9/25 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - add arp_monitor for active backup mode&n; *&n; * 2001/10/23 - Takao Indoh &lt;indou dot takao at jp dot fujitsu dot com&gt;&n; *     - Various memory leak fixes&n; *&n; * 2001/11/5 - Mark Huth &lt;mark dot huth at mvista dot com&gt;&n; *     - Don&squot;t take rtnl lock in bond_mii_monitor as it deadlocks under &n; *       certain hotswap conditions.  &n; *       Note:  this same change may be required in bond_arp_monitor ???&n; *     - Remove possibility of calling bond_sethwaddr with NULL slave_dev ptr &n; *     - Handle hot swap ethernet interface deregistration events to remove&n; *       kernel oops following hot swap of enslaved interface&n; *&n; * 2002/1/2 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Restore original slave flags at release time.&n; *&n; * 2002/02/18 - Erik Habbinga &lt;erik_habbinga at hp dot com&gt;&n; *     - bond_release(): calling kfree on our_slave after call to&n; *       bond_restore_slave_flags, not before&n; *     - bond_enslave(): saving slave flags into original_flags before&n; *       call to netdev_set_master, so the IFF_SLAVE flag doesn&squot;t end&n; *       up in original_flags&n; *&n; * 2002/04/05 - Mark Smith &lt;mark.smith at comdev dot cc&gt; and&n; *              Steve Mead &lt;steve.mead at comdev dot cc&gt;&n; *     - Port Gleb Natapov&squot;s multicast support patchs from 2.4.12&n; *       to 2.4.18 adding support for multicast.&n; *&n; * 2002/06/17 - Tony Cureington &lt;tony.cureington * hp_com&gt;&n; *     - corrected uninitialized pointer (ifr.ifr_data) in bond_check_dev_link;&n; *       actually changed function to use ETHTOOL, then MIIPHY, and finally&n; *       MIIREG to determine the link status&n; *     - fixed bad ifr_data pointer assignments in bond_ioctl&n; *     - corrected mode 1 being reported as active-backup in bond_get_info;&n; *       also added text to distinguish type of load balancing (rr or xor)&n; *     - change arp_ip_target module param from &quot;1-12s&quot; (array of 12 ptrs)&n; *       to &quot;s&quot; (a single ptr)&n; */
+multiline_comment|/*&n; * originally based on the dummy device.&n; *&n; * Copyright 1999, Thomas Davis, tadavis@lbl.gov.  &n; * Licensed under the GPL. Based on dummy.c, and eql.c devices.&n; *&n; * bonding.c: an Ethernet Bonding driver&n; *&n; * This is useful to talk to a Cisco EtherChannel compatible equipment:&n; *&t;Cisco 5500&n; *&t;Sun Trunking (Solaris)&n; *&t;Alteon AceDirector Trunks&n; *&t;Linux Bonding&n; *&t;and probably many L2 switches ...&n; *&n; * How it works:&n; *    ifconfig bond0 ipaddress netmask up&n; *      will setup a network device, with an ip address.  No mac address &n; *&t;will be assigned at this time.  The hw mac address will come from &n; *&t;the first slave bonded to the channel.  All slaves will then use &n; *&t;this hw mac address.&n; *&n; *    ifconfig bond0 down&n; *         will release all slaves, marking them as down.&n; *&n; *    ifenslave bond0 eth0&n; *&t;will attach eth0 to bond0 as a slave.  eth0 hw mac address will either&n; *&t;a: be used as initial mac address&n; *&t;b: if a hw mac address already is there, eth0&squot;s hw mac address &n; *&t;   will then be set from bond0.&n; *&n; * v0.1 - first working version.&n; * v0.2 - changed stats to be calculated by summing slaves stats.&n; *&n; * Changes:&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * - fix leaks on failure at bond_init&n; *&n; * 2000/09/30 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - added trivial code to release a slave device.&n; *     - fixed security bug (CAP_NET_ADMIN not checked)&n; *     - implemented MII link monitoring to disable dead links :&n; *       All MII capable slaves are checked every &lt;miimon&gt; milliseconds&n; *       (100 ms seems good). This value can be changed by passing it to&n; *       insmod. A value of zero disables the monitoring (default).&n; *     - fixed an infinite loop in bond_xmit_roundrobin() when there&squot;s no&n; *       good slave.&n; *     - made the code hopefully SMP safe&n; *&n; * 2000/10/03 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - optimized slave lists based on relevant suggestions from Thomas Davis&n; *     - implemented active-backup method to obtain HA with two switches:&n; *       stay as long as possible on the same active interface, while we&n; *       also monitor the backup one (MII link status) because we want to know&n; *       if we are able to switch at any time. ( pass &quot;mode=1&quot; to insmod )&n; *     - lots of stress testings because we need it to be more robust than the&n; *       wires ! :-&gt;&n; *&n; * 2000/10/09 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - added up and down delays after link state change.&n; *     - optimized the slaves chaining so that when we run forward, we never&n; *       repass through the bond itself, but we can find it by searching&n; *       backwards. Renders the deletion more difficult, but accelerates the&n; *       scan.&n; *     - smarter enslaving and releasing.&n; *     - finer and more robust SMP locking&n; *&n; * 2000/10/17 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - fixed two potential SMP race conditions&n; *&n; * 2000/10/18 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - small fixes to the monitoring FSM in case of zero delays&n; * 2000/11/01 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - fixed first slave not automatically used in trunk mode.&n; * 2000/11/10 : spelling of &quot;EtherChannel&quot; corrected.&n; * 2000/11/13 : fixed a race condition in case of concurrent accesses to ioctl().&n; * 2000/12/16 : fixed improper usage of rtnl_exlock_nowait().&n; *&n; * 2001/1/3 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - The bonding driver now simulates MII status monitoring, just like&n; *       a normal network device.  It will show that the link is down iff&n; *       every slave in the bond shows that their links are down.  If at least&n; *       one slave is up, the bond&squot;s MII status will appear as up.&n; *&n; * 2001/2/7 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Applications can now query the bond from user space to get&n; *       information which may be useful.  They do this by calling&n; *       the BOND_INFO_QUERY ioctl.  Once the app knows how many slaves&n; *       are in the bond, it can call the BOND_SLAVE_INFO_QUERY ioctl to&n; *       get slave specific information (# link failures, etc).  See&n; *       &lt;linux/if_bonding.h&gt; for more details.  The structs of interest&n; *       are ifbond and ifslave.&n; *&n; * 2001/4/5 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Ported to 2.4 Kernel&n; * &n; * 2001/5/2 - Jeffrey E. Mast &lt;jeff at mastfamily dot com&gt;&n; *     - When a device is detached from a bond, the slave device is no longer&n; *       left thinking that is has a master.&n; *&n; * 2001/5/16 - Jeffrey E. Mast &lt;jeff at mastfamily dot com&gt;&n; *     - memset did not appropriately initialized the bond rw_locks. Used &n; *       rwlock_init to initialize to unlocked state to prevent deadlock when &n; *       first attempting a lock&n; *     - Called SET_MODULE_OWNER for bond device&n; *&n; * 2001/5/17 - Tim Anderson &lt;tsa at mvista.com&gt;&n; *     - 2 paths for releasing for slave release; 1 through ioctl&n; *       and 2) through close. Both paths need to release the same way.&n; *     - the free slave in bond release is changing slave status before&n; *       the free. The netdev_set_master() is intended to change slave state&n; *       so it should not be done as part of the release process.&n; *     - Simple rule for slave state at release: only the active in A/B and&n; *       only one in the trunked case.&n; *&n; * 2001/6/01 - Tim Anderson &lt;tsa at mvista.com&gt;&n; *     - Now call dev_close when releasing a slave so it doesn&squot;t screw up&n; *       out routing table.&n; *&n; * 2001/6/01 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Added /proc support for getting bond and slave information.&n; *       Information is in /proc/net/&lt;bond device&gt;/info. &n; *     - Changed the locking when calling bond_close to prevent deadlock.&n; *&n; * 2001/8/05 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - correct problem where refcnt of slave is not incremented in bond_ioctl&n; *       so the system hangs when halting.&n; *     - correct locking problem when unable to malloc in bond_enslave.&n; *     - adding bond_xmit_xor logic.&n; *     - adding multiple bond device support.&n; *&n; * 2001/8/13 - Erik Habbinga &lt;erik_habbinga at hp dot com&gt;&n; *     - correct locking problem with rtnl_exlock_nowait&n; *&n; * 2001/8/23 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - bzero initial dev_bonds, to correct oops&n; *     - convert SIOCDEVPRIVATE to new MII ioctl calls&n; *&n; * 2001/9/13 - Takao Indoh &lt;indou dot takao at jp dot fujitsu dot com&gt;&n; *     - Add the BOND_CHANGE_ACTIVE ioctl implementation&n; *&n; * 2001/9/14 - Mark Huth &lt;mhuth at mvista dot com&gt;&n; *     - Change MII_LINK_READY to not check for end of auto-negotiation,&n; *       but only for an up link.&n; *&n; * 2001/9/20 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Add the device field to bonding_t.  Previously the net_device &n; *       corresponding to a bond wasn&squot;t available from the bonding_t &n; *       structure.&n; *&n; * 2001/9/25 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - add arp_monitor for active backup mode&n; *&n; * 2001/10/23 - Takao Indoh &lt;indou dot takao at jp dot fujitsu dot com&gt;&n; *     - Various memory leak fixes&n; *&n; * 2001/11/5 - Mark Huth &lt;mark dot huth at mvista dot com&gt;&n; *     - Don&squot;t take rtnl lock in bond_mii_monitor as it deadlocks under &n; *       certain hotswap conditions.  &n; *       Note:  this same change may be required in bond_arp_monitor ???&n; *     - Remove possibility of calling bond_sethwaddr with NULL slave_dev ptr &n; *     - Handle hot swap ethernet interface deregistration events to remove&n; *       kernel oops following hot swap of enslaved interface&n; *&n; * 2002/1/2 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Restore original slave flags at release time.&n; *&n; * 2002/02/18 - Erik Habbinga &lt;erik_habbinga at hp dot com&gt;&n; *     - bond_release(): calling kfree on our_slave after call to&n; *       bond_restore_slave_flags, not before&n; *     - bond_enslave(): saving slave flags into original_flags before&n; *       call to netdev_set_master, so the IFF_SLAVE flag doesn&squot;t end&n; *       up in original_flags&n; *&n; * 2002/04/05 - Mark Smith &lt;mark.smith at comdev dot cc&gt; and&n; *              Steve Mead &lt;steve.mead at comdev dot cc&gt;&n; *     - Port Gleb Natapov&squot;s multicast support patchs from 2.4.12&n; *       to 2.4.18 adding support for multicast.&n; *&n; * 2002/06/17 - Tony Cureington &lt;tony.cureington * hp_com&gt;&n; *     - corrected uninitialized pointer (ifr.ifr_data) in bond_check_dev_link;&n; *       actually changed function to use ETHTOOL, then MIIPHY, and finally&n; *       MIIREG to determine the link status&n; *     - fixed bad ifr_data pointer assignments in bond_ioctl&n; *     - corrected mode 1 being reported as active-backup in bond_get_info;&n; *       also added text to distinguish type of load balancing (rr or xor)&n; *     - change arp_ip_target module param from &quot;1-12s&quot; (array of 12 ptrs)&n; *       to &quot;s&quot; (a single ptr)&n; *&n; * 2002/09/18 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *     - Fixed up bond_check_dev_link() (and callers): removed some magic&n; *&t; numbers, banished local MII_ defines, wrapped ioctl calls to&n; *&t; prevent EFAULT errors&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -35,18 +35,6 @@ macro_line|#ifndef BOND_LINK_MON_INTERV
 DECL|macro|BOND_LINK_MON_INTERV
 mdefine_line|#define BOND_LINK_MON_INTERV&t;0
 macro_line|#endif
-DECL|macro|MII_LINK_UP
-macro_line|#undef  MII_LINK_UP
-DECL|macro|MII_LINK_UP
-mdefine_line|#define MII_LINK_UP&t;0x04
-DECL|macro|MII_ENDOF_NWAY
-macro_line|#undef  MII_ENDOF_NWAY
-DECL|macro|MII_ENDOF_NWAY
-mdefine_line|#define MII_ENDOF_NWAY&t;0x20
-DECL|macro|MII_LINK_READY
-macro_line|#undef  MII_LINK_READY
-DECL|macro|MII_LINK_READY
-mdefine_line|#define MII_LINK_READY&t;(MII_LINK_UP)
 macro_line|#ifndef BOND_LINK_ARP_INTERV
 DECL|macro|BOND_LINK_ARP_INTERV
 mdefine_line|#define BOND_LINK_ARP_INTERV&t;0
@@ -918,7 +906,10 @@ r_return
 id|slave
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * if &lt;dev&gt; supports MII link status reporting, check its link&n; * and report it as a bit field in a short int :&n; *   - 0x04 means link is up,&n; *   - 0x20 means end of autonegociation&n; * If the device doesn&squot;t support MII, then we only report 0x24,&n; * meaning that the link is up and running since we can&squot;t check it.&n; */
+multiline_comment|/*&n; * Less bad way to call ioctl from within the kernel; this needs to be&n; * done some other way to get the call out of interrupt context.&n; * Needs &quot;ioctl&quot; variable to be supplied by calling context.&n; */
+DECL|macro|IOCTL
+mdefine_line|#define IOCTL(dev, arg, cmd) ({&t;&t;&bslash;&n;&t;int ret;&t;&t;&t;&bslash;&n;&t;mm_segment_t fs = get_fs();&t;&bslash;&n;&t;set_fs(get_ds());&t;&t;&bslash;&n;&t;ret = ioctl(dev, arg, cmd);&t;&bslash;&n;&t;set_fs(fs);&t;&t;&t;&bslash;&n;&t;ret; })
+multiline_comment|/* &n; * if &lt;dev&gt; supports MII link status reporting, check its link status.&n; *&n; * Return either BMSR_LSTATUS, meaning that the link is up (or we&n; * can&squot;t tell and just pretend it is), or 0, meaning that the link is&n; * down.&n; */
 DECL|function|bond_check_dev_link
 r_static
 id|u16
@@ -962,19 +953,16 @@ r_struct
 id|ethtool_value
 id|etool
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|ioctl
 op_assign
 id|dev-&gt;do_ioctl
-)paren
-op_ne
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ioctl
 )paren
 (brace
-multiline_comment|/* ioctl to access MII */
 multiline_comment|/* TODO: set pointer to correct ioctl on a per team member */
 multiline_comment|/*       bases to make this more efficient. that is, once  */
 multiline_comment|/*       we determine the correct ioctl, we will always    */
@@ -1001,7 +989,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ioctl
+id|IOCTL
 c_func
 (paren
 id|dev
@@ -1024,7 +1012,7 @@ l_int|1
 )paren
 (brace
 r_return
-id|MII_LINK_READY
+id|BMSR_LSTATUS
 suffix:semicolon
 )brace
 r_else
@@ -1049,7 +1037,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ioctl
+id|IOCTL
 c_func
 (paren
 id|dev
@@ -1064,18 +1052,18 @@ l_int|0
 )paren
 (brace
 r_return
-id|MII_LINK_READY
+id|BMSR_LSTATUS
 suffix:semicolon
 multiline_comment|/* can&squot;t tell */
 )brace
 id|mii-&gt;reg_num
 op_assign
-l_int|1
+id|MII_BMSR
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ioctl
+id|IOCTL
 c_func
 (paren
 id|dev
@@ -1089,14 +1077,15 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * mii-&gt;val_out contains MII reg 1, BMSR&n;&t;&t;&t; * 0x0004 means link established&n;&t;&t;&t; */
 r_return
 id|mii-&gt;val_out
+op_amp
+id|BMSR_LSTATUS
 suffix:semicolon
 )brace
 )brace
 r_return
-id|MII_LINK_READY
+id|BMSR_LSTATUS
 suffix:semicolon
 multiline_comment|/* spoof link up ( we can&squot;t check it) */
 )brace
@@ -1165,7 +1154,7 @@ r_return
 id|has_active_interface
 ques
 c_cond
-id|MII_LINK_READY
+id|BMSR_LSTATUS
 suffix:colon
 l_int|0
 )paren
@@ -2603,17 +2592,13 @@ l_int|0
 )paren
 op_logical_or
 (paren
-(paren
 id|bond_check_dev_link
 c_func
 (paren
 id|slave_dev
 )paren
-op_amp
-id|MII_LINK_READY
-)paren
 op_eq
-id|MII_LINK_READY
+id|BMSR_LSTATUS
 )paren
 )paren
 (brace
@@ -4111,13 +4096,9 @@ multiline_comment|/* the link was up */
 r_if
 c_cond
 (paren
-(paren
 id|link_state
-op_amp
-id|MII_LINK_UP
-)paren
 op_eq
-id|MII_LINK_UP
+id|BMSR_LSTATUS
 )paren
 (brace
 multiline_comment|/* link stays up, tell that this one&n;&t;&t;&t;&t;   is immediately available */
@@ -4241,13 +4222,9 @@ multiline_comment|/* the link has just gone down */
 r_if
 c_cond
 (paren
-(paren
 id|link_state
-op_amp
-id|MII_LINK_UP
-)paren
-op_eq
-l_int|0
+op_ne
+id|BMSR_LSTATUS
 )paren
 (brace
 multiline_comment|/* link stays down */
@@ -4351,17 +4328,6 @@ suffix:semicolon
 )brace
 )brace
 r_else
-r_if
-c_cond
-(paren
-(paren
-id|link_state
-op_amp
-id|MII_LINK_READY
-)paren
-op_eq
-id|MII_LINK_READY
-)paren
 (brace
 multiline_comment|/* link up again */
 id|slave-&gt;link
@@ -4426,13 +4392,9 @@ multiline_comment|/* the link was down */
 r_if
 c_cond
 (paren
-(paren
 id|link_state
-op_amp
-id|MII_LINK_READY
-)paren
 op_ne
-id|MII_LINK_READY
+id|BMSR_LSTATUS
 )paren
 (brace
 multiline_comment|/* the link stays down, nothing more to do */
@@ -4484,13 +4446,9 @@ multiline_comment|/* the link has just come back */
 r_if
 c_cond
 (paren
-(paren
 id|link_state
-op_amp
-id|MII_LINK_UP
-)paren
-op_eq
-l_int|0
+op_ne
+id|BMSR_LSTATUS
 )paren
 (brace
 multiline_comment|/* link down again */
@@ -4520,17 +4478,6 @@ id|dev-&gt;name
 suffix:semicolon
 )brace
 r_else
-r_if
-c_cond
-(paren
-(paren
-id|link_state
-op_amp
-id|MII_LINK_READY
-)paren
-op_eq
-id|MII_LINK_READY
-)paren
 (brace
 multiline_comment|/* link stays up */
 r_if
@@ -7795,7 +7742,7 @@ id|len
 comma
 id|link
 op_eq
-id|MII_LINK_READY
+id|BMSR_LSTATUS
 ques
 c_cond
 l_string|&quot;up&bslash;n&quot;

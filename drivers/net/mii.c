@@ -993,11 +993,7 @@ op_assign
 (paren
 id|media
 op_amp
-(paren
-id|ADVERTISE_100FULL
-op_or
-id|ADVERTISE_10FULL
-)paren
+id|ADVERTISE_FULL
 )paren
 ques
 c_cond
