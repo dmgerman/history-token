@@ -3,6 +3,7 @@ DECL|macro|_PPC64_IO_H
 mdefine_line|#define _PPC64_IO_H
 multiline_comment|/* &n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#ifdef CONFIG_PPC_ISERIES 
@@ -53,79 +54,291 @@ mdefine_line|#define __raw_writel(v, addr)   { BUG(); 0; }
 DECL|macro|__raw_writeq
 mdefine_line|#define __raw_writeq(v, addr)   { BUG(); 0; }
 DECL|macro|readb
-mdefine_line|#define readb(addr)&t;&t;iSeries_Read_Byte((void*)(addr))  
+mdefine_line|#define readb(addr)&t;&t;iSeries_Read_Byte(addr)
 DECL|macro|readw
-mdefine_line|#define readw(addr)&t;&t;iSeries_Read_Word((void*)(addr))  
+mdefine_line|#define readw(addr)&t;&t;iSeries_Read_Word(addr)
 DECL|macro|readl
-mdefine_line|#define readl(addr)&t;&t;iSeries_Read_Long((void*)(addr))
+mdefine_line|#define readl(addr)&t;&t;iSeries_Read_Long(addr)
 DECL|macro|writeb
-mdefine_line|#define writeb(data, addr)&t;iSeries_Write_Byte(data,((void*)(addr)))
+mdefine_line|#define writeb(data, addr)&t;iSeries_Write_Byte((data),(addr))
 DECL|macro|writew
-mdefine_line|#define writew(data, addr)&t;iSeries_Write_Word(data,((void*)(addr)))
+mdefine_line|#define writew(data, addr)&t;iSeries_Write_Word((data),(addr))
 DECL|macro|writel
-mdefine_line|#define writel(data, addr)&t;iSeries_Write_Long(data,((void*)(addr)))
+mdefine_line|#define writel(data, addr)&t;iSeries_Write_Long((data),(addr))
 DECL|macro|memset_io
-mdefine_line|#define memset_io(a,b,c)&t;iSeries_memset_io((void *)(a),(b),(c))
+mdefine_line|#define memset_io(a,b,c)&t;iSeries_memset_io((a),(b),(c))
 DECL|macro|memcpy_fromio
-mdefine_line|#define memcpy_fromio(a,b,c)&t;iSeries_memcpy_fromio((void *)(a), (void *)(b), (c))
+mdefine_line|#define memcpy_fromio(a,b,c)&t;iSeries_memcpy_fromio((a), (b), (c))
 DECL|macro|memcpy_toio
-mdefine_line|#define memcpy_toio(a,b,c)&t;iSeries_memcpy_toio((void *)(a), (void *)(b), (c))
+mdefine_line|#define memcpy_toio(a,b,c)&t;iSeries_memcpy_toio((a), (b), (c))
 DECL|macro|inb
-mdefine_line|#define inb(addr)&t;&t;readb(((unsigned long)(addr)))  
+mdefine_line|#define inb(addr)&t;&t;readb(((void __iomem *)(long)(addr)))
 DECL|macro|inw
-mdefine_line|#define inw(addr)&t;&t;readw(((unsigned long)(addr)))  
+mdefine_line|#define inw(addr)&t;&t;readw(((void __iomem *)(long)(addr)))
 DECL|macro|inl
-mdefine_line|#define inl(addr)&t;&t;readl(((unsigned long)(addr)))
+mdefine_line|#define inl(addr)&t;&t;readl(((void __iomem *)(long)(addr)))
 DECL|macro|outb
-mdefine_line|#define outb(data,addr)&t;&t;writeb(data,((unsigned long)(addr)))  
+mdefine_line|#define outb(data,addr)&t;&t;writeb(data,((void __iomem *)(long)(addr)))
 DECL|macro|outw
-mdefine_line|#define outw(data,addr)&t;&t;writew(data,((unsigned long)(addr)))  
+mdefine_line|#define outw(data,addr)&t;&t;writew(data,((void __iomem *)(long)(addr)))
 DECL|macro|outl
-mdefine_line|#define outl(data,addr)&t;&t;writel(data,((unsigned long)(addr)))
+mdefine_line|#define outl(data,addr)&t;&t;writel(data,((void __iomem *)(long)(addr)))
 multiline_comment|/*&n; * The *_ns versions below don&squot;t do byte-swapping.&n; * Neither do the standard versions now, these are just here&n; * for older code.&n; */
 DECL|macro|insw_ns
 mdefine_line|#define insw_ns(port, buf, ns)&t;_insw_ns((u16 *)((port)+pci_io_base), (buf), (ns))
 DECL|macro|insl_ns
 mdefine_line|#define insl_ns(port, buf, nl)&t;_insl_ns((u32 *)((port)+pci_io_base), (buf), (nl))
 macro_line|#else
-DECL|macro|__raw_readb
-mdefine_line|#define __raw_readb(addr)       (*(volatile unsigned char *)(addr))
-DECL|macro|__raw_readw
-mdefine_line|#define __raw_readw(addr)       (*(volatile unsigned short *)(addr))
-DECL|macro|__raw_readl
-mdefine_line|#define __raw_readl(addr)       (*(volatile unsigned int *)(addr))
-DECL|macro|__raw_readq
-mdefine_line|#define __raw_readq(addr)       (*(volatile unsigned long *)(addr))
-DECL|macro|__raw_writeb
-mdefine_line|#define __raw_writeb(v, addr)   (*(volatile unsigned char *)(addr) = (v))
-DECL|macro|__raw_writew
-mdefine_line|#define __raw_writew(v, addr)   (*(volatile unsigned short *)(addr) = (v))
-DECL|macro|__raw_writel
-mdefine_line|#define __raw_writel(v, addr)   (*(volatile unsigned int *)(addr) = (v))
-DECL|macro|__raw_writeq
-mdefine_line|#define __raw_writeq(v, addr)   (*(volatile unsigned long *)(addr) = (v))
+DECL|function|__raw_readb
+r_static
+r_inline
+r_int
+r_char
+id|__raw_readb
+c_func
+(paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|addr
+)paren
+(brace
+r_return
+op_star
+(paren
+r_int
+r_char
+id|__force
+op_star
+)paren
+id|addr
+suffix:semicolon
+)brace
+DECL|function|__raw_readw
+r_static
+r_inline
+r_int
+r_int
+id|__raw_readw
+c_func
+(paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|addr
+)paren
+(brace
+r_return
+op_star
+(paren
+r_int
+r_int
+id|__force
+op_star
+)paren
+id|addr
+suffix:semicolon
+)brace
+DECL|function|__raw_readl
+r_static
+r_inline
+r_int
+r_int
+id|__raw_readl
+c_func
+(paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|addr
+)paren
+(brace
+r_return
+op_star
+(paren
+r_int
+r_int
+id|__force
+op_star
+)paren
+id|addr
+suffix:semicolon
+)brace
+DECL|function|__raw_readq
+r_static
+r_inline
+r_int
+r_int
+id|__raw_readq
+c_func
+(paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|addr
+)paren
+(brace
+r_return
+op_star
+(paren
+r_int
+r_int
+id|__force
+op_star
+)paren
+id|addr
+suffix:semicolon
+)brace
+DECL|function|__raw_writeb
+r_static
+r_inline
+r_void
+id|__raw_writeb
+c_func
+(paren
+r_int
+r_char
+id|v
+comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|addr
+)paren
+(brace
+op_star
+(paren
+r_int
+r_char
+id|__force
+op_star
+)paren
+id|addr
+op_assign
+id|v
+suffix:semicolon
+)brace
+DECL|function|__raw_writew
+r_static
+r_inline
+r_void
+id|__raw_writew
+c_func
+(paren
+r_int
+r_int
+id|v
+comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|addr
+)paren
+(brace
+op_star
+(paren
+r_int
+r_int
+id|__force
+op_star
+)paren
+id|addr
+op_assign
+id|v
+suffix:semicolon
+)brace
+DECL|function|__raw_writel
+r_static
+r_inline
+r_void
+id|__raw_writel
+c_func
+(paren
+r_int
+r_int
+id|v
+comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|addr
+)paren
+(brace
+op_star
+(paren
+r_int
+r_int
+id|__force
+op_star
+)paren
+id|addr
+op_assign
+id|v
+suffix:semicolon
+)brace
+DECL|function|__raw_writeq
+r_static
+r_inline
+r_void
+id|__raw_writeq
+c_func
+(paren
+r_int
+r_int
+id|v
+comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|addr
+)paren
+(brace
+op_star
+(paren
+r_int
+r_int
+id|__force
+op_star
+)paren
+id|addr
+op_assign
+id|v
+suffix:semicolon
+)brace
 DECL|macro|readb
-mdefine_line|#define readb(addr)&t;&t;eeh_readb((void*)(addr))  
+mdefine_line|#define readb(addr)&t;&t;eeh_readb(addr)
 DECL|macro|readw
-mdefine_line|#define readw(addr)&t;&t;eeh_readw((void*)(addr))  
+mdefine_line|#define readw(addr)&t;&t;eeh_readw(addr)
 DECL|macro|readl
-mdefine_line|#define readl(addr)&t;&t;eeh_readl((void*)(addr))
+mdefine_line|#define readl(addr)&t;&t;eeh_readl(addr)
 DECL|macro|readq
-mdefine_line|#define readq(addr)&t;&t;eeh_readq((void*)(addr))
+mdefine_line|#define readq(addr)&t;&t;eeh_readq(addr)
 DECL|macro|writeb
-mdefine_line|#define writeb(data, addr)&t;eeh_writeb((data), ((void*)(addr)))
+mdefine_line|#define writeb(data, addr)&t;eeh_writeb((data), (addr))
 DECL|macro|writew
-mdefine_line|#define writew(data, addr)&t;eeh_writew((data), ((void*)(addr)))
+mdefine_line|#define writew(data, addr)&t;eeh_writew((data), (addr))
 DECL|macro|writel
-mdefine_line|#define writel(data, addr)&t;eeh_writel((data), ((void*)(addr)))
+mdefine_line|#define writel(data, addr)&t;eeh_writel((data), (addr))
 DECL|macro|writeq
-mdefine_line|#define writeq(data, addr)&t;eeh_writeq((data), ((void*)(addr)))
+mdefine_line|#define writeq(data, addr)&t;eeh_writeq((data), (addr))
 DECL|macro|memset_io
-mdefine_line|#define memset_io(a,b,c)&t;eeh_memset_io((void *)(a),(b),(c))
+mdefine_line|#define memset_io(a,b,c)&t;eeh_memset_io((a),(b),(c))
 DECL|macro|memcpy_fromio
-mdefine_line|#define memcpy_fromio(a,b,c)&t;eeh_memcpy_fromio((a),(void *)(b),(c))
+mdefine_line|#define memcpy_fromio(a,b,c)&t;eeh_memcpy_fromio((a),(b),(c))
 DECL|macro|memcpy_toio
-mdefine_line|#define memcpy_toio(a,b,c)&t;eeh_memcpy_toio((void *)(a),(b),(c))
+mdefine_line|#define memcpy_toio(a,b,c)&t;eeh_memcpy_toio((a),(b),(c))
 DECL|macro|inb
 mdefine_line|#define inb(port)&t;&t;eeh_inb((unsigned long)port)
 DECL|macro|outb
@@ -394,6 +607,7 @@ id|flags
 suffix:semicolon
 r_extern
 r_void
+id|__iomem
 op_star
 id|__ioremap
 c_func
@@ -414,6 +628,7 @@ suffix:semicolon
 multiline_comment|/**&n; * ioremap     -   map bus memory into CPU space&n; * @address:   bus address of the memory&n; * @size:      size of the resource to map&n; *&n; * ioremap performs a platform specific sequence of operations to&n; * make bus memory CPU accessible via the readb/readw/readl/writeb/&n; * writew/writel functions and the other mmio helpers. The returned&n; * address is not guaranteed to be usable directly as a virtual&n; * address.&n; */
 r_extern
 r_void
+id|__iomem
 op_star
 id|ioremap
 c_func
@@ -434,7 +649,9 @@ r_int
 id|iounmap_explicit
 c_func
 (paren
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 comma
@@ -448,7 +665,9 @@ r_void
 id|iounmap
 c_func
 (paren
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -1160,8 +1379,11 @@ r_int
 id|check_signature
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|io_addr
 comma
 r_const

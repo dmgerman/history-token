@@ -1111,6 +1111,7 @@ id|dev
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|rom
 suffix:semicolon
@@ -1465,8 +1466,8 @@ multiline_comment|/* I simplified this code as we used to miss the signatures in
 id|u32
 id|segstart
 suffix:semicolon
-r_int
-r_char
+r_void
+id|__iomem
 op_star
 id|rom_base
 op_assign
@@ -1490,10 +1491,6 @@ l_int|0x00001000
 (brace
 id|rom_base
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -1516,29 +1513,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|readb
+c_func
 (paren
-op_star
 id|rom_base
+)paren
 op_eq
 l_int|0x55
-)paren
 op_logical_and
-(paren
-(paren
-(paren
-op_star
+id|readb
+c_func
 (paren
 id|rom_base
 op_plus
 l_int|1
 )paren
-)paren
-op_amp
-l_int|0xff
-)paren
 op_eq
 l_int|0xaa
-)paren
 )paren
 r_break
 suffix:semicolon
@@ -7650,7 +7641,8 @@ c_cond
 id|count
 )paren
 (brace
-r_char
+r_void
+id|__iomem
 op_star
 id|base_addr
 suffix:semicolon
@@ -7672,6 +7664,7 @@ comma
 id|count
 )paren
 suffix:semicolon
+multiline_comment|/* Ayee!! */
 r_if
 c_cond
 (paren
@@ -7820,7 +7813,8 @@ c_cond
 id|count
 )paren
 (brace
-r_char
+r_void
+id|__iomem
 op_star
 id|base_addr
 suffix:semicolon
@@ -7842,6 +7836,7 @@ comma
 id|count
 )paren
 suffix:semicolon
+multiline_comment|/* Ayee!! */
 op_star
 id|ppos
 op_add_assign
@@ -7995,10 +7990,6 @@ id|radeonfb_ops
 suffix:semicolon
 id|info-&gt;screen_base
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|rinfo-&gt;fb_base
 suffix:semicolon
 multiline_comment|/* Fill fix common fields */
@@ -9436,10 +9427,6 @@ suffix:semicolon
 multiline_comment|/* map the regions */
 id|rinfo-&gt;mmio_base
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -9904,10 +9891,6 @@ r_do
 (brace
 id|rinfo-&gt;fb_base
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 (paren
 id|rinfo-&gt;fb_base_phys
@@ -10304,11 +10287,8 @@ suffix:semicolon
 id|err_unmap_fb
 suffix:colon
 id|iounmap
+c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|rinfo-&gt;fb_base
 )paren
 suffix:semicolon
@@ -10376,11 +10356,8 @@ id|pdev
 )paren
 suffix:semicolon
 id|iounmap
+c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|rinfo-&gt;mmio_base
 )paren
 suffix:semicolon
@@ -10494,20 +10471,14 @@ id|info
 )paren
 suffix:semicolon
 id|iounmap
+c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|rinfo-&gt;mmio_base
 )paren
 suffix:semicolon
 id|iounmap
+c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|rinfo-&gt;fb_base
 )paren
 suffix:semicolon

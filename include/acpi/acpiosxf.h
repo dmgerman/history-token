@@ -203,6 +203,7 @@ id|acpi_size
 id|size
 comma
 r_void
+id|__iomem
 op_star
 op_star
 id|logical_address
@@ -212,6 +213,7 @@ r_void
 id|acpi_os_unmap_memory
 (paren
 r_void
+id|__iomem
 op_star
 id|logical_address
 comma

@@ -1553,7 +1553,10 @@ r_int
 id|eeh_check_failure
 c_func
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|token
 comma
@@ -2521,6 +2524,7 @@ suffix:semicolon
 multiline_comment|/*&n; * If EEH is implemented, find the PCI device using given phys addr&n; * and check to see if eeh failure checking is disabled.&n; * Remap the addr (trivially) to the EEH region if EEH checking enabled.&n; * For addresses not known to PCI the vaddr is simply returned unchanged.&n; */
 DECL|function|eeh_ioremap
 r_void
+id|__iomem
 op_star
 id|eeh_ioremap
 c_func
@@ -2530,6 +2534,7 @@ r_int
 id|addr
 comma
 r_void
+id|__iomem
 op_star
 id|vaddr
 )paren
@@ -2622,6 +2627,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|IO_ADDR_TO_TOKEN

@@ -350,6 +350,7 @@ id|flags
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|mem_base
 suffix:semicolon

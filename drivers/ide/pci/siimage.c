@@ -2911,11 +2911,8 @@ id|tmpbyte
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-r_int
-id|addr
-suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ioaddr
 suffix:semicolon
@@ -2987,16 +2984,12 @@ c_func
 (paren
 id|dev
 comma
-id|ioaddr
-)paren
-suffix:semicolon
-id|addr
-op_assign
 (paren
-r_int
-r_int
+r_void
+op_star
 )paren
 id|ioaddr
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3013,7 +3006,7 @@ c_func
 (paren
 l_int|0
 comma
-id|addr
+id|ioaddr
 op_plus
 l_int|0x148
 )paren
@@ -3023,7 +3016,7 @@ c_func
 (paren
 l_int|0
 comma
-id|addr
+id|ioaddr
 op_plus
 l_int|0x1C8
 )paren
@@ -3034,7 +3027,7 @@ c_func
 (paren
 l_int|0
 comma
-id|addr
+id|ioaddr
 op_plus
 l_int|0xB4
 )paren
@@ -3044,7 +3037,7 @@ c_func
 (paren
 l_int|0
 comma
-id|addr
+id|ioaddr
 op_plus
 l_int|0xF4
 )paren
@@ -3054,7 +3047,7 @@ op_assign
 id|readb
 c_func
 (paren
-id|addr
+id|ioaddr
 op_plus
 l_int|0x4A
 )paren
@@ -3078,7 +3071,7 @@ id|tmpbyte
 op_or
 l_int|0x10
 comma
-id|addr
+id|ioaddr
 op_plus
 l_int|0x4A
 )paren
@@ -3110,7 +3103,7 @@ op_amp
 op_complement
 l_int|0x20
 comma
-id|addr
+id|ioaddr
 op_plus
 l_int|0x4A
 )paren
@@ -3123,7 +3116,7 @@ c_func
 (paren
 l_int|0x72
 comma
-id|addr
+id|ioaddr
 op_plus
 l_int|0xA1
 )paren
@@ -3133,7 +3126,7 @@ c_func
 (paren
 l_int|0x328A
 comma
-id|addr
+id|ioaddr
 op_plus
 l_int|0xA2
 )paren
@@ -3143,7 +3136,7 @@ c_func
 (paren
 l_int|0x62DD62DD
 comma
-id|addr
+id|ioaddr
 op_plus
 l_int|0xA4
 )paren
@@ -3153,7 +3146,7 @@ c_func
 (paren
 l_int|0x43924392
 comma
-id|addr
+id|ioaddr
 op_plus
 l_int|0xA8
 )paren
@@ -3163,7 +3156,7 @@ c_func
 (paren
 l_int|0x40094009
 comma
-id|addr
+id|ioaddr
 op_plus
 l_int|0xAC
 )paren
@@ -3173,7 +3166,7 @@ c_func
 (paren
 l_int|0x72
 comma
-id|addr
+id|ioaddr
 op_plus
 l_int|0xE1
 )paren
@@ -3183,7 +3176,7 @@ c_func
 (paren
 l_int|0x328A
 comma
-id|addr
+id|ioaddr
 op_plus
 l_int|0xE2
 )paren
@@ -3193,7 +3186,7 @@ c_func
 (paren
 l_int|0x62DD62DD
 comma
-id|addr
+id|ioaddr
 op_plus
 l_int|0xE4
 )paren
@@ -3203,7 +3196,7 @@ c_func
 (paren
 l_int|0x43924392
 comma
-id|addr
+id|ioaddr
 op_plus
 l_int|0xE8
 )paren
@@ -3213,7 +3206,7 @@ c_func
 (paren
 l_int|0x40094009
 comma
-id|addr
+id|ioaddr
 op_plus
 l_int|0xEC
 )paren
@@ -3233,7 +3226,7 @@ c_func
 (paren
 l_int|0xFFFF0000
 comma
-id|addr
+id|ioaddr
 op_plus
 l_int|0x108
 )paren
@@ -3243,7 +3236,7 @@ c_func
 (paren
 l_int|0xFFFF0000
 comma
-id|addr
+id|ioaddr
 op_plus
 l_int|0x188
 )paren
@@ -3253,7 +3246,7 @@ c_func
 (paren
 l_int|0x00680000
 comma
-id|addr
+id|ioaddr
 op_plus
 l_int|0x148
 )paren
@@ -3263,7 +3256,7 @@ c_func
 (paren
 l_int|0x00680000
 comma
-id|addr
+id|ioaddr
 op_plus
 l_int|0x1C8
 )paren
@@ -3274,7 +3267,7 @@ op_assign
 id|readb
 c_func
 (paren
-id|addr
+id|ioaddr
 op_plus
 l_int|0x4A
 )paren
