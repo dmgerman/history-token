@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;AMD Elan SC520 processor Watchdog Timer driver&n; *&n; *      Based on acquirewdt.c by Alan Cox,&n; *           and sbc60xxwdt.c by Jakob Oestergaard &lt;jakob@unthought.net&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;The authors do NOT admit liability nor provide warranty for&n; *&t;any of this software. This material is provided &quot;AS-IS&quot; in&n; *      the hope that it may be useful for others.&n; *&n; *&t;(c) Copyright 2001    Scott Jennings &lt;linuxdrivers@oro.net&gt;&n; *           9/27 - 2001      [Initial release]&n; *&n; *&t;Additional fixes Alan Cox&n; *&t;-&t;Fixed formatting&n; *&t;-&t;Removed debug printks&n; *&t;-&t;Fixed SMP built kernel deadlock&n; *&t;-&t;Switched to private locks not lock_kernel&n; *&t;-&t;Used ioremap/writew/readw&n; *&t;-&t;Added NOWAYOUT support&n; *&n; *     4/12 - 2002 Changes by Rob Radez &lt;rob@osinvestor.com&gt;&n; *     -       Change comments&n; *     -       Eliminate fop_llseek&n; *     -       Change CONFIG_WATCHDOG_NOWAYOUT semantics&n; *     -       Add KERN_* tags to printks&n; *     -       fix possible wdt_is_open race&n; *     -       Report proper capabilities in watchdog_info&n; *     -       Add WDIOC_{GETSTATUS, GETBOOTSTATUS, SETOPTIONS} ioctls&n; *     09/8 - 2003 Changes by Wim Van Sebroeck &lt;wim@iguana.be&gt;&n; *     -       cleanup of trailing spaces&n; *     -       added extra printk&squot;s for startup problems&n; *     -       use module_param&n; *&n; *  This WDT driver is different from most other Linux WDT&n; *  drivers in that the driver will ping the watchdog by itself,&n; *  because this particular WDT has a very short timeout (1.6&n; *  seconds) and it would be insane to count on any userspace&n; *  daemon always getting scheduled within that time frame.&n; *&n; *  This driver uses memory mapped IO, and spinlock.&n; */
+multiline_comment|/*&n; *&t;AMD Elan SC520 processor Watchdog Timer driver&n; *&n; *      Based on acquirewdt.c by Alan Cox,&n; *           and sbc60xxwdt.c by Jakob Oestergaard &lt;jakob@unthought.net&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;The authors do NOT admit liability nor provide warranty for&n; *&t;any of this software. This material is provided &quot;AS-IS&quot; in&n; *      the hope that it may be useful for others.&n; *&n; *&t;(c) Copyright 2001    Scott Jennings &lt;linuxdrivers@oro.net&gt;&n; *           9/27 - 2001      [Initial release]&n; *&n; *&t;Additional fixes Alan Cox&n; *&t;-&t;Fixed formatting&n; *&t;-&t;Removed debug printks&n; *&t;-&t;Fixed SMP built kernel deadlock&n; *&t;-&t;Switched to private locks not lock_kernel&n; *&t;-&t;Used ioremap/writew/readw&n; *&t;-&t;Added NOWAYOUT support&n; *&n; *     4/12 - 2002 Changes by Rob Radez &lt;rob@osinvestor.com&gt;&n; *     -       Change comments&n; *     -       Eliminate fop_llseek&n; *     -       Change CONFIG_WATCHDOG_NOWAYOUT semantics&n; *     -       Add KERN_* tags to printks&n; *     -       fix possible wdt_is_open race&n; *     -       Report proper capabilities in watchdog_info&n; *     -       Add WDIOC_{GETSTATUS, GETBOOTSTATUS, SETTIMEOUT,&n; *             GETTIMEOUT, SETOPTIONS} ioctls&n; *     09/8 - 2003 Changes by Wim Van Sebroeck &lt;wim@iguana.be&gt;&n; *     -       cleanup of trailing spaces&n; *     -       added extra printk&squot;s for startup problems&n; *     -       use module_param&n; *     -       made timeout (the emulated heartbeat) a module_param&n; *     -       made the keepalive ping an internal subroutine&n; *&n; *  This WDT driver is different from most other Linux WDT&n; *  drivers in that the driver will ping the watchdog by itself,&n; *  because this particular WDT has a very short timeout (1.6&n; *  seconds) and it would be insane to count on any userspace&n; *  daemon always getting scheduled within that time frame.&n; *&n; *  This driver uses memory mapped IO, and spinlock.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -17,8 +17,40 @@ multiline_comment|/*&n; * The SC520 can timeout anywhere from 492us to 32.21s.&n
 DECL|macro|WDT_INTERVAL
 mdefine_line|#define WDT_INTERVAL (HZ/4+1)
 multiline_comment|/*&n; * We must not require too good response from the userspace daemon.&n; * Here we require the userspace daemon to send us a heartbeat&n; * char to /dev/watchdog every 30 seconds.&n; */
-DECL|macro|WDT_HEARTBEAT
-mdefine_line|#define WDT_HEARTBEAT (HZ * 30)
+DECL|macro|WATCHDOG_TIMEOUT
+mdefine_line|#define WATCHDOG_TIMEOUT 30&t;&t;/* 30 sec default timeout */
+DECL|variable|timeout
+r_static
+r_int
+id|timeout
+op_assign
+id|WATCHDOG_TIMEOUT
+suffix:semicolon
+multiline_comment|/* in seconds, will be multiplied by HZ to get seconds to wait for a ping */
+id|module_param
+c_func
+(paren
+id|timeout
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|timeout
+comma
+l_string|&quot;Watchdog timeout in seconds. (1&lt;=timeout&lt;=3600, default=&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|WATCHDOG_TIMEOUT
+)paren
+l_string|&quot;)&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * AMD Elan SC520 timeout value is 492us times a power of 2 (0-7)&n; *&n; *   0: 492us    2: 1.01s    4: 4.03s   6: 16.22s&n; *   1: 503ms    3: 2.01s    5: 8.05s   7: 32.21s&n; */
 DECL|macro|TIMEOUT_EXPONENT
 mdefine_line|#define TIMEOUT_EXPONENT ( 1 &lt;&lt; 3 )  /* 0x08 = 2.01s */
@@ -300,7 +332,11 @@ id|next_heartbeat
 op_assign
 id|jiffies
 op_plus
-id|WDT_HEARTBEAT
+(paren
+id|timeout
+op_star
+id|HZ
+)paren
 suffix:semicolon
 multiline_comment|/* Start the timer */
 id|timer.expires
@@ -374,6 +410,27 @@ l_string|&quot;Watchdog timer is now disabled...&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+)brace
+DECL|function|wdt_keepalive
+r_static
+r_void
+id|wdt_keepalive
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* user land ping */
+id|next_heartbeat
+op_assign
+id|jiffies
+op_plus
+(paren
+id|timeout
+op_star
+id|HZ
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * /dev/watchdog handling&n; */
 DECL|function|fop_write
@@ -489,11 +546,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Well, anyhow someone wrote to us, we should return that favour */
-id|next_heartbeat
-op_assign
-id|jiffies
-op_plus
-id|WDT_HEARTBEAT
+id|wdt_keepalive
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -659,6 +715,8 @@ id|options
 op_assign
 id|WDIOF_KEEPALIVEPING
 op_or
+id|WDIOF_SETTIMEOUT
+op_or
 id|WDIOF_MAGICCLOSE
 comma
 dot
@@ -735,11 +793,10 @@ suffix:semicolon
 r_case
 id|WDIOC_KEEPALIVE
 suffix:colon
-id|next_heartbeat
-op_assign
-id|jiffies
-op_plus
-id|WDT_HEARTBEAT
+id|wdt_keepalive
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -817,6 +874,75 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+r_case
+id|WDIOC_SETTIMEOUT
+suffix:colon
+(brace
+r_int
+id|new_timeout
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|new_timeout
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|new_timeout
+template_param
+l_int|3600
+)paren
+(brace
+multiline_comment|/* arbitrary upper limit */
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+id|timeout
+op_assign
+id|new_timeout
+suffix:semicolon
+id|wdt_keepalive
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Fall through */
+)brace
+r_case
+id|WDIOC_GETTIMEOUT
+suffix:colon
+r_return
+id|put_user
+c_func
+(paren
+id|timeout
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+suffix:semicolon
 )brace
 )brace
 DECL|variable|wdt_fops
@@ -1015,6 +1141,30 @@ op_amp
 id|wdt_spinlock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|timeout
+template_param
+l_int|3600
+)paren
+multiline_comment|/* arbitrary upper limit */
+(brace
+id|timeout
+op_assign
+id|WATCHDOG_TIMEOUT
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;timeout value must be 1&lt;=x&lt;=3600, using %d&bslash;n&quot;
+comma
+id|timeout
+)paren
+suffix:semicolon
+)brace
 id|init_timer
 c_func
 (paren
@@ -1196,7 +1346,9 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;WDT driver for SC520 initialised. (nowayout=%d)&bslash;n&quot;
+l_string|&quot;WDT driver for SC520 initialised. timeout=%d sec (nowayout=%d)&bslash;n&quot;
+comma
+id|timeout
 comma
 id|nowayout
 )paren
