@@ -181,7 +181,7 @@ mdefine_line|#define NCR5380_region_size 0x3a00
 DECL|macro|NCR5380_read
 mdefine_line|#define NCR5380_read(reg) isa_readb(NCR5380_map_name + NCR53C400_mem_base + (reg))
 DECL|macro|NCR5380_write
-mdefine_line|#define NCR5380_write(reg, value) isa_writeb(NCR5380_map_name + NCR53C400_mem_base + (reg), value)
+mdefine_line|#define NCR5380_write(reg, value) isa_writeb(value, NCR5380_map_name + NCR53C400_mem_base + (reg))
 macro_line|#endif
 DECL|macro|NCR5380_implementation_fields
 mdefine_line|#define NCR5380_implementation_fields &bslash;&n;    NCR5380_map_type NCR5380_map_name
