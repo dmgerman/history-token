@@ -581,7 +581,7 @@ op_or
 id|MCLK_CNTL__FORCE_YCLKA
 )paren
 suffix:semicolon
-id|OUTREG
+id|OUTPLL
 c_func
 (paren
 id|pllMCLK_CNTL
@@ -1565,7 +1565,7 @@ id|tmp
 op_or_assign
 id|PLL_PWRMGT_CNTL__TCL_BYPASS_DISABLE
 suffix:semicolon
-id|OUTREG
+id|OUTPLL
 c_func
 (paren
 id|pllPLL_PWRMGT_CNTL
