@@ -2,6 +2,15 @@ multiline_comment|/*&n; * Linux ISDN subsystem, CISCO HDLC network interfaces&n;
 macro_line|#ifndef ISDN_CISCOHDLCK_H
 DECL|macro|ISDN_CISCOHDLCK_H
 mdefine_line|#define ISDN_CISCOHDLCK_H
+r_int
+id|isdn_ciscohdlck_setup
+c_func
+(paren
+id|isdn_net_dev
+op_star
+id|p
+)paren
+suffix:semicolon
 r_void
 id|isdn_ciscohdlck_connected
 c_func
@@ -18,15 +27,6 @@ c_func
 id|isdn_net_local
 op_star
 id|lp
-)paren
-suffix:semicolon
-r_int
-id|isdn_ciscohdlck_setup
-c_func
-(paren
-id|isdn_net_dev
-op_star
-id|p
 )paren
 suffix:semicolon
 r_void
