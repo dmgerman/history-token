@@ -898,11 +898,9 @@ id|xmit
 OL
 id|WAKEUP_CHARS
 )paren
-id|uart_event
+id|uart_write_wakeup
 (paren
 id|port
-comma
-id|EVT_WRITE_WAKEUP
 )paren
 suffix:semicolon
 )brace
