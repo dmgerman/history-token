@@ -13,6 +13,7 @@ macro_line|#include &quot;mce.h&quot;
 multiline_comment|/* Machine Check Handler For AMD Athlon/Duron */
 DECL|function|k7_machine_check
 r_static
+id|asmlinkage
 r_void
 id|k7_machine_check
 c_func
