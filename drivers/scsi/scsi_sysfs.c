@@ -894,7 +894,7 @@ c_cond
 (paren
 id|error
 )paren
-id|scsi_device_unregister
+id|scsi_remove_device
 c_func
 (paren
 id|sdev
@@ -953,7 +953,7 @@ c_cond
 (paren
 id|error
 )paren
-id|scsi_device_unregister
+id|scsi_remove_device
 c_func
 (paren
 id|sdev
@@ -965,10 +965,10 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_device_unregister - unregister a device from the scsi bus&n; * @sdev:&t;scsi_device to unregister&n; **/
-DECL|function|scsi_device_unregister
+multiline_comment|/**&n; * scsi_remove_device - unregister a device from the scsi bus&n; * @sdev:&t;scsi_device to unregister&n; **/
+DECL|function|scsi_remove_device
 r_void
-id|scsi_device_unregister
+id|scsi_remove_device
 c_func
 (paren
 r_struct

@@ -397,7 +397,7 @@ id|uint
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|scsi_remove_device
 c_func
 (paren

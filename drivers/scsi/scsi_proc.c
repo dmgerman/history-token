@@ -939,13 +939,15 @@ id|sdev-&gt;access_count
 r_goto
 id|out
 suffix:semicolon
-id|error
-op_assign
 id|scsi_remove_device
 c_func
 (paren
 id|sdev
 )paren
+suffix:semicolon
+id|error
+op_assign
+l_int|0
 suffix:semicolon
 id|out
 suffix:colon

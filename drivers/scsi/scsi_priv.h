@@ -463,16 +463,6 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|scsi_device_unregister
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|scsi_sysfs_init_host
 c_func
 (paren
