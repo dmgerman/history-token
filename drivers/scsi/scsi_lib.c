@@ -116,6 +116,8 @@ comma
 id|at_head
 comma
 id|sreq
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -223,6 +225,8 @@ comma
 l_int|1
 comma
 id|cmd
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -1043,6 +1047,8 @@ comma
 l_int|1
 comma
 id|cmd
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|scsi_run_queue

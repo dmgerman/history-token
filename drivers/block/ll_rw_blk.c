@@ -4918,7 +4918,7 @@ id|rq
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * blk_insert_request - insert a special request in to a request queue&n; * @q:&t;&t;request queue where request should be inserted&n; * @rq:&t;&t;request to be inserted&n; * @at_head:&t;insert request at head or tail of queue&n; * @data:&t;private data&n; *&n; * Description:&n; *    Many block devices need to execute commands asynchronously, so they don&squot;t&n; *    block the whole kernel from preemption during request execution.  This is&n; *    accomplished normally by inserting aritficial requests tagged as&n; *    REQ_SPECIAL in to the corresponding request queue, and letting them be&n; *    scheduled for actual execution by the request queue.&n; *&n; *    We have the option of inserting the head or the tail of the queue.&n; *    Typically we use the tail for new ioctls and so forth.  We use the head&n; *    of the queue for things like a QUEUE_FULL message from a device, or a&n; *    host that is unable to accept a particular command.&n; */
+multiline_comment|/**&n; * blk_insert_request - insert a special request in to a request queue&n; * @q:&t;&t;request queue where request should be inserted&n; * @rq:&t;&t;request to be inserted&n; * @at_head:&t;insert request at head or tail of queue&n; * @data:&t;private data&n; * @reinsert:&t;true if request it a reinsertion of previously processed one&n; *&n; * Description:&n; *    Many block devices need to execute commands asynchronously, so they don&squot;t&n; *    block the whole kernel from preemption during request execution.  This is&n; *    accomplished normally by inserting aritficial requests tagged as&n; *    REQ_SPECIAL in to the corresponding request queue, and letting them be&n; *    scheduled for actual execution by the request queue.&n; *&n; *    We have the option of inserting the head or the tail of the queue.&n; *    Typically we use the tail for new ioctls and so forth.  We use the head&n; *    of the queue for things like a QUEUE_FULL message from a device, or a&n; *    host that is unable to accept a particular command.&n; */
 DECL|function|blk_insert_request
 r_void
 id|blk_insert_request
@@ -4939,6 +4939,9 @@ comma
 r_void
 op_star
 id|data
+comma
+r_int
+id|reinsert
 )paren
 (brace
 r_int
@@ -4965,6 +4968,23 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If command is tagged, release the tag&n;&t; */
+r_if
+c_cond
+(paren
+id|reinsert
+)paren
+(brace
+id|blk_requeue_request
+c_func
+(paren
+id|q
+comma
+id|rq
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 r_if
 c_cond
 (paren
@@ -5005,6 +5025,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 id|q
 op_member_access_from_pointer
 id|request_fn
