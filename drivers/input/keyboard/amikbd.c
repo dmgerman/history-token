@@ -217,9 +217,9 @@ l_int|67
 comma
 l_int|68
 comma
-l_int|69
+l_int|179
 comma
-l_int|70
+l_int|180
 comma
 l_int|98
 comma
@@ -227,7 +227,7 @@ l_int|55
 comma
 l_int|78
 comma
-l_int|87
+l_int|138
 comma
 l_int|42
 comma
@@ -240,6 +240,10 @@ comma
 l_int|56
 comma
 l_int|100
+comma
+l_int|125
+comma
+l_int|126
 )brace
 suffix:semicolon
 DECL|variable|amikbd_messages
