@@ -1600,6 +1600,50 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|acer_cpufreq_pst
+r_static
+id|__init
+r_int
+id|acer_cpufreq_pst
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s laptop with broken PST tables in BIOS detected.&bslash;n&quot;
+comma
+id|d-&gt;ident
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;You need to downgrade to 3A21 (09/09/2002), or try a newer BIOS than 3A71 (01/20/2003)&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;cpufreq scaling has been disabled as a result of this.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|dmi_broken
+op_or_assign
+id|BROKEN_CPUFREQ
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *&t;Simple &quot;print if true&quot; callback&n; */
 DECL|function|print_if_true
 r_static
