@@ -1070,11 +1070,11 @@ id|atomic_dec_and_lock
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
-DECL|variable|spin_unlock
+DECL|variable|_raw_spin_unlock
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|spin_unlock
+id|_raw_spin_unlock
 )paren
 suffix:semicolon
 DECL|variable|debug_spin_lock
@@ -1093,18 +1093,18 @@ id|debug_spin_trylock
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_DEBUG_RWLOCK
-DECL|variable|write_lock
+DECL|variable|_raw_write_lock
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|write_lock
+id|_raw_write_lock
 )paren
 suffix:semicolon
-DECL|variable|read_lock
+DECL|variable|_raw_read_lock
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|read_lock
+id|_raw_read_lock
 )paren
 suffix:semicolon
 macro_line|#endif
