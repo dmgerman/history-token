@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
@@ -355,20 +356,10 @@ c_func
 id|IPAQ_EGPIO_OPT_RESET
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
 l_int|10
-op_star
-id|HZ
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 id|soc_pcmcia_enable_irqs
