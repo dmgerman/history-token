@@ -444,20 +444,12 @@ mdefine_line|#define USG_MODEMORVOICE(x) (((x &amp; ISDN_USAGE_MASK)==ISDN_USAGE
 multiline_comment|/* Timer-delays and scheduling-flags */
 DECL|macro|ISDN_TIMER_RES
 mdefine_line|#define ISDN_TIMER_RES         4                         /* Main Timer-Resolution   */
-DECL|macro|ISDN_TIMER_02SEC
-mdefine_line|#define ISDN_TIMER_02SEC       (HZ/ISDN_TIMER_RES/5)     /* Slow-Timer1 .2 sec      */
-DECL|macro|ISDN_TIMER_1SEC
-mdefine_line|#define ISDN_TIMER_1SEC        (HZ/ISDN_TIMER_RES)       /* Slow-Timer2 1 sec       */
 DECL|macro|ISDN_TIMER_MODEMREAD
 mdefine_line|#define ISDN_TIMER_MODEMREAD   1
 DECL|macro|ISDN_TIMER_MODEMXMIT
 mdefine_line|#define ISDN_TIMER_MODEMXMIT   8
-DECL|macro|ISDN_TIMER_CARRIER
-mdefine_line|#define ISDN_TIMER_CARRIER   256 /* Wait for Carrier */
 DECL|macro|ISDN_TIMER_FAST
 mdefine_line|#define ISDN_TIMER_FAST      (ISDN_TIMER_MODEMREAD | ISDN_TIMER_MODEMXMIT)
-DECL|macro|ISDN_TIMER_SLOW
-mdefine_line|#define ISDN_TIMER_SLOW      (ISDN_TIMER_CARRIER)
 multiline_comment|/* GLOBAL_FLAGS */
 DECL|macro|ISDN_GLOBAL_STOPPED
 mdefine_line|#define ISDN_GLOBAL_STOPPED 1
@@ -620,11 +612,6 @@ r_int
 id|lastplus
 suffix:semicolon
 multiline_comment|/* Timestamp of last +                */
-DECL|member|carrierwait
-r_int
-id|carrierwait
-suffix:semicolon
-multiline_comment|/* Seconds of carrier waiting         */
 DECL|member|mdmcmd
 r_char
 id|mdmcmd
@@ -906,6 +893,12 @@ id|timer_list
 id|ring_timer
 suffix:semicolon
 multiline_comment|/* for writing &squot;RING&squot; responses   */
+DECL|member|connect_timer
+r_struct
+id|timer_list
+id|connect_timer
+suffix:semicolon
+multiline_comment|/* waiting for CONNECT            */
 DECL|member|normal_termios
 r_struct
 id|termios

@@ -146,14 +146,6 @@ DECL|macro|TTY_IS_FCLASS2
 mdefine_line|#define TTY_IS_FCLASS2(info) &bslash;&n;&t;((info-&gt;emu.mdmreg[REG_L2PROT] == ISDN_PROTO_L2_FAX) &amp;&amp; &bslash;&n;&t; (info-&gt;emu.mdmreg[REG_L3PROT] == ISDN_PROTO_L3_FCLASS2))
 r_extern
 r_void
-id|isdn_tty_carrier_timeout
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|isdn_tty_modem_xmit
 c_func
 (paren
