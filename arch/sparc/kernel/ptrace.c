@@ -1248,7 +1248,7 @@ id|PTRACE_TRACEME
 )paren
 (brace
 r_int
-id|ret
+id|my_ret
 suffix:semicolon
 multiline_comment|/* are we already being traced? */
 r_if
@@ -1271,7 +1271,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|ret
+id|my_ret
 op_assign
 id|security_ptrace
 c_func
@@ -1284,7 +1284,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ret
+id|my_ret
 )paren
 (brace
 id|pt_error_return
@@ -1293,7 +1293,7 @@ c_func
 id|regs
 comma
 op_minus
-id|ret
+id|my_ret
 )paren
 suffix:semicolon
 r_goto
@@ -1879,18 +1879,12 @@ id|pt_regs
 )paren
 )paren
 (brace
-id|i
-op_assign
-op_minus
-id|EFAULT
-suffix:semicolon
 id|pt_error_return
 c_func
 (paren
 id|regs
 comma
-op_minus
-id|i
+id|EFAULT
 )paren
 suffix:semicolon
 r_goto
