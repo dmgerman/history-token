@@ -4974,6 +4974,22 @@ id|tp
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|tcp_set_skb_tso_factor
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/* This checks if the data bearing packet SKB (usually sk-&gt;sk_send_head)&n; * should be put on the wire right now.&n; */
 DECL|function|tcp_snd_test
 r_static
@@ -5010,6 +5026,34 @@ id|skb
 op_member_access_from_pointer
 id|tso_factor
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pkts
+)paren
+(brace
+id|tcp_set_skb_tso_factor
+c_func
+(paren
+id|skb
+comma
+id|cur_mss
+comma
+id|tp-&gt;mss_cache_std
+)paren
+suffix:semicolon
+id|pkts
+op_assign
+id|TCP_SKB_CB
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|tso_factor
+suffix:semicolon
+)brace
 multiline_comment|/*&t;RFC 1122 - section 4.2.3.4&n;&t; *&n;&t; *&t;We must queue if&n;&t; *&n;&t; *&t;a) The right edge of this frame exceeds the window&n;&t; *&t;b) There are packets in flight and we have a small segment&n;&t; *&t;   [SWS avoidance and Nagle algorithm]&n;&t; *&t;   (part of SWS is done on packetization)&n;&t; *&t;   Minshall version sounds: there are no _small_&n;&t; *&t;   segments in flight. (tcp_nagle_check)&n;&t; *&t;c) We have too many packets &squot;in flight&squot;&n;&t; *&n;&t; * &t;Don&squot;t use the nagle rule for urgent data (or&n;&t; *&t;for the final FIN -DaveM).&n;&t; *&n;&t; *&t;Also, Nagle rule does not apply to frames, which&n;&t; *&t;sit in the middle of queue (they have no chances&n;&t; *&t;to get new data) and if room at tail of skb is&n;&t; *&t;not enough to save something seriously (&lt;32 for now).&n;&t; */
 multiline_comment|/* Don&squot;t be strict about the congestion window for the&n;&t; * final FIN frame.  -DaveM&n;&t; */
 r_return
