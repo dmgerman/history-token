@@ -631,6 +631,13 @@ id|qs-&gt;Version
 op_assign
 id|QNX4_VERSION
 suffix:semicolon
+macro_line|#ifndef CONFIG_QNX4FS_RW
+op_star
+id|flags
+op_or_assign
+id|MS_RDONLY
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

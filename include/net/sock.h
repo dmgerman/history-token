@@ -2229,9 +2229,11 @@ comma
 r_int
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -2249,6 +2251,7 @@ comma
 r_int
 comma
 r_char
+id|__user
 op_star
 comma
 r_int

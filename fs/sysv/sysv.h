@@ -201,6 +201,10 @@ id|u16
 id|s_namelen
 suffix:semicolon
 multiline_comment|/* max length of dir entry */
+DECL|member|s_forced_ro
+r_int
+id|s_forced_ro
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * SystemV/V7/Coherent FS inode data in memory&n; */

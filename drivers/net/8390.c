@@ -3764,6 +3764,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ei_debug
+OG
+l_int|1
+op_logical_and
 id|inb_p
 c_func
 (paren
@@ -3781,7 +3785,6 @@ id|dev-&gt;dev_addr
 id|i
 )braket
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -3791,7 +3794,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-)brace
 )brace
 id|outb_p
 c_func

@@ -442,7 +442,26 @@ DECL|macro|inb_p
 mdefine_line|#define inb_p(port)   in_8(port)
 DECL|macro|outb_p
 mdefine_line|#define outb_p(val,port)  out_8(port,val)
-macro_line|#elif defined(CONFIG_ARM_ETHERH) || defined(CONFIG_ARM_ETHERH_MODULE) || &bslash;&n;      defined(CONFIG_NET_CBUS)
+macro_line|#elif defined(CONFIG_ARM_ETHERH) || defined(CONFIG_ARM_ETHERH_MODULE)
+DECL|macro|EI_SHIFT
+mdefine_line|#define EI_SHIFT(x)&t;(ei_local-&gt;reg_offset[x])
+DECL|macro|inb
+macro_line|#undef inb
+DECL|macro|inb_p
+macro_line|#undef inb_p
+DECL|macro|outb
+macro_line|#undef outb
+DECL|macro|outb_p
+macro_line|#undef outb_p
+DECL|macro|inb
+mdefine_line|#define inb(_p)&t;&t;readb(_p)
+DECL|macro|outb
+mdefine_line|#define outb(_v,_p)&t;writeb(_v,_p)
+DECL|macro|inb_p
+mdefine_line|#define inb_p(_p)&t;inb(_p)
+DECL|macro|outb_p
+mdefine_line|#define outb_p(_v,_p)&t;outb(_v,_p)
+macro_line|#elif defined(CONFIG_NET_CBUS)
 DECL|macro|EI_SHIFT
 mdefine_line|#define EI_SHIFT(x)&t;(ei_local-&gt;reg_offset[x])
 macro_line|#else

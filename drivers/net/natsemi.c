@@ -421,7 +421,7 @@ comma
 DECL|enumerator|IntrHoldoff
 id|IntrHoldoff
 op_assign
-l_int|0x16
+l_int|0x1C
 comma
 multiline_comment|/* DP83816 only */
 DECL|enumerator|TxRingPtr
