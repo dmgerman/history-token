@@ -23,26 +23,10 @@ DECL|macro|ALPS_4BTN
 mdefine_line|#define ALPS_4BTN&t;0x08
 DECL|macro|ALPS_OLDPROTO
 mdefine_line|#define ALPS_OLDPROTO&t;0x10
-DECL|struct|alps_model_info
+DECL|variable|alps_model_data
 r_static
 r_struct
 id|alps_model_info
-(brace
-DECL|member|signature
-r_int
-r_char
-id|signature
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|flags
-r_int
-r_char
-id|flags
-suffix:semicolon
-DECL|variable|alps_model_data
-)brace
 id|alps_model_data
 (braket
 )braket
@@ -57,6 +41,10 @@ comma
 l_int|0x0a
 )brace
 comma
+l_int|0x88
+comma
+l_int|0xf8
+comma
 id|ALPS_OLDPROTO
 )brace
 comma
@@ -69,6 +57,10 @@ comma
 l_int|0x0a
 )brace
 comma
+l_int|0xf8
+comma
+l_int|0xf8
+comma
 l_int|0
 )brace
 comma
@@ -80,6 +72,10 @@ l_int|0x02
 comma
 l_int|0x14
 )brace
+comma
+l_int|0xf8
+comma
+l_int|0xf8
 comma
 l_int|0
 )brace
@@ -93,6 +89,10 @@ comma
 l_int|0x0a
 )brace
 comma
+l_int|0xf8
+comma
+l_int|0xf8
+comma
 l_int|0
 )brace
 comma
@@ -104,6 +104,10 @@ l_int|0x02
 comma
 l_int|0x14
 )brace
+comma
+l_int|0xf8
+comma
+l_int|0xf8
 comma
 l_int|0
 )brace
@@ -117,6 +121,10 @@ comma
 l_int|0x28
 )brace
 comma
+l_int|0xf8
+comma
+l_int|0xf8
+comma
 l_int|0
 )brace
 comma
@@ -128,6 +136,10 @@ l_int|0x02
 comma
 l_int|0x3c
 )brace
+comma
+l_int|0x8f
+comma
+l_int|0x8f
 comma
 id|ALPS_WHEEL
 )brace
@@ -141,6 +153,10 @@ comma
 l_int|0x50
 )brace
 comma
+l_int|0xef
+comma
+l_int|0xef
+comma
 id|ALPS_FW_BK
 )brace
 comma
@@ -152,6 +168,10 @@ l_int|0x02
 comma
 l_int|0x64
 )brace
+comma
+l_int|0xf8
+comma
+l_int|0xf8
 comma
 l_int|0
 )brace
@@ -165,6 +185,10 @@ comma
 l_int|0xc8
 )brace
 comma
+l_int|0xf8
+comma
+l_int|0xf8
+comma
 l_int|0
 )brace
 comma
@@ -176,6 +200,10 @@ l_int|0x02
 comma
 l_int|0x0a
 )brace
+comma
+l_int|0xf8
+comma
+l_int|0xf8
 comma
 l_int|0
 )brace
@@ -189,6 +217,10 @@ comma
 l_int|0x14
 )brace
 comma
+l_int|0xf8
+comma
+l_int|0xf8
+comma
 l_int|0
 )brace
 comma
@@ -200,6 +232,10 @@ l_int|0x02
 comma
 l_int|0x0e
 )brace
+comma
+l_int|0xf8
+comma
+l_int|0xf8
 comma
 id|ALPS_DUALPOINT
 )brace
@@ -214,6 +250,10 @@ comma
 l_int|0x0a
 )brace
 comma
+l_int|0xf8
+comma
+l_int|0xf8
+comma
 id|ALPS_DUALPOINT
 )brace
 comma
@@ -225,6 +265,10 @@ l_int|0x02
 comma
 l_int|0x14
 )brace
+comma
+l_int|0xf8
+comma
+l_int|0xf8
 comma
 id|ALPS_DUALPOINT
 )brace
@@ -460,7 +504,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|priv-&gt;flags
+id|priv-&gt;i-&gt;flags
 op_amp
 id|ALPS_OLDPROTO
 )paren
@@ -658,7 +702,7 @@ multiline_comment|/* Dualpoint has stick buttons in byte 0 */
 r_if
 c_cond
 (paren
-id|priv-&gt;flags
+id|priv-&gt;i-&gt;flags
 op_amp
 id|ALPS_DUALPOINT
 )paren
@@ -976,7 +1020,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|priv-&gt;flags
+id|priv-&gt;i-&gt;flags
 op_amp
 id|ALPS_WHEEL
 )paren
@@ -1017,7 +1061,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|priv-&gt;flags
+id|priv-&gt;i-&gt;flags
 op_amp
 id|ALPS_FW_BK
 )paren
@@ -1077,6 +1121,15 @@ op_star
 id|regs
 )paren
 (brace
+r_struct
+id|alps_data
+op_star
+id|priv
+op_assign
+id|psmouse
+op_member_access_from_pointer
+r_private
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1117,7 +1170,6 @@ r_return
 id|PSMOUSE_GOOD_DATA
 suffix:semicolon
 )brace
-multiline_comment|/* ALPS absolute mode packets start with 0b11111mrl */
 r_if
 c_cond
 (paren
@@ -1127,10 +1179,10 @@ id|psmouse-&gt;packet
 l_int|0
 )braket
 op_amp
-l_int|0x88
+id|priv-&gt;i-&gt;mask0
 )paren
 op_ne
-l_int|0x88
+id|priv-&gt;i-&gt;byte0
 )paren
 r_return
 id|PSMOUSE_BAD_DATA
@@ -1187,7 +1239,9 @@ suffix:semicolon
 )brace
 DECL|function|alps_get_model
 r_static
-r_int
+r_struct
+id|alps_model_info
+op_star
 id|alps_get_model
 c_func
 (paren
@@ -1295,8 +1349,7 @@ id|PSMOUSE_CMD_SETSCALE11
 )paren
 )paren
 r_return
-op_minus
-l_int|1
+l_int|NULL
 suffix:semicolon
 id|param
 (braket
@@ -1329,8 +1382,7 @@ id|PSMOUSE_CMD_GETINFO
 )paren
 )paren
 r_return
-op_minus
-l_int|1
+l_int|NULL
 suffix:semicolon
 id|dbg
 c_func
@@ -1387,8 +1439,7 @@ l_int|100
 )paren
 )paren
 r_return
-op_minus
-l_int|1
+l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * Now try &quot;E7 report&quot;. Allowed responses are in&n;&t; * alps_model_data[].signature&n;&t; */
 id|param
@@ -1442,8 +1493,7 @@ id|PSMOUSE_CMD_SETSCALE21
 )paren
 )paren
 r_return
-op_minus
-l_int|1
+l_int|NULL
 suffix:semicolon
 id|param
 (braket
@@ -1476,8 +1526,7 @@ id|PSMOUSE_CMD_GETINFO
 )paren
 )paren
 r_return
-op_minus
-l_int|1
+l_int|NULL
 suffix:semicolon
 id|dbg
 c_func
@@ -1599,15 +1648,11 @@ id|signature
 )paren
 r_return
 id|alps_model_data
-(braket
+op_plus
 id|i
-)braket
-dot
-id|flags
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * For DualPoint devices select the device that should respond to&n; * subsequent commands. It looks like glidepad is behind stickpointer,&n; * I&squot;d thought it would be other way around...&n; */
@@ -2056,7 +2101,7 @@ r_if
 c_cond
 (paren
 (paren
-id|priv-&gt;flags
+id|priv-&gt;i
 op_assign
 id|alps_get_model
 c_func
@@ -2077,7 +2122,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|priv-&gt;flags
+id|priv-&gt;i-&gt;flags
 op_amp
 id|ALPS_DUALPOINT
 op_logical_and
@@ -2151,7 +2196,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|priv-&gt;flags
+id|priv-&gt;i-&gt;flags
 op_eq
 id|ALPS_DUALPOINT
 op_logical_and
@@ -2283,7 +2328,7 @@ r_if
 c_cond
 (paren
 (paren
-id|priv-&gt;flags
+id|priv-&gt;i
 op_assign
 id|alps_get_model
 c_func
@@ -2300,29 +2345,11 @@ l_int|0
 r_goto
 id|init_fail
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;ALPS Touchpad (%s) detected&bslash;n&quot;
-comma
-(paren
-id|priv-&gt;flags
-op_amp
-id|ALPS_DUALPOINT
-)paren
-ques
-c_cond
-l_string|&quot;DualPoint&quot;
-suffix:colon
-l_string|&quot;GlidePoint&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
-id|priv-&gt;flags
+id|priv-&gt;i-&gt;flags
 op_amp
 id|ALPS_DUALPOINT
 )paren
@@ -2423,7 +2450,7 @@ r_if
 c_cond
 (paren
 (paren
-id|priv-&gt;flags
+id|priv-&gt;i-&gt;flags
 op_amp
 id|ALPS_DUALPOINT
 )paren
@@ -2580,7 +2607,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|priv-&gt;flags
+id|priv-&gt;i-&gt;flags
 op_amp
 id|ALPS_WHEEL
 )paren
@@ -2619,7 +2646,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|priv-&gt;flags
+id|priv-&gt;i-&gt;flags
 op_amp
 id|ALPS_FW_BK
 )paren
@@ -2672,7 +2699,7 @@ suffix:semicolon
 id|priv-&gt;dev2.name
 op_assign
 (paren
-id|priv-&gt;flags
+id|priv-&gt;i-&gt;flags
 op_amp
 id|ALPS_DUALPOINT
 )paren
@@ -2770,6 +2797,17 @@ op_amp
 id|priv-&gt;dev2
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;input: %s on %s&bslash;n&quot;
+comma
+id|priv-&gt;dev2.name
+comma
+id|psmouse-&gt;ps2dev.serio-&gt;phys
+)paren
+suffix:semicolon
 id|psmouse-&gt;protocol_handler
 op_assign
 id|alps_process_byte
@@ -2819,12 +2857,15 @@ id|set_properties
 r_int
 id|version
 suffix:semicolon
-r_int
+r_struct
+id|alps_model_info
+op_star
 id|model
 suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 (paren
 id|model
 op_assign
@@ -2837,8 +2878,6 @@ op_amp
 id|version
 )paren
 )paren
-OL
-l_int|0
 )paren
 r_return
 op_minus
@@ -2857,7 +2896,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|model
+id|model-&gt;flags
 op_amp
 id|ALPS_DUALPOINT
 )paren

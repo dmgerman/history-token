@@ -25,6 +25,33 @@ op_star
 id|psmouse
 )paren
 suffix:semicolon
+DECL|struct|alps_model_info
+r_struct
+id|alps_model_info
+(brace
+DECL|member|signature
+r_int
+r_char
+id|signature
+(braket
+l_int|3
+)braket
+suffix:semicolon
+DECL|member|byte0
+DECL|member|mask0
+r_int
+r_char
+id|byte0
+comma
+id|mask0
+suffix:semicolon
+DECL|member|flags
+r_int
+r_char
+id|flags
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|alps_data
 r_struct
 id|alps_data
@@ -51,11 +78,13 @@ l_int|32
 )braket
 suffix:semicolon
 multiline_comment|/* Phys */
-DECL|member|flags
-r_int
-id|flags
+DECL|member|i
+r_struct
+id|alps_model_info
+op_star
+id|i
 suffix:semicolon
-multiline_comment|/* Protocol details */
+multiline_comment|/* Info */
 DECL|member|prev_fin
 r_int
 id|prev_fin
