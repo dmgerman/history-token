@@ -129,6 +129,7 @@ multiline_comment|/* 5.10.12  - use pci_dma interfaces, update for 2.5 kernel ch
 multiline_comment|/* 5.10.15  - remove unused code (sem, macros, etc.)                         */
 multiline_comment|/* 5.30.00  - use __devexit_p()                                              */
 multiline_comment|/* 6.00.00  - Add 6x Adapters and Battery Flash                              */
+multiline_comment|/* 6.10.00  - Remove 1G Addressing Limitations                               */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * Conditional Compilation directives for this driver:&n; *&n; * IPS_DEBUG            - Turn on debugging info&n; *&n; * Parameters:&n; *&n; * debug:&lt;number&gt;       - Set debug level to &lt;number&gt;&n; *                        NOTE: only works when IPS_DEBUG compile directive is used.&n; *       1              - Normal debug messages&n; *       2              - Verbose debug messages&n; *       11             - Method trace (non interrupt)&n; *       12             - Method trace (includes interrupt)&n; *&n; * noi2o                - Don&squot;t use I2O Queues (ServeRAID 4 only)&n; * nommap               - Don&squot;t use memory mapped I/O&n; * ioctlsize            - Initial size of the IOCTL buffer&n; */
 macro_line|#include &lt;asm/io.h&gt;
@@ -178,13 +179,14 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * DRIVER_VER&n; */
 DECL|macro|IPS_VERSION_HIGH
-mdefine_line|#define IPS_VERSION_HIGH        &quot;5.99&quot;
+mdefine_line|#define IPS_VERSION_HIGH        &quot;6.10&quot;
 DECL|macro|IPS_VERSION_LOW
-mdefine_line|#define IPS_VERSION_LOW         &quot;.01-BETA&quot;
-macro_line|#if !defined(__i386__) &amp;&amp; !defined(__ia64__)
-macro_line|#error &quot;This driver has only been tested on the x86/ia64 platforms&quot;
+mdefine_line|#define IPS_VERSION_LOW         &quot;.90-BETA&quot;
+macro_line|#if !defined(__i386__) &amp;&amp; !defined(__ia64__) &amp;&amp; !defined(__x86_64__)
+macro_line|#error &quot;This driver has only been tested on the x86/ia64/x86_64 platforms&quot;
 macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,5,0)
+macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;sd.h&quot;
 DECL|macro|IPS_SG_ADDRESS
 mdefine_line|#define IPS_SG_ADDRESS(sg)       ((sg)-&gt;address)
@@ -331,6 +333,11 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* CD Boot - Flash Data Buffer      */
+DECL|variable|ips_flashbusaddr
+r_static
+id|dma_addr_t
+id|ips_flashbusaddr
+suffix:semicolon
 DECL|variable|ips_FlashDataInUse
 r_static
 r_int
@@ -381,13 +388,28 @@ id|eh_host_reset_handler
 op_assign
 id|ips_eh_reset
 comma
+dot
+id|proc_name
+op_assign
+l_string|&quot;ips&quot;
+comma
 macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
+dot
+id|proc_info
+op_assign
+id|ips_proc_info
+comma
 dot
 id|slave_configure
 op_assign
 id|ips_slave_configure
 comma
 macro_line|#else
+dot
+id|proc_info
+op_assign
+id|ips_proc24_info
+comma
 dot
 id|select_queue_depths
 op_assign
@@ -632,9 +654,9 @@ l_string|&quot;ServeRAID 5i&quot;
 comma
 l_string|&quot;ServeRAID 5i&quot;
 comma
-l_string|&quot;ServeRAID 00&quot;
+l_string|&quot;ServeRAID 6M&quot;
 comma
-l_string|&quot;ServeRAID 00&quot;
+l_string|&quot;ServeRAID 6i&quot;
 )brace
 suffix:semicolon
 DECL|variable|ips_notifier
@@ -2532,7 +2554,7 @@ op_increment
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
-multiline_comment|/*&n;      * We now have key/value pairs.&n;      * Update the variables&n;      */
+multiline_comment|/*&n;&t;&t; * We now have key/value pairs.&n;&t;&t; * Update the variables&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -2565,7 +2587,6 @@ r_if
 c_cond
 (paren
 id|strnicmp
-c_func
 (paren
 id|key
 comma
@@ -2694,54 +2715,6 @@ id|ips
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* If Booting from the Manager CD, Allocate a large Flash        */
-multiline_comment|/* Buffer ( so we won&squot;t need to allocate one for each adapter ). */
-r_if
-c_cond
-(paren
-id|ips_cd_boot
-)paren
-(brace
-id|ips_FlashData
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|__get_free_pages
-c_func
-(paren
-id|IPS_INIT_GFP
-comma
-l_int|7
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ips_FlashData
-op_eq
-l_int|NULL
-)paren
-(brace
-multiline_comment|/* The validity of this pointer is checked in ips_make_passthru() before it is used */
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;ERROR: Can&squot;t Allocate Large Buffer for Flashing&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
-id|SHT-&gt;proc_info
-op_assign
-id|ips_proc_info
-suffix:semicolon
-id|SHT-&gt;proc_name
-op_assign
-l_string|&quot;ips&quot;
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2793,10 +2766,9 @@ multiline_comment|/*************************************************************
 multiline_comment|/*   configure the function pointers to use the functions that will work    */
 multiline_comment|/*   with the found version of the adapter                                  */
 multiline_comment|/****************************************************************************/
-DECL|function|ips_setup_funclist
 r_static
 r_void
-(def_block
+DECL|function|ips_setup_funclist
 id|ips_setup_funclist
 c_func
 (paren
@@ -2805,7 +2777,7 @@ op_star
 id|ha
 )paren
 (brace
-multiline_comment|/*                                &n;    * Setup Functions&n;    */
+multiline_comment|/*                                &n;&t; * Setup Functions&n;&t; */
 r_if
 c_cond
 (paren
@@ -2998,7 +2970,6 @@ id|ips_issue_copperhead
 suffix:semicolon
 )brace
 )brace
-)def_block
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Name: ips_release                                                */
@@ -4003,7 +3974,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Reset the IOCTL Requested Reset Flag */
-multiline_comment|/*&n;    * command must have already been sent&n;    * reset the controller&n;    */
+multiline_comment|/*&n;&t; * command must have already been sent&n;&t; * reset the controller&n;&t; */
 id|IPS_PRINTK
 c_func
 (paren
@@ -4422,7 +4393,7 @@ r_return
 id|SUCCESS
 )paren
 suffix:semicolon
-macro_line|#endif /* NO_IPS_RESET */
+macro_line|#endif&t;&t;&t;&t;/* NO_IPS_RESET */
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -4645,7 +4616,7 @@ id|ips_copp_wait_item_t
 op_star
 id|scratch
 suffix:semicolon
-multiline_comment|/* A Reset IOCTL is only sent by the ServeRAID boot CD in extreme cases. */
+multiline_comment|/* A Reset IOCTL is only sent by the boot CD in extreme cases.           */
 multiline_comment|/* There can never be any system activity ( network or disk ), but check */
 multiline_comment|/* anyway just as a good practice.                                       */
 id|pt
@@ -5045,6 +5016,98 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+multiline_comment|/* ips_proc24_info is a wrapper around ips_proc_info *&n; * for compatibility with the 2.4 scsi parameters    */
+r_static
+r_int
+DECL|function|ips_proc24_info
+id|ips_proc24_info
+c_func
+(paren
+r_char
+op_star
+id|buffer
+comma
+r_char
+op_star
+op_star
+id|start
+comma
+id|off_t
+id|offset
+comma
+r_int
+id|length
+comma
+r_int
+id|hostno
+comma
+r_int
+id|func
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ips_next_controller
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ips_sh
+(braket
+id|i
+)braket
+op_logical_and
+id|ips_sh
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|host_no
+op_eq
+id|hostno
+)paren
+(brace
+r_return
+id|ips_proc_info
+c_func
+(paren
+id|ips_sh
+(braket
+id|i
+)braket
+comma
+id|buffer
+comma
+id|start
+comma
+id|offset
+comma
+id|length
+comma
+id|func
+)paren
+suffix:semicolon
+)brace
+)brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Name: ips_select_queue_depth                                     */
@@ -5538,7 +5601,7 @@ op_logical_neg
 id|intrstatus
 )paren
 (brace
-multiline_comment|/*&n;       * Unexpected/Shared interrupt&n;       */
+multiline_comment|/*&n;&t;&t; * Unexpected/Shared interrupt&n;&t;&t; */
 r_return
 l_int|0
 suffix:semicolon
@@ -5616,7 +5679,7 @@ op_star
 )paren
 id|sp-&gt;scb_addr
 suffix:semicolon
-multiline_comment|/*&n;       * use the callback function to finish things up&n;       * NOTE: interrupts are OFF for this&n;       */
+multiline_comment|/*&n;&t;&t; * use the callback function to finish things up&n;&t;&t; * NOTE: interrupts are OFF for this&n;&t;&t; */
 (paren
 op_star
 id|scb-&gt;callback
@@ -5711,7 +5774,7 @@ op_logical_neg
 id|intrstatus
 )paren
 (brace
-multiline_comment|/*&n;       * Unexpected/Shared interrupt&n;       */
+multiline_comment|/*&n;&t;&t; * Unexpected/Shared interrupt&n;&t;&t; */
 r_return
 l_int|0
 suffix:semicolon
@@ -5808,7 +5871,7 @@ op_star
 )paren
 id|sp-&gt;scb_addr
 suffix:semicolon
-multiline_comment|/*&n;       * use the callback function to finish things up&n;       * NOTE: interrupts are OFF for this&n;       */
+multiline_comment|/*&n;&t;&t; * use the callback function to finish things up&n;&t;&t; * NOTE: interrupts are OFF for this&n;&t;&t; */
 (paren
 op_star
 id|scb-&gt;callback
@@ -6290,11 +6353,9 @@ op_eq
 l_char|&squot;P&squot;
 )paren
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -6352,11 +6413,9 @@ l_int|3
 op_eq
 l_char|&squot;P&squot;
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 )brace
 )brace
 r_return
@@ -6374,7 +6433,6 @@ multiline_comment|/*************************************************************
 r_static
 r_int
 DECL|function|ips_alloc_passthru_buffer
-(def_block
 id|ips_alloc_passthru_buffer
 c_func
 (paren
@@ -6390,11 +6448,8 @@ r_void
 op_star
 id|bigger_buf
 suffix:semicolon
-r_int
-id|count
-suffix:semicolon
-r_int
-id|order
+id|dma_addr_t
+id|dma_busaddr
 suffix:semicolon
 r_if
 c_cond
@@ -6403,53 +6458,23 @@ id|ha-&gt;ioctl_data
 op_logical_and
 id|length
 op_le
-(paren
-id|PAGE_SIZE
-op_lshift
-id|ha-&gt;ioctl_order
+id|ha-&gt;ioctl_len
 )paren
-)paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 multiline_comment|/* there is no buffer or it&squot;s not big enough, allocate a new one */
-r_for
-c_loop
-(paren
-id|count
-op_assign
-id|PAGE_SIZE
-comma
-id|order
-op_assign
-l_int|0
-suffix:semicolon
-id|count
-OL
-id|length
-suffix:semicolon
-id|order
-op_increment
-comma
-id|count
-op_lshift_assign
-l_int|1
-)paren
-suffix:semicolon
 id|bigger_buf
 op_assign
-(paren
-r_void
-op_star
-)paren
-id|__get_free_pages
+id|pci_alloc_consistent
 c_func
 (paren
-id|IPS_ATOMIC_GFP
+id|ha-&gt;pcidev
 comma
-id|order
+id|length
+comma
+op_amp
+id|dma_busaddr
 )paren
 suffix:semicolon
 r_if
@@ -6459,16 +6484,16 @@ id|bigger_buf
 )paren
 (brace
 multiline_comment|/* free the old memory */
-id|free_pages
+id|pci_free_consistent
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
+id|ha-&gt;pcidev
+comma
+id|ha-&gt;ioctl_len
+comma
 id|ha-&gt;ioctl_data
 comma
-id|ha-&gt;ioctl_order
+id|ha-&gt;ioctl_busaddr
 )paren
 suffix:semicolon
 multiline_comment|/* use the new memory */
@@ -6480,9 +6505,13 @@ op_star
 )paren
 id|bigger_buf
 suffix:semicolon
-id|ha-&gt;ioctl_order
+id|ha-&gt;ioctl_len
 op_assign
-id|order
+id|length
+suffix:semicolon
+id|ha-&gt;ioctl_busaddr
+op_assign
+id|dma_busaddr
 suffix:semicolon
 )brace
 r_else
@@ -6496,7 +6525,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-)def_block
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Name: ips_make_passthru                                          */
@@ -6586,7 +6614,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|length
 op_add_assign
 id|sg
@@ -6596,7 +6623,6 @@ id|i
 dot
 id|length
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -6640,7 +6666,7 @@ id|length
 )paren
 )paren
 (brace
-multiline_comment|/* allocation failure!  If ha-&gt;ioctl_data exists, use it to return&n;         some error codes.  Return a failed command to the scsi layer. */
+multiline_comment|/* allocation failure!  If ha-&gt;ioctl_data exists, use it to return&n;&t;&t;   some error codes.  Return a failed command to the scsi layer. */
 r_if
 c_cond
 (paren
@@ -6716,7 +6742,7 @@ op_star
 )paren
 id|ha-&gt;ioctl_data
 suffix:semicolon
-multiline_comment|/*&n;    * Some notes about the passthru interface used&n;    *&n;    * IF the scsi op_code == 0x0d then we assume&n;    * that the data came along with/goes with the&n;    * packet we received from the sg driver. In this&n;    * case the CmdBSize field of the pt structure is&n;    * used for the size of the buffer.&n;    */
+multiline_comment|/*&n;&t; * Some notes about the passthru interface used&n;&t; *&n;&t; * IF the scsi op_code == 0x0d then we assume&n;&t; * that the data came along with/goes with the&n;&t; * packet we received from the sg driver. In this&n;&t; * case the CmdBSize field of the pt structure is&n;&t; * used for the size of the buffer.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -6909,7 +6935,6 @@ multiline_comment|/*************************************************************
 r_static
 r_int
 DECL|function|ips_flash_copperhead
-(def_block
 id|ips_flash_copperhead
 c_func
 (paren
@@ -6928,10 +6953,8 @@ id|scb
 (brace
 r_int
 id|datasize
-comma
-id|count
 suffix:semicolon
-multiline_comment|/* Trombone is the only copperhead that can do packet flash, but only&n;    * for firmware. No one said it had to make sence. */
+multiline_comment|/* Trombone is the only copperhead that can do packet flash, but only&n;&t; * for firmware. No one said it had to make sence. */
 r_if
 c_cond
 (paren
@@ -6959,11 +6982,9 @@ comma
 id|scb
 )paren
 )paren
-(brace
 r_return
 id|IPS_SUCCESS
 suffix:semicolon
-)brace
 r_else
 r_return
 id|IPS_FAILURE
@@ -7042,8 +7063,14 @@ id|ha-&gt;flash_data
 op_assign
 id|ips_FlashData
 suffix:semicolon
-id|ha-&gt;flash_order
+id|ha-&gt;flash_busaddr
 op_assign
+id|ips_flashbusaddr
+suffix:semicolon
+id|ha-&gt;flash_len
+op_assign
+id|PAGE_SIZE
+op_lshift
 l_int|7
 suffix:semicolon
 id|ha-&gt;flash_datasize
@@ -7065,54 +7092,50 @@ id|pt-&gt;CoppCP.cmd.flashfw.total_packets
 op_star
 id|pt-&gt;CoppCP.cmd.flashfw.count
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|count
-op_assign
-id|PAGE_SIZE
-comma
-id|ha-&gt;flash_order
-op_assign
-l_int|0
-suffix:semicolon
-id|count
-OL
-id|datasize
-suffix:semicolon
-id|ha-&gt;flash_order
-op_increment
-comma
-id|count
-op_lshift_assign
-l_int|1
-)paren
-suffix:semicolon
 id|ha-&gt;flash_data
 op_assign
-(paren
-r_char
-op_star
-)paren
-id|__get_free_pages
+id|pci_alloc_consistent
 c_func
 (paren
-id|IPS_ATOMIC_GFP
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;flash_order
+id|datasize
+comma
+op_amp
+id|ha-&gt;flash_busaddr
 )paren
 suffix:semicolon
-id|ha-&gt;flash_datasize
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ha-&gt;flash_data
+)paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Unable to allocate a flash buffer&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 id|IPS_FAILURE
 suffix:semicolon
 )brace
+id|ha-&gt;flash_datasize
+op_assign
+l_int|0
+suffix:semicolon
+id|ha-&gt;flash_len
+op_assign
+id|datasize
+suffix:semicolon
+)brace
+r_else
+r_return
+id|IPS_FAILURE
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -7123,11 +7146,7 @@ id|pt-&gt;CoppCP.cmd.flashfw.count
 op_plus
 id|ha-&gt;flash_datasize
 OG
-(paren
-id|PAGE_SIZE
-op_lshift
-id|ha-&gt;flash_order
-)paren
+id|ha-&gt;flash_len
 )paren
 (brace
 id|ips_free_flash_copperhead
@@ -7157,11 +7176,9 @@ c_cond
 op_logical_neg
 id|ha-&gt;flash_data
 )paren
-(brace
 r_return
 id|IPS_FAILURE
 suffix:semicolon
-)brace
 id|pt-&gt;BasicStatus
 op_assign
 l_int|0
@@ -7203,7 +7220,6 @@ id|pt-&gt;CoppCP.cmd.flashfw.type
 op_eq
 id|IPS_BIOS_IMAGE
 )paren
-(brace
 r_return
 id|ips_flash_bios
 c_func
@@ -7215,7 +7231,6 @@ comma
 id|scb
 )paren
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -7224,7 +7239,6 @@ id|pt-&gt;CoppCP.cmd.flashfw.type
 op_eq
 id|IPS_FW_IMAGE
 )paren
-(brace
 r_return
 id|ips_flash_firmware
 c_func
@@ -7237,12 +7251,10 @@ id|scb
 )paren
 suffix:semicolon
 )brace
-)brace
 r_return
 id|IPS_SUCCESS_IMM
 suffix:semicolon
 )brace
-)def_block
 multiline_comment|/****************************************************************************/
 multiline_comment|/* Routine Name: ips_flash_bios                                             */
 multiline_comment|/* Routine Description:                                                     */
@@ -7251,7 +7263,6 @@ multiline_comment|/*************************************************************
 r_static
 r_int
 DECL|function|ips_flash_bios
-(def_block
 id|ips_flash_bios
 c_func
 (paren
@@ -7436,11 +7447,9 @@ c_cond
 op_logical_neg
 id|ha-&gt;func.erasebios
 )paren
-(brace
 r_goto
 id|error
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -7493,7 +7502,6 @@ r_return
 id|IPS_FAILURE
 suffix:semicolon
 )brace
-)def_block
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Name: ips_fill_scb_sg_single                                     */
@@ -7502,10 +7510,10 @@ multiline_comment|/* Routine Description:                                       
 multiline_comment|/*   Fill in a single scb sg_list element from an address                   */
 multiline_comment|/*   return a -1 if a breakup occurred                                      */
 multiline_comment|/****************************************************************************/
-DECL|function|ips_fill_scb_sg_single
 r_static
 r_inline
 r_int
+DECL|function|ips_fill_scb_sg_single
 id|ips_fill_scb_sg_single
 c_func
 (paren
@@ -7685,7 +7693,6 @@ multiline_comment|/*************************************************************
 r_static
 r_int
 DECL|function|ips_flash_firmware
-(def_block
 id|ips_flash_firmware
 c_func
 (paren
@@ -7900,7 +7907,6 @@ r_return
 id|IPS_SUCCESS
 suffix:semicolon
 )brace
-)def_block
 multiline_comment|/****************************************************************************/
 multiline_comment|/* Routine Name: ips_free_flash_copperhead                                  */
 multiline_comment|/* Routine Description:                                                     */
@@ -7909,7 +7915,6 @@ multiline_comment|/*************************************************************
 r_static
 r_void
 DECL|function|ips_free_flash_copperhead
-(def_block
 id|ips_free_flash_copperhead
 c_func
 (paren
@@ -7925,7 +7930,6 @@ id|ha-&gt;flash_data
 op_eq
 id|ips_FlashData
 )paren
-(brace
 id|test_and_clear_bit
 c_func
 (paren
@@ -7935,33 +7939,29 @@ op_amp
 id|ips_FlashDataInUse
 )paren
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
 (paren
 id|ha-&gt;flash_data
 )paren
-(brace
-id|free_pages
+id|pci_free_consistent
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
+id|ha-&gt;pcidev
+comma
+id|ha-&gt;flash_len
+comma
 id|ha-&gt;flash_data
 comma
-id|ha-&gt;flash_order
+id|ha-&gt;flash_busaddr
 )paren
 suffix:semicolon
-)brace
 id|ha-&gt;flash_data
 op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-)def_block
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Name: ips_usrcmd                                                 */
@@ -8161,30 +8161,12 @@ id|pt-&gt;CmdBSize
 suffix:semicolon
 id|scb-&gt;data_busaddr
 op_assign
-id|pci_map_single
-c_func
-(paren
-id|ha-&gt;pcidev
-comma
-id|ha-&gt;ioctl_data
+id|ha-&gt;ioctl_busaddr
 op_plus
 r_sizeof
 (paren
 id|ips_passthru_t
 )paren
-comma
-id|pt-&gt;CmdBSize
-comma
-id|IPS_DMA_DIR
-c_func
-(paren
-id|scb
-)paren
-)paren
-suffix:semicolon
-id|scb-&gt;flags
-op_or_assign
-id|IPS_SCB_MAP_SINGLE
 suffix:semicolon
 )brace
 r_else
@@ -8213,7 +8195,9 @@ r_int
 r_int
 )paren
 op_amp
-id|scb-&gt;dcdb
+id|scb
+op_member_access_from_pointer
+id|dcdb
 op_minus
 (paren
 r_int
@@ -8438,14 +8422,12 @@ op_eq
 id|IPS_CMD_RW_BIOSFW
 )paren
 )paren
-(brace
 id|ips_free_flash_copperhead
 c_func
 (paren
 id|ha
 )paren
 suffix:semicolon
-)brace
 id|ips_scmd_buf_write
 c_func
 (paren
@@ -9899,21 +9881,7 @@ r_else
 multiline_comment|/* Morpheus Family - Send Command to the card */
 id|buffer
 op_assign
-id|kmalloc
-c_func
-(paren
-l_int|0x1000
-comma
-id|IPS_ATOMIC_GFP
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|buffer
-)paren
-r_return
+id|ha-&gt;ioctl_data
 suffix:semicolon
 id|memset
 c_func
@@ -9996,31 +9964,9 @@ id|scb-&gt;data_len
 op_assign
 l_int|0x1000
 suffix:semicolon
-id|scb-&gt;data_busaddr
-op_assign
-id|pci_map_single
-c_func
-(paren
-id|ha-&gt;pcidev
-comma
-id|buffer
-comma
-id|scb-&gt;data_len
-comma
-id|IPS_DMA_DIR
-c_func
-(paren
-id|scb
-)paren
-)paren
-suffix:semicolon
 id|scb-&gt;cmd.flashfw.buffer_addr
 op_assign
-id|scb-&gt;data_busaddr
-suffix:semicolon
-id|scb-&gt;flags
-op_or_assign
-id|IPS_SCB_MAP_SINGLE
+id|ha-&gt;ioctl_busaddr
 suffix:semicolon
 multiline_comment|/* issue the command */
 r_if
@@ -10064,12 +10010,6 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* Error occurred */
-id|kfree
-c_func
-(paren
-id|buffer
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -10128,21 +10068,9 @@ multiline_comment|/* Offset 0x1fd after the header (0xc0) */
 )brace
 r_else
 (brace
-id|kfree
-c_func
-(paren
-id|buffer
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|kfree
-c_func
-(paren
-id|buffer
-)paren
-suffix:semicolon
 )brace
 id|ha-&gt;bios_version
 (braket
@@ -10800,7 +10728,7 @@ id|ips_sh
 id|ha-&gt;host_num
 )braket
 suffix:semicolon
-multiline_comment|/*&n;    * Block access to the queue function so&n;    * this command won&squot;t time out&n;    */
+multiline_comment|/*&n;&t; * Block access to the queue function so&n;&t; * this command won&squot;t time out&n;&t; */
 r_if
 c_cond
 (paren
@@ -10808,7 +10736,6 @@ id|intr
 op_eq
 id|IPS_INTR_ON
 )paren
-(brace
 id|IPS_LOCK_SAVE
 c_func
 (paren
@@ -10817,7 +10744,6 @@ comma
 id|cpu_flags
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -10870,7 +10796,7 @@ id|ha
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;    * Send passthru commands&n;    * These have priority over normal I/O&n;    * but shouldn&squot;t affect performance too much&n;    * since we limit the number that can be active&n;    * on the card at any one time&n;    */
+multiline_comment|/*&n;&t; * Send passthru commands&n;&t; * These have priority over normal I/O&n;&t; * but shouldn&squot;t affect performance too much&n;&t; * since we limit the number that can be active&n;&t; * on the card at any one time&n;&t; */
 r_while
 c_loop
 (paren
@@ -10914,7 +10840,6 @@ id|intr
 op_eq
 id|IPS_INTR_ON
 )paren
-(brace
 id|IPS_UNLOCK_RESTORE
 c_func
 (paren
@@ -10923,7 +10848,6 @@ comma
 id|cpu_flags
 )paren
 suffix:semicolon
-)brace
 id|scb-&gt;scsi_cmd
 op_assign
 id|item-&gt;scsi_cmd
@@ -10955,7 +10879,6 @@ id|intr
 op_eq
 id|IPS_INTR_ON
 )paren
-(brace
 id|IPS_LOCK_SAVE
 c_func
 (paren
@@ -10964,7 +10887,6 @@ comma
 id|cpu_flags
 )paren
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -11141,7 +11063,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end case */
 )brace
-multiline_comment|/*&n;    * Send &quot;Normal&quot; I/O commands&n;    */
+multiline_comment|/*&n;&t; * Send &quot;Normal&quot; I/O commands&n;&t; */
 id|p
 op_assign
 id|ha-&gt;scb_waitlist.head
@@ -11174,7 +11096,9 @@ l_int|0
 )paren
 op_logical_and
 (paren
-id|ha-&gt;dcdb_active
+id|ha
+op_member_access_from_pointer
+id|dcdb_active
 (braket
 id|p-&gt;device-&gt;channel
 op_minus
@@ -11230,7 +11154,6 @@ id|intr
 op_eq
 id|IPS_INTR_ON
 )paren
-(brace
 id|IPS_UNLOCK_RESTORE
 c_func
 (paren
@@ -11239,7 +11162,6 @@ comma
 id|cpu_flags
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Unlock HA after command is taken off queue */
 id|SC-&gt;result
 op_assign
@@ -11349,7 +11271,9 @@ comma
 id|scsi_to_pci_dma_dir
 c_func
 (paren
-id|SC-&gt;sc_data_direction
+id|SC
+op_member_access_from_pointer
+id|sc_data_direction
 )paren
 )paren
 suffix:semicolon
@@ -11376,7 +11300,6 @@ r_if
 c_cond
 (paren
 id|ips_fill_scb_sg_single
-c_func
 (paren
 id|ha
 comma
@@ -11437,7 +11360,9 @@ comma
 id|scsi_to_pci_dma_dir
 c_func
 (paren
-id|SC-&gt;sc_data_direction
+id|SC
+op_member_access_from_pointer
+id|sc_data_direction
 )paren
 )paren
 suffix:semicolon
@@ -11532,7 +11457,6 @@ id|intr
 op_eq
 id|IPS_INTR_ON
 )paren
-(brace
 id|IPS_LOCK_SAVE
 c_func
 (paren
@@ -11541,7 +11465,6 @@ comma
 id|cpu_flags
 )paren
 suffix:semicolon
-)brace
 id|ret
 op_assign
 id|ips_send_cmd
@@ -11693,7 +11616,6 @@ id|intr
 op_eq
 id|IPS_INTR_ON
 )paren
-(brace
 id|IPS_UNLOCK_RESTORE
 c_func
 (paren
@@ -11702,7 +11624,6 @@ comma
 id|cpu_flags
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -12997,7 +12918,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;       * Check to see if this command had too much&n;       * data and had to be broke up.  If so, queue&n;       * the rest of the data and continue.&n;       */
+multiline_comment|/*&n;&t;&t; * Check to see if this command had too much&n;&t;&t; * data and had to be broke up.  If so, queue&n;&t;&t; * the rest of the data and continue.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -13044,7 +12965,7 @@ id|sg_dma_index
 op_assign
 id|scb-&gt;breakup
 suffix:semicolon
-multiline_comment|/* Take care of possible partial on last chunk*/
+multiline_comment|/* Take care of possible partial on last chunk */
 id|ips_fill_scb_sg_single
 c_func
 (paren
@@ -13092,7 +13013,6 @@ r_if
 c_cond
 (paren
 id|ips_fill_scb_sg_single
-c_func
 (paren
 id|ha
 comma
@@ -13139,7 +13059,9 @@ c_func
 (paren
 id|ha
 comma
-id|scb-&gt;data_busaddr
+id|scb
+op_member_access_from_pointer
+id|data_busaddr
 op_plus
 (paren
 id|scb-&gt;sg_break
@@ -13151,7 +13073,9 @@ id|scb
 comma
 l_int|0
 comma
-id|scb-&gt;scsi_cmd-&gt;request_bufflen
+id|scb-&gt;scsi_cmd
+op_member_access_from_pointer
+id|request_bufflen
 op_minus
 (paren
 id|scb-&gt;sg_break
@@ -13345,7 +13269,7 @@ multiline_comment|/* Routine Name: ips_map_status                               
 multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Description:                                                     */
 multiline_comment|/*                                                                          */
-multiline_comment|/*   Map ServeRAID error codes to Linux Error Codes                         */
+multiline_comment|/*   Map Controller Error codes to Linux Error Codes                        */
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
@@ -13603,7 +13527,9 @@ op_logical_and
 r_char
 op_star
 )paren
-id|scb-&gt;scsi_cmd-&gt;buffer
+id|scb-&gt;scsi_cmd
+op_member_access_from_pointer
+id|buffer
 )paren
 (braket
 l_int|0
@@ -13703,7 +13629,9 @@ id|tapeDCDB-&gt;sense_info
 comma
 r_sizeof
 (paren
-id|scb-&gt;scsi_cmd-&gt;sense_buffer
+id|scb-&gt;scsi_cmd
+op_member_access_from_pointer
+id|sense_buffer
 )paren
 )paren
 suffix:semicolon
@@ -13719,7 +13647,9 @@ id|scb-&gt;dcdb.sense_info
 comma
 r_sizeof
 (paren
-id|scb-&gt;scsi_cmd-&gt;sense_buffer
+id|scb-&gt;scsi_cmd
+op_member_access_from_pointer
+id|sense_buffer
 )paren
 )paren
 suffix:semicolon
@@ -13895,9 +13825,9 @@ multiline_comment|/*                                                            
 multiline_comment|/* Routine Description:                                                     */
 multiline_comment|/*  Write data to Scsi_Cmnd request_buffer at proper offsets                */
 multiline_comment|/****************************************************************************/
-DECL|function|ips_scmd_buf_write
 r_static
 r_void
+DECL|function|ips_scmd_buf_write
 id|ips_scmd_buf_write
 c_func
 (paren
@@ -13987,10 +13917,8 @@ id|i
 )braket
 )paren
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 id|min_cnt
 op_assign
 id|min
@@ -14069,9 +13997,9 @@ multiline_comment|/*                                                            
 multiline_comment|/* Routine Description:                                                     */
 multiline_comment|/*  Copy data from a Scsi_Cmnd to a new, linear buffer                      */
 multiline_comment|/****************************************************************************/
-DECL|function|ips_scmd_buf_read
 r_static
 r_void
+DECL|function|ips_scmd_buf_read
 id|ips_scmd_buf_read
 c_func
 (paren
@@ -14161,10 +14089,8 @@ id|i
 )braket
 )paren
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 id|min_cnt
 op_assign
 id|min
@@ -14305,8 +14231,8 @@ OG
 l_int|0
 )paren
 (brace
-multiline_comment|/* ServeRAID commands can&squot;t be issued */
-multiline_comment|/* to real devices -- fail them       */
+multiline_comment|/* Controller commands can&squot;t be issued */
+multiline_comment|/* to real devices -- fail them        */
 r_if
 c_cond
 (paren
@@ -14418,7 +14344,7 @@ op_eq
 id|IPS_ADAPTER_ID
 )paren
 (brace
-multiline_comment|/*&n;             * Either we have a TUR&n;             * or we have a SCSI inquiry&n;             */
+multiline_comment|/*&n;&t;&t;&t;&t; * Either we have a TUR&n;&t;&t;&t;&t; * or we have a SCSI inquiry&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -14590,7 +14516,9 @@ c_func
 id|ha-&gt;pcidev
 comma
 op_amp
-id|ha-&gt;adapt-&gt;logical_drive_info
+id|ha-&gt;adapt
+op_member_access_from_pointer
+id|logical_drive_info
 comma
 id|scb-&gt;data_len
 comma
@@ -14750,7 +14678,6 @@ id|cpu_to_le32
 c_func
 (paren
 id|le32_to_cpu
-c_func
 (paren
 id|scb-&gt;cmd.basic_io.lba
 )paren
@@ -14758,7 +14685,9 @@ op_plus
 id|le16_to_cpu
 c_func
 (paren
-id|scb-&gt;cmd.basic_io.sector_count
+id|scb-&gt;cmd.basic_io
+dot
+id|sector_count
 )paren
 )paren
 suffix:semicolon
@@ -14768,7 +14697,9 @@ op_assign
 (paren
 (paren
 (paren
-id|scb-&gt;scsi_cmd-&gt;cmnd
+id|scb-&gt;scsi_cmd
+op_member_access_from_pointer
+id|cmnd
 (braket
 l_int|1
 )braket
@@ -14780,7 +14711,9 @@ l_int|16
 )paren
 op_or
 (paren
-id|scb-&gt;scsi_cmd-&gt;cmnd
+id|scb-&gt;scsi_cmd
+op_member_access_from_pointer
+id|cmnd
 (braket
 l_int|2
 )braket
@@ -14946,7 +14879,6 @@ id|cpu_to_le32
 c_func
 (paren
 id|le32_to_cpu
-c_func
 (paren
 id|scb-&gt;cmd.basic_io.lba
 )paren
@@ -14954,7 +14886,9 @@ op_plus
 id|le16_to_cpu
 c_func
 (paren
-id|scb-&gt;cmd.basic_io.sector_count
+id|scb-&gt;cmd.basic_io
+dot
+id|sector_count
 )paren
 )paren
 suffix:semicolon
@@ -14972,7 +14906,11 @@ l_int|24
 )paren
 op_or
 (paren
-id|scb-&gt;scsi_cmd-&gt;cmnd
+id|scb
+op_member_access_from_pointer
+id|scsi_cmd
+op_member_access_from_pointer
+id|cmnd
 (braket
 l_int|3
 )braket
@@ -14989,7 +14927,9 @@ op_lshift
 l_int|8
 )paren
 op_or
-id|scb-&gt;scsi_cmd-&gt;cmnd
+id|scb
+op_member_access_from_pointer
+id|scsi_cmd-&gt;cmnd
 (braket
 l_int|5
 )braket
@@ -15017,7 +14957,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;             * This is a null condition&n;             * we don&squot;t have to do anything&n;             * so just return&n;             */
+multiline_comment|/*&n;&t;&t;&t;&t; * This is a null condition&n;&t;&t;&t;&t; * we don&squot;t have to do anything&n;&t;&t;&t;&t; * so just return&n;&t;&t;&t;&t; */
 id|scb-&gt;scsi_cmd-&gt;result
 op_assign
 id|DID_OK
@@ -15079,31 +15019,9 @@ op_star
 id|ha-&gt;enq
 )paren
 suffix:semicolon
-id|scb-&gt;data_busaddr
-op_assign
-id|pci_map_single
-c_func
-(paren
-id|ha-&gt;pcidev
-comma
-id|ha-&gt;enq
-comma
-id|scb-&gt;data_len
-comma
-id|IPS_DMA_DIR
-c_func
-(paren
-id|scb
-)paren
-)paren
-suffix:semicolon
 id|scb-&gt;cmd.basic_io.sg_addr
 op_assign
-id|scb-&gt;data_busaddr
-suffix:semicolon
-id|scb-&gt;flags
-op_or_assign
-id|IPS_SCB_MAP_SINGLE
+id|ha-&gt;enq_busaddr
 suffix:semicolon
 id|ret
 op_assign
@@ -15155,7 +15073,9 @@ c_func
 id|ha-&gt;pcidev
 comma
 op_amp
-id|ha-&gt;adapt-&gt;logical_drive_info
+id|ha-&gt;adapt
+op_member_access_from_pointer
+id|logical_drive_info
 comma
 id|scb-&gt;data_len
 comma
@@ -15387,7 +15307,9 @@ r_int
 r_int
 )paren
 op_amp
-id|scb-&gt;dcdb
+id|scb
+op_member_access_from_pointer
+id|dcdb
 op_minus
 (paren
 r_int
@@ -15574,7 +15496,6 @@ id|scb-&gt;cmd.dcdb.op_code
 op_eq
 id|IPS_CMD_EXTENDED_DCDB_SG
 )paren
-(brace
 id|tapeDCDB-&gt;buffer_pointer
 op_assign
 id|cpu_to_le32
@@ -15583,7 +15504,6 @@ c_func
 id|scb-&gt;sg_busaddr
 )paren
 suffix:semicolon
-)brace
 r_else
 id|tapeDCDB-&gt;buffer_pointer
 op_assign
@@ -15754,7 +15674,6 @@ id|scb-&gt;cmd.dcdb.op_code
 op_eq
 id|IPS_CMD_DCDB_SG
 )paren
-(brace
 id|scb-&gt;dcdb.buffer_pointer
 op_assign
 id|cpu_to_le32
@@ -15763,7 +15682,6 @@ c_func
 id|scb-&gt;sg_busaddr
 )paren
 suffix:semicolon
-)brace
 r_else
 id|scb-&gt;dcdb.buffer_pointer
 op_assign
@@ -16702,9 +16620,10 @@ id|cpu_to_be32
 c_func
 (paren
 id|le32_to_cpu
-c_func
 (paren
-id|ha-&gt;adapt-&gt;logical_drive_info.drive_info
+id|ha-&gt;adapt-&gt;logical_drive_info
+dot
+id|drive_info
 (braket
 id|scb-&gt;target_id
 )braket
@@ -17235,10 +17154,19 @@ c_cond
 id|ha-&gt;enq
 )paren
 (brace
-id|kfree
+id|pci_free_consistent
 c_func
 (paren
+id|ha-&gt;pcidev
+comma
+r_sizeof
+(paren
+id|IPS_ENQ
+)paren
+comma
 id|ha-&gt;enq
+comma
+id|ha-&gt;enq_busaddr
 )paren
 suffix:semicolon
 id|ha-&gt;enq
@@ -17334,16 +17262,16 @@ c_cond
 id|ha-&gt;ioctl_data
 )paren
 (brace
-id|free_pages
+id|pci_free_consistent
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
+id|ha-&gt;pcidev
+comma
+id|ha-&gt;ioctl_len
+comma
 id|ha-&gt;ioctl_data
 comma
-id|ha-&gt;ioctl_order
+id|ha-&gt;ioctl_busaddr
 )paren
 suffix:semicolon
 id|ha-&gt;ioctl_data
@@ -17354,7 +17282,7 @@ id|ha-&gt;ioctl_datasize
 op_assign
 l_int|0
 suffix:semicolon
-id|ha-&gt;ioctl_order
+id|ha-&gt;ioctl_len
 op_assign
 l_int|0
 suffix:semicolon
@@ -18007,7 +17935,6 @@ id|scb-&gt;flags
 op_amp
 id|IPS_SCB_MAP_SG
 )paren
-(brace
 id|pci_unmap_sg
 c_func
 (paren
@@ -18024,7 +17951,6 @@ id|scb
 )paren
 )paren
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -18033,7 +17959,6 @@ id|scb-&gt;flags
 op_amp
 id|IPS_SCB_MAP_SINGLE
 )paren
-(brace
 id|pci_unmap_single
 c_func
 (paren
@@ -18050,7 +17975,6 @@ id|scb
 )paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* check to make sure this is not our &quot;special&quot; scb */
 r_if
 c_cond
@@ -18383,6 +18307,15 @@ comma
 id|IPS_BIT_EI
 )paren
 suffix:semicolon
+id|inb
+c_func
+(paren
+id|ha-&gt;io_addr
+op_plus
+id|IPS_REG_HISR
+)paren
+suffix:semicolon
+multiline_comment|/*Ensure PCI Posting Completes*/
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -18421,6 +18354,15 @@ op_plus
 id|IPS_REG_HISR
 )paren
 suffix:semicolon
+id|readb
+c_func
+(paren
+id|ha-&gt;mem_ptr
+op_plus
+id|IPS_REG_HISR
+)paren
+suffix:semicolon
+multiline_comment|/*Ensure PCI Posting Completes*/
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -18477,6 +18419,15 @@ op_plus
 id|IPS_REG_I960_OIMR
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|ha-&gt;mem_ptr
+op_plus
+id|IPS_REG_I960_OIMR
+)paren
+suffix:semicolon
+multiline_comment|/*Ensure PCI Posting Completes*/
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -21471,7 +21422,7 @@ op_eq
 id|FALSE
 )paren
 (brace
-multiline_comment|/*&n;             * controller generated an interrupt to&n;             * acknowledge completion of the command&n;             * and ips_intr() has serviced the interrupt.&n;             */
+multiline_comment|/*&n;&t;&t;&t;&t; * controller generated an interrupt to&n;&t;&t;&t;&t; * acknowledge completion of the command&n;&t;&t;&t;&t; * and ips_intr() has serviced the interrupt.&n;&t;&t;&t;&t; */
 id|ret
 op_assign
 id|IPS_SUCCESS
@@ -21483,7 +21434,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;          * NOTE: we already have the io_request_lock so&n;          * even if we get an interrupt it won&squot;t get serviced&n;          * until after we finish.&n;          */
+multiline_comment|/*&n;&t;&t;&t; * NOTE: we already have the io_request_lock so&n;&t;&t;&t; * even if we get an interrupt it won&squot;t get serviced&n;&t;&t;&t; * until after we finish.&n;&t;&t;&t; */
 (paren
 op_star
 id|ha-&gt;func.intr
@@ -21897,31 +21848,9 @@ op_star
 id|ha-&gt;enq
 )paren
 suffix:semicolon
-id|scb-&gt;data_busaddr
-op_assign
-id|pci_map_single
-c_func
-(paren
-id|ha-&gt;pcidev
-comma
-id|ha-&gt;enq
-comma
-id|scb-&gt;data_len
-comma
-id|IPS_DMA_DIR
-c_func
-(paren
-id|scb
-)paren
-)paren
-suffix:semicolon
 id|scb-&gt;cmd.basic_io.sg_addr
 op_assign
-id|scb-&gt;data_busaddr
-suffix:semicolon
-id|scb-&gt;flags
-op_or_assign
-id|IPS_SCB_MAP_SINGLE
+id|ha-&gt;enq_busaddr
 suffix:semicolon
 multiline_comment|/* send command */
 r_if
@@ -22079,31 +22008,9 @@ op_star
 id|ha-&gt;subsys
 )paren
 suffix:semicolon
-id|scb-&gt;data_busaddr
-op_assign
-id|pci_map_single
-c_func
-(paren
-id|ha-&gt;pcidev
-comma
-id|ha-&gt;subsys
-comma
-id|scb-&gt;data_len
-comma
-id|IPS_DMA_DIR
-c_func
-(paren
-id|scb
-)paren
-)paren
-suffix:semicolon
 id|scb-&gt;cmd.basic_io.sg_addr
 op_assign
-id|scb-&gt;data_busaddr
-suffix:semicolon
-id|scb-&gt;flags
-op_or_assign
-id|IPS_SCB_MAP_SINGLE
+id|ha-&gt;ioctl_busaddr
 suffix:semicolon
 multiline_comment|/* send command */
 r_if
@@ -22148,6 +22055,20 @@ l_int|1
 r_return
 (paren
 l_int|0
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|ha-&gt;subsys
+comma
+id|ha-&gt;ioctl_data
+comma
+r_sizeof
+(paren
+op_star
+id|ha-&gt;subsys
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -22270,31 +22191,9 @@ op_star
 id|ha-&gt;conf
 )paren
 suffix:semicolon
-id|scb-&gt;data_busaddr
-op_assign
-id|pci_map_single
-c_func
-(paren
-id|ha-&gt;pcidev
-comma
-id|ha-&gt;conf
-comma
-id|scb-&gt;data_len
-comma
-id|IPS_DMA_DIR
-c_func
-(paren
-id|scb
-)paren
-)paren
-suffix:semicolon
 id|scb-&gt;cmd.basic_io.sg_addr
 op_assign
-id|scb-&gt;data_busaddr
-suffix:semicolon
-id|scb-&gt;flags
-op_or_assign
-id|IPS_SCB_MAP_SINGLE
+id|ha-&gt;ioctl_busaddr
 suffix:semicolon
 multiline_comment|/* send command */
 r_if
@@ -22395,6 +22294,20 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+id|memcpy
+c_func
+(paren
+id|ha-&gt;conf
+comma
+id|ha-&gt;ioctl_data
+comma
+r_sizeof
+(paren
+op_star
+id|ha-&gt;conf
+)paren
+)paren
+suffix:semicolon
 r_return
 (paren
 l_int|1
@@ -22509,31 +22422,28 @@ op_star
 id|ha-&gt;nvram
 )paren
 suffix:semicolon
-id|scb-&gt;data_busaddr
+id|scb-&gt;cmd.nvram.buffer_addr
 op_assign
-id|pci_map_single
+id|ha-&gt;ioctl_busaddr
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|write
+)paren
+id|memcpy
 c_func
 (paren
-id|ha-&gt;pcidev
+id|ha-&gt;ioctl_data
 comma
 id|ha-&gt;nvram
 comma
-id|scb-&gt;data_len
-comma
-id|IPS_DMA_DIR
-c_func
+r_sizeof
 (paren
-id|scb
+op_star
+id|ha-&gt;nvram
 )paren
 )paren
-suffix:semicolon
-id|scb-&gt;cmd.nvram.buffer_addr
-op_assign
-id|scb-&gt;data_busaddr
-suffix:semicolon
-id|scb-&gt;flags
-op_or_assign
-id|IPS_SCB_MAP_SINGLE
 suffix:semicolon
 multiline_comment|/* issue the command */
 r_if
@@ -22595,6 +22505,26 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|write
+)paren
+id|memcpy
+c_func
+(paren
+id|ha-&gt;nvram
+comma
+id|ha-&gt;ioctl_data
+comma
+r_sizeof
+(paren
+op_star
+id|ha-&gt;nvram
+)paren
+)paren
+suffix:semicolon
 r_return
 (paren
 l_int|1
@@ -23056,7 +22986,7 @@ l_int|0
 suffix:semicolon
 id|scb-&gt;cmd.ffdc.reset_type
 op_assign
-l_int|0x80
+l_int|0
 suffix:semicolon
 multiline_comment|/* convert time to what the card wants */
 id|ips_fix_ffdc_time
@@ -25485,12 +25415,12 @@ multiline_comment|/*   Dependencies:                                            
 multiline_comment|/*     Assumes that ips_read_adapter_status() is called first filling in     */
 multiline_comment|/*     the data for SubSystem Parameters.                                    */
 multiline_comment|/*     Called from ips_write_driver_status() so it also assumes NVRAM Page 5 */
-multiline_comment|/*     Data is availaible.                                                   */
+multiline_comment|/*     Data is available.                                                    */
 multiline_comment|/*                                                                           */
 multiline_comment|/*---------------------------------------------------------------------------*/
-DECL|function|ips_version_check
 r_static
 r_void
+DECL|function|ips_version_check
 id|ips_version_check
 c_func
 (paren
@@ -25596,8 +25526,8 @@ l_int|4
 op_amp
 id|IPS_GET_VERSION_SUPPORT
 )paren
-multiline_comment|/* If Versioning is Supported */
 (brace
+multiline_comment|/* If Versioning is Supported */
 multiline_comment|/* Get the Version Info with a Get Version Command */
 id|rc
 op_assign
@@ -25637,8 +25567,8 @@ id|rc
 op_ne
 id|IPS_SUCCESS
 )paren
-multiline_comment|/* If Data Not Obtainable from a GetVersion Command */
 (brace
+multiline_comment|/* If Data Not Obtainable from a GetVersion Command */
 multiline_comment|/* Get the Firmware Version from Enquiry Data */
 id|memcpy
 c_func
@@ -25663,7 +25593,6 @@ r_if
 c_cond
 (paren
 id|strncmp
-c_func
 (paren
 id|FirmwareVersion
 comma
@@ -25833,14 +25762,14 @@ multiline_comment|/*------------------------------------------------------------
 multiline_comment|/*   Routine Name: ips_get_version_info                                      */
 multiline_comment|/*                                                                           */
 multiline_comment|/*   Routine Description:                                                    */
-multiline_comment|/*     Issue an internal GETVERSION ServeRAID Command                        */
+multiline_comment|/*     Issue an internal GETVERSION Command                                  */
 multiline_comment|/*                                                                           */
 multiline_comment|/*   Return Value:                                                           */
 multiline_comment|/*     0 if Successful, else non-zero                                        */
 multiline_comment|/*---------------------------------------------------------------------------*/
-DECL|function|ips_get_version_info
 r_static
 r_int
+DECL|function|ips_get_version_info
 id|ips_get_version_info
 c_func
 (paren
@@ -25992,7 +25921,9 @@ id|intr
 )paren
 suffix:semicolon
 r_return
+(paren
 id|rc
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
@@ -26002,10 +25933,9 @@ multiline_comment|/*                                                            
 multiline_comment|/* Routine Description:                                                     */
 multiline_comment|/*   cleanup routine for a failed adapter initialization                    */
 multiline_comment|/****************************************************************************/
-DECL|function|ips_abort_init
 r_static
 r_int
-(def_block
+DECL|function|ips_abort_init
 id|ips_abort_init
 c_func
 (paren
@@ -26046,7 +25976,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-)def_block
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Name: ips_shift_controllers                                      */
@@ -26057,7 +25986,6 @@ multiline_comment|/*************************************************************
 r_static
 r_void
 DECL|function|ips_shift_controllers
-(def_block
 id|ips_shift_controllers
 c_func
 (paren
@@ -26158,7 +26086,6 @@ op_assign
 id|sh_sav
 suffix:semicolon
 )brace
-)def_block
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Name: ips_order_controllers                                      */
@@ -26169,7 +26096,6 @@ multiline_comment|/*************************************************************
 r_static
 r_void
 DECL|function|ips_order_controllers
-(def_block
 id|ips_order_controllers
 c_func
 (paren
@@ -26200,10 +26126,8 @@ id|ips_ha
 l_int|0
 )braket
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 id|nvram
 op_assign
 id|ips_ha
@@ -26561,7 +26485,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-)def_block
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Name: ips_register_scsi                                          */
@@ -26572,7 +26495,6 @@ multiline_comment|/*************************************************************
 r_static
 r_int
 DECL|function|ips_register_scsi
-(def_block
 id|ips_register_scsi
 c_func
 (paren
@@ -26784,7 +26706,7 @@ id|sh-&gt;max_sectors
 op_assign
 l_int|128
 suffix:semicolon
-macro_line|#endif 
+macro_line|#endif
 id|sh-&gt;max_id
 op_assign
 id|ha-&gt;ntargets
@@ -26817,17 +26739,16 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-)def_block
 multiline_comment|/*---------------------------------------------------------------------------*/
 multiline_comment|/*   Routine Name: ips_remove_device                                         */
 multiline_comment|/*                                                                           */
 multiline_comment|/*   Routine Description:                                                    */
 multiline_comment|/*     Remove one Adapter ( Hot Plugging )                                   */
 multiline_comment|/*---------------------------------------------------------------------------*/
-DECL|function|ips_remove_device
 r_static
 r_void
 id|__devexit
+DECL|function|ips_remove_device
 id|ips_remove_device
 c_func
 (paren
@@ -26921,7 +26842,6 @@ r_static
 r_int
 id|__init
 DECL|function|ips_module_init
-(def_block
 id|ips_module_init
 c_func
 (paren
@@ -26940,12 +26860,10 @@ id|ips_pci_driver
 OL
 l_int|0
 )paren
-(brace
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-)brace
 id|ips_driver_template.module
 op_assign
 id|THIS_MODULE
@@ -26989,7 +26907,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-)def_block
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Name: ips_module_exit                                            */
@@ -27001,7 +26918,6 @@ r_static
 r_void
 id|__exit
 DECL|function|ips_module_exit
-(def_block
 id|ips_module_exit
 c_func
 (paren
@@ -27030,7 +26946,6 @@ id|ips_notifier
 )paren
 suffix:semicolon
 )brace
-)def_block
 DECL|variable|ips_module_init
 id|module_init
 c_func
@@ -27054,10 +26969,10 @@ multiline_comment|/*                                                            
 multiline_comment|/*   Return Value:                                                           */
 multiline_comment|/*     0 if Successful, else non-zero                                        */
 multiline_comment|/*---------------------------------------------------------------------------*/
-DECL|function|ips_insert_device
 r_static
 r_int
 id|__devinit
+DECL|function|ips_insert_device
 id|ips_insert_device
 c_func
 (paren
@@ -27183,9 +27098,9 @@ multiline_comment|/*                                                            
 multiline_comment|/*   Return Value:                                                           */
 multiline_comment|/*     0 if Successful, else non-zero                                        */
 multiline_comment|/*---------------------------------------------------------------------------*/
-DECL|function|ips_init_phase1
 r_static
 r_int
+DECL|function|ips_init_phase1
 id|ips_init_phase1
 c_func
 (paren
@@ -27235,9 +27150,6 @@ id|j
 suffix:semicolon
 r_int
 id|index
-suffix:semicolon
-r_uint32
-id|count
 suffix:semicolon
 id|dma_addr_t
 id|dma_address
@@ -27720,7 +27632,7 @@ id|ha-&gt;pcidev
 op_assign
 id|pci_dev
 suffix:semicolon
-multiline_comment|/*&n;     * Set the pci_dev&squot;s dma_mask.  Not all adapters support 64bit&n;     * addressing so don&squot;t enable it if the adapter can&squot;t support&n;     * it!  Also, don&squot;t use 64bit addressing if dma addresses&n;     * are guaranteed to be &lt; 4G.&n;     */
+multiline_comment|/*&n;&t; * Set the pci_dev&squot;s dma_mask.  Not all adapters support 64bit&n;&t; * addressing so don&squot;t enable it if the adapter can&squot;t support&n;&t; * it!  Also, don&squot;t use 64bit addressing if dma addresses&n;&t; * are guaranteed to be &lt; 4G.&n;&t; */
 r_if
 c_cond
 (paren
@@ -27785,17 +27697,45 @@ id|index
 suffix:semicolon
 )brace
 )brace
-id|ha-&gt;enq
+r_if
+c_cond
+(paren
+id|ips_cd_boot
+op_logical_and
+op_logical_neg
+id|ips_FlashData
+)paren
+(brace
+id|ips_FlashData
 op_assign
-id|kmalloc
+id|pci_alloc_consistent
 c_func
 (paren
+id|pci_dev
+comma
+id|PAGE_SIZE
+op_lshift
+l_int|7
+comma
+op_amp
+id|ips_flashbusaddr
+)paren
+suffix:semicolon
+)brace
+id|ha-&gt;enq
+op_assign
+id|pci_alloc_consistent
+c_func
+(paren
+id|pci_dev
+comma
 r_sizeof
 (paren
 id|IPS_ENQ
 )paren
 comma
-id|IPS_INIT_GFP
+op_amp
+id|ha-&gt;enq_busaddr
 )paren
 suffix:semicolon
 r_if
@@ -27899,7 +27839,7 @@ r_sizeof
 id|IPS_CONF
 )paren
 comma
-id|IPS_INIT_GFP
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -27939,7 +27879,7 @@ r_sizeof
 id|IPS_NVRAM_P5
 )paren
 comma
-id|IPS_INIT_GFP
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -27979,7 +27919,7 @@ r_sizeof
 id|IPS_SUBSYS
 )paren
 comma
-id|IPS_INIT_GFP
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -28009,46 +27949,34 @@ id|index
 )paren
 suffix:semicolon
 )brace
-r_for
-c_loop
+multiline_comment|/* the ioctl buffer is now used during adapter initialization, so its&n;&t; * successful allocation is now required */
+r_if
+c_cond
 (paren
-id|count
+id|ips_ioctlsize
+OL
+id|PAGE_SIZE
+)paren
+id|ips_ioctlsize
 op_assign
 id|PAGE_SIZE
-comma
-id|ha-&gt;ioctl_order
-op_assign
-l_int|0
-suffix:semicolon
-id|count
-OL
-id|ips_ioctlsize
-suffix:semicolon
-id|ha-&gt;ioctl_order
-op_increment
-comma
-id|count
-op_lshift_assign
-l_int|1
-)paren
 suffix:semicolon
 id|ha-&gt;ioctl_data
 op_assign
-(paren
-r_char
-op_star
-)paren
-id|__get_free_pages
+id|pci_alloc_consistent
 c_func
 (paren
-id|IPS_INIT_GFP
+id|pci_dev
 comma
-id|ha-&gt;ioctl_order
+id|ips_ioctlsize
+comma
+op_amp
+id|ha-&gt;ioctl_busaddr
 )paren
 suffix:semicolon
-id|ha-&gt;ioctl_datasize
+id|ha-&gt;ioctl_len
 op_assign
-id|count
+id|ips_ioctlsize
 suffix:semicolon
 r_if
 c_cond
@@ -28067,20 +27995,17 @@ comma
 l_string|&quot;Unable to allocate IOCTL data&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ha-&gt;ioctl_data
-op_assign
-l_int|NULL
-suffix:semicolon
-id|ha-&gt;ioctl_order
-op_assign
-l_int|0
-suffix:semicolon
-id|ha-&gt;ioctl_datasize
-op_assign
-l_int|0
+r_return
+id|ips_abort_init
+c_func
+(paren
+id|ha
+comma
+id|index
+)paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * Setup Functions&n;     */
+multiline_comment|/*&n;&t; * Setup Functions&n;&t; */
 id|ips_setup_funclist
 c_func
 (paren
@@ -28134,7 +28059,7 @@ id|ha
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;     * Initialize the card if it isn&squot;t already&n;     */
+multiline_comment|/*&n;&t; * Initialize the card if it isn&squot;t already&n;&t; */
 r_if
 c_cond
 (paren
@@ -28161,7 +28086,7 @@ id|ha
 )paren
 )paren
 (brace
-multiline_comment|/*&n;           * Initialization failed&n;           */
+multiline_comment|/*&n;&t;&t;&t; * Initialization failed&n;&t;&t;&t; */
 id|IPS_PRINTK
 c_func
 (paren
@@ -28201,9 +28126,9 @@ multiline_comment|/*                                                            
 multiline_comment|/*   Return Value:                                                           */
 multiline_comment|/*     0 if Successful, else non-zero                                        */
 multiline_comment|/*---------------------------------------------------------------------------*/
-DECL|function|ips_init_phase2
 r_static
 r_int
+DECL|function|ips_init_phase2
 id|ips_init_phase2
 c_func
 (paren
@@ -28288,7 +28213,7 @@ id|index
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * Allocate a temporary SCB for initialization&n;     */
+multiline_comment|/*&n;&t; * Allocate a temporary SCB for initialization&n;&t; */
 id|ha-&gt;max_cmds
 op_assign
 l_int|1

@@ -3480,6 +3480,7 @@ DECL|macro|LU_Q
 mdefine_line|#define LU_Q(ha, b, t, l)&t;(ha-&gt;dev[SUBDEV(b, t, l)])
 macro_line|#endif&t;&t;&t;&t;/* HOSTS_C */
 multiline_comment|/*&n; *  Linux - SCSI Driver Interface Function Prototypes.&n; */
+macro_line|#if LINUX_VERSION_CODE &lt; 0x020600
 r_int
 id|qla1280_proc_info
 c_func
@@ -3500,6 +3501,30 @@ comma
 r_int
 )paren
 suffix:semicolon
+macro_line|#else
+r_int
+id|qla1280_proc_info
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+comma
+r_char
+op_star
+comma
+r_char
+op_star
+op_star
+comma
+id|off_t
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+macro_line|#endif
 r_const
 r_char
 op_star
@@ -3641,6 +3666,6 @@ mdefine_line|#define USE_NEW_EH
 macro_line|#endif
 multiline_comment|/*&n; * Scsi_Host_template (see hosts.h)&n; * Device driver Interfaces to mid-level SCSI driver.&n; */
 DECL|macro|QLA1280_LINUX_TEMPLATE
-mdefine_line|#define QLA1280_LINUX_TEMPLATE {&t;&t;&t;&t;&bslash;&n;&t;.module = NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.proc_dir = NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;.proc_info = qla1280_proc_info,&t;&t;&t;&t;&bslash;&n;&t;.name = &quot;Qlogic ISP 1280/12160&quot;,&t;&t;&t;&bslash;&n;&t;.detect = qla1280_detect,&t;&t;&t;&t;&bslash;&n;&t;.release = qla1280_release,&t;&t;&t;&t;&bslash;&n;&t;.info = qla1280_info,&t;&t;&t;&t;&t;&bslash;&n;&t;.ioctl = NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.command = NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;.queuecommand = qla1280_queuecommand,&t;&t;&t;&bslash;&n;&t;.eh_strategy_handler = NULL,&t;&t;&t;&t;&bslash;&n;&t;.eh_abort_handler = qla1280_eh_abort,&t;&t;&t;&bslash;&n;&t;.eh_device_reset_handler = qla1280_eh_device_reset,&t;&bslash;&n;&t;.eh_bus_reset_handler = qla1280_eh_bus_reset,&t;&t;&bslash;&n;&t;.eh_host_reset_handler = qla1280_eh_adapter_reset,&t;&bslash;&n;&t;.bios_param = qla1280_biosparam,&t;&t;&t;&bslash;&n;&t;.can_queue = 255,&t;/* max simultaneous cmds      */&bslash;&n;&t;.this_id = -1,&t;&t;/* scsi id of host adapter    */&bslash;&n;&t;.sg_tablesize = SG_ALL,&t;/* max scatter-gather cmds    */&bslash;&n;&t;.cmd_per_lun = 3,&t;/* cmds per lun (linked cmds) */&bslash;&n;&t;.present = 0,&t;&t;/* number of 1280&squot;s present   */&bslash;&n;&t;.unchecked_isa_dma = 0,&t;/* no memory DMA restrictions */&bslash;&n;&t;.use_clustering = ENABLE_CLUSTERING,&t;&t;&t;&bslash;&n;&t;.emulated = 0,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;USE_NEW_EH&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define QLA1280_LINUX_TEMPLATE {&t;&t;&t;&t;&bslash;&n;&t;.module = NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.proc_dir = NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;.proc_info = qla1280_proc_info,&t;&t;&t;&t;&bslash;&n;&t;.name = &quot;Qlogic ISP 1280/12160&quot;,&t;&t;&t;&bslash;&n;&t;.detect = qla1280_detect,&t;&t;&t;&t;&bslash;&n;&t;.release = qla1280_release,&t;&t;&t;&t;&bslash;&n;&t;.info = qla1280_info,&t;&t;&t;&t;&t;&bslash;&n;&t;.queuecommand = qla1280_queuecommand,&t;&t;&t;&bslash;&n;&t;.eh_strategy_handler = NULL,&t;&t;&t;&t;&bslash;&n;&t;.eh_abort_handler = qla1280_eh_abort,&t;&t;&t;&bslash;&n;&t;.eh_device_reset_handler = qla1280_eh_device_reset,&t;&bslash;&n;&t;.eh_bus_reset_handler = qla1280_eh_bus_reset,&t;&t;&bslash;&n;&t;.eh_host_reset_handler = qla1280_eh_adapter_reset,&t;&bslash;&n;&t;.bios_param = qla1280_biosparam,&t;&t;&t;&bslash;&n;&t;.can_queue = 255,&t;/* max simultaneous cmds      */&bslash;&n;&t;.this_id = -1,&t;&t;/* scsi id of host adapter    */&bslash;&n;&t;.sg_tablesize = SG_ALL,&t;/* max scatter-gather cmds    */&bslash;&n;&t;.cmd_per_lun = 3,&t;/* cmds per lun (linked cmds) */&bslash;&n;&t;.present = 0,&t;&t;/* number of 1280&squot;s present   */&bslash;&n;&t;.unchecked_isa_dma = 0,&t;/* no memory DMA restrictions */&bslash;&n;&t;.use_clustering = ENABLE_CLUSTERING,&t;&t;&t;&bslash;&n;&t;.emulated = 0,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;USE_NEW_EH&t;&t;&t;&t;&t;&t;&bslash;&n;}
 macro_line|#endif&t;&t;&t;&t;/* _IO_HBA_QLA1280_H */
 eof

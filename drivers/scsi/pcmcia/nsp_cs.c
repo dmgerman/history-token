@@ -6048,36 +6048,18 @@ id|link-&gt;state
 op_amp
 id|DEV_CONFIG
 )paren
-(brace
 id|nsp_cs_release
 c_func
 (paren
 id|link
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_STALE_CONFIG
-)paren
-(brace
-id|link-&gt;state
-op_or_assign
-id|DEV_STALE_LINK
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/* Break the link with Card Services */
 r_if
 c_cond
 (paren
 id|link-&gt;handle
 )paren
-(brace
 id|CardServices
 c_func
 (paren
@@ -6086,7 +6068,6 @@ comma
 id|link-&gt;handle
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Unlink device structure, free bits */
 op_star
 id|linkp
@@ -7163,30 +7144,6 @@ comma
 id|link
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If the device is currently in use, we won&squot;t release until it&n;&t; * is actually closed.&n;&t; */
-r_if
-c_cond
-(paren
-id|link-&gt;open
-)paren
-(brace
-id|DEBUG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;nsp_cs: release postponed, &squot;%s&squot; still open&bslash;n&quot;
-comma
-id|link-&gt;dev-&gt;dev_name
-)paren
-suffix:semicolon
-id|link-&gt;state
-op_or_assign
-id|DEV_STALE_CONFIG
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* Unlink the device chain */
 macro_line|#if (LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,5,2))
 id|scsi_unregister_module
@@ -7292,23 +7249,7 @@ op_and_assign
 op_complement
 id|DEV_CONFIG
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_STALE_LINK
-)paren
-(brace
-id|nsp_cs_detach
-c_func
-(paren
-id|link
-)paren
-suffix:semicolon
 )brace
-)brace
-multiline_comment|/* nsp_cs_release */
 multiline_comment|/*======================================================================&n;&n;    The card status event handler.  Mostly, this schedules other&n;    stuff to run after an event is received.  A CARD_REMOVAL event&n;    also sets some flags to discourage the net drivers from trying&n;    to talk to the card any more.&n;&n;    When a CARD_REMOVAL event is received, we immediately set a flag&n;    to block future accesses to this device.  All the functions that&n;    actually access the device should check this flag to make sure&n;    the card is still present.&n;    &n;======================================================================*/
 DECL|function|nsp_cs_event
 r_static

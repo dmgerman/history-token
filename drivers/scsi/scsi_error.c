@@ -3579,6 +3579,7 @@ id|FAILED
 suffix:semicolon
 id|maybe_retry
 suffix:colon
+multiline_comment|/* we requeue for retry because the error was retryable, and&n;&t; * the request was not marked fast fail.  Note that above,&n;&t; * even if the request is marked fast fail, we still requeue&n;&t; * for queue congestion conditions (QUEUE_FULL or BUSY) */
 r_if
 c_cond
 (paren
@@ -3588,6 +3589,13 @@ id|scmd-&gt;retries
 )paren
 OL
 id|scmd-&gt;allowed
+op_logical_and
+op_logical_neg
+id|blk_noretry_request
+c_func
+(paren
+id|scmd-&gt;request
+)paren
 )paren
 (brace
 r_return

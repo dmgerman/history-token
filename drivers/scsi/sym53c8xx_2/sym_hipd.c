@@ -20436,15 +20436,8 @@ multiline_comment|/*&n;&t; *  Sigh! we are done.&n;&t; */
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; *  We have failed.&n;&t; *  We will try to free all the resources we have &n;&t; *  allocated, but if we are a boot device, this &n;&t; *  will not help that much.;)&n;&t; */
 id|attach_failed
 suffix:colon
-id|sym_hcb_free
-c_func
-(paren
-id|np
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENXIO
