@@ -1424,10 +1424,18 @@ op_eq
 op_minus
 id|ENODATA
 )paren
+(brace
+multiline_comment|/* This may seem odd here, but it means that the ACL was set&n;                 * with a value representable with mode bits. If there was&n;                 * an ACL before, reiserfs_xattr_del already dirtied the inode.&n;                 */
+id|mark_inode_dirty
+(paren
+id|inode
+)paren
+suffix:semicolon
 id|error
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
