@@ -238,6 +238,20 @@ id|a-&gt;attr
 )paren
 suffix:semicolon
 )brace
+DECL|variable|sysdev_create_file
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sysdev_create_file
+)paren
+suffix:semicolon
+DECL|variable|sysdev_remove_file
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sysdev_remove_file
+)paren
+suffix:semicolon
 multiline_comment|/* &n; * declare system_subsys &n; */
 id|decl_subsys
 c_func
@@ -568,6 +582,12 @@ op_assign
 op_amp
 id|cls-&gt;kset
 suffix:semicolon
+multiline_comment|/* But make sure we point to the right type for sysfs translation */
+id|sysdev-&gt;kobj.ktype
+op_assign
+op_amp
+id|ktype_sysdev
+suffix:semicolon
 multiline_comment|/* set the kobject name */
 id|snprintf
 c_func
@@ -758,13 +778,6 @@ id|sysdev
 )paren
 suffix:semicolon
 )brace
-id|list_del_init
-c_func
-(paren
-op_amp
-id|sysdev-&gt;entry
-)paren
-suffix:semicolon
 id|up_write
 c_func
 (paren
