@@ -80,6 +80,7 @@ op_and_assign
 op_complement
 id|__GFP_WAIT
 suffix:semicolon
+multiline_comment|/*&n;&t; * if sg table allocation fails, requeue request later.&n;&t; */
 id|sgpnt
 op_assign
 id|scsi_alloc_sgtable
@@ -90,12 +91,14 @@ comma
 id|gfp_mask
 )paren
 suffix:semicolon
-id|BUG_ON
-c_func
+r_if
+c_cond
 (paren
 op_logical_neg
 id|sgpnt
 )paren
+r_return
+l_int|0
 suffix:semicolon
 id|SCpnt-&gt;request_buffer
 op_assign
@@ -171,15 +174,28 @@ comma
 id|req-&gt;current_nr_sectors
 )paren
 suffix:semicolon
-id|BUG
+multiline_comment|/*&n;&t; * kill it. there should be no leftover blocks in this request&n;&t; */
+id|SCpnt
+op_assign
+id|scsi_end_request
 c_func
 (paren
+id|SCpnt
+comma
+l_int|0
+comma
+id|req-&gt;nr_sectors
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|SCpnt
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* ahem */
 )brace
 multiline_comment|/*&n; * Function:    scsi_initialize_merge_fn()&n; *&n; * Purpose:     Initialize merge function for a host&n; *&n; * Arguments:   SHpnt   - Host descriptor.&n; *&n; * Returns:     Nothing.&n; *&n; * Lock status: &n; *&n; * Notes:&n; */
 DECL|function|scsi_initialize_merge_fn
