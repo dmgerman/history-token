@@ -782,6 +782,10 @@ id|dev-&gt;init
 op_assign
 id|ipip6_tunnel_init
 suffix:semicolon
+id|dev-&gt;tx_queue_len
+op_assign
+l_int|1
+suffix:semicolon
 id|nt-&gt;parms
 op_assign
 op_star
@@ -3703,6 +3707,10 @@ suffix:semicolon
 id|ipip6_fb_tunnel_dev-&gt;init
 op_assign
 id|ipip6_fb_tunnel_init
+suffix:semicolon
+id|ipip6_fb_tunnel_dev-&gt;tx_queue_len
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond
