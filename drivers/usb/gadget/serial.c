@@ -1502,12 +1502,16 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#if G_SERIAL_DEBUG
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1515,16 +1519,18 @@ c_func
 (paren
 id|debug
 comma
-l_string|&quot;Enable debugging, 0=off, 1=on&quot;
+l_string|&quot;Enable debugging, 0=off, 1=on, larger values for more messages&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|read_q_size
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1535,12 +1541,14 @@ comma
 l_string|&quot;Read request queue size, default=32&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|write_q_size
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1551,12 +1559,14 @@ comma
 l_string|&quot;Write request queue size, default=32&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|write_buf_size
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
