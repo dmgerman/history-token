@@ -16,8 +16,6 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irmod.h&gt;
-macro_line|#include &lt;net/irda/irlap_frame.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &lt;net/irda/smc-ircc.h&gt;
 macro_line|#include &lt;net/irda/irport.h&gt;
@@ -4915,9 +4913,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 multiline_comment|/*&n; * Function ircc_close (self)&n; *&n; *    Close driver instance&n; *&n; */
-macro_line|#ifdef MODULE
 DECL|function|ircc_close
 r_static
 r_int
@@ -5090,7 +5086,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* MODULE */
 DECL|function|smc_init
 r_int
 id|__init
@@ -5274,5 +5269,4 @@ comma
 l_string|&quot;Configuration register base address&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* MODULE */
 eof

@@ -541,10 +541,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|function|__ircomm_tty_cleanup
 r_static
 r_void
+id|__exit
 id|__ircomm_tty_cleanup
 c_func
 (paren
@@ -605,6 +605,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Function ircomm_tty_cleanup ()&n; *&n; *    Remove IrCOMM TTY layer/driver&n; *&n; */
 DECL|function|ircomm_tty_cleanup
 r_void
+id|__exit
 id|ircomm_tty_cleanup
 c_func
 (paren
@@ -660,7 +661,6 @@ id|__ircomm_tty_cleanup
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* MODULE */
 multiline_comment|/*&n; * Function ircomm_startup (self)&n; *&n; *    &n; *&n; */
 DECL|function|ircomm_tty_startup
 r_static
@@ -5469,7 +5469,6 @@ id|offset
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PROC_FS */
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -5488,34 +5487,18 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|function|init_module
-r_int
-id|init_module
+DECL|variable|ircomm_tty_init
+id|module_init
 c_func
 (paren
-r_void
-)paren
-(brace
-r_return
 id|ircomm_tty_init
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+DECL|variable|ircomm_tty_cleanup
+id|module_exit
 c_func
 (paren
-r_void
-)paren
-(brace
 id|ircomm_tty_cleanup
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif /* MODULE */
 eof

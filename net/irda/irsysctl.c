@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irias_object.h&gt;
 DECL|macro|NET_IRDA
@@ -771,6 +772,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Function irda_sysctl_register (void)&n; *&n; *    Register our sysctl interface&n; *&n; */
 DECL|function|irda_sysctl_register
 r_int
+id|__init
 id|irda_sysctl_register
 c_func
 (paren
@@ -804,6 +806,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Function irda_sysctl_unregister (void)&n; *&n; *    Unregister our sysctl interface&n; *&n; */
 DECL|function|irda_sysctl_unregister
 r_void
+id|__exit
 id|irda_sysctl_unregister
 c_func
 (paren

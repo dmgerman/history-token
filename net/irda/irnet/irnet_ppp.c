@@ -3885,7 +3885,10 @@ multiline_comment|/************************** INITIALISATION *******************
 multiline_comment|/*&n; * Module initialisation and all that jazz...&n; */
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Hook our device callbacks in the filesystem, to connect our code&n; * to /dev/irnet&n; */
+r_static
+r_inline
 r_int
+id|__init
 DECL|function|ppp_irnet_init
 id|ppp_irnet_init
 c_func
@@ -3930,7 +3933,10 @@ suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Cleanup at exit...&n; */
+r_static
+r_inline
 r_void
+id|__exit
 DECL|function|ppp_irnet_cleanup
 id|ppp_irnet_cleanup
 c_func
@@ -3963,12 +3969,12 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Module main entry point&n; */
 r_int
-DECL|function|init_module
-id|init_module
+id|__init
+DECL|function|irnet_init
+id|irnet_init
 c_func
 (paren
 r_void
@@ -4007,8 +4013,9 @@ suffix:semicolon
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Module exit&n; */
 r_void
-DECL|function|cleanup_module
-id|cleanup_module
+id|__exit
+DECL|function|irnet_cleanup
+id|irnet_cleanup
 c_func
 (paren
 r_void
@@ -4026,7 +4033,34 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* MODULE */
+multiline_comment|/*------------------------------------------------------------------*/
+multiline_comment|/*&n; * Module magic&n; */
+DECL|variable|irnet_init
+id|module_init
+c_func
+(paren
+id|irnet_init
+)paren
+suffix:semicolon
+DECL|variable|irnet_cleanup
+id|module_exit
+c_func
+(paren
+id|irnet_cleanup
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;IrNET : Synchronous PPP over IrDA&quot;
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

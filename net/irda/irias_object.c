@@ -2,7 +2,6 @@ multiline_comment|/*************************************************************
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irmod.h&gt;
 macro_line|#include &lt;net/irda/irias_object.h&gt;
 DECL|variable|objects
 id|hashbin_t

@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlap.h&n; * Version:       0.8&n; * Description:   An IrDA LAP driver for Linux&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Aug  4 20:40:53 1997&n; * Modified at:   Fri Dec 10 13:21:17 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlap.h&n; * Version:       0.8&n; * Description:   An IrDA LAP driver for Linux&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Aug  4 20:40:53 1997&n; * Modified at:   Fri Dec 10 13:21:17 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2002 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#ifndef IRLAP_H
 DECL|macro|IRLAP_H
 mdefine_line|#define IRLAP_H
@@ -7,7 +7,11 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;net/irda/irlap_event.h&gt;
+macro_line|#include &lt;net/irda/irqueue.h&gt;&t;&t;/* irda_queue_t */
+macro_line|#include &lt;net/irda/qos.h&gt;&t;&t;/* struct qos_info */
+macro_line|#include &lt;net/irda/discovery.h&gt;&t;&t;/* discovery_t */
+macro_line|#include &lt;net/irda/irlap_event.h&gt;&t;/* IRLAP_STATE, ... */
+macro_line|#include &lt;net/irda/irmod.h&gt;&t;&t;/* struct notify_t */
 DECL|macro|CONFIG_IRDA_DYNAMIC_WINDOW
 mdefine_line|#define CONFIG_IRDA_DYNAMIC_WINDOW 1
 DECL|macro|LAP_RELIABLE
@@ -49,6 +53,71 @@ DECL|macro|NS_UNEXPECTED
 mdefine_line|#define NS_UNEXPECTED   0
 DECL|macro|NS_INVALID
 mdefine_line|#define NS_INVALID     -1
+multiline_comment|/*&n; *  Meta information passed within the IrLAP state machine&n; */
+DECL|struct|irlap_info
+r_struct
+id|irlap_info
+(brace
+DECL|member|caddr
+id|__u8
+id|caddr
+suffix:semicolon
+multiline_comment|/* Connection address */
+DECL|member|control
+id|__u8
+id|control
+suffix:semicolon
+multiline_comment|/* Frame type */
+DECL|member|cmd
+id|__u8
+id|cmd
+suffix:semicolon
+DECL|member|saddr
+id|__u32
+id|saddr
+suffix:semicolon
+DECL|member|daddr
+id|__u32
+id|daddr
+suffix:semicolon
+DECL|member|pf
+r_int
+id|pf
+suffix:semicolon
+multiline_comment|/* Poll/final bit set */
+DECL|member|nr
+id|__u8
+id|nr
+suffix:semicolon
+multiline_comment|/* Sequence number of next frame expected */
+DECL|member|ns
+id|__u8
+id|ns
+suffix:semicolon
+multiline_comment|/* Sequence number of frame sent */
+DECL|member|S
+r_int
+id|S
+suffix:semicolon
+multiline_comment|/* Number of slots */
+DECL|member|slot
+r_int
+id|slot
+suffix:semicolon
+multiline_comment|/* Random chosen slot */
+DECL|member|s
+r_int
+id|s
+suffix:semicolon
+multiline_comment|/* Current slot */
+DECL|member|discovery
+id|discovery_t
+op_star
+id|discovery
+suffix:semicolon
+multiline_comment|/* Discovery information */
+)brace
+suffix:semicolon
 multiline_comment|/* Main structure of IrLAP */
 DECL|struct|irlap_cb
 r_struct

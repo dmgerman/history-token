@@ -5,53 +5,14 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/irda.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
+macro_line|#include &lt;asm/ioctls.h&gt;&t;&t;/* TIOCOUTQ, TIOCINQ */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
-macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/iriap.h&gt;
-macro_line|#include &lt;net/irda/irias_object.h&gt;
-macro_line|#include &lt;net/irda/irlmp.h&gt;
-macro_line|#include &lt;net/irda/irttp.h&gt;
-macro_line|#include &lt;net/irda/discovery.h&gt;
-r_extern
-r_int
-id|irda_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|irda_cleanup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|irlap_driver_rcv
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-comma
-r_struct
-id|net_device
-op_star
-comma
-r_struct
-id|packet_type
-op_star
-)paren
-suffix:semicolon
+macro_line|#include &lt;net/irda/af_irda.h&gt;
 r_static
 r_int
 id|irda_create
@@ -96,14 +57,6 @@ mdefine_line|#define ULTRA_MAX_DATA 382
 macro_line|#endif /* CONFIG_IRDA_ULTRA */
 DECL|macro|IRDA_MAX_HEADER
 mdefine_line|#define IRDA_MAX_HEADER (TTP_MAX_HEADER)
-macro_line|#ifdef CONFIG_IRDA_DEBUG
-DECL|variable|irda_debug
-id|__u32
-id|irda_debug
-op_assign
-id|IRDA_DEBUG_LEVEL
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * Function irda_data_indication (instance, sap, skb)&n; *&n; *    Received some data from TinyTP. Just queue it on the receive queue&n; *&n; */
 DECL|function|irda_data_indication
 r_static
@@ -8867,166 +8820,11 @@ id|PF_IRDA
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_IRDA_ULTRA */
-multiline_comment|/*&n; * Function irda_device_event (this, event, ptr)&n; *&n; *    Called when a device is taken up or down&n; *&n; */
-DECL|function|irda_device_event
-r_static
-r_int
-id|irda_device_event
-c_func
-(paren
-r_struct
-id|notifier_block
-op_star
-id|this
-comma
-r_int
-r_int
-id|event
-comma
-r_void
-op_star
-id|ptr
-)paren
-(brace
-r_struct
-id|net_device
-op_star
-id|dev
-op_assign
-(paren
-r_struct
-id|net_device
-op_star
-)paren
-id|ptr
-suffix:semicolon
-multiline_comment|/* Reject non IrDA devices */
-r_if
-c_cond
-(paren
-id|dev-&gt;type
-op_ne
-id|ARPHRD_IRDA
-)paren
-r_return
-id|NOTIFY_DONE
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|event
-)paren
-(brace
-r_case
-id|NETDEV_UP
-suffix:colon
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|3
-comma
-id|__FUNCTION__
-l_string|&quot;(), NETDEV_UP&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* irda_dev_device_up(dev); */
-r_break
-suffix:semicolon
-r_case
-id|NETDEV_DOWN
-suffix:colon
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|3
-comma
-id|__FUNCTION__
-l_string|&quot;(), NETDEV_DOWN&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* irda_kill_by_device(dev); */
-multiline_comment|/* irda_rt_device_down(dev); */
-multiline_comment|/* irda_dev_device_down(dev); */
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
-)brace
-r_return
-id|NOTIFY_DONE
-suffix:semicolon
-)brace
-DECL|variable|irda_packet_type
-r_static
-r_struct
-id|packet_type
-id|irda_packet_type
-op_assign
-(brace
-l_int|0
-comma
-multiline_comment|/* MUTTER ntohs(ETH_P_IRDA),*/
-l_int|NULL
-comma
-id|irlap_driver_rcv
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-)brace
-suffix:semicolon
-DECL|variable|irda_dev_notifier
-r_static
-r_struct
-id|notifier_block
-id|irda_dev_notifier
-op_assign
-(brace
-id|irda_device_event
-comma
-l_int|NULL
-comma
-l_int|0
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * Function irda_proc_modcount (inode, fill)&n; *&n; *    Use by the proc file system functions to prevent the irda module&n; *    being removed while the use is standing in the net/irda directory&n; */
-DECL|function|irda_proc_modcount
-r_void
-id|irda_proc_modcount
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_int
-id|fill
-)paren
-(brace
-macro_line|#ifdef MODULE
-macro_line|#ifdef CONFIG_PROC_FS
-r_if
-c_cond
-(paren
-id|fill
-)paren
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_else
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif /* CONFIG_PROC_FS */
-macro_line|#endif /* MODULE */
-)brace
-multiline_comment|/*&n; * Function irda_proto_init (pro)&n; *&n; *    Initialize IrDA protocol layer&n; *&n; */
-DECL|function|irda_proto_init
+multiline_comment|/*&n; * Function irsock_init (pro)&n; *&n; *    Initialize IrDA protocol&n; *&n; */
+DECL|function|irsock_init
 r_int
 id|__init
-id|irda_proto_init
+id|irsock_init
 c_func
 (paren
 r_void
@@ -9039,129 +8837,27 @@ op_amp
 id|irda_family_ops
 )paren
 suffix:semicolon
-id|irda_packet_type.type
-op_assign
-id|htons
-c_func
-(paren
-id|ETH_P_IRDA
-)paren
-suffix:semicolon
-id|dev_add_pack
-c_func
-(paren
-op_amp
-id|irda_packet_type
-)paren
-suffix:semicolon
-id|register_netdevice_notifier
-c_func
-(paren
-op_amp
-id|irda_dev_notifier
-)paren
-suffix:semicolon
-id|irda_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|irda_device_init
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|irda_proto_init
-id|late_initcall
-c_func
-(paren
-id|irda_proto_init
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Function irda_proto_cleanup (void)&n; *&n; *    Remove IrDA protocol layer&n; *&n; */
-macro_line|#ifdef MODULE
-DECL|function|irda_proto_cleanup
+multiline_comment|/*&n; * Function irsock_cleanup (void)&n; *&n; *    Remove IrDA protocol&n; *&n; */
+DECL|function|irsock_cleanup
 r_void
-id|irda_proto_cleanup
+id|__exit
+id|irsock_cleanup
 c_func
 (paren
 r_void
 )paren
 (brace
-id|irda_packet_type.type
-op_assign
-id|htons
-c_func
-(paren
-id|ETH_P_IRDA
-)paren
-suffix:semicolon
-id|dev_remove_pack
-c_func
-(paren
-op_amp
-id|irda_packet_type
-)paren
-suffix:semicolon
-id|unregister_netdevice_notifier
-c_func
-(paren
-op_amp
-id|irda_dev_notifier
-)paren
-suffix:semicolon
 id|sock_unregister
 c_func
 (paren
 id|PF_IRDA
 )paren
 suffix:semicolon
-id|irda_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-DECL|variable|irda_proto_cleanup
-id|module_exit
-c_func
-(paren
-id|irda_proto_cleanup
-)paren
-suffix:semicolon
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Dag Brattli &lt;dagb@cs.uit.no&gt;&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;The Linux IrDA Protocol Subsystem&quot;
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_DEBUG
-id|MODULE_PARM
-c_func
-(paren
-id|irda_debug
-comma
-l_string|&quot;1l&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif /* MODULE */
 eof

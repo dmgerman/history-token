@@ -11,6 +11,7 @@ macro_line|#include &lt;net/irda/irlap.h&gt;
 macro_line|#include &lt;net/irda/irlap_frame.h&gt;
 macro_line|#include &lt;net/irda/qos.h&gt;
 macro_line|#include &lt;net/irda/parameters.h&gt;
+macro_line|#include &lt;net/irda/irlmp.h&gt;&t;&t;/* irlmp_flow_indication(), ... */
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#if CONFIG_IRDA_FAST_RR
 DECL|variable|sysctl_fast_poll_increase
