@@ -346,7 +346,7 @@ id|sx
 (brace
 id|line_ofs
 op_assign
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 op_minus
 id|width
 suffix:semicolon
@@ -358,7 +358,7 @@ id|dx
 op_plus
 id|dy
 op_star
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 suffix:semicolon
 id|src
 op_assign
@@ -368,7 +368,7 @@ id|sx
 op_plus
 id|sy
 op_star
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 suffix:semicolon
 r_while
 c_loop
@@ -427,7 +427,7 @@ r_else
 (brace
 id|line_ofs
 op_assign
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 op_minus
 id|width
 suffix:semicolon
@@ -447,7 +447,7 @@ op_minus
 l_int|1
 )paren
 op_star
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 suffix:semicolon
 id|src
 op_assign
@@ -465,7 +465,7 @@ op_minus
 l_int|1
 )paren
 op_star
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 suffix:semicolon
 r_while
 c_loop
@@ -552,7 +552,7 @@ id|width
 r_int
 id|line_ofs
 op_assign
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 op_minus
 id|width
 suffix:semicolon
@@ -628,7 +628,7 @@ id|sx
 op_plus
 id|sy
 op_star
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 suffix:semicolon
 r_while
 c_loop
@@ -748,7 +748,7 @@ id|xx
 op_plus
 id|yy
 op_star
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 op_star
 id|fontheight
 c_func
@@ -811,7 +811,7 @@ op_increment
 comma
 id|where
 op_add_assign
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 )paren
 id|rmw
 c_func
@@ -821,7 +821,7 @@ id|where
 suffix:semicolon
 id|where
 op_sub_assign
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 op_star
 id|y
 suffix:semicolon
@@ -856,7 +856,7 @@ op_increment
 comma
 id|where
 op_add_assign
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 )paren
 r_if
 c_cond
@@ -962,7 +962,7 @@ id|xx
 op_plus
 id|yy
 op_star
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 op_star
 id|fontheight
 c_func
@@ -1056,7 +1056,7 @@ op_increment
 comma
 id|where
 op_add_assign
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 )paren
 id|writeb
 c_func
@@ -1176,7 +1176,7 @@ id|xx
 op_plus
 id|yy
 op_star
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 op_star
 id|fontheight
 c_func
@@ -1300,14 +1300,14 @@ id|where
 suffix:semicolon
 id|where
 op_add_assign
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 suffix:semicolon
 )brace
 id|where
 op_add_assign
 l_int|1
 op_minus
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 op_star
 id|fontheight
 c_func
@@ -1435,7 +1435,7 @@ id|xx
 op_plus
 id|yy
 op_star
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 op_star
 id|fontheight
 c_func
@@ -1554,14 +1554,14 @@ id|where
 suffix:semicolon
 id|where
 op_add_assign
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 suffix:semicolon
 )brace
 id|where
 op_add_assign
 l_int|1
 op_minus
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 op_star
 id|fontheight
 c_func
@@ -1603,7 +1603,7 @@ id|xx
 op_plus
 id|yy
 op_star
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 op_star
 id|fontheight
 c_func
@@ -1676,7 +1676,7 @@ id|where
 suffix:semicolon
 id|where
 op_add_assign
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 suffix:semicolon
 )brace
 )brace
