@@ -3156,6 +3156,8 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|device_node
@@ -3192,10 +3194,24 @@ id|pci_root_buses
 suffix:semicolon
 )brace
 multiline_comment|/* Now copy the tce_table ptr from the bus devices down to every&n;&t; * pci device_node.  This means get_tce_table() won&squot;t need to search&n;&t; * up the device tree to find it.&n;&t; */
-id|pci_for_each_dev
-c_func
+r_while
+c_loop
+(paren
 (paren
 id|dev
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|dev
+)paren
+)paren
+op_ne
+l_int|NULL
 )paren
 (brace
 id|mydn
