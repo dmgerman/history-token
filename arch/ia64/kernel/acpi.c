@@ -1924,6 +1924,30 @@ c_func
 id|acpi_register_gsi
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_DEALLOCATE_IRQ
+r_void
+DECL|function|acpi_unregister_gsi
+id|acpi_unregister_gsi
+(paren
+id|u32
+id|gsi
+)paren
+(brace
+id|iosapic_unregister_intr
+c_func
+(paren
+id|gsi
+)paren
+suffix:semicolon
+)brace
+DECL|variable|acpi_unregister_gsi
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_unregister_gsi
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ACPI_DEALLOCATE_IRQ */
 r_static
 r_int
 id|__init
