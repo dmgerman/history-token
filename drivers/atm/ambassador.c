@@ -2344,7 +2344,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|function|drain_rx_pools
 r_static
 r_void
@@ -2391,10 +2390,7 @@ comma
 id|pool
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|fill_rx_pool
 r_static
 r_inline
