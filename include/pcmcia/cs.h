@@ -1479,16 +1479,6 @@ op_star
 id|err
 )paren
 suffix:semicolon
-r_struct
-id|pci_bus
-op_star
-id|pcmcia_lookup_bus
-c_func
-(paren
-id|client_handle_t
-id|handle
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_PCMCIA_OBSOLETE
 r_int
 id|pcmcia_get_first_client

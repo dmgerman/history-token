@@ -2366,6 +2366,19 @@ suffix:semicolon
 )brace
 multiline_comment|/* bind_request */
 multiline_comment|/*====================================================================*/
+r_extern
+r_struct
+id|pci_bus
+op_star
+id|pcmcia_lookup_bus
+c_func
+(paren
+r_struct
+id|pcmcia_socket
+op_star
+id|s
+)paren
+suffix:semicolon
 DECL|function|get_device_info
 r_static
 r_int
@@ -2406,7 +2419,7 @@ op_assign
 id|pcmcia_lookup_bus
 c_func
 (paren
-id|s-&gt;handle
+id|s-&gt;parent
 )paren
 suffix:semicolon
 r_if
