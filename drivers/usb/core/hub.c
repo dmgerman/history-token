@@ -8453,17 +8453,6 @@ id|i
 op_assign
 id|udev-&gt;descriptor.bMaxPacketSize0
 suffix:semicolon
-id|dev_dbg
-c_func
-(paren
-op_amp
-id|udev-&gt;dev
-comma
-l_string|&quot;ep0 maxpacket = %d&bslash;n&quot;
-comma
-id|i
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8475,6 +8464,17 @@ op_ne
 id|i
 )paren
 (brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|udev-&gt;dev
+comma
+l_string|&quot;ep0 maxpacket = %d&bslash;n&quot;
+comma
+id|i
+)paren
+suffix:semicolon
 id|usb_disable_endpoint
 c_func
 (paren
@@ -9684,6 +9684,40 @@ c_func
 (paren
 op_amp
 id|hub_event_lock
+)paren
+suffix:semicolon
+id|dev_dbg
+c_func
+(paren
+id|hub_dev
+comma
+l_string|&quot;state %d ports %d chg %04x evt %04x&bslash;n&quot;
+comma
+id|hdev-&gt;state
+comma
+id|hub-&gt;descriptor
+ques
+c_cond
+id|hub-&gt;descriptor-&gt;bNbrPorts
+suffix:colon
+l_int|0
+comma
+multiline_comment|/* NOTE: expects max 15 ports... */
+(paren
+id|u16
+)paren
+id|hub-&gt;change_bits
+(braket
+l_int|0
+)braket
+comma
+(paren
+id|u16
+)paren
+id|hub-&gt;event_bits
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 multiline_comment|/* Lock the device, then check to see if we were&n;&t;&t; * disconnected while waiting for the lock to succeed. */

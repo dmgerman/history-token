@@ -77,7 +77,7 @@ c_func
 op_amp
 id|urb-&gt;dev-&gt;dev
 comma
-l_string|&quot;%s timeout on ep%d%s&bslash;n&quot;
+l_string|&quot;%s timeout from &squot;%s&squot; on ep%d%s&bslash;n&quot;
 comma
 id|usb_pipecontrol
 c_func
@@ -89,6 +89,8 @@ c_cond
 l_string|&quot;control&quot;
 suffix:colon
 l_string|&quot;bulk&quot;
+comma
+id|current-&gt;comm
 comma
 id|usb_pipeendpoint
 c_func
