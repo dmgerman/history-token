@@ -1306,6 +1306,10 @@ id|fsync
 suffix:colon
 id|udf_fsync_file
 comma
+id|sendfile
+suffix:colon
+id|generic_file_sendfile
+comma
 )brace
 suffix:semicolon
 DECL|variable|udf_file_inode_operations

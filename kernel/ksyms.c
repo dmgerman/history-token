@@ -1068,6 +1068,13 @@ c_func
 id|generic_file_read
 )paren
 suffix:semicolon
+DECL|variable|generic_file_sendfile
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_file_sendfile
+)paren
+suffix:semicolon
 DECL|variable|do_generic_file_read
 id|EXPORT_SYMBOL
 c_func

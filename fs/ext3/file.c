@@ -198,6 +198,12 @@ op_assign
 id|ext3_sync_file
 comma
 multiline_comment|/* BKL held */
+dot
+id|sendfile
+op_assign
+id|generic_file_sendfile
+comma
+multiline_comment|/* BKL not held.  Don&squot;t need */
 )brace
 suffix:semicolon
 DECL|variable|ext3_file_inode_operations
