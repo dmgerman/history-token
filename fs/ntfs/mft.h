@@ -5,20 +5,6 @@ mdefine_line|#define _LINUX_NTFS_MFT_H
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;inode.h&quot;
 r_extern
-r_int
-id|format_mft_record
-c_func
-(paren
-id|ntfs_inode
-op_star
-id|ni
-comma
-id|MFT_RECORD
-op_star
-id|m
-)paren
-suffix:semicolon
-r_extern
 id|MFT_RECORD
 op_star
 id|map_mft_record

@@ -4209,6 +4209,13 @@ id|ni
 )paren
 suffix:semicolon
 multiline_comment|/* Clear the bit in the $MFT/$BITMAP corresponding to this record. */
+id|down_write
+c_func
+(paren
+op_amp
+id|vol-&gt;mftbmp_lock
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|ntfs_bitmap_clear_bit
@@ -4217,6 +4224,13 @@ c_func
 id|vol-&gt;mftbmp_ino
 comma
 id|mft_no
+)paren
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|vol-&gt;mftbmp_lock
 )paren
 suffix:semicolon
 r_if
