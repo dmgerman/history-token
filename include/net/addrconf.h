@@ -852,7 +852,7 @@ suffix:semicolon
 multiline_comment|/* &n;&t; * We perform the hash function over the last 64 bits of the address&n;&t; * This will include the IEEE address token on links that support it.&n;&t; */
 id|word
 op_assign
-id|addr-&gt;s6_addr
+id|addr-&gt;s6_addr32
 (braket
 l_int|2
 )braket

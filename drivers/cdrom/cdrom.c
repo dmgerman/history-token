@@ -8477,8 +8477,6 @@ c_func
 (paren
 id|rq
 comma
-id|ubuf
-comma
 id|bio
 comma
 id|len
