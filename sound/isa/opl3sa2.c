@@ -3692,6 +3692,16 @@ comma
 l_int|16
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|wss_port
+(braket
+id|dev
+)braket
+op_ne
+id|SNDRV_AUTO_PORT
+)paren
 id|pnp_resource_change
 c_func
 (paren
@@ -3923,7 +3933,9 @@ id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;PnP configure failure (out of resources?)&bslash;n&quot;
+l_string|&quot;PnP configure failure (out of resources?) err = %d&bslash;n&quot;
+comma
+id|err
 )paren
 suffix:semicolon
 r_return

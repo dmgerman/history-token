@@ -763,12 +763,6 @@ op_star
 id|comment
 suffix:semicolon
 multiline_comment|/* for /proc/asound/devices */
-DECL|member|dev
-id|snd_info_entry_t
-op_star
-id|dev
-suffix:semicolon
-multiline_comment|/* for /proc/asound/dev */
 DECL|member|f_ops
 r_struct
 id|file_operations
@@ -776,6 +770,14 @@ op_star
 id|f_ops
 suffix:semicolon
 multiline_comment|/* file operations */
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|0
+)braket
+suffix:semicolon
+multiline_comment|/* device name (keep at the end of structure) */
 )brace
 suffix:semicolon
 DECL|typedef|snd_minor_t
@@ -926,6 +928,13 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|snd_minor_info_oss_init
+mdefine_line|#define snd_minor_info_oss_init() /*NOP*/
+DECL|macro|snd_minor_info_oss_done
+mdefine_line|#define snd_minor_info_oss_done() /*NOP*/
+DECL|macro|snd_oss_init_module
+mdefine_line|#define snd_oss_init_module() /*NOP*/
 macro_line|#endif
 multiline_comment|/* memory.c */
 macro_line|#ifdef CONFIG_SND_DEBUG_MEMORY
@@ -1015,6 +1024,14 @@ mdefine_line|#define kfree_nocheck(obj) snd_wrapper_kfree(obj)
 DECL|macro|vfree_nocheck
 mdefine_line|#define vfree_nocheck(obj) snd_wrapper_vfree(obj)
 macro_line|#else
+DECL|macro|snd_memory_init
+mdefine_line|#define snd_memory_init() /*NOP*/
+DECL|macro|snd_memory_done
+mdefine_line|#define snd_memory_done() /*NOP*/
+DECL|macro|snd_memory_info_init
+mdefine_line|#define snd_memory_info_init() /*NOP*/
+DECL|macro|snd_memory_info_done
+mdefine_line|#define snd_memory_info_done() /*NOP*/
 DECL|macro|kmalloc_nocheck
 mdefine_line|#define kmalloc_nocheck(size, flags) kmalloc(size, flags)
 DECL|macro|vmalloc_nocheck

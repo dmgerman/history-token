@@ -508,7 +508,6 @@ DECL|struct|snd_card_azt2320
 r_struct
 id|snd_card_azt2320
 (brace
-macro_line|#ifdef CONFIG_PNP
 DECL|member|dev_no
 r_int
 id|dev_no
@@ -525,7 +524,6 @@ id|pnp_dev
 op_star
 id|devmpu
 suffix:semicolon
-macro_line|#endif&t;/* CONFIG_PNP */
 )brace
 suffix:semicolon
 DECL|variable|__devinitdata

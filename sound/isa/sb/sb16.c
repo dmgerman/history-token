@@ -1662,6 +1662,7 @@ macro_line|#else
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME&t;&quot;snd-card-sb16&quot;
 macro_line|#endif
+macro_line|#ifdef CONFIG_PNP
 DECL|function|snd_card_sb16_pnp
 r_static
 r_int
@@ -2340,6 +2341,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_PNP */
 DECL|function|snd_sb16_probe
 r_static
 r_int
@@ -2504,6 +2506,7 @@ op_star
 )paren
 id|card-&gt;private_data
 suffix:semicolon
+macro_line|#ifdef CONFIG_PNP
 r_if
 c_cond
 (paren
@@ -2544,6 +2547,7 @@ id|err
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 id|xirq
 op_assign
 id|irq

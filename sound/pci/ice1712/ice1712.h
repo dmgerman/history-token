@@ -1529,6 +1529,17 @@ id|no_mpu401
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|eeprom_size
+r_int
+r_int
+id|eeprom_size
+suffix:semicolon
+DECL|member|eeprom_data
+r_int
+r_char
+op_star
+id|eeprom_data
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* __SOUND_ICE1712_H */

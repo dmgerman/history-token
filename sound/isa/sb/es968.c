@@ -648,6 +648,12 @@ id|PFX
 l_string|&quot;AUDIO pnp configure failure&bslash;n&quot;
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|cfg
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon

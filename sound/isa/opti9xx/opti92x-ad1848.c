@@ -793,8 +793,6 @@ op_assign
 id|SNDRV_DEFAULT_PTR1
 suffix:semicolon
 macro_line|#ifdef CONFIG_PNP
-DECL|macro|ISAPNP_OPTI9XX
-mdefine_line|#define ISAPNP_OPTI9XX(_va, _vb, _vc, _device, _fa, _fb, _fc, _audio, _mpu401) &bslash;&n;&t;{ &bslash;&n;&t;&t;ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;&t;&t;.devs = { ISAPNP_DEVICE_ID(_fa, _fb, _fc, _audio), &bslash;&n;&t;&t;&t;ISAPNP_DEVICE_ID(_fa, _fb, _fc, _mpu401), } &bslash;&n;&t;}
 DECL|variable|snd_opti9xx_pnpids
 r_static
 r_struct
@@ -10872,6 +10870,7 @@ id|cards
 comma
 id|error
 suffix:semicolon
+macro_line|#ifdef CONFIG_PNP
 id|cards
 op_assign
 id|pnp_register_card_driver
@@ -10881,6 +10880,12 @@ op_amp
 id|opti9xx_pnpc_driver
 )paren
 suffix:semicolon
+macro_line|#else
+id|cards
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

@@ -328,8 +328,6 @@ id|PRO_RATE_DEFAULT
 op_assign
 l_int|44100
 suffix:semicolon
-multiline_comment|/*&n; *  AK4xxx stuff&n; */
-macro_line|#include &quot;ak4xxx.c&quot;
 multiline_comment|/*&n; *  Basic I/O&n; */
 multiline_comment|/* check whether the clock mode is spdif-in */
 DECL|function|is_spdif_master
@@ -12038,6 +12036,8 @@ multiline_comment|/* EEPROM device address */
 r_int
 r_int
 id|i
+comma
+id|size
 suffix:semicolon
 r_if
 c_cond
@@ -12146,6 +12146,19 @@ r_if
 c_cond
 (paren
 id|ice-&gt;eeprom.size
+OL
+l_int|6
+)paren
+id|ice-&gt;eeprom.size
+op_assign
+l_int|32
+suffix:semicolon
+multiline_comment|/* FIXME: any cards without the correct size? */
+r_else
+r_if
+c_cond
+(paren
+id|ice-&gt;eeprom.size
 OG
 l_int|32
 )paren
@@ -12193,6 +12206,12 @@ id|ice-&gt;eeprom.version
 suffix:semicolon
 multiline_comment|/* return -EIO; */
 )brace
+id|size
+op_assign
+id|ice-&gt;eeprom.size
+op_minus
+l_int|6
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -12202,7 +12221,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|ice-&gt;eeprom.size
+id|size
 suffix:semicolon
 id|i
 op_increment

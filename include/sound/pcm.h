@@ -1063,14 +1063,16 @@ id|snd_pcm_uframes_t
 id|boundary
 suffix:semicolon
 multiline_comment|/* pointers wrap point */
-DECL|member|silenced_start
+DECL|member|silence_start
 id|snd_pcm_uframes_t
-id|silenced_start
+id|silence_start
 suffix:semicolon
-DECL|member|silenced_size
+multiline_comment|/* starting pointer to silence area */
+DECL|member|silence_filled
 id|snd_pcm_uframes_t
-id|silenced_size
+id|silence_filled
 suffix:semicolon
+multiline_comment|/* size filled with silence */
 DECL|member|sync
 id|snd_pcm_sync_id_t
 id|sync
