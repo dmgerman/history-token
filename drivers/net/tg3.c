@@ -13190,15 +13190,35 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* No BH disabling for tx_lock here.  We are running in BH disabled&n;&t; * context and TX reclaim runs via tp-&gt;poll inside of a software&n;&t; * interrupt.  Rejoice!&n;&t; *&n;&t; * Actually, things are not so simple.  If we are to take a hw&n;&t; * IRQ here, we can deadlock, consider:&n;&t; *&n;&t; *       CPU1&t;&t;CPU2&n;&t; *   tg3_start_xmit&n;&t; *   take tp-&gt;tx_lock&n;&t; *&t;&t;&t;tg3_timer&n;&t; *&t;&t;&t;take tp-&gt;lock&n;&t; *   tg3_interrupt&n;&t; *   spin on tp-&gt;lock&n;&t; *&t;&t;&t;spin on tp-&gt;tx_lock&n;&t; *&n;&t; * So we really do need to disable interrupts when taking&n;&t; * tx_lock here.&n;&t; */
-id|spin_lock_irqsave
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|spin_trylock
 c_func
 (paren
 op_amp
 id|tp-&gt;tx_lock
-comma
+)paren
+)paren
+(brace
+id|local_irq_restore
+c_func
+(paren
 id|flags
 )paren
 suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* This is a hard error, log it. */
 r_if
 c_cond
@@ -41691,6 +41711,10 @@ id|pci_using_dac
 id|dev-&gt;features
 op_or_assign
 id|NETIF_F_HIGHDMA
+suffix:semicolon
+id|dev-&gt;features
+op_or_assign
+id|NETIF_F_LLTX
 suffix:semicolon
 macro_line|#if TG3_VLAN_TAG_USED
 id|dev-&gt;features
