@@ -1868,8 +1868,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-singleline_comment|//FIXME: This doesn&squot;t smell right.
-singleline_comment|//We need a function we pass an agp_device to.
+multiline_comment|/**&n; * agp_collect_device_status - determine correct agp_cmd from various agp_stat&squot;s&n; * @mode: requested agp_stat from userspace (Typically from X)&n; * @cmd: current agp_stat from AGP bridge.&n; *&n; * This function will hunt for an AGP graphics card, and try to match&n; * the requested mode to the capabilities of both the bridge and the card.&n; */
 DECL|function|agp_collect_device_status
 id|u32
 id|agp_collect_device_status
@@ -1891,6 +1890,8 @@ l_int|NULL
 suffix:semicolon
 id|u8
 id|cap_ptr
+op_assign
+l_int|0
 suffix:semicolon
 id|u32
 id|tmp
@@ -1898,12 +1899,41 @@ suffix:semicolon
 id|u32
 id|agp3
 suffix:semicolon
-id|for_each_pci_dev
+r_while
+c_loop
+(paren
+op_logical_neg
+id|cap_ptr
+)paren
+(brace
+id|device
+op_assign
+id|pci_get_class
 c_func
 (paren
+id|PCI_CLASS_DISPLAY_VGA
+comma
+id|device
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|device
 )paren
 (brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Couldn&squot;t find an AGP VGA controller.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|cap_ptr
 op_assign
 id|pci_find_capability
@@ -1920,11 +1950,18 @@ c_cond
 op_logical_neg
 id|cap_ptr
 )paren
+(brace
+id|pci_dev_put
+c_func
+(paren
+id|device
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
-singleline_comment|//FIXME: We should probably skip anything here that
-singleline_comment|// isn&squot;t an AGP graphic card.
-multiline_comment|/*&n;&t;&t; * Ok, here we have a AGP device. Disable impossible&n;&t;&t; * settings, and adjust the readqueue to the minimum.&n;&t;&t; */
+)brace
+)brace
+multiline_comment|/*&n;&t; * Ok, here we have a AGP device. Disable impossible&n;&t; * settings, and adjust the readqueue to the minimum.&n;&t; */
 id|pci_read_config_dword
 c_func
 (paren
@@ -2061,7 +2098,6 @@ op_amp
 id|tmp
 )paren
 suffix:semicolon
-)brace
 )brace
 r_return
 id|cmd
@@ -2302,6 +2338,16 @@ id|mode
 comma
 id|command
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|command
+op_eq
+l_int|0
+)paren
+multiline_comment|/* Something bad happened. FIXME: Return error code? */
+r_return
 suffix:semicolon
 id|command
 op_or_assign
