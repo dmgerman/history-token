@@ -2489,6 +2489,11 @@ op_assign
 op_amp
 id|d_getattr
 comma
+dot
+id|server
+op_assign
+id|server
+comma
 )brace
 suffix:semicolon
 r_struct
@@ -2513,6 +2518,11 @@ id|d_getattr
 op_assign
 op_amp
 id|d_getattr
+comma
+dot
+id|server
+op_assign
+id|server
 comma
 )brace
 suffix:semicolon
@@ -2973,6 +2983,11 @@ op_assign
 op_amp
 id|getattr
 comma
+dot
+id|server
+op_assign
+id|server
+comma
 )brace
 suffix:semicolon
 r_struct
@@ -2985,6 +3000,11 @@ id|attr
 op_assign
 op_amp
 id|getattr
+comma
+dot
+id|server
+op_assign
+id|server
 comma
 )brace
 suffix:semicolon

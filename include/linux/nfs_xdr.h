@@ -394,6 +394,13 @@ id|nfs4_getattr
 op_star
 id|d_getattr
 suffix:semicolon
+DECL|member|server
+r_struct
+id|nfs_server
+op_star
+id|server
+suffix:semicolon
+multiline_comment|/* Needed for ID mapping */
 )brace
 suffix:semicolon
 DECL|struct|nfs_openres
@@ -434,6 +441,12 @@ r_struct
 id|nfs4_getattr
 op_star
 id|d_getattr
+suffix:semicolon
+DECL|member|server
+r_struct
+id|nfs_server
+op_star
+id|server
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -838,6 +851,13 @@ id|nfs4_getattr
 op_star
 id|attr
 suffix:semicolon
+DECL|member|server
+r_struct
+id|nfs_server
+op_star
+id|server
+suffix:semicolon
+multiline_comment|/* Needed for name mapping */
 )brace
 suffix:semicolon
 DECL|struct|nfs_setattrres
@@ -849,6 +869,12 @@ r_struct
 id|nfs4_getattr
 op_star
 id|attr
+suffix:semicolon
+DECL|member|server
+r_struct
+id|nfs_server
+op_star
+id|server
 suffix:semicolon
 )brace
 suffix:semicolon

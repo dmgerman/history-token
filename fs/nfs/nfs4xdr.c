@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  fs/nfs/nfs4xdr.c&n; *&n; *  Client-side XDR for NFSv4.&n; *&n; *  Copyright (c) 2002 The Regents of the University of Michigan.&n; *  All rights reserved.&n; *&n; *  Kendrick Smith &lt;kmsmith@umich.edu&gt;&n; *  Andy Adamson   &lt;andros@umich.edu&gt;&n; *&n; *  Redistribution and use in source and binary forms, with or without&n; *  modification, are permitted provided that the following conditions&n; *  are met:&n; *&n; *  1. Redistributions of source code must retain the above copyright&n; *     notice, this list of conditions and the following disclaimer.&n; *  2. Redistributions in binary form must reproduce the above copyright&n; *     notice, this list of conditions and the following disclaimer in the&n; *     documentation and/or other materials provided with the distribution.&n; *  3. Neither the name of the University nor the names of its&n; *     contributors may be used to endorse or promote products derived&n; *     from this software without specific prior written permission.&n; *&n; *  THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; *  DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE&n; *  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR&n; *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF&n; *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR&n; *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF&n; *  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING&n; *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS&n; *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
+multiline_comment|/*&n; *  fs/nfs/nfs4xdr.c&n; *&n; *  Client-side XDR for NFSv4.&n; *&n; *  Copyright (c) 2002 The Regents of the University of Michigan.&n; *  All rights reserved.&n; *&n; *  Kendrick Smith &lt;kmsmith@umich.edu&gt;&n; *  Andy Adamson   &lt;andros@umich.edu&gt;&n; * &n; *  Redistribution and use in source and binary forms, with or without&n; *  modification, are permitted provided that the following conditions&n; *  are met:&n; *&n; *  1. Redistributions of source code must retain the above copyright&n; *     notice, this list of conditions and the following disclaimer.&n; *  2. Redistributions in binary form must reproduce the above copyright&n; *     notice, this list of conditions and the following disclaimer in the&n; *     documentation and/or other materials provided with the distribution.&n; *  3. Neither the name of the University nor the names of its&n; *     contributors may be used to endorse or promote products derived&n; *     from this software without specific prior written permission.&n; *&n; *  THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; *  DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE&n; *  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR&n; *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF&n; *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR&n; *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF&n; *  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING&n; *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS&n; *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;
 macro_line|#include &lt;linux/nfs4.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
+macro_line|#include &lt;linux/nfs_idmap.h&gt;
 DECL|macro|NFSDBG_FACILITY
 mdefine_line|#define NFSDBG_FACILITY&t;&t;NFSDBG_XDR
 multiline_comment|/* Mapping from NFS error code to &quot;errno&quot; error code. */
@@ -371,60 +372,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * FIXME: The following dummy entries will be replaced once the userland&n; * upcall gets in...&n; */
-r_static
-r_int
-DECL|function|encode_uid
-id|encode_uid
-c_func
-(paren
-r_char
-op_star
-id|p
-comma
-id|uid_t
-id|uid
-)paren
-(brace
-id|strcpy
-c_func
-(paren
-id|p
-comma
-l_string|&quot;nobody&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|6
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * FIXME: The following dummy entries will be replaced once the userland&n; * upcall gets in...&n; */
-r_static
-r_int
-DECL|function|encode_gid
-id|encode_gid
-c_func
-(paren
-r_char
-op_star
-id|p
-comma
-id|gid_t
-id|gid
-)paren
-(brace
-id|strcpy
-c_func
-(paren
-id|p
-comma
-l_string|&quot;nobody&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|6
-suffix:semicolon
-)brace
 r_static
 r_int
 DECL|function|encode_attrs
@@ -440,6 +387,11 @@ r_struct
 id|iattr
 op_star
 id|iap
+comma
+r_struct
+id|nfs_server
+op_star
+id|server
 )paren
 (brace
 r_char
@@ -526,14 +478,19 @@ id|ATTR_UID
 (brace
 id|status
 op_assign
-id|owner_namelen
-op_assign
-id|encode_uid
+id|nfs_idmap_name
 c_func
 (paren
-id|owner_name
+id|server
+comma
+id|IDMAP_TYPE_USER
 comma
 id|iap-&gt;ia_uid
+comma
+id|owner_name
+comma
+op_amp
+id|owner_namelen
 )paren
 suffix:semicolon
 r_if
@@ -553,9 +510,25 @@ comma
 id|iap-&gt;ia_uid
 )paren
 suffix:semicolon
-r_goto
-id|out
+multiline_comment|/* XXX */
+id|strcpy
+c_func
+(paren
+id|owner_name
+comma
+l_string|&quot;nobody&quot;
+)paren
 suffix:semicolon
+id|owner_namelen
+op_assign
+r_sizeof
+(paren
+l_string|&quot;nobody&quot;
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* goto out; */
 )brace
 id|len
 op_add_assign
@@ -582,14 +555,19 @@ id|ATTR_GID
 (brace
 id|status
 op_assign
-id|owner_grouplen
-op_assign
-id|encode_gid
+id|nfs_idmap_name
 c_func
 (paren
-id|owner_group
+id|server
+comma
+id|IDMAP_TYPE_GROUP
 comma
 id|iap-&gt;ia_gid
+comma
+id|owner_group
+comma
+op_amp
+id|owner_grouplen
 )paren
 suffix:semicolon
 r_if
@@ -609,9 +587,24 @@ comma
 id|iap-&gt;ia_gid
 )paren
 suffix:semicolon
-r_goto
-id|out
+id|strcpy
+c_func
+(paren
+id|owner_group
+comma
+l_string|&quot;nobody&quot;
+)paren
 suffix:semicolon
+id|owner_grouplen
+op_assign
+r_sizeof
+(paren
+l_string|&quot;nobody&quot;
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* goto out; */
 )brace
 id|len
 op_add_assign
@@ -1175,6 +1168,11 @@ r_struct
 id|nfs4_create
 op_star
 id|create
+comma
+r_struct
+id|nfs_server
+op_star
+id|server
 )paren
 (brace
 r_uint32
@@ -1292,6 +1290,8 @@ c_func
 id|xdr
 comma
 id|create-&gt;cr_attrs
+comma
+id|server
 )paren
 suffix:semicolon
 )brace
@@ -1843,6 +1843,8 @@ c_func
 id|xdr
 comma
 id|arg-&gt;u.attrs
+comma
+id|arg-&gt;server
 )paren
 )paren
 )paren
@@ -2590,6 +2592,11 @@ r_struct
 id|nfs_setattrargs
 op_star
 id|arg
+comma
+r_struct
+id|nfs_server
+op_star
+id|server
 )paren
 (brace
 r_int
@@ -2639,6 +2646,8 @@ c_func
 id|xdr
 comma
 id|arg-&gt;iap
+comma
+id|server
 )paren
 )paren
 )paren
@@ -3082,6 +3091,8 @@ id|i
 )braket
 dot
 id|u.create
+comma
+id|cp-&gt;server
 )paren
 suffix:semicolon
 r_break
@@ -4092,6 +4103,8 @@ op_amp
 id|xdr
 comma
 id|args
+comma
+id|args-&gt;server
 )paren
 suffix:semicolon
 r_if
@@ -4400,64 +4413,6 @@ DECL|macro|COPYMEM
 mdefine_line|#define COPYMEM(x,nbytes) do {&t;&t;&t;&bslash;&n;&t;memcpy((x), p, nbytes);&t;&t;&t;&bslash;&n;&t;p += XDR_QUADLEN(nbytes);&t;&t;&bslash;&n;} while (0)
 DECL|macro|READ_BUF
 mdefine_line|#define READ_BUF(nbytes)  do { &bslash;&n;&t;p = xdr_inline_decode(xdr, nbytes); &bslash;&n;&t;if (!p) { &bslash;&n;&t;&t;printk(KERN_WARNING &quot;%s: reply buffer overflowed in line %d.&quot;, &bslash;&n;&t;&t;&t;       &t;__FUNCTION__, __LINE__); &bslash;&n;&t;&t;return -EIO; &bslash;&n;&t;} &bslash;&n;} while (0)
-multiline_comment|/*&n; * FIXME: The following dummy entry will be replaced once the userland&n; * upcall gets in...&n; */
-r_static
-r_int
-DECL|function|decode_uid
-id|decode_uid
-c_func
-(paren
-r_char
-op_star
-id|p
-comma
-r_uint32
-id|len
-comma
-id|uid_t
-op_star
-id|uid
-)paren
-(brace
-op_star
-id|uid
-op_assign
-op_minus
-l_int|2
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * FIXME: The following dummy entry will be replaced once the userland&n; * upcall gets in...&n; */
-r_static
-r_int
-DECL|function|decode_gid
-id|decode_gid
-c_func
-(paren
-r_char
-op_star
-id|p
-comma
-r_uint32
-id|len
-comma
-id|gid_t
-op_star
-id|gid
-)paren
-(brace
-op_star
-id|gid
-op_assign
-op_minus
-l_int|2
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_static
 r_int
 DECL|function|decode_compound_hdr
@@ -5033,6 +4988,11 @@ r_struct
 id|nfs4_getattr
 op_star
 id|getattr
+comma
+r_struct
+id|nfs_server
+op_star
+id|server
 )paren
 (brace
 r_struct
@@ -5973,21 +5933,28 @@ c_cond
 (paren
 id|status
 op_assign
-id|decode_uid
+id|nfs_idmap_id
 c_func
 (paren
+id|server
+comma
+id|IDMAP_TYPE_USER
+comma
 (paren
 r_char
 op_star
 )paren
 id|p
 comma
-id|dummy32
+id|len
 comma
 op_amp
 id|nfp-&gt;uid
 )paren
 )paren
+op_eq
+op_minus
+l_int|1
 )paren
 (brace
 id|dprintk
@@ -5996,8 +5963,11 @@ c_func
 l_string|&quot;read_attrs: gss_get_num failed!&bslash;n&quot;
 )paren
 suffix:semicolon
-r_goto
-id|out
+multiline_comment|/* goto out; */
+id|nfp-&gt;uid
+op_assign
+op_minus
+l_int|2
 suffix:semicolon
 )brace
 id|dprintk
@@ -6078,21 +6048,28 @@ c_cond
 (paren
 id|status
 op_assign
-id|decode_gid
+id|nfs_idmap_id
 c_func
 (paren
+id|server
+comma
+id|IDMAP_TYPE_GROUP
+comma
 (paren
 r_char
 op_star
 )paren
 id|p
 comma
-id|dummy32
+id|len
 comma
 op_amp
 id|nfp-&gt;gid
 )paren
 )paren
+op_eq
+op_minus
+l_int|1
 )paren
 (brace
 id|dprintk
@@ -6101,9 +6078,12 @@ c_func
 l_string|&quot;read_attrs: gss_get_num failed!&bslash;n&quot;
 )paren
 suffix:semicolon
-r_goto
-id|out
+id|nfp-&gt;gid
+op_assign
+op_minus
+l_int|2
 suffix:semicolon
+multiline_comment|/* goto out; */
 )brace
 id|dprintk
 c_func
@@ -9175,6 +9155,8 @@ id|xdr
 comma
 op_amp
 id|op-&gt;u.getattr
+comma
+id|cp-&gt;server
 )paren
 suffix:semicolon
 r_break
@@ -9735,6 +9717,8 @@ op_amp
 id|xdr
 comma
 id|res-&gt;f_getattr
+comma
+id|res-&gt;server
 )paren
 suffix:semicolon
 r_if
@@ -9791,6 +9775,8 @@ op_amp
 id|xdr
 comma
 id|res-&gt;d_getattr
+comma
+id|res-&gt;server
 )paren
 suffix:semicolon
 r_if
@@ -10016,6 +10002,8 @@ op_amp
 id|xdr
 comma
 id|res-&gt;attr
+comma
+id|res-&gt;server
 )paren
 suffix:semicolon
 id|out
@@ -10643,7 +10631,7 @@ DECL|macro|MAX
 macro_line|# define MAX(a, b)&t;(((a) &gt; (b))? (a) : (b))
 macro_line|#endif
 DECL|macro|PROC
-mdefine_line|#define PROC(proc, argtype, restype)&t;&t;&t;&t;&bslash;&n;[NFSPROC4_CLNT_##proc] = {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.p_proc   = NFSPROC4_COMPOUND,&t;&t;&t;&t;&bslash;&n;&t;.p_encode = (kxdrproc_t) nfs4_xdr_##argtype,&t;&t;&bslash;&n;&t;.p_decode = (kxdrproc_t) nfs4_xdr_##restype,&t;&t;&bslash;&n;&t;.p_bufsiz = MAX(NFS4_##argtype##_sz,NFS4_##restype##_sz) &lt;&lt; 2,&t;&bslash;&n;    }
+mdefine_line|#define PROC(proc, argtype, restype)&t;&t;&t;&t;&bslash;&n;[NFSPROC4_CLNT_##proc] = {&t;&t;&t;&t;&t;&bslash;&n;&t;.p_proc   = NFSPROC4_COMPOUND,&t;&t;&t;&t;&bslash;&n;&t;.p_encode = (kxdrproc_t) nfs4_xdr_##argtype,&t;&t;&bslash;&n;&t;.p_decode = (kxdrproc_t) nfs4_xdr_##restype,&t;&t;&bslash;&n;&t;.p_bufsiz = MAX(NFS4_##argtype##_sz,NFS4_##restype##_sz) &lt;&lt; 2,&t;&bslash;&n;    }
 DECL|variable|nfs4_procedures
 r_struct
 id|rpc_procinfo
