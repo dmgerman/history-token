@@ -26019,14 +26019,13 @@ comma
 multiline_comment|/* same as 4624 */
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|cs46xx_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|cs46xx_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

@@ -1703,14 +1703,13 @@ macro_line|#ifndef PCI_DEVICE_ID_ESS_MAESTRO3_2
 DECL|macro|PCI_DEVICE_ID_ESS_MAESTRO3_2
 mdefine_line|#define PCI_DEVICE_ID_ESS_MAESTRO3_2&t;0x199b
 macro_line|#endif
-DECL|variable|__devinitdata
+DECL|variable|snd_m3_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_m3_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

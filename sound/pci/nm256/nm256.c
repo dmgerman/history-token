@@ -905,14 +905,13 @@ macro_line|#ifndef PCI_DEVICE_ID_NEOMAGIC_NM256ZX_AUDIO
 DECL|macro|PCI_DEVICE_ID_NEOMAGIC_NM256ZX_AUDIO
 mdefine_line|#define PCI_DEVICE_ID_NEOMAGIC_NM256ZX_AUDIO 0x8006
 macro_line|#endif
-DECL|variable|__devinitdata
+DECL|variable|snd_nm256_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_nm256_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

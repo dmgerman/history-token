@@ -1358,14 +1358,13 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|snd_es1968_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_es1968_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 multiline_comment|/* Maestro 1 */

@@ -728,14 +728,13 @@ suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|snd_sonic_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_sonic_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

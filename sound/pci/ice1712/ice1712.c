@@ -245,14 +245,13 @@ macro_line|#ifndef PCI_DEVICE_ID_ICE_1712
 DECL|macro|PCI_DEVICE_ID_ICE_1712
 mdefine_line|#define PCI_DEVICE_ID_ICE_1712&t;&t;0x1712
 macro_line|#endif
-DECL|variable|__devinitdata
+DECL|variable|snd_ice1712_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_ice1712_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

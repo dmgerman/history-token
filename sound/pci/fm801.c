@@ -441,14 +441,13 @@ id|proc_entry
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|snd_fm801_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_fm801_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

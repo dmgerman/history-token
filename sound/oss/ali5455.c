@@ -447,14 +447,13 @@ op_assign
 l_string|&quot;ALI 5455&quot;
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|ali_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|ali_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

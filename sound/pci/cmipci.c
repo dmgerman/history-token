@@ -12781,14 +12781,13 @@ id|snd_cmipci_proc_read
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|snd_cmipci_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_cmipci_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

@@ -4195,14 +4195,13 @@ suffix:semicolon
 )brace
 multiline_comment|/************************* PCI interfaces ****************************** */
 multiline_comment|/* PCI device table */
-DECL|variable|__devinitdata
+DECL|variable|ad1889_id_tbl
 r_static
 r_struct
 id|pci_device_id
 id|ad1889_id_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
