@@ -354,6 +354,16 @@ l_int|0
 op_assign
 id|max_pfn
 suffix:semicolon
+id|memory_present
+c_func
+(paren
+l_int|0
+comma
+l_int|0
+comma
+id|max_pfn
+)paren
+suffix:semicolon
 multiline_comment|/* Indicate there is one node available. */
 id|nodes_clear
 c_func
