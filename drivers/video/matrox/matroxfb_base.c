@@ -3520,6 +3520,10 @@ op_amp
 id|mt
 )paren
 suffix:semicolon
+id|mt.crtc
+op_assign
+id|MATROXFB_SRC_CRTC1
+suffix:semicolon
 multiline_comment|/* CRTC1 delays */
 r_switch
 c_cond
@@ -3709,6 +3713,26 @@ id|altout
 dot
 id|lock
 )paren
+suffix:semicolon
+id|ACCESS_FBINFO
+c_func
+(paren
+id|crtc1
+)paren
+dot
+id|pixclock
+op_assign
+id|mt.pixclock
+suffix:semicolon
+id|ACCESS_FBINFO
+c_func
+(paren
+id|crtc1
+)paren
+dot
+id|mnp
+op_assign
+id|mt.mnp
 suffix:semicolon
 id|ACCESS_FBINFO
 c_func

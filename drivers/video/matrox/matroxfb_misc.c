@@ -311,6 +311,11 @@ id|mt-&gt;pixclock
 op_assign
 l_int|1
 suffix:semicolon
+id|mt-&gt;mnp
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|mt-&gt;dblscan
 op_assign
 id|var-&gt;vmode
