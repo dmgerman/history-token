@@ -36,7 +36,7 @@ DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Linus &squot;Frodo Rabbit&squot; Torvalds, Johannes Erdfelt, Randy Dunlap, Georg Acher, Deti Fliegl, Thomas Sailer, Roman Weissgaerber&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB Universal Host Controller Interface driver&quot;
-multiline_comment|/*&n; * debug = 0, no debugging messages&n; * debug = 1, dump failed URB&squot;s except for stalls&n; * debug = 2, dump all failed URB&squot;s (including stalls)&n; *            show all queues in /proc/uhci/hc*&n; * debug = 3, show all TD&squot;s in URB&squot;s when dumping&n; */
+multiline_comment|/*&n; * debug = 0, no debugging messages&n; * debug = 1, dump failed URB&squot;s except for stalls&n; * debug = 2, dump all failed URB&squot;s (including stalls)&n; *            show all queues in /proc/driver/uhci/[pci_addr]&n; * debug = 3, show all TD&squot;s in URB&squot;s when dumping&n; */
 macro_line|#ifdef DEBUG
 DECL|variable|debug
 r_static
