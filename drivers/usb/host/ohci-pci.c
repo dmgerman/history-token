@@ -323,10 +323,6 @@ id|hcd_to_ohci
 id|hcd
 )paren
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|u16
 id|cmd
 suffix:semicolon
@@ -374,17 +370,11 @@ comma
 id|state
 )paren
 suffix:semicolon
-id|ohci-&gt;sleeping
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/* First stop processing */
-id|spin_lock_irqsave
+id|spin_lock_irq
 (paren
 op_amp
 id|ohci-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|ohci-&gt;hc_control
@@ -425,12 +415,10 @@ op_amp
 id|ohci-&gt;regs-&gt;intrstatus
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 (paren
 op_amp
 id|ohci-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Wait a frame or two */
@@ -487,6 +475,12 @@ id|ohci-&gt;regs-&gt;intrenable
 )paren
 suffix:semicolon
 multiline_comment|/* Suspend chip and let things settle down a bit */
+id|spin_lock_irq
+(paren
+op_amp
+id|ohci-&gt;lock
+)paren
+suffix:semicolon
 id|ohci-&gt;hc_control
 op_assign
 id|OHCI_USB_SUSPEND
@@ -508,12 +502,24 @@ op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
-id|mdelay
+id|spin_unlock_irq
 (paren
-l_int|500
+op_amp
+id|ohci-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/* No schedule here ! */
+id|set_current_state
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+(paren
+id|HZ
+op_div
+l_int|2
+)paren
+suffix:semicolon
 id|tmp
 op_assign
 id|readl
@@ -655,10 +661,6 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 macro_line|#ifdef CONFIG_PMAC_PBOOK
 (brace
 r_struct
@@ -735,6 +737,8 @@ r_case
 id|OHCI_USB_RESET
 suffix:colon
 singleline_comment|// lost power
+id|restart
+suffix:colon
 id|ohci_info
 (paren
 id|ohci
@@ -777,6 +781,7 @@ suffix:colon
 l_string|&quot;remote&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* we &quot;should&quot; only need RESUME if we&squot;re SUSPENDed ... */
 id|ohci-&gt;hc_control
 op_assign
 id|OHCI_USB_RESUME
@@ -798,18 +803,13 @@ op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
+multiline_comment|/* Some controllers (lucent) need extra-long delays */
 id|mdelay
 (paren
-l_int|20
+l_int|35
 )paren
 suffix:semicolon
 multiline_comment|/* no schedule here ! */
-multiline_comment|/* Some controllers (lucent) need a longer delay here */
-id|mdelay
-(paren
-l_int|15
-)paren
-suffix:semicolon
 id|temp
 op_assign
 id|readl
@@ -839,19 +839,12 @@ comma
 l_string|&quot;controller won&squot;t resume&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ohci-&gt;disabled
-op_assign
-l_int|1
-suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|EIO
-suffix:semicolon
-r_break
+multiline_comment|/* maybe we can reset */
+r_goto
+id|restart
 suffix:semicolon
 )brace
-multiline_comment|/* Some chips likes being resumed first */
+multiline_comment|/* Then re-enable operations */
 id|writel
 (paren
 id|OHCI_USB_OPER
@@ -874,22 +867,11 @@ id|mdelay
 l_int|3
 )paren
 suffix:semicolon
-multiline_comment|/* Then re-enable operations */
-id|spin_lock_irqsave
+id|spin_lock_irq
 (paren
 op_amp
 id|ohci-&gt;lock
-comma
-id|flags
 )paren
-suffix:semicolon
-id|ohci-&gt;disabled
-op_assign
-l_int|0
-suffix:semicolon
-id|ohci-&gt;sleeping
-op_assign
-l_int|0
 suffix:semicolon
 id|ohci-&gt;hc_control
 op_assign
@@ -952,7 +934,6 @@ op_amp
 id|ohci-&gt;regs-&gt;intrenable
 )paren
 suffix:semicolon
-multiline_comment|/* Check for a pending done list */
 id|writel
 (paren
 id|OHCI_INTR_WDH
@@ -970,12 +951,10 @@ op_amp
 id|ohci-&gt;regs-&gt;intrdisable
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 (paren
 op_amp
 id|ohci-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PMAC_PBOOK
@@ -992,6 +971,7 @@ id|hcd-&gt;pdev-&gt;irq
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Check for a pending done list */
 r_if
 c_cond
 (paren
@@ -1026,18 +1006,6 @@ id|OHCI_CLF
 comma
 op_amp
 id|ohci-&gt;regs-&gt;cmdstatus
-)paren
-suffix:semicolon
-singleline_comment|// ohci_dump_status (ohci);
-id|ohci_dbg
-(paren
-id|ohci
-comma
-l_string|&quot;sleeping = %d, disabled = %d&bslash;n&quot;
-comma
-id|ohci-&gt;sleeping
-comma
-id|ohci-&gt;disabled
 )paren
 suffix:semicolon
 r_break

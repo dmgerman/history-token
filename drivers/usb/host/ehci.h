@@ -751,6 +751,12 @@ op_star
 id|fstn
 suffix:semicolon
 multiline_comment|/* Q_TYPE_FSTN */
+DECL|member|hw_next
+id|u32
+op_star
+id|hw_next
+suffix:semicolon
+multiline_comment|/* (all types) */
 DECL|member|ptr
 r_void
 op_star
@@ -1149,44 +1155,12 @@ l_int|32
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,32)
-DECL|macro|SUBMIT_URB
-mdefine_line|#define SUBMIT_URB(urb,mem_flags) usb_submit_urb(urb)
-DECL|macro|STUB_DEBUG_FILES
-mdefine_line|#define STUB_DEBUG_FILES
-DECL|function|hcd_register_root
-r_static
-r_inline
-r_int
-id|hcd_register_root
-(paren
-r_struct
-id|usb_hcd
-op_star
-id|hcd
-)paren
-(brace
-r_return
-id|usb_new_device
-(paren
-id|hcd_to_bus
-(paren
-id|hcd
-)paren
-op_member_access_from_pointer
-id|root_hub
-)paren
-suffix:semicolon
-)brace
-macro_line|#else&t;/* LINUX_VERSION_CODE */
 DECL|macro|SUBMIT_URB
 mdefine_line|#define SUBMIT_URB(urb,mem_flags) usb_submit_urb(urb,mem_flags)
 macro_line|#ifndef DEBUG
 DECL|macro|STUB_DEBUG_FILES
 mdefine_line|#define STUB_DEBUG_FILES
 macro_line|#endif&t;/* DEBUG */
-macro_line|#endif&t;/* LINUX_VERSION_CODE */
 multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#endif /* __LINUX_EHCI_HCD_H */
 eof
