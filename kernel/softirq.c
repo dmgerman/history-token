@@ -1096,7 +1096,7 @@ c_func
 (paren
 id|current-&gt;comm
 comma
-l_string|&quot;ksoftirqd_CPU%d&quot;
+l_string|&quot;ksoftirqd/%d&quot;
 comma
 id|cpu
 )paren

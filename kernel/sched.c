@@ -6713,7 +6713,7 @@ c_func
 (paren
 id|current-&gt;comm
 comma
-l_string|&quot;migration_CPU%d&quot;
+l_string|&quot;migration/%d&quot;
 comma
 id|smp_processor_id
 c_func
