@@ -4295,9 +4295,9 @@ comma
 id|irq
 )paren
 suffix:semicolon
+macro_line|#endif
 r_break
 suffix:semicolon
-macro_line|#endif
 )brace
 r_default
 suffix:colon
