@@ -1358,6 +1358,7 @@ id|callback_instance_id
 suffix:semicolon
 DECL|member|creg
 r_void
+id|__iomem
 op_star
 id|creg
 suffix:semicolon

@@ -5848,11 +5848,6 @@ suffix:semicolon
 )brace
 id|php_ctlr-&gt;creg
 op_assign
-(paren
-r_struct
-id|ctrl_reg
-op_star
-)paren
 id|ioremap
 c_func
 (paren
