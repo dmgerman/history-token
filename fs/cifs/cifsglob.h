@@ -650,6 +650,10 @@ DECL|member|info_level
 id|__u16
 id|info_level
 suffix:semicolon
+DECL|member|resume_key
+id|__u32
+id|resume_key
+suffix:semicolon
 DECL|member|ntwrk_buf_start
 r_char
 op_star
@@ -659,6 +663,16 @@ DECL|member|srch_entries_start
 r_char
 op_star
 id|srch_entries_start
+suffix:semicolon
+DECL|member|presume_name
+r_char
+op_star
+id|presume_name
+suffix:semicolon
+DECL|member|resume_name_len
+r_int
+r_int
+id|resume_name_len
 suffix:semicolon
 DECL|member|endOfSearch
 r_int
@@ -760,12 +774,7 @@ r_int
 r_int
 id|resume_name_length
 suffix:semicolon
-multiline_comment|/* BB removeme BB */
-DECL|member|resume_key
-id|__u32
-id|resume_key
-suffix:semicolon
-multiline_comment|/* BB removeme BB */
+multiline_comment|/* BB removeme - field renamed and moved BB */
 DECL|member|srch_inf
 r_struct
 id|cifs_search_info

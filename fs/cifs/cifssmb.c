@@ -12244,6 +12244,8 @@ l_int|0
 suffix:semicolon
 r_int
 id|bytes_returned
+comma
+id|name_len
 suffix:semicolon
 id|__u16
 id|params
@@ -12256,10 +12258,23 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;In FindNext&quot;
+l_string|&quot;In FindNext2&quot;
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|psrch_inf-&gt;endOfSearch
+op_eq
+id|TRUE
+)paren
+(brace
+r_return
+op_minus
+id|ENOENT
+suffix:semicolon
+)brace
 id|rc
 op_assign
 id|smb_init
@@ -12422,9 +12437,8 @@ id|psrch_inf-&gt;info_level
 suffix:semicolon
 id|pSMB-&gt;ResumeKey
 op_assign
-l_int|0
+id|psrch_inf-&gt;resume_key
 suffix:semicolon
-multiline_comment|/* BB fixme add resume_key BB */
 id|pSMB-&gt;SearchFlags
 op_assign
 id|cpu_to_le16
@@ -12435,10 +12449,48 @@ op_or
 id|CIFS_SEARCH_RETURN_RESUME
 )paren
 suffix:semicolon
-multiline_comment|/* BB fixme check to make sure we do not cross end of smb with long resume name */
-multiline_comment|/*&t;if(name_len &lt; CIFS_MAX_MSGSIZE) {&n;&t;&t;memcpy(pSMB-&gt;ResumeFileName, resume_file_name, name_len);&n;&t;&t;byte_count += name_len; */
-multiline_comment|/* BB fixme - add resume file name processing BB */
-multiline_comment|/*&t;} &n;&t;params += name_len; */
+id|name_len
+op_assign
+id|psrch_inf-&gt;resume_name_len
+suffix:semicolon
+id|params
+op_add_assign
+id|name_len
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|name_len
+OL
+id|PATH_MAX
+)paren
+(brace
+id|memcpy
+c_func
+(paren
+id|pSMB-&gt;ResumeFileName
+comma
+id|psrch_inf-&gt;presume_name
+comma
+id|name_len
+)paren
+suffix:semicolon
+id|byte_count
+op_add_assign
+id|name_len
+suffix:semicolon
+)brace
+r_else
+(brace
+id|rc
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_goto
+id|FNext2_err_exit
+suffix:semicolon
+)brace
 id|byte_count
 op_assign
 id|params
@@ -12513,11 +12565,17 @@ op_eq
 op_minus
 id|EBADF
 )paren
+(brace
+id|psrch_inf-&gt;endOfSearch
+op_assign
+id|TRUE
+suffix:semicolon
 id|rc
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* search probably was closed at end of search above */
+)brace
 r_else
 id|cFYI
 c_func
@@ -12585,7 +12643,7 @@ op_plus
 id|le16_to_cpu
 c_func
 (paren
-id|pSMBr-&gt;t2.DataOffset
+id|pSMBr-&gt;t2.ParameterOffset
 )paren
 suffix:semicolon
 id|parms
@@ -12595,6 +12653,21 @@ id|T2_FNEXT_RSP_PARMS
 op_star
 )paren
 id|response_data
+suffix:semicolon
+id|response_data
+op_assign
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|pSMBr-&gt;hdr.Protocol
+op_plus
+id|le16_to_cpu
+c_func
+(paren
+id|pSMBr-&gt;t2.DataOffset
+)paren
 suffix:semicolon
 id|cifs_buf_release
 c_func
@@ -12648,6 +12721,8 @@ multiline_comment|/* BB fixme add unlock here */
 )brace
 multiline_comment|/* BB On error, should we leave previous search buf (and count and&n;&t;last entry fields) intact or free the previous one? */
 multiline_comment|/* Note: On -EAGAIN error only caller can retry on handle based calls&n;&t;since file handle passed in no longer valid */
+id|FNext2_err_exit
+suffix:colon
 r_if
 c_cond
 (paren
@@ -12981,7 +13056,7 @@ c_cond
 (paren
 id|name_len
 OL
-id|CIFS_MAX_MSGSIZE
+id|PATH_MAX
 )paren
 (brace
 id|memcpy

@@ -4899,9 +4899,10 @@ id|__le32
 id|NextEntryOffset
 suffix:semicolon
 DECL|member|ResumeKey
-id|__le32
+id|__u32
 id|ResumeKey
 suffix:semicolon
+multiline_comment|/* as with FileIndex - no need to convert */
 DECL|member|EndOfFile
 id|__le64
 id|EndOfFile

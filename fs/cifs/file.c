@@ -8320,7 +8320,7 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Offset of resume key same for levels 257 and 514 */
-id|cifsFile-&gt;resume_key
+id|cifsFile-&gt;srch_inf.resume_key
 op_assign
 id|lastFindData-&gt;FileIndex
 suffix:semicolon
@@ -9057,7 +9057,7 @@ id|cifsFile-&gt;search_resume_name
 comma
 id|cifsFile-&gt;resume_name_length
 comma
-id|cifsFile-&gt;resume_key
+id|cifsFile-&gt;srch_inf.resume_key
 comma
 op_amp
 id|Unicode
@@ -9171,7 +9171,7 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Offset of resume key same for levels 257 and 514 */
-id|cifsFile-&gt;resume_key
+id|cifsFile-&gt;srch_inf.resume_key
 op_assign
 id|lastFindData-&gt;FileIndex
 suffix:semicolon
