@@ -749,9 +749,11 @@ r_char
 id|__iomem
 op_star
 )paren
-id|immrbar
+(paren
+id|VIRT_IMMRBAR
 op_plus
 l_int|0x4500
+)paren
 suffix:semicolon
 id|p.uartclk
 op_assign
@@ -792,9 +794,11 @@ r_char
 id|__iomem
 op_star
 )paren
-id|immrbar
+(paren
+id|VIRT_IMMRBAR
 op_plus
-l_int|0x4500
+l_int|0x4600
+)paren
 suffix:semicolon
 id|p.uartclk
 op_assign
