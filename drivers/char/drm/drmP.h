@@ -34,7 +34,7 @@ macro_line|#if defined(CONFIG_AGP) || defined(CONFIG_AGP_MODULE)
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#endif
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &quot;drm.h&quot;
@@ -1614,10 +1614,10 @@ r_int
 id|last_switch
 suffix:semicolon
 multiline_comment|/* jiffies at last context switch  */
-DECL|member|tq
+DECL|member|work
 r_struct
-id|tq_struct
-id|tq
+id|work_struct
+id|work
 suffix:semicolon
 DECL|member|ctx_start
 id|cycles_t

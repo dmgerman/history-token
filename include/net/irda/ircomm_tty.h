@@ -169,7 +169,7 @@ id|watchdog_timer
 suffix:semicolon
 DECL|member|tqueue
 r_struct
-id|tq_struct
+id|work_struct
 id|tqueue
 suffix:semicolon
 DECL|member|close_delay

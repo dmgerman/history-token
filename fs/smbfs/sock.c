@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;net/scm.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;linux/smb_fs.h&gt;

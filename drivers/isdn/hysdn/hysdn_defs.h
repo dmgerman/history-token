@@ -5,7 +5,7 @@ mdefine_line|#define HYSDN_DEFS_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/hysdn_if.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 multiline_comment|/****************************/
 multiline_comment|/* storage type definitions */
@@ -315,7 +315,7 @@ suffix:semicolon
 multiline_comment|/* interrupt handler + interrupt synchronisation */
 DECL|member|irq_queue
 r_struct
-id|tq_struct
+id|work_struct
 id|irq_queue
 suffix:semicolon
 multiline_comment|/* interrupt task queue */

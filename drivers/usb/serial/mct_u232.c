@@ -1836,11 +1836,11 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* from generic_write_bulk_callback */
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|port-&gt;tqueue
+id|port-&gt;work
 )paren
 suffix:semicolon
 )brace

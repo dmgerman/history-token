@@ -1700,11 +1700,11 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|port-&gt;tqueue
+id|port-&gt;work
 )paren
 suffix:semicolon
 )brace

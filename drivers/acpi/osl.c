@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#ifdef CONFIG_ACPI_EFI
@@ -1853,7 +1853,7 @@ id|return_ACPI_STATUS
 id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Queue via DPC:&n;&t; * --------------&n;&t; * Note that we have to use two different processes for queuing DPCs:&n;&t; *&t; Interrupt-Level: Use schedule_task; can&squot;t spawn a new thread.&n;&t; *&t;    Kernel-Level: Spawn a new kernel thread, as schedule_task has&n;&t; *&t;&t;&t;  its limitations (e.g. single-threaded model), and&n;&t; *&t;&t;&t;  all other task queues run at interrupt-level.&n;&t; */
+multiline_comment|/*&n;&t; * Queue via DPC:&n;&t; * --------------&n;&t; * Note that we have to use two different processes for queuing DPCs:&n;&t; *&t; Interrupt-Level: Use schedule_work; can&squot;t spawn a new thread.&n;&t; *&t;    Kernel-Level: Spawn a new kernel thread, as schedule_work has&n;&t; *&t;&t;&t;  its limitations (e.g. single-threaded model), and&n;&t; *&t;&t;&t;  all other task queues run at interrupt-level.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -1866,7 +1866,7 @@ suffix:colon
 (brace
 multiline_comment|/*&n;&t;&t; * Allocate/initialize DPC structure.  Note that this memory will be&n;&t;&t; * freed by the callee.  The kernel handles the tq_struct list  in a&n;&t;&t; * way that allows us to also free its memory inside the callee.&n;&t;&t; * Because we may want to schedule several tasks with different&n;&t;&t; * parameters we can&squot;t use the approach some kernel code uses of&n;&t;&t; * having a static tq_struct.&n;&t;&t; * We can save time and code by allocating the DPC and tq_structs&n;&t;&t; * from the same memory.&n;&t;&t; */
 r_struct
-id|tq_struct
+id|work_struct
 op_star
 id|task
 suffix:semicolon
@@ -1883,7 +1883,7 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|tq_struct
+id|work_struct
 )paren
 comma
 id|GFP_ATOMIC
@@ -1920,7 +1920,7 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|INIT_TQUEUE
+id|INIT_WORK
 c_func
 (paren
 id|task
@@ -1937,7 +1937,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 id|task
@@ -1951,7 +1951,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Call to schedule_task() failed.&bslash;n&quot;
+l_string|&quot;Call to schedule_work() failed.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon

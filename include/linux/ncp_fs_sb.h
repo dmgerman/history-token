@@ -5,7 +5,7 @@ mdefine_line|#define _NCP_FS_SB
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ncp_mount.h&gt;
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 DECL|macro|NCP_DEFAULT_OPTIONS
 mdefine_line|#define NCP_DEFAULT_OPTIONS 0&t;&t;/* 2 for packet signatures */
 DECL|struct|ncp_server
@@ -266,7 +266,7 @@ r_struct
 (brace
 DECL|member|tq
 r_struct
-id|tq_struct
+id|work_struct
 id|tq
 suffix:semicolon
 multiline_comment|/* STREAM/DGRAM: data/error ready */
@@ -399,7 +399,7 @@ suffix:semicolon
 multiline_comment|/* STREAM only: queued requests */
 DECL|member|tq
 r_struct
-id|tq_struct
+id|work_struct
 id|tq
 suffix:semicolon
 multiline_comment|/* STREAM only: transmitter ready */
@@ -422,7 +422,7 @@ suffix:semicolon
 multiline_comment|/* DGRAM only: timeout timer */
 DECL|member|timeout_tq
 r_struct
-id|tq_struct
+id|work_struct
 id|timeout_tq
 suffix:semicolon
 multiline_comment|/* DGRAM only: associated queue, we run timers from process context */

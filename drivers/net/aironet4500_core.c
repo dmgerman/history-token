@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -10195,7 +10195,7 @@ suffix:semicolon
 )brace
 )def_block
 DECL|macro|AWC_QUEUE_BH
-mdefine_line|#define AWC_QUEUE_BH {&bslash;&n;&t;if (!priv-&gt;bh_active &amp;&amp; !priv-&gt;bh_running){&bslash;&n;&t;&t;priv-&gt;bh_active = 1;&bslash;&n;&t;&t;queue_task(&amp;priv-&gt;immediate_bh, &amp;tq_immediate);&bslash;&n;&t;&t;mark_bh(IMMEDIATE_BH);&bslash;&n;&t;}&bslash;&n;&t;}
+mdefine_line|#define AWC_QUEUE_BH {&bslash;&n;&t;if (!priv-&gt;work_active &amp;&amp; !priv-&gt;work_running){&bslash;&n;&t;&t;priv-&gt;work_active = 1;&bslash;&n;&t;&t;schedule_work(&amp;priv-&gt;work); &bslash;&n;&t;}&bslash;&n;&t;}
 r_void
 DECL|function|awc_bh
 (def_block
@@ -10244,7 +10244,7 @@ comma
 id|jiffies
 )paren
 suffix:semicolon
-id|priv-&gt;bh_running
+id|priv-&gt;work_running
 op_assign
 l_int|1
 suffix:semicolon
@@ -10292,7 +10292,7 @@ id|priv-&gt;tx_chain_active
 )paren
 (brace
 singleline_comment|//&t;&t;printk(KERN_ERR &quot;tx chain active in bh &bslash;n&quot;);
-singleline_comment|//&t;&t;queue_task(&amp;priv-&gt;immediate_bh, &amp;tq_immediate);
+singleline_comment|//&t;&t;schedule_work(&amp;priv-&gt;work);
 r_goto
 id|bad_end
 suffix:semicolon
@@ -10440,11 +10440,11 @@ suffix:semicolon
 )brace
 )brace
 suffix:semicolon
-id|priv-&gt;bh_active
+id|priv-&gt;work_active
 op_assign
 l_int|0
 suffix:semicolon
-id|priv-&gt;bh_running
+id|priv-&gt;work_running
 op_assign
 l_int|0
 suffix:semicolon
@@ -10456,11 +10456,11 @@ id|bad_end
 suffix:colon
 singleline_comment|//&t;if (!priv-&gt;tx_chain_active) 
 singleline_comment|//&t;&t;wake_up(&amp;priv-&gt;tx_chain_wait_queue);
-id|priv-&gt;bh_running
+id|priv-&gt;work_running
 op_assign
 l_int|0
 suffix:semicolon
-id|priv-&gt;bh_active
+id|priv-&gt;work_active
 op_assign
 l_int|0
 suffix:semicolon
@@ -10706,9 +10706,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|priv-&gt;bh_active
+id|priv-&gt;work_active
 op_logical_or
-id|priv-&gt;bh_running
+id|priv-&gt;work_running
 )paren
 (brace
 id|priv-&gt;interrupt_count
@@ -11235,10 +11235,10 @@ l_int|0x7
 )paren
 op_logical_and
 op_logical_neg
-id|priv-&gt;bh_active
+id|priv-&gt;work_active
 op_logical_and
 op_logical_neg
-id|priv-&gt;bh_running
+id|priv-&gt;work_running
 )paren
 (brace
 r_if
@@ -13166,19 +13166,12 @@ id|priv-&gt;unlock_command_postponed
 op_assign
 l_int|0
 suffix:semicolon
-id|INIT_LIST_HEAD
+id|INIT_WORK
 c_func
 (paren
 op_amp
-id|priv-&gt;immediate_bh.list
-)paren
-suffix:semicolon
-id|priv-&gt;immediate_bh.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;immediate_bh.routine
-op_assign
+id|priv-&gt;work
+comma
 (paren
 r_void
 op_star
@@ -13187,17 +13180,16 @@ op_star
 r_void
 op_star
 )paren
-id|awc_bh
-suffix:semicolon
-id|priv-&gt;immediate_bh.data
-op_assign
+id|awc_work
+comma
 id|dev
+)paren
 suffix:semicolon
-id|priv-&gt;bh_running
+id|priv-&gt;work_running
 op_assign
 l_int|0
 suffix:semicolon
-id|priv-&gt;bh_active
+id|priv-&gt;work_active
 op_assign
 l_int|0
 suffix:semicolon

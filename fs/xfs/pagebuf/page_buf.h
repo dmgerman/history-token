@@ -992,16 +992,6 @@ DECL|macro|pagebuf_geterror
 mdefine_line|#define pagebuf_geterror(pb)&t;((pb)-&gt;pb_error)
 r_extern
 r_void
-id|pagebuf_queue_task
-c_func
-(paren
-r_struct
-id|tq_struct
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|pagebuf_iodone
 c_func
 (paren

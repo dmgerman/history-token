@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/ss.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
@@ -1440,17 +1440,16 @@ id|events
 suffix:semicolon
 )brace
 )brace
-DECL|variable|i82092aa_task
 r_static
-r_struct
-id|tq_struct
+id|DECLARE_WORK
+c_func
+(paren
 id|i82092aa_task
-op_assign
-(brace
-id|routine
-suffix:colon
+comma
 id|i82092aa_bh
-)brace
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 DECL|function|i82092aa_interrupt
 r_static
@@ -1699,7 +1698,7 @@ id|pending_events
 op_or_assign
 id|events
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp

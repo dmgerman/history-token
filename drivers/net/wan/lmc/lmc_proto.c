@@ -22,7 +22,7 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/syncppp.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &quot;lmc_ver.h&quot;
 macro_line|#include &quot;lmc.h&quot;

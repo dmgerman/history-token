@@ -4,7 +4,7 @@ DECL|macro|_JFFS2_FS_SB
 mdefine_line|#define _JFFS2_FS_SB
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
@@ -237,7 +237,7 @@ id|wbuf_pagesize
 suffix:semicolon
 DECL|member|wbuf_task
 r_struct
-id|tq_struct
+id|work_struct
 id|wbuf_task
 suffix:semicolon
 multiline_comment|/* task for timed wbuf flush */

@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/fd.h&gt;
 macro_line|#include &lt;linux/fd1772.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -448,15 +448,10 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|fd1772_tq
-r_struct
-id|tq_struct
+id|DECLARE_WORK
+c_func
+(paren
 id|fd1772_tq
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
 comma
 (paren
 r_void
@@ -464,8 +459,8 @@ op_star
 )paren
 id|fd1772_checkint
 comma
-l_int|0
-)brace
+l_int|NULL
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * The driver is trying to determine the correct media format&n; * while Probing is set. fd_rwsec_done() clears it after a&n; * successful access.&n; */
 DECL|variable|Probing
@@ -4299,20 +4294,11 @@ c_cond
 id|fdc_busy
 )paren
 (brace
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|fd1772_tq
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 )brace
@@ -4396,20 +4382,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|fd1772_tq
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 )brace

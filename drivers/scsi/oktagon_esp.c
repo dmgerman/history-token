@@ -28,7 +28,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#ifdef USE_BOTTOM_HALF
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/unistd.h&gt;
@@ -352,18 +352,16 @@ r_int
 id|len
 )paren
 suffix:semicolon
-DECL|variable|tq_fake_dma
 r_static
-r_struct
-id|tq_struct
+id|DECLARE_WORK
+c_func
+(paren
 id|tq_fake_dma
-op_assign
-(brace
-id|routine
-suffix:colon
+comma
 id|dma_commit
 comma
-)brace
+l_int|NULL
+)paren
 suffix:semicolon
 DECL|macro|DMA_MAXTRANSFER
 mdefine_line|#define DMA_MAXTRANSFER 0x8000
@@ -1778,24 +1776,11 @@ c_cond
 id|dma_on
 )paren
 (brace
-id|tq_fake_dma.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|tq_fake_dma
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 )brace

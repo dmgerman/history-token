@@ -528,17 +528,16 @@ id|dev-&gt;b2-&gt;id
 op_assign
 l_int|1
 suffix:semicolon
-id|dev-&gt;qdelivery.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;qdelivery.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|dev-&gt;qdelivery
+comma
 id|pcbit_deliver
-suffix:semicolon
-id|dev-&gt;qdelivery.data
-op_assign
+comma
 id|dev
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  interrupts&n;&t; */
 r_if

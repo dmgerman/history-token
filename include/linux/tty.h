@@ -15,7 +15,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/termios.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/tty_ldisc.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -296,10 +296,10 @@ DECL|struct|tty_flip_buffer
 r_struct
 id|tty_flip_buffer
 (brace
-DECL|member|tqueue
+DECL|member|work
 r_struct
-id|tq_struct
-id|tqueue
+id|work_struct
+id|work
 suffix:semicolon
 DECL|member|pty_sem
 r_struct
@@ -645,10 +645,10 @@ DECL|member|read_wait
 id|wait_queue_head_t
 id|read_wait
 suffix:semicolon
-DECL|member|tq_hangup
+DECL|member|hangup_work
 r_struct
-id|tq_struct
-id|tq_hangup
+id|work_struct
+id|hangup_work
 suffix:semicolon
 DECL|member|disc_data
 r_void
@@ -802,10 +802,10 @@ id|spinlock_t
 id|read_lock
 suffix:semicolon
 multiline_comment|/* If the tty has a pending do_SAK, queue it here - akpm */
-DECL|member|SAK_tq
+DECL|member|SAK_work
 r_struct
-id|tq_struct
-id|SAK_tq
+id|work_struct
+id|SAK_work
 suffix:semicolon
 )brace
 suffix:semicolon

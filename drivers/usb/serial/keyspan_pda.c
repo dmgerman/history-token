@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
@@ -89,15 +89,15 @@ DECL|member|tx_throttled
 r_int
 id|tx_throttled
 suffix:semicolon
-DECL|member|wakeup_task
+DECL|member|wakeup_work
 r_struct
-id|tq_struct
-id|wakeup_task
+id|work_struct
+id|wakeup_work
 suffix:semicolon
-DECL|member|unthrottle_task
+DECL|member|unthrottle_work
 r_struct
-id|tq_struct
-id|unthrottle_task
+id|work_struct
+id|unthrottle_work
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -657,11 +657,11 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* queue up a wakeup at scheduler time */
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|priv-&gt;wakeup_task
+id|priv-&gt;wakeup_work
 )paren
 suffix:semicolon
 r_break
@@ -2218,11 +2218,11 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* block writers */
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|priv-&gt;unthrottle_task
+id|priv-&gt;unthrottle_work
 )paren
 suffix:semicolon
 )brace
@@ -2315,11 +2315,11 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* queue up a wakeup at scheduler time */
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|priv-&gt;wakeup_task
+id|priv-&gt;wakeup_work
 )paren
 suffix:semicolon
 )brace
@@ -2926,27 +2926,18 @@ dot
 id|write_wait
 )paren
 suffix:semicolon
-id|INIT_LIST_HEAD
+id|INIT_WORK
 c_func
 (paren
 op_amp
-id|priv-&gt;wakeup_task.list
-)paren
-suffix:semicolon
-id|priv-&gt;wakeup_task.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;wakeup_task.routine
-op_assign
+id|priv-&gt;wakeup_work
+comma
 (paren
 r_void
 op_star
 )paren
 id|keyspan_pda_wakeup_write
-suffix:semicolon
-id|priv-&gt;wakeup_task.data
-op_assign
+comma
 (paren
 r_void
 op_star
@@ -2958,34 +2949,27 @@ id|serial-&gt;port
 l_int|0
 )braket
 )paren
+)paren
 suffix:semicolon
-id|INIT_LIST_HEAD
+id|INIT_WORK
 c_func
 (paren
 op_amp
-id|priv-&gt;unthrottle_task.list
-)paren
-suffix:semicolon
-id|priv-&gt;unthrottle_task.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;unthrottle_task.routine
-op_assign
+id|priv-&gt;unthrottle_work
+comma
 (paren
 r_void
 op_star
 )paren
 id|keyspan_pda_request_unthrottle
-suffix:semicolon
-id|priv-&gt;unthrottle_task.data
-op_assign
+comma
 (paren
 r_void
 op_star
 )paren
 (paren
 id|serial
+)paren
 )paren
 suffix:semicolon
 r_return

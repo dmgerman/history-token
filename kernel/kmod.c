@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/namespace.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
 r_int
@@ -1119,7 +1119,7 @@ id|envp
 id|DECLARE_COMPLETION
 c_func
 (paren
-id|work
+id|done
 )paren
 suffix:semicolon
 r_struct
@@ -1131,7 +1131,7 @@ dot
 id|complete
 op_assign
 op_amp
-id|work
+id|done
 comma
 dot
 id|path
@@ -1155,23 +1155,16 @@ l_int|0
 comma
 )brace
 suffix:semicolon
-r_struct
-id|tq_struct
-id|tqs
-op_assign
-(brace
-dot
-id|routine
-op_assign
+id|DECLARE_WORK
+c_func
+(paren
+id|work
+comma
 id|__call_usermodehelper
 comma
-dot
-id|data
-op_assign
 op_amp
 id|sub_info
-comma
-)brace
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1216,18 +1209,18 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|tqs
+id|work
 )paren
 suffix:semicolon
 id|wait_for_completion
 c_func
 (paren
 op_amp
-id|work
+id|done
 )paren
 suffix:semicolon
 )brace

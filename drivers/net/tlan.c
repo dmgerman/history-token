@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &quot;tlan.h&quot;
 DECL|typedef|TLanIntVectorFunc
@@ -2164,19 +2164,12 @@ id|debug
 suffix:semicolon
 )brace
 multiline_comment|/* This will be used when we get an adapter error from&n;&t; * within our irq handler */
-id|INIT_LIST_HEAD
+id|INIT_WORK
 c_func
 (paren
 op_amp
-id|priv-&gt;tlan_tqueue.list
-)paren
-suffix:semicolon
-id|priv-&gt;tlan_tqueue.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;tlan_tqueue.routine
-op_assign
+id|priv-&gt;tlan_tqueue
+comma
 (paren
 r_void
 op_star
@@ -2186,10 +2179,9 @@ r_void
 op_star
 )paren
 id|TLan_tx_timeout
-suffix:semicolon
-id|priv-&gt;tlan_tqueue.data
-op_assign
+comma
 id|dev
+)paren
 suffix:semicolon
 id|spin_lock_init
 c_func
@@ -5835,7 +5827,7 @@ op_plus
 id|TLAN_HOST_CMD
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp

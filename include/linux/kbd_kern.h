@@ -532,11 +532,11 @@ op_star
 id|t
 )paren
 (brace
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|t-&gt;flip.tqueue
+id|t-&gt;flip.work
 )paren
 suffix:semicolon
 )brace

@@ -396,7 +396,7 @@ id|is_eisa
 suffix:semicolon
 DECL|member|tlan_tqueue
 r_struct
-id|tq_struct
+id|work_struct
 id|tlan_tqueue
 suffix:semicolon
 DECL|member|neg_be_verbose

@@ -1574,12 +1574,12 @@ id|hdlc_state
 suffix:semicolon
 DECL|member|tq_rcv
 r_struct
-id|tq_struct
+id|work_struct
 id|tq_rcv
 suffix:semicolon
 DECL|member|tq_xmt
 r_struct
-id|tq_struct
+id|work_struct
 id|tq_xmt
 suffix:semicolon
 )brace
@@ -1700,7 +1700,7 @@ id|transbusy
 suffix:semicolon
 DECL|member|tqueue
 r_struct
-id|tq_struct
+id|work_struct
 id|tqueue
 suffix:semicolon
 DECL|member|event
@@ -3801,7 +3801,7 @@ id|event
 suffix:semicolon
 DECL|member|tqueue
 r_struct
-id|tq_struct
+id|work_struct
 id|tqueue
 suffix:semicolon
 DECL|member|dbusytimer

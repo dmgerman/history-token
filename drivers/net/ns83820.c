@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;&t;/* for iph */
 macro_line|#include &lt;linux/in.h&gt;&t;/* for IPPROTO_... */
@@ -553,7 +553,7 @@ id|ihr
 suffix:semicolon
 DECL|member|tq_refill
 r_struct
-id|tq_struct
+id|work_struct
 id|tq_refill
 suffix:semicolon
 multiline_comment|/* protects everything below.  irqsave when using. */
@@ -2384,7 +2384,7 @@ l_int|3
 op_div
 l_int|4
 )paren
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -5681,7 +5681,7 @@ id|dev-&gt;net_dev.owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-id|PREPARE_TQUEUE
+id|INIT_WORK
 c_func
 (paren
 op_amp

@@ -700,20 +700,11 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* request transfer */
 multiline_comment|/* now queue the task */
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|card-&gt;irq_queue
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 id|sti

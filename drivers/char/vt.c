@@ -23,7 +23,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -303,18 +303,16 @@ r_static
 r_int
 id|vesa_off_interval
 suffix:semicolon
-DECL|variable|console_callback_tq
 r_static
-r_struct
-id|tq_struct
-id|console_callback_tq
-op_assign
-(brace
-id|routine
-suffix:colon
+id|DECLARE_WORK
+c_func
+(paren
+id|console_work
+comma
 id|console_callback
 comma
-)brace
+l_int|NULL
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * fg_console is the current virtual console,&n; * last_console is the last used one,&n; * want_console is the console we want to switch to,&n; * kmsg_redirect is the console for kernel messages,&n; */
 DECL|variable|fg_console
@@ -519,11 +517,11 @@ c_func
 r_void
 )paren
 (brace
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|console_callback_tq
+id|console_work
 )paren
 suffix:semicolon
 )brace

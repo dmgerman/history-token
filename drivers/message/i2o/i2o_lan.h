@@ -265,7 +265,7 @@ suffix:semicolon
 multiline_comment|/* IOP address of the batch msg frame */
 DECL|member|i2o_batch_send_task
 r_struct
-id|tq_struct
+id|work_struct
 id|i2o_batch_send_task
 suffix:semicolon
 DECL|member|send_active
