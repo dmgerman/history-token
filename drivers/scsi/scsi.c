@@ -200,7 +200,7 @@ id|SCSI_REQ_MAGIC
 suffix:semicolon
 id|sreq-&gt;sr_data_direction
 op_assign
-id|SCSI_DATA_UNKNOWN
+id|DMA_BIDIRECTIONAL
 suffix:semicolon
 )brace
 r_return

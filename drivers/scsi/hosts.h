@@ -4,75 +4,7 @@ DECL|macro|_HOSTS_H
 mdefine_line|#define _HOSTS_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
-DECL|struct|scsi_driver
-r_struct
-id|scsi_driver
-(brace
-DECL|member|owner
-r_struct
-id|module
-op_star
-id|owner
-suffix:semicolon
-DECL|member|gendrv
-r_struct
-id|device_driver
-id|gendrv
-suffix:semicolon
-DECL|member|init_command
-r_int
-(paren
-op_star
-id|init_command
-)paren
-(paren
-r_struct
-id|scsi_cmnd
-op_star
-)paren
-suffix:semicolon
-DECL|member|rescan
-r_void
-(paren
-op_star
-id|rescan
-)paren
-(paren
-r_struct
-id|device
-op_star
-)paren
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|macro|to_scsi_driver
-mdefine_line|#define to_scsi_driver(drv) &bslash;&n;&t;container_of((drv), struct scsi_driver, gendrv)
-r_extern
-r_int
-id|scsi_register_driver
-c_func
-(paren
-r_struct
-id|device_driver
-op_star
-)paren
-suffix:semicolon
-DECL|macro|scsi_unregister_driver
-mdefine_line|#define scsi_unregister_driver(drv) &bslash;&n;&t;driver_unregister(drv);
-r_extern
-r_int
-id|scsi_register_interface
-c_func
-(paren
-r_struct
-id|class_interface
-op_star
-)paren
-suffix:semicolon
-DECL|macro|scsi_unregister_interface
-mdefine_line|#define scsi_unregister_interface(intf) &bslash;&n;&t;class_interface_unregister(intf)
 multiline_comment|/**&n; * scsi_find_device - find a device given the host&n; * @shost:&t;SCSI host pointer&n; * @channel:&t;SCSI channel (zero if only one channel)&n; * @pun:&t;SCSI target number (physical unit number)&n; * @lun:&t;SCSI Logical Unit Number&n; **/
 DECL|function|scsi_find_device
 r_static

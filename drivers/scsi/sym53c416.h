@@ -38,15 +38,6 @@ op_star
 suffix:semicolon
 r_static
 r_int
-id|sym53c416_command
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
 id|sym53c416_queuecommand
 c_func
 (paren
