@@ -111,7 +111,7 @@ suffix:semicolon
 DECL|variable|__devinitdata
 r_static
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 id|fcpnp_ids
 (braket
 )braket

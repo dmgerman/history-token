@@ -18,6 +18,8 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;mach_apic.h&gt;
+macro_line|#include &lt;mach_mpparse.h&gt;
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 r_extern
@@ -268,6 +270,14 @@ id|PREFIX
 l_string|&quot;Local APIC address 0x%08x&bslash;n&quot;
 comma
 id|madt-&gt;lapic_address
+)paren
+suffix:semicolon
+id|acpi_madt_oem_check
+c_func
+(paren
+id|madt-&gt;header.oem_id
+comma
+id|madt-&gt;header.oem_table_id
 )paren
 suffix:semicolon
 r_return
@@ -1142,10 +1152,17 @@ id|acpi_lapic
 op_logical_and
 id|acpi_ioapic
 )paren
+(brace
 id|smp_found_config
 op_assign
 l_int|1
 suffix:semicolon
+id|clustered_apic_check
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 r_return
 l_int|0
