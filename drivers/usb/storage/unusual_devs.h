@@ -1707,6 +1707,31 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
+multiline_comment|/* aeb */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x090c
+comma
+l_int|0x1132
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;Feiya&quot;
+comma
+l_string|&quot;5-in-1 Card Reader&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_CAPACITY
+)paren
+comma
 id|UNUSUAL_DEV
 c_func
 (paren
