@@ -479,7 +479,7 @@ r_extern
 r_struct
 id|scsi_device
 op_star
-id|scsi_add_device
+id|__scsi_add_device
 c_func
 (paren
 r_struct
@@ -491,8 +491,14 @@ comma
 id|uint
 comma
 id|uint
+comma
+r_void
+op_star
+id|hostdata
 )paren
 suffix:semicolon
+DECL|macro|scsi_add_device
+mdefine_line|#define scsi_add_device(host, channel, target, lun) &bslash;&n;&t;__scsi_add_device(host, channel, target, lun, NULL)
 r_extern
 r_void
 id|scsi_remove_device

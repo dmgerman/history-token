@@ -308,11 +308,11 @@ c_func
 id|scsi_io_completion
 )paren
 suffix:semicolon
-DECL|variable|scsi_add_device
+DECL|variable|__scsi_add_device
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|scsi_add_device
+id|__scsi_add_device
 )paren
 suffix:semicolon
 DECL|variable|scsi_remove_device
