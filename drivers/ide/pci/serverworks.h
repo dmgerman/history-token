@@ -31,8 +31,6 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
-DECL|macro|DISPLAY_SVWKS_TIMINGS
-mdefine_line|#define DISPLAY_SVWKS_TIMINGS&t;1
 r_static
 r_void
 id|init_setup_svwks
