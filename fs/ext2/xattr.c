@@ -3315,6 +3315,7 @@ id|error
 op_logical_and
 id|error
 op_ne
+op_minus
 id|ENOSPC
 )paren
 (brace
