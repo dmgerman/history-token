@@ -781,6 +781,7 @@ id|vsyscall_sysctl_nostrat
 comma
 dot
 id|proc_handler
+op_assign
 id|vsyscall_sysctl_change
 )brace
 comma
