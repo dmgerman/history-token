@@ -141,12 +141,14 @@ id|bus_type
 id|pnpc_bus_type
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;pnp_card&quot;
 comma
+dot
 id|match
-suffix:colon
+op_assign
 id|card_bus_match
 comma
 )brace
