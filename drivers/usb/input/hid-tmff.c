@@ -265,8 +265,7 @@ op_assign
 id|list_entry
 c_func
 (paren
-op_amp
-id|hid-&gt;inputs
+id|hid-&gt;inputs.next
 comma
 r_struct
 id|hid_input
