@@ -1,8 +1,6 @@
 multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irproc.c&n; * Version:       1.0&n; * Description:   Various entries in the /proc file system&n; * Status:        Experimental.&n; * Author:        Thomas Davis, &lt;ratbert@radiks.net&gt;&n; * Created at:    Sat Feb 21 21:33:24 1998&n; * Modified at:   Sun Nov 14 08:54:54 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1998-1999, Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *     Copyright (c) 1998, Thomas Davis, &lt;ratbert@radiks.net&gt;, &n; *     All Rights Reserved.&n; *      &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *  &n; *     I, Thomas Davis, provide no warranty for any of this software. &n; *     This material is provided &quot;AS-IS&quot; and at no charge. &n; *     &n; ********************************************************************/
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;

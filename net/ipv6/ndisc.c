@@ -25,8 +25,6 @@ macro_line|#undef ND_PRINTK2
 DECL|macro|ND_PRINTK2
 mdefine_line|#define ND_PRINTK2 ND_PRINTK
 macro_line|#endif
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
