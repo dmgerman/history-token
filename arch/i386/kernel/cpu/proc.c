@@ -444,7 +444,7 @@ comma
 id|c-&gt;x86_cache_size
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
+macro_line|#ifdef CONFIG_X86_HT
 r_if
 c_cond
 (paren
