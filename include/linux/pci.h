@@ -1532,6 +1532,17 @@ r_int
 id|devfn
 )paren
 suffix:semicolon
+r_int
+r_int
+id|pci_scan_child_bus
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
+)paren
+suffix:semicolon
 r_void
 id|pci_bus_add_devices
 c_func
