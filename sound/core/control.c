@@ -5583,7 +5583,7 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 r_goto
-id|out
+id|__end
 suffix:semicolon
 )brace
 id|init_waitqueue_entry
@@ -5725,7 +5725,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 r_goto
-id|__end
+id|out
 suffix:semicolon
 )brace
 id|spin_lock_irq
