@@ -443,7 +443,7 @@ DECL|macro|__NR_sched_getaffinity
 mdefine_line|#define __NR_sched_getaffinity&t;240
 DECL|macro|__NR_tgkill
 mdefine_line|#define __NR_tgkill&t;&t;241
-multiline_comment|/*&n; * Number 242 is reserved for tux&n; */
+multiline_comment|/* Number 242 is reserved for tux */
 DECL|macro|__NR_io_setup
 mdefine_line|#define __NR_io_setup&t;&t;243
 DECL|macro|__NR_io_destroy
@@ -484,15 +484,31 @@ DECL|macro|__NR_clock_getres
 mdefine_line|#define __NR_clock_getres&t;(__NR_timer_create+7)
 DECL|macro|__NR_clock_nanosleep
 mdefine_line|#define __NR_clock_nanosleep&t;(__NR_timer_create+8)
-multiline_comment|/*&n; * Number 263 is reserved for vserver&n; */
+multiline_comment|/* Number 263 is reserved for vserver */
 DECL|macro|__NR_fadvise64_64
 mdefine_line|#define __NR_fadvise64_64&t;264
 DECL|macro|__NR_statfs64
 mdefine_line|#define __NR_statfs64&t;&t;265
 DECL|macro|__NR_fstatfs64
 mdefine_line|#define __NR_fstatfs64&t;&t;266
+multiline_comment|/* Number 267 is reserved for new sys_remap_file_pages */
+multiline_comment|/* Number 268 is reserved for new sys_mbind */
+multiline_comment|/* Number 269 is reserved for new sys_get_mempolicy */
+multiline_comment|/* Number 270 is reserved for new sys_set_mempolicy */
+DECL|macro|__NR_mq_open
+mdefine_line|#define __NR_mq_open&t;&t;271
+DECL|macro|__NR_mq_unlink
+mdefine_line|#define __NR_mq_unlink&t;&t;272
+DECL|macro|__NR_mq_timedsend
+mdefine_line|#define __NR_mq_timedsend&t;273
+DECL|macro|__NR_mq_timedreceive
+mdefine_line|#define __NR_mq_timedreceive&t;274
+DECL|macro|__NR_mq_notify
+mdefine_line|#define __NR_mq_notify&t;&t;275
+DECL|macro|__NR_mq_getsetattr
+mdefine_line|#define __NR_mq_getsetattr&t;276
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls 267
+mdefine_line|#define NR_syscalls 277
 multiline_comment|/* &n; * There are some system calls that are not present on 64 bit, some&n; * have a different name although they do the same (e.g. __NR_chown32&n; * is __NR_chown on 64 bit).&n; */
 macro_line|#ifdef __s390x__
 DECL|macro|__NR_time
