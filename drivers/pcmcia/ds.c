@@ -3654,8 +3654,8 @@ op_or
 id|CLIENT_CONFIG_LOCKED
 )paren
 )paren
-r_return
-id|CS_IN_USE
+r_goto
+id|warn_out
 suffix:semicolon
 r_for
 c_loop
@@ -3682,23 +3682,15 @@ c_func
 id|i
 )paren
 )paren
-r_return
-id|CS_IN_USE
+r_goto
+id|warn_out
 suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|handle-&gt;state
 op_amp
 id|CLIENT_STALE
-)paren
-op_logical_or
-(paren
-id|handle-&gt;Attributes
-op_amp
-id|INFO_MASTER_CLIENT
-)paren
 )paren
 (brace
 id|spin_lock_irqsave
@@ -3802,6 +3794,18 @@ suffix:semicolon
 )brace
 r_return
 id|CS_SUCCESS
+suffix:semicolon
+id|warn_out
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ds: deregister_client was called too early.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|CS_IN_USE
 suffix:semicolon
 )brace
 multiline_comment|/* deregister_client */
