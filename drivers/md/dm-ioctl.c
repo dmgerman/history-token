@@ -4113,6 +4113,17 @@ op_star
 id|param
 )paren
 (brace
+multiline_comment|/* Ignores parameters */
+r_if
+c_cond
+(paren
+id|cmd
+op_eq
+id|DM_REMOVE_ALL_CMD
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/* Unless creating, either name of uuid but not both */
 r_if
 c_cond
