@@ -972,6 +972,19 @@ id|pvr
 )paren
 (brace
 r_case
+id|PV_NORTHSTAR
+suffix:colon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;RS64-II (northstar)&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|PV_PULSAR
 suffix:colon
 id|seq_printf
