@@ -177,11 +177,6 @@ id|serio-&gt;dev
 )paren
 r_break
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;connect
-)paren
 id|dev
 op_member_access_from_pointer
 id|connect
@@ -546,8 +541,6 @@ r_if
 c_cond
 (paren
 id|event-&gt;serio-&gt;dev
-op_logical_and
-id|event-&gt;serio-&gt;dev-&gt;disconnect
 )paren
 id|event-&gt;serio-&gt;dev
 op_member_access_from_pointer
@@ -987,8 +980,6 @@ r_if
 c_cond
 (paren
 id|serio-&gt;dev
-op_logical_and
-id|serio-&gt;dev-&gt;disconnect
 )paren
 id|serio-&gt;dev
 op_member_access_from_pointer
@@ -1048,8 +1039,6 @@ c_cond
 (paren
 op_logical_neg
 id|serio-&gt;dev
-op_logical_and
-id|dev-&gt;connect
 )paren
 id|dev
 op_member_access_from_pointer
@@ -1116,8 +1105,6 @@ c_cond
 id|serio-&gt;dev
 op_eq
 id|dev
-op_logical_and
-id|dev-&gt;disconnect
 )paren
 id|dev
 op_member_access_from_pointer
