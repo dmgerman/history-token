@@ -3855,8 +3855,6 @@ id|sdev-&gt;sdev_driverfs_dev.name
 )paren
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * scsi_probe_lun - probe a single LUN using a SCSI INQUIRY&n; * @sreq:&t;used to send the INQUIRY&n; * @inq_result:&t;area to store the INQUIRY result&n; * @bflags:&t;store any bflags found here&n; *&n; * Description:&n; *     Probe the lun associated with @sreq using a standard SCSI INQUIRY;&n; *&n; *     If the INQUIRY is successful, sreq-&gt;sr_result is zero and: the&n; *     INQUIRY data is in @inq_result; the scsi_level and INQUIRY length&n; *     are copied to the Scsi_Device at @sreq-&gt;sr_device (sdev);&n; *     any flags value is stored in *@bflags.&n; **/
 DECL|function|scsi_probe_lun

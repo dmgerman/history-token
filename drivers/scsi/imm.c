@@ -821,7 +821,7 @@ suffix:semicolon
 multiline_comment|/* return number of hosts detected */
 )brace
 )brace
-multiline_comment|/* This is to give the imm driver a way to modify the timings (and other&n; * parameters) by writing to the /proc/scsi/imm/0 file.&n; * Very simple method really... (To simple, no error checking :( )&n; * Reason: Kernel hackers HATE having to unload and reload modules for&n; * testing...&n; * Also gives a method to use a script to obtain optimum timings (TODO)&n; */
+multiline_comment|/* This is to give the imm driver a way to modify the timings (and other&n; * parameters) by writing to the /proc/scsi/imm/0 file.&n; * Very simple method really... (Too simple, no error checking :( )&n; * Reason: Kernel hackers HATE having to unload and reload modules for&n; * testing...&n; * Also gives a method to use a script to obtain optimum timings (TODO)&n; */
 DECL|function|imm_proc_write
 r_static
 r_inline
@@ -3990,7 +3990,7 @@ id|retv
 comma
 id|x
 suffix:semicolon
-multiline_comment|/* First check for any errors that may of occurred&n;     * Here we check for internal errors&n;     */
+multiline_comment|/* First check for any errors that may have occurred&n;     * Here we check for internal errors&n;     */
 r_if
 c_cond
 (paren
