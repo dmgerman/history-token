@@ -808,116 +808,116 @@ l_int|4
 suffix:semicolon
 multiline_comment|/* Mandatory Attributes */
 DECL|macro|FATTR4_WORD0_SUPPORTED_ATTRS
-mdefine_line|#define FATTR4_WORD0_SUPPORTED_ATTRS    (1)
+mdefine_line|#define FATTR4_WORD0_SUPPORTED_ATTRS    (1UL &lt;&lt; 0)
 DECL|macro|FATTR4_WORD0_TYPE
-mdefine_line|#define FATTR4_WORD0_TYPE               (1 &lt;&lt; 1)
+mdefine_line|#define FATTR4_WORD0_TYPE               (1UL &lt;&lt; 1)
 DECL|macro|FATTR4_WORD0_FH_EXPIRE_TYPE
-mdefine_line|#define FATTR4_WORD0_FH_EXPIRE_TYPE     (1 &lt;&lt; 2)
+mdefine_line|#define FATTR4_WORD0_FH_EXPIRE_TYPE     (1UL &lt;&lt; 2)
 DECL|macro|FATTR4_WORD0_CHANGE
-mdefine_line|#define FATTR4_WORD0_CHANGE             (1 &lt;&lt; 3)
+mdefine_line|#define FATTR4_WORD0_CHANGE             (1UL &lt;&lt; 3)
 DECL|macro|FATTR4_WORD0_SIZE
-mdefine_line|#define FATTR4_WORD0_SIZE               (1 &lt;&lt; 4)
+mdefine_line|#define FATTR4_WORD0_SIZE               (1UL &lt;&lt; 4)
 DECL|macro|FATTR4_WORD0_LINK_SUPPORT
-mdefine_line|#define FATTR4_WORD0_LINK_SUPPORT       (1 &lt;&lt; 5)
+mdefine_line|#define FATTR4_WORD0_LINK_SUPPORT       (1UL &lt;&lt; 5)
 DECL|macro|FATTR4_WORD0_SYMLINK_SUPPORT
-mdefine_line|#define FATTR4_WORD0_SYMLINK_SUPPORT    (1 &lt;&lt; 6)
+mdefine_line|#define FATTR4_WORD0_SYMLINK_SUPPORT    (1UL &lt;&lt; 6)
 DECL|macro|FATTR4_WORD0_NAMED_ATTR
-mdefine_line|#define FATTR4_WORD0_NAMED_ATTR         (1 &lt;&lt; 7)
+mdefine_line|#define FATTR4_WORD0_NAMED_ATTR         (1UL &lt;&lt; 7)
 DECL|macro|FATTR4_WORD0_FSID
-mdefine_line|#define FATTR4_WORD0_FSID               (1 &lt;&lt; 8)
+mdefine_line|#define FATTR4_WORD0_FSID               (1UL &lt;&lt; 8)
 DECL|macro|FATTR4_WORD0_UNIQUE_HANDLES
-mdefine_line|#define FATTR4_WORD0_UNIQUE_HANDLES     (1 &lt;&lt; 9)
+mdefine_line|#define FATTR4_WORD0_UNIQUE_HANDLES     (1UL &lt;&lt; 9)
 DECL|macro|FATTR4_WORD0_LEASE_TIME
-mdefine_line|#define FATTR4_WORD0_LEASE_TIME         (1 &lt;&lt; 10)
+mdefine_line|#define FATTR4_WORD0_LEASE_TIME         (1UL &lt;&lt; 10)
 DECL|macro|FATTR4_WORD0_RDATTR_ERROR
-mdefine_line|#define FATTR4_WORD0_RDATTR_ERROR       (1 &lt;&lt; 11)
+mdefine_line|#define FATTR4_WORD0_RDATTR_ERROR       (1UL &lt;&lt; 11)
 multiline_comment|/* Recommended Attributes */
 DECL|macro|FATTR4_WORD0_ACL
-mdefine_line|#define FATTR4_WORD0_ACL                (1 &lt;&lt; 12)
+mdefine_line|#define FATTR4_WORD0_ACL                (1UL &lt;&lt; 12)
 DECL|macro|FATTR4_WORD0_ACLSUPPORT
-mdefine_line|#define FATTR4_WORD0_ACLSUPPORT         (1 &lt;&lt; 13)
+mdefine_line|#define FATTR4_WORD0_ACLSUPPORT         (1UL &lt;&lt; 13)
 DECL|macro|FATTR4_WORD0_ARCHIVE
-mdefine_line|#define FATTR4_WORD0_ARCHIVE            (1 &lt;&lt; 14)
+mdefine_line|#define FATTR4_WORD0_ARCHIVE            (1UL &lt;&lt; 14)
 DECL|macro|FATTR4_WORD0_CANSETTIME
-mdefine_line|#define FATTR4_WORD0_CANSETTIME         (1 &lt;&lt; 15)
+mdefine_line|#define FATTR4_WORD0_CANSETTIME         (1UL &lt;&lt; 15)
 DECL|macro|FATTR4_WORD0_CASE_INSENSITIVE
-mdefine_line|#define FATTR4_WORD0_CASE_INSENSITIVE   (1 &lt;&lt; 16)
+mdefine_line|#define FATTR4_WORD0_CASE_INSENSITIVE   (1UL &lt;&lt; 16)
 DECL|macro|FATTR4_WORD0_CASE_PRESERVING
-mdefine_line|#define FATTR4_WORD0_CASE_PRESERVING    (1 &lt;&lt; 17)
+mdefine_line|#define FATTR4_WORD0_CASE_PRESERVING    (1UL &lt;&lt; 17)
 DECL|macro|FATTR4_WORD0_CHOWN_RESTRICTED
-mdefine_line|#define FATTR4_WORD0_CHOWN_RESTRICTED   (1 &lt;&lt; 18)
+mdefine_line|#define FATTR4_WORD0_CHOWN_RESTRICTED   (1UL &lt;&lt; 18)
 DECL|macro|FATTR4_WORD0_FILEHANDLE
-mdefine_line|#define FATTR4_WORD0_FILEHANDLE         (1 &lt;&lt; 19)
+mdefine_line|#define FATTR4_WORD0_FILEHANDLE         (1UL &lt;&lt; 19)
 DECL|macro|FATTR4_WORD0_FILEID
-mdefine_line|#define FATTR4_WORD0_FILEID             (1 &lt;&lt; 20)
+mdefine_line|#define FATTR4_WORD0_FILEID             (1UL &lt;&lt; 20)
 DECL|macro|FATTR4_WORD0_FILES_AVAIL
-mdefine_line|#define FATTR4_WORD0_FILES_AVAIL        (1 &lt;&lt; 21)
+mdefine_line|#define FATTR4_WORD0_FILES_AVAIL        (1UL &lt;&lt; 21)
 DECL|macro|FATTR4_WORD0_FILES_FREE
-mdefine_line|#define FATTR4_WORD0_FILES_FREE         (1 &lt;&lt; 22)
+mdefine_line|#define FATTR4_WORD0_FILES_FREE         (1UL &lt;&lt; 22)
 DECL|macro|FATTR4_WORD0_FILES_TOTAL
-mdefine_line|#define FATTR4_WORD0_FILES_TOTAL        (1 &lt;&lt; 23)
+mdefine_line|#define FATTR4_WORD0_FILES_TOTAL        (1UL &lt;&lt; 23)
 DECL|macro|FATTR4_WORD0_FS_LOCATIONS
-mdefine_line|#define FATTR4_WORD0_FS_LOCATIONS       (1 &lt;&lt; 24)
+mdefine_line|#define FATTR4_WORD0_FS_LOCATIONS       (1UL &lt;&lt; 24)
 DECL|macro|FATTR4_WORD0_HIDDEN
-mdefine_line|#define FATTR4_WORD0_HIDDEN             (1 &lt;&lt; 25)
+mdefine_line|#define FATTR4_WORD0_HIDDEN             (1UL &lt;&lt; 25)
 DECL|macro|FATTR4_WORD0_HOMOGENEOUS
-mdefine_line|#define FATTR4_WORD0_HOMOGENEOUS        (1 &lt;&lt; 26)
+mdefine_line|#define FATTR4_WORD0_HOMOGENEOUS        (1UL &lt;&lt; 26)
 DECL|macro|FATTR4_WORD0_MAXFILESIZE
-mdefine_line|#define FATTR4_WORD0_MAXFILESIZE        (1 &lt;&lt; 27)
+mdefine_line|#define FATTR4_WORD0_MAXFILESIZE        (1UL &lt;&lt; 27)
 DECL|macro|FATTR4_WORD0_MAXLINK
-mdefine_line|#define FATTR4_WORD0_MAXLINK            (1 &lt;&lt; 28)
+mdefine_line|#define FATTR4_WORD0_MAXLINK            (1UL &lt;&lt; 28)
 DECL|macro|FATTR4_WORD0_MAXNAME
-mdefine_line|#define FATTR4_WORD0_MAXNAME            (1 &lt;&lt; 29)
+mdefine_line|#define FATTR4_WORD0_MAXNAME            (1UL &lt;&lt; 29)
 DECL|macro|FATTR4_WORD0_MAXREAD
-mdefine_line|#define FATTR4_WORD0_MAXREAD            (1 &lt;&lt; 30)
+mdefine_line|#define FATTR4_WORD0_MAXREAD            (1UL &lt;&lt; 30)
 DECL|macro|FATTR4_WORD0_MAXWRITE
-mdefine_line|#define FATTR4_WORD0_MAXWRITE           (1 &lt;&lt; 31)
+mdefine_line|#define FATTR4_WORD0_MAXWRITE           (1UL &lt;&lt; 31)
 DECL|macro|FATTR4_WORD1_MIMETYPE
-mdefine_line|#define FATTR4_WORD1_MIMETYPE           (1)
+mdefine_line|#define FATTR4_WORD1_MIMETYPE           (1UL &lt;&lt; 0)
 DECL|macro|FATTR4_WORD1_MODE
-mdefine_line|#define FATTR4_WORD1_MODE               (1 &lt;&lt; 1)
+mdefine_line|#define FATTR4_WORD1_MODE               (1UL &lt;&lt; 1)
 DECL|macro|FATTR4_WORD1_NO_TRUNC
-mdefine_line|#define FATTR4_WORD1_NO_TRUNC           (1 &lt;&lt; 2)
+mdefine_line|#define FATTR4_WORD1_NO_TRUNC           (1UL &lt;&lt; 2)
 DECL|macro|FATTR4_WORD1_NUMLINKS
-mdefine_line|#define FATTR4_WORD1_NUMLINKS           (1 &lt;&lt; 3)
+mdefine_line|#define FATTR4_WORD1_NUMLINKS           (1UL &lt;&lt; 3)
 DECL|macro|FATTR4_WORD1_OWNER
-mdefine_line|#define FATTR4_WORD1_OWNER              (1 &lt;&lt; 4)
+mdefine_line|#define FATTR4_WORD1_OWNER              (1UL &lt;&lt; 4)
 DECL|macro|FATTR4_WORD1_OWNER_GROUP
-mdefine_line|#define FATTR4_WORD1_OWNER_GROUP        (1 &lt;&lt; 5)
+mdefine_line|#define FATTR4_WORD1_OWNER_GROUP        (1UL &lt;&lt; 5)
 DECL|macro|FATTR4_WORD1_QUOTA_HARD
-mdefine_line|#define FATTR4_WORD1_QUOTA_HARD         (1 &lt;&lt; 6)
+mdefine_line|#define FATTR4_WORD1_QUOTA_HARD         (1UL &lt;&lt; 6)
 DECL|macro|FATTR4_WORD1_QUOTA_SOFT
-mdefine_line|#define FATTR4_WORD1_QUOTA_SOFT         (1 &lt;&lt; 7)
+mdefine_line|#define FATTR4_WORD1_QUOTA_SOFT         (1UL &lt;&lt; 7)
 DECL|macro|FATTR4_WORD1_QUOTA_USED
-mdefine_line|#define FATTR4_WORD1_QUOTA_USED         (1 &lt;&lt; 8)
+mdefine_line|#define FATTR4_WORD1_QUOTA_USED         (1UL &lt;&lt; 8)
 DECL|macro|FATTR4_WORD1_RAWDEV
-mdefine_line|#define FATTR4_WORD1_RAWDEV             (1 &lt;&lt; 9)
+mdefine_line|#define FATTR4_WORD1_RAWDEV             (1UL &lt;&lt; 9)
 DECL|macro|FATTR4_WORD1_SPACE_AVAIL
-mdefine_line|#define FATTR4_WORD1_SPACE_AVAIL        (1 &lt;&lt; 10)
+mdefine_line|#define FATTR4_WORD1_SPACE_AVAIL        (1UL &lt;&lt; 10)
 DECL|macro|FATTR4_WORD1_SPACE_FREE
-mdefine_line|#define FATTR4_WORD1_SPACE_FREE         (1 &lt;&lt; 11)
+mdefine_line|#define FATTR4_WORD1_SPACE_FREE         (1UL &lt;&lt; 11)
 DECL|macro|FATTR4_WORD1_SPACE_TOTAL
-mdefine_line|#define FATTR4_WORD1_SPACE_TOTAL        (1 &lt;&lt; 12)
+mdefine_line|#define FATTR4_WORD1_SPACE_TOTAL        (1UL &lt;&lt; 12)
 DECL|macro|FATTR4_WORD1_SPACE_USED
-mdefine_line|#define FATTR4_WORD1_SPACE_USED         (1 &lt;&lt; 13)
+mdefine_line|#define FATTR4_WORD1_SPACE_USED         (1UL &lt;&lt; 13)
 DECL|macro|FATTR4_WORD1_SYSTEM
-mdefine_line|#define FATTR4_WORD1_SYSTEM             (1 &lt;&lt; 14)
+mdefine_line|#define FATTR4_WORD1_SYSTEM             (1UL &lt;&lt; 14)
 DECL|macro|FATTR4_WORD1_TIME_ACCESS
-mdefine_line|#define FATTR4_WORD1_TIME_ACCESS        (1 &lt;&lt; 15)
+mdefine_line|#define FATTR4_WORD1_TIME_ACCESS        (1UL &lt;&lt; 15)
 DECL|macro|FATTR4_WORD1_TIME_ACCESS_SET
-mdefine_line|#define FATTR4_WORD1_TIME_ACCESS_SET    (1 &lt;&lt; 16)
+mdefine_line|#define FATTR4_WORD1_TIME_ACCESS_SET    (1UL &lt;&lt; 16)
 DECL|macro|FATTR4_WORD1_TIME_BACKUP
-mdefine_line|#define FATTR4_WORD1_TIME_BACKUP        (1 &lt;&lt; 17)
+mdefine_line|#define FATTR4_WORD1_TIME_BACKUP        (1UL &lt;&lt; 17)
 DECL|macro|FATTR4_WORD1_TIME_CREATE
-mdefine_line|#define FATTR4_WORD1_TIME_CREATE        (1 &lt;&lt; 18)
+mdefine_line|#define FATTR4_WORD1_TIME_CREATE        (1UL &lt;&lt; 18)
 DECL|macro|FATTR4_WORD1_TIME_DELTA
-mdefine_line|#define FATTR4_WORD1_TIME_DELTA         (1 &lt;&lt; 19)
+mdefine_line|#define FATTR4_WORD1_TIME_DELTA         (1UL &lt;&lt; 19)
 DECL|macro|FATTR4_WORD1_TIME_METADATA
-mdefine_line|#define FATTR4_WORD1_TIME_METADATA      (1 &lt;&lt; 20)
+mdefine_line|#define FATTR4_WORD1_TIME_METADATA      (1UL &lt;&lt; 20)
 DECL|macro|FATTR4_WORD1_TIME_MODIFY
-mdefine_line|#define FATTR4_WORD1_TIME_MODIFY        (1 &lt;&lt; 21)
+mdefine_line|#define FATTR4_WORD1_TIME_MODIFY        (1UL &lt;&lt; 21)
 DECL|macro|FATTR4_WORD1_TIME_MODIFY_SET
-mdefine_line|#define FATTR4_WORD1_TIME_MODIFY_SET    (1 &lt;&lt; 22)
+mdefine_line|#define FATTR4_WORD1_TIME_MODIFY_SET    (1UL &lt;&lt; 22)
 DECL|macro|NFSPROC4_NULL
 mdefine_line|#define NFSPROC4_NULL 0
 DECL|macro|NFSPROC4_COMPOUND
