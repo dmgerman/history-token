@@ -820,14 +820,15 @@ comma
 l_int|NULL
 )brace
 comma
+multiline_comment|/* { 0x434d4983, 0xffffffff, &quot;CMI9761&quot;,&t;&t;patch_cm9761,&t;NULL }, */
 (brace
 l_int|0x434d4983
 comma
 l_int|0xffffffff
 comma
-l_string|&quot;CMI9761&quot;
+l_string|&quot;CMI9761A&quot;
 comma
-id|patch_cm9761
+id|patch_cm9761a
 comma
 l_int|NULL
 )brace
