@@ -989,10 +989,6 @@ id|kind
 op_assign
 id|lm83
 suffix:semicolon
-id|name
-op_assign
-l_string|&quot;lm83&quot;
-suffix:semicolon
 )brace
 )brace
 r_if
@@ -1022,6 +1018,19 @@ r_goto
 id|exit_free
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+id|kind
+op_eq
+id|lm83
+)paren
+(brace
+id|name
+op_assign
+l_string|&quot;lm83&quot;
+suffix:semicolon
 )brace
 multiline_comment|/* We can fill in the remaining client fields */
 id|strlcpy

@@ -1740,13 +1740,6 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-r_const
-r_char
-op_star
-id|name
-op_assign
-l_string|&quot;&quot;
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1930,10 +1923,6 @@ id|kind
 op_assign
 id|gl518sm_r00
 suffix:semicolon
-id|name
-op_assign
-l_string|&quot;gl518sm&quot;
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -1947,10 +1936,6 @@ l_int|0x80
 id|kind
 op_assign
 id|gl518sm_r80
-suffix:semicolon
-id|name
-op_assign
-l_string|&quot;gl518sm&quot;
 suffix:semicolon
 )brace
 r_else
@@ -1991,7 +1976,7 @@ c_func
 (paren
 id|new_client-&gt;name
 comma
-id|name
+l_string|&quot;gl518sm&quot;
 comma
 id|I2C_NAME_SIZE
 )paren

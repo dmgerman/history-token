@@ -420,13 +420,6 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-r_const
-r_char
-op_star
-id|name
-op_assign
-l_string|&quot;&quot;
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -678,10 +671,6 @@ id|kind
 op_assign
 id|w83l785ts
 suffix:semicolon
-id|name
-op_assign
-l_string|&quot;w83l785ts&quot;
-suffix:semicolon
 )brace
 )brace
 r_if
@@ -718,7 +707,7 @@ c_func
 (paren
 id|new_client-&gt;name
 comma
-id|name
+l_string|&quot;w83l785ts&quot;
 comma
 id|I2C_NAME_SIZE
 )paren
