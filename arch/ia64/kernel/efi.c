@@ -1018,11 +1018,9 @@ suffix:semicolon
 id|u64
 id|vaddr
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_MCA
 r_int
 id|cpu
 suffix:semicolon
-macro_line|#endif
 id|efi_map_start
 op_assign
 id|__va
@@ -1252,7 +1250,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_MCA
 id|cpu
 op_assign
 id|smp_processor_id
@@ -1291,7 +1288,6 @@ id|PAGE_KERNEL
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_void

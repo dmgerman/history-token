@@ -225,6 +225,19 @@ id|u32
 id|irq
 )paren
 suffix:semicolon
+multiline_comment|/* deprecated in favor of acpi_gsi_to_irq */
+r_int
+id|acpi_gsi_to_irq
+(paren
+id|u32
+id|gsi
+comma
+r_int
+r_int
+op_star
+id|irq
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI_NUMA
 multiline_comment|/* Proximity bitmap length; _PXM is at most 255 (8 bit)*/
 DECL|macro|MAX_PXM_DOMAINS

@@ -3419,13 +3419,7 @@ macro_line|#ifdef ALLOW_IOV_BYPASS
 id|ASSERT
 c_func
 (paren
-id|to_pci_dev
-c_func
-(paren
-id|dev
-)paren
-op_member_access_from_pointer
-id|consistent_dma_mask
+id|dev-&gt;coherent_dma_mask
 )paren
 suffix:semicolon
 multiline_comment|/*&n; &t;** Check if the PCI device can DMA to ptr... if so, just return ptr&n; &t;*/
@@ -3440,13 +3434,7 @@ op_star
 id|dma_handle
 op_amp
 op_complement
-id|to_pci_dev
-c_func
-(paren
-id|dev
-)paren
-op_member_access_from_pointer
-id|consistent_dma_mask
+id|dev-&gt;coherent_dma_mask
 )paren
 op_eq
 l_int|0
@@ -3458,13 +3446,7 @@ c_func
 (paren
 l_string|&quot;sba_alloc_coherent() bypass mask/addr: 0x%lx/0x%lx&bslash;n&quot;
 comma
-id|to_pci_dev
-c_func
-(paren
-id|dev
-)paren
-op_member_access_from_pointer
-id|consistent_dma_mask
+id|dev-&gt;coherent_dma_mask
 comma
 op_star
 id|dma_handle
