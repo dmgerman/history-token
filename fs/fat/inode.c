@@ -5757,8 +5757,7 @@ suffix:semicolon
 multiline_comment|/* Don&squot;t know yet */
 id|sbi-&gt;prev_free
 op_assign
-op_minus
-l_int|1
+id|FAT_START_ENT
 suffix:semicolon
 r_if
 c_cond
@@ -6178,6 +6177,22 @@ id|sbi-&gt;free_clusters
 op_assign
 op_minus
 l_int|1
+suffix:semicolon
+multiline_comment|/* check the prev_free, it&squot;s not necessarily correct */
+id|sbi-&gt;prev_free
+op_mod_assign
+id|sbi-&gt;max_cluster
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sbi-&gt;prev_free
+OL
+id|FAT_START_ENT
+)paren
+id|sbi-&gt;prev_free
+op_assign
+id|FAT_START_ENT
 suffix:semicolon
 id|brelse
 c_func

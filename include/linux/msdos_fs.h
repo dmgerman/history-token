@@ -669,10 +669,12 @@ id|fat_lock
 suffix:semicolon
 DECL|member|prev_free
 r_int
+r_int
 id|prev_free
 suffix:semicolon
 multiline_comment|/* previously allocated cluster number */
 DECL|member|free_clusters
+r_int
 r_int
 id|free_clusters
 suffix:semicolon
