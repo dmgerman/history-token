@@ -7,6 +7,13 @@ id|modversions
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Do we have vmlinux? */
+DECL|variable|have_vmlinux
+r_int
+id|have_vmlinux
+op_assign
+l_int|0
+suffix:semicolon
 r_void
 DECL|function|fatal
 id|fatal
@@ -1438,6 +1445,24 @@ id|Elf_Sym
 op_star
 id|sym
 suffix:semicolon
+multiline_comment|/* When there&squot;s no vmlinux, don&squot;t print warnings about&n;&t; * unresolved symbols (since there&squot;ll be too many ;) */
+r_if
+c_cond
+(paren
+id|strcmp
+c_func
+(paren
+id|modname
+comma
+l_string|&quot;vmlinux&quot;
+)paren
+op_eq
+l_int|0
+)paren
+id|have_vmlinux
+op_assign
+l_int|1
+suffix:semicolon
 id|parse_elf
 c_func
 (paren
@@ -1811,6 +1836,11 @@ op_logical_neg
 id|exp
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|have_vmlinux
+)paren
 id|fprintf
 c_func
 (paren
@@ -2473,7 +2503,7 @@ c_func
 (paren
 id|fname
 comma
-l_string|&quot;%s.ver.c&quot;
+l_string|&quot;%s.mod.c&quot;
 comma
 id|mod-&gt;name
 )paren
