@@ -3385,6 +3385,13 @@ id|all_zones_ok
 )paren
 r_break
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|to_free
+OG
+l_int|0
+)paren
 id|blk_congestion_wait
 c_func
 (paren
