@@ -1110,6 +1110,7 @@ DECL|macro|allocate_mm
 mdefine_line|#define allocate_mm()&t;(kmem_cache_alloc(mm_cachep, SLAB_KERNEL))
 DECL|macro|free_mm
 mdefine_line|#define free_mm(mm)&t;(kmem_cache_free(mm_cachep, (mm)))
+macro_line|#include &lt;linux/init_task.h&gt;
 DECL|function|mm_init
 r_static
 r_struct
@@ -1152,6 +1153,25 @@ suffix:semicolon
 id|mm-&gt;page_table_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+id|mm-&gt;ioctx_list_lock
+op_assign
+id|RW_LOCK_UNLOCKED
+suffix:semicolon
+id|mm-&gt;default_kioctx
+op_assign
+(paren
+r_struct
+id|kioctx
+)paren
+id|INIT_KIOCTX
+c_func
+(paren
+id|mm-&gt;default_kioctx
+comma
+op_star
+id|mm
+)paren
 suffix:semicolon
 id|mm-&gt;pgd
 op_assign

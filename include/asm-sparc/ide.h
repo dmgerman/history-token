@@ -231,326 +231,39 @@ mdefine_line|#define ide_release_region(from,extent)&t;&t;release_region((from),
 multiline_comment|/*&n; * The following are not needed for the non-m68k ports&n; */
 DECL|macro|ide_ack_intr
 mdefine_line|#define ide_ack_intr(hwif)&t;&t;(1)
-DECL|macro|ide_fix_driveid
-mdefine_line|#define ide_fix_driveid(id)&t;&t;do {} while (0)
 DECL|macro|ide_release_lock
 mdefine_line|#define ide_release_lock(lock)&t;&t;do {} while (0)
 DECL|macro|ide_get_lock
 mdefine_line|#define ide_get_lock(lock, hdlr, data)&t;do {} while (0)
-multiline_comment|/* From m68k code... */
-macro_line|#ifdef insl
-DECL|macro|insl
-macro_line|#undef insl
-macro_line|#endif
-macro_line|#ifdef outsl
-DECL|macro|outsl
-macro_line|#undef outsl
-macro_line|#endif
-macro_line|#ifdef insw
-DECL|macro|insw
-macro_line|#undef insw
-macro_line|#endif
-macro_line|#ifdef outsw
-DECL|macro|outsw
-macro_line|#undef outsw
-macro_line|#endif
-DECL|macro|insl
-mdefine_line|#define insl(data_reg, buffer, wcount) insw(data_reg, buffer, (wcount)&lt;&lt;1)
-DECL|macro|outsl
-mdefine_line|#define outsl(data_reg, buffer, wcount) outsw(data_reg, buffer, (wcount)&lt;&lt;1)
-DECL|macro|insw
-mdefine_line|#define insw(port, buf, nr) ide_insw((port), (buf), (nr))
-DECL|macro|outsw
-mdefine_line|#define outsw(port, buf, nr) ide_outsw((port), (buf), (nr))
-DECL|function|ide_insw
-r_static
-id|__inline__
-r_void
-id|ide_insw
-c_func
-(paren
-r_int
-r_int
-id|port
-comma
-r_void
-op_star
-id|dst
-comma
-r_int
-r_int
-id|count
-)paren
-(brace
-r_volatile
-r_int
-r_int
-op_star
-id|data_port
-suffix:semicolon
-multiline_comment|/* unsigned long end = (unsigned long)dst + (count &lt;&lt; 1); */
-multiline_comment|/* P3 */
-id|u16
-op_star
-id|ps
-op_assign
-id|dst
-suffix:semicolon
-id|u32
-op_star
-id|pi
-suffix:semicolon
-id|data_port
-op_assign
-(paren
-r_volatile
-r_int
-r_int
-op_star
-)paren
-id|port
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|ps
-)paren
-op_amp
-l_int|0x2
-)paren
-(brace
-op_star
-id|ps
-op_increment
-op_assign
-op_star
-id|data_port
-suffix:semicolon
-id|count
-op_decrement
-suffix:semicolon
-)brace
-id|pi
-op_assign
-(paren
-id|u32
-op_star
-)paren
-id|ps
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|count
-op_ge
-l_int|2
-)paren
-(brace
-id|u32
-id|w
-suffix:semicolon
-id|w
-op_assign
-(paren
-op_star
-id|data_port
-)paren
-op_lshift
-l_int|16
-suffix:semicolon
-id|w
-op_or_assign
-(paren
-op_star
-id|data_port
-)paren
-suffix:semicolon
-op_star
-id|pi
-op_increment
-op_assign
-id|w
-suffix:semicolon
-id|count
-op_sub_assign
-l_int|2
-suffix:semicolon
-)brace
-id|ps
-op_assign
-(paren
-id|u16
-op_star
-)paren
-id|pi
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|count
-)paren
-(brace
-op_star
-id|ps
-op_increment
-op_assign
-op_star
-id|data_port
-suffix:semicolon
-)brace
-multiline_comment|/* __flush_dcache_range((unsigned long)dst, end); */
-multiline_comment|/* P3 see hme */
-)brace
-DECL|function|ide_outsw
-r_static
-id|__inline__
-r_void
-id|ide_outsw
-c_func
-(paren
-r_int
-r_int
-id|port
-comma
-r_const
-r_void
-op_star
-id|src
-comma
-r_int
-r_int
-id|count
-)paren
-(brace
-r_volatile
-r_int
-r_int
-op_star
-id|data_port
-suffix:semicolon
-multiline_comment|/* unsigned long end = (unsigned long)src + (count &lt;&lt; 1); */
-r_const
-id|u16
-op_star
-id|ps
-op_assign
-id|src
-suffix:semicolon
-r_const
-id|u32
-op_star
-id|pi
-suffix:semicolon
-id|data_port
-op_assign
-(paren
-r_volatile
-r_int
-r_int
-op_star
-)paren
-id|port
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|src
-)paren
-op_amp
-l_int|0x2
-)paren
-(brace
-op_star
-id|data_port
-op_assign
-op_star
-id|ps
-op_increment
-suffix:semicolon
-id|count
-op_decrement
-suffix:semicolon
-)brace
-id|pi
-op_assign
-(paren
-r_const
-id|u32
-op_star
-)paren
-id|ps
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|count
-op_ge
-l_int|2
-)paren
-(brace
-id|u32
-id|w
-suffix:semicolon
-id|w
-op_assign
-op_star
-id|pi
-op_increment
-suffix:semicolon
-op_star
-id|data_port
-op_assign
-(paren
-id|w
-op_rshift
-l_int|16
-)paren
-suffix:semicolon
-op_star
-id|data_port
-op_assign
-id|w
-suffix:semicolon
-id|count
-op_sub_assign
-l_int|2
-suffix:semicolon
-)brace
-id|ps
-op_assign
-(paren
-r_const
-id|u16
-op_star
-)paren
-id|pi
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|count
-)paren
-(brace
-op_star
-id|data_port
-op_assign
-op_star
-id|ps
-suffix:semicolon
-)brace
-multiline_comment|/* __flush_dcache_range((unsigned long)src, end); */
-multiline_comment|/* P3 see hme */
-)brace
+multiline_comment|/* XXX Known to be broken.  Axboe will fix the problems this&n; * XXX has by making seperate IN/OUT macros for IDE_DATA&n; * XXX register and rest of IDE regs and also using&n; * XXX ide_ioreg_t instead of u32 for ports. -DaveM&n; */
+DECL|macro|HAVE_ARCH_IN_BYTE
+mdefine_line|#define HAVE_ARCH_IN_BYTE
+DECL|macro|IN_BYTE
+mdefine_line|#define IN_BYTE(p)&t;&t;(*((volatile u8 *)(p)))
+DECL|macro|IN_WORD
+mdefine_line|#define IN_WORD(p)&t;&t;(*((volatile u16 *)(p)))
+DECL|macro|IN_LONG
+mdefine_line|#define IN_LONG(p)&t;&t;(*((volatile u32 *)(p)))
+DECL|macro|IN_BYTE_P
+mdefine_line|#define IN_BYTE_P&t;&t;IN_BYTE
+DECL|macro|IN_WORD_P
+mdefine_line|#define IN_WORD_P&t;&t;IN_WORD
+DECL|macro|IN_LONG_P
+mdefine_line|#define IN_LONG_P&t;&t;IN_LONG
+DECL|macro|HAVE_ARCH_OUT_BYTE
+mdefine_line|#define HAVE_ARCH_OUT_BYTE
+DECL|macro|OUT_BYTE
+mdefine_line|#define OUT_BYTE(b,p)&t;&t;((*((volatile u8 *)(p))) = (b))
+DECL|macro|OUT_WORD
+mdefine_line|#define OUT_WORD(w,p)&t;&t;((*((volatile u16 *)(p))) = (w))
+DECL|macro|OUT_LONG
+mdefine_line|#define OUT_LONG(l,p)&t;&t;((*((volatile u32 *)(p))) = (l))
+DECL|macro|OUT_BYTE_P
+mdefine_line|#define OUT_BYTE_P&t;&t;OUT_BYTE
+DECL|macro|OUT_WORD_P
+mdefine_line|#define OUT_WORD_P&t;&t;OUT_WORD
+DECL|macro|OUT_LONG_P
+mdefine_line|#define OUT_LONG_P&t;&t;OUT_LONG
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _SPARC_IDE_H */
 eof

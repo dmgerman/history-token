@@ -1,7 +1,6 @@
 macro_line|#ifndef __LINUX__AIO_H
 DECL|macro|__LINUX__AIO_H
 mdefine_line|#define __LINUX__AIO_H
-macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/aio_abi.h&gt;
@@ -17,6 +16,8 @@ DECL|macro|KIOCB_C_CANCELLED
 mdefine_line|#define KIOCB_C_CANCELLED&t;0x01
 DECL|macro|KIOCB_C_COMPLETE
 mdefine_line|#define KIOCB_C_COMPLETE&t;0x02
+DECL|macro|KIOCB_SYNC_KEY
+mdefine_line|#define KIOCB_SYNC_KEY&t;&t;(~0U)
 DECL|macro|KIOCB_PRIVATE_SIZE
 mdefine_line|#define KIOCB_PRIVATE_SIZE&t;(16 * sizeof(long))
 DECL|struct|kiocb
@@ -27,6 +28,11 @@ DECL|member|ki_users
 r_int
 id|ki_users
 suffix:semicolon
+DECL|member|ki_key
+r_int
+id|ki_key
+suffix:semicolon
+multiline_comment|/* id of this request */
 DECL|member|ki_filp
 r_struct
 id|file
@@ -78,11 +84,6 @@ id|__u64
 id|ki_user_data
 suffix:semicolon
 multiline_comment|/* user&squot;s data for completion */
-DECL|member|ki_key
-r_int
-id|ki_key
-suffix:semicolon
-multiline_comment|/* id of this request */
 DECL|member|private
 r_int
 r_private
@@ -98,7 +99,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|init_sync_kiocb
-mdefine_line|#define init_sync_kiocb(x, filp)&t;&bslash;&n;&t;do {&t;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_users = 1;&t;&bslash;&n;&t;&t;(x)-&gt;ki_filp = (filp);&t;&bslash;&n;&t;&t;(x)-&gt;ki_ctx = 0;&t;&bslash;&n;&t;&t;(x)-&gt;ki_cancel = NULL;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define init_sync_kiocb(x, filp)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;struct task_struct *tsk = current;&t;&bslash;&n;&t;&t;(x)-&gt;ki_users = 1;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_key = KIOCB_SYNC_KEY;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_filp = (filp);&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_ctx = &amp;tsk-&gt;active_mm-&gt;default_kioctx;&t;&bslash;&n;&t;&t;(x)-&gt;ki_cancel = NULL;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_user_obj = tsk;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|AIO_RING_MAGIC
 mdefine_line|#define AIO_RING_MAGIC&t;&t;&t;0xa10a10a1
 DECL|macro|AIO_RING_COMPAT_FEATURES
@@ -269,6 +270,21 @@ multiline_comment|/* prototypes */
 r_extern
 r_int
 id|aio_max_size
+suffix:semicolon
+r_extern
+id|ssize_t
+id|FASTCALL
+c_func
+(paren
+id|wait_on_sync_kiocb
+c_func
+(paren
+r_struct
+id|kiocb
+op_star
+id|iocb
+)paren
+)paren
 suffix:semicolon
 r_extern
 r_int

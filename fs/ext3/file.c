@@ -156,25 +156,31 @@ id|llseek
 op_assign
 id|generic_file_llseek
 comma
-multiline_comment|/* BKL held */
 dot
 id|read
 op_assign
 id|generic_file_read
 comma
-multiline_comment|/* BKL not held.  Don&squot;t need */
 dot
 id|write
 op_assign
 id|ext3_file_write
 comma
-multiline_comment|/* BKL not held.  Don&squot;t need */
+dot
+id|readv
+op_assign
+id|generic_file_readv
+comma
+dot
+id|writev
+op_assign
+id|generic_file_writev
+comma
 dot
 id|ioctl
 op_assign
 id|ext3_ioctl
 comma
-multiline_comment|/* BKL held */
 dot
 id|mmap
 op_assign
@@ -185,25 +191,21 @@ id|open
 op_assign
 id|ext3_open_file
 comma
-multiline_comment|/* BKL not held.  Don&squot;t need */
 dot
 id|release
 op_assign
 id|ext3_release_file
 comma
-multiline_comment|/* BKL not held.  Don&squot;t need */
 dot
 id|fsync
 op_assign
 id|ext3_sync_file
 comma
-multiline_comment|/* BKL held */
 dot
 id|sendfile
 op_assign
 id|generic_file_sendfile
 comma
-multiline_comment|/* BKL not held.  Don&squot;t need */
 )brace
 suffix:semicolon
 DECL|variable|ext3_file_inode_operations
@@ -217,13 +219,11 @@ id|truncate
 op_assign
 id|ext3_truncate
 comma
-multiline_comment|/* BKL held */
 dot
 id|setattr
 op_assign
 id|ext3_setattr
 comma
-multiline_comment|/* BKL held */
 )brace
 suffix:semicolon
 eof

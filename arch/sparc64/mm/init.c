@@ -7654,14 +7654,6 @@ op_amp
 id|pages_avail
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SUN_SERIAL
-multiline_comment|/* This does not logically belong here, but we need to&n;&t; * call it at the moment we are able to use the bootmem&n;&t; * allocator.&n;&t; */
-id|sun_serial_setup
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Inherit non-locked OBP mappings. */
 id|inherit_prom_mappings
 c_func

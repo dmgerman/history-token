@@ -188,7 +188,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -269,7 +269,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -371,10 +371,6 @@ r_char
 id|reboot_command
 (braket
 )braket
-suffix:semicolon
-r_extern
-r_int
-id|serial_console
 suffix:semicolon
 r_extern
 r_void

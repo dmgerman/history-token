@@ -20,14 +20,6 @@ id|ebus_chain
 op_assign
 l_int|0
 suffix:semicolon
-r_extern
-r_void
-id|rs_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* We are together with pcic.c under CONFIG_PCI. */
 r_extern
 r_int
@@ -1764,10 +1756,5 @@ op_increment
 id|num_ebus
 suffix:semicolon
 )brace
-id|rs_init
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 eof
