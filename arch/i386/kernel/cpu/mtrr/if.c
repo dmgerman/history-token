@@ -242,7 +242,11 @@ r_int
 op_star
 id|fcount
 op_assign
-id|file-&gt;private_data
+id|FILE_FCOUNT
+c_func
+(paren
+id|file
+)paren
 suffix:semicolon
 r_if
 c_cond
