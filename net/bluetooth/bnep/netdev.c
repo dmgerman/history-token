@@ -409,7 +409,7 @@ id|skb_queue_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 comma
 id|skb
 )paren
@@ -417,7 +417,7 @@ suffix:semicolon
 id|wake_up_interruptible
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -826,7 +826,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n;&t; * We cannot send L2CAP packets from here as we are potentially in a bh.&n;&t; * So we have to queue them and wake up session thread which is sleeping&n;&t; * on the sk-&gt;sleep.&n;&t; */
+multiline_comment|/*&n;&t; * We cannot send L2CAP packets from here as we are potentially in a bh.&n;&t; * So we have to queue them and wake up session thread which is sleeping&n;&t; * on the sk-&gt;sk_sleep.&n;&t; */
 id|dev-&gt;trans_start
 op_assign
 id|jiffies
@@ -835,7 +835,7 @@ id|skb_queue_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 comma
 id|skb
 )paren
@@ -843,7 +843,7 @@ suffix:semicolon
 id|wake_up_interruptible
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 r_if
@@ -853,7 +853,7 @@ id|skb_queue_len
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 op_ge
 id|BNEP_TX_QUEUE_LEN

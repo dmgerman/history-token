@@ -290,7 +290,7 @@ mdefine_line|#define pppoe_pa&t;proto.pppoe.pa
 DECL|macro|pppoe_relay
 mdefine_line|#define pppoe_relay&t;proto.pppoe.relay
 DECL|macro|pppox_sk
-mdefine_line|#define pppox_sk(__sk) ((struct pppox_opt *)(__sk)-&gt;protinfo)
+mdefine_line|#define pppox_sk(__sk) ((struct pppox_opt *)(__sk)-&gt;sk_protinfo)
 r_struct
 id|module
 suffix:semicolon

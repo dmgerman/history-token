@@ -36,7 +36,7 @@ id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 suffix:semicolon
 id|skb_queue_purge
@@ -194,7 +194,7 @@ id|skb_queue_head
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 comma
 id|skb
 )paren
@@ -2462,15 +2462,15 @@ id|rose-&gt;diagnostic
 op_assign
 id|diagnostic
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|TCP_CLOSE
 suffix:semicolon
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_assign
 id|reason
 suffix:semicolon
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_or_assign
 id|SEND_SHUTDOWN
 suffix:semicolon
@@ -2489,7 +2489,7 @@ id|SOCK_DEAD
 (brace
 id|sk
 op_member_access_from_pointer
-id|state_change
+id|sk_state_change
 c_func
 (paren
 id|sk

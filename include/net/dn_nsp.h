@@ -1004,11 +1004,11 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 OG
 (paren
-id|sk-&gt;rcvbuf
+id|sk-&gt;sk_rcvbuf
 op_rshift
 l_int|1
 )paren

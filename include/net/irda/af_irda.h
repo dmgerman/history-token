@@ -166,6 +166,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|irda_sk
-mdefine_line|#define irda_sk(__sk) ((struct irda_sock *)(__sk)-&gt;protinfo)
+mdefine_line|#define irda_sk(__sk) ((struct irda_sock *)(__sk)-&gt;sk_protinfo)
 macro_line|#endif /* AF_IRDA_H */
 eof

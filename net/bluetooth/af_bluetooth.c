@@ -354,7 +354,7 @@ comma
 id|pi_size
 )paren
 suffix:semicolon
-id|sk-&gt;protinfo
+id|sk-&gt;sk_protinfo
 op_assign
 id|pi
 suffix:semicolon
@@ -380,15 +380,15 @@ op_member_access_from_pointer
 id|accept_q
 )paren
 suffix:semicolon
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 op_assign
 id|proto
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_OPEN
 suffix:semicolon
@@ -419,7 +419,7 @@ op_amp
 id|l-&gt;lock
 )paren
 suffix:semicolon
-id|sk-&gt;next
+id|sk-&gt;sk_next
 op_assign
 id|l-&gt;head
 suffix:semicolon
@@ -490,7 +490,7 @@ op_star
 id|skp
 )paren
 op_member_access_from_pointer
-id|next
+id|sk_next
 )paren
 )paren
 (brace
@@ -506,7 +506,7 @@ id|sk
 op_star
 id|skp
 op_assign
-id|sk-&gt;next
+id|sk-&gt;sk_next
 suffix:semicolon
 id|__sock_put
 c_func
@@ -590,7 +590,7 @@ id|parent
 op_assign
 id|parent
 suffix:semicolon
-id|parent-&gt;ack_backlog
+id|parent-&gt;sk_ack_backlog
 op_increment
 suffix:semicolon
 )brace
@@ -613,7 +613,7 @@ l_string|&quot;sk %p state %d&quot;
 comma
 id|sk
 comma
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 suffix:semicolon
 id|list_del_init
@@ -635,7 +635,7 @@ c_func
 id|sk
 )paren
 op_member_access_from_pointer
-id|parent-&gt;ack_backlog
+id|parent-&gt;sk_ack_backlog
 op_decrement
 suffix:semicolon
 id|bt_sk
@@ -738,7 +738,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|BT_CLOSED
 )paren
@@ -761,7 +761,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|BT_CONNECTED
 op_logical_or
@@ -910,7 +910,7 @@ id|err
 r_if
 c_cond
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|RCV_SHUTDOWN
 )paren
@@ -1027,7 +1027,7 @@ c_func
 (paren
 id|file
 comma
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 id|wait
 )paren
@@ -1039,14 +1039,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_logical_or
 op_logical_neg
 id|skb_queue_empty
 c_func
 (paren
 op_amp
-id|sk-&gt;error_queue
+id|sk-&gt;sk_error_queue
 )paren
 )paren
 id|mask
@@ -1056,7 +1056,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_eq
 id|SHUTDOWN_MASK
 )paren
@@ -1072,7 +1072,7 @@ id|skb_queue_empty
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 op_logical_or
 op_logical_neg
@@ -1090,7 +1090,7 @@ id|accept_q
 )paren
 op_logical_or
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|RCV_SHUTDOWN
 )paren
@@ -1104,7 +1104,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|BT_CLOSED
 )paren
@@ -1115,11 +1115,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|BT_CONNECT
 op_logical_or
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|BT_CONNECT2
 )paren
@@ -1150,7 +1150,7 @@ c_func
 id|SOCK_ASYNC_NOSPACE
 comma
 op_amp
-id|sk-&gt;socket-&gt;flags
+id|sk-&gt;sk_socket-&gt;flags
 )paren
 suffix:semicolon
 r_return
@@ -1208,7 +1208,7 @@ suffix:semicolon
 id|add_wait_queue
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -1217,7 +1217,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|BT_CONNECTED
 )paren
@@ -1270,7 +1270,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|BT_CONNECTED
 )paren
@@ -1279,7 +1279,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;err
+id|sk-&gt;sk_err
 )paren
 (brace
 id|err
@@ -1324,7 +1324,7 @@ suffix:semicolon
 id|remove_wait_queue
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait

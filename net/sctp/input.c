@@ -1542,13 +1542,13 @@ op_logical_and
 id|inet-&gt;recverr
 )paren
 (brace
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_assign
 id|err
 suffix:semicolon
 id|sk
 op_member_access_from_pointer
-id|error_report
+id|sk_error_report
 c_func
 (paren
 id|sk
@@ -1558,7 +1558,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Only an error on timeout */
-id|sk-&gt;err_soft
+id|sk-&gt;sk_err_soft
 op_assign
 id|err
 suffix:semicolon

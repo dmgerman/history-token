@@ -521,7 +521,7 @@ id|write_lock
 c_func
 (paren
 op_amp
-id|sk-&gt;dst_lock
+id|sk-&gt;sk_dst_lock
 )paren
 suffix:semicolon
 id|__sk_dst_set
@@ -549,7 +549,7 @@ id|write_unlock
 c_func
 (paren
 op_amp
-id|sk-&gt;dst_lock
+id|sk-&gt;sk_dst_lock
 )paren
 suffix:semicolon
 )brace
