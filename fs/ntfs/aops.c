@@ -1581,7 +1581,7 @@ id|unlikely
 c_func
 (paren
 op_logical_neg
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|ni-&gt;type
@@ -4334,7 +4334,7 @@ id|unlikely
 c_func
 (paren
 op_logical_neg
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|ni-&gt;type
@@ -6134,7 +6134,7 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Because resident attributes are handled by memcpy() to/from the&n;&t; * corresponding MFT record, and because this form of i/o is byte&n;&t; * aligned rather than block aligned, there is no need to bring the&n;&t; * page uptodate here as in the non-resident case where we need to&n;&t; * bring the buffers straddled by the write uptodate before&n;&t; * generic_file_write() does the copying from userspace.&n;&t; *&n;&t; * We thus defer the uptodate bringing of the page region outside the&n;&t; * region written to to ntfs_commit_write(). The reason for doing this&n;&t; * is that we save one round of:&n;&t; *&t;map_mft_record(), get_attr_search_ctx(), lookup_attr(),&n;&t; *&t;kmap_atomic(), kunmap_atomic(), put_attr_search_ctx(),&n;&t; *&t;unmap_mft_record().&n;&t; * Which is obviously a very worthwhile save.&n;&t; *&n;&t; * Thus we just return success now...&n;&t; */
+multiline_comment|/*&n;&t; * Because resident attributes are handled by memcpy() to/from the&n;&t; * corresponding MFT record, and because this form of i/o is byte&n;&t; * aligned rather than block aligned, there is no need to bring the&n;&t; * page uptodate here as in the non-resident case where we need to&n;&t; * bring the buffers straddled by the write uptodate before&n;&t; * generic_file_write() does the copying from userspace.&n;&t; *&n;&t; * We thus defer the uptodate bringing of the page region outside the&n;&t; * region written to to ntfs_commit_write(). The reason for doing this&n;&t; * is that we save one round of:&n;&t; *&t;map_mft_record(), get_attr_search_ctx(), ntfs_attr_lookup(),&n;&t; *&t;kmap_atomic(), kunmap_atomic(), put_attr_search_ctx(),&n;&t; *&t;unmap_mft_record().&n;&t; * Which is obviously a very worthwhile save.&n;&t; *&n;&t; * Thus we just return success now...&n;&t; */
 id|ntfs_debug
 c_func
 (paren
@@ -6740,7 +6740,7 @@ id|unlikely
 c_func
 (paren
 op_logical_neg
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|ni-&gt;type

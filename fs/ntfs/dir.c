@@ -245,7 +245,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_INDEX_ROOT
@@ -2239,7 +2239,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_INDEX_ROOT
@@ -4270,7 +4270,7 @@ id|unlikely
 c_func
 (paren
 op_logical_neg
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_INDEX_ROOT

@@ -1279,7 +1279,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_VOLUME_INFORMATION
@@ -5958,7 +5958,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_VOLUME_INFORMATION

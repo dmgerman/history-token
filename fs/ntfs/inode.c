@@ -1312,7 +1312,7 @@ multiline_comment|/* Loop through all hard links. */
 r_while
 c_loop
 (paren
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_FILE_NAME
@@ -1807,7 +1807,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_STANDARD_INFORMATION
@@ -1902,7 +1902,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_ATTRIBUTE_LIST
@@ -2270,7 +2270,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_INDEX_ROOT
@@ -2750,7 +2750,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_INDEX_ALLOCATION
@@ -3136,7 +3136,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_DATA
@@ -3841,7 +3841,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|ni-&gt;type
@@ -4677,7 +4677,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_INDEX_ROOT
@@ -5092,7 +5092,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_INDEX_ALLOCATION
@@ -5519,7 +5519,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_read_inode_mount - special read_inode for mount time use only&n; * @vi:&t;&t;inode to read&n; *&n; * Read inode FILE_MFT at mount time, only called with super_block lock&n; * held from within the read_super() code path.&n; *&n; * This function exists because when it is called the page cache for $MFT/$DATA&n; * is not initialized and hence we cannot get at the contents of mft records&n; * by calling map_mft_record*().&n; *&n; * Further it needs to cope with the circular references problem, i.e. can&squot;t&n; * load any attributes other than $ATTRIBUTE_LIST until $DATA is loaded, because&n; * we don&squot;t know where the other extent mft records are yet and again, because&n; * we cannot call map_mft_record*() yet. Obviously this applies only when an&n; * attribute list is actually present in $MFT inode.&n; *&n; * We solve these problems by starting with the $DATA attribute before anything&n; * else and iterating using lookup_attr($DATA) over all extents. As each extent&n; * is found, we decompress_mapping_pairs() including the implied&n; * merge_runlists(). Each step of the iteration necessarily provides&n; * sufficient information for the next step to complete.&n; *&n; * This should work but there are two possible pit falls (see inline comments&n; * below), but only time will tell if they are real pits or just smoke...&n; */
+multiline_comment|/**&n; * ntfs_read_inode_mount - special read_inode for mount time use only&n; * @vi:&t;&t;inode to read&n; *&n; * Read inode FILE_MFT at mount time, only called with super_block lock&n; * held from within the read_super() code path.&n; *&n; * This function exists because when it is called the page cache for $MFT/$DATA&n; * is not initialized and hence we cannot get at the contents of mft records&n; * by calling map_mft_record*().&n; *&n; * Further it needs to cope with the circular references problem, i.e. cannot&n; * load any attributes other than $ATTRIBUTE_LIST until $DATA is loaded, because&n; * we do not know where the other extent mft records are yet and again, because&n; * we cannot call map_mft_record*() yet.  Obviously this applies only when an&n; * attribute list is actually present in $MFT inode.&n; *&n; * We solve these problems by starting with the $DATA attribute before anything&n; * else and iterating using ntfs_attr_lookup($DATA) over all extents.  As each&n; * extent is found, we decompress_mapping_pairs() including the implied&n; * ntfs_merge_runlists().  Each step of the iteration necessarily provides&n; * sufficient information for the next step to complete.&n; *&n; * This should work but there are two possible pit falls (see inline comments&n; * below), but only time will tell if they are real pits or just smoke...&n; */
 DECL|function|ntfs_read_inode_mount
 r_int
 id|ntfs_read_inode_mount
@@ -5896,7 +5896,7 @@ multiline_comment|/* Find the attribute list attribute if present. */
 r_if
 c_cond
 (paren
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_ATTRIBUTE_LIST
@@ -6453,7 +6453,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_DATA
@@ -8098,7 +8098,7 @@ id|unlikely
 c_func
 (paren
 op_logical_neg
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_STANDARD_INFORMATION
