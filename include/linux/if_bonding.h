@@ -53,12 +53,6 @@ DECL|macro|BOND_STATE_BACKUP
 mdefine_line|#define BOND_STATE_BACKUP       1   /* link is backup */
 DECL|macro|BOND_DEFAULT_MAX_BONDS
 mdefine_line|#define BOND_DEFAULT_MAX_BONDS  1   /* Default maximum number of devices to support */
-DECL|macro|BOND_MULTICAST_DISABLED
-mdefine_line|#define BOND_MULTICAST_DISABLED 0
-DECL|macro|BOND_MULTICAST_ACTIVE
-mdefine_line|#define BOND_MULTICAST_ACTIVE   1
-DECL|macro|BOND_MULTICAST_ALL
-mdefine_line|#define BOND_MULTICAST_ALL      2
 DECL|struct|ifbond
 r_typedef
 r_struct
