@@ -701,10 +701,6 @@ r_extern
 r_int
 id|boot_cpuid
 suffix:semicolon
-r_extern
-r_int
-id|srmcons_output
-suffix:semicolon
 multiline_comment|/* srmcons.c */
 macro_line|#if defined(CONFIG_ALPHA_GENERIC) || defined(CONFIG_ALPHA_SRM)
 r_extern

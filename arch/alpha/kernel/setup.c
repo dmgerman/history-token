@@ -94,7 +94,7 @@ DECL|variable|boot_cpuid
 r_int
 id|boot_cpuid
 suffix:semicolon
-multiline_comment|/*&n; * Using SRM callbacks for initial console output. This works from&n; * setup_arch() time through the end of time_init(), as those places&n; * are under our (Alpha) control.&n;&n; * &quot;srmcons&quot; specified in the boot command arguments allows us to&n; * see kernel messages during the period of time before the true&n; * console device is &quot;registered&quot; during console_init(). As of this&n; * version (2.4.10), time_init() is the last Alpha-specific code&n; * called before console_init(), so we put &quot;unregister&quot; code&n; * there to prevent schizophrenic console behavior later... ;-}&n; *&n; * By default, OFF; set it with a bootcommand arg of &quot;srmcons&quot; or &n; * &quot;console=srm&quot;. The meaning of these two args is:&n; *     &quot;srmcons&quot;     - early callback prints &n; *     &quot;console=srm&quot; - full callback based console, including early prints&n; */
+multiline_comment|/*&n; * Using SRM callbacks for initial console output. This works from&n; * setup_arch() time through the end of time_init(), as those places&n; * are under our (Alpha) control.&n;&n; * &quot;srmcons&quot; specified in the boot command arguments allows us to&n; * see kernel messages during the period of time before the true&n; * console device is &quot;registered&quot; during console_init(). &n; * As of this version (2.5.59), console_init() will call&n; * disable_early_printk() as the last action before initializing&n; * the console drivers. That&squot;s the last possible time srmcons can be &n; * unregistered without interfering with console behavior.&n; *&n; * By default, OFF; set it with a bootcommand arg of &quot;srmcons&quot; or &n; * &quot;console=srm&quot;. The meaning of these two args is:&n; *     &quot;srmcons&quot;     - early callback prints &n; *     &quot;console=srm&quot; - full callback based console, including early prints&n; */
 DECL|variable|srmcons_output
 r_int
 id|srmcons_output
@@ -2440,6 +2440,34 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
+r_void
+id|__init
+DECL|function|disable_early_printk
+id|disable_early_printk
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|alpha_using_srm
+op_logical_and
+id|srmcons_output
+)paren
+(brace
+id|unregister_srm_console
+c_func
+(paren
+)paren
+suffix:semicolon
+id|srmcons_output
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 )brace
 DECL|variable|sys_unknown
 r_static
