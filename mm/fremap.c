@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   linux/mm/fremap.c&n; * &n; * Explicit pagetable population and nonlinear (random) mappings support.&n; *&n; * started by Ingo Molnar, Copyright (C) 2002&n; */
+multiline_comment|/*&n; *   linux/mm/fremap.c&n; * &n; * Explicit pagetable population and nonlinear (random) mappings support.&n; *&n; * started by Ingo Molnar, Copyright (C) 2002, 2003&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
 macro_line|#include &lt;linux/rmap-locking.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
@@ -440,6 +441,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|install_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|install_page
+)paren
+suffix:semicolon
 multiline_comment|/***&n; * sys_remap_file_pages - remap arbitrary pages of a shared backing store&n; *                        file within an existing vma.&n; * @start: start of the remapped virtual memory range&n; * @size: size of the remapped virtual memory range&n; * @prot: new protection bits of the range&n; * @pgoff: to be mapped page of the backing store file&n; * @flags: 0 or MAP_NONBLOCKED - the later will cause no IO.&n; *&n; * this syscall works purely via pagetables, so it&squot;s the most efficient&n; * way to map the same (large) file into a given virtual window. Unlike&n; * mmap()/mremap() it does not create any new vmas. The new mappings are&n; * also safe across swapout.&n; *&n; * NOTE: the &squot;prot&squot; parameter right now is ignored, and the vma&squot;s default&n; * protection is used. Arbitrary protections might be implemented in the&n; * future.&n; */
 DECL|function|sys_remap_file_pages
 r_int
