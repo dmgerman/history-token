@@ -2354,7 +2354,7 @@ l_int|0x04
 multiline_comment|/* master volume */
 id|parsed
 op_assign
-id|SNDRV_MIDI_SYSEX_GS_REVERB_MODE
+id|SNDRV_MIDI_SYSEX_GS_MASTER_VOLUME
 suffix:semicolon
 id|chset-&gt;gs_master_volume
 op_assign

@@ -72,6 +72,14 @@ r_extern
 id|snd_pcm_ops_t
 id|snd_cs46xx_playback_indirect_iec958_ops
 suffix:semicolon
+r_extern
+id|snd_pcm_ops_t
+id|snd_cs46xx_playback_clfe_ops
+suffix:semicolon
+r_extern
+id|snd_pcm_ops_t
+id|snd_cs46xx_playback_indirect_clfe_ops
+suffix:semicolon
 multiline_comment|/*&n; *  common I/O routines&n; */
 DECL|function|snd_cs46xx_poke
 r_static

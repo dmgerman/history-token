@@ -206,21 +206,6 @@ op_ge
 id|OPL3_HW_OPL3
 )paren
 (brace
-multiline_comment|/* Enter OPL3 mode */
-id|opl3
-op_member_access_from_pointer
-id|command
-c_func
-(paren
-id|opl3
-comma
-id|OPL3_RIGHT
-op_or
-id|OPL3_REG_MODE
-comma
-id|OPL3_OPL3_ENABLE
-)paren
-suffix:semicolon
 multiline_comment|/* Clear 4-op connections */
 id|opl3
 op_member_access_from_pointer
@@ -806,7 +791,7 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;OPL%i Port&quot;
+l_string|&quot;OPL%i FM Port&quot;
 comma
 id|opl_ver
 )paren
