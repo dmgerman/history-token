@@ -178,6 +178,11 @@ DECL|member|scsi_level
 r_char
 id|scsi_level
 suffix:semicolon
+DECL|member|inq_periph_qual
+r_char
+id|inq_periph_qual
+suffix:semicolon
+multiline_comment|/* PQ from INQUIRY data */
 DECL|member|inquiry_len
 r_int
 r_char

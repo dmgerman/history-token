@@ -1708,11 +1708,9 @@ c_func
 id|inq_result
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * For a peripheral qualifier (PQ) value of 1 (001b), the SCSI&n;&t; * spec says: The device server is capable of supporting the&n;&t; * specified peripheral device type on this logical unit. However,&n;&t; * the physical device is not currently connected to this logical&n;&t; * unit.&n;&t; *&n;&t; * The above is vague, as it implies that we could treat 001 and&n;&t; * 011 the same. Stay compatible with previous code, and create a&n;&t; * Scsi_Device for a PQ of 1&n;&t; *&n;&t; * XXX Save the PQ field let the upper layers figure out if they&n;&t; * want to attach or not to this device, do not set online FALSE;&n;&t; * otherwise, offline devices still get an sd allocated, and they&n;&t; * use up an sd slot.&n;&t; */
-r_if
-c_cond
-(paren
-(paren
+multiline_comment|/*&n;&t; * For a peripheral qualifier (PQ) value of 1 (001b), the SCSI&n;&t; * spec says: The device server is capable of supporting the&n;&t; * specified peripheral device type on this logical unit. However,&n;&t; * the physical device is not currently connected to this logical&n;&t; * unit.&n;&t; *&n;&t; * The above is vague, as it implies that we could treat 001 and&n;&t; * 011 the same. Stay compatible with previous code, and create a&n;&t; * Scsi_Device for a PQ of 1&n;&t; *&n;&t; * Don&squot;t set the device offline here; rather let the upper&n;&t; * level drivers eval the PQ to decide whether they should&n;&t; * attach. So remove ((inq_result[0] &gt;&gt; 5) &amp; 7) == 1 check.&n;&t; */
+id|sdev-&gt;inq_periph_qual
+op_assign
 (paren
 id|inq_result
 (braket
@@ -1723,34 +1721,7 @@ l_int|5
 )paren
 op_amp
 l_int|7
-)paren
-op_eq
-l_int|1
-)paren
-(brace
-id|SCSI_LOG_SCAN_BUS
-c_func
-(paren
-l_int|3
-comma
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;scsi scan: peripheral&quot;
-l_string|&quot; qualifier of 1, device offlined&bslash;n&quot;
-)paren
-)paren
 suffix:semicolon
-id|scsi_device_set_state
-c_func
-(paren
-id|sdev
-comma
-id|SDEV_OFFLINE
-)paren
-suffix:semicolon
-)brace
 id|sdev-&gt;removable
 op_assign
 (paren
