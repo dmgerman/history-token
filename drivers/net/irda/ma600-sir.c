@@ -467,7 +467,7 @@ id|speed
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(): bad control byte read-back %02x != %02x&bslash;n&quot;

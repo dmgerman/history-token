@@ -47,21 +47,21 @@ multiline_comment|/* use 0 for production, 1 for verification, &gt;2 for debug *
 DECL|macro|IRDA_DEBUG_LEVEL
 mdefine_line|#define IRDA_DEBUG_LEVEL 0
 DECL|macro|IRDA_DEBUG
-mdefine_line|#define IRDA_DEBUG(n, args...) (irda_debug &gt;= (n)) ? (printk(KERN_DEBUG args)) : 0
-DECL|macro|ASSERT
-mdefine_line|#define ASSERT(expr, func) &bslash;&n;if(!(expr)) { &bslash;&n;        printk( &quot;Assertion failed! %s:%s:%d %s&bslash;n&quot;, &bslash;&n;        __FILE__,__FUNCTION__,__LINE__,(#expr));  &bslash;&n;        func }
+mdefine_line|#define IRDA_DEBUG(n, args...) ( (irda_debug &gt;= (n)) ? &bslash;&n;&t;&t;&t;&t; (printk(KERN_DEBUG args)) : &bslash;&n;&t;&t;&t;&t; 0 )
+DECL|macro|IRDA_ASSERT
+mdefine_line|#define IRDA_ASSERT(expr, func) &bslash;&n;do { if(!(expr)) { &bslash;&n;&t;printk( &quot;Assertion failed! %s:%s:%d %s&bslash;n&quot;, &bslash;&n;&t;&t;__FILE__,__FUNCTION__,__LINE__,(#expr) ); &bslash;&n;&t;func } } while (0)
 macro_line|#else
 DECL|macro|IRDA_DEBUG
-mdefine_line|#define IRDA_DEBUG(n, args...)
-DECL|macro|ASSERT
-mdefine_line|#define ASSERT(expr, func) &bslash;&n;if(!(expr)) do { &bslash;&n;        func } while (0)
+mdefine_line|#define IRDA_DEBUG(n, args...) 0
+DECL|macro|IRDA_ASSERT
+mdefine_line|#define IRDA_ASSERT(expr, func) 0
 macro_line|#endif /* CONFIG_IRDA_DEBUG */
-DECL|macro|WARNING
-mdefine_line|#define WARNING(args...) printk(KERN_WARNING args)
-DECL|macro|MESSAGE
-mdefine_line|#define MESSAGE(args...) printk(KERN_INFO args)
-DECL|macro|ERROR
-mdefine_line|#define ERROR(args...)   printk(KERN_ERR args)
+DECL|macro|IRDA_WARNING
+mdefine_line|#define IRDA_WARNING(args...) printk(KERN_WARNING args)
+DECL|macro|IRDA_MESSAGE
+mdefine_line|#define IRDA_MESSAGE(args...) printk(KERN_INFO args)
+DECL|macro|IRDA_ERROR
+mdefine_line|#define IRDA_ERROR(args...)   printk(KERN_ERR args)
 multiline_comment|/*&n; *  Magic numbers used by Linux-IrDA. Random numbers which must be unique to &n; *  give the best protection&n; */
 DECL|macro|IRTTY_MAGIC
 mdefine_line|#define IRTTY_MAGIC        0x2357

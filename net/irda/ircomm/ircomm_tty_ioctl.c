@@ -212,7 +212,7 @@ id|self-&gt;service_type
 op_eq
 id|IRCOMM_3_WIRE_RAW
 )paren
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), enabling RTS/CTS on link that doesn&squot;t support it (3-wire-raw)&bslash;n&quot;
@@ -771,7 +771,7 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -784,7 +784,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
