@@ -23,7 +23,17 @@ DECL|macro|pci64_dma_lo32
 mdefine_line|#define pci64_dma_lo32(a) ((u32) (0xffffffff &amp; (((u64)(a)))))
 DECL|macro|pci64_dma_build
 mdefine_line|#define pci64_dma_build(hi,lo) &bslash;&n;&t;((dma_addr_t)(((u64)(lo))|(((u64)(hi))&lt;&lt;32)))
-macro_line|#include &quot;qlogicfc.h&quot;
+multiline_comment|/*&n; * With the qlogic interface, every queue slot can hold a SCSI&n; * command with up to 2 scatter/gather entries.  If we need more&n; * than 2 entries, continuation entries can be used that hold&n; * another 5 entries each.  Unlike for other drivers, this means&n; * that the maximum number of scatter/gather entries we can&n; * support at any given time is a function of the number of queue&n; * slots available.  That is, host-&gt;can_queue and host-&gt;sg_tablesize&n; * are dynamic and _not_ independent.  This all works fine because&n; * requests are queued serially and the scatter/gather limit is&n; * determined for each queue request anew.&n; */
+DECL|macro|DATASEGS_PER_COMMAND
+mdefine_line|#define DATASEGS_PER_COMMAND 2
+DECL|macro|DATASEGS_PER_CONT
+mdefine_line|#define DATASEGS_PER_CONT 5
+DECL|macro|QLOGICFC_REQ_QUEUE_LEN
+mdefine_line|#define QLOGICFC_REQ_QUEUE_LEN 255     /* must be power of two - 1 */
+DECL|macro|QLOGICFC_MAX_SG
+mdefine_line|#define QLOGICFC_MAX_SG(ql)&t;(DATASEGS_PER_COMMAND + (((ql) &gt; 0) ? DATASEGS_PER_CONT*((ql) - 1) : 0))
+DECL|macro|QLOGICFC_CMD_PER_LUN
+mdefine_line|#define QLOGICFC_CMD_PER_LUN    8
 multiline_comment|/* Configuration section **************************************************** */
 multiline_comment|/* Set the following macro to 1 to reload the ISP2x00&squot;s firmware.  This is&n;   version 1.17.30 of the isp2100&squot;s firmware and version 2.00.40 of the &n;   isp2200&squot;s firmware. &n;*/
 DECL|macro|USE_NVRAM_DEFAULTS
@@ -1607,6 +1617,7 @@ id|PCI_INTER_CTL
 suffix:semicolon
 )brace
 DECL|function|isp2x00_detect
+r_static
 r_int
 id|isp2x00_detect
 c_func
@@ -4284,6 +4295,7 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;&t;&t;&t;/* ISP2x00_FABRIC */
 DECL|function|isp2x00_release
+r_static
 r_int
 id|isp2x00_release
 c_func
@@ -4386,6 +4398,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|isp2x00_info
+r_static
 r_const
 r_char
 op_star
@@ -4455,6 +4468,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The middle SCSI layer ensures that queuecommand never gets invoked&n; * concurrently with itself or the interrupt handler (though the&n; * interrupt handler may call this routine as part of&n; * request-completion handling).&n; */
 DECL|function|isp2x00_queuecommand
+r_static
 r_int
 id|isp2x00_queuecommand
 c_func
@@ -7579,6 +7593,7 @@ l_int|16
 suffix:semicolon
 )brace
 DECL|function|isp2x00_abort
+r_static
 r_int
 id|isp2x00_abort
 c_func
@@ -7879,134 +7894,8 @@ r_return
 id|return_status
 suffix:semicolon
 )brace
-DECL|function|isp2x00_reset
-r_int
-id|isp2x00_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|Cmnd
-comma
-r_int
-r_int
-id|reset_flags
-)paren
-(brace
-id|u_short
-id|param
-(braket
-l_int|8
-)braket
-suffix:semicolon
-r_struct
-id|Scsi_Host
-op_star
-id|host
-suffix:semicolon
-r_struct
-id|isp2x00_hostdata
-op_star
-id|hostdata
-suffix:semicolon
-r_int
-id|return_status
-op_assign
-id|SCSI_RESET_SUCCESS
-suffix:semicolon
-id|ENTER
-c_func
-(paren
-l_string|&quot;isp2x00_reset&quot;
-)paren
-suffix:semicolon
-id|host
-op_assign
-id|Cmnd-&gt;device-&gt;host
-suffix:semicolon
-id|hostdata
-op_assign
-(paren
-r_struct
-id|isp2x00_hostdata
-op_star
-)paren
-id|host-&gt;hostdata
-suffix:semicolon
-id|param
-(braket
-l_int|0
-)braket
-op_assign
-id|MBOX_BUS_RESET
-suffix:semicolon
-id|param
-(braket
-l_int|1
-)braket
-op_assign
-l_int|3
-suffix:semicolon
-id|isp2x00_disable_irqs
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-id|isp2x00_mbox_command
-c_func
-(paren
-id|host
-comma
-id|param
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|param
-(braket
-l_int|0
-)braket
-op_ne
-id|MBOX_COMMAND_COMPLETE
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;qlogicfc%d : scsi bus reset failure: %x&bslash;n&quot;
-comma
-id|hostdata-&gt;host_id
-comma
-id|param
-(braket
-l_int|0
-)braket
-)paren
-suffix:semicolon
-id|return_status
-op_assign
-id|SCSI_RESET_ERROR
-suffix:semicolon
-)brace
-id|isp2x00_enable_irqs
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-id|LEAVE
-c_func
-(paren
-l_string|&quot;isp2x00_reset&quot;
-)paren
-suffix:semicolon
-r_return
-id|return_status
-suffix:semicolon
-)brace
 DECL|function|isp2x00_biosparam
+r_static
 r_int
 id|isp2x00_biosparam
 c_func
