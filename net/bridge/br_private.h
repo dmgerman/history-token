@@ -196,6 +196,11 @@ r_struct
 id|timer_list
 id|message_age_timer
 suffix:semicolon
+DECL|member|kobj
+r_struct
+id|kobject
+id|kobj
+suffix:semicolon
 DECL|member|rcu
 r_struct
 id|rcu_head
@@ -330,6 +335,11 @@ DECL|member|gc_timer
 r_struct
 id|timer_list
 id|gc_timer
+suffix:semicolon
+DECL|member|ifobj
+r_struct
+id|kobject
+id|ifobj
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -919,6 +929,22 @@ id|u32
 id|path_cost
 )paren
 suffix:semicolon
+r_extern
+id|ssize_t
+id|br_show_bridge_id
+c_func
+(paren
+r_char
+op_star
+id|buf
+comma
+r_const
+r_struct
+id|bridge_id
+op_star
+id|id
+)paren
+suffix:semicolon
 multiline_comment|/* br_stp_bpdu.c */
 r_extern
 r_int
@@ -967,5 +993,100 @@ op_star
 id|timer
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SYSFS
+multiline_comment|/* br_sysfs_if.c */
+r_extern
+r_int
+id|br_sysfs_addif
+c_func
+(paren
+r_struct
+id|net_bridge_port
+op_star
+id|p
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|br_sysfs_removeif
+c_func
+(paren
+r_struct
+id|net_bridge_port
+op_star
+id|p
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|br_sysfs_freeif
+c_func
+(paren
+r_struct
+id|net_bridge_port
+op_star
+id|p
+)paren
+suffix:semicolon
+multiline_comment|/* br_sysfs_br.c */
+r_extern
+r_struct
+id|subsystem
+id|bridge_subsys
+suffix:semicolon
+r_extern
+r_void
+id|br_sysfs_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|br_sysfs_fini
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|br_sysfs_addbr
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|br_sysfs_delbr
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|br_sysfs_addif
+mdefine_line|#define br_sysfs_addif(p)&t;(0)
+DECL|macro|br_sysfs_removeif
+mdefine_line|#define br_sysfs_removeif(p)&t;do { } while(0)
+DECL|macro|br_sysfs_freeif
+mdefine_line|#define br_sysfs_freeif(p)&t;kfree(p)
+DECL|macro|br_sysfs_init
+mdefine_line|#define br_sysfs_init()&t;&t;do { } while(0)
+DECL|macro|br_sysfs_fini
+mdefine_line|#define br_sysfs_fini()&t;&t;do { } while(0)
+DECL|macro|br_sysfs_addbr
+mdefine_line|#define br_sysfs_addbr(dev)&t;(0)
+DECL|macro|br_sysfs_delbr
+mdefine_line|#define br_sysfs_delbr(dev)&t;do { } while(0)
+macro_line|#endif /* CONFIG_SYSFS */
 macro_line|#endif
 eof
