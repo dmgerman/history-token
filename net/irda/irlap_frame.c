@@ -193,7 +193,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -204,7 +204,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -547,7 +547,7 @@ comma
 id|jiffies
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -558,7 +558,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -695,7 +695,7 @@ id|__u8
 op_star
 id|frame
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -706,7 +706,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -816,7 +816,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -827,7 +827,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -953,7 +953,7 @@ comma
 id|command
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -964,7 +964,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -975,7 +975,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|discovery
@@ -1339,7 +1339,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1350,7 +1350,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -1378,7 +1378,7 @@ id|xid_frame
 )paren
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: frame to short!&bslash;n&quot;
@@ -1465,7 +1465,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: kmalloc failed!&bslash;n&quot;
@@ -1718,7 +1718,7 @@ id|xid_frame
 )paren
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: frame to short!&bslash;n&quot;
@@ -1881,7 +1881,7 @@ l_int|3
 )paren
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: discovery frame to short!&bslash;n&quot;
@@ -1913,7 +1913,7 @@ op_logical_neg
 id|discovery
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: unable to malloc!&bslash;n&quot;
@@ -3071,7 +3071,7 @@ id|tx_skb
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3082,7 +3082,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -3093,7 +3093,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -3451,7 +3451,7 @@ suffix:semicolon
 r_int
 id|count
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3462,7 +3462,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -3676,7 +3676,7 @@ op_amp
 id|self-&gt;txq
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -3761,7 +3761,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3772,7 +3772,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -3915,7 +3915,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3926,7 +3926,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -3937,7 +3937,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -4236,7 +4236,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -4247,7 +4247,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -4258,7 +4258,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -4269,7 +4269,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|info
@@ -4293,7 +4293,7 @@ l_int|4
 )paren
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: frame to short!&bslash;n&quot;
@@ -4687,7 +4687,7 @@ id|frame
 )paren
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: frame to short!&bslash;n&quot;
@@ -4899,7 +4899,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: can&squot;t clone shared skb!&bslash;n&quot;
@@ -4932,7 +4932,7 @@ l_int|2
 )paren
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: frame to short!&bslash;n&quot;
@@ -5144,7 +5144,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: Unknown S-frame %02x received!&bslash;n&quot;
@@ -5321,7 +5321,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: Unknown frame %02x received!&bslash;n&quot;

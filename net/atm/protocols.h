@@ -3,21 +3,6 @@ multiline_comment|/* Written 1995-1997 by Werner Almesberger, EPFL LRC */
 macro_line|#ifndef NET_ATM_PROTOCOLS_H
 DECL|macro|NET_ATM_PROTOCOLS_H
 mdefine_line|#define NET_ATM_PROTOCOLS_H
-r_void
-id|atm_push_raw
-c_func
-(paren
-r_struct
-id|atm_vcc
-op_star
-id|vcc
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-suffix:semicolon
 r_int
 id|atm_init_aal0
 c_func

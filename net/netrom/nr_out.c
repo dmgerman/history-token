@@ -262,7 +262,8 @@ op_star
 id|skb
 )paren
 (brace
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign
@@ -343,7 +344,8 @@ comma
 op_star
 id|skbn
 suffix:semicolon
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign
@@ -453,7 +455,8 @@ op_star
 id|sk
 )paren
 (brace
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign
@@ -693,7 +696,8 @@ op_star
 id|skb
 )paren
 (brace
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign
@@ -841,7 +845,8 @@ op_star
 id|sk
 )paren
 (brace
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign
@@ -904,7 +909,8 @@ op_star
 id|sk
 )paren
 (brace
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign
@@ -984,7 +990,8 @@ r_int
 id|nr
 )paren
 (brace
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nrom
 op_assign

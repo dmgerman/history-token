@@ -156,7 +156,7 @@ op_star
 id|skb
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 op_star
@@ -218,7 +218,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -324,7 +324,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -557,7 +557,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -703,7 +703,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -716,7 +716,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic

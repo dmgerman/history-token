@@ -1161,7 +1161,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), can&squot;t allocate memory for control block!&bslash;n&quot;
@@ -1250,7 +1250,7 @@ id|driver_name
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), can&squot;t get iobase of 0x%03x&bslash;n&quot;
@@ -1477,7 +1477,7 @@ c_cond
 id|err
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), register_netdev() failed!&bslash;n&quot;
@@ -1489,7 +1489,7 @@ r_goto
 id|err_out4
 suffix:semicolon
 )brace
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;IrDA: Registered device %s&bslash;n&quot;
@@ -1508,7 +1508,7 @@ comma
 id|info
 )paren
 suffix:semicolon
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;%s(), %s, Found dongle: %s&bslash;n&quot;
@@ -1645,7 +1645,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2000,7 +2000,7 @@ op_eq
 l_int|0x04
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), No DMA channel assigned !&bslash;n&quot;
@@ -2211,7 +2211,7 @@ op_ne
 l_int|0x00
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s, Wrong chip version %02x&bslash;n&quot;
@@ -2226,7 +2226,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-singleline_comment|// MESSAGE(&quot;%s, Found chip at base=0x%03x&bslash;n&quot;, driver_name, info-&gt;cfg_base);
+singleline_comment|// IRDA_MESSAGE(&quot;%s, Found chip at base=0x%03x&bslash;n&quot;, driver_name, info-&gt;cfg_base);
 multiline_comment|/* Set FIR FIFO Threshold Register */
 id|switch_bank
 c_func
@@ -2347,7 +2347,7 @@ c_func
 id|iobase
 )paren
 suffix:semicolon
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;%s, driver loaded (Benjamin Kong)&bslash;n&quot;
@@ -2590,7 +2590,7 @@ op_logical_neg
 id|dev
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: irq %d for unknown device.&bslash;n&quot;
@@ -3326,7 +3326,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3434,7 +3434,7 @@ suffix:semicolon
 r_int
 id|iobase
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3802,7 +3802,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3944,7 +3944,7 @@ comma
 id|speed
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -4943,7 +4943,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -4965,7 +4965,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -5000,7 +5000,7 @@ id|dev
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s, unable to allocate irq=%d&bslash;n&quot;
@@ -5028,7 +5028,7 @@ id|dev-&gt;name
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s, unable to allocate dma=%d&bslash;n&quot;
@@ -5138,7 +5138,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -5160,7 +5160,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -6229,7 +6229,7 @@ op_eq
 id|LSR_FRAME_ABORT
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), ********* LSR_FRAME_ABORT *********&bslash;n&quot;
@@ -7199,7 +7199,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), memory squeeze, &quot;
@@ -7348,7 +7348,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -7369,7 +7369,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -7596,7 +7596,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -7613,7 +7613,7 @@ id|self
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -7829,7 +7829,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -8020,7 +8020,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;%s, Suspending&bslash;n&quot;
@@ -8092,7 +8092,7 @@ c_func
 id|self-&gt;netdev
 )paren
 suffix:semicolon
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;%s, Waking up&bslash;n&quot;

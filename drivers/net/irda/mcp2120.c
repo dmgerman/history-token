@@ -303,7 +303,7 @@ suffix:semicolon
 r_case
 id|IRDA_TASK_CHILD_WAIT
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), resetting dongle timed out!&bslash;n&quot;
@@ -486,7 +486,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), unknown state %d&bslash;n&quot;
@@ -661,7 +661,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), unknown state %d&bslash;n&quot;

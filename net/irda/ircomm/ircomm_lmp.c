@@ -157,7 +157,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/*  &n;&t;&t; *  Check that the client has reserved enough space for &n;&t;&t; *  headers&n;&t;&t; */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb_headroom
@@ -329,7 +329,7 @@ suffix:semicolon
 r_int
 id|line
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -400,7 +400,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -411,7 +411,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -503,7 +503,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -615,7 +615,7 @@ c_cond
 id|ret
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), failed&bslash;n&quot;
@@ -672,7 +672,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -685,7 +685,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -698,7 +698,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -792,7 +792,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -803,7 +803,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -814,7 +814,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -825,7 +825,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|qos
@@ -927,7 +927,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -938,7 +938,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -949,7 +949,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -960,7 +960,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|qos
@@ -1054,7 +1054,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1065,7 +1065,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic

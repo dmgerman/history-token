@@ -1098,6 +1098,7 @@ id|vc_map
 DECL|member|tx
 r_volatile
 r_int
+r_int
 id|tx
 suffix:colon
 l_int|1
@@ -1105,6 +1106,7 @@ suffix:semicolon
 multiline_comment|/* TX vc? */
 DECL|member|rx
 r_volatile
+r_int
 r_int
 id|rx
 suffix:colon

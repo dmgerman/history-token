@@ -36,10 +36,6 @@ macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/scm.h&gt;
 DECL|macro|Nprintk
 mdefine_line|#define Nprintk(a...)
-macro_line|#if defined(CONFIG_NETLINK_DEV) || defined(CONFIG_NETLINK_DEV_MODULE)
-DECL|macro|NL_EMULATE_DEV
-mdefine_line|#define NL_EMULATE_DEV
-macro_line|#endif
 DECL|struct|netlink_sock
 r_struct
 id|netlink_sock
@@ -72,22 +68,6 @@ DECL|member|state
 r_int
 r_int
 id|state
-suffix:semicolon
-DECL|member|handler
-r_int
-(paren
-op_star
-id|handler
-)paren
-(paren
-r_int
-id|unit
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
 suffix:semicolon
 DECL|member|wait
 id|wait_queue_head_t
@@ -2614,16 +2594,6 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-macro_line|#ifdef NL_EMULATE_DEV
-r_if
-c_cond
-(paren
-id|nlk-&gt;handler
-)paren
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2845,42 +2815,6 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-macro_line|#ifdef NL_EMULATE_DEV
-r_if
-c_cond
-(paren
-id|nlk-&gt;handler
-)paren
-(brace
-id|skb_orphan
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-id|len
-op_assign
-id|nlk
-op_member_access_from_pointer
-id|handler
-c_func
-(paren
-id|protocol
-comma
-id|skb
-)paren
-suffix:semicolon
-id|sock_put
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
-r_return
-id|len
-suffix:semicolon
-)brace
-macro_line|#endif
 id|skb_queue_tail
 c_func
 (paren
@@ -3217,29 +3151,6 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-macro_line|#ifdef NL_EMULATE_DEV
-r_if
-c_cond
-(paren
-id|nlk-&gt;handler
-)paren
-(brace
-id|nlk
-op_member_access_from_pointer
-id|handler
-c_func
-(paren
-id|sk-&gt;sk_protocol
-comma
-id|skb
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_else
-macro_line|#endif
 r_if
 c_cond
 (paren

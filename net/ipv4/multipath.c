@@ -18,6 +18,8 @@ op_star
 id|ip_mp_alg_table
 (braket
 id|IP_MP_ALG_MAX
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 DECL|function|multipath_alg_register
@@ -50,6 +52,9 @@ c_cond
 id|n
 template_param
 id|IP_MP_ALG_MAX
+op_logical_or
+op_logical_neg
+id|ops-&gt;mp_alg_select_route
 )paren
 r_return
 op_minus

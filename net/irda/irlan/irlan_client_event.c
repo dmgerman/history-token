@@ -275,7 +275,7 @@ op_star
 id|skb
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -286,7 +286,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -344,7 +344,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -357,7 +357,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -385,7 +385,7 @@ c_cond
 id|self-&gt;client.iriap
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), busy with a previous query&bslash;n&quot;
@@ -515,7 +515,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -528,7 +528,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -550,7 +550,7 @@ id|event
 r_case
 id|IRLAN_IAS_PROVIDER_AVAIL
 suffix:colon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;dtsap_sel_ctrl
@@ -738,7 +738,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -871,7 +871,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -893,7 +893,7 @@ id|event
 r_case
 id|IRLAN_DATA_INDICATION
 suffix:colon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -1024,7 +1024,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1168,7 +1168,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1199,7 +1199,7 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *  Check if we have got the remote TSAP for data &n;&t;&t; *  communications&n;&t;&t; */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;dtsap_sel_data
@@ -1413,7 +1413,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1552,7 +1552,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1768,7 +1768,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1781,7 +1781,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic

@@ -1764,7 +1764,7 @@ id|virt_to_bus
 id|self-&gt;ring
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 (paren
 (paren
 id|physaddr
@@ -3659,7 +3659,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 (paren
 id|self
 op_ne
@@ -5074,7 +5074,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 (paren
 id|dev
 op_ne
@@ -5095,7 +5095,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 (paren
 id|self
 op_ne
@@ -5227,7 +5227,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 (paren
 id|dev
 op_ne
@@ -5348,7 +5348,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 (paren
 id|dev
 op_ne
@@ -5364,7 +5364,7 @@ id|self
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 (paren
 id|self
 op_ne
@@ -5669,7 +5669,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 (paren
 id|self
 op_ne

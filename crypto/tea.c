@@ -21,9 +21,9 @@ mdefine_line|#define XTEA_ROUNDS&t;&t;32
 DECL|macro|XTEA_DELTA
 mdefine_line|#define XTEA_DELTA&t;&t;0x9e3779b9
 DECL|macro|u32_in
-mdefine_line|#define u32_in(x) le32_to_cpu(*(const u32 *)(x))
+mdefine_line|#define u32_in(x) le32_to_cpu(*(const __le32 *)(x))
 DECL|macro|u32_out
-mdefine_line|#define u32_out(to, from) (*(u32 *)(to) = cpu_to_le32(from))
+mdefine_line|#define u32_out(to, from) (*(__le32 *)(to) = cpu_to_le32(from))
 DECL|struct|tea_ctx
 r_struct
 id|tea_ctx

@@ -581,7 +581,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* could be dropped later when we have tx_timeout to recover */
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: drv-&gt;do_write failed (%d)&bslash;n&quot;
@@ -753,7 +753,7 @@ id|err
 )paren
 (brace
 multiline_comment|/* should never happen&n;&t;&t;&t; * forget the speed change and hope the stack recovers&n;&t;&t;&t; */
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s - schedule speed change failed: %d&bslash;n&quot;
@@ -830,7 +830,7 @@ op_logical_neg
 id|dev-&gt;netdev
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), not ready yet!&bslash;n&quot;
@@ -850,7 +850,7 @@ op_logical_neg
 id|dev-&gt;irlap
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s - too early: %p / %zd!&bslash;n&quot;
@@ -1059,7 +1059,7 @@ suffix:semicolon
 id|s32
 id|speed
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -1319,7 +1319,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* could be dropped later when we have tx_timeout to recover */
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: drv-&gt;do_write failed (%d)&bslash;n&quot;
@@ -1406,7 +1406,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -2202,7 +2202,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s - Can&squot;t allocate memory for IrDA control block!&bslash;n&quot;
@@ -2353,7 +2353,7 @@ id|ndev
 )paren
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), register_netdev() failed!&bslash;n&quot;
@@ -2447,7 +2447,7 @@ c_cond
 (paren
 id|err
 )paren
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s - error %d&bslash;n&quot;
