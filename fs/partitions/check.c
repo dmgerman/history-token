@@ -2006,7 +2006,7 @@ id|nr_sects
 op_assign
 id|size
 suffix:semicolon
-multiline_comment|/* No Such Agen^Wdevice or no minors to use for partitions */
+multiline_comment|/* No such device or no minors to use for partitions */
 r_if
 c_cond
 (paren
@@ -2018,13 +2018,6 @@ op_eq
 l_int|1
 )paren
 r_return
-suffix:semicolon
-id|blk_size
-(braket
-id|dev-&gt;major
-)braket
-op_assign
-l_int|NULL
 suffix:semicolon
 id|check_partition
 c_func

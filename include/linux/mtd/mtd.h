@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: mtd.h,v 1.26 2000/10/30 17:18:04 sjhill Exp $ */
+multiline_comment|/* $Id: mtd.h,v 1.33 2001/06/09 00:08:59 dwmw2 Exp $ */
 macro_line|#ifndef __MTD_MTD_H__
 DECL|macro|__MTD_MTD_H__
 mdefine_line|#define __MTD_MTD_H__
@@ -15,13 +15,11 @@ r_struct
 id|erase_info_user
 (brace
 DECL|member|start
-r_int
-r_int
+id|u_int32_t
 id|start
 suffix:semicolon
 DECL|member|length
-r_int
-r_int
+id|u_int32_t
 id|length
 suffix:semicolon
 )brace
@@ -31,11 +29,11 @@ r_struct
 id|mtd_oob_buf
 (brace
 DECL|member|start
-id|loff_t
+id|u_int32_t
 id|start
 suffix:semicolon
 DECL|member|length
-id|ssize_t
+id|u_int32_t
 id|length
 suffix:semicolon
 DECL|member|ptr
@@ -122,35 +120,60 @@ id|u_char
 id|type
 suffix:semicolon
 DECL|member|flags
-id|u_long
+id|u_int32_t
 id|flags
 suffix:semicolon
 DECL|member|size
-id|u_long
+id|u_int32_t
 id|size
 suffix:semicolon
 singleline_comment|// Total size of the MTD
 DECL|member|erasesize
-id|u_long
+id|u_int32_t
 id|erasesize
 suffix:semicolon
 DECL|member|oobblock
-id|u_long
+id|u_int32_t
 id|oobblock
 suffix:semicolon
 singleline_comment|// Size of OOB blocks (e.g. 512)
 DECL|member|oobsize
-id|u_long
+id|u_int32_t
 id|oobsize
 suffix:semicolon
 singleline_comment|// Amount of OOB data per block (e.g. 16)
 DECL|member|ecctype
-id|u_long
+id|u_int32_t
 id|ecctype
 suffix:semicolon
 DECL|member|eccsize
-id|u_long
+id|u_int32_t
 id|eccsize
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|region_info_user
+r_struct
+id|region_info_user
+(brace
+DECL|member|offset
+id|u_int32_t
+id|offset
+suffix:semicolon
+multiline_comment|/* At which this region starts, &n;&t;&t;&t;&t;&t; * from the beginning of the MTD */
+DECL|member|erasesize
+id|u_int32_t
+id|erasesize
+suffix:semicolon
+multiline_comment|/* For this region */
+DECL|member|numblocks
+id|u_int32_t
+id|numblocks
+suffix:semicolon
+multiline_comment|/* Number of blocks in this region */
+DECL|member|regionindex
+id|u_int32_t
+id|regionindex
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -166,6 +189,10 @@ DECL|macro|MEMLOCK
 mdefine_line|#define MEMLOCK                 _IOW(&squot;M&squot;, 5, struct erase_info_user)
 DECL|macro|MEMUNLOCK
 mdefine_line|#define MEMUNLOCK               _IOW(&squot;M&squot;, 6, struct erase_info_user)
+DECL|macro|MEMGETREGIONCOUNT
+mdefine_line|#define MEMGETREGIONCOUNT&t;_IOR(&squot;M&squot;, 7, int)
+DECL|macro|MEMGETREGIONINFO
+mdefine_line|#define MEMGETREGIONINFO&t;_IOWR(&squot;M&squot;, 8, struct region_info_user)
 macro_line|#ifndef __KERNEL__
 DECL|typedef|mtd_info_t
 r_typedef
@@ -178,6 +205,12 @@ r_typedef
 r_struct
 id|erase_info_user
 id|erase_info_t
+suffix:semicolon
+DECL|typedef|region_info_t
+r_typedef
+r_struct
+id|region_info_user
+id|region_info_t
 suffix:semicolon
 multiline_comment|/* User-space ioctl definitions */
 macro_line|#else /* __KERNEL__ */
@@ -202,11 +235,11 @@ op_star
 id|mtd
 suffix:semicolon
 DECL|member|addr
-id|u_long
+id|u_int32_t
 id|addr
 suffix:semicolon
 DECL|member|len
-id|u_long
+id|u_int32_t
 id|len
 suffix:semicolon
 DECL|member|time
@@ -254,6 +287,27 @@ id|next
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|mtd_erase_region_info
+r_struct
+id|mtd_erase_region_info
+(brace
+DECL|member|offset
+id|u_int32_t
+id|offset
+suffix:semicolon
+multiline_comment|/* At which this region starts, from the beginning of the MTD */
+DECL|member|erasesize
+id|u_int32_t
+id|erasesize
+suffix:semicolon
+multiline_comment|/* For this region */
+DECL|member|numblocks
+id|u_int32_t
+id|numblocks
+suffix:semicolon
+multiline_comment|/* Number of blocks of erasesize in this region */
+)brace
+suffix:semicolon
 DECL|struct|mtd_info
 r_struct
 id|mtd_info
@@ -263,34 +317,35 @@ id|u_char
 id|type
 suffix:semicolon
 DECL|member|flags
-id|u_long
+id|u_int32_t
 id|flags
 suffix:semicolon
 DECL|member|size
-id|u_long
+id|u_int32_t
 id|size
 suffix:semicolon
 singleline_comment|// Total size of the MTD
+multiline_comment|/* &quot;Major&quot; erase size for the device. Na&#xfffd;ve users may take this&n;&t; * to be the only erase size available, or may use the more detailed&n;&t; * information below if they desire&n;&t; */
 DECL|member|erasesize
-id|u_long
+id|u_int32_t
 id|erasesize
 suffix:semicolon
 DECL|member|oobblock
-id|u_long
+id|u_int32_t
 id|oobblock
 suffix:semicolon
 singleline_comment|// Size of OOB blocks (e.g. 512)
 DECL|member|oobsize
-id|u_long
+id|u_int32_t
 id|oobsize
 suffix:semicolon
 singleline_comment|// Amount of OOB data per block (e.g. 16)
 DECL|member|ecctype
-id|u_long
+id|u_int32_t
 id|ecctype
 suffix:semicolon
 DECL|member|eccsize
-id|u_long
+id|u_int32_t
 id|eccsize
 suffix:semicolon
 singleline_comment|// Kernel-only stuff starts here.
@@ -303,8 +358,20 @@ DECL|member|index
 r_int
 id|index
 suffix:semicolon
+multiline_comment|/* Data for variable erase regions. If numeraseregions is zero,&n;&t; * it means that the whole device has erasesize as given above. &n;&t; */
+DECL|member|numeraseregions
+r_int
+id|numeraseregions
+suffix:semicolon
+DECL|member|eraseregions
+r_struct
+id|mtd_erase_region_info
+op_star
+id|eraseregions
+suffix:semicolon
+multiline_comment|/* This really shouldn&squot;t be here. It can go away in 2.5 */
 DECL|member|bank_size
-id|u_long
+id|u_int32_t
 id|bank_size
 suffix:semicolon
 DECL|member|module

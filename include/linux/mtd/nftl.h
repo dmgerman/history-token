@@ -1,7 +1,7 @@
 multiline_comment|/* Defines for NAND Flash Translation Layer  */
 multiline_comment|/* (c) 1999 Machine Vision Holdings, Inc.    */
 multiline_comment|/* Author: David Woodhouse &lt;dwmw2@mvhi.com&gt;  */
-multiline_comment|/* $Id: nftl.h,v 1.9 2000/11/07 05:48:49 ollie Exp $ */
+multiline_comment|/* $Id: nftl.h,v 1.10 2000/12/29 00:25:38 dwmw2 Exp $ */
 macro_line|#ifndef __MTD_NFTL_H__
 DECL|macro|__MTD_NFTL_H__
 mdefine_line|#define __MTD_NFTL_H__
@@ -368,6 +368,8 @@ DECL|macro|MAX_NFTLS
 mdefine_line|#define MAX_NFTLS 16
 DECL|macro|MAX_SECTORS_PER_UNIT
 mdefine_line|#define MAX_SECTORS_PER_UNIT 32
+DECL|macro|NFTL_PARTN_BITS
+mdefine_line|#define NFTL_PARTN_BITS 4
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __MTD_NFTL_H__ */
 eof

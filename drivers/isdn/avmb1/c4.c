@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: c4.c,v 1.20.6.6 2001/04/20 02:41:59 keil Exp $&n; * &n; * Module for AVM C4 card.&n; * &n; * (c) Copyright 1999 by Carsten Paeth (calle@calle.in-berlin.de)&n; * &n; * $Log: c4.c,v $&n; * Revision 1.20.6.6  2001/04/20 02:41:59  keil&n; * changes from mainstream&n; *&n; * Revision 1.20.6.5  2001/03/21 08:52:21  kai&n; * merge from main branch: fix buffer for revision string (calle)&n; *&n; * Revision 1.20.6.4  2001/03/15 15:11:23  kai&n; * *** empty log message ***&n; *&n; * Revision 1.20.6.3  2001/02/16 16:43:23  kai&n; * Changes from -ac16, little bug fixes, typos and the like&n; *&n; * Revision 1.20.6.2  2001/02/13 11:43:29  kai&n; * more compatility changes for 2.2.19&n; *&n; * Revision 1.20.6.1  2000/11/28 12:02:45  kai&n; * MODULE_DEVICE_TABLE for 2.4&n; *&n; * Revision 1.20.2.2  2000/11/26 17:47:53  kai&n; * added PCI_DEV_TABLE for 2.4&n; *&n; * Revision 1.20.2.1  2000/11/26 17:14:19  kai&n; * fix device ids&n; * also needs patches to include/linux/pci_ids.h&n; *&n; * Revision 1.20  2000/11/23 20:45:14  kai&n; * fixed module_init/exit stuff&n; * Note: compiled-in kernel doesn&squot;t work pre 2.2.18 anymore.&n; *&n; * Revision 1.19  2000/11/19 17:02:47  kai&n; * compatibility cleanup - part 3&n; *&n; * Revision 1.18  2000/11/01 14:05:02  calle&n; * - use module_init/module_exit from linux/init.h.&n; * - all static struct variables are initialized with &quot;membername:&quot; now.&n; * - avm_cs.c, let it work with newer pcmcia-cs.&n; *&n; * Revision 1.17  2000/10/10 17:44:19  kai&n; * changes from/for 2.2.18&n; *&n; * Revision 1.16  2000/08/20 07:30:13  keil&n; * changes for 2.4&n; *&n; * Revision 1.15  2000/08/08 09:24:19  calle&n; * calls to pci_enable_device surounded by #ifndef COMPAT_HAS_2_2_PCI&n; *&n; * Revision 1.14  2000/08/04 12:20:08  calle&n; * - Fix unsigned/signed warning in the right way ...&n; *&n; * Revision 1.13  2000/07/20 10:21:21  calle&n; * Bugfix: driver will not be unregistered, if not cards were detected.&n; *         this result in an oops in kcapi.c&n; *&n; * Revision 1.12  2000/06/19 16:51:53  keil&n; * don&squot;t free skb in irq context&n; *&n; * Revision 1.11  2000/06/19 15:11:24  keil&n; * avoid use of freed structs&n; * changes from 2.4.0-ac21&n; *&n; * Revision 1.10  2000/05/29 12:29:18  keil&n; * make pci_enable_dev compatible to 2.2 kernel versions&n; *&n; * Revision 1.9  2000/05/19 15:43:22  calle&n; * added calls to pci_device_start().&n; *&n; * Revision 1.8  2000/04/03 16:38:05  calle&n; * made suppress_pollack static.&n; *&n; * Revision 1.7  2000/04/03 13:29:24  calle&n; * make Tim Waugh happy (module unload races in 2.3.99-pre3).&n; * no real problem there, but now it is much cleaner ...&n; *&n; * Revision 1.6  2000/03/17 12:21:08  calle&n; * send patchvalues now working.&n; *&n; * Revision 1.5  2000/03/16 15:21:03  calle&n; * Bugfix in c4_remove: loop 5 times instead of 4 :-(&n; *&n; * Revision 1.4  2000/02/02 18:36:03  calle&n; * - Modules are now locked while init_module is running&n; * - fixed problem with memory mapping if address is not aligned&n; *&n; * Revision 1.3  2000/01/25 14:37:39  calle&n; * new message after successful detection including card revision and&n; * used resources.&n; *&n; * Revision 1.2  2000/01/21 20:52:58  keil&n; * pci_find_subsys as local function for 2.2.X kernel&n; *&n; * Revision 1.1  2000/01/20 10:51:37  calle&n; * Added driver for C4.&n; *&n; *&n; */
+multiline_comment|/*&n; * $Id: c4.c,v 1.20.6.8 2001/05/17 21:15:33 kai Exp $&n; * &n; * Module for AVM C4 &amp; C2 card.&n; * &n; * (c) Copyright 1999 by Carsten Paeth (calle@calle.in-berlin.de)&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -24,17 +24,12 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.20.6.8 $&quot;
+l_string|&quot;$Revision: 1.20.6.9 $&quot;
 suffix:semicolon
 DECL|macro|CONFIG_C4_DEBUG
 macro_line|#undef CONFIG_C4_DEBUG
 DECL|macro|CONFIG_C4_POLLDEBUG
 macro_line|#undef CONFIG_C4_POLLDEBUG
-multiline_comment|/* ------------------------------------------------------------- */
-macro_line|#ifndef PCI_DEVICE_ID_AVM_C2
-DECL|macro|PCI_DEVICE_ID_AVM_C2
-mdefine_line|#define PCI_DEVICE_ID_AVM_C2&t;0x1100
-macro_line|#endif
 multiline_comment|/* ------------------------------------------------------------- */
 DECL|variable|suppress_pollack
 r_static

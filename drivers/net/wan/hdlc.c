@@ -4731,9 +4731,9 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
 multiline_comment|/* to be defined */
+r_break
+suffix:semicolon
 )brace
 id|dev_kfree_skb
 c_func

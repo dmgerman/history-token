@@ -796,6 +796,9 @@ DECL|macro|add_page_to_active_list
 mdefine_line|#define add_page_to_active_list(page) { &bslash;&n;&t;DEBUG_ADD_PAGE &bslash;&n;&t;ZERO_PAGE_BUG &bslash;&n;&t;SetPageActive(page); &bslash;&n;&t;list_add(&amp;(page)-&gt;lru, &amp;active_list); &bslash;&n;&t;nr_active_pages++; &bslash;&n;}
 DECL|macro|add_page_to_inactive_dirty_list
 mdefine_line|#define add_page_to_inactive_dirty_list(page) { &bslash;&n;&t;DEBUG_ADD_PAGE &bslash;&n;&t;ZERO_PAGE_BUG &bslash;&n;&t;SetPageInactiveDirty(page); &bslash;&n;&t;list_add(&amp;(page)-&gt;lru, &amp;inactive_dirty_list); &bslash;&n;&t;nr_inactive_dirty_pages++; &bslash;&n;&t;page-&gt;zone-&gt;inactive_dirty_pages++; &bslash;&n;}
+multiline_comment|/* Like the above, but add us after the bookmark. */
+DECL|macro|add_page_to_inactive_dirty_list_marker
+mdefine_line|#define add_page_to_inactive_dirty_list_marker(page) { &bslash;&n;&t;DEBUG_ADD_PAGE &bslash;&n;&t;ZERO_PAGE_BUG &bslash;&n;&t;SetPageInactiveDirty(page); &bslash;&n;&t;list_add(&amp;(page)-&gt;lru, marker_lru); &bslash;&n;&t;nr_inactive_dirty_pages++; &bslash;&n;&t;page-&gt;zone-&gt;inactive_dirty_pages++; &bslash;&n;}
 DECL|macro|add_page_to_inactive_clean_list
 mdefine_line|#define add_page_to_inactive_clean_list(page) { &bslash;&n;&t;DEBUG_ADD_PAGE &bslash;&n;&t;ZERO_PAGE_BUG &bslash;&n;&t;SetPageInactiveClean(page); &bslash;&n;&t;list_add(&amp;(page)-&gt;lru, &amp;page-&gt;zone-&gt;inactive_clean_list); &bslash;&n;&t;page-&gt;zone-&gt;inactive_clean_pages++; &bslash;&n;}
 DECL|macro|del_page_from_active_list

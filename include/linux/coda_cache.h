@@ -67,5 +67,5 @@ r_int
 id|flag
 )paren
 suffix:semicolon
-macro_line|#endif _CFSNC_HEADER_
+macro_line|#endif /* _CFSNC_HEADER_ */
 eof

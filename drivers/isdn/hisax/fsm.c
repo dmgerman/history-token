@@ -1,11 +1,11 @@
-multiline_comment|/* $Id: fsm.c,v 1.14.6.1 2001/02/16 16:43:26 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: fsm.c,v 1.14.6.2 2001/05/26 15:19:57 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;hisax.h&quot;
 DECL|macro|FSM_TIMER_DEBUG
 mdefine_line|#define FSM_TIMER_DEBUG 0
-r_void
+r_int
 id|__init
 DECL|function|FsmNew
 id|FsmNew
@@ -48,6 +48,16 @@ id|fsm-&gt;event_count
 comma
 id|GFP_KERNEL
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|fsm-&gt;jumpmatrix
+)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|memset
 c_func
@@ -175,6 +185,9 @@ id|i
 )braket
 dot
 id|routine
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_void

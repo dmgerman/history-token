@@ -342,13 +342,7 @@ id|info
 c_func
 (paren
 id|DRIVER_VERSION
-l_string|&quot; &quot;
-id|DRIVER_AUTHOR
-)paren
-suffix:semicolon
-id|info
-c_func
-(paren
+l_string|&quot;:&quot;
 id|DRIVER_DESC
 )paren
 suffix:semicolon

@@ -456,6 +456,14 @@ id|remount_fs
 suffix:colon
 id|reiserfs_remount
 comma
+id|fh_to_dentry
+suffix:colon
+id|reiserfs_fh_to_dentry
+comma
+id|dentry_to_fh
+suffix:colon
+id|reiserfs_dentry_to_fh
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* this was (ext2)parse_options */

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hysdn_net.c,v 1.8.6.2 2001/04/20 02:42:00 keil Exp $&n;&n; * Linux driver for HYSDN cards, net (ethernet type) handling routines.&n; *&n; * written by Werner Cornelius (werner@titro.de) for Hypercope GmbH&n; *&n; * Copyright 1999  by Werner Cornelius (werner@titro.de)&n; *&n; * This net module has been inspired by the skeleton driver from&n; * Donald Becker (becker@CESDIS.gsfc.nasa.gov)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: hysdn_net.c,v 1.8.6.3 2001/06/05 19:45:37 kai Exp $&n;&n; * Linux driver for HYSDN cards, net (ethernet type) handling routines.&n; *&n; * written by Werner Cornelius (werner@titro.de) for Hypercope GmbH&n; *&n; * Copyright 1999  by Werner Cornelius (werner@titro.de)&n; *&n; * This net module has been inspired by the skeleton driver from&n; * Donald Becker (becker@CESDIS.gsfc.nasa.gov)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
@@ -31,7 +31,7 @@ r_char
 op_star
 id|hysdn_net_revision
 op_assign
-l_string|&quot;$Revision: 1.8.6.2 $&quot;
+l_string|&quot;$Revision: 1.8.6.3 $&quot;
 suffix:semicolon
 DECL|macro|MAX_SKB_BUFFERS
 mdefine_line|#define MAX_SKB_BUFFERS 20&t;/* number of buffers for keeping TX-data */
@@ -971,13 +971,6 @@ id|KERN_WARNING
 l_string|&quot;HYSDN: unable to allocate mem&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|card-&gt;debug_flags
-op_amp
-id|LOG_NET_INIT
-)paren
 r_return
 (paren
 op_minus

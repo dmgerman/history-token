@@ -2670,9 +2670,9 @@ suffix:semicolon
 macro_line|#endif
 r_default
 suffix:colon
-(brace
-)brace
 multiline_comment|/* nothing */
+r_break
+suffix:semicolon
 )brace
 r_return
 l_int|0

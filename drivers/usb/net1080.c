@@ -1901,7 +1901,7 @@ id|dbg
 l_string|&quot;no read resubmitted&quot;
 )paren
 suffix:semicolon
-macro_line|#endif&t;VERBOSE
+macro_line|#endif&t;/* VERBOSE */
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 singleline_comment|// unlink pending rx/tx; completion handlers do all other cleanup
@@ -4123,13 +4123,7 @@ id|info
 c_func
 (paren
 id|DRIVER_VERSION
-l_string|&quot; &quot;
-id|DRIVER_AUTHOR
-)paren
-suffix:semicolon
-id|info
-c_func
-(paren
+l_string|&quot;:&quot;
 id|DRIVER_DESC
 )paren
 suffix:semicolon

@@ -12834,6 +12834,12 @@ multiline_comment|/* Can&squot;t use _sync here: called from tasklet */
 r_if
 c_cond
 (paren
+op_logical_neg
+id|vt_cons
+(braket
+id|fg_console
+)braket
+op_logical_or
 id|vt_cons
 (braket
 id|fg_console

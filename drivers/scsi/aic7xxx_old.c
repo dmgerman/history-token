@@ -39022,7 +39022,7 @@ multiline_comment|/* while(pdev=....) */
 multiline_comment|/* for PCI_DEVICES */
 )brace
 multiline_comment|/* PCI BIOS present */
-macro_line|#endif CONFIG_PCI
+macro_line|#endif /* CONFIG_PCI */
 macro_line|#if defined(__i386__) || defined(__alpha__)
 multiline_comment|/*&n;   * EISA/VL-bus card signature probe.&n;   */
 id|slot

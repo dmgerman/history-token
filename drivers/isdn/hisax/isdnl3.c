@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdnl3.c,v 2.17.6.2 2001/02/16 16:43:27 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
+multiline_comment|/* $Id: isdnl3.c,v 2.17.6.3 2001/05/26 15:19:57 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -11,7 +11,7 @@ r_char
 op_star
 id|l3_revision
 op_assign
-l_string|&quot;$Revision: 2.17.6.2 $&quot;
+l_string|&quot;$Revision: 2.17.6.3 $&quot;
 suffix:semicolon
 DECL|variable|l3fsm
 r_static
@@ -2701,7 +2701,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_void
+r_int
 id|__init
 DECL|function|Isdnl3New
 id|Isdnl3New
@@ -2726,6 +2726,7 @@ id|l3fsm.strState
 op_assign
 id|strL3State
 suffix:semicolon
+r_return
 id|FsmNew
 c_func
 (paren

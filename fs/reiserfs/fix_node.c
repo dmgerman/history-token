@@ -3538,6 +3538,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|mark_buffer_journal_new
+c_func
+(paren
+id|p_s_new_bh
+)paren
+suffix:semicolon
 id|p_s_tb-&gt;FEB
 (braket
 id|p_s_tb-&gt;cur_blknum
@@ -11534,21 +11540,6 @@ id|tb
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
-(paren
-op_logical_neg
-id|tb-&gt;vn_buf
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
-comma
-l_string|&quot;PAP-16050: unfix_nodes: pointer to the virtual node is NULL&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Release path buffers. */
 id|pathrelse_and_restore
 (paren
@@ -11922,6 +11913,11 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* 0 */
+r_if
+c_cond
+(paren
+id|tb-&gt;vn_buf
+)paren
 id|reiserfs_kfree
 (paren
 id|tb-&gt;vn_buf

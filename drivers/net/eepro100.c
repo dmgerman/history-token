@@ -1632,17 +1632,20 @@ id|pdev
 suffix:semicolon
 macro_line|#ifdef CONFIG_EEPRO100_PM
 r_static
-r_void
+r_int
 id|eepro100_suspend
 (paren
 r_struct
 id|pci_dev
 op_star
 id|pdev
+comma
+id|u32
+id|state
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|eepro100_resume
 (paren
 r_struct
@@ -10512,7 +10515,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_EEPRO100_PM
 DECL|function|eepro100_suspend
 r_static
-r_void
+r_int
 id|eepro100_suspend
 c_func
 (paren
@@ -10520,6 +10523,9 @@ r_struct
 id|pci_dev
 op_star
 id|pdev
+comma
+id|u32
+id|state
 )paren
 (brace
 r_struct
@@ -10551,10 +10557,13 @@ id|SCBPort
 )paren
 suffix:semicolon
 multiline_comment|/* XXX call pci_set_power_state ()? */
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|eepro100_resume
 r_static
-r_void
+r_int
 id|eepro100_resume
 c_func
 (paren
@@ -10627,6 +10636,9 @@ c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_EEPRO100_PM */

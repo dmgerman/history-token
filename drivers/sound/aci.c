@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Audio Command Interface (ACI) driver (sound/aci.c)&n; *&n; * ACI is a protocol used to communicate with the microcontroller on&n; * some sound cards produced by miro, e.g. the miroSOUND PCM12 and&n; * PCM20. The ACI has been developed for miro by Norberto Pellicci&n; * &lt;pellicci@home.com&gt;. Special thanks to both him and miro for&n; * providing the ACI specification.&n; *&n; * The main function of the ACI is to control the mixer and to get a&n; * product identification. On the PCM20, ACI also controls the radio&n; * tuner on this card, this is supported in the Video for Linux &n; * miropcm20 driver.&n; * -&n; * This is a fullfeatured implementation. Unsupported features&n; * are bugs... (:&n; *&n; * It is not longer necessary to load the mad16 module first. The&n; * user is currently responsible to set the mad16 mixer correctly.&n; *&n; * To toggle the solo mode for full duplex operation just use the OSS&n; * record switch for the pcm (&squot;wave&squot;) controller.           Robert&n; * -&n; *&n; * Revision history:&n; *&n; *   1995-11-10  Markus Kuhn &lt;mskuhn@cip.informatik.uni-erlangen.de&gt;&n; *        First version written.&n; *   1995-12-31  Markus Kuhn&n; *        Second revision, general code cleanup.&n; *   1996-05-16&t; Hannu Savolainen&n; *&t;  Integrated with other parts of the driver.&n; *   1996-05-28  Markus Kuhn&n; *        Initialize CS4231A mixer, make ACI first mixer,&n; *        use new private mixer API for solo mode.&n; *   1998-08-18  Ruurd Reitsma &lt;R.A.Reitsma@wbmt.tudelft.nl&gt;&n; *&t;  Small modification to export ACI functions and &n; *&t;  complete modularisation.&n; *   2000-06-20  Robert Siemer &lt;Robert.Siemer@gmx.de&gt;&n; *        Don&squot;t initialize the CS4231A mixer anymore, so the code is&n; *        working again, and other small changes to fit in todays&n; *        kernels.&n; *   2000-08-26  Robert Siemer&n; *        Clean up and rewrite for 2.4.x. Maybe it&squot;s SMP safe now... (:&n; *        ioctl bugfix, and integration of solo-mode into OSS-API,&n; *        added (OSS-limited) equalizer support, return value bugfix,&n; *        changed param aci_reset to reset, new params: ide, wss.&n; */
+multiline_comment|/*&n; * Audio Command Interface (ACI) driver (sound/aci.c)&n; *&n; * ACI is a protocol used to communicate with the microcontroller on&n; * some sound cards produced by miro, e.g. the miroSOUND PCM12 and&n; * PCM20. The ACI has been developed for miro by Norberto Pellicci&n; * &lt;pellicci@home.com&gt;. Special thanks to both him and miro for&n; * providing the ACI specification.&n; *&n; * The main function of the ACI is to control the mixer and to get a&n; * product identification. On the PCM20, ACI also controls the radio&n; * tuner on this card, this is supported in the Video for Linux &n; * miropcm20 driver.&n; * -&n; * This is a fullfeatured implementation. Unsupported features&n; * are bugs... (:&n; *&n; * It is not longer necessary to load the mad16 module first. The&n; * user is currently responsible to set the mad16 mixer correctly.&n; *&n; * To toggle the solo mode for full duplex operation just use the OSS&n; * record switch for the pcm (&squot;wave&squot;) controller.           Robert&n; * -&n; *&n; * Revision history:&n; *&n; *   1995-11-10  Markus Kuhn &lt;mskuhn@cip.informatik.uni-erlangen.de&gt;&n; *        First version written.&n; *   1995-12-31  Markus Kuhn&n; *        Second revision, general code cleanup.&n; *   1996-05-16&t; Hannu Savolainen&n; *&t;  Integrated with other parts of the driver.&n; *   1996-05-28  Markus Kuhn&n; *        Initialize CS4231A mixer, make ACI first mixer,&n; *        use new private mixer API for solo mode.&n; *   1998-08-18  Ruurd Reitsma &lt;R.A.Reitsma@wbmt.tudelft.nl&gt;&n; *&t;  Small modification to export ACI functions and &n; *&t;  complete modularisation.&n; *   2000-06-20  Robert Siemer &lt;Robert.Siemer@gmx.de&gt;&n; *        Don&squot;t initialize the CS4231A mixer anymore, so the code is&n; *        working again, and other small changes to fit in todays&n; *        kernels.&n; *   2000-08-26  Robert Siemer&n; *        Clean up and rewrite for 2.4.x. Maybe it&squot;s SMP safe now... (:&n; *        ioctl bugfix, and integration of solo-mode into OSS-API,&n; *        added (OSS-limited) equalizer support, return value bugfix,&n; *        changed param aci_reset to reset, new params: ide, wss.&n; *   2001-04-20  Robert Siemer&n; *        even more cleanups...&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
@@ -166,6 +166,7 @@ l_string|&quot;change between ACI/WSS-mixer; use 0 and 1 - untested&quot;
 l_string|&quot; default: do nothing; for PCM1-pro only&quot;
 )paren
 suffix:semicolon
+macro_line|#if DEBUG
 DECL|function|print_bits
 r_static
 r_void
@@ -205,7 +206,6 @@ op_decrement
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%d&quot;
 comma
 (paren
@@ -221,11 +221,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * This busy wait code normally requires less than 15 loops and&n; * practically always less than 100 loops on my i486/DX2 66 MHz.&n; *&n; * Warning: Waiting on the general status flag after reseting the MUTE&n; * function can take a VERY long time, because the PCM12 does some kind&n; * of fade-in effect. For this reason, access to the MUTE function has&n; * not been implemented at all.&n; *&n; * - The OSS interface has no mute option. It takes about 3 seconds to&n; * fade-in on my PCM20. busy_wait() handles it great now...     Robert&n; */
 DECL|function|busy_wait
 r_static
@@ -868,7 +868,7 @@ op_assign
 id|aci_indexed_cmd
 c_func
 (paren
-l_int|0xf0
+id|ACI_STATUS
 comma
 id|left_index
 )paren
@@ -910,7 +910,7 @@ op_assign
 id|aci_indexed_cmd
 c_func
 (paren
-l_int|0xf0
+id|ACI_STATUS
 comma
 id|right_index
 )paren
@@ -1232,7 +1232,7 @@ op_assign
 id|aci_indexed_cmd
 c_func
 (paren
-l_int|0xf0
+id|ACI_STATUS
 comma
 id|left_index
 )paren
@@ -1261,7 +1261,7 @@ op_assign
 id|aci_indexed_cmd
 c_func
 (paren
-l_int|0xf0
+id|ACI_STATUS
 comma
 id|right_index
 )paren
@@ -1625,7 +1625,7 @@ op_assign
 id|aci_write_cmd
 c_func
 (paren
-l_int|0x03
+id|ACI_WRITE_IGAIN
 comma
 id|vol
 )paren
@@ -1743,7 +1743,7 @@ op_assign
 id|aci_write_cmd
 c_func
 (paren
-l_int|0x0f
+id|ACI_SET_POWERAMP
 comma
 id|vol
 )paren
@@ -1849,7 +1849,7 @@ op_assign
 id|aci_write_cmd
 c_func
 (paren
-l_int|0xd2
+id|ACI_SET_SOLOMODE
 comma
 id|vol
 )paren
@@ -2198,9 +2198,9 @@ op_assign
 id|aci_rw_cmd
 c_func
 (paren
-l_int|0xf0
+id|ACI_STATUS
 comma
-l_int|0x00
+id|ACI_S_GENERAL
 comma
 op_minus
 l_int|1
@@ -2517,9 +2517,9 @@ op_assign
 id|aci_indexed_cmd
 c_func
 (paren
-l_int|0xf0
+id|ACI_STATUS
 comma
-l_int|0x21
+id|ACI_S_READ_IGAIN
 )paren
 )paren
 OL
@@ -2744,7 +2744,7 @@ c_cond
 id|aci_rw_cmd
 c_func
 (paren
-l_int|0xdf
+id|ACI_ERROR_OP
 comma
 op_minus
 l_int|1
@@ -2772,7 +2772,7 @@ op_assign
 id|aci_rw_cmd
 c_func
 (paren
-l_int|0xf2
+id|ACI_READ_IDCODE
 comma
 op_minus
 l_int|1
@@ -2793,7 +2793,7 @@ op_assign
 id|aci_rw_cmd
 c_func
 (paren
-l_int|0xf2
+id|ACI_READ_IDCODE
 comma
 op_minus
 l_int|1
@@ -2829,7 +2829,7 @@ op_assign
 id|aci_rw_cmd
 c_func
 (paren
-l_int|0xf1
+id|ACI_READ_VERSION
 comma
 op_minus
 l_int|1
@@ -2973,7 +2973,7 @@ c_cond
 id|aci_rw_cmd
 c_func
 (paren
-l_int|0xff
+id|ACI_INIT
 comma
 op_minus
 l_int|1
@@ -2987,11 +2987,11 @@ op_logical_or
 id|aci_rw_cmd
 c_func
 (paren
-l_int|0xdf
+id|ACI_ERROR_OP
 comma
-l_int|0xdf
+id|ACI_ERROR_OP
 comma
-l_int|0xdf
+id|ACI_ERROR_OP
 )paren
 OL
 l_int|0
@@ -2999,11 +2999,11 @@ op_logical_or
 id|aci_rw_cmd
 c_func
 (paren
-l_int|0xdf
+id|ACI_ERROR_OP
 comma
-l_int|0xdf
+id|ACI_ERROR_OP
 comma
-l_int|0xdf
+id|ACI_ERROR_OP
 )paren
 OL
 l_int|0
@@ -3020,7 +3020,7 @@ c_cond
 id|aci_rw_cmd
 c_func
 (paren
-l_int|0x0d
+id|ACI_SET_MUTE
 comma
 l_int|0x00
 comma
@@ -3047,7 +3047,7 @@ c_cond
 id|aci_rw_cmd
 c_func
 (paren
-l_int|0xd0
+id|ACI_SET_IDE
 comma
 op_logical_neg
 id|ide
@@ -3082,7 +3082,7 @@ c_cond
 id|aci_rw_cmd
 c_func
 (paren
-l_int|0xd1
+id|ACI_SET_WSS
 comma
 op_logical_neg
 op_logical_neg

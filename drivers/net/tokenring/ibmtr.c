@@ -5109,6 +5109,7 @@ id|ISRP_ODD
 suffix:semicolon
 id|skip_reset
 suffix:colon
+suffix:semicolon
 )brace
 multiline_comment|/* SRB response */
 r_if

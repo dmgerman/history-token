@@ -546,8 +546,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+r_break
+suffix:semicolon
 )brace
 )brace
 r_else

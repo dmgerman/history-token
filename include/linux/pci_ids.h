@@ -261,12 +261,16 @@ DECL|macro|PCI_DEVICE_ID_NCR_YELLOWFIN
 mdefine_line|#define PCI_DEVICE_ID_NCR_YELLOWFIN&t;0x0701
 DECL|macro|PCI_VENDOR_ID_ATI
 mdefine_line|#define PCI_VENDOR_ID_ATI&t;&t;0x1002
+multiline_comment|/* Mach64 */
 DECL|macro|PCI_DEVICE_ID_ATI_68800
 mdefine_line|#define PCI_DEVICE_ID_ATI_68800&t;&t;0x4158
 DECL|macro|PCI_DEVICE_ID_ATI_215CT222
 mdefine_line|#define PCI_DEVICE_ID_ATI_215CT222&t;0x4354
 DECL|macro|PCI_DEVICE_ID_ATI_210888CX
 mdefine_line|#define PCI_DEVICE_ID_ATI_210888CX&t;0x4358
+DECL|macro|PCI_DEVICE_ID_ATI_215ET222
+mdefine_line|#define PCI_DEVICE_ID_ATI_215ET222&t;0x4554
+multiline_comment|/* Mach64 / Rage */
 DECL|macro|PCI_DEVICE_ID_ATI_215GB
 mdefine_line|#define PCI_DEVICE_ID_ATI_215GB&t;&t;0x4742
 DECL|macro|PCI_DEVICE_ID_ATI_215GD
@@ -277,18 +281,45 @@ DECL|macro|PCI_DEVICE_ID_ATI_215GP
 mdefine_line|#define PCI_DEVICE_ID_ATI_215GP&t;&t;0x4750
 DECL|macro|PCI_DEVICE_ID_ATI_215GQ
 mdefine_line|#define PCI_DEVICE_ID_ATI_215GQ&t;&t;0x4751
+DECL|macro|PCI_DEVICE_ID_ATI_215XL
+mdefine_line|#define PCI_DEVICE_ID_ATI_215XL&t;&t;0x4752
 DECL|macro|PCI_DEVICE_ID_ATI_215GT
 mdefine_line|#define PCI_DEVICE_ID_ATI_215GT&t;&t;0x4754
 DECL|macro|PCI_DEVICE_ID_ATI_215GTB
 mdefine_line|#define PCI_DEVICE_ID_ATI_215GTB&t;0x4755
+DECL|macro|PCI_DEVICE_ID_ATI_215_IV
+mdefine_line|#define PCI_DEVICE_ID_ATI_215_IV&t;0x4756
+DECL|macro|PCI_DEVICE_ID_ATI_215_IW
+mdefine_line|#define PCI_DEVICE_ID_ATI_215_IW&t;0x4757
+DECL|macro|PCI_DEVICE_ID_ATI_215_IZ
+mdefine_line|#define PCI_DEVICE_ID_ATI_215_IZ&t;0x475A
 DECL|macro|PCI_DEVICE_ID_ATI_210888GX
 mdefine_line|#define PCI_DEVICE_ID_ATI_210888GX&t;0x4758
-DECL|macro|PCI_DEVICE_ID_ATI_215LG
-mdefine_line|#define PCI_DEVICE_ID_ATI_215LG&t;&t;0x4c47
-DECL|macro|PCI_DEVICE_ID_ATI_264LT
-mdefine_line|#define PCI_DEVICE_ID_ATI_264LT&t;&t;0x4c54
+DECL|macro|PCI_DEVICE_ID_ATI_215_LB
+mdefine_line|#define PCI_DEVICE_ID_ATI_215_LB&t;0x4c42
+DECL|macro|PCI_DEVICE_ID_ATI_215_LD
+mdefine_line|#define PCI_DEVICE_ID_ATI_215_LD&t;0x4c44
+DECL|macro|PCI_DEVICE_ID_ATI_215_LG
+mdefine_line|#define PCI_DEVICE_ID_ATI_215_LG&t;0x4c47
+DECL|macro|PCI_DEVICE_ID_ATI_215_LI
+mdefine_line|#define PCI_DEVICE_ID_ATI_215_LI&t;0x4c49
+DECL|macro|PCI_DEVICE_ID_ATI_215_LM
+mdefine_line|#define PCI_DEVICE_ID_ATI_215_LM&t;0x4c4D
+DECL|macro|PCI_DEVICE_ID_ATI_215_LN
+mdefine_line|#define PCI_DEVICE_ID_ATI_215_LN&t;0x4c4E
+DECL|macro|PCI_DEVICE_ID_ATI_215_LR
+mdefine_line|#define PCI_DEVICE_ID_ATI_215_LR&t;0x4c52
+DECL|macro|PCI_DEVICE_ID_ATI_215_LS
+mdefine_line|#define PCI_DEVICE_ID_ATI_215_LS&t;0x4c53
+DECL|macro|PCI_DEVICE_ID_ATI_264_LT
+mdefine_line|#define PCI_DEVICE_ID_ATI_264_LT&t;0x4c54
+multiline_comment|/* Mach64 VT */
 DECL|macro|PCI_DEVICE_ID_ATI_264VT
 mdefine_line|#define PCI_DEVICE_ID_ATI_264VT&t;&t;0x5654
+DECL|macro|PCI_DEVICE_ID_ATI_264VU
+mdefine_line|#define PCI_DEVICE_ID_ATI_264VU&t;&t;0x5655
+DECL|macro|PCI_DEVICE_ID_ATI_264VV
+mdefine_line|#define PCI_DEVICE_ID_ATI_264VV&t;&t;0x5656
 multiline_comment|/* Rage128 Pro GL */
 DECL|macro|PCI_DEVICE_ID_ATI_Rage128_PA
 mdefine_line|#define PCI_DEVICE_ID_ATI_Rage128_PA&t;0x5041
@@ -1940,6 +1971,8 @@ DECL|macro|PCI_DEVICE_ID_AVM_C4
 mdefine_line|#define PCI_DEVICE_ID_AVM_C4&t;&t;0x0800
 DECL|macro|PCI_DEVICE_ID_AVM_A1
 mdefine_line|#define PCI_DEVICE_ID_AVM_A1&t;&t;0x0a00
+DECL|macro|PCI_DEVICE_ID_AVM_C2
+mdefine_line|#define PCI_DEVICE_ID_AVM_C2&t;&t;0x1100
 DECL|macro|PCI_DEVICE_ID_AVM_T1
 mdefine_line|#define PCI_DEVICE_ID_AVM_T1&t;&t;0x1200
 DECL|macro|PCI_VENDOR_ID_DIPIX

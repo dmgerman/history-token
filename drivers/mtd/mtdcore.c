@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: mtdcore.c,v 1.27 2000/12/10 01:10:09 dwmw2 Exp $&n; *&n; * Core registration and callback routines for MTD&n; * drivers and users.&n; *&n; */
+multiline_comment|/*&n; * $Id: mtdcore.c,v 1.30 2001/06/02 14:30:42 dwmw2 Exp $&n; *&n; * Core registration and callback routines for MTD&n; * drivers and users.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -860,11 +860,13 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;mtd%d: %8.8lx &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
+l_string|&quot;mtd%d: %8.8x %8.8x &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
 id|i
 comma
 id|this-&gt;size
+comma
+id|this-&gt;erasesize
 comma
 id|this-&gt;name
 )paren
@@ -907,8 +909,6 @@ macro_line|#endif
 (brace
 r_int
 id|len
-op_assign
-l_int|0
 comma
 id|l
 comma
@@ -924,6 +924,16 @@ c_func
 (paren
 op_amp
 id|mtd_table_mutex
+)paren
+suffix:semicolon
+id|len
+op_assign
+id|sprintf
+c_func
+(paren
+id|page
+comma
+l_string|&quot;dev:    size   erasesize  name&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for

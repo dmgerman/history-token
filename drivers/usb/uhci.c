@@ -1610,15 +1610,8 @@ id|qh-&gt;list
 )paren
 )paren
 (brace
-id|uhci_free_qh
-c_func
-(paren
-id|uhci
-comma
-id|qh
-)paren
-suffix:semicolon
-r_return
+r_goto
+id|list
 suffix:semicolon
 )brace
 id|qh-&gt;urbp
@@ -1685,6 +1678,8 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|list
+suffix:colon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -12707,7 +12702,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_PM
 DECL|function|uhci_pci_suspend
 r_static
-r_void
+r_int
 id|uhci_pci_suspend
 c_func
 (paren
@@ -12715,6 +12710,9 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+comma
+id|u32
+id|state
 )paren
 (brace
 id|reset_hc
@@ -12728,10 +12726,13 @@ op_star
 id|dev-&gt;driver_data
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|uhci_pci_resume
 r_static
-r_void
+r_int
 id|uhci_pci_resume
 c_func
 (paren
@@ -12762,6 +12763,9 @@ op_star
 )paren
 id|dev-&gt;driver_data
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -12982,13 +12986,7 @@ id|info
 c_func
 (paren
 id|DRIVER_VERSION
-l_string|&quot; &quot;
-id|DRIVER_AUTHOR
-)paren
-suffix:semicolon
-id|info
-c_func
-(paren
+l_string|&quot;:&quot;
 id|DRIVER_DESC
 )paren
 suffix:semicolon

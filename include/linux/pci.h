@@ -493,6 +493,8 @@ DECL|macro|pci_present
 mdefine_line|#define pci_present pcibios_present
 DECL|macro|pci_for_each_dev_reverse
 mdefine_line|#define pci_for_each_dev_reverse(dev) &bslash;&n;&t;for(dev = pci_dev_g(pci_devices.prev); dev != pci_dev_g(&amp;pci_devices); dev = pci_dev_g(dev-&gt;global_list.prev))
+DECL|macro|pci_for_each_bus
+mdefine_line|#define pci_for_each_bus(bus) &bslash;&n;for(bus = pci_bus_b(pci_root_buses.next); bus != pci_bus_b(&amp;pci_root_buses); bus = pci_bus_b(bus-&gt;node.next))
 multiline_comment|/*&n; * The pci_dev structure is used to describe both PCI and ISAPnP devices.&n; */
 DECL|struct|pci_dev
 r_struct
@@ -597,6 +599,11 @@ id|dma_addr_t
 id|dma_mask
 suffix:semicolon
 multiline_comment|/* Mask of the bits of bus address this&n;&t;&t;&t;&t;&t;   device implements.  Normally this is&n;&t;&t;&t;&t;&t;   0xffffffff.  You only need to change&n;&t;&t;&t;&t;&t;   this if your device has broken DMA&n;&t;&t;&t;&t;&t;   or supports 64-bit transfers.  */
+DECL|member|current_state
+id|u32
+id|current_state
+suffix:semicolon
+multiline_comment|/* Current operating state. In ACPI-speak,&n;&t;&t;&t;&t;&t;   this is D0-D3, D0 being fully functional,&n;&t;&t;&t;&t;&t;   and D3 being off. */
 multiline_comment|/* device is compatible with these IDs */
 DECL|member|vendor_compatible
 r_int
@@ -1139,7 +1146,7 @@ id|dev
 suffix:semicolon
 multiline_comment|/* Device removed (NULL if not a hot-plug capable driver) */
 DECL|member|suspend
-r_void
+r_int
 (paren
 op_star
 id|suspend
@@ -1149,11 +1156,14 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+comma
+id|u32
+id|state
 )paren
 suffix:semicolon
 multiline_comment|/* Device suspended */
 DECL|member|resume
-r_void
+r_int
 (paren
 op_star
 id|resume
@@ -1166,6 +1176,26 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Device woken up */
+DECL|member|enable_wake
+r_int
+(paren
+op_star
+id|enable_wake
+)paren
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+id|u32
+id|state
+comma
+r_int
+id|enable
+)paren
+suffix:semicolon
+multiline_comment|/* Enable wake event */
 )brace
 suffix:semicolon
 multiline_comment|/* these external functions are only available when PCI support is enabled */
@@ -1791,8 +1821,6 @@ id|u32
 id|val
 )paren
 suffix:semicolon
-DECL|macro|HAVE_PCI_DISABLE_DEVICE
-mdefine_line|#define HAVE_PCI_DISABLE_DEVICE
 r_int
 id|pci_enable_device
 c_func
@@ -1837,6 +1865,48 @@ id|mask
 )paren
 suffix:semicolon
 r_int
+id|pci_assign_resource
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+id|i
+)paren
+suffix:semicolon
+multiline_comment|/* Power management related routines */
+r_int
+id|pci_save_state
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+id|u32
+op_star
+id|buffer
+)paren
+suffix:semicolon
+r_int
+id|pci_restore_state
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+id|u32
+op_star
+id|buffer
+)paren
+suffix:semicolon
+r_int
 id|pci_set_power_state
 c_func
 (paren
@@ -1850,7 +1920,7 @@ id|state
 )paren
 suffix:semicolon
 r_int
-id|pci_assign_resource
+id|pci_enable_wake
 c_func
 (paren
 r_struct
@@ -1858,8 +1928,11 @@ id|pci_dev
 op_star
 id|dev
 comma
+id|u32
+id|state
+comma
 r_int
-id|i
+id|enable
 )paren
 suffix:semicolon
 multiline_comment|/* Helper functions for low-level code (drivers/pci/setup-[bus,res].c) */

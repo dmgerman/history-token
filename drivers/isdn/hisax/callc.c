@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: callc.c,v 2.51.6.2 2001/03/13 16:17:08 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
+multiline_comment|/* $Id: callc.c,v 2.51.6.3 2001/05/26 15:19:57 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -14,7 +14,7 @@ r_char
 op_star
 id|lli_revision
 op_assign
-l_string|&quot;$Revision: 2.51.6.2 $&quot;
+l_string|&quot;$Revision: 2.51.6.3 $&quot;
 suffix:semicolon
 r_extern
 r_struct
@@ -4216,7 +4216,7 @@ suffix:semicolon
 multiline_comment|/* *INDENT-ON* */
 DECL|macro|FNCOUNT
 mdefine_line|#define FNCOUNT (sizeof(fnlist)/sizeof(struct FsmNode))
-r_void
+r_int
 id|__init
 DECL|function|CallcNew
 id|CallcNew
@@ -4241,6 +4241,7 @@ id|callcfsm.strState
 op_assign
 id|strState
 suffix:semicolon
+r_return
 id|FsmNew
 c_func
 (paren

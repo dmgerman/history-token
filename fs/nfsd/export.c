@@ -818,9 +818,15 @@ op_amp
 id|FS_REQUIRES_DEV
 )paren
 op_logical_or
+(paren
 id|inode-&gt;i_sb-&gt;s_op-&gt;read_inode
 op_eq
 l_int|NULL
+op_logical_and
+id|inode-&gt;i_sb-&gt;s_op-&gt;fh_to_dentry
+op_eq
+l_int|NULL
+)paren
 )paren
 (brace
 id|dprintk

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: power.c,v 1.8 2000/07/11 22:41:33 davem Exp $&n; * power.c: Power management driver.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: power.c,v 1.9 2001/06/08 02:28:22 davem Exp $&n; * power.c: Power management driver.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -277,6 +277,23 @@ r_struct
 id|linux_ebus_device
 op_star
 id|edev
+suffix:semicolon
+r_static
+r_int
+id|invoked
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|invoked
+)paren
+r_return
+suffix:semicolon
+id|invoked
+op_assign
+l_int|1
 suffix:semicolon
 id|for_each_ebus
 c_func

@@ -8403,9 +8403,9 @@ id|ENOTTY
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
 multiline_comment|/*&n;&t;&t; * Some programs mix up audio devices and ioctls&n;&t;&t; * or perhaps they expect &quot;universal&quot; ioctls,&n;&t;&t; * for instance we get SNDCTL_TMR_CONTINUE here.&n;&t;&t; * XXX Is there sound_generic_ioctl() around?&n;&t;&t; */
+r_break
+suffix:semicolon
 )brace
 r_return
 op_minus

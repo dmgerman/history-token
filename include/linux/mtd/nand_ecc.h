@@ -1,0 +1,49 @@
+multiline_comment|/*&n; *  drivers/mtd/nand_ecc.h&n; *&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@cotw.com)&n; *&n; * $Id: nand_ecc.h,v 1.1 2000/10/12 00:57:15 sjhill Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * This file is the header for the ECC algorithm.&n; */
+multiline_comment|/*&n; * Creates non-inverted ECC code from line parity&n; */
+r_void
+id|nand_trans_result
+c_func
+(paren
+id|u_char
+id|reg2
+comma
+id|u_char
+id|reg3
+comma
+id|u_char
+op_star
+id|ecc_code
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Calculate 3 byte ECC code for 256 byte block&n; */
+r_void
+id|nand_calculate_ecc
+(paren
+r_const
+id|u_char
+op_star
+id|dat
+comma
+id|u_char
+op_star
+id|ecc_code
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Detect and correct a 1 bit error for 256 byte block&n; */
+r_int
+id|nand_correct_data
+(paren
+id|u_char
+op_star
+id|dat
+comma
+id|u_char
+op_star
+id|read_ecc
+comma
+id|u_char
+op_star
+id|calc_ecc
+)paren
+suffix:semicolon
+eof

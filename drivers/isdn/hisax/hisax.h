@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hisax.h,v 2.52.6.4 2001/04/08 19:32:26 kai Exp $&n; *&n; *   Basic declarations, defines and prototypes&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: hisax.h,v 2.52.6.5 2001/05/26 15:19:57 kai Exp $&n; *&n; *   Basic declarations, defines and prototypes&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -4427,7 +4427,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_void
+r_int
 id|FsmNew
 c_func
 (paren
@@ -4773,7 +4773,7 @@ op_star
 id|cs
 )paren
 suffix:semicolon
-r_void
+r_int
 id|CallcNew
 c_func
 (paren
@@ -4807,7 +4807,7 @@ op_star
 id|cs
 )paren
 suffix:semicolon
-r_void
+r_int
 id|Isdnl1New
 c_func
 (paren
@@ -4821,7 +4821,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_void
+r_int
 id|Isdnl2New
 c_func
 (paren
@@ -4835,7 +4835,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_void
+r_int
 id|Isdnl3New
 c_func
 (paren
@@ -4883,7 +4883,7 @@ op_star
 id|revision
 )paren
 suffix:semicolon
-r_void
+r_int
 id|TeiNew
 c_func
 (paren

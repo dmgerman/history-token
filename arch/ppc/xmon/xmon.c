@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.xmon.c 1.9 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.xmon.c 1.12 06/09/01 22:18:05 paulus&n; */
 multiline_comment|/*&n; * Routines providing a simple monitor for use on the PowerMac.&n; *&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -3392,12 +3392,8 @@ id|ret_from_syscall_2
 suffix:semicolon
 r_extern
 r_char
-id|do_bottom_half_ret
-comma
 id|do_signal_ret
-suffix:semicolon
-r_extern
-r_char
+comma
 id|ret_from_except
 suffix:semicolon
 id|printf
@@ -3536,17 +3532,6 @@ r_int
 )paren
 op_amp
 id|ret_from_syscall_2
-op_logical_or
-id|stack
-(braket
-l_int|1
-)braket
-op_eq
-(paren
-r_int
-)paren
-op_amp
-id|do_bottom_half_ret
 op_logical_or
 id|stack
 (braket

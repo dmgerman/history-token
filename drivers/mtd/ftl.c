@@ -1,11 +1,5 @@
-multiline_comment|/* This version ported to the Linux-MTD system by dwmw2@infradead.org&n; *&n; * - Based on Id: ftl.c,v 1.21 2000/08/01 13:07:49 dwmw2 Exp&n; * - With the Franz Galiana&squot;s set_bam_entry fix from v1.23&n; * - Perhaps it&squot;s about time I made a branch for the 2.4 series.&n;&n; * Originally based on:&n; */
-multiline_comment|/*======================================================================&n;&n;    A Flash Translation Layer memory card driver&n;&n;    This driver implements a disk-like block device driver with an&n;    apparent block size of 512 bytes for flash memory cards.&n;&n;    ftl_cs.c 1.62 2000/02/01 00:59:04&n;&n;    The contents of this file are subject to the Mozilla Public&n;    License Version 1.1 (the &quot;License&quot;); you may not use this file&n;    except in compliance with the License. You may obtain a copy of&n;    the License at http://www.mozilla.org/MPL/&n;&n;    Software distributed under the License is distributed on an &quot;AS&n;    IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, either express or&n;    implied. See the License for the specific language governing&n;    rights and limitations under the License.&n;&n;    The initial developer of the original code is David A. Hinds&n;    &lt;dhinds@pcmcia.sourceforge.org&gt;.  Portions created by David A. Hinds&n;    are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n;&n;    Alternatively, the contents of this file may be used under the&n;    terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in which&n;    case the provisions of the GPL are applicable instead of the&n;    above.  If you wish to allow the use of your version of this file&n;    only under the terms of the GPL and not to allow others to use&n;    your version of this file under the MPL, indicate your decision&n;    by deleting the provisions above and replace them with the notice&n;    and other provisions required by the GPL.  If you do not delete&n;    the provisions above, a recipient may use your version of this&n;    file under either the MPL or the GPL.&n;&n;    LEGAL NOTE: The FTL format is patented by M-Systems.  They have&n;    granted a license for its use with PCMCIA devices:&n;&n;     &quot;M-Systems grants a royalty-free, non-exclusive license under&n;      any presently existing M-Systems intellectual property rights&n;      necessary for the design and development of FTL-compatible&n;      drivers, file systems and utilities using the data formats with&n;      PCMCIA PC Cards as described in the PCMCIA Flash Translation&n;      Layer (FTL) Specification.&quot;&n;&n;    Use of the FTL format for non-PCMCIA applications may be an&n;    infringement of these patents.  For additional information,&n;    contact M-Systems (http://www.m-sys.com) directly.&n;      &n;======================================================================*/
-DECL|macro|FTL_DEBUG
-mdefine_line|#define FTL_DEBUG 5
-macro_line|#ifdef FTL_DEBUG
-DECL|macro|DEBUGLVL
-mdefine_line|#define DEBUGLVL debug
-macro_line|#endif
+multiline_comment|/* This version ported to the Linux-MTD system by dwmw2@infradead.org&n; * $Id: ftl.c,v 1.35 2001/06/09 00:40:17 dwmw2 Exp $&n; *&n; * Fixes: Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * - fixes some leaks on failure in build_maps and ftl_notify_add, cleanups&n; *&n; * Based on:&n; */
+multiline_comment|/*======================================================================&n;&n;    A Flash Translation Layer memory card driver&n;&n;    This driver implements a disk-like block device driver with an&n;    apparent block size of 512 bytes for flash memory cards.&n;&n;    ftl_cs.c 1.62 2000/02/01 00:59:04&n;&n;    The contents of this file are subject to the Mozilla Public&n;    License Version 1.1 (the &quot;License&quot;); you may not use this file&n;    except in compliance with the License. You may obtain a copy of&n;    the License at http://www.mozilla.org/MPL/&n;&n;    Software distributed under the License is distributed on an &quot;AS&n;    IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, either express or&n;    implied. See the License for the specific language governing&n;    rights and limitations under the License.&n;&n;    The initial developer of the original code is David A. Hinds&n;    &lt;dhinds@pcmcia.sourceforge.org&gt;.  Portions created by David A. Hinds&n;    are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n;&n;    Alternatively, the contents of this file may be used under the&n;    terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n;    which case the provisions of the GPL are applicable instead of the&n;    above.  If you wish to allow the use of your version of this file&n;    only under the terms of the GPL and not to allow others to use&n;    your version of this file under the MPL, indicate your decision&n;    by deleting the provisions above and replace them with the notice&n;    and other provisions required by the GPL.  If you do not delete&n;    the provisions above, a recipient may use your version of this&n;    file under either the MPL or the GPL.&n;&n;    LEGAL NOTE: The FTL format is patented by M-Systems.  They have&n;    granted a license for its use with PCMCIA devices:&n;&n;     &quot;M-Systems grants a royalty-free, non-exclusive license under&n;      any presently existing M-Systems intellectual property rights&n;      necessary for the design and development of FTL-compatible&n;      drivers, file systems and utilities using the data formats with&n;      PCMCIA PC Cards as described in the PCMCIA Flash Translation&n;      Layer (FTL) Specification.&quot;&n;&n;    Use of the FTL format for non-PCMCIA applications may be an&n;    infringement of these patents.  For additional information,&n;    contact M-Systems (http://www.m-sys.com) directly.&n;      &n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -49,7 +43,6 @@ mdefine_line|#define request_arg_t           request_queue_t *q
 macro_line|#endif
 multiline_comment|/*====================================================================*/
 multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
-multiline_comment|/* Major device # for FTL device */
 DECL|variable|shuffle_freq
 r_static
 r_int
@@ -66,6 +59,7 @@ l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*====================================================================*/
+multiline_comment|/* Major device # for FTL device */
 macro_line|#ifndef FTL_MAJOR
 DECL|macro|FTL_MAJOR
 mdefine_line|#define FTL_MAJOR&t;44
@@ -90,28 +84,7 @@ mdefine_line|#define PART_NR(minor)&t;&t;((minor)&amp;7)
 DECL|macro|MINOR_NR
 mdefine_line|#define MINOR_NR(dev,reg,part)&t;(((dev)&lt;&lt;5)+((reg)&lt;&lt;3)+(part))
 macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#ifdef FTL_DEBUG
-DECL|variable|debug
-r_static
-r_int
-id|debug
-op_assign
-id|FTL_DEBUG
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|debug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*====================================================================*/
-macro_line|#ifndef FTL_MAJOR
-DECL|macro|FTL_MAJOR
-mdefine_line|#define FTL_MAJOR&t;44
-macro_line|#endif
 multiline_comment|/* Maximum number of separate memory devices we&squot;ll allow */
 DECL|macro|MAX_DEV
 mdefine_line|#define MAX_DEV&t;&t;4
@@ -287,7 +260,16 @@ r_struct
 id|mtd_notifier
 id|ftl_notifier
 op_assign
-initialization_block
+(brace
+id|add
+suffix:colon
+id|ftl_notify_add
+comma
+id|remove
+suffix:colon
+id|ftl_notify_remove
+comma
+)brace
 suffix:semicolon
 multiline_comment|/* Partition state flags */
 DECL|macro|FTL_FORMATTED
@@ -391,9 +373,6 @@ id|sizes
 suffix:colon
 id|ftl_sizes
 comma
-id|nr_real
-suffix:colon
-l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/*====================================================================*/
@@ -584,7 +563,6 @@ op_add_assign
 id|part-&gt;mtd-&gt;erasesize
 ques
 c_cond
-id|part-&gt;mtd-&gt;erasesize
 suffix:colon
 l_int|0x2000
 )paren
@@ -731,7 +709,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;ftl: FTL EraseUnitSize %x != MTD erasesize %lx&bslash;n&quot;
+l_string|&quot;ftl: FTL EraseUnitSize %x != MTD erasesize %x&bslash;n&quot;
 comma
 l_int|1
 op_lshift
@@ -783,6 +761,9 @@ r_int
 id|hdr_ok
 comma
 id|ret
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 id|ssize_t
 id|retval
@@ -823,9 +804,8 @@ c_cond
 op_logical_neg
 id|part-&gt;EUNInfo
 )paren
-r_return
-op_minus
-l_int|1
+r_goto
+id|out
 suffix:semicolon
 r_for
 c_loop
@@ -872,9 +852,8 @@ c_cond
 op_logical_neg
 id|part-&gt;XferInfo
 )paren
-r_return
-op_minus
-l_int|1
+r_goto
+id|out_EUNInfo
 suffix:semicolon
 id|xvalid
 op_assign
@@ -950,8 +929,13 @@ c_cond
 (paren
 id|ret
 )paren
-r_return
+r_goto
+id|out_XferInfo
+suffix:semicolon
 id|ret
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 multiline_comment|/* Is this a transfer partition? */
 id|hdr_ok
@@ -1053,9 +1037,8 @@ l_string|&quot;ftl_cs: format error: too many &quot;
 l_string|&quot;transfer units!&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-l_int|1
+r_goto
+id|out_XferInfo
 suffix:semicolon
 )brace
 r_if
@@ -1172,9 +1155,8 @@ l_string|&quot;ftl_cs: format error: erase units &quot;
 l_string|&quot;don&squot;t add up!&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-l_int|1
+r_goto
+id|out_XferInfo
 suffix:semicolon
 )brace
 multiline_comment|/* Set up virtual page map */
@@ -1200,6 +1182,15 @@ r_sizeof
 id|u_int32_t
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|part-&gt;VirtualBlockMap
+)paren
+r_goto
+id|out_XferInfo
 suffix:semicolon
 id|memset
 c_func
@@ -1247,9 +1238,8 @@ c_cond
 op_logical_neg
 id|part-&gt;bam_cache
 )paren
-r_return
-op_minus
-l_int|1
+r_goto
+id|out_VirtualBlockMap
 suffix:semicolon
 id|part-&gt;bam_index
 op_assign
@@ -1341,8 +1331,8 @@ c_cond
 (paren
 id|ret
 )paren
-r_return
-id|ret
+r_goto
+id|out_bam_cache
 suffix:semicolon
 r_for
 c_loop
@@ -1481,8 +1471,49 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-r_return
+id|ret
+op_assign
 l_int|0
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+id|out_bam_cache
+suffix:colon
+id|kfree
+c_func
+(paren
+id|part-&gt;bam_cache
+)paren
+suffix:semicolon
+id|out_VirtualBlockMap
+suffix:colon
+id|vfree
+c_func
+(paren
+id|part-&gt;VirtualBlockMap
+)paren
+suffix:semicolon
+id|out_XferInfo
+suffix:colon
+id|kfree
+c_func
+(paren
+id|part-&gt;XferInfo
+)paren
+suffix:semicolon
+id|out_EUNInfo
+suffix:colon
+id|kfree
+c_func
+(paren
+id|part-&gt;EUNInfo
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* build_maps */
@@ -2554,7 +2585,7 @@ suffix:semicolon
 id|DEBUG
 c_func
 (paren
-l_int|4
+l_int|3
 comma
 l_string|&quot;NumTransferUnits == %x&bslash;n&quot;
 comma
@@ -2612,7 +2643,7 @@ id|XFER_UNKNOWN
 id|DEBUG
 c_func
 (paren
-l_int|4
+l_int|3
 comma
 l_string|&quot;XferInfo[%d].state == XFER_UNKNOWN&bslash;n&quot;
 comma
@@ -2648,7 +2679,7 @@ id|XFER_ERASING
 id|DEBUG
 c_func
 (paren
-l_int|4
+l_int|3
 comma
 l_string|&quot;XferInfo[%d].state == XFER_ERASING&bslash;n&quot;
 comma
@@ -2681,7 +2712,7 @@ id|XFER_ERASED
 id|DEBUG
 c_func
 (paren
-l_int|4
+l_int|3
 comma
 l_string|&quot;XferInfo[%d].state == XFER_ERASED&bslash;n&quot;
 comma
@@ -2717,7 +2748,7 @@ id|XFER_PREPARED
 id|DEBUG
 c_func
 (paren
-l_int|4
+l_int|3
 comma
 l_string|&quot;XferInfo[%d].state == XFER_PREPARED&bslash;n&quot;
 comma
@@ -2765,7 +2796,7 @@ id|n
 id|DEBUG
 c_func
 (paren
-l_int|4
+l_int|3
 comma
 l_string|&quot;XferInfo[%d].state == %x&bslash;n&quot;
 comma
@@ -5140,19 +5171,19 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-r_for
+id|i
+op_assign
+id|MAX_PART
+op_minus
+l_int|1
+suffix:semicolon
+r_while
 c_loop
 (paren
 id|i
-op_assign
+op_decrement
+OG
 l_int|0
-suffix:semicolon
-id|i
-OL
-id|MAX_PART
-suffix:semicolon
-id|i
-op_increment
 )paren
 (brace
 r_if
@@ -5183,16 +5214,12 @@ op_plus
 id|i
 )paren
 suffix:semicolon
-id|sync_dev
+id|invalidate_device
 c_func
 (paren
 id|rdev
-)paren
-suffix:semicolon
-id|invalidate_buffers
-c_func
-(paren
-id|rdev
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -5783,6 +5810,13 @@ l_int|10
 suffix:semicolon
 macro_line|#endif
 )brace
+r_else
+id|kfree
+c_func
+(paren
+id|partition
+)paren
+suffix:semicolon
 )brace
 DECL|function|ftl_notify_remove
 r_static
@@ -5917,13 +5951,11 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20300
-macro_line|#ifdef MODULE
+macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
 DECL|macro|init_ftl
 mdefine_line|#define init_ftl init_module
 DECL|macro|cleanup_ftl
 mdefine_line|#define cleanup_ftl cleanup_module
-macro_line|#endif
 macro_line|#endif
 DECL|function|init_ftl
 id|mod_init_t
@@ -5947,6 +5979,14 @@ r_sizeof
 (paren
 id|myparts
 )paren
+)paren
+suffix:semicolon
+id|DEBUG
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;$Id: ftl.c,v 1.35 2001/06/09 00:40:17 dwmw2 Exp $&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -6182,7 +6222,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt; 0x20300
 DECL|variable|init_ftl
 id|module_init
 c_func
@@ -6197,5 +6236,4 @@ c_func
 id|cleanup_ftl
 )paren
 suffix:semicolon
-macro_line|#endif
 eof

@@ -9300,6 +9300,7 @@ op_star
 id|uuid
 suffix:semicolon
 r_int
+r_int
 id|len
 suffix:semicolon
 r_if
@@ -9386,7 +9387,7 @@ c_func
 (paren
 id|oldval
 comma
-id|table-&gt;data
+id|uuid
 comma
 id|len
 )paren

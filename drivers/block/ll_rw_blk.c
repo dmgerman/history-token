@@ -2814,6 +2814,11 @@ c_func
 id|bh-&gt;b_rdev
 )paren
 suffix:semicolon
+r_int
+id|minorsize
+op_assign
+l_int|0
+suffix:semicolon
 id|request_queue_t
 op_star
 id|q
@@ -2829,6 +2834,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Test device size, when known. */
 r_if
 c_cond
 (paren
@@ -2837,12 +2843,8 @@ id|blk_size
 id|major
 )braket
 )paren
-(brace
-r_int
-r_int
-id|maxsector
+id|minorsize
 op_assign
-(paren
 id|blk_size
 (braket
 id|major
@@ -2854,6 +2856,19 @@ c_func
 id|bh-&gt;b_rdev
 )paren
 )braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|minorsize
+)paren
+(brace
+r_int
+r_int
+id|maxsector
+op_assign
+(paren
+id|minorsize
 op_lshift
 l_int|1
 )paren
@@ -2888,6 +2903,7 @@ OL
 id|sector
 )paren
 (brace
+multiline_comment|/* Yecch */
 id|bh-&gt;b_state
 op_and_assign
 (paren
@@ -2902,23 +2918,7 @@ op_lshift
 id|BH_Mapped
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|blk_size
-(braket
-id|major
-)braket
-(braket
-id|MINOR
-c_func
-(paren
-id|bh-&gt;b_rdev
-)paren
-)braket
-)paren
-(brace
-multiline_comment|/* This may well happen - the kernel calls bread()&n;&t;&t;&t;&t;   without checking the size of the device, e.g.,&n;&t;&t;&t;&t;   when mounting a device. */
+multiline_comment|/* This may well happen - the kernel calls bread()&n;&t;&t;&t;   without checking the size of the device, e.g.,&n;&t;&t;&t;   when mounting a device. */
 id|printk
 c_func
 (paren
@@ -2948,20 +2948,10 @@ id|count
 op_rshift
 l_int|1
 comma
-id|blk_size
-(braket
-id|major
-)braket
-(braket
-id|MINOR
-c_func
-(paren
-id|bh-&gt;b_rdev
-)paren
-)braket
+id|minorsize
 )paren
 suffix:semicolon
-)brace
+multiline_comment|/* Yecch again */
 id|bh
 op_member_access_from_pointer
 id|b_end_io
@@ -2999,7 +2989,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;generic_make_request: Trying to access nonexistent block-device %s (%ld)&bslash;n&quot;
+l_string|&quot;generic_make_request: Trying to access &quot;
+l_string|&quot;nonexistent block-device %s (%ld)&bslash;n&quot;
 comma
 id|kdevname
 c_func

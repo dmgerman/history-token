@@ -9705,6 +9705,8 @@ comma
 id|valid
 comma
 id|code
+comma
+id|info
 suffix:semicolon
 r_const
 r_char
@@ -9775,26 +9777,8 @@ op_assign
 id|SCSI_SENSE_BUFFERSIZE
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|valid
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;[valid=0] &quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Info fld=0x%x, &quot;
-comma
-(paren
-r_int
-)paren
+id|info
+op_assign
 (paren
 (paren
 id|sense_buffer
@@ -9828,8 +9812,43 @@ id|sense_buffer
 l_int|6
 )braket
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info
+op_logical_or
+id|valid
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Info fld=0x%x&quot;
+comma
+id|info
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|valid
+)paren
+multiline_comment|/* info data not according to standard */
+id|printk
+c_func
+(paren
+l_string|&quot; (nonstd)&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;, &quot;
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

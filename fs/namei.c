@@ -3,19 +3,14 @@ multiline_comment|/*&n; * Some corrections by tytso.&n; */
 multiline_comment|/* [Feb 1997 T. Schoebel-Theuer] Complete rewrite of the pathname&n; * lookup logic.&n; */
 multiline_comment|/* [Feb-Apr 2000, AV] Rewrite to the new namespace architecture.&n; */
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
-macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/unaligned.h&gt;
-macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/namei.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|ACC_MODE
 mdefine_line|#define ACC_MODE(x) (&quot;&bslash;000&bslash;004&bslash;002&bslash;006&quot;[(x)&amp;O_ACCMODE])
 multiline_comment|/* [Feb-1997 T. Schoebel-Theuer]&n; * Fundamental changes in the pathname lookup mechanisms (namei)&n; * were necessary because of omirr.  The reason is that omirr needs&n; * to know the _real_ pathname, not the user-supplied one, in case&n; * of symlinks (and also when transname replacements occur).&n; *&n; * The new code replaces the old recursive symlink resolution with&n; * an iterative one (in case of non-nested symlink chains).  It does&n; * this with calls to &lt;fs&gt;_follow_link().&n; * As a side effect, dir_namei(), _namei() and follow_link() are now &n; * replaced with a single function lookup_dentry() that can handle all &n; * the special cases of the former code.&n; *&n; * With the new dcache, the pathname is stored at each inode, at least as&n; * long as the refcount of the inode is positive.  As a side effect, the&n; * size of the dcache depends on the inode cache and thus is dynamic.&n; *&n; * [29-Apr-1998 C. Scott Ananian] Updated above description of symlink&n; * resolution to correspond with current state of the code.&n; *&n; * Note that the symlink resolution is not *completely* iterative.&n; * There is still a significant amount of tail- and mid- recursion in&n; * the algorithm.  Also, note that &lt;fs&gt;_readlink() is not used in&n; * lookup_dentry(): lookup_dentry() on the result of &lt;fs&gt;_readlink()&n; * may return different results than &lt;fs&gt;_follow_link().  Many virtual&n; * filesystems (including /proc) exhibit this behavior.&n; */

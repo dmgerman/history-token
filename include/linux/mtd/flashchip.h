@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * struct flchip definition&n; * &n; * Contains information about the location and state of a given flash device &n; *&n; * (C) 2000 Red Hat. GPLd.&n; *&n; * $Id: flashchip.h,v 1.4 2000/07/03 12:58:41 dwmw2 Exp $&n; *&n; */
+multiline_comment|/* &n; * struct flchip definition&n; * &n; * Contains information about the location and state of a given flash device &n; *&n; * (C) 2000 Red Hat. GPLd.&n; *&n; * $Id: flashchip.h,v 1.7 2001/01/18 03:52:36 nico Exp $&n; *&n; */
 macro_line|#ifndef __MTD_FLASHCHIP_H__
 DECL|macro|__MTD_FLASHCHIP_H__
 mdefine_line|#define __MTD_FLASHCHIP_H__
@@ -22,11 +22,20 @@ comma
 DECL|enumerator|FL_ERASING
 id|FL_ERASING
 comma
+DECL|enumerator|FL_ERASE_SUSPENDING
+id|FL_ERASE_SUSPENDING
+comma
 DECL|enumerator|FL_ERASE_SUSPENDED
 id|FL_ERASE_SUSPENDED
 comma
 DECL|enumerator|FL_WRITING
 id|FL_WRITING
+comma
+DECL|enumerator|FL_WRITING_TO_BUFFER
+id|FL_WRITING_TO_BUFFER
+comma
+DECL|enumerator|FL_WRITE_SUSPENDING
+id|FL_WRITE_SUSPENDING
 comma
 DECL|enumerator|FL_WRITE_SUSPENDED
 id|FL_WRITE_SUSPENDED
@@ -39,6 +48,12 @@ id|FL_SYNCING
 comma
 DECL|enumerator|FL_UNLOADING
 id|FL_UNLOADING
+comma
+DECL|enumerator|FL_LOCKING
+id|FL_LOCKING
+comma
+DECL|enumerator|FL_UNLOCKING
+id|FL_UNLOCKING
 comma
 DECL|enumerator|FL_UNKNOWN
 id|FL_UNKNOWN

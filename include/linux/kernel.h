@@ -450,6 +450,12 @@ r_int
 id|procs
 suffix:semicolon
 multiline_comment|/* Number of current processes */
+DECL|member|pad
+r_int
+r_int
+id|pad
+suffix:semicolon
+multiline_comment|/* explicit padding for m68k */
 DECL|member|totalhigh
 r_int
 r_int

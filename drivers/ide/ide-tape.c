@@ -18533,7 +18533,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ide-tape: %s: chrdev_write: use %d bytes as block size (%d used)&bslash;n&quot;
+l_string|&quot;ide-tape: %s: chrdev_write: use %d bytes as block size (%Zd used)&bslash;n&quot;
 comma
 id|tape-&gt;name
 comma

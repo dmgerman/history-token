@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: creatorfb.c,v 1.34 2001/03/16 10:22:02 davem Exp $&n; * creatorfb.c: Creator/Creator3D frame buffer driver&n; *&n; * Copyright (C) 1997,1998,1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: creatorfb.c,v 1.35 2001/06/08 21:48:37 davem Exp $&n; * creatorfb.c: Creator/Creator3D frame buffer driver&n; *&n; * Copyright (C) 1997,1998,1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -105,6 +105,24 @@ DECL|macro|FFB_PROM_POFF
 mdefine_line|#define&t;FFB_PROM_POFF&t;&t;0x00000000UL
 DECL|macro|FFB_EXP_POFF
 mdefine_line|#define&t;FFB_EXP_POFF&t;&t;0x00200000UL
+DECL|macro|FFB_DFB422A_POFF
+mdefine_line|#define FFB_DFB422A_POFF&t;0x09000000UL
+DECL|macro|FFB_DFB422AD_POFF
+mdefine_line|#define FFB_DFB422AD_POFF&t;0x09800000UL
+DECL|macro|FFB_DFB24B_POFF
+mdefine_line|#define FFB_DFB24B_POFF&t;&t;0x0a000000UL
+DECL|macro|FFB_DFB422B_POFF
+mdefine_line|#define FFB_DFB422B_POFF&t;0x0b000000UL
+DECL|macro|FFB_DFB422BD_POFF
+mdefine_line|#define FFB_DFB422BD_POFF&t;0x0b800000UL
+DECL|macro|FFB_SFB16Z_POFF
+mdefine_line|#define FFB_SFB16Z_POFF&t;&t;0x0c800000UL
+DECL|macro|FFB_SFB8Z_POFF
+mdefine_line|#define FFB_SFB8Z_POFF&t;&t;0x0c000000UL
+DECL|macro|FFB_SFB422_POFF
+mdefine_line|#define FFB_SFB422_POFF&t;&t;0x0d000000UL
+DECL|macro|FFB_SFB422D_POFF
+mdefine_line|#define FFB_SFB422D_POFF&t;0x0d800000UL
 multiline_comment|/* Draw operations */
 DECL|macro|FFB_DRAWOP_DOT
 mdefine_line|#define FFB_DRAWOP_DOT&t;&t;0x00
@@ -1198,6 +1216,78 @@ comma
 id|FFB_EXP_POFF
 comma
 l_int|0x0002000
+)brace
+comma
+(brace
+id|FFB_DFB422A_VOFF
+comma
+id|FFB_DFB422A_POFF
+comma
+l_int|0x0800000
+)brace
+comma
+(brace
+id|FFB_DFB422AD_VOFF
+comma
+id|FFB_DFB422AD_POFF
+comma
+l_int|0x0800000
+)brace
+comma
+(brace
+id|FFB_DFB24B_VOFF
+comma
+id|FFB_DFB24B_POFF
+comma
+l_int|0x1000000
+)brace
+comma
+(brace
+id|FFB_DFB422B_VOFF
+comma
+id|FFB_DFB422B_POFF
+comma
+l_int|0x0800000
+)brace
+comma
+(brace
+id|FFB_DFB422BD_VOFF
+comma
+id|FFB_DFB422BD_POFF
+comma
+l_int|0x0800000
+)brace
+comma
+(brace
+id|FFB_SFB16Z_VOFF
+comma
+id|FFB_SFB16Z_POFF
+comma
+l_int|0x0800000
+)brace
+comma
+(brace
+id|FFB_SFB8Z_VOFF
+comma
+id|FFB_SFB8Z_POFF
+comma
+l_int|0x0800000
+)brace
+comma
+(brace
+id|FFB_SFB422_VOFF
+comma
+id|FFB_SFB422_POFF
+comma
+l_int|0x0800000
+)brace
+comma
+(brace
+id|FFB_SFB422D_VOFF
+comma
+id|FFB_SFB422D_POFF
+comma
+l_int|0x0800000
 )brace
 comma
 (brace

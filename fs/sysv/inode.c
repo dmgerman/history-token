@@ -2309,6 +2309,7 @@ id|failed
 suffix:semicolon
 id|superblock_ok
 suffix:colon
+suffix:semicolon
 )brace
 )brace
 r_else

@@ -1925,6 +1925,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+l_int|0x2800
+suffix:colon
+id|what
+op_assign
+l_string|&quot;not ready to ready transition (media change?)&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 l_int|0x2903
 suffix:colon
 id|what

@@ -414,5 +414,5 @@ id|MCA_DMA_REG_EXE
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif MCA_DMA_H
+macro_line|#endif /* MCA_DMA_H */
 eof

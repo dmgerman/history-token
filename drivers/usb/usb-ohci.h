@@ -303,11 +303,12 @@ c_func
 id|aligned
 c_func
 (paren
-l_int|16
+l_int|32
 )paren
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* normally 16, iso needs 32 */
 DECL|typedef|td_t
 r_typedef
 r_struct
@@ -1691,7 +1692,7 @@ r_struct
 id|td
 )paren
 comma
-l_int|16
+l_int|32
 multiline_comment|/* byte alignment */
 comma
 l_int|0

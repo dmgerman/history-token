@@ -6644,6 +6644,8 @@ suffix:semicolon
 r_return
 suffix:semicolon
 macro_line|#endif /* PARANOID */
+r_break
+suffix:semicolon
 )brace
 )brace
 r_else

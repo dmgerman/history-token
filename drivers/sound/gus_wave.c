@@ -9946,8 +9946,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+r_break
+suffix:semicolon
 )brace
 )brace
 DECL|function|gus_audio_set_speed
@@ -14980,8 +14980,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+r_break
+suffix:semicolon
 )brace
 id|restore_flags
 c_func
@@ -15559,8 +15559,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+r_break
+suffix:semicolon
 )brace
 id|status
 op_assign

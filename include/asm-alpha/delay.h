@@ -94,6 +94,7 @@ l_int|32
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
+macro_line|#include &lt;linux/sched.h&gt;&t;/* for smp_processor_id */
 DECL|macro|udelay
 mdefine_line|#define udelay(u)  __udelay((u), cpu_data[smp_processor_id()].loops_per_jiffy)
 macro_line|#else

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ppc_ksyms.c 1.31 05/18/01 08:18:10 patch&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.ppc_ksyms.c 1.34 06/09/01 22:38:13 paulus&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -1742,13 +1742,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ret_to_user_hook
-)paren
-suffix:semicolon
-DECL|variable|do_softirq
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|do_softirq
 )paren
 suffix:semicolon
 DECL|variable|next_mmu_context

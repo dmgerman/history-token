@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ebus.c,v 1.61 2001/04/24 05:13:25 davem Exp $&n; * ebus.c: PCI to EBus bridge device.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 1999  David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: ebus.c,v 1.63 2001/06/08 02:27:16 davem Exp $&n; * ebus.c: PCI to EBus bridge device.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 1999  David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -30,14 +30,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-r_extern
-r_void
-id|rs_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|ebus_alloc
 r_static
 r_inline
@@ -1455,22 +1447,6 @@ l_string|&quot;]&quot;
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|clock_probe
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|power_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|ebus_init
 r_void
 id|__init
@@ -1982,11 +1958,6 @@ op_increment
 id|num_ebus
 suffix:semicolon
 )brace
-id|rs_init
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SUN_AUXIO
 id|auxio_probe
 c_func
@@ -1994,15 +1965,5 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|clock_probe
-c_func
-(paren
-)paren
-suffix:semicolon
-id|power_init
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 eof

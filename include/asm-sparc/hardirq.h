@@ -10,15 +10,15 @@ multiline_comment|/* entry.S is sensitive to the offsets of these fields */
 r_typedef
 r_struct
 (brace
-DECL|member|__softirq_active
+DECL|member|__softirq_pending
 r_int
 r_int
-id|__softirq_active
+id|__softirq_pending
 suffix:semicolon
-DECL|member|__softirq_mask
+DECL|member|__unused_1
 r_int
 r_int
-id|__softirq_mask
+id|__unused_1
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
 DECL|member|__local_irq_count

@@ -10448,7 +10448,7 @@ comma
 id|card-&gt;devname
 )paren
 suffix:semicolon
-macro_line|#endif MODEM_NOT_LOG
+macro_line|#endif /* MODEM_NOT_LOG */
 id|api_oob_event
 c_func
 (paren

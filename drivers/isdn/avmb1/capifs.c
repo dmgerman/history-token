@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: capifs.c,v 1.14.6.7 2001/05/24 08:29:08 kai Exp $&n; *&n; * (c) Copyright 2000 by Carsten Paeth (calle@calle.de)&n; *&n; * Heavily based on devpts filesystem from H. Peter Anvin&n; *&n; */
+multiline_comment|/*&n; * $Id: capifs.c,v 1.14.6.7 2001/05/24 08:29:08 kai Exp $&n; * &n; * (c) Copyright 2000 by Carsten Paeth (calle@calle.de)&n; *&n; * Heavily based on devpts filesystem from H. Peter Anvin&n; * &n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;

@@ -248,7 +248,7 @@ id|mask
 r_int
 id|port
 op_assign
-l_int|0x536
+l_int|0x537
 suffix:semicolon
 r_if
 c_cond
@@ -369,7 +369,7 @@ id|val2
 op_assign
 l_int|0xE0
 op_or
-l_int|2
+l_int|3
 suffix:semicolon
 )brace
 r_else

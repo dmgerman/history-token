@@ -1,4 +1,6 @@
-multiline_comment|/* &n; * NFTL mount code with extensive checks&n; *&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; *&n; * $Id: nftlmount.c,v 1.11 2000/11/17 12:24:09 ollie Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/* &n; * NFTL mount code with extensive checks&n; *&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; *&n; * $Id: nftlmount.c,v 1.17 2001/06/02 20:33:20 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+DECL|macro|__NO_VERSION__
+mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
@@ -258,10 +260,30 @@ l_int|2
 op_ge
 id|nftl-&gt;nb_blocks
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;Potential NFTL Media Header found, but sanity check failed:&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;nb_boot_blocks (%d) + 2 &gt; nb_blocks (%d)&bslash;n&quot;
+comma
+id|nftl-&gt;nb_boot_blocks
+comma
+id|nftl-&gt;nb_blocks
+)paren
+suffix:semicolon
 r_goto
 id|ReplUnitTable
 suffix:semicolon
 multiline_comment|/* small consistency check */
+)brace
 id|nftl-&gt;numvunits
 op_assign
 id|le32_to_cpu
@@ -285,10 +307,32 @@ op_minus
 l_int|2
 )paren
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;Potential NFTL Media Header found, but sanity check failed:&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;numvunits (%d) &gt; nb_blocks (%d) - nb_boot_blocks(%d) - 2&bslash;n&quot;
+comma
+id|nftl-&gt;numvunits
+comma
+id|nftl-&gt;nb_blocks
+comma
+id|nftl-&gt;nb_boot_blocks
+)paren
+suffix:semicolon
 r_goto
 id|ReplUnitTable
 suffix:semicolon
 multiline_comment|/* small consistency check */
+)brace
 multiline_comment|/* FixMe: with bad blocks, the total size available is not FormattedSize any&n;&t;&t;&t;&t;   more !!! */
 id|nftl-&gt;nr_sects
 op_assign
@@ -1443,16 +1487,7 @@ r_int
 id|erase_mark
 suffix:semicolon
 r_int
-id|i
-comma
 id|retlen
-suffix:semicolon
-r_int
-r_char
-id|buf
-(braket
-id|SECTORSIZE
-)braket
 suffix:semicolon
 multiline_comment|/* check erase mark. */
 r_if

@@ -1426,6 +1426,8 @@ r_case
 id|FORE200E_STATE_BLANK
 suffix:colon
 multiline_comment|/* nothing to do for that state */
+r_break
+suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef CONFIG_ATM_FORE200E_PCA

@@ -7217,12 +7217,8 @@ id|STp-&gt;devt
 suffix:semicolon
 r_int
 id|expected
-id|__attribute__
-(paren
-(paren
-id|__unused__
-)paren
-)paren
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|attempts
@@ -18074,7 +18070,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:W: Read (%d bytes) not multiple of tape block size (%d%c).&bslash;n&quot;
+l_string|&quot;osst%d:W: Read (%Zd bytes) not multiple of tape block size (%d%c).&bslash;n&quot;
 comma
 id|dev
 comma

@@ -1,7 +1,7 @@
 multiline_comment|/* Linux driver for Disk-On-Chip 2000       */
 multiline_comment|/* (c) 1999 Machine Vision Holdings, Inc.   */
 multiline_comment|/* Author: David Woodhouse &lt;dwmw2@mvhi.com&gt; */
-multiline_comment|/* $Id: doc2000.h,v 1.12 2000/11/03 12:43:43 dwmw2 Exp $ */
+multiline_comment|/* $Id: doc2000.h,v 1.13 2001/05/29 12:03:45 dwmw2 Exp $ */
 macro_line|#ifndef __MTD_DOC2000_H__
 DECL|macro|__MTD_DOC2000_H__
 mdefine_line|#define __MTD_DOC2000_H__
@@ -57,21 +57,27 @@ mdefine_line|#define DoC_Mil_CDSN_IO &t;0x0800
 DECL|macro|DoC_2k_CDSN_IO
 mdefine_line|#define DoC_2k_CDSN_IO &t;&t;0x1800
 multiline_comment|/* How to access the device? &n; * On ARM, it&squot;ll be mmap&squot;d directly with 32-bit wide accesses. &n; * On PPC, it&squot;s mmap&squot;d and 16-bit wide.&n; * Others use readb/writeb &n; */
-macro_line|#if defined(__arm__) 
+macro_line|#if defined(__arm__)
 DECL|macro|ReadDOC_
-mdefine_line|#define ReadDOC_(adr, reg)      ((unsigned char)(*(__u32 *)(((unsigned long)adr)+(reg&lt;&lt;2))))
+mdefine_line|#define ReadDOC_(adr, reg)      ((unsigned char)(*(__u32 *)(((unsigned long)adr)+((reg)&lt;&lt;2))))
 DECL|macro|WriteDOC_
-mdefine_line|#define WriteDOC_(d, adr, reg)  do{ *(__u32 *)(((unsigned long)adr)+(reg&lt;&lt;2)) = (__u32)d} while(0)
+mdefine_line|#define WriteDOC_(d, adr, reg)  do{ *(__u32 *)(((unsigned long)adr)+((reg)&lt;&lt;2)) = (__u32)d; wmb();} while(0)
+DECL|macro|DOC_IOREMAP_LEN
+mdefine_line|#define DOC_IOREMAP_LEN 0x8000
 macro_line|#elif defined(__ppc__)
 DECL|macro|ReadDOC_
-mdefine_line|#define ReadDOC_(adr, reg)      ((unsigned char)(*(__u16 *)(((unsigned long)adr)+(reg&lt;&lt;1))))
+mdefine_line|#define ReadDOC_(adr, reg)      ((unsigned char)(*(__u16 *)(((unsigned long)adr)+((reg)&lt;&lt;1))))
 DECL|macro|WriteDOC_
-mdefine_line|#define WriteDOC_(d, adr, reg)  do{ *(__u16 *)(((unsigned long)adr)+(reg&lt;&lt;1)) = (__u16)d} while(0)
+mdefine_line|#define WriteDOC_(d, adr, reg)  do{ *(__u16 *)(((unsigned long)adr)+((reg)&lt;&lt;1)) = (__u16)d; wmb();} while(0)
+DECL|macro|DOC_IOREMAP_LEN
+mdefine_line|#define DOC_IOREMAP_LEN 0x4000
 macro_line|#else
 DECL|macro|ReadDOC_
-mdefine_line|#define ReadDOC_(adr, reg)      readb(((unsigned long)adr) + reg)
+mdefine_line|#define ReadDOC_(adr, reg)      readb(((unsigned long)adr) + (reg))
 DECL|macro|WriteDOC_
-mdefine_line|#define WriteDOC_(d, adr, reg)  writeb(d, ((unsigned long)adr) + reg)
+mdefine_line|#define WriteDOC_(d, adr, reg)  writeb(d, ((unsigned long)adr) + (reg))
+DECL|macro|DOC_IOREMAP_LEN
+mdefine_line|#define DOC_IOREMAP_LEN 0x2000
 macro_line|#endif
 macro_line|#if defined(__i386__)
 DECL|macro|USE_MEMCPY

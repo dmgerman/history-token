@@ -7251,12 +7251,10 @@ suffix:colon
 r_case
 id|MODULE_SCSI_IOCTL
 suffix:colon
-r_break
-suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+r_break
+suffix:semicolon
 )brace
 r_return
 suffix:semicolon

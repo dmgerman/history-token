@@ -8539,6 +8539,9 @@ c_cond
 (paren
 id|err
 OL
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|dev-&gt;descriptor

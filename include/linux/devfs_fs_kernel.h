@@ -757,10 +757,6 @@ id|devfs_get_info
 (paren
 id|devfs_handle_t
 id|de
-comma
-r_int
-r_int
-id|size
 )paren
 (brace
 r_return

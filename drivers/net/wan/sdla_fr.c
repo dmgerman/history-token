@@ -15676,8 +15676,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+r_break
+suffix:semicolon
 singleline_comment|// ARP&squot;s and RARP&squot;s -- Shouldn&squot;t happen.
 )brace
 r_return

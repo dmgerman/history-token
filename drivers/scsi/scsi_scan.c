@@ -1733,7 +1733,7 @@ op_assign
 id|SDpnt
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * We need to increment the counter for this one device so we can track when&n;&t; * things are quiet.&n;&t; */
+multiline_comment|/*&n;&t; * We need to increment the counter for this one device so we can track&n;&t; * when things are quiet.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2441,7 +2441,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * Assume that the device will have handshaking problems, and then fix this&n;&t; * field later if it turns out it doesn&squot;t&n;&t; */
+multiline_comment|/*&n;&t; * Assume that the device will have handshaking problems, and then fix&n;&t; * this field later if it turns out it doesn&squot;t&n;&t; */
 id|SDpnt-&gt;borken
 op_assign
 l_int|1
@@ -2602,12 +2602,59 @@ id|SRpnt-&gt;sr_result
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Now that we don&squot;t do TEST_UNIT_READY anymore, we must be prepared&n;&t; * for media change conditions here, so cannot require zero result.&n;&t; */
 r_if
 c_cond
 (paren
 id|SRpnt-&gt;sr_result
 )paren
 (brace
+r_if
+c_cond
+(paren
+(paren
+id|driver_byte
+c_func
+(paren
+id|SRpnt-&gt;sr_result
+)paren
+op_amp
+id|DRIVER_SENSE
+)paren
+op_ne
+l_int|0
+op_logical_and
+(paren
+id|SRpnt-&gt;sr_sense_buffer
+(braket
+l_int|2
+)braket
+op_amp
+l_int|0xf
+)paren
+op_eq
+id|UNIT_ATTENTION
+op_logical_and
+id|SRpnt-&gt;sr_sense_buffer
+(braket
+l_int|12
+)braket
+op_eq
+l_int|0x28
+op_logical_and
+id|SRpnt-&gt;sr_sense_buffer
+(braket
+l_int|13
+)braket
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* not-ready to ready transition - good */
+)brace
+r_else
+(brace
+multiline_comment|/* assume no peripheral if any other sort of error */
 id|scsi_release_request
 c_func
 (paren
@@ -2617,7 +2664,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* assume no peripheral if any sort of error */
+)brace
 )brace
 multiline_comment|/*&n;&t; * Check the peripheral qualifier field - this tells us whether LUNS&n;&t; * are supported here or not.&n;&t; */
 r_if

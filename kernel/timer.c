@@ -25,7 +25,6 @@ suffix:semicolon
 multiline_comment|/* timer interrupt period */
 multiline_comment|/* The current time */
 DECL|variable|xtime
-r_volatile
 r_struct
 id|timeval
 id|xtime

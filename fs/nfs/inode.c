@@ -275,6 +275,11 @@ id|inode-&gt;i_rdev
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* We can&squot;t support UPDATE_ATIME(), since the server will reset it */
+id|inode-&gt;i_flags
+op_or_assign
+id|S_NOATIME
+suffix:semicolon
 id|NFS_FILEID
 c_func
 (paren
@@ -4097,7 +4102,6 @@ c_func
 id|fattr-&gt;ctime
 )paren
 suffix:semicolon
-multiline_comment|/* If we&squot;ve been messing around with atime, don&squot;t&n;&t; * update it. Save the server value in NFS_CACHE_ATIME.&n;&t; */
 id|NFS_CACHE_ATIME
 c_func
 (paren
@@ -4106,21 +4110,6 @@ id|inode
 op_assign
 id|fattr-&gt;atime
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|time_before
-c_func
-(paren
-id|inode-&gt;i_atime
-comma
-id|nfs_time_to_secs
-c_func
-(paren
-id|fattr-&gt;atime
-)paren
-)paren
-)paren
 id|inode-&gt;i_atime
 op_assign
 id|nfs_time_to_secs

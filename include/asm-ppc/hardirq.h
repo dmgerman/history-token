@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.hardirq.h 1.7 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.hardirq.h 1.10 06/09/01 22:16:38 paulus&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_HARDIRQ_H
 DECL|macro|__ASM_HARDIRQ_H
@@ -10,16 +10,12 @@ multiline_comment|/* The __last_jiffy_stamp field is needed to ensure that no de
 r_typedef
 r_struct
 (brace
-DECL|member|__softirq_active
+DECL|member|__softirq_pending
 r_int
 r_int
-id|__softirq_active
+id|__softirq_pending
 suffix:semicolon
-DECL|member|__softirq_mask
-r_int
-r_int
-id|__softirq_mask
-suffix:semicolon
+multiline_comment|/* set_bit is used on this */
 DECL|member|__local_irq_count
 r_int
 r_int

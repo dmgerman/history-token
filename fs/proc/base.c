@@ -3190,21 +3190,6 @@ comma
 id|ino
 )paren
 suffix:semicolon
-id|inode-&gt;u.proc_i.file
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/*&n;&t; * grab the reference to task.&n;&t; */
-id|inode-&gt;u.proc_i.task
-op_assign
-id|task
-suffix:semicolon
-id|get_task_struct
-c_func
-(paren
-id|task
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3213,6 +3198,17 @@ id|task-&gt;pid
 )paren
 r_goto
 id|out_unlock
+suffix:semicolon
+multiline_comment|/*&n;&t; * grab the reference to task.&n;&t; */
+id|get_task_struct
+c_func
+(paren
+id|task
+)paren
+suffix:semicolon
+id|inode-&gt;u.proc_i.task
+op_assign
+id|task
 suffix:semicolon
 id|inode-&gt;i_uid
 op_assign

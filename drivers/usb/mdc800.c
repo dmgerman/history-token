@@ -2791,12 +2791,7 @@ suffix:semicolon
 id|info
 (paren
 id|DRIVER_VERSION
-l_string|&quot; &quot;
-id|DRIVER_AUTHOR
-)paren
-suffix:semicolon
-id|info
-(paren
+l_string|&quot;:&quot;
 id|DRIVER_DESC
 )paren
 suffix:semicolon

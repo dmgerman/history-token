@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: string.h,v 1.18 2000/10/30 21:01:41 davem Exp $&n; * string.h: External definitions for optimized assembly string&n; *           routines for the Linux Kernel.&n; *&n; * Copyright (C) 1995,1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996,1997,1999 Jakub Jelinek (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: string.h,v 1.19 2001/06/05 20:56:33 davem Exp $&n; * string.h: External definitions for optimized assembly string&n; *           routines for the Linux Kernel.&n; *&n; * Copyright (C) 1995,1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996,1997,1999 Jakub Jelinek (jakub@redhat.com)&n; */
 macro_line|#ifndef __SPARC64_STRING_H__
 DECL|macro|__SPARC64_STRING_H__
 mdefine_line|#define __SPARC64_STRING_H__
@@ -346,6 +346,22 @@ DECL|macro|memscan
 mdefine_line|#define memscan(__arg0, __char, __arg2)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern void *__memscan_zero(void *, size_t);&t;&t;&t;&t;&bslash;&n;&t;extern void *__memscan_generic(void *, int, size_t);&t;&t;&t;&bslash;&n;&t;void *__retval, *__addr = (__arg0);&t;&t;&t;&t;&t;&bslash;&n;&t;size_t __size = (__arg2);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if(__builtin_constant_p(__char) &amp;&amp; !(__char))&t;&t;&t;&t;&bslash;&n;&t;&t;__retval = __memscan_zero(__addr, __size);&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__retval = __memscan_generic(__addr, (__char), __size);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__retval;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__HAVE_ARCH_MEMCMP
 mdefine_line|#define __HAVE_ARCH_MEMCMP
+r_extern
+r_int
+id|memcmp
+c_func
+(paren
+r_const
+r_void
+op_star
+comma
+r_const
+r_void
+op_star
+comma
+id|__kernel_size_t
+)paren
+suffix:semicolon
 multiline_comment|/* Now the str*() stuff... */
 DECL|macro|__HAVE_ARCH_STRLEN
 mdefine_line|#define __HAVE_ARCH_STRLEN

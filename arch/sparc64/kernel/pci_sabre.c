@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_sabre.c,v 1.33 2001/06/04 23:20:32 ecd Exp $&n; * pci_sabre.c: Sabre specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: pci_sabre.c,v 1.36 2001/06/08 06:25:41 davem Exp $&n; * pci_sabre.c: Sabre specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/apb.h&gt;
 macro_line|#include &lt;asm/pbm.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &quot;pci_impl.h&quot;
 multiline_comment|/* All SABRE registers are 64-bits.  The following accessor&n; * routines are how they are accessed.  The REG parameter&n; * is a physical address.&n; */
 DECL|macro|sabre_read
@@ -330,7 +331,7 @@ mdefine_line|#define SABRE_CONFIGSPACE&t;0x001000000UL
 DECL|macro|SABRE_IOSPACE
 mdefine_line|#define SABRE_IOSPACE&t;&t;0x002000000UL
 DECL|macro|SABRE_IOSPACE_SIZE
-mdefine_line|#define SABRE_IOSPACE_SIZE&t;0x00000ffffUL
+mdefine_line|#define SABRE_IOSPACE_SIZE&t;0x000ffffffUL
 DECL|macro|SABRE_MEMSPACE
 mdefine_line|#define SABRE_MEMSPACE&t;&t;0x100000000UL
 DECL|macro|SABRE_MEMSPACE_SIZE
@@ -4305,18 +4306,21 @@ id|root
 )paren
 (brace
 r_struct
-id|pcidev_cookie
+id|pci_pbm_info
 op_star
-id|pcp
+id|pbm
 op_assign
-id|pdev-&gt;sysdata
+id|pci_bus2pbm
+(braket
+id|pdev-&gt;bus-&gt;number
+)braket
 suffix:semicolon
 r_struct
 id|pci_controller_info
 op_star
 id|p
 op_assign
-id|pcp-&gt;pbm-&gt;parent
+id|pbm-&gt;parent
 suffix:semicolon
 r_int
 r_int
@@ -6608,7 +6612,7 @@ op_plus
 (paren
 l_int|1UL
 op_lshift
-l_int|16
+l_int|24
 )paren
 op_minus
 l_int|1UL
@@ -6826,10 +6830,59 @@ comma
 l_string|&quot;pci108e,a001&quot;
 )paren
 )paren
+(brace
 id|hummingbird_p
 op_assign
 l_int|1
 suffix:semicolon
+)brace
+r_else
+(brace
+r_int
+id|cpu_node
+op_assign
+id|linux_cpus
+(braket
+l_int|0
+)braket
+dot
+id|prom_node
+suffix:semicolon
+multiline_comment|/* Of course, Sun has to encode things a thousand&n;&t;&t;&t; * different ways, inconsistently.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|prom_getproperty
+c_func
+(paren
+id|cpu_node
+comma
+l_string|&quot;name&quot;
+comma
+id|compat
+comma
+r_sizeof
+(paren
+id|compat
+)paren
+)paren
+OG
+l_int|0
+op_logical_and
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|compat
+comma
+l_string|&quot;SUNW,UltraSPARC-IIe&quot;
+)paren
+)paren
+id|hummingbird_p
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 )brace
 id|p
 op_assign

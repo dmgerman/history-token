@@ -21,6 +21,9 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#ifdef __sparc__
 macro_line|#include &lt;asm/ebus.h&gt;
+macro_line|#ifdef __sparc_v9__
+macro_line|#include &lt;asm/isa.h&gt;
+macro_line|#endif
 DECL|variable|rtc_port
 r_static
 r_int
@@ -2149,6 +2152,18 @@ id|linux_ebus_device
 op_star
 id|edev
 suffix:semicolon
+macro_line|#ifdef __sparc_v9__
+r_struct
+id|isa_bridge
+op_star
+id|isa_br
+suffix:semicolon
+r_struct
+id|isa_device
+op_star
+id|isa_dev
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef __sparc__
 id|for_each_ebus
@@ -2179,25 +2194,6 @@ op_eq
 l_int|0
 )paren
 (brace
-r_goto
-id|found
-suffix:semicolon
-)brace
-)brace
-)brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;rtc_init: no PC rtc found&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-id|found
-suffix:colon
 id|rtc_port
 op_assign
 id|edev-&gt;resource
@@ -2214,6 +2210,69 @@ id|edev-&gt;irqs
 l_int|0
 )braket
 suffix:semicolon
+r_goto
+id|found
+suffix:semicolon
+)brace
+)brace
+)brace
+macro_line|#ifdef __sparc_v9__
+id|for_each_isa
+c_func
+(paren
+id|isa_br
+)paren
+(brace
+id|for_each_isadev
+c_func
+(paren
+id|isa_dev
+comma
+id|isa_br
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|strcmp
+c_func
+(paren
+id|isa_dev-&gt;prom_name
+comma
+l_string|&quot;rtc&quot;
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|rtc_port
+op_assign
+id|isa_dev-&gt;resource.start
+suffix:semicolon
+id|rtc_irq
+op_assign
+id|isa_dev-&gt;irq
+suffix:semicolon
+r_goto
+id|found
+suffix:semicolon
+)brace
+)brace
+)brace
+macro_line|#endif
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;rtc_init: no PC rtc found&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+id|found
+suffix:colon
 multiline_comment|/*&n;&t; * XXX Interrupt pin #7 in Espresso is shared between RTC and&n;&t; * PCI Slot 2 INTA# (and some INTx# in Slot 1). SA_INTERRUPT here&n;&t; * is asking for trouble with add-on boards. Change to SA_SHIRQ.&n;&t; */
 r_if
 c_cond

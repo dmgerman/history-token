@@ -35307,6 +35307,8 @@ r_return
 suffix:semicolon
 id|out_stuck
 suffix:colon
+r_return
+suffix:semicolon
 )brace
 multiline_comment|/*==========================================================&n;**&n;**&n;**&t;Aquire a control block&n;**&n;**&n;**==========================================================&n;*/
 DECL|function|ncr_get_ccb

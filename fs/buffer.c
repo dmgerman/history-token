@@ -2563,11 +2563,12 @@ id|dev
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* Part of a mapping? */
+multiline_comment|/* Not hashed? */
 r_if
 c_cond
 (paren
-id|bh-&gt;b_page-&gt;mapping
+op_logical_neg
+id|bh-&gt;b_pprev
 )paren
 r_continue
 suffix:semicolon
@@ -2957,6 +2958,15 @@ op_logical_or
 id|bh-&gt;b_size
 op_eq
 id|size
+)paren
+r_continue
+suffix:semicolon
+multiline_comment|/* Unhashed? */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bh-&gt;b_pprev
 )paren
 r_continue
 suffix:semicolon

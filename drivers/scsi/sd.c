@@ -3457,19 +3457,12 @@ id|the_result
 op_amp
 id|DRIVER_SENSE
 )paren
-id|printk
+id|print_req_sense
 c_func
 (paren
-l_string|&quot;%s : extended sense code = %1x &bslash;n&quot;
+l_string|&quot;sd&quot;
 comma
-id|nbuff
-comma
-id|SRpnt-&gt;sr_sense_buffer
-(braket
-l_int|2
-)braket
-op_amp
-l_int|0xf
+id|SRpnt
 )paren
 suffix:semicolon
 r_else

@@ -13057,6 +13057,12 @@ id|bh
 )paren
 )paren
 (brace
+id|mark_buffer_notjournal_new
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
 id|clear_prepared_bits
 c_func
 (paren

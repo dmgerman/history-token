@@ -378,7 +378,7 @@ l_int|0xc8000
 suffix:semicolon
 DECL|macro|ADDRESS_COUNT
 mdefine_line|#define ADDRESS_COUNT (sizeof( addresses ) / sizeof( unsigned ))
-macro_line|#endif USE_BIOS
+macro_line|#endif /* USE_BIOS */
 multiline_comment|/* possible i/o port addresses */
 DECL|variable|ports
 r_static
@@ -474,7 +474,7 @@ comma
 suffix:semicolon
 DECL|macro|SIGNATURE_COUNT
 mdefine_line|#define SIGNATURE_COUNT (sizeof( signatures ) / sizeof( struct signature ))
-macro_line|#endif USE_BIOS
+macro_line|#endif /* USE_BIOS */
 multiline_comment|/* ============================================================ */
 multiline_comment|/* Control Register Set 0 */
 DECL|variable|TC_LSB
@@ -967,7 +967,7 @@ r_return
 id|tmp
 suffix:semicolon
 )brace
-macro_line|#endif USE_DMA
+macro_line|#endif /* USE_DMA */
 macro_line|#if USE_PIO
 DECL|function|NCR53c406a_pio_read
 r_static
@@ -1426,7 +1426,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif USE_PIO
+macro_line|#endif /* USE_PIO */
 r_int
 id|__init
 DECL|function|NCR53c406a_detect
@@ -1584,7 +1584,7 @@ id|bios_base
 suffix:semicolon
 )paren
 suffix:semicolon
-macro_line|#endif USE_BIOS
+macro_line|#endif /* USE_BIOS */
 macro_line|#ifdef PORT_BASE
 r_if
 c_cond
@@ -1836,7 +1836,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif PORT_BASE
+macro_line|#endif /* PORT_BASE */
 r_if
 c_cond
 (paren
@@ -2015,7 +2015,7 @@ suffix:semicolon
 r_goto
 id|err_release
 suffix:semicolon
-macro_line|#endif USE_DMA
+macro_line|#endif /* USE_DMA */
 )brace
 r_else
 (brace
@@ -2076,7 +2076,7 @@ id|dma_chan
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif USE_DMA 
+macro_line|#endif /* USE_DMA */
 id|tpnt-&gt;present
 op_assign
 l_int|1
@@ -3371,8 +3371,8 @@ comma
 id|pio_status
 )paren
 suffix:semicolon
-macro_line|#endif USE_DMA
-macro_line|#endif NCR53C406A_DEBUG
+macro_line|#endif /* USE_DMA */
+macro_line|#endif /* NCR53C406A_DEBUG */
 r_if
 c_cond
 (paren
@@ -3455,7 +3455,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif USE_PIO
+macro_line|#endif /* USE_PIO */
 r_if
 c_cond
 (paren
@@ -3678,7 +3678,7 @@ comma
 id|current_SC-&gt;request_bufflen
 )paren
 suffix:semicolon
-macro_line|#endif USE_DMA
+macro_line|#endif /* USE_DMA */
 id|outb
 c_func
 (paren
@@ -3738,7 +3738,7 @@ suffix:semicolon
 )brace
 id|REG0
 suffix:semicolon
-macro_line|#endif USE_PIO
+macro_line|#endif /* USE_PIO */
 )brace
 r_break
 suffix:semicolon
@@ -3799,7 +3799,7 @@ comma
 id|current_SC-&gt;request_bufflen
 )paren
 suffix:semicolon
-macro_line|#endif USE_DMA
+macro_line|#endif /* USE_DMA */
 id|outb
 c_func
 (paren
@@ -3859,7 +3859,7 @@ suffix:semicolon
 )brace
 id|REG0
 suffix:semicolon
-macro_line|#endif USE_PIO
+macro_line|#endif /* USE_PIO */
 )brace
 r_break
 suffix:semicolon
@@ -4227,7 +4227,7 @@ r_return
 id|irq
 suffix:semicolon
 )brace
-macro_line|#endif IRQ_LEV
+macro_line|#endif /* IRQ_LEV */
 DECL|function|chip_init
 r_static
 r_void
