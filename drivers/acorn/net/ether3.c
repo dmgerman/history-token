@@ -1952,7 +1952,7 @@ op_amp
 id|priv-&gt;timer
 )paren
 suffix:semicolon
-id|save_flags_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -2059,7 +2059,7 @@ id|dev
 )paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2193,7 +2193,7 @@ l_int|1
 op_amp
 l_int|15
 suffix:semicolon
-id|save_flags_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -2207,7 +2207,7 @@ op_eq
 id|next_ptr
 )paren
 (brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2396,7 +2396,7 @@ l_int|1
 op_amp
 l_int|15
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
