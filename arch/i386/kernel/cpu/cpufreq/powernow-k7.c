@@ -918,6 +918,10 @@ op_ne
 id|vid
 )paren
 (brace
+id|fidvidctl.bits.SGTC
+op_assign
+id|latency
+suffix:semicolon
 id|fidvidctl.bits.VID
 op_assign
 id|vid
