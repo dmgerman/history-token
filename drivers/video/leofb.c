@@ -1391,7 +1391,7 @@ op_assign
 id|u32
 op_star
 )paren
-id|p-&gt;fb_info.screen_base
+id|fb-&gt;info.screen_base
 )paren
 op_plus
 id|y
@@ -1776,7 +1776,7 @@ op_assign
 id|u32
 op_star
 )paren
-id|p-&gt;fb_info.screen_base
+id|fb-&gt;info.screen_base
 )paren
 op_plus
 id|y
@@ -4036,7 +4036,7 @@ r_int
 id|y_margin
 )paren
 (brace
-id|fb-&gt;fb_info.screen_base
+id|fb-&gt;info.screen_base
 op_add_assign
 l_int|8192
 op_star
@@ -4356,7 +4356,7 @@ op_star
 id|fix
 op_assign
 op_amp
-id|fb-&gt;fix
+id|fb-&gt;info.fix
 suffix:semicolon
 r_struct
 id|fb_var_screeninfo
@@ -4364,7 +4364,7 @@ op_star
 id|var
 op_assign
 op_amp
-id|fb-&gt;var
+id|fb-&gt;info.var
 suffix:semicolon
 r_struct
 id|display
