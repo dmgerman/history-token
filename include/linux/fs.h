@@ -777,13 +777,13 @@ r_struct
 id|list_head
 id|i_mmap_shared
 suffix:semicolon
-multiline_comment|/* list of private mappings */
+multiline_comment|/* list of shared mappings */
 DECL|member|i_shared_sem
 r_struct
 id|semaphore
 id|i_shared_sem
 suffix:semicolon
-multiline_comment|/* and sem protecting it */
+multiline_comment|/* protect both above lists */
 DECL|member|dirtied_when
 r_int
 r_int
