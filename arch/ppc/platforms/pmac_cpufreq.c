@@ -1249,15 +1249,6 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_FREQ_24_API
-id|driver-&gt;cpu_cur_freq
-(braket
-l_int|0
-)braket
-op_assign
-id|cur_freq
-suffix:semicolon
-macro_line|#endif
 id|driver-&gt;verify
 op_assign
 op_amp
