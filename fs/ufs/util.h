@@ -1078,6 +1078,36 @@ id|value
 )paren
 suffix:semicolon
 )brace
+r_extern
+id|dev_t
+id|ufs_get_inode_dev
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+comma
+r_struct
+id|ufs_inode_info
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ufs_set_inode_dev
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+comma
+r_struct
+id|ufs_inode_info
+op_star
+comma
+id|dev_t
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * These functions manipulate ufs buffers&n; */
 DECL|macro|ubh_bread
 mdefine_line|#define ubh_bread(sb,fragment,size) _ubh_bread_(uspi,sb,fragment,size)  
