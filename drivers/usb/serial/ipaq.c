@@ -409,17 +409,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-op_increment
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_eq
-l_int|1
-)paren
-(brace
 id|bytes_in
 op_assign
 l_int|0
@@ -600,7 +589,7 @@ op_add_assign
 id|PACKET_SIZE
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Force low latency on. This will immediately push data to the line&n;&t;&t; * discipline instead of queueing.&n;&t;&t; */
+multiline_comment|/*&n;&t; * Force low latency on. This will immediately push data to the line&n;&t; * discipline instead of queueing.&n;&t; */
 id|port-&gt;tty-&gt;low_latency
 op_assign
 l_int|1
@@ -613,7 +602,7 @@ id|port-&gt;tty-&gt;real_raw
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Lose the small buffers usbserial provides. Make larger ones.&n;&t;&t; */
+multiline_comment|/*&n;&t; * Lose the small buffers usbserial provides. Make larger ones.&n;&t; */
 id|kfree
 c_func
 (paren
@@ -745,7 +734,7 @@ id|result
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Send out two control messages observed in win98 sniffs. Not sure what&n;&t;&t; * they do.&n;&t;&t; */
+multiline_comment|/*&n;&t; * Send out two control messages observed in win98 sniffs. Not sure what&n;&t; * they do.&n;&t; */
 id|result
 op_assign
 id|usb_control_msg
@@ -845,7 +834,6 @@ comma
 id|result
 )paren
 suffix:semicolon
-)brace
 )brace
 r_return
 id|result
@@ -949,18 +937,7 @@ id|serial
 )paren
 r_return
 suffix:semicolon
-op_decrement
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_le
-l_int|0
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * shut down bulk read and write&n;&t;&t; */
+multiline_comment|/*&n;&t; * shut down bulk read and write&n;&t; */
 id|usb_unlink_urb
 c_func
 (paren
@@ -991,11 +968,6 @@ r_private
 op_assign
 l_int|NULL
 suffix:semicolon
-id|port-&gt;open_count
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* Uncomment the following line if you want to see some statistics in your syslog */
 multiline_comment|/* info (&quot;Bytes In = %d  Bytes Out = %d&quot;, bytes_in, bytes_out); */
 )brace
@@ -2306,57 +2278,11 @@ op_star
 id|serial
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 id|dbg
 (paren
 id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/* stop reads and writes on all ports */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|serial-&gt;num_ports
-suffix:semicolon
-op_increment
-id|i
-)paren
-(brace
-r_while
-c_loop
-(paren
-id|serial-&gt;port
-(braket
-id|i
-)braket
-dot
-id|open_count
-OG
-l_int|0
-)paren
-(brace
-id|ipaq_close
-c_func
-(paren
-op_amp
-id|serial-&gt;port
-(braket
-id|i
-)braket
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
-)brace
 )brace
 DECL|function|ipaq_init
 r_static

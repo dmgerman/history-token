@@ -696,6 +696,7 @@ op_logical_neg
 id|port-&gt;read_urb
 )paren
 (brace
+multiline_comment|/* this is needed for some brain dead Sony devices */
 id|err
 (paren
 l_string|&quot;Device lied about number of ports, please use a lower one.&quot;
@@ -706,17 +707,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-op_increment
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_eq
-l_int|1
-)paren
-(brace
 id|bytes_in
 op_assign
 l_int|0
@@ -725,7 +715,7 @@ id|bytes_out
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* force low_latency on so that our tty_push actually forces the data through, &n;&t;&t;   otherwise it is scheduled, and with high data rates (like with OHCI) data&n;&t;&t;   can get lost. */
+multiline_comment|/*&n;&t; * Force low_latency on so that our tty_push actually forces the data&n;&t; * through, otherwise it is scheduled, and with high data rates (like&n;&t; * with OHCI) data can get lost.&n;&t; */
 id|port-&gt;tty-&gt;low_latency
 op_assign
 l_int|1
@@ -777,7 +767,6 @@ comma
 id|result
 )paren
 suffix:semicolon
-)brace
 r_return
 id|result
 suffix:semicolon
@@ -846,24 +835,13 @@ id|serial
 )paren
 r_return
 suffix:semicolon
-op_decrement
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_le
-l_int|0
-)paren
-(brace
 r_if
 c_cond
 (paren
 id|serial-&gt;dev
 )paren
 (brace
-multiline_comment|/* only send a shutdown message if the &n;&t;&t;&t; * device is still here */
+multiline_comment|/* only send a shutdown message if the &n;&t;&t; * device is still here */
 id|transfer_buffer
 op_assign
 id|kmalloc
@@ -931,11 +909,6 @@ id|usb_unlink_urb
 (paren
 id|port-&gt;read_urb
 )paren
-suffix:semicolon
-)brace
-id|port-&gt;open_count
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Uncomment the following line if you want to see some statistics in your syslog */
@@ -2274,37 +2247,10 @@ op_star
 id|serial
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 id|dbg
 (paren
 id|__FUNCTION__
 )paren
-suffix:semicolon
-multiline_comment|/* stop reads and writes on all ports */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|serial-&gt;num_ports
-suffix:semicolon
-op_increment
-id|i
-)paren
-id|serial-&gt;port
-(braket
-id|i
-)braket
-dot
-id|open_count
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|visor_ioctl

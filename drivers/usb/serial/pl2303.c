@@ -1677,21 +1677,10 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-op_increment
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_eq
-l_int|1
-)paren
-(brace
 DECL|macro|FISH
-mdefine_line|#define FISH(a,b,c,d)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;result=usb_control_msg(serial-&gt;dev, usb_rcvctrlpipe(serial-&gt;dev,0),&t;&bslash;&n;&t;&t;&t;&t;       b, a, c, d, buf, 1, 100);&t;&t;&t;&bslash;&n;&t;&t;dbg(&quot;0x%x:0x%x:0x%x:0x%x  %d - %x&quot;,a,b,c,d,result,buf[0]);
+mdefine_line|#define FISH(a,b,c,d)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;result=usb_control_msg(serial-&gt;dev, usb_rcvctrlpipe(serial-&gt;dev,0),&t;&bslash;&n;&t;&t;&t;       b, a, c, d, buf, 1, 100);&t;&t;&t;&bslash;&n;&t;dbg(&quot;0x%x:0x%x:0x%x:0x%x  %d - %x&quot;,a,b,c,d,result,buf[0]);
 DECL|macro|SOUP
-mdefine_line|#define SOUP(a,b,c,d)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;result=usb_control_msg(serial-&gt;dev, usb_sndctrlpipe(serial-&gt;dev,0),&t;&bslash;&n;&t;&t;&t;&t;       b, a, c, d, NULL, 0, 100);&t;&t;&t;&bslash;&n;&t;&t;dbg(&quot;0x%x:0x%x:0x%x:0x%x  %d&quot;,a,b,c,d,result);
+mdefine_line|#define SOUP(a,b,c,d)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;result=usb_control_msg(serial-&gt;dev, usb_sndctrlpipe(serial-&gt;dev,0),&t;&bslash;&n;&t;&t;&t;       b, a, c, d, NULL, 0, 100);&t;&t;&t;&bslash;&n;&t;dbg(&quot;0x%x:0x%x:0x%x:0x%x  %d&quot;,a,b,c,d,result);
 id|FISH
 (paren
 id|VENDOR_READ_REQUEST_TYPE
@@ -1934,7 +1923,6 @@ op_minus
 id|EPROTO
 suffix:semicolon
 )brace
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2009,17 +1997,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-op_decrement
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_le
-l_int|0
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -2126,11 +2103,6 @@ l_string|&quot;(interrupt_in_urb) failed with reason: %d&quot;
 comma
 id|result
 )paren
-suffix:semicolon
-)brace
-id|port-&gt;open_count
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -2644,7 +2616,6 @@ id|dbg
 id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/* stop everything on all ports */
 r_for
 c_loop
 (paren
@@ -2659,30 +2630,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-r_while
-c_loop
-(paren
-id|serial-&gt;port
-(braket
-id|i
-)braket
-dot
-id|open_count
-OG
-l_int|0
-)paren
-(brace
-id|pl2303_close
-(paren
-op_amp
-id|serial-&gt;port
-(braket
-id|i
-)braket
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 id|kfree
 (paren
 id|serial-&gt;port
@@ -2693,7 +2640,6 @@ dot
 r_private
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|pl2303_read_int_callback
 r_static

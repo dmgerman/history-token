@@ -2872,23 +2872,12 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-op_increment
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_eq
-l_int|1
-)paren
-(brace
-multiline_comment|/* force low_latency on so that our tty_push actually forces the data through, &n;&t;&t;   otherwise it is scheduled, and with high data rates (like with OHCI) data&n;&t;&t;   can get lost. */
+multiline_comment|/* force low_latency on so that our tty_push actually forces the data through, &n;&t;   otherwise it is scheduled, and with high data rates (like with OHCI) data&n;&t;   can get lost. */
 id|port-&gt;tty-&gt;low_latency
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* see if we&squot;ve set up our endpoint info yet (can&squot;t set it up in edge_startup&n;&t;&t;   as the structures were not set up at that time.) */
+multiline_comment|/* see if we&squot;ve set up our endpoint info yet (can&squot;t set it up in edge_startup&n;&t;   as the structures were not set up at that time.) */
 id|serial
 op_assign
 id|port-&gt;serial
@@ -2912,10 +2901,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|port-&gt;open_count
-op_assign
-l_int|0
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -3021,7 +3006,7 @@ comma
 id|edge_serial
 )paren
 suffix:semicolon
-multiline_comment|/* start interrupt read for this edgeport&n;&t;&t;&t; * this interrupt will continue as long as the edgeport is connected */
+multiline_comment|/* start interrupt read for this edgeport&n;&t;&t; * this interrupt will continue as long as the edgeport is connected */
 id|response
 op_assign
 id|usb_submit_urb
@@ -3147,10 +3132,6 @@ id|edge_port-&gt;openPending
 op_assign
 id|FALSE
 suffix:semicolon
-id|port-&gt;open_count
-op_assign
-l_int|0
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -3201,10 +3182,6 @@ suffix:semicolon
 id|edge_port-&gt;openPending
 op_assign
 id|FALSE
-suffix:semicolon
-id|port-&gt;open_count
-op_assign
-l_int|0
 suffix:semicolon
 r_return
 op_minus
@@ -3310,7 +3287,6 @@ comma
 id|edge_port-&gt;maxTxCredits
 )paren
 suffix:semicolon
-)brace
 id|dbg
 c_func
 (paren
@@ -3696,17 +3672,6 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-op_decrement
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_le
-l_int|0
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -3852,11 +3817,6 @@ c_func
 (paren
 id|edge_port-&gt;txfifo.fifo
 )paren
-suffix:semicolon
-)brace
-id|port-&gt;open_count
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 id|dbg
@@ -10783,31 +10743,6 @@ op_increment
 id|i
 )paren
 (brace
-r_while
-c_loop
-(paren
-id|serial-&gt;port
-(braket
-id|i
-)braket
-dot
-id|open_count
-OG
-l_int|0
-)paren
-(brace
-id|edge_close
-(paren
-op_amp
-id|serial-&gt;port
-(braket
-id|i
-)braket
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
 id|kfree
 (paren
 id|serial-&gt;port

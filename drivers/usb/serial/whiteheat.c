@@ -979,17 +979,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-op_increment
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_eq
-l_int|1
-)paren
-(brace
 multiline_comment|/* set up some stuff for our command port */
 id|command_port
 op_assign
@@ -1048,7 +1037,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
-id|error_exit
+m_exit
 suffix:semicolon
 )brace
 id|init_waitqueue_head
@@ -1106,7 +1095,7 @@ id|retval
 )paren
 suffix:semicolon
 r_goto
-id|error_exit
+m_exit
 suffix:semicolon
 )brace
 )brace
@@ -1141,7 +1130,7 @@ id|retval
 )paren
 suffix:semicolon
 r_goto
-id|error_exit
+m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* send an open port command */
@@ -1181,31 +1170,19 @@ c_cond
 id|retval
 )paren
 r_goto
-id|error_exit
+m_exit
 suffix:semicolon
 multiline_comment|/* Need to do device specific setup here (control lines, baud rate, etc.) */
 multiline_comment|/* FIXME!!! */
-)brace
-id|dbg
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - exit&quot;
-)paren
-suffix:semicolon
-r_return
-id|retval
-suffix:semicolon
-id|error_exit
+m_exit
 suffix:colon
-op_decrement
-id|port-&gt;open_count
-suffix:semicolon
 id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; - error_exit&quot;
+l_string|&quot; - exit, retval = %d&quot;
+comma
+id|retval
 )paren
 suffix:semicolon
 r_return
@@ -1242,17 +1219,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-op_decrement
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_le
-l_int|0
-)paren
-(brace
 multiline_comment|/* send a close command to the port */
 multiline_comment|/* firmware uses 1 based port numbering */
 id|close_command.port
@@ -1295,11 +1261,6 @@ id|usb_unlink_urb
 id|port-&gt;read_urb
 )paren
 suffix:semicolon
-id|port-&gt;open_count
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 )brace
 DECL|function|whiteheat_ioctl
 r_static
@@ -2407,57 +2368,12 @@ id|usb_serial_port
 op_star
 id|command_port
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 id|dbg
 c_func
 (paren
 id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/* stop reads and writes on all ports */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|serial-&gt;num_ports
-suffix:semicolon
-op_increment
-id|i
-)paren
-(brace
-r_while
-c_loop
-(paren
-id|serial-&gt;port
-(braket
-id|i
-)braket
-dot
-id|open_count
-OG
-l_int|0
-)paren
-(brace
-id|whiteheat_close
-(paren
-op_amp
-id|serial-&gt;port
-(braket
-id|i
-)braket
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/* free up our private data for our command port */
 id|command_port
 op_assign

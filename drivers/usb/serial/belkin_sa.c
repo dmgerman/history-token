@@ -476,31 +476,6 @@ op_increment
 id|i
 )paren
 (brace
-r_while
-c_loop
-(paren
-id|serial-&gt;port
-(braket
-id|i
-)braket
-dot
-id|open_count
-OG
-l_int|0
-)paren
-(brace
-id|belkin_sa_close
-(paren
-op_amp
-id|serial-&gt;port
-(braket
-id|i
-)braket
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* My special items, the standard routines free my urbs */
 r_if
 c_cond
@@ -555,19 +530,8 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-op_increment
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_eq
-l_int|1
-)paren
-(brace
 multiline_comment|/*Start reading from the device*/
-multiline_comment|/* TODO: Look at possibility of submitting mulitple URBs to device to&n;&t;&t; *       enhance buffering.  Win trace shows 16 initial read URBs.&n;&t;&t; */
+multiline_comment|/* TODO: Look at possibility of submitting mulitple URBs to device to&n;&t; *       enhance buffering.  Win trace shows 16 initial read URBs.&n;&t; */
 id|port-&gt;read_urb-&gt;dev
 op_assign
 id|port-&gt;serial-&gt;dev
@@ -623,7 +587,6 @@ c_func
 l_string|&quot; usb_submit_urb(read int) failed&quot;
 )paren
 suffix:semicolon
-)brace
 m_exit
 suffix:colon
 r_return
@@ -690,17 +653,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-op_decrement
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_le
-l_int|0
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -722,11 +674,6 @@ id|usb_unlink_urb
 (paren
 id|port-&gt;interrupt_in_urb
 )paren
-suffix:semicolon
-)brace
-id|port-&gt;open_count
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 )brace
