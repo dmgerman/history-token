@@ -125,7 +125,9 @@ mdefine_line|#define TX_DMA_BURST&t;6&t;/* Maximum PCI burst, &squot;6&squot; is
 DECL|macro|EarlyTxThld
 mdefine_line|#define EarlyTxThld &t;0x3F&t;/* 0x3F means NO early transmit */
 DECL|macro|RxPacketMaxSize
-mdefine_line|#define RxPacketMaxSize&t;0x3FE8&t;/* 16K - 1 - ETH_HLEN - VLAN - CRC */
+mdefine_line|#define RxPacketMaxSize&t;0x3FE8&t;/* 16K - 1 - ETH_HLEN - VLAN - CRC... */
+DECL|macro|SafeMtu
+mdefine_line|#define SafeMtu&t;&t;0x1c20&t;/* ... actually life sucks beyond ~7k */
 DECL|macro|InterFrameGap
 mdefine_line|#define InterFrameGap&t;0x03&t;/* 3 means InterFrameGap = the shortest one */
 DECL|macro|R8169_REGS_SIZE
@@ -7253,7 +7255,7 @@ c_cond
 (paren
 id|new_mtu
 template_param
-id|RxPacketMaxSize
+id|SafeMtu
 )paren
 r_return
 op_minus
