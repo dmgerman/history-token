@@ -4,6 +4,7 @@ DECL|macro|_LINUX_REISER_FS_SB
 mdefine_line|#define _LINUX_REISER_FS_SB
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#endif
 r_typedef
 r_enum
@@ -1179,6 +1180,25 @@ id|spinlock_t
 id|bitmap_lock
 suffix:semicolon
 multiline_comment|/* this lock on now only used to protect reserved_blocks variable */
+DECL|member|priv_root
+r_struct
+id|dentry
+op_star
+id|priv_root
+suffix:semicolon
+multiline_comment|/* root of /.reiserfs_priv */
+DECL|member|xattr_root
+r_struct
+id|dentry
+op_star
+id|xattr_root
+suffix:semicolon
+multiline_comment|/* root of /.reiserfs_priv/.xa */
+DECL|member|xattr_dir_sem
+r_struct
+id|rw_semaphore
+id|xattr_dir_sem
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Definitions of reiserfs on-disk properties: */
@@ -1246,6 +1266,12 @@ comma
 DECL|enumerator|REISERFS_ATTRS
 id|REISERFS_ATTRS
 comma
+DECL|enumerator|REISERFS_XATTRS
+id|REISERFS_XATTRS
+comma
+DECL|enumerator|REISERFS_XATTRS_USER
+id|REISERFS_XATTRS_USER
+comma
 DECL|enumerator|REISERFS_TEST1
 id|REISERFS_TEST1
 comma
@@ -1294,6 +1320,12 @@ DECL|macro|reiserfs_data_ordered
 mdefine_line|#define reiserfs_data_ordered(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_DATA_ORDERED))
 DECL|macro|reiserfs_data_writeback
 mdefine_line|#define reiserfs_data_writeback(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_DATA_WRITEBACK))
+DECL|macro|reiserfs_xattrs
+mdefine_line|#define reiserfs_xattrs(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_XATTRS))
+DECL|macro|reiserfs_xattrs_user
+mdefine_line|#define reiserfs_xattrs_user(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_XATTRS_USER))
+DECL|macro|reiserfs_xattrs_optional
+mdefine_line|#define reiserfs_xattrs_optional(s) reiserfs_xattrs_user(s)
 r_void
 id|reiserfs_file_buffer
 (paren

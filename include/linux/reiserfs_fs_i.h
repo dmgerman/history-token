@@ -43,6 +43,12 @@ DECL|enumerator|i_link_saved_truncate_mask
 id|i_link_saved_truncate_mask
 op_assign
 l_int|0x0020
+comma
+DECL|enumerator|i_priv_object
+id|i_priv_object
+op_assign
+l_int|0x0080
+comma
 DECL|typedef|reiserfs_inode_flags
 )brace
 id|reiserfs_inode_flags

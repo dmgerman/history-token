@@ -439,6 +439,7 @@ op_star
 id|REISERFS_I
 c_func
 (paren
+r_const
 r_struct
 id|inode
 op_star
@@ -5249,6 +5250,21 @@ op_star
 id|sd_attrs
 )paren
 suffix:semicolon
+r_int
+id|reiserfs_setattr
+c_func
+(paren
+r_struct
+id|dentry
+op_star
+id|dentry
+comma
+r_struct
+id|iattr
+op_star
+id|attr
+)paren
+suffix:semicolon
 multiline_comment|/* namei.c */
 r_void
 id|set_de_name_and_namelen
@@ -5422,6 +5438,16 @@ r_extern
 r_struct
 id|inode_operations
 id|reiserfs_dir_inode_operations
+suffix:semicolon
+r_extern
+r_struct
+id|inode_operations
+id|reiserfs_symlink_inode_operations
+suffix:semicolon
+r_extern
+r_struct
+id|inode_operations
+id|reiserfs_special_inode_operations
 suffix:semicolon
 r_extern
 r_struct
@@ -6737,5 +6763,8 @@ DECL|macro|reiserfs_write_lock
 mdefine_line|#define reiserfs_write_lock( sb ) lock_kernel()
 DECL|macro|reiserfs_write_unlock
 mdefine_line|#define reiserfs_write_unlock( sb ) unlock_kernel()
+multiline_comment|/* xattr stuff */
+DECL|macro|REISERFS_XATTR_DIR_SEM
+mdefine_line|#define REISERFS_XATTR_DIR_SEM(s) (REISERFS_SB(s)-&gt;xattr_dir_sem)
 macro_line|#endif /* _LINUX_REISER_FS_H */
 eof
