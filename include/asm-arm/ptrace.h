@@ -1,13 +1,6 @@
 macro_line|#ifndef __ASM_ARM_PTRACE_H
 DECL|macro|__ASM_ARM_PTRACE_H
 mdefine_line|#define __ASM_ARM_PTRACE_H
-macro_line|#include &lt;asm/proc/ptrace.h&gt;
-macro_line|#ifndef __ASSEMBLY__
-DECL|macro|pc_pointer
-mdefine_line|#define pc_pointer(v) &bslash;&n;&t;((v) &amp; ~PCMASK)
-DECL|macro|instruction_pointer
-mdefine_line|#define instruction_pointer(regs) &bslash;&n;&t;(pc_pointer((regs)-&gt;ARM_pc))
-macro_line|#ifdef __KERNEL__
 DECL|macro|PTRACE_GETREGS
 mdefine_line|#define PTRACE_GETREGS&t;&t;12
 DECL|macro|PTRACE_SETREGS
@@ -16,6 +9,18 @@ DECL|macro|PTRACE_GETFPREGS
 mdefine_line|#define PTRACE_GETFPREGS&t;14
 DECL|macro|PTRACE_SETFPREGS
 mdefine_line|#define PTRACE_SETFPREGS&t;15
+DECL|macro|PTRACE_SETOPTIONS
+mdefine_line|#define PTRACE_SETOPTIONS&t;21
+multiline_comment|/* options set using PTRACE_SETOPTIONS */
+DECL|macro|PTRACE_O_TRACESYSGOOD
+mdefine_line|#define PTRACE_O_TRACESYSGOOD&t;0x00000001
+macro_line|#include &lt;asm/proc/ptrace.h&gt;
+macro_line|#ifndef __ASSEMBLY__
+DECL|macro|pc_pointer
+mdefine_line|#define pc_pointer(v) &bslash;&n;&t;((v) &amp; ~PCMASK)
+DECL|macro|instruction_pointer
+mdefine_line|#define instruction_pointer(regs) &bslash;&n;&t;(pc_pointer((regs)-&gt;ARM_pc))
+macro_line|#ifdef __KERNEL__
 r_extern
 r_void
 id|show_regs
