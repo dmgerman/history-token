@@ -656,7 +656,7 @@ id|buf
 l_int|80
 )braket
 suffix:semicolon
-id|bus_addr_t
+id|dma_addr_t
 id|mask_39bit
 suffix:semicolon
 r_struct
@@ -876,9 +876,6 @@ id|pdev
 suffix:semicolon
 id|mask_39bit
 op_assign
-(paren
-id|bus_addr_t
-)paren
 l_int|0x7FFFFFFFFFULL
 suffix:semicolon
 r_if
@@ -886,7 +883,7 @@ c_cond
 (paren
 r_sizeof
 (paren
-id|bus_addr_t
+id|dma_addr_t
 )paren
 OG
 l_int|4
@@ -898,7 +895,7 @@ c_func
 OG
 l_int|0x80000000
 op_logical_and
-id|ahc_pci_set_dma_mask
+id|pci_set_dma_mask
 c_func
 (paren
 id|pdev
@@ -923,7 +920,7 @@ r_else
 r_if
 c_cond
 (paren
-id|ahc_pci_set_dma_mask
+id|pci_set_dma_mask
 c_func
 (paren
 id|pdev
