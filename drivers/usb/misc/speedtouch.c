@@ -1064,6 +1064,12 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|tasklet_schedule
+(paren
+op_amp
+id|instance-&gt;receive_tasklet
+)paren
+suffix:semicolon
 multiline_comment|/* may not be in_interrupt() */
 id|spin_lock_irqsave
 (paren
@@ -1088,17 +1094,6 @@ op_amp
 id|instance-&gt;completed_receivers_lock
 comma
 id|flags
-)paren
-suffix:semicolon
-id|PDEBUG
-(paren
-l_string|&quot;udsl_complete_receive: scheduling tasklet&bslash;n&quot;
-)paren
-suffix:semicolon
-id|tasklet_schedule
-(paren
-op_amp
-id|instance-&gt;receive_tasklet
 )paren
 suffix:semicolon
 )brace
@@ -1809,6 +1804,12 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|tasklet_schedule
+(paren
+op_amp
+id|instance-&gt;send_tasklet
+)paren
+suffix:semicolon
 multiline_comment|/* may not be in_interrupt() */
 id|spin_lock_irqsave
 (paren
@@ -1842,17 +1843,6 @@ op_amp
 id|instance-&gt;send_lock
 comma
 id|flags
-)paren
-suffix:semicolon
-id|PDEBUG
-(paren
-l_string|&quot;udsl_complete_send: scheduling tasklet&bslash;n&quot;
-)paren
-suffix:semicolon
-id|tasklet_schedule
-(paren
-op_amp
-id|instance-&gt;send_tasklet
 )paren
 suffix:semicolon
 )brace
