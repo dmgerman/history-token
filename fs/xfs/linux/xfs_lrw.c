@@ -723,6 +723,13 @@ comma
 id|XFS_IOLOCK_SHARED
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OG
+l_int|0
+)paren
 id|XFS_STATS_ADD
 c_func
 (paren
