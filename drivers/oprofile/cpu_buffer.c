@@ -2,6 +2,7 @@ multiline_comment|/**&n; * @file cpu_buffer.c&n; *&n; * @remark Copyright 2002 O
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &quot;cpu_buffer.h&quot;
 macro_line|#include &quot;oprof.h&quot;
 macro_line|#include &quot;oprofile_stats.h&quot;
