@@ -5131,10 +5131,12 @@ c_func
 id|sk_common_release
 )paren
 suffix:semicolon
-DECL|variable|proto_list_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|proto_list_lock
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD
