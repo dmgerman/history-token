@@ -2967,6 +2967,16 @@ op_amp
 id|BIT_5
 )paren
 (brace
+multiline_comment|/* Magic Packet WoL is enabled on device by default */
+multiline_comment|/* if EEPROM WoL bit is TRUE                        */
+id|bdp-&gt;wolsupported
+op_assign
+id|WAKE_MAGIC
+suffix:semicolon
+id|bdp-&gt;wolopts
+op_assign
+id|WAKE_MAGIC
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2992,12 +3002,6 @@ op_or_assign
 id|WAKE_UCAST
 op_or
 id|WAKE_ARP
-suffix:semicolon
-multiline_comment|/* Magic Packet WoL is enabled on device by default */
-multiline_comment|/* if EEPROM WoL bit is TRUE                        */
-id|bdp-&gt;wolopts
-op_assign
-id|WAKE_MAGIC
 suffix:semicolon
 )brace
 id|printk
