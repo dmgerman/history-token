@@ -518,6 +518,26 @@ id|NUM_ROUNDS
 )braket
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n;&t; * Make sure local timer ticks are disabled while we sync.  If&n;&t; * they were enabled, we&squot;d have to worry about nasty issues&n;&t; * like setting the ITC ahead of (or a long time before) the&n;&t; * next scheduled tick.&n;&t; */
+id|BUG_ON
+c_func
+(paren
+(paren
+id|ia64_get_itv
+c_func
+(paren
+)paren
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|16
+)paren
+)paren
+op_eq
+l_int|0
+)paren
+suffix:semicolon
 id|go
 (braket
 id|MASTER
@@ -790,39 +810,6 @@ comma
 id|rt
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Check whether we sync&squot;d the itc ahead of the next timer interrupt.  If so, just&n;&t; * reset it.&n;&t; */
-r_if
-c_cond
-(paren
-id|time_after
-c_func
-(paren
-id|ia64_get_itc
-c_func
-(paren
-)paren
-comma
-id|local_cpu_data-&gt;itm_next
-)paren
-)paren
-(brace
-id|Dprintk
-c_func
-(paren
-l_string|&quot;CPU %d: oops, jumped a timer tick; resetting timer.&bslash;n&quot;
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-id|ia64_cpu_local_tick
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Ideally sets up per-cpu profiling hooks.  Doesn&squot;t do much now...&n; */
 r_static
@@ -916,12 +903,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Get our bogomips.&n;&t; */
-id|ia64_init_itm
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ia64_mca_cmc_vector_setup
 c_func
 (paren
@@ -940,22 +921,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|calibrate_delay
-c_func
-(paren
-)paren
-suffix:semicolon
-id|local_cpu_data-&gt;loops_per_jiffy
-op_assign
-id|loops_per_jiffy
-suffix:semicolon
-macro_line|#ifdef CONFIG_IA32_SUPPORT
-id|ia32_gdt_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -981,6 +946,28 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Get our bogomips.&n;&t; */
+id|ia64_init_itm
+c_func
+(paren
+)paren
+suffix:semicolon
+id|calibrate_delay
+c_func
+(paren
+)paren
+suffix:semicolon
+id|local_cpu_data-&gt;loops_per_jiffy
+op_assign
+id|loops_per_jiffy
+suffix:semicolon
+macro_line|#ifdef CONFIG_IA32_SUPPORT
+id|ia32_gdt_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Allow the master to continue.&n;&t; */
 id|cpu_set
 c_func
