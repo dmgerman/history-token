@@ -666,6 +666,27 @@ r_struct
 id|list_head
 id|pcmcia_socket_list
 suffix:semicolon
+r_int
+id|pcmcia_get_window
+c_func
+(paren
+r_struct
+id|pcmcia_socket
+op_star
+id|s
+comma
+id|window_handle_t
+op_star
+id|handle
+comma
+r_int
+id|idx
+comma
+id|win_req_t
+op_star
+id|req
+)paren
+suffix:semicolon
 DECL|macro|cs_socket_name
 mdefine_line|#define cs_socket_name(skt)&t;((skt)-&gt;dev.class_id)
 macro_line|#ifdef DEBUG
