@@ -28,71 +28,11 @@ macro_line|#undef DEBUG_IOSAPIC
 DECL|macro|DEBUG_IOSAPIC_IRT
 macro_line|#undef DEBUG_IOSAPIC_IRT
 macro_line|#ifdef DEBUG_IOSAPIC
-DECL|variable|assert_buf
-r_static
-r_char
-id|assert_buf
-(braket
-l_int|128
-)braket
-suffix:semicolon
-r_static
-r_int
-DECL|function|assert_failed
-id|assert_failed
-(paren
-r_char
-op_star
-id|a
-comma
-r_char
-op_star
-id|f
-comma
-r_int
-id|l
-)paren
-(brace
-id|sprintf
-c_func
-(paren
-id|assert_buf
-comma
-l_string|&quot;ASSERT(%s) failed!&bslash;nline %d in %s&bslash;n&quot;
-comma
-id|a
-comma
-multiline_comment|/* assertion text */
-id|l
-comma
-multiline_comment|/* line number */
-id|f
-)paren
-suffix:semicolon
-multiline_comment|/* file name */
-id|panic
-c_func
-(paren
-id|assert_buf
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|macro|ASSERT
-macro_line|#undef ASSERT
-DECL|macro|ASSERT
-mdefine_line|#define ASSERT(EX) { if (!(EX)) assert_failed(# EX, __FILE__, __LINE__); }
 DECL|macro|DBG
 mdefine_line|#define DBG(x...) printk(x)
 macro_line|#else /* DEBUG_IOSAPIC */
 DECL|macro|DBG
 mdefine_line|#define DBG(x...)
-DECL|macro|ASSERT
-macro_line|#undef&t;ASSERT
-DECL|macro|ASSERT
-mdefine_line|#define ASSERT(EX)
 macro_line|#endif /* DEBUG_IOSAPIC */
 macro_line|#ifdef DEBUG_IOSAPIC_IRT
 DECL|macro|DBG_IRT
@@ -100,6 +40,13 @@ mdefine_line|#define DBG_IRT(x...) printk(x)
 macro_line|#else
 DECL|macro|DBG_IRT
 mdefine_line|#define DBG_IRT(x...)
+macro_line|#endif
+macro_line|#ifdef CONFIG_64BIT
+DECL|macro|COMPARE_IRTE_ADDR
+mdefine_line|#define COMPARE_IRTE_ADDR(irte, hpa)&t;((irte)-&gt;dest_iosapic_addr == (hpa))
+macro_line|#else
+DECL|macro|COMPARE_IRTE_ADDR
+mdefine_line|#define COMPARE_IRTE_ADDR(irte, hpa)&t;&bslash;&n;&t;&t;((irte)-&gt;dest_iosapic_addr == ((hpa) | 0xffffffff00000000ULL))
 macro_line|#endif
 DECL|macro|IOSAPIC_REG_SELECT
 mdefine_line|#define IOSAPIC_REG_SELECT              0x00
@@ -121,8 +68,9 @@ r_int
 id|iosapic_read
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|iosapic
 comma
 r_int
@@ -157,8 +105,9 @@ r_void
 id|iosapic_write
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|iosapic
 comma
 r_int
@@ -190,15 +139,6 @@ id|IOSAPIC_REG_WINDOW
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;**     GFP_KERNEL includes __GFP_WAIT flag and that may not&n;**     be acceptable. Since this is boot time, we shouldn&squot;t have&n;**     to wait ever and this code should (will?) never get called&n;**     from the interrrupt context.&n;*/
-DECL|macro|IOSAPIC_KALLOC
-mdefine_line|#define&t;IOSAPIC_KALLOC(a_type, cnt) &bslash;&n;&t;&t;&t;(a_type *) kmalloc(sizeof(a_type)*(cnt), GFP_KERNEL)
-DECL|macro|IOSAPIC_FREE
-mdefine_line|#define IOSAPIC_FREE(addr, f_type, cnt) kfree((void *)addr)
-DECL|macro|IOSAPIC_LOCK
-mdefine_line|#define&t;IOSAPIC_LOCK(lck)&t;spin_lock_irqsave(lck, irqflags)
-DECL|macro|IOSAPIC_UNLOCK
-mdefine_line|#define&t;IOSAPIC_UNLOCK(lck)&t;spin_unlock_irqrestore(lck, irqflags)
 DECL|macro|IOSAPIC_VERSION_MASK
 mdefine_line|#define IOSAPIC_VERSION_MASK&t;0x000000ff
 DECL|macro|IOSAPIC_VERSION
@@ -267,11 +207,69 @@ r_static
 r_int
 id|irt_num_entry
 suffix:semicolon
-multiline_comment|/*&n;** iosapic_load_irt&n;**&n;** The &quot;Get PCI INT Routing Table Size&quot; option returns the number of &n;** entries in the PCI interrupt routing table for the cell specified &n;** in the cell_number argument.  The cell number must be for a cell &n;** within the caller&squot;s protection domain.&n;**&n;** The &quot;Get PCI INT Routing Table&quot; option returns, for the cell &n;** specified in the cell_number argument, the PCI interrupt routing &n;** table in the caller allocated memory pointed to by mem_addr.&n;** We assume the IRT only contains entries for I/O SAPIC and&n;** calculate the size based on the size of I/O sapic entries.&n;**&n;** The PCI interrupt routing table entry format is derived from the&n;** IA64 SAL Specification 2.4.   The PCI interrupt routing table defines&n;** the routing of PCI interrupt signals between the PCI device output&n;** &quot;pins&quot; and the IO SAPICs&squot; input &quot;lines&quot; (including core I/O PCI&n;** devices).  This table does NOT include information for devices/slots&n;** behind PCI to PCI bridges. See PCI to PCI Bridge Architecture Spec.&n;** for the architected method of routing of IRQ&squot;s behind PPB&squot;s.&n;*/
+DECL|function|iosapic_alloc_irt
+r_static
+r_struct
+id|irt_entry
+op_star
+id|iosapic_alloc_irt
+c_func
+(paren
+r_int
+id|num_entries
+)paren
+(brace
+r_int
+r_int
+id|a
+suffix:semicolon
+multiline_comment|/* The IRT needs to be 8-byte aligned for the PDC call. &n;&t; * Normally kmalloc would guarantee larger alignment, but&n;&t; * if CONFIG_DEBUG_SLAB is enabled, then we can get only&n;&t; * 4-byte alignment on 32-bit kernels&n;&t; */
+id|a
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|irt_entry
+)paren
+op_star
+id|num_entries
+op_plus
+l_int|8
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+id|a
+op_assign
+(paren
+id|a
+op_plus
+l_int|7
+)paren
+op_amp
+op_complement
+l_int|7
+suffix:semicolon
+r_return
+(paren
+r_struct
+id|irt_entry
+op_star
+)paren
+id|a
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * iosapic_load_irt - Fill in the interrupt routing table&n; * @cell_num: The cell number of the CPU we&squot;re currently executing on&n; * @irt: The address to place the new IRT at&n; * @return The number of entries found&n; *&n; * The &quot;Get PCI INT Routing Table Size&quot; option returns the number of &n; * entries in the PCI interrupt routing table for the cell specified &n; * in the cell_number argument.  The cell number must be for a cell &n; * within the caller&squot;s protection domain.&n; *&n; * The &quot;Get PCI INT Routing Table&quot; option returns, for the cell &n; * specified in the cell_number argument, the PCI interrupt routing &n; * table in the caller allocated memory pointed to by mem_addr.&n; * We assume the IRT only contains entries for I/O SAPIC and&n; * calculate the size based on the size of I/O sapic entries.&n; *&n; * The PCI interrupt routing table entry format is derived from the&n; * IA64 SAL Specification 2.4.   The PCI interrupt routing table defines&n; * the routing of PCI interrupt signals between the PCI device output&n; * &quot;pins&quot; and the IO SAPICs&squot; input &quot;lines&quot; (including core I/O PCI&n; * devices).  This table does NOT include information for devices/slots&n; * behind PCI to PCI bridges. See PCI to PCI Bridge Architecture Spec.&n; * for the architected method of routing of IRQ&squot;s behind PPB&squot;s.&n; */
 r_static
 r_int
 id|__init
-multiline_comment|/* return number of entries as success/fail flag */
 DECL|function|iosapic_load_irt
 id|iosapic_load_irt
 c_func
@@ -303,11 +301,10 @@ id|num_entries
 op_assign
 l_int|0UL
 suffix:semicolon
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
-l_int|NULL
-op_ne
+op_logical_neg
 id|irt
 )paren
 suffix:semicolon
@@ -348,32 +345,28 @@ comma
 id|status
 )paren
 suffix:semicolon
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 id|status
-op_eq
+op_ne
 id|PDC_OK
 )paren
 suffix:semicolon
-multiline_comment|/* save the number of entries in the table */
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
-l_int|0UL
-op_ne
 id|num_entries
+op_eq
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;** allocate memory for interrupt routing table&n;&t;&t;** This interface isn&squot;t really right. We are assuming&n;&t;&t;** the contents of the table are exclusively&n;&t;&t;** for I/O sapic devices.&n;&t;&t;*/
 id|table
 op_assign
-id|IOSAPIC_KALLOC
+id|iosapic_alloc_irt
 c_func
 (paren
-r_struct
-id|irt_entry
-comma
 id|num_entries
 )paren
 suffix:semicolon
@@ -390,7 +383,8 @@ c_func
 (paren
 id|KERN_WARNING
 id|MODULE_NAME
-l_string|&quot;: read_irt : can not alloc mem for IRT&bslash;n&quot;
+l_string|&quot;: read_irt : can &quot;
+l_string|&quot;not alloc mem for IRT&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -416,11 +410,11 @@ comma
 id|status
 )paren
 suffix:semicolon
-id|ASSERT
+id|WARN_ON
 c_func
 (paren
 id|status
-op_eq
+op_ne
 id|PDC_OK
 )paren
 suffix:semicolon
@@ -431,8 +425,6 @@ multiline_comment|/*&n;&t;&t;** C3000/J5000 (and similar) platforms with Sprocke
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|irt_cell
 )paren
 r_return
@@ -461,9 +453,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|PDC_OK
-op_ne
 id|status
+op_ne
+id|PDC_OK
 )paren
 (brace
 multiline_comment|/* Not a &quot;legacy&quot; system with I/O SAPIC either */
@@ -471,31 +463,27 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
-l_int|0UL
-op_ne
 id|num_entries
+op_eq
+l_int|0
 )paren
 suffix:semicolon
 id|table
 op_assign
-id|IOSAPIC_KALLOC
+id|iosapic_alloc_irt
 c_func
 (paren
-r_struct
-id|irt_entry
-comma
 id|num_entries
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|table
-op_eq
-l_int|NULL
 )paren
 (brace
 id|printk
@@ -503,7 +491,8 @@ c_func
 (paren
 id|KERN_WARNING
 id|MODULE_NAME
-l_string|&quot;: read_irt : can not alloc mem for IRT&bslash;n&quot;
+l_string|&quot;: read_irt : can &quot;
+l_string|&quot;not alloc mem for IRT&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -523,12 +512,12 @@ comma
 id|table
 )paren
 suffix:semicolon
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
-id|PDC_OK
-op_eq
 id|status
+op_ne
+id|PDC_OK
 )paren
 suffix:semicolon
 )brace
@@ -649,9 +638,9 @@ r_return
 id|num_entries
 suffix:semicolon
 )brace
+DECL|function|iosapic_init
 r_void
 id|__init
-DECL|function|iosapic_init
 id|iosapic_init
 c_func
 (paren
@@ -661,27 +650,6 @@ r_void
 r_int
 r_int
 id|cell
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* init global data */
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|iosapic_lock
-)paren
-suffix:semicolon
-id|iosapic_list
-op_assign
-(paren
-r_struct
-id|iosapic_info
-op_star
-)paren
-l_int|NULL
-suffix:semicolon
-id|iosapic_count
 op_assign
 l_int|0
 suffix:semicolon
@@ -732,7 +700,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-multiline_comment|/*&n;&t;**  get IRT for this cell.&n;&t;*/
+multiline_comment|/* get interrupt routing table for this cell */
 id|irt_num_entry
 op_assign
 id|iosapic_load_irt
@@ -747,9 +715,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_eq
 id|irt_num_entry
+op_eq
+l_int|0
 )paren
 id|irt_cell
 op_assign
@@ -908,19 +876,15 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;** Compare: dest_iosapic_addr, src_bus_irq_devno&n;&t;&t;*/
 r_if
 c_cond
 (paren
-id|i-&gt;dest_iosapic_addr
-op_ne
+op_logical_neg
+id|COMPARE_IRTE_ADDR
+c_func
 (paren
-id|u64
-)paren
-(paren
-(paren
-r_int
-)paren
+id|i
+comma
 id|isi-&gt;isi_hpa
 )paren
 )paren
@@ -1002,7 +966,9 @@ suffix:semicolon
 id|DBG_IRT
 c_func
 (paren
-l_string|&quot;iosapic_xlate_pin() SLOT %d pin %d&bslash;n&quot;
+l_string|&quot;iosapic_xlate_pin(%s) SLOT %d pin %d&bslash;n&quot;
+comma
+id|pcidev-&gt;slot_name
 comma
 id|PCI_SLOT
 c_func
@@ -1016,9 +982,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_eq
 id|intr_pin
+op_eq
+l_int|0
 )paren
 (brace
 multiline_comment|/* The device does NOT support/use IRQ lines.  */
@@ -1329,14 +1295,6 @@ id|p
 op_assign
 id|vi-&gt;irte
 suffix:semicolon
-id|ASSERT
-c_func
-(paren
-l_int|NULL
-op_ne
-id|vi-&gt;irte
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1372,12 +1330,6 @@ op_or_assign
 id|IOSAPIC_IRDT_LEVEL_TRIG
 suffix:semicolon
 multiline_comment|/*&n;&t;** IA64 REVISIT&n;&t;** PA doesn&squot;t support EXTINT or LPRIO bits.&n;&t;*/
-id|ASSERT
-c_func
-(paren
-id|vi-&gt;txn_data
-)paren
-suffix:semicolon
 op_star
 id|dp0
 op_assign
@@ -2060,15 +2012,15 @@ id|vi-&gt;irte
 op_assign
 id|irte
 suffix:semicolon
-multiline_comment|/* Allocate processor IRQ */
+multiline_comment|/*&n;&t; * Allocate processor IRQ&n;&t; *&n;&t; * XXX/FIXME The txn_alloc_irq() code and related code should be&n;&t; * moved to enable_irq(). That way we only allocate processor IRQ&n;&t; * bits for devices that actually have drivers claiming them.&n;&t; * Right now we assign an IRQ to every PCI device present,&n;&t; * regardless of whether it&squot;s used or not.&n;&t; */
 id|vi-&gt;txn_irq
 op_assign
 id|txn_alloc_irq
 c_func
 (paren
+l_int|8
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * XXX/FIXME The txn_alloc_irq() code and related code should be&n;&t; * moved to enable_irq(). That way we only allocate processor IRQ&n;&t; * bits for devices that actually have drivers claiming them.&n;&t; * Right now we assign an IRQ to every PCI device present,&n;&t; * regardless of whether it&squot;s used or not.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2097,8 +2049,6 @@ id|txn_alloc_data
 c_func
 (paren
 id|vi-&gt;txn_irq
-comma
-l_int|8
 )paren
 suffix:semicolon
 id|vi-&gt;eoi_addr
@@ -2176,23 +2126,11 @@ op_star
 id|isi
 )paren
 (brace
-id|ASSERT
-c_func
-(paren
-id|isi
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|isi-&gt;isi_hpa
-)paren
-suffix:semicolon
 r_return
 id|iosapic_read
 c_func
 (paren
-id|isi-&gt;isi_hpa
+id|isi-&gt;addr
 comma
 id|IOSAPIC_REG_VERSION
 )paren
@@ -2233,16 +2171,7 @@ r_int
 id|cnt
 suffix:semicolon
 multiline_comment|/* track how many entries we&squot;ve looked at */
-multiline_comment|/*&n;&t;** Astro based platforms can&squot;t support PCI OLARD if they&n;&t;** implement the legacy PDC (not PAT). Though Legacy PDC&n;&t;** supports an IRT, LBA&squot;s with no device under them&n;&t;** are *not* listed in the IRT.&n;&t;** Search the IRT and ignore iosapic&squot;s which aren&squot;t&n;&t;** in the IRT.&n;&t;*/
-id|ASSERT
-c_func
-(paren
-l_int|NULL
-op_ne
-id|irte
-)paren
-suffix:semicolon
-multiline_comment|/* always have built-in devices */
+multiline_comment|/*&n;&t; * Astro based platforms can only support PCI OLARD if they implement&n;&t; * PAT PDC.  Legacy PDC omits LBAs with no PCI devices from the IRT.&n;&t; * Search the IRT and ignore iosapic&squot;s which aren&squot;t in the IRT.&n;&t; */
 r_for
 c_loop
 (paren
@@ -2261,27 +2190,22 @@ id|irte
 op_increment
 )paren
 (brace
-id|ASSERT
+id|WARN_ON
 c_func
 (paren
 id|IRT_IOSAPIC_TYPE
-op_eq
+op_ne
 id|irte-&gt;entry_type
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;** We need sign extension of the hpa on 32-bit kernels.&n;&t;&t;** The address in the IRT is *always* 64 bit and really&n;&t;&t;** is an unsigned quantity (like all physical addresses).&n;&t;&t;*/
 r_if
 c_cond
 (paren
-id|irte-&gt;dest_iosapic_addr
-op_eq
+id|COMPARE_IRTE_ADDR
+c_func
 (paren
-id|s64
-)paren
-(paren
-(paren
-r_int
-)paren
+id|irte
+comma
 id|hpa
 )paren
 )paren
@@ -2295,28 +2219,43 @@ id|cnt
 op_ge
 id|irt_num_entry
 )paren
-r_return
+(brace
+id|DBG
+c_func
 (paren
+l_string|&quot;iosapic_register() ignoring 0x%lx (NOT FOUND)&bslash;n&quot;
+comma
+id|hpa
+)paren
+suffix:semicolon
+r_return
 l_int|NULL
+suffix:semicolon
+)brace
+id|isi
+op_assign
+(paren
+r_struct
+id|iosapic_info
+op_star
+)paren
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|iosapic_info
+)paren
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
+op_logical_neg
 id|isi
-op_assign
-id|IOSAPIC_KALLOC
-c_func
-(paren
-r_struct
-id|iosapic_info
-comma
-l_int|1
-)paren
-)paren
-op_eq
-l_int|NULL
 )paren
 (brace
 id|BUG
@@ -2325,9 +2264,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|NULL
-)paren
 suffix:semicolon
 )brace
 id|memset
@@ -2342,6 +2279,16 @@ r_sizeof
 r_struct
 id|iosapic_info
 )paren
+)paren
+suffix:semicolon
+id|isi-&gt;addr
+op_assign
+id|ioremap
+c_func
+(paren
+id|hpa
+comma
+l_int|4096
 )paren
 suffix:semicolon
 id|isi-&gt;isi_hpa
@@ -2370,13 +2317,23 @@ id|vip
 op_assign
 id|isi-&gt;isi_vector
 op_assign
-id|IOSAPIC_KALLOC
-c_func
 (paren
 r_struct
 id|vector_info
-comma
+op_star
+)paren
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|vector_info
+)paren
+op_star
 id|isi-&gt;isi_num_vectors
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -2387,15 +2344,10 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|IOSAPIC_FREE
+id|kfree
 c_func
 (paren
 id|isi
-comma
-r_struct
-id|iosapic_info
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -2482,14 +2434,6 @@ op_star
 )paren
 id|irt
 suffix:semicolon
-id|ASSERT
-c_func
-(paren
-l_int|NULL
-op_ne
-id|irt
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2564,14 +2508,6 @@ op_star
 id|vi
 )paren
 (brace
-id|ASSERT
-c_func
-(paren
-l_int|NULL
-op_ne
-id|vi
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2651,14 +2587,6 @@ op_star
 id|isi
 )paren
 (brace
-id|ASSERT
-c_func
-(paren
-l_int|NULL
-op_ne
-id|isi
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2682,7 +2610,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;&bslash;t&bslash;tisi_status:     %x&bslash;n&quot;
+l_string|&quot;&bslash;t&bslash;tisi_status:    %x&bslash;n&quot;
 comma
 id|isi-&gt;isi_status
 )paren
