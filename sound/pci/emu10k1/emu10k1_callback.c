@@ -1226,7 +1226,7 @@ id|hw
 comma
 id|EMU10K1_SYNTH
 comma
-l_int|0
+l_int|1
 comma
 op_amp
 id|hwvoice
