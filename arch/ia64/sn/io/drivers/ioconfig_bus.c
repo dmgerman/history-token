@@ -13,8 +13,7 @@ macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
-macro_line|#include &lt;asm
-singleline_comment|//sn/sn_sal.h&gt;
+macro_line|#include &lt;asm/sn/sn_sal.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/ioconfig_bus.h&gt;
 DECL|macro|SGI_IOCONFIG_BUS
@@ -476,7 +475,7 @@ id|next
 suffix:semicolon
 r_char
 op_star
-id|current
+id|curr
 suffix:semicolon
 r_char
 op_star
@@ -531,7 +530,7 @@ id|moduleid
 op_assign
 id|table
 suffix:semicolon
-id|current
+id|curr
 op_assign
 id|file_contents
 suffix:semicolon
@@ -541,7 +540,7 @@ c_loop
 id|nextline
 c_func
 (paren
-id|current
+id|curr
 comma
 op_amp
 id|next
@@ -553,9 +552,9 @@ id|line
 id|DBG
 c_func
 (paren
-l_string|&quot;current 0x%lx next 0x%lx&bslash;n&quot;
+l_string|&quot;curr 0x%lx next 0x%lx&bslash;n&quot;
 comma
-id|current
+id|curr
 comma
 id|next
 )paren
@@ -598,7 +597,7 @@ op_eq
 l_char|&squot;&bslash;n&squot;
 )paren
 (brace
-id|current
+id|curr
 op_assign
 id|next
 suffix:semicolon
@@ -625,7 +624,7 @@ op_eq
 l_char|&squot;#&squot;
 )paren
 (brace
-id|current
+id|curr
 op_assign
 id|next
 suffix:semicolon
@@ -681,7 +680,7 @@ suffix:semicolon
 id|free_entry
 op_increment
 suffix:semicolon
-id|current
+id|curr
 op_assign
 id|next
 suffix:semicolon
