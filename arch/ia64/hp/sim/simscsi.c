@@ -530,7 +530,7 @@ id|stat.fd
 op_assign
 id|desc
 (braket
-id|sc-&gt;target
+id|sc-&gt;device-&gt;id
 )braket
 suffix:semicolon
 r_if
@@ -664,7 +664,7 @@ id|stat.fd
 op_assign
 id|desc
 (braket
-id|sc-&gt;target
+id|sc-&gt;device-&gt;id
 )braket
 suffix:semicolon
 r_while
@@ -1146,6 +1146,12 @@ op_star
 )paren
 )paren
 (brace
+r_int
+r_int
+id|target_id
+op_assign
+id|sc-&gt;device-&gt;id
+suffix:semicolon
 r_char
 id|fname
 (braket
@@ -1180,7 +1186,7 @@ c_func
 (paren
 l_string|&quot;simscsi_queuecommand: target=%d,cmnd=%u,sc=%lu,sp=%lx,done=%p&bslash;n&quot;
 comma
-id|sc-&gt;target
+id|target_id
 comma
 id|sc-&gt;cmnd
 (braket
@@ -1208,11 +1214,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sc-&gt;target
+id|target_id
 op_le
 l_int|15
 op_logical_and
-id|sc-&gt;lun
+id|sc-&gt;device-&gt;lun
 op_eq
 l_int|0
 )paren
@@ -1250,12 +1256,12 @@ id|simscsi_root
 comma
 l_char|&squot;a&squot;
 op_plus
-id|sc-&gt;target
+id|target_id
 )paren
 suffix:semicolon
 id|desc
 (braket
-id|sc-&gt;target
+id|target_id
 )braket
 op_assign
 id|ia64_ssc
@@ -1283,7 +1289,7 @@ c_cond
 (paren
 id|desc
 (braket
-id|sc-&gt;target
+id|target_id
 )braket
 OL
 l_int|0
@@ -1396,7 +1402,7 @@ c_cond
 (paren
 id|desc
 (braket
-id|sc-&gt;target
+id|target_id
 )braket
 OL
 l_int|0
@@ -1421,7 +1427,7 @@ c_cond
 (paren
 id|desc
 (braket
-id|sc-&gt;target
+id|target_id
 )braket
 OL
 l_int|0
@@ -1446,7 +1452,7 @@ c_cond
 (paren
 id|desc
 (braket
-id|sc-&gt;target
+id|target_id
 )braket
 OL
 l_int|0
@@ -1471,7 +1477,7 @@ c_cond
 (paren
 id|desc
 (braket
-id|sc-&gt;target
+id|target_id
 )braket
 OL
 l_int|0
@@ -1496,7 +1502,7 @@ c_cond
 (paren
 id|desc
 (braket
-id|sc-&gt;target
+id|target_id
 )braket
 OL
 l_int|0
@@ -1520,7 +1526,7 @@ c_func
 (paren
 id|desc
 (braket
-id|sc-&gt;target
+id|target_id
 )braket
 )paren
 suffix:semicolon

@@ -15,8 +15,10 @@ DECL|macro|TI_ADDR_LIMIT
 mdefine_line|#define TI_ADDR_LIMIT&t;0x10
 DECL|macro|TI_PRE_COUNT
 mdefine_line|#define TI_PRE_COUNT&t;0x18
+DECL|macro|PREEMPT_ACTIVE_BIT
+mdefine_line|#define PREEMPT_ACTIVE_BIT 30
 DECL|macro|PREEMPT_ACTIVE
-mdefine_line|#define PREEMPT_ACTIVE&t;0x4000000
+mdefine_line|#define PREEMPT_ACTIVE&t;(1 &lt;&lt; PREEMPT_ACTIVE_BIT)
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * On IA-64, we want to keep the task structure and kernel stack together, so they can be&n; * mapped by a single TLB entry and so they can be addressed by the &quot;current&quot; pointer&n; * without having to do pointer masking.&n; */
 DECL|struct|thread_info

@@ -196,6 +196,16 @@ id|tasklist_lock
 )paren
 suffix:semicolon
 multiline_comment|/* can&squot;t call flush_tlb_all() here because of race condition with O(1) scheduler [EF] */
+(brace
+r_int
+id|cpu
+op_assign
+id|get_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* prevent preemption/migration */
 r_for
 c_loop
 (paren
@@ -215,10 +225,7 @@ c_cond
 (paren
 id|i
 op_ne
-id|smp_processor_id
-c_func
-(paren
-)paren
+id|cpu
 )paren
 id|per_cpu
 c_func
@@ -230,6 +237,12 @@ id|i
 op_assign
 l_int|1
 suffix:semicolon
+id|put_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 id|local_flush_tlb_all
 c_func
 (paren

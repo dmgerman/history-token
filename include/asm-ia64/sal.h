@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_SAL_H
 DECL|macro|_ASM_IA64_SAL_H
 mdefine_line|#define _ASM_IA64_SAL_H
-multiline_comment|/*&n; * System Abstraction Layer definitions.&n; *&n; * This is based on version 2.5 of the manual &quot;IA-64 System&n; * Abstraction Layer&quot;.&n; *&n; * Copyright (C) 2001 Intel&n; * Copyright (C) 2002 Jenna Hall &lt;jenna.s.hall@intel.com&gt;&n; * Copyright (C) 2001 Fred Lewis &lt;frederick.v.lewis@intel.com&gt;&n; * Copyright (C) 1998, 1999, 2001 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999, 2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Srinivasa Prasad Thirumalachar &lt;sprasad@sprasad.engr.sgi.com&gt;&n; *&n; * 02/01/04 J. Hall Updated Error Record Structures to conform to July 2001&n; *&t;&t;    revision of the SAL spec.&n; * 01/01/03 fvlewis Updated Error Record Structures to conform with Nov. 2000&n; *                  revision of the SAL spec.&n; * 99/09/29 davidm&t;Updated for SAL 2.6.&n; * 00/03/29 cfleck      Updated SAL Error Logging info for processor (SAL 2.6) &n; *                      (plus examples of platform error info structures from smariset @ Intel)&n; */
+multiline_comment|/*&n; * System Abstraction Layer definitions.&n; *&n; * This is based on version 2.5 of the manual &quot;IA-64 System&n; * Abstraction Layer&quot;.&n; *&n; * Copyright (C) 2001 Intel&n; * Copyright (C) 2002 Jenna Hall &lt;jenna.s.hall@intel.com&gt;&n; * Copyright (C) 2001 Fred Lewis &lt;frederick.v.lewis@intel.com&gt;&n; * Copyright (C) 1998, 1999, 2001, 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Srinivasa Prasad Thirumalachar &lt;sprasad@sprasad.engr.sgi.com&gt;&n; *&n; * 02/01/04 J. Hall Updated Error Record Structures to conform to July 2001&n; *&t;&t;    revision of the SAL spec.&n; * 01/01/03 fvlewis Updated Error Record Structures to conform with Nov. 2000&n; *                  revision of the SAL spec.&n; * 99/09/29 davidm&t;Updated for SAL 2.6.&n; * 00/03/29 cfleck      Updated SAL Error Logging info for processor (SAL 2.6)&n; *                      (plus examples of platform error info structures from smariset @ Intel)&n; */
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
@@ -630,32 +630,32 @@ DECL|macro|SAL_MC_PARAM_RZ_ALWAYS
 mdefine_line|#define&t;SAL_MC_PARAM_RZ_ALWAYS&t;&t;0x1
 DECL|macro|SAL_MC_PARAM_BINIT_ESCALATE
 mdefine_line|#define&t;SAL_MC_PARAM_BINIT_ESCALATE&t;0x10
-multiline_comment|/*&n;** Definition of the SAL Error Log from the SAL spec&n;*/
+multiline_comment|/*&n; * Definition of the SAL Error Log from the SAL spec&n; */
 multiline_comment|/* SAL Error Record Section GUID Definitions */
 DECL|macro|SAL_PROC_DEV_ERR_SECT_GUID
-mdefine_line|#define SAL_PROC_DEV_ERR_SECT_GUID  &bslash;&n;    EFI_GUID ( 0xe429faf1, 0x3cb7, 0x11d4,  0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 )
+mdefine_line|#define SAL_PROC_DEV_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(0xe429faf1, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, 0xc7, 0x3c, 0x88, 0x81)
 DECL|macro|SAL_PLAT_MEM_DEV_ERR_SECT_GUID
-mdefine_line|#define SAL_PLAT_MEM_DEV_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(  0xe429faf2, 0x3cb7, 0x11d4,  0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 )
+mdefine_line|#define SAL_PLAT_MEM_DEV_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(0xe429faf2, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, 0xc7, 0x3c, 0x88, 0x81)
 DECL|macro|SAL_PLAT_SEL_DEV_ERR_SECT_GUID
-mdefine_line|#define SAL_PLAT_SEL_DEV_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(  0xe429faf3, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 )
+mdefine_line|#define SAL_PLAT_SEL_DEV_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(0xe429faf3, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, 0xc7, 0x3c, 0x88, 0x81)
 DECL|macro|SAL_PLAT_PCI_BUS_ERR_SECT_GUID
-mdefine_line|#define SAL_PLAT_PCI_BUS_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(  0xe429faf4, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 )
+mdefine_line|#define SAL_PLAT_PCI_BUS_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(0xe429faf4, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, 0xc7, 0x3c, 0x88, 0x81)
 DECL|macro|SAL_PLAT_SMBIOS_DEV_ERR_SECT_GUID
-mdefine_line|#define SAL_PLAT_SMBIOS_DEV_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(  0xe429faf5, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 )
+mdefine_line|#define SAL_PLAT_SMBIOS_DEV_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(0xe429faf5, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, 0xc7, 0x3c, 0x88, 0x81)
 DECL|macro|SAL_PLAT_PCI_COMP_ERR_SECT_GUID
-mdefine_line|#define SAL_PLAT_PCI_COMP_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(  0xe429faf6, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 )
+mdefine_line|#define SAL_PLAT_PCI_COMP_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(0xe429faf6, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, 0xc7, 0x3c, 0x88, 0x81)
 DECL|macro|SAL_PLAT_SPECIFIC_ERR_SECT_GUID
-mdefine_line|#define SAL_PLAT_SPECIFIC_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(  0xe429faf7, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 )
+mdefine_line|#define SAL_PLAT_SPECIFIC_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(0xe429faf7, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, 0xc7, 0x3c, 0x88, 0x81)
 DECL|macro|SAL_PLAT_HOST_CTLR_ERR_SECT_GUID
-mdefine_line|#define SAL_PLAT_HOST_CTLR_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(  0xe429faf8, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 )
+mdefine_line|#define SAL_PLAT_HOST_CTLR_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(0xe429faf8, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, 0xc7, 0x3c, 0x88, 0x81)
 DECL|macro|SAL_PLAT_BUS_ERR_SECT_GUID
-mdefine_line|#define SAL_PLAT_BUS_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(  0xe429faf9, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, &bslash;&n;                    0xc7, 0x3c, 0x88, 0x81 )
+mdefine_line|#define SAL_PLAT_BUS_ERR_SECT_GUID  &bslash;&n;    EFI_GUID(0xe429faf9, 0x3cb7, 0x11d4, 0xbc, 0xa7, 0x0, 0x80, 0xc7, 0x3c, 0x88, 0x81)
 DECL|macro|MAX_CACHE_ERRORS
-mdefine_line|#define MAX_CACHE_ERRORS&t;&t;&t;6
+mdefine_line|#define MAX_CACHE_ERRORS&t;6
 DECL|macro|MAX_TLB_ERRORS
-mdefine_line|#define MAX_TLB_ERRORS&t;&t;&t;&t;6
+mdefine_line|#define MAX_TLB_ERRORS&t;&t;6
 DECL|macro|MAX_BUS_ERRORS
-mdefine_line|#define MAX_BUS_ERRORS&t;&t;&t;&t;1
+mdefine_line|#define MAX_BUS_ERRORS&t;&t;1
 multiline_comment|/* Definition of version  according to SAL spec for logging purposes */
 DECL|struct|sal_log_revision
 r_typedef
@@ -951,6 +951,23 @@ DECL|typedef|sal_processor_static_info_t
 )brace
 id|sal_processor_static_info_t
 suffix:semicolon
+DECL|struct|sal_cpuid_info
+r_struct
+id|sal_cpuid_info
+(brace
+DECL|member|regs
+id|u64
+id|regs
+(braket
+l_int|5
+)braket
+suffix:semicolon
+DECL|member|reserved
+id|u64
+id|reserved
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|sal_log_processor_info
 r_typedef
 r_struct
@@ -1034,66 +1051,22 @@ DECL|member|proc_cr_lid
 id|u64
 id|proc_cr_lid
 suffix:semicolon
-DECL|member|cache_check_info
+multiline_comment|/*&n;&t; * The rest of this structure consists of variable-length arrays, which can&squot;t be&n;&t; * expressed in C.&n;&t; */
+DECL|member|info
 id|sal_log_mod_error_info_t
-id|cache_check_info
+id|info
 (braket
-l_int|16
+l_int|0
 )braket
 suffix:semicolon
-DECL|member|tlb_check_info
-id|sal_log_mod_error_info_t
-id|tlb_check_info
-(braket
-l_int|16
-)braket
-suffix:semicolon
-DECL|member|bus_check_info
-id|sal_log_mod_error_info_t
-id|bus_check_info
-(braket
-l_int|16
-)braket
-suffix:semicolon
-DECL|member|reg_file_check_info
-id|sal_log_mod_error_info_t
-id|reg_file_check_info
-(braket
-l_int|16
-)braket
-suffix:semicolon
-DECL|member|ms_check_info
-id|sal_log_mod_error_info_t
-id|ms_check_info
-(braket
-l_int|16
-)braket
-suffix:semicolon
-r_struct
-(brace
-DECL|member|regs
-id|u64
-id|regs
-(braket
-l_int|5
-)braket
-suffix:semicolon
-DECL|member|reserved
-id|u64
-id|reserved
-suffix:semicolon
-DECL|member|cpuid_info
-)brace
-id|cpuid_info
-suffix:semicolon
-DECL|member|processor_static_info
-id|sal_processor_static_info_t
-id|processor_static_info
-suffix:semicolon
+multiline_comment|/*&n;&t; * This is what the rest looked like if C supported variable-length arrays:&n;&t; *&n;&t; * sal_log_mod_error_info_t cache_check_info[.valid.num_cache_check];&n;&t; * sal_log_mod_error_info_t tlb_check_info[.valid.num_tlb_check];&n;&t; * sal_log_mod_error_info_t bus_check_info[.valid.num_bus_check];&n;&t; * sal_log_mod_error_info_t reg_file_check_info[.valid.num_reg_file_check];&n;&t; * sal_log_mod_error_info_t ms_check_info[.valid.num_ms_check];&n;&t; * struct sal_cpuid_info cpuid_info;&n;&t; * sal_processor_static_info_t processor_static_info;&n;&t; */
 DECL|typedef|sal_log_processor_info_t
 )brace
 id|sal_log_processor_info_t
 suffix:semicolon
+multiline_comment|/* Given a sal_log_processor_info_t pointer, return a pointer to the processor_static_info: */
+DECL|macro|SAL_LPI_PSI_INFO
+mdefine_line|#define SAL_LPI_PSI_INFO(l)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;sal_log_processor_info_t *_l = (l);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((sal_processor_static_info_t *)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; ((char *) _l-&gt;info + ((_l-&gt;valid.num_cache_check + _l-&gt;valid.num_tlb_check&t;&t;&bslash;&n;&t;&t;&t;&t;+ _l-&gt;valid.num_bus_check + _l-&gt;valid.num_reg_file_check&t;&bslash;&n;&t;&t;&t;&t;+ _l-&gt;valid.num_ms_check) * sizeof(sal_log_mod_error_info_t)&t;&bslash;&n;&t;&t;&t;       + sizeof(struct sal_cpuid_info))));&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/* platform error log structures */
 DECL|struct|sal_log_mem_dev_err_info
 r_typedef
@@ -1588,7 +1561,7 @@ id|data
 l_int|1
 )braket
 suffix:semicolon
-singleline_comment|// data of variable length, length == slsmb_length
+multiline_comment|/* data of variable length, length == slsmb_length */
 DECL|typedef|sal_log_smbios_dev_err_info_t
 )brace
 id|sal_log_smbios_dev_err_info_t
@@ -1707,7 +1680,7 @@ id|reg_data_pairs
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* array of address/data register pairs is num_mem_regs + num_io_regs&n;       elements long.  Each array element consists of a u64 address followed&n;       by a u64 data value.  The oem_data array immediately follows the&n;       reg_data_pairs array */
+multiline_comment|/*&n;&t; * array of address/data register pairs is num_mem_regs + num_io_regs elements&n;&t; * long.  Each array element consists of a u64 address followed by a u64 data&n;&t; * value.  The oem_data array immediately follows the reg_data_pairs array&n;&t; */
 DECL|member|oem_data
 id|u8
 id|oem_data
@@ -2156,7 +2129,7 @@ r_return
 id|isrv.status
 suffix:semicolon
 )brace
-multiline_comment|/* Clear the processor and platform information logged by SAL with respect to the &n; * machine state at the time of MCA&squot;s, INITs, CMCs, or CPEs.&n; */
+multiline_comment|/*&n; * Clear the processor and platform information logged by SAL with respect to the machine&n; * state at the time of MCA&squot;s, INITs, CMCs, or CPEs.&n; */
 r_static
 r_inline
 id|s64
@@ -2250,7 +2223,7 @@ r_return
 id|isrv.v0
 suffix:semicolon
 )brace
-multiline_comment|/* Get the maximum size of the information logged by SAL with respect to the machine &n; * state at the time of MCAs, INITs, CMCs, or CPEs.&n; */
+multiline_comment|/*&n; * Get the maximum size of the information logged by SAL with respect to the machine state&n; * at the time of MCAs, INITs, CMCs, or CPEs.&n; */
 r_static
 r_inline
 id|u64
@@ -2299,7 +2272,7 @@ r_return
 id|isrv.v0
 suffix:semicolon
 )brace
-multiline_comment|/* Causes the processor to go into a spin loop within SAL where SAL awaits a wakeup&n; * from the monarch processor.&n; */
+multiline_comment|/*&n; * Causes the processor to go into a spin loop within SAL where SAL awaits a wakeup from&n; * the monarch processor.&n; */
 r_static
 r_inline
 id|s64
@@ -2339,7 +2312,7 @@ r_return
 id|isrv.status
 suffix:semicolon
 )brace
-multiline_comment|/* Allow the OS to specify the interrupt number to be used by SAL to interrupt OS during&n; * the machine check rendezvous sequence as well as the mechanism to wake up the &n; * non-monarch processor at the end of machine check processing.&n; */
+multiline_comment|/*&n; * Allow the OS to specify the interrupt number to be used by SAL to interrupt OS during&n; * the machine check rendezvous sequence as well as the mechanism to wake up the&n; * non-monarch processor at the end of machine check processing.&n; */
 r_static
 r_inline
 id|s64
@@ -2497,7 +2470,7 @@ r_return
 id|isrv.status
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Register physical addresses of locations needed by SAL when SAL&n; * procedures are invoked in virtual mode.&n; */
+multiline_comment|/*&n; * Register physical addresses of locations needed by SAL when SAL procedures are invoked&n; * in virtual mode.&n; */
 r_static
 r_inline
 id|s64
@@ -2541,7 +2514,7 @@ r_return
 id|isrv.status
 suffix:semicolon
 )brace
-multiline_comment|/* Register software dependent code locations within SAL. These locations are handlers&n; * or entry points where SAL will pass control for the specified event. These event&n; * handlers are for the bott rendezvous, MCAs and INIT scenarios.&n; */
+multiline_comment|/*&n; * Register software dependent code locations within SAL. These locations are handlers or&n; * entry points where SAL will pass control for the specified event. These event handlers&n; * are for the bott rendezvous, MCAs and INIT scenarios.&n; */
 r_static
 r_inline
 id|s64

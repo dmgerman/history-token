@@ -130,6 +130,12 @@ op_star
 id|cfm_loc
 suffix:semicolon
 multiline_comment|/* cfm save location (or NULL) */
+DECL|member|pt
+r_int
+r_int
+id|pt
+suffix:semicolon
+multiline_comment|/* struct pt_regs location */
 DECL|member|task
 r_struct
 id|task_struct

@@ -419,7 +419,8 @@ DECL|macro|__NR_sched_getaffinity
 mdefine_line|#define __NR_sched_getaffinity&t;&t;1232
 DECL|macro|__NR_set_tid_address
 mdefine_line|#define __NR_set_tid_address&t;&t;1233
-multiline_comment|/* 1234 available for reuse */
+DECL|macro|__NR_fadvise64
+mdefine_line|#define __NR_fadvise64&t;&t;&t;1234
 multiline_comment|/* 1235 available for reuse */
 DECL|macro|__NR_exit_group
 mdefine_line|#define __NR_exit_group&t;&t;&t;1236
