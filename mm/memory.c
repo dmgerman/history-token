@@ -8886,8 +8886,8 @@ r_return
 id|VM_FAULT_OOM
 suffix:semicolon
 )brace
-macro_line|#ifndef __ARCH_HAS_4LEVEL_HACK
-multiline_comment|/*&n; * Allocate page upper directory.&n; *&n; * We&squot;ve already handled the fast-path in-line, and we own the&n; * page table lock.&n; *&n; * On a two-level or three-level page table, this ends up actually being&n; * entirely optimized away.&n; */
+macro_line|#ifndef __PAGETABLE_PUD_FOLDED
+multiline_comment|/*&n; * Allocate page upper directory.&n; *&n; * We&squot;ve already handled the fast-path in-line, and we own the&n; * page table lock.&n; */
 DECL|function|__pud_alloc
 id|pud_t
 id|fastcall
@@ -8990,7 +8990,9 @@ id|address
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Allocate page middle directory.&n; *&n; * We&squot;ve already handled the fast-path in-line, and we own the&n; * page table lock.&n; *&n; * On a two-level page table, this ends up actually being entirely&n; * optimized away.&n; */
+macro_line|#endif /* __PAGETABLE_PUD_FOLDED */
+macro_line|#ifndef __PAGETABLE_PMD_FOLDED
+multiline_comment|/*&n; * Allocate page middle directory.&n; *&n; * We&squot;ve already handled the fast-path in-line, and we own the&n; * page table lock.&n; */
 DECL|function|__pmd_alloc
 id|pmd_t
 id|fastcall
@@ -9050,6 +9052,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * Because we dropped the lock, we should re-check the&n;&t; * entry, as somebody else could have populated it..&n;&t; */
+macro_line|#ifndef __ARCH_HAS_4LEVEL_HACK
 r_if
 c_cond
 (paren
@@ -9081,78 +9084,7 @@ comma
 r_new
 )paren
 suffix:semicolon
-id|out
-suffix:colon
-r_return
-id|pmd_offset
-c_func
-(paren
-id|pud
-comma
-id|address
-)paren
-suffix:semicolon
-)brace
 macro_line|#else
-DECL|function|__pmd_alloc
-id|pmd_t
-id|fastcall
-op_star
-id|__pmd_alloc
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-comma
-id|pud_t
-op_star
-id|pud
-comma
-r_int
-r_int
-id|address
-)paren
-(brace
-id|pmd_t
-op_star
-r_new
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|mm-&gt;page_table_lock
-)paren
-suffix:semicolon
-r_new
-op_assign
-id|pmd_alloc_one
-c_func
-(paren
-id|mm
-comma
-id|address
-)paren
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|mm-&gt;page_table_lock
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-r_new
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-multiline_comment|/*&n;&t; * Because we dropped the lock, we should re-check the&n;&t; * entry, as somebody else could have populated it..&n;&t; */
 r_if
 c_cond
 (paren
@@ -9184,6 +9116,7 @@ comma
 r_new
 )paren
 suffix:semicolon
+macro_line|#endif /* __ARCH_HAS_4LEVEL_HACK */
 id|out
 suffix:colon
 r_return
@@ -9196,7 +9129,7 @@ id|address
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* __PAGETABLE_PMD_FOLDED */
 DECL|function|make_pages_present
 r_int
 id|make_pages_present

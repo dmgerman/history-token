@@ -105,10 +105,14 @@ macro_line|#endif
 multiline_comment|/*&n; * When walking page tables, get the address of the next boundary, or&n; * the end address of the range if that comes earlier.  Although end might&n; * wrap to 0 only in clear_page_range, __boundary may wrap to 0 throughout.&n; */
 DECL|macro|pgd_addr_end
 mdefine_line|#define pgd_addr_end(addr, end)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;unsigned long __boundary = ((addr) + PGDIR_SIZE) &amp; PGDIR_MASK;&t;&bslash;&n;&t;(__boundary - 1 &lt; (end) - 1)? __boundary: (end);&t;&t;&bslash;&n;})
+macro_line|#ifndef pud_addr_end
 DECL|macro|pud_addr_end
 mdefine_line|#define pud_addr_end(addr, end)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;unsigned long __boundary = ((addr) + PUD_SIZE) &amp; PUD_MASK;&t;&bslash;&n;&t;(__boundary - 1 &lt; (end) - 1)? __boundary: (end);&t;&t;&bslash;&n;})
+macro_line|#endif
+macro_line|#ifndef pmd_addr_end
 DECL|macro|pmd_addr_end
 mdefine_line|#define pmd_addr_end(addr, end)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;unsigned long __boundary = ((addr) + PMD_SIZE) &amp; PMD_MASK;&t;&bslash;&n;&t;(__boundary - 1 &lt; (end) - 1)? __boundary: (end);&t;&t;&bslash;&n;})
+macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * When walking page tables, we usually want to skip any p?d_none entries;&n; * and any p?d_bad entries - reporting the error before resetting to none.&n; * Do the tests inline, but report and clear the bad entry in mm/memory.c.&n; */
 r_void

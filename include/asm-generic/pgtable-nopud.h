@@ -2,6 +2,8 @@ macro_line|#ifndef _PGTABLE_NOPUD_H
 DECL|macro|_PGTABLE_NOPUD_H
 mdefine_line|#define _PGTABLE_NOPUD_H
 macro_line|#ifndef __ASSEMBLY__
+DECL|macro|__PAGETABLE_PUD_FOLDED
+mdefine_line|#define __PAGETABLE_PUD_FOLDED
 multiline_comment|/*&n; * Having the pud type consist of a pgd gets the size right, and allows&n; * us to conceptually access the pgd entry that this pud is folded into&n; * without casting.&n; */
 DECL|member|pgd
 DECL|typedef|pud_t
@@ -128,6 +130,10 @@ DECL|macro|pud_free
 mdefine_line|#define pud_free(x)&t;&t;&t;&t;do { } while (0)
 DECL|macro|__pud_free_tlb
 mdefine_line|#define __pud_free_tlb(tlb, x)&t;&t;&t;do { } while (0)
+DECL|macro|pud_addr_end
+macro_line|#undef  pud_addr_end
+DECL|macro|pud_addr_end
+mdefine_line|#define pud_addr_end(addr, end)&t;&t;&t;(end)
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* _PGTABLE_NOPUD_H */
 eof

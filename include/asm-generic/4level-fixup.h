@@ -3,6 +3,8 @@ DECL|macro|_4LEVEL_FIXUP_H
 mdefine_line|#define _4LEVEL_FIXUP_H
 DECL|macro|__ARCH_HAS_4LEVEL_HACK
 mdefine_line|#define __ARCH_HAS_4LEVEL_HACK
+DECL|macro|__PAGETABLE_PUD_FOLDED
+mdefine_line|#define __PAGETABLE_PUD_FOLDED
 DECL|macro|PUD_SIZE
 mdefine_line|#define PUD_SIZE&t;&t;&t;PGDIR_SIZE
 DECL|macro|PUD_MASK
@@ -35,5 +37,9 @@ DECL|macro|pud_free
 mdefine_line|#define pud_free(x)&t;&t;&t;do { } while (0)
 DECL|macro|__pud_free_tlb
 mdefine_line|#define __pud_free_tlb(tlb, x)&t;&t;do { } while (0)
+DECL|macro|pud_addr_end
+macro_line|#undef  pud_addr_end
+DECL|macro|pud_addr_end
+mdefine_line|#define pud_addr_end(addr, end)&t;&t;(end)
 macro_line|#endif
 eof

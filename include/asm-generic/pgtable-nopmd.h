@@ -3,6 +3,8 @@ DECL|macro|_PGTABLE_NOPMD_H
 mdefine_line|#define _PGTABLE_NOPMD_H
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm-generic/pgtable-nopud.h&gt;
+DECL|macro|__PAGETABLE_PMD_FOLDED
+mdefine_line|#define __PAGETABLE_PMD_FOLDED
 multiline_comment|/*&n; * Having the pmd type consist of a pud gets the size right, and allows&n; * us to conceptually access the pud entry that this pmd is folded into&n; * without casting.&n; */
 DECL|member|pud
 DECL|typedef|pmd_t
@@ -129,6 +131,10 @@ DECL|macro|pmd_free
 mdefine_line|#define pmd_free(x)&t;&t;&t;&t;do { } while (0)
 DECL|macro|__pmd_free_tlb
 mdefine_line|#define __pmd_free_tlb(tlb, x)&t;&t;&t;do { } while (0)
+DECL|macro|pmd_addr_end
+macro_line|#undef  pmd_addr_end
+DECL|macro|pmd_addr_end
+mdefine_line|#define pmd_addr_end(addr, end)&t;&t;&t;(end)
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* _PGTABLE_NOPMD_H */
 eof
