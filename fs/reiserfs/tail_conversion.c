@@ -786,7 +786,7 @@ op_eq
 id|bh-&gt;b_size
 )paren
 (brace
-id|ClearPageDirty
+id|clear_page_dirty
 c_func
 (paren
 id|page
