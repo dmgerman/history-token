@@ -217,9 +217,8 @@ r_int
 id|res
 )paren
 (brace
-macro_line|#ifdef CONFIG_DEBUG_ERRORS
-r_if
-c_cond
+id|WARN_ON
+c_func
 (paren
 id|res
 OL
@@ -233,22 +232,7 @@ r_int
 )paren
 id|high_memory
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;__virt_to_bus: invalid virtual address 0x%08lx&bslash;n&quot;
-comma
-id|res
-)paren
 suffix:semicolon
-id|__backtrace
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 (paren
 id|res
@@ -288,9 +272,8 @@ id|res
 op_add_assign
 id|PAGE_OFFSET
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_ERRORS
-r_if
-c_cond
+id|WARN_ON
+c_func
 (paren
 id|res
 OL
@@ -304,22 +287,7 @@ r_int
 )paren
 id|high_memory
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;__bus_to_virt: invalid virtual address 0x%08lx&bslash;n&quot;
-comma
-id|res
-)paren
 suffix:semicolon
-id|__backtrace
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 id|res
 suffix:semicolon
