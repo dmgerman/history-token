@@ -45,11 +45,13 @@ l_int|8
 )braket
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|arg
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|carg

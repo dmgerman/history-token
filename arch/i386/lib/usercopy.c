@@ -5,21 +5,19 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmx.h&gt;
-DECL|function|movsl_is_ok
+DECL|function|__movsl_is_ok
 r_static
 r_inline
 r_int
-id|movsl_is_ok
+id|__movsl_is_ok
 c_func
 (paren
-r_const
-r_void
-op_star
+r_int
+r_int
 id|a1
 comma
-r_const
-r_void
-op_star
+r_int
+r_int
 id|a2
 comma
 r_int
@@ -37,16 +35,8 @@ l_int|64
 op_logical_and
 (paren
 (paren
-(paren
-r_const
-r_int
-)paren
 id|a1
 op_xor
-(paren
-r_const
-r_int
-)paren
 id|a2
 )paren
 op_amp
@@ -61,6 +51,8 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|macro|movsl_is_ok
+mdefine_line|#define movsl_is_ok(a1,a2,n) &bslash;&n;&t;__movsl_is_ok((unsigned long)(a1),(unsigned long)(a2),(n))
 multiline_comment|/*&n; * Copy a null terminated string from userspace.&n; */
 DECL|macro|__do_strncpy_from_user
 mdefine_line|#define __do_strncpy_from_user(dst,src,count,res)&t;&t;&t;   &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;int __d0, __d1, __d2;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;testl %1,%1&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;jz 2f&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;0:&t;lodsb&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;stosb&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;testb %%al,%%al&bslash;n&quot;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;jz 1f&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;decl %1&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;jnz 0b&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;1:&t;subl %1,%0&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;2:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;3:&t;movl %5,%0&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;jmp 2b&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;.previous&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;.align 4&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;.long 0b,3b&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;: &quot;=d&quot;(res), &quot;=c&quot;(count), &quot;=&amp;a&quot; (__d0), &quot;=&amp;S&quot; (__d1),&t;   &bslash;&n;&t;&t;  &quot;=&amp;D&quot; (__d2)&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;: &quot;i&quot;(-EFAULT), &quot;0&quot;(count), &quot;1&quot;(count), &quot;3&quot;(src), &quot;4&quot;(dst) &bslash;&n;&t;&t;: &quot;memory&quot;);&t;&t;&t;&t;&t;&t;   &bslash;&n;} while (0)
@@ -76,6 +68,7 @@ id|dst
 comma
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -114,6 +107,7 @@ id|dst
 comma
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -167,6 +161,7 @@ id|clear_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -208,6 +203,7 @@ id|__clear_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -236,6 +232,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|s
 comma
@@ -690,6 +687,7 @@ id|__copy_to_user_ll
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -940,6 +938,10 @@ id|n
 id|__copy_user
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|to
 comma
 id|from
@@ -953,6 +955,10 @@ op_assign
 id|__copy_user_intel
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|to
 comma
 id|from
@@ -976,6 +982,7 @@ id|to
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
@@ -1002,6 +1009,11 @@ c_func
 (paren
 id|to
 comma
+(paren
+r_const
+r_void
+op_star
+)paren
 id|from
 comma
 id|n
@@ -1015,6 +1027,11 @@ c_func
 (paren
 id|to
 comma
+(paren
+r_const
+r_void
+op_star
+)paren
 id|from
 comma
 id|n

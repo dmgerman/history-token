@@ -1,13 +1,13 @@
-multiline_comment|/*&n; * Generic routines for AGP 3.0 compliant bridges.&n; */
+multiline_comment|/*&n; * Setup routines for AGP 3.5 compliant bridges.&n; */
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;agp.h&quot;
-multiline_comment|/* Generic AGP 3.0 enabling routines */
-DECL|struct|agp_3_0_dev
+multiline_comment|/* Generic AGP 3.5 enabling routines */
+DECL|struct|agp_3_5_dev
 r_struct
-id|agp_3_0_dev
+id|agp_3_5_dev
 (brace
 DECL|member|list
 r_struct
@@ -30,10 +30,10 @@ id|dev
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|function|agp_3_0_dev_list_insert
+DECL|function|agp_3_5_dev_list_insert
 r_static
 r_void
-id|agp_3_0_dev_list_insert
+id|agp_3_5_dev_list_insert
 c_func
 (paren
 r_struct
@@ -48,7 +48,7 @@ r_new
 )paren
 (brace
 r_struct
-id|agp_3_0_dev
+id|agp_3_5_dev
 op_star
 id|cur
 comma
@@ -61,7 +61,7 @@ c_func
 r_new
 comma
 r_struct
-id|agp_3_0_dev
+id|agp_3_5_dev
 comma
 id|list
 )paren
@@ -87,7 +87,7 @@ c_func
 id|pos
 comma
 r_struct
-id|agp_3_0_dev
+id|agp_3_5_dev
 comma
 id|list
 )paren
@@ -113,14 +113,14 @@ id|pos
 )paren
 suffix:semicolon
 )brace
-DECL|function|agp_3_0_dev_list_sort
+DECL|function|agp_3_5_dev_list_sort
 r_static
 r_void
-id|agp_3_0_dev_list_sort
+id|agp_3_5_dev_list_sort
 c_func
 (paren
 r_struct
-id|agp_3_0_dev
+id|agp_3_5_dev
 op_star
 id|list
 comma
@@ -130,7 +130,7 @@ id|ndevs
 )paren
 (brace
 r_struct
-id|agp_3_0_dev
+id|agp_3_5_dev
 op_star
 id|cur
 suffix:semicolon
@@ -188,7 +188,7 @@ c_func
 id|pos
 comma
 r_struct
-id|agp_3_0_dev
+id|agp_3_5_dev
 comma
 id|list
 )paren
@@ -204,7 +204,7 @@ id|dev
 comma
 id|cur-&gt;capndx
 op_plus
-l_int|0x0c
+id|AGPNISTAT
 comma
 op_amp
 id|nistat
@@ -228,7 +228,7 @@ id|pos
 op_assign
 id|pos-&gt;next
 suffix:semicolon
-id|agp_3_0_dev_list_insert
+id|agp_3_5_dev_list_insert
 c_func
 (paren
 id|head
@@ -239,10 +239,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* &n; * Initialize all isochronous transfer parameters for an AGP 3.0 &n; * node (i.e. a host bridge in combination with the adapters &n; * lying behind it...)&n; */
-DECL|function|agp_3_0_isochronous_node_enable
+DECL|function|agp_3_5_isochronous_node_enable
 r_static
 r_int
-id|agp_3_0_isochronous_node_enable
+id|agp_3_5_isochronous_node_enable
 c_func
 (paren
 r_struct
@@ -251,7 +251,7 @@ op_star
 id|bridge
 comma
 r_struct
-id|agp_3_0_dev
+id|agp_3_5_dev
 op_star
 id|dev_list
 comma
@@ -280,7 +280,7 @@ id|u32
 id|rq
 suffix:semicolon
 r_struct
-id|agp_3_0_dev
+id|agp_3_5_dev
 op_star
 id|dev
 suffix:semicolon
@@ -308,7 +308,7 @@ op_star
 id|pos
 suffix:semicolon
 r_struct
-id|agp_3_0_dev
+id|agp_3_5_dev
 op_star
 id|cur
 suffix:semicolon
@@ -410,7 +410,7 @@ id|get_out
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Sort the device list by maxbw.  We need to do this because the&n;&t; * spec suggests that the devices with the smallest requirements&n;&t; * have their resources allocated first, with all remaining resources&n;&t; * falling to the device with the largest requirement.&n;&t; *&n;&t; * We don&squot;t exactly do this, we divide target resources by ndevs&n;&t; * and split them amongst the AGP 3.0 devices.  The remainder of such&n;&t; * division operations are dropped on the last device, sort of like&n;&t; * the spec mentions it should be done.&n;&t; *&n;&t; * We can&squot;t do this sort when we initially construct the dev_list&n;&t; * because we don&squot;t know until this function whether isochronous&n;&t; * transfers are enabled and consequently whether maxbw will mean&n;&t; * anything.&n;&t; */
-id|agp_3_0_dev_list_sort
+id|agp_3_5_dev_list_sort
 c_func
 (paren
 id|dev_list
@@ -425,7 +425,7 @@ id|td
 comma
 id|bridge-&gt;capndx
 op_plus
-l_int|0x0c
+id|AGPNISTAT
 comma
 op_amp
 id|tnistat
@@ -516,7 +516,7 @@ c_func
 id|pos
 comma
 r_struct
-id|agp_3_0_dev
+id|agp_3_5_dev
 comma
 id|list
 )paren
@@ -536,7 +536,7 @@ id|dev
 comma
 id|cur-&gt;capndx
 op_plus
-l_int|0x0c
+id|AGPNISTAT
 comma
 op_amp
 id|mnistat
@@ -664,7 +664,7 @@ id|td
 comma
 id|bridge-&gt;capndx
 op_plus
-l_int|0x20
+id|AGPNICMD
 comma
 op_amp
 id|tnicmd
@@ -692,7 +692,7 @@ id|td
 comma
 id|bridge-&gt;capndx
 op_plus
-l_int|0x20
+id|AGPNICMD
 comma
 id|tnicmd
 )paren
@@ -705,7 +705,7 @@ id|td
 comma
 id|bridge-&gt;capndx
 op_plus
-l_int|0x0c
+id|AGPNISTAT
 comma
 op_amp
 id|tnistat
@@ -902,7 +902,6 @@ id|ndevs
 op_minus
 l_int|1
 )paren
-(brace
 id|master
 (braket
 id|cdev
@@ -912,7 +911,6 @@ id|n
 op_add_assign
 id|rem
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Figure the number of isochronous and asynchronous RQ slots the&n;&t; * target is providing. */
 id|rq_isoch
@@ -1060,7 +1058,7 @@ id|dev
 comma
 id|cur-&gt;capndx
 op_plus
-l_int|0x20
+id|AGPNICMD
 comma
 op_amp
 id|mnicmd
@@ -1158,7 +1156,7 @@ id|dev
 comma
 id|cur-&gt;capndx
 op_plus
-l_int|0x20
+id|AGPNICMD
 comma
 id|mnicmd
 )paren
@@ -1179,10 +1177,10 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function basically allocates request queue slots among the&n; * AGP 3.0 systems in nonisochronous nodes.  The algorithm is&n; * pretty stupid, divide the total number of RQ slots provided by the&n; * target by ndevs.  Distribute this many slots to each AGP 3.0 device,&n; * giving any left over slots to the last device in dev_list.&n; */
-DECL|function|agp_3_0_nonisochronous_node_enable
+DECL|function|agp_3_5_nonisochronous_node_enable
 r_static
 r_void
-id|agp_3_0_nonisochronous_node_enable
+id|agp_3_5_nonisochronous_node_enable
 c_func
 (paren
 r_struct
@@ -1191,7 +1189,7 @@ op_star
 id|bridge
 comma
 r_struct
-id|agp_3_0_dev
+id|agp_3_5_dev
 op_star
 id|dev_list
 comma
@@ -1201,7 +1199,7 @@ id|ndevs
 )paren
 (brace
 r_struct
-id|agp_3_0_dev
+id|agp_3_5_dev
 op_star
 id|cur
 suffix:semicolon
@@ -1241,7 +1239,7 @@ id|bridge-&gt;dev
 comma
 id|bridge-&gt;capndx
 op_plus
-l_int|0x04
+id|AGPSTAT
 comma
 op_amp
 id|tstatus
@@ -1300,7 +1298,7 @@ c_func
 id|pos
 comma
 r_struct
-id|agp_3_0_dev
+id|agp_3_5_dev
 comma
 id|list
 )paren
@@ -1361,9 +1359,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Fully configure and enable an AGP 3.0 host bridge and all the devices&n; * lying behind it.&n; */
-DECL|function|agp_3_0_node_enable
+DECL|function|agp_3_5_enable
 r_int
-id|agp_3_0_node_enable
+id|agp_3_5_enable
 c_func
 (paren
 r_struct
@@ -1373,9 +1371,6 @@ id|bridge
 comma
 id|u32
 id|mode
-comma
-id|u32
-id|minor
 )paren
 (brace
 r_struct
@@ -1395,19 +1390,9 @@ id|u32
 id|isoch
 comma
 id|arqsz
-comma
-id|cal_cycle
-comma
-id|tmp
-comma
-id|rate
 suffix:semicolon
 id|u32
 id|tstatus
-comma
-id|tcmd
-comma
-id|mcmd
 comma
 id|mstatus
 comma
@@ -1415,14 +1400,12 @@ id|ncapid
 suffix:semicolon
 id|u32
 id|mmajor
-comma
-id|mminor
 suffix:semicolon
 id|u16
 id|mpstat
 suffix:semicolon
 r_struct
-id|agp_3_0_dev
+id|agp_3_5_dev
 op_star
 id|dev_list
 comma
@@ -1448,7 +1431,53 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* &n;&t; * Allocate a head for our AGP 3.0 device list (multiple AGP 3.0&n;&t; * devices are allowed behind a single bridge). &n;&t; */
+multiline_comment|/* Extract some power-on defaults from the target */
+id|pci_read_config_dword
+c_func
+(paren
+id|td
+comma
+id|bridge-&gt;capndx
+op_plus
+id|AGPSTAT
+comma
+op_amp
+id|tstatus
+)paren
+suffix:semicolon
+id|isoch
+op_assign
+(paren
+id|tstatus
+op_rshift
+l_int|17
+)paren
+op_amp
+l_int|0x1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|isoch
+op_eq
+l_int|0
+)paren
+multiline_comment|/* isoch xfers not available, bail out. */
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+id|arqsz
+op_assign
+(paren
+id|tstatus
+op_rshift
+l_int|13
+)paren
+op_amp
+l_int|0x7
+suffix:semicolon
+multiline_comment|/* &n;&t; * Allocate a head for our AGP 3.5 device list&n;&t; * (multiple AGP v3 devices are allowed behind a single bridge). &n;&t; */
 r_if
 c_cond
 (paren
@@ -1507,6 +1536,15 @@ id|dev
 comma
 id|PCI_CAP_ID_AGP
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mcapndx
+op_eq
+l_int|0
+)paren
+r_continue
 suffix:semicolon
 r_switch
 c_cond
@@ -1567,15 +1605,6 @@ multiline_comment|/* Multimedia controller */
 r_if
 c_cond
 (paren
-id|mcapndx
-op_eq
-l_int|0
-)paren
-r_continue
-suffix:semicolon
-r_if
-c_cond
-(paren
 (paren
 id|cur
 op_assign
@@ -1632,57 +1661,7 @@ r_continue
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Extract some power-on defaults from the target */
-id|pci_read_config_dword
-c_func
-(paren
-id|td
-comma
-id|bridge-&gt;capndx
-op_plus
-l_int|0x04
-comma
-op_amp
-id|tstatus
-)paren
-suffix:semicolon
-id|isoch
-op_assign
-(paren
-id|tstatus
-op_rshift
-l_int|17
-)paren
-op_amp
-l_int|0x1
-suffix:semicolon
-id|arqsz
-op_assign
-(paren
-id|tstatus
-op_rshift
-l_int|13
-)paren
-op_amp
-l_int|0x7
-suffix:semicolon
-id|cal_cycle
-op_assign
-(paren
-id|tstatus
-op_rshift
-l_int|10
-)paren
-op_amp
-l_int|0x7
-suffix:semicolon
-id|rate
-op_assign
-id|tstatus
-op_amp
-l_int|0x7
-suffix:semicolon
-multiline_comment|/*&n;&t; * Take an initial pass through the devices lying behind our host&n;&t; * bridge.  Make sure each one is actually an AGP 3.0 device, otherwise&n;&t; * exit with an error message.  Along the way store the AGP 3.0&n;&t; * cap_ptr for each device, the minimum supported cal_cycle, and the&n;&t; * minimum supported data rate.&n;&t; */
+multiline_comment|/*&n;&t; * Take an initial pass through the devices lying behind our host&n;&t; * bridge.  Make sure each one is actually an AGP 3.0 device, otherwise&n;&t; * exit with an error message.  Along the way store the AGP 3.0&n;&t; * cap_ptr for each device&n;&t; */
 id|list_for_each
 c_func
 (paren
@@ -1699,7 +1678,7 @@ c_func
 id|pos
 comma
 r_struct
-id|agp_3_0_dev
+id|agp_3_5_dev
 comma
 id|list
 )paren
@@ -1730,10 +1709,8 @@ id|PCI_STATUS_CAP_LIST
 op_eq
 l_int|0
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 id|pci_read_config_byte
 c_func
 (paren
@@ -1750,7 +1727,7 @@ c_cond
 (paren
 id|mcapndx
 op_ne
-l_int|0x00
+l_int|0
 )paren
 (brace
 r_do
@@ -1775,7 +1752,7 @@ op_amp
 l_int|0xff
 )paren
 op_ne
-l_int|0x02
+l_int|2
 )paren
 id|mcapndx
 op_assign
@@ -1798,13 +1775,13 @@ op_amp
 l_int|0xff
 )paren
 op_ne
-l_int|0x02
+l_int|2
 )paren
 op_logical_and
 (paren
 id|mcapndx
 op_ne
-l_int|0x00
+l_int|0
 )paren
 )paren
 suffix:semicolon
@@ -1823,7 +1800,7 @@ c_func
 id|KERN_ERR
 id|PFX
 l_string|&quot;woah!  Non-AGP device &quot;
-l_string|&quot;found on the secondary bus of an AGP 3.0 bridge!&bslash;n&quot;
+l_string|&quot;found on the secondary bus of an AGP 3.5 bridge!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret
@@ -1845,16 +1822,6 @@ id|AGP_MAJOR_VERSION_SHIFT
 op_amp
 l_int|0xf
 suffix:semicolon
-id|mminor
-op_assign
-(paren
-id|ncapid
-op_rshift
-id|AGP_MINOR_VERSION_SHIFT
-)paren
-op_amp
-l_int|0xf
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1869,7 +1836,7 @@ c_func
 id|KERN_ERR
 id|PFX
 l_string|&quot;woah!  AGP 2.0 device &quot;
-l_string|&quot;found on the secondary bus of an AGP 3.0 &quot;
+l_string|&quot;found on the secondary bus of an AGP 3.5 &quot;
 l_string|&quot;bridge operating with AGP 3.0 electricals!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1893,7 +1860,7 @@ id|dev
 comma
 id|cur-&gt;capndx
 op_plus
-l_int|0x04
+id|AGPSTAT
 comma
 op_amp
 id|mstatus
@@ -1920,9 +1887,9 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;woah!  AGP 3.0 device &quot;
-l_string|&quot;not operating in AGP 3.0 mode found on the &quot;
-l_string|&quot;secondary bus of an AGP 3.0 bridge operating &quot;
+l_string|&quot;woah!  AGP 3.x device &quot;
+l_string|&quot;not operating in AGP 3.x mode found on the &quot;
+l_string|&quot;secondary bus of an AGP 3.5 bridge operating &quot;
 l_string|&quot;with AGP 3.0 electricals!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1935,92 +1902,6 @@ r_goto
 id|free_and_exit
 suffix:semicolon
 )brace
-id|tmp
-op_assign
-(paren
-id|mstatus
-op_rshift
-l_int|10
-)paren
-op_amp
-l_int|0x7
-suffix:semicolon
-id|cal_cycle
-op_assign
-id|min
-c_func
-(paren
-id|cal_cycle
-comma
-id|tmp
-)paren
-suffix:semicolon
-multiline_comment|/* figure the lesser rate */
-id|tmp
-op_assign
-id|mstatus
-op_amp
-l_int|0x7
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tmp
-OL
-id|rate
-)paren
-(brace
-id|rate
-op_assign
-id|tmp
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* Turn rate into something we can actually write out to AGPCMD */
-r_switch
-c_cond
-(paren
-id|rate
-)paren
-(brace
-r_case
-l_int|0x1
-suffix:colon
-r_case
-l_int|0x2
-suffix:colon
-r_break
-suffix:semicolon
-r_case
-l_int|0x3
-suffix:colon
-id|rate
-op_assign
-l_int|0x2
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|PFX
-l_string|&quot;woah!  Bogus AGP rate (%d) &quot;
-l_string|&quot;value found advertised behind an AGP 3.0 bridge!&bslash;n&quot;
-comma
-id|rate
-)paren
-suffix:semicolon
-id|ret
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-r_goto
-id|free_and_exit
-suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Call functions to divide target resources amongst the AGP 3.0&n;&t; * masters.  This process is dramatically different depending on&n;&t; * whether isochronous transfers are supported.&n;&t; */
 r_if
@@ -2031,7 +1912,7 @@ id|isoch
 (brace
 id|ret
 op_assign
-id|agp_3_0_isochronous_node_enable
+id|agp_3_5_isochronous_node_enable
 c_func
 (paren
 id|bridge
@@ -2059,7 +1940,7 @@ l_string|&quot;non-isochronous xfer mode.&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-id|agp_3_0_nonisochronous_node_enable
+id|agp_3_5_nonisochronous_node_enable
 c_func
 (paren
 id|bridge
@@ -2069,146 +1950,6 @@ comma
 id|ndevs
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set the calculated minimum supported cal_cycle and minimum&n;&t; * supported transfer rate in the target&squot;s AGPCMD register.&n;&t; * Also set the AGP_ENABLE bit, effectively &squot;turning on&squot; the&n;&t; * target (this has to be done _before_ turning on the masters).&n;&t; */
-id|pci_read_config_dword
-c_func
-(paren
-id|td
-comma
-id|bridge-&gt;capndx
-op_plus
-id|AGPCMD
-comma
-op_amp
-id|tcmd
-)paren
-suffix:semicolon
-id|tcmd
-op_and_assign
-op_complement
-(paren
-l_int|0x7
-op_lshift
-l_int|10
-)paren
-suffix:semicolon
-id|tcmd
-op_and_assign
-op_complement
-l_int|0x7
-suffix:semicolon
-id|tcmd
-op_or_assign
-id|cal_cycle
-op_lshift
-l_int|10
-suffix:semicolon
-id|tcmd
-op_or_assign
-l_int|0x1
-op_lshift
-l_int|8
-suffix:semicolon
-id|tcmd
-op_or_assign
-id|rate
-suffix:semicolon
-id|pci_write_config_dword
-c_func
-(paren
-id|td
-comma
-id|bridge-&gt;capndx
-op_plus
-id|AGPCMD
-comma
-id|tcmd
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Set the target&squot;s advertised arqsz value, the minimum supported&n;&t; * transfer rate, and the AGP_ENABLE bit in each master&squot;s AGPCMD&n;&t; * register.&n;&t; */
-id|list_for_each
-c_func
-(paren
-id|pos
-comma
-id|head
-)paren
-(brace
-id|cur
-op_assign
-id|list_entry
-c_func
-(paren
-id|pos
-comma
-r_struct
-id|agp_3_0_dev
-comma
-id|list
-)paren
-suffix:semicolon
-id|dev
-op_assign
-id|cur-&gt;dev
-suffix:semicolon
-id|mcapndx
-op_assign
-id|cur-&gt;capndx
-suffix:semicolon
-id|pci_read_config_dword
-c_func
-(paren
-id|dev
-comma
-id|cur-&gt;capndx
-op_plus
-id|AGPCMD
-comma
-op_amp
-id|mcmd
-)paren
-suffix:semicolon
-id|mcmd
-op_and_assign
-op_complement
-(paren
-l_int|0x7
-op_lshift
-id|AGPSTAT_ARQSZ_SHIFT
-)paren
-suffix:semicolon
-id|mcmd
-op_and_assign
-op_complement
-l_int|0x7
-suffix:semicolon
-id|mcmd
-op_or_assign
-id|arqsz
-op_lshift
-l_int|13
-suffix:semicolon
-id|mcmd
-op_or_assign
-id|AGPSTAT_AGP_ENABLE
-suffix:semicolon
-id|mcmd
-op_or_assign
-id|rate
-suffix:semicolon
-id|pci_write_config_dword
-c_func
-(paren
-id|dev
-comma
-id|cur-&gt;capndx
-op_plus
-id|AGPCMD
-comma
-id|mcmd
-)paren
-suffix:semicolon
-)brace
 id|free_and_exit
 suffix:colon
 multiline_comment|/* Be sure to free the dev_list */
@@ -2233,7 +1974,7 @@ c_func
 id|pos
 comma
 r_struct
-id|agp_3_0_dev
+id|agp_3_5_dev
 comma
 id|list
 )paren
@@ -2261,11 +2002,4 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|variable|agp_3_0_node_enable
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|agp_3_0_node_enable
-)paren
-suffix:semicolon
 eof
