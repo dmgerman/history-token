@@ -5863,11 +5863,7 @@ suffix:semicolon
 id|gtk_widget_grab_focus
 c_func
 (paren
-id|GTK_WIDGET
-c_func
-(paren
 id|tree2_w
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -7139,13 +7135,6 @@ comma
 op_star
 id|menu2
 suffix:semicolon
-r_static
-id|GtkTreePath
-op_star
-id|path
-op_assign
-l_int|NULL
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7798,6 +7787,7 @@ r_if
 c_cond
 (paren
 (paren
+(paren
 id|view_mode
 op_eq
 id|SINGLE_VIEW
@@ -7807,6 +7797,7 @@ op_logical_and
 id|menu-&gt;flags
 op_amp
 id|MENU_ROOT
+)paren
 )paren
 op_logical_or
 (paren
