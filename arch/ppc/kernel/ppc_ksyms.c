@@ -494,7 +494,13 @@ c_func
 id|__div64_32
 )paren
 suffix:semicolon
-multiline_comment|/* EXPORT_SYMBOL(csum_partial); already in net/netsyms.c */
+DECL|variable|csum_partial
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|csum_partial
+)paren
+suffix:semicolon
 DECL|variable|csum_partial_copy_generic
 id|EXPORT_SYMBOL
 c_func
