@@ -1,6 +1,7 @@
 macro_line|#ifndef _ASM_PARISC_SCATTERLIST_H
 DECL|macro|_ASM_PARISC_SCATTERLIST_H
 mdefine_line|#define _ASM_PARISC_SCATTERLIST_H
+macro_line|#include &lt;asm/page.h&gt;
 DECL|struct|scatterlist
 r_struct
 id|scatterlist
@@ -34,6 +35,8 @@ suffix:semicolon
 multiline_comment|/* bytes mapped */
 )brace
 suffix:semicolon
+DECL|macro|sg_virt_addr
+mdefine_line|#define sg_virt_addr(sg) ((unsigned long)(page_address(sg-&gt;page) + sg-&gt;offset))
 DECL|macro|sg_dma_address
 mdefine_line|#define sg_dma_address(sg) ((sg)-&gt;iova)
 DECL|macro|sg_dma_len

@@ -1,48 +1,43 @@
-macro_line|#ifndef _ASM_IRQ_H
-DECL|macro|_ASM_IRQ_H
-mdefine_line|#define _ASM_IRQ_H
-macro_line|#include &lt;linux/string.h&gt;
+multiline_comment|/*&n; *&t;linux/include/asm-parisc/irq.h&n; *&n; *&t;(C) 1992, 1993 Linus Torvalds, (C) 1997 Ingo Molnar,&n; *&t;&t;Copyright 1999 SuSE GmbH&n; *&n; *&t;IRQ/IPI changes taken from work by Thomas Radke&n; *&t;&lt;tomsoft@informatik.tu-chemnitz.de&gt;&n; */
+macro_line|#ifndef _ASM_PARISC_IRQ_H
+DECL|macro|_ASM_PARISC_IRQ_H
+mdefine_line|#define _ASM_PARISC_IRQ_H
 macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
-multiline_comment|/*&n; *&t;linux/include/asm/irq.h&n; *&n; *&t;(C) 1992, 1993 Linus Torvalds, (C) 1997 Ingo Molnar,&n; *&t;&t;Copyright 1999 SuSE GmbH&n; *&n; *&t;IRQ/IPI changes taken from work by Thomas Radke&n; *&t;&lt;tomsoft@informatik.tu-chemnitz.de&gt;&n; */
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|macro|CPU_IRQ_REGION
-mdefine_line|#define CPU_IRQ_REGION&t; 1
+mdefine_line|#define CPU_IRQ_REGION&t;&t;1
 DECL|macro|TIMER_IRQ
-mdefine_line|#define TIMER_IRQ&t; (IRQ_FROM_REGION(CPU_IRQ_REGION) | 0)
+mdefine_line|#define TIMER_IRQ&t;&t;(IRQ_FROM_REGION(CPU_IRQ_REGION) | 0)
 DECL|macro|IPI_IRQ
-mdefine_line|#define&t;IPI_IRQ&t;&t; (IRQ_FROM_REGION(CPU_IRQ_REGION) | 1)
-multiline_comment|/* This should be 31 for PA1.1 binaries and 63 for PA-2.0 wide mode) */
+mdefine_line|#define&t;IPI_IRQ&t;&t;&t;(IRQ_FROM_REGION(CPU_IRQ_REGION) | 1)
+multiline_comment|/* This should be 31 for PA1.1 binaries and 63 for PA-2.0 wide mode */
 DECL|macro|MAX_CPU_IRQ
-mdefine_line|#define MAX_CPU_IRQ&t;(BITS_PER_LONG - 1)
-macro_line|#if 1    /* set to 1 to get the new irq offsets, or ...   */
-macro_line|# if BITS_PER_LONG == 32
+mdefine_line|#define MAX_CPU_IRQ&t;&t;(BITS_PER_LONG - 1)
+macro_line|#if BITS_PER_LONG == 32
 DECL|macro|IRQ_REGION_SHIFT
-macro_line|#  define IRQ_REGION_SHIFT 5
-macro_line|# else
+macro_line|#  define IRQ_REGION_SHIFT &t;5
+macro_line|#else
 DECL|macro|IRQ_REGION_SHIFT
-macro_line|#  define IRQ_REGION_SHIFT 6
-macro_line|# endif
-macro_line|#else   /* 256 irq-entries per region (wastes memory, maybe gains speed? :-))*/
-DECL|macro|IRQ_REGION_SHIFT
-macro_line|# define IRQ_REGION_SHIFT 8
-macro_line|#endif 
+macro_line|#  define IRQ_REGION_SHIFT &t;6
+macro_line|#endif
 DECL|macro|IRQ_PER_REGION
-mdefine_line|#define IRQ_PER_REGION  (1 &lt;&lt; IRQ_REGION_SHIFT)
+mdefine_line|#define IRQ_PER_REGION&t;&t;(1 &lt;&lt; IRQ_REGION_SHIFT)
 DECL|macro|NR_IRQ_REGS
-mdefine_line|#define NR_IRQ_REGS&t;8
+mdefine_line|#define NR_IRQ_REGS&t;&t;16
 DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS&t;&t;(NR_IRQ_REGS * IRQ_PER_REGION)
+mdefine_line|#define NR_IRQS&t;&t;&t;(NR_IRQ_REGS * IRQ_PER_REGION)
 DECL|macro|IRQ_REGION
 mdefine_line|#define IRQ_REGION(irq) &t;((irq) &gt;&gt; IRQ_REGION_SHIFT)
 DECL|macro|IRQ_OFFSET
 mdefine_line|#define IRQ_OFFSET(irq)&t;&t;((irq) &amp; ((1&lt;&lt;IRQ_REGION_SHIFT)-1))
 DECL|macro|IRQ_FROM_REGION
 mdefine_line|#define&t;IRQ_FROM_REGION(reg)&t;((reg) &lt;&lt; IRQ_REGION_SHIFT)
-DECL|macro|IRQ_REG_DIS
-mdefine_line|#define IRQ_REG_DIS&t;   1&t;/* support disable_irq / enable_irq */
-DECL|macro|IRQ_REG_MASK
-mdefine_line|#define IRQ_REG_MASK&t;   2&t;/* require IRQs to be masked */
+DECL|macro|EISA_IRQ_REGION
+mdefine_line|#define EISA_IRQ_REGION&t;&t;0 /* region 0 needs to be reserved for EISA */
+DECL|macro|EISA_MAX_IRQS
+mdefine_line|#define EISA_MAX_IRQS&t;&t;16 /* max. (E)ISA irq line */
 DECL|struct|irq_region_ops
 r_struct
 id|irq_region_ops
@@ -124,14 +119,19 @@ r_char
 op_star
 id|name
 suffix:semicolon
-DECL|member|flags
-r_int
-id|flags
-suffix:semicolon
 DECL|member|irqbase
 r_int
 id|irqbase
 suffix:semicolon
+DECL|member|status
+r_int
+r_int
+id|status
+(braket
+id|IRQ_PER_REGION
+)braket
+suffix:semicolon
+multiline_comment|/* IRQ status */
 )brace
 suffix:semicolon
 DECL|struct|irq_region
@@ -176,9 +176,40 @@ r_int
 id|irq
 )paren
 (brace
+macro_line|#ifdef CONFIG_EISA
+r_return
+(paren
+id|irq
+op_eq
+(paren
+id|IRQ_FROM_REGION
+c_func
+(paren
+id|EISA_IRQ_REGION
+)paren
+op_plus
+l_int|2
+)paren
+ques
+c_cond
+(paren
+id|IRQ_FROM_REGION
+c_func
+(paren
+id|EISA_IRQ_REGION
+)paren
+op_plus
+l_int|9
+)paren
+suffix:colon
+id|irq
+)paren
+suffix:semicolon
+macro_line|#else
 r_return
 id|irq
 suffix:semicolon
+macro_line|#endif
 )brace
 r_extern
 r_void
@@ -188,12 +219,33 @@ c_func
 r_int
 )paren
 suffix:semicolon
+DECL|macro|disable_irq_nosync
+mdefine_line|#define disable_irq_nosync(i) disable_irq(i)
 r_extern
 r_void
 id|enable_irq
 c_func
 (paren
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|do_irq
+c_func
+(paren
+r_struct
+id|irqaction
+op_star
+id|a
+comma
+r_int
+id|i
+comma
+r_struct
+id|pt_regs
+op_star
+id|p
 )paren
 suffix:semicolon
 r_extern
@@ -230,10 +282,6 @@ r_struct
 id|irq_region_ops
 op_star
 id|ops
-comma
-r_int
-r_int
-id|flags
 comma
 r_const
 r_char
@@ -282,5 +330,11 @@ c_func
 r_int
 )paren
 suffix:semicolon
-macro_line|#endif /* _ASM_IRQ_H */
+multiline_comment|/* soft power switch support (power.c) */
+r_extern
+r_struct
+id|tasklet_struct
+id|power_tasklet
+suffix:semicolon
+macro_line|#endif&t;/* _ASM_PARISC_IRQ_H */
 eof

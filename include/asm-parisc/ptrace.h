@@ -3,7 +3,7 @@ DECL|macro|_PARISC_PTRACE_H
 mdefine_line|#define _PARISC_PTRACE_H
 multiline_comment|/* written by Philipp Rumpf, Copyright (C) 1999 SuSE GmbH Nuernberg&n;** Copyright (C) 2000 Grant Grundler, Hewlett-Packard&n;*/
 macro_line|#include &lt;linux/types.h&gt;
-multiline_comment|/* This struct defines the way the registers are stored on the &n;   stack during a system call. */
+multiline_comment|/* This struct defines the way the registers are stored on the &n; * stack during a system call.&n; *&n; * N.B. gdb/strace care about the size and offsets within this&n; * structure. If you change things, you may break object compatibility&n; * for those applications.&n; */
 DECL|struct|pt_regs
 r_struct
 id|pt_regs
@@ -48,31 +48,17 @@ id|iaoq
 l_int|2
 )braket
 suffix:semicolon
-DECL|member|cr24
-r_int
-r_int
-id|cr24
-suffix:semicolon
-DECL|member|cr25
-r_int
-r_int
-id|cr25
-suffix:semicolon
-DECL|member|cr26
-r_int
-r_int
-id|cr26
-suffix:semicolon
 DECL|member|cr27
 r_int
 r_int
 id|cr27
 suffix:semicolon
-DECL|member|cr30
+DECL|member|pad0
 r_int
 r_int
-id|cr30
+id|pad0
 suffix:semicolon
+multiline_comment|/* available for other uses */
 DECL|member|orig_r28
 r_int
 r_int
@@ -118,15 +104,6 @@ r_int
 id|ipsw
 suffix:semicolon
 multiline_comment|/* CR22 */
-DECL|member|cr_pid
-r_int
-r_int
-id|cr_pid
-(braket
-l_int|4
-)braket
-suffix:semicolon
-multiline_comment|/* CR8,9,12,13 */
 )brace
 suffix:semicolon
 DECL|macro|task_regs

@@ -15,6 +15,8 @@ DECL|macro|PSW_G
 mdefine_line|#define&t;PSW_G&t;0x00000040&t;/* PA1.x only */
 DECL|macro|PSW_O
 mdefine_line|#define PSW_O&t;0x00000080&t;/* PA2.0 only */
+DECL|macro|PSW_CB
+mdefine_line|#define PSW_CB&t;0x0000ff00
 DECL|macro|PSW_M
 mdefine_line|#define&t;PSW_M&t;0x00010000
 DECL|macro|PSW_V
@@ -39,10 +41,16 @@ DECL|macro|PSW_E
 mdefine_line|#define&t;PSW_E&t;0x04000000
 DECL|macro|PSW_W
 mdefine_line|#define PSW_W&t;0x08000000&t;/* PA2.0 only */
+DECL|macro|PSW_W_BIT
+mdefine_line|#define PSW_W_BIT       36      /* PA2.0 only */
 DECL|macro|PSW_Z
 mdefine_line|#define&t;PSW_Z&t;0x40000000&t;/* PA1.x only */
 DECL|macro|PSW_Y
 mdefine_line|#define&t;PSW_Y&t;0x80000000&t;/* PA1.x only */
+macro_line|#ifdef __LP64__
+DECL|macro|PSW_HI_CB
+mdefine_line|#define PSW_HI_CB 0x000000ff    /* PA2.0 only */
+macro_line|#endif
 multiline_comment|/* PSW bits to be used with ssm/rsm */
 DECL|macro|PSW_SM_I
 mdefine_line|#define PSW_SM_I        0x1
@@ -66,22 +74,24 @@ DECL|macro|PSW_SM_W
 mdefine_line|#define PSW_SM_W        0x200
 macro_line|#ifdef __LP64__
 DECL|macro|USER_PSW
-macro_line|#  define USER_PSW&t;(PSW_C | PSW_D | PSW_Q | PSW_I)
-DECL|macro|USER_INIT_PSW
-macro_line|#  define USER_INIT_PSW&t;(PSW_C | PSW_D | PSW_Q | PSW_I | PSW_N)
+macro_line|#  define USER_PSW      (PSW_C | PSW_Q | PSW_P | PSW_D | PSW_I)
 DECL|macro|KERNEL_PSW
-macro_line|#  define KERNEL_PSW&t;(PSW_C | PSW_D | PSW_Q | PSW_W)
-DECL|macro|PDC_PSW
-macro_line|#  define PDC_PSW&t;(PSW_Q | PSW_W)
+macro_line|#  define KERNEL_PSW    (PSW_W | PSW_C | PSW_Q | PSW_P | PSW_D)
+DECL|macro|REAL_MODE_PSW
+macro_line|#  define REAL_MODE_PSW (PSW_W | PSW_Q)
+DECL|macro|USER_PSW_MASK
+macro_line|#  define USER_PSW_MASK (PSW_W | PSW_T | PSW_N | PSW_X | PSW_B | PSW_V | PSW_CB)
+DECL|macro|USER_PSW_HI_MASK
+macro_line|#  define USER_PSW_HI_MASK (PSW_HI_CB)
 macro_line|#else
 DECL|macro|USER_PSW
-macro_line|#  define USER_PSW&t;(PSW_C | PSW_D | PSW_Q | PSW_I | PSW_P)
-DECL|macro|USER_INIT_PSW
-macro_line|#  define USER_INIT_PSW&t;(PSW_C | PSW_D | PSW_Q | PSW_I | PSW_N)
+macro_line|#  define USER_PSW      (PSW_C | PSW_Q | PSW_P | PSW_D | PSW_I)
 DECL|macro|KERNEL_PSW
-macro_line|#  define KERNEL_PSW&t;(PSW_C | PSW_D | PSW_Q)
-DECL|macro|PDC_PSW
-macro_line|#  define PDC_PSW&t;(PSW_Q)
+macro_line|#  define KERNEL_PSW    (PSW_C | PSW_Q | PSW_P | PSW_D)
+DECL|macro|REAL_MODE_PSW
+macro_line|#  define REAL_MODE_PSW (PSW_Q)
+DECL|macro|USER_PSW_MASK
+macro_line|#  define USER_PSW_MASK (PSW_T | PSW_N | PSW_X | PSW_B | PSW_V | PSW_CB)
 macro_line|#endif
 macro_line|#endif
 eof

@@ -4,6 +4,8 @@ DECL|macro|_ASMPARISC_TIMEX_H
 mdefine_line|#define _ASMPARISC_TIMEX_H
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+DECL|macro|CLOCK_TICK_RATE
+mdefine_line|#define CLOCK_TICK_RATE&t;1193180 /* Underlying HZ */
 DECL|typedef|cycles_t
 r_typedef
 r_int

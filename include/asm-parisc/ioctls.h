@@ -125,6 +125,12 @@ DECL|macro|TIOCSHAYESESP
 mdefine_line|#define TIOCSHAYESESP   0x545F  /* Set Hayes ESP configuration */
 DECL|macro|FIOQSIZE
 mdefine_line|#define FIOQSIZE&t;0x5460&t;/* Get exact space used by quota */
+DECL|macro|TIOCSTART
+mdefine_line|#define TIOCSTART&t;0x5461
+DECL|macro|TIOCSTOP
+mdefine_line|#define TIOCSTOP&t;0x5462
+DECL|macro|TIOCSLTC
+mdefine_line|#define TIOCSLTC&t;0x5462
 multiline_comment|/* Used for packet mode */
 DECL|macro|TIOCPKT_DATA
 mdefine_line|#define TIOCPKT_DATA&t;&t; 0

@@ -1,8 +1,73 @@
 macro_line|#ifndef __PARISC_IPCBUF_H__
 DECL|macro|__PARISC_IPCBUF_H__
 mdefine_line|#define __PARISC_IPCBUF_H__
-multiline_comment|/*&n; * The ipc64_perm structure for PA-RISC is identical to kern_ipc_perm&n; * as we have always had 32-bit UIDs and GIDs in the kernel.&n; */
-DECL|macro|ipc64_perm
-mdefine_line|#define ipc64_perm&t;kern_ipc_perm
+multiline_comment|/*&n; * The ipc64_perm structure for PA-RISC is almost identical to&n; * kern_ipc_perm as we have always had 32-bit UIDs and GIDs in the kernel.&n; * &squot;seq&squot; has been changed from long to int so that it&squot;s the same size&n; * on 64-bit kernels as on 32-bit ones.&n; */
+DECL|struct|ipc64_perm
+r_struct
+id|ipc64_perm
+(brace
+DECL|member|key
+id|key_t
+id|key
+suffix:semicolon
+DECL|member|uid
+id|uid_t
+id|uid
+suffix:semicolon
+DECL|member|gid
+id|gid_t
+id|gid
+suffix:semicolon
+DECL|member|cuid
+id|uid_t
+id|cuid
+suffix:semicolon
+DECL|member|cgid
+id|gid_t
+id|cgid
+suffix:semicolon
+DECL|member|__pad1
+r_int
+r_int
+r_int
+id|__pad1
+suffix:semicolon
+DECL|member|mode
+id|mode_t
+id|mode
+suffix:semicolon
+DECL|member|__pad2
+r_int
+r_int
+r_int
+id|__pad2
+suffix:semicolon
+DECL|member|seq
+r_int
+r_int
+r_int
+id|seq
+suffix:semicolon
+DECL|member|__pad3
+r_int
+r_int
+id|__pad3
+suffix:semicolon
+DECL|member|__unused1
+r_int
+r_int
+r_int
+r_int
+id|__unused1
+suffix:semicolon
+DECL|member|__unused2
+r_int
+r_int
+r_int
+r_int
+id|__unused2
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#endif /* __PARISC_IPCBUF_H__ */
 eof

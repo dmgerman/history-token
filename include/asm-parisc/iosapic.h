@@ -6,8 +6,8 @@ op_star
 id|iosapic_register
 c_func
 (paren
-r_void
-op_star
+r_int
+r_int
 id|hpa
 )paren
 suffix:semicolon

@@ -1,6 +1,10 @@
 macro_line|#ifndef __PARISC_MMU_CONTEXT_H
 DECL|macro|__PARISC_MMU_CONTEXT_H
 mdefine_line|#define __PARISC_MMU_CONTEXT_H
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
 DECL|function|enter_lazy_tlb
 r_static
 r_inline
@@ -60,24 +64,23 @@ op_star
 id|mm
 )paren
 (brace
-multiline_comment|/*&n;&t; * Init_new_context can be called for a cloned mm, so we&n;&t; * only allocate a space id if one hasn&squot;t been allocated&n;&t; * yet AND mm != &amp;init_mm (cloned kernel thread which&n;&t; * will run in the kernel space with spaceid 0).&n;&t; */
 r_if
 c_cond
 (paren
+id|atomic_read
+c_func
 (paren
-id|mm
-op_ne
 op_amp
-id|init_mm
+id|mm-&gt;mm_users
 )paren
-op_logical_and
+op_ne
+l_int|1
+)paren
+id|BUG
+c_func
 (paren
-id|mm-&gt;context
-op_eq
-l_int|0
 )paren
-)paren
-(brace
+suffix:semicolon
 id|mm-&gt;context
 op_assign
 id|alloc_sid
@@ -85,7 +88,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -113,6 +115,53 @@ id|mm-&gt;context
 op_assign
 l_int|0
 suffix:semicolon
+)brace
+DECL|function|load_context
+r_static
+r_inline
+r_void
+id|load_context
+c_func
+(paren
+id|mm_context_t
+id|context
+)paren
+(brace
+id|mtsp
+c_func
+(paren
+id|context
+comma
+l_int|3
+)paren
+suffix:semicolon
+macro_line|#if SPACEID_SHIFT == 0
+id|mtctl
+c_func
+(paren
+id|context
+op_lshift
+l_int|1
+comma
+l_int|8
+)paren
+suffix:semicolon
+macro_line|#else
+id|mtctl
+c_func
+(paren
+id|context
+op_rshift
+(paren
+id|SPACEID_SHIFT
+op_minus
+l_int|1
+)paren
+comma
+l_int|8
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|switch_mm
 r_static
@@ -148,29 +197,22 @@ op_ne
 id|next
 )paren
 (brace
-multiline_comment|/* Re-load page tables */
-id|tsk-&gt;thread.pg_tables
-op_assign
+id|mtctl
+c_func
+(paren
 id|__pa
 c_func
 (paren
 id|next-&gt;pgd
 )paren
-suffix:semicolon
-id|mtctl
-c_func
-(paren
-id|tsk-&gt;thread.pg_tables
 comma
 l_int|25
 )paren
 suffix:semicolon
-id|mtsp
+id|load_context
 c_func
 (paren
 id|next-&gt;context
-comma
-l_int|3
 )paren
 suffix:semicolon
 )brace
