@@ -373,6 +373,10 @@ DECL|macro|__pa
 mdefine_line|#define __pa(x)                 ((unsigned long)(x) - PAGE_OFFSET)
 DECL|macro|__va
 mdefine_line|#define __va(x)                 ((void *)((unsigned long) (x) + PAGE_OFFSET))
+DECL|macro|virt_to_phys
+mdefine_line|#define virt_to_phys(x)&t;&t;__pa((unsigned long)(x))
+DECL|macro|phys_to_virt
+mdefine_line|#define phys_to_virt(x)&t;&t;__va((unsigned long)(x))
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)        (mem_map + (pfn))
 DECL|macro|page_to_pfn

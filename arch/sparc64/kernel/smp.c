@@ -565,91 +565,15 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|sethi
-op_mod
-op_mod
-id|hi
-c_func
-(paren
-l_int|0x80000000
-)paren
-comma
-op_mod
-op_mod
-id|g1
-id|ba
-comma
-id|pt
-op_mod
-op_mod
-id|xcc
-comma
-l_float|1f
-id|sllx
-op_mod
-op_mod
-id|g1
-comma
-l_int|32
-comma
-op_mod
-op_mod
-id|g1
-dot
-id|align
-l_int|64
-l_int|1
-suffix:colon
-id|rd
-op_mod
-op_mod
-id|tick
-comma
-op_mod
-op_mod
-id|g2
-id|add
-op_mod
-op_mod
-id|g2
-comma
-l_int|6
-comma
-op_mod
-op_mod
-id|g2
-id|andn
-op_mod
-op_mod
-id|g2
-comma
-op_mod
-op_mod
-id|g1
-comma
-op_mod
-op_mod
-id|g2
-id|wrpr
-op_mod
-op_mod
-id|g2
-comma
-l_int|0
-comma
-op_mod
-op_mod
-id|tick
-id|rdpr
-op_mod
-op_mod
-id|tick
-comma
-op_mod
-op_mod
-id|g0
-"&quot;"
+l_string|&quot;sethi&t;%%hi(0x80000000), %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;ba,pt&t;%%xcc, 1f&bslash;n&bslash;t&quot;
+l_string|&quot; sllx&t;%%g1, 32, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;.align&t;64&bslash;n&quot;
+l_string|&quot;1:&t;rd&t;%%tick, %%g2&bslash;n&bslash;t&quot;
+l_string|&quot;add&t;%%g2, 6, %%g2&bslash;n&bslash;t&quot;
+l_string|&quot;andn&t;%%g2, %%g1, %%g2&bslash;n&bslash;t&quot;
+l_string|&quot;wrpr&t;%%g2, 0, %%tick&bslash;n&bslash;t&quot;
+l_string|&quot;rdpr&t;%%tick, %%g0&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -671,60 +595,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|sethi
-op_mod
-op_mod
-id|hi
-c_func
-(paren
-l_int|0x80000000
-)paren
-comma
-op_mod
-op_mod
-id|g1
-id|sllx
-op_mod
-op_mod
-id|g1
-comma
-l_int|32
-comma
-op_mod
-op_mod
-id|g1
-id|rd
-op_mod
-op_mod
-id|asr24
-comma
-op_mod
-op_mod
-id|g2
-id|andn
-op_mod
-op_mod
-id|g2
-comma
-op_mod
-op_mod
-id|g1
-comma
-op_mod
-op_mod
-id|g2
-id|wr
-op_mod
-op_mod
-id|g2
-comma
-l_int|0
-comma
-op_mod
-op_mod
-id|asr24
-"&quot;"
+l_string|&quot;sethi&t;%%hi(0x80000000), %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;sllx&t;%%g1, 32, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;rd&t;%%asr24, %%g2&bslash;n&bslash;t&quot;
+l_string|&quot;andn&t;%%g2, %%g1, %%g2&bslash;n&bslash;t&quot;
+l_string|&quot;wr&t;%%g2, 0, %%asr24&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -1213,96 +1088,17 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|wrpr
-op_mod
-l_int|1
-comma
-op_mod
-l_int|2
-comma
-op_mod
-op_mod
-id|pstate
-id|stxa
-op_mod
-l_int|4
-comma
-(braket
-op_mod
-l_int|0
-)braket
-op_mod
-l_int|3
-id|stxa
-op_mod
-l_int|5
-comma
-(braket
-op_mod
-l_int|0
-op_plus
-op_mod
-l_int|8
-)braket
-op_mod
-l_int|3
-id|add
-op_mod
-l_int|0
-comma
-op_mod
-l_int|8
-comma
-op_mod
-l_int|0
-id|stxa
-op_mod
-l_int|6
-comma
-(braket
-op_mod
-l_int|0
-op_plus
-op_mod
-l_int|8
-)braket
-op_mod
-l_int|3
-id|membar
-macro_line|#Sync
-id|stxa
-op_mod
-op_mod
-id|g0
-comma
-(braket
-op_mod
-l_int|7
-)braket
-op_mod
-l_int|3
-id|membar
-macro_line|#Sync
-id|mov
-l_int|0x20
-comma
-op_mod
-op_mod
-id|g1
-id|ldxa
-(braket
-op_mod
-op_mod
-id|g1
-)braket
-l_int|0x7f
-comma
-op_mod
-op_mod
-id|g0
-id|membar
-macro_line|#Sync&quot;
+l_string|&quot;wrpr&t;%1, %2, %%pstate&bslash;n&bslash;t&quot;
+l_string|&quot;stxa&t;%4, [%0] %3&bslash;n&bslash;t&quot;
+l_string|&quot;stxa&t;%5, [%0+%8] %3&bslash;n&bslash;t&quot;
+l_string|&quot;add&t;%0, %8, %0&bslash;n&bslash;t&quot;
+l_string|&quot;stxa&t;%6, [%0+%8] %3&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&bslash;n&bslash;t&quot;
+l_string|&quot;stxa&t;%%g0, [%7] %3&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&bslash;n&bslash;t&quot;
+l_string|&quot;mov&t;0x20, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;ldxa&t;[%%g1] 0x7f, %%g0&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -4254,58 +4050,12 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|rd
-op_mod
-op_mod
-id|tick
-comma
-op_mod
-op_mod
-id|g1
-id|ba
-comma
-id|pt
-op_mod
-op_mod
-id|xcc
-comma
-l_float|1f
-id|add
-op_mod
-op_mod
-id|g1
-comma
-op_mod
-l_int|0
-comma
-op_mod
-op_mod
-id|g1
-dot
-id|align
-l_int|64
-l_int|1
-suffix:colon
-id|wr
-op_mod
-op_mod
-id|g1
-comma
-l_int|0x0
-comma
-op_mod
-op_mod
-id|tick_cmpr
-id|rd
-op_mod
-op_mod
-id|tick_cmpr
-comma
-op_mod
-op_mod
-id|g0
-"&quot;"
+l_string|&quot;rd&t;%%tick, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;ba,pt&t;%%xcc, 1f&bslash;n&bslash;t&quot;
+l_string|&quot; add&t;%%g1, %0, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;.align&t;64&bslash;n&quot;
+l_string|&quot;1:&t;wr&t;%%g1, 0x0, %%tick_cmpr&bslash;n&bslash;t&quot;
+l_string|&quot;rd&t;%%tick_cmpr, %%g0&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -4324,37 +4074,9 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|rd
-op_mod
-op_mod
-id|asr24
-comma
-op_mod
-op_mod
-id|g1
-id|add
-op_mod
-op_mod
-id|g1
-comma
-op_mod
-l_int|0
-comma
-op_mod
-op_mod
-id|g1
-id|wr
-op_mod
-op_mod
-id|g1
-comma
-l_int|0x0
-comma
-op_mod
-op_mod
-id|asr25
-"&quot;"
+l_string|&quot;rd&t;%%asr24, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;add&t;%%g1, %0, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;wr&t;%%g1, 0x0, %%asr25&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
