@@ -474,11 +474,10 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-id|MS_MSE_INT_OFF
-c_func
+r_if
+c_cond
 (paren
-)paren
-suffix:semicolon
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -487,6 +486,15 @@ comma
 l_int|0x04
 comma
 l_string|&quot;MS Busmouse&quot;
+)paren
+)paren
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+id|MS_MSE_INT_OFF
+c_func
+(paren
 )paren
 suffix:semicolon
 id|msedev
@@ -505,6 +513,7 @@ id|msedev
 OL
 l_int|0
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -512,6 +521,15 @@ id|KERN_WARNING
 l_string|&quot;Unable to register msbusmouse driver.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|release_region
+c_func
+(paren
+id|MS_MSE_CONTROL_PORT
+comma
+l_int|0x04
+)paren
+suffix:semicolon
+)brace
 r_else
 id|printk
 c_func
