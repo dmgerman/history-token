@@ -2783,6 +2783,14 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
+id|fs_check_frozen
+c_func
+(paren
+id|vp-&gt;v_vfsp
+comma
+id|SB_FREEZE_WRITE
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3955,6 +3963,7 @@ comma
 id|XFS_ILOCK_EXCL
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3963,7 +3972,6 @@ id|error
 r_goto
 id|out_unlock_internal
 suffix:semicolon
-)brace
 )brace
 id|xfs_rwunlock
 c_func

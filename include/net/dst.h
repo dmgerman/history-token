@@ -254,6 +254,11 @@ r_struct
 id|dst_entry
 op_star
 comma
+r_struct
+id|net_device
+op_star
+id|dev
+comma
 r_int
 id|how
 )paren
