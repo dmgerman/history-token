@@ -7061,10 +7061,7 @@ comma
 l_string|&quot;capi20&quot;
 )paren
 suffix:semicolon
-id|devfs_unregister
-c_func
-(paren
-id|devfs_find_handle
+id|devfs_find_and_unregister
 c_func
 (paren
 l_int|NULL
@@ -7078,7 +7075,6 @@ comma
 id|DEVFS_SPECIAL_CHR
 comma
 l_int|0
-)paren
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_CAPI_MIDDLEWARE

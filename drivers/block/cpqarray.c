@@ -1650,10 +1650,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-id|devfs_unregister
-c_func
-(paren
-id|devfs_find_handle
+id|devfs_find_and_unregister
 c_func
 (paren
 l_int|NULL
@@ -1667,7 +1664,6 @@ comma
 l_int|0
 comma
 l_int|0
-)paren
 )paren
 suffix:semicolon
 id|remove_proc_entry

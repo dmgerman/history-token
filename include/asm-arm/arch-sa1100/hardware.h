@@ -3,7 +3,6 @@ macro_line|#ifndef __ASM_ARCH_HARDWARE_H
 DECL|macro|__ASM_ARCH_HARDWARE_H
 mdefine_line|#define __ASM_ARCH_HARDWARE_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/mach-types.h&gt;
 multiline_comment|/* Flushing areas */
 DECL|macro|FLUSH_BASE_PHYS
 mdefine_line|#define FLUSH_BASE_PHYS&t;&t;0xe0000000&t;/* SA1100 zero bank */

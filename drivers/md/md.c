@@ -13944,7 +13944,7 @@ id|devname
 suffix:semicolon
 id|handle
 op_assign
-id|devfs_find_handle
+id|devfs_get_handle
 c_func
 (paren
 l_int|NULL
@@ -14001,6 +14001,12 @@ c_func
 id|major
 comma
 id|minor
+)paren
+suffix:semicolon
+id|devfs_put
+c_func
+(paren
+id|handle
 )paren
 suffix:semicolon
 )brace
