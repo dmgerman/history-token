@@ -1941,7 +1941,7 @@ c_cond
 (paren
 id|max_proto
 OG
-id|PSMOUSE_PS2
+id|PSMOUSE_IMEX
 op_logical_and
 id|thinking_detect
 c_func
