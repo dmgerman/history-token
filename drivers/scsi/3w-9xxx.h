@@ -1311,6 +1311,13 @@ DECL|macro|TW_CURRENT_FW_BUILD
 mdefine_line|#define TW_CURRENT_FW_BUILD 5
 DECL|macro|TW_CURRENT_FW_BRANCH
 mdefine_line|#define TW_CURRENT_FW_BRANCH 1
+multiline_comment|/* Phase defines */
+DECL|macro|TW_PHASE_INITIAL
+mdefine_line|#define TW_PHASE_INITIAL 0
+DECL|macro|TW_PHASE_SINGLE
+mdefine_line|#define TW_PHASE_SINGLE  1
+DECL|macro|TW_PHASE_SGLIST
+mdefine_line|#define TW_PHASE_SGLIST  2
 multiline_comment|/* Misc defines */
 DECL|macro|TW_SECTOR_SIZE
 mdefine_line|#define TW_SECTOR_SIZE                        512
@@ -1371,8 +1378,6 @@ DECL|macro|TW_MAX_RESPONSE_DRAIN
 mdefine_line|#define TW_MAX_RESPONSE_DRAIN&t;&t;      256
 DECL|macro|TW_MAX_AEN_DRAIN
 mdefine_line|#define TW_MAX_AEN_DRAIN&t;&t;      40
-DECL|macro|TW_IN_INTR
-mdefine_line|#define TW_IN_INTR                            1
 DECL|macro|TW_IN_IOCTL
 mdefine_line|#define TW_IN_IOCTL                           2
 DECL|macro|TW_IN_CHRDEV_IOCTL
@@ -1512,6 +1517,27 @@ mdefine_line|#define TW_COMMAND_SIZE&t;&t;&t;      4
 DECL|macro|TW_DMA_MASK
 mdefine_line|#define TW_DMA_MASK&t;&t;&t;      DMA_32BIT_MASK
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_3WARE_9000
+DECL|macro|PCI_DEVICE_ID_3WARE_9000
+mdefine_line|#define PCI_DEVICE_ID_3WARE_9000 0x1002
+macro_line|#endif
+multiline_comment|/* Bitmask macros to eliminate bitfields */
+multiline_comment|/* opcode: 5, reserved: 3 */
+DECL|macro|TW_OPRES_IN
+mdefine_line|#define TW_OPRES_IN(x,y) ((x &lt;&lt; 5) | (y &amp; 0x1f))
+DECL|macro|TW_OP_OUT
+mdefine_line|#define TW_OP_OUT(x) (x &amp; 0x1f)
+multiline_comment|/* opcode: 5, sgloffset: 3 */
+DECL|macro|TW_OPSGL_IN
+mdefine_line|#define TW_OPSGL_IN(x,y) ((x &lt;&lt; 5) | (y &amp; 0x1f))
+DECL|macro|TW_SGL_OUT
+mdefine_line|#define TW_SGL_OUT(x) ((x &gt;&gt; 5) &amp; 0x7)
+multiline_comment|/* severity: 3, reserved: 5 */
+DECL|macro|TW_SEV_OUT
+mdefine_line|#define TW_SEV_OUT(x) (x &amp; 0x7)
+multiline_comment|/* reserved_1: 4, response_id: 8, reserved_2: 20 */
+DECL|macro|TW_RESID_OUT
+mdefine_line|#define TW_RESID_OUT(x) ((x &gt;&gt; 4) &amp; 0xff)
 multiline_comment|/* Macros */
 DECL|macro|TW_CONTROL_REG_ADDR
 mdefine_line|#define TW_CONTROL_REG_ADDR(x) (x-&gt;base_addr)
@@ -1570,26 +1596,10 @@ r_typedef
 r_struct
 id|TW_Command
 (brace
-multiline_comment|/* First DWORD */
-r_struct
-(brace
-DECL|member|opcode
+DECL|member|opcode__sgloffset
 r_int
 r_char
-id|opcode
-suffix:colon
-l_int|5
-suffix:semicolon
-DECL|member|sgl_offset
-r_int
-r_char
-id|sgl_offset
-suffix:colon
-l_int|3
-suffix:semicolon
-DECL|member|byte0_offset
-)brace
-id|byte0_offset
+id|opcode__sgloffset
 suffix:semicolon
 DECL|member|size
 r_int
@@ -1601,25 +1611,10 @@ r_int
 r_char
 id|request_id
 suffix:semicolon
-r_struct
-(brace
-DECL|member|unit
+DECL|member|unit__hostid
 r_int
 r_char
-id|unit
-suffix:colon
-l_int|4
-suffix:semicolon
-DECL|member|host_id
-r_int
-r_char
-id|host_id
-suffix:colon
-l_int|4
-suffix:semicolon
-DECL|member|byte3_offset
-)brace
-id|byte3_offset
+id|unit__hostid
 suffix:semicolon
 multiline_comment|/* Second DWORD */
 DECL|member|status
@@ -1745,25 +1740,10 @@ r_typedef
 r_struct
 id|TAG_TW_Command_Apache
 (brace
-r_struct
-(brace
-DECL|member|opcode
+DECL|member|opcode__reserved
 r_int
 r_char
-id|opcode
-suffix:colon
-l_int|5
-suffix:semicolon
-DECL|member|reserved
-r_int
-r_char
-id|reserved
-suffix:colon
-l_int|3
-suffix:semicolon
-DECL|member|command
-)brace
-id|command
+id|opcode__reserved
 suffix:semicolon
 DECL|member|unit
 r_int
@@ -1852,25 +1832,10 @@ r_int
 r_char
 id|padding
 suffix:semicolon
-r_struct
-(brace
-DECL|member|severity
+DECL|member|severity__reserved
 r_int
 r_char
-id|severity
-suffix:colon
-l_int|3
-suffix:semicolon
-DECL|member|reserved
-r_int
-r_char
-id|reserved
-suffix:colon
-l_int|5
-suffix:semicolon
-DECL|member|substatus_block
-)brace
-id|substatus_block
+id|severity__reserved
 suffix:semicolon
 DECL|member|status_block
 )brace
@@ -1943,19 +1908,10 @@ r_typedef
 r_struct
 id|TAG_TW_Initconnect
 (brace
-DECL|member|opcode
+DECL|member|opcode__reserved
 r_int
 r_char
-id|opcode
-suffix:colon
-l_int|5
-suffix:semicolon
-DECL|member|res1
-r_int
-r_char
-id|res1
-suffix:colon
-l_int|3
+id|opcode__reserved
 suffix:semicolon
 DECL|member|size
 r_int
@@ -2213,29 +2169,9 @@ r_typedef
 r_union
 id|TAG_TW_Response_Queue
 (brace
-r_struct
-(brace
-DECL|member|undefined_1
-id|u32
-id|undefined_1
-suffix:colon
-l_int|4
-suffix:semicolon
 DECL|member|response_id
 id|u32
 id|response_id
-suffix:colon
-l_int|8
-suffix:semicolon
-DECL|member|undefined_2
-id|u32
-id|undefined_2
-suffix:colon
-l_int|20
-suffix:semicolon
-DECL|member|u
-)brace
-id|u
 suffix:semicolon
 DECL|member|value
 id|u32
@@ -2303,131 +2239,6 @@ DECL|typedef|TW_Compatibility_Info
 )brace
 id|TW_Compatibility_Info
 suffix:semicolon
-multiline_comment|/* Command header for ATA pass-thru */
-DECL|struct|TAG_TW_Passthru
-r_typedef
-r_struct
-id|TAG_TW_Passthru
-(brace
-r_struct
-(brace
-DECL|member|opcode
-r_int
-r_char
-id|opcode
-suffix:colon
-l_int|5
-suffix:semicolon
-DECL|member|sgloff
-r_int
-r_char
-id|sgloff
-suffix:colon
-l_int|3
-suffix:semicolon
-DECL|member|byte0
-)brace
-id|byte0
-suffix:semicolon
-DECL|member|size
-r_int
-r_char
-id|size
-suffix:semicolon
-DECL|member|request_id
-r_int
-r_char
-id|request_id
-suffix:semicolon
-r_struct
-(brace
-DECL|member|aport
-r_int
-r_char
-id|aport
-suffix:colon
-l_int|4
-suffix:semicolon
-DECL|member|host_id
-r_int
-r_char
-id|host_id
-suffix:colon
-l_int|4
-suffix:semicolon
-DECL|member|byte3
-)brace
-id|byte3
-suffix:semicolon
-DECL|member|status
-r_int
-r_char
-id|status
-suffix:semicolon
-DECL|member|flags
-r_int
-r_char
-id|flags
-suffix:semicolon
-DECL|member|param
-r_int
-r_int
-id|param
-suffix:semicolon
-DECL|member|features
-r_int
-r_int
-id|features
-suffix:semicolon
-DECL|member|sector_count
-r_int
-r_int
-id|sector_count
-suffix:semicolon
-DECL|member|sector_num
-r_int
-r_int
-id|sector_num
-suffix:semicolon
-DECL|member|cylinder_lo
-r_int
-r_int
-id|cylinder_lo
-suffix:semicolon
-DECL|member|cylinder_hi
-r_int
-r_int
-id|cylinder_hi
-suffix:semicolon
-DECL|member|drive_head
-r_int
-r_char
-id|drive_head
-suffix:semicolon
-DECL|member|command
-r_int
-r_char
-id|command
-suffix:semicolon
-DECL|member|sg_list
-id|TW_SG_Entry
-id|sg_list
-(braket
-id|TW_ATA_PASS_SGL_MAX
-)braket
-suffix:semicolon
-DECL|member|padding
-r_int
-r_char
-id|padding
-(braket
-l_int|12
-)braket
-suffix:semicolon
-DECL|typedef|TW_Passthru
-)brace
-id|TW_Passthru
-suffix:semicolon
 DECL|struct|TAG_TW_Device_Extension
 r_typedef
 r_struct
@@ -2456,8 +2267,7 @@ id|TW_Q_LENGTH
 )braket
 suffix:semicolon
 DECL|member|command_packet_virt
-r_int
-r_int
+id|TW_Command_Full
 op_star
 id|command_packet_virt
 (braket
