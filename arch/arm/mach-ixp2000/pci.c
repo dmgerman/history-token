@@ -14,21 +14,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach/pci.h&gt;
-r_extern
-r_int
-(paren
-op_star
-id|external_fault
-)paren
-(paren
-r_int
-r_int
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
 DECL|variable|pci_master_aborts
 r_static
 r_int
