@@ -548,7 +548,7 @@ suffix:colon
 id|err
 op_assign
 op_minus
-id|EINVAL
+id|ENOSYS
 suffix:semicolon
 r_goto
 id|out
@@ -747,7 +747,7 @@ suffix:colon
 id|err
 op_assign
 op_minus
-id|EINVAL
+id|ENOSYS
 suffix:semicolon
 r_goto
 id|out
@@ -934,7 +934,7 @@ suffix:colon
 id|err
 op_assign
 op_minus
-id|EINVAL
+id|ENOSYS
 suffix:semicolon
 r_goto
 id|out
@@ -944,7 +944,7 @@ r_else
 id|err
 op_assign
 op_minus
-id|EINVAL
+id|ENOSYS
 suffix:semicolon
 id|out
 suffix:colon
