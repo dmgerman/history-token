@@ -653,8 +653,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-id|__FUNCTION__
-l_string|&quot;: %s&bslash;n&quot;
+l_string|&quot;%s&bslash;n&quot;
 comma
 id|title
 )paren
@@ -747,7 +746,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|macro|iucv_debug
-mdefine_line|#define iucv_debug(lvl, fmt, args...) &bslash;&n;do { &bslash;&n;&t;if (debuglevel &gt;= lvl) &bslash;&n;&t;&t;printk(KERN_DEBUG __FUNCTION__ &quot;: &quot; fmt &quot;&bslash;n&quot; , ## args); &bslash;&n;} while (0)
+mdefine_line|#define iucv_debug(lvl, fmt, args...) &bslash;&n;do { &bslash;&n;&t;if (debuglevel &gt;= lvl) &bslash;&n;&t;&t;printk(KERN_DEBUG &quot;%s: &quot; fmt &quot;&bslash;n&quot;, __FUNCTION__ , ## args); &bslash;&n;} while (0)
 macro_line|#else
 DECL|macro|iucv_debug
 mdefine_line|#define iucv_debug(lvl, fmt, args...)
@@ -6770,20 +6769,9 @@ id|iucv_irqdata
 op_star
 id|irqdata
 suffix:semicolon
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 id|irq_enter
 c_func
 (paren
-id|cpu
-comma
-l_int|0x4000
 )paren
 suffix:semicolon
 id|irqdata
@@ -6818,9 +6806,6 @@ suffix:semicolon
 id|irq_exit
 c_func
 (paren
-id|cpu
-comma
-l_int|0x4000
 )paren
 suffix:semicolon
 r_return
@@ -6899,9 +6884,6 @@ suffix:semicolon
 id|irq_exit
 c_func
 (paren
-id|cpu
-comma
-l_int|0x4000
 )paren
 suffix:semicolon
 r_return

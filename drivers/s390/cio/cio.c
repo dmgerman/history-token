@@ -3250,10 +3250,6 @@ id|IO_INTERRUPT_TYPE
 (brace
 id|irq_enter
 (paren
-id|cpu
-comma
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|do_adapter_IO
@@ -3263,10 +3259,6 @@ id|tpi_info-&gt;intparm
 suffix:semicolon
 id|irq_exit
 (paren
-id|cpu
-comma
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -3319,9 +3311,6 @@ suffix:semicolon
 )brace
 id|irq_enter
 (paren
-id|cpu
-comma
-id|irq
 )paren
 suffix:semicolon
 id|s390irq_spin_lock
@@ -3341,9 +3330,6 @@ id|irq
 suffix:semicolon
 id|irq_exit
 (paren
-id|cpu
-comma
-id|irq
 )paren
 suffix:semicolon
 )brace

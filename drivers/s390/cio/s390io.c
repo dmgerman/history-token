@@ -505,6 +505,22 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * init_IRQ wrapper&n; */
+r_void
+id|__init
+DECL|function|init_IRQ
+id|init_IRQ
+c_func
+(paren
+r_void
+)paren
+(brace
+id|s390_init_IRQ
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * dummy handler, used during init_IRQ() processing for compatibility only&n; */
 r_static
 r_void

@@ -7207,9 +7207,6 @@ id|hwc_ext_int_param
 suffix:semicolon
 id|irq_enter
 (paren
-id|cpu
-comma
-l_int|0x2401
 )paren
 suffix:semicolon
 r_if
@@ -7284,9 +7281,6 @@ suffix:semicolon
 )brace
 id|irq_exit
 (paren
-id|cpu
-comma
-l_int|0x2401
 )paren
 suffix:semicolon
 )brace

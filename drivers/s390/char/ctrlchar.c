@@ -40,8 +40,6 @@ id|ctrlchar_sysrq_key
 comma
 l_int|NULL
 comma
-l_int|NULL
-comma
 id|tty
 )paren
 suffix:semicolon

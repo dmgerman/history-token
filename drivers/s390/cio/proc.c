@@ -1,7 +1,8 @@
-multiline_comment|/*&n; *  drivers/s390/cio/proc.c&n; *   S/390 common I/O routines -- proc file system entries&n; *   $Revision: 1.4 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; *               05/03/2002 Cornelia Huck  removed /proc/deviceinfo/&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/proc.c&n; *   S/390 common I/O routines -- proc file system entries&n; *   $Revision: 1.5 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; *               05/03/2002 Cornelia Huck  removed /proc/deviceinfo/&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -17,6 +18,135 @@ id|chan_proc_init
 r_void
 )paren
 suffix:semicolon
+DECL|function|show_interrupts
+r_int
+id|show_interrupts
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|p
+comma
+r_void
+op_star
+id|v
+)paren
+(brace
+r_int
+id|i
+comma
+id|j
+suffix:semicolon
+id|seq_puts
+c_func
+(paren
+id|p
+comma
+l_string|&quot;           &quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|j
+op_assign
+l_int|0
+suffix:semicolon
+id|j
+OL
+id|num_online_cpus
+c_func
+(paren
+)paren
+suffix:semicolon
+id|j
+op_increment
+)paren
+id|seq_printf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;CPU%d       &quot;
+comma
+id|j
+)paren
+suffix:semicolon
+id|seq_putc
+c_func
+(paren
+id|p
+comma
+l_char|&squot;&bslash;n&squot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NR_IRQS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ioinfo
+(braket
+id|i
+)braket
+op_eq
+id|INVALID_STORAGE_AREA
+)paren
+r_continue
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;%3d: &quot;
+comma
+id|i
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;  %s&quot;
+comma
+id|ioinfo
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|irq_desc.name
+)paren
+suffix:semicolon
+id|seq_putc
+c_func
+(paren
+id|p
+comma
+l_char|&squot;&bslash;n&squot;
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* endfor */
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* &n; * Display info on subchannels in /proc/subchannels. &n; * Adapted from procfs stuff in dasd.c by Cornelia Huck, 02/28/01.      &n; */
 r_typedef
 r_struct
@@ -1165,4 +1295,14 @@ id|__initcall
 id|cio_irq_proc_init
 )paren
 suffix:semicolon
+r_void
+DECL|function|init_irq_proc
+id|init_irq_proc
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* For now, nothing... */
+)brace
 eof
