@@ -1906,6 +1906,11 @@ c_func
 (paren
 id|value
 comma
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|port
 )paren
 suffix:semicolon
