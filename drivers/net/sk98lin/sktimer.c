@@ -73,7 +73,7 @@ id|SK_INIT_DATA
 suffix:colon
 id|pAC-&gt;Tim.StQueue
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -315,7 +315,7 @@ id|pTimer
 suffix:semicolon
 id|pTimer-&gt;TmNext
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pTimer-&gt;TmDelta
 op_assign
@@ -575,7 +575,7 @@ suffix:semicolon
 op_star
 id|ppLast
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * pTm points to the first Timer that did not run out.&n;&t; * StQueue points to the first Timer that run out.&n;&t; */
 r_for

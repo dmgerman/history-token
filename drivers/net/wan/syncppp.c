@@ -2507,7 +2507,7 @@ id|h-&gt;ident
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Go to closed state. */
@@ -5123,7 +5123,7 @@ id|h-&gt;ident
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Change the state. */
@@ -5253,7 +5253,7 @@ id|h-&gt;ident
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Go to closed state. */
@@ -5419,7 +5419,7 @@ id|sp-&gt;ipcp.confid
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|sppp_set_timeout

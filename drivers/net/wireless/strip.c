@@ -10253,7 +10253,7 @@ id|strip_info-&gt;dev
 suffix:semicolon
 id|tty-&gt;disc_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|strip_info-&gt;tty
 op_assign

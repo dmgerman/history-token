@@ -242,7 +242,7 @@ DECL|macro|POWER_ON_DOWN
 mdefine_line|#define POWER_ON_DOWN
 multiline_comment|/* As you can see this list is HUGH!&n;   I really don&squot;t know what a lot of these counts are about, but they&n;   are all here for completeness.  If the IGNLABEL macro is put in&n;   infront of the label, that statistic will not be included in the list&n;   of statistics in the /proc filesystem */
 DECL|macro|IGNLABEL
-mdefine_line|#define IGNLABEL(comment) 0
+mdefine_line|#define IGNLABEL(comment) NULL
 DECL|variable|statsLabels
 r_static
 r_char
@@ -10545,7 +10545,7 @@ id|ai-&gt;wifidev
 suffix:semicolon
 id|ai-&gt;wifidev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|clear_bit
@@ -10611,7 +10611,7 @@ id|sk_buff
 op_star
 id|skb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop

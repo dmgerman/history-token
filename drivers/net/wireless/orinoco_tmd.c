@@ -603,16 +603,6 @@ c_func
 id|orinoco_tmd_remove_one
 )paren
 comma
-dot
-id|suspend
-op_assign
-l_int|0
-comma
-dot
-id|resume
-op_assign
-l_int|0
-comma
 )brace
 suffix:semicolon
 DECL|variable|__initdata

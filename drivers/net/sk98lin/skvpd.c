@@ -1970,7 +1970,7 @@ id|RES_ID
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -2236,7 +2236,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* DEBUG */
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Move &squot;n&squot; bytes. Begin with the last byte if &squot;n&squot; is &gt; 0,&n; *&t;Start with the last byte if n is &lt; 0.&n; *&n; * returns nothing&n; */
@@ -2798,7 +2798,7 @@ l_int|0
 suffix:semicolon
 id|ip
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond

@@ -4103,11 +4103,11 @@ suffix:semicolon
 multiline_comment|/* ... and zero out VM areas */
 id|privN-&gt;vmem
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|privN-&gt;vplxdma
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* ... and zero out IRQ */
 id|devN-&gt;irq

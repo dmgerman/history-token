@@ -964,7 +964,7 @@ id|cpc_tty-&gt;buf_rx.first
 op_assign
 id|cpc_tty-&gt;buf_rx.last
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pc300dev-&gt;cpc_tty
 op_assign
@@ -3782,7 +3782,7 @@ r_new
 op_member_access_from_pointer
 id|next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond

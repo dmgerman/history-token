@@ -22290,7 +22290,7 @@ c_func
 (paren
 id|dev
 comma
-l_int|0L
+l_int|NULL
 comma
 id|tmf
 comma
