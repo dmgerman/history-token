@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/futex.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -800,6 +801,7 @@ r_return
 id|tsk
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_MMU
 DECL|function|dup_mmap
 r_static
 r_inline
@@ -811,6 +813,11 @@ r_struct
 id|mm_struct
 op_star
 id|mm
+comma
+r_struct
+id|mm_struct
+op_star
+id|oldmm
 )paren
 (brace
 r_struct
@@ -833,6 +840,13 @@ r_int
 id|charge
 op_assign
 l_int|0
+suffix:semicolon
+id|down_write
+c_func
+(paren
+op_amp
+id|oldmm-&gt;mmap_sem
+)paren
 suffix:semicolon
 id|flush_cache_mm
 c_func
@@ -1164,6 +1178,13 @@ c_func
 id|current-&gt;mm
 )paren
 suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|oldmm-&gt;mmap_sem
+)paren
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -1179,6 +1200,73 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+DECL|function|mm_alloc_pgd
+r_static
+r_inline
+r_int
+id|mm_alloc_pgd
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+(brace
+id|mm-&gt;pgd
+op_assign
+id|pgd_alloc
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+op_logical_neg
+id|mm-&gt;pgd
+)paren
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|mm_free_pgd
+r_static
+r_inline
+r_void
+id|mm_free_pgd
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+(brace
+id|pgd_free
+c_func
+(paren
+id|mm-&gt;pgd
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|macro|dup_mmap
+mdefine_line|#define dup_mmap(mm, oldmm)&t;(0)
+DECL|macro|mm_alloc_pgd
+mdefine_line|#define mm_alloc_pgd(mm)&t;(0)
+DECL|macro|mm_free_pgd
+mdefine_line|#define mm_free_pgd(mm)
+macro_line|#endif /* CONFIG_MMU */
 DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t
 id|mmlist_lock
@@ -1284,18 +1372,19 @@ id|mm-&gt;free_area_cache
 op_assign
 id|TASK_UNMAPPED_BASE
 suffix:semicolon
-id|mm-&gt;pgd
-op_assign
-id|pgd_alloc
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+op_logical_neg
+id|mm_alloc_pgd
 c_func
 (paren
 id|mm
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mm-&gt;pgd
+)paren
 )paren
 r_return
 id|mm
@@ -1378,23 +1467,19 @@ op_star
 id|mm
 )paren
 (brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|mm
 op_eq
 op_amp
 id|init_mm
 )paren
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
-id|pgd_free
+id|mm_free_pgd
 c_func
 (paren
-id|mm-&gt;pgd
+id|mm
 )paren
 suffix:semicolon
 id|destroy_context
@@ -1702,26 +1787,14 @@ id|mm
 r_goto
 id|free_pt
 suffix:semicolon
-id|down_write
-c_func
-(paren
-op_amp
-id|oldmm-&gt;mmap_sem
-)paren
-suffix:semicolon
 id|retval
 op_assign
 id|dup_mmap
 c_func
 (paren
 id|mm
-)paren
-suffix:semicolon
-id|up_write
-c_func
-(paren
-op_amp
-id|oldmm-&gt;mmap_sem
+comma
+id|oldmm
 )paren
 suffix:semicolon
 r_if
