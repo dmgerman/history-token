@@ -1591,6 +1591,8 @@ op_mul_assign
 op_complement
 (paren
 id|AGPSTAT3_4X
+op_or
+id|AGPSTAT3_RSVD
 )paren
 suffix:semicolon
 r_if
@@ -1607,6 +1609,8 @@ op_mul_assign
 op_complement
 (paren
 id|AGPSTAT3_8X
+op_or
+id|AGPSTAT3_RSVD
 )paren
 suffix:semicolon
 )brace
