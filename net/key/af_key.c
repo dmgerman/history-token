@@ -5307,6 +5307,8 @@ l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* Nobody uses this, but we try. */
+id|x-&gt;sel.family
+op_assign
 id|pfkey_sadb_addr2xfrm_addr
 c_func
 (paren
