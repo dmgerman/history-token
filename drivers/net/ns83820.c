@@ -6259,6 +6259,7 @@ id|loops
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef PHY_CODE_IS_FINISHED
 DECL|function|ns83820_mii_write_bit
 r_static
 r_void
@@ -7163,6 +7164,7 @@ id|b
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 DECL|function|ns83820_init_one
 r_static
 r_int
@@ -7323,9 +7325,21 @@ op_assign
 op_amp
 id|dev-&gt;misc_lock
 suffix:semicolon
-id|dev-&gt;net_dev.owner
-op_assign
-id|THIS_MODULE
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev-&gt;net_dev
+)paren
+suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+op_amp
+id|dev-&gt;net_dev
+comma
+op_amp
+id|pci_dev-&gt;dev
+)paren
 suffix:semicolon
 id|dev-&gt;net_dev.priv
 op_assign

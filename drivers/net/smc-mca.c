@@ -645,6 +645,14 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+id|gen_dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

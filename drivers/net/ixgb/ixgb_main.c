@@ -1421,6 +1421,15 @@ c_func
 id|netdev
 )paren
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|netdev
+comma
+op_amp
+id|pdev-&gt;dev
+)paren
+suffix:semicolon
 id|pci_set_drvdata
 c_func
 (paren

@@ -3046,6 +3046,15 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|pci_dev-&gt;dev
+)paren
+suffix:semicolon
 id|ether_setup
 c_func
 (paren

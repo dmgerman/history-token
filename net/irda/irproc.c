@@ -188,8 +188,6 @@ id|irias_proc_read
 comma
 )brace
 suffix:semicolon
-DECL|macro|IRDA_ENTRIES_NUM
-mdefine_line|#define IRDA_ENTRIES_NUM (sizeof(dir)/sizeof(dir[0]))
 multiline_comment|/*&n; * Function irda_proc_register (void)&n; *&n; *    Register irda entry in /proc file system&n; *&n; */
 DECL|function|irda_proc_register
 r_void
@@ -235,7 +233,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|IRDA_ENTRIES_NUM
+id|ARRAY_SIZE
+c_func
+(paren
+id|dir
+)paren
 suffix:semicolon
 id|i
 op_increment
@@ -291,7 +293,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|IRDA_ENTRIES_NUM
+id|ARRAY_SIZE
+c_func
+(paren
+id|dir
+)paren
 suffix:semicolon
 id|i
 op_increment

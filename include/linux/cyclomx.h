@@ -153,7 +153,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* Public Functions */
 r_void
-id|cyclomx_set_state
+id|cycx_set_state
 c_func
 (paren
 r_struct
@@ -167,7 +167,7 @@ id|state
 suffix:semicolon
 macro_line|#ifdef CONFIG_CYCLOMX_X25
 r_int
-id|cyx_init
+id|cycx_x25_wan_init
 c_func
 (paren
 r_struct
