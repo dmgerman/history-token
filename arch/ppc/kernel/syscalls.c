@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * arch/ppc/kernel/sys_ppc.c&n; *&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; * Derived from &quot;arch/i386/kernel/sys_i386.c&quot;&n; * Adapted from the i386 version by Gary Thomas&n; * Modified by Cort Dougan (cort@cs.nmt.edu)&n; * and Paul Mackerras (paulus@cs.anu.edu.au).&n; *&n; * This file contains various random system calls that&n; * have a non-standard calling sequence on the Linux/PPC&n; * platform.&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -72,7 +71,7 @@ suffix:semicolon
 id|ret
 op_assign
 op_minus
-id|EINVAL
+id|ENOSYS
 suffix:semicolon
 r_switch
 c_cond
@@ -85,7 +84,7 @@ id|SEMOP
 suffix:colon
 id|ret
 op_assign
-id|sys_semop
+id|sys_semtimedop
 (paren
 id|first
 comma
@@ -98,6 +97,38 @@ op_star
 id|ptr
 comma
 id|second
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SEMTIMEDOP
+suffix:colon
+id|ret
+op_assign
+id|sys_semtimedop
+(paren
+id|first
+comma
+(paren
+r_struct
+id|sembuf
+id|__user
+op_star
+)paren
+id|ptr
+comma
+id|second
+comma
+(paren
+r_const
+r_struct
+id|timespec
+op_star
+)paren
+id|fifth
 )paren
 suffix:semicolon
 r_break
@@ -1292,20 +1323,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-DECL|variable|sys_pciconfig_read
-id|cond_syscall
-c_func
-(paren
-id|sys_pciconfig_read
-)paren
-suffix:semicolon
-DECL|variable|sys_pciconfig_write
-id|cond_syscall
-c_func
-(paren
-id|sys_pciconfig_write
-)paren
-suffix:semicolon
 DECL|variable|sys_pciconfig_iobase
 id|cond_syscall
 c_func
