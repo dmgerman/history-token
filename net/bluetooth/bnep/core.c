@@ -22,7 +22,7 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/l2cap.h&gt;
 macro_line|#include &quot;bnep.h&quot;
-macro_line|#ifndef CONFIG_BLUEZ_BNEP_DEBUG
+macro_line|#ifndef CONFIG_BT_BNEP_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
@@ -443,7 +443,7 @@ comma
 id|n
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLUEZ_BNEP_PROTO_FILTER
+macro_line|#ifdef CONFIG_BT_BNEP_PROTO_FILTER
 id|n
 op_div_assign
 l_int|4
@@ -689,7 +689,7 @@ comma
 id|n
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLUEZ_BNEP_MC_FILTER
+macro_line|#ifdef CONFIG_BT_BNEP_MC_FILTER
 id|n
 op_div_assign
 (paren
@@ -2415,7 +2415,7 @@ op_star
 id|dst
 comma
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sock-&gt;sk
@@ -2434,7 +2434,7 @@ op_star
 id|src
 comma
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sock-&gt;sk
@@ -2582,7 +2582,7 @@ id|s-&gt;msg.msg_flags
 op_assign
 id|MSG_NOSIGNAL
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLUEZ_BNEP_MC_FILTER
+macro_line|#ifdef CONFIG_BT_BNEP_MC_FILTER
 multiline_comment|/* Set default mc filter */
 id|set_bit
 c_func
@@ -2602,7 +2602,7 @@ id|s-&gt;mc_filter
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_BLUEZ_BNEP_PROTO_FILTER
+macro_line|#ifdef CONFIG_BT_BNEP_PROTO_FILTER
 multiline_comment|/* Set default protocol filter */
 multiline_comment|/* (IPv4, ARP)  */
 id|s-&gt;proto_filter

@@ -1,5 +1,5 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; * BlueZ SCO sockets.&n; *&n; * $Id: sco.c,v 1.3 2002/04/17 17:37:16 maxk Exp $&n; */
+multiline_comment|/*&n; * Bluetooth SCO sockets.&n; *&n; * $Id: sco.c,v 1.3 2002/04/17 17:37:16 maxk Exp $&n; */
 DECL|macro|VERSION
 mdefine_line|#define VERSION &quot;0.3&quot;
 macro_line|#include &lt;linux/config.h&gt;
@@ -25,7 +25,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/hci_core.h&gt;
 macro_line|#include &lt;net/bluetooth/sco.h&gt;
-macro_line|#ifndef SCO_DEBUG
+macro_line|#ifndef CONFIG_BT_SCO_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
@@ -40,7 +40,7 @@ suffix:semicolon
 DECL|variable|sco_sk_list
 r_static
 r_struct
-id|bluez_sock_list
+id|bt_sock_list
 id|sco_sk_list
 op_assign
 (brace
@@ -704,7 +704,7 @@ op_star
 id|src
 op_assign
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -717,7 +717,7 @@ op_star
 id|dst
 op_assign
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -1006,7 +1006,7 @@ op_logical_neg
 (paren
 id|skb
 op_assign
-id|bluez_skb_send_alloc
+id|bt_skb_send_alloc
 c_func
 (paren
 id|sk
@@ -1213,7 +1213,7 @@ id|bacmp
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -1294,7 +1294,7 @@ id|bacmp
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -1316,7 +1316,7 @@ id|bacmp
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -1428,7 +1428,7 @@ c_loop
 (paren
 id|sk
 op_assign
-id|bluez_accept_dequeue
+id|bt_accept_dequeue
 c_func
 (paren
 id|parent
@@ -1486,7 +1486,7 @@ id|sk-&gt;state
 )paren
 suffix:semicolon
 multiline_comment|/* Kill poor orphan */
-id|bluez_sock_unlink
+id|bt_sock_unlink
 c_func
 (paren
 op_amp
@@ -1684,7 +1684,7 @@ id|sk
 suffix:semicolon
 id|sk
 op_assign
-id|bluez_sock_alloc
+id|bt_sock_alloc
 c_func
 (paren
 id|sock
@@ -1727,7 +1727,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|bluez_sock_link
+id|bt_sock_link
 c_func
 (paren
 op_amp
@@ -1965,7 +1965,7 @@ id|bacpy
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -2112,7 +2112,7 @@ id|bacpy
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -2142,7 +2142,7 @@ id|done
 suffix:semicolon
 id|err
 op_assign
-id|bluez_sock_w4_connect
+id|bt_sock_w4_connect
 c_func
 (paren
 id|sk
@@ -2356,7 +2356,7 @@ op_logical_neg
 (paren
 id|ch
 op_assign
-id|bluez_accept_dequeue
+id|bt_accept_dequeue
 c_func
 (paren
 id|sk
@@ -2570,7 +2570,7 @@ op_amp
 id|sa-&gt;sco_bdaddr
 comma
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -2587,7 +2587,7 @@ op_amp
 id|sa-&gt;sco_bdaddr
 comma
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -3139,7 +3139,7 @@ c_cond
 (paren
 id|parent
 )paren
-id|bluez_accept_enqueue
+id|bt_accept_enqueue
 c_func
 (paren
 id|parent
@@ -3392,7 +3392,7 @@ id|bacpy
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -3407,7 +3407,7 @@ id|bacpy
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -3584,7 +3584,7 @@ c_func
 (paren
 id|hcon
 comma
-id|bterr
+id|bt_err
 c_func
 (paren
 id|status
@@ -3634,7 +3634,7 @@ c_func
 (paren
 id|hcon
 comma
-id|bterr
+id|bt_err
 c_func
 (paren
 id|reason
@@ -3729,7 +3729,7 @@ op_star
 id|buf
 comma
 r_struct
-id|bluez_sock_list
+id|bt_sock_list
 op_star
 id|list
 )paren
@@ -3792,7 +3792,7 @@ id|batostr
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -3805,7 +3805,7 @@ id|batostr
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -4008,12 +4008,12 @@ comma
 dot
 id|recvmsg
 op_assign
-id|bluez_sock_recvmsg
+id|bt_sock_recvmsg
 comma
 dot
 id|poll
 op_assign
-id|bluez_sock_poll
+id|bt_sock_poll
 comma
 dot
 id|ioctl
@@ -4120,7 +4120,7 @@ c_cond
 (paren
 id|err
 op_assign
-id|bluez_sock_register
+id|bt_sock_register
 c_func
 (paren
 id|BTPROTO_SCO
@@ -4183,7 +4183,7 @@ suffix:semicolon
 id|BT_INFO
 c_func
 (paren
-l_string|&quot;BlueZ SCO ver %s Copyright (C) 2000,2001 Qualcomm Inc&quot;
+l_string|&quot;Bluetooth SCO ver %s Copyright (C) 2000,2001 Qualcomm Inc&quot;
 comma
 id|VERSION
 )paren
@@ -4224,7 +4224,7 @@ c_cond
 (paren
 id|err
 op_assign
-id|bluez_sock_unregister
+id|bt_sock_unregister
 c_func
 (paren
 id|BTPROTO_SCO
@@ -4285,7 +4285,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;BlueZ SCO ver &quot;
+l_string|&quot;Bluetooth SCO ver &quot;
 id|VERSION
 )paren
 suffix:semicolon

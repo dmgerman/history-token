@@ -1,5 +1,5 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; * BlueZ HCI socket layer.&n; *&n; * $Id: hci_sock.c,v 1.4 2002/04/18 22:26:14 maxk Exp $&n; */
+multiline_comment|/*&n; * Bluetooth HCI socket layer.&n; *&n; * $Id: hci_sock.c,v 1.4 2002/04/18 22:26:14 maxk Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -21,7 +21,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/hci_core.h&gt;
-macro_line|#ifndef HCI_SOCK_DEBUG
+macro_line|#ifndef CONFIG_BT_HCI_SOCK_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
@@ -97,7 +97,7 @@ suffix:semicolon
 DECL|variable|hci_sk_list
 r_static
 r_struct
-id|bluez_sock_list
+id|bt_sock_list
 id|hci_sk_list
 op_assign
 (brace
@@ -428,7 +428,7 @@ id|sk
 r_return
 l_int|0
 suffix:semicolon
-id|bluez_sock_unlink
+id|bt_sock_unlink
 c_func
 (paren
 op_amp
@@ -1200,13 +1200,13 @@ r_int
 )paren
 comma
 op_amp
-id|bluez_cb
+id|bt_cb
 c_func
 (paren
 id|skb
 )paren
 op_member_access_from_pointer
-id|incomming
+id|incoming
 )paren
 suffix:semicolon
 r_if
@@ -1557,7 +1557,7 @@ op_logical_neg
 (paren
 id|skb
 op_assign
-id|bluez_skb_send_alloc
+id|bt_skb_send_alloc
 c_func
 (paren
 id|sk
@@ -2489,7 +2489,7 @@ id|hci_sock_ops
 suffix:semicolon
 id|sk
 op_assign
-id|bluez_sock_alloc
+id|bt_sock_alloc
 c_func
 (paren
 id|sock
@@ -2523,7 +2523,7 @@ id|sk-&gt;state
 op_assign
 id|BT_OPEN
 suffix:semicolon
-id|bluez_sock_link
+id|bt_sock_link
 c_func
 (paren
 op_amp
@@ -2752,7 +2752,7 @@ r_void
 r_if
 c_cond
 (paren
-id|bluez_sock_register
+id|bt_sock_register
 c_func
 (paren
 id|BTPROTO_HCI
@@ -2795,7 +2795,7 @@ r_void
 r_if
 c_cond
 (paren
-id|bluez_sock_unregister
+id|bt_sock_unregister
 c_func
 (paren
 id|BTPROTO_HCI
