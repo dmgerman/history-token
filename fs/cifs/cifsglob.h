@@ -610,6 +610,12 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* file closed via session abend */
+DECL|member|fh_sem
+r_struct
+id|semaphore
+id|fh_sem
+suffix:semicolon
+multiline_comment|/* prevents reopen race after dead ses*/
 DECL|member|search_resume_name
 r_char
 op_star
@@ -866,7 +872,7 @@ multiline_comment|/*&n; ********************************************************
 DECL|macro|UID_HASH
 mdefine_line|#define UID_HASH (16)
 multiline_comment|/*&n; * Note that ONE module should define _DECLARE_GLOBALS_HERE to cause the&n; * following to be declared.&n; */
-multiline_comment|/****************************************************************************&n; *  Locking notes.  All updates to global variables and lists should be&n; *                  protected by spinlocks or semaphores.&n; *&n; *  Spinlocks&n; *  ---------&n; *  GlobalMid_Lock protects:&n; *&t;list operations on pending_mid_q and oplockQ&n; *      updates to XID counters, multiplex id  and SMB sequence numbers&n; *  GlobalSMBSesLock protects:&n; *&t;list operations on tcp and SMB session lists and tCon lists&n; *  f_owner.lock protects certain per file struct operations&n; *  mapping-&gt;page_lock protects certain per page operations&n; *&n; *  Semaphores&n; *  ----------&n; *  sesSem     operations on smb session&n; *  tconSem    operations on tree connection&n; *  i_sem      inode operations &n; *&n; ****************************************************************************/
+multiline_comment|/****************************************************************************&n; *  Locking notes.  All updates to global variables and lists should be&n; *                  protected by spinlocks or semaphores.&n; *&n; *  Spinlocks&n; *  ---------&n; *  GlobalMid_Lock protects:&n; *&t;list operations on pending_mid_q and oplockQ&n; *      updates to XID counters, multiplex id  and SMB sequence numbers&n; *  GlobalSMBSesLock protects:&n; *&t;list operations on tcp and SMB session lists and tCon lists&n; *  f_owner.lock protects certain per file struct operations&n; *  mapping-&gt;page_lock protects certain per page operations&n; *&n; *  Semaphores&n; *  ----------&n; *  sesSem     operations on smb session&n; *  tconSem    operations on tree connection&n; *  fh_sem      file handle reconnection operations &n; *&n; ****************************************************************************/
 macro_line|#ifdef DECLARE_GLOBALS_HERE
 DECL|macro|GLOBAL_EXTERN
 mdefine_line|#define GLOBAL_EXTERN

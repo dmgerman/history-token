@@ -897,7 +897,7 @@ id|down
 c_func
 (paren
 op_amp
-id|inode-&gt;i_sem
+id|pCifsFile-&gt;fh_sem
 )paren
 suffix:semicolon
 r_if
@@ -912,7 +912,7 @@ id|up
 c_func
 (paren
 op_amp
-id|inode-&gt;i_sem
+id|pCifsFile-&gt;fh_sem
 )paren
 suffix:semicolon
 id|FreeXid
@@ -1049,7 +1049,7 @@ id|up
 c_func
 (paren
 op_amp
-id|inode-&gt;i_sem
+id|pCifsFile-&gt;fh_sem
 )paren
 suffix:semicolon
 r_if
@@ -1112,7 +1112,7 @@ id|up
 c_func
 (paren
 op_amp
-id|inode-&gt;i_sem
+id|pCifsFile-&gt;fh_sem
 )paren
 suffix:semicolon
 id|cFYI
@@ -1154,7 +1154,7 @@ id|up
 c_func
 (paren
 op_amp
-id|inode-&gt;i_sem
+id|pCifsFile-&gt;fh_sem
 )paren
 suffix:semicolon
 id|pCifsInode
