@@ -313,6 +313,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|xtkbd_interrupt
+r_static
 id|irqreturn_t
 id|xtkbd_interrupt
 c_func
@@ -443,6 +444,7 @@ id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|xtkbd_connect
+r_static
 r_int
 id|xtkbd_connect
 c_func
@@ -711,6 +713,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|xtkbd_disconnect
+r_static
 r_void
 id|xtkbd_disconnect
 c_func
@@ -806,6 +809,7 @@ id|xtkbd_serio_ids
 )paren
 suffix:semicolon
 DECL|variable|xtkbd_drv
+r_static
 r_struct
 id|serio_driver
 id|xtkbd_drv
@@ -850,6 +854,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|xtkbd_init
+r_static
 r_int
 id|__init
 id|xtkbd_init
@@ -870,6 +875,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|xtkbd_exit
+r_static
 r_void
 id|__exit
 id|xtkbd_exit

@@ -618,6 +618,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|fm801_gp_init
+r_static
 r_int
 id|__init
 id|fm801_gp_init
@@ -636,6 +637,7 @@ id|fm801_gp_driver
 suffix:semicolon
 )brace
 DECL|function|fm801_gp_exit
+r_static
 r_void
 id|__exit
 id|fm801_gp_exit

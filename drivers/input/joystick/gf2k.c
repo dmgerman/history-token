@@ -2051,6 +2051,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|gf2k_init
+r_static
 r_int
 id|__init
 id|gf2k_init
@@ -2071,6 +2072,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|gf2k_exit
+r_static
 r_void
 id|__exit
 id|gf2k_exit

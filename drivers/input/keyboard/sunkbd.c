@@ -1587,6 +1587,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * The functions for insering/removing us as a module.&n; */
 DECL|function|sunkbd_init
+r_static
 r_int
 id|__init
 id|sunkbd_init
@@ -1607,6 +1608,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|sunkbd_exit
+r_static
 r_void
 id|__exit
 id|sunkbd_exit

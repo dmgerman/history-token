@@ -1643,6 +1643,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|sermouse_init
+r_static
 r_int
 id|__init
 id|sermouse_init
@@ -1663,6 +1664,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|sermouse_exit
+r_static
 r_void
 id|__exit
 id|sermouse_exit

@@ -3009,6 +3009,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|mousedev_fops
+r_static
 r_struct
 id|file_operations
 id|mousedev_fops

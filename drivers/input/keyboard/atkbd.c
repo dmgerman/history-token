@@ -6057,6 +6057,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|function|atkbd_init
+r_static
 r_int
 id|__init
 id|atkbd_init
@@ -6077,6 +6078,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|atkbd_exit
+r_static
 r_void
 id|__exit
 id|atkbd_exit

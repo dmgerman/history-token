@@ -1143,6 +1143,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * The functions for inserting/removing us as a module.&n; */
 DECL|function|warrior_init
+r_static
 r_int
 id|__init
 id|warrior_init
@@ -1163,6 +1164,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|warrior_exit
+r_static
 r_void
 id|__exit
 id|warrior_exit

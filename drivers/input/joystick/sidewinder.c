@@ -4456,6 +4456,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|sw_init
+r_static
 r_int
 id|__init
 id|sw_init
@@ -4476,6 +4477,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|sw_exit
+r_static
 r_void
 id|__exit
 id|sw_exit

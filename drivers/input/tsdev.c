@@ -926,6 +926,7 @@ id|retval
 suffix:semicolon
 )brace
 DECL|variable|tsdev_fops
+r_static
 r_struct
 id|file_operations
 id|tsdev_fops

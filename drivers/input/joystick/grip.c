@@ -2791,6 +2791,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|grip_init
+r_static
 r_int
 id|__init
 id|grip_init
@@ -2811,6 +2812,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|grip_exit
+r_static
 r_void
 id|__exit
 id|grip_exit

@@ -332,7 +332,7 @@ l_string|&quot;i8042_dumbkbd&quot;
 )paren
 suffix:semicolon
 macro_line|#include &quot;i8042.h&quot;
-DECL|variable|i8042_lock
+r_static
 id|DEFINE_SPINLOCK
 c_func
 (paren
@@ -2738,6 +2738,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Reset the controller.&n; */
 DECL|function|i8042_controller_reset
+r_static
 r_void
 id|i8042_controller_reset
 c_func
@@ -2815,6 +2816,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Here we try to reset everything back to a state in which the BIOS will be&n; * able to talk to the hardware when rebooting.&n; */
 DECL|function|i8042_controller_cleanup
+r_static
 r_void
 id|i8042_controller_cleanup
 c_func
@@ -3660,6 +3662,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|i8042_init
+r_static
 r_int
 id|__init
 id|i8042_init
@@ -3862,6 +3865,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|i8042_exit
+r_static
 r_void
 id|__exit
 id|i8042_exit

@@ -1996,6 +1996,7 @@ id|vsxxxaa_disconnect
 comma
 )brace
 suffix:semicolon
+r_static
 r_int
 id|__init
 DECL|function|vsxxxaa_init
@@ -2015,6 +2016,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_void
 id|__exit
 DECL|function|vsxxxaa_exit

@@ -674,6 +674,7 @@ id|serio
 suffix:semicolon
 )brace
 DECL|function|parkbd_init
+r_static
 r_int
 id|__init
 id|parkbd_init
@@ -758,6 +759,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|parkbd_exit
+r_static
 r_void
 id|__exit
 id|parkbd_exit

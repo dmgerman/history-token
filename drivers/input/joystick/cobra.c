@@ -1443,6 +1443,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|cobra_init
+r_static
 r_int
 id|__init
 id|cobra_init
@@ -1463,6 +1464,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cobra_exit
+r_static
 r_void
 id|__exit
 id|cobra_exit

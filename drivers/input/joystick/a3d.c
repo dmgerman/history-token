@@ -44,6 +44,7 @@ mdefine_line|#define A3D_MODE_OEM&t;&t;3&t;/* Panther OEM version */
 DECL|macro|A3D_MODE_PXL
 mdefine_line|#define A3D_MODE_PXL&t;&t;4&t;/* Panther XL */
 DECL|variable|a3d_names
+r_static
 r_char
 op_star
 id|a3d_names
@@ -1346,6 +1347,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * a3d_adc_cooked_read() copies the acis and button data to the&n; * callers arrays. It could do the read itself, but the caller could&n; * call this more than 50 times a second, which would use too much CPU.&n; */
 DECL|function|a3d_adc_cooked_read
+r_static
 r_int
 id|a3d_adc_cooked_read
 c_func
@@ -1422,6 +1424,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * a3d_adc_open() is the gameport open routine. It refuses to serve&n; * any but cooked data.&n; */
 DECL|function|a3d_adc_open
+r_static
 r_int
 id|a3d_adc_open
 c_func
@@ -2409,6 +2412,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|a3d_init
+r_static
 r_int
 id|__init
 id|a3d_init
@@ -2429,6 +2433,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|a3d_exit
+r_static
 r_void
 id|__exit
 id|a3d_exit

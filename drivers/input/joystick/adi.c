@@ -3053,6 +3053,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|adi_init
+r_static
 r_int
 id|__init
 id|adi_init
@@ -3073,6 +3074,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|adi_exit
+r_static
 r_void
 id|__exit
 id|adi_exit

@@ -697,6 +697,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * The functions for inserting/removing us as a module.&n; */
 DECL|function|gunze_init
+r_static
 r_int
 id|__init
 id|gunze_init
@@ -717,6 +718,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|gunze_exit
+r_static
 r_void
 id|__exit
 id|gunze_exit

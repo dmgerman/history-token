@@ -4283,6 +4283,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|psmouse_init
+r_static
 r_int
 id|__init
 id|psmouse_init
@@ -4308,6 +4309,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|psmouse_exit
+r_static
 r_void
 id|__exit
 id|psmouse_exit

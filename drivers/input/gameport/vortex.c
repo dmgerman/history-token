@@ -672,6 +672,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|vortex_init
+r_static
 r_int
 id|__init
 id|vortex_init
@@ -690,6 +691,7 @@ id|vortex_driver
 suffix:semicolon
 )brace
 DECL|function|vortex_exit
+r_static
 r_void
 id|__exit
 id|vortex_exit

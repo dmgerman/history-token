@@ -339,6 +339,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|nkbd_interrupt
+r_static
 id|irqreturn_t
 id|nkbd_interrupt
 c_func
@@ -445,6 +446,7 @@ id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|nkbd_connect
+r_static
 r_int
 id|nkbd_connect
 c_func
@@ -713,6 +715,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|nkbd_disconnect
+r_static
 r_void
 id|nkbd_disconnect
 c_func
@@ -808,6 +811,7 @@ id|nkbd_serio_ids
 )paren
 suffix:semicolon
 DECL|variable|nkbd_drv
+r_static
 r_struct
 id|serio_driver
 id|nkbd_drv
@@ -852,6 +856,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|nkbd_init
+r_static
 r_int
 id|__init
 id|nkbd_init
@@ -872,6 +877,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|nkbd_exit
+r_static
 r_void
 id|__exit
 id|nkbd_exit

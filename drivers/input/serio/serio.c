@@ -113,6 +113,7 @@ id|serio_list
 )paren
 suffix:semicolon
 DECL|variable|serio_bus
+r_static
 r_struct
 id|bus_type
 id|serio_bus

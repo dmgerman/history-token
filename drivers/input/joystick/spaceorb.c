@@ -1227,6 +1227,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * The functions for inserting/removing us as a module.&n; */
 DECL|function|spaceorb_init
+r_static
 r_int
 id|__init
 id|spaceorb_init
@@ -1247,6 +1248,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|spaceorb_exit
+r_static
 r_void
 id|__exit
 id|spaceorb_exit

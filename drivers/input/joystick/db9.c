@@ -4637,6 +4637,7 @@ id|db9
 suffix:semicolon
 )brace
 DECL|function|db9_init
+r_static
 r_int
 id|__init
 id|db9_init
@@ -4711,6 +4712,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|db9_exit
+r_static
 r_void
 id|__exit
 id|db9_exit

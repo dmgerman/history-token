@@ -1343,6 +1343,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|guillemot_init
+r_static
 r_int
 id|__init
 id|guillemot_init
@@ -1363,6 +1364,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|guillemot_exit
+r_static
 r_void
 id|__exit
 id|guillemot_exit

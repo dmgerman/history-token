@@ -149,7 +149,7 @@ id|proc_dir_entry
 op_star
 id|proc_bus_input_dir
 suffix:semicolon
-DECL|variable|input_devices_poll_wait
+r_static
 id|DECLARE_WAIT_QUEUE_HEAD
 c_func
 (paren

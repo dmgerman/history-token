@@ -421,6 +421,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|emu_init
+r_static
 r_int
 id|__init
 id|emu_init
@@ -439,6 +440,7 @@ id|emu_driver
 suffix:semicolon
 )brace
 DECL|function|emu_exit
+r_static
 r_void
 id|__exit
 id|emu_exit

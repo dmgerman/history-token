@@ -1710,6 +1710,7 @@ id|retval
 suffix:semicolon
 )brace
 DECL|variable|uinput_fops
+r_static
 r_struct
 id|file_operations
 id|uinput_fops

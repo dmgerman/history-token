@@ -1555,6 +1555,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|interact_init
+r_static
 r_int
 id|__init
 id|interact_init
@@ -1575,6 +1576,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|interact_exit
+r_static
 r_void
 id|__exit
 id|interact_exit

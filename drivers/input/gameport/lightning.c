@@ -49,6 +49,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|struct|l4
+r_static
 r_struct
 id|l4
 (brace
@@ -78,6 +79,7 @@ l_int|8
 )braket
 suffix:semicolon
 DECL|variable|l4_name
+r_static
 r_char
 id|l4_name
 (braket

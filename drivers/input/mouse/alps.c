@@ -18,6 +18,7 @@ mdefine_line|#define ALPS_MODEL_GLIDEPOINT&t;1
 DECL|macro|ALPS_MODEL_DUALPOINT
 mdefine_line|#define ALPS_MODEL_DUALPOINT&t;2
 DECL|struct|alps_model_info
+r_static
 r_struct
 id|alps_model_info
 (brace
@@ -1005,6 +1006,7 @@ id|PSMOUSE_GOOD_DATA
 suffix:semicolon
 )brace
 DECL|function|alps_get_model
+r_static
 r_int
 id|alps_get_model
 c_func

@@ -2698,6 +2698,7 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * The functions for insering/removing us as a module.&n; */
+r_static
 r_int
 id|__init
 DECL|function|lkkbd_init
@@ -2717,6 +2718,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_void
 id|__exit
 DECL|function|lkkbd_exit

@@ -953,6 +953,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * The functions for inserting/removing us as a module.&n; */
 DECL|function|magellan_init
+r_static
 r_int
 id|__init
 id|magellan_init
@@ -973,6 +974,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|magellan_exit
+r_static
 r_void
 id|__exit
 id|magellan_exit

@@ -1321,6 +1321,7 @@ id|ns558_pnp_driver
 suffix:semicolon
 macro_line|#endif
 DECL|function|ns558_init
+r_static
 r_int
 id|__init
 id|ns558_init
@@ -1376,6 +1377,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ns558_exit
+r_static
 r_void
 id|__exit
 id|ns558_exit

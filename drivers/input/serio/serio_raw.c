@@ -951,6 +951,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|serio_raw_fops
+r_static
 r_struct
 id|file_operations
 id|serio_raw_fops
@@ -1615,6 +1616,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|serio_raw_init
+r_static
 r_int
 id|__init
 id|serio_raw_init
@@ -1635,6 +1637,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|serio_raw_exit
+r_static
 r_void
 id|__exit
 id|serio_raw_exit

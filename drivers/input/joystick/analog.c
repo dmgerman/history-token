@@ -4114,6 +4114,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|analog_types
+r_static
 r_struct
 id|analog_types
 id|analog_types
@@ -4394,6 +4395,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|analog_init
+r_static
 r_int
 id|__init
 id|analog_init
@@ -4419,6 +4421,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|analog_exit
+r_static
 r_void
 id|__exit
 id|analog_exit

@@ -3954,6 +3954,7 @@ id|gc
 suffix:semicolon
 )brace
 DECL|function|gc_init
+r_static
 r_int
 id|__init
 id|gc_init
@@ -4028,6 +4029,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|gc_exit
+r_static
 r_void
 id|__exit
 id|gc_exit

@@ -48,7 +48,7 @@ r_struct
 id|input_dev
 id|pcspkr_dev
 suffix:semicolon
-DECL|variable|i8253_beep_lock
+r_static
 id|DEFINE_SPINLOCK
 c_func
 (paren
