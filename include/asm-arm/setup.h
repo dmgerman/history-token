@@ -353,8 +353,12 @@ multiline_comment|/* starting block of floppy-based RAM disk image */
 )brace
 suffix:semicolon
 multiline_comment|/* describes where the compressed ramdisk image lives */
+multiline_comment|/*&n; * this one accidentally used virtual addresses - as such,&n; * its depreciated.&n; */
 DECL|macro|ATAG_INITRD
 mdefine_line|#define ATAG_INITRD&t;0x54410005
+multiline_comment|/* describes where the compressed ramdisk image lives */
+DECL|macro|ATAG_INITRD2
+mdefine_line|#define ATAG_INITRD2&t;0x54420005
 DECL|struct|tag_initrd
 r_struct
 id|tag_initrd
