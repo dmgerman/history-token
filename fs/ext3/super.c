@@ -1698,6 +1698,7 @@ id|kmem_cache_t
 op_star
 id|ext3_inode_cachep
 suffix:semicolon
+multiline_comment|/*&n; * Called inside transaction, so use GFP_NOFS&n; */
 DECL|function|ext3_alloc_inode
 r_static
 r_struct
@@ -1719,17 +1720,12 @@ id|ei
 suffix:semicolon
 id|ei
 op_assign
-(paren
-r_struct
-id|ext3_inode_info
-op_star
-)paren
 id|kmem_cache_alloc
 c_func
 (paren
 id|ext3_inode_cachep
 comma
-id|SLAB_KERNEL
+id|SLAB_NOFS
 )paren
 suffix:semicolon
 r_if
