@@ -310,8 +310,9 @@ id|timer_list
 id|esdi_timer
 op_assign
 (brace
+dot
 id|function
-suffix:colon
+op_assign
 id|ps2esdi_reset_timer
 )brace
 suffix:semicolon

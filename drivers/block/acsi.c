@@ -1157,8 +1157,9 @@ id|timer_list
 id|acsi_timer
 op_assign
 (brace
+dot
 id|function
-suffix:colon
+op_assign
 id|acsi_times_out
 )brace
 suffix:semicolon
