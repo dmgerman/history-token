@@ -2721,7 +2721,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Function : static int ncr53c7xx_init(Scsi_Host_Template *tpnt, int board, &n; *&t;int chip, u32 base, int io_port, int irq, int dma, long long options,&n; *&t;int clock);&n; *&n; * Purpose : initializes a NCR53c7,8x0 based on base addresses,&n; *&t;IRQ, and DMA channel.&t;&n; *&t;&n; * Inputs : tpnt - Template for this SCSI adapter, board - board level&n; *&t;product, chip - 710&n; * &n; * Returns : 0 on success, -1 on failure.&n; *&n; */
+multiline_comment|/* &n; * Function : int ncr53c7xx_init(Scsi_Host_Template *tpnt, int board, int chip,&n; *&t;unsigned long base, int io_port, int irq, int dma, long long options,&n; *&t;int clock);&n; *&n; * Purpose : initializes a NCR53c7,8x0 based on base addresses,&n; *&t;IRQ, and DMA channel.&t;&n; *&t;&n; * Inputs : tpnt - Template for this SCSI adapter, board - board level&n; *&t;product, chip - 710&n; * &n; * Returns : 0 on success, -1 on failure.&n; *&n; */
 r_int
 DECL|function|ncr53c7xx_init
 id|ncr53c7xx_init
