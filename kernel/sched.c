@@ -233,8 +233,6 @@ DECL|macro|task_rq
 mdefine_line|#define task_rq(p)&t;&t;cpu_rq(task_cpu(p))
 DECL|macro|cpu_curr
 mdefine_line|#define cpu_curr(cpu)&t;&t;(cpu_rq(cpu)-&gt;curr)
-DECL|macro|rt_task
-mdefine_line|#define rt_task(p)&t;&t;((p)-&gt;prio &lt; MAX_RT_PRIO)
 multiline_comment|/*&n; * Default context-switch locking:&n; */
 macro_line|#ifndef prepare_arch_switch
 DECL|macro|prepare_arch_switch

@@ -2227,7 +2227,7 @@ r_return
 id|page
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is the &squot;heart&squot; of the zoned buddy allocator.&n; *&n; * Herein lies the mysterious &quot;incremental min&quot;.  That&squot;s the&n; *&n; *&t;min += z-&gt;pages_low;&n; *&n; * thing.  The intent here is to provide additional protection to low zones for&n; * allocation requests which _could_ use higher zones.  So a GFP_HIGHMEM&n; * request is not allowed to dip as deeply into the normal zone as a GFP_KERNEL&n; * request.  This preserves additional space in those lower zones for requests&n; * which really do need memory from those zones.  It means that on a decent&n; * sized machine, GFP_HIGHMEM and GFP_KERNEL requests basically leave the DMA&n; * zone untouched.&n; */
+multiline_comment|/*&n; * This is the &squot;heart&squot; of the zoned buddy allocator.&n; *&n; * Herein lies the mysterious &quot;incremental min&quot;.  That&squot;s the&n; *&n; *&t;local_low = z-&gt;pages_low;&n; *&t;min += local_low;&n; *&n; * thing.  The intent here is to provide additional protection to low zones for&n; * allocation requests which _could_ use higher zones.  So a GFP_HIGHMEM&n; * request is not allowed to dip as deeply into the normal zone as a GFP_KERNEL&n; * request.  This preserves additional space in those lower zones for requests&n; * which really do need memory from those zones.  It means that on a decent&n; * sized machine, GFP_HIGHMEM and GFP_KERNEL requests basically leave the DMA&n; * zone untouched.&n; */
 r_struct
 id|page
 op_star
@@ -2275,6 +2275,17 @@ id|page
 op_star
 id|page
 suffix:semicolon
+r_struct
+id|reclaim_state
+id|reclaim_state
+suffix:semicolon
+r_struct
+id|task_struct
+op_star
+id|p
+op_assign
+id|current
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -2283,10 +2294,6 @@ id|cold
 suffix:semicolon
 r_int
 id|do_retry
-suffix:semicolon
-r_struct
-id|reclaim_state
-id|reclaim_state
 suffix:semicolon
 id|might_sleep_if
 c_func
@@ -2367,9 +2374,31 @@ id|zones
 id|i
 )braket
 suffix:semicolon
+r_int
+r_int
+id|local_low
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * This is the fabled &squot;incremental min&squot;. We let real-time tasks&n;&t;&t; * dip their real-time paws a little deeper into reserves.&n;&t;&t; */
+id|local_low
+op_assign
+id|z-&gt;pages_low
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rt_task
+c_func
+(paren
+id|p
+)paren
+)paren
+id|local_low
+op_rshift_assign
+l_int|1
+suffix:semicolon
 id|min
 op_add_assign
-id|z-&gt;pages_low
+id|local_low
 suffix:semicolon
 r_if
 c_cond
@@ -2497,6 +2526,19 @@ id|local_min
 op_rshift_assign
 l_int|2
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rt_task
+c_func
+(paren
+id|p
+)paren
+)paren
+id|local_min
+op_rshift_assign
+l_int|1
+suffix:semicolon
 id|min
 op_add_assign
 id|local_min
@@ -2553,7 +2595,7 @@ r_if
 c_cond
 (paren
 (paren
-id|current-&gt;flags
+id|p-&gt;flags
 op_amp
 (paren
 id|PF_MEMALLOC
@@ -2633,7 +2675,7 @@ id|wait
 r_goto
 id|nopage
 suffix:semicolon
-id|current-&gt;flags
+id|p-&gt;flags
 op_or_assign
 id|PF_MEMALLOC
 suffix:semicolon
@@ -2641,7 +2683,7 @@ id|reclaim_state.reclaimed_slab
 op_assign
 l_int|0
 suffix:semicolon
-id|current-&gt;reclaim_state
+id|p-&gt;reclaim_state
 op_assign
 op_amp
 id|reclaim_state
@@ -2656,11 +2698,11 @@ comma
 id|order
 )paren
 suffix:semicolon
-id|current-&gt;reclaim_state
+id|p-&gt;reclaim_state
 op_assign
 l_int|NULL
 suffix:semicolon
-id|current-&gt;flags
+id|p-&gt;flags
 op_and_assign
 op_complement
 id|PF_MEMALLOC
@@ -2835,7 +2877,7 @@ c_func
 l_string|&quot;%s: page allocation failure.&quot;
 l_string|&quot; order:%d, mode:0x%x&bslash;n&quot;
 comma
-id|current-&gt;comm
+id|p-&gt;comm
 comma
 id|order
 comma

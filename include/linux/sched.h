@@ -634,6 +634,8 @@ DECL|macro|MAX_RT_PRIO
 mdefine_line|#define MAX_RT_PRIO&t;&t;MAX_USER_RT_PRIO
 DECL|macro|MAX_PRIO
 mdefine_line|#define MAX_PRIO&t;&t;(MAX_RT_PRIO + 40)
+DECL|macro|rt_task
+mdefine_line|#define rt_task(p)&t;&t;((p)-&gt;prio &lt; MAX_RT_PRIO)
 multiline_comment|/*&n; * Some day this will be a full-fledged user tracking system..&n; */
 DECL|struct|user_struct
 r_struct
