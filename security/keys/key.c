@@ -3519,8 +3519,7 @@ suffix:semicolon
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * initialise the key management stuff&n; */
 DECL|function|key_init
-r_static
-r_int
+r_void
 id|__init
 id|key_init
 c_func
@@ -3545,22 +3544,12 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_PANIC
 comma
 l_int|NULL
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|key_jar
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Cannot create key jar&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* add the special key types */
@@ -3671,16 +3660,6 @@ op_amp
 id|root_user_keyring
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/* end key_init() */
-DECL|variable|key_init
-id|security_initcall
-c_func
-(paren
-id|key_init
-)paren
-suffix:semicolon
 eof

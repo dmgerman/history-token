@@ -3800,6 +3800,7 @@ id|proc_dointvec
 comma
 )brace
 comma
+macro_line|#ifdef CONFIG_DNOTIFY
 (brace
 dot
 id|ctl_name
@@ -3838,6 +3839,7 @@ id|proc_dointvec
 comma
 )brace
 comma
+macro_line|#endif
 (brace
 dot
 id|ctl_name

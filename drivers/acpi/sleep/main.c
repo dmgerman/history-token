@@ -82,7 +82,7 @@ r_int
 id|acpi_pm_prepare
 c_func
 (paren
-id|u32
+id|suspend_state_t
 id|pm_state
 )paren
 (brace
@@ -170,7 +170,7 @@ r_int
 id|acpi_pm_enter
 c_func
 (paren
-id|u32
+id|suspend_state_t
 id|pm_state
 )paren
 (brace
@@ -350,7 +350,7 @@ r_int
 id|acpi_pm_finish
 c_func
 (paren
-id|u32
+id|suspend_state_t
 id|pm_state
 )paren
 (brace

@@ -290,6 +290,20 @@ id|apicid
 r_return
 id|i
 suffix:semicolon
+multiline_comment|/* No entries in x86_cpu_to_apicid?  Either no MPS|ACPI,&n;&t; * or called too early.  Either way, we must be CPU 0. */
+r_if
+c_cond
+(paren
+id|x86_cpu_to_apicid
+(braket
+l_int|0
+)braket
+op_eq
+id|BAD_APICID
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_return
 op_minus
 l_int|1

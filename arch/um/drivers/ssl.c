@@ -513,8 +513,6 @@ id|serial_lines
 comma
 id|tty
 comma
-l_int|0
-comma
 op_amp
 id|ch
 comma

@@ -59,22 +59,6 @@ c_func
 l_string|&quot;FBDev driver for S3 Savage PCI/AGP Chips&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|disabled
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|disabled
-comma
-l_string|&quot;Disable this driver&squot;s initialization.&quot;
-)paren
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|vgaHWSeqReset

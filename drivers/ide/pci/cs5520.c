@@ -757,8 +757,6 @@ id|dev
 comma
 id|d
 comma
-l_int|1
-comma
 l_int|14
 comma
 op_amp

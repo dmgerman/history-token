@@ -35,6 +35,7 @@ macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;linux/mempolicy.h&gt;
+macro_line|#include &lt;linux/key.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
@@ -2294,6 +2295,11 @@ c_func
 )paren
 suffix:semicolon
 id|usermodehelper_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|key_init
 c_func
 (paren
 )paren

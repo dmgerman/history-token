@@ -1,3 +1,6 @@
+macro_line|#ifndef _LINUX_DNOTIFY_H
+DECL|macro|_LINUX_DNOTIFY_H
+mdefine_line|#define _LINUX_DNOTIFY_H
 multiline_comment|/*&n; * Directory notification for Linux&n; *&n; * Copyright (C) 2000,2002 Stephen Rothwell&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 DECL|struct|dnotify_struct
@@ -15,7 +18,6 @@ r_int
 r_int
 id|dn_mask
 suffix:semicolon
-multiline_comment|/* Events to be notified&n;&t;&t;&t;&t;&t;&t;   see linux/fcntl.h */
 DECL|member|dn_fd
 r_int
 id|dn_fd
@@ -32,6 +34,9 @@ id|dn_owner
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_DNOTIFY
 r_extern
 r_void
 id|__inode_dir_notify
@@ -53,10 +58,8 @@ c_func
 r_struct
 id|file
 op_star
-id|filp
 comma
 id|fl_owner_t
-id|id
 )paren
 suffix:semicolon
 r_extern
@@ -74,6 +77,7 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|dnotify_parent
 c_func
@@ -81,11 +85,9 @@ c_func
 r_struct
 id|dentry
 op_star
-id|dentry
 comma
 r_int
 r_int
-id|event
 )paren
 suffix:semicolon
 DECL|function|inode_dir_notify
@@ -108,11 +110,7 @@ id|event
 r_if
 c_cond
 (paren
-(paren
-id|inode
-)paren
-op_member_access_from_pointer
-id|i_dnotify_mask
+id|inode-&gt;i_dnotify_mask
 op_amp
 (paren
 id|event
@@ -127,4 +125,104 @@ id|event
 )paren
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|function|__inode_dir_notify
+r_static
+r_inline
+r_void
+id|__inode_dir_notify
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_int
+r_int
+id|event
+)paren
+(brace
+)brace
+DECL|function|dnotify_flush
+r_static
+r_inline
+r_void
+id|dnotify_flush
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|filp
+comma
+id|fl_owner_t
+id|id
+)paren
+(brace
+)brace
+DECL|function|fcntl_dirnotify
+r_static
+r_inline
+r_int
+id|fcntl_dirnotify
+c_func
+(paren
+r_int
+id|fd
+comma
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|arg
+)paren
+(brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+DECL|function|dnotify_parent
+r_static
+r_inline
+r_void
+id|dnotify_parent
+c_func
+(paren
+r_struct
+id|dentry
+op_star
+id|dentry
+comma
+r_int
+r_int
+id|event
+)paren
+(brace
+)brace
+DECL|function|inode_dir_notify
+r_static
+r_inline
+r_void
+id|inode_dir_notify
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_int
+r_int
+id|event
+)paren
+(brace
+)brace
+macro_line|#endif /* CONFIG_DNOTIFY */
+macro_line|#endif /* __KERNEL __ */
+macro_line|#endif /* _LINUX_DNOTIFY_H */
 eof

@@ -2695,14 +2695,12 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
-id|destroy_proc_ide_drives
+id|destroy_proc_ide_interface
 c_func
 (paren
 id|hwif
 )paren
 suffix:semicolon
-macro_line|#endif
 id|hwgroup
 op_assign
 id|hwif-&gt;hwgroup
@@ -7430,7 +7428,7 @@ l_string|&quot;autotune&quot;
 comma
 l_string|&quot;noautotune&quot;
 comma
-l_string|&quot;stroke&quot;
+l_string|&quot;minus8&quot;
 comma
 l_string|&quot;swapdata&quot;
 comma
@@ -7630,18 +7628,6 @@ multiline_comment|/* &quot;noautotune&quot; */
 id|drive-&gt;autotune
 op_assign
 id|IDE_TUNE_NOAUTO
-suffix:semicolon
-r_goto
-id|done
-suffix:semicolon
-r_case
-op_minus
-l_int|8
-suffix:colon
-multiline_comment|/* stroke */
-id|drive-&gt;stroke
-op_assign
-l_int|1
 suffix:semicolon
 r_goto
 id|done

@@ -364,7 +364,7 @@ c_func
 (paren
 id|mode
 comma
-l_int|NULL
+l_int|0
 comma
 l_string|&quot;Initial video mode &bslash;&quot;&lt;xres&gt;x&lt;yres&gt;[-&lt;depth&gt;][@&lt;refresh&gt;]&bslash;&quot;&quot;
 )paren
@@ -6320,7 +6320,11 @@ c_cond
 (paren
 id|cursor-&gt;set
 op_amp
+(paren
 id|FB_CUR_SETSHAPE
+op_amp
+id|FB_CUR_SETIMAGE
+)paren
 )paren
 (brace
 id|u32

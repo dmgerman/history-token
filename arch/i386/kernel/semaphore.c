@@ -7,7 +7,7 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/*&n; * Semaphores are implemented using a two-way counter:&n; * The &quot;count&quot; variable is decremented for each process&n; * that tries to acquire the semaphore, while the &quot;sleeping&quot;&n; * variable is a count of such acquires.&n; *&n; * Notably, the inline &quot;up()&quot; and &quot;down()&quot; functions can&n; * efficiently test if they need to do any extra work (up&n; * needs to do something only if count was negative before&n; * the increment operation.&n; *&n; * &quot;sleeping&quot; and the contention routine ordering is protected&n; * by the spinlock in the semaphore&squot;s waitqueue head.&n; *&n; * Note that these functions are only called when there is&n; * contention on the lock, and as such all this is the&n; * &quot;non-critical&quot; part of the whole semaphore business. The&n; * critical part is the inline stuff in &lt;asm/semaphore.h&gt;&n; * where we want to avoid any extra jumps and calls.&n; */
 multiline_comment|/*&n; * Logic:&n; *  - only on a boundary condition do we need to care. When we go&n; *    from a negative count to a non-negative, we wake people up.&n; *  - when we go from a non-negative count to a negative do we&n; *    (a) synchronize with the &quot;sleeper&quot; count and (b) make sure&n; *    that we&squot;re on the wakeup list before we synchronize so that&n; *    we cannot lose wakeup events.&n; */
 DECL|function|__up
-id|asmlinkage
+id|fastcall
 r_void
 id|__up
 c_func
@@ -27,7 +27,7 @@ id|sem-&gt;wait
 suffix:semicolon
 )brace
 DECL|function|__down
-id|asmlinkage
+id|fastcall
 r_void
 id|__sched
 id|__down
@@ -185,7 +185,7 @@ id|TASK_RUNNING
 suffix:semicolon
 )brace
 DECL|function|__down_interruptible
-id|asmlinkage
+id|fastcall
 r_int
 id|__sched
 id|__down_interruptible
@@ -384,7 +384,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Trylock failed - make sure we correct for&n; * having decremented the count.&n; *&n; * We could have done the trylock with a&n; * single &quot;cmpxchg&quot; without failure cases,&n; * but then it wouldn&squot;t work on a 386.&n; */
 DECL|function|__down_trylock
-id|asmlinkage
+id|fastcall
 r_int
 id|__down_trylock
 c_func
@@ -457,7 +457,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The semaphore operations have a special calling sequence that&n; * allow us to do a simpler in-line version of them. These routines&n; * need to convert that sequence back into the C sequence when&n; * there is contention on the semaphore.&n; *&n; * %ecx contains the semaphore pointer on entry. Save the C-clobbered&n; * registers (%eax, %edx and %ecx) except %eax when used as a return&n; * value..&n; */
+multiline_comment|/*&n; * The semaphore operations have a special calling sequence that&n; * allow us to do a simpler in-line version of them. These routines&n; * need to convert that sequence back into the C sequence when&n; * there is contention on the semaphore.&n; *&n; * %eax contains the semaphore pointer on entry. Save the C-clobbered&n; * registers (%eax, %edx and %ecx) except %eax whish is either a return&n; * value or just clobbered..&n; */
 id|asm
 c_func
 (paren
@@ -469,13 +469,11 @@ macro_line|#if defined(CONFIG_FRAME_POINTER)
 l_string|&quot;pushl %ebp&bslash;n&bslash;t&quot;
 l_string|&quot;movl  %esp,%ebp&bslash;n&bslash;t&quot;
 macro_line|#endif
-l_string|&quot;pushl %eax&bslash;n&bslash;t&quot;
 l_string|&quot;pushl %edx&bslash;n&bslash;t&quot;
 l_string|&quot;pushl %ecx&bslash;n&bslash;t&quot;
 l_string|&quot;call __down&bslash;n&bslash;t&quot;
 l_string|&quot;popl %ecx&bslash;n&bslash;t&quot;
 l_string|&quot;popl %edx&bslash;n&bslash;t&quot;
-l_string|&quot;popl %eax&bslash;n&bslash;t&quot;
 macro_line|#if defined(CONFIG_FRAME_POINTER)
 l_string|&quot;movl %ebp,%esp&bslash;n&bslash;t&quot;
 l_string|&quot;popl %ebp&bslash;n&bslash;t&quot;
@@ -536,13 +534,11 @@ l_string|&quot;.section .sched.text&bslash;n&quot;
 l_string|&quot;.align 4&bslash;n&quot;
 l_string|&quot;.globl __up_wakeup&bslash;n&quot;
 l_string|&quot;__up_wakeup:&bslash;n&bslash;t&quot;
-l_string|&quot;pushl %eax&bslash;n&bslash;t&quot;
 l_string|&quot;pushl %edx&bslash;n&bslash;t&quot;
 l_string|&quot;pushl %ecx&bslash;n&bslash;t&quot;
 l_string|&quot;call __up&bslash;n&bslash;t&quot;
 l_string|&quot;popl %ecx&bslash;n&bslash;t&quot;
 l_string|&quot;popl %edx&bslash;n&bslash;t&quot;
-l_string|&quot;popl %eax&bslash;n&bslash;t&quot;
 l_string|&quot;ret&quot;
 )paren
 suffix:semicolon
