@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/fs/ext2/balloc.c&n; *&n; * Copyright (C) 1992, 
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;ext2.h&quot;
 macro_line|#include &lt;linux/quotaops.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 multiline_comment|/*&n; * balloc.c contains the blocks allocation and deallocation routines&n; */
 multiline_comment|/*&n; * The free blocks are managed by bitmaps.  A file system contains several&n; * blocks groups.  Each group contains 1 bitmap block for blocks, 1 bitmap&n; * block for inodes, N blocks for the inode table and data blocks.&n; *&n; * The file system contains group descriptors which are located after the&n; * super block.  Each descriptor contains the number of the bitmap block and&n; * the free blocks count in the block.  The descriptors are loaded in memory&n; * when a file system is mounted (see ext2_read_super).&n; */
 DECL|macro|in_range
