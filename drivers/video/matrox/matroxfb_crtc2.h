@@ -86,10 +86,6 @@ DECL|member|mmio
 )brace
 id|mmio
 suffix:semicolon
-DECL|member|currcon
-r_int
-id|currcon
-suffix:semicolon
 DECL|member|currcon_display
 r_struct
 id|display
