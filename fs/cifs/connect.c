@@ -204,6 +204,18 @@ id|cifsTconInfo
 op_star
 id|tcon
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|server-&gt;tcpStatus
+op_eq
+id|CifsExiting
+)paren
+(brace
+r_return
+id|rc
+suffix:semicolon
+)brace
 id|server-&gt;tcpStatus
 op_assign
 id|CifsNeedReconnect
@@ -664,21 +676,6 @@ id|smb_msg.msg_controllen
 op_assign
 l_int|0
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;about to rcv csocket %p tcpStatus %d&quot;
-comma
-id|csocket
-comma
-id|server-&gt;tcpStatus
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* BB removeme BB */
 id|length
 op_assign
 id|sock_recvmsg
@@ -702,29 +699,18 @@ id|MSG_PEEK
 multiline_comment|/* flags see socket.h */
 )paren
 suffix:semicolon
-id|cFYI
-c_func
+r_if
+c_cond
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;rcv csocket %p with rc 0x%x smb len of 0x%x tcpStatus %d&quot;
-comma
-id|csocket
-comma
-id|length
-comma
-id|ntohl
-c_func
-(paren
-id|smb_buffer-&gt;smb_buf_length
-)paren
-comma
 id|server-&gt;tcpStatus
+op_eq
+id|CifsExiting
 )paren
-)paren
+(brace
+r_break
 suffix:semicolon
-multiline_comment|/* BB removeme BB */
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -1175,7 +1161,6 @@ id|length
 )paren
 (brace
 multiline_comment|/* Should improve check for buffer overflow with bad pdu_length */
-multiline_comment|/*  iov.iov_base = smb_buffer+total_read;&n;&t;&t;&t;&t;&t;&t;   iov.iov_len =  pdu_length-total_read; */
 id|length
 op_assign
 id|sock_recvmsg
@@ -1193,7 +1178,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* cERROR(1,(&quot;For iovlen %d Length received: %d with total read %d&quot;,&n;&t;&t;&t;&t;&t;&t;   iov.iov_len, length,total_read));       */
 r_if
 c_cond
 (paren
@@ -5483,6 +5467,24 @@ c_cond
 id|rc
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|srvTcp-&gt;socketUseCount
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|srvTcp-&gt;tcpStatus
+op_assign
+id|CifsExiting
+suffix:semicolon
+)brace
 multiline_comment|/* If find_unc succeeded then rc == 0 so we can not end */
 r_if
 c_cond

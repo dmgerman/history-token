@@ -4235,19 +4235,6 @@ id|nls_codepage
 )paren
 suffix:semicolon
 )brace
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;len of str: %d&quot;
-comma
-id|len_of_str
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* BB removeme BB */
 id|rename_info-&gt;target_name_len
 op_assign
 id|cpu_to_le32
