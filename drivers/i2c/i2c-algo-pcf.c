@@ -5,6 +5,8 @@ multiline_comment|/*   Copyright (C) 1995-1997 Simon G. Vogl&n;                 
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt; and &n;   Frodo Looijaard &lt;frodol@dds.nl&gt; ,and also from Martin Bailey&n;   &lt;mbailey@littlefeet-inc.com&gt; */
 multiline_comment|/* Partially rewriten by Oleg I. Vdovikin &lt;vdovikin@jscc.ru&gt; to handle multiple&n;   messages, proper stop/repstart signaling during receive,&n;   added detect code */
+multiline_comment|/* #define DEBUG 1 */
+multiline_comment|/* to pick up dev_dbg calls */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -853,13 +855,13 @@ id|wrcount
 id|DEB2
 c_func
 (paren
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-algo-pcf.o: %s i2c_write: writing %2.2X&bslash;n&quot;
+op_amp
+id|i2c_adap-&gt;dev
 comma
-id|i2c_adap-&gt;name
+l_string|&quot;i2c_write: writing %2.2X&bslash;n&quot;
 comma
 id|buf
 (braket
@@ -904,14 +906,13 @@ c_func
 id|adap
 )paren
 suffix:semicolon
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2c-algo-pcf.o: %s i2c_write: &quot;
-l_string|&quot;error - timeout.&bslash;n&quot;
+op_amp
+id|i2c_adap-&gt;dev
 comma
-id|i2c_adap-&gt;name
+l_string|&quot;i2c_write: error - timeout.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -935,14 +936,13 @@ c_func
 id|adap
 )paren
 suffix:semicolon
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2c-algo-pcf.o: %s i2c_write: &quot;
-l_string|&quot;error - no ack.&bslash;n&quot;
+op_amp
+id|i2c_adap-&gt;dev
 comma
-id|i2c_adap-&gt;name
+l_string|&quot;i2c_write: error - no ack.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1050,11 +1050,13 @@ c_func
 id|adap
 )paren
 suffix:semicolon
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2c-algo-pcf.o: pcf_readbytes timed out.&bslash;n&quot;
+op_amp
+id|i2c_adap-&gt;dev
+comma
+l_string|&quot;pcf_readbytes timed out.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1087,11 +1089,13 @@ c_func
 id|adap
 )paren
 suffix:semicolon
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2c-algo-pcf.o: i2c_read: i2c_inb, No ack.&bslash;n&quot;
+op_amp
+id|i2c_adap-&gt;dev
+comma
+l_string|&quot;i2c_read: i2c_inb, No ack.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1920,13 +1924,13 @@ suffix:semicolon
 id|DEB2
 c_func
 (paren
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-algo-pcf.o: hw routines for %s registered.&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
 comma
-id|adap-&gt;name
+l_string|&quot;hw routines registered.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon

@@ -501,7 +501,7 @@ c_func
 (paren
 l_string|&quot;%s: chip_write: 0x%x&bslash;n&quot;
 comma
-id|chip-&gt;c.name
+id|chip-&gt;c.dev.name
 comma
 id|val
 )paren
@@ -543,7 +543,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: I/O error (write 0x%x)&bslash;n&quot;
 comma
-id|chip-&gt;c.name
+id|chip-&gt;c.dev.name
 comma
 id|val
 )paren
@@ -561,7 +561,7 @@ c_func
 (paren
 l_string|&quot;%s: chip_write: reg%d=0x%x&bslash;n&quot;
 comma
-id|chip-&gt;c.name
+id|chip-&gt;c.dev.name
 comma
 id|subaddr
 comma
@@ -614,7 +614,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: I/O error (write reg%d=0x%x)&bslash;n&quot;
 comma
-id|chip-&gt;c.name
+id|chip-&gt;c.dev.name
 comma
 id|subaddr
 comma
@@ -764,7 +764,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: I/O error (read)&bslash;n&quot;
 comma
-id|chip-&gt;c.name
+id|chip-&gt;c.dev.name
 )paren
 suffix:semicolon
 r_return
@@ -777,7 +777,7 @@ c_func
 (paren
 l_string|&quot;%s: chip_read: 0x%x&bslash;n&quot;
 comma
-id|chip-&gt;c.name
+id|chip-&gt;c.dev.name
 comma
 id|buffer
 )paren
@@ -873,7 +873,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: I/O error (read2)&bslash;n&quot;
 comma
-id|chip-&gt;c.name
+id|chip-&gt;c.dev.name
 )paren
 suffix:semicolon
 r_return
@@ -886,7 +886,7 @@ c_func
 (paren
 l_string|&quot;%s: chip_read2: reg%d=0x%x&bslash;n&quot;
 comma
-id|chip-&gt;c.name
+id|chip-&gt;c.dev.name
 comma
 id|subaddr
 comma
@@ -942,7 +942,7 @@ c_func
 (paren
 l_string|&quot;%s: chip_cmd(%s): reg=%d, data:&quot;
 comma
-id|chip-&gt;c.name
+id|chip-&gt;c.dev.name
 comma
 id|name
 comma
@@ -1024,7 +1024,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: I/O error (%s)&bslash;n&quot;
 comma
-id|chip-&gt;c.name
+id|chip-&gt;c.dev.name
 comma
 id|name
 )paren
@@ -1110,7 +1110,7 @@ c_func
 (paren
 l_string|&quot;%s&quot;
 comma
-id|chip-&gt;c.name
+id|chip-&gt;c.dev.name
 )paren
 suffix:semicolon
 id|chip-&gt;thread
@@ -1129,7 +1129,7 @@ c_func
 (paren
 l_string|&quot;%s: thread started&bslash;n&quot;
 comma
-id|chip-&gt;c.name
+id|chip-&gt;c.dev.name
 )paren
 suffix:semicolon
 r_if
@@ -1166,7 +1166,7 @@ c_func
 (paren
 l_string|&quot;%s: thread wakeup&bslash;n&quot;
 comma
-id|chip-&gt;c.name
+id|chip-&gt;c.dev.name
 )paren
 suffix:semicolon
 r_if
@@ -1229,7 +1229,7 @@ c_func
 (paren
 l_string|&quot;%s: thread exiting&bslash;n&quot;
 comma
-id|chip-&gt;c.name
+id|chip-&gt;c.dev.name
 )paren
 suffix:semicolon
 r_if
@@ -1297,7 +1297,7 @@ c_func
 (paren
 l_string|&quot;%s: thread checkmode&bslash;n&quot;
 comma
-id|chip-&gt;c.name
+id|chip-&gt;c.dev.name
 )paren
 suffix:semicolon
 id|chip-&gt;prevmode
@@ -5209,9 +5209,14 @@ id|chip-&gt;c.addr
 op_assign
 id|addr
 suffix:semicolon
-id|chip-&gt;c.data
-op_assign
+id|i2c_set_clientdata
+c_func
+(paren
+op_amp
+id|chip-&gt;c
+comma
 id|chip
+)paren
 suffix:semicolon
 multiline_comment|/* find description for the chip */
 id|dprintk
@@ -5346,12 +5351,14 @@ l_string|&quot;&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* fill required data structures */
-id|strcpy
+id|strncpy
 c_func
 (paren
-id|chip-&gt;c.name
+id|chip-&gt;c.dev.name
 comma
 id|desc-&gt;name
+comma
+id|DEVICE_NAME_SIZE
 )paren
 suffix:semicolon
 id|chip-&gt;type
@@ -5673,7 +5680,11 @@ id|CHIPSTATE
 op_star
 id|chip
 op_assign
-id|client-&gt;data
+id|i2c_get_clientdata
+c_func
+(paren
+id|client
+)paren
 suffix:semicolon
 id|del_timer
 c_func
@@ -5777,7 +5788,11 @@ id|CHIPSTATE
 op_star
 id|chip
 op_assign
-id|client-&gt;data
+id|i2c_get_clientdata
+c_func
+(paren
+id|client
+)paren
 suffix:semicolon
 r_struct
 id|CHIPDESC
@@ -5793,7 +5808,7 @@ c_func
 (paren
 l_string|&quot;%s: chip_command 0x%x&bslash;n&quot;
 comma
-id|chip-&gt;c.name
+id|chip-&gt;c.dev.name
 comma
 id|cmd
 )paren
@@ -6295,11 +6310,6 @@ id|client_template
 op_assign
 (brace
 dot
-id|name
-op_assign
-l_string|&quot;(unset)&quot;
-comma
-dot
 id|flags
 op_assign
 id|I2C_CLIENT_ALLOW_USE
@@ -6309,6 +6319,17 @@ id|driver
 op_assign
 op_amp
 id|driver
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;(unset)&quot;
+comma
+)brace
 comma
 )brace
 suffix:semicolon

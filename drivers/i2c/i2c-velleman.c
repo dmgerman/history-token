@@ -336,11 +336,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|name
-op_assign
-l_string|&quot;Velleman K8000&quot;
-comma
-dot
 id|id
 op_assign
 id|I2C_HW_B_VELLE
@@ -350,6 +345,17 @@ id|algo_data
 op_assign
 op_amp
 id|bit_velle_data
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;Velleman K8000&quot;
+comma
+)brace
 comma
 )brace
 suffix:semicolon
