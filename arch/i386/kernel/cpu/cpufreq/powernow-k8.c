@@ -1701,6 +1701,9 @@ r_if
 c_cond
 (paren
 id|num_online_cpus
+c_func
+(paren
+)paren
 op_ne
 l_int|1
 )paren
