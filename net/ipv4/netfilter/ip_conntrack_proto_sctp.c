@@ -2680,6 +2680,7 @@ id|ip_ct_sysctl_header
 suffix:semicolon
 macro_line|#endif
 DECL|function|init
+r_static
 r_int
 id|__init
 id|init
@@ -2735,6 +2736,11 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|ret
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2780,6 +2786,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|fini
+r_static
 r_void
 id|__exit
 id|fini
