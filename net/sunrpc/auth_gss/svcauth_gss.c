@@ -1721,6 +1721,11 @@ id|N
 r_goto
 id|out
 suffix:semicolon
+id|status
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|rsci.cred.cr_group_info
 op_assign
 id|groups_alloc
@@ -1740,6 +1745,11 @@ r_goto
 id|out
 suffix:semicolon
 multiline_comment|/* gid&squot;s */
+id|status
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_for
 c_loop
 (paren
