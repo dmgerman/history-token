@@ -904,6 +904,12 @@ id|ebt_table_info
 op_star
 r_private
 suffix:semicolon
+DECL|member|me
+r_struct
+id|module
+op_star
+id|me
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
