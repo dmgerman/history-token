@@ -373,6 +373,19 @@ c_func
 id|cpuid
 )paren
 suffix:semicolon
+multiline_comment|/* Call platform-specific callin, if specified */
+r_if
+c_cond
+(paren
+id|alpha_mv.smp_callin
+)paren
+id|alpha_mv
+dot
+id|smp_callin
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* All kernel threads share the same mm context.  */
 id|atomic_inc
 c_func

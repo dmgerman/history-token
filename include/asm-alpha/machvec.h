@@ -447,6 +447,16 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+DECL|member|smp_callin
+r_void
+(paren
+op_star
+id|smp_callin
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|member|init_arch
 r_void
 (paren
