@@ -1943,6 +1943,10 @@ comma
 id|index
 )paren
 suffix:semicolon
+id|i8042_last_e0
+op_assign
+l_int|0
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace

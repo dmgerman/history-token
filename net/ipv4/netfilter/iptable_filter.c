@@ -1,6 +1,24 @@
 multiline_comment|/*&n; * This is the 1999 rewrite of IP Firewalling, aiming for kernel 2.3.x.&n; *&n; * Copyright (C) 1999 Paul `Rusty&squot; Russell &amp; Michael J. Neuling&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Netfilter Core Team &lt;coreteam@netfilter.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;iptables filter table&quot;
+)paren
+suffix:semicolon
 DECL|macro|FILTER_VALID_HOOKS
 mdefine_line|#define FILTER_VALID_HOOKS ((1 &lt;&lt; NF_IP_LOCAL_IN) | (1 &lt;&lt; NF_IP_FORWARD) | (1 &lt;&lt; NF_IP_LOCAL_OUT))
 multiline_comment|/* Standard entry. */
@@ -1102,12 +1120,6 @@ id|module_exit
 c_func
 (paren
 id|fini
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

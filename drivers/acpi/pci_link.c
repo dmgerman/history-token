@@ -1881,12 +1881,12 @@ c_func
 id|link
 )paren
 )paren
-(brace
-r_return
-op_minus
-id|ENODEV
+id|return_VALUE
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

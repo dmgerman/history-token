@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/it8172/it8172_int.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
 macro_line|#include &quot;it8172.h&quot;
 multiline_comment|/*&n; * Prototypes&n; */
 DECL|function|it8172_ratemask

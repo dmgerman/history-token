@@ -10389,19 +10389,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-macro_line|#ifdef __sparc_v9__ /* copied from drivers/net/sunhme.c */
-multiline_comment|/* NOTE: Cache line size is in 32-bit word units. */
-id|pci_write_config_byte
-c_func
-(paren
-id|eni_dev-&gt;pci_dev
-comma
-id|PCI_CACHE_LINE_SIZE
-comma
-l_int|0x10
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -13458,7 +13445,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;eni_detect: skb-&gt;cb is too small (%d &lt; %d)&bslash;n&quot;
+l_string|&quot;eni_detect: skb-&gt;cb is too small (%Zd &lt; %Zd)&bslash;n&quot;
 comma
 r_sizeof
 (paren

@@ -162,10 +162,10 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Bitmask of physically existing CPUs */
 DECL|variable|phys_cpu_present_map
-id|cpumask_t
+id|physid_mask_t
 id|phys_cpu_present_map
 op_assign
-id|CPU_MASK_NONE
+id|PHYSID_MASK_NONE
 suffix:semicolon
 multiline_comment|/* ACPI MADT entry parsing functions */
 macro_line|#ifdef CONFIG_ACPI_BOOT
@@ -358,7 +358,7 @@ id|ver
 op_assign
 id|m-&gt;mpc_apicver
 suffix:semicolon
-id|cpu_set
+id|physid_set
 c_func
 (paren
 id|m-&gt;mpc_apicid

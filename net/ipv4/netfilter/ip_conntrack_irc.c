@@ -50,13 +50,13 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Harald Welte &lt;laforge@gnumonks.org&gt;&quot;
+l_string|&quot;Harald Welte &lt;laforge@netfilter.org&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;IRC (DCC) connection tracking module&quot;
+l_string|&quot;IRC (DCC) connection tracking helper&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

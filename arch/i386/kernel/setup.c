@@ -138,6 +138,14 @@ suffix:semicolon
 macro_line|#ifdef&t;CONFIG_ACPI_BOOT
 DECL|variable|__initdata
 r_int
+id|acpi_irq
+id|__initdata
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* enable IRQ */
+DECL|variable|__initdata
+r_int
 id|acpi_ht
 id|__initdata
 op_assign
@@ -2128,6 +2136,28 @@ id|acpi_force
 id|acpi_disabled
 op_assign
 l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* &quot;pci=noacpi&quot; disables ACPI interrupt routing */
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|from
+comma
+l_string|&quot;pci=noacpi&quot;
+comma
+l_int|10
+)paren
+)paren
+(brace
+id|acpi_irq
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC

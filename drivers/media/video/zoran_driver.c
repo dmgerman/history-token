@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
@@ -327,10 +328,11 @@ macro_line|#   include &lt;linux/bigphysarea.h&gt;
 macro_line|#endif
 r_extern
 r_int
-id|debug
+op_star
+id|zr_debug
 suffix:semicolon
 DECL|macro|dprintk
-mdefine_line|#define dprintk(num, format, args...) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (debug &gt;= num) &bslash;&n;&t;&t;&t;printk(format, ##args);&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define dprintk(num, format, args...) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (*zr_debug &gt;= num) &bslash;&n;&t;&t;&t;printk(format, ##args);&t;&bslash;&n;&t;} while (0)
 r_extern
 r_int
 id|v4l_nbufs
@@ -4100,7 +4102,8 @@ multiline_comment|/* buffer should now be in BUZ_STATE_DONE */
 r_if
 c_cond
 (paren
-id|debug
+op_star
+id|zr_debug
 OG
 l_int|0
 )paren
@@ -4612,7 +4615,7 @@ id|zoran
 id|i
 )braket
 dot
-id|video_dev.minor
+id|video_dev-&gt;minor
 op_eq
 id|minor
 )paren
@@ -5214,7 +5217,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|debug
+op_star
+id|zr_debug
 OG
 l_int|1
 )paren
@@ -8781,7 +8785,7 @@ id|zr
 suffix:semicolon
 id|vunit-&gt;video
 op_assign
-id|zr-&gt;video_dev.minor
+id|zr-&gt;video_dev-&gt;minor
 suffix:semicolon
 id|vunit-&gt;vbi
 op_assign
@@ -17513,6 +17517,12 @@ id|fops
 op_assign
 op_amp
 id|zoran_fops
+comma
+dot
+id|release
+op_assign
+op_amp
+id|zoran_vdev_release
 comma
 dot
 id|minor

@@ -5,6 +5,7 @@ mdefine_line|#define _SELINUX_OBJSEC_H_
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &quot;flask.h&quot;
 macro_line|#include &quot;avc.h&quot;
@@ -282,6 +283,35 @@ id|avc_entry_ref
 id|avcr
 suffix:semicolon
 multiline_comment|/* reference to permissions */
+)brace
+suffix:semicolon
+DECL|struct|bprm_security_struct
+r_struct
+id|bprm_security_struct
+(brace
+DECL|member|magic
+r_int
+r_int
+id|magic
+suffix:semicolon
+multiline_comment|/* magic number for this module */
+DECL|member|bprm
+r_struct
+id|linux_binprm
+op_star
+id|bprm
+suffix:semicolon
+multiline_comment|/* back pointer to bprm object */
+DECL|member|sid
+id|u32
+id|sid
+suffix:semicolon
+multiline_comment|/* SID for transformed process */
+DECL|member|set
+r_int
+r_char
+id|set
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern

@@ -9,6 +9,24 @@ macro_line|#include &lt;linux/netfilter_ipv4/ip_nat_helper.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat_rule.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_ftp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_helper.h&gt;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Rusty Russell &lt;rusty@rustcorp.com.au&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;ftp NAT helper&quot;
+)paren
+suffix:semicolon
 macro_line|#if 0
 mdefine_line|#define DEBUGP printk
 macro_line|#else
@@ -1653,12 +1671,6 @@ id|module_exit
 c_func
 (paren
 id|fini
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

@@ -144,6 +144,53 @@ DECL|macro|pci_unmap_len
 mdefine_line|#define pci_unmap_len(PTR, LEN_NAME)&t;&t;&t;&bslash;&n;&t;((PTR)-&gt;LEN_NAME)
 DECL|macro|pci_unmap_len_set
 mdefine_line|#define pci_unmap_len_set(PTR, LEN_NAME, VAL)&t;&t;&bslash;&n;&t;(((PTR)-&gt;LEN_NAME) = (VAL))
+multiline_comment|/*&n; * Same as above, only with pages instead of mapped addresses.&n; */
+r_extern
+id|dma_addr_t
+id|pci_map_page
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+r_int
+id|offset
+comma
+r_int
+id|size
+comma
+r_int
+id|direction
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pci_unmap_page
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+id|dma_addr_t
+id|dma_address
+comma
+r_int
+id|size
+comma
+r_int
+id|direction
+)paren
+suffix:semicolon
 multiline_comment|/* Map a set of buffers described by scatterlist in streaming&n; * mode for DMA.  This is the scather-gather version of the&n; * above pci_map_single interface.  Here the scatter gather list&n; * elements are each tagged with the appropriate dma address&n; * and length.  They are obtained via sg_dma_{address,length}(SG).&n; *&n; * NOTE: An implementation may be able to use a smaller number of&n; *       DMA address/length pairs than there are SG table elements.&n; *       (for example via virtual mapping capabilities)&n; *       The routine returns the number of addr/length pairs actually&n; *       used, at most nents.&n; *&n; * Device ownership issues as mentioned above for pci_map_single are&n; * the same here.&n; */
 r_extern
 r_int

@@ -66,7 +66,7 @@ id|ver
 comma
 id|logical_apicid
 suffix:semicolon
-id|cpumask_t
+id|physid_mask_t
 id|apic_cpus
 suffix:semicolon
 r_if

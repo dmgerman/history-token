@@ -2877,7 +2877,7 @@ id|fs_dprintk
 (paren
 id|FS_DEBUG_ALLOC
 comma
-l_string|&quot;Alloc VCC: %p(%d)&bslash;n&quot;
+l_string|&quot;Alloc VCC: %p(%Zd)&bslash;n&quot;
 comma
 id|vcc
 comma
@@ -3149,7 +3149,7 @@ id|fs_dprintk
 (paren
 id|FS_DEBUG_ALLOC
 comma
-l_string|&quot;Alloc tc: %p(%d)&bslash;n&quot;
+l_string|&quot;Alloc tc: %p(%Zd)&bslash;n&quot;
 comma
 id|tc
 comma
@@ -4108,7 +4108,7 @@ id|fs_dprintk
 (paren
 id|FS_DEBUG_ALLOC
 comma
-l_string|&quot;Alloc transd: %p(%d)&bslash;n&quot;
+l_string|&quot;Alloc transd: %p(%Zd)&bslash;n&quot;
 comma
 id|td
 comma
@@ -5489,7 +5489,7 @@ id|fs_dprintk
 (paren
 id|FS_DEBUG_ALLOC
 comma
-l_string|&quot;Alloc rec-d: %p(%d)&bslash;n&quot;
+l_string|&quot;Alloc rec-d: %p(%Zd)&bslash;n&quot;
 comma
 id|ne
 comma
@@ -7047,7 +7047,7 @@ id|fs_dprintk
 (paren
 id|FS_DEBUG_ALLOC
 comma
-l_string|&quot;Alloc atmvccs: %p(%d)&bslash;n&quot;
+l_string|&quot;Alloc atmvccs: %p(%Zd)&bslash;n&quot;
 comma
 id|dev-&gt;atm_vccs
 comma
@@ -7596,7 +7596,7 @@ id|fs_dprintk
 (paren
 id|FS_DEBUG_ALLOC
 comma
-l_string|&quot;Alloc fs-dev: %p(%d)&bslash;n&quot;
+l_string|&quot;Alloc fs-dev: %p(%Zd)&bslash;n&quot;
 comma
 id|fs_dev
 comma

@@ -5871,4 +5871,10 @@ c_func
 id|xfrm_user_exit
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

@@ -130,14 +130,6 @@ r_char
 op_star
 id|avail_high
 suffix:semicolon
-DECL|macro|RAM_START
-mdefine_line|#define RAM_START&t;0
-DECL|macro|RAM_END
-mdefine_line|#define RAM_END&t;&t;(RAM_START + 0x800000)&t;/* only 8M mapped with BATs */
-DECL|macro|PROG_START
-mdefine_line|#define PROG_START&t;RAM_START
-DECL|macro|PROG_SIZE
-mdefine_line|#define PROG_SIZE&t;0x00700000
 DECL|macro|SCRATCH_SIZE
 mdefine_line|#define SCRATCH_SIZE&t;(128 &lt;&lt; 10)
 DECL|variable|heap
@@ -147,6 +139,38 @@ id|heap
 (braket
 id|SCRATCH_SIZE
 )braket
+suffix:semicolon
+DECL|variable|ram_start
+r_static
+r_int
+r_int
+id|ram_start
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|ram_end
+r_static
+r_int
+r_int
+id|ram_end
+op_assign
+l_int|0x1000000
+suffix:semicolon
+DECL|variable|prog_start
+r_static
+r_int
+r_int
+id|prog_start
+op_assign
+l_int|0x800000
+suffix:semicolon
+DECL|variable|prog_size
+r_static
+r_int
+r_int
+id|prog_size
+op_assign
+l_int|0x800000
 suffix:semicolon
 DECL|typedef|kernel_start_t
 r_typedef
@@ -211,7 +235,7 @@ suffix:semicolon
 id|setup_bats
 c_func
 (paren
-id|RAM_START
+id|ram_start
 )paren
 suffix:semicolon
 id|initrd_size
@@ -243,7 +267,7 @@ id|initrd_size
 id|initrd_start
 op_assign
 (paren
-id|RAM_END
+id|ram_end
 op_minus
 id|initrd_size
 )paren
@@ -264,7 +288,7 @@ c_func
 (paren
 id|initrd_start
 comma
-id|RAM_END
+id|ram_end
 op_minus
 id|initrd_start
 comma
@@ -311,6 +335,12 @@ comma
 id|initrd_size
 )paren
 suffix:semicolon
+id|prog_size
+op_assign
+id|initrd_start
+op_minus
+id|prog_start
+suffix:semicolon
 )brace
 r_else
 id|a2
@@ -348,15 +378,25 @@ op_amp
 id|__image_begin
 )paren
 suffix:semicolon
-multiline_comment|/* claim 4MB starting at 0 */
+multiline_comment|/* claim 4MB starting at PROG_START */
 id|claim
 c_func
 (paren
-l_int|0
+id|prog_start
 comma
-id|PROG_SIZE
+id|prog_size
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|map
+c_func
+(paren
+id|prog_start
+comma
+id|prog_start
+comma
+id|prog_size
 )paren
 suffix:semicolon
 id|dst
@@ -365,7 +405,7 @@ op_assign
 r_void
 op_star
 )paren
-id|RAM_START
+id|prog_start
 suffix:semicolon
 r_if
 c_cond
@@ -430,7 +470,7 @@ c_func
 (paren
 id|dst
 comma
-id|PROG_SIZE
+id|prog_size
 comma
 id|im
 comma
@@ -498,9 +538,9 @@ comma
 id|_MACH_Pmac
 comma
 (paren
-id|PROG_START
+id|prog_start
 op_plus
-id|PROG_SIZE
+id|prog_size
 )paren
 )paren
 suffix:semicolon
@@ -510,7 +550,7 @@ op_assign
 r_int
 r_int
 )paren
-id|PROG_START
+id|prog_start
 suffix:semicolon
 id|printf
 c_func

@@ -6217,15 +6217,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|check_pending
-c_func
-(paren
-r_int
-id|signum
-)paren
-suffix:semicolon
 id|asmlinkage
 r_int
 id|sys_utimes

@@ -7,13 +7,13 @@ macro_line|#include &lt;linux/netfilter_ipv4/ipt_ecn.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Harald Welte &lt;laforge@gnumonks.org&gt;&quot;
+l_string|&quot;Harald Welte &lt;laforge@netfilter.org&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;IP tables ECN matching module&quot;
+l_string|&quot;iptables ECN matching module&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

@@ -2555,16 +2555,9 @@ c_func
 (paren
 id|cmd_line
 comma
-l_string|&quot;nokgdb&quot;
+l_string|&quot;gdb&quot;
 )paren
 )paren
-id|printk
-c_func
-(paren
-l_string|&quot;kgdb default breakpoint deactivated on command line&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
 (brace
 r_if
 c_cond
@@ -2584,7 +2577,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;kgdb default breakpoint activated&bslash;n&quot;
+l_string|&quot;kgdb breakpoint activated&bslash;n&quot;
 )paren
 suffix:semicolon
 id|breakpoint

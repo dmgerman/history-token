@@ -136,23 +136,11 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+DECL|variable|netdev_ethtool_ops
 r_static
-r_int
-id|netdev_ioctl
-(paren
 r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_struct
-id|ifreq
-op_star
-id|rq
-comma
-r_int
-id|cmd
-)paren
+id|ethtool_ops
+id|netdev_ethtool_ops
 suffix:semicolon
 DECL|macro|EL1_IO_EXTENT
 mdefine_line|#define EL1_IO_EXTENT&t;16

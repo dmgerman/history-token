@@ -16,22 +16,6 @@ macro_line|#include &lt;asm/gpio.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/regs306x.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
-DECL|macro|EXT_IRQ0
-mdefine_line|#define EXT_IRQ0 12
-DECL|macro|EXT_IRQ1
-mdefine_line|#define EXT_IRQ1 13
-DECL|macro|EXT_IRQ2
-mdefine_line|#define EXT_IRQ2 14
-DECL|macro|EXT_IRQ3
-mdefine_line|#define EXT_IRQ3 15
-DECL|macro|EXT_IRQ4
-mdefine_line|#define EXT_IRQ4 16
-DECL|macro|EXT_IRQ5
-mdefine_line|#define EXT_IRQ5 17
-DECL|macro|EXT_IRQ6
-mdefine_line|#define EXT_IRQ6 18
-DECL|macro|EXT_IRQ7
-mdefine_line|#define EXT_IRQ7 19
 multiline_comment|/*&n; * This structure has only 4 elements for speed reasons&n; */
 DECL|struct|irq_handler
 r_typedef
@@ -98,6 +82,10 @@ r_int
 op_star
 id|interrupt_redirect_table
 suffix:semicolon
+DECL|macro|CPU_VECTOR
+mdefine_line|#define CPU_VECTOR ((unsigned long *)0x000000)
+DECL|macro|ADDR_MASK
+mdefine_line|#define ADDR_MASK (0xffffff)
 DECL|function|get_vector_address
 r_static
 r_inline
@@ -115,12 +103,7 @@ r_int
 op_star
 id|rom_vector
 op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-l_int|0x000000
+id|CPU_VECTOR
 suffix:semicolon
 r_int
 r_int
@@ -137,6 +120,8 @@ id|rom_vector
 (braket
 id|EXT_IRQ0
 )braket
+op_amp
+id|ADDR_MASK
 suffix:semicolon
 multiline_comment|/* check romvector format */
 r_for
@@ -169,10 +154,14 @@ op_star
 l_int|4
 )paren
 op_ne
+(paren
 id|rom_vector
 (braket
 id|vec_no
 )braket
+op_amp
+id|ADDR_MASK
+)paren
 )paren
 r_return
 l_int|NULL
@@ -790,6 +779,10 @@ r_if
 c_cond
 (paren
 (paren
+(paren
+r_int
+r_int
+)paren
 id|irq_list
 (braket
 id|irq
@@ -1173,7 +1166,7 @@ r_void
 )brace
 DECL|function|enable_kmalloc
 r_static
-r_void
+r_int
 id|__init
 id|enable_kmalloc
 c_func
@@ -1185,9 +1178,12 @@ id|use_kmalloc
 op_assign
 l_int|1
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|enable_kmalloc
-id|__initcall
+id|core_initcall
 c_func
 (paren
 id|enable_kmalloc

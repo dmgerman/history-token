@@ -1089,6 +1089,11 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|smp_rmb
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 multiline_comment|/* Version Information */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;v2.0.2&quot;

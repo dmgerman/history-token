@@ -13463,10 +13463,10 @@ suffix:semicolon
 macro_line|#endif
 id|brdnr
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|ip-&gt;i_rdev
+id|ip
 )paren
 suffix:semicolon
 r_if
@@ -19093,7 +19093,7 @@ op_amp
 id|portp-&gt;istate
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -22561,7 +22561,7 @@ op_amp
 id|portp-&gt;istate
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -23584,7 +23584,7 @@ op_amp
 id|portp-&gt;istate
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp

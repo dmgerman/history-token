@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/arch/simpad.h&gt;
 macro_line|#include &quot;leds.h&quot;
 DECL|macro|LED_STATE_ENABLED
 mdefine_line|#define LED_STATE_ENABLED&t;1

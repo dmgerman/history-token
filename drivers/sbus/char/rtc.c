@@ -21,6 +21,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Retrieve the current date and time from the real time clock. */
 DECL|function|get_rtc_time
+r_static
 r_void
 id|get_rtc_time
 c_func

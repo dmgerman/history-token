@@ -7483,7 +7483,7 @@ id|IXGB_RX_DESC_STATUS_VP
 )paren
 )paren
 (brace
-id|vlan_hwaccel_rx
+id|vlan_hwaccel_receive_skb
 c_func
 (paren
 id|skb

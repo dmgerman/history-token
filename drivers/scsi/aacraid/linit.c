@@ -2304,10 +2304,10 @@ id|file
 r_int
 id|minor_number
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 suffix:semicolon
 r_if
@@ -2382,10 +2382,10 @@ id|dev
 op_assign
 id|aac_devices
 (braket
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 )braket
 suffix:semicolon

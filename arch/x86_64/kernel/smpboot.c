@@ -2553,7 +2553,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpu_isset
+id|physid_isset
 c_func
 (paren
 id|hard_smp_processor_id
@@ -2576,7 +2576,7 @@ c_func
 )paren
 )paren
 suffix:semicolon
-id|cpu_set
+id|physid_set
 c_func
 (paren
 id|hard_smp_processor_id
@@ -2617,7 +2617,7 @@ l_int|0
 suffix:semicolon
 id|phys_cpu_present_map
 op_assign
-id|cpumask_of_cpu
+id|physid_mask_of_physid
 c_func
 (paren
 l_int|0
@@ -2648,7 +2648,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpu_isset
+id|physid_isset
 c_func
 (paren
 id|boot_cpu_id
@@ -2666,7 +2666,7 @@ comma
 id|boot_cpu_id
 )paren
 suffix:semicolon
-id|cpu_set
+id|physid_set
 c_func
 (paren
 id|hard_smp_processor_id
@@ -2725,7 +2725,7 @@ l_int|0
 suffix:semicolon
 id|phys_cpu_present_map
 op_assign
-id|cpumask_of_cpu
+id|physid_mask_of_physid
 c_func
 (paren
 l_int|0
@@ -2777,7 +2777,7 @@ l_int|0
 suffix:semicolon
 id|phys_cpu_present_map
 op_assign
-id|cpumask_of_cpu
+id|physid_mask_of_physid
 c_func
 (paren
 l_int|0
@@ -2827,7 +2827,11 @@ c_func
 (paren
 l_string|&quot;CPU present map: %lx&bslash;n&quot;
 comma
+id|physids_coerce
+c_func
+(paren
 id|phys_cpu_present_map
+)paren
 )paren
 suffix:semicolon
 r_for

@@ -92,7 +92,7 @@ id|regs
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|handle_exception
 (paren
 r_struct
@@ -1639,14 +1639,12 @@ op_star
 id|regs
 )paren
 (brace
+r_return
 id|handle_exception
 c_func
 (paren
 id|regs
 )paren
-suffix:semicolon
-r_return
-l_int|1
 suffix:semicolon
 )brace
 DECL|function|kgdb_sstep
@@ -1660,14 +1658,12 @@ op_star
 id|regs
 )paren
 (brace
+r_return
 id|handle_exception
 c_func
 (paren
 id|regs
 )paren
-suffix:semicolon
-r_return
-l_int|1
 suffix:semicolon
 )brace
 DECL|function|kgdb
@@ -1702,17 +1698,16 @@ id|regs
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;kgdb doesn&squot;t support iabr, what?!?&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
 id|handle_exception
 c_func
 (paren
 id|regs
 )paren
-suffix:semicolon
-r_return
-l_int|1
 suffix:semicolon
 )brace
 DECL|function|kgdb_dabr_match
@@ -1729,17 +1724,16 @@ id|regs
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;kgdb doesn&squot;t support dabr, what?!?&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
 id|handle_exception
 c_func
 (paren
 id|regs
 )paren
-suffix:semicolon
-r_return
-l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Convert the hardware trap type code to a unix signal number. */
@@ -2034,7 +2028,7 @@ DECL|macro|SP_REGNUM
 mdefine_line|#define SP_REGNUM 1
 multiline_comment|/*&n; * This function does all command processing for interfacing to gdb.&n; */
 r_static
-r_void
+r_int
 DECL|function|handle_exception
 id|handle_exception
 (paren
@@ -2060,6 +2054,19 @@ suffix:semicolon
 r_int
 r_int
 id|msr
+suffix:semicolon
+multiline_comment|/* We don&squot;t handle user-mode breakpoints. */
+r_if
+c_cond
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2089,10 +2096,12 @@ id|kgdb_active
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;interrupt while in kgdb, returning&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 id|kgdb_active
@@ -3158,6 +3167,7 @@ id|remcomOutBuffer
 suffix:semicolon
 )brace
 r_return
+l_int|1
 suffix:semicolon
 r_case
 l_char|&squot;s&squot;
@@ -3225,6 +3235,7 @@ id|remcomOutBuffer
 suffix:semicolon
 )brace
 r_return
+l_int|1
 suffix:semicolon
 r_case
 l_char|&squot;r&squot;

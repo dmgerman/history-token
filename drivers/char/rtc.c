@@ -1,6 +1,6 @@
-multiline_comment|/*&n; *&t;Real Time Clock interface for Linux&t;&n; *&n; *&t;Copyright (C) 1996 Paul Gortmaker&n; *&n; *&t;This driver allows use of the real time clock (built into&n; *&t;nearly all computers) from user space. It exports the /dev/rtc&n; *&t;interface supporting various ioctl() and also the&n; *&t;/proc/driver/rtc pseudo-file for status information.&n; *&n; *&t;The ioctls can be used to set the interrupt behaviour and&n; *&t;generation rate from the RTC via IRQ 8. Then the /dev/rtc&n; *&t;interface can be used to make use of these timer interrupts,&n; *&t;be they interval or alarm based.&n; *&n; *&t;The /dev/rtc interface will block on reads until an interrupt&n; *&t;has been received. If a RTC interrupt has already happened,&n; *&t;it will output an unsigned long and then block. The output value&n; *&t;contains the interrupt status in the low byte and the number of&n; *&t;interrupts since the last read in the remaining high bytes. The &n; *&t;/dev/rtc interface can also be used with the select(2) call.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Based on other minimal char device drivers, like Alan&squot;s&n; *&t;watchdog, Ted&squot;s random, etc. etc.&n; *&n; *&t;1.07&t;Paul Gortmaker.&n; *&t;1.08&t;Miquel van Smoorenburg: disallow certain things on the&n; *&t;&t;DEC Alpha as the CMOS clock is also used for other things.&n; *&t;1.09&t;Nikita Schmidt: epoch support and some Alpha cleanup.&n; *&t;1.09a&t;Pete Zaitcev: Sun SPARC&n; *&t;1.09b&t;Jeff Garzik: Modularize, init cleanup&n; *&t;1.09c&t;Jeff Garzik: SMP cleanup&n; *&t;1.10    Paul Barton-Davis: add support for async I/O&n; *&t;1.10a&t;Andrea Arcangeli: Alpha updates&n; *&t;1.10b&t;Andrew Morton: SMP lock fix&n; *&t;1.10c&t;Cesar Barros: SMP locking fixes and cleanup&n; *&t;1.10d&t;Paul Gortmaker: delete paranoia check in rtc_exit&n; *&t;1.10e&t;Maciej W. Rozycki: Handle DECstation&squot;s year weirdness.&n; *      1.11    Takashi Iwai: Kernel access functions&n; *&t;&t;&t;      rtc_register/rtc_unregister/rtc_control&n; *      1.11a   Daniele Bellucci: Audit create_proc_read_entry in rtc_init&n; *&n; */
+multiline_comment|/*&n; *&t;Real Time Clock interface for Linux&t;&n; *&n; *&t;Copyright (C) 1996 Paul Gortmaker&n; *&n; *&t;This driver allows use of the real time clock (built into&n; *&t;nearly all computers) from user space. It exports the /dev/rtc&n; *&t;interface supporting various ioctl() and also the&n; *&t;/proc/driver/rtc pseudo-file for status information.&n; *&n; *&t;The ioctls can be used to set the interrupt behaviour and&n; *&t;generation rate from the RTC via IRQ 8. Then the /dev/rtc&n; *&t;interface can be used to make use of these timer interrupts,&n; *&t;be they interval or alarm based.&n; *&n; *&t;The /dev/rtc interface will block on reads until an interrupt&n; *&t;has been received. If a RTC interrupt has already happened,&n; *&t;it will output an unsigned long and then block. The output value&n; *&t;contains the interrupt status in the low byte and the number of&n; *&t;interrupts since the last read in the remaining high bytes. The &n; *&t;/dev/rtc interface can also be used with the select(2) call.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Based on other minimal char device drivers, like Alan&squot;s&n; *&t;watchdog, Ted&squot;s random, etc. etc.&n; *&n; *&t;1.07&t;Paul Gortmaker.&n; *&t;1.08&t;Miquel van Smoorenburg: disallow certain things on the&n; *&t;&t;DEC Alpha as the CMOS clock is also used for other things.&n; *&t;1.09&t;Nikita Schmidt: epoch support and some Alpha cleanup.&n; *&t;1.09a&t;Pete Zaitcev: Sun SPARC&n; *&t;1.09b&t;Jeff Garzik: Modularize, init cleanup&n; *&t;1.09c&t;Jeff Garzik: SMP cleanup&n; *&t;1.10    Paul Barton-Davis: add support for async I/O&n; *&t;1.10a&t;Andrea Arcangeli: Alpha updates&n; *&t;1.10b&t;Andrew Morton: SMP lock fix&n; *&t;1.10c&t;Cesar Barros: SMP locking fixes and cleanup&n; *&t;1.10d&t;Paul Gortmaker: delete paranoia check in rtc_exit&n; *&t;1.10e&t;Maciej W. Rozycki: Handle DECstation&squot;s year weirdness.&n; *      1.11    Takashi Iwai: Kernel access functions&n; *&t;&t;&t;      rtc_register/rtc_unregister/rtc_control&n; *      1.11a   Daniele Bellucci: Audit create_proc_read_entry in rtc_init&n; *&t;1.12&t;Venkatesh Pallipadi: Hooks for emulating rtc on HPET base-timer&n; *&t;&t;CONFIG_HPET_EMULATE_RTC&n; *&n; */
 DECL|macro|RTC_VERSION
-mdefine_line|#define RTC_VERSION&t;&t;&quot;1.11a&quot;
+mdefine_line|#define RTC_VERSION&t;&t;&quot;1.12&quot;
 DECL|macro|RTC_IO_EXTENT
 mdefine_line|#define RTC_IO_EXTENT&t;0x8
 multiline_comment|/*&n; *&t;Note that *all* calls to CMOS_READ and CMOS_WRITE are done with&n; *&t;interrupts disabled. Due to the index-port/data-port (0x70/0x71)&n; *&t;design of the RTC, we don&squot;t want two different things trying to&n; *&t;get to it at once. (e.g. the periodic 11 min sync from time.c vs.&n; *&t;this driver.)&n; */
@@ -23,6 +23,9 @@ macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#if defined(__i386__)
+macro_line|#include &lt;asm/hpet.h&gt;
+macro_line|#endif
 macro_line|#ifdef __sparc__
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/ebus.h&gt;
@@ -51,6 +54,46 @@ id|rtc_has_irq
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifndef CONFIG_HPET_EMULATE_RTC
+DECL|macro|is_hpet_enabled
+mdefine_line|#define is_hpet_enabled()&t;&t;&t;0
+DECL|macro|hpet_set_alarm_time
+mdefine_line|#define hpet_set_alarm_time(hrs, min, sec) &t;0
+DECL|macro|hpet_set_periodic_freq
+mdefine_line|#define hpet_set_periodic_freq(arg) &t;&t;0
+DECL|macro|hpet_mask_rtc_irq_bit
+mdefine_line|#define hpet_mask_rtc_irq_bit(arg) &t;&t;0
+DECL|macro|hpet_set_rtc_irq_bit
+mdefine_line|#define hpet_set_rtc_irq_bit(arg) &t;&t;0
+DECL|macro|hpet_rtc_timer_init
+mdefine_line|#define hpet_rtc_timer_init() &t;&t;&t;do { } while (0)
+DECL|macro|hpet_rtc_dropped_irq
+mdefine_line|#define hpet_rtc_dropped_irq() &t;&t;&t;0
+DECL|function|hpet_rtc_interrupt
+r_static
+r_inline
+id|irqreturn_t
+id|hpet_rtc_interrupt
+c_func
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|dev_id
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif
 multiline_comment|/*&n; *&t;We sponge a minor off of the misc major. No need slurping&n; *&t;up another valuable major dev number for this. If you add&n; *&t;an ioctl, make sure you don&squot;t conflict with SPARC&squot;s RTC&n; *&t;ioctls.&n; */
 DECL|variable|rtc_async_queue
@@ -139,7 +182,6 @@ id|wait
 )paren
 suffix:semicolon
 macro_line|#endif
-r_static
 r_void
 id|get_rtc_time
 (paren
@@ -340,7 +382,6 @@ suffix:semicolon
 macro_line|#if RTC_IRQ
 multiline_comment|/*&n; *&t;A very tiny interrupt handler. It runs with SA_INTERRUPT set,&n; *&t;but there is possibility of conflicting with the set_rtc_mmss()&n; *&t;call (the rtc irq and the timer irq can easily run at the same&n; *&t;time in two different CPUs). So we need to serialize&n; *&t;accesses to the chip with the rtc_lock spinlock that each&n; *&t;architecture should implement in the timer code.&n; *&t;(See ./arch/XXXX/kernel/time.c for the set_rtc_mmss() function.)&n; */
 DECL|function|rtc_interrupt
-r_static
 id|irqreturn_t
 id|rtc_interrupt
 c_func
@@ -374,6 +415,29 @@ op_and_assign
 op_complement
 l_int|0xff
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_hpet_enabled
+c_func
+(paren
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * In this case it is HPET RTC interrupt handler&n;&t;&t; * calling us, with the interrupt information&n;&t;&t; * passed as arg1, instead of irq.&n;&t;&t; */
+id|rtc_irq_data
+op_or_assign
+(paren
+r_int
+r_int
+)paren
+id|irq
+op_amp
+l_int|0xF0
+suffix:semicolon
+)brace
+r_else
+(brace
 id|rtc_irq_data
 op_or_assign
 (paren
@@ -386,6 +450,7 @@ op_amp
 l_int|0xF0
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1260,6 +1325,22 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|hpet_set_alarm_time
+c_func
+(paren
+id|hrs
+comma
+id|min
+comma
+id|sec
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * Fallthru and set alarm time in CMOS too,&n;&t;&t;&t; * so that we will get proper value in RTC_ALM_READ&n;&t;&t;&t; */
+)brace
+r_if
+c_cond
+(paren
 op_logical_neg
 (paren
 id|CMOS_READ
@@ -1977,6 +2058,27 @@ op_amp
 id|rtc_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|hpet_set_periodic_freq
+c_func
+(paren
+id|arg
+)paren
+)paren
+(brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|rtc_lock
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|rtc_freq
 op_assign
 id|arg
@@ -2283,6 +2385,21 @@ op_amp
 id|rtc_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hpet_mask_rtc_irq_bit
+c_func
+(paren
+id|RTC_PIE
+op_or
+id|RTC_AIE
+op_or
+id|RTC_UIE
+)paren
+)paren
+(brace
 id|tmp
 op_assign
 id|CMOS_READ
@@ -2320,6 +2437,7 @@ c_func
 id|RTC_INTR_FLAGS
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2677,6 +2795,21 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* disable controls */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hpet_mask_rtc_irq_bit
+c_func
+(paren
+id|RTC_PIE
+op_or
+id|RTC_AIE
+op_or
+id|RTC_UIE
+)paren
+)paren
+(brace
 id|tmp
 op_assign
 id|CMOS_READ
@@ -2714,6 +2847,7 @@ c_func
 id|RTC_INTR_FLAGS
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2897,6 +3031,29 @@ op_amp
 id|rtc_fops
 )brace
 suffix:semicolon
+macro_line|#if RTC_IRQ
+DECL|variable|rtc_int_handler_ptr
+r_static
+id|irqreturn_t
+(paren
+op_star
+id|rtc_int_handler_ptr
+)paren
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|dev_id
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|function|rtc_init
 r_static
 r_int
@@ -3155,12 +3312,33 @@ macro_line|#if RTC_IRQ
 r_if
 c_cond
 (paren
+id|is_hpet_enabled
+c_func
+(paren
+)paren
+)paren
+(brace
+id|rtc_int_handler_ptr
+op_assign
+id|hpet_rtc_interrupt
+suffix:semicolon
+)brace
+r_else
+(brace
+id|rtc_int_handler_ptr
+op_assign
+id|rtc_interrupt
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|request_irq
 c_func
 (paren
 id|RTC_IRQ
 comma
-id|rtc_interrupt
+id|rtc_int_handler_ptr
 comma
 id|SA_INTERRUPT
 comma
@@ -3197,6 +3375,11 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+id|hpet_rtc_timer_init
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#endif /* __sparc__ vs. others */
 r_if
@@ -3534,6 +3717,21 @@ op_amp
 id|rtc_lock
 )paren
 suffix:semicolon
+id|rtc_freq
+op_assign
+l_int|1024
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hpet_set_periodic_freq
+c_func
+(paren
+id|rtc_freq
+)paren
+)paren
+(brace
 multiline_comment|/* Initialize periodic freq. to CMOS reset default, which is 1024Hz */
 id|CMOS_WRITE
 c_func
@@ -3555,16 +3753,13 @@ comma
 id|RTC_FREQ_SELECT
 )paren
 suffix:semicolon
+)brace
 id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|rtc_lock
 )paren
-suffix:semicolon
-id|rtc_freq
-op_assign
-l_int|1024
 suffix:semicolon
 id|no_irq2
 suffix:colon
@@ -3696,6 +3891,25 @@ op_amp
 id|rtc_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|hpet_rtc_dropped_irq
+c_func
+(paren
+)paren
+)paren
+(brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|rtc_lock
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* Just in case someone disabled the timer from behind our back... */
 r_if
 c_cond
@@ -4228,7 +4442,6 @@ id|uip
 suffix:semicolon
 )brace
 DECL|function|get_rtc_time
-r_static
 r_void
 id|get_rtc_time
 c_func
@@ -4574,6 +4787,26 @@ op_amp
 id|rtc_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|hpet_mask_rtc_irq_bit
+c_func
+(paren
+id|bit
+)paren
+)paren
+(brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|rtc_lock
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|val
 op_assign
 id|CMOS_READ
@@ -4635,6 +4868,26 @@ op_amp
 id|rtc_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|hpet_set_rtc_irq_bit
+c_func
+(paren
+id|bit
+)paren
+)paren
+(brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|rtc_lock
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|val
 op_assign
 id|CMOS_READ

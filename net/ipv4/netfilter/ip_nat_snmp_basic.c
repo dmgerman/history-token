@@ -11,6 +11,24 @@ macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;James Morris &lt;jmorris@intercode.com.au&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Basic SNMP Application Layer Gateway&quot;
+)paren
+suffix:semicolon
 DECL|macro|SNMP_PORT
 mdefine_line|#define SNMP_PORT 161
 DECL|macro|SNMP_TRAP_PORT
@@ -6079,18 +6097,6 @@ c_func
 id|debug
 comma
 l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;Basic SNMP Application Layer Gateway&quot;
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

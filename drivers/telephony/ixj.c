@@ -45,9 +45,9 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#include &quot;ixj.h&quot;
 DECL|macro|TYPE
-mdefine_line|#define TYPE(dev) (minor(dev) &gt;&gt; 4)
+mdefine_line|#define TYPE(inode) (iminor(inode) &gt;&gt; 4)
 DECL|macro|NUM
-mdefine_line|#define NUM(dev) (minor(dev) &amp; 0xf)
+mdefine_line|#define NUM(inode) (iminor(inode) &amp; 0xf)
 DECL|variable|ixjdebug
 r_static
 r_int
@@ -11322,7 +11322,7 @@ comma
 id|NUM
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 )paren
 suffix:semicolon
@@ -15878,7 +15878,7 @@ c_func
 id|NUM
 c_func
 (paren
-id|file_p-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|file_p-&gt;f_dentry-&gt;d_inode
 )paren
 )paren
 suffix:semicolon
@@ -16186,7 +16186,7 @@ c_func
 id|NUM
 c_func
 (paren
-id|file_p-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|file_p-&gt;f_dentry-&gt;d_inode
 )paren
 )paren
 suffix:semicolon
@@ -16617,7 +16617,7 @@ c_func
 id|NUM
 c_func
 (paren
-id|file_p-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|file_p-&gt;f_dentry-&gt;d_inode
 )paren
 )paren
 suffix:semicolon
@@ -24851,7 +24851,7 @@ c_func
 id|NUM
 c_func
 (paren
-id|file_p-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|file_p-&gt;f_dentry-&gt;d_inode
 )paren
 )paren
 suffix:semicolon
@@ -32768,10 +32768,10 @@ r_int
 r_int
 id|minor
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 suffix:semicolon
 r_int
@@ -32780,7 +32780,7 @@ op_assign
 id|NUM
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 suffix:semicolon
 id|IXJ
@@ -32793,7 +32793,7 @@ c_func
 id|NUM
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 )paren
 suffix:semicolon
@@ -35433,7 +35433,7 @@ c_func
 id|NUM
 c_func
 (paren
-id|file_p-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|file_p-&gt;f_dentry-&gt;d_inode
 )paren
 )paren
 suffix:semicolon

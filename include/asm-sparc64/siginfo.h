@@ -200,7 +200,7 @@ r_struct
 id|sigevent32
 (brace
 DECL|member|sigev_value
-id|sigval_t
+id|sigval_t32
 id|sigev_value
 suffix:semicolon
 DECL|member|sigev_signo

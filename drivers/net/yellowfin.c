@@ -4037,13 +4037,6 @@ id|yp-&gt;cur_tx
 op_mod
 id|TX_RING_SIZE
 suffix:semicolon
-id|yp-&gt;tx_skbuff
-(braket
-id|entry
-)braket
-op_assign
-id|skb
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4133,6 +4126,13 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+id|yp-&gt;tx_skbuff
+(braket
+id|entry
+)braket
+op_assign
+id|skb
+suffix:semicolon
 macro_line|#ifdef NO_TXSTATS
 id|yp-&gt;tx_ring
 (braket

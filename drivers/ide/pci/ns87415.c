@@ -594,21 +594,7 @@ comma
 l_int|64
 )paren
 suffix:semicolon
-macro_line|#ifdef __sparc_v9__
-(paren
-r_void
-)paren
-id|pci_write_config_byte
-c_func
-(paren
-id|dev
-comma
-id|PCI_CACHE_LINE_SIZE
-comma
-l_int|0x10
-)paren
-suffix:semicolon
-macro_line|#endif
+multiline_comment|/* FIXME: use pci_set_master() to ensure good latency timer value */
 multiline_comment|/*&n;&t; * We cannot probe for IRQ: both ports share common IRQ on INTA.&n;&t; * Also, leave IRQ masked during drive probing, to prevent infinite&n;&t; * interrupts from a potentially floating INTA..&n;&t; *&n;&t; * IRQs get unmasked in selectproc when drive is first used.&n;&t; */
 (paren
 r_void

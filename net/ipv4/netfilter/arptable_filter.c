@@ -1,6 +1,24 @@
 multiline_comment|/*&n; * Filtering ARP tables module.&n; *&n; * Copyright (C) 2002 David S. Miller (davem@redhat.com)&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/netfilter_arp/arp_tables.h&gt;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David S. Miller &lt;davem@redhat.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;arptables filter table&quot;
+)paren
+suffix:semicolon
 DECL|macro|FILTER_VALID_HOOKS
 mdefine_line|#define FILTER_VALID_HOOKS ((1 &lt;&lt; NF_ARP_IN) | (1 &lt;&lt; NF_ARP_OUT) | &bslash;&n;&t;&t;&t;   (1 &lt;&lt; NF_ARP_FORWARD))
 multiline_comment|/* Standard entry. */
@@ -1044,12 +1062,6 @@ id|module_exit
 c_func
 (paren
 id|fini
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

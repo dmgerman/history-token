@@ -3204,6 +3204,289 @@ DECL|macro|SCHIZO_PCIAFSR_MEM
 mdefine_line|#define SCHIZO_PCIAFSR_MEM&t;0x0000000020000000UL /* Schizo/Tomatillo */
 DECL|macro|SCHIZO_PCIAFSR_IO
 mdefine_line|#define SCHIZO_PCIAFSR_IO&t;0x0000000010000000UL /* Schizo/Tomatillo */
+DECL|macro|SCHIZO_PCI_CTRL
+mdefine_line|#define SCHIZO_PCI_CTRL&t;&t;(0x2000UL)
+DECL|macro|SCHIZO_PCICTRL_BUS_UNUS
+mdefine_line|#define SCHIZO_PCICTRL_BUS_UNUS&t;(1UL &lt;&lt; 63UL) /* Safari */
+DECL|macro|SCHIZO_PCICTRL_ARB_PRIO
+mdefine_line|#define SCHIZO_PCICTRL_ARB_PRIO (0x1ff &lt;&lt; 52UL) /* Tomatillo */
+DECL|macro|SCHIZO_PCICTRL_ESLCK
+mdefine_line|#define SCHIZO_PCICTRL_ESLCK&t;(1UL &lt;&lt; 51UL) /* Safari */
+DECL|macro|SCHIZO_PCICTRL_ERRSLOT
+mdefine_line|#define SCHIZO_PCICTRL_ERRSLOT&t;(7UL &lt;&lt; 48UL) /* Safari */
+DECL|macro|SCHIZO_PCICTRL_TTO_ERR
+mdefine_line|#define SCHIZO_PCICTRL_TTO_ERR&t;(1UL &lt;&lt; 38UL) /* Safari/Tomatillo */
+DECL|macro|SCHIZO_PCICTRL_RTRY_ERR
+mdefine_line|#define SCHIZO_PCICTRL_RTRY_ERR&t;(1UL &lt;&lt; 37UL) /* Safari/Tomatillo */
+DECL|macro|SCHIZO_PCICTRL_DTO_ERR
+mdefine_line|#define SCHIZO_PCICTRL_DTO_ERR&t;(1UL &lt;&lt; 36UL) /* Safari/Tomatillo */
+DECL|macro|SCHIZO_PCICTRL_SBH_ERR
+mdefine_line|#define SCHIZO_PCICTRL_SBH_ERR&t;(1UL &lt;&lt; 35UL) /* Safari */
+DECL|macro|SCHIZO_PCICTRL_SERR
+mdefine_line|#define SCHIZO_PCICTRL_SERR&t;(1UL &lt;&lt; 34UL) /* Safari/Tomatillo */
+DECL|macro|SCHIZO_PCICTRL_PCISPD
+mdefine_line|#define SCHIZO_PCICTRL_PCISPD&t;(1UL &lt;&lt; 33UL) /* Safari */
+DECL|macro|SCHIZO_PCICTRL_MRM_PREF
+mdefine_line|#define SCHIZO_PCICTRL_MRM_PREF&t;(1UL &lt;&lt; 28UL) /* Tomatillo */
+DECL|macro|SCHIZO_PCICTRL_RDO_PREF
+mdefine_line|#define SCHIZO_PCICTRL_RDO_PREF&t;(1UL &lt;&lt; 27UL) /* Tomatillo */
+DECL|macro|SCHIZO_PCICTRL_RDL_PREF
+mdefine_line|#define SCHIZO_PCICTRL_RDL_PREF&t;(1UL &lt;&lt; 26UL) /* Tomatillo */
+DECL|macro|SCHIZO_PCICTRL_PTO
+mdefine_line|#define SCHIZO_PCICTRL_PTO&t;(3UL &lt;&lt; 24UL) /* Safari/Tomatillo */
+DECL|macro|SCHIZO_PCICTRL_PTO_SHIFT
+mdefine_line|#define SCHIZO_PCICTRL_PTO_SHIFT 24UL
+DECL|macro|SCHIZO_PCICTRL_TRWSW
+mdefine_line|#define SCHIZO_PCICTRL_TRWSW&t;(7UL &lt;&lt; 21UL) /* Tomatillo */
+DECL|macro|SCHIZO_PCICTRL_F_TGT_A
+mdefine_line|#define SCHIZO_PCICTRL_F_TGT_A&t;(1UL &lt;&lt; 20UL) /* Tomatillo */
+DECL|macro|SCHIZO_PCICTRL_S_DTO_INT
+mdefine_line|#define SCHIZO_PCICTRL_S_DTO_INT (1UL &lt;&lt; 19UL) /* Safari */
+DECL|macro|SCHIZO_PCICTRL_F_TGT_RT
+mdefine_line|#define SCHIZO_PCICTRL_F_TGT_RT&t;(1UL &lt;&lt; 19UL) /* Tomatillo */
+DECL|macro|SCHIZO_PCICTRL_SBH_INT
+mdefine_line|#define SCHIZO_PCICTRL_SBH_INT&t;(1UL &lt;&lt; 18UL) /* Safari */
+DECL|macro|SCHIZO_PCICTRL_T_DTO_INT
+mdefine_line|#define SCHIZO_PCICTRL_T_DTO_INT (1UL &lt;&lt; 18UL) /* Tomatillo */
+DECL|macro|SCHIZO_PCICTRL_EEN
+mdefine_line|#define SCHIZO_PCICTRL_EEN&t;(1UL &lt;&lt; 17UL) /* Safari/Tomatillo */
+DECL|macro|SCHIZO_PCICTRL_PARK
+mdefine_line|#define SCHIZO_PCICTRL_PARK&t;(1UL &lt;&lt; 16UL) /* Safari/Tomatillo */
+DECL|macro|SCHIZO_PCICTRL_PCIRST
+mdefine_line|#define SCHIZO_PCICTRL_PCIRST&t;(1UL &lt;&lt;  8UL) /* Safari */
+DECL|macro|SCHIZO_PCICTRL_ARB_S
+mdefine_line|#define SCHIZO_PCICTRL_ARB_S&t;(0x3fUL &lt;&lt; 0UL) /* Safari */
+DECL|macro|SCHIZO_PCICTRL_ARB_T
+mdefine_line|#define SCHIZO_PCICTRL_ARB_T&t;(0xffUL &lt;&lt; 0UL) /* Tomatillo */
+DECL|function|schizo_pcierr_intr_other
+r_static
+id|irqreturn_t
+id|schizo_pcierr_intr_other
+c_func
+(paren
+r_struct
+id|pci_pbm_info
+op_star
+id|pbm
+)paren
+(brace
+r_int
+r_int
+id|csr_reg
+comma
+id|csr
+comma
+id|csr_error_bits
+suffix:semicolon
+id|irqreturn_t
+id|ret
+op_assign
+id|IRQ_NONE
+suffix:semicolon
+id|u16
+id|stat
+suffix:semicolon
+id|csr_reg
+op_assign
+id|pbm-&gt;pbm_regs
+op_plus
+id|SCHIZO_PCI_CTRL
+suffix:semicolon
+id|csr
+op_assign
+id|schizo_read
+c_func
+(paren
+id|csr_reg
+)paren
+suffix:semicolon
+id|csr_error_bits
+op_assign
+id|csr
+op_amp
+(paren
+id|SCHIZO_PCICTRL_BUS_UNUS
+op_or
+id|SCHIZO_PCICTRL_TTO_ERR
+op_or
+id|SCHIZO_PCICTRL_RTRY_ERR
+op_or
+id|SCHIZO_PCICTRL_DTO_ERR
+op_or
+id|SCHIZO_PCICTRL_SBH_ERR
+op_or
+id|SCHIZO_PCICTRL_SERR
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|csr_error_bits
+)paren
+(brace
+multiline_comment|/* Clear the errors.  */
+id|schizo_write
+c_func
+(paren
+id|csr_reg
+comma
+id|csr
+)paren
+suffix:semicolon
+multiline_comment|/* Log &squot;em.  */
+r_if
+c_cond
+(paren
+id|csr_error_bits
+op_amp
+id|SCHIZO_PCICTRL_BUS_UNUS
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s: Bus unusable error asserted.&bslash;n&quot;
+comma
+id|pbm-&gt;name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|csr_error_bits
+op_amp
+id|SCHIZO_PCICTRL_TTO_ERR
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s: PCI TRDY# timeout error asserted.&bslash;n&quot;
+comma
+id|pbm-&gt;name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|csr_error_bits
+op_amp
+id|SCHIZO_PCICTRL_RTRY_ERR
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s: PCI excessive retry error asserted.&bslash;n&quot;
+comma
+id|pbm-&gt;name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|csr_error_bits
+op_amp
+id|SCHIZO_PCICTRL_DTO_ERR
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s: PCI discard timeout error asserted.&bslash;n&quot;
+comma
+id|pbm-&gt;name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|csr_error_bits
+op_amp
+id|SCHIZO_PCICTRL_SBH_ERR
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s: PCI streaming byte hole error asserted.&bslash;n&quot;
+comma
+id|pbm-&gt;name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|csr_error_bits
+op_amp
+id|SCHIZO_PCICTRL_SERR
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s: PCI SERR signal asserted.&bslash;n&quot;
+comma
+id|pbm-&gt;name
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|IRQ_HANDLED
+suffix:semicolon
+)brace
+id|pci_read_config_word
+c_func
+(paren
+id|pbm-&gt;pci_bus-&gt;self
+comma
+id|PCI_STATUS
+comma
+op_amp
+id|stat
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+(paren
+id|PCI_STATUS_PARITY
+op_or
+id|PCI_STATUS_SIG_TARGET_ABORT
+op_or
+id|PCI_STATUS_REC_TARGET_ABORT
+op_or
+id|PCI_STATUS_REC_MASTER_ABORT
+op_or
+id|PCI_STATUS_SIG_SYSTEM_ERROR
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s: PCI bus error, PCI_STATUS[%04x]&bslash;n&quot;
+comma
+id|pbm-&gt;name
+comma
+id|stat
+)paren
+suffix:semicolon
+id|pci_write_config_word
+c_func
+(paren
+id|pbm-&gt;pci_bus-&gt;self
+comma
+id|PCI_STATUS
+comma
+l_int|0xffff
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|IRQ_HANDLED
+suffix:semicolon
+)brace
+r_return
+id|ret
+suffix:semicolon
+)brace
 DECL|function|schizo_pcierr_intr
 r_static
 id|irqreturn_t
@@ -3327,7 +3610,11 @@ op_logical_neg
 id|error_bits
 )paren
 r_return
-id|IRQ_NONE
+id|schizo_pcierr_intr_other
+c_func
+(paren
+id|pbm
+)paren
 suffix:semicolon
 id|schizo_write
 c_func
@@ -3917,60 +4204,6 @@ DECL|macro|SCHIZO_PCIERR_B_INO
 mdefine_line|#define SCHIZO_PCIERR_B_INO&t;0x33 /* PBM B PCI bus error */
 DECL|macro|SCHIZO_SERR_INO
 mdefine_line|#define SCHIZO_SERR_INO&t;&t;0x34 /* Safari interface error */
-DECL|macro|SCHIZO_PCI_CTRL
-mdefine_line|#define SCHIZO_PCI_CTRL&t;&t;(0x2000UL)
-DECL|macro|SCHIZO_PCICTRL_BUS_UNUS
-mdefine_line|#define SCHIZO_PCICTRL_BUS_UNUS&t;(1UL &lt;&lt; 63UL) /* Safari */
-DECL|macro|SCHIZO_PCICTRL_ARB_PRIO
-mdefine_line|#define SCHIZO_PCICTRL_ARB_PRIO (0x1ff &lt;&lt; 52UL) /* Tomatillo */
-DECL|macro|SCHIZO_PCICTRL_ESLCK
-mdefine_line|#define SCHIZO_PCICTRL_ESLCK&t;(1UL &lt;&lt; 51UL) /* Safari */
-DECL|macro|SCHIZO_PCICTRL_ERRSLOT
-mdefine_line|#define SCHIZO_PCICTRL_ERRSLOT&t;(7UL &lt;&lt; 48UL) /* Safari */
-DECL|macro|SCHIZO_PCICTRL_TTO_ERR
-mdefine_line|#define SCHIZO_PCICTRL_TTO_ERR&t;(1UL &lt;&lt; 38UL) /* Safari/Tomatillo */
-DECL|macro|SCHIZO_PCICTRL_RTRY_ERR
-mdefine_line|#define SCHIZO_PCICTRL_RTRY_ERR&t;(1UL &lt;&lt; 37UL) /* Safari/Tomatillo */
-DECL|macro|SCHIZO_PCICTRL_DTO_ERR
-mdefine_line|#define SCHIZO_PCICTRL_DTO_ERR&t;(1UL &lt;&lt; 36UL) /* Safari/Tomatillo */
-DECL|macro|SCHIZO_PCICTRL_SBH_ERR
-mdefine_line|#define SCHIZO_PCICTRL_SBH_ERR&t;(1UL &lt;&lt; 35UL) /* Safari */
-DECL|macro|SCHIZO_PCICTRL_SERR
-mdefine_line|#define SCHIZO_PCICTRL_SERR&t;(1UL &lt;&lt; 34UL) /* Safari/Tomatillo */
-DECL|macro|SCHIZO_PCICTRL_PCISPD
-mdefine_line|#define SCHIZO_PCICTRL_PCISPD&t;(1UL &lt;&lt; 33UL) /* Safari */
-DECL|macro|SCHIZO_PCICTRL_MRM_PREF
-mdefine_line|#define SCHIZO_PCICTRL_MRM_PREF&t;(1UL &lt;&lt; 28UL) /* Tomatillo */
-DECL|macro|SCHIZO_PCICTRL_RDO_PREF
-mdefine_line|#define SCHIZO_PCICTRL_RDO_PREF&t;(1UL &lt;&lt; 27UL) /* Tomatillo */
-DECL|macro|SCHIZO_PCICTRL_RDL_PREF
-mdefine_line|#define SCHIZO_PCICTRL_RDL_PREF&t;(1UL &lt;&lt; 26UL) /* Tomatillo */
-DECL|macro|SCHIZO_PCICTRL_PTO
-mdefine_line|#define SCHIZO_PCICTRL_PTO&t;(3UL &lt;&lt; 24UL) /* Safari/Tomatillo */
-DECL|macro|SCHIZO_PCICTRL_PTO_SHIFT
-mdefine_line|#define SCHIZO_PCICTRL_PTO_SHIFT 24UL
-DECL|macro|SCHIZO_PCICTRL_TRWSW
-mdefine_line|#define SCHIZO_PCICTRL_TRWSW&t;(7UL &lt;&lt; 21UL) /* Tomatillo */
-DECL|macro|SCHIZO_PCICTRL_F_TGT_A
-mdefine_line|#define SCHIZO_PCICTRL_F_TGT_A&t;(1UL &lt;&lt; 20UL) /* Tomatillo */
-DECL|macro|SCHIZO_PCICTRL_S_DTO_INT
-mdefine_line|#define SCHIZO_PCICTRL_S_DTO_INT (1UL &lt;&lt; 19UL) /* Safari */
-DECL|macro|SCHIZO_PCICTRL_F_TGT_RT
-mdefine_line|#define SCHIZO_PCICTRL_F_TGT_RT&t;(1UL &lt;&lt; 19UL) /* Tomatillo */
-DECL|macro|SCHIZO_PCICTRL_SBH_INT
-mdefine_line|#define SCHIZO_PCICTRL_SBH_INT&t;(1UL &lt;&lt; 18UL) /* Safari */
-DECL|macro|SCHIZO_PCICTRL_T_DTO_INT
-mdefine_line|#define SCHIZO_PCICTRL_T_DTO_INT (1UL &lt;&lt; 18UL) /* Tomatillo */
-DECL|macro|SCHIZO_PCICTRL_EEN
-mdefine_line|#define SCHIZO_PCICTRL_EEN&t;(1UL &lt;&lt; 17UL) /* Safari/Tomatillo */
-DECL|macro|SCHIZO_PCICTRL_PARK
-mdefine_line|#define SCHIZO_PCICTRL_PARK&t;(1UL &lt;&lt; 16UL) /* Safari/Tomatillo */
-DECL|macro|SCHIZO_PCICTRL_PCIRST
-mdefine_line|#define SCHIZO_PCICTRL_PCIRST&t;(1UL &lt;&lt;  8UL) /* Safari */
-DECL|macro|SCHIZO_PCICTRL_ARB_S
-mdefine_line|#define SCHIZO_PCICTRL_ARB_S&t;(0x3fUL &lt;&lt; 0UL) /* Safari */
-DECL|macro|SCHIZO_PCICTRL_ARB_T
-mdefine_line|#define SCHIZO_PCICTRL_ARB_T&t;(0xffUL &lt;&lt; 0UL) /* Tomatillo */
 DECL|function|pbm_for_ino
 r_struct
 id|pci_pbm_info

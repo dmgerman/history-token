@@ -5783,7 +5783,7 @@ l_string|&quot;Unexpected ftape interrupt&quot;
 )paren
 suffix:semicolon
 )brace
-r_return
+id|TRACE_EXIT
 id|IRQ_RETVAL
 c_func
 (paren

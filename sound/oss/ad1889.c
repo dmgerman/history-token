@@ -3484,10 +3484,10 @@ multiline_comment|/* check minor; only support /dev/dsp atm */
 r_if
 c_cond
 (paren
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_ne
 l_int|3
@@ -3629,10 +3629,10 @@ c_cond
 (paren
 id|ad1889_dev-&gt;ac97_codec-&gt;dev_mixer
 op_ne
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 )paren
 r_return

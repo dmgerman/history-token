@@ -13,14 +13,6 @@ DECL|macro|SIIMAGE_BUFFERED_TASKFILE
 macro_line|#undef SIIMAGE_BUFFERED_TASKFILE
 DECL|macro|SIIMAGE_LARGE_DMA
 macro_line|#undef SIIMAGE_LARGE_DMA
-macro_line|#if 0
-r_typedef
-r_struct
-id|ide_io_ops_s
-id|siimage_iops
-(brace
-)brace
-macro_line|#endif
 DECL|macro|SII_DEBUG
 mdefine_line|#define SII_DEBUG 0
 macro_line|#if SII_DEBUG
@@ -30,16 +22,6 @@ macro_line|#else
 DECL|macro|siiprintk
 mdefine_line|#define siiprintk(x...)
 macro_line|#endif
-DECL|macro|ADJREG
-mdefine_line|#define ADJREG(B,R)&t;((B)|(R)|((hwif-&gt;channel)&lt;&lt;(4+(2*(hwif-&gt;mmio)))))
-DECL|macro|SELREG
-mdefine_line|#define SELREG(R)&t;ADJREG((0xA0),(R))
-DECL|macro|SELADDR
-mdefine_line|#define SELADDR(R)&t;((((unsigned long)hwif-&gt;hwif_data)*(hwif-&gt;mmio))|SELREG((R)))
-DECL|macro|HWIFADDR
-mdefine_line|#define HWIFADDR(R)&t;((((unsigned long)hwif-&gt;hwif_data)*(hwif-&gt;mmio))|(R))
-DECL|macro|DEVADDR
-mdefine_line|#define DEVADDR(R)&t;(((unsigned long) pci_get_drvdata(dev))|(R))
 macro_line|#if defined(DISPLAY_SIIMAGE_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -266,6 +248,86 @@ dot
 id|name
 op_assign
 l_string|&quot;SiI3112 Serial ATA&quot;
+comma
+dot
+id|init_chipset
+op_assign
+id|init_chipset_siimage
+comma
+dot
+id|init_iops
+op_assign
+id|init_iops_siimage
+comma
+dot
+id|init_hwif
+op_assign
+id|init_hwif_siimage
+comma
+dot
+id|init_dma
+op_assign
+id|init_dma_siimage
+comma
+dot
+id|channels
+op_assign
+l_int|2
+comma
+dot
+id|autodma
+op_assign
+id|AUTODMA
+comma
+dot
+id|enablebits
+op_assign
+(brace
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+comma
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+)brace
+comma
+dot
+id|bootable
+op_assign
+id|ON_BOARD
+comma
+dot
+id|extra
+op_assign
+l_int|0
+comma
+)brace
+comma
+(brace
+multiline_comment|/* 2 */
+dot
+id|vendor
+op_assign
+id|PCI_VENDOR_ID_CMD
+comma
+dot
+id|device
+op_assign
+id|PCI_DEVICE_ID_SII_1210SA
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Adaptec AAR-1210SA&quot;
 comma
 dot
 id|init_chipset

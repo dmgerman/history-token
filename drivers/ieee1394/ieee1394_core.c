@@ -4929,10 +4929,10 @@ multiline_comment|/* shift away lower four bits of the minor&n;&t;   to get the 
 id|blocknum
 op_assign
 (paren
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_rshift
 l_int|4
@@ -5345,6 +5345,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|hpsb_make_writepacket
+)paren
+suffix:semicolon
+DECL|variable|hpsb_make_streampacket
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hpsb_make_streampacket
 )paren
 suffix:semicolon
 DECL|variable|hpsb_make_lockpacket

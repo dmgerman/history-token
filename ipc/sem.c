@@ -2768,7 +2768,7 @@ id|val
 suffix:semicolon
 id|curr-&gt;sempid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|sma-&gt;sem_ctime
 op_assign
@@ -4589,7 +4589,7 @@ id|nsops
 comma
 id|un
 comma
-id|current-&gt;pid
+id|current-&gt;tgid
 )paren
 suffix:semicolon
 r_if
@@ -4621,7 +4621,7 @@ id|un
 suffix:semicolon
 id|queue.pid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|queue.id
 op_assign
@@ -5171,7 +5171,7 @@ suffix:semicolon
 multiline_comment|/* shouldn&squot;t happen */
 id|sem-&gt;sempid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 )brace
 )brace

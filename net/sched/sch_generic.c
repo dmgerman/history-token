@@ -232,13 +232,11 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|netdev_rx_stat
-(braket
-id|smp_processor_id
+id|__get_cpu_var
 c_func
 (paren
+id|netdev_rx_stat
 )paren
-)braket
 dot
 id|cpu_collision
 op_increment

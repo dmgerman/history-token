@@ -516,14 +516,6 @@ id|wait_queue_head_t
 id|wq
 suffix:semicolon
 multiline_comment|/* Processes waiting */
-multiline_comment|/* proc interface */
-DECL|member|proc_entry
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_entry
-suffix:semicolon
-multiline_comment|/* /proc/se401/videoX */
 DECL|member|nullpackets
 r_int
 id|nullpackets

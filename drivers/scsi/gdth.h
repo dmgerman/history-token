@@ -4,10 +4,6 @@ mdefine_line|#define _GDTH_H
 multiline_comment|/*&n; * Header file for the GDT Disk Array/Storage RAID controllers driver for Linux&n; * &n; * gdth.h Copyright (C) 1995-02 ICP vortex, an Intel company, Achim Leubner&n; * See gdth.c for further informations and &n; * below for supported controller types&n; *&n; * &lt;achim.leubner@intel.com&gt;&n; *&n; * $Id: gdth.h,v 1.48 2003/02/27 14:58:22 achim Exp $&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#ifndef NULL
-DECL|macro|NULL
-mdefine_line|#define NULL 0
-macro_line|#endif
 macro_line|#ifndef TRUE
 DECL|macro|TRUE
 mdefine_line|#define TRUE 1

@@ -325,7 +325,7 @@ id|drives
 l_int|0
 )braket
 suffix:semicolon
-id|drive-&gt;capacity
+id|drive-&gt;capacity64
 op_assign
 id|drive-&gt;cyl
 op_star

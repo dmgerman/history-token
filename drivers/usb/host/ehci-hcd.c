@@ -23,7 +23,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &quot;../core/hcd.h&quot;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -468,10 +467,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|ehci-&gt;hcd.state
-op_assign
-id|USB_STATE_READY
-suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#include &quot;ehci-hub.c&quot;
@@ -1439,7 +1434,7 @@ id|ehci-&gt;reboot_notifier
 suffix:semicolon
 id|ehci-&gt;hcd.state
 op_assign
-id|USB_STATE_READY
+id|USB_STATE_RUNNING
 suffix:semicolon
 id|writel
 (paren
@@ -1971,7 +1966,7 @@ singleline_comment|// restore pci FLADJ value
 singleline_comment|// khubd and drivers will set HC running, if needed;
 id|hcd-&gt;state
 op_assign
-id|USB_STATE_READY
+id|USB_STATE_RUNNING
 suffix:semicolon
 singleline_comment|// FIXME Philips/Intel/... etc don&squot;t really have a &quot;READY&quot;
 singleline_comment|// state ... turn on CMD_RUN too
@@ -3211,6 +3206,7 @@ multiline_comment|/* EHCI spec says PCI is required. */
 multiline_comment|/* PCI driver selection metadata; PCI hotplugging uses this */
 DECL|variable|pci_ids
 r_static
+r_const
 r_struct
 id|pci_device_id
 id|pci_ids
@@ -3220,9 +3216,9 @@ op_assign
 (brace
 (brace
 multiline_comment|/* handle any USB 2.0 EHCI controller */
-dot
-r_class
-op_assign
+id|PCI_DEVICE_CLASS
+c_func
+(paren
 (paren
 (paren
 id|PCI_CLASS_SERIAL_USB
@@ -3233,11 +3229,9 @@ op_or
 l_int|0x20
 )paren
 comma
-dot
-id|class_mask
-op_assign
 op_complement
 l_int|0
+)paren
 comma
 dot
 id|driver_data
@@ -3248,27 +3242,6 @@ r_int
 )paren
 op_amp
 id|ehci_driver
-comma
-multiline_comment|/* no matter who makes it */
-dot
-id|vendor
-op_assign
-id|PCI_ANY_ID
-comma
-dot
-id|device
-op_assign
-id|PCI_ANY_ID
-comma
-dot
-id|subvendor
-op_assign
-id|PCI_ANY_ID
-comma
-dot
-id|subdevice
-op_assign
-id|PCI_ANY_ID
 comma
 )brace
 comma

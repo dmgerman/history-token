@@ -637,6 +637,10 @@ c_cond
 id|c-&gt;x86
 OG
 l_int|6
+op_logical_and
+id|c-&gt;x86_vendor
+op_eq
+id|X86_VENDOR_INTEL
 )paren
 id|pci_cache_line_size
 op_assign

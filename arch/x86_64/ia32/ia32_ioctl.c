@@ -3013,18 +3013,14 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|macro|REF_SYMBOL
-mdefine_line|#define REF_SYMBOL(handler) if (0) (void)handler;
-DECL|macro|HANDLE_IOCTL2
-mdefine_line|#define HANDLE_IOCTL2(cmd,handler) REF_SYMBOL(handler);  asm volatile(&quot;.quad %P0, &quot; #handler &quot;,0&quot;::&quot;i&quot; (cmd)); 
 DECL|macro|HANDLE_IOCTL
-mdefine_line|#define HANDLE_IOCTL(cmd,handler) HANDLE_IOCTL2(cmd,handler)
+mdefine_line|#define HANDLE_IOCTL(cmd,handler) { (cmd), (ioctl_trans_handler_t)(handler), NULL },
 DECL|macro|COMPATIBLE_IOCTL
 mdefine_line|#define COMPATIBLE_IOCTL(cmd) HANDLE_IOCTL(cmd,sys_ioctl)
 DECL|macro|IOCTL_TABLE_START
-mdefine_line|#define IOCTL_TABLE_START void ioctl_dummy(void) { asm volatile(&quot;&bslash;n.global ioctl_start&bslash;nioctl_start:&bslash;n&bslash;t&quot; );
+mdefine_line|#define IOCTL_TABLE_START struct ioctl_trans ioctl_start[] = {
 DECL|macro|IOCTL_TABLE_END
-mdefine_line|#define IOCTL_TABLE_END  asm volatile(&quot;&bslash;n.global ioctl_end;&bslash;nioctl_end:&bslash;n&quot;); }
+mdefine_line|#define IOCTL_TABLE_END  };
 id|IOCTL_TABLE_START
 macro_line|#include &lt;linux/compat_ioctl.h&gt;
 DECL|macro|DECLARES
@@ -3428,4 +3424,13 @@ comma
 id|mtrr_ioctl32
 )paren
 id|IOCTL_TABLE_END
+r_int
+id|ioctl_table_size
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|ioctl_start
+)paren
+suffix:semicolon
 eof

@@ -17,7 +17,6 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
 multiline_comment|/* #define DEBUG */
 multiline_comment|/* remove comments for DEBUG messages */
 multiline_comment|/*&n; * The special i/o-port that HT-6560B uses to configuration:&n; *    bit0 (0x01): &quot;1&quot; selects secondary interface&n; *    bit2 (0x04): &quot;1&quot; enables FIFO function&n; *    bit5 (0x20): &quot;1&quot; enables prefetched data read function  (???)&n; *&n; * The special i/o-port that HT-6560A uses to configuration:&n; *    bit0 (0x01): &quot;1&quot; selects secondary interface&n; *    bit1 (0x02): &quot;1&quot; enables prefetched data read function&n; *    bit2 (0x04): &quot;0&quot; enables multi-master system&t;      (?)&n; *    bit3 (0x08): &quot;1&quot; 3 cycle time, &quot;0&quot; 2 cycle time&t;      (?)&n; */

@@ -15,9 +15,11 @@ macro_line|#if defined(CONFIG_SYSVIPC)
 macro_line|#include &quot;util.h&quot;
 multiline_comment|/**&n; *&t;ipc_init&t;-&t;initialise IPC subsystem&n; *&n; *&t;The various system5 IPC resources (semaphores, messages and shared&n; *&t;memory are initialised&n; */
 DECL|function|ipc_init
-r_void
+r_static
+r_int
 id|__init
 id|ipc_init
+c_func
 (paren
 r_void
 )paren
@@ -38,8 +40,16 @@ c_func
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
+DECL|variable|ipc_init
+id|__initcall
+c_func
+(paren
+id|ipc_init
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;ipc_init_ids&t;&t;-&t;initialise IPC identifiers&n; *&t;@ids: Identifier set&n; *&t;@size: Number of identifiers&n; *&n; *&t;Given a size for the ipc identifier range (limited below IPCMNI)&n; *&t;set up the sequence range to use then allocate and initialise the&n; *&t;array itself. &n; */
 DECL|function|ipc_init_ids
 r_void

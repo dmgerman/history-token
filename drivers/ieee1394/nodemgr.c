@@ -5835,6 +5835,11 @@ c_func
 id|ne
 )paren
 suffix:semicolon
+multiline_comment|/* With all the ud&squot;s gone, mark the generation current,&n;&t;&t; * this way the probe will succeed. */
+id|ne-&gt;generation
+op_assign
+id|generation
+suffix:semicolon
 multiline_comment|/* This will re-register our unitdir&squot;s */
 id|nodemgr_process_config_rom
 (paren
@@ -5846,7 +5851,7 @@ id|busoptions
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Since that&squot;s done, we can declare this record current */
+r_else
 id|ne-&gt;generation
 op_assign
 id|generation

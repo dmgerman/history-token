@@ -303,6 +303,8 @@ r_struct
 id|sock
 op_star
 id|sk
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|hlist_node
@@ -385,6 +387,8 @@ r_struct
 id|sock
 op_star
 id|sk
+op_assign
+l_int|NULL
 comma
 op_star
 id|sk1

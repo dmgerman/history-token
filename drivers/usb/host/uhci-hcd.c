@@ -8834,7 +8834,7 @@ id|USBCMD
 suffix:semicolon
 id|uhci-&gt;hcd.state
 op_assign
-id|USB_STATE_READY
+id|USB_STATE_RUNNING
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * De-allocate all resources..&n; */
@@ -8997,11 +8997,62 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+DECL|function|uhci_reset
+r_static
+r_int
+id|uhci_reset
+c_func
+(paren
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+)paren
+(brace
+r_struct
+id|uhci_hcd
+op_star
+id|uhci
+op_assign
+id|hcd_to_uhci
+c_func
+(paren
+id|hcd
+)paren
+suffix:semicolon
+id|uhci-&gt;io_addr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|hcd-&gt;regs
+suffix:semicolon
+multiline_comment|/* Maybe kick BIOS off this hardware.  Then reset, so we won&squot;t get&n;&t; * interrupts from any previous setup.&n;&t; */
+id|pci_write_config_word
+c_func
+(paren
+id|hcd-&gt;pdev
+comma
+id|USBLEGSUP
+comma
+id|USBLEGSUP_DEFAULT
+)paren
+suffix:semicolon
+id|reset_hc
+c_func
+(paren
+id|uhci
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Allocate a frame list, and then setup the skeleton&n; *&n; * The hardware doesn&squot;t really know any difference&n; * in the queues, but the order does matter for the&n; * protocols higher up. The order is:&n; *&n; *  - any isochronous events handled before any&n; *    of the queues. We don&squot;t do that here, because&n; *    we&squot;ll create the actual TD entries on demand.&n; *  - The first queue is the interrupt queue.&n; *  - The second queue is the control queue, split into low and high speed&n; *  - The third queue is bulk queue.&n; *  - The fourth queue is the bandwidth reclamation queue, which loops back&n; *    to the high speed control queue.&n; */
 DECL|function|uhci_start
 r_static
 r_int
-id|__devinit
 id|uhci_start
 c_func
 (paren
@@ -9051,14 +9102,6 @@ op_star
 id|ent
 suffix:semicolon
 macro_line|#endif
-id|uhci-&gt;io_addr
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|hcd-&gt;regs
-suffix:semicolon
 id|io_size
 op_assign
 id|pci_resource_len
@@ -9126,14 +9169,6 @@ op_assign
 id|ent
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Reset here so we don&squot;t get any interrupts from an old setup */
-multiline_comment|/*  or broken setup */
-id|reset_hc
-c_func
-(paren
-id|uhci
-)paren
-suffix:semicolon
 id|uhci-&gt;fsbr
 op_assign
 l_int|0
@@ -9831,17 +9866,6 @@ c_func
 id|hcd
 )paren
 suffix:semicolon
-multiline_comment|/* disable legacy emulation */
-id|pci_write_config_word
-c_func
-(paren
-id|hcd-&gt;pdev
-comma
-id|USBLEGSUP
-comma
-id|USBLEGSUP_DEFAULT
-)paren
-suffix:semicolon
 id|udev-&gt;speed
 op_assign
 id|USB_SPEED_FULL
@@ -10204,7 +10228,7 @@ suffix:semicolon
 )brace
 id|uhci-&gt;hcd.state
 op_assign
-id|USB_STATE_READY
+id|USB_STATE_RUNNING
 suffix:semicolon
 r_return
 l_int|0
@@ -10361,6 +10385,11 @@ id|HCD_USB11
 comma
 multiline_comment|/* Basic lifecycle operations */
 dot
+id|reset
+op_assign
+id|uhci_reset
+comma
+dot
 id|start
 op_assign
 id|uhci_start
@@ -10431,9 +10460,9 @@ op_assign
 (brace
 (brace
 multiline_comment|/* handle any USB UHCI controller */
-dot
-r_class
-op_assign
+id|PCI_DEVICE_CLASS
+c_func
+(paren
 (paren
 (paren
 id|PCI_CLASS_SERIAL_USB
@@ -10444,11 +10473,9 @@ op_or
 l_int|0x00
 )paren
 comma
-dot
-id|class_mask
-op_assign
 op_complement
 l_int|0
+)paren
 comma
 dot
 id|driver_data
@@ -10459,27 +10486,6 @@ r_int
 )paren
 op_amp
 id|uhci_driver
-comma
-multiline_comment|/* no matter who makes it */
-dot
-id|vendor
-op_assign
-id|PCI_ANY_ID
-comma
-dot
-id|device
-op_assign
-id|PCI_ANY_ID
-comma
-dot
-id|subvendor
-op_assign
-id|PCI_ANY_ID
-comma
-dot
-id|subdevice
-op_assign
-id|PCI_ANY_ID
 comma
 )brace
 comma

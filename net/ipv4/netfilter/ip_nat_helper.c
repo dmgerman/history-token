@@ -1,5 +1,4 @@
 multiline_comment|/* ip_nat_mangle.c - generic support functions for NAT helpers &n; *&n; * (C) 2000-2002 by Harald Welte &lt;laforge@gnumonks.org&gt;&n; *&n; * distributed under the terms of GNU GPL&n; *&n; * &t;14 Jan 2002 Harald Welte &lt;laforge@gnumonks.org&gt;:&n; *&t;&t;- add support for SACK adjustment &n; *&t;14 Mar 2002 Harald Welte &lt;laforge@gnumonks.org&gt;:&n; *&t;&t;- merge SACK support into newnat API&n; *&t;16 Aug 2002 Brian J. Murrell &lt;netfilter@interlinx.bc.ca&gt;:&n; *&t;&t;- make ip_nat_resize_packet more generic (TCP and UDP)&n; *&t;&t;- add ip_nat_mangle_udp_packet&n; */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;

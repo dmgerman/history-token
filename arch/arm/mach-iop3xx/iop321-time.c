@@ -59,9 +59,9 @@ r_return
 id|usec
 suffix:semicolon
 )brace
-DECL|function|iop321_timer_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|iop321_timer_interrupt
 id|iop321_timer_interrupt
 c_func
 (paren
@@ -113,6 +113,9 @@ c_func
 (paren
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_extern

@@ -48,11 +48,16 @@ macro_line|#include &lt;linux/netfilter_ipv4/ip_nat_core.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;Dual BSD/GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;ipfwadm backwards compatibility layer&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Implement IP packet firewall&n; */

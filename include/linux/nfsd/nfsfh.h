@@ -874,10 +874,10 @@ c_func
 (paren
 id|u32
 )paren
-id|major
+id|imajor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 )paren
 suffix:semicolon
@@ -892,10 +892,10 @@ c_func
 (paren
 id|u32
 )paren
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 )paren
 suffix:semicolon

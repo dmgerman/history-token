@@ -251,7 +251,7 @@ mdefine_line|#define HANDLE_IOCTL(cmd,handler)&t;{ (cmd), (ioctl32_handler_t)(ha
 DECL|macro|IOCTL_TABLE_START
 mdefine_line|#define IOCTL_TABLE_START &bslash;&n;&t;struct ioctl_trans ioctl_start[] = {
 DECL|macro|IOCTL_TABLE_END
-mdefine_line|#define IOCTL_TABLE_END &bslash;&n;&t;}; struct ioctl_trans ioctl_end[0];
+mdefine_line|#define IOCTL_TABLE_END &bslash;&n;&t;};
 id|IOCTL_TABLE_START
 id|HANDLE_IOCTL
 c_func
@@ -272,4 +272,13 @@ mdefine_line|#define DECLARES
 macro_line|#include &quot;compat_ioctl.c&quot;
 macro_line|#include &lt;linux/compat_ioctl.h&gt;
 id|IOCTL_TABLE_END
+r_int
+id|ioctl_table_size
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|ioctl_start
+)paren
+suffix:semicolon
 eof

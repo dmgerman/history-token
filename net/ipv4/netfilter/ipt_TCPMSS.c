@@ -5,6 +5,24 @@ macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ipt_TCPMSS.h&gt;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Marc Boucher &lt;marc@mbsi.ca&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;iptables TCP MSS modification module&quot;
+)paren
+suffix:semicolon
 macro_line|#if 0
 mdefine_line|#define DEBUGP printk
 macro_line|#else
@@ -1305,12 +1323,6 @@ id|module_exit
 c_func
 (paren
 id|fini
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

@@ -311,7 +311,7 @@ OL
 id|ACPI_MAX_PLATFORM_INTERRUPTS
 )paren
 (brace
-multiline_comment|/* correctable platform error interrupt */
+multiline_comment|/* corrected platform error interrupt */
 id|vector
 op_assign
 id|platform_intr_list

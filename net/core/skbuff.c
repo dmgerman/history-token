@@ -675,7 +675,7 @@ c_func
 id|skb-&gt;nfct
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 id|nf_bridge_put
 c_func
 (paren
@@ -916,7 +916,7 @@ id|nf_debug
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 id|C
 c_func
 (paren
@@ -1198,7 +1198,7 @@ op_assign
 id|old-&gt;nf_debug
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 r_new
 op_member_access_from_pointer
 id|nf_bridge

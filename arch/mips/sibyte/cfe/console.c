@@ -9,11 +9,6 @@ r_extern
 r_int
 id|cfe_cons_handle
 suffix:semicolon
-DECL|variable|cfe_consdev
-r_static
-id|kdev_t
-id|cfe_consdev
-suffix:semicolon
 DECL|function|cfe_console_write
 r_static
 r_void
@@ -282,7 +277,6 @@ c_func
 l_string|&quot;u0cn&quot;
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;&t;cfe_consdev = MKDEV(TTY_MAJOR, SB1250_DUART_MINOR_BASE + 0);
 )brace
 r_else
 r_if
@@ -304,7 +298,6 @@ c_func
 l_string|&quot;u1cn&quot;
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;&t;cfe_consdev = MKDEV(TTY_MAJOR, SB1250_DUART_MINOR_BASE + 1);
 macro_line|#endif
 macro_line|#ifdef CONFIG_VGA_CONSOLE
 )brace
@@ -328,7 +321,6 @@ c_func
 l_string|&quot;pccn&quot;
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;&t;cfe_consdev = MKDEV(TTY_MAJOR, 0);
 macro_line|#endif
 )brace
 r_else
@@ -348,28 +340,34 @@ id|console
 id|sb1250_cfe_cons
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;cfe&quot;
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|cfe_console_write
 comma
+dot
 id|device
-suffix:colon
+op_assign
 id|cfe_console_device
 comma
+dot
 id|setup
-suffix:colon
+op_assign
 id|cfe_console_setup
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 id|CON_PRINTBUFFER
 comma
+dot
 id|index
-suffix:colon
+op_assign
 op_minus
 l_int|1
 comma

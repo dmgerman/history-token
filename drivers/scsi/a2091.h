@@ -66,10 +66,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-macro_line|#ifndef NULL
-DECL|macro|NULL
-mdefine_line|#define NULL 0
-macro_line|#endif
 macro_line|#ifndef CMD_PER_LUN
 DECL|macro|CMD_PER_LUN
 mdefine_line|#define CMD_PER_LUN 2

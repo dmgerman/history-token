@@ -14,136 +14,192 @@ id|tw_aen_string
 )braket
 op_assign
 (brace
+(braket
+l_int|0x000
+)braket
+op_assign
 l_string|&quot;INFO: AEN queue empty&quot;
 comma
-singleline_comment|// 0x000
+(braket
+l_int|0x001
+)braket
+op_assign
 l_string|&quot;INFO: Soft reset occurred&quot;
 comma
-singleline_comment|// 0x001
+(braket
+l_int|0x002
+)braket
+op_assign
 l_string|&quot;ERROR: Unit degraded: Unit #&quot;
 comma
-singleline_comment|// 0x002
+(braket
+l_int|0x003
+)braket
+op_assign
 l_string|&quot;ERROR: Controller error&quot;
 comma
-singleline_comment|// 0x003 
+(braket
+l_int|0x004
+)braket
+op_assign
 l_string|&quot;ERROR: Rebuild failed: Unit #&quot;
 comma
-singleline_comment|// 0x004
+(braket
+l_int|0x005
+)braket
+op_assign
 l_string|&quot;INFO: Rebuild complete: Unit #&quot;
 comma
-singleline_comment|// 0x005
+(braket
+l_int|0x006
+)braket
+op_assign
 l_string|&quot;ERROR: Incomplete unit detected: Unit #&quot;
 comma
-singleline_comment|// 0x006
+(braket
+l_int|0x007
+)braket
+op_assign
 l_string|&quot;INFO: Initialization complete: Unit #&quot;
 comma
-singleline_comment|// 0x007
+(braket
+l_int|0x008
+)braket
+op_assign
 l_string|&quot;WARNING: Unclean shutdown detected: Unit #&quot;
 comma
-singleline_comment|// 0x008
+(braket
+l_int|0x009
+)braket
+op_assign
 l_string|&quot;WARNING: ATA port timeout: Port #&quot;
 comma
-singleline_comment|// 0x009
+(braket
+l_int|0x00A
+)braket
+op_assign
 l_string|&quot;ERROR: Drive error: Port #&quot;
 comma
-singleline_comment|// 0x00A
+(braket
+l_int|0x00B
+)braket
+op_assign
 l_string|&quot;INFO: Rebuild started: Unit #&quot;
 comma
-singleline_comment|// 0x00B 
+(braket
+l_int|0x00C
+)braket
+op_assign
 l_string|&quot;INFO: Initialization started: Unit #&quot;
 comma
-singleline_comment|// 0x00C
+(braket
+l_int|0x00D
+)braket
+op_assign
 l_string|&quot;ERROR: Logical unit deleted: Unit #&quot;
 comma
-singleline_comment|// 0x00D
-l_int|NULL
-comma
-singleline_comment|// 0x00E unused
+(braket
+l_int|0x00F
+)braket
+op_assign
 l_string|&quot;WARNING: SMART threshold exceeded: Port #&quot;
 comma
-singleline_comment|// 0x00F
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-singleline_comment|// 0x010-0x020 unused
+(braket
+l_int|0x021
+)braket
+op_assign
 l_string|&quot;WARNING: ATA UDMA downgrade: Port #&quot;
 comma
-singleline_comment|// 0x021
+(braket
+l_int|0x021
+)braket
+op_assign
 l_string|&quot;WARNING: ATA UDMA upgrade: Port #&quot;
 comma
-singleline_comment|// 0x022
+(braket
+l_int|0x023
+)braket
+op_assign
 l_string|&quot;WARNING: Sector repair occurred: Port #&quot;
 comma
-singleline_comment|// 0x023
+(braket
+l_int|0x024
+)braket
+op_assign
 l_string|&quot;ERROR: SBUF integrity check failure&quot;
 comma
-singleline_comment|// 0x024
+(braket
+l_int|0x025
+)braket
+op_assign
 l_string|&quot;ERROR: Lost cached write: Port #&quot;
 comma
-singleline_comment|// 0x025
+(braket
+l_int|0x026
+)braket
+op_assign
 l_string|&quot;ERROR: Drive ECC error detected: Port #&quot;
 comma
-singleline_comment|// 0x026
+(braket
+l_int|0x027
+)braket
+op_assign
 l_string|&quot;ERROR: DCB checksum error: Port #&quot;
 comma
-singleline_comment|// 0x027
+(braket
+l_int|0x028
+)braket
+op_assign
 l_string|&quot;ERROR: DCB unsupported version: Port #&quot;
 comma
-singleline_comment|// 0x028
+(braket
+l_int|0x029
+)braket
+op_assign
 l_string|&quot;INFO: Verify started: Unit #&quot;
 comma
-singleline_comment|// 0x029
+(braket
+l_int|0x02A
+)braket
+op_assign
 l_string|&quot;ERROR: Verify failed: Port #&quot;
 comma
-singleline_comment|// 0x02A
+(braket
+l_int|0x02B
+)braket
+op_assign
 l_string|&quot;INFO: Verify complete: Unit #&quot;
 comma
-singleline_comment|// 0x02B
+(braket
+l_int|0x02C
+)braket
+op_assign
 l_string|&quot;WARNING: Overwrote bad sector during rebuild: Port #&quot;
 comma
-singleline_comment|//0x02C
+(braket
+l_int|0x02D
+)braket
+op_assign
 l_string|&quot;ERROR: Encountered bad sector during rebuild: Port #&quot;
 comma
-singleline_comment|//0x02D
+(braket
+l_int|0x02E
+)braket
+op_assign
 l_string|&quot;ERROR: Replacement drive is too small: Port #&quot;
 comma
-singleline_comment|//0x02E
+(braket
+l_int|0x02F
+)braket
+op_assign
 l_string|&quot;WARNING: Verify error: Unit not previously initialized: Unit #&quot;
 comma
-singleline_comment|//0x02F
+(braket
+l_int|0x030
+)braket
+op_assign
 l_string|&quot;ERROR: Drive not supported: Port #&quot;
-singleline_comment|// 0x030
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n;   Sense key lookup table&n;   Format: ESDC/flags,SenseKey,AdditionalSenseCode,AdditionalSenseCodeQualifier&n;*/

@@ -109,16 +109,19 @@ id|partition_info
 op_assign
 (brace
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;EP7312 Nand Flash&quot;
 comma
+dot
 id|offset
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|size
-suffix:colon
+op_assign
 l_int|8
 op_star
 l_int|1024

@@ -5742,8 +5742,7 @@ id|err
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|err
 suffix:semicolon
 )brace
 r_return

@@ -91,10 +91,6 @@ DECL|macro|UDWORD
 mdefine_line|#define UDWORD  unsigned long
 DECL|macro|U32
 mdefine_line|#define U32     u32
-macro_line|#ifndef NULL
-DECL|macro|NULL
-mdefine_line|#define NULL     0&t;&t;/* zero          */
-macro_line|#endif
 macro_line|#ifndef FAILURE
 DECL|macro|FAILURE
 mdefine_line|#define FAILURE  (-1)

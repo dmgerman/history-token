@@ -15,7 +15,6 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
 multiline_comment|/* port addresses for auto-detection */
 DECL|macro|ALI_NUM_PORTS
 mdefine_line|#define ALI_NUM_PORTS 4

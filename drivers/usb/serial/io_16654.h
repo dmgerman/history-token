@@ -1,4 +1,4 @@
-multiline_comment|/************************************************************************&n; *&n; *&t;16654.H&t;&t;Definitions for 16C654 UART used on EdgePorts&n; *&n; *&t;Copyright (c) 1998 Inside Out Networks, Inc.&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; ************************************************************************/
+multiline_comment|/************************************************************************&n; *&n; *&t;16654.H&t;&t;Definitions for 16C654 UART used on EdgePorts&n; *&n; *&t;Copyright (C) 1998 Inside Out Networks, Inc.&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; ************************************************************************/
 macro_line|#if !defined(_16654_H)
 DECL|macro|_16654_H
 mdefine_line|#define&t;_16654_H
@@ -274,29 +274,29 @@ singleline_comment|// Tx Fifo and shift register empty
 DECL|macro|LSR_FIFO_ERR
 mdefine_line|#define LSR_FIFO_ERR&t;&t;0x80&t;
 singleline_comment|// Rx Fifo contains at least 1 erred char
-DECL|macro|MSR_DELTA_CTS
-mdefine_line|#define MSR_DELTA_CTS&t;&t;0x01&t;
+DECL|macro|EDGEPORT_MSR_DELTA_CTS
+mdefine_line|#define EDGEPORT_MSR_DELTA_CTS&t;0x01&t;
 singleline_comment|// CTS changed from last read
-DECL|macro|MSR_DELTA_DSR
-mdefine_line|#define MSR_DELTA_DSR&t;&t;0x02&t;
+DECL|macro|EDGEPORT_MSR_DELTA_DSR
+mdefine_line|#define EDGEPORT_MSR_DELTA_DSR&t;0x02&t;
 singleline_comment|// DSR changed from last read
-DECL|macro|MSR_DELTA_RI
-mdefine_line|#define MSR_DELTA_RI&t;&t;0x04&t;
+DECL|macro|EDGEPORT_MSR_DELTA_RI
+mdefine_line|#define EDGEPORT_MSR_DELTA_RI&t;0x04&t;
 singleline_comment|// RI  changed from 0 -&gt; 1
-DECL|macro|MSR_DELTA_CD
-mdefine_line|#define MSR_DELTA_CD&t;&t;0x08&t;
+DECL|macro|EDGEPORT_MSR_DELTA_CD
+mdefine_line|#define EDGEPORT_MSR_DELTA_CD&t;0x08&t;
 singleline_comment|// CD  changed from last read
-DECL|macro|MSR_CTS
-mdefine_line|#define MSR_CTS&t;&t;&t;0x10&t;
+DECL|macro|EDGEPORT_MSR_CTS
+mdefine_line|#define EDGEPORT_MSR_CTS&t;0x10&t;
 singleline_comment|// Current state of CTS
-DECL|macro|MSR_DSR
-mdefine_line|#define MSR_DSR&t;&t;&t;0x20&t;
+DECL|macro|EDGEPORT_MSR_DSR
+mdefine_line|#define EDGEPORT_MSR_DSR&t;0x20&t;
 singleline_comment|// Current state of DSR
-DECL|macro|MSR_RI
-mdefine_line|#define MSR_RI&t;&t;&t;0x40&t;
+DECL|macro|EDGEPORT_MSR_RI
+mdefine_line|#define EDGEPORT_MSR_RI&t;&t;0x40&t;
 singleline_comment|// Current state of RI
-DECL|macro|MSR_CD
-mdefine_line|#define MSR_CD&t;&t;&t;0x80&t;
+DECL|macro|EDGEPORT_MSR_CD
+mdefine_line|#define EDGEPORT_MSR_CD&t;&t;0x80&t;
 singleline_comment|// Current state of CD
 singleline_comment|//&t;Tx&t;&t;Rx
 singleline_comment|//-------------------------------

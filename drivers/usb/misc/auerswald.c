@@ -4798,10 +4798,10 @@ id|file
 r_int
 id|dtindex
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 suffix:semicolon
 id|pauerswald_t

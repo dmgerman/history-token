@@ -55,6 +55,17 @@ id|flowi
 id|fl
 suffix:semicolon
 multiline_comment|/* flowi template for xmit */
+DECL|member|dst_cache
+r_struct
+id|dst_entry
+op_star
+id|dst_cache
+suffix:semicolon
+multiline_comment|/* cached dst */
+DECL|member|dst_cookie
+id|u32
+id|dst_cookie
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Tunnel encapsulation limit destination sub-option */

@@ -15029,11 +15029,13 @@ id|proc_name
 op_assign
 l_string|&quot;advansys&quot;
 comma
+macro_line|#ifdef CONFIG_PROC_FS
 dot
 id|proc_info
 op_assign
 id|advansys_proc_info
 comma
+macro_line|#endif
 dot
 id|name
 op_assign

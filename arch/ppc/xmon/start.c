@@ -953,14 +953,6 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|pmu_poll
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|cuda_poll
 c_func
 (paren
@@ -985,7 +977,7 @@ id|sys_ctrler
 op_eq
 id|SYS_CTRLER_PMU
 )paren
-id|pmu_poll
+id|pmu_poll_adb
 c_func
 (paren
 )paren

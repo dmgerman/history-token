@@ -457,6 +457,7 @@ id|retval
 suffix:semicolon
 )brace
 )brace
+singleline_comment|// hcd zeroed everything
 id|hcd-&gt;regs
 op_assign
 id|base
@@ -576,6 +577,10 @@ r_goto
 id|clean_3
 suffix:semicolon
 )brace
+id|hcd-&gt;state
+op_assign
+id|USB_STATE_HALT
+suffix:semicolon
 id|pci_set_master
 (paren
 id|dev
@@ -791,6 +796,14 @@ id|hub
 op_assign
 id|hcd-&gt;self.root_hub
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|HCD_IS_RUNNING
+(paren
+id|hcd-&gt;state
+)paren
+)paren
 id|hcd-&gt;state
 op_assign
 id|USB_STATE_QUIESCING
@@ -988,6 +1001,10 @@ id|hcd-&gt;pci_state
 )paren
 suffix:semicolon
 multiline_comment|/* driver may want to disable DMA etc */
+id|hcd-&gt;state
+op_assign
+id|USB_STATE_QUIESCING
+suffix:semicolon
 id|retval
 op_assign
 id|hcd-&gt;driver-&gt;suspend
@@ -996,10 +1013,6 @@ id|hcd
 comma
 id|state
 )paren
-suffix:semicolon
-id|hcd-&gt;state
-op_assign
-id|USB_STATE_SUSPENDED
 suffix:semicolon
 )brace
 id|pci_set_power_state

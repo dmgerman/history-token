@@ -179,6 +179,16 @@ l_int|0
 suffix:semicolon
 )brace
 r_extern
+r_void
+(paren
+op_star
+id|wait_timer_tick
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|get_maxlvt
 c_func

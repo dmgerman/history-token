@@ -3258,7 +3258,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(dev)&t;(minor(dev) &amp; 0x7F)
+mdefine_line|#define DEVICE_NR(inode)&t;(iminor(inode) &amp; 0x7F)
 DECL|function|pt_open
 r_static
 r_int
@@ -3282,7 +3282,7 @@ op_assign
 id|DEVICE_NR
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 suffix:semicolon
 r_if
@@ -3388,10 +3388,10 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_amp
 l_int|128
@@ -3480,7 +3480,7 @@ op_assign
 id|DEVICE_NR
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 suffix:semicolon
 r_if
@@ -3631,7 +3631,7 @@ op_assign
 id|DEVICE_NR
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 suffix:semicolon
 r_if
@@ -3741,7 +3741,7 @@ op_assign
 id|DEVICE_NR
 c_func
 (paren
-id|ino-&gt;i_rdev
+id|ino
 )paren
 suffix:semicolon
 r_char
@@ -4268,7 +4268,7 @@ op_assign
 id|DEVICE_NR
 c_func
 (paren
-id|ino-&gt;i_rdev
+id|ino
 )paren
 suffix:semicolon
 r_char

@@ -2622,10 +2622,10 @@ suffix:semicolon
 multiline_comment|/* CHECK whether this is sensible - in the case that dsp0 could be opened&n;&t;  O_RDONLY and dsp1 could be opened O_WRONLY&n;&t;*/
 id|dmasound.minDev
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_amp
 l_int|0x0f

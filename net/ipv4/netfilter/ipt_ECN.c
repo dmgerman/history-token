@@ -12,6 +12,18 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Harald Welte &lt;laforge@netfilter.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;iptables ECN modification module&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* set ECT codepoint from IP header.&n; * &t;return 0 if there was an error. */
 r_static
 r_inline

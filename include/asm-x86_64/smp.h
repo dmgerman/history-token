@@ -40,10 +40,6 @@ r_void
 suffix:semicolon
 r_extern
 id|cpumask_t
-id|phys_cpu_present_map
-suffix:semicolon
-r_extern
-id|cpumask_t
 id|cpu_online_map
 suffix:semicolon
 r_extern

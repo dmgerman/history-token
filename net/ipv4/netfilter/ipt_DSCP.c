@@ -8,13 +8,13 @@ macro_line|#include &lt;linux/netfilter_ipv4/ipt_DSCP.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Harald Welte &lt;laforge@gnumonks.org&gt;&quot;
+l_string|&quot;Harald Welte &lt;laforge@netfilter.org&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;IP tables DSCP modification module&quot;
+l_string|&quot;iptables DSCP modification module&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
