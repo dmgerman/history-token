@@ -57,6 +57,8 @@ DECL|macro|cpu_possible
 mdefine_line|#define cpu_possible(cpu)&t;&t;({ BUG_ON((cpu) != 0); 1; })
 DECL|macro|cpu_present
 mdefine_line|#define cpu_present(cpu)&t;&t;({ BUG_ON((cpu) != 0); 1; })
+DECL|macro|for_each_cpu_mask
+mdefine_line|#define for_each_cpu_mask(cpu, mask) for (cpu = 0; cpu &lt; 1; cpu++)
 DECL|macro|for_each_cpu
 mdefine_line|#define for_each_cpu(cpu) for (cpu = 0; cpu &lt; 1; cpu++)
 DECL|macro|for_each_online_cpu
