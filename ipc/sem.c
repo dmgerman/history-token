@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;util.h&quot;
 DECL|macro|sem_lock
@@ -164,6 +165,9 @@ id|semflg
 r_int
 id|id
 suffix:semicolon
+r_int
+id|retval
+suffix:semicolon
 r_struct
 id|sem_array
 op_star
@@ -257,6 +261,38 @@ id|sma-&gt;sem_perm.key
 op_assign
 id|key
 suffix:semicolon
+id|sma-&gt;sem_perm.security
+op_assign
+l_int|NULL
+suffix:semicolon
+id|retval
+op_assign
+id|security_ops
+op_member_access_from_pointer
+id|sem_alloc_security
+c_func
+(paren
+id|sma
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+(brace
+id|ipc_free
+c_func
+(paren
+id|sma
+comma
+id|size
+)paren
+suffix:semicolon
+r_return
+id|retval
+suffix:semicolon
+)brace
 id|id
 op_assign
 id|ipc_addid
@@ -280,6 +316,14 @@ op_minus
 l_int|1
 )paren
 (brace
+id|security_ops
+op_member_access_from_pointer
+id|sem_free_security
+c_func
+(paren
+id|sma
+)paren
+suffix:semicolon
 id|ipc_free
 c_func
 (paren
@@ -1510,6 +1554,14 @@ r_sizeof
 (paren
 r_struct
 id|sem
+)paren
+suffix:semicolon
+id|security_ops
+op_member_access_from_pointer
+id|sem_free_security
+c_func
+(paren
+id|sma
 )paren
 suffix:semicolon
 id|ipc_free

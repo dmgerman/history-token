@@ -105,6 +105,11 @@ r_int
 r_int
 id|seq
 suffix:semicolon
+DECL|member|security
+r_void
+op_star
+id|security
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */

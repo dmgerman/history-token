@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;util.h&quot;
 multiline_comment|/* sysctl: */
@@ -240,6 +241,9 @@ id|msgflg
 r_int
 id|id
 suffix:semicolon
+r_int
+id|retval
+suffix:semicolon
 r_struct
 id|msg_queue
 op_star
@@ -285,6 +289,36 @@ id|msq-&gt;q_perm.key
 op_assign
 id|key
 suffix:semicolon
+id|msq-&gt;q_perm.security
+op_assign
+l_int|NULL
+suffix:semicolon
+id|retval
+op_assign
+id|security_ops
+op_member_access_from_pointer
+id|msg_queue_alloc_security
+c_func
+(paren
+id|msq
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|msq
+)paren
+suffix:semicolon
+r_return
+id|retval
+suffix:semicolon
+)brace
 id|id
 op_assign
 id|ipc_addid
@@ -308,6 +342,14 @@ op_minus
 l_int|1
 )paren
 (brace
+id|security_ops
+op_member_access_from_pointer
+id|msg_queue_free_security
+c_func
+(paren
+id|msq
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -1184,6 +1226,14 @@ id|msq-&gt;q_cbytes
 comma
 op_amp
 id|msg_bytes
+)paren
+suffix:semicolon
+id|security_ops
+op_member_access_from_pointer
+id|msg_queue_free_security
+c_func
+(paren
+id|msq
 )paren
 suffix:semicolon
 id|kfree

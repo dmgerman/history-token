@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#if defined(CONFIG_SYSVIPC)
 macro_line|#include &quot;util.h&quot;
 multiline_comment|/**&n; *&t;ipc_init&t;-&t;initialise IPC subsystem&n; *&n; *&t;The various system5 IPC resources (semaphores, messages and shared&n; *&t;memory are initialised&n; */
@@ -884,7 +885,15 @@ op_minus
 l_int|1
 suffix:semicolon
 r_return
-l_int|0
+id|security_ops
+op_member_access_from_pointer
+id|ipc_permission
+c_func
+(paren
+id|ipcp
+comma
+id|flag
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Functions to convert between the kern_ipc_perm structure and the&n; * old/new ipc_perm structures&n; */

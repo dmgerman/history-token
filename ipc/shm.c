@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/shmem_fs.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;util.h&quot;
 DECL|macro|shm_flags
@@ -382,6 +383,14 @@ id|fput
 id|shp-&gt;shm_file
 )paren
 suffix:semicolon
+id|security_ops
+op_member_access_from_pointer
+id|shm_free_security
+c_func
+(paren
+id|shp
+)paren
+suffix:semicolon
 id|kfree
 (paren
 id|shp
@@ -679,6 +688,36 @@ op_amp
 id|S_IRWXUGO
 )paren
 suffix:semicolon
+id|shp-&gt;shm_perm.security
+op_assign
+l_int|NULL
+suffix:semicolon
+id|error
+op_assign
+id|security_ops
+op_member_access_from_pointer
+id|shm_alloc_security
+c_func
+(paren
+id|shp
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|shp
+)paren
+suffix:semicolon
+r_return
+id|error
+suffix:semicolon
+)brace
 id|sprintf
 (paren
 id|name
@@ -817,6 +856,14 @@ id|file
 suffix:semicolon
 id|no_file
 suffix:colon
+id|security_ops
+op_member_access_from_pointer
+id|shm_free_security
+c_func
+(paren
+id|shp
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
