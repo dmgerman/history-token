@@ -1059,7 +1059,7 @@ r_return
 id|next
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * bond_dev_queue_xmit - Prepare skb for xmit.&n; * &n; * @bond: bond device that got this skb for tx.&n; * @skb: hw accel VLAN tagged skb to transmit&n; * @slave_dev: slave that is supposed to xmit this skbuff&n; * &n; * When the bond gets an skb to tarnsmit that is&n; * already hardware accelerated VLAN tagged, and it&n; * needs to relay this skb to a slave that is not&n; * hw accel capable, the skb needs to be &quot;unaccelerated&quot;,&n; * i.e. strip the hwaccel tag and re-insert it as part&n; * of the payload.&n; * &n; * Assumption - once a VLAN device is created over the bond device, all&n; * packets are going to be hardware accelerated VLAN tagged since the IP&n; * binding is done over the VLAN device&n; */
+multiline_comment|/**&n; * bond_dev_queue_xmit - Prepare skb for xmit.&n; * &n; * @bond: bond device that got this skb for tx.&n; * @skb: hw accel VLAN tagged skb to transmit&n; * @slave_dev: slave that is supposed to xmit this skbuff&n; * &n; * When the bond gets an skb to transmit that is&n; * already hardware accelerated VLAN tagged, and it&n; * needs to relay this skb to a slave that is not&n; * hw accel capable, the skb needs to be &quot;unaccelerated&quot;,&n; * i.e. strip the hwaccel tag and re-insert it as part&n; * of the payload.&n; */
 DECL|function|bond_dev_queue_xmit
 r_int
 id|bond_dev_queue_xmit
@@ -1085,9 +1085,6 @@ r_int
 r_int
 id|vlan_id
 suffix:semicolon
-r_int
-id|res
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1105,10 +1102,7 @@ id|slave_dev-&gt;features
 op_amp
 id|NETIF_F_HW_VLAN_TX
 )paren
-)paren
-(brace
-id|res
-op_assign
+op_logical_and
 id|vlan_get_tag
 c_func
 (paren
@@ -1117,18 +1111,10 @@ comma
 op_amp
 id|vlan_id
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|res
+op_eq
+l_int|0
 )paren
 (brace
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 id|skb-&gt;dev
 op_assign
 id|slave_dev
