@@ -4,8 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/genhd.h&gt;&t;/* For gendisk stuff. */
-macro_line|#include &lt;linux/blkdev.h&gt;&t;/* Fox get_hardsect_size. */
+macro_line|#include &lt;linux/blkdev.h&gt;&t;/* For bdev_hardsect_size(). */
 macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;sysctl.h&quot;
 multiline_comment|/* Number of mounted file systems which have compression enabled. */
@@ -6026,13 +6025,6 @@ r_int
 id|silent
 )paren
 (brace
-r_extern
-r_int
-op_star
-id|blksize_size
-(braket
-)braket
-suffix:semicolon
 id|ntfs_volume
 op_star
 id|vol
@@ -6048,14 +6040,7 @@ op_star
 id|tmp_ino
 suffix:semicolon
 r_int
-id|old_blocksize
-comma
 id|result
-suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|sb-&gt;s_dev
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -6305,10 +6290,10 @@ multiline_comment|/*&n;&t; * TODO: Fail safety check. In the future we should re
 r_if
 c_cond
 (paren
-id|get_hardsect_size
+id|bdev_hardsect_size
 c_func
 (paren
-id|dev
+id|sb-&gt;s_bdev
 )paren
 OG
 id|NTFS_BLOCK_SIZE
@@ -6333,42 +6318,6 @@ id|err_out_now
 suffix:semicolon
 )brace
 multiline_comment|/* Setup the device access block size to NTFS_BLOCK_SIZE. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|blksize_size
-(braket
-id|major
-c_func
-(paren
-id|dev
-)paren
-)braket
-)paren
-id|old_blocksize
-op_assign
-id|BLOCK_SIZE
-suffix:semicolon
-r_else
-id|old_blocksize
-op_assign
-id|blksize_size
-(braket
-id|major
-c_func
-(paren
-id|dev
-)paren
-)braket
-(braket
-id|minor
-c_func
-(paren
-id|dev
-)paren
-)braket
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7023,12 +6972,13 @@ suffix:semicolon
 id|set_blk_size_err_out_now
 suffix:colon
 multiline_comment|/* Errors at this stage are irrelevant. */
+singleline_comment|// FIXME: This should be done in fs/super.c::get_sb_bdev() itself! (AIA)
 id|sb_set_blocksize
 c_func
 (paren
 id|sb
 comma
-id|old_blocksize
+id|sb-&gt;s_old_blocksize
 )paren
 suffix:semicolon
 id|err_out_now

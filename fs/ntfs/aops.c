@@ -555,15 +555,9 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|bh-&gt;b_dev
+id|bh-&gt;b_bdev
 op_assign
-id|VFS_I
-c_func
-(paren
-id|ni
-)paren
-op_member_access_from_pointer
-id|i_dev
+id|vol-&gt;sb-&gt;s_bdev
 suffix:semicolon
 multiline_comment|/* Is the block within the allowed limits? */
 r_if
@@ -1871,9 +1865,9 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|bh-&gt;b_dev
+id|bh-&gt;b_bdev
 op_assign
-id|vol-&gt;mft_ino-&gt;i_dev
+id|vol-&gt;sb-&gt;s_bdev
 suffix:semicolon
 multiline_comment|/* Is the block within the allowed limits? */
 r_if
@@ -2959,15 +2953,9 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|bh-&gt;b_dev
+id|bh-&gt;b_bdev
 op_assign
-id|VFS_I
-c_func
-(paren
-id|ni
-)paren
-op_member_access_from_pointer
-id|i_dev
+id|vol-&gt;sb-&gt;s_bdev
 suffix:semicolon
 multiline_comment|/* Is the block within the allowed limits? */
 r_if
