@@ -315,7 +315,8 @@ r_int
 op_star
 id|res
 suffix:semicolon
-id|va_copy
+multiline_comment|/* Some old gccs recognize __va_copy, but not va_copy */
+id|__va_copy
 c_func
 (paren
 id|args
