@@ -137,9 +137,7 @@ mdefine_line|#define MIN_RXD                       80
 DECL|macro|MAX_82544_RXD
 mdefine_line|#define MAX_82544_RXD               4096
 DECL|macro|DEFAULT_RDTR
-mdefine_line|#define DEFAULT_RDTR                 128
-DECL|macro|DEFAULT_RDTR_82544
-mdefine_line|#define DEFAULT_RDTR_82544             0
+mdefine_line|#define DEFAULT_RDTR                   0
 DECL|macro|MAX_RXDELAY
 mdefine_line|#define MAX_RXDELAY               0xFFFF
 DECL|macro|MIN_RXDELAY
@@ -1051,17 +1049,6 @@ c_func
 id|DEFAULT_RDTR
 )paren
 suffix:semicolon
-r_char
-op_star
-id|rdtr_82544
-op_assign
-l_string|&quot;using default of &quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|DEFAULT_RDTR_82544
-)paren
-suffix:semicolon
 r_struct
 id|e1000_option
 id|opt
@@ -1095,32 +1082,13 @@ id|MAX_RXDELAY
 )brace
 )brace
 suffix:semicolon
-id|e1000_mac_type
-id|mac_type
-op_assign
-id|adapter-&gt;hw.mac_type
-suffix:semicolon
 id|opt.def
 op_assign
-id|mac_type
-OG
-id|e1000_82544
-ques
-c_cond
 id|DEFAULT_RDTR
-suffix:colon
-l_int|0
 suffix:semicolon
 id|opt.err
 op_assign
-id|mac_type
-OG
-id|e1000_82544
-ques
-c_cond
 id|rdtr
-suffix:colon
-id|rdtr_82544
 suffix:semicolon
 id|adapter-&gt;rx_int_delay
 op_assign
