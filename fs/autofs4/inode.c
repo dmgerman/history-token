@@ -296,12 +296,14 @@ id|super_operations
 id|autofs4_sops
 op_assign
 (brace
+dot
 id|put_super
-suffix:colon
+op_assign
 id|autofs4_put_super
 comma
+dot
 id|statfs
-suffix:colon
+op_assign
 id|simple_statfs
 comma
 )brace
