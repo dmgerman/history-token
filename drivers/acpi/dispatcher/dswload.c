@@ -7,6 +7,9 @@ macro_line|#include &lt;acpi/acdispat.h&gt;
 macro_line|#include &lt;acpi/acinterp.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
 macro_line|#include &lt;acpi/acevents.h&gt;
+macro_line|#ifdef _ACPI_ASL_COMPILER
+macro_line|#include &lt;acpi/acdisasm.h&gt;
+macro_line|#endif
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
 id|ACPI_MODULE_NAME
@@ -328,6 +331,27 @@ id|status
 )paren
 )paren
 (brace
+macro_line|#ifdef _ACPI_ASL_COMPILER
+r_if
+c_cond
+(paren
+id|status
+op_eq
+id|AE_NOT_FOUND
+)paren
+(brace
+id|acpi_dm_add_to_external_list
+(paren
+id|path
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|AE_OK
+suffix:semicolon
+)brace
+r_else
+(brace
 id|ACPI_REPORT_NSERROR
 (paren
 id|path
@@ -335,6 +359,16 @@ comma
 id|status
 )paren
 suffix:semicolon
+)brace
+macro_line|#else
+id|ACPI_REPORT_NSERROR
+(paren
+id|path
+comma
+id|status
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 (paren
 id|status
@@ -1240,6 +1274,22 @@ id|status
 )paren
 )paren
 (brace
+macro_line|#ifdef _ACPI_ASL_COMPILER
+r_if
+c_cond
+(paren
+id|status
+op_eq
+id|AE_NOT_FOUND
+)paren
+(brace
+id|status
+op_assign
+id|AE_OK
+suffix:semicolon
+)brace
+r_else
+(brace
 id|ACPI_REPORT_NSERROR
 (paren
 id|buffer_ptr
@@ -1247,6 +1297,16 @@ comma
 id|status
 )paren
 suffix:semicolon
+)brace
+macro_line|#else
+id|ACPI_REPORT_NSERROR
+(paren
+id|buffer_ptr
+comma
+id|status
+)paren
+suffix:semicolon
+macro_line|#endif
 id|return_ACPI_STATUS
 (paren
 id|status

@@ -353,7 +353,7 @@ comma
 l_string|&quot;_S4D&quot;
 )brace
 suffix:semicolon
-multiline_comment|/* Strings supported by the _OSI predefined (internal) method */
+multiline_comment|/*&n; * Strings supported by the _OSI predefined (internal) method.&n; * When adding strings, be sure to update ACPI_NUM_OSI_STRINGS.&n; */
 DECL|variable|acpi_gbl_valid_osi_strings
 r_const
 r_char
@@ -371,6 +371,16 @@ comma
 l_string|&quot;Windows 2001&quot;
 comma
 l_string|&quot;Windows 2001.1&quot;
+comma
+l_string|&quot;Windows 2001 SP0&quot;
+comma
+l_string|&quot;Windows 2001 SP1&quot;
+comma
+l_string|&quot;Windows 2001 SP2&quot;
+comma
+l_string|&quot;Windows 2001 SP3&quot;
+comma
+l_string|&quot;Windows 2001 SP4&quot;
 )brace
 suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * Namespace globals&n; *&n; ******************************************************************************/
@@ -419,7 +429,7 @@ comma
 (brace
 l_string|&quot;_TZ_&quot;
 comma
-id|ACPI_TYPE_LOCAL_SCOPE
+id|ACPI_TYPE_THERMAL
 comma
 l_int|NULL
 )brace
@@ -1446,6 +1456,7 @@ op_star
 )paren
 id|object
 suffix:semicolon
+multiline_comment|/* Must return a string of exactly 4 characters == ACPI_NAME_SIZE */
 r_if
 c_cond
 (paren
@@ -1455,23 +1466,34 @@ id|object
 (brace
 r_return
 (paren
-l_string|&quot;NULL NODE&quot;
+l_string|&quot;NULL&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Check for Root node */
 r_if
 c_cond
+(paren
 (paren
 id|object
 op_eq
 id|ACPI_ROOT_OBJECT
 )paren
-(brace
-id|node
-op_assign
+op_logical_or
+(paren
+id|object
+op_eq
 id|acpi_gbl_root_node
+)paren
+)paren
+(brace
+r_return
+(paren
+l_string|&quot;&bslash;&quot;&bslash;&bslash;&bslash;&quot; &quot;
+)paren
 suffix:semicolon
 )brace
+multiline_comment|/* Descriptor must be a namespace node */
 r_if
 c_cond
 (paren
@@ -1482,10 +1504,11 @@ id|ACPI_DESC_TYPE_NAMED
 (brace
 r_return
 (paren
-l_string|&quot;****&quot;
+l_string|&quot;####&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Name must be a valid ACPI name */
 r_if
 c_cond
 (paren
@@ -1503,10 +1526,11 @@ id|node-&gt;name.ascii
 (brace
 r_return
 (paren
-l_string|&quot;----&quot;
+l_string|&quot;????&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Return the name */
 r_return
 (paren
 id|node-&gt;name.ascii
@@ -1836,15 +1860,6 @@ id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;ut_init_globals&quot;
 )paren
-suffix:semicolon
-multiline_comment|/* Runtime configuration */
-id|acpi_gbl_create_osi_method
-op_assign
-id|TRUE
-suffix:semicolon
-id|acpi_gbl_all_methods_serialized
-op_assign
-id|FALSE
 suffix:semicolon
 multiline_comment|/* Memory allocation and cache lists */
 id|ACPI_MEMSET
@@ -2412,6 +2427,10 @@ multiline_comment|/* Hardware oriented */
 id|acpi_gbl_events_initialized
 op_assign
 id|FALSE
+suffix:semicolon
+id|acpi_gbl_system_awake_and_running
+op_assign
+id|TRUE
 suffix:semicolon
 multiline_comment|/* Namespace */
 id|acpi_gbl_root_node

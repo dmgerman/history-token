@@ -3,8 +3,6 @@ multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rig
 macro_line|#ifndef __ACLINUX_H__
 DECL|macro|__ACLINUX_H__
 mdefine_line|#define __ACLINUX_H__
-DECL|macro|ACPI_OS_NAME
-mdefine_line|#define ACPI_OS_NAME                &quot;Linux&quot;
 DECL|macro|ACPI_USE_SYSTEM_CLIBRARY
 mdefine_line|#define ACPI_USE_SYSTEM_CLIBRARY
 DECL|macro|ACPI_USE_DO_WHILE_0
