@@ -1796,6 +1796,10 @@ id|hci_uart_ldisc.write_wakeup
 op_assign
 id|hci_uart_tty_wakeup
 suffix:semicolon
+id|hci_uart_ldisc.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 r_if
 c_cond
 (paren
