@@ -402,11 +402,6 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|to_i2c_driver
 mdefine_line|#define to_i2c_driver(d) container_of(d, struct i2c_driver, driver)
-r_extern
-r_struct
-id|bus_type
-id|i2c_bus_type
-suffix:semicolon
 DECL|macro|I2C_NAME_SIZE
 mdefine_line|#define I2C_NAME_SIZE&t;50
 multiline_comment|/*&n; * i2c_client identifies a single device (i.e. chip) that is connected to an &n; * i2c bus. The behaviour is defined by the routines of the driver. This&n; * function is mainly used for lookup &amp; other admin. functions.&n; */
