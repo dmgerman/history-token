@@ -192,6 +192,7 @@ id|lower
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PPC_ISERIES
 DECL|function|iSeries_smp_message_recv
 r_void
 id|iSeries_smp_message_recv
@@ -374,7 +375,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifdef CONFIG_PPC_ISERIES
 DECL|function|smp_iSeries_numProcs
 r_static
 r_int
@@ -439,7 +439,6 @@ r_return
 id|np
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|smp_iSeries_probe
 r_static
 r_int
@@ -624,7 +623,6 @@ id|smp_ops-&gt;setup_cpu
 op_assign
 id|smp_iSeries_setup_cpu
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#warning fix for iseries
 id|naca-&gt;processorCount
 op_assign
@@ -633,8 +631,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_PPC_PSERIES
 r_static
 r_void
 DECL|function|smp_openpic_message_pass
@@ -845,6 +844,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|smp_space_timers
 r_static
 r_void
@@ -931,6 +931,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 DECL|function|pSeries_setup_cpu
 r_static
 r_void
@@ -1333,6 +1334,7 @@ op_assign
 id|pSeries_setup_cpu
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|smp_local_timer_interrupt
 r_void
 id|smp_local_timer_interrupt

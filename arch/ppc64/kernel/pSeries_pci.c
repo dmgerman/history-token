@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/pci_dma.h&gt;
-macro_line|#include &quot;xics.h&quot;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &quot;pci.h&quot;
 multiline_comment|/*******************************************************************&n; * Forward declares of prototypes. &n; *******************************************************************/
@@ -1883,8 +1882,8 @@ l_string|&quot;Python&quot;
 )paren
 )paren
 (brace
-r_int
-r_int
+r_void
+op_star
 id|chip_regs
 suffix:semicolon
 r_volatile
@@ -2961,20 +2960,6 @@ c_func
 (paren
 id|dev
 )paren
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|naca-&gt;interrupt_controller
-op_eq
-id|IC_PPC_XIC
-)paren
-(brace
-id|xics_isa_init
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
