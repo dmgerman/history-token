@@ -2409,12 +2409,9 @@ c_func
 (paren
 id|us
 comma
-id|us-&gt;irqdata
+id|us-&gt;iobuf
 comma
-r_sizeof
-(paren
-id|us-&gt;irqdata
-)paren
+l_int|2
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -2422,12 +2419,12 @@ c_func
 (paren
 l_string|&quot;Got interrupt data (0x%x, 0x%x)&bslash;n&quot;
 comma
-id|us-&gt;irqdata
+id|us-&gt;iobuf
 (braket
 l_int|0
 )braket
 comma
-id|us-&gt;irqdata
+id|us-&gt;iobuf
 (braket
 l_int|1
 )braket
@@ -2477,7 +2474,7 @@ r_else
 r_if
 c_cond
 (paren
-id|us-&gt;irqdata
+id|us-&gt;iobuf
 (braket
 l_int|0
 )braket
@@ -2495,7 +2492,7 @@ multiline_comment|/* If not UFI, we interpret the data as a result code &n;&t; *
 r_if
 c_cond
 (paren
-id|us-&gt;irqdata
+id|us-&gt;iobuf
 (braket
 l_int|0
 )braket
@@ -2506,7 +2503,7 @@ c_func
 (paren
 l_string|&quot;CBI IRQ data showed reserved bType %d&bslash;n&quot;
 comma
-id|us-&gt;irqdata
+id|us-&gt;iobuf
 (braket
 l_int|0
 )braket
@@ -2519,7 +2516,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|us-&gt;irqdata
+id|us-&gt;iobuf
 (braket
 l_int|1
 )braket
@@ -2715,10 +2712,6 @@ id|us
 )paren
 (brace
 r_int
-r_char
-id|data
-suffix:semicolon
-r_int
 id|result
 suffix:semicolon
 multiline_comment|/* issue the command */
@@ -2743,13 +2736,9 @@ l_int|0
 comma
 id|us-&gt;ifnum
 comma
-op_amp
-id|data
+id|us-&gt;iobuf
 comma
-r_sizeof
-(paren
-id|data
-)paren
+l_int|1
 comma
 id|HZ
 )paren
@@ -2761,7 +2750,10 @@ l_string|&quot;GetMaxLUN command result is %d, data is %d&bslash;n&quot;
 comma
 id|result
 comma
-id|data
+id|us-&gt;iobuf
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 multiline_comment|/* if we have a successful request, return the result */
@@ -2773,7 +2765,10 @@ op_eq
 l_int|1
 )paren
 r_return
-id|data
+id|us-&gt;iobuf
+(braket
+l_int|0
+)braket
 suffix:semicolon
 multiline_comment|/* return the default -- no LUNs */
 r_return
@@ -2797,11 +2792,27 @@ id|us
 (brace
 r_struct
 id|bulk_cb_wrap
+op_star
 id|bcb
+op_assign
+(paren
+r_struct
+id|bulk_cb_wrap
+op_star
+)paren
+id|us-&gt;iobuf
 suffix:semicolon
 r_struct
 id|bulk_cs_wrap
+op_star
 id|bcs
+op_assign
+(paren
+r_struct
+id|bulk_cs_wrap
+op_star
+)paren
+id|us-&gt;iobuf
 suffix:semicolon
 r_int
 r_int
@@ -2818,7 +2829,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* set up the command wrapper */
-id|bcb.Signature
+id|bcb-&gt;Signature
 op_assign
 id|cpu_to_le32
 c_func
@@ -2826,7 +2837,7 @@ c_func
 id|US_BULK_CB_SIGN
 )paren
 suffix:semicolon
-id|bcb.DataTransferLength
+id|bcb-&gt;DataTransferLength
 op_assign
 id|cpu_to_le32
 c_func
@@ -2834,7 +2845,7 @@ c_func
 id|transfer_length
 )paren
 suffix:semicolon
-id|bcb.Flags
+id|bcb-&gt;Flags
 op_assign
 id|srb-&gt;sc_data_direction
 op_eq
@@ -2847,11 +2858,11 @@ l_int|7
 suffix:colon
 l_int|0
 suffix:semicolon
-id|bcb.Tag
+id|bcb-&gt;Tag
 op_assign
 id|srb-&gt;serial_number
 suffix:semicolon
-id|bcb.Lun
+id|bcb-&gt;Lun
 op_assign
 id|srb-&gt;device-&gt;lun
 suffix:semicolon
@@ -2862,13 +2873,13 @@ id|us-&gt;flags
 op_amp
 id|US_FL_SCM_MULT_TARG
 )paren
-id|bcb.Lun
+id|bcb-&gt;Lun
 op_or_assign
 id|srb-&gt;device-&gt;id
 op_lshift
 l_int|4
 suffix:semicolon
-id|bcb.Length
+id|bcb-&gt;Length
 op_assign
 id|srb-&gt;cmd_len
 suffix:semicolon
@@ -2876,24 +2887,24 @@ multiline_comment|/* copy the command payload */
 id|memset
 c_func
 (paren
-id|bcb.CDB
+id|bcb-&gt;CDB
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-id|bcb.CDB
+id|bcb-&gt;CDB
 )paren
 )paren
 suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|bcb.CDB
+id|bcb-&gt;CDB
 comma
 id|srb-&gt;cmnd
 comma
-id|bcb.Length
+id|bcb-&gt;Length
 )paren
 suffix:semicolon
 multiline_comment|/* send it to out endpoint */
@@ -2905,19 +2916,19 @@ comma
 id|le32_to_cpu
 c_func
 (paren
-id|bcb.Signature
+id|bcb-&gt;Signature
 )paren
 comma
-id|bcb.Tag
+id|bcb-&gt;Tag
 comma
 (paren
-id|bcb.Lun
+id|bcb-&gt;Lun
 op_rshift
 l_int|4
 )paren
 comma
 (paren
-id|bcb.Lun
+id|bcb-&gt;Lun
 op_amp
 l_int|0x0F
 )paren
@@ -2925,12 +2936,12 @@ comma
 id|le32_to_cpu
 c_func
 (paren
-id|bcb.DataTransferLength
+id|bcb-&gt;DataTransferLength
 )paren
 comma
-id|bcb.Flags
+id|bcb-&gt;Flags
 comma
-id|bcb.Length
+id|bcb-&gt;Length
 )paren
 suffix:semicolon
 id|result
@@ -2942,7 +2953,6 @@ id|us
 comma
 id|us-&gt;send_bulk_pipe
 comma
-op_amp
 id|bcb
 comma
 id|US_BULK_CB_WRAP_LEN
@@ -3056,7 +3066,6 @@ id|us
 comma
 id|us-&gt;recv_bulk_pipe
 comma
-op_amp
 id|bcs
 comma
 id|US_BULK_CS_WRAP_LEN
@@ -3089,7 +3098,6 @@ id|us
 comma
 id|us-&gt;recv_bulk_pipe
 comma
-op_amp
 id|bcs
 comma
 id|US_BULK_CS_WRAP_LEN
@@ -3126,21 +3134,21 @@ comma
 id|le32_to_cpu
 c_func
 (paren
-id|bcs.Signature
+id|bcs-&gt;Signature
 )paren
 comma
-id|bcs.Tag
+id|bcs-&gt;Tag
 comma
-id|bcs.Residue
+id|bcs-&gt;Residue
 comma
-id|bcs.Status
+id|bcs-&gt;Status
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
-id|bcs.Signature
+id|bcs-&gt;Signature
 op_ne
 id|cpu_to_le32
 c_func
@@ -3148,7 +3156,7 @@ c_func
 id|US_BULK_CS_SIGN
 )paren
 op_logical_and
-id|bcs.Signature
+id|bcs-&gt;Signature
 op_ne
 id|cpu_to_le32
 c_func
@@ -3157,11 +3165,11 @@ id|US_BULK_CS_OLYMPUS_SIGN
 )paren
 )paren
 op_logical_or
-id|bcs.Tag
+id|bcs-&gt;Tag
 op_ne
-id|bcb.Tag
+id|srb-&gt;serial_number
 op_logical_or
-id|bcs.Status
+id|bcs-&gt;Status
 OG
 id|US_BULK_STAT_PHASE
 )paren
@@ -3180,7 +3188,7 @@ multiline_comment|/* based on the status code, we report good or bad */
 r_switch
 c_cond
 (paren
-id|bcs.Status
+id|bcs-&gt;Status
 )paren
 (brace
 r_case
@@ -3444,6 +3452,8 @@ id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* This issues a CB[I] Reset to the device in question&n; */
+DECL|macro|CB_RESET_CMD_SIZE
+mdefine_line|#define CB_RESET_CMD_SIZE&t;12
 DECL|function|usb_stor_CB_reset
 r_int
 id|usb_stor_CB_reset
@@ -3455,40 +3465,32 @@ op_star
 id|us
 )paren
 (brace
-r_int
-r_char
-id|cmd
-(braket
-l_int|12
-)braket
-suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;CB_reset() called&bslash;n&quot;
+l_string|&quot;%s called&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|memset
 c_func
 (paren
-id|cmd
+id|us-&gt;iobuf
 comma
 l_int|0xFF
 comma
-r_sizeof
-(paren
-id|cmd
-)paren
+id|CB_RESET_CMD_SIZE
 )paren
 suffix:semicolon
-id|cmd
+id|us-&gt;iobuf
 (braket
 l_int|0
 )braket
 op_assign
 id|SEND_DIAGNOSTIC
 suffix:semicolon
-id|cmd
+id|us-&gt;iobuf
 (braket
 l_int|1
 )braket
@@ -3511,12 +3513,9 @@ l_int|0
 comma
 id|us-&gt;ifnum
 comma
-id|cmd
+id|us-&gt;iobuf
 comma
-r_sizeof
-(paren
-id|cmd
-)paren
+id|CB_RESET_CMD_SIZE
 )paren
 suffix:semicolon
 )brace
@@ -3535,7 +3534,9 @@ id|us
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;Bulk reset requested&bslash;n&quot;
+l_string|&quot;%s called&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return

@@ -2553,12 +2553,6 @@ r_int
 id|p
 suffix:semicolon
 multiline_comment|/* Allocate the USB control blocks */
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;Allocating usb_ctrlrequest&bslash;n&quot;
-)paren
-suffix:semicolon
 id|us-&gt;dr
 op_assign
 id|kmalloc
@@ -2583,7 +2577,7 @@ id|us-&gt;dr
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;allocation failed&bslash;n&quot;
+l_string|&quot;usb_ctrlrequest allocation failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2591,12 +2585,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;Allocating URB&bslash;n&quot;
-)paren
-suffix:semicolon
 id|us-&gt;current_urb
 op_assign
 id|usb_alloc_urb
@@ -2617,7 +2605,35 @@ id|us-&gt;current_urb
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;allocation failed&bslash;n&quot;
+l_string|&quot;URB allocation failed&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+id|us-&gt;iobuf
+op_assign
+id|kmalloc
+c_func
+(paren
+id|US_IOBUF_SIZE
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|us-&gt;iobuf
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;I/O buffer allocation failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2950,6 +2966,17 @@ id|us-&gt;extra
 suffix:semicolon
 )brace
 multiline_comment|/* Free the USB control blocks */
+r_if
+c_cond
+(paren
+id|us-&gt;iobuf
+)paren
+id|kfree
+c_func
+(paren
+id|us-&gt;iobuf
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

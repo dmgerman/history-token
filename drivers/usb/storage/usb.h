@@ -89,6 +89,8 @@ DECL|macro|US_STATE_ABORTING
 mdefine_line|#define US_STATE_ABORTING&t;4
 DECL|macro|USB_STOR_STRING_LEN
 mdefine_line|#define USB_STOR_STRING_LEN 32
+DECL|macro|US_IOBUF_SIZE
+mdefine_line|#define US_IOBUF_SIZE&t;&t;32&t;/* Big enough for bulk-only CBW */
 DECL|typedef|trans_cmnd
 r_typedef
 r_int
@@ -300,16 +302,6 @@ r_int
 id|sm_state
 suffix:semicolon
 multiline_comment|/* what we are doing&t; */
-multiline_comment|/* interrupt communications data */
-DECL|member|irqdata
-r_int
-r_char
-id|irqdata
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* data from USB IRQ&t; */
 multiline_comment|/* control and bulk communications data */
 DECL|member|current_urb
 r_struct
@@ -331,6 +323,13 @@ id|usb_sg_request
 id|current_sg
 suffix:semicolon
 multiline_comment|/* scatter-gather USB   */
+DECL|member|iobuf
+r_int
+r_char
+op_star
+id|iobuf
+suffix:semicolon
+multiline_comment|/* I/O buffer&t;&t; */
 multiline_comment|/* the semaphore for sleeping the control thread */
 DECL|member|sema
 r_struct
