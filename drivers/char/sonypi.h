@@ -1093,7 +1093,7 @@ comma
 (brace
 id|SONYPI_DEVICE_MODEL_TYPE2
 comma
-l_int|0x08
+l_int|0x61
 comma
 id|SONYPI_CAPTURE_MASK
 comma
