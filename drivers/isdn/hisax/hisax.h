@@ -84,12 +84,6 @@ DECL|macro|DL_FLUSH
 mdefine_line|#define DL_FLUSH&t;0x0224
 DECL|macro|DL_UNIT_DATA
 mdefine_line|#define DL_UNIT_DATA&t;0x0230
-DECL|macro|MDL_BC_RELEASE
-mdefine_line|#define MDL_BC_RELEASE  0x0278  
-singleline_comment|// Formula-n enter:now
-DECL|macro|MDL_BC_ASSIGN
-mdefine_line|#define MDL_BC_ASSIGN   0x027C  
-singleline_comment|// Formula-n enter:now
 DECL|macro|MDL_ASSIGN
 mdefine_line|#define MDL_ASSIGN&t;0x0280
 DECL|macro|MDL_REMOVE
@@ -2467,6 +2461,38 @@ r_struct
 id|pci_dev
 op_star
 id|pdev
+suffix:semicolon
+DECL|member|bc_activate
+r_void
+(paren
+op_star
+id|bc_activate
+)paren
+(paren
+r_struct
+id|IsdnCardState
+op_star
+id|cs
+comma
+r_int
+id|bc
+)paren
+suffix:semicolon
+DECL|member|bc_deactivate
+r_void
+(paren
+op_star
+id|bc_deactivate
+)paren
+(paren
+r_struct
+id|IsdnCardState
+op_star
+id|cs
+comma
+r_int
+id|bc
+)paren
 suffix:semicolon
 )brace
 suffix:semicolon
