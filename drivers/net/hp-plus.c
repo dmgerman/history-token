@@ -1606,7 +1606,11 @@ suffix:semicolon
 id|hdr-&gt;count
 op_assign
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|hdr-&gt;count
+)paren
 op_plus
 l_int|3
 )paren

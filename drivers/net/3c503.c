@@ -2269,6 +2269,14 @@ id|e8390_pkt_hdr
 )paren
 )paren
 suffix:semicolon
+id|hdr-&gt;count
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|hdr-&gt;count
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace

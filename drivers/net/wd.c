@@ -1822,8 +1822,9 @@ op_plus
 id|WD_CMDREG5
 )paren
 suffix:semicolon
-macro_line|#ifdef notdef
+macro_line|#ifdef __BIG_ENDIAN
 multiline_comment|/* Officially this is what we are doing, but the readl() is faster */
+multiline_comment|/* unfortunately it isn&squot;t endian aware of the struct               */
 id|isa_memcpy_fromio
 c_func
 (paren
@@ -1836,6 +1837,14 @@ r_sizeof
 r_struct
 id|e8390_pkt_hdr
 )paren
+)paren
+suffix:semicolon
+id|hdr-&gt;count
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|hdr-&gt;count
 )paren
 suffix:semicolon
 macro_line|#else
