@@ -1121,7 +1121,7 @@ r_char
 op_star
 id|string
 comma
-r_int
+id|__le16
 op_star
 id|unicode
 comma
@@ -1157,7 +1157,7 @@ suffix:semicolon
 id|__u8
 id|BootMinorVersion
 suffix:semicolon
-id|__u16
+id|__le16
 id|BootBuildNumber
 suffix:semicolon
 id|__u8
@@ -9925,7 +9925,7 @@ r_char
 op_star
 id|string
 comma
-r_int
+id|__le16
 op_star
 id|unicode
 comma

@@ -3105,7 +3105,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if BITS_PER_LONG == 64
+macro_line|#ifdef CONFIG_COMPAT
 DECL|function|i2o_cfg_passthru32
 r_static
 r_int
@@ -3140,6 +3140,7 @@ op_star
 id|c
 suffix:semicolon
 id|u32
+id|__user
 op_star
 id|user_msg
 suffix:semicolon
@@ -3150,6 +3151,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|u32
+id|__user
 op_star
 id|user_reply
 op_assign
@@ -3770,10 +3772,12 @@ id|p-&gt;virt
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
-id|u64
+r_int
+r_int
 )paren
 id|sg
 (braket
@@ -5414,7 +5418,7 @@ id|fp
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#if BITS_PER_LONG != 64
+macro_line|#ifndef CONFIG_COMPAT
 r_case
 id|I2OPASSTHRU
 suffix:colon
@@ -5926,7 +5930,7 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-macro_line|#if BITS_PER_LONG ==64
+macro_line|#ifdef CONFIG_COMPAT
 id|register_ioctl32_conversion
 c_func
 (paren
@@ -5961,7 +5965,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if BITS_PER_LONG ==64
+macro_line|#ifdef CONFIG_COMPAT
 id|unregister_ioctl32_conversion
 c_func
 (paren

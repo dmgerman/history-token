@@ -1,7 +1,8 @@
-multiline_comment|/* $Id: cache.h,v 1.5 2003/07/16 04:08:29 lethal Exp $&n; *&n; * include/asm-sh/cache.h&n; *&n; * Copyright 1999 (C) Niibe Yutaka&n; * Copyright 2002, 2003 (C) Paul Mundt&n; */
+multiline_comment|/* $Id: cache.h,v 1.6 2004/03/11 18:08:05 lethal Exp $&n; *&n; * include/asm-sh/cache.h&n; *&n; * Copyright 1999 (C) Niibe Yutaka&n; * Copyright 2002, 2003 (C) Paul Mundt&n; */
 macro_line|#ifndef __ASM_SH_CACHE_H
 DECL|macro|__ASM_SH_CACHE_H
 mdefine_line|#define __ASM_SH_CACHE_H
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/cpu/cache.h&gt;
 macro_line|#include &lt;asm/cpu/cacheflush.h&gt;
 DECL|macro|SH_CACHE_VALID
@@ -103,5 +104,6 @@ r_int
 id|size
 )paren
 suffix:semicolon
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_SH_CACHE_H */
 eof

@@ -375,11 +375,10 @@ suffix:semicolon
 id|u64
 id|mask
 op_assign
-l_int|0x00ffffff
+id|ISA_DMA_THRESHOLD
 comma
 id|limit
 suffix:semicolon
-multiline_comment|/* ISA default */
 r_if
 c_cond
 (paren
@@ -415,6 +414,7 @@ id|mask
 op_assign
 id|dev-&gt;coherent_dma_mask
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Sanity check the DMA mask - it must be non-zero, and&n;&t;&t; * must be able to be satisfied by a DMA allocation.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -431,11 +431,45 @@ comma
 l_string|&quot;coherent DMA mask is unset&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|no_page
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+op_complement
+id|mask
+)paren
+op_amp
+id|ISA_DMA_THRESHOLD
+)paren
+(brace
+id|dev_warn
+c_func
+(paren
+id|dev
+comma
+l_string|&quot;coherent DMA mask %#llx is smaller &quot;
+l_string|&quot;than system GFP_DMA mask %#llx&bslash;n&quot;
+comma
+id|mask
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|ISA_DMA_THRESHOLD
+)paren
+suffix:semicolon
+r_goto
+id|no_page
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n;&t; * Sanity check the allocation size.&n;&t; */
 id|size
 op_assign
 id|PAGE_ALIGN
@@ -479,21 +513,16 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;coherent allocation too big (requested %#x mask %#Lx)&bslash;n&quot;
+l_string|&quot;coherent allocation too big &quot;
+l_string|&quot;(requested %#x mask %#llx)&bslash;n&quot;
 comma
 id|size
 comma
 id|mask
 )paren
 suffix:semicolon
-op_star
-id|handle
-op_assign
-op_complement
-l_int|0
-suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|no_page
 suffix:semicolon
 )brace
 id|order
@@ -746,6 +775,12 @@ id|order
 suffix:semicolon
 id|no_page
 suffix:colon
+op_star
+id|handle
+op_assign
+op_complement
+l_int|0
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon

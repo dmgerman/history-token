@@ -9,6 +9,10 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/ocp.h&gt;
 macro_line|#include &lt;asm/mpc52xx.h&gt;
+r_extern
+r_int
+id|powersave_nap
+suffix:semicolon
 multiline_comment|/* Board data given by U-Boot */
 DECL|variable|__res
 id|bd_t
@@ -82,8 +86,8 @@ multiline_comment|/* Platform specific code                                     
 multiline_comment|/* ======================================================================== */
 r_static
 r_int
-DECL|function|icecube_show_cpuinfo
-id|icecube_show_cpuinfo
+DECL|function|lite5200_show_cpuinfo
+id|lite5200_show_cpuinfo
 c_func
 (paren
 r_struct
@@ -107,8 +111,107 @@ suffix:semicolon
 r_static
 r_void
 id|__init
-DECL|function|icecube_setup_arch
-id|icecube_setup_arch
+DECL|function|lite5200_setup_cpu
+id|lite5200_setup_cpu
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|mpc52xx_intr
+op_star
+id|intr
+suffix:semicolon
+id|u32
+id|intr_ctrl
+suffix:semicolon
+multiline_comment|/* Map zones */
+id|intr
+op_assign
+(paren
+r_struct
+id|mpc52xx_intr
+op_star
+)paren
+id|ioremap
+c_func
+(paren
+id|MPC52xx_INTR
+comma
+r_sizeof
+(paren
+r_struct
+id|mpc52xx_intr
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|intr
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;lite5200.c: Error while mapping INTR during lite5200_setup_cpu&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|unmap_regs
+suffix:semicolon
+)brace
+multiline_comment|/* IRQ[0-3] setup : IRQ0     - Level Active Low  */
+multiline_comment|/*                  IRQ[1-3] - Level Active High */
+id|intr_ctrl
+op_assign
+id|in_be32
+c_func
+(paren
+op_amp
+id|intr-&gt;ctrl
+)paren
+suffix:semicolon
+id|intr_ctrl
+op_and_assign
+op_complement
+l_int|0x00ff0000
+suffix:semicolon
+id|intr_ctrl
+op_or_assign
+l_int|0x00c00000
+suffix:semicolon
+id|out_be32
+c_func
+(paren
+op_amp
+id|intr-&gt;ctrl
+comma
+id|intr_ctrl
+)paren
+suffix:semicolon
+multiline_comment|/* Unmap reg zone */
+id|unmap_regs
+suffix:colon
+r_if
+c_cond
+(paren
+id|intr
+)paren
+id|iounmap
+c_func
+(paren
+id|intr
+)paren
+suffix:semicolon
+)brace
+r_static
+r_void
+id|__init
+DECL|function|lite5200_setup_arch
+id|lite5200_setup_arch
 c_func
 (paren
 r_void
@@ -119,6 +222,12 @@ id|mpc52xx_add_board_devices
 c_func
 (paren
 id|board_ocp
+)paren
+suffix:semicolon
+multiline_comment|/* CPU &amp; Port mux setup */
+id|lite5200_setup_cpu
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -281,14 +390,20 @@ id|isa_mem_base
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Powersave */
+id|powersave_nap
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* We allow this platform to NAP */
 multiline_comment|/* Setup the ppc_md struct */
 id|ppc_md.setup_arch
 op_assign
-id|icecube_setup_arch
+id|lite5200_setup_arch
 suffix:semicolon
 id|ppc_md.show_cpuinfo
 op_assign
-id|icecube_show_cpuinfo
+id|lite5200_show_cpuinfo
 suffix:semicolon
 id|ppc_md.show_percpuinfo
 op_assign
@@ -322,7 +437,7 @@ id|ppc_md.halt
 op_assign
 id|mpc52xx_halt
 suffix:semicolon
-multiline_comment|/* No time keeper on the IceCube */
+multiline_comment|/* No time keeper on the LITE5200 */
 id|ppc_md.time_init
 op_assign
 l_int|NULL

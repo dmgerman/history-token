@@ -92,7 +92,7 @@ c_func
 (paren
 id|section
 (paren
-l_string|&quot;.text,#alloc&quot;
+l_string|&quot;.text&bslash;&quot;&bslash;n&bslash;t#&quot;
 )paren
 )paren
 )paren

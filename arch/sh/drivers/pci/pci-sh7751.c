@@ -30,6 +30,19 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_void
+id|pcibios_fixup_irqs
+c_func
+(paren
+r_void
+)paren
+id|__attribute__
+(paren
+(paren
+id|weak
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Direct access to PCI hardware...&n; */
 DECL|macro|CONFIG_CMD
 mdefine_line|#define CONFIG_CMD(bus, devfn, where) (0x80000000 | (bus-&gt;number &lt;&lt; 16) | (devfn &lt;&lt; 8) | (where &amp; ~3))
@@ -570,7 +583,6 @@ suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************************/
 multiline_comment|/*&n; *  Handle bus scanning and fixups ....&n; */
-macro_line|#if !defined(CONFIG_SH_HS7751RVOIP) &amp;&amp; !defined(CONFIG_SH_RTS7751R2D)
 DECL|function|pci_fixup_ide_bases
 r_static
 r_void
@@ -938,7 +950,7 @@ comma
 id|PCI_REG
 c_func
 (paren
-id|SH7751_PCICLKR
+id|SH7751_PCIPINT
 )paren
 )paren
 suffix:semicolon

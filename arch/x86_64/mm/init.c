@@ -3026,7 +3026,7 @@ multiline_comment|/* lookup code assumes the pages are present. set them up&n;&t
 r_if
 c_cond
 (paren
-id|map_syscall32
+id|__map_syscall32
 c_func
 (paren
 id|tsk-&gt;mm

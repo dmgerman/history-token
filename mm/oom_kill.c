@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 multiline_comment|/* #define DEBUG */
-multiline_comment|/**&n; * oom_badness - calculate a numeric value for how bad this task has been&n; * @p: task struct of which task we should calculate&n; *&n; * The formula used is relatively simple and documented inline in the&n; * function. The main rationale is that we want to select a good task&n; * to kill when we run out of memory.&n; *&n; * Good in this context means that:&n; * 1) we lose the minimum amount of work done&n; * 2) we recover a large amount of memory&n; * 3) we don&squot;t kill anything innocent of eating tons of memory&n; * 4) we want to kill the minimum amount of processes (one)&n; * 5) we try to kill the process the user expects us to kill, this&n; *    algorithm has been meticulously tuned to meet the principle&n; *    of least surprise ... (be careful when you change it)&n; */
+multiline_comment|/**&n; * oom_badness - calculate a numeric value for how bad this task has been&n; * @p: task struct of which task we should calculate&n; * @p: current uptime in seconds&n; *&n; * The formula used is relatively simple and documented inline in the&n; * function. The main rationale is that we want to select a good task&n; * to kill when we run out of memory.&n; *&n; * Good in this context means that:&n; * 1) we lose the minimum amount of work done&n; * 2) we recover a large amount of memory&n; * 3) we don&squot;t kill anything innocent of eating tons of memory&n; * 4) we want to kill the minimum amount of processes (one)&n; * 5) we try to kill the process the user expects us to kill, this&n; *    algorithm has been meticulously tuned to meet the principle&n; *    of least surprise ... (be careful when you change it)&n; */
 DECL|function|badness
 r_static
 r_int
@@ -17,6 +17,10 @@ r_struct
 id|task_struct
 op_star
 id|p
+comma
+r_int
+r_int
+id|uptime
 )paren
 (brace
 r_int
@@ -53,7 +57,7 @@ id|points
 op_assign
 id|p-&gt;mm-&gt;total_vm
 suffix:semicolon
-multiline_comment|/*&n;&t; * CPU time is in seconds and run time is in minutes. There is no&n;&t; * particular reason for this other than that it turned out to work&n;&t; * very well in practice.&n;&t; */
+multiline_comment|/*&n;&t; * CPU time is in tens of seconds and run time is in thousands&n;         * of seconds. There is no particular reason for this other than&n;         * that it turned out to work very well in practice.&n;&t; */
 id|cpu_time
 op_assign
 (paren
@@ -68,22 +72,27 @@ op_plus
 l_int|3
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|uptime
+op_ge
+id|p-&gt;start_time.tv_sec
+)paren
 id|run_time
 op_assign
 (paren
-id|get_jiffies_64
-c_func
-(paren
-)paren
+id|uptime
 op_minus
-id|p-&gt;start_time
+id|p-&gt;start_time.tv_sec
 )paren
 op_rshift
-(paren
-id|SHIFT_HZ
-op_plus
 l_int|10
-)paren
+suffix:semicolon
+r_else
+id|run_time
+op_assign
+l_int|0
 suffix:semicolon
 id|s
 op_assign
@@ -239,6 +248,17 @@ id|chosen
 op_assign
 l_int|NULL
 suffix:semicolon
+r_struct
+id|timespec
+id|uptime
+suffix:semicolon
+id|do_posix_clock_monotonic_gettime
+c_func
+(paren
+op_amp
+id|uptime
+)paren
+suffix:semicolon
 id|do_each_thread
 c_func
 (paren
@@ -260,6 +280,8 @@ id|badness
 c_func
 (paren
 id|p
+comma
+id|uptime.tv_sec
 )paren
 suffix:semicolon
 r_if

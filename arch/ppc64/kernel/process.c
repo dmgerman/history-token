@@ -332,7 +332,6 @@ op_star
 id|tsk
 )paren
 (brace
-macro_line|#ifdef CONFIG_ALTIVEC
 r_if
 c_cond
 (paren
@@ -375,7 +374,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 DECL|function|dump_task_altivec
 r_int
@@ -1389,6 +1387,11 @@ id|pt_regs
 suffix:semicolon
 id|current-&gt;thread.regs
 op_assign
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
 id|childregs
 suffix:semicolon
 )brace
@@ -1998,11 +2001,25 @@ id|error
 op_eq
 l_int|0
 )paren
+(brace
+id|task_lock
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 id|current-&gt;ptrace
 op_and_assign
 op_complement
 id|PT_DTRACE
 suffix:semicolon
+id|task_unlock
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+)brace
 id|putname
 c_func
 (paren

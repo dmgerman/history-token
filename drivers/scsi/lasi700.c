@@ -18,6 +18,9 @@ macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/parisc-device.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_transport.h&gt;
+macro_line|#include &lt;scsi/scsi_transport_spi.h&gt;
 macro_line|#include &quot;lasi700.h&quot;
 macro_line|#include &quot;53c700.h&quot;
 id|MODULE_AUTHOR
@@ -246,6 +249,13 @@ op_amp
 id|lasi700_template
 comma
 id|hostdata
+comma
+op_amp
+id|dev-&gt;dev
+comma
+id|dev-&gt;irq
+comma
+l_int|7
 )paren
 suffix:semicolon
 r_if
@@ -256,56 +266,6 @@ id|host
 )paren
 r_goto
 id|out_kfree
-suffix:semicolon
-id|host-&gt;irq
-op_assign
-id|dev-&gt;irq
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|request_irq
-c_func
-(paren
-id|dev-&gt;irq
-comma
-id|NCR_700_intr
-comma
-id|SA_SHIRQ
-comma
-id|dev-&gt;dev.bus_id
-comma
-id|host
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: irq problem, detaching&bslash;n&quot;
-comma
-id|dev-&gt;dev.bus_id
-)paren
-suffix:semicolon
-r_goto
-id|out_put_host
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|scsi_add_host
-c_func
-(paren
-id|host
-comma
-op_amp
-id|dev-&gt;dev
-)paren
-)paren
-r_goto
-id|out_free_irq
 suffix:semicolon
 id|dev_set_drvdata
 c_func
@@ -324,24 +284,6 @@ id|host
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-id|out_free_irq
-suffix:colon
-id|free_irq
-c_func
-(paren
-id|host-&gt;irq
-comma
-id|host
-)paren
-suffix:semicolon
-id|out_put_host
-suffix:colon
-id|scsi_host_put
-c_func
-(paren
-id|host
-)paren
 suffix:semicolon
 id|out_kfree
 suffix:colon

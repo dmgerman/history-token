@@ -33,16 +33,16 @@ mdefine_line|#define clear_user_page(page, vaddr, pg)&t;clear_page(page)
 DECL|macro|copy_user_page
 mdefine_line|#define copy_user_page(to, from, vaddr, pg)&t;copy_page(to, from)
 multiline_comment|/*&n; * These are used to make use of C type-checking..&n; */
+r_extern
+r_int
+id|nx_enabled
+suffix:semicolon
 macro_line|#ifdef CONFIG_X86_PAE
 r_extern
 r_int
 r_int
 r_int
 id|__supported_pte_mask
-suffix:semicolon
-r_extern
-r_int
-id|nx_enabled
 suffix:semicolon
 DECL|member|pte_low
 DECL|member|pte_high
@@ -103,8 +103,6 @@ mdefine_line|#define pte_val(x)&t;((x).pte_low | ((unsigned long long)(x).pte_hi
 DECL|macro|HPAGE_SHIFT
 mdefine_line|#define HPAGE_SHIFT&t;21
 macro_line|#else
-DECL|macro|nx_enabled
-mdefine_line|#define nx_enabled 0
 DECL|member|pte_low
 DECL|typedef|pte_t
 r_typedef

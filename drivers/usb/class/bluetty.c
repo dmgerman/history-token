@@ -3592,11 +3592,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_struct
-id|tty_struct
-op_star
-id|tty
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -3616,7 +3611,6 @@ suffix:semicolon
 id|tty_wakeup
 c_func
 (paren
-op_amp
 id|bluetooth-&gt;tty
 )paren
 suffix:semicolon

@@ -20,12 +20,12 @@ op_star
 id|k2
 )paren
 (brace
-id|u32
+id|__be32
 id|k1id
 comma
 id|k2id
 suffix:semicolon
-id|u32
+id|__be32
 id|k1s
 comma
 id|k2s

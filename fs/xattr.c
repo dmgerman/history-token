@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/xattr.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * Extended attribute SET operations&n; */
 r_static

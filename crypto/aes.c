@@ -157,37 +157,41 @@ DECL|macro|E_KEY
 mdefine_line|#define E_KEY ctx-&gt;E
 DECL|macro|D_KEY
 mdefine_line|#define D_KEY ctx-&gt;D
-DECL|variable|pow_tab
+DECL|variable|__initdata
 r_static
 id|u8
 id|pow_tab
 (braket
 l_int|256
 )braket
+id|__initdata
 suffix:semicolon
-DECL|variable|log_tab
+DECL|variable|__initdata
 r_static
 id|u8
 id|log_tab
 (braket
 l_int|256
 )braket
+id|__initdata
 suffix:semicolon
-DECL|variable|sbx_tab
+DECL|variable|__initdata
 r_static
 id|u8
 id|sbx_tab
 (braket
 l_int|256
 )braket
+id|__initdata
 suffix:semicolon
-DECL|variable|isb_tab
+DECL|variable|__initdata
 r_static
 id|u8
 id|isb_tab
 (braket
 l_int|256
 )braket
+id|__initdata
 suffix:semicolon
 DECL|variable|rco_tab
 r_static
@@ -244,6 +248,7 @@ suffix:semicolon
 r_static
 r_inline
 id|u8
+id|__init
 DECL|function|f_mult
 id|f_mult
 (paren
@@ -303,6 +308,7 @@ DECL|macro|i_rl
 mdefine_line|#define i_rl(bo, bi, n, k)&t;&t;&t;&t;&t;&bslash;&n;    bo[n] =  il_tab[0][byte(bi[n],0)] ^&t;&t;&t;&t;&bslash;&n;             il_tab[1][byte(bi[(n + 3) &amp; 3],1)] ^&t;&t;&bslash;&n;             il_tab[2][byte(bi[(n + 2) &amp; 3],2)] ^&t;&t;&bslash;&n;             il_tab[3][byte(bi[(n + 1) &amp; 3],3)] ^ *(k + n)
 r_static
 r_void
+id|__init
 DECL|function|gen_tabs
 id|gen_tabs
 (paren

@@ -298,14 +298,6 @@ l_int|0x00
 )brace
 )brace
 suffix:semicolon
-macro_line|#ifndef HIGH_4
-DECL|macro|HIGH_4
-mdefine_line|#define HIGH_4(H)&t;&t;((H)=(H&gt;&gt;4))
-macro_line|#endif
-macro_line|#ifndef LOW_4
-DECL|macro|LOW_4
-mdefine_line|#define LOW_4(L)&t;&t;((L)=(L-((L&gt;&gt;4)&lt;&lt;4)))
-macro_line|#endif
 macro_line|#ifndef SPLIT_BYTE
 DECL|macro|SPLIT_BYTE
 mdefine_line|#define SPLIT_BYTE(B,H,L)&t;((H)=(B&gt;&gt;4), (L)=(B-((B&gt;&gt;4)&lt;&lt;4)))

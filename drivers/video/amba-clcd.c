@@ -738,9 +738,13 @@ c_func
 (paren
 id|fb-&gt;clk
 comma
+(paren
 l_int|1000000000
 op_div
 id|regs.pixclock
+)paren
+op_star
+l_int|1000
 )paren
 suffix:semicolon
 id|fb-&gt;clcd_cntl

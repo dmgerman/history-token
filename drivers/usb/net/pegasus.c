@@ -1209,7 +1209,7 @@ comma
 id|indx
 )brace
 suffix:semicolon
-id|__u16
+id|__le16
 id|regdi
 suffix:semicolon
 id|set_register
@@ -1610,7 +1610,7 @@ suffix:semicolon
 id|__u8
 id|tmp
 suffix:semicolon
-id|__u16
+id|__le16
 id|retdatai
 suffix:semicolon
 id|set_register
@@ -2029,7 +2029,7 @@ id|w16
 suffix:semicolon
 (paren
 (paren
-id|__u16
+id|__le16
 op_star
 )paren
 id|id
@@ -2931,7 +2931,7 @@ c_func
 (paren
 op_star
 (paren
-r_int
+id|__le32
 op_star
 )paren
 (paren
@@ -3015,7 +3015,7 @@ c_func
 (paren
 op_star
 (paren
-r_int
+id|__le32
 op_star
 )paren
 id|urb-&gt;transfer_buffer
@@ -3813,7 +3813,7 @@ id|net
 suffix:semicolon
 (paren
 (paren
-id|__u16
+id|__le16
 op_star
 )paren
 id|pegasus-&gt;tx_buff

@@ -2273,7 +2273,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|__u16
+id|__le16
 op_star
 )paren
 id|start
@@ -2288,7 +2288,7 @@ op_star
 )paren
 (paren
 (paren
-id|__u16
+id|__le16
 op_star
 )paren
 id|start
@@ -2328,7 +2328,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|__u32
+id|__le32
 op_star
 )paren
 id|start
@@ -2343,7 +2343,7 @@ op_star
 )paren
 (paren
 (paren
-id|__u32
+id|__le32
 op_star
 )paren
 id|start
@@ -3101,7 +3101,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|__u64
+id|__le64
 op_star
 )paren
 id|report
@@ -3165,7 +3165,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|__u64
+id|__le64
 op_star
 )paren
 id|report
@@ -3206,7 +3206,7 @@ id|offset
 )paren
 comma
 (paren
-id|__u64
+id|__le64
 op_star
 )paren
 id|report
@@ -4123,6 +4123,13 @@ op_minus
 id|ESHUTDOWN
 suffix:colon
 r_return
+suffix:semicolon
+r_case
+op_minus
+id|ETIMEDOUT
+suffix:colon
+multiline_comment|/* NAK */
+r_break
 suffix:semicolon
 r_default
 suffix:colon
@@ -8957,16 +8964,16 @@ c_func
 r_void
 )paren
 (brace
-id|hiddev_exit
-c_func
-(paren
-)paren
-suffix:semicolon
 id|usb_deregister
 c_func
 (paren
 op_amp
 id|hid_driver
+)paren
+suffix:semicolon
+id|hiddev_exit
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

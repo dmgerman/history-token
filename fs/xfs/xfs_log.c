@@ -2971,7 +2971,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|vfsp-&gt;vfs_super-&gt;s_frozen
+id|fs_frozen
+c_func
+(paren
+id|vfsp
+)paren
 op_logical_or
 id|XFS_FORCED_SHUTDOWN
 c_func

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
@@ -54,8 +55,10 @@ suffix:semicolon
 DECL|variable|sysctl_overcommit_memory
 r_int
 id|sysctl_overcommit_memory
+op_assign
+id|OVERCOMMIT_GUESS
 suffix:semicolon
-multiline_comment|/* default is heuristic overcommit */
+multiline_comment|/* heuristic overcommit */
 DECL|variable|sysctl_overcommit_ratio
 r_int
 id|sysctl_overcommit_ratio
@@ -135,7 +138,7 @@ id|do_expand
 suffix:colon
 id|limit
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_FSIZE
 )braket

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * include/asm-sh/freq.h&n; *&n; * Copyright (C) 2002, 20
 macro_line|#ifndef __ASM_SH_FREQ_H
 DECL|macro|__ASM_SH_FREQ_H
 mdefine_line|#define __ASM_SH_FREQ_H
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/cpu/freq.h&gt;
 multiline_comment|/* arch/sh/kernel/time.c */
 r_extern
@@ -91,5 +92,6 @@ r_int
 id|divisor
 )paren
 suffix:semicolon
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_SH_FREQ_H */
 eof

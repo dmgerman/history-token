@@ -1,9 +1,6 @@
 macro_line|#ifndef _ST_H
 DECL|macro|_ST_H
 mdefine_line|#define _ST_H
-macro_line|#ifndef _SCSI_H
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#endif
 macro_line|#include &lt;linux/completion.h&gt;
 multiline_comment|/* The tape buffer descriptor. */
 r_typedef
@@ -55,7 +52,8 @@ r_int
 id|syscall_result
 suffix:semicolon
 DECL|member|last_SRpnt
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|last_SRpnt
 suffix:semicolon
@@ -265,7 +263,8 @@ op_star
 id|driver
 suffix:semicolon
 DECL|member|device
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|device
 suffix:semicolon

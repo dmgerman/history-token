@@ -5,20 +5,6 @@ mdefine_line|#define _ASM_IA64_THREAD_INFO_H
 macro_line|#include &lt;asm/offsets.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
-DECL|macro|TI_TASK
-mdefine_line|#define TI_TASK&t;&t;&t;0x00
-DECL|macro|TI_EXEC_DOMAIN
-mdefine_line|#define TI_EXEC_DOMAIN&t;&t;0x08
-DECL|macro|TI_FLAGS
-mdefine_line|#define TI_FLAGS&t;&t;0x10
-DECL|macro|TI_CPU
-mdefine_line|#define TI_CPU&t;&t;&t;0x14
-DECL|macro|TI_ADDR_LIMIT
-mdefine_line|#define TI_ADDR_LIMIT&t;&t;0x18
-DECL|macro|TI_PRE_COUNT
-mdefine_line|#define TI_PRE_COUNT&t;&t;0x20
-DECL|macro|TI_RESTART_BLOCK
-mdefine_line|#define TI_RESTART_BLOCK&t;0x28
 DECL|macro|PREEMPT_ACTIVE_BIT
 mdefine_line|#define PREEMPT_ACTIVE_BIT 30
 DECL|macro|PREEMPT_ACTIVE

@@ -693,9 +693,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|child-&gt;state
+id|child-&gt;exit_state
 op_eq
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 )paren
 multiline_comment|/* already dead */
 r_break
@@ -1253,8 +1253,17 @@ r_default
 suffix:colon
 id|ret
 op_assign
-op_minus
-id|EIO
+id|ptrace_request
+c_func
+(paren
+id|child
+comma
+id|request
+comma
+id|addr
+comma
+id|data
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon

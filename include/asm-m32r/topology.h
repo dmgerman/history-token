@@ -21,10 +21,5 @@ macro_line|#ifndef pcibus_to_cpumask
 DECL|macro|pcibus_to_cpumask
 mdefine_line|#define pcibus_to_cpumask(bus)&t;(cpu_online_map)
 macro_line|#endif
-multiline_comment|/* Cross-node load balancing interval. */
-macro_line|#ifndef NODE_BALANCE_RATE
-DECL|macro|NODE_BALANCE_RATE
-mdefine_line|#define NODE_BALANCE_RATE 10
-macro_line|#endif
 macro_line|#endif /* _ASM_M32R_TOPOLOGY_H */
 eof

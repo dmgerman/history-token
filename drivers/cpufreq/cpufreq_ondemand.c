@@ -49,7 +49,7 @@ mdefine_line|#define DEF_SAMPLING_DOWN_FACTOR&t;&t;(10)
 DECL|macro|TRANSITION_LATENCY_LIMIT
 mdefine_line|#define TRANSITION_LATENCY_LIMIT&t;&t;(10 * 1000)
 DECL|macro|sampling_rate_in_HZ
-mdefine_line|#define sampling_rate_in_HZ(x)&t;&t;&t;((x * HZ) / (1000 * 1000))
+mdefine_line|#define sampling_rate_in_HZ(x)&t;&t;&t;(((x * HZ) &lt; (1000 * 1000))?1:((x * HZ) / (1000 * 1000)))
 r_static
 r_void
 id|do_dbs_timer
@@ -700,6 +700,10 @@ id|down_idle_ticks
 suffix:semicolon
 r_int
 r_int
+id|total_idle_ticks
+suffix:semicolon
+r_int
+r_int
 id|freq_down_step
 suffix:semicolon
 r_int
@@ -739,7 +743,7 @@ r_return
 suffix:semicolon
 multiline_comment|/* &n;&t; * The default safe range is 20% to 80% &n;&t; * Every sampling_rate, we check&n;&t; * &t;- If current idle time is less than 20%, then we try to &n;&t; * &t;  increase frequency&n;&t; * Every sampling_rate*sampling_down_factor, we check&n;&t; * &t;- If current idle time is more than 80%, then we try to&n;&t; * &t;  decrease frequency&n;&t; *&n;&t; * Any frequency increase takes it to the maximum frequency. &n;&t; * Frequency reduction happens at minimum steps of &n;&t; * 5% of max_frequency &n;&t; */
 multiline_comment|/* Check for frequency increase */
-id|idle_ticks
+id|total_idle_ticks
 op_assign
 id|kstat_cpu
 c_func
@@ -748,18 +752,29 @@ id|cpu
 )paren
 dot
 id|cpustat.idle
+op_plus
+id|kstat_cpu
+c_func
+(paren
+id|cpu
+)paren
+dot
+id|cpustat.iowait
+suffix:semicolon
+id|idle_ticks
+op_assign
+id|total_idle_ticks
 op_minus
 id|this_dbs_info-&gt;prev_cpu_idle_up
 suffix:semicolon
 id|this_dbs_info-&gt;prev_cpu_idle_up
 op_assign
-id|kstat_cpu
-c_func
-(paren
-id|cpu
-)paren
-dot
-id|cpustat.idle
+id|total_idle_ticks
+suffix:semicolon
+multiline_comment|/* Scale idle ticks by 100 and compare with up and down ticks */
+id|idle_ticks
+op_mul_assign
+l_int|100
 suffix:semicolon
 id|up_idle_ticks
 op_assign
@@ -774,8 +789,6 @@ c_func
 (paren
 id|dbs_tuners_ins.sampling_rate
 )paren
-op_div
-l_int|100
 suffix:semicolon
 r_if
 c_cond
@@ -804,13 +817,7 @@ l_int|0
 suffix:semicolon
 id|this_dbs_info-&gt;prev_cpu_idle_down
 op_assign
-id|kstat_cpu
-c_func
-(paren
-id|cpu
-)paren
-dot
-id|cpustat.idle
+id|total_idle_ticks
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -836,15 +843,14 @@ r_return
 suffix:semicolon
 id|idle_ticks
 op_assign
-id|kstat_cpu
-c_func
-(paren
-id|cpu
-)paren
-dot
-id|cpustat.idle
+id|total_idle_ticks
 op_minus
 id|this_dbs_info-&gt;prev_cpu_idle_down
+suffix:semicolon
+multiline_comment|/* Scale idle ticks by 100 and compare with up and down ticks */
+id|idle_ticks
+op_mul_assign
+l_int|100
 suffix:semicolon
 id|down_skip
 (braket
@@ -855,13 +861,7 @@ l_int|0
 suffix:semicolon
 id|this_dbs_info-&gt;prev_cpu_idle_down
 op_assign
-id|kstat_cpu
-c_func
-(paren
-id|cpu
-)paren
-dot
-id|cpustat.idle
+id|total_idle_ticks
 suffix:semicolon
 id|freq_down_sampling_rate
 op_assign
@@ -882,8 +882,6 @@ c_func
 (paren
 id|freq_down_sampling_rate
 )paren
-op_div
-l_int|100
 suffix:semicolon
 r_if
 c_cond
@@ -902,6 +900,22 @@ id|this_dbs_info-&gt;cur_policy-&gt;max
 )paren
 op_div
 l_int|100
+suffix:semicolon
+multiline_comment|/* max freq cannot be less than 100. But who knows.... */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|freq_down_step
+op_eq
+l_int|0
+)paren
+)paren
+id|freq_down_step
+op_assign
+l_int|5
 suffix:semicolon
 id|__cpufreq_driver_target
 c_func
@@ -1152,6 +1166,14 @@ id|cpu
 )paren
 dot
 id|cpustat.idle
+op_plus
+id|kstat_cpu
+c_func
+(paren
+id|cpu
+)paren
+dot
+id|cpustat.iowait
 suffix:semicolon
 id|this_dbs_info-&gt;prev_cpu_idle_down
 op_assign
@@ -1162,6 +1184,14 @@ id|cpu
 )paren
 dot
 id|cpustat.idle
+op_plus
+id|kstat_cpu
+c_func
+(paren
+id|cpu
+)paren
+dot
+id|cpustat.iowait
 suffix:semicolon
 id|this_dbs_info-&gt;enable
 op_assign
@@ -1189,11 +1219,30 @@ op_eq
 l_int|1
 )paren
 (brace
+r_int
+r_int
+id|latency
+suffix:semicolon
 multiline_comment|/* policy latency is in nS. Convert it to uS first */
+id|latency
+op_assign
+id|policy-&gt;cpuinfo.transition_latency
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|latency
+OL
+l_int|1000
+)paren
+id|latency
+op_assign
+l_int|1000
+suffix:semicolon
 id|def_sampling_rate
 op_assign
 (paren
-id|policy-&gt;cpuinfo.transition_latency
+id|latency
 op_div
 l_int|1000
 )paren

@@ -1266,7 +1266,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_MEMLOCK
 )braket

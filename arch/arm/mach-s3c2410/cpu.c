@@ -300,6 +300,9 @@ id|cpu_ids
 suffix:semicolon
 id|count
 op_increment
+comma
+id|tab
+op_increment
 )paren
 (brace
 r_if

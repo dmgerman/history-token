@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_diag.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Based on.......: linux/drivers/s390/block/mdisk.c&n; * ...............: by Hartmunt Penner &lt;hpenner@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.37 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_diag.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Based on.......: linux/drivers/s390/block/mdisk.c&n; * ...............: by Hartmunt Penner &lt;hpenner@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.38 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1319,11 +1319,25 @@ l_int|0
 suffix:semicolon
 )brace
 r_else
+(brace
+id|DEV_MESSAGE
+c_func
+(paren
+id|KERN_WARNING
+comma
+id|device
+comma
+l_string|&quot;%s&quot;
+comma
+l_string|&quot;volume has incompatible disk layout&quot;
+)paren
+suffix:semicolon
 id|rc
 op_assign
 op_minus
 id|EMEDIUMTYPE
 suffix:semicolon
+)brace
 id|free_page
 c_func
 (paren

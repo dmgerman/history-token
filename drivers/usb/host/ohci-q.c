@@ -504,7 +504,7 @@ id|ohci-&gt;periodic
 id|i
 )braket
 suffix:semicolon
-id|u32
+id|__le32
 op_star
 id|prev_p
 op_assign
@@ -592,9 +592,9 @@ suffix:semicolon
 op_star
 id|prev_p
 op_assign
-id|cpu_to_le32p
+id|cpu_to_le32
+c_func
 (paren
-op_amp
 id|ed-&gt;dma
 )paren
 suffix:semicolon
@@ -969,7 +969,7 @@ id|ohci-&gt;periodic
 id|i
 )braket
 suffix:semicolon
-id|u32
+id|__le32
 op_star
 id|prev_p
 op_assign
@@ -1529,6 +1529,9 @@ id|ED_IDLE
 id|u32
 id|info
 suffix:semicolon
+id|__le32
+id|hw_info
+suffix:semicolon
 id|info
 op_assign
 id|usb_pipedevice
@@ -1559,7 +1562,7 @@ id|is_out
 op_lshift
 l_int|16
 suffix:semicolon
-id|info
+id|hw_info
 op_assign
 id|cpu_to_le32
 (paren
@@ -1573,7 +1576,7 @@ id|udev-&gt;speed
 op_eq
 id|USB_SPEED_LOW
 )paren
-id|info
+id|hw_info
 op_or_assign
 id|ED_LOWSPEED
 suffix:semicolon
@@ -1586,7 +1589,7 @@ op_ne
 id|PIPE_CONTROL
 )paren
 (brace
-id|info
+id|hw_info
 op_or_assign
 id|is_out
 ques
@@ -1611,7 +1614,7 @@ id|type
 op_eq
 id|PIPE_ISOCHRONOUS
 )paren
-id|info
+id|hw_info
 op_or_assign
 id|ED_ISO
 suffix:semicolon
@@ -1661,7 +1664,7 @@ suffix:semicolon
 )brace
 id|ed-&gt;hwINFO
 op_assign
-id|info
+id|hw_info
 suffix:semicolon
 )brace
 id|done
@@ -2956,7 +2959,7 @@ id|tmp
 op_assign
 id|td-&gt;td_list.next
 suffix:semicolon
-id|u32
+id|__le32
 id|toggle
 op_assign
 id|ed-&gt;hwHeadP
@@ -2992,7 +2995,7 @@ id|td
 op_star
 id|next
 suffix:semicolon
-id|u32
+id|__le32
 id|info
 suffix:semicolon
 id|next
@@ -3362,7 +3365,7 @@ id|completed
 comma
 id|modified
 suffix:semicolon
-id|u32
+id|__le32
 op_star
 id|prev
 suffix:semicolon
@@ -3436,7 +3439,7 @@ id|td_list
 suffix:semicolon
 id|head
 op_assign
-id|cpu_to_le32
+id|le32_to_cpu
 (paren
 id|ed-&gt;hwHeadP
 )paren
@@ -3506,7 +3509,7 @@ id|urb_priv_t
 op_star
 id|urb_priv
 suffix:semicolon
-id|u32
+id|__le32
 id|savebits
 suffix:semicolon
 id|td

@@ -690,7 +690,7 @@ id|le16_to_cpup
 c_func
 (paren
 (paren
-id|u16
+id|__le16
 op_star
 )paren
 id|pkt_start
@@ -1012,7 +1012,7 @@ id|be16_to_cpup
 c_func
 (paren
 (paren
-id|u16
+id|__be16
 op_star
 )paren
 id|data

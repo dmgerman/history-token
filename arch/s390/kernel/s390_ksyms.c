@@ -93,6 +93,13 @@ c_func
 id|diag10
 )paren
 suffix:semicolon
+DECL|variable|default_storage_key
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|default_storage_key
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * semaphore ops&n; */
 DECL|variable|__up
 id|EXPORT_SYMBOL

@@ -18,8 +18,9 @@ id|vclk
 suffix:semicolon
 singleline_comment|//in MHz
 DECL|member|io_virt
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|io_virt
 suffix:semicolon
 singleline_comment|//iospace virtual memory address
@@ -5819,10 +5820,6 @@ suffix:semicolon
 )brace
 id|default_par.io_virt
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -6161,20 +6158,12 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|par-&gt;io_virt
 )paren
 suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|fb_info.screen_base
 )paren
 suffix:semicolon

@@ -104,11 +104,11 @@ DECL|macro|TOC_BITMAP2
 mdefine_line|#define TOC_BITMAP2&t;&t;&quot;log&quot;&t;&t;/* bitmaps in the TOCBLOCK. */
 multiline_comment|/* Most numbers we deal with are big-endian and won&squot;t be aligned. */
 DECL|macro|BE16
-mdefine_line|#define BE16(x)&t;&t;&t;((u16)be16_to_cpu(get_unaligned((u16*)(x))))
+mdefine_line|#define BE16(x)&t;&t;&t;((u16)be16_to_cpu(get_unaligned((__be16*)(x))))
 DECL|macro|BE32
-mdefine_line|#define BE32(x)&t;&t;&t;((u32)be32_to_cpu(get_unaligned((u32*)(x))))
+mdefine_line|#define BE32(x)&t;&t;&t;((u32)be32_to_cpu(get_unaligned((__be32*)(x))))
 DECL|macro|BE64
-mdefine_line|#define BE64(x)&t;&t;&t;((u64)be64_to_cpu(get_unaligned((u64*)(x))))
+mdefine_line|#define BE64(x)&t;&t;&t;((u64)be64_to_cpu(get_unaligned((__be64*)(x))))
 multiline_comment|/* Borrowed from msdos.c */
 DECL|macro|SYS_IND
 mdefine_line|#define SYS_IND(p)&t;&t;(get_unaligned(&amp;(p)-&gt;sys_ind))

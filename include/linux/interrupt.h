@@ -71,6 +71,16 @@ id|irqaction
 op_star
 id|next
 suffix:semicolon
+DECL|member|irq
+r_int
+id|irq
+suffix:semicolon
+DECL|member|dir
+r_struct
+id|proc_dir_entry
+op_star
+id|dir
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
@@ -138,6 +148,38 @@ r_void
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_GENERIC_HARDIRQS
+r_extern
+r_void
+id|disable_irq_nosync
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|disable_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|enable_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Temporary defines for UP kernels, until all code gets fixed.&n; */
 macro_line|#ifndef CONFIG_SMP
 DECL|macro|cli

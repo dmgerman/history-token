@@ -9,7 +9,7 @@ id|ufs_inode_info
 r_union
 (brace
 DECL|member|i_data
-id|__u32
+id|__fs32
 id|i_data
 (braket
 l_int|15
@@ -25,7 +25,7 @@ l_int|15
 )braket
 suffix:semicolon
 DECL|member|u2_i_data
-id|__u64
+id|__fs64
 id|u2_i_data
 (braket
 l_int|15

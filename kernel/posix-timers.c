@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/idr.h&gt;
 macro_line|#include &lt;linux/posix-timers.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#ifndef div_long_long_rem
@@ -294,18 +295,6 @@ op_assign
 id|do_posix_clock_monotonic_settime
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_TIME_INTERPOLATION
-multiline_comment|/* Clocks are more accurate with time interpolators */
-id|clock_realtime.res
-op_assign
-id|clock_monotonic.res
-op_assign
-id|time_interpolator_resolution
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|register_posix_clock
 c_func
 (paren

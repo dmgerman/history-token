@@ -101,6 +101,9 @@ DECL|macro|NOTIFY_STOP_MASK
 mdefine_line|#define NOTIFY_STOP_MASK&t;0x8000&t;&t;/* Don&squot;t call further */
 DECL|macro|NOTIFY_BAD
 mdefine_line|#define NOTIFY_BAD&t;&t;(NOTIFY_STOP_MASK|0x0002)&t;/* Bad/Veto action&t;*/
+multiline_comment|/*&n; * Clean way to return from the notifier and stop further calls.&n; */
+DECL|macro|NOTIFY_STOP
+mdefine_line|#define NOTIFY_STOP&t;&t;(NOTIFY_OK|NOTIFY_STOP_MASK)
 multiline_comment|/*&n; *&t;Declared notifiers so far. I can imagine quite a few more chains&n; *&t;over time (eg laptop power reset chains, reboot chain (to clean &n; *&t;device units up), device [un]mount chain, module load/unload chain,&n; *&t;low memory chain, screenblank chain (for plug in modular screenblankers) &n; *&t;VC switch chains (for loadable kernel svgalib VC switch helpers) etc...&n; */
 multiline_comment|/* netdevice notifier chain */
 DECL|macro|NETDEV_UP
@@ -134,13 +137,17 @@ mdefine_line|#define SYS_POWER_OFF&t;0x0003&t;/* Notify of system power off */
 DECL|macro|NETLINK_URELEASE
 mdefine_line|#define NETLINK_URELEASE&t;0x0001&t;/* Unicast netlink socket released */
 DECL|macro|CPU_ONLINE
-mdefine_line|#define CPU_ONLINE&t;0x0002 /* CPU (unsigned)v is up */
+mdefine_line|#define CPU_ONLINE&t;&t;0x0002 /* CPU (unsigned)v is up */
 DECL|macro|CPU_UP_PREPARE
-mdefine_line|#define CPU_UP_PREPARE&t;0x0003 /* CPU (unsigned)v coming up */
+mdefine_line|#define CPU_UP_PREPARE&t;&t;0x0003 /* CPU (unsigned)v coming up */
 DECL|macro|CPU_UP_CANCELED
-mdefine_line|#define CPU_UP_CANCELED&t;0x0004 /* CPU (unsigned)v NOT coming up */
+mdefine_line|#define CPU_UP_CANCELED&t;&t;0x0004 /* CPU (unsigned)v NOT coming up */
+DECL|macro|CPU_DOWN_PREPARE
+mdefine_line|#define CPU_DOWN_PREPARE&t;0x0005 /* CPU (unsigned)v going down */
+DECL|macro|CPU_DOWN_FAILED
+mdefine_line|#define CPU_DOWN_FAILED&t;&t;0x0006 /* CPU (unsigned)v NOT going down */
 DECL|macro|CPU_DEAD
-mdefine_line|#define CPU_DEAD&t;0x0006 /* CPU (unsigned)v dead */
+mdefine_line|#define CPU_DEAD&t;&t;0x0007 /* CPU (unsigned)v dead */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_NOTIFIER_H */
 eof

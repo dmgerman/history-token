@@ -1334,23 +1334,6 @@ op_logical_and
 id|hwif-&gt;autodma
 )paren
 (brace
-multiline_comment|/* Consult the list of known &quot;bad&quot; drives */
-r_if
-c_cond
-(paren
-id|__ide_dma_bad_drive
-c_func
-(paren
-id|drive
-)paren
-)paren
-r_return
-id|__ide_dma_off
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Enable DMA on any drive that has&n;&t;&t; * UltraDMA (mode 0/1/2/3/4/5/6) enabled&n;&t;&t; */
 r_if
 c_cond
@@ -1817,6 +1800,19 @@ op_star
 id|drive
 )paren
 (brace
+multiline_comment|/* consult the list of known &quot;bad&quot; drives */
+r_if
+c_cond
+(paren
+id|__ide_dma_bad_drive
+c_func
+(paren
+id|drive
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
 id|drive-&gt;using_dma
 op_assign
 l_int|1

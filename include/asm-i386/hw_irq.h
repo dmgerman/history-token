@@ -96,24 +96,6 @@ DECL|macro|platform_legacy_irq
 mdefine_line|#define platform_legacy_irq(irq)&t;((irq) &lt; 16)
 macro_line|#endif
 r_void
-id|mask_irq
-c_func
-(paren
-r_int
-r_int
-id|irq
-)paren
-suffix:semicolon
-r_void
-id|unmask_irq
-c_func
-(paren
-r_int
-r_int
-id|irq
-)paren
-suffix:semicolon
-r_void
 id|disable_8259A_irq
 c_func
 (paren

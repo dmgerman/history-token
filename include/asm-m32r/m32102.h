@@ -1,8 +1,7 @@
 macro_line|#ifndef _M32102_H_
 DECL|macro|_M32102_H_
 mdefine_line|#define _M32102_H_
-multiline_comment|/*&n; * Mitsubishi M32R 32102 group&n; * Copyright (c) 2001 [Hitoshi Yamamoto] All rights reserved.&n; */
-multiline_comment|/* $Id$ */
+multiline_comment|/*&n; * Renesas M32R 32102 group&n; *&n; * Copyright (c) 2001  Hitoshi Yamamoto&n; * Copyright (c) 2003, 2004  Renesas Technology Corp.&n; */
 multiline_comment|/*======================================================================*&n; * Special Function Register&n; *======================================================================*/
 DECL|macro|M32R_SFR_OFFSET
 mdefine_line|#define M32R_SFR_OFFSET  (0x00E00000)  /* 0x00E00000-0x00EFFFFF 1[MB] */
@@ -15,6 +14,49 @@ DECL|macro|M32R_CPM_CLKMOD_PORTL
 mdefine_line|#define M32R_CPM_CLKMOD_PORTL    (0x04+M32R_CPM_OFFSET)
 DECL|macro|M32R_CPM_PLLCR_PORTL
 mdefine_line|#define M32R_CPM_PLLCR_PORTL     (0x08+M32R_CPM_OFFSET)
+multiline_comment|/*&n; * DMA Controller registers.&n; */
+DECL|macro|M32R_DMA_OFFSET
+mdefine_line|#define M32R_DMA_OFFSET&t;&t;(0x000F8000+M32R_SFR_OFFSET)
+DECL|macro|M32R_DMAEN_PORTL
+mdefine_line|#define M32R_DMAEN_PORTL&t;(0x000+M32R_DMA_OFFSET)
+DECL|macro|M32R_DMAISTS_PORTL
+mdefine_line|#define M32R_DMAISTS_PORTL&t;(0x004+M32R_DMA_OFFSET)
+DECL|macro|M32R_DMAEDET_PORTL
+mdefine_line|#define M32R_DMAEDET_PORTL&t;(0x008+M32R_DMA_OFFSET)
+DECL|macro|M32R_DMAASTS_PORTL
+mdefine_line|#define M32R_DMAASTS_PORTL&t;(0x00c+M32R_DMA_OFFSET)
+DECL|macro|M32R_DMA0CR0_PORTL
+mdefine_line|#define M32R_DMA0CR0_PORTL&t;(0x100+M32R_DMA_OFFSET)
+DECL|macro|M32R_DMA0CR1_PORTL
+mdefine_line|#define M32R_DMA0CR1_PORTL&t;(0x104+M32R_DMA_OFFSET)
+DECL|macro|M32R_DMA0CSA_PORTL
+mdefine_line|#define M32R_DMA0CSA_PORTL&t;(0x108+M32R_DMA_OFFSET)
+DECL|macro|M32R_DMA0RSA_PORTL
+mdefine_line|#define M32R_DMA0RSA_PORTL&t;(0x10c+M32R_DMA_OFFSET)
+DECL|macro|M32R_DMA0CDA_PORTL
+mdefine_line|#define M32R_DMA0CDA_PORTL&t;(0x110+M32R_DMA_OFFSET)
+DECL|macro|M32R_DMA0RDA_PORTL
+mdefine_line|#define M32R_DMA0RDA_PORTL&t;(0x114+M32R_DMA_OFFSET)
+DECL|macro|M32R_DMA0CBCUT_PORTL
+mdefine_line|#define M32R_DMA0CBCUT_PORTL&t;(0x118+M32R_DMA_OFFSET)
+DECL|macro|M32R_DMA0RBCUT_PORTL
+mdefine_line|#define M32R_DMA0RBCUT_PORTL&t;(0x11c+M32R_DMA_OFFSET)
+DECL|macro|M32R_DMA1CR0_PORTL
+mdefine_line|#define M32R_DMA1CR0_PORTL&t;(0x200+M32R_DMA_OFFSET)
+DECL|macro|M32R_DMA1CR1_PORTL
+mdefine_line|#define M32R_DMA1CR1_PORTL&t;(0x204+M32R_DMA_OFFSET)
+DECL|macro|M32R_DMA1CSA_PORTL
+mdefine_line|#define M32R_DMA1CSA_PORTL&t;(0x208+M32R_DMA_OFFSET)
+DECL|macro|M32R_DMA1RSA_PORTL
+mdefine_line|#define M32R_DMA1RSA_PORTL&t;(0x20c+M32R_DMA_OFFSET)
+DECL|macro|M32R_DMA1CDA_PORTL
+mdefine_line|#define M32R_DMA1CDA_PORTL&t;(0x210+M32R_DMA_OFFSET)
+DECL|macro|M32R_DMA1RDA_PORTL
+mdefine_line|#define M32R_DMA1RDA_PORTL&t;(0x214+M32R_DMA_OFFSET)
+DECL|macro|M32R_DMA1CBCUT_PORTL
+mdefine_line|#define M32R_DMA1CBCUT_PORTL&t;(0x218+M32R_DMA_OFFSET)
+DECL|macro|M32R_DMA1RBCUT_PORTL
+mdefine_line|#define M32R_DMA1RBCUT_PORTL&t;(0x21c+M32R_DMA_OFFSET)
 multiline_comment|/*&n; * Multi Function Timer registers.&n; */
 DECL|macro|M32R_MFT_OFFSET
 mdefine_line|#define M32R_MFT_OFFSET        (0x000FC000+M32R_SFR_OFFSET)
@@ -179,23 +221,23 @@ multiline_comment|/*&n; * Serial I/O registers.&n; */
 DECL|macro|M32R_SIO_OFFSET
 mdefine_line|#define M32R_SIO_OFFSET  (0x000FD000+M32R_SFR_OFFSET)
 DECL|macro|M32R_SIO0_CR_PORTL
-mdefine_line|#define M32R_SIO0_CR_PORTL     (0x000+M32R_SIO_OFFSET)
+mdefine_line|#define M32R_SIO0_CR_PORTL    (0x000+M32R_SIO_OFFSET)
 DECL|macro|M32R_SIO0_MOD0_PORTL
-mdefine_line|#define M32R_SIO0_MOD0_PORTL   (0x004+M32R_SIO_OFFSET)
+mdefine_line|#define M32R_SIO0_MOD0_PORTL  (0x004+M32R_SIO_OFFSET)
 DECL|macro|M32R_SIO0_MOD1_PORTL
-mdefine_line|#define M32R_SIO0_MOD1_PORTL   (0x008+M32R_SIO_OFFSET)
+mdefine_line|#define M32R_SIO0_MOD1_PORTL  (0x008+M32R_SIO_OFFSET)
 DECL|macro|M32R_SIO0_STS_PORTL
-mdefine_line|#define M32R_SIO0_STS_PORTL    (0x00C+M32R_SIO_OFFSET)
+mdefine_line|#define M32R_SIO0_STS_PORTL   (0x00C+M32R_SIO_OFFSET)
 DECL|macro|M32R_SIO0_TRCR_PORTL
-mdefine_line|#define M32R_SIO0_TRCR_PORTL   (0x010+M32R_SIO_OFFSET)
+mdefine_line|#define M32R_SIO0_TRCR_PORTL  (0x010+M32R_SIO_OFFSET)
 DECL|macro|M32R_SIO0_BAUR_PORTL
-mdefine_line|#define M32R_SIO0_BAUR_PORTL   (0x014+M32R_SIO_OFFSET)
+mdefine_line|#define M32R_SIO0_BAUR_PORTL  (0x014+M32R_SIO_OFFSET)
 DECL|macro|M32R_SIO0_RBAUR_PORTL
-mdefine_line|#define M32R_SIO0_RBAUR_PORTL  (0x018+M32R_SIO_OFFSET)
+mdefine_line|#define M32R_SIO0_RBAUR_PORTL (0x018+M32R_SIO_OFFSET)
 DECL|macro|M32R_SIO0_TXB_PORTL
-mdefine_line|#define M32R_SIO0_TXB_PORTL    (0x01C+M32R_SIO_OFFSET)
+mdefine_line|#define M32R_SIO0_TXB_PORTL   (0x01C+M32R_SIO_OFFSET)
 DECL|macro|M32R_SIO0_RXB_PORTL
-mdefine_line|#define M32R_SIO0_RXB_PORTL    (0x020+M32R_SIO_OFFSET)
+mdefine_line|#define M32R_SIO0_RXB_PORTL   (0x020+M32R_SIO_OFFSET)
 multiline_comment|/*&n; * Interrupt Control Unit registers.&n; */
 DECL|macro|M32R_ICU_OFFSET
 mdefine_line|#define M32R_ICU_OFFSET       (0x000FF000+M32R_SFR_OFFSET)
@@ -322,72 +364,72 @@ mdefine_line|#define M32R_ICUCR_ILEVEL6  (6UL&lt;&lt;0)   /* b29-b31: Interrupt 
 DECL|macro|M32R_ICUCR_ILEVEL7
 mdefine_line|#define M32R_ICUCR_ILEVEL7  (7UL&lt;&lt;0)   /* b29-b31: Disable interrupt */
 DECL|macro|M32R_IRQ_INT0
-mdefine_line|#define  M32R_IRQ_INT0    (1)   /* INT0 */
+mdefine_line|#define M32R_IRQ_INT0    (1)   /* INT0 */
 DECL|macro|M32R_IRQ_INT1
-mdefine_line|#define  M32R_IRQ_INT1    (2)   /* INT1 */
+mdefine_line|#define M32R_IRQ_INT1    (2)   /* INT1 */
 DECL|macro|M32R_IRQ_INT2
-mdefine_line|#define  M32R_IRQ_INT2    (3)   /* INT2 */
+mdefine_line|#define M32R_IRQ_INT2    (3)   /* INT2 */
 DECL|macro|M32R_IRQ_INT3
-mdefine_line|#define  M32R_IRQ_INT3    (4)   /* INT3 */
+mdefine_line|#define M32R_IRQ_INT3    (4)   /* INT3 */
 DECL|macro|M32R_IRQ_INT4
-mdefine_line|#define  M32R_IRQ_INT4    (5)   /* INT4 */
+mdefine_line|#define M32R_IRQ_INT4    (5)   /* INT4 */
 DECL|macro|M32R_IRQ_INT5
-mdefine_line|#define  M32R_IRQ_INT5    (6)   /* INT5 */
+mdefine_line|#define M32R_IRQ_INT5    (6)   /* INT5 */
 DECL|macro|M32R_IRQ_INT6
-mdefine_line|#define  M32R_IRQ_INT6    (7)   /* INT6 */
+mdefine_line|#define M32R_IRQ_INT6    (7)   /* INT6 */
 DECL|macro|M32R_IRQ_MFT0
-mdefine_line|#define  M32R_IRQ_MFT0    (16)  /* MFT0 */
+mdefine_line|#define M32R_IRQ_MFT0    (16)  /* MFT0 */
 DECL|macro|M32R_IRQ_MFT1
-mdefine_line|#define  M32R_IRQ_MFT1    (17)  /* MFT1 */
+mdefine_line|#define M32R_IRQ_MFT1    (17)  /* MFT1 */
 DECL|macro|M32R_IRQ_MFT2
-mdefine_line|#define  M32R_IRQ_MFT2    (18)  /* MFT2 */
+mdefine_line|#define M32R_IRQ_MFT2    (18)  /* MFT2 */
 DECL|macro|M32R_IRQ_MFT3
-mdefine_line|#define  M32R_IRQ_MFT3    (19)  /* MFT3 */
+mdefine_line|#define M32R_IRQ_MFT3    (19)  /* MFT3 */
 DECL|macro|M32R_IRQ_MFT4
-mdefine_line|#define  M32R_IRQ_MFT4    (20)  /* MFT4 */
+mdefine_line|#define M32R_IRQ_MFT4    (20)  /* MFT4 */
 DECL|macro|M32R_IRQ_MFT5
-mdefine_line|#define  M32R_IRQ_MFT5    (21)  /* MFT5 */
+mdefine_line|#define M32R_IRQ_MFT5    (21)  /* MFT5 */
 DECL|macro|M32R_IRQ_DMA0
-mdefine_line|#define  M32R_IRQ_DMA0    (32)  /* DMA0 */
+mdefine_line|#define M32R_IRQ_DMA0    (32)  /* DMA0 */
 DECL|macro|M32R_IRQ_DMA1
-mdefine_line|#define  M32R_IRQ_DMA1    (33)  /* DMA1 */
+mdefine_line|#define M32R_IRQ_DMA1    (33)  /* DMA1 */
 DECL|macro|M32R_IRQ_SIO0_R
-mdefine_line|#define  M32R_IRQ_SIO0_R  (48)  /* SIO0 send    */
+mdefine_line|#define M32R_IRQ_SIO0_R  (48)  /* SIO0 send    */
 DECL|macro|M32R_IRQ_SIO0_S
-mdefine_line|#define  M32R_IRQ_SIO0_S  (49)  /* SIO0 receive */
+mdefine_line|#define M32R_IRQ_SIO0_S  (49)  /* SIO0 receive */
 DECL|macro|M32R_IRQ_SIO1_R
-mdefine_line|#define  M32R_IRQ_SIO1_R  (50)  /* SIO1 send    */
+mdefine_line|#define M32R_IRQ_SIO1_R  (50)  /* SIO1 send    */
 DECL|macro|M32R_IRQ_SIO1_S
-mdefine_line|#define  M32R_IRQ_SIO1_S  (51)  /* SIO1 receive */
+mdefine_line|#define M32R_IRQ_SIO1_S  (51)  /* SIO1 receive */
 DECL|macro|M32R_IRQ_SIO2_R
-mdefine_line|#define  M32R_IRQ_SIO2_R  (52)  /* SIO2 send    */
+mdefine_line|#define M32R_IRQ_SIO2_R  (52)  /* SIO2 send    */
 DECL|macro|M32R_IRQ_SIO2_S
-mdefine_line|#define  M32R_IRQ_SIO2_S  (53)  /* SIO2 receive */
+mdefine_line|#define M32R_IRQ_SIO2_S  (53)  /* SIO2 receive */
 DECL|macro|M32R_IRQ_SIO3_R
-mdefine_line|#define  M32R_IRQ_SIO3_R  (54)  /* SIO3 send    */
+mdefine_line|#define M32R_IRQ_SIO3_R  (54)  /* SIO3 send    */
 DECL|macro|M32R_IRQ_SIO3_S
-mdefine_line|#define  M32R_IRQ_SIO3_S  (55)  /* SIO3 receive */
+mdefine_line|#define M32R_IRQ_SIO3_S  (55)  /* SIO3 receive */
 DECL|macro|M32R_IRQ_SIO4_R
-mdefine_line|#define  M32R_IRQ_SIO4_R  (56)  /* SIO4 send    */
+mdefine_line|#define M32R_IRQ_SIO4_R  (56)  /* SIO4 send    */
 DECL|macro|M32R_IRQ_SIO4_S
-mdefine_line|#define  M32R_IRQ_SIO4_S  (57)  /* SIO4 receive */
+mdefine_line|#define M32R_IRQ_SIO4_S  (57)  /* SIO4 receive */
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|M32R_IRQ_IPI0
-mdefine_line|#define M32R_IRQ_IPI0 (56)
+mdefine_line|#define M32R_IRQ_IPI0    (56)
 DECL|macro|M32R_IRQ_IPI1
-mdefine_line|#define M32R_IRQ_IPI1 (57)
+mdefine_line|#define M32R_IRQ_IPI1    (57)
 DECL|macro|M32R_IRQ_IPI2
-mdefine_line|#define M32R_IRQ_IPI2 (58)
+mdefine_line|#define M32R_IRQ_IPI2    (58)
 DECL|macro|M32R_IRQ_IPI3
-mdefine_line|#define M32R_IRQ_IPI3 (59)
+mdefine_line|#define M32R_IRQ_IPI3    (59)
 DECL|macro|M32R_IRQ_IPI4
-mdefine_line|#define M32R_IRQ_IPI4 (60)
+mdefine_line|#define M32R_IRQ_IPI4    (60)
 DECL|macro|M32R_IRQ_IPI5
-mdefine_line|#define M32R_IRQ_IPI5 (61)
+mdefine_line|#define M32R_IRQ_IPI5    (61)
 DECL|macro|M32R_IRQ_IPI6
-mdefine_line|#define M32R_IRQ_IPI6 (62)
+mdefine_line|#define M32R_IRQ_IPI6    (62)
 DECL|macro|M32R_IRQ_IPI7
-mdefine_line|#define M32R_IRQ_IPI7 (63)
+mdefine_line|#define M32R_IRQ_IPI7    (63)
 DECL|macro|M32R_CPUID_PORTL
 mdefine_line|#define M32R_CPUID_PORTL (0xffffffe0)
 DECL|macro|M32R_FPGA_TOP

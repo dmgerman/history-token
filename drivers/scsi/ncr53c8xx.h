@@ -3,11 +3,6 @@ macro_line|#ifndef NCR53C8XX_H
 DECL|macro|NCR53C8XX_H
 mdefine_line|#define NCR53C8XX_H
 macro_line|#include &lt;scsi/scsi_host.h&gt;
-DECL|typedef|vm_offset_t
-r_typedef
-id|u_long
-id|vm_offset_t
-suffix:semicolon
 macro_line|#include &quot;sym53c8xx_defs.h&quot;
 multiline_comment|/*&n;&t;Build a scatter/gather entry.&n;&t;see sym53c8xx_2/sym_hipd.h for more detailed sym_build_sge()&n;&t;implementation ;)&n; */
 DECL|macro|ncr_build_sge
@@ -133,6 +128,22 @@ r_struct
 id|pt_regs
 op_star
 id|regs
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ncr53c8xx_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ncr53c8xx_exit
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* NCR53C8XX_H */

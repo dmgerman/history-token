@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sh_bios.c,v 1.2 2003/05/04 19:29:53 lethal Exp $&n; *&n; *  linux/arch/sh/kernel/sh_bios.c&n; *  C interface for trapping into the standard LinuxSH BIOS.&n; *&n; *  Copyright (C) 2000 Greg Banks, Mitch Davis&n; *&n; */
+multiline_comment|/*&n; *  linux/arch/sh/kernel/sh_bios.c&n; *  C interface for trapping into the standard LinuxSH BIOS.&n; *&n; *  Copyright (C) 2000 Greg Banks, Mitch Davis&n; *&n; */
 macro_line|#include &lt;asm/sh_bios.h&gt;
 DECL|macro|BIOS_CALL_CONSOLE_WRITE
 mdefine_line|#define BIOS_CALL_CONSOLE_WRITE     &t;0

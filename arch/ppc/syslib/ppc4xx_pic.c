@@ -985,6 +985,8 @@ suffix:semicolon
 r_int
 r_int
 id|tr_bits
+op_assign
+l_int|0
 suffix:semicolon
 id|bit
 op_assign

@@ -10,7 +10,7 @@ DECL|function|checksum_block
 id|checksum_block
 c_func
 (paren
-id|u32
+id|__be32
 op_star
 id|m
 comma
@@ -185,7 +185,7 @@ c_cond
 (paren
 op_star
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|data
@@ -214,7 +214,7 @@ id|checksum_block
 c_func
 (paren
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|data
@@ -235,7 +235,7 @@ suffix:semicolon
 multiline_comment|/* Try again with 0xdc..0xdf zeroed, Windows might have&n;&t;&t; * trashed it.&n;&t;&t; */
 op_star
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 (paren
@@ -253,7 +253,7 @@ id|checksum_block
 c_func
 (paren
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|data
@@ -447,7 +447,7 @@ id|checksum_block
 c_func
 (paren
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|pb
@@ -570,12 +570,12 @@ id|dostype
 l_int|4
 )braket
 suffix:semicolon
-id|u32
+id|__be32
 op_star
 id|dt
 op_assign
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|dostype

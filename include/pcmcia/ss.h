@@ -512,7 +512,8 @@ id|pccard_mem_map
 id|cis_mem
 suffix:semicolon
 DECL|member|cis_virt
-id|u_char
+r_void
+id|__iomem
 op_star
 id|cis_virt
 suffix:semicolon
@@ -692,7 +693,8 @@ op_star
 id|cb_cis_res
 suffix:semicolon
 DECL|member|cb_cis_virt
-id|u_char
+r_void
+id|__iomem
 op_star
 id|cb_cis_virt
 suffix:semicolon

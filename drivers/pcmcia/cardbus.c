@@ -50,7 +50,8 @@ id|u_int
 id|xlate_rom_addr
 c_func
 (paren
-id|u_char
+r_void
+id|__iomem
 op_star
 id|b
 comma

@@ -212,8 +212,6 @@ r_struct
 id|NCR_ESP
 op_star
 id|espchain
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|nesps
 DECL|variable|esps_in_use
@@ -2405,7 +2403,7 @@ suffix:semicolon
 )brace
 id|esp-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|esp
@@ -2437,7 +2435,7 @@ id|esp
 (brace
 id|espchain
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -2882,15 +2880,15 @@ suffix:semicolon
 multiline_comment|/* Initialize the command queues */
 id|esp-&gt;current_SC
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|esp-&gt;disconnected_SC
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|esp-&gt;issue_SC
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Clear the state machines. */
 id|esp-&gt;targets_present
@@ -7063,7 +7061,7 @@ l_int|0
 suffix:semicolon
 id|esp-&gt;current_SC
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|sp-&gt;SCp.phase
 op_assign
@@ -14194,7 +14192,7 @@ id|isvc_vector
 )braket
 op_assign
 (brace
-l_int|0
+l_int|NULL
 comma
 id|esp_do_phase_determine
 comma

@@ -1,7 +1,9 @@
 multiline_comment|/*&n; *    Disk Array driver for Compaq SA53xx Controllers, SCSI Tape module&n; *    Copyright 2001 Compaq Computer Corporation&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; *    NON INFRINGEMENT.  See the GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *    Questions/Comments/Bugfixes to arrays@compaq.com&n; *    &n; *    Author: Stephen M. Cameron&n; */
 macro_line|#ifdef CONFIG_CISS_SCSI_TAPE
 multiline_comment|/* Here we have code to present the driver as a scsi driver &n;   as it is simultaneously presented as a block driver.  The &n;   reason for doing this is to allow access to SCSI tape drives&n;   through the array controller.  Note in particular, neither &n;   physical nor logical disks are presented through the scsi layer. */
-macro_line|#include &quot;../scsi/scsi.h&quot; 
+macro_line|#include &lt;scsi/scsi.h&gt; 
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt; 
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
@@ -95,7 +97,8 @@ multiline_comment|/* 0 == read, 1 == write */
 r_int
 id|cciss_scsi_queue_command
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -105,47 +108,12 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
 suffix:semicolon
-macro_line|#if 0
-r_int
-id|cciss_scsi_abort
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-)paren
-suffix:semicolon
-macro_line|#if defined SCSI_RESET_SYNCHRONOUS &amp;&amp; defined SCSI_RESET_ASYNCHRONOUS
-r_int
-id|cciss_scsi_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-comma
-r_int
-r_int
-id|reset_flags
-)paren
-suffix:semicolon
-macro_line|#else
-r_int
-id|cciss_scsi_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 DECL|variable|ccissscsi
 r_static
 r_struct
@@ -256,7 +224,8 @@ comma
 suffix:semicolon
 DECL|variable|cciss_driver_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|cciss_driver_template
 op_assign
 (brace
@@ -2504,7 +2473,8 @@ id|__u32
 id|tag
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 suffix:semicolon
@@ -2542,7 +2512,8 @@ suffix:semicolon
 id|cmd
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|cp-&gt;scsi_cmd
@@ -2570,11 +2541,7 @@ id|cmd-&gt;buffer
 comma
 id|cmd-&gt;use_sg
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|cmd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2615,11 +2582,7 @@ id|addr64.val
 comma
 id|cmd-&gt;request_bufflen
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|cmd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -3408,11 +3371,7 @@ id|buf
 comma
 id|bufsize
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
-id|SCSI_DATA_READ
-)paren
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|cp-&gt;waiting
@@ -3480,11 +3439,7 @@ id|cp
 comma
 id|bufsize
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
-id|SCSI_DATA_READ
-)paren
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 r_return
@@ -5145,7 +5100,7 @@ r_return
 id|buf
 suffix:semicolon
 )brace
-multiline_comment|/* cciss_scatter_gather takes a Scsi_Cmnd, (cmd), and does the pci &n;   dma mapping  and fills in the scatter gather entries of the &n;   cciss command, cp. */
+multiline_comment|/* cciss_scatter_gather takes a struct scsi_cmnd, (cmd), and does the pci &n;   dma mapping  and fills in the scatter gather entries of the &n;   cciss command, cp. */
 r_static
 r_void
 DECL|function|cciss_scatter_gather
@@ -5161,7 +5116,8 @@ id|CommandList_struct
 op_star
 id|cp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -5220,11 +5176,7 @@ id|cmd-&gt;request_buffer
 comma
 id|cmd-&gt;request_bufflen
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|cmd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 id|cp-&gt;SG
@@ -5306,11 +5258,7 @@ id|cmd-&gt;buffer
 comma
 id|cmd-&gt;use_sg
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|cmd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 r_for
@@ -5447,7 +5395,8 @@ r_int
 DECL|function|cciss_scsi_queue_command
 id|cciss_scsi_queue_command
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -5457,7 +5406,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -5737,7 +5687,7 @@ id|cmd-&gt;sc_data_direction
 )paren
 (brace
 r_case
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 suffix:colon
 id|cp-&gt;Request.Type.Direction
 op_assign
@@ -5746,7 +5696,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:colon
 id|cp-&gt;Request.Type.Direction
 op_assign
@@ -5755,7 +5705,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:colon
 id|cp-&gt;Request.Type.Direction
 op_assign
@@ -5764,7 +5714,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCSI_DATA_UNKNOWN
+id|DMA_BIDIRECTIONAL
 suffix:colon
 singleline_comment|// This can happen if a buggy application does a scsi passthru
 singleline_comment|// and sets both inlen and outlen to non-zero. ( see

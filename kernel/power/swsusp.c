@@ -798,10 +798,28 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+r_int
+id|mod
+op_assign
+id|nr_copy_pages
+op_div
+l_int|100
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mod
+)paren
+id|mod
+op_assign
+l_int|1
+suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Writing data to swap (%d pages): &quot;
+l_string|&quot;Writing data to swap (%d pages)...     &quot;
 comma
 id|nr_copy_pages
 )paren
@@ -831,13 +849,17 @@ op_logical_neg
 (paren
 id|i
 op_mod
-l_int|100
+id|mod
 )paren
 )paren
 id|printk
 c_func
 (paren
-l_string|&quot;.&quot;
+l_string|&quot;&bslash;b&bslash;b&bslash;b&bslash;b%3d%%&quot;
+comma
+id|i
+op_div
+id|mod
 )paren
 suffix:semicolon
 id|error
@@ -869,9 +891,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; %d Pages done.&bslash;n&quot;
-comma
-id|i
+l_string|&quot;&bslash;b&bslash;b&bslash;b&bslash;bdone&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3032,7 +3052,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Restore control flow magically appears here */
 id|restore_processor_state
+c_func
+(paren
+)paren
+suffix:semicolon
+id|restore_highmem
 c_func
 (paren
 )paren
@@ -3095,6 +3121,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* We&squot;ll ignore saved state, but this gets preempt count (etc) right */
 id|save_processor_state
 c_func
 (paren
@@ -3105,6 +3132,14 @@ op_assign
 id|swsusp_arch_resume
 c_func
 (paren
+)paren
+suffix:semicolon
+multiline_comment|/* Code below is only ever reached in case of failure. Otherwise&n;&t; * execution continues at place where swsusp_arch_suspend was called&n;         */
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|error
 )paren
 suffix:semicolon
 id|restore_processor_state
@@ -4157,6 +4192,23 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|mod
+op_assign
+id|nr_copy_pages
+op_div
+l_int|100
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mod
+)paren
+id|mod
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4175,7 +4227,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Reading image data (%d pages): &quot;
+l_string|&quot;Reading image data (%d pages):     &quot;
 comma
 id|nr_copy_pages
 )paren
@@ -4212,13 +4264,17 @@ op_logical_neg
 (paren
 id|i
 op_mod
-l_int|100
+id|mod
 )paren
 )paren
 id|printk
 c_func
 (paren
-l_string|&quot;.&quot;
+l_string|&quot;&bslash;b&bslash;b&bslash;b&bslash;b%3d%%&quot;
+comma
+id|i
+op_div
+id|mod
 )paren
 suffix:semicolon
 id|error

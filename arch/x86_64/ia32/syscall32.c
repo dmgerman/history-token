@@ -63,11 +63,10 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* RED-PEN: This knows too much about high level VM */
-multiline_comment|/* Alternative would be to generate a vma with appropriate backing options&n;   and let it be handled by generic VM */
-DECL|function|map_syscall32
+multiline_comment|/*&n; * Map the 32bit vsyscall page on demand.&n; *&n; * RED-PEN: This knows too much about high level VM.&n; *&n; * Alternative would be to generate a vma with appropriate backing options&n; * and let it be handled by generic VM.&n; */
+DECL|function|__map_syscall32
 r_int
-id|map_syscall32
+id|__map_syscall32
 c_func
 (paren
 r_struct
@@ -92,13 +91,6 @@ r_int
 id|err
 op_assign
 l_int|0
-suffix:semicolon
-id|down_read
-c_func
-(paren
-op_amp
-id|mm-&gt;mmap_sem
-)paren
 suffix:semicolon
 id|spin_lock
 c_func
@@ -196,6 +188,45 @@ c_func
 (paren
 op_amp
 id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
+DECL|function|map_syscall32
+r_int
+id|map_syscall32
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|address
+)paren
+(brace
+r_int
+id|err
+suffix:semicolon
+id|down_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
+id|err
+op_assign
+id|__map_syscall32
+c_func
+(paren
+id|mm
+comma
+id|address
 )paren
 suffix:semicolon
 id|up_read
@@ -300,9 +331,9 @@ c_func
 id|init_syscall32
 )paren
 suffix:semicolon
+multiline_comment|/* May not be __init: called during resume */
 DECL|function|syscall32_cpu_init
 r_void
-id|__init
 id|syscall32_cpu_init
 c_func
 (paren

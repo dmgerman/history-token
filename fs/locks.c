@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -6445,10 +6446,17 @@ op_eq
 id|filp
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t; * We might have a POSIX lock that was created at the same time&n;&t;&t;&t; * the filp was closed for the last time. Just remove that too,&n;&t;&t;&t; * regardless of ownership, since nobody can own it.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
 id|IS_FLOCK
+c_func
+(paren
+id|fl
+)paren
+op_logical_or
+id|IS_POSIX
 c_func
 (paren
 id|fl
@@ -6485,7 +6493,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/* FL_POSIX locks of this process have already been&n;&t;&t;&t; * removed in filp_close-&gt;locks_remove_posix.&n;&t;&t;&t; */
+multiline_comment|/* What? */
 id|BUG
 c_func
 (paren

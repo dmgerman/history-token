@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/kref.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
@@ -2214,6 +2215,20 @@ id|cmd
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we are in the middle of error recovery, don&squot;t let anyone&n;&t; * else try and use this device.  Also, if error recovery fails, it&n;&t; * may try and take the device offline, in which case all further&n;&t; * access to the device is prohibited.&n;&t; */
+id|error
+op_assign
+id|scsi_nonblockable_ioctl
+c_func
+(paren
+id|sdp
+comma
+id|cmd
+comma
+id|p
+comma
+id|filp
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2223,10 +2238,12 @@ c_func
 (paren
 id|sdp
 )paren
+op_logical_or
+op_logical_neg
+id|error
 )paren
 r_return
-op_minus
-id|ENODEV
+id|error
 suffix:semicolon
 r_if
 c_cond
@@ -3638,10 +3655,6 @@ op_eq
 id|NOT_READY
 )paren
 (brace
-r_int
-r_int
-id|time1
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3755,34 +3768,13 @@ id|spintime
 op_assign
 l_int|1
 suffix:semicolon
-id|time1
-op_assign
-id|HZ
-suffix:semicolon
 multiline_comment|/* Wait 1 second for next try */
-r_do
-(brace
-id|current-&gt;state
-op_assign
-id|TASK_UNINTERRUPTIBLE
-suffix:semicolon
-id|time1
-op_assign
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|time1
+l_int|1000
 )paren
 suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|time1
-)paren
-(brace
-suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
@@ -4637,6 +4629,11 @@ multiline_comment|/*&n;&t;&t; * The user might want to re-format the drive with&
 id|sdkp-&gt;capacity
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * set a bogus sector size so the normal read/write&n;&t;&t; * logic in the block layer will eventually refuse any&n;&t;&t; * request on this device without tripping over power&n;&t;&t; * of two sector size assumptions&n;&t;&t; */
+id|sector_size
+op_assign
+l_int|512
 suffix:semicolon
 )brace
 (brace

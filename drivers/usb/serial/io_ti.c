@@ -861,7 +861,7 @@ suffix:semicolon
 id|__u8
 id|read_length
 suffix:semicolon
-id|__u16
+id|__be16
 id|be_start_address
 suffix:semicolon
 id|dbg
@@ -1366,7 +1366,7 @@ suffix:semicolon
 r_int
 id|write_length
 suffix:semicolon
-id|__u16
+id|__be16
 id|be_start_address
 suffix:semicolon
 multiline_comment|/* We can only send a maximum of 1 aligned byte page at a time */

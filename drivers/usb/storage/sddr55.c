@@ -3333,7 +3333,7 @@ op_decrement
 suffix:semicolon
 (paren
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|ptr
@@ -3350,7 +3350,7 @@ id|capacity
 suffix:semicolon
 (paren
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|ptr

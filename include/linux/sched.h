@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/pid.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
+macro_line|#include &lt;linux/topology.h&gt;
 r_struct
 id|exec_domain
 suffix:semicolon
@@ -163,10 +164,10 @@ DECL|macro|TASK_STOPPED
 mdefine_line|#define TASK_STOPPED&t;&t;4
 DECL|macro|TASK_TRACED
 mdefine_line|#define TASK_TRACED&t;&t;8
-DECL|macro|TASK_ZOMBIE
-mdefine_line|#define TASK_ZOMBIE&t;&t;16
-DECL|macro|TASK_DEAD
-mdefine_line|#define TASK_DEAD&t;&t;32
+DECL|macro|EXIT_ZOMBIE
+mdefine_line|#define EXIT_ZOMBIE&t;&t;16
+DECL|macro|EXIT_DEAD
+mdefine_line|#define EXIT_DEAD&t;&t;32
 DECL|macro|__set_task_state
 mdefine_line|#define __set_task_state(tsk, state_value)&t;&t;&bslash;&n;&t;do { (tsk)-&gt;state = (state_value); } while (0)
 DECL|macro|set_task_state
@@ -854,6 +855,15 @@ id|cmin_flt
 comma
 id|cmaj_flt
 suffix:semicolon
+multiline_comment|/*&n;&t; * We don&squot;t bother to synchronize most readers of this at all,&n;&t; * because there is no reader checking a limit that actually needs&n;&t; * to get both rlim_cur and rlim_max atomically, and either one&n;&t; * alone is a single word that can safely be read normally.&n;&t; * getrlimit/setrlimit use task_lock(current-&gt;group_leader) to&n;&t; * protect this instead of the siglock, because they really&n;&t; * have no need to disable irqs.&n;&t; */
+DECL|member|rlim
+r_struct
+id|rlimit
+id|rlim
+(braket
+id|RLIM_NLIMITS
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Priority of a process goes from 0..MAX_PRIO-1, valid RT&n; * priority is 0..MAX_RT_PRIO-1, and SCHED_NORMAL tasks are&n; * in the range MAX_RT_PRIO..MAX_PRIO-1. Priority values&n; * are inverted: lower p-&gt;prio value means higher priority.&n; *&n; * The MAX_USER_RT_PRIO value allows the actual maximum&n; * RT priority to be separate from the value exported to&n; * user-space.  This allows kernel threads to set their&n; * priority to a value higher than any user task. Note:&n; * MAX_RT_PRIO must not be smaller than MAX_USER_RT_PRIO.&n; */
@@ -1077,6 +1087,269 @@ id|file_operations
 id|proc_schedstat_operations
 suffix:semicolon
 macro_line|#endif
+DECL|enum|idle_type
+r_enum
+id|idle_type
+(brace
+DECL|enumerator|SCHED_IDLE
+id|SCHED_IDLE
+comma
+DECL|enumerator|NOT_IDLE
+id|NOT_IDLE
+comma
+DECL|enumerator|NEWLY_IDLE
+id|NEWLY_IDLE
+comma
+DECL|enumerator|MAX_IDLE_TYPES
+id|MAX_IDLE_TYPES
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * sched-domains (multiprocessor balancing) declarations:&n; */
+macro_line|#ifdef CONFIG_SMP
+DECL|macro|SCHED_LOAD_SCALE
+mdefine_line|#define SCHED_LOAD_SCALE&t;128UL&t;/* increase resolution of load */
+DECL|macro|SD_LOAD_BALANCE
+mdefine_line|#define SD_LOAD_BALANCE&t;&t;1&t;/* Do load balancing on this domain. */
+DECL|macro|SD_BALANCE_NEWIDLE
+mdefine_line|#define SD_BALANCE_NEWIDLE&t;2&t;/* Balance when about to become idle */
+DECL|macro|SD_BALANCE_EXEC
+mdefine_line|#define SD_BALANCE_EXEC&t;&t;4&t;/* Balance on exec */
+DECL|macro|SD_WAKE_IDLE
+mdefine_line|#define SD_WAKE_IDLE&t;&t;8&t;/* Wake to idle CPU on task wakeup */
+DECL|macro|SD_WAKE_AFFINE
+mdefine_line|#define SD_WAKE_AFFINE&t;&t;16&t;/* Wake task to waking CPU */
+DECL|macro|SD_WAKE_BALANCE
+mdefine_line|#define SD_WAKE_BALANCE&t;&t;32&t;/* Perform balancing at task wakeup */
+DECL|macro|SD_SHARE_CPUPOWER
+mdefine_line|#define SD_SHARE_CPUPOWER&t;64&t;/* Domain members share cpu power */
+DECL|struct|sched_group
+r_struct
+id|sched_group
+(brace
+DECL|member|next
+r_struct
+id|sched_group
+op_star
+id|next
+suffix:semicolon
+multiline_comment|/* Must be a circular list */
+DECL|member|cpumask
+id|cpumask_t
+id|cpumask
+suffix:semicolon
+multiline_comment|/*&n;&t; * CPU power of this group, SCHED_LOAD_SCALE being max power for a&n;&t; * single CPU. This is read only (except for setup, hotplug CPU).&n;&t; */
+DECL|member|cpu_power
+r_int
+r_int
+id|cpu_power
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|sched_domain
+r_struct
+id|sched_domain
+(brace
+multiline_comment|/* These fields must be setup */
+DECL|member|parent
+r_struct
+id|sched_domain
+op_star
+id|parent
+suffix:semicolon
+multiline_comment|/* top domain must be null terminated */
+DECL|member|groups
+r_struct
+id|sched_group
+op_star
+id|groups
+suffix:semicolon
+multiline_comment|/* the balancing groups of the domain */
+DECL|member|span
+id|cpumask_t
+id|span
+suffix:semicolon
+multiline_comment|/* span of all CPUs in this domain */
+DECL|member|min_interval
+r_int
+r_int
+id|min_interval
+suffix:semicolon
+multiline_comment|/* Minimum balance interval ms */
+DECL|member|max_interval
+r_int
+r_int
+id|max_interval
+suffix:semicolon
+multiline_comment|/* Maximum balance interval ms */
+DECL|member|busy_factor
+r_int
+r_int
+id|busy_factor
+suffix:semicolon
+multiline_comment|/* less balancing by factor if busy */
+DECL|member|imbalance_pct
+r_int
+r_int
+id|imbalance_pct
+suffix:semicolon
+multiline_comment|/* No balance until over watermark */
+DECL|member|cache_hot_time
+r_int
+r_int
+r_int
+id|cache_hot_time
+suffix:semicolon
+multiline_comment|/* Task considered cache hot (ns) */
+DECL|member|cache_nice_tries
+r_int
+r_int
+id|cache_nice_tries
+suffix:semicolon
+multiline_comment|/* Leave cache hot tasks for # tries */
+DECL|member|per_cpu_gain
+r_int
+r_int
+id|per_cpu_gain
+suffix:semicolon
+multiline_comment|/* CPU % gained by adding domain cpus */
+DECL|member|flags
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* See SD_* */
+multiline_comment|/* Runtime fields. */
+DECL|member|last_balance
+r_int
+r_int
+id|last_balance
+suffix:semicolon
+multiline_comment|/* init to jiffies. units in jiffies */
+DECL|member|balance_interval
+r_int
+r_int
+id|balance_interval
+suffix:semicolon
+multiline_comment|/* initialise to 1. units in ms. */
+DECL|member|nr_balance_failed
+r_int
+r_int
+id|nr_balance_failed
+suffix:semicolon
+multiline_comment|/* initialise to 0 */
+macro_line|#ifdef CONFIG_SCHEDSTATS
+multiline_comment|/* load_balance() stats */
+DECL|member|lb_cnt
+r_int
+r_int
+id|lb_cnt
+(braket
+id|MAX_IDLE_TYPES
+)braket
+suffix:semicolon
+DECL|member|lb_failed
+r_int
+r_int
+id|lb_failed
+(braket
+id|MAX_IDLE_TYPES
+)braket
+suffix:semicolon
+DECL|member|lb_imbalance
+r_int
+r_int
+id|lb_imbalance
+(braket
+id|MAX_IDLE_TYPES
+)braket
+suffix:semicolon
+DECL|member|lb_nobusyg
+r_int
+r_int
+id|lb_nobusyg
+(braket
+id|MAX_IDLE_TYPES
+)braket
+suffix:semicolon
+DECL|member|lb_nobusyq
+r_int
+r_int
+id|lb_nobusyq
+(braket
+id|MAX_IDLE_TYPES
+)braket
+suffix:semicolon
+multiline_comment|/* sched_balance_exec() stats */
+DECL|member|sbe_attempts
+r_int
+r_int
+id|sbe_attempts
+suffix:semicolon
+DECL|member|sbe_pushed
+r_int
+r_int
+id|sbe_pushed
+suffix:semicolon
+multiline_comment|/* try_to_wake_up() stats */
+DECL|member|ttwu_wake_affine
+r_int
+r_int
+id|ttwu_wake_affine
+suffix:semicolon
+DECL|member|ttwu_wake_balance
+r_int
+r_int
+id|ttwu_wake_balance
+suffix:semicolon
+macro_line|#endif
+)brace
+suffix:semicolon
+macro_line|#ifdef ARCH_HAS_SCHED_DOMAIN
+multiline_comment|/* Useful helpers that arch setup code may use. Defined in kernel/sched.c */
+r_extern
+id|cpumask_t
+id|cpu_isolated_map
+suffix:semicolon
+r_extern
+r_void
+id|init_sched_build_groups
+c_func
+(paren
+r_struct
+id|sched_group
+id|groups
+(braket
+)braket
+comma
+id|cpumask_t
+id|span
+comma
+r_int
+(paren
+op_star
+id|group_fn
+)paren
+(paren
+r_int
+id|cpu
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|cpu_attach_domain
+c_func
+(paren
+r_struct
+id|sched_domain
+op_star
+id|sd
+comma
+r_int
+id|cpu
+)paren
+suffix:semicolon
+macro_line|#endif /* ARCH_HAS_SCHED_DOMAIN */
+macro_line|#endif /* CONFIG_SMP */
 r_struct
 id|io_context
 suffix:semicolon
@@ -1233,10 +1506,13 @@ r_int
 id|interactive_credit
 suffix:semicolon
 DECL|member|timestamp
+DECL|member|last_ran
 r_int
 r_int
 r_int
 id|timestamp
+comma
+id|last_ran
 suffix:semicolon
 DECL|member|activated
 r_int
@@ -1298,6 +1574,10 @@ r_struct
 id|linux_binfmt
 op_star
 id|binfmt
+suffix:semicolon
+DECL|member|exit_state
+r_int
+id|exit_state
 suffix:semicolon
 DECL|member|exit_code
 DECL|member|exit_signal
@@ -1451,7 +1731,8 @@ id|nivcsw
 suffix:semicolon
 multiline_comment|/* context switch counts */
 DECL|member|start_time
-id|u64
+r_struct
+id|timespec
 id|start_time
 suffix:semicolon
 multiline_comment|/* mm fault and swap info: this can arguably be seen as either mm-specific or thread-specific */
@@ -1517,15 +1798,6 @@ r_struct
 id|user_struct
 op_star
 id|user
-suffix:semicolon
-multiline_comment|/* limits */
-DECL|member|rlim
-r_struct
-id|rlimit
-id|rlim
-(braket
-id|RLIM_NLIMITS
-)braket
 suffix:semicolon
 DECL|member|used_math
 r_int

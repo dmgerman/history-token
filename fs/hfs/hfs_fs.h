@@ -153,7 +153,7 @@ op_star
 id|alt_mdb
 suffix:semicolon
 DECL|member|bitmap
-id|u32
+id|__be32
 op_star
 id|bitmap
 suffix:semicolon
@@ -232,12 +232,12 @@ id|s_quiet
 suffix:semicolon
 multiline_comment|/* Silent failure when&n;&t;&t;&t;&t;&t;&t;   changing owner or mode? */
 DECL|member|s_type
-id|u32
+id|__be32
 id|s_type
 suffix:semicolon
 multiline_comment|/* Type for new files */
 DECL|member|s_creator
-id|u32
+id|__be32
 id|s_creator
 suffix:semicolon
 multiline_comment|/* Creator for new files */
@@ -647,10 +647,10 @@ r_struct
 id|hfs_extent
 op_star
 comma
-id|u32
+id|__be32
 op_star
 comma
-id|u32
+id|__be32
 op_star
 )paren
 suffix:semicolon
@@ -695,10 +695,10 @@ id|hfs_extent
 op_star
 id|ext
 comma
-id|u32
+id|__be32
 id|log_size
 comma
-id|u32
+id|__be32
 id|phys_size
 comma
 id|u32

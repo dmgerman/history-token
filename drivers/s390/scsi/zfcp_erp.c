@@ -1,9 +1,9 @@
-multiline_comment|/* &n; * &n; * linux/drivers/s390/scsi/zfcp_erp.c &n; * &n; * FCP adapter driver for IBM eServer zSeries &n; * &n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt; &n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt; &n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt; &n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt; &n; * &n; * This program is free software; you can redistribute it and/or modify &n; * it under the terms of the GNU General Public License as published by &n; * the Free Software Foundation; either version 2, or (at your option) &n; * any later version. &n; * &n; * This program is distributed in the hope that it will be useful, &n; * but WITHOUT ANY WARRANTY; without even the implied warranty of &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the &n; * GNU General Public License for more details. &n; * &n; * You should have received a copy of the GNU General Public License &n; * along with this program; if not, write to the Free Software &n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; */
+multiline_comment|/* &n; * &n; * linux/drivers/s390/scsi/zfcp_erp.c &n; * &n; * FCP adapter driver for IBM eServer zSeries &n; * &n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt; &n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt; &n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt; &n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt; &n; *            Andreas Herrmann &lt;aherrman@de.ibm.com&gt;&n; * &n; * This program is free software; you can redistribute it and/or modify &n; * it under the terms of the GNU General Public License as published by &n; * the Free Software Foundation; either version 2, or (at your option) &n; * any later version. &n; * &n; * This program is distributed in the hope that it will be useful, &n; * but WITHOUT ANY WARRANTY; without even the implied warranty of &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the &n; * GNU General Public License for more details. &n; * &n; * You should have received a copy of the GNU General Public License &n; * along with this program; if not, write to the Free Software &n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; */
 DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA&t;&t;&t;ZFCP_LOG_AREA_ERP
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_ERP_REVISION
-mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.65 $&quot;
+mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.69 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -1301,9 +1301,13 @@ id|PAGE_SIZE
 op_rshift
 l_int|1
 suffix:semicolon
-id|send_els-&gt;port
+id|send_els-&gt;adapter
 op_assign
-id|port
+id|port-&gt;adapter
+suffix:semicolon
+id|send_els-&gt;d_id
+op_assign
+id|port-&gt;d_id
 suffix:semicolon
 id|send_els-&gt;ls_code
 op_assign
@@ -1727,8 +1731,6 @@ r_struct
 id|zfcp_port
 op_star
 id|port
-op_assign
-id|send_els-&gt;port
 suffix:semicolon
 r_struct
 id|zfcp_ls_rtv_acc
@@ -1759,6 +1761,38 @@ id|resp
 suffix:semicolon
 id|u8
 id|req_code
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|zfcp_data.config_lock
+)paren
+suffix:semicolon
+id|port
+op_assign
+id|zfcp_get_port_by_did
+c_func
+(paren
+id|send_els-&gt;adapter
+comma
+id|send_els-&gt;d_id
+)paren
+suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|zfcp_data.config_lock
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|port
+op_eq
+l_int|NULL
+)paren
 suffix:semicolon
 multiline_comment|/* request rejected or timed out */
 r_if
@@ -2017,6 +2051,12 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
+id|zfcp_port_put
+c_func
+(paren
+id|port
+)paren
+suffix:semicolon
 id|__free_pages
 c_func
 (paren
@@ -2059,6 +2099,12 @@ id|port
 r_int
 id|retval
 suffix:semicolon
+id|zfcp_port_get
+c_func
+(paren
+id|port
+)paren
+suffix:semicolon
 id|retval
 op_assign
 id|zfcp_els
@@ -2077,6 +2123,12 @@ op_ne
 l_int|0
 )paren
 (brace
+id|zfcp_port_put
+c_func
+(paren
+id|port
+)paren
+suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
@@ -11982,7 +12034,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * zfcp_erp_action_cleanup&n; *&n; * registers unit with scsi stack if appropiate and fixes reference counts&n; */
+multiline_comment|/**&n; * zfcp_erp_action_cleanup&n; *&n; * Register unit with scsi stack if appropiate and fix reference counts.&n; * Note: Temporary units are not registered with scsi stack.&n; */
 r_static
 r_void
 DECL|function|zfcp_erp_action_cleanup
@@ -12011,34 +12063,6 @@ r_int
 id|result
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
-id|action
-op_eq
-id|ZFCP_ERP_ACTION_REOPEN_UNIT
-)paren
-op_logical_and
-(paren
-id|result
-op_eq
-id|ZFCP_ERP_SUCCEEDED
-)paren
-op_logical_and
-(paren
-op_logical_neg
-id|unit-&gt;device
-)paren
-)paren
-(brace
-id|zfcp_erp_schedule_work
-c_func
-(paren
-id|unit
-)paren
-suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -12048,6 +12072,38 @@ id|action
 r_case
 id|ZFCP_ERP_ACTION_REOPEN_UNIT
 suffix:colon
+r_if
+c_cond
+(paren
+(paren
+id|result
+op_eq
+id|ZFCP_ERP_SUCCEEDED
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|atomic_test_mask
+c_func
+(paren
+id|ZFCP_STATUS_UNIT_TEMPORARY
+comma
+op_amp
+id|unit-&gt;status
+)paren
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|unit-&gt;device
+)paren
+)paren
+id|zfcp_erp_schedule_work
+c_func
+(paren
+id|unit
+)paren
+suffix:semicolon
 id|zfcp_unit_put
 c_func
 (paren

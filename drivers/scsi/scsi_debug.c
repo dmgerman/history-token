@@ -25,7 +25,7 @@ macro_line|#endif
 macro_line|#include &quot;scsi_logging.h&quot;
 macro_line|#include &quot;scsi_debug.h&quot;
 DECL|macro|SCSI_DEBUG_VERSION
-mdefine_line|#define SCSI_DEBUG_VERSION &quot;1.73&quot;
+mdefine_line|#define SCSI_DEBUG_VERSION &quot;1.74&quot;
 DECL|variable|scsi_debug_version_date
 r_static
 r_const
@@ -33,7 +33,7 @@ r_char
 op_star
 id|scsi_debug_version_date
 op_assign
-l_string|&quot;20040518&quot;
+l_string|&quot;20040829&quot;
 suffix:semicolon
 multiline_comment|/* Additional Sense Code (ASC) used */
 DECL|macro|NO_ADDED_SENSE
@@ -73,9 +73,11 @@ mdefine_line|#define DEF_NUM_PARTS   0
 DECL|macro|DEF_OPTS
 mdefine_line|#define DEF_OPTS   0
 DECL|macro|DEF_SCSI_LEVEL
-mdefine_line|#define DEF_SCSI_LEVEL   3
+mdefine_line|#define DEF_SCSI_LEVEL   4    /* SPC-2 */
 DECL|macro|DEF_PTYPE
 mdefine_line|#define DEF_PTYPE   0
+DECL|macro|DEF_D_SENSE
+mdefine_line|#define DEF_D_SENSE   0
 multiline_comment|/* bit mask values for scsi_debug_opts */
 DECL|macro|SCSI_DEBUG_OPT_NOISE
 mdefine_line|#define SCSI_DEBUG_OPT_NOISE   1
@@ -164,6 +166,13 @@ op_assign
 id|DEF_PTYPE
 suffix:semicolon
 multiline_comment|/* SCSI peripheral type (0==disk) */
+DECL|variable|scsi_debug_dsense
+r_static
+r_int
+id|scsi_debug_dsense
+op_assign
+id|DEF_D_SENSE
+suffix:semicolon
 DECL|variable|scsi_debug_cmnd_count
 r_static
 r_int
@@ -1024,6 +1033,8 @@ comma
 id|upper_blk
 comma
 id|num
+comma
+id|k
 suffix:semicolon
 r_int
 r_char
@@ -1145,6 +1156,64 @@ multiline_comment|/* assume cmd moves no data */
 id|bufflen
 op_assign
 id|SDEBUG_SENSE_LEN
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|SCSI_DEBUG_OPT_NOISE
+op_amp
+id|scsi_debug_opts
+)paren
+op_logical_and
+id|cmd
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;scsi_debug: cmd &quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|k
+op_assign
+l_int|0
+comma
+id|num
+op_assign
+id|SCpnt-&gt;cmd_len
+suffix:semicolon
+id|k
+OL
+id|num
+suffix:semicolon
+op_increment
+id|k
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%02x &quot;
+comma
+(paren
+r_int
+)paren
+id|cmd
+(braket
+id|k
+)braket
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -1293,7 +1362,7 @@ id|cmd
 r_case
 id|INQUIRY
 suffix:colon
-multiline_comment|/* mandatory */
+multiline_comment|/* mandatory, ignore unit attention */
 id|errsts
 op_assign
 id|resp_inquiry
@@ -1315,8 +1384,7 @@ suffix:semicolon
 r_case
 id|REQUEST_SENSE
 suffix:colon
-multiline_comment|/* mandatory */
-multiline_comment|/* Since this driver indicates autosense by placing the&n;&t;&t; * sense buffer in the scsi_cmnd structure in the response&n;&t;&t; * (when SAM_STAT_CHECK_CONDITION is set), the mid level&n;&t;&t; * shouldn&squot;t need to call REQUEST_SENSE */
+multiline_comment|/* mandatory, ignore unit attention */
 r_if
 c_cond
 (paren
@@ -1384,6 +1452,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|REZERO_UNIT
+suffix:colon
+multiline_comment|/* actually this is REWIND for SSC */
+r_case
 id|START_STOP
 suffix:colon
 id|errsts
@@ -1394,6 +1466,16 @@ c_func
 id|SCpnt
 comma
 id|devip
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|buff
+comma
+l_int|0
+comma
+id|bufflen
 )paren
 suffix:semicolon
 r_break
@@ -1428,7 +1510,8 @@ id|scsi_debug_opts
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;tMedium removal %s&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;scsi_debug: Medium removal %s&bslash;n&quot;
 comma
 id|cmd
 (braket
@@ -1447,6 +1530,16 @@ r_case
 id|SEND_DIAGNOSTIC
 suffix:colon
 multiline_comment|/* mandatory */
+id|errsts
+op_assign
+id|check_reset
+c_func
+(paren
+id|SCpnt
+comma
+id|devip
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -1463,6 +1556,16 @@ r_case
 id|TEST_UNIT_READY
 suffix:colon
 multiline_comment|/* mandatory */
+id|errsts
+op_assign
+id|check_reset
+c_func
+(paren
+id|SCpnt
+comma
+id|devip
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -2077,6 +2180,7 @@ suffix:semicolon
 r_case
 id|REPORT_LUNS
 suffix:colon
+multiline_comment|/* mandatory, ignore unit attention */
 id|errsts
 op_assign
 id|resp_report_luns
@@ -2478,6 +2582,23 @@ suffix:colon
 r_case
 id|MODE_SENSE_10
 suffix:colon
+r_if
+c_cond
+(paren
+(paren
+id|errsts
+op_assign
+id|check_reset
+c_func
+(paren
+id|SCpnt
+comma
+id|devip
+)paren
+)paren
+)paren
+r_break
+suffix:semicolon
 id|errsts
 op_assign
 id|resp_mode_sense
@@ -2499,6 +2620,16 @@ suffix:semicolon
 r_case
 id|SYNCHRONIZE_CACHE
 suffix:colon
+id|errsts
+op_assign
+id|check_reset
+c_func
+(paren
+id|SCpnt
+comma
+id|devip
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -2518,6 +2649,24 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|SCSI_DEBUG_OPT_NOISE
+op_amp
+id|scsi_debug_opts
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;scsi_debug: Opcode: 0x%x not &quot;
+l_string|&quot;supported&bslash;n&quot;
+comma
+op_star
+id|cmd
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 (paren
 id|errsts
 op_assign
@@ -2532,6 +2681,7 @@ id|devip
 )paren
 r_break
 suffix:semicolon
+multiline_comment|/* Unit attention takes precedence */
 id|mk_sense_buffer
 c_func
 (paren
@@ -2636,6 +2786,21 @@ c_cond
 id|devip-&gt;reset
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|SCSI_DEBUG_OPT_NOISE
+op_amp
+id|scsi_debug_opts
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;scsi_debug: Reporting Unit &quot;
+l_string|&quot;attention: power on reset&bslash;n&quot;
+)paren
+suffix:semicolon
 id|devip-&gt;reset
 op_assign
 l_int|0
@@ -2663,7 +2828,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|macro|SDEBUG_LONG_INQ_SZ
-mdefine_line|#define SDEBUG_LONG_INQ_SZ 58
+mdefine_line|#define SDEBUG_LONG_INQ_SZ 96
 DECL|macro|SDEBUG_MAX_INQ_ARR_SZ
 mdefine_line|#define SDEBUG_MAX_INQ_ARR_SZ 128
 DECL|variable|vendor_id
@@ -3329,6 +3494,14 @@ id|scsi_debug_scsi_level
 suffix:semicolon
 id|arr
 (braket
+l_int|3
+)braket
+op_assign
+l_int|2
+suffix:semicolon
+multiline_comment|/* response_data_format==2 */
+id|arr
+(braket
 l_int|4
 )braket
 op_assign
@@ -3336,6 +3509,14 @@ id|SDEBUG_LONG_INQ_SZ
 op_minus
 l_int|5
 suffix:semicolon
+id|arr
+(braket
+l_int|6
+)braket
+op_assign
+l_int|0x1
+suffix:semicolon
+multiline_comment|/* claim: ADDR16 */
 id|arr
 (braket
 l_int|7
@@ -3386,6 +3567,86 @@ comma
 l_int|4
 )paren
 suffix:semicolon
+multiline_comment|/* version descriptors (2 bytes each) follow */
+id|arr
+(braket
+l_int|58
+)braket
+op_assign
+l_int|0x0
+suffix:semicolon
+id|arr
+(braket
+l_int|59
+)braket
+op_assign
+l_int|0x40
+suffix:semicolon
+multiline_comment|/* SAM-2 */
+id|arr
+(braket
+l_int|60
+)braket
+op_assign
+l_int|0x2
+suffix:semicolon
+id|arr
+(braket
+l_int|61
+)braket
+op_assign
+l_int|0x60
+suffix:semicolon
+multiline_comment|/* SPC-2 */
+r_if
+c_cond
+(paren
+id|scsi_debug_ptype
+op_eq
+l_int|0
+)paren
+(brace
+id|arr
+(braket
+l_int|62
+)braket
+op_assign
+l_int|0x1
+suffix:semicolon
+id|arr
+(braket
+l_int|63
+)braket
+op_assign
+l_int|0x80
+suffix:semicolon
+multiline_comment|/* SBC */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|scsi_debug_ptype
+op_eq
+l_int|1
+)paren
+(brace
+id|arr
+(braket
+l_int|62
+)braket
+op_assign
+l_int|0x2
+suffix:semicolon
+id|arr
+(braket
+l_int|63
+)braket
+op_assign
+l_int|0x00
+suffix:semicolon
+multiline_comment|/* SSC */
+)brace
 id|memcpy
 c_func
 (paren
@@ -3941,6 +4202,18 @@ comma
 l_int|0x4b
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|scsi_debug_dsense
+)paren
+id|ctrl_m_pg
+(braket
+l_int|2
+)braket
+op_or_assign
+l_int|0x4
+suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -4118,6 +4391,8 @@ r_int
 id|pcontrol
 comma
 id|pcode
+comma
+id|subpcode
 suffix:semicolon
 r_int
 r_char
@@ -4203,6 +4478,13 @@ l_int|2
 op_amp
 l_int|0x3f
 suffix:semicolon
+id|subpcode
+op_assign
+id|cmd
+(braket
+l_int|3
+)braket
+suffix:semicolon
 id|msense_6
 op_assign
 (paren
@@ -4240,7 +4522,6 @@ l_int|8
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* printk(KERN_INFO &quot;msense: dbd=%d pcontrol=%d pcode=%d &quot;&n;&t;&t;&quot;msense_6=%d alloc_len=%d&bslash;n&quot;, dbd, pcontrol, pcode, &quot;&n;&t;&t;&quot;msense_6, alloc_len); */
 r_if
 c_cond
 (paren
@@ -4358,6 +4639,33 @@ id|arr
 op_plus
 id|offset
 suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|0
+op_ne
+id|subpcode
+)paren
+(brace
+multiline_comment|/* TODO: Control Extension page */
+id|mk_sense_buffer
+c_func
+(paren
+id|devip
+comma
+id|ILLEGAL_REQUEST
+comma
+id|INVALID_FIELD_IN_CDB
+comma
+l_int|0
+comma
+l_int|18
+)paren
+suffix:semicolon
+r_return
+id|check_condition_result
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -6124,6 +6432,44 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|scsi_debug_dsense
+)paren
+(brace
+id|sbuff
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0x72
+suffix:semicolon
+multiline_comment|/* descriptor, current */
+id|sbuff
+(braket
+l_int|1
+)braket
+op_assign
+id|key
+suffix:semicolon
+id|sbuff
+(braket
+l_int|2
+)braket
+op_assign
+id|asc
+suffix:semicolon
+id|sbuff
+(braket
+l_int|3
+)braket
+op_assign
+id|asq
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
 id|inbandLen
 OG
 id|SDEBUG_SENSE_LEN
@@ -6139,6 +6485,7 @@ l_int|0
 op_assign
 l_int|0x70
 suffix:semicolon
+multiline_comment|/* fixed, current */
 id|sbuff
 (braket
 l_int|2
@@ -6179,6 +6526,28 @@ l_int|13
 )braket
 op_assign
 id|asq
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|SCSI_DEBUG_OPT_NOISE
+op_amp
+id|scsi_debug_opts
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;scsi_debug:    [sense_key,asc,ascq]: &quot;
+l_string|&quot;[0x%x,0x%x,0x%x]&bslash;n&quot;
+comma
+id|key
+comma
+id|asc
+comma
+id|asq
+)paren
 suffix:semicolon
 )brace
 DECL|function|scsi_debug_abort
@@ -7225,11 +7594,6 @@ r_int
 id|delta_jiff
 )paren
 (brace
-r_int
-id|k
-comma
-id|num
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7242,51 +7606,6 @@ op_logical_and
 id|cmnd
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;scsi_debug: cmd &quot;
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|k
-op_assign
-l_int|0
-comma
-id|num
-op_assign
-id|cmnd-&gt;cmd_len
-suffix:semicolon
-id|k
-OL
-id|num
-suffix:semicolon
-op_increment
-id|k
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;%02x &quot;
-comma
-(paren
-r_int
-)paren
-id|cmnd-&gt;cmnd
-(braket
-id|k
-)braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7304,7 +7623,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;scsi_debug: ... &lt;%u %u %u %u&gt; &quot;
+l_string|&quot;scsi_debug:    &lt;%u %u %u %u&gt; &quot;
 l_string|&quot;non-zero result=0x%x&bslash;n&quot;
 comma
 id|sdp-&gt;host-&gt;host_no
@@ -7580,6 +7899,18 @@ suffix:semicolon
 id|module_param_named
 c_func
 (paren
+id|dsense
+comma
+id|scsi_debug_dsense
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
 id|every_nth
 comma
 id|scsi_debug_every_nth
@@ -7714,6 +8045,14 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
+id|dsense
+comma
+l_string|&quot;use descriptor sense format(def: fixed)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
 id|every_nth
 comma
 l_string|&quot;timeout every nth command(def=100)&quot;
@@ -7764,7 +8103,7 @@ c_func
 (paren
 id|scsi_level
 comma
-l_string|&quot;SCSI level to simulate&quot;
+l_string|&quot;SCSI level to simulate(def=4[SPC-2])&quot;
 )paren
 suffix:semicolon
 DECL|variable|sdebug_info
@@ -8476,6 +8815,117 @@ comma
 id|sdebug_ptype_show
 comma
 id|sdebug_ptype_store
+)paren
+suffix:semicolon
+DECL|function|sdebug_dsense_show
+r_static
+id|ssize_t
+id|sdebug_dsense_show
+c_func
+(paren
+r_struct
+id|device_driver
+op_star
+id|ddp
+comma
+r_char
+op_star
+id|buf
+)paren
+(brace
+r_return
+id|scnprintf
+c_func
+(paren
+id|buf
+comma
+id|PAGE_SIZE
+comma
+l_string|&quot;%d&bslash;n&quot;
+comma
+id|scsi_debug_dsense
+)paren
+suffix:semicolon
+)brace
+DECL|function|sdebug_dsense_store
+r_static
+id|ssize_t
+id|sdebug_dsense_store
+c_func
+(paren
+r_struct
+id|device_driver
+op_star
+id|ddp
+comma
+r_const
+r_char
+op_star
+id|buf
+comma
+r_int
+id|count
+)paren
+(brace
+r_int
+id|n
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|count
+OG
+l_int|0
+)paren
+op_logical_and
+(paren
+l_int|1
+op_eq
+id|sscanf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;%d&quot;
+comma
+op_amp
+id|n
+)paren
+)paren
+op_logical_and
+(paren
+id|n
+op_ge
+l_int|0
+)paren
+)paren
+(brace
+id|scsi_debug_dsense
+op_assign
+id|n
+suffix:semicolon
+r_return
+id|count
+suffix:semicolon
+)brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+id|DRIVER_ATTR
+c_func
+(paren
+id|dsense
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
+comma
+id|sdebug_dsense_show
+comma
+id|sdebug_dsense_store
 )paren
 suffix:semicolon
 DECL|function|sdebug_num_tgts_show

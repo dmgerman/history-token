@@ -1,7 +1,7 @@
-multiline_comment|/*&n; *&n; * linux/drivers/s390/scsi/zfcp_fsf.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt;&n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt;&n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *&n; * linux/drivers/s390/scsi/zfcp_fsf.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt;&n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt;&n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *            Andreas Herrmann &lt;aherrman@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_FSF_C_REVISION
-mdefine_line|#define ZFCP_FSF_C_REVISION &quot;$Revision: 1.65 $&quot;
+mdefine_line|#define ZFCP_FSF_C_REVISION &quot;$Revision: 1.76 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -5989,6 +5989,139 @@ id|ZFCP_STATUS_FSFREQ_RETRY
 suffix:semicolon
 r_break
 suffix:semicolon
+multiline_comment|/* following states should never occure, all cases avoided&n;&t;   in zfcp_fsf_send_ct - but who knows ... */
+r_case
+id|FSF_PAYLOAD_SIZE_MISMATCH
+suffix:colon
+id|ZFCP_LOG_FLAGS
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;FSF_PAYLOAD_SIZE_MISMATCH&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ZFCP_LOG_INFO
+c_func
+(paren
+l_string|&quot;payload size mismatch (adapter: %s, &quot;
+l_string|&quot;req_buf_length=%d, resp_buf_length=%d)&bslash;n&quot;
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+comma
+id|bottom-&gt;req_buf_length
+comma
+id|bottom-&gt;resp_buf_length
+)paren
+suffix:semicolon
+id|fsf_req-&gt;status
+op_or_assign
+id|ZFCP_STATUS_FSFREQ_ERROR
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|FSF_REQUEST_SIZE_TOO_LARGE
+suffix:colon
+id|ZFCP_LOG_FLAGS
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;FSF_REQUEST_SIZE_TOO_LARGE&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ZFCP_LOG_INFO
+c_func
+(paren
+l_string|&quot;request size too large (adapter: %s, &quot;
+l_string|&quot;req_buf_length=%d)&bslash;n&quot;
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+comma
+id|bottom-&gt;req_buf_length
+)paren
+suffix:semicolon
+id|fsf_req-&gt;status
+op_or_assign
+id|ZFCP_STATUS_FSFREQ_ERROR
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|FSF_RESPONSE_SIZE_TOO_LARGE
+suffix:colon
+id|ZFCP_LOG_FLAGS
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;FSF_RESPONSE_SIZE_TOO_LARGE&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ZFCP_LOG_INFO
+c_func
+(paren
+l_string|&quot;response size too large (adapter: %s, &quot;
+l_string|&quot;resp_buf_length=%d)&bslash;n&quot;
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+comma
+id|bottom-&gt;resp_buf_length
+)paren
+suffix:semicolon
+id|fsf_req-&gt;status
+op_or_assign
+id|ZFCP_STATUS_FSFREQ_ERROR
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|FSF_SBAL_MISMATCH
+suffix:colon
+id|ZFCP_LOG_FLAGS
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;FSF_SBAL_MISMATCH&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ZFCP_LOG_INFO
+c_func
+(paren
+l_string|&quot;SBAL mismatch (adapter: %s, req_buf_length=%d, &quot;
+l_string|&quot;resp_buf_length=%d)&bslash;n&quot;
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+comma
+id|bottom-&gt;req_buf_length
+comma
+id|bottom-&gt;resp_buf_length
+)paren
+suffix:semicolon
+id|fsf_req-&gt;status
+op_or_assign
+id|ZFCP_STATUS_FSFREQ_ERROR
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|ZFCP_LOG_NORMAL
@@ -6080,10 +6213,8 @@ id|zfcp_fsf_req
 op_star
 id|fsf_req
 suffix:semicolon
-r_struct
-id|zfcp_port
-op_star
-id|port
+id|fc_id_t
+id|d_id
 suffix:semicolon
 r_struct
 id|zfcp_adapter
@@ -6102,13 +6233,13 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|port
+id|d_id
 op_assign
-id|els-&gt;port
+id|els-&gt;d_id
 suffix:semicolon
 id|adapter
 op_assign
-id|port-&gt;adapter
+id|els-&gt;adapter
 suffix:semicolon
 id|ret
 op_assign
@@ -6152,7 +6283,7 @@ c_func
 id|adapter
 )paren
 comma
-id|port-&gt;d_id
+id|d_id
 )paren
 suffix:semicolon
 r_goto
@@ -6315,7 +6446,7 @@ c_func
 id|adapter
 )paren
 comma
-id|port-&gt;d_id
+id|d_id
 )paren
 suffix:semicolon
 r_if
@@ -6387,7 +6518,7 @@ c_func
 id|adapter
 )paren
 comma
-id|port-&gt;d_id
+id|d_id
 )paren
 suffix:semicolon
 r_if
@@ -6436,7 +6567,7 @@ c_func
 id|adapter
 )paren
 comma
-id|port-&gt;d_id
+id|d_id
 )paren
 suffix:semicolon
 id|ret
@@ -6451,7 +6582,7 @@ suffix:semicolon
 multiline_comment|/* settings in QTCB */
 id|fsf_req-&gt;qtcb-&gt;bottom.support.d_id
 op_assign
-id|port-&gt;d_id
+id|d_id
 suffix:semicolon
 id|fsf_req-&gt;qtcb-&gt;bottom.support.service_class
 op_assign
@@ -6498,7 +6629,7 @@ id|ZFCP_LOG_DEBUG
 c_func
 (paren
 l_string|&quot;error: initiation of ELS request failed &quot;
-l_string|&quot;(adapter %s, port 0x%016Lx)&bslash;n&quot;
+l_string|&quot;(adapter %s, port d_id: 0x%08x)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -6506,7 +6637,7 @@ c_func
 id|adapter
 )paren
 comma
-id|port-&gt;wwpn
+id|d_id
 )paren
 suffix:semicolon
 r_goto
@@ -6516,7 +6647,8 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;ELS request initiated (adapter %s, port 0x%016Lx)&bslash;n&quot;
+l_string|&quot;ELS request initiated (adapter %s, port d_id: &quot;
+l_string|&quot;0x%08x)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -6524,7 +6656,7 @@ c_func
 id|adapter
 )paren
 comma
-id|port-&gt;wwpn
+id|d_id
 )paren
 suffix:semicolon
 r_goto
@@ -6573,6 +6705,9 @@ id|zfcp_adapter
 op_star
 id|adapter
 suffix:semicolon
+id|fc_id_t
+id|d_id
+suffix:semicolon
 r_struct
 id|zfcp_port
 op_star
@@ -6606,17 +6741,17 @@ id|rule
 comma
 id|counter
 suffix:semicolon
-id|adapter
-op_assign
-id|fsf_req-&gt;adapter
-suffix:semicolon
 id|send_els
 op_assign
 id|fsf_req-&gt;data.send_els
 suffix:semicolon
-id|port
+id|adapter
 op_assign
-id|send_els-&gt;port
+id|send_els-&gt;adapter
+suffix:semicolon
+id|d_id
+op_assign
+id|send_els-&gt;d_id
 suffix:semicolon
 id|header
 op_assign
@@ -6686,10 +6821,10 @@ c_func
 l_string|&quot;error: adapter %s does &quot;
 l_string|&quot;not support fibrechannel class %d.&bslash;n&quot;
 comma
-id|zfcp_get_busid_by_port
+id|zfcp_get_busid_by_adapter
 c_func
 (paren
-id|port
+id|adapter
 )paren
 comma
 id|adapter-&gt;fc_service_class
@@ -6705,10 +6840,10 @@ l_string|&quot;bug: The fibrechannel class at &quot;
 l_string|&quot;adapter %s is invalid. &quot;
 l_string|&quot;(debug info %d)&bslash;n&quot;
 comma
-id|zfcp_get_busid_by_port
+id|zfcp_get_busid_by_adapter
 c_func
 (paren
-id|port
+id|adapter
 )paren
 comma
 id|adapter-&gt;fc_service_class
@@ -6729,7 +6864,7 @@ suffix:semicolon
 id|zfcp_erp_adapter_shutdown
 c_func
 (paren
-id|port-&gt;adapter
+id|adapter
 comma
 l_int|0
 )paren
@@ -6763,7 +6898,6 @@ l_int|0
 r_case
 id|FSF_SQ_INVOKE_LINK_TEST_PROCEDURE
 suffix:colon
-(brace
 id|ZFCP_LOG_FLAGS
 c_func
 (paren
@@ -6789,19 +6923,49 @@ id|send_els-&gt;ls_code
 op_ne
 id|ZFCP_LS_ADISC
 )paren
+(brace
+id|read_lock
+c_func
+(paren
+op_amp
+id|zfcp_data.config_lock
+)paren
+suffix:semicolon
+id|port
+op_assign
+id|zfcp_get_port_by_did
+c_func
+(paren
+id|adapter
+comma
+id|d_id
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|port
+)paren
 id|zfcp_test_link
 c_func
 (paren
 id|port
 )paren
 suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|zfcp_data.config_lock
+)paren
+suffix:semicolon
+)brace
 id|fsf_req-&gt;status
 op_or_assign
 id|ZFCP_STATUS_FSFREQ_ERROR
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|FSF_SQ_ULP_DEPENDENT_ERP_REQUIRED
 suffix:colon
@@ -6813,7 +6977,6 @@ comma
 l_string|&quot;FSF_SQ_ULP_DEPENDENT_ERP_REQUIRED&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* ERP strategy will escalate */
 id|debug_text_event
 c_func
 (paren
@@ -6925,15 +7088,15 @@ c_func
 (paren
 l_string|&quot;ELS has been rejected because command filter &quot;
 l_string|&quot;prohibited sending &quot;
-l_string|&quot;(adapter: %s, wwpn=0x%016Lx)&bslash;n&quot;
+l_string|&quot;(adapter: %s, port d_id: 0x%08x)&bslash;n&quot;
 comma
-id|zfcp_get_busid_by_port
+id|zfcp_get_busid_by_adapter
 c_func
 (paren
-id|port
+id|adapter
 )paren
 comma
-id|port-&gt;wwpn
+id|d_id
 )paren
 suffix:semicolon
 r_break
@@ -6956,10 +7119,10 @@ l_string|&quot;ELS request size and ELS response size must be either &quot;
 l_string|&quot;both 0, or both greater than 0 &quot;
 l_string|&quot;(adapter: %s, req_buf_length=%d resp_buf_length=%d)&bslash;n&quot;
 comma
-id|zfcp_get_busid_by_port
+id|zfcp_get_busid_by_adapter
 c_func
 (paren
-id|port
+id|adapter
 )paren
 comma
 id|bottom-&gt;req_buf_length
@@ -6989,10 +7152,10 @@ l_string|&quot;exceeds the size of the buffers &quot;
 l_string|&quot;that have been allocated for ELS request data &quot;
 l_string|&quot;(adapter: %s, req_buf_length=%d)&bslash;n&quot;
 comma
-id|zfcp_get_busid_by_port
+id|zfcp_get_busid_by_adapter
 c_func
 (paren
-id|port
+id|adapter
 )paren
 comma
 id|bottom-&gt;req_buf_length
@@ -7020,14 +7183,49 @@ l_string|&quot;exceeds the size of the buffers &quot;
 l_string|&quot;that have been allocated for ELS response data &quot;
 l_string|&quot;(adapter: %s, resp_buf_length=%d)&bslash;n&quot;
 comma
-id|zfcp_get_busid_by_port
+id|zfcp_get_busid_by_adapter
 c_func
 (paren
-id|port
+id|adapter
 )paren
 comma
 id|bottom-&gt;resp_buf_length
 )paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|FSF_SBAL_MISMATCH
+suffix:colon
+multiline_comment|/* should never occure, avoided in zfcp_fsf_send_els */
+id|ZFCP_LOG_FLAGS
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;FSF_SBAL_MISMATCH&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ZFCP_LOG_INFO
+c_func
+(paren
+l_string|&quot;SBAL mismatch (adapter: %s, req_buf_length=%d, &quot;
+l_string|&quot;resp_buf_length=%d)&bslash;n&quot;
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+comma
+id|bottom-&gt;req_buf_length
+comma
+id|bottom-&gt;resp_buf_length
+)paren
+suffix:semicolon
+id|fsf_req-&gt;status
+op_or_assign
+id|ZFCP_STATUS_FSFREQ_ERROR
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -7046,15 +7244,15 @@ id|ZFCP_LOG_NORMAL
 c_func
 (paren
 l_string|&quot;Access denied, cannot send ELS &quot;
-l_string|&quot;(adapter: %s, wwpn=0x%016Lx)&bslash;n&quot;
+l_string|&quot;(adapter: %s, port d_id: 0x%08x)&bslash;n&quot;
 comma
-id|zfcp_get_busid_by_port
+id|zfcp_get_busid_by_adapter
 c_func
 (paren
-id|port
+id|adapter
 )paren
 comma
-id|port-&gt;wwpn
+id|d_id
 )paren
 suffix:semicolon
 r_for
@@ -7151,10 +7349,10 @@ c_func
 l_string|&quot;bug: An unknown FSF Status was presented &quot;
 l_string|&quot;(adapter: %s, fsf_status=0x%08x)&bslash;n&quot;
 comma
-id|zfcp_get_busid_by_port
+id|zfcp_get_busid_by_adapter
 c_func
 (paren
-id|port
+id|adapter
 )paren
 comma
 id|header-&gt;fsf_status
@@ -9343,6 +9541,39 @@ id|plogi-&gt;serv_param.wwnn
 suffix:semicolon
 )brace
 )brace
+r_break
+suffix:semicolon
+r_case
+id|FSF_UNKNOWN_OP_SUBTYPE
+suffix:colon
+multiline_comment|/* should never occure, subtype not set in zfcp_fsf_open_port */
+id|ZFCP_LOG_FLAGS
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;FSF_UNKNOWN_OP_SUBTYPE&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ZFCP_LOG_INFO
+c_func
+(paren
+l_string|&quot;unknown operation subtype (adapter: %s, &quot;
+l_string|&quot;op_subtype=0x%x)&bslash;n&quot;
+comma
+id|zfcp_get_busid_by_port
+c_func
+(paren
+id|port
+)paren
+comma
+id|fsf_req-&gt;qtcb-&gt;bottom.support.operation_subtype
+)paren
+suffix:semicolon
+id|fsf_req-&gt;status
+op_or_assign
+id|ZFCP_STATUS_FSFREQ_ERROR
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -15591,7 +15822,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * function:    zfcp_fsf_control_file&n; *&n; * purpose:     Initiator of the control file upload/download FSF requests&n; *&n; * returns:     0           - FSF request is successfuly created and queued&n; *              -EOPNOTSUPP - The FCP adapter does not have Control File support&n; *              -EINVAL     - Invalid direction specified&n; *              -ENOMEM     - Insufficient memory&n; *              -EPERM      - Cannot create FSF request or or place it in QDIO queue&n; */
+multiline_comment|/*&n; * function:    zfcp_fsf_control_file&n; *&n; * purpose:     Initiator of the control file upload/download FSF requests&n; *&n; * returns:     0           - FSF request is successfuly created and queued&n; *              -EOPNOTSUPP - The FCP adapter does not have Control File support&n; *              -EINVAL     - Invalid direction specified&n; *              -ENOMEM     - Insufficient memory&n; *              -EPERM      - Cannot create FSF request or place it in QDIO queue&n; */
 r_int
 DECL|function|zfcp_fsf_control_file
 id|zfcp_fsf_control_file
@@ -15636,6 +15867,11 @@ id|qdio_buffer_element
 op_star
 id|sbale
 suffix:semicolon
+r_struct
+id|timer_list
+op_star
+id|timer
+suffix:semicolon
 r_int
 r_int
 id|lock_flags
@@ -15667,7 +15903,7 @@ id|FSF_FEATURE_CFDC
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;Adapter %s does not support control file&bslash;n&quot;
+l_string|&quot;cfdc not supported (adapter %s)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -15682,7 +15918,7 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 r_goto
-id|no_cfdc_support
+id|out
 suffix:semicolon
 )brace
 r_switch
@@ -15738,8 +15974,43 @@ comma
 id|fsf_command
 )paren
 suffix:semicolon
+id|retval
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_goto
-id|invalid_command
+id|out
+suffix:semicolon
+)brace
+id|timer
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|timer_list
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|timer
+)paren
+(brace
+id|retval
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|retval
@@ -15789,7 +16060,7 @@ op_minus
 id|EPERM
 suffix:semicolon
 r_goto
-id|out
+id|unlock_queue_lock
 suffix:semicolon
 )brace
 id|sbale
@@ -15880,12 +16151,11 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
-id|sbals_failed
+id|free_fsf_req
 suffix:semicolon
 )brace
 )brace
 r_else
-(brace
 id|sbale
 (braket
 l_int|1
@@ -15895,7 +16165,28 @@ id|flags
 op_or_assign
 id|SBAL_FLAGS_LAST_ENTRY
 suffix:semicolon
-)brace
+id|init_timer
+c_func
+(paren
+id|timer
+)paren
+suffix:semicolon
+id|timer-&gt;function
+op_assign
+id|zfcp_fsf_request_timeout_handler
+suffix:semicolon
+id|timer-&gt;data
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|adapter
+suffix:semicolon
+id|timer-&gt;expires
+op_assign
+id|ZFCP_FSF_REQUEST_TIMEOUT
+suffix:semicolon
 id|retval
 op_assign
 id|zfcp_fsf_req_send
@@ -15903,7 +16194,7 @@ c_func
 (paren
 id|fsf_req
 comma
-l_int|NULL
+id|timer
 )paren
 suffix:semicolon
 r_if
@@ -15917,7 +16208,8 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Could not send FSF request to the adapter %s&bslash;n&quot;
+l_string|&quot;initiation of cfdc up/download failed&quot;
+l_string|&quot;(adapter %s)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -15932,13 +16224,23 @@ op_minus
 id|EPERM
 suffix:semicolon
 r_goto
-id|queue_failed
+id|free_fsf_req
 suffix:semicolon
 )brace
+id|write_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|adapter-&gt;request_queue.queue_lock
+comma
+id|lock_flags
+)paren
+suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Control file %s FSF request has been sent to the adapter %s&bslash;n&quot;
+l_string|&quot;Control file %s FSF request has been sent to the &quot;
+l_string|&quot;adapter %s&bslash;n&quot;
 comma
 id|fsf_command
 op_eq
@@ -15956,17 +16258,31 @@ id|adapter
 )paren
 )paren
 suffix:semicolon
+id|wait_event
+c_func
+(paren
+id|fsf_req-&gt;completion_wq
+comma
+id|fsf_req-&gt;status
+op_amp
+id|ZFCP_STATUS_FSFREQ_COMPLETED
+)paren
+suffix:semicolon
 op_star
 id|fsf_req_ptr
 op_assign
 id|fsf_req
 suffix:semicolon
-r_goto
-id|out
+id|del_timer_sync
+c_func
+(paren
+id|timer
+)paren
 suffix:semicolon
-id|sbals_failed
-suffix:colon
-id|queue_failed
+r_goto
+id|free_timer
+suffix:semicolon
+id|free_fsf_req
 suffix:colon
 id|zfcp_fsf_req_free
 c_func
@@ -15974,7 +16290,7 @@ c_func
 id|fsf_req
 )paren
 suffix:semicolon
-id|out
+id|unlock_queue_lock
 suffix:colon
 id|write_unlock_irqrestore
 c_func
@@ -15985,9 +16301,15 @@ comma
 id|lock_flags
 )paren
 suffix:semicolon
-id|invalid_command
+id|free_timer
 suffix:colon
-id|no_cfdc_support
+id|kfree
+c_func
+(paren
+id|timer
+)paren
+suffix:semicolon
+id|out
 suffix:colon
 r_return
 id|retval
@@ -16429,16 +16751,16 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Invalid operation subtype 0x%x has been specified &quot;
-l_string|&quot;in QTCB bottom sent to the adapter %s&bslash;n&quot;
-comma
-id|bottom-&gt;operation_subtype
+l_string|&quot;unknown operation subtype (adapter: %s, &quot;
+l_string|&quot;op_subtype=0x%x)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
 (paren
 id|adapter
 )paren
+comma
+id|bottom-&gt;operation_subtype
 )paren
 suffix:semicolon
 id|fsf_req-&gt;status
@@ -16860,6 +17182,16 @@ l_int|0
 )paren
 r_return
 id|ret
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ret
+)paren
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 r_else

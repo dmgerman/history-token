@@ -12,7 +12,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
-macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#if 0
 macro_line|#include &lt;asm/debug-ll.h&gt;
 mdefine_line|#define dbg(x...) llprintk(x)
@@ -2468,12 +2467,14 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
 r_case
 id|S3C2410_LCON_PNONE
 suffix:colon
-multiline_comment|/* nothing */
+op_star
+id|parity
+op_assign
+l_char|&squot;n&squot;
+suffix:semicolon
 )brace
 multiline_comment|/* now calculate the baud rate */
 op_star

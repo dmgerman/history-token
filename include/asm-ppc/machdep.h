@@ -278,6 +278,16 @@ id|setup_io_mappings
 r_void
 )paren
 suffix:semicolon
+DECL|member|early_serial_map
+r_void
+(paren
+op_star
+id|early_serial_map
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|member|progress
 r_void
 (paren

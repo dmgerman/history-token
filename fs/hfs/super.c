@@ -493,12 +493,13 @@ l_int|0755
 suffix:semicolon
 id|hsb-&gt;s_type
 op_assign
-l_int|0x3f3f3f3f
-suffix:semicolon
-multiline_comment|/* == &squot;????&squot; */
 id|hsb-&gt;s_creator
 op_assign
+id|cpu_to_be32
+c_func
+(paren
 l_int|0x3f3f3f3f
+)paren
 suffix:semicolon
 multiline_comment|/* == &squot;????&squot; */
 id|hsb-&gt;s_quiet
@@ -958,14 +959,16 @@ l_int|4
 r_return
 l_int|0
 suffix:semicolon
-id|hsb-&gt;s_type
-op_assign
-op_star
+id|memcpy
+c_func
 (paren
-id|u32
-op_star
-)paren
+op_amp
+id|hsb-&gt;s_type
+comma
 id|value
+comma
+l_int|4
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -998,14 +1001,16 @@ l_int|4
 r_return
 l_int|0
 suffix:semicolon
-id|hsb-&gt;s_creator
-op_assign
-op_star
+id|memcpy
+c_func
 (paren
-id|u32
-op_star
-)paren
+op_amp
+id|hsb-&gt;s_creator
+comma
 id|value
+comma
+l_int|4
+)paren
 suffix:semicolon
 multiline_comment|/* Boolean-valued options */
 )brace

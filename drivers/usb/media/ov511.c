@@ -2132,7 +2132,7 @@ suffix:semicolon
 op_star
 (paren
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|ov-&gt;cbuf

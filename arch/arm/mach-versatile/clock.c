@@ -316,6 +316,8 @@ c_func
 id|clk-&gt;params
 comma
 id|rate
+op_div
+l_int|1000
 )paren
 suffix:semicolon
 id|clk-&gt;rate
@@ -327,6 +329,8 @@ id|clk-&gt;params
 comma
 id|vco
 )paren
+op_star
+l_int|1000
 suffix:semicolon
 id|printk
 c_func

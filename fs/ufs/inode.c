@@ -404,10 +404,10 @@ id|ret
 op_assign
 l_int|0L
 suffix:semicolon
-id|u32
+id|__fs32
 id|block
 suffix:semicolon
-id|u64
+id|__fs64
 id|u2_block
 op_assign
 l_int|0L
@@ -561,7 +561,7 @@ id|block
 op_assign
 (paren
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 id|bh-&gt;b_data
@@ -701,7 +701,7 @@ id|u2_block
 op_assign
 (paren
 (paren
-id|u64
+id|__fs64
 op_star
 )paren
 id|bh-&gt;b_data
@@ -849,7 +849,7 @@ id|tmp
 comma
 id|goal
 suffix:semicolon
-id|u32
+id|__fs32
 op_star
 id|p
 comma
@@ -1438,7 +1438,7 @@ id|block
 comma
 id|blockoff
 suffix:semicolon
-id|u32
+id|__fs32
 op_star
 id|p
 suffix:semicolon
@@ -1539,7 +1539,7 @@ suffix:semicolon
 id|p
 op_assign
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 id|bh-&gt;b_data
@@ -1638,7 +1638,7 @@ id|sb
 comma
 (paren
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 id|bh-&gt;b_data

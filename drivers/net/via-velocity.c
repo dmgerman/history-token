@@ -1024,6 +1024,9 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|velocity_nics
+op_decrement
+suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;velocity_set_int_opt&t;-&t;parser for integer options&n; *&t;@opt: pointer to option value&n; *&t;@val: value the user requested (or -1 for default)&n; *&t;@min: lowest value allowed&n; *&t;@max: highest value allowed&n; *&t;@def: default value&n; *&t;@name: property name&n; *&t;@dev: device name&n; *&n; *&t;Set an integer property in the module options. This function does&n; *&t;all the verification and checking as well as reporting so that&n; *&t;we don&squot;t duplicate code for each option.&n; */
 DECL|function|velocity_set_int_opt
@@ -1595,7 +1598,7 @@ id|regs
 op_assign
 id|vptr-&gt;mac_regs
 suffix:semicolon
-multiline_comment|/* T urn on MCFG_PQEN, turn off MCFG_RTGOPT */
+multiline_comment|/* Turn on MCFG_PQEN, turn off MCFG_RTGOPT */
 id|WORD_REG_BITS_SET
 c_func
 (paren
@@ -1775,38 +1778,6 @@ id|VELOCITY_VLAN_ID_CAM
 suffix:semicolon
 )brace
 )brace
-DECL|function|velocity_give_rx_desc
-r_static
-r_inline
-r_void
-id|velocity_give_rx_desc
-c_func
-(paren
-r_struct
-id|rx_desc
-op_star
-id|rd
-)paren
-(brace
-op_star
-(paren
-id|u32
-op_star
-)paren
-op_amp
-id|rd-&gt;rdesc0
-op_assign
-l_int|0
-suffix:semicolon
-id|rd-&gt;rdesc0.owner
-op_assign
-id|cpu_to_le32
-c_func
-(paren
-id|OWNED_BY_NIC
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/**&n; *&t;velocity_rx_reset&t;-&t;handle a receive reset&n; *&t;@vptr: velocity we are resetting&n; *&n; *&t;Reset the ownership and status for the receive ring side.&n; *&t;Hand all the receive queue to the NIC.&n; */
 DECL|function|velocity_rx_reset
 r_static
@@ -1853,13 +1824,14 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-id|velocity_give_rx_desc
-c_func
-(paren
 id|vptr-&gt;rd_ring
-op_plus
+(braket
 id|i
-)paren
+)braket
+dot
+id|rdesc0.owner
+op_assign
+id|OWNED_BY_NIC
 suffix:semicolon
 id|writew
 c_func
@@ -2153,7 +2125,7 @@ op_amp
 id|regs-&gt;WOLCFGSet
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *&t;Bback off algorithm use original IEEE standard&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *&t;Back off algorithm use original IEEE standard&n;&t;&t; */
 id|BYTE_REG_BITS_SET
 c_func
 (paren
@@ -2171,6 +2143,13 @@ id|CFGB_BAKOPT
 comma
 op_amp
 id|regs-&gt;CFGB
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; *&t;Init CAM filter&n;&t;&t; */
+id|velocity_init_cam_filter
+c_func
+(paren
+id|vptr
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *&t;Set packet filter: Receive directed and broadcast address&n;&t;&t; */
@@ -2283,12 +2262,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-id|velocity_init_cam_filter
-c_func
-(paren
-id|vptr
-)paren
-suffix:semicolon
 id|init_flow_control_register
 c_func
 (paren
@@ -2333,12 +2306,6 @@ id|netif_stop_queue
 c_func
 (paren
 id|vptr-&gt;dev
-)paren
-suffix:semicolon
-id|mac_clear_isr
-c_func
-(paren
-id|regs
 )paren
 suffix:semicolon
 id|mii_init
@@ -2581,7 +2548,6 @@ r_if
 c_cond
 (paren
 id|velocity_nics
-op_increment
 op_ge
 id|MAX_UNITS
 )paren
@@ -2702,10 +2668,6 @@ suffix:semicolon
 id|vptr-&gt;dev
 op_assign
 id|dev
-suffix:semicolon
-id|dev-&gt;priv
-op_assign
-id|vptr
 suffix:semicolon
 id|dev-&gt;irq
 op_assign
@@ -2866,8 +2828,6 @@ op_amp
 id|vptr-&gt;options
 comma
 id|velocity_nics
-op_minus
-l_int|1
 comma
 id|dev-&gt;name
 )paren
@@ -3037,6 +2997,9 @@ id|flags
 suffix:semicolon
 )brace
 macro_line|#endif
+id|velocity_nics
+op_increment
+suffix:semicolon
 id|out
 suffix:colon
 r_return
@@ -3217,13 +3180,6 @@ c_func
 (paren
 op_amp
 id|vptr-&gt;lock
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|vptr-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|INIT_LIST_HEAD
@@ -3780,7 +3736,7 @@ suffix:semicolon
 id|unusable
 op_assign
 id|vptr-&gt;rd_filled
-op_or
+op_amp
 l_int|0x0003
 suffix:semicolon
 id|dirty
@@ -3788,8 +3744,6 @@ op_assign
 id|vptr-&gt;rd_dirty
 op_minus
 id|unusable
-op_plus
-l_int|1
 suffix:semicolon
 r_for
 c_loop
@@ -3823,13 +3777,14 @@ id|vptr-&gt;options.numrx
 op_minus
 l_int|1
 suffix:semicolon
-id|velocity_give_rx_desc
-c_func
-(paren
 id|vptr-&gt;rd_ring
-op_plus
+(braket
 id|dirty
-)paren
+)braket
+dot
+id|rdesc0.owner
+op_assign
+id|OWNED_BY_NIC
 suffix:semicolon
 )brace
 id|writew
@@ -3890,11 +3845,7 @@ c_cond
 (paren
 id|rd-&gt;rdesc0.owner
 op_eq
-id|cpu_to_le32
-c_func
-(paren
 id|OWNED_BY_NIC
-)paren
 )paren
 r_break
 suffix:semicolon
@@ -4095,7 +4046,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;velocity_free_rd_ring&t;-&t;set up receive ring&n; *&t;@vptr: velocity to clean up&n; *&n; *&t;Free the receive buffers for each ring slot and any&n; *&t;attached socket buffers that need to go away.&n; */
+multiline_comment|/**&n; *&t;velocity_free_rd_ring&t;-&t;free receive ring&n; *&t;@vptr: velocity to clean up&n; *&n; *&t;Free the receive buffers for each ring slot and any&n; *&t;attached socket buffers that need to go away.&n; */
 DECL|function|velocity_free_rd_ring
 r_static
 r_void
@@ -4378,9 +4329,11 @@ op_assign
 id|vptr-&gt;tx_bufs
 op_plus
 (paren
-id|i
-op_plus
 id|j
+op_star
+id|vptr-&gt;options.numtx
+op_plus
+id|i
 )paren
 op_star
 id|PKT_BUF_SZ
@@ -4390,9 +4343,11 @@ op_assign
 id|vptr-&gt;tx_bufs_dma
 op_plus
 (paren
-id|i
-op_plus
 id|j
+op_star
+id|vptr-&gt;options.numtx
+op_plus
+id|i
 )paren
 op_star
 id|PKT_BUF_SZ
@@ -4669,11 +4624,7 @@ id|works
 op_assign
 l_int|0
 suffix:semicolon
-r_while
-c_loop
-(paren
-l_int|1
-)paren
+r_do
 (brace
 r_struct
 id|rx_desc
@@ -4694,13 +4645,6 @@ id|rd_curr
 )braket
 dot
 id|skb
-op_logical_or
-(paren
-id|works
-op_increment
-OG
-l_int|15
-)paren
 )paren
 r_break
 suffix:semicolon
@@ -4712,6 +4656,11 @@ op_eq
 id|OWNED_BY_NIC
 )paren
 r_break
+suffix:semicolon
+id|rmb
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *&t;Don&squot;t drop CE or RL error frame although RXOK is off&n;&t;&t; */
 r_if
@@ -4809,9 +4758,26 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_while
+c_loop
+(paren
+op_increment
+id|works
+op_le
+l_int|15
+)paren
+suffix:semicolon
+id|vptr-&gt;rd_curr
+op_assign
+id|rd_curr
+suffix:semicolon
 r_if
 c_cond
 (paren
+id|works
+OG
+l_int|0
+op_logical_and
 id|velocity_rx_refill
 c_func
 (paren
@@ -4833,10 +4799,6 @@ id|vptr-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 )brace
-id|vptr-&gt;rd_curr
-op_assign
-id|rd_curr
-suffix:semicolon
 id|VAR_USED
 c_func
 (paren

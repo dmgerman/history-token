@@ -1919,7 +1919,7 @@ id|target_id
 dot
 id|curr_req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;working
 op_decrement
@@ -13695,7 +13695,7 @@ id|dev-&gt;querequ
 id|k
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_for
@@ -13720,7 +13720,7 @@ id|k
 dot
 id|curr_req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;sp
 (braket

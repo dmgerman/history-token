@@ -41,6 +41,7 @@ DECL|function|ia64_rt_sigsuspend
 id|ia64_rt_sigsuspend
 (paren
 id|sigset_t
+id|__user
 op_star
 id|uset
 comma
@@ -198,10 +199,12 @@ id|sys_sigaltstack
 (paren
 r_const
 id|stack_t
+id|__user
 op_star
 id|uss
 comma
 id|stack_t
+id|__user
 op_star
 id|uoss
 comma
@@ -259,6 +262,7 @@ id|restore_sigcontext
 (paren
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sc
 comma
@@ -764,6 +768,7 @@ DECL|function|copy_siginfo_to_user
 id|copy_siginfo_to_user
 (paren
 id|siginfo_t
+id|__user
 op_star
 id|to
 comma
@@ -1105,6 +1110,7 @@ id|ia64_leave_kernel
 suffix:semicolon
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sc
 suffix:semicolon
@@ -1125,6 +1131,7 @@ op_amp
 (paren
 r_struct
 id|sigframe
+id|__user
 op_star
 )paren
 (paren
@@ -1272,7 +1279,7 @@ c_func
 op_amp
 id|sc-&gt;sc_stack
 comma
-l_int|0
+l_int|NULL
 comma
 id|scr-&gt;pt.r12
 )paren
@@ -1329,6 +1336,7 @@ id|setup_sigcontext
 (paren
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sc
 comma
@@ -1869,10 +1877,10 @@ id|__copy_to_user
 c_func
 (paren
 op_amp
-id|scr-&gt;pt.ar_csd
+id|sc-&gt;sc_ar25
 comma
 op_amp
-id|sc-&gt;sc_ar25
+id|scr-&gt;pt.ar_csd
 comma
 l_int|2
 op_star
@@ -1956,6 +1964,7 @@ r_int
 id|sig
 comma
 r_void
+id|__user
 op_star
 id|addr
 )paren
@@ -2089,6 +2098,7 @@ l_int|0
 suffix:semicolon
 r_struct
 id|sigframe
+id|__user
 op_star
 id|frame
 suffix:semicolon
@@ -2099,6 +2109,7 @@ id|frame
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|scr-&gt;pt.r12
@@ -2137,6 +2148,7 @@ id|frame
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -2193,6 +2205,7 @@ id|frame
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|frame

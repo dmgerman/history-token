@@ -227,7 +227,7 @@ id|GetHubStatus
 suffix:colon
 op_star
 (paren
-id|__u32
+id|__le32
 op_star
 )paren
 id|buf
@@ -457,7 +457,7 @@ id|status
 suffix:semicolon
 op_star
 (paren
-id|__u16
+id|__le16
 op_star
 )paren
 id|buf
@@ -470,7 +470,7 @@ id|wPortStatus
 suffix:semicolon
 op_star
 (paren
-id|__u16
+id|__le16
 op_star
 )paren
 (paren

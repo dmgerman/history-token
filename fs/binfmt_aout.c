@@ -352,7 +352,7 @@ op_plus
 id|dump.u_ssize
 )paren
 OG
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_CORE
 )braket
@@ -377,7 +377,7 @@ l_int|1
 op_star
 id|PAGE_SIZE
 OG
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_CORE
 )braket
@@ -398,7 +398,7 @@ c_cond
 id|dump.u_ssize
 )paren
 OG
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_CORE
 )braket
@@ -421,7 +421,7 @@ l_int|1
 op_star
 id|PAGE_SIZE
 OG
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_CORE
 )braket
@@ -1230,7 +1230,7 @@ suffix:semicolon
 multiline_comment|/* Check initial limits. This avoids letting people circumvent&n;&t; * size limits imposed on them by creating programs with large&n;&t; * arrays in the data or bss.&n;&t; */
 id|rlim
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_DATA
 )braket

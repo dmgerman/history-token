@@ -44,6 +44,11 @@ l_int|256
 )braket
 suffix:semicolon
 r_extern
+r_int
+r_int
+id|io_page_mask
+suffix:semicolon
+r_extern
 r_void
 id|iSeries_MmIoTest
 c_func
@@ -600,6 +605,11 @@ id|find_and_init_phbs
 c_func
 (paren
 )paren
+suffix:semicolon
+id|io_page_mask
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 multiline_comment|/* pci_assign_all_busses = 0;&t;&t;SFRXXX*/
 id|PPCDBG

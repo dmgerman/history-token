@@ -7,6 +7,9 @@ macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/kregs.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/ustack.h&gt;
+multiline_comment|/* Our arch specific arch_init_sched_domain is in arch/ia64/kernel/domain.c */
+DECL|macro|ARCH_HAS_SCHED_DOMAIN
+mdefine_line|#define ARCH_HAS_SCHED_DOMAIN
 DECL|macro|IA64_NUM_DBG_REGS
 mdefine_line|#define IA64_NUM_DBG_REGS&t;8
 multiline_comment|/*&n; * Limits for PMC and PMD are set to less than maximum architected values&n; * but should be sufficient for a while&n; */
@@ -15,9 +18,9 @@ mdefine_line|#define IA64_NUM_PMC_REGS&t;32
 DECL|macro|IA64_NUM_PMD_REGS
 mdefine_line|#define IA64_NUM_PMD_REGS&t;32
 DECL|macro|DEFAULT_MAP_BASE
-mdefine_line|#define DEFAULT_MAP_BASE&t;0x2000000000000000
+mdefine_line|#define DEFAULT_MAP_BASE&t;__IA64_UL_CONST(0x2000000000000000)
 DECL|macro|DEFAULT_TASK_SIZE
-mdefine_line|#define DEFAULT_TASK_SIZE&t;0xa000000000000000
+mdefine_line|#define DEFAULT_TASK_SIZE&t;__IA64_UL_CONST(0xa000000000000000)
 multiline_comment|/*&n; * TASK_SIZE really is a mis-named.  It really is the maximum user&n; * space address (plus one).  On IA-64, there are five regions of 2TB&n; * each (assuming 8KB page size), for a total of 8TB of user virtual&n; * address space.&n; */
 DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE&t;&t;(current-&gt;thread.task_size)
@@ -475,11 +478,11 @@ suffix:semicolon
 DECL|macro|SET_UNALIGN_CTL
 mdefine_line|#define SET_UNALIGN_CTL(task,value)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(task)-&gt;thread.flags = (((task)-&gt;thread.flags &amp; ~IA64_THREAD_UAC_MASK)&t;&t;&t;&bslash;&n;&t;&t;&t;&t;| (((value) &lt;&lt; IA64_THREAD_UAC_SHIFT) &amp; IA64_THREAD_UAC_MASK));&t;&bslash;&n;&t;0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|GET_UNALIGN_CTL
-mdefine_line|#define GET_UNALIGN_CTL(task,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;put_user(((task)-&gt;thread.flags &amp; IA64_THREAD_UAC_MASK) &gt;&gt; IA64_THREAD_UAC_SHIFT,&t;&bslash;&n;&t;&t; (int *) (addr));&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define GET_UNALIGN_CTL(task,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;put_user(((task)-&gt;thread.flags &amp; IA64_THREAD_UAC_MASK) &gt;&gt; IA64_THREAD_UAC_SHIFT,&t;&bslash;&n;&t;&t; (int __user *) (addr));&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|SET_FPEMU_CTL
 mdefine_line|#define SET_FPEMU_CTL(task,value)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(task)-&gt;thread.flags = (((task)-&gt;thread.flags &amp; ~IA64_THREAD_FPEMU_MASK)&t;&t;&bslash;&n;&t;&t;&t;  | (((value) &lt;&lt; IA64_THREAD_FPEMU_SHIFT) &amp; IA64_THREAD_FPEMU_MASK));&t;&bslash;&n;&t;0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|GET_FPEMU_CTL
-mdefine_line|#define GET_FPEMU_CTL(task,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;put_user(((task)-&gt;thread.flags &amp; IA64_THREAD_FPEMU_MASK) &gt;&gt; IA64_THREAD_FPEMU_SHIFT,&t;&bslash;&n;&t;&t; (int *) (addr));&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define GET_FPEMU_CTL(task,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;put_user(((task)-&gt;thread.flags &amp; IA64_THREAD_FPEMU_MASK) &gt;&gt; IA64_THREAD_FPEMU_SHIFT,&t;&bslash;&n;&t;&t; (int __user *) (addr));&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 macro_line|#ifdef CONFIG_IA32_SUPPORT
 DECL|struct|desc_struct
 r_struct
@@ -611,7 +614,7 @@ id|GDT_ENTRY_TLS_ENTRIES
 )braket
 suffix:semicolon
 DECL|macro|INIT_THREAD_IA32
-macro_line|# define INIT_THREAD_IA32&t;.eflag =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fsr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fcr =&t;&t;0x17800000037fULL,&t;&bslash;&n;&t;&t;&t;&t;.fir =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fdr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_k1 =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_iob =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.ppl =&t;&t;0,
+macro_line|# define INIT_THREAD_IA32&t;.eflag =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fsr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fcr =&t;&t;0x17800000037fULL,&t;&bslash;&n;&t;&t;&t;&t;.fir =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fdr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_k1 =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_iob =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.ppl =&t;&t;NULL,
 macro_line|#else
 DECL|macro|INIT_THREAD_IA32
 macro_line|# define INIT_THREAD_IA32
@@ -691,10 +694,6 @@ mdefine_line|#define release_thread(dead_task)
 multiline_comment|/* Prepare to copy thread state - unlazy all lazy status */
 DECL|macro|prepare_to_copy
 mdefine_line|#define prepare_to_copy(tsk)&t;do { } while (0)
-macro_line|#ifdef CONFIG_NUMA
-DECL|macro|SD_NODE_INIT
-mdefine_line|#define SD_NODE_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 80,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 320,&t;&t;&t;&bslash;&n;&t;.busy_factor&t;&t;= 320,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 125,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= (10*1000000),&t;&t;&bslash;&n;&t;.cache_nice_tries&t;= 1,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 100,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_BALANCE_EXEC&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_BALANCE,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 10,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
-macro_line|#endif
 multiline_comment|/*&n; * This is the mechanism for creating a new kernel thread.&n; *&n; * NOTE 1: Only a kernel-only process (ie the swapper or direct&n; * descendants who haven&squot;t done an &quot;execve()&quot;) should use this: it&n; * will work within a system call from a &quot;real&quot; process, but the&n; * process memory space will not be free&squot;d until both the parent and&n; * the child have exited.&n; *&n; * NOTE 2: This MUST NOT be an inlined function.  Otherwise, we get&n; * into trouble in init/main.c when the child thread returns to&n; * do_basic_setup() and the timing is such that free_initmem() has&n; * been called already.&n; */
 r_extern
 id|pid_t

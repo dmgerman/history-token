@@ -5,7 +5,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/se7751/se7751.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;asm/pci-sh7751.h&gt;
+macro_line|#include &quot;../../../drivers/pci/pci-sh7751.h&quot;
 macro_line|#if 0
 multiline_comment|/******************************************************************&n; * Variables from io_se.c, related to PCMCIA (not PCI); we&squot;re not&n; * compiling them in, and have removed references from functions&n; * which follow.  [Many checked for IO ports in the range bounded&n; * by sh_pcic_io_start/stop, and used sh_pcic_io_wbase as offset.&n; * As start/stop are uninitialized, only port 0x0 would match?]&n; * When used, remember to adjust names to avoid clash with io_se?&n; *****************************************************************/
 multiline_comment|/* SH pcmcia io window base, start and end.  */

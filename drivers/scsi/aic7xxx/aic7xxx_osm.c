@@ -5,9 +5,7 @@ macro_line|#include &quot;aic7xxx_inline.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 multiline_comment|/*&n; * Include aiclib.c as part of our&n; * &quot;module dependencies are hard&quot; work around.&n; */
 macro_line|#include &quot;aiclib.c&quot;
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)
 macro_line|#include &lt;linux/init.h&gt;&t;&t;/* __setup */
-macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 macro_line|#include &quot;sd.h&quot;&t;&t;&t;/* For geometry detection */
 macro_line|#endif
@@ -24,49 +22,6 @@ multiline_comment|/* For dynamic sglist size calculation. */
 DECL|variable|ahc_linux_nseg
 id|u_int
 id|ahc_linux_nseg
-suffix:semicolon
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
-DECL|variable|proc_scsi_aic7xxx
-r_struct
-id|proc_dir_entry
-id|proc_scsi_aic7xxx
-op_assign
-(brace
-id|PROC_SCSI_AIC7XXX
-comma
-l_int|7
-comma
-l_string|&quot;aic7xxx&quot;
-comma
-id|S_IFDIR
-op_or
-id|S_IRUGO
-op_or
-id|S_IXUGO
-comma
-l_int|2
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-)brace
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Set this to the delay in seconds after SCSI bus reset.&n; * Note, we honor this only for the initial bus reset.&n; * The scsi error recovery code performs its own bus settle&n; * delay handling for error recovery actions.&n; */
@@ -1191,7 +1146,7 @@ id|ahc_dma_seg
 op_star
 id|sg
 comma
-id|bus_addr_t
+id|dma_addr_t
 id|addr
 comma
 id|bus_size_t
@@ -1254,7 +1209,6 @@ op_star
 id|ahc
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 id|tasklet_schedule
 c_func
 (paren
@@ -1262,19 +1216,6 @@ op_amp
 id|ahc-&gt;platform_data-&gt;runq_tasklet
 )paren
 suffix:semicolon
-macro_line|#else
-multiline_comment|/*&n;&t; * Tasklets are not available, so run inline.&n;&t; */
-id|ahc_runq_tasklet
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|ahc
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 r_static
 id|__inline
@@ -1885,7 +1826,7 @@ id|ahc_dma_seg
 op_star
 id|sg
 comma
-id|bus_addr_t
+id|dma_addr_t
 id|addr
 comma
 id|bus_size_t
@@ -1936,7 +1877,7 @@ c_cond
 (paren
 r_sizeof
 (paren
-id|bus_addr_t
+id|dma_addr_t
 )paren
 OG
 l_int|4
@@ -2371,22 +2312,12 @@ l_string|&quot;aic7xxx: insmod or else it might trash certain memory areas.&bsla
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,0)
 r_template
 op_member_access_from_pointer
 id|proc_name
 op_assign
 l_string|&quot;aic7xxx&quot;
 suffix:semicolon
-macro_line|#else
-r_template
-op_member_access_from_pointer
-id|proc_dir
-op_assign
-op_amp
-id|proc_scsi_aic7xxx
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Initialize our softc list lock prior to&n;&t; * probing for any adapters.&n;&t; */
 id|ahc_list_lockinit
 c_func
@@ -4191,11 +4122,9 @@ id|ahc_linux_device
 op_star
 id|dev
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 id|u_long
 id|flags
 suffix:semicolon
-macro_line|#endif
 id|ahc
 op_assign
 (paren
@@ -4205,7 +4134,6 @@ op_star
 )paren
 id|data
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 id|ahc_lock
 c_func
 (paren
@@ -4215,7 +4143,6 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 r_while
 c_loop
 (paren
@@ -4256,7 +4183,6 @@ comma
 id|dev
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 multiline_comment|/* Yeild to our interrupt handler */
 id|ahc_unlock
 c_func
@@ -4276,9 +4202,7 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 id|ahc_unlock
 c_func
 (paren
@@ -4288,7 +4212,6 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/******************************** Macros **************************************/
 DECL|macro|BUILD_SCSIID
@@ -4313,10 +4236,10 @@ comma
 id|bus_size_t
 id|boundary
 comma
-id|bus_addr_t
+id|dma_addr_t
 id|lowaddr
 comma
-id|bus_addr_t
+id|dma_addr_t
 id|highaddr
 comma
 id|bus_dma_filter_t
@@ -4451,7 +4374,6 @@ id|mapp
 id|bus_dmamap_t
 id|map
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)
 id|map
 op_assign
 id|malloc
@@ -4491,7 +4413,7 @@ l_int|NULL
 r_if
 c_cond
 (paren
-id|ahc_pci_set_dma_mask
+id|pci_set_dma_mask
 c_func
 (paren
 id|ahc-&gt;dev_softc
@@ -4505,6 +4427,12 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;aic7xxx: No suitable DMA available.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|map
 )paren
 suffix:semicolon
 r_return
@@ -4537,7 +4465,7 @@ l_int|NULL
 r_if
 c_cond
 (paren
-id|ahc_pci_set_dma_mask
+id|pci_set_dma_mask
 c_func
 (paren
 id|ahc-&gt;dev_softc
@@ -4553,33 +4481,18 @@ id|KERN_WARNING
 l_string|&quot;aic7xxx: No suitable DMA available.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|map
+)paren
+suffix:semicolon
 r_return
 (paren
 id|ENODEV
 )paren
 suffix:semicolon
 )brace
-macro_line|#else /* LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0) */
-multiline_comment|/*&n;&t; * At least in 2.2.14, malloc is a slab allocator so all&n;&t; * allocations are aligned.  We assume for these kernel versions&n;&t; * that all allocations will be bellow 4Gig, physically contiguous,&n;&t; * and accessible via DMA by the controller.&n;&t; */
-id|map
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* No additional information to store */
-op_star
-id|vaddr
-op_assign
-id|malloc
-c_func
-(paren
-id|dmat-&gt;maxsize
-comma
-id|M_DEVBUF
-comma
-id|M_NOWAIT
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4623,7 +4536,6 @@ id|bus_dmamap_t
 id|map
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)
 id|pci_free_consistent
 c_func
 (paren
@@ -4636,16 +4548,6 @@ comma
 id|map-&gt;bus_addr
 )paren
 suffix:semicolon
-macro_line|#else
-id|free
-c_func
-(paren
-id|vaddr
-comma
-id|M_DEVBUF
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 r_int
 DECL|function|ahc_dmamap_load
@@ -4686,22 +4588,10 @@ multiline_comment|/*&n;&t; * Assume for now that this will only be used during&n
 id|bus_dma_segment_t
 id|stack_sg
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)
 id|stack_sg.ds_addr
 op_assign
 id|map-&gt;bus_addr
 suffix:semicolon
-macro_line|#else
-mdefine_line|#define VIRT_TO_BUS(a) (uint32_t)virt_to_bus((void *)(a))
-id|stack_sg.ds_addr
-op_assign
-id|VIRT_TO_BUS
-c_func
-(paren
-id|buf
-)paren
-suffix:semicolon
-macro_line|#endif
 id|stack_sg.ds_len
 op_assign
 id|dmat-&gt;maxsize
@@ -4744,14 +4634,15 @@ id|bus_dmamap_t
 id|map
 )paren
 (brace
-multiline_comment|/*&n;&t; * The map may is NULL in our &lt; 2.3.X implementation.&n;&t; */
-r_if
-c_cond
+multiline_comment|/*&n;&t; * The map may is NULL in our &lt; 2.3.X implementation.&n;&t; * Now it&squot;s 2.6.5, but just in case...&n;&t; */
+id|BUG_ON
+c_func
 (paren
 id|map
-op_ne
+op_eq
 l_int|NULL
 )paren
+suffix:semicolon
 id|free
 c_func
 (paren
@@ -5760,7 +5651,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,0)
 id|__setup
 c_func
 (paren
@@ -5769,7 +5659,6 @@ comma
 id|aic7xxx_setup
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|aic7xxx_verbose
 r_uint32
 id|aic7xxx_verbose
@@ -6005,7 +5894,7 @@ id|host-&gt;unique_id
 op_assign
 id|ahc-&gt;unit
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,4) &amp;&amp; &bslash;&n;    LINUX_VERSION_CODE  &lt; KERNEL_VERSION(2,5,0)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 id|scsi_set_pci_device
 c_func
 (paren
@@ -6756,7 +6645,6 @@ op_star
 )paren
 id|ahc_linux_thread_run_complete_queue
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)
 id|init_MUTEX_LOCKED
 c_func
 (paren
@@ -6778,21 +6666,6 @@ op_amp
 id|ahc-&gt;platform_data-&gt;dv_cmd_sem
 )paren
 suffix:semicolon
-macro_line|#else
-id|ahc-&gt;platform_data-&gt;eh_sem
-op_assign
-id|MUTEX_LOCKED
-suffix:semicolon
-id|ahc-&gt;platform_data-&gt;dv_sem
-op_assign
-id|MUTEX_LOCKED
-suffix:semicolon
-id|ahc-&gt;platform_data-&gt;dv_cmd_sem
-op_assign
-id|MUTEX_LOCKED
-suffix:semicolon
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 id|tasklet_init
 c_func
 (paren
@@ -6808,7 +6681,6 @@ r_int
 id|ahc
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ahc-&gt;seltime
 op_assign
 (paren
@@ -6893,7 +6765,6 @@ c_func
 id|ahc
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 id|tasklet_kill
 c_func
 (paren
@@ -6901,7 +6772,6 @@ op_amp
 id|ahc-&gt;platform_data-&gt;runq_tasklet
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7084,7 +6954,6 @@ op_star
 id|base_addr
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 id|release_mem_region
 c_func
 (paren
@@ -7093,9 +6962,8 @@ comma
 l_int|0x1000
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0) &amp;&amp; &bslash;&n;    LINUX_VERSION_CODE  &lt; KERNEL_VERSION(2,5,0)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 multiline_comment|/*&n;&t;&t; * In 2.4 we detach from the scsi midlayer before the PCI&n;&t;&t; * layer invokes our remove callback.  No per-instance&n;&t;&t; * detach is provided, so we must reach inside the PCI&n;&t;&t; * subsystem&squot;s internals and detach our driver manually.&n;&t;&t; */
 r_if
 c_cond
@@ -14299,7 +14167,7 @@ OL
 id|end_seg
 )paren
 (brace
-id|bus_addr_t
+id|dma_addr_t
 id|addr
 suffix:semicolon
 id|bus_size_t
@@ -14398,7 +14266,7 @@ id|ahc_dma_seg
 op_star
 id|sg
 suffix:semicolon
-id|bus_addr_t
+id|dma_addr_t
 id|addr
 suffix:semicolon
 id|sg
@@ -15627,7 +15495,7 @@ comma
 id|target
 )paren
 suffix:semicolon
-macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)
+macro_line|#else
 id|Scsi_Device
 op_star
 id|scsi_dev
@@ -15690,7 +15558,6 @@ suffix:semicolon
 r_case
 id|AC_BUS_RESET
 suffix:colon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)
 r_if
 c_cond
 (paren
@@ -15710,7 +15577,6 @@ l_char|&squot;A&squot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 r_break
 suffix:semicolon
 r_default
@@ -19640,17 +19506,7 @@ id|ahc_softc
 op_star
 id|ahc
 suffix:semicolon
-id|u_long
-id|l
-suffix:semicolon
 multiline_comment|/*&n;&t; * Shutdown DV threads before going into the SCSI mid-layer.&n;&t; * This avoids situations where the mid-layer locks the entire&n;&t; * kernel so that waiting for our DV threads to exit leads&n;&t; * to deadlock.&n;&t; */
-id|ahc_list_lock
-c_func
-(paren
-op_amp
-id|l
-)paren
-suffix:semicolon
 id|TAILQ_FOREACH
 c_func
 (paren
@@ -19669,13 +19525,6 @@ id|ahc
 )paren
 suffix:semicolon
 )brace
-id|ahc_list_unlock
-c_func
-(paren
-op_amp
-id|l
-)paren
-suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 multiline_comment|/*&n;&t; * In 2.4 we have to unregister from the PCI core _after_&n;&t; * unregistering from the scsi midlayer to avoid dangling&n;&t; * references.&n;&t; */
 id|scsi_unregister_module

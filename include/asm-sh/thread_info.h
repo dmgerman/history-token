@@ -51,20 +51,6 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#else /* !__ASSEMBLY__ */
-multiline_comment|/* offsets into the thread_info struct for assembly code access */
-DECL|macro|TI_TASK
-mdefine_line|#define TI_TASK&t;&t;0x00000000
-DECL|macro|TI_EXEC_DOMAIN
-mdefine_line|#define TI_EXEC_DOMAIN&t;0x00000004
-DECL|macro|TI_FLAGS
-mdefine_line|#define TI_FLAGS&t;0x00000008
-DECL|macro|TI_CPU
-mdefine_line|#define TI_CPU&t;&t;0x0000000c
-DECL|macro|TI_PRE_COUNT
-mdefine_line|#define TI_PRE_COUNT&t;0x00000010
-DECL|macro|TI_RESTART_BLOCK
-mdefine_line|#define TI_RESTART_BLOCK 0x00000014
 macro_line|#endif
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000

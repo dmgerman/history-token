@@ -2,6 +2,7 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef __ASM_SH_ADDRSPACE_H
 DECL|macro|__ASM_SH_ADDRSPACE_H
 mdefine_line|#define __ASM_SH_ADDRSPACE_H
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/cpu/addrspace.h&gt;
 multiline_comment|/* Memory segments (32bit Priviledged mode addresses)  */
 DECL|macro|P0SEG
@@ -29,5 +30,6 @@ DECL|macro|P3SEGADDR
 mdefine_line|#define P3SEGADDR(a)&t;((__typeof__(a))(((unsigned long)(a) &amp; 0x1fffffff) | P3SEG))
 DECL|macro|P4SEGADDR
 mdefine_line|#define P4SEGADDR(a)&t;((__typeof__(a))(((unsigned long)(a) &amp; 0x1fffffff) | P4SEG))
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_SH_ADDRSPACE_H */
 eof

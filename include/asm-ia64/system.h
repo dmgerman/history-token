@@ -8,10 +8,10 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
 macro_line|#include &lt;asm/percpu.h&gt;
 DECL|macro|GATE_ADDR
-mdefine_line|#define GATE_ADDR&t;&t;(0xa000000000000000)
+mdefine_line|#define GATE_ADDR&t;&t;__IA64_UL_CONST(0xa000000000000000)
 multiline_comment|/*&n; * 0xa000000000000000+2*PERCPU_PAGE_SIZE&n; * - 0xa000000000000000+3*PERCPU_PAGE_SIZE remain unmapped (guard page)&n; */
 DECL|macro|KERNEL_START
-mdefine_line|#define KERNEL_START&t;&t; 0xa000000100000000
+mdefine_line|#define KERNEL_START&t;&t; __IA64_UL_CONST(0xa000000100000000)
 DECL|macro|PERCPU_ADDR
 mdefine_line|#define PERCPU_ADDR&t;&t;(-PERCPU_PAGE_SIZE)
 macro_line|#ifndef __ASSEMBLY__

@@ -121,6 +121,12 @@ suffix:semicolon
 id|__u32
 id|unused_objectid
 suffix:semicolon
+id|BUG_ON
+(paren
+op_logical_neg
+id|th-&gt;t_trans_id
+)paren
+suffix:semicolon
 id|check_objectid_map
 (paren
 id|s
@@ -326,6 +332,12 @@ r_int
 id|i
 op_assign
 l_int|0
+suffix:semicolon
+id|BUG_ON
+(paren
+op_logical_neg
+id|th-&gt;t_trans_id
+)paren
 suffix:semicolon
 singleline_comment|//return;
 id|check_objectid_map

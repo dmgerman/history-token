@@ -342,7 +342,7 @@ r_int
 id|intr_interval
 suffix:semicolon
 DECL|member|rx_creg
-id|u16
+id|__le16
 id|rx_creg
 suffix:semicolon
 DECL|member|intr_buff
@@ -1887,7 +1887,7 @@ c_func
 (paren
 op_star
 (paren
-r_int
+id|__le16
 op_star
 )paren
 (paren

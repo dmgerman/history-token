@@ -714,12 +714,12 @@ op_ge
 l_int|0
 )paren
 (brace
-id|ppc_irq_dispatch_handler
+id|__do_IRQ
 c_func
 (paren
-id|regs
-comma
 id|irq
+comma
+id|regs
 )paren
 suffix:semicolon
 )brace

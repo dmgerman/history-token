@@ -740,7 +740,7 @@ id|urb
 op_star
 id|urb
 comma
-id|u32
+id|__le32
 id|breadth
 )paren
 (brace
@@ -1320,7 +1320,7 @@ id|uhci_qh
 op_star
 id|pqh
 suffix:semicolon
-id|u32
+id|__le32
 id|newlink
 suffix:semicolon
 r_int

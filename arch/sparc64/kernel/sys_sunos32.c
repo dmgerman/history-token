@@ -506,7 +506,7 @@ id|ENOMEM
 suffix:semicolon
 id|rlim
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_DATA
 )braket
