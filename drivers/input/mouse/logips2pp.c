@@ -673,7 +673,6 @@ id|psmouse
 comma
 r_int
 r_char
-id|param
 op_star
 id|param
 )paren

@@ -33,6 +33,11 @@ r_struct
 id|psmouse
 op_star
 id|psmouse
+comma
+r_int
+r_char
+op_star
+id|param
 )paren
 suffix:semicolon
 macro_line|#endif
