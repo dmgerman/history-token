@@ -3274,7 +3274,7 @@ suffix:semicolon
 id|kdev_t
 id|device
 op_assign
-id|mk_mdev
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR
@@ -3485,7 +3485,7 @@ op_assign
 id|get_start_sect
 c_func
 (paren
-id|inode-&gt;i_bdev
+id|i-&gt;i_bdev
 )paren
 suffix:semicolon
 id|geo.cylinders
