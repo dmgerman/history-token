@@ -1623,6 +1623,9 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_int
+id|mem_flags
 )paren
 suffix:semicolon
 r_extern
@@ -1936,6 +1939,9 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_int
+id|mem_flags
 )paren
 suffix:semicolon
 DECL|member|unlink_urb
