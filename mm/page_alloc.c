@@ -2493,7 +2493,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Really, prep_compound_page() should be called from __rmqueue_bulk().  But&n; * we cheat by calling it from here, in the order &gt; 0 path.  Saves a branch&n; * or two.&n; */
 DECL|function|prep_zero_page
 r_static
 r_inline
@@ -2508,10 +2507,29 @@ id|page
 comma
 r_int
 id|order
+comma
+r_int
+id|gfp_flags
 )paren
 (brace
 r_int
 id|i
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+(paren
+id|gfp_flags
+op_amp
+(paren
+id|__GFP_WAIT
+op_or
+id|__GFP_HIGHMEM
+)paren
+)paren
+op_eq
+id|__GFP_HIGHMEM
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -2542,6 +2560,7 @@ id|i
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n; * Really, prep_compound_page() should be called from __rmqueue_bulk().  But&n; * we cheat by calling it from here, in the order &gt; 0 path.  Saves a branch&n; * or two.&n; */
 r_static
 r_struct
 id|page
@@ -2773,6 +2792,8 @@ c_func
 id|page
 comma
 id|order
+comma
+id|gfp_flags
 )paren
 suffix:semicolon
 r_if
