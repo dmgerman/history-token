@@ -506,6 +506,10 @@ DECL|enumerator|UNW_INSN_MOVE_SCRATCH
 id|UNW_INSN_MOVE_SCRATCH
 comma
 multiline_comment|/* s[dst] = scratch reg &quot;val&quot; */
+DECL|enumerator|UNW_INSN_MOVE_CONST
+id|UNW_INSN_MOVE_CONST
+comma
+multiline_comment|/* s[dst] = constant reg &quot;val&quot; */
 )brace
 suffix:semicolon
 DECL|struct|unw_insn

@@ -553,7 +553,7 @@ id|conn_v
 id|cnodeid_t
 id|cnode
 op_assign
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|nasid
@@ -619,7 +619,7 @@ multiline_comment|/* pcibr widget hw/module/001c11/slab/0/Pbrick/xtalk/12 */
 multiline_comment|/* sprintf(pathname, &quot;%v&quot;, conn_v); */
 id|xbow_peer
 op_assign
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|NODEPDA

@@ -1454,17 +1454,6 @@ id|pda-&gt;shub_1_1_found
 op_assign
 id|shub_1_1_found
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|local_node_data-&gt;active_cpu_count
-op_eq
-l_int|1
-)paren
-id|nodepda-&gt;node_first_cpu
-op_assign
-id|cpuid
-suffix:semicolon
 multiline_comment|/*&n;&t; * We must use different memory allocators for first cpu (bootmem &n;&t; * allocator) than for the other cpus (regular allocator).&n;&t; */
 r_if
 c_cond
@@ -1583,9 +1572,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|nodepda-&gt;node_first_cpu
+id|local_node_data-&gt;active_cpu_count
+op_increment
 op_eq
-id|cpuid
+l_int|0
 )paren
 (brace
 r_int

@@ -1039,6 +1039,10 @@ DECL|macro|ia64_srlz_d
 mdefine_line|#define ia64_srlz_d&t;&t;__dsrlz
 DECL|macro|ia64_srlz_i
 mdefine_line|#define ia64_srlz_i&t;&t;__isrlz
+DECL|macro|ia64_dv_serialize_data
+mdefine_line|#define ia64_dv_serialize_data()
+DECL|macro|ia64_dv_serialize_instruction
+mdefine_line|#define ia64_dv_serialize_instruction()
 DECL|macro|ia64_st1_rel
 mdefine_line|#define ia64_st1_rel&t;&t;__st1_rel
 DECL|macro|ia64_st2_rel

@@ -1,7 +1,8 @@
 macro_line|#ifndef _ASM_IA64_GCC_INTRIN_H
 DECL|macro|_ASM_IA64_GCC_INTRIN_H
 mdefine_line|#define _ASM_IA64_GCC_INTRIN_H
-multiline_comment|/*&n; *&n; * Copyright (C) 2002,2003 Jun Nakajima &lt;jun.nakajima@intel.com&gt;&n; * Copyright (C) 2002,2003 Suresh Siddha &lt;suresh.b.siddha@intel.com&gt;&n; *&n; */
+multiline_comment|/*&n; *&n; * Copyright (C) 2002,2003 Jun Nakajima &lt;jun.nakajima@intel.com&gt;&n; * Copyright (C) 2002,2003 Suresh Siddha &lt;suresh.b.siddha@intel.com&gt;&n; */
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/* define this macro to get some asm stmts included in &squot;c&squot; files */
 DECL|macro|ASM_SUPPORTED
 mdefine_line|#define ASM_SUPPORTED
@@ -37,6 +38,7 @@ id|asm
 (paren
 l_string|&quot;r13&quot;
 )paren
+id|__attribute_used__
 suffix:semicolon
 DECL|macro|ia64_setreg
 mdefine_line|#define ia64_setreg(regnum, val)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (regnum) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;    case _IA64_REG_PSR_L:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;    asm volatile (&quot;mov psr.l=%0&quot; :: &quot;r&quot;(val) : &quot;memory&quot;);&t;&bslash;&n;&t;&t;    break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;    case _IA64_REG_AR_KR0 ... _IA64_REG_AR_EC:&t;&t;&t;&t;&bslash;&n;&t;&t;    asm volatile (&quot;mov ar%0=%1&quot; ::&t;&t;&t;&t;&bslash;&n;&t;&t;    &t;&t;&t;  &quot;i&quot; (regnum - _IA64_REG_AR_KR0),&t;&bslash;&n;&t;&t;&t;&t;&t;  &quot;r&quot;(val): &quot;memory&quot;);&t;&t;&t;&bslash;&n;&t;&t;    break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;    case _IA64_REG_CR_DCR ... _IA64_REG_CR_LRR1:&t;&t;&t;&bslash;&n;&t;&t;    asm volatile (&quot;mov cr%0=%1&quot; ::&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;          &quot;i&quot; (regnum - _IA64_REG_CR_DCR),&t;&bslash;&n;&t;&t;&t;&t;&t;  &quot;r&quot;(val): &quot;memory&quot; );&t;&t;&t;&bslash;&n;&t;&t;    break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;    case _IA64_REG_SP:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;    asm volatile (&quot;mov r12=%0&quot; ::&t;&t;&t;&t;&bslash;&n;&t;&t;&t;    &t;&t;  &quot;r&quot;(val): &quot;memory&quot;);&t;&t;&t;&bslash;&n;&t;&t;    break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;    case _IA64_REG_GP:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;    asm volatile (&quot;mov gp=%0&quot; :: &quot;r&quot;(val) : &quot;memory&quot;);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;    default:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;    ia64_bad_param_for_setreg();&t;&t;&t;&t;&bslash;&n;&t;&t;    break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
@@ -129,6 +131,17 @@ DECL|macro|ia64_srlz_i
 mdefine_line|#define ia64_srlz_i()&t;asm volatile (&quot;;; srlz.i ;;&quot; ::: &quot;memory&quot;)
 DECL|macro|ia64_srlz_d
 mdefine_line|#define ia64_srlz_d()&t;asm volatile (&quot;;; srlz.d&quot; ::: &quot;memory&quot;);
+macro_line|#ifdef HAVE_SERIALIZE_DIRECTIVE
+DECL|macro|ia64_dv_serialize_data
+macro_line|# define ia64_dv_serialize_data()&t;&t;asm volatile (&quot;.serialize.data&quot;);
+DECL|macro|ia64_dv_serialize_instruction
+macro_line|# define ia64_dv_serialize_instruction()&t;asm volatile (&quot;.serialize.instruction&quot;);
+macro_line|#else
+DECL|macro|ia64_dv_serialize_data
+macro_line|# define ia64_dv_serialize_data()
+DECL|macro|ia64_dv_serialize_instruction
+macro_line|# define ia64_dv_serialize_instruction()
+macro_line|#endif
 DECL|macro|ia64_nop
 mdefine_line|#define ia64_nop(x)&t;asm volatile (&quot;nop %0&quot;::&quot;i&quot;(x));
 DECL|macro|ia64_itci

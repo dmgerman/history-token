@@ -61,10 +61,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|master_procid
-id|cpuid_t
-id|master_procid
-suffix:semicolon
 DECL|variable|console_nasid
 id|nasid_t
 id|console_nasid
@@ -119,7 +115,7 @@ id|ii_ilcsr
 suffix:semicolon
 id|nasid
 op_assign
-id|COMPACT_TO_NASID_NODEID
+id|cnodeid_to_nasid
 c_func
 (paren
 id|cnode
@@ -136,7 +132,7 @@ suffix:semicolon
 id|ASSERT
 c_func
 (paren
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|nasid
@@ -396,7 +392,7 @@ op_eq
 id|NODEPDA
 c_func
 (paren
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|nasidb
