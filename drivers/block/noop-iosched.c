@@ -63,9 +63,16 @@ id|bio
 )paren
 )paren
 )paren
+(brace
+op_star
+id|req
+op_assign
+id|q-&gt;last_merge
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
