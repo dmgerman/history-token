@@ -95,30 +95,36 @@ DECL|macro|RPC_CREDCACHE_NR
 mdefine_line|#define RPC_CREDCACHE_NR&t;8
 DECL|macro|RPC_CREDCACHE_MASK
 mdefine_line|#define RPC_CREDCACHE_MASK&t;(RPC_CREDCACHE_NR - 1)
-DECL|struct|rpc_auth
+DECL|struct|rpc_cred_cache
 r_struct
-id|rpc_auth
+id|rpc_cred_cache
 (brace
-DECL|member|au_credcache
+DECL|member|hashtable
 r_struct
 id|hlist_head
-id|au_credcache
+id|hashtable
 (braket
 id|RPC_CREDCACHE_NR
 )braket
 suffix:semicolon
-DECL|member|au_expire
+DECL|member|nextgc
 r_int
 r_int
-id|au_expire
-suffix:semicolon
-multiline_comment|/* cache expiry interval */
-DECL|member|au_nextgc
-r_int
-r_int
-id|au_nextgc
+id|nextgc
 suffix:semicolon
 multiline_comment|/* next garbage collection */
+DECL|member|expire
+r_int
+r_int
+id|expire
+suffix:semicolon
+multiline_comment|/* cache expiry interval */
+)brace
+suffix:semicolon
+DECL|struct|rpc_auth
+r_struct
+id|rpc_auth
+(brace
 DECL|member|au_cslack
 r_int
 r_int
@@ -154,6 +160,12 @@ id|atomic_t
 id|au_count
 suffix:semicolon
 multiline_comment|/* Reference counter */
+DECL|member|au_credcache
+r_struct
+id|rpc_cred_cache
+op_star
+id|au_credcache
+suffix:semicolon
 multiline_comment|/* per-flavor data */
 )brace
 suffix:semicolon
@@ -615,13 +627,16 @@ id|rpc_task
 op_star
 )paren
 suffix:semicolon
-r_void
+r_int
 id|rpcauth_init_credcache
 c_func
 (paren
 r_struct
 id|rpc_auth
 op_star
+comma
+r_int
+r_int
 )paren
 suffix:semicolon
 r_void
