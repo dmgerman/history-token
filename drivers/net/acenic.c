@@ -768,6 +768,14 @@ id|ap-&gt;pdev
 op_assign
 id|pdev
 suffix:semicolon
+id|ap-&gt;name
+op_assign
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 id|dev-&gt;features
 op_or_assign
 id|NETIF_F_SG
@@ -925,7 +933,7 @@ id|KERN_INFO
 l_string|&quot;%s: Enabling PCI Memory Mapped &quot;
 l_string|&quot;access - was not enabled by BIOS/Firmware&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 id|ap-&gt;pci_command
@@ -1024,7 +1032,7 @@ id|KERN_ERR
 l_string|&quot;%s:  Unable to map I/O register, &quot;
 l_string|&quot;AceNIC %i will be disabled.&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 comma
 id|boards_found
 )paren
@@ -1050,52 +1058,25 @@ op_eq
 id|PCI_DEVICE_ID_FARALLON_PN9100T
 )paren
 (brace
-id|strncpy
-c_func
-(paren
-id|ap-&gt;name
-comma
-l_string|&quot;Farallon PN9100-T &quot;
-l_string|&quot;Gigabit Ethernet&quot;
-comma
-r_sizeof
-(paren
-id|ap-&gt;name
-)paren
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s: Farallon PN9100-T &quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
-id|strncpy
-c_func
-(paren
-id|ap-&gt;name
-comma
-l_string|&quot;AceNIC Gigabit Ethernet&quot;
-comma
-r_sizeof
-(paren
-id|ap-&gt;name
-)paren
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s: Alteon AceNIC &quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -1104,26 +1085,13 @@ suffix:semicolon
 r_case
 id|PCI_VENDOR_ID_3COM
 suffix:colon
-id|strncpy
-c_func
-(paren
-id|ap-&gt;name
-comma
-l_string|&quot;3Com 3C985 Gigabit Ethernet&quot;
-comma
-r_sizeof
-(paren
-id|ap-&gt;name
-)paren
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s: 3Com 3C985 &quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 r_break
@@ -1131,26 +1099,13 @@ suffix:semicolon
 r_case
 id|PCI_VENDOR_ID_NETGEAR
 suffix:colon
-id|strncpy
-c_func
-(paren
-id|ap-&gt;name
-comma
-l_string|&quot;NetGear GA620 Gigabit Ethernet&quot;
-comma
-r_sizeof
-(paren
-id|ap-&gt;name
-)paren
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s: NetGear GA620 &quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 r_break
@@ -1166,27 +1121,13 @@ op_eq
 id|PCI_DEVICE_ID_FARALLON_PN9000SX
 )paren
 (brace
-id|strncpy
-c_func
-(paren
-id|ap-&gt;name
-comma
-l_string|&quot;Farallon PN9000-SX &quot;
-l_string|&quot;Gigabit Ethernet&quot;
-comma
-r_sizeof
-(paren
-id|ap-&gt;name
-)paren
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s: Farallon PN9000-SX &quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 r_break
@@ -1195,70 +1136,31 @@ suffix:semicolon
 r_case
 id|PCI_VENDOR_ID_SGI
 suffix:colon
-id|strncpy
-c_func
-(paren
-id|ap-&gt;name
-comma
-l_string|&quot;SGI AceNIC Gigabit Ethernet&quot;
-comma
-r_sizeof
-(paren
-id|ap-&gt;name
-)paren
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s: SGI AceNIC &quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|strncpy
-c_func
-(paren
-id|ap-&gt;name
-comma
-l_string|&quot;Unknown AceNIC based Gigabit &quot;
-l_string|&quot;Ethernet&quot;
-comma
-r_sizeof
-(paren
-id|ap-&gt;name
-)paren
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s: Unknown AceNIC &quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|ap-&gt;name
-(braket
-r_sizeof
-(paren
-id|ap-&gt;name
-)paren
-op_minus
-l_int|1
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1391,6 +1293,10 @@ r_goto
 id|fail_uninit
 suffix:semicolon
 )brace
+id|ap-&gt;name
+op_assign
+id|dev-&gt;name
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1464,7 +1370,11 @@ id|ace_private
 op_star
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_struct
 id|ace_regs
@@ -1960,7 +1870,11 @@ id|ace_private
 op_star
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|size
@@ -2217,7 +2131,11 @@ id|ace_private
 op_star
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|size
@@ -2480,7 +2398,11 @@ id|ap
 suffix:semicolon
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|ace_free_descriptors
 c_func
@@ -2690,7 +2612,11 @@ id|cache_size
 suffix:semicolon
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|regs
 op_assign
@@ -4667,7 +4593,7 @@ id|KERN_WARNING
 l_string|&quot;%s: more than %i NICs detected, &quot;
 l_string|&quot;ignoring module parameters!&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 comma
 id|ACE_MAX_MOD_PARMS
 )paren
@@ -4890,7 +4816,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Setting half duplex link&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 id|tmp
@@ -4963,7 +4889,7 @@ id|KERN_WARNING
 l_string|&quot;%s: No media speed specified, &quot;
 l_string|&quot;forcing auto negotiation&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 id|tmp
@@ -5000,7 +4926,7 @@ id|KERN_INFO
 l_string|&quot;%s: Disabling flow control &quot;
 l_string|&quot;negotiation&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 r_if
@@ -5036,7 +4962,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Enabling TX flow control&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 id|tmp
@@ -5253,7 +5179,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: Firmware NOT running!&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 id|ace_dump_trace
@@ -5363,7 +5289,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: Someone is busy refilling the RX ring&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 r_if
@@ -5403,7 +5329,7 @@ id|KERN_ERR
 l_string|&quot;%s: Someone is busy refilling &quot;
 l_string|&quot;the RX mini ring&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -5452,7 +5378,11 @@ id|board_idx
 suffix:semicolon
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|regs
 op_assign
@@ -5687,7 +5617,11 @@ id|ace_private
 op_star
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_struct
 id|ace_regs
@@ -6818,7 +6752,11 @@ id|ap
 suffix:semicolon
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -6848,7 +6786,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Firmware up and running&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 id|ap-&gt;fw_running
@@ -6908,7 +6846,7 @@ id|KERN_WARNING
 l_string|&quot;%s: Optical link UP &quot;
 l_string|&quot;(%s Duplex, Flow Control: %s%s)&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 comma
 id|state
 op_amp
@@ -6950,7 +6888,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: Optical link DOWN&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 r_break
@@ -6965,7 +6903,7 @@ id|KERN_WARNING
 l_string|&quot;%s: 10/100BaseT link &quot;
 l_string|&quot;UP&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 r_break
@@ -6979,7 +6917,7 @@ id|KERN_ERR
 l_string|&quot;%s: Unknown optical link &quot;
 l_string|&quot;state %02x&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 comma
 id|code
 )paren
@@ -7011,7 +6949,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: invalid command error&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 r_break
@@ -7026,7 +6964,7 @@ id|KERN_ERR
 l_string|&quot;%s: unimplemented command &quot;
 l_string|&quot;error&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 r_break
@@ -7040,7 +6978,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: bad config error&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 r_break
@@ -7053,7 +6991,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: unknown error %02x&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 comma
 id|ap-&gt;evt_ring
 (braket
@@ -7217,7 +7155,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Jumbo ring flushed&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 id|clear_bit
@@ -7240,7 +7178,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: Unhandled event 0x%02x&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 comma
 id|ap-&gt;evt_ring
 (braket
@@ -7289,7 +7227,11 @@ id|ace_private
 op_star
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|u32
 id|idx
@@ -7747,7 +7689,11 @@ id|ace_private
 op_star
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_do
 (brace
@@ -7950,7 +7896,11 @@ id|evtprd
 suffix:semicolon
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|regs
 op_assign
@@ -8385,7 +8335,11 @@ id|ace_private
 op_star
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -8441,7 +8395,11 @@ id|ace_private
 op_star
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -8513,7 +8471,11 @@ id|cmd
 suffix:semicolon
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|regs
 op_assign
@@ -8756,7 +8718,11 @@ id|dev
 suffix:semicolon
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|regs
 op_assign
@@ -9279,7 +9245,11 @@ id|ace_private
 op_star
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_struct
 id|ace_regs
@@ -9856,7 +9826,11 @@ id|ace_private
 op_star
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_struct
 id|ace_regs
@@ -10043,7 +10017,11 @@ id|ace_private
 op_star
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_struct
 id|ace_regs
@@ -10263,7 +10241,11 @@ id|ace_private
 op_star
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_struct
 id|ace_regs
@@ -10547,7 +10529,11 @@ id|ace_private
 op_star
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|strlcpy
 c_func
@@ -10682,7 +10668,11 @@ r_struct
 id|ace_private
 op_star
 )paren
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 )paren
 op_member_access_from_pointer
 id|regs
@@ -10787,7 +10777,11 @@ id|ace_private
 op_star
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_struct
 id|ace_regs
@@ -11043,7 +11037,11 @@ id|ace_private
 op_star
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_struct
 id|ace_mac_stats
@@ -11450,7 +11448,11 @@ id|regs
 suffix:semicolon
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|regs
 op_assign
@@ -11479,7 +11481,7 @@ id|KERN_ERR
 l_string|&quot;%s: trying to download firmware while the &quot;
 l_string|&quot;CPU is running!&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -12344,6 +12346,11 @@ id|offset
 )paren
 (brace
 r_struct
+id|ace_private
+op_star
+id|ap
+suffix:semicolon
+r_struct
 id|ace_regs
 op_star
 id|regs
@@ -12383,21 +12390,20 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_goto
-id|eeprom_read_error
+id|out
 suffix:semicolon
 )brace
+id|ap
+op_assign
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|regs
 op_assign
-(paren
-(paren
-r_struct
-id|ace_private
-op_star
-)paren
-id|dev-&gt;priv
-)paren
-op_member_access_from_pointer
-id|regs
+id|ap-&gt;regs
 suffix:semicolon
 multiline_comment|/*&n;&t; * Don&squot;t take interrupts on this CPU will bit banging&n;&t; * the %#%#@$ I2C device&n;&t; */
 id|local_irq_save
@@ -12442,7 +12448,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: Unable to sync eeprom&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 id|result
@@ -12490,7 +12496,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: Unable to set address byte 0&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 id|result
@@ -12534,7 +12540,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: Unable to set address byte 1&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 id|result
@@ -12582,7 +12588,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: Unable to set READ_SELECT&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 )paren
 suffix:semicolon
 id|result
@@ -12918,7 +12924,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: Unable to read eeprom byte 0x%02lx&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|ap-&gt;name
 comma
 id|offset
 )paren
