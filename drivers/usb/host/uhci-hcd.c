@@ -10209,6 +10209,10 @@ id|uhci
 )paren
 suffix:semicolon
 )brace
+id|uhci-&gt;hcd.state
+op_assign
+id|USB_STATE_READY
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
