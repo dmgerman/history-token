@@ -165,7 +165,7 @@ op_amp
 id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
-macro_line|#if DEBUG_SIG
+macro_line|#ifdef DEBUG_SIG
 id|printk
 c_func
 (paren
@@ -663,7 +663,7 @@ r_goto
 id|badframe
 suffix:semicolon
 )brace
-macro_line|#if DEBUG_SIG
+macro_line|#ifdef DEBUG_SIG
 id|printk
 c_func
 (paren
@@ -1519,7 +1519,7 @@ r_goto
 id|give_sigsegv
 suffix:semicolon
 )brace
-macro_line|#if DEBUG_SIG
+macro_line|#ifdef DEBUG_SIG
 id|printk
 c_func
 (paren
@@ -1627,7 +1627,7 @@ op_and_assign
 op_complement
 id|TF_MASK
 suffix:semicolon
-macro_line|#if DEBUG_SIG
+macro_line|#ifdef DEBUG_SIG
 id|printk
 c_func
 (paren
@@ -1709,7 +1709,7 @@ op_minus
 l_int|1
 )braket
 suffix:semicolon
-macro_line|#if DEBUG_SIG
+macro_line|#ifdef DEBUG_SIG
 id|printk
 c_func
 (paren
@@ -2138,7 +2138,7 @@ id|__u32
 id|thread_info_flags
 )paren
 (brace
-macro_line|#if DEBUG_SIG
+macro_line|#ifdef DEBUG_SIG
 id|printk
 c_func
 (paren
