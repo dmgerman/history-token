@@ -332,10 +332,10 @@ op_div
 l_int|8
 )paren
 op_mod
-l_int|254
+l_int|253
 )paren
 op_plus
-l_int|1
+l_int|2
 suffix:semicolon
 r_return
 id|irq

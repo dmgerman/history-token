@@ -105,6 +105,10 @@ op_star
 r_volatile
 id|varp
 suffix:semicolon
+DECL|member|var_idx
+r_int
+id|var_idx
+suffix:semicolon
 DECL|member|tb_to_us
 r_int
 id|tb_to_us

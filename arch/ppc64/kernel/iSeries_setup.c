@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -2309,6 +2310,12 @@ comma
 id|naca-&gt;physicalMemorySize
 )paren
 suffix:semicolon
+id|lmb_analyze
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* ?? */
 id|lmb_reserve
 c_func
 (paren
@@ -2343,11 +2350,21 @@ id|i
 comma
 id|n
 suffix:semicolon
+r_int
+id|procIx
+op_assign
+id|get_paca
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|xLpPaca.xDynHvPhysicalProcIndex
+suffix:semicolon
 id|naca-&gt;iCacheL1LineSize
 op_assign
 id|xIoHriProcessorVpd
 (braket
-l_int|0
+id|procIx
 )braket
 dot
 id|xInstCacheOperandSize
@@ -2356,7 +2373,7 @@ id|naca-&gt;dCacheL1LineSize
 op_assign
 id|xIoHriProcessorVpd
 (braket
-l_int|0
+id|procIx
 )braket
 dot
 id|xDataCacheOperandSize
@@ -2614,6 +2631,16 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_PPC_ISERIES */
+r_extern
+r_int
+r_int
+id|ppc_proc_freq
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|ppc_tb_freq
+suffix:semicolon
 multiline_comment|/*&n; * Document me.&n; */
 r_void
 id|__init
@@ -2627,6 +2654,16 @@ r_void
 r_void
 op_star
 id|eventStack
+suffix:semicolon
+r_int
+id|procIx
+op_assign
+id|get_paca
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|xLpPaca.xDynHvPhysicalProcIndex
 suffix:semicolon
 multiline_comment|/* Setup the Lp Event Queue */
 multiline_comment|/* Allocate a page for the Event Stack&n;&t; * The hypervisor wants the absolute real address, so&n;&t; * we subtract out the KERNELBASE and add in the&n;&t; * absolute real address of the kernel load area&n;&t; */
@@ -2710,7 +2747,7 @@ l_int|1000000
 op_div
 id|xIoHriProcessorVpd
 (braket
-l_int|0
+id|procIx
 )braket
 dot
 id|xProcFreq
@@ -2736,6 +2773,10 @@ op_star
 l_int|100
 )paren
 suffix:semicolon
+id|ppc_proc_freq
+op_assign
+id|procFreqHz
+suffix:semicolon
 multiline_comment|/* Compute time base frequency */
 id|tbFreqHz
 op_assign
@@ -2752,7 +2793,7 @@ l_int|1000000
 op_div
 id|xIoHriProcessorVpd
 (braket
-l_int|0
+id|procIx
 )braket
 dot
 id|xTimeBaseFreq
@@ -2777,6 +2818,10 @@ id|tbFreqMhz
 op_star
 l_int|100
 )paren
+suffix:semicolon
+id|ppc_tb_freq
+op_assign
+id|tbFreqHz
 suffix:semicolon
 id|printk
 c_func
@@ -2821,16 +2866,16 @@ l_string|&quot;Processor version = %x&bslash;n&quot;
 comma
 id|xIoHriProcessorVpd
 (braket
-l_int|0
+id|procIx
 )braket
 dot
 id|xPVR
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * int iSeries_setup_residual()&n; *&n; * Description:&n; *   This routine pretty-prints CPU information gathered from the VPD    &n; *   for use in /proc/cpuinfo                               &n; *&n; * Input(s):&n; *  *buffer - Buffer into which CPU data is to be printed.             &n; *&n; * Output(s):&n; *  *buffer - Buffer with CPU data.&n; *&n; * Returns:&n; *   The number of bytes copied into &squot;buffer&squot; if OK, otherwise zero or less&n; *   on error.&n; */
-r_void
+multiline_comment|/*&n; * int as400_setup_residual()&n; *&n; * Description:&n; *   This routine pretty-prints CPU information gathered from the VPD    &n; *   for use in /proc/cpuinfo                               &n; *&n; * Input(s):&n; *  *buffer - Buffer into which CPU data is to be printed.             &n; *&n; * Output(s):&n; *  *buffer - Buffer with CPU data.&n; *&n; * Returns:&n; *   The number of bytes copied into &squot;buffer&squot; if OK, otherwise zero or less&n; *   on error.&n; */
 DECL|function|iSeries_setup_residual
+r_void
 id|iSeries_setup_residual
 c_func
 (paren
@@ -2838,10 +2883,6 @@ r_struct
 id|seq_file
 op_star
 id|m
-comma
-r_int
-r_int
-id|cpu_id
 )paren
 (brace
 id|seq_printf
@@ -3014,49 +3055,16 @@ r_void
 (brace
 r_int
 r_int
-id|freq
-suffix:semicolon
-r_int
-r_int
 id|cyclesPerUsec
-suffix:semicolon
-r_int
-r_int
-id|tbf
 suffix:semicolon
 r_struct
 id|div_result
 id|divres
 suffix:semicolon
 multiline_comment|/* Compute decrementer (and TB) frequency &n;&t; * in cycles/sec &n;&t; */
-id|tbf
-op_assign
-id|xIoHriProcessorVpd
-(braket
-l_int|0
-)braket
-dot
-id|xTimeBaseFreq
-suffix:semicolon
-id|freq
-op_assign
-l_int|0x0100000000
-suffix:semicolon
-id|freq
-op_mul_assign
-l_int|1000000
-suffix:semicolon
-multiline_comment|/* 2^32 * 10^6 */
-id|freq
-op_assign
-id|freq
-op_div
-id|tbf
-suffix:semicolon
-multiline_comment|/* cycles / sec */
 id|cyclesPerUsec
 op_assign
-id|freq
+id|ppc_tb_freq
 op_div
 l_int|1000000
 suffix:semicolon
@@ -3064,10 +3072,20 @@ multiline_comment|/* cycles / usec */
 multiline_comment|/* Set the amount to refresh the decrementer by.  This&n;&t; * is the number of decrementer ticks it takes for &n;&t; * 1/HZ seconds.&n;&t; */
 id|tb_ticks_per_jiffy
 op_assign
-id|freq
+id|ppc_tb_freq
 op_div
 id|HZ
 suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* TEST CODE FOR ADJTIME */
+id|tb_ticks_per_jiffy
+op_add_assign
+id|tb_ticks_per_jiffy
+op_div
+l_int|5000
+suffix:semicolon
+multiline_comment|/* END OF TEST CODE */
+macro_line|#endif
 multiline_comment|/*&n;&t; * tb_ticks_per_sec = freq; would give better accuracy&n;&t; * but tb_ticks_per_sec = tb_ticks_per_jiffy*HZ; assures&n;&t; * that jiffies (and xtime) will match the time returned&n;&t; * by do_gettimeofday.&n;&t; */
 id|tb_ticks_per_sec
 op_assign
@@ -3084,7 +3102,7 @@ op_assign
 id|mulhwu_scale_factor
 c_func
 (paren
-id|freq
+id|ppc_tb_freq
 comma
 l_int|1000000
 )paren

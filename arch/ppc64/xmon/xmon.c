@@ -998,6 +998,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef CONFIG_PPC_ISERIES
 id|rtas_call
 c_func
 (paren
@@ -1020,6 +1021,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_void
 DECL|function|xmon

@@ -130,6 +130,12 @@ c_cond
 id|nextLpEvent-&gt;xFlags.xValid
 )paren
 (brace
+multiline_comment|/* rmb() needed only for weakly consistent machines (regatta) */
+id|rmb
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Set pointer to next potential event */
 id|lpQueue-&gt;xSlicCurEventPtr
 op_add_assign

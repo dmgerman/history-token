@@ -193,6 +193,16 @@ id|u8
 id|maxAgents
 suffix:semicolon
 singleline_comment|// Max idsels on secondary bus
+DECL|member|maxSubBusNumber
+id|u8
+id|maxSubBusNumber
+suffix:semicolon
+singleline_comment|// Max Sub Bus
+DECL|member|logicalSlotNumber
+id|u8
+id|logicalSlotNumber
+suffix:semicolon
+singleline_comment|// Logical Slot Number for IOA 
 )brace
 suffix:semicolon
 singleline_comment|//  Maximum BusUnitInfo buffer size.  Provided for clients so they can allocate

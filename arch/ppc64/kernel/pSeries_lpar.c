@@ -3168,7 +3168,6 @@ suffix:semicolon
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Take a spinlock around flushes to avoid bouncing the hypervisor tlbie&n; * lock.&n; */
 DECL|function|pSeries_lpar_hpte_invalidate
 r_static
 r_void
@@ -3234,15 +3233,6 @@ id|vpn
 op_rshift
 l_int|11
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|pSeries_lpar_tlbie_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|lpar_rc
 op_assign
 id|plpar_pte_remove
@@ -3266,15 +3256,6 @@ id|dummy1
 comma
 op_amp
 id|dummy2
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|pSeries_lpar_tlbie_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_if
@@ -3442,6 +3423,10 @@ suffix:semicolon
 id|ppc_md.make_pte
 op_assign
 id|pSeries_lpar_make_pte
+suffix:semicolon
+id|ppc_md.flush_hash_range
+op_assign
+id|pSeries_lpar_flush_hash_range
 suffix:semicolon
 )brace
 eof

@@ -523,12 +523,14 @@ op_assign
 (brace
 )brace
 suffix:semicolon
+DECL|macro|maxPhysicalProcessors
+mdefine_line|#define maxPhysicalProcessors 32
 DECL|variable|xIoHriProcessorVpd
 r_struct
 id|IoHriProcessorVpd
 id|xIoHriProcessorVpd
 (braket
-id|maxProcessors
+id|maxPhysicalProcessors
 )braket
 op_assign
 (brace
@@ -633,7 +635,7 @@ id|maxProcessors
 op_star
 l_int|2
 comma
-id|maxProcessors
+id|maxPhysicalProcessors
 comma
 multiline_comment|/* Max logical, physical procs */
 m_offsetof
