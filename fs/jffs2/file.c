@@ -191,7 +191,7 @@ comma
 dot
 id|mmap
 op_assign
-id|generic_file_mmap
+id|generic_file_readonly_mmap
 comma
 dot
 id|fsync
