@@ -2981,6 +2981,23 @@ op_or
 id|S_IWUGO
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|shmflg
+op_amp
+id|SHM_EXEC
+)paren
+(brace
+id|prot
+op_or_assign
+id|PROT_EXEC
+suffix:semicolon
+id|acc_mode
+op_or_assign
+id|S_IXUGO
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * We cannot rely on the fs check since SYSV IPC does have an&n;&t; * additional creator id...&n;&t; */
 id|shp
 op_assign
