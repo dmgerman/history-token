@@ -2341,16 +2341,16 @@ op_star
 )paren
 id|dev-&gt;ext_priv
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|8
+comma
 l_string|&quot;dev: %p, budget_ci: %p&bslash;n&quot;
 comma
 id|dev
 comma
 id|budget_ci
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -2450,14 +2450,14 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget_ci: %p&bslash;n&quot;
 comma
 id|budget_ci
-)paren
 )paren
 suffix:semicolon
 id|spin_lock_init
@@ -2782,14 +2782,6 @@ c_func
 r_void
 )paren
 (brace
-id|DEB_EE
-c_func
-(paren
-(paren
-l_string|&quot;.&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 id|saa7146_unregister_extension
 c_func
 (paren

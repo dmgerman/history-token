@@ -693,5 +693,7 @@ DECL|macro|FE_GET_FRONTEND
 mdefine_line|#define FE_GET_FRONTEND            _IOR(&squot;o&squot;, 77, struct dvb_frontend_parameters)
 DECL|macro|FE_GET_EVENT
 mdefine_line|#define FE_GET_EVENT               _IOR(&squot;o&squot;, 78, struct dvb_frontend_event)
+DECL|macro|FE_DISHNETWORK_SEND_LEGACY_CMD
+mdefine_line|#define FE_DISHNETWORK_SEND_LEGACY_CMD _IO(&squot;o&squot;, 80) /* unsigned int */
 macro_line|#endif /*_DVBFRONTEND_H_*/
 eof

@@ -2672,17 +2672,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|hwif-&gt;irq
+op_eq
+l_int|0
 )paren
+multiline_comment|/* 0 is bogus but will do for now */
 id|hwif-&gt;irq
 op_assign
+id|pci_get_legacy_ide_irq
+c_func
+(paren
+id|hwif-&gt;pci_dev
+comma
 id|hwif-&gt;channel
-ques
-c_cond
-l_int|15
-suffix:colon
-l_int|14
+)paren
 suffix:semicolon
 id|hwif-&gt;autodma
 op_assign

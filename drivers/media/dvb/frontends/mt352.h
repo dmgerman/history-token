@@ -1,11 +1,9 @@
-multiline_comment|/*&n; *  Driver for Zarlink DVB-T MT352 demodulator&n; *&n; *  Written by Holger Waechtler &lt;holger@qanu.de&gt;&n; *&t; and Daniel Mack &lt;daniel@qanu.de&gt;&n; *&n; *  Support for Samsung TDTC9251DH01C(M) tuner&n; *&n; *  Copyright (C) 2004 Antonio Mancuso &lt;antonio.mancuso@digitaltelevision.it&gt;&n; *                     Amauri  Celani  &lt;acelani@essegi.net&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.=&n; */
+multiline_comment|/*&n; *  Driver for Zarlink DVB-T MT352 demodulator&n; *&n; *  Written by Holger Waechtler &lt;holger@qanu.de&gt;&n; *&t; and Daniel Mack &lt;daniel@qanu.de&gt;&n; *&n; *  AVerMedia AVerTV DVB-T 771 support by&n; *       Wolfram Joost &lt;dbox2@frokaschwei.de&gt;&n; *&n; *  Support for Samsung TDTC9251DH01C(M) tuner&n; *  Copyright (C) 2004 Antonio Mancuso &lt;antonio.mancuso@digitaltelevision.it&gt;&n; *                     Amauri  Celani  &lt;acelani@essegi.net&gt;&n; *&n; *  DVICO FusionHDTV DVB-T1 and DVICO FusionHDTV DVB-T Lite support by&n; *       Christopher Pascoe &lt;c.pascoe@itee.uq.edu.au&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.=&n; */
 macro_line|#ifndef _MT352_
 DECL|macro|_MT352_
 mdefine_line|#define _MT352_
 DECL|macro|I2C_MT352_ADDR
 mdefine_line|#define I2C_MT352_ADDR  0x0f
-DECL|macro|I2C_TUNER_ADDR
-mdefine_line|#define I2C_TUNER_ADDR  0xc2
 DECL|macro|ID_MT352
 mdefine_line|#define ID_MT352        0x13
 DECL|macro|CARD_AVDVBT771
@@ -14,6 +12,10 @@ DECL|macro|CARD_TUA6034
 mdefine_line|#define CARD_TUA6034&t;    0x01
 DECL|macro|CARD_TDTC9251DH01C
 mdefine_line|#define CARD_TDTC9251DH01C  0x02
+DECL|macro|CARD_DVICODVBT1
+mdefine_line|#define CARD_DVICODVBT1&t;    0x03
+DECL|macro|CARD_DVICODVBTLITE
+mdefine_line|#define CARD_DVICODVBTLITE  0x04
 DECL|macro|msb
 mdefine_line|#define msb(x) (((x) &gt;&gt; 8) &amp; 0xff)
 DECL|macro|lsb
@@ -427,6 +429,13 @@ DECL|struct|_tuner_info
 r_struct
 id|_tuner_info
 (brace
+DECL|member|fe_name
+r_char
+op_star
+id|fe_name
+suffix:semicolon
+DECL|macro|FE_NAME
+mdefine_line|#define FE_NAME tuner_info[card_type].fe_name
 DECL|member|fe_frequency_min
 id|__u32
 id|fe_frequency_min
@@ -446,49 +455,12 @@ suffix:semicolon
 singleline_comment|//verificare se u32 e&squot; corretto
 DECL|macro|FE_FREQ_STEPSIZE
 mdefine_line|#define FE_FREQ_STEPSIZE  tuner_info[card_type].fe_frequency_stepsize
-DECL|member|coderate_hp_shift
-id|__u32
-id|coderate_hp_shift
+DECL|member|pll_i2c_addr
+id|u8
+id|pll_i2c_addr
 suffix:semicolon
-singleline_comment|//verificare se u32 giusto
-DECL|macro|CODERATE_HP_SHIFT
-mdefine_line|#define CODERATE_HP_SHIFT tuner_info[card_type].coderate_hp_shift
-DECL|member|coderate_lp_shift
-id|__u32
-id|coderate_lp_shift
-suffix:semicolon
-DECL|macro|CODERATE_LP_SHIFT
-mdefine_line|#define CODERATE_LP_SHIFT tuner_info[card_type].coderate_lp_shift
-DECL|member|constellation_shift
-r_int
-id|constellation_shift
-suffix:semicolon
-DECL|macro|CONSTELLATION_SHIFT
-mdefine_line|#define CONSTELLATION_SHIFT tuner_info[card_type].constellation_shift
-DECL|member|tx_mode_shift
-r_int
-id|tx_mode_shift
-suffix:semicolon
-DECL|macro|TX_MODE_SHIFT
-mdefine_line|#define TX_MODE_SHIFT tuner_info[card_type].tx_mode_shift
-DECL|member|guard_interval_shift
-r_int
-id|guard_interval_shift
-suffix:semicolon
-DECL|macro|GUARD_INTERVAL_SHIFT
-mdefine_line|#define GUARD_INTERVAL_SHIFT tuner_info[card_type].guard_interval_shift
-DECL|member|hierarchy_shift
-r_int
-id|hierarchy_shift
-suffix:semicolon
-DECL|macro|HIERARCHY_SHIFT
-mdefine_line|#define HIERARCHY_SHIFT tuner_info[card_type].hierarchy_shift
-DECL|member|read_reg_flag
-r_int
-id|read_reg_flag
-suffix:semicolon
-DECL|macro|READ_REG_FLAG
-mdefine_line|#define READ_REG_FLAG tuner_info[card_type].read_reg_flag
+DECL|macro|PLL_I2C_ADDR
+mdefine_line|#define PLL_I2C_ADDR tuner_info[card_type].pll_i2c_addr
 DECL|member|mt352_init
 r_int
 (paren
@@ -569,6 +541,28 @@ id|i2c
 suffix:semicolon
 r_static
 r_int
+id|mt352_init_DVICODVBT1
+c_func
+(paren
+r_struct
+id|i2c_adapter
+op_star
+id|i2c
+)paren
+suffix:semicolon
+r_static
+r_int
+id|mt352_init_DVICODVBTLITE
+c_func
+(paren
+r_struct
+id|i2c_adapter
+op_star
+id|i2c
+)paren
+suffix:semicolon
+r_static
+r_int
 r_char
 id|mt352_cp_TUA6034
 c_func
@@ -591,6 +585,26 @@ r_static
 r_int
 r_char
 id|mt352_cp_TDTC9251DH01C
+c_func
+(paren
+id|u32
+id|freq
+)paren
+suffix:semicolon
+r_static
+r_int
+r_char
+id|mt352_cp_DVICODVBT1
+c_func
+(paren
+id|u32
+id|freq
+)paren
+suffix:semicolon
+r_static
+r_int
+r_char
+id|mt352_cp_DVICODVBTLITE
 c_func
 (paren
 id|u32
@@ -629,13 +643,36 @@ id|freq
 suffix:semicolon
 r_static
 r_int
-id|mt352_detect_avermedia_771
+r_char
+id|mt352_bs_DVICODVBT1
+c_func
+(paren
+id|u32
+id|freq
+)paren
+suffix:semicolon
+r_static
+r_int
+r_char
+id|mt352_bs_DVICODVBTLITE
+c_func
+(paren
+id|u32
+id|freq
+)paren
+suffix:semicolon
+r_static
+id|u8
+id|mt352_read_register
 c_func
 (paren
 r_struct
 id|i2c_adapter
 op_star
 id|i2c
+comma
+id|u8
+id|reg
 )paren
 suffix:semicolon
 macro_line|#endif                          /* _MT352_ */

@@ -6,8 +6,34 @@ macro_line|#include &lt;linux/dvb/net.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &quot;dvb_demux.h&quot;
 macro_line|#include &quot;dvb_net.h&quot;
+DECL|variable|dvb_net_debug
+r_static
+r_int
+id|dvb_net_debug
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|dvb_net_debug
+comma
+r_int
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|dvb_net_debug
+comma
+l_string|&quot;enable debug messages&quot;
+)paren
+suffix:semicolon
+DECL|macro|dprintk
+mdefine_line|#define dprintk(x...) do { if (dvb_net_debug) printk(x); } while (0)
 DECL|function|iov_crc32
 r_static
 r_inline
@@ -72,13 +98,6 @@ r_return
 id|c
 suffix:semicolon
 )brace
-macro_line|#if 1
-DECL|macro|dprintk
-mdefine_line|#define dprintk(x...) printk(x)
-macro_line|#else
-DECL|macro|dprintk
-mdefine_line|#define dprintk(x...)
-macro_line|#endif
 DECL|macro|DVB_NET_MULTICAST_MAX
 mdefine_line|#define DVB_NET_MULTICAST_MAX 10
 DECL|macro|isprint
