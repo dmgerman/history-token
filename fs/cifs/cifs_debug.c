@@ -309,7 +309,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;Servers: &bslash;n&quot;
+l_string|&quot;Servers:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|buf
@@ -402,7 +402,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;n&bslash;tLocal Users To Same Server: %d SecMode: 0x%x&quot;
+l_string|&quot;&bslash;n&bslash;tLocal Users To Same Server: %d SecMode: 0x%x Req Active: %d&quot;
 comma
 id|atomic_read
 c_func
@@ -412,6 +412,13 @@ id|ses-&gt;server-&gt;socketUseCount
 )paren
 comma
 id|ses-&gt;server-&gt;secMode
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|ses-&gt;server-&gt;inFlight
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* length = sprintf(buf, &quot;&bslash;nMIDs: &bslash;n&quot;);&n;&t;&t;&t;buf += length;&n;&n;&t;&t;&t;spin_lock(&amp;GlobalMid_Lock);&n;&t;&t;&t;list_for_each(tmp1, &amp;ses-&gt;server-&gt;pending_mid_q) {&n;&t;&t;&t;&t;mid_entry = list_entry(tmp1, struct&n;&t;&t;&t;&t;&t;mid_q_entry,&n;&t;&t;&t;&t;&t;qhead);&n;&t;&t;&t;&t;if(mid_entry) {&n;&t;&t;&t;&t;&t;length = sprintf(buf,&quot;State: %d com: %d pid: %d tsk: %p&bslash;n&quot;,mid_entry-&gt;midState,mid_entry-&gt;command,mid_entry-&gt;pid,mid_entry-&gt;tsk);&n;&t;&t;&t;&t;&t;buf += length;&n;&t;&t;&t;&t;}&n;&t;&t;&t;}&n;&t;&t;&t;spin_unlock(&amp;GlobalMid_Lock); */
@@ -442,7 +449,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;nShares: &bslash;n&quot;
+l_string|&quot;&bslash;nShares:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|buf
