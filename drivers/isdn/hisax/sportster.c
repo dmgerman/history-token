@@ -20,13 +20,6 @@ id|sportster_revision
 op_assign
 l_string|&quot;$Revision: 1.14.6.2 $&quot;
 suffix:semicolon
-DECL|variable|sportster_lock
-r_static
-id|spinlock_t
-id|sportster_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 DECL|macro|byteout
 mdefine_line|#define byteout(addr,val) outb(val,addr)
 DECL|macro|bytein
@@ -605,9 +598,6 @@ op_star
 id|cs
 )paren
 (brace
-r_int
-id|flags
-suffix:semicolon
 id|cs-&gt;hw.spt.res_irq
 op_or_assign
 id|SPORTSTER_RESET
@@ -621,17 +611,6 @@ op_plus
 id|SPORTSTER_RES_IRQ
 comma
 id|cs-&gt;hw.spt.res_irq
-)paren
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|sti
-c_func
-(paren
 )paren
 suffix:semicolon
 id|set_current_state
@@ -684,12 +663,6 @@ id|HZ
 )paren
 op_div
 l_int|1000
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 )brace

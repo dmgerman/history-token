@@ -20,13 +20,6 @@ id|teles0_revision
 op_assign
 l_string|&quot;$Revision: 2.13.6.2 $&quot;
 suffix:semicolon
-DECL|variable|teles0_lock
-r_static
-id|spinlock_t
-id|teles0_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 DECL|macro|TELES_IOMEM_SIZE
 mdefine_line|#define TELES_IOMEM_SIZE&t;0x400
 DECL|macro|byteout
@@ -1019,19 +1012,6 @@ id|cs
 id|u_char
 id|cfval
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|teles0_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1121,15 +1101,6 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|teles0_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -1237,15 +1208,6 @@ op_div
 l_int|5
 op_plus
 l_int|1
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|teles0_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return

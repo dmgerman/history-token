@@ -1208,9 +1208,6 @@ op_star
 id|cs
 )paren
 (brace
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1240,17 +1237,6 @@ id|ASUS_RESET
 )paren
 suffix:semicolon
 multiline_comment|/* Reset On */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 id|set_current_state
 c_func
 (paren
@@ -1385,12 +1371,6 @@ l_int|0x12
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 )brace
 r_static
 r_int

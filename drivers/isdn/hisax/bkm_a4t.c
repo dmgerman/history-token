@@ -876,9 +876,6 @@ op_star
 id|cs
 )paren
 (brace
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -897,17 +894,6 @@ op_star
 )paren
 (paren
 id|cs-&gt;hw.ax.base
-)paren
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|sti
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Issue the I20 soft reset     */
@@ -1027,12 +1013,6 @@ id|HZ
 )paren
 op_div
 l_int|1000
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 )brace

@@ -3862,20 +3862,6 @@ op_star
 id|cs
 )paren
 (brace
-r_int
-id|flags
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4231,12 +4217,6 @@ id|cs-&gt;hw.diva.ctrl_reg
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 )brace
 DECL|macro|DIVA_ASSIGN
 mdefine_line|#define DIVA_ASSIGN 1

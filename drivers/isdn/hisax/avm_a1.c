@@ -21,13 +21,6 @@ id|avm_revision
 op_assign
 l_string|&quot;$Revision: 2.13.6.2 $&quot;
 suffix:semicolon
-DECL|variable|avm_a1_lock
-r_static
-id|spinlock_t
-id|avm_a1_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 DECL|macro|AVM_A1_STAT_ISAC
 mdefine_line|#define&t; AVM_A1_STAT_ISAC&t;0x01
 DECL|macro|AVM_A1_STAT_HSCX
@@ -858,10 +851,6 @@ id|cs
 op_assign
 id|card-&gt;cs
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_char
 id|tmp
 (braket
@@ -1338,15 +1327,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|avm_a1_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|byteout
 c_func
 (paren
@@ -1452,15 +1432,6 @@ op_div
 l_int|5
 op_plus
 l_int|1
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|avm_a1_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|val

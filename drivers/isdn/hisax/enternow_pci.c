@@ -260,9 +260,6 @@ op_star
 id|cs
 )paren
 (brace
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -276,17 +273,6 @@ c_func
 id|cs
 comma
 l_string|&quot;enter:now PCI: reset&quot;
-)paren
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|sti
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Reset on, (also for AMD) */
@@ -355,12 +341,6 @@ id|HZ
 )paren
 op_div
 l_int|1000
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 id|cs-&gt;hw.njet.auxd
