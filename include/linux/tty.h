@@ -232,8 +232,6 @@ DECL|macro|VIDEO_TYPE_PICA_S3
 mdefine_line|#define VIDEO_TYPE_PICA_S3&t;0x30&t;/* ACER PICA-61 local S3 video&t;*/
 DECL|macro|VIDEO_TYPE_MIPS_G364
 mdefine_line|#define VIDEO_TYPE_MIPS_G364&t;0x31    /* MIPS Magnum 4000 G364 video  */
-DECL|macro|VIDEO_TYPE_SNI_RM
-mdefine_line|#define VIDEO_TYPE_SNI_RM&t;0x32    /* SNI RM200 PCI video          */
 DECL|macro|VIDEO_TYPE_SGI
 mdefine_line|#define VIDEO_TYPE_SGI          0x33    /* Various SGI graphics hardware */
 DECL|macro|VIDEO_TYPE_TGAC
