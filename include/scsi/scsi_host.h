@@ -452,6 +452,19 @@ id|skip_settle_delay
 suffix:colon
 l_int|1
 suffix:semicolon
+multiline_comment|/*&n;&t; * ordered write support&n;&t; */
+DECL|member|ordered_flush
+r_int
+id|ordered_flush
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|ordered_tag
+r_int
+id|ordered_tag
+suffix:colon
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;&t; * Countdown for host blocking with no commands outstanding&n;&t; */
 DECL|member|max_host_blocked
 r_int
@@ -729,6 +742,19 @@ multiline_comment|/*&n;&t; * Host uses correct SCSI ordering not PC ordering. Th
 DECL|member|reverse_ordering
 r_int
 id|reverse_ordering
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t; * ordered write support&n;&t; */
+DECL|member|ordered_flush
+r_int
+id|ordered_flush
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|ordered_tag
+r_int
+id|ordered_tag
 suffix:colon
 l_int|1
 suffix:semicolon

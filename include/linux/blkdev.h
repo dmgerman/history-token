@@ -862,6 +862,36 @@ id|sector_t
 op_star
 )paren
 suffix:semicolon
+DECL|typedef|prepare_flush_fn
+r_typedef
+r_int
+(paren
+id|prepare_flush_fn
+)paren
+(paren
+id|request_queue_t
+op_star
+comma
+r_struct
+id|request
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|end_flush_fn
+r_typedef
+r_void
+(paren
+id|end_flush_fn
+)paren
+(paren
+id|request_queue_t
+op_star
+comma
+r_struct
+id|request
+op_star
+)paren
+suffix:semicolon
 DECL|enum|blk_queue_state
 r_enum
 id|blk_queue_state
@@ -1001,6 +1031,16 @@ DECL|member|issue_flush_fn
 id|issue_flush_fn
 op_star
 id|issue_flush_fn
+suffix:semicolon
+DECL|member|prepare_flush_fn
+id|prepare_flush_fn
+op_star
+id|prepare_flush_fn
+suffix:semicolon
+DECL|member|end_flush_fn
+id|end_flush_fn
+op_star
+id|end_flush_fn
 suffix:semicolon
 multiline_comment|/*&n;&t; * Auto-unplugging state&n;&t; */
 DECL|member|unplug_timer
@@ -1161,6 +1201,31 @@ r_struct
 id|list_head
 id|drain_list
 suffix:semicolon
+multiline_comment|/*&n;&t; * reserved for flush operations&n;&t; */
+DECL|member|flush_rq
+r_struct
+id|request
+op_star
+id|flush_rq
+suffix:semicolon
+DECL|member|ordered
+r_int
+r_char
+id|ordered
+suffix:semicolon
+)brace
+suffix:semicolon
+r_enum
+(brace
+DECL|enumerator|QUEUE_ORDERED_NONE
+id|QUEUE_ORDERED_NONE
+comma
+DECL|enumerator|QUEUE_ORDERED_TAG
+id|QUEUE_ORDERED_TAG
+comma
+DECL|enumerator|QUEUE_ORDERED_FLUSH
+id|QUEUE_ORDERED_FLUSH
+comma
 )brace
 suffix:semicolon
 DECL|macro|RQ_INACTIVE
@@ -1189,16 +1254,18 @@ DECL|macro|QUEUE_FLAG_REENTER
 mdefine_line|#define QUEUE_FLAG_REENTER&t;6&t;/* Re-entrancy avoidance */
 DECL|macro|QUEUE_FLAG_PLUGGED
 mdefine_line|#define QUEUE_FLAG_PLUGGED&t;7&t;/* queue is plugged */
-DECL|macro|QUEUE_FLAG_ORDERED
-mdefine_line|#define QUEUE_FLAG_ORDERED&t;8&t;/* supports ordered writes */
 DECL|macro|QUEUE_FLAG_DRAIN
-mdefine_line|#define QUEUE_FLAG_DRAIN&t;9&t;/* draining queue for sched switch */
+mdefine_line|#define QUEUE_FLAG_DRAIN&t;8&t;/* draining queue for sched switch */
+DECL|macro|QUEUE_FLAG_FLUSH
+mdefine_line|#define QUEUE_FLAG_FLUSH&t;9&t;/* doing barrier flush sequence */
 DECL|macro|blk_queue_plugged
 mdefine_line|#define blk_queue_plugged(q)&t;test_bit(QUEUE_FLAG_PLUGGED, &amp;(q)-&gt;queue_flags)
 DECL|macro|blk_queue_tagged
 mdefine_line|#define blk_queue_tagged(q)&t;test_bit(QUEUE_FLAG_QUEUED, &amp;(q)-&gt;queue_flags)
 DECL|macro|blk_queue_stopped
 mdefine_line|#define blk_queue_stopped(q)&t;test_bit(QUEUE_FLAG_STOPPED, &amp;(q)-&gt;queue_flags)
+DECL|macro|blk_queue_flushing
+mdefine_line|#define blk_queue_flushing(q)&t;test_bit(QUEUE_FLAG_FLUSH, &amp;(q)-&gt;queue_flags)
 DECL|macro|blk_fs_request
 mdefine_line|#define blk_fs_request(rq)&t;((rq)-&gt;flags &amp; REQ_CMD)
 DECL|macro|blk_pc_request
@@ -2206,6 +2273,51 @@ op_star
 comma
 id|sector_t
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|request
+op_star
+id|blk_start_pre_flush
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+r_struct
+id|request
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|blk_complete_barrier_rq
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+r_struct
+id|request
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|blk_complete_barrier_rq_locked
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+r_struct
+id|request
+op_star
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern

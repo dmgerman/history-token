@@ -962,6 +962,11 @@ id|bios_param
 op_assign
 id|ata_std_bios_param
 comma
+dot
+id|ordered_flush
+op_assign
+l_int|1
+comma
 )brace
 suffix:semicolon
 DECL|variable|ahci_ops
