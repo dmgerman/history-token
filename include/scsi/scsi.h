@@ -3,6 +3,9 @@ macro_line|#ifndef _SCSI_SCSI_H
 DECL|macro|_SCSI_SCSI_H
 mdefine_line|#define _SCSI_SCSI_H
 macro_line|#include &lt;linux/types.h&gt;
+multiline_comment|/*&n; *&t;The maximum sg list length SCSI can cope with&n; *&t;(currently must be a power of 2 between 32 and 256)&n; */
+DECL|macro|SCSI_MAX_PHYS_SEGMENTS
+mdefine_line|#define SCSI_MAX_PHYS_SEGMENTS&t;MAX_PHYS_SEGMENTS
 multiline_comment|/*&n; *&t;SCSI command lengths&n; */
 r_extern
 r_const
