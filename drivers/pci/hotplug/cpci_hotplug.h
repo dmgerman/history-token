@@ -19,16 +19,10 @@ DECL|macro|HS_CSR_EIM
 mdefine_line|#define HS_CSR_EIM&t;0x0002
 DECL|macro|HS_CSR_DHA
 mdefine_line|#define HS_CSR_DHA&t;0x0001
-DECL|macro|SLOT_MAGIC
-mdefine_line|#define SLOT_MAGIC&t;0x67267322
 DECL|struct|slot
 r_struct
 id|slot
 (brace
-DECL|member|magic
-id|u32
-id|magic
-suffix:semicolon
 DECL|member|number
 id|u8
 id|number

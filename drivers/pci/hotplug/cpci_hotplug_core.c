@@ -1457,10 +1457,6 @@ id|hotplug_slot-&gt;name
 op_assign
 id|name
 suffix:semicolon
-id|slot-&gt;magic
-op_assign
-id|SLOT_MAGIC
-suffix:semicolon
 id|slot-&gt;bus
 op_assign
 id|bus
