@@ -1,6 +1,5 @@
-multiline_comment|/*&n; * $Id: i8042.c,v 1.21 2002/03/01 22:09:27 jsimmons Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; */
-multiline_comment|/*&n; *  i8042 keyboard and mouse controller driver for Linux&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; *  i8042 keyboard and mouse controller driver for Linux&n; *&n; *  Copyright (c) 1999-2002 Vojtech Pavlik&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -147,6 +146,11 @@ r_static
 r_int
 r_char
 id|i8042_ctr
+suffix:semicolon
+DECL|variable|i8042_timer
+r_struct
+id|timer_list
+id|i8042_timer
 suffix:semicolon
 macro_line|#ifdef I8042_DEBUG_IO
 DECL|variable|i8042_start
@@ -472,10 +476,9 @@ c_loop
 (paren
 (paren
 op_complement
-id|inb
+id|i8042_read_status
 c_func
 (paren
-id|I8042_STATUS_REG
 )paren
 op_amp
 id|I8042_STR_OBF
@@ -525,10 +528,9 @@ r_while
 c_loop
 (paren
 (paren
-id|inb
+id|i8042_read_status
 c_func
 (paren
-id|I8042_STATUS_REG
 )paren
 op_amp
 id|I8042_STR_IBF
@@ -592,10 +594,9 @@ r_while
 c_loop
 (paren
 (paren
-id|inb
+id|i8042_read_status
 c_func
 (paren
-id|I8042_STATUS_REG
 )paren
 op_amp
 id|I8042_STR_OBF
@@ -615,10 +616,9 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;i8042.c: %02x &lt;- i8042 (flush) [%d]&bslash;n&quot;
 comma
-id|inb
+id|i8042_read_data
 c_func
 (paren
-id|I8042_DATA_REG
 )paren
 comma
 (paren
@@ -632,10 +632,9 @@ id|i8042_start
 )paren
 suffix:semicolon
 macro_line|#else
-id|inb
+id|i8042_read_data
 c_func
 (paren
-id|I8042_DATA_REG
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -726,14 +725,12 @@ id|i8042_start
 )paren
 suffix:semicolon
 macro_line|#endif
-id|outb
+id|i8042_write_command
 c_func
 (paren
 id|command
 op_amp
 l_int|0xff
-comma
-id|I8042_COMMAND_REG
 )paren
 suffix:semicolon
 )brace
@@ -803,15 +800,13 @@ id|i8042_start
 )paren
 suffix:semicolon
 macro_line|#endif
-id|outb
+id|i8042_write_data
 c_func
 (paren
 id|param
 (braket
 id|i
 )braket
-comma
-id|I8042_DATA_REG
 )paren
 suffix:semicolon
 )brace
@@ -861,10 +856,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|inb
+id|i8042_read_status
 c_func
 (paren
-id|I8042_STATUS_REG
 )paren
 op_amp
 id|I8042_STR_AUXDATA
@@ -875,10 +869,9 @@ id|i
 )braket
 op_assign
 op_complement
-id|inb
+id|i8042_read_data
 c_func
 (paren
-id|I8042_DATA_REG
 )paren
 suffix:semicolon
 r_else
@@ -887,10 +880,9 @@ id|param
 id|i
 )braket
 op_assign
-id|inb
+id|i8042_read_data
 c_func
 (paren
-id|I8042_DATA_REG
 )paren
 suffix:semicolon
 macro_line|#ifdef I8042_DEBUG_IO
@@ -1022,12 +1014,10 @@ id|i8042_start
 )paren
 suffix:semicolon
 macro_line|#endif
-id|outb
+id|i8042_write_data
 c_func
 (paren
 id|c
-comma
-id|I8042_DATA_REG
 )paren
 suffix:semicolon
 )brace
@@ -1078,7 +1068,7 @@ id|I8042_CMD_AUX_SEND
 suffix:semicolon
 multiline_comment|/*&n; * Here we restore the CTR value. I don&squot;t know why, but i8042&squot;s in half-AT&n; * mode tend to trash their CTR when doing the AUX_SEND command.&n; */
 id|retval
-op_add_assign
+op_or_assign
 id|i8042_command
 c_func
 (paren
@@ -1094,7 +1084,7 @@ c_func
 (paren
 l_int|0
 comma
-id|port
+l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -1146,11 +1136,21 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;i8042.c: Can&squot;t get irq %d for %s&bslash;n&quot;
+l_string|&quot;i8042.c: Can&squot;t get irq %d for %s, unregistering the port.&bslash;n&quot;
 comma
 id|values-&gt;irq
 comma
 id|values-&gt;name
+)paren
+suffix:semicolon
+id|values-&gt;exists
+op_assign
+l_int|0
+suffix:semicolon
+id|serio_unregister_port
+c_func
+(paren
+id|port
 )paren
 suffix:semicolon
 r_return
@@ -1158,15 +1158,10 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Enable the device and its interrupt.&n; */
+multiline_comment|/*&n; * Enable the interrupt.&n; */
 id|i8042_ctr
 op_or_assign
 id|values-&gt;irqen
-suffix:semicolon
-id|i8042_ctr
-op_and_assign
-op_complement
-id|values-&gt;disable
 suffix:semicolon
 r_if
 c_cond
@@ -1195,12 +1190,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Flush buffers&n; */
-id|i8042_flush
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1225,15 +1214,11 @@ id|values
 op_assign
 id|port-&gt;driver
 suffix:semicolon
-multiline_comment|/*&n; * Disable the device and its interrupt.&n; */
+multiline_comment|/*&n; * Disable the interrupt.&n; */
 id|i8042_ctr
 op_and_assign
 op_complement
 id|values-&gt;irqen
-suffix:semicolon
-id|i8042_ctr
-op_or_assign
-id|values-&gt;disable
 suffix:semicolon
 r_if
 c_cond
@@ -1334,7 +1319,7 @@ l_string|&quot;i8042 Kbd Port&quot;
 comma
 id|phys
 suffix:colon
-l_string|&quot;isa0060/serio0&quot;
+id|I8042_KBD_PHYS_DESC
 comma
 )brace
 suffix:semicolon
@@ -1401,7 +1386,7 @@ l_string|&quot;i8042 Aux Port&quot;
 comma
 id|phys
 suffix:colon
-l_string|&quot;isa0060/serio1&quot;
+id|I8042_AUX_PHYS_DESC
 comma
 )brace
 suffix:semicolon
@@ -1435,6 +1420,10 @@ id|str
 comma
 id|data
 suffix:semicolon
+r_int
+r_int
+id|dfl
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -1450,10 +1439,9 @@ c_loop
 (paren
 id|str
 op_assign
-id|inb
+id|i8042_read_status
 c_func
 (paren
-id|I8042_STATUS_REG
 )paren
 )paren
 op_amp
@@ -1462,10 +1450,37 @@ id|I8042_STR_OBF
 (brace
 id|data
 op_assign
-id|inb
+id|i8042_read_data
 c_func
 (paren
-id|I8042_DATA_REG
+)paren
+suffix:semicolon
+id|dfl
+op_assign
+(paren
+(paren
+id|str
+op_amp
+id|I8042_STR_PARITY
+)paren
+ques
+c_cond
+id|SERIO_PARITY
+suffix:colon
+l_int|0
+)paren
+op_or
+(paren
+(paren
+id|str
+op_amp
+id|I8042_STR_TIMEOUT
+)paren
+ques
+c_cond
+id|SERIO_TIMEOUT
+suffix:colon
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#ifdef I8042_DEBUG_IO
@@ -1473,7 +1488,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;i8042.c: %02x &lt;- i8042 (interrupt-%s) [%d]&bslash;n&quot;
+l_string|&quot;i8042.c: %02x &lt;- i8042 (interrupt-%s, %d) [%d]&bslash;n&quot;
 comma
 id|data
 comma
@@ -1487,6 +1502,8 @@ c_cond
 l_string|&quot;aux&quot;
 suffix:colon
 l_string|&quot;kbd&quot;
+comma
+id|irq
 comma
 (paren
 r_int
@@ -1511,14 +1528,7 @@ id|I8042_STR_AUXDATA
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|i8042_aux_port.dev
-)paren
-id|i8042_aux_port.dev
-op_member_access_from_pointer
-id|interrupt
+id|serio_interrupt
 c_func
 (paren
 op_amp
@@ -1526,7 +1536,7 @@ id|i8042_aux_port
 comma
 id|data
 comma
-l_int|0
+id|dfl
 )paren
 suffix:semicolon
 )brace
@@ -1536,8 +1546,6 @@ r_if
 c_cond
 (paren
 id|i8042_kbd_values.exists
-op_logical_and
-id|i8042_kbd_port.dev
 )paren
 (brace
 r_if
@@ -1569,9 +1577,7 @@ id|i8042_unxlate_seen
 )paren
 )paren
 (brace
-id|i8042_kbd_port.dev
-op_member_access_from_pointer
-id|interrupt
+id|serio_interrupt
 c_func
 (paren
 op_amp
@@ -1579,7 +1585,7 @@ id|i8042_kbd_port
 comma
 l_int|0xf0
 comma
-l_int|0
+id|dfl
 )paren
 suffix:semicolon
 id|data
@@ -1612,9 +1618,7 @@ id|data
 suffix:semicolon
 )brace
 )brace
-id|i8042_kbd_port.dev
-op_member_access_from_pointer
-id|interrupt
+id|serio_interrupt
 c_func
 (paren
 op_amp
@@ -1622,7 +1626,7 @@ id|i8042_kbd_port
 comma
 id|data
 comma
-l_int|0
+id|dfl
 )paren
 suffix:semicolon
 )brace
@@ -1790,10 +1794,9 @@ r_if
 c_cond
 (paren
 op_complement
-id|inb
+id|i8042_read_status
 c_func
 (paren
-id|I8042_STATUS_REG
 )paren
 op_amp
 id|I8042_STR_KEYLOCK
@@ -1884,6 +1887,11 @@ c_func
 r_void
 )paren
 (brace
+id|i8042_flush
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Reset the controller.&n; */
 r_if
 c_cond
@@ -1992,6 +2000,37 @@ r_int
 r_char
 id|param
 suffix:semicolon
+multiline_comment|/*&n; * Check if AUX irq is available. If it isn&squot;t, then there is no point&n; * in trying to detect AUX presence.&n; */
+r_if
+c_cond
+(paren
+id|request_irq
+c_func
+(paren
+id|values-&gt;irq
+comma
+id|i8042_interrupt
+comma
+l_int|0
+comma
+l_string|&quot;i8042&quot;
+comma
+l_int|NULL
+)paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+id|free_irq
+c_func
+(paren
+id|values-&gt;irq
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Get rid of bytes in the queue.&n; */
 id|i8042_flush
 c_func
 (paren
@@ -2227,6 +2266,121 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|i8042_timer_func
+r_static
+r_void
+id|i8042_timer_func
+c_func
+(paren
+r_int
+r_int
+id|data
+)paren
+(brace
+id|i8042_interrupt
+c_func
+(paren
+l_int|0
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|mod_timer
+c_func
+(paren
+op_amp
+id|i8042_timer
+comma
+id|jiffies
+op_plus
+id|I8042_POLL_PERIOD
+)paren
+suffix:semicolon
+)brace
+DECL|function|i8042_start_polling
+r_static
+r_void
+id|__init
+id|i8042_start_polling
+c_func
+(paren
+r_void
+)paren
+(brace
+id|i8042_ctr
+op_and_assign
+op_complement
+id|I8042_CTR_KBDDIS
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i8042_aux_values.exists
+)paren
+id|i8042_ctr
+op_and_assign
+op_complement
+id|I8042_CTR_AUXDIS
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i8042_command
+c_func
+(paren
+op_amp
+id|i8042_ctr
+comma
+id|I8042_CMD_CTL_WCTR
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;i8042.c: Can&squot;t write CTR while starting polling.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|i8042_timer.function
+op_assign
+id|i8042_timer_func
+suffix:semicolon
+id|mod_timer
+c_func
+(paren
+op_amp
+id|i8042_timer
+comma
+id|jiffies
+op_plus
+id|I8042_POLL_PERIOD
+)paren
+suffix:semicolon
+)brace
+DECL|function|i8042_stop_polling
+r_static
+r_void
+id|__exit
+id|i8042_stop_polling
+c_func
+(paren
+r_void
+)paren
+(brace
+id|del_timer
+c_func
+(paren
+op_amp
+id|i8042_timer
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Module init and cleanup functions.&n; */
 DECL|function|i8042_setup
 r_void
@@ -2381,6 +2535,19 @@ macro_line|#endif
 r_if
 c_cond
 (paren
+op_logical_neg
+id|i8042_platform_init
+c_func
+(paren
+)paren
+)paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|i8042_controller_init
 c_func
 (paren
@@ -2427,19 +2594,11 @@ op_amp
 id|i8042_aux_port
 )paren
 suffix:semicolon
-multiline_comment|/* &n; * On ix86 platforms touching the i8042 data register region can do really&n; * bad things. Because of this the region is always reserved on ix86 boxes.  &n; */
-macro_line|#if !defined(__i386__) &amp;&amp; !defined(__sh__) &amp;&amp; !defined(__alpha__)
-id|request_region
+id|i8042_start_polling
 c_func
 (paren
-id|I8042_DATA_REG
-comma
-l_int|16
-comma
-l_string|&quot;i8042&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|register_reboot_notifier
 c_func
 (paren
@@ -2465,6 +2624,11 @@ c_func
 (paren
 op_amp
 id|i8042_notifier
+)paren
+suffix:semicolon
+id|i8042_stop_polling
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if
@@ -2496,16 +2660,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if !defined(__i386__) &amp;&amp; !defined(__sh__) &amp;&amp; !defined(__alpha__)
-id|release_region
+id|i8042_platform_exit
 c_func
 (paren
-id|I8042_DATA_REG
-comma
-l_int|16
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|variable|i8042_init
 id|module_init

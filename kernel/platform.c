@@ -2,28 +2,6 @@ multiline_comment|/*&n; * platform driver support &n; */
 macro_line|#include &lt;linux/platform.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-DECL|variable|default_platform
-r_static
-r_struct
-id|platform_t
-id|default_platform
-suffix:semicolon
-DECL|variable|platform
-r_struct
-id|platform_t
-op_star
-id|platform
-op_assign
-op_amp
-id|default_platform
-suffix:semicolon
-DECL|variable|platform_lock
-r_static
-id|spinlock_t
-id|platform_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 DECL|function|default_reboot
 r_void
 id|default_reboot
@@ -99,6 +77,22 @@ suffix:colon
 id|default_idle
 comma
 )brace
+suffix:semicolon
+DECL|variable|platform
+r_struct
+id|platform_t
+op_star
+id|platform
+op_assign
+op_amp
+id|default_platform
+suffix:semicolon
+DECL|variable|platform_lock
+r_static
+id|spinlock_t
+id|platform_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/**&n; * set_platform_driver - set the platform driver.&n; * @pf:&t;driver to set it to&n; *&n; * Return -EEXIST if someone else already owns it.&n; */
 DECL|function|set_platform_driver

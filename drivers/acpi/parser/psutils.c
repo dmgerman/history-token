@@ -1,14 +1,58 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psutils - Parser miscellaneous utilities (Parser only)&n; *              $Revision: 51 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psutils - Parser miscellaneous utilities (Parser only)&n; *              $Revision: 52 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
+macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_PARSER
 id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;psutils&quot;
 )paren
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_create_scope_op&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Scope_op&n; *&n; * DESCRIPTION: Create a Scope and associated namepath op with the root name&n; *&n; ******************************************************************************/
+id|acpi_parse_object
+op_star
+DECL|function|acpi_ps_create_scope_op
+id|acpi_ps_create_scope_op
+(paren
+r_void
+)paren
+(brace
+id|acpi_parse_object
+op_star
+id|scope_op
+suffix:semicolon
+id|scope_op
+op_assign
+id|acpi_ps_alloc_op
+(paren
+id|AML_SCOPE_OP
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|scope_op
+)paren
+(brace
+r_return
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+id|scope_op-&gt;named.name
+op_assign
+id|ACPI_ROOT_NAME
+suffix:semicolon
+r_return
+(paren
+id|scope_op
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_init_op&n; *&n; * PARAMETERS:  Op              - A newly allocated Op object&n; *              Opcode          - Opcode to store in the Op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Allocate an acpi_op, choose op type (and thus size) based on&n; *              opcode&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ps_init_op

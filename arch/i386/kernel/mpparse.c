@@ -4195,7 +4195,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif /*CONFIG_X86_IO_APIC*/
 macro_line|#ifdef CONFIG_ACPI_PCI
 DECL|function|mp_parse_prt
 r_void
@@ -4480,5 +4479,6 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif /*CONFIG_ACPI_PCI*/
+macro_line|#endif /*CONFIG_X86_IO_APIC*/
 macro_line|#endif /*CONFIG_ACPI_BOOT*/
 eof

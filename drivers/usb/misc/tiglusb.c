@@ -98,9 +98,9 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|err
 (paren
-l_string|&quot;tiglusb: clear_device failed&bslash;n&quot;
+l_string|&quot;tiglusb: clear_device failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -151,9 +151,10 @@ id|pipe
 )paren
 )paren
 (brace
-id|printk
+id|err
+c_func
 (paren
-l_string|&quot;tiglusb: clear_pipe (r), request failed&bslash;n&quot;
+l_string|&quot;tiglusb: clear_pipe (r), request failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -184,9 +185,9 @@ id|pipe
 )paren
 )paren
 (brace
-id|printk
+id|err
 (paren
-l_string|&quot;tiglusb: clear_pipe (w), request failed&bslash;n&quot;
+l_string|&quot;tiglusb: clear_pipe (w), request failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -569,9 +570,9 @@ op_logical_neg
 id|bytes_read
 )paren
 (brace
-id|printk
+id|warn
 (paren
-l_string|&quot;quirk !&bslash;n&quot;
+l_string|&quot;quirk !&quot;
 )paren
 suffix:semicolon
 )brace
@@ -898,7 +899,7 @@ id|pipe
 )paren
 id|warn
 (paren
-l_string|&quot;send_packet, request failed&bslash;n&quot;
+l_string|&quot;send_packet, request failed&quot;
 )paren
 suffix:semicolon
 singleline_comment|//clear_device(s-&gt;dev);
@@ -1053,10 +1054,9 @@ suffix:semicolon
 r_case
 id|IOCTL_TIUSB_RESET_DEVICE
 suffix:colon
-id|printk
+id|dbg
 (paren
-id|KERN_DEBUG
-l_string|&quot;IOCTL_TIGLUSB_RESET_DEVICE&bslash;n&quot;
+l_string|&quot;IOCTL_TIGLUSB_RESET_DEVICE&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1077,10 +1077,9 @@ suffix:semicolon
 r_case
 id|IOCTL_TIUSB_RESET_PIPES
 suffix:colon
-id|printk
+id|dbg
 (paren
-id|KERN_DEBUG
-l_string|&quot;IOCTL_TIGLUSB_RESET_PIPES&bslash;n&quot;
+l_string|&quot;IOCTL_TIGLUSB_RESET_PIPES&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1241,9 +1240,9 @@ id|name
 l_int|8
 )braket
 suffix:semicolon
-id|printk
+id|dbg
 (paren
-l_string|&quot;tiglusb: probing vendor id 0x%x, device id 0x%x ifnum:%d&bslash;n&quot;
+l_string|&quot;tiglusb: probing vendor id 0x%x, device id 0x%x ifnum:%d&quot;
 comma
 id|dev-&gt;descriptor.idVendor
 comma
@@ -1299,9 +1298,9 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|err
 (paren
-l_string|&quot;tiglusb_probe: set_configuration failed&bslash;n&quot;
+l_string|&quot;tiglusb_probe: set_configuration failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1369,9 +1368,9 @@ comma
 id|s-&gt;minor
 )paren
 suffix:semicolon
-id|printk
+id|info
 (paren
-l_string|&quot;tiglusb: registering to devfs : major = %d, minor = %d, node = %s&bslash;n&quot;
+l_string|&quot;tiglusb: registering to devfs : major = %d, minor = %d, node = %s&quot;
 comma
 id|TIUSB_MAJOR
 comma
@@ -1413,9 +1412,9 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Display firmware version */
-id|printk
+id|info
 (paren
-l_string|&quot;tiglusb: link cable version %i.%02x&bslash;n&quot;
+l_string|&quot;tiglusb: link cable version %i.%02x&quot;
 comma
 id|dev-&gt;descriptor.bcdDevice
 op_rshift
@@ -1462,7 +1461,7 @@ op_logical_or
 op_logical_neg
 id|s-&gt;dev
 )paren
-id|printk
+id|warn
 (paren
 l_string|&quot;bogus disconnect&quot;
 )paren
@@ -1533,9 +1532,9 @@ id|s-&gt;devfs
 op_assign
 l_int|NULL
 suffix:semicolon
-id|printk
+id|info
 (paren
-l_string|&quot;tiglusb: device disconnected&bslash;n&quot;
+l_string|&quot;tiglusb: device disconnected&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1753,9 +1752,9 @@ id|tiglusb_fops
 )paren
 )paren
 (brace
-id|printk
+id|err
 (paren
-l_string|&quot;tiglusb: unable to get major %d&bslash;n&quot;
+l_string|&quot;tiglusb: unable to get major %d&quot;
 comma
 id|TIUSB_MAJOR
 )paren

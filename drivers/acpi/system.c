@@ -1,8 +1,6 @@
-multiline_comment|/*&n; *  acpi_system.c - ACPI System Driver ($Revision: 57 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
+multiline_comment|/*&n; *  acpi_system.c - ACPI System Driver ($Revision: 60 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
 DECL|macro|ACPI_C
 mdefine_line|#define ACPI_C
-DECL|macro|HAVE_NEW_DEVICE_MODEL
-mdefine_line|#define HAVE_NEW_DEVICE_MODEL
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -194,7 +192,6 @@ c_func
 l_int|10
 )paren
 suffix:semicolon
-macro_line|#ifdef HAVE_NEW_DEVICE_MODEL
 multiline_comment|/* turn all the devices back on */
 id|device_resume
 c_func
@@ -215,23 +212,12 @@ c_func
 id|RESUME_RESTORE_STATE
 )paren
 suffix:semicolon
-macro_line|#else
-macro_line|#error Resume cant work without driver model
-macro_line|#endif
 r_if
 c_cond
-(paren
-(paren
-id|state
-op_eq
-id|ACPI_STATE_S1
-)paren
-op_logical_and
 (paren
 id|dmi_broken
 op_amp
 id|BROKEN_INIT_AFTER_S1
-)paren
 )paren
 (brace
 id|printk
@@ -266,7 +252,6 @@ id|error
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef HAVE_NEW_DEVICE_MODEL
 multiline_comment|/* Send notification to devices that they will be suspended.&n;&t; * If any device or driver cannot make the transition, either up&n;&t; * or down, we&squot;ll get an error back.&n;&t; */
 id|error
 op_assign
@@ -286,7 +271,6 @@ id|error
 r_return
 id|AE_ERROR
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -295,7 +279,6 @@ OL
 id|ACPI_STATE_S5
 )paren
 (brace
-macro_line|#ifdef HAVE_NEW_DEVICE_MODEL
 multiline_comment|/* Tell devices to stop I/O and actually save their state.&n;&t;&t; * It is theoretically possible that something could fail,&n;&t;&t; * so handle that gracefully..&n;&t;&t; */
 id|error
 op_assign
@@ -324,7 +307,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* flush caches */
 id|ACPI_FLUSH_CPU_CACHE
 c_func
@@ -366,7 +348,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef HAVE_NEW_DEVICE_MODEL
 r_if
 c_cond
 (paren
@@ -383,10 +364,8 @@ r_return
 id|error
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 )brace
-macro_line|#ifdef HAVE_NEW_DEVICE_MODEL
 multiline_comment|/* disable interrupts&n;&t; * Note that acpi_suspend -- our caller -- will do this once we return.&n;&t; * But, we want it done early, so we don&squot;t get any suprises during&n;&t; * the device suspend sequence.&n;&t; */
 id|ACPI_DISABLE_IRQS
 c_func
@@ -420,7 +399,6 @@ c_func
 id|state
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|error
 ques
@@ -1467,7 +1445,7 @@ id|size
 )paren
 )paren
 (brace
-id|kfree
+id|acpi_os_free
 c_func
 (paren
 id|dsdt.pointer
@@ -1482,7 +1460,7 @@ id|EFAULT
 suffix:semicolon
 )brace
 )brace
-id|kfree
+id|acpi_os_free
 c_func
 (paren
 id|dsdt.pointer
@@ -1658,7 +1636,7 @@ id|size
 )paren
 )paren
 (brace
-id|kfree
+id|acpi_os_free
 c_func
 (paren
 id|fadt.pointer
@@ -1673,7 +1651,7 @@ id|EFAULT
 suffix:semicolon
 )brace
 )brace
-id|kfree
+id|acpi_os_free
 c_func
 (paren
 id|fadt.pointer
@@ -4338,11 +4316,6 @@ r_struct
 id|pt_regs
 op_star
 id|pt_regs
-comma
-r_struct
-id|kbd_struct
-op_star
-id|kbd
 comma
 r_struct
 id|tty_struct

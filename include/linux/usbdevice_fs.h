@@ -142,12 +142,10 @@ id|slow
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|USBDEVFS_URB_DISABLE_SPD
-mdefine_line|#define USBDEVFS_URB_DISABLE_SPD           1
+DECL|macro|USBDEVFS_URB_SHORT_NOT_OK
+mdefine_line|#define USBDEVFS_URB_SHORT_NOT_OK          1
 DECL|macro|USBDEVFS_URB_ISO_ASAP
 mdefine_line|#define USBDEVFS_URB_ISO_ASAP              2
-DECL|macro|USBDEVFS_URB_QUEUE_BULK
-mdefine_line|#define USBDEVFS_URB_QUEUE_BULK            0x10
 DECL|macro|USBDEVFS_URB_TYPE_ISO
 mdefine_line|#define USBDEVFS_URB_TYPE_ISO&t;&t;   0
 DECL|macro|USBDEVFS_URB_TYPE_INTERRUPT

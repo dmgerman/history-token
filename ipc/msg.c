@@ -2611,6 +2611,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pipelined_send
+r_static
 r_int
 r_inline
 id|pipelined_send
@@ -3139,6 +3140,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|convert_mode
+r_static
 r_int
 r_inline
 id|convert_mode

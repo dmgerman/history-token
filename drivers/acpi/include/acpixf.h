@@ -20,6 +20,13 @@ id|flags
 )paren
 suffix:semicolon
 id|acpi_status
+id|acpi_initialize_objects
+(paren
+id|u32
+id|flags
+)paren
+suffix:semicolon
+id|acpi_status
 id|acpi_terminate
 (paren
 r_void

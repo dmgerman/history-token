@@ -3016,7 +3016,7 @@ suffix:semicolon
 id|u8
 id|tmp
 suffix:semicolon
-multiline_comment|/* &n;&t; * Not having a register set can lead to trouble.&n;&t; * Also starfire doesnt have a tod clock.&n;&t; */
+multiline_comment|/* &n;&t; * Not having a register set can lead to trouble.&n;&t; * Also starfire doesn&squot;t have a tod clock.&n;&t; */
 r_if
 c_cond
 (paren

@@ -1124,6 +1124,12 @@ op_eq
 op_minus
 id|ENAMETOOLONG
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -1132,6 +1138,7 @@ op_minus
 id|ENAMETOOLONG
 )paren
 suffix:semicolon
+)brace
 r_goto
 id|end_add
 suffix:semicolon

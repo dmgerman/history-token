@@ -679,6 +679,138 @@ DECL|macro|BTN_GEAR_DOWN
 mdefine_line|#define BTN_GEAR_DOWN&t;&t;0x150
 DECL|macro|BTN_GEAR_UP
 mdefine_line|#define BTN_GEAR_UP&t;&t;0x151
+DECL|macro|KEY_OK
+mdefine_line|#define KEY_OK&t;&t;&t;0x160
+DECL|macro|KEY_SELECT
+mdefine_line|#define KEY_SELECT &t;&t;0x161
+DECL|macro|KEY_GOTO
+mdefine_line|#define KEY_GOTO&t;&t;0x162
+DECL|macro|KEY_CLEAR
+mdefine_line|#define KEY_CLEAR&t;&t;0x163
+DECL|macro|KEY_POWER2
+mdefine_line|#define KEY_POWER2&t;&t;0x164
+DECL|macro|KEY_OPTION
+mdefine_line|#define KEY_OPTION&t;&t;0x165
+DECL|macro|KEY_INFO
+mdefine_line|#define KEY_INFO&t;&t;0x166
+DECL|macro|KEY_TIME
+mdefine_line|#define KEY_TIME&t;&t;0x167
+DECL|macro|KEY_VENDOR
+mdefine_line|#define KEY_VENDOR&t;&t;0x168
+DECL|macro|KEY_ARCHIVE
+mdefine_line|#define KEY_ARCHIVE&t;&t;0x169
+DECL|macro|KEY_PROGRAM
+mdefine_line|#define KEY_PROGRAM&t;&t;0x16a
+DECL|macro|KEY_CHANNEL
+mdefine_line|#define KEY_CHANNEL&t;&t;0x16b
+DECL|macro|KEY_FAVORITES
+mdefine_line|#define KEY_FAVORITES&t;&t;0x16c
+DECL|macro|KEY_EPG
+mdefine_line|#define KEY_EPG&t;&t;&t;0x16d
+DECL|macro|KEY_PVR
+mdefine_line|#define KEY_PVR&t;&t;&t;0x16e
+DECL|macro|KEY_MHP
+mdefine_line|#define KEY_MHP&t;&t;&t;0x16f
+DECL|macro|KEY_LANGUAGE
+mdefine_line|#define KEY_LANGUAGE&t;&t;0x170
+DECL|macro|KEY_TITLE
+mdefine_line|#define KEY_TITLE&t;&t;0x171
+DECL|macro|KEY_SUBTITLE
+mdefine_line|#define KEY_SUBTITLE&t;&t;0x172
+DECL|macro|KEY_ANGLE
+mdefine_line|#define KEY_ANGLE&t;&t;0x173
+DECL|macro|KEY_ZOOM
+mdefine_line|#define KEY_ZOOM&t;&t;0x174
+DECL|macro|KEY_MODE
+mdefine_line|#define KEY_MODE&t;&t;0x175
+DECL|macro|KEY_KEYBOARD
+mdefine_line|#define KEY_KEYBOARD&t;&t;0x176
+DECL|macro|KEY_SCREEN
+mdefine_line|#define KEY_SCREEN&t;&t;0x177
+DECL|macro|KEY_PC
+mdefine_line|#define KEY_PC&t;&t;&t;0x178
+DECL|macro|KEY_TV
+mdefine_line|#define KEY_TV&t;&t;&t;0x179
+DECL|macro|KEY_TV2
+mdefine_line|#define KEY_TV2&t;&t;&t;0x17a
+DECL|macro|KEY_VCR
+mdefine_line|#define KEY_VCR&t;&t;&t;0x17b
+DECL|macro|KEY_VCR2
+mdefine_line|#define KEY_VCR2&t;&t;0x17c
+DECL|macro|KEY_SAT
+mdefine_line|#define KEY_SAT&t;&t;&t;0x17d
+DECL|macro|KEY_SAT2
+mdefine_line|#define KEY_SAT2&t;&t;0x17e
+DECL|macro|KEY_CD
+mdefine_line|#define KEY_CD&t;&t;&t;0x17f
+DECL|macro|KEY_TAPE
+mdefine_line|#define KEY_TAPE&t;&t;0x180
+DECL|macro|KEY_RADIO
+mdefine_line|#define KEY_RADIO&t;&t;0x181
+DECL|macro|KEY_TUNER
+mdefine_line|#define KEY_TUNER&t;&t;0x182
+DECL|macro|KEY_PLAYER
+mdefine_line|#define KEY_PLAYER&t;&t;0x183
+DECL|macro|KEY_TEXT
+mdefine_line|#define KEY_TEXT&t;&t;0x184
+DECL|macro|KEY_DVD
+mdefine_line|#define KEY_DVD&t;&t;&t;0x185
+DECL|macro|KEY_AUX
+mdefine_line|#define KEY_AUX&t;&t;&t;0x186
+DECL|macro|KEY_MP3
+mdefine_line|#define KEY_MP3&t;&t;&t;0x187
+DECL|macro|KEY_AUDIO
+mdefine_line|#define KEY_AUDIO&t;&t;0x188
+DECL|macro|KEY_VIDEO
+mdefine_line|#define KEY_VIDEO&t;&t;0x189
+DECL|macro|KEY_DIRECTORY
+mdefine_line|#define KEY_DIRECTORY&t;&t;0x18a
+DECL|macro|KEY_LIST
+mdefine_line|#define KEY_LIST&t;&t;0x18b
+DECL|macro|KEY_MEMO
+mdefine_line|#define KEY_MEMO&t;&t;0x18c
+DECL|macro|KEY_CALENDAR
+mdefine_line|#define KEY_CALENDAR&t;&t;0x18d
+DECL|macro|KEY_RED
+mdefine_line|#define KEY_RED&t;&t;&t;0x18e
+DECL|macro|KEY_GREEN
+mdefine_line|#define KEY_GREEN&t;&t;0x18f
+DECL|macro|KEY_YELLOW
+mdefine_line|#define KEY_YELLOW&t;&t;0x190
+DECL|macro|KEY_BLUE
+mdefine_line|#define KEY_BLUE&t;&t;0x191
+DECL|macro|KEY_CHANNELUP
+mdefine_line|#define KEY_CHANNELUP&t;&t;0x192
+DECL|macro|KEY_CHANNELDOWN
+mdefine_line|#define KEY_CHANNELDOWN&t;&t;0x193
+DECL|macro|KEY_FIRST
+mdefine_line|#define KEY_FIRST&t;&t;0x194
+DECL|macro|KEY_LAST
+mdefine_line|#define KEY_LAST&t;&t;0x195
+DECL|macro|KEY_AB
+mdefine_line|#define KEY_AB&t;&t;&t;0x196
+DECL|macro|KEY_PLAY
+mdefine_line|#define KEY_PLAY&t;&t;0x197
+DECL|macro|KEY_RESTART
+mdefine_line|#define KEY_RESTART&t;&t;0x198
+DECL|macro|KEY_SLOW
+mdefine_line|#define KEY_SLOW&t;&t;0x199
+DECL|macro|KEY_SHUFFLE
+mdefine_line|#define KEY_SHUFFLE&t;&t;0x19a
+DECL|macro|KEY_FASTFORWARD
+mdefine_line|#define KEY_FASTFORWARD&t;&t;0x19b
+DECL|macro|KEY_PREVIOUS
+mdefine_line|#define KEY_PREVIOUS&t;&t;0x19c
+DECL|macro|KEY_NEXT
+mdefine_line|#define KEY_NEXT&t;&t;0x19d
+DECL|macro|KEY_DIGITS
+mdefine_line|#define KEY_DIGITS&t;&t;0x19e
+DECL|macro|KEY_TEEN
+mdefine_line|#define KEY_TEEN&t;&t;0x19f
+DECL|macro|KEY_TWEN
+mdefine_line|#define KEY_TWEN&t;&t;0x1a0
+DECL|macro|KEY_BREAK
+mdefine_line|#define KEY_BREAK&t;&t;0x1a1
 DECL|macro|KEY_MAX
 mdefine_line|#define KEY_MAX&t;&t;&t;0x1ff
 multiline_comment|/*&n; * Relative axes&n; */
@@ -828,6 +960,8 @@ DECL|macro|BUS_ADB
 mdefine_line|#define BUS_ADB&t;&t;&t;0x17
 DECL|macro|BUS_I2C
 mdefine_line|#define BUS_I2C&t;&t;&t;0x18
+DECL|macro|BUS_HOST
+mdefine_line|#define BUS_HOST&t;&t;0x19
 multiline_comment|/*&n; * Values describing the status of an effect&n; */
 DECL|macro|FF_STATUS_STOPPED
 mdefine_line|#define FF_STATUS_STOPPED&t;0x00

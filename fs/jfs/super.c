@@ -218,7 +218,7 @@ op_star
 id|dentry
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_JFS_DEBUG) &amp;&amp; defined(CONFIG_PROC_FS)
+macro_line|#ifdef PROC_FS_JFS /* see jfs_debug.h */
 r_extern
 r_void
 id|jfs_proc_init
@@ -1335,6 +1335,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* logical blocks are represented by 40 bits in pxd_t, etc. */
 id|sb-&gt;s_maxbytes
 op_assign
 (paren
@@ -1347,10 +1348,12 @@ op_lshift
 l_int|40
 suffix:semicolon
 macro_line|#if BITS_PER_LONG == 32
+multiline_comment|/*&n;&t; * Page cache is indexed by long.&n;&t; * I would use MAX_LFS_FILESIZE, but it&squot;s only half as big&n;&t; */
 id|sb-&gt;s_maxbytes
 op_assign
 id|min
 c_func
+(paren
 (paren
 (paren
 id|u64
@@ -1358,6 +1361,9 @@ id|u64
 id|PAGE_CACHE_SIZE
 op_lshift
 l_int|32
+)paren
+op_minus
+l_int|1
 comma
 id|sb-&gt;s_maxbytes
 )paren
@@ -1920,7 +1926,7 @@ id|jfsIOwait
 )paren
 suffix:semicolon
 multiline_comment|/* Wait until IO thread starts */
-macro_line|#if defined(CONFIG_JFS_DEBUG) &amp;&amp; defined(CONFIG_PROC_FS)
+macro_line|#ifdef PROC_FS_JFS
 id|jfs_proc_init
 c_func
 (paren
@@ -2083,7 +2089,7 @@ id|jfsIOwait
 )paren
 suffix:semicolon
 multiline_comment|/* Wait until Sync thread exits */
-macro_line|#if defined(CONFIG_JFS_DEBUG) &amp;&amp; defined(CONFIG_PROC_FS)
+macro_line|#ifdef PROC_FS_JFS
 id|jfs_proc_clean
 c_func
 (paren

@@ -2032,9 +2032,23 @@ id|endpoint
 op_ge
 l_int|0
 )paren
+(brace
+id|strcpy
+(paren
+id|dev-&gt;actconfig-&gt;interface
+(braket
+id|i
+)braket
+dot
+id|dev.name
+comma
+l_string|&quot;Hub/Port Status Changes&quot;
+)paren
+suffix:semicolon
 r_return
 id|hub
 suffix:semicolon
+)brace
 id|err
 c_func
 (paren
@@ -2667,9 +2681,11 @@ l_int|0
 id|err
 c_func
 (paren
-l_string|&quot;%s(%s) failed (err = %d)&quot;
+l_string|&quot;%s(%s-%s) failed (err = %d)&quot;
 comma
 id|__FUNCTION__
+comma
+id|hub-&gt;bus-&gt;bus_name
 comma
 id|hub-&gt;devpath
 comma
@@ -3655,7 +3671,7 @@ comma
 id|dev-&gt;devnum
 )paren
 suffix:semicolon
-multiline_comment|/* put the device in the global device tree */
+multiline_comment|/* put the device in the global device tree. the hub port&n;&t;&t; * is the &quot;bus_id&quot;; hubs show in hierarchy like bridges&n;&t;&t; */
 id|dev-&gt;dev.parent
 op_assign
 op_amp
@@ -3664,75 +3680,18 @@ suffix:semicolon
 id|sprintf
 (paren
 op_amp
-id|dev-&gt;dev.name
-(braket
-l_int|0
-)braket
-comma
-l_string|&quot;USB device %04x:%04x&quot;
-comma
-id|dev-&gt;descriptor.idVendor
-comma
-id|dev-&gt;descriptor.idProduct
-)paren
-suffix:semicolon
-multiline_comment|/* find the number of the port this device is connected to */
-id|sprintf
-(paren
-op_amp
 id|dev-&gt;dev.bus_id
 (braket
 l_int|0
 )braket
 comma
-l_string|&quot;unknown_port_%03d&quot;
+l_string|&quot;%d&quot;
 comma
-id|dev-&gt;devnum
+id|port
+op_plus
+l_int|1
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|USB_MAXCHILDREN
-suffix:semicolon
-op_increment
-id|i
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|dev-&gt;parent-&gt;children
-(braket
-id|i
-)braket
-op_eq
-id|dev
-)paren
-(brace
-id|sprintf
-(paren
-op_amp
-id|dev-&gt;dev.bus_id
-(braket
-l_int|0
-)braket
-comma
-l_string|&quot;%02d&quot;
-comma
-id|i
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/* Run it through the hoops (find a driver, etc) */
 r_if
 c_cond

@@ -10060,7 +10060,7 @@ id|happy_meal_interrupt
 comma
 id|SA_SHIRQ
 comma
-l_string|&quot;HAPPY MEAL&quot;
+id|dev-&gt;name
 comma
 (paren
 r_void

@@ -1880,6 +1880,20 @@ c_func
 id|netlink_ack
 )paren
 suffix:semicolon
+DECL|variable|netlink_register_notifier
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|netlink_register_notifier
+)paren
+suffix:semicolon
+DECL|variable|netlink_unregister_notifier
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|netlink_unregister_notifier
+)paren
+suffix:semicolon
 macro_line|#if defined(CONFIG_NETLINK_DEV) || defined(CONFIG_NETLINK_DEV_MODULE)
 DECL|variable|netlink_attach
 id|EXPORT_SYMBOL

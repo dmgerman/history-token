@@ -63,6 +63,11 @@ r_int
 r_int
 id|type
 suffix:semicolon
+DECL|member|event
+r_int
+r_int
+id|event
+suffix:semicolon
 DECL|member|write
 r_int
 (paren
@@ -233,6 +238,24 @@ id|serio
 )paren
 suffix:semicolon
 r_void
+id|serio_interrupt
+c_func
+(paren
+r_struct
+id|serio
+op_star
+id|serio
+comma
+r_int
+r_char
+id|data
+comma
+r_int
+r_int
+id|flags
+)paren
+suffix:semicolon
+r_void
 id|serio_register_port
 c_func
 (paren
@@ -321,7 +344,6 @@ id|serio-&gt;dev
 op_logical_and
 id|serio-&gt;dev-&gt;write_wakeup
 )paren
-(brace
 id|serio-&gt;dev
 op_member_access_from_pointer
 id|write_wakeup
@@ -330,7 +352,6 @@ c_func
 id|serio
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|macro|SERIO_TIMEOUT
 mdefine_line|#define SERIO_TIMEOUT&t;1

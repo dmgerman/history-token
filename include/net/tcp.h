@@ -861,10 +861,6 @@ id|sysctl_tcp_rfc1337
 suffix:semicolon
 r_extern
 r_int
-id|sysctl_tcp_tw_recycle
-suffix:semicolon
-r_extern
-r_int
 id|sysctl_tcp_abort_on_overflow
 suffix:semicolon
 r_extern

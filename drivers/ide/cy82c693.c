@@ -469,6 +469,9 @@ r_struct
 id|ata_device
 op_star
 id|drive
+comma
+r_int
+id|map
 )paren
 (brace
 multiline_comment|/*&n;&t; * Set dma mode for drive everything else is done by the defaul func.&n;&t; */
@@ -1106,10 +1109,6 @@ id|autotune
 op_assign
 l_int|1
 suffix:semicolon
-id|hwif-&gt;autodma
-op_assign
-l_int|0
-suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
@@ -1124,16 +1123,6 @@ suffix:semicolon
 id|hwif-&gt;udma_setup
 op_assign
 id|cy82c693_udma_setup
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|noautodma
-)paren
-id|hwif-&gt;autodma
-op_assign
-l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif

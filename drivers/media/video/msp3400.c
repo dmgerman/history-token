@@ -6726,6 +6726,12 @@ c_func
 id|msp
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -6794,6 +6800,12 @@ id|kfree
 c_func
 (paren
 id|msp
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|c
 )paren
 suffix:semicolon
 id|printk

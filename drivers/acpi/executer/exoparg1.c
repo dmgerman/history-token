@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg1 - AML execution - opcodes with 1 argument&n; *              $Revision: 139 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg1 - AML execution - opcodes with 1 argument&n; *              $Revision: 140 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -815,7 +815,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/* Get the object reference and store it */
+multiline_comment|/* Get the object reference, store it, and remove our reference */
 id|status
 op_assign
 id|acpi_ex_get_object_reference
@@ -856,6 +856,11 @@ l_int|1
 )braket
 comma
 id|walk_state
+)paren
+suffix:semicolon
+id|acpi_ut_remove_reference
+(paren
+id|return_desc2
 )paren
 suffix:semicolon
 multiline_comment|/* The object exists in the namespace, return TRUE */
@@ -1834,6 +1839,36 @@ id|cleanup
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t;&t;&t;&t; * Delete our reference to the input object and&n;&t;&t;&t;&t;&t; * point to the object just retrieved&n;&t;&t;&t;&t;&t; */
+id|acpi_ut_remove_reference
+(paren
+id|operand
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+id|operand
+(braket
+l_int|0
+)braket
+op_assign
+id|temp_desc
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|AML_REF_OF_OP
+suffix:colon
+multiline_comment|/* Get the object to which the reference refers */
+id|temp_desc
+op_assign
+id|operand
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|reference.object
+suffix:semicolon
 id|acpi_ut_remove_reference
 (paren
 id|operand

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  pci_link.c - ACPI PCI Interrupt Link Device Driver ($Revision: 31 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *  Copyright (C) 2002       Dominik Brodowski &lt;devel@brodo.de&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; * TBD: &n; *      1. Support more than one IRQ resource entry per link device (index).&n; *&t;2. Implement start/stop mechanism and use ACPI Bus Driver facilities&n; *&t;   for IRQ management (e.g. start()-&gt;_SRS).&n; */
+multiline_comment|/*&n; *  pci_link.c - ACPI PCI Interrupt Link Device Driver ($Revision: 33 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *  Copyright (C) 2002       Dominik Brodowski &lt;devel@brodo.de&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; * TBD: &n; *      1. Support more than one IRQ resource entry per link device (index).&n; *&t;2. Implement start/stop mechanism and use ACPI Bus Driver facilities&n; *&t;   for IRQ management (e.g. start()-&gt;_SRS).&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -251,6 +251,22 @@ id|acpi_resource
 op_star
 )paren
 id|buffer.pointer
+suffix:semicolon
+multiline_comment|/* skip past dependent function resource (if present) */
+r_if
+c_cond
+(paren
+id|resource-&gt;id
+op_eq
+id|ACPI_RSTYPE_START_DPF
+)paren
+id|resource
+op_assign
+id|ACPI_NEXT_RESOURCE
+c_func
+(paren
+id|resource
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -507,7 +523,7 @@ id|link-&gt;irq.possible_count
 suffix:semicolon
 id|end
 suffix:colon
-id|kfree
+id|acpi_os_free
 c_func
 (paren
 id|buffer.pointer
@@ -861,7 +877,7 @@ id|link-&gt;irq.active
 suffix:semicolon
 id|end
 suffix:colon
-id|kfree
+id|acpi_os_free
 c_func
 (paren
 id|buffer.pointer
@@ -1389,6 +1405,11 @@ op_add_assign
 l_int|100
 suffix:semicolon
 r_else
+r_if
+c_cond
+(paren
+id|link-&gt;irq.possible_count
+)paren
 (brace
 r_int
 id|penalty
@@ -1473,6 +1494,9 @@ c_cond
 (paren
 op_logical_neg
 id|link
+op_logical_or
+op_logical_neg
+id|link-&gt;irq.possible_count
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -1580,7 +1604,7 @@ c_func
 id|link-&gt;device
 )paren
 comma
-id|irq
+id|link-&gt;irq.active
 )paren
 suffix:semicolon
 )brace

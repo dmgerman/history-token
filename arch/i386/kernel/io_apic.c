@@ -649,6 +649,7 @@ DECL|macro|IDLE_ENOUGH
 mdefine_line|#define IDLE_ENOUGH(cpu,now) &bslash;&n;&t;&t;(idle_cpu(cpu) &amp;&amp; ((now) - irq_stat[(cpu)].idle_timestamp &gt; 1))
 DECL|macro|IRQ_ALLOWED
 mdefine_line|#define IRQ_ALLOWED(cpu,allowed_mask) &bslash;&n;&t;&t;((1 &lt;&lt; cpu) &amp; (allowed_mask))
+macro_line|#if CONFIG_SMP
 DECL|function|move
 r_static
 r_int
@@ -795,7 +796,6 @@ r_int
 id|irq
 )paren
 (brace
-macro_line|#if CONFIG_SMP
 id|irq_balance_t
 op_star
 id|entry
@@ -873,8 +873,21 @@ id|entry-&gt;cpu
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
+macro_line|#else /* !SMP */
+DECL|function|balance_irq
+r_static
+r_inline
+r_void
+id|balance_irq
+c_func
+(paren
+r_int
+id|irq
+)paren
+(brace
+)brace
+macro_line|#endif
 multiline_comment|/*&n; * support for broken MP BIOSs, enables hand-redirection of PIRQ0-7 to&n; * specific CPU-side IRQs.&n; */
 DECL|macro|MAX_PIRQS
 mdefine_line|#define MAX_PIRQS 8
@@ -2743,6 +2756,27 @@ comma
 id|pin
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * skip adding the timer int on secondary nodes, which causes&n;&t;&t; * a small but painful rift in the time-space continuum&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|clustered_apic_mode
+op_logical_and
+(paren
+id|apic
+op_ne
+l_int|0
+)paren
+op_logical_and
+(paren
+id|irq
+op_eq
+l_int|0
+)paren
+)paren
+r_continue
+suffix:semicolon
+r_else
 id|add_pin_to_irq
 c_func
 (paren

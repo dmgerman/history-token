@@ -4765,12 +4765,6 @@ suffix:semicolon
 id|mm-&gt;map_count
 op_decrement
 suffix:semicolon
-id|remove_shared_vm_struct
-c_func
-(paren
-id|mpnt
-)paren
-suffix:semicolon
 id|unmap_page_range
 c_func
 (paren
@@ -4865,6 +4859,12 @@ op_star
 id|next
 op_assign
 id|mpnt-&gt;vm_next
+suffix:semicolon
+id|remove_shared_vm_struct
+c_func
+(paren
+id|mpnt
+)paren
 suffix:semicolon
 r_if
 c_cond

@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Packet matching code.&n; *&n; * Copyright (C) 1999 Paul `Rusty&squot; Russell &amp; Michael J. Neuling&n; * Copyright (C) 2009-2002 Netfilter core team &lt;coreteam@netfilter.org&gt;&n; *&n; * 19 Jan 2002 Harald Welte &lt;laforge@gnumonks.org&gt;&n; * &t;- increase module usage count as soon as we have rules inside&n; * &t;  a table&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -102,23 +103,13 @@ id|NF_IP_NUMHOOKS
 )braket
 suffix:semicolon
 multiline_comment|/* ipt_entry tables: one per CPU */
-DECL|member|entries
+DECL|member|____cacheline_aligned
 r_char
 id|entries
 (braket
 l_int|0
 )braket
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-id|SMP_CACHE_BYTES
-)paren
-)paren
-)paren
+id|____cacheline_aligned
 suffix:semicolon
 )brace
 suffix:semicolon

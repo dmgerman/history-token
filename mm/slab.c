@@ -7158,7 +7158,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * slabinfo_op - iterator that generates /proc/slabinfo&n; *&n; * Output layout:&n; * cache-name&n; * num-active-objs&n; * total-objs&n; * object size&n; * num-active-slabs&n; * total-slabs&n; * num-pages-per-slab&n; * + further values on SMP and with statistics enabled&n; */
+multiline_comment|/*&n; * slabinfo_op - iterator that generates /proc/slabinfo&n; *&n; * Output layout:&n; * cache-name&n; * num-active-objs&n; * total-objs&n; * object size&n; * num-active-slabs&n; * total-slabs&n; * num-pages-per-slab&n; * + further values on SMP and with statistics enabled&n; */
 DECL|variable|slabinfo_op
 r_struct
 id|seq_operations

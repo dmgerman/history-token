@@ -2,6 +2,7 @@ multiline_comment|/*&n; * ohci1394.h - driver for OHCI 1394 boards&n; * Copyrigh
 macro_line|#ifndef _OHCI1394_H
 DECL|macro|_OHCI1394_H
 mdefine_line|#define _OHCI1394_H
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|OHCI1394_DRIVER_NAME
@@ -335,9 +336,35 @@ id|pci_dev
 op_star
 id|dev
 suffix:semicolon
-DECL|member|state
-id|u32
-id|state
+r_enum
+(brace
+DECL|enumerator|OHCI_INIT_ALLOC_HOST
+id|OHCI_INIT_ALLOC_HOST
+comma
+DECL|enumerator|OHCI_INIT_HAVE_MEM_REGION
+id|OHCI_INIT_HAVE_MEM_REGION
+comma
+DECL|enumerator|OHCI_INIT_HAVE_IOMAPPING
+id|OHCI_INIT_HAVE_IOMAPPING
+comma
+DECL|enumerator|OHCI_INIT_HAVE_CONFIG_ROM_BUFFER
+id|OHCI_INIT_HAVE_CONFIG_ROM_BUFFER
+comma
+DECL|enumerator|OHCI_INIT_HAVE_SELFID_BUFFER
+id|OHCI_INIT_HAVE_SELFID_BUFFER
+comma
+DECL|enumerator|OHCI_INIT_HAVE_TXRX_BUFFERS__MAYBE
+id|OHCI_INIT_HAVE_TXRX_BUFFERS__MAYBE
+comma
+DECL|enumerator|OHCI_INIT_HAVE_IRQ
+id|OHCI_INIT_HAVE_IRQ
+comma
+DECL|enumerator|OHCI_INIT_DONE
+id|OHCI_INIT_DONE
+comma
+DECL|member|init_state
+)brace
+id|init_state
 suffix:semicolon
 multiline_comment|/* remapped memory spaces */
 DECL|member|registers

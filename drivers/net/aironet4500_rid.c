@@ -12,7 +12,7 @@ mdefine_line|#define awc_RID_gen_OperatingMode_Infrastructure &t;{&amp;aironet45
 singleline_comment|// With AP
 DECL|macro|awc_RID_gen_OperatingMode_AP
 mdefine_line|#define awc_RID_gen_OperatingMode_AP&t;&t;&t;{&amp;aironet4500_RID_Select_General_Config,0x0002,16,1,1,0,0, 0x00000003,0x0002,&quot;Opmode Access Point&quot; } 
-singleline_comment|// Aironet doesnt release info on use 
+singleline_comment|// Aironet doesn&squot;t release info on use 
 DECL|macro|awc_RID_gen_OperatingMode_AP_and_repeater
 mdefine_line|#define awc_RID_gen_OperatingMode_AP_and_repeater &t;{&amp;aironet4500_RID_Select_General_Config,0x0002,16,1,1,0,0, 0x00000003,0x0003,&quot;Opmode Access Point and Repeater&quot; } 
 singleline_comment|// no info

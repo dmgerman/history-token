@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbdisply - debug display commands&n; *              $Revision: 75 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbdisply - debug display commands&n; *              $Revision: 76 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -744,6 +744,27 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ACPI_GET_DESCRIPTOR_TYPE
+(paren
+id|obj_desc
+)paren
+op_ne
+id|ACPI_DESC_TYPE_OPERAND
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot;%p&quot;
+comma
+id|obj_desc
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|acpi_os_printf
 (paren
 l_string|&quot; %s&quot;
@@ -867,10 +888,75 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/* No additional display for other types */
+id|acpi_os_printf
+(paren
+l_string|&quot;%p&quot;
+comma
+id|obj_desc
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_decode_node&n; *&n; * PARAMETERS:  Node        - Object to be displayed&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Short display of a namespace node&n; *&n; ******************************************************************************/
+r_void
+DECL|function|acpi_db_decode_node
+id|acpi_db_decode_node
+(paren
+id|acpi_namespace_node
+op_star
+id|node
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot;&lt;Node&gt;          Name %4.4s Type-%s&quot;
+comma
+id|node-&gt;name.ascii
+comma
+id|acpi_ut_get_type_name
+(paren
+id|node-&gt;type
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|node-&gt;flags
+op_amp
+id|ANOBJ_METHOD_ARG
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot; [Method Arg]&quot;
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|node-&gt;flags
+op_amp
+id|ANOBJ_METHOD_LOCAL
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot; [Method Local]&quot;
+)paren
+suffix:semicolon
+)brace
+id|acpi_db_decode_internal_object
+(paren
+id|acpi_ns_get_attached_object
+(paren
+id|node
+)paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_display_internal_object&n; *&n; * PARAMETERS:  Obj_desc        - Object to be displayed&n; *              Walk_state      - Current walk state&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Short display of an internal object&n; *&n; ******************************************************************************/
 r_void
@@ -934,78 +1020,15 @@ suffix:semicolon
 r_case
 id|ACPI_DESC_TYPE_NAMED
 suffix:colon
-id|acpi_os_printf
-(paren
-l_string|&quot;&lt;Node&gt;          Name %4.4s Type-%s&quot;
-comma
+id|acpi_db_decode_node
 (paren
 (paren
 id|acpi_namespace_node
 op_star
 )paren
 id|obj_desc
-)paren
-op_member_access_from_pointer
-id|name.ascii
-comma
-id|acpi_ut_get_type_name
-(paren
-(paren
-(paren
-id|acpi_namespace_node
-op_star
-)paren
-id|obj_desc
-)paren
-op_member_access_from_pointer
-id|type
-)paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-(paren
-id|acpi_namespace_node
-op_star
-)paren
-id|obj_desc
-)paren
-op_member_access_from_pointer
-id|flags
-op_amp
-id|ANOBJ_METHOD_ARG
-)paren
-(brace
-id|acpi_os_printf
-(paren
-l_string|&quot; [Method Arg]&quot;
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-(paren
-id|acpi_namespace_node
-op_star
-)paren
-id|obj_desc
-)paren
-op_member_access_from_pointer
-id|flags
-op_amp
-id|ANOBJ_METHOD_LOCAL
-)paren
-(brace
-id|acpi_os_printf
-(paren
-l_string|&quot; [Method Local]&quot;
-)paren
-suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -1150,7 +1173,7 @@ id|AML_INDEX_OP
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;[Index]         &quot;
+l_string|&quot;[Index]        &quot;
 )paren
 suffix:semicolon
 id|acpi_db_decode_internal_object
@@ -1158,6 +1181,51 @@ id|acpi_db_decode_internal_object
 id|obj_desc-&gt;reference.object
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|AML_REF_OF_OP
+suffix:colon
+id|acpi_os_printf
+(paren
+l_string|&quot;[Reference]    &quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Reference can be to a Node or an Operand object */
+r_switch
+c_cond
+(paren
+id|ACPI_GET_DESCRIPTOR_TYPE
+(paren
+id|obj_desc-&gt;reference.object
+)paren
+)paren
+(brace
+r_case
+id|ACPI_DESC_TYPE_NAMED
+suffix:colon
+id|acpi_db_decode_node
+(paren
+id|obj_desc-&gt;reference.object
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_DESC_TYPE_OPERAND
+suffix:colon
+id|acpi_db_decode_internal_object
+(paren
+id|obj_desc-&gt;reference.object
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_default

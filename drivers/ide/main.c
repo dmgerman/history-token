@@ -4274,10 +4274,17 @@ op_ne
 l_int|2
 )paren
 (brace
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|drive-&gt;channel-&gt;udma_setup
+id|ch-&gt;udma_setup
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Force DMAing for the beginning of the check.  Some&n;&t;&t;&t; * chipsets appear to do interesting things, if not&n;&t;&t;&t; * checked and cleared.&n;&t;&t;&t; *&n;&t;&t;&t; *   PARANOIA!!!&n;&t;&t;&t; */
@@ -4291,12 +4298,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|drive-&gt;channel
+id|ch
 op_member_access_from_pointer
 id|udma_setup
 c_func
 (paren
 id|drive
+comma
+id|ch-&gt;modes_map
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ_DEFAULT

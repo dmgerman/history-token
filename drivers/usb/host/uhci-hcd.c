@@ -1891,7 +1891,7 @@ id|toggle
 suffix:semicolon
 )brace
 multiline_comment|/* This function will append one URB&squot;s QH to another URB&squot;s QH. This is for */
-multiline_comment|/*  USB_QUEUE_BULK support for bulk transfers and soon implicitily for */
+multiline_comment|/* queuing bulk transfers and soon implicitily for */
 multiline_comment|/*  control transfers */
 DECL|function|uhci_append_queued_urb
 r_static
@@ -3465,7 +3465,7 @@ op_logical_neg
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_DISABLE_SPD
+id|URB_SHORT_NOT_OK
 )paren
 )paren
 id|status
@@ -4171,7 +4171,7 @@ c_cond
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_DISABLE_SPD
+id|URB_SHORT_NOT_OK
 )paren
 (brace
 id|ret
@@ -4769,7 +4769,7 @@ c_cond
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_DISABLE_SPD
+id|URB_SHORT_NOT_OK
 )paren
 (brace
 id|ret
@@ -5206,7 +5206,7 @@ op_logical_neg
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_DISABLE_SPD
+id|URB_SHORT_NOT_OK
 )paren
 )paren
 id|status
@@ -5498,10 +5498,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|urb-&gt;transfer_flags
-op_amp
-id|USB_QUEUE_BULK
-op_logical_and
 id|eurb
 )paren
 id|uhci_append_queued_urb
@@ -6442,33 +6438,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|eurb
-op_logical_and
-op_logical_neg
-(paren
-id|urb-&gt;transfer_flags
-op_amp
-id|USB_QUEUE_BULK
-)paren
-)paren
-(brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|uhci-&gt;urb_list_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENXIO
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 op_logical_neg
 id|uhci_alloc_urb_priv
 c_func
@@ -6506,6 +6475,18 @@ id|urb-&gt;pipe
 r_case
 id|PIPE_CONTROL
 suffix:colon
+r_if
+c_cond
+(paren
+id|eurb
+)paren
+id|ret
+op_assign
+op_minus
+id|ENXIO
+suffix:semicolon
+multiline_comment|/* no control queueing yet */
+r_else
 id|ret
 op_assign
 id|uhci_submit_control
@@ -6521,6 +6502,18 @@ suffix:semicolon
 r_case
 id|PIPE_INTERRUPT
 suffix:colon
+r_if
+c_cond
+(paren
+id|eurb
+)paren
+id|ret
+op_assign
+op_minus
+id|ENXIO
+suffix:semicolon
+multiline_comment|/* no interrupt queueing yet */
+r_else
 r_if
 c_cond
 (paren
@@ -10558,7 +10551,6 @@ suffix:semicolon
 DECL|function|uhci_stop
 r_static
 r_void
-id|__devexit
 id|uhci_stop
 c_func
 (paren
@@ -10871,11 +10863,7 @@ comma
 macro_line|#endif
 id|stop
 suffix:colon
-id|__devexit_p
-c_func
-(paren
 id|uhci_stop
-)paren
 comma
 id|hcd_alloc
 suffix:colon

@@ -3334,14 +3334,6 @@ op_assign
 id|apus_map_io
 suffix:semicolon
 multiline_comment|/* These should not be used for the APUS yet, since it uses&n;&t;   the M68K keyboard now. */
-id|ppc_md.kbd_setkeycode
-op_assign
-id|apus_kbd_setkeycode
-suffix:semicolon
-id|ppc_md.kbd_getkeycode
-op_assign
-id|apus_kbd_getkeycode
-suffix:semicolon
 id|ppc_md.kbd_translate
 op_assign
 id|amiga_kbd_translate
@@ -3350,19 +3342,5 @@ id|ppc_md.kbd_unexpected_up
 op_assign
 id|apus_kbd_unexpected_up
 suffix:semicolon
-id|ppc_md.kbd_init_hw
-op_assign
-id|apus_kbd_init_hw
-suffix:semicolon
-macro_line|#ifdef CONFIG_SYSRQ
-id|ppc_md.ppc_kbd_sysrq_xlate
-op_assign
-id|amiga_sysrq_xlate
-suffix:semicolon
-id|SYSRQ_KEY
-op_assign
-l_int|0xff
-suffix:semicolon
-macro_line|#endif
 )brace
 eof

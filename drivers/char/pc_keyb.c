@@ -3117,6 +3117,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef CONFIG_SERIO_I8042
 id|kbd_request_region
 c_func
 (paren
@@ -3186,6 +3187,7 @@ c_func
 id|keyboard_interrupt
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 macro_line|#if defined CONFIG_PSMOUSE
 DECL|function|aux_reconnect_setup
@@ -4284,6 +4286,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef CONFIG_SERIO_I8042
 r_int
 id|retval
 suffix:semicolon
@@ -4446,6 +4449,7 @@ id|AUX_INTS_OFF
 )paren
 suffix:semicolon
 multiline_comment|/* Disable controller ints. */
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

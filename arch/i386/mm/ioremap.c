@@ -893,7 +893,7 @@ r_if
 c_cond
 (paren
 id|addr
-OL
+op_le
 id|high_memory
 )paren
 r_return
@@ -903,6 +903,12 @@ op_assign
 id|remove_kernel_area
 c_func
 (paren
+id|PAGE_MASK
+op_amp
+(paren
+r_int
+r_int
+)paren
 id|addr
 )paren
 suffix:semicolon
