@@ -816,7 +816,9 @@ DECL|function|sys_ipc
 id|asmlinkage
 r_int
 id|sys_ipc
+c_func
 (paren
+r_int
 r_int
 id|call
 comma
@@ -831,6 +833,7 @@ r_int
 id|third
 comma
 r_void
+id|__user
 op_star
 id|ptr
 comma
@@ -849,6 +852,7 @@ id|call
 op_le
 id|SEMCTL
 )paren
+(brace
 r_switch
 c_cond
 (paren
@@ -861,15 +865,10 @@ suffix:colon
 id|err
 op_assign
 id|sys_semtimedop
+c_func
 (paren
 id|first
 comma
-(paren
-r_struct
-id|sembuf
-id|__user
-op_star
-)paren
 id|ptr
 comma
 id|second
@@ -886,15 +885,10 @@ suffix:colon
 id|err
 op_assign
 id|sys_semtimedop
+c_func
 (paren
 id|first
 comma
-(paren
-r_struct
-id|sembuf
-id|__user
-op_star
-)paren
 id|ptr
 comma
 id|second
@@ -918,6 +912,7 @@ suffix:colon
 id|err
 op_assign
 id|sys_semget
+c_func
 (paren
 id|first
 comma
@@ -983,6 +978,7 @@ suffix:semicolon
 id|err
 op_assign
 id|sys_semctl
+c_func
 (paren
 id|first
 comma
@@ -1013,6 +1009,8 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1020,6 +1018,7 @@ id|call
 op_le
 id|MSGCTL
 )paren
+(brace
 r_switch
 c_cond
 (paren
@@ -1032,15 +1031,10 @@ suffix:colon
 id|err
 op_assign
 id|sys_msgsnd
+c_func
 (paren
 id|first
 comma
-(paren
-r_struct
-id|msgbuf
-id|__user
-op_star
-)paren
 id|ptr
 comma
 id|second
@@ -1060,15 +1054,10 @@ suffix:colon
 id|err
 op_assign
 id|sys_msgrcv
+c_func
 (paren
 id|first
 comma
-(paren
-r_struct
-id|msgbuf
-id|__user
-op_star
-)paren
 id|ptr
 comma
 id|second
@@ -1090,6 +1079,7 @@ suffix:colon
 id|err
 op_assign
 id|sys_msgget
+c_func
 (paren
 (paren
 id|key_t
@@ -1108,6 +1098,7 @@ suffix:colon
 id|err
 op_assign
 id|sys_msgctl
+c_func
 (paren
 id|first
 comma
@@ -1115,12 +1106,6 @@ id|second
 op_or
 id|IPC_64
 comma
-(paren
-r_struct
-id|msqid_ds
-id|__user
-op_star
-)paren
 id|ptr
 )paren
 suffix:semicolon
@@ -1138,6 +1123,8 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1145,6 +1132,7 @@ id|call
 op_le
 id|SHMCTL
 )paren
+(brace
 r_switch
 c_cond
 (paren
@@ -1161,14 +1149,10 @@ suffix:semicolon
 id|err
 op_assign
 id|do_shmat
+c_func
 (paren
 id|first
 comma
-(paren
-r_char
-id|__user
-op_star
-)paren
 id|ptr
 comma
 id|second
@@ -1216,12 +1200,8 @@ suffix:colon
 id|err
 op_assign
 id|sys_shmdt
+c_func
 (paren
-(paren
-r_char
-id|__user
-op_star
-)paren
 id|ptr
 )paren
 suffix:semicolon
@@ -1234,6 +1214,7 @@ suffix:colon
 id|err
 op_assign
 id|sys_shmget
+c_func
 (paren
 id|first
 comma
@@ -1254,6 +1235,7 @@ suffix:colon
 id|err
 op_assign
 id|sys_shmctl
+c_func
 (paren
 id|first
 comma
@@ -1261,12 +1243,6 @@ id|second
 op_or
 id|IPC_64
 comma
-(paren
-r_struct
-id|shmid_ds
-id|__user
-op_star
-)paren
 id|ptr
 )paren
 suffix:semicolon
@@ -1284,12 +1260,16 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+suffix:semicolon
+)brace
 r_else
+(brace
 id|err
 op_assign
 op_minus
 id|ENOSYS
 suffix:semicolon
+)brace
 id|out
 suffix:colon
 r_return
@@ -1331,6 +1311,7 @@ id|ret
 (brace
 id|ret
 op_assign
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -1346,6 +1327,7 @@ op_minus
 id|EFAULT
 suffix:colon
 l_int|0
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -1961,11 +1943,12 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* we come to here via sys_nis_syscall so it can setup the regs argument */
+DECL|function|c_sys_nis_syscall
 id|asmlinkage
 r_int
 r_int
-DECL|function|c_sys_nis_syscall
 id|c_sys_nis_syscall
+c_func
 (paren
 r_struct
 id|pt_regs
@@ -2013,10 +1996,11 @@ id|ENOSYS
 suffix:semicolon
 )brace
 multiline_comment|/* #define DEBUG_SPARC_BREAKPOINT */
+DECL|function|sparc_breakpoint
 id|asmlinkage
 r_void
-DECL|function|sparc_breakpoint
 id|sparc_breakpoint
+c_func
 (paren
 r_struct
 id|pt_regs
@@ -2845,9 +2829,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|sys_rt_sigaction
 id|asmlinkage
 r_int
-DECL|function|sys_rt_sigaction
 id|sys_rt_sigaction
 c_func
 (paren
@@ -2994,9 +2978,9 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* Invoked by rtrap code to update performance counters in&n; * user space.&n; */
+DECL|function|update_perfctrs
 id|asmlinkage
 r_void
-DECL|function|update_perfctrs
 id|update_perfctrs
 c_func
 (paren
@@ -3081,9 +3065,9 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|function|sys_perfctr
 id|asmlinkage
 r_int
-DECL|function|sys_perfctr
 id|sys_perfctr
 c_func
 (paren
