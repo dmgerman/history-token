@@ -42,10 +42,10 @@ op_star
 id|sdev
 )paren
 (brace
-multiline_comment|/*&n;&t; * Set default bflags. These can be overridden for individual&n;&t; * models and vendors via the scsi devinfo mechanism.  The only&n;&t; * flag we need is to force 36-byte INQUIRYs; we don&squot;t use any&n;&t; * of the extra data and many devices choke if asked for more or&n;&t; * less than 36 bytes.&n;&t; */
-id|sdev-&gt;sdev_bflags
+multiline_comment|/*&n;&t; * Set the INQUIRY transfer length to 36.  We don&squot;t use any of&n;&t; * the extra data and many devices choke if asked for more or&n;&t; * less than 36 bytes.&n;&t; */
+id|sdev-&gt;inquiry_len
 op_assign
-id|BLIST_INQUIRY_36
+l_int|36
 suffix:semicolon
 r_return
 l_int|0
