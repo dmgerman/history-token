@@ -673,12 +673,15 @@ suffix:semicolon
 multiline_comment|/* Input URB */
 DECL|member|inbuf
 r_char
+op_star
 id|inbuf
-(braket
-id|HID_BUFFER_SIZE
-)braket
 suffix:semicolon
 multiline_comment|/* Input buffer */
+DECL|member|inbuf_dma
+id|dma_addr_t
+id|inbuf_dma
+suffix:semicolon
+multiline_comment|/* Input buffer dma */
 DECL|member|urbctrl
 r_struct
 id|urb
@@ -689,9 +692,15 @@ multiline_comment|/* Control URB */
 DECL|member|cr
 r_struct
 id|usb_ctrlrequest
+op_star
 id|cr
 suffix:semicolon
 multiline_comment|/* Control request struct */
+DECL|member|cr_dma
+id|dma_addr_t
+id|cr_dma
+suffix:semicolon
+multiline_comment|/* Control request struct dma */
 DECL|member|ctrl
 r_struct
 id|hid_control_fifo
@@ -712,12 +721,15 @@ suffix:semicolon
 multiline_comment|/* Control fifo head &amp; tail */
 DECL|member|ctrlbuf
 r_char
+op_star
 id|ctrlbuf
-(braket
-id|HID_BUFFER_SIZE
-)braket
 suffix:semicolon
 multiline_comment|/* Control buffer */
+DECL|member|ctrlbuf_dma
+id|dma_addr_t
+id|ctrlbuf_dma
+suffix:semicolon
+multiline_comment|/* Control buffer dma */
 DECL|member|ctrllock
 id|spinlock_t
 id|ctrllock
@@ -751,12 +763,15 @@ suffix:semicolon
 multiline_comment|/* Output pipe fifo head &amp; tail */
 DECL|member|outbuf
 r_char
+op_star
 id|outbuf
-(braket
-id|HID_BUFFER_SIZE
-)braket
 suffix:semicolon
 multiline_comment|/* Output buffer */
+DECL|member|outbuf_dma
+id|dma_addr_t
+id|outbuf_dma
+suffix:semicolon
+multiline_comment|/* Output buffer dma */
 DECL|member|outlock
 id|spinlock_t
 id|outlock

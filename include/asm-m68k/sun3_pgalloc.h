@@ -59,11 +59,11 @@ id|page
 )paren
 suffix:semicolon
 )brace
-DECL|function|pte_free_tlb
+DECL|function|__pte_free_tlb
 r_static
 r_inline
 r_void
-id|pte_free_tlb
+id|__pte_free_tlb
 c_func
 (paren
 id|mmu_gather_t
@@ -284,8 +284,8 @@ suffix:semicolon
 multiline_comment|/*&n; * allocating and freeing a pmd is trivial: the 1-entry pmd is&n; * inside the pgd, so has no extra memory associated with it.&n; */
 DECL|macro|pmd_free
 mdefine_line|#define pmd_free(x)&t;&t;&t;do { } while (0)
-DECL|macro|pmd_free_tlb
-mdefine_line|#define pmd_free_tlb(tlb, x)&t;&t;do { } while (0)
+DECL|macro|__pmd_free_tlb
+mdefine_line|#define __pmd_free_tlb(tlb, x)&t;&t;do { } while (0)
 DECL|function|pgd_free
 r_static
 r_inline

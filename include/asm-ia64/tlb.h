@@ -401,8 +401,8 @@ multiline_comment|/*&n; * Remove TLB entry for PTE mapped at virtual address ADD
 r_static
 r_inline
 r_void
-DECL|function|tlb_remove_tlb_entry
-id|tlb_remove_tlb_entry
+DECL|function|__tlb_remove_tlb_entry
+id|__tlb_remove_tlb_entry
 (paren
 id|mmu_gather_t
 op_star

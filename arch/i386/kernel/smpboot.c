@@ -1244,7 +1244,7 @@ c_func
 l_string|&quot;CALLIN, before setup_local_APIC().&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Because we use NMIs rather than the INIT-STARTUP sequence to&n;&t; * bootstrap the CPUs, the APIC may be in a wierd state. Kick it.&n;&t; */
+multiline_comment|/*&n;&t; * Because we use NMIs rather than the INIT-STARTUP sequence to&n;&t; * bootstrap the CPUs, the APIC may be in a weird state. Kick it.&n;&t; */
 r_if
 c_cond
 (paren

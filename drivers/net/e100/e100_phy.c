@@ -1946,7 +1946,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* &n; * Procedure: e100_force_speed_duplex&n; *&n; * Description: This routine forces line speed and duplex mode of the&n; * adapter based on the values the user has set in e100.c.&n; *&n; * Arguments:  bdp - Pointer to the e100_private structure for the board&n; *&n; * Returns: void&n; *&n; */
-r_static
 r_void
 DECL|function|e100_force_speed_duplex
 id|e100_force_speed_duplex

@@ -43,8 +43,8 @@ DECL|macro|pmd_alloc_one
 mdefine_line|#define pmd_alloc_one(mm,address)       ({ BUG(); ((pmd_t *)2); })
 DECL|macro|pmd_free
 mdefine_line|#define pmd_free(x)                     do { } while (0)
-DECL|macro|pmd_free_tlb
-mdefine_line|#define pmd_free_tlb(tlb,x)&t;&t;do { } while (0)
+DECL|macro|__pmd_free_tlb
+mdefine_line|#define __pmd_free_tlb(tlb,x)&t;&t;do { } while (0)
 DECL|macro|pgd_populate
 mdefine_line|#define pgd_populate(mm, pmd, pte)      BUG()
 DECL|macro|pmd_populate_kernel
@@ -105,8 +105,8 @@ op_star
 id|pte
 )paren
 suffix:semicolon
-DECL|macro|pte_free_tlb
-mdefine_line|#define pte_free_tlb(tlb, pte)&t;pte_free((pte))
+DECL|macro|__pte_free_tlb
+mdefine_line|#define __pte_free_tlb(tlb, pte)&t;pte_free((pte))
 DECL|macro|check_pgt_cache
 mdefine_line|#define check_pgt_cache()&t;do { } while (0)
 macro_line|#endif /* _PPC_PGALLOC_H */

@@ -104,8 +104,6 @@ suffix:semicolon
 macro_line|#ifndef elf_addr_t
 DECL|macro|elf_addr_t
 mdefine_line|#define elf_addr_t unsigned long
-DECL|macro|elf_caddr_t
-mdefine_line|#define elf_caddr_t char *
 macro_line|#endif
 macro_line|#ifdef DEBUG_ELF
 multiline_comment|/* Debugging routines. */
@@ -676,11 +674,11 @@ op_star
 id|ephdr
 )paren
 (brace
-id|elf_caddr_t
+id|elf_addr_t
 op_star
 id|argv
 suffix:semicolon
-id|elf_caddr_t
+id|elf_addr_t
 op_star
 id|envp
 suffix:semicolon
@@ -954,10 +952,6 @@ l_int|1
 suffix:semicolon
 id|envp
 op_assign
-(paren
-id|elf_caddr_t
-op_star
-)paren
 id|sp
 suffix:semicolon
 id|sp
@@ -968,10 +962,6 @@ l_int|1
 suffix:semicolon
 id|argv
 op_assign
-(paren
-id|elf_caddr_t
-op_star
-)paren
 id|sp
 suffix:semicolon
 id|__put_user
@@ -1006,9 +996,6 @@ l_int|0
 id|__put_user
 c_func
 (paren
-(paren
-id|elf_caddr_t
-)paren
 (paren
 r_int
 r_int
@@ -1058,9 +1045,6 @@ l_int|0
 id|__put_user
 c_func
 (paren
-(paren
-id|elf_caddr_t
-)paren
 (paren
 r_int
 r_int

@@ -254,6 +254,7 @@ comma
 op_amp
 id|try_direct_io
 )brace
+)brace
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* The default definitions have been moved to st_options.h */
@@ -296,30 +297,35 @@ DECL|macro|SET_DENS_AND_BLK
 mdefine_line|#define SET_DENS_AND_BLK 0x10001
 DECL|macro|ST_DEV_ARR_LUMP
 mdefine_line|#define ST_DEV_ARR_LUMP  6
+DECL|variable|st_dev_arr_lock
 r_static
 id|rwlock_t
 id|st_dev_arr_lock
 op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
+DECL|variable|st_fixed_buffer_size
 r_static
 r_int
 id|st_fixed_buffer_size
 op_assign
 id|ST_FIXED_BUFFER_SIZE
 suffix:semicolon
+DECL|variable|st_write_threshold
 r_static
 r_int
 id|st_write_threshold
 op_assign
 id|ST_WRITE_THRESHOLD
 suffix:semicolon
+DECL|variable|st_max_sg_segs
 r_static
 r_int
 id|st_max_sg_segs
 op_assign
 id|ST_MAX_SG
 suffix:semicolon
+DECL|variable|scsi_tapes
 r_static
 id|Scsi_Tape
 op_star
@@ -328,6 +334,7 @@ id|scsi_tapes
 op_assign
 l_int|NULL
 suffix:semicolon
+DECL|variable|modes_defined
 r_static
 r_int
 id|modes_defined
@@ -496,6 +503,7 @@ id|Scsi_Device
 op_star
 )paren
 suffix:semicolon
+DECL|variable|st_template
 r_static
 r_struct
 id|Scsi_Device_Template

@@ -273,8 +273,6 @@ DECL|macro|NEW_TO_OLD_GID
 mdefine_line|#define NEW_TO_OLD_GID(gid) ((gid) &gt; 65535) ? (u16)overflowgid : (u16)(gid) 
 DECL|macro|elf_addr_t
 mdefine_line|#define elf_addr_t&t;u32
-DECL|macro|elf_caddr_t
-mdefine_line|#define elf_caddr_t&t;u32
 multiline_comment|/*&n;#define init_elf_binfmt init_elf32_binfmt&n;*/
 DECL|macro|CONFIG_BINFMT_ELF
 macro_line|#undef CONFIG_BINFMT_ELF

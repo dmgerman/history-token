@@ -10,5 +10,7 @@ macro_line|#elif defined(__SH4__)
 DECL|macro|L1_CACHE_BYTES
 mdefine_line|#define        L1_CACHE_BYTES  32
 macro_line|#endif
+DECL|macro|L1_CACHE_SHIFT_MAX
+mdefine_line|#define L1_CACHE_SHIFT_MAX 5&t;/* largest L1 which this arch supports */
 macro_line|#endif /* __ASM_SH_CACHE_H */
 eof

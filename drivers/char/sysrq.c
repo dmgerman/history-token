@@ -180,6 +180,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_VT
 multiline_comment|/* unraw sysrq handler */
 DECL|function|sysrq_handle_unraw
 r_static
@@ -243,6 +244,7 @@ l_string|&quot;Keyboard mode set to XLATE&quot;
 comma
 )brace
 suffix:semicolon
+macro_line|#endif /* CONFIG_VT */
 multiline_comment|/* reboot sysrq handler */
 DECL|function|sysrq_handle_reboot
 r_static
@@ -1320,10 +1322,16 @@ comma
 multiline_comment|/* q */
 l_int|NULL
 comma
+macro_line|#ifdef CONFIG_VT
 multiline_comment|/* r */
 op_amp
 id|sysrq_unraw_op
 comma
+macro_line|#else
+multiline_comment|/* r */
+l_int|NULL
+comma
+macro_line|#endif
 multiline_comment|/* s */
 op_amp
 id|sysrq_sync_op

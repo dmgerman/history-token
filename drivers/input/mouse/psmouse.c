@@ -1,5 +1,5 @@
-multiline_comment|/*&n; * $Id: psmouse.c,v 1.18 2002/03/13 10:03:43 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * PS/2 mouse driver&n; *&n; * Copyright (c) 1999-2002 Vojtech Pavlik&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/tqueue.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
+l_string|&quot;Vojtech Pavlik &lt;vojtech@suse.cz&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -38,6 +38,8 @@ DECL|macro|PSMOUSE_CMD_POLL
 mdefine_line|#define PSMOUSE_CMD_POLL&t;0x03eb&t;
 DECL|macro|PSMOUSE_CMD_GETID
 mdefine_line|#define PSMOUSE_CMD_GETID&t;0x01f2
+DECL|macro|PSMOUSE_CMD_GETID2
+mdefine_line|#define PSMOUSE_CMD_GETID2&t;0x0100
 DECL|macro|PSMOUSE_CMD_SETRATE
 mdefine_line|#define PSMOUSE_CMD_SETRATE&t;0x10f3
 DECL|macro|PSMOUSE_CMD_ENABLE
@@ -1425,7 +1427,7 @@ l_string|&quot;Mouse&quot;
 suffix:semicolon
 id|psmouse-&gt;model
 op_assign
-l_int|2
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Try Genius NetMouse magic init.&n; */
 id|param
@@ -1510,14 +1512,6 @@ op_eq
 l_int|0x55
 )paren
 (brace
-id|psmouse-&gt;vendor
-op_assign
-l_string|&quot;Genius&quot;
-suffix:semicolon
-id|psmouse-&gt;name
-op_assign
-l_string|&quot;Mouse&quot;
-suffix:semicolon
 id|set_bit
 c_func
 (paren
@@ -1541,6 +1535,14 @@ id|REL_WHEEL
 comma
 id|psmouse-&gt;dev.relbit
 )paren
+suffix:semicolon
+id|psmouse-&gt;vendor
+op_assign
+l_string|&quot;Genius&quot;
+suffix:semicolon
+id|psmouse-&gt;name
+op_assign
+l_string|&quot;Wheel Mouse&quot;
 suffix:semicolon
 r_return
 id|PSMOUSE_GENPS
@@ -1717,10 +1719,6 @@ id|psmouse-&gt;vendor
 op_assign
 l_string|&quot;Logitech&quot;
 suffix:semicolon
-id|psmouse-&gt;name
-op_assign
-l_string|&quot;Mouse&quot;
-suffix:semicolon
 id|psmouse-&gt;model
 op_assign
 (paren
@@ -1825,12 +1823,10 @@ r_if
 c_cond
 (paren
 id|psmouse-&gt;type
-op_ne
+op_eq
 id|PSMOUSE_PS2PP
 )paren
-r_return
-id|PSMOUSE_PS2
-suffix:semicolon
+(brace
 r_for
 c_loop
 (paren
@@ -1895,6 +1891,7 @@ id|i
 op_eq
 id|psmouse-&gt;model
 )paren
+(brace
 id|set_bit
 c_func
 (paren
@@ -1903,6 +1900,11 @@ comma
 id|psmouse-&gt;dev.relbit
 )paren
 suffix:semicolon
+id|psmouse-&gt;name
+op_assign
+l_string|&quot;Wheel Mouse&quot;
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Do Logitech PS2++ / PS2T++ magic init.&n; */
 r_if
 c_cond
@@ -2073,6 +2075,23 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|param
+(braket
+l_int|0
+)braket
+op_assign
+id|param
+(braket
+l_int|1
+)braket
+op_assign
+id|param
+(braket
+l_int|2
+)braket
+op_assign
+l_int|0
+suffix:semicolon
 id|psmouse_ps2pp_cmd
 c_func
 (paren
@@ -2144,6 +2163,7 @@ l_int|3
 r_return
 id|PSMOUSE_PS2PP
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/*&n; * Try IntelliMouse magic init.&n; */
@@ -2227,7 +2247,7 @@ comma
 id|psmouse-&gt;dev.relbit
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Try IntelliMouse Explorer magic init.&n; */
+multiline_comment|/*&n; * Try IntelliMouse/Explorer magic init.&n; */
 id|param
 (braket
 l_int|0
@@ -2300,14 +2320,6 @@ op_eq
 l_int|4
 )paren
 (brace
-id|psmouse-&gt;vendor
-op_assign
-l_string|&quot;Microsoft&quot;
-suffix:semicolon
-id|psmouse-&gt;name
-op_assign
-l_string|&quot;IntelliMouse Explorer&quot;
-suffix:semicolon
 id|set_bit
 c_func
 (paren
@@ -2324,31 +2336,23 @@ comma
 id|psmouse-&gt;dev.keybit
 )paren
 suffix:semicolon
+id|psmouse-&gt;name
+op_assign
+l_string|&quot;Explorer Mouse&quot;
+suffix:semicolon
 r_return
 id|PSMOUSE_IMEX
 suffix:semicolon
 )brace
-id|psmouse-&gt;vendor
-op_assign
-l_string|&quot;Microsoft&quot;
-suffix:semicolon
 id|psmouse-&gt;name
 op_assign
-l_string|&quot;IntelliMouse&quot;
+l_string|&quot;Wheel Mouse&quot;
 suffix:semicolon
 r_return
 id|PSMOUSE_IMPS
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Okay, all failed, we have a standard mouse here. The number of the buttons is&n; * still a question, though.&n; */
-id|psmouse-&gt;vendor
-op_assign
-l_string|&quot;Generic&quot;
-suffix:semicolon
-id|psmouse-&gt;name
-op_assign
-l_string|&quot;Mouse&quot;
-suffix:semicolon
+multiline_comment|/*&n; * Okay, all failed, we have a standard mouse here. The number of the buttons&n; * is still a question, though. We assume 3.&n; */
 r_return
 id|PSMOUSE_PS2
 suffix:semicolon
@@ -2373,25 +2377,7 @@ id|param
 l_int|2
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * First we reset and disable the mouse.&n; */
-r_if
-c_cond
-(paren
-id|psmouse_command
-c_func
-(paren
-id|psmouse
-comma
-l_int|NULL
-comma
-id|PSMOUSE_CMD_RESET_DIS
-)paren
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/*&n; * Next, we check if it&squot;s a mouse. It should send 0x00 or 0x03&n; * in case of an IntelliMouse in 4-byte mode or 0x04 for IM Explorer.&n; */
+multiline_comment|/*&n; * First, we check if it&squot;s a mouse. It should send 0x00 or 0x03&n; * in case of an IntelliMouse in 4-byte mode or 0x04 for IM Explorer.&n; */
 id|param
 (braket
 l_int|0
@@ -2428,6 +2414,39 @@ id|param
 (braket
 l_int|0
 )braket
+op_eq
+l_int|0xab
+op_logical_or
+id|param
+(braket
+l_int|0
+)braket
+op_eq
+l_int|0xac
+)paren
+(brace
+id|psmouse_command
+c_func
+(paren
+id|psmouse
+comma
+id|param
+comma
+id|PSMOUSE_CMD_GETID2
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|param
+(braket
+l_int|0
+)braket
 op_ne
 l_int|0x00
 op_logical_and
@@ -2444,6 +2463,24 @@ l_int|0
 )braket
 op_ne
 l_int|0x04
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n; * Then we reset and disable the mouse so that it doesn&squot;t generate events.&n; */
+r_if
+c_cond
+(paren
+id|psmouse_command
+c_func
+(paren
+id|psmouse
+comma
+l_int|NULL
+comma
+id|PSMOUSE_CMD_RESET_DIS
+)paren
 )paren
 r_return
 op_minus
@@ -2860,15 +2897,15 @@ id|BUS_I8042
 suffix:semicolon
 id|psmouse-&gt;dev.id.vendor
 op_assign
-id|psmouse-&gt;type
+l_int|0x0002
 suffix:semicolon
 id|psmouse-&gt;dev.id.product
 op_assign
-id|psmouse-&gt;model
+id|psmouse-&gt;type
 suffix:semicolon
 id|psmouse-&gt;dev.id.version
 op_assign
-l_int|0x0100
+id|psmouse-&gt;model
 suffix:semicolon
 id|input_register_device
 c_func

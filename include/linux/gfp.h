@@ -81,7 +81,8 @@ r_int
 r_int
 id|order
 comma
-id|zonelist_t
+r_struct
+id|zonelist
 op_star
 id|zonelist
 )paren

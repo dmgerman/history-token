@@ -1563,9 +1563,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 id|req-&gt;flags
 op_amp
 id|REQ_CMD
+)paren
 )paren
 r_goto
 id|end_req
