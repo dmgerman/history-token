@@ -209,6 +209,15 @@ r_int
 id|irq
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|openpic_set_priority
+c_func
+(paren
+id|u_int
+id|pri
+)paren
+suffix:semicolon
 DECL|function|openpic_to_irq
 r_extern
 r_inline
