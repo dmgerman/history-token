@@ -2,6 +2,7 @@ multiline_comment|/*&n; * PowerPC memory management structures&n; *&n; * Dave En
 macro_line|#ifndef _PPC64_MMU_H_
 DECL|macro|_PPC64_MMU_H_
 mdefine_line|#define _PPC64_MMU_H_
+macro_line|#include &lt;asm/page.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Default &quot;unsigned long&quot; context */
 DECL|typedef|mm_context_t
@@ -929,6 +930,44 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Handle a fault by adding an HPTE. If the address can&squot;t be determined&n; * to be valid via Linux page tables, return 1. If handled return 0&n; */
+r_extern
+r_int
+id|__hash_page
+c_func
+(paren
+r_int
+r_int
+id|ea
+comma
+r_int
+r_int
+id|access
+comma
+r_int
+r_int
+id|vsid
+comma
+id|pte_t
+op_star
+id|ptep
+comma
+r_int
+r_int
+id|trap
+comma
+r_int
+id|local
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|htab_finish_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * Location of cpu0&squot;s segment table&n; */
 DECL|macro|STAB0_PAGE

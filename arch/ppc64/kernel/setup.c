@@ -663,6 +663,12 @@ suffix:semicolon
 macro_line|#endif
 )brace
 macro_line|#endif
+multiline_comment|/* Finish initializing the hash table (do the dynamic&n;&t; * patching for the fast-path hashtable.S code)&n;&t; */
+id|htab_finish_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
