@@ -80,7 +80,7 @@ mdefine_line|#define PAL_REGISTER_INFO&t;39&t;/* return AR and CR register infor
 DECL|macro|PAL_SHUTDOWN
 mdefine_line|#define PAL_SHUTDOWN&t;&t;40&t;/* enter processor shutdown state */
 DECL|macro|PAL_PREFETCH_VISIBILITY
-mdefine_line|#define PAL_PREFETCH_VISIBILITY&t;41
+mdefine_line|#define PAL_PREFETCH_VISIBILITY&t;41&t;/* Make Processor Prefetches Visible */
 DECL|macro|PAL_COPY_PAL
 mdefine_line|#define PAL_COPY_PAL&t;&t;256&t;/* relocate PAL procedures and PAL PMI */
 DECL|macro|PAL_HALT_INFO
@@ -4813,13 +4813,28 @@ r_return
 id|iprv.status
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * PAL_PREFETCH_VISIBILITY transaction types&n; */
+DECL|macro|PAL_VISIBILITY_VIRTUAL
+mdefine_line|#define PAL_VISIBILITY_VIRTUAL&t;&t;0
+DECL|macro|PAL_VISIBILITY_PHYSICAL
+mdefine_line|#define PAL_VISIBILITY_PHYSICAL&t;&t;1
+multiline_comment|/*&n; * PAL_PREFETCH_VISIBILITY return codes&n; */
+DECL|macro|PAL_VISIBILITY_OK
+mdefine_line|#define PAL_VISIBILITY_OK&t;&t;1
+DECL|macro|PAL_VISIBILITY_OK_REMOTE_NEEDED
+mdefine_line|#define PAL_VISIBILITY_OK_REMOTE_NEEDED&t;0
+DECL|macro|PAL_VISIBILITY_INVAL_ARG
+mdefine_line|#define PAL_VISIBILITY_INVAL_ARG&t;-2
+DECL|macro|PAL_VISIBILITY_ERROR
+mdefine_line|#define PAL_VISIBILITY_ERROR&t;&t;-3
 r_static
 r_inline
 id|s64
 DECL|function|ia64_pal_prefetch_visibility
 id|ia64_pal_prefetch_visibility
 (paren
-r_void
+id|s64
+id|trans_type
 )paren
 (brace
 r_struct
@@ -4833,7 +4848,7 @@ id|iprv
 comma
 id|PAL_PREFETCH_VISIBILITY
 comma
-l_int|0
+id|trans_type
 comma
 l_int|0
 comma
