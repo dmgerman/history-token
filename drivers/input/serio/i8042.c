@@ -186,21 +186,18 @@ comma
 l_string|&quot;Pretend that controller can only read data from keyboard&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef __i386__
 r_extern
 r_int
 r_int
 id|i8042_dmi_noloop
 suffix:semicolon
+macro_line|#endif
 DECL|variable|i8042_noloop
 r_static
 r_int
 r_int
 id|i8042_noloop
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|i8042_dmi_noloop
 suffix:semicolon
 id|__obsolete_setup
 c_func
