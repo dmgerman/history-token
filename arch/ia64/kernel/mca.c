@@ -1664,6 +1664,8 @@ id|show_stack
 c_func
 (paren
 id|t
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

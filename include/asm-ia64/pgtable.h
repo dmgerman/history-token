@@ -326,7 +326,7 @@ DECL|macro|pte_mkclean
 mdefine_line|#define pte_mkclean(pte)&t;(__pte(pte_val(pte) &amp; ~_PAGE_D))
 DECL|macro|pte_mkdirty
 mdefine_line|#define pte_mkdirty(pte)&t;(__pte(pte_val(pte) | _PAGE_D))
-multiline_comment|/*&n; * Macro to make mark a page protection value as &quot;uncacheable&quot;.  Note&n; * that &quot;protection&quot; is really a misnomer here as the protection value&n; * contains the memory attribute bits, dirty bits, and various other&n; * bits as well.&n; */
+multiline_comment|/*&n; * Macro to a page protection value as &quot;uncacheable&quot;.  Note that &quot;protection&quot; is really a&n; * misnomer here as the protection value contains the memory attribute bits, dirty bits,&n; * and various other bits as well.&n; */
 DECL|macro|pgprot_noncached
 mdefine_line|#define pgprot_noncached(prot)&t;&t;__pgprot((pgprot_val(prot) &amp; ~_PAGE_MA_MASK) | _PAGE_MA_UC)
 multiline_comment|/*&n; * Macro to make mark a page protection value as &quot;write-combining&quot;.&n; * Note that &quot;protection&quot; is really a misnomer here as the protection&n; * value contains the memory attribute bits, dirty bits, and various&n; * other bits as well.  Accesses through a write-combining translation&n; * works bypasses the caches, but does allow for consecutive writes to&n; * be combined into single (but larger) write transactions.&n; */
