@@ -561,6 +561,7 @@ op_star
 id|mnt
 )paren
 suffix:semicolon
+macro_line|#ifdef NTFS_RW
 r_extern
 r_void
 id|ntfs_truncate
@@ -588,5 +589,6 @@ op_star
 id|attr
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* _LINUX_NTFS_FS_INODE_H */
 eof

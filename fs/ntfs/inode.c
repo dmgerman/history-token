@@ -7023,6 +7023,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef NTFS_RW
 multiline_comment|/**&n; * ntfs_truncate - called when the i_size of an ntfs inode is changed&n; * @vi:&t;&t;inode for which the i_size was changed&n; *&n; * We don&squot;t support i_size changes yet.&n; *&n; * Called with -&gt;i_sem held.&n; */
 DECL|function|ntfs_truncate
 r_void
@@ -7298,4 +7299,5 @@ r_return
 id|err
 suffix:semicolon
 )brace
+macro_line|#endif
 eof

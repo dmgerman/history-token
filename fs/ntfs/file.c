@@ -104,6 +104,7 @@ id|inode_operations
 id|ntfs_file_inode_ops
 op_assign
 (brace
+macro_line|#ifdef NTFS_RW
 dot
 id|truncate
 op_assign
@@ -114,6 +115,7 @@ id|setattr
 op_assign
 id|ntfs_setattr
 comma
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|ntfs_empty_file_ops
