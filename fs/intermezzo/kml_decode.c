@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * KML Decoding&n; *&n; * Copryright (C) 1996 Arthur Ma &lt;arthur.ma@mountainviewdata.com&gt; &n; *&n; * Copyright (C) 2001 Mountainview Data, Inc.&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

@@ -1,7 +1,5 @@
 multiline_comment|/* -*- mode: c; c-basic-offset: 8; indent-tabs-mode: nil; -*-&n; * vim:expandtab:shiftwidth=8:tabstop=8:&n; *&n; *  Original version: Copyright (C) 1996 P. Braam and M. Callahan&n; *  Rewritten for Linux 2.1. Copyright (C) 1997 Carnegie Mellon University&n; *  d_fsdata and NFS compatiblity fixes Copyright (C) 2001 Tacit Networks, Inc.&n; *&n; *   This file is part of InterMezzo, http://www.inter-mezzo.org.&n; *&n; *   InterMezzo is free software; you can redistribute it and/or&n; *   modify it under the terms of version 2 of the GNU General Public&n; *   License as published by the Free Software Foundation.&n; *&n; *   InterMezzo is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with InterMezzo; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Directory operations for InterMezzo filesystem&n; */
 multiline_comment|/* inode dentry alias list walking code adapted from linux/fs/dcache.c&n; *&n; * fs/dcache.c&n; *&n; * (C) 1997 Thomas Schoebel-Theuer,&n; * with heavy changes by Linus Torvalds&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
