@@ -831,7 +831,7 @@ r_struct
 id|list_head
 id|online
 suffix:semicolon
-multiline_comment|/* circular list of all bundled&n;&t;&t;&t;&t;&t;  channels, which are currently&n;&t;&t;&t;&t;&t;  online                           &n;&t;&t;&t;&t;&t;  protected by xmit_lock           */
+multiline_comment|/* list of all bundled channels &n;&t;&t;&t;&t;&t;  which can be used for actual&n;&t;&t;&t;&t;&t;  data (IP) transfer              &n;&t;&t;&t;&t;&t;  protected by xmit_lock           */
 DECL|member|xmit_lock
 id|spinlock_t
 id|xmit_lock

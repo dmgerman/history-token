@@ -1,6 +1,7 @@
 multiline_comment|/* $Id: isdnloop.c,v 1.11.6.7 2001/11/11 19:54:31 kai Exp $&n; *&n; * ISDN low-level module implementing a dummy loop driver.&n; *&n; * Copyright 1997 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;isdnloop.h&quot;
 DECL|variable|revision
@@ -16,6 +17,8 @@ r_static
 r_char
 op_star
 id|isdnloop_id
+op_assign
+l_string|&quot;loop0&quot;
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func

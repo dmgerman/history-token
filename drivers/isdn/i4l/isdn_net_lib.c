@@ -577,6 +577,12 @@ op_logical_or
 id|encap
 op_ge
 id|ISDN_NET_ENCAP_NR
+op_logical_or
+op_logical_neg
+id|isdn_netif_ops
+(braket
+id|encap
+)braket
 )paren
 (brace
 id|lp-&gt;p_encap
@@ -4249,7 +4255,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|retval
 )paren
 r_return
@@ -4303,7 +4308,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Shutdown a net-interface.&n; */
-singleline_comment|// FIXME share?
 r_static
 r_int
 DECL|function|isdn_net_close
@@ -4365,7 +4369,7 @@ comma
 id|n
 comma
 op_amp
-id|lp-&gt;online
+id|lp-&gt;slaves
 )paren
 (brace
 id|sdev
@@ -4377,7 +4381,7 @@ id|l
 comma
 id|isdn_net_dev
 comma
-id|online
+id|slaves
 )paren
 suffix:semicolon
 id|isdn_net_hangup
@@ -4404,7 +4408,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|dev-&gt;refcnt
+id|lp-&gt;refcnt
 )paren
 op_ne
 l_int|1
@@ -7614,8 +7618,6 @@ op_logical_neg
 id|idev
 )paren
 (brace
-id|HERE
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -8244,9 +8246,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * For the given net device, this will get a non-busy channel out of the&n; * corresponding bundle.&n; */
-r_static
-r_inline
+multiline_comment|/*&n; * For the given net device, this will get a non-busy channel out of the&n; * corresponding bundle.&n; * must hold mlp-&gt;xmit_lock&n; */
 id|isdn_net_dev
 op_star
 DECL|function|isdn_net_get_xmit_dev
@@ -8333,10 +8333,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|isdn_net_local_busy
+id|isdn_net_dev_busy
 c_func
 (paren
-id|mlp
+id|idev
 )paren
 )paren
 id|isdn_BUG
@@ -8400,10 +8400,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|isdn_net_local_busy
+id|isdn_net_dev_busy
 c_func
 (paren
-id|mlp
+id|idev
 )paren
 )paren
 id|isdn_BUG
