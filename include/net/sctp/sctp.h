@@ -1,8 +1,8 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * The base lksctp header. &n; * &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; * &n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * The base lksctp header.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#ifndef __net_sctp_h__
 DECL|macro|__net_sctp_h__
 mdefine_line|#define __net_sctp_h__
-multiline_comment|/* Header Strategy.&n; *    Start getting some control over the header file depencies:&n; *       includes&n; *       constants&n; *       structs&n; *       prototypes&n; *       macros, externs, and inlines&n; * &n; *   Move test_frame specific items out of the kernel headers &n; *   and into the test frame headers.   This is not perfect in any sense&n; *   and will continue to evolve.  &n; */
+multiline_comment|/* Header Strategy.&n; *    Start getting some control over the header file depencies:&n; *       includes&n; *       constants&n; *       structs&n; *       prototypes&n; *       macros, externs, and inlines&n; *&n; *   Move test_frame specific items out of the kernel headers&n; *   and into the test frame headers.   This is not perfect in any sense&n; *   and will continue to evolve.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef TEST_FRAME
 DECL|macro|CONFIG_PROC_FS
@@ -22,7 +22,7 @@ macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/ip6_route.h&gt;
-macro_line|#endif 
+macro_line|#endif
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
@@ -47,13 +47,13 @@ macro_line|#else /* static! */
 DECL|macro|SCTP_PROTOSW_FLAG
 mdefine_line|#define SCTP_PROTOSW_FLAG INET_PROTOSW_PERMANENT
 macro_line|#endif
-multiline_comment|/* Certain internal static functions need to be exported when &n; * compiled into the test frame.&n; */
+multiline_comment|/* Certain internal static functions need to be exported when&n; * compiled into the test frame.&n; */
 macro_line|#ifndef SCTP_STATIC
 DECL|macro|SCTP_STATIC
 mdefine_line|#define SCTP_STATIC static
 macro_line|#endif
-multiline_comment|/* &n; * Function declarations. &n; */
-multiline_comment|/*&n; * sctp_protocol.c &n; */
+multiline_comment|/*&n; * Function declarations.&n; */
+multiline_comment|/*&n; * sctp_protocol.c&n; */
 r_extern
 id|sctp_protocol_t
 id|sctp_proto
@@ -216,6 +216,19 @@ suffix:semicolon
 r_extern
 r_int
 id|sctp_primitive_SEND
+c_func
+(paren
+id|sctp_association_t
+op_star
+comma
+r_void
+op_star
+id|arg
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sctp_primitive_REQUESTHEARTBEAT
 c_func
 (paren
 id|sctp_association_t
@@ -1016,6 +1029,11 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/* Walk through a list of TLV parameters.  Don&squot;t trust the&n; * individual parameter lengths and instead depend on&n; * the chunk length to indicate when to stop.  Make sure&n; * there is room for a param header too.&n; */
+DECL|macro|sctp_walk_params
+mdefine_line|#define sctp_walk_params(pos, chunk, member)&bslash;&n;_sctp_walk_params((pos), (chunk), ntohs((chunk)-&gt;chunk_hdr.length), member)
+DECL|macro|_sctp_walk_params
+mdefine_line|#define _sctp_walk_params(pos, chunk, end, member)&bslash;&n;for (pos.v = chunk-&gt;member;&bslash;&n;     pos.v &lt;= (void *)chunk + end - sizeof(sctp_paramhdr_t) &amp;&amp;&bslash;&n;     pos.v &lt;= (void *)chunk + end - WORD_ROUND(ntohs(pos.p-&gt;length)); &bslash;&n;     pos.v += WORD_ROUND(ntohs(pos.p-&gt;length)))
 multiline_comment|/* Round an int up to the next multiple of 4.  */
 DECL|macro|WORD_ROUND
 mdefine_line|#define WORD_ROUND(s) (((s)+3)&amp;~3)
@@ -1123,6 +1141,59 @@ r_void
 r_return
 op_amp
 id|sctp_proto
+suffix:semicolon
+)brace
+multiline_comment|/* Convert from an IP version number to an Address Family symbol.  */
+DECL|function|ipver2af
+r_static
+r_inline
+r_int
+id|ipver2af
+c_func
+(paren
+id|__u8
+id|ipver
+)paren
+(brace
+r_int
+id|family
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ipver
+)paren
+(brace
+r_case
+l_int|4
+suffix:colon
+id|family
+op_assign
+id|AF_INET
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|6
+suffix:colon
+id|family
+op_assign
+id|AF_INET6
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|family
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+suffix:semicolon
+r_return
+id|family
 suffix:semicolon
 )brace
 multiline_comment|/* Warning: The following hash functions assume a power of two &squot;size&squot;. */
