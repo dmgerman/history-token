@@ -2845,6 +2845,10 @@ c_cond
 id|specials_only
 op_eq
 id|SDEV_QUIESCE
+op_logical_or
+id|specials_only
+op_eq
+id|SDEV_BLOCK
 )paren
 (brace
 r_return
