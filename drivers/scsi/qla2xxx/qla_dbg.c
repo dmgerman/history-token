@@ -122,7 +122,8 @@ comma
 id|ha-&gt;fw_dump
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|qla2300_fw_dump_failed
 suffix:semicolon
 )brace
 multiline_comment|/* Allocate (large) dump buffer. */
@@ -179,7 +180,8 @@ id|qla2300_fw_dump
 )paren
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|qla2300_fw_dump_failed
 suffix:semicolon
 )brace
 id|fw
@@ -2256,7 +2258,7 @@ id|KERN_WARNING
 comma
 id|ha
 comma
-l_string|&quot;Failed to dump firmware (%d)!!!&bslash;n&quot;
+l_string|&quot;Failed to dump firmware (%x)!!!&bslash;n&quot;
 comma
 id|rval
 )paren
@@ -2295,6 +2297,8 @@ id|ha-&gt;fw_dump
 )paren
 suffix:semicolon
 )brace
+id|qla2300_fw_dump_failed
+suffix:colon
 r_if
 c_cond
 (paren
@@ -3711,7 +3715,7 @@ id|cnt
 comma
 id|timer
 suffix:semicolon
-r_uint32
+r_uint16
 id|risc_address
 suffix:semicolon
 r_uint16
@@ -3790,7 +3794,8 @@ comma
 id|ha-&gt;fw_dump
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|qla2100_fw_dump_failed
 suffix:semicolon
 )brace
 multiline_comment|/* Allocate (large) dump buffer. */
@@ -3847,7 +3852,8 @@ id|qla2100_fw_dump
 )paren
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|qla2100_fw_dump_failed
 suffix:semicolon
 )brace
 id|fw
@@ -4761,53 +4767,14 @@ id|dmp_reg
 op_increment
 )paren
 suffix:semicolon
-multiline_comment|/* Disable ISP interrupts. */
+multiline_comment|/* Reset the ISP. */
 id|WRT_REG_WORD
 c_func
 (paren
 op_amp
-id|reg-&gt;ictrl
+id|reg-&gt;ctrl_status
 comma
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* Reset RISC module. */
-id|WRT_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;hccr
-comma
-id|HCCR_RESET_RISC
-)paren
-suffix:semicolon
-multiline_comment|/* Release RISC module. */
-id|WRT_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;hccr
-comma
-id|HCCR_RELEASE_RISC
-)paren
-suffix:semicolon
-multiline_comment|/* Insure mailbox registers are free. */
-id|WRT_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;hccr
-comma
-id|HCCR_CLR_RISC_INT
-)paren
-suffix:semicolon
-id|WRT_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;hccr
-comma
-id|HCCR_CLR_HOST_INT
+id|CSR_ISP_SOFT_RESET
 )paren
 suffix:semicolon
 )brace
@@ -5071,9 +5038,6 @@ id|reg
 comma
 l_int|1
 comma
-(paren
-r_uint16
-)paren
 id|risc_address
 )paren
 suffix:semicolon
@@ -5249,7 +5213,7 @@ id|KERN_WARNING
 comma
 id|ha
 comma
-l_string|&quot;Failed to dump firmware (%d)!!!&bslash;n&quot;
+l_string|&quot;Failed to dump firmware (%x)!!!&bslash;n&quot;
 comma
 id|rval
 )paren
@@ -5288,6 +5252,8 @@ id|ha-&gt;fw_dump
 )paren
 suffix:semicolon
 )brace
+id|qla2100_fw_dump_failed
+suffix:colon
 r_if
 c_cond
 (paren
