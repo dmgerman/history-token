@@ -4,6 +4,7 @@ DECL|macro|_LINUX_DS_H
 mdefine_line|#define _LINUX_DS_H
 macro_line|#include &lt;pcmcia/driver_ops.h&gt;
 macro_line|#include &lt;pcmcia/bulkmem.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 DECL|struct|tuple_parse_t
 r_typedef
 r_struct
@@ -352,6 +353,11 @@ DECL|macro|register_pcmcia_driver
 mdefine_line|#define register_pcmcia_driver register_pccard_driver
 DECL|macro|unregister_pcmcia_driver
 mdefine_line|#define unregister_pcmcia_driver unregister_pccard_driver
+r_extern
+r_struct
+id|bus_type
+id|pcmcia_bus_type
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_DS_H */
 eof
