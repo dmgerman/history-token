@@ -90,12 +90,6 @@ DECL|macro|MDL_REMOVE
 mdefine_line|#define MDL_REMOVE&t;0x0284
 DECL|macro|MDL_ERROR
 mdefine_line|#define MDL_ERROR&t;0x0288
-DECL|macro|MDL_INFO_SETUP
-mdefine_line|#define MDL_INFO_SETUP&t;0x02E0
-DECL|macro|MDL_INFO_CONN
-mdefine_line|#define MDL_INFO_CONN&t;0x02E4
-DECL|macro|MDL_INFO_REL
-mdefine_line|#define MDL_INFO_REL&t;0x02E8
 DECL|macro|CC_SETUP
 mdefine_line|#define CC_SETUP&t;0x0300
 DECL|macro|CC_RESUME
@@ -2209,11 +2203,6 @@ r_int
 r_int
 id|hscx
 suffix:semicolon
-DECL|member|status
-r_int
-r_int
-id|status
-suffix:semicolon
 DECL|member|tl
 r_struct
 id|timer_list
@@ -3385,6 +3374,18 @@ r_void
 op_star
 )paren
 suffix:semicolon
+DECL|member|led_handler
+r_void
+(paren
+op_star
+id|led_handler
+)paren
+(paren
+r_struct
+id|IsdnCardState
+op_star
+)paren
+suffix:semicolon
 DECL|member|irq_func
 r_void
 (paren
@@ -3734,6 +3735,10 @@ DECL|member|irq_flags
 r_int
 r_int
 id|irq_flags
+suffix:semicolon
+DECL|member|status
+r_int
+id|status
 suffix:semicolon
 DECL|member|HW_Flags
 r_int
