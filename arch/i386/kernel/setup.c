@@ -1734,6 +1734,34 @@ id|edd
 id|EDDMAXNR
 )braket
 suffix:semicolon
+DECL|variable|edd_disk80_sig
+r_int
+r_int
+id|edd_disk80_sig
+suffix:semicolon
+macro_line|#ifdef CONFIG_EDD_MODULE
+DECL|variable|eddnr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|eddnr
+)paren
+suffix:semicolon
+DECL|variable|edd
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|edd
+)paren
+suffix:semicolon
+DECL|variable|edd_disk80_sig
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|edd_disk80_sig
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/**&n; * copy_edd() - Copy the BIOS EDD information&n; *              from empty_zero_page into a safe place.&n; *&n; */
 DECL|function|copy_edd
 r_static
@@ -1761,6 +1789,10 @@ r_sizeof
 id|edd
 )paren
 )paren
+suffix:semicolon
+id|edd_disk80_sig
+op_assign
+id|DISK80_SIGNATURE
 suffix:semicolon
 )brace
 macro_line|#else
