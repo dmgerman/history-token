@@ -2513,7 +2513,7 @@ id|openpic_ipi_action
 comma
 id|SA_INTERRUPT
 comma
-l_string|&quot;IPI2 (invalidate tlb)&quot;
+l_string|&quot;IPI2 (unused)&quot;
 comma
 l_int|0
 )paren
@@ -2529,7 +2529,7 @@ id|openpic_ipi_action
 comma
 id|SA_INTERRUPT
 comma
-l_string|&quot;IPI3 (xmon break)&quot;
+l_string|&quot;IPI3 (debugger break)&quot;
 comma
 l_int|0
 )paren
