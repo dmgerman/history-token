@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -1994,6 +1993,14 @@ r_void
 op_star
 id|calibrate_delay
 )paren
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|sort_exception_table
+c_func
 (paren
 r_void
 )paren

@@ -3,7 +3,6 @@ macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
@@ -356,7 +355,6 @@ suffix:semicolon
 macro_line|#if 0
 mdefine_line|#define DEBUG_RTAS
 macro_line|#endif
-id|__openfirmware
 r_int
 DECL|function|rtas_token
 id|rtas_token
@@ -418,7 +416,6 @@ suffix:colon
 id|RTAS_UNKNOWN_SERVICE
 suffix:semicolon
 )brace
-id|__openfirmware
 r_int
 DECL|function|rtas_call
 id|rtas_call
@@ -1209,7 +1206,6 @@ l_string|&quot;FLASH: the firmware image will NOT be flashed&bslash;n&quot;
 suffix:semicolon
 )brace
 r_void
-id|__chrp
 DECL|function|rtas_restart
 id|rtas_restart
 c_func
@@ -1260,7 +1256,6 @@ suffix:semicolon
 suffix:semicolon
 )brace
 r_void
-id|__chrp
 DECL|function|rtas_power_off
 id|rtas_power_off
 c_func
@@ -1314,7 +1309,6 @@ suffix:semicolon
 suffix:semicolon
 )brace
 r_void
-id|__chrp
 DECL|function|rtas_halt
 id|rtas_halt
 c_func

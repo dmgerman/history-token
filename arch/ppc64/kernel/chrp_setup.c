@@ -38,7 +38,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/keyboard.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &quot;local_irq.h&quot;
@@ -1032,7 +1031,6 @@ l_int|0x0
 suffix:semicolon
 )brace
 r_void
-id|__chrp
 DECL|function|chrp_progress
 id|chrp_progress
 c_func

@@ -3,7 +3,6 @@ DECL|macro|__PPC64_SYSTEM_H
 mdefine_line|#define __PPC64_SYSTEM_H
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
@@ -242,22 +241,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|hard_reset_now
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|poweroff_now
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|_get_PVR
 c_func
@@ -281,26 +264,6 @@ id|enable_kernel_fp
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|giveup_altivec
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|load_up_altivec
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
 )paren
 suffix:semicolon
 r_extern
@@ -348,9 +311,6 @@ c_func
 (paren
 r_int
 )paren
-suffix:semicolon
-r_struct
-id|device_node
 suffix:semicolon
 r_struct
 id|task_struct
