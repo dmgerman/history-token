@@ -17,12 +17,6 @@ id|EFS_VERSION
 l_string|&quot; - (c) 1999 Al Smith &lt;Al.Smith@aeschi.ch.eu.org&gt;&quot;
 suffix:semicolon
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#ifndef LINUX_VERSION_CODE
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20200
-macro_line|#error This code is only for linux-2.2 and later.
-macro_line|#endif
 multiline_comment|/* 1 block is 512 bytes */
 DECL|macro|EFS_BLOCKSIZE_BITS
 mdefine_line|#define&t;EFS_BLOCKSIZE_BITS&t;9
@@ -32,14 +26,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/efs_fs_i.h&gt;
 macro_line|#include &lt;linux/efs_fs_sb.h&gt;
 macro_line|#include &lt;linux/efs_dir.h&gt;
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a, b) (((a) &lt; (b)) ? (a) : (b))
-macro_line|#endif
-macro_line|#ifndef MAX
-DECL|macro|MAX
-mdefine_line|#define MAX(a, b) (((a) &gt; (b)) ? (a) : (b))
-macro_line|#endif
 DECL|function|INODE_INFO
 r_static
 r_inline
