@@ -215,12 +215,12 @@ singleline_comment|// and starts lower in memory, at the uppermost 1K in ROM.
 DECL|macro|EDGE_MANUF_DESC_ADDR
 mdefine_line|#define&t;EDGE_MANUF_DESC_ADDR&t;&t;0x00FF7C00
 DECL|macro|EDGE_MANUF_DESC_LEN
-mdefine_line|#define&t;EDGE_MANUF_DESC_LEN&t;&t;sizeof(EDGE_MANUF_DESCRIPTOR)
+mdefine_line|#define&t;EDGE_MANUF_DESC_LEN&t;&t;sizeof(struct edge_manuf_descriptor)
 singleline_comment|// Boot params descriptor
 DECL|macro|EDGE_BOOT_DESC_ADDR
 mdefine_line|#define&t;EDGE_BOOT_DESC_ADDR&t;&t;0x00FF7FC0
 DECL|macro|EDGE_BOOT_DESC_LEN
-mdefine_line|#define&t;EDGE_BOOT_DESC_LEN&t;&t;sizeof(EDGE_BOOT_DESCRIPTOR)
+mdefine_line|#define&t;EDGE_BOOT_DESC_LEN&t;&t;sizeof(struct edge_boot_descriptor)
 singleline_comment|// Define the max block size that may be read or written
 singleline_comment|// in a read/write RAM/ROM command.
 DECL|macro|MAX_SIZE_REQ_ION_READ_MEM
@@ -259,10 +259,9 @@ DECL|macro|MAX_SERIALNUMBER_LEN
 mdefine_line|#define MAX_SERIALNUMBER_LEN&t;12
 DECL|macro|MAX_ASSEMBLYNUMBER_LEN
 mdefine_line|#define MAX_ASSEMBLYNUMBER_LEN&t;14
-DECL|struct|_EDGE_MANUF_DESCRIPTOR
-r_typedef
+DECL|struct|edge_manuf_descriptor
 r_struct
-id|_EDGE_MANUF_DESCRIPTOR
+id|edge_manuf_descriptor
 (brace
 DECL|member|RootDescTable
 id|__u16
@@ -433,13 +432,7 @@ id|IonConfig
 suffix:semicolon
 singleline_comment|// FBF Config byte for ION manufacturing use
 singleline_comment|// FBF end of structure, total len = 3C0h
-DECL|typedef|EDGE_MANUF_DESCRIPTOR
-DECL|typedef|PEDGE_MANUF_DESCRIPTOR
 )brace
-id|EDGE_MANUF_DESCRIPTOR
-comma
-op_star
-id|PEDGE_MANUF_DESCRIPTOR
 suffix:semicolon
 DECL|macro|MANUF_DESC_VER_1
 mdefine_line|#define MANUF_DESC_VER_1&t;1&t;
@@ -498,13 +491,13 @@ DECL|macro|MANUF_BOARD_REV_A
 mdefine_line|#define MANUF_BOARD_REV_A&t;&t;1&t;
 singleline_comment|// First rev of 251+Netchip design
 DECL|macro|MANUF_SERNUM_LENGTH
-mdefine_line|#define&t;MANUF_SERNUM_LENGTH&t;&t;sizeof(((PEDGE_MANUF_DESCRIPTOR)0)-&gt;SerialNumber)
+mdefine_line|#define&t;MANUF_SERNUM_LENGTH&t;&t;sizeof(((struct edge_manuf_descriptor *)0)-&gt;SerialNumber)
 DECL|macro|MANUF_ASSYNUM_LENGTH
-mdefine_line|#define&t;MANUF_ASSYNUM_LENGTH&t;&t;sizeof(((PEDGE_MANUF_DESCRIPTOR)0)-&gt;AssemblyNumber)
+mdefine_line|#define&t;MANUF_ASSYNUM_LENGTH&t;&t;sizeof(((struct edge_manuf_descriptor *)0)-&gt;AssemblyNumber)
 DECL|macro|MANUF_OEMASSYNUM_LENGTH
-mdefine_line|#define&t;MANUF_OEMASSYNUM_LENGTH&t;&t;sizeof(((PEDGE_MANUF_DESCRIPTOR)0)-&gt;OemAssyNumber)
+mdefine_line|#define&t;MANUF_OEMASSYNUM_LENGTH&t;&t;sizeof(((struct edge_manuf_descriptor *)0)-&gt;OemAssyNumber)
 DECL|macro|MANUF_MANUFDATE_LENGTH
-mdefine_line|#define&t;MANUF_MANUFDATE_LENGTH&t;&t;sizeof(((PEDGE_MANUF_DESCRIPTOR)0)-&gt;ManufDate)
+mdefine_line|#define&t;MANUF_MANUFDATE_LENGTH&t;&t;sizeof(((struct edge_manuf_descriptor *)0)-&gt;ManufDate)
 DECL|macro|MANUF_ION_CONFIG_MASTER
 mdefine_line|#define&t;MANUF_ION_CONFIG_MASTER&t;&t;0x80&t;
 singleline_comment|// 1=Master mode, 0=Normal
@@ -522,10 +515,9 @@ singleline_comment|// is exactly 64 bytes long and is fixed at address FF:xFC0
 singleline_comment|// - FF:xFFF. Note that the 930-mandated UCONFIG bytes are
 singleline_comment|// included in this structure.
 singleline_comment|//
-DECL|struct|_EDGE_BOOT_DESCRIPTOR
-r_typedef
+DECL|struct|edge_boot_descriptor
 r_struct
-id|_EDGE_BOOT_DESCRIPTOR
+id|edge_boot_descriptor
 (brace
 DECL|member|Length
 id|__u8
@@ -615,13 +607,7 @@ l_int|6
 suffix:semicolon
 singleline_comment|// FA -- unused, set to 0 --
 singleline_comment|// FF end of structure, total len = 80
-DECL|typedef|EDGE_BOOT_DESCRIPTOR
-DECL|typedef|PEDGE_BOOT_DESCRIPTOR
 )brace
-id|EDGE_BOOT_DESCRIPTOR
-comma
-op_star
-id|PEDGE_BOOT_DESCRIPTOR
 suffix:semicolon
 DECL|macro|BOOT_DESC_VER_1
 mdefine_line|#define BOOT_DESC_VER_1&t;&t;1&t;

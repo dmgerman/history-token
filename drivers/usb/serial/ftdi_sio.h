@@ -53,8 +53,9 @@ mdefine_line|#define FTDI_SIO_SET_BAUDRATE_REQUEST_TYPE 0x40
 DECL|macro|FTDI_SIO_SET_BAUDRATE_REQUEST
 mdefine_line|#define FTDI_SIO_SET_BAUDRATE_REQUEST 3
 multiline_comment|/*&n; * BmRequestType:  0100 0000B&n; * bRequest:       FTDI_SIO_SET_BAUDRATE&n; * wValue:         BaudRate value - see below&n; * wIndex:         Port&n; * wLength:        0&n; * Data:           None&n; */
-r_typedef
+DECL|enum|ftdi_type
 r_enum
+id|ftdi_type
 (brace
 DECL|enumerator|sio
 id|sio
@@ -66,11 +67,8 @@ id|F8U232AM
 op_assign
 l_int|2
 comma
-DECL|typedef|ftdi_type_t
 )brace
-id|ftdi_type_t
 suffix:semicolon
-r_typedef
 r_enum
 (brace
 DECL|enumerator|ftdi_sio_b300
@@ -122,11 +120,8 @@ DECL|enumerator|ftdi_sio_b115200
 id|ftdi_sio_b115200
 op_assign
 l_int|9
-DECL|typedef|FTDI_SIO_baudrate_t
 )brace
-id|FTDI_SIO_baudrate_t
 suffix:semicolon
-r_typedef
 r_enum
 (brace
 DECL|enumerator|ftdi_8U232AM_12MHz_b300
@@ -184,12 +179,9 @@ id|ftdi_8U232AM_12MHz_b230400
 op_assign
 l_int|0x8003
 comma
-DECL|typedef|FTDI_8U232AM_12MHz_baudrate_t
 )brace
-id|FTDI_8U232AM_12MHz_baudrate_t
 suffix:semicolon
 multiline_comment|/* Apparently all devices are 48MHz */
-r_typedef
 r_enum
 (brace
 DECL|enumerator|ftdi_8U232AM_48MHz_b300
@@ -257,9 +249,7 @@ id|ftdi_8U232AM_48MHz_b921600
 op_assign
 l_int|0x8003
 comma
-DECL|typedef|FTDI_8U232AM_48MHz_baudrate_t
 )brace
-id|FTDI_8U232AM_48MHz_baudrate_t
 suffix:semicolon
 DECL|macro|FTDI_SIO_SET_DATA_REQUEST
 mdefine_line|#define FTDI_SIO_SET_DATA_REQUEST FTDI_SIO_SET_DATA

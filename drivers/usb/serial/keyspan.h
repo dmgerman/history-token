@@ -536,8 +536,9 @@ DECL|macro|keyspan_usa28xb_product_id
 mdefine_line|#define&t;keyspan_usa28xb_product_id&t;&t;0x0110
 DECL|macro|keyspan_usa49w_product_id
 mdefine_line|#define&t;keyspan_usa49w_product_id&t;&t;0x010a
-r_typedef
+DECL|struct|keyspan_device_details
 r_struct
+id|keyspan_device_details
 (brace
 multiline_comment|/* product ID value */
 DECL|member|product_id
@@ -645,14 +646,13 @@ DECL|member|baudclk
 id|u32
 id|baudclk
 suffix:semicolon
-DECL|typedef|keyspan_device_details
 )brace
-id|keyspan_device_details
 suffix:semicolon
 multiline_comment|/* Now for each device type we setup the device detail&n;&t;   structure with the appropriate information (provided&n;&t;   in Keyspan&squot;s documentation) */
 DECL|variable|usa18x_device_details
 r_static
 r_const
+r_struct
 id|keyspan_device_details
 id|usa18x_device_details
 op_assign
@@ -708,6 +708,7 @@ suffix:semicolon
 DECL|variable|usa19_device_details
 r_static
 r_const
+r_struct
 id|keyspan_device_details
 id|usa19_device_details
 op_assign
@@ -764,6 +765,7 @@ suffix:semicolon
 DECL|variable|usa19w_device_details
 r_static
 r_const
+r_struct
 id|keyspan_device_details
 id|usa19w_device_details
 op_assign
@@ -819,6 +821,7 @@ suffix:semicolon
 DECL|variable|usa28x_device_details
 r_static
 r_const
+r_struct
 id|keyspan_device_details
 id|usa28x_device_details
 op_assign
@@ -881,6 +884,7 @@ suffix:semicolon
 DECL|variable|usa28xa_device_details
 r_static
 r_const
+r_struct
 id|keyspan_device_details
 id|usa28xa_device_details
 op_assign
@@ -944,6 +948,7 @@ multiline_comment|/* We don&squot;t need a separate entry for the usa28xb as it 
 DECL|variable|usa49w_device_details
 r_static
 r_const
+r_struct
 id|keyspan_device_details
 id|usa49w_device_details
 op_assign
@@ -1030,6 +1035,7 @@ suffix:semicolon
 DECL|variable|keyspan_devices
 r_static
 r_const
+r_struct
 id|keyspan_device_details
 op_star
 id|keyspan_devices

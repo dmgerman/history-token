@@ -4,7 +4,6 @@ DECL|macro|__USA49MSG__
 mdefine_line|#define&t;__USA49MSG__
 multiline_comment|/*&n;&t;Host-&gt;device messages sent on the global control endpoint:&n;&n;&t;portNumber&t;message&n;&t;----------&t;--------------------&n;&t;0,1,2,3&t;&t;portControlMessage&n;&t;0x80&t;&t;globalControlMessage&n;*/
 DECL|struct|keyspan_usa49_portControlMessage
-r_typedef
 r_struct
 id|keyspan_usa49_portControlMessage
 (brace
@@ -151,9 +150,7 @@ DECL|member|disablePort
 id|disablePort
 suffix:semicolon
 singleline_comment|// stop servicing port (does implicit tx/rx flush/off)
-DECL|typedef|keyspan_usa49_portControlMessage
 )brace
-id|keyspan_usa49_portControlMessage
 suffix:semicolon
 singleline_comment|// defines for bits in lcr
 DECL|macro|USA_DATABITS_5
@@ -185,7 +182,6 @@ DECL|macro|PARITY_0
 mdefine_line|#define&t;PARITY_0&t;&t;&t;0x38
 multiline_comment|/*&n;&t;during normal operation, status messages are returned &n;&t;to the host whenever the board detects changes.  In some&n;&t;circumstances (e.g. Windows), status messages from the&n;&t;device cause problems; to shut them off, the host issues&n;&t;a control message with the disableStatusMessages flags&n;&t;set (to any non-zero value).  The device will respond to&n;&t;this message, and then suppress further status messages;&n;&t;it will resume sending status messages any time the host&n;&t;sends any control message (either global or port-specific).&n;*/
 DECL|struct|keyspan_usa49_globalControlMessage
-r_typedef
 r_struct
 id|keyspan_usa49_globalControlMessage
 (brace
@@ -214,13 +210,10 @@ DECL|member|disableStatusMessages
 id|disableStatusMessages
 suffix:semicolon
 singleline_comment|// 1=send no status until host talks
-DECL|typedef|keyspan_usa49_globalControlMessage
 )brace
-id|keyspan_usa49_globalControlMessage
 suffix:semicolon
 multiline_comment|/*&n;&t;Device-&gt;host messages send on the global status endpoint&n;&n;&t;portNumber&t;&t;&t;message&n;&t;----------&t;&t;&t;--------------------&n;&t;0x00,0x01,0x02,0x03&t;portStatusMessage&n;&t;0x80&t;&t;&t;&t;globalStatusMessage&n;&t;0x81&t;&t;&t;&t;globalDebugMessage&n;*/
 DECL|struct|keyspan_usa49_portStatusMessage
-r_typedef
 r_struct
 id|keyspan_usa49_portStatusMessage
 singleline_comment|// one for each port
@@ -270,9 +263,7 @@ DECL|member|rs232valid
 id|rs232valid
 suffix:semicolon
 singleline_comment|// RS-232 signal valid
-DECL|typedef|keyspan_usa49_portStatusMessage
 )brace
-id|keyspan_usa49_portStatusMessage
 suffix:semicolon
 singleline_comment|// bits in RX data message when STAT byte is included
 DECL|macro|RXERROR_OVERRUN
@@ -284,7 +275,6 @@ mdefine_line|#define&t;RXERROR_FRAMING&t;0x08
 DECL|macro|RXERROR_BREAK
 mdefine_line|#define&t;RXERROR_BREAK&t;0x10
 DECL|struct|keyspan_usa49_globalStatusMessage
-r_typedef
 r_struct
 id|keyspan_usa49_globalStatusMessage
 (brace
@@ -301,12 +291,9 @@ DECL|member|resetStatusCount
 id|resetStatusCount
 suffix:semicolon
 singleline_comment|// as in request
-DECL|typedef|keyspan_usa49_globalStatusMessage
 )brace
-id|keyspan_usa49_globalStatusMessage
 suffix:semicolon
 DECL|struct|keyspan_usa49_globalDebugMessage
-r_typedef
 r_struct
 id|keyspan_usa49_globalDebugMessage
 (brace
@@ -323,9 +310,7 @@ DECL|member|b
 id|b
 suffix:semicolon
 singleline_comment|// typically a data byte
-DECL|typedef|keyspan_usa49_globalDebugMessage
 )brace
-id|keyspan_usa49_globalDebugMessage
 suffix:semicolon
 singleline_comment|// ie: the maximum length of an EZUSB endpoint buffer
 DECL|macro|MAX_DATA_LEN

@@ -291,12 +291,14 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* string name of this device */
 DECL|member|manuf_descriptor
-id|EDGE_MANUF_DESCRIPTOR
+r_struct
+id|edge_manuf_descriptor
 id|manuf_descriptor
 suffix:semicolon
 multiline_comment|/* the manufacturer descriptor */
 DECL|member|boot_descriptor
-id|EDGE_BOOT_DESCRIPTOR
+r_struct
+id|edge_boot_descriptor
 id|boot_descriptor
 suffix:semicolon
 multiline_comment|/* the boot firmware descriptor */
@@ -405,10 +407,9 @@ multiline_comment|/* loop back to the owner of this object */
 )brace
 suffix:semicolon
 multiline_comment|/* baud rate information */
-DECL|struct|_DIVISOR_TABLE_ENTRY
-r_typedef
+DECL|struct|divisor_table_entry
 r_struct
-id|_DIVISOR_TABLE_ENTRY
+id|divisor_table_entry
 (brace
 DECL|member|BaudRate
 id|__u32
@@ -418,23 +419,18 @@ DECL|member|Divisor
 id|__u16
 id|Divisor
 suffix:semicolon
-DECL|typedef|DIVISOR_TABLE_ENTRY
-DECL|typedef|PDIVISOR_TABLE_ENTRY
 )brace
-id|DIVISOR_TABLE_ENTRY
-comma
-op_star
-id|PDIVISOR_TABLE_ENTRY
 suffix:semicolon
 singleline_comment|//
 singleline_comment|// Define table of divisors for Rev A EdgePort/4 hardware
 singleline_comment|// These assume a 3.6864MHz crystal, the standard /16, and
 singleline_comment|// MCR.7 = 0.
 singleline_comment|//
-DECL|variable|DivisorTable
+DECL|variable|divisor_table
 r_static
-id|DIVISOR_TABLE_ENTRY
-id|DivisorTable
+r_struct
+id|divisor_table_entry
+id|divisor_table
 (braket
 )braket
 op_assign
@@ -1092,7 +1088,9 @@ suffix:semicolon
 id|__u32
 id|BootSize
 suffix:semicolon
-id|PEDGE_FIRMWARE_IMAGE_RECORD
+r_struct
+id|edge_firmware_image_record
+op_star
 id|record
 suffix:semicolon
 r_int
@@ -1269,7 +1267,9 @@ suffix:semicolon
 id|record
 op_assign
 (paren
-id|PEDGE_FIRMWARE_IMAGE_RECORD
+r_struct
+id|edge_firmware_image_record
+op_star
 )paren
 id|firmware
 suffix:semicolon
@@ -1319,7 +1319,8 @@ id|firmware
 op_add_assign
 r_sizeof
 (paren
-id|EDGE_FIRMWARE_IMAGE_RECORD
+r_struct
+id|edge_firmware_image_record
 )paren
 op_plus
 id|record-&gt;Len
@@ -8852,7 +8853,7 @@ OL
 id|NUM_ENTRIES
 c_func
 (paren
-id|DivisorTable
+id|divisor_table
 )paren
 suffix:semicolon
 id|i
@@ -8862,7 +8863,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|DivisorTable
+id|divisor_table
 (braket
 id|i
 )braket
@@ -8875,7 +8876,7 @@ id|baudrate
 op_star
 id|divisor
 op_assign
-id|DivisorTable
+id|divisor_table
 (braket
 id|i
 )braket
@@ -10174,7 +10175,9 @@ op_star
 id|edge_serial
 )paren
 (brace
-id|PEDGE_FIRMWARE_IMAGE_RECORD
+r_struct
+id|edge_firmware_image_record
+op_star
 id|record
 suffix:semicolon
 r_int
@@ -10304,7 +10307,9 @@ suffix:semicolon
 id|record
 op_assign
 (paren
-id|PEDGE_FIRMWARE_IMAGE_RECORD
+r_struct
+id|edge_firmware_image_record
+op_star
 )paren
 id|firmware
 suffix:semicolon
@@ -10354,7 +10359,8 @@ id|firmware
 op_add_assign
 r_sizeof
 (paren
-id|EDGE_FIRMWARE_IMAGE_RECORD
+r_struct
+id|edge_firmware_image_record
 )paren
 op_plus
 id|record-&gt;Len

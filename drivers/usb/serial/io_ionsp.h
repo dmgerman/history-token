@@ -4,10 +4,9 @@ singleline_comment|//
 singleline_comment|// Define format of InterruptStatus packet returned from the
 singleline_comment|// Interrupt pipe
 singleline_comment|//
-DECL|struct|_INT_STATUS_PKT
-r_typedef
+DECL|struct|int_status_pkt
 r_struct
-id|_INT_STATUS_PKT
+id|int_status_pkt
 (brace
 DECL|member|RxBytesAvail
 id|__u16
@@ -24,13 +23,7 @@ id|MAX_RS232_PORTS
 suffix:semicolon
 singleline_comment|// Additional space available in
 singleline_comment|// given port&squot;s TxBuffer
-DECL|typedef|INT_STATUS_PKT
-DECL|typedef|PINT_STATUS_PKT
 )brace
-id|INT_STATUS_PKT
-comma
-op_star
-id|PINT_STATUS_PKT
 suffix:semicolon
 DECL|macro|GET_INT_STATUS_SIZE
 mdefine_line|#define GET_INT_STATUS_SIZE(NumPorts) (sizeof(__u16) + (sizeof(__u16) * (NumPorts)))

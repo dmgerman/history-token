@@ -3,7 +3,6 @@ macro_line|#ifndef&t;__USA28MSG__
 DECL|macro|__USA28MSG__
 mdefine_line|#define&t;__USA28MSG__
 DECL|struct|keyspan_usa28_portControlMessage
-r_typedef
 r_struct
 id|keyspan_usa28_portControlMessage
 (brace
@@ -112,12 +111,9 @@ DECL|member|resetDataToggle
 id|resetDataToggle
 suffix:semicolon
 singleline_comment|// reset data toggle state to DATA0
-DECL|typedef|keyspan_usa28_portControlMessage
 )brace
-id|keyspan_usa28_portControlMessage
 suffix:semicolon
 DECL|struct|keyspan_usa28_portStatusMessage
-r_typedef
 r_struct
 id|keyspan_usa28_portStatusMessage
 (brace
@@ -168,9 +164,7 @@ DECL|member|controlResponse
 id|controlResponse
 suffix:semicolon
 singleline_comment|// 1=a control messages has been processed
-DECL|typedef|keyspan_usa28_portStatusMessage
 )brace
-id|keyspan_usa28_portStatusMessage
 suffix:semicolon
 singleline_comment|// bit defines in txState
 DECL|macro|TX_OFF
@@ -180,7 +174,6 @@ DECL|macro|TX_XOFF
 mdefine_line|#define&t;TX_XOFF&t;&t;&t;0x02&t;
 singleline_comment|// either real, or simulated by host
 DECL|struct|keyspan_usa28_globalControlMessage
-r_typedef
 r_struct
 id|keyspan_usa28_globalControlMessage
 (brace
@@ -197,12 +190,9 @@ DECL|member|resetStatusCount
 id|resetStatusCount
 suffix:semicolon
 singleline_comment|// a cycling value
-DECL|typedef|keyspan_usa28_globalControlMessage
 )brace
-id|keyspan_usa28_globalControlMessage
 suffix:semicolon
 DECL|struct|keyspan_usa28_globalStatusMessage
-r_typedef
 r_struct
 id|keyspan_usa28_globalStatusMessage
 (brace
@@ -219,12 +209,9 @@ DECL|member|resetStatusCount
 id|resetStatusCount
 suffix:semicolon
 singleline_comment|// as in request
-DECL|typedef|keyspan_usa28_globalStatusMessage
 )brace
-id|keyspan_usa28_globalStatusMessage
 suffix:semicolon
 DECL|struct|keyspan_usa28_globalDebugMessage
-r_typedef
 r_struct
 id|keyspan_usa28_globalDebugMessage
 (brace
@@ -241,9 +228,7 @@ DECL|member|b
 id|b
 suffix:semicolon
 singleline_comment|// typically a data byte
-DECL|typedef|keyspan_usa28_globalDebugMessage
 )brace
-id|keyspan_usa28_globalDebugMessage
 suffix:semicolon
 singleline_comment|// ie: the maximum length of an EZUSB endpoint buffer
 DECL|macro|MAX_DATA_LEN

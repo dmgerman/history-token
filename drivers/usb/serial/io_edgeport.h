@@ -292,15 +292,5 @@ suffix:semicolon
 multiline_comment|/* Start of string block */
 )brace
 suffix:semicolon
-DECL|typedef|STRING_BLOCK
-DECL|typedef|PSTRING_BLOCK
-r_typedef
-r_struct
-id|string_block
-id|STRING_BLOCK
-comma
-op_star
-id|PSTRING_BLOCK
-suffix:semicolon
 macro_line|#endif
 eof
