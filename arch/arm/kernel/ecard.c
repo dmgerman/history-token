@@ -925,25 +925,6 @@ c_func
 id|completion
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Make sure we have a context that is able to sleep.&n;&t; */
-r_if
-c_cond
-(paren
-id|current
-op_eq
-op_amp
-id|init_task
-op_logical_or
-id|in_interrupt
-c_func
-(paren
-)paren
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 id|req-&gt;complete
 op_assign
 op_amp
