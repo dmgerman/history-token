@@ -495,6 +495,21 @@ id|shost-&gt;max_sectors
 op_assign
 id|SCSI_DEFAULT_MAX_SECTORS
 suffix:semicolon
+multiline_comment|/*&n;&t; * assume a 4GB boundary, if not set&n;&t; */
+r_if
+c_cond
+(paren
+id|sht-&gt;dma_boundary
+)paren
+id|shost-&gt;dma_boundary
+op_assign
+id|sht-&gt;dma_boundary
+suffix:semicolon
+r_else
+id|shost-&gt;dma_boundary
+op_assign
+l_int|0xffffffff
+suffix:semicolon
 id|rval
 op_assign
 id|scsi_setup_command_freelist

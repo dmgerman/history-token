@@ -340,6 +340,12 @@ r_int
 r_int
 id|max_sectors
 suffix:semicolon
+multiline_comment|/*&n;&t; * dma scatter gather segment boundary limit. a segment crossing this&n;&t; * boundary will be split in two.&n;&t; */
+DECL|member|dma_boundary
+r_int
+r_int
+id|dma_boundary
+suffix:semicolon
 multiline_comment|/*&n;&t; * This specifies &quot;machine infinity&quot; for host templates which don&squot;t&n;&t; * limit the transfer size.  Note this limit represents an absolute&n;&t; * maximum, and may be over the transfer limits allowed for&n;&t; * individual devices (e.g. 256 for SCSI-1)&n;&t; */
 DECL|macro|SCSI_DEFAULT_MAX_SECTORS
 mdefine_line|#define SCSI_DEFAULT_MAX_SECTORS&t;1024
@@ -594,6 +600,11 @@ r_int
 r_int
 r_int
 id|max_sectors
+suffix:semicolon
+DECL|member|dma_boundary
+r_int
+r_int
+id|dma_boundary
 suffix:semicolon
 DECL|member|in_recovery
 r_int

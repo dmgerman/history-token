@@ -3422,6 +3422,14 @@ id|shost
 )paren
 )paren
 suffix:semicolon
+id|blk_queue_segment_boundary
+c_func
+(paren
+id|q
+comma
+id|shost-&gt;dma_boundary
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
