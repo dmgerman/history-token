@@ -28,19 +28,12 @@ id|list_head
 id|c_cilist
 suffix:semicolon
 multiline_comment|/* list of all coda inodes */
-DECL|member|c_container
-r_struct
-id|file
-op_star
-id|c_container
-suffix:semicolon
-multiline_comment|/* container file for this cnode */
-DECL|member|c_contcount
+DECL|member|c_mapcount
 r_int
 r_int
-id|c_contcount
+id|c_mapcount
 suffix:semicolon
-multiline_comment|/* refcount for container file */
+multiline_comment|/* nr of times this inode is mapped */
 DECL|member|c_cached_cred
 r_struct
 id|coda_cred
@@ -60,6 +53,41 @@ id|vfs_inode
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * coda fs file private data&n; */
+DECL|macro|CODA_MAGIC
+mdefine_line|#define CODA_MAGIC 0xC0DAC0DA
+DECL|struct|coda_file_info
+r_struct
+id|coda_file_info
+(brace
+DECL|member|cfi_magic
+r_int
+id|cfi_magic
+suffix:semicolon
+multiline_comment|/* magic number */
+DECL|member|cfi_container
+r_struct
+id|file
+op_star
+id|cfi_container
+suffix:semicolon
+multiline_comment|/* container file for this cnode */
+DECL|member|cfi_mapcount
+r_int
+r_int
+id|cfi_mapcount
+suffix:semicolon
+multiline_comment|/* nr of times this file is mapped */
+DECL|member|cfi_cred
+r_struct
+id|coda_cred
+id|cfi_cred
+suffix:semicolon
+multiline_comment|/* credentials of opener */
+)brace
+suffix:semicolon
+DECL|macro|CODA_FTOC
+mdefine_line|#define CODA_FTOC(file) ((struct coda_file_info *)((file)-&gt;private_data))
 multiline_comment|/* flags */
 DECL|macro|C_VATTR
 mdefine_line|#define C_VATTR       0x1   /* Validity of vattr in inode */

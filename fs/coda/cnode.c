@@ -425,6 +425,10 @@ id|inode-&gt;i_ino
 op_assign
 id|hash
 suffix:semicolon
+id|cii-&gt;c_mapcount
+op_assign
+l_int|0
+suffix:semicolon
 id|list_add
 c_func
 (paren

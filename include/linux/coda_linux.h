@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;&t;&t;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/coda_fs_i.h&gt;
 multiline_comment|/* operations */
 r_extern
 r_struct
@@ -157,10 +158,6 @@ suffix:semicolon
 multiline_comment|/* global variables */
 r_extern
 r_int
-id|coda_access_cache
-suffix:semicolon
-r_extern
-r_int
 id|coda_fake_statfs
 suffix:semicolon
 multiline_comment|/* this file:  heloers */
@@ -206,16 +203,6 @@ suffix:semicolon
 r_char
 op_star
 id|coda_f2s
-c_func
-(paren
-id|ViceFid
-op_star
-id|f
-)paren
-suffix:semicolon
-r_char
-op_star
-id|coda_f2s2
 c_func
 (paren
 id|ViceFid

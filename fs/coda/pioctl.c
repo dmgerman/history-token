@@ -6,8 +6,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -61,12 +59,14 @@ id|inode_operations
 id|coda_ioctl_inode_operations
 op_assign
 (brace
+dot
 id|permission
-suffix:colon
+op_assign
 id|coda_ioctl_permission
 comma
+dot
 id|setattr
-suffix:colon
+op_assign
 id|coda_setattr
 comma
 )brace
@@ -77,12 +77,14 @@ id|file_operations
 id|coda_ioctl_operations
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|coda_pioctl
 comma
 )brace
