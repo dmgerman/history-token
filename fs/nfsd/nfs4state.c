@@ -6522,15 +6522,27 @@ id|share_access
 op_and_assign
 id|open-&gt;op_share_access
 suffix:semicolon
-multiline_comment|/* update the struct file */
 r_if
 c_cond
+(paren
+op_logical_neg
 (paren
 id|share_access
 op_amp
 id|NFS4_SHARE_ACCESS_WRITE
 )paren
-(brace
+)paren
+r_return
+id|nfsd4_truncate
+c_func
+(paren
+id|rqstp
+comma
+id|cur_fh
+comma
+id|open
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|get_write_access
@@ -6609,7 +6621,6 @@ op_amp
 id|stp-&gt;st_deny_bmap
 )paren
 suffix:semicolon
-)brace
 r_return
 id|nfs_ok
 suffix:semicolon
