@@ -57,8 +57,7 @@ id|sb
 )paren
 (brace
 r_return
-op_amp
-id|sb-&gt;u.sysv_sb
+id|sb-&gt;u.generic_sbp
 suffix:semicolon
 )brace
 multiline_comment|/* Layout on disk */

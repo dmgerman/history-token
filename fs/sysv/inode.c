@@ -197,6 +197,12 @@ c_func
 id|sbi-&gt;s_bh2
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|sbi
+)paren
+suffix:semicolon
 )brace
 DECL|function|sysv_statfs
 r_static

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/sysv_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 multiline_comment|/*&n; * The following functions try to recognize specific filesystems.&n; *&n; * We recognize:&n; * - Xenix FS by its magic number.&n; * - SystemV FS by its magic number.&n; * - Coherent FS by its funny fname/fpack field.&n; * - SCO AFS by s_nfree == 0xffff&n; * - V7 FS has no distinguishing features.&n; *&n; * We discriminate among SystemV4 and SystemV2 FS by the assumption that&n; * the time stamp is not &lt; 01-01-1980.&n; */
 r_enum
 (brace
@@ -1655,27 +1656,19 @@ id|silent
 )paren
 (brace
 r_struct
-id|sysv_sb_info
-op_star
-id|sbi
-op_assign
-id|SYSV_SB
-c_func
-(paren
-id|sb
-)paren
-suffix:semicolon
-r_struct
 id|buffer_head
 op_star
 id|bh1
-suffix:semicolon
-r_struct
-id|buffer_head
+comma
 op_star
 id|bh
 op_assign
 l_int|NULL
+suffix:semicolon
+r_struct
+id|sysv_sb_info
+op_star
+id|sbi
 suffix:semicolon
 r_int
 r_int
@@ -1685,8 +1678,7 @@ r_int
 id|size
 op_assign
 l_int|0
-suffix:semicolon
-r_int
+comma
 id|i
 suffix:semicolon
 r_if
@@ -1703,12 +1695,11 @@ id|xenix_super_block
 id|panic
 c_func
 (paren
-l_string|&quot;Xenix FS: bad super-block size&quot;
+l_string|&quot;Xenix FS: bad superblock size&quot;
 )paren
 suffix:semicolon
 r_if
 c_cond
-(paren
 (paren
 l_int|512
 op_ne
@@ -1718,7 +1709,14 @@ r_struct
 id|sysv4_super_block
 )paren
 )paren
-op_logical_or
+id|panic
+c_func
+(paren
+l_string|&quot;SystemV FS: bad superblock size&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
 (paren
 l_int|512
 op_ne
@@ -1728,11 +1726,10 @@ r_struct
 id|sysv2_super_block
 )paren
 )paren
-)paren
 id|panic
 c_func
 (paren
-l_string|&quot;SystemV FS: bad super-block size&quot;
+l_string|&quot;SystemV FS: bad superblock size&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1749,7 +1746,7 @@ id|coh_super_block
 id|panic
 c_func
 (paren
-l_string|&quot;Coherent FS: bad super-block size&quot;
+l_string|&quot;Coherent FS: bad superblock size&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1766,15 +1763,45 @@ id|sysv_inode
 id|panic
 c_func
 (paren
-l_string|&quot;sysv fs: bad i-node size&quot;
+l_string|&quot;sysv fs: bad inode size&quot;
 )paren
 suffix:semicolon
-id|sb_set_blocksize
+id|sbi
+op_assign
+id|kmalloc
 c_func
 (paren
-id|sb
+r_sizeof
+(paren
+r_struct
+id|sysv_sb_info
+)paren
 comma
-id|BLOCK_SIZE
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sbi
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|sbi
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|sysv_sb_info
+)paren
 )paren
 suffix:semicolon
 id|sbi-&gt;s_sb
@@ -1784,6 +1811,18 @@ suffix:semicolon
 id|sbi-&gt;s_block_base
 op_assign
 l_int|0
+suffix:semicolon
+id|sb-&gt;u.generic_sbp
+op_assign
+id|sbi
+suffix:semicolon
+id|sb_set_blocksize
+c_func
+(paren
+id|sb
+comma
+id|BLOCK_SIZE
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -2038,6 +2077,12 @@ l_string|&quot;oldfs: cannot read superblock&bslash;n&quot;
 suffix:semicolon
 id|failed
 suffix:colon
+id|kfree
+c_func
+(paren
+id|sbi
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
@@ -2122,12 +2167,6 @@ r_struct
 id|sysv_sb_info
 op_star
 id|sbi
-op_assign
-id|SYSV_SB
-c_func
-(paren
-id|sb
-)paren
 suffix:semicolon
 r_struct
 id|buffer_head
@@ -2183,9 +2222,51 @@ c_func
 l_string|&quot;sysv fs: bad i-node size&quot;
 )paren
 suffix:semicolon
+id|sbi
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|sysv_sb_info
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sbi
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|sbi
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|sysv_sb_info
+)paren
+)paren
+suffix:semicolon
 id|sbi-&gt;s_sb
 op_assign
 id|sb
+suffix:semicolon
+id|sbi-&gt;s_block_base
+op_assign
+l_int|0
 suffix:semicolon
 id|sbi-&gt;s_type
 op_assign
@@ -2195,12 +2276,16 @@ id|sbi-&gt;s_bytesex
 op_assign
 id|BYTESEX_PDP
 suffix:semicolon
+id|sb-&gt;u.generic_sbp
+op_assign
+id|sbi
+suffix:semicolon
 id|sb_set_blocksize
 c_func
 (paren
 id|sb
 comma
-l_int|512
+id|BLOCK_SIZE
 )paren
 suffix:semicolon
 r_if
@@ -2409,6 +2494,12 @@ id|brelse
 c_func
 (paren
 id|bh
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|sbi
 )paren
 suffix:semicolon
 r_return
