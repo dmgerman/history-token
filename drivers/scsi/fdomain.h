@@ -2,6 +2,7 @@ multiline_comment|/* fdomain.h -- Header for Future Domain TMC-16x0 driver&n; * 
 macro_line|#ifndef _FDOMAIN_H
 DECL|macro|_FDOMAIN_H
 mdefine_line|#define _FDOMAIN_H
+r_static
 r_int
 id|fdomain_16x0_detect
 c_func
@@ -10,6 +11,7 @@ id|Scsi_Host_Template
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|fdomain_16x0_command
 c_func
@@ -18,6 +20,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|fdomain_16x0_abort
 c_func
@@ -26,6 +29,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_const
 r_char
 op_star
@@ -37,17 +41,34 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
-id|fdomain_16x0_reset
+id|fdomain_16x0_bus_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
+r_static
+r_int
+id|fdomain_16x0_host_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
+id|fdomain_16x0_device_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+suffix:semicolon
+r_static
 r_int
 id|fdomain_16x0_queue
 c_func
@@ -66,6 +87,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
+r_static
 r_int
 id|fdomain_16x0_biosparam
 c_func
@@ -81,6 +103,7 @@ r_int
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|fdomain_16x0_proc_info
 c_func
@@ -107,6 +130,7 @@ r_int
 id|inout
 )paren
 suffix:semicolon
+r_static
 r_int
 id|fdomain_16x0_release
 c_func
@@ -118,6 +142,6 @@ id|shpnt
 )paren
 suffix:semicolon
 DECL|macro|FDOMAIN_16X0
-mdefine_line|#define FDOMAIN_16X0 { proc_info:      fdomain_16x0_proc_info,           &bslash;&n;&t;&t;       detect:         fdomain_16x0_detect,              &bslash;&n;&t;&t;       info:           fdomain_16x0_info,                &bslash;&n;&t;&t;       command:        fdomain_16x0_command,             &bslash;&n;&t;&t;       queuecommand:   fdomain_16x0_queue,               &bslash;&n;&t;&t;       abort:          fdomain_16x0_abort,               &bslash;&n;&t;&t;       reset:          fdomain_16x0_reset,               &bslash;&n;&t;&t;       bios_param:     fdomain_16x0_biosparam,           &bslash;&n;&t;&t;       release:        fdomain_16x0_release,&t;&t; &bslash;&n;&t;&t;       can_queue:      1, &t;&t;&t;&t; &bslash;&n;&t;&t;       this_id:        6, &t;&t;&t;&t; &bslash;&n;&t;&t;       sg_tablesize:   64, &t;&t;&t;&t; &bslash;&n;&t;&t;       cmd_per_lun:    1, &t;&t;&t;&t; &bslash;&n;&t;&t;       use_clustering: DISABLE_CLUSTERING }
+mdefine_line|#define FDOMAIN_16X0 { proc_info:      &t;&t;fdomain_16x0_proc_info,           &bslash;&n;&t;&t;       detect:         &t;&t;fdomain_16x0_detect,              &bslash;&n;&t;&t;       info:           &t;&t;fdomain_16x0_info,                &bslash;&n;&t;&t;       command:        &t;&t;fdomain_16x0_command,             &bslash;&n;&t;&t;       queuecommand:   &t;&t;fdomain_16x0_queue,               &bslash;&n;&t;&t;       eh_abort_handler:&t;fdomain_16x0_abort,               &bslash;&n;&t;&t;       eh_bus_reset_handler:&t;fdomain_16x0_bus_reset,           &bslash;&n;&t;&t;       eh_device_reset_handler:&t;fdomain_16x0_device_reset,        &bslash;&n;&t;&t;       eh_host_reset_handler:&t;fdomain_16x0_host_reset,          &bslash;&n;&t;&t;       bios_param:&t;&t;fdomain_16x0_biosparam,           &bslash;&n;&t;&t;       release:&t;&t;&t;fdomain_16x0_release,&t;&t;  &bslash;&n;&t;&t;       can_queue:&t;&t;1, &t;&t;&t;&t;  &bslash;&n;&t;&t;       this_id:  &t;&t;6, &t;&t;&t;&t;  &bslash;&n;&t;&t;       sg_tablesize:&t;&t;64, &t;&t;&t;&t;  &bslash;&n;&t;&t;       cmd_per_lun:&t;&t;1, &t;&t;&t;&t;  &bslash;&n;&t;&t;       use_clustering:&t;&t;DISABLE_CLUSTERING&t;&t;  &bslash;&n;}
 macro_line|#endif
 eof
