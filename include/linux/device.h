@@ -114,6 +114,25 @@ op_star
 id|drv
 )paren
 suffix:semicolon
+DECL|member|add
+r_struct
+id|device
+op_star
+(paren
+op_star
+id|add
+)paren
+(paren
+r_struct
+id|device
+op_star
+id|parent
+comma
+r_char
+op_star
+id|bus_id
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
@@ -1036,6 +1055,12 @@ id|u32
 id|class_num
 suffix:semicolon
 multiline_comment|/* class-enumerated value */
+DECL|member|class_data
+r_void
+op_star
+id|class_data
+suffix:semicolon
+multiline_comment|/* class-specific data */
 DECL|member|platform_data
 r_void
 op_star
