@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -2039,6 +2040,21 @@ id|err
 )paren
 r_goto
 id|badframe
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|test_thread_flag
+c_func
+(paren
+id|TIF_SINGLESTEP
+)paren
+)paren
+id|ptrace_notify
+c_func
+(paren
+id|SIGTRAP
+)paren
 suffix:semicolon
 r_return
 suffix:semicolon

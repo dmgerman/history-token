@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/ppc32.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
@@ -3119,6 +3120,21 @@ id|regs-&gt;result
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|test_thread_flag
+c_func
+(paren
+id|TIF_SINGLESTEP
+)paren
+)paren
+id|ptrace_notify
+c_func
+(paren
+id|SIGTRAP
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 id|badframe
@@ -3922,6 +3938,21 @@ suffix:semicolon
 id|regs-&gt;result
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|test_thread_flag
+c_func
+(paren
+id|TIF_SINGLESTEP
+)paren
+)paren
+id|ptrace_notify
+c_func
+(paren
+id|SIGTRAP
+)paren
 suffix:semicolon
 r_return
 suffix:semicolon

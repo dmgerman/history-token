@@ -142,6 +142,8 @@ DECL|macro|TIF_ABI_PENDING
 mdefine_line|#define TIF_ABI_PENDING&t;&t;7&t;/* 32/64 bit switch needed */
 DECL|macro|TIF_SYSCALL_AUDIT
 mdefine_line|#define TIF_SYSCALL_AUDIT&t;8&t;/* syscall auditing active */
+DECL|macro|TIF_SINGLESTEP
+mdefine_line|#define TIF_SINGLESTEP&t;&t;9&t;/* singlestepping active */
 multiline_comment|/* as above, but as bit values */
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1&lt;&lt;TIF_SYSCALL_TRACE)
@@ -161,6 +163,8 @@ DECL|macro|_TIF_ABI_PENDING
 mdefine_line|#define _TIF_ABI_PENDING&t;(1&lt;&lt;TIF_ABI_PENDING)
 DECL|macro|_TIF_SYSCALL_AUDIT
 mdefine_line|#define _TIF_SYSCALL_AUDIT&t;(1&lt;&lt;TIF_SYSCALL_AUDIT)
+DECL|macro|_TIF_SINGLESTEP
+mdefine_line|#define _TIF_SINGLESTEP&t;&t;(1&lt;&lt;TIF_SINGLESTEP)
 DECL|macro|_TIF_SYSCALL_T_OR_A
 mdefine_line|#define _TIF_SYSCALL_T_OR_A&t;(_TIF_SYSCALL_TRACE|_TIF_SYSCALL_AUDIT)
 DECL|macro|_TIF_USER_WORK_MASK
