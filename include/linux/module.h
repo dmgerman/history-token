@@ -216,13 +216,24 @@ id|symbol
 suffix:semicolon
 DECL|macro|symbol_get
 mdefine_line|#define symbol_get(x) ((typeof(&amp;x))(__symbol_get(MODULE_SYMBOL_PREFIX #x)))
+macro_line|#ifdef CONFIG_MODVERSIONING
+multiline_comment|/* Mark the CRC weak since genksyms apparently decides not to&n; * generate a checksums for some symbols */
+DECL|macro|__CRC_SYMBOL
+mdefine_line|#define __CRC_SYMBOL(sym, sec)&t;&t;&t;&t;&t;&bslash;&n;&t;extern void *__crc_##sym __attribute__((weak));&t;&t;&bslash;&n;&t;static const unsigned long __kcrctab_##sym&t;&t;&bslash;&n;&t;__attribute__((section(&quot;__kcrctab&quot; sec)))&t;&t;&bslash;&n;&t;= (unsigned long) &amp;__crc_##sym;
+macro_line|#else
+DECL|macro|__CRC_SYMBOL
+mdefine_line|#define __CRC_SYMBOL(sym, sec)
+macro_line|#endif
 multiline_comment|/* For every exported symbol, place a struct in the __ksymtab section */
+DECL|macro|__EXPORT_SYMBOL
+mdefine_line|#define __EXPORT_SYMBOL(sym, sec)&t;&t;&t;&t;&bslash;&n;&t;__CRC_SYMBOL(sym, sec)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __kstrtab_##sym[]&t;&t;&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab_strings&quot;)))&t;&t;&bslash;&n;&t;= MODULE_SYMBOL_PREFIX #sym;                    &t;&bslash;&n;&t;static const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab&quot; sec)))&t;&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, __kstrtab_##sym }
 DECL|macro|EXPORT_SYMBOL
-mdefine_line|#define EXPORT_SYMBOL(sym)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __kstrtab_##sym[]&t;&t;&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab_strings&quot;)))&t;&t;&bslash;&n;&t;= MODULE_SYMBOL_PREFIX #sym;                    &t;&bslash;&n;&t;static const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab&quot;)))&t;&t;&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, __kstrtab_##sym }
+mdefine_line|#define EXPORT_SYMBOL(sym)&t;__EXPORT_SYMBOL(sym, &quot;&quot;)
+DECL|macro|EXPORT_SYMBOL_GPL
+mdefine_line|#define EXPORT_SYMBOL_GPL(sym)&t;__EXPORT_SYMBOL(sym, &quot;_gpl&quot;)
+multiline_comment|/* We don&squot;t mangle the actual symbol anymore, so no need for&n; * special casing EXPORT_SYMBOL_NOVERS */
 DECL|macro|EXPORT_SYMBOL_NOVERS
 mdefine_line|#define EXPORT_SYMBOL_NOVERS(sym) EXPORT_SYMBOL(sym)
-DECL|macro|EXPORT_SYMBOL_GPL
-mdefine_line|#define EXPORT_SYMBOL_GPL(sym)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __kstrtab_##sym[]&t;&t;&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab_strings&quot;)))&t;&t;&bslash;&n;&t;= MODULE_SYMBOL_PREFIX #sym;                    &t;&bslash;&n;&t;static const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__gpl_ksymtab&quot;)))&t;&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, __kstrtab_##sym }
 DECL|struct|module_ref
 r_struct
 id|module_ref
