@@ -2,6 +2,7 @@ macro_line|#ifndef _LINUX_SHM_H_
 DECL|macro|_LINUX_SHM_H_
 mdefine_line|#define _LINUX_SHM_H_
 macro_line|#include &lt;linux/ipc.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/*&n; * SHMMAX, SHMMNI and SHMALL are upper limits are defaults which can&n; * be increased by sysctl&n; */
 DECL|macro|SHMMAX
@@ -234,6 +235,7 @@ mdefine_line|#define SHM_HUGETLB     04000   /* segment will use huge TLB pages 
 macro_line|#ifdef CONFIG_SYSVIPC
 r_int
 id|do_shmat
+c_func
 (paren
 r_int
 id|shmid
@@ -254,9 +256,11 @@ id|addr
 suffix:semicolon
 macro_line|#else
 DECL|function|do_shmat
+r_static
 r_inline
 r_int
 id|do_shmat
+c_func
 (paren
 r_int
 id|shmid
