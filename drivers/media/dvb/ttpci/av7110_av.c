@@ -3454,6 +3454,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|write_ts_header2
+r_static
 r_int
 id|write_ts_header2
 c_func
@@ -4846,6 +4847,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|iframe_header
+r_static
 id|u8
 id|iframe_header
 (braket

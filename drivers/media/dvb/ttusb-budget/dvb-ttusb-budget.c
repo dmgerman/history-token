@@ -5763,6 +5763,7 @@ id|ttusb-&gt;dev-&gt;dev
 suffix:semicolon
 )brace
 DECL|variable|philips_tdm1316l_config
+r_static
 r_struct
 id|tda1004x_config
 id|philips_tdm1316l_config

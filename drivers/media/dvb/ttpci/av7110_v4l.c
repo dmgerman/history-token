@@ -743,6 +743,7 @@ id|V4L2_AUDCAP_STEREO
 )brace
 suffix:semicolon
 DECL|function|av7110_dvb_c_switch
+r_static
 r_int
 id|av7110_dvb_c_switch
 c_func
@@ -1182,6 +1183,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|av7110_ioctl
+r_static
 r_int
 id|av7110_ioctl
 c_func
@@ -2097,6 +2099,7 @@ suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; * INITIALIZATION&n; ****************************************************************************/
 DECL|variable|ioctls
+r_static
 r_struct
 id|saa7146_extension_ioctls
 id|ioctls
@@ -3644,15 +3647,10 @@ comma
 dot
 id|num_stds
 op_assign
-r_sizeof
+id|ARRAY_SIZE
+c_func
 (paren
 id|standard
-)paren
-op_div
-r_sizeof
-(paren
-r_struct
-id|saa7146_standard
 )paren
 comma
 dot
@@ -3718,15 +3716,10 @@ comma
 dot
 id|num_stds
 op_assign
-r_sizeof
+id|ARRAY_SIZE
+c_func
 (paren
 id|standard
-)paren
-op_div
-r_sizeof
-(paren
-r_struct
-id|saa7146_standard
 )paren
 comma
 dot
