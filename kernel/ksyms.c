@@ -2799,6 +2799,13 @@ c_func
 id|seq_printf
 )paren
 suffix:semicolon
+DECL|variable|seq_path
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|seq_path
+)paren
+suffix:semicolon
 DECL|variable|seq_open
 id|EXPORT_SYMBOL
 c_func
