@@ -366,6 +366,7 @@ r_int
 id|ctl-&gt;extra1
 suffix:semicolon
 r_int
+r_int
 id|len
 comma
 id|left

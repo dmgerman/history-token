@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
@@ -22,10 +21,11 @@ macro_line|#include &lt;asm/iSeries/HvLpConfig.h&gt;
 macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
+macro_line|#include &lt;asm/vio.h&gt;
 macro_line|#include &quot;iseries_veth.h&quot;
 r_extern
 r_struct
-id|pci_dev
+id|vio_dev
 op_star
 id|iSeries_veth_dev
 suffix:semicolon
@@ -3538,7 +3538,7 @@ id|skb-&gt;len
 suffix:semicolon
 id|dma_address
 op_assign
-id|pci_map_single
+id|vio_map_single
 c_func
 (paren
 id|iSeries_veth_dev
@@ -3547,13 +3547,13 @@ id|skb-&gt;data
 comma
 id|dma_length
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|pci_dma_mapping_error
+id|dma_mapping_error
 c_func
 (paren
 id|dma_address
@@ -4075,7 +4075,7 @@ id|msg-&gt;data.len
 l_int|0
 )braket
 suffix:semicolon
-id|pci_unmap_single
+id|vio_unmap_single
 c_func
 (paren
 id|iSeries_veth_dev
@@ -4084,7 +4084,7 @@ id|dma_address
 comma
 id|dma_length
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 r_if

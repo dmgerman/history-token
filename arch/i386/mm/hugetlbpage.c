@@ -948,7 +948,6 @@ r_int
 id|address
 suffix:semicolon
 id|pte_t
-op_star
 id|pte
 suffix:semicolon
 r_struct
@@ -998,12 +997,16 @@ id|HPAGE_SIZE
 (brace
 id|pte
 op_assign
+id|ptep_get_and_clear
+c_func
+(paren
 id|huge_pte_offset
 c_func
 (paren
 id|mm
 comma
 id|address
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1012,7 +1015,6 @@ c_cond
 id|pte_none
 c_func
 (paren
-op_star
 id|pte
 )paren
 )paren
@@ -1023,7 +1025,6 @@ op_assign
 id|pte_page
 c_func
 (paren
-op_star
 id|pte
 )paren
 suffix:semicolon
@@ -1031,12 +1032,6 @@ id|huge_page_release
 c_func
 (paren
 id|page
-)paren
-suffix:semicolon
-id|pte_clear
-c_func
-(paren
-id|pte
 )paren
 suffix:semicolon
 )brace

@@ -201,9 +201,9 @@ op_assign
 id|cap_capable
 comma
 dot
-id|bprm_compute_creds
+id|bprm_apply_creds
 op_assign
-id|cap_bprm_compute_creds
+id|cap_bprm_apply_creds
 comma
 dot
 id|bprm_set_security

@@ -2736,16 +2736,6 @@ id|mp
 op_assign
 id|io-&gt;io_mount
 suffix:semicolon
-id|xfs_check_frozen
-c_func
-(paren
-id|mp
-comma
-id|bdp
-comma
-id|XFS_FREEZE_WRITE
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

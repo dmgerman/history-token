@@ -1564,21 +1564,6 @@ id|xfs_ioops
 id|m_io_ops
 suffix:semicolon
 multiline_comment|/* vector of I/O ops */
-DECL|member|m_freeze_lock
-id|lock_t
-id|m_freeze_lock
-suffix:semicolon
-multiline_comment|/* Lock for m_frozen */
-DECL|member|m_frozen
-id|uint
-id|m_frozen
-suffix:semicolon
-multiline_comment|/* FS frozen for shutdown or&n;&t;&t;&t;&t;&t;&t; * snapshot */
-DECL|member|m_wait_unfreeze
-id|sv_t
-id|m_wait_unfreeze
-suffix:semicolon
-multiline_comment|/* waiting to unfreeze */
 DECL|member|m_active_trans
 id|atomic_t
 id|m_active_trans
@@ -2084,45 +2069,6 @@ comma
 id|xfs_arch_t
 comma
 id|__int64_t
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Flags for freeze operations.&n; */
-DECL|macro|XFS_FREEZE_WRITE
-mdefine_line|#define XFS_FREEZE_WRITE&t;1
-DECL|macro|XFS_FREEZE_TRANS
-mdefine_line|#define XFS_FREEZE_TRANS&t;2
-r_extern
-r_void
-id|xfs_start_freeze
-c_func
-(paren
-id|xfs_mount_t
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|xfs_finish_freeze
-c_func
-(paren
-id|xfs_mount_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|xfs_check_frozen
-c_func
-(paren
-id|xfs_mount_t
-op_star
-comma
-id|bhv_desc_t
-op_star
-comma
-r_int
 )paren
 suffix:semicolon
 r_extern

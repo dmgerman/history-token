@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
-macro_line|#ifdef CONFIG_X86_POWERNOW_K8_ACPI
+macro_line|#ifdef CONFIG_ACPI_PROCESSOR
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;acpi/processor.h&gt;
 macro_line|#endif
@@ -940,7 +940,7 @@ id|smp_processor_id
 c_func
 (paren
 )paren
-suffix:semicolon
+comma
 id|data-&gt;currfid
 comma
 id|data-&gt;currvid
@@ -2950,7 +2950,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_X86_POWERNOW_K8_ACPI
+macro_line|#ifdef CONFIG_ACPI_PROCESSOR
 DECL|function|powernow_k8_acpi_pst_values
 r_static
 r_void

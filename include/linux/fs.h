@@ -865,6 +865,12 @@ id|semaphore
 id|bd_sem
 suffix:semicolon
 multiline_comment|/* open/close mutex */
+DECL|member|bd_mount_sem
+r_struct
+id|semaphore
+id|bd_mount_sem
+suffix:semicolon
+multiline_comment|/* mount mutex */
 DECL|member|bd_inodes
 r_struct
 id|list_head
@@ -2494,6 +2500,14 @@ id|quota_info
 id|s_dquot
 suffix:semicolon
 multiline_comment|/* Diskquota specific options */
+DECL|member|s_frozen
+r_int
+id|s_frozen
+suffix:semicolon
+DECL|member|s_wait_unfrozen
+id|wait_queue_head_t
+id|s_wait_unfrozen
+suffix:semicolon
 DECL|member|s_id
 r_char
 id|s_id
@@ -2517,6 +2531,28 @@ suffix:semicolon
 multiline_comment|/* Kludge */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Snapshotting support.&n; */
+r_enum
+(brace
+DECL|enumerator|SB_UNFROZEN
+id|SB_UNFROZEN
+op_assign
+l_int|0
+comma
+DECL|enumerator|SB_FREEZE_WRITE
+id|SB_FREEZE_WRITE
+op_assign
+l_int|1
+comma
+DECL|enumerator|SB_FREEZE_TRANS
+id|SB_FREEZE_TRANS
+op_assign
+l_int|2
+comma
+)brace
+suffix:semicolon
+DECL|macro|vfs_check_frozen
+mdefine_line|#define vfs_check_frozen(sb, level) &bslash;&n;&t;wait_event((sb)-&gt;s_wait_unfrozen, ((sb)-&gt;s_frozen &lt; (level)))
 multiline_comment|/*&n; * Superblock locking.&n; */
 DECL|function|lock_super
 r_static

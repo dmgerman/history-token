@@ -839,6 +839,39 @@ r_int
 id|offset
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|_find_first_bit_le
+c_func
+(paren
+r_const
+r_int
+r_int
+op_star
+id|p
+comma
+r_int
+id|size
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|_find_next_bit_le
+c_func
+(paren
+r_const
+r_int
+r_int
+op_star
+id|p
+comma
+r_int
+id|size
+comma
+r_int
+id|offset
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Big endian assembly bitops.  nr = 0 -&gt; byte 3 bit 0.&n; */
 r_extern
 r_void
@@ -959,6 +992,38 @@ r_int
 id|offset
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|_find_first_bit_be
+c_func
+(paren
+r_const
+r_int
+r_int
+op_star
+id|p
+comma
+r_int
+id|size
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|_find_next_bit_be
+c_func
+(paren
+r_int
+r_int
+op_star
+id|p
+comma
+r_int
+id|size
+comma
+r_int
+id|offset
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * The __* form of bitops are non-atomic and may be reordered.&n; */
 DECL|macro|ATOMIC_BITOP_LE
 mdefine_line|#define&t;ATOMIC_BITOP_LE(name,nr,p)&t;&t;&bslash;&n;&t;(__builtin_constant_p(nr) ?&t;&t;&bslash;&n;&t; ____atomic_##name(nr, p) :&t;&t;&bslash;&n;&t; _##name##_le(nr,p))
@@ -986,6 +1051,10 @@ DECL|macro|find_first_zero_bit
 mdefine_line|#define find_first_zero_bit(p,sz)&t;_find_first_zero_bit_le(p,sz)
 DECL|macro|find_next_zero_bit
 mdefine_line|#define find_next_zero_bit(p,sz,off)&t;_find_next_zero_bit_le(p,sz,off)
+DECL|macro|find_first_bit
+mdefine_line|#define find_first_bit(p,sz)&t;&t;_find_first_bit_le(p,sz)
+DECL|macro|find_next_bit
+mdefine_line|#define find_next_bit(p,sz,off)&t;&t;_find_next_bit_le(p,sz,off)
 DECL|macro|WORD_BITOFF_TO_LE
 mdefine_line|#define WORD_BITOFF_TO_LE(x)&t;&t;((x))
 macro_line|#else
@@ -1008,6 +1077,10 @@ DECL|macro|find_first_zero_bit
 mdefine_line|#define find_first_zero_bit(p,sz)&t;_find_first_zero_bit_be(p,sz)
 DECL|macro|find_next_zero_bit
 mdefine_line|#define find_next_zero_bit(p,sz,off)&t;_find_next_zero_bit_be(p,sz,off)
+DECL|macro|find_first_bit
+mdefine_line|#define find_first_bit(p,sz)&t;&t;_find_first_bit_be(p,sz)
+DECL|macro|find_next_bit
+mdefine_line|#define find_next_bit(p,sz,off)&t;&t;_find_next_bit_be(p,sz,off)
 DECL|macro|WORD_BITOFF_TO_LE
 mdefine_line|#define WORD_BITOFF_TO_LE(x)&t;&t;((x) ^ 0x18)
 macro_line|#endif

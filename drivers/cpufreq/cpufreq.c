@@ -1263,10 +1263,16 @@ c_cond
 op_logical_neg
 id|policy
 )paren
-r_return
+(brace
+id|ret
+op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
+r_goto
+id|nomem_out
+suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
@@ -1523,6 +1529,8 @@ c_func
 id|policy
 )paren
 suffix:semicolon
+id|nomem_out
+suffix:colon
 id|module_put
 c_func
 (paren

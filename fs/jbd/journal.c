@@ -2027,6 +2027,16 @@ comma
 id|journal-&gt;j_blocksize
 )paren
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|bh-&gt;b_data
+comma
+l_int|0
+comma
+id|journal-&gt;j_blocksize
+)paren
+suffix:semicolon
 id|bh-&gt;b_state
 op_or_assign
 (paren

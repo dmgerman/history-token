@@ -2640,7 +2640,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|lo_file-&gt;f_op-&gt;sendfile
+id|file-&gt;f_op-&gt;sendfile
 )paren
 r_goto
 id|out_putf

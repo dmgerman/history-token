@@ -243,6 +243,13 @@ op_amp
 id|s-&gt;s_dquot.dqptr_sem
 )paren
 suffix:semicolon
+id|init_waitqueue_head
+c_func
+(paren
+op_amp
+id|s-&gt;s_wait_unfrozen
+)paren
+suffix:semicolon
 id|s-&gt;s_maxbytes
 op_assign
 id|MAX_NON_LFS
@@ -2502,6 +2509,14 @@ op_star
 )paren
 id|bdev
 suffix:semicolon
+multiline_comment|/*&n;&t; * once the super is inserted into the list by sget, s_umount&n;&t; * will protect the lockfs code from trying to start a snapshot&n;&t; * while we are mounting&n;&t; */
+id|down
+c_func
+(paren
+op_amp
+id|bdev-&gt;bd_mount_sem
+)paren
+suffix:semicolon
 id|s
 op_assign
 id|sget
@@ -2514,6 +2529,13 @@ comma
 id|set_bdev_super
 comma
 id|bdev
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|bdev-&gt;bd_mount_sem
 )paren
 suffix:semicolon
 r_if

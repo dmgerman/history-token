@@ -9093,6 +9093,13 @@ c_func
 id|g
 )paren
 suffix:semicolon
+id|drive-&gt;devfs_name
+(braket
+l_int|0
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
+suffix:semicolon
 id|g-&gt;fops
 op_assign
 id|ide_fops

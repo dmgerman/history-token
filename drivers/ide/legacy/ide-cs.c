@@ -1581,8 +1581,6 @@ r_goto
 id|failed
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|info-&gt;ndev
 op_assign
 l_int|1
@@ -1747,8 +1745,6 @@ id|link-&gt;io.NumPorts2
 comma
 id|info-&gt;node.dev_name
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 id|info-&gt;ndev

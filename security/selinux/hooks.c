@@ -6816,10 +6816,10 @@ id|files-&gt;file_lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|selinux_bprm_compute_creds
+DECL|function|selinux_bprm_apply_creds
 r_static
 r_void
-id|selinux_bprm_compute_creds
+id|selinux_bprm_apply_creds
 c_func
 (paren
 r_struct
@@ -6867,7 +6867,7 @@ id|i
 suffix:semicolon
 id|secondary_ops
 op_member_access_from_pointer
-id|bprm_compute_creds
+id|bprm_apply_creds
 c_func
 (paren
 id|bprm
@@ -10531,7 +10531,7 @@ id|current-&gt;rlim
 op_plus
 id|resource
 suffix:semicolon
-multiline_comment|/* Control the ability to change the hard limit (whether&n;&t;   lowering or raising it), so that the hard limit can&n;&t;   later be used as a safe reset point for the soft limit&n;&t;   upon context transitions. See selinux_bprm_compute_creds. */
+multiline_comment|/* Control the ability to change the hard limit (whether&n;&t;   lowering or raising it), so that the hard limit can&n;&t;   later be used as a safe reset point for the soft limit&n;&t;   upon context transitions. See selinux_bprm_apply_creds. */
 r_if
 c_cond
 (paren
@@ -16474,9 +16474,9 @@ op_assign
 id|selinux_bprm_free_security
 comma
 dot
-id|bprm_compute_creds
+id|bprm_apply_creds
 op_assign
-id|selinux_bprm_compute_creds
+id|selinux_bprm_apply_creds
 comma
 dot
 id|bprm_set_security
@@ -17484,5 +17484,125 @@ c_func
 id|selinux_nf_ip_init
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SECURITY_SELINUX_DISABLE
+DECL|function|selinux_nf_ip_exit
+r_static
+r_void
+id|selinux_nf_ip_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;SELinux:  Unregistering netfilter hooks&bslash;n&quot;
+)paren
+suffix:semicolon
+id|nf_unregister_hook
+c_func
+(paren
+op_amp
+id|selinux_ipv4_op
+)paren
+suffix:semicolon
+macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
+id|nf_unregister_hook
+c_func
+(paren
+op_amp
+id|selinux_ipv6_op
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* IPV6 */
+)brace
+macro_line|#endif
+macro_line|#else /* CONFIG_SECURITY_NETWORK &amp;&amp; CONFIG_NETFILTER */
+macro_line|#ifdef CONFIG_SECURITY_SELINUX_DISABLE
+DECL|macro|selinux_nf_ip_exit
+mdefine_line|#define selinux_nf_ip_exit()
+macro_line|#endif
 macro_line|#endif /* CONFIG_SECURITY_NETWORK &amp;&amp; CONFIG_NETFILTER */
+macro_line|#ifdef CONFIG_SECURITY_SELINUX_DISABLE
+DECL|function|selinux_disable
+r_int
+id|selinux_disable
+c_func
+(paren
+r_void
+)paren
+(brace
+r_extern
+r_void
+id|exit_sel_fs
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_static
+r_int
+id|selinux_disabled
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ss_initialized
+)paren
+(brace
+multiline_comment|/* Not permitted after initial policy load. */
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|selinux_disabled
+)paren
+(brace
+multiline_comment|/* Only do this once. */
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;SELinux:  Disabled at runtime.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|selinux_disabled
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Reset security_ops to the secondary module, dummy or capability. */
+id|security_ops
+op_assign
+id|secondary_ops
+suffix:semicolon
+multiline_comment|/* Unregister netfilter hooks. */
+id|selinux_nf_ip_exit
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Unregister selinuxfs. */
+id|exit_sel_fs
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 eof
