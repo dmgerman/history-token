@@ -349,31 +349,9 @@ id|cp
 r_int
 id|hash
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cp-&gt;flags
-op_amp
-id|IP_VS_CONN_F_HASHED
-)paren
-(brace
-id|IP_VS_ERR
-c_func
-(paren
-l_string|&quot;ip_vs_conn_hash(): request for already hashed, &quot;
-l_string|&quot;called from %p&bslash;n&quot;
-comma
-id|__builtin_return_address
-c_func
-(paren
-l_int|0
-)paren
-)paren
+r_int
+id|ret
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* Hash by protocol, client address and port */
 id|hash
 op_assign
@@ -393,6 +371,17 @@ c_func
 id|hash
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|cp-&gt;flags
+op_amp
+id|IP_VS_CONN_F_HASHED
+)paren
+)paren
+(brace
 id|list_add
 c_func
 (paren
@@ -417,6 +406,31 @@ op_amp
 id|cp-&gt;refcnt
 )paren
 suffix:semicolon
+id|ret
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+(brace
+id|IP_VS_ERR
+c_func
+(paren
+l_string|&quot;ip_vs_conn_hash(): request for already hashed, &quot;
+l_string|&quot;called from %p&bslash;n&quot;
+comma
+id|__builtin_return_address
+c_func
+(paren
+l_int|0
+)paren
+)paren
+suffix:semicolon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|ct_write_unlock
 c_func
 (paren
@@ -424,7 +438,7 @@ id|hash
 )paren
 suffix:semicolon
 r_return
-l_int|1
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;UNhashes ip_vs_conn from ip_vs_conn_tab.&n; *&t;returns bool success.&n; */
@@ -444,34 +458,9 @@ id|cp
 r_int
 id|hash
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|cp-&gt;flags
-op_amp
-id|IP_VS_CONN_F_HASHED
-)paren
-)paren
-(brace
-id|IP_VS_ERR
-c_func
-(paren
-l_string|&quot;ip_vs_conn_unhash(): request for unhash flagged, &quot;
-l_string|&quot;called from %p&bslash;n&quot;
-comma
-id|__builtin_return_address
-c_func
-(paren
-l_int|0
-)paren
-)paren
+r_int
+id|ret
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* unhash it and decrease its reference counter */
 id|hash
 op_assign
@@ -491,6 +480,14 @@ c_func
 id|hash
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cp-&gt;flags
+op_amp
+id|IP_VS_CONN_F_HASHED
+)paren
+(brace
 id|list_del
 c_func
 (paren
@@ -510,6 +507,16 @@ op_amp
 id|cp-&gt;refcnt
 )paren
 suffix:semicolon
+id|ret
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 id|ct_write_unlock
 c_func
 (paren
@@ -517,7 +524,7 @@ id|hash
 )paren
 suffix:semicolon
 r_return
-l_int|1
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Gets ip_vs_conn associated with supplied parameters in the ip_vs_conn_tab.&n; *  Called for pkts coming from OUTside-to-INside.&n; *&t;s_addr, s_port: pkt source address (foreign host)&n; *&t;d_addr, d_port: pkt dest address (load balancer)&n; */
@@ -969,17 +976,36 @@ id|__u16
 id|cport
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ip_vs_conn_unhash
+c_func
+(paren
+id|cp
+)paren
+)paren
+(brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|cp-&gt;lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cp-&gt;flags
+op_amp
+id|IP_VS_CONN_F_NO_CPORT
+)paren
+(brace
 id|atomic_dec
 c_func
 (paren
 op_amp
 id|ip_vs_conn_no_cport_cnt
-)paren
-suffix:semicolon
-id|ip_vs_conn_unhash
-c_func
-(paren
-id|cp
 )paren
 suffix:semicolon
 id|cp-&gt;flags
@@ -991,6 +1017,14 @@ id|cp-&gt;cport
 op_assign
 id|cport
 suffix:semicolon
+)brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|cp-&gt;lock
+)paren
+suffix:semicolon
 multiline_comment|/* hash on new dport */
 id|ip_vs_conn_hash
 c_func
@@ -998,6 +1032,7 @@ c_func
 id|cp
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; *&t;Bind a connection entry with the corresponding packet_xmit.&n; *&t;Called by ip_vs_conn_new.&n; */
 DECL|function|ip_vs_bind_xmit
@@ -1602,12 +1637,22 @@ id|ct-&gt;dport
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Invalidate the connection template&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|ct-&gt;cport
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|ip_vs_conn_unhash
 c_func
 (paren
 id|ct
 )paren
-suffix:semicolon
+)paren
+(brace
 id|ct-&gt;dport
 op_assign
 l_int|65535
@@ -1626,6 +1671,8 @@ c_func
 id|ct
 )paren
 suffix:semicolon
+)brace
+)brace
 multiline_comment|/*&n;&t;&t; * Simply decrease the refcnt of the template,&n;&t;&t; * don&squot;t restart its timer.&n;&t;&t; */
 id|atomic_dec
 c_func
@@ -1694,11 +1741,18 @@ r_goto
 id|expire_later
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;unhash it if it is hashed in the conn table&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
 id|ip_vs_conn_unhash
 c_func
 (paren
 id|cp
 )paren
+)paren
+r_goto
+id|expire_later
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;refcnt==1 implies I&squot;m the only one referrer&n;&t; */
 r_if
