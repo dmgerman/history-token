@@ -1384,6 +1384,7 @@ r_goto
 id|out_clean
 suffix:semicolon
 )brace
+macro_line|#if defined CONFIG_PNP
 multiline_comment|/* now that the user has specified an IO port and we haven&squot;t detected&n;&t; * any devices, disable pnp support */
 id|isapnp
 op_assign
@@ -1396,6 +1397,7 @@ op_amp
 id|scl200wdt_pnp_driver
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
