@@ -348,6 +348,18 @@ op_star
 id|return_value
 )paren
 suffix:semicolon
+r_void
+id|acpi_db_generate_gpe
+(paren
+r_char
+op_star
+id|gpe_arg
+comma
+r_char
+op_star
+id|block_arg
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * dbdisply - debug display commands&n; */
 r_void
 id|acpi_db_display_method_info
