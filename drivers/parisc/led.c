@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/stddef.h&gt;&t;/* for offsetof() */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
@@ -66,10 +66,8 @@ r_static
 r_char
 id|lcd_text_default
 (braket
+l_int|32
 )braket
-op_assign
-l_string|&quot;Linux &quot;
-id|UTS_RELEASE
 suffix:semicolon
 macro_line|#if 0
 mdefine_line|#define DPRINTK(x)&t;printk x
@@ -2225,6 +2223,21 @@ id|chassis_info
 suffix:semicolon
 r_int
 id|ret
+suffix:semicolon
+id|snprintf
+c_func
+(paren
+id|lcd_text_default
+comma
+r_sizeof
+(paren
+id|lcd_text_default
+)paren
+comma
+l_string|&quot;Linux %s&quot;
+comma
+id|system_utsname.release
+)paren
 suffix:semicolon
 multiline_comment|/* Work around the buggy PDC of KittyHawk-machines */
 r_switch

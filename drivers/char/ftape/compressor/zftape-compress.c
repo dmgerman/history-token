@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *      Copyright (C) 1994-1997 Claus-Justus Heine&n;&n; This program is free software; you can redistribute it and/or&n; modify it under the terms of the GNU General Public License as&n; published by the Free Software Foundation; either version 2, or (at&n; your option) any later version.&n; &n; This program is distributed in the hope that it will be useful, but&n; WITHOUT ANY WARRANTY; without even the implied warranty of&n; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; General Public License for more details.&n; &n; You should have received a copy of the GNU General Public License&n; along with this program; see the file COPYING.  If not, write to&n; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139,&n; USA.&n; &n; *&n; *     This file implements a &quot;generic&quot; interface between the *&n; *     zftape-driver and a compression-algorithm. The *&n; *     compression-algorithm currently used is a LZ77. I use the *&n; *     implementation lzrw3 by Ross N. Williams (Renaissance *&n; *     Software). The compression program itself is in the file&n; *     lzrw3.c * and lzrw3.h.  To adopt another compression algorithm&n; *     the functions * zft_compress() and zft_uncompress() must be&n; *     changed * appropriately. See below.&n; */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -4498,27 +4497,18 @@ id|ft_t_info
 )paren
 (brace
 id|printk
-c_func
 (paren
 id|KERN_INFO
 l_string|&quot;(c) 1997 Claus-Justus Heine (claus@momo.math.rwth-aachen.de)&bslash;n&quot;
 id|KERN_INFO
 l_string|&quot;Compressor for zftape (lzrw3 algorithm)&bslash;n&quot;
-id|KERN_INFO
-l_string|&quot;Compiled for kernel version %s&bslash;n&quot;
-comma
-id|UTS_RELEASE
-)paren
-suffix:semicolon
 )brace
 macro_line|#else /* !MODULE */
 multiline_comment|/* print a short no-nonsense boot message */
 id|printk
 c_func
 (paren
-l_string|&quot;zftape compressor v1.00a 970514 for Linux &quot;
-id|UTS_RELEASE
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;zftape compressor v1.00a 970514&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk

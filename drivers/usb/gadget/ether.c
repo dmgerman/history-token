@@ -14,8 +14,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/uts.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
@@ -8165,10 +8164,11 @@ comma
 r_sizeof
 id|manufacturer
 comma
-id|UTS_SYSNAME
-l_string|&quot; &quot;
-id|UTS_RELEASE
-l_string|&quot;/%s&quot;
+l_string|&quot;%s %s/%s&quot;
+comma
+id|system_utsname.sysname
+comma
+id|system_utsname.release
 comma
 id|gadget-&gt;name
 )paren

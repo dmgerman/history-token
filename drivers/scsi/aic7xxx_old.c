@@ -11,7 +11,6 @@ macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -39479,11 +39478,9 @@ id|cmd
 id|printk
 c_func
 (paren
-l_string|&quot;aic7xxx driver version %s/%s&bslash;n&quot;
+l_string|&quot;aic7xxx driver version %s&bslash;n&quot;
 comma
 id|AIC7XXX_C_VERSION
-comma
-id|UTS_RELEASE
 )paren
 suffix:semicolon
 id|printk

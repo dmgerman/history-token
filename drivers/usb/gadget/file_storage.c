@@ -34,8 +34,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
-macro_line|#include &lt;linux/uts.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/usb_ch9.h&gt;
 macro_line|#include &lt;linux/usb_gadget.h&gt;
@@ -15801,10 +15800,11 @@ comma
 r_sizeof
 id|manufacturer
 comma
-id|UTS_SYSNAME
-l_string|&quot; &quot;
-id|UTS_RELEASE
-l_string|&quot; with %s&quot;
+l_string|&quot;%s %s with %s&quot;
+comma
+id|system_utsname.sysname
+comma
+id|system_utsname.release
 comma
 id|gadget-&gt;name
 )paren

@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
@@ -8694,7 +8693,7 @@ op_star
 )paren
 id|bcc_ptr
 comma
-id|UTS_RELEASE
+id|system_utsname.release
 comma
 l_int|32
 comma
@@ -8858,7 +8857,7 @@ c_func
 (paren
 id|bcc_ptr
 comma
-id|UTS_RELEASE
+id|system_utsname.release
 )paren
 suffix:semicolon
 id|bcc_ptr
@@ -8866,7 +8865,7 @@ op_add_assign
 id|strlen
 c_func
 (paren
-id|UTS_RELEASE
+id|system_utsname.release
 )paren
 op_plus
 l_int|1
@@ -10105,7 +10104,7 @@ op_star
 )paren
 id|bcc_ptr
 comma
-id|UTS_RELEASE
+id|system_utsname.release
 comma
 l_int|32
 comma
@@ -10260,7 +10259,7 @@ c_func
 (paren
 id|bcc_ptr
 comma
-id|UTS_RELEASE
+id|system_utsname.release
 )paren
 suffix:semicolon
 id|bcc_ptr
@@ -10268,7 +10267,7 @@ op_add_assign
 id|strlen
 c_func
 (paren
-id|UTS_RELEASE
+id|system_utsname.release
 )paren
 op_plus
 l_int|1
@@ -11630,7 +11629,7 @@ op_star
 )paren
 id|bcc_ptr
 comma
-id|UTS_RELEASE
+id|system_utsname.release
 comma
 l_int|32
 comma
@@ -11743,7 +11742,7 @@ c_func
 (paren
 id|bcc_ptr
 comma
-id|UTS_RELEASE
+id|system_utsname.release
 )paren
 suffix:semicolon
 id|bcc_ptr
@@ -11751,7 +11750,7 @@ op_add_assign
 id|strlen
 c_func
 (paren
-id|UTS_RELEASE
+id|system_utsname.release
 )paren
 op_plus
 l_int|1
@@ -13409,7 +13408,7 @@ op_star
 )paren
 id|bcc_ptr
 comma
-id|UTS_RELEASE
+id|system_utsname.release
 comma
 l_int|32
 comma
@@ -13685,7 +13684,7 @@ c_func
 (paren
 id|bcc_ptr
 comma
-id|UTS_RELEASE
+id|system_utsname.release
 )paren
 suffix:semicolon
 id|bcc_ptr
@@ -13693,7 +13692,7 @@ op_add_assign
 id|strlen
 c_func
 (paren
-id|UTS_RELEASE
+id|system_utsname.release
 )paren
 op_plus
 l_int|1

@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
-macro_line|#include &lt;linux/uts.h&gt;&t;&t;&t;/* for UTS_SYSNAME */
+macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
@@ -578,9 +578,9 @@ id|buf
 comma
 l_string|&quot;%s %s %s&quot;
 comma
-id|UTS_SYSNAME
+id|system_utsname.sysname
 comma
-id|UTS_RELEASE
+id|system_utsname.release
 comma
 id|hcd-&gt;driver-&gt;description
 )paren

@@ -1,7 +1,6 @@
 multiline_comment|/*&n; *      Copyright (C) 1993-1996 Bas Laarhoven,&n; *                (C) 1996-1997 Claus-Justus Heine.&n;&n; This program is free software; you can redistribute it and/or modify&n; it under the terms of the GNU General Public License as published by&n; the Free Software Foundation; either version 2, or (at your option)&n; any later version.&n;&n; This program is distributed in the hope that it will be useful,&n; but WITHOUT ANY WARRANTY; without even the implied warranty of&n; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; GNU General Public License for more details.&n;&n; You should have received a copy of the GNU General Public License&n; along with this program; see the file COPYING.  If not, write to&n; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n; *&n; *      This file contains the code that interfaces the kernel&n; *      for the QIC-40/80/3010/3020 floppy-tape driver for Linux.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -84,7 +83,6 @@ id|ft_t_info
 )paren
 (brace
 id|printk
-c_func
 (paren
 id|KERN_INFO
 l_string|&quot;(c) 1993-1996 Bas Laarhoven (bas@vimec.nl)&bslash;n&quot;
@@ -94,12 +92,6 @@ id|KERN_INFO
 l_string|&quot;(c) 1996-1997 Claus-Justus Heine (claus@momo.math.rwth-aachen.de)&bslash;n&quot;
 id|KERN_INFO
 l_string|&quot;QIC-117 driver for QIC-40/80/3010/3020 floppy tape drives&bslash;n&quot;
-id|KERN_INFO
-l_string|&quot;Compiled for Linux version %s&bslash;n&quot;
-comma
-id|UTS_RELEASE
-)paren
-suffix:semicolon
 )brace
 macro_line|#else /* !MODULE */
 multiline_comment|/* print a short no-nonsense boot message */
@@ -108,8 +100,6 @@ c_func
 (paren
 id|KERN_INFO
 id|FTAPE_VERSION
-l_string|&quot; for Linux &quot;
-id|UTS_RELEASE
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
