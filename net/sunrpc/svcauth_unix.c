@@ -11,6 +11,7 @@ DECL|macro|RPCDBG_FACILITY
 mdefine_line|#define RPCDBG_FACILITY&t;RPCDBG_AUTH
 multiline_comment|/*&n; * AUTHUNIX and AUTHNULL credentials are both handled here.&n; * AUTHNULL is treated just like AUTHUNIX except that the uid/gid&n; * are always nobody (-2).  i.e. we do the same IP address checks for&n; * AUTHNULL as for AUTHUNIX, and that is done here.&n; */
 DECL|function|strdup
+r_static
 r_char
 op_star
 id|strdup
