@@ -1559,30 +1559,6 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* access a scratch register */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|info-&gt;pt
-)paren
-(brace
-id|UNW_DPRINT
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;unwind.%s: no pt-regs; cannot access r%d&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|regnum
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 id|pt
 op_assign
 id|get_scratch_regs
