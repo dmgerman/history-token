@@ -2,6 +2,7 @@ macro_line|#ifndef __LINUX_KEYBOARD_H
 DECL|macro|__LINUX_KEYBOARD_H
 mdefine_line|#define __LINUX_KEYBOARD_H
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/input.h&gt;
 DECL|macro|KG_SHIFT
 mdefine_line|#define KG_SHIFT&t;0
 DECL|macro|KG_CTRL
@@ -23,10 +24,10 @@ mdefine_line|#define KG_CAPSSHIFT&t;8
 DECL|macro|NR_SHIFT
 mdefine_line|#define NR_SHIFT&t;9
 DECL|macro|NR_KEYS
-mdefine_line|#define NR_KEYS&t;&t;128
+mdefine_line|#define NR_KEYS&t;&t;(KEY_MAX+1)
 DECL|macro|MAX_NR_KEYMAPS
 mdefine_line|#define MAX_NR_KEYMAPS&t;256
-multiline_comment|/* This means 64Kb if all keymaps are allocated. Only the superuser&n;&t;may increase the number of keymaps beyond MAX_NR_OF_USER_KEYMAPS. */
+multiline_comment|/* This means 128Kb if all keymaps are allocated. Only the superuser&n;&t;may increase the number of keymaps beyond MAX_NR_OF_USER_KEYMAPS. */
 DECL|macro|MAX_NR_OF_USER_KEYMAPS
 mdefine_line|#define MAX_NR_OF_USER_KEYMAPS 256 &t;/* should be at least 7 */
 macro_line|#ifdef __KERNEL__
