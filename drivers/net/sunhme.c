@@ -25,6 +25,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -13725,6 +13726,10 @@ id|parent
 op_eq
 l_int|NULL
 )paren
+(brace
+r_if
+c_cond
+(paren
 id|pci_assign_resource
 c_func
 (paren
@@ -13732,7 +13737,13 @@ id|pdev
 comma
 id|PCI_ROM_RESOURCE
 )paren
+OL
+l_int|0
+)paren
+r_goto
+id|use_random
 suffix:semicolon
+)brace
 id|pci_read_config_dword
 c_func
 (paren
@@ -13839,6 +13850,42 @@ id|pdev-&gt;rom_base_reg
 comma
 id|rom_reg_orig
 )paren
+suffix:semicolon
+r_return
+suffix:semicolon
+id|use_random
+suffix:colon
+multiline_comment|/* Sun MAC prefix then 3 random bytes. */
+id|dev_addr
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0x08
+suffix:semicolon
+id|dev_addr
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0x00
+suffix:semicolon
+id|dev_addr
+(braket
+l_int|2
+)braket
+op_assign
+l_int|0x20
+suffix:semicolon
+id|get_random_bytes
+c_func
+(paren
+id|dev_addr
+comma
+l_int|3
+)paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 macro_line|#endif /* !(__sparc__) */
