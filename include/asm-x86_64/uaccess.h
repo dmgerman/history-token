@@ -293,6 +293,7 @@ r_void
 op_star
 id|dst
 comma
+r_const
 r_void
 op_star
 id|src
@@ -643,6 +644,7 @@ r_void
 op_star
 id|dst
 comma
+r_const
 r_void
 op_star
 id|src

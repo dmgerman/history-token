@@ -2008,7 +2008,7 @@ id|IFNAMSIZ
 )braket
 suffix:semicolon
 DECL|member|ifru_data
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|ifru_data
 suffix:semicolon
 DECL|member|ifr_ifru
@@ -2027,7 +2027,7 @@ id|ifc_len
 suffix:semicolon
 multiline_comment|/* size of buffer       */
 DECL|member|ifcbuf
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|ifcbuf
 suffix:semicolon
 )brace
@@ -4854,7 +4854,7 @@ l_int|16
 )braket
 suffix:semicolon
 DECL|member|smem_start
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|smem_start
 suffix:semicolon
 DECL|member|smem_len
@@ -4890,7 +4890,7 @@ id|__u32
 id|line_length
 suffix:semicolon
 DECL|member|mmio_start
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|mmio_start
 suffix:semicolon
 DECL|member|mmio_len
@@ -4923,19 +4923,19 @@ id|__u32
 id|len
 suffix:semicolon
 DECL|member|red
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|red
 suffix:semicolon
 DECL|member|green
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|green
 suffix:semicolon
 DECL|member|blue
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|blue
 suffix:semicolon
 DECL|member|transp
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|transp
 suffix:semicolon
 )brace
@@ -6162,7 +6162,7 @@ id|fmt_gap
 suffix:semicolon
 DECL|member|name
 r_const
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|name
 suffix:semicolon
 )brace
@@ -6316,7 +6316,7 @@ r_int
 id|last_checked
 suffix:semicolon
 DECL|member|dmabuf
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|dmabuf
 suffix:semicolon
 DECL|member|bufblocks
@@ -10209,7 +10209,7 @@ r_struct
 id|ppp_option_data32
 (brace
 DECL|member|ptr
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|ptr
 suffix:semicolon
 DECL|member|length
@@ -10597,11 +10597,11 @@ id|__u32
 id|mt_erreg
 suffix:semicolon
 DECL|member|mt_fileno
-id|__kernel_daddr_t32
+id|compat_daddr_t
 id|mt_fileno
 suffix:semicolon
 DECL|member|mt_blkno
-id|__kernel_daddr_t32
+id|compat_daddr_t
 id|mt_blkno
 suffix:semicolon
 )brace
@@ -11497,7 +11497,7 @@ r_int
 id|cdread_lba
 suffix:semicolon
 DECL|member|cdread_bufaddr
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|cdread_bufaddr
 suffix:semicolon
 DECL|member|cdread_buflen
@@ -11524,7 +11524,7 @@ r_int
 id|nframes
 suffix:semicolon
 DECL|member|buf
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|buf
 suffix:semicolon
 )brace
@@ -11542,7 +11542,7 @@ id|CDROM_PACKET_SIZE
 )braket
 suffix:semicolon
 DECL|member|buffer
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|buffer
 suffix:semicolon
 DECL|member|buflen
@@ -11555,11 +11555,11 @@ r_int
 id|stat
 suffix:semicolon
 DECL|member|sense
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|sense
 suffix:semicolon
 DECL|member|reserved
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|reserved
 (braket
 l_int|3
@@ -11606,7 +11606,7 @@ r_struct
 id|cdrom_generic_command
 id|cgc
 suffix:semicolon
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|addr
 suffix:semicolon
 r_char
@@ -13596,7 +13596,7 @@ r_int
 id|length
 suffix:semicolon
 DECL|member|arg
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|arg
 suffix:semicolon
 )brace
@@ -13610,7 +13610,7 @@ r_int
 id|length
 suffix:semicolon
 DECL|member|buffer
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|buffer
 suffix:semicolon
 )brace
@@ -13854,7 +13854,7 @@ c_cond
 id|iobuf32.buffer
 op_eq
 (paren
-id|__kernel_caddr_t32
+id|compat_caddr_t
 )paren
 l_int|NULL
 op_logical_or
@@ -14153,7 +14153,7 @@ c_cond
 id|sioc32.arg
 op_eq
 (paren
-id|__kernel_caddr_t32
+id|compat_caddr_t
 )paren
 l_int|NULL
 op_logical_or

@@ -440,12 +440,6 @@ c_func
 r_void
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;VSYSCALL: consistency checks...&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -523,21 +517,9 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;passed...mapping...&quot;
-)paren
-suffix:semicolon
 id|map_vsyscall
 c_func
 (paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;done.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

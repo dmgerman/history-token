@@ -2775,25 +2775,6 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We have the boot CPU online for sure.&n;&t; */
-id|set_bit
-c_func
-(paren
-l_int|0
-comma
-op_amp
-id|cpu_online_map
-)paren
-suffix:semicolon
-id|set_bit
-c_func
-(paren
-l_int|0
-comma
-op_amp
-id|cpu_callout_map
-)paren
-suffix:semicolon
 id|x86_apicid_to_cpu
 (braket
 id|boot_cpu_id

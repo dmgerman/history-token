@@ -286,6 +286,12 @@ id|delim
 op_assign
 l_string|&quot;:&quot;
 suffix:semicolon
+r_char
+id|namebuf
+(braket
+l_int|128
+)braket
+suffix:semicolon
 id|symname
 op_assign
 id|kallsyms_lookup
@@ -301,6 +307,8 @@ id|offset
 comma
 op_amp
 id|modname
+comma
+id|namebuf
 )paren
 suffix:semicolon
 r_if
