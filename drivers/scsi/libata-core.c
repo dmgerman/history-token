@@ -154,12 +154,11 @@ op_assign
 l_int|1
 suffix:semicolon
 DECL|variable|ata_wq
+r_static
 r_struct
 id|workqueue_struct
 op_star
 id|ata_wq
-op_assign
-l_int|NULL
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func

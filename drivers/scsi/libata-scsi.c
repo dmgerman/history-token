@@ -6,7 +6,6 @@ macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;linux/libata.h&gt;
-macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &quot;libata.h&quot;
 DECL|typedef|ata_xlat_func_t
 r_typedef
