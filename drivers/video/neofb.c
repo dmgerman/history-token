@@ -1952,7 +1952,7 @@ multiline_comment|/*&n; * Hardware Acceleration for Neo2200+&n; */
 DECL|function|neo2200_sync
 r_static
 r_inline
-r_void
+r_int
 id|neo2200_sync
 c_func
 (paren
@@ -1986,6 +1986,9 @@ l_int|1
 )paren
 id|waitcycles
 op_increment
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|neo2200_wait_fifo
