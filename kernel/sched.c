@@ -180,7 +180,10 @@ comma
 id|expired_timestamp
 comma
 DECL|member|nr_uninterruptible
+DECL|member|timestamp_last_tick
 id|nr_uninterruptible
+comma
+id|timestamp_last_tick
 suffix:semicolon
 DECL|member|curr
 DECL|member|idle
@@ -3524,6 +3527,19 @@ comma
 id|this_rq-&gt;active
 )paren
 suffix:semicolon
+id|p-&gt;timestamp
+op_assign
+id|sched_clock
+c_func
+(paren
+)paren
+op_minus
+(paren
+id|src_rq-&gt;timestamp_last_tick
+op_minus
+id|p-&gt;timestamp
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Note that idle threads have a prio of MAX_PRIO, for this test&n;&t; * to be always true for them.&n;&t; */
 r_if
 c_cond
@@ -3569,10 +3585,7 @@ r_int
 r_int
 id|delta
 op_assign
-id|sched_clock
-c_func
-(paren
-)paren
+id|rq-&gt;timestamp_last_tick
 op_minus
 id|tsk-&gt;timestamp
 suffix:semicolon
@@ -4249,6 +4262,13 @@ op_star
 id|p
 op_assign
 id|current
+suffix:semicolon
+id|rq-&gt;timestamp_last_tick
+op_assign
+id|sched_clock
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -8976,6 +8996,10 @@ id|rq_dest-&gt;curr
 )paren
 suffix:semicolon
 )brace
+id|p-&gt;timestamp
+op_assign
+id|rq_dest-&gt;timestamp_last_tick
+suffix:semicolon
 id|out
 suffix:colon
 id|double_rq_unlock
