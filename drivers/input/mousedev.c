@@ -728,19 +728,13 @@ suffix:semicolon
 r_case
 id|EV_KEY
 suffix:colon
-r_switch
-c_cond
-(paren
-id|code
-)paren
-(brace
-r_case
-id|BTN_TOUCH
-suffix:colon
-multiline_comment|/* Handle touchpad data */
 r_if
 c_cond
 (paren
+id|code
+op_eq
+id|BTN_TOUCH
+op_logical_and
 id|test_bit
 c_func
 (paren
@@ -750,6 +744,7 @@ id|handle-&gt;dev-&gt;keybit
 )paren
 )paren
 (brace
+multiline_comment|/* Handle touchpad data */
 id|list-&gt;touch
 op_assign
 id|value
@@ -764,9 +759,18 @@ id|list-&gt;pkt_count
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+r_break
 suffix:semicolon
 )brace
+r_switch
+c_cond
+(paren
+id|code
+)paren
+(brace
+r_case
+id|BTN_TOUCH
+suffix:colon
 r_case
 id|BTN_0
 suffix:colon
