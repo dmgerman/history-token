@@ -2202,12 +2202,19 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ACPI
+macro_line|#ifdef CONFIG_PNPACPI
+r_extern
+r_int
+id|pnpacpi_disabled
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|acpi_disabled
+op_logical_and
+op_logical_neg
+id|pnpacpi_disabled
 )paren
 (brace
 id|pnpbios_disabled
@@ -2218,7 +2225,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;PnPBIOS: Disabled by ACPI&bslash;n&quot;
+l_string|&quot;PnPBIOS: Disabled by ACPI PNP&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
