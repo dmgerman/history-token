@@ -27,6 +27,14 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+r_extern
+id|cpumask_t
+id|__cacheline_aligned
+id|pending_irq_cpumask
+(braket
+id|NR_IRQS
+)braket
+suffix:semicolon
 multiline_comment|/*&n; * Linux has a controller-independent x86 interrupt architecture.&n; * every controller has a &squot;controller-template&squot;, that is used&n; * by the main code to do the right thing. Each driver-visible&n; * interrupt source is transparently wired to the appropriate&n; * controller. Thus drivers need not be aware of the&n; * interrupt-controller.&n; *&n; * Various interrupt controllers we handle: 8259 PIC, SMP IO-APIC,&n; * PIIX4&squot;s internal 8259 PIC and SGI&squot;s Visual Workstation Cobalt (IO-)APIC.&n; * (IO-APICs assumed to be messaging to Pentium local-APICs)&n; *&n; * the code is designed to be easily extended with new/different&n; * interrupt controllers, without having to do assembly magic.&n; */
 multiline_comment|/*&n; * Controller mappings for all interrupt sources:&n; */
 DECL|variable|__cacheline_aligned
@@ -3077,10 +3085,35 @@ id|data
 r_int
 id|len
 op_assign
+id|sprintf
+c_func
+(paren
+id|page
+comma
+l_string|&quot;%s&quot;
+comma
+id|irq_redir
+(braket
+(paren
+r_int
+)paren
+id|data
+)braket
+ques
+c_cond
+l_string|&quot;r &quot;
+suffix:colon
+l_string|&quot;&quot;
+)paren
+suffix:semicolon
+id|len
+op_add_assign
 id|cpumask_scnprintf
 c_func
 (paren
 id|page
+op_plus
+id|len
 comma
 id|count
 comma
@@ -3191,6 +3224,10 @@ c_func
 (paren
 id|irq
 )paren
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 r_if
 c_cond
@@ -3332,14 +3369,29 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|desc-&gt;handler
-op_member_access_from_pointer
-id|set_affinity
+id|spin_lock_irqsave
 c_func
 (paren
-id|irq
+op_amp
+id|desc-&gt;lock
 comma
+id|flags
+)paren
+suffix:semicolon
+id|pending_irq_cpumask
+(braket
+id|irq
+)braket
+op_assign
 id|new_value
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|desc-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
