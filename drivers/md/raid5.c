@@ -8215,10 +8215,18 @@ id|conf
 )paren
 suffix:semicolon
 multiline_comment|/* Ok, everything is just fine now */
-r_return
+id|mddev-&gt;array_size
+op_assign
+id|mddev-&gt;size
+op_star
 (paren
-l_int|0
+id|mddev-&gt;raid_disks
+op_minus
+l_int|1
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 m_abort
 suffix:colon

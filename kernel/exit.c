@@ -1911,14 +1911,14 @@ c_cond
 (paren
 id|p-&gt;pdeath_signal
 )paren
-id|send_sig
+id|send_group_sig_info
 c_func
 (paren
 id|p-&gt;pdeath_signal
 comma
-id|p
-comma
 l_int|0
+comma
+id|p
 )paren
 suffix:semicolon
 multiline_comment|/* Move the child from its dying parent to the new one.  */

@@ -982,6 +982,13 @@ comma
 id|CPUFREQ_PRECHANGE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|old_divisor
+op_ne
+id|divisor
+)paren
 id|us2e_transition
 c_func
 (paren

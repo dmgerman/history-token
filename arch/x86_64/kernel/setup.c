@@ -1886,7 +1886,7 @@ id|c-&gt;x86
 r_case
 l_int|15
 suffix:colon
-multiline_comment|/* Should distingush Models here, but this is only&n;&t;&t;&t;   a fallback anyways. */
+multiline_comment|/* Should distinguish Models here, but this is only&n;&t;&t;&t;   a fallback anyways. */
 id|strcpy
 c_func
 (paren

@@ -3044,6 +3044,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|FB_VISUAL_PSEUDOCOLOR
+suffix:colon
+r_case
 id|FB_VISUAL_STATIC_PSEUDOCOLOR
 suffix:colon
 r_if

@@ -298,7 +298,7 @@ l_int|1
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Serial functions losely based on a similar package from Klaus P. Gerlicher */
+multiline_comment|/* Serial functions loosely based on a similar package from Klaus P. Gerlicher */
 DECL|variable|early_serial_base
 r_int
 id|early_serial_base

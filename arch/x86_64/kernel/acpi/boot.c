@@ -18,9 +18,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
-macro_line|#include &lt;asm/desc.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 r_extern
 r_int
 id|acpi_disabled
@@ -744,7 +742,7 @@ id|result
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * The default interrupt routing model is PIC (8259).  This gets&n;&t; * overridden if IOAPICs are enumerated (below).&n;&t; */
+multiline_comment|/*&n;&t; * The default interrupt routing model is PIC (8259).  This gets&n;&t; * overriden if IOAPICs are enumerated (below).&n;&t; */
 id|acpi_irq_model
 op_assign
 id|ACPI_IRQ_MODEL_PIC
@@ -875,7 +873,7 @@ id|PREFIX
 l_string|&quot;Multiple MADT tables exist&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Local APIC&n;&t; * ----------&n;&t; * Note that the LAPIC address is obtained from the MADT (32-bit value)&n;&t; * and (optionally) overridden by a LAPIC_ADDR_OVR entry (64-bit value).&n;&t; */
+multiline_comment|/* &n;&t; * Local APIC&n;&t; * ----------&n;&t; * Note that the LAPIC address is obtained from the MADT (32-bit value)&n;&t; * and (optionally) overriden by a LAPIC_ADDR_OVR entry (64-bit value).&n;&t; */
 id|result
 op_assign
 id|acpi_table_parse_madt
@@ -1176,202 +1174,4 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /*CONFIG_ACPI_BOOT*/
-multiline_comment|/* --------------------------------------------------------------------------&n;                              Low-Level Sleep Support&n;   -------------------------------------------------------------------------- */
-macro_line|#ifdef CONFIG_ACPI_SLEEP
-r_extern
-r_void
-id|acpi_prepare_wakeup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_char
-id|acpi_wakeup
-(braket
-)braket
-comma
-id|acpi_wakeup_end
-(braket
-)braket
-comma
-id|s3_prot16
-(braket
-)braket
-suffix:semicolon
-multiline_comment|/* address in low memory of the wakeup routine. */
-DECL|variable|acpi_wakeup_address
-r_int
-r_int
-id|acpi_wakeup_address
-suffix:semicolon
-multiline_comment|/**&n; * acpi_save_state_mem - save kernel state&n; */
-DECL|function|acpi_save_state_mem
-r_int
-id|acpi_save_state_mem
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|acpi_wakeup_address
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|acpi_wakeup_address
-comma
-id|acpi_wakeup
-comma
-id|acpi_wakeup_end
-op_minus
-id|acpi_wakeup
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * acpi_save_state_disk - save kernel state to disk&n; *&n; * Assume preemption/interrupts are already turned off and that we&squot;re running&n; * on the BP (note this doesn&squot;t imply SMP is handled correctly)&n; */
-DECL|function|acpi_save_state_disk
-r_int
-id|acpi_save_state_disk
-(paren
-r_void
-)paren
-(brace
-r_int
-r_int
-id|pbase
-op_assign
-id|read_cr3
-c_func
-(paren
-)paren
-op_amp
-id|PAGE_MASK
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pbase
-op_ge
-l_int|0xffffffffUL
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;ACPI: High page table. Suspend disabled.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|set_seg_base
-c_func
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|GDT_ENTRY_KERNELCS16
-comma
-id|s3_prot16
-)paren
-suffix:semicolon
-id|swap_low_mappings
-c_func
-(paren
-)paren
-suffix:semicolon
-id|acpi_prepare_wakeup
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * acpi_restore_state&n; */
-DECL|function|acpi_restore_state_mem
-r_void
-id|acpi_restore_state_mem
-(paren
-r_void
-)paren
-(brace
-id|swap_low_mappings
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * acpi_reserve_bootmem - do _very_ early ACPI initialisation&n; *&n; * We allocate a page in 1MB low memory for the real-mode wakeup&n; * routine for when we come back from a sleep state. The&n; * runtime allocator allows specification of &lt;16M pages, but not&n; * &lt;1M pages.&n; */
-DECL|function|acpi_reserve_bootmem
-r_void
-id|__init
-id|acpi_reserve_bootmem
-c_func
-(paren
-r_void
-)paren
-(brace
-id|acpi_wakeup_address
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|alloc_bootmem_low
-c_func
-(paren
-id|PAGE_SIZE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|acpi_wakeup_address
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;ACPI: Cannot allocate lowmem. S3 disabled.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif /*CONFIG_ACPI_SLEEP*/
-DECL|function|acpi_pci_link_exit
-r_void
-id|acpi_pci_link_exit
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
 eof

@@ -1256,6 +1256,14 @@ id|event
 r_goto
 id|fail_init
 suffix:semicolon
+id|event-&gt;iif
+op_assign
+id|sctp_chunk_iif
+c_func
+(paren
+id|chunk
+)paren
+suffix:semicolon
 multiline_comment|/* Note:  Not clearing the entire event struct as&n;&t; * this is just a fragment of the real event.  However,&n;&t; * we still need to do rwnd accounting. &n;&t; */
 r_for
 c_loop

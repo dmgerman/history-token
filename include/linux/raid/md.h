@@ -35,13 +35,6 @@ DECL|macro|MD_MINOR_VERSION
 mdefine_line|#define MD_MINOR_VERSION                90
 DECL|macro|MD_PATCHLEVEL_VERSION
 mdefine_line|#define MD_PATCHLEVEL_VERSION           0
-r_extern
-id|sector_t
-id|md_size
-(braket
-id|MAX_MD_DEVS
-)braket
-suffix:semicolon
 DECL|function|bdev_partition_name
 r_extern
 r_inline
