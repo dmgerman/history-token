@@ -285,20 +285,6 @@ c_func
 id|scsi_io_completion
 )paren
 suffix:semicolon
-DECL|variable|scsi_register_blocked_host
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|scsi_register_blocked_host
-)paren
-suffix:semicolon
-DECL|variable|scsi_deregister_blocked_host
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|scsi_deregister_blocked_host
-)paren
-suffix:semicolon
 DECL|variable|scsi_slave_attach
 id|EXPORT_SYMBOL
 c_func
@@ -325,6 +311,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|scsi_device_put
+)paren
+suffix:semicolon
+DECL|variable|scsi_set_device_offline
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_set_device_offline
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This symbol is for the highlevel drivers (e.g. sg) only.&n; */

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: $&n; *  linux/drivers/scsi/wd7000.c&n; *&n; *  Copyright (C) 1992  Thomas Wuensche&n; *&t;closely related to the aha1542 driver from Tommy Thorn&n; *&t;( as close as different hardware allows on a lowlevel-driver :-) )&n; *&n; *  Revised (and renamed) by John Boyd &lt;boyd@cis.ohio-state.edu&gt; to&n; *  accommodate Eric Youngdale&squot;s modifications to scsi.c.  Nov 1992.&n; *&n; *  Additional changes to support scatter/gather.  Dec. 1992.  tw/jb&n; *&n; *  No longer tries to reset SCSI bus at boot (it wasn&squot;t working anyway).&n; *  Rewritten to support multiple host adapters.&n; *  Miscellaneous cleanup.&n; *  So far, still doesn&squot;t do reset or abort correctly, since I have no idea&n; *  how to do them with this board (8^(.                      Jan 1994 jb&n; *&n; * This driver now supports both of the two standard configurations (per&n; * the 3.36 Owner&squot;s Manual, my latest reference) by the same method as&n; * before; namely, by looking for a BIOS signature.  Thus, the location of&n; * the BIOS signature determines the board configuration.  Until I have&n; * time to do something more flexible, users should stick to one of the&n; * following:&n; *&n; * Standard configuration for single-adapter systems:&n; *    - BIOS at CE00h&n; *    - I/O base address 350h&n; *    - IRQ level 15&n; *    - DMA channel 6&n; * Standard configuration for a second adapter in a system:&n; *    - BIOS at C800h&n; *    - I/O base address 330h&n; *    - IRQ level 11&n; *    - DMA channel 5&n; *&n; * Anyone who can recompile the kernel is welcome to add others as need&n; * arises, but unpredictable results may occur if there are conflicts.&n; * In any event, if there are multiple adapters in a system, they MUST&n; * use different I/O bases, IRQ levels, and DMA channels, since they will be&n; * indistinguishable (and in direct conflict) otherwise.&n; *&n; *   As a point of information, the NO_OP command toggles the CMD_RDY bit&n; * of the status port, and this fact could be used as a test for the I/O&n; * base address (or more generally, board detection).  There is an interrupt&n; * status port, so IRQ probing could also be done.  I suppose the full&n; * DMA diagnostic could be used to detect the DMA channel being used.  I&n; * haven&squot;t done any of this, though, because I think there&squot;s too much of&n; * a chance that such explorations could be destructive, if some other&n; * board&squot;s resources are used inadvertently.  So, call me a wimp, but I&n; * don&squot;t want to try it.  The only kind of exploration I trust is memory&n; * exploration, since it&squot;s more certain that reading memory won&squot;t be&n; * destructive.&n; *&n; * More to my liking would be a LILO boot command line specification, such&n; * as is used by the aha152x driver (and possibly others).  I&squot;ll look into&n; * it, as I have time...&n; *&n; *   I get mail occasionally from people who either are using or are&n; * considering using a WD7000 with Linux.  There is a variety of&n; * nomenclature describing WD7000&squot;s.  To the best of my knowledge, the&n; * following is a brief summary (from an old WD doc - I don&squot;t work for&n; * them or anything like that):&n; *&n; * WD7000-FASST2: This is a WD7000 board with the real-mode SST ROM BIOS&n; *        installed.  Last I heard, the BIOS was actually done by Columbia&n; *        Data Products.  The BIOS is only used by this driver (and thus&n; *        by Linux) to identify the board; none of it can be executed under&n; *        Linux.&n; *&n; * WD7000-ASC: This is the original adapter board, with or without BIOS.&n; *        The board uses a WD33C93 or WD33C93A SBIC, which in turn is&n; *        controlled by an onboard Z80 processor.  The board interface&n; *        visible to the host CPU is defined effectively by the Z80&squot;s&n; *        firmware, and it is this firmware&squot;s revision level that is&n; *        determined and reported by this driver.  (The version of the&n; *        on-board BIOS is of no interest whatsoever.)  The host CPU has&n; *        no access to the SBIC; hence the fact that it is a WD33C93 is&n; *        also of no interest to this driver.&n; *&n; * WD7000-AX:&n; * WD7000-MX:&n; * WD7000-EX: These are newer versions of the WD7000-ASC.  The -ASC is&n; *        largely built from discrete components; these boards use more&n; *        integration.  The -AX is an ISA bus board (like the -ASC),&n; *        the -MX is an MCA (i.e., PS/2) bus board), and the -EX is an&n; *        EISA bus board.&n; *&n; *  At the time of my documentation, the -?X boards were &quot;future&quot; products,&n; *  and were not yet available.  However, I vaguely recall that Thomas&n; *  Wuensche had an -AX, so I believe at least it is supported by this&n; *  driver.  I have no personal knowledge of either -MX or -EX boards.&n; *&n; *  P.S. Just recently, I&squot;ve discovered (directly from WD and Future&n; *  Domain) that all but the WD7000-EX have been out of production for&n; *  two years now.  FD has production rights to the 7000-EX, and are&n; *  producing it under a new name, and with a new BIOS.  If anyone has&n; *  one of the FD boards, it would be nice to come up with a signature&n; *  for it.&n; *                                                           J.B. Jan 1994.&n; *&n; *&n; *  Revisions by Miroslav Zagorac &lt;zaga@fly.cc.fer.hr&gt;&n; *&n; *  08/24/1996.&n; *&n; *  Enhancement for wd7000_detect function has been made, so you don&squot;t have&n; *  to enter BIOS ROM address in initialisation data (see struct Config).&n; *  We cannot detect IRQ, DMA and I/O base address for now, so we have to&n; *  enter them as arguments while wd_7000 is detected. If someone has IRQ,&n; *  DMA or I/O base address set to some other value, he can enter them in&n; *  configuration without any problem. Also I wrote a function wd7000_setup,&n; *  so now you can enter WD-7000 definition as kernel arguments,&n; *  as in lilo.conf:&n; *&n; *     append=&quot;wd7000=IRQ,DMA,IO&quot;&n; *&n; *  PS: If card BIOS ROM is disabled, function wd7000_detect now will recognize&n; *      adapter, unlike the old one. Anyway, BIOS ROM from WD7000 adapter is&n; *      useless for Linux. B^)&n; *&n; *&n; *  09/06/1996.&n; *&n; *  Autodetecting of I/O base address from wd7000_detect function is removed,&n; *  some little bugs removed, etc...&n; *&n; *  Thanks to Roger Scott for driver debugging.&n; *&n; *  06/07/1997&n; *&n; *  Added support for /proc file system (/proc/scsi/wd7000/[0...] files).&n; *  Now, driver can handle hard disks with capacity &gt;1GB.&n; *&n; *  01/15/1998&n; *&n; *  Added support for BUS_ON and BUS_OFF parameters in config line.&n; *  Miscellaneous cleanup.&n; *&n; *  03/01/1998&n; *&n; *  WD7000 driver now work on kernels &gt;= 2.1.x&n; *&n; *&n; * 12/31/2001 - Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * use host-&gt;host_lock, not io_request_lock, cleanups&n; *&n; * 2002/10/04 - Alan Cox &lt;alan@redhat.com&gt;&n; *&n; * Use dev_id for interrupts, kill __FUNCTION__ pasting&n; * Add a lock for the scb pool, clean up all other cli/sti usage stuff&n; * Use the adapter lock for the other places we had the cli&squot;s&n; *&n; * 2002/10/06 - Alan Cox &lt;alan@redhat.com&gt;&n; *&n; * Switch to new style error handling&n; * Clean up delay to udelay, and yielding sleeps&n; * Make host reset actually reset the card&n; * Make everything static&n; */
+multiline_comment|/* $Id: $&n; *  linux/drivers/scsi/wd7000.c&n; *&n; *  Copyright (C) 1992  Thomas Wuensche&n; *&t;closely related to the aha1542 driver from Tommy Thorn&n; *&t;( as close as different hardware allows on a lowlevel-driver :-) )&n; *&n; *  Revised (and renamed) by John Boyd &lt;boyd@cis.ohio-state.edu&gt; to&n; *  accommodate Eric Youngdale&squot;s modifications to scsi.c.  Nov 1992.&n; *&n; *  Additional changes to support scatter/gather.  Dec. 1992.  tw/jb&n; *&n; *  No longer tries to reset SCSI bus at boot (it wasn&squot;t working anyway).&n; *  Rewritten to support multiple host adapters.&n; *  Miscellaneous cleanup.&n; *  So far, still doesn&squot;t do reset or abort correctly, since I have no idea&n; *  how to do them with this board (8^(.                      Jan 1994 jb&n; *&n; * This driver now supports both of the two standard configurations (per&n; * the 3.36 Owner&squot;s Manual, my latest reference) by the same method as&n; * before; namely, by looking for a BIOS signature.  Thus, the location of&n; * the BIOS signature determines the board configuration.  Until I have&n; * time to do something more flexible, users should stick to one of the&n; * following:&n; *&n; * Standard configuration for single-adapter systems:&n; *    - BIOS at CE00h&n; *    - I/O base address 350h&n; *    - IRQ level 15&n; *    - DMA channel 6&n; * Standard configuration for a second adapter in a system:&n; *    - BIOS at C800h&n; *    - I/O base address 330h&n; *    - IRQ level 11&n; *    - DMA channel 5&n; *&n; * Anyone who can recompile the kernel is welcome to add others as need&n; * arises, but unpredictable results may occur if there are conflicts.&n; * In any event, if there are multiple adapters in a system, they MUST&n; * use different I/O bases, IRQ levels, and DMA channels, since they will be&n; * indistinguishable (and in direct conflict) otherwise.&n; *&n; *   As a point of information, the NO_OP command toggles the CMD_RDY bit&n; * of the status port, and this fact could be used as a test for the I/O&n; * base address (or more generally, board detection).  There is an interrupt&n; * status port, so IRQ probing could also be done.  I suppose the full&n; * DMA diagnostic could be used to detect the DMA channel being used.  I&n; * haven&squot;t done any of this, though, because I think there&squot;s too much of&n; * a chance that such explorations could be destructive, if some other&n; * board&squot;s resources are used inadvertently.  So, call me a wimp, but I&n; * don&squot;t want to try it.  The only kind of exploration I trust is memory&n; * exploration, since it&squot;s more certain that reading memory won&squot;t be&n; * destructive.&n; *&n; * More to my liking would be a LILO boot command line specification, such&n; * as is used by the aha152x driver (and possibly others).  I&squot;ll look into&n; * it, as I have time...&n; *&n; *   I get mail occasionally from people who either are using or are&n; * considering using a WD7000 with Linux.  There is a variety of&n; * nomenclature describing WD7000&squot;s.  To the best of my knowledge, the&n; * following is a brief summary (from an old WD doc - I don&squot;t work for&n; * them or anything like that):&n; *&n; * WD7000-FASST2: This is a WD7000 board with the real-mode SST ROM BIOS&n; *        installed.  Last I heard, the BIOS was actually done by Columbia&n; *        Data Products.  The BIOS is only used by this driver (and thus&n; *        by Linux) to identify the board; none of it can be executed under&n; *        Linux.&n; *&n; * WD7000-ASC: This is the original adapter board, with or without BIOS.&n; *        The board uses a WD33C93 or WD33C93A SBIC, which in turn is&n; *        controlled by an onboard Z80 processor.  The board interface&n; *        visible to the host CPU is defined effectively by the Z80&squot;s&n; *        firmware, and it is this firmware&squot;s revision level that is&n; *        determined and reported by this driver.  (The version of the&n; *        on-board BIOS is of no interest whatsoever.)  The host CPU has&n; *        no access to the SBIC; hence the fact that it is a WD33C93 is&n; *        also of no interest to this driver.&n; *&n; * WD7000-AX:&n; * WD7000-MX:&n; * WD7000-EX: These are newer versions of the WD7000-ASC.  The -ASC is&n; *        largely built from discrete components; these boards use more&n; *        integration.  The -AX is an ISA bus board (like the -ASC),&n; *        the -MX is an MCA (i.e., PS/2) bus board), and the -EX is an&n; *        EISA bus board.&n; *&n; *  At the time of my documentation, the -?X boards were &quot;future&quot; products,&n; *  and were not yet available.  However, I vaguely recall that Thomas&n; *  Wuensche had an -AX, so I believe at least it is supported by this&n; *  driver.  I have no personal knowledge of either -MX or -EX boards.&n; *&n; *  P.S. Just recently, I&squot;ve discovered (directly from WD and Future&n; *  Domain) that all but the WD7000-EX have been out of production for&n; *  two years now.  FD has production rights to the 7000-EX, and are&n; *  producing it under a new name, and with a new BIOS.  If anyone has&n; *  one of the FD boards, it would be nice to come up with a signature&n; *  for it.&n; *                                                           J.B. Jan 1994.&n; *&n; *&n; *  Revisions by Miroslav Zagorac &lt;zaga@fly.cc.fer.hr&gt;&n; *&n; *  08/24/1996.&n; *&n; *  Enhancement for wd7000_detect function has been made, so you don&squot;t have&n; *  to enter BIOS ROM address in initialisation data (see struct Config).&n; *  We cannot detect IRQ, DMA and I/O base address for now, so we have to&n; *  enter them as arguments while wd_7000 is detected. If someone has IRQ,&n; *  DMA or I/O base address set to some other value, he can enter them in&n; *  configuration without any problem. Also I wrote a function wd7000_setup,&n; *  so now you can enter WD-7000 definition as kernel arguments,&n; *  as in lilo.conf:&n; *&n; *     append=&quot;wd7000=IRQ,DMA,IO&quot;&n; *&n; *  PS: If card BIOS ROM is disabled, function wd7000_detect now will recognize&n; *      adapter, unlike the old one. Anyway, BIOS ROM from WD7000 adapter is&n; *      useless for Linux. B^)&n; *&n; *&n; *  09/06/1996.&n; *&n; *  Autodetecting of I/O base address from wd7000_detect function is removed,&n; *  some little bugs removed, etc...&n; *&n; *  Thanks to Roger Scott for driver debugging.&n; *&n; *  06/07/1997&n; *&n; *  Added support for /proc file system (/proc/scsi/wd7000/[0...] files).&n; *  Now, driver can handle hard disks with capacity &gt;1GB.&n; *&n; *  01/15/1998&n; *&n; *  Added support for BUS_ON and BUS_OFF parameters in config line.&n; *  Miscellaneous cleanup.&n; *&n; *  03/01/1998&n; *&n; *  WD7000 driver now work on kernels &gt;= 2.1.x&n; *&n; *&n; * 12/31/2001 - Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * use host-&gt;host_lock, not io_request_lock, cleanups&n; *&n; * 2002/10/04 - Alan Cox &lt;alan@redhat.com&gt;&n; *&n; * Use dev_id for interrupts, kill __FUNCTION__ pasting&n; * Add a lock for the scb pool, clean up all other cli/sti usage stuff&n; * Use the adapter lock for the other places we had the cli&squot;s&n; *&n; * 2002/10/06 - Alan Cox &lt;alan@redhat.com&gt;&n; *&n; * Switch to new style error handling&n; * Clean up delay to udelay, and yielding sleeps&n; * Make host reset actually reset the card&n; * Make everything static&n; *&n; * 2003/02/12 - Christoph Hellwig &lt;hch@infradead.org&gt;&n; *&n; * Cleaned up host template defintion&n; * Removed now obsolete wd7000.h&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -9,8 +9,8 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -28,8 +28,6 @@ macro_line|#else
 DECL|macro|dprintk
 mdefine_line|#define dprintk(format,args...)
 macro_line|#endif
-macro_line|#include &quot;wd7000.h&quot;
-macro_line|#include &lt;linux/stat.h&gt;
 multiline_comment|/*&n; *  Mailbox structure sizes.&n; *  I prefer to keep the number of ICMBs much larger than the number of&n; *  OGMBs.  OGMBs are used very quickly by the driver to start one or&n; *  more commands, while ICMBs are used by the host adapter per command.&n; */
 DECL|macro|OGMB_CNT
 mdefine_line|#define OGMB_CNT&t;16
@@ -38,6 +36,11 @@ mdefine_line|#define ICMB_CNT&t;32
 multiline_comment|/*&n; *  Scb&squot;s are shared by all active adapters.  So, if they all become busy,&n; *  callers may be made to wait in alloc_scbs for them to free.  That can&n; *  be avoided by setting MAX_SCBS to NUM_CONFIG * WD7000_Q.  If you&squot;d&n; *  rather conserve memory, use a smaller number (&gt; 0, of course) - things&n; *  will should still work OK.&n; */
 DECL|macro|MAX_SCBS
 mdefine_line|#define MAX_SCBS        32
+multiline_comment|/*&n; *  In this version, sg_tablesize now defaults to WD7000_SG, and will&n; *  be set to SG_NONE for older boards.  This is the reverse of the&n; *  previous default, and was changed so that the driver-level&n; *  Scsi_Host_Template would reflect the driver&squot;s support for scatter/&n; *  gather.&n; *&n; *  Also, it has been reported that boards at Revision 6 support scatter/&n; *  gather, so the new definition of an &quot;older&quot; board has been changed&n; *  accordingly.&n; */
+DECL|macro|WD7000_Q
+mdefine_line|#define WD7000_Q&t;16
+DECL|macro|WD7000_SG
+mdefine_line|#define WD7000_SG&t;16
 multiline_comment|/*&n; *  WD7000-specific mailbox structure&n; *&n; */
 DECL|struct|mailbox
 r_typedef
@@ -6610,13 +6613,93 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Eventually this will go into an include file, but this will be later */
 DECL|variable|driver_template
 r_static
 id|Scsi_Host_Template
 id|driver_template
 op_assign
-id|WD7000
+(brace
+dot
+id|proc_name
+op_assign
+l_string|&quot;wd7000&quot;
+comma
+dot
+id|proc_info
+op_assign
+id|wd7000_proc_info
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Western Digital WD-7000&quot;
+comma
+dot
+id|detect
+op_assign
+id|wd7000_detect
+comma
+dot
+id|command
+op_assign
+id|wd7000_command
+comma
+dot
+id|queuecommand
+op_assign
+id|wd7000_queuecommand
+comma
+dot
+id|eh_bus_reset_handler
+op_assign
+id|wd7000_bus_reset
+comma
+dot
+id|eh_device_reset_handler
+op_assign
+id|wd7000_device_reset
+comma
+dot
+id|eh_host_reset_handler
+op_assign
+id|wd7000_host_reset
+comma
+dot
+id|bios_param
+op_assign
+id|wd7000_biosparam
+comma
+dot
+id|can_queue
+op_assign
+id|WD7000_Q
+comma
+dot
+id|this_id
+op_assign
+l_int|7
+comma
+dot
+id|sg_tablesize
+op_assign
+id|WD7000_SG
+comma
+dot
+id|cmd_per_lun
+op_assign
+l_int|1
+comma
+dot
+id|unchecked_isa_dma
+op_assign
+l_int|1
+comma
+dot
+id|use_clustering
+op_assign
+id|ENABLE_CLUSTERING
+comma
+)brace
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
 eof

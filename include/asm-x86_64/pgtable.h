@@ -1293,6 +1293,8 @@ multiline_comment|/* PTE - Level 1 access. */
 multiline_comment|/* page, protection -&gt; pte */
 DECL|macro|mk_pte
 mdefine_line|#define mk_pte(page, pgprot)&t;pfn_pte(page_to_pfn(page), (pgprot))
+DECL|macro|mk_pte_huge
+mdefine_line|#define mk_pte_huge(entry) (pte_val(entry) |= _PAGE_PRESENT | _PAGE_PSE)
 multiline_comment|/* physical address -&gt; PTE */
 DECL|function|mk_pte_phys
 r_static
@@ -1364,6 +1366,14 @@ c_func
 (paren
 id|newprot
 )paren
+suffix:semicolon
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_and_assign
+id|__supported_pte_mask
 suffix:semicolon
 r_return
 id|pte

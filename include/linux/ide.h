@@ -6289,6 +6289,15 @@ op_star
 suffix:semicolon
 r_extern
 r_void
+id|ide_unregister
+(paren
+r_int
+r_int
+id|index
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|export_ide_init_queue
 c_func
 (paren

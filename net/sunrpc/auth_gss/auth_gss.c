@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * linux/net/sunrpc/auth_gss.c&n; *&n; * RPCSEC_GSS client authentication.&n; * &n; *  Copyright (c) 2000 The Regents of the University of Michigan.&n; *  All rights reserved.&n; *&n; *  Dug Song       &lt;dugsong@monkey.org&gt;&n; *  Andy Adamson   &lt;andros@umich.edu&gt;&n; *&n; *  Redistribution and use in source and binary forms, with or without&n; *  modification, are permitted provided that the following conditions&n; *  are met:&n; *&n; *  1. Redistributions of source code must retain the above copyright&n; *     notice, this list of conditions and the following disclaimer.&n; *  2. Redistributions in binary form must reproduce the above copyright&n; *     notice, this list of conditions and the following disclaimer in the&n; *     documentation and/or other materials provided with the distribution.&n; *  3. Neither the name of the University nor the names of its&n; *     contributors may be used to endorse or promote products derived&n; *     from this software without specific prior written permission.&n; *&n; *  THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; *  DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE&n; *  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR&n; *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF&n; *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR&n; *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF&n; *  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING&n; *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS&n; *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * $Id$&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -2066,19 +2064,6 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|try_module_get
-c_func
-(paren
-id|THIS_MODULE
-)paren
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
 (paren
 id|gss_auth
 op_assign
@@ -2233,12 +2218,6 @@ id|gss_auth
 suffix:semicolon
 id|out_dec
 suffix:colon
-id|module_put
-c_func
-(paren
-id|THIS_MODULE
-)paren
-suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
@@ -2293,18 +2272,6 @@ id|rpcauth_free_credcache
 c_func
 (paren
 id|auth
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|auth
-)paren
-suffix:semicolon
-id|module_put
-c_func
-(paren
-id|THIS_MODULE
 )paren
 suffix:semicolon
 )brace
@@ -3279,6 +3246,11 @@ id|rpc_authops
 id|authgss_ops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|au_flavor
 op_assign

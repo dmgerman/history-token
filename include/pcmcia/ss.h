@@ -247,6 +247,12 @@ DECL|struct|pccard_operations
 r_struct
 id|pccard_operations
 (brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|init
 r_int
 (paren
@@ -452,8 +458,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *  Calls to set up low-level &quot;Socket Services&quot; drivers&n; */
-DECL|macro|MAX_SOCKETS_PER_DEV
-mdefine_line|#define MAX_SOCKETS_PER_DEV 8
 DECL|struct|pcmcia_socket_class_data
 r_struct
 id|pcmcia_socket_class_data
@@ -464,6 +468,12 @@ r_int
 id|nsock
 suffix:semicolon
 multiline_comment|/* number of sockets */
+DECL|member|sock_offset
+r_int
+r_int
+id|sock_offset
+suffix:semicolon
+multiline_comment|/* socket # (which is&n;&t; * returned to driver) = sock_offset + (0, 1, .. , (nsock-1) */
 DECL|member|ops
 r_struct
 id|pccard_operations
@@ -475,9 +485,6 @@ DECL|member|s_info
 r_void
 op_star
 id|s_info
-(braket
-id|MAX_SOCKETS_PER_DEV
-)braket
 suffix:semicolon
 multiline_comment|/* socket_info_t */
 DECL|member|use_bus_pm

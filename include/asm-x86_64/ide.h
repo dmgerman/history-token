@@ -6,7 +6,7 @@ mdefine_line|#define __ASMx86_64_IDE_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef MAX_HWIFS
-macro_line|# ifdef CONFIG_PCI
+macro_line|# ifdef CONFIG_BLK_DEV_IDEPCI
 DECL|macro|MAX_HWIFS
 mdefine_line|#define MAX_HWIFS&t;10
 macro_line|# else
@@ -21,7 +21,8 @@ r_int
 id|ide_default_irq
 c_func
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 id|base
 )paren
 (brace
@@ -77,7 +78,8 @@ suffix:semicolon
 DECL|function|ide_default_io_base
 r_static
 id|__inline__
-id|ide_ioreg_t
+r_int
+r_int
 id|ide_default_io_base
 c_func
 (paren
@@ -85,34 +87,54 @@ r_int
 id|index
 )paren
 (brace
-r_static
-r_int
-r_int
-id|ata_io_base
-(braket
-id|MAX_HWIFS
-)braket
-op_assign
-(brace
-l_int|0x1f0
-comma
-l_int|0x170
-comma
-l_int|0x1e8
-comma
-l_int|0x168
-comma
-l_int|0x1e0
-comma
-l_int|0x160
-)brace
-suffix:semicolon
-r_return
-id|ata_io_base
-(braket
+r_switch
+c_cond
+(paren
 id|index
-)braket
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
+r_return
+l_int|0x1f0
 suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+r_return
+l_int|0x170
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+r_return
+l_int|0x1e8
+suffix:semicolon
+r_case
+l_int|3
+suffix:colon
+r_return
+l_int|0x168
+suffix:semicolon
+r_case
+l_int|4
+suffix:colon
+r_return
+l_int|0x1e0
+suffix:semicolon
+r_case
+l_int|5
+suffix:colon
+r_return
+l_int|0x160
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 )brace
 DECL|function|ide_init_hwif_ports
 r_static
@@ -125,10 +147,12 @@ id|hw_regs_t
 op_star
 id|hw
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|data_port
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|ctrl_port
 comma
 r_int
@@ -136,7 +160,8 @@ op_star
 id|irq
 )paren
 (brace
-id|ide_ioreg_t
+r_int
+r_int
 id|reg
 op_assign
 id|data_port
@@ -230,7 +255,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifndef CONFIG_PCI
+macro_line|#ifndef CONFIG_BLK_DEV_IDEPCI
 id|hw_regs_t
 id|hw
 suffix:semicolon
@@ -303,8 +328,9 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
 )brace
+macro_line|#include &lt;asm-generic/ide_iops.h&gt;
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASMx86_64_IDE_H */
 eof

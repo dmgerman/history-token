@@ -258,6 +258,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;checking TSC synchronization across %u CPUs: &quot;
 comma
 id|num_booting_cpus
@@ -829,19 +830,14 @@ id|cpu_callin_map
 )paren
 )paren
 (brace
-id|printk
+id|panic
 c_func
 (paren
-l_string|&quot;huh, phys CPU#%d, CPU#%d already present??&bslash;n&quot;
+l_string|&quot;smp_callin: phys CPU#%d, CPU#%d already present??&bslash;n&quot;
 comma
 id|phys_id
 comma
 id|cpuid
-)paren
-suffix:semicolon
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -911,17 +907,12 @@ id|timeout
 )paren
 )paren
 (brace
-id|printk
+id|panic
 c_func
 (paren
-l_string|&quot;BUG: CPU%d started up but did not get a callout!&bslash;n&quot;
+l_string|&quot;smp_callin: CPU%d started up but did not get a callout!&bslash;n&quot;
 comma
 id|cpuid
-)paren
-suffix:semicolon
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -1330,6 +1321,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Inquiring remote APIC #%d...&bslash;n&quot;
 comma
 id|apicid
@@ -1930,6 +1922,7 @@ id|send_status
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;APIC never delivered???&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1941,6 +1934,7 @@ id|accept_status
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;APIC delivery error (%lx).&bslash;n&quot;
 comma
 id|accept_status
@@ -2086,6 +2080,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Booting processor %d/%d rip %lx rsp %lx rsp2 %lx&bslash;n&quot;
 comma
 id|cpu
@@ -2329,7 +2324,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;CPU%d: &quot;
+l_string|&quot;KERN_INFO CPU%d: &quot;
 comma
 id|cpu
 )paren
@@ -2553,6 +2548,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;per-CPU timeslice cutoff: %ld.%02ld usecs.&bslash;n&quot;
 comma
 (paren
@@ -2587,6 +2583,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;task migration cache decay timeout: %ld msecs.&bslash;n&quot;
 comma
 (paren
@@ -2630,6 +2627,7 @@ multiline_comment|/* Final full version of the data */
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;CPU%d: &quot;
 comma
 l_int|0
@@ -2765,6 +2763,7 @@ id|phys_cpu_present_map
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot;weird, boot CPU (#%d) not listed by the BIOS.&bslash;n&quot;
 comma
 id|boot_cpu_id

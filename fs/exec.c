@@ -3448,6 +3448,8 @@ id|flush_signal_handlers
 c_func
 (paren
 id|current
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|flush_old_files

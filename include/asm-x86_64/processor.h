@@ -96,6 +96,22 @@ DECL|member|x86_clflush_size
 r_int
 id|x86_clflush_size
 suffix:semicolon
+DECL|member|x86_tlbsize
+r_int
+id|x86_tlbsize
+suffix:semicolon
+multiline_comment|/* number of 4K pages in DTLB/ITLB combined(in pages)*/
+DECL|member|x86_virt_bits
+DECL|member|x86_phys_bits
+id|__u8
+id|x86_virt_bits
+comma
+id|x86_phys_bits
+suffix:semicolon
+DECL|member|x86_power
+id|__u32
+id|x86_power
+suffix:semicolon
 DECL|member|loops_per_jiffy
 r_int
 r_int

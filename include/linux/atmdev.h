@@ -531,12 +531,6 @@ op_star
 id|proto_data
 suffix:semicolon
 multiline_comment|/* per-protocol data */
-DECL|member|timestamp
-r_struct
-id|timeval
-id|timestamp
-suffix:semicolon
-multiline_comment|/* AAL timestamps */
 DECL|member|recvq
 r_struct
 id|sk_buff_head

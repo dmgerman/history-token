@@ -1729,6 +1729,9 @@ c_func
 r_struct
 id|task_struct
 op_star
+comma
+r_int
+id|force_default
 )paren
 suffix:semicolon
 r_extern

@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * linux/net/sunrpc/stats.c&n; *&n; * procfs-based user access to generic RPC statistics. The stats files&n; * reside in /proc/net/rpc.&n; *&n; * The read routines assume that the buffer passed in is just big enough.&n; * If you implement an RPC service that has its own stats routine which&n; * appends the generic RPC stats, make sure you don&squot;t exceed the PAGE_SIZE&n; * limit.&n; *&n; * Copyright (C) 1995, 1996, 1997 Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

@@ -197,10 +197,6 @@ multiline_comment|/* Cancel all outstanding async requests without resetting the
 DECL|enumerator|CANCEL_REQUESTS
 id|CANCEL_REQUESTS
 comma
-multiline_comment|/* Decrease host usage count if arg == 0, increase otherwise.  Return&n;         * 1 for success, 0 for failure.  Increase usage may fail if the driver&n;         * is in the process of shutting itself down.  Decrease usage can not&n;         * fail. */
-DECL|enumerator|MODIFY_USAGE
-id|MODIFY_USAGE
-comma
 multiline_comment|/* Start or stop receiving isochronous channel in arg.  Return void.&n;         * This acts as an optimization hint, hosts are not required not to&n;         * listen on unrequested channels. */
 DECL|enumerator|ISO_LISTEN_CHANNEL
 id|ISO_LISTEN_CHANNEL
@@ -289,6 +285,12 @@ DECL|struct|hpsb_host_driver
 r_struct
 id|hpsb_host_driver
 (brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|name
 r_const
 r_char
