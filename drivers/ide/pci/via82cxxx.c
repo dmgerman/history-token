@@ -10,7 +10,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;ide-timing.h&quot;
-macro_line|#include &quot;via82cxxx.h&quot;
+DECL|macro|DISPLAY_VIA_TIMINGS
+mdefine_line|#define DISPLAY_VIA_TIMINGS
 DECL|macro|VIA_IDE_ENABLE
 mdefine_line|#define VIA_IDE_ENABLE&t;&t;0x40
 DECL|macro|VIA_IDE_CONFIG
@@ -3372,6 +3373,66 @@ op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
 )brace
+DECL|variable|__devinitdata
+r_static
+id|ide_pci_device_t
+id|via82cxxx_chipset
+id|__devinitdata
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;VP_IDE&quot;
+comma
+dot
+id|init_chipset
+op_assign
+id|init_chipset_via82cxxx
+comma
+dot
+id|init_hwif
+op_assign
+id|init_hwif_via82cxxx
+comma
+dot
+id|channels
+op_assign
+l_int|2
+comma
+dot
+id|autodma
+op_assign
+id|NOAUTODMA
+comma
+dot
+id|enablebits
+op_assign
+(brace
+(brace
+l_int|0x40
+comma
+l_int|0x02
+comma
+l_int|0x02
+)brace
+comma
+(brace
+l_int|0x40
+comma
+l_int|0x01
+comma
+l_int|0x01
+)brace
+)brace
+comma
+dot
+id|bootable
+op_assign
+id|ON_BOARD
+comma
+)brace
+suffix:semicolon
 DECL|function|via_init_one
 r_static
 r_int
@@ -3397,10 +3458,7 @@ c_func
 id|dev
 comma
 op_amp
-id|via82cxxx_chipsets
-(braket
-id|id-&gt;driver_data
-)braket
+id|via82cxxx_chipset
 )paren
 suffix:semicolon
 r_return

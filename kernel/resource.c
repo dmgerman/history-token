@@ -1499,12 +1499,12 @@ id|end
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* existing resource overlaps end of new resource */
+multiline_comment|/* existing resource includes new resource */
 r_if
 c_cond
 (paren
 id|next-&gt;end
-OG
+op_ge
 r_new
 op_member_access_from_pointer
 id|end

@@ -3989,8 +3989,9 @@ DECL|function|init_chipset_pdc202xx
 r_static
 r_int
 r_int
-id|__init
+id|__devinit
 id|init_chipset_pdc202xx
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -4178,8 +4179,9 @@ suffix:semicolon
 DECL|function|init_hwif_pdc202xx
 r_static
 r_void
-id|__init
+id|__devinit
 id|init_hwif_pdc202xx
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -4362,8 +4364,9 @@ macro_line|#endif /* PDC202_DEBUG_CABLE */&t;
 DECL|function|init_dma_pdc202xx
 r_static
 r_void
-id|__init
+id|__devinit
 id|init_dma_pdc202xx
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -4728,8 +4731,9 @@ suffix:semicolon
 DECL|function|init_setup_pdc202ata4
 r_static
 r_void
-id|__init
+id|__devinit
 id|init_setup_pdc202ata4
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -4934,8 +4938,9 @@ suffix:semicolon
 DECL|function|init_setup_pdc20265
 r_static
 r_void
-id|__init
+id|__devinit
 id|init_setup_pdc20265
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -5098,8 +5103,9 @@ suffix:semicolon
 DECL|function|init_setup_pdc202xx
 r_static
 r_void
-id|__init
+id|__devinit
 id|init_setup_pdc202xx
+c_func
 (paren
 r_struct
 id|pci_dev
