@@ -929,6 +929,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -952,6 +953,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1148,8 +1150,9 @@ id|cosa_data
 op_star
 id|cosa
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|a
 )paren
 suffix:semicolon
@@ -1163,8 +1166,9 @@ id|cosa_data
 op_star
 id|cosa
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|a
 )paren
 suffix:semicolon
@@ -1181,6 +1185,7 @@ id|cosa
 comma
 r_const
 r_char
+id|__user
 op_star
 id|data
 comma
@@ -1216,6 +1221,7 @@ op_star
 id|cosa
 comma
 r_char
+id|__user
 op_star
 id|data
 comma
@@ -3652,6 +3658,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -4051,6 +4058,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -4869,8 +4877,9 @@ id|cosa_data
 op_star
 id|cosa
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -4935,11 +4944,6 @@ c_func
 op_amp
 id|d
 comma
-(paren
-r_void
-id|__user
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -5058,8 +5062,9 @@ id|cosa_data
 op_star
 id|cosa
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -5125,11 +5130,6 @@ c_func
 op_amp
 id|d
 comma
-(paren
-r_void
-id|__user
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -5359,6 +5359,7 @@ op_star
 id|cosa
 comma
 r_char
+id|__user
 op_star
 id|string
 )paren
@@ -5409,6 +5410,7 @@ op_star
 id|cosa
 comma
 r_char
+id|__user
 op_star
 id|string
 )paren
@@ -5470,6 +5472,18 @@ r_int
 id|arg
 )paren
 (brace
+r_void
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -5552,7 +5566,7 @@ c_func
 (paren
 id|cosa
 comma
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -5578,7 +5592,7 @@ c_func
 (paren
 id|cosa
 comma
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -5590,11 +5604,7 @@ c_func
 (paren
 id|cosa
 comma
-(paren
-r_char
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -5606,11 +5616,7 @@ c_func
 (paren
 id|cosa
 comma
-(paren
-r_char
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -6604,6 +6610,7 @@ id|cosa
 comma
 r_const
 r_char
+id|__user
 op_star
 id|microcode
 comma
@@ -7116,6 +7123,7 @@ op_star
 id|cosa
 comma
 r_char
+id|__user
 op_star
 id|microcode
 comma
