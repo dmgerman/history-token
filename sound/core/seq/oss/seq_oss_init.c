@@ -53,8 +53,6 @@ DECL|variable|num_clients
 r_static
 r_int
 id|num_clients
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|client_table
 r_static

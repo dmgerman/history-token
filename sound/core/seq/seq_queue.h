@@ -6,9 +6,6 @@ macro_line|#include &quot;seq_memory.h&quot;
 macro_line|#include &quot;seq_prioq.h&quot;
 macro_line|#include &quot;seq_timer.h&quot;
 macro_line|#include &quot;seq_lock.h&quot;
-macro_line|#ifdef SNDRV_SEQ_SYNC_SUPPORT
-macro_line|#include &quot;seq_sync.h&quot;
-macro_line|#endif
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 DECL|macro|SEQ_QUEUE_NO_OWNER
@@ -132,32 +129,6 @@ r_struct
 id|tasklet_struct
 id|taskq
 suffix:semicolon
-macro_line|#ifdef SNDRV_SEQ_SYNC_SUPPORT
-DECL|member|master_head
-r_struct
-id|list_head
-id|master_head
-suffix:semicolon
-multiline_comment|/* list of masters */
-DECL|member|slave
-id|queue_sync_t
-id|slave
-suffix:semicolon
-multiline_comment|/* slave (exclusive) */
-DECL|member|master_lock
-id|rwlock_t
-id|master_lock
-suffix:semicolon
-DECL|member|slave_lock
-id|rwlock_t
-id|slave_lock
-suffix:semicolon
-DECL|member|sync_port
-id|snd_seq_addr_t
-id|sync_port
-suffix:semicolon
-multiline_comment|/* address of the attached sync port */
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* get the number of current queues */

@@ -434,8 +434,6 @@ id|id
 r_static
 r_int
 id|dev
-op_assign
-l_int|0
 suffix:semicolon
 id|snd_card_t
 op_star
@@ -761,17 +759,7 @@ id|dev
 )braket
 )paren
 suffix:semicolon
-id|snd_printd
-c_func
-(paren
-l_string|&quot;MPU401 supported on 0x%lx&bslash;n&quot;
-comma
-id|snd_mpu_port
-(braket
-id|dev
-)braket
-)paren
-suffix:semicolon
+singleline_comment|//snd_printd(&quot;MPU401 supported on 0x%lx&bslash;n&quot;, snd_mpu_port[dev]);
 )brace
 )brace
 r_else
@@ -967,17 +955,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|snd_printd
-c_func
-(paren
-l_string|&quot;MPU401 supported on 0x%lx&bslash;n&quot;
-comma
-id|snd_mpu_port
-(braket
-id|dev
-)braket
-)paren
-suffix:semicolon
+singleline_comment|//snd_printd(&quot;MPU401 supported on 0x%lx&bslash;n&quot;, snd_mpu_port[dev]);
 id|legacy_ctrl
 op_or_assign
 l_int|8
@@ -1015,11 +993,8 @@ OG
 l_int|0
 )paren
 (brace
-id|legacy_ctrl
-op_or_assign
-l_int|0x10
-suffix:semicolon
-multiline_comment|/* MPU401 irq enable */
+singleline_comment|// this bit is for legacy mpu irqs
+singleline_comment|// legacy_ctrl |= 0x10; /* MPU401 irq enable */
 id|legacy_ctrl2
 op_or_assign
 l_int|1
@@ -1297,25 +1272,16 @@ id|dev
 )braket
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|legacy_ctrl
-op_and_assign
-op_complement
-l_int|0x10
+id|snd_mpu_port
+(braket
+id|dev
+)braket
+op_assign
+l_int|0
 suffix:semicolon
-multiline_comment|/* disable MPU401 irq */
-id|pci_write_config_word
-c_func
-(paren
-id|pci
-comma
-id|PCIR_DSXG_LEGACY
-comma
-id|legacy_ctrl
-)paren
-suffix:semicolon
+singleline_comment|// only for legacy mpu irqs
+singleline_comment|// legacy_ctrl &amp;= ~0x10; /* disable MPU401 irq */
+singleline_comment|// pci_write_config_word(pci, PCIR_DSXG_LEGACY, legacy_ctrl);
 )brace
 )brace
 r_if
@@ -1374,6 +1340,28 @@ id|snd_fm_port
 (braket
 id|dev
 )braket
+)paren
+suffix:semicolon
+id|snd_fm_port
+(braket
+id|dev
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|legacy_ctrl
+op_and_assign
+op_complement
+l_int|2
+suffix:semicolon
+id|pci_write_config_word
+c_func
+(paren
+id|pci
+comma
+id|PCIR_DSXG_LEGACY
+comma
+id|legacy_ctrl
 )paren
 suffix:semicolon
 )brace

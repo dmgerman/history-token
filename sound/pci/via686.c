@@ -565,10 +565,6 @@ DECL|member|reg_lock
 id|spinlock_t
 id|reg_lock
 suffix:semicolon
-DECL|member|ac97_lock
-id|spinlock_t
-id|ac97_lock
-suffix:semicolon
 DECL|member|proc_entry
 id|snd_info_entry_t
 op_star
@@ -982,7 +978,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|chip-&gt;ac97_lock
+id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
 id|snd_via686a_codec_xwrite
@@ -1005,7 +1001,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|chip-&gt;ac97_lock
+id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
 )brace
@@ -1094,7 +1090,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|chip-&gt;ac97_lock
+id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
 r_while
@@ -1116,7 +1112,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|chip-&gt;ac97_lock
+id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
 r_return
@@ -1182,7 +1178,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|chip-&gt;ac97_lock
+id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
 r_return
@@ -2238,7 +2234,6 @@ id|ptr
 comma
 id|count
 suffix:semicolon
-singleline_comment|// unsigned int tmp;
 id|ptr
 op_assign
 id|inl
@@ -2311,7 +2306,6 @@ id|VIA_REG_STAT_ACTIVE
 r_return
 l_int|0
 suffix:semicolon
-singleline_comment|// tmp =
 id|val
 op_assign
 (paren
@@ -2352,7 +2346,7 @@ id|viadev-&gt;lastcount
 op_assign
 id|count
 suffix:semicolon
-singleline_comment|// printk(&quot;pointer: ptr = 0x%x (%i), count = 0x%x, val = 0x%x&bslash;n&quot;, ptr, tmp, count, val);
+singleline_comment|// printk(&quot;pointer: ptr = 0x%x (%i), count = 0x%x, val = 0x%x&bslash;n&quot;, ptr, count, val);
 r_return
 id|val
 suffix:semicolon
@@ -4888,13 +4882,6 @@ op_amp
 id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|chip-&gt;ac97_lock
-)paren
-suffix:semicolon
 id|chip-&gt;card
 op_assign
 id|card
@@ -5246,8 +5233,6 @@ id|id
 r_static
 r_int
 id|dev
-op_assign
-l_int|0
 suffix:semicolon
 id|snd_card_t
 op_star

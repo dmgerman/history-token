@@ -1891,6 +1891,7 @@ id|flags
 suffix:semicolon
 )brace
 r_int
+id|__init
 DECL|function|snd_wavefront_midi_start
 id|snd_wavefront_midi_start
 (paren

@@ -8106,8 +8106,8 @@ id|es-&gt;count
 op_add_assign
 id|diff
 suffix:semicolon
-r_while
-c_loop
+r_if
+c_cond
 (paren
 id|es-&gt;count
 OG
@@ -8135,7 +8135,7 @@ id|chip-&gt;substream_lock
 )paren
 suffix:semicolon
 id|es-&gt;count
-op_sub_assign
+op_mod_assign
 id|es-&gt;frag_size
 suffix:semicolon
 )brace
@@ -11723,8 +11723,6 @@ id|id
 r_static
 r_int
 id|dev
-op_assign
-l_int|0
 suffix:semicolon
 id|snd_card_t
 op_star
