@@ -68,6 +68,7 @@ id|search_msg
 )braket
 id|__initdata
 op_assign
+id|KERN_INFO
 l_string|&quot;%s: Looking for 3c505 adapter at address %#x...&quot;
 suffix:semicolon
 DECL|variable|__initdata
@@ -108,6 +109,7 @@ id|couldnot_msg
 )braket
 id|__initdata
 op_assign
+id|KERN_INFO
 l_string|&quot;%s: 3c505 not found&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/*********************************************************&n; *&n; *  various other debug stuff&n; *&n; *********************************************************/
@@ -1018,6 +1020,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;3c505: send_pcb_slow timed out&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1087,6 +1090,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;3c505: send_pcb_fast timed out&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1222,6 +1226,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: send_pcb entered while threaded&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2076,6 +2081,7 @@ id|skb
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: memory squeeze, dropping packet&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2089,6 +2095,7 @@ id|adapter-&gt;current_dma.target
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* FIXME: stats */
 r_return
 suffix:semicolon
 )brace
@@ -2297,6 +2304,7 @@ id|adapter-&gt;busy
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: receive_packet called, busy not set.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3176,6 +3184,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Opening a non-existent physical device&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5272,18 +5281,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* Enable interrupts - we need timers! */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Wait for a while; the adapter may still be booting up */
 r_if
 c_cond
@@ -5317,32 +5314,20 @@ op_plus
 id|PORT_CONTROL
 )paren
 suffix:semicolon
-id|timeout
-op_assign
-id|jiffies
-op_plus
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
 l_int|30
 op_star
 id|HZ
 op_div
 l_int|100
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|time_before
-c_func
-(paren
-id|jiffies
-comma
-id|timeout
-)paren
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 r_if
@@ -5390,32 +5375,20 @@ op_plus
 id|PORT_CONTROL
 )paren
 suffix:semicolon
-id|timeout
-op_assign
-id|jiffies
-op_plus
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
 l_int|30
 op_star
 id|HZ
 op_div
 l_int|100
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|time_before
-c_func
-(paren
-id|jiffies
-comma
-id|timeout
-)paren
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 r_if
