@@ -23,10 +23,6 @@ id|arlan_device
 id|MAX_ARLANS
 )braket
 suffix:semicolon
-DECL|variable|last_arlan
-r_int
-id|last_arlan
-suffix:semicolon
 DECL|variable|SID
 r_static
 r_int
@@ -67,14 +63,6 @@ comma
 l_char|&squot;h&squot;
 )brace
 suffix:semicolon
-DECL|variable|siteName
-r_static
-r_char
-op_star
-id|siteName
-op_assign
-id|siteNameUNKNOWN
-suffix:semicolon
 DECL|variable|mem
 r_static
 r_int
@@ -87,13 +75,6 @@ r_int
 id|arlan_debug
 op_assign
 id|debugUNKNOWN
-suffix:semicolon
-DECL|variable|probe
-r_static
-r_int
-id|probe
-op_assign
-id|probeUNKNOWN
 suffix:semicolon
 DECL|variable|numDevices
 r_static
@@ -153,13 +134,6 @@ r_int
 id|retries
 op_assign
 l_int|5
-suffix:semicolon
-DECL|variable|async
-r_static
-r_int
-id|async
-op_assign
-l_int|1
 suffix:semicolon
 DECL|variable|tx_queue_len
 r_static
@@ -519,17 +493,9 @@ l_string|&quot;(ignored)&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-singleline_comment|//        #warning kernel 2.1.110 tested
-DECL|macro|myATOMIC_INIT
-mdefine_line|#define myATOMIC_INIT(a,b) atomic_set(&amp;(a),b)
 macro_line|#else
 DECL|macro|test_and_set_bit
 mdefine_line|#define test_and_set_bit&t;set_bit
-macro_line|#if LINUX_VERSION_CODE != 0x20024
-singleline_comment|//        #warning kernel  2.0.36  tested
-macro_line|#endif
-DECL|macro|myATOMIC_INIT
-mdefine_line|#define myATOMIC_INIT(a,b) a = b;
 macro_line|#endif
 DECL|variable|arlan_conf
 r_struct
@@ -713,19 +679,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-r_int
-id|arlan_command
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_int
-id|command
-)paren
-suffix:semicolon
 DECL|function|arlan_time
 r_static
 r_inline
@@ -776,26 +729,6 @@ mdefine_line|#define ARLAN_DEBUG_EXIT(name)
 macro_line|#endif
 DECL|macro|arlan_interrupt_ack
 mdefine_line|#define arlan_interrupt_ack(dev)&bslash;&n;        clearClearInterrupt(dev);&bslash;&n;        setClearInterrupt(dev);
-DECL|macro|ARLAN_COMMAND_LOCK
-mdefine_line|#define ARLAN_COMMAND_LOCK(dev) &bslash;&n;&t;if (atomic_dec_and_test(&amp;((struct arlan_private * )dev-&gt;priv)-&gt;card_users))&bslash;&n;   &t;&t;arlan_wait_command_complete_short(dev,__LINE__);
-DECL|macro|ARLAN_COMMAND_UNLOCK
-mdefine_line|#define ARLAN_COMMAND_UNLOCK(dev) &bslash;&n;&t;atomic_inc(&amp;((struct arlan_private * )dev-&gt;priv)-&gt;card_users);
-DECL|macro|ARLAN_COMMAND_INC
-mdefine_line|#define ARLAN_COMMAND_INC(dev) &bslash;&n; &t;{((struct arlan_private *) dev-&gt;priv)-&gt;under_command++;}
-DECL|macro|ARLAN_COMMAND_ZERO
-mdefine_line|#define ARLAN_COMMAND_ZERO(dev) &bslash;&n; &t;{((struct arlan_private *) dev-&gt;priv)-&gt;under_command =0;}
-DECL|macro|ARLAN_UNDER_COMMAND
-mdefine_line|#define ARLAN_UNDER_COMMAND(dev)&bslash;&n;&t;(((struct arlan_private *) dev-&gt;priv)-&gt;under_command)
-DECL|macro|ARLAN_COMMAND_START
-mdefine_line|#define ARLAN_COMMAND_START(dev) ARLAN_COMMAND_INC(dev)
-DECL|macro|ARLAN_COMMAND_END
-mdefine_line|#define ARLAN_COMMAND_END(dev) ARLAN_COMMAND_ZERO(dev)
-DECL|macro|ARLAN_TOGGLE_START
-mdefine_line|#define ARLAN_TOGGLE_START(dev)&bslash;&n; &t;{((struct arlan_private *) dev-&gt;priv)-&gt;under_toggle++;}
-DECL|macro|ARLAN_TOGGLE_END
-mdefine_line|#define ARLAN_TOGGLE_END(dev)&bslash;&n; &t;{((struct arlan_private *) dev-&gt;priv)-&gt;under_toggle=0;}
-DECL|macro|ARLAN_UNDER_TOGGLE
-mdefine_line|#define ARLAN_UNDER_TOGGLE(dev)&bslash;&n; &t;(((struct arlan_private *) dev-&gt;priv)-&gt;under_toggle)
 DECL|function|arlan_drop_tx
 r_static
 r_inline
@@ -1622,9 +1555,6 @@ c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-id|priv-&gt;numResets
-op_increment
 suffix:semicolon
 id|priv-&gt;card_polling_interval
 op_assign
@@ -2710,9 +2640,6 @@ id|dev
 comma
 id|ARLAN_COMMAND_TX
 )paren
-suffix:semicolon
-id|priv-&gt;nof_tx
-op_increment
 suffix:semicolon
 id|priv-&gt;Conf-&gt;driverRetransmissions
 op_increment
@@ -4220,9 +4147,6 @@ id|priv-&gt;tx_last_sent
 op_assign
 id|jiffies
 suffix:semicolon
-id|priv-&gt;nof_tx
-op_increment
-suffix:semicolon
 id|IFDEBUG
 c_func
 (paren
@@ -5367,10 +5291,6 @@ suffix:semicolon
 id|conf-&gt;tx_delay_ms
 op_assign
 id|tx_delay_ms
-suffix:semicolon
-id|conf-&gt;async
-op_assign
-id|async
 suffix:semicolon
 id|conf-&gt;ReTransmitPacketMaxSize
 op_assign
@@ -6535,10 +6455,6 @@ id|priv-&gt;reset
 op_assign
 l_int|0
 suffix:semicolon
-id|priv-&gt;open_time
-op_assign
-id|jiffies
-suffix:semicolon
 id|memcpy_fromio
 c_func
 (paren
@@ -6580,22 +6496,6 @@ id|netif_start_queue
 id|dev
 )paren
 suffix:semicolon
-id|init_MUTEX
-c_func
-(paren
-op_amp
-id|priv-&gt;card_lock
-)paren
-suffix:semicolon
-id|myATOMIC_INIT
-c_func
-(paren
-id|priv-&gt;card_users
-comma
-l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* damn 2.0.33 */
 id|priv-&gt;registrationLostCount
 op_assign
 l_int|0
@@ -6619,14 +6519,6 @@ suffix:semicolon
 id|priv-&gt;reRegisterExp
 op_assign
 l_int|1
-suffix:semicolon
-id|priv-&gt;nof_tx
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;nof_tx_ack
-op_assign
-l_int|0
 suffix:semicolon
 id|priv-&gt;last_command_was_rx
 op_assign
@@ -7186,9 +7078,6 @@ suffix:semicolon
 id|priv-&gt;tx_command_given
 op_assign
 l_int|0
-suffix:semicolon
-id|priv-&gt;nof_tx_ack
-op_increment
 suffix:semicolon
 r_switch
 c_cond
@@ -9292,10 +9181,6 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|priv-&gt;open_time
-op_assign
-l_int|0
-suffix:semicolon
 id|netif_stop_queue
 c_func
 (paren
@@ -9737,23 +9622,6 @@ suffix:semicolon
 id|arlans_found
 op_increment
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|arlans_found
-op_eq
-l_int|1
-)paren
-id|siteName
-op_assign
-id|kmalloc
-c_func
-(paren
-l_int|100
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -9909,29 +9777,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|siteName
-op_assign
-id|kmalloc
-c_func
-(paren
-l_int|100
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|siteName
-op_eq
-l_int|NULL
-)paren
-(brace
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 r_for
 c_loop
 (paren

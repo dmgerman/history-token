@@ -72,11 +72,6 @@ r_int
 id|arlan_debug
 suffix:semicolon
 r_extern
-r_char
-op_star
-id|siteName
-suffix:semicolon
-r_extern
 r_int
 id|arlan_entry_debug
 suffix:semicolon
@@ -136,8 +131,6 @@ DECL|macro|systemIdUNKNOWN
 mdefine_line|#define systemIdUNKNOWN -1
 DECL|macro|registrationModeUNKNOWN
 mdefine_line|#define registrationModeUNKNOWN -1
-DECL|macro|siteNameUNKNOWN
-mdefine_line|#define siteNameUNKNOWN &quot;LinuxSite&quot;
 DECL|macro|IFDEBUG
 mdefine_line|#define IFDEBUG( L ) if ( (L) &amp; arlan_debug ) 
 DECL|macro|ARLAN_FAKE_HDR_LEN
@@ -1246,10 +1239,6 @@ DECL|member|headerSize
 r_int
 id|headerSize
 suffix:semicolon
-DECL|member|async
-r_int
-id|async
-suffix:semicolon
 DECL|member|retries
 r_int
 id|retries
@@ -1403,17 +1392,6 @@ id|scrambled
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|TxRingPoint
-r_struct
-id|TxRingPoint
-(brace
-DECL|member|txParam
-r_struct
-id|TxParam
-id|txParam
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|macro|TX_RING_SIZE
 mdefine_line|#define TX_RING_SIZE 2
 multiline_comment|/* Information that need to be kept for each board. */
@@ -1426,11 +1404,6 @@ r_struct
 id|net_device_stats
 id|stats
 suffix:semicolon
-DECL|member|open_time
-r_int
-id|open_time
-suffix:semicolon
-multiline_comment|/* Useless example local info. */
 DECL|member|card
 r_struct
 id|arlan_shmem
@@ -1505,23 +1478,6 @@ r_struct
 id|timer_list
 id|rx_check_timer
 suffix:semicolon
-DECL|member|card_lock
-r_struct
-id|semaphore
-id|card_lock
-suffix:semicolon
-DECL|member|card_users
-id|atomic_t
-id|card_users
-suffix:semicolon
-DECL|member|delay_on
-id|atomic_t
-id|delay_on
-suffix:semicolon
-DECL|member|retr_on
-id|atomic_t
-id|retr_on
-suffix:semicolon
 DECL|member|registrationLostCount
 r_int
 id|registrationLostCount
@@ -1529,22 +1485,6 @@ suffix:semicolon
 DECL|member|reRegisterExp
 r_int
 id|reRegisterExp
-suffix:semicolon
-DECL|member|nof_tx
-r_int
-id|nof_tx
-suffix:semicolon
-DECL|member|nof_tx_ack
-r_int
-id|nof_tx_ack
-suffix:semicolon
-DECL|member|last_nof_tx
-r_int
-id|last_nof_tx
-suffix:semicolon
-DECL|member|last_nof_tx_ack
-r_int
-id|last_nof_tx_ack
 suffix:semicolon
 DECL|member|irq_test_done
 r_int
@@ -1623,11 +1563,6 @@ r_int
 r_int
 id|tx_last_cleared
 suffix:semicolon
-DECL|member|under_tx
-r_volatile
-id|u_char
-id|under_tx
-suffix:semicolon
 DECL|member|retransmissions
 r_volatile
 r_int
@@ -1677,11 +1612,6 @@ DECL|member|last_command_buff_free_time
 r_volatile
 r_int
 id|last_command_buff_free_time
-suffix:semicolon
-DECL|member|numResets
-r_volatile
-r_int
-id|numResets
 suffix:semicolon
 DECL|member|under_reset
 r_volatile
