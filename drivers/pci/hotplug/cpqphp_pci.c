@@ -7,9 +7,10 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &quot;../pci.h&quot;
 macro_line|#include &quot;cpqphp.h&quot;
 macro_line|#include &quot;cpqphp_nvram.h&quot;
-macro_line|#include &quot;../../arch/i386/pci/pci.h&quot;&t;/* horrible hack showing how processor dependent we are... */
+macro_line|#include &quot;../../../arch/i386/pci/pci.h&quot;&t;/* horrible hack showing how processor dependent we are... */
 DECL|variable|cpqhp_nic_irq
 id|u8
 id|cpqhp_nic_irq

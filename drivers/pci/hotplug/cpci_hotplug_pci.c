@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &quot;../pci.h&quot;
 macro_line|#include &quot;pci_hotplug.h&quot;
 macro_line|#include &quot;cpci_hotplug.h&quot;
 macro_line|#if !defined(CONFIG_HOTPLUG_CPCI_MODULE)
@@ -1325,14 +1326,12 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
 id|pci_proc_attach_bus
 c_func
 (paren
 id|child
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Update parent bridge&squot;s subordinate field if there were more bridges&n;&t; * behind the bridge that was scanned.&n;&t; */
 r_if
 c_cond
