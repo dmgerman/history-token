@@ -1453,7 +1453,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;&t;&t;/* not really needed, later.. */
 macro_line|#include &lt;linux/device.h&gt;
 DECL|struct|cdrom_write_settings
 r_struct

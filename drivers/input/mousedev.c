@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#ifdef CONFIG_INPUT_MOUSEDEV_PSAUX
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#endif

@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;        /* O_ACCMODE */
 macro_line|#include &lt;linux/hdreg.h&gt;  /* HDIO_GETGEO */
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/umem.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

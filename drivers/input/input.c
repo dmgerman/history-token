@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
