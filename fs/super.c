@@ -3437,7 +3437,7 @@ id|data
 )paren
 (brace
 r_return
-id|get_sb_nodev
+id|get_sb_single
 c_func
 (paren
 id|fs_type

@@ -1173,10 +1173,6 @@ id|file_system_type
 id|bd_type
 op_assign
 (brace
-id|owner
-suffix:colon
-id|THIS_MODULE
-comma
 id|name
 suffix:colon
 l_string|&quot;bdev&quot;
