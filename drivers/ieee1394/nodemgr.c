@@ -265,10 +265,14 @@ id|__ci
 (brace
 r_return
 (paren
+id|CSR1212_BE32_TO_CPU
+c_func
+(paren
 id|bus_info_data
 (braket
 l_int|2
 )braket
+)paren
 op_rshift
 l_int|8
 )paren
