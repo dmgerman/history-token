@@ -278,7 +278,7 @@ macro_line|#endif /* CONFIG_PPC_ISERIES */
 r_struct
 id|scatterlist
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PSERIES
+macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 multiline_comment|/* Walks all buses and creates iommu tables */
 r_extern
 r_void
@@ -308,7 +308,7 @@ op_star
 id|dn
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PPC_PSERIES */
+macro_line|#endif /* CONFIG_PPC_MULTIPLATFORM */
 macro_line|#ifdef CONFIG_PPC_ISERIES
 multiline_comment|/* Walks all buses and creates iommu tables */
 r_extern

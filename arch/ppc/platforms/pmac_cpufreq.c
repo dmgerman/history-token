@@ -972,9 +972,6 @@ r_struct
 id|cpufreq_freqs
 id|freqs
 suffix:semicolon
-r_int
-id|rc
-suffix:semicolon
 id|freqs.old
 op_assign
 id|cur_freq
@@ -1053,7 +1050,7 @@ suffix:colon
 id|low_freq
 suffix:semicolon
 r_return
-id|rc
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|pmac_cpufreq_verify

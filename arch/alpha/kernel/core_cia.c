@@ -897,8 +897,9 @@ id|dma_addr_t
 id|end
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|bus_addr
 suffix:semicolon
 r_int
@@ -1219,8 +1220,9 @@ id|use_tbia_try2
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|bus_addr
 suffix:semicolon
 multiline_comment|/* pyxis -- tbia is broken */

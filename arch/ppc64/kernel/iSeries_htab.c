@@ -816,5 +816,10 @@ id|ppc_md.hpte_remove
 op_assign
 id|iSeries_hpte_remove
 suffix:semicolon
+id|htab_finish_init
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 eof

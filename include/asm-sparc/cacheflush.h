@@ -241,9 +241,9 @@ mdefine_line|#define flush_icache_page(vma, pg)&t;&t;do { } while (0)
 DECL|macro|flush_icache_user_range
 mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)&t;do { } while (0)
 DECL|macro|copy_to_user_page
-mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;memcpy(dst, src, len)
+mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flush_cache_page(vma, vaddr);&t;&bslash;&n;&t;&t;memcpy(dst, src, len);&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|copy_from_user_page
-mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;memcpy(dst, src, len)
+mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flush_cache_page(vma, vaddr);&t;&bslash;&n;&t;&t;memcpy(dst, src, len);&t;&t;&bslash;&n;&t;} while (0)
 id|BTFIXUPDEF_CALL
 c_func
 (paren

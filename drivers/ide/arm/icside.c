@@ -633,12 +633,6 @@ suffix:semicolon
 r_int
 id|nents
 suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-id|hwif-&gt;sg_dma_active
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1203,10 +1197,6 @@ comma
 id|hwif-&gt;sg_dma_direction
 )paren
 suffix:semicolon
-id|hwif-&gt;sg_dma_active
-op_assign
-l_int|0
-suffix:semicolon
 r_return
 id|get_dma_residue
 c_func
@@ -1438,12 +1428,6 @@ id|drive
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We can not enable DMA on both channels.&n;&t; */
-id|BUG_ON
-c_func
-(paren
-id|hwif-&gt;sg_dma_active
-)paren
-suffix:semicolon
 id|BUG_ON
 c_func
 (paren

@@ -15,6 +15,7 @@ DECL|macro|EEH_MODE_SUPPORTED
 mdefine_line|#define EEH_MODE_SUPPORTED&t;(1&lt;&lt;0)
 DECL|macro|EEH_MODE_NOCHECK
 mdefine_line|#define EEH_MODE_NOCHECK&t;(1&lt;&lt;1)
+macro_line|#ifdef CONFIG_PPC_PSERIES
 r_extern
 r_void
 id|__init
@@ -79,6 +80,10 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|eeh_check_failure
+mdefine_line|#define eeh_check_failure(token, val) (val)
+macro_line|#endif
 multiline_comment|/**&n; * eeh_add_device_early&n; * eeh_add_device_late&n; *&n; * Perform eeh initialization for devices added after boot.&n; * Call eeh_add_device_early before doing any i/o to the&n; * device (including config space i/o).  Call eeh_add_device_late&n; * to finish the eeh setup for this device.&n; */
 r_struct
 id|device_node

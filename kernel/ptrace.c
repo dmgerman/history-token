@@ -736,14 +736,6 @@ id|PAGE_SIZE
 op_minus
 id|offset
 suffix:semicolon
-id|flush_cache_page
-c_func
-(paren
-id|vma
-comma
-id|addr
-)paren
-suffix:semicolon
 id|maddr
 op_assign
 id|kmap

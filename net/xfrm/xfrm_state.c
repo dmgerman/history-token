@@ -2791,13 +2791,6 @@ c_func
 id|x
 )paren
 suffix:semicolon
-id|spin_unlock_bh
-c_func
-(paren
-op_amp
-id|xfrm_state_lock
-)paren
-suffix:semicolon
 r_return
 id|x
 suffix:semicolon

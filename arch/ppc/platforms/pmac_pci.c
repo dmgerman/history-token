@@ -78,6 +78,10 @@ r_extern
 id|u8
 id|pci_cache_line_size
 suffix:semicolon
+r_extern
+r_int
+id|pcibios_assign_bus_offset
+suffix:semicolon
 DECL|variable|k2_skiplist
 r_struct
 id|pci_dev
@@ -2465,6 +2469,16 @@ id|fixup_nec_usb2
 c_func
 (paren
 )paren
+suffix:semicolon
+multiline_comment|/* We are still having some issues with the Xserve G4, enabling&n;&t; * some offset between bus number and domains for now when we&n;&t; * assign all busses should help for now&n;&t; */
+r_if
+c_cond
+(paren
+id|pci_assign_all_busses
+)paren
+id|pcibios_assign_bus_offset
+op_assign
+l_int|0x10
 suffix:semicolon
 macro_line|#ifdef CONFIG_POWER4 
 multiline_comment|/* There is something wrong with DMA on U3/HT. I haven&squot;t figured out&n;&t; * the details yet, but if I set the cache line size to 128 bytes like&n;&t; * it should, I&squot;m getting memory corruption caused by devices like&n;&t; * sungem (even without the MWI bit set, but maybe sungem doesn&squot;t&n;&t; * care). Right now, it appears that setting up a 64 bytes line size&n;&t; * works properly, 64 bytes beeing the max transfer size of HT, I&n;&t; * suppose this is related the way HT/PCI are hooked together. I still&n;&t; * need to dive into more specs though to be really sure of what&squot;s&n;&t; * going on. --BenH.&n;&t; *&n;&t; * Ok, apparently, it&squot;s just that HT can&squot;t do more than 64 bytes&n;&t; * transactions. MWI seem to be meaningless there as well, it may&n;&t; * be worth nop&squot;ing out pci_set_mwi too though I haven&squot;t done that&n;&t; * yet.&n;&t; *&n;&t; * Note that it&squot;s a bit different for whatever is in the AGP slot.&n;&t; * For now, I don&squot;t care, but this can become a real issue, we&n;&t; * should probably hook pci_set_mwi anyway to make sure it sets&n;&t; * the real cache line size in there.&n;&t; */

@@ -892,8 +892,6 @@ id|DO_DEFAULT_RTC
 comma
 id|DO_MCPCIA_IO
 comma
-id|DO_MCPCIA_BUS
-comma
 dot
 id|machine_check
 op_assign

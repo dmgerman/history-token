@@ -65,5 +65,13 @@ mdefine_line|#define __kernel_stb(val,mem) &bslash;&n;  __asm__(&quot;stb %1,%0&
 DECL|macro|__kernel_stw
 mdefine_line|#define __kernel_stw(val,mem) &bslash;&n;  __asm__(&quot;stw %1,%0&quot; : &quot;=m&quot;(mem) : &quot;r&quot;(val))
 macro_line|#endif
+multiline_comment|/* Some idiots over in &lt;linux/compiler.h&gt; thought inline should imply&n;   always_inline.  This breaks stuff.  We&squot;ll include this file whenever&n;   we run into such problems.  */
+macro_line|#include &lt;linux/compiler.h&gt;
+DECL|macro|inline
+macro_line|#undef inline
+DECL|macro|__inline__
+macro_line|#undef __inline__
+DECL|macro|__inline
+macro_line|#undef __inline
 macro_line|#endif /* __ALPHA_COMPILER_H */
 eof

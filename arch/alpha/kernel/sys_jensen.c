@@ -774,8 +774,6 @@ l_string|&quot;Machine check&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|macro|jensen_pci_tbi
-mdefine_line|#define jensen_pci_tbi&t;((void*)0)
 multiline_comment|/*&n; * The System Vector&n; */
 DECL|variable|__initmv
 r_struct
@@ -796,12 +794,6 @@ c_func
 (paren
 id|JENSEN
 comma
-id|jensen
-)paren
-comma
-id|BUS
-c_func
-(paren
 id|jensen
 )paren
 comma

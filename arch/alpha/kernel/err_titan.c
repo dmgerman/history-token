@@ -502,7 +502,7 @@ mdefine_line|#define TITAN__PCHIP_PERROR__CMD__M&t;(0x0f)
 DECL|macro|TITAN__PCHIP_PERROR__ADDR__S
 mdefine_line|#define TITAN__PCHIP_PERROR__ADDR__S&t;(14)
 DECL|macro|TITAN__PCHIP_PERROR__ADDR__M
-mdefine_line|#define TITAN__PCHIP_PERROR__ADDR__M&t;(0x1ffffffff)
+mdefine_line|#define TITAN__PCHIP_PERROR__ADDR__M&t;(0x1fffffffful)
 r_if
 c_cond
 (paren

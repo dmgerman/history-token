@@ -1417,14 +1417,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize timer interrupts */
-id|ppc64_boot_msg
-c_func
-(paren
-l_int|0x21
-comma
-l_string|&quot;OpenPic Timer&quot;
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1465,14 +1457,6 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Initialize IPI interrupts */
-id|ppc64_boot_msg
-c_func
-(paren
-l_int|0x22
-comma
-l_string|&quot;OpenPic IPI&quot;
-)paren
-suffix:semicolon
 id|openpic_test_broken_IPI
 c_func
 (paren
@@ -1535,14 +1519,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* Initialize external interrupts */
-id|ppc64_boot_msg
-c_func
-(paren
-l_int|0x23
-comma
-l_string|&quot;OpenPic Ext&quot;
-)paren
-suffix:semicolon
 id|openpic_set_priority
 c_func
 (paren
@@ -1734,14 +1710,6 @@ op_amp
 id|open_pic
 suffix:semicolon
 multiline_comment|/* Initialize the spurious interrupt */
-id|ppc64_boot_msg
-c_func
-(paren
-l_int|0x24
-comma
-l_string|&quot;OpenPic Spurious&quot;
-)paren
-suffix:semicolon
 id|openpic_set_spurious
 c_func
 (paren

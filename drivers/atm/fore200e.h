@@ -1610,7 +1610,7 @@ id|align_addr
 suffix:semicolon
 multiline_comment|/* base address of aligned chunk   */
 DECL|member|dma_addr
-id|u32
+id|dma_addr_t
 id|dma_addr
 suffix:semicolon
 multiline_comment|/* DMA address of aligned chunk    */

@@ -870,22 +870,14 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifndef CONFIG_PPC_ISERIES
+macro_line|#ifdef CONFIG_PPC_PSERIES
 multiline_comment|/* Since this can&squot;t be a module, args should end up below 4GB. */
 r_static
 r_struct
 id|rtas_args
 id|args
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|systemcfg-&gt;platform
-op_amp
-id|PLATFORM_PSERIES
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * At this point we have got all the cpus we can into&n;&t;&t; * xmon, so there is hopefully no other cpu calling RTAS&n;&t;&t; * at the moment, even though we don&squot;t take rtas.lock.&n;&t;&t; * If we did try to take rtas.lock there would be a&n;&t;&t; * real possibility of deadlock.&n;&t;&t; */
+multiline_comment|/*&n;&t; * At this point we have got all the cpus we can into&n;&t; * xmon, so there is hopefully no other cpu calling RTAS&n;&t; * at the moment, even though we don&squot;t take rtas.lock.&n;&t; * If we did try to take rtas.lock there would be a&n;&t; * real possibility of deadlock.&n;&t; */
 id|args.token
 op_assign
 id|rtas_token
@@ -951,8 +943,7 @@ id|args
 )paren
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_PPC_PSERIES */
 )brace
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|xmon_speaker

@@ -440,13 +440,6 @@ c_func
 id|flush_instruction_cache
 )paren
 suffix:semicolon
-DECL|variable|_get_PVR
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|_get_PVR
-)paren
-suffix:semicolon
 DECL|variable|giveup_fpu
 id|EXPORT_SYMBOL
 c_func

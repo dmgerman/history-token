@@ -14,6 +14,61 @@ DECL|macro|LONG_LSW
 mdefine_line|#define LONG_LSW(X) (((unsigned long)X) &amp; 0xffffffff)
 DECL|macro|LONG_MSW
 mdefine_line|#define LONG_MSW(X) (((unsigned long)X) &gt;&gt; 32)
+multiline_comment|/* Definitions used by the flattened device tree */
+DECL|macro|OF_DT_HEADER
+mdefine_line|#define OF_DT_HEADER&t;&t;0xd00dfeed&t;/* 4: version, 4: total size */
+DECL|macro|OF_DT_BEGIN_NODE
+mdefine_line|#define OF_DT_BEGIN_NODE&t;0x1&t;&t;/* Start node: full name */
+DECL|macro|OF_DT_END_NODE
+mdefine_line|#define OF_DT_END_NODE&t;&t;0x2&t;&t;/* End node */
+DECL|macro|OF_DT_PROP
+mdefine_line|#define OF_DT_PROP&t;&t;0x3&t;&t;/* Property: name off, size, content */
+DECL|macro|OF_DT_END
+mdefine_line|#define OF_DT_END&t;&t;0x9
+DECL|macro|OF_DT_VERSION
+mdefine_line|#define OF_DT_VERSION&t;&t;1
+multiline_comment|/*&n; * This is what gets passed to the kernel by prom_init or kexec&n; *&n; * The dt struct contains the device tree structure, full pathes and&n; * property contents. The dt strings contain a separate block with just&n; * the strings for the property names, and is fully page aligned and&n; * self contained in a page, so that it can be kept around by the kernel,&n; * each property name appears only once in this page (cheap compression)&n; *&n; * the mem_rsvmap contains a map of reserved ranges of physical memory,&n; * passing it here instead of in the device-tree itself greatly simplifies&n; * the job of everybody. It&squot;s just a list of u64 pairs (base/size) that&n; * ends when size is 0&n; */
+DECL|struct|boot_param_header
+r_struct
+id|boot_param_header
+(brace
+DECL|member|magic
+id|u32
+id|magic
+suffix:semicolon
+multiline_comment|/* magic word OF_DT_HEADER */
+DECL|member|totalsize
+id|u32
+id|totalsize
+suffix:semicolon
+multiline_comment|/* total size of DT block */
+DECL|member|off_dt_struct
+id|u32
+id|off_dt_struct
+suffix:semicolon
+multiline_comment|/* offset to structure */
+DECL|member|off_dt_strings
+id|u32
+id|off_dt_strings
+suffix:semicolon
+multiline_comment|/* offset to strings */
+DECL|member|off_mem_rsvmap
+id|u32
+id|off_mem_rsvmap
+suffix:semicolon
+multiline_comment|/* offset to memory reserve map */
+DECL|member|version
+id|u32
+id|version
+suffix:semicolon
+multiline_comment|/* format version */
+DECL|member|last_comp_version
+id|u32
+id|last_comp_version
+suffix:semicolon
+multiline_comment|/* last compatible version */
+)brace
+suffix:semicolon
 DECL|typedef|phandle
 r_typedef
 id|u32
@@ -33,18 +88,6 @@ DECL|typedef|ihandle32
 r_typedef
 id|u32
 id|ihandle32
-suffix:semicolon
-r_extern
-r_char
-op_star
-id|prom_display_paths
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|prom_num_displays
 suffix:semicolon
 DECL|struct|address_range
 r_struct
@@ -549,6 +592,12 @@ id|_flags
 suffix:semicolon
 )brace
 suffix:semicolon
+r_extern
+r_struct
+id|device_node
+op_star
+id|of_chosen
+suffix:semicolon
 multiline_comment|/* flag descriptions */
 DECL|macro|OF_STALE
 mdefine_line|#define OF_STALE   0 /* node is slated for deletion */
@@ -634,108 +683,6 @@ op_assign
 id|de
 suffix:semicolon
 )brace
-DECL|typedef|prom_arg_t
-r_typedef
-id|u32
-id|prom_arg_t
-suffix:semicolon
-DECL|struct|prom_args
-r_struct
-id|prom_args
-(brace
-DECL|member|service
-id|u32
-id|service
-suffix:semicolon
-DECL|member|nargs
-id|u32
-id|nargs
-suffix:semicolon
-DECL|member|nret
-id|u32
-id|nret
-suffix:semicolon
-DECL|member|args
-id|prom_arg_t
-id|args
-(braket
-l_int|10
-)braket
-suffix:semicolon
-DECL|member|rets
-id|prom_arg_t
-op_star
-id|rets
-suffix:semicolon
-multiline_comment|/* Pointer to return values in args[16]. */
-)brace
-suffix:semicolon
-DECL|struct|prom_t
-r_struct
-id|prom_t
-(brace
-DECL|member|entry
-r_int
-r_int
-id|entry
-suffix:semicolon
-DECL|member|root
-id|ihandle
-id|root
-suffix:semicolon
-DECL|member|chosen
-id|ihandle
-id|chosen
-suffix:semicolon
-DECL|member|cpu
-r_int
-id|cpu
-suffix:semicolon
-DECL|member|stdout
-id|ihandle
-id|stdout
-suffix:semicolon
-DECL|member|disp_node
-id|ihandle
-id|disp_node
-suffix:semicolon
-DECL|member|args
-r_struct
-id|prom_args
-id|args
-suffix:semicolon
-DECL|member|version
-r_int
-r_int
-id|version
-suffix:semicolon
-DECL|member|encode_phys_size
-r_int
-r_int
-id|encode_phys_size
-suffix:semicolon
-DECL|member|bi_recs
-r_struct
-id|bi_record
-op_star
-id|bi_recs
-suffix:semicolon
-)brace
-suffix:semicolon
-r_extern
-r_struct
-id|prom_t
-id|prom
-suffix:semicolon
-r_extern
-r_char
-op_star
-id|of_stdout_device
-suffix:semicolon
-r_extern
-r_int
-id|boot_cpuid
-suffix:semicolon
 multiline_comment|/* OBSOLETE: Old stlye node lookup */
 r_extern
 r_struct
@@ -875,6 +822,17 @@ r_const
 r_char
 op_star
 id|path
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|device_node
+op_star
+id|of_find_node_by_phandle
+c_func
+(paren
+id|phandle
+id|handle
 )paren
 suffix:semicolon
 r_extern
