@@ -857,7 +857,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Interface functions */
 r_static
-id|u_char
+id|u8
 DECL|function|ReadISAC
 id|ReadISAC
 c_func
@@ -867,7 +867,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
@@ -894,10 +894,10 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -925,7 +925,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -959,7 +959,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -1012,7 +1012,7 @@ comma
 )brace
 suffix:semicolon
 r_static
-id|u_char
+id|u8
 DECL|function|ReadISAC_IPAC
 id|ReadISAC_IPAC
 c_func
@@ -1022,7 +1022,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
@@ -1051,10 +1051,10 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -1084,7 +1084,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -1118,7 +1118,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -1171,7 +1171,7 @@ comma
 )brace
 suffix:semicolon
 r_static
-id|u_char
+id|u8
 DECL|function|ReadHSCX
 id|ReadHSCX
 c_func
@@ -1184,7 +1184,7 @@ comma
 r_int
 id|hscx
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
@@ -1223,10 +1223,10 @@ comma
 r_int
 id|hscx
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -1273,7 +1273,7 @@ comma
 suffix:semicolon
 r_static
 r_inline
-id|u_char
+id|u8
 DECL|function|readitac
 id|readitac
 c_func
@@ -1283,12 +1283,12 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|off
 )paren
 (brace
 r_register
-id|u_char
+id|u8
 id|ret
 suffix:semicolon
 r_int
@@ -1347,10 +1347,10 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|off
 comma
-id|u_char
+id|u8
 id|data
 )paren
 (brace
@@ -1407,7 +1407,7 @@ id|cs
 )paren
 (brace
 r_register
-id|u_char
+id|u8
 id|v
 suffix:semicolon
 id|v
@@ -1503,7 +1503,7 @@ id|cs
 op_assign
 id|dev_id
 suffix:semicolon
-id|u_char
+id|u8
 id|val
 suffix:semicolon
 r_int
@@ -1970,7 +1970,7 @@ id|cs
 op_assign
 id|dev_id
 suffix:semicolon
-id|u_char
+id|u8
 id|ista
 comma
 id|val
@@ -2932,7 +2932,7 @@ r_char
 op_star
 id|t
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|p
 suffix:semicolon
@@ -3503,7 +3503,7 @@ id|ELSA_QS3000PCI
 )paren
 )paren
 (brace
-id|u_char
+id|u8
 id|led
 op_assign
 l_int|0xff
@@ -4010,7 +4010,7 @@ id|cs-&gt;hw.elsa.MFlag
 r_int
 id|len
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|msg
 suffix:semicolon
@@ -4626,7 +4626,7 @@ id|card
 r_int
 id|bytecnt
 suffix:semicolon
-id|u_char
+id|u8
 id|val
 comma
 id|pci_rev
@@ -4822,7 +4822,7 @@ id|ELSA_PC
 )paren
 (brace
 r_const
-id|u_char
+id|u8
 id|CARD_IrqTab
 (braket
 l_int|8
@@ -4870,7 +4870,7 @@ id|ELSA_PCC8
 )paren
 (brace
 r_const
-id|u_char
+id|u8
 id|CARD_IrqTab
 (braket
 l_int|8
@@ -4911,7 +4911,7 @@ suffix:semicolon
 r_else
 (brace
 r_const
-id|u_char
+id|u8
 id|CARD_IrqTab
 (braket
 l_int|8

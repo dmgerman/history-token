@@ -295,7 +295,7 @@ r_int
 id|count
 )paren
 (brace
-id|u_char
+id|u8
 op_star
 id|ptr
 suffix:semicolon

@@ -79,7 +79,7 @@ op_star
 id|cs
 )paren
 (brace
-id|u_char
+id|u8
 id|val
 suffix:semicolon
 id|add_arcofi_timer

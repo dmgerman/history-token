@@ -64,7 +64,7 @@ DECL|macro|bytein
 mdefine_line|#define bytein(addr) inb(addr)
 r_static
 r_inline
-id|u_char
+id|u8
 DECL|function|readreg
 id|readreg
 c_func
@@ -101,7 +101,7 @@ comma
 id|u_short
 id|off
 comma
-id|u_char
+id|u8
 id|data
 )paren
 (brace
@@ -127,7 +127,7 @@ r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -156,7 +156,7 @@ r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -177,7 +177,7 @@ suffix:semicolon
 )brace
 r_static
 r_inline
-id|u_char
+id|u8
 DECL|function|readreg_ipac
 id|readreg_ipac
 c_func
@@ -191,7 +191,7 @@ id|off
 )paren
 (brace
 r_register
-id|u_char
+id|u8
 id|ret
 suffix:semicolon
 r_int
@@ -252,7 +252,7 @@ comma
 id|u_short
 id|off
 comma
-id|u_char
+id|u8
 id|data
 )paren
 (brace
@@ -311,7 +311,7 @@ comma
 id|u_short
 id|off
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -353,7 +353,7 @@ comma
 id|u_short
 id|off
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -384,7 +384,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Interface functions */
 r_static
-id|u_char
+id|u8
 DECL|function|ReadISAC
 id|ReadISAC
 c_func
@@ -394,7 +394,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
@@ -479,10 +479,10 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -566,7 +566,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -631,7 +631,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -728,7 +728,7 @@ comma
 r_int
 id|hscx
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -801,7 +801,7 @@ comma
 r_int
 id|hscx
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -861,7 +861,7 @@ suffix:semicolon
 )brace
 )brace
 r_static
-id|u_char
+id|u8
 DECL|function|ReadHSCX
 id|ReadHSCX
 c_func
@@ -874,7 +874,7 @@ comma
 r_int
 id|hscx
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
@@ -967,10 +967,10 @@ comma
 r_int
 id|hscx
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -1105,7 +1105,7 @@ id|cs
 op_assign
 id|dev_id
 suffix:semicolon
-id|u_char
+id|u8
 id|valisac
 comma
 id|valhscx
@@ -1294,7 +1294,7 @@ id|cs
 op_assign
 id|dev_id
 suffix:semicolon
-id|u_char
+id|u8
 id|ista
 comma
 id|val
@@ -2810,7 +2810,7 @@ id|pci_ioaddr1
 op_assign
 l_int|0
 suffix:semicolon
-id|u_char
+id|u8
 id|pci_irq
 op_assign
 l_int|0
@@ -2822,7 +2822,7 @@ id|nbseek
 comma
 id|seekcard
 suffix:semicolon
-id|u_char
+id|u8
 id|pci_rev
 suffix:semicolon
 id|printk
@@ -3266,7 +3266,7 @@ id|tmp
 l_int|64
 )braket
 suffix:semicolon
-id|u_char
+id|u8
 id|val
 suffix:semicolon
 id|strcpy

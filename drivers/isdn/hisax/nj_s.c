@@ -42,7 +42,7 @@ id|cs
 op_assign
 id|dev_id
 suffix:semicolon
-id|u_char
+id|u8
 id|val
 comma
 id|sval

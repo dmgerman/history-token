@@ -1859,7 +1859,7 @@ r_int
 id|HiSax_readstatus
 c_func
 (paren
-id|u_char
+id|u8
 op_star
 id|buf
 comma
@@ -1881,7 +1881,7 @@ id|count
 comma
 id|cnt
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|p
 op_assign
@@ -2215,7 +2215,7 @@ suffix:semicolon
 )brace
 DECL|variable|tmpbuf
 r_static
-id|u_char
+id|u8
 id|tmpbuf
 (braket
 id|HISAX_STATUS_BUFSIZE
@@ -2253,7 +2253,7 @@ id|count
 comma
 id|i
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|p
 suffix:semicolon
@@ -7300,7 +7300,7 @@ op_star
 id|card
 )paren
 (brace
-id|u_char
+id|u8
 id|ids
 (braket
 l_int|16
@@ -9101,7 +9101,7 @@ id|cs
 op_assign
 id|d_if-&gt;cs
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|ptr
 suffix:semicolon

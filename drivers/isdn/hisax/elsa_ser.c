@@ -25,7 +25,7 @@ singleline_comment|//#define SERIAL_DEBUG_REG 1
 macro_line|#ifdef SERIAL_DEBUG_REG
 DECL|variable|deb
 r_static
-id|u_char
+id|u8
 id|deb
 (braket
 l_int|32
@@ -2067,7 +2067,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|buf
 comma
@@ -2080,7 +2080,7 @@ id|count
 comma
 id|fp
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|msg
 op_assign

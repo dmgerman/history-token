@@ -233,10 +233,10 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|reg
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -249,7 +249,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|u_char
+id|u8
 id|ret
 suffix:semicolon
 id|spin_lock_irqsave

@@ -115,7 +115,7 @@ DECL|macro|PITA_INT0_STATUS
 mdefine_line|#define PITA_INT0_STATUS&t;0x02
 r_static
 r_inline
-id|u_char
+id|u8
 DECL|function|readreg
 id|readreg
 c_func
@@ -128,12 +128,12 @@ r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 id|off
 )paren
 (brace
 r_register
-id|u_char
+id|u8
 id|ret
 suffix:semicolon
 r_int
@@ -195,10 +195,10 @@ r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 id|off
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -241,10 +241,10 @@ r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 id|off
 comma
-id|u_char
+id|u8
 id|data
 )paren
 (brace
@@ -302,10 +302,10 @@ r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 id|off
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -335,7 +335,7 @@ suffix:semicolon
 )brace
 r_static
 r_inline
-id|u_char
+id|u8
 DECL|function|memreadreg
 id|memreadreg
 c_func
@@ -344,7 +344,7 @@ r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 id|off
 )paren
 (brace
@@ -382,15 +382,15 @@ r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 id|off
 comma
-id|u_char
+id|u8
 id|data
 )paren
 (brace
 r_register
-id|u_char
+id|u8
 op_star
 id|p
 suffix:semicolon
@@ -422,7 +422,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Interface functions */
 r_static
-id|u_char
+id|u8
 DECL|function|ReadISAC
 id|ReadISAC
 c_func
@@ -432,7 +432,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
@@ -459,10 +459,10 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -490,7 +490,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -524,7 +524,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -577,7 +577,7 @@ comma
 )brace
 suffix:semicolon
 r_static
-id|u_char
+id|u8
 DECL|function|ReadISAC_IPAC
 id|ReadISAC_IPAC
 c_func
@@ -587,7 +587,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
@@ -618,10 +618,10 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -651,7 +651,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -685,7 +685,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -738,7 +738,7 @@ comma
 )brace
 suffix:semicolon
 r_static
-id|u_char
+id|u8
 DECL|function|ReadHSCX
 id|ReadHSCX
 c_func
@@ -751,7 +751,7 @@ comma
 r_int
 id|hscx
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
@@ -790,10 +790,10 @@ comma
 r_int
 id|hscx
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -839,7 +839,7 @@ comma
 )brace
 suffix:semicolon
 r_static
-id|u_char
+id|u8
 DECL|function|MemReadISAC_IPAC
 id|MemReadISAC_IPAC
 c_func
@@ -849,7 +849,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
@@ -878,10 +878,10 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -909,7 +909,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -949,7 +949,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -1008,7 +1008,7 @@ comma
 )brace
 suffix:semicolon
 r_static
-id|u_char
+id|u8
 DECL|function|MemReadHSCX
 id|MemReadHSCX
 c_func
@@ -1021,7 +1021,7 @@ comma
 r_int
 id|hscx
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
@@ -1058,10 +1058,10 @@ comma
 r_int
 id|hscx
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -1106,7 +1106,7 @@ comma
 suffix:semicolon
 multiline_comment|/* IO-Functions for IPACX type cards */
 r_static
-id|u_char
+id|u8
 DECL|function|MemReadISAC_IPACX
 id|MemReadISAC_IPACX
 c_func
@@ -1116,7 +1116,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
@@ -1143,10 +1143,10 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -1172,7 +1172,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -1212,7 +1212,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -1271,7 +1271,7 @@ comma
 )brace
 suffix:semicolon
 r_static
-id|u_char
+id|u8
 DECL|function|MemReadHSCX_IPACX
 id|MemReadHSCX_IPACX
 c_func
@@ -1284,7 +1284,7 @@ comma
 r_int
 id|hscx
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
@@ -1321,10 +1321,10 @@ comma
 r_int
 id|hscx
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -1403,7 +1403,7 @@ id|cs
 op_assign
 id|dev_id
 suffix:semicolon
-id|u_char
+id|u8
 id|val
 comma
 id|sval
@@ -1619,7 +1619,7 @@ id|cs
 op_assign
 id|dev_id
 suffix:semicolon
-id|u_char
+id|u8
 id|ista
 comma
 id|val
@@ -2026,7 +2026,7 @@ comma
 r_int
 id|hscx
 comma
-id|u_char
+id|u8
 id|data
 )paren
 (brace
@@ -2088,7 +2088,7 @@ r_int
 id|count
 )paren
 (brace
-id|u_char
+id|u8
 op_star
 id|ptr
 suffix:semicolon
@@ -2425,14 +2425,14 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|val
 comma
-id|u_char
+id|u8
 id|hscx
 )paren
 (brace
-id|u_char
+id|u8
 id|r
 suffix:semicolon
 r_struct
@@ -2891,11 +2891,11 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|val
 )paren
 (brace
-id|u_char
+id|u8
 id|exval
 suffix:semicolon
 r_struct
@@ -3137,7 +3137,7 @@ id|cs
 op_assign
 id|dev_id
 suffix:semicolon
-id|u_char
+id|u8
 id|ista
 comma
 id|val
@@ -3147,7 +3147,7 @@ id|icnt
 op_assign
 l_int|5
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|cfg
 suffix:semicolon
@@ -3171,7 +3171,7 @@ suffix:semicolon
 id|cfg
 op_assign
 (paren
-id|u_char
+id|u8
 op_star
 )paren
 id|cs-&gt;hw.diva.pci_cfg
@@ -3444,10 +3444,10 @@ id|cs
 op_assign
 id|dev_id
 suffix:semicolon
-id|u_char
+id|u8
 id|val
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|cfg
 suffix:semicolon
@@ -3471,7 +3471,7 @@ suffix:semicolon
 id|cfg
 op_assign
 (paren
-id|u_char
+id|u8
 op_star
 )paren
 id|cs-&gt;hw.diva.pci_cfg
@@ -4820,7 +4820,7 @@ id|bytecnt
 op_assign
 l_int|8
 suffix:semicolon
-id|u_char
+id|u8
 id|val
 suffix:semicolon
 r_struct

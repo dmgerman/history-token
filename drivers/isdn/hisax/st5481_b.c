@@ -589,7 +589,7 @@ op_star
 id|adapter
 )paren
 (brace
-id|u_char
+id|u8
 id|leds
 op_assign
 id|adapter-&gt;leds

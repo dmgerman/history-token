@@ -247,7 +247,7 @@ id|size
 suffix:semicolon
 )brace
 r_static
-id|u_char
+id|u8
 DECL|function|fcclassic_read_hscx
 id|fcclassic_read_hscx
 c_func
@@ -257,7 +257,7 @@ id|hscx
 op_star
 id|hscx
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
@@ -292,10 +292,10 @@ id|hscx
 op_star
 id|hscx
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace

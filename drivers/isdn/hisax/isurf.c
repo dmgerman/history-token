@@ -44,7 +44,7 @@ DECL|macro|ISURF_IOMEM_SIZE
 mdefine_line|#define ISURF_IOMEM_SIZE&t;0x400
 multiline_comment|/* Interface functions */
 r_static
-id|u_char
+id|u8
 DECL|function|ReadISAC
 id|ReadISAC
 c_func
@@ -54,7 +54,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
@@ -81,10 +81,10 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -115,7 +115,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -164,7 +164,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -240,7 +240,7 @@ comma
 suffix:semicolon
 multiline_comment|/* ISAR access routines&n; * mode = 0 access with IRQ on&n; * mode = 1 access with IRQ off&n; * mode = 2 access with IRQ off and using last offset&n; */
 r_static
-id|u_char
+id|u8
 DECL|function|ReadISAR
 id|ReadISAR
 c_func
@@ -253,7 +253,7 @@ comma
 r_int
 id|mode
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
@@ -281,10 +281,10 @@ comma
 r_int
 id|mode
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -349,7 +349,7 @@ id|cs
 op_assign
 id|dev_id
 suffix:semicolon
-id|u_char
+id|u8
 id|val
 suffix:semicolon
 r_int
@@ -625,7 +625,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|chips
 )paren
 (brace

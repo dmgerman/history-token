@@ -33,7 +33,7 @@ DECL|macro|bytein
 mdefine_line|#define bytein(addr) inb(addr)
 r_static
 r_inline
-id|u_char
+id|u8
 DECL|function|readreg
 id|readreg
 c_func
@@ -46,12 +46,12 @@ r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 id|off
 )paren
 (brace
 r_register
-id|u_char
+id|u8
 id|ret
 suffix:semicolon
 r_int
@@ -175,10 +175,10 @@ r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 id|off
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -187,7 +187,7 @@ id|size
 )paren
 (brace
 r_register
-id|u_char
+id|u8
 id|ret
 suffix:semicolon
 r_register
@@ -296,15 +296,15 @@ r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 id|off
 comma
-id|u_char
+id|u8
 id|data
 )paren
 (brace
 r_register
-id|u_char
+id|u8
 id|ret
 suffix:semicolon
 r_int
@@ -420,10 +420,10 @@ r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 id|off
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -432,7 +432,7 @@ id|size
 )paren
 (brace
 r_register
-id|u_char
+id|u8
 id|ret
 suffix:semicolon
 r_register
@@ -529,7 +529,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Interface functions */
 r_static
-id|u_char
+id|u8
 DECL|function|ReadISAC
 id|ReadISAC
 c_func
@@ -539,7 +539,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
@@ -574,10 +574,10 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -611,7 +611,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -651,7 +651,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -710,7 +710,7 @@ comma
 )brace
 suffix:semicolon
 r_static
-id|u_char
+id|u8
 DECL|function|ReadHFC
 id|ReadHFC
 c_func
@@ -723,12 +723,12 @@ comma
 r_int
 id|data
 comma
-id|u_char
+id|u8
 id|reg
 )paren
 (brace
 r_register
-id|u_char
+id|u8
 id|ret
 suffix:semicolon
 r_if
@@ -816,10 +816,10 @@ comma
 r_int
 id|data
 comma
-id|u_char
+id|u8
 id|reg
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -928,7 +928,7 @@ id|cs
 op_assign
 id|dev_id
 suffix:semicolon
-id|u_char
+id|u8
 id|val
 suffix:semicolon
 id|spin_lock

@@ -14,7 +14,7 @@ DECL|macro|ETX
 mdefine_line|#define ETX&t;0x03
 DECL|variable|faxmodulation_s
 r_const
-id|u_char
+id|u8
 id|faxmodulation_s
 (braket
 )braket
@@ -23,7 +23,7 @@ l_string|&quot;3,24,48,72,73,74,96,97,98,121,122,145,146&quot;
 suffix:semicolon
 DECL|variable|faxmodulation
 r_const
-id|u_char
+id|u8
 id|faxmodulation
 (braket
 )braket
@@ -78,10 +78,10 @@ id|BCState
 op_star
 id|bcs
 comma
-id|u_char
+id|u8
 id|cmd
 comma
-id|u_char
+id|u8
 id|para
 )paren
 suffix:semicolon
@@ -96,7 +96,7 @@ id|BCState
 op_star
 id|bcs
 comma
-id|u_char
+id|u8
 id|status
 )paren
 suffix:semicolon
@@ -250,16 +250,16 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|his
 comma
-id|u_char
+id|u8
 id|creg
 comma
-id|u_char
+id|u8
 id|len
 comma
-id|u_char
+id|u8
 op_star
 id|msg
 )paren
@@ -543,7 +543,7 @@ id|isar_reg
 op_star
 id|ireg
 comma
-id|u_char
+id|u8
 op_star
 id|msg
 )paren
@@ -803,11 +803,11 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|len
 comma
-id|u_char
+id|u8
 op_star
 id|msg
 comma
@@ -953,20 +953,20 @@ id|s
 r_int
 id|ver
 suffix:semicolon
-id|u_char
+id|u8
 id|msg
 (braket
 )braket
 op_assign
 id|ISAR_MSG_HWVER
 suffix:semicolon
-id|u_char
+id|u8
 id|tmp
 (braket
 l_int|64
 )braket
 suffix:semicolon
-id|u_char
+id|u8
 id|len
 suffix:semicolon
 r_int
@@ -1122,7 +1122,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|buf
 )paren
@@ -1136,7 +1136,7 @@ id|cnt
 comma
 id|debug
 suffix:semicolon
-id|u_char
+id|u8
 id|len
 comma
 id|nom
@@ -1151,13 +1151,13 @@ comma
 op_star
 id|sp
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|p
 op_assign
 id|buf
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|msg
 comma
@@ -2698,7 +2698,7 @@ op_star
 id|bcs
 )paren
 (brace
-id|u_char
+id|u8
 id|dleetx
 (braket
 l_int|2
@@ -2888,7 +2888,7 @@ op_star
 id|bcs
 )paren
 (brace
-id|u_char
+id|u8
 op_star
 id|ptr
 suffix:semicolon
@@ -3012,7 +3012,7 @@ comma
 id|ireg
 comma
 (paren
-id|u_char
+id|u8
 op_star
 )paren
 id|skb_put
@@ -3434,7 +3434,7 @@ id|insert_dle
 c_func
 (paren
 (paren
-id|u_char
+id|u8
 op_star
 )paren
 id|skb_put
@@ -3817,7 +3817,7 @@ id|insert_dle
 c_func
 (paren
 (paren
-id|u_char
+id|u8
 op_star
 )paren
 id|skb_put
@@ -4000,10 +4000,10 @@ suffix:semicolon
 r_int
 id|count
 suffix:semicolon
-id|u_char
+id|u8
 id|msb
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|ptr
 suffix:semicolon
@@ -4409,7 +4409,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|dpath
 )paren
 (brace
@@ -4678,7 +4678,7 @@ id|bcs-&gt;Flag
 )paren
 )paren
 (brace
-id|u_char
+id|u8
 id|dummy
 op_assign
 l_int|0
@@ -4757,7 +4757,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|rdm
 )paren
 (brace
@@ -4943,7 +4943,7 @@ id|cs
 op_assign
 id|bcs-&gt;cs
 suffix:semicolon
-id|u_char
+id|u8
 id|ril
 op_assign
 id|ireg-&gt;par
@@ -4951,7 +4951,7 @@ id|ireg-&gt;par
 l_int|0
 )braket
 suffix:semicolon
-id|u_char
+id|u8
 id|rim
 suffix:semicolon
 r_if
@@ -5158,7 +5158,7 @@ id|BCState
 op_star
 id|bcs
 comma
-id|u_char
+id|u8
 id|devt
 )paren
 (brace
@@ -5169,7 +5169,7 @@ id|cs
 op_assign
 id|bcs-&gt;cs
 suffix:semicolon
-id|u_char
+id|u8
 id|dps
 op_assign
 id|SET_DPS
@@ -5548,7 +5548,7 @@ id|BCState
 op_star
 id|bcs
 comma
-id|u_char
+id|u8
 id|status
 )paren
 (brace
@@ -5621,7 +5621,7 @@ id|BCState
 op_star
 id|bcs
 comma
-id|u_char
+id|u8
 id|devt
 )paren
 (brace
@@ -5632,7 +5632,7 @@ id|cs
 op_assign
 id|bcs-&gt;cs
 suffix:semicolon
-id|u_char
+id|u8
 id|dps
 op_assign
 id|SET_DPS
@@ -5641,7 +5641,7 @@ c_func
 id|bcs-&gt;hw.isar.dpath
 )paren
 suffix:semicolon
-id|u_char
+id|u8
 id|p1
 suffix:semicolon
 r_switch
@@ -6875,7 +6875,7 @@ comma
 id|ireg
 comma
 (paren
-id|u_char
+id|u8
 op_star
 )paren
 id|ireg-&gt;par
@@ -6999,7 +6999,7 @@ comma
 id|ireg
 comma
 (paren
-id|u_char
+id|u8
 op_star
 )paren
 id|ireg-&gt;par
@@ -7062,7 +7062,7 @@ comma
 id|ireg
 comma
 (paren
-id|u_char
+id|u8
 op_star
 )paren
 id|ireg-&gt;par
@@ -7084,7 +7084,7 @@ op_eq
 id|L1_DEB_HSCX
 )paren
 (brace
-id|u_char
+id|u8
 op_star
 id|tp
 op_assign
@@ -7110,7 +7110,7 @@ c_func
 id|tp
 comma
 (paren
-id|u_char
+id|u8
 op_star
 )paren
 id|ireg-&gt;par
@@ -7276,7 +7276,7 @@ id|cs
 op_assign
 id|bcs-&gt;cs
 suffix:semicolon
-id|u_char
+id|u8
 id|dps
 op_assign
 id|SET_DPS
@@ -7285,7 +7285,7 @@ c_func
 id|bcs-&gt;hw.isar.dpath
 )paren
 suffix:semicolon
-id|u_char
+id|u8
 id|ctrl
 comma
 id|param
@@ -7574,7 +7574,7 @@ id|cs
 op_assign
 id|bcs-&gt;cs
 suffix:semicolon
-id|u_char
+id|u8
 id|dps
 op_assign
 id|SET_DPS
@@ -7583,7 +7583,7 @@ c_func
 id|bcs-&gt;hw.isar.dpath
 )paren
 suffix:semicolon
-id|u_char
+id|u8
 id|ctrl
 comma
 id|param
@@ -7760,7 +7760,7 @@ id|cs
 op_assign
 id|bcs-&gt;cs
 suffix:semicolon
-id|u_char
+id|u8
 id|dps
 op_assign
 id|SET_DPS
@@ -7769,7 +7769,7 @@ c_func
 id|bcs-&gt;hw.isar.dpath
 )paren
 suffix:semicolon
-id|u_char
+id|u8
 id|cmsb
 op_assign
 id|IOM_CTRL_ENA
@@ -8179,10 +8179,10 @@ id|BCState
 op_star
 id|bcs
 comma
-id|u_char
+id|u8
 id|cmd
 comma
-id|u_char
+id|u8
 id|para
 )paren
 (brace
@@ -8193,7 +8193,7 @@ id|cs
 op_assign
 id|bcs-&gt;cs
 suffix:semicolon
-id|u_char
+id|u8
 id|dps
 op_assign
 id|SET_DPS
@@ -8202,7 +8202,7 @@ c_func
 id|bcs-&gt;hw.isar.dpath
 )paren
 suffix:semicolon
-id|u_char
+id|u8
 id|ctrl
 op_assign
 l_int|0
@@ -8676,7 +8676,7 @@ op_star
 id|cs
 )paren
 (brace
-id|u_char
+id|u8
 id|msg
 suffix:semicolon
 r_int
@@ -9770,7 +9770,7 @@ c_func
 id|cs
 comma
 (paren
-id|u_char
+id|u8
 op_star
 )paren
 id|adr

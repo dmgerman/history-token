@@ -109,7 +109,7 @@ DECL|macro|HDLC_CMD_XML_MASK
 mdefine_line|#define  HDLC_CMD_XML_MASK&t;0x3f00
 multiline_comment|/* Interface functions */
 r_static
-id|u_char
+id|u8
 DECL|function|ReadISAC
 id|ReadISAC
 c_func
@@ -119,12 +119,12 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
 r_register
-id|u_char
+id|u8
 id|idx
 op_assign
 (paren
@@ -139,7 +139,7 @@ suffix:colon
 id|AVM_ISAC_REG_LOW
 suffix:semicolon
 r_register
-id|u_char
+id|u8
 id|val
 suffix:semicolon
 r_register
@@ -206,15 +206,15 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
 r_register
-id|u_char
+id|u8
 id|idx
 op_assign
 (paren
@@ -287,7 +287,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -327,7 +327,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -400,7 +400,7 @@ comma
 r_int
 id|chan
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
@@ -483,7 +483,7 @@ comma
 r_int
 id|chan
 comma
-id|u_char
+id|u8
 id|offset
 comma
 id|u_int
@@ -547,7 +547,7 @@ suffix:semicolon
 )brace
 r_static
 r_inline
-id|u_char
+id|u8
 DECL|function|ReadHDLCPnP
 id|ReadHDLCPnP
 c_func
@@ -560,12 +560,12 @@ comma
 r_int
 id|chan
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
 r_register
-id|u_char
+id|u8
 id|idx
 op_assign
 id|chan
@@ -576,7 +576,7 @@ suffix:colon
 id|AVM_HDLC_1
 suffix:semicolon
 r_register
-id|u_char
+id|u8
 id|val
 suffix:semicolon
 r_register
@@ -643,15 +643,15 @@ comma
 r_int
 id|chan
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
 r_register
-id|u_char
+id|u8
 id|idx
 op_assign
 id|chan
@@ -1172,11 +1172,11 @@ id|u_int
 op_star
 id|ptr
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|p
 suffix:semicolon
-id|u_char
+id|u8
 id|idx
 op_assign
 id|bcs-&gt;channel
@@ -1411,7 +1411,7 @@ id|AVM_FRITZ_PNP
 id|p
 op_assign
 (paren
-id|u_char
+id|u8
 op_star
 )paren
 id|ptr
@@ -3161,10 +3161,10 @@ id|cs
 op_assign
 id|dev_id
 suffix:semicolon
-id|u_char
+id|u8
 id|val
 suffix:semicolon
-id|u_char
+id|u8
 id|sval
 suffix:semicolon
 r_if

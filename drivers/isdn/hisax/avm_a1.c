@@ -33,7 +33,7 @@ DECL|macro|bytein
 mdefine_line|#define bytein(addr) inb(addr)
 r_static
 r_inline
-id|u_char
+id|u8
 DECL|function|readreg
 id|readreg
 c_func
@@ -42,7 +42,7 @@ r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 id|off
 )paren
 (brace
@@ -69,10 +69,10 @@ r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 id|off
 comma
-id|u_char
+id|u8
 id|data
 )paren
 (brace
@@ -98,7 +98,7 @@ r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -127,7 +127,7 @@ r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -148,7 +148,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Interface functions */
 r_static
-id|u_char
+id|u8
 DECL|function|ReadISAC
 id|ReadISAC
 c_func
@@ -158,7 +158,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
@@ -185,10 +185,10 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -214,7 +214,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -244,7 +244,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -293,7 +293,7 @@ comma
 )brace
 suffix:semicolon
 r_static
-id|u_char
+id|u8
 DECL|function|ReadHSCX
 id|ReadHSCX
 c_func
@@ -306,7 +306,7 @@ comma
 r_int
 id|hscx
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 (brace
@@ -339,10 +339,10 @@ comma
 r_int
 id|hscx
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -415,7 +415,7 @@ id|cs
 op_assign
 id|dev_id
 suffix:semicolon
-id|u_char
+id|u8
 id|val
 comma
 id|sval
@@ -876,7 +876,7 @@ op_star
 id|card
 )paren
 (brace
-id|u_char
+id|u8
 id|val
 suffix:semicolon
 r_struct

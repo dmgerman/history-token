@@ -7280,7 +7280,7 @@ c_func
 id|t
 comma
 (paren
-id|u_char
+id|u8
 op_star
 )paren
 id|cm

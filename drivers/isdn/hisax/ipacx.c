@@ -214,7 +214,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|hscx
 )paren
 suffix:semicolon
@@ -592,7 +592,7 @@ op_star
 id|cs
 )paren
 (brace
-id|u_char
+id|u8
 id|event
 suffix:semicolon
 id|event
@@ -681,7 +681,7 @@ id|skb
 op_assign
 id|arg
 suffix:semicolon
-id|u_char
+id|u8
 id|cda1_cr
 comma
 id|cda2_cr
@@ -1548,7 +1548,7 @@ r_int
 id|count
 )paren
 (brace
-id|u_char
+id|u8
 op_star
 id|ptr
 suffix:semicolon
@@ -1870,7 +1870,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u_char
+id|u8
 id|istad
 comma
 id|rstad
@@ -2570,7 +2570,7 @@ r_int
 id|count
 )paren
 (brace
-id|u_char
+id|u8
 op_star
 id|ptr
 comma
@@ -2880,11 +2880,11 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|hscx
 )paren
 (brace
-id|u_char
+id|u8
 id|istab
 suffix:semicolon
 r_struct
@@ -2900,7 +2900,7 @@ suffix:semicolon
 r_int
 id|count
 suffix:semicolon
-id|u_char
+id|u8
 id|rstab
 suffix:semicolon
 id|bcs
@@ -4082,7 +4082,7 @@ op_star
 id|cs
 )paren
 (brace
-id|u_char
+id|u8
 id|ista
 suffix:semicolon
 id|spin_lock

@@ -535,7 +535,7 @@ r_int
 id|count
 )paren
 (brace
-id|u_char
+id|u8
 op_star
 id|ptr
 suffix:semicolon
@@ -826,11 +826,11 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|val
 )paren
 (brace
-id|u_char
+id|u8
 id|exval
 comma
 id|v1

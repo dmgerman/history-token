@@ -710,7 +710,7 @@ id|last_fn
 comma
 id|last_ret
 suffix:semicolon
-id|u_char
+id|u8
 id|buf
 (braket
 l_int|64

@@ -193,7 +193,7 @@ id|ll_id
 suffix:semicolon
 multiline_comment|/* remebered ll id */
 DECL|member|remote_operation
-id|u_char
+id|u8
 id|remote_operation
 suffix:semicolon
 multiline_comment|/* handled remote operation, 0 = not active */

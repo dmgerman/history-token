@@ -322,7 +322,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|command
 comma
 r_char
@@ -609,7 +609,7 @@ op_star
 id|cs
 )paren
 (brace
-id|u_char
+id|u8
 id|index
 op_assign
 id|stateHelper
@@ -626,7 +626,7 @@ id|cs-&gt;dc.amd7930.ph_state
 op_minus
 l_int|1
 suffix:semicolon
-id|u_char
+id|u8
 id|message
 op_assign
 id|i430States

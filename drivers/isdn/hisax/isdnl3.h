@@ -40,7 +40,7 @@ r_struct
 id|l3_process
 op_star
 comma
-id|u_char
+id|u8
 comma
 r_void
 op_star

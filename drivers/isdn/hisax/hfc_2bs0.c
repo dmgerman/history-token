@@ -93,7 +93,7 @@ id|to
 op_assign
 l_int|130
 suffix:semicolon
-id|u_char
+id|u8
 id|val
 suffix:semicolon
 r_while
@@ -320,7 +320,7 @@ id|BCState
 op_star
 id|bcs
 comma
-id|u_char
+id|u8
 id|reg
 )paren
 (brace
@@ -410,7 +410,7 @@ id|z1
 comma
 id|z2
 suffix:semicolon
-id|u_char
+id|u8
 id|cip
 comma
 id|f1
@@ -880,7 +880,7 @@ r_int
 id|count
 )paren
 (brace
-id|u_char
+id|u8
 op_star
 id|ptr
 suffix:semicolon
@@ -902,7 +902,7 @@ suffix:semicolon
 r_int
 id|chksum
 suffix:semicolon
-id|u_char
+id|u8
 id|stat
 comma
 id|cip
@@ -1528,7 +1528,7 @@ id|z1
 comma
 id|z2
 suffix:semicolon
-id|u_char
+id|u8
 id|cip
 suffix:semicolon
 r_if
@@ -2046,7 +2046,7 @@ id|z2
 comma
 id|rcnt
 suffix:semicolon
-id|u_char
+id|u8
 id|f1
 comma
 id|f2

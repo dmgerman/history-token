@@ -86,7 +86,7 @@ r_struct
 id|dc_hw_ops
 id|netjet_dc_ops
 suffix:semicolon
-id|u_char
+id|u8
 id|NETjet_ReadIC
 c_func
 (paren
@@ -95,7 +95,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 )paren
 suffix:semicolon
@@ -108,10 +108,10 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|offset
 comma
-id|u_char
+id|u8
 id|value
 )paren
 suffix:semicolon
@@ -124,7 +124,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -141,7 +141,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma

@@ -128,7 +128,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|val
 )paren
 suffix:semicolon

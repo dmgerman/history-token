@@ -358,7 +358,7 @@ suffix:semicolon
 )brace
 r_static
 r_inline
-id|u_char
+id|u8
 DECL|function|ReadISAC
 id|ReadISAC
 c_func
@@ -368,7 +368,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|adr
 )paren
 (brace
@@ -396,10 +396,10 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|adr
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -428,7 +428,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -461,7 +461,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -513,7 +513,7 @@ comma
 suffix:semicolon
 r_static
 r_inline
-id|u_char
+id|u8
 DECL|function|ReadHSCX
 id|ReadHSCX
 c_func
@@ -526,7 +526,7 @@ comma
 r_int
 id|hscx
 comma
-id|u_char
+id|u8
 id|adr
 )paren
 (brace
@@ -561,10 +561,10 @@ comma
 r_int
 id|hscx
 comma
-id|u_char
+id|u8
 id|adr
 comma
-id|u_char
+id|u8
 id|value
 )paren
 (brace
@@ -600,7 +600,7 @@ comma
 r_int
 id|hscx
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -641,7 +641,7 @@ comma
 r_int
 id|hscx
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -721,7 +721,7 @@ id|cs
 op_assign
 id|dev_id
 suffix:semicolon
-id|u_char
+id|u8
 id|val
 comma
 id|sval
@@ -1059,7 +1059,7 @@ op_star
 id|card
 )paren
 (brace
-id|u_char
+id|u8
 id|model
 comma
 id|vers

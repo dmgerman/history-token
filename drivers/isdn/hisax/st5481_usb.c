@@ -333,7 +333,7 @@ id|st5481_adapter
 op_star
 id|adapter
 comma
-id|u_char
+id|u8
 id|pipe
 comma
 id|ctrl_complete_t
@@ -619,13 +619,13 @@ op_star
 id|regs
 )paren
 (brace
-id|u_char
+id|u8
 op_star
 id|data
 op_assign
 id|urb-&gt;transfer_buffer
 suffix:semicolon
-id|u_char
+id|u8
 id|irqbyte
 suffix:semicolon
 r_struct
@@ -932,7 +932,7 @@ id|urb
 op_star
 id|urb
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|buf
 suffix:semicolon

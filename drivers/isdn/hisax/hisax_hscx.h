@@ -37,7 +37,7 @@ r_int
 id|channel
 suffix:semicolon
 DECL|member|tsaxr
-id|u_char
+id|u8
 id|tsaxr
 suffix:semicolon
 DECL|member|tx_skb
@@ -51,7 +51,7 @@ r_int
 id|tx_cnt
 suffix:semicolon
 DECL|member|rcvbuf
-id|u_char
+id|u8
 id|rcvbuf
 (braket
 id|HSCX_BUFMAX
@@ -62,7 +62,7 @@ r_int
 id|rcvidx
 suffix:semicolon
 DECL|member|read_hscx
-id|u_char
+id|u8
 (paren
 op_star
 id|read_hscx
@@ -72,7 +72,7 @@ r_struct
 id|hscx
 op_star
 comma
-id|u_char
+id|u8
 )paren
 suffix:semicolon
 DECL|member|write_hscx
@@ -86,9 +86,9 @@ r_struct
 id|hscx
 op_star
 comma
-id|u_char
+id|u8
 comma
-id|u_char
+id|u8
 )paren
 suffix:semicolon
 DECL|member|read_hscx_fifo
@@ -102,7 +102,7 @@ r_struct
 id|hscx
 op_star
 comma
-id|u_char
+id|u8
 op_star
 comma
 r_int
@@ -119,7 +119,7 @@ r_struct
 id|hscx
 op_star
 comma
-id|u_char
+id|u8
 op_star
 comma
 r_int
