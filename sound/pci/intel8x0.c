@@ -8145,6 +8145,29 @@ comma
 dot
 id|device
 op_assign
+l_int|0x010d
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Dell&quot;
+comma
+multiline_comment|/* which model?  AD1885 */
+dot
+id|type
+op_assign
+id|AC97_TUNE_HP_ONLY
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x1028
+comma
+dot
+id|device
+op_assign
 l_int|0x0126
 comma
 dot
@@ -8176,6 +8199,29 @@ op_assign
 l_string|&quot;Dell Precision 450&quot;
 comma
 multiline_comment|/* AD1981B*/
+dot
+id|type
+op_assign
+id|AC97_TUNE_HP_ONLY
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x1028
+comma
+dot
+id|device
+op_assign
+l_int|0x0147
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Dell&quot;
+comma
+multiline_comment|/* which model?  AD1981B*/
 dot
 id|type
 op_assign
