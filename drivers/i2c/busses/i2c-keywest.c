@@ -2425,6 +2425,12 @@ id|ENODEV
 suffix:semicolon
 )brace
 macro_line|#endif /* POLLED_MODE */
+id|pmac_low_i2c_unlock
+c_func
+(paren
+id|np
+)paren
+suffix:semicolon
 id|dev_set_drvdata
 c_func
 (paren
@@ -2637,12 +2643,6 @@ suffix:colon
 l_string|&quot;&quot;
 comma
 id|bsteps
-)paren
-suffix:semicolon
-id|pmac_low_i2c_unlock
-c_func
-(paren
-id|np
 )paren
 suffix:semicolon
 r_return
