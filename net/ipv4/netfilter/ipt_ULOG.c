@@ -176,7 +176,7 @@ op_star
 id|nflognl
 suffix:semicolon
 multiline_comment|/* our socket */
-DECL|variable|ulog_lock
+r_static
 id|DECLARE_LOCK
 c_func
 (paren
@@ -339,6 +339,7 @@ id|ulog_lock
 suffix:semicolon
 )brace
 DECL|function|ulog_alloc_skb
+r_static
 r_struct
 id|sk_buff
 op_star

@@ -343,7 +343,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 suffix:semicolon

@@ -602,7 +602,7 @@ op_star
 id|saddr
 comma
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|opt
 )paren

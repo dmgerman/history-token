@@ -1119,7 +1119,7 @@ c_func
 (paren
 r_const
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 comma
@@ -1503,50 +1503,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* WARNING: Do not change the layout of the members in sctp_sock! */
-DECL|struct|sctp_sock
-r_struct
-id|sctp_sock
-(brace
-DECL|member|inet
-r_struct
-id|inet_sock
-id|inet
-suffix:semicolon
-DECL|member|sctp
-r_struct
-id|sctp_opt
-id|sctp
-suffix:semicolon
-)brace
-suffix:semicolon
-macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
-DECL|struct|sctp6_sock
-r_struct
-id|sctp6_sock
-(brace
-DECL|member|inet
-r_struct
-id|inet_sock
-id|inet
-suffix:semicolon
-DECL|member|sctp
-r_struct
-id|sctp_opt
-id|sctp
-suffix:semicolon
-DECL|member|inet6
-r_struct
-id|ipv6_pinfo
-id|inet6
-suffix:semicolon
-)brace
-suffix:semicolon
-macro_line|#endif /* CONFIG_IPV6 */
-DECL|macro|sctp_sk
-mdefine_line|#define sctp_sk(__sk) (&amp;((struct sctp_sock *)__sk)-&gt;sctp)
-DECL|macro|sctp_opt2sk
-mdefine_line|#define sctp_opt2sk(__sp) &amp;container_of(__sp, struct sctp_sock, sctp)-&gt;inet.sk
 multiline_comment|/* Is a socket of this style? */
 DECL|macro|sctp_style
 mdefine_line|#define sctp_style(sk, style) __sctp_style((sk), (SCTP_SOCKET_##style))

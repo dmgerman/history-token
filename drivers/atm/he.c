@@ -37,48 +37,19 @@ macro_line|#undef USE_RBPL_POOL&t;&t;&t;/* if memory is tight try this */
 DECL|macro|USE_TPD_POOL
 mdefine_line|#define USE_TPD_POOL
 multiline_comment|/* #undef CONFIG_ATM_HE_USE_SUNI */
-multiline_comment|/* compatibility */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,69)
-DECL|typedef|irqreturn_t
-r_typedef
-r_void
-id|irqreturn_t
-suffix:semicolon
-DECL|macro|IRQ_NONE
-mdefine_line|#define IRQ_NONE
-DECL|macro|IRQ_HANDLED
-mdefine_line|#define IRQ_HANDLED
-DECL|macro|IRQ_RETVAL
-mdefine_line|#define IRQ_RETVAL(x)
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,9)
-DECL|macro|__devexit_p
-mdefine_line|#define __devexit_p(func)&t;&t;func
-macro_line|#endif
-macro_line|#ifndef MODULE_LICENSE
-DECL|macro|MODULE_LICENSE
-mdefine_line|#define MODULE_LICENSE(x)
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,3)
-DECL|macro|pci_set_drvdata
-mdefine_line|#define pci_set_drvdata(pci_dev, data)&t;(pci_dev)-&gt;driver_data = (data)
-DECL|macro|pci_get_drvdata
-mdefine_line|#define pci_get_drvdata(pci_dev)&t;(pci_dev)-&gt;driver_data
-macro_line|#endif
+multiline_comment|/* #undef HE_DEBUG */
 macro_line|#include &quot;he.h&quot;
 macro_line|#include &quot;suni.h&quot;
 macro_line|#include &lt;linux/atm_he.h&gt;
 DECL|macro|hprintk
 mdefine_line|#define hprintk(fmt,args...)&t;printk(KERN_ERR DEV_LABEL &quot;%d: &quot; fmt, he_dev-&gt;number , ##args)
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#ifdef DEBUG
+macro_line|#ifdef HE_DEBUG
 DECL|macro|HPRINTK
 mdefine_line|#define HPRINTK(fmt,args...)&t;printk(KERN_DEBUG DEV_LABEL &quot;%d: &quot; fmt, he_dev-&gt;number , ##args)
-macro_line|#else
+macro_line|#else /* !HE_DEBUG */
 DECL|macro|HPRINTK
 mdefine_line|#define HPRINTK(fmt,args...)&t;do { } while (0)
-macro_line|#endif /* DEBUG */
+macro_line|#endif /* HE_DEBUG */
 multiline_comment|/* version definition */
 DECL|variable|version
 r_static
@@ -267,15 +238,11 @@ r_struct
 id|he_dev
 op_star
 id|he_devs
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|disable64
 r_static
 r_int
 id|disable64
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|nvpibits
 r_static

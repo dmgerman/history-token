@@ -49,9 +49,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.15&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.16&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;January 6, 2005&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;January 17, 2005&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
@@ -11737,6 +11737,11 @@ c_cond
 id|len
 OG
 id|RX_COPY_THRESHOLD
+op_logical_and
+id|tp-&gt;rx_offset
+op_eq
+l_int|2
+multiline_comment|/* rx_offset != 2 iff this is a 5701 card running&n;&t;&t;&t; * in PCI-X mode [see tg3_get_invariants()] */
 )paren
 (brace
 r_int
