@@ -506,7 +506,7 @@ id|ip_reply_arg
 (brace
 DECL|member|iov
 r_struct
-id|iovec
+id|kvec
 id|iov
 (braket
 l_int|1
