@@ -302,10 +302,14 @@ DECL|enumerator|__REQ_RW_AHEAD
 id|__REQ_RW_AHEAD
 comma
 multiline_comment|/* READA */
-DECL|enumerator|__REQ_BARRIER
-id|__REQ_BARRIER
+DECL|enumerator|__REQ_SOFTBARRIER
+id|__REQ_SOFTBARRIER
 comma
-multiline_comment|/* may not be passed */
+multiline_comment|/* may not be passed by ioscheduler */
+DECL|enumerator|__REQ_HARDBARRIER
+id|__REQ_HARDBARRIER
+comma
+multiline_comment|/* may not be passed by drive either */
 DECL|enumerator|__REQ_CMD
 id|__REQ_CMD
 comma
@@ -370,8 +374,10 @@ DECL|macro|REQ_RW
 mdefine_line|#define REQ_RW&t;&t;(1 &lt;&lt; __REQ_RW)
 DECL|macro|REQ_RW_AHEAD
 mdefine_line|#define REQ_RW_AHEAD&t;(1 &lt;&lt; __REQ_RW_AHEAD)
-DECL|macro|REQ_BARRIER
-mdefine_line|#define REQ_BARRIER&t;(1 &lt;&lt; __REQ_BARRIER)
+DECL|macro|REQ_SOFTBARRIER
+mdefine_line|#define REQ_SOFTBARRIER&t;(1 &lt;&lt; __REQ_SOFTBARRIER)
+DECL|macro|REQ_HARDBARRIER
+mdefine_line|#define REQ_HARDBARRIER&t;(1 &lt;&lt; __REQ_HARDBARRIER)
 DECL|macro|REQ_CMD
 mdefine_line|#define REQ_CMD&t;&t;(1 &lt;&lt; __REQ_CMD)
 DECL|macro|REQ_NOMERGE
@@ -766,8 +772,10 @@ mdefine_line|#define list_entry_rq(ptr)&t;list_entry((ptr), struct request, queu
 DECL|macro|rq_data_dir
 mdefine_line|#define rq_data_dir(rq)&t;&t;((rq)-&gt;flags &amp; 1)
 multiline_comment|/*&n; * mergeable request must not have _NOMERGE or _BARRIER bit set, nor may&n; * it already be started by driver.&n; */
+DECL|macro|RQ_NOMERGE_FLAGS
+mdefine_line|#define RQ_NOMERGE_FLAGS&t;&bslash;&n;&t;(REQ_NOMERGE | REQ_STARTED | REQ_HARDBARRIER | REQ_SOFTBARRIER)
 DECL|macro|rq_mergeable
-mdefine_line|#define rq_mergeable(rq)&t;&bslash;&n;&t;(!((rq)-&gt;flags &amp; (REQ_NOMERGE | REQ_STARTED | REQ_BARRIER))&t;&bslash;&n;&t;&amp;&amp; ((rq)-&gt;flags &amp; REQ_CMD))
+mdefine_line|#define rq_mergeable(rq)&t;&bslash;&n;&t;(!((rq)-&gt;flags &amp; RQ_NOMERGE_FLAGS) &amp;&amp; blk_fs_request((rq)))
 multiline_comment|/*&n; * noop, requests are automagically marked as active/inactive by I/O&n; * scheduler -- see elv_next_request&n; */
 DECL|macro|blk_queue_headactive
 mdefine_line|#define blk_queue_headactive(q, head_active)

@@ -700,7 +700,11 @@ c_cond
 (paren
 id|__rq-&gt;flags
 op_amp
-id|REQ_BARRIER
+(paren
+id|REQ_SOFTBARRIER
+op_or
+id|REQ_HARDBARRIER
+)paren
 )paren
 r_break
 suffix:semicolon
@@ -1533,7 +1537,7 @@ c_func
 (paren
 id|rq-&gt;flags
 op_amp
-id|REQ_BARRIER
+id|REQ_HARDBARRIER
 )paren
 )paren
 (brace

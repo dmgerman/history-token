@@ -8680,7 +8680,7 @@ id|cmd-&gt;device-&gt;simple_tags
 op_logical_and
 id|cmd-&gt;request-&gt;flags
 op_amp
-id|REQ_BARRIER
+id|REQ_HARDBARRIER
 )paren
 (brace
 id|aic_dev-&gt;barrier_total
@@ -38124,7 +38124,7 @@ c_cond
 (paren
 id|req-&gt;flags
 op_amp
-id|REQ_BARRIER
+id|REQ_HARDBARRIER
 )paren
 (brace
 r_if

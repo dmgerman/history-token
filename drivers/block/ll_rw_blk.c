@@ -1752,7 +1752,9 @@ l_string|&quot;REQ_RW&quot;
 comma
 l_string|&quot;REQ_RW_AHEAD&quot;
 comma
-l_string|&quot;REQ_BARRIER&quot;
+l_string|&quot;REQ_SOFTBARRIER&quot;
+comma
+l_string|&quot;REQ_HARDBARRIER&quot;
 comma
 l_string|&quot;REQ_CMD&quot;
 comma
@@ -4473,7 +4475,7 @@ id|rq-&gt;flags
 op_or_assign
 id|REQ_SPECIAL
 op_or
-id|REQ_BARRIER
+id|REQ_SOFTBARRIER
 suffix:semicolon
 id|rq-&gt;special
 op_assign
@@ -5977,7 +5979,7 @@ id|barrier
 id|req-&gt;flags
 op_or_assign
 (paren
-id|REQ_BARRIER
+id|REQ_HARDBARRIER
 op_or
 id|REQ_NOMERGE
 )paren
