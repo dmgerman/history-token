@@ -23,6 +23,7 @@ macro_line|#include &lt;asm/sn/sn2/shubio.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
 macro_line|#include &lt;asm/sn/sn2/shub_mmr.h&gt;
+macro_line|#include &lt;asm/sn/pda.h&gt;
 r_extern
 id|irqpda_t
 op_star
@@ -884,10 +885,6 @@ id|min_count
 op_assign
 l_int|1000
 suffix:semicolon
-id|irqpda_t
-op_star
-id|irqs
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -939,13 +936,15 @@ id|cpu
 )paren
 r_continue
 suffix:semicolon
-id|irqs
-op_assign
-id|irqpdaindr
-suffix:semicolon
 id|intrs
 op_assign
-id|irqs-&gt;num_irq_used
+id|pdacpu
+c_func
+(paren
+id|cpu
+)paren
+op_member_access_from_pointer
+id|sn_num_irqs
 suffix:semicolon
 r_if
 c_cond
@@ -978,6 +977,15 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|pdacpu
+c_func
+(paren
+id|best_cpu
+)paren
+op_member_access_from_pointer
+id|sn_num_irqs
+op_increment
+suffix:semicolon
 r_return
 id|best_cpu
 suffix:semicolon
