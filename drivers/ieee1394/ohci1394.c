@@ -1736,7 +1736,7 @@ OL
 l_int|512
 )paren
 (brace
-id|HPSB_WARNING
+id|HPSB_ERR
 c_func
 (paren
 l_string|&quot;warning: Invalid max packet size of %d, setting to 512&quot;
