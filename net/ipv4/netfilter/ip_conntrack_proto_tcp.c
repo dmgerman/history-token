@@ -805,13 +805,6 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|WRITE_UNLOCK
-c_func
-(paren
-op_amp
-id|tcp_lock
-)paren
-suffix:semicolon
 multiline_comment|/* If only reply is a RST, we can consider ourselves not to&n;&t;   have an established connection: this is a fairly common&n;&t;   problem case, so we can delete the conntrack&n;&t;   immediately.  --RR */
 r_if
 c_cond
@@ -826,6 +819,13 @@ op_logical_and
 id|tcph-&gt;rst
 )paren
 (brace
+id|WRITE_UNLOCK
+c_func
+(paren
+op_amp
+id|tcp_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -883,6 +883,13 @@ id|IPS_ASSURED_BIT
 comma
 op_amp
 id|conntrack-&gt;status
+)paren
+suffix:semicolon
+id|WRITE_UNLOCK
+c_func
+(paren
+op_amp
+id|tcp_lock
 )paren
 suffix:semicolon
 id|ip_ct_refresh

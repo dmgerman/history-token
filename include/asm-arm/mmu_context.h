@@ -76,6 +76,8 @@ id|next
 suffix:semicolon
 )brace
 )brace
+DECL|macro|deactivate_mm
+mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 DECL|function|activate_mm
 r_static
 r_inline

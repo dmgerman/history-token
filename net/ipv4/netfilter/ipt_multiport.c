@@ -290,7 +290,7 @@ id|IPPROTO_UDP
 op_logical_and
 op_logical_neg
 (paren
-id|ip-&gt;flags
+id|ip-&gt;invflags
 op_amp
 id|IPT_INV_PROTO
 )paren

@@ -1478,6 +1478,13 @@ c_func
 id|ip_nat_mangle_tcp_packet
 )paren
 suffix:semicolon
+DECL|variable|ip_nat_mangle_udp_packet
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_nat_mangle_udp_packet
+)paren
+suffix:semicolon
 DECL|variable|ip_nat_used_tuple
 id|EXPORT_SYMBOL
 c_func
