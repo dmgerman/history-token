@@ -543,6 +543,18 @@ id|nskb-&gt;nfmark
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+id|nf_bridge_put
+c_func
+(paren
+id|nskb-&gt;nf_bridge
+)paren
+suffix:semicolon
+id|nskb-&gt;nf_bridge
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
 id|tcph
 op_assign
 (paren
