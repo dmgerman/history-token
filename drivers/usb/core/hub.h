@@ -151,6 +151,10 @@ mdefine_line|#define HUB_CHANGE_LOCAL_POWER&t;0x0001
 DECL|macro|HUB_CHANGE_OVERCURRENT
 mdefine_line|#define HUB_CHANGE_OVERCURRENT&t;0x0002
 multiline_comment|/* &n; * Hub descriptor &n; * See USB 2.0 spec Table 11-13&n; */
+DECL|macro|USB_DT_HUB
+mdefine_line|#define USB_DT_HUB&t;&t;&t;(USB_TYPE_CLASS | 0x09)
+DECL|macro|USB_DT_HUB_NONVAR_SIZE
+mdefine_line|#define USB_DT_HUB_NONVAR_SIZE&t;&t;7
 DECL|struct|usb_hub_descriptor
 r_struct
 id|usb_hub_descriptor

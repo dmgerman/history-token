@@ -3974,8 +3974,6 @@ op_assign
 id|usb_match_id
 c_func
 (paren
-id|dev
-comma
 id|interface
 comma
 id|type-&gt;id_table

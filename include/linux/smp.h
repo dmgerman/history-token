@@ -203,6 +203,8 @@ DECL|macro|cpu_online
 mdefine_line|#define cpu_online(cpu)&t;&t;&t;&t;({ cpu; 1; })
 DECL|macro|num_online_cpus
 mdefine_line|#define num_online_cpus()&t;&t;&t;1
+DECL|macro|num_booting_cpus
+mdefine_line|#define num_booting_cpus()&t;&t;&t;1
 r_struct
 id|notifier_block
 suffix:semicolon

@@ -346,7 +346,7 @@ id|sx
 (brace
 id|line_ofs
 op_assign
-id|p-&gt;fb_info.fix.line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 op_minus
 id|width
 suffix:semicolon

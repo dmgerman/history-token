@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/usbdevice_fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &quot;hcd.h&quot;&t;/* for usbcore internals */
 DECL|struct|async
 r_struct
 id|async
@@ -3666,13 +3667,10 @@ id|ps-&gt;dev
 )paren
 (brace
 id|usb_bind_driver
-c_func
 (paren
 id|intf-&gt;driver
 comma
-id|ps-&gt;dev
-comma
-id|i
+id|intf
 )paren
 suffix:semicolon
 )brace
@@ -5955,11 +5953,11 @@ multiline_comment|/* let kernel drivers try to (re)bind to the interface */
 r_case
 id|USBDEVFS_CONNECT
 suffix:colon
-id|usb_find_interface_driver_for_ifnum
+id|usb_find_interface_driver
 (paren
 id|ps-&gt;dev
 comma
-id|ctrl.ifno
+id|ifp
 )paren
 suffix:semicolon
 r_break
@@ -6124,6 +6122,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * NOTE:  All requests here that have interface numbers as parameters&n; * are assuming that somehow the configuration has been prevented from&n; * changing.  But there&squot;s no mechanism to ensure that...&n; */
 DECL|function|usbdev_ioctl
 r_static
 r_int

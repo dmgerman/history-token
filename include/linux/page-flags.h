@@ -146,6 +146,8 @@ DECL|macro|ClearPageDirty
 mdefine_line|#define ClearPageDirty(page)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (test_and_clear_bit(PG_dirty_dontuse,&t;&t;&bslash;&n;&t;&t;&t;&t;&amp;(page)-&gt;flags))&t;&t;&t;&bslash;&n;&t;&t;&t;dec_page_state(nr_dirty);&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|TestClearPageDirty
 mdefine_line|#define TestClearPageDirty(page)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int ret;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ret = test_and_clear_bit(PG_dirty_dontuse,&t;&t;&bslash;&n;&t;&t;&t;&t;&amp;(page)-&gt;flags);&t;&t;&t;&bslash;&n;&t;&t;if (ret)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;dec_page_state(nr_dirty);&t;&t;&t;&bslash;&n;&t;&t;ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+DECL|macro|SetPageLRU
+mdefine_line|#define SetPageLRU(page)&t;set_bit(PG_lru, &amp;(page)-&gt;flags)
 DECL|macro|PageLRU
 mdefine_line|#define PageLRU(page)&t;&t;test_bit(PG_lru, &amp;(page)-&gt;flags)
 DECL|macro|TestSetPageLRU
@@ -158,6 +160,8 @@ DECL|macro|SetPageActive
 mdefine_line|#define SetPageActive(page)&t;set_bit(PG_active, &amp;(page)-&gt;flags)
 DECL|macro|ClearPageActive
 mdefine_line|#define ClearPageActive(page)&t;clear_bit(PG_active, &amp;(page)-&gt;flags)
+DECL|macro|TestClearPageActive
+mdefine_line|#define TestClearPageActive(page) test_and_clear_bit(PG_active, &amp;(page)-&gt;flags)
 DECL|macro|PageSlab
 mdefine_line|#define PageSlab(page)&t;&t;test_bit(PG_slab, &amp;(page)-&gt;flags)
 DECL|macro|SetPageSlab

@@ -7641,6 +7641,34 @@ singleline_comment|//&t;printk(&quot;&bslash;n&quot;);
 id|Done
 suffix:colon
 )brace
+r_extern
+r_int
+id|is_private_data_of_cpqfc
+c_func
+(paren
+id|CPQFCHBA
+op_star
+id|hba
+comma
+r_void
+op_star
+id|pointer
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|cpqfc_free_private_data
+c_func
+(paren
+id|CPQFCHBA
+op_star
+id|hba
+comma
+id|cpqfc_passthru_private_t
+op_star
+id|data
+)paren
+suffix:semicolon
 r_static
 r_void
 DECL|function|call_scsi_done
@@ -7652,21 +7680,58 @@ op_star
 id|Cmnd
 )paren
 (brace
-singleline_comment|// We have to reinitialize sent_command here, so the scsi-mid
-singleline_comment|// layer won&squot;t re-use the scsi command leaving it set incorrectly.
-singleline_comment|// (incorrectly for our purposes...it&squot;s normally unused.)
+id|CPQFCHBA
+op_star
+id|hba
+suffix:semicolon
+id|hba
+op_assign
+(paren
+id|CPQFCHBA
+op_star
+)paren
+id|Cmnd-&gt;host-&gt;hostdata
+suffix:semicolon
+singleline_comment|// Was this command a cpqfc passthru ioctl ?
 r_if
 c_cond
 (paren
-id|Cmnd-&gt;SCp.sent_command
+id|Cmnd-&gt;sc_request
 op_ne
-l_int|0
+l_int|NULL
+op_logical_and
+id|Cmnd-&gt;host
+op_ne
+l_int|NULL
+op_logical_and
+id|Cmnd-&gt;host-&gt;hostdata
+op_ne
+l_int|NULL
+op_logical_and
+id|is_private_data_of_cpqfc
+c_func
+(paren
+(paren
+id|CPQFCHBA
+op_star
+)paren
+id|Cmnd-&gt;host-&gt;hostdata
+comma
+id|Cmnd-&gt;sc_request-&gt;upper_private_data
+)paren
 )paren
 (brace
-singleline_comment|// was it a passthru?
-id|Cmnd-&gt;SCp.sent_command
+id|cpqfc_free_private_data
+c_func
+(paren
+id|hba
+comma
+id|Cmnd-&gt;sc_request-&gt;upper_private_data
+)paren
+suffix:semicolon
+id|Cmnd-&gt;sc_request-&gt;upper_private_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|Cmnd-&gt;result
 op_and_assign
@@ -8644,6 +8709,17 @@ suffix:semicolon
 singleline_comment|// failed - not found
 )brace
 macro_line|#endif
+r_extern
+id|cpqfc_passthru_private_t
+op_star
+id|cpqfc_private
+c_func
+(paren
+id|Scsi_Request
+op_star
+id|sr
+)paren
+suffix:semicolon
 singleline_comment|// Search the singly (forward) linked list &quot;fcPorts&quot; looking for 
 singleline_comment|// either the SCSI target (if != -1), port_id (if not NULL), 
 singleline_comment|// or WWN (if not null), in that specific order.
@@ -8839,11 +8915,53 @@ singleline_comment|// for setting the FCP-LUN addressing
 r_if
 c_cond
 (paren
-op_logical_neg
-id|Cmnd-&gt;SCp.sent_command
+id|Cmnd-&gt;sc_request
+op_ne
+l_int|NULL
+op_logical_and
+id|Cmnd-&gt;host
+op_ne
+l_int|NULL
+op_logical_and
+id|Cmnd-&gt;host-&gt;hostdata
+op_ne
+l_int|NULL
+op_logical_and
+id|is_private_data_of_cpqfc
+c_func
+(paren
+(paren
+id|CPQFCHBA
+op_star
 )paren
-singleline_comment|// NOT passthru?
+id|Cmnd-&gt;host-&gt;hostdata
+comma
+id|Cmnd-&gt;sc_request-&gt;upper_private_data
+)paren
+)paren
 (brace
+multiline_comment|/* This is a passthru... */
+id|cpqfc_passthru_private_t
+op_star
+id|pd
+suffix:semicolon
+id|pd
+op_assign
+id|Cmnd-&gt;sc_request-&gt;upper_private_data
+suffix:semicolon
+id|Cmnd-&gt;SCp.phase
+op_assign
+id|pd-&gt;bus
+suffix:semicolon
+singleline_comment|// Cmnd-&gt;SCp.have_data_in = pd-&gt;pdrive;
+id|Cmnd-&gt;SCp.have_data_in
+op_assign
+id|Cmnd-&gt;lun
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* This is not a passthru... */
 singleline_comment|// set the FCP-LUN addressing type
 id|Cmnd-&gt;SCp.phase
 op_assign
@@ -8865,6 +8983,19 @@ op_eq
 l_int|1
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|Cmnd-&gt;lun
+OG
+r_sizeof
+(paren
+id|pLoggedInPort-&gt;ScsiNexus.lun
+)paren
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 singleline_comment|// we KNOW all the valid LUNs... 0xFF is invalid!
 id|Cmnd-&gt;SCp.have_data_in
 op_assign
@@ -9272,10 +9403,6 @@ l_string|&quot;LinkDnCmnd scsi_done ptr null, port_id %Xh&bslash;n&quot;
 comma
 id|pLoggedInPort-&gt;port_id
 )paren
-suffix:semicolon
-id|Cmnd-&gt;SCp.sent_command
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 r_else
@@ -14922,7 +15049,6 @@ id|Cmnd-&gt;sc_data_direction
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// printk(&quot;sgl = %p, sg_count = %d&bslash;n&quot;, (void *) sgl, sg_count);
 r_if
 c_cond
 (paren
@@ -15017,7 +15143,6 @@ singleline_comment|// as a first estimate, definitely &gt;3,
 singleline_comment|// if (totalsgs != sg_count) 
 singleline_comment|//&t;printk(&quot;totalsgs = %d, sgcount=%d&bslash;n&quot;,totalsgs,sg_count);
 )brace
-singleline_comment|// printk(&quot;totalsgs = %d, sgcount=%d&bslash;n&quot;, totalsgs, sg_count);
 r_if
 c_cond
 (paren
@@ -18050,30 +18175,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|Exchanges-&gt;fcExchange
-(braket
-id|x_ID
-)braket
-dot
-id|Cmnd-&gt;SCp.sent_command
-op_assign
-l_int|0
-suffix:semicolon
 singleline_comment|//&t;printk(&quot; not calling scsi_done on x_ID %Xh, Cmnd %p&bslash;n&quot;,
 singleline_comment|//&t;&t;&t;x_ID, Exchanges-&gt;fcExchange[ x_ID ].Cmnd);
 )brace
 )brace
 r_else
 (brace
-id|Exchanges-&gt;fcExchange
-(braket
-id|x_ID
-)braket
-dot
-id|Cmnd-&gt;SCp.sent_command
-op_assign
-l_int|0
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -18966,26 +19073,10 @@ id|i
 )braket
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|Cmnd-&gt;cmd_len
-op_eq
-l_int|16
-)paren
-(brace
-id|memcpy
-c_func
-(paren
-id|payload
-comma
-op_amp
-id|Cmnd-&gt;SCp.buffers_residual
-comma
-l_int|4
-)paren
-suffix:semicolon
-)brace
+singleline_comment|// if( Cmnd-&gt;cmd_len == 16 )
+singleline_comment|// {
+singleline_comment|//  memcpy( payload, &amp;Cmnd-&gt;SCp.buffers_residual, 4);
+singleline_comment|// }
 id|payload
 op_add_assign
 (paren

@@ -792,8 +792,6 @@ op_assign
 id|usb_match_id
 c_func
 (paren
-id|pusb_dev_save
-comma
 id|intf
 comma
 id|intf-&gt;driver-&gt;id_table

@@ -51,12 +51,8 @@ comma
 multiline_comment|/* max timeout */
 DECL|member|to_increment
 id|to_increment
-comma
-multiline_comment|/* if !exponential */
-DECL|member|to_resrvval
-id|to_resrvval
 suffix:semicolon
-multiline_comment|/* reserve timeout */
+multiline_comment|/* if !exponential */
 DECL|member|to_retries
 r_int
 id|to_retries
@@ -461,7 +457,7 @@ r_int
 r_int
 )paren
 suffix:semicolon
-r_int
+r_void
 id|xprt_reserve
 c_func
 (paren

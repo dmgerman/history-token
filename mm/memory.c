@@ -5286,6 +5286,12 @@ id|pgmajfault
 )paren
 suffix:semicolon
 )brace
+id|mark_page_accessed
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|lock_page
 c_func
 (paren
@@ -5666,6 +5672,12 @@ id|vma-&gt;vm_page_prot
 )paren
 suffix:semicolon
 id|lru_cache_add
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|mark_page_accessed
 c_func
 (paren
 id|page

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
+macro_line|#include &lt;linux/pagevec.h&gt;
 DECL|variable|default_backing_dev_info
 r_struct
 id|backing_dev_info
@@ -99,6 +100,17 @@ id|nr_pages
 r_int
 id|page_idx
 suffix:semicolon
+r_struct
+id|pagevec
+id|lru_pvec
+suffix:semicolon
+id|pagevec_init
+c_func
+(paren
+op_amp
+id|lru_pvec
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -169,6 +181,27 @@ comma
 id|page-&gt;index
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pagevec_add
+c_func
+(paren
+op_amp
+id|lru_pvec
+comma
+id|page
+)paren
+)paren
+id|__pagevec_lru_add
+c_func
+(paren
+op_amp
+id|lru_pvec
+)paren
+suffix:semicolon
 id|mapping-&gt;a_ops
 op_member_access_from_pointer
 id|readpage
@@ -179,6 +212,9 @@ comma
 id|page
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
 id|page_cache_release
 c_func
 (paren
@@ -186,6 +222,14 @@ id|page
 )paren
 suffix:semicolon
 )brace
+)brace
+id|pagevec_lru_add
+c_func
+(paren
+op_amp
+id|lru_pvec
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

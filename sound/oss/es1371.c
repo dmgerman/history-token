@@ -7644,6 +7644,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;irq
 )paren
 suffix:semicolon
 id|s-&gt;dma_dac2.swptr
@@ -7674,6 +7675,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;irq
 )paren
 suffix:semicolon
 id|s-&gt;dma_adc.swptr
@@ -11034,6 +11036,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;irq
 )paren
 suffix:semicolon
 id|s-&gt;dma_dac1.swptr
@@ -15989,6 +15992,7 @@ multiline_comment|/* clear serial interrupts */
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;irq
 )paren
 suffix:semicolon
 id|free_irq

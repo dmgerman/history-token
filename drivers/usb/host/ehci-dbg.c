@@ -909,8 +909,6 @@ id|DEVICE_ATTR
 (paren
 id|async
 comma
-l_string|&quot;sched-async&quot;
-comma
 id|S_IRUSR
 comma
 id|show_async
@@ -1435,8 +1433,6 @@ r_static
 id|DEVICE_ATTR
 (paren
 id|periodic
-comma
-l_string|&quot;sched-periodic&quot;
 comma
 id|S_IRUSR
 comma

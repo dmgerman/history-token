@@ -18,7 +18,7 @@ mdefine_line|#define VER_MAJOR 2
 DECL|macro|VER_MINOR
 mdefine_line|#define VER_MINOR 5
 DECL|macro|VER_SUBMINOR
-mdefine_line|#define VER_SUBMINOR 0
+mdefine_line|#define VER_SUBMINOR 3
 singleline_comment|// Macros for kernel (esp. SMP) tracing using a PCI analyzer
 singleline_comment|// (e.g. x86).
 singleline_comment|//#define PCI_KERNEL_TRACE
@@ -2757,6 +2757,24 @@ comma
 op_star
 id|PFC_SCSI_QUE
 suffix:semicolon
+r_typedef
+r_struct
+(brace
+multiline_comment|/* This is tacked on to a Scsi_Request in upper_private_data &n;&t;   for pasthrough ioctls, as a place to hold data that can&squot;t &n;&t;   be stashed anywhere else in the Scsi_Request.  We differentiate&n;&t;   this from _real_ upper_private_data by checking if the virt addr&n;&t;   is within our special pool.  */
+DECL|member|bus
+id|ushort
+id|bus
+suffix:semicolon
+DECL|member|pdrive
+id|ushort
+id|pdrive
+suffix:semicolon
+DECL|typedef|cpqfc_passthru_private_t
+)brace
+id|cpqfc_passthru_private_t
+suffix:semicolon
+DECL|macro|CPQFC_MAX_PASSTHRU_CMDS
+mdefine_line|#define CPQFC_MAX_PASSTHRU_CMDS 100
 DECL|macro|DYNAMIC_ALLOCATIONS
 mdefine_line|#define DYNAMIC_ALLOCATIONS 4  
 singleline_comment|// Tachyon aligned allocations: ERQ,IMQ,SFQ,SEST
@@ -2893,6 +2911,17 @@ id|spinlock_t
 id|hba_spinlock
 suffix:semicolon
 singleline_comment|// held/released by WorkerThread
+DECL|member|private_data_pool
+id|cpqfc_passthru_private_t
+op_star
+id|private_data_pool
+suffix:semicolon
+DECL|member|private_data_bits
+r_int
+r_int
+op_star
+id|private_data_bits
+suffix:semicolon
 DECL|typedef|CPQFCHBA
 )brace
 id|CPQFCHBA

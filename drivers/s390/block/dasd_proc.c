@@ -901,36 +901,6 @@ id|minor
 )paren
 suffix:semicolon
 multiline_comment|/* Print device name. */
-r_if
-c_cond
-(paren
-id|device
-op_eq
-l_int|NULL
-)paren
-(brace
-id|dasd_device_name
-c_func
-(paren
-id|buffer
-comma
-id|minor
-comma
-l_int|0
-comma
-id|gdp
-)paren
-suffix:semicolon
-id|substr
-op_assign
-id|buffer
-suffix:semicolon
-)brace
-r_else
-id|substr
-op_assign
-id|device-&gt;name
-suffix:semicolon
 id|len
 op_add_assign
 id|sprintf
@@ -942,7 +912,7 @@ id|len
 comma
 l_string|&quot; is %-7s&quot;
 comma
-id|substr
+id|gdp-&gt;major_name
 )paren
 suffix:semicolon
 multiline_comment|/* Print devices features. */

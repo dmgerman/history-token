@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &quot;hcd.h&quot;&t;/* for usbcore internals */
 DECL|struct|usb_api_data
 r_struct
 id|usb_api_data
