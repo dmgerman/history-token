@@ -306,7 +306,7 @@ mdefine_line|#define STACK_ADD(sp, items) ((elf_addr_t *)(sp) - (items))
 DECL|macro|STACK_ROUND
 mdefine_line|#define STACK_ROUND(sp, items) &bslash;&n;&t;(((unsigned long) (sp - items)) &amp;~ 15UL)
 DECL|macro|STACK_ALLOC
-mdefine_line|#define STACK_ALLOC(sp, len) sp -= len
+mdefine_line|#define STACK_ALLOC(sp, len) ({ sp -= len ; sp; })
 macro_line|#endif
 r_static
 r_void
