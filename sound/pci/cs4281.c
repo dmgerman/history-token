@@ -4736,11 +4736,21 @@ c_func
 id|chip
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip-&gt;irq
+op_ge
+l_int|0
+)paren
+(brace
 id|synchronize_irq
 c_func
 (paren
+id|chip-&gt;irq
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Mask interrupts */
 id|snd_cs4281_pokeBA0
 c_func
@@ -6267,6 +6277,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|chip-&gt;irq
 )paren
 suffix:semicolon
 r_if

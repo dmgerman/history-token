@@ -142,13 +142,6 @@ DECL|member|irq
 r_int
 id|irq
 suffix:semicolon
-DECL|member|queue_buggy
-r_int
-id|queue_buggy
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* Don&squot;t send a lot of messages */
 DECL|member|short_req
 r_int
 id|short_req
@@ -163,6 +156,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Don&squot;t quiesce                */
+DECL|member|promise
+r_int
+id|promise
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Promise controller&t;&t;*/
 macro_line|#ifdef CONFIG_MTRR
 DECL|member|mtrr_reg0
 r_int
@@ -235,26 +235,23 @@ id|next
 suffix:semicolon
 multiline_comment|/* Controller chain */
 DECL|member|post_port
-r_volatile
-id|u32
-op_star
+r_int
+r_int
 id|post_port
 suffix:semicolon
-multiline_comment|/* Inbout port */
+multiline_comment|/* Inbout port address */
 DECL|member|reply_port
-r_volatile
-id|u32
-op_star
+r_int
+r_int
 id|reply_port
 suffix:semicolon
-multiline_comment|/* Outbound port */
+multiline_comment|/* Outbound port address */
 DECL|member|irq_mask
-r_volatile
-id|u32
-op_star
+r_int
+r_int
 id|irq_mask
 suffix:semicolon
-multiline_comment|/* Interrupt register */
+multiline_comment|/* Interrupt register address */
 multiline_comment|/* Dynamic LCT related data */
 DECL|member|lct_sem
 r_struct
@@ -275,31 +272,53 @@ op_star
 id|status_block
 suffix:semicolon
 multiline_comment|/* IOP status block */
+DECL|member|status_block_phys
+id|dma_addr_t
+id|status_block_phys
+suffix:semicolon
 DECL|member|lct
 id|i2o_lct
 op_star
 id|lct
 suffix:semicolon
 multiline_comment|/* Logical Config Table */
+DECL|member|lct_phys
+id|dma_addr_t
+id|lct_phys
+suffix:semicolon
 DECL|member|dlct
 id|i2o_lct
 op_star
 id|dlct
 suffix:semicolon
 multiline_comment|/* Temp LCT */
+DECL|member|dlct_phys
+id|dma_addr_t
+id|dlct_phys
+suffix:semicolon
 DECL|member|hrt
 id|i2o_hrt
 op_star
 id|hrt
 suffix:semicolon
 multiline_comment|/* HW Resource Table */
-DECL|member|mem_offset
+DECL|member|hrt_phys
+id|dma_addr_t
+id|hrt_phys
+suffix:semicolon
+DECL|member|hrt_len
 id|u32
+id|hrt_len
+suffix:semicolon
+DECL|member|mem_offset
+r_int
+r_int
 id|mem_offset
 suffix:semicolon
 multiline_comment|/* MFA offset */
 DECL|member|mem_phys
-id|u32
+r_int
+r_int
 id|mem_phys
 suffix:semicolon
 multiline_comment|/* MFA physical */
@@ -736,8 +755,11 @@ id|c
 )paren
 (brace
 r_return
-op_star
+id|readl
+c_func
+(paren
 id|c-&gt;post_port
+)paren
 suffix:semicolon
 )brace
 DECL|function|I2O_POST_WRITE32
@@ -753,13 +775,16 @@ op_star
 id|c
 comma
 id|u32
-id|Val
+id|val
 )paren
 (brace
-op_star
+id|writel
+c_func
+(paren
+id|val
+comma
 id|c-&gt;post_port
-op_assign
-id|Val
+)paren
 suffix:semicolon
 )brace
 DECL|function|I2O_REPLY_READ32
@@ -776,8 +801,11 @@ id|c
 )paren
 (brace
 r_return
-op_star
+id|readl
+c_func
+(paren
 id|c-&gt;reply_port
+)paren
 suffix:semicolon
 )brace
 DECL|function|I2O_REPLY_WRITE32
@@ -793,13 +821,16 @@ op_star
 id|c
 comma
 id|u32
-id|Val
+id|val
 )paren
 (brace
-op_star
+id|writel
+c_func
+(paren
+id|val
+comma
 id|c-&gt;reply_port
-op_assign
-id|Val
+)paren
 suffix:semicolon
 )brace
 DECL|function|I2O_IRQ_READ32
@@ -816,8 +847,11 @@ id|c
 )paren
 (brace
 r_return
-op_star
+id|readl
+c_func
+(paren
 id|c-&gt;irq_mask
+)paren
 suffix:semicolon
 )brace
 DECL|function|I2O_IRQ_WRITE32
@@ -833,13 +867,16 @@ op_star
 id|c
 comma
 id|u32
-id|Val
+id|val
 )paren
 (brace
-op_star
+id|writel
+c_func
+(paren
+id|val
+comma
 id|c-&gt;irq_mask
-op_assign
-id|Val
+)paren
 suffix:semicolon
 )brace
 DECL|function|i2o_post_message
@@ -902,6 +939,9 @@ id|m
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; *&t;Endian handling wrapped into the macro - keeps the core code&n; *&t;cleaner.&n; */
+DECL|macro|i2o_raw_writel
+mdefine_line|#define i2o_raw_writel(val, mem)&t;__raw_writel(cpu_to_le32(val), mem)
 r_extern
 r_struct
 id|i2o_controller
@@ -1071,6 +1111,14 @@ op_star
 comma
 r_void
 op_star
+comma
+id|dma_addr_t
+comma
+id|dma_addr_t
+comma
+r_int
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern
@@ -1309,8 +1357,39 @@ id|i2o_controller
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * I2O Function codes&n; */
-multiline_comment|/*&n; * Executive Class&n; */
+multiline_comment|/*&n; *&t;Cache strategies&n; */
+multiline_comment|/*&t;The NULL strategy leaves everything up to the controller. This tends to be a&n; *&t;pessimal but functional choice.&n; */
+DECL|macro|CACHE_NULL
+mdefine_line|#define CACHE_NULL&t;&t;0
+multiline_comment|/*&t;Prefetch data when reading. We continually attempt to load the next 32 sectors&n; *&t;into the controller cache. &n; */
+DECL|macro|CACHE_PREFETCH
+mdefine_line|#define CACHE_PREFETCH&t;&t;1
+multiline_comment|/*&t;Prefetch data when reading. We sometimes attempt to load the next 32 sectors&n; *&t;into the controller cache. When an I/O is less &lt;= 8K we assume its probably&n; *&t;not sequential and don&squot;t prefetch (default)&n; */
+DECL|macro|CACHE_SMARTFETCH
+mdefine_line|#define CACHE_SMARTFETCH&t;2
+multiline_comment|/*&t;Data is written to the cache and then out on to the disk. The I/O must be&n; *&t;physically on the medium before the write is acknowledged (default without&n; *&t;NVRAM)&n; */
+DECL|macro|CACHE_WRITETHROUGH
+mdefine_line|#define CACHE_WRITETHROUGH&t;17
+multiline_comment|/*&t;Data is written to the cache and then out on to the disk. The controller&n; *&t;is permitted to write back the cache any way it wants. (default if battery&n; *&t;backed NVRAM is present). It can be useful to set this for swap regardless of&n; *&t;battery state.&n; */
+DECL|macro|CACHE_WRITEBACK
+mdefine_line|#define CACHE_WRITEBACK&t;&t;18
+multiline_comment|/*&t;Optimise for under powered controllers, especially on RAID1 and RAID0. We&n; *&t;write large I/O&squot;s directly to disk bypassing the cache to avoid the extra&n; *&t;memory copy hits. Small writes are writeback cached&n; */
+DECL|macro|CACHE_SMARTBACK
+mdefine_line|#define CACHE_SMARTBACK&t;&t;19
+multiline_comment|/*&t;Optimise for under powered controllers, especially on RAID1 and RAID0. We&n; *&t;write large I/O&squot;s directly to disk bypassing the cache to avoid the extra&n; *&t;memory copy hits. Small writes are writethrough cached. Suitable for devices&n; *&t;lacking battery backup&n; */
+DECL|macro|CACHE_SMARTTHROUGH
+mdefine_line|#define CACHE_SMARTTHROUGH&t;20
+multiline_comment|/*&n; *&t;Ioctl structures&n; */
+DECL|macro|BLKI2OGRSTRAT
+mdefine_line|#define &t;BLKI2OGRSTRAT&t;_IOR(&squot;2&squot;, 1, int) 
+DECL|macro|BLKI2OGWSTRAT
+mdefine_line|#define &t;BLKI2OGWSTRAT&t;_IOR(&squot;2&squot;, 2, int) 
+DECL|macro|BLKI2OSRSTRAT
+mdefine_line|#define &t;BLKI2OSRSTRAT&t;_IOW(&squot;2&squot;, 3, int) 
+DECL|macro|BLKI2OSWSTRAT
+mdefine_line|#define &t;BLKI2OSWSTRAT&t;_IOW(&squot;2&squot;, 4, int) 
+multiline_comment|/*&n; *&t;I2O Function codes&n; */
+multiline_comment|/*&n; *&t;Executive Class&n; */
 DECL|macro|I2O_CMD_ADAPTER_ASSIGN
 mdefine_line|#define&t;I2O_CMD_ADAPTER_ASSIGN&t;&t;0xB3
 DECL|macro|I2O_CMD_ADAPTER_READ
@@ -1428,6 +1507,8 @@ DECL|macro|I2O_CMD_BLOCK_MMOUNT
 mdefine_line|#define I2O_CMD_BLOCK_MMOUNT&t;&t;0x41
 DECL|macro|I2O_CMD_BLOCK_MEJECT
 mdefine_line|#define I2O_CMD_BLOCK_MEJECT&t;&t;0x43
+DECL|macro|I2O_CMD_BLOCK_POWER
+mdefine_line|#define I2O_CMD_BLOCK_POWER&t;&t;0x70
 DECL|macro|I2O_PRIVATE_MSG
 mdefine_line|#define I2O_PRIVATE_MSG&t;&t;&t;0xFF
 multiline_comment|/* Command status values  */
@@ -1686,6 +1767,8 @@ DECL|macro|NINE_WORD_MSG_SIZE
 mdefine_line|#define NINE_WORD_MSG_SIZE&t;0x00090000
 DECL|macro|TEN_WORD_MSG_SIZE
 mdefine_line|#define TEN_WORD_MSG_SIZE&t;0x000A0000
+DECL|macro|ELEVEN_WORD_MSG_SIZE
+mdefine_line|#define ELEVEN_WORD_MSG_SIZE&t;0x000B0000
 DECL|macro|I2O_MESSAGE_SIZE
 mdefine_line|#define I2O_MESSAGE_SIZE(x)&t;((x)&lt;&lt;16)
 multiline_comment|/* Special TID Assignments */
@@ -1694,11 +1777,11 @@ mdefine_line|#define ADAPTER_TID&t;&t;0
 DECL|macro|HOST_TID
 mdefine_line|#define HOST_TID&t;&t;1
 DECL|macro|MSG_FRAME_SIZE
-mdefine_line|#define MSG_FRAME_SIZE&t;&t;128
+mdefine_line|#define MSG_FRAME_SIZE&t;&t;64&t;/* i2o_scsi assumes &gt;= 32 */
 DECL|macro|NMBR_MSG_FRAMES
 mdefine_line|#define NMBR_MSG_FRAMES&t;&t;128
 DECL|macro|MSG_POOL_SIZE
-mdefine_line|#define MSG_POOL_SIZE&t;&t;16384
+mdefine_line|#define MSG_POOL_SIZE&t;&t;(MSG_FRAME_SIZE*NMBR_MSG_FRAMES*sizeof(u32))
 DECL|macro|I2O_POST_WAIT_OK
 mdefine_line|#define I2O_POST_WAIT_OK&t;0
 DECL|macro|I2O_POST_WAIT_TIMEOUT

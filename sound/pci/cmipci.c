@@ -11319,6 +11319,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|cm-&gt;irq
 )paren
 suffix:semicolon
 id|free_irq
