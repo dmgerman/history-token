@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common Flash Interface support:&n; *   AMD &amp; Fujitsu Standard Vendor Command Set (ID 0x0002)&n; *&n; * Copyright (C) 2000 Crossnet Co. &lt;info@crossnet.co.jp&gt;&n; * Copyright (C) 2004 Arcom Control Systems Ltd &lt;linux@arcom.com&gt;&n; *&n; * 2_by_8 routines added by Simon Munton&n; *&n; * 4_by_16 work by Carolyn J. Smith&n; *&n; * Occasionally maintained by Thayne Harbaugh tharbaugh at lnxi dot com&n; *&n; * This code is GPL&n; *&n; * $Id: cfi_cmdset_0002.c,v 1.111 2004/11/16 18:29:00 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * Common Flash Interface support:&n; *   AMD &amp; Fujitsu Standard Vendor Command Set (ID 0x0002)&n; *&n; * Copyright (C) 2000 Crossnet Co. &lt;info@crossnet.co.jp&gt;&n; * Copyright (C) 2004 Arcom Control Systems Ltd &lt;linux@arcom.com&gt;&n; *&n; * 2_by_8 routines added by Simon Munton&n; *&n; * 4_by_16 work by Carolyn J. Smith&n; *&n; * Occasionally maintained by Thayne Harbaugh tharbaugh at lnxi dot com&n; *&n; * This code is GPL&n; *&n; * $Id: cfi_cmdset_0002.c,v 1.112 2004/11/20 12:49:04 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -5574,26 +5574,12 @@ c_func
 id|chip-&gt;mutex
 )paren
 suffix:semicolon
-id|set_current_state
+id|msleep
 c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
 (paren
 id|chip-&gt;erase_time
-op_star
-id|HZ
-)paren
 op_div
-(paren
 l_int|2
-op_star
-l_int|1000
-)paren
 )paren
 suffix:semicolon
 id|cfi_spin_lock
@@ -6043,26 +6029,12 @@ c_func
 id|chip-&gt;mutex
 )paren
 suffix:semicolon
-id|set_current_state
+id|msleep
 c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
 (paren
 id|chip-&gt;erase_time
-op_star
-id|HZ
-)paren
 op_div
-(paren
 l_int|2
-op_star
-l_int|1000
-)paren
 )paren
 suffix:semicolon
 id|cfi_spin_lock
