@@ -336,11 +336,6 @@ id|status
 r_return
 id|status
 suffix:semicolon
-multiline_comment|/*&n;&t; * To finish the open response, we just need to set the rflags.&n;&t; */
-id|open-&gt;op_rflags
-op_assign
-l_int|0
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2400,6 +2395,25 @@ id|current_fh
 comma
 op_amp
 id|op-&gt;u.open
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|OP_OPEN_CONFIRM
+suffix:colon
+id|op-&gt;status
+op_assign
+id|nfsd4_open_confirm
+c_func
+(paren
+id|rqstp
+comma
+op_amp
+id|current_fh
+comma
+op_amp
+id|op-&gt;u.open_confirm
 )paren
 suffix:semicolon
 r_break

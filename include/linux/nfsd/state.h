@@ -166,6 +166,12 @@ DECL|struct|nfs4_stateowner
 r_struct
 id|nfs4_stateowner
 (brace
+DECL|member|so_idhash
+r_struct
+id|list_head
+id|so_idhash
+suffix:semicolon
+multiline_comment|/* hash by so_id */
 DECL|member|so_strhash
 r_struct
 id|list_head
@@ -265,6 +271,12 @@ DECL|struct|nfs4_stateid
 r_struct
 id|nfs4_stateid
 (brace
+DECL|member|st_hash
+r_struct
+id|list_head
+id|st_hash
+suffix:semicolon
+multiline_comment|/* openstateid_hashtbl[]*/
 DECL|member|st_perfile
 r_struct
 id|list_head
@@ -314,5 +326,12 @@ id|st_share_deny
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* flags for preprocess_seqid_op() */
+DECL|macro|CHECK_FH
+mdefine_line|#define CHECK_FH                0x00000001
+DECL|macro|CONFIRM
+mdefine_line|#define CONFIRM                 0x00000002
+DECL|macro|seqid_mutating_err
+mdefine_line|#define seqid_mutating_err(err)                       &bslash;&n;&t;(((err) != nfserr_stale_clientid) &amp;&amp;    &bslash;&n;&t;((err) != nfserr_bad_seqid) &amp;&amp;          &bslash;&n;&t;((err) != nfserr_stale_stateid) &amp;&amp;      &bslash;&n;&t;((err) != nfserr_bad_stateid))
 macro_line|#endif   /* NFSD4_STATE_H */
 eof

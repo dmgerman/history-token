@@ -409,6 +409,34 @@ DECL|macro|op_iattr
 mdefine_line|#define op_iattr&t;u.iattr
 DECL|macro|op_verf
 mdefine_line|#define op_verf&t;&t;u.verf
+DECL|struct|nfsd4_open_confirm
+r_struct
+id|nfsd4_open_confirm
+(brace
+DECL|member|oc_req_stateid
+id|stateid_t
+id|oc_req_stateid
+multiline_comment|/* request */
+suffix:semicolon
+DECL|member|oc_seqid
+id|u32
+id|oc_seqid
+multiline_comment|/* request */
+suffix:semicolon
+DECL|member|oc_resp_stateid
+id|stateid_t
+id|oc_resp_stateid
+multiline_comment|/* response */
+suffix:semicolon
+DECL|member|oc_stateowner
+r_struct
+id|nfs4_stateowner
+op_star
+id|oc_stateowner
+suffix:semicolon
+multiline_comment|/* response */
+)brace
+suffix:semicolon
 DECL|struct|nfsd4_read
 r_struct
 id|nfsd4_read
@@ -854,6 +882,11 @@ r_struct
 id|nfsd4_open
 id|open
 suffix:semicolon
+DECL|member|open_confirm
+r_struct
+id|nfsd4_open_confirm
+id|open_confirm
+suffix:semicolon
 DECL|member|putfh
 r_struct
 id|nfsd4_putfh
@@ -1263,6 +1296,27 @@ r_struct
 id|nfsd4_open
 op_star
 id|open
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|nfsd4_open_confirm
+c_func
+(paren
+r_struct
+id|svc_rqst
+op_star
+id|rqstp
+comma
+r_struct
+id|svc_fh
+op_star
+id|current_fh
+comma
+r_struct
+id|nfsd4_open_confirm
+op_star
+id|oc
 )paren
 suffix:semicolon
 macro_line|#endif
