@@ -116,14 +116,14 @@ r_union
 (brace
 r_struct
 (brace
-multiline_comment|/* It is a directory or $MFT. */
+multiline_comment|/* It is a directory, $MFT, or an index inode. */
 DECL|member|bmp_ino
 r_struct
 id|inode
 op_star
 id|bmp_ino
 suffix:semicolon
-multiline_comment|/* Attribute inode for the&n;&t;&t;&t;&t;&t;&t;   directory index $BITMAP. */
+multiline_comment|/* Attribute inode for the&n;&t;&t;&t;&t;&t;&t;   index $BITMAP. */
 DECL|member|block_size
 id|u32
 id|block_size
@@ -133,7 +133,12 @@ DECL|member|vcn_size
 id|u32
 id|vcn_size
 suffix:semicolon
-multiline_comment|/* Size of a vcn in this&n;&t;&t;&t;&t;&t;&t;   directory index. */
+multiline_comment|/* Size of a vcn in this&n;&t;&t;&t;&t;&t;&t;   index. */
+DECL|member|collation_rule
+id|COLLATION_RULES
+id|collation_rule
+suffix:semicolon
+multiline_comment|/* The collation rule&n;&t;&t;&t;&t;&t;&t;   for the index. */
 DECL|member|block_size_bits
 id|u8
 id|block_size_bits
@@ -150,7 +155,7 @@ id|index
 suffix:semicolon
 r_struct
 (brace
-multiline_comment|/* It is a compressed file or fake inode. */
+multiline_comment|/* It is a compressed file or an attribute inode. */
 DECL|member|size
 id|s64
 id|size
@@ -489,6 +494,26 @@ id|base_vi
 comma
 id|ATTR_TYPES
 id|type
+comma
+id|ntfschar
+op_star
+id|name
+comma
+id|u32
+id|name_len
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|inode
+op_star
+id|ntfs_index_iget
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|base_vi
 comma
 id|ntfschar
 op_star
