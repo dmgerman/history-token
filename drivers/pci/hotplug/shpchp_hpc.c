@@ -4108,7 +4108,7 @@ suffix:semicolon
 multiline_comment|/* Clear all slot events */
 id|temp_dword
 op_assign
-l_int|0xe01fffff
+l_int|0xe01f3fff
 suffix:semicolon
 id|dbg
 c_func
