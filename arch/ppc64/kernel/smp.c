@@ -1513,7 +1513,18 @@ op_plus
 id|num_size_cell
 )braket
 suffix:semicolon
-multiline_comment|/* DRENG need to account for threads here too */
+multiline_comment|/* Double maxcpus for processors which have SMT capability */
+r_if
+c_cond
+(paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_SMT
+)paren
+id|maxcpus
+op_mul_assign
+l_int|2
+suffix:semicolon
 r_if
 c_cond
 (paren
