@@ -8268,7 +8268,7 @@ id|sb-&gt;s_dirt
 op_assign
 l_int|0
 suffix:semicolon
-id|log_start_commit
+id|journal_start_commit
 c_func
 (paren
 id|EXT3_SB
@@ -8305,9 +8305,10 @@ id|sb-&gt;s_dirt
 op_assign
 l_int|0
 suffix:semicolon
-id|target
-op_assign
-id|log_start_commit
+r_if
+c_cond
+(paren
+id|journal_start_commit
 c_func
 (paren
 id|EXT3_SB
@@ -8318,9 +8319,11 @@ id|sb
 op_member_access_from_pointer
 id|s_journal
 comma
-l_int|NULL
+op_amp
+id|target
 )paren
-suffix:semicolon
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -8340,6 +8343,7 @@ comma
 id|target
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

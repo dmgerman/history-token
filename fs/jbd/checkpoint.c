@@ -327,7 +327,7 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Clean up a transaction&squot;s checkpoint list.  &n; *&n; * We wait for any pending IO to complete and make sure any clean&n; * buffers are removed from the transaction. &n; *&n; * Return 1 if we performed any actions which might have destroyed the&n; * checkpoint.  (journal_remove_checkpoint() deletes the transaction when&n; * the last checkpoint buffer is cleansed)&n; *&n; * Called with the journal locked.&n; * Called with j_list_lock held.&n; */
+multiline_comment|/*&n; * Clean up a transaction&squot;s checkpoint list.  &n; *&n; * We wait for any pending IO to complete and make sure any clean&n; * buffers are removed from the transaction. &n; *&n; * Return 1 if we performed any actions which might have destroyed the&n; * checkpoint.  (journal_remove_checkpoint() deletes the transaction when&n; * the last checkpoint buffer is cleansed)&n; *&n; * Called with j_list_lock held.&n; */
 DECL|function|__cleanup_transaction
 r_static
 r_int
@@ -516,7 +516,7 @@ c_func
 (paren
 id|journal
 comma
-id|t
+id|tid
 )paren
 suffix:semicolon
 id|log_wait_commit
@@ -531,7 +531,6 @@ r_goto
 id|out_return_1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * We used to test for (jh-&gt;b_list != BUF_CLEAN) here.&n;&t;&t; * But unmap_underlying_metadata() can place buffer onto&n;&t;&t; * BUF_CLEAN.&n;&t;&t; */
 multiline_comment|/*&n;&t;&t; * AKPM: I think the buffer_jbddirty test is redundant - it&n;&t;&t; * shouldn&squot;t have NULL b_transaction?&n;&t;&t; */
 id|next_jh
 op_assign
@@ -1053,7 +1052,7 @@ id|this_tid
 suffix:semicolon
 id|transaction
 op_assign
-id|journal-&gt;j_checkpoint_transactions-&gt;t_cpprev
+id|journal-&gt;j_checkpoint_transactions-&gt;t_cpnext
 suffix:semicolon
 id|this_tid
 op_assign
@@ -1197,7 +1196,7 @@ multiline_comment|/*&n;&t;&t; * If someone cleaned up this transaction while we 
 r_if
 c_cond
 (paren
-id|journal-&gt;j_checkpoint_transactions-&gt;t_cpprev
+id|journal-&gt;j_checkpoint_transactions-&gt;t_cpnext
 op_ne
 id|transaction
 )paren
