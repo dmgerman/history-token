@@ -1282,11 +1282,7 @@ op_assign
 id|desc-&gt;status
 op_amp
 op_complement
-(paren
 id|IRQ_DISABLED
-op_or
-id|IRQ_INPROGRESS
-)paren
 suffix:semicolon
 id|desc-&gt;status
 op_assign

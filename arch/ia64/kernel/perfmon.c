@@ -161,9 +161,9 @@ mdefine_line|#define GET_PMU_OWNER()&t;&t;pfm_get_cpu_var(pmu_owner)
 DECL|macro|GET_PMU_CTX
 mdefine_line|#define GET_PMU_CTX()&t;&t;pfm_get_cpu_var(pmu_ctx)
 DECL|macro|LOCK_PFS
-mdefine_line|#define LOCK_PFS()&t;    &t;spin_lock(&amp;pfm_sessions.pfs_lock)
+mdefine_line|#define LOCK_PFS(g)&t;    &t;spin_lock_irqsave(&amp;pfm_sessions.pfs_lock, g)
 DECL|macro|UNLOCK_PFS
-mdefine_line|#define UNLOCK_PFS()&t;    &t;spin_unlock(&amp;pfm_sessions.pfs_lock)
+mdefine_line|#define UNLOCK_PFS(g)&t;    &t;spin_unlock_irqrestore(&amp;pfm_sessions.pfs_lock, g)
 DECL|macro|PFM_REG_RETFLAG_SET
 mdefine_line|#define PFM_REG_RETFLAG_SET(flags, val)&t;do { flags &amp;= ~PFM_REG_RETFL_MASK; flags |= (val); } while(0)
 multiline_comment|/*&n; * cmp0 must be the value of pmc0&n; */
@@ -1830,6 +1830,15 @@ id|ta
 )paren
 suffix:semicolon
 macro_line|#endif
+r_void
+id|dump_pmu_state
+c_func
+(paren
+r_const
+r_char
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * the HP simulator must be first because&n; * CONFIG_IA64_HP_SIM is independent of CONFIG_MCKINLEY or CONFIG_ITANIUM&n; */
 macro_line|#if defined(CONFIG_IA64_HP_SIM)
 macro_line|#include &quot;perfmon_hpsim.h&quot;
@@ -4583,10 +4592,15 @@ r_int
 id|cpu
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 multiline_comment|/*&n;&t; * validy checks on cpu_mask have been done upstream&n;&t; */
 id|LOCK_PFS
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|DPRINT
@@ -4708,6 +4722,7 @@ suffix:semicolon
 id|UNLOCK_PFS
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -4740,6 +4755,7 @@ suffix:colon
 id|UNLOCK_PFS
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -4765,10 +4781,15 @@ r_int
 id|cpu
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 multiline_comment|/*&n;&t; * validy checks on cpu_mask have been done upstream&n;&t; */
 id|LOCK_PFS
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|DPRINT
@@ -4867,6 +4888,7 @@ suffix:semicolon
 id|UNLOCK_PFS
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -5924,7 +5946,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * context is locked when coming here&n; */
+multiline_comment|/*&n; * context is locked when coming here and interrupts are disabled&n; */
 r_static
 r_inline
 r_int
@@ -6492,28 +6514,6 @@ id|state
 comma
 id|is_system
 suffix:semicolon
-(brace
-id|u64
-id|psr
-op_assign
-id|pfm_get_psr
-c_func
-(paren
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-(paren
-id|psr
-op_amp
-id|IA64_PSR_I
-)paren
-op_eq
-l_int|0UL
-)paren
-suffix:semicolon
-)brace
 id|DPRINT
 c_func
 (paren
@@ -6554,13 +6554,14 @@ op_eq
 l_int|0
 )paren
 (brace
-id|printk
+id|DPRINT
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;perfmon: pfm_close: bad magic [%d]&bslash;n&quot;
+(paren
+l_string|&quot;bad magic for [%d]&bslash;n&quot;
 comma
 id|current-&gt;pid
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -6598,6 +6599,40 @@ op_minus
 id|EBADF
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * remove our file from the async queue, if we use this mode.&n;&t; * This can be done without the context being protected. We come&n;&t; * here when the context has become unreacheable by other tasks.&n;&t; *&n;&t; * We may still have active monitoring at this point and we may&n;&t; * end up in pfm_overflow_handler(). However, fasync_helper()&n;&t; * operates with interrupts disabled and it cleans up the&n;&t; * queue. If the PMU handler is called prior to entering&n;&t; * fasync_helper() then it will send a signal. If it is&n;&t; * invoked after, it will find an empty queue and no&n;&t; * signal will be sent. In both case, we are safe&n;&t; */
+r_if
+c_cond
+(paren
+id|filp-&gt;f_flags
+op_amp
+id|FASYNC
+)paren
+(brace
+id|DPRINT
+c_func
+(paren
+(paren
+l_string|&quot;[%d] cleaning up async_queue=%p&bslash;n&quot;
+comma
+id|current-&gt;pid
+comma
+id|ctx-&gt;ctx_async_queue
+)paren
+)paren
+suffix:semicolon
+id|pfm_do_fasync
+(paren
+op_minus
+l_int|1
+comma
+id|filp
+comma
+id|ctx
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 id|PROTECT_CTX
 c_func
 (paren
@@ -6622,61 +6657,32 @@ c_func
 id|ctx
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * remove our file from the async queue, if we use it&n;&t; */
-r_if
-c_cond
-(paren
-id|filp-&gt;f_flags
-op_amp
-id|FASYNC
-)paren
-(brace
-id|DPRINT
+id|regs
+op_assign
+id|ia64_task_regs
 c_func
 (paren
-(paren
-l_string|&quot;[%d] before async_queue=%p&bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|ctx-&gt;ctx_async_queue
-)paren
-)paren
-suffix:semicolon
-id|pfm_do_fasync
-(paren
-op_minus
-l_int|1
-comma
-id|filp
-comma
-id|ctx
-comma
-l_int|0
+id|task
 )paren
 suffix:semicolon
 id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] after async_queue=%p&bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|ctx-&gt;ctx_async_queue
-)paren
-)paren
-suffix:semicolon
-)brace
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;[%d] ctx_state=%d&bslash;n&quot;
+l_string|&quot;[%d] ctx_state=%d is_current=%d&bslash;n&quot;
 comma
 id|current-&gt;pid
 comma
 id|state
+comma
+id|task
+op_eq
+id|current
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
 )paren
 )paren
 suffix:semicolon
@@ -6696,14 +6702,6 @@ r_goto
 id|doit
 suffix:semicolon
 )brace
-id|regs
-op_assign
-id|ia64_task_regs
-c_func
-(paren
-id|task
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * context still loaded/masked and self monitoring,&n;&t; * we stop/unload and we destroy right here&n;&t; *&n;&t; * We always go here for system-wide sessions&n;&t; */
 r_if
 c_cond
@@ -6826,7 +6824,7 @@ l_string|&quot;[%d] ctx_state=%d&bslash;n&quot;
 comma
 id|current-&gt;pid
 comma
-id|state
+id|ctx-&gt;ctx_state
 )paren
 )paren
 suffix:semicolon
@@ -12238,6 +12236,10 @@ op_assign
 id|task-&gt;thread.pfm_context
 suffix:semicolon
 r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
 id|ret
 op_assign
 l_int|0
@@ -12290,6 +12292,7 @@ suffix:semicolon
 id|LOCK_PFS
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We cannot allow setting breakpoints when system wide monitoring&n;&t; * sessions are using the debug registers.&n;&t; */
@@ -12328,6 +12331,7 @@ suffix:semicolon
 id|UNLOCK_PFS
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -12347,6 +12351,10 @@ id|task
 )paren
 (brace
 r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
 id|ret
 suffix:semicolon
 r_if
@@ -12362,6 +12370,7 @@ suffix:semicolon
 id|LOCK_PFS
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -12400,6 +12409,7 @@ suffix:semicolon
 id|UNLOCK_PFS
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -13065,6 +13075,10 @@ op_star
 )paren
 id|arg
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|dbreg_t
 id|dbreg
 suffix:semicolon
@@ -13246,6 +13260,7 @@ id|is_loaded
 id|LOCK_PFS
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -13274,6 +13289,7 @@ suffix:semicolon
 id|UNLOCK_PFS
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -13629,6 +13645,7 @@ id|first_time
 id|LOCK_PFS
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -13644,6 +13661,7 @@ suffix:semicolon
 id|UNLOCK_PFS
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|ctx-&gt;ctx_fl_using_dbreg
@@ -13881,6 +13899,28 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+id|DPRINT
+c_func
+(paren
+(paren
+l_string|&quot;current [%d] task [%d] ctx_state=%d is_system=%d&bslash;n&quot;
+comma
+id|current-&gt;pid
+comma
+id|PFM_CTX_TASK
+c_func
+(paren
+id|ctx
+)paren
+op_member_access_from_pointer
+id|pid
+comma
+id|state
+comma
+id|is_system
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * in system mode, we need to update the PMU directly&n;&t; * and the user level state of the caller, which may not&n;&t; * necessarily be the creator of the context.&n;&t; */
 r_if
 c_cond
@@ -14453,6 +14493,10 @@ id|pfm_context_t
 op_star
 id|old
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
 r_struct
 id|task_struct
@@ -14693,6 +14737,7 @@ suffix:semicolon
 id|LOCK_PFS
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -14749,6 +14794,7 @@ suffix:semicolon
 id|UNLOCK_PFS
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -15179,6 +15225,7 @@ id|set_dbregs
 id|LOCK_PFS
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|pfm_sessions.pfs_sys_use_dbregs
@@ -15187,6 +15234,7 @@ suffix:semicolon
 id|UNLOCK_PFS
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -15869,6 +15917,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|UNPROTECT_CTX
+c_func
+(paren
+id|ctx
+comma
+id|flags
+)paren
+suffix:semicolon
 (brace
 id|u64
 id|psr
@@ -15899,15 +15955,31 @@ c_func
 )paren
 )paren
 suffix:semicolon
-)brace
-id|UNPROTECT_CTX
+id|BUG_ON
 c_func
 (paren
-id|ctx
-comma
-id|flags
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|up
 )paren
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|pp
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * All memory free operations (especially for vmalloc&squot;ed memory)&n;&t; * MUST be done with interrupts ENABLED.&n;&t; */
 r_if
 c_cond
@@ -19016,6 +19088,8 @@ suffix:semicolon
 r_int
 r_int
 id|psr
+comma
+id|flags
 suffix:semicolon
 r_int
 id|online_cpus
@@ -19545,6 +19619,7 @@ suffix:semicolon
 id|LOCK_PFS
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|p
@@ -19571,6 +19646,7 @@ suffix:semicolon
 id|UNLOCK_PFS
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|spin_lock
@@ -20152,30 +20228,6 @@ id|psr
 op_amp
 id|IA64_PSR_UP
 suffix:semicolon
-(brace
-id|u64
-id|foo
-op_assign
-id|pfm_get_psr
-c_func
-(paren
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-id|foo
-op_amp
-(paren
-(paren
-id|IA64_PSR_UP
-op_or
-id|IA64_PSR_PP
-)paren
-)paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * release ownership of this PMU.&n;&t; * PM interrupts are masked, so nothing&n;&t; * can happen.&n;&t; */
 id|SET_PMU_OWNER
 c_func
@@ -20303,6 +20355,16 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|foo
+op_amp
+(paren
+id|IA64_PSR_I
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * stop monitoring:&n;&t; * This is the last instruction which may generate an overflow&n;&t; *&n;&t; * We do not need to set psr.sp because, it is irrelevant in kernel.&n;&t; * It will be restored from ipsr when going back to user level&n;&t; */
 id|pfm_clear_psr_up
 c_func
@@ -20316,42 +20378,6 @@ id|psr
 op_amp
 id|IA64_PSR_UP
 suffix:semicolon
-macro_line|#if 1
-(brace
-id|u64
-id|foo
-op_assign
-id|pfm_get_psr
-c_func
-(paren
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-id|foo
-op_amp
-(paren
-id|IA64_PSR_I
-)paren
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-id|foo
-op_amp
-(paren
-(paren
-id|IA64_PSR_UP
-op_or
-id|IA64_PSR_PP
-)paren
-)paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 suffix:semicolon
 id|save_error
@@ -20399,10 +20425,9 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#if 1
 (brace
 id|u64
-id|foo
+id|psr
 op_assign
 id|pfm_get_psr
 c_func
@@ -20412,13 +20437,12 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|foo
+id|psr
 op_amp
 id|IA64_PSR_UP
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 id|ctx
 op_assign
 id|PFM_GET_CTX
@@ -20499,7 +20523,7 @@ l_int|0
 )braket
 op_amp
 op_complement
-l_int|1UL
+l_int|0x1UL
 )paren
 id|pfm_unfreeze_pmu
 c_func
@@ -20645,7 +20669,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if 1
 id|BUG_ON
 c_func
 (paren
@@ -20666,7 +20689,6 @@ op_amp
 id|IA64_PSR_I
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -21114,7 +21136,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if 1
 id|BUG_ON
 c_func
 (paren
@@ -21135,7 +21156,6 @@ op_amp
 id|IA64_PSR_I
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * we restore ALL the debug registers to avoid picking up&n;&t; * stale state.&n;&t; *&n;&t; * This must be done even when the task is still the owner&n;&t; * as the registers may have been modified via ptrace()&n;&t; * (not perfmon) by the previous task.&n;&t; */
 r_if
 c_cond
@@ -21494,9 +21514,8 @@ id|task-&gt;thread.pmcs
 (braket
 l_int|0
 )braket
-op_and_assign
-op_complement
-l_int|0x1
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 id|ovfl_val
@@ -22140,6 +22159,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * we run with the PMU not frozen at all times&n;&t; */
+id|pfm_unfreeze_pmu
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -22259,12 +22284,6 @@ l_int|0UL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * we run with the PMU not frozen at all times&n;&t; */
-id|pfm_unfreeze_pmu
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * used for debug purposes only&n; */
 r_void
@@ -22272,7 +22291,10 @@ DECL|function|dump_pmu_state
 id|dump_pmu_state
 c_func
 (paren
-r_void
+r_const
+r_char
+op_star
+id|from
 )paren
 (brace
 r_struct
@@ -22285,6 +22307,11 @@ id|thread_struct
 op_star
 id|t
 suffix:semicolon
+r_struct
+id|pt_regs
+op_star
+id|regs
+suffix:semicolon
 id|pfm_context_t
 op_star
 id|ctx
@@ -22292,16 +22319,101 @@ suffix:semicolon
 r_int
 r_int
 id|psr
+comma
+id|dcr
+comma
+id|info
+comma
+id|flags
 suffix:semicolon
 r_int
 id|i
+comma
+id|this_cpu
 suffix:semicolon
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|this_cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+id|regs
+op_assign
+id|ia64_task_regs
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+id|info
+op_assign
+id|PFM_CPUINFO_GET
+c_func
+(paren
+)paren
+suffix:semicolon
+id|dcr
+op_assign
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_CR_DCR
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info
+op_eq
+l_int|0
+op_logical_and
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|pp
+op_eq
+l_int|0
+op_logical_and
+(paren
+id|dcr
+op_amp
+id|IA64_DCR_PP
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
-l_string|&quot;current [%d] %s&bslash;n&quot;
+l_string|&quot;CPU%d from %s() current [%d] iip=0x%lx %s&bslash;n&quot;
+comma
+id|this_cpu
+comma
+id|from
 comma
 id|current-&gt;pid
+comma
+id|regs-&gt;cr_iip
 comma
 id|current-&gt;comm
 )paren
@@ -22323,7 +22435,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;owner [%d] ctx=%p&bslash;n&quot;
+l_string|&quot;-&gt;CPU%d owner [%d] ctx=%p&bslash;n&quot;
+comma
+id|this_cpu
 comma
 id|task
 ques
@@ -22346,24 +22460,81 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;psr.pp=%ld psr.up=%ld&bslash;n&quot;
+l_string|&quot;-&gt;CPU%d pmc0=0x%lx psr.pp=%d psr.up=%d dcr.pp=%d syst_info=0x%lx user_psr.up=%d user_psr.pp=%d&bslash;n&quot;
 comma
-(paren
-id|psr
-op_rshift
-id|IA64_PSR_PP_BIT
-)paren
-op_amp
-l_int|0x1UL
+id|this_cpu
 comma
+id|ia64_get_pmc
+c_func
 (paren
+l_int|0
+)paren
+comma
 id|psr
-op_rshift
-id|IA64_PSR_PP_BIT
-)paren
 op_amp
-l_int|0x1UL
+id|IA64_PSR_PP
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+comma
+id|psr
+op_amp
+id|IA64_PSR_UP
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+comma
+id|dcr
+op_amp
+id|IA64_DCR_PP
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+comma
+id|info
+comma
+id|ia64_psr
+c_func
+(paren
+id|regs
 )paren
+op_member_access_from_pointer
+id|up
+comma
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|pp
+)paren
+suffix:semicolon
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|up
+op_assign
+l_int|0
+suffix:semicolon
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|pp
+op_assign
+l_int|0
 suffix:semicolon
 id|t
 op_assign
@@ -22405,7 +22576,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;pmc[%d]=0x%lx tpmc=0x%lx&bslash;n&quot;
+l_string|&quot;-&gt;CPU%d pmc[%d]=0x%lx thread_pmc[%d]=0x%lx&bslash;n&quot;
+comma
+id|this_cpu
 comma
 id|i
 comma
@@ -22414,6 +22587,8 @@ c_func
 (paren
 id|i
 )paren
+comma
+id|i
 comma
 id|t-&gt;pmcs
 (braket
@@ -22457,7 +22632,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;pmd[%d]=0x%lx tpmd=0x%lx&bslash;n&quot;
+l_string|&quot;-&gt;CPU%d pmd[%d]=0x%lx thread_pmd[%d]=0x%lx&bslash;n&quot;
+comma
+id|this_cpu
 comma
 id|i
 comma
@@ -22466,6 +22643,8 @@ c_func
 (paren
 id|i
 )paren
+comma
+id|i
 comma
 id|t-&gt;pmds
 (braket
@@ -22483,7 +22662,9 @@ id|ctx
 id|printk
 c_func
 (paren
-l_string|&quot;ctx_state=%d vaddr=%p addr=%p fd=%d ctx_task=[%d] saved_psr_up=0x%lx&bslash;n&quot;
+l_string|&quot;-&gt;CPU%d ctx_state=%d vaddr=%p addr=%p fd=%d ctx_task=[%d] saved_psr_up=0x%lx&bslash;n&quot;
+comma
+id|this_cpu
 comma
 id|ctx-&gt;ctx_state
 comma
@@ -22499,6 +22680,12 @@ id|ctx-&gt;ctx_saved_psr_up
 )paren
 suffix:semicolon
 )brace
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * called from process.c:copy_thread(). task is new child.&n; */
 r_void
@@ -22552,35 +22739,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * restore default psr settings&n;&t; */
-id|ia64_psr
-c_func
-(paren
-id|regs
-)paren
-op_member_access_from_pointer
-id|pp
-op_assign
-id|ia64_psr
-c_func
-(paren
-id|regs
-)paren
-op_member_access_from_pointer
-id|up
-op_assign
-l_int|0
-suffix:semicolon
-id|ia64_psr
-c_func
-(paren
-id|regs
-)paren
-op_member_access_from_pointer
-id|sp
-op_assign
-l_int|1
-suffix:semicolon
+multiline_comment|/*&n;&t; * the psr bits are already set properly in copy_threads()&n;&t; */
 )brace
 macro_line|#else  /* !CONFIG_PERFMON */
 id|asmlinkage

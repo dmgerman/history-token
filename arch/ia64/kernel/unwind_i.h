@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2000, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Kernel unwind support.&n; */
+multiline_comment|/*&n; * Copyright (C) 2000, 2002-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Kernel unwind support.&n; */
 DECL|macro|UNW_VER
 mdefine_line|#define UNW_VER(x)&t;&t;((x) &gt;&gt; 48)
 DECL|macro|UNW_FLAG_MASK
@@ -167,24 +167,6 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* unwind descriptors */
 multiline_comment|/* personality routine and language-specific data follow behind descriptors */
-)brace
-suffix:semicolon
-DECL|struct|unw_table_entry
-r_struct
-id|unw_table_entry
-(brace
-DECL|member|start_offset
-id|u64
-id|start_offset
-suffix:semicolon
-DECL|member|end_offset
-id|u64
-id|end_offset
-suffix:semicolon
-DECL|member|info_offset
-id|u64
-id|info_offset
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|unw_table
