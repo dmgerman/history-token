@@ -5122,13 +5122,6 @@ r_int
 id|ct
 )paren
 suffix:semicolon
-id|WRITE_LOCK
-c_func
-(paren
-op_amp
-id|ip_conntrack_lock
-)paren
-suffix:semicolon
 multiline_comment|/* If not in hash table, timer will not be active yet */
 r_if
 c_cond
@@ -5146,6 +5139,13 @@ id|extra_jiffies
 suffix:semicolon
 r_else
 (brace
+id|WRITE_LOCK
+c_func
+(paren
+op_amp
+id|ip_conntrack_lock
+)paren
+suffix:semicolon
 multiline_comment|/* Need del_timer for race avoidance (may already be dying). */
 r_if
 c_cond
@@ -5172,7 +5172,6 @@ id|ct-&gt;timeout
 )paren
 suffix:semicolon
 )brace
-)brace
 id|WRITE_UNLOCK
 c_func
 (paren
@@ -5180,6 +5179,7 @@ op_amp
 id|ip_conntrack_lock
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Returns new sk_buff, or NULL */
 r_struct
