@@ -443,6 +443,7 @@ id|dev-&gt;driver_data
 op_assign
 id|rec
 suffix:semicolon
+macro_line|#ifdef SNDRV_OSS_INFO_DEV_SYNTH
 r_if
 c_cond
 (paren
@@ -460,6 +461,7 @@ comma
 id|rec-&gt;name
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -611,6 +613,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+macro_line|#ifdef SNDRV_OSS_INFO_DEV_SYNTH
 r_if
 c_cond
 (paren
@@ -626,6 +629,7 @@ comma
 id|rec-&gt;seq_device
 )paren
 suffix:semicolon
+macro_line|#endif
 id|snd_use_lock_sync
 c_func
 (paren

@@ -7286,6 +7286,7 @@ comma
 id|name
 )paren
 suffix:semicolon
+macro_line|#ifdef SNDRV_OSS_INFO_DEV_MIXERS
 id|snd_oss_info_register
 c_func
 (paren
@@ -7296,6 +7297,7 @@ comma
 id|mixer-&gt;name
 )paren
 suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -7354,6 +7356,7 @@ l_int|NULL
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#ifdef SNDRV_OSS_INFO_DEV_MIXERS
 id|snd_oss_info_unregister
 c_func
 (paren
@@ -7362,6 +7365,7 @@ comma
 id|mixer-&gt;card-&gt;number
 )paren
 suffix:semicolon
+macro_line|#endif
 id|snd_unregister_oss_device
 c_func
 (paren

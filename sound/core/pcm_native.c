@@ -11791,6 +11791,7 @@ id|i
 suffix:semicolon
 r_void
 op_star
+op_star
 id|bufs
 suffix:semicolon
 id|snd_pcm_uframes_t
@@ -12021,6 +12022,7 @@ id|i
 suffix:semicolon
 r_void
 op_star
+op_star
 id|bufs
 suffix:semicolon
 id|snd_pcm_uframes_t
@@ -12136,7 +12138,7 @@ id|_vector-&gt;iov_len
 suffix:semicolon
 id|bufs
 op_assign
-id|kcalloc
+id|kmalloc
 c_func
 (paren
 r_sizeof
