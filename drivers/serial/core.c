@@ -1090,28 +1090,6 @@ c_func
 id|uart_get_baud_rate
 )paren
 suffix:semicolon
-r_static
-r_inline
-r_int
-r_int
-DECL|function|uart_calculate_quot
-id|uart_calculate_quot
-c_func
-(paren
-r_struct
-id|uart_port
-op_star
-id|port
-comma
-r_int
-r_int
-id|baud
-)paren
-(brace
-r_return
-id|quot
-suffix:semicolon
-)brace
 multiline_comment|/**&n; *&t;uart_get_divisor - return uart clock divisor&n; *&t;@port: uart_port structure describing the port.&n; *&t;@termios: desired termios settings&n; *&t;@old_termios: the original port settings, or NULL&n; *&n; *&t;Calculate the uart clock divisor for the port.  If the&n; *&t;divisor is invalid, try the old termios setting.  If&n; *&t;the divisor is still invalid, we try 9600 baud.&n; *&n; *&t;Update the @termios structure to reflect the baud rate&n; *&t;we&squot;re actually going to be using.&n; *&n; *&t;If 9600 baud fails, we return a zero divisor.&n; */
 r_int
 r_int
@@ -1241,10 +1219,6 @@ r_struct
 id|termios
 op_star
 id|termios
-suffix:semicolon
-r_int
-r_int
-id|quot
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we have no tty, termios, or the port does not exist,&n;&t; * then we can&squot;t set the parameters for this port.&n;&t; */
 r_if
