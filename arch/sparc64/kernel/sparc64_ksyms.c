@@ -52,6 +52,7 @@ macro_line|#include &lt;asm/a.out.h&gt;
 macro_line|#include &lt;asm/ns87303.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/cpudata.h&gt;
+macro_line|#include &lt;asm/rwsem.h&gt;
 DECL|struct|poll
 r_struct
 id|poll
@@ -823,6 +824,56 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|up
+)paren
+suffix:semicolon
+multiline_comment|/* RW semaphores */
+DECL|variable|__down_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__down_read
+)paren
+suffix:semicolon
+DECL|variable|__down_read_trylock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__down_read_trylock
+)paren
+suffix:semicolon
+DECL|variable|__down_write
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__down_write
+)paren
+suffix:semicolon
+DECL|variable|__down_write_trylock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__down_write_trylock
+)paren
+suffix:semicolon
+DECL|variable|__up_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__up_read
+)paren
+suffix:semicolon
+DECL|variable|__up_write
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__up_write
+)paren
+suffix:semicolon
+DECL|variable|__downgrade_write
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__downgrade_write
 )paren
 suffix:semicolon
 multiline_comment|/* Atomic counter implementation. */
