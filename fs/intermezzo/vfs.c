@@ -9716,6 +9716,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|putname
+c_func
+(paren
+id|tmp
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -9868,7 +9874,7 @@ l_int|0
 id|EXIT
 suffix:semicolon
 r_goto
-id|cleanup_dput
+m_exit
 suffix:semicolon
 )brace
 (brace
@@ -9916,12 +9922,9 @@ id|fd
 op_assign
 id|error
 suffix:semicolon
-id|EXIT
-suffix:semicolon
-r_goto
-id|cleanup_dput
-suffix:semicolon
 )brace
+r_else
+(brace
 id|fd_install
 c_func
 (paren
@@ -9930,6 +9933,7 @@ comma
 id|f
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* end of code that might be replaced by open_dentry */
 id|EXIT
@@ -9956,18 +9960,6 @@ id|tmp
 suffix:semicolon
 r_return
 id|fd
-suffix:semicolon
-id|cleanup_dput
-suffix:colon
-id|putname
-c_func
-(paren
-op_amp
-id|nd
-)paren
-suffix:semicolon
-r_goto
-m_exit
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_FS_EXT_ATTR
