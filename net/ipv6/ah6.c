@@ -299,19 +299,15 @@ id|exthdr
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
+id|LIMIT_NETDEBUG
 c_func
 (paren
-)paren
-)paren
 id|printk
 c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;overrun hopopts&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -412,19 +408,15 @@ id|exthdr
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
+id|LIMIT_NETDEBUG
 c_func
 (paren
-)paren
-)paren
 id|printk
 c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;overrun destopt&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -551,19 +543,15 @@ id|exthdr
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
+id|LIMIT_NETDEBUG
 c_func
 (paren
-)paren
-)paren
 id|printk
 c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;overrun destopt&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -688,7 +676,7 @@ id|x
 comma
 id|skb
 comma
-id|AF_INET
+id|AF_INET6
 )paren
 suffix:semicolon
 r_if
@@ -1541,19 +1529,15 @@ id|ahp-&gt;icv_trunc_len
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
+id|LIMIT_NETDEBUG
 c_func
 (paren
-)paren
-)paren
 id|printk
 c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;ipsec ah authentication error&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 id|x-&gt;stats.integrity_failed
@@ -1781,6 +1765,9 @@ id|x
 )paren
 r_return
 suffix:semicolon
+id|NETDEBUG
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -1798,6 +1785,7 @@ id|NIP6
 c_func
 (paren
 id|iph-&gt;daddr
+)paren
 )paren
 )paren
 suffix:semicolon

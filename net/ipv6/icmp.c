@@ -1108,19 +1108,15 @@ id|IPV6_ADDR_MULTICAST
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
+id|LIMIT_NETDEBUG
 c_func
 (paren
-)paren
-)paren
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;icmpv6_send: addr_any/mcast source&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -1137,19 +1133,15 @@ id|skb
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
+id|LIMIT_NETDEBUG
 c_func
 (paren
-)paren
-)paren
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;icmpv6_send: no reply to icmp error&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -1390,19 +1382,15 @@ OL
 l_int|0
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
+id|LIMIT_NETDEBUG
 c_func
 (paren
-)paren
-)paren
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;icmp: len problem&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -2392,19 +2380,15 @@ id|skb-&gt;csum
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
+id|LIMIT_NETDEBUG
 c_func
 (paren
-)paren
-)paren
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;ICMPv6 hw checksum failed&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 id|skb-&gt;ip_summed
@@ -2449,14 +2433,9 @@ l_int|0
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
+id|LIMIT_NETDEBUG
 c_func
 (paren
-)paren
-)paren
 id|printk
 c_func
 (paren
@@ -2475,6 +2454,7 @@ c_func
 (paren
 op_star
 id|daddr
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -2727,21 +2707,15 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
+id|LIMIT_NETDEBUG
 c_func
 (paren
-)paren
-)paren
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;icmpv6: msg of unknown type&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* informational */

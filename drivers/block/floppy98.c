@@ -49,15 +49,15 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-DECL|macro|FDPATCHES
-mdefine_line|#define FDPATCHES
 macro_line|#include &lt;linux/fdreg.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/blkpg.h&gt;
+macro_line|#include &lt;linux/cdrom.h&gt;&t;/* for the compatibility eject ioctl */
+macro_line|#include &lt;linux/completion.h&gt;
 multiline_comment|/*&n; * 1998/1/21 -- Richard Gooch &lt;rgooch@atnf.csiro.au&gt; -- devfs support&n; */
 macro_line|#include &lt;linux/fd.h&gt;
 DECL|macro|FLOPPY98_MOTOR_MASK
 mdefine_line|#define FLOPPY98_MOTOR_MASK 0x08
-DECL|macro|FDPATCHES
-mdefine_line|#define FDPATCHES
 macro_line|#include &lt;linux/hdreg.h&gt;
 DECL|macro|FD98_STATUS
 mdefine_line|#define FD98_STATUS&t;(0 + FD_IOPORT )
@@ -153,6 +153,12 @@ id|floppy_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+DECL|variable|device_release
+r_static
+r_struct
+id|completion
+id|device_release
+suffix:semicolon
 DECL|variable|virtual_dma_port
 r_static
 r_int
@@ -161,7 +167,7 @@ id|virtual_dma_port
 op_assign
 l_int|0x3f0
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|floppy_interrupt
 c_func
 (paren
@@ -3528,7 +3534,6 @@ id|handler
 )paren
 (paren
 r_void
-op_star
 )paren
 )paren
 (brace
@@ -3538,6 +3543,16 @@ c_func
 op_amp
 id|floppy_work
 comma
+(paren
+r_void
+(paren
+op_star
+)paren
+(paren
+r_void
+op_star
+)paren
+)paren
 id|handler
 comma
 l_int|NULL
@@ -6129,7 +6144,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* interrupt handler. Note that this can be called externally on the Sparc */
 DECL|function|floppy_interrupt
-r_void
+id|irqreturn_t
 id|floppy_interrupt
 c_func
 (paren
@@ -6249,6 +6264,7 @@ l_string|&quot;bizarre fdc&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|FDCS-&gt;reset
@@ -6260,6 +6276,8 @@ id|do_print
 op_assign
 op_logical_neg
 id|handler
+op_logical_and
+id|print_unex
 op_logical_and
 op_logical_neg
 id|initialising
@@ -6430,14 +6448,6 @@ id|handler
 id|schedule_bh
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-(paren
-r_void
-op_star
-)paren
 id|handler
 )paren
 suffix:semicolon
@@ -6456,6 +6466,10 @@ c_func
 (paren
 l_string|&quot;normal interrupt end&quot;
 )paren
+suffix:semicolon
+multiline_comment|/* FIXME! Was it really for us? */
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|recalibrate_floppy
@@ -17772,6 +17786,26 @@ op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
+DECL|function|floppy_device_release
+r_static
+r_void
+id|floppy_device_release
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
+id|complete
+c_func
+(paren
+op_amp
+id|device_release
+)paren
+suffix:semicolon
+)brace
 DECL|variable|floppy_device
 r_static
 r_struct
@@ -17794,9 +17828,9 @@ id|dev
 op_assign
 (brace
 dot
-id|name
+id|release
 op_assign
-l_string|&quot;Floppy Drive&quot;
+id|floppy_device_release
 comma
 )brace
 comma
@@ -17994,6 +18028,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|err
+op_assign
 id|register_blkdev
 c_func
 (paren
@@ -18002,16 +18039,10 @@ comma
 l_string|&quot;fd&quot;
 )paren
 )paren
-(brace
-id|err
-op_assign
-op_minus
-id|EBUSY
-suffix:semicolon
+)paren
 r_goto
 id|out
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -18156,6 +18187,7 @@ comma
 op_amp
 id|floppy_lock
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -19895,6 +19927,13 @@ r_void
 r_int
 id|drive
 suffix:semicolon
+id|init_completion
+c_func
+(paren
+op_amp
+id|device_release
+)paren
+suffix:semicolon
 id|platform_device_unregister
 c_func
 (paren
@@ -19939,6 +19978,16 @@ id|drive
 op_increment
 )paren
 (brace
+id|del_timer_sync
+c_func
+(paren
+op_amp
+id|motor_off_timer
+(braket
+id|drive
+)braket
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -19998,10 +20047,34 @@ c_func
 l_string|&quot;floppy&quot;
 )paren
 suffix:semicolon
+id|del_timer_sync
+c_func
+(paren
+op_amp
+id|fd_timeout
+)paren
+suffix:semicolon
+id|del_timer_sync
+c_func
+(paren
+op_amp
+id|fd_timer
+)paren
+suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
 id|floppy_queue
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|usage_count
+)paren
+id|floppy_release_irq_and_dma
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/* eject disk, if any */
@@ -20009,6 +20082,13 @@ id|fd_eject
 c_func
 (paren
 l_int|0
+)paren
+suffix:semicolon
+id|wait_for_completion
+c_func
+(paren
+op_amp
+id|device_release
 )paren
 suffix:semicolon
 )brace

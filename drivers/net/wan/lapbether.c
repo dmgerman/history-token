@@ -1425,7 +1425,7 @@ id|lapbeth-&gt;axdev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Handle device status changes.&n; */
+multiline_comment|/*&n; *&t;Handle device status changes.&n; *&n; * Called from notifier with RTNL held.&n; */
 DECL|function|lapbeth_device_event
 r_static
 r_int
@@ -1470,11 +1470,6 @@ id|dev
 )paren
 r_return
 id|NOTIFY_DONE
-suffix:semicolon
-id|rcu_read_lock
-c_func
-(paren
-)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -1556,11 +1551,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|rcu_read_unlock
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|NOTIFY_DONE
 suffix:semicolon

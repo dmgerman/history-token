@@ -21,7 +21,7 @@ id|value
 )paren
 suffix:semicolon
 r_void
-id|handle_filter_request
+id|irlan_filter_request
 c_func
 (paren
 r_struct

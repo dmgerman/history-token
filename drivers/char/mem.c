@@ -1758,6 +1758,8 @@ comma
 id|addr
 comma
 id|count
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|zeromap_page_range

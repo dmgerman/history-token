@@ -6,8 +6,6 @@ macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/if_bridge.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;br_private.h&quot;
 macro_line|#if defined(CONFIG_ATM_LANE) || defined(CONFIG_ATM_LANE_MODULE)
 macro_line|#include &quot;../atm/lec.h&quot;
@@ -38,6 +36,11 @@ c_func
 r_void
 )paren
 (brace
+id|br_fdb_init
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 r_if
 c_cond
@@ -112,9 +115,15 @@ c_func
 l_int|NULL
 )paren
 suffix:semicolon
-id|br_handle_frame_hook
-op_assign
-l_int|NULL
+id|br_cleanup_bridges
+c_func
+(paren
+)paren
+suffix:semicolon
+id|synchronize_net
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_ATM_LANE) || defined(CONFIG_ATM_LANE_MODULE)
 id|br_fdb_get_hook
@@ -126,12 +135,11 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif
-id|br_cleanup_bridges
-c_func
-(paren
-)paren
+id|br_handle_frame_hook
+op_assign
+l_int|NULL
 suffix:semicolon
-id|synchronize_net
+id|br_fdb_fini
 c_func
 (paren
 )paren

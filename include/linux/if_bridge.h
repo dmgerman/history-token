@@ -224,12 +224,6 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/netdevice.h&gt;
-r_struct
-id|net_bridge
-suffix:semicolon
-r_struct
-id|net_bridge_port
-suffix:semicolon
 r_extern
 r_void
 id|brioctl_set

@@ -2940,7 +2940,7 @@ id|packet_type
 op_star
 id|ptype
 suffix:semicolon
-id|do_gettimeofday
+id|net_timestamp
 c_func
 (paren
 op_amp
@@ -4589,7 +4589,7 @@ c_cond
 op_logical_neg
 id|skb-&gt;stamp.tv_sec
 )paren
-id|do_gettimeofday
+id|net_timestamp
 c_func
 (paren
 op_amp
@@ -5236,7 +5236,7 @@ c_cond
 op_logical_neg
 id|skb-&gt;stamp.tv_sec
 )paren
-id|do_gettimeofday
+id|net_timestamp
 c_func
 (paren
 op_amp
@@ -5981,6 +5981,7 @@ c_func
 (paren
 r_struct
 id|ifreq
+id|__user
 op_star
 id|arg
 )paren
@@ -6100,6 +6101,7 @@ id|dev_ifconf
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|arg
 )paren
@@ -8390,6 +8392,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -8426,6 +8429,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -8454,6 +8458,7 @@ c_func
 (paren
 r_struct
 id|ifreq
+id|__user
 op_star
 )paren
 id|arg

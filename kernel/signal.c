@@ -7373,17 +7373,6 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|from-&gt;si_int
-comma
-op_amp
-id|to-&gt;si_int
-)paren
-suffix:semicolon
-id|err
-op_or_assign
-id|__put_user
-c_func
-(paren
 id|from-&gt;si_ptr
 comma
 op_amp

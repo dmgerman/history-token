@@ -1,10 +1,67 @@
 multiline_comment|/*&n; *&t;Forwarding database&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_fdb.c,v 1.6 2002/01/17 00:57:07 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/if_bridge.h&gt;
+macro_line|#include &lt;linux/times.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;br_private.h&quot;
+DECL|variable|br_fdb_cache
+r_static
+id|kmem_cache_t
+op_star
+id|br_fdb_cache
+suffix:semicolon
+DECL|function|br_fdb_init
+r_void
+id|__init
+id|br_fdb_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|br_fdb_cache
+op_assign
+id|kmem_cache_create
+c_func
+(paren
+l_string|&quot;bridge_fdb_cache&quot;
+comma
+r_sizeof
+(paren
+r_struct
+id|net_bridge_fdb_entry
+)paren
+comma
+l_int|0
+comma
+id|SLAB_HWCACHE_ALIGN
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+DECL|function|br_fdb_fini
+r_void
+id|__exit
+id|br_fdb_fini
+c_func
+(paren
+r_void
+)paren
+(brace
+id|kmem_cache_destroy
+c_func
+(paren
+id|br_fdb_cache
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* if topology_changing then use forward_delay (default 15 sec)&n; * otherwise keep longer (default 5 minutes)&n; */
 DECL|function|hold_time
 r_static
@@ -71,7 +128,7 @@ suffix:semicolon
 )brace
 DECL|function|copy_fdb
 r_static
-id|__inline__
+r_inline
 r_void
 id|copy_fdb
 c_func
@@ -132,17 +189,13 @@ ques
 c_cond
 l_int|0
 suffix:colon
-(paren
+id|jiffies_to_clock_t
+c_func
 (paren
 id|jiffies
 op_minus
 id|f-&gt;ageing_timer
 )paren
-op_star
-id|USER_HZ
-)paren
-op_div
-id|HZ
 suffix:semicolon
 )brace
 DECL|function|br_mac_hash
@@ -835,9 +888,11 @@ op_amp
 id|ent-&gt;use_count
 )paren
 )paren
-id|kfree
+id|kmem_cache_free
 c_func
 (paren
+id|br_fdb_cache
+comma
 id|ent
 )paren
 suffix:semicolon
@@ -1046,9 +1101,11 @@ id|f-&gt;use_count
 )paren
 )paren
 (brace
-id|kfree
+id|kmem_cache_free
 c_func
 (paren
+id|br_fdb_cache
+comma
 id|f
 )paren
 suffix:semicolon
@@ -1105,7 +1162,7 @@ id|num
 suffix:semicolon
 )brace
 DECL|function|br_fdb_insert
-r_void
+r_int
 id|br_fdb_insert
 c_func
 (paren
@@ -1147,6 +1204,25 @@ c_func
 (paren
 id|addr
 )paren
+suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_valid_ether_addr
+c_func
+(paren
+id|addr
+)paren
+)paren
+r_return
+op_minus
+id|EADDRNOTAVAIL
 suffix:semicolon
 id|write_lock_bh
 c_func
@@ -1240,6 +1316,11 @@ comma
 id|source-&gt;dev-&gt;name
 )paren
 suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|EEXIST
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
@@ -1276,14 +1357,10 @@ suffix:semicolon
 )brace
 id|fdb
 op_assign
-id|kmalloc
+id|kmem_cache_alloc
 c_func
 (paren
-r_sizeof
-(paren
-op_star
-id|fdb
-)paren
+id|br_fdb_cache
 comma
 id|GFP_ATOMIC
 )paren
@@ -1291,13 +1368,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|fdb
 op_eq
 l_int|NULL
 )paren
+)paren
+(brace
+id|ret
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
 id|memcpy
 c_func
 (paren
@@ -1396,6 +1484,9 @@ c_func
 op_amp
 id|br-&gt;hash_lock
 )paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 eof

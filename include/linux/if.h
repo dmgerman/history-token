@@ -270,6 +270,7 @@ id|IFNAMSIZ
 suffix:semicolon
 DECL|member|ifru_data
 r_char
+id|__user
 op_star
 id|ifru_data
 suffix:semicolon

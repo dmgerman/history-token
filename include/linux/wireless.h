@@ -344,7 +344,9 @@ r_struct
 id|iw_point
 (brace
 DECL|member|pointer
-id|caddr_t
+r_void
+id|__user
+op_star
 id|pointer
 suffix:semicolon
 multiline_comment|/* Pointer to the data  (in user space) */

@@ -599,6 +599,7 @@ id|cmd
 comma
 r_struct
 id|divert_cf
+id|__user
 op_star
 id|arg
 )paren

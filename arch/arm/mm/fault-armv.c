@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &quot;fault.h&quot;
@@ -853,6 +852,17 @@ id|page
 )paren
 (brace
 r_struct
+id|address_space
+op_star
+id|mapping
+op_assign
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+r_struct
 id|mm_struct
 op_star
 id|mm
@@ -878,11 +888,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|page_mapping
-c_func
-(paren
-id|page
-)paren
+id|mapping
 )paren
 r_return
 suffix:semicolon
@@ -893,7 +899,7 @@ c_func
 id|l
 comma
 op_amp
-id|page-&gt;mapping-&gt;i_mmap_shared
+id|mapping-&gt;i_mmap_shared
 )paren
 (brace
 r_struct
@@ -999,6 +1005,17 @@ id|dirty
 )paren
 (brace
 r_struct
+id|address_space
+op_star
+id|mapping
+op_assign
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+r_struct
 id|list_head
 op_star
 id|l
@@ -1018,6 +1035,14 @@ r_int
 id|aliases
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mapping
+)paren
+r_return
 suffix:semicolon
 id|pgoff
 op_assign
@@ -1040,7 +1065,7 @@ c_func
 id|l
 comma
 op_amp
-id|page-&gt;mapping-&gt;i_mmap_shared
+id|mapping-&gt;i_mmap_shared
 )paren
 (brace
 r_struct

@@ -599,19 +599,15 @@ c_func
 id|Ip6OutNoRoutes
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|net_ratelimit
+id|LIMIT_NETDEBUG
 c_func
 (paren
-)paren
-)paren
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;ip6_route_me_harder: No more route.&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 id|dst_release

@@ -2,8 +2,9 @@ multiline_comment|/*&n; *  linux/include/asm-arm/tlb.h&n; *&n; *  Copyright (C) 
 macro_line|#ifndef __ASMARM_TLB_H
 DECL|macro|__ASMARM_TLB_H
 mdefine_line|#define __ASMARM_TLB_H
-macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
 multiline_comment|/*&n; * TLB handling.  This allows us to remove pages from the page&n; * tables, and efficiently handle the TLB issues.&n; */
 DECL|struct|mmu_gather
 r_struct

@@ -2621,6 +2621,17 @@ op_amp
 id|newsig-&gt;shared_pending
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|newsig-&gt;posix_timers
+)paren
+suffix:semicolon
+id|newsig-&gt;tty
+op_assign
+id|oldsig-&gt;tty
+suffix:semicolon
 id|newsig-&gt;pgrp
 op_assign
 id|oldsig-&gt;pgrp

@@ -4717,7 +4717,7 @@ suffix:semicolon
 )brace
 id|skb-&gt;stamp.tv_sec
 op_assign
-l_int|0
+id|LOCALLY_ENQUEUED
 suffix:semicolon
 id|skb-&gt;stamp.tv_usec
 op_assign

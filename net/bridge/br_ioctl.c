@@ -1,57 +1,10 @@
 multiline_comment|/*&n; *&t;Ioctl handler&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_ioctl.c,v 1.4 2000/11/08 05:16:40 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/if_bridge.h&gt;
-macro_line|#include &lt;linux/inetdevice.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;br_private.h&quot;
-multiline_comment|/* import values in USER_HZ  */
-DECL|function|user_to_ticks
-r_static
-r_inline
-r_int
-r_int
-id|user_to_ticks
-c_func
-(paren
-r_int
-r_int
-id|utick
-)paren
-(brace
-r_return
-(paren
-id|utick
-op_star
-id|HZ
-)paren
-op_div
-id|USER_HZ
-suffix:semicolon
-)brace
-multiline_comment|/* export values in USER_HZ */
-DECL|function|ticks_to_user
-r_static
-r_inline
-r_int
-r_int
-id|ticks_to_user
-c_func
-(paren
-r_int
-r_int
-id|tick
-)paren
-(brace
-r_return
-(paren
-id|tick
-op_star
-id|USER_HZ
-)paren
-op_div
-id|HZ
-suffix:semicolon
-)brace
 multiline_comment|/* Report time remaining in user HZ  */
 DECL|function|timer_residue
 r_static
@@ -68,9 +21,6 @@ id|timer
 )paren
 (brace
 r_return
-id|ticks_to_user
-c_func
-(paren
 id|timer_pending
 c_func
 (paren
@@ -78,6 +28,8 @@ id|timer
 )paren
 ques
 c_cond
+id|jiffies_to_clock_t
+c_func
 (paren
 id|timer-&gt;expires
 op_minus
@@ -85,7 +37,6 @@ id|jiffies
 )paren
 suffix:colon
 l_int|0
-)paren
 suffix:semicolon
 )brace
 DECL|function|br_ioctl_device
@@ -180,13 +131,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|spin_lock_bh
-c_func
-(paren
-op_amp
-id|br-&gt;lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -213,13 +157,6 @@ c_func
 id|br
 comma
 id|dev
-)paren
-suffix:semicolon
-id|spin_unlock_bh
-c_func
-(paren
-op_amp
-id|br-&gt;lock
 )paren
 suffix:semicolon
 id|dev_put
@@ -290,7 +227,7 @@ id|br-&gt;root_path_cost
 suffix:semicolon
 id|b.max_age
 op_assign
-id|ticks_to_user
+id|jiffies_to_clock_t
 c_func
 (paren
 id|br-&gt;max_age
@@ -298,7 +235,7 @@ id|br-&gt;max_age
 suffix:semicolon
 id|b.hello_time
 op_assign
-id|ticks_to_user
+id|jiffies_to_clock_t
 c_func
 (paren
 id|br-&gt;hello_time
@@ -318,7 +255,7 @@ id|br-&gt;bridge_hello_time
 suffix:semicolon
 id|b.bridge_forward_delay
 op_assign
-id|ticks_to_user
+id|jiffies_to_clock_t
 c_func
 (paren
 id|br-&gt;bridge_forward_delay
@@ -342,7 +279,7 @@ id|br-&gt;stp_enabled
 suffix:semicolon
 id|b.ageing_time
 op_assign
-id|ticks_to_user
+id|jiffies_to_clock_t
 c_func
 (paren
 id|br-&gt;ageing_time
@@ -424,23 +361,46 @@ suffix:colon
 (brace
 r_int
 id|num
-op_assign
-id|arg1
-ques
-c_cond
-id|arg1
-suffix:colon
-l_int|256
-suffix:semicolon
-multiline_comment|/* compatiablity */
-r_int
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
-r_int
+comma
 op_star
 id|indices
+suffix:semicolon
+id|num
+op_assign
+id|arg1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|num
+OL
+l_int|0
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|num
+op_eq
+l_int|0
+)paren
+id|num
+op_assign
+l_int|256
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|num
+OG
+id|BR_MAX_PORTS
+)paren
+id|num
+op_assign
+id|BR_MAX_PORTS
 suffix:semicolon
 id|indices
 op_assign
@@ -515,7 +475,7 @@ r_int
 )paren
 )paren
 )paren
-id|ret
+id|num
 op_assign
 op_minus
 id|EFAULT
@@ -527,7 +487,7 @@ id|indices
 )paren
 suffix:semicolon
 r_return
-id|ret
+id|num
 suffix:semicolon
 )brace
 r_case
@@ -556,7 +516,7 @@ id|br-&gt;lock
 suffix:semicolon
 id|br-&gt;bridge_forward_delay
 op_assign
-id|user_to_ticks
+id|clock_t_to_jiffies
 c_func
 (paren
 id|arg0
@@ -611,7 +571,7 @@ id|br-&gt;lock
 suffix:semicolon
 id|br-&gt;bridge_hello_time
 op_assign
-id|user_to_ticks
+id|clock_t_to_jiffies
 c_func
 (paren
 id|arg0
@@ -666,7 +626,7 @@ id|br-&gt;lock
 suffix:semicolon
 id|br-&gt;bridge_max_age
 op_assign
-id|user_to_ticks
+id|clock_t_to_jiffies
 c_func
 (paren
 id|arg0
@@ -714,7 +674,7 @@ id|EPERM
 suffix:semicolon
 id|br-&gt;ageing_time
 op_assign
-id|user_to_ticks
+id|clock_t_to_jiffies
 c_func
 (paren
 id|arg0
@@ -995,6 +955,25 @@ id|CAP_NET_ADMIN
 r_return
 op_minus
 id|EPERM
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|arg1
+op_ge
+(paren
+l_int|1
+op_lshift
+(paren
+l_int|16
+op_minus
+id|BR_PORT_BITS
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|ERANGE
 suffix:semicolon
 id|spin_lock_bh
 c_func

@@ -49,6 +49,14 @@ DECL|variable|phys_cpu_present_map
 id|physid_mask_t
 id|phys_cpu_present_map
 suffix:semicolon
+DECL|variable|maxcpus
+r_int
+r_int
+id|__initdata
+id|maxcpus
+op_assign
+id|NR_CPUS
+suffix:semicolon
 multiline_comment|/*&n; * The Visual Workstation is Intel MP compliant in the hardware&n; * sense, but it doesn&squot;t have a BIOS(-configuration table).&n; * No problem for Linux.&n; */
 DECL|function|MP_processor_info
 r_void
@@ -272,6 +280,17 @@ op_assign
 id|CO_CPU_MAX
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ncpus
+OG
+id|maxcpus
+)paren
+id|ncpus
+op_assign
+id|maxcpus
+suffix:semicolon
 id|smp_found_config
 op_assign
 l_int|1

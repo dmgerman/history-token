@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
@@ -2215,17 +2214,6 @@ id|pte_chain_init
 c_func
 (paren
 r_void
-)paren
-(brace
-)brace
-DECL|function|swap_unplug_io_fn
-r_void
-id|swap_unplug_io_fn
-c_func
-(paren
-r_struct
-id|backing_dev_info
-op_star
 )paren
 (brace
 )brace

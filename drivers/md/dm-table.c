@@ -2662,6 +2662,14 @@ id|tgt-&gt;error
 op_assign
 l_string|&quot;zero-length target&quot;
 suffix:semicolon
+id|DMERR
+c_func
+(paren
+l_string|&quot;: %s&bslash;n&quot;
+comma
+id|tgt-&gt;error
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
@@ -2685,6 +2693,14 @@ id|tgt-&gt;type
 id|tgt-&gt;error
 op_assign
 l_string|&quot;unknown target type&quot;
+suffix:semicolon
+id|DMERR
+c_func
+(paren
+l_string|&quot;: %s&bslash;n&quot;
+comma
+id|tgt-&gt;error
+)paren
 suffix:semicolon
 r_return
 op_minus
@@ -2818,11 +2834,9 @@ l_int|0
 suffix:semicolon
 id|bad
 suffix:colon
-id|printk
+id|DMERR
 c_func
 (paren
-id|KERN_ERR
-id|DM_NAME
 l_string|&quot;: %s&bslash;n&quot;
 comma
 id|tgt-&gt;error

@@ -1282,16 +1282,9 @@ id|skb-&gt;csum
 )paren
 )paren
 (brace
-id|NETDEBUG
+id|LIMIT_NETDEBUG
 c_func
 (paren
-r_if
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
 id|printk
 c_func
 (paren

@@ -764,6 +764,13 @@ op_assign
 id|vma-&gt;vm_mm
 suffix:semicolon
 r_struct
+id|address_space
+op_star
+id|mapping
+op_assign
+l_int|NULL
+suffix:semicolon
+r_struct
 id|vm_area_struct
 op_star
 id|new_vma
@@ -826,6 +833,7 @@ op_assign
 id|copy_vma
 c_func
 (paren
+op_amp
 id|vma
 comma
 id|new_addr
@@ -845,6 +853,25 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|vma-&gt;vm_file
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Subtle point from Rajesh Venkatasubramanian: before&n;&t;&t; * moving file-based ptes, we must lock vmtruncate out,&n;&t;&t; * since it might clean the dst vma before the src vma,&n;&t;&t; * and we propagate stale pages into the dst afterward.&n;&t;&t; */
+id|mapping
+op_assign
+id|vma-&gt;vm_file-&gt;f_mapping
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|mapping-&gt;i_shared_sem
+)paren
+suffix:semicolon
+)brace
 id|moved_len
 op_assign
 id|move_page_tables
@@ -867,15 +894,7 @@ OL
 id|old_len
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * On error, move entries back from new area to old,&n;&t;&t; * which will succeed since page tables still there,&n;&t;&t; * and then proceed to unmap new area instead of old.&n;&t;&t; *&n;&t;&t; * Subtle point from Rajesh Venkatasubramanian: before&n;&t;&t; * moving file-based ptes, move new_vma before old vma&n;&t;&t; * in the i_mmap or i_mmap_shared list, so when racing&n;&t;&t; * against vmtruncate we cannot propagate pages to be&n;&t;&t; * truncated back from new_vma into just cleaned old.&n;&t;&t; */
-id|vma_relink_file
-c_func
-(paren
-id|vma
-comma
-id|new_vma
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;&t; * On error, move entries back from new area to old,&n;&t;&t; * which will succeed since page tables still there,&n;&t;&t; * and then proceed to unmap new area instead of old.&n;&t;&t; */
 id|move_page_tables
 c_func
 (paren
@@ -906,6 +925,18 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|mapping
+)paren
+id|up
+c_func
+(paren
+op_amp
+id|mapping-&gt;i_shared_sem
+)paren
+suffix:semicolon
 multiline_comment|/* Conceal VM_ACCOUNT so old reservation is not undone */
 r_if
 c_cond

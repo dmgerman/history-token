@@ -1293,6 +1293,9 @@ id|x
 )paren
 r_return
 suffix:semicolon
+id|NETDEBUG
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -1305,6 +1308,7 @@ id|NIPQUAD
 c_func
 (paren
 id|iph-&gt;daddr
+)paren
 )paren
 )paren
 suffix:semicolon
