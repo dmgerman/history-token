@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *&n; * linux/drivers/s390/scsi/zfcp_fsf.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt;&n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt;&n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_FSF_C_REVISION
-mdefine_line|#define ZFCP_FSF_C_REVISION &quot;$Revision: 1.29 $&quot;
+mdefine_line|#define ZFCP_FSF_C_REVISION &quot;$Revision: 1.43 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -352,6 +352,40 @@ id|FSF_QTCB_UPLOAD_CONTROL_FILE
 )braket
 op_assign
 id|FSF_SUPPORT_COMMAND
+)brace
+suffix:semicolon
+DECL|variable|zfcp_act_subtable_type
+r_static
+r_const
+r_char
+id|zfcp_act_subtable_type
+(braket
+l_int|5
+)braket
+(braket
+l_int|8
+)braket
+op_assign
+(brace
+(brace
+l_string|&quot;unknown&quot;
+)brace
+comma
+(brace
+l_string|&quot;OS&quot;
+)brace
+comma
+(brace
+l_string|&quot;WWPN&quot;
+)brace
+comma
+(brace
+l_string|&quot;DID&quot;
+)brace
+comma
+(brace
+l_string|&quot;LUN&quot;
+)brace
 )brace
 suffix:semicolon
 multiline_comment|/****************************************************************/
@@ -1005,6 +1039,9 @@ r_if
 c_cond
 (paren
 (paren
+r_int
+)paren
+(paren
 id|fsf_req-&gt;qtcb-&gt;header.log_start
 op_plus
 id|fsf_req-&gt;qtcb-&gt;header.log_length
@@ -1279,7 +1316,6 @@ dot
 id|sequence_error.exp_req_seq_no
 )paren
 suffix:semicolon
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
 id|debug_text_event
 c_func
 (paren
@@ -1328,7 +1364,6 @@ comma
 l_int|4
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* ZFCP_DEBUG_REQUESTS */
 id|debug_text_exception
 c_func
 (paren
@@ -2729,6 +2764,20 @@ op_star
 id|fsf_req
 )paren
 (brace
+r_struct
+id|zfcp_erp_action
+op_star
+id|erp_action
+op_assign
+id|fsf_req-&gt;erp_action
+suffix:semicolon
+r_struct
+id|zfcp_adapter
+op_star
+id|adapter
+op_assign
+id|fsf_req-&gt;adapter
+suffix:semicolon
 r_int
 id|retval
 op_assign
@@ -3080,10 +3129,47 @@ id|fsf_req-&gt;qtcb-&gt;header.fsf_command
 )paren
 suffix:semicolon
 )brace
-id|zfcp_erp_fsf_req_handler
+r_if
+c_cond
+(paren
+op_logical_neg
+id|erp_action
+)paren
+r_return
+id|retval
+suffix:semicolon
+id|debug_text_event
 c_func
 (paren
-id|fsf_req
+id|adapter-&gt;erp_dbf
+comma
+l_int|3
+comma
+l_string|&quot;a_frh&quot;
+)paren
+suffix:semicolon
+id|debug_event
+c_func
+(paren
+id|adapter-&gt;erp_dbf
+comma
+l_int|3
+comma
+op_amp
+id|erp_action-&gt;action
+comma
+r_sizeof
+(paren
+r_int
+)paren
+)paren
+suffix:semicolon
+id|zfcp_erp_async_handler
+c_func
+(paren
+id|erp_action
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -3324,7 +3410,6 @@ id|adapter
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
 id|debug_text_event
 c_func
 (paren
@@ -3335,7 +3420,6 @@ comma
 l_string|&quot;unso&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_goto
 id|out
 suffix:semicolon
@@ -3811,7 +3895,43 @@ comma
 l_string|&quot;FSF_STATUS_READ_LINK_DOWN&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Unneccessary, ignoring.... */
+id|debug_text_event
+c_func
+(paren
+id|adapter-&gt;erp_dbf
+comma
+l_int|0
+comma
+l_string|&quot;unsol_link_down:&quot;
+)paren
+suffix:semicolon
+id|ZFCP_LOG_INFO
+c_func
+(paren
+l_string|&quot;Local link to adapter %s is down&bslash;n&quot;
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+)paren
+suffix:semicolon
+id|atomic_set_mask
+c_func
+(paren
+id|ZFCP_STATUS_ADAPTER_LINK_UNPLUGGED
+comma
+op_amp
+id|adapter-&gt;status
+)paren
+suffix:semicolon
+id|zfcp_erp_adapter_failed
+c_func
+(paren
+id|adapter
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -3870,74 +3990,6 @@ op_or
 id|ZFCP_STATUS_COMMON_ERP_FAILED
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|FSF_STATUS_READ_NOTIFICATION_LOST
-suffix:colon
-id|ZFCP_LOG_FLAGS
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;FSF_STATUS_READ_NOTIFICATION_LOST&bslash;n&quot;
-)paren
-suffix:semicolon
-id|debug_text_event
-c_func
-(paren
-id|adapter-&gt;erp_dbf
-comma
-l_int|2
-comma
-l_string|&quot;unsol_not_lost:&quot;
-)paren
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|status_buffer-&gt;status_subtype
-)paren
-(brace
-r_case
-id|FSF_STATUS_READ_SUB_LOST_CFDC_UPDATED
-suffix:colon
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;The unsolicited status information about &quot;
-l_string|&quot;CFDC update on the adapter %s is lost &quot;
-l_string|&quot;due to the lack of internal resources&bslash;n&quot;
-comma
-id|zfcp_get_busid_by_adapter
-c_func
-(paren
-id|adapter
-)paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|FSF_STATUS_READ_SUB_LOST_CFDC_HARDENED
-suffix:colon
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;The unsolicited status information about &quot;
-l_string|&quot;CFDC harden on the adapter %s is lost &quot;
-l_string|&quot;due to the lack of internal resources&bslash;n&quot;
-comma
-id|zfcp_get_busid_by_adapter
-c_func
-(paren
-id|adapter
-)paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -4789,8 +4841,6 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
-multiline_comment|/*&n;&t;&t; * debug feature area which records&n;&t;&t; * fsf request sequence numbers&n;&t;&t; */
 id|debug_text_event
 c_func
 (paren
@@ -4818,7 +4868,6 @@ r_int
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* ZFCP_DEBUG_REQUESTS */
 id|debug_text_event
 c_func
 (paren
@@ -6057,18 +6106,28 @@ id|port
 )paren
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
 id|counter
 op_assign
 l_int|0
 suffix:semicolon
-r_do
+id|counter
+OL
+l_int|2
+suffix:semicolon
+id|counter
+op_increment
+)paren
 (brace
 id|subtable
 op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
 )braket
 suffix:semicolon
 id|rule
@@ -6076,7 +6135,10 @@ op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 r_switch
@@ -6097,7 +6159,7 @@ suffix:colon
 r_case
 id|FSF_SQ_CFDC_SUBTABLE_LUN
 suffix:colon
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
 l_string|&quot;Access denied (%s rule %d)&bslash;n&quot;
@@ -6114,14 +6176,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_while
-c_loop
-(paren
-id|counter
-OL
-l_int|4
-)paren
-suffix:semicolon
 id|debug_text_event
 c_func
 (paren
@@ -7505,18 +7559,28 @@ comma
 id|port-&gt;wwpn
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
 id|counter
 op_assign
 l_int|0
 suffix:semicolon
-r_do
+id|counter
+OL
+l_int|2
+suffix:semicolon
+id|counter
+op_increment
+)paren
 (brace
 id|subtable
 op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
 )braket
 suffix:semicolon
 id|rule
@@ -7524,7 +7588,10 @@ op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 r_switch
@@ -7545,7 +7612,7 @@ suffix:colon
 r_case
 id|FSF_SQ_CFDC_SUBTABLE_LUN
 suffix:colon
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
 l_string|&quot;Access denied (%s rule %d)&bslash;n&quot;
@@ -7562,14 +7629,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_while
-c_loop
-(paren
-id|counter
-OL
-l_int|4
-)paren
-suffix:semicolon
 id|debug_text_event
 c_func
 (paren
@@ -7783,6 +7842,8 @@ suffix:semicolon
 id|erp_action-&gt;fsf_req-&gt;qtcb-&gt;bottom.config.feature_selection
 op_assign
 id|FSF_FEATURE_CFDC
+op_or
+id|FSF_FEATURE_LOST_SAN_NOTIFICATION
 suffix:semicolon
 multiline_comment|/* start QDIO request for this FSF request */
 id|retval
@@ -7856,25 +7917,22 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * function:    zfcp_fsf_exchange_config_data_handler&n; *&n; * purpose:     is called for finished Exchange Configuration Data command&n; *&n; * returns:&n; */
+multiline_comment|/**&n; * zfcp_fsf_exchange_config_evaluate&n; * @fsf_req: fsf_req which belongs to xchg config data request&n; * @xchg_ok: specifies if xchg config data was incomplete or complete (0/1)&n; *&n; * returns: -EIO on error, 0 otherwise&n; */
 r_static
 r_int
-DECL|function|zfcp_fsf_exchange_config_data_handler
-id|zfcp_fsf_exchange_config_data_handler
+DECL|function|zfcp_fsf_exchange_config_evaluate
+id|zfcp_fsf_exchange_config_evaluate
 c_func
 (paren
 r_struct
 id|zfcp_fsf_req
 op_star
 id|fsf_req
+comma
+r_int
+id|xchg_ok
 )paren
 (brace
-r_int
-id|retval
-op_assign
-op_minus
-id|EIO
-suffix:semicolon
 r_struct
 id|fsf_qtcb_bottom_config
 op_star
@@ -7887,54 +7945,35 @@ id|adapter
 op_assign
 id|fsf_req-&gt;adapter
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|fsf_req-&gt;status
-op_amp
-id|ZFCP_STATUS_FSFREQ_ERROR
-)paren
-(brace
-multiline_comment|/* don&squot;t set any value, stay with the old (unitialized) ones */
-r_goto
-id|skip_fsfstatus
-suffix:semicolon
-)brace
-multiline_comment|/* evaluate FSF status in QTCB */
-r_switch
-c_cond
-(paren
-id|fsf_req-&gt;qtcb-&gt;header.fsf_status
-)paren
-(brace
-r_case
-id|FSF_GOOD
-suffix:colon
-id|ZFCP_LOG_FLAGS
-c_func
-(paren
-l_int|2
-comma
-l_string|&quot;FSF_GOOD&bslash;n&quot;
-)paren
-suffix:semicolon
 id|bottom
 op_assign
 op_amp
 id|fsf_req-&gt;qtcb-&gt;bottom.config
 suffix:semicolon
-multiline_comment|/* only log QTCB versions for now */
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;low QTCB version 0x%x of FSF, &quot;
-l_string|&quot;high QTCB version 0x%x of FSF, &bslash;n&quot;
+l_string|&quot;low/high QTCB version 0x%x/0x%x of FSF&bslash;n&quot;
 comma
 id|bottom-&gt;low_qtcb_version
 comma
 id|bottom-&gt;high_qtcb_version
 )paren
 suffix:semicolon
+id|adapter-&gt;fsf_lic_version
+op_assign
+id|bottom-&gt;lic_version
+suffix:semicolon
+id|adapter-&gt;supported_features
+op_assign
+id|bottom-&gt;supported_features
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|xchg_ok
+)paren
+(brace
 id|adapter-&gt;wwnn
 op_assign
 id|bottom-&gt;nport_serv_param.wwnn
@@ -7949,14 +7988,6 @@ id|bottom-&gt;s_id
 op_amp
 id|ZFCP_DID_MASK
 suffix:semicolon
-id|adapter-&gt;hydra_version
-op_assign
-id|bottom-&gt;adapter_type
-suffix:semicolon
-id|adapter-&gt;fsf_lic_version
-op_assign
-id|bottom-&gt;lic_version
-suffix:semicolon
 id|adapter-&gt;fc_topology
 op_assign
 id|bottom-&gt;fc_topology
@@ -7965,10 +7996,38 @@ id|adapter-&gt;fc_link_speed
 op_assign
 id|bottom-&gt;fc_link_speed
 suffix:semicolon
-id|adapter-&gt;supported_features
+id|adapter-&gt;hydra_version
 op_assign
-id|bottom-&gt;supported_features
+id|bottom-&gt;adapter_type
 suffix:semicolon
+)brace
+r_else
+(brace
+id|adapter-&gt;wwnn
+op_assign
+l_int|0
+suffix:semicolon
+id|adapter-&gt;wwpn
+op_assign
+l_int|0
+suffix:semicolon
+id|adapter-&gt;s_id
+op_assign
+l_int|0
+suffix:semicolon
+id|adapter-&gt;fc_topology
+op_assign
+l_int|0
+suffix:semicolon
+id|adapter-&gt;fc_link_speed
+op_assign
+l_int|0
+suffix:semicolon
+id|adapter-&gt;hydra_version
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -7981,7 +8040,6 @@ id|adapter-&gt;hardware_version
 op_assign
 id|bottom-&gt;hardware_version
 suffix:semicolon
-multiline_comment|/* copy just first 17 bytes */
 id|memcpy
 c_func
 (paren
@@ -8007,11 +8065,10 @@ suffix:semicolon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;The adapter %s reported &quot;
-l_string|&quot;the following characteristics:&bslash;n&quot;
-l_string|&quot;WWNN 0x%16.16Lx, &quot;
-l_string|&quot;WWPN 0x%16.16Lx, &quot;
-l_string|&quot;S_ID 0x%6.6x,&bslash;n&quot;
+l_string|&quot;The adapter %s reported the following characteristics:&bslash;n&quot;
+l_string|&quot;WWNN 0x%016Lx, &quot;
+l_string|&quot;WWPN 0x%016Lx, &quot;
+l_string|&quot;S_ID 0x%08x,&bslash;n&quot;
 l_string|&quot;adapter version 0x%x, &quot;
 l_string|&quot;LIC version 0x%x, &quot;
 l_string|&quot;FC link speed %d Gb/s&bslash;n&quot;
@@ -8065,7 +8122,7 @@ suffix:semicolon
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|0
 comma
@@ -8080,8 +8137,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_goto
-id|skip_fsfstatus
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 r_if
@@ -8110,7 +8168,7 @@ suffix:semicolon
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|0
 comma
@@ -8125,10 +8183,83 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_goto
-id|skip_fsfstatus
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * function:    zfcp_fsf_exchange_config_data_handler&n; *&n; * purpose:     is called for finished Exchange Configuration Data command&n; *&n; * returns:&n; */
+r_static
+r_int
+DECL|function|zfcp_fsf_exchange_config_data_handler
+id|zfcp_fsf_exchange_config_data_handler
+c_func
+(paren
+r_struct
+id|zfcp_fsf_req
+op_star
+id|fsf_req
+)paren
+(brace
+r_struct
+id|fsf_qtcb_bottom_config
+op_star
+id|bottom
+suffix:semicolon
+r_struct
+id|zfcp_adapter
+op_star
+id|adapter
+op_assign
+id|fsf_req-&gt;adapter
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fsf_req-&gt;status
+op_amp
+id|ZFCP_STATUS_FSFREQ_ERROR
+)paren
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|fsf_req-&gt;qtcb-&gt;header.fsf_status
+)paren
+(brace
+r_case
+id|FSF_GOOD
+suffix:colon
+id|ZFCP_LOG_FLAGS
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;FSF_GOOD&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|zfcp_fsf_exchange_config_evaluate
+c_func
+(paren
+id|fsf_req
+comma
+l_int|1
+)paren
+)paren
+r_return
+op_minus
+id|EIO
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -8179,8 +8310,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_goto
-id|skip_fsfstatus
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 r_case
 id|FSF_TOPO_AL
@@ -8226,8 +8358,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_goto
-id|skip_fsfstatus
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 r_case
 id|FSF_TOPO_FABRIC
@@ -8293,10 +8426,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_goto
-id|skip_fsfstatus
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
+id|bottom
+op_assign
+op_amp
+id|fsf_req-&gt;qtcb-&gt;bottom.config
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8366,8 +8505,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_goto
-id|skip_fsfstatus
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|atomic_set_mask
@@ -8379,15 +8519,69 @@ op_amp
 id|adapter-&gt;status
 )paren
 suffix:semicolon
-id|retval
-op_assign
+r_break
+suffix:semicolon
+r_case
+id|FSF_EXCHANGE_CONFIG_DATA_INCOMPLETE
+suffix:colon
+id|debug_text_event
+c_func
+(paren
+id|adapter-&gt;erp_dbf
+comma
 l_int|0
+comma
+l_string|&quot;xchg-inco&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|zfcp_fsf_exchange_config_evaluate
+c_func
+(paren
+id|fsf_req
+comma
+l_int|0
+)paren
+)paren
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+id|ZFCP_LOG_INFO
+c_func
+(paren
+l_string|&quot;Local link to adapter %s is down&bslash;n&quot;
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+)paren
+suffix:semicolon
+id|atomic_set_mask
+c_func
+(paren
+id|ZFCP_STATUS_ADAPTER_XCONFIG_OK
+op_or
+id|ZFCP_STATUS_ADAPTER_LINK_UNPLUGGED
+comma
+op_amp
+id|adapter-&gt;status
+)paren
+suffix:semicolon
+id|zfcp_erp_adapter_failed
+c_func
+(paren
+id|adapter
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/* retval is -EIO by default */
 id|debug_text_event
 c_func
 (paren
@@ -8414,11 +8608,21 @@ id|u32
 )paren
 )paren
 suffix:semicolon
-)brace
-id|skip_fsfstatus
-suffix:colon
+id|zfcp_erp_adapter_shutdown
+c_func
+(paren
+id|adapter
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_return
-id|retval
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * function:    zfcp_fsf_open_port&n; *&n; * purpose:&t;&n; *&n; * returns:&t;address of initiated FSF request&n; *&t;&t;NULL - request could not be initiated &n; */
@@ -8768,18 +8972,28 @@ id|port
 )paren
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
 id|counter
 op_assign
 l_int|0
 suffix:semicolon
-r_do
+id|counter
+OL
+l_int|2
+suffix:semicolon
+id|counter
+op_increment
+)paren
 (brace
 id|subtable
 op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
 )braket
 suffix:semicolon
 id|rule
@@ -8787,7 +9001,10 @@ op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 r_switch
@@ -8808,7 +9025,7 @@ suffix:colon
 r_case
 id|FSF_SQ_CFDC_SUBTABLE_LUN
 suffix:colon
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
 l_string|&quot;Access denied (%s rule %d)&bslash;n&quot;
@@ -8825,14 +9042,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_while
-c_loop
-(paren
-id|counter
-OL
-l_int|4
-)paren
-suffix:semicolon
 id|debug_text_event
 c_func
 (paren
@@ -10104,18 +10313,28 @@ id|port
 )paren
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
 id|counter
 op_assign
 l_int|0
 suffix:semicolon
-r_do
+id|counter
+OL
+l_int|2
+suffix:semicolon
+id|counter
+op_increment
+)paren
 (brace
 id|subtable
 op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
 )braket
 suffix:semicolon
 id|rule
@@ -10123,7 +10342,10 @@ op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 r_switch
@@ -10144,7 +10366,7 @@ suffix:colon
 r_case
 id|FSF_SQ_CFDC_SUBTABLE_LUN
 suffix:colon
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
 l_string|&quot;Access denied (%s rule %d)&bslash;n&quot;
@@ -10161,14 +10383,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_while
-c_loop
-(paren
-id|counter
-OL
-l_int|4
-)paren
-suffix:semicolon
 id|debug_text_event
 c_func
 (paren
@@ -10617,10 +10831,8 @@ id|erp_action-&gt;fsf_req-&gt;erp_action
 op_assign
 id|erp_action
 suffix:semicolon
-id|erp_action-&gt;fsf_req-&gt;qtcb-&gt;bottom.support.option
-op_assign
-id|FSF_OPEN_LUN_SUPPRESS_BOXING
-suffix:semicolon
+singleline_comment|//&t;erp_action-&gt;fsf_req-&gt;qtcb-&gt;bottom.support.option =
+singleline_comment|//&t;&t;FSF_OPEN_LUN_UNSOLICITED_SENSE_DATA;
 multiline_comment|/* start QDIO request for this FSF request */
 id|retval
 op_assign
@@ -10723,6 +10935,11 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_struct
+id|zfcp_adapter
+op_star
+id|adapter
+suffix:semicolon
+r_struct
 id|zfcp_unit
 op_star
 id|unit
@@ -10732,12 +10949,21 @@ id|fsf_qtcb_header
 op_star
 id|header
 suffix:semicolon
+r_struct
+id|fsf_qtcb_bottom_support
+op_star
+id|bottom
+suffix:semicolon
 id|u16
 id|subtable
 comma
 id|rule
 comma
 id|counter
+suffix:semicolon
+id|adapter
+op_assign
+id|fsf_req-&gt;adapter
 suffix:semicolon
 id|unit
 op_assign
@@ -10747,6 +10973,11 @@ id|header
 op_assign
 op_amp
 id|fsf_req-&gt;qtcb-&gt;header
+suffix:semicolon
+id|bottom
+op_assign
+op_amp
+id|fsf_req-&gt;qtcb-&gt;bottom.support
 suffix:semicolon
 r_if
 c_cond
@@ -10826,7 +11057,7 @@ suffix:semicolon
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|1
 comma
@@ -10880,7 +11111,7 @@ suffix:semicolon
 id|debug_text_exception
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|0
 comma
@@ -10922,18 +11153,28 @@ id|unit
 )paren
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
 id|counter
 op_assign
 l_int|0
 suffix:semicolon
-r_do
+id|counter
+OL
+l_int|2
+suffix:semicolon
+id|counter
+op_increment
+)paren
 (brace
 id|subtable
 op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
 )braket
 suffix:semicolon
 id|rule
@@ -10941,7 +11182,10 @@ op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 r_switch
@@ -10962,7 +11206,7 @@ suffix:colon
 r_case
 id|FSF_SQ_CFDC_SUBTABLE_LUN
 suffix:colon
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
 l_string|&quot;Access denied (%s rule %d)&bslash;n&quot;
@@ -10979,18 +11223,10 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_while
-c_loop
-(paren
-id|counter
-OL
-l_int|4
-)paren
-suffix:semicolon
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|1
 comma
@@ -11039,7 +11275,7 @@ suffix:semicolon
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|2
 comma
@@ -11073,26 +11309,6 @@ comma
 l_string|&quot;FSF_LUN_SHARING_VIOLATION&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;error: FCP-LUN 0x%Lx at &quot;
-l_string|&quot;the remote port with WWPN 0x%Lx connected &quot;
-l_string|&quot;to the adapter %s &quot;
-l_string|&quot;is already owned by another operating system &quot;
-l_string|&quot;instance (LPAR or VM guest)&bslash;n&quot;
-comma
-id|unit-&gt;fcp_lun
-comma
-id|unit-&gt;port-&gt;wwpn
-comma
-id|zfcp_get_busid_by_unit
-c_func
-(paren
-id|unit
-)paren
-)paren
-suffix:semicolon
 id|subtable
 op_assign
 id|header-&gt;fsf_status_qual.halfword
@@ -11107,6 +11323,35 @@ id|header-&gt;fsf_status_qual.halfword
 l_int|5
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rule
+op_eq
+l_int|0xFFFF
+)paren
+(brace
+id|ZFCP_LOG_NORMAL
+c_func
+(paren
+l_string|&quot;FCP-LUN 0x%Lx at the remote port &quot;
+l_string|&quot;with WWPN 0x%Lx connected to the &quot;
+l_string|&quot;adapter %s is already in use&bslash;n&quot;
+comma
+id|unit-&gt;fcp_lun
+comma
+id|unit-&gt;port-&gt;wwpn
+comma
+id|zfcp_get_busid_by_unit
+c_func
+(paren
+id|unit
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 r_switch
 c_cond
 (paren
@@ -11128,7 +11373,20 @@ suffix:colon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Access denied (%s rule %d)&bslash;n&quot;
+l_string|&quot;Access to FCP-LUN 0x%Lx at the &quot;
+l_string|&quot;remote port with WWPN 0x%Lx &quot;
+l_string|&quot;connected to the adapter %s &quot;
+l_string|&quot;is denied (%s rule %d)&bslash;n&quot;
+comma
+id|unit-&gt;fcp_lun
+comma
+id|unit-&gt;port-&gt;wwpn
+comma
+id|zfcp_get_busid_by_unit
+c_func
+(paren
+id|unit
+)paren
 comma
 id|zfcp_act_subtable_type
 (braket
@@ -11141,16 +11399,17 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|ZFCP_LOG_NORMAL
+)brace
+id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;Additional sense data is presented:&bslash;n&quot;
+l_string|&quot;status qualifier:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ZFCP_HEX_DUMP
 c_func
 (paren
-id|ZFCP_LOG_LEVEL_NORMAL
+id|ZFCP_LOG_LEVEL_DEBUG
 comma
 (paren
 r_char
@@ -11169,7 +11428,7 @@ suffix:semicolon
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|2
 comma
@@ -11222,7 +11481,7 @@ suffix:semicolon
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|1
 comma
@@ -11276,7 +11535,7 @@ multiline_comment|/* Re-establish link to port */
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|1
 comma
@@ -11312,7 +11571,7 @@ multiline_comment|/* ERP strategy will escalate */
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|1
 comma
@@ -11340,7 +11599,7 @@ suffix:semicolon
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|0
 comma
@@ -11350,7 +11609,7 @@ suffix:semicolon
 id|debug_exception
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|0
 comma
@@ -11367,6 +11626,43 @@ id|u32
 )paren
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
+r_case
+id|FSF_INVALID_COMMAND_OPTION
+suffix:colon
+id|ZFCP_LOG_FLAGS
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;FSF_INVALID_COMMAND_OPTION&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ZFCP_LOG_NORMAL
+c_func
+(paren
+l_string|&quot;Invalid option 0x%x has been specified &quot;
+l_string|&quot;in QTCB bottom sent to the adapter %s&bslash;n&quot;
+comma
+id|bottom-&gt;option
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+)paren
+suffix:semicolon
+id|fsf_req-&gt;status
+op_or_assign
+id|ZFCP_STATUS_FSFREQ_ERROR
+suffix:semicolon
+id|retval
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -11390,7 +11686,7 @@ c_func
 (paren
 l_string|&quot;unit (FCP_LUN=0x%Lx) of remote port &quot;
 l_string|&quot;(WWPN=0x%Lx) via adapter (busid=%s) opened, &quot;
-l_string|&quot;port handle 0x%x &bslash;n&quot;
+l_string|&quot;port handle 0x%x, access flag 0x%02x&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -11403,6 +11699,8 @@ id|unit
 )paren
 comma
 id|unit-&gt;handle
+comma
+id|bottom-&gt;lun_access
 )paren
 suffix:semicolon
 multiline_comment|/* mark unit as open */
@@ -11414,6 +11712,17 @@ comma
 op_amp
 id|unit-&gt;status
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|adapter-&gt;supported_features
+op_amp
+id|FSF_FEATURE_CFDC
+)paren
+id|unit-&gt;lun_access
+op_assign
+id|bottom-&gt;lun_access
 suffix:semicolon
 id|retval
 op_assign
@@ -11435,7 +11744,7 @@ suffix:semicolon
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|0
 comma
@@ -11445,7 +11754,7 @@ suffix:semicolon
 id|debug_exception
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|0
 comma
@@ -12357,7 +12666,6 @@ id|fsf_req-&gt;data.send_fcp_command_task.scsi_cmnd
 op_assign
 id|scsi_cmnd
 suffix:semicolon
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
 id|debug_text_event
 c_func
 (paren
@@ -12402,13 +12710,10 @@ r_int
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* ZFCP_DEBUG_REQUESTS */
-macro_line|#ifdef ZFCP_DEBUG_ABORTS
 id|fsf_req-&gt;data.send_fcp_command_task.start_jiffies
 op_assign
 id|jiffies
 suffix:semicolon
-macro_line|#endif
 id|fsf_req-&gt;data.send_fcp_command_task.unit
 op_assign
 id|unit
@@ -12840,7 +13145,6 @@ suffix:colon
 id|failed_scsi_cmnd
 suffix:colon
 multiline_comment|/* dequeue new FSF request previously enqueued */
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
 id|debug_text_event
 c_func
 (paren
@@ -12868,7 +13172,6 @@ r_int
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* ZFCP_DEBUG_REQUESTS */
 id|zfcp_fsf_req_free
 c_func
 (paren
@@ -13751,18 +14054,28 @@ id|unit
 )paren
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
 id|counter
 op_assign
 l_int|0
 suffix:semicolon
-r_do
+id|counter
+OL
+l_int|2
+suffix:semicolon
+id|counter
+op_increment
+)paren
 (brace
 id|subtable
 op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
 )braket
 suffix:semicolon
 id|rule
@@ -13770,7 +14083,10 @@ op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 r_switch
@@ -13791,7 +14107,7 @@ suffix:colon
 r_case
 id|FSF_SQ_CFDC_SUBTABLE_LUN
 suffix:colon
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
 l_string|&quot;Access denied (%s rule %d)&bslash;n&quot;
@@ -13808,14 +14124,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_while
-c_loop
-(paren
-id|counter
-OL
-l_int|4
-)paren
-suffix:semicolon
 id|debug_text_event
 c_func
 (paren
@@ -15439,7 +15747,6 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * NOTE:&n;&t; * according to the outcome of a discussion on linux-scsi we&n;&t; * don&squot;t need to grab the io_request_lock here since we use&n;&t; * the new eh&n;&t; */
 multiline_comment|/* always call back */
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
 id|debug_text_event
 c_func
 (paren
@@ -15501,7 +15808,6 @@ r_int
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif /* ZFCP_DEBUG_REQUESTS */
 (paren
 id|scpnt-&gt;scsi_done
 )paren
@@ -15804,13 +16110,12 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if 0
 r_if
 c_cond
 (paren
 op_logical_neg
 (paren
-id|adapter-&gt;features
+id|adapter-&gt;supported_features
 op_amp
 id|FSF_FEATURE_CFDC
 )paren
@@ -15834,10 +16139,9 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 r_goto
-id|no_act_support
+id|no_cfdc_support
 suffix:semicolon
 )brace
-macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -16139,6 +16443,8 @@ id|lock_flags
 )paren
 suffix:semicolon
 id|invalid_command
+suffix:colon
+id|no_cfdc_support
 suffix:colon
 r_return
 id|retval
@@ -17227,15 +17533,6 @@ r_goto
 id|failed_sbals
 suffix:semicolon
 )brace
-multiline_comment|/* set magics */
-id|fsf_req-&gt;common_magic
-op_assign
-id|ZFCP_MAGIC
-suffix:semicolon
-id|fsf_req-&gt;specific_magic
-op_assign
-id|ZFCP_MAGIC_FSFREQ
-suffix:semicolon
 id|fsf_req-&gt;adapter
 op_assign
 id|adapter
@@ -17833,7 +18130,6 @@ id|req_queue-&gt;distance_from_int
 op_assign
 id|new_distance_from_int
 suffix:semicolon
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
 id|debug_text_event
 c_func
 (paren
@@ -17901,7 +18197,6 @@ l_string|&quot;nocb&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;&t;/* ZFCP_DEBUG_REQUESTS */
 multiline_comment|/*&n;&t;&t; * increase FSF sequence counter -&n;&t;&t; * this must only be done for request successfully enqueued to&n;&t;&t; * QDIO this rejected requests may be cleaned up by calling&n;&t;&t; * routines  resulting in missing sequence counter values&n;&t;&t; * otherwise,&n;&t;&t; */
 multiline_comment|/* Don&squot;t increase for unsolicited status */
 r_if

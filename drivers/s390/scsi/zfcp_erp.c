@@ -3,7 +3,7 @@ DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA&t;&t;&t;ZFCP_LOG_AREA_ERP
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_ERP_REVISION
-mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.44 $&quot;
+mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.49 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -4061,7 +4061,6 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * purpose:&t;generic handler for asynchronous events related to erp_action&n; *               events&t;(normal completion, time-out, dismissing, retry after&n; *&t;&t;low memory condition)&n; *&n; * note:&t;deletion of timer is not required (e.g. in case of a time-out),&n; *&t;&t;but a second try does no harm,&n; *&t;&t;we leave it in here to allow for greater simplification&n; *&n; * returns:&t;0 - there was an action to handle&n; *&t;&t;!0 - otherwise&n; */
-r_static
 r_int
 DECL|function|zfcp_erp_async_handler
 id|zfcp_erp_async_handler
@@ -4122,90 +4121,6 @@ suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * purpose:&t;is called for finished FSF requests related to erp,&n; *&t;&t;moves concerned erp action to &squot;ready&squot; queue and&n; *&t;&t;signals erp thread to process it,&n; *&t;&t;besides it cancels a timeout&n; */
-r_void
-DECL|function|zfcp_erp_fsf_req_handler
-id|zfcp_erp_fsf_req_handler
-c_func
-(paren
-r_struct
-id|zfcp_fsf_req
-op_star
-id|fsf_req
-)paren
-(brace
-r_struct
-id|zfcp_erp_action
-op_star
-id|erp_action
-op_assign
-id|fsf_req-&gt;erp_action
-suffix:semicolon
-r_struct
-id|zfcp_adapter
-op_star
-id|adapter
-op_assign
-id|fsf_req-&gt;adapter
-suffix:semicolon
-id|debug_text_event
-c_func
-(paren
-id|adapter-&gt;erp_dbf
-comma
-l_int|3
-comma
-l_string|&quot;a_frh&quot;
-)paren
-suffix:semicolon
-id|debug_event
-c_func
-(paren
-id|adapter-&gt;erp_dbf
-comma
-l_int|3
-comma
-op_amp
-id|erp_action-&gt;action
-comma
-r_sizeof
-(paren
-r_int
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|erp_action
-)paren
-(brace
-id|debug_event
-c_func
-(paren
-id|adapter-&gt;erp_dbf
-comma
-l_int|3
-comma
-op_amp
-id|erp_action-&gt;action
-comma
-r_sizeof
-(paren
-r_int
-)paren
-)paren
-suffix:semicolon
-id|zfcp_erp_async_handler
-c_func
-(paren
-id|erp_action
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * purpose:&t;is called for erp_action which was slept waiting for&n; *&t;&t;memory becoming avaliable,&n; *&t;&t;will trigger that this action will be continued&n; */
 r_static
@@ -6263,7 +6178,7 @@ id|atomic_set
 c_func
 (paren
 op_amp
-id|p-&gt;unit-&gt;scsi_add_work
+id|unit-&gt;scsi_add_work
 comma
 l_int|0
 )paren
@@ -8359,7 +8274,6 @@ id|retval_cleanup
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
 r_else
 id|debug_text_event
 c_func
@@ -8371,7 +8285,6 @@ comma
 l_string|&quot;q_clean&quot;
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* ZFCP_DEBUG_REQUESTS */
 id|failed_qdio_establish
 suffix:colon
 id|atomic_clear_mask
@@ -8498,7 +8411,6 @@ c_func
 l_string|&quot;queues cleaned up&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
 id|debug_text_event
 c_func
 (paren
@@ -8509,7 +8421,6 @@ comma
 l_string|&quot;q_clean&quot;
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* ZFCP_DEBUG_REQUESTS */
 )brace
 multiline_comment|/*&n;&t; * First we had to stop QDIO operation.&n;&t; * Now it is safe to take the following actions.&n;&t; */
 multiline_comment|/* Cleanup only necessary when there are unacknowledged buffers */

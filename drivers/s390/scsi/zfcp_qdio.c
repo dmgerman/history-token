@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/drivers/s390/scsi/zfcp_qdio.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * QDIO related routines&n; *&n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Authors:&n; *      Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *      Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt;&n; *      Wolfgang Taphorn&n; *      Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 DECL|macro|ZFCP_QDIO_C_REVISION
-mdefine_line|#define ZFCP_QDIO_C_REVISION &quot;$Revision: 1.13 $&quot;
+mdefine_line|#define ZFCP_QDIO_C_REVISION &quot;$Revision: 1.16 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_inline
@@ -1702,7 +1702,6 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
 multiline_comment|/* Note: seq is entered later */
 id|debug_text_event
 c_func
@@ -1731,7 +1730,6 @@ r_int
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* ZFCP_DEBUG_REQUESTS */
 multiline_comment|/* invalid (per convention used in this driver) */
 r_if
 c_cond
@@ -1768,52 +1766,6 @@ op_star
 )paren
 id|sbale_addr
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-(paren
-id|fsf_req-&gt;common_magic
-op_ne
-id|ZFCP_MAGIC
-)paren
-op_logical_or
-(paren
-id|fsf_req-&gt;specific_magic
-op_ne
-id|ZFCP_MAGIC_FSFREQ
-)paren
-)paren
-)paren
-(brace
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;bug: An inbound FSF acknowledgement was &quot;
-l_string|&quot;faulty (debug info 0x%x, 0x%x, 0x%lx)&bslash;n&quot;
-comma
-id|fsf_req-&gt;common_magic
-comma
-id|fsf_req-&gt;specific_magic
-comma
-(paren
-r_int
-r_int
-)paren
-id|fsf_req
-)paren
-suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1860,7 +1812,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
 multiline_comment|/* debug feature stuff (test for QTCB: remember new unsol. status!) */
 r_if
 c_cond
@@ -1889,7 +1840,6 @@ id|u32
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;&t;/* ZFCP_DEBUG_REQUESTS */
 id|ZFCP_LOG_TRACE
 c_func
 (paren

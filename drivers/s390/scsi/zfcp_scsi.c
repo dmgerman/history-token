@@ -3,7 +3,7 @@ DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA&t;&t;&t;ZFCP_LOG_AREA_SCSI
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_SCSI_REVISION
-mdefine_line|#define ZFCP_SCSI_REVISION &quot;$Revision: 1.52 $&quot;
+mdefine_line|#define ZFCP_SCSI_REVISION &quot;$Revision: 1.59 $&quot;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
@@ -125,9 +125,9 @@ op_star
 comma
 r_int
 comma
-r_int
+id|scsi_id_t
 comma
-r_int
+id|scsi_lun_t
 )paren
 suffix:semicolon
 DECL|variable|zfcp_sysfs_sdev_attrs
@@ -155,7 +155,7 @@ id|ZFCP_NAME
 comma
 id|proc_name
 suffix:colon
-l_string|&quot;dummy&quot;
+l_string|&quot;zfcp&quot;
 comma
 id|proc_info
 suffix:colon
@@ -981,7 +981,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
 id|debug_text_event
 c_func
 (paren
@@ -1009,7 +1008,6 @@ r_int
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* ZFCP_DEBUG_REQUESTS */
 )brace
 id|out
 suffix:colon
@@ -1199,10 +1197,10 @@ comma
 r_int
 id|channel
 comma
-r_int
+id|scsi_id_t
 id|id
 comma
-r_int
+id|scsi_lun_t
 id|lun
 )paren
 (brace
@@ -1358,7 +1356,6 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef ZFCP_DEBUG_ABORTS
 multiline_comment|/* the components of a abort_dbf record (fixed size record) */
 id|u64
 id|dbf_scsi_cmnd
@@ -1462,7 +1459,6 @@ id|ZFCP_ABORT_DBF_LENGTH
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*TRACE*/
 id|ZFCP_LOG_INFO
 (paren
@@ -1572,7 +1568,6 @@ id|old_fsf_req
 op_assign
 id|req_data-&gt;send_fcp_command_task.fsf_req
 suffix:semicolon
-macro_line|#ifdef ZFCP_DEBUG_ABORTS
 id|dbf_fsf_req
 op_assign
 (paren
@@ -1591,7 +1586,6 @@ id|req_data-&gt;send_fcp_command_task.start_jiffies
 op_div
 id|HZ
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* DEBUG */
 id|ZFCP_LOG_DEBUG
 c_func
@@ -1803,7 +1797,7 @@ c_func
 l_string|&quot;Waiting for cleanup....&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef ZFCP_DEBUG_ABORTS
+macro_line|#ifdef 1
 multiline_comment|/*&n;&t; * FIXME:&n;&t; * copying zfcp_fsf_req_wait_and_cleanup code is not really nice&n;&t; */
 id|__wait_event
 c_func
@@ -1952,7 +1946,6 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-macro_line|#ifdef ZFCP_DEBUG_ABORTS
 id|debug_event
 c_func
 (paren
@@ -2142,7 +2135,6 @@ comma
 id|dbf_result
 )paren
 suffix:semicolon
-macro_line|#endif
 id|spin_lock_irq
 c_func
 (paren
@@ -2764,14 +2756,10 @@ suffix:semicolon
 multiline_comment|/* tell the SCSI stack some characteristics of this adapter */
 id|adapter-&gt;scsi_host-&gt;max_id
 op_assign
-id|adapter-&gt;max_scsi_id
-op_plus
 l_int|1
 suffix:semicolon
 id|adapter-&gt;scsi_host-&gt;max_lun
 op_assign
-id|adapter-&gt;max_scsi_lun
-op_plus
 l_int|1
 suffix:semicolon
 id|adapter-&gt;scsi_host-&gt;max_channel
@@ -2787,6 +2775,11 @@ multiline_comment|/* FIXME */
 id|adapter-&gt;scsi_host-&gt;max_cmd_len
 op_assign
 id|ZFCP_MAX_SCSI_CMND_LENGTH
+suffix:semicolon
+multiline_comment|/*&n;&t; * Reverse mapping of the host number to avoid race condition&n;&t; */
+id|adapter-&gt;scsi_host_no
+op_assign
+id|adapter-&gt;scsi_host-&gt;host_no
 suffix:semicolon
 multiline_comment|/*&n;&t; * save a pointer to our own adapter data structure within&n;&t; * hostdata field of SCSI host data structure&n;&t; */
 id|adapter-&gt;scsi_host-&gt;hostdata
@@ -2888,6 +2881,10 @@ id|adapter-&gt;scsi_host
 op_assign
 l_int|NULL
 suffix:semicolon
+id|adapter-&gt;scsi_host_no
+op_assign
+l_int|0
+suffix:semicolon
 id|atomic_clear_mask
 c_func
 (paren
@@ -2937,55 +2934,13 @@ id|adapter-&gt;scsi_er_timer
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * zfcp_sysfs_hba_id_show - display hba_id of scsi device&n; * @dev: pointer to belonging device&n; * @buf: pointer to input buffer&n; *&n; * &quot;hba_id&quot; attribute of a scsi device. Displays hba_id (bus_id)&n; * of the adapter belonging to a scsi device.&n; */
-r_static
-id|ssize_t
-DECL|function|zfcp_sysfs_hba_id_show
-id|zfcp_sysfs_hba_id_show
+multiline_comment|/**&n; * ZFCP_DEFINE_SCSI_ATTR&n; * @_name:   name of show attribute&n; * @_format: format string&n; * @_value:  value to print&n; *&n; * Generates attribute for a unit.&n; */
+DECL|macro|ZFCP_DEFINE_SCSI_ATTR
+mdefine_line|#define ZFCP_DEFINE_SCSI_ATTR(_name, _format, _value)                    &bslash;&n;static ssize_t zfcp_sysfs_scsi_##_name##_show(struct device *dev,        &bslash;&n;                                              char *buf)                 &bslash;&n;{                                                                        &bslash;&n;        struct scsi_device *sdev;                                        &bslash;&n;        struct zfcp_unit *unit;                                          &bslash;&n;                                                                         &bslash;&n;        sdev = to_scsi_device(dev);                                      &bslash;&n;        unit = sdev-&gt;hostdata;                                           &bslash;&n;        return sprintf(buf, _format, _value);                            &bslash;&n;}                                                                        &bslash;&n;                                                                         &bslash;&n;static DEVICE_ATTR(_name, S_IRUGO, zfcp_sysfs_scsi_##_name##_show, NULL);
+id|ZFCP_DEFINE_SCSI_ATTR
 c_func
 (paren
-r_struct
-id|device
-op_star
-id|dev
-comma
-r_char
-op_star
-id|buf
-)paren
-(brace
-r_struct
-id|scsi_device
-op_star
-id|sdev
-suffix:semicolon
-r_struct
-id|zfcp_unit
-op_star
-id|unit
-suffix:semicolon
-id|sdev
-op_assign
-id|to_scsi_device
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|unit
-op_assign
-(paren
-r_struct
-id|zfcp_unit
-op_star
-)paren
-id|sdev-&gt;hostdata
-suffix:semicolon
-r_return
-id|sprintf
-c_func
-(paren
-id|buf
+id|hba_id
 comma
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -2996,156 +2951,24 @@ id|unit
 )paren
 )paren
 suffix:semicolon
-)brace
-r_static
-id|DEVICE_ATTR
+id|ZFCP_DEFINE_SCSI_ATTR
 c_func
 (paren
-id|hba_id
-comma
-id|S_IRUGO
-comma
-id|zfcp_sysfs_hba_id_show
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-multiline_comment|/**&n; * zfcp_sysfs_wwpn_show - display wwpn of scsi device&n; * @dev: pointer to belonging device&n; * @buf: pointer to input buffer&n; *&n; * &quot;wwpn&quot; attribute of a scsi device. Displays wwpn of the port&n; * belonging to a scsi device.&n; */
-r_static
-id|ssize_t
-DECL|function|zfcp_sysfs_wwpn_show
-id|zfcp_sysfs_wwpn_show
-c_func
-(paren
-r_struct
-id|device
-op_star
-id|dev
-comma
-r_char
-op_star
-id|buf
-)paren
-(brace
-r_struct
-id|scsi_device
-op_star
-id|sdev
-suffix:semicolon
-r_struct
-id|zfcp_unit
-op_star
-id|unit
-suffix:semicolon
-id|sdev
-op_assign
-id|to_scsi_device
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|unit
-op_assign
-(paren
-r_struct
-id|zfcp_unit
-op_star
-)paren
-id|sdev-&gt;hostdata
-suffix:semicolon
-r_return
-id|sprintf
-c_func
-(paren
-id|buf
+id|wwpn
 comma
 l_string|&quot;0x%016llx&bslash;n&quot;
 comma
 id|unit-&gt;port-&gt;wwpn
 )paren
 suffix:semicolon
-)brace
-r_static
-id|DEVICE_ATTR
-c_func
-(paren
-id|wwpn
-comma
-id|S_IRUGO
-comma
-id|zfcp_sysfs_wwpn_show
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-multiline_comment|/**&n; * zfcp_sysfs_fcp_lun_show - display fcp lun of scsi device&n; * @dev: pointer to belonging device&n; * @buf: pointer to input buffer&n; *&n; * &quot;fcp_lun&quot; attribute of a scsi device. Displays fcp_lun of the unit&n; * belonging to a scsi device.&n; */
-r_static
-id|ssize_t
-DECL|function|zfcp_sysfs_fcp_lun_show
-id|zfcp_sysfs_fcp_lun_show
-c_func
-(paren
-r_struct
-id|device
-op_star
-id|dev
-comma
-r_char
-op_star
-id|buf
-)paren
-(brace
-r_struct
-id|scsi_device
-op_star
-id|sdev
-suffix:semicolon
-r_struct
-id|zfcp_unit
-op_star
-id|unit
-suffix:semicolon
-id|sdev
-op_assign
-id|to_scsi_device
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|unit
-op_assign
-(paren
-r_struct
-id|zfcp_unit
-op_star
-)paren
-id|sdev-&gt;hostdata
-suffix:semicolon
-r_return
-id|sprintf
-c_func
-(paren
-id|buf
-comma
-l_string|&quot;0x%016llx&bslash;n&quot;
-comma
-id|unit-&gt;fcp_lun
-)paren
-suffix:semicolon
-)brace
-r_static
-id|DEVICE_ATTR
+id|ZFCP_DEFINE_SCSI_ATTR
 c_func
 (paren
 id|fcp_lun
 comma
-id|S_IRUGO
+l_string|&quot;0x%016llx&bslash;n&quot;
 comma
-id|zfcp_sysfs_fcp_lun_show
-comma
-l_int|NULL
+id|unit-&gt;fcp_lun
 )paren
 suffix:semicolon
 DECL|variable|zfcp_sysfs_sdev_attrs

@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/drivers/s390/scsi/zfcp_ccw.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * CCW driver related routines&n; *&n; * (C) Copyright IBM Corp. 2003, 2004&n; *&n; * Authors:&n; *      Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *&t;Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 DECL|macro|ZFCP_CCW_C_REVISION
-mdefine_line|#define ZFCP_CCW_C_REVISION &quot;$Revision: 1.48 $&quot;
+mdefine_line|#define ZFCP_CCW_C_REVISION &quot;$Revision: 1.52 $&quot;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/ccwdev.h&gt;
@@ -109,6 +109,11 @@ id|ccw_driver
 id|zfcp_ccw_driver
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|name
 op_assign
@@ -410,52 +415,17 @@ comma
 id|list
 )paren
 (brace
-id|zfcp_unit_wait
+id|zfcp_unit_dequeue
 c_func
 (paren
 id|unit
 )paren
 suffix:semicolon
-id|zfcp_sysfs_unit_remove_files
-c_func
-(paren
-op_amp
-id|unit-&gt;sysfs_device
-)paren
-suffix:semicolon
-id|device_unregister
-c_func
-(paren
-op_amp
-id|unit-&gt;sysfs_device
-)paren
-suffix:semicolon
 )brace
-id|zfcp_port_wait
+id|zfcp_port_dequeue
 c_func
 (paren
 id|port
-)paren
-suffix:semicolon
-id|zfcp_sysfs_port_remove_files
-c_func
-(paren
-op_amp
-id|port-&gt;sysfs_device
-comma
-id|atomic_read
-c_func
-(paren
-op_amp
-id|port-&gt;status
-)paren
-)paren
-suffix:semicolon
-id|device_unregister
-c_func
-(paren
-op_amp
-id|port-&gt;sysfs_device
 )paren
 suffix:semicolon
 )brace
@@ -518,6 +488,22 @@ id|ccw_device-&gt;dev
 suffix:semicolon
 id|retval
 op_assign
+id|zfcp_adapter_debug_register
+c_func
+(paren
+id|adapter
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+r_goto
+id|out
+suffix:semicolon
+id|retval
+op_assign
 id|zfcp_erp_thread_setup
 c_func
 (paren
@@ -545,7 +531,7 @@ id|adapter
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_erp_thread
 suffix:semicolon
 )brace
 id|retval
@@ -594,6 +580,14 @@ suffix:semicolon
 id|out_scsi_register
 suffix:colon
 id|zfcp_erp_thread_kill
+c_func
+(paren
+id|adapter
+)paren
+suffix:semicolon
+id|out_erp_thread
+suffix:colon
+id|zfcp_adapter_debug_unregister
 c_func
 (paren
 id|adapter
@@ -667,6 +661,12 @@ id|adapter
 )paren
 suffix:semicolon
 id|zfcp_erp_thread_kill
+c_func
+(paren
+id|adapter
+)paren
+suffix:semicolon
+id|zfcp_adapter_debug_unregister
 c_func
 (paren
 id|adapter

@@ -4,23 +4,27 @@ DECL|macro|ZFCP_DEF_H
 mdefine_line|#define ZFCP_DEF_H
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_DEF_REVISION
-mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.62 $&quot;
+mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.71 $&quot;
 multiline_comment|/*************************** INCLUDES *****************************************/
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/miscdevice.h&gt;
+macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_tcq.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
-macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../fc4/fc.h&quot;
-macro_line|#include &quot;zfcp_fsf.h&quot;&t;&t;&t;/* FSF SW Interface */
+macro_line|#include &quot;zfcp_fsf.h&quot;
 macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &lt;asm/qdio.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#ifdef CONFIG_S390_SUPPORT
 macro_line|#include &lt;linux/ioctl32.h&gt;
@@ -28,14 +32,6 @@ macro_line|#endif
 multiline_comment|/************************ DEBUG FLAGS *****************************************/
 DECL|macro|ZFCP_PRINT_FLAGS
 mdefine_line|#define&t;ZFCP_PRINT_FLAGS
-DECL|macro|ZFCP_DEBUG_REQUESTS
-mdefine_line|#define&t;ZFCP_DEBUG_REQUESTS     /* fsf_req tracing */
-DECL|macro|ZFCP_DEBUG_COMMANDS
-mdefine_line|#define ZFCP_DEBUG_COMMANDS     /* host_byte tracing */
-DECL|macro|ZFCP_DEBUG_ABORTS
-mdefine_line|#define ZFCP_DEBUG_ABORTS       /* scsi_cmnd abort tracing */
-DECL|macro|ZFCP_DEBUG_INCOMING_ELS
-mdefine_line|#define ZFCP_DEBUG_INCOMING_ELS /* incoming ELS tracing */
 DECL|macro|ZFCP_STAT_REQSIZES
 mdefine_line|#define&t;ZFCP_STAT_REQSIZES
 DECL|macro|ZFCP_STAT_QUEUES
@@ -1594,40 +1590,6 @@ DECL|macro|ZFCP_CFDC_DEV_MINOR
 mdefine_line|#define ZFCP_CFDC_DEV_MINOR&t;&t;&t;MISC_DYNAMIC_MINOR
 DECL|macro|ZFCP_CFDC_MAX_CONTROL_FILE_SIZE
 mdefine_line|#define ZFCP_CFDC_MAX_CONTROL_FILE_SIZE&t;&t;127 * 1024
-DECL|variable|zfcp_act_subtable_type
-r_static
-r_const
-r_char
-id|zfcp_act_subtable_type
-(braket
-l_int|5
-)braket
-(braket
-l_int|8
-)braket
-op_assign
-(brace
-(brace
-l_string|&quot;unknown&quot;
-)brace
-comma
-(brace
-l_string|&quot;OS&quot;
-)brace
-comma
-(brace
-l_string|&quot;WWPN&quot;
-)brace
-comma
-(brace
-l_string|&quot;DID&quot;
-)brace
-comma
-(brace
-l_string|&quot;LUN&quot;
-)brace
-)brace
-suffix:semicolon
 multiline_comment|/************************* STRUCTURE DEFINITIONS *****************************/
 r_struct
 id|zfcp_fsf_req
@@ -2420,16 +2382,6 @@ DECL|struct|zfcp_adapter
 r_struct
 id|zfcp_adapter
 (brace
-DECL|member|common_magic
-id|u32
-id|common_magic
-suffix:semicolon
-multiline_comment|/* driver common magic */
-DECL|member|specific_magic
-id|u32
-id|specific_magic
-suffix:semicolon
-multiline_comment|/* struct specific magic */
 DECL|member|list
 r_struct
 id|list_head
@@ -2516,6 +2468,12 @@ op_star
 id|scsi_host
 suffix:semicolon
 multiline_comment|/* Pointer to mid-layer */
+DECL|member|scsi_host_no
+r_int
+r_int
+id|scsi_host_no
+suffix:semicolon
+multiline_comment|/* Assigned host number */
 DECL|member|name
 r_int
 r_char
@@ -2541,16 +2499,6 @@ id|u32
 id|ports
 suffix:semicolon
 multiline_comment|/* number of remote ports */
-DECL|member|max_scsi_id
-id|scsi_id_t
-id|max_scsi_id
-suffix:semicolon
-multiline_comment|/* largest SCSI ID */
-DECL|member|max_scsi_lun
-id|scsi_lun_t
-id|max_scsi_lun
-suffix:semicolon
-multiline_comment|/* largest SCSI LUN */
 DECL|member|scsi_er_timer
 r_struct
 id|timer_list
@@ -2709,20 +2657,17 @@ suffix:semicolon
 multiline_comment|/* for qdio_establish */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * the struct device sysfs_device must be at the beginning of this structure.&n; * pointer to struct device is used to free port structure in release function&n; * of the device. don&squot;t change!&n; */
 DECL|struct|zfcp_port
 r_struct
 id|zfcp_port
 (brace
-DECL|member|common_magic
-id|u32
-id|common_magic
+DECL|member|sysfs_device
+r_struct
+id|device
+id|sysfs_device
 suffix:semicolon
-multiline_comment|/* driver wide common magic */
-DECL|member|specific_magic
-id|u32
-id|specific_magic
-suffix:semicolon
-multiline_comment|/* structure specific magic */
+multiline_comment|/* sysfs device */
 DECL|member|list
 r_struct
 id|list_head
@@ -2788,11 +2733,6 @@ id|fc_id_t
 id|d_id
 suffix:semicolon
 multiline_comment|/* D_ID */
-DECL|member|max_scsi_lun
-id|scsi_lun_t
-id|max_scsi_lun
-suffix:semicolon
-multiline_comment|/* largest SCSI LUN */
 DECL|member|handle
 id|u32
 id|handle
@@ -2808,28 +2748,19 @@ DECL|member|erp_counter
 id|atomic_t
 id|erp_counter
 suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* the struct device sysfs_device must be at the beginning of this structure.&n; * pointer to struct device is used to free unit structure in release function&n; * of the device. don&squot;t change!&n; */
+DECL|struct|zfcp_unit
+r_struct
+id|zfcp_unit
+(brace
 DECL|member|sysfs_device
 r_struct
 id|device
 id|sysfs_device
 suffix:semicolon
 multiline_comment|/* sysfs device */
-)brace
-suffix:semicolon
-DECL|struct|zfcp_unit
-r_struct
-id|zfcp_unit
-(brace
-DECL|member|common_magic
-id|u32
-id|common_magic
-suffix:semicolon
-multiline_comment|/* driver wide common magic */
-DECL|member|specific_magic
-id|u32
-id|specific_magic
-suffix:semicolon
-multiline_comment|/* structure specific magic */
 DECL|member|list
 r_struct
 id|list_head
@@ -2858,6 +2789,11 @@ id|atomic_t
 id|status
 suffix:semicolon
 multiline_comment|/* status of this logical unit */
+DECL|member|lun_access
+id|u32
+id|lun_access
+suffix:semicolon
+multiline_comment|/* access flags for this unit */
 DECL|member|scsi_lun
 id|scsi_lun_t
 id|scsi_lun
@@ -2890,12 +2826,6 @@ DECL|member|erp_counter
 id|atomic_t
 id|erp_counter
 suffix:semicolon
-DECL|member|sysfs_device
-r_struct
-id|device
-id|sysfs_device
-suffix:semicolon
-multiline_comment|/* sysfs device */
 DECL|member|scsi_add_work
 id|atomic_t
 id|scsi_add_work
@@ -2913,16 +2843,6 @@ DECL|struct|zfcp_fsf_req
 r_struct
 id|zfcp_fsf_req
 (brace
-DECL|member|common_magic
-id|u32
-id|common_magic
-suffix:semicolon
-multiline_comment|/* driver wide common magic */
-DECL|member|specific_magic
-id|u32
-id|specific_magic
-suffix:semicolon
-multiline_comment|/* structure specific magic */
 DECL|member|list
 r_struct
 id|list_head
@@ -3252,17 +3172,6 @@ DECL|macro|ZFCP_INTERRUPTIBLE
 mdefine_line|#define ZFCP_INTERRUPTIBLE&t;1
 DECL|macro|ZFCP_UNINTERRUPTIBLE
 mdefine_line|#define ZFCP_UNINTERRUPTIBLE&t;0
-multiline_comment|/* some magics which may be used to authenticate data structures */
-DECL|macro|ZFCP_MAGIC
-mdefine_line|#define ZFCP_MAGIC&t;&t;0xFCFCFCFC
-DECL|macro|ZFCP_MAGIC_ADAPTER
-mdefine_line|#define ZFCP_MAGIC_ADAPTER&t;0xAAAAAAAA
-DECL|macro|ZFCP_MAGIC_PORT
-mdefine_line|#define ZFCP_MAGIC_PORT&t;&t;0xBBBBBBBB
-DECL|macro|ZFCP_MAGIC_UNIT
-mdefine_line|#define ZFCP_MAGIC_UNIT&t;&t;0xCCCCCCCC
-DECL|macro|ZFCP_MAGIC_FSFREQ
-mdefine_line|#define ZFCP_MAGIC_FSFREQ&t;0xEEEEEEEE
 macro_line|#ifndef atomic_test_mask
 DECL|macro|atomic_test_mask
 mdefine_line|#define atomic_test_mask(mask, target) &bslash;&n;           ((atomic_read(target) &amp; mask) == mask)

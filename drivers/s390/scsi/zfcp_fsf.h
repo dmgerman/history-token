@@ -141,6 +141,8 @@ DECL|macro|FSF_PORT_BOXED
 mdefine_line|#define FSF_PORT_BOXED&t;&t;&t;&t;0x00000059
 DECL|macro|FSF_LUN_BOXED
 mdefine_line|#define FSF_LUN_BOXED&t;&t;&t;&t;0x0000005A
+DECL|macro|FSF_EXCHANGE_CONFIG_DATA_INCOMPLETE
+mdefine_line|#define FSF_EXCHANGE_CONFIG_DATA_INCOMPLETE&t;0x0000005B
 DECL|macro|FSF_PAYLOAD_SIZE_MISMATCH
 mdefine_line|#define FSF_PAYLOAD_SIZE_MISMATCH&t;&t;0x00000060
 DECL|macro|FSF_REQUEST_SIZE_TOO_LARGE
@@ -215,8 +217,6 @@ DECL|macro|FSF_STATUS_READ_LINK_DOWN
 mdefine_line|#define FSF_STATUS_READ_LINK_DOWN&t;&t;0x00000005 /* FIXME: really? */
 DECL|macro|FSF_STATUS_READ_LINK_UP
 mdefine_line|#define FSF_STATUS_READ_LINK_UP          &t;0x00000006
-DECL|macro|FSF_STATUS_READ_NOTIFICATION_LOST
-mdefine_line|#define FSF_STATUS_READ_NOTIFICATION_LOST&t;0x00000009
 DECL|macro|FSF_STATUS_READ_CFDC_UPDATED
 mdefine_line|#define FSF_STATUS_READ_CFDC_UPDATED&t;&t;0x0000000A
 DECL|macro|FSF_STATUS_READ_CFDC_HARDENED
@@ -227,10 +227,6 @@ mdefine_line|#define FSF_STATUS_READ_SUB_CLOSE_PHYS_PORT&t;0x00000001
 DECL|macro|FSF_STATUS_READ_SUB_ERROR_PORT
 mdefine_line|#define FSF_STATUS_READ_SUB_ERROR_PORT&t;&t;0x00000002
 multiline_comment|/* status subtypes for CFDC */
-DECL|macro|FSF_STATUS_READ_SUB_LOST_CFDC_UPDATED
-mdefine_line|#define FSF_STATUS_READ_SUB_LOST_CFDC_UPDATED&t;0x00000020
-DECL|macro|FSF_STATUS_READ_SUB_LOST_CFDC_HARDENED
-mdefine_line|#define FSF_STATUS_READ_SUB_LOST_CFDC_HARDENED&t;0x00000040
 DECL|macro|FSF_STATUS_READ_SUB_CFDC_HARDENED_ON_SE
 mdefine_line|#define FSF_STATUS_READ_SUB_CFDC_HARDENED_ON_SE&t;0x00000002
 DECL|macro|FSF_STATUS_READ_SUB_CFDC_HARDENED_ON_SE2
@@ -275,8 +271,6 @@ DECL|macro|FSF_FEATURE_QTCB_SUPPRESSION
 mdefine_line|#define FSF_FEATURE_QTCB_SUPPRESSION            0x00000001
 DECL|macro|FSF_FEATURE_CFDC
 mdefine_line|#define FSF_FEATURE_CFDC&t;&t;&t;0x00000002
-DECL|macro|FSF_FEATURE_SENSEDATA_REPLICATION
-mdefine_line|#define FSF_FEATURE_SENSEDATA_REPLICATION       0x00000004
 DECL|macro|FSF_FEATURE_LOST_SAN_NOTIFICATION
 mdefine_line|#define FSF_FEATURE_LOST_SAN_NOTIFICATION       0x00000008
 DECL|macro|FSF_FEATURE_HBAAPI_MANAGEMENT
@@ -286,11 +280,20 @@ mdefine_line|#define FSF_FEATURE_ELS_CT_CHAINED_SBALS        0x00000020
 multiline_comment|/* option */
 DECL|macro|FSF_OPEN_LUN_SUPPRESS_BOXING
 mdefine_line|#define FSF_OPEN_LUN_SUPPRESS_BOXING&t;&t;0x00000001
+DECL|macro|FSF_OPEN_LUN_UNSOLICITED_SENSE_DATA
+mdefine_line|#define FSF_OPEN_LUN_UNSOLICITED_SENSE_DATA&t;0x00000002
 multiline_comment|/* adapter types */
 DECL|macro|FSF_ADAPTER_TYPE_FICON
 mdefine_line|#define FSF_ADAPTER_TYPE_FICON                  0x00000001
 DECL|macro|FSF_ADAPTER_TYPE_FICON_EXPRESS
 mdefine_line|#define FSF_ADAPTER_TYPE_FICON_EXPRESS          0x00000002
+multiline_comment|/* flags */
+DECL|macro|FSF_CFDC_OPEN_LUN_ALLOWED
+mdefine_line|#define FSF_CFDC_OPEN_LUN_ALLOWED&t;&t;0x01
+DECL|macro|FSF_CFDC_EXCLUSIVE_ACCESS
+mdefine_line|#define FSF_CFDC_EXCLUSIVE_ACCESS&t;&t;0x02
+DECL|macro|FSF_CFDC_OUTBOUND_TRANSFER_ALLOWED
+mdefine_line|#define FSF_CFDC_OUTBOUND_TRANSFER_ALLOWED&t;0x10
 multiline_comment|/* port types */
 DECL|macro|FSF_HBA_PORTTYPE_UNKNOWN
 mdefine_line|#define FSF_HBA_PORTTYPE_UNKNOWN&t;&t;0x00000001
@@ -1042,11 +1045,15 @@ DECL|member|timeout
 id|u8
 id|timeout
 suffix:semicolon
+DECL|member|lun_access
+id|u32
+id|lun_access
+suffix:semicolon
 DECL|member|res4
 id|u8
 id|res4
 (braket
-l_int|184
+l_int|180
 )braket
 suffix:semicolon
 DECL|member|els1_length
