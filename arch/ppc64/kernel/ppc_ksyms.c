@@ -243,7 +243,13 @@ c_func
 id|__down
 )paren
 suffix:semicolon
-multiline_comment|/* EXPORT_SYMBOL(csum_partial); already in net/netsyms.c */
+DECL|variable|csum_partial
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|csum_partial
+)paren
+suffix:semicolon
 DECL|variable|csum_partial_copy_generic
 id|EXPORT_SYMBOL
 c_func
@@ -841,6 +847,13 @@ id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|memcmp
+)paren
+suffix:semicolon
+DECL|variable|memchr
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|memchr
 )paren
 suffix:semicolon
 DECL|variable|abs
