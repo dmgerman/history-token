@@ -35,7 +35,7 @@ DECL|macro|RAID5_DEBUG
 mdefine_line|#define RAID5_DEBUG&t;0
 DECL|macro|RAID5_PARANOIA
 mdefine_line|#define RAID5_PARANOIA&t;1
-macro_line|#if RAID5_PARANOIA &amp;&amp; CONFIG_SMP
+macro_line|#if RAID5_PARANOIA &amp;&amp; defined(CONFIG_SMP)
 DECL|macro|CHECK_DEVLOCK
 macro_line|# define CHECK_DEVLOCK() if (!spin_is_locked(&amp;conf-&gt;device_lock)) BUG()
 macro_line|#else

@@ -1108,6 +1108,7 @@ id|seg_sz
 comma
 r_const
 id|__u8
+id|__user
 op_star
 id|src_buf
 comma
@@ -1455,6 +1456,7 @@ id|volume
 comma
 r_const
 r_char
+id|__user
 op_star
 id|usr_buf
 comma
@@ -1646,6 +1648,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|buff
 comma

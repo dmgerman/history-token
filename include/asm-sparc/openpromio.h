@@ -1,6 +1,7 @@
 macro_line|#ifndef&t;_SPARC_OPENPROMIO_H
 DECL|macro|_SPARC_OPENPROMIO_H
 mdefine_line|#define&t;_SPARC_OPENPROMIO_H
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/*&n; * SunOS and Solaris /dev/openprom definitions. The ioctl values&n; * were chosen to be exactly equal to the SunOS equivalents.&n; */
@@ -83,6 +84,7 @@ suffix:semicolon
 multiline_comment|/* Length of op_name. */
 DECL|member|op_name
 r_char
+id|__user
 op_star
 id|op_name
 suffix:semicolon
@@ -94,6 +96,7 @@ suffix:semicolon
 multiline_comment|/* Length of op_buf (value-result) */
 DECL|member|op_buf
 r_char
+id|__user
 op_star
 id|op_buf
 suffix:semicolon

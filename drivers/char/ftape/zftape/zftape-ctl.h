@@ -96,6 +96,7 @@ r_int
 id|command
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren

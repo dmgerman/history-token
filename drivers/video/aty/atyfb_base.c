@@ -5131,6 +5131,7 @@ id|copy_to_user
 (paren
 r_struct
 id|fbtype
+id|__user
 op_star
 )paren
 id|arg

@@ -422,6 +422,7 @@ op_star
 id|read_cnt
 comma
 id|__u8
+id|__user
 op_star
 id|dst_buf
 comma
@@ -834,6 +835,7 @@ id|empty_deblock_buf
 c_func
 (paren
 id|__u8
+id|__user
 op_star
 id|usr_buf
 comma
@@ -1027,6 +1029,7 @@ id|_zft_read
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|buff
 comma

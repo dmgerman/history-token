@@ -20,9 +20,9 @@ DECL|macro|ENABLE_PCI
 mdefine_line|#define ENABLE_PCI
 macro_line|#endif /* CONFIG_PCI */
 DECL|macro|putUser
-mdefine_line|#define putUser(arg1, arg2) put_user(arg1, (unsigned long *)arg2)
+mdefine_line|#define putUser(arg1, arg2) put_user(arg1, (unsigned long __user *)arg2)
 DECL|macro|getUser
-mdefine_line|#define getUser(arg1, arg2) get_user(arg1, (unsigned int *)arg2)
+mdefine_line|#define getUser(arg1, arg2) get_user(arg1, (unsigned __user *)arg2)
 macro_line|#ifdef ENABLE_PCI
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;digiPCI.h&quot;
@@ -1027,6 +1027,7 @@ op_star
 comma
 r_struct
 id|termio
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -2862,34 +2863,7 @@ id|bytesAvailable
 )paren
 (brace
 multiline_comment|/* Begin bytesAvailable */
-multiline_comment|/* Can the user buffer be accessed at the moment ? */
-r_if
-c_cond
-(paren
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-(paren
-r_char
-op_star
-)paren
-id|buf
-comma
-id|bytesAvailable
-)paren
-)paren
-id|bytesAvailable
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Can&squot;t do; try again later */
-r_else
-multiline_comment|/* Evidently it can, began transmission */
-(brace
-multiline_comment|/* Begin if area verified */
-multiline_comment|/* ---------------------------------------------------------------&n;&t;&t;&t;&t;&t;The below function reads data from user memory.  This routine&n;&t;&t;&t;&t;&t;can not be used in an interrupt routine. (Because it may &n;&t;&t;&t;&t;&t;generate a page fault)  It can only be called while we can the&n;&t;&t;&t;&t;&t;user context is accessible. &n;&n;&t;&t;&t;&t;&t;The prototype is :&n;&t;&t;&t;&t;&t;inline void copy_from_user(void * to, const void * from,&n;&t;&t;&t;&t;&t;                          unsigned long count);&n;&n;&t;&t;&t;&t;&t;I also think (Check hackers guide) that optimization must&n;&t;&t;&t;&t;&t;be turned ON.  (Which sounds strange to me...)&n;&t;&n;&t;&t;&t;&t;&t;Remember copy_from_user WILL generate a page fault if the&n;&t;&t;&t;&t;&t;user memory being accessed has been swapped out.  This can&n;&t;&t;&t;&t;&t;cause this routine to temporarily sleep while this page&n;&t;&t;&t;&t;&t;fault is occurring.&n;&t;&t;&t;&t;&n;&t;&t;&t;&t;----------------------------------------------------------------- */
+multiline_comment|/* ---------------------------------------------------------------&n;&t;&t;&t;&t;The below function reads data from user memory.  This routine&n;&t;&t;&t;&t;can not be used in an interrupt routine. (Because it may &n;&t;&t;&t;&t;generate a page fault)  It can only be called while we can the&n;&t;&t;&t;&t;user context is accessible. &n;&n;&t;&t;&t;&t;The prototype is :&n;&t;&t;&t;&t;inline void copy_from_user(void * to, const void * from,&n;&t;&t;&t;&t;&t;&t;&t;  unsigned long count);&n;&n;&t;&t;&t;&t;I also think (Check hackers guide) that optimization must&n;&t;&t;&t;&t;be turned ON.  (Which sounds strange to me...)&n;&n;&t;&t;&t;&t;Remember copy_from_user WILL generate a page fault if the&n;&t;&t;&t;&t;user memory being accessed has been swapped out.  This can&n;&t;&t;&t;&t;cause this routine to temporarily sleep while this page&n;&t;&t;&t;&t;fault is occurring.&n;&t;&t;&t;&n;&t;&t;&t;----------------------------------------------------------------- */
 r_if
 c_cond
 (paren
@@ -2907,8 +2881,6 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
-multiline_comment|/* End if area verified */
 )brace
 multiline_comment|/* End bytesAvailable */
 multiline_comment|/* ------------------------------------------------------------------ &n;&t;&t;&t;Set buf to this address for the moment.  tmp_buf was allocated in&n;&t;&t;&t;post_fep_init.&n;&t;&t;--------------------------------------------------------------------- */
@@ -6145,7 +6117,7 @@ id|EPCA_MAGIC
 suffix:semicolon
 id|ch-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -8711,7 +8683,7 @@ id|termios
 op_star
 id|ts
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|tty_struct
@@ -9076,9 +9048,6 @@ r_int
 id|arg
 )paren
 (brace
-r_int
-id|error
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -9106,52 +9075,12 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|error
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_char
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-id|di
-)paren
-)paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;DIGI_GETINFO : verify area size 0x%x failed&bslash;n&quot;
-comma
-r_sizeof
-(paren
-id|di
-)paren
-)paren
-suffix:semicolon
-r_return
-id|error
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -9249,7 +9178,8 @@ id|copy_to_user
 c_func
 (paren
 (paren
-r_char
+r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -9720,6 +9650,9 @@ c_func
 id|flags
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|pc_ioctl
 r_static
@@ -9752,8 +9685,6 @@ id|dflow
 suffix:semicolon
 r_int
 id|retval
-comma
-id|error
 suffix:semicolon
 r_int
 r_int
@@ -9788,6 +9719,18 @@ id|channel
 op_star
 )paren
 id|tty-&gt;driver_data
+suffix:semicolon
+r_void
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
 suffix:semicolon
 r_if
 c_cond
@@ -9835,12 +9778,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_struct
-id|termios
-op_star
-)paren
-id|arg
+id|argp
 comma
 id|tty-&gt;termios
 comma
@@ -9867,12 +9805,7 @@ c_func
 (paren
 id|tty
 comma
-(paren
-r_struct
-id|termio
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -9996,34 +9929,10 @@ suffix:semicolon
 r_case
 id|TIOCGSOFTCAR
 suffix:colon
-id|error
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-r_int
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|error
-)paren
-r_return
-id|error
-suffix:semicolon
-id|putUser
+id|put_user
 c_func
 (paren
 id|C_CLOCAL
@@ -10040,10 +9949,15 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 l_int|0
@@ -10051,24 +9965,30 @@ suffix:semicolon
 r_case
 id|TIOCSSOFTCAR
 suffix:colon
-multiline_comment|/*RONNIE PUT VERIFY_READ (See above) check here */
 (brace
 r_int
 r_int
 id|value
 suffix:semicolon
-id|getUser
+r_if
+c_cond
+(paren
+id|get_user
 c_func
 (paren
 id|value
 comma
 (paren
 r_int
-r_int
+id|__user
 op_star
 )paren
-id|arg
+id|argp
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|tty-&gt;termios-&gt;c_cflag
 op_assign
@@ -10110,7 +10030,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|putUser
+id|put_user
 c_func
 (paren
 id|mflag
@@ -10118,9 +10038,10 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
-id|arg
+id|argp
 )paren
 )paren
 r_return
@@ -10135,17 +10056,17 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|getUser
+id|get_user
 c_func
 (paren
 id|mstat
 comma
 (paren
 r_int
-r_int
+id|__user
 op_star
 )paren
-id|arg
+id|argp
 )paren
 )paren
 r_return
@@ -10272,11 +10193,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
-id|arg
+id|argp
 comma
 op_amp
 id|ch-&gt;digiext
@@ -10358,11 +10275,7 @@ c_func
 op_amp
 id|ch-&gt;digiext
 comma
-(paren
-r_char
-op_star
-)paren
-id|arg
+id|argp
 comma
 r_sizeof
 (paren
@@ -10503,11 +10416,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
-id|arg
+id|argp
 comma
 op_amp
 id|dflow
@@ -10571,11 +10480,7 @@ c_func
 op_amp
 id|dflow
 comma
-(paren
-r_char
-op_star
-)paren
-id|arg
+id|argp
 comma
 r_sizeof
 (paren
@@ -11569,38 +11474,13 @@ id|tty
 comma
 r_struct
 id|termio
+id|__user
 op_star
 id|termio
 )paren
 (brace
 multiline_comment|/* Begin get_termio */
-r_int
-id|error
-suffix:semicolon
-id|error
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-id|termio
-comma
-r_sizeof
-(paren
-r_struct
-id|termio
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
 r_return
-id|error
-suffix:semicolon
 id|kernel_termios_to_user_termio
 c_func
 (paren
@@ -11608,9 +11488,6 @@ id|termio
 comma
 id|tty-&gt;termios
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* End get_termio */

@@ -63,6 +63,7 @@ id|_zft_read
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|buff
 comma
