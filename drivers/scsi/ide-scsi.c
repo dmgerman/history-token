@@ -1380,7 +1380,7 @@ comma
 id|min
 c_func
 (paren
-l_int|16
+l_int|16U
 comma
 id|pc-&gt;scsi_cmd-&gt;request_bufflen
 )paren
@@ -1466,6 +1466,10 @@ r_return
 id|max
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|WAIT_CMD
 comma
 id|pc-&gt;timeout
@@ -2862,7 +2866,6 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n; *&t;idescsi_init will register the driver for each scsi.&n; */
 DECL|function|idescsi_init
-r_static
 r_int
 id|idescsi_init
 c_func

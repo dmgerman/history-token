@@ -1,7 +1,8 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_ALENLIST_H
-DECL|macro|_ASM_SN_ALENLIST_H
-mdefine_line|#define _ASM_SN_ALENLIST_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_ALENLIST_H
+DECL|macro|_ASM_IA64_SN_ALENLIST_H
+mdefine_line|#define _ASM_IA64_SN_ALENLIST_H
+macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/* Definition of Address/Length List */
 multiline_comment|/*&n; * An Address/Length List is used when setting up for an I/O DMA operation.&n; * A driver creates an Address/Length List that describes to the the DMA &n; * interface where in memory the DMA should go.  The bus interface sets up &n; * mapping registers, if required, and returns a suitable list of &quot;physical &n; * addresses&quot; or &quot;I/O address&quot; to the driver.  The driver then uses these &n; * to set up an appropriate scatter/gather operation(s).&n; */
 macro_line|#ifdef __cplusplus
@@ -59,7 +60,7 @@ id|external_alenlist_t
 suffix:semicolon
 multiline_comment|/* Return codes from alenlist routines.  */
 DECL|macro|ALENLIST_FAILURE
-mdefine_line|#define ALENLIST_FAILURE -1
+mdefine_line|#define ALENLIST_FAILURE (-1)
 DECL|macro|ALENLIST_SUCCESS
 mdefine_line|#define ALENLIST_SUCCESS 0
 multiline_comment|/* Flags to alenlist routines */
@@ -445,5 +446,5 @@ suffix:semicolon
 macro_line|#ifdef __cplusplus
 )brace
 macro_line|#endif
-macro_line|#endif /* _ASM_SN_ALENLIST_H */
+macro_line|#endif /* _ASM_IA64_SN_ALENLIST_H */
 eof

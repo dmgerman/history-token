@@ -1,7 +1,8 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_PRIO_H
-DECL|macro|_ASM_SN_PRIO_H
-mdefine_line|#define _ASM_SN_PRIO_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_PRIO_H
+DECL|macro|_ASM_IA64_SN_PRIO_H
+mdefine_line|#define _ASM_IA64_SN_PRIO_H
+macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/*&n; * Priority I/O function prototypes and macro definitions&n; */
 DECL|typedef|bandwidth_t
 r_typedef
@@ -69,6 +70,6 @@ multiline_comment|/* Error returns */
 DECL|macro|PRIO_SUCCESS
 mdefine_line|#define PRIO_SUCCESS     0
 DECL|macro|PRIO_FAIL
-mdefine_line|#define PRIO_FAIL       -1 
-macro_line|#endif /* _ASM_SN_PRIO_H */
+mdefine_line|#define PRIO_FAIL       (-1) 
+macro_line|#endif /* _ASM_IA64_SN_PRIO_H */
 eof

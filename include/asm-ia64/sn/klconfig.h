@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Derived from IRIX &lt;sys/SN/klconfig.h&gt;.&n; *&n; * Copyright (C) 1992 - 1997, 1999 Silicon Graphics, Inc.&n; * Copyright (C) 1999 by Ralf Baechle&n; */
-macro_line|#ifndef&t;_ASM_SN_KLCONFIG_H
-DECL|macro|_ASM_SN_KLCONFIG_H
-mdefine_line|#define&t;_ASM_SN_KLCONFIG_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Derived from IRIX &lt;sys/SN/klconfig.h&gt;.&n; *&n; * Copyright (C) 1992-1997,1999,2001-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; * Copyright (C) 1999 by Ralf Baechle&n; */
+macro_line|#ifndef _ASM_IA64_SN_KLCONFIG_H
+DECL|macro|_ASM_IA64_SN_KLCONFIG_H
+mdefine_line|#define _ASM_IA64_SN_KLCONFIG_H
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * klconfig.h&n; */
 multiline_comment|/*&n; * The KLCONFIG structures store info about the various BOARDs found&n; * during Hardware Discovery. In addition, it stores info about the&n; * components found on the BOARDs.&n; */
@@ -10,19 +10,20 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/slotnum.h&gt;
 macro_line|#include &lt;asm/sn/router.h&gt;
-macro_line|#if defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
 macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/sn1/addrs.h&gt;
+macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/vector.h&gt;
-macro_line|#include &lt;asm/sn/agent.h&gt;
-singleline_comment|// #include &lt;sys/graph.h&gt;
-singleline_comment|// #include &lt;asm/sn/arc/types.h&gt;
 macro_line|#include &lt;asm/sn/arc/hinv.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
 macro_line|#include &lt;asm/sn/kldir.h&gt;
 macro_line|#include &lt;asm/sn/sn_fru.h&gt;
-macro_line|#endif  /* CONFIG_SGI_IP35 ... */
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
+macro_line|#include &lt;asm/sn/sn1/hubmd_next.h&gt;
+macro_line|#endif
+macro_line|#ifdef CONFIG_IA64_SGI_SN2
+macro_line|#include &lt;asm/sn/sn2/shub_md.h&gt;
+macro_line|#endif
 DECL|macro|KLCFGINFO_MAGIC
 mdefine_line|#define KLCFGINFO_MAGIC&t;0xbeedbabe
 DECL|typedef|klconf_off_t
@@ -34,15 +35,9 @@ DECL|macro|MAX_MODULE_ID
 mdefine_line|#define&t;MAX_MODULE_ID&t;&t;255
 DECL|macro|SIZE_PAD
 mdefine_line|#define SIZE_PAD&t;&t;4096 /* 4k padding for structures */
-macro_line|#if (defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)) &amp;&amp; defined(BRINGUP) /* MAX_SLOTS_PER_NODE??? */
 multiline_comment|/* &n; * 1 NODE brick, 3 Router bricks (1 local, 1 meta, 1 repeater),&n; * 6 XIO Widgets, 1 Xbow, 1 gfx&n; */
 DECL|macro|MAX_SLOTS_PER_NODE
 mdefine_line|#define MAX_SLOTS_PER_NODE&t;(1 + 3 + 6 + 1 + 1) 
-macro_line|#else
-multiline_comment|/* &n; * 1 NODE brd, 2 Router brd (1 8p, 1 meta), 6 Widgets, &n; * 2 Midplanes assuming no pci card cages &n; */
-DECL|macro|MAX_SLOTS_PER_NODE
-mdefine_line|#define MAX_SLOTS_PER_NODE&t;(1 + 2 + 6 + 2) 
-macro_line|#endif
 multiline_comment|/* XXX if each node is guranteed to have some memory */
 DECL|macro|MAX_PCI_DEVS
 mdefine_line|#define MAX_PCI_DEVS&t;&t;8
@@ -320,7 +315,7 @@ DECL|macro|KLCLASS_UNKNOWN
 mdefine_line|#define KLCLASS_UNKNOWN&t;0xf0
 DECL|macro|KLCLASS
 mdefine_line|#define KLCLASS(_x) ((_x) &amp; KLCLASS_MASK)
-multiline_comment|/*&n; * IP27 board types&n; */
+multiline_comment|/*&n; * board types&n; */
 DECL|macro|KLTYPE_MASK
 mdefine_line|#define KLTYPE_MASK&t;0x0f
 DECL|macro|KLTYPE_NONE
@@ -329,14 +324,8 @@ DECL|macro|KLTYPE_EMPTY
 mdefine_line|#define KLTYPE_EMPTY&t;0x00
 DECL|macro|KLTYPE_WEIRDCPU
 mdefine_line|#define KLTYPE_WEIRDCPU (KLCLASS_CPU | 0x0)
-DECL|macro|KLTYPE_IP27
-mdefine_line|#define KLTYPE_IP27&t;(KLCLASS_CPU | 0x1) /* 2 CPUs(R10K) per board */
-macro_line|#if defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
-DECL|macro|KLTYPE_IP35
-mdefine_line|#define KLTYPE_IP35&t;KLTYPE_IP27
-DECL|macro|KLTYPE_IP37
-mdefine_line|#define KLTYPE_IP37&t;KLTYPE_IP35
-macro_line|#endif
+DECL|macro|KLTYPE_SNIA
+mdefine_line|#define KLTYPE_SNIA&t;(KLCLASS_CPU | 0x1)
 DECL|macro|KLTYPE_WEIRDIO
 mdefine_line|#define KLTYPE_WEIRDIO&t;(KLCLASS_IO  | 0x0)
 DECL|macro|KLTYPE_BASEIO
@@ -2073,16 +2062,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-id|klcpu_t
-op_star
-id|get_cpuinfo
-c_func
-(paren
-id|cpuid_t
-id|cpu
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|update_klcfg_cpuinfo
 c_func
@@ -2219,5 +2198,5 @@ comma
 r_int
 )paren
 suffix:semicolon
-macro_line|#endif /* _ASM_SN_KLCONFIG_H */
+macro_line|#endif /* _ASM_IA64_SN_KLCONFIG_H */
 eof

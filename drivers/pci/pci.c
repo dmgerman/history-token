@@ -7752,7 +7752,7 @@ l_int|0
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;pci_pool_free %s/%s, %p/%x (bad dma)&bslash;n&quot;
+l_string|&quot;pci_pool_free %s/%s, %p/%lx (bad dma)&bslash;n&quot;
 comma
 id|pool-&gt;dev
 ques
@@ -7767,12 +7767,9 @@ id|vaddr
 comma
 (paren
 r_int
+r_int
 )paren
-(paren
 id|dma
-op_amp
-l_int|0xffffffff
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -7802,7 +7799,7 @@ id|vaddr
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;pci_pool_free %s/%s, %p (bad vaddr)/%x&bslash;n&quot;
+l_string|&quot;pci_pool_free %s/%s, %p (bad vaddr)/%lx&bslash;n&quot;
 comma
 id|pool-&gt;dev
 ques
@@ -7817,12 +7814,9 @@ id|vaddr
 comma
 (paren
 r_int
+r_int
 )paren
-(paren
 id|dma
-op_amp
-l_int|0xffffffff
-)paren
 )paren
 suffix:semicolon
 r_return

@@ -6186,6 +6186,10 @@ id|get_sb
 suffix:colon
 id|openprom_get_sb
 comma
+id|kill_sb
+suffix:colon
+id|kill_anon_super
+comma
 )brace
 suffix:semicolon
 DECL|function|init_openprom_fs

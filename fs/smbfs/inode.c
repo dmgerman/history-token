@@ -2966,6 +2966,10 @@ id|get_sb
 suffix:colon
 id|smb_get_sb
 comma
+id|kill_sb
+suffix:colon
+id|kill_anon_super
+comma
 )brace
 suffix:semicolon
 DECL|function|init_smb_fs

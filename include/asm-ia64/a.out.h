@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_A_OUT_H
 DECL|macro|_ASM_IA64_A_OUT_H
 mdefine_line|#define _ASM_IA64_A_OUT_H
-multiline_comment|/*&n; * No a.out format has been (or should be) defined so this file is&n; * just a dummy that allows us to get binfmt_elf compiled.  It&n; * probably would be better to clean up binfmt_elf.c so it does not&n; * necessarily depend on there being a.out support.&n; *&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * No a.out format has been (or should be) defined so this file is&n; * just a dummy that allows us to get binfmt_elf compiled.  It&n; * probably would be better to clean up binfmt_elf.c so it does not&n; * necessarily depend on there being a.out support.&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 DECL|struct|exec
 r_struct
@@ -51,7 +51,7 @@ mdefine_line|#define N_TXTOFF(x)&t;0
 macro_line|#ifdef __KERNEL__
 macro_line|# include &lt;asm/page.h&gt;
 DECL|macro|STACK_TOP
-macro_line|# define STACK_TOP&t;(0x8000000000000000UL + (1UL &lt;&lt; (4*PAGE_SHIFT - 12)) - PAGE_SIZE)
+macro_line|# define STACK_TOP&t;(0x6000000000000000UL + (1UL &lt;&lt; (4*PAGE_SHIFT - 12)) - PAGE_SIZE)
 DECL|macro|IA64_RBS_BOT
 macro_line|# define IA64_RBS_BOT&t;(STACK_TOP - 0x80000000L + PAGE_SIZE)&t;/* bottom of reg. backing store */
 macro_line|#endif

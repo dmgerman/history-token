@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_MMAN_H
 DECL|macro|_ASM_IA64_MMAN_H
 mdefine_line|#define _ASM_IA64_MMAN_H
-multiline_comment|/*&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Copyright (C) 1998-2000, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 DECL|macro|PROT_READ
 mdefine_line|#define PROT_READ&t;0x1&t;&t;/* page can be read */
 DECL|macro|PROT_WRITE
@@ -32,10 +32,6 @@ DECL|macro|MAP_LOCKED
 mdefine_line|#define MAP_LOCKED&t;0x2000&t;&t;/* pages are locked */
 DECL|macro|MAP_NORESERVE
 mdefine_line|#define MAP_NORESERVE&t;0x4000&t;&t;/* don&squot;t check for reservations */
-DECL|macro|MAP_WRITECOMBINED
-mdefine_line|#define MAP_WRITECOMBINED 0x10000&t;/* write-combine the area */
-DECL|macro|MAP_NONCACHED
-mdefine_line|#define MAP_NONCACHED&t;0x20000&t;&t;/* don&squot;t cache the memory */
 DECL|macro|MS_ASYNC
 mdefine_line|#define MS_ASYNC&t;1&t;&t;/* sync memory asynchronously */
 DECL|macro|MS_INVALIDATE

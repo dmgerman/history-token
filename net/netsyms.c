@@ -2768,5 +2768,42 @@ c_func
 id|softnet_data
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_NET_RADIO) || defined(CONFIG_NET_PCMCIA_RADIO)
+multiline_comment|/* Don&squot;t include the whole header mess for a single function */
+r_union
+id|iwreq_data
+suffix:semicolon
+r_extern
+r_void
+id|wireless_send_event
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|cmd
+comma
+r_union
+id|iwreq_data
+op_star
+id|wrqu
+comma
+r_char
+op_star
+id|extra
+)paren
+suffix:semicolon
+DECL|variable|wireless_send_event
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|wireless_send_event
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* CONFIG_NET_RADIO || CONFIG_NET_PCMCIA_RADIO */
 macro_line|#endif  /* CONFIG_NET */
 eof

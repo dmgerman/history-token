@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * Architecture-specific unaligned trap handling.&n; *&n; * Copyright (C) 1999-2001 Hewlett-Packard Co&n; * Copyright (C) 1999-2000 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 2001/10/11&t;Fix unaligned access to rotating registers in s/w pipelined loops.&n; * 2001/08/13&t;Correct size of extended floats (float_fsz) from 16 to 10 bytes.&n; * 2001/01/17&t;Add support emulation of unaligned kernel accesses.&n; */
+multiline_comment|/*&n; * Architecture-specific unaligned trap handling.&n; *&n; * Copyright (C) 1999-2002 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 2001/10/11&t;Fix unaligned access to rotating registers in s/w pipelined loops.&n; * 2001/08/13&t;Correct size of extended floats (float_fsz) from 16 to 10 bytes.&n; * 2001/01/17&t;Add support emulation of unaligned kernel accesses.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/rse.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -34,7 +35,7 @@ DECL|macro|DEBUG_UNALIGNED_TRAP
 macro_line|#undef DEBUG_UNALIGNED_TRAP
 macro_line|#ifdef DEBUG_UNALIGNED_TRAP
 DECL|macro|DPRINT
-macro_line|# define DPRINT(a...)&t;do { printk(&quot;%s.%u: &quot;, __FUNCTION__, __LINE__); printk (a); } while (0)
+macro_line|# define DPRINT(a...)&t;do { printk(&quot;%s %u: &quot;, __FUNCTION__, __LINE__); printk (a); } while (0)
 DECL|macro|DDUMP
 macro_line|# define DDUMP(str,vp,len)&t;dump(str, vp, len)
 r_static
@@ -3832,9 +3833,11 @@ l_int|3
 id|printk
 c_func
 (paren
+l_string|&quot;%s %s: register update on speculative load, error&bslash;n&quot;
+comma
 id|KERN_ERR
+comma
 id|__FUNCTION__
-l_string|&quot;: register update on speculative load, error&bslash;n&quot;
 )paren
 suffix:semicolon
 id|die_if_kernel
@@ -5036,10 +5039,12 @@ l_int|3
 id|printk
 c_func
 (paren
-id|KERN_ERR
-id|__FUNCTION__
-l_string|&quot;: register update on speculative load pair, &quot;
+l_string|&quot;%s %s: register update on speculative load pair, &quot;
 l_string|&quot;error&bslash;n&quot;
+comma
+id|KERN_ERR
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|setreg
@@ -6409,6 +6414,18 @@ r_void
 op_star
 )paren
 id|ifa
+suffix:semicolon
+id|si.si_flags
+op_assign
+l_int|0
+suffix:semicolon
+id|si.si_isr
+op_assign
+l_int|0
+suffix:semicolon
+id|si.si_imm
+op_assign
+l_int|0
 suffix:semicolon
 id|force_sig_info
 c_func

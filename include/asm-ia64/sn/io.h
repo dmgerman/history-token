@@ -1,11 +1,9 @@
-multiline_comment|/* $Id: io.h,v 1.2 2000/02/02 16:35:57 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000 Ralf Baechle&n; * Copyright (C) 2000 Silicon Graphics, Inc.&n; */
-macro_line|#ifndef _ASM_SN_IO_H
-DECL|macro|_ASM_SN_IO_H
-mdefine_line|#define _ASM_SN_IO_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000 Ralf Baechle&n; * Copyright (C) 2000-2001 Silicon Graphics, Inc.&n; */
+macro_line|#ifndef _ASM_IA64_SN_IO_H
+DECL|macro|_ASM_IA64_SN_IO_H
+mdefine_line|#define _ASM_IA64_SN_IO_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
-macro_line|#include &lt;asm/sn/sn1/addrs.h&gt;
-macro_line|#endif
+macro_line|#include &lt;asm/sn/addrs.h&gt;
 multiline_comment|/* Because we only have PCI I/O ports.  */
 DECL|macro|IIO_ITTE_BASE
 mdefine_line|#define IIO_ITTE_BASE&t;0x400160&t;/* base of translation table entries */
@@ -41,11 +39,29 @@ DECL|macro|IIO_ITTE_DISABLE
 mdefine_line|#define IIO_ITTE_DISABLE(nasid, bigwin) &bslash;&n;&t;IIO_ITTE_PUT((nasid), HUB_PIO_MAP_TO_MEM, &bslash;&n;&t;&t;     (bigwin), IIO_ITTE_INVALID_WIDGET, 0)
 DECL|macro|IIO_ITTE_GET
 mdefine_line|#define IIO_ITTE_GET(nasid, bigwin) REMOTE_HUB_ADDR((nasid), IIO_ITTE(bigwin))
-multiline_comment|/*&n; * Macro which takes the widget number, and returns the &n; * IO PRB address of that widget.&n; * value _x is expected to be a widget number in the range &n; * 0, 8 - 0xF&n; */
+multiline_comment|/*&n; * Macro which takes the widget number, and returns the&n; * IO PRB address of that widget.&n; * value _x is expected to be a widget number in the range&n; * 0, 8 - 0xF&n; */
 DECL|macro|IIO_IOPRB
 mdefine_line|#define&t;IIO_IOPRB(_x)&t;(IIO_IOPRB_0 + ( ( (_x) &lt; HUB_WIDGET_ID_MIN ? &bslash;&n;&t;&t;&t;(_x) : &bslash;&n;&t;&t;&t;(_x) - (HUB_WIDGET_ID_MIN-1)) &lt;&lt; 3) )
-macro_line|#if defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
+macro_line|#if defined(CONFIG_IA64_SGI_SN1)
+macro_line|#include &lt;asm/sn/sn1/bedrock.h&gt;
 macro_line|#include &lt;asm/sn/sn1/hubio.h&gt;
+macro_line|#include &lt;asm/sn/sn1/hubio_next.h&gt;
+macro_line|#include &lt;asm/sn/sn1/hubmd.h&gt;
+macro_line|#include &lt;asm/sn/sn1/hubmd_next.h&gt;
+macro_line|#include &lt;asm/sn/sn1/hubpi.h&gt;
+macro_line|#include &lt;asm/sn/sn1/hubpi_next.h&gt;
+macro_line|#include &lt;asm/sn/sn1/hublb.h&gt;
+macro_line|#include &lt;asm/sn/sn1/hublb_next.h&gt;
+macro_line|#include &lt;asm/sn/sn1/hubni.h&gt;
+macro_line|#include &lt;asm/sn/sn1/hubni_next.h&gt;
+macro_line|#include &lt;asm/sn/sn1/hubxb.h&gt;
+macro_line|#include &lt;asm/sn/sn1/hubxb_next.h&gt;
+macro_line|#include &lt;asm/sn/sn1/hubstat.h&gt;
+macro_line|#include &lt;asm/sn/sn1/hubdev.h&gt;
+macro_line|#include &lt;asm/sn/sn1/synergy.h&gt;
+macro_line|#elif defined(CONFIG_IA64_SGI_SN2)
+macro_line|#include &lt;asm/sn/sn2/shub.h&gt;
+macro_line|#include &lt;asm/sn/sn2/shubio.h&gt;
 macro_line|#endif
-macro_line|#endif /* _ASM_SN_IO_H */
+macro_line|#endif /* _ASM_IA64_SN_IO_H */
 eof

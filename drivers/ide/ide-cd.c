@@ -9202,6 +9202,7 @@ id|devinfo-&gt;mask
 op_or_assign
 id|CDC_CLOSE_TRAY
 suffix:semicolon
+multiline_comment|/* FIXME: I&squot;m less that sure that this is the proper thing to do, since&n;&t; * ware already adding the devices to devfs int ide.c upon device&n;&t; * registration.&n;&t; */
 id|devinfo-&gt;de
 op_assign
 id|devfs_register

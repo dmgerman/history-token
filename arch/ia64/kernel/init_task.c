@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This is where we statically allocate and initialize the initial&n; * task.&n; *&n; * Copyright (C) 1999 Hewlett-Packard Co&n; * Copyright (C) 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This is where we statically allocate and initialize the initial&n; * task.&n; *&n; * Copyright (C) 1999, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -40,11 +40,46 @@ c_func
 id|init_mm
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Initial task structure.&n; *&n; * We need to make sure that this is page aligned due to the way&n; * process stacks are handled. This is done by having a special&n; * &quot;init_task&quot; linker map entry..&n; */
-DECL|variable|init_task_union
+multiline_comment|/*&n; * Initial task structure.&n; *&n; * We need to make sure that this is properly aligned due to the way process stacks are&n; * handled. This is done by having a special &quot;.data.init_task&quot; section...&n; */
+DECL|macro|init_thread_info
+mdefine_line|#define init_thread_info&t;init_thread_union.s.thread_info
+DECL|union|init_thread
 r_union
-id|task_union
-id|init_task_union
+id|init_thread
+(brace
+r_struct
+(brace
+DECL|member|task
+r_struct
+id|task_struct
+id|task
+suffix:semicolon
+DECL|member|thread_info
+r_struct
+id|thread_info
+id|thread_info
+suffix:semicolon
+DECL|member|s
+)brace
+id|s
+suffix:semicolon
+DECL|member|stack
+r_int
+r_int
+id|stack
+(braket
+id|KERNEL_STACK_SIZE
+op_div
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+)braket
+suffix:semicolon
+DECL|variable|init_thread_union
+)brace
+id|init_thread_union
 id|__attribute__
 c_func
 (paren
@@ -52,17 +87,34 @@ c_func
 id|section
 c_func
 (paren
-l_string|&quot;init_task&quot;
+l_string|&quot;.data.init_task&quot;
 )paren
 )paren
 )paren
 op_assign
 (brace
+(brace
+id|task
+suffix:colon
 id|INIT_TASK
 c_func
 (paren
-id|init_task_union.task
+id|init_thread_union.s.task
+)paren
+comma
+id|thread_info
+suffix:colon
+id|INIT_THREAD_INFO
+c_func
+(paren
+id|init_thread_union.s.thread_info
 )paren
 )brace
+)brace
+suffix:semicolon
+id|asm
+(paren
+l_string|&quot;.global init_task; init_task = init_thread_union&quot;
+)paren
 suffix:semicolon
 eof

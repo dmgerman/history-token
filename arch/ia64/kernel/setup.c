@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * Architecture-specific setup.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1998, 1999, 2001 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 2000, Rohit Seth &lt;rohit.seth@intel.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; *&n; * 11/12/01 D.Mosberger Convert get_cpuinfo() to seq_file based show_cpuinfo().&n; * 04/04/00 D.Mosberger renamed cpu_initialized to cpu_online_map&n; * 03/31/00 R.Seth&t;cpu_initialized and current-&gt;processor fixes&n; * 02/04/00 D.Mosberger&t;some more get_cpuinfo fixes...&n; * 02/01/00 R.Seth&t;fixed get_cpuinfo for SMP&n; * 01/07/99 S.Eranian&t;added the support for command line argument&n; * 06/24/99 W.Drummond&t;added boot_cpu_data.&n; */
+multiline_comment|/*&n; * Architecture-specific setup.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 2000, Rohit Seth &lt;rohit.seth@intel.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; *&n; * 11/12/01 D.Mosberger Convert get_cpuinfo() to seq_file based show_cpuinfo().&n; * 04/04/00 D.Mosberger renamed cpu_initialized to cpu_online_map&n; * 03/31/00 R.Seth&t;cpu_initialized and current-&gt;processor fixes&n; * 02/04/00 D.Mosberger&t;some more get_cpuinfo fixes...&n; * 02/01/00 R.Seth&t;fixed get_cpuinfo for SMP&n; * 01/07/99 S.Eranian&t;added the support for command line argument&n; * 06/24/99 W.Drummond&t;added boot_cpu_data.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
@@ -9,7 +10,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/acpi-ext.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -352,6 +353,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Find a place to put the bootmap and return its starting address in bootmap_start.&n; * This address must be page-aligned.&n; */
 r_static
 r_int
 DECL|function|find_bootmap_location
@@ -460,6 +462,8 @@ id|i
 )braket
 dot
 id|start
+op_amp
+id|PAGE_MASK
 )paren
 suffix:semicolon
 r_if
@@ -508,12 +512,16 @@ l_int|0
 suffix:semicolon
 id|free_start
 op_assign
+id|PAGE_ALIGN
+c_func
+(paren
 id|rsvd_region
 (braket
 id|i
 )braket
 dot
 id|end
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -1135,6 +1143,17 @@ c_func
 id|efi.sal_systab
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64_GENERIC
+id|machvec_init
+c_func
+(paren
+id|acpi_get_sysname
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; *  Set `iobase&squot; to the appropriate address in region 6&n;&t; *    (uncached access range)&n;&t; *&n;&t; *  The EFI memory map is the &quot;prefered&quot; location to get the I/O port&n;&t; *  space base, rather the relying on AR.KR0. This should become more&n;&t; *  clear in future SAL specs. We&squot;ll fall back to getting it out of&n;&t; *  AR.KR0 if no appropriate entry is found in the memory map.&n;&t; */
 id|ia64_iobase
 op_assign
@@ -1212,17 +1231,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* initialize the bootstrap CPU */
-macro_line|#ifdef CONFIG_IA64_GENERIC
-id|machvec_init
-c_func
-(paren
-id|acpi_get_sysname
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1311,8 +1319,11 @@ id|v
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|lpj
 macro_line|#&t;define lpj&t;c-&gt;loops_per_jiffy
+DECL|macro|cpunum
+macro_line|#&t;define cpunum&t;c-&gt;cpu
 macro_line|#else
 macro_line|#&t;define lpj&t;loops_per_jiffy
+macro_line|#&t;define cpunum&t;0
 macro_line|#endif
 r_char
 id|family
@@ -1338,36 +1349,7 @@ suffix:semicolon
 r_int
 r_int
 id|mask
-comma
-id|cpu
-op_assign
-id|c
-op_minus
-id|cpu_data
-c_func
-(paren
-l_int|0
-)paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|cpu_online_map
-op_amp
-(paren
-l_int|1
-op_lshift
-id|cpu
-)paren
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#endif
 id|mask
 op_assign
 id|c-&gt;features
@@ -1490,7 +1472,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;processor  : %lu&bslash;n&quot;
+l_string|&quot;processor  : %d&bslash;n&quot;
 l_string|&quot;vendor     : %s&bslash;n&quot;
 l_string|&quot;arch       : IA-64&bslash;n&quot;
 l_string|&quot;family     : %s&bslash;n&quot;
@@ -1505,7 +1487,7 @@ l_string|&quot;cpu MHz    : %lu.%06lu&bslash;n&quot;
 l_string|&quot;itc MHz    : %lu.%06lu&bslash;n&quot;
 l_string|&quot;BogoMIPS   : %lu.%02lu&bslash;n&bslash;n&quot;
 comma
-id|cpu
+id|cpunum
 comma
 id|c-&gt;vendor
 comma
@@ -1576,6 +1558,32 @@ op_star
 id|pos
 )paren
 (brace
+macro_line|#ifdef CONFIG_SMP
+r_while
+c_loop
+(paren
+op_star
+id|pos
+OL
+id|NR_CPUS
+op_logical_and
+op_logical_neg
+(paren
+id|cpu_online_map
+op_amp
+(paren
+l_int|1
+op_lshift
+op_star
+id|pos
+)paren
+)paren
+)paren
+op_increment
+op_star
+id|pos
+suffix:semicolon
+macro_line|#endif
 r_return
 op_star
 id|pos
@@ -1798,6 +1806,15 @@ comma
 l_int|16
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+id|c-&gt;cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|c-&gt;ppn
 op_assign
 id|cpuid.field.ppn
@@ -2058,7 +2075,7 @@ id|my_cpu_data-&gt;cpu_data
 id|cpu
 )braket
 op_member_access_from_pointer
-id|cpu_data_ptrs
+id|cpu_data
 comma
 id|my_cpu_data-&gt;cpu_data
 comma
@@ -2249,6 +2266,16 @@ id|current-&gt;active_mm
 op_assign
 op_amp
 id|init_mm
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;mm
+)paren
+id|BUG
+c_func
+(paren
+)paren
 suffix:semicolon
 id|ia64_mmu_init
 c_func
@@ -2448,6 +2475,11 @@ op_star
 l_int|8
 op_plus
 l_int|8
+suffix:semicolon
+id|platform_cpu_init
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 eof

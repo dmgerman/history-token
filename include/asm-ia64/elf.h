@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_ELF_H
 DECL|macro|_ASM_IA64_ELF_H
 mdefine_line|#define _ASM_IA64_ELF_H
-multiline_comment|/*&n; * ELF archtecture specific definitions.&n; *&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * ELF archtecture specific definitions.&n; *&n; * Copyright (C) 1998, 1999, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;asm/fpu.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; */
@@ -16,7 +16,9 @@ DECL|macro|ELF_ARCH
 mdefine_line|#define ELF_ARCH&t;EM_IA_64
 DECL|macro|USE_ELF_CORE_DUMP
 mdefine_line|#define USE_ELF_CORE_DUMP
-multiline_comment|/* always align to 64KB to allow for future page sizes of up to 64KB: */
+multiline_comment|/* Least-significant four bits of ELF header&squot;s e_flags are OS-specific.  The bits are&n;   interpreted as follows by Linux: */
+DECL|macro|EF_IA_64_LINUX_EXECUTABLE_STACK
+mdefine_line|#define EF_IA_64_LINUX_EXECUTABLE_STACK&t;0x1&t;/* is stack (&amp; heap) executable by default? */
 DECL|macro|ELF_EXEC_PAGESIZE
 mdefine_line|#define ELF_EXEC_PAGESIZE&t;PAGE_SIZE
 multiline_comment|/*&n; * This is the location that an ET_DYN program is loaded if exec&squot;ed.&n; * Typical use of this is to invoke &quot;./ld.so someprog&quot; to test out a&n; * new version of the loader.  We need to make sure that it is out of&n; * the way of the program that it will &quot;exec&quot;, and that there is&n; * sufficient room for the brk.&n; */
@@ -92,8 +94,24 @@ multiline_comment|/* This macro yields a string that ld.so will use to load&n;  
 DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM&t;0
 macro_line|#ifdef __KERNEL__
+r_struct
+id|elf64_hdr
+suffix:semicolon
+r_extern
+r_void
+id|ia64_set_personality
+(paren
+r_struct
+id|elf64_hdr
+op_star
+id|elf_ex
+comma
+r_int
+id|ibcs2_interpreter
+)paren
+suffix:semicolon
 DECL|macro|SET_PERSONALITY
-mdefine_line|#define SET_PERSONALITY(ex, ibcs2) set_personality((ibcs2)?PER_SVR4:PER_LINUX)
+mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;ia64_set_personality(&amp;(ex), ibcs2)
 macro_line|#endif
 macro_line|#endif /* _ASM_IA64_ELF_H */
 eof

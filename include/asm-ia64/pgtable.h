@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_PGTABLE_H
 DECL|macro|_ASM_IA64_PGTABLE_H
 mdefine_line|#define _ASM_IA64_PGTABLE_H
-multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the IA-64 page table tree.&n; *&n; * This hopefully works with any (fixed) IA-64 page-size, as defined&n; * in &lt;asm/page.h&gt; (currently 8192).&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the IA-64 page table tree.&n; *&n; * This hopefully works with any (fixed) IA-64 page-size, as defined&n; * in &lt;asm/page.h&gt; (currently 8192).&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -126,7 +126,7 @@ mdefine_line|#define PTRS_PER_PMD&t;(__IA64_UL(1) &lt;&lt; (PAGE_SHIFT-3))
 multiline_comment|/*&n; * Definitions for third level:&n; */
 DECL|macro|PTRS_PER_PTE
 mdefine_line|#define PTRS_PER_PTE&t;(__IA64_UL(1) &lt;&lt; (PAGE_SHIFT-3))
-multiline_comment|/*&n; * All the normal masks have the &quot;page accessed&quot; bits on, as any time&n; * they are used, the page is accessed. They are cleared only by the&n; * page-out routines.  On the other hand, we do NOT turn on the&n; * execute bit on pages that are mapped writable.  For those pages, we&n; * turn on the X bit only when the program attempts to actually&n; * execute code in such a page (it&squot;s a &quot;lazy execute bit&quot;, if you&n; * will).  This lets reduce the amount of i-cache flushing we have to&n; * do for data pages such as stack and heap pages.&n; */
+multiline_comment|/*&n; * All the normal masks have the &quot;page accessed&quot; bits on, as any time&n; * they are used, the page is accessed. They are cleared only by the&n; * page-out routines.&n; */
 DECL|macro|PAGE_NONE
 mdefine_line|#define PAGE_NONE&t;__pgprot(_PAGE_PROTNONE | _PAGE_A)
 DECL|macro|PAGE_SHARED
@@ -134,11 +134,13 @@ mdefine_line|#define PAGE_SHARED&t;__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_A
 DECL|macro|PAGE_READONLY
 mdefine_line|#define PAGE_READONLY&t;__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_R)
 DECL|macro|PAGE_COPY
-mdefine_line|#define PAGE_COPY&t;__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_R)
+mdefine_line|#define PAGE_COPY&t;__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_RX)
 DECL|macro|PAGE_GATE
 mdefine_line|#define PAGE_GATE&t;__pgprot(__ACCESS_BITS | _PAGE_PL_0 | _PAGE_AR_X_RX)
 DECL|macro|PAGE_KERNEL
 mdefine_line|#define PAGE_KERNEL&t;__pgprot(__DIRTY_BITS  | _PAGE_PL_0 | _PAGE_AR_RWX)
+DECL|macro|PAGE_KERNELRX
+mdefine_line|#define PAGE_KERNELRX&t;__pgprot(__ACCESS_BITS | _PAGE_PL_0 | _PAGE_AR_RX)
 macro_line|# ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
@@ -174,16 +176,16 @@ mdefine_line|#define __S100&t;__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_X_R
 DECL|macro|__S101
 mdefine_line|#define __S101&t;__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_RX)
 DECL|macro|__S110
-mdefine_line|#define __S110&t;__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_RW)
+mdefine_line|#define __S110&t;__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_RWX)
 DECL|macro|__S111
-mdefine_line|#define __S111&t;__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_RW)
+mdefine_line|#define __S111&t;__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_RWX)
 DECL|macro|pgd_ERROR
 mdefine_line|#define pgd_ERROR(e)&t;printk(&quot;%s:%d: bad pgd %016lx.&bslash;n&quot;, __FILE__, __LINE__, pgd_val(e))
 DECL|macro|pmd_ERROR
 mdefine_line|#define pmd_ERROR(e)&t;printk(&quot;%s:%d: bad pmd %016lx.&bslash;n&quot;, __FILE__, __LINE__, pmd_val(e))
 DECL|macro|pte_ERROR
 mdefine_line|#define pte_ERROR(e)&t;printk(&quot;%s:%d: bad pte %016lx.&bslash;n&quot;, __FILE__, __LINE__, pte_val(e))
-multiline_comment|/*&n; * Some definitions to translate between mem_map, PTEs, and page&n; * addresses:&n; */
+multiline_comment|/*&n; * Some definitions to translate between mem_map, PTEs, and page addresses:&n; */
 multiline_comment|/* Quick test to see if ADDR is a (potentially) valid physical address. */
 r_static
 r_inline
@@ -208,9 +210,11 @@ op_eq
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 multiline_comment|/*&n; * kern_addr_valid(ADDR) tests if ADDR is pointing to valid kernel&n; * memory.  For the return value to be meaningful, ADDR must be &gt;=&n; * PAGE_OFFSET.  This operation can be relatively expensive (e.g.,&n; * require a hash-, or multi-level tree-lookup or something of that&n; * sort) but it guarantees to return TRUE only if accessing the page&n; * at that address does not cause an error.  Note that there may be&n; * addresses for which kern_addr_valid() returns FALSE even though an&n; * access would not cause an error (e.g., this is typically true for&n; * memory mapped I/O regions.&n; *&n; * XXX Need to implement this for IA-64.&n; */
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
+macro_line|#endif
 multiline_comment|/*&n; * Now come the defines and routines to manage and access the three-level&n; * page table.&n; */
 multiline_comment|/*&n; * On some architectures, special things need to be done when setting&n; * the PTE in a page table.  Nothing special needs to be on IA-64.&n; */
 DECL|macro|set_pte
@@ -229,7 +233,7 @@ DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END&t;&t;(0xa000000000000000 + (1UL &lt;&lt; (4*PAGE_SHIFT - 9)))
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
 DECL|macro|mk_pte
-mdefine_line|#define mk_pte(page,pgprot)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t __pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_val(__pte) = ((page - mem_map) &lt;&lt; PAGE_SHIFT) | pgprot_val(pgprot);&t;&bslash;&n;&t;__pte;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define mk_pte(page,pgprot)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t __pte;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_val(__pte) = (page_to_phys(page)) | pgprot_val(pgprot);&t;&bslash;&n;&t;__pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/* This takes a physical page address that is used by the remapping functions */
 DECL|macro|mk_pte_phys
 mdefine_line|#define mk_pte_phys(physpage, pgprot) &bslash;&n;({ pte_t __pte; pte_val(__pte) = physpage + pgprot_val(pgprot); __pte; })
@@ -245,9 +249,11 @@ DECL|macro|pte_present
 mdefine_line|#define pte_present(pte)&t;&t;(pte_val(pte) &amp; (_PAGE_P | _PAGE_PROTNONE))
 DECL|macro|pte_clear
 mdefine_line|#define pte_clear(pte)&t;&t;&t;(pte_val(*(pte)) = 0UL)
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 multiline_comment|/* pte_page() returns the &quot;struct page *&quot; corresponding to the PTE: */
 DECL|macro|pte_page
-mdefine_line|#define pte_page(pte)&t;&t;&t;(mem_map + (unsigned long) ((pte_val(pte) &amp; _PFN_MASK) &gt;&gt; PAGE_SHIFT))
+mdefine_line|#define pte_page(pte)&t;&t;&t;virt_to_page(((pte_val(pte) &amp; _PFN_MASK) + PAGE_OFFSET))
+macro_line|#endif
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(pmd)&t;&t;&t;(!pmd_val(pmd))
 DECL|macro|pmd_bad
@@ -256,8 +262,10 @@ DECL|macro|pmd_present
 mdefine_line|#define pmd_present(pmd)&t;&t;(pmd_val(pmd) != 0UL)
 DECL|macro|pmd_clear
 mdefine_line|#define pmd_clear(pmdp)&t;&t;&t;(pmd_val(*(pmdp)) = 0UL)
+DECL|macro|pmd_page_kernel
+mdefine_line|#define pmd_page_kernel(pmd)&t;&t;((unsigned long) __va(pmd_val(pmd) &amp; _PFN_MASK))
 DECL|macro|pmd_page
-mdefine_line|#define pmd_page(pmd)&t;&t;&t;((unsigned long) __va(pmd_val(pmd) &amp; _PFN_MASK))
+mdefine_line|#define pmd_page(pmd)&t;&t;&t;virt_to_page((pmd_val(pmd) + PAGE_OFFSET))
 DECL|macro|pgd_none
 mdefine_line|#define pgd_none(pgd)&t;&t;&t;(!pgd_val(pgd))
 DECL|macro|pgd_bad
@@ -441,9 +449,19 @@ mdefine_line|#define pgd_offset_k(addr) &bslash;&n;&t;(init_mm.pgd + (((addr) &g
 multiline_comment|/* Find an entry in the second-level page table.. */
 DECL|macro|pmd_offset
 mdefine_line|#define pmd_offset(dir,addr) &bslash;&n;&t;((pmd_t *) pgd_page(*(dir)) + (((addr) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD - 1)))
-multiline_comment|/* Find an entry in the third-level page table.. */
-DECL|macro|pte_offset
-mdefine_line|#define pte_offset(dir,addr) &bslash;&n;&t;((pte_t *) pmd_page(*(dir)) + (((addr) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1)))
+multiline_comment|/*&n; * Find an entry in the third-level page table.  This looks more complicated than it&n; * should be because some platforms place page tables in high memory.&n; */
+DECL|macro|__pte_offset
+mdefine_line|#define __pte_offset(addr)&t; &t;(((addr) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
+DECL|macro|pte_offset_kernel
+mdefine_line|#define pte_offset_kernel(dir,addr)&t;((pte_t *) pmd_page_kernel(*(dir)) + __pte_offset(addr))
+DECL|macro|pte_offset_map
+mdefine_line|#define pte_offset_map(dir,addr)&t;pte_offset_kernel(dir, addr)
+DECL|macro|pte_offset_map_nested
+mdefine_line|#define pte_offset_map_nested(dir,addr)&t;pte_offset_map(dir, addr)
+DECL|macro|pte_unmap
+mdefine_line|#define pte_unmap(pte)&t;&t;&t;do { } while (0)
+DECL|macro|pte_unmap_nested
+mdefine_line|#define pte_unmap_nested(pte)&t;&t;do { } while (0)
 multiline_comment|/* atomic versions of the some PTE manipulations: */
 r_static
 r_inline
@@ -763,43 +781,6 @@ id|b
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Macros to check the type of access that triggered a page fault.&n; */
-r_static
-r_inline
-r_int
-DECL|function|is_write_access
-id|is_write_access
-(paren
-r_int
-id|access_type
-)paren
-(brace
-r_return
-(paren
-id|access_type
-op_amp
-l_int|0x2
-)paren
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_int
-DECL|function|is_exec_access
-id|is_exec_access
-(paren
-r_int
-id|access_type
-)paren
-(brace
-r_return
-(paren
-id|access_type
-op_amp
-l_int|0x4
-)paren
-suffix:semicolon
-)brace
 r_extern
 id|pgd_t
 id|swapper_pg_dir
@@ -829,6 +810,37 @@ DECL|macro|PageSkip
 mdefine_line|#define PageSkip(page)&t;&t;(0)
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range remap_page_range&t;/* XXX is this right? */
+multiline_comment|/*&n; * Now for some cache flushing routines.  This is the kind of stuff that can be very&n; * expensive, so try to avoid them whenever possible.&n; */
+multiline_comment|/* Caches aren&squot;t brain-dead on the IA-64. */
+DECL|macro|flush_cache_all
+mdefine_line|#define flush_cache_all()&t;&t;&t;do { } while (0)
+DECL|macro|flush_cache_mm
+mdefine_line|#define flush_cache_mm(mm)&t;&t;&t;do { } while (0)
+DECL|macro|flush_cache_range
+mdefine_line|#define flush_cache_range(vma, start, end)&t;do { } while (0)
+DECL|macro|flush_cache_page
+mdefine_line|#define flush_cache_page(vma, vmaddr)&t;&t;do { } while (0)
+DECL|macro|flush_page_to_ram
+mdefine_line|#define flush_page_to_ram(page)&t;&t;&t;do { } while (0)
+DECL|macro|flush_icache_page
+mdefine_line|#define flush_icache_page(vma,page)&t;&t;do { } while (0)
+DECL|macro|flush_dcache_page
+mdefine_line|#define flush_dcache_page(page)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;clear_bit(PG_arch_1, &amp;page-&gt;flags);&t;&bslash;&n;} while (0)
+r_extern
+r_void
+id|flush_icache_range
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+suffix:semicolon
+DECL|macro|flush_icache_user_range
+mdefine_line|#define flush_icache_user_range(vma, page, user_addr, len)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long _addr = page_address(page) + ((user_addr) &amp; ~PAGE_MASK);&t;&bslash;&n;&t;flush_icache_range(_addr, _addr + (len));&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
 r_extern
 r_int

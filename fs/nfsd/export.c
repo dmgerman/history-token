@@ -1846,6 +1846,8 @@ op_eq
 id|addr
 )paren
 (brace
+macro_line|#if 0
+multiline_comment|/* If we really want to do this, we need a spin&n;lock to protect against multiple access (as we only&n;have an exp_readlock) and need to protect&n;the code in e_show() that walks this list too.&n;*/
 multiline_comment|/* Move client to the front */
 r_if
 c_cond
@@ -1871,6 +1873,7 @@ op_assign
 id|tmp
 suffix:semicolon
 )brace
+macro_line|#endif
 r_return
 id|tmp-&gt;h_client
 suffix:semicolon

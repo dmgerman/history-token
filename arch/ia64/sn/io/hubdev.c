@@ -1,7 +1,9 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
+macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/sn1/hubdev.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
@@ -98,7 +100,7 @@ op_assign
 id|hubdev_callout_t
 op_star
 )paren
-id|kmem_zalloc
+id|snia_kmem_zalloc
 c_func
 (paren
 r_sizeof
@@ -355,6 +357,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Given a hub vertex, return the base address of the Hspec space&n; * for that hub.&n; */
+macro_line|#if defined(CONFIG_IA64_SGI_SN1)
 id|caddr_t
 DECL|function|hubdev_prombase_get
 id|hubdev_prombase_get
@@ -430,4 +433,5 @@ r_return
 id|hinfo-&gt;h_cnodeid
 suffix:semicolon
 )brace
+macro_line|#endif&t;/* CONFIG_IA64_SGI_SN1 */
 eof

@@ -499,7 +499,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * count() counts the number of arguments/envelopes&n; */
+multiline_comment|/*&n; * count() counts the number of strings in array ARGV.&n; */
 DECL|function|count
 r_static
 r_int
@@ -585,7 +585,7 @@ r_return
 id|i
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * &squot;copy_strings()&squot; copies argument/envelope strings from user&n; * memory to free pages in kernel mem. These are in a format ready&n; * to be put directly into the top of new user memory.&n; */
+multiline_comment|/*&n; * &squot;copy_strings()&squot; copies argument/environment strings from user&n; * memory to free pages in kernel mem. These are in a format ready&n; * to be put directly into the top of new user memory.&n; */
 DECL|function|copy_strings
 r_int
 id|copy_strings

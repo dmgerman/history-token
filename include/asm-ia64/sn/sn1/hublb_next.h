@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_SN1_HUBLB_NEXT_H
-DECL|macro|_ASM_SN_SN1_HUBLB_NEXT_H
-mdefine_line|#define _ASM_SN_SN1_HUBLB_NEXT_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_SN1_HUBLB_NEXT_H
+DECL|macro|_ASM_IA64_SN_SN1_HUBLB_NEXT_H
+mdefine_line|#define _ASM_IA64_SN_SN1_HUBLB_NEXT_H
 multiline_comment|/**********************************************************************&n;&n; This contains some mask and shift values for LB defined as required&n; for compatibility.&n;&n; **********************************************************************/
 DECL|macro|LRI_SYSTEM_SIZE_SHFT
 mdefine_line|#define LRI_SYSTEM_SIZE_SHFT        46
@@ -141,5 +141,5 @@ DECL|macro|PIOTYPE_PROT_ERR
 mdefine_line|#define  PIOTYPE_PROT_ERR       6       /* VECTOR_STATUS only               */
 DECL|macro|PIOTYPE_UNKNOWN
 mdefine_line|#define  PIOTYPE_UNKNOWN        7       /* VECTOR_STATUS only               */
-macro_line|#endif&t;/* _ASM_SN_SN1_HUBLB_NEXT_H */
+macro_line|#endif /* _ASM_IA64_SN_SN1_HUBLB_NEXT_H */
 eof

@@ -1147,6 +1147,10 @@ id|get_sb
 suffix:colon
 id|sockfs_get_sb
 comma
+id|kill_sb
+suffix:colon
+id|kill_anon_super
+comma
 id|fs_flags
 suffix:colon
 id|FS_NOMOUNT

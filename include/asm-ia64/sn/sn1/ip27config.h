@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_SN1_IP27CONFIG_H
-DECL|macro|_ASM_SN_SN1_IP27CONFIG_H
-mdefine_line|#define _ASM_SN_SN1_IP27CONFIG_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_SN1_IP27CONFIG_H
+DECL|macro|_ASM_IA64_SN_SN1_IP27CONFIG_H
+mdefine_line|#define _ASM_IA64_SN_SN1_IP27CONFIG_H
 multiline_comment|/*&n; * Structure: &t;ip27config_s&n; * Typedef:&t;ip27config_t&n; * Purpose: &t;Maps out the region of the boot prom used to define&n; *&t;&t;configuration information.&n; * Notes:       Corresponds to ip27config structure found in start.s.&n; *&t;&t;Fields are ulong where possible to facilitate IP27 PROM fetches.&n; */
 DECL|macro|CONFIG_INFO_OFFSET
 mdefine_line|#define CONFIG_INFO_OFFSET&t;&t;0x60
@@ -22,7 +22,7 @@ mdefine_line|#define SN1_MACH_TYPE 0
 multiline_comment|/*&n; * Since 800 ns works well with various HUB frequencies, (such as 360,&n; * 380, 390, and 400 MHZ), we now use 800ns rtc cycle time instead of&n; * 1 microsec.&n; */
 DECL|macro|IP27_RTC_FREQ
 mdefine_line|#define IP27_RTC_FREQ&t;&t;&t;1250&t;/* 800ns cycle time */
-macro_line|#if _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|struct|ip27config_s
 r_typedef
 r_struct
@@ -164,8 +164,8 @@ mdefine_line|#define CONFIG_12P4I&t;&t;(0) /* IP35 has no 12p4i equivalent */
 multiline_comment|/* Macro to check if the ip27config on node with nasid n&n; * indicates a config of 12 p 4io&n; */
 DECL|macro|CONFIG_12P4I_NODE
 mdefine_line|#define CONFIG_12P4I_NODE(n)&t;(0)
-macro_line|#endif /* _LANGUAGE_C */
-macro_line|#if _LANGUAGE_ASSEMBLY
+macro_line|#endif /* __ASSEMBLY__ */
+macro_line|#if __ASSEMBLY__
 dot
 r_struct
 l_int|0
@@ -246,7 +246,7 @@ dot
 id|word
 l_int|0
 multiline_comment|/* To recognize special configs */
-macro_line|#endif /* _LANGUAGE_ASSEMBLY */
+macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * R10000 Configuration Cycle - These define the SYSAD values used&n; * during the reset cycle.&n; */
 DECL|macro|IP27C_R10000_KSEG0CA_SHFT
 mdefine_line|#define&t;IP27C_R10000_KSEG0CA_SHFT&t;0
@@ -378,11 +378,11 @@ DECL|macro|CONFIG_FPROM_SETUP
 mdefine_line|#define CONFIG_FPROM_SETUP&t;0x10
 DECL|macro|CONFIG_FREQ_RTC
 mdefine_line|#define CONFIG_FREQ_RTC&t;IP27C_KHZ(IP27_RTC_FREQ)
-macro_line|#if _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* we are going to define all the known configs is a table&n; * for building hex images we will pull out the particular&n; * slice we care about by using the IP27_CONFIG_XX_XX as&n; * entries into the table&n; * to keep the table of reasonable size we only include the&n; * values that differ across configurations&n; * please note then that this makes assumptions about what&n; * will and will not change across configurations&n; */
 multiline_comment|/* these numbers are as the are ordered in the table below */
 DECL|macro|IP27_CONFIG_UNKNOWN
-mdefine_line|#define&t;IP27_CONFIG_UNKNOWN -1
+mdefine_line|#define&t;IP27_CONFIG_UNKNOWN (-1)
 DECL|macro|IP27_CONFIG_SN1_1MB_200_400_200_TABLE
 mdefine_line|#define IP27_CONFIG_SN1_1MB_200_400_200_TABLE 0
 DECL|macro|IP27_CONFIG_SN00_4MB_100_200_133_TABLE
@@ -1329,8 +1329,8 @@ mdefine_line|#define CONFIG_MACH_TYPE ip_config_table[IP27_CONFIG_SN1_4MB_180_36
 DECL|macro|CONFIG_FPROM_WR
 mdefine_line|#define CONFIG_FPROM_WR&t;ip_config_table[IP27_CONFIG_SN1_4MB_180_360_240_TABLE].fprom_wr
 macro_line|#endif /* IP27_CONFIG_SN1_4MB_180_360_240 */
-macro_line|#endif /* _LANGUAGE_C */
-macro_line|#if _LANGUAGE_ASSEMBLY
+macro_line|#endif /* __ASSEMBLY__ */
+macro_line|#if __ASSEMBLY__
 multiline_comment|/* these need to be in here since we need assembly definitions&n; * for building hex images (as required by start.s)&n; */
 macro_line|#ifdef IP27_CONFIG_SN00_4MB_100_200_133
 DECL|macro|BRINGUP_PRM_VAL
@@ -1418,6 +1418,6 @@ mdefine_line|#define CONFIG_MACH_TYPE SN1_MACH_TYPE
 DECL|macro|CONFIG_FPROM_WR
 mdefine_line|#define CONFIG_FPROM_WR CONFIG_FPROM_ENABLE
 macro_line|#endif /* IP27_CONFIG_SN1_4MB_180_360_240 */
-macro_line|#endif /* _LANGUAGE_C */
-macro_line|#endif /* _ASM_SN_SN1_IP27CONFIG_H */
+macro_line|#endif /* __ASSEMBLY__ */
+macro_line|#endif /* _ASM_IA64_SN_SN1_IP27CONFIG_H */
 eof

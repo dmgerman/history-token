@@ -2463,6 +2463,10 @@ id|get_sb
 suffix:colon
 id|sysv_get_sb
 comma
+id|kill_sb
+suffix:colon
+id|kill_block_super
+comma
 id|fs_flags
 suffix:colon
 id|FS_REQUIRES_DEV
@@ -2487,6 +2491,10 @@ comma
 id|get_sb
 suffix:colon
 id|v7_get_sb
+comma
+id|kill_sb
+suffix:colon
+id|kill_block_super
 comma
 id|fs_flags
 suffix:colon
