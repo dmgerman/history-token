@@ -500,7 +500,7 @@ id|urb
 suffix:semicolon
 r_extern
 r_void
-id|usb_init_bus
+id|usb_bus_init
 (paren
 r_struct
 id|usb_bus
@@ -522,15 +522,6 @@ id|urb
 op_star
 id|urb
 )paren
-suffix:semicolon
-r_extern
-id|spinlock_t
-id|hcd_data_lock
-suffix:semicolon
-r_extern
-r_struct
-id|usb_operations
-id|hcd_operations
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 r_struct
@@ -594,6 +585,39 @@ suffix:semicolon
 singleline_comment|// extern int usb_hcd_pci_enable_wake (struct pci_dev *dev, u32 state, int flg);
 macro_line|#endif /* CONFIG_PM */
 macro_line|#endif /* CONFIG_PCI */
+multiline_comment|/* generic bus glue, needed for host controllers that don&squot;t use PCI */
+r_extern
+r_struct
+id|usb_operations
+id|usb_hcd_operations
+suffix:semicolon
+r_extern
+r_void
+id|usb_hcd_irq
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|__hcd
+comma
+r_struct
+id|pt_regs
+op_star
+id|r
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_hc_died
+(paren
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+)paren
+suffix:semicolon
 multiline_comment|/* -------------------------------------------------------------------------- */
 multiline_comment|/* Enumeration is only for the hub driver, or HCD virtual root hubs */
 r_extern
