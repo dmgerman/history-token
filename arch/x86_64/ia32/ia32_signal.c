@@ -99,7 +99,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/* If you change siginfo_t structure, please make sure that&n;&t;&t;   this code is fixed accordingly.&n;&t;&t;   It should never copy any pad contained in the structure&n;&t;&t;   to avoid security leaks, but must copy the generic&n;&t;&t;   3 ints plus the relevant union member.  */
+multiline_comment|/* If you change siginfo_t structure, please make sure that&n;&t;   this code is fixed accordingly.&n;&t;   It should never copy any pad contained in the structure&n;&t;   to avoid security leaks, but must copy the generic&n;&t;   3 ints plus the relevant union member.  */
 id|err
 op_assign
 id|__put_user
@@ -255,6 +255,7 @@ op_amp
 id|to-&gt;si_status
 )paren
 suffix:semicolon
+multiline_comment|/* FALL THROUGH */
 r_default
 suffix:colon
 r_case
@@ -947,9 +948,9 @@ id|sc-&gt;eflags
 suffix:semicolon
 macro_line|#endif
 DECL|macro|COPY
-mdefine_line|#define COPY(x)&t;&t;{ &bslash;&n;&t;unsigned int reg;&t;&bslash;&n;&t;err |= __get_user(reg, &amp;sc-&gt;e ##x);&t;&bslash;&n;&t;regs-&gt;r ## x = reg;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define COPY(x)&t;&t;{ &bslash;&n;&t;unsigned int reg;&t;&t;&t;&bslash;&n;&t;err |= __get_user(reg, &amp;sc-&gt;e ##x);&t;&bslash;&n;&t;regs-&gt;r ## x = reg;&t;&t;&t;&bslash;&n;}
 DECL|macro|RELOAD_SEG
-mdefine_line|#define RELOAD_SEG(seg,mask)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ unsigned int cur; &t;&t;&t;&t;&bslash;&n;&t;  unsigned short pre;&t;&t;&t;&t;&bslash;&n;&t;  err |= __get_user(pre, &amp;sc-&gt;seg);&t;&t;&t;&t;&bslash;&n;    &t;  asm volatile(&quot;movl %%&quot; #seg &quot;,%0&quot; : &quot;=r&quot; (cur));&t;&t;&bslash;&n;&t;  pre |= mask; &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  if (pre != cur) loadsegment(seg,pre); }
+mdefine_line|#define RELOAD_SEG(seg,mask)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ unsigned int cur; &t;&t;&t;&t;&t;&t;&bslash;&n;&t;  unsigned short pre;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  err |= __get_user(pre, &amp;sc-&gt;seg);&t;&t;&t;&t;&bslash;&n;    &t;  asm volatile(&quot;movl %%&quot; #seg &quot;,%0&quot; : &quot;=r&quot; (cur));&t;&t;&bslash;&n;&t;  pre |= mask; &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  if (pre != cur) loadsegment(seg,pre); }
 multiline_comment|/* Reload fs and gs if they have changed in the signal handler.&n;&t;   This does not handle long fs/gs base changes in the handler, but &n;&t;   does not clobber them at least in the normal case. */
 (brace
 r_int
@@ -1989,13 +1990,11 @@ id|current-&gt;ptrace
 op_amp
 id|PT_PTRACED
 )paren
-(brace
 id|eflags
 op_and_assign
 op_complement
 id|TF_MASK
 suffix:semicolon
-)brace
 id|err
 op_or_assign
 id|__put_user
