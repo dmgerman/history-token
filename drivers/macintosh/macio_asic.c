@@ -12,7 +12,7 @@ macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG
+macro_line|#undef DEBUG
 DECL|macro|MAX_NODE_NAME_SIZE
 mdefine_line|#define MAX_NODE_NAME_SIZE (BUS_ID_SIZE - 12)
 DECL|variable|macio_on_hold
