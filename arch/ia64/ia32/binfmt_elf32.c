@@ -103,13 +103,10 @@ id|pg
 op_assign
 id|ia32_shared_page
 (braket
+id|smp_processor_id
+c_func
 (paren
-id|address
-op_minus
-id|vma-&gt;vm_start
 )paren
-op_div
-id|PAGE_SIZE
 )braket
 suffix:semicolon
 id|get_page
@@ -150,7 +147,7 @@ id|vm_area_struct
 op_star
 id|vma
 suffix:semicolon
-multiline_comment|/*&n;&t; * Map GDT and TSS below 4GB, where the processor can find them.  We need to map&n;&t; * it with privilege level 3 because the IVE uses non-privileged accesses to these&n;&t; * tables.  IA-32 segmentation is used to protect against IA-32 accesses to them.&n;&t; */
+multiline_comment|/*&n;&t; * Map GDT below 4GB, where the processor can find it.  We need to map&n;&t; * it with privilege level 3 because the IVE uses non-privileged accesses to these&n;&t; * tables.  IA-32 segmentation is used to protect against IA-32 accesses to them.&n;&t; */
 id|vma
 op_assign
 id|kmem_cache_alloc
@@ -179,15 +176,7 @@ id|vma-&gt;vm_end
 op_assign
 id|vma-&gt;vm_start
 op_plus
-id|max
-c_func
-(paren
 id|PAGE_SIZE
-comma
-l_int|2
-op_star
-id|IA32_PAGE_SIZE
-)paren
 suffix:semicolon
 id|vma-&gt;vm_page_prot
 op_assign

@@ -234,7 +234,7 @@ id|oldmode
 )paren
 (brace
 r_struct
-id|ia32_modify_ldt_ldt_s
+id|ia32_user_desc
 id|ldt_info
 suffix:semicolon
 id|__u64
