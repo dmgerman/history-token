@@ -902,18 +902,16 @@ l_string|&quot;3D Control - Wide&quot;
 suffix:semicolon
 id|kctl-&gt;private_value
 op_assign
+id|AC97_SINGLE_VALUE
+c_func
+(paren
 id|AC97_3D_CONTROL
-op_or
-(paren
+comma
 l_int|9
-op_lshift
-l_int|8
-)paren
-op_or
-(paren
+comma
 l_int|7
-op_lshift
-l_int|16
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|snd_ac97_write_cache
@@ -1334,12 +1332,16 @@ l_string|&quot;3D Control Sigmatel - Depth&quot;
 suffix:semicolon
 id|kctl-&gt;private_value
 op_assign
-id|AC97_3D_CONTROL
-op_or
+id|AC97_SINGLE_VALUE
+c_func
 (paren
+id|AC97_3D_CONTROL
+comma
+l_int|2
+comma
 l_int|3
-op_lshift
-l_int|16
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|snd_ac97_write_cache
@@ -1416,12 +1418,16 @@ l_string|&quot;3D Control Sigmatel - Depth&quot;
 suffix:semicolon
 id|kctl-&gt;private_value
 op_assign
-id|AC97_3D_CONTROL
-op_or
+id|AC97_SINGLE_VALUE
+c_func
 (paren
+id|AC97_3D_CONTROL
+comma
+l_int|0
+comma
 l_int|3
-op_lshift
-l_int|16
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1466,18 +1472,16 @@ l_string|&quot;3D Control Sigmatel - Rear Depth&quot;
 suffix:semicolon
 id|kctl-&gt;private_value
 op_assign
+id|AC97_SINGLE_VALUE
+c_func
+(paren
 id|AC97_3D_CONTROL
-op_or
-(paren
+comma
 l_int|2
-op_lshift
-l_int|8
-)paren
-op_or
-(paren
+comma
 l_int|3
-op_lshift
-l_int|16
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|snd_ac97_write_cache
@@ -1777,24 +1781,6 @@ op_assign
 id|patch_sigmatel_stac97xx_specific
 )brace
 suffix:semicolon
-DECL|variable|patch_sigmatel_stac9708_ops
-r_static
-r_struct
-id|snd_ac97_build_ops
-id|patch_sigmatel_stac9708_ops
-op_assign
-(brace
-dot
-id|build_3d
-op_assign
-id|patch_sigmatel_stac9708_3d
-comma
-dot
-id|build_specific
-op_assign
-id|patch_sigmatel_stac97xx_specific
-)brace
-suffix:semicolon
 DECL|function|patch_sigmatel_stac9700
 r_int
 id|patch_sigmatel_stac9700
@@ -1814,6 +1800,53 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|patch_sigmatel_stac9708_specific
+r_static
+r_int
+id|patch_sigmatel_stac9708_specific
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+(brace
+id|snd_ac97_rename_vol_ctl
+c_func
+(paren
+id|ac97
+comma
+l_string|&quot;Headphone Playback&quot;
+comma
+l_string|&quot;Sigmatel Surround Playback&quot;
+)paren
+suffix:semicolon
+r_return
+id|patch_sigmatel_stac97xx_specific
+c_func
+(paren
+id|ac97
+)paren
+suffix:semicolon
+)brace
+DECL|variable|patch_sigmatel_stac9708_ops
+r_static
+r_struct
+id|snd_ac97_build_ops
+id|patch_sigmatel_stac9708_ops
+op_assign
+(brace
+dot
+id|build_3d
+op_assign
+id|patch_sigmatel_stac9708_3d
+comma
+dot
+id|build_specific
+op_assign
+id|patch_sigmatel_stac9708_specific
+)brace
+suffix:semicolon
 DECL|function|patch_sigmatel_stac9708
 r_int
 id|patch_sigmatel_stac9708
@@ -2335,17 +2368,15 @@ id|ac97-&gt;regs
 (braket
 id|AC97_SIGMATEL_OUTSEL
 )braket
+op_rshift
+id|shift
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 (paren
-(paren
 id|val
-op_rshift
-id|shift
-)paren
 op_amp
 l_int|4
 )paren
@@ -2366,11 +2397,7 @@ op_assign
 l_int|1
 op_plus
 (paren
-(paren
 id|val
-op_rshift
-id|shift
-)paren
 op_amp
 l_int|3
 )paren
@@ -2412,6 +2439,9 @@ suffix:semicolon
 r_int
 r_int
 id|val
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 r_if
 c_cond
@@ -2455,7 +2485,27 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-r_return
+id|down
+c_func
+(paren
+op_amp
+id|ac97-&gt;mutex
+)paren
+suffix:semicolon
+id|snd_ac97_update_bits
+c_func
+(paren
+id|ac97
+comma
+id|AC97_INT_PAGING
+comma
+id|AC97_PAGE_MASK
+comma
+id|AC97_PAGE_VENDOR
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|snd_ac97_update_bits
 c_func
 (paren
@@ -2471,6 +2521,16 @@ id|val
 op_lshift
 id|shift
 )paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|ac97-&gt;mutex
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|snd_ac97_stac9758_input_jack_info
@@ -2638,7 +2698,30 @@ id|shift
 op_assign
 id|kcontrol-&gt;private_value
 suffix:semicolon
-r_return
+r_int
+id|ret
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|ac97-&gt;mutex
+)paren
+suffix:semicolon
+id|snd_ac97_update_bits
+c_func
+(paren
+id|ac97
+comma
+id|AC97_INT_PAGING
+comma
+id|AC97_PAGE_MASK
+comma
+id|AC97_PAGE_VENDOR
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|snd_ac97_update_bits
 c_func
 (paren
@@ -2657,6 +2740,16 @@ l_int|0
 op_lshift
 id|shift
 )paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|ac97-&gt;mutex
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|snd_ac97_stac9758_phonesel_info
@@ -2794,7 +2887,30 @@ c_func
 id|kcontrol
 )paren
 suffix:semicolon
-r_return
+r_int
+id|ret
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|ac97-&gt;mutex
+)paren
+suffix:semicolon
+id|snd_ac97_update_bits
+c_func
+(paren
+id|ac97
+comma
+id|AC97_INT_PAGING
+comma
+id|AC97_PAGE_MASK
+comma
+id|AC97_PAGE_VENDOR
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|snd_ac97_update_bits
 c_func
 (paren
@@ -2809,6 +2925,16 @@ id|ucontrol-&gt;value.enumerated.item
 l_int|0
 )braket
 )paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|ac97-&gt;mutex
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|macro|STAC9758_OUTPUT_JACK
@@ -2994,6 +3120,31 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
+multiline_comment|/* DAC-A direct */
+id|snd_ac97_rename_vol_ctl
+c_func
+(paren
+id|ac97
+comma
+l_string|&quot;Headphone Playback&quot;
+comma
+l_string|&quot;Front Playback&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* DAC-A to Mix = PCM */
+multiline_comment|/* DAC-B direct = Surround */
+multiline_comment|/* DAC-B to Mix */
+id|snd_ac97_rename_vol_ctl
+c_func
+(paren
+id|ac97
+comma
+l_string|&quot;Video Playback&quot;
+comma
+l_string|&quot;Surround Mix Playback&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* DAC-C direct = Center/LFE */
 r_return
 l_int|0
 suffix:semicolon
@@ -3056,12 +3207,14 @@ op_assign
 multiline_comment|/* OUTSEL */
 l_int|0xd794
 comma
+multiline_comment|/* CL:CL, SR:SR, LO:MX, LI:DS, MI:DS */
 multiline_comment|/* IOMISC */
 l_int|0x2001
 comma
 multiline_comment|/* INSEL */
 l_int|0x0201
 comma
+multiline_comment|/* LI:LI, MI:M1 */
 multiline_comment|/* VARIOUS */
 l_int|0x0040
 )brace
@@ -3078,14 +3231,18 @@ op_assign
 multiline_comment|/* OUTSEL */
 l_int|0x9040
 comma
+multiline_comment|/* CL:FR, SR:FR, LO:DS, LI:FR, MI:DS */
 multiline_comment|/* IOMISC */
 l_int|0x2102
 comma
+multiline_comment|/* HP amp on */
 multiline_comment|/* INSEL */
 l_int|0x0203
 comma
+multiline_comment|/* LI:LI, MI:FR */
 multiline_comment|/* VARIOUS */
 l_int|0x0041
+multiline_comment|/* stereo mic */
 )brace
 suffix:semicolon
 r_int
@@ -3121,6 +3278,19 @@ id|ac97-&gt;build_ops
 op_assign
 op_amp
 id|patch_sigmatel_stac9758_ops
+suffix:semicolon
+multiline_comment|/* FIXME: assume only page 0 for writing cache */
+id|snd_ac97_update_bits
+c_func
+(paren
+id|ac97
+comma
+id|AC97_INT_PAGING
+comma
+id|AC97_PAGE_MASK
+comma
+id|AC97_PAGE_VENDOR
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -3231,6 +3401,7 @@ id|ac97
 r_int
 id|err
 suffix:semicolon
+multiline_comment|/* con mask, pro mask, default */
 r_if
 c_cond
 (paren
@@ -3257,6 +3428,7 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
+multiline_comment|/* switch, spsa */
 r_if
 c_cond
 (paren
@@ -3471,6 +3643,7 @@ id|ac97
 r_int
 id|err
 suffix:semicolon
+multiline_comment|/* con mask, pro mask, default */
 r_if
 c_cond
 (paren
@@ -3497,6 +3670,7 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
+multiline_comment|/* switch */
 r_if
 c_cond
 (paren
@@ -3591,6 +3765,14 @@ op_or_assign
 id|AC97_EI_SPDIF
 suffix:semicolon
 multiline_comment|/* force the detection of spdif */
+id|ac97-&gt;rates
+(braket
+id|AC97_RATES_SPDIF
+)braket
+op_assign
+id|SNDRV_PCM_RATE_48000
+suffix:semicolon
+multiline_comment|/* 48k only */
 r_return
 l_int|0
 suffix:semicolon
@@ -4115,13 +4297,6 @@ r_int
 id|idx
 comma
 id|num
-suffix:semicolon
-id|init_MUTEX
-c_func
-(paren
-op_amp
-id|ac97-&gt;spec.ad18xx.mutex
-)paren
 suffix:semicolon
 id|val
 op_assign
@@ -5582,44 +5757,24 @@ id|ac97
 )paren
 (brace
 multiline_comment|/* rename 0x04 as &quot;Master&quot; and 0x02 as &quot;Master Surround&quot; */
-id|snd_ac97_rename_ctl
+id|snd_ac97_rename_vol_ctl
 c_func
 (paren
 id|ac97
 comma
-l_string|&quot;Master Playback Switch&quot;
+l_string|&quot;Master Playback&quot;
 comma
-l_string|&quot;Master Surround Playback Switch&quot;
+l_string|&quot;Master Surround Playback&quot;
 )paren
 suffix:semicolon
-id|snd_ac97_rename_ctl
+id|snd_ac97_rename_vol_ctl
 c_func
 (paren
 id|ac97
 comma
-l_string|&quot;Master Playback Volume&quot;
+l_string|&quot;Headphone Playback&quot;
 comma
-l_string|&quot;Master Surround Playback Volume&quot;
-)paren
-suffix:semicolon
-id|snd_ac97_rename_ctl
-c_func
-(paren
-id|ac97
-comma
-l_string|&quot;Headphone Playback Switch&quot;
-comma
-l_string|&quot;Master Playback Switch&quot;
-)paren
-suffix:semicolon
-id|snd_ac97_rename_ctl
-c_func
-(paren
-id|ac97
-comma
-l_string|&quot;Headphone Playback Volume&quot;
-comma
-l_string|&quot;Master Playback Volume&quot;
+l_string|&quot;Master Playback&quot;
 )paren
 suffix:semicolon
 r_return
@@ -6589,6 +6744,70 @@ op_assign
 op_amp
 id|patch_alc650_ops
 suffix:semicolon
+multiline_comment|/* determine the revision */
+id|val
+op_assign
+id|snd_ac97_read
+c_func
+(paren
+id|ac97
+comma
+id|AC97_ALC650_REVISION
+)paren
+op_amp
+l_int|0x3f
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|val
+OL
+l_int|3
+)paren
+id|ac97-&gt;id
+op_assign
+l_int|0x414c4720
+suffix:semicolon
+multiline_comment|/* Old version */
+r_else
+r_if
+c_cond
+(paren
+id|val
+OL
+l_int|0x10
+)paren
+id|ac97-&gt;id
+op_assign
+l_int|0x414c4721
+suffix:semicolon
+multiline_comment|/* D version */
+r_else
+r_if
+c_cond
+(paren
+id|val
+OL
+l_int|0x20
+)paren
+id|ac97-&gt;id
+op_assign
+l_int|0x414c4722
+suffix:semicolon
+multiline_comment|/* E version */
+r_else
+r_if
+c_cond
+(paren
+id|val
+OL
+l_int|0x30
+)paren
+id|ac97-&gt;id
+op_assign
+l_int|0x414c4723
+suffix:semicolon
+multiline_comment|/* F version */
 multiline_comment|/* revision E or F */
 multiline_comment|/* FIXME: what about revision D ? */
 id|ac97-&gt;spec.dev_flags
@@ -8138,6 +8357,14 @@ op_or
 l_int|0x01
 )paren
 suffix:semicolon
+id|ac97-&gt;rates
+(braket
+id|AC97_RATES_SPDIF
+)braket
+op_assign
+id|SNDRV_PCM_RATE_48000
+suffix:semicolon
+multiline_comment|/* 48k only */
 )brace
 r_else
 (brace
@@ -8147,6 +8374,13 @@ op_complement
 id|AC97_EI_SPDIF
 suffix:semicolon
 multiline_comment|/* disable extended-id */
+id|ac97-&gt;rates
+(braket
+id|AC97_RATES_SPDIF
+)braket
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* set-up multi channel */
 multiline_comment|/* bit 14: 0 = SPDIF, 1 = EAPD */
