@@ -4,10 +4,6 @@ DECL|macro|_LINUX_QUOTA_
 mdefine_line|#define _LINUX_QUOTA_
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-DECL|macro|__DQUOT_VERSION__
-mdefine_line|#define __DQUOT_VERSION__&t;&quot;dquot_6.5.1&quot;
-DECL|macro|__DQUOT_NUM_VERSION__
-mdefine_line|#define __DQUOT_NUM_VERSION__&t;6*10000+5*100+1
 DECL|typedef|qid_t
 r_typedef
 id|__kernel_uid32_t
@@ -97,10 +93,19 @@ multiline_comment|/* time limit for excessive inode use */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Data for one quotafile kept in memory&n; */
+r_struct
+id|quota_format_type
+suffix:semicolon
 DECL|struct|mem_dqinfo
 r_struct
 id|mem_dqinfo
 (brace
+DECL|member|dqi_format
+r_struct
+id|quota_format_type
+op_star
+id|dqi_format
+suffix:semicolon
 DECL|member|dqi_flags
 r_int
 id|dqi_flags
@@ -177,10 +182,6 @@ id|nr_dquots
 comma
 id|nr_free_dquots
 suffix:semicolon
-r_extern
-r_int
-id|dquot_root_squash
-suffix:semicolon
 DECL|struct|dqstats
 r_struct
 id|dqstats
@@ -218,6 +219,11 @@ id|__u32
 id|syncs
 suffix:semicolon
 )brace
+suffix:semicolon
+r_extern
+r_struct
+id|dqstats
+id|dqstats
 suffix:semicolon
 DECL|macro|NR_DQHASH
 mdefine_line|#define NR_DQHASH 43            /* Just an arbitrary number */
@@ -440,6 +446,30 @@ id|dquot
 )paren
 suffix:semicolon
 multiline_comment|/* Write (or delete) structure for one user */
+)brace
+suffix:semicolon
+DECL|struct|quota_format_type
+r_struct
+id|quota_format_type
+(brace
+DECL|member|qf_fmt_id
+r_int
+id|qf_fmt_id
+suffix:semicolon
+multiline_comment|/* Quota format id */
+DECL|member|qf_ops
+r_struct
+id|quota_format_ops
+op_star
+id|qf_ops
+suffix:semicolon
+multiline_comment|/* Operations of format */
+DECL|member|qf_next
+r_struct
+id|quota_format_type
+op_star
+id|qf_next
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#else
