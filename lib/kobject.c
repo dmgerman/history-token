@@ -1933,7 +1933,7 @@ id|k-&gt;kobj
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;kset_find_obj - search for object in kset.&n; *&t;@kset:&t;kset we&squot;re looking in.&n; *&t;@name:&t;object&squot;s name.&n; *&n; *&t;Lock kset via @kset-&gt;subsys, and iterate over @kset-&gt;list,&n; *&t;looking for a matching kobject. Return object if found.&n; */
+multiline_comment|/**&n; *&t;kset_find_obj - search for object in kset.&n; *&t;@kset:&t;kset we&squot;re looking in.&n; *&t;@name:&t;object&squot;s name.&n; *&n; *&t;Lock kset via @kset-&gt;subsys, and iterate over @kset-&gt;list,&n; *&t;looking for a matching kobject. If matching object is found&n; *&t;take a reference and return the object.&n; */
 DECL|function|kset_find_obj
 r_struct
 id|kobject
@@ -2000,7 +2000,6 @@ c_func
 id|k
 )paren
 op_logical_and
-(paren
 op_logical_neg
 id|strcmp
 c_func
@@ -2014,11 +2013,14 @@ comma
 id|name
 )paren
 )paren
-)paren
 (brace
 id|ret
 op_assign
+id|kobject_get
+c_func
+(paren
 id|k
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon

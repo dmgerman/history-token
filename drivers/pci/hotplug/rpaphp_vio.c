@@ -269,9 +269,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|slot-&gt;dev.vio_dev
 )paren
+(brace
+multiline_comment|/*&n;&t;&t; * rpaphp is the only owner of vio devices and&n;&t;&t; * does not need extra reference taken by&n;&t;&t; * vio_find_node&n;&t;&t; */
+id|put_device
+c_func
+(paren
+op_amp
+id|slot-&gt;dev.vio_dev-&gt;dev
+)paren
+suffix:semicolon
+)brace
+r_else
 id|slot-&gt;dev.vio_dev
 op_assign
 id|vio_register_device_node
