@@ -12,6 +12,8 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+DECL|macro|dprintk
+mdefine_line|#define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_CORE, &quot;cpufreq-core&quot;, msg)
 multiline_comment|/**&n; * The &quot;cpufreq driver&quot; - the arch- or hardware-dependend low&n; * level driver of CPUFreq support, and its spinlock. This lock&n; * also protects the cpufreq_cpu_data array.&n; */
 DECL|variable|cpufreq_driver
 r_static
@@ -688,6 +690,16 @@ id|l_p_j_ref_freq
 op_assign
 id|ci-&gt;old
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;saving %lu as reference value for loops_per_jiffy; freq is %u kHz&bslash;n&quot;
+comma
+id|l_p_j_ref
+comma
+id|l_p_j_ref_freq
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -722,6 +734,7 @@ op_eq
 id|CPUFREQ_RESUMECHANGE
 )paren
 )paren
+(brace
 id|loops_per_jiffy
 op_assign
 id|cpufreq_scale
@@ -736,6 +749,19 @@ op_member_access_from_pointer
 r_new
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;scaling loops_per_jiffy to %lu for frequency %u kHz&bslash;n&quot;
+comma
+id|loops_per_jiffy
+comma
+id|ci
+op_member_access_from_pointer
+r_new
+)paren
+suffix:semicolon
+)brace
 )brace
 macro_line|#else
 DECL|function|adjust_jiffies
@@ -787,6 +813,18 @@ suffix:semicolon
 id|freqs-&gt;flags
 op_assign
 id|cpufreq_driver-&gt;flags
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;notification %u of frequency transition to %u kHz&bslash;n&quot;
+comma
+id|state
+comma
+id|freqs
+op_member_access_from_pointer
+r_new
+)paren
 suffix:semicolon
 id|down_read
 c_func
@@ -1970,6 +2008,12 @@ c_func
 id|kobj
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;last reference is dropped&bslash;n&quot;
+)paren
+suffix:semicolon
 id|complete
 c_func
 (paren
@@ -2073,6 +2117,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;adding CPU %u&bslash;n&quot;
+comma
+id|cpu
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* check whether a different CPU already registered this&n;&t; * CPU because it is in the same boat. */
 id|policy
@@ -2099,6 +2151,12 @@ id|cpu
 )braket
 op_assign
 id|sys_dev
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;CPU already managed, adding link&bslash;n&quot;
+)paren
 suffix:semicolon
 id|sysfs_create_link
 c_func
@@ -2246,9 +2304,17 @@ c_cond
 (paren
 id|ret
 )paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;initialization failed&bslash;n&quot;
+)paren
+suffix:semicolon
 r_goto
 id|err_out
 suffix:semicolon
+)brace
 id|memcpy
 c_func
 (paren
@@ -2430,9 +2496,17 @@ c_cond
 (paren
 id|ret
 )paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;setting policy failed&bslash;n&quot;
+)paren
+suffix:semicolon
 r_goto
 id|err_out_unregister
 suffix:semicolon
+)brace
 id|module_put
 c_func
 (paren
@@ -2445,6 +2519,12 @@ id|cpu
 )braket
 op_assign
 id|sys_dev
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;initialization complete&bslash;n&quot;
+)paren
 suffix:semicolon
 id|cpufreq_debug_enable_ratelimit
 c_func
@@ -2567,6 +2647,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;unregistering CPU %u&bslash;n&quot;
+comma
+id|cpu
+)paren
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2637,6 +2725,12 @@ id|data-&gt;cpu
 )paren
 )paren
 (brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;removing link&bslash;n&quot;
+)paren
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -2802,6 +2896,14 @@ id|cpu
 )paren
 r_continue
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;removing link for cpu %u&bslash;n&quot;
+comma
+id|j
+)paren
+suffix:semicolon
 id|sysfs_remove_link
 c_func
 (paren
@@ -2863,11 +2965,23 @@ id|data-&gt;kobj
 )paren
 suffix:semicolon
 multiline_comment|/* we need to make sure that the underlying kobj is actually&n;&t; * not referenced anymore by anybody before we proceed with &n;&t; * unloading.&n;&t; */
+id|dprintk
+c_func
+(paren
+l_string|&quot;waiting for dropping of refcount&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wait_for_completion
 c_func
 (paren
 op_amp
 id|data-&gt;kobj_unregister
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;wait complete&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2922,6 +3036,14 @@ r_int
 r_int
 )paren
 id|data
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;handle_update for cpu %u called&bslash;n&quot;
+comma
+id|cpu
+)paren
 suffix:semicolon
 id|cpufreq_update_policy
 c_func
@@ -3166,6 +3288,14 @@ r_struct
 id|cpufreq_policy
 op_star
 id|cpu_policy
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;resuming cpu %u&bslash;n&quot;
+comma
+id|cpu
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3599,6 +3729,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;target for CPU %u: %u kHz, relation %u&bslash;n&quot;
+comma
+id|policy-&gt;cpu
+comma
+id|target_freq
+comma
+id|relation
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3757,6 +3899,16 @@ id|policy-&gt;governor-&gt;owner
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;__cpufreq_governor for CPU %u, event %u&bslash;n&quot;
+comma
+id|policy-&gt;cpu
+comma
+id|event
+)paren
 suffix:semicolon
 id|ret
 op_assign
@@ -4163,6 +4315,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;setting new policy for CPU %u: %u - %u kHz&bslash;n&quot;
+comma
+id|policy-&gt;cpu
+comma
+id|policy-&gt;min
+comma
+id|policy-&gt;max
+)paren
+suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -4284,6 +4448,16 @@ id|data-&gt;max
 op_assign
 id|policy-&gt;max
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;new min and max freqs are %u - %u kHz&bslash;n&quot;
+comma
+id|data-&gt;min
+comma
+id|data-&gt;max
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4293,6 +4467,12 @@ id|cpufreq_driver-&gt;setpolicy
 id|data-&gt;policy
 op_assign
 id|policy-&gt;policy
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;setting range&bslash;n&quot;
+)paren
 suffix:semicolon
 id|ret
 op_assign
@@ -4322,6 +4502,12 @@ op_star
 id|old_gov
 op_assign
 id|data-&gt;governor
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;governor switch&bslash;n&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* end old governor */
 r_if
@@ -4355,6 +4541,14 @@ id|CPUFREQ_GOV_START
 )paren
 (brace
 multiline_comment|/* new governor failed, so re-start old one */
+id|dprintk
+c_func
+(paren
+l_string|&quot;starting governor %s failed&bslash;n&quot;
+comma
+id|data-&gt;governor-&gt;name
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4385,6 +4579,12 @@ suffix:semicolon
 )brace
 multiline_comment|/* might be a policy change, too, so fall through */
 )brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;governor: change or update limits&bslash;n&quot;
+)paren
+suffix:semicolon
 id|__cpufreq_governor
 c_func
 (paren
@@ -4561,6 +4761,14 @@ op_amp
 id|data-&gt;lock
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;updating policy for CPU %u&bslash;n&quot;
+comma
+id|cpu
+)paren
+suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -4674,6 +4882,14 @@ id|driver_data-&gt;target
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;trying to register driver %s&bslash;n&quot;
+comma
+id|driver_data-&gt;name
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4796,6 +5012,14 @@ c_cond
 id|ret
 )paren
 (brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;no CPU initialized for driver %s&bslash;n&quot;
+comma
+id|driver_data-&gt;name
+)paren
+suffix:semicolon
 id|sysdev_driver_unregister
 c_func
 (paren
@@ -4836,11 +5060,21 @@ c_cond
 op_logical_neg
 id|ret
 )paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;driver %s up and running&bslash;n&quot;
+comma
+id|driver_data-&gt;name
+)paren
+suffix:semicolon
 id|cpufreq_debug_enable_ratelimit
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 r_return
 (paren
 id|ret
@@ -4898,6 +5132,14 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;unregistering driver %s&bslash;n&quot;
+comma
+id|driver-&gt;name
+)paren
+suffix:semicolon
 id|sysdev_driver_unregister
 c_func
 (paren
