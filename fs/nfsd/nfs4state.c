@@ -6171,8 +6171,6 @@ id|NFS4_OPEN_DELEGATE_WRITE
 )paren
 suffix:semicolon
 )brace
-DECL|macro|DONT_DELEGATE
-mdefine_line|#define DONT_DELEGATE  8
 multiline_comment|/*&n; * nfs4_check_deleg_recall()&n; *&n; * Test any delegation that is currently within an incompleted recalled&n; * state, and return NFSERR_DELAY for conflicting open share.&n; * flag is set to DONT_DELEGATE for shares that match the deleg type.&n; */
 r_static
 r_int
@@ -6265,7 +6263,7 @@ r_else
 op_star
 id|flag
 op_assign
-id|DONT_DELEGATE
+id|NFS4_OPEN_DELEGATE_NONE
 suffix:semicolon
 )brace
 )brace
@@ -6798,17 +6796,10 @@ c_cond
 op_star
 id|flag
 op_eq
-id|DONT_DELEGATE
-)paren
-(brace
-op_star
-id|flag
-op_assign
 id|NFS4_OPEN_DELEGATE_NONE
-suffix:semicolon
+)paren
 r_return
 suffix:semicolon
-)brace
 multiline_comment|/* set flag */
 op_star
 id|flag
