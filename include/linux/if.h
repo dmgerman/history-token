@@ -123,18 +123,45 @@ r_int
 id|type
 suffix:semicolon
 multiline_comment|/* Type of physical device or protocol */
+DECL|member|size
+r_int
+r_int
+id|size
+suffix:semicolon
+multiline_comment|/* Size of the data allocated by the caller */
 r_union
 (brace
 multiline_comment|/* {atm/eth/dsl}_settings anyone ? */
-DECL|member|ifsu_hdlc
-r_union
-id|hdlc_settings
-id|ifsu_hdlc
+DECL|member|raw_hdlc
+id|raw_hdlc_proto
+op_star
+id|raw_hdlc
 suffix:semicolon
-DECL|member|ifsu_line
-r_union
-id|line_settings
-id|ifsu_line
+DECL|member|cisco
+id|cisco_proto
+op_star
+id|cisco
+suffix:semicolon
+DECL|member|fr
+id|fr_proto
+op_star
+id|fr
+suffix:semicolon
+DECL|member|fr_pvc
+id|fr_proto_pvc
+op_star
+id|fr_pvc
+suffix:semicolon
+multiline_comment|/* interface settings */
+DECL|member|sync
+id|sync_serial_settings
+op_star
+id|sync
+suffix:semicolon
+DECL|member|te1
+id|te1_settings
+op_star
+id|te1
 suffix:semicolon
 DECL|member|ifs_ifsu
 )brace
@@ -142,10 +169,6 @@ id|ifs_ifsu
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|ifs_hdlc
-mdefine_line|#define ifs_hdlc&t;ifs_ifsu.ifsu_hdlc
-DECL|macro|ifs_line
-mdefine_line|#define ifs_line&t;ifs_ifsu.ifsu_line
 multiline_comment|/*&n; * Interface request structure used for socket&n; * ioctl&squot;s.  All interface ioctl&squot;s must have parameter&n; * definitions which begin with ifr_name.  The&n; * remainder may be interface specific.&n; */
 DECL|struct|ifreq
 r_struct
@@ -236,7 +259,6 @@ suffix:semicolon
 DECL|member|ifru_settings
 r_struct
 id|if_settings
-op_star
 id|ifru_settings
 suffix:semicolon
 DECL|member|ifr_ifru

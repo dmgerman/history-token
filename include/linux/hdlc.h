@@ -3,7 +3,7 @@ macro_line|#ifndef __HDLC_H
 DECL|macro|__HDLC_H
 mdefine_line|#define __HDLC_H
 DECL|macro|GENERIC_HDLC_VERSION
-mdefine_line|#define GENERIC_HDLC_VERSION 3&t;/* For synchronization with sethdlc utility */
+mdefine_line|#define GENERIC_HDLC_VERSION 4&t;/* For synchronization with sethdlc utility */
 DECL|macro|CLOCK_DEFAULT
 mdefine_line|#define CLOCK_DEFAULT   0&t;/* Default setting */
 DECL|macro|CLOCK_EXT
