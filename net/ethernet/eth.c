@@ -324,7 +324,7 @@ c_func
 (paren
 id|skb
 comma
-id|dev-&gt;hard_header_len
+id|ETH_HLEN
 )paren
 suffix:semicolon
 id|eth
