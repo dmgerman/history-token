@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/drivers/s390/scsi/zfcp_qdio.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * QDIO related routines&n; *&n; * Copyright (C) 2003 IBM Entwicklung GmbH, IBM Corporation&n; * Authors:&n; *      Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *      Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt;&n; *      Wolfgang Taphorn &lt;taphorn@de.ibm.com&gt;&n; *      Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 DECL|macro|ZFCP_QDIO_C_REVISION
-mdefine_line|#define ZFCP_QDIO_C_REVISION &quot;$Revision: 1.7 $&quot;
+mdefine_line|#define ZFCP_QDIO_C_REVISION &quot;$Revision: 1.10 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 DECL|variable|zfcp_qdio_request_handler
 r_static
@@ -682,9 +682,13 @@ singleline_comment|// if (ZFCP_LOG_CHECK(ZFCP_LOG_LEVEL_TRACE))
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|status
 op_amp
 id|QDIO_STATUS_LOOK_FOR_ERROR
+)paren
 )paren
 (brace
 id|retval
@@ -868,12 +872,15 @@ comma
 l_string|&quot;qdio_err&quot;
 )paren
 suffix:semicolon
+multiline_comment|/*&n;                * Since we have been using this adapter, it is save to assume&n;                * that it is not failed but recoverable. The card seems to&n;                * report link-up events by self-initiated queue shutdown.&n;                * That is why we need to clear the the link-down flag&n;                * which is set again in case we have missed by a mile.&n;                */
 id|zfcp_erp_adapter_reopen
 c_func
 (paren
 id|adapter
 comma
-l_int|0
+id|ZFCP_STATUS_ADAPTER_LINK_UNPLUGGED
+op_or
+id|ZFCP_STATUS_COMMON_ERP_FAILED
 )paren
 suffix:semicolon
 )brace
@@ -963,6 +970,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|zfcp_qdio_handler_error_check
 c_func
 (paren
@@ -973,6 +983,7 @@ comma
 id|qdio_error
 comma
 id|siga_error
+)paren
 )paren
 )paren
 r_goto
@@ -1139,6 +1150,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|zfcp_qdio_handler_error_check
 c_func
 (paren
@@ -1149,6 +1163,7 @@ comma
 id|qdio_error
 comma
 id|siga_error
+)paren
 )paren
 )paren
 r_goto
@@ -1321,12 +1336,17 @@ id|SBAL_SIZE
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t;&t; * A single used SBALE per inbound SBALE has been&n;&t;&t;&t; * implemented by QDIO so far. Hope they will&n;&t;&t;&t; * do some optimisation. Will need to change to&n;&t;&t;&t; * unlikely() then.&n;&t;&t;&t; */
 r_if
 c_cond
+(paren
+id|likely
+c_func
 (paren
 id|buffere-&gt;flags
 op_amp
 id|SBAL_FLAGS_LAST_ENTRY
+)paren
 )paren
 r_break
 suffix:semicolon
@@ -1335,10 +1355,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_logical_neg
+(paren
 id|buffere-&gt;flags
 op_amp
 id|SBAL_FLAGS_LAST_ENTRY
+)paren
+)paren
 )paren
 (brace
 id|ZFCP_LOG_NORMAL
@@ -1422,7 +1448,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|retval
+)paren
 )paren
 (brace
 id|atomic_set
@@ -1545,8 +1575,12 @@ multiline_comment|/* invalid (per convention used in this driver) */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_logical_neg
 id|sbale_addr
+)paren
 )paren
 (brace
 id|ZFCP_LOG_NORMAL
@@ -1576,6 +1610,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 (paren
 id|fsf_req-&gt;common_magic
 op_ne
@@ -1586,6 +1623,7 @@ op_logical_or
 id|fsf_req-&gt;specific_magic
 op_ne
 id|ZFCP_MAGIC_FSFREQ
+)paren
 )paren
 )paren
 (brace
@@ -1618,9 +1656,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|adapter
 op_ne
 id|fsf_req-&gt;adapter
+)paren
 )paren
 (brace
 id|ZFCP_LOG_NORMAL
@@ -1662,7 +1704,11 @@ multiline_comment|/* debug feature stuff (test for QTCB: remember new unsol. sta
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|fsf_req-&gt;qtcb
+)paren
 )paren
 (brace
 id|debug_event
@@ -1704,7 +1750,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|fsf_req-&gt;qtcb
+)paren
 )paren
 (brace
 id|ZFCP_LOG_TRACE
@@ -1772,9 +1822,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|new_distance_from_int
 op_ge
 id|ZFCP_QDIO_PCI_INTERVAL
+)paren
 )paren
 (brace
 id|new_distance_from_int

@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/drivers/s390/scsi/zfcp_sysfs_unit.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * sysfs unit related routines&n; *&n; * Copyright (C) 2003 IBM Entwicklung GmbH, IBM Corporation&n; * Authors:&n; *      Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *&t;Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 DECL|macro|ZFCP_SYSFS_UNIT_C_REVISION
-mdefine_line|#define ZFCP_SYSFS_UNIT_C_REVISION &quot;$Revision: 1.17 $&quot;
+mdefine_line|#define ZFCP_SYSFS_UNIT_C_REVISION &quot;$Revision: 1.19 $&quot;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/ccwdev.h&gt;
@@ -453,6 +453,29 @@ id|dev
 (brace
 r_return
 id|sysfs_create_group
+c_func
+(paren
+op_amp
+id|dev-&gt;kobj
+comma
+op_amp
+id|zfcp_unit_attr_group
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/** &n; * zfcp_sysfs_remove_unit_files - remove sysfs unit files&n; * @dev: pointer to belonging device&n; *&n; * Remove all attributes of the sysfs representation of a unit.&n; */
+r_void
+DECL|function|zfcp_sysfs_unit_remove_files
+id|zfcp_sysfs_unit_remove_files
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
+id|sysfs_remove_group
 c_func
 (paren
 op_amp

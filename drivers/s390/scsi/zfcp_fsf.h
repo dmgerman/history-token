@@ -2,7 +2,6 @@ multiline_comment|/* &n; * &n; * linux/drivers/s390/scsi/zfcp_fsf.h&n; * &n; * F
 macro_line|#ifndef FSF_H
 DECL|macro|FSF_H
 mdefine_line|#define FSF_H
-macro_line|#ifdef __KERNEL__
 DECL|macro|FSF_QTCB_VERSION1
 mdefine_line|#define FSF_QTCB_VERSION1&t;&t;&t;0x00000001
 DECL|macro|FSF_QTCB_CURRENT_VERSION
@@ -1070,6 +1069,5 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* __KERNEL__ */
 macro_line|#endif&t;&t;&t;&t;/* FSF_H */
 eof

@@ -2,10 +2,9 @@ multiline_comment|/* &n; * &n; * linux/drivers/s390/scsi/zfcp_def.h&n; * &n; * F
 macro_line|#ifndef ZFCP_DEF_H
 DECL|macro|ZFCP_DEF_H
 mdefine_line|#define ZFCP_DEF_H
-macro_line|#ifdef __KERNEL__
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_DEF_REVISION
-mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.41 $&quot;
+mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.48 $&quot;
 multiline_comment|/*************************** INCLUDES *****************************************/
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
@@ -43,8 +42,6 @@ r_typedef
 id|u32
 id|scsi_lun_t
 suffix:semicolon
-DECL|macro|ZFCP_FAKE_SCSI_COMPLETION_TIME
-mdefine_line|#define ZFCP_FAKE_SCSI_COMPLETION_TIME&t;        (HZ / 3)
 DECL|macro|ZFCP_ERP_SCSI_LOW_MEM_TIMEOUT
 mdefine_line|#define ZFCP_ERP_SCSI_LOW_MEM_TIMEOUT           (100*HZ)
 DECL|macro|ZFCP_SCSI_ER_TIMEOUT
@@ -832,8 +829,6 @@ DECL|macro|ZFCP_STATUS_ADAPTER_ERP_PENDING
 mdefine_line|#define ZFCP_STATUS_ADAPTER_ERP_PENDING&t;&t;0x00000100
 DECL|macro|ZFCP_STATUS_ADAPTER_LINK_UNPLUGGED
 mdefine_line|#define ZFCP_STATUS_ADAPTER_LINK_UNPLUGGED&t;0x00000200
-DECL|macro|ZFCP_STATUS_ADAPTER_QUEUECOMMAND_BLOCK
-mdefine_line|#define ZFCP_STATUS_ADAPTER_QUEUECOMMAND_BLOCK&t;0x00000400 
 DECL|macro|ZFCP_STATUS_ADAPTER_SCSI_UP
 mdefine_line|#define ZFCP_STATUS_ADAPTER_SCSI_UP&t;&t;&t;&bslash;&n;&t;&t;(ZFCP_STATUS_COMMON_UNBLOCKED |&t;&bslash;&n;&t;&t; ZFCP_STATUS_ADAPTER_REGISTERED)
 DECL|macro|ZFCP_DID_NAMESERVER
@@ -1410,23 +1405,6 @@ op_star
 id|scsi_host
 suffix:semicolon
 multiline_comment|/* Pointer to mid-layer */
-DECL|member|first_fake_cmnd
-id|Scsi_Cmnd
-op_star
-id|first_fake_cmnd
-suffix:semicolon
-multiline_comment|/* Packets in flight list */
-DECL|member|fake_list_lock
-id|rwlock_t
-id|fake_list_lock
-suffix:semicolon
-multiline_comment|/* Lock for the above */
-DECL|member|fake_scsi_timer
-r_struct
-id|timer_list
-id|fake_scsi_timer
-suffix:semicolon
-multiline_comment|/* Starts processing of&n;&t;&t;&t;&t;&t;&t;      faked commands */
 DECL|member|name
 r_int
 r_char
@@ -1484,16 +1462,6 @@ id|atomic_t
 id|fsf_reqs_active
 suffix:semicolon
 multiline_comment|/* # active FSF reqs */
-DECL|member|scsi_reqs_active
-id|atomic_t
-id|scsi_reqs_active
-suffix:semicolon
-multiline_comment|/* # active SCSI reqs */
-DECL|member|scsi_reqs_active_wq
-id|wait_queue_head_t
-id|scsi_reqs_active_wq
-suffix:semicolon
-multiline_comment|/* can be used to wait for&n;&t;&t;&t;&t;&t;&t;&t;fsf_reqs_active chngs */
 DECL|member|request_queue
 r_struct
 id|zfcp_qdio_queue
@@ -1806,6 +1774,16 @@ id|device
 id|sysfs_device
 suffix:semicolon
 multiline_comment|/* sysfs device */
+DECL|member|scsi_add_work
+id|atomic_t
+id|scsi_add_work
+suffix:semicolon
+multiline_comment|/* used to synchronize */
+DECL|member|scsi_add_wq
+id|wait_queue_head_t
+id|scsi_add_wq
+suffix:semicolon
+multiline_comment|/* wait for scsi_add_device */
 )brace
 suffix:semicolon
 multiline_comment|/* FSF request */
@@ -1977,6 +1955,27 @@ id|atomic_t
 id|loglevel
 suffix:semicolon
 multiline_comment|/* current loglevel */
+macro_line|#ifndef MODULE                                       /* initial parameters&n;&t;&t;&t;&t;&t;&t;&t;needed if ipl from a&n;&t;&t;&t;&t;&t;&t;&t;scsi device is wanted */
+DECL|member|init_busid
+r_char
+id|init_busid
+(braket
+id|BUS_ID_SIZE
+)braket
+suffix:semicolon
+DECL|member|init_wwpn
+id|wwn_t
+id|init_wwpn
+suffix:semicolon
+DECL|member|init_fcp_lun
+id|fcp_lun_t
+id|init_fcp_lun
+suffix:semicolon
+DECL|member|init_is_valid
+r_int
+id|init_is_valid
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef ZFCP_STAT_REQSIZES                            /* Statistical accounting&n;&t;&t;&t;&t;&t;&t;&t;of processed data */
 DECL|member|read_req_head
 r_struct
@@ -2081,7 +2080,7 @@ DECL|macro|ZFCP_MAGIC_FSFREQ
 mdefine_line|#define ZFCP_MAGIC_FSFREQ&t;0xEEEEEEEE
 macro_line|#ifndef atomic_test_mask
 DECL|macro|atomic_test_mask
-mdefine_line|#define atomic_test_mask(mask, target) &bslash;&n;           (atomic_read(target) &amp; mask)
+mdefine_line|#define atomic_test_mask(mask, target) &bslash;&n;           ((atomic_read(target) &amp; mask) == mask)
 macro_line|#endif
 r_extern
 r_void
@@ -2357,6 +2356,5 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* __KERNEL_- */
 macro_line|#endif /* ZFCP_DEF_H */
 eof
