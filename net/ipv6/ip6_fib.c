@@ -3255,10 +3255,6 @@ c_func
 id|fn
 op_eq
 l_int|NULL
-op_logical_or
-id|rt-&gt;u.dst.obsolete
-op_le
-l_int|0
 )paren
 suffix:semicolon
 r_return
