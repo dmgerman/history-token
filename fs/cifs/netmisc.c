@@ -212,6 +212,13 @@ id|ENOENT
 )brace
 comma
 (brace
+id|ERRinvlevel
+comma
+op_minus
+id|EOPNOTSUPP
+)brace
+comma
+(brace
 id|ERRdirnotempty
 comma
 op_minus
@@ -237,6 +244,13 @@ id|ERRmoredata
 comma
 op_minus
 id|EOVERFLOW
+)brace
+comma
+(brace
+id|ERReasnotsupported
+comma
+op_minus
+id|EOPNOTSUPP
 )brace
 comma
 (brace
@@ -1545,7 +1559,7 @@ comma
 (brace
 id|ERRDOS
 comma
-l_int|282
+id|ERReasnotsupported
 comma
 id|NT_STATUS_EAS_NOT_SUPPORTED
 )brace

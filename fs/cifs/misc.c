@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   fs/cifs/misc.c&n; *&n; *   Copyright (C) International Business Machines  Corp., 2002,2003&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA &n; */
+multiline_comment|/*&n; *   fs/cifs/misc.c&n; *&n; *   Copyright (C) International Business Machines  Corp., 2002,2004&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA &n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
@@ -8,6 +8,13 @@ macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
 macro_line|#include &quot;smberr.h&quot;
 macro_line|#include &quot;nterr.h&quot;
+macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL
+r_extern
+id|mempool_t
+op_star
+id|cifs_sm_req_poolp
+suffix:semicolon
+macro_line|#endif /* CIFS_EXPERIMENTAL */
 r_extern
 id|mempool_t
 op_star
@@ -545,6 +552,7 @@ id|SLAB_NOFS
 )paren
 suffix:semicolon
 multiline_comment|/* clear the first few header bytes */
+multiline_comment|/* clear through bcc + 1, making an even 0x40 bytes */
 r_if
 c_cond
 (paren
@@ -563,6 +571,8 @@ r_sizeof
 r_struct
 id|smb_hdr
 )paren
+op_plus
+l_int|27
 )paren
 suffix:semicolon
 id|atomic_inc
@@ -626,6 +636,128 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL
+r_struct
+id|smb_hdr
+op_star
+DECL|function|cifs_small_buf_get
+id|cifs_small_buf_get
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|smb_hdr
+op_star
+id|ret_buf
+op_assign
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* We could use negotiated size instead of max_msgsize - &n;   but it may be more efficient to always alloc same size &n;   albeit slightly larger than necessary and maxbuffersize &n;   defaults to this and can not be bigger */
+id|ret_buf
+op_assign
+(paren
+r_struct
+id|smb_hdr
+op_star
+)paren
+id|mempool_alloc
+c_func
+(paren
+id|cifs_sm_req_poolp
+comma
+id|SLAB_KERNEL
+op_or
+id|SLAB_NOFS
+)paren
+suffix:semicolon
+multiline_comment|/* clear the first few header bytes */
+multiline_comment|/* clear through bcc + 1, making an even 0x40 bytes */
+r_if
+c_cond
+(paren
+id|ret_buf
+)paren
+(brace
+id|memset
+c_func
+(paren
+id|ret_buf
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|smb_hdr
+)paren
+op_plus
+l_int|27
+)paren
+suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|smBufAllocCount
+)paren
+suffix:semicolon
+)brace
+r_return
+id|ret_buf
+suffix:semicolon
+)brace
+r_void
+DECL|function|cifs_small_buf_release
+id|cifs_small_buf_release
+c_func
+(paren
+r_void
+op_star
+id|buf_to_free
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|buf_to_free
+op_eq
+l_int|NULL
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Null buffer passed to cifs_small_buf_release&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|mempool_free
+c_func
+(paren
+id|buf_to_free
+comma
+id|cifs_sm_req_poolp
+)paren
+suffix:semicolon
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|smBufAllocCount
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+macro_line|#endif /* CIFS_EXPERIMENTAL */
 r_void
 DECL|function|header_assemble
 id|header_assemble
