@@ -92,5 +92,17 @@ op_star
 id|mp
 )paren
 suffix:semicolon
+r_int
+id|xfs_fs_goingdown
+c_func
+(paren
+id|xfs_mount_t
+op_star
+id|mp
+comma
+id|__uint32_t
+id|inflags
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* __XFS_FSOPS_H__ */
 eof

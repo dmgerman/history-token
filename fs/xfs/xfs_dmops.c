@@ -11,9 +11,9 @@ macro_line|#include &quot;xfs_dir.h&quot;
 macro_line|#include &quot;xfs_dir2.h&quot;
 macro_line|#include &quot;xfs_dmapi.h&quot;
 macro_line|#include &quot;xfs_mount.h&quot;
-DECL|variable|xfs_dmcore_xfs
+DECL|variable|xfs_dmcore_stub
 id|xfs_dmops_t
-id|xfs_dmcore_xfs
+id|xfs_dmcore_stub
 op_assign
 (brace
 dot

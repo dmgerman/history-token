@@ -2138,12 +2138,12 @@ suffix:semicolon
 r_extern
 r_struct
 id|xfs_dmops
-id|xfs_dmcore_xfs
+id|xfs_dmcore_stub
 suffix:semicolon
 r_extern
 r_struct
 id|xfs_qmops
-id|xfs_qmcore_xfs
+id|xfs_qmcore_stub
 suffix:semicolon
 r_extern
 r_struct
