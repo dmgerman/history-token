@@ -522,6 +522,8 @@ DECL|macro|ioremap
 mdefine_line|#define ioremap(cookie,size)&t;&t;__ioremap(cookie,size,0,1)
 DECL|macro|ioremap_nocache
 mdefine_line|#define ioremap_nocache(cookie,size)&t;__ioremap(cookie,size,0,1)
+DECL|macro|ioremap_cached
+mdefine_line|#define ioremap_cached(cookie,size)&t;__ioremap(cookie,size,L_PTE_CACHEABLE,1)
 DECL|macro|iounmap
 mdefine_line|#define iounmap(cookie)&t;&t;&t;__iounmap(cookie)
 macro_line|#else
@@ -529,6 +531,8 @@ DECL|macro|ioremap
 mdefine_line|#define ioremap(cookie,size)&t;&t;__arch_ioremap((cookie),(size),0,1)
 DECL|macro|ioremap_nocache
 mdefine_line|#define ioremap_nocache(cookie,size)&t;__arch_ioremap((cookie),(size),0,1)
+DECL|macro|ioremap_cached
+mdefine_line|#define ioremap_cached(cookie,size)&t;__arch_ioremap((cookie),(size),L_PTE_CACHEABLE,1)
 DECL|macro|iounmap
 mdefine_line|#define iounmap(cookie)&t;&t;&t;__arch_iounmap(cookie)
 macro_line|#endif
