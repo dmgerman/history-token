@@ -9588,7 +9588,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The page straddles i_size.  It must be zeroed out on each and every&n;&t; * writepage invokation because it may be mmapped.  &quot;A file is mapped&n;&t; * in multiples of the page size.  For a file that is not a multiple of&n;&t; * the  page size, the remaining memory is zeroed when mapped, and&n;&t; * writes to that region are not written out to the file.&quot;&n;&t; */
+multiline_comment|/*&n;&t; * The page straddles i_size.  It must be zeroed out on each and every&n;&t; * writepage invocation because it may be mmapped.  &quot;A file is mapped&n;&t; * in multiples of the page size.  For a file that is not a multiple of&n;&t; * the  page size, the remaining memory is zeroed when mapped, and&n;&t; * writes to that region are not written out to the file.&quot;&n;&t; */
 id|kaddr
 op_assign
 id|kmap_atomic

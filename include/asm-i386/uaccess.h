@@ -285,7 +285,7 @@ r_int
 id|n
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Here we special-case 1, 2 and 4-byte copy_*_user invokations.  On a fault&n; * we return the initial request size (1, 2 or 4), as copy_*_user should do.&n; * If a store crosses a page boundary and gets a fault, the x86 will not write&n; * anything, so this is accurate.&n; */
+multiline_comment|/*&n; * Here we special-case 1, 2 and 4-byte copy_*_user invocations.  On a fault&n; * we return the initial request size (1, 2 or 4), as copy_*_user should do.&n; * If a store crosses a page boundary and gets a fault, the x86 will not write&n; * anything, so this is accurate.&n; */
 r_static
 r_inline
 r_int
