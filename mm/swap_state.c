@@ -1282,7 +1282,7 @@ id|err
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Initiate read into locked page and return.&n;&t;&t;&t; */
-id|lru_cache_add
+id|lru_cache_add_active
 c_func
 (paren
 id|new_page

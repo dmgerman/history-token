@@ -4015,7 +4015,7 @@ comma
 id|page_table
 )paren
 suffix:semicolon
-id|lru_cache_add
+id|lru_cache_add_active
 c_func
 (paren
 id|new_page
@@ -5111,7 +5111,7 @@ id|vma-&gt;vm_page_prot
 )paren
 )paren
 suffix:semicolon
-id|lru_cache_add
+id|lru_cache_add_active
 c_func
 (paren
 id|page
@@ -5349,7 +5349,7 @@ c_func
 id|new_page
 )paren
 suffix:semicolon
-id|lru_cache_add
+id|lru_cache_add_active
 c_func
 (paren
 id|page
