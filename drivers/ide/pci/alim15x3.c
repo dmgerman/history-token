@@ -3672,6 +3672,7 @@ op_assign
 id|init_hwif_common_ali15x3
 suffix:semicolon
 macro_line|#endif /* CONFIG_SPARC64 */
+r_return
 id|ide_setup_pci_device
 c_func
 (paren
@@ -3679,9 +3680,6 @@ id|dev
 comma
 id|d
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|alim15x3_pci_tbl

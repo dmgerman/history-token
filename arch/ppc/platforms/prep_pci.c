@@ -1684,8 +1684,8 @@ op_assign
 id|bus-&gt;sysdata
 suffix:semicolon
 r_volatile
-r_int
-r_char
+r_void
+id|__iomem
 op_star
 id|cfg_data
 suffix:semicolon
@@ -1735,10 +1735,6 @@ op_assign
 id|in_8
 c_func
 (paren
-(paren
-id|u8
-op_star
-)paren
 id|cfg_data
 )paren
 suffix:semicolon
@@ -1753,10 +1749,6 @@ op_assign
 id|in_le16
 c_func
 (paren
-(paren
-id|u16
-op_star
-)paren
 id|cfg_data
 )paren
 suffix:semicolon
@@ -1770,10 +1762,6 @@ op_assign
 id|in_le32
 c_func
 (paren
-(paren
-id|u32
-op_star
-)paren
 id|cfg_data
 )paren
 suffix:semicolon
@@ -1817,8 +1805,8 @@ op_assign
 id|bus-&gt;sysdata
 suffix:semicolon
 r_volatile
-r_int
-r_char
+r_void
+id|__iomem
 op_star
 id|cfg_data
 suffix:semicolon
@@ -1865,10 +1853,6 @@ suffix:colon
 id|out_8
 c_func
 (paren
-(paren
-id|u8
-op_star
-)paren
 id|cfg_data
 comma
 id|val
@@ -1882,10 +1866,6 @@ suffix:colon
 id|out_le16
 c_func
 (paren
-(paren
-id|u16
-op_star
-)paren
 id|cfg_data
 comma
 id|val
@@ -1898,10 +1878,6 @@ suffix:colon
 id|out_le32
 c_func
 (paren
-(paren
-id|u32
-op_star
-)paren
 id|cfg_data
 comma
 id|val

@@ -956,6 +956,27 @@ id|single_release
 comma
 )brace
 suffix:semicolon
+DECL|variable|device_decode
+r_static
+r_char
+id|device_decode
+(braket
+)braket
+(braket
+l_int|30
+)braket
+op_assign
+(brace
+l_string|&quot;motherboard VGA device&quot;
+comma
+l_string|&quot;PCI VGA device&quot;
+comma
+l_string|&quot;AGP VGA device&quot;
+comma
+l_string|&quot;UNKNOWN&quot;
+comma
+)brace
+suffix:semicolon
 r_static
 r_void
 id|acpi_video_device_notify
@@ -4795,25 +4816,6 @@ r_int
 r_int
 id|id
 suffix:semicolon
-r_char
-id|device_decode
-(braket
-)braket
-(braket
-l_int|30
-)braket
-op_assign
-(brace
-l_string|&quot;motherboard VGA device&quot;
-comma
-l_string|&quot;PCI VGA device&quot;
-comma
-l_string|&quot;AGP VGA device&quot;
-comma
-l_string|&quot;UNKNOWN&quot;
-comma
-)brace
-suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
 (paren
@@ -6577,7 +6579,11 @@ op_assign
 id|kmalloc
 c_func
 (paren
+(paren
+l_int|1
+op_plus
 id|dod-&gt;package.count
+)paren
 op_star
 r_sizeof
 (paren

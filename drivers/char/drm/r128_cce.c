@@ -1,5 +1,4 @@
 multiline_comment|/* r128_cce.c -- ATI Rage 128 driver -*- linux-c -*-&n; * Created: Wed Apr  5 19:24:19 2000 by kevin@precisioninsight.com&n; *&n; * Copyright 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
-macro_line|#include &quot;r128.h&quot;
 macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;r128_drm.h&quot;
@@ -2126,11 +2125,8 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 id|dev_priv
 op_assign
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 r_sizeof
 (paren
@@ -2986,11 +2982,8 @@ id|init-&gt;ring_size
 suffix:semicolon
 id|dev_priv-&gt;ring.size_l2qw
 op_assign
-id|DRM
+id|drm_order
 c_func
-(paren
-id|order
-)paren
 (paren
 id|init-&gt;ring_size
 op_div
@@ -3050,11 +3043,8 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|DRM
+id|drm_ati_pcigart_init
 c_func
-(paren
-id|ati_pcigart_init
-)paren
 (paren
 id|dev
 comma
@@ -3153,11 +3143,8 @@ c_cond
 (paren
 id|dev-&gt;irq_enabled
 )paren
-id|DRM
+id|drm_irq_uninstall
 c_func
-(paren
-id|irq_uninstall
-)paren
 (paren
 id|dev
 )paren
@@ -3235,11 +3222,8 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|DRM
+id|drm_ati_pcigart_cleanup
 c_func
-(paren
-id|ati_pcigart_cleanup
-)paren
 (paren
 id|dev
 comma
@@ -3255,11 +3239,8 @@ l_string|&quot;failed to cleanup PCI GART!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|dev-&gt;dev_private
 comma
@@ -3749,11 +3730,8 @@ id|i
 suffix:semicolon
 id|dev_priv-&gt;head
 op_assign
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 r_sizeof
 (paren
@@ -3822,11 +3800,8 @@ id|buf-&gt;dev_private
 suffix:semicolon
 id|entry
 op_assign
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 r_sizeof
 (paren

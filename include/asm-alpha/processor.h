@@ -12,11 +12,6 @@ mdefine_line|#define TASK_SIZE (0x40000000000UL)
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE &bslash;&n;  ((current-&gt;personality &amp; ADDR_LIMIT_32BIT) ? 0x40000000 : TASK_SIZE / 2)
-multiline_comment|/*&n; * Bus types&n; */
-DECL|macro|MCA_bus
-mdefine_line|#define MCA_bus 0
-DECL|macro|MCA_bus__is_a_macro
-mdefine_line|#define MCA_bus__is_a_macro /* for versions in ksyms.c */
 r_typedef
 r_struct
 (brace

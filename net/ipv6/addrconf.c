@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/if_arcnet.h&gt;
+macro_line|#include &lt;linux/if_infiniband.h&gt;
 macro_line|#include &lt;linux/route.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -4885,6 +4886,42 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+r_case
+id|ARPHRD_INFINIBAND
+suffix:colon
+r_if
+c_cond
+(paren
+id|dev-&gt;addr_len
+op_ne
+id|INFINIBAND_ALEN
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|eui
+comma
+id|dev-&gt;dev_addr
+op_plus
+l_int|12
+comma
+l_int|8
+)paren
+suffix:semicolon
+id|eui
+(braket
+l_int|0
+)braket
+op_or_assign
+l_int|2
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_return
 op_minus
@@ -8175,6 +8212,12 @@ op_logical_and
 id|dev-&gt;type
 op_ne
 id|ARPHRD_ARCNET
+)paren
+op_logical_and
+(paren
+id|dev-&gt;type
+op_ne
+id|ARPHRD_INFINIBAND
 )paren
 )paren
 (brace

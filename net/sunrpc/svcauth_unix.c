@@ -358,6 +358,7 @@ id|IP_HASHMAX
 )braket
 suffix:semicolon
 DECL|function|ip_map_put
+r_static
 r_void
 id|ip_map_put
 c_func
@@ -2028,6 +2029,7 @@ id|svcauth_null_release
 comma
 )brace
 suffix:semicolon
+r_static
 r_int
 DECL|function|svcauth_unix_accept
 id|svcauth_unix_accept
@@ -2498,6 +2500,7 @@ r_return
 id|SVC_DENIED
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|svcauth_unix_release
 id|svcauth_unix_release

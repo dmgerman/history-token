@@ -319,7 +319,6 @@ op_assign
 id|u_int16_t
 op_star
 )paren
-op_amp
 id|th
 )paren
 (braket

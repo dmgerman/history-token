@@ -131,8 +131,9 @@ DECL|macro|ASI_M_DCDR
 mdefine_line|#define ASI_M_DCDR         0x39   /* Data Cache Diagnostics Register rw, ss */
 DECL|macro|ASI_M_VIKING_TMP1
 mdefine_line|#define ASI_M_VIKING_TMP1  0x40&t;  /* Emulation temporary 1 on Viking */
-DECL|macro|ASI_M_VIKING_TMP2
-mdefine_line|#define ASI_M_VIKING_TMP2  0x41&t;  /* Emulation temporary 2 on Viking */
+multiline_comment|/* only available on SuperSparc I */
+multiline_comment|/* #define ASI_M_VIKING_TMP2  0x41 */
+multiline_comment|/* Emulation temporary 2 on Viking */
 DECL|macro|ASI_M_ACTION
 mdefine_line|#define ASI_M_ACTION       0x4c   /* Breakpoint Action Register (GNU/Viking) */
 macro_line|#endif /* _SPARC_ASI_H */

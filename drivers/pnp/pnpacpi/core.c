@@ -1114,6 +1114,10 @@ c_func
 id|device
 )paren
 suffix:semicolon
+r_else
+r_return
+id|AE_CTRL_DEPTH
+suffix:semicolon
 r_return
 id|AE_OK
 suffix:semicolon
@@ -1156,14 +1160,10 @@ op_amp
 id|pnpacpi_protocol
 )paren
 suffix:semicolon
-id|acpi_walk_namespace
+id|acpi_get_devices
 c_func
 (paren
-id|ACPI_TYPE_DEVICE
-comma
-id|ACPI_ROOT_OBJECT
-comma
-id|ACPI_UINT32_MAX
+l_int|NULL
 comma
 id|pnpacpi_add_device_handler
 comma

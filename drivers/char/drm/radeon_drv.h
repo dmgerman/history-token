@@ -2,6 +2,21 @@ multiline_comment|/* radeon_drv.h -- Private header for radeon driver -*- linux-
 macro_line|#ifndef __RADEON_DRV_H__
 DECL|macro|__RADEON_DRV_H__
 mdefine_line|#define __RADEON_DRV_H__
+multiline_comment|/* General customization:&n; */
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR&t;&t;&quot;Gareth Hughes, Keith Whitwell, others.&quot;
+DECL|macro|DRIVER_NAME
+mdefine_line|#define DRIVER_NAME&t;&t;&quot;radeon&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&t;&quot;ATI Radeon&quot;
+DECL|macro|DRIVER_DATE
+mdefine_line|#define DRIVER_DATE&t;&t;&quot;20020828&quot;
+DECL|macro|DRIVER_MAJOR
+mdefine_line|#define DRIVER_MAJOR&t;&t;1
+DECL|macro|DRIVER_MINOR
+mdefine_line|#define DRIVER_MINOR&t;&t;11
+DECL|macro|DRIVER_PATCHLEVEL
+mdefine_line|#define DRIVER_PATCHLEVEL&t;0
 DECL|macro|GET_RING_HEAD
 mdefine_line|#define GET_RING_HEAD(dev_priv)&t;&t;DRM_READ32(  (dev_priv)-&gt;ring_rptr, 0 )
 DECL|macro|SET_RING_HEAD
@@ -816,6 +831,98 @@ id|radeon_driver_irq_uninstall
 c_func
 (paren
 id|drm_device_t
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|radeon_driver_prerelease
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+comma
+id|DRMFILE
+id|filp
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|radeon_driver_pretakedown
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|radeon_driver_open_helper
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+comma
+id|drm_file_t
+op_star
+id|filp_priv
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|radeon_driver_free_filp_priv
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+comma
+id|drm_file_t
+op_star
+id|filp_priv
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|radeon_preinit
+c_func
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|flags
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|radeon_postinit
+c_func
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|flags
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|radeon_postcleanup
+c_func
+(paren
+r_struct
+id|drm_device
 op_star
 id|dev
 )paren

@@ -487,6 +487,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_sap_state_process - sends event to SAP state machine&n; *&t;@sap: sap to use&n; *&t;@skb: pointer to occurred event&n; *&n; *&t;After executing actions of the event, upper layer will be indicated&n; *&t;if needed(on receiving an UI frame). sk can be null for the&n; *&t;datalink_proto case.&n; */
 DECL|function|llc_sap_state_process
+r_static
 r_void
 id|llc_sap_state_process
 c_func
@@ -806,6 +807,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_lookup_dgram - Finds dgram socket for the local sap/mac&n; *&t;@sap: SAP&n; *&t;@laddr: address of local LLC (MAC + SAP)&n; *&n; *&t;Search socket list of the SAP and finds connection using the local&n; *&t;mac, and local sap. Returns pointer for socket found, %NULL otherwise.&n; */
 DECL|function|llc_lookup_dgram
+r_static
 r_struct
 id|sock
 op_star

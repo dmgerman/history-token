@@ -72,22 +72,9 @@ DECL|struct|udp_sock
 r_struct
 id|udp_sock
 (brace
-DECL|member|sk
-r_struct
-id|sock
-id|sk
-suffix:semicolon
-macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
-DECL|member|pinet6
-r_struct
-id|ipv6_pinfo
-op_star
-id|pinet6
-suffix:semicolon
-macro_line|#endif
 DECL|member|inet
 r_struct
-id|inet_opt
+id|inet_sock
 id|inet
 suffix:semicolon
 DECL|member|udp

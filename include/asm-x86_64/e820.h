@@ -21,8 +21,6 @@ DECL|macro|HIGH_MEMORY
 mdefine_line|#define HIGH_MEMORY&t;(1024*1024)
 DECL|macro|LOWMEMSIZE
 mdefine_line|#define LOWMEMSIZE()&t;(0x9f000)
-DECL|macro|MAXMEM
-mdefine_line|#define MAXMEM&t;&t;(120UL * 1024 * 1024 * 1024 * 1024)  /* 120TB */ 
 macro_line|#ifndef __ASSEMBLY__
 DECL|struct|e820entry
 r_struct

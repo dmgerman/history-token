@@ -52,6 +52,7 @@ id|NPROTO
 )braket
 suffix:semicolon
 DECL|variable|xfrm_dst_cache
+r_static
 id|kmem_cache_t
 op_star
 id|xfrm_dst_cache
@@ -2378,6 +2379,7 @@ id|pol-&gt;refcnt
 suffix:semicolon
 )brace
 DECL|function|xfrm_sk_policy_lookup
+r_static
 r_struct
 id|xfrm_policy
 op_star
@@ -5866,6 +5868,7 @@ id|NOTIFY_DONE
 suffix:semicolon
 )brace
 DECL|variable|xfrm_dev_notifier
+r_static
 r_struct
 id|notifier_block
 id|xfrm_dev_notifier
@@ -5879,6 +5882,7 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|function|xfrm_policy_init
+r_static
 r_void
 id|__init
 id|xfrm_policy_init

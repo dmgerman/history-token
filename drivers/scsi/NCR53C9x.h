@@ -1661,15 +1661,6 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|esp_command
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|esp_abort
 c_func
 (paren

@@ -1665,7 +1665,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_eval_data_object_operands&n; *&n; * PARAMETERS:  walk_state      - Current walk&n; *              Op              - A valid data_object Op object&n; *              obj_desc        - data_object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get the operands and complete the following data objec types:&n; *              Buffer&n; *              Package&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_eval_data_object_operands&n; *&n; * PARAMETERS:  walk_state      - Current walk&n; *              Op              - A valid data_object Op object&n; *              obj_desc        - data_object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get the operands and complete the following data object types:&n; *              Buffer, Package.&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_eval_data_object_operands
 id|acpi_ds_eval_data_object_operands

@@ -789,8 +789,7 @@ id|pdma_size
 suffix:semicolon
 )brace
 multiline_comment|/* Our low-level entry point in arch/sparc/kernel/entry.S */
-r_extern
-r_void
+id|irqreturn_t
 id|floppy_hardint
 c_func
 (paren

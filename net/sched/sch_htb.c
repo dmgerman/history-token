@@ -33,7 +33,7 @@ mdefine_line|#define HTB_HSIZE 16&t;/* classid hash size */
 DECL|macro|HTB_EWMAC
 mdefine_line|#define HTB_EWMAC 2&t;/* rate average over HTB_EWMAC*HTB_HSIZE sec */
 DECL|macro|HTB_DEBUG
-mdefine_line|#define HTB_DEBUG 1&t;/* compile debugging support (activated by tc tool) */
+macro_line|#undef HTB_DEBUG&t;/* compile debugging support (activated by tc tool) */
 DECL|macro|HTB_RATECM
 mdefine_line|#define HTB_RATECM 1    /* whether to use rate computer */
 DECL|macro|HTB_HYSTERESIS

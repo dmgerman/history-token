@@ -66,6 +66,17 @@ id|qc
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|ata_check_atapi_dma
+c_func
+(paren
+r_struct
+id|ata_queued_cmd
+op_star
+id|qc
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|ata_dev_select
 c_func

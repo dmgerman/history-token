@@ -27,24 +27,17 @@ mdefine_line|#define RNG_DRIVER_NAME   RNG_MODULE_NAME &quot; hardware driver &q
 DECL|macro|PFX
 mdefine_line|#define PFX RNG_MODULE_NAME &quot;: &quot;
 multiline_comment|/*&n; * debugging macros&n; */
-DECL|macro|RNG_DEBUG
-macro_line|#undef RNG_DEBUG /* define to enable copious debugging info */
-macro_line|#ifdef RNG_DEBUG
-multiline_comment|/* note: prints function name for you */
+multiline_comment|/* pr_debug() collapses to a no-op if DEBUG is not defined */
 DECL|macro|DPRINTK
-mdefine_line|#define DPRINTK(fmt, args...) printk(KERN_DEBUG &quot;%s: &quot; fmt, __FUNCTION__ , ## args)
-macro_line|#else
-DECL|macro|DPRINTK
-mdefine_line|#define DPRINTK(fmt, args...)
-macro_line|#endif
+mdefine_line|#define DPRINTK(fmt, args...) pr_debug(PFX &quot;%s: &quot; fmt, __FUNCTION__ , ## args)
 DECL|macro|RNG_NDEBUG
-mdefine_line|#define RNG_NDEBUG        /* define to disable lightweight runtime checks */
+macro_line|#undef RNG_NDEBUG        /* define to enable lightweight runtime checks */
 macro_line|#ifdef RNG_NDEBUG
 DECL|macro|assert
-mdefine_line|#define assert(expr)
+mdefine_line|#define assert(expr)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if(!(expr)) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(KERN_DEBUG PFX &quot;Assertion failed! %s,%s,%s,&quot;&t;&bslash;&n;&t;&t;&quot;line=%d&bslash;n&quot;, #expr, __FILE__, __FUNCTION__, __LINE__);&t;&bslash;&n;&t;&t;}
 macro_line|#else
 DECL|macro|assert
-mdefine_line|#define assert(expr) &bslash;&n;        if(!(expr)) {                                   &bslash;&n;        printk( &quot;Assertion failed! %s,%s,%s,line=%d&bslash;n&quot;, &bslash;&n;        #expr,__FILE__,__FUNCTION__,__LINE__);          &bslash;&n;        }
+mdefine_line|#define assert(expr)
 macro_line|#endif
 DECL|macro|RNG_MISCDEV_MINOR
 mdefine_line|#define RNG_MISCDEV_MINOR&t;&t;183 /* official */
@@ -1046,10 +1039,9 @@ comma
 id|rnen
 )paren
 suffix:semicolon
-id|printk
+id|pr_info
 c_func
 (paren
-id|KERN_INFO
 id|PFX
 l_string|&quot;AMD768 system management I/O registers at 0x%X.&bslash;n&quot;
 comma
@@ -1218,6 +1210,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|via_rng_datum
+r_static
 id|u32
 id|via_rng_datum
 suffix:semicolon
@@ -1952,9 +1945,9 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
-id|printk
+id|pr_info
+c_func
 (paren
-id|KERN_INFO
 id|RNG_DRIVER_NAME
 l_string|&quot; loaded&bslash;n&quot;
 )paren

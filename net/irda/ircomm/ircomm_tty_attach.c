@@ -61,6 +61,7 @@ op_star
 id|priv
 )paren
 suffix:semicolon
+r_static
 r_void
 id|ircomm_tty_start_watchdog_timer
 c_func
@@ -74,6 +75,7 @@ r_int
 id|timeout
 )paren
 suffix:semicolon
+r_static
 r_void
 id|ircomm_tty_watchdog_timer_expired
 c_func
@@ -252,6 +254,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|ircomm_tty_event
+r_static
 r_char
 op_star
 id|ircomm_tty_event
@@ -1925,6 +1928,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function ircomm_tty_start_watchdog_timer (self, timeout)&n; *&n; *    Start the watchdog timer. This timer is used to make sure that any &n; *    connection attempt is successful, and if not, we will retry after &n; *    the timeout&n; */
 DECL|function|ircomm_tty_start_watchdog_timer
+r_static
 r_void
 id|ircomm_tty_start_watchdog_timer
 c_func
@@ -1980,6 +1984,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function ircomm_tty_watchdog_timer_expired (data)&n; *&n; *    Called when the connect procedure have taken to much time.&n; *&n; */
 DECL|function|ircomm_tty_watchdog_timer_expired
+r_static
 r_void
 id|ircomm_tty_watchdog_timer_expired
 c_func

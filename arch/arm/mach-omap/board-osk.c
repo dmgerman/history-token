@@ -10,7 +10,6 @@ macro_line|#include &lt;asm/arch/clocks.h&gt;
 macro_line|#include &lt;asm/arch/gpio.h&gt;
 macro_line|#include &lt;asm/arch/fpga.h&gt;
 macro_line|#include &lt;asm/arch/usb.h&gt;
-macro_line|#include &lt;asm/arch/serial.h&gt;
 macro_line|#include &quot;common.h&quot;
 DECL|variable|__initdata
 r_static
@@ -93,13 +92,20 @@ op_assign
 dot
 id|start
 op_assign
+id|OMAP_GPIO_IRQ
+c_func
+(paren
 l_int|0
+)paren
 comma
-multiline_comment|/* Really GPIO 0 */
 dot
 id|end
 op_assign
+id|OMAP_GPIO_IRQ
+c_func
+(paren
 l_int|0
+)paren
 comma
 dot
 id|flags
@@ -159,6 +165,48 @@ id|osk5912_smc91x_device
 comma
 )brace
 suffix:semicolon
+DECL|function|osk_init_smc91x
+r_static
+r_void
+id|__init
+id|osk_init_smc91x
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|omap_request_gpio
+c_func
+(paren
+l_int|0
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Error requesting gpio 0 for smc91x irq&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|omap_set_gpio_edge_ctrl
+c_func
+(paren
+l_int|0
+comma
+id|OMAP_GPIO_RISING_EDGE
+)paren
+suffix:semicolon
+)brace
 DECL|function|osk_init_irq
 r_void
 id|osk_init_irq
@@ -168,6 +216,16 @@ r_void
 )paren
 (brace
 id|omap_init_irq
+c_func
+(paren
+)paren
+suffix:semicolon
+id|omap_gpio_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|osk_init_smc91x
 c_func
 (paren
 )paren

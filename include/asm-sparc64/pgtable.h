@@ -3,6 +3,7 @@ macro_line|#ifndef _SPARC64_PGTABLE_H
 DECL|macro|_SPARC64_PGTABLE_H
 mdefine_line|#define _SPARC64_PGTABLE_H
 multiline_comment|/* This file contains the functions and defines necessary to modify and use&n; * the SpitFire page tables.&n; */
+macro_line|#include &lt;asm-generic/4level-fixup.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
 macro_line|#include &lt;asm/asi.h&gt;
@@ -397,7 +398,7 @@ DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
 multiline_comment|/* Find an entry in the second-level page table.. */
 DECL|macro|pmd_offset
-mdefine_line|#define pmd_offset(dir, address)&t;&bslash;&n;&t;((pmd_t *) pgd_page(*(dir)) + &bslash;&n;&t; ((address &gt;&gt; PMD_SHIFT) &amp; (REAL_PTRS_PER_PMD-1)))
+mdefine_line|#define pmd_offset(dir, address)&t;&bslash;&n;&t;((pmd_t *) pgd_page(*(dir)) + &bslash;&n;&t; (((address) &gt;&gt; PMD_SHIFT) &amp; (REAL_PTRS_PER_PMD-1)))
 multiline_comment|/* Find an entry in the third-level page table.. */
 DECL|macro|pte_index
 mdefine_line|#define pte_index(dir, address)&t;&bslash;&n;&t;((pte_t *) __pmd_page(*(dir)) + &bslash;&n;&t; ((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1)))

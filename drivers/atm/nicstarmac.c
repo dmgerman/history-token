@@ -21,7 +21,7 @@ mdefine_line|#define SI_HIGH&t;&t;0x0001&t;&t;/* Serial input data high */
 DECL|macro|SI_LOW
 mdefine_line|#define SI_LOW&t;&t;0x0000&t;&t;/* Serial input data low */
 multiline_comment|/* Read Status Register = 0000 0101b */
-DECL|variable|rdsrtab
+macro_line|#if 0
 r_static
 id|u_int32_t
 id|rdsrtab
@@ -86,6 +86,7 @@ id|SI_HIGH
 multiline_comment|/* 1 */
 )brace
 suffix:semicolon
+macro_line|#endif  /*  0  */
 multiline_comment|/* Read from EEPROM = 0000 0011b */
 DECL|variable|readtab
 r_static
@@ -198,8 +199,8 @@ mdefine_line|#define NICSTAR_REG_READ(bs, reg) &bslash;&n;&t;readl((base)+(reg))
 DECL|macro|NICSTAR_REG_GENERAL_PURPOSE
 mdefine_line|#define NICSTAR_REG_GENERAL_PURPOSE GP
 multiline_comment|/*&n; * This routine will clock the Read_Status_reg function into the X2520&n; * eeprom, then pull the result from bit 16 of the NicSTaR&squot;s General Purpose &n; * register.  &n; */
+macro_line|#if 0
 id|u_int32_t
-DECL|function|nicstar_read_eprom_status
 id|nicstar_read_eprom_status
 c_func
 (paren
@@ -387,6 +388,7 @@ r_return
 id|rbyte
 suffix:semicolon
 )brace
+macro_line|#endif  /*  0  */
 multiline_comment|/*&n; * This routine will clock the Read_data function into the X2520&n; * eeprom, followed by the address to read from, through the NicSTaR&squot;s General&n; * Purpose register.  &n; */
 r_static
 id|u_int8_t

@@ -6102,7 +6102,7 @@ suffix:semicolon
 )brace
 DECL|function|init_setup_hpt374
 r_static
-r_void
+r_int
 id|__devinit
 id|init_setup_hpt374
 c_func
@@ -6136,6 +6136,8 @@ op_amp
 l_int|1
 )paren
 r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 r_while
 c_loop
@@ -6217,6 +6219,7 @@ id|d-&gt;name
 )paren
 suffix:semicolon
 )brace
+r_return
 id|ide_setup_pci_devices
 c_func
 (paren
@@ -6227,10 +6230,9 @@ comma
 id|d
 )paren
 suffix:semicolon
+)brace
+)brace
 r_return
-suffix:semicolon
-)brace
-)brace
 id|ide_setup_pci_device
 c_func
 (paren
@@ -6242,7 +6244,7 @@ suffix:semicolon
 )brace
 DECL|function|init_setup_hpt37x
 r_static
-r_void
+r_int
 id|__devinit
 id|init_setup_hpt37x
 c_func
@@ -6257,6 +6259,7 @@ op_star
 id|d
 )paren
 (brace
+r_return
 id|ide_setup_pci_device
 c_func
 (paren
@@ -6268,7 +6271,7 @@ suffix:semicolon
 )brace
 DECL|function|init_setup_hpt366
 r_static
-r_void
+r_int
 id|__devinit
 id|init_setup_hpt366
 c_func
@@ -6337,6 +6340,8 @@ op_amp
 l_int|1
 )paren
 r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 id|pci_read_config_dword
 c_func
@@ -6400,15 +6405,8 @@ suffix:colon
 r_case
 l_int|3
 suffix:colon
-id|ide_setup_pci_device
-c_func
-(paren
-id|dev
-comma
-id|d
-)paren
-suffix:semicolon
-r_return
+r_goto
+id|init_single
 suffix:semicolon
 r_default
 suffix:colon
@@ -6531,6 +6529,7 @@ id|pin2
 )paren
 suffix:semicolon
 )brace
+r_return
 id|ide_setup_pci_devices
 c_func
 (paren
@@ -6541,10 +6540,11 @@ comma
 id|d
 )paren
 suffix:semicolon
+)brace
+)brace
+id|init_single
+suffix:colon
 r_return
-suffix:semicolon
-)brace
-)brace
 id|ide_setup_pci_device
 c_func
 (paren
@@ -6584,6 +6584,7 @@ id|hpt366_chipsets
 id|id-&gt;driver_data
 )braket
 suffix:semicolon
+r_return
 id|d
 op_member_access_from_pointer
 id|init_setup
@@ -6593,9 +6594,6 @@ id|dev
 comma
 id|d
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|hpt366_pci_tbl

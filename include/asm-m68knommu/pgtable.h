@@ -1,6 +1,7 @@
 macro_line|#ifndef _M68KNOMMU_PGTABLE_H
 DECL|macro|_M68KNOMMU_PGTABLE_H
 mdefine_line|#define _M68KNOMMU_PGTABLE_H
+macro_line|#include &lt;asm-generic/4level-fixup.h&gt;
 multiline_comment|/*&n; * (C) Copyright 2000-2002, Greg Ungerer &lt;gerg@snapgear.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;

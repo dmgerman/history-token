@@ -47,6 +47,17 @@ l_int|60
 op_star
 l_int|60
 suffix:semicolon
+r_static
+r_void
+id|rxrpc_peer_do_timeout
+c_func
+(paren
+r_struct
+id|rxrpc_peer
+op_star
+id|peer
+)paren
+suffix:semicolon
 DECL|function|__rxrpc_peer_timeout
 r_static
 r_void
@@ -1026,6 +1037,7 @@ multiline_comment|/* end rxrpc_put_peer() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * handle a peer timing out in the graveyard&n; * - called from krxtimod&n; */
 DECL|function|rxrpc_peer_do_timeout
+r_static
 r_void
 id|rxrpc_peer_do_timeout
 c_func

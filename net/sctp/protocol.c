@@ -1926,7 +1926,7 @@ op_star
 id|newsk
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -1937,7 +1937,7 @@ id|sk
 )paren
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|newinet
 suffix:semicolon

@@ -117,7 +117,7 @@ mdefine_line|#define PGDIR_SIZE&t;&t;(__IA64_UL(1) &lt;&lt; PGDIR_SHIFT)
 DECL|macro|PGDIR_MASK
 mdefine_line|#define PGDIR_MASK&t;&t;(~(PGDIR_SIZE-1))
 DECL|macro|PTRS_PER_PGD
-mdefine_line|#define PTRS_PER_PGD&t;&t;(__IA64_UL(1) &lt;&lt; (PAGE_SHIFT-3))
+mdefine_line|#define PTRS_PER_PGD&t;&t;(1UL &lt;&lt; (PAGE_SHIFT-3))
 DECL|macro|USER_PTRS_PER_PGD
 mdefine_line|#define USER_PTRS_PER_PGD&t;(5*PTRS_PER_PGD/8)&t;/* regions 0-4 are user regions */
 DECL|macro|FIRST_USER_PGD_NR
@@ -130,7 +130,7 @@ mdefine_line|#define PMD_SIZE&t;(1UL &lt;&lt; PMD_SHIFT)
 DECL|macro|PMD_MASK
 mdefine_line|#define PMD_MASK&t;(~(PMD_SIZE-1))
 DECL|macro|PTRS_PER_PMD
-mdefine_line|#define PTRS_PER_PMD&t;(__IA64_UL(1) &lt;&lt; (PAGE_SHIFT-3))
+mdefine_line|#define PTRS_PER_PMD&t;(1UL &lt;&lt; (PAGE_SHIFT-3))
 multiline_comment|/*&n; * Definitions for third level:&n; */
 DECL|macro|PTRS_PER_PTE
 mdefine_line|#define PTRS_PER_PTE&t;(__IA64_UL(1) &lt;&lt; (PAGE_SHIFT-3))
@@ -291,16 +291,16 @@ DECL|macro|pmd_page_kernel
 mdefine_line|#define pmd_page_kernel(pmd)&t;&t;((unsigned long) __va(pmd_val(pmd) &amp; _PFN_MASK))
 DECL|macro|pmd_page
 mdefine_line|#define pmd_page(pmd)&t;&t;&t;virt_to_page((pmd_val(pmd) + PAGE_OFFSET))
-DECL|macro|pgd_none
-mdefine_line|#define pgd_none(pgd)&t;&t;&t;(!pgd_val(pgd))
-DECL|macro|pgd_bad
-mdefine_line|#define pgd_bad(pgd)&t;&t;&t;(!ia64_phys_addr_valid(pgd_val(pgd)))
-DECL|macro|pgd_present
-mdefine_line|#define pgd_present(pgd)&t;&t;(pgd_val(pgd) != 0UL)
-DECL|macro|pgd_clear
-mdefine_line|#define pgd_clear(pgdp)&t;&t;&t;(pgd_val(*(pgdp)) = 0UL)
-DECL|macro|pgd_page
-mdefine_line|#define pgd_page(pgd)&t;&t;&t;((unsigned long) __va(pgd_val(pgd) &amp; _PFN_MASK))
+DECL|macro|pud_none
+mdefine_line|#define pud_none(pud)&t;&t;&t;(!pud_val(pud))
+DECL|macro|pud_bad
+mdefine_line|#define pud_bad(pud)&t;&t;&t;(!ia64_phys_addr_valid(pud_val(pud)))
+DECL|macro|pud_present
+mdefine_line|#define pud_present(pud)&t;&t;(pud_val(pud) != 0UL)
+DECL|macro|pud_clear
+mdefine_line|#define pud_clear(pudp)&t;&t;&t;(pud_val(*(pudp)) = 0UL)
+DECL|macro|pud_page
+mdefine_line|#define pud_page(pud)&t;&t;&t;((unsigned long) __va(pud_val(pud) &amp; _PFN_MASK))
 multiline_comment|/*&n; * The following have defined behavior only work if pte_present() is true.&n; */
 DECL|macro|pte_user
 mdefine_line|#define pte_user(pte)&t;&t;((pte_val(pte) &amp; _PAGE_PL_MASK) == _PAGE_PL_3)
@@ -427,7 +427,7 @@ DECL|macro|pgd_offset_gate
 mdefine_line|#define pgd_offset_gate(mm, addr)&t;pgd_offset_k(addr)
 multiline_comment|/* Find an entry in the second-level page table.. */
 DECL|macro|pmd_offset
-mdefine_line|#define pmd_offset(dir,addr) &bslash;&n;&t;((pmd_t *) pgd_page(*(dir)) + (((addr) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD - 1)))
+mdefine_line|#define pmd_offset(dir,addr) &bslash;&n;&t;((pmd_t *) pud_page(*(dir)) + (((addr) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD - 1)))
 multiline_comment|/*&n; * Find an entry in the third-level page table.  This looks more complicated than it&n; * should be because some platforms place page tables in high memory.&n; */
 DECL|macro|pte_index
 mdefine_line|#define pte_index(addr)&t; &t;(((addr) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
@@ -975,5 +975,6 @@ mdefine_line|#define __HAVE_ARCH_PTE_SAME
 DECL|macro|__HAVE_ARCH_PGD_OFFSET_GATE
 mdefine_line|#define __HAVE_ARCH_PGD_OFFSET_GATE
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
+macro_line|#include &lt;asm-generic/pgtable-nopud.h&gt;
 macro_line|#endif /* _ASM_IA64_PGTABLE_H */
 eof

@@ -12,6 +12,18 @@ DECL|macro|HAVE_ARCH_PCI_SET_DMA_MASK
 mdefine_line|#define&t;HAVE_ARCH_PCI_SET_DMA_MASK
 DECL|macro|pcibios_assign_all_busses
 mdefine_line|#define pcibios_assign_all_busses()&t;1
+macro_line|#if defined(CONFIG_CPU_IXP465) &amp;&amp; !defined(__ASSEMBLY__)
+r_extern
+r_int
+r_int
+id|processor_id
+suffix:semicolon
+DECL|macro|cpu_is_ixp465
+mdefine_line|#define cpu_is_ixp465() ((processor_id &amp; 0xffffffc0) == 0x69054200)
+macro_line|#else
+DECL|macro|cpu_is_ixp465
+mdefine_line|#define&t;cpu_is_ixp465()&t;(0)
+macro_line|#endif
 multiline_comment|/* Register locations and bits */
 macro_line|#include &quot;ixp4xx-regs.h&quot;
 multiline_comment|/* Platform helper functions and definitions */

@@ -46,7 +46,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|FDPATCHES
 mdefine_line|#define FDPATCHES
 macro_line|#include &lt;linux/fdreg.h&gt;
@@ -20851,15 +20850,6 @@ c_func
 r_void
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;inserting floppy driver for &quot;
-id|UTS_RELEASE
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

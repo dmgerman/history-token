@@ -201,7 +201,7 @@ id|node
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -521,7 +521,7 @@ id|info
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -870,7 +870,7 @@ id|flags
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -1410,7 +1410,7 @@ id|len
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -2094,7 +2094,7 @@ id|addr_len
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -2216,6 +2216,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;This should be easy, if there is something there&n; *&t;we return it, otherwise we block.&n; */
 DECL|function|raw_recvmsg
+r_static
 r_int
 id|raw_recvmsg
 c_func
@@ -2250,7 +2251,7 @@ id|addr_len
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -3549,7 +3550,7 @@ id|i
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign

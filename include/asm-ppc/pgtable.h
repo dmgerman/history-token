@@ -2,6 +2,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_PGTABLE_H
 DECL|macro|_PPC_PGTABLE_H
 mdefine_line|#define _PPC_PGTABLE_H
+macro_line|#include &lt;asm-generic/4level-fixup.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/sched.h&gt;

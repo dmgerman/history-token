@@ -124,6 +124,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|ircomm_event
+r_static
 r_char
 op_star
 id|ircomm_event

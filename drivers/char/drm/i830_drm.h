@@ -547,34 +547,62 @@ mdefine_line|#define I830_BOX_TEXTURE_LOAD  0x8 /* populated by kernel */
 DECL|macro|I830_BOX_LOST_CONTEXT
 mdefine_line|#define I830_BOX_LOST_CONTEXT  0x10 /* populated by client */
 multiline_comment|/* I830 specific ioctls&n; * The device specific ioctl range is 0x40 to 0x79.&n; */
+DECL|macro|DRM_I830_INIT
+mdefine_line|#define DRM_I830_INIT&t;0x00
+DECL|macro|DRM_I830_VERTEX
+mdefine_line|#define DRM_I830_VERTEX&t;0x01
+DECL|macro|DRM_I830_CLEAR
+mdefine_line|#define DRM_I830_CLEAR&t;0x02
+DECL|macro|DRM_I830_FLUSH
+mdefine_line|#define DRM_I830_FLUSH&t;0x03
+DECL|macro|DRM_I830_GETAGE
+mdefine_line|#define DRM_I830_GETAGE&t;0x04
+DECL|macro|DRM_I830_GETBUF
+mdefine_line|#define DRM_I830_GETBUF&t;0x05
+DECL|macro|DRM_I830_SWAP
+mdefine_line|#define DRM_I830_SWAP&t;0x06
+DECL|macro|DRM_I830_COPY
+mdefine_line|#define DRM_I830_COPY&t;0x07
+DECL|macro|DRM_I830_DOCOPY
+mdefine_line|#define DRM_I830_DOCOPY&t;0x08
+DECL|macro|DRM_I830_FLIP
+mdefine_line|#define DRM_I830_FLIP&t;0x09
+DECL|macro|DRM_I830_IRQ_EMIT
+mdefine_line|#define DRM_I830_IRQ_EMIT&t;0x0a
+DECL|macro|DRM_I830_IRQ_WAIT
+mdefine_line|#define DRM_I830_IRQ_WAIT&t;0x0b
+DECL|macro|DRM_I830_GETPARAM
+mdefine_line|#define DRM_I830_GETPARAM&t;0x0c
+DECL|macro|DRM_I830_SETPARAM
+mdefine_line|#define DRM_I830_SETPARAM&t;0x0d
 DECL|macro|DRM_IOCTL_I830_INIT
-mdefine_line|#define DRM_IOCTL_I830_INIT&t;&t;DRM_IOW( 0x40, drm_i830_init_t)
+mdefine_line|#define DRM_IOCTL_I830_INIT&t;&t;DRM_IOW( DRM_COMMAND_BASE + DRM_IOCTL_I830_INIT, drm_i830_init_t)
 DECL|macro|DRM_IOCTL_I830_VERTEX
-mdefine_line|#define DRM_IOCTL_I830_VERTEX&t;&t;DRM_IOW( 0x41, drm_i830_vertex_t)
+mdefine_line|#define DRM_IOCTL_I830_VERTEX&t;&t;DRM_IOW( DRM_COMMAND_BASE + DRM_IOCTL_I830_VERTEX, drm_i830_vertex_t)
 DECL|macro|DRM_IOCTL_I830_CLEAR
-mdefine_line|#define DRM_IOCTL_I830_CLEAR&t;&t;DRM_IOW( 0x42, drm_i830_clear_t)
+mdefine_line|#define DRM_IOCTL_I830_CLEAR&t;&t;DRM_IOW( DRM_COMMAND_BASE + DRM_IOCTL_I830_CLEAR, drm_i830_clear_t)
 DECL|macro|DRM_IOCTL_I830_FLUSH
-mdefine_line|#define DRM_IOCTL_I830_FLUSH&t;&t;DRM_IO ( 0x43)
+mdefine_line|#define DRM_IOCTL_I830_FLUSH&t;&t;DRM_IO ( DRM_COMMAND_BASE + DRM_IOCTL_I830_FLUSH)
 DECL|macro|DRM_IOCTL_I830_GETAGE
-mdefine_line|#define DRM_IOCTL_I830_GETAGE&t;&t;DRM_IO ( 0x44)
+mdefine_line|#define DRM_IOCTL_I830_GETAGE&t;&t;DRM_IO ( DRM_COMMAND_BASE + DRM_IOCTL_I830_GETAGE)
 DECL|macro|DRM_IOCTL_I830_GETBUF
-mdefine_line|#define DRM_IOCTL_I830_GETBUF&t;&t;DRM_IOWR(0x45, drm_i830_dma_t)
+mdefine_line|#define DRM_IOCTL_I830_GETBUF&t;&t;DRM_IOWR(DRM_COMMAND_BASE + DRM_IOCTL_I830_GETBUF, drm_i830_dma_t)
 DECL|macro|DRM_IOCTL_I830_SWAP
-mdefine_line|#define DRM_IOCTL_I830_SWAP&t;&t;DRM_IO ( 0x46)
+mdefine_line|#define DRM_IOCTL_I830_SWAP&t;&t;DRM_IO ( DRM_COMMAND_BASE + DRM_IOCTL_I830_SWAP)
 DECL|macro|DRM_IOCTL_I830_COPY
-mdefine_line|#define DRM_IOCTL_I830_COPY&t;&t;DRM_IOW( 0x47, drm_i830_copy_t)
+mdefine_line|#define DRM_IOCTL_I830_COPY&t;&t;DRM_IOW( DRM_COMMAND_BASE + DRM_IOCTL_I830_COPY, drm_i830_copy_t)
 DECL|macro|DRM_IOCTL_I830_DOCOPY
-mdefine_line|#define DRM_IOCTL_I830_DOCOPY&t;&t;DRM_IO ( 0x48)
+mdefine_line|#define DRM_IOCTL_I830_DOCOPY&t;&t;DRM_IO ( DRM_COMMAND_BASE + DRM_IOCTL_I830_DOCOPY)
 DECL|macro|DRM_IOCTL_I830_FLIP
-mdefine_line|#define DRM_IOCTL_I830_FLIP&t;&t;DRM_IO ( 0x49)
+mdefine_line|#define DRM_IOCTL_I830_FLIP&t;&t;DRM_IO ( DRM_COMMAND_BASE + DRM_IOCTL_I830_FLIP)
 DECL|macro|DRM_IOCTL_I830_IRQ_EMIT
-mdefine_line|#define DRM_IOCTL_I830_IRQ_EMIT         DRM_IOWR(0x4a, drm_i830_irq_emit_t)
+mdefine_line|#define DRM_IOCTL_I830_IRQ_EMIT         DRM_IOWR(DRM_COMMAND_BASE + DRM_IOCTL_I830_IRQ_EMIT, drm_i830_irq_emit_t)
 DECL|macro|DRM_IOCTL_I830_IRQ_WAIT
-mdefine_line|#define DRM_IOCTL_I830_IRQ_WAIT         DRM_IOW( 0x4b, drm_i830_irq_wait_t)
+mdefine_line|#define DRM_IOCTL_I830_IRQ_WAIT         DRM_IOW( DRM_COMMAND_BASE + DRM_IOCTL_I830_IRQ_WAIT, drm_i830_irq_wait_t)
 DECL|macro|DRM_IOCTL_I830_GETPARAM
-mdefine_line|#define DRM_IOCTL_I830_GETPARAM         DRM_IOWR(0x4c, drm_i830_getparam_t)
+mdefine_line|#define DRM_IOCTL_I830_GETPARAM         DRM_IOWR(DRM_COMMAND_BASE + DRM_IOCTL_I830_GETPARAM, drm_i830_getparam_t)
 DECL|macro|DRM_IOCTL_I830_SETPARAM
-mdefine_line|#define DRM_IOCTL_I830_SETPARAM         DRM_IOWR(0x4d, drm_i830_setparam_t)
+mdefine_line|#define DRM_IOCTL_I830_SETPARAM         DRM_IOWR(DRM_COMMAND_BASE + DRM_IOCTL_I830_SETPARAM, drm_i830_setparam_t)
 DECL|struct|_drm_i830_clear
 r_typedef
 r_struct

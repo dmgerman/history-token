@@ -240,7 +240,7 @@ DECL|macro|MAX_PXM_DOMAINS
 mdefine_line|#define MAX_PXM_DOMAINS (256)
 r_extern
 r_int
-id|__initdata
+id|__devinitdata
 id|pxm_to_nid_map
 (braket
 id|MAX_PXM_DOMAINS

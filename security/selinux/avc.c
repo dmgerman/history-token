@@ -2278,7 +2278,7 @@ id|AF_INET
 suffix:colon
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -2324,7 +2324,7 @@ id|AF_INET6
 suffix:colon
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign

@@ -89,6 +89,18 @@ suffix:semicolon
 )brace
 id|pmd_t
 suffix:semicolon
+DECL|member|pud
+DECL|typedef|pud_t
+r_typedef
+r_struct
+(brace
+r_int
+r_int
+id|pud
+suffix:semicolon
+)brace
+id|pud_t
+suffix:semicolon
 DECL|member|pgd
 DECL|typedef|pgd_t
 r_typedef
@@ -100,18 +112,6 @@ id|pgd
 suffix:semicolon
 )brace
 id|pgd_t
-suffix:semicolon
-DECL|member|pml4
-DECL|typedef|pml4_t
-r_typedef
-r_struct
-(brace
-r_int
-r_int
-id|pml4
-suffix:semicolon
-)brace
-id|pml4_t
 suffix:semicolon
 DECL|macro|PTE_MASK
 mdefine_line|#define PTE_MASK&t;PHYSICAL_PAGE_MASK
@@ -131,20 +131,20 @@ DECL|macro|pte_val
 mdefine_line|#define pte_val(x)&t;((x).pte)
 DECL|macro|pmd_val
 mdefine_line|#define pmd_val(x)&t;((x).pmd)
+DECL|macro|pud_val
+mdefine_line|#define pud_val(x)&t;((x).pud)
 DECL|macro|pgd_val
 mdefine_line|#define pgd_val(x)&t;((x).pgd)
-DECL|macro|pml4_val
-mdefine_line|#define pml4_val(x)&t;((x).pml4)
 DECL|macro|pgprot_val
 mdefine_line|#define pgprot_val(x)&t;((x).pgprot)
 DECL|macro|__pte
 mdefine_line|#define __pte(x) ((pte_t) { (x) } )
 DECL|macro|__pmd
 mdefine_line|#define __pmd(x) ((pmd_t) { (x) } )
+DECL|macro|__pud
+mdefine_line|#define __pud(x) ((pud_t) { (x) } )
 DECL|macro|__pgd
 mdefine_line|#define __pgd(x) ((pgd_t) { (x) } )
-DECL|macro|__pml4
-mdefine_line|#define __pml4(x) ((pml4_t) { (x) } )
 DECL|macro|__pgprot
 mdefine_line|#define __pgprot(x)&t;((pgprot_t) { (x) } )
 r_extern
@@ -171,21 +171,21 @@ mdefine_line|#define __START_KERNEL&t;&t;0xffffffff80100000UL
 DECL|macro|__START_KERNEL_map
 mdefine_line|#define __START_KERNEL_map&t;0xffffffff80000000UL
 DECL|macro|__PAGE_OFFSET
-mdefine_line|#define __PAGE_OFFSET           0x0000010000000000UL&t;/* 1 &lt;&lt; 40 */
+mdefine_line|#define __PAGE_OFFSET           0xffff810000000000UL
 macro_line|#else
 DECL|macro|__START_KERNEL
 mdefine_line|#define __START_KERNEL&t;&t;0xffffffff80100000
 DECL|macro|__START_KERNEL_map
 mdefine_line|#define __START_KERNEL_map&t;0xffffffff80000000
 DECL|macro|__PAGE_OFFSET
-mdefine_line|#define __PAGE_OFFSET           0x0000010000000000&t;/* 1 &lt;&lt; 40 */
+mdefine_line|#define __PAGE_OFFSET           0xffff810000000000
 macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* to align the pointer to the (next) page boundary */
 DECL|macro|PAGE_ALIGN
 mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
 multiline_comment|/* See Documentation/x86_64/mm.txt for a description of the memory map. */
 DECL|macro|__PHYSICAL_MASK_SHIFT
-mdefine_line|#define __PHYSICAL_MASK_SHIFT&t;40
+mdefine_line|#define __PHYSICAL_MASK_SHIFT&t;46
 DECL|macro|__PHYSICAL_MASK
 mdefine_line|#define __PHYSICAL_MASK&t;&t;((1UL &lt;&lt; __PHYSICAL_MASK_SHIFT) - 1)
 DECL|macro|__VIRTUAL_MASK_SHIFT

@@ -1012,7 +1012,16 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * Some adapter firmware needs communication memory &n; * below 2gig. This tells the init function to set the&n; * dma mask such that fib memory will be allocated where the&n; * adapter firmware can get to it.&n; */
 DECL|macro|AAC_QUIRK_31BIT
-mdefine_line|#define AAC_QUIRK_31BIT&t;1
+mdefine_line|#define AAC_QUIRK_31BIT&t;0x0001
+multiline_comment|/*&n; * Some adapter firmware, when the raid card&squot;s cache is turned off, can not&n; * split up scatter gathers in order to deal with the limits of the&n; * underlying CHIM. This limit is 34 scatter gather elements.&n; */
+DECL|macro|AAC_QUIRK_34SG
+mdefine_line|#define AAC_QUIRK_34SG&t;0x0002
+multiline_comment|/*&n; * This adapter is a slave (no Firmware)&n; */
+DECL|macro|AAC_QUIRK_SLAVE
+mdefine_line|#define AAC_QUIRK_SLAVE 0x0004
+multiline_comment|/*&n; * This adapter is a master.&n; */
+DECL|macro|AAC_QUIRK_MASTER
+mdefine_line|#define AAC_QUIRK_MASTER 0x0008
 multiline_comment|/*&n; *&t;The adapter interface specs all queues to be located in the same&n; *&t;physically contigous block. The host structure that defines the&n; *&t;commuication queues will assume they are each a separate physically&n; *&t;contigous memory region that will support them all being one big&n; *&t;contigous block. &n; *&t;There is a command and response queue for each level and direction of&n; *&t;commuication. These regions are accessed by both the host and adapter.&n; */
 DECL|struct|aac_queue
 r_struct

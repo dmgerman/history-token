@@ -1,5 +1,4 @@
 multiline_comment|/* sis_ds.c -- Private header for Direct Rendering Manager -*- linux-c -*-&n; * Created: Mon Jan  4 10:05:05 1999 by sclin@sis.com.tw&n; *&n; * Copyright 2000 Silicon Integrated Systems Corp, Inc., HsinChu, Taiwan.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; * &n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; * &n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; * &n; * Authors:&n; *    Sung-Ching Lin &lt;sclin@sis.com.tw&gt;&n; * &n; */
-macro_line|#include &quot;sis.h&quot;
 macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;sis_ds.h&quot;
@@ -26,11 +25,8 @@ op_assign
 id|set_t
 op_star
 )paren
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 r_sizeof
 (paren
@@ -435,11 +431,8 @@ op_star
 id|set
 )paren
 (brace
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|set
 comma
@@ -455,7 +448,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * GLX Hardware Device Driver common code&n; * Copyright (C) 1999 Keith Whitwell&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * KEITH WHITWELL, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM, &n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR &n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE &n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; */
+multiline_comment|/*&n; * GLX Hardware Device Driver common code&n; * Copyright (C) 1999 Wittawat Yamwong&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * WITTAWAT YAMWONG, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM, &n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR &n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE &n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; */
 DECL|macro|ISFREE
 mdefine_line|#define ISFREE(bptr) ((bptr)-&gt;free)
 DECL|function|mmInit
@@ -490,11 +483,8 @@ op_assign
 id|TMemBlock
 op_star
 )paren
-id|DRM
+id|drm_calloc
 c_func
-(paren
-id|calloc
-)paren
 (paren
 l_int|1
 comma
@@ -634,11 +624,8 @@ op_assign
 id|TMemBlock
 op_star
 )paren
-id|DRM
+id|drm_calloc
 c_func
-(paren
-id|calloc
-)paren
 (paren
 l_int|2
 comma
@@ -796,11 +783,8 @@ op_assign
 id|TMemBlock
 op_star
 )paren
-id|DRM
+id|drm_calloc
 c_func
-(paren
-id|calloc
-)paren
 (paren
 l_int|1
 comma
@@ -862,11 +846,8 @@ op_assign
 id|TMemBlock
 op_star
 )paren
-id|DRM
+id|drm_calloc
 c_func
-(paren
-id|calloc
-)paren
 (paren
 l_int|1
 comma
@@ -1133,11 +1114,8 @@ id|p-&gt;next
 op_assign
 id|q-&gt;next
 suffix:semicolon
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|q
 comma
@@ -1526,11 +1504,8 @@ id|q
 op_assign
 id|p-&gt;next
 suffix:semicolon
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|p
 comma

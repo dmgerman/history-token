@@ -559,5 +559,7 @@ DECL|macro|pte_free_tlb
 mdefine_line|#define pte_free_tlb(tlb, ptep)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;tlb-&gt;need_flush = 1;&t;&t;&t;&t;&bslash;&n;&t;__pte_free_tlb(tlb, ptep);&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|pmd_free_tlb
 mdefine_line|#define pmd_free_tlb(tlb, ptep)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;tlb-&gt;need_flush = 1;&t;&t;&t;&t;&bslash;&n;&t;__pmd_free_tlb(tlb, ptep);&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|pud_free_tlb
+mdefine_line|#define pud_free_tlb(tlb, pudp)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;tlb-&gt;need_flush = 1;&t;&t;&t;&t;&bslash;&n;&t;__pud_free_tlb(tlb, pudp);&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif /* _ASM_IA64_TLB_H */
 eof

@@ -233,6 +233,11 @@ id|machine_is_avila
 c_func
 (paren
 )paren
+op_logical_or
+id|machine_is_ixdp465
+c_func
+(paren
+)paren
 )paren
 id|pci_common_init
 c_func

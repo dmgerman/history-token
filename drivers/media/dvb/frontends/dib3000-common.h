@@ -177,7 +177,7 @@ mdefine_line|#define rd(reg) dib3000_read_reg(state,reg)
 DECL|macro|wr
 mdefine_line|#define wr(reg,val) if (dib3000_write_reg(state,reg,val)) &bslash;&n;&t;{ err(&quot;while sending 0x%04x to 0x%04x.&quot;,val,reg); return -EREMOTEIO; }
 DECL|macro|wr_foreach
-mdefine_line|#define wr_foreach(a,v) { int i; &bslash;&n;&t;if (sizeof(a) != sizeof(v)) &bslash;&n;&t;&t;err(&quot;sizeof: %d %d is different&quot;,sizeof(a),sizeof(v));&bslash;&n;&t;for (i=0; i &lt; sizeof(a)/sizeof(u16); i++) &bslash;&n;&t;&t;wr(a[i],v[i]); &bslash;&n;&t;}
+mdefine_line|#define wr_foreach(a,v) { int i; &bslash;&n;&t;if (sizeof(a) != sizeof(v)) &bslash;&n;&t;&t;err(&quot;sizeof: %zd %zd is different&quot;,sizeof(a),sizeof(v));&bslash;&n;&t;for (i=0; i &lt; sizeof(a)/sizeof(u16); i++) &bslash;&n;&t;&t;wr(a[i],v[i]); &bslash;&n;&t;}
 DECL|macro|set_or
 mdefine_line|#define set_or(reg,val) wr(reg,rd(reg) | val)
 DECL|macro|set_and

@@ -2191,10 +2191,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;virtadr
 )paren
 suffix:semicolon
@@ -2354,10 +2350,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;virtadr
 )paren
 suffix:semicolon
@@ -5747,10 +5739,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;virtadr
 )paren
 suffix:semicolon

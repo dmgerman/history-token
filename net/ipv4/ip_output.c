@@ -148,7 +148,7 @@ id|ip_select_ttl
 c_func
 (paren
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 comma
@@ -213,7 +213,7 @@ id|opt
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -1021,7 +1021,7 @@ op_assign
 id|skb-&gt;sk
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -2748,7 +2748,7 @@ id|flags
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -3961,7 +3961,7 @@ id|flags
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -4588,7 +4588,7 @@ op_star
 id|tail_skb
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -5077,7 +5077,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -5247,7 +5247,7 @@ id|len
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign

@@ -1,5 +1,4 @@
 multiline_comment|/* radeon_state.c -- State support for Radeon -*- linux-c -*-&n; *&n; * Copyright 2000 VA Linux Systems, Inc., Fremont, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; *    Kevin E. Martin &lt;martin@valinux.com&gt;&n; */
-macro_line|#include &quot;radeon.h&quot;
 macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;drm_sarea.h&quot;
@@ -6409,6 +6408,9 @@ c_func
 l_string|&quot;radeon_cp_dispatch_texture: EAGAIN&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|DRM_COPY_TO_USER
 c_func
 (paren
@@ -6421,6 +6423,13 @@ r_sizeof
 op_star
 id|image
 )paren
+)paren
+)paren
+r_return
+id|DRM_ERR
+c_func
+(paren
+id|EFAULT
 )paren
 suffix:semicolon
 r_return
@@ -7095,7 +7104,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Called whenever a client dies, from DRM(release).&n; * NOTE:  Lock isn&squot;t necessarily held when this is called!&n; */
+multiline_comment|/* Called whenever a client dies, from drm_release.&n; * NOTE:  Lock isn&squot;t necessarily held when this is called!&n; */
 DECL|function|radeon_do_cleanup_pageflip
 r_int
 id|radeon_do_cleanup_pageflip
@@ -11087,7 +11096,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* When a client dies:&n; *    - Check for and clean up flipped page state&n; *    - Free any alloced GART memory.&n; *&n; * DRM infrastructure takes care of reclaiming dma buffers.&n; */
 DECL|function|radeon_driver_prerelease
-r_static
 r_void
 id|radeon_driver_prerelease
 c_func
@@ -11144,7 +11152,6 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|radeon_driver_pretakedown
-r_static
 r_void
 id|radeon_driver_pretakedown
 c_func
@@ -11162,7 +11169,6 @@ id|dev
 suffix:semicolon
 )brace
 DECL|function|radeon_driver_open_helper
-r_static
 r_int
 id|radeon_driver_open_helper
 c_func
@@ -11194,11 +11200,8 @@ r_struct
 id|drm_radeon_driver_file_fields
 op_star
 )paren
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 r_sizeof
 (paren
@@ -11242,7 +11245,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|radeon_driver_free_filp_priv
-r_static
 r_void
 id|radeon_driver_free_filp_priv
 c_func
@@ -11263,11 +11265,8 @@ id|radeon_priv
 op_assign
 id|filp_priv-&gt;driver_priv
 suffix:semicolon
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|radeon_priv
 comma
@@ -11279,79 +11278,6 @@ id|radeon_priv
 comma
 id|DRM_MEM_FILES
 )paren
-suffix:semicolon
-)brace
-DECL|function|radeon_driver_register_fns
-r_void
-id|radeon_driver_register_fns
-c_func
-(paren
-r_struct
-id|drm_device
-op_star
-id|dev
-)paren
-(brace
-id|dev-&gt;driver_features
-op_assign
-id|DRIVER_USE_AGP
-op_or
-id|DRIVER_USE_MTRR
-op_or
-id|DRIVER_PCI_DMA
-op_or
-id|DRIVER_SG
-op_or
-id|DRIVER_HAVE_IRQ
-op_or
-id|DRIVER_HAVE_DMA
-op_or
-id|DRIVER_IRQ_SHARED
-op_or
-id|DRIVER_IRQ_VBL
-suffix:semicolon
-id|dev-&gt;dev_priv_size
-op_assign
-r_sizeof
-(paren
-id|drm_radeon_buf_priv_t
-)paren
-suffix:semicolon
-id|dev-&gt;fn_tbl.prerelease
-op_assign
-id|radeon_driver_prerelease
-suffix:semicolon
-id|dev-&gt;fn_tbl.pretakedown
-op_assign
-id|radeon_driver_pretakedown
-suffix:semicolon
-id|dev-&gt;fn_tbl.open_helper
-op_assign
-id|radeon_driver_open_helper
-suffix:semicolon
-id|dev-&gt;fn_tbl.free_filp_priv
-op_assign
-id|radeon_driver_free_filp_priv
-suffix:semicolon
-id|dev-&gt;fn_tbl.vblank_wait
-op_assign
-id|radeon_driver_vblank_wait
-suffix:semicolon
-id|dev-&gt;fn_tbl.irq_preinstall
-op_assign
-id|radeon_driver_irq_preinstall
-suffix:semicolon
-id|dev-&gt;fn_tbl.irq_postinstall
-op_assign
-id|radeon_driver_irq_postinstall
-suffix:semicolon
-id|dev-&gt;fn_tbl.irq_uninstall
-op_assign
-id|radeon_driver_irq_uninstall
-suffix:semicolon
-id|dev-&gt;fn_tbl.irq_handler
-op_assign
-id|radeon_driver_irq_handler
 suffix:semicolon
 )brace
 eof

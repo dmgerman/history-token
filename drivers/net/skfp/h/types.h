@@ -14,34 +14,17 @@ macro_line|#ifndef _far
 DECL|macro|_far
 mdefine_line|#define _far
 macro_line|#endif
-macro_line|#ifndef MEM_MAPPED_IO 
-singleline_comment|// &quot;normal&quot; IO
 DECL|macro|inp
-mdefine_line|#define inp(p)  inb(p)
+mdefine_line|#define inp(p)  ioread8(p)
 DECL|macro|inpw
-mdefine_line|#define inpw(p)&t;inw(p)
+mdefine_line|#define inpw(p)&t;ioread16(p)
 DECL|macro|inpd
-mdefine_line|#define inpd(p) inl(p)
+mdefine_line|#define inpd(p) ioread32(p)
 DECL|macro|outp
-mdefine_line|#define outp(p,c)  outb(c,p)
+mdefine_line|#define outp(p,c)  iowrite8(c,p)
 DECL|macro|outpw
-mdefine_line|#define outpw(p,s) outw(s,p)
+mdefine_line|#define outpw(p,s) iowrite16(s,p)
 DECL|macro|outpd
-mdefine_line|#define outpd(p,l) outl(l,p)
-macro_line|#else 
-singleline_comment|// memory mapped io
-DECL|macro|inp
-mdefine_line|#define inp(a)&t;&t;readb(a)
-DECL|macro|inpw
-mdefine_line|#define inpw(a)&t;&t;readw(a)
-DECL|macro|inpd
-mdefine_line|#define inpd(a)&t;&t;readl(a)
-DECL|macro|outp
-mdefine_line|#define outp(a,v)&t;writeb(v, a)&t;
-DECL|macro|outpw
-mdefine_line|#define outpw(a,v)&t;writew(v, a)&t;
-DECL|macro|outpd
-mdefine_line|#define outpd(a,v)&t;writel(v, a)&t;
-macro_line|#endif
+mdefine_line|#define outpd(p,l) iowrite32(l,p)
 macro_line|#endif&t;/* _TYPES_ */
 eof

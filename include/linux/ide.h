@@ -4888,7 +4888,7 @@ op_star
 id|name
 suffix:semicolon
 DECL|member|init_setup
-r_void
+r_int
 (paren
 op_star
 id|init_setup
@@ -5025,7 +5025,7 @@ DECL|typedef|ide_pci_device_t
 id|ide_pci_device_t
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|ide_setup_pci_device
 c_func
 (paren
@@ -5038,7 +5038,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|ide_setup_pci_devices
 c_func
 (paren

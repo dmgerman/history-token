@@ -1186,6 +1186,7 @@ id|OFF_BOARD
 suffix:colon
 id|NEVER_BOARD
 suffix:semicolon
+r_return
 id|ide_setup_pci_device
 c_func
 (paren
@@ -1193,9 +1194,6 @@ id|dev
 comma
 id|d
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|hpt34x_pci_tbl

@@ -2895,6 +2895,7 @@ id|res
 suffix:semicolon
 )brace
 DECL|function|ax25_create
+r_static
 r_int
 id|ax25_create
 c_func

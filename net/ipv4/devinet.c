@@ -1456,6 +1456,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|inet_rtm_deladdr
+r_static
 r_int
 id|inet_rtm_deladdr
 c_func
@@ -1680,6 +1681,7 @@ id|EADDRNOTAVAIL
 suffix:semicolon
 )brace
 DECL|function|inet_rtm_newaddr
+r_static
 r_int
 id|inet_rtm_newaddr
 c_func

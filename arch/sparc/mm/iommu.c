@@ -464,6 +464,25 @@ comma
 id|IOMMU_NPTES
 )paren
 suffix:semicolon
+multiline_comment|/* To be coherent on HyperSparc, the page color of DVMA&n;&t; * and physical addresses must match.&n;&t; */
+r_if
+c_cond
+(paren
+id|srmmu_modtype
+op_eq
+id|HyperSparc
+)paren
+id|iommu-&gt;usemap.num_colors
+op_assign
+id|vac_cache_size
+op_rshift
+id|PAGE_SHIFT
+suffix:semicolon
+r_else
+id|iommu-&gt;usemap.num_colors
+op_assign
+l_int|1
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -499,10 +518,12 @@ id|iommu
 suffix:semicolon
 )brace
 multiline_comment|/* This begs to be btfixup-ed by srmmu. */
-DECL|function|iommu_viking_flush_iotlb
+multiline_comment|/* Flush the iotlb entries to ram. */
+multiline_comment|/* This could be better if we didn&squot;t have to flush whole pages. */
+DECL|function|iommu_flush_iotlb
 r_static
 r_void
-id|iommu_viking_flush_iotlb
+id|iommu_flush_iotlb
 c_func
 (paren
 id|iopte_t
@@ -600,6 +621,28 @@ id|PAGE_SIZE
 suffix:semicolon
 )brace
 )brace
+r_else
+(brace
+r_while
+c_loop
+(paren
+id|start
+OL
+id|end
+)paren
+(brace
+id|__flush_page_to_ram
+c_func
+(paren
+id|start
+)paren
+suffix:semicolon
+id|start
+op_add_assign
+id|PAGE_SIZE
+suffix:semicolon
+)brace
+)brace
 )brace
 DECL|function|iommu_get_one
 r_static
@@ -647,6 +690,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+multiline_comment|/* page color = pfn of page */
 id|ioptex
 op_assign
 id|bit_map_string_get
@@ -657,7 +701,11 @@ id|iommu-&gt;usemap
 comma
 id|npages
 comma
-l_int|1
+id|page_to_pfn
+c_func
+(paren
+id|page
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -752,7 +800,7 @@ id|page
 op_increment
 suffix:semicolon
 )brace
-id|iommu_viking_flush_iotlb
+id|iommu_flush_iotlb
 c_func
 (paren
 id|iopte0
@@ -760,12 +808,6 @@ comma
 id|npages
 )paren
 suffix:semicolon
-id|flush_cache_all
-c_func
-(paren
-)paren
-suffix:semicolon
-singleline_comment|// hack to fix dma errors with hypersparc
 r_return
 id|busa0
 suffix:semicolon
@@ -1642,6 +1684,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* page color = physical address */
 id|ioptex
 op_assign
 id|bit_map_string_get
@@ -1654,7 +1697,9 @@ id|len
 op_rshift
 id|PAGE_SHIFT
 comma
-l_int|1
+id|addr
+op_rshift
+id|PAGE_SHIFT
 )paren
 suffix:semicolon
 r_if
@@ -1828,7 +1873,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|iommu_viking_flush_iotlb
+id|iommu_flush_iotlb
 c_func
 (paren
 id|first

@@ -151,11 +151,11 @@ id|u8
 id|register_bit_offset
 suffix:semicolon
 multiline_comment|/* Bit offset within the register */
-DECL|member|reserved
+DECL|member|access_width
 id|u8
-id|reserved
+id|access_width
 suffix:semicolon
-multiline_comment|/* Must be 0 */
+multiline_comment|/* Minimum Access size (ACPI 3.0) */
 DECL|member|address
 id|u64
 id|address

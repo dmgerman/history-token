@@ -1,15 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/affs/namei.c&n; *&n; *  (c) 1996  Hans-Joachim Widmaier - Rewritten&n; *&n; *  (C) 1993  Ray Burr - Modified for Amiga FFS filesystem.&n; *&n; *  (C) 1991  Linus Torvalds - minix filesystem&n; */
-macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/affs_fs.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
-macro_line|#include &lt;linux/amigaffs.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &quot;affs.h&quot;
 DECL|typedef|toupper_t
 r_typedef
 r_int
@@ -20,11 +10,6 @@ id|toupper_t
 (paren
 r_int
 )paren
-suffix:semicolon
-r_extern
-r_struct
-id|inode_operations
-id|affs_symlink_inode_operations
 suffix:semicolon
 r_static
 r_int

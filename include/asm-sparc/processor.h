@@ -13,11 +13,6 @@ macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/btfixup.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-multiline_comment|/*&n; * Bus types&n; */
-DECL|macro|MCA_bus
-mdefine_line|#define MCA_bus 0
-DECL|macro|MCA_bus__is_a_macro
-mdefine_line|#define MCA_bus__is_a_macro /* for versions in ksyms.c */
 multiline_comment|/*&n; * The sparc has no problems with write protection&n; */
 DECL|macro|wp_works_ok
 mdefine_line|#define wp_works_ok 1

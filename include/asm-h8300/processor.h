@@ -58,9 +58,6 @@ mdefine_line|#define TASK_SIZE&t;(0xFFFFFFFFUL)
 multiline_comment|/*&n; * This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s. We won&squot;t be using it&n; */
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;0
-multiline_comment|/*&n; * Bus types&n; */
-DECL|macro|MCA_bus
-mdefine_line|#define MCA_bus 0
 DECL|struct|thread_struct
 r_struct
 id|thread_struct

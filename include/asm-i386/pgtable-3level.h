@@ -1,6 +1,7 @@
 macro_line|#ifndef _I386_PGTABLE_3LEVEL_H
 DECL|macro|_I386_PGTABLE_3LEVEL_H
 mdefine_line|#define _I386_PGTABLE_3LEVEL_H
+macro_line|#include &lt;asm-generic/pgtable-nopud.h&gt;
 multiline_comment|/*&n; * Intel Physical Address Extension (PAE) Mode - three-level page&n; * tables on PPro+ CPUs.&n; *&n; * Copyright (C) 1999 Ingo Molnar &lt;mingo@redhat.com&gt;&n; */
 DECL|macro|pte_ERROR
 mdefine_line|#define pte_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pte %p(%08lx%08lx).&bslash;n&quot;, __FILE__, __LINE__, &amp;(e), (e).pte_high, (e).pte_low)
@@ -8,51 +9,12 @@ DECL|macro|pmd_ERROR
 mdefine_line|#define pmd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pmd %p(%016Lx).&bslash;n&quot;, __FILE__, __LINE__, &amp;(e), pmd_val(e))
 DECL|macro|pgd_ERROR
 mdefine_line|#define pgd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pgd %p(%016Lx).&bslash;n&quot;, __FILE__, __LINE__, &amp;(e), pgd_val(e))
-DECL|function|pgd_none
-r_static
-r_inline
-r_int
-id|pgd_none
-c_func
-(paren
-id|pgd_t
-id|pgd
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|pgd_bad
-r_static
-r_inline
-r_int
-id|pgd_bad
-c_func
-(paren
-id|pgd_t
-id|pgd
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|pgd_present
-r_static
-r_inline
-r_int
-id|pgd_present
-c_func
-(paren
-id|pgd_t
-id|pgd
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
+DECL|macro|pud_none
+mdefine_line|#define pud_none(pud)&t;&t;&t;&t;0
+DECL|macro|pud_bad
+mdefine_line|#define pud_bad(pud)&t;&t;&t;&t;0
+DECL|macro|pud_present
+mdefine_line|#define pud_present(pud)&t;&t;&t;1
 multiline_comment|/*&n; * Is the pte executable?&n; */
 DECL|function|pte_x
 r_static
@@ -160,26 +122,32 @@ DECL|macro|set_pte_atomic
 mdefine_line|#define set_pte_atomic(pteptr,pteval) &bslash;&n;&t;&t;set_64bit((unsigned long long *)(pteptr),pte_val(pteval))
 DECL|macro|set_pmd
 mdefine_line|#define set_pmd(pmdptr,pmdval) &bslash;&n;&t;&t;set_64bit((unsigned long long *)(pmdptr),pmd_val(pmdval))
-DECL|macro|set_pgd
-mdefine_line|#define set_pgd(pgdptr,pgdval) &bslash;&n;&t;&t;set_64bit((unsigned long long *)(pgdptr),pgd_val(pgdval))
+DECL|macro|set_pud
+mdefine_line|#define set_pud(pudptr,pudval) &bslash;&n;&t;&t;set_64bit((unsigned long long *)(pudptr),pud_val(pudval))
 multiline_comment|/*&n; * Pentium-II erratum A13: in PAE mode we explicitly have to flush&n; * the TLB via cr3 if the top-level pgd is changed...&n; * We do not let the generic code free and clear pgd entries due to&n; * this erratum.&n; */
-DECL|function|pgd_clear
+DECL|function|pud_clear
 r_static
 r_inline
 r_void
-id|pgd_clear
+id|pud_clear
 (paren
-id|pgd_t
+id|pud_t
 op_star
-id|pgd
+id|pud
 )paren
 (brace
 )brace
-DECL|macro|pgd_page
-mdefine_line|#define pgd_page(pgd) &bslash;&n;((unsigned long) __va(pgd_val(pgd) &amp; PAGE_MASK))
+DECL|macro|pmd_page
+mdefine_line|#define pmd_page(pmd) (pfn_to_page(pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
+DECL|macro|pmd_page_kernel
+mdefine_line|#define pmd_page_kernel(pmd) &bslash;&n;((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
+DECL|macro|pud_page
+mdefine_line|#define pud_page(pud) &bslash;&n;((struct page *) __va(pud_val(pud) &amp; PAGE_MASK))
+DECL|macro|pud_page_kernel
+mdefine_line|#define pud_page_kernel(pud) &bslash;&n;((unsigned long) __va(pud_val(pud) &amp; PAGE_MASK))
 multiline_comment|/* Find an entry in the second-level page table.. */
 DECL|macro|pmd_offset
-mdefine_line|#define pmd_offset(dir, address) ((pmd_t *) pgd_page(*(dir)) + &bslash;&n;&t;&t;&t;pmd_index(address))
+mdefine_line|#define pmd_offset(pud, address) ((pmd_t *) pud_page(*(pud)) + &bslash;&n;&t;&t;&t;pmd_index(address))
 DECL|function|ptep_get_and_clear
 r_static
 r_inline
@@ -433,5 +401,7 @@ DECL|macro|__pte_to_swp_entry
 mdefine_line|#define __pte_to_swp_entry(pte)&t;&t;((swp_entry_t){ (pte).pte_high })
 DECL|macro|__swp_entry_to_pte
 mdefine_line|#define __swp_entry_to_pte(x)&t;&t;((pte_t){ 0, (x).val })
+DECL|macro|__pmd_free_tlb
+mdefine_line|#define __pmd_free_tlb(tlb, x)&t;&t;do { } while (0)
 macro_line|#endif /* _I386_PGTABLE_3LEVEL_H */
 eof

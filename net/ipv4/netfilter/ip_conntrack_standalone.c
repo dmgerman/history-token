@@ -3502,8 +3502,13 @@ c_func
 l_string|&quot;ip_conntrack: can&squot;t register to sysctl.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_goto
-id|cleanup
+id|cleanup_localinops
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -3519,6 +3524,8 @@ c_func
 id|ip_ct_sysctl_header
 )paren
 suffix:semicolon
+id|cleanup_localinops
+suffix:colon
 macro_line|#endif
 id|nf_unregister_hook
 c_func
@@ -3600,10 +3607,12 @@ suffix:semicolon
 id|cleanup_proc_stat
 suffix:colon
 macro_line|#ifdef CONFIG_PROC_FS
-id|proc_net_remove
+id|remove_proc_entry
 c_func
 (paren
-l_string|&quot;ip_conntrack_stat&quot;
+l_string|&quot;ip_conntrack&quot;
+comma
+id|proc_net_stat
 )paren
 suffix:semicolon
 id|cleanup_proc_exp

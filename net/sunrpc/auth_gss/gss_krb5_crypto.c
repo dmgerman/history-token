@@ -480,6 +480,7 @@ c_func
 id|krb5_decrypt
 )paren
 suffix:semicolon
+r_static
 r_void
 DECL|function|buf_to_sg
 id|buf_to_sg
