@@ -42,18 +42,10 @@ multiline_comment|/* Driver customization:&n; */
 DECL|macro|DRIVER_PRETAKEDOWN
 mdefine_line|#define DRIVER_PRETAKEDOWN() do {&t;&t;&t;&t;&t;&bslash;&n;&t;gamma_do_cleanup_dma( dev );&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* DMA customization:&n; */
-DECL|macro|__HAVE_DMA
-mdefine_line|#define __HAVE_DMA&t;&t;&t;1
-DECL|macro|__HAVE_OLD_DMA
-mdefine_line|#define __HAVE_OLD_DMA&t;&t;&t;1
 DECL|macro|__HAVE_MULTIPLE_DMA_QUEUES
 mdefine_line|#define __HAVE_MULTIPLE_DMA_QUEUES&t;1
 DECL|macro|__HAVE_DMA_WAITQUEUE
 mdefine_line|#define __HAVE_DMA_WAITQUEUE&t;&t;1
 multiline_comment|/* removed from DRM HAVE_DMA_FREELIST &amp; HAVE_DMA_SCHEDULE */
-DECL|macro|__HAVE_IRQ
-mdefine_line|#define __HAVE_IRQ&t;&t;&t;1
-DECL|macro|__HAVE_IRQ_BH
-mdefine_line|#define __HAVE_IRQ_BH&t;&t;&t;1
 macro_line|#endif /* __GAMMA_H__ */
 eof

@@ -35,12 +35,6 @@ mdefine_line|#define __HAVE_COUNTER8         _DRM_STAT_SECONDARY
 DECL|macro|__HAVE_COUNTER9
 mdefine_line|#define __HAVE_COUNTER9         _DRM_STAT_DMA
 multiline_comment|/* We use our own dma mechanisms, not the drm template code.  However,&n; * the shared IRQ code is useful to us:&n; */
-DECL|macro|__HAVE_DMA
-mdefine_line|#define __HAVE_DMA&t;&t;0
-DECL|macro|__HAVE_IRQ
-mdefine_line|#define __HAVE_IRQ&t;&t;1
-DECL|macro|__HAVE_SHARED_IRQ
-mdefine_line|#define __HAVE_SHARED_IRQ&t;1
 DECL|macro|__HAVE_PM
 mdefine_line|#define __HAVE_PM&t;&t;1
 macro_line|#endif
