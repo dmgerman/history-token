@@ -295,6 +295,27 @@ DECL|macro|RIM_ALL
 mdefine_line|#define RIM_ALL &t;      (ntohl(0xFF0F0000L))
 DECL|macro|RIM_COMPRESSED_INFO
 mdefine_line|#define RIM_COMPRESSED_INFO   (ntohl(0x00000080L))
+multiline_comment|/* Defines for NSInfoBitMask */
+DECL|macro|NSIBM_NFS_NAME
+mdefine_line|#define NSIBM_NFS_NAME&t;&t;0x0001
+DECL|macro|NSIBM_NFS_MODE
+mdefine_line|#define NSIBM_NFS_MODE&t;&t;0x0002
+DECL|macro|NSIBM_NFS_GID
+mdefine_line|#define NSIBM_NFS_GID&t;&t;0x0004
+DECL|macro|NSIBM_NFS_NLINKS
+mdefine_line|#define NSIBM_NFS_NLINKS&t;0x0008
+DECL|macro|NSIBM_NFS_RDEV
+mdefine_line|#define NSIBM_NFS_RDEV&t;&t;0x0010
+DECL|macro|NSIBM_NFS_LINK
+mdefine_line|#define NSIBM_NFS_LINK&t;&t;0x0020
+DECL|macro|NSIBM_NFS_CREATED
+mdefine_line|#define NSIBM_NFS_CREATED&t;0x0040
+DECL|macro|NSIBM_NFS_UID
+mdefine_line|#define NSIBM_NFS_UID&t;&t;0x0080
+DECL|macro|NSIBM_NFS_ACSFLAG
+mdefine_line|#define NSIBM_NFS_ACSFLAG&t;0x0100
+DECL|macro|NSIBM_NFS_MYFLAG
+mdefine_line|#define NSIBM_NFS_MYFLAG&t;0x0200
 multiline_comment|/* open/create modes */
 DECL|macro|OC_MODE_OPEN
 mdefine_line|#define OC_MODE_OPEN&t;  0x01
@@ -332,6 +353,20 @@ mdefine_line|#define AR_WRITE_THROUGH   0x0040
 DECL|macro|AR_OPEN_COMPRESSED
 mdefine_line|#define AR_OPEN_COMPRESSED 0x0100
 macro_line|#endif
+DECL|struct|nw_nfs_info
+r_struct
+id|nw_nfs_info
+(brace
+DECL|member|mode
+id|__u32
+id|mode
+suffix:semicolon
+DECL|member|rdev
+id|__u32
+id|rdev
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|nw_info_struct
 r_struct
 id|nw_info_struct
@@ -625,6 +660,14 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* libncp may depend on there being nothing after entryName */
+macro_line|#ifdef __KERNEL__
+DECL|member|nfs
+r_struct
+id|nw_nfs_info
+id|nfs
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* modify mask - use with MODIFY_DOS_INFO structure */
