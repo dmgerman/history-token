@@ -7553,24 +7553,14 @@ c_func
 l_string|&quot; (NOTLB)&bslash;n&quot;
 )paren
 suffix:semicolon
-(brace
-r_extern
-r_void
-id|show_trace_task
-c_func
-(paren
-id|task_t
-op_star
-id|tsk
-)paren
-suffix:semicolon
-id|show_trace_task
+id|show_stack
 c_func
 (paren
 id|p
+comma
+l_int|NULL
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|show_state
 r_void
