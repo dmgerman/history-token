@@ -908,10 +908,6 @@ c_func
 (paren
 id|mask
 )paren
-op_logical_or
-id|vec
-op_ge
-id|IA64_NUM_VECTORS
 )paren
 r_return
 suffix:semicolon
