@@ -1409,6 +1409,11 @@ comma
 op_star
 id|next
 suffix:semicolon
+r_int
+id|count
+op_assign
+l_int|0
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
 (paren
@@ -1499,6 +1504,9 @@ op_amp
 id|drv-&gt;references
 )paren
 suffix:semicolon
+id|count
+op_increment
+suffix:semicolon
 id|ACPI_DEBUG_PRINT
 c_func
 (paren
@@ -1533,7 +1541,7 @@ suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-l_int|0
+id|count
 )paren
 suffix:semicolon
 )brace
@@ -1665,7 +1673,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * acpi_bus_register_driver &n; * ------------------------ &n; * Registers a driver with the ACPI bus.  Searches the namespace for all&n; * devices that match the driver&squot;s criteria and binds.&n; */
+multiline_comment|/**&n; * acpi_bus_register_driver &n; * ------------------------ &n; * Registers a driver with the ACPI bus.  Searches the namespace for all&n; * devices that match the driver&squot;s criteria and binds.  Returns the&n; * number of devices that were claimed by the driver, or a negative&n; * error status for failure.&n; */
 r_int
 DECL|function|acpi_bus_register_driver
 id|acpi_bus_register_driver
@@ -1677,9 +1685,7 @@ id|driver
 )paren
 (brace
 r_int
-id|error
-op_assign
-l_int|0
+id|count
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
@@ -1702,9 +1708,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|driver
 )paren
-(brace
+id|return_VALUE
+c_func
+(paren
+op_minus
+id|EINVAL
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1729,23 +1742,18 @@ op_amp
 id|acpi_device_lock
 )paren
 suffix:semicolon
+id|count
+op_assign
 id|acpi_driver_attach
 c_func
 (paren
 id|driver
 )paren
 suffix:semicolon
-)brace
-r_else
-id|error
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-id|error
+id|count
 )paren
 suffix:semicolon
 )brace
