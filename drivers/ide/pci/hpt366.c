@@ -283,6 +283,7 @@ suffix:colon
 l_string|&quot;yes&quot;
 )paren
 suffix:semicolon
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -387,6 +388,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|p
 op_add_assign
 id|sprintf
