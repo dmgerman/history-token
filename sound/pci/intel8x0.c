@@ -556,6 +556,16 @@ mdefine_line|#define ICH_STARTBM&t;&t;&t;0x01&t;/* start busmaster operation */
 multiline_comment|/* global block */
 DECL|macro|ICH_REG_GLOB_CNT
 mdefine_line|#define ICH_REG_GLOB_CNT&t;&t;0x2c&t;/* dword - global control */
+DECL|macro|ICH_PCM_SPDIF_MASK
+mdefine_line|#define   ICH_PCM_SPDIF_MASK&t;0xc0000000&t;/* s/pdif pcm slot mask (ICH4) */
+DECL|macro|ICH_PCM_SPDIF_NONE
+mdefine_line|#define   ICH_PCM_SPDIF_NONE&t;0x00000000&t;/* reserved - undefined */
+DECL|macro|ICH_PCM_SPDIF_78
+mdefine_line|#define   ICH_PCM_SPDIF_78&t;0x40000000&t;/* s/pdif pcm on slots 7&amp;8 */
+DECL|macro|ICH_PCM_SPDIF_69
+mdefine_line|#define   ICH_PCM_SPDIF_69&t;0x80000000&t;/* s/pdif pcm on slots 6&amp;9 */
+DECL|macro|ICH_PCM_SPDIF_1011
+mdefine_line|#define   ICH_PCM_SPDIF_1011&t;0xc0000000&t;/* s/pdif pcm on slots 10&amp;11 */
 DECL|macro|ICH_PCM_20BIT
 mdefine_line|#define   ICH_PCM_20BIT&t;&t;0x00400000&t;/* 20-bit samples (ICH4) */
 DECL|macro|ICH_PCM_246_MASK
