@@ -7934,7 +7934,7 @@ comma
 dot
 r_class
 op_assign
-id|I2C_ADAP_CLASS_CAM_DIGITAL
+id|I2C_CLASS_CAM_DIGITAL
 comma
 dot
 id|owner

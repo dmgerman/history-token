@@ -1,6 +1,5 @@
 multiline_comment|/*  linux/drivers/i2c/scx200_acb.c &n;&n;    Copyright (c) 2001,2002 Christer Weinigel &lt;wingel@nano-system.com&gt;&n;&n;    National Semiconductor SCx200 ACCESS.bus support&n;    &n;    Based on i2c-keywest.c which is:&n;        Copyright (c) 2001 Benjamin Herrenschmidt &lt;benh@kernel.crashing.org&gt;&n;        Copyright (c) 2000 Philip Edelbrock &lt;phil@stimpy.netroedge.com&gt;&n;    &n;    This program is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU General Public License as&n;    published by the Free Software Foundation; either version 2 of the&n;    License, or (at your option) any later version.&n;   &n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;    General Public License for more details.&n;   &n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

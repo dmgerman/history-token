@@ -348,9 +348,9 @@ mdefine_line|#define PWM_FROM_REG(val)&t;&t;(val)
 DECL|macro|PWM_TO_REG
 mdefine_line|#define PWM_TO_REG(val)&t;&t;&t;(SENSORS_LIMIT((val),0,255))
 DECL|macro|BEEP_MASK_FROM_REG
-mdefine_line|#define BEEP_MASK_FROM_REG(val)&t;&t;(val)
+mdefine_line|#define BEEP_MASK_FROM_REG(val,type)&t;((type) == as99127f ? &bslash;&n;&t;&t;&t;&t;&t; (val) ^ 0x7fff : (val))
 DECL|macro|BEEP_MASK_TO_REG
-mdefine_line|#define BEEP_MASK_TO_REG(val)&t;&t;((val) &amp; 0xffffff)
+mdefine_line|#define BEEP_MASK_TO_REG(val,type)&t;((type) == as99127f ? &bslash;&n;&t;&t;&t;&t;&t; (~(val)) &amp; 0x7fff : (val) &amp; 0xffffff)
 DECL|macro|BEEP_ENABLE_TO_REG
 mdefine_line|#define BEEP_ENABLE_TO_REG(val)&t;&t;((val) ? 1 : 0)
 DECL|macro|BEEP_ENABLE_FROM_REG
@@ -1354,24 +1354,98 @@ l_int|NULL
 )paren
 DECL|macro|device_create_file_alarms
 mdefine_line|#define device_create_file_alarms(client) &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_alarms);
-DECL|macro|show_beep_reg
-mdefine_line|#define show_beep_reg(REG, reg) &bslash;&n;static ssize_t show_beep_##reg (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct w83781d_data *data = w83781d_update_device(dev); &bslash;&n;&t;return sprintf(buf,&quot;%ld&bslash;n&quot;, (long)BEEP_##REG##_FROM_REG(data-&gt;beep_##reg)); &bslash;&n;}
-id|show_beep_reg
+DECL|function|show_beep_mask
+r_static
+id|ssize_t
+id|show_beep_mask
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_char
+op_star
+id|buf
+)paren
+(brace
+r_struct
+id|w83781d_data
+op_star
+id|data
+op_assign
+id|w83781d_update_device
 c_func
 (paren
-id|ENABLE
-comma
-id|enable
+id|dev
 )paren
 suffix:semicolon
-id|show_beep_reg
+r_return
+id|sprintf
 c_func
 (paren
-id|MASK
+id|buf
 comma
-id|mask
+l_string|&quot;%ld&bslash;n&quot;
+comma
+(paren
+r_int
+)paren
+id|BEEP_MASK_FROM_REG
+c_func
+(paren
+id|data-&gt;beep_mask
+comma
+id|data-&gt;type
+)paren
 )paren
 suffix:semicolon
+)brace
+DECL|function|show_beep_enable
+r_static
+id|ssize_t
+id|show_beep_enable
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_char
+op_star
+id|buf
+)paren
+(brace
+r_struct
+id|w83781d_data
+op_star
+id|data
+op_assign
+id|w83781d_update_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_return
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;%ld&bslash;n&quot;
+comma
+(paren
+r_int
+)paren
+id|BEEP_ENABLE_FROM_REG
+c_func
+(paren
+id|data-&gt;beep_enable
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|macro|BEEP_ENABLE
 mdefine_line|#define BEEP_ENABLE&t;&t;&t;0&t;/* Store beep_enable */
 DECL|macro|BEEP_MASK
@@ -1453,6 +1527,8 @@ id|BEEP_MASK_TO_REG
 c_func
 (paren
 id|val
+comma
+id|data-&gt;type
 )paren
 suffix:semicolon
 id|w83781d_write_value
@@ -2960,7 +3036,7 @@ id|adapter
 op_member_access_from_pointer
 r_class
 op_amp
-id|I2C_ADAP_CLASS_SMBUS
+id|I2C_CLASS_HWMON
 )paren
 )paren
 r_return
@@ -5264,6 +5340,29 @@ r_return
 id|err
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|i2c_get_clientdata
+c_func
+(paren
+id|client
+)paren
+op_eq
+l_int|NULL
+)paren
+(brace
+multiline_comment|/* subclients */
+id|kfree
+c_func
+(paren
+id|client
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* main client */
 id|kfree
 c_func
 (paren
@@ -5274,6 +5373,7 @@ id|client
 )paren
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

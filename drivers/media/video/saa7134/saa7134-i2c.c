@@ -1541,11 +1541,11 @@ op_assign
 id|dec_use
 comma
 macro_line|#endif
-macro_line|#ifdef I2C_ADAP_CLASS_TV_ANALOG
+macro_line|#ifdef I2C_CLASS_TV_ANALOG
 dot
 r_class
 op_assign
-id|I2C_ADAP_CLASS_TV_ANALOG
+id|I2C_CLASS_TV_ANALOG
 comma
 macro_line|#endif
 id|I2C_DEVNAME

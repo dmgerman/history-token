@@ -564,7 +564,7 @@ comma
 dot
 r_class
 op_assign
-id|I2C_ADAP_CLASS_TV_ANALOG
+id|I2C_CLASS_TV_ANALOG
 comma
 dot
 id|name
@@ -637,7 +637,7 @@ comma
 dot
 r_class
 op_assign
-id|I2C_ADAP_CLASS_DDC
+id|I2C_CLASS_DDC
 comma
 dot
 id|name
