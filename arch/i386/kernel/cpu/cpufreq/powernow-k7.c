@@ -282,10 +282,10 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* This parameter is used in order to force ACPI instead of legacy method for&n; * configuration purpose.&n; */
-DECL|variable|powernow_acpi_force
+DECL|variable|acpi_force
 r_static
 r_int
-id|powernow_acpi_force
+id|acpi_force
 suffix:semicolon
 DECL|variable|powernow_table
 r_static
@@ -2506,7 +2506,7 @@ op_amp
 id|BROKEN_CPUFREQ
 )paren
 op_logical_or
-id|powernow_acpi_force
+id|acpi_force
 )paren
 (brace
 id|printk
@@ -2847,7 +2847,7 @@ suffix:semicolon
 id|module_param
 c_func
 (paren
-id|powernow_acpi_force
+id|acpi_force
 comma
 r_int
 comma
