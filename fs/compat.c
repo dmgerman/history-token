@@ -3278,7 +3278,10 @@ id|__user
 op_star
 id|ptr32
 comma
-id|u64
+r_struct
+id|iocb
+id|__user
+op_star
 id|__user
 op_star
 id|ptr64
@@ -3328,9 +3331,6 @@ c_cond
 id|put_user
 c_func
 (paren
-(paren
-id|u64
-)paren
 id|compat_ptr
 c_func
 (paren
@@ -3431,11 +3431,6 @@ id|nr
 comma
 id|iocb
 comma
-(paren
-id|u64
-id|__user
-op_star
-)paren
 id|iocb64
 )paren
 suffix:semicolon
