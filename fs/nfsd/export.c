@@ -1568,9 +1568,6 @@ r_struct
 id|svc_fh
 id|fh
 suffix:semicolon
-id|kdev_t
-id|dev
-suffix:semicolon
 r_int
 id|err
 suffix:semicolon
@@ -1620,14 +1617,10 @@ id|inode
 op_assign
 id|nd.dentry-&gt;d_inode
 suffix:semicolon
-id|dev
-op_assign
-id|inode-&gt;i_dev
-suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfsd: exp_rootfh(%s [%p] %s:%02x:%02x/%ld)&bslash;n&quot;
+l_string|&quot;nfsd: exp_rootfh(%s [%p] %s:%s/%ld)&bslash;n&quot;
 comma
 id|path
 comma
@@ -1635,21 +1628,8 @@ id|nd.dentry
 comma
 id|clp-&gt;cl_ident
 comma
-id|major
-c_func
-(paren
-id|dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
-id|minor
-c_func
-(paren
-id|dev
-)paren
-comma
-(paren
-r_int
-)paren
 id|inode-&gt;i_ino
 )paren
 suffix:semicolon

@@ -940,11 +940,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;VFS: dquota write failed on dev %s&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|dquot-&gt;dq_sb-&gt;s_dev
-)paren
+id|dquot-&gt;dq_sb-&gt;s_id
 )paren
 suffix:semicolon
 id|set_fs
@@ -1590,11 +1586,7 @@ c_func
 (paren
 l_string|&quot;VFS: device %s, dquot of %s %d&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|dquot-&gt;dq_sb-&gt;s_dev
-)paren
+id|dquot-&gt;dq_sb-&gt;s_id
 comma
 id|quotatypes
 (braket
@@ -2918,15 +2910,7 @@ c_func
 (paren
 id|current-&gt;tty
 comma
-(paren
-r_char
-op_star
-)paren
-id|bdevname
-c_func
-(paren
-id|dquot-&gt;dq_sb-&gt;s_dev
-)paren
+id|dquot-&gt;dq_sb-&gt;s_id
 )paren
 suffix:semicolon
 r_if
