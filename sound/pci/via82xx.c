@@ -10213,6 +10213,24 @@ id|VIA_DXS_NO_VRA
 comma
 multiline_comment|/* ASRock K7VM2 */
 (brace
+dot
+id|vendor
+op_assign
+l_int|0x147b
+comma
+dot
+id|device
+op_assign
+l_int|0x1415
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_NO_VRA
+)brace
+comma
+multiline_comment|/* Abit AV8 */
+(brace
 )brace
 multiline_comment|/* terminator */
 )brace
