@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -41,6 +41,13 @@ r_struct
 id|efi
 id|efi
 suffix:semicolon
+DECL|variable|efi
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|efi
+)paren
+suffix:semicolon
 DECL|variable|__initdata
 r_struct
 id|efi
@@ -67,15 +74,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * efi_dir is allocated here, but the directory isn&squot;t created&n; * here, as proc_mkdir() doesn&squot;t work this early in the bootup&n; * process.  Therefore, each module, like efivars, must test for&n; *    if (!efi_dir) efi_dir = proc_mkdir(&quot;efi&quot;, NULL);&n; * prior to creating their own entries under /proc/efi.&n; */
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|variable|efi_dir
-r_struct
-id|proc_dir_entry
-op_star
-id|efi_dir
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * To make EFI call EFI runtime service in physical addressing mode we need&n; * prelog/epilog before/after the invocation to disable interrupt, to&n; * claim EFI runtime service handler exclusively and to duplicate a memory in&n; * low memory space say 0 - 3G.&n; */
 DECL|variable|efi_rt_eflags
 r_static
