@@ -1,6 +1,7 @@
 multiline_comment|/* &n; * RNDIS MSG parser&n; * &n; * Version:     $Id: rndis.c,v 1.19 2004/03/25 21:33:46 robert Exp $&n; * &n; * Authors:&t;Benedikt Spranger, Pengutronix&n; * &t;&t;Robert Schwebel, Pengutronix&n; * &n; *              This program is free software; you can redistribute it and/or&n; *              modify it under the terms of the GNU General Public License&n; *              version 2, as published by the Free Software Foundation. &n; * &n; *&t;&t;This software was originally developed in conformance with&n; *&t;&t;Microsoft&squot;s Remote NDIS Specification License Agreement.&n; *              &n; * 03/12/2004 Kai-Uwe Bloem &lt;linux-development@auerswald.de&gt;&n; *&t;&t;Fixed message length bug in init_response&n; * &n; * 03/25/2004 Kai-Uwe Bloem &lt;linux-development@auerswald.de&gt;&n; * &t;&t;Fixed rndis_rm_hdr length bug.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -24,11 +25,13 @@ id|rndis_debug
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 (paren
 id|rndis_debug
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
