@@ -4720,6 +4720,7 @@ r_int
 id|arg
 )paren
 (brace
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -4818,6 +4819,12 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#else
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|set_pio_mode
 r_static

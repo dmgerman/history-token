@@ -5963,6 +5963,23 @@ id|drive
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#else
+DECL|function|__ide_dma_off
+r_static
+r_inline
+r_int
+id|__ide_dma_off
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 macro_line|#ifndef CONFIG_BLK_DEV_IDEDMA_PCI
 DECL|function|ide_release_dma

@@ -5217,14 +5217,17 @@ id|ide_stopped
 suffix:semicolon
 )brace
 DECL|function|check_dma_crc
+r_static
 r_void
 id|check_dma_crc
+c_func
 (paren
 id|ide_drive_t
 op_star
 id|drive
 )paren
 (brace
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -5282,7 +5285,6 @@ id|drive
 suffix:semicolon
 )brace
 r_else
-(brace
 (paren
 r_void
 )paren
@@ -5292,7 +5294,7 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-)brace
+macro_line|#endif
 )brace
 DECL|function|pre_reset
 r_void
