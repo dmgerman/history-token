@@ -9859,11 +9859,6 @@ id|dev_boot_phase
 op_assign
 l_int|0
 suffix:semicolon
-id|probe_old_netdevs
-c_func
-(paren
-)paren
-suffix:semicolon
 id|open_softirq
 c_func
 (paren
