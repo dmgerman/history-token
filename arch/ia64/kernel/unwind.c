@@ -11,6 +11,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/ptrace_offsets.h&gt;
 macro_line|#include &lt;asm/rse.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;entry.h&quot;
@@ -10735,12 +10736,10 @@ r_void
 )paren
 (brace
 r_extern
-r_int
-id|ia64_unw_start
-comma
-id|ia64_unw_end
-comma
+r_char
 id|__gp
+(braket
+)braket
 suffix:semicolon
 r_extern
 r_void
@@ -11106,14 +11105,11 @@ comma
 r_int
 r_int
 )paren
-op_amp
 id|__gp
 comma
-op_amp
-id|ia64_unw_start
+id|__start_unwind
 comma
-op_amp
-id|ia64_unw_end
+id|__end_unwind
 )paren
 suffix:semicolon
 )brace

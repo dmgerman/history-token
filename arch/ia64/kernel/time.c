@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 r_extern
 r_int
@@ -48,10 +49,6 @@ r_int
 r_int
 id|prof_cpu_mask
 suffix:semicolon
-r_extern
-r_char
-id|_stext
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -85,7 +82,6 @@ op_sub_assign
 r_int
 r_int
 )paren
-op_amp
 id|_stext
 suffix:semicolon
 id|ip
