@@ -5801,7 +5801,7 @@ c_func
 op_amp
 id|ud-&gt;device
 comma
-l_int|0
+id|PMSG_SUSPEND
 comma
 l_int|0
 )paren
