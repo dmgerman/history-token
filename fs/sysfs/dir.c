@@ -227,8 +227,6 @@ id|sd
 )paren
 r_return
 op_minus
-id|ENOMEMurn
-op_minus
 id|ENOMEM
 suffix:semicolon
 id|sd-&gt;s_mode
