@@ -192,6 +192,10 @@ op_star
 op_star
 id|donetail
 suffix:semicolon
+DECL|member|cpu
+r_int
+id|cpu
+suffix:semicolon
 )brace
 suffix:semicolon
 id|DECLARE_PER_CPU
@@ -208,28 +212,111 @@ r_struct
 id|rcu_ctrlblk
 id|rcu_ctrlblk
 suffix:semicolon
-DECL|macro|RCU_quiescbatch
-mdefine_line|#define RCU_quiescbatch(cpu)&t;(per_cpu(rcu_data, (cpu)).quiescbatch)
-DECL|macro|RCU_qsctr
-mdefine_line|#define RCU_qsctr(cpu) &t;&t;(per_cpu(rcu_data, (cpu)).qsctr)
-DECL|macro|RCU_last_qsctr
-mdefine_line|#define RCU_last_qsctr(cpu) &t;(per_cpu(rcu_data, (cpu)).last_qsctr)
-DECL|macro|RCU_qs_pending
-mdefine_line|#define RCU_qs_pending(cpu)&t;(per_cpu(rcu_data, (cpu)).qs_pending)
-DECL|macro|RCU_batch
-mdefine_line|#define RCU_batch(cpu) &t;&t;(per_cpu(rcu_data, (cpu)).batch)
-DECL|macro|RCU_nxtlist
-mdefine_line|#define RCU_nxtlist(cpu) &t;(per_cpu(rcu_data, (cpu)).nxtlist)
-DECL|macro|RCU_curlist
-mdefine_line|#define RCU_curlist(cpu) &t;(per_cpu(rcu_data, (cpu)).curlist)
-DECL|macro|RCU_nxttail
-mdefine_line|#define RCU_nxttail(cpu) &t;(per_cpu(rcu_data, (cpu)).nxttail)
-DECL|macro|RCU_curtail
-mdefine_line|#define RCU_curtail(cpu) &t;(per_cpu(rcu_data, (cpu)).curtail)
-DECL|macro|RCU_donelist
-mdefine_line|#define RCU_donelist(cpu) &t;(per_cpu(rcu_data, (cpu)).donelist)
-DECL|macro|RCU_donetail
-mdefine_line|#define RCU_donetail(cpu) &t;(per_cpu(rcu_data, (cpu)).donetail)
+multiline_comment|/*&n; * Increment the quiscent state counter.&n; */
+DECL|function|rcu_qsctr_inc
+r_static
+r_inline
+r_void
+id|rcu_qsctr_inc
+c_func
+(paren
+r_int
+id|cpu
+)paren
+(brace
+r_struct
+id|rcu_data
+op_star
+id|rdp
+op_assign
+op_amp
+id|per_cpu
+c_func
+(paren
+id|rcu_data
+comma
+id|cpu
+)paren
+suffix:semicolon
+id|rdp-&gt;qsctr
+op_increment
+suffix:semicolon
+)brace
+DECL|function|__rcu_pending
+r_static
+r_inline
+r_int
+id|__rcu_pending
+c_func
+(paren
+r_struct
+id|rcu_ctrlblk
+op_star
+id|rcp
+comma
+r_struct
+id|rcu_data
+op_star
+id|rdp
+)paren
+(brace
+multiline_comment|/* This cpu has pending rcu entries and the grace period&n;&t; * for them has completed.&n;&t; */
+r_if
+c_cond
+(paren
+id|rdp-&gt;curlist
+op_logical_and
+op_logical_neg
+id|rcu_batch_before
+c_func
+(paren
+id|rcp-&gt;completed
+comma
+id|rdp-&gt;batch
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* This cpu has no pending entries, but there are new entries */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rdp-&gt;curlist
+op_logical_and
+id|rdp-&gt;nxtlist
+)paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* This cpu has finished callbacks to invoke */
+r_if
+c_cond
+(paren
+id|rdp-&gt;donelist
+)paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* The rcu core waits for a quiescent state from the cpu */
+r_if
+c_cond
+(paren
+id|rdp-&gt;quiescbatch
+op_ne
+id|rcp-&gt;cur
+op_logical_or
+id|rdp-&gt;qs_pending
+)paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* nothing to do */
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|rcu_pending
 r_static
 r_inline
@@ -241,88 +328,22 @@ r_int
 id|cpu
 )paren
 (brace
-multiline_comment|/* This cpu has pending rcu entries and the grace period&n;&t; * for them has completed.&n;&t; */
-r_if
-c_cond
-(paren
-id|RCU_curlist
+r_return
+id|__rcu_pending
 c_func
 (paren
-id|cpu
-)paren
-op_logical_and
-op_logical_neg
-id|rcu_batch_before
-c_func
-(paren
-id|rcu_ctrlblk.completed
+op_amp
+id|rcu_ctrlblk
 comma
-id|RCU_batch
+op_amp
+id|per_cpu
 c_func
 (paren
+id|rcu_data
+comma
 id|cpu
 )paren
 )paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* This cpu has no pending entries, but there are new entries */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|RCU_curlist
-c_func
-(paren
-id|cpu
-)paren
-op_logical_and
-id|RCU_nxtlist
-c_func
-(paren
-id|cpu
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|RCU_donelist
-c_func
-(paren
-id|cpu
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* The rcu core waits for a quiescent state from the cpu */
-r_if
-c_cond
-(paren
-id|RCU_quiescbatch
-c_func
-(paren
-id|cpu
-)paren
-op_ne
-id|rcu_ctrlblk.cur
-op_logical_or
-id|RCU_qs_pending
-c_func
-(paren
-id|cpu
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* nothing to do */
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|macro|rcu_read_lock
