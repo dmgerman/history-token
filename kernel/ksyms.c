@@ -561,6 +561,13 @@ c_func
 id|lookup_mnt
 )paren
 suffix:semicolon
+DECL|variable|path_lookup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|path_lookup
+)paren
+suffix:semicolon
 DECL|variable|path_init
 id|EXPORT_SYMBOL
 c_func
@@ -1734,13 +1741,6 @@ id|tty_std_termios
 )paren
 suffix:semicolon
 multiline_comment|/* block device driver support */
-DECL|variable|blksize_size
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|blksize_size
-)paren
-suffix:semicolon
 DECL|variable|blk_size
 id|EXPORT_SYMBOL
 c_func

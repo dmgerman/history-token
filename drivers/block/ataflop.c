@@ -755,14 +755,6 @@ id|floppy_sizes
 l_int|256
 )braket
 suffix:semicolon
-DECL|variable|floppy_blocksizes
-r_static
-r_int
-id|floppy_blocksizes
-(braket
-l_int|256
-)braket
-suffix:semicolon
 multiline_comment|/* current info on each unit */
 DECL|struct|atari_floppy_struct
 r_static
@@ -8061,13 +8053,6 @@ id|MAJOR_NR
 )braket
 op_assign
 id|floppy_sizes
-suffix:semicolon
-id|blksize_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-id|floppy_blocksizes
 suffix:semicolon
 id|blk_init_queue
 c_func

@@ -5518,13 +5518,6 @@ id|cdu535_check_media_change
 comma
 )brace
 suffix:semicolon
-DECL|variable|sonycd535_block_size
-r_static
-r_int
-id|sonycd535_block_size
-op_assign
-id|CDU535_BLOCK_SIZE
-suffix:semicolon
 multiline_comment|/*&n; * Initialize the driver.&n; */
 r_int
 id|__init
@@ -6102,13 +6095,17 @@ op_amp
 id|sonycd535_lock
 )paren
 suffix:semicolon
-id|blksize_size
-(braket
+id|blk_queue_hardsect_size
+c_func
+(paren
+id|BLK_DEFAULT_QUEUE
+c_func
+(paren
 id|MAJOR_NR
-)braket
-op_assign
-op_amp
-id|sonycd535_block_size
+)paren
+comma
+id|CDU535_BLOCK_SIZE
+)paren
 suffix:semicolon
 id|sony_toc
 op_assign

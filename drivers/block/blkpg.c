@@ -957,7 +957,7 @@ op_assign
 id|blk_get_ra_pages
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 suffix:semicolon
 r_if
@@ -1006,7 +1006,7 @@ op_assign
 id|blk_get_ra_pages
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 suffix:semicolon
 r_if
@@ -1262,7 +1262,7 @@ op_assign
 id|block_size
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 suffix:semicolon
 r_return
@@ -1371,7 +1371,7 @@ suffix:semicolon
 id|set_blocksize
 c_func
 (paren
-id|dev
+id|bdev
 comma
 id|intval
 )paren

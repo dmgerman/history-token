@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/swapctl.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 DECL|variable|swaplock
@@ -3185,12 +3186,31 @@ c_func
 id|swap_file-&gt;f_dentry-&gt;d_inode-&gt;i_mode
 )paren
 )paren
+(brace
+r_struct
+id|block_device
+op_star
+id|bdev
+suffix:semicolon
+id|bdev
+op_assign
+id|swap_file-&gt;f_dentry-&gt;d_inode-&gt;i_bdev
+suffix:semicolon
+id|set_blocksize
+c_func
+(paren
+id|bdev
+comma
+id|p-&gt;old_block_size
+)paren
+suffix:semicolon
 id|bd_release
 c_func
 (paren
-id|swap_file-&gt;f_dentry-&gt;d_inode-&gt;i_bdev
+id|bdev
 )paren
 suffix:semicolon
+)brace
 id|filp_close
 c_func
 (paren
@@ -3636,6 +3656,10 @@ id|p-&gt;swap_file
 op_assign
 l_int|NULL
 suffix:semicolon
+id|p-&gt;old_block_size
+op_assign
+l_int|0
+suffix:semicolon
 id|p-&gt;swap_map
 op_assign
 l_int|NULL
@@ -3814,12 +3838,20 @@ r_goto
 id|bad_swap
 suffix:semicolon
 )brace
+id|p-&gt;old_block_size
+op_assign
+id|block_size
+c_func
+(paren
+id|bdev
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|set_blocksize
 c_func
 (paren
-id|swap_file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|swap_file-&gt;f_dentry-&gt;d_inode-&gt;i_bdev
 comma
 id|PAGE_SIZE
 )paren
@@ -4623,12 +4655,22 @@ c_cond
 (paren
 id|bdev
 )paren
+(brace
+id|set_blocksize
+c_func
+(paren
+id|bdev
+comma
+id|p-&gt;old_block_size
+)paren
+suffix:semicolon
 id|bd_release
 c_func
 (paren
 id|bdev
 )paren
 suffix:semicolon
+)brace
 id|bad_swap_2
 suffix:colon
 id|swap_list_lock

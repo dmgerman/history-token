@@ -66,15 +66,6 @@ id|blk_size
 id|MAX_BLKDEV
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * blksize_size contains the size of all block-devices:&n; *&n; * blksize_size[MAJOR][MINOR]&n; *&n; * if (!blksize_size[MAJOR]) then 1024 bytes is assumed.&n; */
-DECL|variable|blksize_size
-r_int
-op_star
-id|blksize_size
-(braket
-id|MAX_BLKDEV
-)braket
-suffix:semicolon
 multiline_comment|/*&n; * How many reqeusts do we allocate per queue,&n; * and how many do we &quot;batch&quot; on freeing them?&n; */
 DECL|variable|queue_nr_requests
 DECL|variable|batch_requests
@@ -159,8 +150,10 @@ op_star
 id|blk_get_ra_pages
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 )paren
 (brace
 r_int
@@ -177,7 +170,11 @@ op_assign
 id|blk_get_queue
 c_func
 (paren
-id|dev
+id|to_kdev_t
+c_func
+(paren
+id|bdev-&gt;bd_dev
+)paren
 )paren
 suffix:semicolon
 r_if

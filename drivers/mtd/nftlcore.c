@@ -44,14 +44,6 @@ id|nftl_sizes
 l_int|256
 )braket
 suffix:semicolon
-DECL|variable|nftl_blocksizes
-r_static
-r_int
-id|nftl_blocksizes
-(braket
-l_int|256
-)braket
-suffix:semicolon
 multiline_comment|/* .. for the Linux partition table handling. */
 DECL|variable|part_table
 r_struct
@@ -460,7 +452,6 @@ l_int|16
 op_assign
 id|nftl-&gt;nr_sects
 suffix:semicolon
-singleline_comment|//nftl_blocksizes[firstfree*16] = 512;
 id|part_table
 (braket
 id|firstfree
@@ -4065,37 +4056,6 @@ comma
 op_amp
 id|nftl_request
 )paren
-suffix:semicolon
-multiline_comment|/* set block size to 1kB each */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|256
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|nftl_blocksizes
-(braket
-id|i
-)braket
-op_assign
-l_int|1024
-suffix:semicolon
-)brace
-id|blksize_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-id|nftl_blocksizes
 suffix:semicolon
 id|add_gendisk
 c_func

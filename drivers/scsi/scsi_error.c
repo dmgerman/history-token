@@ -2525,13 +2525,8 @@ r_goto
 id|maybe_retry
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Examine the sense data to figure out how to proceed from here.&n;&t;&t; * If there is no sense data, we will be forced into the error&n;&t;&t; * handler thread, where we get to examine the thing in a lot more&n;&t;&t; * detail.&n;&t;&t; */
 r_return
-id|scsi_check_sense
-c_func
-(paren
-id|SCpnt
-)paren
+id|SUCCESS
 suffix:semicolon
 r_default
 suffix:colon

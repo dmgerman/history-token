@@ -975,14 +975,6 @@ id|NR_SBPCD
 op_assign
 initialization_block
 suffix:semicolon
-DECL|variable|sbpcd_blocksizes
-r_static
-r_int
-id|sbpcd_blocksizes
-(braket
-id|NR_SBPCD
-)braket
-suffix:semicolon
 multiline_comment|/*==========================================================================*/
 multiline_comment|/*&n; * drive space begins here (needed separate for each unit) &n; */
 DECL|variable|d
@@ -33679,21 +33671,18 @@ l_string|&quot; sbpcd: Unable to register with Uniform CD-ROm driver&bslash;n&qu
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * set the block size&n;&t;&t; */
-id|sbpcd_blocksizes
-(braket
-id|j
-)braket
-op_assign
-id|CD_FRAMESIZE
-suffix:semicolon
 )brace
-id|blksize_size
-(braket
+id|blk_queue_hardsect_size
+c_func
+(paren
+id|BLK_DEFAULT_QUEUE
+c_func
+(paren
 id|MAJOR_NR
-)braket
-op_assign
-id|sbpcd_blocksizes
+)paren
+comma
+id|CD_FRAMESIZE
+)paren
 suffix:semicolon
 macro_line|#ifndef MODULE
 id|init_done
