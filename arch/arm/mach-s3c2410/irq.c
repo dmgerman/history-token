@@ -2217,11 +2217,11 @@ id|regs
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* s3c2410_init_irq&n; *&n; * Initialise S3C2410 IRQ system&n;*/
-DECL|function|s3c2410_init_irq
+multiline_comment|/* s3c24xx_init_irq&n; *&n; * Initialise S3C2410 IRQ system&n;*/
+DECL|function|s3c24xx_init_irq
 r_void
 id|__init
-id|s3c2410_init_irq
+id|s3c24xx_init_irq
 c_func
 (paren
 r_void
