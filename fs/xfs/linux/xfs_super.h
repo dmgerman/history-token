@@ -51,6 +51,9 @@ mdefine_line|#define LINVFS_GET_VFS(s) &bslash;&n;&t;(vfs_t *)((s)-&gt;s_fs_info
 DECL|macro|LINVFS_SET_VFS
 mdefine_line|#define LINVFS_SET_VFS(s, vfsp) &bslash;&n;&t;((s)-&gt;s_fs_info = vfsp)
 r_struct
+id|xfs_mount
+suffix:semicolon
+r_struct
 id|pb_target
 suffix:semicolon
 r_struct
@@ -76,6 +79,10 @@ r_extern
 r_int
 id|xfs_blkdev_get
 (paren
+r_struct
+id|xfs_mount
+op_star
+comma
 r_const
 r_char
 op_star

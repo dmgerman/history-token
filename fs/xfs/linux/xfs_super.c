@@ -2193,11 +2193,16 @@ id|inode
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*ARGSUSED*/
 r_int
 DECL|function|xfs_blkdev_get
 id|xfs_blkdev_get
 c_func
 (paren
+id|xfs_mount_t
+op_star
+id|mp
+comma
 r_const
 r_char
 op_star
