@@ -374,6 +374,10 @@ r_void
 r_int
 id|i
 suffix:semicolon
+multiline_comment|/*&n;&t; * NOTE: The assumption here is that NR_IRQS is 32 or less&n;&t; * (NR_IRQS is 32 for PowerPC 405 cores by default).&n;&t; */
+macro_line|#if (NR_IRQS &gt; 32)
+macro_line|#error NR_IRQS &gt; 32 not supported
+macro_line|#endif
 macro_line|#if XPAR_XINTC_USE_DCR == 0
 id|intc
 op_assign
@@ -474,6 +478,7 @@ suffix:semicolon
 op_increment
 id|i
 )paren
+(brace
 id|irq_desc
 (braket
 id|i
@@ -484,5 +489,37 @@ op_assign
 op_amp
 id|xilinx_intc
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|XPAR_INTC_0_KIND_OF_INTR
+op_amp
+(paren
+l_int|0x00000001
+op_lshift
+id|i
+)paren
+)paren
+id|irq_desc
+(braket
+id|i
+)braket
+dot
+id|status
+op_and_assign
+op_complement
+id|IRQ_LEVEL
+suffix:semicolon
+r_else
+id|irq_desc
+(braket
+id|i
+)braket
+dot
+id|status
+op_or_assign
+id|IRQ_LEVEL
+suffix:semicolon
+)brace
 )brace
 eof
