@@ -18,11 +18,9 @@ mdefine_line|#define DISABLE_CLUSTERING 0
 DECL|macro|ENABLE_CLUSTERING
 mdefine_line|#define ENABLE_CLUSTERING 1
 multiline_comment|/* The various choices mean:&n; * NONE: Self evident.&t;Host adapter is not capable of scatter-gather.&n; * ALL:&t; Means that the host adapter module can do scatter-gather,&n; *&t; and that there is no limit to the size of the table to which&n; *&t; we scatter/gather data.&n; * Anything else:  Indicates the maximum number of chains that can be&n; *&t; used in one scatter-gather request.&n; */
-multiline_comment|/*&n; * The Scsi_Host_Template type has all that is needed to interface with a SCSI&n; * host in a device independent matter.&t; There is one entry for each different&n; * type of host adapter that is supported on the system.&n; */
-DECL|struct|SHT
-r_typedef
+DECL|struct|scsi_host_template
 r_struct
-id|SHT
+id|scsi_host_template
 (brace
 multiline_comment|/* Used with loadable modules so that we know when it is safe to unload */
 DECL|member|module
@@ -80,7 +78,7 @@ id|detect
 )paren
 (paren
 r_struct
-id|SHT
+id|scsi_host_template
 op_star
 )paren
 suffix:semicolon
@@ -411,11 +409,14 @@ r_struct
 id|list_head
 id|legacy_hosts
 suffix:semicolon
-DECL|typedef|Scsi_Host_Template
 )brace
+suffix:semicolon
+DECL|typedef|Scsi_Host_Template
+r_typedef
+r_struct
+id|scsi_host_template
 id|Scsi_Host_Template
 suffix:semicolon
-multiline_comment|/*&n; * The scsi_hosts array is the array containing the data for all&n; * possible &lt;supported&gt; scsi hosts.   This is similar to the&n; * Scsi_Host_Template, except that we have one entry for each&n; * actual physical host adapter on the system, stored as a linked&n; * list.  Note that if there are 2 aha1542 boards, then there will&n; * be two Scsi_Host entries, but only 1 Scsi_Host_Template entry.&n; */
 DECL|struct|Scsi_Host
 r_struct
 id|Scsi_Host
@@ -511,7 +512,8 @@ id|wait_queue_head_t
 id|host_wait
 suffix:semicolon
 DECL|member|hostt
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|hostt
 suffix:semicolon
@@ -932,7 +934,8 @@ op_star
 id|scsi_host_alloc
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 comma
 r_int
@@ -1002,7 +1005,8 @@ op_star
 id|scsi_register
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 comma
 r_int
@@ -1083,7 +1087,7 @@ id|scsi_sysfs_release_attributes
 c_func
 (paren
 r_struct
-id|SHT
+id|scsi_host_template
 op_star
 id|hostt
 )paren

@@ -248,7 +248,8 @@ op_star
 id|shost
 )paren
 (brace
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|sht
 op_assign
@@ -390,7 +391,8 @@ op_star
 id|shost
 )paren
 (brace
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|sht
 op_assign

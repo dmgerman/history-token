@@ -14,7 +14,8 @@ c_func
 r_void
 )paren
 (brace
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|sht
 op_assign
@@ -165,7 +166,8 @@ c_func
 r_void
 )paren
 (brace
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|sht
 op_assign

@@ -1149,7 +1149,7 @@ suffix:semicolon
 multiline_comment|/*&n; * this defines our host template, with which we&squot;ll allocate hosts&n; */
 DECL|variable|usb_stor_host_template
 r_struct
-id|SHT
+id|scsi_host_template
 id|usb_stor_host_template
 op_assign
 (brace

@@ -89,7 +89,8 @@ op_star
 id|dev
 )paren
 (brace
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|sht
 op_assign
@@ -229,7 +230,8 @@ op_star
 id|scsi_host_alloc
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|sht
 comma
@@ -589,7 +591,8 @@ op_star
 id|scsi_register
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|sht
 comma
