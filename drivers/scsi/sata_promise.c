@@ -998,12 +998,6 @@ op_assign
 id|sata_phy_reset
 comma
 dot
-id|phy_config
-op_assign
-id|pata_phy_config
-comma
-multiline_comment|/* not a typo */
-dot
 id|bmdma_start
 op_assign
 id|pdc_dma_start
@@ -1082,12 +1076,6 @@ id|phy_reset
 op_assign
 id|pdc_20621_phy_reset
 comma
-dot
-id|phy_config
-op_assign
-id|pata_phy_config
-comma
-multiline_comment|/* not a typo */
 dot
 id|bmdma_start
 op_assign

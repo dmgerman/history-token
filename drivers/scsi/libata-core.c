@@ -149,6 +149,17 @@ r_int
 id|device
 )paren
 suffix:semicolon
+r_static
+r_void
+id|ata_set_mode
+c_func
+(paren
+r_struct
+id|ata_port
+op_star
+id|ap
+)paren
+suffix:semicolon
 DECL|variable|ata_unique_id
 r_static
 r_int
@@ -3416,9 +3427,7 @@ id|ATA_FLAG_PORT_DISABLED
 r_goto
 id|err_out_disable
 suffix:semicolon
-id|ap-&gt;ops
-op_member_access_from_pointer
-id|phy_config
+id|ata_set_mode
 c_func
 (paren
 id|ap
@@ -3714,10 +3723,11 @@ op_or_assign
 id|ATA_FLAG_PORT_DISABLED
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pata_phy_config -&n; *&t;@ap:&n; *&n; *&t;LOCKING:&n; *&n; */
-DECL|function|pata_phy_config
+multiline_comment|/**&n; *&t;ata_set_mode - Program timings and issue SET FEATURES - XFER&n; *&t;@ap: port on which timings will be programmed&n; *&n; *&t;LOCKING:&n; *&n; */
+DECL|function|ata_set_mode
+r_static
 r_void
-id|pata_phy_config
+id|ata_set_mode
 c_func
 (paren
 r_struct
@@ -12194,13 +12204,6 @@ id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|sata_phy_reset
-)paren
-suffix:semicolon
-DECL|variable|pata_phy_config
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|pata_phy_config
 )paren
 suffix:semicolon
 DECL|variable|ata_bus_reset

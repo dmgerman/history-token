@@ -535,11 +535,6 @@ op_assign
 id|piix_pata_phy_reset
 comma
 dot
-id|phy_config
-op_assign
-id|pata_phy_config
-comma
-dot
 id|bmdma_start
 op_assign
 id|ata_bmdma_start_pio
@@ -618,12 +613,6 @@ id|phy_reset
 op_assign
 id|piix_sata_phy_reset
 comma
-dot
-id|phy_config
-op_assign
-id|pata_phy_config
-comma
-multiline_comment|/* not a typo */
 dot
 id|bmdma_start
 op_assign
