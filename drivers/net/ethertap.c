@@ -1195,7 +1195,7 @@ id|dev
 op_assign
 id|tap_map
 (braket
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 )braket
 suffix:semicolon
 r_struct
@@ -1222,7 +1222,7 @@ id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 r_return
@@ -1253,7 +1253,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 )paren
 op_ne
@@ -1333,7 +1333,7 @@ suffix:semicolon
 id|sock_release
 c_func
 (paren
-id|sk-&gt;socket
+id|sk-&gt;sk_socket
 )paren
 suffix:semicolon
 )brace
