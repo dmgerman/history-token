@@ -5130,7 +5130,7 @@ comma
 id|ppc_md.pci_map_irq
 )paren
 suffix:semicolon
-multiline_comment|/* Call machine dependant fixup */
+multiline_comment|/* Call machine dependent fixup */
 r_if
 c_cond
 (paren

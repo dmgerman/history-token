@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/ia64/kernel/time.c&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&t;David Mosberger &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; * Copyright (C) 1999-2000 VA Linux Systems&n; * Copyright (C) 1999-2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; */
+multiline_comment|/*&n; * linux/arch/ia64/kernel/time.c&n; *&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&t;David Mosberger &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; * Copyright (C) 1999-2000 VA Linux Systems&n; * Copyright (C) 1999-2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -200,10 +200,10 @@ OL
 l_int|0
 )paren
 (brace
-macro_line|# if 1
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;CPU %d: now &lt; last_tick (now=0x%lx,last_tick=0x%lx)!&bslash;n&quot;
 comma
 id|smp_processor_id
@@ -216,7 +216,6 @@ comma
 id|last_tick
 )paren
 suffix:semicolon
-macro_line|# endif
 r_return
 id|last_time_offset
 suffix:semicolon
@@ -501,6 +500,7 @@ id|new_itm
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Oops: timer tick before it&squot;s due (itc=%lx,itm=%lx)&bslash;n&quot;
 comma
 id|ia64_get_itc
@@ -810,6 +810,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;SAL_FREQ_BASE_PLATFORM failed: %s&bslash;n&quot;
 comma
 id|ia64_sal_strerror
@@ -846,6 +847,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;PAL_FREQ_RATIOS failed with status=%ld&bslash;n&quot;
 comma
 id|status
@@ -864,6 +866,7 @@ multiline_comment|/* invent &quot;random&quot; values */
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;SAL/PAL failed to obtain frequency info---inventing reasonably values&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -891,6 +894,7 @@ l_int|40000000
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Platform base frequency %lu bogus---resetting to 75MHz!&bslash;n&quot;
 comma
 id|platform_base_freq
@@ -948,7 +952,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;CPU %d: base freq=%lu.%03luMHz, ITC ratio=%lu/%lu, ITC freq=%lu.%03luMHz&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;CPU %d: base freq=%lu.%03luMHz, ITC ratio=%lu/%lu, &quot;
+l_string|&quot;ITC freq=%lu.%03luMHz&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func

@@ -2091,7 +2091,7 @@ singleline_comment|// Description:
 singleline_comment|//
 singleline_comment|// Writes &squot;count&squot; bytes from &squot;address&squot; to the data fifo specified by the board
 singleline_comment|// structure pointer pB. Should count happen to be odd, an extra pad byte is
-singleline_comment|// sent (identity unknown...). This is to be consistant with the 16-bit version.
+singleline_comment|// sent (identity unknown...). This is to be consistent with the 16-bit version.
 singleline_comment|// Uses 8-bit (byte) operations. Is called indirectly through pB-&gt;i2eWriteBuf.
 singleline_comment|//
 singleline_comment|//******************************************************************************

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Simulated Serial Driver (fake serial)&n; *&n; * This driver is mostly used for bringup purposes and will go away.&n; * It has a strong dependency on the system console. All outputs&n; * are rerouted to the same facility as the one used by printk which, in our&n; * case means sys_sim.c console (goes via the simulator). The code hereafter&n; * is completely leveraged from the serial.c driver.&n; *&n; * Copyright (C) 1999-2000, 2002 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 02/04/00 D. Mosberger&t;Merged in serial.c bug fixes in rs_close().&n; * 02/25/00 D. Mosberger&t;Synced up with 2.3.99pre-5 version of serial.c.&n; * 07/30/02 D. Mosberger&t;Replace sti()/cli() with explicit spinlocks &amp; local irq masking&n; */
+multiline_comment|/*&n; * Simulated Serial Driver (fake serial)&n; *&n; * This driver is mostly used for bringup purposes and will go away.&n; * It has a strong dependency on the system console. All outputs&n; * are rerouted to the same facility as the one used by printk which, in our&n; * case means sys_sim.c console (goes via the simulator). The code hereafter&n; * is completely leveraged from the serial.c driver.&n; *&n; * Copyright (C) 1999-2000, 2002-2003 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 02/04/00 D. Mosberger&t;Merged in serial.c bug fixes in rs_close().&n; * 02/25/00 D. Mosberger&t;Synced up with 2.3.99pre-5 version of serial.c.&n; * 07/30/02 D. Mosberger&t;Replace sti()/cli() with explicit spinlocks &amp; local irq masking&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -569,6 +569,7 @@ id|info-&gt;tty
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;simrs_interrupt_single: info|tty=0 info=%p problem&bslash;n&quot;
 comma
 id|info
@@ -616,6 +617,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;do_serial_bh: called&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -635,6 +637,7 @@ id|private_
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;simserial: do_softint called&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1611,6 +1614,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;simrs_throttle called&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1675,6 +1679,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;simrs_unthrottle called&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1789,6 +1794,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;rs_ioctl: TIOCMGET called&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1808,6 +1814,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;rs_ioctl: TIOCMBIS/BIC/SET called&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1821,6 +1828,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;simrs_ioctl TIOCGSERIAL called&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1833,6 +1841,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;simrs_ioctl TIOCSSERIAL called&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1845,6 +1854,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;rs_ioctl: TIOCSERCONFIG called&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1859,6 +1869,7 @@ multiline_comment|/* Get line status register */
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;rs_ioctl: TIOCSERGETLSR called&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1872,6 +1883,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;rs_ioctl: TIOCSERGSTRUCT called&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1913,6 +1925,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;rs_ioctl: TIOCMIWAIT: called&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1926,6 +1939,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;rs_ioctl: TIOCGICOUNT called&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1941,6 +1955,7 @@ suffix:colon
 multiline_comment|/* &quot;setserial -W&quot; is called in Debian boot */
 id|printk
 (paren
+id|KERN_INFO
 l_string|&quot;TIOCSER?WILD ioctl obsolete, ignored.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2196,6 +2211,7 @@ id|retval
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;serial shutdown: request_irq: error %d&quot;
 l_string|&quot;  Couldn&squot;t reacquire IRQ.&bslash;n&quot;
 comma
@@ -2388,6 +2404,7 @@ multiline_comment|/*&n;&t;&t; * Uh, oh.  tty-&gt;count is 1, which means that th
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;rs_close: bad serial port count; tty-&gt;count is 1, &quot;
 l_string|&quot;state-&gt;count is %d&bslash;n&quot;
 comma
@@ -2411,6 +2428,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;rs_close: bad serial port count for ttys%d: %d&bslash;n&quot;
 comma
 id|info-&gt;line
@@ -3864,6 +3882,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot; no serial options enabled&bslash;n&quot;
 )paren
 suffix:semicolon

@@ -199,7 +199,7 @@ DECL|macro|LMC_MII16_SSI_TM
 mdefine_line|#define LMC_MII16_SSI_TM&t;&t;0x4000&t;/* TM input RO */
 DECL|macro|LMC_MII16_SSI_LOOP
 mdefine_line|#define LMC_MII16_SSI_LOOP&t;0x8000&t;/* loopback enable RW */
-multiline_comment|/*&n; * Some of the MII16 bits are mirrored in the MII17 register as well,&n; * but let&squot;s keep thing seperate for now, and get only the cable from&n; * the MII17.&n; */
+multiline_comment|/*&n; * Some of the MII16 bits are mirrored in the MII17 register as well,&n; * but let&squot;s keep thing separate for now, and get only the cable from&n; * the MII17.&n; */
 DECL|macro|LMC_MII17_SSI_CABLE_MASK
 mdefine_line|#define LMC_MII17_SSI_CABLE_MASK&t;0x0038&t;/* mask to extract the cable type */
 DECL|macro|LMC_MII17_SSI_CABLE_SHIFT

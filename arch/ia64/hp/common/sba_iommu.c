@@ -608,10 +608,10 @@ suffix:semicolon
 id|uint
 id|rcnt
 suffix:semicolon
-multiline_comment|/* printk(KERN_DEBUG &quot;SBA: %s rp %p bit %d rval 0x%lx&bslash;n&quot;, */
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;SBA: %s rp %p bit %d rval 0x%lx&bslash;n&quot;
 comma
 id|msg
@@ -645,6 +645,7 @@ id|BITS_PER_LONG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s %2d %p %016Lx&bslash;n&quot;
 comma
 (paren
@@ -684,6 +685,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s&quot;
 comma
 id|msg
@@ -883,6 +885,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot; %d : DMA %08lx/%05x CPU %p&bslash;n&quot;
 comma
 id|nents
@@ -4751,7 +4754,9 @@ multiline_comment|/* Yet another 1.x hack */
 id|printk
 c_func
 (paren
-l_string|&quot;zx1 1.x: Starting resource hint offset into IOV space to avoid initial zero value IOVA&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;zx1 1.x: Starting resource hint offset into &quot;
+l_string|&quot;IOV space to avoid initial zero value IOVA&bslash;n&quot;
 )paren
 suffix:semicolon
 id|sba_dev-&gt;ioc
@@ -5821,6 +5826,7 @@ l_int|0x20
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: SBA rev less than 2.0 not supported&quot;
 comma
 id|DRIVER_NAME

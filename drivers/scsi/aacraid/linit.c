@@ -2062,7 +2062,7 @@ id|dev-&gt;id
 comma
 id|dev-&gt;lun
 comma
-id|dev-&gt;new_queue_depth
+id|dev-&gt;queue_depth
 comma
 id|dev-&gt;online
 ques

@@ -724,7 +724,7 @@ mdefine_line|#define acmd_scsi_cmd(cmd) ((cmd)-&gt;un.scsi_cmd)
 DECL|macro|acmd_links
 mdefine_line|#define acmd_links un.icmd.links
 multiline_comment|/*************************** Device Data Structures ***************************/
-multiline_comment|/*&n; * A per probed device structure used to deal with some error recovery&n; * scenarios that the Linux mid-layer code just doesn&squot;t know how to&n; * handle.  The structure allocated for a device only becomes persistant&n; * after a successfully completed inquiry command to the target when&n; * that inquiry data indicates a lun is present.&n; */
+multiline_comment|/*&n; * A per probed device structure used to deal with some error recovery&n; * scenarios that the Linux mid-layer code just doesn&squot;t know how to&n; * handle.  The structure allocated for a device only becomes persistent&n; * after a successfully completed inquiry command to the target when&n; * that inquiry data indicates a lun is present.&n; */
 id|TAILQ_HEAD
 c_func
 (paren

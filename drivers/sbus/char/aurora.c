@@ -5409,7 +5409,7 @@ id|CD180_MSVR
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Now we must calculate some speed dependant things. */
+multiline_comment|/* Now we must calculate some speed dependent things. */
 multiline_comment|/* Set baud rate for port. */
 id|tmp
 op_assign

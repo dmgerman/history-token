@@ -1952,7 +1952,7 @@ op_logical_and
 id|oact
 )paren
 (brace
-multiline_comment|/* In the clone() case we could copy half consistant&n;&t;&t; * state to the user, however this could sleep and&n;&t;&t; * deadlock us if we held the signal lock on SMP.  So for&n;&t;&t; * now I take the easy way out and do no locking.&n;&t;&t; */
+multiline_comment|/* In the clone() case we could copy half consistent&n;&t;&t; * state to the user, however this could sleep and&n;&t;&t; * deadlock us if we held the signal lock on SMP.  So for&n;&t;&t; * now I take the easy way out and do no locking.&n;&t;&t; */
 r_if
 c_cond
 (paren

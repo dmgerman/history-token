@@ -5888,7 +5888,7 @@ id|hmp-&gt;lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* This routine is logically part of the interrupt handler, but seperated&n;   for clarity and better register allocation. */
+multiline_comment|/* This routine is logically part of the interrupt handler, but separated&n;   for clarity and better register allocation. */
 DECL|function|hamachi_rx
 r_static
 r_int

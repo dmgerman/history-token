@@ -1865,7 +1865,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* no change */
 )brace
-multiline_comment|/*&n; * Set the register page.  This equates to the SRSX line&n; * on the TMS380Cx6.&n; *&n; * Register selection is normally done via three contiguous&n; * bits.  However, some boards (such as the MC16/32) use only&n; * two bits, plus a seperate bit in the glue chip.  This&n; * sets the SRSX bit (the top bit).  See page 4-17 in the&n; * Yellow Book for which registers are affected.&n; *&n; */
+multiline_comment|/*&n; * Set the register page.  This equates to the SRSX line&n; * on the TMS380Cx6.&n; *&n; * Register selection is normally done via three contiguous&n; * bits.  However, some boards (such as the MC16/32) use only&n; * two bits, plus a separate bit in the glue chip.  This&n; * sets the SRSX bit (the top bit).  See page 4-17 in the&n; * Yellow Book for which registers are affected.&n; *&n; */
 DECL|function|madgemc_setregpage
 r_static
 r_void
@@ -2270,7 +2270,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Read the card type (MC16 or MC32) from the card.&n; *&n; * The configuration registers are stored in two seperate&n; * pages.  Pages are flipped by clearing bit 3 of CONTROL_REG0 (PAGE)&n; * for page zero, or setting bit 3 for page one.&n; *&n; * Page zero contains the following data:&n; *&t;Byte 0: Manufacturer ID (0x4D -- ASCII &quot;M&quot;)&n; *&t;Byte 1: Card type:&n; *&t;&t;&t;0x08 for MC16&n; *&t;&t;&t;0x0D for MC32&n; *&t;Byte 2: Card revision&n; *&t;Byte 3: Mirror of POS config register 0&n; *&t;Byte 4: Mirror of POS 1&n; *&t;Byte 5: Mirror of POS 2&n; *&n; * Page one contains the following data:&n; *&t;Byte 0: Unused&n; *&t;Byte 1-6: BIA, MSB to LSB.&n; *&n; * Note that to read the BIA, we must unmap the SIF registers&n; * by clearing bit 2 of CONTROL_REG0 (SIFSEL), as the data&n; * will reside in the same logical location.  For this reason,&n; * _never_ read the BIA while the Eagle processor is running!&n; * The SIF will be completely inaccessible until the BIA operation&n; * is complete.&n; *&n; */
+multiline_comment|/*&n; * Read the card type (MC16 or MC32) from the card.&n; *&n; * The configuration registers are stored in two separate&n; * pages.  Pages are flipped by clearing bit 3 of CONTROL_REG0 (PAGE)&n; * for page zero, or setting bit 3 for page one.&n; *&n; * Page zero contains the following data:&n; *&t;Byte 0: Manufacturer ID (0x4D -- ASCII &quot;M&quot;)&n; *&t;Byte 1: Card type:&n; *&t;&t;&t;0x08 for MC16&n; *&t;&t;&t;0x0D for MC32&n; *&t;Byte 2: Card revision&n; *&t;Byte 3: Mirror of POS config register 0&n; *&t;Byte 4: Mirror of POS 1&n; *&t;Byte 5: Mirror of POS 2&n; *&n; * Page one contains the following data:&n; *&t;Byte 0: Unused&n; *&t;Byte 1-6: BIA, MSB to LSB.&n; *&n; * Note that to read the BIA, we must unmap the SIF registers&n; * by clearing bit 2 of CONTROL_REG0 (SIFSEL), as the data&n; * will reside in the same logical location.  For this reason,&n; * _never_ read the BIA while the Eagle processor is running!&n; * The SIF will be completely inaccessible until the BIA operation&n; * is complete.&n; *&n; */
 DECL|function|madgemc_read_rom
 r_static
 r_void

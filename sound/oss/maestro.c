@@ -2394,7 +2394,7 @@ op_assign
 id|AC97_REC_PHONE
 )brace
 suffix:semicolon
-multiline_comment|/* read or write the recmask &n;&t;the ac97 can really have left and right recording&n;&t;inputs independantly set, but OSS doesn&squot;t seem to &n;&t;want us to express that to the user. &n;&t;the caller guarantees that we have a supported bit set,&n;&t;and they must be holding the card&squot;s spinlock */
+multiline_comment|/* read or write the recmask &n;&t;the ac97 can really have left and right recording&n;&t;inputs independently set, but OSS doesn&squot;t seem to &n;&t;want us to express that to the user. &n;&t;the caller guarantees that we have a supported bit set,&n;&t;and they must be holding the card&squot;s spinlock */
 r_static
 r_int
 DECL|function|ac97_recmask_io

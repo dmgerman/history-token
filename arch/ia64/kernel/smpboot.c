@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * SMP boot-related support&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 01/05/16 Rohit Seth &lt;rohit.seth@intel.com&gt;&t;Moved SMP booting functions from smp.c to here.&n; * 01/04/27 David Mosberger &lt;davidm@hpl.hp.com&gt;&t;Added ITC synching code.&n; * 02/07/31 David Mosberger &lt;davidm@hpl.hp.com&gt;&t;Switch over to hotplug-CPU boot-sequence.&n; *&t;&t;&t;&t;&t;&t;smp_boot_cpus()/smp_commence() is replaced by&n; *&t;&t;&t;&t;&t;&t;smp_prepare_cpus()/__cpu_up()/smp_cpus_done().&n; */
+multiline_comment|/*&n; * SMP boot-related support&n; *&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 01/05/16 Rohit Seth &lt;rohit.seth@intel.com&gt;&t;Moved SMP booting functions from smp.c to here.&n; * 01/04/27 David Mosberger &lt;davidm@hpl.hp.com&gt;&t;Added ITC synching code.&n; * 02/07/31 David Mosberger &lt;davidm@hpl.hp.com&gt;&t;Switch over to hotplug-CPU boot-sequence.&n; *&t;&t;&t;&t;&t;&t;smp_boot_cpus()/smp_commence() is replaced by&n; *&t;&t;&t;&t;&t;&t;smp_prepare_cpus()/__cpu_up()/smp_cpus_done().&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/config.h&gt;
@@ -528,6 +528,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;sync_itc: failed to get attention of CPU %u!&bslash;n&quot;
 comma
 id|master
@@ -753,7 +754,9 @@ macro_line|#endif
 id|printk
 c_func
 (paren
-l_string|&quot;CPU %d: synchronized ITC with CPU %u (last diff %ld cycles, maxerr %lu cycles)&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;CPU %d: synchronized ITC with CPU %u (last diff %ld cycles, &quot;
+l_string|&quot;maxerr %lu cycles)&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
@@ -813,7 +816,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_PERFMON
 r_extern
 r_void
-id|perfmon_init_percpu
+id|pfm_init_percpu
 c_func
 (paren
 r_void
@@ -850,6 +853,7 @@ id|cpu_online_map
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;huh, phys CPU#0x%x, CPU#0x%x already present??&bslash;n&quot;
 comma
 id|phys_id
@@ -915,7 +919,7 @@ suffix:semicolon
 multiline_comment|/* For post-failure MCA error logging */
 macro_line|#endif
 macro_line|#ifdef CONFIG_PERFMON
-id|perfmon_init_percpu
+id|pfm_init_percpu
 c_func
 (paren
 )paren
@@ -1196,16 +1200,10 @@ multiline_comment|/* number CPUs logically, starting from 1 (BSP is 0) */
 id|printk
 c_func
 (paren
-l_string|&quot;CPU%d: &quot;
+id|KERN_INFO
+l_string|&quot;CPU%d: CPU has booted.&bslash;n&quot;
 comma
 id|cpu
-)paren
-suffix:semicolon
-multiline_comment|/*print_cpu_info(&amp;cpu_data[cpu]); */
-id|printk
-c_func
-(paren
-l_string|&quot;CPU has booted.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1271,6 +1269,7 @@ multiline_comment|/* XXX base this on PAL info and cache-bandwidth estimate */
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;task migration cache decay timeout: %ld msecs.&bslash;n&quot;
 comma
 (paren
@@ -1617,6 +1616,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Boot processor id 0x%x/0x%x&bslash;n&quot;
 comma
 l_int|0
@@ -1862,7 +1862,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Assume that CPU&squot;s have been discovered by some platform-dependant interface.  For&n; * SoftSDV/Lion, that would be ACPI.&n; *&n; * Setup of the IPI irq handler is done in irq.c:init_IRQ_SMP().&n; */
+multiline_comment|/*&n; * Assume that CPU&squot;s have been discovered by some platform-dependent interface.  For&n; * SoftSDV/Lion, that would be ACPI.&n; *&n; * Setup of the IPI irq handler is done in irq.c:init_IRQ_SMP().&n; */
 r_void
 id|__init
 DECL|function|init_smp_config
@@ -1938,6 +1938,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;SMP: Can&squot;t set SAL AP Boot Rendezvous: %s&bslash;n&quot;
 comma
 id|ia64_sal_strerror

@@ -49,7 +49,7 @@ r_extern
 id|spinlock_t
 id|vlan_group_lock
 suffix:semicolon
-multiline_comment|/*  Find a VLAN device by the MAC address of it&squot;s Ethernet device, and&n; *  it&squot;s VLAN ID.  The default configuration is to have VLAN&squot;s scope&n; *  to be box-wide, so the MAC will be ignored.  The mac will only be&n; *  looked at if we are configured to have a seperate set of VLANs per&n; *  each MAC addressable interface.  Note that this latter option does&n; *  NOT follow the spec for VLANs, but may be useful for doing very&n; *  large quantities of VLAN MUX/DEMUX onto FrameRelay or ATM PVCs.&n; *&n; *  Must be invoked with vlan_group_lock held and that lock MUST NOT&n; *  be dropped until a reference is obtained on the returned device.&n; *  You may drop the lock earlier if you are running under the RTNL&n; *  semaphore, however.&n; */
+multiline_comment|/*  Find a VLAN device by the MAC address of it&squot;s Ethernet device, and&n; *  it&squot;s VLAN ID.  The default configuration is to have VLAN&squot;s scope&n; *  to be box-wide, so the MAC will be ignored.  The mac will only be&n; *  looked at if we are configured to have a separate set of VLANs per&n; *  each MAC addressable interface.  Note that this latter option does&n; *  NOT follow the spec for VLANs, but may be useful for doing very&n; *  large quantities of VLAN MUX/DEMUX onto FrameRelay or ATM PVCs.&n; *&n; *  Must be invoked with vlan_group_lock held and that lock MUST NOT&n; *  be dropped until a reference is obtained on the returned device.&n; *  You may drop the lock earlier if you are running under the RTNL&n; *  semaphore, however.&n; */
 r_struct
 id|net_device
 op_star

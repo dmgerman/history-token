@@ -8960,7 +8960,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|sigfillset
@@ -8979,7 +8979,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|LAZY_LOCK_INIT
@@ -9061,7 +9061,7 @@ c_func
 id|tblk
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * We can be running indefinately if other processors&n;&t;&t;&t; * are adding transactions to this list&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * We can be running indefinitely if other processors&n;&t;&t;&t; * are adding transactions to this list&n;&t;&t;&t; */
 id|cond_resched
 c_func
 (paren
@@ -9648,7 +9648,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|sigfillset
@@ -9667,7 +9667,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|complete

@@ -6964,7 +6964,7 @@ id|cam-&gt;cam_lock
 suffix:semicolon
 )brace
 r_static
-r_int
+id|ssize_t
 DECL|function|vicam_read
 id|vicam_read
 c_func

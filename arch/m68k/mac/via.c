@@ -48,7 +48,7 @@ DECL|variable|rbv_clear
 id|__u8
 id|rbv_clear
 suffix:semicolon
-multiline_comment|/*&n; * Globals for accessing the VIA chip registers without having to&n; * check if we&squot;re hitting a real VIA or an RBV. Normally you could&n; * just hit the combined register (ie, vIER|rIER) but that seems to&n; * break on AV Macs...probably because they actually decode more than&n; * eight address bits. Why can&squot;t Apple engineers at least be&n; * _consistantly_ lazy?                          - 1999-05-21 (jmt)&n; */
+multiline_comment|/*&n; * Globals for accessing the VIA chip registers without having to&n; * check if we&squot;re hitting a real VIA or an RBV. Normally you could&n; * just hit the combined register (ie, vIER|rIER) but that seems to&n; * break on AV Macs...probably because they actually decode more than&n; * eight address bits. Why can&squot;t Apple engineers at least be&n; * _consistently_ lazy?                          - 1999-05-21 (jmt)&n; */
 DECL|variable|gIER
 DECL|variable|gIFR
 DECL|variable|gBufA

@@ -2991,6 +2991,7 @@ op_minus
 id|ENODEV
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_FREQ
 r_if
 c_cond
 (paren
@@ -3090,6 +3091,7 @@ l_string|&quot;Platform limit event detected. Consider using ACPI P-States CPUfr
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren

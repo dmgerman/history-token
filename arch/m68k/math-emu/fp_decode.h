@@ -24,7 +24,7 @@ id|instr
 id|type
 op_or
 id|this
-id|seperates
+id|separates
 id|the
 id|conditional
 id|instr
@@ -80,7 +80,7 @@ id|instr
 id|type
 op_or
 id|this
-id|seperates
+id|separates
 id|most
 id|move
 id|instr

@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * linux/drivers/ide/sis5513.c&t;&t;Version 0.14ac&t;Sept 11, 2002&n; *&n; * Copyright (C) 1999-2000&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Copyright (C) 2002&t;&t;Lionel Bouton &lt;Lionel.Bouton@inet6.fr&gt;, Maintainer&n; * May be copied or modified under the terms of the GNU General Public License&n; *&n; *&n; * Thanks :&n; *&n; * SiS Taiwan&t;&t;: for direct support and hardware.&n; * Daniela Engert&t;: for initial ATA100 advices and numerous others.&n; * John Fremlin, Manfred Spraul, Dave Morgan :&n; *&t;&t;&t;  for checking code correctness, providing patches.&n; *&n; *&n; * Original tests and design on the SiS620/5513 chipset.&n; * ATA100 tests and design on the SiS735/5513 chipset.&n; * ATA16/33 support from specs&n; * ATA133 support for SiS961/962 by L.C. Chang &lt;lcchang@sis.com.tw&gt;&n; */
-multiline_comment|/*&n; * TODO:&n; *&t;- Get ridden of SisHostChipInfo[] completness dependancy.&n; *&t;- Study drivers/ide/ide-timing.h.&n; *&t;- Are there pre-ATA_16 SiS5513 chips ? -&gt; tune init code for them&n; *&t;  or remove ATA_00 define&n; *&t;- More checks in the config registers (force values instead of&n; *&t;  relying on the BIOS setting them correctly).&n; *&t;- Further optimisations ?&n; *&t;  . for example ATA66+ regs 0x48 &amp; 0x4A&n; */
+multiline_comment|/*&n; * TODO:&n; *&t;- Get ridden of SisHostChipInfo[] completness dependency.&n; *&t;- Study drivers/ide/ide-timing.h.&n; *&t;- Are there pre-ATA_16 SiS5513 chips ? -&gt; tune init code for them&n; *&t;  or remove ATA_00 define&n; *&t;- More checks in the config registers (force values instead of&n; *&t;  relying on the BIOS setting them correctly).&n; *&t;- Further optimisations ?&n; *&t;  . for example ATA66+ regs 0x48 &amp; 0x4A&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -25,7 +25,7 @@ singleline_comment|// #define BROKEN_LEVEL XFER_SW_DMA_0
 multiline_comment|/* Miscellaneaous flags */
 DECL|macro|SIS5513_LATENCY
 mdefine_line|#define SIS5513_LATENCY&t;&t;0x01
-multiline_comment|/* registers layout and init values are chipset family dependant */
+multiline_comment|/* registers layout and init values are chipset family dependent */
 multiline_comment|/* 1/ define families */
 DECL|macro|ATA_00
 mdefine_line|#define ATA_00&t;&t;0x00

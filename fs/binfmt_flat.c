@@ -1669,7 +1669,7 @@ c_func
 id|PER_LINUX
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * there are a couple of cases here,  the seperate code/data&n;&t; * case,  and then the fully copied to RAM case which lumps&n;&t; * it all together.&n;&t; */
+multiline_comment|/*&n;&t; * there are a couple of cases here,  the separate code/data&n;&t; * case,  and then the fully copied to RAM case which lumps&n;&t; * it all together.&n;&t; */
 r_if
 c_cond
 (paren

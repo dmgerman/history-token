@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/fs/block_dev.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
+multiline_comment|/*&n; *  linux/fs/char_dev.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -107,7 +107,6 @@ id|SLAB_CTOR_CONSTRUCTOR
 op_eq
 id|SLAB_CTOR_CONSTRUCTOR
 )paren
-(brace
 id|memset
 c_func
 (paren
@@ -122,16 +121,6 @@ id|cdev
 )paren
 )paren
 suffix:semicolon
-id|sema_init
-c_func
-(paren
-op_amp
-id|cdev-&gt;sem
-comma
-l_int|1
-)paren
-suffix:semicolon
-)brace
 )brace
 DECL|function|cdev_cache_init
 r_void
