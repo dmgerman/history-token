@@ -44,6 +44,10 @@ DECL|macro|MCL_CURRENT
 mdefine_line|#define MCL_CURRENT     0x2000          /* lock all currently mapped pages */
 DECL|macro|MCL_FUTURE
 mdefine_line|#define MCL_FUTURE      0x4000          /* lock all additions to address space */
+DECL|macro|MAP_POPULATE
+mdefine_line|#define MAP_POPULATE&t;0x8000&t;&t;/* populate (prefault) pagetables */
+DECL|macro|MAP_NONBLOCK
+mdefine_line|#define MAP_NONBLOCK&t;0x10000&t;&t;/* do not block on IO */
 DECL|macro|MADV_NORMAL
 mdefine_line|#define MADV_NORMAL&t;0x0&t;&t;/* default page-in behavior */
 DECL|macro|MADV_RANDOM
