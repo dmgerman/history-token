@@ -5962,11 +5962,11 @@ c_func
 id|ubuf
 comma
 op_amp
-id|ub
+id|ks
 comma
 r_sizeof
 (paren
-id|ub
+id|ks
 )paren
 )paren
 ques

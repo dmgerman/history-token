@@ -85,6 +85,9 @@ id|tsk
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * We restart softirq processing MAX_SOFTIRQ_RESTART times,&n; * and we fall back to softirqd after that.&n; *&n; * This number has been established via experimentation.&n; * The two things to balance is latency against fairness -&n; * we want to handle softirqs as soon as possible, but they&n; * should not be able to lock up the box.&n; */
+DECL|macro|MAX_SOFTIRQ_RESTART
+mdefine_line|#define MAX_SOFTIRQ_RESTART 10
 DECL|function|do_softirq
 id|asmlinkage
 r_void
@@ -94,15 +97,17 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|max_restart
+op_assign
+id|MAX_SOFTIRQ_RESTART
+suffix:semicolon
 id|__u32
 id|pending
 suffix:semicolon
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|__u32
-id|mask
 suffix:semicolon
 r_if
 c_cond
@@ -137,11 +142,6 @@ r_struct
 id|softirq_action
 op_star
 id|h
-suffix:semicolon
-id|mask
-op_assign
-op_complement
-id|pending
 suffix:semicolon
 id|local_bh_disable
 c_func
@@ -214,19 +214,13 @@ r_if
 c_cond
 (paren
 id|pending
-op_amp
-id|mask
+op_logical_and
+op_decrement
+id|max_restart
 )paren
-(brace
-id|mask
-op_and_assign
-op_complement
-id|pending
-suffix:semicolon
 r_goto
 id|restart
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

@@ -10086,4 +10086,11 @@ c_func
 id|blk_rq_bio_prep
 )paren
 suffix:semicolon
+DECL|variable|blk_rq_prep_restart
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|blk_rq_prep_restart
+)paren
+suffix:semicolon
 eof

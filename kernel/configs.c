@@ -5,8 +5,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/compile.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/**************************************************/
 multiline_comment|/* the actual current config file                 */

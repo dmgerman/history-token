@@ -2977,7 +2977,8 @@ c_func
 (paren
 l_string|&quot;lidt %0&quot;
 suffix:colon
-l_string|&quot;=m&quot;
+suffix:colon
+l_string|&quot;m&quot;
 (paren
 id|idt_descr
 )paren

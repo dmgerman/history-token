@@ -24072,6 +24072,7 @@ id|cyclades_get_proc_info
 comma
 )brace
 suffix:semicolon
+r_static
 r_int
 id|__init
 DECL|function|cy_init
@@ -25137,8 +25138,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* cy_init */
-macro_line|#ifdef MODULE
+r_static
 r_void
+id|__exit
 DECL|function|cy_cleanup_module
 id|cy_cleanup_module
 c_func
@@ -25148,15 +25150,8 @@ r_void
 (brace
 r_int
 id|i
-suffix:semicolon
-r_int
-id|e1
 comma
-id|e2
-suffix:semicolon
-r_int
-r_int
-id|flags
+id|e1
 suffix:semicolon
 macro_line|#ifndef CONFIG_CYZ_INTR
 r_if
@@ -25361,7 +25356,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* cy_cleanup_module */
-multiline_comment|/* Module entry-points */
 DECL|variable|cy_init
 id|module_init
 c_func
@@ -25376,7 +25370,7 @@ c_func
 id|cy_cleanup_module
 )paren
 suffix:semicolon
-macro_line|#else /* MODULE */
+macro_line|#ifndef MODULE
 multiline_comment|/* called by linux/init/main.c to parse command line options */
 r_void
 DECL|function|cy_setup

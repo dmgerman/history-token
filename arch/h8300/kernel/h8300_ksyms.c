@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
-macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 singleline_comment|//asmlinkage long long __ashrdi3 (long long, int);
 singleline_comment|//asmlinkage long long __lshrdi3 (long long, int);

@@ -22,14 +22,14 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;wanXL serial card driver version: 0.46&quot;
+l_string|&quot;wanXL serial card driver version: 0.47&quot;
 suffix:semicolon
 DECL|macro|PLX_CTL_RESET
 mdefine_line|#define PLX_CTL_RESET   0x40000000 /* adapter reset */
 DECL|macro|DEBUG_PKT
 macro_line|#undef DEBUG_PKT
 DECL|macro|DEBUG_PCI
-mdefine_line|#define DEBUG_PCI
+macro_line|#undef DEBUG_PCI
 multiline_comment|/* MAILBOX #1 - PUTS COMMANDS */
 DECL|macro|MBX1_CMD_ABORTJ
 mdefine_line|#define MBX1_CMD_ABORTJ 0x85000000 /* Abort and Jump */
@@ -364,7 +364,7 @@ c_func
 (paren
 id|KERN_CRIT
 l_string|&quot;wanXL %s: pci_map_single() returned memory&quot;
-l_string|&quot; at 0x%X!&bslash;n&quot;
+l_string|&quot; at 0x%LX!&bslash;n&quot;
 comma
 id|card_name
 c_func
@@ -372,6 +372,11 @@ c_func
 id|pdev
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|addr
 )paren
 suffix:semicolon
@@ -691,8 +696,6 @@ l_int|1
 (brace
 id|desc_t
 op_star
-id|desc
-suffix:semicolon
 id|desc
 op_assign
 op_amp
@@ -1236,6 +1239,10 @@ c_func
 id|hdlc
 )paren
 suffix:semicolon
+id|desc_t
+op_star
+id|desc
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1243,8 +1250,6 @@ op_amp
 id|port-&gt;lock
 )paren
 suffix:semicolon
-id|desc_t
-op_star
 id|desc
 op_assign
 op_amp
@@ -2632,6 +2637,32 @@ id|ports
 comma
 id|alloc_size
 suffix:semicolon
+macro_line|#ifndef MODULE
+r_static
+r_int
+id|printed_version
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|printed_version
+)paren
+(brace
+id|printed_version
+op_increment
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|version
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 id|i
 op_assign
 id|pci_enable_device
@@ -2854,7 +2885,7 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;wanXL %s: pci_alloc_consistent() returned memory&quot;
-l_string|&quot; at 0x%X&bslash;n&quot;
+l_string|&quot; at 0x%LX&bslash;n&quot;
 comma
 id|card_name
 c_func
@@ -2862,6 +2893,11 @@ c_func
 id|pdev
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|card-&gt;status_address
 )paren
 suffix:semicolon

@@ -11645,8 +11645,8 @@ id|macserial_read_proc
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* rs_init inits the driver */
 DECL|function|macserial_init
+r_static
 r_int
 id|macserial_init
 c_func
