@@ -394,8 +394,10 @@ DECL|macro|__NR_syslog
 mdefine_line|#define __NR_syslog             207 /* Linux Specific                              */
 DECL|macro|__NR_lookup_dcookie
 mdefine_line|#define __NR_lookup_dcookie     208 /* Linux Specific                              */
-multiline_comment|/* #define __NR_iopl            209    Linux Specific - i386 specific, unused      */
-multiline_comment|/* #define __NR_idle            210    Linux Specific - was sys_idle, now unused   */
+DECL|macro|__NR_fadvise64
+mdefine_line|#define __NR_fadvise64          209 /* Linux Specific                              */
+DECL|macro|__NR_fadvise64_64
+mdefine_line|#define __NR_fadvise64_64       210 /* Linux Specific                              */
 multiline_comment|/* #define __NR_vm86            211    Linux Specific - i386 specific, unused      */
 DECL|macro|__NR_waitpid
 mdefine_line|#define __NR_waitpid            212 /* Linux Specific                              */
