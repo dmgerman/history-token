@@ -3661,6 +3661,11 @@ op_star
 id|x
 )paren
 (brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -7347,7 +7352,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Sleeping function called from illegal&quot;
+id|KERN_ERR
+l_string|&quot;Debug: sleeping function called from illegal&quot;
 l_string|&quot; context at %s:%d&bslash;n&quot;
 comma
 id|file
