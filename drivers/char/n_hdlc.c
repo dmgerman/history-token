@@ -212,7 +212,7 @@ suffix:semicolon
 multiline_comment|/* max frame size for memory allocations */
 DECL|variable|maxframe
 r_static
-id|ssize_t
+r_int
 id|maxframe
 op_assign
 l_int|4096
@@ -2056,7 +2056,7 @@ id|printk
 (paren
 id|KERN_WARNING
 l_string|&quot;n_hdlc_tty_write: truncating user packet &quot;
-l_string|&quot;from %lu to %Zd&bslash;n&quot;
+l_string|&quot;from %lu to %d&bslash;n&quot;
 comma
 (paren
 r_int
