@@ -17,8 +17,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;entry.h&quot;
 macro_line|#include &quot;unwind_i.h&quot;
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
 DECL|macro|p5
 mdefine_line|#define p5&t;&t;5
 DECL|macro|UNW_LOG_CACHE_SIZE
@@ -4777,12 +4775,11 @@ id|UNW_WHERE_NONE
 comma
 id|sr-&gt;region_start
 op_plus
-id|MIN
+id|min_t
 c_func
 (paren
-(paren
 r_int
-)paren
+comma
 id|t
 comma
 id|sr-&gt;region_len
@@ -4820,12 +4817,11 @@ id|when
 op_assign
 id|sr-&gt;region_start
 op_plus
-id|MIN
+id|min_t
 c_func
 (paren
-(paren
 r_int
-)paren
+comma
 id|t
 comma
 id|sr-&gt;region_len
@@ -5019,12 +5015,11 @@ id|reg-&gt;when
 op_assign
 id|sr-&gt;region_start
 op_plus
-id|MIN
+id|min_t
 c_func
 (paren
-(paren
 r_int
-)paren
+comma
 id|t
 comma
 id|sr-&gt;region_len
@@ -5324,12 +5319,11 @@ id|sr-&gt;when_target
 op_le
 id|sr-&gt;region_start
 op_plus
-id|MIN
+id|min_t
 c_func
 (paren
-(paren
 r_int
-)paren
+comma
 id|t
 comma
 id|sr-&gt;region_len
@@ -5547,12 +5541,11 @@ id|r-&gt;when
 op_assign
 id|sr-&gt;region_start
 op_plus
-id|MIN
+id|min_t
 c_func
 (paren
-(paren
 r_int
-)paren
+comma
 id|t
 comma
 id|sr-&gt;region_len
@@ -5636,12 +5629,11 @@ id|r-&gt;when
 op_assign
 id|sr-&gt;region_start
 op_plus
-id|MIN
+id|min_t
 c_func
 (paren
-(paren
 r_int
-)paren
+comma
 id|t
 comma
 id|sr-&gt;region_len
@@ -5725,12 +5717,11 @@ id|r-&gt;when
 op_assign
 id|sr-&gt;region_start
 op_plus
-id|MIN
+id|min_t
 c_func
 (paren
-(paren
 r_int
-)paren
+comma
 id|t
 comma
 id|sr-&gt;region_len
