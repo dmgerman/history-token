@@ -5814,7 +5814,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;IBM MCA SCSI: Seperate bus mode (wide-addressing enabled)&bslash;n&quot;
+l_string|&quot;IBM MCA SCSI: Separate bus mode (wide-addressing enabled)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|subsystem_maxid

@@ -28221,7 +28221,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Seperate R/W functions bracket legality here&n;&t;&t; */
+multiline_comment|/* Separate R/W functions bracket legality here&n;&t;&t; */
 r_if
 c_cond
 (paren
