@@ -8033,11 +8033,6 @@ r_sizeof
 (paren
 id|FILE_UNIX_BASIC_INFO
 )paren
-op_plus
-r_sizeof
-(paren
-id|FILE_UNIX_BASIC_INFO
-)paren
 )paren
 op_logical_or
 (paren
