@@ -1,7 +1,6 @@
 macro_line|#ifndef _ASM_IA64_PGTABLE_H
 DECL|macro|_ASM_IA64_PGTABLE_H
 mdefine_line|#define _ASM_IA64_PGTABLE_H
-macro_line|#include &lt;asm-generic/4level-fixup.h&gt;
 multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the IA-64 page table tree.&n; *&n; * This hopefully works with any (fixed) IA-64 page-size, as defined&n; * in &lt;asm/page.h&gt;.&n; *&n; * Copyright (C) 1998-2004 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
@@ -292,16 +291,16 @@ DECL|macro|pmd_page_kernel
 mdefine_line|#define pmd_page_kernel(pmd)&t;&t;((unsigned long) __va(pmd_val(pmd) &amp; _PFN_MASK))
 DECL|macro|pmd_page
 mdefine_line|#define pmd_page(pmd)&t;&t;&t;virt_to_page((pmd_val(pmd) + PAGE_OFFSET))
-DECL|macro|pgd_none
-mdefine_line|#define pgd_none(pgd)&t;&t;&t;(!pgd_val(pgd))
-DECL|macro|pgd_bad
-mdefine_line|#define pgd_bad(pgd)&t;&t;&t;(!ia64_phys_addr_valid(pgd_val(pgd)))
-DECL|macro|pgd_present
-mdefine_line|#define pgd_present(pgd)&t;&t;(pgd_val(pgd) != 0UL)
-DECL|macro|pgd_clear
-mdefine_line|#define pgd_clear(pgdp)&t;&t;&t;(pgd_val(*(pgdp)) = 0UL)
-DECL|macro|pgd_page
-mdefine_line|#define pgd_page(pgd)&t;&t;&t;((unsigned long) __va(pgd_val(pgd) &amp; _PFN_MASK))
+DECL|macro|pud_none
+mdefine_line|#define pud_none(pud)&t;&t;&t;(!pud_val(pud))
+DECL|macro|pud_bad
+mdefine_line|#define pud_bad(pud)&t;&t;&t;(!ia64_phys_addr_valid(pud_val(pud)))
+DECL|macro|pud_present
+mdefine_line|#define pud_present(pud)&t;&t;(pud_val(pud) != 0UL)
+DECL|macro|pud_clear
+mdefine_line|#define pud_clear(pudp)&t;&t;&t;(pud_val(*(pudp)) = 0UL)
+DECL|macro|pud_page
+mdefine_line|#define pud_page(pud)&t;&t;&t;((unsigned long) __va(pud_val(pud) &amp; _PFN_MASK))
 multiline_comment|/*&n; * The following have defined behavior only work if pte_present() is true.&n; */
 DECL|macro|pte_user
 mdefine_line|#define pte_user(pte)&t;&t;((pte_val(pte) &amp; _PAGE_PL_MASK) == _PAGE_PL_3)
@@ -428,7 +427,7 @@ DECL|macro|pgd_offset_gate
 mdefine_line|#define pgd_offset_gate(mm, addr)&t;pgd_offset_k(addr)
 multiline_comment|/* Find an entry in the second-level page table.. */
 DECL|macro|pmd_offset
-mdefine_line|#define pmd_offset(dir,addr) &bslash;&n;&t;((pmd_t *) pgd_page(*(dir)) + (((addr) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD - 1)))
+mdefine_line|#define pmd_offset(dir,addr) &bslash;&n;&t;((pmd_t *) pud_page(*(dir)) + (((addr) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD - 1)))
 multiline_comment|/*&n; * Find an entry in the third-level page table.  This looks more complicated than it&n; * should be because some platforms place page tables in high memory.&n; */
 DECL|macro|pte_index
 mdefine_line|#define pte_index(addr)&t; &t;(((addr) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
@@ -976,5 +975,6 @@ mdefine_line|#define __HAVE_ARCH_PTE_SAME
 DECL|macro|__HAVE_ARCH_PGD_OFFSET_GATE
 mdefine_line|#define __HAVE_ARCH_PGD_OFFSET_GATE
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
+macro_line|#include &lt;asm-generic/pgtable-nopud.h&gt;
 macro_line|#endif /* _ASM_IA64_PGTABLE_H */
 eof
