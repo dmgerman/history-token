@@ -5382,7 +5382,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Elsa: PLX9050 rev1 workaround activated&quot;
+l_string|&quot;Elsa: PLX9050 rev1 workaround activated&bslash;n&quot;
 )paren
 suffix:semicolon
 id|set_bit
