@@ -5533,9 +5533,6 @@ id|mem_flags
 (brace
 r_int
 id|ret
-op_assign
-op_minus
-id|EINVAL
 suffix:semicolon
 r_struct
 id|uhci_hcd
@@ -5569,10 +5566,14 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|ret
+op_assign
+id|urb-&gt;status
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|urb-&gt;status
+id|ret
 op_ne
 op_minus
 id|EINPROGRESS
