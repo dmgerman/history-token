@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;AMD Elan SC520 processor Watchdog Timer driver for Linux 2.4.x&n; *&n; *      Based on acquirewdt.c by Alan Cox,&n; *           and sbc60xxwdt.c by Jakob Oestergaard &lt;jakob@ostenfeld.dk&gt;&n; *     &n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;The authors do NOT admit liability nor provide warranty for &n; *&t;any of this software. This material is provided &quot;AS-IS&quot; in &n; *      the hope that it may be useful for others.&n; *&n; *&t;(c) Copyright 2001    Scott Jennings &lt;linuxdrivers@oro.net&gt;&n; *           9/27 - 2001      [Initial release]&n; *&t;&n; *&t;Additional fixes Alan Cox&n; *&t;-&t;Fixed formatting&n; *&t;-&t;Removed debug printks&n; *&t;-&t;Fixed SMP built kernel deadlock&n; *&t;-&t;Switched to private locks not lock_kernel&n; *&t;-&t;Used ioremap/writew/readw&n; *&t;-&t;Added NOWAYOUT support&n; *&n; *  Theory of operation:&n; *  A Watchdog Timer (WDT) is a hardware circuit that can &n; *  reset the computer system in case of a software fault.&n; *  You probably knew that already.&n; *&n; *  Usually a userspace daemon will notify the kernel WDT driver&n; *  via the /proc/watchdog special device file that userspace is&n; *  still alive, at regular intervals.  When such a notification&n; *  occurs, the driver will usually tell the hardware watchdog&n; *  that everything is in order, and that the watchdog should wait&n; *  for yet another little while to reset the system.&n; *  If userspace fails (RAM error, kernel bug, whatever), the&n; *  notifications cease to occur, and the hardware watchdog will&n; *  reset the system (causing a reboot) after the timeout occurs.&n; *&n; *  This WDT driver is different from most other Linux WDT&n; *  drivers in that the driver will ping the watchdog by itself,&n; *  because this particular WDT has a very short timeout (1.6&n; *  seconds) and it would be insane to count on any userspace&n; *  daemon always getting scheduled within that time frame.&n; *&n; *  This driver uses memory mapped IO, and spinlock.&n; */
+multiline_comment|/*&n; *&t;AMD Elan SC520 processor Watchdog Timer driver&n; *&n; *      Based on acquirewdt.c by Alan Cox,&n; *           and sbc60xxwdt.c by Jakob Oestergaard &lt;jakob@unthought.net&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;The authors do NOT admit liability nor provide warranty for&n; *&t;any of this software. This material is provided &quot;AS-IS&quot; in&n; *      the hope that it may be useful for others.&n; *&n; *&t;(c) Copyright 2001    Scott Jennings &lt;linuxdrivers@oro.net&gt;&n; *           9/27 - 2001      [Initial release]&n; *&n; *&t;Additional fixes Alan Cox&n; *&t;-&t;Fixed formatting&n; *&t;-&t;Removed debug printks&n; *&t;-&t;Fixed SMP built kernel deadlock&n; *&t;-&t;Switched to private locks not lock_kernel&n; *&t;-&t;Used ioremap/writew/readw&n; *&t;-&t;Added NOWAYOUT support&n; *&n; *     4/12 - 2002 Changes by Rob Radez &lt;rob@osinvestor.com&gt;&n; *     -       Change comments&n; *     -       Eliminate fop_llseek&n; *     -       Change CONFIG_WATCHDOG_NOWAYOUT semantics&n; *     -       Add KERN_* tags to printks&n; *     -       fix possible wdt_is_open race&n; *     -       Report proper capabilities in watchdog_info&n; *     -       Add WDIOC_{GETSTATUS, GETBOOTSTATUS, SETTIMEOUT,&n; *             GETTIMEOUT, SETOPTIONS} ioctls&n; *     09/8 - 2003 Changes by Wim Van Sebroeck &lt;wim@iguana.be&gt;&n; *     -       cleanup of trailing spaces&n; *     -       added extra printk&squot;s for startup problems&n; *     -       use module_param&n; *     -       made timeout (the emulated heartbeat) a module_param&n; *     -       made the keepalive ping an internal subroutine&n; *&n; *  This WDT driver is different from most other Linux WDT&n; *  drivers in that the driver will ping the watchdog by itself,&n; *  because this particular WDT has a very short timeout (1.6&n; *  seconds) and it would be insane to count on any userspace&n; *  daemon always getting scheduled within that time frame.&n; *&n; *  This driver uses memory mapped IO, and spinlock.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -17,8 +17,40 @@ multiline_comment|/*&n; * The SC520 can timeout anywhere from 492us to 32.21s.&n
 DECL|macro|WDT_INTERVAL
 mdefine_line|#define WDT_INTERVAL (HZ/4+1)
 multiline_comment|/*&n; * We must not require too good response from the userspace daemon.&n; * Here we require the userspace daemon to send us a heartbeat&n; * char to /dev/watchdog every 30 seconds.&n; */
-DECL|macro|WDT_HEARTBEAT
-mdefine_line|#define WDT_HEARTBEAT (HZ * 30)
+DECL|macro|WATCHDOG_TIMEOUT
+mdefine_line|#define WATCHDOG_TIMEOUT 30&t;&t;/* 30 sec default timeout */
+DECL|variable|timeout
+r_static
+r_int
+id|timeout
+op_assign
+id|WATCHDOG_TIMEOUT
+suffix:semicolon
+multiline_comment|/* in seconds, will be multiplied by HZ to get seconds to wait for a ping */
+id|module_param
+c_func
+(paren
+id|timeout
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|timeout
+comma
+l_string|&quot;Watchdog timeout in seconds. (1&lt;=timeout&lt;=3600, default=&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|WATCHDOG_TIMEOUT
+)paren
+l_string|&quot;)&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * AMD Elan SC520 timeout value is 492us times a power of 2 (0-7)&n; *&n; *   0: 492us    2: 1.01s    4: 4.03s   6: 16.22s&n; *   1: 503ms    3: 2.01s    5: 8.05s   7: 32.21s&n; */
 DECL|macro|TIMEOUT_EXPONENT
 mdefine_line|#define TIMEOUT_EXPONENT ( 1 &lt;&lt; 3 )  /* 0x08 = 2.01s */
@@ -33,6 +65,8 @@ DECL|macro|WDT_WRST_ENB
 mdefine_line|#define WDT_WRST_ENB 0x4000&t;/* [14] Watchdog Timer Reset Enable */
 DECL|macro|OUR_NAME
 mdefine_line|#define OUR_NAME &quot;sc520_wdt&quot;
+DECL|macro|PFX
+mdefine_line|#define PFX OUR_NAME &quot;: &quot;
 DECL|macro|WRT_DOG
 mdefine_line|#define WRT_DOG(data) *wdtmrctl=data
 DECL|variable|wdtmrctl
@@ -70,8 +104,13 @@ id|wdt_is_open
 suffix:semicolon
 DECL|variable|wdt_expect_close
 r_static
-r_int
+r_char
 id|wdt_expect_close
+suffix:semicolon
+DECL|variable|wdt_spinlock
+r_static
+id|spinlock_t
+id|wdt_spinlock
 suffix:semicolon
 macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
 DECL|variable|nowayout
@@ -108,11 +147,6 @@ comma
 l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_NOWAYOUT)&quot;
 )paren
 suffix:semicolon
-DECL|variable|wdt_spinlock
-r_static
-id|spinlock_t
-id|wdt_spinlock
-suffix:semicolon
 multiline_comment|/*&n; *&t;Whack the dog&n; */
 DECL|function|wdt_timer_ping
 r_static
@@ -125,7 +159,7 @@ r_int
 id|data
 )paren
 (brace
-multiline_comment|/* If we got a heartbeat pulse within the WDT_US_INTERVAL&n;&t; * we agree to ping the WDT &n;&t; */
+multiline_comment|/* If we got a heartbeat pulse within the WDT_US_INTERVAL&n;&t; * we agree to ping the WDT&n;&t; */
 r_if
 c_cond
 (paren
@@ -189,13 +223,14 @@ r_else
 id|printk
 c_func
 (paren
-id|OUR_NAME
-l_string|&quot;: Heartbeat lost! Will not ping the watchdog&bslash;n&quot;
+id|KERN_WARNING
+id|PFX
+l_string|&quot;Heartbeat lost! Will not ping the watchdog&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* &n; * Utility routines&n; */
+multiline_comment|/*&n; * Utility routines&n; */
 DECL|function|wdt_config
 r_static
 r_void
@@ -297,7 +332,11 @@ id|next_heartbeat
 op_assign
 id|jiffies
 op_plus
-id|WDT_HEARTBEAT
+(paren
+id|timeout
+op_star
+id|HZ
+)paren
 suffix:semicolon
 multiline_comment|/* Start the timer */
 id|timer.expires
@@ -326,8 +365,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|OUR_NAME
-l_string|&quot;: Watchdog timer is now enabled.&bslash;n&quot;
+id|KERN_INFO
+id|PFX
+l_string|&quot;Watchdog timer is now enabled.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -364,11 +404,33 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|OUR_NAME
-l_string|&quot;: Watchdog timer is now disabled...&bslash;n&quot;
+id|KERN_INFO
+id|PFX
+l_string|&quot;Watchdog timer is now disabled...&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+)brace
+DECL|function|wdt_keepalive
+r_static
+r_void
+id|wdt_keepalive
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* user land ping */
+id|next_heartbeat
+op_assign
+id|jiffies
+op_plus
+(paren
+id|timeout
+op_star
+id|HZ
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * /dev/watchdog handling&n; */
 DECL|function|fop_write
@@ -410,17 +472,24 @@ op_minus
 id|ESPIPE
 suffix:semicolon
 )brace
-multiline_comment|/* See if we got the magic character */
+multiline_comment|/* See if we got the magic character &squot;V&squot; and reload the timer */
 r_if
 c_cond
 (paren
 id|count
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nowayout
+)paren
+(brace
 r_int
 id|ofs
 suffix:semicolon
-multiline_comment|/* note: just in case someone wrote the magic character&n;&t;&t; * five months ago... */
+multiline_comment|/* note: just in case someone wrote the magic character&n;&t;&t;&t; * five months ago... */
 id|wdt_expect_close
 op_assign
 l_int|0
@@ -471,23 +540,20 @@ l_char|&squot;V&squot;
 (brace
 id|wdt_expect_close
 op_assign
-l_int|1
+l_int|42
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/* Well, anyhow someone wrote to us, we should return that favour */
-id|next_heartbeat
-op_assign
-id|jiffies
-op_plus
-id|WDT_HEARTBEAT
-suffix:semicolon
-r_return
-l_int|1
+id|wdt_keepalive
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|count
 suffix:semicolon
 )brace
 DECL|function|fop_open
@@ -507,19 +573,6 @@ op_star
 id|file
 )paren
 (brace
-r_switch
-c_cond
-(paren
-id|minor
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-)paren
-(brace
-r_case
-id|WATCHDOG_MINOR
-suffix:colon
 multiline_comment|/* Just in case we&squot;re already talking to someone... */
 r_if
 c_cond
@@ -539,12 +592,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-multiline_comment|/* Good, fire up the show */
-id|wdt_startup
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -556,16 +603,15 @@ c_func
 id|THIS_MODULE
 )paren
 suffix:semicolon
+multiline_comment|/* Good, fire up the show */
+id|wdt_startup
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-r_default
-suffix:colon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 )brace
 DECL|function|fop_close
 r_static
@@ -587,19 +633,9 @@ id|file
 r_if
 c_cond
 (paren
-id|minor
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-op_eq
-id|WATCHDOG_MINOR
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|wdt_expect_close
+op_eq
+l_int|42
 )paren
 (brace
 id|wdt_turnoff
@@ -620,11 +656,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|OUR_NAME
-l_string|&quot;: device file closed unexpectedly. Will not stop the WDT!&bslash;n&quot;
+id|KERN_CRIT
+id|PFX
+l_string|&quot;device file closed unexpectedly. Will not stop the WDT!&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 )brace
 id|clear_bit
 c_func
@@ -634,6 +670,10 @@ comma
 op_amp
 id|wdt_is_open
 )paren
+suffix:semicolon
+id|wdt_expect_close
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 l_int|0
@@ -673,6 +713,10 @@ op_assign
 dot
 id|options
 op_assign
+id|WDIOF_KEEPALIVEPING
+op_or
+id|WDIOF_SETTIMEOUT
+op_or
 id|WDIOF_MAGICCLOSE
 comma
 dot
@@ -684,6 +728,7 @@ dot
 id|identity
 op_assign
 l_string|&quot;SC520&quot;
+comma
 )brace
 suffix:semicolon
 r_switch
@@ -727,16 +772,176 @@ suffix:colon
 l_int|0
 suffix:semicolon
 r_case
+id|WDIOC_GETSTATUS
+suffix:colon
+r_case
+id|WDIOC_GETBOOTSTATUS
+suffix:colon
+r_return
+id|put_user
+c_func
+(paren
+l_int|0
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+suffix:semicolon
+r_case
 id|WDIOC_KEEPALIVE
 suffix:colon
-id|next_heartbeat
-op_assign
-id|jiffies
-op_plus
-id|WDT_HEARTBEAT
+id|wdt_keepalive
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+r_case
+id|WDIOC_SETOPTIONS
+suffix:colon
+(brace
+r_int
+id|new_options
+comma
+id|retval
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|new_options
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|new_options
+op_amp
+id|WDIOS_DISABLECARD
+)paren
+(brace
+id|wdt_turnoff
+c_func
+(paren
+)paren
+suffix:semicolon
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|new_options
+op_amp
+id|WDIOS_ENABLECARD
+)paren
+(brace
+id|wdt_startup
+c_func
+(paren
+)paren
+suffix:semicolon
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_return
+id|retval
+suffix:semicolon
+)brace
+r_case
+id|WDIOC_SETTIMEOUT
+suffix:colon
+(brace
+r_int
+id|new_timeout
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|new_timeout
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|new_timeout
+template_param
+l_int|3600
+)paren
+(brace
+multiline_comment|/* arbitrary upper limit */
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+id|timeout
+op_assign
+id|new_timeout
+suffix:semicolon
+id|wdt_keepalive
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Fall through */
+)brace
+r_case
+id|WDIOC_GETTIMEOUT
+suffix:colon
+r_return
+id|put_user
+c_func
+(paren
+id|timeout
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -776,6 +981,7 @@ dot
 id|ioctl
 op_assign
 id|fop_ioctl
+comma
 )brace
 suffix:semicolon
 DECL|variable|wdt_miscdev
@@ -800,6 +1006,7 @@ id|fops
 op_assign
 op_amp
 id|wdt_fops
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Notifier for system down&n; */
@@ -845,7 +1052,7 @@ r_return
 id|NOTIFY_DONE
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;The WDT needs to learn about soft shutdowns in order to&n; *&t;turn the timebomb registers off. &n; */
+multiline_comment|/*&n; *&t;The WDT needs to learn about soft shutdowns in order to&n; *&t;turn the timebomb registers off.&n; */
 DECL|variable|wdt_notifier
 r_static
 r_struct
@@ -867,6 +1074,7 @@ dot
 id|priority
 op_assign
 l_int|0
+comma
 )brace
 suffix:semicolon
 DECL|function|sc520_wdt_unload
@@ -933,6 +1141,30 @@ op_amp
 id|wdt_spinlock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|timeout
+template_param
+l_int|3600
+)paren
+multiline_comment|/* arbitrary upper limit */
+(brace
+id|timeout
+op_assign
+id|WATCHDOG_TIMEOUT
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;timeout value must be 1&lt;=x&lt;=3600, using %d&bslash;n&quot;
+comma
+id|timeout
+)paren
+suffix:semicolon
+)brace
 id|init_timer
 c_func
 (paren
@@ -962,9 +1194,23 @@ c_cond
 (paren
 id|rc
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;cannot register miscdev on minor=%d (err=%d)&bslash;n&quot;
+comma
+id|wdt_miscdev.minor
+comma
+id|rc
+)paren
+suffix:semicolon
 r_goto
 id|err_out_region2
 suffix:semicolon
+)brace
 id|rc
 op_assign
 id|register_reboot_notifier
@@ -979,9 +1225,21 @@ c_cond
 (paren
 id|rc
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;cannot register reboot notifier (err=%d)&bslash;n&quot;
+comma
+id|rc
+)paren
+suffix:semicolon
 r_goto
 id|err_out_miscdev
 suffix:semicolon
+)brace
 multiline_comment|/* get the Base Address Register */
 id|cbar
 op_assign
@@ -994,8 +1252,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|OUR_NAME
-l_string|&quot;: CBAR: 0x%08lx&bslash;n&quot;
+id|KERN_INFO
+id|PFX
+l_string|&quot;CBAR: 0x%08lx&bslash;n&quot;
 comma
 id|cbar
 )paren
@@ -1012,8 +1271,9 @@ l_int|0x80000000
 id|printk
 c_func
 (paren
-id|OUR_NAME
-l_string|&quot;: MMCR Aliasing enabled.&bslash;n&quot;
+id|KERN_INFO
+id|PFX
+l_string|&quot;MMCR Aliasing enabled.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|wdtmrctl
@@ -1034,7 +1294,8 @@ r_else
 id|printk
 c_func
 (paren
-id|OUR_NAME
+id|KERN_INFO
+id|PFX
 l_string|&quot;!!! WARNING !!!&bslash;n&quot;
 l_string|&quot;&bslash;t MMCR Aliasing found NOT enabled!&bslash;n&quot;
 l_string|&quot;&bslash;t Using default value of: %p&bslash;n&quot;
@@ -1084,8 +1345,12 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-id|OUR_NAME
-l_string|&quot;: WDT driver for SC520 initialised.&bslash;n&quot;
+id|PFX
+l_string|&quot;WDT driver for SC520 initialised. timeout=%d sec (nowayout=%d)&bslash;n&quot;
+comma
+id|timeout
+comma
+id|nowayout
 )paren
 suffix:semicolon
 r_return
