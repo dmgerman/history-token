@@ -2426,20 +2426,9 @@ c_func
 id|NBD_MAJOR
 comma
 l_string|&quot;nbd&quot;
-comma
-op_amp
-id|nbd_fops
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;Unable to get major number %d for NBD&bslash;n&quot;
-comma
-id|NBD_MAJOR
-)paren
-suffix:semicolon
 id|err
 op_assign
 op_minus

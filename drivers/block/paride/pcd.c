@@ -4865,20 +4865,9 @@ c_func
 id|major
 comma
 id|name
-comma
-op_amp
-id|pcd_bdops
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;pcd: unable to get major number %d&bslash;n&quot;
-comma
-id|major
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren

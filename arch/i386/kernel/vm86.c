@@ -974,6 +974,7 @@ suffix:semicolon
 id|disable_sysenter
 c_func
 (paren
+id|tss
 )paren
 suffix:semicolon
 id|tsk-&gt;thread.screen_bitmap

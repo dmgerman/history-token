@@ -237,6 +237,9 @@ r_int
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* Prepare to copy thread state - unlazy all lazy status */
+DECL|macro|prepare_to_copy
+mdefine_line|#define prepare_to_copy(tsk)&t;do { } while (0)
 multiline_comment|/*&n; * Return saved PC of a blocked thread.&n; */
 r_extern
 r_int

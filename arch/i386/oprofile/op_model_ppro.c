@@ -443,13 +443,11 @@ comma
 id|i
 )paren
 suffix:semicolon
+)brace
+)brace
+multiline_comment|/* We can&squot;t work out if we really handled an interrupt. We&n;&t; * might have caught a *second* counter just after overflowing&n;&t; * the interrupt for this counter then arrives&n;&t; * and we don&squot;t find a counter that&squot;s overflowed, so we&n;&t; * would return 0 and get dazed + confused. Instead we always&n;&t; * assume we found an overflow. This sucks.&n;&t; */
 r_return
 l_int|1
-suffix:semicolon
-)brace
-)brace
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|ppro_start

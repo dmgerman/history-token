@@ -72,7 +72,6 @@ id|Scsi_Device
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 r_int
 id|ncr53c8xx_release
 c_func
@@ -82,13 +81,9 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
-macro_line|#else
-DECL|macro|ncr53c8xx_release
-mdefine_line|#define ncr53c8xx_release NULL
-macro_line|#endif
 macro_line|#if&t;LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,75)
 DECL|macro|NCR53C8XX
-mdefine_line|#define NCR53C8XX {     .name           = &quot;&quot;,&t;&t;&t;&bslash;&n;&t;&t;&t;.detect         = ncr53c8xx_detect,&t;&bslash;&n;&t;&t;&t;.release        = ncr53c8xx_release,&t;&bslash;&n;&t;&t;&t;.info           = ncr53c8xx_info, &t;&bslash;&n;&t;&t;&t;.queuecommand   = ncr53c8xx_queue_command,&bslash;&n;&t;&t;&t;.slave_configure = ncr53c8xx_slave_configure,&bslash;&n;&t;&t;&t;.abort          = ncr53c8xx_abort,&t;&bslash;&n;&t;&t;&t;.reset          = ncr53c8xx_reset,&t;&bslash;&n;&t;&t;&t;.can_queue      = SCSI_NCR_CAN_QUEUE,&t;&bslash;&n;&t;&t;&t;.this_id        = 7,&t;&t;&t;&bslash;&n;&t;&t;&t;.sg_tablesize   = SCSI_NCR_SG_TABLESIZE,&t;&bslash;&n;&t;&t;&t;.cmd_per_lun    = SCSI_NCR_CMD_PER_LUN,&t;&bslash;&n;&t;&t;&t;.use_clustering = DISABLE_CLUSTERING} 
+mdefine_line|#define NCR53C8XX {     .name           = &quot;ncr53c8xx&quot;,&t;&t;&bslash;&n;&t;&t;&t;.detect         = ncr53c8xx_detect,&t;&bslash;&n;&t;&t;&t;.release        = ncr53c8xx_release,&t;&bslash;&n;&t;&t;&t;.info           = ncr53c8xx_info, &t;&bslash;&n;&t;&t;&t;.queuecommand   = ncr53c8xx_queue_command,&bslash;&n;&t;&t;&t;.slave_configure = ncr53c8xx_slave_configure,&bslash;&n;&t;&t;&t;.abort          = ncr53c8xx_abort,&t;&bslash;&n;&t;&t;&t;.reset          = ncr53c8xx_reset,&t;&bslash;&n;&t;&t;&t;.can_queue      = SCSI_NCR_CAN_QUEUE,&t;&bslash;&n;&t;&t;&t;.this_id        = 7,&t;&t;&t;&bslash;&n;&t;&t;&t;.sg_tablesize   = SCSI_NCR_SG_TABLESIZE,&t;&bslash;&n;&t;&t;&t;.cmd_per_lun    = SCSI_NCR_CMD_PER_LUN,&t;&bslash;&n;&t;&t;&t;.use_clustering = DISABLE_CLUSTERING} 
 macro_line|#else
 DECL|macro|NCR53C8XX
 mdefine_line|#define NCR53C8XX {&t;NULL, NULL, NULL, NULL,&t;&t;&t;&t;&bslash;&n;&t;&t;&t;NULL,&t;&t;&t;ncr53c8xx_detect,&t;&bslash;&n;&t;&t;&t;ncr53c8xx_release,&t;ncr53c8xx_info,&t;NULL,&t;&bslash;&n;&t;&t;&t;ncr53c8xx_queue_command,ncr53c8xx_abort,&t;&bslash;&n;&t;&t;&t;ncr53c8xx_reset, NULL,&t;scsicam_bios_param,&t;&bslash;&n;&t;&t;&t;SCSI_NCR_CAN_QUEUE,&t;7,&t;&t;&t;&bslash;&n;&t;&t;&t;SCSI_NCR_SG_TABLESIZE,&t;SCSI_NCR_CMD_PER_LUN,&t;&bslash;&n;&t;&t;&t;0,&t;0,&t;DISABLE_CLUSTERING} 

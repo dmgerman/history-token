@@ -20,17 +20,6 @@ suffix:semicolon
 multiline_comment|/*&n; * FPU lazy state save handling...&n; */
 r_extern
 r_void
-id|save_init_fpu
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|restore_fpu
 c_func
 (paren
@@ -50,10 +39,86 @@ r_void
 suffix:semicolon
 DECL|macro|kernel_fpu_end
 mdefine_line|#define kernel_fpu_end() do { stts(); preempt_enable(); } while(0)
+DECL|function|__save_init_fpu
+r_static
+r_inline
+r_void
+id|__save_init_fpu
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cpu_has_fxsr
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;fxsave %0 ; fnclex&quot;
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+id|tsk-&gt;thread.i387.fxsave
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;fnsave %0 ; fwait&quot;
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+id|tsk-&gt;thread.i387.fsave
+)paren
+)paren
+suffix:semicolon
+)brace
+id|tsk-&gt;thread_info-&gt;status
+op_and_assign
+op_complement
+id|TS_USEDFPU
+suffix:semicolon
+)brace
+DECL|function|save_init_fpu
+r_static
+r_inline
+r_void
+id|save_init_fpu
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+(brace
+id|__save_init_fpu
+c_func
+(paren
+id|tsk
+)paren
+suffix:semicolon
+id|stts
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 DECL|macro|unlazy_fpu
-mdefine_line|#define unlazy_fpu( tsk ) do { &bslash;&n;&t;if (test_tsk_thread_flag(tsk, TIF_USEDFPU)) &bslash;&n;&t;&t;save_init_fpu( tsk ); &bslash;&n;} while (0)
+mdefine_line|#define unlazy_fpu( tsk ) do { &bslash;&n;&t;if ((tsk)-&gt;thread_info-&gt;status &amp; TS_USEDFPU) &bslash;&n;&t;&t;save_init_fpu( tsk ); &bslash;&n;} while (0)
 DECL|macro|clear_fpu
-mdefine_line|#define clear_fpu( tsk )&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (test_tsk_thread_flag(tsk, TIF_USEDFPU)) {&t;&t;&bslash;&n;&t;&t;asm volatile(&quot;fwait&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;clear_tsk_thread_flag(tsk, TIF_USEDFPU);&t;&bslash;&n;&t;&t;stts();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define clear_fpu( tsk )&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((tsk)-&gt;thread_info-&gt;status &amp; TS_USEDFPU) {&t;&t;&bslash;&n;&t;&t;asm volatile(&quot;fwait&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;(tsk)-&gt;thread_info-&gt;status &amp;= ~TS_USEDFPU;&t;&bslash;&n;&t;&t;stts();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * FPU state interaction...&n; */
 r_extern
 r_int

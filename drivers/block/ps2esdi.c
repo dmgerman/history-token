@@ -552,7 +552,7 @@ id|error
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* register the device - pass the name, major number and operations&n;&t;   vector .                                                 */
+multiline_comment|/* register the device - pass the name and major number */
 r_if
 c_cond
 (paren
@@ -562,27 +562,12 @@ c_func
 id|PS2ESDI_MAJOR
 comma
 l_string|&quot;ed&quot;
-comma
-op_amp
-id|ps2esdi_fops
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: Unable to get major number %d&bslash;n&quot;
-comma
-id|DEVICE_NAME
-comma
-id|PS2ESDI_MAJOR
-)paren
-suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 multiline_comment|/* set up some global information - indicating device specific info */
 id|blk_init_queue
 c_func

@@ -3392,24 +3392,9 @@ c_func
 id|MAJOR_NR
 comma
 l_string|&quot;gscd&quot;
-comma
-op_amp
-id|gscd_fops
 )paren
-op_ne
-l_int|0
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;GSCD: Unable to get major %d for GoldStar &quot;
-l_string|&quot;CD-ROM&bslash;n&quot;
-comma
-id|MAJOR_NR
-)paren
-suffix:semicolon
 id|ret
 op_assign
 op_minus

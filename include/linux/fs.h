@@ -4551,10 +4551,6 @@ comma
 r_const
 r_char
 op_star
-comma
-r_struct
-id|block_device_operations
-op_star
 )paren
 suffix:semicolon
 r_extern

@@ -4414,23 +4414,9 @@ c_func
 id|MAJOR_NR
 comma
 l_string|&quot;mcd&quot;
-comma
-op_amp
-id|mcd_bdops
 )paren
-op_ne
-l_int|0
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;mcd: Unable to get major %d for Mitsumi CD-ROM&bslash;n&quot;
-comma
-id|MAJOR_NR
-)paren
-suffix:semicolon
 id|put_disk
 c_func
 (paren

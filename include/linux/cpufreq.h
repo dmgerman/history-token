@@ -6,6 +6,8 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/kobject.h&gt;
+macro_line|#include &lt;linux/sysfs.h&gt;
 DECL|macro|CPUFREQ_NAME_LEN
 mdefine_line|#define CPUFREQ_NAME_LEN 16
 multiline_comment|/*********************************************************************&n; *                     CPUFREQ NOTIFIER INTERFACE                    *&n; *********************************************************************/
@@ -135,6 +137,12 @@ r_struct
 id|kobject
 id|kobj
 suffix:semicolon
+DECL|member|lock
+r_struct
+id|semaphore
+id|lock
+suffix:semicolon
+multiline_comment|/* CPU -&gt;setpolicy or -&gt;target may&n;&t;&t;&t;&t;&t;   only be called once a time */
 )brace
 suffix:semicolon
 DECL|macro|CPUFREQ_ADJUST
@@ -283,7 +291,7 @@ id|owner
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* pass a target to the cpufreq driver &n; * _l : (cpufreq_driver_sem is not held)&n; */
+multiline_comment|/* pass a target to the cpufreq driver &n; */
 r_inline
 r_int
 id|cpufreq_driver_target
@@ -303,28 +311,9 @@ r_int
 id|relation
 )paren
 suffix:semicolon
-r_inline
-r_int
-id|cpufreq_driver_target_l
-c_func
-(paren
-r_struct
-id|cpufreq_policy
-op_star
-id|policy
-comma
-r_int
-r_int
-id|target_freq
-comma
-r_int
-r_int
-id|relation
-)paren
-suffix:semicolon
 multiline_comment|/* pass an event to the cpufreq governor */
 r_int
-id|cpufreq_governor_l
+id|cpufreq_governor
 c_func
 (paren
 r_int
@@ -361,6 +350,9 @@ DECL|macro|CPUFREQ_RELATION_L
 mdefine_line|#define CPUFREQ_RELATION_L 0  /* lowest frequency at or above target */
 DECL|macro|CPUFREQ_RELATION_H
 mdefine_line|#define CPUFREQ_RELATION_H 1  /* highest frequency below or at target */
+r_struct
+id|freq_attr
+suffix:semicolon
 DECL|struct|cpufreq_driver
 r_struct
 id|cpufreq_driver
@@ -427,6 +419,12 @@ r_int
 id|relation
 )paren
 suffix:semicolon
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 multiline_comment|/* optional, for the moment */
 DECL|member|init
 r_int
@@ -454,6 +452,13 @@ op_star
 id|policy
 )paren
 suffix:semicolon
+DECL|member|attr
+r_struct
+id|freq_attr
+op_star
+op_star
+id|attr
+suffix:semicolon
 )brace
 suffix:semicolon
 r_int
@@ -476,11 +481,6 @@ op_star
 id|driver_data
 )paren
 suffix:semicolon
-multiline_comment|/* deprecated */
-DECL|macro|cpufreq_register
-mdefine_line|#define cpufreq_register(x)   cpufreq_register_driver(x)
-DECL|macro|cpufreq_unregister
-mdefine_line|#define cpufreq_unregister() cpufreq_unregister_driver(NULL)
 r_void
 id|cpufreq_notify_transition
 c_func
@@ -574,6 +574,51 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+DECL|struct|freq_attr
+r_struct
+id|freq_attr
+(brace
+DECL|member|attr
+r_struct
+id|attribute
+id|attr
+suffix:semicolon
+DECL|member|show
+id|ssize_t
+(paren
+op_star
+id|show
+)paren
+(paren
+r_struct
+id|cpufreq_policy
+op_star
+comma
+r_char
+op_star
+)paren
+suffix:semicolon
+DECL|member|store
+id|ssize_t
+(paren
+op_star
+id|store
+)paren
+(paren
+r_struct
+id|cpufreq_policy
+op_star
+comma
+r_const
+r_char
+op_star
+comma
+r_int
+id|count
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*********************************************************************&n; *                        CPUFREQ 2.6. INTERFACE                     *&n; *********************************************************************/
 r_int
 id|cpufreq_set_policy
@@ -923,26 +968,6 @@ id|table
 )paren
 suffix:semicolon
 r_int
-id|cpufreq_frequency_table_setpolicy
-c_func
-(paren
-r_struct
-id|cpufreq_policy
-op_star
-id|policy
-comma
-r_struct
-id|cpufreq_frequency_table
-op_star
-id|table
-comma
-r_int
-r_int
-op_star
-id|index
-)paren
-suffix:semicolon
-r_int
 id|cpufreq_frequency_table_target
 c_func
 (paren
@@ -968,6 +993,35 @@ r_int
 r_int
 op_star
 id|index
+)paren
+suffix:semicolon
+multiline_comment|/* the following are really really optional */
+r_extern
+r_struct
+id|freq_attr
+id|cpufreq_freq_attr_scaling_available_freqs
+suffix:semicolon
+r_void
+id|cpufreq_frequency_table_get_attr
+c_func
+(paren
+r_struct
+id|cpufreq_frequency_table
+op_star
+id|table
+comma
+r_int
+r_int
+id|cpu
+)paren
+suffix:semicolon
+r_void
+id|cpufreq_frequency_table_put_attr
+c_func
+(paren
+r_int
+r_int
+id|cpu
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_CPU_FREQ_TABLE */

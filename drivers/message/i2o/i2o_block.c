@@ -5951,26 +5951,12 @@ c_func
 id|MAJOR_NR
 comma
 l_string|&quot;i2o_block&quot;
-comma
-op_amp
-id|i2ob_fops
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Unable to get major number %d for i2o_block&bslash;n&quot;
-comma
-id|MAJOR_NR
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EIO
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren

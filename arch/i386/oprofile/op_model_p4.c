@@ -2364,9 +2364,6 @@ op_complement
 id|APIC_LVT_MASKED
 )paren
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/* P4 quirk: you have to re-unmask the apic vector */
@@ -2385,8 +2382,9 @@ op_complement
 id|APIC_LVT_MASKED
 )paren
 suffix:semicolon
+multiline_comment|/* See op_model_ppro.c */
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 )brace
 DECL|function|p4_start

@@ -386,6 +386,13 @@ op_assign
 id|dentry-&gt;d_subdirs.next
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dcache_lock
+)paren
+suffix:semicolon
 id|up
 c_func
 (paren
