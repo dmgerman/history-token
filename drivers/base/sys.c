@@ -252,6 +252,8 @@ id|sysdev_remove_file
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * declare system_subsys&n; */
+DECL|variable|decl_subsys
+r_static
 id|decl_subsys
 c_func
 (paren
