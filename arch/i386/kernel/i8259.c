@@ -141,7 +141,7 @@ id|CALL_FUNCTION_VECTOR
 macro_line|#endif
 multiline_comment|/*&n; * every pentium local APIC has two &squot;local interrupts&squot;, with a&n; * soft-definable vector attached to both interrupts, one of&n; * which is a timer interrupt, the other one is error counter&n; * overflow. Linux uses the local APIC timer interrupt to get&n; * a much simpler SMP time architecture:&n; */
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-id|BUILD_SMP_TIMER_INTERRUPT
+id|BUILD_SMP_INTERRUPT
 c_func
 (paren
 id|apic_timer_interrupt

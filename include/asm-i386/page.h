@@ -148,6 +148,9 @@ mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
 multiline_comment|/*&n; * This handles the memory map.. We could make this a config&n; * option, but too many people screw it up, and too few need&n; * it.&n; *&n; * A __PAGE_OFFSET of 0xC0000000 means that the kernel has&n; * a virtual address space of one gigabyte, which limits the&n; * amount of physical memory you can use to about 950MB. &n; *&n; * If you want more physical memory than this then see the CONFIG_HIGHMEM4G&n; * and CONFIG_HIGHMEM64G options in the kernel configuration.&n; */
 DECL|macro|__PAGE_OFFSET
 mdefine_line|#define __PAGE_OFFSET&t;&t;(0xC0000000)
+multiline_comment|/*&n; * This much address space is reserved for vmalloc() and iomap()&n; * as well as fixmap mappings.&n; */
+DECL|macro|__VMALLOC_RESERVE
+mdefine_line|#define __VMALLOC_RESERVE&t;(128 &lt;&lt; 20)
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Tell the user there is some problem. Beep too, so we can&n; * see^H^H^Hhear bugs in early bootup as well!&n; */
 macro_line|#ifdef CONFIG_DEBUG_BUGVERBOSE
@@ -231,6 +234,12 @@ suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;&t;((unsigned long)__PAGE_OFFSET)
+DECL|macro|VMALLOC_RESERVE
+mdefine_line|#define VMALLOC_RESERVE&t;&t;((unsigned long)__VMALLOC_RESERVE)
+DECL|macro|__MAXMEM
+mdefine_line|#define __MAXMEM&t;&t;(-__PAGE_OFFSET-__VMALLOC_RESERVE)
+DECL|macro|MAXMEM
+mdefine_line|#define MAXMEM&t;&t;&t;((unsigned long)(-PAGE_OFFSET-VMALLOC_RESERVE))
 DECL|macro|__pa
 mdefine_line|#define __pa(x)&t;&t;&t;((unsigned long)(x)-PAGE_OFFSET)
 DECL|macro|__va

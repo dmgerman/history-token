@@ -4011,13 +4011,6 @@ op_amp
 id|b-&gt;devices
 )paren
 suffix:semicolon
-id|iobus_init
-c_func
-(paren
-op_amp
-id|b-&gt;iobus
-)paren
-suffix:semicolon
 )brace
 r_return
 id|b
@@ -4995,14 +4988,6 @@ l_int|16
 op_amp
 l_int|0xffff
 suffix:semicolon
-multiline_comment|/* make sure generic fields are setup properly */
-id|device_init_dev
-c_func
-(paren
-op_amp
-id|dev-&gt;dev
-)paren
-suffix:semicolon
 multiline_comment|/* Assume 32-bit PCI; let 64-bit PCI cards (which are far rarer)&n;&t;   set this higher, assuming the system even supports it.  */
 id|dev-&gt;dma_mask
 op_assign
@@ -5306,13 +5291,6 @@ r_sizeof
 (paren
 id|dev0
 )paren
-)paren
-suffix:semicolon
-id|device_init_dev
-c_func
-(paren
-op_amp
-id|dev0.dev
 )paren
 suffix:semicolon
 id|dev0.bus

@@ -3383,7 +3383,6 @@ c_func
 (paren
 r_struct
 id|pt_regs
-op_star
 id|regs
 )paren
 (brace
@@ -3420,6 +3419,7 @@ suffix:semicolon
 id|smp_local_timer_interrupt
 c_func
 (paren
+op_amp
 id|regs
 )paren
 suffix:semicolon

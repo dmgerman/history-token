@@ -2579,11 +2579,7 @@ DECL|macro|PFN_DOWN
 mdefine_line|#define PFN_DOWN(x)&t;((x) &gt;&gt; PAGE_SHIFT)
 DECL|macro|PFN_PHYS
 mdefine_line|#define PFN_PHYS(x)&t;((x) &lt;&lt; PAGE_SHIFT)
-multiline_comment|/*&n; * 128MB for vmalloc and initrd&n; */
-DECL|macro|VMALLOC_RESERVE
-mdefine_line|#define VMALLOC_RESERVE&t;(unsigned long)(128 &lt;&lt; 20)
-DECL|macro|MAXMEM
-mdefine_line|#define MAXMEM&t;&t;(unsigned long)(-PAGE_OFFSET-VMALLOC_RESERVE)
+multiline_comment|/*&n; * Reserved space for vmalloc and iomap - defined in asm/page.h&n; */
 DECL|macro|MAXMEM_PFN
 mdefine_line|#define MAXMEM_PFN&t;PFN_DOWN(MAXMEM)
 DECL|macro|MAX_NONPAE_PFN

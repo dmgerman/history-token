@@ -2126,9 +2126,6 @@ id|ftmp
 )paren
 suffix:semicolon
 id|MOD_DEC_USE_COUNT
-c_func
-(paren
-)paren
 suffix:semicolon
 )brace
 id|restore_flags
@@ -2300,9 +2297,6 @@ id|flags
 )paren
 suffix:semicolon
 id|MOD_INC_USE_COUNT
-c_func
-(paren
-)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -2517,9 +2511,6 @@ id|flags
 )paren
 suffix:semicolon
 id|MOD_INC_USE_COUNT
-c_func
-(paren
-)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -2826,9 +2817,6 @@ id|was_found
 )paren
 (brace
 id|MOD_DEC_USE_COUNT
-c_func
-(paren
-)paren
 suffix:semicolon
 r_return
 l_int|0
