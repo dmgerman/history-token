@@ -292,6 +292,17 @@ r_int
 id|primary
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|pcibios_remove_root_bus
+c_func
+(paren
+r_struct
+id|pci_controller
+op_star
+id|phb
+)paren
+suffix:semicolon
 multiline_comment|/* Use this macro after the PCI bus walk for max performance when it&n; * is known that sysdata is correct.&n; */
 DECL|macro|PCI_GET_DN
 mdefine_line|#define PCI_GET_DN(dev) ((struct device_node *)((dev)-&gt;sysdata))
