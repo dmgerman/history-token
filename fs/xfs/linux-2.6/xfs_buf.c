@@ -12,11 +12,8 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &quot;xfs_linux.h&quot;
-macro_line|#ifndef GFP_READAHEAD
-DECL|macro|GFP_READAHEAD
-mdefine_line|#define GFP_READAHEAD&t;(__GFP_NOWARN|__GFP_NORETRY)
-macro_line|#endif
 multiline_comment|/*&n; * File wide globals&n; */
 DECL|variable|pagebuf_cache
 id|STATIC
@@ -222,7 +219,7 @@ macro_line|# define PB_GET_OWNER(pb)&t;do { } while (0)
 macro_line|#endif
 multiline_comment|/*&n; * Pagebuf allocation / freeing.&n; */
 DECL|macro|pb_to_gfp
-mdefine_line|#define pb_to_gfp(flags) &bslash;&n;&t;(((flags) &amp; PBF_READ_AHEAD) ? GFP_READAHEAD : &bslash;&n;&t; ((flags) &amp; PBF_DONT_BLOCK) ? GFP_NOFS : GFP_KERNEL)
+mdefine_line|#define pb_to_gfp(flags) &bslash;&n;&t;((((flags) &amp; PBF_READ_AHEAD) ? __GFP_NORETRY : &bslash;&n;&t;  ((flags) &amp; PBF_DONT_BLOCK) ? GFP_NOFS : GFP_KERNEL) | __GFP_NOWARN)
 DECL|macro|pb_to_km
 mdefine_line|#define pb_to_km(flags) &bslash;&n;&t; (((flags) &amp; PBF_DONT_BLOCK) ? KM_NOFS : KM_SLEEP)
 DECL|macro|pagebuf_allocate
@@ -1198,7 +1195,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;possible deadlock in %s (mode:0x%x)&bslash;n&quot;
+l_string|&quot;XFS: possible memory allocation &quot;
+l_string|&quot;deadlock in %s (mode:0x%x)&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1219,16 +1217,14 @@ comma
 id|gfp_mask
 )paren
 suffix:semicolon
-id|set_current_state
+id|blk_congestion_wait
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-l_int|10
+id|WRITE
+comma
+id|HZ
+op_div
+l_int|50
 )paren
 suffix:semicolon
 r_goto
