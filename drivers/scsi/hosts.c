@@ -738,10 +738,6 @@ id|shost-&gt;use_clustering
 op_assign
 id|sht-&gt;use_clustering
 suffix:semicolon
-id|shost-&gt;use_blk_tcq
-op_assign
-id|sht-&gt;use_blk_tcq
-suffix:semicolon
 r_if
 c_cond
 (paren

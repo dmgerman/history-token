@@ -381,13 +381,6 @@ id|emulated
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* &n;&t; * True if the driver wishes to use the generic block layer&n;&t; * tag queueing functions&n;&t; */
-DECL|member|use_blk_tcq
-r_int
-id|use_blk_tcq
-suffix:colon
-l_int|1
-suffix:semicolon
 multiline_comment|/*&n;&t; * Countdown for host blocking with no commands outstanding&n;&t; */
 DECL|member|max_host_blocked
 r_int
