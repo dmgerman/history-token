@@ -1,6 +1,7 @@
 macro_line|#ifndef __LINUX_ATALK_H__
 DECL|macro|__LINUX_ATALK_H__
 mdefine_line|#define __LINUX_ATALK_H__
+macro_line|#include &lt;net/sock.h&gt;
 multiline_comment|/*&n; * AppleTalk networking structures&n; *&n; * The following are directly referenced from the University Of Michigan&n; * netatalk for compatibility reasons.&n; */
 DECL|macro|ATPORT_FIRST
 mdefine_line|#define ATPORT_FIRST&t;1

@@ -276,15 +276,11 @@ id|skb-&gt;dst
 suffix:semicolon
 id|mtu
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|dst
 )paren
-op_minus
-id|dst-&gt;header_len
-op_minus
-id|dst-&gt;trailer_len
 suffix:semicolon
 r_if
 c_cond

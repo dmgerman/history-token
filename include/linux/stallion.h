@@ -302,7 +302,7 @@ r_int
 id|irqtype
 suffix:semicolon
 DECL|member|isr
-r_void
+r_int
 (paren
 op_star
 id|isr

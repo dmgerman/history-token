@@ -2528,38 +2528,8 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-r_struct
-id|dst_entry
-op_star
-id|dst
-op_assign
-id|__sk_dst_get
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
 r_int
 id|mss_now
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dst
-op_logical_and
-id|dst-&gt;ops-&gt;get_mss
-)paren
-id|pmtu
-op_assign
-id|dst-&gt;ops
-op_member_access_from_pointer
-id|get_mss
-c_func
-(paren
-id|dst
-comma
-id|pmtu
-)paren
 suffix:semicolon
 multiline_comment|/* Calculate base mss without TCP options:&n;&t;   It is MMS_S - sizeof(tcphdr) of rfc1122&n;&t; */
 id|mss_now
@@ -2590,8 +2560,6 @@ multiline_comment|/* Now subtract optional transport overhead */
 id|mss_now
 op_sub_assign
 id|tp-&gt;ext_header_len
-op_plus
-id|tp-&gt;ext2_header_len
 suffix:semicolon
 multiline_comment|/* Then reserve room for full set of TCP options and 8 bytes of data */
 r_if
@@ -2718,7 +2686,7 @@ id|dst
 id|u32
 id|mtu
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|dst
@@ -2730,10 +2698,6 @@ c_cond
 id|mtu
 op_ne
 id|tp-&gt;pmtu_cookie
-op_logical_or
-id|tp-&gt;ext2_header_len
-op_ne
-id|dst-&gt;header_len
 )paren
 id|mss_now
 op_assign
@@ -2782,8 +2746,6 @@ op_minus
 id|tp-&gt;af_specific-&gt;net_header_len
 op_minus
 id|tp-&gt;ext_header_len
-op_minus
-id|tp-&gt;ext2_header_len
 op_minus
 id|tp-&gt;tcp_header_len
 suffix:semicolon
@@ -5940,7 +5902,7 @@ c_func
 (paren
 id|sk
 comma
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|dst

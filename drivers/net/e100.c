@@ -11870,7 +11870,7 @@ id|pci_dev
 op_star
 id|pdev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -11936,7 +11936,13 @@ c_func
 (paren
 id|pdev
 comma
+id|pci_choose_state
+c_func
+(paren
+id|pdev
+comma
 id|state
+)paren
 comma
 id|nic-&gt;flags
 op_amp

@@ -925,11 +925,6 @@ id|__u16
 id|ext_header_len
 suffix:semicolon
 multiline_comment|/* Network protocol overhead (IP/IPv6 options) */
-DECL|member|ext2_header_len
-id|__u16
-id|ext2_header_len
-suffix:semicolon
-multiline_comment|/* Options depending on route */
 DECL|member|ca_state
 id|__u8
 id|ca_state
@@ -940,6 +935,21 @@ id|__u8
 id|retransmits
 suffix:semicolon
 multiline_comment|/* Number of unrecovered RTO timeouts.&t;*/
+DECL|member|advmss
+id|__u16
+id|advmss
+suffix:semicolon
+multiline_comment|/* Advertised MSS&t;&t;&t;*/
+DECL|member|window_clamp
+id|__u32
+id|window_clamp
+suffix:semicolon
+multiline_comment|/* Maximal window to advertise&t;&t;*/
+DECL|member|rcv_ssthresh
+id|__u32
+id|rcv_ssthresh
+suffix:semicolon
+multiline_comment|/* Current window clamp&t;&t;&t;*/
 DECL|member|frto_highmark
 id|__u32
 id|frto_highmark
@@ -1141,21 +1151,6 @@ l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* The SACKS themselves*/
-DECL|member|window_clamp
-id|__u32
-id|window_clamp
-suffix:semicolon
-multiline_comment|/* Maximal window to advertise&t;&t;*/
-DECL|member|rcv_ssthresh
-id|__u32
-id|rcv_ssthresh
-suffix:semicolon
-multiline_comment|/* Current window clamp&t;&t;&t;*/
-DECL|member|advmss
-id|__u16
-id|advmss
-suffix:semicolon
-multiline_comment|/* Advertised MSS&t;&t;&t;*/
 DECL|member|syn_retries
 id|__u8
 id|syn_retries
@@ -1171,10 +1166,6 @@ id|__u16
 id|prior_ssthresh
 suffix:semicolon
 multiline_comment|/* ssthresh saved at recovery start&t;*/
-DECL|member|__pad1
-id|__u16
-id|__pad1
-suffix:semicolon
 DECL|member|lost_out
 id|__u32
 id|lost_out

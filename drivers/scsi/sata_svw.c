@@ -514,6 +514,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;k2_bmdma_setup_mmio - Set up PCI IDE BMDMA transaction (MMIO)&n; *&t;@qc: Info associated with this ATA transaction.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|k2_bmdma_setup_mmio
+r_static
 r_void
 id|k2_bmdma_setup_mmio
 (paren
@@ -632,6 +633,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;k2_bmdma_start_mmio - Start a PCI IDE BMDMA transaction (MMIO)&n; *&t;@qc: Info associated with this ATA transaction.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|k2_bmdma_start_mmio
+r_static
 r_void
 id|k2_bmdma_start_mmio
 (paren

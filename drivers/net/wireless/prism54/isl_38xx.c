@@ -287,6 +287,9 @@ l_string|&quot;%08li.%08li Device wakeup triggered&bslash;n&quot;
 comma
 id|current_time.tv_sec
 comma
+(paren
+r_int
+)paren
 id|current_time.tv_usec
 )paren
 suffix:semicolon
@@ -300,6 +303,9 @@ l_string|&quot;%08li.%08li Device register read %08x&bslash;n&quot;
 comma
 id|current_time.tv_sec
 comma
+(paren
+r_int
+)paren
 id|current_time.tv_usec
 comma
 id|readl
@@ -352,6 +358,9 @@ l_string|&quot;%08li.%08li Device register abadface&bslash;n&quot;
 comma
 id|current_time.tv_sec
 comma
+(paren
+r_int
+)paren
 id|current_time.tv_usec
 )paren
 suffix:semicolon
@@ -398,6 +407,9 @@ l_string|&quot;%08li.%08li Device register read %08x&bslash;n&quot;
 comma
 id|current_time.tv_sec
 comma
+(paren
+r_int
+)paren
 id|current_time.tv_usec
 comma
 id|readl
@@ -432,6 +444,9 @@ l_string|&quot;%08li.%08li Device asleep counter %i&bslash;n&quot;
 comma
 id|current_time.tv_sec
 comma
+(paren
+r_int
+)paren
 id|current_time.tv_usec
 comma
 id|counter
@@ -490,6 +505,9 @@ l_string|&quot;%08li.%08li Device register read %08x&bslash;n&quot;
 comma
 id|current_time.tv_sec
 comma
+(paren
+r_int
+)paren
 id|current_time.tv_usec
 comma
 id|reg
