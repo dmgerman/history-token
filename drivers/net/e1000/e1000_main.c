@@ -8842,6 +8842,13 @@ c_cond
 id|work_done
 OL
 id|work_to_do
+op_logical_or
+op_logical_neg
+id|netif_running
+c_func
+(paren
+id|netdev
+)paren
 )paren
 (brace
 id|netif_rx_complete
