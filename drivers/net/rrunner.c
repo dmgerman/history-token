@@ -504,13 +504,13 @@ id|readl
 c_func
 (paren
 op_amp
-id|regs-&gt;HostCtrl
+id|rrpriv-&gt;regs-&gt;HostCtrl
 )paren
 op_or
 id|NO_SWAP
 comma
 op_amp
-id|regs-&gt;HostCtrl
+id|rrpriv-&gt;regs-&gt;HostCtrl
 )paren
 suffix:semicolon
 macro_line|#endif
