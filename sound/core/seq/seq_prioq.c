@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;seq_timer.h&quot;
 macro_line|#include &quot;seq_prioq.h&quot;
-macro_line|#include &quot;seq_timer.h&quot;
 multiline_comment|/* Implementation is a simple linked list for now...&n;&n;   This priority queue orders the events on timestamp. For events with an&n;   equeal timestamp the queue behaves as a FIFO. &n;&n;   *&n;   *           +-------+&n;   *  Head --&gt; | first |&n;   *           +-------+&n;   *                 |next&n;   *           +-----v-+&n;   *           |       |&n;   *           +-------+&n;   *                 |&n;   *           +-----v-+&n;   *           |       |&n;   *           +-------+&n;   *                 |&n;   *           +-----v-+&n;   *  Tail --&gt; | last  |&n;   *           +-------+&n;   *&n;&n; */
 multiline_comment|/* create new prioq (constructor) */
 DECL|function|snd_seq_prioq_new

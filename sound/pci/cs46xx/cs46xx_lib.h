@@ -15,12 +15,20 @@ DECL|macro|CS46XX_BA1_PRG_SIZE
 mdefine_line|#define CS46XX_BA1_PRG_SIZE&t;  0x7000
 DECL|macro|CS46XX_BA1_REG_SIZE
 mdefine_line|#define CS46XX_BA1_REG_SIZE&t;  0x0100
-DECL|macro|CS46XX_PERIOD_SIZE
-mdefine_line|#define CS46XX_PERIOD_SIZE 2048
+macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
+DECL|macro|CS46XX_MIN_PERIOD_SIZE
+mdefine_line|#define CS46XX_MIN_PERIOD_SIZE 1
+DECL|macro|CS46XX_MAX_PERIOD_SIZE
+mdefine_line|#define CS46XX_MAX_PERIOD_SIZE 1024*1024
+macro_line|#else
+DECL|macro|CS46XX_MIN_PERIOD_SIZE
+mdefine_line|#define CS46XX_MIN_PERIOD_SIZE 2048
+DECL|macro|CS46XX_MAX_PERIOD_SIZE
+mdefine_line|#define CS46XX_MAX_PERIOD_SIZE 2048
+macro_line|#endif
 DECL|macro|CS46XX_FRAGS
 mdefine_line|#define CS46XX_FRAGS 2
-DECL|macro|CS46XX_BUFFER_SIZE
-mdefine_line|#define CS46XX_BUFFER_SIZE CS46XX_PERIOD_SIZE * CS46XX_FRAGS
+multiline_comment|/* #define CS46XX_BUFFER_SIZE CS46XX_MAX_PERIOD_SIZE * CS46XX_FRAGS */
 DECL|macro|SCB_NO_PARENT
 mdefine_line|#define SCB_NO_PARENT             0
 DECL|macro|SCB_ON_PARENT_NEXT_SCB
@@ -47,6 +55,22 @@ suffix:semicolon
 r_extern
 id|snd_pcm_ops_t
 id|snd_cs46xx_capture_indirect_ops
+suffix:semicolon
+r_extern
+id|snd_pcm_ops_t
+id|snd_cs46xx_playback_rear_ops
+suffix:semicolon
+r_extern
+id|snd_pcm_ops_t
+id|snd_cs46xx_playback_indirect_rear_ops
+suffix:semicolon
+r_extern
+id|snd_pcm_ops_t
+id|snd_cs46xx_playback_iec958_ops
+suffix:semicolon
+r_extern
+id|snd_pcm_ops_t
+id|snd_cs46xx_playback_indirect_iec958_ops
 suffix:semicolon
 multiline_comment|/*&n; *  common I/O routines&n; */
 DECL|function|snd_cs46xx_poke
@@ -351,6 +375,14 @@ id|len
 suffix:semicolon
 r_int
 id|cs46xx_dsp_enable_spdif_out
+(paren
+id|cs46xx_t
+op_star
+id|chip
+)paren
+suffix:semicolon
+r_int
+id|cs46xx_dsp_enable_spdif_hw
 (paren
 id|cs46xx_t
 op_star
@@ -982,6 +1014,9 @@ id|private_data
 comma
 id|u32
 id|hw_dma_addr
+comma
+r_int
+id|pcm_channel_id
 )paren
 suffix:semicolon
 r_void
@@ -1080,6 +1115,76 @@ comma
 id|dsp_scb_descriptor_t
 op_star
 id|src
+)paren
+suffix:semicolon
+r_int
+id|cs46xx_iec958_pre_open
+(paren
+id|cs46xx_t
+op_star
+id|chip
+)paren
+suffix:semicolon
+r_int
+id|cs46xx_iec958_post_close
+(paren
+id|cs46xx_t
+op_star
+id|chip
+)paren
+suffix:semicolon
+r_int
+id|cs46xx_dsp_pcm_channel_set_period
+(paren
+id|cs46xx_t
+op_star
+id|chip
+comma
+id|pcm_channel_descriptor_t
+op_star
+id|pcm_channel
+comma
+r_int
+id|period_size
+)paren
+suffix:semicolon
+r_int
+id|cs46xx_dsp_pcm_ostream_set_period
+(paren
+id|cs46xx_t
+op_star
+id|chip
+comma
+r_int
+id|period_size
+)paren
+suffix:semicolon
+r_int
+id|cs46xx_dsp_set_dac_volume
+(paren
+id|cs46xx_t
+op_star
+id|chip
+comma
+id|u16
+id|right
+comma
+id|u16
+id|left
+)paren
+suffix:semicolon
+r_int
+id|cs46xx_dsp_set_iec958_volume
+(paren
+id|cs46xx_t
+op_star
+id|chip
+comma
+id|u16
+id|right
+comma
+id|u16
+id|left
 )paren
 suffix:semicolon
 macro_line|#endif /* __CS46XX_LIB_H__ */

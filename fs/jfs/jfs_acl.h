@@ -80,5 +80,6 @@ id|iattr
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif                         /* CONFIG_JFS_POSIX_ACL */
+macro_line|#endif&t;&t;/* CONFIG_JFS_POSIX_ACL */
+macro_line|#endif&t;&t;/* _H_JFS_ACL */
 eof

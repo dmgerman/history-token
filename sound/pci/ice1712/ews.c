@@ -1919,6 +1919,10 @@ id|ak-&gt;num_dacs
 op_assign
 l_int|8
 suffix:semicolon
+id|ak-&gt;type
+op_assign
+id|SND_AK4524
+suffix:semicolon
 id|ak-&gt;cif
 op_assign
 l_int|1
@@ -1975,6 +1979,10 @@ id|ak-&gt;num_dacs
 op_assign
 l_int|2
 suffix:semicolon
+id|ak-&gt;type
+op_assign
+id|SND_AK4524
+suffix:semicolon
 id|ak-&gt;cif
 op_assign
 l_int|1
@@ -2027,6 +2035,10 @@ op_assign
 id|ak-&gt;num_dacs
 op_assign
 l_int|6
+suffix:semicolon
+id|ak-&gt;type
+op_assign
+id|SND_AK4524
 suffix:semicolon
 id|ak-&gt;cif
 op_assign

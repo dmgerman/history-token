@@ -404,7 +404,8 @@ id|count
 )paren
 suffix:semicolon
 DECL|member|page
-r_void
+r_struct
+id|page
 op_star
 (paren
 op_star
@@ -459,7 +460,7 @@ DECL|macro|SNDRV_PCM_DMA_TYPE_PCI
 mdefine_line|#define SNDRV_PCM_DMA_TYPE_PCI&t;&t;2&t;/* PCI continuous */
 DECL|macro|SNDRV_PCM_DMA_TYPE_SBUS
 mdefine_line|#define SNDRV_PCM_DMA_TYPE_SBUS&t;&t;3&t;/* SBUS continuous */
-multiline_comment|/* If you change this don&squot;t forget to changed snd_pcm_rates table in pcm_lib.c */
+multiline_comment|/* If you change this don&squot;t forget to change rates[] table in pcm_native.c */
 DECL|macro|SNDRV_PCM_RATE_5512
 mdefine_line|#define SNDRV_PCM_RATE_5512&t;&t;(1&lt;&lt;0)&t;&t;/* 5512Hz */
 DECL|macro|SNDRV_PCM_RATE_8000

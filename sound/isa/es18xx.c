@@ -253,13 +253,13 @@ mdefine_line|#define ES18XX_PM_GPO0&t;0x01
 DECL|macro|ES18XX_PM_GPO1
 mdefine_line|#define ES18XX_PM_GPO1&t;0x02
 DECL|macro|ES18XX_PM_PDR
-mdefine_line|#define ES18XX_PM_PDR&t;0x03
+mdefine_line|#define ES18XX_PM_PDR&t;0x04
 DECL|macro|ES18XX_PM_ANA
-mdefine_line|#define ES18XX_PM_ANA&t;0x04
+mdefine_line|#define ES18XX_PM_ANA&t;0x08
 DECL|macro|ES18XX_PM_FM
-mdefine_line|#define ES18XX_PM_FM&t;0x06
+mdefine_line|#define ES18XX_PM_FM&t;0x020
 DECL|macro|ES18XX_PM_SUS
-mdefine_line|#define ES18XX_PM_SUS&t;0x08
+mdefine_line|#define ES18XX_PM_SUS&t;0x080
 DECL|typedef|es18xx_t
 r_typedef
 r_struct
