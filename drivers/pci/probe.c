@@ -2494,6 +2494,11 @@ op_assign
 op_amp
 id|pci_device_driver
 suffix:semicolon
+id|dev0.dev.bus
+op_assign
+op_amp
+id|pci_bus_type
+suffix:semicolon
 multiline_comment|/* Go find them, Rover! */
 r_for
 c_loop

@@ -247,6 +247,12 @@ id|dev
 r_goto
 id|register_done
 suffix:semicolon
+id|bus_add_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* notify platform of device entry */
 r_if
 c_cond
@@ -350,6 +356,12 @@ c_cond
 id|platform_notify_remove
 )paren
 id|platform_notify_remove
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|bus_remove_device
 c_func
 (paren
 id|dev
