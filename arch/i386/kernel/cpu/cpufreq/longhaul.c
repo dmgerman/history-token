@@ -2301,7 +2301,7 @@ suffix:semicolon
 DECL|function|longhaul_cpu_exit
 r_static
 r_int
-id|__exit
+id|__devexit
 id|longhaul_cpu_exit
 c_func
 (paren
@@ -2368,7 +2368,11 @@ comma
 dot
 m_exit
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|longhaul_cpu_exit
+)paren
 comma
 dot
 id|name
