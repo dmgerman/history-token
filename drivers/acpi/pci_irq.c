@@ -1278,6 +1278,21 @@ id|dev-&gt;irq
 suffix:semicolon
 )brace
 macro_line|#endif
+macro_line|#ifdef CONFIG_IOSAPIC
+r_if
+c_cond
+(paren
+id|acpi_irq_model
+op_eq
+id|ACPI_IRQ_MODEL_IOSAPIC
+)paren
+id|iosapic_enable_intr
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+macro_line|#endif
 id|return_VALUE
 c_func
 (paren
