@@ -283,7 +283,8 @@ op_amp
 id|trans-&gt;usage
 )paren
 suffix:semicolon
-singleline_comment|//printk(&quot;rxrpc_get_transport(%p{u=%d})&bslash;n&quot;,trans,atomic_read(&amp;trans-&gt;usage));
+singleline_comment|//printk(&quot;rxrpc_get_transport(%p{u=%d})&bslash;n&quot;,
+singleline_comment|//       trans, atomic_read(&amp;trans-&gt;usage));
 )brace
 r_extern
 r_void
@@ -328,24 +329,6 @@ op_star
 id|srv
 )paren
 suffix:semicolon
-macro_line|#if 0
-r_extern
-r_int
-id|rxrpc_trans_add_connection
-c_func
-(paren
-r_struct
-id|rxrpc_transport
-op_star
-id|trans
-comma
-r_struct
-id|rxrpc_connection
-op_star
-id|conn
-)paren
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_void
 id|rxrpc_trans_receive_packet

@@ -95,11 +95,27 @@ id|list_head
 id|proc_link
 suffix:semicolon
 multiline_comment|/* link in /proc list */
+DECL|member|conn_idlock
+id|rwlock_t
+id|conn_idlock
+suffix:semicolon
+multiline_comment|/* lock for connection IDs */
+DECL|member|conn_idlist
+r_struct
+id|list_head
+id|conn_idlist
+suffix:semicolon
+multiline_comment|/* list of connections granted IDs */
+DECL|member|conn_idcounter
+r_uint32
+id|conn_idcounter
+suffix:semicolon
+multiline_comment|/* connection ID counter */
 DECL|member|conn_lock
 id|rwlock_t
 id|conn_lock
 suffix:semicolon
-multiline_comment|/* lock for connections */
+multiline_comment|/* lock for active/dead connections */
 DECL|member|conn_active
 r_struct
 id|list_head

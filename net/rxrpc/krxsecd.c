@@ -39,7 +39,7 @@ r_static
 id|atomic_t
 id|rxrpc_krxsecd_qcount
 suffix:semicolon
-multiline_comment|/* queue of unprocessed inbound messages with seqno #1 and RXRPC_CLIENT_INITIATED flag set */
+multiline_comment|/* queue of unprocessed inbound messages with seqno #1 and&n; * RXRPC_CLIENT_INITIATED flag set */
 r_static
 id|LIST_HEAD
 c_func
@@ -101,6 +101,35 @@ id|daemonize
 c_func
 (paren
 l_string|&quot;krxsecd&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* only certain signals are of interest */
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sighand-&gt;siglock
+)paren
+suffix:semicolon
+id|siginitsetinv
+c_func
+(paren
+op_amp
+id|current-&gt;blocked
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|recalc_sigpending
+c_func
+(paren
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 multiline_comment|/* loop around waiting for work to do */

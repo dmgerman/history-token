@@ -311,7 +311,7 @@ id|count
 )paren
 suffix:semicolon
 DECL|macro|_state
-mdefine_line|#define _state(call) &bslash;&n;&t;_debug(&quot;[[[ state %s ]]]&quot;,rxrpc_call_states[call-&gt;app_call_state]);
+mdefine_line|#define _state(call) &bslash;&n;&t;_debug(&quot;[[[ state %s ]]]&quot;, rxrpc_call_states[call-&gt;app_call_state]);
 DECL|function|rxrpc_call_default_attn_func
 r_static
 r_void
@@ -1395,7 +1395,7 @@ id|call-&gt;app_mark
 op_assign
 r_sizeof
 (paren
-id|u32
+r_uint32
 )paren
 suffix:semicolon
 id|_state
@@ -1627,7 +1627,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* to prevent a race, the decrement and the de-list must be effectively atomic */
+multiline_comment|/* to prevent a race, the decrement and the de-list must be effectively&n;&t; * atomic */
 id|spin_lock
 c_func
 (paren
@@ -2146,11 +2146,9 @@ l_int|1
 dot
 id|iov_len
 op_assign
-(paren
 id|call-&gt;ackr_pend_cnt
 op_plus
 l_int|3
-)paren
 suffix:semicolon
 id|diov
 (braket
@@ -2412,7 +2410,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end __rxrpc_call_gen_normal_ACK() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * note the reception of a packet in the call&squot;s ACK records and generate an appropriate ACK packet&n; * if necessary&n; * - returns 0 if packet should be processed, 1 if packet should be ignored and -ve on an error&n; */
+multiline_comment|/*&n; * note the reception of a packet in the call&squot;s ACK records and generate an&n; * appropriate ACK packet if necessary&n; * - returns 0 if packet should be processed, 1 if packet should be ignored&n; *   and -ve on an error&n; */
 DECL|function|rxrpc_call_generate_ACK
 r_static
 r_int
@@ -2901,7 +2899,7 @@ id|call-&gt;ackr_dfr_seq
 op_assign
 id|seq
 suffix:semicolon
-multiline_comment|/* start the ACK timer if not running if there are any pending deferred ACKs */
+multiline_comment|/* start the ACK timer if not running if there are any pending deferred&n;&t; * ACKs */
 r_if
 c_cond
 (paren
@@ -3021,7 +3019,7 @@ id|diov
 l_int|2
 )braket
 suffix:semicolon
-id|u8
+r_uint8
 id|acks
 (braket
 l_int|1
@@ -3080,11 +3078,11 @@ id|ack.nAcks
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|//ack.nAcks = special_ACK==RXRPC_ACK_OUT_OF_SEQUENCE ? 0 : hdr-&gt;seq ? 1 : 0;
 id|_proto
 c_func
 (paren
-l_string|&quot;Rx Sending s-ACK { m=%hu f=#%u p=#%u s=%%%u r=%s n=%u }&quot;
+l_string|&quot;Rx Sending s-ACK&quot;
+l_string|&quot; { m=%hu f=#%u p=#%u s=%%%u r=%s n=%u }&quot;
 comma
 id|ntohs
 c_func
@@ -3658,7 +3656,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* send the abort packet only if we actually traded some other packets */
+multiline_comment|/* send the abort packet only if we actually traded some other&n;&t; * packets */
 id|ret
 op_assign
 l_int|0
@@ -3843,7 +3841,7 @@ id|list_head
 op_star
 id|_p
 suffix:semicolon
-id|u32
+r_uint32
 id|data32
 suffix:semicolon
 id|_enter
@@ -3860,7 +3858,7 @@ c_func
 id|call
 )paren
 suffix:semicolon
-multiline_comment|/* must not go away too soon if aborted by app-layer */
+multiline_comment|/* must not go away too soon if aborted by&n;&t;&t;&t;       * app-layer */
 r_while
 c_loop
 (paren
@@ -4242,7 +4240,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end rxrpc_call_receive_packet() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * process next data packet&n; * - as the next data packet arrives:&n; *   - it is queued on app_readyq _if_ it is the next one expected (app_ready_seq+1)&n; *   - it is queued on app_unreadyq _if_ it is not the next one expected&n; *   - if a packet placed on app_readyq completely fills a hole leading up to the first packet&n; *     on app_unreadyq, then packets now in sequence are tranferred to app_readyq&n; * - the application layer can only see packets on app_readyq (app_ready_qty bytes)&n; * - the application layer is prodded every time a new packet arrives&n; */
+multiline_comment|/*&n; * process next data packet&n; * - as the next data packet arrives:&n; *   - it is queued on app_readyq _if_ it is the next one expected&n; *     (app_ready_seq+1)&n; *   - it is queued on app_unreadyq _if_ it is not the next one expected&n; *   - if a packet placed on app_readyq completely fills a hole leading up to&n; *     the first packet on app_unreadyq, then packets now in sequence are&n; *     tranferred to app_readyq&n; * - the application layer can only see packets on app_readyq&n; *   (app_ready_qty bytes)&n; * - the application layer is prodded every time a new packet arrives&n; */
 DECL|function|rxrpc_call_receive_data_packet
 r_static
 r_void
@@ -4315,7 +4313,7 @@ c_func
 id|msg
 )paren
 suffix:semicolon
-multiline_comment|/* add to the unready queue if we&squot;d have to create a hole in the ready queue otherwise */
+multiline_comment|/* add to the unready queue if we&squot;d have to create a hole in the ready&n;&t; * queue otherwise */
 r_if
 c_cond
 (paren
@@ -4570,7 +4568,7 @@ l_string|&quot; [error]&quot;
 suffix:semicolon
 r_return
 suffix:semicolon
-multiline_comment|/* extract the operation ID from an incoming call if that&squot;s not yet been done */
+multiline_comment|/* extract the operation ID from an incoming call if that&squot;s not&n;&t;&t; * yet been done */
 r_case
 id|RXRPC_CSTATE_SRVR_RCV_OPID
 suffix:colon
@@ -4595,6 +4593,7 @@ c_cond
 (paren
 id|call-&gt;app_last_rcv
 )paren
+multiline_comment|/* trouble - last packet seen */
 id|rxrpc_call_abort
 c_func
 (paren
@@ -4604,7 +4603,6 @@ op_minus
 id|EINVAL
 )paren
 suffix:semicolon
-multiline_comment|/* trouble - last packet seen */
 id|_leave
 c_func
 (paren
@@ -4792,7 +4790,7 @@ comma
 id|call-&gt;conn-&gt;service-&gt;name
 )paren
 suffix:semicolon
-multiline_comment|/* we&squot;re now waiting for the argument block (unless the call was aborted) */
+multiline_comment|/* we&squot;re now waiting for the argument block (unless the call&n;&t;&t; * was aborted) */
 id|spin_lock
 c_func
 (paren
@@ -5260,7 +5258,7 @@ comma
 id|call-&gt;ackr.nAcks
 )paren
 suffix:semicolon
-multiline_comment|/* check the other side isn&squot;t ACK&squot;ing a sequence number I haven&squot;t sent yet */
+multiline_comment|/* check the other side isn&squot;t ACK&squot;ing a sequence number I haven&squot;t sent&n;&t; * yet */
 r_if
 c_cond
 (paren
@@ -5396,7 +5394,7 @@ id|list_head
 op_star
 id|_p
 suffix:semicolon
-multiline_comment|/* it ought to be a data packet - look in the pending ACK list */
+multiline_comment|/* it ought to be a data packet - look in the pending&n;&t;&t;&t; * ACK list */
 id|list_for_each
 c_func
 (paren
@@ -5432,9 +5430,9 @@ c_cond
 (paren
 id|rttmsg-&gt;rttdone
 )paren
+multiline_comment|/* never do RTT twice without&n;&t;&t;&t;&t;&t;&t; * resending */
 r_break
 suffix:semicolon
-multiline_comment|/* never do RTT twice without resending */
 id|rttmsg-&gt;rttdone
 op_assign
 l_int|1
@@ -5468,7 +5466,7 @@ c_cond
 id|ack.reason
 )paren
 (brace
-multiline_comment|/* deal with negative/positive acknowledgement of data packets */
+multiline_comment|/* deal with negative/positive acknowledgement of data&n;&t;&t; * packets */
 r_case
 id|RXRPC_ACK_REQUESTED
 suffix:colon
@@ -5565,7 +5563,7 @@ id|rxrpc_message
 op_star
 id|rttmsg
 suffix:semicolon
-multiline_comment|/* only do RTT stuff if the response matches the retained ping */
+multiline_comment|/* only do RTT stuff if the response matches the&n;&t;&t;&t; * retained ping */
 id|rttmsg
 op_assign
 l_int|NULL
@@ -5655,7 +5653,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end rxrpc_call_receive_ack_packet() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * record definitive ACKs for all messages up to and including the one with the &squot;highest&squot; seq&n; */
+multiline_comment|/*&n; * record definitive ACKs for all messages up to and including the one with the&n; * &squot;highest&squot; seq&n; */
 DECL|function|rxrpc_call_definitively_ACK
 r_static
 r_void
@@ -5710,7 +5708,7 @@ comma
 id|call-&gt;acks_dftv_seq
 )paren
 suffix:semicolon
-multiline_comment|/* discard those at front of queue until message with highest ACK is found */
+multiline_comment|/* discard those at front of queue until message with highest&n;&t;&t; * ACK is found */
 id|spin_lock
 c_func
 (paren
@@ -5798,7 +5796,8 @@ id|call-&gt;acks_dftv_seq
 id|panic
 c_func
 (paren
-l_string|&quot;%s(): Packet #%u expected at front of acks_pendq (#%u found)&bslash;n&quot;
+l_string|&quot;%s(): Packet #%u expected at front of acks_pendq&quot;
+l_string|&quot; (#%u found)&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -5987,7 +5986,7 @@ comma
 id|count
 )paren
 suffix:semicolon
-multiline_comment|/* handle re-ACK&squot;ing of definitively ACK&squot;d packets (may be out-of-order ACKs) */
+multiline_comment|/* handle re-ACK&squot;ing of definitively ACK&squot;d packets (may be out-of-order&n;&t; * ACKs) */
 r_if
 c_cond
 (paren
@@ -6169,7 +6168,8 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;Rx Received unsupported ACK state %u&bslash;n&quot;
+l_string|&quot;Rx Received unsupported ACK state&quot;
+l_string|&quot; %u&bslash;n&quot;
 comma
 id|acks
 (braket
@@ -6192,7 +6192,8 @@ suffix:semicolon
 id|_proto
 c_func
 (paren
-l_string|&quot;Rx ACK of packets #%u-#%u [%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c] (pend=%u)&quot;
+l_string|&quot;Rx ACK of packets #%u-#%u &quot;
+l_string|&quot;[%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c] (pend=%u)&quot;
 comma
 id|seq
 comma
@@ -6338,7 +6339,7 @@ comma
 id|call-&gt;acks_pend_cnt
 )paren
 suffix:semicolon
-multiline_comment|/* mark the packets in the ACK queue as being provisionally ACK&squot;d */
+multiline_comment|/* mark the packets in the ACK queue as being provisionally&n;&t;&t; * ACK&squot;d */
 id|ix
 op_assign
 l_int|0
@@ -6538,7 +6539,7 @@ comma
 id|highest
 )paren
 suffix:semicolon
-multiline_comment|/* if all packets are provisionally ACK&squot;d, then wake up anyone who&squot;s waiting for that */
+multiline_comment|/* if all packets are provisionally ACK&squot;d, then wake up anyone who&squot;s&n;&t; * waiting for that */
 id|now_complete
 op_assign
 l_int|0
@@ -6657,7 +6658,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end rxrpc_call_record_ACK() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * transfer data from the ready packet queue to the asynchronous read buffer&n; * - since this func is the only one going to look at packets queued on app_readyq, we don&squot;t need&n; *   a lock to modify or access them, only to modify the queue pointers&n; * - called with call-&gt;lock held&n; * - the buffer must be in kernel space&n; * - returns:&n; *&t;0 if buffer filled&n; *&t;-EAGAIN if buffer not filled and more data to come&n; *&t;-EBADMSG if last packet received and insufficient data left&n; *&t;-ECONNABORTED if the call has in an error state&n; */
+multiline_comment|/*&n; * transfer data from the ready packet queue to the asynchronous read buffer&n; * - since this func is the only one going to look at packets queued on&n; *   app_readyq, we don&squot;t need a lock to modify or access them, only to modify&n; *   the queue pointers&n; * - called with call-&gt;lock held&n; * - the buffer must be in kernel space&n; * - returns:&n; *&t;0 if buffer filled&n; *&t;-EAGAIN if buffer not filled and more data to come&n; *&t;-EBADMSG if last packet received and insufficient data left&n; *&t;-ECONNABORTED if the call has in an error state&n; */
 DECL|function|__rxrpc_call_read_data
 r_static
 r_int
@@ -6719,7 +6720,8 @@ id|call-&gt;app_last_rcv
 id|printk
 c_func
 (paren
-l_string|&quot;%s(%p,%p,%Zd): Inconsistent call state (%s, last pkt)&quot;
+l_string|&quot;%s(%p,%p,%Zd):&quot;
+l_string|&quot; Inconsistent call state (%s, last pkt)&quot;
 comma
 id|__FUNCTION__
 comma
@@ -6767,7 +6769,8 @@ id|call-&gt;app_last_rcv
 id|printk
 c_func
 (paren
-l_string|&quot;%s(%p,%p,%Zd): Inconsistent call state (%s, not last pkt)&quot;
+l_string|&quot;%s(%p,%p,%Zd):&quot;
+l_string|&quot; Inconsistent call state (%s, not last pkt)&quot;
 comma
 id|__FUNCTION__
 comma
@@ -6976,7 +6979,8 @@ l_int|0
 id|panic
 c_func
 (paren
-l_string|&quot;%s: Failed to copy data from packet: (%p,%p,%Zd)&quot;
+l_string|&quot;%s: Failed to copy data from packet:&quot;
+l_string|&quot; (%p,%p,%Zd)&quot;
 comma
 id|__FUNCTION__
 comma
@@ -7226,7 +7230,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end __rxrpc_call_read_data() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * attempt to read the specified amount of data from the call&squot;s ready queue into the buffer&n; * provided&n; * - since this func is the only one going to look at packets queued on app_readyq, we don&squot;t need&n; *   a lock to modify or access them, only to modify the queue pointers&n; * - if the buffer pointer is NULL, then data is merely drained, not copied&n; * - if flags&amp;RXRPC_CALL_READ_BLOCK, then the function will wait until there is enough data or an&n; *   error will be generated&n; *   - note that the caller must have added the calling task to the call&squot;s wait queue beforehand&n; * - if flags&amp;RXRPC_CALL_READ_ALL, then an error will be generated if this function doesn&squot;t read&n; *   all available data&n; */
+multiline_comment|/*&n; * attempt to read the specified amount of data from the call&squot;s ready queue&n; * into the buffer provided&n; * - since this func is the only one going to look at packets queued on&n; *   app_readyq, we don&squot;t need a lock to modify or access them, only to modify&n; *   the queue pointers&n; * - if the buffer pointer is NULL, then data is merely drained, not copied&n; * - if flags&amp;RXRPC_CALL_READ_BLOCK, then the function will wait until there is&n; *   enough data or an error will be generated&n; *   - note that the caller must have added the calling task to the call&squot;s wait&n; *     queue beforehand&n; * - if flags&amp;RXRPC_CALL_READ_ALL, then an error will be generated if this&n; *   function doesn&squot;t read all available data&n; */
 DECL|function|rxrpc_call_read_data
 r_int
 id|rxrpc_call_read_data
@@ -7573,7 +7577,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end rxrpc_call_read_data() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * write data to a call&n; * - the data may not be sent immediately if it doesn&squot;t fill a buffer&n; * - if we can&squot;t queue all the data for buffering now, siov[] will have been adjusted to take&n; *   account of what has been sent&n; */
+multiline_comment|/*&n; * write data to a call&n; * - the data may not be sent immediately if it doesn&squot;t fill a buffer&n; * - if we can&squot;t queue all the data for buffering now, siov[] will have been&n; *   adjusted to take account of what has been sent&n; */
 DECL|function|rxrpc_call_write_data
 r_int
 id|rxrpc_call_write_data
@@ -7881,7 +7885,7 @@ id|siov-&gt;iov_len
 id|siov
 op_increment
 suffix:semicolon
-multiline_comment|/* if we are going to have to duplicate the data then coalesce it too */
+multiline_comment|/* if we are going to have to duplicate the data then coalesce&n;&t;&t; * it too */
 r_if
 c_cond
 (paren
@@ -7934,7 +7938,7 @@ id|rxrpc_header
 )paren
 )paren
 (brace
-multiline_comment|/* discard an empty msg and wind back the seq counter */
+multiline_comment|/* discard an empty msg and wind back&n;&t;&t;&t;&t;&t; * the seq counter */
 id|rxrpc_put_message
 c_func
 (paren
@@ -8301,7 +8305,7 @@ op_amp
 id|call-&gt;acks_pendq
 )paren
 suffix:semicolon
-multiline_comment|/* decide what to do depending on current state and if this is the last packet */
+multiline_comment|/* decide what to do depending on current state and if this is&n;&t;&t; * the last packet */
 id|ret
 op_assign
 op_minus
@@ -8522,6 +8526,7 @@ id|call-&gt;pkt_rcv_count
 OG
 l_int|0
 ques
+c_cond
 op_minus
 id|EIO
 suffix:colon
@@ -8616,7 +8621,8 @@ suffix:semicolon
 id|panic
 c_func
 (paren
-l_string|&quot;%s(%p,%d): Inconsistent pending-ACK queue (ds=%u sc=%u sq=%u)&bslash;n&quot;
+l_string|&quot;%s(%p,%d):&quot;
+l_string|&quot; Inconsistent pending-ACK queue (ds=%u sc=%u sq=%u)&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -8656,7 +8662,7 @@ op_amp
 id|call-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/* send each message again (and ignore any errors we might incur) */
+multiline_comment|/* send each message again (and ignore any errors we might&n;&t;&t; * incur) */
 id|_proto
 c_func
 (paren

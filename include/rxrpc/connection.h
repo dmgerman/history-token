@@ -62,6 +62,12 @@ id|list_head
 id|err_link
 suffix:semicolon
 multiline_comment|/* link in ICMP error processing list */
+DECL|member|id_link
+r_struct
+id|list_head
+id|id_link
+suffix:semicolon
+multiline_comment|/* link in ID grant list */
 DECL|member|addr
 r_struct
 id|sockaddr_in
@@ -111,37 +117,37 @@ suffix:semicolon
 multiline_comment|/* packet serial number counter */
 multiline_comment|/* the following should all be in net order */
 DECL|member|in_epoch
-id|u32
+r_uint32
 id|in_epoch
 suffix:semicolon
 multiline_comment|/* peer&squot;s epoch */
 DECL|member|out_epoch
-id|u32
+r_uint32
 id|out_epoch
 suffix:semicolon
 multiline_comment|/* my epoch */
 DECL|member|conn_id
-id|u32
+r_uint32
 id|conn_id
 suffix:semicolon
 multiline_comment|/* connection ID, appropriately shifted */
 DECL|member|service_id
-id|u16
+r_uint16
 id|service_id
 suffix:semicolon
 multiline_comment|/* service ID */
 DECL|member|security_ix
-id|u8
+r_uint8
 id|security_ix
 suffix:semicolon
 multiline_comment|/* security ID */
 DECL|member|in_clientflag
-id|u8
+r_uint8
 id|in_clientflag
 suffix:semicolon
 multiline_comment|/* RXRPC_CLIENT_INITIATED if we are server */
 DECL|member|out_clientflag
-id|u8
+r_uint8
 id|out_clientflag
 suffix:semicolon
 multiline_comment|/* RXRPC_CLIENT_INITIATED if we are client */
@@ -157,14 +163,13 @@ id|rxrpc_transport
 op_star
 id|trans
 comma
-id|u16
+r_uint16
 id|port
 comma
-id|u32
+r_uint32
 id|addr
 comma
-r_int
-r_int
+r_uint16
 id|service_id
 comma
 r_void

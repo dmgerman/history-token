@@ -183,12 +183,12 @@ id|call_link
 suffix:semicolon
 multiline_comment|/* master call list link */
 DECL|member|chan_ix
-id|u32
+r_uint32
 id|chan_ix
 suffix:semicolon
 multiline_comment|/* connection channel index (net order) */
 DECL|member|call_id
-id|u32
+r_uint32
 id|call_id
 suffix:semicolon
 multiline_comment|/* call ID on connection (net order) */
@@ -329,7 +329,7 @@ id|ackr
 suffix:semicolon
 multiline_comment|/* pending normal ACK packet */
 DECL|member|ackr_array
-id|u8
+r_uint8
 id|ackr_array
 (braket
 id|RXRPC_CALL_ACK_WINDOW_SIZE
@@ -452,13 +452,13 @@ id|app_async_read
 suffix:semicolon
 multiline_comment|/* T if in async-read mode */
 DECL|member|app_read_buf
-id|u8
+r_uint8
 op_star
 id|app_read_buf
 suffix:semicolon
 multiline_comment|/* application async read buffer (app_mark size) */
 DECL|member|app_scr_alloc
-id|u8
+r_uint8
 op_star
 id|app_scr_alloc
 suffix:semicolon
@@ -473,7 +473,7 @@ DECL|macro|RXRPC_APP_MARK_EOF
 mdefine_line|#define RXRPC_APP_MARK_EOF 0xFFFFFFFFU&t;/* mark at end of input */
 multiline_comment|/* application scratch buffer */
 DECL|member|app_scratch
-id|u8
+r_uint8
 id|app_scratch
 (braket
 l_int|0
@@ -672,7 +672,7 @@ id|siov
 (braket
 )braket
 comma
-id|u8
+r_uint8
 id|rxhdr_flags
 comma
 r_int
