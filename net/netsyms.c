@@ -2736,6 +2736,16 @@ c_func
 id|ip_ct_attach
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_INET
+macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
+DECL|variable|ip_route_me_harder
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_route_me_harder
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 DECL|variable|register_gifconf
 id|EXPORT_SYMBOL
