@@ -773,15 +773,6 @@ id|semaphore
 id|open_mutex
 suffix:semicolon
 multiline_comment|/* playback open mutex */
-macro_line|#ifdef CONFIG_PM
-DECL|member|pci_state
-id|u32
-id|pci_state
-(braket
-l_int|16
-)braket
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; */
@@ -5842,14 +5833,6 @@ c_func
 id|chip
 )paren
 suffix:semicolon
-id|pci_save_state
-c_func
-(paren
-id|chip-&gt;pci
-comma
-id|chip-&gt;pci_state
-)paren
-suffix:semicolon
 id|pci_set_power_state
 c_func
 (paren
@@ -5904,14 +5887,6 @@ id|pci_enable_device
 c_func
 (paren
 id|chip-&gt;pci
-)paren
-suffix:semicolon
-id|pci_restore_state
-c_func
-(paren
-id|chip-&gt;pci
-comma
-id|chip-&gt;pci_state
 )paren
 suffix:semicolon
 id|pci_set_power_state

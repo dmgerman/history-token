@@ -3213,6 +3213,15 @@ id|SNDRV_CTL_POWER_D0
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/* restore the PCI config space */
+id|pci_restore_state
+c_func
+(paren
+id|dev
+comma
+id|dev-&gt;saved_config_space
+)paren
+suffix:semicolon
 multiline_comment|/* FIXME: correct state value? */
 r_return
 id|card
