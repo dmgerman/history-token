@@ -38,7 +38,7 @@ macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &lt;asm/ia32.h&gt;
+macro_line|#include &quot;ia32priv.h&quot;
 macro_line|#include &lt;net/scm.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 DECL|macro|DEBUG
@@ -6550,10 +6550,6 @@ op_minus
 id|EINVAL
 comma
 id|err2
-suffix:semicolon
-r_struct
-id|msqid_ds
-id|m
 suffix:semicolon
 r_struct
 id|msqid64_ds

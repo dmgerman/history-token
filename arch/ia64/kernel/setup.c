@@ -3227,25 +3227,9 @@ id|cpu_data
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IA32_SUPPORT
-multiline_comment|/* initialize global ia32 state - CR0 and CR4 */
-id|asm
-r_volatile
+id|ia32_cpu_init
+c_func
 (paren
-l_string|&quot;mov ar.cflg = %0&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
-(paren
-(paren
-id|ulong
-)paren
-id|IA32_CR4
-op_lshift
-l_int|32
-)paren
-op_or
-id|IA32_CR0
-)paren
 )paren
 suffix:semicolon
 macro_line|#endif

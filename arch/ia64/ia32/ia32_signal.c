@@ -16,7 +16,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/rse.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
-macro_line|#include &lt;asm/ia32.h&gt;
+macro_line|#include &quot;ia32priv.h&quot;
 macro_line|#include &quot;../kernel/sigframe.h&quot;
 DECL|macro|A
 mdefine_line|#define A(__x)&t;&t;((unsigned long)(__x))

@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/dirent.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;&t;&t;/* argh, msdos_fs.h isn&squot;t self-contained... */
 macro_line|#include &lt;linux/signal.h&gt;&t;/* argh, msdos_fs.h isn&squot;t self-contained... */
 macro_line|#include &lt;linux/compat.h&gt;
-macro_line|#include &lt;asm/ia32.h&gt;
+macro_line|#include &quot;ia32priv.h&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

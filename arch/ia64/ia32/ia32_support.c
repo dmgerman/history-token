@@ -8,7 +8,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/ia32.h&gt;
+macro_line|#include &quot;ia32priv.h&quot;
 r_extern
 r_void
 id|die_if_kernel
@@ -845,6 +845,35 @@ op_amp
 id|siginfo
 comma
 id|current
+)paren
+suffix:semicolon
+)brace
+r_void
+DECL|function|ia32_cpu_init
+id|ia32_cpu_init
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* initialize global ia32 state - CR0 and CR4 */
+id|asm
+r_volatile
+(paren
+l_string|&quot;mov ar.cflg = %0&quot;
+op_scope_resolution
+l_string|&quot;r&quot;
+(paren
+(paren
+(paren
+id|ulong
+)paren
+id|IA32_CR4
+op_lshift
+l_int|32
+)paren
+op_or
+id|IA32_CR0
+)paren
 )paren
 suffix:semicolon
 )brace
