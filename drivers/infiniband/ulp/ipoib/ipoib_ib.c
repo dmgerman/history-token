@@ -5,6 +5,7 @@ macro_line|#include &lt;ib_cache.h&gt;
 macro_line|#include &quot;ipoib.h&quot;
 macro_line|#ifdef CONFIG_INFINIBAND_IPOIB_DEBUG_DATA
 DECL|variable|data_debug_level
+r_static
 r_int
 id|data_debug_level
 suffix:semicolon

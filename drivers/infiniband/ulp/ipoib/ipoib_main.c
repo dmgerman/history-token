@@ -27,14 +27,16 @@ l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_INFINIBAND_IPOIB_DEBUG
-DECL|variable|debug_level
+DECL|variable|ipoib_debug_level
 r_int
-id|debug_level
+id|ipoib_debug_level
 suffix:semicolon
-id|module_param
+id|module_param_named
 c_func
 (paren
 id|debug_level
+comma
+id|ipoib_debug_level
 comma
 r_int
 comma
