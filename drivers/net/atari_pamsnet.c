@@ -85,6 +85,12 @@ comma
 l_string|&quot;pamsnet debug enable (0-1)&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|pamsnet_min_poll_time
 r_static
 r_int

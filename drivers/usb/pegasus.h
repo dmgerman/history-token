@@ -348,6 +348,10 @@ DECL|macro|VENDOR_ACCTON
 mdefine_line|#define&t;VENDOR_ACCTON&t;&t;0x083a
 DECL|macro|VENDOR_ADMTEK
 mdefine_line|#define&t;VENDOR_ADMTEK&t;&t;0x07a6
+DECL|macro|VENDOR_ALLIEDTEL
+mdefine_line|#define&t;VENDOR_ALLIEDTEL&t;0x07c9
+DECL|macro|VENDOR_BELKIN
+mdefine_line|#define&t;VENDOR_BELKIN&t;&t;0x050d
 DECL|macro|VENDOR_BILLIONTON
 mdefine_line|#define&t;VENDOR_BILLIONTON&t;0x08dd
 DECL|macro|VENDOR_COREGA
@@ -370,8 +374,6 @@ DECL|macro|VENDOR_SMC
 mdefine_line|#define&t;VENDOR_SMC&t;&t;0x0707
 DECL|macro|VENDOR_SOHOWARE
 mdefine_line|#define&t;VENDOR_SOHOWARE&t;&t;0x15e8
-DECL|macro|VENDOR_BELKIN
-mdefine_line|#define&t;VENDOR_BELKIN&t;&t;0x050d
 macro_line|#else&t;/* PEGASUS_DEV */
 id|PEGASUS_DEV
 c_func
@@ -550,6 +552,32 @@ comma
 id|DEFAULT_GPIO_RESET
 op_or
 id|HAS_HOME_PNA
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;Allied Telesyn Int. AT-USB100&quot;
+comma
+id|VENDOR_ALLIEDTEL
+comma
+l_int|0xb100
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;Belkin F5D5050 USB Ethernet&quot;
+comma
+id|VENDOR_BELKIN
+comma
+l_int|0x0121
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
 )paren
 id|PEGASUS_DEV
 c_func
@@ -906,19 +934,6 @@ comma
 l_int|0x9100
 comma
 id|DEFAULT_GPIO_RESET
-)paren
-id|PEGASUS_DEV
-c_func
-(paren
-l_string|&quot;Belkin F5D5050 USB Ethernet&quot;
-comma
-id|VENDOR_BELKIN
-comma
-l_int|0x0121
-comma
-id|DEFAULT_GPIO_RESET
-op_or
-id|PEGASUS_II
 )paren
 macro_line|#endif&t;/* PEGASUS_DEV */
 eof

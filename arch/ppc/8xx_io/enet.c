@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.enet.c 1.15 09/14/01 18:01:16 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.enet.c 1.17 10/11/01 11:55:47 trini&n; */
 multiline_comment|/*&n; * Ethernet driver for Motorola MPC8xx.&n; * Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * I copied the basic skeleton from the lance driver, because I did not&n; * know how to write the Linux driver, but I did know how the LANCE worked.&n; *&n; * This version of the driver is somewhat selectable for the different&n; * processor/board combinations.  It works for the boards I know about&n; * now, and should be easily modified to include others.  Some of the&n; * configuration information is contained in &lt;asm/commproc.h&gt; and the&n; * remainder is here.&n; *&n; * Buffer descriptors are kept in the CPM dual port RAM, and the frame&n; * buffers are in the host memory.&n; *&n; * Right now, I am very watseful with the buffers.  I allocate memory&n; * pages and then divide them into 2K frame buffers.  This way I know I&n; * have buffers large enough to hold one frame within one buffer descriptor.&n; * Once I get this working, I will use 64 or 128 byte CPM buffers, which&n; * will be much more memory efficient and will easily handle lots of&n; * small packets.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -178,6 +178,11 @@ c_func
 r_void
 op_star
 id|dev_id
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 r_static
@@ -646,6 +651,11 @@ c_func
 r_void
 op_star
 id|dev_id
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -2092,7 +2102,7 @@ id|ep-&gt;sen_iaddr4
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Set Ethernet station address.&n;&t; *&n;&t; * If we performed a MBX diskless boot, the Ethernet controller&n;&t; * has been initialized and we copy the address out into our&n;&t; * own structure.&n;&t; *&n;&t; * All other types of boards supply the address in the board&n;&t; * information structure, so we copy that into the controller.&n;&t; */
+multiline_comment|/* Set Ethernet station address.&n;&t; */
 id|eap
 op_assign
 (paren
@@ -2105,7 +2115,6 @@ op_amp
 id|ep-&gt;sen_paddrh
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_MBX
 r_for
 c_loop
 (paren
@@ -2134,31 +2143,6 @@ id|bd-&gt;bi_enetaddr
 id|i
 )braket
 suffix:semicolon
-macro_line|#else
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|5
-suffix:semicolon
-id|i
-op_ge
-l_int|0
-suffix:semicolon
-id|i
-op_decrement
-)paren
-id|dev-&gt;dev_addr
-(braket
-id|i
-)braket
-op_assign
-op_star
-id|eap
-op_increment
-suffix:semicolon
-macro_line|#endif
 id|ep-&gt;sen_pper
 op_assign
 l_int|0
@@ -2507,6 +2491,30 @@ id|immap-&gt;im_ioport.iop_pcdat
 op_and_assign
 op_complement
 id|PC_BSE_LOOPBACK
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_FADS
+id|cp-&gt;cp_pbpar
+op_or_assign
+id|PB_ENET_TENA
+suffix:semicolon
+id|cp-&gt;cp_pbdir
+op_or_assign
+id|PB_ENET_TENA
+suffix:semicolon
+multiline_comment|/* Enable the EEST PHY.&n;&t;*/
+op_star
+(paren
+(paren
+r_volatile
+id|uint
+op_star
+)paren
+id|BCSR1
+)paren
+op_and_assign
+op_complement
+id|BCSR1_ETHEN
 suffix:semicolon
 macro_line|#endif
 id|dev-&gt;base_addr

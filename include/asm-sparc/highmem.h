@@ -317,7 +317,6 @@ id|km_type
 id|type
 )paren
 (brace
-macro_line|#if HIGHMEM_DEBUG
 r_int
 r_int
 id|vaddr
@@ -341,18 +340,16 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if 0
 r_if
 c_cond
 (paren
 id|vaddr
 OL
-id|FIXADDR_START
+id|FIX_KMAP_BEGIN
 )paren
 singleline_comment|// FIXME
 r_return
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -384,6 +381,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef HIGHMEM_DEBUG
 multiline_comment|/*&n;&t; * force other mappings to Oops if they&squot;ll try to access&n;&t; * this pte without first remap it&n;&t; */
 id|pte_clear
 c_func

@@ -131,6 +131,18 @@ DECL|macro|BTTV_FLYVIDEO2000
 mdefine_line|#define BTTV_FLYVIDEO2000   0x41
 DECL|macro|BTTV_TERRATVALUER
 mdefine_line|#define BTTV_TERRATVALUER   0x42
+DECL|macro|BTTV_GVBCTV4PCI
+mdefine_line|#define BTTV_GVBCTV4PCI     0x43
+DECL|macro|BTTV_VOODOOTV_FM
+mdefine_line|#define BTTV_VOODOOTV_FM    0x44
+DECL|macro|BTTV_AIMMS
+mdefine_line|#define BTTV_AIMMS          0x45
+DECL|macro|BTTV_PV_BT878P_PLUS
+mdefine_line|#define BTTV_PV_BT878P_PLUS 0x46
+DECL|macro|BTTV_FLYVIDEO98EZ
+mdefine_line|#define BTTV_FLYVIDEO98EZ   0x47
+DECL|macro|BTTV_PV_BT878P_9B
+mdefine_line|#define BTTV_PV_BT878P_9B   0x48
 multiline_comment|/* i2c address list */
 DECL|macro|I2C_TSA5522
 mdefine_line|#define I2C_TSA5522        0xc2
@@ -142,6 +154,8 @@ DECL|macro|I2C_TDA9840
 mdefine_line|#define I2C_TDA9840        0x84
 DECL|macro|I2C_TDA9850
 mdefine_line|#define I2C_TDA9850        0xb6 /* also used by 9855,9873 */
+DECL|macro|I2C_TDA9874A
+mdefine_line|#define I2C_TDA9874A       0xb0 /* also used by 9875 */
 DECL|macro|I2C_TDA9875
 mdefine_line|#define I2C_TDA9875        0xb0
 DECL|macro|I2C_HAUPEE
@@ -230,6 +244,12 @@ id|no_msp34xx
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|no_tda9875
+r_int
+id|no_tda9875
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|needs_tvaudio
 r_int
 id|needs_tvaudio
@@ -250,6 +270,10 @@ mdefine_line|#define PLL_35   2
 DECL|member|tuner_type
 r_int
 id|tuner_type
+suffix:semicolon
+DECL|member|has_radio
+r_int
+id|has_radio
 suffix:semicolon
 DECL|member|audio_hook
 r_void
@@ -327,13 +351,16 @@ id|freq
 suffix:semicolon
 r_extern
 r_void
-id|bttv_hauppauge_boot_msp34xx
+id|bttv_boot_msp34xx
 c_func
 (paren
 r_struct
 id|bttv
 op_star
 id|btv
+comma
+r_int
+id|pin
 )paren
 suffix:semicolon
 multiline_comment|/* kernel cmd line parse helper */
@@ -475,7 +502,7 @@ id|card
 suffix:semicolon
 multiline_comment|/* i2c */
 DECL|macro|I2C_CLIENTS_MAX
-mdefine_line|#define I2C_CLIENTS_MAX 8
+mdefine_line|#define I2C_CLIENTS_MAX 16
 r_extern
 r_void
 id|bttv_bit_setscl
@@ -586,4 +613,5 @@ id|addr
 )paren
 suffix:semicolon
 macro_line|#endif /* _BTTV_H_ */
+multiline_comment|/*&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */
 eof

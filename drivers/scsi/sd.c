@@ -363,6 +363,16 @@ id|dev
 dot
 id|device
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|SDev
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 multiline_comment|/*&n;&t; * If we are in the middle of error recovery, don&squot;t let anyone&n;&t; * else try and use this device.  Also, if error recovery fails, it&n;&t; * may try and take the device offline, in which case all further&n;&t; * access to the device is prohibited.&n;&t; */
 r_if
 c_cond
@@ -2163,6 +2173,16 @@ id|target
 )braket
 dot
 id|device
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|SDev
+)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 id|SDev-&gt;access_count
 op_decrement

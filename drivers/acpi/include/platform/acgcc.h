@@ -21,8 +21,6 @@ DECL|macro|disable
 mdefine_line|#define disable() __cli()
 DECL|macro|enable
 mdefine_line|#define enable()  __sti()
-DECL|macro|wbinvd
-mdefine_line|#define wbinvd()
 multiline_comment|/*! [Begin] no source code translation */
 macro_line|#include &lt;asm/pal.h&gt;
 DECL|macro|halt

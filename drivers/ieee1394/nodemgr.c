@@ -15,11 +15,7 @@ macro_line|#include &quot;ieee1394_hotplug.h&quot;
 macro_line|#include &quot;highlevel.h&quot;
 macro_line|#include &quot;csr.h&quot;
 macro_line|#include &quot;nodemgr.h&quot;
-DECL|macro|NODE_BUS_FMT
-mdefine_line|#define NODE_BUS_FMT&t;&quot;%d:%d&quot;
-DECL|macro|NODE_BUS_ARGS
-mdefine_line|#define NODE_BUS_ARGS(nodeid) &bslash;&n;&t;(nodeid &amp; NODE_MASK), ((nodeid &amp; BUS_MASK) &gt;&gt; 6)
-multiline_comment|/* Basically what we do here is start off retrieving the bus_info block.&n; * From there will fill in some info about the node, verify it is of IEEE&n; * 1394 type, and that the crc checks out ok. After that we start off with&n; * the root directory, and subdirectories. To do this, we retrieve the&n; * quadlet header for a directory, find out the length, and retrieve the&n; * complete directory entry (be it a leaf or a directory). We then process&n; * it and add the info to our structure for that particular node.&n; *&n; * We verify CRC&squot;s along the way for each directory/block/leaf. The&n; * entire node structure is generic, and simply stores the information in&n; * a way that&squot;s easy to parse by the protocol interface.&n; *&n; * XXX: Most of this isn&squot;t done yet :)  */
+multiline_comment|/* &n; * Basically what we do here is start off retrieving the bus_info block.&n; * From there will fill in some info about the node, verify it is of IEEE&n; * 1394 type, and that the crc checks out ok. After that we start off with&n; * the root directory, and subdirectories. To do this, we retrieve the&n; * quadlet header for a directory, find out the length, and retrieve the&n; * complete directory entry (be it a leaf or a directory). We then process&n; * it and add the info to our structure for that particular node.&n; *&n; * We verify CRC&squot;s along the way for each directory/block/leaf. The&n; * entire node structure is generic, and simply stores the information in&n; * a way that&squot;s easy to parse by the protocol interface.&n; */
 r_static
 id|LIST_HEAD
 c_func

@@ -5409,6 +5409,8 @@ id|pcount
 op_assign
 id|next_scsi_host
 suffix:semicolon
+id|MOD_INC_USE_COUNT
+suffix:semicolon
 multiline_comment|/* The detect routine must carefully spinunlock/spinlock if &n;&t;   it enables interrupts, since all interrupt handlers do &n;&t;   spinlock as well.&n;&t;   All lame drivers are going to fail due to the following &n;&t;   spinlock. For the time beeing let&squot;s use it only for drivers &n;&t;   using the new scsi code. NOTE: the detect routine could&n;&t;   redefine the value tpnt-&gt;use_new_eh_code. (DB, 13 May 1998) */
 r_if
 c_cond
@@ -5931,8 +5933,6 @@ l_int|1024
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren

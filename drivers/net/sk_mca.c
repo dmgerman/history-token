@@ -4352,6 +4352,12 @@ suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------------------&n; * modularization support&n; * ------------------------------------------------------------------------ */
 macro_line|#ifdef MODULE
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|DEVMAX
 mdefine_line|#define DEVMAX 5
 macro_line|#if (LINUX_VERSION_CODE &gt;= 0x020369)

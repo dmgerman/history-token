@@ -36,7 +36,6 @@ suffix:semicolon
 DECL|variable|loop_sizes
 r_static
 r_int
-r_int
 op_star
 id|loop_sizes
 suffix:semicolon
@@ -3806,6 +3805,10 @@ op_assign
 id|put_user
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|loop_sizes
 (braket
 id|lo-&gt;lo_number
@@ -4542,7 +4545,6 @@ op_star
 r_sizeof
 (paren
 r_int
-r_int
 )paren
 comma
 id|GFP_KERNEL
@@ -4677,7 +4679,6 @@ id|max_loop
 op_star
 r_sizeof
 (paren
-r_int
 r_int
 )paren
 )paren

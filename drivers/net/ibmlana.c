@@ -4298,6 +4298,12 @@ comma
 l_string|&quot;IBM LAN/A I/O base address&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|init_module
 r_int
 id|init_module

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.fec.c 1.18 09/22/01 09:12:32 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.fec.c 1.20 10/11/01 11:55:47 trini&n; */
 multiline_comment|/*&n; * Fast Ethernet Controller (FEC) driver for Motorola MPC8xx.&n; * Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * This version of the driver is specific to the FADS implementation,&n; * since the board contains control registers external to the processor&n; * for the control of the LevelOne LXT970 transceiver.  The MPC860T manual&n; * describes connections using the internal parallel port I/O, which&n; * is basically all of Port D.&n; *&n; * Includes support for the following PHYs: QS6612, LXT970, LXT971/2.&n; *&n; * Right now, I am very wasteful with the buffers.  I allocate memory&n; * pages and then divide them into 2K frame buffers.  This way I know I&n; * have buffers large enough to hold one frame within one buffer descriptor.&n; * Once I get this working, I will use 64 or 128 byte CPM buffers, which&n; * will be much more memory efficient and will easily handle lots of&n; * small packets.&n; *&n; * Much better multiple PHY support by Magnus Damm.&n; * Copyright (c) 2000 Ericsson Radio Systems AB.&n; *&n; * Make use of MII for PHY control configurable.&n; * Some fixes.&n; * Copyright (c) 2000 Wolfgang Denk, DENX Software Engineering.&n; */
 multiline_comment|/* List of PHYs we wish to support.&n;*/
 DECL|macro|CONFIG_FEC_LXT970
@@ -2724,6 +2724,20 @@ op_star
 id|s
 op_or_assign
 id|PHY_STAT_ANC
+suffix:semicolon
+id|fep-&gt;link
+op_assign
+(paren
+op_star
+id|s
+op_amp
+id|PHY_STAT_LINK
+)paren
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|mii_parse_cr
@@ -5699,6 +5713,22 @@ id|BCSR2_FETHLEDMODE
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef PHY_INTERRUPT
+(paren
+(paren
+id|immap_t
+op_star
+)paren
+id|IMAP_ADDR
+)paren
+op_member_access_from_pointer
+id|im_siu_conf.sc_siel
+op_or_assign
+(paren
+l_int|0x80000000
+op_rshift
+id|PHY_INTERRUPT
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5722,22 +5752,6 @@ id|panic
 c_func
 (paren
 l_string|&quot;Could not allocate MII IRQ!&quot;
-)paren
-suffix:semicolon
-(paren
-(paren
-id|immap_t
-op_star
-)paren
-id|IMAP_ADDR
-)paren
-op_member_access_from_pointer
-id|im_siu_conf.sc_siel
-op_or_assign
-(paren
-l_int|0x80000000
-op_rshift
-id|PHY_INTERRUPT
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -258,7 +258,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfsd: LOOKUP   %s %s&bslash;n&quot;
+l_string|&quot;nfsd: LOOKUP   %s %.*s&bslash;n&quot;
 comma
 id|SVCFH_fmt
 c_func
@@ -266,6 +266,8 @@ c_func
 op_amp
 id|argp-&gt;fh
 )paren
+comma
+id|argp-&gt;len
 comma
 id|argp-&gt;name
 )paren
@@ -696,13 +698,15 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfsd: CREATE   %s %s&bslash;n&quot;
+l_string|&quot;nfsd: CREATE   %s %*.s&bslash;n&quot;
 comma
 id|SVCFH_fmt
 c_func
 (paren
 id|dirfhp
 )paren
+comma
+id|argp-&gt;len
 comma
 id|argp-&gt;name
 )paren
@@ -1294,7 +1298,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfsd: REMOVE   %s %s&bslash;n&quot;
+l_string|&quot;nfsd: REMOVE   %s %.*s&bslash;n&quot;
 comma
 id|SVCFH_fmt
 c_func
@@ -1302,6 +1306,8 @@ c_func
 op_amp
 id|argp-&gt;fh
 )paren
+comma
+id|argp-&gt;len
 comma
 id|argp-&gt;name
 )paren
@@ -1363,7 +1369,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfsd: RENAME   %s %s -&gt; &bslash;n&quot;
+l_string|&quot;nfsd: RENAME   %s %.*s -&gt; &bslash;n&quot;
 comma
 id|SVCFH_fmt
 c_func
@@ -1372,13 +1378,15 @@ op_amp
 id|argp-&gt;ffh
 )paren
 comma
+id|argp-&gt;flen
+comma
 id|argp-&gt;fname
 )paren
 suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfsd:        -&gt;  %s %s&bslash;n&quot;
+l_string|&quot;nfsd:        -&gt;  %s %.*s&bslash;n&quot;
 comma
 id|SVCFH_fmt
 c_func
@@ -1386,6 +1394,8 @@ c_func
 op_amp
 id|argp-&gt;tfh
 )paren
+comma
+id|argp-&gt;tlen
 comma
 id|argp-&gt;tname
 )paren
@@ -1470,7 +1480,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfsd:    %s %s&bslash;n&quot;
+l_string|&quot;nfsd:    %s %.*s&bslash;n&quot;
 comma
 id|SVCFH_fmt
 c_func
@@ -1478,6 +1488,8 @@ c_func
 op_amp
 id|argp-&gt;tfh
 )paren
+comma
+id|argp-&gt;tlen
 comma
 id|argp-&gt;tname
 )paren
@@ -1549,7 +1561,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfsd: SYMLINK  %s %s -&gt; %s&bslash;n&quot;
+l_string|&quot;nfsd: SYMLINK  %s %.*s -&gt; %.*s&bslash;n&quot;
 comma
 id|SVCFH_fmt
 c_func
@@ -1558,7 +1570,11 @@ op_amp
 id|argp-&gt;ffh
 )paren
 comma
+id|argp-&gt;flen
+comma
 id|argp-&gt;fname
+comma
+id|argp-&gt;tlen
 comma
 id|argp-&gt;tname
 )paren
@@ -1645,7 +1661,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfsd: MKDIR    %s %s&bslash;n&quot;
+l_string|&quot;nfsd: MKDIR    %s %.*s&bslash;n&quot;
 comma
 id|SVCFH_fmt
 c_func
@@ -1653,6 +1669,8 @@ c_func
 op_amp
 id|argp-&gt;fh
 )paren
+comma
+id|argp-&gt;len
 comma
 id|argp-&gt;name
 )paren
@@ -1749,7 +1767,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfsd: RMDIR    %s %s&bslash;n&quot;
+l_string|&quot;nfsd: RMDIR    %s %.*s&bslash;n&quot;
 comma
 id|SVCFH_fmt
 c_func
@@ -1757,6 +1775,8 @@ c_func
 op_amp
 id|argp-&gt;fh
 )paren
+comma
+id|argp-&gt;len
 comma
 id|argp-&gt;name
 )paren

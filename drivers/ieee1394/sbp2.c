@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * sbp2.c - SBP-2 protocol driver for IEEE-1394&n; *&n; * Copyright (C) 2000 James Goodwin, Filanet Corporation (www.filanet.com)&n; * jamesg@filanet.com&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
-multiline_comment|/*&n; * Brief Description:&n; *&n; * This driver implements the Serial Bus Protocol 2 (SBP-2) over IEEE-1394&n; * under Linux. The SBP-2 driver is implemented as an IEEE-1394 high-level&n; * driver. It also registers as a SCSI lower-level driver in order to accept&n; * SCSI commands for transport using SBP-2.&n; *&n; * Driver Loading:&n; *&n; * Currently, the SBP-2 driver is supported only as a module. Because the &n; * Linux SCSI stack is not Plug-N-Play aware, module load order is &n; * important. Assuming the SCSI core drivers are either built into the &n; * kernel or already loaded as modules, you should load the IEEE-1394 modules &n; * in the following order:&n; *&n; * &t;ieee1394 (e.g. insmod ieee1394)&n; *&t;ohci1394 (e.g. insmod ohci1394)&n; *&t;sbp2 (e.g. insmod sbp2)&n; *&n; * The SBP-2 driver will attempt to discover any attached SBP-2 devices when first&n; * loaded, or after any IEEE-1394 bus reset (e.g. a hot-plug). It will then print &n; * out a debug message indicating if it was able to discover a SBP-2 device.&n; *&n; * Currently, the SBP-2 driver will catch any attached SBP-2 devices during the&n; * initial scsi bus scan (when the driver is first loaded). To add or remove&n; * SBP-2 devices after this initial scan (i.e. if you plug-in or un-plug a &n; * device after the SBP-2 driver is loaded), you must either use the scsi procfs&n; * add-single-device, remove-single-device, or a shell script such as &n; * rescan-scsi-bus.sh.&n; *&n; * The easiest way to add/detect new SBP-2 devices is to run the shell script&n; * rescan-scsi-bus.sh (or re-load the SBP-2 driver). This script may be &n; * found at:&n; * http://www.garloff.de/kurt/linux/rescan-scsi-bus.sh&n; *&n; * As an alternative, you may manually add/remove SBP-2 devices via the procfs with&n; * add-single-device &lt;h&gt; &lt;b&gt; &lt;t&gt; &lt;l&gt; or remove-single-device &lt;h&gt; &lt;b&gt; &lt;t&gt; &lt;l&gt;, where:&n; *&t;&lt;h&gt; = host (starting at zero for first SCSI adapter)&n; *&t;&lt;b&gt; = bus (normally zero)&n; *&t;&lt;t&gt; = target (starting at zero for first SBP-2 device)&n; *&t;&lt;l&gt; = lun (normally zero)&n; *&n; * e.g. To manually add/detect a new SBP-2 device&n; *&t;echo &quot;scsi add-single-device 0 0 0 0&quot; &gt; /proc/scsi/scsi&n; *&n; * e.g. To manually remove a SBP-2 device after it&squot;s been unplugged&n; *&t;echo &quot;scsi remove-single-device 0 0 0 0&quot; &gt; /proc/scsi/scsi&n; *&n; * e.g. To check to see which SBP-2/SCSI devices are currently registered&n; * &t;cat /proc/scsi/scsi&n; *&n; * After scanning for new SCSI devices (above), you may access any attached &n; * SBP-2 storage devices as if they were SCSI devices (e.g. mount /dev/sda1, &n; * fdisk, mkfs, etc.).&n; *&n; *&n; * Current Support:&n; *&n; * The SBP-2 driver is still in an early state, but supports a variety of devices.&n; * I have read/written many gigabytes of data from/to SBP-2 drives, and have seen &n; * performance of more than 16 MBytes/s on individual drives (limit of the media &n; * transfer rate).&n; *&n; * Following are the devices that have been tested successfully:&n; *&n; *&t;- Western Digital IEEE-1394 hard drives&n; *&t;- Maxtor IEEE-1394 hard drives&n; *&t;- VST (SmartDisk) IEEE-1394 hard drives and Zip drives (several flavors)&n; *&t;- LaCie IEEE-1394 hard drives (several flavors)&n; *&t;- QPS IEEE-1394 CD-RW/DVD drives and hard drives&n; *&t;- BusLink IEEE-1394 hard drives&n; *&t;- Iomega IEEE-1394 Zip/Jazz drives&n; *&t;- ClubMac IEEE-1394 hard drives&n; *&t;- FirePower IEEE-1394 hard drives&n; *&t;- EzQuest IEEE-1394 hard drives and CD-RW drives&n; *&t;- Castlewood/ADS IEEE-1394 ORB drives&n; *&t;- Evergreen IEEE-1394 hard drives and CD-RW drives&n; *&t;- Addonics IEEE-1394 CD-RW drives&n; *&t;- Bellstor IEEE-1394 hard drives and CD-RW drives&n; *&t;- APDrives IEEE-1394 hard drives&n; *&t;- Fujitsu IEEE-1394 MO drives&n; *&t;- Sony IEEE-1394 CD-RW drives&n; *&t;- Epson IEEE-1394 scanner&n; *&t;- ADS IEEE-1394 memory stick and compact flash readers &n; *&t;  (e.g. &quot;insmod sbp2 mode_sense_hack=1&quot; for mem stick and flash readers))&n; *&t;- SBP-2 bridge-based devices (LSI, Oxford Semiconductor, Indigita bridges)&n; *&t;- Various other standard IEEE-1394 hard drives and enclosures&n; *&n; *&n; * Performance Issues:&n; *&n; *&t;- Make sure you are &quot;not&quot; running fat/fat32 on your attached SBP-2 drives. You&squot;ll&n; *&t;  get much better performance formatting the drive ext2 (but you will lose the&n; *&t;  ability to easily move the drive between Windows/Linux).&n; *&n; *&n; * Current Issues:&n; *&n; *&t;- Currently, all I/O from the scsi stack is serialized by default, as there&n; *&t;  are some stress issues under investigation with deserialized I/O. To enable&n; *&t;  deserialized I/O for testing, do &quot;insmod sbp2 serialize_io=0&quot;&n; *&n; *&t;- Error Handling: SCSI aborts and bus reset requests are handled somewhat&n; *&t;  but the code needs additional debugging.&n; *&n; *&t;- The SBP-2 driver is currently only supported as a module. It would not take&n; *&t;  much work to allow it to be compiled into the kernel, but you&squot;d have to &n; *&t;  add some init code to the kernel to support this... and modules are much&n; *&t;  more flexible anyway.   ;-)&n; *&n; *&n; * History:&n; *&n; *&t;07/25/00 - Initial revision (JSG)&n; *&t;08/11/00 - Following changes/bug fixes were made (JSG):&n; *&t;&t;   * Bug fix to SCSI procfs code (still needs to be synched with 2.4 kernel).&n; *&t;&t;   * Bug fix where request sense commands were actually sent on the bus.&n; *&t;&t;   * Changed bus reset/abort code to deal with devices that spin up quite&n; *&t;&t;     slowly (which result in SCSI time-outs).&n; *&t;&t;   * &quot;More&quot; properly pull information from device&squot;s config rom, for enumeration&n; *&t;&t;     of SBP-2 devices, and determining SBP-2 register offsets.&n; *&t;&t;   * Change Simplified Direct Access Device type to Direct Access Device type in&n; *&t;&t;     returned inquiry data, in order to make the SCSI stack happy.&n; *&t;&t;   * Modified driver to register with the SCSI stack &quot;before&quot; enumerating any attached&n; *&t;&t;     SBP-2 devices. This means that you&squot;ll have to use procfs scsi-add-device or &n; *&t;&t;     some sort of script to discover new SBP-2 devices.&n; *&t;&t;   * Minor re-write of some code and other minor changes.&n; *&t;08/28/00 - Following changes/bug fixes were made (JSG):&n; *&t;&t;   * Bug fixes to scatter/gather support (case of one s/g element)&n; *&t;&t;   * Updated direction table for scsi commands (mostly DVD commands)&n; *&t;&t;   * Retries when trying to detect SBP-2 devices (for slow devices)&n; *&t;&t;   * Slightly better error handling (previously none) when commands time-out.&n; *&t;&t;   * Misc. other bug fixes and code reorganization.&n; *&t;09/13/00 - Following changes/bug fixes were made (JSG)&n; *&t;&t;   * Moved detection/enumeration code to a kernel thread which is woken up when IEEE-1394&n; *&t;&t;     bus resets occur.&n; *&t;&t;   * Added code to handle bus resets and hot-plugging while devices are mounted, but full&n; *&t;&t;     hot-plug support is not quite there yet.&n; *&t;&t;   * Now use speed map to determine speed and max payload sizes for ORBs&n; *&t;&t;   * Clean-up of code and reorganization &n; *&t;09/19/00 - Added better hot-plug support and other minor changes (JSG)&n; *&t;10/15/00 - Fixes for latest 2.4.0 test kernel, minor fix for hot-plug race. (JSG)&n; *&t;12/03/00 - Created pool of request packet structures for use in sending out sbp2 command&n; *&t;&t;   and agent reset requests. This removes the kmallocs/kfrees in the critical I/O paths,&n; *&t;&t;   and also deals with some subtle race conditions related to allocating and freeing&n; *&t;&t;   packets. (JSG)&n; *      12/09/00 - Improved the sbp2 device detection by actually reading the root and unit &n; *&t;&t;   directory (khk@khk.net)&n; *&t;12/23/00 - Following changes/enhancements were made (JSG)&n; *&t;&t;   * Only do SCSI to RBC command conversion for Direct Access and Simplified&n; *&t;&t;     Direct Access Devices (this is pulled from the config rom root directory).&n; *&t;&t;     This is needed because doing the conversion for all device types broke the&n; *&t;&t;     Epson scanner. Still looking for a better way of determining when to convert&n; *&t;&t;     commands (for RBC devices). Thanks to khk for helping on this!&n; *&t;&t;   * Added ability to &quot;emulate&quot; physical dma support, for host adapters such as TILynx.&n; *&t;&t;   * Determine max payload and speed by also looking at the host adapter&squot;s max_rec field.&n; *&t;01/19/01 - Added checks to sbp2 login and made the login time-out longer. Also fixed a compile &n; *&t;&t;   problem for 2.4.0. (JSG)&n; *&t;01/24/01 - Fixed problem when individual s/g elements are 64KB or larger. Needed to break&n; *&t;&t;   up these larger elements, since the sbp2 page table element size is only 16 bits. (JSG)&n; *&t;01/29/01 - Minor byteswap fix for login response (used for reconnect and log out).&n; *&t;03/07/01 - Following changes/enhancements were made (JSG)&n; *&t;&t;   * Changes to allow us to catch the initial scsi bus scan (for detecting sbp2&n; *&t;&t;     devices when first loading sbp2.o). To disable this, un-define &n; *&t;&t;     SBP2_SUPPORT_INITIAL_BUS_SCAN.&n; *&t;&t;   * Temporary fix to deal with many sbp2 devices that do not support individual&n; *&t;&t;     transfers of greater than 128KB in size. &n; *&t;&t;   * Mode sense conversion from 6 byte to 10 byte versions for CDRW/DVD devices. (Mark Burton)&n; *&t;&t;   * Define allowing support for goofy sbp2 devices that do not support mode&n; *&t;&t;     sense command at all, allowing them to be mounted rw (such as 1394 memory&n; *&t;&t;     stick and compact flash readers). Define SBP2_MODE_SENSE_WRITE_PROTECT_HACK&n; *&t;&t;     if you need this fix.&n; *&t;03/29/01 - Major performance enhancements and misc. other changes. Thanks to Daniel Berlin for many of&n; *&t;&t;   changes and suggestions for change:&n; *&t;&t;   * Now use sbp2 doorbell and link commands on the fly (instead of serializing requests)&n; *&t;&t;   * Removed all bit fields in an attempt to run on PPC machines (still needs a little more work)&n; *&t;&t;   * Added large request break-up/linking support for sbp2 chipsets that do not support transfers &n; *&t;&t;     greater than 128KB in size.&n; *&t;&t;   * Bumped up max commands per lun to two, and max total outstanding commands to eight.&n; *&t;04/03/01 - Minor clean-up. Write orb pointer directly if no outstanding commands (saves one 1394 bus&n; *&t;&t;   transaction). Added module load options (bus scan, mode sense hack, max speed, serialize_io,&n; *&t;&t;   no_large_transfers). Better bus reset handling while I/O pending. Set serialize_io to 1 by &n; *&t;&t;   default (debugging of deserialized I/O in progress).&n; *&t;04/04/01 - Added workaround for PPC Pismo firewire chipset. See #define below. (Daniel Berlin)&n; *&t;04/20/01 - Minor clean-up. Allocate more orb structures when running with sbp2 target chipsets with&n; *&t;&t;   128KB max transfer limit.&n; *&t;06/16/01 - Converted DMA interfaces to pci_dma - Ben Collins&n; *&t;&t;&t;&t;&t;&t;&t; &lt;bcollins@debian.org&n; *&t;07/22/01 - Use NodeMngr to get info about the local host and&n; *&t;&t;   attached devices. Ben Collins&n; *&n; *      09/15/01 - Remove detection code, instead subscribe to the nodemgr&n; *                 driver management interface.  This also removes the&n; *                 initial bus scan stuff since the nodemgr calls&n; *                 sbp2_probe for each sbp2 device already on the bus,&n; *                 when we register our driver.  This change &n; *                 automtically adds hotplug support to the driver.&n; *                                 Kristian Hogsberg &lt;hogsberg@users.sf.net&gt;&n; */
+multiline_comment|/*&n; * Brief Description:&n; *&n; * This driver implements the Serial Bus Protocol 2 (SBP-2) over IEEE-1394&n; * under Linux. The SBP-2 driver is implemented as an IEEE-1394 high-level&n; * driver. It also registers as a SCSI lower-level driver in order to accept&n; * SCSI commands for transport using SBP-2.&n; *&n; * Driver Loading:&n; *&n; * Currently, the SBP-2 driver is supported only as a module. Because the &n; * Linux SCSI stack is not Plug-N-Play aware, module load order is &n; * important. Assuming the SCSI core drivers are either built into the &n; * kernel or already loaded as modules, you should load the IEEE-1394 modules &n; * in the following order:&n; *&n; * &t;ieee1394 (e.g. insmod ieee1394)&n; *&t;ohci1394 (e.g. insmod ohci1394)&n; *&t;sbp2 (e.g. insmod sbp2)&n; *&n; * The SBP-2 driver will attempt to discover any attached SBP-2 devices when first&n; * loaded, or after any IEEE-1394 bus reset (e.g. a hot-plug). It will then print &n; * out a debug message indicating if it was able to discover a SBP-2 device.&n; *&n; * Currently, the SBP-2 driver will catch any attached SBP-2 devices during the&n; * initial scsi bus scan (when the driver is first loaded). To add or remove&n; * SBP-2 devices after this initial scan (i.e. if you plug-in or un-plug a &n; * device after the SBP-2 driver is loaded), you must either use the scsi procfs&n; * add-single-device, remove-single-device, or a shell script such as &n; * rescan-scsi-bus.sh.&n; *&n; * The easiest way to add/detect new SBP-2 devices is to run the shell script&n; * rescan-scsi-bus.sh (or re-load the SBP-2 driver). This script may be &n; * found at:&n; * http://www.garloff.de/kurt/linux/rescan-scsi-bus.sh&n; *&n; * As an alternative, you may manually add/remove SBP-2 devices via the procfs with&n; * add-single-device &lt;h&gt; &lt;b&gt; &lt;t&gt; &lt;l&gt; or remove-single-device &lt;h&gt; &lt;b&gt; &lt;t&gt; &lt;l&gt;, where:&n; *&t;&lt;h&gt; = host (starting at zero for first SCSI adapter)&n; *&t;&lt;b&gt; = bus (normally zero)&n; *&t;&lt;t&gt; = target (starting at zero for first SBP-2 device)&n; *&t;&lt;l&gt; = lun (normally zero)&n; *&n; * e.g. To manually add/detect a new SBP-2 device&n; *&t;echo &quot;scsi add-single-device 0 0 0 0&quot; &gt; /proc/scsi/scsi&n; *&n; * e.g. To manually remove a SBP-2 device after it&squot;s been unplugged&n; *&t;echo &quot;scsi remove-single-device 0 0 0 0&quot; &gt; /proc/scsi/scsi&n; *&n; * e.g. To check to see which SBP-2/SCSI devices are currently registered&n; * &t;cat /proc/scsi/scsi&n; *&n; * After scanning for new SCSI devices (above), you may access any attached &n; * SBP-2 storage devices as if they were SCSI devices (e.g. mount /dev/sda1, &n; * fdisk, mkfs, etc.).&n; *&n; *&n; * Current Support:&n; *&n; * The SBP-2 driver is still in an early state, but supports a variety of devices.&n; * I have read/written many gigabytes of data from/to SBP-2 drives, and have seen &n; * performance of more than 16 MBytes/s on individual drives (limit of the media &n; * transfer rate).&n; *&n; * Following are the devices that have been tested successfully:&n; *&n; *&t;- Western Digital IEEE-1394 hard drives&n; *&t;- Maxtor IEEE-1394 hard drives&n; *&t;- VST (SmartDisk) IEEE-1394 hard drives and Zip drives (several flavors)&n; *&t;- LaCie IEEE-1394 hard drives (several flavors)&n; *&t;- QPS IEEE-1394 CD-RW/DVD drives and hard drives&n; *&t;- BusLink IEEE-1394 hard drives&n; *&t;- Iomega IEEE-1394 Zip/Jazz drives&n; *&t;- ClubMac IEEE-1394 hard drives&n; *&t;- FirePower IEEE-1394 hard drives&n; *&t;- EzQuest IEEE-1394 hard drives and CD-RW drives&n; *&t;- Castlewood/ADS IEEE-1394 ORB drives&n; *&t;- Evergreen IEEE-1394 hard drives and CD-RW drives&n; *&t;- Addonics IEEE-1394 CD-RW drives&n; *&t;- Bellstor IEEE-1394 hard drives and CD-RW drives&n; *&t;- APDrives IEEE-1394 hard drives&n; *&t;- Fujitsu IEEE-1394 MO drives&n; *&t;- Sony IEEE-1394 CD-RW drives&n; *&t;- Epson IEEE-1394 scanner&n; *&t;- ADS IEEE-1394 memory stick and compact flash readers &n; *&t;  (e.g. &quot;insmod sbp2 mode_sense_hack=1&quot; for mem stick and flash readers))&n; *&t;- SBP-2 bridge-based devices (LSI, Oxford Semiconductor, Indigita bridges)&n; *&t;- Various other standard IEEE-1394 hard drives and enclosures&n; *&n; *&n; * Performance Issues:&n; *&n; *&t;- Make sure you are &quot;not&quot; running fat/fat32 on your attached SBP-2 drives. You&squot;ll&n; *&t;  get much better performance formatting the drive ext2 (but you will lose the&n; *&t;  ability to easily move the drive between Windows/Linux).&n; *&n; *&n; * Current Issues:&n; *&n; *&t;- Currently, all I/O from the scsi stack is serialized by default, as there&n; *&t;  are some stress issues under investigation with deserialized I/O. To enable&n; *&t;  deserialized I/O for testing, do &quot;insmod sbp2 serialize_io=0&quot;&n; *&n; *&t;- Error Handling: SCSI aborts and bus reset requests are handled somewhat&n; *&t;  but the code needs additional debugging.&n; *&n; *&t;- The SBP-2 driver is currently only supported as a module. It would not take&n; *&t;  much work to allow it to be compiled into the kernel, but you&squot;d have to &n; *&t;  add some init code to the kernel to support this... and modules are much&n; *&t;  more flexible anyway.   ;-)&n; *&n; *     - The scsi stack in recent kernels pass down the data transfer&n; *       direction as scsicmd-&gt;sc_data_direction, which we should use&n; *       instead of the sbp2scsi_direction_table.&n; *&n; *&n; * History:&n; *&n; *&t;07/25/00 - Initial revision (JSG)&n; *&t;08/11/00 - Following changes/bug fixes were made (JSG):&n; *&t;&t;   * Bug fix to SCSI procfs code (still needs to be synched with 2.4 kernel).&n; *&t;&t;   * Bug fix where request sense commands were actually sent on the bus.&n; *&t;&t;   * Changed bus reset/abort code to deal with devices that spin up quite&n; *&t;&t;     slowly (which result in SCSI time-outs).&n; *&t;&t;   * &quot;More&quot; properly pull information from device&squot;s config rom, for enumeration&n; *&t;&t;     of SBP-2 devices, and determining SBP-2 register offsets.&n; *&t;&t;   * Change Simplified Direct Access Device type to Direct Access Device type in&n; *&t;&t;     returned inquiry data, in order to make the SCSI stack happy.&n; *&t;&t;   * Modified driver to register with the SCSI stack &quot;before&quot; enumerating any attached&n; *&t;&t;     SBP-2 devices. This means that you&squot;ll have to use procfs scsi-add-device or &n; *&t;&t;     some sort of script to discover new SBP-2 devices.&n; *&t;&t;   * Minor re-write of some code and other minor changes.&n; *&t;08/28/00 - Following changes/bug fixes were made (JSG):&n; *&t;&t;   * Bug fixes to scatter/gather support (case of one s/g element)&n; *&t;&t;   * Updated direction table for scsi commands (mostly DVD commands)&n; *&t;&t;   * Retries when trying to detect SBP-2 devices (for slow devices)&n; *&t;&t;   * Slightly better error handling (previously none) when commands time-out.&n; *&t;&t;   * Misc. other bug fixes and code reorganization.&n; *&t;09/13/00 - Following changes/bug fixes were made (JSG)&n; *&t;&t;   * Moved detection/enumeration code to a kernel thread which is woken up when IEEE-1394&n; *&t;&t;     bus resets occur.&n; *&t;&t;   * Added code to handle bus resets and hot-plugging while devices are mounted, but full&n; *&t;&t;     hot-plug support is not quite there yet.&n; *&t;&t;   * Now use speed map to determine speed and max payload sizes for ORBs&n; *&t;&t;   * Clean-up of code and reorganization &n; *&t;09/19/00 - Added better hot-plug support and other minor changes (JSG)&n; *&t;10/15/00 - Fixes for latest 2.4.0 test kernel, minor fix for hot-plug race. (JSG)&n; *&t;12/03/00 - Created pool of request packet structures for use in sending out sbp2 command&n; *&t;&t;   and agent reset requests. This removes the kmallocs/kfrees in the critical I/O paths,&n; *&t;&t;   and also deals with some subtle race conditions related to allocating and freeing&n; *&t;&t;   packets. (JSG)&n; *      12/09/00 - Improved the sbp2 device detection by actually reading the root and unit &n; *&t;&t;   directory (khk@khk.net)&n; *&t;12/23/00 - Following changes/enhancements were made (JSG)&n; *&t;&t;   * Only do SCSI to RBC command conversion for Direct Access and Simplified&n; *&t;&t;     Direct Access Devices (this is pulled from the config rom root directory).&n; *&t;&t;     This is needed because doing the conversion for all device types broke the&n; *&t;&t;     Epson scanner. Still looking for a better way of determining when to convert&n; *&t;&t;     commands (for RBC devices). Thanks to khk for helping on this!&n; *&t;&t;   * Added ability to &quot;emulate&quot; physical dma support, for host adapters such as TILynx.&n; *&t;&t;   * Determine max payload and speed by also looking at the host adapter&squot;s max_rec field.&n; *&t;01/19/01 - Added checks to sbp2 login and made the login time-out longer. Also fixed a compile &n; *&t;&t;   problem for 2.4.0. (JSG)&n; *&t;01/24/01 - Fixed problem when individual s/g elements are 64KB or larger. Needed to break&n; *&t;&t;   up these larger elements, since the sbp2 page table element size is only 16 bits. (JSG)&n; *&t;01/29/01 - Minor byteswap fix for login response (used for reconnect and log out).&n; *&t;03/07/01 - Following changes/enhancements were made (JSG)&n; *&t;&t;   * Changes to allow us to catch the initial scsi bus scan (for detecting sbp2&n; *&t;&t;     devices when first loading sbp2.o). To disable this, un-define &n; *&t;&t;     SBP2_SUPPORT_INITIAL_BUS_SCAN.&n; *&t;&t;   * Temporary fix to deal with many sbp2 devices that do not support individual&n; *&t;&t;     transfers of greater than 128KB in size. &n; *&t;&t;   * Mode sense conversion from 6 byte to 10 byte versions for CDRW/DVD devices. (Mark Burton)&n; *&t;&t;   * Define allowing support for goofy sbp2 devices that do not support mode&n; *&t;&t;     sense command at all, allowing them to be mounted rw (such as 1394 memory&n; *&t;&t;     stick and compact flash readers). Define SBP2_MODE_SENSE_WRITE_PROTECT_HACK&n; *&t;&t;     if you need this fix.&n; *&t;03/29/01 - Major performance enhancements and misc. other changes. Thanks to Daniel Berlin for many of&n; *&t;&t;   changes and suggestions for change:&n; *&t;&t;   * Now use sbp2 doorbell and link commands on the fly (instead of serializing requests)&n; *&t;&t;   * Removed all bit fields in an attempt to run on PPC machines (still needs a little more work)&n; *&t;&t;   * Added large request break-up/linking support for sbp2 chipsets that do not support transfers &n; *&t;&t;     greater than 128KB in size.&n; *&t;&t;   * Bumped up max commands per lun to two, and max total outstanding commands to eight.&n; *&t;04/03/01 - Minor clean-up. Write orb pointer directly if no outstanding commands (saves one 1394 bus&n; *&t;&t;   transaction). Added module load options (bus scan, mode sense hack, max speed, serialize_io,&n; *&t;&t;   no_large_transfers). Better bus reset handling while I/O pending. Set serialize_io to 1 by &n; *&t;&t;   default (debugging of deserialized I/O in progress).&n; *&t;04/04/01 - Added workaround for PPC Pismo firewire chipset. See #define below. (Daniel Berlin)&n; *&t;04/20/01 - Minor clean-up. Allocate more orb structures when running with sbp2 target chipsets with&n; *&t;&t;   128KB max transfer limit.&n; *&t;06/16/01 - Converted DMA interfaces to pci_dma - Ben Collins&n; *&t;&t;&t;&t;&t;&t;&t; &lt;bcollins@debian.org&n; *&t;07/22/01 - Use NodeMngr to get info about the local host and&n; *&t;&t;   attached devices. Ben Collins&n; *&n; *      09/15/01 - Remove detection code, instead subscribe to the nodemgr&n; *                 driver management interface.  This also removes the&n; *                 initial bus scan stuff since the nodemgr calls&n; *                 sbp2_probe for each sbp2 device already on the bus,&n; *                 when we register our driver.  This change &n; *                 automtically adds hotplug support to the driver.&n; *                                 Kristian Hogsberg &lt;hogsberg@users.sf.net&gt;&n; */
 "&f;"
 multiline_comment|/*&n; * Includes&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -218,34 +218,34 @@ mdefine_line|#define SBP2_DMA_FREE(fmt, args...)
 macro_line|#endif
 macro_line|#if CONFIG_IEEE1394_SBP2_DEBUG &gt;= 2
 DECL|macro|SBP2_DEBUG
-mdefine_line|#define SBP2_DEBUG(fmt, args...)&t;HPSB_ERR(fmt, ## args)&t;
+mdefine_line|#define SBP2_DEBUG(fmt, args...)&t;HPSB_ERR(&quot;sbp2: &quot;fmt, ## args)
 DECL|macro|SBP2_INFO
-mdefine_line|#define SBP2_INFO(fmt, args...)&t;&t;HPSB_ERR(fmt, ## args)&t;
+mdefine_line|#define SBP2_INFO(fmt, args...)&t;&t;HPSB_ERR(&quot;sbp2: &quot;fmt, ## args)
 DECL|macro|SBP2_NOTICE
-mdefine_line|#define SBP2_NOTICE(fmt, args...)&t;HPSB_ERR(fmt, ## args)&t;
+mdefine_line|#define SBP2_NOTICE(fmt, args...)&t;HPSB_ERR(&quot;sbp2: &quot;fmt, ## args)
 DECL|macro|SBP2_WARN
-mdefine_line|#define SBP2_WARN(fmt, args...)&t;&t;HPSB_ERR(fmt, ## args)
+mdefine_line|#define SBP2_WARN(fmt, args...)&t;&t;HPSB_ERR(&quot;sbp2: &quot;fmt, ## args)
 macro_line|#elif CONFIG_IEEE1394_SBP2_DEBUG == 1
 DECL|macro|SBP2_DEBUG
-mdefine_line|#define SBP2_DEBUG(fmt, args...)&t;HPSB_DEBUG(fmt, ## args)
+mdefine_line|#define SBP2_DEBUG(fmt, args...)&t;HPSB_DEBUG(&quot;sbp2: &quot;fmt, ## args)
 DECL|macro|SBP2_INFO
-mdefine_line|#define SBP2_INFO(fmt, args...)&t;&t;HPSB_INFO(fmt, ## args)
+mdefine_line|#define SBP2_INFO(fmt, args...)&t;&t;HPSB_INFO(&quot;sbp2: &quot;fmt, ## args)
 DECL|macro|SBP2_NOTICE
-mdefine_line|#define SBP2_NOTICE(fmt, args...)&t;HPSB_NOTICE(fmt, ## args)
+mdefine_line|#define SBP2_NOTICE(fmt, args...)&t;HPSB_NOTICE(&quot;sbp2: &quot;fmt, ## args)
 DECL|macro|SBP2_WARN
-mdefine_line|#define SBP2_WARN(fmt, args...)&t;&t;HPSB_WARN(fmt, ## args)
+mdefine_line|#define SBP2_WARN(fmt, args...)&t;&t;HPSB_WARN(&quot;sbp2: &quot;fmt, ## args)
 macro_line|#else 
 DECL|macro|SBP2_DEBUG
-mdefine_line|#define SBP2_DEBUG(fmt, args...)&t;
+mdefine_line|#define SBP2_DEBUG(fmt, args...)
 DECL|macro|SBP2_INFO
-mdefine_line|#define SBP2_INFO(fmt, args...)&t;
+mdefine_line|#define SBP2_INFO(fmt, args...)
 DECL|macro|SBP2_NOTICE
-mdefine_line|#define SBP2_NOTICE(fmt, args...)&t;
+mdefine_line|#define SBP2_NOTICE(fmt, args...)
 DECL|macro|SBP2_WARN
-mdefine_line|#define SBP2_WARN(fmt, args...)&t;
+mdefine_line|#define SBP2_WARN(fmt, args...)
 macro_line|#endif
 DECL|macro|SBP2_ERR
-mdefine_line|#define SBP2_ERR(fmt, args...)&t;&t;HPSB_ERR(fmt, ## args)
+mdefine_line|#define SBP2_ERR(fmt, args...)&t;&t;HPSB_ERR(&quot;sbp2: &quot;fmt, ## args)
 multiline_comment|/*&n; * Spinlock debugging stuff. I&squot;m playing it safe until the driver has been&n; * debugged on SMP. (JSG)&n; */
 multiline_comment|/* #define SBP2_USE_REAL_SPINLOCKS */
 macro_line|#ifdef SBP2_USE_REAL_SPINLOCKS
@@ -273,6 +273,21 @@ op_star
 id|global_scsi_tpnt
 op_assign
 l_int|NULL
+suffix:semicolon
+DECL|variable|sbp2_speedto_maxrec
+r_static
+id|u8
+id|sbp2_speedto_maxrec
+(braket
+)braket
+op_assign
+(brace
+l_int|0x7
+comma
+l_int|0x8
+comma
+l_int|0x9
+)brace
 suffix:semicolon
 r_static
 id|LIST_HEAD
@@ -528,7 +543,7 @@ id|packet
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: sbp2util_create_request_packet_pool - packet allocation failed!&quot;
+l_string|&quot;sbp2util_create_request_packet_pool - packet allocation failed!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -912,7 +927,7 @@ r_else
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: sbp2util_allocate_request_packet - no packets available!&quot;
+l_string|&quot;sbp2util_allocate_request_packet - no packets available!&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1690,7 +1705,7 @@ r_else
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: sbp2util_allocate_command_orb - No orbs available!&quot;
+l_string|&quot;sbp2util_allocate_command_orb - No orbs available!&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1895,7 +1910,7 @@ r_void
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_init&quot;
+l_string|&quot;sbp2_init&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Register our high level driver with 1394 stack&n;&t; */
@@ -1921,7 +1936,7 @@ l_int|NULL
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: sbp2 failed to register with ieee1394 highlevel&quot;
+l_string|&quot;sbp2 failed to register with ieee1394 highlevel&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1972,7 +1987,7 @@ r_void
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_cleanup&quot;
+l_string|&quot;sbp2_cleanup&quot;
 )paren
 suffix:semicolon
 id|hpsb_unregister_protocol
@@ -2022,7 +2037,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_probe&quot;
+l_string|&quot;sbp2_probe&quot;
 )paren
 suffix:semicolon
 id|hi
@@ -2070,7 +2085,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_disconnect&quot;
+l_string|&quot;sbp2_disconnect&quot;
 )paren
 suffix:semicolon
 id|hi
@@ -2128,7 +2143,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_update&quot;
+l_string|&quot;sbp2_update&quot;
 )paren
 suffix:semicolon
 id|hi
@@ -2168,7 +2183,7 @@ multiline_comment|/* Login failed too... so, just mark him as&n;&t;&t;&t; * unva
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_reconnect_device failed!&quot;
+l_string|&quot;sbp2_reconnect_device failed!&quot;
 )paren
 suffix:semicolon
 id|sbp2_remove_device
@@ -2267,7 +2282,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_add_host&quot;
+l_string|&quot;sbp2_add_host&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Allocate some memory for our host info structure */
@@ -2301,7 +2316,7 @@ l_int|NULL
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: out of memory in sbp2_add_host&quot;
+l_string|&quot;out of memory in sbp2_add_host&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2369,7 +2384,7 @@ id|hi
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: sbp2util_create_request_packet_pool failed!&quot;
+l_string|&quot;sbp2util_create_request_packet_pool failed!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2507,7 +2522,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_remove_host&quot;
+l_string|&quot;sbp2_remove_host&quot;
 )paren
 suffix:semicolon
 id|sbp2_spin_lock
@@ -2613,7 +2628,7 @@ r_else
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: attempt to remove unknown host %p&quot;
+l_string|&quot;attempt to remove unknown host %p&quot;
 comma
 id|host
 )paren
@@ -2664,7 +2679,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_start_device&quot;
+l_string|&quot;sbp2_start_device&quot;
 )paren
 suffix:semicolon
 id|ne
@@ -2938,7 +2953,7 @@ id|alloc_fail_first
 suffix:colon
 id|SBP2_ERR
 (paren
-l_string|&quot;sbp2: Could not allocate memory for scsi_id&quot;
+l_string|&quot;Could not allocate memory for scsi_id&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2967,7 +2982,10 @@ id|SPEED_100
 suffix:semicolon
 id|scsi_id-&gt;max_payload_size
 op_assign
-id|MAX_PAYLOAD_S100
+id|sbp2_speedto_maxrec
+(braket
+id|SPEED_100
+)braket
 suffix:semicolon
 id|ud-&gt;driver_data
 op_assign
@@ -3081,7 +3099,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: New SBP-2 device inserted, SCSI ID = %x&quot;
+l_string|&quot;New SBP-2 device inserted, SCSI ID = %x&quot;
 comma
 (paren
 r_int
@@ -3110,7 +3128,7 @@ id|hi
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: sbp2util_create_command_orb_pool failed!&quot;
+l_string|&quot;sbp2util_create_command_orb_pool failed!&quot;
 )paren
 suffix:semicolon
 id|sbp2_remove_device
@@ -3138,7 +3156,7 @@ id|SBP2SCSI_MAX_SCSI_IDS
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: No slots left for SBP-2 device&quot;
+l_string|&quot;No slots left for SBP-2 device&quot;
 )paren
 suffix:semicolon
 id|sbp2_remove_device
@@ -3171,7 +3189,7 @@ multiline_comment|/*&n;&t;&t; * Login failed... so, just mark him as unvalidated
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_login_device failed&quot;
+l_string|&quot;sbp2_login_device failed&quot;
 )paren
 suffix:semicolon
 id|sbp2_remove_device
@@ -3384,7 +3402,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: Unvalidated SBP-2 device removed, SCSI ID = %d&quot;
+l_string|&quot;Unvalidated SBP-2 device removed, SCSI ID = %d&quot;
 comma
 id|scsi_id-&gt;id
 )paren
@@ -3436,7 +3454,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_login_device&quot;
+l_string|&quot;sbp2_login_device&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3449,7 +3467,7 @@ id|scsi_id-&gt;login_orb
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_login_device: login_orb not alloc&squot;d!&quot;
+l_string|&quot;sbp2_login_device: login_orb not alloc&squot;d!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3469,7 +3487,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_login_device: password_hi/lo initialized&quot;
+l_string|&quot;sbp2_login_device: password_hi/lo initialized&quot;
 )paren
 suffix:semicolon
 id|scsi_id-&gt;login_orb-&gt;login_response_lo
@@ -3487,7 +3505,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_login_device: login_response_hi/lo initialized&quot;
+l_string|&quot;sbp2_login_device: login_response_hi/lo initialized&quot;
 )paren
 suffix:semicolon
 id|scsi_id-&gt;login_orb-&gt;lun_misc
@@ -3528,7 +3546,7 @@ multiline_comment|/* Notify us of login complete */
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_login_device: lun_misc initialized&quot;
+l_string|&quot;sbp2_login_device: lun_misc initialized&quot;
 )paren
 suffix:semicolon
 id|scsi_id-&gt;login_orb-&gt;passwd_resp_lengths
@@ -3546,7 +3564,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_login_device: passwd_resp_lengths initialized&quot;
+l_string|&quot;sbp2_login_device: passwd_resp_lengths initialized&quot;
 )paren
 suffix:semicolon
 id|scsi_id-&gt;login_orb-&gt;status_FIFO_lo
@@ -3568,7 +3586,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_login_device: status FIFO initialized&quot;
+l_string|&quot;sbp2_login_device: status FIFO initialized&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Byte swap ORB if necessary&n;&t; */
@@ -3587,7 +3605,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_login_device: orb byte-swapped&quot;
+l_string|&quot;sbp2_login_device: orb byte-swapped&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize login response and status fifo&n;&t; */
@@ -3623,7 +3641,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_login_device: login_response/status FIFO memset&quot;
+l_string|&quot;sbp2_login_device: login_response/status FIFO memset&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ok, let&squot;s write to the target&squot;s management agent register&n;&t; */
@@ -3656,7 +3674,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_login_device: prepared to write&quot;
+l_string|&quot;sbp2_login_device: prepared to write&quot;
 )paren
 suffix:semicolon
 id|hpsb_write
@@ -3678,7 +3696,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_login_device: written&quot;
+l_string|&quot;sbp2_login_device: written&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Wait for login status... but, only if the device has not&n;&t; * already logged-in (some devices are fast)&n;&t; */
@@ -3721,7 +3739,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_login_device: initial check&quot;
+l_string|&quot;sbp2_login_device: initial check&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Match status to the login orb. If they do not match, it&squot;s&n;&t; * probably because the login timed-out.&n;&t; */
@@ -3736,7 +3754,7 @@ id|scsi_id-&gt;login_orb_dma
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: Error logging into SBP-2 device - login timed-out&quot;
+l_string|&quot;Error logging into SBP-2 device - login timed-out&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3747,7 +3765,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_login_device: second check&quot;
+l_string|&quot;sbp2_login_device: second check&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check status&n;&t; */
@@ -3776,7 +3794,7 @@ id|scsi_id-&gt;status_block.ORB_offset_hi_misc
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: Error logging into SBP-2 device - login failed&quot;
+l_string|&quot;Error logging into SBP-2 device - login failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3801,7 +3819,7 @@ multiline_comment|/*&n;&t; * Grab our command block agent address from the login
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: command_block_agent_hi = %x&quot;
+l_string|&quot;command_block_agent_hi = %x&quot;
 comma
 (paren
 r_int
@@ -3813,7 +3831,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: command_block_agent_lo = %x&quot;
+l_string|&quot;command_block_agent_lo = %x&quot;
 comma
 (paren
 r_int
@@ -3849,7 +3867,7 @@ suffix:semicolon
 id|SBP2_INFO
 c_func
 (paren
-l_string|&quot;sbp2: Logged into SBP-2 device&quot;
+l_string|&quot;Logged into SBP-2 device&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3883,7 +3901,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_logout_device&quot;
+l_string|&quot;sbp2_logout_device&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set-up logout ORB&n;&t; */
@@ -4017,7 +4035,7 @@ suffix:semicolon
 id|SBP2_INFO
 c_func
 (paren
-l_string|&quot;sbp2: Logged out of SBP-2 device&quot;
+l_string|&quot;Logged out of SBP-2 device&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4055,7 +4073,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_reconnect_device&quot;
+l_string|&quot;sbp2_reconnect_device&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set-up reconnect ORB&n;&t; */
@@ -4239,7 +4257,7 @@ id|scsi_id-&gt;reconnect_orb_dma
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: Error reconnecting to SBP-2 device - reconnect timed-out&quot;
+l_string|&quot;Error reconnecting to SBP-2 device - reconnect timed-out&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4273,7 +4291,7 @@ id|scsi_id-&gt;status_block.ORB_offset_hi_misc
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: Error reconnecting to SBP-2 device - reconnect failed&quot;
+l_string|&quot;Error reconnecting to SBP-2 device - reconnect failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4284,7 +4302,7 @@ suffix:semicolon
 id|SBP2_INFO
 c_func
 (paren
-l_string|&quot;sbp2: Reconnected to SBP-2 device&quot;
+l_string|&quot;Reconnected to SBP-2 device&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4315,7 +4333,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_set_busy_timeout&quot;
+l_string|&quot;sbp2_set_busy_timeout&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ok, let&squot;s write to the target&squot;s busy timeout register&n;&t; */
@@ -4351,7 +4369,7 @@ l_int|4
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_set_busy_timeout error&quot;
+l_string|&quot;sbp2_set_busy_timeout error&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4383,7 +4401,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_parse_unit_directory&quot;
+l_string|&quot;sbp2_parse_unit_directory&quot;
 )paren
 suffix:semicolon
 id|ud
@@ -4435,7 +4453,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_management_agent_addr = %x&quot;
+l_string|&quot;sbp2_management_agent_addr = %x&quot;
 comma
 (paren
 r_int
@@ -4460,7 +4478,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_command_set_spec_id = %x&quot;
+l_string|&quot;sbp2_command_set_spec_id = %x&quot;
 comma
 (paren
 r_int
@@ -4485,7 +4503,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_command_set = %x&quot;
+l_string|&quot;sbp2_command_set = %x&quot;
 comma
 (paren
 r_int
@@ -4510,7 +4528,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_unit_characteristics = %x&quot;
+l_string|&quot;sbp2_unit_characteristics = %x&quot;
 comma
 (paren
 r_int
@@ -4535,7 +4553,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_device_type_and_lun = %x&quot;
+l_string|&quot;sbp2_device_type_and_lun = %x&quot;
 comma
 (paren
 r_int
@@ -4568,7 +4586,7 @@ id|SBP2_128KB_BROKEN_FIRMWARE
 id|SBP2_WARN
 c_func
 (paren
-l_string|&quot;sbp2: warning: Bridge chipset supports 128KB max transfer size&quot;
+l_string|&quot;warning: Bridge chipset supports 128KB max transfer size&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4581,7 +4599,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * This function is called in order to determine the max speed and packet&n; * size we can use in our ORBs. &n; */
+multiline_comment|/*&n; * This function is called in order to determine the max speed and packet&n; * size we can use in our ORBs. Note, that we (the driver and host) only&n; * initiate the transaction. The SBP-2 device actually transfers the data&n; * (by reading from the DMA area we tell it). This means that the SBP-2&n; * device decides the actual maximum data it can transfer. We just tell it&n; * the speed that it needs to use, and the max_rec the host supports, and&n; * it takes care of the rest.&n; */
 DECL|function|sbp2_max_speed_and_size
 r_static
 r_int
@@ -4599,122 +4617,125 @@ op_star
 id|scsi_id
 )paren
 (brace
-id|u8
-id|speed_code
-suffix:semicolon
-r_int
-r_int
-id|max_rec
-suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_max_speed_and_size&quot;
+l_string|&quot;sbp2_max_speed_and_size&quot;
 )paren
 suffix:semicolon
-id|speed_code
+multiline_comment|/* Initial setting comes from the hosts speed map */
+id|scsi_id-&gt;speed_code
 op_assign
-id|scsi_id-&gt;ne-&gt;busopt.lnkspd
+id|hi-&gt;host-&gt;speed_map
+(braket
+(paren
+id|hi-&gt;host-&gt;node_id
+op_amp
+id|NODE_MASK
+)paren
+op_star
+l_int|64
+op_plus
+(paren
+id|scsi_id-&gt;ne-&gt;nodeid
+op_amp
+id|NODE_MASK
+)paren
+)braket
 suffix:semicolon
-id|max_rec
-op_assign
-id|scsi_id-&gt;ne-&gt;busopt.max_rec
-suffix:semicolon
-multiline_comment|/* Bump down our speed if there is a module parameter forcing us slower */
+multiline_comment|/* Bump down our speed if the user requested it */
 r_if
 c_cond
 (paren
-id|speed_code
+id|scsi_id-&gt;speed_code
 OG
 id|max_speed
 )paren
 (brace
-id|speed_code
+id|scsi_id-&gt;speed_code
 op_assign
 id|max_speed
 suffix:semicolon
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: Reducing SBP-2 max speed allowed (%x)&quot;
+l_string|&quot;Forcing SBP-2 max speed down to %s&quot;
 comma
-id|max_speed
+id|hpsb_speedto_str
+(braket
+id|scsi_id-&gt;speed_code
+)braket
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Support the devices max_rec and max speed. We choose a setting&n;&t; * that fits both values, since they may differ.  */
-r_if
-c_cond
-(paren
-id|speed_code
-op_ge
-id|SPEED_400
-op_logical_and
-id|max_rec
-op_ge
-id|MAX_REC_S400
-)paren
-(brace
-id|HPSB_INFO
-c_func
-(paren
-l_string|&quot;sbp2: SBP-2 device max speed S400 and payload 2KB&quot;
-)paren
-suffix:semicolon
-id|scsi_id-&gt;speed_code
-op_assign
-id|SPEED_400
-suffix:semicolon
+multiline_comment|/* Payload size is the lesser of what our speed supports and what&n;&t; * our host supports.  */
 id|scsi_id-&gt;max_payload_size
 op_assign
-id|MAX_PAYLOAD_S400
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|speed_code
-op_ge
-id|SPEED_200
-op_logical_and
-id|max_rec
-op_ge
-id|MAX_REC_S200
-)paren
-(brace
-id|HPSB_INFO
+id|min
 c_func
 (paren
-l_string|&quot;sbp2: SBP-2 device max speed S200 and payload 1KB&quot;
-)paren
-suffix:semicolon
+id|sbp2_speedto_maxrec
+(braket
 id|scsi_id-&gt;speed_code
-op_assign
-id|SPEED_200
-suffix:semicolon
-id|scsi_id-&gt;max_payload_size
-op_assign
-id|MAX_PAYLOAD_S200
-suffix:semicolon
-)brace
-r_else
-(brace
-id|HPSB_INFO
+)braket
+comma
+(paren
+id|u8
+)paren
+(paren
+(paren
+(paren
+id|be32_to_cpu
 c_func
 (paren
-l_string|&quot;sbp2: SBP-2 device max speed S100 and payload 512 bytes&quot;
+id|hi-&gt;host-&gt;csr.rom
+(braket
+l_int|2
+)braket
+)paren
+op_rshift
+l_int|12
+)paren
+op_amp
+l_int|0xf
+)paren
+op_minus
+l_int|1
+)paren
 )paren
 suffix:semicolon
+id|SBP2_ERR
+c_func
+(paren
+l_string|&quot;Node &quot;
+id|NODE_BUS_FMT
+l_string|&quot;: Max speed [%s] - Max payload [0x%02x/%u]&quot;
+comma
+id|NODE_BUS_ARGS
+c_func
+(paren
+id|scsi_id-&gt;ne-&gt;nodeid
+)paren
+comma
+id|hpsb_speedto_str
+(braket
 id|scsi_id-&gt;speed_code
-op_assign
-id|SPEED_100
-suffix:semicolon
+)braket
+comma
 id|scsi_id-&gt;max_payload_size
-op_assign
-id|MAX_PAYLOAD_S100
+comma
+l_int|1
+op_lshift
+(paren
+(paren
+id|u32
+)paren
+id|scsi_id-&gt;max_payload_size
+op_plus
+l_int|2
+)paren
+)paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -4748,7 +4769,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_agent_reset&quot;
+l_string|&quot;sbp2_agent_reset&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ok, let&squot;s write to the target&squot;s management agent register&n;&t; */
@@ -4786,7 +4807,7 @@ id|agent_reset_request_packet
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: sbp2util_allocate_write_request_packet failed&quot;
+l_string|&quot;sbp2util_allocate_write_request_packet failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4808,7 +4829,7 @@ id|agent_reset_request_packet-&gt;packet
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: hpsb_send_packet failed&quot;
+l_string|&quot;hpsb_send_packet failed&quot;
 )paren
 suffix:semicolon
 id|sbp2util_free_request_packet
@@ -4991,7 +5012,7 @@ id|ORB_DIRECTION_NO_DATA_TRANSFER
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: No data transfer&quot;
+l_string|&quot;No data transfer&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Handle no data transfer&n;&t;&t; */
@@ -5022,7 +5043,7 @@ id|scsi_use_sg
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: Use scatter/gather&quot;
+l_string|&quot;Use scatter/gather&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Special case if only one element (and less than 64KB in size)&n;&t;&t; */
@@ -5050,7 +5071,7 @@ id|SBP2_MAX_SG_ELEMENT_LENGTH
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: Only one s/g element&quot;
+l_string|&quot;Only one s/g element&quot;
 )paren
 suffix:semicolon
 id|command-&gt;dma_dir
@@ -5333,7 +5354,7 @@ r_else
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: No scatter/gather&quot;
+l_string|&quot;No scatter/gather&quot;
 )paren
 suffix:semicolon
 id|command-&gt;dma_dir
@@ -5719,7 +5740,7 @@ id|command_request_packet
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: sbp2util_allocate_write_request_packet failed&quot;
+l_string|&quot;sbp2util_allocate_write_request_packet failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5775,7 +5796,7 @@ id|command_request_packet-&gt;packet
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: hpsb_send_packet failed&quot;
+l_string|&quot;hpsb_send_packet failed&quot;
 )paren
 suffix:semicolon
 id|sbp2util_free_request_packet
@@ -5865,7 +5886,7 @@ id|command_request_packet
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: sbp2util_allocate_write_request_packet failed&quot;
+l_string|&quot;sbp2util_allocate_write_request_packet failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5895,7 +5916,7 @@ id|command_request_packet-&gt;packet
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: hpsb_send_packet failed&quot;
+l_string|&quot;hpsb_send_packet failed&quot;
 )paren
 suffix:semicolon
 id|sbp2util_free_request_packet
@@ -5980,13 +6001,13 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_send_command&quot;
+l_string|&quot;sbp2_send_command&quot;
 )paren
 suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: SCSI command = %02x&quot;
+l_string|&quot;SCSI command = %02x&quot;
 comma
 op_star
 id|cmd
@@ -5995,7 +6016,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: SCSI transfer size = %x&quot;
+l_string|&quot;SCSI transfer size = %x&quot;
 comma
 id|SCpnt-&gt;request_bufflen
 )paren
@@ -6003,7 +6024,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: SCSI s/g elements = %x&quot;
+l_string|&quot;SCSI s/g elements = %x&quot;
 comma
 (paren
 r_int
@@ -6822,7 +6843,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_check_sbp2_command&quot;
+l_string|&quot;sbp2_check_sbp2_command&quot;
 )paren
 suffix:semicolon
 r_switch
@@ -6838,7 +6859,7 @@ suffix:colon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: Convert READ_6 to READ_10&quot;
+l_string|&quot;Convert READ_6 to READ_10&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Need to turn read_6 into read_10&n;&t;&t;&t; */
@@ -6956,7 +6977,7 @@ suffix:colon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: Convert WRITE_6 to WRITE_10&quot;
+l_string|&quot;Convert WRITE_6 to WRITE_10&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Need to turn write_6 into write_10&n;&t;&t;&t; */
@@ -7074,7 +7095,7 @@ suffix:colon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: Convert MODE_SENSE_6 to MOSE_SENSE_10&quot;
+l_string|&quot;Convert MODE_SENSE_6 to MOSE_SENSE_10&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Need to turn mode_sense_6 into mode_sense_10&n;&t;&t;&t; */
@@ -7204,7 +7225,7 @@ id|sense_data
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_status_to_sense_data&quot;
+l_string|&quot;sbp2_status_to_sense_data&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ok, it&squot;s pretty ugly...   ;-)&n;&t; */
@@ -7411,7 +7432,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_check_sbp2_response&quot;
+l_string|&quot;sbp2_check_sbp2_response&quot;
 )paren
 suffix:semicolon
 r_switch
@@ -7429,7 +7450,7 @@ suffix:colon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: Check Inquiry data&quot;
+l_string|&quot;Check Inquiry data&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Check for Simple Direct Access Device and change it to TYPE_DISK&n;&t;&t;&t; */
@@ -7451,7 +7472,7 @@ id|TYPE_SDAD
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: Changing TYPE_SDAD to TYPE_DISK&quot;
+l_string|&quot;Changing TYPE_SDAD to TYPE_DISK&quot;
 )paren
 suffix:semicolon
 id|scsi_buf
@@ -7516,7 +7537,7 @@ id|TYPE_ROM
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: Modify mode sense response (10 byte version)&quot;
+l_string|&quot;Modify mode sense response (10 byte version)&quot;
 )paren
 suffix:semicolon
 id|scsi_buf
@@ -7665,7 +7686,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_handle_status_write&quot;
+l_string|&quot;sbp2_handle_status_write&quot;
 )paren
 suffix:semicolon
 r_if
@@ -7678,7 +7699,7 @@ id|host
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: host is NULL - this is bad!&quot;
+l_string|&quot;host is NULL - this is bad!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7721,7 +7742,7 @@ id|hi
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: host info is NULL - this is bad!&quot;
+l_string|&quot;host info is NULL - this is bad!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7793,7 +7814,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: SBP-2 status write from node %x&quot;
+l_string|&quot;SBP-2 status write from node %x&quot;
 comma
 id|scsi_id-&gt;ne-&gt;nodeid
 )paren
@@ -7813,7 +7834,7 @@ id|scsi_id
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: scsi_id is NULL - device is gone?&quot;
+l_string|&quot;scsi_id is NULL - device is gone?&quot;
 )paren
 suffix:semicolon
 id|sbp2_spin_unlock
@@ -7871,7 +7892,7 @@ id|command
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: Found status for command ORB&quot;
+l_string|&quot;Found status for command ORB&quot;
 )paren
 suffix:semicolon
 id|SBP2_ORB_DEBUG
@@ -7921,7 +7942,7 @@ id|scsi_id-&gt;status_block.ORB_offset_hi_misc
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: CHECK CONDITION&quot;
+l_string|&quot;CHECK CONDITION&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; * Translate SBP-2 status to SCSI sense data&n;&t;&t;&t;&t; */
@@ -7965,7 +7986,7 @@ multiline_comment|/*&n;&t;&t;&t; * Complete the SCSI command&n;&t;&t;&t; */
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: Completing SCSI command&quot;
+l_string|&quot;Completing SCSI command&quot;
 )paren
 suffix:semicolon
 id|sbp2scsi_complete_command
@@ -8071,7 +8092,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2scsi_queuecommand&quot;
+l_string|&quot;sbp2scsi_queuecommand&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Pull our host info and scsi id instance data from the scsi command&n;&t; */
@@ -8097,7 +8118,7 @@ id|hi
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: sbp2scsi_host_info is NULL - this is bad!&quot;
+l_string|&quot;sbp2scsi_host_info is NULL - this is bad!&quot;
 )paren
 suffix:semicolon
 id|SCpnt-&gt;result
@@ -8182,7 +8203,7 @@ id|REQUEST_SENSE
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: REQUEST_SENSE&quot;
+l_string|&quot;REQUEST_SENSE&quot;
 )paren
 suffix:semicolon
 id|memcpy
@@ -8241,7 +8262,7 @@ id|scsi_id-&gt;ne
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: Bus reset in progress - rejecting command&quot;
+l_string|&quot;Bus reset in progress - rejecting command&quot;
 )paren
 suffix:semicolon
 id|SCpnt-&gt;result
@@ -8288,7 +8309,7 @@ id|done
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: Error sending SCSI command&quot;
+l_string|&quot;Error sending SCSI command&quot;
 )paren
 suffix:semicolon
 id|sbp2scsi_complete_command
@@ -8353,7 +8374,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2_complete_all_commands&quot;
+l_string|&quot;sbp2_complete_all_commands&quot;
 )paren
 suffix:semicolon
 r_while
@@ -8371,7 +8392,7 @@ id|scsi_id-&gt;sbp2_command_orb_inuse
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: Found pending command to complete&quot;
+l_string|&quot;Found pending command to complete&quot;
 )paren
 suffix:semicolon
 id|lh
@@ -8474,7 +8495,7 @@ op_star
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2scsi_complete_command&quot;
+l_string|&quot;sbp2scsi_complete_command&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Sanity&n;&t; */
@@ -8488,7 +8509,7 @@ id|SCpnt
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: SCpnt is NULL&quot;
+l_string|&quot;SCpnt is NULL&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8515,7 +8536,7 @@ id|SBP2_SCSI_STATUS_GOOD
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: Bus reset in progress - retry command later&quot;
+l_string|&quot;Bus reset in progress - retry command later&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8543,7 +8564,7 @@ suffix:colon
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: SBP2_SCSI_STATUS_BUSY&quot;
+l_string|&quot;SBP2_SCSI_STATUS_BUSY&quot;
 )paren
 suffix:semicolon
 id|SCpnt-&gt;result
@@ -8560,7 +8581,7 @@ suffix:colon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: SBP2_SCSI_STATUS_CHECK_CONDITION&quot;
+l_string|&quot;SBP2_SCSI_STATUS_CHECK_CONDITION&quot;
 )paren
 suffix:semicolon
 id|SCpnt-&gt;result
@@ -8586,7 +8607,7 @@ suffix:colon
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: SBP2_SCSI_STATUS_SELECTION_TIMEOUT&quot;
+l_string|&quot;SBP2_SCSI_STATUS_SELECTION_TIMEOUT&quot;
 )paren
 suffix:semicolon
 id|SCpnt-&gt;result
@@ -8609,7 +8630,7 @@ suffix:colon
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: Bad SCSI status = %x&quot;
+l_string|&quot;Bad SCSI status = %x&quot;
 comma
 id|scsi_status
 )paren
@@ -8627,7 +8648,7 @@ suffix:colon
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: Unsupported SCSI status = %x&quot;
+l_string|&quot;Unsupported SCSI status = %x&quot;
 comma
 id|scsi_status
 )paren
@@ -8680,7 +8701,7 @@ id|MODE_SENSE
 id|SBP2_INFO
 c_func
 (paren
-l_string|&quot;sbp2: Returning success to mode sense command&quot;
+l_string|&quot;Returning success to mode sense command&quot;
 )paren
 suffix:semicolon
 id|SCpnt-&gt;result
@@ -8725,7 +8746,7 @@ id|SBP2_SCSI_STATUS_GOOD
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: Completing command with busy (bus reset)&quot;
+l_string|&quot;Completing command with busy (bus reset)&quot;
 )paren
 suffix:semicolon
 id|SCpnt-&gt;result
@@ -8758,7 +8779,7 @@ id|UNIT_ATTENTION
 id|SBP2_INFO
 c_func
 (paren
-l_string|&quot;sbp2: UNIT ATTENTION - return busy&quot;
+l_string|&quot;UNIT ATTENTION - return busy&quot;
 )paren
 suffix:semicolon
 id|SCpnt-&gt;result
@@ -8825,7 +8846,7 @@ suffix:semicolon
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: aborting sbp2 command&quot;
+l_string|&quot;aborting sbp2 command&quot;
 )paren
 suffix:semicolon
 r_if
@@ -8865,7 +8886,7 @@ id|command
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: Found command to abort&quot;
+l_string|&quot;Found command to abort&quot;
 )paren
 suffix:semicolon
 id|sbp2util_mark_command_completed
@@ -8985,7 +9006,7 @@ suffix:semicolon
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: reset requested&quot;
+l_string|&quot;reset requested&quot;
 )paren
 suffix:semicolon
 r_if
@@ -8997,7 +9018,7 @@ id|hi
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: generating IEEE-1394 bus reset&quot;
+l_string|&quot;Generating IEEE-1394 bus reset&quot;
 )paren
 suffix:semicolon
 id|hpsb_reset_bus
@@ -9042,7 +9063,7 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: request for bios parameters&quot;
+l_string|&quot;Request for bios parameters&quot;
 )paren
 suffix:semicolon
 id|heads
@@ -9133,7 +9154,7 @@ id|ints
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2scsi_setup&quot;
+l_string|&quot;sbp2scsi_setup&quot;
 )paren
 suffix:semicolon
 r_return
@@ -9153,7 +9174,7 @@ id|tpnt
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2scsi_detect&quot;
+l_string|&quot;sbp2scsi_detect&quot;
 )paren
 suffix:semicolon
 id|global_scsi_tpnt
@@ -9176,7 +9197,7 @@ id|serialize_io
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: Driver forced to serialize I/O (serialize_io = 1)&quot;
+l_string|&quot;Driver forced to serialize I/O (serialize_io = 1)&quot;
 )paren
 suffix:semicolon
 id|global_scsi_tpnt-&gt;can_queue
@@ -9198,7 +9219,7 @@ id|no_large_packets
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: Driver forced to limit max transfer size (no_large_packets = 1)&quot;
+l_string|&quot;Driver forced to limit max transfer size (no_large_packets = 1)&quot;
 )paren
 suffix:semicolon
 id|global_scsi_tpnt-&gt;sg_tablesize
@@ -9219,7 +9240,7 @@ id|mode_sense_hack
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: Mode sense emulation enabled (mode_sense_hack = 1)&quot;
+l_string|&quot;Mode sense emulation enabled (mode_sense_hack = 1)&quot;
 )paren
 suffix:semicolon
 )brace
@@ -9238,7 +9259,7 @@ id|sbp2_host_count
 id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2: Please load the lower level IEEE-1394 driver (e.g. ohci1394) before sbp2...&quot;
+l_string|&quot;Please load the lower level IEEE-1394 driver (e.g. ohci1394) before sbp2...&quot;
 )paren
 suffix:semicolon
 id|sbp2_cleanup
@@ -9275,13 +9296,13 @@ suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2scsi_register_scsi_host&quot;
+l_string|&quot;sbp2scsi_register_scsi_host&quot;
 )paren
 suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2scsi_host_info = %p&quot;
+l_string|&quot;sbp2scsi_host_info = %p&quot;
 comma
 id|hi
 )paren
@@ -9345,7 +9366,7 @@ id|host
 id|SBP2_DEBUG
 c_func
 (paren
-l_string|&quot;sbp2: sbp2scsi_release&quot;
+l_string|&quot;sbp2scsi_release&quot;
 )paren
 suffix:semicolon
 id|sbp2_cleanup
@@ -9392,6 +9413,12 @@ id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 id|SBP2_DEVICE_NAME
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* SCSI host template */

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 multiline_comment|/* entry.S is sensitive to the offsets of these fields */
+multiline_comment|/* rtrap.S is sensitive to the size of this structure */
 r_typedef
 r_struct
 (brace

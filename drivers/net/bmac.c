@@ -9065,6 +9065,12 @@ c_func
 l_string|&quot;PowerMac BMAC ethernet driver.&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|bmac_cleanup
 r_static
 r_void

@@ -374,7 +374,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Ralph  Metzler &amp; Marcus Metzler &amp; Gerd Knorr&quot;
+l_string|&quot;Ralph Metzler &amp; Marcus Metzler &amp; Gerd Knorr&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -819,9 +819,22 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+l_int|NULL
+op_eq
 id|mem
 )paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;bttv: vmalloc_32(%ld) failed&bslash;n&quot;
+comma
+id|size
+)paren
+suffix:semicolon
+r_else
 (brace
+multiline_comment|/* Clear the ram out, no junk to the user */
 id|memset
 c_func
 (paren
@@ -832,7 +845,6 @@ comma
 id|size
 )paren
 suffix:semicolon
-multiline_comment|/* Clear the ram out, no junk to the user */
 id|adr
 op_assign
 (paren
@@ -2002,8 +2014,15 @@ l_int|186
 comma
 l_int|924
 comma
+macro_line|#ifdef VIDEODAT_HACK
+id|VBI_MAXLINES
+op_star
+l_int|2
+comma
+macro_line|#else
 l_int|0x20
 comma
+macro_line|#endif
 l_int|255
 )brace
 comma
@@ -2333,7 +2352,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|16
+id|VBI_MAXLINES
 suffix:semicolon
 id|i
 op_increment
@@ -2433,11 +2452,13 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|16
+id|VBI_MAXLINES
 suffix:semicolon
 id|i
 OL
-l_int|32
+id|VBI_MAXLINES
+op_star
+l_int|2
 suffix:semicolon
 id|i
 op_increment
@@ -2612,7 +2633,7 @@ id|BT848_COLOR_FMT_RGB15
 comma
 id|BT848_COLOR_FMT_YUY2
 comma
-id|BT848_COLOR_FMT_BtYUV
+id|BT848_COLOR_FMT_YUY2
 comma
 op_minus
 l_int|1
@@ -14319,10 +14340,27 @@ id|btv-&gt;type
 op_eq
 id|BTTV_HAUPPAUGE878
 )paren
-id|bttv_hauppauge_boot_msp34xx
+id|bttv_boot_msp34xx
 c_func
 (paren
 id|btv
+comma
+l_int|5
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|btv-&gt;type
+op_eq
+id|BTTV_VOODOOTV_FM
+)paren
+id|bttv_boot_msp34xx
+c_func
+(paren
+id|btv
+comma
+l_int|20
 )paren
 suffix:semicolon
 multiline_comment|/* register i2c */

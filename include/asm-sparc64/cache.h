@@ -7,8 +7,10 @@ DECL|macro|L1_CACHE_BYTES
 mdefine_line|#define        L1_CACHE_BYTES&t;&t;32 /* Two 16-byte sub-blocks per line. */
 DECL|macro|L1_CACHE_ALIGN
 mdefine_line|#define        L1_CACHE_ALIGN(x)       (((x)+(L1_CACHE_BYTES-1))&amp;~(L1_CACHE_BYTES-1))
+DECL|macro|SMP_CACHE_BYTES_SHIFT
+mdefine_line|#define        SMP_CACHE_BYTES_SHIFT&t;6
 DECL|macro|SMP_CACHE_BYTES
-mdefine_line|#define        SMP_CACHE_BYTES&t;&t;64 /* L2 cache line size. */
+mdefine_line|#define        SMP_CACHE_BYTES&t;&t;(1 &lt;&lt; SMP_CACHE_BYTES_SHIFT) /* L2 cache line size. */
 macro_line|#ifdef MODULE
 DECL|macro|__cacheline_aligned
 mdefine_line|#define __cacheline_aligned __attribute__((__aligned__(SMP_CACHE_BYTES)))

@@ -6234,6 +6234,12 @@ op_lshift
 id|MD_SB_CLEAN
 )paren
 )paren
+op_logical_and
+(paren
+id|conf-&gt;working_disks
+OG
+l_int|1
+)paren
 )paren
 (brace
 r_const

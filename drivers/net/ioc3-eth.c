@@ -7505,6 +7505,12 @@ c_func
 l_string|&quot;SGI IOC3 Ethernet driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|ioc3_init_module
 id|module_init
 c_func

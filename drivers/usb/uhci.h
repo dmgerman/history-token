@@ -195,6 +195,8 @@ DECL|macro|TD_CTRL_LS
 mdefine_line|#define TD_CTRL_LS&t;&t;(1 &lt;&lt; 26)&t;/* Low Speed Device */
 DECL|macro|TD_CTRL_IOS
 mdefine_line|#define TD_CTRL_IOS&t;&t;(1 &lt;&lt; 25)&t;/* Isochronous Select */
+DECL|macro|TD_CTRL_IOC_BIT
+mdefine_line|#define TD_CTRL_IOC_BIT&t;&t;24
 DECL|macro|TD_CTRL_IOC
 mdefine_line|#define TD_CTRL_IOC&t;&t;(1 &lt;&lt; 24)&t;/* Interrupt on Complete */
 DECL|macro|TD_CTRL_ACTIVE

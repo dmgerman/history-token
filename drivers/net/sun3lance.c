@@ -71,6 +71,12 @@ comma
 l_string|&quot;SUN3 Lance debug level (0-3)&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|DPRINTK
 mdefine_line|#define&t;DPRINTK(n,a) &bslash;&n;&t;do {  &bslash;&n;&t;&t;if (lance_debug &gt;= n)  &bslash;&n;&t;&t;&t;printk a; &bslash;&n;&t;} while( 0 )
 multiline_comment|/* we&squot;re only using 32k of memory, so we use 4 TX&n;   buffers and 16 RX buffers.  These values are expressed as log2. */

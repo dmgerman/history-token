@@ -74,7 +74,16 @@ mdefine_line|#define SPEED_100                0x0
 DECL|macro|SPEED_200
 mdefine_line|#define SPEED_200                0x1
 DECL|macro|SPEED_400
-mdefine_line|#define SPEED_400                0x2 
+mdefine_line|#define SPEED_400                0x2
+multiline_comment|/* Maps speed values above to a string representation */
+r_extern
+r_const
+r_char
+op_star
+id|hpsb_speedto_str
+(braket
+)braket
+suffix:semicolon
 DECL|macro|SELFID_PWRCL_NO_POWER
 mdefine_line|#define SELFID_PWRCL_NO_POWER    0x0
 DECL|macro|SELFID_PWRCL_PROVIDE_15W

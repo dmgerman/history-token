@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;TCP over IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: tcp_ipv6.c,v 1.139 2001/09/26 23:38:47 davem Exp $&n; *&n; *&t;Based on: &n; *&t;linux/net/ipv4/tcp.c&n; *&t;linux/net/ipv4/tcp_input.c&n; *&t;linux/net/ipv4/tcp_output.c&n; *&n; *&t;Fixes:&n; *&t;Hideaki YOSHIFUJI&t;:&t;sin6_scope_id support&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;TCP over IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: tcp_ipv6.c,v 1.140 2001/10/15 12:34:50 davem Exp $&n; *&n; *&t;Based on: &n; *&t;linux/net/ipv4/tcp.c&n; *&t;linux/net/ipv4/tcp_input.c&n; *&t;linux/net/ipv4/tcp_output.c&n; *&n; *&t;Fixes:&n; *&t;Hideaki YOSHIFUJI&t;:&t;sin6_scope_id support&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
@@ -1557,8 +1557,73 @@ id|dif
 )paren
 suffix:semicolon
 )brace
-DECL|macro|tcp_v6_lookup
-mdefine_line|#define tcp_v6_lookup(sa, sp, da, dp, dif) &bslash;&n;({&t;struct sock *___sk; &bslash;&n;&t;local_bh_disable(); &bslash;&n;&t;___sk = __tcp_v6_lookup((sa),(sp),(da),ntohs(dp),(dif)); &bslash;&n;&t;local_bh_enable(); &bslash;&n;&t;___sk; &bslash;&n;})
+DECL|function|tcp_v6_lookup
+id|__inline__
+r_struct
+id|sock
+op_star
+id|tcp_v6_lookup
+c_func
+(paren
+r_struct
+id|in6_addr
+op_star
+id|saddr
+comma
+id|u16
+id|sport
+comma
+r_struct
+id|in6_addr
+op_star
+id|daddr
+comma
+id|u16
+id|dport
+comma
+r_int
+id|dif
+)paren
+(brace
+r_struct
+id|sock
+op_star
+id|sk
+suffix:semicolon
+id|local_bh_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|sk
+op_assign
+id|__tcp_v6_lookup
+c_func
+(paren
+id|saddr
+comma
+id|sport
+comma
+id|daddr
+comma
+id|ntohs
+c_func
+(paren
+id|dport
+)paren
+comma
+id|dif
+)paren
+suffix:semicolon
+id|local_bh_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|sk
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Open request hash tables.&n; */
 DECL|function|tcp_v6_synq_hash
 r_static
@@ -3074,7 +3139,7 @@ id|MAX_TCP_HEADER
 op_plus
 l_int|15
 comma
-id|GFP_KERNEL
+id|sk-&gt;allocation
 )paren
 suffix:semicolon
 r_if

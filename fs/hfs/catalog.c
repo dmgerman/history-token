@@ -289,6 +289,7 @@ id|C_HASHSIZE
 )braket
 suffix:semicolon
 DECL|variable|entry_lock
+r_static
 id|spinlock_t
 id|entry_lock
 op_assign

@@ -2104,6 +2104,18 @@ id|pirq_serverworks_set
 )brace
 comma
 (brace
+l_string|&quot;ServerWorks&quot;
+comma
+id|PCI_VENDOR_ID_SERVERWORKS
+comma
+id|PCI_DEVICE_ID_SERVERWORKS_CSB5
+comma
+id|pirq_serverworks_get
+comma
+id|pirq_serverworks_set
+)brace
+comma
+(brace
 l_string|&quot;AMD756 VIPER&quot;
 comma
 id|PCI_VENDOR_ID_AMD

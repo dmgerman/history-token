@@ -1,11 +1,11 @@
 multiline_comment|/* xircom_tulip_cb.c: A Xircom CBE-100 ethernet driver for Linux. */
-multiline_comment|/*&n;&t;Written/copyright 1994-1999 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;*/
+multiline_comment|/*&n;&t;Written/copyright 1994-1999 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;-----------------------------------------------------------&n;&n;&t;Linux kernel-specific changes:&n;&n;&t;LK1.0 (Ion Badulescu)&n;&t;- Major cleanup&n;&t;- Use 2.4 PCI API&n;&t;- Support ethtool&n;&t;- Rewrite perfect filter/hash code&n;&t;- Use interrupts for media changes&n;&n;&t;LK1.1 (Ion Badulescu)&n;&t;- Disallow negotiation of unsupported full-duplex modes&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;xircom_tulip_cb&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.91+LK&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;0.91+LK1.1&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;July 19, 2001&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;October 11, 2001&quot;
 DECL|macro|CARDBUS
 mdefine_line|#define CARDBUS 1
 multiline_comment|/* A few user-configurable values. */
@@ -156,8 +156,6 @@ op_assign
 id|KERN_INFO
 id|DRV_NAME
 l_string|&quot;.c derived from tulip.c:v0.91 4/14/99 becker@scyld.com&bslash;n&quot;
-id|KERN_INFO
-l_string|&quot; modified by danilo@cs.uni-magdeburg.de for XIRCOM CBE, fixed by Doug Ledford&bslash;n&quot;
 id|KERN_INFO
 l_string|&quot; unofficial 2.4.x kernel port, version &quot;
 id|DRV_VERSION
@@ -671,7 +669,7 @@ id|xircom_tbl
 op_assign
 (brace
 (brace
-l_string|&quot;Xircom Cardbus Adapter (DEC 21143 compatible mode)&quot;
+l_string|&quot;Xircom Cardbus Adapter&quot;
 comma
 id|LinkChange
 op_or
@@ -1842,7 +1840,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * locate the MII interfaces and initialize them.&n; */
+multiline_comment|/*&n; * locate the MII interfaces and initialize them.&n; * we disable full-duplex modes here,&n; * because we don&squot;t know how to handle them.&n; */
 DECL|function|find_mii_transceivers
 r_static
 r_void
@@ -1866,6 +1864,59 @@ r_int
 id|phy
 comma
 id|phy_idx
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|media_cap
+(braket
+id|tp-&gt;default_port
+)braket
+op_amp
+id|MediaIsMII
+)paren
+(brace
+id|u16
+id|media2advert
+(braket
+)braket
+op_assign
+(brace
+l_int|0x20
+comma
+l_int|0x40
+comma
+l_int|0x03e0
+comma
+l_int|0x60
+comma
+l_int|0x80
+comma
+l_int|0x100
+comma
+l_int|0x200
+)brace
+suffix:semicolon
+id|tp-&gt;to_advertise
+op_assign
+id|media2advert
+(braket
+id|tp-&gt;default_port
+op_minus
+l_int|9
+)braket
+suffix:semicolon
+)brace
+r_else
+id|tp-&gt;to_advertise
+op_assign
+multiline_comment|/*ADVERTISE_100BASE4 | ADVERTISE_100FULL |*/
+id|ADVERTISE_100HALF
+op_or
+multiline_comment|/*ADVERTISE_10FULL |*/
+id|ADVERTISE_10HALF
+op_or
+id|ADVERTISE_CSMA
 suffix:semicolon
 multiline_comment|/* Find the connected MII xcvrs.&n;&t;   Doing this in open() would allow detecting external xcvrs later,&n;&t;   but takes much time. */
 r_for
@@ -2023,82 +2074,6 @@ comma
 id|mii_status
 comma
 id|mii_advert
-)paren
-suffix:semicolon
-multiline_comment|/* Fixup for DLink with miswired PHY. */
-r_if
-c_cond
-(paren
-id|mii_advert
-op_ne
-id|reg4
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s:  Advertising %4.4x on PHY %d,&quot;
-l_string|&quot; previously advertising %4.4x.&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|reg4
-comma
-id|phy
-comma
-id|mii_advert
-)paren
-suffix:semicolon
-id|mdio_write
-c_func
-(paren
-id|dev
-comma
-id|phy
-comma
-id|MII_ADVERTISE
-comma
-id|reg4
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Enable autonegotiation: some boards default to off. */
-id|mdio_write
-c_func
-(paren
-id|dev
-comma
-id|phy
-comma
-id|MII_BMCR
-comma
-id|mii_reg0
-op_or
-id|BMCR_ANENABLE
-op_or
-(paren
-id|tp-&gt;full_duplex
-ques
-c_cond
-id|BMCR_FULLDPLX
-suffix:colon
-l_int|0
-)paren
-op_or
-(paren
-id|media_cap
-(braket
-id|tp-&gt;default_port
-)braket
-op_amp
-id|MediaIs100
-ques
-c_cond
-id|BMCR_SPEED100
-suffix:colon
-l_int|0
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2316,15 +2291,7 @@ id|version
 )paren
 suffix:semicolon
 macro_line|#endif
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;xircom_init_one(%s)&bslash;n&quot;
-comma
-id|pdev-&gt;slot_name
-)paren
-suffix:semicolon
+singleline_comment|//printk(KERN_INFO &quot;xircom_init_one(%s)&bslash;n&quot;, pdev-&gt;slot_name);
 id|board_idx
 op_increment
 suffix:semicolon
@@ -8466,7 +8433,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* XXX: resume isn&squot;t able to power up the MII/PHY! */
 DECL|function|xircom_resume
 r_static
 r_int

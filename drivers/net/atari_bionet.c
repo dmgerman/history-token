@@ -83,6 +83,12 @@ comma
 l_string|&quot;bionet debug level (0-2)&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|bionet_min_poll_time
 r_static
 r_int

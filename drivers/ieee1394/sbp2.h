@@ -17,20 +17,6 @@ DECL|macro|ORB_DIRECTION_READ_FROM_MEDIA
 mdefine_line|#define ORB_DIRECTION_READ_FROM_MEDIA   0x1
 DECL|macro|ORB_DIRECTION_NO_DATA_TRANSFER
 mdefine_line|#define ORB_DIRECTION_NO_DATA_TRANSFER  0x2
-multiline_comment|/* 2^(MAX_PAYLOAD+1) = Maximum data transfer length */
-DECL|macro|MAX_PAYLOAD_S100
-mdefine_line|#define MAX_PAYLOAD_S100&t;&t;0x7
-DECL|macro|MAX_PAYLOAD_S200
-mdefine_line|#define MAX_PAYLOAD_S200&t;&t;0x8
-DECL|macro|MAX_PAYLOAD_S400
-mdefine_line|#define MAX_PAYLOAD_S400&t;&t;0x9
-multiline_comment|/* Max rec matches node_entry values */
-DECL|macro|MAX_REC_S100
-mdefine_line|#define MAX_REC_S100&t;&t;&t;512
-DECL|macro|MAX_REC_S200
-mdefine_line|#define MAX_REC_S200&t;&t;&t;1024
-DECL|macro|MAX_REC_S400
-mdefine_line|#define MAX_REC_S400&t;&t;&t;2048
 DECL|macro|ORB_SET_NOTIFY
 mdefine_line|#define ORB_SET_NOTIFY(value)                   ((value &amp; 0x1) &lt;&lt; 31)
 DECL|macro|ORB_SET_RQ_FMT
@@ -479,7 +465,7 @@ macro_line|#ifndef TYPE_SDAD
 DECL|macro|TYPE_SDAD
 mdefine_line|#define TYPE_SDAD&t;&t;&t;0x0e&t;/* simplified direct access device */
 macro_line|#endif
-multiline_comment|/*&n; * SCSI direction table... since the scsi stack doesn&squot;t specify direction...   =(&n; *&n; * DIN = IN data direction&n; * DOU = OUT data direction&n; * DNO = No data transfer&n; * DUN = Unknown data direction&n; */
+multiline_comment|/*&n; * SCSI direction table... since the scsi stack doesn&squot;t specify direction...   =(&n; *&n; * DIN = IN data direction&n; * DOU = OUT data direction&n; * DNO = No data transfer&n; * DUN = Unknown data direction&n; *&n; * Opcode 0xec (Teac specific &quot;opc execute&quot;) possibly should be DNO,&n; * but we&squot;ll change it when somebody reports a problem with this.&n; */
 DECL|macro|DIN
 mdefine_line|#define DIN&t;&t;&t;&t;ORB_DIRECTION_READ_FROM_MEDIA
 DECL|macro|DOU
@@ -665,7 +651,7 @@ id|DIN
 comma
 id|DNO
 comma
-id|DOU
+id|DNO
 comma
 id|DOU
 comma

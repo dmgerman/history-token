@@ -1289,4 +1289,10 @@ id|stnic_probe
 )paren
 suffix:semicolon
 multiline_comment|/* No cleanup routine. */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

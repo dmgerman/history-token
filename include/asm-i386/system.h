@@ -770,5 +770,9 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|is_sony_vaio_laptop
+suffix:semicolon
 macro_line|#endif
 eof

@@ -40892,9 +40892,13 @@ multiline_comment|/* Configure DMA attributes.  For DAC capable boards, we can e
 r_if
 c_cond
 (paren
+id|chip
+op_logical_and
+(paren
 id|chip-&gt;features
 op_amp
 id|FE_DAC
+)paren
 )paren
 (brace
 r_if
@@ -40925,6 +40929,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|chip
+op_logical_and
 op_logical_neg
 (paren
 id|chip-&gt;features

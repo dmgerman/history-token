@@ -56,9 +56,9 @@ multiline_comment|/* Version block */
 DECL|macro|PWC_MAJOR
 mdefine_line|#define PWC_MAJOR&t;8
 DECL|macro|PWC_MINOR
-mdefine_line|#define PWC_MINOR&t;2
+mdefine_line|#define PWC_MINOR&t;3
 DECL|macro|PWC_VERSION
-mdefine_line|#define PWC_VERSION &t;&quot;8.2&quot;
+mdefine_line|#define PWC_VERSION &t;&quot;8.3&quot;
 DECL|macro|PWC_NAME
 mdefine_line|#define PWC_NAME &t;&quot;pwc&quot;
 multiline_comment|/* Turn certain features on/off */
@@ -707,6 +707,42 @@ id|pdev
 comma
 r_int
 id|value
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pwc_set_leds
+c_func
+(paren
+r_struct
+id|pwc_device
+op_star
+id|pdev
+comma
+r_int
+id|on_value
+comma
+r_int
+id|off_value
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pwc_get_leds
+c_func
+(paren
+r_struct
+id|pwc_device
+op_star
+id|pdev
+comma
+r_int
+op_star
+id|on_value
+comma
+r_int
+op_star
+id|off_value
 )paren
 suffix:semicolon
 multiline_comment|/* Power down or up the camera; not supported by all models */

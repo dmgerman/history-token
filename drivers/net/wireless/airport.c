@@ -52,6 +52,8 @@ c_func
 l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
 DECL|struct|dldwd_card
 r_typedef
 r_struct

@@ -3062,6 +3062,12 @@ id|MAX_NE_CARDS
 )braket
 suffix:semicolon
 multiline_comment|/* 0xbad = bad sig or no reset ack */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#ifdef MODULE_PARM
 id|MODULE_PARM
 c_func

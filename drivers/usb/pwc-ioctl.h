@@ -51,6 +51,23 @@ suffix:semicolon
 multiline_comment|/* R/O */
 )brace
 suffix:semicolon
+multiline_comment|/* Used with VIDIOCPWC[SG]LED */
+DECL|struct|pwc_leds
+r_struct
+id|pwc_leds
+(brace
+DECL|member|led_on
+r_int
+id|led_on
+suffix:semicolon
+multiline_comment|/* Led on-time; range = 0..255 */
+DECL|member|led_off
+r_int
+id|led_off
+suffix:semicolon
+multiline_comment|/*  */
+)brace
+suffix:semicolon
 multiline_comment|/* Restore user settings */
 DECL|macro|VIDIOCPWCRUSER
 mdefine_line|#define VIDIOCPWCRUSER&t;&t;_IO(&squot;v&squot;, 192)
@@ -83,9 +100,9 @@ DECL|macro|VIDIOCPWCGAWB
 mdefine_line|#define VIDIOCPWCGAWB           _IOR(&squot;v&squot;, 202, struct pwc_whitebalance)
 multiline_comment|/* Turn LED on/off ; int range 0..65535 */
 DECL|macro|VIDIOCPWCSLED
-mdefine_line|#define VIDIOCPWCSLED           _IOW(&squot;v&squot;, 205, int)
+mdefine_line|#define VIDIOCPWCSLED           _IOW(&squot;v&squot;, 205, struct pwc_leds)
 multiline_comment|/* Get state of LED; int range 0..65535 */
 DECL|macro|VIDIOCPWCGLED
-mdefine_line|#define VIDIOCPWCGLED           _IOR(&squot;v&squot;, 205, int)
+mdefine_line|#define VIDIOCPWCGLED           _IOR(&squot;v&squot;, 205, struct pwc_leds)
 macro_line|#endif
 eof

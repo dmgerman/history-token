@@ -2442,7 +2442,11 @@ c_cond
 id|disk-&gt;dev
 op_eq
 id|dev
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|disk-&gt;operational
 )paren
 (brace
@@ -2513,6 +2517,7 @@ comma
 id|conf-&gt;working_disks
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

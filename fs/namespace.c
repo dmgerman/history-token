@@ -762,6 +762,14 @@ c_func
 id|root
 )paren
 suffix:semicolon
+id|mnt-&gt;mnt_mountpoint
+op_assign
+id|mnt-&gt;mnt_root
+suffix:semicolon
+id|mnt-&gt;mnt_parent
+op_assign
+id|mnt
+suffix:semicolon
 )brace
 r_return
 id|mnt
@@ -5480,7 +5488,7 @@ op_amp
 id|dcache_lock
 )paren
 suffix:semicolon
-id|list_del
+id|list_del_init
 c_func
 (paren
 op_amp

@@ -2447,17 +2447,25 @@ id|nd
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/* something went wrong... */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|nd-&gt;dentry-&gt;d_inode
+op_logical_or
+id|S_ISDIR
+c_func
+(paren
+id|nd-&gt;dentry-&gt;d_inode-&gt;i_mode
+)paren
 )paren
 (brace
 r_struct
 id|nameidata
 id|nd_root
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * NAME was not found in alternate root or it&squot;s a directory.  Try to find&n;&t;&t; * it in the normal root:&n;&t;&t; */
 id|nd_root.last_type
 op_assign
 id|LAST_ROOT

@@ -172,7 +172,13 @@ mdefine_line|#define ETHTOOL_GREGS&t;&t;0x00000004 /* Get NIC registers, privile
 DECL|macro|ETHTOOL_GWOL
 mdefine_line|#define ETHTOOL_GWOL&t;&t;0x00000005 /* Get wake-on-lan options. */
 DECL|macro|ETHTOOL_SWOL
-mdefine_line|#define ETHTOOL_SWOL&t;&t;0x00000006 /* Set wake-on-lan options. */
+mdefine_line|#define ETHTOOL_SWOL&t;&t;0x00000006 /* Set wake-on-lan options, priv. */
+DECL|macro|ETHTOOL_GMSGLVL
+mdefine_line|#define ETHTOOL_GMSGLVL&t;&t;0x00000007 /* Get driver message level */
+DECL|macro|ETHTOOL_SMSGLVL
+mdefine_line|#define ETHTOOL_SMSGLVL&t;&t;0x00000008 /* Set driver msg level, priv. */
+DECL|macro|ETHTOOL_NWAY_RST
+mdefine_line|#define ETHTOOL_NWAY_RST&t;0X00000009 /* Restart autonegotiation, priv. */
 multiline_comment|/* compatibility with older code */
 DECL|macro|SPARC_ETH_GSET
 mdefine_line|#define SPARC_ETH_GSET&t;&t;ETHTOOL_GSET
@@ -201,6 +207,8 @@ DECL|macro|SUPPORTED_MII
 mdefine_line|#define SUPPORTED_MII&t;&t;&t;(1 &lt;&lt; 9)
 DECL|macro|SUPPORTED_FIBRE
 mdefine_line|#define SUPPORTED_FIBRE&t;&t;&t;(1 &lt;&lt; 10)
+DECL|macro|SUPPORTED_10base2
+mdefine_line|#define SUPPORTED_10base2&t;&t;(1 &lt;&lt; 11)
 multiline_comment|/* Indicates what features are advertised by the interface. */
 DECL|macro|ADVERTISED_10baseT_Half
 mdefine_line|#define ADVERTISED_10baseT_Half&t;&t;(1 &lt;&lt; 0)
@@ -224,6 +232,8 @@ DECL|macro|ADVERTISED_MII
 mdefine_line|#define ADVERTISED_MII&t;&t;&t;(1 &lt;&lt; 9)
 DECL|macro|ADVERTISED_FIBRE
 mdefine_line|#define ADVERTISED_FIBRE&t;&t;(1 &lt;&lt; 10)
+DECL|macro|ADVERTISED_10base2
+mdefine_line|#define ADVERTISED_10base2&t;&t;(1 &lt;&lt; 11)
 multiline_comment|/* The following are all involved in forcing a particular link&n; * mode for the device for setting things.  When getting the&n; * devices settings, these indicate the current mode and whether&n; * it was foced up into this mode or autonegotiated.&n; */
 multiline_comment|/* The forced speed, 10Mb, 100Mb, gigabit. */
 DECL|macro|SPEED_10

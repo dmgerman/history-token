@@ -558,8 +558,8 @@ id|DAC960_V1_Read
 op_assign
 l_int|0x36
 comma
-DECL|enumerator|DAC960_V1_ReadWithOldScatterGather
-id|DAC960_V1_ReadWithOldScatterGather
+DECL|enumerator|DAC960_V1_ReadWithScatterGather
+id|DAC960_V1_ReadWithScatterGather
 op_assign
 l_int|0xB6
 comma
@@ -568,8 +568,8 @@ id|DAC960_V1_Write
 op_assign
 l_int|0x37
 comma
-DECL|enumerator|DAC960_V1_WriteWithOldScatterGather
-id|DAC960_V1_WriteWithOldScatterGather
+DECL|enumerator|DAC960_V1_WriteWithScatterGather
+id|DAC960_V1_WriteWithScatterGather
 op_assign
 l_int|0xB7
 comma
@@ -814,6 +814,37 @@ DECL|enumerator|DAC960_V1_SetSubsystemParameters
 id|DAC960_V1_SetSubsystemParameters
 op_assign
 l_int|0x71
+comma
+multiline_comment|/* Version 2.xx Firmware Commands */
+DECL|enumerator|DAC960_V1_Enquiry_Old
+id|DAC960_V1_Enquiry_Old
+op_assign
+l_int|0x05
+comma
+DECL|enumerator|DAC960_V1_GetDeviceState_Old
+id|DAC960_V1_GetDeviceState_Old
+op_assign
+l_int|0x14
+comma
+DECL|enumerator|DAC960_V1_Read_Old
+id|DAC960_V1_Read_Old
+op_assign
+l_int|0x02
+comma
+DECL|enumerator|DAC960_V1_Write_Old
+id|DAC960_V1_Write_Old
+op_assign
+l_int|0x03
+comma
+DECL|enumerator|DAC960_V1_ReadWithScatterGather_Old
+id|DAC960_V1_ReadWithScatterGather_Old
+op_assign
+l_int|0x82
+comma
+DECL|enumerator|DAC960_V1_WriteWithScatterGather_Old
+id|DAC960_V1_WriteWithScatterGather_Old
+op_assign
+l_int|0x83
 )brace
 id|__attribute__
 (paren
@@ -892,6 +923,12 @@ DECL|macro|DAC960_V1_RebuildSuccessful
 mdefine_line|#define DAC960_V1_RebuildSuccessful&t;&t;0x0100&t;/* Consistency */
 DECL|macro|DAC960_V1_RebuildSuccessfullyTerminated
 mdefine_line|#define DAC960_V1_RebuildSuccessfullyTerminated&t;0x0107&t;/* Consistency */
+DECL|macro|DAC960_V1_BackgroundInitSuccessful
+mdefine_line|#define DAC960_V1_BackgroundInitSuccessful&t;0x0100&t;/* Consistency */
+DECL|macro|DAC960_V1_BackgroundInitAborted
+mdefine_line|#define DAC960_V1_BackgroundInitAborted&t;&t;0x0005&t;/* Consistency */
+DECL|macro|DAC960_V1_NoBackgroundInitInProgress
+mdefine_line|#define DAC960_V1_NoBackgroundInitInProgress&t;0x0105&t;/* Consistency */
 DECL|macro|DAC960_V1_AddCapacityInProgress
 mdefine_line|#define DAC960_V1_AddCapacityInProgress&t;&t;0x0004&t;/* Consistency */
 DECL|macro|DAC960_V1_AddCapacityFailedOrSuspended
@@ -2207,7 +2244,7 @@ id|packed
 DECL|typedef|DAC960_V1_PhysicalDeviceState_T
 id|DAC960_V1_PhysicalDeviceState_T
 suffix:semicolon
-multiline_comment|/*&n;  Define the DAC960 V1 Firmware Get Device State Command reply structure.&n;*/
+multiline_comment|/*&n;  Define the DAC960 V1 Firmware Get Device State Command reply structure.&n;  The structure is padded by 2 bytes for compatibility with Version 2.xx&n;  Firmware.&n;*/
 DECL|struct|DAC960_V1_DeviceState
 r_typedef
 r_struct
@@ -2344,6 +2381,12 @@ id|packed
 )paren
 suffix:semicolon
 multiline_comment|/* Bytes 6-9 */
+r_int
+r_int
+suffix:colon
+l_int|16
+suffix:semicolon
+multiline_comment|/* Bytes 10-11 */
 )brace
 DECL|typedef|DAC960_V1_DeviceState_T
 id|DAC960_V1_DeviceState_T
@@ -2375,6 +2418,95 @@ multiline_comment|/* Bytes 8-11 */
 )brace
 DECL|typedef|DAC960_V1_RebuildProgress_T
 id|DAC960_V1_RebuildProgress_T
+suffix:semicolon
+multiline_comment|/*&n;  Define the DAC960 V1 Firmware Background Initialization Status Command&n;  reply structure.&n;*/
+DECL|struct|DAC960_V1_BackgroundInitializationStatus
+r_typedef
+r_struct
+id|DAC960_V1_BackgroundInitializationStatus
+(brace
+DECL|member|LogicalDriveSize
+r_int
+r_int
+id|LogicalDriveSize
+suffix:semicolon
+multiline_comment|/* Bytes 0-3 */
+DECL|member|BlocksCompleted
+r_int
+r_int
+id|BlocksCompleted
+suffix:semicolon
+multiline_comment|/* Bytes 4-7 */
+DECL|member|Reserved1
+r_int
+r_char
+id|Reserved1
+(braket
+l_int|12
+)braket
+suffix:semicolon
+multiline_comment|/* Bytes 8-19 */
+DECL|member|LogicalDriveNumber
+r_int
+r_int
+id|LogicalDriveNumber
+suffix:semicolon
+multiline_comment|/* Bytes 20-23 */
+DECL|member|RAIDLevel
+r_int
+r_char
+id|RAIDLevel
+suffix:semicolon
+multiline_comment|/* Byte 24 */
+r_enum
+(brace
+DECL|enumerator|DAC960_V1_BackgroundInitializationInvalid
+id|DAC960_V1_BackgroundInitializationInvalid
+op_assign
+l_int|0x00
+comma
+DECL|enumerator|DAC960_V1_BackgroundInitializationStarted
+id|DAC960_V1_BackgroundInitializationStarted
+op_assign
+l_int|0x02
+comma
+DECL|enumerator|DAC960_V1_BackgroundInitializationInProgress
+id|DAC960_V1_BackgroundInitializationInProgress
+op_assign
+l_int|0x04
+comma
+DECL|enumerator|DAC960_V1_BackgroundInitializationSuspended
+id|DAC960_V1_BackgroundInitializationSuspended
+op_assign
+l_int|0x05
+comma
+DECL|enumerator|DAC960_V1_BackgroundInitializationCancelled
+id|DAC960_V1_BackgroundInitializationCancelled
+op_assign
+l_int|0x06
+DECL|member|Status
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+id|Status
+suffix:semicolon
+multiline_comment|/* Byte 25 */
+DECL|member|Reserved2
+r_int
+r_char
+id|Reserved2
+(braket
+l_int|6
+)braket
+suffix:semicolon
+multiline_comment|/* Bytes 26-31 */
+)brace
+DECL|typedef|DAC960_V1_BackgroundInitializationStatus_T
+id|DAC960_V1_BackgroundInitializationStatus_T
 suffix:semicolon
 multiline_comment|/*&n;  Define the DAC960 V1 Firmware Error Table Entry structure.&n;*/
 DECL|struct|DAC960_V1_ErrorTableEntry
@@ -3173,6 +3305,57 @@ id|DAC960_V1_CommandIdentifier_T
 id|CommandIdentifier
 suffix:semicolon
 multiline_comment|/* Byte 1 */
+DECL|member|CommandOpcode2
+r_int
+r_char
+id|CommandOpcode2
+suffix:semicolon
+multiline_comment|/* Byte 2 */
+DECL|member|Dummy1
+r_int
+r_char
+id|Dummy1
+(braket
+l_int|5
+)braket
+suffix:semicolon
+multiline_comment|/* Bytes 3-7 */
+DECL|member|BusAddress
+id|DAC960_BusAddress32_T
+id|BusAddress
+suffix:semicolon
+multiline_comment|/* Bytes 8-11 */
+DECL|member|Dummy2
+r_int
+r_char
+id|Dummy2
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* Bytes 12-15 */
+DECL|member|Type3B
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+id|Type3B
+suffix:semicolon
+r_struct
+(brace
+DECL|member|CommandOpcode
+id|DAC960_V1_CommandOpcode_T
+id|CommandOpcode
+suffix:semicolon
+multiline_comment|/* Byte 0 */
+DECL|member|CommandIdentifier
+id|DAC960_V1_CommandIdentifier_T
+id|CommandIdentifier
+suffix:semicolon
+multiline_comment|/* Byte 1 */
 DECL|member|Dummy1
 r_int
 r_char
@@ -3705,6 +3888,11 @@ id|DAC960_V2_GetEvent
 op_assign
 l_int|0x15
 comma
+DECL|enumerator|DAC960_V2_StartDiscovery
+id|DAC960_V2_StartDiscovery
+op_assign
+l_int|0x81
+comma
 DECL|enumerator|DAC960_V2_SetDeviceState
 id|DAC960_V2_SetDeviceState
 op_assign
@@ -3766,8 +3954,14 @@ DECL|macro|DAC960_V2_NormalCompletion
 mdefine_line|#define DAC960_V2_NormalCompletion&t;&t;0x00
 DECL|macro|DAC960_V2_AbormalCompletion
 mdefine_line|#define DAC960_V2_AbormalCompletion&t;&t;0x02
+DECL|macro|DAC960_V2_DeviceBusy
+mdefine_line|#define DAC960_V2_DeviceBusy&t;&t;&t;0x08
 DECL|macro|DAC960_V2_DeviceNonresponsive
 mdefine_line|#define DAC960_V2_DeviceNonresponsive&t;&t;0x0E
+DECL|macro|DAC960_V2_DeviceNonresponsive2
+mdefine_line|#define DAC960_V2_DeviceNonresponsive2&t;&t;0x0F
+DECL|macro|DAC960_V2_DeviceRevervationConflict
+mdefine_line|#define DAC960_V2_DeviceRevervationConflict&t;0x18
 DECL|typedef|DAC960_V2_CommandStatus_T
 r_typedef
 r_int
@@ -4022,10 +4216,15 @@ id|DAC960_V2_AcceleRAID352
 op_assign
 l_int|0x1E
 comma
-DECL|enumerator|DAC960_V2_AcceleRAID351
-id|DAC960_V2_AcceleRAID351
+DECL|enumerator|DAC960_V2_AcceleRAID170
+id|DAC960_V2_AcceleRAID170
 op_assign
 l_int|0x1F
+comma
+DECL|enumerator|DAC960_V2_AcceleRAID160
+id|DAC960_V2_AcceleRAID160
+op_assign
+l_int|0x20
 comma
 DECL|enumerator|DAC960_V2_DAC960S
 id|DAC960_V2_DAC960S
@@ -4115,15 +4314,27 @@ r_char
 id|BusWidthBits
 suffix:semicolon
 multiline_comment|/* Byte 6 */
+DECL|member|FlashCodeTypeOrProductID
+r_int
+r_char
+id|FlashCodeTypeOrProductID
+suffix:semicolon
+multiline_comment|/* Byte 7 */
+DECL|member|NumberOfHostPortsPresent
+r_int
+r_char
+id|NumberOfHostPortsPresent
+suffix:semicolon
+multiline_comment|/* Byte 8 */
 DECL|member|Reserved1
 r_int
 r_char
 id|Reserved1
 (braket
-l_int|9
+l_int|7
 )braket
 suffix:semicolon
-multiline_comment|/* Bytes 7-15 */
+multiline_comment|/* Bytes 9-15 */
 DECL|member|BusInterfaceName
 r_int
 r_char
@@ -4286,16 +4497,16 @@ r_char
 id|HardwareManufacturingYearLow2Digits
 suffix:semicolon
 multiline_comment|/* Byte 87 */
-DECL|member|MaximumNumberOfPDDperXLDD
+DECL|member|MaximumNumberOfPDDperXLD
 r_int
 r_char
-id|MaximumNumberOfPDDperXLDD
+id|MaximumNumberOfPDDperXLD
 suffix:semicolon
 multiline_comment|/* Byte 88 */
-DECL|member|MaximumNumberOfILDDperXLDD
+DECL|member|MaximumNumberOfILDperXLD
 r_int
 r_char
-id|MaximumNumberOfILDDperXLDD
+id|MaximumNumberOfILDperXLD
 suffix:semicolon
 multiline_comment|/* Byte 89 */
 DECL|member|NonvolatileMemorySizeKB
@@ -4304,10 +4515,10 @@ r_int
 id|NonvolatileMemorySizeKB
 suffix:semicolon
 multiline_comment|/* Bytes 90-91 */
-DECL|member|MaximumNumberOfXLDD
+DECL|member|MaximumNumberOfXLD
 r_int
 r_char
-id|MaximumNumberOfXLDD
+id|MaximumNumberOfXLD
 suffix:semicolon
 multiline_comment|/* Byte 92 */
 r_int
@@ -4342,10 +4553,10 @@ suffix:colon
 l_int|24
 suffix:semicolon
 multiline_comment|/* Bytes 128-130 */
-DECL|member|OEM_Information
+DECL|member|OEM_Code
 r_int
 r_char
-id|OEM_Information
+id|OEM_Code
 suffix:semicolon
 multiline_comment|/* Byte 131 */
 DECL|member|VendorName
@@ -4805,15 +5016,21 @@ r_int
 id|PhysicalDeviceHostCommandsFailed
 suffix:semicolon
 multiline_comment|/* Bytes 374-375 */
+DECL|member|PhysicalDeviceHardErrors
+r_int
+r_int
+id|PhysicalDeviceHardErrors
+suffix:semicolon
+multiline_comment|/* Bytes 376-377 */
 DECL|member|Reserved9
 r_int
 r_char
 id|Reserved9
 (braket
-l_int|8
+l_int|6
 )braket
 suffix:semicolon
-multiline_comment|/* Bytes 376-383 */
+multiline_comment|/* Bytes 378-383 */
 multiline_comment|/* Error Counters on Logical Devices */
 DECL|member|LogicalDeviceSoftErrors
 r_int
@@ -4839,6 +5056,7 @@ suffix:colon
 l_int|16
 suffix:semicolon
 multiline_comment|/* Bytes 390-391 */
+multiline_comment|/* Error Counters on Controller */
 DECL|member|ControllerMemoryErrors
 r_int
 r_int
@@ -4900,18 +5118,12 @@ r_int
 id|PatrolActivitiesActive
 suffix:semicolon
 multiline_comment|/* Bytes 412-413 */
-DECL|member|LongOperationStatus
 r_int
-r_char
-id|LongOperationStatus
-suffix:semicolon
-multiline_comment|/* Byte 414 */
 r_int
-r_char
 suffix:colon
-l_int|8
+l_int|16
 suffix:semicolon
-multiline_comment|/* Byte 415 */
+multiline_comment|/* Bytes 414-415 */
 multiline_comment|/* Flash ROM Information */
 DECL|member|FlashType
 r_int
@@ -5042,15 +5254,9 @@ multiline_comment|/* Byte 476 Bit 1 */
 r_int
 r_int
 suffix:colon
-l_int|6
-suffix:semicolon
-multiline_comment|/* Byte 476 Bits 2-7 */
-r_int
-r_int
-suffix:colon
 l_int|24
 suffix:semicolon
-multiline_comment|/* Bytes 477-479 */
+multiline_comment|/* Bytes 476-479 */
 DECL|member|Reserved10
 r_int
 r_char
@@ -5389,8 +5595,9 @@ suffix:colon
 l_int|2
 suffix:semicolon
 multiline_comment|/* Byte 14 Bits 5-6 */
-r_int
-r_char
+DECL|member|SuperReadAheadEnabled
+id|boolean
+id|SuperReadAheadEnabled
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -5451,16 +5658,16 @@ r_int
 id|DeviceBlockSizeInBytes
 suffix:semicolon
 multiline_comment|/* Bytes 34-35 */
-DECL|member|OriginalDeviceSizeIn512ByteBlocksOrMB
+DECL|member|OriginalDeviceSize
 r_int
 r_int
-id|OriginalDeviceSizeIn512ByteBlocksOrMB
+id|OriginalDeviceSize
 suffix:semicolon
 multiline_comment|/* Bytes 36-39 */
-DECL|member|ConfigurableDeviceSizeIn512ByteBlocksOrMB
+DECL|member|ConfigurableDeviceSize
 r_int
 r_int
-id|ConfigurableDeviceSizeIn512ByteBlocksOrMB
+id|ConfigurableDeviceSize
 suffix:semicolon
 multiline_comment|/* Bytes 40-43 */
 r_int
@@ -5563,15 +5770,35 @@ id|DAC960_V2_Device_Online
 op_assign
 l_int|0x01
 comma
-DECL|enumerator|DAC960_V2_Device_WriteOnly
-id|DAC960_V2_Device_WriteOnly
+DECL|enumerator|DAC960_V2_Device_Rebuild
+id|DAC960_V2_Device_Rebuild
 op_assign
 l_int|0x03
+comma
+DECL|enumerator|DAC960_V2_Device_Missing
+id|DAC960_V2_Device_Missing
+op_assign
+l_int|0x04
+comma
+DECL|enumerator|DAC960_V2_Device_Critical
+id|DAC960_V2_Device_Critical
+op_assign
+l_int|0x05
 comma
 DECL|enumerator|DAC960_V2_Device_Dead
 id|DAC960_V2_Device_Dead
 op_assign
 l_int|0x08
+comma
+DECL|enumerator|DAC960_V2_Device_SuspectedDead
+id|DAC960_V2_Device_SuspectedDead
+op_assign
+l_int|0x0C
+comma
+DECL|enumerator|DAC960_V2_Device_CommandedOffline
+id|DAC960_V2_Device_CommandedOffline
+op_assign
+l_int|0x10
 comma
 DECL|enumerator|DAC960_V2_Device_Standby
 id|DAC960_V2_Device_Standby
@@ -5630,8 +5857,9 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Byte 4 Bit 0 */
-DECL|member|boolean
+DECL|member|PhysicalDeviceConnected
 id|boolean
+id|PhysicalDeviceConnected
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -5842,16 +6070,16 @@ r_int
 id|DeviceBlockSizeInBytes
 suffix:semicolon
 multiline_comment|/* Bytes 50-51 */
-DECL|member|OriginalDeviceSizeIn512ByteBlocksOrMB
+DECL|member|OriginalDeviceSize
 r_int
 r_int
-id|OriginalDeviceSizeIn512ByteBlocksOrMB
+id|OriginalDeviceSize
 suffix:semicolon
 multiline_comment|/* Bytes 52-55 */
-DECL|member|ConfigurableDeviceSizeIn512ByteBlocksOrMB
+DECL|member|ConfigurableDeviceSize
 r_int
 r_int
-id|ConfigurableDeviceSizeIn512ByteBlocksOrMB
+id|ConfigurableDeviceSize
 suffix:semicolon
 multiline_comment|/* Bytes 56-59 */
 r_int
@@ -5901,19 +6129,19 @@ r_int
 r_char
 id|Reserved3
 (braket
-l_int|12
+l_int|20
 )braket
 suffix:semicolon
-multiline_comment|/* Bytes 164-175 */
+multiline_comment|/* Bytes 164-183 */
 DECL|member|Reserved4
 r_int
 r_char
 id|Reserved4
 (braket
-l_int|16
+l_int|8
 )braket
 suffix:semicolon
-multiline_comment|/* Bytes 176-191 */
+multiline_comment|/* Bytes 184-191 */
 DECL|member|LastReadBlockNumber
 id|DAC960_ByteCount64_T
 id|LastReadBlockNumber
@@ -6374,6 +6602,11 @@ DECL|enumerator|DAC960_V2_Configuration_Group
 id|DAC960_V2_Configuration_Group
 op_assign
 l_int|0x10
+comma
+DECL|enumerator|DAC960_V2_Enclosure
+id|DAC960_V2_Enclosure
+op_assign
+l_int|0x11
 )brace
 id|__attribute__
 (paren
@@ -6624,16 +6857,8 @@ multiline_comment|/* Byte 3 */
 DECL|member|DataTransferSize
 id|DAC960_ByteCount32_T
 id|DataTransferSize
-suffix:colon
-l_int|24
 suffix:semicolon
-multiline_comment|/* Bytes 4-6 */
-DECL|member|DataTransferPageNumber
-r_int
-r_char
-id|DataTransferPageNumber
-suffix:semicolon
-multiline_comment|/* Byte 7 */
+multiline_comment|/* Bytes 4-7 */
 DECL|member|RequestSenseBusAddress
 id|DAC960_BusAddress64_T
 id|RequestSenseBusAddress
@@ -6699,16 +6924,8 @@ multiline_comment|/* Byte 3 */
 DECL|member|DataTransferSize
 id|DAC960_ByteCount32_T
 id|DataTransferSize
-suffix:colon
-l_int|24
 suffix:semicolon
-multiline_comment|/* Bytes 4-6 */
-DECL|member|DataTransferPageNumber
-r_int
-r_char
-id|DataTransferPageNumber
-suffix:semicolon
-multiline_comment|/* Byte 7 */
+multiline_comment|/* Bytes 4-7 */
 DECL|member|RequestSenseBusAddress
 id|DAC960_BusAddress64_T
 id|RequestSenseBusAddress
@@ -7452,12 +7669,6 @@ DECL|member|DeviceOperation
 id|DeviceOperation
 suffix:semicolon
 )brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
 DECL|typedef|DAC960_V2_CommandMailbox_T
 id|DAC960_V2_CommandMailbox_T
 suffix:semicolon
@@ -7880,7 +8091,13 @@ DECL|enumerator|DAC960_PD_Controller
 id|DAC960_PD_Controller
 op_assign
 l_int|5
-multiline_comment|/* DAC960PU/PD/PL */
+comma
+multiline_comment|/* DAC960PU/PD/PL/P */
+DECL|enumerator|DAC960_P_Controller
+id|DAC960_P_Controller
+op_assign
+l_int|6
+multiline_comment|/* DAC960PU/PD/PL/P */
 )brace
 DECL|typedef|DAC960_HardwareType_T
 id|DAC960_HardwareType_T
@@ -8837,6 +9054,10 @@ DECL|member|DualModeMemoryMailboxInterface
 id|boolean
 id|DualModeMemoryMailboxInterface
 suffix:semicolon
+DECL|member|BackgroundInitializationStatusSupported
+id|boolean
+id|BackgroundInitializationStatusSupported
+suffix:semicolon
 DECL|member|SAFTE_EnclosureManagementEnabled
 id|boolean
 id|SAFTE_EnclosureManagementEnabled
@@ -8868,6 +9089,10 @@ suffix:semicolon
 DECL|member|NeedConsistencyCheckProgress
 id|boolean
 id|NeedConsistencyCheckProgress
+suffix:semicolon
+DECL|member|NeedBackgroundInitializationStatus
+id|boolean
+id|NeedBackgroundInitializationStatus
 suffix:semicolon
 DECL|member|StartDeviceStateScan
 id|boolean
@@ -8968,6 +9193,14 @@ suffix:semicolon
 DECL|member|NewLogicalDriveInformation
 id|DAC960_V1_LogicalDriveInformationArray_T
 id|NewLogicalDriveInformation
+suffix:semicolon
+id|DAC960_V1_BackgroundInitializationStatus_T
+DECL|member|BackgroundInitializationStatus
+id|BackgroundInitializationStatus
+suffix:semicolon
+id|DAC960_V1_BackgroundInitializationStatus_T
+DECL|member|LastBackgroundInitializationStatus
+id|LastBackgroundInitializationStatus
 suffix:semicolon
 id|DAC960_V1_DeviceState_T
 DECL|member|DeviceState
@@ -14950,6 +15183,193 @@ r_return
 l_bool|true
 suffix:semicolon
 )brace
+DECL|function|DAC960_P_To_PD_TranslateEnquiry
+r_static
+r_inline
+r_void
+id|DAC960_P_To_PD_TranslateEnquiry
+c_func
+(paren
+r_void
+op_star
+id|Enquiry
+)paren
+(brace
+id|memcpy
+c_func
+(paren
+id|Enquiry
+op_plus
+l_int|132
+comma
+id|Enquiry
+op_plus
+l_int|36
+comma
+l_int|64
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|Enquiry
+op_plus
+l_int|36
+comma
+l_int|0
+comma
+l_int|96
+)paren
+suffix:semicolon
+)brace
+DECL|function|DAC960_P_To_PD_TranslateDeviceState
+r_static
+r_inline
+r_void
+id|DAC960_P_To_PD_TranslateDeviceState
+c_func
+(paren
+r_void
+op_star
+id|DeviceState
+)paren
+(brace
+id|memcpy
+c_func
+(paren
+id|DeviceState
+op_plus
+l_int|2
+comma
+id|DeviceState
+op_plus
+l_int|3
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|DeviceState
+op_plus
+l_int|4
+comma
+id|DeviceState
+op_plus
+l_int|5
+comma
+l_int|2
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|DeviceState
+op_plus
+l_int|6
+comma
+id|DeviceState
+op_plus
+l_int|8
+comma
+l_int|4
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+DECL|function|DAC960_PD_To_P_TranslateReadWriteCommand
+r_void
+id|DAC960_PD_To_P_TranslateReadWriteCommand
+c_func
+(paren
+id|DAC960_V1_CommandMailbox_T
+op_star
+id|CommandMailbox
+)paren
+(brace
+r_int
+id|LogicalDriveNumber
+op_assign
+id|CommandMailbox-&gt;Type5.LD.LogicalDriveNumber
+suffix:semicolon
+id|CommandMailbox-&gt;Bytes
+(braket
+l_int|3
+)braket
+op_and_assign
+l_int|0x7
+suffix:semicolon
+id|CommandMailbox-&gt;Bytes
+(braket
+l_int|3
+)braket
+op_or_assign
+id|CommandMailbox-&gt;Bytes
+(braket
+l_int|7
+)braket
+op_lshift
+l_int|6
+suffix:semicolon
+id|CommandMailbox-&gt;Bytes
+(braket
+l_int|7
+)braket
+op_assign
+id|LogicalDriveNumber
+suffix:semicolon
+)brace
+r_static
+r_inline
+DECL|function|DAC960_P_To_PD_TranslateReadWriteCommand
+r_void
+id|DAC960_P_To_PD_TranslateReadWriteCommand
+c_func
+(paren
+id|DAC960_V1_CommandMailbox_T
+op_star
+id|CommandMailbox
+)paren
+(brace
+r_int
+id|LogicalDriveNumber
+op_assign
+id|CommandMailbox-&gt;Bytes
+(braket
+l_int|7
+)braket
+suffix:semicolon
+id|CommandMailbox-&gt;Bytes
+(braket
+l_int|7
+)braket
+op_assign
+id|CommandMailbox-&gt;Bytes
+(braket
+l_int|3
+)braket
+op_rshift
+l_int|6
+suffix:semicolon
+id|CommandMailbox-&gt;Bytes
+(braket
+l_int|3
+)braket
+op_and_assign
+l_int|0x7
+suffix:semicolon
+id|CommandMailbox-&gt;Bytes
+(braket
+l_int|3
+)braket
+op_or_assign
+id|LogicalDriveNumber
+op_lshift
+l_int|3
+suffix:semicolon
+)brace
 multiline_comment|/*&n;  Define prototypes for the forward referenced DAC960 Driver Internal Functions.&n;*/
 r_static
 r_void
@@ -14962,7 +15382,7 @@ op_star
 suffix:semicolon
 r_static
 r_int
-id|DAC960_Finalize
+id|DAC960_Notifier
 c_func
 (paren
 id|NotifierBlock_T
@@ -15061,6 +15481,20 @@ suffix:semicolon
 r_static
 r_void
 id|DAC960_PD_InterruptHandler
+c_func
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+id|Registers_T
+op_star
+)paren
+suffix:semicolon
+r_static
+r_void
+id|DAC960_P_InterruptHandler
 c_func
 (paren
 r_int

@@ -5076,6 +5076,12 @@ c_func
 l_string|&quot;PowerMac MACE driver.&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|mace_cleanup
 r_static
 r_void

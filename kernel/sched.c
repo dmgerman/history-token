@@ -4114,6 +4114,10 @@ id|current-&gt;pgrp
 op_assign
 l_int|1
 suffix:semicolon
+id|current-&gt;tty
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/* Become as one with the init task */
 id|exit_fs
 c_func

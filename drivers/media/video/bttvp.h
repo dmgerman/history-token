@@ -3,7 +3,7 @@ macro_line|#ifndef _BTTVP_H_
 DECL|macro|_BTTVP_H_
 mdefine_line|#define _BTTVP_H_
 DECL|macro|BTTV_VERSION_CODE
-mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,7,72)
+mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,7,83)
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
@@ -82,14 +82,19 @@ macro_line|#ifndef O_NONCAP
 DECL|macro|O_NONCAP
 mdefine_line|#define O_NONCAP&t;O_TRUNC
 macro_line|#endif
+macro_line|#ifdef VIDEODAT_HACK
+DECL|macro|VBI_MAXLINES
+macro_line|# define VBI_MAXLINES   19
+macro_line|#else
+DECL|macro|VBI_MAXLINES
+macro_line|# define VBI_MAXLINES   16
+macro_line|#endif
+DECL|macro|VBIBUF_SIZE
+mdefine_line|#define VBIBUF_SIZE     (2048*VBI_MAXLINES*2)
 DECL|macro|MAX_GBUFFERS
 mdefine_line|#define MAX_GBUFFERS&t;64
 DECL|macro|RISCMEM_LEN
 mdefine_line|#define RISCMEM_LEN&t;(32744*2)
-DECL|macro|VBI_MAXLINES
-mdefine_line|#define VBI_MAXLINES    16
-DECL|macro|VBIBUF_SIZE
-mdefine_line|#define VBIBUF_SIZE     (2048*VBI_MAXLINES*2)
 DECL|macro|BTTV_MAX_FBUF
 mdefine_line|#define BTTV_MAX_FBUF&t;0x208000
 DECL|struct|bttv_window

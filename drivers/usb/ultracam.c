@@ -3668,14 +3668,12 @@ comma
 r_int
 r_int
 id|ifnum
-macro_line|#if defined(usb_device_id_ver)
 comma
 r_const
 r_struct
 id|usb_device_id
 op_star
 id|devid
-macro_line|#endif
 )paren
 (brace
 id|uvd_t

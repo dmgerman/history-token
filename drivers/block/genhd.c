@@ -487,16 +487,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_DAC960
-r_extern
-r_void
-id|DAC960_Initialize
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_FUSION_BOOT
 r_extern
 r_int
@@ -583,13 +573,6 @@ c_func
 suffix:semicolon
 macro_line|#ifdef CONFIG_I2O
 id|i2o_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_DAC960
-id|DAC960_Initialize
 c_func
 (paren
 )paren

@@ -2765,6 +2765,12 @@ comma
 l_string|&quot;FMV-18X debug level (0-1,5-6)&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|init_module
 r_int
 id|init_module

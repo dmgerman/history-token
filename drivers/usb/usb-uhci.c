@@ -10002,7 +10002,7 @@ id|TD_CTRL_BABBLE
 multiline_comment|/* Babble */
 r_return
 op_minus
-id|EPIPE
+id|EOVERFLOW
 suffix:semicolon
 r_if
 c_cond

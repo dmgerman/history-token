@@ -450,6 +450,8 @@ DECL|macro|__NR_security
 mdefine_line|#define __NR_security&t;&t;223&t;/* syscall for security modules */
 DECL|macro|__NR_gettid
 mdefine_line|#define __NR_gettid&t;&t;224
+DECL|macro|__NR_readahead
+mdefine_line|#define __NR_readahead&t;&t;225
 multiline_comment|/* user-visible error numbers are in the range -1 - -124: see &lt;asm-i386/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;&t;&t;errno = -(res); &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)

@@ -20,6 +20,17 @@ mdefine_line|#define INIT_TQ_LINK(tq) INIT_LIST_HEAD(&amp;(tq).list)
 DECL|macro|INIT_TQ_HEAD
 mdefine_line|#define INIT_TQ_HEAD(tq) INIT_LIST_HEAD(&amp;(tq))
 macro_line|#endif
+multiline_comment|/* This showed up around this time */
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,12)
+macro_line|# ifndef MODULE_LICENSE
+DECL|macro|MODULE_LICENSE
+macro_line|# define MODULE_LICENSE(x)
+macro_line|# endif
+macro_line|# ifndef min
+DECL|macro|min
+macro_line|# define min(x,y) ({ &bslash;&n;&t;const typeof(x) _x = (x);       &bslash;&n;&t;const typeof(y) _y = (y);       &bslash;&n;&t;(void) (&amp;_x == &amp;_y);            &bslash;&n;&t;_x &lt; _y ? _x : _y; })
+macro_line|# endif
+macro_line|#endif /* Linux version &lt; 2.4.12 */
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,18)
 macro_line|#include &lt;asm/spinlock.h&gt;
 macro_line|#else
@@ -60,6 +71,10 @@ DECL|macro|LOCAL_BUS
 mdefine_line|#define LOCAL_BUS 0xffc0
 DECL|macro|ALL_NODES
 mdefine_line|#define ALL_NODES 0x003f
+DECL|macro|NODE_BUS_FMT
+mdefine_line|#define NODE_BUS_FMT    &quot;%d:%d&quot;
+DECL|macro|NODE_BUS_ARGS
+mdefine_line|#define NODE_BUS_ARGS(nodeid) &bslash;&n;&t;(nodeid &amp; NODE_MASK), ((nodeid &amp; BUS_MASK) &gt;&gt; 6)
 DECL|macro|HPSB_PRINT
 mdefine_line|#define HPSB_PRINT(level, fmt, args...) printk(level &quot;ieee1394: &quot; fmt &quot;&bslash;n&quot; , ## args)
 DECL|macro|HPSB_DEBUG

@@ -332,11 +332,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-op_star
-id|name
-op_assign
-l_char|&squot;&bslash;0&squot;
-suffix:semicolon
 )brace
 r_return
 id|p

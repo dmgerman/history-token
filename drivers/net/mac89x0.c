@@ -2617,6 +2617,12 @@ comma
 l_string|&quot;CS89[02]0 debug level (0-5)&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 r_int

@@ -1095,8 +1095,6 @@ op_assign
 id|try_to_free_pages
 c_func
 (paren
-id|classzone
-comma
 id|gfp_mask
 comma
 id|order

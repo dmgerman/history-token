@@ -751,11 +751,22 @@ id|bttv_verbose
 id|printk
 c_func
 (paren
-l_string|&quot;bttv%d: i2c attach [%s]&bslash;n&quot;
+l_string|&quot;bttv%d: i2c attach [client=%s,%s]&bslash;n&quot;
 comma
 id|btv-&gt;nr
 comma
 id|client-&gt;name
+comma
+(paren
+id|i
+OL
+id|I2C_CLIENTS_MAX
+)paren
+ques
+c_cond
+l_string|&quot;ok&quot;
+suffix:colon
+l_string|&quot;failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -788,21 +799,6 @@ id|client-&gt;adapter-&gt;data
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|bttv_verbose
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;bttv%d: i2c detach [%s]&bslash;n&quot;
-comma
-id|btv-&gt;nr
-comma
-id|client-&gt;name
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -841,6 +837,32 @@ r_break
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|bttv_verbose
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;bttv%d: i2c detach [client=%s,%s]&bslash;n&quot;
+comma
+id|btv-&gt;nr
+comma
+id|client-&gt;name
+comma
+(paren
+id|i
+OL
+id|I2C_CLIENTS_MAX
+)paren
+ques
+c_cond
+l_string|&quot;ok&quot;
+suffix:colon
+l_string|&quot;failed&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1488,11 +1510,5 @@ r_return
 id|btv-&gt;i2c_rc
 suffix:semicolon
 )brace
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */
 eof

@@ -3,7 +3,7 @@ macro_line|#ifndef _TUNER_H
 DECL|macro|_TUNER_H
 mdefine_line|#define _TUNER_H
 DECL|macro|TUNER_TEMIC_PAL
-mdefine_line|#define TUNER_TEMIC_PAL     0        /* 4002 FH5_9483 */
+mdefine_line|#define TUNER_TEMIC_PAL     0        /* 4002 FH5 (3X 7756, 9483) */
 DECL|macro|TUNER_PHILIPS_PAL_I
 mdefine_line|#define TUNER_PHILIPS_PAL_I 1
 DECL|macro|TUNER_PHILIPS_NTSC
@@ -15,11 +15,11 @@ mdefine_line|#define TUNER_ABSENT        4
 DECL|macro|TUNER_PHILIPS_PAL
 mdefine_line|#define TUNER_PHILIPS_PAL   5
 DECL|macro|TUNER_TEMIC_NTSC
-mdefine_line|#define TUNER_TEMIC_NTSC    6        /* 4032 FY5_7004 */
+mdefine_line|#define TUNER_TEMIC_NTSC    6        /* 4032 FY5 (3X 7004, 9498, 9789)  */
 DECL|macro|TUNER_TEMIC_PAL_I
-mdefine_line|#define TUNER_TEMIC_PAL_I   7        /* 4062 FY5_9957 */
+mdefine_line|#define TUNER_TEMIC_PAL_I   7        /* 4062 FY5 (3X 8501, 9957)        */
 DECL|macro|TUNER_TEMIC_4036FY5_NTSC
-mdefine_line|#define TUNER_TEMIC_4036FY5_NTSC 8   /* 4036 FY5      */
+mdefine_line|#define TUNER_TEMIC_4036FY5_NTSC 8   /* 4036 FY5 (3X 1223, 1981, 7686)  */
 DECL|macro|TUNER_ALPS_TSBH1_NTSC
 mdefine_line|#define TUNER_ALPS_TSBH1_NTSC &t; 9
 DECL|macro|TUNER_ALPS_TSBE1_PAL
@@ -31,23 +31,23 @@ mdefine_line|#define TUNER_ALPS_TSBE5_PAL &t;12
 DECL|macro|TUNER_ALPS_TSBC5_PAL
 mdefine_line|#define TUNER_ALPS_TSBC5_PAL &t;13
 DECL|macro|TUNER_TEMIC_4006FH5_PAL
-mdefine_line|#define TUNER_TEMIC_4006FH5_PAL&t;14   /* 4006 FH5      */
+mdefine_line|#define TUNER_TEMIC_4006FH5_PAL&t;14   /* 4006 FH5 (3X 9500, 9501, 7291)     */
 DECL|macro|TUNER_ALPS_TSHC6_NTSC
 mdefine_line|#define TUNER_ALPS_TSHC6_NTSC &t;15
 DECL|macro|TUNER_TEMIC_PAL_DK
-mdefine_line|#define TUNER_TEMIC_PAL_DK&t;16   /* 4016 FY5      */
+mdefine_line|#define TUNER_TEMIC_PAL_DK&t;16   /* 4016 FY5 (3X 1392, 1393)     */
 DECL|macro|TUNER_PHILIPS_NTSC_M
 mdefine_line|#define TUNER_PHILIPS_NTSC_M&t;17
 DECL|macro|TUNER_TEMIC_4066FY5_PAL_I
-mdefine_line|#define TUNER_TEMIC_4066FY5_PAL_I       18
+mdefine_line|#define TUNER_TEMIC_4066FY5_PAL_I       18  /* 4066 FY5 (3X 7032, 7035) */
 DECL|macro|TUNER_TEMIC_4006FN5_MULTI_PAL
-mdefine_line|#define TUNER_TEMIC_4006FN5_MULTI_PAL   19  /* B/G, I and D/K autodetected */
+mdefine_line|#define TUNER_TEMIC_4006FN5_MULTI_PAL   19  /* B/G, I and D/K autodetected (3X 7595, 7606, 7657)*/
 DECL|macro|TUNER_TEMIC_4009FR5_PAL
-mdefine_line|#define TUNER_TEMIC_4009FR5_PAL         20  /* incl. FM radio */
+mdefine_line|#define TUNER_TEMIC_4009FR5_PAL         20  /* incl. FM radio (3X 7607, 7488, 7711)*/
 DECL|macro|TUNER_TEMIC_4039FR5_NTSC
-mdefine_line|#define TUNER_TEMIC_4039FR5_NTSC        21  /* incl. FM radio */
+mdefine_line|#define TUNER_TEMIC_4039FR5_NTSC        21  /* incl. FM radio (3X 7246, 7578, 7732)*/
 DECL|macro|TUNER_TEMIC_4046FM5
-mdefine_line|#define TUNER_TEMIC_4046FM5             22  /* you must actively select B/G, D/K, I, L, L` !  */
+mdefine_line|#define TUNER_TEMIC_4046FM5             22  /* you must actively select B/G, D/K, I, L, L` !  (3X 7804, 7806, 8103, 8104)*/
 DECL|macro|TUNER_PHILIPS_PAL_DK
 mdefine_line|#define TUNER_PHILIPS_PAL_DK&t;&t;23
 DECL|macro|TUNER_PHILIPS_FQ1216ME
@@ -63,7 +63,21 @@ mdefine_line|#define TUNER_LG_PAL_FM&t;&t;28
 DECL|macro|TUNER_LG_PAL
 mdefine_line|#define TUNER_LG_PAL&t;&t;29
 DECL|macro|TUNER_TEMIC_4009FN5_MULTI_PAL_FM
-mdefine_line|#define TUNER_TEMIC_4009FN5_MULTI_PAL_FM&t;30  /* B/G, I and D/K autodetected */
+mdefine_line|#define TUNER_TEMIC_4009FN5_MULTI_PAL_FM&t;30  /* B/G, I and D/K autodetected (3X 8155, 8160, 8163)*/
+DECL|macro|TUNER_SHARP_2U5JF5540_NTSC
+mdefine_line|#define TUNER_SHARP_2U5JF5540_NTSC  31
+DECL|macro|TUNER_Samsung_PAL_TCPM9091PD27
+mdefine_line|#define TUNER_Samsung_PAL_TCPM9091PD27 32
+DECL|macro|TUNER_MT2032
+mdefine_line|#define TUNER_MT2032 33
+DECL|macro|TUNER_TEMIC_4106FH5
+mdefine_line|#define TUNER_TEMIC_4106FH5 &t;34&t;/* 4106 FH5 (3X 7808, 7865)*/
+DECL|macro|TUNER_TEMIC_4012FY5
+mdefine_line|#define TUNER_TEMIC_4012FY5&t;35&t;/* 4012 FY5 (3X 0971, 1099)*/
+DECL|macro|TUNER_TEMIC_4136FY5
+mdefine_line|#define TUNER_TEMIC_4136FY5&t;36&t;/* 4136 FY5 (3X 7708, 7746)*/
+DECL|macro|TUNER_LG_PAL_NEW_TAPC
+mdefine_line|#define TUNER_LG_PAL_NEW_TAPC   37
 DECL|macro|NOTUNER
 mdefine_line|#define NOTUNER 0
 DECL|macro|PAL
@@ -86,6 +100,12 @@ DECL|macro|Alps
 mdefine_line|#define Alps    4
 DECL|macro|LGINNOTEK
 mdefine_line|#define LGINNOTEK 5
+DECL|macro|SHARP
+mdefine_line|#define SHARP   6
+DECL|macro|Samsung
+mdefine_line|#define Samsung 7
+DECL|macro|Microtune
+mdefine_line|#define Microtune 8
 DECL|macro|TUNER_SET_TYPE
 mdefine_line|#define TUNER_SET_TYPE               _IOW(&squot;t&squot;,1,int)    /* set tuner type */
 DECL|macro|TUNER_SET_TVFREQ

@@ -672,15 +672,9 @@ suffix:semicolon
 id|DRM_DEBUG
 c_func
 (paren
-l_string|&quot;0x%08lx =&gt; 0x%08x&bslash;n&quot;
+l_string|&quot;shm_nopage 0x%lx&bslash;n&quot;
 comma
 id|address
-comma
-id|page_to_bus
-c_func
-(paren
-id|page
-)paren
 )paren
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &lt; 0x020317
@@ -1208,17 +1202,11 @@ suffix:semicolon
 id|DRM_DEBUG
 c_func
 (paren
-l_string|&quot;0x%08lx (page %lu) =&gt; 0x%08x&bslash;n&quot;
+l_string|&quot;dma_nopage 0x%lx (page %lu)&bslash;n&quot;
 comma
 id|address
 comma
 id|page_nr
-comma
-id|page_to_bus
-c_func
-(paren
-id|page
-)paren
 )paren
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &lt; 0x020317

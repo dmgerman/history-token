@@ -61,7 +61,8 @@ op_star
 id|sys_call_table
 suffix:semicolon
 r_extern
-r_int
+r_struct
+id|timezone
 id|sys_tz
 suffix:semicolon
 r_extern

@@ -66,6 +66,12 @@ comma
 l_string|&quot;Lance debug level (0-3)&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Print debug messages on probing? */
 DECL|macro|LANCE_DEBUG_PROBE
 macro_line|#undef LANCE_DEBUG_PROBE

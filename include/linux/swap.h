@@ -369,9 +369,6 @@ c_func
 id|try_to_free_pages
 c_func
 (paren
-id|zone_t
-op_star
-comma
 r_int
 r_int
 comma

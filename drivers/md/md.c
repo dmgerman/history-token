@@ -2006,6 +2006,7 @@ id|sb
 op_ne
 id|sb-&gt;sb_csum
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -2018,6 +2019,10 @@ id|rdev-&gt;dev
 )paren
 )paren
 suffix:semicolon
+r_goto
+m_abort
+suffix:semicolon
+)brace
 id|ret
 op_assign
 l_int|0
