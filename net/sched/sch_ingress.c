@@ -1110,39 +1110,61 @@ id|Qdisc_class_ops
 id|ingress_class_ops
 op_assign
 (brace
+dot
+id|graft
+op_assign
 id|ingress_graft
 comma
-multiline_comment|/* graft */
+dot
+id|leaf
+op_assign
 id|ingress_leaf
 comma
-multiline_comment|/* leaf */
+dot
+id|get
+op_assign
 id|ingress_get
 comma
-multiline_comment|/* get */
+dot
+id|put
+op_assign
 id|ingress_put
 comma
-multiline_comment|/* put */
+dot
+id|change
+op_assign
 id|ingress_change
 comma
-multiline_comment|/* change */
+dot
+r_delete
+op_assign
 l_int|NULL
 comma
-multiline_comment|/* delete */
+dot
+id|walk
+op_assign
 id|ingress_walk
 comma
-multiline_comment|/* walk */
+dot
+id|tcf_chain
+op_assign
 id|ingress_find_tcf
 comma
-multiline_comment|/* tcf_chain */
+dot
+id|bind_tcf
+op_assign
 id|ingress_bind_filter
 comma
-multiline_comment|/* bind_tcf */
+dot
+id|unbind_tcf
+op_assign
 id|ingress_put
 comma
-multiline_comment|/* unbind_tcf */
+dot
+id|dump
+op_assign
 l_int|NULL
 comma
-multiline_comment|/* dump */
 )brace
 suffix:semicolon
 DECL|variable|ingress_qdisc_ops
@@ -1151,48 +1173,76 @@ id|Qdisc_ops
 id|ingress_qdisc_ops
 op_assign
 (brace
+dot
+id|next
+op_assign
 l_int|NULL
 comma
-multiline_comment|/* next */
+dot
+id|cl_ops
+op_assign
 op_amp
 id|ingress_class_ops
 comma
-multiline_comment|/* cl_ops */
+dot
+id|id
+op_assign
 l_string|&quot;ingress&quot;
 comma
+dot
+id|priv_size
+op_assign
 r_sizeof
 (paren
 r_struct
 id|ingress_qdisc_data
 )paren
 comma
+dot
+id|enqueue
+op_assign
 id|ingress_enqueue
 comma
-multiline_comment|/* enqueue */
+dot
+id|dequeue
+op_assign
 id|ingress_dequeue
 comma
-multiline_comment|/* dequeue */
+dot
+id|requeue
+op_assign
 id|ingress_requeue
 comma
-multiline_comment|/* requeue */
+dot
+id|drop
+op_assign
 id|ingress_drop
 comma
-multiline_comment|/* drop */
+dot
+id|init
+op_assign
 id|ingress_init
 comma
-multiline_comment|/* init */
+dot
+id|reset
+op_assign
 id|ingress_reset
 comma
-multiline_comment|/* reset */
+dot
+id|destroy
+op_assign
 id|ingress_destroy
 comma
-multiline_comment|/* destroy */
+dot
+id|change
+op_assign
 l_int|NULL
 comma
-multiline_comment|/* change */
+dot
+id|dump
+op_assign
 id|ingress_dump
 comma
-multiline_comment|/* dump */
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE
