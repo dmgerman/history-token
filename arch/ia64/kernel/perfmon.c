@@ -7837,6 +7837,20 @@ r_goto
 id|error_kmem
 suffix:semicolon
 )brace
+id|memset
+c_func
+(paren
+id|vma
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+id|vma
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * partially initialize the vma for the sampling buffer&n;&t; *&n;&t; * The VM_DONTCOPY flag is very important as it ensures that the mapping&n;&t; * will never be inherited for any child process (via fork()) which is always&n;&t; * what we want.&n;&t; */
 id|vma-&gt;vm_mm
 op_assign
@@ -7855,28 +7869,6 @@ op_assign
 id|PAGE_READONLY
 suffix:semicolon
 multiline_comment|/* XXX may need to change */
-id|vma-&gt;vm_ops
-op_assign
-l_int|NULL
-suffix:semicolon
-id|vma-&gt;vm_pgoff
-op_assign
-l_int|0
-suffix:semicolon
-id|vma-&gt;vm_file
-op_assign
-l_int|NULL
-suffix:semicolon
-id|mpol_set_vma_default
-c_func
-(paren
-id|vma
-)paren
-suffix:semicolon
-id|vma-&gt;vm_private_data
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/*&n;&t; * Now we have everything we need and we can initialize&n;&t; * and connect all the data structures&n;&t; */
 id|ctx-&gt;ctx_smpl_hdr
 op_assign
