@@ -504,6 +504,10 @@ id|name
 comma
 id|loff_t
 id|size
+comma
+r_int
+r_int
+id|flags
 )paren
 suffix:semicolon
 r_extern
@@ -1128,14 +1132,6 @@ id|page
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|__free_pte
-c_func
-(paren
-id|pte_t
-)paren
-suffix:semicolon
 multiline_comment|/* mmap.c */
 r_extern
 r_void
@@ -1366,8 +1362,6 @@ id|mm_struct
 op_star
 comma
 r_int
-r_int
-comma
 r_int
 comma
 r_int

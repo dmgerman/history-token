@@ -3,7 +3,7 @@ DECL|macro|_ASM_IA64_SOCKET_H
 mdefine_line|#define _ASM_IA64_SOCKET_H
 multiline_comment|/*&n; * Socket related defines.  This mostly mirrors the Linux/x86 version.&n; *&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;asm/sockios.h&gt;
-multiline_comment|/* For setsockoptions(2) */
+multiline_comment|/* For setsockopt(2) */
 DECL|macro|SOL_SOCKET
 mdefine_line|#define SOL_SOCKET&t;1
 DECL|macro|SO_DEBUG

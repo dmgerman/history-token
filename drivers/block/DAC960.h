@@ -9415,13 +9415,6 @@ id|DiskPartitions
 id|DAC960_MinorCount
 )braket
 suffix:semicolon
-DECL|member|PartitionSizes
-r_int
-id|PartitionSizes
-(braket
-id|DAC960_MinorCount
-)braket
-suffix:semicolon
 DECL|member|ProgressBuffer
 r_int
 r_char

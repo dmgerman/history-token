@@ -1549,6 +1549,27 @@ id|regs-&gt;esp
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * This gets run with %ebx containing the&n; * function to call, and %edx containing&n; * the &quot;args&quot;.&n; */
+r_extern
+r_void
+id|kernel_thread_helper
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+id|__asm__
+c_func
+(paren
+l_string|&quot;.align 4&bslash;n&quot;
+l_string|&quot;kernel_thread_helper:&bslash;n&bslash;t&quot;
+l_string|&quot;movl %edx,%eax&bslash;n&bslash;t&quot;
+l_string|&quot;pushl %edx&bslash;n&bslash;t&quot;
+l_string|&quot;call *%ebx&bslash;n&bslash;t&quot;
+l_string|&quot;pushl %eax&bslash;n&bslash;t&quot;
+l_string|&quot;call do_exit&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Create a kernel thread&n; */
 DECL|function|kernel_thread
 r_int
@@ -1574,74 +1595,107 @@ r_int
 id|flags
 )paren
 (brace
-r_int
-id|retval
-comma
-id|d0
+r_struct
+id|task_struct
+op_star
+id|p
 suffix:semicolon
-id|__asm__
-id|__volatile__
+r_struct
+id|pt_regs
+id|regs
+suffix:semicolon
+id|memset
 c_func
 (paren
-l_string|&quot;movl %%esp,%%esi&bslash;n&bslash;t&quot;
-l_string|&quot;int $0x80&bslash;n&bslash;t&quot;
-multiline_comment|/* Linux/i386 system call */
-l_string|&quot;cmpl %%esp,%%esi&bslash;n&bslash;t&quot;
-multiline_comment|/* child or parent? */
-l_string|&quot;je 1f&bslash;n&bslash;t&quot;
-multiline_comment|/* parent - jump */
-multiline_comment|/* Load the argument into eax, and push it.  That way, it does&n;&t;&t; * not matter whether the called function is compiled with&n;&t;&t; * -mregparm or not.  */
-l_string|&quot;movl %4,%%eax&bslash;n&bslash;t&quot;
-l_string|&quot;pushl %%eax&bslash;n&bslash;t&quot;
-l_string|&quot;call *%5&bslash;n&bslash;t&quot;
-multiline_comment|/* call fn */
-l_string|&quot;movl %3,%0&bslash;n&bslash;t&quot;
-multiline_comment|/* exit */
-l_string|&quot;int $0x80&bslash;n&quot;
-l_string|&quot;1:&bslash;t&quot;
-suffix:colon
-l_string|&quot;=&amp;a&quot;
-(paren
-id|retval
-)paren
+op_amp
+id|regs
 comma
-l_string|&quot;=&amp;S&quot;
-(paren
-id|d0
-)paren
-suffix:colon
-l_string|&quot;0&quot;
-(paren
-id|__NR_clone
-)paren
+l_int|0
 comma
-l_string|&quot;i&quot;
+r_sizeof
 (paren
-id|__NR_exit
+id|regs
 )paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|arg
 )paren
-comma
-l_string|&quot;r&quot;
+suffix:semicolon
+id|regs.ebx
+op_assign
 (paren
+r_int
+r_int
+)paren
 id|fn
+suffix:semicolon
+id|regs.edx
+op_assign
+(paren
+r_int
+r_int
 )paren
-comma
-l_string|&quot;b&quot;
+id|arg
+suffix:semicolon
+id|regs.xds
+op_assign
+id|__KERNEL_DS
+suffix:semicolon
+id|regs.xes
+op_assign
+id|__KERNEL_DS
+suffix:semicolon
+id|regs.orig_eax
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|regs.eip
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|kernel_thread_helper
+suffix:semicolon
+id|regs.xcs
+op_assign
+id|__KERNEL_CS
+suffix:semicolon
+id|regs.eflags
+op_assign
+l_int|0x286
+suffix:semicolon
+multiline_comment|/* Ok, create the new process.. */
+id|p
+op_assign
+id|do_fork
+c_func
 (paren
 id|flags
 op_or
 id|CLONE_VM
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
+comma
+l_int|0
+comma
+op_amp
+id|regs
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
-id|retval
+id|IS_ERR
+c_func
+(paren
+id|p
+)paren
+ques
+c_cond
+id|PTR_ERR
+c_func
+(paren
+id|p
+)paren
+suffix:colon
+id|p-&gt;pid
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Free current thread data structures etc..&n; */
@@ -2923,45 +2977,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/*&n;&t; * Clear the TLS?&n;&t; */
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|TLS_FLAG_CLEAR
-)paren
-(brace
-id|cpu
-op_assign
-id|get_cpu
-c_func
-(paren
-)paren
-suffix:semicolon
-id|t-&gt;tls_desc.a
-op_assign
-id|t-&gt;tls_desc.b
-op_assign
-l_int|0
-suffix:semicolon
-id|load_TLS_desc
-c_func
-(paren
-id|t
-comma
-id|cpu
-)paren
-suffix:semicolon
-id|put_cpu
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

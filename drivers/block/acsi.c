@@ -16,7 +16,6 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
@@ -408,21 +407,6 @@ r_int
 id|NDevices
 op_assign
 l_int|0
-suffix:semicolon
-DECL|variable|acsi_sizes
-r_static
-r_int
-id|acsi_sizes
-(braket
-id|MAX_DEV
-op_lshift
-l_int|4
-)braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
 suffix:semicolon
 DECL|variable|acsi_part
 r_static
@@ -5314,10 +5298,6 @@ id|part
 suffix:colon
 id|acsi_part
 comma
-id|sizes
-suffix:colon
-id|acsi_sizes
-comma
 id|fops
 suffix:colon
 op_amp
@@ -6945,7 +6925,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_register_blkdev
+id|register_blkdev
 c_func
 (paren
 id|MAJOR_NR
@@ -6999,7 +6979,7 @@ id|KERN_ERR
 l_string|&quot;Unable to get ACSI ST-Ram buffer.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MAJOR_NR
@@ -7157,7 +7137,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MAJOR_NR

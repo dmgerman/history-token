@@ -1952,7 +1952,7 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 )brace
 DECL|macro|cpu_relax
-mdefine_line|#define cpu_relax()&t;do { } while (0)
+mdefine_line|#define cpu_relax()&t;barrier()
 r_static
 r_inline
 r_void

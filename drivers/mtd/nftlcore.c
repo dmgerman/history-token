@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif
@@ -36,15 +37,8 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 multiline_comment|/* Linux-specific block device functions */
 multiline_comment|/* I _HATE_ the Linux block device setup more than anything else I&squot;ve ever&n; *  encountered, except ...&n; */
-DECL|variable|nftl_sizes
-r_static
-r_int
-id|nftl_sizes
-(braket
-l_int|256
-)braket
-suffix:semicolon
 multiline_comment|/* .. for the Linux partition table handling. */
+multiline_comment|/* So why didn&squot;t you fucking go and clean it up? -- AV */
 DECL|variable|part_table
 r_struct
 id|hd_struct
@@ -52,6 +46,12 @@ id|part_table
 (braket
 l_int|256
 )braket
+suffix:semicolon
+DECL|variable|nftl_fops
+r_static
+r_struct
+id|block_device_operations
+id|nftl_fops
 suffix:semicolon
 DECL|variable|nftl_gendisk
 r_static
@@ -78,11 +78,6 @@ suffix:colon
 id|part_table
 comma
 multiline_comment|/* hd struct */
-id|sizes
-suffix:colon
-id|nftl_sizes
-comma
-multiline_comment|/* block sizes */
 )brace
 suffix:semicolon
 DECL|variable|NFTLs
@@ -439,15 +434,6 @@ op_assign
 id|nftl
 suffix:semicolon
 multiline_comment|/* Finally, set up the block device sizes */
-id|nftl_sizes
-(braket
-id|firstfree
-op_star
-l_int|16
-)braket
-op_assign
-id|nftl-&gt;nr_sects
-suffix:semicolon
 id|part_table
 (braket
 id|firstfree

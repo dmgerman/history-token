@@ -3,7 +3,7 @@ macro_line|#ifndef _ASM_SOCKET_H
 DECL|macro|_ASM_SOCKET_H
 mdefine_line|#define _ASM_SOCKET_H
 macro_line|#include &lt;asm/sockios.h&gt;
-multiline_comment|/* For setsockoptions(2) */
+multiline_comment|/* For setsockopt(2) */
 DECL|macro|SOL_SOCKET
 mdefine_line|#define SOL_SOCKET&t;0xffff
 DECL|macro|SO_DEBUG

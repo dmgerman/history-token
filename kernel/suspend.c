@@ -38,6 +38,14 @@ op_star
 id|t
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|sys_sync
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|variable|software_suspend_enabled
 r_int
 r_char
@@ -3318,7 +3326,6 @@ id|name_suspend
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * We try to swap out as much as we can then make a copy of the&n; * occupied pages in memory so we can make a copy of kernel state&n; * atomically, the I/O needed by saving won&squot;t bother us anymore. &n; */
 DECL|function|do_software_suspend
 r_void
 id|do_software_suspend
@@ -3358,6 +3365,7 @@ c_func
 )paren
 )paren
 (brace
+multiline_comment|/* At this point, all user processes and &quot;dangerous&quot;&n;                   kernel threads are stopped. Free some memory, as we&n;                   need half of memory free. */
 id|free_some_memory
 c_func
 (paren
@@ -3375,6 +3383,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Save state of all device drivers, and stop them. */
 r_if
 c_cond
 (paren
@@ -3386,6 +3395,7 @@ op_eq
 l_int|0
 )paren
 (brace
+multiline_comment|/* If stopping device drivers worked, we proceed basically into&n;&t;&t;&t; * suspend_save_image.&n;&t;&t;&t; *&n;&t;&t;&t; * do_magic(0) returns after system is resumed.&n;&t;&t;&t; *&n;&t;&t;&t; * do_magic() copies all &quot;used&quot; memory to &quot;free&quot; memory, then&n;&t;&t;&t; * unsuspends all device drivers, and writes memory to disk&n;&t;&t;&t; * using normal kernel mechanism.&n;&t;&t;&t; */
 id|do_magic
 c_func
 (paren
@@ -3393,7 +3403,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* This function returns after machine woken up from resume */
 id|PRINTK
 c_func
 (paren
@@ -4185,12 +4194,12 @@ op_star
 id|buf
 )paren
 (brace
+macro_line|#if 0
 r_struct
 id|buffer_head
 op_star
 id|bh
 suffix:semicolon
-macro_line|#if 0
 id|BUG_ON
 (paren
 id|pos

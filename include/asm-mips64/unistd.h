@@ -853,10 +853,10 @@ DECL|macro|__NR_rt_sigqueueinfo
 mdefine_line|#define __NR_rt_sigqueueinfo&t;&t;(__NR_Linux + 198)
 DECL|macro|__NR_rt_sigsuspend
 mdefine_line|#define __NR_rt_sigsuspend&t;&t;(__NR_Linux + 199)
-DECL|macro|__NR_pread
-mdefine_line|#define __NR_pread&t;&t;&t;(__NR_Linux + 200)
-DECL|macro|__NR_pwrite
-mdefine_line|#define __NR_pwrite&t;&t;&t;(__NR_Linux + 201)
+DECL|macro|__NR_pread64
+mdefine_line|#define __NR_pread64&t;&t;&t;(__NR_Linux + 200)
+DECL|macro|__NR_pwrite64
+mdefine_line|#define __NR_pwrite64&t;&t;&t;(__NR_Linux + 201)
 DECL|macro|__NR_chown
 mdefine_line|#define __NR_chown&t;&t;&t;(__NR_Linux + 202)
 DECL|macro|__NR_getcwd

@@ -522,7 +522,7 @@ suffix:semicolon
 multiline_comment|/* minimal values */
 )brace
 )brace
-multiline_comment|/* Main tune procedure, called from tuneproc. */
+multiline_comment|/* Main tune procedure, called from tuneproc.&n;   Assumes IRQ&squot;s are disabled or at least that no other process will&n;   attempt to access the IDE registers concurrently.&n;*/
 DECL|function|opti621_tune_drive
 r_static
 r_void
@@ -539,10 +539,6 @@ id|pio
 )paren
 (brace
 multiline_comment|/* primary and secondary drives share some registers,&n;&t; * so we have to program both drives&n;&t; */
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|u8
 id|pio1
 comma
@@ -730,19 +726,6 @@ id|drdy
 )paren
 suffix:semicolon
 macro_line|#endif
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
 id|reg_base
 op_assign
 id|hwif-&gt;io_ports
@@ -871,13 +854,6 @@ id|MISC_REG
 suffix:semicolon
 multiline_comment|/* set address setup, DRDY timings,   */
 multiline_comment|/*  and read prefetch for both drives */
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
 )brace
 multiline_comment|/*&n; * ide_init_opti621() is called once for each hwif found at boot.&n; */
 DECL|function|ide_init_opti621

@@ -8784,7 +8784,7 @@ l_int|0
 suffix:semicolon
 id|error
 op_assign
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|driver-&gt;major
@@ -9006,7 +9006,7 @@ l_int|NULL
 (brace
 id|retval
 op_assign
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|driver-&gt;major
@@ -9024,7 +9024,7 @@ id|retval
 suffix:semicolon
 )brace
 r_else
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|driver-&gt;major

@@ -16,9 +16,10 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/atapi.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -6979,9 +6980,14 @@ id|i
 )paren
 r_continue
 suffix:semicolon
-id|hwif-&gt;gd-&gt;de_arr
+id|hwif-&gt;gd
 (braket
 id|i
+)braket
+op_member_access_from_pointer
+id|de_arr
+(braket
+l_int|0
 )braket
 op_assign
 id|drive-&gt;de
@@ -6991,9 +6997,14 @@ c_cond
 (paren
 id|drive-&gt;removable
 )paren
-id|hwif-&gt;gd-&gt;flags
+id|hwif-&gt;gd
 (braket
 id|i
+)braket
+op_member_access_from_pointer
+id|flags
+(braket
+l_int|0
 )braket
 op_or_assign
 id|GENHD_FL_REMOVABLE
@@ -7023,7 +7034,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ide_unregister_subdriver
+id|ata_unregister_device
+c_func
 (paren
 id|drive
 )paren
@@ -7036,6 +7048,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|floppy
 )paren
@@ -7266,7 +7279,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ide_register_subdriver
+id|ata_register_device
 c_func
 (paren
 id|drive

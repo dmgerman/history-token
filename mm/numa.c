@@ -23,8 +23,9 @@ id|pg_data_t
 id|contig_page_data
 op_assign
 (brace
+dot
 id|bdata
-suffix:colon
+op_assign
 op_amp
 id|contig_bootmem_data
 )brace
