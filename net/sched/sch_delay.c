@@ -33,6 +33,10 @@ DECL|member|limit
 id|u32
 id|limit
 suffix:semicolon
+DECL|member|loss
+id|u32
+id|loss
+suffix:semicolon
 DECL|member|timer
 r_struct
 id|timer_list
@@ -102,6 +106,26 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
+multiline_comment|/* Random packet drop 0 =&gt; none, ~0 =&gt; all */
+r_if
+c_cond
+(paren
+id|q-&gt;loss
+op_ge
+id|net_random
+c_func
+(paren
+)paren
+)paren
+(brace
+id|sch-&gt;stats.drops
+op_increment
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* lie about loss so TCP doesn&squot;t know */
+)brace
 id|PSCHED_GET_TIME
 c_func
 (paren
@@ -743,6 +767,10 @@ id|q-&gt;limit
 op_assign
 id|qopt-&gt;limit
 suffix:semicolon
+id|q-&gt;loss
+op_assign
+id|qopt-&gt;loss
+suffix:semicolon
 )brace
 r_return
 id|err
@@ -911,6 +939,10 @@ suffix:semicolon
 id|qopt.limit
 op_assign
 id|q-&gt;limit
+suffix:semicolon
+id|qopt.loss
+op_assign
+id|q-&gt;loss
 suffix:semicolon
 id|RTA_PUT
 c_func
