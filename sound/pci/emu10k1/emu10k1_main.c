@@ -3379,9 +3379,15 @@ id|emu-&gt;revision
 op_eq
 l_int|4
 op_logical_and
+(paren
+id|emu-&gt;model
+op_eq
+l_int|0x2001
+op_logical_or
 id|emu-&gt;model
 op_eq
 l_int|0x2002
+)paren
 )paren
 (brace
 multiline_comment|/* Audigy 2 ZS */
