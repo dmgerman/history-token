@@ -96,42 +96,14 @@ DECL|macro|MTRR_TYPE_WRBACK
 mdefine_line|#define MTRR_TYPE_WRBACK     6
 DECL|macro|MTRR_NUM_TYPES
 mdefine_line|#define MTRR_NUM_TYPES       7
-macro_line|#ifdef MTRR_NEED_STRINGS
-DECL|variable|mtrr_strings
-r_static
+macro_line|#ifdef __KERNEL__
+r_extern
 r_char
 op_star
 id|mtrr_strings
 (braket
-id|MTRR_NUM_TYPES
 )braket
-op_assign
-(brace
-l_string|&quot;uncachable&quot;
-comma
-multiline_comment|/* 0 */
-l_string|&quot;write-combining&quot;
-comma
-multiline_comment|/* 1 */
-l_string|&quot;?&quot;
-comma
-multiline_comment|/* 2 */
-l_string|&quot;?&quot;
-comma
-multiline_comment|/* 3 */
-l_string|&quot;write-through&quot;
-comma
-multiline_comment|/* 4 */
-l_string|&quot;write-protect&quot;
-comma
-multiline_comment|/* 5 */
-l_string|&quot;write-back&quot;
-comma
-multiline_comment|/* 6 */
-)brace
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef __KERNEL__
 multiline_comment|/*  The following functions are for use by other drivers  */
 macro_line|# ifdef CONFIG_MTRR
 r_extern

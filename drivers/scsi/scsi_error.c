@@ -3957,7 +3957,6 @@ suffix:semicolon
 id|__blk_run_queue
 c_func
 (paren
-op_amp
 id|sdev-&gt;request_queue
 )paren
 suffix:semicolon

@@ -8545,13 +8545,13 @@ id|mp
 comma
 id|mp-&gt;m_rtdev_targp
 comma
+id|d
+op_minus
 id|XFS_FSB_TO_BB
 c_func
 (paren
 id|mp
 comma
-id|d
-op_minus
 l_int|1
 )paren
 comma

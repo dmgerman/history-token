@@ -438,10 +438,10 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * No need to lock the MM as we are the last user&n; */
-DECL|function|release_segments
+multiline_comment|/*&n; * &n; * Don&squot;t touch the LDT register - we&squot;re already in the next thread.&n; */
+DECL|function|destroy_context
 r_void
-id|release_segments
+id|destroy_context
 c_func
 (paren
 r_struct
@@ -456,18 +456,6 @@ c_cond
 id|mm-&gt;context.size
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|mm
-op_eq
-id|current-&gt;active_mm
-)paren
-id|clear_LDT
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -814,22 +802,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|me-&gt;thread.fsindex
-op_assign
-l_int|0
-suffix:semicolon
-id|me-&gt;thread.gsindex
-op_assign
-l_int|0
-suffix:semicolon
-id|me-&gt;thread.gs
-op_assign
-l_int|0
-suffix:semicolon
-id|me-&gt;thread.fs
-op_assign
-l_int|0
-suffix:semicolon
 id|down
 c_func
 (paren

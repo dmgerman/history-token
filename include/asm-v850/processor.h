@@ -3,8 +3,10 @@ macro_line|#ifndef __V850_PROCESSOR_H__
 DECL|macro|__V850_PROCESSOR_H__
 mdefine_line|#define __V850_PROCESSOR_H__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifndef __ASSEMBLY__ /* &lt;linux/thread_info.h&gt; is not asm-safe.  */
+macro_line|#include &lt;linux/thread_info.h&gt;
+macro_line|#endif
 macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &lt;asm/thread_info.h&gt;
 macro_line|#include &lt;asm/entry.h&gt;
 multiline_comment|/* Some code expects `segment&squot; stuff to be defined here.  */
 macro_line|#include &lt;asm/segment.h&gt;

@@ -145,9 +145,9 @@ mdefine_line|#define XFS_MIN_BLOCKSIZE&t;(1 &lt;&lt; XFS_MIN_BLOCKSIZE_LOG)
 DECL|macro|XFS_MAX_BLOCKSIZE
 mdefine_line|#define XFS_MAX_BLOCKSIZE&t;(1 &lt;&lt; XFS_MAX_BLOCKSIZE_LOG)
 DECL|macro|XFS_MIN_SECTORSIZE_LOG
-mdefine_line|#define XFS_MIN_SECTORSIZE_LOG&t;9       /* i.e. 512 bytes */
+mdefine_line|#define XFS_MIN_SECTORSIZE_LOG&t;9&t;/* i.e. 512 bytes */
 DECL|macro|XFS_MAX_SECTORSIZE_LOG
-mdefine_line|#define XFS_MAX_SECTORSIZE_LOG&t;15      /* i.e. 32768 bytes */
+mdefine_line|#define XFS_MAX_SECTORSIZE_LOG&t;15&t;/* i.e. 32768 bytes */
 DECL|macro|XFS_MIN_SECTORSIZE
 mdefine_line|#define XFS_MIN_SECTORSIZE&t;(1 &lt;&lt; XFS_MIN_SECTORSIZE_LOG)
 DECL|macro|XFS_MAX_SECTORSIZE

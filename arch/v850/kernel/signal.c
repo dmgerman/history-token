@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * arch/v850/kernel/signal.c -- Signal handling&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *  Copyright (C) 1999,2000,2002  Niibe Yutaka &amp; Kaz Kojima&n; *  Copyright (C) 1991,1992  Linus Torvalds&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * 1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; *&n; * This file was derived from the sh version, arch/sh/kernel/signal.c&n; */
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -546,17 +545,6 @@ DECL|struct|rt_sigframe
 r_struct
 id|rt_sigframe
 (brace
-DECL|member|pinfo
-r_struct
-id|siginfo
-op_star
-id|pinfo
-suffix:semicolon
-DECL|member|puc
-r_void
-op_star
-id|puc
-suffix:semicolon
 DECL|member|info
 r_struct
 id|siginfo
@@ -1948,18 +1936,25 @@ id|err
 r_goto
 id|give_sigsegv
 suffix:semicolon
-multiline_comment|/* Set up registers for signal handler */
+multiline_comment|/* Set up registers for signal handler.  */
+id|regs-&gt;pc
+op_assign
+(paren
+id|v850_reg_t
+)paren
+id|ka-&gt;sa.sa_handler
+suffix:semicolon
 id|regs-&gt;gpr
 (braket
 id|GPR_SP
 )braket
 op_assign
 (paren
-r_int
-r_int
+id|v850_reg_t
 )paren
 id|frame
 suffix:semicolon
+multiline_comment|/* Signal handler args:  */
 id|regs-&gt;gpr
 (braket
 id|GPR_ARG0
@@ -1967,15 +1962,19 @@ id|GPR_ARG0
 op_assign
 id|signal
 suffix:semicolon
-multiline_comment|/* Arg for signal handler */
-id|regs-&gt;pc
+multiline_comment|/* arg 0: signum */
+id|regs-&gt;gpr
+(braket
+id|GPR_ARG1
+)braket
 op_assign
 (paren
-r_int
-r_int
+id|v850_reg_t
 )paren
-id|ka-&gt;sa.sa_handler
+op_amp
+id|frame-&gt;sc
 suffix:semicolon
+multiline_comment|/* arg 1: sigcontext */
 id|set_fs
 c_func
 (paren
@@ -2133,30 +2132,6 @@ id|sig
 )braket
 suffix:colon
 id|sig
-suffix:semicolon
-id|err
-op_or_assign
-id|__put_user
-c_func
-(paren
-op_amp
-id|frame-&gt;info
-comma
-op_amp
-id|frame-&gt;pinfo
-)paren
-suffix:semicolon
-id|err
-op_or_assign
-id|__put_user
-c_func
-(paren
-op_amp
-id|frame-&gt;uc
-comma
-op_amp
-id|frame-&gt;puc
-)paren
 suffix:semicolon
 id|err
 op_or_assign
@@ -2353,18 +2328,25 @@ id|err
 r_goto
 id|give_sigsegv
 suffix:semicolon
-multiline_comment|/* Set up registers for signal handler */
+multiline_comment|/* Set up registers for signal handler.  */
+id|regs-&gt;pc
+op_assign
+(paren
+id|v850_reg_t
+)paren
+id|ka-&gt;sa.sa_handler
+suffix:semicolon
 id|regs-&gt;gpr
 (braket
 id|GPR_SP
 )braket
 op_assign
 (paren
-r_int
-r_int
+id|v850_reg_t
 )paren
 id|frame
 suffix:semicolon
+multiline_comment|/* Signal handler args:  */
 id|regs-&gt;gpr
 (braket
 id|GPR_ARG0
@@ -2372,15 +2354,31 @@ id|GPR_ARG0
 op_assign
 id|signal
 suffix:semicolon
-multiline_comment|/* Arg for signal handler */
-id|regs-&gt;pc
+multiline_comment|/* arg 0: signum */
+id|regs-&gt;gpr
+(braket
+id|GPR_ARG1
+)braket
 op_assign
 (paren
-r_int
-r_int
+id|v850_reg_t
 )paren
-id|ka-&gt;sa.sa_handler
+op_amp
+id|frame-&gt;info
 suffix:semicolon
+multiline_comment|/* arg 1: siginfo */
+id|regs-&gt;gpr
+(braket
+id|GPR_ARG2
+)braket
+op_assign
+(paren
+id|v850_reg_t
+)paren
+op_amp
+id|frame-&gt;uc
+suffix:semicolon
+multiline_comment|/* arg 2: ucontext */
 id|set_fs
 c_func
 (paren
@@ -2487,6 +2485,20 @@ id|GPR_RVAL
 )braket
 )paren
 (brace
+r_case
+op_minus
+id|ERESTART_RESTARTBLOCK
+suffix:colon
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|restart_block.fn
+op_assign
+id|do_no_restart_syscall
+suffix:semicolon
+multiline_comment|/* fall through */
 r_case
 op_minus
 id|ERESTARTNOHAND
@@ -2750,40 +2762,33 @@ id|regs
 )paren
 )paren
 (brace
+r_int
+id|rval
+op_assign
+(paren
+r_int
+)paren
+id|regs-&gt;gpr
+(braket
+id|GPR_RVAL
+)braket
+suffix:semicolon
 multiline_comment|/* Restart the system call - no handlers present */
 r_if
 c_cond
 (paren
-id|regs-&gt;gpr
-(braket
-id|GPR_RVAL
-)braket
+id|rval
 op_eq
-(paren
-id|v850_reg_t
-)paren
 op_minus
 id|ERESTARTNOHAND
 op_logical_or
-id|regs-&gt;gpr
-(braket
-id|GPR_RVAL
-)braket
+id|rval
 op_eq
-(paren
-id|v850_reg_t
-)paren
 op_minus
 id|ERESTARTSYS
 op_logical_or
-id|regs-&gt;gpr
-(braket
-id|GPR_RVAL
-)braket
+id|rval
 op_eq
-(paren
-id|v850_reg_t
-)paren
 op_minus
 id|ERESTARTNOINTR
 )paren
@@ -2797,6 +2802,29 @@ id|PT_REGS_SYSCALL
 (paren
 id|regs
 )paren
+suffix:semicolon
+id|regs-&gt;pc
+op_sub_assign
+l_int|4
+suffix:semicolon
+multiline_comment|/* Size of `trap 0&squot; insn.  */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|rval
+op_eq
+op_minus
+id|ERESTART_RESTARTBLOCK
+)paren
+(brace
+id|regs-&gt;gpr
+(braket
+l_int|12
+)braket
+op_assign
+id|__NR_restart_syscall
 suffix:semicolon
 id|regs-&gt;pc
 op_sub_assign

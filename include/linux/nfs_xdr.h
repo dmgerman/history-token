@@ -133,6 +133,14 @@ r_struct
 id|timespec
 id|ctime
 suffix:semicolon
+DECL|member|bitmap
+id|__u32
+id|bitmap
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* NFSv4 returned attribute bitmap */
 DECL|member|change_attr
 id|__u64
 id|change_attr
@@ -1259,29 +1267,6 @@ suffix:semicolon
 multiline_comment|/* request */
 )brace
 suffix:semicolon
-DECL|struct|nfs4_commit
-r_struct
-id|nfs4_commit
-(brace
-DECL|member|co_start
-id|u64
-id|co_start
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|co_len
-id|u32
-id|co_len
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|co_verifier
-r_struct
-id|nfs_writeverf
-op_star
-id|co_verifier
-suffix:semicolon
-multiline_comment|/* response */
-)brace
-suffix:semicolon
 DECL|struct|nfs4_create
 r_struct
 id|nfs4_create
@@ -1565,48 +1550,6 @@ suffix:semicolon
 multiline_comment|/* request */
 )brace
 suffix:semicolon
-DECL|struct|nfs4_read
-r_struct
-id|nfs4_read
-(brace
-DECL|member|rd_offset
-id|u64
-id|rd_offset
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|rd_length
-id|u32
-id|rd_length
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|rd_eof
-id|u32
-op_star
-id|rd_eof
-suffix:semicolon
-multiline_comment|/* response */
-DECL|member|rd_bytes_read
-id|u32
-op_star
-id|rd_bytes_read
-suffix:semicolon
-multiline_comment|/* response */
-DECL|member|rd_pages
-r_struct
-id|page
-op_star
-op_star
-id|rd_pages
-suffix:semicolon
-multiline_comment|/* zero-copy data */
-DECL|member|rd_pgbase
-r_int
-r_int
-id|rd_pgbase
-suffix:semicolon
-multiline_comment|/* zero-copy data */
-)brace
-suffix:semicolon
 DECL|struct|nfs4_readdir
 r_struct
 id|nfs4_readdir
@@ -1812,54 +1755,6 @@ suffix:semicolon
 multiline_comment|/* response */
 )brace
 suffix:semicolon
-DECL|struct|nfs4_write
-r_struct
-id|nfs4_write
-(brace
-DECL|member|wr_offset
-id|u64
-id|wr_offset
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|wr_stable_how
-id|u32
-id|wr_stable_how
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|wr_len
-id|u32
-id|wr_len
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|wr_bytes_written
-id|u32
-op_star
-id|wr_bytes_written
-suffix:semicolon
-multiline_comment|/* response */
-DECL|member|wr_verf
-r_struct
-id|nfs_writeverf
-op_star
-id|wr_verf
-suffix:semicolon
-multiline_comment|/* response */
-DECL|member|wr_pages
-r_struct
-id|page
-op_star
-op_star
-id|wr_pages
-suffix:semicolon
-multiline_comment|/* zero-copy data */
-DECL|member|wr_pgbase
-r_int
-r_int
-id|wr_pgbase
-suffix:semicolon
-multiline_comment|/* zero-copy data */
-)brace
-suffix:semicolon
 DECL|struct|nfs4_op
 r_struct
 id|nfs4_op
@@ -1879,11 +1774,6 @@ DECL|member|close
 r_struct
 id|nfs4_close
 id|close
-suffix:semicolon
-DECL|member|commit
-r_struct
-id|nfs4_commit
-id|commit
 suffix:semicolon
 DECL|member|create
 r_struct
@@ -1924,11 +1814,6 @@ DECL|member|putfh
 r_struct
 id|nfs4_putfh
 id|putfh
-suffix:semicolon
-DECL|member|read
-r_struct
-id|nfs4_read
-id|read
 suffix:semicolon
 DECL|member|readdir
 r_struct
@@ -1971,11 +1856,6 @@ r_struct
 id|nfs4_client
 op_star
 id|setclientid_confirm
-suffix:semicolon
-DECL|member|write
-r_struct
-id|nfs4_write
-id|write
 suffix:semicolon
 DECL|member|u
 )brace
@@ -2099,10 +1979,6 @@ id|pagevec
 id|NFS_READ_MAXIOV
 )braket
 suffix:semicolon
-r_union
-(brace
-r_struct
-(brace
 DECL|member|args
 r_struct
 id|nfs_readargs
@@ -2113,44 +1989,14 @@ r_struct
 id|nfs_readres
 id|res
 suffix:semicolon
-DECL|member|v3
-)brace
-id|v3
-suffix:semicolon
-multiline_comment|/* also v2 */
 macro_line|#ifdef CONFIG_NFS_V4
-r_struct
-(brace
-DECL|member|compound
-r_struct
-id|nfs4_compound
-id|compound
+DECL|member|timestamp
+r_int
+r_int
+id|timestamp
 suffix:semicolon
-DECL|member|ops
-r_struct
-id|nfs4_op
-id|ops
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|res_count
-id|u32
-id|res_count
-suffix:semicolon
-DECL|member|res_eof
-id|u32
-id|res_eof
-suffix:semicolon
-DECL|member|v4
-)brace
-id|v4
-suffix:semicolon
+multiline_comment|/* For lease renewal */
 macro_line|#endif
-DECL|member|u
-)brace
-id|u
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|nfs_write_data
@@ -2199,10 +2045,6 @@ id|pagevec
 id|NFS_WRITE_MAXIOV
 )braket
 suffix:semicolon
-r_union
-(brace
-r_struct
-(brace
 DECL|member|args
 r_struct
 id|nfs_writeargs
@@ -2215,47 +2057,14 @@ id|nfs_writeres
 id|res
 suffix:semicolon
 multiline_comment|/* result struct */
-DECL|member|v3
-)brace
-id|v3
-suffix:semicolon
 macro_line|#ifdef CONFIG_NFS_V4
-r_struct
-(brace
-DECL|member|compound
-r_struct
-id|nfs4_compound
-id|compound
+DECL|member|timestamp
+r_int
+r_int
+id|timestamp
 suffix:semicolon
-DECL|member|ops
-r_struct
-id|nfs4_op
-id|ops
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|arg_count
-id|u32
-id|arg_count
-suffix:semicolon
-DECL|member|arg_stable
-id|u32
-id|arg_stable
-suffix:semicolon
-DECL|member|res_count
-id|u32
-id|res_count
-suffix:semicolon
-DECL|member|v4
-)brace
-id|v4
-suffix:semicolon
+multiline_comment|/* For lease renewal */
 macro_line|#endif
-DECL|member|u
-)brace
-id|u
-suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * RPC procedure vector for NFSv2/NFSv3 demuxing&n; */

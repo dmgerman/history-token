@@ -13,24 +13,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
-DECL|enum|xfs_buffer_state
-DECL|enumerator|BH_Delay
-r_enum
-id|xfs_buffer_state
-(brace
-id|BH_Delay
-op_assign
-id|BH_PrivateStart
-)brace
-suffix:semicolon
-id|BUFFER_FNS
-c_func
-(paren
-id|Delay
-comma
-id|delay
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Turn this on to get pagebuf lock ownership&n;#define PAGEBUF_LOCK_TRACKING&n;*/
 multiline_comment|/*&n; *&t;Base types&n; */
 multiline_comment|/* daddr must be signed since -1 is used for bmaps that are not yet allocated */
@@ -108,7 +90,7 @@ id|PBMF_UNWRITTEN
 op_assign
 l_int|0x20
 multiline_comment|/* mapping covers allocated&t;*/
-multiline_comment|/* but uninitialized XFS data&t;*/
+multiline_comment|/* but uninitialized file data&t;*/
 DECL|typedef|bmap_flags_t
 )brace
 id|bmap_flags_t
@@ -290,6 +272,16 @@ l_int|17
 )paren
 comma
 multiline_comment|/* direct I/O desired&t;&t;&t;   */
+DECL|enumerator|PBF_FILE_UNWRITTEN
+id|PBF_FILE_UNWRITTEN
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|18
+)paren
+comma
+multiline_comment|/* convert unwritten extent space  */
 multiline_comment|/* flags used only internally */
 DECL|enumerator|_PBF_LOCKABLE
 id|_PBF_LOCKABLE
@@ -310,7 +302,7 @@ op_lshift
 l_int|21
 )paren
 comma
-multiline_comment|/* all pages in rage are mapped&t;&t;   */
+multiline_comment|/* all pages in range mapped&t;   */
 DECL|enumerator|_PBF_ADDR_ALLOCATED
 id|_PBF_ADDR_ALLOCATED
 op_assign
@@ -320,7 +312,7 @@ op_lshift
 l_int|22
 )paren
 comma
-multiline_comment|/* pb_addr space was allocated&t;&t;   */
+multiline_comment|/* pb_addr space was allocated&t;   */
 DECL|enumerator|_PBF_MEM_ALLOCATED
 id|_PBF_MEM_ALLOCATED
 op_assign
@@ -330,7 +322,7 @@ op_lshift
 l_int|23
 )paren
 comma
-multiline_comment|/* pb_mem and underlying pages allocated   */
+multiline_comment|/* pb_mem+underlying pages alloc&squot;d */
 DECL|enumerator|PBF_FORCEIO
 id|PBF_FORCEIO
 op_assign
@@ -349,7 +341,7 @@ op_lshift
 l_int|25
 )paren
 comma
-multiline_comment|/* flush disk write cache */
+multiline_comment|/* flush disk write cache&t;&t;   */
 DECL|enumerator|PBF_READ_AHEAD
 id|PBF_READ_AHEAD
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2001 Silicon Graphics, Inc.  All rights reserved.&n; */
+multiline_comment|/* &n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2002 Silicon Graphics, Inc.  All rights reserved.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * Structure of the mem config of the node as a SN1 MI reg&n; * Medusa supports this reg config.&n; *&n; * BankSize nibble to bank size mapping&n; *&n; *      1 - 64 MB&n; *      2 - 128 MB&n; *      3 - 256 MB&n; *      4 - 512 MB&n; *      5 - 1024 MB (1GB)&n; */
 DECL|macro|MBSHIFT
@@ -226,8 +226,10 @@ id|node_memmap_t
 suffix:semicolon
 DECL|macro|SN2_BANK_SIZE_SHIFT
 mdefine_line|#define SN2_BANK_SIZE_SHIFT&t;&t;(MBSHIFT+6)     /* 64 MB */
+DECL|macro|BankPresent
+mdefine_line|#define BankPresent(bsize)&t;&t;(bsize&lt;6)
 DECL|macro|BankSizeBytes
-mdefine_line|#define BankSizeBytes(bsize)            (1UL&lt;&lt;((bsize)+SN2_BANK_SIZE_SHIFT))
+mdefine_line|#define BankSizeBytes(bsize)            (BankPresent(bsize) ? 1UL&lt;&lt;((bsize)+SN2_BANK_SIZE_SHIFT) : 0)
 macro_line|#endif
 DECL|struct|sn_memmap_s
 r_typedef

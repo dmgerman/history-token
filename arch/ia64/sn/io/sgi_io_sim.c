@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
@@ -160,6 +160,12 @@ id|nasid_t
 op_minus
 l_int|1
 suffix:semicolon
+macro_line|#if !defined(CONFIG_IA64_SGI_SN1)
+DECL|variable|master_baseio_wid
+r_char
+id|master_baseio_wid
+suffix:semicolon
+macro_line|#endif
 DECL|variable|console_wid
 r_static
 r_char
@@ -262,6 +268,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#if defined(CONFIG_IA64_SGI_SN1)
 r_int
 DECL|function|is_master_nasid_widget
 id|is_master_nasid_widget
@@ -312,6 +319,64 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+macro_line|#else
+r_int
+DECL|function|is_master_baseio_nasid_widget
+id|is_master_baseio_nasid_widget
+c_func
+(paren
+id|nasid_t
+id|test_nasid
+comma
+id|xwidgetnum_t
+id|test_wid
+)paren
+(brace
+r_extern
+id|nasid_t
+id|master_baseio_nasid
+suffix:semicolon
+multiline_comment|/*&n;         * If the widget numbers are different, we&squot;re not the master.&n;         */
+r_if
+c_cond
+(paren
+id|test_wid
+op_ne
+(paren
+id|xwidgetnum_t
+)paren
+id|master_baseio_wid
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n;         * If the NASIDs are the same or equivalent, we&squot;re the master.&n;         */
+r_if
+c_cond
+(paren
+id|check_nasid_equiv
+c_func
+(paren
+id|test_nasid
+comma
+id|master_baseio_nasid
+)paren
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_else
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif&t;/* CONFIG_IA64_SGI_SN1 */
 multiline_comment|/*&n; * Routines provided by ml/SN/nvram.c&n; */
 r_void
 DECL|function|nvram_baseinit

@@ -75,6 +75,8 @@ DECL|macro|XWIDGET_MFG_NUM
 mdefine_line|#define XWIDGET_MFG_NUM(widgetid) (((widgetid) &amp; WIDGET_MFG_NUM) &gt;&gt; WIDGET_MFG_NUM_SHFT)
 DECL|macro|XWIDGET_PART_REV_NUM
 mdefine_line|#define XWIDGET_PART_REV_NUM(widgetid) ((XWIDGET_PART_NUM(widgetid) &lt;&lt; 4) | &bslash;&n;&t;&t;&t;&t;&t;XWIDGET_REV_NUM(widgetid))
+DECL|macro|XWIDGET_PART_REV_NUM_REV
+mdefine_line|#define XWIDGET_PART_REV_NUM_REV(partrev) (partrev &amp; 0xf)
 multiline_comment|/* WIDGET_STATUS */
 DECL|macro|WIDGET_LLP_REC_CNT
 mdefine_line|#define WIDGET_LLP_REC_CNT&t;&t;0xff000000

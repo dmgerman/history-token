@@ -454,10 +454,12 @@ mdefine_line|#define&t;RED_MAGIC1&t;0x5A2CF071UL&t;/* when obj is active */
 DECL|macro|RED_MAGIC2
 mdefine_line|#define&t;RED_MAGIC2&t;0x170FC2A5UL&t;/* when obj is inactive */
 multiline_comment|/* ...and for poisoning */
-DECL|macro|POISON_BYTE
-mdefine_line|#define&t;POISON_BYTE&t;0x5a&t;&t;/* byte value for poisoning */
+DECL|macro|POISON_BEFORE
+mdefine_line|#define&t;POISON_BEFORE&t;0x5a&t;/* for use-uninitialised poisoning */
+DECL|macro|POISON_AFTER
+mdefine_line|#define POISON_AFTER&t;0x6b&t;/* for use-after-free poisoning */
 DECL|macro|POISON_END
-mdefine_line|#define&t;POISON_END&t;0xa5&t;&t;/* end-byte of poisoning */
+mdefine_line|#define&t;POISON_END&t;0xa5&t;/* end-byte of poisoning */
 macro_line|#endif
 multiline_comment|/* maximum size of an obj (in 2^order pages) */
 DECL|macro|MAX_OBJ_ORDER
@@ -2109,6 +2111,7 @@ DECL|function|poison_obj
 r_static
 r_void
 id|poison_obj
+c_func
 (paren
 id|kmem_cache_t
 op_star
@@ -2117,6 +2120,10 @@ comma
 r_void
 op_star
 id|addr
+comma
+r_int
+r_char
+id|val
 )paren
 (brace
 r_int
@@ -2148,7 +2155,7 @@ c_func
 (paren
 id|addr
 comma
-id|POISON_BYTE
+id|val
 comma
 id|size
 )paren
@@ -4216,6 +4223,8 @@ c_func
 id|cachep
 comma
 id|objp
+comma
+id|POISON_BEFORE
 )paren
 suffix:semicolon
 r_if
@@ -5180,16 +5189,16 @@ id|cachep-&gt;flags
 op_amp
 id|SLAB_POISON
 )paren
-(brace
 id|poison_obj
 c_func
 (paren
 id|cachep
 comma
 id|objp
+comma
+id|POISON_AFTER
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 r_return
 id|objp

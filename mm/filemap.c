@@ -4696,6 +4696,27 @@ op_minus
 id|ENOSYS
 suffix:semicolon
 )brace
+DECL|function|generic_file_readonly_mmap
+r_int
+id|generic_file_readonly_mmap
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+)paren
+(brace
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
 macro_line|#endif /* CONFIG_MMU */
 DECL|function|__read_cache_page
 r_static

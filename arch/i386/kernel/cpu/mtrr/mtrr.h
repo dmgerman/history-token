@@ -345,15 +345,6 @@ op_star
 id|ops
 )paren
 suffix:semicolon
-multiline_comment|/* Don&squot;t even ask... */
-r_extern
-r_void
-id|compute_ascii
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 id|u32
 id|size_or_mask

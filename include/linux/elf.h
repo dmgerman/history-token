@@ -161,6 +161,9 @@ mdefine_line|#define EM_V850&t;&t;87&t;/* NEC v850 */
 multiline_comment|/*&n; * This is an interim value that we will use until the committee comes&n; * up with a final number.&n; */
 DECL|macro|EM_ALPHA
 mdefine_line|#define EM_ALPHA&t;0x9026
+multiline_comment|/* Bogus old v850 magic number, used by old tools.  */
+DECL|macro|EM_CYGNUS_V850
+mdefine_line|#define EM_CYGNUS_V850&t;0x9080
 multiline_comment|/*&n; * This is the old interim value for S/390 architecture&n; */
 DECL|macro|EM_S390_OLD
 mdefine_line|#define EM_S390_OLD     0xA390
@@ -809,6 +812,41 @@ mdefine_line|#define R_390_GOTENT&t;26&t;       /* 32 bit PC rel. to GOT entry &
 multiline_comment|/* Keep this the last entry.  */
 DECL|macro|R_390_NUM
 mdefine_line|#define R_390_NUM&t;27
+multiline_comment|/* x86-64 relocation types */
+DECL|macro|R_X86_64_NONE
+mdefine_line|#define R_X86_64_NONE&t;&t;0&t;/* No reloc */
+DECL|macro|R_X86_64_64
+mdefine_line|#define R_X86_64_64&t;&t;1&t;/* Direct 64 bit  */
+DECL|macro|R_X86_64_PC32
+mdefine_line|#define R_X86_64_PC32&t;&t;2&t;/* PC relative 32 bit signed */
+DECL|macro|R_X86_64_GOT32
+mdefine_line|#define R_X86_64_GOT32&t;&t;3&t;/* 32 bit GOT entry */
+DECL|macro|R_X86_64_PLT32
+mdefine_line|#define R_X86_64_PLT32&t;&t;4&t;/* 32 bit PLT address */
+DECL|macro|R_X86_64_COPY
+mdefine_line|#define R_X86_64_COPY&t;&t;5&t;/* Copy symbol at runtime */
+DECL|macro|R_X86_64_GLOB_DAT
+mdefine_line|#define R_X86_64_GLOB_DAT&t;6&t;/* Create GOT entry */
+DECL|macro|R_X86_64_JUMP_SLOT
+mdefine_line|#define R_X86_64_JUMP_SLOT&t;7&t;/* Create PLT entry */
+DECL|macro|R_X86_64_RELATIVE
+mdefine_line|#define R_X86_64_RELATIVE&t;8&t;/* Adjust by program base */
+DECL|macro|R_X86_64_GOTPCREL
+mdefine_line|#define R_X86_64_GOTPCREL&t;9&t;/* 32 bit signed pc relative&n;&t;&t;&t;&t;&t;   offset to GOT */
+DECL|macro|R_X86_64_32
+mdefine_line|#define R_X86_64_32&t;&t;10&t;/* Direct 32 bit zero extended */
+DECL|macro|R_X86_64_32S
+mdefine_line|#define R_X86_64_32S&t;&t;11&t;/* Direct 32 bit sign extended */
+DECL|macro|R_X86_64_16
+mdefine_line|#define R_X86_64_16&t;&t;12&t;/* Direct 16 bit zero extended */
+DECL|macro|R_X86_64_PC16
+mdefine_line|#define R_X86_64_PC16&t;&t;13&t;/* 16 bit sign extended pc relative */
+DECL|macro|R_X86_64_8
+mdefine_line|#define R_X86_64_8&t;&t;14&t;/* Direct 8 bit sign extended  */
+DECL|macro|R_X86_64_PC8
+mdefine_line|#define R_X86_64_PC8&t;&t;15&t;/* 8 bit sign extended pc relative */
+DECL|macro|R_X86_64_NUM
+mdefine_line|#define R_X86_64_NUM&t;&t;16
 multiline_comment|/* s390 relocations defined by the ABIs */
 DECL|macro|R_390_NONE
 mdefine_line|#define R_390_NONE&t;0&t;       /* No reloc.  */

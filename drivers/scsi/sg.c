@@ -3622,7 +3622,6 @@ id|SRpnt
 suffix:semicolon
 id|q
 op_assign
-op_amp
 id|SRpnt-&gt;sr_device-&gt;request_queue
 suffix:semicolon
 id|SRpnt-&gt;sr_request-&gt;rq_disk

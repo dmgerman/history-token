@@ -469,11 +469,6 @@ r_int
 id|nr_iovecs
 )paren
 (brace
-r_int
-id|pf_flags
-op_assign
-id|current-&gt;flags
-suffix:semicolon
 r_struct
 id|bio_vec
 op_star
@@ -489,10 +484,6 @@ r_struct
 id|bio
 op_star
 id|bio
-suffix:semicolon
-id|current-&gt;flags
-op_or_assign
-id|PF_NOWARN
 suffix:semicolon
 id|bio
 op_assign
@@ -582,10 +573,6 @@ id|bio_destructor
 suffix:semicolon
 id|out
 suffix:colon
-id|current-&gt;flags
-op_assign
-id|pf_flags
-suffix:semicolon
 r_return
 id|bio
 suffix:semicolon

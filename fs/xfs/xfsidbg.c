@@ -7517,7 +7517,7 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot; i_ino = %lu i_count = %u i_dev = 0x%x i_size %Ld&bslash;n&quot;
+l_string|&quot; i_ino = %lu i_count = %u i_size %Ld&bslash;n&quot;
 comma
 id|ip-&gt;i_ino
 comma
@@ -7527,8 +7527,6 @@ c_func
 op_amp
 id|ip-&gt;i_count
 )paren
-comma
-id|ip-&gt;i_sb-&gt;s_dev
 comma
 id|ip-&gt;i_size
 )paren

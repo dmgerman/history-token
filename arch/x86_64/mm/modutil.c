@@ -1,26 +1,26 @@
 multiline_comment|/*  arch/x86_64/mm/modutil.c&n; *&n; *  Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; *  Based upon code written by Linus Torvalds and others.&n; * &n; *  Blatantly copied from sparc64 for x86-64 by Andi Kleen. &n; *  Should use direct mapping with 2MB pages. This would need extension&n; *  of the kernel mapping.&n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-DECL|variable|modvmlist
-r_static
-r_struct
-id|vm_struct
-op_star
-id|modvmlist
-op_assign
-l_int|NULL
-suffix:semicolon
-DECL|function|module_unmap
+multiline_comment|/* FIXME: If module_region == mod-&gt;init_region, trim exception&n;   table entries. */
+DECL|function|module_free
 r_void
-id|module_unmap
+id|module_free
+c_func
 (paren
+r_struct
+id|module
+op_star
+id|mod
+comma
 r_void
 op_star
-id|addr
+id|module_region
 )paren
 (brace
 r_struct
@@ -34,6 +34,16 @@ id|tmp
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+r_int
+r_int
+id|addr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|module_region
 suffix:semicolon
 r_if
 c_cond
@@ -52,17 +62,13 @@ op_minus
 l_int|1
 )paren
 op_amp
-(paren
-r_int
-r_int
-)paren
 id|addr
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;Trying to unmap module with bad address (%p)&bslash;n&quot;
+l_string|&quot;Trying to unmap module with bad address (%lx)&bslash;n&quot;
 comma
 id|addr
 )paren
@@ -70,13 +76,20 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|write_lock
+c_func
+(paren
+op_amp
+id|vmlist_lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
 id|p
 op_assign
 op_amp
-id|modvmlist
+id|vmlist
 suffix:semicolon
 (paren
 id|tmp
@@ -94,6 +107,10 @@ id|tmp-&gt;next
 r_if
 c_cond
 (paren
+(paren
+r_int
+r_int
+)paren
 id|tmp-&gt;addr
 op_eq
 id|addr
@@ -104,15 +121,29 @@ id|p
 op_assign
 id|tmp-&gt;next
 suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|vmlist_lock
+)paren
+suffix:semicolon
 r_goto
 id|found
 suffix:semicolon
 )brace
 )brace
+id|write_unlock
+c_func
+(paren
+op_amp
+id|vmlist_lock
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Trying to unmap nonexistent module vm area (%p)&bslash;n&quot;
+l_string|&quot;Trying to unmap nonexistent module vm area (%lx)&bslash;n&quot;
 comma
 id|addr
 )paren
@@ -183,10 +214,10 @@ id|tmp
 )paren
 suffix:semicolon
 )brace
-DECL|function|module_map
+DECL|function|module_alloc
 r_void
 op_star
-id|module_map
+id|module_alloc
 (paren
 r_int
 r_int
@@ -223,6 +254,15 @@ id|array_size
 comma
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|size
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 id|size
 op_assign
 id|PAGE_ALIGN
@@ -234,15 +274,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|size
-op_logical_or
 id|size
 OG
 id|MODULES_LEN
 )paren
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ENOMEM
+)paren
 suffix:semicolon
 id|addr
 op_assign
@@ -258,7 +300,7 @@ c_loop
 id|p
 op_assign
 op_amp
-id|modvmlist
+id|vmlist
 suffix:semicolon
 (paren
 id|tmp
@@ -323,7 +365,12 @@ op_ge
 id|MODULES_END
 )paren
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ENOMEM
+)paren
 suffix:semicolon
 id|area
 op_assign
@@ -351,7 +398,12 @@ op_logical_neg
 id|area
 )paren
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ENOMEM
+)paren
 suffix:semicolon
 id|area-&gt;size
 op_assign
@@ -490,7 +542,7 @@ c_func
 (paren
 id|area
 comma
-id|PAGE_KERNEL
+id|PAGE_KERNEL_EXECUTABLE
 comma
 op_amp
 id|pages
@@ -507,6 +559,16 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
+id|memset
+c_func
+(paren
+id|area-&gt;addr
+comma
+l_int|0
+comma
+id|size
+)paren
+suffix:semicolon
 r_return
 id|area-&gt;addr
 suffix:semicolon
@@ -565,7 +627,12 @@ id|area
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ENOMEM
+)paren
 suffix:semicolon
 )brace
 eof

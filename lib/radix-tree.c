@@ -1409,7 +1409,7 @@ id|radix_tree_node
 comma
 l_int|0
 comma
-id|SLAB_HWCACHE_ALIGN
+l_int|0
 comma
 id|radix_tree_node_ctor
 comma

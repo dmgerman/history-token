@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2001 Silicon Graphics, Inc.  All rights reserved&n; *&n; * This implemenation of synchronization variables is heavily based on&n; * one done by Steve Lord &lt;lord@sgi.com&gt;&n; *&n; * Paul Cassella &lt;pwc@sgi.com&gt;&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2002 Silicon Graphics, Inc.  All rights reserved&n; *&n; * This implemenation of synchronization variables is heavily based on&n; * one done by Steve Lord &lt;lord@sgi.com&gt;&n; *&n; * Paul Cassella &lt;pwc@sgi.com&gt;&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -572,7 +572,7 @@ id|sv-&gt;sv_mon_lock
 suffix:semicolon
 multiline_comment|/* Add ourselves to the wait queue and set the state before&n;&t; * releasing the sv_lock so as to avoid racing with the&n;&t; * wake_up() in sv_signal() and sv_broadcast(). &n;&t; */
 multiline_comment|/* don&squot;t need the _irqsave part, but there is no wq_write_lock() */
-id|wq_write_lock_irqsave
+id|write_lock_irqsave
 c_func
 (paren
 op_amp
@@ -648,7 +648,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|wq_write_unlock_irqrestore
+id|write_unlock_irqrestore
 c_func
 (paren
 op_amp

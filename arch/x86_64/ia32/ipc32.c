@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ipc.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -41,19 +42,19 @@ r_int
 id|key
 suffix:semicolon
 DECL|member|uid
-id|__kernel_uid_t32
+id|compat_uid_t
 id|uid
 suffix:semicolon
 DECL|member|gid
-id|__kernel_gid_t32
+id|compat_gid_t
 id|gid
 suffix:semicolon
 DECL|member|cuid
-id|__kernel_uid_t32
+id|compat_uid_t
 id|cuid
 suffix:semicolon
 DECL|member|cgid
-id|__kernel_gid_t32
+id|compat_gid_t
 id|cgid
 suffix:semicolon
 DECL|member|mode
@@ -135,12 +136,12 @@ id|sem_perm
 suffix:semicolon
 multiline_comment|/* permissions .. see ipc.h */
 DECL|member|sem_otime
-id|__kernel_time_t32
+id|compat_time_t
 id|sem_otime
 suffix:semicolon
 multiline_comment|/* last semop time */
 DECL|member|sem_ctime
-id|__kernel_time_t32
+id|compat_time_t
 id|sem_ctime
 suffix:semicolon
 multiline_comment|/* last change time */
@@ -182,7 +183,7 @@ id|ipc64_perm32
 id|sem_perm
 suffix:semicolon
 DECL|member|sem_otime
-id|__kernel_time_t32
+id|compat_time_t
 id|sem_otime
 suffix:semicolon
 DECL|member|__unused1
@@ -191,7 +192,7 @@ r_int
 id|__unused1
 suffix:semicolon
 DECL|member|sem_ctime
-id|__kernel_time_t32
+id|compat_time_t
 id|sem_ctime
 suffix:semicolon
 DECL|member|__unused2
@@ -234,15 +235,15 @@ id|u32
 id|msg_last
 suffix:semicolon
 DECL|member|msg_stime
-id|__kernel_time_t32
+id|compat_time_t
 id|msg_stime
 suffix:semicolon
 DECL|member|msg_rtime
-id|__kernel_time_t32
+id|compat_time_t
 id|msg_rtime
 suffix:semicolon
 DECL|member|msg_ctime
-id|__kernel_time_t32
+id|compat_time_t
 id|msg_ctime
 suffix:semicolon
 DECL|member|wwait
@@ -288,7 +289,7 @@ id|ipc64_perm32
 id|msg_perm
 suffix:semicolon
 DECL|member|msg_stime
-id|__kernel_time_t32
+id|compat_time_t
 id|msg_stime
 suffix:semicolon
 DECL|member|__unused1
@@ -297,7 +298,7 @@ r_int
 id|__unused1
 suffix:semicolon
 DECL|member|msg_rtime
-id|__kernel_time_t32
+id|compat_time_t
 id|msg_rtime
 suffix:semicolon
 DECL|member|__unused2
@@ -306,7 +307,7 @@ r_int
 id|__unused2
 suffix:semicolon
 DECL|member|msg_ctime
-id|__kernel_time_t32
+id|compat_time_t
 id|msg_ctime
 suffix:semicolon
 DECL|member|__unused3
@@ -330,11 +331,11 @@ r_int
 id|msg_qbytes
 suffix:semicolon
 DECL|member|msg_lspid
-id|__kernel_pid_t32
+id|compat_pid_t
 id|msg_lspid
 suffix:semicolon
 DECL|member|msg_lrpid
-id|__kernel_pid_t32
+id|compat_pid_t
 id|msg_lrpid
 suffix:semicolon
 DECL|member|__unused4
@@ -363,15 +364,15 @@ r_int
 id|shm_segsz
 suffix:semicolon
 DECL|member|shm_atime
-id|__kernel_time_t32
+id|compat_time_t
 id|shm_atime
 suffix:semicolon
 DECL|member|shm_dtime
-id|__kernel_time_t32
+id|compat_time_t
 id|shm_dtime
 suffix:semicolon
 DECL|member|shm_ctime
-id|__kernel_time_t32
+id|compat_time_t
 id|shm_ctime
 suffix:semicolon
 DECL|member|shm_cpid
@@ -399,11 +400,11 @@ id|ipc64_perm32
 id|shm_perm
 suffix:semicolon
 DECL|member|shm_segsz
-id|__kernel_size_t32
+id|compat_size_t
 id|shm_segsz
 suffix:semicolon
 DECL|member|shm_atime
-id|__kernel_time_t32
+id|compat_time_t
 id|shm_atime
 suffix:semicolon
 DECL|member|__unused1
@@ -412,7 +413,7 @@ r_int
 id|__unused1
 suffix:semicolon
 DECL|member|shm_dtime
-id|__kernel_time_t32
+id|compat_time_t
 id|shm_dtime
 suffix:semicolon
 DECL|member|__unused2
@@ -421,7 +422,7 @@ r_int
 id|__unused2
 suffix:semicolon
 DECL|member|shm_ctime
-id|__kernel_time_t32
+id|compat_time_t
 id|shm_ctime
 suffix:semicolon
 DECL|member|__unused3
@@ -430,11 +431,11 @@ r_int
 id|__unused3
 suffix:semicolon
 DECL|member|shm_cpid
-id|__kernel_pid_t32
+id|compat_pid_t
 id|shm_cpid
 suffix:semicolon
 DECL|member|shm_lpid
-id|__kernel_pid_t32
+id|compat_pid_t
 id|shm_lpid
 suffix:semicolon
 DECL|member|shm_nattch
@@ -556,6 +557,8 @@ DECL|macro|SEMGET
 mdefine_line|#define SEMGET&t;&t; 2
 DECL|macro|SEMCTL
 mdefine_line|#define SEMCTL&t;&t; 3
+DECL|macro|TIMEDSEMOP
+mdefine_line|#define TIMEDSEMOP&t; 4
 DECL|macro|MSGSND
 mdefine_line|#define MSGSND&t;&t;11
 DECL|macro|MSGRCV
@@ -3608,7 +3611,7 @@ id|SEMOP
 suffix:colon
 multiline_comment|/* struct sembuf is the same on 32 and 64bit :)) */
 r_return
-id|sys_semop
+id|sys_semtimedop
 c_func
 (paren
 id|first
@@ -3625,6 +3628,44 @@ id|ptr
 )paren
 comma
 id|second
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_case
+id|TIMEDSEMOP
+suffix:colon
+multiline_comment|/* struct sembuf is the same on 32 and 64bit :)) */
+r_return
+id|sys_semtimedop
+c_func
+(paren
+id|first
+comma
+(paren
+r_struct
+id|sembuf
+op_star
+)paren
+id|AA
+c_func
+(paren
+id|ptr
+)paren
+comma
+id|second
+comma
+(paren
+r_const
+r_struct
+id|timespec
+op_star
+)paren
+id|AA
+c_func
+(paren
+id|fifth
+)paren
 )paren
 suffix:semicolon
 r_case

@@ -1111,10 +1111,9 @@ r_return
 id|p
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ext2_find_near - find a place for allocation with sufficient locality&n; *&t;@inode: owner&n; *&t;@ind: descriptor of indirect block.&n; *&n; *&t;This function returns the prefered place for block allocation.&n; *&t;It is used when heuristic for sequential allocation fails.&n; *&t;Rules are:&n; *&t;  + if there is a block to the left of our position - allocate near it.&n; *&t;  + if pointer will live in indirect block - allocate near that block.&n; *&t;  + if pointer will live in inode - allocate in the same cylinder group.&n; *&t;Caller must make sure that @ind is valid and will stay that way.&n; */
+multiline_comment|/**&n; *&t;ext2_find_near - find a place for allocation with sufficient locality&n; *&t;@inode: owner&n; *&t;@ind: descriptor of indirect block.&n; *&n; *&t;This function returns the prefered place for block allocation.&n; *&t;It is used when heuristic for sequential allocation fails.&n; *&t;Rules are:&n; *&t;  + if there is a block to the left of our position - allocate near it.&n; *&t;  + if pointer will live in indirect block - allocate near that block.&n; *&t;  + if pointer will live in inode - allocate in the same cylinder group.&n; *&n; * In the latter case we colour the starting block by the callers PID to&n; * prevent it from clashing with concurrent allocations for a different inode&n; * in the same block group.   The PID is used here so that functionally related&n; * files will be close-by on-disk.&n; *&n; *&t;Caller must make sure that @ind is valid and will stay that way.&n; */
 DECL|function|ext2_find_near
 r_static
-r_inline
 r_int
 r_int
 id|ext2_find_near
@@ -1160,6 +1159,14 @@ id|u32
 op_star
 id|p
 suffix:semicolon
+r_int
+r_int
+id|bg_start
+suffix:semicolon
+r_int
+r_int
+id|colour
+suffix:semicolon
 multiline_comment|/* Try to find previous block */
 r_for
 c_loop
@@ -1201,7 +1208,8 @@ r_return
 id|ind-&gt;bh-&gt;b_blocknr
 suffix:semicolon
 multiline_comment|/*&n;&t; * It is going to be refered from inode itself? OK, just put it into&n;&t; * the same cylinder group then.&n;&t; */
-r_return
+id|bg_start
+op_assign
 (paren
 id|ei-&gt;i_block_group
 op_star
@@ -1223,6 +1231,29 @@ id|inode-&gt;i_sb
 op_member_access_from_pointer
 id|s_es-&gt;s_first_data_block
 )paren
+suffix:semicolon
+id|colour
+op_assign
+(paren
+id|current-&gt;pid
+op_mod
+l_int|16
+)paren
+op_star
+(paren
+id|EXT2_BLOCKS_PER_GROUP
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_div
+l_int|16
+)paren
+suffix:semicolon
+r_return
+id|bg_start
+op_plus
+id|colour
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;ext2_find_goal - find a prefered place for allocation.&n; *&t;@inode: owner&n; *&t;@block:  block we want&n; *&t;@chain:  chain of indirect blocks&n; *&t;@partial: pointer to the last triple within a chain&n; *&t;@goal:&t;place to store the result.&n; *&n; *&t;Normally this function find the prefered place for block allocation,&n; *&t;stores it in *@goal and returns zero. If the branch had been changed&n; *&t;under us we return -EAGAIN.&n; */

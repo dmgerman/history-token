@@ -56,10 +56,6 @@ DECL|macro|GBL_PERF_B_ADDR
 mdefine_line|#define GBL_PERF_B_ADDR (0x338 + LB_REG_BASE + __IA64_UNCACHED_OFFSET)
 DECL|macro|WRITE_LOCAL_SYNERGY_REG
 mdefine_line|#define WRITE_LOCAL_SYNERGY_REG(addr, value)&t;__synergy_out(addr, value)
-DECL|macro|HUB_L
-mdefine_line|#define HUB_L(_a)               *(_a)
-DECL|macro|HUB_S
-mdefine_line|#define HUB_S(_a, _d)           *(_a) = (_d)
 DECL|macro|HSPEC_SYNERGY0_0
 mdefine_line|#define HSPEC_SYNERGY0_0        0x04000000    /* Synergy0 Registers     */
 DECL|macro|HSPEC_SYNERGY1_0

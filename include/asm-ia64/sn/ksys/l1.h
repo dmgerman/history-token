@@ -2,10 +2,12 @@ multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and condit
 macro_line|#ifndef _ASM_SN_KSYS_L1_H
 DECL|macro|_ASM_SN_KSYS_L1_H
 mdefine_line|#define _ASM_SN_KSYS_L1_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/vector.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/sn/sv.h&gt;
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 DECL|macro|BRL1_QSIZE
 mdefine_line|#define BRL1_QSIZE&t;128&t;/* power of 2 is more efficient */
 DECL|macro|BRL1_BUFSZ
@@ -218,7 +220,6 @@ DECL|macro|BRL1_ESC
 mdefine_line|#define BRL1_ESC&t;4
 DECL|macro|BRL1_RESET
 mdefine_line|#define BRL1_RESET&t;7
-macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * l1sc_t structure-- tracks protocol state, open subchannels, etc.&n; */
 DECL|struct|l1sc_s
 r_typedef
@@ -377,12 +378,20 @@ DECL|macro|SC_TIMEDOUT
 mdefine_line|#define SC_TIMEDOUT&t;(-9)
 DECL|macro|SC_NSUBCH
 mdefine_line|#define SC_NSUBCH&t;(-10)
+macro_line|#endif&t;/* CONFIG_IA64_SGI_SN1 */
 multiline_comment|/* L1 Target Addresses */
 multiline_comment|/*&n; * L1 commands and responses use source/target addresses that are&n; * 32 bits long.  These are broken up into multiple bitfields that&n; * specify the type of the target controller (could actually be L2&n; * L3, not just L1), the rack and bay of the target, and the task&n; * id (L1 functionality is divided into several independent &quot;tasks&quot;&n; * that can each receive command requests and transmit responses)&n; */
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 DECL|macro|L1_ADDR_TYPE_SHFT
 mdefine_line|#define L1_ADDR_TYPE_SHFT&t;28
 DECL|macro|L1_ADDR_TYPE_MASK
 mdefine_line|#define L1_ADDR_TYPE_MASK&t;0xF0000000
+macro_line|#else
+DECL|macro|L1_ADDR_TYPE_SHFT
+mdefine_line|#define L1_ADDR_TYPE_SHFT&t;8
+DECL|macro|L1_ADDR_TYPE_MASK
+mdefine_line|#define L1_ADDR_TYPE_MASK&t;0xFF00
+macro_line|#endif&t;/* CONFIG_IA64_SGI_SN1 */
 DECL|macro|L1_ADDR_TYPE_L1
 mdefine_line|#define L1_ADDR_TYPE_L1&t;&t;0x00&t;/* L1 system controller */
 DECL|macro|L1_ADDR_TYPE_L2
@@ -393,18 +402,36 @@ DECL|macro|L1_ADDR_TYPE_CBRICK
 mdefine_line|#define L1_ADDR_TYPE_CBRICK&t;0x03&t;/* attached C brick&t;*/
 DECL|macro|L1_ADDR_TYPE_IOBRICK
 mdefine_line|#define L1_ADDR_TYPE_IOBRICK&t;0x04&t;/* attached I/O brick&t;*/
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 DECL|macro|L1_ADDR_RACK_SHFT
 mdefine_line|#define L1_ADDR_RACK_SHFT&t;18
 DECL|macro|L1_ADDR_RACK_MASK
 mdefine_line|#define L1_ADDR_RACK_MASK&t;0x0FFC0000
 DECL|macro|L1_ADDR_RACK_LOCAL
 mdefine_line|#define&t;L1_ADDR_RACK_LOCAL&t;0x3ff&t;/* local brick&squot;s rack&t;*/
+macro_line|#else
+DECL|macro|L1_ADDR_RACK_SHFT
+mdefine_line|#define L1_ADDR_RACK_SHFT&t;16
+DECL|macro|L1_ADDR_RACK_MASK
+mdefine_line|#define L1_ADDR_RACK_MASK&t;0xFFFF00
+DECL|macro|L1_ADDR_RACK_LOCAL
+mdefine_line|#define&t;L1_ADDR_RACK_LOCAL&t;0xffff&t;/* local brick&squot;s rack&t;*/
+macro_line|#endif /* CONFIG_IA64_SGI_SN1 */
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 DECL|macro|L1_ADDR_BAY_SHFT
 mdefine_line|#define L1_ADDR_BAY_SHFT&t;12
 DECL|macro|L1_ADDR_BAY_MASK
 mdefine_line|#define L1_ADDR_BAY_MASK&t;0x0003F000
 DECL|macro|L1_ADDR_BAY_LOCAL
 mdefine_line|#define&t;L1_ADDR_BAY_LOCAL&t;0x3f&t;/* local brick&squot;s bay&t;*/
+macro_line|#else
+DECL|macro|L1_ADDR_BAY_SHFT
+mdefine_line|#define L1_ADDR_BAY_SHFT&t;0
+DECL|macro|L1_ADDR_BAY_MASK
+mdefine_line|#define L1_ADDR_BAY_MASK&t;0xFF
+DECL|macro|L1_ADDR_BAY_LOCAL
+mdefine_line|#define&t;L1_ADDR_BAY_LOCAL&t;0xff&t;/* local brick&squot;s bay&t;*/
+macro_line|#endif&t;/* CONFIG_IA64_SGI_SN1 */
 DECL|macro|L1_ADDR_TASK_SHFT
 mdefine_line|#define L1_ADDR_TASK_SHFT&t;0
 DECL|macro|L1_ADDR_TASK_MASK
@@ -498,16 +525,24 @@ multiline_comment|/* request codes */
 DECL|macro|L1_REQ_EXEC_CMD
 mdefine_line|#define L1_REQ_EXEC_CMD&t;&t;0x0000&t;/* interpret and execute an ASCII&n;&t;&t;&t;&t;&t;   command string */
 multiline_comment|/* brick type response codes */
+DECL|macro|L1_BRICKTYPE_IP45
+mdefine_line|#define L1_BRICKTYPE_IP45       0x34            /* 4 */
 DECL|macro|L1_BRICKTYPE_C
-mdefine_line|#define L1_BRICKTYPE_C&t;0x43
+mdefine_line|#define L1_BRICKTYPE_C          0x43            /* C */
 DECL|macro|L1_BRICKTYPE_I
-mdefine_line|#define L1_BRICKTYPE_I&t;0x49
+mdefine_line|#define L1_BRICKTYPE_I          0x49            /* I */
 DECL|macro|L1_BRICKTYPE_P
-mdefine_line|#define L1_BRICKTYPE_P&t;0x50
+mdefine_line|#define L1_BRICKTYPE_P          0x50            /* P */
 DECL|macro|L1_BRICKTYPE_R
-mdefine_line|#define L1_BRICKTYPE_R  0x52
+mdefine_line|#define L1_BRICKTYPE_R          0x52            /* R */
 DECL|macro|L1_BRICKTYPE_X
-mdefine_line|#define L1_BRICKTYPE_X  0x58
+mdefine_line|#define L1_BRICKTYPE_X          0x58            /* X */
+DECL|macro|L1_BRICKTYPE_X2
+mdefine_line|#define L1_BRICKTYPE_X2         0x59            /* Y */
+DECL|macro|L1_BRICKTYPE_N
+mdefine_line|#define L1_BRICKTYPE_N          0x4e            /* N */
+DECL|macro|L1_BRICKTYPE_PX
+mdefine_line|#define L1_BRICKTYPE_PX&t;&t;0x23&t;&t;/* # */
 multiline_comment|/* EEPROM codes (for the &quot;read EEPROM&quot; request) */
 multiline_comment|/* c brick */
 DECL|macro|L1_EEP_NODE
@@ -552,10 +587,11 @@ macro_line|#else
 DECL|macro|L1_DISPLAY_LINES
 mdefine_line|#define L1_DISPLAY_LINES&t;1&t;/* number of L1 display lines available&n;&t;&t;&t;&t;&t; * to system software */
 macro_line|#endif
-DECL|macro|SC_EVENT_CLASS_MASK
-mdefine_line|#define SC_EVENT_CLASS_MASK ((unsigned short)0xff00)
 DECL|macro|bzero
 mdefine_line|#define bzero(d, n)&t;memset((d), 0, (n))
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
+DECL|macro|SC_EVENT_CLASS_MASK
+mdefine_line|#define SC_EVENT_CLASS_MASK ((unsigned short)0xff00)
 multiline_comment|/* public interfaces to L1 system controller */
 r_int
 id|sc_open
@@ -847,17 +883,6 @@ mdefine_line|#define get_l1sc&t;get_elsc
 DECL|macro|get_master_l1sc
 mdefine_line|#define get_master_l1sc get_l1sc
 r_int
-id|router_module_get
-c_func
-(paren
-id|nasid_t
-id|nasid
-comma
-id|net_vec_t
-id|path
-)paren
-suffix:semicolon
-r_int
 id|iobrick_rack_bay_type_get
 c_func
 (paren
@@ -933,6 +958,50 @@ op_star
 id|result
 )paren
 suffix:semicolon
-macro_line|#endif /* !__ASSEMBLY__ */
+macro_line|#else
+r_int
+id|elsc_display_line
+c_func
+(paren
+id|nasid_t
+id|nasid
+comma
+r_char
+op_star
+id|line
+comma
+r_int
+id|lnum
+)paren
+suffix:semicolon
+r_int
+id|iobrick_rack_bay_type_get
+c_func
+(paren
+id|nasid_t
+id|nasid
+comma
+id|uint
+op_star
+id|rack
+comma
+id|uint
+op_star
+id|bay
+comma
+id|uint
+op_star
+id|brick_type
+)paren
+suffix:semicolon
+r_int
+id|iobrick_module_get
+c_func
+(paren
+id|nasid_t
+id|nasid
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* CONFIG_IA64_SGI_SN1 */
 macro_line|#endif /* _ASM_SN_KSYS_L1_H */
 eof

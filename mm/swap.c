@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm_inline.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
-macro_line|#include &lt;linux/prefetch.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 multiline_comment|/* How many pages do we try to swap or page in/out together? */
 DECL|variable|page_cluster

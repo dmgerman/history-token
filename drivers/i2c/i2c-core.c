@@ -2421,7 +2421,8 @@ comma
 id|len
 op_assign
 l_int|0
-comma
+suffix:semicolon
+r_int
 id|len_total
 suffix:semicolon
 r_int

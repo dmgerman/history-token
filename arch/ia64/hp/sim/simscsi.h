@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Simulated SCSI driver.&n; *&n; * Copyright (C) 1999 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Simulated SCSI driver.&n; *&n; * Copyright (C) 1999, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#ifndef SIMSCSI_H
 DECL|macro|SIMSCSI_H
 mdefine_line|#define SIMSCSI_H
@@ -91,6 +91,6 @@ r_int
 )paren
 suffix:semicolon
 DECL|macro|SIMSCSI
-mdefine_line|#define SIMSCSI {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.detect&t;&t;&t;= simscsi_detect,&t;&t;&bslash;&n;&t;.release&t;&t;= simscsi_release,&t;&t;&bslash;&n;&t;.info&t;&t;&t;= simscsi_info,&t;&t;&t;&bslash;&n;&t;.queuecommand&t;&t;= simscsi_queuecommand,&t;&t;&bslash;&n;&t;.bios_param&t;&t;= simscsi_biosparam,&t;&t;&bslash;&n;&t;.can_queue&t;&t;= SIMSCSI_REQ_QUEUE_LEN,&t;&bslash;&n;&t;.this_id&t;&t;= -1,&t;&t;&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;= SG_ALL,&t;&t;&t;&bslash;&n;&t;.cmd_per_lun&t;&t;= SIMSCSI_REQ_QUEUE_LEN,&t;&bslash;&n;&t;.present&t;&t;= 0,&t;&t;&t;&t;&bslash;&n;&t;.unchecked_isa_dma&t;= 0,&t;&t;&t;&t;&bslash;&n;&t;.use_clustering&t;&t;= DISABLE_CLUSTERING&t;&t;&bslash;&n;}
+mdefine_line|#define SIMSCSI {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.name&t;&t;&t;= &quot;simscsi&quot;,&t;&t;&t;&bslash;&n;&t;.detect&t;&t;&t;= simscsi_detect,&t;&t;&bslash;&n;&t;.release&t;&t;= simscsi_release,&t;&t;&bslash;&n;&t;.info&t;&t;&t;= simscsi_info,&t;&t;&t;&bslash;&n;&t;.queuecommand&t;&t;= simscsi_queuecommand,&t;&t;&bslash;&n;&t;.eh_host_reset_handler&t;= simscsi_host_reset,&t;&t;&bslash;&n;&t;.bios_param&t;&t;= simscsi_biosparam,&t;&t;&bslash;&n;&t;.can_queue&t;&t;= SIMSCSI_REQ_QUEUE_LEN,&t;&bslash;&n;&t;.this_id&t;&t;= -1,&t;&t;&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;= SG_ALL,&t;&t;&t;&bslash;&n;&t;.max_sectors&t;&t;= 1024,&t;&t;&t;&t;&bslash;&n;&t;.cmd_per_lun&t;&t;= SIMSCSI_REQ_QUEUE_LEN,&t;&bslash;&n;&t;.present&t;&t;= 0,&t;&t;&t;&t;&bslash;&n;&t;.unchecked_isa_dma&t;= 0,&t;&t;&t;&t;&bslash;&n;&t;.use_clustering&t;&t;= DISABLE_CLUSTERING&t;&t;&bslash;&n;}
 macro_line|#endif /* SIMSCSI_H */
 eof

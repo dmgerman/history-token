@@ -12,9 +12,11 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
+macro_line|#include &lt;asm/proto.h&gt;
 multiline_comment|/* #define DEBUG_SIG 1 */
 DECL|macro|_BLOCKABLE
 mdefine_line|#define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
@@ -762,6 +764,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set up a signal frame.&n; */
 r_static
+r_inline
 r_int
 DECL|function|setup_sigcontext
 id|setup_sigcontext
@@ -780,6 +783,11 @@ comma
 r_int
 r_int
 id|mask
+comma
+r_struct
+id|task_struct
+op_star
+id|me
 )paren
 (brace
 r_int
@@ -788,13 +796,6 @@ comma
 id|err
 op_assign
 l_int|0
-suffix:semicolon
-r_struct
-id|task_struct
-op_star
-id|me
-op_assign
-id|current
 suffix:semicolon
 id|tmp
 op_assign
@@ -1111,8 +1112,6 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Determine which stack to use..&n; */
-DECL|macro|round_down
-mdefine_line|#define round_down(p, r) ((void *)  ((unsigned long)((p) - (r) + 1) &amp; ~((r)-1)))
 r_static
 r_void
 op_star
@@ -1174,6 +1173,10 @@ id|current-&gt;sas_ss_size
 suffix:semicolon
 )brace
 r_return
+(paren
+r_void
+op_star
+)paren
 id|round_down
 c_func
 (paren
@@ -1217,8 +1220,6 @@ r_struct
 id|rt_sigframe
 op_star
 id|frame
-op_assign
-l_int|NULL
 suffix:semicolon
 r_struct
 id|_fpstate
@@ -1232,10 +1233,17 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|task_struct
+op_star
+id|me
+op_assign
+id|current
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;used_math
+id|me-&gt;used_math
 )paren
 (brace
 id|fp
@@ -1256,12 +1264,15 @@ id|_fpstate
 suffix:semicolon
 id|frame
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|round_down
 c_func
 (paren
 (paren
-r_char
-op_star
+id|u64
 )paren
 id|fp
 op_minus
@@ -1316,12 +1327,8 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|frame
-)paren
+r_else
+(brace
 id|frame
 op_assign
 id|get_stack
@@ -1340,6 +1347,7 @@ id|rt_sigframe
 op_minus
 l_int|8
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1421,7 +1429,7 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|current-&gt;sas_ss_sp
+id|me-&gt;sas_ss_sp
 comma
 op_amp
 id|frame-&gt;uc.uc_stack.ss_sp
@@ -1447,7 +1455,7 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|current-&gt;sas_ss_size
+id|me-&gt;sas_ss_size
 comma
 op_amp
 id|frame-&gt;uc.uc_stack.ss_size
@@ -1467,6 +1475,8 @@ id|set-&gt;sig
 (braket
 l_int|0
 )braket
+comma
+id|me
 )paren
 suffix:semicolon
 id|err
@@ -1480,6 +1490,51 @@ op_amp
 id|frame-&gt;uc.uc_mcontext.fpstate
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+r_sizeof
+(paren
+op_star
+id|set
+)paren
+op_eq
+l_int|16
+)paren
+(brace
+id|__put_user
+c_func
+(paren
+id|set-&gt;sig
+(braket
+l_int|0
+)braket
+comma
+op_amp
+id|frame-&gt;uc.uc_sigmask.sig
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+id|__put_user
+c_func
+(paren
+id|set-&gt;sig
+(braket
+l_int|1
+)braket
+comma
+op_amp
+id|frame-&gt;uc.uc_sigmask.sig
+(braket
+l_int|1
+)braket
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|err
 op_or_assign
 id|__copy_to_user
@@ -1497,6 +1552,7 @@ id|set
 )paren
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Set up to return from userspace.  If provided, use a stub&n;&t;   already in userspace.  */
 multiline_comment|/* x86-64 should always use SA_RESTORER. */
 r_if
@@ -1526,7 +1582,7 @@ c_func
 (paren
 l_string|&quot;%s forgot to set SA_RESTORER for signal %d.&bslash;n&quot;
 comma
-id|current-&gt;comm
+id|me-&gt;comm
 comma
 id|sig
 )paren
@@ -1693,7 +1749,7 @@ id|regs
 comma
 id|frame
 comma
-l_string|&quot;signal setup&quot;
+l_string|&quot;signal deliver&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1771,6 +1827,20 @@ id|regs-&gt;rax
 (brace
 r_case
 op_minus
+id|ERESTART_RESTARTBLOCK
+suffix:colon
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|restart_block.fn
+op_assign
+id|do_no_restart_syscall
+suffix:semicolon
+multiline_comment|/* FALL THROUGH */
+r_case
+op_minus
 id|ERESTARTNOHAND
 suffix:colon
 id|regs-&gt;rax
@@ -1811,6 +1881,24 @@ suffix:colon
 id|regs-&gt;rax
 op_assign
 id|regs-&gt;orig_rax
+suffix:semicolon
+id|regs-&gt;rip
+op_sub_assign
+l_int|2
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|regs-&gt;rax
+op_eq
+op_minus
+id|ERESTART_RESTARTBLOCK
+)paren
+(brace
+id|regs-&gt;rax
+op_assign
+id|__NR_restart_syscall
 suffix:semicolon
 id|regs-&gt;rip
 op_sub_assign
@@ -1987,6 +2075,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+(brace
+id|refrigerator
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_goto
+id|no_signal
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 op_logical_neg
 id|oldset
 )paren
@@ -2048,6 +2154,8 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+id|no_signal
+suffix:colon
 multiline_comment|/* Did we come from a system call? */
 r_if
 c_cond

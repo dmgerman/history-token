@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/rse.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
@@ -696,7 +697,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  SAVE and RESTORE of ia32 fpstate info, from ia64 current state&n; *  Used in exception handler to pass the fpstate to the user, and restore&n; *  the fpstate while returning from the exception handler.&n; *&n; *    fpstate info and their mapping to IA64 regs:&n; *    fpstate    REG(BITS)      Attribute    Comments&n; *    cw         ar.fcr(0:12)                with bits 7 and 6 not used&n; *    sw         ar.fsr(0:15)&n; *    tag        ar.fsr(16:31)               with odd numbered bits not used&n; *                                           (read returns 0, writes ignored)&n; *    ipoff      ar.fir(0:31)   RO&n; *    cssel      ar.fir(32:47)  RO&n; *    dataoff    ar.fdr(0:31)   RO&n; *    datasel    ar.fdr(32:47)  RO&n; *&n; *    _st[(0+TOS)%8]   f8&n; *    _st[(1+TOS)%8]   f9                    (f8, f9 from ptregs)&n; *      : :            :                     (f10..f15 from live reg)&n; *      : :            :&n; *    _st[(7+TOS)%8]   f15                   TOS=sw.top(bits11:13)&n; *&n; *    status     Same as sw     RO&n; *    magic      0                           as X86_FXSR_MAGIC in ia32&n; *    mxcsr      Bits(7:15)=ar.fcr(39:47)&n; *               Bits(0:5) =ar.fsr(32:37)    with bit 6 reserved&n; *    _xmm[0..7] f16..f31                    (live registers)&n; *                                           with _xmm[0]&n; *                                             Bit(64:127)=f17(0:63)&n; *                                             Bit(0:63)=f16(0:63)&n; *    All other fields unused...&n; */
+multiline_comment|/*&n; *  SAVE and RESTORE of ia32 fpstate info, from ia64 current state&n; *  Used in exception handler to pass the fpstate to the user, and restore&n; *  the fpstate while returning from the exception handler.&n; *&n; *    fpstate info and their mapping to IA64 regs:&n; *    fpstate    REG(BITS)      Attribute    Comments&n; *    cw         ar.fcr(0:12)                with bits 7 and 6 not used&n; *    sw         ar.fsr(0:15)&n; *    tag        ar.fsr(16:31)               with odd numbered bits not used&n; *                                           (read returns 0, writes ignored)&n; *    ipoff      ar.fir(0:31)&n; *    cssel      ar.fir(32:47)&n; *    dataoff    ar.fdr(0:31)&n; *    datasel    ar.fdr(32:47)&n; *&n; *    _st[(0+TOS)%8]   f8&n; *    _st[(1+TOS)%8]   f9                    (f8, f9 from ptregs)&n; *      : :            :                     (f10..f15 from live reg)&n; *      : :            :&n; *    _st[(7+TOS)%8]   f15                   TOS=sw.top(bits11:13)&n; *&n; *    status     Same as sw     RO&n; *    magic      0                           as X86_FXSR_MAGIC in ia32&n; *    mxcsr      Bits(7:15)=ar.fcr(39:47)&n; *               Bits(0:5) =ar.fsr(32:37)    with bit 6 reserved&n; *    _xmm[0..7] f16..f31                    (live registers)&n; *                                           with _xmm[0]&n; *                                             Bit(64:127)=f17(0:63)&n; *                                             Bit(0:63)=f16(0:63)&n; *    All other fields unused...&n; */
 DECL|macro|__ldfe
 mdefine_line|#define __ldfe(regnum, x)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; &t;register double __f__ asm (&quot;f&quot;#regnum);&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&quot;ldfe %0=[%1] ;;&quot; :&quot;=f&quot;(__f__): &quot;r&quot;(x));&t;&bslash;&n;})
 DECL|macro|__ldf8
@@ -1704,6 +1705,10 @@ r_int
 id|fsr
 comma
 id|fcr
+comma
+id|fir
+comma
+id|fdr
 suffix:semicolon
 r_int
 id|fp_tos
@@ -1752,6 +1757,28 @@ suffix:colon
 l_string|&quot;=r&quot;
 (paren
 id|fcr
+)paren
+)paren
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;mov %0=ar.fir;&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|fir
+)paren
+)paren
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;mov %0=ar.fdr;&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|fdr
 )paren
 )paren
 suffix:semicolon
@@ -1832,6 +1859,24 @@ op_amp
 id|save-&gt;sw
 )paren
 suffix:semicolon
+multiline_comment|/* set bits 15,7 (fsw.b, fsw.es) to reflect the current error status */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|lo
+op_amp
+l_int|0x7f
+)paren
+)paren
+id|lo
+op_and_assign
+(paren
+op_complement
+l_int|0x8080
+)paren
+suffix:semicolon
 id|__get_user
 c_func
 (paren
@@ -1893,6 +1938,122 @@ l_int|0x3fffffffff
 op_or
 id|num64
 suffix:semicolon
+multiline_comment|/* setting bits 0..47 with cssel and ipoff */
+id|__get_user
+c_func
+(paren
+id|lo
+comma
+(paren
+r_int
+r_int
+op_star
+)paren
+op_amp
+id|save-&gt;ipoff
+)paren
+suffix:semicolon
+id|__get_user
+c_func
+(paren
+id|hi
+comma
+(paren
+r_int
+r_int
+op_star
+)paren
+op_amp
+id|save-&gt;cssel
+)paren
+suffix:semicolon
+id|num64
+op_assign
+id|hi
+op_amp
+l_int|0xffff
+suffix:semicolon
+id|num64
+op_assign
+(paren
+id|num64
+op_lshift
+l_int|32
+)paren
+op_or
+id|lo
+suffix:semicolon
+id|fir
+op_assign
+(paren
+id|fir
+op_amp
+(paren
+op_complement
+l_int|0xffffffffffff
+)paren
+)paren
+op_or
+id|num64
+suffix:semicolon
+multiline_comment|/* setting bits 0..47 with datasel and dataoff */
+id|__get_user
+c_func
+(paren
+id|lo
+comma
+(paren
+r_int
+r_int
+op_star
+)paren
+op_amp
+id|save-&gt;dataoff
+)paren
+suffix:semicolon
+id|__get_user
+c_func
+(paren
+id|hi
+comma
+(paren
+r_int
+r_int
+op_star
+)paren
+op_amp
+id|save-&gt;datasel
+)paren
+suffix:semicolon
+id|num64
+op_assign
+id|hi
+op_amp
+l_int|0xffff
+suffix:semicolon
+id|num64
+op_assign
+(paren
+id|num64
+op_lshift
+l_int|32
+)paren
+op_or
+id|lo
+suffix:semicolon
+id|fdr
+op_assign
+(paren
+id|fdr
+op_amp
+(paren
+op_complement
+l_int|0xffffffffffff
+)paren
+)paren
+op_or
+id|num64
+suffix:semicolon
 id|asm
 r_volatile
 (paren
@@ -1912,6 +2073,28 @@ op_scope_resolution
 l_string|&quot;r&quot;
 (paren
 id|fcr
+)paren
+)paren
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;mov ar.fir=%0;&quot;
+op_scope_resolution
+l_string|&quot;r&quot;
+(paren
+id|fir
+)paren
+)paren
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;mov ar.fdr=%0;&quot;
+op_scope_resolution
+l_string|&quot;r&quot;
+(paren
+id|fdr
 )paren
 )paren
 suffix:semicolon
@@ -3379,7 +3562,7 @@ op_star
 id|uinfo
 comma
 r_struct
-id|timespec32
+id|compat_timespec
 op_star
 id|uts
 comma

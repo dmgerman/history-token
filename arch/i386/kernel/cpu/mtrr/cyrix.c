@@ -364,7 +364,9 @@ suffix:semicolon
 r_int
 r_int
 id|lbase
-comma
+suffix:semicolon
+r_int
+r_int
 id|lsize
 suffix:semicolon
 multiline_comment|/* If we are to set up a region &gt;32M then look at ARR7 immediately */

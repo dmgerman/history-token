@@ -532,6 +532,11 @@ id|irq
 )paren
 suffix:semicolon
 macro_line|#endif
+r_extern
+r_int
+id|sis_apic_bug
+suffix:semicolon
+multiline_comment|/* dummy */
 macro_line|#else  /* !CONFIG_X86_IO_APIC */
 DECL|macro|io_apic_assign_pci_irqs
 mdefine_line|#define io_apic_assign_pci_irqs 0

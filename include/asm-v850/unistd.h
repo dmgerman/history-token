@@ -3,6 +3,8 @@ macro_line|#ifndef __V850_UNISTD_H__
 DECL|macro|__V850_UNISTD_H__
 mdefine_line|#define __V850_UNISTD_H__
 macro_line|#include &lt;asm/clinkage.h&gt;
+DECL|macro|__NR_restart_syscall
+mdefine_line|#define __NR_restart_syscall&t;  0
 DECL|macro|__NR_exit
 mdefine_line|#define __NR_exit&t;&t;  1
 DECL|macro|__NR_fork

@@ -1,9 +1,7 @@
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-singleline_comment|//#include &lt;linux/pagemap.h&gt;
-singleline_comment|//#include &lt;linux/miscdevice.h&gt;
-singleline_comment|//#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;agp.h&quot;
 multiline_comment|/* Generic AGP 3.0 enabling routines */
 DECL|struct|agp_3_0_dev
@@ -2225,7 +2223,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n; * Entry point to AGP 3.0 host bridge init.  Check to see if we &n; * have an AGP 3.0 device operating in 3.0 mode.  Call &n; * agp_3_0_node_enable or agp_generic_agp_enable if we don&squot;t &n; * (AGP 3.0 devices are required to operate as AGP 2.0 devices &n; * when not using 3.0 electricals.&n; */
 DECL|function|agp_generic_agp_3_0_enable
-r_void
+r_int
 id|agp_generic_agp_3_0_enable
 c_func
 (paren
@@ -2328,14 +2326,19 @@ id|minor
 )paren
 suffix:semicolon
 r_return
+id|TRUE
 suffix:semicolon
 )brace
 )brace
-id|agp_generic_agp_enable
+r_return
+id|FALSE
+suffix:semicolon
+)brace
+DECL|variable|agp_generic_agp_3_0_enable
+id|EXPORT_SYMBOL
 c_func
 (paren
-id|mode
+id|agp_generic_agp_3_0_enable
 )paren
 suffix:semicolon
-)brace
 eof

@@ -43,6 +43,17 @@ DECL|macro|SNDRV_SYNERGY_ENABLE
 mdefine_line|#define SNDRV_SYNERGY_ENABLE&t;&t;34
 DECL|macro|SNDRV_SYNERGY_FREQ
 mdefine_line|#define SNDRV_SYNERGY_FREQ&t;&t;35
+multiline_comment|/* see shubstats_ioctl() */
+DECL|macro|SNDRV_SHUB_INFOSIZE
+mdefine_line|#define SNDRV_SHUB_INFOSIZE&t;&t;40
+DECL|macro|SNDRV_SHUB_CONFIGURE
+mdefine_line|#define SNDRV_SHUB_CONFIGURE&t;&t;41
+DECL|macro|SNDRV_SHUB_RESETSTATS
+mdefine_line|#define SNDRV_SHUB_RESETSTATS&t;&t;42
+DECL|macro|SNDRV_SHUB_GETSTATS
+mdefine_line|#define SNDRV_SHUB_GETSTATS&t;&t;43
+DECL|macro|SNDRV_SHUB_GETNASID
+mdefine_line|#define SNDRV_SHUB_GETNASID&t;&t;44
 multiline_comment|/* Devices */
 DECL|macro|SNDRV_UKNOWN_DEVICE
 mdefine_line|#define SNDRV_UKNOWN_DEVICE&t;&t;-1

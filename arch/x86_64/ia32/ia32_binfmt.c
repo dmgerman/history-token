@@ -1,11 +1,12 @@
 multiline_comment|/* &n; * Written 2000,2002 by Andi Kleen. &n; * &n; * Losely based on the sparc64 and IA64 32bit emulation loaders.&n; * This tricks binfmt_elf.c into loading 32bit binaries using lots &n; * of ugly preprocessor tricks. Talk about very very poor man&squot;s inheritance.&n; */
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/config.h&gt; 
 macro_line|#include &lt;linux/stddef.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;asm/segment.h&gt; 
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -13,6 +14,8 @@ macro_line|#include &lt;asm/user32.h&gt;
 macro_line|#include &lt;asm/sigcontext32.h&gt;
 macro_line|#include &lt;asm/fpu32.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/ia32.h&gt;
 r_struct
 id|file
 suffix:semicolon
@@ -21,10 +24,6 @@ id|elf_phdr
 suffix:semicolon
 DECL|macro|IA32_EMULATOR
 mdefine_line|#define IA32_EMULATOR 1
-DECL|macro|IA32_PAGE_OFFSET
-mdefine_line|#define IA32_PAGE_OFFSET 0xffff0000
-DECL|macro|IA32_STACK_TOP
-mdefine_line|#define IA32_STACK_TOP IA32_PAGE_OFFSET
 DECL|macro|ELF_ET_DYN_BASE
 mdefine_line|#define ELF_ET_DYN_BASE&t;&t;(IA32_PAGE_OFFSET/3 + 0x1000000)
 DECL|macro|ELF_ARCH
@@ -79,19 +78,6 @@ suffix:semicolon
 multiline_comment|/* errno */
 )brace
 suffix:semicolon
-DECL|struct|timeval32
-r_struct
-id|timeval32
-(brace
-DECL|member|tv_sec
-DECL|member|tv_usec
-r_int
-id|tv_sec
-comma
-id|tv_usec
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|macro|jiffies_to_timeval
 mdefine_line|#define jiffies_to_timeval(a,b) do { (b)-&gt;tv_usec = 0; (b)-&gt;tv_sec = (a)/HZ; }while(0)
 DECL|struct|elf_prstatus
@@ -139,25 +125,25 @@ id|pr_sid
 suffix:semicolon
 DECL|member|pr_utime
 r_struct
-id|timeval32
+id|compat_timeval
 id|pr_utime
 suffix:semicolon
 multiline_comment|/* User time */
 DECL|member|pr_stime
 r_struct
-id|timeval32
+id|compat_timeval
 id|pr_stime
 suffix:semicolon
 multiline_comment|/* System time */
 DECL|member|pr_cutime
 r_struct
-id|timeval32
+id|compat_timeval
 id|pr_cutime
 suffix:semicolon
 multiline_comment|/* Cumulative user time */
 DECL|member|pr_cstime
 r_struct
-id|timeval32
+id|compat_timeval
 id|pr_cstime
 suffix:semicolon
 multiline_comment|/* Cumulative system time */
@@ -256,11 +242,9 @@ DECL|macro|ELF_CORE_COPY_REGS
 mdefine_line|#define ELF_CORE_COPY_REGS(pr_reg, regs)       &t;&t;&bslash;&n;&t;pr_reg[0] = regs-&gt;rbx;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[1] = regs-&gt;rcx;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[2] = regs-&gt;rdx;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[3] = regs-&gt;rsi;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[4] = regs-&gt;rdi;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[5] = regs-&gt;rbp;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[6] = regs-&gt;rax;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[7] = _GET_SEG(ds);   &t;&t;&t;&bslash;&n;&t;pr_reg[8] = _GET_SEG(es);&t;&t;&t;&bslash;&n;&t;pr_reg[9] = _GET_SEG(fs);&t;&t;&t;&bslash;&n;&t;pr_reg[10] = _GET_SEG(gs);&t;&t;&t;&bslash;&n;&t;pr_reg[11] = regs-&gt;orig_rax;&t;&t;&t;&bslash;&n;&t;pr_reg[12] = regs-&gt;rip;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[13] = regs-&gt;cs;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[14] = regs-&gt;eflags;&t;&t;&t;&bslash;&n;&t;pr_reg[15] = regs-&gt;rsp;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[16] = regs-&gt;ss;
 DECL|macro|user
 mdefine_line|#define user user32
-DECL|macro|dump_fpu
-mdefine_line|#define dump_fpu dump_fpu_ia32
 DECL|macro|__ASM_X86_64_ELF_H
 mdefine_line|#define __ASM_X86_64_ELF_H 1
-macro_line|#include &lt;asm/ia32.h&gt;
+singleline_comment|//#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 DECL|typedef|elf_fpregset_t
 r_typedef
@@ -274,6 +258,322 @@ r_struct
 id|user32_fxsr_struct
 id|elf_fpxregset_t
 suffix:semicolon
+DECL|function|elf_core_copy_regs
+r_static
+r_inline
+r_void
+id|elf_core_copy_regs
+c_func
+(paren
+id|elf_gregset_t
+op_star
+id|elfregs
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+id|ELF_CORE_COPY_REGS
+c_func
+(paren
+(paren
+op_star
+id|elfregs
+)paren
+comma
+id|regs
+)paren
+)brace
+DECL|function|elf_core_copy_task_regs
+r_static
+r_inline
+r_int
+id|elf_core_copy_task_regs
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|t
+comma
+id|elf_gregset_t
+op_star
+id|elfregs
+)paren
+(brace
+r_struct
+id|pt_regs
+op_star
+id|pp
+op_assign
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+(paren
+id|t-&gt;thread.rsp0
+)paren
+suffix:semicolon
+id|ELF_CORE_COPY_REGS
+c_func
+(paren
+(paren
+op_star
+id|elfregs
+)paren
+comma
+id|pp
+)paren
+suffix:semicolon
+multiline_comment|/* fix wrong segments */
+(paren
+op_star
+id|elfregs
+)paren
+(braket
+l_int|7
+)braket
+op_assign
+id|t-&gt;thread.ds
+suffix:semicolon
+(paren
+op_star
+id|elfregs
+)paren
+(braket
+l_int|9
+)braket
+op_assign
+id|t-&gt;thread.fsindex
+suffix:semicolon
+(paren
+op_star
+id|elfregs
+)paren
+(braket
+l_int|10
+)braket
+op_assign
+id|t-&gt;thread.gsindex
+suffix:semicolon
+(paren
+op_star
+id|elfregs
+)paren
+(braket
+l_int|8
+)braket
+op_assign
+id|t-&gt;thread.es
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_int
+DECL|function|elf_core_copy_task_fpregs
+id|elf_core_copy_task_fpregs
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+id|elf_fpregset_t
+op_star
+id|fpu
+)paren
+(brace
+r_struct
+id|_fpstate_ia32
+op_star
+id|fpstate
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|fpu
+suffix:semicolon
+r_struct
+id|pt_regs
+op_star
+id|regs
+op_assign
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+(paren
+id|tsk-&gt;thread.rsp0
+)paren
+suffix:semicolon
+id|mm_segment_t
+id|oldfs
+op_assign
+id|get_fs
+c_func
+(paren
+)paren
+suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tsk-&gt;used_math
+)paren
+r_return
+l_int|0
+suffix:semicolon
+op_decrement
+id|regs
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tsk
+op_eq
+id|current
+)paren
+id|unlazy_fpu
+c_func
+(paren
+id|tsk
+)paren
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|KERNEL_DS
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|save_i387_ia32
+c_func
+(paren
+id|tsk
+comma
+id|fpstate
+comma
+id|regs
+comma
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* Correct for i386 bug. It puts the fop into the upper 16bits of &n;&t;   the tag word (like FXSAVE), not into the fcs*/
+id|fpstate-&gt;cssel
+op_or_assign
+id|fpstate-&gt;tag
+op_amp
+l_int|0xffff0000
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|oldfs
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+DECL|macro|ELF_CORE_COPY_XFPREGS
+mdefine_line|#define ELF_CORE_COPY_XFPREGS 1
+r_static
+r_inline
+r_int
+DECL|function|elf_core_copy_task_xfpregs
+id|elf_core_copy_task_xfpregs
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|t
+comma
+id|elf_fpxregset_t
+op_star
+id|xfpu
+)paren
+(brace
+r_struct
+id|pt_regs
+op_star
+id|regs
+op_assign
+(paren
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+(paren
+id|t-&gt;thread.rsp0
+)paren
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|t-&gt;used_math
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|t
+op_eq
+id|current
+)paren
+id|unlazy_fpu
+c_func
+(paren
+id|t
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|xfpu
+comma
+op_amp
+id|t-&gt;thread.i387.fxsave
+comma
+r_sizeof
+(paren
+id|elf_fpxregset_t
+)paren
+)paren
+suffix:semicolon
+id|xfpu-&gt;fcs
+op_assign
+id|regs-&gt;cs
+suffix:semicolon
+id|xfpu-&gt;fos
+op_assign
+id|t-&gt;thread.ds
+suffix:semicolon
+multiline_comment|/* right? */
+r_return
+l_int|1
+suffix:semicolon
+)brace
 DECL|macro|elf_check_arch
 macro_line|#undef elf_check_arch
 DECL|macro|elf_check_arch
@@ -324,9 +624,10 @@ suffix:semicolon
 DECL|macro|start_thread
 macro_line|#undef start_thread
 DECL|macro|start_thread
-mdefine_line|#define start_thread(regs,new_rip,new_rsp) do { &bslash;&n;&t;__asm__(&quot;movl %0,%%fs&quot;: :&quot;r&quot; (0)); &bslash;&n;&t;__asm__(&quot;movl %0,%%es; movl %0,%%ds&quot;: :&quot;r&quot; (__USER32_DS)); &bslash;&n;&t;wrmsrl(MSR_KERNEL_GS_BASE, 0); &bslash;&n;&t;(regs)-&gt;rip = (new_rip); &bslash;&n;&t;(regs)-&gt;rsp = (new_rsp); &bslash;&n;&t;(regs)-&gt;eflags = 0x200; &bslash;&n;&t;(regs)-&gt;cs = __USER32_CS; &bslash;&n;&t;(regs)-&gt;ss = __USER32_DS; &bslash;&n;&t;set_fs(USER_DS); &bslash;&n;} while(0) 
+mdefine_line|#define start_thread(regs,new_rip,new_rsp) do { &bslash;&n;&t;asm volatile(&quot;movl %0,%%fs&quot; :: &quot;r&quot; (0)); &bslash;&n;&t;asm volatile(&quot;movl %0,%%es; movl %0,%%ds&quot;: :&quot;r&quot; (__USER32_DS)); &bslash;&n;&t;load_gs_index(0); &bslash;&n;&t;(regs)-&gt;rip = (new_rip); &bslash;&n;&t;(regs)-&gt;rsp = (new_rsp); &bslash;&n;&t;(regs)-&gt;eflags = 0x200; &bslash;&n;&t;(regs)-&gt;cs = __USER32_CS; &bslash;&n;&t;(regs)-&gt;ss = __USER32_DS; &bslash;&n;&t;set_fs(USER_DS); &bslash;&n;} while(0) 
 DECL|macro|elf_map
 mdefine_line|#define elf_map elf32_map
+macro_line|#include &lt;linux/module.h&gt;
 id|MODULE_DESCRIPTION
 c_func
 (paren
@@ -601,7 +902,7 @@ id|IA32_STACK_TOP
 suffix:semicolon
 id|mpnt-&gt;vm_page_prot
 op_assign
-id|PAGE_COPY
+id|PAGE_COPY_EXEC
 suffix:semicolon
 id|mpnt-&gt;vm_flags
 op_assign
@@ -819,119 +1120,6 @@ id|me-&gt;mm-&gt;mmap_sem
 suffix:semicolon
 r_return
 id|map_addr
-suffix:semicolon
-)brace
-DECL|function|dump_fpu_ia32
-r_int
-id|dump_fpu_ia32
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-id|elf_fpregset_t
-op_star
-id|fp
-)paren
-(brace
-r_struct
-id|_fpstate_ia32
-op_star
-id|fpu
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|fp
-suffix:semicolon
-r_struct
-id|task_struct
-op_star
-id|tsk
-op_assign
-id|current
-suffix:semicolon
-id|mm_segment_t
-id|oldfs
-op_assign
-id|get_fs
-c_func
-(paren
-)paren
-suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|tsk-&gt;used_math
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|test_thread_flag
-c_func
-(paren
-id|TIF_IA32
-)paren
-)paren
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-id|unlazy_fpu
-c_func
-(paren
-id|tsk
-)paren
-suffix:semicolon
-id|set_fs
-c_func
-(paren
-id|KERNEL_DS
-)paren
-suffix:semicolon
-id|ret
-op_assign
-id|save_i387_ia32
-c_func
-(paren
-id|current
-comma
-id|fpu
-comma
-id|regs
-comma
-l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* Correct for i386 bug. It puts the fop into the upper 16bits of &n;&t;   the tag word (like FXSAVE), not into the fcs*/
-id|fpu-&gt;cssel
-op_or_assign
-id|fpu-&gt;tag
-op_amp
-l_int|0xffff0000
-suffix:semicolon
-id|set_fs
-c_func
-(paren
-id|oldfs
-)paren
-suffix:semicolon
-r_return
-id|ret
 suffix:semicolon
 )brace
 eof

@@ -2410,6 +2410,7 @@ r_char
 op_star
 id|name
 comma
+r_const
 r_void
 op_star
 id|data
@@ -2532,6 +2533,10 @@ c_func
 (paren
 id|vp
 comma
+(paren
+r_void
+op_star
+)paren
 id|data
 comma
 id|size
@@ -2562,6 +2567,10 @@ c_func
 (paren
 id|vp
 comma
+(paren
+r_void
+op_star
+)paren
 id|data
 comma
 id|size
@@ -2592,6 +2601,10 @@ c_func
 (paren
 id|vp
 comma
+(paren
+r_void
+op_star
+)paren
 id|data
 comma
 id|size
@@ -2701,6 +2714,10 @@ id|vp
 comma
 id|p
 comma
+(paren
+r_void
+op_star
+)paren
 id|data
 comma
 id|size
@@ -2773,6 +2790,10 @@ id|vp
 comma
 id|p
 comma
+(paren
+r_void
+op_star
+)paren
 id|data
 comma
 id|size

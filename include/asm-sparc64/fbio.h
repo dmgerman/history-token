@@ -217,41 +217,6 @@ DECL|macro|FBIOSVIDEO
 mdefine_line|#define FBIOSVIDEO _IOW(&squot;F&squot;, 7, int)
 DECL|macro|FBIOGVIDEO
 mdefine_line|#define FBIOGVIDEO _IOR(&squot;F&squot;, 8, int)
-multiline_comment|/* Cursor position */
-DECL|struct|fbcurpos
-r_struct
-id|fbcurpos
-(brace
-macro_line|#ifdef __KERNEL__
-DECL|member|fbx
-DECL|member|fby
-r_int
-id|fbx
-comma
-id|fby
-suffix:semicolon
-macro_line|#else
-r_int
-id|x
-comma
-id|y
-suffix:semicolon
-macro_line|#endif
-)brace
-suffix:semicolon
-multiline_comment|/* Cursor operations */
-DECL|macro|FB_CUR_SETCUR
-mdefine_line|#define FB_CUR_SETCUR   0x01&t;/* Enable/disable cursor display */
-DECL|macro|FB_CUR_SETPOS
-mdefine_line|#define FB_CUR_SETPOS   0x02&t;/* set cursor position */
-DECL|macro|FB_CUR_SETHOT
-mdefine_line|#define FB_CUR_SETHOT   0x04&t;/* set cursor hotspot */
-DECL|macro|FB_CUR_SETCMAP
-mdefine_line|#define FB_CUR_SETCMAP  0x08&t;/* set color map for the cursor */
-DECL|macro|FB_CUR_SETSHAPE
-mdefine_line|#define FB_CUR_SETSHAPE 0x10&t;/* set shape */
-DECL|macro|FB_CUR_SETALL
-mdefine_line|#define FB_CUR_SETALL   0x1F&t;/* all of the above */
 DECL|struct|fbcursor
 r_struct
 id|fbcursor

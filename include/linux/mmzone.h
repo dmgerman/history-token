@@ -383,48 +383,6 @@ id|pglist_data
 op_star
 id|pgdat_list
 suffix:semicolon
-r_static
-r_inline
-r_int
-DECL|function|memclass
-id|memclass
-c_func
-(paren
-r_struct
-id|zone
-op_star
-id|pgzone
-comma
-r_struct
-id|zone
-op_star
-id|classzone
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pgzone-&gt;zone_pgdat
-op_ne
-id|classzone-&gt;zone_pgdat
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pgzone
-OG
-id|classzone
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
 r_void
 id|get_zone_counts
 c_func
@@ -702,8 +660,6 @@ mdefine_line|#define memblk_set_offline(memblk) &bslash;&n;&t;({ BUG_ON((memblk)
 DECL|macro|num_online_memblks
 mdefine_line|#define num_online_memblks()&t;&t;1
 macro_line|#endif /* CONFIG_DISCONTIGMEM || CONFIG_NUMA */
-DECL|macro|MAP_ALIGN
-mdefine_line|#define MAP_ALIGN(x)&t;((((x) % sizeof(struct page)) == 0) ? (x) : ((x) + &bslash;&n;&t;&t;sizeof(struct page) - ((x) % sizeof(struct page))))
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_MMZONE_H */

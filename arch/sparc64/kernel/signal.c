@@ -4420,6 +4420,8 @@ c_func
 (paren
 id|signr
 comma
+id|exit_code
+comma
 id|regs
 )paren
 )paren

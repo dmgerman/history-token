@@ -60,7 +60,6 @@ id|block
 id|pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;affs_bread: %d&bslash;n&quot;
 comma
 id|block
@@ -123,7 +122,6 @@ id|block
 id|pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;affs_getblk: %d&bslash;n&quot;
 comma
 id|block
@@ -191,7 +189,6 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;affs_getzeroblk: %d&bslash;n&quot;
 comma
 id|block
@@ -293,7 +290,6 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;affs_getemptyblk: %d&bslash;n&quot;
 comma
 id|block
@@ -374,7 +370,6 @@ id|bh
 id|pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;affs_brelse: %ld&bslash;n&quot;
 comma
 id|bh-&gt;b_blocknr

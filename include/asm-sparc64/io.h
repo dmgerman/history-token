@@ -1233,6 +1233,47 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|_sbus_readq
+r_static
+id|__inline__
+id|u64
+id|_sbus_readq
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+id|u64
+id|ret
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;ldxa&bslash;t[%1] %2, %0&bslash;t/* sbus_readq */&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|ret
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|addr
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|ASI_PHYS_BYPASS_EC_E
+)paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 DECL|function|_sbus_writeb
 r_static
 id|__inline__
@@ -1353,18 +1394,62 @@ id|ASI_PHYS_BYPASS_EC_E
 )paren
 suffix:semicolon
 )brace
+DECL|function|_sbus_writeq
+r_static
+id|__inline__
+r_void
+id|_sbus_writeq
+c_func
+(paren
+id|u64
+id|l
+comma
+r_int
+r_int
+id|addr
+)paren
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;stxa&bslash;t%r0, [%1] %2&bslash;t/* sbus_writeq */&quot;
+suffix:colon
+multiline_comment|/* no outputs */
+suffix:colon
+l_string|&quot;Jr&quot;
+(paren
+id|l
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|addr
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|ASI_PHYS_BYPASS_EC_E
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|macro|sbus_readb
 mdefine_line|#define sbus_readb(__addr)&t;&t;(_sbus_readb((unsigned long)(__addr)))
 DECL|macro|sbus_readw
 mdefine_line|#define sbus_readw(__addr)&t;&t;(_sbus_readw((unsigned long)(__addr)))
 DECL|macro|sbus_readl
 mdefine_line|#define sbus_readl(__addr)&t;&t;(_sbus_readl((unsigned long)(__addr)))
+DECL|macro|sbus_readq
+mdefine_line|#define sbus_readq(__addr)&t;&t;(_sbus_readq((unsigned long)(__addr)))
 DECL|macro|sbus_writeb
 mdefine_line|#define sbus_writeb(__b, __addr)&t;(_sbus_writeb((__b), (unsigned long)(__addr)))
 DECL|macro|sbus_writew
 mdefine_line|#define sbus_writew(__w, __addr)&t;(_sbus_writew((__w), (unsigned long)(__addr)))
 DECL|macro|sbus_writel
 mdefine_line|#define sbus_writel(__l, __addr)&t;(_sbus_writel((__l), (unsigned long)(__addr)))
+DECL|macro|sbus_writeq
+mdefine_line|#define sbus_writeq(__l, __addr)&t;(_sbus_writeq((__l), (unsigned long)(__addr)))
 DECL|function|_sbus_memset_io
 r_static
 r_inline

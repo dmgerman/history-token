@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
@@ -968,13 +969,6 @@ op_minus
 id|ENXIO
 )paren
 suffix:semicolon
-id|read_lock
-c_func
-(paren
-op_amp
-id|ctl-&gt;card-&gt;control_rwlock
-)paren
-suffix:semicolon
 id|kctl
 op_assign
 id|snd_ctl_find_id
@@ -991,19 +985,10 @@ c_cond
 op_logical_neg
 id|kctl
 )paren
-(brace
-id|read_unlock
-c_func
-(paren
-op_amp
-id|ctl-&gt;card-&gt;control_rwlock
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENXIO
 suffix:semicolon
-)brace
 id|info.id
 op_assign
 op_star
@@ -1032,13 +1017,6 @@ l_int|0
 id|err
 op_assign
 id|info.type
-suffix:semicolon
-id|read_unlock
-c_func
-(paren
-op_amp
-id|ctl-&gt;card-&gt;control_rwlock
-)paren
 suffix:semicolon
 r_return
 id|err

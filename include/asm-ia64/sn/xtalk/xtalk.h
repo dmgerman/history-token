@@ -2,6 +2,7 @@ multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and condit
 macro_line|#ifndef _ASM_SN_XTALK_XTALK_H
 DECL|macro|_ASM_SN_XTALK_XTALK_H
 mdefine_line|#define _ASM_SN_XTALK_XTALK_H
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * xtalk.h -- platform-independent crosstalk interface&n; */
 multiline_comment|/*&n; * User-level device driver visible types&n; */
 DECL|typedef|xwidgetnum_t
@@ -418,6 +419,7 @@ id|xtalk_intr_t
 id|intr_hdl
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 r_typedef
 r_int
 DECL|typedef|xtalk_intr_connect_f
@@ -438,6 +440,37 @@ id|setfunc_arg
 )paren
 suffix:semicolon
 multiline_comment|/* arg to setfunc */
+macro_line|#else
+r_typedef
+r_int
+DECL|typedef|xtalk_intr_connect_f
+id|xtalk_intr_connect_f
+(paren
+id|xtalk_intr_t
+id|intr_hdl
+comma
+multiline_comment|/* xtalk intr resource handle */
+id|intr_func_t
+id|intr_func
+comma
+multiline_comment|/* xtalk intr handler */
+r_void
+op_star
+id|intr_arg
+comma
+multiline_comment|/* arg to intr handler */
+id|xtalk_intr_setfunc_f
+op_star
+id|setfunc
+comma
+multiline_comment|/* func to set intr hw */
+r_void
+op_star
+id|setfunc_arg
+)paren
+suffix:semicolon
+multiline_comment|/* arg to setfunc */
+macro_line|#endif
 r_typedef
 r_void
 DECL|typedef|xtalk_intr_disconnect_f
@@ -1098,26 +1131,6 @@ comma
 id|xtalk_iter_f
 op_star
 id|func
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xtalk_device_powerup
-c_func
-(paren
-id|devfs_handle_t
-comma
-id|xwidgetnum_t
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xtalk_device_shutdown
-c_func
-(paren
-id|devfs_handle_t
-comma
-id|xwidgetnum_t
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* __KERNEL__ */

@@ -2,7 +2,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
-macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -85,13 +84,7 @@ c_func
 id|boot_cpu_data
 )paren
 suffix:semicolon
-DECL|variable|dump_fpu
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|dump_fpu
-)paren
-suffix:semicolon
+singleline_comment|//EXPORT_SYMBOL(dump_fpu);
 DECL|variable|__ioremap
 id|EXPORT_SYMBOL
 c_func
@@ -456,15 +449,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|smp_call_function
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_MCA
-DECL|variable|machine_id
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|machine_id
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -908,6 +892,18 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|init_level4_pgt
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|__supported_pte_mask
+suffix:semicolon
+DECL|variable|__supported_pte_mask
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__supported_pte_mask
 )paren
 suffix:semicolon
 eof

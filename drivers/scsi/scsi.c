@@ -208,7 +208,6 @@ id|request_queue_t
 op_star
 id|q
 op_assign
-op_amp
 id|SDpnt-&gt;request_queue
 suffix:semicolon
 multiline_comment|/*&n;&t; * tell block layer about assigned host_lock for this host&n;&t; */
@@ -221,14 +220,6 @@ id|scsi_request_fn
 comma
 id|SHpnt-&gt;host_lock
 )paren
-suffix:semicolon
-id|q-&gt;queuedata
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|SDpnt
 suffix:semicolon
 multiline_comment|/* Hardware imposed limit. */
 id|blk_queue_max_hw_segments
@@ -407,7 +398,6 @@ id|request_queue
 op_star
 id|q
 op_assign
-op_amp
 id|SCpnt-&gt;device-&gt;request_queue
 suffix:semicolon
 r_int
@@ -1507,13 +1497,6 @@ op_star
 id|SCpnt
 )paren
 (brace
-id|request_queue_t
-op_star
-id|q
-op_assign
-op_amp
-id|SCpnt-&gt;device-&gt;request_queue
-suffix:semicolon
 id|__scsi_release_command
 c_func
 (paren
@@ -1524,7 +1507,7 @@ multiline_comment|/*&n;         * Finally, hit the queue request function to mak
 id|scsi_queue_next_request
 c_func
 (paren
-id|q
+id|SCpnt-&gt;device-&gt;request_queue
 comma
 l_int|NULL
 )paren
@@ -2076,13 +2059,6 @@ c_func
 id|wait
 )paren
 suffix:semicolon
-id|request_queue_t
-op_star
-id|q
-op_assign
-op_amp
-id|SRpnt-&gt;sr_device-&gt;request_queue
-suffix:semicolon
 id|SRpnt-&gt;sr_request-&gt;waiting
 op_assign
 op_amp
@@ -2116,7 +2092,7 @@ suffix:semicolon
 id|generic_unplug_device
 c_func
 (paren
-id|q
+id|SRpnt-&gt;sr_device-&gt;request_queue
 )paren
 suffix:semicolon
 id|wait_for_completion
@@ -5234,106 +5210,10 @@ op_star
 id|sdev
 )paren
 (brace
-r_if
-c_cond
-(paren
+multiline_comment|/* all this code is now handled elsewhere &n;&t;if (sdev-&gt;attached++ == 0) {&n;&t;&t;scsi_build_commandblocks(sdev);&n;&t;&t;if (sdev-&gt;current_queue_depth == 0) {&n;&t;&t;&t;printk(KERN_ERR &quot;scsi: Allocation failure during&quot;&n;&t;&t;&t;       &quot; attach, some SCSI devices might not be&quot;&n;&t;&t;&t;       &quot; configured&bslash;n&quot;);&n;&t;&t;&t;return -ENOMEM;&n;&t;&t;}&n;&t;&t;if (sdev-&gt;host-&gt;hostt-&gt;slave_configure != NULL) {&n;&t;&t;&t;if (sdev-&gt;host-&gt;hostt-&gt;slave_configure(sdev) != 0) {&n;&t;&t;&t;&t;printk(KERN_INFO &quot;scsi: failed low level driver&quot;&n;&t;&t;&t;&t;       &quot; attach, some SCSI device might not be&quot;&n;&t;&t;&t;&t;       &quot; configured&bslash;n&quot;);&n;&t;&t;&t;&t;scsi_release_commandblocks(sdev);&n;&t;&t;&t;&t;return -ENOMEM;&n;&t;&t;&t;}&n;&t;&t;} else if (sdev-&gt;host-&gt;cmd_per_lun != 0)&n;&t;&t;&t;scsi_adjust_queue_depth(sdev, 0,&n;&t;&t;&t;&t;&t;&t;sdev-&gt;host-&gt;cmd_per_lun);&n;&t;}&n;&t;&t; */
 id|sdev-&gt;attached
 op_increment
-op_eq
-l_int|0
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * No one was attached.&n;&t;&t; */
-id|scsi_build_commandblocks
-c_func
-(paren
-id|sdev
-)paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sdev-&gt;current_queue_depth
-op_eq
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;scsi: Allocation failure during&quot;
-l_string|&quot; attach, some SCSI devices might not be&quot;
-l_string|&quot; configured&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|sdev-&gt;host-&gt;hostt-&gt;slave_configure
-op_ne
-l_int|NULL
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|sdev-&gt;host-&gt;hostt
-op_member_access_from_pointer
-id|slave_configure
-c_func
-(paren
-id|sdev
-)paren
-op_ne
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;scsi: failed low level driver&quot;
-l_string|&quot; attach, some SCSI device might not be&quot;
-l_string|&quot; configured&bslash;n&quot;
-)paren
-suffix:semicolon
-id|scsi_release_commandblocks
-c_func
-(paren
-id|sdev
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|sdev-&gt;host-&gt;cmd_per_lun
-op_ne
-l_int|0
-)paren
-id|scsi_adjust_queue_depth
-c_func
-(paren
-id|sdev
-comma
-l_int|0
-comma
-id|sdev-&gt;host-&gt;cmd_per_lun
-)paren
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -5350,22 +5230,10 @@ op_star
 id|sdev
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_decrement
+multiline_comment|/*&n;&t;if (--sdev-&gt;attached == 0) {&n;&t;&t;scsi_release_commandblocks(sdev);&n;&t;}&n;&t;*/
 id|sdev-&gt;attached
-op_eq
-l_int|0
-)paren
-(brace
-id|scsi_release_commandblocks
-c_func
-(paren
-id|sdev
-)paren
+op_decrement
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * This entry point should be called by a loadable module if it is trying&n; * add a high level scsi driver to the system.&n; *&n; * This entry point is called from the upper level module&squot;s module_init()&n; * routine.  That implies that when this function is called, the&n; * scsi_mod module is locked down because of upper module layering and&n; * that the high level driver module is locked down by being in it&squot;s&n; * init routine.  So, the *only* thing we have to do to protect adds &n; * we perform in this function is to make sure that all call&squot;s&n; * to the high level driver&squot;s attach() and detach() call in points, other&n; * than via scsi_register_device and scsi_unregister_device which are in&n; * the module_init and module_exit code respectively and therefore already&n; * locked down by the kernel module loader, are wrapped by try_module_get()&n; * and module_put() to avoid races on device adds and removes.&n; */
 DECL|function|scsi_register_device

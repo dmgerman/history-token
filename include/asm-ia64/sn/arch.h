@@ -39,6 +39,11 @@ r_typedef
 id|u64
 id|nic_t
 suffix:semicolon
+DECL|typedef|cnodeid_t
+r_typedef
+r_char
+id|cnodeid_t
+suffix:semicolon
 DECL|macro|CNODE_TO_CPU_BASE
 mdefine_line|#define CNODE_TO_CPU_BASE(_cnode)&t;(NODEPDA(_cnode)-&gt;node_first_cpu)
 DECL|macro|NASID_TO_COMPACT_NODEID
@@ -51,6 +56,8 @@ DECL|macro|INVALID_CNODEID
 mdefine_line|#define INVALID_CNODEID&t;&t;((cnodeid_t)-1)
 DECL|macro|INVALID_PNODEID
 mdefine_line|#define INVALID_PNODEID&t;&t;((pnodeid_t)-1)
+DECL|macro|INVALID_SLAB
+mdefine_line|#define INVALID_SLAB            (slabid_t)-1
 DECL|macro|INVALID_MODULE
 mdefine_line|#define INVALID_MODULE&t;&t;((moduleid_t)-1)
 DECL|macro|INVALID_PARTID

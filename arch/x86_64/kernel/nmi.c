@@ -983,6 +983,13 @@ id|error_code
 (brace
 r_int
 id|cpu
+suffix:semicolon
+id|nmi_enter
+c_func
+(paren
+)paren
+suffix:semicolon
+id|cpu
 op_assign
 id|smp_processor_id
 c_func
@@ -1013,6 +1020,11 @@ id|default_do_nmi
 c_func
 (paren
 id|regs
+)paren
+suffix:semicolon
+id|nmi_exit
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

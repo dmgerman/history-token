@@ -57,8 +57,8 @@ mdefine_line|#define PLAT_VALID_MEM_KADDR(kaddr)&t;(((unsigned long)(kaddr) &amp
 multiline_comment|/*&n; * Memory is conceptually divided into chunks. A chunk is either&n; * completely present, or else the kernel assumes it is completely&n; * absent. Each node consists of a number of possibly contiguous chunks.&n; */
 DECL|macro|SN2_CHUNKSHIFT
 mdefine_line|#define SN2_CHUNKSHIFT&t;&t;&t;25&t;&t;&t;/* 32 MB */
-DECL|macro|SN2_CHUNKSIZE
-mdefine_line|#define SN2_CHUNKSIZE&t;&t;&t;(1UL &lt;&lt; SN2_CHUNKSHIFT)
+DECL|macro|PLAT_CHUNKSIZE
+mdefine_line|#define PLAT_CHUNKSIZE&t;&t;&t;(1UL &lt;&lt; SN2_CHUNKSHIFT)
 DECL|macro|PLAT_CHUNKNUM
 mdefine_line|#define PLAT_CHUNKNUM(addr)&t;&t;({unsigned long _p=(unsigned long)(addr);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;(((_p&amp;SN2_NODE_MASK)&gt;&gt;2) | &t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;(_p&amp;SN2_NODE_OFFSET_MASK)) &gt;&gt;SN2_CHUNKSHIFT;})
 multiline_comment|/*&n; * Given a kaddr, find the nid (compact nodeid)&n; */
@@ -76,7 +76,7 @@ DECL|macro|PLAT_CLUMP_MEM_MAP_INDEX
 mdefine_line|#define PLAT_CLUMP_MEM_MAP_INDEX(kaddr)&t;&t;({long _kmmi=(long)(kaddr);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;KVADDR_TO_NID(_kmmi) * PLAT_CLUMPS_PER_NODE +&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;SN2_NODE_CLUMP_NUMBER(_kmmi);})
 multiline_comment|/*&n; * Calculate a &quot;goal&quot; value to be passed to __alloc_bootmem_node for allocating structures on&n; * nodes so that they dont alias to the same line in the cache as the previous allocated structure.&n; * This macro takes an address of the end of previous allocation, rounds it to a page boundary &amp; &n; * changes the node number.&n; */
 DECL|macro|PLAT_BOOTMEM_ALLOC_GOAL
-mdefine_line|#define PLAT_BOOTMEM_ALLOC_GOAL(cnode,kaddr)&t;SN2_KADDR(PLAT_PXM_TO_PHYS_NODE_NUMBER(nid_to_pxm_map[cnodeid]),       &bslash;&n;&t;&t;&t;&t;&t;&t; (SN2_NODE_OFFSET(kaddr) + PAGE_SIZE - 1) &gt;&gt; PAGE_SHIFT &lt;&lt; PAGE_SHIFT)
+mdefine_line|#define PLAT_BOOTMEM_ALLOC_GOAL(cnode,kaddr)&t;__pa(SN2_KADDR(PLAT_PXM_TO_PHYS_NODE_NUMBER(nid_to_pxm_map[cnode]),&t;       &bslash;&n;&t;&t;&t;&t;&t;&t; (SN2_NODE_OFFSET(kaddr) + PAGE_SIZE - 1) &gt;&gt; PAGE_SHIFT &lt;&lt; PAGE_SHIFT))
 multiline_comment|/*&n; * Convert a proximity domain number (from the ACPI tables) into a physical node number.&n; *&t;Note: on SN2, the promity domain number is the same as bits [8:1] of the NASID. The following&n; *&t;algorithm relies on:&n; *&t;&t;- bit 0 of the NASID for cpu nodes is always 0&n; *&t;&t;- bits [10:9] of all NASIDs in a partition are always the same&n; *&t;&t;- hard_smp_processor_id return the SAPIC of the current cpu &amp;&n; *&t;&t;&t;bits 0..11 contain the NASID.&n; *&n; *&t;All of this complexity is because MS architectually limited proximity domain numbers to&n; *&t;8 bits. &n; */
 DECL|macro|PLAT_PXM_TO_PHYS_NODE_NUMBER
 mdefine_line|#define PLAT_PXM_TO_PHYS_NODE_NUMBER(pxm)&t;(((pxm)&lt;&lt;1) | (hard_smp_processor_id() &amp; 0x300))

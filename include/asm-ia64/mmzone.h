@@ -48,15 +48,25 @@ DECL|macro|NR_NODES
 mdefine_line|#define NR_NODES&t;8&t;/* Maximum number of nodes in SSI */
 DECL|macro|MAX_PHYS_MEMORY
 mdefine_line|#define MAX_PHYS_MEMORY&t;(1UL &lt;&lt; 40)&t;/* 1 TB */
-multiline_comment|/*&n; * Bank definitions.&n; * Current settings for DIG: 512MB/bank, 16GB/node.&n; */
+multiline_comment|/*&n; * Bank definitions.&n; * Configurable settings for DIG: 512MB/bank:  16GB/node,&n; *                               2048MB/bank:  64GB/node,&n; *                               8192MB/bank: 256GB/node.&n; */
 DECL|macro|NR_BANKS_PER_NODE
 mdefine_line|#define NR_BANKS_PER_NODE&t;32
-DECL|macro|BANK_OFFSET
-mdefine_line|#define BANK_OFFSET(addr)&t;((unsigned long)(addr) &amp; (BANKSIZE-1))
+macro_line|#if defined(CONFIG_IA64_NODESIZE_16GB)
 DECL|macro|DIG_BANKSHIFT
-mdefine_line|#define DIG_BANKSHIFT&t;&t;29
+macro_line|# define DIG_BANKSHIFT&t;&t;29
+macro_line|#elif defined(CONFIG_IA64_NODESIZE_64GB)
+DECL|macro|DIG_BANKSHIFT
+macro_line|# define DIG_BANKSHIFT&t;&t;31
+macro_line|#elif defined(CONFIG_IA64_NODESIZE_256GB)
+DECL|macro|DIG_BANKSHIFT
+macro_line|# define DIG_BANKSHIFT&t;&t;33
+macro_line|#else
+macro_line|# error Unsupported bank and nodesize!
+macro_line|#endif
 DECL|macro|BANKSIZE
 mdefine_line|#define BANKSIZE&t;&t;(1UL &lt;&lt; DIG_BANKSHIFT)
+DECL|macro|BANK_OFFSET
+mdefine_line|#define BANK_OFFSET(addr)&t;((unsigned long)(addr) &amp; (BANKSIZE-1))
 DECL|macro|NR_BANKS
 mdefine_line|#define NR_BANKS&t;&t;(NR_BANKS_PER_NODE * NR_NODES)
 multiline_comment|/*&n; * VALID_MEM_KADDR returns a boolean to indicate if a kaddr is&n; * potentially a valid cacheable identity mapped RAM memory address.&n; * Note that the RAM may or may not actually be present!!&n; */

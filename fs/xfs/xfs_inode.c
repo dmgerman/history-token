@@ -461,7 +461,7 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;Bad next_unlinked field (0) in XFS inode buffer 0x%x, starting blockno %Ld, offset 0x%x&quot;
+l_string|&quot;Bad next_unlinked field (0) in XFS inode buffer 0x%p, starting blockno %Ld, offset 0x%x&quot;
 comma
 (paren
 id|__uint64_t

@@ -981,14 +981,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MTRR
-multiline_comment|/*&n;&t; * Must be done before calibration delay is computed&n;&t; */
-id|mtrr_init_cpu
-(paren
-id|cpuid
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Get our bogomips.&n;&t; */
 id|calibrate_delay
 c_func
@@ -1026,6 +1018,11 @@ comma
 l_int|NULL
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|local_irq_disable
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Allow the master to continue.&n;&t; */
@@ -1304,6 +1301,8 @@ op_amp
 id|regs
 comma
 l_int|0
+comma
+l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -3393,10 +3392,17 @@ op_amp
 id|smp_commenced_mask
 )paren
 )paren
+(brace
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOSYS
 suffix:semicolon
+)brace
 multiline_comment|/* In case one didn&squot;t come up */
 r_if
 c_cond
@@ -3411,9 +3417,21 @@ op_amp
 id|cpu_callin_map
 )paren
 )paren
+(brace
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EIO
+suffix:semicolon
+)brace
+id|local_irq_enable
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* Unleash the CPU! */
 id|Dprintk

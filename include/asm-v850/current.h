@@ -2,8 +2,10 @@ multiline_comment|/*&n; * include/asm-v850/current.h -- Current task&n; *&n; *  
 macro_line|#ifndef __V850_CURRENT_H__
 DECL|macro|__V850_CURRENT_H__
 mdefine_line|#define __V850_CURRENT_H__
+macro_line|#ifndef __ASSEMBLY__ /* &lt;linux/thread_info.h&gt; is not asm-safe.  */
+macro_line|#include &lt;linux/thread_info.h&gt;
+macro_line|#endif
 macro_line|#include &lt;asm/macrology.h&gt;
-macro_line|#include &lt;asm/thread_info.h&gt;
 multiline_comment|/* Register used to hold the current task pointer while in the kernel.&n;   Any `call clobbered&squot; register without a special meaning should be OK,&n;   but check asm/v850/kernel/entry.S to be sure.  */
 DECL|macro|CURRENT_TASK_REGNUM
 mdefine_line|#define CURRENT_TASK_REGNUM&t;16
