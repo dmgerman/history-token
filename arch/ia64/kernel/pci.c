@@ -47,12 +47,6 @@ id|pcibios_fixups
 l_int|1
 )braket
 suffix:semicolon
-DECL|variable|pci_root_ops
-r_struct
-id|pci_ops
-op_star
-id|pci_root_ops
-suffix:semicolon
 multiline_comment|/*&n; * Low-level SAL-based PCI configuration access functions. Note that SAL&n; * calls are already serialized (via sal_lock), so we don&squot;t need another&n; * synchronization mechanism here.  Not using segment number (yet).&n; */
 DECL|macro|PCI_SAL_ADDRESS
 mdefine_line|#define PCI_SAL_ADDRESS(bus, dev, fn, reg) &bslash;&n;&t;((u64)(bus &lt;&lt; 16) | (u64)(dev &lt;&lt; 11) | (u64)(fn &lt;&lt; 8) | (u64)(reg))
@@ -366,13 +360,21 @@ id|pci_sal_write
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Initialization. Uses the SAL interface&n; */
+DECL|variable|pci_root_ops
+r_struct
+id|pci_ops
+op_star
+id|pci_root_ops
+op_assign
+op_amp
+id|pci_sal_ops
+suffix:semicolon
+multiline_comment|/* default to SAL */
 r_struct
 id|pci_bus
 op_star
 DECL|function|pcibios_scan_root
 id|pcibios_scan_root
-c_func
 (paren
 r_int
 id|bus
@@ -451,35 +453,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-r_void
-id|__init
-DECL|function|pcibios_config_init
-id|pcibios_config_init
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pci_root_ops
-)paren
-r_return
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;PCI: Using SAL to access configuration space&bslash;n&quot;
-)paren
-suffix:semicolon
-id|pci_root_ops
-op_assign
-op_amp
-id|pci_sal_ops
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 r_static
 r_int
 id|__init
@@ -496,6 +469,12 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
+id|acpi_init
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* hackedy hack hack... */
 macro_line|#ifdef CONFIG_IA64_MCA
 id|ia64_mca_check_errors
 c_func
@@ -504,11 +483,6 @@ c_func
 suffix:semicolon
 multiline_comment|/* For post-failure MCA error logging */
 macro_line|#endif
-id|pcibios_config_init
-c_func
-(paren
-)paren
-suffix:semicolon
 id|platform_pci_fixup
 c_func
 (paren
