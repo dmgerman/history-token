@@ -1460,6 +1460,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|show_stat
+r_static
 r_int
 id|show_stat
 c_func
@@ -2325,6 +2326,7 @@ id|show_interrupts
 )brace
 suffix:semicolon
 DECL|function|interrupts_open
+r_static
 r_int
 id|interrupts_open
 c_func
