@@ -154,8 +154,6 @@ DECL|macro|DRM_COPY_TO_USER_UNCHECKED
 mdefine_line|#define DRM_COPY_TO_USER_UNCHECKED(arg1, arg2, arg3)&t;&bslash;&n;&t;__copy_to_user(arg1, arg2, arg3)
 DECL|macro|DRM_GET_USER_UNCHECKED
 mdefine_line|#define DRM_GET_USER_UNCHECKED(val, uaddr)&t;&t;&bslash;&n;&t;__get_user(val, uaddr)
-DECL|macro|DRM_PUT_USER_UNCHECKED
-mdefine_line|#define DRM_PUT_USER_UNCHECKED(uaddr, val)&t;&t;&bslash;&n;&t;__put_user(val, uaddr)
 DECL|macro|DRM_GET_PRIV_WITH_RETURN
 mdefine_line|#define DRM_GET_PRIV_WITH_RETURN(_priv, _filp) _priv = _filp-&gt;private_data
 multiline_comment|/** &n; * Get the pointer to the SAREA.&n; *&n; * Searches the SAREA on the mapping lists and points drm_device::sarea to it.&n; */
