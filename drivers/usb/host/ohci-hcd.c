@@ -103,6 +103,14 @@ macro_line|#include &quot;ohci-hub.c&quot;
 macro_line|#include &quot;ohci-dbg.c&quot;
 macro_line|#include &quot;ohci-mem.c&quot;
 macro_line|#include &quot;ohci-q.c&quot;
+multiline_comment|/*&n; * On architectures with edge-triggered interrupts we must never return&n; * IRQ_NONE.&n; */
+macro_line|#if defined(CONFIG_SA1111)  /* ... or other edge-triggered systems */
+DECL|macro|IRQ_NOTMINE
+mdefine_line|#define IRQ_NOTMINE&t;IRQ_HANDLED
+macro_line|#else
+DECL|macro|IRQ_NOTMINE
+mdefine_line|#define IRQ_NOTMINE&t;IRQ_NONE
+macro_line|#endif
 multiline_comment|/* Some boards misreport power switching/overcurrent */
 DECL|variable|distrust_firmware
 r_static
@@ -2387,7 +2395,7 @@ l_int|0
 )paren
 (brace
 r_return
-id|IRQ_NONE
+id|IRQ_NOTMINE
 suffix:semicolon
 )brace
 r_if
