@@ -806,7 +806,7 @@ id|mdc800-&gt;irq_woken
 op_assign
 l_int|1
 suffix:semicolon
-id|wake_up_interruptible
+id|wake_up
 (paren
 op_amp
 id|mdc800-&gt;irq_wait
@@ -950,7 +950,7 @@ id|mdc800-&gt;written
 op_assign
 l_int|1
 suffix:semicolon
-id|wake_up_interruptible
+id|wake_up
 (paren
 op_amp
 id|mdc800-&gt;write_wait
@@ -1039,7 +1039,7 @@ id|mdc800-&gt;downloaded
 op_assign
 l_int|1
 suffix:semicolon
-id|wake_up_interruptible
+id|wake_up
 (paren
 op_amp
 id|mdc800-&gt;download_wait
