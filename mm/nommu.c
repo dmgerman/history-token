@@ -10,6 +10,9 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
@@ -1366,58 +1369,9 @@ suffix:semicolon
 r_int
 id|ret
 comma
-id|chrdev
+id|membacked
 suffix:semicolon
-multiline_comment|/*&n;&t; * Get the !CONFIG_MMU specific checks done first&n;&t; */
-id|chrdev
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|file
-)paren
-id|chrdev
-op_assign
-id|S_ISCHR
-c_func
-(paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mode
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|flags
-op_amp
-id|MAP_SHARED
-)paren
-op_logical_and
-(paren
-id|prot
-op_amp
-id|PROT_WRITE
-)paren
-op_logical_and
-id|file
-op_logical_and
-op_logical_neg
-id|chrdev
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;MAP_SHARED not completely supported (cannot detect page dirtying)&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
+multiline_comment|/* do the simple checks first */
 r_if
 c_cond
 (paren
@@ -1428,30 +1382,20 @@ op_logical_or
 id|addr
 )paren
 (brace
-multiline_comment|/* printk(&quot;can&squot;t do fixed-address/overlay mmap of RAM&bslash;n&quot;); */
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%d: Can&squot;t do fixed-address/overlay mmap of RAM&bslash;n&quot;
+comma
+id|current-&gt;pid
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * now all the standard checks&n;&t; */
-r_if
-c_cond
-(paren
-id|file
-op_logical_and
-(paren
-op_logical_neg
-id|file-&gt;f_op
-op_logical_or
-op_logical_neg
-id|file-&gt;f_op-&gt;mmap
-)paren
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1497,45 +1441,238 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/* we&squot;re going to need to record the mapping if it works */
-id|vml
+multiline_comment|/* validate file mapping requests */
+id|membacked
 op_assign
-id|kmalloc
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|file
+)paren
+(brace
+multiline_comment|/* files must support mmap */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|file-&gt;f_op
+op_logical_or
+op_logical_neg
+id|file-&gt;f_op-&gt;mmap
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|prot
+op_amp
+id|PROT_EXEC
+)paren
+op_logical_and
+(paren
+id|file-&gt;f_vfsmnt-&gt;mnt_flags
+op_amp
+id|MNT_NOEXEC
+)paren
+)paren
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+multiline_comment|/* work out if what we&squot;ve got could possibly be shared&n;&t;&t; * - we support chardevs that provide their own &quot;memory&quot;&n;&t;&t; * - we support files/blockdevs that are memory backed&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|S_ISCHR
 c_func
 (paren
-r_sizeof
-(paren
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mode
+)paren
+)paren
+(brace
+id|membacked
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+(brace
 r_struct
-id|vm_list_struct
-)paren
-comma
-id|GFP_KERNEL
-)paren
+id|address_space
+op_star
+id|mapping
+op_assign
+id|file-&gt;f_mapping
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|vml
+id|mapping
 )paren
-r_goto
-id|error_getting_vml
+id|mapping
+op_assign
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
 suffix:semicolon
-id|memset
+r_if
+c_cond
+(paren
+id|mapping
+op_logical_and
+id|mapping-&gt;backing_dev_info
+)paren
+id|membacked
+op_assign
+id|mapping-&gt;backing_dev_info-&gt;memory_backed
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|MAP_SHARED
+)paren
+(brace
+multiline_comment|/* do checks for writing, appending and locking */
+r_if
+c_cond
+(paren
+(paren
+id|prot
+op_amp
+id|PROT_WRITE
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|file-&gt;f_mode
+op_amp
+id|FMODE_WRITE
+)paren
+)paren
+r_return
+op_minus
+id|EACCES
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_APPEND
 c_func
 (paren
-id|vml
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|vml
+id|file-&gt;f_dentry-&gt;d_inode
 )paren
+op_logical_and
+(paren
+id|file-&gt;f_mode
+op_amp
+id|FMODE_WRITE
+)paren
+)paren
+r_return
+op_minus
+id|EACCES
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|locks_verify_locked
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_inode
+)paren
+)paren
+r_return
+op_minus
+id|EAGAIN
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|membacked
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;MAP_SHARED not completely supported on !MMU&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Do simple checking here so the lower-level routines won&squot;t have&n;&t; * to. we assume access permissions have been handled by the open&n;&t; * of the memory object, so we don&squot;t do any here.&n;&t; */
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+multiline_comment|/* we require greater support from the driver or&n;&t;&t;&t; * filesystem - we ask it to tell us what memory to&n;&t;&t;&t; * use */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|file-&gt;f_op-&gt;get_unmapped_area
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* we read private files into memory we allocate */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|file-&gt;f_op-&gt;read
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* handle PROT_EXEC implication by PROT_READ */
+r_if
+c_cond
+(paren
+(paren
+id|prot
+op_amp
+id|PROT_READ
+)paren
+op_logical_and
+(paren
+id|current-&gt;personality
+op_amp
+id|READ_IMPLIES_EXEC
+)paren
+)paren
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|file
+op_logical_and
+(paren
+id|file-&gt;f_vfsmnt-&gt;mnt_flags
+op_amp
+id|MNT_NOEXEC
+)paren
+)paren
+)paren
+id|prot
+op_or_assign
+id|PROT_EXEC
+suffix:semicolon
+multiline_comment|/* do simple checking here so the lower-level routines won&squot;t have&n;&t; * to. we assume access permissions have been handled by the open&n;&t; * of the memory object, so we don&squot;t do any here.&n;&t; */
 id|vm_flags
 op_assign
 id|calc_vm_flags
@@ -1557,7 +1694,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|chrdev
+id|membacked
 )paren
 (brace
 multiline_comment|/* share any file segment that&squot;s mapped read-only */
@@ -1600,17 +1737,12 @@ id|file
 )paren
 id|vm_flags
 op_or_assign
-id|VM_SHARED
-op_or
 id|VM_MAYSHARE
 suffix:semicolon
 multiline_comment|/* refuse to let anyone share files with this process if it&squot;s being traced -&n;&t;&t; * otherwise breakpoints set in it may interfere with another untraced process&n;&t;&t; */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|chrdev
-op_logical_and
 id|current-&gt;ptrace
 op_amp
 id|PT_PTRACED
@@ -1627,7 +1759,25 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* permit sharing of character devices at any time */
+multiline_comment|/* permit sharing of character devices and ramfs files at any time for&n;&t;&t; * anything other than a privately writable mapping&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|flags
+op_amp
+id|MAP_PRIVATE
+)paren
+op_logical_or
+op_logical_neg
+(paren
+id|prot
+op_amp
+id|PROT_WRITE
+)paren
+)paren
+(brace
 id|vm_flags
 op_or_assign
 id|VM_MAYSHARE
@@ -1644,7 +1794,66 @@ op_or_assign
 id|VM_SHARED
 suffix:semicolon
 )brace
-multiline_comment|/* if we want to share, we need to search for VMAs created by another mmap() call that&n;&t; * overlap with our proposed mapping&n;&t; * - we can only share with an exact match on regular files&n;&t; * - shared mappings on character devices are permitted to overlap inexactly as far as we&n;&t; *   are concerned, but in that case, sharing is handled in the driver rather than here&n;&t; */
+)brace
+multiline_comment|/* allow the security API to have its say */
+id|ret
+op_assign
+id|security_file_mmap
+c_func
+(paren
+id|file
+comma
+id|prot
+comma
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_return
+id|ret
+suffix:semicolon
+multiline_comment|/* we&squot;re going to need to record the mapping if it works */
+id|vml
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|vm_list_struct
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|vml
+)paren
+r_goto
+id|error_getting_vml
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|vml
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+id|vml
+)paren
+)paren
+suffix:semicolon
 id|down_write
 c_func
 (paren
@@ -1652,15 +1861,13 @@ op_amp
 id|nommu_vma_sem
 )paren
 suffix:semicolon
+multiline_comment|/* if we want to share, we need to search for VMAs created by another&n;&t; * mmap() call that overlap with our proposed mapping&n;&t; * - we can only share with an exact match on most regular files&n;&t; * - shared mappings on character devices and memory backed files are&n;&t; *   permitted to overlap inexactly as far as we are concerned for in&n;&t; *   these cases, sharing is handled in the driver or filesystem rather&n;&t; *   than here&n;&t; */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|chrdev
-op_logical_and
 id|vm_flags
 op_amp
-id|VM_SHARED
+id|VM_MAYSHARE
 )paren
 (brace
 r_int
@@ -1724,11 +1931,12 @@ op_logical_neg
 (paren
 id|vma-&gt;vm_flags
 op_amp
-id|VM_SHARED
+id|VM_MAYSHARE
 )paren
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/* search for overlapping mappings on the same file */
 r_if
 c_cond
 (paren
@@ -1774,6 +1982,7 @@ id|vmpglen
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/* handle inexact matches between mappings */
 r_if
 c_cond
 (paren
@@ -1789,9 +1998,8 @@ id|pgoff
 r_if
 c_cond
 (paren
-id|flags
-op_amp
-id|MAP_SHARED
+op_logical_neg
+id|membacked
 )paren
 r_goto
 id|sharing_violation
@@ -1824,13 +2032,15 @@ id|shared
 suffix:semicolon
 )brace
 )brace
+id|vma
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/* obtain the address to map to. we verify (or select) it and ensure&n;&t; * that it represents a valid section of the address space&n;&t; * - this is the hook for quasi-memory character devices&n;&t; */
 r_if
 c_cond
 (paren
 id|file
-op_logical_and
-id|file-&gt;f_op
 op_logical_and
 id|file-&gt;f_op-&gt;get_unmapped_area
 )paren
@@ -1965,27 +2175,13 @@ id|vml-&gt;vma
 op_assign
 id|vma
 suffix:semicolon
-multiline_comment|/*&n;&t; * determine the object being mapped and call the appropriate&n;&t; * specific mapper.&n;&t; */
+multiline_comment|/* determine the object being mapped and call the appropriate specific&n;&t; * mapper.&n;&t; */
 r_if
 c_cond
 (paren
 id|file
 )paren
 (brace
-id|ret
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|file-&gt;f_op
-)paren
-r_goto
-id|error
-suffix:semicolon
 macro_line|#ifdef MAGIC_ROM_PTR
 multiline_comment|/* First, try simpler routine designed to give us a ROM pointer. */
 r_if
@@ -2057,7 +2253,7 @@ suffix:semicolon
 )brace
 r_else
 macro_line|#endif /* MAGIC_ROM_PTR */
-multiline_comment|/* Then try full mmap routine, which might return a RAM pointer,&n;&t;&t;   or do something truly complicated. */
+multiline_comment|/* Then try full mmap routine, which might return a RAM&n;&t;&t; * pointer, or do something truly complicated&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2130,9 +2326,9 @@ r_goto
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* An ENOSYS error indicates that mmap isn&squot;t possible (as opposed to&n;&t;&t;   tried but failed) so we&squot;ll fall through to the copy. */
+multiline_comment|/* An ENOSYS error indicates that mmap isn&squot;t possible (as&n;&t;&t; * opposed to tried but failed) so we&squot;ll fall through to the&n;&t;&t; * copy. */
 )brace
-multiline_comment|/* allocate some memory to hold the mapping */
+multiline_comment|/* allocate some memory to hold the mapping&n;&t; * - note that this may not return a page-aligned address if the object&n;&t; *   we&squot;re allocating is smaller than a page&n;&t; */
 id|ret
 op_assign
 op_minus
@@ -2351,6 +2547,17 @@ id|len
 suffix:semicolon
 id|done
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|vma-&gt;vm_flags
+op_amp
+id|VM_SHARED
+)paren
+)paren
+(brace
 id|realalloc
 op_add_assign
 id|kobjsize
@@ -2363,6 +2570,7 @@ id|askedalloc
 op_add_assign
 id|len
 suffix:semicolon
+)brace
 id|realalloc
 op_add_assign
 id|kobjsize

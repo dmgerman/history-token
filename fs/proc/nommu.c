@@ -155,6 +155,13 @@ op_amp
 id|VM_MAYSHARE
 ques
 c_cond
+id|flags
+op_amp
+id|VM_SHARED
+ques
+c_cond
+l_char|&squot;S&squot;
+suffix:colon
 l_char|&squot;s&squot;
 suffix:colon
 l_char|&squot;p&squot;
