@@ -3077,7 +3077,9 @@ id|dev
 id|printk
 c_func
 (paren
-l_string|&quot;lance: Can&squot;t get IRQ %d&bslash;n&quot;
+l_string|&quot;%s: Can&squot;t get IRQ %d&bslash;n&quot;
+comma
+id|dev-&gt;name
 comma
 id|dev-&gt;irq
 )paren
@@ -3129,7 +3131,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;lance: Can&squot;t get DMA IRQ %d&bslash;n&quot;
+l_string|&quot;%s: Can&squot;t get DMA IRQ %d&bslash;n&quot;
+comma
+id|dev-&gt;name
 comma
 id|lp-&gt;dma_irq
 )paren
@@ -4146,6 +4150,21 @@ r_static
 r_int
 id|version_printed
 suffix:semicolon
+r_static
+r_const
+r_char
+id|fmt
+(braket
+)braket
+op_assign
+l_string|&quot;declance%d&quot;
+suffix:semicolon
+r_char
+id|name
+(braket
+l_int|10
+)braket
+suffix:semicolon
 r_struct
 id|net_device
 op_star
@@ -4198,6 +4217,52 @@ c_func
 id|version
 )paren
 suffix:semicolon
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|dev
+op_assign
+id|root_lance_dev
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|dev
+)paren
+(brace
+id|i
+op_increment
+suffix:semicolon
+id|lp
+op_assign
+(paren
+r_struct
+id|lance_private
+op_star
+)paren
+id|dev-&gt;priv
+suffix:semicolon
+id|dev
+op_assign
+id|lp-&gt;next
+suffix:semicolon
+)brace
+id|snprintf
+c_func
+(paren
+id|name
+comma
+r_sizeof
+(paren
+id|name
+)paren
+comma
+id|fmt
+comma
+id|i
+)paren
+suffix:semicolon
 id|dev
 op_assign
 id|alloc_etherdev
@@ -4216,16 +4281,25 @@ c_cond
 op_logical_neg
 id|dev
 )paren
-r_return
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: Unable to allocate etherdev, aborting.&bslash;n&quot;
+comma
+id|name
+)paren
+suffix:semicolon
+id|ret
+op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|SET_MODULE_OWNER
-c_func
-(paren
-id|dev
-)paren
+r_goto
+id|err_out
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * alloc_etherdev ensures the data structures used by the LANCE&n;&t; * are aligned.&n;&t; */
 id|lp
 op_assign
@@ -4769,7 +4843,10 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;declance_init called with unknown type&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;%s: declance_init called with unknown type&bslash;n&quot;
+comma
+id|name
 )paren
 suffix:semicolon
 id|ret
@@ -4778,7 +4855,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_goto
-id|err_out
+id|err_out_free_dev
 suffix:semicolon
 )brace
 id|ll
@@ -4836,7 +4913,10 @@ l_int|0xaa
 id|printk
 c_func
 (paren
-l_string|&quot;Ethernet station address prom not found!&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;%s: Ethernet station address prom not found!&bslash;n&quot;
+comma
+id|name
 )paren
 suffix:semicolon
 id|ret
@@ -4845,7 +4925,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_goto
-id|err_out
+id|err_out_free_dev
 suffix:semicolon
 )brace
 multiline_comment|/* Check the prom contents */
@@ -4921,8 +5001,11 @@ l_int|4
 id|printk
 c_func
 (paren
-l_string|&quot;Something is wrong with the ethernet &quot;
-l_string|&quot;station address prom!&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;%s: Something is wrong with the &quot;
+l_string|&quot;ethernet station address prom!&bslash;n&quot;
+comma
+id|name
 )paren
 suffix:semicolon
 id|ret
@@ -4931,7 +5014,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_goto
-id|err_out
+id|err_out_free_dev
 suffix:semicolon
 )brace
 )brace
@@ -4950,7 +5033,7 @@ c_func
 (paren
 l_string|&quot;%s: IOASIC onboard LANCE, addr = &quot;
 comma
-id|dev-&gt;name
+id|name
 )paren
 suffix:semicolon
 r_break
@@ -4963,7 +5046,7 @@ c_func
 (paren
 l_string|&quot;%s: PMAD-AA, addr = &quot;
 comma
-id|dev-&gt;name
+id|name
 )paren
 suffix:semicolon
 r_break
@@ -4976,7 +5059,7 @@ c_func
 (paren
 l_string|&quot;%s: PMAX onboard LANCE, addr = &quot;
 comma
-id|dev-&gt;name
+id|name
 )paren
 suffix:semicolon
 r_break
@@ -5122,9 +5205,20 @@ c_cond
 (paren
 id|ret
 )paren
-r_goto
-id|err_out
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: Unable to register netdev, aborting.&bslash;n&quot;
+comma
+id|name
+)paren
 suffix:semicolon
+r_goto
+id|err_out_free_dev
+suffix:semicolon
+)brace
 id|lp-&gt;next
 op_assign
 id|root_lance_dev
@@ -5133,17 +5227,29 @@ id|root_lance_dev
 op_assign
 id|dev
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%s: registered as %s.&bslash;n&quot;
+comma
+id|name
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|err_out
+id|err_out_free_dev
 suffix:colon
-id|free_netdev
+id|kfree
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+id|err_out
+suffix:colon
 r_return
 id|ret
 suffix:semicolon
