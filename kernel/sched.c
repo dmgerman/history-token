@@ -2480,7 +2480,7 @@ macro_line|#endif
 multiline_comment|/*&n; * We place interactive tasks back into the active array, if possible.&n; *&n; * To guarantee that this does not starve expired tasks we ignore the&n; * interactivity of a task if the first expired task had to wait more&n; * than a &squot;reasonable&squot; amount of time. This deadline timeout is&n; * load-dependent, as the frequency of array switched decreases with&n; * increasing number of running tasks:&n; */
 DECL|macro|EXPIRED_STARVING
 mdefine_line|#define EXPIRED_STARVING(rq) &bslash;&n;&t;&t;((rq)-&gt;expired_timestamp &amp;&amp; &bslash;&n;&t;&t;(jiffies - (rq)-&gt;expired_timestamp &gt;= &bslash;&n;&t;&t;&t;STARVATION_LIMIT * ((rq)-&gt;nr_running) + 1))
-multiline_comment|/*&n; * This function gets called by the timer code, with HZ frequency.&n; * We call it with interrupts disabled.&n; */
+multiline_comment|/*&n; * This function gets called by the timer code, with HZ frequency.&n; * We call it with interrupts disabled.&n; *&n; * It also gets called by the fork code, when changing the parent&squot;s&n; * timeslices.&n; */
 DECL|function|scheduler_tick
 r_void
 id|scheduler_tick
@@ -2515,11 +2515,6 @@ op_star
 id|p
 op_assign
 id|current
-suffix:semicolon
-id|run_local_timers
-c_func
-(paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -7125,14 +7120,6 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 macro_line|#endif
-r_extern
-r_void
-id|init_timers
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|sched_init
 r_void
 id|__init
