@@ -1,6 +1,7 @@
 macro_line|#ifndef __LINUX_FBIO_H
 DECL|macro|__LINUX_FBIO_H
 mdefine_line|#define __LINUX_FBIO_H
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/* Constants used for fbio SunOS compatibility */
 multiline_comment|/* (C) 1996 Miguel de Icaza */
 multiline_comment|/* Frame buffer types */
@@ -118,18 +119,21 @@ suffix:semicolon
 DECL|member|red
 r_int
 r_char
+id|__user
 op_star
 id|red
 suffix:semicolon
 DECL|member|green
 r_int
 r_char
+id|__user
 op_star
 id|green
 suffix:semicolon
 DECL|member|blue
 r_int
 r_char
+id|__user
 op_star
 id|blue
 suffix:semicolon

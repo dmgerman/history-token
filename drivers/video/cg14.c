@@ -1076,6 +1076,7 @@ r_struct
 id|mdi_cfginfo
 id|kmdi
 comma
+id|__user
 op_star
 id|mdii
 suffix:semicolon
@@ -1192,6 +1193,7 @@ op_assign
 (paren
 r_struct
 id|mdi_cfginfo
+id|__user
 op_star
 )paren
 id|arg
@@ -1233,6 +1235,7 @@ id|mode
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
