@@ -382,12 +382,12 @@ op_increment
 r_if
 c_cond
 (paren
-id|data-&gt;map
-op_amp
+id|test_bit
+c_func
 (paren
-l_int|1
-op_lshift
 id|i
+comma
+id|data-&gt;map
 )paren
 )paren
 id|pcibios_penalize_isa_irq
