@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;ib_cache.h&gt;
 macro_line|#include &quot;core_priv.h&quot;
 DECL|struct|ib_pkey_cache
 r_struct

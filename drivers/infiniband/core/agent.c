@@ -5,6 +5,7 @@ macro_line|#include &lt;ib_smi.h&gt;
 macro_line|#include &quot;smi.h&quot;
 macro_line|#include &quot;agent_priv.h&quot;
 macro_line|#include &quot;mad_priv.h&quot;
+macro_line|#include &quot;agent.h&quot;
 DECL|variable|ib_agent_port_list_lock
 id|spinlock_t
 id|ib_agent_port_list_lock
@@ -15,11 +16,6 @@ c_func
 (paren
 id|ib_agent_port_list
 )paren
-suffix:semicolon
-r_extern
-id|kmem_cache_t
-op_star
-id|ib_mad_cache
 suffix:semicolon
 multiline_comment|/*&n; * Caller must hold ib_agent_port_list_lock&n; */
 r_static

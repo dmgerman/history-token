@@ -576,5 +576,10 @@ id|IB_MAD_QPS_CORE
 suffix:semicolon
 )brace
 suffix:semicolon
+r_extern
+id|kmem_cache_t
+op_star
+id|ib_mad_cache
+suffix:semicolon
 macro_line|#endif&t;/* __IB_MAD_PRIV_H__ */
 eof
