@@ -3917,9 +3917,6 @@ id|dscc4_pci_priv
 op_star
 id|ppriv
 suffix:semicolon
-id|u32
-id|ioaddr
-suffix:semicolon
 r_int
 id|ret
 op_assign
@@ -3978,16 +3975,6 @@ id|dev
 )paren
 r_goto
 id|err_out
-suffix:semicolon
-id|ioaddr
-op_assign
-id|dev-&gt;base_addr
-op_plus
-id|SCC_REG_START
-c_func
-(paren
-id|dpriv
-)paren
 suffix:semicolon
 multiline_comment|/* IDT+IDR during XPR */
 id|dpriv-&gt;flags
@@ -6101,7 +6088,6 @@ l_string|&quot;Tx&quot;
 )paren
 r_return
 suffix:semicolon
-singleline_comment|// state &amp;= 0x0fffffff; /* Tracking the analyzed bits */
 r_if
 c_cond
 (paren
@@ -6390,7 +6376,7 @@ suffix:semicolon
 id|writel
 c_func
 (paren
-l_int|0x00000001
+id|Action
 comma
 id|dev-&gt;base_addr
 op_plus
@@ -6409,7 +6395,15 @@ id|Xmr
 )paren
 (brace
 multiline_comment|/* Frame needs to be sent again - FIXME */
-singleline_comment|//dscc4_start_xmit(dpriv-&gt;tx_skbuff[dpriv-&gt;tx_dirty], dev);
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: Xmr. Ask maintainer&bslash;n&quot;
+comma
+id|DRV_NAME
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6418,7 +6412,7 @@ op_logical_neg
 id|state
 op_and_assign
 op_complement
-l_int|0x00002000
+id|Xmr
 )paren
 )paren
 multiline_comment|/* DEBUG */
@@ -7533,8 +7527,8 @@ id|TX_RING_SIZE
 op_star
 r_sizeof
 (paren
-r_struct
-id|TxFD
+op_star
+id|tx_fd
 )paren
 comma
 op_amp
@@ -7566,8 +7560,8 @@ id|RX_RING_SIZE
 op_star
 r_sizeof
 (paren
-r_struct
-id|RxFD
+op_star
+id|rx_fd
 )paren
 comma
 op_amp
@@ -7683,7 +7677,7 @@ op_assign
 id|dev_alloc_skb
 c_func
 (paren
-l_int|32
+id|DUMMY_SKB_SIZE
 )paren
 suffix:semicolon
 r_if
@@ -7697,16 +7691,22 @@ id|err_free_dma_tx
 suffix:semicolon
 id|skb-&gt;len
 op_assign
-l_int|32
+id|DUMMY_SKB_SIZE
 suffix:semicolon
-id|memset
+id|memcpy
 c_func
 (paren
 id|skb-&gt;data
 comma
-l_int|0xaa
+id|version
 comma
-l_int|16
+id|strlen
+c_func
+(paren
+id|version
+)paren
+op_mod
+id|DUMMY_SKB_SIZE
 )paren
 suffix:semicolon
 id|tx_fd
