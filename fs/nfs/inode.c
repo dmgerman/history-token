@@ -4599,6 +4599,8 @@ r_if
 c_cond
 (paren
 id|status
+op_ne
+l_int|0
 )paren
 (brace
 id|dfprintk
@@ -8594,7 +8596,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|nfs_destroy_readpagecache
 c_func
 (paren
@@ -8610,13 +8612,31 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|nfs_destroy_writepagecache
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NFS_DIRECTIO
+r_extern
+r_int
+id|nfs_init_directcache
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nfs_destroy_directcache
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|nfs_inode_cachep
 r_static
 id|kmem_cache_t
@@ -8971,6 +8991,23 @@ id|err
 r_goto
 id|out1
 suffix:semicolon
+macro_line|#ifdef CONFIG_NFS_DIRECTIO
+id|err
+op_assign
+id|nfs_init_directcache
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|out0
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_PROC_FS
 id|rpc_proc_register
 c_func
@@ -9019,17 +9056,28 @@ l_int|0
 suffix:semicolon
 id|out
 suffix:colon
+macro_line|#ifdef CONFIG_PROC_FS
 id|rpc_proc_unregister
 c_func
 (paren
 l_string|&quot;nfs&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 id|nfs_destroy_writepagecache
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NFS_DIRECTIO
+id|out0
+suffix:colon
+id|nfs_destroy_directcache
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|out1
 suffix:colon
 id|nfs_destroy_readpagecache
@@ -9067,6 +9115,13 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_NFS_DIRECTIO
+id|nfs_destroy_directcache
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|nfs_destroy_writepagecache
 c_func
 (paren
