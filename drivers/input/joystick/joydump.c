@@ -106,14 +106,14 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: ,------------------- START ------------------.&bslash;n&quot;
+l_string|&quot;joydump: ,------------------ START ----------------.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: | Dumping gameport%s.&bslash;n&quot;
+l_string|&quot;joydump: | Dumping: %30s |&bslash;n&quot;
 comma
 id|gameport-&gt;phys
 )paren
@@ -122,7 +122,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: | Speed: %4d kHz.                            |&bslash;n&quot;
+l_string|&quot;joydump: | Speed: %28d kHz |&bslash;n&quot;
 comma
 id|gameport-&gt;speed
 )paren
@@ -166,14 +166,14 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: | Cooked not available either. Failing.      |&bslash;n&quot;
+l_string|&quot;joydump: | Cooked not available either. Failing.   |&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: `-------------------- END -------------------&squot;&bslash;n&quot;
+l_string|&quot;joydump: `------------------- END -----------------&squot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -210,7 +210,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: | Axis %d: %4d.                              |&bslash;n&quot;
+l_string|&quot;joydump: | Axis %d: %4d.                           |&bslash;n&quot;
 comma
 id|i
 comma
@@ -224,7 +224,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: | Buttons %02x.                                |&bslash;n&quot;
+l_string|&quot;joydump: | Buttons %02x.                             |&bslash;n&quot;
 comma
 id|buttons
 )paren
@@ -233,7 +233,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: `-------------------- END -------------------&squot;&bslash;n&quot;
+l_string|&quot;joydump: `------------------- END -----------------&squot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -395,16 +395,14 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: &gt;------------------- DATA -------------------&lt;&bslash;n&quot;
+l_string|&quot;joydump: &gt;------------------ DATA -----------------&lt;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: | index: %3d delta: %3d.%02d us data: &quot;
-comma
-l_int|0
+l_string|&quot;joydump: | index: %3d delta: %3d us data: &quot;
 comma
 l_int|0
 comma
@@ -513,7 +511,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;    |&bslash;n&quot;
+l_string|&quot; |&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -529,7 +527,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: `-------------------- END -------------------&squot;&bslash;n&quot;
+l_string|&quot;joydump: `------------------- END -----------------&squot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
