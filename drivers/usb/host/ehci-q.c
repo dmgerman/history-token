@@ -3756,7 +3756,10 @@ id|qh-&gt;qtd_list
 )paren
 )paren
 (brace
-singleline_comment|// dbg_qh (&quot;scan_async&quot;, ehci, qh);
+r_int
+id|temp
+suffix:semicolon
+multiline_comment|/* unlinks could happen here; completion&n;&t;&t;&t;&t; * reporting drops the lock.&n;&t;&t;&t;&t; */
 id|qh
 op_assign
 id|qh_get
@@ -3764,9 +3767,8 @@ id|qh_get
 id|qh
 )paren
 suffix:semicolon
-multiline_comment|/* concurrent unlink could happen here */
-id|count
-op_add_assign
+id|temp
+op_assign
 id|qh_completions
 (paren
 id|ehci
@@ -3781,9 +3783,22 @@ comma
 id|qh
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|temp
+op_ne
+l_int|0
+)paren
+(brace
+id|count
+op_add_assign
+id|temp
+suffix:semicolon
 r_goto
 id|rescan
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* unlink idle entries, reducing HC PCI usage as&n;&t;&t;&t; * well as HCD schedule-scanning costs.&n;&t;&t;&t; *&n;&t;&t;&t; * FIXME don&squot;t unlink idle entries so quickly; it&n;&t;&t;&t; * can penalize (common) half duplex protocols.&n;&t;&t;&t; */
 r_if
