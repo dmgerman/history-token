@@ -2250,9 +2250,11 @@ id|page
 )paren
 )paren
 suffix:semicolon
-id|mod_page_state
+id|mod_page_state_zone
 c_func
 (paren
+id|zone
+comma
 id|pgalloc
 comma
 l_int|1
@@ -4305,6 +4307,7 @@ l_string|&quot; low:%lukB&quot;
 l_string|&quot; high:%lukB&quot;
 l_string|&quot; active:%lukB&quot;
 l_string|&quot; inactive:%lukB&quot;
+l_string|&quot; present:%lukB&quot;
 l_string|&quot;&bslash;n&quot;
 comma
 id|zone-&gt;name
@@ -4343,6 +4346,12 @@ id|K
 c_func
 (paren
 id|zone-&gt;nr_inactive
+)paren
+comma
+id|K
+c_func
+(paren
+id|zone-&gt;present_pages
 )paren
 )paren
 suffix:semicolon
@@ -6687,7 +6696,11 @@ l_string|&quot;pswpin&quot;
 comma
 l_string|&quot;pswpout&quot;
 comma
-l_string|&quot;pgalloc&quot;
+l_string|&quot;pgalloc_high&quot;
+comma
+l_string|&quot;pgalloc_normal&quot;
+comma
+l_string|&quot;pgalloc_dma&quot;
 comma
 l_string|&quot;pgfree&quot;
 comma
@@ -6699,13 +6712,33 @@ l_string|&quot;pgfault&quot;
 comma
 l_string|&quot;pgmajfault&quot;
 comma
-l_string|&quot;pgscan&quot;
+l_string|&quot;pgrefill_high&quot;
 comma
-l_string|&quot;pgrefill&quot;
+l_string|&quot;pgrefill_normal&quot;
 comma
-l_string|&quot;pgsteal&quot;
+l_string|&quot;pgrefill_dma&quot;
+comma
+l_string|&quot;pgsteal_high&quot;
+comma
+l_string|&quot;pgsteal_normal&quot;
+comma
+l_string|&quot;pgsteal_dma&quot;
+comma
+l_string|&quot;pgscan_kswapd_high&quot;
+comma
+l_string|&quot;pgscan_kswapd_normal&quot;
+comma
+l_string|&quot;pgscan_kswapd_dma&quot;
+comma
+l_string|&quot;pgscan_direct_high&quot;
+comma
+l_string|&quot;pgscan_direct_normal&quot;
+comma
+l_string|&quot;pgscan_direct_dma&quot;
 comma
 l_string|&quot;pginodesteal&quot;
+comma
+l_string|&quot;slabs_scanned&quot;
 comma
 l_string|&quot;kswapd_steal&quot;
 comma
