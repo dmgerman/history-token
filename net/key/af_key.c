@@ -1125,7 +1125,7 @@ suffix:semicolon
 )brace
 DECL|function|pfkey_error
 r_static
-r_void
+r_int
 id|pfkey_error
 c_func
 (paren
@@ -1136,6 +1136,11 @@ id|orig
 comma
 r_int
 id|err
+comma
+r_struct
+id|sock
+op_star
+id|sk
 )paren
 (brace
 r_struct
@@ -1169,6 +1174,8 @@ op_logical_neg
 id|skb
 )paren
 r_return
+op_minus
+id|ENOBUFS
 suffix:semicolon
 multiline_comment|/* Woe be to the platform trying to support PFKEY yet&n;&t; * having normal errnos outside the 1-255 range, inclusive.&n;&t; */
 id|err
@@ -1278,10 +1285,13 @@ id|skb
 comma
 id|GFP_KERNEL
 comma
-id|BROADCAST_ALL
+id|BROADCAST_ONE
 comma
-l_int|NULL
+id|sk
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|sadb_ext_min_len
@@ -3384,7 +3394,7 @@ suffix:semicolon
 )brace
 id|sa-&gt;sadb_sa_flags
 op_assign
-id|SADB_SAFLAGS_PFS
+l_int|0
 suffix:semicolon
 multiline_comment|/* hard time */
 r_if
@@ -8153,6 +8163,15 @@ r_sizeof
 r_uint64
 )paren
 suffix:semicolon
+id|hdr-&gt;sadb_msg_reserved
+op_assign
+id|atomic_read
+c_func
+(paren
+op_amp
+id|xp-&gt;refcnt
+)paren
+suffix:semicolon
 r_return
 id|skb
 suffix:semicolon
@@ -8684,10 +8703,6 @@ id|out_hdr-&gt;sadb_msg_errno
 op_assign
 l_int|0
 suffix:semicolon
-id|out_hdr-&gt;sadb_msg_reserved
-op_assign
-l_int|0
-suffix:semicolon
 id|out_hdr-&gt;sadb_msg_seq
 op_assign
 id|hdr-&gt;sadb_msg_seq
@@ -9054,10 +9069,6 @@ id|out_hdr-&gt;sadb_msg_errno
 op_assign
 l_int|0
 suffix:semicolon
-id|out_hdr-&gt;sadb_msg_reserved
-op_assign
-l_int|0
-suffix:semicolon
 id|out_hdr-&gt;sadb_msg_seq
 op_assign
 id|hdr-&gt;sadb_msg_seq
@@ -9285,10 +9296,6 @@ id|out_hdr-&gt;sadb_msg_errno
 op_assign
 l_int|0
 suffix:semicolon
-id|out_hdr-&gt;sadb_msg_reserved
-op_assign
-l_int|0
-suffix:semicolon
 id|out_hdr-&gt;sadb_msg_seq
 op_assign
 id|hdr-&gt;sadb_msg_seq
@@ -9432,10 +9439,6 @@ op_assign
 id|SADB_SATYPE_UNSPEC
 suffix:semicolon
 id|out_hdr-&gt;sadb_msg_errno
-op_assign
-l_int|0
-suffix:semicolon
-id|out_hdr-&gt;sadb_msg_reserved
 op_assign
 l_int|0
 suffix:semicolon
@@ -10917,7 +10920,7 @@ c_func
 (paren
 id|out_skb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 comma
 id|BROADCAST_REGISTERED
 comma
@@ -11880,14 +11883,22 @@ c_cond
 id|err
 op_logical_and
 id|hdr
-)paren
+op_logical_and
 id|pfkey_error
 c_func
 (paren
 id|hdr
 comma
 id|err
+comma
+id|sk
 )paren
+op_eq
+l_int|0
+)paren
+id|err
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
