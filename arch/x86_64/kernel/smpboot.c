@@ -14,10 +14,7 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/kdebug.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-r_extern
-r_int
-id|disable_apic
-suffix:semicolon
+macro_line|#include &lt;asm/proto.h&gt;
 multiline_comment|/* Bitmask of currently online CPUs */
 DECL|variable|cpu_online_map
 r_int
@@ -59,14 +56,6 @@ multiline_comment|/* Set when the idlers are all forked */
 DECL|variable|smp_threads_ready
 r_int
 id|smp_threads_ready
-suffix:semicolon
-r_extern
-r_void
-id|time_init_smp
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 multiline_comment|/*&n; * Trampoline 80x86 program as an array.&n; */
 r_extern
@@ -258,10 +247,6 @@ r_int
 id|buggy
 op_assign
 l_int|0
-suffix:semicolon
-r_extern
-r_int
-id|cpu_khz
 suffix:semicolon
 id|printk
 c_func
@@ -761,14 +746,6 @@ suffix:semicolon
 )brace
 DECL|macro|NR_LOOPS
 macro_line|#undef NR_LOOPS
-r_extern
-r_void
-id|calibrate_delay
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|init_deasserted
 r_static
 id|atomic_t
@@ -998,14 +975,6 @@ suffix:semicolon
 DECL|variable|cpucount
 r_int
 id|cpucount
-suffix:semicolon
-r_extern
-r_int
-id|cpu_idle
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 multiline_comment|/*&n; * Activate a secondary processor.&n; */
 DECL|function|start_secondary
@@ -1901,11 +1870,6 @@ id|accept_status
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_int
-r_int
-id|cpu_initialized
-suffix:semicolon
 DECL|function|do_boot_cpu
 r_static
 r_void

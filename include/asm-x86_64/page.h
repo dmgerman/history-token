@@ -181,6 +181,10 @@ DECL|macro|__PHYSICAL_MASK_SHIFT
 mdefine_line|#define __PHYSICAL_MASK_SHIFT&t;40
 DECL|macro|__PHYSICAL_MASK
 mdefine_line|#define __PHYSICAL_MASK&t;&t;((1UL &lt;&lt; __PHYSICAL_MASK_SHIFT) - 1)
+DECL|macro|__VIRTUAL_MASK_SHIFT
+mdefine_line|#define __VIRTUAL_MASK_SHIFT&t;48
+DECL|macro|__VIRTUAL_MASK
+mdefine_line|#define __VIRTUAL_MASK&t;&t;((1UL &lt;&lt; __VIRTUAL_MASK_SHIFT) - 1)
 DECL|macro|KERNEL_TEXT_SIZE
 mdefine_line|#define KERNEL_TEXT_SIZE  (40UL*1024*1024)
 DECL|macro|KERNEL_TEXT_START
