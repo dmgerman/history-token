@@ -10873,7 +10873,6 @@ DECL|variable|pci_ids
 r_static
 r_struct
 id|pci_device_id
-id|__devinitdata
 id|pci_ids
 (braket
 )braket

@@ -278,14 +278,13 @@ id|drv_state
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|ax8817x_id_table
 r_const
 r_struct
 id|usb_device_id
 id|ax8817x_id_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 multiline_comment|/* Linksys USB200M */

@@ -1050,7 +1050,6 @@ suffix:semicolon
 )brace
 DECL|variable|id_table
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table
@@ -1188,7 +1187,7 @@ comma
 dot
 id|id_table
 op_assign
-l_int|NULL
+id|id_table
 comma
 )brace
 suffix:semicolon
