@@ -144,12 +144,21 @@ r_int
 id|refcnt
 suffix:semicolon
 multiline_comment|/* usage count */
-DECL|member|stats
+DECL|member|bstats
 r_struct
-id|tc_stats
-id|stats
+id|gnet_stats_basic
+id|bstats
 suffix:semicolon
-multiline_comment|/* generic statistics */
+DECL|member|qstats
+r_struct
+id|gnet_stats_queue
+id|qstats
+suffix:semicolon
+DECL|member|rate_est
+r_struct
+id|gnet_stats_rate_est
+id|rate_est
+suffix:semicolon
 DECL|member|stats_lock
 id|spinlock_t
 op_star
@@ -6958,7 +6967,7 @@ id|NET_XMIT_SUCCESS
 )paren
 )paren
 (brace
-id|cl-&gt;stats.drops
+id|cl-&gt;qstats.drops
 op_increment
 suffix:semicolon
 id|sch-&gt;qstats.drops
@@ -6983,10 +6992,10 @@ comma
 id|len
 )paren
 suffix:semicolon
-id|cl-&gt;stats.packets
+id|cl-&gt;bstats.packets
 op_increment
 suffix:semicolon
-id|cl-&gt;stats.bytes
+id|cl-&gt;bstats.bytes
 op_add_assign
 id|len
 suffix:semicolon
@@ -7425,7 +7434,7 @@ id|q-&gt;droplist
 )paren
 suffix:semicolon
 )brace
-id|cl-&gt;stats.drops
+id|cl-&gt;qstats.drops
 op_increment
 suffix:semicolon
 id|sch-&gt;qstats.drops
