@@ -2682,11 +2682,16 @@ id|memcell_buf
 suffix:semicolon
 id|numa_domain
 op_assign
+id|numa_enabled
+ques
+c_cond
 id|of_node_numa_domain
 c_func
 (paren
 id|memory
 )paren
+suffix:colon
+l_int|0
 suffix:semicolon
 r_if
 c_cond
