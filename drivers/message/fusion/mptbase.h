@@ -30,9 +30,9 @@ DECL|macro|COPYRIGHT
 mdefine_line|#define COPYRIGHT&t;&quot;Copyright (c) 1999-2004 &quot; MODULEAUTHOR
 macro_line|#endif
 DECL|macro|MPT_LINUX_VERSION_COMMON
-mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.01.16&quot;
+mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.01.17&quot;
 DECL|macro|MPT_LINUX_PACKAGE_NAME
-mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.01.16&quot;
+mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.01.17&quot;
 DECL|macro|WHAT_MAGIC_STRING
 mdefine_line|#define WHAT_MAGIC_STRING&t;&t;&quot;@&quot; &quot;(&quot; &quot;#&quot; &quot;)&quot;
 DECL|macro|show_mptmod_ver
@@ -190,10 +190,6 @@ DECL|enumerator|MPTSTM_DRIVER
 id|MPTSTM_DRIVER
 comma
 multiline_comment|/* MPT SCSI target mode class */
-DECL|enumerator|MPTDMP_DRIVER
-id|MPTDMP_DRIVER
-comma
-multiline_comment|/* MPT Dynamic Multi-pathing class */
 DECL|enumerator|MPTUNKNOWN_DRIVER
 id|MPTUNKNOWN_DRIVER
 DECL|typedef|MPT_DRIVER_CLASS
@@ -595,64 +591,6 @@ id|SYSIF_REGS
 suffix:semicolon
 multiline_comment|/*&n; * NOTE: Use MPI_{DOORBELL,WRITESEQ,DIAG}_xxx defs in lsi/mpi.h&n; * in conjunction with SYSIF_REGS accesses!&n; */
 multiline_comment|/*&n; *&t;Dynamic Multi-Pathing specific stuff...&n; */
-DECL|macro|DMP_MAX_PATHS
-mdefine_line|#define DMP_MAX_PATHS&t;8
-DECL|struct|_PathInfo
-r_typedef
-r_struct
-id|_PathInfo
-(brace
-DECL|member|ioc
-id|u8
-id|ioc
-suffix:semicolon
-DECL|member|target
-id|u8
-id|target
-suffix:semicolon
-DECL|member|pad
-id|u8
-id|pad
-suffix:semicolon
-DECL|member|pflags
-id|u8
-id|pflags
-suffix:semicolon
-DECL|typedef|PathInfo
-)brace
-id|PathInfo
-suffix:semicolon
-DECL|macro|PATHINFO_FLAGS_OWNED
-mdefine_line|#define PATHINFO_FLAGS_OWNED&t;&t;0x01
-DECL|macro|PATHINFO_FLAGS_EXISTS
-mdefine_line|#define PATHINFO_FLAGS_EXISTS&t;&t;0x02
-DECL|macro|PATHINFO_FLAGS_AVAILABLE
-mdefine_line|#define PATHINFO_FLAGS_AVAILABLE&t;0x04
-DECL|macro|PATHINFO_FLAGS_SECONDARY
-mdefine_line|#define PATHINFO_FLAGS_SECONDARY&t;0x08
-DECL|macro|PFLAGS_EXISTS_AND_AVAIL
-mdefine_line|#define PFLAGS_EXISTS_AND_AVAIL&t;&t;(PATHINFO_FLAGS_EXISTS|PATHINFO_FLAGS_AVAILABLE)
-DECL|macro|PFLAGS_AVAIL_AND_OWNED
-mdefine_line|#define PFLAGS_AVAIL_AND_OWNED&t;&t;(PATHINFO_FLAGS_AVAILABLE|PATHINFO_FLAGS_OWNED)
-DECL|struct|_ScsiCmndTracker
-r_typedef
-r_struct
-id|_ScsiCmndTracker
-(brace
-DECL|member|head
-r_void
-op_star
-id|head
-suffix:semicolon
-DECL|member|tail
-r_void
-op_star
-id|tail
-suffix:semicolon
-DECL|typedef|ScsiCmndTracker
-)brace
-id|ScsiCmndTracker
-suffix:semicolon
 multiline_comment|/* VirtDevice negoFlags field */
 DECL|macro|MPT_TARGET_NO_NEGO_WIDE
 mdefine_line|#define MPT_TARGET_NO_NEGO_WIDE&t;&t;0x01
@@ -662,7 +600,7 @@ DECL|macro|MPT_TARGET_NO_NEGO_QAS
 mdefine_line|#define MPT_TARGET_NO_NEGO_QAS&t;&t;0x04
 DECL|macro|MPT_TAPE_NEGO_IDP
 mdefine_line|#define MPT_TAPE_NEGO_IDP     &t;&t;0x08
-multiline_comment|/*&n; *&t;VirtDevice - FC LUN device or SCSI target device&n; *&t;(used to be FCSCSI_TARGET)&n; */
+multiline_comment|/*&n; *&t;VirtDevice - FC LUN device or SCSI target device&n; */
 DECL|struct|_VirtDevice
 r_typedef
 r_struct
@@ -673,14 +611,6 @@ r_struct
 id|scsi_device
 op_star
 id|device
-suffix:semicolon
-DECL|member|VdevLock
-id|rwlock_t
-id|VdevLock
-suffix:semicolon
-DECL|member|ref_cnt
-r_int
-id|ref_cnt
 suffix:semicolon
 DECL|member|tflags
 id|u8
@@ -737,10 +667,6 @@ DECL|member|rsvd1raid
 id|u8
 id|rsvd1raid
 suffix:semicolon
-DECL|member|npaths
-r_int
-id|npaths
-suffix:semicolon
 DECL|member|fc_phys_lun
 id|u16
 id|fc_phys_lun
@@ -748,32 +674,6 @@ suffix:semicolon
 DECL|member|fc_xlat_lun
 id|u16
 id|fc_xlat_lun
-suffix:semicolon
-DECL|member|stall_detected
-r_int
-id|stall_detected
-suffix:semicolon
-DECL|member|path
-id|PathInfo
-id|path
-(braket
-id|DMP_MAX_PATHS
-)braket
-suffix:semicolon
-DECL|member|stall_timer
-r_struct
-id|timer_list
-id|stall_timer
-suffix:semicolon
-DECL|member|retry_timer
-r_struct
-id|timer_list
-id|retry_timer
-suffix:semicolon
-DECL|member|gone_timer
-r_struct
-id|timer_list
-id|gone_timer
 suffix:semicolon
 DECL|member|num_luns
 id|u32
@@ -841,35 +741,6 @@ DECL|macro|MPT_TARGET_FLAGS_VALID_56
 mdefine_line|#define MPT_TARGET_FLAGS_VALID_56&t;0x10
 DECL|macro|MPT_TARGET_FLAGS_SAF_TE_ISSUED
 mdefine_line|#define MPT_TARGET_FLAGS_SAF_TE_ISSUED&t;0x20
-DECL|struct|_VirtDevTracker
-r_typedef
-r_struct
-id|_VirtDevTracker
-(brace
-DECL|member|head
-r_struct
-id|_VirtDevice
-op_star
-id|head
-suffix:semicolon
-DECL|member|tail
-r_struct
-id|_VirtDevice
-op_star
-id|tail
-suffix:semicolon
-DECL|member|VlistLock
-id|rwlock_t
-id|VlistLock
-suffix:semicolon
-DECL|member|pad
-r_int
-id|pad
-suffix:semicolon
-DECL|typedef|VirtDevTracker
-)brace
-id|VirtDevTracker
-suffix:semicolon
 multiline_comment|/*&n; *&t;/proc/mpt interface&n; */
 r_typedef
 r_struct
@@ -1612,25 +1483,6 @@ DECL|typedef|MPT_ADAPTER
 )brace
 id|MPT_ADAPTER
 suffix:semicolon
-DECL|struct|_MPT_ADAPTER_TRACKER
-r_typedef
-r_struct
-id|_MPT_ADAPTER_TRACKER
-(brace
-DECL|member|head
-id|MPT_ADAPTER
-op_star
-id|head
-suffix:semicolon
-DECL|member|tail
-id|MPT_ADAPTER
-op_star
-id|tail
-suffix:semicolon
-DECL|typedef|MPT_ADAPTER_TRACKER
-)brace
-id|MPT_ADAPTER_TRACKER
-suffix:semicolon
 multiline_comment|/*&n; *  New return value convention:&n; *    1 = Ok to free associated request frame&n; *    0 = not Ok ...&n; */
 DECL|typedef|MPT_CALLBACK
 r_typedef
@@ -1911,8 +1763,6 @@ DECL|macro|MFPTR_2_MPT_INDEX
 mdefine_line|#define MFPTR_2_MPT_INDEX(ioc,mf) &bslash;&n;&t;(int)( ((u8*)mf - (u8*)(ioc)-&gt;req_frames) / (ioc)-&gt;req_sz )
 DECL|macro|MPT_INDEX_2_RFPTR
 mdefine_line|#define MPT_INDEX_2_RFPTR(ioc,idx) &bslash;&n;&t;(MPT_FRAME_HDR*)( (u8*)(ioc)-&gt;reply_frames + (ioc)-&gt;req_sz * (idx) )
-DECL|macro|SWAB4
-mdefine_line|#define SWAB4(value) &bslash;&n;&t;(u32)(   (((value) &amp; 0x000000ff) &lt;&lt; 24) &bslash;&n;&t;       | (((value) &amp; 0x0000ff00) &lt;&lt; 8)  &bslash;&n;&t;       | (((value) &amp; 0x00ff0000) &gt;&gt; 8)  &bslash;&n;&t;       | (((value) &amp; 0xff000000) &gt;&gt; 24) )
 macro_line|#if defined(MPT_DEBUG) || defined(MPT_DEBUG_MSG_FRAME)
 DECL|macro|DBG_DUMP_REPLY_FRAME
 mdefine_line|#define DBG_DUMP_REPLY_FRAME(mfp) &bslash;&n;&t;{&t;u32 *m = (u32 *)(mfp);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int  i, n = (le32_to_cpu(m[0]) &amp; 0x00FF0000) &gt;&gt; 16;&t;&bslash;&n;&t;&t;printk(KERN_INFO &quot; &quot;);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;for (i=0; i&lt;n; i++)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(&quot; %08x&quot;, le32_to_cpu(m[i]));&t;&t;&bslash;&n;&t;&t;printk(&quot;&bslash;n&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
@@ -2073,11 +1923,10 @@ id|u8
 id|negoNvram
 suffix:semicolon
 multiline_comment|/* DV disabled, nego NVRAM */
-DECL|member|is_multipath
+DECL|member|pad1
 id|u8
-id|is_multipath
+id|pad1
 suffix:semicolon
-multiline_comment|/* Multi-path compatible */
 DECL|member|tmState
 id|u8
 id|tmState
@@ -2146,110 +1995,6 @@ multiline_comment|/*&n; *&t;More Dynamic Multi-Pathing stuff...&n; */
 multiline_comment|/* Forward decl, a strange C thing, to prevent gcc compiler warnings */
 r_struct
 id|scsi_cmnd
-suffix:semicolon
-multiline_comment|/*&n; *&t;DMP service layer structure / API interface&n; */
-DECL|struct|_DmpServices
-r_typedef
-r_struct
-id|_DmpServices
-(brace
-DECL|member|VdevList
-id|VirtDevTracker
-id|VdevList
-suffix:semicolon
-DECL|member|Daemon
-r_struct
-id|semaphore
-op_star
-id|Daemon
-suffix:semicolon
-DECL|member|ScsiPathSelect
-r_int
-(paren
-op_star
-id|ScsiPathSelect
-)paren
-(paren
-r_struct
-id|scsi_cmnd
-op_star
-comma
-id|MPT_SCSI_HOST
-op_star
-op_star
-id|hd
-comma
-r_int
-op_star
-id|target
-comma
-r_int
-op_star
-id|lun
-)paren
-suffix:semicolon
-DECL|member|DmpIoDoneChk
-r_int
-(paren
-op_star
-id|DmpIoDoneChk
-)paren
-(paren
-id|MPT_SCSI_HOST
-op_star
-comma
-r_struct
-id|scsi_cmnd
-op_star
-comma
-id|SCSIIORequest_t
-op_star
-comma
-id|SCSIIOReply_t
-op_star
-)paren
-suffix:semicolon
-DECL|member|mptscsih_scanVlist
-r_void
-(paren
-op_star
-id|mptscsih_scanVlist
-)paren
-(paren
-id|MPT_SCSI_HOST
-op_star
-comma
-r_int
-id|portnum
-)paren
-suffix:semicolon
-DECL|member|ScsiAbort
-r_int
-(paren
-op_star
-id|ScsiAbort
-)paren
-(paren
-r_struct
-id|scsi_cmnd
-op_star
-)paren
-suffix:semicolon
-DECL|member|ScsiBusReset
-r_int
-(paren
-op_star
-id|ScsiBusReset
-)paren
-(paren
-r_struct
-id|scsi_cmnd
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|DmpServices_t
-)brace
-id|DmpServices_t
 suffix:semicolon
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; * Generic structure passed to the base mpt_config function.&n; */
@@ -2468,25 +2213,6 @@ id|dma_addr
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|mpt_add_chain
-c_func
-(paren
-r_char
-op_star
-id|pAddr
-comma
-id|u8
-id|next
-comma
-id|u16
-id|length
-comma
-id|dma_addr_t
-id|dma_addr
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|mpt_send_handshake_request
 c_func
@@ -2504,36 +2230,6 @@ comma
 id|u32
 op_star
 id|req
-comma
-r_int
-id|sleepFlag
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|mpt_handshake_req_reply_wait
-c_func
-(paren
-id|MPT_ADAPTER
-op_star
-id|ioc
-comma
-r_int
-id|reqBytes
-comma
-id|u32
-op_star
-id|req
-comma
-r_int
-id|replyBytes
-comma
-id|u16
-op_star
-id|u16reply
-comma
-r_int
-id|maxwait
 comma
 r_int
 id|sleepFlag
@@ -2687,11 +2383,6 @@ op_star
 id|mpt_proc_root_dir
 suffix:semicolon
 r_extern
-id|DmpServices_t
-op_star
-id|DmpService
-suffix:semicolon
-r_extern
 r_int
 id|mpt_lan_index
 suffix:semicolon
@@ -2703,11 +2394,6 @@ suffix:semicolon
 multiline_comment|/* needed by mptstm.c */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 macro_line|#endif&t;&t;/* } __KERNEL__ */
-multiline_comment|/*&n; *  More (public) macros...&n; */
-macro_line|#ifndef offsetof
-DECL|macro|offsetof
-mdefine_line|#define offsetof(t, m)&t;((size_t) (&amp;((t *)0)-&gt;m))
-macro_line|#endif
 macro_line|#if defined(__alpha__) || defined(__sparc_v9__) || defined(__ia64__) || defined(__x86_64__)
 DECL|macro|CAST_U32_TO_PTR
 mdefine_line|#define CAST_U32_TO_PTR(x)&t;((void *)(u64)x)
