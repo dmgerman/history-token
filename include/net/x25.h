@@ -355,6 +355,8 @@ DECL|typedef|x25_cb
 )brace
 id|x25_cb
 suffix:semicolon
+DECL|macro|x25_sk
+mdefine_line|#define x25_sk(__sk) ((x25_cb *)(__sk)-&gt;protinfo)
 multiline_comment|/* af_x25.c */
 r_extern
 r_int

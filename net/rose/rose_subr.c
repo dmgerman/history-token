@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
+macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -42,7 +43,13 @@ id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;protinfo.rose-&gt;ack_queue
+id|rose_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|ack_queue
 )paren
 suffix:semicolon
 )brace
@@ -67,11 +74,21 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
+id|rose_cb
+op_star
+id|rose
+op_assign
+id|rose_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Remove all the ack-ed frames from the ack queue.&n;&t; */
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.rose-&gt;va
+id|rose-&gt;va
 op_ne
 id|nr
 )paren
@@ -83,12 +100,12 @@ id|skb_peek
 c_func
 (paren
 op_amp
-id|sk-&gt;protinfo.rose-&gt;ack_queue
+id|rose-&gt;ack_queue
 )paren
 op_ne
 l_int|NULL
 op_logical_and
-id|sk-&gt;protinfo.rose-&gt;va
+id|rose-&gt;va
 op_ne
 id|nr
 )paren
@@ -99,7 +116,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;protinfo.rose-&gt;ack_queue
+id|rose-&gt;ack_queue
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -108,10 +125,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|sk-&gt;protinfo.rose-&gt;va
+id|rose-&gt;va
 op_assign
 (paren
-id|sk-&gt;protinfo.rose-&gt;va
+id|rose-&gt;va
 op_plus
 l_int|1
 )paren
@@ -153,7 +170,13 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;protinfo.rose-&gt;ack_queue
+id|rose_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|ack_queue
 )paren
 )paren
 op_ne
@@ -207,18 +230,28 @@ r_int
 id|nr
 )paren
 (brace
+id|rose_cb
+op_star
+id|rose
+op_assign
+id|rose_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_int
 r_int
 id|vc
 op_assign
-id|sk-&gt;protinfo.rose-&gt;va
+id|rose-&gt;va
 suffix:semicolon
 r_while
 c_loop
 (paren
 id|vc
 op_ne
-id|sk-&gt;protinfo.rose-&gt;vs
+id|rose-&gt;vs
 )paren
 (brace
 r_if
@@ -242,18 +275,10 @@ op_mod
 id|ROSE_MODULUS
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
+r_return
 id|nr
 op_eq
-id|sk-&gt;protinfo.rose-&gt;vs
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_return
-l_int|0
+id|rose-&gt;vs
 suffix:semicolon
 )brace
 multiline_comment|/* &n; *  This routine is called when the packet layer internally generates a&n; *  control frame.&n; */
@@ -271,6 +296,16 @@ r_int
 id|frametype
 )paren
 (brace
+id|rose_cb
+op_star
+id|rose
+op_assign
+id|rose_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_struct
 id|sk_buff
 op_star
@@ -334,7 +369,7 @@ c_func
 (paren
 id|buffer
 comma
-id|sk-&gt;protinfo.rose
+id|rose
 )paren
 suffix:semicolon
 id|len
@@ -408,7 +443,7 @@ suffix:semicolon
 id|lci1
 op_assign
 (paren
-id|sk-&gt;protinfo.rose-&gt;lci
+id|rose-&gt;lci
 op_rshift
 l_int|8
 )paren
@@ -418,7 +453,7 @@ suffix:semicolon
 id|lci2
 op_assign
 (paren
-id|sk-&gt;protinfo.rose-&gt;lci
+id|rose-&gt;lci
 op_rshift
 l_int|0
 )paren
@@ -466,7 +501,7 @@ c_func
 id|dptr
 comma
 op_amp
-id|sk-&gt;protinfo.rose-&gt;dest_addr
+id|rose-&gt;dest_addr
 comma
 id|ROSE_ADDR_LEN
 )paren
@@ -481,7 +516,7 @@ c_func
 id|dptr
 comma
 op_amp
-id|sk-&gt;protinfo.rose-&gt;source_addr
+id|rose-&gt;source_addr
 comma
 id|ROSE_ADDR_LEN
 )paren
@@ -572,13 +607,13 @@ op_star
 id|dptr
 op_increment
 op_assign
-id|sk-&gt;protinfo.rose-&gt;cause
+id|rose-&gt;cause
 suffix:semicolon
 op_star
 id|dptr
 op_increment
 op_assign
-id|sk-&gt;protinfo.rose-&gt;diagnostic
+id|rose-&gt;diagnostic
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -649,7 +684,7 @@ id|dptr
 op_increment
 op_or_assign
 (paren
-id|sk-&gt;protinfo.rose-&gt;vr
+id|rose-&gt;vr
 op_lshift
 l_int|5
 )paren
@@ -711,7 +746,7 @@ c_func
 (paren
 id|skb
 comma
-id|sk-&gt;protinfo.rose-&gt;neighbour
+id|rose-&gt;neighbour
 )paren
 suffix:semicolon
 )brace
@@ -2367,6 +2402,16 @@ r_int
 id|diagnostic
 )paren
 (brace
+id|rose_cb
+op_star
+id|rose
+op_assign
+id|rose_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|rose_stop_timer
 c_func
 (paren
@@ -2385,11 +2430,11 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;protinfo.rose-&gt;lci
+id|rose-&gt;lci
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;protinfo.rose-&gt;state
+id|rose-&gt;state
 op_assign
 id|ROSE_STATE_0
 suffix:semicolon
@@ -2401,7 +2446,7 @@ op_ne
 op_minus
 l_int|1
 )paren
-id|sk-&gt;protinfo.rose-&gt;cause
+id|rose-&gt;cause
 op_assign
 id|cause
 suffix:semicolon
@@ -2413,7 +2458,7 @@ op_ne
 op_minus
 l_int|1
 )paren
-id|sk-&gt;protinfo.rose-&gt;diagnostic
+id|rose-&gt;diagnostic
 op_assign
 id|diagnostic
 suffix:semicolon

@@ -640,6 +640,16 @@ op_star
 r_new
 )paren
 (brace
+id|x25_cb
+op_star
+id|x25
+op_assign
+id|x25_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_struct
 id|x25_facilities
 op_star
@@ -670,7 +680,7 @@ suffix:semicolon
 id|ours
 op_assign
 op_amp
-id|sk-&gt;protinfo.x25-&gt;facilities
+id|x25-&gt;facilities
 suffix:semicolon
 op_star
 r_new
@@ -689,7 +699,7 @@ op_amp
 id|theirs
 comma
 op_amp
-id|sk-&gt;protinfo.x25-&gt;vc_facil_mask
+id|x25-&gt;vc_facil_mask
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;They want reverse charging, we won&squot;t accept it.&n;&t; */

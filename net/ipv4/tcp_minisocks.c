@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Implementation of the Transmission Control Protocol(TCP).&n; *&n; * Version:&t;$Id: tcp_minisocks.c,v 1.14 2001/09/21 21:27:34 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&t;&t;Corey Minyard &lt;wf-rch!minyard@relay.EU.net&gt;&n; *&t;&t;Florian La Roche, &lt;flla@stud.uni-sb.de&gt;&n; *&t;&t;Charles Hedrick, &lt;hedrick@klinzhai.rutgers.edu&gt;&n; *&t;&t;Linus Torvalds, &lt;torvalds@cs.helsinki.fi&gt;&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;Matthew Dillon, &lt;dillon@apollo.west.oic.com&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Implementation of the Transmission Control Protocol(TCP).&n; *&n; * Version:&t;$Id: tcp_minisocks.c,v 1.15 2002/02/01 22:01:04 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&t;&t;Corey Minyard &lt;wf-rch!minyard@relay.EU.net&gt;&n; *&t;&t;Florian La Roche, &lt;flla@stud.uni-sb.de&gt;&n; *&t;&t;Charles Hedrick, &lt;hedrick@klinzhai.rutgers.edu&gt;&n; *&t;&t;Linus Torvalds, &lt;torvalds@cs.helsinki.fi&gt;&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;Matthew Dillon, &lt;dillon@apollo.west.oic.com&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
@@ -1161,9 +1161,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 r_int
@@ -1323,6 +1324,17 @@ op_eq
 id|PF_INET6
 )paren
 (brace
+r_struct
+id|ipv6_pinfo
+op_star
+id|np
+op_assign
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -1330,7 +1342,7 @@ op_amp
 id|tw-&gt;v6_daddr
 comma
 op_amp
-id|sk-&gt;net_pinfo.af_inet6.daddr
+id|np-&gt;daddr
 comma
 r_sizeof
 (paren
@@ -1346,7 +1358,7 @@ op_amp
 id|tw-&gt;v6_rcv_saddr
 comma
 op_amp
-id|sk-&gt;net_pinfo.af_inet6.rcv_saddr
+id|np-&gt;rcv_saddr
 comma
 r_sizeof
 (paren
@@ -2411,6 +2423,7 @@ op_star
 id|skb
 )paren
 (brace
+multiline_comment|/* allocate the newsk from the same slab of the master sock,&n;&t; * if not, at sk_free time we&squot;ll try to free it from the wrong&n;&t; * slabcache (i.e. is it TCPv4 or v6?) -acme */
 r_struct
 id|sock
 op_star
@@ -2424,6 +2437,8 @@ comma
 id|GFP_ATOMIC
 comma
 l_int|0
+comma
+id|sk-&gt;slab
 )paren
 suffix:semicolon
 r_if
@@ -2455,8 +2470,8 @@ id|sk
 comma
 r_sizeof
 (paren
-op_star
-id|newsk
+r_struct
+id|tcp_sock
 )paren
 )paren
 suffix:semicolon
@@ -2603,9 +2618,10 @@ macro_line|#endif
 multiline_comment|/* Now setup tcp_opt */
 id|newtp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|newsk-&gt;tp_pinfo.af_tcp
+id|newsk
 )paren
 suffix:semicolon
 id|newtp-&gt;pred_flags
@@ -3060,9 +3076,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 id|u32

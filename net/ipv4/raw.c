@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;RAW - implementation of IP &quot;raw&quot; sockets.&n; *&n; * Version:&t;$Id: raw.c,v 1.63 2001/07/10 04:29:01 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;:&t;verify_area() fixed up&n; *&t;&t;Alan Cox&t;:&t;ICMP error handling&n; *&t;&t;Alan Cox&t;:&t;EMSGSIZE if you send too big a packet&n; *&t;&t;Alan Cox&t;: &t;Now uses generic datagrams and shared&n; *&t;&t;&t;&t;&t;skbuff library. No more peek crashes,&n; *&t;&t;&t;&t;&t;no more backlogs&n; *&t;&t;Alan Cox&t;:&t;Checks sk-&gt;broadcast.&n; *&t;&t;Alan Cox&t;:&t;Uses skb_free_datagram/skb_copy_datagram&n; *&t;&t;Alan Cox&t;:&t;Raw passes ip options too&n; *&t;&t;Alan Cox&t;:&t;Setsocketopt added&n; *&t;&t;Alan Cox&t;:&t;Fixed error return for broadcasts&n; *&t;&t;Alan Cox&t;:&t;Removed wake_up calls&n; *&t;&t;Alan Cox&t;:&t;Use ttl/tos&n; *&t;&t;Alan Cox&t;:&t;Cleaned up old debugging&n; *&t;&t;Alan Cox&t;:&t;Use new kernel side addresses&n; *&t;Arnt Gulbrandsen&t;:&t;Fixed MSG_DONTROUTE in raw sockets.&n; *&t;&t;Alan Cox&t;:&t;BSD style RAW socket demultiplexing.&n; *&t;&t;Alan Cox&t;:&t;Beginnings of mrouted support.&n; *&t;&t;Alan Cox&t;:&t;Added IP_HDRINCL option.&n; *&t;&t;Alan Cox&t;:&t;Skip broadcast check if BSDism set.&n; *&t;&t;David S. Miller&t;:&t;New socket lookup architecture.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;RAW - implementation of IP &quot;raw&quot; sockets.&n; *&n; * Version:&t;$Id: raw.c,v 1.64 2002/02/01 22:01:04 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;:&t;verify_area() fixed up&n; *&t;&t;Alan Cox&t;:&t;ICMP error handling&n; *&t;&t;Alan Cox&t;:&t;EMSGSIZE if you send too big a packet&n; *&t;&t;Alan Cox&t;: &t;Now uses generic datagrams and shared&n; *&t;&t;&t;&t;&t;skbuff library. No more peek crashes,&n; *&t;&t;&t;&t;&t;no more backlogs&n; *&t;&t;Alan Cox&t;:&t;Checks sk-&gt;broadcast.&n; *&t;&t;Alan Cox&t;:&t;Uses skb_free_datagram/skb_copy_datagram&n; *&t;&t;Alan Cox&t;:&t;Raw passes ip options too&n; *&t;&t;Alan Cox&t;:&t;Setsocketopt added&n; *&t;&t;Alan Cox&t;:&t;Fixed error return for broadcasts&n; *&t;&t;Alan Cox&t;:&t;Removed wake_up calls&n; *&t;&t;Alan Cox&t;:&t;Use ttl/tos&n; *&t;&t;Alan Cox&t;:&t;Cleaned up old debugging&n; *&t;&t;Alan Cox&t;:&t;Use new kernel side addresses&n; *&t;Arnt Gulbrandsen&t;:&t;Fixed MSG_DONTROUTE in raw sockets.&n; *&t;&t;Alan Cox&t;:&t;BSD style RAW socket demultiplexing.&n; *&t;&t;Alan Cox&t;:&t;Beginnings of mrouted support.&n; *&t;&t;Alan Cox&t;:&t;Added IP_HDRINCL option.&n; *&t;&t;Alan Cox&t;:&t;Skip broadcast check if BSDism set.&n; *&t;&t;David S. Miller&t;:&t;New socket lookup architecture.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt; 
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -15,7 +15,7 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/mroute.h&gt;
-macro_line|#include &lt;net/ip.h&gt;
+macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
@@ -319,7 +319,13 @@ l_int|32
 id|__u32
 id|data
 op_assign
-id|sk-&gt;tp_pinfo.tp_raw4.filter.data
+id|raw4_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|filter.data
 suffix:semicolon
 r_return
 (paren
@@ -534,6 +540,17 @@ id|u32
 id|info
 )paren
 (brace
+r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_int
 id|type
 op_assign
@@ -559,7 +576,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;protinfo.af_inet.recverr
+id|inet-&gt;recverr
 op_logical_and
 id|sk-&gt;state
 op_ne
@@ -646,7 +663,7 @@ id|ICMP_FRAG_NEEDED
 (brace
 id|harderr
 op_assign
-id|sk-&gt;protinfo.af_inet.pmtudisc
+id|inet-&gt;pmtudisc
 op_ne
 id|IP_PMTUDISC_DONT
 suffix:semicolon
@@ -659,7 +676,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.af_inet.recverr
+id|inet-&gt;recverr
 )paren
 (brace
 r_struct
@@ -689,7 +706,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.af_inet.hdrincl
+id|inet-&gt;hdrincl
 )paren
 id|payload
 op_assign
@@ -715,7 +732,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.af_inet.recverr
+id|inet-&gt;recverr
 op_logical_or
 id|harderr
 )paren
@@ -1060,6 +1077,17 @@ id|len
 )paren
 (brace
 r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_struct
 id|ipcm_cookie
 id|ipc
 suffix:semicolon
@@ -1294,7 +1322,7 @@ id|ipc.opt
 )paren
 id|ipc.opt
 op_assign
-id|sk-&gt;protinfo.af_inet.opt
+id|inet-&gt;opt
 suffix:semicolon
 r_if
 c_cond
@@ -1311,7 +1339,7 @@ multiline_comment|/* Linux does not mangle headers on raw sockets,&n;&t;&t; * so
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.af_inet.hdrincl
+id|inet-&gt;hdrincl
 )paren
 r_goto
 id|done
@@ -1342,7 +1370,7 @@ op_assign
 id|RT_TOS
 c_func
 (paren
-id|sk-&gt;protinfo.af_inet.tos
+id|inet-&gt;tos
 )paren
 op_or
 id|sk-&gt;localroute
@@ -1376,7 +1404,7 @@ id|ipc.oif
 )paren
 id|ipc.oif
 op_assign
-id|sk-&gt;protinfo.af_inet.mc_index
+id|inet-&gt;mc_index
 suffix:semicolon
 r_if
 c_cond
@@ -1386,7 +1414,7 @@ id|rfh.saddr
 )paren
 id|rfh.saddr
 op_assign
-id|sk-&gt;protinfo.af_inet.mc_addr
+id|inet-&gt;mc_addr
 suffix:semicolon
 )brace
 id|err
@@ -1474,7 +1502,7 @@ c_func
 (paren
 id|sk
 comma
-id|sk-&gt;protinfo.af_inet.hdrincl
+id|inet-&gt;hdrincl
 ques
 c_cond
 id|raw_getrawfrag
@@ -1751,6 +1779,17 @@ op_star
 id|addr_len
 )paren
 (brace
+r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_int
 id|copied
 op_assign
@@ -1937,7 +1976,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 )paren
 id|ip_cmsg_recv
 c_func
@@ -1984,9 +2023,10 @@ id|raw_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|raw4_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.tp_raw4
+id|sk
 )paren
 suffix:semicolon
 r_if
@@ -2059,7 +2099,13 @@ id|copy_from_user
 c_func
 (paren
 op_amp
-id|sk-&gt;tp_pinfo.tp_raw4.filter
+id|raw4_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|filter
 comma
 id|optval
 comma
@@ -2172,7 +2218,13 @@ c_func
 id|optval
 comma
 op_amp
-id|sk-&gt;tp_pinfo.tp_raw4.filter
+id|raw4_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|filter
 comma
 id|len
 )paren

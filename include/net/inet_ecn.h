@@ -103,13 +103,13 @@ id|outer
 suffix:semicolon
 )brace
 DECL|macro|INET_ECN_xmit
-mdefine_line|#define&t;INET_ECN_xmit(sk) do { (sk)-&gt;protinfo.af_inet.tos |= 2; } while (0)
+mdefine_line|#define&t;INET_ECN_xmit(sk) do { inet_sk(sk)-&gt;tos |= 2; } while (0)
 DECL|macro|INET_ECN_dontxmit
-mdefine_line|#define&t;INET_ECN_dontxmit(sk) do { (sk)-&gt;protinfo.af_inet.tos &amp;= ~3; } while (0)
+mdefine_line|#define&t;INET_ECN_dontxmit(sk) do { inet_sk(sk)-&gt;tos &amp;= ~3; } while (0)
 DECL|macro|IP6_ECN_flow_init
 mdefine_line|#define IP6_ECN_flow_init(label) do {&t;&bslash;&n;      (label) &amp;= ~htonl(3&lt;&lt;20);&t;&t;&bslash;&n;    } while (0)
 DECL|macro|IP6_ECN_flow_xmit
-mdefine_line|#define&t;IP6_ECN_flow_xmit(sk, label) do {&t;&t;&t;&bslash;&n;&t;if (INET_ECN_is_capable((sk)-&gt;protinfo.af_inet.tos))&t;&bslash;&n;&t;&t;(label) |= __constant_htons(2 &lt;&lt; 4);&t;&t;&bslash;&n;    } while (0)
+mdefine_line|#define&t;IP6_ECN_flow_xmit(sk, label) do {&t;&t;&t;&bslash;&n;&t;if (INET_ECN_is_capable(inet_sk(sk)-&gt;tos))&t;&t;&bslash;&n;&t;&t;(label) |= __constant_htons(2 &lt;&lt; 4);&t;&t;&bslash;&n;    } while (0)
 DECL|function|IP_ECN_set_ce
 r_static
 r_inline

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;common UDP/RAW code&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: datagram.c,v 1.23 2001/09/01 00:31:50 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;common UDP/RAW code&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: datagram.c,v 1.24 2002/02/01 22:01:04 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -45,6 +45,17 @@ id|payload
 )paren
 (brace
 r_struct
+id|ipv6_pinfo
+op_star
+id|np
+op_assign
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_struct
 id|icmp6hdr
 op_star
 id|icmph
@@ -65,7 +76,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;net_pinfo.af_inet6.recverr
+id|np-&gt;recverr
 )paren
 r_return
 suffix:semicolon
@@ -208,6 +219,17 @@ id|info
 )paren
 (brace
 r_struct
+id|ipv6_pinfo
+op_star
+id|np
+op_assign
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_struct
 id|sock_exterr_skb
 op_star
 id|serr
@@ -226,7 +248,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;net_pinfo.af_inet6.recverr
+id|np-&gt;recverr
 )paren
 r_return
 suffix:semicolon
@@ -389,6 +411,17 @@ r_int
 id|len
 )paren
 (brace
+r_struct
+id|ipv6_pinfo
+op_star
+id|np
+op_assign
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_struct
 id|sock_exterr_skb
 op_star
@@ -566,7 +599,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;net_pinfo.af_inet6.sndflow
+id|np-&gt;sndflow
 )paren
 id|sin-&gt;sin6_flowinfo
 op_assign
@@ -712,7 +745,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;net_pinfo.af_inet6.rxopt.all
+id|np-&gt;rxopt.all
 )paren
 id|datagram_recv_ctl
 c_func
@@ -757,6 +790,17 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|ipv6_addr_set
 c_func
 (paren
@@ -779,7 +823,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 )paren
 id|ip_cmsg_recv
 c_func
@@ -923,8 +967,11 @@ id|ipv6_pinfo
 op_star
 id|np
 op_assign
-op_amp
-id|sk-&gt;net_pinfo.af_inet6
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_struct
 id|inet6_skb_parm

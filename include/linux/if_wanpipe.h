@@ -299,6 +299,8 @@ id|packet_sent
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|wp_sk
+mdefine_line|#define wp_sk(__sk) ((struct wanpipe_opt *)(__sk)-&gt;protinfo)
 macro_line|#endif
 macro_line|#endif
 eof

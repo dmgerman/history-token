@@ -2647,6 +2647,8 @@ comma
 id|prio
 comma
 l_int|1
+comma
+l_int|NULL
 )paren
 )paren
 )paren
@@ -10273,6 +10275,7 @@ comma
 id|create
 suffix:colon
 id|l2cap_sock_create
+comma
 )brace
 suffix:semicolon
 DECL|variable|l2cap_hci_proto

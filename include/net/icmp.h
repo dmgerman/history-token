@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/icmp.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
+macro_line|#include &lt;linux/ip.h&gt;
 DECL|struct|icmp_err
 r_struct
 id|icmp_err
@@ -120,5 +121,51 @@ r_int
 id|timeout
 )paren
 suffix:semicolon
+DECL|struct|raw_opt
+r_struct
+id|raw_opt
+(brace
+DECL|member|filter
+r_struct
+id|icmp_filter
+id|filter
+suffix:semicolon
+)brace
+suffix:semicolon
+r_struct
+id|ipv6_pinfo
+suffix:semicolon
+multiline_comment|/* WARNING: don&squot;t change the layout of the members in raw_sock! */
+DECL|struct|raw_sock
+r_struct
+id|raw_sock
+(brace
+DECL|member|sk
+r_struct
+id|sock
+id|sk
+suffix:semicolon
+macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
+DECL|member|pinet6
+r_struct
+id|ipv6_pinfo
+op_star
+id|pinet6
+suffix:semicolon
+macro_line|#endif
+DECL|member|inet
+r_struct
+id|inet_opt
+id|inet
+suffix:semicolon
+DECL|member|raw4
+r_struct
+id|raw_opt
+id|raw4
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|raw4_sk
+mdefine_line|#define raw4_sk(__sk) (&amp;((struct raw_sock *)__sk)-&gt;raw4)
 macro_line|#endif&t;/* _ICMP_H */
 eof

@@ -217,6 +217,8 @@ DECL|typedef|nr_cb
 )brace
 id|nr_cb
 suffix:semicolon
+DECL|macro|nr_sk
+mdefine_line|#define nr_sk(__sk) ((nr_cb *)(__sk)-&gt;protinfo)
 DECL|struct|nr_neigh
 r_struct
 id|nr_neigh

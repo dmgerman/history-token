@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/checksum.h&gt;   /* for ip_fast_csum() */
+macro_line|#include &lt;net/checksum.h&gt;   /* for ip_fast_csum() */
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;

@@ -2281,18 +2281,14 @@ id|net_proto_family
 id|svc_family_ops
 op_assign
 (brace
+id|family
+suffix:colon
 id|PF_ATMSVC
 comma
+id|create
+suffix:colon
 id|svc_create
 comma
-l_int|0
-comma
-multiline_comment|/* no authentication */
-l_int|0
-comma
-multiline_comment|/* no encryption */
-l_int|0
-multiline_comment|/* no encrypt_net */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Initialize the ATM SVC protocol family&n; */

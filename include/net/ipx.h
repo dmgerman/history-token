@@ -256,6 +256,51 @@ id|last_hop
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|ipx_opt
+r_struct
+id|ipx_opt
+(brace
+DECL|member|dest_addr
+id|ipx_address
+id|dest_addr
+suffix:semicolon
+DECL|member|intrfc
+id|ipx_interface
+op_star
+id|intrfc
+suffix:semicolon
+DECL|member|port
+r_int
+r_int
+id|port
+suffix:semicolon
+macro_line|#ifdef CONFIG_IPX_INTERN
+DECL|member|node
+r_int
+r_char
+id|node
+(braket
+id|IPX_NODE_LEN
+)braket
+suffix:semicolon
+macro_line|#endif
+DECL|member|type
+r_int
+r_int
+id|type
+suffix:semicolon
+multiline_comment|/* To handle special ncp connection-handling sockets for mars_nwe,&n; &t; * the connection number must be stored in the socket. */
+DECL|member|ipx_ncp_conn
+r_int
+r_int
+id|ipx_ncp_conn
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|ipx_sk
+mdefine_line|#define ipx_sk(__sk) ((struct ipx_opt *)(__sk)-&gt;protinfo)
+DECL|macro|IPX_SKB_CB
+mdefine_line|#define IPX_SKB_CB(__skb) ((struct ipx_cb *)&amp;((__skb)-&gt;cb[0]))
 macro_line|#endif
 DECL|macro|IPX_MIN_EPHEMERAL_SOCKET
 mdefine_line|#define IPX_MIN_EPHEMERAL_SOCKET&t;0x4000

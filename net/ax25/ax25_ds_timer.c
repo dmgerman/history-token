@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
+macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/ax25.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;

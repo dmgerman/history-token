@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Linux NET3:&t;Internet Group Management Protocol  [IGMP]&n; *&n; *&t;This code implements the IGMP protocol as defined in RFC1112. There has&n; *&t;been a further revision of this protocol since which is now supported.&n; *&n; *&t;If you have trouble with this module be careful what gcc you have used,&n; *&t;the older version didn&squot;t come out right using gcc 2.5.8, the newer one&n; *&t;seems to fall out with gcc 2.6.2.&n; *&n; *&t;Version: $Id: igmp.c,v 1.46 2001/07/27 09:27:29 davem Exp $&n; *&n; *&t;Authors:&n; *&t;&t;Alan Cox &lt;Alan.Cox@linux.org&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Fixes:&n; *&n; *&t;&t;Alan Cox&t;:&t;Added lots of __inline__ to optimise&n; *&t;&t;&t;&t;&t;the memory usage of all the tiny little&n; *&t;&t;&t;&t;&t;functions.&n; *&t;&t;Alan Cox&t;:&t;Dumped the header building experiment.&n; *&t;&t;Alan Cox&t;:&t;Minor tweaks ready for multicast routing&n; *&t;&t;&t;&t;&t;and extended IGMP protocol.&n; *&t;&t;Alan Cox&t;:&t;Removed a load of inline directives. Gcc 2.5.8&n; *&t;&t;&t;&t;&t;writes utterly bogus code otherwise (sigh)&n; *&t;&t;&t;&t;&t;fixed IGMP loopback to behave in the manner&n; *&t;&t;&t;&t;&t;desired by mrouted, fixed the fact it has been&n; *&t;&t;&t;&t;&t;broken since 1.3.6 and cleaned up a few minor&n; *&t;&t;&t;&t;&t;points.&n; *&n; *&t;&t;Chih-Jen Chang&t;:&t;Tried to revise IGMP to Version 2&n; *&t;&t;Tsu-Sheng Tsao&t;&t;E-mail: chihjenc@scf.usc.edu and tsusheng@scf.usc.edu&n; *&t;&t;&t;&t;&t;The enhancements are mainly based on Steve Deering&squot;s &n; * &t;&t;&t;&t;&t;ipmulti-3.5 source code.&n; *&t;&t;Chih-Jen Chang&t;:&t;Added the igmp_get_mrouter_info and&n; *&t;&t;Tsu-Sheng Tsao&t;&t;igmp_set_mrouter_info to keep track of&n; *&t;&t;&t;&t;&t;the mrouted version on that device.&n; *&t;&t;Chih-Jen Chang&t;:&t;Added the max_resp_time parameter to&n; *&t;&t;Tsu-Sheng Tsao&t;&t;igmp_heard_query(). Using this parameter&n; *&t;&t;&t;&t;&t;to identify the multicast router version&n; *&t;&t;&t;&t;&t;and do what the IGMP version 2 specified.&n; *&t;&t;Chih-Jen Chang&t;:&t;Added a timer to revert to IGMP V2 router&n; *&t;&t;Tsu-Sheng Tsao&t;&t;if the specified time expired.&n; *&t;&t;Alan Cox&t;:&t;Stop IGMP from 0.0.0.0 being accepted.&n; *&t;&t;Alan Cox&t;:&t;Use GFP_ATOMIC in the right places.&n; *&t;&t;Christian Daudt :&t;igmp timer wasn&squot;t set for local group&n; *&t;&t;&t;&t;&t;memberships but was being deleted, &n; *&t;&t;&t;&t;&t;which caused a &quot;del_timer() called &n; *&t;&t;&t;&t;&t;from %p with timer not initialized&bslash;n&quot;&n; *&t;&t;&t;&t;&t;message (960131).&n; *&t;&t;Christian Daudt :&t;removed del_timer from &n; *&t;&t;&t;&t;&t;igmp_timer_expire function (960205).&n; *             Christian Daudt :       igmp_heard_report now only calls&n; *                                     igmp_timer_expire if tm-&gt;running is&n; *                                     true (960216).&n; *&t;&t;Malcolm Beattie :&t;ttl comparison wrong in igmp_rcv made&n; *&t;&t;&t;&t;&t;igmp_heard_query never trigger. Expiry&n; *&t;&t;&t;&t;&t;miscalculation fixed in igmp_heard_query&n; *&t;&t;&t;&t;&t;and random() made to return unsigned to&n; *&t;&t;&t;&t;&t;prevent negative expiry times.&n; *&t;&t;Alexey Kuznetsov:&t;Wrong group leaving behaviour, backport&n; *&t;&t;&t;&t;&t;fix from pending 2.1.x patches.&n; *&t;&t;Alan Cox:&t;&t;Forget to enable FDDI support earlier.&n; *&t;&t;Alexey Kuznetsov:&t;Fixed leaving groups on device down.&n; *&t;&t;Alexey Kuznetsov:&t;Accordance to igmp-v2-06 draft.&n; */
+multiline_comment|/*&n; *&t;Linux NET3:&t;Internet Group Management Protocol  [IGMP]&n; *&n; *&t;This code implements the IGMP protocol as defined in RFC1112. There has&n; *&t;been a further revision of this protocol since which is now supported.&n; *&n; *&t;If you have trouble with this module be careful what gcc you have used,&n; *&t;the older version didn&squot;t come out right using gcc 2.5.8, the newer one&n; *&t;seems to fall out with gcc 2.6.2.&n; *&n; *&t;Version: $Id: igmp.c,v 1.47 2002/02/01 22:01:03 davem Exp $&n; *&n; *&t;Authors:&n; *&t;&t;Alan Cox &lt;Alan.Cox@linux.org&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Fixes:&n; *&n; *&t;&t;Alan Cox&t;:&t;Added lots of __inline__ to optimise&n; *&t;&t;&t;&t;&t;the memory usage of all the tiny little&n; *&t;&t;&t;&t;&t;functions.&n; *&t;&t;Alan Cox&t;:&t;Dumped the header building experiment.&n; *&t;&t;Alan Cox&t;:&t;Minor tweaks ready for multicast routing&n; *&t;&t;&t;&t;&t;and extended IGMP protocol.&n; *&t;&t;Alan Cox&t;:&t;Removed a load of inline directives. Gcc 2.5.8&n; *&t;&t;&t;&t;&t;writes utterly bogus code otherwise (sigh)&n; *&t;&t;&t;&t;&t;fixed IGMP loopback to behave in the manner&n; *&t;&t;&t;&t;&t;desired by mrouted, fixed the fact it has been&n; *&t;&t;&t;&t;&t;broken since 1.3.6 and cleaned up a few minor&n; *&t;&t;&t;&t;&t;points.&n; *&n; *&t;&t;Chih-Jen Chang&t;:&t;Tried to revise IGMP to Version 2&n; *&t;&t;Tsu-Sheng Tsao&t;&t;E-mail: chihjenc@scf.usc.edu and tsusheng@scf.usc.edu&n; *&t;&t;&t;&t;&t;The enhancements are mainly based on Steve Deering&squot;s &n; * &t;&t;&t;&t;&t;ipmulti-3.5 source code.&n; *&t;&t;Chih-Jen Chang&t;:&t;Added the igmp_get_mrouter_info and&n; *&t;&t;Tsu-Sheng Tsao&t;&t;igmp_set_mrouter_info to keep track of&n; *&t;&t;&t;&t;&t;the mrouted version on that device.&n; *&t;&t;Chih-Jen Chang&t;:&t;Added the max_resp_time parameter to&n; *&t;&t;Tsu-Sheng Tsao&t;&t;igmp_heard_query(). Using this parameter&n; *&t;&t;&t;&t;&t;to identify the multicast router version&n; *&t;&t;&t;&t;&t;and do what the IGMP version 2 specified.&n; *&t;&t;Chih-Jen Chang&t;:&t;Added a timer to revert to IGMP V2 router&n; *&t;&t;Tsu-Sheng Tsao&t;&t;if the specified time expired.&n; *&t;&t;Alan Cox&t;:&t;Stop IGMP from 0.0.0.0 being accepted.&n; *&t;&t;Alan Cox&t;:&t;Use GFP_ATOMIC in the right places.&n; *&t;&t;Christian Daudt :&t;igmp timer wasn&squot;t set for local group&n; *&t;&t;&t;&t;&t;memberships but was being deleted, &n; *&t;&t;&t;&t;&t;which caused a &quot;del_timer() called &n; *&t;&t;&t;&t;&t;from %p with timer not initialized&bslash;n&quot;&n; *&t;&t;&t;&t;&t;message (960131).&n; *&t;&t;Christian Daudt :&t;removed del_timer from &n; *&t;&t;&t;&t;&t;igmp_timer_expire function (960205).&n; *             Christian Daudt :       igmp_heard_report now only calls&n; *                                     igmp_timer_expire if tm-&gt;running is&n; *                                     true (960216).&n; *&t;&t;Malcolm Beattie :&t;ttl comparison wrong in igmp_rcv made&n; *&t;&t;&t;&t;&t;igmp_heard_query never trigger. Expiry&n; *&t;&t;&t;&t;&t;miscalculation fixed in igmp_heard_query&n; *&t;&t;&t;&t;&t;and random() made to return unsigned to&n; *&t;&t;&t;&t;&t;prevent negative expiry times.&n; *&t;&t;Alexey Kuznetsov:&t;Wrong group leaving behaviour, backport&n; *&t;&t;&t;&t;&t;fix from pending 2.1.x patches.&n; *&t;&t;Alan Cox:&t;&t;Forget to enable FDDI support earlier.&n; *&t;&t;Alexey Kuznetsov:&t;Fixed leaving groups on device down.&n; *&t;&t;Alexey Kuznetsov:&t;Accordance to igmp-v2-06 draft.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -2249,6 +2249,17 @@ id|in_device
 op_star
 id|in_dev
 suffix:semicolon
+r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_int
 id|count
 op_assign
@@ -2360,7 +2371,7 @@ c_loop
 (paren
 id|i
 op_assign
-id|sk-&gt;protinfo.af_inet.mc_list
+id|inet-&gt;mc_list
 suffix:semicolon
 id|i
 suffix:semicolon
@@ -2451,13 +2462,13 @@ id|imr
 suffix:semicolon
 id|iml-&gt;next
 op_assign
-id|sk-&gt;protinfo.af_inet.mc_list
+id|inet-&gt;mc_list
 suffix:semicolon
 id|iml-&gt;count
 op_assign
 l_int|1
 suffix:semicolon
-id|sk-&gt;protinfo.af_inet.mc_list
+id|inet-&gt;mc_list
 op_assign
 id|iml
 suffix:semicolon
@@ -2525,6 +2536,17 @@ id|imr
 )paren
 (brace
 r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_struct
 id|ip_mc_socklist
 op_star
 id|iml
@@ -2544,7 +2566,7 @@ c_loop
 id|imlp
 op_assign
 op_amp
-id|sk-&gt;protinfo.af_inet.mc_list
+id|inet-&gt;mc_list
 suffix:semicolon
 (paren
 id|iml
@@ -2684,6 +2706,17 @@ id|sk
 )paren
 (brace
 r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_struct
 id|ip_mc_socklist
 op_star
 id|iml
@@ -2691,7 +2724,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.af_inet.mc_list
+id|inet-&gt;mc_list
 op_eq
 l_int|NULL
 )paren
@@ -2708,7 +2741,7 @@ c_loop
 (paren
 id|iml
 op_assign
-id|sk-&gt;protinfo.af_inet.mc_list
+id|inet-&gt;mc_list
 )paren
 op_ne
 l_int|NULL
@@ -2719,7 +2752,7 @@ id|in_device
 op_star
 id|in_dev
 suffix:semicolon
-id|sk-&gt;protinfo.af_inet.mc_list
+id|inet-&gt;mc_list
 op_assign
 id|iml-&gt;next
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The IP to API glue.&n; *&t;&t;&n; * Version:&t;$Id: ip_sockglue.c,v 1.61 2001/10/20 00:00:11 davem Exp $&n; *&n; * Authors:&t;see ip.c&n; *&n; * Fixes:&n; *&t;&t;Many&t;&t;:&t;Split from ip.c , see ip.c for history.&n; *&t;&t;Martin Mares&t;:&t;TOS setting fixed.&n; *&t;&t;Alan Cox&t;:&t;Fixed a couple of oopses in Martin&squot;s &n; *&t;&t;&t;&t;&t;TOS tweaks.&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The IP to API glue.&n; *&t;&t;&n; * Version:&t;$Id: ip_sockglue.c,v 1.62 2002/02/01 22:01:04 davem Exp $&n; *&n; * Authors:&t;see ip.c&n; *&n; * Fixes:&n; *&t;&t;Many&t;&t;:&t;Split from ip.c , see ip.c for history.&n; *&t;&t;Martin Mares&t;:&t;TOS setting fixed.&n; *&t;&t;Alan Cox&t;:&t;Fixed a couple of oopses in Martin&squot;s &n; *&t;&t;&t;&t;&t;TOS tweaks.&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -357,10 +357,21 @@ op_star
 id|skb
 )paren
 (brace
+r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|skb-&gt;sk
+)paren
+suffix:semicolon
 r_int
 id|flags
 op_assign
-id|skb-&gt;sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 suffix:semicolon
 multiline_comment|/* Ordered by supposed usage frequency */
 r_if
@@ -962,6 +973,17 @@ id|payload
 )paren
 (brace
 r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_struct
 id|sock_exterr_skb
 op_star
 id|serr
@@ -970,7 +992,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;protinfo.af_inet.recverr
+id|inet-&gt;recverr
 )paren
 r_return
 suffix:semicolon
@@ -1115,6 +1137,17 @@ id|info
 )paren
 (brace
 r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_struct
 id|sock_exterr_skb
 op_star
 id|serr
@@ -1133,7 +1166,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;protinfo.af_inet.recverr
+id|inet-&gt;recverr
 )paren
 r_return
 suffix:semicolon
@@ -1495,6 +1528,17 @@ op_eq
 id|SO_EE_ORIGIN_ICMP
 )paren
 (brace
+r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|sin-&gt;sin_family
 op_assign
 id|AF_INET
@@ -1524,7 +1568,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 )paren
 id|ip_cmsg_recv
 c_func
@@ -1666,6 +1710,17 @@ r_int
 id|optlen
 )paren
 (brace
+r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_int
 id|val
 op_assign
@@ -1961,8 +2016,11 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
 r_if
@@ -2022,7 +2080,7 @@ id|xchg
 c_func
 (paren
 op_amp
-id|sk-&gt;protinfo.af_inet.opt
+id|inet-&gt;opt
 comma
 id|opt
 )paren
@@ -2049,12 +2107,12 @@ c_cond
 (paren
 id|val
 )paren
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 op_or_assign
 id|IP_CMSG_PKTINFO
 suffix:semicolon
 r_else
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 op_and_assign
 op_complement
 id|IP_CMSG_PKTINFO
@@ -2069,12 +2127,12 @@ c_cond
 (paren
 id|val
 )paren
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 op_or_assign
 id|IP_CMSG_TTL
 suffix:semicolon
 r_else
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 op_and_assign
 op_complement
 id|IP_CMSG_TTL
@@ -2089,12 +2147,12 @@ c_cond
 (paren
 id|val
 )paren
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 op_or_assign
 id|IP_CMSG_TOS
 suffix:semicolon
 r_else
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 op_and_assign
 op_complement
 id|IP_CMSG_TOS
@@ -2109,12 +2167,12 @@ c_cond
 (paren
 id|val
 )paren
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 op_or_assign
 id|IP_CMSG_RECVOPTS
 suffix:semicolon
 r_else
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 op_and_assign
 op_complement
 id|IP_CMSG_RECVOPTS
@@ -2129,12 +2187,12 @@ c_cond
 (paren
 id|val
 )paren
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 op_or_assign
 id|IP_CMSG_RETOPTS
 suffix:semicolon
 r_else
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 op_and_assign
 op_complement
 id|IP_CMSG_RETOPTS
@@ -2160,7 +2218,7 @@ l_int|3
 suffix:semicolon
 id|val
 op_or_assign
-id|sk-&gt;protinfo.af_inet.tos
+id|inet-&gt;tos
 op_amp
 l_int|3
 suffix:semicolon
@@ -2195,12 +2253,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.af_inet.tos
+id|inet-&gt;tos
 op_ne
 id|val
 )paren
 (brace
-id|sk-&gt;protinfo.af_inet.tos
+id|inet-&gt;tos
 op_assign
 id|val
 suffix:semicolon
@@ -2259,7 +2317,7 @@ r_goto
 id|e_inval
 suffix:semicolon
 )brace
-id|sk-&gt;protinfo.af_inet.ttl
+id|inet-&gt;ttl
 op_assign
 id|val
 suffix:semicolon
@@ -2284,7 +2342,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|sk-&gt;protinfo.af_inet.hdrincl
+id|inet-&gt;hdrincl
 op_assign
 id|val
 ques
@@ -2307,7 +2365,7 @@ l_int|2
 r_goto
 id|e_inval
 suffix:semicolon
-id|sk-&gt;protinfo.af_inet.pmtudisc
+id|inet-&gt;pmtudisc
 op_assign
 id|val
 suffix:semicolon
@@ -2316,7 +2374,7 @@ suffix:semicolon
 r_case
 id|IP_RECVERR
 suffix:colon
-id|sk-&gt;protinfo.af_inet.recverr
+id|inet-&gt;recverr
 op_assign
 op_logical_neg
 op_logical_neg
@@ -2382,7 +2440,7 @@ l_int|255
 r_goto
 id|e_inval
 suffix:semicolon
-id|sk-&gt;protinfo.af_inet.mc_ttl
+id|inet-&gt;mc_ttl
 op_assign
 id|val
 suffix:semicolon
@@ -2401,14 +2459,11 @@ l_int|1
 r_goto
 id|e_inval
 suffix:semicolon
-id|sk-&gt;protinfo.af_inet.mc_loop
+id|inet-&gt;mc_loop
 op_assign
+op_logical_neg
+op_logical_neg
 id|val
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2535,11 +2590,11 @@ op_eq
 id|INADDR_ANY
 )paren
 (brace
-id|sk-&gt;protinfo.af_inet.mc_index
+id|inet-&gt;mc_index
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;protinfo.af_inet.mc_addr
+id|inet-&gt;mc_addr
 op_assign
 l_int|0
 suffix:semicolon
@@ -2614,11 +2669,11 @@ id|sk-&gt;bound_dev_if
 )paren
 r_break
 suffix:semicolon
-id|sk-&gt;protinfo.af_inet.mc_index
+id|inet-&gt;mc_index
 op_assign
 id|mreq.imr_ifindex
 suffix:semicolon
-id|sk-&gt;protinfo.af_inet.mc_addr
+id|inet-&gt;mc_addr
 op_assign
 id|mreq.imr_address.s_addr
 suffix:semicolon
@@ -2798,7 +2853,7 @@ l_int|1
 r_goto
 id|e_inval
 suffix:semicolon
-id|sk-&gt;protinfo.af_inet.freebind
+id|inet-&gt;freebind
 op_assign
 op_logical_neg
 op_logical_neg
@@ -2883,6 +2938,17 @@ op_star
 id|optlen
 )paren
 (brace
+r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_int
 id|val
 suffix:semicolon
@@ -3010,14 +3076,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.af_inet.opt
+id|inet-&gt;opt
 )paren
 id|memcpy
 c_func
 (paren
 id|optbuf
 comma
-id|sk-&gt;protinfo.af_inet.opt
+id|inet-&gt;opt
 comma
 r_sizeof
 (paren
@@ -3025,7 +3091,7 @@ r_struct
 id|ip_options
 )paren
 op_plus
-id|sk-&gt;protinfo.af_inet.opt-&gt;optlen
+id|inet-&gt;opt-&gt;optlen
 )paren
 suffix:semicolon
 id|release_sock
@@ -3115,7 +3181,7 @@ suffix:colon
 id|val
 op_assign
 (paren
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 op_amp
 id|IP_CMSG_PKTINFO
 )paren
@@ -3130,7 +3196,7 @@ suffix:colon
 id|val
 op_assign
 (paren
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 op_amp
 id|IP_CMSG_TTL
 )paren
@@ -3145,7 +3211,7 @@ suffix:colon
 id|val
 op_assign
 (paren
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 op_amp
 id|IP_CMSG_TOS
 )paren
@@ -3160,7 +3226,7 @@ suffix:colon
 id|val
 op_assign
 (paren
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 op_amp
 id|IP_CMSG_RECVOPTS
 )paren
@@ -3175,7 +3241,7 @@ suffix:colon
 id|val
 op_assign
 (paren
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 op_amp
 id|IP_CMSG_RETOPTS
 )paren
@@ -3189,7 +3255,7 @@ id|IP_TOS
 suffix:colon
 id|val
 op_assign
-id|sk-&gt;protinfo.af_inet.tos
+id|inet-&gt;tos
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3198,7 +3264,7 @@ id|IP_TTL
 suffix:colon
 id|val
 op_assign
-id|sk-&gt;protinfo.af_inet.ttl
+id|inet-&gt;ttl
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3207,7 +3273,7 @@ id|IP_HDRINCL
 suffix:colon
 id|val
 op_assign
-id|sk-&gt;protinfo.af_inet.hdrincl
+id|inet-&gt;hdrincl
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3216,7 +3282,7 @@ id|IP_MTU_DISCOVER
 suffix:colon
 id|val
 op_assign
-id|sk-&gt;protinfo.af_inet.pmtudisc
+id|inet-&gt;pmtudisc
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3284,7 +3350,7 @@ id|IP_RECVERR
 suffix:colon
 id|val
 op_assign
-id|sk-&gt;protinfo.af_inet.recverr
+id|inet-&gt;recverr
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3293,7 +3359,7 @@ id|IP_MULTICAST_TTL
 suffix:colon
 id|val
 op_assign
-id|sk-&gt;protinfo.af_inet.mc_ttl
+id|inet-&gt;mc_ttl
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3302,7 +3368,7 @@ id|IP_MULTICAST_LOOP
 suffix:colon
 id|val
 op_assign
-id|sk-&gt;protinfo.af_inet.mc_loop
+id|inet-&gt;mc_loop
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3333,7 +3399,7 @@ id|in_addr
 suffix:semicolon
 id|addr.s_addr
 op_assign
-id|sk-&gt;protinfo.af_inet.mc_addr
+id|inet-&gt;mc_addr
 suffix:semicolon
 id|release_sock
 c_func
@@ -3426,7 +3492,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 op_amp
 id|IP_CMSG_PKTINFO
 )paren
@@ -3445,7 +3511,7 @@ id|sk-&gt;rcv_saddr
 suffix:semicolon
 id|info.ipi_ifindex
 op_assign
-id|sk-&gt;protinfo.af_inet.mc_index
+id|inet-&gt;mc_index
 suffix:semicolon
 id|put_cmsg
 c_func
@@ -3470,7 +3536,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 op_amp
 id|IP_CMSG_TTL
 )paren
@@ -3478,7 +3544,7 @@ id|IP_CMSG_TTL
 r_int
 id|hlim
 op_assign
-id|sk-&gt;protinfo.af_inet.mc_ttl
+id|inet-&gt;mc_ttl
 suffix:semicolon
 id|put_cmsg
 c_func
@@ -3519,7 +3585,7 @@ id|IP_FREEBIND
 suffix:colon
 id|val
 op_assign
-id|sk-&gt;protinfo.af_inet.freebind
+id|inet-&gt;freebind
 suffix:semicolon
 r_break
 suffix:semicolon

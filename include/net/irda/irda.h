@@ -297,6 +297,8 @@ id|rx_flow
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|irda_sk
+mdefine_line|#define irda_sk(__sk) ((struct irda_sock *)(__sk)-&gt;protinfo)
 multiline_comment|/*&n; *  This type is used by the protocols that transmit 16 bits words in &n; *  little endian format. A little endian machine stores MSB of word in&n; *  byte[1] and LSB in byte[0]. A big endian machine stores MSB in byte[0] &n; *  and LSB in byte[1].&n; */
 r_typedef
 r_union

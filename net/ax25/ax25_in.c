@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/ip.h&gt;&t;&t;&t;/* For ip_rcv */
+macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/arp.h&gt;&t;&t;&t;/* For arp_rcv */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -1481,7 +1482,11 @@ suffix:semicolon
 )brace
 id|ax25
 op_assign
-id|make-&gt;protinfo.ax25
+id|ax25_sk
+c_func
+(paren
+id|make
+)paren
 suffix:semicolon
 id|skb_set_owner_r
 c_func

@@ -23,8 +23,10 @@ mdefine_line|#define ATM_DS3_PCR&t;(8000*12)
 multiline_comment|/* DS3: 12 cells in a 125 usec time slot */
 DECL|macro|ATM_PDU_OVHD
 mdefine_line|#define ATM_PDU_OVHD&t;0&t;/* number of bytes to charge against buffer&n;&t;&t;&t;&t;   quota per PDU */
+DECL|macro|atm_sk
+mdefine_line|#define atm_sk(__sk) ((struct atm_vcc *)(__sk)-&gt;protinfo)
 DECL|macro|ATM_SD
-mdefine_line|#define ATM_SD(s)&t;((s)-&gt;sk-&gt;protinfo.af_atm)
+mdefine_line|#define ATM_SD(s)&t;(atm_sk((s)-&gt;sk))
 DECL|macro|__AAL_STAT_ITEMS
 mdefine_line|#define __AAL_STAT_ITEMS &bslash;&n;    __HANDLE_ITEM(tx);&t;&t;&t;/* TX okay */ &bslash;&n;    __HANDLE_ITEM(tx_err);&t;&t;/* TX errors */ &bslash;&n;    __HANDLE_ITEM(rx);&t;&t;&t;/* RX okay */ &bslash;&n;    __HANDLE_ITEM(rx_err);&t;&t;/* RX errors */ &bslash;&n;    __HANDLE_ITEM(rx_drop);&t;&t;/* RX out of memory */
 DECL|struct|atm_aal_stats

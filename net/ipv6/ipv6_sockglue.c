@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;IPv6 BSD socket options interface&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;Based on linux/net/ipv4/ip_sockglue.c&n; *&n; *&t;$Id: ipv6_sockglue.c,v 1.40 2001/09/18 22:29:10 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *&t;FIXME: Make the setsockopt code POSIX compliant: That is&n; *&n; *&t;o&t;Return -EINVAL for setsockopt of short lengths&n; *&t;o&t;Truncate getsockopt returns&n; *&t;o&t;Return an optlen of the truncated length if need be&n; */
+multiline_comment|/*&n; *&t;IPv6 BSD socket options interface&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;Based on linux/net/ipv4/ip_sockglue.c&n; *&n; *&t;$Id: ipv6_sockglue.c,v 1.41 2002/02/01 22:01:04 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *&t;FIXME: Make the setsockopt code POSIX compliant: That is&n; *&n; *&t;o&t;Return -EINVAL for setsockopt of short lengths&n; *&t;o&t;Truncate getsockopt returns&n; *&t;o&t;Return an optlen of the truncated length if need be&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
@@ -364,8 +364,11 @@ id|ipv6_pinfo
 op_star
 id|np
 op_assign
-op_amp
-id|sk-&gt;net_pinfo.af_inet6
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_int
 id|val
@@ -570,9 +573,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 id|local_bh_disable
@@ -1042,8 +1046,11 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1560,8 +1567,11 @@ id|ipv6_pinfo
 op_star
 id|np
 op_assign
-op_amp
-id|sk-&gt;net_pinfo.af_inet6
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_int
 id|len

@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/route.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
+macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -27,6 +28,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/netfilter_decnet.h&gt;
 macro_line|#include &lt;net/neighbour.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
+macro_line|#include &lt;net/dn.h&gt;
 macro_line|#include &lt;net/dn_nsp.h&gt;
 macro_line|#include &lt;net/dn_dev.h&gt;
 macro_line|#include &lt;net/dn_route.h&gt;
@@ -170,7 +172,7 @@ multiline_comment|/* ACK - Data */
 r_if
 c_cond
 (paren
-id|after
+id|dn_after
 c_func
 (paren
 id|ack
@@ -216,7 +218,7 @@ multiline_comment|/* ACK - OtherData */
 r_if
 c_cond
 (paren
-id|after
+id|dn_after
 c_func
 (paren
 id|ack

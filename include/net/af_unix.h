@@ -120,12 +120,83 @@ mdefine_line|#define UNIXCB(skb) &t;(*(struct unix_skb_parms*)&amp;((skb)-&gt;cb
 DECL|macro|UNIXCREDS
 mdefine_line|#define UNIXCREDS(skb)&t;(&amp;UNIXCB((skb)).creds)
 DECL|macro|unix_state_rlock
-mdefine_line|#define unix_state_rlock(s)&t;read_lock(&amp;(s)-&gt;protinfo.af_unix.lock)
+mdefine_line|#define unix_state_rlock(s)&t;read_lock(&amp;unix_sk(s)-&gt;lock)
 DECL|macro|unix_state_runlock
-mdefine_line|#define unix_state_runlock(s)&t;read_unlock(&amp;(s)-&gt;protinfo.af_unix.lock)
+mdefine_line|#define unix_state_runlock(s)&t;read_unlock(&amp;unix_sk(s)-&gt;lock)
 DECL|macro|unix_state_wlock
-mdefine_line|#define unix_state_wlock(s)&t;write_lock(&amp;(s)-&gt;protinfo.af_unix.lock)
+mdefine_line|#define unix_state_wlock(s)&t;write_lock(&amp;unix_sk(s)-&gt;lock)
 DECL|macro|unix_state_wunlock
-mdefine_line|#define unix_state_wunlock(s)&t;write_unlock(&amp;(s)-&gt;protinfo.af_unix.lock)
+mdefine_line|#define unix_state_wunlock(s)&t;write_unlock(&amp;unix_sk(s)-&gt;lock)
+macro_line|#ifdef __KERNEL__
+multiline_comment|/* The AF_UNIX socket */
+DECL|struct|unix_sock
+r_struct
+id|unix_sock
+(brace
+multiline_comment|/* WARNING: sk has to be the first member */
+DECL|member|sk
+r_struct
+id|sock
+id|sk
+suffix:semicolon
+DECL|member|addr
+r_struct
+id|unix_address
+op_star
+id|addr
+suffix:semicolon
+DECL|member|dentry
+r_struct
+id|dentry
+op_star
+id|dentry
+suffix:semicolon
+DECL|member|mnt
+r_struct
+id|vfsmount
+op_star
+id|mnt
+suffix:semicolon
+DECL|member|readsem
+r_struct
+id|semaphore
+id|readsem
+suffix:semicolon
+DECL|member|other
+r_struct
+id|sock
+op_star
+id|other
+suffix:semicolon
+DECL|member|list
+r_struct
+id|sock
+op_star
+op_star
+id|list
+suffix:semicolon
+DECL|member|gc_tree
+r_struct
+id|sock
+op_star
+id|gc_tree
+suffix:semicolon
+DECL|member|inflight
+id|atomic_t
+id|inflight
+suffix:semicolon
+DECL|member|lock
+id|rwlock_t
+id|lock
+suffix:semicolon
+DECL|member|peer_wait
+id|wait_queue_head_t
+id|peer_wait
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|unix_sk
+mdefine_line|#define unix_sk(__sk) ((struct unix_sock *)__sk)
+macro_line|#endif
 macro_line|#endif
 eof

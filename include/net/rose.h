@@ -448,6 +448,8 @@ DECL|typedef|rose_cb
 )brace
 id|rose_cb
 suffix:semicolon
+DECL|macro|rose_sk
+mdefine_line|#define rose_sk(__sk) ((rose_cb *)(__sk)-&gt;protinfo)
 multiline_comment|/* af_rose.c */
 r_extern
 id|ax25_address

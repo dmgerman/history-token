@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * tcp_diag.c&t;Module for monitoring TCP sockets.&n; *&n; * Version:&t;$Id: tcp_diag.c,v 1.2 2001/11/05 09:42:22 davem Exp $&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * tcp_diag.c&t;Module for monitoring TCP sockets.&n; *&n; * Version:&t;$Id: tcp_diag.c,v 1.3 2002/02/01 22:01:04 davem Exp $&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -53,8 +53,11 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
-id|sk-&gt;tp_pinfo.af_tcp
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_struct
 id|tcpdiagmsg
@@ -370,13 +373,24 @@ op_eq
 id|AF_INET6
 )paren
 (brace
+r_struct
+id|ipv6_pinfo
+op_star
+id|np
+op_assign
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|memcpy
 c_func
 (paren
 id|r-&gt;id.tcpdiag_src
 comma
 op_amp
-id|sk-&gt;net_pinfo.af_inet6.rcv_saddr
+id|np-&gt;rcv_saddr
 comma
 l_int|16
 )paren
@@ -387,7 +401,7 @@ c_func
 id|r-&gt;id.tcpdiag_dst
 comma
 op_amp
-id|sk-&gt;net_pinfo.af_inet6.daddr
+id|np-&gt;daddr
 comma
 l_int|16
 )paren
@@ -1539,6 +1553,17 @@ op_eq
 id|AF_INET6
 )paren
 (brace
+r_struct
+id|ipv6_pinfo
+op_star
+id|np
+op_assign
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1553,7 +1578,7 @@ id|u32
 op_star
 )paren
 op_amp
-id|sk-&gt;net_pinfo.af_inet6.rcv_saddr
+id|np-&gt;rcv_saddr
 suffix:semicolon
 r_else
 id|addr
@@ -1563,7 +1588,7 @@ id|u32
 op_star
 )paren
 op_amp
-id|sk-&gt;net_pinfo.af_inet6.daddr
+id|np-&gt;daddr
 suffix:semicolon
 )brace
 r_else
@@ -2095,11 +2120,6 @@ r_struct
 id|sock
 op_star
 id|sk
-op_assign
-id|tcp_listening_hash
-(braket
-id|i
-)braket
 suffix:semicolon
 r_if
 c_cond

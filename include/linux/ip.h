@@ -105,6 +105,9 @@ mdefine_line|#define&t;IPOPT_TS_TSANDADDR&t;1&t;&t;/* timestamps and addresses *
 DECL|macro|IPOPT_TS_PRESPEC
 mdefine_line|#define&t;IPOPT_TS_PRESPEC&t;3&t;&t;/* specified modules only */
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;net/sock.h&gt;
+macro_line|#include &lt;linux/igmp.h&gt;
 DECL|struct|ip_options
 r_struct
 id|ip_options
@@ -211,6 +214,114 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|optlength
 mdefine_line|#define optlength(opt) (sizeof(struct ip_options) + opt-&gt;optlen)
+DECL|struct|inet_opt
+r_struct
+id|inet_opt
+(brace
+DECL|member|ttl
+r_int
+id|ttl
+suffix:semicolon
+multiline_comment|/* TTL setting */
+DECL|member|tos
+r_int
+id|tos
+suffix:semicolon
+multiline_comment|/* TOS */
+DECL|member|cmsg_flags
+r_int
+id|cmsg_flags
+suffix:semicolon
+DECL|member|opt
+r_struct
+id|ip_options
+op_star
+id|opt
+suffix:semicolon
+DECL|member|hdrincl
+r_int
+r_char
+id|hdrincl
+suffix:semicolon
+multiline_comment|/* Include headers ? */
+DECL|member|mc_ttl
+id|__u8
+id|mc_ttl
+suffix:semicolon
+multiline_comment|/* Multicasting TTL */
+DECL|member|mc_loop
+id|__u8
+id|mc_loop
+suffix:semicolon
+multiline_comment|/* Loopback */
+DECL|member|recverr
+r_int
+id|recverr
+suffix:colon
+l_int|1
+comma
+DECL|member|freebind
+id|freebind
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|id
+id|__u16
+id|id
+suffix:semicolon
+multiline_comment|/* ID counter for DF pkts */
+DECL|member|pmtudisc
+id|__u8
+id|pmtudisc
+suffix:semicolon
+DECL|member|mc_index
+r_int
+id|mc_index
+suffix:semicolon
+multiline_comment|/* Multicast device index */
+DECL|member|mc_addr
+id|__u32
+id|mc_addr
+suffix:semicolon
+DECL|member|mc_list
+r_struct
+id|ip_mc_socklist
+op_star
+id|mc_list
+suffix:semicolon
+multiline_comment|/* Group array */
+)brace
+suffix:semicolon
+r_struct
+id|ipv6_pinfo
+suffix:semicolon
+multiline_comment|/* WARNING: don&squot;t change the layout of the members in inet_sock! */
+DECL|struct|inet_sock
+r_struct
+id|inet_sock
+(brace
+DECL|member|sk
+r_struct
+id|sock
+id|sk
+suffix:semicolon
+macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
+DECL|member|pinet6
+r_struct
+id|ipv6_pinfo
+op_star
+id|pinet6
+suffix:semicolon
+macro_line|#endif
+DECL|member|inet
+r_struct
+id|inet_opt
+id|inet
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|inet_sk
+mdefine_line|#define inet_sk(__sk) (&amp;((struct inet_sock *)__sk)-&gt;inet)
 macro_line|#endif
 DECL|struct|iphdr
 r_struct

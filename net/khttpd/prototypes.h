@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
+macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;structure.h&quot;
 multiline_comment|/* General defines and stuff */

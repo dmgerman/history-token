@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Syncookies implementation for the Linux kernel&n; *&n; *  Copyright (C) 1997 Andi Kleen&n; *  Based on ideas by D.J.Bernstein and Eric Schenk. &n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; * &n; *  $Id: syncookies.c,v 1.17 2001/10/26 14:55:41 davem Exp $&n; *&n; *  Missing: IPv6 support. &n; */
+multiline_comment|/*&n; *  Syncookies implementation for the Linux kernel&n; *&n; *  Copyright (C) 1997 Andi Kleen&n; *  Based on ideas by D.J.Bernstein and Eric Schenk. &n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; * &n; *  $Id: syncookies.c,v 1.18 2002/02/01 22:01:04 davem Exp $&n; *&n; *  Missing: IPv6 support. &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if defined(CONFIG_SYN_COOKIES) 
 macro_line|#include &lt;linux/tcp.h&gt;
@@ -82,6 +82,17 @@ op_star
 id|mssp
 )paren
 (brace
+r_struct
+id|tcp_opt
+op_star
+id|tp
+op_assign
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_int
 id|mssind
 suffix:semicolon
@@ -92,7 +103,7 @@ op_assign
 op_star
 id|mssp
 suffix:semicolon
-id|sk-&gt;tp_pinfo.af_tcp.last_synq_overflow
+id|tp-&gt;last_synq_overflow
 op_assign
 id|jiffies
 suffix:semicolon
@@ -283,9 +294,10 @@ id|tcp_opt
 op_star
 id|tp
 op_assign
-op_amp
+id|tcp_sk
+c_func
 (paren
-id|sk-&gt;tp_pinfo.af_tcp
+id|sk
 )paren
 suffix:semicolon
 r_struct
@@ -358,6 +370,17 @@ op_star
 id|opt
 )paren
 (brace
+r_struct
+id|tcp_opt
+op_star
+id|tp
+op_assign
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|__u32
 id|cookie
 op_assign
@@ -412,7 +435,7 @@ c_func
 (paren
 id|jiffies
 comma
-id|sk-&gt;tp_pinfo.af_tcp.last_synq_overflow
+id|tp-&gt;last_synq_overflow
 op_plus
 id|TCP_TIMEOUT_INIT
 )paren

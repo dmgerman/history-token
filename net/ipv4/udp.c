@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The User Datagram Protocol (UDP).&n; *&n; * Version:&t;$Id: udp.c,v 1.101 2002/01/12 07:39:45 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&t;&t;Alan Cox, &lt;Alan.Cox@linux.org&gt;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;:&t;verify_area() calls&n; *&t;&t;Alan Cox&t;: &t;stopped close while in use off icmp&n; *&t;&t;&t;&t;&t;messages. Not a fix but a botch that&n; *&t;&t;&t;&t;&t;for udp at least is &squot;valid&squot;.&n; *&t;&t;Alan Cox&t;:&t;Fixed icmp handling properly&n; *&t;&t;Alan Cox&t;: &t;Correct error for oversized datagrams&n; *&t;&t;Alan Cox&t;:&t;Tidied select() semantics. &n; *&t;&t;Alan Cox&t;:&t;udp_err() fixed properly, also now &n; *&t;&t;&t;&t;&t;select and read wake correctly on errors&n; *&t;&t;Alan Cox&t;:&t;udp_send verify_area moved to avoid mem leak&n; *&t;&t;Alan Cox&t;:&t;UDP can count its memory&n; *&t;&t;Alan Cox&t;:&t;send to an unknown connection causes&n; *&t;&t;&t;&t;&t;an ECONNREFUSED off the icmp, but&n; *&t;&t;&t;&t;&t;does NOT close.&n; *&t;&t;Alan Cox&t;:&t;Switched to new sk_buff handlers. No more backlog!&n; *&t;&t;Alan Cox&t;:&t;Using generic datagram code. Even smaller and the PEEK&n; *&t;&t;&t;&t;&t;bug no longer crashes it.&n; *&t;&t;Fred Van Kempen&t;: &t;Net2e support for sk-&gt;broadcast.&n; *&t;&t;Alan Cox&t;:&t;Uses skb_free_datagram&n; *&t;&t;Alan Cox&t;:&t;Added get/set sockopt support.&n; *&t;&t;Alan Cox&t;:&t;Broadcasting without option set returns EACCES.&n; *&t;&t;Alan Cox&t;:&t;No wakeup calls. Instead we now use the callbacks.&n; *&t;&t;Alan Cox&t;:&t;Use ip_tos and ip_ttl&n; *&t;&t;Alan Cox&t;:&t;SNMP Mibs&n; *&t;&t;Alan Cox&t;:&t;MSG_DONTROUTE, and 0.0.0.0 support.&n; *&t;&t;Matt Dillon&t;:&t;UDP length checks.&n; *&t;&t;Alan Cox&t;:&t;Smarter af_inet used properly.&n; *&t;&t;Alan Cox&t;:&t;Use new kernel side addressing.&n; *&t;&t;Alan Cox&t;:&t;Incorrect return on truncated datagram receive.&n; *&t;Arnt Gulbrandsen &t;:&t;New udp_send and stuff&n; *&t;&t;Alan Cox&t;:&t;Cache last socket&n; *&t;&t;Alan Cox&t;:&t;Route cache&n; *&t;&t;Jon Peatfield&t;:&t;Minor efficiency fix to sendto().&n; *&t;&t;Mike Shaver&t;:&t;RFC1122 checks.&n; *&t;&t;Alan Cox&t;:&t;Nonblocking error fix.&n; *&t;Willy Konynenberg&t;:&t;Transparent proxying support.&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; *&t;&t;David S. Miller&t;:&t;New socket lookup architecture.&n; *&t;&t;&t;&t;&t;Last socket cache retained as it&n; *&t;&t;&t;&t;&t;does have a high hit rate.&n; *&t;&t;Olaf Kirch&t;:&t;Don&squot;t linearise iovec on sendmsg.&n; *&t;&t;Andi Kleen&t;:&t;Some cleanups, cache destination entry&n; *&t;&t;&t;&t;&t;for connect. &n; *&t;Vitaly E. Lavrov&t;:&t;Transparent proxy revived after year coma.&n; *&t;&t;Melvin Smith&t;:&t;Check msg_name not msg_namelen in sendto(),&n; *&t;&t;&t;&t;&t;return ENOTCONN for unconnected sockets (POSIX)&n; *&t;&t;Janos Farkas&t;:&t;don&squot;t deliver multi/broadcasts to a different&n; *&t;&t;&t;&t;&t;bound-to-device socket&n; *&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The User Datagram Protocol (UDP).&n; *&n; * Version:&t;$Id: udp.c,v 1.102 2002/02/01 22:01:04 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&t;&t;Alan Cox, &lt;Alan.Cox@linux.org&gt;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;:&t;verify_area() calls&n; *&t;&t;Alan Cox&t;: &t;stopped close while in use off icmp&n; *&t;&t;&t;&t;&t;messages. Not a fix but a botch that&n; *&t;&t;&t;&t;&t;for udp at least is &squot;valid&squot;.&n; *&t;&t;Alan Cox&t;:&t;Fixed icmp handling properly&n; *&t;&t;Alan Cox&t;: &t;Correct error for oversized datagrams&n; *&t;&t;Alan Cox&t;:&t;Tidied select() semantics. &n; *&t;&t;Alan Cox&t;:&t;udp_err() fixed properly, also now &n; *&t;&t;&t;&t;&t;select and read wake correctly on errors&n; *&t;&t;Alan Cox&t;:&t;udp_send verify_area moved to avoid mem leak&n; *&t;&t;Alan Cox&t;:&t;UDP can count its memory&n; *&t;&t;Alan Cox&t;:&t;send to an unknown connection causes&n; *&t;&t;&t;&t;&t;an ECONNREFUSED off the icmp, but&n; *&t;&t;&t;&t;&t;does NOT close.&n; *&t;&t;Alan Cox&t;:&t;Switched to new sk_buff handlers. No more backlog!&n; *&t;&t;Alan Cox&t;:&t;Using generic datagram code. Even smaller and the PEEK&n; *&t;&t;&t;&t;&t;bug no longer crashes it.&n; *&t;&t;Fred Van Kempen&t;: &t;Net2e support for sk-&gt;broadcast.&n; *&t;&t;Alan Cox&t;:&t;Uses skb_free_datagram&n; *&t;&t;Alan Cox&t;:&t;Added get/set sockopt support.&n; *&t;&t;Alan Cox&t;:&t;Broadcasting without option set returns EACCES.&n; *&t;&t;Alan Cox&t;:&t;No wakeup calls. Instead we now use the callbacks.&n; *&t;&t;Alan Cox&t;:&t;Use ip_tos and ip_ttl&n; *&t;&t;Alan Cox&t;:&t;SNMP Mibs&n; *&t;&t;Alan Cox&t;:&t;MSG_DONTROUTE, and 0.0.0.0 support.&n; *&t;&t;Matt Dillon&t;:&t;UDP length checks.&n; *&t;&t;Alan Cox&t;:&t;Smarter af_inet used properly.&n; *&t;&t;Alan Cox&t;:&t;Use new kernel side addressing.&n; *&t;&t;Alan Cox&t;:&t;Incorrect return on truncated datagram receive.&n; *&t;Arnt Gulbrandsen &t;:&t;New udp_send and stuff&n; *&t;&t;Alan Cox&t;:&t;Cache last socket&n; *&t;&t;Alan Cox&t;:&t;Route cache&n; *&t;&t;Jon Peatfield&t;:&t;Minor efficiency fix to sendto().&n; *&t;&t;Mike Shaver&t;:&t;RFC1122 checks.&n; *&t;&t;Alan Cox&t;:&t;Nonblocking error fix.&n; *&t;Willy Konynenberg&t;:&t;Transparent proxying support.&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; *&t;&t;David S. Miller&t;:&t;New socket lookup architecture.&n; *&t;&t;&t;&t;&t;Last socket cache retained as it&n; *&t;&t;&t;&t;&t;does have a high hit rate.&n; *&t;&t;Olaf Kirch&t;:&t;Don&squot;t linearise iovec on sendmsg.&n; *&t;&t;Andi Kleen&t;:&t;Some cleanups, cache destination entry&n; *&t;&t;&t;&t;&t;for connect. &n; *&t;Vitaly E. Lavrov&t;:&t;Transparent proxy revived after year coma.&n; *&t;&t;Melvin Smith&t;:&t;Check msg_name not msg_namelen in sendto(),&n; *&t;&t;&t;&t;&t;return ENOTCONN for unconnected sockets (POSIX)&n; *&t;&t;Janos Farkas&t;:&t;don&squot;t deliver multi/broadcasts to a different&n; *&t;&t;&t;&t;&t;bound-to-device socket&n; *&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ioctls.h&gt;
@@ -14,7 +14,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;net/snmp.h&gt;
-macro_line|#include &lt;net/ip.h&gt;
+macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
@@ -1021,6 +1021,11 @@ id|info
 )paren
 (brace
 r_struct
+id|inet_opt
+op_star
+id|inet
+suffix:semicolon
+r_struct
 id|iphdr
 op_star
 id|iph
@@ -1115,6 +1120,14 @@ id|harderr
 op_assign
 l_int|0
 suffix:semicolon
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1166,7 +1179,7 @@ multiline_comment|/* Path MTU discovery */
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.af_inet.pmtudisc
+id|inet-&gt;pmtudisc
 op_ne
 id|IP_PMTUDISC_DONT
 )paren
@@ -1225,7 +1238,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;protinfo.af_inet.recverr
+id|inet-&gt;recverr
 )paren
 (brace
 r_if
@@ -1668,6 +1681,17 @@ r_int
 id|len
 )paren
 (brace
+r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_int
 id|ulen
 op_assign
@@ -1902,7 +1926,7 @@ id|ipc.opt
 )paren
 id|ipc.opt
 op_assign
-id|sk-&gt;protinfo.af_inet.opt
+id|inet-&gt;opt
 suffix:semicolon
 id|ufh.saddr
 op_assign
@@ -1946,7 +1970,7 @@ op_assign
 id|RT_TOS
 c_func
 (paren
-id|sk-&gt;protinfo.af_inet.tos
+id|inet-&gt;tos
 )paren
 suffix:semicolon
 r_if
@@ -1994,7 +2018,7 @@ id|ipc.oif
 )paren
 id|ipc.oif
 op_assign
-id|sk-&gt;protinfo.af_inet.mc_index
+id|inet-&gt;mc_index
 suffix:semicolon
 r_if
 c_cond
@@ -2004,7 +2028,7 @@ id|ufh.saddr
 )paren
 id|ufh.saddr
 op_assign
-id|sk-&gt;protinfo.af_inet.mc_addr
+id|inet-&gt;mc_addr
 suffix:semicolon
 id|connected
 op_assign
@@ -2483,6 +2507,17 @@ id|addr_len
 )paren
 (brace
 r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_struct
 id|sockaddr_in
 op_star
 id|sin
@@ -2739,7 +2774,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 )paren
 id|ip_cmsg_recv
 c_func
@@ -2875,6 +2910,17 @@ r_int
 id|addr_len
 )paren
 (brace
+r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_struct
 id|sockaddr_in
 op_star
@@ -3017,7 +3063,7 @@ id|sk-&gt;state
 op_assign
 id|TCP_ESTABLISHED
 suffix:semicolon
-id|sk-&gt;protinfo.af_inet.id
+id|inet-&gt;id
 op_assign
 id|jiffies
 suffix:semicolon
@@ -3085,11 +3131,30 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
+r_if
+c_cond
+(paren
+id|sk-&gt;family
+op_eq
+id|PF_INET6
+)paren
+(brace
+r_struct
+id|ipv6_pinfo
+op_star
+id|np
+op_assign
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
 op_amp
-id|sk-&gt;net_pinfo.af_inet6.saddr
+id|np-&gt;saddr
 comma
 l_int|0
 comma
@@ -3100,13 +3165,14 @@ id|memset
 c_func
 (paren
 op_amp
-id|sk-&gt;net_pinfo.af_inet6.rcv_saddr
+id|np-&gt;rcv_saddr
 comma
 l_int|0
 comma
 l_int|16
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 )brace
 r_if

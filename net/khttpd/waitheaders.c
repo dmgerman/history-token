@@ -687,7 +687,18 @@ suffix:semicolon
 r_else
 multiline_comment|/* Normal Case */
 (brace
-id|Request-&gt;sock-&gt;sk-&gt;tp_pinfo.af_tcp.nonagle
+r_struct
+id|tcp_opt
+op_star
+id|tp
+op_assign
+id|tcp_sk
+c_func
+(paren
+id|Request-&gt;sock-&gt;sk
+)paren
+suffix:semicolon
+id|tp-&gt;nonagle
 op_assign
 l_int|2
 suffix:semicolon

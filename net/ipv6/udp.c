@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;UDP over IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;Based on linux/ipv4/udp.c&n; *&n; *&t;$Id: udp.c,v 1.64 2001/09/01 00:31:50 davem Exp $&n; *&n; *&t;Fixes:&n; *&t;Hideaki YOSHIFUJI&t;:&t;sin6_scope_id support&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;UDP over IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;Based on linux/ipv4/udp.c&n; *&n; *&t;$Id: udp.c,v 1.65 2002/02/01 22:01:04 davem Exp $&n; *&n; *&t;Fixes:&n; *&t;Hideaki YOSHIFUJI&t;:&t;sin6_scope_id support&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -313,6 +313,17 @@ id|sock
 op_star
 id|sk2
 suffix:semicolon
+r_struct
+id|ipv6_pinfo
+op_star
+id|np
+op_assign
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_int
 id|addr_type
 op_assign
@@ -320,7 +331,7 @@ id|ipv6_addr_type
 c_func
 (paren
 op_amp
-id|sk-&gt;net_pinfo.af_inet6.rcv_saddr
+id|np-&gt;rcv_saddr
 )paren
 suffix:semicolon
 r_for
@@ -348,6 +359,17 @@ op_assign
 id|sk2-&gt;next
 )paren
 (brace
+r_struct
+id|ipv6_pinfo
+op_star
+id|np2
+op_assign
+id|inet6_sk
+c_func
+(paren
+id|sk2
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -376,10 +398,10 @@ id|ipv6_addr_cmp
 c_func
 (paren
 op_amp
-id|sk-&gt;net_pinfo.af_inet6.rcv_saddr
+id|np-&gt;rcv_saddr
 comma
 op_amp
-id|sk2-&gt;net_pinfo.af_inet6.rcv_saddr
+id|np2-&gt;rcv_saddr
 )paren
 op_logical_or
 (paren
@@ -700,8 +722,11 @@ id|ipv6_pinfo
 op_star
 id|np
 op_assign
-op_amp
-id|sk-&gt;net_pinfo.af_inet6
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_int
 id|score
@@ -753,10 +778,8 @@ comma
 id|daddr
 )paren
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 id|score
 op_increment
 suffix:semicolon
@@ -785,10 +808,8 @@ comma
 id|saddr
 )paren
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 id|score
 op_increment
 suffix:semicolon
@@ -908,8 +929,11 @@ id|ipv6_pinfo
 op_star
 id|np
 op_assign
-op_amp
-id|sk-&gt;net_pinfo.af_inet6
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_struct
 id|in6_addr
@@ -1146,7 +1170,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|__constant_htonl
+id|htonl
 c_func
 (paren
 l_int|0x0000ffff
@@ -1176,7 +1200,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|__constant_htonl
+id|htonl
 c_func
 (paren
 l_int|0x0000ffff
@@ -1207,7 +1231,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|__constant_htonl
+id|htonl
 c_func
 (paren
 l_int|0x0000ffff
@@ -1465,7 +1489,6 @@ op_amp
 id|np-&gt;saddr
 )paren
 )paren
-(brace
 id|ipv6_addr_copy
 c_func
 (paren
@@ -1476,7 +1499,6 @@ op_amp
 id|saddr
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1570,6 +1592,17 @@ op_star
 id|addr_len
 )paren
 (brace
+r_struct
+id|ipv6_pinfo
+op_star
+id|np
+op_assign
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_struct
 id|sk_buff
 op_star
@@ -1841,6 +1874,17 @@ id|ETH_P_IP
 )paren
 )paren
 (brace
+r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|ipv6_addr_set
 c_func
 (paren
@@ -1863,7 +1907,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|inet-&gt;cmsg_flags
 )paren
 id|ip_cmsg_recv
 c_func
@@ -1895,7 +1939,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;net_pinfo.af_inet6.rxopt.all
+id|np-&gt;rxopt.all
 )paren
 id|datagram_recv_ctl
 c_func
@@ -2082,6 +2126,11 @@ id|info
 )paren
 (brace
 r_struct
+id|ipv6_pinfo
+op_star
+id|np
+suffix:semicolon
+r_struct
 id|ipv6hdr
 op_star
 id|hdr
@@ -2165,6 +2214,14 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
+id|np
+op_assign
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2181,7 +2238,7 @@ id|err
 )paren
 op_logical_and
 op_logical_neg
-id|sk-&gt;net_pinfo.af_inet6.recverr
+id|np-&gt;recverr
 )paren
 r_goto
 id|out
@@ -2194,7 +2251,7 @@ op_ne
 id|TCP_ESTABLISHED
 op_logical_and
 op_logical_neg
-id|sk-&gt;net_pinfo.af_inet6.recverr
+id|np-&gt;recverr
 )paren
 r_goto
 id|out
@@ -2202,7 +2259,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;net_pinfo.af_inet6.recverr
+id|np-&gt;recverr
 )paren
 id|ipv6_icmp_error
 c_func
@@ -2458,8 +2515,11 @@ id|ipv6_pinfo
 op_star
 id|np
 op_assign
-op_amp
-id|s-&gt;net_pinfo.af_inet6
+id|inet6_sk
+c_func
+(paren
+id|s
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2499,10 +2559,8 @@ comma
 id|rmt_addr
 )paren
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2529,6 +2587,7 @@ id|np-&gt;rcv_saddr
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ipv6_addr_cmp
 c_func
 (paren
@@ -2537,14 +2596,10 @@ id|np-&gt;rcv_saddr
 comma
 id|loc_addr
 )paren
-op_eq
-l_int|0
 )paren
-(brace
 r_return
 id|s
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -3499,8 +3554,11 @@ id|ipv6_pinfo
 op_star
 id|np
 op_assign
-op_amp
-id|sk-&gt;net_pinfo.af_inet6
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_struct
 id|sockaddr_in6
@@ -3722,13 +3780,13 @@ c_func
 id|daddr
 comma
 op_amp
-id|sk-&gt;net_pinfo.af_inet6.daddr
+id|np-&gt;daddr
 )paren
 )paren
 id|daddr
 op_assign
 op_amp
-id|sk-&gt;net_pinfo.af_inet6.daddr
+id|np-&gt;daddr
 suffix:semicolon
 r_if
 c_cond
@@ -3776,7 +3834,7 @@ suffix:semicolon
 id|daddr
 op_assign
 op_amp
-id|sk-&gt;net_pinfo.af_inet6.daddr
+id|np-&gt;daddr
 suffix:semicolon
 id|fl.fl6_flowlabel
 op_assign
@@ -4150,26 +4208,22 @@ id|inet6_protocol
 id|udpv6_protocol
 op_assign
 (brace
+id|handler
+suffix:colon
 id|udpv6_rcv
 comma
-multiline_comment|/* UDP handler&t;&t;*/
+id|err_handler
+suffix:colon
 id|udpv6_err
 comma
-multiline_comment|/* UDP error control&t;*/
-l_int|NULL
-comma
-multiline_comment|/* next&t;&t;&t;*/
+id|protocol
+suffix:colon
 id|IPPROTO_UDP
 comma
-multiline_comment|/* protocol ID&t;&t;*/
-l_int|0
-comma
-multiline_comment|/* copy&t;&t;&t;*/
-l_int|NULL
-comma
-multiline_comment|/* data&t;&t;&t;*/
+id|name
+suffix:colon
 l_string|&quot;UDPv6&quot;
-multiline_comment|/* name&t;&t;&t;*/
+comma
 )brace
 suffix:semicolon
 DECL|macro|LINE_LEN
@@ -4196,6 +4250,17 @@ id|i
 )paren
 (brace
 r_struct
+id|ipv6_pinfo
+op_star
+id|np
+op_assign
+id|inet6_sk
+c_func
+(paren
+id|sp
+)paren
+suffix:semicolon
+r_struct
 id|in6_addr
 op_star
 id|dest
@@ -4211,12 +4276,12 @@ suffix:semicolon
 id|dest
 op_assign
 op_amp
-id|sp-&gt;net_pinfo.af_inet6.daddr
+id|np-&gt;daddr
 suffix:semicolon
 id|src
 op_assign
 op_amp
-id|sp-&gt;net_pinfo.af_inet6.rcv_saddr
+id|np-&gt;rcv_saddr
 suffix:semicolon
 id|destp
 op_assign

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
+macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/file.h&gt;

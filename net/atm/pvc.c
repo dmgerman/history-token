@@ -441,18 +441,14 @@ id|net_proto_family
 id|pvc_family_ops
 op_assign
 (brace
+id|family
+suffix:colon
 id|PF_ATMPVC
 comma
+id|create
+suffix:colon
 id|pvc_create
 comma
-l_int|0
-comma
-multiline_comment|/* no authentication */
-l_int|0
-comma
-multiline_comment|/* no encryption */
-l_int|0
-multiline_comment|/* no encrypt_net */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Initialize the ATM PVC protocol family&n; */

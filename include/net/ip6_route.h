@@ -14,6 +14,8 @@ mdefine_line|#define IP6_RT_FLOW_MASK&t;0x00ff
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;net/flow.h&gt;
 macro_line|#include &lt;net/ip6_fib.h&gt;
+macro_line|#include &lt;linux/tcp.h&gt;
+macro_line|#include &lt;linux/ip.h&gt;
 DECL|struct|pol_chain
 r_struct
 id|pol_chain
@@ -472,8 +474,11 @@ id|ipv6_pinfo
 op_star
 id|np
 op_assign
-op_amp
-id|sk-&gt;net_pinfo.af_inet6
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_struct
 id|rt6_info

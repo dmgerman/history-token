@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The Internet Protocol (IP) output module.&n; *&n; * Version:&t;$Id: ip_output.c,v 1.99 2001/10/15 12:34:50 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Donald Becker, &lt;becker@super.org&gt;&n; *&t;&t;Alan Cox, &lt;Alan.Cox@linux.org&gt;&n; *&t;&t;Richard Underwood&n; *&t;&t;Stefan Becker, &lt;stefanb@yello.ping.de&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&n; *&t;See ip_input.c for original log&n; *&n; *&t;Fixes:&n; *&t;&t;Alan Cox&t;:&t;Missing nonblock feature in ip_build_xmit.&n; *&t;&t;Mike Kilburn&t;:&t;htons() missing in ip_build_xmit.&n; *&t;&t;Bradford Johnson:&t;Fix faulty handling of some frames when &n; *&t;&t;&t;&t;&t;no route is found.&n; *&t;&t;Alexander Demenshin:&t;Missing sk/skb free in ip_queue_xmit&n; *&t;&t;&t;&t;&t;(in case if packet not accepted by&n; *&t;&t;&t;&t;&t;output firewall rules)&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; *&t;&t;Alexey Kuznetsov:&t;use new route cache&n; *&t;&t;Andi Kleen:&t;&t;Fix broken PMTU recovery and remove&n; *&t;&t;&t;&t;&t;some redundant tests.&n; *&t;Vitaly E. Lavrov&t;:&t;Transparent proxy revived after year coma.&n; *&t;&t;Andi Kleen&t;: &t;Replace ip_reply with ip_send_reply.&n; *&t;&t;Andi Kleen&t;:&t;Split fast and slow ip_build_xmit path &n; *&t;&t;&t;&t;&t;for decreased register pressure on x86 &n; *&t;&t;&t;&t;&t;and more readibility. &n; *&t;&t;Marc Boucher&t;:&t;When call_out_firewall returns FW_QUEUE,&n; *&t;&t;&t;&t;&t;silently drop skb instead of failing with -EPERM.&n; *&t;&t;Detlev Wengorz&t;:&t;Copy protocol for fragments.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The Internet Protocol (IP) output module.&n; *&n; * Version:&t;$Id: ip_output.c,v 1.100 2002/02/01 22:01:03 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Donald Becker, &lt;becker@super.org&gt;&n; *&t;&t;Alan Cox, &lt;Alan.Cox@linux.org&gt;&n; *&t;&t;Richard Underwood&n; *&t;&t;Stefan Becker, &lt;stefanb@yello.ping.de&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&n; *&t;See ip_input.c for original log&n; *&n; *&t;Fixes:&n; *&t;&t;Alan Cox&t;:&t;Missing nonblock feature in ip_build_xmit.&n; *&t;&t;Mike Kilburn&t;:&t;htons() missing in ip_build_xmit.&n; *&t;&t;Bradford Johnson:&t;Fix faulty handling of some frames when &n; *&t;&t;&t;&t;&t;no route is found.&n; *&t;&t;Alexander Demenshin:&t;Missing sk/skb free in ip_queue_xmit&n; *&t;&t;&t;&t;&t;(in case if packet not accepted by&n; *&t;&t;&t;&t;&t;output firewall rules)&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; *&t;&t;Alexey Kuznetsov:&t;use new route cache&n; *&t;&t;Andi Kleen:&t;&t;Fix broken PMTU recovery and remove&n; *&t;&t;&t;&t;&t;some redundant tests.&n; *&t;Vitaly E. Lavrov&t;:&t;Transparent proxy revived after year coma.&n; *&t;&t;Andi Kleen&t;: &t;Replace ip_reply with ip_send_reply.&n; *&t;&t;Andi Kleen&t;:&t;Split fast and slow ip_build_xmit path &n; *&t;&t;&t;&t;&t;for decreased register pressure on x86 &n; *&t;&t;&t;&t;&t;and more readibility. &n; *&t;&t;Marc Boucher&t;:&t;When call_out_firewall returns FW_QUEUE,&n; *&t;&t;&t;&t;&t;silently drop skb instead of failing with -EPERM.&n; *&t;&t;Detlev Wengorz&t;:&t;Copy protocol for fragments.&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -192,6 +192,17 @@ id|opt
 )paren
 (brace
 r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_struct
 id|rtable
 op_star
 id|rt
@@ -265,7 +276,7 @@ l_int|5
 suffix:semicolon
 id|iph-&gt;tos
 op_assign
-id|sk-&gt;protinfo.af_inet.tos
+id|inet-&gt;tos
 suffix:semicolon
 id|iph-&gt;frag_off
 op_assign
@@ -293,7 +304,7 @@ id|IP_DF
 suffix:semicolon
 id|iph-&gt;ttl
 op_assign
-id|sk-&gt;protinfo.af_inet.ttl
+id|inet-&gt;ttl
 suffix:semicolon
 id|iph-&gt;daddr
 op_assign
@@ -646,7 +657,13 @@ c_cond
 op_logical_neg
 id|sk
 op_logical_or
-id|sk-&gt;protinfo.af_inet.mc_loop
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|mc_loop
 )paren
 macro_line|#ifdef CONFIG_IP_MROUTE
 multiline_comment|/* Small optimization: do not loopback not local frames,&n;&t;&t;   which returned after forwarding; they will be  dropped&n;&t;&t;   by ip_mr_input in any case.&n;&t;&t;   Note, that local frames are looped back to be delivered&n;&t;&t;   to local recipients.&n;&n;&t;&t;   This check is duplicated in ip_mr_input at the moment.&n;&t;&t; */
@@ -1145,11 +1162,22 @@ op_assign
 id|skb-&gt;sk
 suffix:semicolon
 r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_struct
 id|ip_options
 op_star
 id|opt
 op_assign
-id|sk-&gt;protinfo.af_inet.opt
+id|inet-&gt;opt
 suffix:semicolon
 r_struct
 id|rtable
@@ -1345,7 +1373,7 @@ l_int|8
 )paren
 op_or
 (paren
-id|sk-&gt;protinfo.af_inet.tos
+id|inet-&gt;tos
 op_amp
 l_int|0xff
 )paren
@@ -1365,7 +1393,7 @@ l_int|0
 suffix:semicolon
 id|iph-&gt;ttl
 op_assign
-id|sk-&gt;protinfo.af_inet.ttl
+id|inet-&gt;ttl
 suffix:semicolon
 id|iph-&gt;protocol
 op_assign
@@ -1500,6 +1528,17 @@ r_int
 id|flags
 )paren
 (brace
+r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_int
 r_int
 id|fraglen
@@ -1739,7 +1778,7 @@ id|offset
 OG
 l_int|0
 op_logical_and
-id|sk-&gt;protinfo.af_inet.pmtudisc
+id|inet-&gt;pmtudisc
 op_eq
 id|IP_PMTUDISC_DO
 )paren
@@ -1776,7 +1815,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Begin outputting the bytes.&n;&t; */
 id|id
 op_assign
-id|sk-&gt;protinfo.af_inet.id
+id|inet-&gt;id
 op_increment
 suffix:semicolon
 r_do
@@ -1915,7 +1954,7 @@ suffix:semicolon
 )brace
 id|iph-&gt;tos
 op_assign
-id|sk-&gt;protinfo.af_inet.tos
+id|inet-&gt;tos
 suffix:semicolon
 id|iph-&gt;tot_len
 op_assign
@@ -1999,12 +2038,12 @@ id|RTN_MULTICAST
 )paren
 id|iph-&gt;ttl
 op_assign
-id|sk-&gt;protinfo.af_inet.mc_ttl
+id|inet-&gt;mc_ttl
 suffix:semicolon
 r_else
 id|iph-&gt;ttl
 op_assign
-id|sk-&gt;protinfo.af_inet.ttl
+id|inet-&gt;ttl
 suffix:semicolon
 id|iph-&gt;protocol
 op_assign
@@ -2126,7 +2165,7 @@ l_int|0
 )paren
 id|err
 op_assign
-id|sk-&gt;protinfo.af_inet.recverr
+id|inet-&gt;recverr
 ques
 c_cond
 id|net_xmit_errno
@@ -2276,6 +2315,17 @@ r_int
 id|flags
 )paren
 (brace
+r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_int
 id|err
 suffix:semicolon
@@ -2297,7 +2347,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;protinfo.af_inet.hdrincl
+id|inet-&gt;hdrincl
 )paren
 (brace
 id|length
@@ -2495,7 +2545,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;protinfo.af_inet.hdrincl
+id|inet-&gt;hdrincl
 )paren
 (brace
 id|iph-&gt;version
@@ -2508,7 +2558,7 @@ l_int|5
 suffix:semicolon
 id|iph-&gt;tos
 op_assign
-id|sk-&gt;protinfo.af_inet.tos
+id|inet-&gt;tos
 suffix:semicolon
 id|iph-&gt;tot_len
 op_assign
@@ -2524,7 +2574,7 @@ id|df
 suffix:semicolon
 id|iph-&gt;ttl
 op_assign
-id|sk-&gt;protinfo.af_inet.mc_ttl
+id|inet-&gt;mc_ttl
 suffix:semicolon
 id|ip_select_ident
 c_func
@@ -2546,7 +2596,7 @@ id|RTN_MULTICAST
 )paren
 id|iph-&gt;ttl
 op_assign
-id|sk-&gt;protinfo.af_inet.ttl
+id|inet-&gt;ttl
 suffix:semicolon
 id|iph-&gt;protocol
 op_assign
@@ -2662,7 +2712,7 @@ l_int|0
 )paren
 id|err
 op_assign
-id|sk-&gt;protinfo.af_inet.recverr
+id|inet-&gt;recverr
 ques
 c_cond
 id|net_xmit_errno
@@ -3430,6 +3480,17 @@ id|len
 )paren
 (brace
 r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_struct
 (brace
 r_struct
 id|ip_options
@@ -3539,7 +3600,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;protinfo.af_inet.tos
+id|inet-&gt;tos
 op_assign
 id|skb-&gt;nh.iph-&gt;tos
 suffix:semicolon
