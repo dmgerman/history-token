@@ -356,6 +356,17 @@ multiline_comment|/* copied to request */
 DECL|member|tcp_flags
 id|tcp_flags
 suffix:semicolon
+multiline_comment|/*&n;&t; * Connection of sockets&n;&t; */
+DECL|member|sock_connect
+r_struct
+id|work_struct
+id|sock_connect
+suffix:semicolon
+DECL|member|port
+r_int
+r_int
+id|port
+suffix:semicolon
 multiline_comment|/*&n;&t; * Disconnection of idle sockets&n;&t; */
 DECL|member|task_cleanup
 r_struct
