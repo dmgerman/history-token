@@ -3286,7 +3286,14 @@ multiline_comment|/* Get the highest TSN in the sack. */
 id|highest_tsn
 op_assign
 id|sack_ctsn
-op_plus
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sack-&gt;num_gap_ack_blocks
+)paren
+id|highest_tsn
+op_add_assign
 id|ntohs
 c_func
 (paren
