@@ -2205,6 +2205,10 @@ DECL|member|rx_tco_frames
 id|u32
 id|rx_tco_frames
 suffix:semicolon
+DECL|member|rx_over_length_errors
+id|u32
+id|rx_over_length_errors
+suffix:semicolon
 DECL|member|rev_id
 id|u8
 id|rev_id
@@ -5593,6 +5597,8 @@ c_func
 (paren
 id|s-&gt;rx_short_frame_errors
 )paren
+op_plus
+id|nic-&gt;rx_over_length_errors
 suffix:semicolon
 id|ns-&gt;rx_crc_errors
 op_add_assign
@@ -5608,6 +5614,14 @@ id|le32_to_cpu
 c_func
 (paren
 id|s-&gt;rx_alignment_errors
+)paren
+suffix:semicolon
+id|ns-&gt;rx_over_errors
+op_add_assign
+id|le32_to_cpu
+c_func
+(paren
+id|s-&gt;rx_overrun_errors
 )paren
 suffix:semicolon
 id|ns-&gt;rx_fifo_errors
@@ -7196,7 +7210,7 @@ id|VLAN_ETH_HLEN
 )paren
 (brace
 multiline_comment|/* Don&squot;t indicate oversized frames */
-id|nic-&gt;net_stats.rx_over_errors
+id|nic-&gt;rx_over_length_errors
 op_increment
 suffix:semicolon
 id|nic-&gt;net_stats.rx_dropped
