@@ -2202,6 +2202,14 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* ! */
+id|xtlck-&gt;twm.offset
+op_assign
+l_int|0
+suffix:semicolon
+id|xtlck-&gt;hwm.offset
+op_assign
+l_int|0
+suffix:semicolon
 id|xtlck-&gt;index
 op_assign
 l_int|2
@@ -5761,6 +5769,9 @@ id|pxd_t
 id|tpxd
 suffix:semicolon
 multiline_comment|/* truncated extent of xad */
+r_int
+id|twm
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * For truncation the entire linelock may be used, so it would&n;&t;&t; * be difficult to store xad list in linelock itself.&n;&t;&t; * Therefore, we&squot;ll just force transaction to be committed&n;&t;&t; * synchronously, so that xtree pages won&squot;t be changed before&n;&t;&t; * txUpdateMap runs.&n;&t;&t; */
 id|tblk-&gt;xflag
 op_and_assign
@@ -5785,6 +5796,10 @@ suffix:semicolon
 id|hwm
 op_assign
 id|xtlck-&gt;hwm.offset
+suffix:semicolon
+id|twm
+op_assign
+id|xtlck-&gt;twm.offset
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *      write log records&n;&t;&t; */
 multiline_comment|/*&n;&t;&t; * allocate entries XAD[lwm:next]:&n;&t;&t; */
@@ -5844,11 +5859,11 @@ id|tlck
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * truncate entry XAD[hwm == next - 1]:&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * truncate entry XAD[twm == next - 1]:&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|hwm
+id|twm
 op_eq
 id|next
 op_minus
@@ -6069,11 +6084,11 @@ id|xadlock
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * truncate entry XAD[hwm == next - 1]:&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * truncate entry XAD[twm == next - 1]:&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|hwm
+id|twm
 op_eq
 id|next
 op_minus
