@@ -1578,12 +1578,6 @@ c_func
 id|gfp_mask
 )paren
 suffix:semicolon
-id|wakeup_bdflush
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
 r_goto
 id|try_again
 suffix:semicolon

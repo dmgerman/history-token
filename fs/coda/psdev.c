@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
@@ -28,6 +29,8 @@ macro_line|#include &lt;linux/coda_linux.h&gt;
 macro_line|#include &lt;linux/coda_fs_i.h&gt;
 macro_line|#include &lt;linux/coda_psdev.h&gt;
 macro_line|#include &lt;linux/coda_proc.h&gt;
+DECL|macro|upc_free
+mdefine_line|#define upc_free(r) kfree(r)
 multiline_comment|/* &n; * Coda stuff&n; */
 r_extern
 r_struct
@@ -55,6 +58,19 @@ id|coda_comms
 (braket
 id|MAX_CODADEVS
 )braket
+suffix:semicolon
+DECL|variable|cii_cache
+DECL|variable|cred_cache
+DECL|variable|upc_cache
+id|kmem_cache_t
+op_star
+id|cii_cache
+comma
+op_star
+id|cred_cache
+comma
+op_star
+id|upc_cache
 suffix:semicolon
 multiline_comment|/*&n; * Device operations&n; */
 DECL|function|coda_psdev_poll
@@ -534,20 +550,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|lh
-op_assign
-op_amp
-id|vcp-&gt;vc_processing
-suffix:semicolon
-r_while
-c_loop
-(paren
+id|list_for_each
+c_func
 (paren
 id|lh
-op_assign
-id|lh-&gt;next
-)paren
-op_ne
+comma
 op_amp
 id|vcp-&gt;vc_processing
 )paren
@@ -582,16 +589,6 @@ c_func
 (paren
 op_amp
 id|req-&gt;uc_chain
-)paren
-suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_PSDEV
-comma
-l_string|&quot;Eureka: uniq %ld on queue!&bslash;n&quot;
-comma
-id|hdr.unique
 )paren
 suffix:semicolon
 r_break
@@ -629,6 +626,16 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|CDEBUG
+c_func
+(paren
+id|D_PSDEV
+comma
+l_string|&quot;Eureka: uniq %ld on queue!&bslash;n&quot;
+comma
+id|hdr.unique
+)paren
+suffix:semicolon
 multiline_comment|/* move data into response buffer. */
 r_if
 c_cond
@@ -708,6 +715,36 @@ id|count
 op_assign
 id|nbytes
 suffix:semicolon
+multiline_comment|/* Convert filedescriptor into a file handle */
+r_if
+c_cond
+(paren
+id|req-&gt;uc_opcode
+op_eq
+id|CODA_OPEN_BY_FD
+)paren
+(brace
+r_struct
+id|coda_open_by_fd_out
+op_star
+id|outp
+op_assign
+(paren
+r_struct
+id|coda_open_by_fd_out
+op_star
+)paren
+id|req-&gt;uc_data
+suffix:semicolon
+id|outp-&gt;fh
+op_assign
+id|fget
+c_func
+(paren
+id|outp-&gt;fd
+)paren
+suffix:semicolon
+)brace
 id|CDEBUG
 c_func
 (paren
@@ -973,23 +1010,21 @@ comma
 id|count
 )paren
 )paren
-(brace
 id|retval
 op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-r_goto
-id|free_out
-suffix:semicolon
-)brace
 multiline_comment|/* If request was not a signal, enqueue and don&squot;t free */
 r_if
 c_cond
 (paren
-id|req-&gt;uc_opcode
-op_ne
-id|CODA_SIGNAL
+op_logical_neg
+(paren
+id|req-&gt;uc_flags
+op_amp
+id|REQ_ASYNC
+)paren
 )paren
 (brace
 id|req-&gt;uc_flags
@@ -1023,8 +1058,6 @@ comma
 id|req-&gt;uc_unique
 )paren
 suffix:semicolon
-id|free_out
-suffix:colon
 id|CODA_FREE
 c_func
 (paren
@@ -1037,16 +1070,10 @@ id|coda_in_hdr
 )paren
 )paren
 suffix:semicolon
-id|CODA_FREE
+id|upc_free
 c_func
 (paren
 id|req
-comma
-r_sizeof
-(paren
-r_struct
-id|upc_req
-)paren
 )paren
 suffix:semicolon
 id|out
@@ -1115,6 +1142,11 @@ op_ge
 id|MAX_CODADEVS
 )paren
 (brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -1134,6 +1166,11 @@ c_cond
 id|vcp-&gt;vc_inuse
 )paren
 (brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EBUSY
@@ -1370,19 +1407,10 @@ id|coda_in_hdr
 )paren
 )paren
 suffix:semicolon
-id|CODA_FREE
+id|upc_free
 c_func
 (paren
 id|req
-comma
-(paren
-id|u_int
-)paren
-r_sizeof
-(paren
-r_struct
-id|upc_req
-)paren
 )paren
 suffix:semicolon
 r_continue
@@ -1619,7 +1647,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Coda Kernel/Venus communications, v5.3.9, coda@cs.cmu.edu&bslash;n&quot;
+l_string|&quot;Coda Kernel/Venus communications, v5.3.14, coda@cs.cmu.edu&bslash;n&quot;
 )paren
 suffix:semicolon
 id|status
@@ -1665,7 +1693,26 @@ id|status
 id|printk
 c_func
 (paren
-l_string|&quot;coda: failed in init_coda_fs!&bslash;n&quot;
+l_string|&quot;coda: failed to register filesystem!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|devfs_unregister
+c_func
+(paren
+id|devfs_handle
+)paren
+suffix:semicolon
+id|devfs_unregister_chrdev
+c_func
+(paren
+id|CODA_PSDEV_MAJOR
+comma
+l_string|&quot;coda_psdev&quot;
+)paren
+suffix:semicolon
+id|coda_sysctl_clean
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -1713,6 +1760,7 @@ l_string|&quot;coda: failed to unregister filesystem&bslash;n&quot;
 suffix:semicolon
 )brace
 id|devfs_unregister
+c_func
 (paren
 id|devfs_handle
 )paren

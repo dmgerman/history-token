@@ -4899,7 +4899,7 @@ c_cond
 id|ipv6_addr_type
 c_func
 (paren
-id|saddr
+id|daddr
 )paren
 op_amp
 id|IPV6_ADDR_MULTICAST

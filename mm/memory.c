@@ -4404,8 +4404,6 @@ id|entry
 comma
 id|offset
 )paren
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -4516,7 +4514,7 @@ id|entry
 suffix:semicolon
 id|page
 op_assign
-id|read_swap_cache
+id|read_swap_cache_async
 c_func
 (paren
 id|entry
@@ -4546,6 +4544,12 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+id|wait_on_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|flush_page_to_ram
 c_func
 (paren

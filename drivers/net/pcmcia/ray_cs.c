@@ -6421,7 +6421,7 @@ id|iw_range
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Set the length (useless : its constant...) */
+multiline_comment|/* Set the length (very important for backward compatibility) */
 id|wrq-&gt;u.data.length
 op_assign
 r_sizeof
@@ -6430,6 +6430,17 @@ r_struct
 id|iw_range
 )paren
 suffix:semicolon
+macro_line|#if WIRELESS_EXT &gt; 10
+multiline_comment|/* Set the Wireless Extension versions */
+id|range.we_version_compiled
+op_assign
+id|WIRELESS_EXT
+suffix:semicolon
+id|range.we_version_source
+op_assign
+l_int|9
+suffix:semicolon
+macro_line|#endif /* WIRELESS_EXT &gt; 10 */
 multiline_comment|/* Set information in the range struct */
 id|range.throughput
 op_assign

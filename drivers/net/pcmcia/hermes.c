@@ -10,6 +10,7 @@ l_string|&quot;hermes.c: 12 Dec 2000 David Gibson &lt;hermes@gibson.dropbear.id.
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;

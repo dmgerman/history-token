@@ -394,7 +394,7 @@ mdefine_line|#define pte_free(pte)&t;&t;pte_free_slow(pte)
 DECL|macro|pgd_free
 mdefine_line|#define pgd_free(pgd)&t;&t;free_pgd_slow(pgd)
 DECL|macro|pgd_alloc
-mdefine_line|#define pgd_alloc()&t;&t;get_pgd_fast()
+mdefine_line|#define pgd_alloc(mm)&t;&t;get_pgd_fast()
 multiline_comment|/*&n; * allocating and freeing a pmd is trivial: the 1-entry pmd is&n; * inside the pgd, so has no extra memory associated with it.&n; */
 DECL|function|pmd_free
 r_static

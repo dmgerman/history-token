@@ -1505,6 +1505,10 @@ r_struct
 id|list_head
 id|inodes
 suffix:semicolon
+DECL|member|refcnt
+id|atomic_t
+id|refcnt
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|USB_MAXCHILDREN

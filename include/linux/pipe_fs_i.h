@@ -16,6 +16,11 @@ r_char
 op_star
 id|base
 suffix:semicolon
+DECL|member|len
+r_int
+r_int
+id|len
+suffix:semicolon
 DECL|member|start
 r_int
 r_int
@@ -65,7 +70,7 @@ mdefine_line|#define PIPE_BASE(inode)&t;((inode).i_pipe-&gt;base)
 DECL|macro|PIPE_START
 mdefine_line|#define PIPE_START(inode)&t;((inode).i_pipe-&gt;start)
 DECL|macro|PIPE_LEN
-mdefine_line|#define PIPE_LEN(inode)&t;&t;((inode).i_size)
+mdefine_line|#define PIPE_LEN(inode)&t;&t;((inode).i_pipe-&gt;len)
 DECL|macro|PIPE_READERS
 mdefine_line|#define PIPE_READERS(inode)&t;((inode).i_pipe-&gt;readers)
 DECL|macro|PIPE_WRITERS

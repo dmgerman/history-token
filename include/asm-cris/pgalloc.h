@@ -807,7 +807,7 @@ multiline_comment|/* pgd handling */
 DECL|macro|pgd_free
 mdefine_line|#define pgd_free(pgd)      free_pgd_slow(pgd)
 DECL|macro|pgd_alloc
-mdefine_line|#define pgd_alloc()        get_pgd_fast()
+mdefine_line|#define pgd_alloc(mm)      get_pgd_fast()
 multiline_comment|/* other stuff */
 r_extern
 r_int

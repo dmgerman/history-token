@@ -1586,7 +1586,7 @@ suffix:semicolon
 multiline_comment|/* Get a page for the entry, using the existing swap&n;                   cache page if there is one.  Otherwise, get a clean&n;                   page and read the swap into it. */
 id|page
 op_assign
-id|read_swap_cache
+id|read_swap_cache_async
 c_func
 (paren
 id|entry
@@ -1610,6 +1610,12 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|lock_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1619,7 +1625,13 @@ c_func
 id|page
 )paren
 )paren
-id|delete_from_swap_cache
+id|delete_from_swap_cache_nolock
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|UnlockPage
 c_func
 (paren
 id|page
@@ -3084,8 +3096,6 @@ r_char
 op_star
 )paren
 id|swap_header
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_if

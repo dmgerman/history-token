@@ -516,6 +516,13 @@ op_logical_and
 id|inode-&gt;i_sb-&gt;s_op
 op_logical_and
 id|inode-&gt;i_sb-&gt;s_op-&gt;write_inode
+op_logical_and
+op_logical_neg
+id|is_bad_inode
+c_func
+(paren
+id|inode
+)paren
 )paren
 id|inode-&gt;i_sb-&gt;s_op
 op_member_access_from_pointer

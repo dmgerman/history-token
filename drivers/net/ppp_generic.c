@@ -8466,24 +8466,41 @@ id|dp
 r_case
 id|CCP_CONFREQ
 suffix:colon
+multiline_comment|/* A ConfReq starts negotiation of compression &n;&t;&t; * in one direction of transmission,&n;&t;&t; * and hence brings it down...but which way?&n;&t;&t; *&n;&t;&t; * Remember:&n;&t;&t; * A ConfReq indicates what the sender would like to receive&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|inbound
+)paren
+(brace
+multiline_comment|/* He is proposing what I should send */
+id|ppp-&gt;xstate
+op_and_assign
+op_complement
+id|SC_COMP_RUN
+suffix:semicolon
+)brace
+r_else
+multiline_comment|/* I am proposing to what he should send */
+id|ppp-&gt;rstate
+op_and_assign
+op_complement
+id|SC_DECOMP_RUN
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|CCP_TERMREQ
 suffix:colon
 r_case
 id|CCP_TERMACK
 suffix:colon
-multiline_comment|/*&n;&t;&t; * CCP is going down - disable compression.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|inbound
-)paren
+multiline_comment|/*&n;&t;&t; * CCP is going down, both directions of transmission &n;&t;&t; */
 id|ppp-&gt;rstate
 op_and_assign
 op_complement
 id|SC_DECOMP_RUN
 suffix:semicolon
-r_else
 id|ppp-&gt;xstate
 op_and_assign
 op_complement

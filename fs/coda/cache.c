@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Cache operations for Coda.&n; * For Linux 2.1: (C) 1997 Carnegie Mellon University&n; *&n; * Carnegie Mellon encourages users of this code to contribute improvements&n; * to the Coda project. Contact Peter Braam &lt;coda@cs.cmu.edu&gt;.&n; */
+multiline_comment|/*&n; * Cache operations for Coda.&n; * For Linux 2.1: (C) 1997 Carnegie Mellon University&n; * For Linux 2.3: (C) 2000 Carnegie Mellon University&n; *&n; * Carnegie Mellon encourages users of this code to contribute improvements&n; * to the Coda project http://www.coda.cs.cmu.edu/ &lt;coda@cs.cmu.edu&gt;.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -181,18 +181,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cii-&gt;c_magic
-op_ne
-id|CODA_CNODE_MAGIC
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 op_logical_neg
 id|cred
 op_logical_or
@@ -282,57 +270,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Purging dentries and children */
 multiline_comment|/* The following routines drop dentries which are not&n;   in use and flag dentries which are in use to be &n;   zapped later.&n;&n;   The flags are detected by:&n;   - coda_dentry_revalidate (for lookups) if the flag is C_PURGE&n;   - coda_dentry_delete: to remove dentry from the cache when d_count&n;     falls to zero&n;   - an inode method coda_revalidate (for attributes) if the &n;     flag is C_VATTR&n;*/
-multiline_comment|/* &n;   Some of this is pretty scary: what can disappear underneath us?&n;   - shrink_dcache_parent calls on purge_one_dentry which is safe:&n;     it only purges children.&n;   - dput is evil since it  may recurse up the dentry tree&n; */
-DECL|function|coda_purge_dentries
-r_void
-id|coda_purge_dentries
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|inode
-)paren
-r_return
-suffix:semicolon
-multiline_comment|/* better safe than sorry: dput could kill us */
-id|iget
-c_func
-(paren
-id|inode-&gt;i_sb
-comma
-id|inode-&gt;i_ino
-)paren
-suffix:semicolon
-multiline_comment|/* catch the dentries later if some are still busy */
-id|coda_flag_inode
-c_func
-(paren
-id|inode
-comma
-id|C_PURGE
-)paren
-suffix:semicolon
-id|d_prune_aliases
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
-id|iput
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* this won&squot;t do any harm: just flag all children */
 DECL|function|coda_flag_children
 r_static

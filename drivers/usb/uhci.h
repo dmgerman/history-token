@@ -3,33 +3,6 @@ DECL|macro|__LINUX_UHCI_H
 mdefine_line|#define __LINUX_UHCI_H
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-multiline_comment|/*&n; * This nested spinlock code is courtesy of Davide Libenzi &lt;dlibenzi@maticad.it&gt;&n; */
-DECL|struct|s_nested_lock
-r_struct
-id|s_nested_lock
-(brace
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
-DECL|member|uniq
-r_void
-op_star
-id|uniq
-suffix:semicolon
-DECL|member|count
-r_int
-r_int
-id|count
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|macro|nested_init
-mdefine_line|#define nested_init(snl) &bslash;&n;&t;spin_lock_init(&amp;(snl)-&gt;lock); &bslash;&n;&t;(snl)-&gt;uniq = NULL; &bslash;&n;&t;(snl)-&gt;count = 0;
-DECL|macro|nested_lock
-mdefine_line|#define nested_lock(snl, flags) &bslash;&n;&t;if ((snl)-&gt;uniq == current) { &bslash;&n;&t;&t;(snl)-&gt;count++; &bslash;&n;&t;&t;flags = 0; /* No warnings */ &bslash;&n;&t;} else { &bslash;&n;&t;&t;spin_lock_irqsave(&amp;(snl)-&gt;lock, flags); &bslash;&n;&t;&t;(snl)-&gt;count++; &bslash;&n;&t;&t;(snl)-&gt;uniq = current; &bslash;&n;&t;}
-DECL|macro|nested_unlock
-mdefine_line|#define nested_unlock(snl, flags) &bslash;&n;&t;if (!--(snl)-&gt;count) { &bslash;&n;&t;&t;(snl)-&gt;uniq = NULL; &bslash;&n;&t;&t;spin_unlock_irqrestore(&amp;(snl)-&gt;lock, flags); &bslash;&n;&t;}
 multiline_comment|/*&n; * Universal Host Controller Interface data structures and defines&n; */
 multiline_comment|/* Command register */
 DECL|macro|USBCMD
@@ -126,9 +99,9 @@ DECL|macro|UHCI_MAX_SOF_NUMBER
 mdefine_line|#define UHCI_MAX_SOF_NUMBER&t;2047&t;/* in an SOF packet */
 DECL|macro|CAN_SCHEDULE_FRAMES
 mdefine_line|#define CAN_SCHEDULE_FRAMES&t;1000&t;/* how far future frames can be scheduled */
-DECL|struct|uhci_framelist
+DECL|struct|uhci_frame_list
 r_struct
-id|uhci_framelist
+id|uhci_frame_list
 (brace
 DECL|member|frame
 id|__u32
@@ -137,21 +110,22 @@ id|frame
 id|UHCI_NUMFRAMES
 )braket
 suffix:semicolon
+DECL|member|frame_cpu
+r_void
+op_star
+id|frame_cpu
+(braket
+id|UHCI_NUMFRAMES
+)braket
+suffix:semicolon
+DECL|member|dma_handle
+id|dma_addr_t
+id|dma_handle
+suffix:semicolon
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|4096
-)paren
-)paren
-)paren
 suffix:semicolon
 r_struct
-id|uhci_td
+id|urb_priv
 suffix:semicolon
 DECL|struct|uhci_qh
 r_struct
@@ -169,29 +143,34 @@ id|element
 suffix:semicolon
 multiline_comment|/* Queue element pointer */
 multiline_comment|/* Software fields */
-multiline_comment|/* Can&squot;t use list_head since we want a specific order */
+DECL|member|dma_handle
+id|dma_addr_t
+id|dma_handle
+suffix:semicolon
 DECL|member|dev
 r_struct
 id|usb_device
 op_star
 id|dev
 suffix:semicolon
-multiline_comment|/* The owning device */
-DECL|member|prevqh
-DECL|member|nextqh
+DECL|member|urbp
 r_struct
-id|uhci_qh
+id|urb_priv
 op_star
-id|prevqh
-comma
-op_star
-id|nextqh
+id|urbp
 suffix:semicolon
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+multiline_comment|/* P: uhci-&gt;frame_list_lock */
 DECL|member|remove_list
 r_struct
 id|list_head
 id|remove_list
 suffix:semicolon
+multiline_comment|/* P: uhci-&gt;remove_list_lock */
 )brace
 id|__attribute__
 c_func
@@ -240,8 +219,6 @@ DECL|macro|uhci_status_bits
 mdefine_line|#define uhci_status_bits(ctrl_sts)&t;(ctrl_sts &amp; 0xFE0000)
 DECL|macro|uhci_actual_length
 mdefine_line|#define uhci_actual_length(ctrl_sts)&t;((ctrl_sts + 1) &amp; TD_CTRL_ACTLEN_MASK) /* 1-based */
-DECL|macro|uhci_ptr_to_virt
-mdefine_line|#define uhci_ptr_to_virt(x)&t;bus_to_virt(x &amp; ~UHCI_PTR_BITS)
 multiline_comment|/*&n; * for TD &lt;info&gt;: (a.k.a. Token)&n; */
 DECL|macro|TD_TOKEN_TOGGLE
 mdefine_line|#define TD_TOKEN_TOGGLE&t;&t;19
@@ -265,7 +242,7 @@ DECL|macro|uhci_packetout
 mdefine_line|#define uhci_packetout(token)&t;(uhci_packetid(token) != USB_PID_IN)
 DECL|macro|uhci_packetin
 mdefine_line|#define uhci_packetin(token)&t;(uhci_packetid(token) == USB_PID_IN)
-multiline_comment|/*&n; * The documentation says &quot;4 words for hardware, 4 words for software&quot;.&n; *&n; * That&squot;s silly, the hardware doesn&squot;t care. The hardware only cares that&n; * the hardware words are 16-byte aligned, and we can have any amount of&n; * sw space after the TD entry as far as I can tell.&n; *&n; * But let&squot;s just go with the documentation, at least for 32-bit machines.&n; * On 64-bit machines we probably want to take advantage of the fact that&n; * hw doesn&squot;t really care about the size of the sw-only area.&n; *&n; * Alas, not anymore, we have more than 4 words for software, woops&n; */
+multiline_comment|/*&n; * The documentation says &quot;4 words for hardware, 4 words for software&quot;.&n; *&n; * That&squot;s silly, the hardware doesn&squot;t care. The hardware only cares that&n; * the hardware words are 16-byte aligned, and we can have any amount of&n; * sw space after the TD entry as far as I can tell.&n; *&n; * But let&squot;s just go with the documentation, at least for 32-bit machines.&n; * On 64-bit machines we probably want to take advantage of the fact that&n; * hw doesn&squot;t really care about the size of the sw-only area.&n; *&n; * Alas, not anymore, we have more than 4 words for software, woops.&n; * Everything still works tho, surprise! -jerdfelt&n; */
 DECL|struct|uhci_td
 r_struct
 id|uhci_td
@@ -288,24 +265,10 @@ id|__u32
 id|buffer
 suffix:semicolon
 multiline_comment|/* Software fields */
-DECL|member|frameptr
-r_int
-r_int
-op_star
-id|frameptr
+DECL|member|dma_handle
+id|dma_addr_t
+id|dma_handle
 suffix:semicolon
-multiline_comment|/* Frame list pointer */
-DECL|member|prevtd
-DECL|member|nexttd
-r_struct
-id|uhci_td
-op_star
-id|prevtd
-comma
-op_star
-id|nexttd
-suffix:semicolon
-multiline_comment|/* Previous and next TD in queue */
 DECL|member|dev
 r_struct
 id|usb_device
@@ -318,12 +281,22 @@ id|urb
 op_star
 id|urb
 suffix:semicolon
-multiline_comment|/* URB this TD belongs to */
 DECL|member|list
 r_struct
 id|list_head
 id|list
 suffix:semicolon
+multiline_comment|/* P: urb-&gt;lock */
+DECL|member|frame
+r_int
+id|frame
+suffix:semicolon
+DECL|member|fl_list
+r_struct
+id|list_head
+id|fl_list
+suffix:semicolon
+multiline_comment|/* P: frame_list_lock */
 )brace
 id|__attribute__
 c_func
@@ -474,13 +447,20 @@ DECL|struct|virt_root_hub
 r_struct
 id|virt_root_hub
 (brace
+DECL|member|dev
+r_struct
+id|usb_device
+op_star
+id|dev
+suffix:semicolon
 DECL|member|devnum
 r_int
 id|devnum
 suffix:semicolon
 multiline_comment|/* Address of Root Hub endpoint */
 DECL|member|urb
-r_void
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon
@@ -520,6 +500,23 @@ DECL|struct|uhci
 r_struct
 id|uhci
 (brace
+DECL|member|dev
+r_struct
+id|pci_dev
+op_star
+id|dev
+suffix:semicolon
+multiline_comment|/* procfs */
+DECL|member|num
+r_int
+id|num
+suffix:semicolon
+DECL|member|proc_entry
+r_struct
+id|proc_dir_entry
+op_star
+id|proc_entry
+suffix:semicolon
 multiline_comment|/* Grabbed from PCI */
 DECL|member|irq
 r_int
@@ -540,6 +537,18 @@ r_struct
 id|list_head
 id|uhci_list
 suffix:semicolon
+DECL|member|qh_pool
+r_struct
+id|pci_pool
+op_star
+id|qh_pool
+suffix:semicolon
+DECL|member|td_pool
+r_struct
+id|pci_pool
+op_star
+id|td_pool
+suffix:semicolon
 DECL|member|bus
 r_struct
 id|usb_bus
@@ -549,6 +558,7 @@ suffix:semicolon
 DECL|member|skeltd
 r_struct
 id|uhci_td
+op_star
 id|skeltd
 (braket
 id|UHCI_NUM_SKELTD
@@ -558,19 +568,20 @@ multiline_comment|/* Skeleton TD&squot;s */
 DECL|member|skelqh
 r_struct
 id|uhci_qh
+op_star
 id|skelqh
 (braket
 id|UHCI_NUM_SKELQH
 )braket
 suffix:semicolon
 multiline_comment|/* Skeleton QH&squot;s */
-DECL|member|framelist_lock
+DECL|member|frame_list_lock
 id|spinlock_t
-id|framelist_lock
+id|frame_list_lock
 suffix:semicolon
 DECL|member|fl
 r_struct
-id|uhci_framelist
+id|uhci_frame_list
 op_star
 id|fl
 suffix:semicolon
@@ -584,33 +595,41 @@ DECL|member|is_suspended
 r_int
 id|is_suspended
 suffix:semicolon
-DECL|member|qh_remove_lock
+DECL|member|qh_remove_list_lock
 id|spinlock_t
-id|qh_remove_lock
+id|qh_remove_list_lock
 suffix:semicolon
 DECL|member|qh_remove_list
 r_struct
 id|list_head
 id|qh_remove_list
 suffix:semicolon
-DECL|member|urb_remove_lock
+DECL|member|urb_remove_list_lock
 id|spinlock_t
-id|urb_remove_lock
+id|urb_remove_list_lock
 suffix:semicolon
 DECL|member|urb_remove_list
 r_struct
 id|list_head
 id|urb_remove_list
 suffix:semicolon
-DECL|member|urblist_lock
-r_struct
-id|s_nested_lock
-id|urblist_lock
+DECL|member|urb_list_lock
+id|spinlock_t
+id|urb_list_lock
 suffix:semicolon
 DECL|member|urb_list
 r_struct
 id|list_head
 id|urb_list
+suffix:semicolon
+DECL|member|complete_list_lock
+id|spinlock_t
+id|complete_list_lock
+suffix:semicolon
+DECL|member|complete_list
+r_struct
+id|list_head
+id|complete_list
 suffix:semicolon
 DECL|member|rh
 r_struct
@@ -630,6 +649,20 @@ id|urb
 op_star
 id|urb
 suffix:semicolon
+DECL|member|dev
+r_struct
+id|usb_device
+op_star
+id|dev
+suffix:semicolon
+DECL|member|setup_packet_dma_handle
+id|dma_addr_t
+id|setup_packet_dma_handle
+suffix:semicolon
+DECL|member|transfer_buffer_dma_handle
+id|dma_addr_t
+id|transfer_buffer_dma_handle
+suffix:semicolon
 DECL|member|qh
 r_struct
 id|uhci_qh
@@ -637,6 +670,11 @@ op_star
 id|qh
 suffix:semicolon
 multiline_comment|/* QH for this URB */
+DECL|member|td_list
+r_struct
+id|list_head
+id|td_list
+suffix:semicolon
 DECL|member|fsbr
 r_int
 id|fsbr
@@ -667,23 +705,27 @@ suffix:semicolon
 multiline_comment|/* If we get a short packet during */
 multiline_comment|/*  a control transfer, retrigger */
 multiline_comment|/*  the status phase */
+DECL|member|status
+r_int
+id|status
+suffix:semicolon
+multiline_comment|/* Final status */
 DECL|member|inserttime
 r_int
 r_int
 id|inserttime
 suffix:semicolon
 multiline_comment|/* In jiffies */
-DECL|member|list
+DECL|member|queue_list
 r_struct
 id|list_head
-id|list
+id|queue_list
 suffix:semicolon
-DECL|member|urb_queue_list
+DECL|member|complete_list
 r_struct
 id|list_head
-id|urb_queue_list
+id|complete_list
 suffix:semicolon
-multiline_comment|/* URB&squot;s linked together */
 )brace
 suffix:semicolon
 multiline_comment|/* -------------------------------------------------------------------------&n;   Virtual Root HUB&n;   ------------------------------------------------------------------------- */
@@ -771,68 +813,5 @@ DECL|macro|RH_REQ_ERR
 mdefine_line|#define RH_REQ_ERR&t;&t;-1
 DECL|macro|RH_NACK
 mdefine_line|#define RH_NACK&t;&t;&t;0x00
-multiline_comment|/* needed for the debugging code */
-r_struct
-id|uhci_td
-op_star
-id|uhci_link_to_td
-c_func
-(paren
-r_int
-r_int
-id|element
-)paren
-suffix:semicolon
-multiline_comment|/* Debugging code */
-r_void
-id|uhci_show_td
-c_func
-(paren
-r_struct
-id|uhci_td
-op_star
-id|td
-)paren
-suffix:semicolon
-r_void
-id|uhci_show_status
-c_func
-(paren
-r_struct
-id|uhci
-op_star
-id|uhci
-)paren
-suffix:semicolon
-r_void
-id|uhci_show_urb_queue
-c_func
-(paren
-r_struct
-id|urb
-op_star
-id|urb
-)paren
-suffix:semicolon
-r_void
-id|uhci_show_queue
-c_func
-(paren
-r_struct
-id|uhci_qh
-op_star
-id|qh
-)paren
-suffix:semicolon
-r_void
-id|uhci_show_queues
-c_func
-(paren
-r_struct
-id|uhci
-op_star
-id|uhci
-)paren
-suffix:semicolon
 macro_line|#endif
 eof

@@ -158,12 +158,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat.h&gt;
 macro_line|#endif
-macro_line|#if defined(CONFIG_IP_NF_FTP) || defined(CONFIG_IP_NF_FTP_MODULE)
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_ftp.h&gt;
-macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
-macro_line|#include &lt;linux/netfilter_ipv4/ip_nat_ftp.h&gt;
-macro_line|#endif
-macro_line|#endif
 DECL|struct|ip_conntrack
 r_struct
 id|ip_conntrack
@@ -238,13 +233,11 @@ id|proto
 suffix:semicolon
 r_union
 (brace
-macro_line|#if defined(CONFIG_IP_NF_FTP) || defined(CONFIG_IP_NF_FTP_MODULE)
 DECL|member|ct_ftp_info
 r_struct
 id|ip_ct_ftp
 id|ct_ftp_info
 suffix:semicolon
-macro_line|#endif
 DECL|member|help
 )brace
 id|help
@@ -259,16 +252,7 @@ id|info
 suffix:semicolon
 r_union
 (brace
-macro_line|#if defined(CONFIG_IP_NF_FTP) || defined(CONFIG_IP_NF_FTP_MODULE)
-DECL|member|ftp_info
-r_struct
-id|ip_nat_ftp_info
-id|ftp_info
-(braket
-id|IP_CT_DIR_MAX
-)braket
-suffix:semicolon
-macro_line|#endif
+multiline_comment|/* insert nat helper private data here */
 DECL|member|help
 )brace
 id|help

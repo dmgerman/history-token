@@ -2222,6 +2222,10 @@ op_assign
 id|NFS3_FSF_BILLYBOY
 suffix:semicolon
 )brace
+id|resp-&gt;f_maxfilesize
+op_assign
+id|sb-&gt;s_maxbytes
+suffix:semicolon
 )brace
 id|fh_put
 c_func

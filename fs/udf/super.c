@@ -497,7 +497,7 @@ l_int|0
 suffix:semicolon
 id|uopt-&gt;blocksize
 op_assign
-l_int|512
+l_int|2048
 suffix:semicolon
 id|uopt-&gt;partition
 op_assign

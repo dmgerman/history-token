@@ -52,6 +52,100 @@ id|usb_ed_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/* AMD-756 (D2 rev) reports corrupt register contents in some cases.&n; * The erratum (#4) description is incorrect.  AMD&squot;s workaround waits&n; * till some bits (mostly reserved) are clear; ok for all revs.&n; */
+DECL|macro|read_roothub
+mdefine_line|#define read_roothub(hc, register, mask) ({ &bslash;&n;&t;u32 temp = readl (&amp;hc-&gt;regs-&gt;roothub.register); &bslash;&n;&t;if (hc-&gt;flags &amp; OHCI_QUIRK_AMD756) &bslash;&n;&t;&t;while (temp &amp; mask) &bslash;&n;&t;&t;&t;temp = readl (&amp;hc-&gt;regs-&gt;roothub.register); &bslash;&n;&t;temp; })
+DECL|function|roothub_a
+r_static
+id|u32
+id|roothub_a
+(paren
+r_struct
+id|ohci
+op_star
+id|hc
+)paren
+(brace
+r_return
+id|read_roothub
+(paren
+id|hc
+comma
+id|a
+comma
+l_int|0xfc0fe000
+)paren
+suffix:semicolon
+)brace
+DECL|function|roothub_b
+r_static
+r_inline
+id|u32
+id|roothub_b
+(paren
+r_struct
+id|ohci
+op_star
+id|hc
+)paren
+(brace
+r_return
+id|readl
+(paren
+op_amp
+id|hc-&gt;regs-&gt;roothub.b
+)paren
+suffix:semicolon
+)brace
+DECL|function|roothub_status
+r_static
+r_inline
+id|u32
+id|roothub_status
+(paren
+r_struct
+id|ohci
+op_star
+id|hc
+)paren
+(brace
+r_return
+id|readl
+(paren
+op_amp
+id|hc-&gt;regs-&gt;roothub.status
+)paren
+suffix:semicolon
+)brace
+DECL|function|roothub_portstatus
+r_static
+id|u32
+id|roothub_portstatus
+(paren
+r_struct
+id|ohci
+op_star
+id|hc
+comma
+r_int
+id|i
+)paren
+(brace
+r_return
+id|read_roothub
+(paren
+id|hc
+comma
+id|portstatus
+(braket
+id|i
+)braket
+comma
+l_int|0xffe0fce0
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*-------------------------------------------------------------------------*&n; * URB support functions &n; *-------------------------------------------------------------------------*/
 multiline_comment|/* free HCD-private data associated with this URB */
 DECL|function|urb_free_priv
@@ -237,6 +331,7 @@ id|urb-&gt;hcpriv
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef&t;DO_TIMEOUTS
 r_if
 c_cond
 (paren
@@ -254,6 +349,7 @@ op_sub_assign
 id|jiffies
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Release int/iso bandwidth */
 r_if
 c_cond
@@ -1303,13 +1399,6 @@ r_int
 id|verbose
 )paren
 (brace
-r_struct
-id|ohci_regs
-op_star
-id|regs
-op_assign
-id|controller-&gt;regs
-suffix:semicolon
 id|__u32
 id|temp
 comma
@@ -1319,10 +1408,9 @@ id|i
 suffix:semicolon
 id|temp
 op_assign
-id|readl
+id|roothub_a
 (paren
-op_amp
-id|regs-&gt;roothub.a
+id|controller
 )paren
 suffix:semicolon
 id|ndp
@@ -1417,10 +1505,9 @@ id|ndp
 suffix:semicolon
 id|temp
 op_assign
-id|readl
+id|roothub_b
 (paren
-op_amp
-id|regs-&gt;roothub.b
+id|controller
 )paren
 suffix:semicolon
 id|dbg
@@ -1446,10 +1533,9 @@ id|RH_B_DR
 suffix:semicolon
 id|temp
 op_assign
-id|readl
+id|roothub_status
 (paren
-op_amp
-id|regs-&gt;roothub.status
+id|controller
 )paren
 suffix:semicolon
 id|dbg
@@ -1543,13 +1629,11 @@ op_increment
 (brace
 id|temp
 op_assign
-id|readl
+id|roothub_portstatus
 (paren
-op_amp
-id|regs-&gt;roothub.portstatus
-(braket
+id|controller
+comma
 id|i
-)braket
 )paren
 suffix:semicolon
 id|dbg
@@ -2644,10 +2728,12 @@ id|urb-&gt;pipe
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef&t;DO_TIMEOUTS
 id|urb-&gt;timeout
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif
 )brace
 id|spin_lock_irqsave
 (paren
@@ -2690,6 +2776,7 @@ id|td_submit_urb
 id|urb
 )paren
 suffix:semicolon
+macro_line|#ifdef&t;DO_TIMEOUTS
 multiline_comment|/* maybe add to ordered list of timeouts */
 r_if
 c_cond
@@ -2765,6 +2852,7 @@ id|ohci-&gt;regs-&gt;intrenable
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|spin_unlock_irqrestore
 (paren
 op_amp
@@ -7605,10 +7693,9 @@ l_int|8
 suffix:semicolon
 id|num_ports
 op_assign
-id|readl
+id|roothub_a
 (paren
-op_amp
-id|ohci-&gt;regs-&gt;roothub.a
+id|ohci
 )paren
 op_amp
 id|RH_A_NDP
@@ -7656,10 +7743,9 @@ op_star
 id|data
 op_assign
 (paren
-id|readl
+id|roothub_status
 (paren
-op_amp
-id|ohci-&gt;regs-&gt;roothub.status
+id|ohci
 )paren
 op_amp
 (paren
@@ -7717,13 +7803,11 @@ l_int|8
 op_or_assign
 (paren
 (paren
-id|readl
+id|roothub_portstatus
 (paren
-op_amp
-id|ohci-&gt;regs-&gt;roothub.portstatus
-(braket
+id|ohci
+comma
 id|i
-)braket
 )paren
 op_amp
 (paren
@@ -8016,9 +8100,9 @@ mdefine_line|#define WR_RH_STAT(x) &t;&t;writel((x), &amp;ohci-&gt;regs-&gt;root
 DECL|macro|WR_RH_PORTSTAT
 mdefine_line|#define WR_RH_PORTSTAT(x) &t;writel((x), &amp;ohci-&gt;regs-&gt;roothub.portstatus[wIndex-1])
 DECL|macro|RD_RH_STAT
-mdefine_line|#define RD_RH_STAT&t;&t;readl(&amp;ohci-&gt;regs-&gt;roothub.status)
+mdefine_line|#define RD_RH_STAT&t;&t;roothub_status(ohci)
 DECL|macro|RD_RH_PORTSTAT
-mdefine_line|#define RD_RH_PORTSTAT&t;&t;readl(&amp;ohci-&gt;regs-&gt;roothub.portstatus[wIndex-1])
+mdefine_line|#define RD_RH_PORTSTAT&t;&t;roothub_portstatus(ohci,wIndex-1)
 multiline_comment|/* request to virtual root hub */
 DECL|function|rh_submit_urb
 r_static
@@ -8758,10 +8842,9 @@ suffix:colon
 id|__u32
 id|temp
 op_assign
-id|readl
+id|roothub_a
 (paren
-op_amp
-id|ohci-&gt;regs-&gt;roothub.a
+id|ohci
 )paren
 suffix:semicolon
 id|data_buf
@@ -8863,10 +8946,9 @@ l_int|24
 suffix:semicolon
 id|temp
 op_assign
-id|readl
+id|roothub_b
 (paren
-op_amp
-id|ohci-&gt;regs-&gt;roothub.b
+id|ohci
 )paren
 suffix:semicolon
 id|data_buf
@@ -9503,14 +9585,13 @@ id|ohci-&gt;regs-&gt;intrstatus
 )paren
 suffix:semicolon
 macro_line|#ifdef&t;OHCI_USE_NPS
+multiline_comment|/* required for AMD-756 and some Mac platforms */
 id|writel
 (paren
 (paren
-id|readl
-c_func
+id|roothub_a
 (paren
-op_amp
-id|ohci-&gt;regs-&gt;roothub.a
+id|ohci
 )paren
 op_or
 id|RH_A_NPS
@@ -9536,11 +9617,9 @@ singleline_comment|// POTPGT delay is bits 24-31, in 2 ms units.
 id|mdelay
 (paren
 (paren
-id|readl
-c_func
+id|roothub_a
 (paren
-op_amp
-id|ohci-&gt;regs-&gt;roothub.a
+id|ohci
 )paren
 op_rshift
 l_int|23
@@ -10370,6 +10449,12 @@ comma
 r_void
 op_star
 id|mem_base
+comma
+r_const
+r_struct
+id|pci_device_id
+op_star
+id|id
 )paren
 (brace
 id|ohci_t
@@ -10489,6 +10574,24 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+id|ohci-&gt;flags
+op_assign
+id|id-&gt;driver_data
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ohci-&gt;flags
+op_amp
+id|OHCI_QUIRK_AMD756
+)paren
+id|printk
+(paren
+id|KERN_INFO
+id|__FILE__
+l_string|&quot;: AMD756 erratum 4 workaround&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* bad pci latencies can contribute to overruns */
 id|pci_read_config_byte
 (paren
@@ -10876,33 +10979,6 @@ r_void
 op_star
 id|mem_base
 suffix:semicolon
-multiline_comment|/* blacklisted hardware? */
-r_if
-c_cond
-(paren
-id|id-&gt;driver_data
-)paren
-(brace
-id|info
-(paren
-l_string|&quot;%s (%s): %s&quot;
-comma
-id|dev-&gt;slot_name
-comma
-id|dev-&gt;name
-comma
-(paren
-r_char
-op_star
-)paren
-id|id-&gt;driver_data
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -11004,6 +11080,8 @@ comma
 id|dev-&gt;irq
 comma
 id|mem_base
+comma
+id|id
 )paren
 suffix:semicolon
 )brace
@@ -11504,7 +11582,7 @@ id|ohci_pci_ids
 op_assign
 (brace
 (brace
-multiline_comment|/*&n;&t; * AMD-756 [Viper] USB has a serious erratum when used with&n;&t; * lowspeed devices like mice; oopses have been seen.  The&n;&t; * vendor workaround needs an NDA ... for now, blacklist it.&n;&t; */
+multiline_comment|/*&n;&t; * AMD-756 [Viper] USB has a serious erratum when used with&n;&t; * lowspeed devices like mice.&n;&t; */
 id|vendor
 suffix:colon
 l_int|0x1022
@@ -11523,11 +11601,7 @@ id|PCI_ANY_ID
 comma
 id|driver_data
 suffix:colon
-(paren
-r_int
-r_int
-)paren
-l_string|&quot;blacklisted, erratum #4&quot;
+id|OHCI_QUIRK_AMD756
 comma
 )brace
 comma

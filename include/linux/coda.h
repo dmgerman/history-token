@@ -669,8 +669,12 @@ DECL|macro|CODA_REINTEGRATE
 mdefine_line|#define CODA_REINTEGRATE 33
 DECL|macro|CODA_STATFS
 mdefine_line|#define CODA_STATFS&t; 34
+DECL|macro|CODA_STORE
+mdefine_line|#define CODA_STORE&t; 35
+DECL|macro|CODA_RELEASE
+mdefine_line|#define CODA_RELEASE&t; 36
 DECL|macro|CODA_NCALLS
-mdefine_line|#define CODA_NCALLS 35
+mdefine_line|#define CODA_NCALLS 37
 DECL|macro|DOWNCALL
 mdefine_line|#define DOWNCALL(opcode) (opcode &gt;= CODA_REPLACE &amp;&amp; opcode &lt;= CODA_PURGEFID)
 DECL|macro|VC_MAXDATASIZE
@@ -809,6 +813,68 @@ suffix:semicolon
 DECL|member|inode
 id|ino_t
 id|inode
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* coda_store: */
+DECL|struct|coda_store_in
+r_struct
+id|coda_store_in
+(brace
+DECL|member|ih
+r_struct
+id|coda_in_hdr
+id|ih
+suffix:semicolon
+DECL|member|VFid
+id|ViceFid
+id|VFid
+suffix:semicolon
+DECL|member|flags
+r_int
+id|flags
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|coda_store_out
+r_struct
+id|coda_store_out
+(brace
+DECL|member|out
+r_struct
+id|coda_out_hdr
+id|out
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* coda_release: */
+DECL|struct|coda_release_in
+r_struct
+id|coda_release_in
+(brace
+DECL|member|ih
+r_struct
+id|coda_in_hdr
+id|ih
+suffix:semicolon
+DECL|member|VFid
+id|ViceFid
+id|VFid
+suffix:semicolon
+DECL|member|flags
+r_int
+id|flags
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|coda_release_out
+r_struct
+id|coda_release_out
+(brace
+DECL|member|out
+r_struct
+id|coda_out_hdr
+id|out
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1570,6 +1636,15 @@ DECL|member|fd
 r_int
 id|fd
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
+DECL|member|fh
+r_struct
+id|file
+op_star
+id|fh
+suffix:semicolon
+multiline_comment|/* not passed from userspace but used in-kernel only */
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* coda_open_by_path: */
@@ -1652,6 +1727,16 @@ DECL|member|coda_open
 r_struct
 id|coda_open_in
 id|coda_open
+suffix:semicolon
+DECL|member|coda_store
+r_struct
+id|coda_store_in
+id|coda_store
+suffix:semicolon
+DECL|member|coda_release
+r_struct
+id|coda_release_in
+id|coda_release
 suffix:semicolon
 DECL|member|coda_close
 r_struct

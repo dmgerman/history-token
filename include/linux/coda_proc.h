@@ -42,6 +42,10 @@ DECL|member|open
 r_int
 id|open
 suffix:semicolon
+DECL|member|flush
+r_int
+id|flush
+suffix:semicolon
 DECL|member|release
 r_int
 id|release

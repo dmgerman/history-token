@@ -279,7 +279,7 @@ suffix:semicolon
 DECL|macro|pgd_free
 mdefine_line|#define pgd_free(pgd)&t;&t;free_pgd_fast(pgd)
 DECL|macro|pgd_alloc
-mdefine_line|#define pgd_alloc()&t;&t;get_pgd_fast()
+mdefine_line|#define pgd_alloc(mm)&t;&t;get_pgd_fast()
 multiline_comment|/*&n; * We don&squot;t have any real pmd&squot;s, and this code never triggers because&n; * the pgd will always be present..&n; */
 DECL|macro|pmd_alloc_one_fast
 mdefine_line|#define pmd_alloc_one_fast(mm, address) ({ BUG(); ((pmd_t *)1); })

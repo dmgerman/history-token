@@ -245,7 +245,7 @@ id|ppos
 suffix:semicolon
 r_static
 id|ssize_t
-id|sock_writepage
+id|sock_sendpage
 c_func
 (paren
 r_struct
@@ -325,9 +325,9 @@ id|writev
 suffix:colon
 id|sock_writev
 comma
-id|writepage
+id|sendpage
 suffix:colon
-id|sock_writepage
+id|sock_sendpage
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;The protocol list. Each protocol is registered in here.&n; */
@@ -1958,9 +1958,9 @@ id|size
 )paren
 suffix:semicolon
 )brace
-DECL|function|sock_writepage
+DECL|function|sock_sendpage
 id|ssize_t
-id|sock_writepage
+id|sock_sendpage
 c_func
 (paren
 r_struct

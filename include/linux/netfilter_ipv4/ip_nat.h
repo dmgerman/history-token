@@ -31,6 +31,26 @@ mdefine_line|#define IP_NAT_RANGE_PROTO_SPECIFIED 2
 multiline_comment|/* Used internally by get_unique_tuple(). */
 DECL|macro|IP_NAT_RANGE_FULL
 mdefine_line|#define IP_NAT_RANGE_FULL 4
+multiline_comment|/* NAT sequence number modifications */
+DECL|struct|ip_nat_seq
+r_struct
+id|ip_nat_seq
+(brace
+multiline_comment|/* position of the last TCP sequence number &n;&t; * modification (if any) */
+DECL|member|correction_pos
+id|u_int32_t
+id|correction_pos
+suffix:semicolon
+multiline_comment|/* sequence number offset before and after last modification */
+DECL|member|offset_before
+DECL|member|offset_after
+r_int32
+id|offset_before
+comma
+id|offset_after
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* Single range specification. */
 DECL|struct|ip_nat_range
 r_struct
@@ -188,6 +208,14 @@ r_struct
 id|ip_nat_helper
 op_star
 id|helper
+suffix:semicolon
+DECL|member|seq
+r_struct
+id|ip_nat_seq
+id|seq
+(braket
+id|IP_CT_DIR_MAX
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon

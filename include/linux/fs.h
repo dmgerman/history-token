@@ -2701,11 +2701,11 @@ id|loff_t
 op_star
 )paren
 suffix:semicolon
-DECL|member|writepage
+DECL|member|sendpage
 id|ssize_t
 (paren
 op_star
-id|writepage
+id|sendpage
 )paren
 (paren
 r_struct

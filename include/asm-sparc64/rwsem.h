@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: rwsem.h,v 1.2 2001/04/19 01:52:04 davem Exp $&n; * rwsem.h: R/W semaphores implemented using CAS&n; *&n; * Written by David S. Miller (davem@redhat.com), 2001.&n; * Derived from asm-i386/rwsem-xadd.h&n; */
+multiline_comment|/* $Id: rwsem.h,v 1.2 2001/04/19 01:52:04 davem Exp $&n; * rwsem.h: R/W semaphores implemented using CAS&n; *&n; * Written by David S. Miller (davem@redhat.com), 2001.&n; * Derived from asm-i386/rwsem.h&n; */
 macro_line|#ifndef _SPARC64_RWSEM_H
 DECL|macro|_SPARC64_RWSEM_H
 mdefine_line|#define _SPARC64_RWSEM_H
@@ -249,8 +249,9 @@ l_string|&quot; mov&t;&t;%0, %%g5&bslash;n&bslash;t&quot;
 l_string|&quot;save&t;&t;%%sp, -160, %%sp&bslash;n&bslash;t&quot;
 l_string|&quot;mov&t;&t;%%g2, %%l2&bslash;n&bslash;t&quot;
 l_string|&quot;mov&t;&t;%%g3, %%l3&bslash;n&bslash;t&quot;
+l_string|&quot; mov&t;&t;%%g7, %%o0&bslash;n&bslash;t&quot;
 l_string|&quot;call&t;&t;%1&bslash;n&bslash;t&quot;
-l_string|&quot; mov&t;&t;%%g5, %%o0&bslash;n&bslash;t&quot;
+l_string|&quot; mov&t;&t;%%g5, %%o1&bslash;n&bslash;t&quot;
 l_string|&quot;mov&t;&t;%%l2, %%g2&bslash;n&bslash;t&quot;
 l_string|&quot;ba,pt&t;&t;%%xcc, 2b&bslash;n&bslash;t&quot;
 l_string|&quot; restore&t;%%l3, %%g0, %%g3&bslash;n&bslash;t&quot;
@@ -265,7 +266,7 @@ id|sem
 comma
 l_string|&quot;i&quot;
 (paren
-id|rwsem_wake
+id|rwsem_up_read_wake
 )paren
 comma
 l_string|&quot;i&quot;
@@ -305,23 +306,20 @@ c_func
 l_string|&quot;! beginning __up_write&bslash;n&bslash;t&quot;
 l_string|&quot;sethi&t;&t;%%hi(%2), %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;or&t;&t;%%g1, %%lo(%2), %%g1&bslash;n&quot;
-l_string|&quot;1:&bslash;tlduw&t;[%0], %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;sub&t;&t;%%g5, %%g1, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cas&t;&t;[%0], %%g5, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;&t;%%g5, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;bne,pn&t;&t;%%icc, 1b&bslash;n&bslash;t&quot;
-l_string|&quot; sub&t;&t;%%g7, %%g1, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;&t;%%g7, 0&bslash;n&bslash;t&quot;
-l_string|&quot;bl,pn&t;&t;%%icc, 3f&bslash;n&bslash;t&quot;
+l_string|&quot;sub&t;&t;%%g5, %%g5, %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;cas&t;&t;[%0], %%g1, %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;&t;%%g1, %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;bne,pn&t;&t;%%icc, 1f&bslash;n&bslash;t&quot;
 l_string|&quot; membar&t;#StoreStore&bslash;n&quot;
 l_string|&quot;2:&bslash;n&bslash;t&quot;
 l_string|&quot;.subsection 2&bslash;n&quot;
-l_string|&quot;3:&bslash;tmov&t;%0, %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;3:&bslash;tmov&t;%0, %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;save&t;&t;%%sp, -160, %%sp&bslash;n&bslash;t&quot;
 l_string|&quot;mov&t;&t;%%g2, %%l2&bslash;n&bslash;t&quot;
 l_string|&quot;mov&t;&t;%%g3, %%l3&bslash;n&bslash;t&quot;
+l_string|&quot;mov&t;&t;%%g1, %%o0&bslash;n&bslash;t&quot;
 l_string|&quot;call&t;&t;%1&bslash;n&bslash;t&quot;
-l_string|&quot; mov&t;&t;%%g5, %%o0&bslash;n&bslash;t&quot;
+l_string|&quot; mov&t;&t;%%g5, %%o1&bslash;n&bslash;t&quot;
 l_string|&quot;mov&t;&t;%%l2, %%g2&bslash;n&bslash;t&quot;
 l_string|&quot;ba,pt&t;&t;%%xcc, 2b&bslash;n&bslash;t&quot;
 l_string|&quot; restore&t;%%l3, %%g0, %%g3&bslash;n&bslash;t&quot;
@@ -336,7 +334,7 @@ id|sem
 comma
 l_string|&quot;i&quot;
 (paren
-id|rwsem_wake
+id|rwsem_up_write_wake
 )paren
 comma
 l_string|&quot;i&quot;
@@ -347,8 +345,6 @@ suffix:colon
 l_string|&quot;g1&quot;
 comma
 l_string|&quot;g5&quot;
-comma
-l_string|&quot;g7&quot;
 comma
 l_string|&quot;memory&quot;
 comma
@@ -417,6 +413,8 @@ op_plus
 id|delta
 suffix:semicolon
 )brace
+DECL|macro|rwsem_atomic_add
+mdefine_line|#define rwsem_atomic_add rwsem_atomic_update
 DECL|function|rwsem_cmpxchgw
 r_static
 r_inline
@@ -528,6 +526,41 @@ r_return
 id|prev
 op_amp
 l_int|0xffff
+suffix:semicolon
+)brace
+DECL|function|rwsem_cmpxchg
+r_static
+r_inline
+r_int
+r_int
+id|rwsem_cmpxchg
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+comma
+r_int
+r_int
+id|old
+comma
+r_int
+r_int
+r_new
+)paren
+(brace
+r_return
+id|cmpxchg
+c_func
+(paren
+op_amp
+id|sem-&gt;count
+comma
+id|old
+comma
+r_new
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif /* __KERNEL__ */

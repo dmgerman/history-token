@@ -69,6 +69,16 @@ id|f
 )paren
 suffix:semicolon
 r_int
+id|coda_flush
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|f
+)paren
+suffix:semicolon
+r_int
 id|coda_release
 c_func
 (paren
@@ -118,6 +128,15 @@ id|iattr
 op_star
 )paren
 suffix:semicolon
+r_int
+id|coda_isnullfid
+c_func
+(paren
+id|ViceFid
+op_star
+id|fid
+)paren
+suffix:semicolon
 multiline_comment|/* global variables */
 r_extern
 r_int
@@ -130,6 +149,10 @@ suffix:semicolon
 r_extern
 r_int
 id|coda_access_cache
+suffix:semicolon
+r_extern
+r_int
+id|coda_fake_statfs
 suffix:semicolon
 multiline_comment|/* this file:  heloers */
 r_static
@@ -199,25 +222,6 @@ r_struct
 id|inode
 op_star
 id|i
-)paren
-suffix:semicolon
-r_int
-id|coda_fid_is_volroot
-c_func
-(paren
-r_struct
-id|ViceFid
-op_star
-)paren
-suffix:semicolon
-r_int
-id|coda_fid_is_weird
-c_func
-(paren
-r_struct
-id|ViceFid
-op_star
-id|fid
 )paren
 suffix:semicolon
 r_int
@@ -313,27 +317,6 @@ op_star
 id|cred2
 )paren
 suffix:semicolon
-multiline_comment|/* cache.c */
-r_void
-id|coda_purge_children
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_void
-id|coda_purge_dentries
-c_func
-(paren
-r_struct
-id|inode
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* sysctl.h */
 r_void
 id|coda_sysctl_init
@@ -385,6 +368,8 @@ mdefine_line|#define CODA_ALLOC(ptr, cast, size)                                
 DECL|macro|CODA_FREE
 mdefine_line|#define CODA_FREE(ptr,size) do {if (size &lt; PAGE_SIZE) { kfree((ptr)); CDEBUG(D_MALLOC, &quot;kfreed: %lx at %p.&bslash;n&quot;, (long) size, ptr); } else { vfree((ptr)); CDEBUG(D_MALLOC, &quot;vfreed: %lx at %p.&bslash;n&quot;, (long) size, ptr);} } while (0)
 multiline_comment|/* inode to cnode access functions */
+DECL|macro|ITOC
+mdefine_line|#define ITOC(inode) (&amp;((inode)-&gt;u.coda_i))
 DECL|function|coda_i2f
 r_static
 id|__inline__
@@ -403,7 +388,13 @@ id|inode
 r_return
 op_amp
 (paren
-id|inode-&gt;u.coda_i.c_fid
+id|ITOC
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|c_fid
 )paren
 suffix:semicolon
 )brace
@@ -427,7 +418,13 @@ c_func
 (paren
 op_amp
 (paren
-id|inode-&gt;u.coda_i.c_fid
+id|ITOC
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|c_fid
 )paren
 )paren
 suffix:semicolon
@@ -449,12 +446,16 @@ r_int
 id|flag
 )paren
 (brace
-id|inode-&gt;u.coda_i.c_flags
+id|ITOC
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|c_flags
 op_or_assign
 id|flag
 suffix:semicolon
 )brace
-DECL|macro|ITOC
-mdefine_line|#define ITOC(inode) (&amp;((inode)-&gt;u.coda_i))
 macro_line|#endif
 eof

@@ -848,6 +848,14 @@ id|atomic_t
 id|resume_count
 suffix:semicolon
 multiline_comment|/* defending against multiple resumes */
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* for HC bugs */
+DECL|macro|OHCI_QUIRK_AMD756
+mdefine_line|#define&t;OHCI_QUIRK_AMD756&t;0x01&t;&t;/* erratum #4 */
 DECL|member|regs
 r_struct
 id|ohci_regs

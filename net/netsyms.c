@@ -572,6 +572,13 @@ c_func
 id|sk_run_filter
 )paren
 suffix:semicolon
+DECL|variable|sk_chk_filter
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sk_chk_filter
+)paren
+suffix:semicolon
 macro_line|#endif
 DECL|variable|neigh_table_init
 id|EXPORT_SYMBOL

@@ -813,6 +813,7 @@ op_assign
 id|pgd_alloc
 c_func
 (paren
+id|mm
 )paren
 suffix:semicolon
 r_if

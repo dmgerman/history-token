@@ -71,8 +71,6 @@ c_func
 id|WRITE
 comma
 id|page
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -525,11 +523,9 @@ l_int|1
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Right now the pagecache is 32-bit only.  But it&squot;s a 32 bit index. =)&n;&t;&t; */
-id|repeat
-suffix:colon
 id|found
 op_assign
-id|find_lock_page
+id|find_get_swapcache_page
 c_func
 (paren
 op_amp
@@ -547,7 +543,6 @@ id|found
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Though the &quot;found&quot; page was in the swap cache an instant&n;&t;&t; * earlier, it might have been removed by refill_inactive etc.&n;&t;&t; * Re search ... Since find_lock_page grabs a reference on&n;&t;&t; * the page, it can not be reused for anything else, namely&n;&t;&t; * it can not be associated with another swaphandle, so it&n;&t;&t; * is enough to check whether the page is still in the scache.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -558,23 +553,11 @@ c_func
 id|found
 )paren
 )paren
-(brace
-id|UnlockPage
+id|BUG
 c_func
 (paren
-id|found
 )paren
 suffix:semicolon
-id|page_cache_release
-c_func
-(paren
-id|found
-)paren
-suffix:semicolon
-r_goto
-id|repeat
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -583,47 +566,20 @@ op_ne
 op_amp
 id|swapper_space
 )paren
-r_goto
-id|out_bad
+id|BUG
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#ifdef SWAP_CACHE_INFO
 id|swap_cache_find_success
 op_increment
 suffix:semicolon
 macro_line|#endif
-id|UnlockPage
-c_func
-(paren
-id|found
-)paren
-suffix:semicolon
 r_return
 id|found
 suffix:semicolon
 )brace
-id|out_bad
-suffix:colon
-id|printk
-(paren
-id|KERN_ERR
-l_string|&quot;VM: Found a non-swapper swap page!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|UnlockPage
-c_func
-(paren
-id|found
-)paren
-suffix:semicolon
-id|page_cache_release
-c_func
-(paren
-id|found
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/* &n; * Locate a page of swap in physical memory, reserving swap cache space&n; * and reading the disk if it is not already cached.  If wait==0, we are&n; * only doing readahead, so don&squot;t worry if the page is already locked.&n; *&n; * A failure return means that either the page allocation failed or that&n; * the swap entry is no longer in use.&n; */
 DECL|function|read_swap_cache_async
@@ -635,9 +591,6 @@ c_func
 (paren
 id|swp_entry_t
 id|entry
-comma
-r_int
-id|wait
 )paren
 (brace
 r_struct
@@ -750,8 +703,6 @@ c_func
 id|READ
 comma
 id|new_page
-comma
-id|wait
 )paren
 suffix:semicolon
 r_return

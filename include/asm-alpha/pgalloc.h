@@ -1119,7 +1119,7 @@ mdefine_line|#define pmd_free(pmd)&t;&t;pmd_free_fast(pmd)
 DECL|macro|pgd_free
 mdefine_line|#define pgd_free(pgd)&t;&t;free_pgd_fast(pgd)
 DECL|macro|pgd_alloc
-mdefine_line|#define pgd_alloc()&t;&t;get_pgd_fast()
+mdefine_line|#define pgd_alloc(mm)&t;&t;get_pgd_fast()
 r_extern
 r_int
 id|do_check_pgt_cache

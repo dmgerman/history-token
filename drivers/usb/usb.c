@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/usb/usb.c&n; *&n; * (C) Copyright Linus Torvalds 1999&n; * (C) Copyright Johannes Erdfelt 1999&n; * (C) Copyright Andreas Gal 1999&n; * (C) Copyright Gregory P. Smith 1999&n; * (C) Copyright Deti Fliegl 1999 (new USB architecture)&n; * (C) Copyright Randy Dunlap 2000&n; * (C) Copyright David Brownell 2000 (kernel hotplug, usb_device_id)&n; * (C) Copyright Yggdrasil Computing, Inc. 2000&n; *     (usb_device_id matching changes by Adam J. Richter)&n; *&n; * NOTE! This is not actually a driver at all, rather this is&n; * just a collection of helper routines that implement the&n; * generic USB things that the real drivers can use..&n; *&n; * Think of this as a &quot;USB library&quot; rather than anything else.&n; * It should be considered a slave, with no callbacks. Callbacks&n; * are evil.&n; *&n; * $Id: usb.c,v 1.53 2000/01/14 16:19:09 acher Exp $&n; */
+multiline_comment|/*&n; * drivers/usb/usb.c&n; *&n; * (C) Copyright Linus Torvalds 1999&n; * (C) Copyright Johannes Erdfelt 1999-2001&n; * (C) Copyright Andreas Gal 1999&n; * (C) Copyright Gregory P. Smith 1999&n; * (C) Copyright Deti Fliegl 1999 (new USB architecture)&n; * (C) Copyright Randy Dunlap 2000&n; * (C) Copyright David Brownell 2000 (kernel hotplug, usb_device_id)&n; * (C) Copyright Yggdrasil Computing, Inc. 2000&n; *     (usb_device_id matching changes by Adam J. Richter)&n; *&n; * NOTE! This is not actually a driver at all, rather this is&n; * just a collection of helper routines that implement the&n; * generic USB things that the real drivers can use..&n; *&n; * Think of this as a &quot;USB library&quot; rather than anything else.&n; * It should be considered a slave, with no callbacks. Callbacks&n; * are evil.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -1158,6 +1158,55 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|usb_bus_get
+r_static
+r_void
+id|usb_bus_get
+c_func
+(paren
+r_struct
+id|usb_bus
+op_star
+id|bus
+)paren
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|bus-&gt;refcnt
+)paren
+suffix:semicolon
+)brace
+DECL|function|usb_bus_put
+r_static
+r_void
+id|usb_bus_put
+c_func
+(paren
+r_struct
+id|usb_bus
+op_star
+id|bus
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|atomic_dec_and_test
+c_func
+(paren
+op_amp
+id|bus-&gt;refcnt
+)paren
+)paren
+id|kfree
+c_func
+(paren
+id|bus
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;usb_alloc_bus - creates a new USB host controller structure&n; *&t;@op: pointer to a struct usb_operations that this bus structure should use&n; *&n; *&t;Creates a USB host controller bus structure with the specified &n; *&t;usb_operations and initializes all the necessary internal objects.&n; *&t;(For use only by USB Host Controller Drivers.)&n; *&n; *&t;If no memory is available, NULL is returned.&n; *&n; *&t;The caller should call usb_free_bus() when it is finished with the structure.&n; */
 DECL|function|usb_alloc_bus
 r_struct
@@ -1264,6 +1313,15 @@ op_amp
 id|bus-&gt;inodes
 )paren
 suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|bus-&gt;refcnt
+comma
+l_int|1
+)paren
+suffix:semicolon
 r_return
 id|bus
 suffix:semicolon
@@ -1288,7 +1346,7 @@ id|bus
 )paren
 r_return
 suffix:semicolon
-id|kfree
+id|usb_bus_put
 c_func
 (paren
 id|bus
@@ -1348,6 +1406,12 @@ id|warn
 c_func
 (paren
 l_string|&quot;too many buses&quot;
+)paren
+suffix:semicolon
+id|usb_bus_get
+c_func
+(paren
+id|bus
 )paren
 suffix:semicolon
 multiline_comment|/* Add it to the list of buses */
@@ -1416,6 +1480,12 @@ c_func
 id|bus-&gt;busnum
 comma
 id|busmap.busmap
+)paren
+suffix:semicolon
+id|usb_bus_put
+c_func
+(paren
+id|bus
 )paren
 suffix:semicolon
 )brace
@@ -2817,6 +2887,12 @@ id|dev
 )paren
 )paren
 suffix:semicolon
+id|usb_bus_get
+c_func
+(paren
+id|bus
+)paren
+suffix:semicolon
 id|dev-&gt;bus
 op_assign
 id|bus
@@ -2894,6 +2970,12 @@ id|usb_destroy_configuration
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|usb_bus_put
+c_func
+(paren
+id|dev-&gt;bus
 )paren
 suffix:semicolon
 id|kfree

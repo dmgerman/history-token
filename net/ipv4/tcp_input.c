@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Implementation of the Transmission Control Protocol(TCP).&n; *&n; * Version:&t;$Id: tcp_input.c,v 1.226 2001/03/07 22:00:57 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&t;&t;Corey Minyard &lt;wf-rch!minyard@relay.EU.net&gt;&n; *&t;&t;Florian La Roche, &lt;flla@stud.uni-sb.de&gt;&n; *&t;&t;Charles Hedrick, &lt;hedrick@klinzhai.rutgers.edu&gt;&n; *&t;&t;Linus Torvalds, &lt;torvalds@cs.helsinki.fi&gt;&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;Matthew Dillon, &lt;dillon@apollo.west.oic.com&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Implementation of the Transmission Control Protocol(TCP).&n; *&n; * Version:&t;$Id: tcp_input.c,v 1.228 2001/04/20 20:46:19 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&t;&t;Corey Minyard &lt;wf-rch!minyard@relay.EU.net&gt;&n; *&t;&t;Florian La Roche, &lt;flla@stud.uni-sb.de&gt;&n; *&t;&t;Charles Hedrick, &lt;hedrick@klinzhai.rutgers.edu&gt;&n; *&t;&t;Linus Torvalds, &lt;torvalds@cs.helsinki.fi&gt;&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;Matthew Dillon, &lt;dillon@apollo.west.oic.com&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; */
 multiline_comment|/*&n; * Changes:&n; *&t;&t;Pedro Roque&t;:&t;Fast Retransmit/Recovery.&n; *&t;&t;&t;&t;&t;Two receive queues.&n; *&t;&t;&t;&t;&t;Retransmit queue handled by TCP.&n; *&t;&t;&t;&t;&t;Better retransmit timer handling.&n; *&t;&t;&t;&t;&t;New congestion avoidance.&n; *&t;&t;&t;&t;&t;Header prediction.&n; *&t;&t;&t;&t;&t;Variable renaming.&n; *&n; *&t;&t;Eric&t;&t;:&t;Fast Retransmit.&n; *&t;&t;Randy Scott&t;:&t;MSS option defines.&n; *&t;&t;Eric Schenk&t;:&t;Fixes to slow start algorithm.&n; *&t;&t;Eric Schenk&t;:&t;Yet another double ACK bug.&n; *&t;&t;Eric Schenk&t;:&t;Delayed ACK bug fixes.&n; *&t;&t;Eric Schenk&t;:&t;Floyd style fast retrans war avoidance.&n; *&t;&t;David S. Miller&t;:&t;Don&squot;t allow zero congestion window.&n; *&t;&t;Eric Schenk&t;:&t;Fix retransmitter so that it sends&n; *&t;&t;&t;&t;&t;next packet on ack of previous packet.&n; *&t;&t;Andi Kleen&t;:&t;Moved open_request checking here&n; *&t;&t;&t;&t;&t;and process RSTs for open_requests.&n; *&t;&t;Andi Kleen&t;:&t;Better prune_queue, and other fixes.&n; *&t;&t;Andrey Savochkin:&t;Fix RTT measurements in the presnce of&n; *&t;&t;&t;&t;&t;timestamps.&n; *&t;&t;Andrey Savochkin:&t;Check sequence numbers correctly when&n; *&t;&t;&t;&t;&t;removing SACKs due to in sequence incoming&n; *&t;&t;&t;&t;&t;data segments.&n; *&t;&t;Andi Kleen:&t;&t;Make sure we never ack data there is not&n; *&t;&t;&t;&t;&t;enough room for. Also make this condition&n; *&t;&t;&t;&t;&t;a fatal error if it might still happen.&n; *&t;&t;Andi Kleen:&t;&t;Add tcp_measure_rcv_mss to make &n; *&t;&t;&t;&t;&t;connections with MSS&lt;min(MTU,ann. MSS)&n; *&t;&t;&t;&t;&t;work without delayed acks. &n; *&t;&t;Andi Kleen:&t;&t;Process packets with PSH set in the&n; *&t;&t;&t;&t;&t;fast path.&n; *&t;&t;J Hadi Salim:&t;&t;ECN support&n; *&t; &t;Andrei Gurtov,&n; *&t;&t;Pasi Sarolahti,&n; *&t;&t;Panu Kuhlberg:&t;&t;Experimental audit of TCP (re)transmission&n; *&t;&t;&t;&t;&t;engine. Lots of bugs are found.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -12131,86 +12131,6 @@ op_assign
 id|tcp_time_stamp
 suffix:semicolon
 )brace
-multiline_comment|/* Wakeup users. */
-r_if
-c_cond
-(paren
-id|tcp_wspace
-c_func
-(paren
-id|sk
-)paren
-op_ge
-id|tcp_min_write_space
-c_func
-(paren
-id|sk
-)paren
-)paren
-(brace
-r_struct
-id|socket
-op_star
-id|sock
-op_assign
-id|sk-&gt;socket
-suffix:semicolon
-id|clear_bit
-c_func
-(paren
-id|SOCK_NOSPACE
-comma
-op_amp
-id|sock-&gt;flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sk-&gt;sleep
-op_logical_and
-id|waitqueue_active
-c_func
-(paren
-id|sk-&gt;sleep
-)paren
-)paren
-id|wake_up_interruptible
-c_func
-(paren
-id|sk-&gt;sleep
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sock-&gt;fasync_list
-op_logical_and
-op_logical_neg
-(paren
-id|sk-&gt;shutdown
-op_amp
-id|SEND_SHUTDOWN
-)paren
-)paren
-id|sock_wake_async
-c_func
-(paren
-id|sock
-comma
-l_int|2
-comma
-id|POLL_OUT
-)paren
-suffix:semicolon
-multiline_comment|/* Satisfy those who hook write_space() callback. */
-r_if
-c_cond
-(paren
-id|sk-&gt;write_space
-op_ne
-id|tcp_write_space
-)paren
 id|sk
 op_member_access_from_pointer
 id|write_space
@@ -12219,7 +12139,6 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|tcp_check_space
 r_static
@@ -14961,13 +14880,6 @@ comma
 id|TCP_ESTABLISHED
 )paren
 suffix:semicolon
-multiline_comment|/* Note, that this wakeup is only for marginal&n;&t;&t;&t;&t; * crossed SYN case. Passively open sockets&n;&t;&t;&t;&t; * are not waked up, because sk-&gt;sleep == NULL&n;&t;&t;&t;&t; * and sk-&gt;socket == NULL.&n;&t;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|sk-&gt;socket
-)paren
-(brace
 id|sk
 op_member_access_from_pointer
 id|state_change
@@ -14976,6 +14888,13 @@ c_func
 id|sk
 )paren
 suffix:semicolon
+multiline_comment|/* Note, that this wakeup is only for marginal&n;&t;&t;&t;&t; * crossed SYN case. Passively open sockets&n;&t;&t;&t;&t; * are not waked up, because sk-&gt;sleep == NULL&n;&t;&t;&t;&t; * and sk-&gt;socket == NULL.&n;&t;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|sk-&gt;socket
+)paren
+(brace
 id|sk_wake_async
 c_func
 (paren

@@ -7,29 +7,29 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
 multiline_comment|/*&n; * Limits and constants&n; */
 DECL|macro|HERMES_ALLOC_LEN_MIN
-mdefine_line|#define&t;&t;HERMES_ALLOC_LEN_MIN&t;&t;((uint16_t)4)
+mdefine_line|#define&t;&t;HERMES_ALLOC_LEN_MIN&t;&t;(4)
 DECL|macro|HERMES_ALLOC_LEN_MAX
-mdefine_line|#define&t;&t;HERMES_ALLOC_LEN_MAX&t;&t;((uint16_t)2400)
+mdefine_line|#define&t;&t;HERMES_ALLOC_LEN_MAX&t;&t;(2400)
 DECL|macro|HERMES_LTV_LEN_MAX
 mdefine_line|#define&t;&t;HERMES_LTV_LEN_MAX&t;&t;(34)
 DECL|macro|HERMES_BAP_DATALEN_MAX
-mdefine_line|#define&t;&t;HERMES_BAP_DATALEN_MAX&t;&t;((uint16_t)4096)
+mdefine_line|#define&t;&t;HERMES_BAP_DATALEN_MAX&t;&t;(4096)
 DECL|macro|HERMES_BAP_OFFSET_MAX
-mdefine_line|#define&t;&t;HERMES_BAP_OFFSET_MAX&t;&t;((uint16_t)4096)
+mdefine_line|#define&t;&t;HERMES_BAP_OFFSET_MAX&t;&t;(4096)
 DECL|macro|HERMES_PORTID_MAX
-mdefine_line|#define&t;&t;HERMES_PORTID_MAX&t;&t;((uint16_t)7)
+mdefine_line|#define&t;&t;HERMES_PORTID_MAX&t;&t;(7)
 DECL|macro|HERMES_NUMPORTS_MAX
-mdefine_line|#define&t;&t;HERMES_NUMPORTS_MAX&t;&t;((uint16_t)(HERMES_PORTID_MAX+1))
+mdefine_line|#define&t;&t;HERMES_NUMPORTS_MAX&t;&t;(HERMES_PORTID_MAX+1)
 DECL|macro|HERMES_PDR_LEN_MAX
-mdefine_line|#define&t;&t;HERMES_PDR_LEN_MAX&t;&t;((uint16_t)260)&t;/* in bytes, from EK */
+mdefine_line|#define&t;&t;HERMES_PDR_LEN_MAX&t;&t;(260)&t;/* in bytes, from EK */
 DECL|macro|HERMES_PDA_RECS_MAX
-mdefine_line|#define&t;&t;HERMES_PDA_RECS_MAX&t;&t;((uint16_t)200)&t;/* a guess */
+mdefine_line|#define&t;&t;HERMES_PDA_RECS_MAX&t;&t;(200)&t;/* a guess */
 DECL|macro|HERMES_PDA_LEN_MAX
-mdefine_line|#define&t;&t;HERMES_PDA_LEN_MAX&t;&t;((uint16_t)1024)&t;/* in bytes, from EK */
+mdefine_line|#define&t;&t;HERMES_PDA_LEN_MAX&t;&t;(1024)&t;/* in bytes, from EK */
 DECL|macro|HERMES_SCANRESULT_MAX
-mdefine_line|#define&t;&t;HERMES_SCANRESULT_MAX&t;&t;((uint16_t)35)
+mdefine_line|#define&t;&t;HERMES_SCANRESULT_MAX&t;&t;(35)
 DECL|macro|HERMES_CHINFORESULT_MAX
-mdefine_line|#define&t;&t;HERMES_CHINFORESULT_MAX&t;&t;((uint16_t)8)
+mdefine_line|#define&t;&t;HERMES_CHINFORESULT_MAX&t;&t;(8)
 DECL|macro|HERMES_FRAME_LEN_MAX
 mdefine_line|#define&t;&t;HERMES_FRAME_LEN_MAX&t;&t;(2304)
 DECL|macro|HERMES_MAX_MULTICAST
@@ -95,171 +95,184 @@ DECL|macro|HERMES_AUXDATA
 mdefine_line|#define&t;&t;HERMES_AUXDATA&t;&t;&t;(0x3E)
 multiline_comment|/*&n; * CMD register bitmasks&n; */
 DECL|macro|HERMES_CMD_BUSY
-mdefine_line|#define&t;&t;HERMES_CMD_BUSY&t;&t;&t;((uint16_t)0x8000)
+mdefine_line|#define&t;&t;HERMES_CMD_BUSY&t;&t;&t;(0x8000)
 DECL|macro|HERMES_CMD_AINFO
-mdefine_line|#define&t;&t;HERMES_CMD_AINFO&t;&t;((uint16_t)0x7f00)
+mdefine_line|#define&t;&t;HERMES_CMD_AINFO&t;&t;(0x7f00)
 DECL|macro|HERMES_CMD_MACPORT
-mdefine_line|#define&t;&t;HERMES_CMD_MACPORT&t;&t;((uint16_t)0x0700)
+mdefine_line|#define&t;&t;HERMES_CMD_MACPORT&t;&t;(0x0700)
 DECL|macro|HERMES_CMD_RECL
-mdefine_line|#define&t;&t;HERMES_CMD_RECL&t;&t;&t;((uint16_t)0x0100)
+mdefine_line|#define&t;&t;HERMES_CMD_RECL&t;&t;&t;(0x0100)
 DECL|macro|HERMES_CMD_WRITE
-mdefine_line|#define&t;&t;HERMES_CMD_WRITE&t;&t;((uint16_t)0x0100)
+mdefine_line|#define&t;&t;HERMES_CMD_WRITE&t;&t;(0x0100)
 DECL|macro|HERMES_CMD_PROGMODE
-mdefine_line|#define&t;&t;HERMES_CMD_PROGMODE&t;&t;((uint16_t)0x0300)
+mdefine_line|#define&t;&t;HERMES_CMD_PROGMODE&t;&t;(0x0300)
 DECL|macro|HERMES_CMD_CMDCODE
-mdefine_line|#define&t;&t;HERMES_CMD_CMDCODE&t;&t;((uint16_t)0x003f)
+mdefine_line|#define&t;&t;HERMES_CMD_CMDCODE&t;&t;(0x003f)
 multiline_comment|/*&n; * STATUS register bitmasks&n; */
 DECL|macro|HERMES_STATUS_RESULT
-mdefine_line|#define&t;&t;HERMES_STATUS_RESULT&t;&t;((uint16_t)0x7f00)
+mdefine_line|#define&t;&t;HERMES_STATUS_RESULT&t;&t;(0x7f00)
 DECL|macro|HERMES_STATUS_CMDCODE
-mdefine_line|#define&t;&t;HERMES_STATUS_CMDCODE&t;&t;((uint16_t)0x003f)
+mdefine_line|#define&t;&t;HERMES_STATUS_CMDCODE&t;&t;(0x003f)
 multiline_comment|/*&n; * OFFSET refister bitmasks&n; */
 DECL|macro|HERMES_OFFSET_BUSY
-mdefine_line|#define&t;&t;HERMES_OFFSET_BUSY&t;&t;((uint16_t)0x8000)
+mdefine_line|#define&t;&t;HERMES_OFFSET_BUSY&t;&t;(0x8000)
 DECL|macro|HERMES_OFFSET_ERR
-mdefine_line|#define&t;&t;HERMES_OFFSET_ERR&t;&t;((uint16_t)0x4000)
+mdefine_line|#define&t;&t;HERMES_OFFSET_ERR&t;&t;(0x4000)
 DECL|macro|HERMES_OFFSET_DATAOFF
-mdefine_line|#define&t;&t;HERMES_OFFSET_DATAOFF&t;&t;((uint16_t)0x0ffe)
+mdefine_line|#define&t;&t;HERMES_OFFSET_DATAOFF&t;&t;(0x0ffe)
 multiline_comment|/*&n; * Event register bitmasks (INTEN, EVSTAT, EVACK)&n; */
 DECL|macro|HERMES_EV_TICK
-mdefine_line|#define&t;&t;HERMES_EV_TICK&t;&t;&t;((uint16_t)0x8000)
+mdefine_line|#define&t;&t;HERMES_EV_TICK&t;&t;&t;(0x8000)
 DECL|macro|HERMES_EV_WTERR
-mdefine_line|#define&t;&t;HERMES_EV_WTERR&t;&t;&t;((uint16_t)0x4000)
+mdefine_line|#define&t;&t;HERMES_EV_WTERR&t;&t;&t;(0x4000)
 DECL|macro|HERMES_EV_INFDROP
-mdefine_line|#define&t;&t;HERMES_EV_INFDROP&t;&t;((uint16_t)0x2000)
+mdefine_line|#define&t;&t;HERMES_EV_INFDROP&t;&t;(0x2000)
 DECL|macro|HERMES_EV_INFO
-mdefine_line|#define&t;&t;HERMES_EV_INFO&t;&t;&t;((uint16_t)0x0080)
+mdefine_line|#define&t;&t;HERMES_EV_INFO&t;&t;&t;(0x0080)
 DECL|macro|HERMES_EV_DTIM
-mdefine_line|#define&t;&t;HERMES_EV_DTIM&t;&t;&t;((uint16_t)0x0020)
+mdefine_line|#define&t;&t;HERMES_EV_DTIM&t;&t;&t;(0x0020)
 DECL|macro|HERMES_EV_CMD
-mdefine_line|#define&t;&t;HERMES_EV_CMD&t;&t;&t;((uint16_t)0x0010)
+mdefine_line|#define&t;&t;HERMES_EV_CMD&t;&t;&t;(0x0010)
 DECL|macro|HERMES_EV_ALLOC
-mdefine_line|#define&t;&t;HERMES_EV_ALLOC&t;&t;&t;((uint16_t)0x0008)
+mdefine_line|#define&t;&t;HERMES_EV_ALLOC&t;&t;&t;(0x0008)
 DECL|macro|HERMES_EV_TXEXC
-mdefine_line|#define&t;&t;HERMES_EV_TXEXC&t;&t;&t;((uint16_t)0x0004)
+mdefine_line|#define&t;&t;HERMES_EV_TXEXC&t;&t;&t;(0x0004)
 DECL|macro|HERMES_EV_TX
-mdefine_line|#define&t;&t;HERMES_EV_TX&t;&t;&t;((uint16_t)0x0002)
+mdefine_line|#define&t;&t;HERMES_EV_TX&t;&t;&t;(0x0002)
 DECL|macro|HERMES_EV_RX
-mdefine_line|#define&t;&t;HERMES_EV_RX&t;&t;&t;((uint16_t)0x0001)
+mdefine_line|#define&t;&t;HERMES_EV_RX&t;&t;&t;(0x0001)
 multiline_comment|/*&n; * Command codes&n; */
 multiline_comment|/*--- Controller Commands --------------------------*/
 DECL|macro|HERMES_CMD_INIT
-mdefine_line|#define&t;&t;HERMES_CMD_INIT&t;&t;&t;((uint16_t)0x00)
+mdefine_line|#define&t;&t;HERMES_CMD_INIT&t;&t;&t;(0x0000)
 DECL|macro|HERMES_CMD_ENABLE
-mdefine_line|#define&t;&t;HERMES_CMD_ENABLE&t;&t;((uint16_t)0x01)
+mdefine_line|#define&t;&t;HERMES_CMD_ENABLE&t;&t;(0x0001)
 DECL|macro|HERMES_CMD_DISABLE
-mdefine_line|#define&t;&t;HERMES_CMD_DISABLE&t;&t;((uint16_t)0x02)
+mdefine_line|#define&t;&t;HERMES_CMD_DISABLE&t;&t;(0x0002)
 DECL|macro|HERMES_CMD_DIAG
-mdefine_line|#define&t;&t;HERMES_CMD_DIAG&t;&t;&t;((uint16_t)0x03)
+mdefine_line|#define&t;&t;HERMES_CMD_DIAG&t;&t;&t;(0x0003)
 multiline_comment|/*--- Buffer Mgmt Commands --------------------------*/
 DECL|macro|HERMES_CMD_ALLOC
-mdefine_line|#define&t;&t;HERMES_CMD_ALLOC&t;&t;((uint16_t)0x0A)
+mdefine_line|#define&t;&t;HERMES_CMD_ALLOC&t;&t;(0x000A)
 DECL|macro|HERMES_CMD_TX
-mdefine_line|#define&t;&t;HERMES_CMD_TX&t;&t;&t;((uint16_t)0x0B)
+mdefine_line|#define&t;&t;HERMES_CMD_TX&t;&t;&t;(0x000B)
 DECL|macro|HERMES_CMD_CLRPRST
-mdefine_line|#define&t;&t;HERMES_CMD_CLRPRST&t;&t;((uint16_t)0x12)
+mdefine_line|#define&t;&t;HERMES_CMD_CLRPRST&t;&t;(0x0012)
 multiline_comment|/*--- Regulate Commands --------------------------*/
 DECL|macro|HERMES_CMD_NOTIFY
-mdefine_line|#define&t;&t;HERMES_CMD_NOTIFY&t;&t;((uint16_t)0x10)
+mdefine_line|#define&t;&t;HERMES_CMD_NOTIFY&t;&t;(0x0010)
 DECL|macro|HERMES_CMD_INQ
-mdefine_line|#define&t;&t;HERMES_CMD_INQ&t;&t;&t;((uint16_t)0x11)
+mdefine_line|#define&t;&t;HERMES_CMD_INQ&t;&t;&t;(0x0011)
 multiline_comment|/*--- Configure Commands --------------------------*/
 DECL|macro|HERMES_CMD_ACCESS
-mdefine_line|#define&t;&t;HERMES_CMD_ACCESS&t;&t;((uint16_t)0x21)
+mdefine_line|#define&t;&t;HERMES_CMD_ACCESS&t;&t;(0x0021)
 DECL|macro|HERMES_CMD_DOWNLD
-mdefine_line|#define&t;&t;HERMES_CMD_DOWNLD&t;&t;((uint16_t)0x22)
+mdefine_line|#define&t;&t;HERMES_CMD_DOWNLD&t;&t;(0x0022)
 multiline_comment|/*--- Debugging Commands -----------------------------*/
 DECL|macro|HERMES_CMD_MONITOR
-mdefine_line|#define &t;HERMES_CMD_MONITOR&t;&t;((uint16_t)(0x38))
+mdefine_line|#define &t;HERMES_CMD_MONITOR&t;&t;(0x0038)
 DECL|macro|HERMES_MONITOR_ENABLE
-mdefine_line|#define&t;&t;HERMES_MONITOR_ENABLE&t;&t;((uint16_t)(0x0b))
+mdefine_line|#define&t;&t;HERMES_MONITOR_ENABLE&t;&t;(0x000b)
 DECL|macro|HERMES_MONITOR_DISABLE
-mdefine_line|#define&t;&t;HERMES_MONITOR_DISABLE&t;&t;((uint16_t)(0x0f))
+mdefine_line|#define&t;&t;HERMES_MONITOR_DISABLE&t;&t;(0x000f)
 multiline_comment|/*&n; * Configuration RIDs&n; */
 DECL|macro|HERMES_RID_CNF_PORTTYPE
-mdefine_line|#define&t;&t;HERMES_RID_CNF_PORTTYPE&t;&t;((uint16_t)0xfc00)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_PORTTYPE&t;&t;(0xfc00)
 DECL|macro|HERMES_RID_CNF_MACADDR
-mdefine_line|#define&t;&t;HERMES_RID_CNF_MACADDR&t;&t;((uint16_t)0xfc01)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_MACADDR&t;&t;(0xfc01)
 DECL|macro|HERMES_RID_CNF_DESIRED_SSID
-mdefine_line|#define&t;&t;HERMES_RID_CNF_DESIRED_SSID&t;((uint16_t)0xfc02)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_DESIRED_SSID&t;(0xfc02)
 DECL|macro|HERMES_RID_CNF_CHANNEL
-mdefine_line|#define&t;&t;HERMES_RID_CNF_CHANNEL&t;&t;((uint16_t)0xfc03)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_CHANNEL&t;&t;(0xfc03)
 DECL|macro|HERMES_RID_CNF_OWN_SSID
-mdefine_line|#define&t;&t;HERMES_RID_CNF_OWN_SSID&t;&t;((uint16_t)0xfc04)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_OWN_SSID&t;&t;(0xfc04)
 DECL|macro|HERMES_RID_CNF_SYSTEM_SCALE
-mdefine_line|#define&t;&t;HERMES_RID_CNF_SYSTEM_SCALE&t;((uint16_t)0xfc06)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_SYSTEM_SCALE&t;(0xfc06)
 DECL|macro|HERMES_RID_CNF_MAX_DATA_LEN
-mdefine_line|#define&t;&t;HERMES_RID_CNF_MAX_DATA_LEN&t;((uint16_t)0xfc07)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_MAX_DATA_LEN&t;(0xfc07)
 DECL|macro|HERMES_RID_CNF_PM_ENABLE
-mdefine_line|#define&t;&t;HERMES_RID_CNF_PM_ENABLE&t;((uint16_t)0xfc09)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_PM_ENABLE&t;(0xfc09)
 DECL|macro|HERMES_RID_CNF_PM_MCAST_RX
-mdefine_line|#define&t;&t;HERMES_RID_CNF_PM_MCAST_RX&t;((uint16_t)0xfc0b)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_PM_MCAST_RX&t;(0xfc0b)
 DECL|macro|HERMES_RID_CNF_PM_PERIOD
-mdefine_line|#define&t;&t;HERMES_RID_CNF_PM_PERIOD&t;((uint16_t)0xfc0c)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_PM_PERIOD&t;(0xfc0c)
 DECL|macro|HERMES_RID_CNF_PM_HOLDOVER
-mdefine_line|#define&t;&t;HERMES_RID_CNF_PM_HOLDOVER&t;((uint16_t)0xfc0d)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_PM_HOLDOVER&t;(0xfc0d)
 DECL|macro|HERMES_RID_CNF_NICKNAME
-mdefine_line|#define&t;&t;HERMES_RID_CNF_NICKNAME&t;&t;((uint16_t)0xfc0e)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_NICKNAME&t;&t;(0xfc0e)
 DECL|macro|HERMES_RID_CNF_WEP_ON
-mdefine_line|#define&t;&t;HERMES_RID_CNF_WEP_ON&t;&t;((uint16_t)0xfc20)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_WEP_ON&t;&t;(0xfc20)
 DECL|macro|HERMES_RID_CNF_MWO_ROBUST
-mdefine_line|#define&t;&t;HERMES_RID_CNF_MWO_ROBUST&t;((uint16_t)0xfc25)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_MWO_ROBUST&t;(0xfc25)
 DECL|macro|HERMES_RID_CNF_PRISM2_WEP_ON
-mdefine_line|#define&t;&t;HERMES_RID_CNF_PRISM2_WEP_ON&t;((uint16_t)0xfc28)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_PRISM2_WEP_ON&t;(0xfc28)
 DECL|macro|HERMES_RID_CNF_MULTICAST_LIST
-mdefine_line|#define&t;&t;HERMES_RID_CNF_MULTICAST_LIST&t;((uint16_t)0xfc80)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_MULTICAST_LIST&t;(0xfc80)
 DECL|macro|HERMES_RID_CNF_CREATEIBSS
-mdefine_line|#define&t;&t;HERMES_RID_CNF_CREATEIBSS&t;((uint16_t)0xfc81)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_CREATEIBSS&t;(0xfc81)
 DECL|macro|HERMES_RID_CNF_FRAG_THRESH
-mdefine_line|#define&t;&t;HERMES_RID_CNF_FRAG_THRESH&t;((uint16_t)0xfc82)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_FRAG_THRESH&t;(0xfc82)
 DECL|macro|HERMES_RID_CNF_RTS_THRESH
-mdefine_line|#define&t;&t;HERMES_RID_CNF_RTS_THRESH&t;((uint16_t)0xfc83)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_RTS_THRESH&t;(0xfc83)
 DECL|macro|HERMES_RID_CNF_TX_RATE_CTRL
-mdefine_line|#define&t;&t;HERMES_RID_CNF_TX_RATE_CTRL&t;((uint16_t)0xfc84)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_TX_RATE_CTRL&t;(0xfc84)
 DECL|macro|HERMES_RID_CNF_PROMISCUOUS
-mdefine_line|#define&t;&t;HERMES_RID_CNF_PROMISCUOUS&t;((uint16_t)0xfc85)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_PROMISCUOUS&t;(0xfc85)
 DECL|macro|HERMES_RID_CNF_KEYS
-mdefine_line|#define&t;&t;HERMES_RID_CNF_KEYS&t;&t;((uint16_t)0xfcb0)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_KEYS&t;&t;(0xfcb0)
 DECL|macro|HERMES_RID_CNF_TX_KEY
-mdefine_line|#define&t;&t;HERMES_RID_CNF_TX_KEY&t;&t;((uint16_t)0xfcb1)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_TX_KEY&t;&t;(0xfcb1)
 DECL|macro|HERMES_RID_CNF_TICKTIME
-mdefine_line|#define&t;&t;HERMES_RID_CNF_TICKTIME&t;&t;((uint16_t)0xfce0)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_TICKTIME&t;&t;(0xfce0)
 DECL|macro|HERMES_RID_CNF_PRISM2_TX_KEY
-mdefine_line|#define&t;&t;HERMES_RID_CNF_PRISM2_TX_KEY&t;((uint16_t)0xfc23)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_PRISM2_TX_KEY&t;(0xfc23)
 DECL|macro|HERMES_RID_CNF_PRISM2_KEY0
-mdefine_line|#define&t;&t;HERMES_RID_CNF_PRISM2_KEY0&t;((uint16_t)0xfc24)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_PRISM2_KEY0&t;(0xfc24)
 DECL|macro|HERMES_RID_CNF_PRISM2_KEY1
-mdefine_line|#define&t;&t;HERMES_RID_CNF_PRISM2_KEY1&t;((uint16_t)0xfc25)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_PRISM2_KEY1&t;(0xfc25)
 DECL|macro|HERMES_RID_CNF_PRISM2_KEY2
-mdefine_line|#define&t;&t;HERMES_RID_CNF_PRISM2_KEY2&t;((uint16_t)0xfc26)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_PRISM2_KEY2&t;(0xfc26)
 DECL|macro|HERMES_RID_CNF_PRISM2_KEY3
-mdefine_line|#define&t;&t;HERMES_RID_CNF_PRISM2_KEY3&t;((uint16_t)0xfc27)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_PRISM2_KEY3&t;(0xfc27)
+DECL|macro|HERMES_RID_CNF_SYMBOL_MANDATORY_BSSID
+mdefine_line|#define&t;&t;HERMES_RID_CNF_SYMBOL_MANDATORY_BSSID&t;(0xfc21)
 DECL|macro|HERMES_RID_CNF_SYMBOL_AUTH_TYPE
-mdefine_line|#define&t;&t;HERMES_RID_CNF_SYMBOL_AUTH_TYPE&t;&t;((uint16_t)0xfc2A)
-multiline_comment|/* This one is read only */
-DECL|macro|HERMES_RID_CNF_SYMBOL_KEY_LENGTH
-mdefine_line|#define&t;&t;HERMES_RID_CNF_SYMBOL_KEY_LENGTH&t;((uint16_t)0xfc2B)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_SYMBOL_AUTH_TYPE&t;&t;(0xfc2A)
 DECL|macro|HERMES_RID_CNF_SYMBOL_BASIC_RATES
-mdefine_line|#define&t;&t;HERMES_RID_CNF_SYMBOL_BASIC_RATES&t;((uint16_t)0xfc8A)
+mdefine_line|#define&t;&t;HERMES_RID_CNF_SYMBOL_BASIC_RATES&t;(0xfc8A)
+DECL|macro|HERMES_RID_CNF_SYMBOL_PREAMBLE
+mdefine_line|#define&t;&t;HERMES_RID_CNF_SYMBOL_PREAMBLE&t;&t;(0xfc8C)
 multiline_comment|/*&n; * Information RIDs&n; */
 DECL|macro|HERMES_RID_CHANNEL_LIST
-mdefine_line|#define&t;&t;HERMES_RID_CHANNEL_LIST&t;&t;((uint16_t)0xfd10)
+mdefine_line|#define&t;&t;HERMES_RID_CHANNEL_LIST&t;&t;(0xfd10)
 DECL|macro|HERMES_RID_STAIDENTITY
-mdefine_line|#define&t;&t;HERMES_RID_STAIDENTITY&t;&t;((uint16_t)0xfd20)
+mdefine_line|#define&t;&t;HERMES_RID_STAIDENTITY&t;&t;(0xfd20)
 DECL|macro|HERMES_RID_CURRENT_SSID
-mdefine_line|#define&t;&t;HERMES_RID_CURRENT_SSID&t;&t;((uint16_t)0xfd41)
+mdefine_line|#define&t;&t;HERMES_RID_CURRENT_SSID&t;&t;(0xfd41)
 DECL|macro|HERMES_RID_CURRENT_BSSID
-mdefine_line|#define&t;&t;HERMES_RID_CURRENT_BSSID&t;((uint16_t)0xfd42)
+mdefine_line|#define&t;&t;HERMES_RID_CURRENT_BSSID&t;(0xfd42)
 DECL|macro|HERMES_RID_COMMSQUALITY
-mdefine_line|#define&t;&t;HERMES_RID_COMMSQUALITY&t;&t;((uint16_t)0xfd43)
+mdefine_line|#define&t;&t;HERMES_RID_COMMSQUALITY&t;&t;(0xfd43)
 DECL|macro|HERMES_RID_CURRENT_TX_RATE
-mdefine_line|#define &t;HERMES_RID_CURRENT_TX_RATE&t;((uint16_t)0xfd44)
+mdefine_line|#define &t;HERMES_RID_CURRENT_TX_RATE&t;(0xfd44)
+DECL|macro|HERMES_RID_SHORT_RETRY_LIMIT
+mdefine_line|#define &t;HERMES_RID_SHORT_RETRY_LIMIT&t;(0xfd48)
+DECL|macro|HERMES_RID_LONG_RETRY_LIMIT
+mdefine_line|#define &t;HERMES_RID_LONG_RETRY_LIMIT&t;(0xfd49)
+DECL|macro|HERMES_RID_MAX_TX_LIFETIME
+mdefine_line|#define &t;HERMES_RID_MAX_TX_LIFETIME&t;(0xfd4A)
 DECL|macro|HERMES_RID_WEP_AVAIL
-mdefine_line|#define&t;&t;HERMES_RID_WEP_AVAIL&t;&t;((uint16_t)0xfd4f)
+mdefine_line|#define&t;&t;HERMES_RID_WEP_AVAIL&t;&t;(0xfd4f)
 DECL|macro|HERMES_RID_CURRENT_CHANNEL
-mdefine_line|#define&t;&t;HERMES_RID_CURRENT_CHANNEL&t;((uint16_t)0xfdc1)
+mdefine_line|#define&t;&t;HERMES_RID_CURRENT_CHANNEL&t;(0xfdc1)
 DECL|macro|HERMES_RID_DATARATES
-mdefine_line|#define&t;&t;HERMES_RID_DATARATES&t;&t;((uint16_t)0xfdc6)
+mdefine_line|#define&t;&t;HERMES_RID_DATARATES&t;&t;(0xfdc6)
+DECL|macro|HERMES_RID_SYMBOL_PRIMARY_VER
+mdefine_line|#define&t;&t;HERMES_RID_SYMBOL_PRIMARY_VER&t;(0xfd03)
+DECL|macro|HERMES_RID_SYMBOL_SECONDARY_VER
+mdefine_line|#define&t;&t;HERMES_RID_SYMBOL_SECONDARY_VER&t;(0xfd21)
+DECL|macro|HERMES_RID_SYMBOL_KEY_LENGTH
+mdefine_line|#define&t;&t;HERMES_RID_SYMBOL_KEY_LENGTH&t;(0xfc2B)
 multiline_comment|/*&n; * Frame structures and constants&n; */
 DECL|struct|hermes_frame_desc
 r_typedef
@@ -309,24 +322,24 @@ id|packed
 id|hermes_frame_desc_t
 suffix:semicolon
 DECL|macro|HERMES_RXSTAT_ERR
-mdefine_line|#define&t;&t;HERMES_RXSTAT_ERR&t;&t;((uint16_t)0x0003)
+mdefine_line|#define&t;&t;HERMES_RXSTAT_ERR&t;&t;(0x0003)
 DECL|macro|HERMES_RXSTAT_MACPORT
-mdefine_line|#define&t;&t;HERMES_RXSTAT_MACPORT&t;&t;((uint16_t)0x0700)
+mdefine_line|#define&t;&t;HERMES_RXSTAT_MACPORT&t;&t;(0x0700)
 DECL|macro|HERMES_RXSTAT_MSGTYPE
-mdefine_line|#define&t;&t;HERMES_RXSTAT_MSGTYPE&t;&t;((uint16_t)0xE000)
+mdefine_line|#define&t;&t;HERMES_RXSTAT_MSGTYPE&t;&t;(0xE000)
 DECL|macro|HERMES_RXSTAT_BADCRC
-mdefine_line|#define&t;&t;HERMES_RXSTAT_BADCRC&t;&t;((uint16_t)0x0001)
+mdefine_line|#define&t;&t;HERMES_RXSTAT_BADCRC&t;&t;(0x0001)
 DECL|macro|HERMES_RXSTAT_UNDECRYPTABLE
-mdefine_line|#define&t;&t;HERMES_RXSTAT_UNDECRYPTABLE&t;((uint16_t)0x0002)
+mdefine_line|#define&t;&t;HERMES_RXSTAT_UNDECRYPTABLE&t;(0x0002)
 multiline_comment|/* RFC-1042 encoded frame */
 DECL|macro|HERMES_RXSTAT_1042
-mdefine_line|#define&t;&t;HERMES_RXSTAT_1042&t;&t;((uint16_t)0x2000)
+mdefine_line|#define&t;&t;HERMES_RXSTAT_1042&t;&t;(0x2000)
 multiline_comment|/* Bridge-tunnel encoded frame */
 DECL|macro|HERMES_RXSTAT_TUNNEL
-mdefine_line|#define&t;&t;HERMES_RXSTAT_TUNNEL&t;&t;((uint16_t)0x4000)
+mdefine_line|#define&t;&t;HERMES_RXSTAT_TUNNEL&t;&t;(0x4000)
 multiline_comment|/* Wavelan-II Management Protocol frame */
 DECL|macro|HERMES_RXSTAT_WMP
-mdefine_line|#define&t;&t;HERMES_RXSTAT_WMP&t;&t;((uint16_t)0x6000)
+mdefine_line|#define&t;&t;HERMES_RXSTAT_WMP&t;&t;(0x6000)
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* Basic control structure */
 DECL|struct|hermes
@@ -817,8 +830,6 @@ DECL|macro|HERMES_READ_RECORD
 mdefine_line|#define HERMES_READ_RECORD(hw, bap, rid, buf) &bslash;&n;&t;(hermes_read_ltv((hw),(bap),(rid), sizeof(*buf), NULL, (buf)))
 DECL|macro|HERMES_WRITE_RECORD
 mdefine_line|#define HERMES_WRITE_RECORD(hw, bap, rid, buf) &bslash;&n;&t;(hermes_write_ltv((hw),(bap),(rid),HERMES_BYTES_TO_RECLEN(sizeof(*buf)),(buf)))
-DECL|macro|HERMES_WRITE_RECORD_LEN
-mdefine_line|#define HERMES_WRITE_RECORD_LEN(hw, bap, rid, buf, len) &bslash;&n;&t;(hermes_write_ltv((hw),(bap),(rid),HERMES_BYTES_TO_RECLEN(len),(buf)))
 DECL|function|hermes_read_wordrec
 r_static
 r_inline

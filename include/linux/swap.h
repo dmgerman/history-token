@@ -485,8 +485,6 @@ comma
 r_struct
 id|page
 op_star
-comma
-r_int
 )paren
 suffix:semicolon
 r_extern
@@ -500,8 +498,6 @@ id|swp_entry_t
 comma
 r_char
 op_star
-comma
-r_int
 )paren
 suffix:semicolon
 multiline_comment|/* linux/mm/page_alloc.c */
@@ -553,12 +549,8 @@ id|read_swap_cache_async
 c_func
 (paren
 id|swp_entry_t
-comma
-r_int
 )paren
 suffix:semicolon
-DECL|macro|read_swap_cache
-mdefine_line|#define read_swap_cache(entry) read_swap_cache_async(entry, 1);
 multiline_comment|/* linux/mm/oom_kill.c */
 r_extern
 r_int

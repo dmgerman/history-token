@@ -1361,11 +1361,17 @@ r_int
 r_char
 id|rcvtstamp
 suffix:semicolon
+DECL|member|use_write_queue
+r_int
+r_char
+id|use_write_queue
+suffix:semicolon
 DECL|member|userlocks
 r_int
 r_char
 id|userlocks
 suffix:semicolon
+multiline_comment|/* Hole of 3 bytes. Try to pack. */
 DECL|member|route_caps
 r_int
 id|route_caps

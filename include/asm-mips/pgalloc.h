@@ -540,7 +540,7 @@ mdefine_line|#define pte_free(pte)           free_pte_fast(pte)
 DECL|macro|pgd_free
 mdefine_line|#define pgd_free(pgd)           free_pgd_fast(pgd)
 DECL|macro|pgd_alloc
-mdefine_line|#define pgd_alloc()             get_pgd_fast()
+mdefine_line|#define pgd_alloc(mm)           get_pgd_fast()
 DECL|function|pte_alloc_kernel
 r_extern
 r_inline

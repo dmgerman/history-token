@@ -918,16 +918,6 @@ id|sisfb_setup
 )brace
 comma
 macro_line|#endif
-macro_line|#ifdef CONFIG_FB_E1355
-(brace
-l_string|&quot;e1355fb&quot;
-comma
-id|e1355fb_init
-comma
-id|e1355fb_setup
-)brace
-comma
-macro_line|#endif
 multiline_comment|/*&n;&t; * Generic drivers that are used as fallbacks&n;&t; * &n;&t; * These depend on resource management and must be initialized&n;&t; * _after_ all other frame buffer devices that use resource&n;&t; * management!&n;&t; */
 macro_line|#ifdef CONFIG_FB_OF
 (brace
@@ -1097,6 +1087,16 @@ comma
 id|hitfb_init
 comma
 l_int|NULL
+)brace
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_FB_E1355
+(brace
+l_string|&quot;e1355fb&quot;
+comma
+id|e1355fb_init
+comma
+id|e1355fb_setup
 )brace
 comma
 macro_line|#endif

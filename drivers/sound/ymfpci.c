@@ -10478,7 +10478,7 @@ id|codec
 comma
 id|YDSXGR_BUF441OUTVOL
 comma
-l_int|0x3fff3fff
+l_int|0
 )paren
 suffix:semicolon
 id|ymfpci_writel

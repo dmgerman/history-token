@@ -663,7 +663,10 @@ op_star
 id|pgd_alloc
 c_func
 (paren
-r_void
+r_struct
+id|mm_struct
+op_star
+id|mm
 )paren
 (brace
 id|pgd_t

@@ -21,14 +21,19 @@ id|ip_ct_ftp_type
 multiline_comment|/* PORT command from client */
 DECL|enumerator|IP_CT_FTP_PORT
 id|IP_CT_FTP_PORT
-op_assign
-id|IP_CT_DIR_ORIGINAL
 comma
 multiline_comment|/* PASV response from server */
 DECL|enumerator|IP_CT_FTP_PASV
 id|IP_CT_FTP_PASV
-op_assign
-id|IP_CT_DIR_REPLY
+comma
+multiline_comment|/* EPRT command from client */
+DECL|enumerator|IP_CT_FTP_EPRT
+id|IP_CT_FTP_EPRT
+comma
+multiline_comment|/* EPSV response from server */
+DECL|enumerator|IP_CT_FTP_EPSV
+id|IP_CT_FTP_EPSV
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* We record seq number and length of ftp ip/port text here: all in&n;   host order. */

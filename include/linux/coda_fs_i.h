@@ -6,8 +6,6 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/coda.h&gt;
-DECL|macro|CODA_CNODE_MAGIC
-mdefine_line|#define CODA_CNODE_MAGIC        0x47114711
 multiline_comment|/*&n; * coda fs inode data&n; */
 DECL|struct|coda_inode_info
 r_struct
@@ -24,31 +22,25 @@ id|u_short
 id|c_flags
 suffix:semicolon
 multiline_comment|/* flags (see below) */
-DECL|member|c_volrootlist
-r_struct
-id|list_head
-id|c_volrootlist
-suffix:semicolon
-multiline_comment|/* list of volroot cnoddes */
 DECL|member|c_cilist
 r_struct
 id|list_head
 id|c_cilist
 suffix:semicolon
 multiline_comment|/* list of all coda inodes */
-DECL|member|c_vnode
+DECL|member|c_container
 r_struct
-id|inode
+id|file
 op_star
-id|c_vnode
+id|c_container
 suffix:semicolon
-multiline_comment|/* inode associated with cnode */
+multiline_comment|/* container file for this cnode */
 DECL|member|c_contcount
 r_int
 r_int
 id|c_contcount
 suffix:semicolon
-multiline_comment|/* refcount for container inode */
+multiline_comment|/* refcount for container file */
 DECL|member|c_cached_cred
 r_struct
 id|coda_cred
@@ -61,11 +53,6 @@ r_int
 id|c_cached_perm
 suffix:semicolon
 multiline_comment|/* cached access permissions */
-DECL|member|c_magic
-r_int
-id|c_magic
-suffix:semicolon
-multiline_comment|/* to verify the data structure */
 )brace
 suffix:semicolon
 multiline_comment|/* flags */

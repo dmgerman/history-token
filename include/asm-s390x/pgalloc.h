@@ -146,7 +146,10 @@ id|pgd_t
 op_star
 id|pgd_alloc
 (paren
-r_void
+r_struct
+id|mm_struct
+op_star
+id|mm
 )paren
 (brace
 id|pgd_t

@@ -42,7 +42,7 @@ suffix:semicolon
 r_struct
 id|coda_inode_info
 op_star
-id|cnp
+id|cii
 suffix:semicolon
 r_int
 r_int
@@ -65,7 +65,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|cnp
+id|cii
 op_assign
 id|ITOC
 c_func
@@ -84,9 +84,7 @@ c_func
 id|inode-&gt;i_sb
 comma
 op_amp
-(paren
-id|cnp-&gt;c_fid
-)paren
+id|cii-&gt;c_fid
 comma
 id|p
 comma

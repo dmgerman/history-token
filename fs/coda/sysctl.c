@@ -48,6 +48,8 @@ DECL|macro|CODA_PERMISSION
 mdefine_line|#define CODA_PERMISSION&t; 8       /* permission statistics */
 DECL|macro|CODA_CACHE_INV
 mdefine_line|#define CODA_CACHE_INV &t; 9       /* cache invalidation statistics */
+DECL|macro|CODA_FAKE_STATFS
+mdefine_line|#define CODA_FAKE_STATFS 10&t; /* don&squot;t query venus for actual cache usage */
 DECL|variable|coda_table
 r_static
 id|ctl_table
@@ -230,6 +232,27 @@ id|do_reset_coda_cache_inv_stats
 )brace
 comma
 (brace
+id|CODA_FAKE_STATFS
+comma
+l_string|&quot;fake_statfs&quot;
+comma
+op_amp
+id|coda_fake_statfs
+comma
+r_sizeof
+(paren
+r_int
+)paren
+comma
+l_int|0600
+comma
+l_int|NULL
+comma
+op_amp
+id|proc_dointvec
+)brace
+comma
+(brace
 l_int|0
 )brace
 )brace
@@ -407,7 +430,13 @@ l_string|&quot;reintegrate &quot;
 comma
 multiline_comment|/* 33 */
 l_string|&quot;statfs      &quot;
+comma
 multiline_comment|/* 34 */
+l_string|&quot;store       &quot;
+comma
+multiline_comment|/* 35 */
+l_string|&quot;release     &quot;
+multiline_comment|/* 36 */
 )brace
 suffix:semicolon
 DECL|function|reset_coda_vfs_stats
@@ -1168,7 +1197,8 @@ l_string|&quot;Coda VFS statistics&bslash;n&quot;
 l_string|&quot;===================&bslash;n&bslash;n&quot;
 l_string|&quot;File Operations:&bslash;n&quot;
 l_string|&quot;&bslash;topen&bslash;t&bslash;t%9d&bslash;n&quot;
-l_string|&quot;&bslash;trelase&bslash;t&bslash;t%9d&bslash;n&quot;
+l_string|&quot;&bslash;tflush&bslash;t&bslash;t%9d&bslash;n&quot;
+l_string|&quot;&bslash;trelease&bslash;t&bslash;t%9d&bslash;n&quot;
 l_string|&quot;&bslash;tfsync&bslash;t&bslash;t%9d&bslash;n&bslash;n&quot;
 l_string|&quot;Dir Operations:&bslash;n&quot;
 l_string|&quot;&bslash;treaddir&bslash;t&bslash;t%9d&bslash;n&bslash;n&quot;
@@ -1185,6 +1215,8 @@ l_string|&quot;&bslash;tpermission&bslash;t%9d&bslash;n&quot;
 comma
 multiline_comment|/* file operations */
 id|ps-&gt;open
+comma
+id|ps-&gt;flush
 comma
 id|ps-&gt;release
 comma
@@ -1801,6 +1833,12 @@ comma
 id|proc_root_fs
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|proc_fs_coda
+)paren
+(brace
 id|proc_fs_coda-&gt;owner
 op_assign
 id|THIS_MODULE
@@ -1837,6 +1875,7 @@ comma
 id|coda_cache_inv_stats_get_info
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_SYSCTL
 r_if

@@ -659,6 +659,6 @@ r_void
 DECL|macro|pgd_free
 mdefine_line|#define pgd_free(pgd) BTFIXUP_CALL(pgd_free)(pgd)
 DECL|macro|pgd_alloc
-mdefine_line|#define pgd_alloc() BTFIXUP_CALL(pgd_alloc)()
+mdefine_line|#define pgd_alloc(mm) BTFIXUP_CALL(pgd_alloc)()
 macro_line|#endif /* _SPARC64_PGALLOC_H */
 eof

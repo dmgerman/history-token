@@ -1113,6 +1113,9 @@ op_assign
 r_void
 op_star
 )paren
+(paren
+r_int
+)paren
 id|ino
 suffix:semicolon
 r_switch

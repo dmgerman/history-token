@@ -90,7 +90,10 @@ op_star
 DECL|function|pgd_alloc
 id|pgd_alloc
 (paren
-r_void
+r_struct
+id|mm_struct
+op_star
+id|mm
 )paren
 (brace
 multiline_comment|/* the VM system never calls pgd_alloc_one_fast(), so we do it here. */
