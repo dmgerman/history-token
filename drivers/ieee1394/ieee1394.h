@@ -125,6 +125,51 @@ DECL|macro|SELFID_PORT_NCONN
 mdefine_line|#define SELFID_PORT_NCONN        0x1
 DECL|macro|SELFID_PORT_NONE
 mdefine_line|#define SELFID_PORT_NONE         0x0
+multiline_comment|/* 1394a PHY bitmasks */
+DECL|macro|PHY_00_PHYSICAL_ID
+mdefine_line|#define PHY_00_PHYSICAL_ID       0xFC
+DECL|macro|PHY_00_R
+mdefine_line|#define PHY_00_R                 0x02 /* Root */
+DECL|macro|PHY_00_PS
+mdefine_line|#define PHY_00_PS                0x01 /* Power Status*/
+DECL|macro|PHY_01_RHB
+mdefine_line|#define PHY_01_RHB               0x80 /* Root Hold-Off */
+DECL|macro|PHY_01_IBR
+mdefine_line|#define PHY_01_IBR               0x80 /* Initiate Bus Reset */
+DECL|macro|PHY_01_GAP_COUNT
+mdefine_line|#define PHY_01_GAP_COUNT         0x3F
+DECL|macro|PHY_02_EXTENDED
+mdefine_line|#define PHY_02_EXTENDED          0xE0 /* 0x7 for 1394a-compliant PHY */
+DECL|macro|PHY_02_TOTAL_PORTS
+mdefine_line|#define PHY_02_TOTAL_PORTS       0x1F
+DECL|macro|PHY_03_MAX_SPEED
+mdefine_line|#define PHY_03_MAX_SPEED         0xE0
+DECL|macro|PHY_03_DELAY
+mdefine_line|#define PHY_03_DELAY             0x0F
+DECL|macro|PHY_04_LCTRL
+mdefine_line|#define PHY_04_LCTRL             0x80 /* Link Active Report Control */
+DECL|macro|PHY_04_CONTENDER
+mdefine_line|#define PHY_04_CONTENDER         0x40
+DECL|macro|PHY_04_JITTER
+mdefine_line|#define PHY_04_JITTER            0x38
+DECL|macro|PHY_04_PWR_CLASS
+mdefine_line|#define PHY_04_PWR_CLASS         0x07 /* Power Class */
+DECL|macro|PHY_05_WATCHDOG
+mdefine_line|#define PHY_05_WATCHDOG          0x80
+DECL|macro|PHY_05_ISBR
+mdefine_line|#define PHY_05_ISBR              0x40 /* Initiate Short Bus Reset */
+DECL|macro|PHY_05_LOOP
+mdefine_line|#define PHY_05_LOOP              0x20 /* Loop Detect */
+DECL|macro|PHY_05_PWR_FAIL
+mdefine_line|#define PHY_05_PWR_FAIL          0x10 /* Cable Power Failure Detect */
+DECL|macro|PHY_05_TIMEOUT
+mdefine_line|#define PHY_05_TIMEOUT           0x08 /* Arbitration State Machine Timeout */
+DECL|macro|PHY_05_PORT_EVENT
+mdefine_line|#define PHY_05_PORT_EVENT        0x04 /* Port Event Detect */
+DECL|macro|PHY_05_ENAB_ACCEL
+mdefine_line|#define PHY_05_ENAB_ACCEL        0x02 /* Enable Arbitration Acceleration */
+DECL|macro|PHY_05_ENAB_MULTI
+mdefine_line|#define PHY_05_ENAB_MULTI        0x01 /* Ena. Multispeed Packet Concatenation */
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#ifdef __BIG_ENDIAN_BITFIELD
 DECL|struct|selfid
