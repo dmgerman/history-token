@@ -138,7 +138,7 @@ id|vm_set
 suffix:semicolon
 DECL|member|prio_tree_node
 r_struct
-id|prio_tree_node
+id|raw_prio_tree_node
 id|prio_tree_node
 suffix:semicolon
 DECL|member|shared

@@ -559,7 +559,7 @@ op_amp
 id|inode-&gt;i_data.private_lock
 )paren
 suffix:semicolon
-id|INIT_PRIO_TREE_ROOT
+id|INIT_RAW_PRIO_TREE_ROOT
 c_func
 (paren
 op_amp

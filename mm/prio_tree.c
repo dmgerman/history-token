@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * mm/prio_tree.c - priority search tree for mapping-&gt;i_mmap&n; *&n; * Copyright (C) 2004, Rajesh Venkatasubramanian &lt;vrajesh@umich.edu&gt;&n; *&n; * This file is released under the GPL v2.&n; *&n; * Based on the radix priority search tree proposed by Edward M. McCreight&n; * SIAM Journal of Computing, vol. 14, no.2, pages 257-276, May 1985&n; *&n; * 02Feb2004&t;Initial version&n; */
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/prio_tree.h&gt;
 multiline_comment|/*&n; * A clever mix of heap and radix trees forms a radix priority search tree (PST)&n; * which is useful for storing intervals, e.g, we can consider a vma as a closed&n; * interval of file pages [offset_begin, offset_end], and store all vmas that&n; * map a file in a PST. Then, using the PST, we can answer a stabbing query,&n; * i.e., selecting a set of stored intervals (vmas) that overlap with (map) a&n; * given input interval X (a set of consecutive file pages), in &quot;O(log n + m)&quot;&n; * time where &squot;log n&squot; is the height of the PST, and &squot;m&squot; is the number of stored&n; * intervals (vmas) that overlap (map) with the input interval X (the set of&n; * consecutive file pages).&n; *&n; * In our implementation, we store closed intervals of the form [radix_index,&n; * heap_index]. We assume that always radix_index &lt;= heap_index. McCreight&squot;s PST&n; * is designed for storing intervals with unique radix indices, i.e., each&n; * interval have different radix_index. However, this limitation can be easily&n; * overcome by using the size, i.e., heap_index - radix_index, as part of the&n; * index, so we index the tree using [(radix_index,size), heap_index].&n; *&n; * When the above-mentioned indexing scheme is used, theoretically, in a 32 bit&n; * machine, the maximum height of a PST can be 64. We can use a balanced version&n; * of the priority search tree to optimize the tree height, but the balanced&n; * tree proposed by McCreight is too complex and memory-hungry for our purpose.&n; */
@@ -12,10 +11,90 @@ mdefine_line|#define VMA_SIZE(vma)&t;  (((vma)-&gt;vm_end - (vma)-&gt;vm_start) 
 multiline_comment|/* avoid overflow */
 DECL|macro|HEAP_INDEX
 mdefine_line|#define HEAP_INDEX(vma)&t;  ((vma)-&gt;vm_pgoff + (VMA_SIZE(vma) - 1))
-DECL|macro|GET_INDEX_VMA
-mdefine_line|#define GET_INDEX_VMA(vma, radix, heap)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;radix = RADIX_INDEX(vma);&t;&t;&bslash;&n;&t;heap = HEAP_INDEX(vma);&t;&t;&t;&bslash;&n;} while (0)
-DECL|macro|GET_INDEX
-mdefine_line|#define GET_INDEX(node, radix, heap)&t;&t;&bslash;&n;do { &t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct vm_area_struct *__tmp = &t;&t;&bslash;&n;&t;  prio_tree_entry(node, struct vm_area_struct, shared.prio_tree_node);&bslash;&n;&t;GET_INDEX_VMA(__tmp, radix, heap); &t;&bslash;&n;} while (0)
+DECL|function|get_index
+r_static
+r_void
+id|get_index
+c_func
+(paren
+r_const
+r_struct
+id|prio_tree_root
+op_star
+id|root
+comma
+r_const
+r_struct
+id|prio_tree_node
+op_star
+id|node
+comma
+r_int
+r_int
+op_star
+id|radix
+comma
+r_int
+r_int
+op_star
+id|heap
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|root-&gt;raw
+)paren
+(brace
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+op_assign
+id|prio_tree_entry
+c_func
+(paren
+id|node
+comma
+r_struct
+id|vm_area_struct
+comma
+id|shared.prio_tree_node
+)paren
+suffix:semicolon
+op_star
+id|radix
+op_assign
+id|RADIX_INDEX
+c_func
+(paren
+id|vma
+)paren
+suffix:semicolon
+op_star
+id|heap
+op_assign
+id|HEAP_INDEX
+c_func
+(paren
+id|vma
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+op_star
+id|radix
+op_assign
+id|node-&gt;start
+suffix:semicolon
+op_star
+id|heap
+op_assign
+id|node-&gt;last
+suffix:semicolon
+)brace
+)brace
 DECL|variable|index_bits_to_maxindex
 r_static
 r_int
@@ -113,20 +192,6 @@ l_int|1
 )braket
 suffix:semicolon
 )brace
-r_static
-r_void
-id|prio_tree_remove
-c_func
-(paren
-r_struct
-id|prio_tree_root
-op_star
-comma
-r_struct
-id|prio_tree_node
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Extend a priority search tree so that it can store a node with heap_index&n; * max_heap_index. In the worst case, this algorithm takes O((log n)^2).&n; * However, this function is used rarely and the common case performance is&n; * not bad.&n; */
 DECL|function|prio_tree_expand
 r_static
@@ -327,7 +392,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Replace a prio_tree_node with a new node and return the old node&n; */
 DECL|function|prio_tree_replace
-r_static
 r_struct
 id|prio_tree_node
 op_star
@@ -453,7 +517,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Insert a prio_tree_node @node into a radix priority search tree @root. The&n; * algorithm typically takes O(log n) time where &squot;log n&squot; is the number of bits&n; * required to represent the maximum heap_index. In the worst case, the algo&n; * can take O((log n)^2) - check prio_tree_expand.&n; *&n; * If a prior node with same radix_index and heap_index is already found in&n; * the tree, then returns the address of the prior node. Otherwise, inserts&n; * @node into the tree and returns @node.&n; */
 DECL|function|prio_tree_insert
-r_static
 r_struct
 id|prio_tree_node
 op_star
@@ -502,13 +565,17 @@ id|size_flag
 op_assign
 l_int|0
 suffix:semicolon
-id|GET_INDEX
+id|get_index
 c_func
 (paren
+id|root
+comma
 id|node
 comma
+op_amp
 id|radix_index
 comma
+op_amp
 id|heap_index
 )paren
 suffix:semicolon
@@ -560,13 +627,17 @@ c_loop
 id|mask
 )paren
 (brace
-id|GET_INDEX
+id|get_index
 c_func
 (paren
+id|root
+comma
 id|cur
 comma
+op_amp
 id|r_index
 comma
+op_amp
 id|h_index
 )paren
 suffix:semicolon
@@ -784,7 +855,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Remove a prio_tree_node @node from a radix priority search tree @root. The&n; * algorithm takes O(log n) time where &squot;log n&squot; is the number of bits required&n; * to represent the maximum heap_index.&n; */
 DECL|function|prio_tree_remove
-r_static
 r_void
 id|prio_tree_remove
 c_func
@@ -845,13 +915,17 @@ c_func
 id|cur
 )paren
 )paren
-id|GET_INDEX
+id|get_index
 c_func
 (paren
+id|root
+comma
 id|cur-&gt;left
 comma
+op_amp
 id|r_index
 comma
+op_amp
 id|h_index_left
 )paren
 suffix:semicolon
@@ -874,13 +948,17 @@ c_func
 id|cur
 )paren
 )paren
-id|GET_INDEX
+id|get_index
 c_func
 (paren
+id|root
+comma
 id|cur-&gt;right
 comma
+op_amp
 id|r_index
 comma
+op_amp
 id|h_index_right
 )paren
 suffix:semicolon
@@ -929,10 +1007,12 @@ op_ne
 id|cur
 )paren
 suffix:semicolon
-id|INIT_PRIO_TREE_ROOT
+id|__INIT_PRIO_TREE_ROOT
 c_func
 (paren
 id|root
+comma
+id|root-&gt;raw
 )paren
 suffix:semicolon
 r_return
@@ -1011,15 +1091,15 @@ id|iter-&gt;cur
 r_return
 l_int|NULL
 suffix:semicolon
-id|GET_INDEX
+id|get_index
 c_func
 (paren
+id|iter-&gt;root
+comma
 id|iter-&gt;cur-&gt;left
 comma
-op_star
 id|r_index
 comma
-op_star
 id|h_index
 )paren
 suffix:semicolon
@@ -1185,15 +1265,15 @@ id|value
 r_return
 l_int|NULL
 suffix:semicolon
-id|GET_INDEX
+id|get_index
 c_func
 (paren
+id|iter-&gt;root
+comma
 id|iter-&gt;cur-&gt;right
 comma
-op_star
 id|r_index
 comma
-op_star
 id|h_index
 )paren
 suffix:semicolon
@@ -1450,13 +1530,17 @@ id|root
 r_return
 l_int|NULL
 suffix:semicolon
-id|GET_INDEX
+id|get_index
 c_func
 (paren
+id|root
+comma
 id|root-&gt;prio_tree_node
 comma
+op_amp
 id|r_index
 comma
+op_amp
 id|h_index
 )paren
 suffix:semicolon
@@ -1549,7 +1633,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * prio_tree_next:&n; *&n; * Get the next prio_tree_node that overlaps with the input interval in iter&n; */
 DECL|function|prio_tree_next
-r_static
 r_struct
 id|prio_tree_node
 op_star
@@ -1833,7 +1916,7 @@ l_int|NULL
 suffix:semicolon
 id|ptr
 op_assign
-id|prio_tree_insert
+id|raw_prio_tree_insert
 c_func
 (paren
 id|root
@@ -1847,6 +1930,11 @@ c_cond
 (paren
 id|ptr
 op_ne
+(paren
+r_struct
+id|prio_tree_node
+op_star
+)paren
 op_amp
 id|vma-&gt;shared.prio_tree_node
 )paren
@@ -1922,7 +2010,7 @@ id|vma-&gt;shared.vm_set.list
 )paren
 suffix:semicolon
 r_else
-id|prio_tree_remove
+id|raw_prio_tree_remove
 c_func
 (paren
 id|root
@@ -1991,7 +2079,7 @@ id|new_head
 op_assign
 l_int|NULL
 suffix:semicolon
-id|prio_tree_replace
+id|raw_prio_tree_replace
 c_func
 (paren
 id|root
