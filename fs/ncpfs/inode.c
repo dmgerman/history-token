@@ -1333,11 +1333,10 @@ id|inode
 )paren
 suffix:semicolon
 )brace
-r_struct
-id|super_block
-op_star
-DECL|function|ncp_read_super
-id|ncp_read_super
+DECL|function|ncp_fill_super
+r_static
+r_int
+id|ncp_fill_super
 c_func
 (paren
 r_struct
@@ -1855,7 +1854,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;ncp_read_super: NCP_SBP(sb) = %x&bslash;n&quot;
+l_string|&quot;ncp_fill_super: NCP_SBP(sb) = %x&bslash;n&quot;
 comma
 (paren
 r_int
@@ -2090,7 +2089,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;ncp_read_super: root vol=%d&bslash;n&quot;
+l_string|&quot;ncp_fill_super: root vol=%d&bslash;n&quot;
 comma
 id|NCP_FINFO
 c_func
@@ -2124,7 +2123,7 @@ op_amp
 id|ncp_dentry_operations
 suffix:semicolon
 r_return
-id|sb
+l_int|0
 suffix:semicolon
 id|out_no_root
 suffix:colon
@@ -2132,7 +2131,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ncp_read_super: get root inode failed&bslash;n&quot;
+l_string|&quot;ncp_fill_super: get root inode failed&bslash;n&quot;
 )paren
 suffix:semicolon
 id|iput
@@ -2150,7 +2149,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ncp_read_super: could not get bufsize&bslash;n&quot;
+l_string|&quot;ncp_fill_super: could not get bufsize&bslash;n&quot;
 )paren
 suffix:semicolon
 id|out_disconnect
@@ -2182,7 +2181,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ncp_read_super: Failed connection, error=%d&bslash;n&quot;
+l_string|&quot;ncp_fill_super: Failed connection, error=%d&bslash;n&quot;
 comma
 id|error
 )paren
@@ -2204,7 +2203,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ncp_read_super: could not alloc packet&bslash;n&quot;
+l_string|&quot;ncp_fill_super: could not alloc packet&bslash;n&quot;
 )paren
 suffix:semicolon
 id|out_free_server
@@ -2247,7 +2246,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ncp_read_super: invalid ncp socket&bslash;n&quot;
+l_string|&quot;ncp_fill_super: invalid ncp socket&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2259,7 +2258,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ncp_read_super: kernel requires mount version %d&bslash;n&quot;
+l_string|&quot;ncp_fill_super: kernel requires mount version %d&bslash;n&quot;
 comma
 id|NCP_MOUNT_VERSION
 )paren
@@ -2273,13 +2272,14 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ncp_read_super: missing data argument&bslash;n&quot;
+l_string|&quot;ncp_fill_super: missing data argument&bslash;n&quot;
 )paren
 suffix:semicolon
 id|out
 suffix:colon
 r_return
-l_int|NULL
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|ncp_put_super
@@ -3211,18 +3211,65 @@ r_int
 id|ncp_current_malloced
 suffix:semicolon
 macro_line|#endif
+DECL|function|ncp_get_sb
 r_static
-id|DECLARE_FSTYPE
+r_struct
+id|super_block
+op_star
+id|ncp_get_sb
 c_func
 (paren
-id|ncp_fs_type
+r_struct
+id|file_system_type
+op_star
+id|fs_type
 comma
+r_int
+id|flags
+comma
+r_char
+op_star
+id|dev_name
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+r_return
+id|get_sb_nodev
+c_func
+(paren
+id|fs_type
+comma
+id|flags
+comma
+id|data
+comma
+id|ncp_fill_super
+)paren
+suffix:semicolon
+)brace
+DECL|variable|ncp_fs_type
+r_static
+r_struct
+id|file_system_type
+id|ncp_fs_type
+op_assign
+(brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
+id|name
+suffix:colon
 l_string|&quot;ncpfs&quot;
 comma
-id|ncp_read_super
+id|get_sb
+suffix:colon
+id|ncp_get_sb
 comma
-l_int|0
-)paren
+)brace
 suffix:semicolon
 DECL|function|init_ncp_fs
 r_static
