@@ -4165,9 +4165,7 @@ c_func
 l_string|&quot;.&quot;
 )paren
 suffix:semicolon
-id|security_ops
-op_member_access_from_pointer
-id|sb_post_mountroot
+id|security_sb_post_mountroot
 c_func
 (paren
 )paren

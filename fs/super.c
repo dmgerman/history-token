@@ -107,9 +107,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|security_ops
-op_member_access_from_pointer
-id|sb_alloc_security
+id|security_sb_alloc
 c_func
 (paren
 id|s
@@ -261,9 +259,7 @@ op_star
 id|s
 )paren
 (brace
-id|security_ops
-op_member_access_from_pointer
-id|sb_free_security
+id|security_sb_free
 c_func
 (paren
 id|s

@@ -265,9 +265,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|security_ops
-op_member_access_from_pointer
-id|inode_alloc_security
+id|security_inode_alloc
 c_func
 (paren
 id|inode
@@ -386,9 +384,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|security_ops
-op_member_access_from_pointer
-id|inode_free_security
+id|security_inode_free
 c_func
 (paren
 id|inode
@@ -3108,9 +3104,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|security_ops
-op_member_access_from_pointer
-id|inode_delete
+id|security_inode_delete
 c_func
 (paren
 id|inode
