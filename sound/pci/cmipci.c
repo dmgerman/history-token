@@ -114,8 +114,23 @@ id|soft_ac3
 (braket
 id|SNDRV_CARDS
 )braket
+op_assign
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+(paren
+id|SNDRV_CARDS
+op_minus
+l_int|1
+)paren
+)braket
+op_assign
+l_int|1
+)brace
 suffix:semicolon
-multiline_comment|/* obsoleted */
 macro_line|#ifdef SUPPORT_JOYSTICK
 DECL|variable|joystick_port
 r_static
@@ -290,7 +305,7 @@ c_func
 (paren
 id|soft_ac3
 comma
-l_string|&quot;Sofware-conversion of raw SPDIF packets [obsoleted].&quot;
+l_string|&quot;Sofware-conversion of raw SPDIF packets (model 033 only).&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef SUPPORT_JOYSTICK
@@ -862,11 +877,6 @@ DECL|member|shift
 r_int
 id|shift
 suffix:semicolon
-DECL|member|ac3_shift
-r_int
-id|ac3_shift
-suffix:semicolon
-multiline_comment|/* extra shift: 1 on soft ac3 mode */
 )brace
 suffix:semicolon
 multiline_comment|/* mixer elements toggled/resumed during ac3 playback */
@@ -1020,6 +1030,13 @@ DECL|member|can_multi_ch
 r_int
 r_int
 id|can_multi_ch
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|do_soft_ac3
+r_int
+r_int
+id|do_soft_ac3
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -11524,7 +11541,17 @@ id|cm-&gt;max_channels
 op_assign
 l_int|2
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cm-&gt;do_soft_ac3
+)paren
 id|cm-&gt;can_ac3_sw
+op_assign
+l_int|1
+suffix:semicolon
+r_else
+id|cm-&gt;can_ac3_hw
 op_assign
 l_int|1
 suffix:semicolon
@@ -11642,6 +11669,26 @@ comma
 l_string|&quot;-MC%d&quot;
 comma
 id|cm-&gt;max_channels
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|cm-&gt;can_ac3_sw
+)paren
+id|strcpy
+c_func
+(paren
+id|cm-&gt;card-&gt;driver
+op_plus
+id|strlen
+c_func
+(paren
+id|cm-&gt;card-&gt;driver
+)paren
+comma
+l_string|&quot;-SWIEC&quot;
 )paren
 suffix:semicolon
 )brace
@@ -12159,6 +12206,13 @@ suffix:semicolon
 id|cm-&gt;max_channels
 op_assign
 l_int|2
+suffix:semicolon
+id|cm-&gt;do_soft_ac3
+op_assign
+id|soft_ac3
+(braket
+id|dev
+)braket
 suffix:semicolon
 id|query_chip
 c_func
