@@ -295,7 +295,7 @@ multiline_comment|/*************************************************************
 DECL|macro|W9968CF_MODULE_NAME
 mdefine_line|#define W9968CF_MODULE_NAME     &quot;V4L driver for W996[87]CF JPEG USB &quot; &bslash;&n;                                &quot;Dual Mode Camera Chip&quot;
 DECL|macro|W9968CF_MODULE_VERSION
-mdefine_line|#define W9968CF_MODULE_VERSION  &quot;1:1.32-basic&quot;
+mdefine_line|#define W9968CF_MODULE_VERSION  &quot;1:1.33-basic&quot;
 DECL|macro|W9968CF_MODULE_AUTHOR
 mdefine_line|#define W9968CF_MODULE_AUTHOR   &quot;(C) 2002-2004 Luca Risolia&quot;
 DECL|macro|W9968CF_AUTHOR_EMAIL
