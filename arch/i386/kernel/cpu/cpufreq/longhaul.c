@@ -10,15 +10,6 @@ macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;longhaul.h&quot;
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
-macro_line|#ifdef DEBUG
-DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) printk(msg)
-macro_line|#else
-DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) do { } while(0)
-macro_line|#endif
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;longhaul: &quot;
 DECL|variable|numscales
@@ -31,6 +22,12 @@ op_assign
 l_int|16
 comma
 id|numvscales
+suffix:semicolon
+DECL|variable|fsb
+r_static
+r_int
+r_int
+id|fsb
 suffix:semicolon
 DECL|variable|minvid
 DECL|variable|maxvid
@@ -56,12 +53,46 @@ r_static
 r_int
 id|dont_scale_voltage
 suffix:semicolon
-DECL|variable|fsb
+DECL|variable|debug
 r_static
 r_int
-r_int
-id|fsb
+id|debug
 suffix:semicolon
+DECL|variable|debug
+r_static
+r_int
+id|debug
+suffix:semicolon
+DECL|function|dprintk
+r_static
+r_void
+id|dprintk
+c_func
+(paren
+r_const
+r_char
+op_star
+id|msg
+comma
+dot
+dot
+dot
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|debug
+op_eq
+l_int|1
+)paren
+id|printk
+c_func
+(paren
+id|msg
+)paren
+suffix:semicolon
+)brace
 DECL|macro|__hlt
 mdefine_line|#define __hlt()     __asm__ __volatile__(&quot;hlt&quot;: : :&quot;memory&quot;)
 multiline_comment|/* Clock ratios multiplied by 10 */
@@ -369,8 +400,23 @@ comma
 id|CPUFREQ_PRECHANGE
 )paren
 suffix:semicolon
-singleline_comment|//&t;dprintk (KERN_INFO PFX &quot;FSB:%d Mult:%d.%dx&bslash;n&quot;, fsb,
-singleline_comment|//&t;&t;&t;&t;mult/10, mult%10);
+id|dprintk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;FSB:%d Mult:%d.%dx&bslash;n&quot;
+comma
+id|fsb
+comma
+id|mult
+op_div
+l_int|10
+comma
+id|mult
+op_mod
+l_int|10
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -2459,6 +2505,23 @@ c_func
 id|dont_scale_voltage
 comma
 l_string|&quot;Don&squot;t scale voltage of processor&quot;
+)paren
+suffix:semicolon
+id|module_param
+(paren
+id|debug
+comma
+r_int
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;Dump debugging information.&quot;
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
