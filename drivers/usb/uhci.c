@@ -10313,7 +10313,6 @@ c_cond
 (paren
 id|urb-&gt;complete
 )paren
-(brace
 id|urb
 op_member_access_from_pointer
 id|complete
@@ -10322,6 +10321,11 @@ c_func
 id|urb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|resubmit_interrupt
+)paren
 multiline_comment|/* Recheck the status. The completion handler may have */
 multiline_comment|/*  unlinked the resubmitting interrupt URB */
 id|killed
@@ -10343,7 +10347,6 @@ op_minus
 id|ECONNRESET
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
