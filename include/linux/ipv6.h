@@ -325,6 +325,10 @@ id|__s32
 id|max_desync_factor
 suffix:semicolon
 macro_line|#endif
+DECL|member|max_addresses
+id|__s32
+id|max_addresses
+suffix:semicolon
 DECL|member|sysctl
 r_void
 op_star
@@ -384,6 +388,9 @@ DECL|enumerator|DEVCONF_MAX_DESYNC_FACTOR
 id|DEVCONF_MAX_DESYNC_FACTOR
 comma
 macro_line|#endif
+DECL|enumerator|DEVCONF_MAX_ADDRESSES
+id|DEVCONF_MAX_ADDRESSES
+comma
 DECL|enumerator|DEVCONF_MAX
 id|DEVCONF_MAX
 )brace

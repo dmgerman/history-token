@@ -38,8 +38,6 @@ macro_line|#endif
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
-DECL|macro|IPV6_MAX_ADDRESSES
-mdefine_line|#define IPV6_MAX_ADDRESSES 16
 multiline_comment|/* Set to 3 to get tracing... */
 DECL|macro|ACONF_DEBUG
 mdefine_line|#define ACONF_DEBUG 2
@@ -420,6 +418,11 @@ op_assign
 id|MAX_DESYNC_FACTOR
 comma
 macro_line|#endif
+dot
+id|max_addresses
+op_assign
+id|IPV6_MAX_ADDRESSES
+comma
 )brace
 suffix:semicolon
 DECL|variable|ipv6_devconf_dflt
@@ -506,6 +509,11 @@ op_assign
 id|MAX_DESYNC_FACTOR
 comma
 macro_line|#endif
+dot
+id|max_addresses
+op_assign
+id|IPV6_MAX_ADDRESSES
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* IPv6 Wildcard Address and Loopback Address defined by RFC2553 */
@@ -2583,6 +2591,9 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|max_addresses
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2885,6 +2896,10 @@ id|tmp_plen
 op_assign
 id|ifp-&gt;prefix_len
 suffix:semicolon
+id|max_addresses
+op_assign
+id|idev-&gt;cnf.max_addresses
+suffix:semicolon
 id|write_unlock
 c_func
 (paren
@@ -2901,13 +2916,16 @@ id|ifp-&gt;lock
 suffix:semicolon
 id|ift
 op_assign
+op_logical_neg
+id|max_addresses
+op_logical_or
 id|ipv6_count_addresses
 c_func
 (paren
 id|idev
 )paren
 OL
-id|IPV6_MAX_ADDRESSES
+id|max_addresses
 ques
 c_cond
 id|ipv6_add_addr
@@ -6281,17 +6299,25 @@ op_logical_and
 id|valid_lft
 )paren
 (brace
+r_int
+id|max_addresses
+op_assign
+id|in6_dev-&gt;cnf.max_addresses
+suffix:semicolon
 multiline_comment|/* Do not allow to create too much of autoconfigured&n;&t;&t;&t; * addresses; this would be too easy way to crash kernel.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
+op_logical_neg
+id|max_addresses
+op_logical_or
 id|ipv6_count_addresses
 c_func
 (paren
 id|in6_dev
 )paren
 OL
-id|IPV6_MAX_ADDRESSES
+id|max_addresses
 )paren
 id|ifp
 op_assign
@@ -12869,6 +12895,13 @@ op_assign
 id|cnf-&gt;max_desync_factor
 suffix:semicolon
 macro_line|#endif
+id|array
+(braket
+id|DEVCONF_MAX_ADDRESSES
+)braket
+op_assign
+id|cnf-&gt;max_addresses
+suffix:semicolon
 )brace
 DECL|function|inet6_fill_ifinfo
 r_static
@@ -15234,6 +15267,44 @@ comma
 )brace
 comma
 macro_line|#endif
+(brace
+dot
+id|ctl_name
+op_assign
+id|NET_IPV6_MAX_ADDRESSES
+comma
+dot
+id|procname
+op_assign
+l_string|&quot;max_addresses&quot;
+comma
+dot
+id|data
+op_assign
+op_amp
+id|ipv6_devconf.max_addresses
+comma
+dot
+id|maxlen
+op_assign
+r_sizeof
+(paren
+r_int
+)paren
+comma
+dot
+id|mode
+op_assign
+l_int|0644
+comma
+dot
+id|proc_handler
+op_assign
+op_amp
+id|proc_dointvec
+comma
+)brace
+comma
 )brace
 comma
 dot
