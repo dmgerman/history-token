@@ -7153,6 +7153,15 @@ c_func
 id|urb
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|urb-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 multiline_comment|/* &lt;-- note return */
