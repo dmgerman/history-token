@@ -11,7 +11,7 @@ mdefine_line|#define DATASEGS_PER_COMMAND 2
 DECL|macro|DATASEGS_PER_CONT
 mdefine_line|#define DATASEGS_PER_CONT 5
 DECL|macro|QLOGICFC_REQ_QUEUE_LEN
-mdefine_line|#define QLOGICFC_REQ_QUEUE_LEN&t;127&t;/* must be power of two - 1 */
+mdefine_line|#define QLOGICFC_REQ_QUEUE_LEN 255     /* must be power of two - 1 */
 DECL|macro|QLOGICFC_MAX_SG
 mdefine_line|#define QLOGICFC_MAX_SG(ql)&t;(DATASEGS_PER_COMMAND + (((ql) &gt; 0) ? DATASEGS_PER_CONT*((ql) - 1) : 0))
 DECL|macro|QLOGICFC_CMD_PER_LUN
