@@ -1632,8 +1632,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+(paren
+r_int
+r_int
+)paren
 id|s
+OL
+id|PAGE_SIZE
 )paren
 id|s
 op_assign
