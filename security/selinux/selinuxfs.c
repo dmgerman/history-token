@@ -3090,7 +3090,7 @@ comma
 op_amp
 id|sel_enforce_ops
 comma
-id|S_IRUSR
+id|S_IRUGO
 op_or
 id|S_IWUSR
 )brace
