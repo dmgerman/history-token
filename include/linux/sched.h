@@ -629,15 +629,10 @@ r_int
 r_int
 id|time_slice
 suffix:semicolon
-DECL|member|next_task
-DECL|member|prev_task
+DECL|member|tasks
 r_struct
-id|task_struct
-op_star
-id|next_task
-comma
-op_star
-id|prev_task
+id|list_head
+id|tasks
 suffix:semicolon
 DECL|member|mm
 DECL|member|active_mm
@@ -2737,10 +2732,14 @@ DECL|macro|__wait_event_interruptible
 mdefine_line|#define __wait_event_interruptible(wq, condition, ret)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;wait_queue_t __wait;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;init_waitqueue_entry(&amp;__wait, current);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;add_wait_queue(&amp;wq, &amp;__wait);&t;&t;&t;&t;&t;&bslash;&n;&t;for (;;) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_current_state(TASK_INTERRUPTIBLE);&t;&t;&t;&bslash;&n;&t;&t;if (condition)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!signal_pending(current)) {&t;&t;&t;&t;&bslash;&n;&t;&t;&t;schedule();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;continue;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ret = -ERESTARTSYS;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;current-&gt;state = TASK_RUNNING;&t;&t;&t;&t;&t;&bslash;&n;&t;remove_wait_queue(&amp;wq, &amp;__wait);&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|wait_event_interruptible
 mdefine_line|#define wait_event_interruptible(wq, condition)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __ret = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!(condition))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__wait_event_interruptible(wq, condition, __ret);&t;&bslash;&n;&t;__ret;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|remove_parent
+mdefine_line|#define remove_parent(p)&t;list_del_init(&amp;(p)-&gt;sibling)
+DECL|macro|add_parent
+mdefine_line|#define add_parent(p, parent)&t;list_add_tail(&amp;(p)-&gt;sibling,&amp;(parent)-&gt;children)
 DECL|macro|REMOVE_LINKS
-mdefine_line|#define REMOVE_LINKS(p) do {&t;&t;&t;&t;&bslash;&n;&t;(p)-&gt;next_task-&gt;prev_task = (p)-&gt;prev_task;&t;&bslash;&n;&t;(p)-&gt;prev_task-&gt;next_task = (p)-&gt;next_task;&t;&bslash;&n;&t;list_del_init(&amp;(p)-&gt;sibling);&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define REMOVE_LINKS(p) do {&t;&t;&t;&t;&bslash;&n;&t;list_del_init(&amp;(p)-&gt;tasks);&t;&t;&t;&bslash;&n;&t;remove_parent(p);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|SET_LINKS
-mdefine_line|#define SET_LINKS(p) do {&t;&t;&t;&t;&t;&bslash;&n;&t;(p)-&gt;next_task = &amp;init_task;&t;&t;&t;&t;&bslash;&n;&t;(p)-&gt;prev_task = init_task.prev_task;&t;&t;&t;&bslash;&n;&t;init_task.prev_task-&gt;next_task = (p);&t;&t;&t;&bslash;&n;&t;init_task.prev_task = (p);&t;&t;&t;&t;&bslash;&n;&t;list_add_tail(&amp;(p)-&gt;sibling,&amp;(p)-&gt;parent-&gt;children);&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define SET_LINKS(p) do {&t;&t;&t;&t;&bslash;&n;&t;list_add_tail(&amp;(p)-&gt;tasks,&amp;init_task.tasks);&t;&bslash;&n;&t;add_parent(p, (p)-&gt;parent);&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|function|eldest_child
 r_static
 r_inline
@@ -2901,8 +2900,12 @@ id|sibling
 )paren
 suffix:semicolon
 )brace
+DECL|macro|next_task
+mdefine_line|#define next_task(p)&t;list_entry((p)-&gt;tasks.next, struct task_struct, tasks)
+DECL|macro|prev_task
+mdefine_line|#define prev_task(p)&t;list_entry((p)-&gt;tasks.prev, struct task_struct, tasks)
 DECL|macro|for_each_task
-mdefine_line|#define for_each_task(p) &bslash;&n;&t;for (p = &amp;init_task ; (p = p-&gt;next_task) != &amp;init_task ; )
+mdefine_line|#define for_each_task(p) &bslash;&n;&t;for (p = &amp;init_task ; (p = next_task(p)) != &amp;init_task ; )
 DECL|macro|for_each_thread
 mdefine_line|#define for_each_thread(task) &bslash;&n;&t;for (task = next_thread(current) ; task != current ; task = next_thread(task))
 DECL|macro|next_thread

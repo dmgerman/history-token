@@ -2261,7 +2261,7 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-id|REMOVE_LINKS
+id|remove_parent
 c_func
 (paren
 id|p
@@ -2271,10 +2271,12 @@ id|p-&gt;parent
 op_assign
 id|p-&gt;real_parent
 suffix:semicolon
-id|SET_LINKS
+id|add_parent
 c_func
 (paren
 id|p
+comma
+id|p-&gt;parent
 )paren
 suffix:semicolon
 id|do_notify_parent
