@@ -1331,10 +1331,12 @@ DECL|macro|PCI_DEVICE_ID_CMD_649
 mdefine_line|#define PCI_DEVICE_ID_CMD_649&t;&t;0x0649
 DECL|macro|PCI_DEVICE_ID_CMD_670
 mdefine_line|#define PCI_DEVICE_ID_CMD_670&t;&t;0x0670
+DECL|macro|PCI_DEVICE_ID_CMD_680
+mdefine_line|#define PCI_DEVICE_ID_CMD_680&t;&t;0x0680
 DECL|macro|PCI_DEVICE_ID_SII_680
-mdefine_line|#define PCI_DEVICE_ID_SII_680          0x0680
+mdefine_line|#define PCI_DEVICE_ID_SII_680&t;&t;0x0680
 DECL|macro|PCI_DEVICE_ID_SII_3112
-mdefine_line|#define PCI_DEVICE_ID_SII_3112         0x3112
+mdefine_line|#define PCI_DEVICE_ID_SII_3112&t;&t;0x3112
 DECL|macro|PCI_VENDOR_ID_VISION
 mdefine_line|#define PCI_VENDOR_ID_VISION&t;&t;0x1098
 DECL|macro|PCI_DEVICE_ID_VISION_QD8500

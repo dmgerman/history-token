@@ -906,6 +906,7 @@ l_int|32
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,32)
 DECL|macro|SUBMIT_URB
 mdefine_line|#define SUBMIT_URB(urb,mem_flags) usb_submit_urb(urb)

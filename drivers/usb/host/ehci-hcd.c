@@ -21,6 +21,7 @@ DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,32)
 macro_line|#include &quot;../hcd.h&quot;
 macro_line|#else
