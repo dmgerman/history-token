@@ -3026,6 +3026,7 @@ op_assign
 id|font-&gt;data
 suffix:semicolon
 )brace
+macro_line|#ifdef FBCON_FONTWIDTH8_ONLY&t;&t;
 r_if
 c_cond
 (paren
@@ -3050,6 +3051,7 @@ id|vc-&gt;vc_font.width
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif&t;&t;
 id|updatescrollmode
 c_func
 (paren
@@ -3742,6 +3744,7 @@ op_assign
 id|font-&gt;data
 suffix:semicolon
 )brace
+macro_line|#ifdef FBCON_FONTWIDTH8_ONLY&t;&t;
 r_if
 c_cond
 (paren
@@ -3766,6 +3769,7 @@ id|vc-&gt;vc_font.width
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif&t;
 id|updatescrollmode
 c_func
 (paren

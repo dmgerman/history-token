@@ -108,6 +108,21 @@ op_assign
 l_int|8
 comma
 dot
+id|red.length
+op_assign
+l_int|8
+comma
+dot
+id|green.length
+op_assign
+l_int|8
+comma
+dot
+id|blue.length
+op_assign
+l_int|8
+comma
+dot
 id|activate
 op_assign
 id|FB_ACTIVATE_NOW
@@ -133,6 +148,8 @@ op_assign
 id|FB_VMODE_NONINTERLACED
 comma
 )brace
+suffix:semicolon
+DECL|variable|pmagbafb_fix
 r_static
 r_struct
 id|fb_fix_screeninfo
@@ -169,7 +186,9 @@ op_assign
 l_int|1024
 comma
 )brace
+suffix:semicolon
 multiline_comment|/*&n; * Turn hardware cursor off&n; */
+DECL|function|pmagbafb_erase_cursor
 r_void
 id|pmagbafb_erase_cursor
 c_func
@@ -194,6 +213,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set the palette. &n; */
+DECL|function|pmagbafb_setcolreg
 r_static
 r_int
 id|pmagbafb_setcolreg
@@ -284,6 +304,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|pmagbafb_ops
 r_static
 r_struct
 id|fb_ops
@@ -321,6 +342,8 @@ op_assign
 id|soft_cursor
 comma
 )brace
+suffix:semicolon
+DECL|function|pmagbafb_init_one
 r_int
 id|__init
 id|pmagbafb_init_one
@@ -442,6 +465,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * Initialise the framebuffer&n; */
+DECL|function|pmagbafb_init
 r_int
 id|__init
 id|pmagbafb_init
@@ -514,20 +538,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-)brace
-r_int
-id|__init
-id|pmagbafb_setup
-c_func
-(paren
-r_char
-op_star
-id|options
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 id|MODULE_LICENSE
 c_func

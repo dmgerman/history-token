@@ -54,6 +54,21 @@ op_assign
 l_int|8
 comma
 dot
+id|red.length
+op_assign
+l_int|8
+comma
+dot
+id|green.length
+op_assign
+l_int|8
+comma
+dot
+id|blue.length
+op_assign
+l_int|8
+comma
+dot
 id|activate
 op_assign
 id|FB_ACTIVATE_NOW
@@ -114,6 +129,7 @@ op_assign
 l_int|1024
 comma
 )brace
+suffix:semicolon
 multiline_comment|/* Reference to machine type set in arch/mips/dec/prom/identify.c, KM */
 r_extern
 r_int
