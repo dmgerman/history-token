@@ -13,8 +13,24 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;acpi_power&quot;
 )paren
-DECL|macro|PREFIX
-mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
+DECL|macro|ACPI_POWER_COMPONENT
+mdefine_line|#define ACPI_POWER_COMPONENT&t;&t;0x00800000
+DECL|macro|ACPI_POWER_CLASS
+mdefine_line|#define ACPI_POWER_CLASS&t;&t;&quot;power_resource&quot;
+DECL|macro|ACPI_POWER_DRIVER_NAME
+mdefine_line|#define ACPI_POWER_DRIVER_NAME&t;&t;&quot;ACPI Power Resource Driver&quot;
+DECL|macro|ACPI_POWER_DEVICE_NAME
+mdefine_line|#define ACPI_POWER_DEVICE_NAME&t;&t;&quot;Power Resource&quot;
+DECL|macro|ACPI_POWER_FILE_INFO
+mdefine_line|#define ACPI_POWER_FILE_INFO&t;&t;&quot;info&quot;
+DECL|macro|ACPI_POWER_FILE_STATUS
+mdefine_line|#define ACPI_POWER_FILE_STATUS&t;&t;&quot;state&quot;
+DECL|macro|ACPI_POWER_RESOURCE_STATE_OFF
+mdefine_line|#define ACPI_POWER_RESOURCE_STATE_OFF&t;0x00
+DECL|macro|ACPI_POWER_RESOURCE_STATE_ON
+mdefine_line|#define ACPI_POWER_RESOURCE_STATE_ON&t;0x01
+DECL|macro|ACPI_POWER_RESOURCE_STATE_UNKNOWN
+mdefine_line|#define ACPI_POWER_RESOURCE_STATE_UNKNOWN 0xFF
 r_int
 id|acpi_power_add
 (paren
@@ -2160,9 +2176,10 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|function|acpi_power_init
+r_static
 r_int
 id|__init
-DECL|function|acpi_power_init
 id|acpi_power_init
 (paren
 r_void
@@ -2177,6 +2194,17 @@ id|ACPI_FUNCTION_TRACE
 c_func
 (paren
 l_string|&quot;acpi_power_init&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_disabled
+)paren
+id|return_VALUE
+c_func
+(paren
+l_int|0
 )paren
 suffix:semicolon
 id|INIT_LIST_HEAD
@@ -2226,50 +2254,11 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_void
-id|__exit
-DECL|function|acpi_power_exit
-id|acpi_power_exit
-(paren
-r_void
-)paren
-(brace
-r_int
-id|result
-op_assign
-l_int|0
-suffix:semicolon
-id|ACPI_FUNCTION_TRACE
+DECL|variable|acpi_power_init
+id|subsys_initcall
 c_func
 (paren
-l_string|&quot;acpi_power_exit&quot;
+id|acpi_power_init
 )paren
 suffix:semicolon
-multiline_comment|/* TBD: Empty acpi_power_resource_list */
-id|result
-op_assign
-id|acpi_bus_unregister_driver
-c_func
-(paren
-op_amp
-id|acpi_power_driver
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|result
-)paren
-id|remove_proc_entry
-c_func
-(paren
-id|ACPI_POWER_CLASS
-comma
-id|acpi_root_dir
-)paren
-suffix:semicolon
-id|return_VOID
-suffix:semicolon
-)brace
 eof

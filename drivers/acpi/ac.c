@@ -32,8 +32,26 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|macro|PREFIX
-mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
+DECL|macro|ACPI_AC_COMPONENT
+mdefine_line|#define ACPI_AC_COMPONENT&t;&t;0x00020000
+DECL|macro|ACPI_AC_CLASS
+mdefine_line|#define ACPI_AC_CLASS&t;&t;&t;&quot;ac_adapter&quot;
+DECL|macro|ACPI_AC_HID
+mdefine_line|#define ACPI_AC_HID &t;&t;&t;&quot;ACPI0003&quot;
+DECL|macro|ACPI_AC_DRIVER_NAME
+mdefine_line|#define ACPI_AC_DRIVER_NAME&t;&t;&quot;ACPI AC Adapter Driver&quot;
+DECL|macro|ACPI_AC_DEVICE_NAME
+mdefine_line|#define ACPI_AC_DEVICE_NAME&t;&t;&quot;AC Adapter&quot;
+DECL|macro|ACPI_AC_FILE_STATE
+mdefine_line|#define ACPI_AC_FILE_STATE&t;&t;&quot;state&quot;
+DECL|macro|ACPI_AC_NOTIFY_STATUS
+mdefine_line|#define ACPI_AC_NOTIFY_STATUS&t;&t;0x80
+DECL|macro|ACPI_AC_STATUS_OFFLINE
+mdefine_line|#define ACPI_AC_STATUS_OFFLINE&t;&t;0x00
+DECL|macro|ACPI_AC_STATUS_ONLINE
+mdefine_line|#define ACPI_AC_STATUS_ONLINE&t;&t;0x01
+DECL|macro|ACPI_AC_STATUS_UNKNOWN
+mdefine_line|#define ACPI_AC_STATUS_UNKNOWN&t;&t;0xFF
 r_int
 id|acpi_ac_add
 (paren

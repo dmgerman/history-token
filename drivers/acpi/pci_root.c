@@ -16,14 +16,20 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;pci_root&quot;
 )paren
+DECL|macro|ACPI_PCI_ROOT_CLASS
+mdefine_line|#define ACPI_PCI_ROOT_CLASS&t;&t;&quot;pci_bridge&quot;
+DECL|macro|ACPI_PCI_ROOT_HID
+mdefine_line|#define ACPI_PCI_ROOT_HID&t;&t;&quot;PNP0A03&quot;
+DECL|macro|ACPI_PCI_ROOT_DRIVER_NAME
+mdefine_line|#define ACPI_PCI_ROOT_DRIVER_NAME&t;&quot;ACPI PCI Root Bridge Driver&quot;
+DECL|macro|ACPI_PCI_ROOT_DEVICE_NAME
+mdefine_line|#define ACPI_PCI_ROOT_DEVICE_NAME&t;&quot;PCI Root Bridge&quot;
 r_extern
 r_struct
 id|pci_ops
 op_star
 id|pci_root_ops
 suffix:semicolon
-DECL|macro|PREFIX
-mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 r_static
 r_int
 id|acpi_pci_root_add
@@ -997,9 +1003,10 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|function|acpi_pci_root_init
+r_static
 r_int
 id|__init
-DECL|function|acpi_pci_root_init
 id|acpi_pci_root_init
 (paren
 r_void
@@ -1009,6 +1016,17 @@ id|ACPI_FUNCTION_TRACE
 c_func
 (paren
 l_string|&quot;acpi_pci_root_init&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_disabled
+)paren
+id|return_VALUE
+c_func
+(paren
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* DEBUG:&n;&t;acpi_dbg_layer = ACPI_PCI_COMPONENT;&n;&t;acpi_dbg_level = 0xFFFFFFFF;&n;&t; */
@@ -1045,28 +1063,11 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_void
-id|__exit
-DECL|function|acpi_pci_root_exit
-id|acpi_pci_root_exit
-(paren
-r_void
-)paren
-(brace
-id|ACPI_FUNCTION_TRACE
+DECL|variable|acpi_pci_root_init
+id|subsys_initcall
 c_func
 (paren
-l_string|&quot;acpi_pci_root_exit&quot;
+id|acpi_pci_root_init
 )paren
 suffix:semicolon
-id|acpi_bus_unregister_driver
-c_func
-(paren
-op_amp
-id|acpi_pci_root_driver
-)paren
-suffix:semicolon
-id|return_VOID
-suffix:semicolon
-)brace
 eof

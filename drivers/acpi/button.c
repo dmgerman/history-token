@@ -32,8 +32,50 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|macro|PREFIX
-mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
+DECL|macro|ACPI_BUTTON_COMPONENT
+mdefine_line|#define ACPI_BUTTON_COMPONENT&t;&t;0x00080000
+DECL|macro|ACPI_BUTTON_DRIVER_NAME
+mdefine_line|#define ACPI_BUTTON_DRIVER_NAME&t;&t;&quot;ACPI Button Driver&quot;
+DECL|macro|ACPI_BUTTON_CLASS
+mdefine_line|#define ACPI_BUTTON_CLASS&t;&t;&quot;button&quot;
+DECL|macro|ACPI_BUTTON_FILE_INFO
+mdefine_line|#define ACPI_BUTTON_FILE_INFO&t;&t;&quot;info&quot;
+DECL|macro|ACPI_BUTTON_TYPE_UNKNOWN
+mdefine_line|#define ACPI_BUTTON_TYPE_UNKNOWN&t;0x00
+DECL|macro|ACPI_BUTTON_NOTIFY_STATUS
+mdefine_line|#define ACPI_BUTTON_NOTIFY_STATUS&t;0x80
+DECL|macro|ACPI_BUTTON_SUBCLASS_POWER
+mdefine_line|#define ACPI_BUTTON_SUBCLASS_POWER&t;&quot;power&quot;
+DECL|macro|ACPI_BUTTON_HID_POWER
+mdefine_line|#define ACPI_BUTTON_HID_POWER&t;&t;&quot;PNP0C0C&quot;&t;
+DECL|macro|ACPI_BUTTON_DEVICE_NAME_POWER
+mdefine_line|#define ACPI_BUTTON_DEVICE_NAME_POWER&t;&quot;Power Button (CM)&quot;
+DECL|macro|ACPI_BUTTON_DEVICE_NAME_POWERF
+mdefine_line|#define ACPI_BUTTON_DEVICE_NAME_POWERF&t;&quot;Power Button (FF)&quot;
+DECL|macro|ACPI_BUTTON_TYPE_POWER
+mdefine_line|#define ACPI_BUTTON_TYPE_POWER&t;&t;0x01
+DECL|macro|ACPI_BUTTON_TYPE_POWERF
+mdefine_line|#define ACPI_BUTTON_TYPE_POWERF&t;&t;0x02
+DECL|macro|ACPI_BUTTON_SUBCLASS_SLEEP
+mdefine_line|#define ACPI_BUTTON_SUBCLASS_SLEEP&t;&quot;sleep&quot;
+DECL|macro|ACPI_BUTTON_HID_SLEEP
+mdefine_line|#define ACPI_BUTTON_HID_SLEEP&t;&t;&quot;PNP0C0E&quot;
+DECL|macro|ACPI_BUTTON_DEVICE_NAME_SLEEP
+mdefine_line|#define ACPI_BUTTON_DEVICE_NAME_SLEEP&t;&quot;Sleep Button (CM)&quot;
+DECL|macro|ACPI_BUTTON_DEVICE_NAME_SLEEPF
+mdefine_line|#define ACPI_BUTTON_DEVICE_NAME_SLEEPF&t;&quot;Sleep Button (FF)&quot;
+DECL|macro|ACPI_BUTTON_TYPE_SLEEP
+mdefine_line|#define ACPI_BUTTON_TYPE_SLEEP&t;&t;0x03
+DECL|macro|ACPI_BUTTON_TYPE_SLEEPF
+mdefine_line|#define ACPI_BUTTON_TYPE_SLEEPF&t;&t;0x04
+DECL|macro|ACPI_BUTTON_SUBCLASS_LID
+mdefine_line|#define ACPI_BUTTON_SUBCLASS_LID&t;&quot;lid&quot;
+DECL|macro|ACPI_BUTTON_HID_LID
+mdefine_line|#define ACPI_BUTTON_HID_LID&t;&t;&quot;PNP0C0D&quot;
+DECL|macro|ACPI_BUTTON_DEVICE_NAME_LID
+mdefine_line|#define ACPI_BUTTON_DEVICE_NAME_LID&t;&quot;Lid Switch&quot;
+DECL|macro|ACPI_BUTTON_TYPE_LID
+mdefine_line|#define ACPI_BUTTON_TYPE_LID&t;&t;0x05
 r_int
 id|acpi_button_add
 (paren
