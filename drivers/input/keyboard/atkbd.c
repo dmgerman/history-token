@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: atkbd.c,v 1.31 2002/01/27 01:48:54 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; */
+multiline_comment|/*&n; * $Id: atkbd.c,v 1.33 2002/02/12 09:34:34 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -1708,9 +1707,9 @@ id|byte
 r_int
 id|timeout
 op_assign
-l_int|1000
+l_int|10000
 suffix:semicolon
-multiline_comment|/* 10 msec */
+multiline_comment|/* 100 msec */
 id|atkbd-&gt;ack
 op_assign
 l_int|0
@@ -1782,9 +1781,9 @@ id|command
 r_int
 id|timeout
 op_assign
-l_int|10000
+l_int|50000
 suffix:semicolon
-multiline_comment|/* 100 msec */
+multiline_comment|/* 500 msec */
 r_int
 id|send
 op_assign
@@ -1980,6 +1979,16 @@ id|param
 (braket
 l_int|2
 )braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|atkbd-&gt;serio-&gt;write
+)paren
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 r_switch
 c_cond
@@ -2618,6 +2627,12 @@ id|atkbd
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|serio-&gt;write
+)paren
+(brace
 id|atkbd-&gt;dev.evbit
 (braket
 l_int|0
@@ -2662,6 +2677,25 @@ id|BIT
 c_func
 (paren
 id|LED_SCROLLL
+)paren
+suffix:semicolon
+)brace
+r_else
+id|atkbd-&gt;dev.evbit
+(braket
+l_int|0
+)braket
+op_assign
+id|BIT
+c_func
+(paren
+id|EV_KEY
+)paren
+op_or
+id|BIT
+c_func
+(paren
+id|EV_REP
 )paren
 suffix:semicolon
 id|atkbd-&gt;serio
@@ -2720,6 +2754,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|serio-&gt;write
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|atkbd_probe
 c_func
 (paren
@@ -2750,6 +2790,18 @@ c_func
 id|atkbd
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|atkbd-&gt;set
+op_assign
+l_int|2
+suffix:semicolon
+id|atkbd-&gt;id
+op_assign
+l_int|0xab00
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2933,6 +2985,11 @@ comma
 id|serio-&gt;phys
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|serio-&gt;write
+)paren
 id|atkbd_initialize
 c_func
 (paren
