@@ -13,64 +13,64 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* ALI15X3 SMBus address offsets */
 DECL|macro|SMBHSTSTS
-mdefine_line|#define SMBHSTSTS (0 + ali15x3_smba)
+mdefine_line|#define SMBHSTSTS&t;(0 + ali15x3_smba)
 DECL|macro|SMBHSTCNT
-mdefine_line|#define SMBHSTCNT (1 + ali15x3_smba)
+mdefine_line|#define SMBHSTCNT&t;(1 + ali15x3_smba)
 DECL|macro|SMBHSTSTART
-mdefine_line|#define SMBHSTSTART (2 + ali15x3_smba)
+mdefine_line|#define SMBHSTSTART&t;(2 + ali15x3_smba)
 DECL|macro|SMBHSTCMD
-mdefine_line|#define SMBHSTCMD (7 + ali15x3_smba)
+mdefine_line|#define SMBHSTCMD&t;(7 + ali15x3_smba)
 DECL|macro|SMBHSTADD
-mdefine_line|#define SMBHSTADD (3 + ali15x3_smba)
+mdefine_line|#define SMBHSTADD&t;(3 + ali15x3_smba)
 DECL|macro|SMBHSTDAT0
-mdefine_line|#define SMBHSTDAT0 (4 + ali15x3_smba)
+mdefine_line|#define SMBHSTDAT0&t;(4 + ali15x3_smba)
 DECL|macro|SMBHSTDAT1
-mdefine_line|#define SMBHSTDAT1 (5 + ali15x3_smba)
+mdefine_line|#define SMBHSTDAT1&t;(5 + ali15x3_smba)
 DECL|macro|SMBBLKDAT
-mdefine_line|#define SMBBLKDAT (6 + ali15x3_smba)
+mdefine_line|#define SMBBLKDAT&t;(6 + ali15x3_smba)
 multiline_comment|/* PCI Address Constants */
 DECL|macro|SMBCOM
-mdefine_line|#define SMBCOM    0x004
+mdefine_line|#define SMBCOM&t;&t;0x004
 DECL|macro|SMBBA
-mdefine_line|#define SMBBA     0x014
+mdefine_line|#define SMBBA&t;&t;0x014
 DECL|macro|SMBATPC
-mdefine_line|#define SMBATPC   0x05B&t;&t;/* used to unlock xxxBA registers */
+mdefine_line|#define SMBATPC&t;&t;0x05B&t;/* used to unlock xxxBA registers */
 DECL|macro|SMBHSTCFG
-mdefine_line|#define SMBHSTCFG 0x0E0
+mdefine_line|#define SMBHSTCFG&t;0x0E0
 DECL|macro|SMBSLVC
-mdefine_line|#define SMBSLVC   0x0E1
+mdefine_line|#define SMBSLVC&t;&t;0x0E1
 DECL|macro|SMBCLK
-mdefine_line|#define SMBCLK    0x0E2
+mdefine_line|#define SMBCLK&t;&t;0x0E2
 DECL|macro|SMBREV
-mdefine_line|#define SMBREV    0x008
+mdefine_line|#define SMBREV&t;&t;0x008
 multiline_comment|/* Other settings */
 DECL|macro|MAX_TIMEOUT
-mdefine_line|#define MAX_TIMEOUT 200&t;&t;/* times 1/100 sec */
+mdefine_line|#define MAX_TIMEOUT&t;&t;200&t;/* times 1/100 sec */
 DECL|macro|ALI15X3_SMB_IOSIZE
-mdefine_line|#define ALI15X3_SMB_IOSIZE 32
+mdefine_line|#define ALI15X3_SMB_IOSIZE&t;32
 multiline_comment|/* this is what the Award 1004 BIOS sets them to on a ASUS P5A MB.&n;   We don&squot;t use these here. If the bases aren&squot;t set to some value we&n;   tell user to upgrade BIOS and we fail.&n;*/
 DECL|macro|ALI15X3_SMB_DEFAULTBASE
-mdefine_line|#define ALI15X3_SMB_DEFAULTBASE 0xE800
+mdefine_line|#define ALI15X3_SMB_DEFAULTBASE&t;0xE800
 multiline_comment|/* ALI15X3 address lock bits */
 DECL|macro|ALI15X3_LOCK
-mdefine_line|#define ALI15X3_LOCK&t;0x06
+mdefine_line|#define ALI15X3_LOCK&t;&t;0x06
 multiline_comment|/* ALI15X3 command constants */
 DECL|macro|ALI15X3_ABORT
-mdefine_line|#define ALI15X3_ABORT      0x02
+mdefine_line|#define ALI15X3_ABORT&t;&t;0x02
 DECL|macro|ALI15X3_T_OUT
-mdefine_line|#define ALI15X3_T_OUT      0x04
+mdefine_line|#define ALI15X3_T_OUT&t;&t;0x04
 DECL|macro|ALI15X3_QUICK
-mdefine_line|#define ALI15X3_QUICK      0x00
+mdefine_line|#define ALI15X3_QUICK&t;&t;0x00
 DECL|macro|ALI15X3_BYTE
-mdefine_line|#define ALI15X3_BYTE       0x10
+mdefine_line|#define ALI15X3_BYTE&t;&t;0x10
 DECL|macro|ALI15X3_BYTE_DATA
-mdefine_line|#define ALI15X3_BYTE_DATA  0x20
+mdefine_line|#define ALI15X3_BYTE_DATA&t;0x20
 DECL|macro|ALI15X3_WORD_DATA
-mdefine_line|#define ALI15X3_WORD_DATA  0x30
+mdefine_line|#define ALI15X3_WORD_DATA&t;0x30
 DECL|macro|ALI15X3_BLOCK_DATA
-mdefine_line|#define ALI15X3_BLOCK_DATA 0x40
+mdefine_line|#define ALI15X3_BLOCK_DATA&t;0x40
 DECL|macro|ALI15X3_BLOCK_CLR
-mdefine_line|#define ALI15X3_BLOCK_CLR  0x80
+mdefine_line|#define ALI15X3_BLOCK_CLR&t;0x80
 multiline_comment|/* ALI15X3 status register bits */
 DECL|macro|ALI15X3_STS_IDLE
 mdefine_line|#define ALI15X3_STS_IDLE&t;0x04
@@ -110,16 +110,6 @@ comma
 l_string|&quot;Initialize the base address of the i2c controller&quot;
 )paren
 suffix:semicolon
-r_static
-r_void
-id|ali15x3_do_pause
-c_func
-(paren
-r_int
-r_int
-id|amount
-)paren
-suffix:semicolon
 DECL|variable|ali15x3_smba
 r_static
 r_int
@@ -129,6 +119,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|function|ali15x3_setup
+r_static
 r_int
 id|ali15x3_setup
 c_func
@@ -146,8 +137,8 @@ r_int
 r_char
 id|temp
 suffix:semicolon
-multiline_comment|/* Check the following things:&n;&t;- SMB I/O address is initialized&n;&t;- Device is enabled&n;&t;- We can use the addresses&n;*/
-multiline_comment|/* Unlock the register.&n;   The data sheet says that the address registers are read-only&n;   if the lock bits are 1, but in fact the address registers&n;   are zero unless you clear the lock bits.&n;*/
+multiline_comment|/* Check the following things:&n;&t;&t;- SMB I/O address is initialized&n;&t;&t;- Device is enabled&n;&t;&t;- We can use the addresses&n;&t;*/
+multiline_comment|/* Unlock the register.&n;&t;   The data sheet says that the address registers are read-only&n;&t;   if the lock bits are 1, but in fact the address registers&n;&t;   are zero unless you clear the lock bits.&n;&t;*/
 id|pci_read_config_byte
 c_func
 (paren
@@ -476,7 +467,7 @@ comma
 l_int|0x20
 )paren
 suffix:semicolon
-multiline_comment|/*&n;  The interrupt routing for SMB is set up in register 0x77 in the&n;  1533 ISA Bridge device, NOT in the 7101 device.&n;  Don&squot;t bother with finding the 1533 device and reading the register.&n;&t;if ((....... &amp; 0x0F) == 1)&n;&t;&t;dev_dbg(&amp;ALI15X3_dev-&gt;dev, &quot;ALI15X3 using Interrupt 9 for SMBus.&bslash;n&quot;);&n;*/
+multiline_comment|/*&n;&t;  The interrupt routing for SMB is set up in register 0x77 in the&n;&t;  1533 ISA Bridge device, NOT in the 7101 device.&n;&t;  Don&squot;t bother with finding the 1533 device and reading the register.&n;&t;if ((....... &amp; 0x0F) == 1)&n;&t;&t;dev_dbg(&amp;ALI15X3_dev-&gt;dev, &quot;ALI15X3 using Interrupt 9 for SMBus.&bslash;n&quot;);&n;&t;*/
 id|pci_read_config_byte
 c_func
 (paren
@@ -516,6 +507,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Internally used pause function */
 DECL|function|ali15x3_do_pause
+r_static
 r_void
 id|ali15x3_do_pause
 c_func
@@ -627,9 +619,9 @@ op_amp
 id|ALI15X3_STS_BUSY
 )paren
 (brace
-multiline_comment|/*&n;   If the host controller is still busy, it may have timed out in the previous transaction,&n;   resulting in a &quot;SMBus Timeout&quot; Dev.&n;   I&squot;ve tried the following to reset a stuck busy bit.&n;&t;1. Reset the controller with an ABORT command.&n;&t;   (this doesn&squot;t seem to clear the controller if an external device is hung)&n;&t;2. Reset the controller and the other SMBus devices with a T_OUT command.&n;&t;   (this clears the host busy bit if an external device is hung,&n;&t;   but it comes back upon a new access to a device)&n;&t;3. Disable and reenable the controller in SMBHSTCFG&n;   Worst case, nothing seems to work except power reset.&n;*/
+multiline_comment|/*&n;&t;   If the host controller is still busy, it may have timed out in the&n;&t;   previous transaction, resulting in a &quot;SMBus Timeout&quot; Dev.&n;&t;   I&squot;ve tried the following to reset a stuck busy bit.&n;&t;&t;1. Reset the controller with an ABORT command.&n;&t;&t;   (this doesn&squot;t seem to clear the controller if an external&n;&t;&t;   device is hung)&n;&t;&t;2. Reset the controller and the other SMBus devices with a&n;&t;&t;   T_OUT command.  (this clears the host busy bit if an&n;&t;&t;   external device is hung, but it comes back upon a new access&n;&t;&t;   to a device)&n;&t;&t;3. Disable and reenable the controller in SMBHSTCFG&n;&t;   Worst case, nothing seems to work except power reset.&n;&t;*/
 multiline_comment|/* Abort - reset the host controller */
-multiline_comment|/*&n;   Try resetting entire SMB bus, including other devices -&n;   This may not work either - it clears the BUSY bit but&n;   then the BUSY bit may come back on when you try and use the chip again.&n;   If that&squot;s the case you are stuck.&n;*/
+multiline_comment|/*&n;&t;   Try resetting entire SMB bus, including other devices -&n;&t;   This may not work either - it clears the BUSY bit but&n;&t;   then the BUSY bit may come back on when you try and use the chip again.&n;&t;   If that&squot;s the case you are stuck.&n;&t;*/
 id|dev_info
 c_func
 (paren
@@ -659,7 +651,6 @@ id|SMBHSTSTS
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;  }&n;*/
 multiline_comment|/* now check the error bits and the busy bit */
 r_if
 c_cond
@@ -845,7 +836,7 @@ l_string|&quot;Error: Failed bus transaction&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;  Unfortunately the ALI SMB controller maps &quot;no response&quot; and &quot;bus collision&quot;&n;  into a single bit. No reponse is the usual case so don&squot;t&n;  do a printk.&n;  This means that bus collisions go unreported.&n;*/
+multiline_comment|/*&n;&t;  Unfortunately the ALI SMB controller maps &quot;no response&quot; and &quot;bus&n;&t;  collision&quot; into a single bit. No reponse is the usual case so don&squot;t&n;&t;  do a printk.&n;&t;  This means that bus collisions go unreported.&n;&t;*/
 r_if
 c_cond
 (paren
@@ -951,6 +942,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Return -1 on error. */
 DECL|function|ali15x3_access
+r_static
 id|s32
 id|ali15x3_access
 c_func
@@ -1391,6 +1383,7 @@ comma
 id|SMBHSTDAT0
 )paren
 suffix:semicolon
+multiline_comment|/* Reset SMBBLKDAT */
 id|outb_p
 c_func
 (paren
@@ -1405,7 +1398,6 @@ comma
 id|SMBHSTCNT
 )paren
 suffix:semicolon
-multiline_comment|/* Reset SMBBLKDAT */
 r_for
 c_loop
 (paren
@@ -1565,6 +1557,7 @@ l_int|0
 op_assign
 id|len
 suffix:semicolon
+multiline_comment|/* Reset SMBBLKDAT */
 id|outb_p
 c_func
 (paren
@@ -1579,7 +1572,6 @@ comma
 id|SMBHSTCNT
 )paren
 suffix:semicolon
-multiline_comment|/* Reset SMBBLKDAT */
 r_for
 c_loop
 (paren
@@ -1636,6 +1628,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ali15x3_func
+r_static
 id|u32
 id|ali15x3_func
 c_func
@@ -1937,7 +1930,9 @@ suffix:semicolon
 )brace
 id|MODULE_AUTHOR
 (paren
-l_string|&quot;Frodo Looijaard &lt;frodol@dds.nl&gt;, Philip Edelbrock &lt;phil@netroedge.com&gt;, and Mark D. Studebaker &lt;mdsxyz123@yahoo.com&gt;&quot;
+l_string|&quot;Frodo Looijaard &lt;frodol@dds.nl&gt;, &quot;
+l_string|&quot;Philip Edelbrock &lt;phil@netroedge.com&gt;, &quot;
+l_string|&quot;and Mark D. Studebaker &lt;mdsxyz123@yahoo.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
