@@ -6,9 +6,9 @@ macro_line|#ifdef CONFIG_XFS_DMAPI
 DECL|macro|vfs_insertdmapi
 macro_line|# define vfs_insertdmapi(vfs)&t;vfs_insertops(vfsp, &amp;xfs_dmops)
 DECL|macro|vfs_initdmapi
-macro_line|# define vfs_initdmapi()&t;xfs_dm_init()
+macro_line|# define vfs_initdmapi()&t;dmapi_init()
 DECL|macro|vfs_exitdmapi
-macro_line|# define vfs_exitdmapi()&t;xfs_dm_exit()
+macro_line|# define vfs_exitdmapi()&t;dmapi_uninit()
 macro_line|#else
 DECL|macro|vfs_insertdmapi
 macro_line|# define vfs_insertdmapi(vfs)&t;do { } while (0)
