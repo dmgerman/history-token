@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;power.h&quot;
 r_static
 id|DECLARE_MUTEX
@@ -47,6 +48,14 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
+r_extern
+r_int
+id|sys_sync
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;pm_set_ops - Set the global power method table. &n; *&t;@ops:&t;Pointer to ops structure.&n; */
 DECL|function|pm_set_ops
 r_void
@@ -321,6 +330,49 @@ id|__nosavedata
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/**&n; *&t;free_some_memory -  Try to free as much memory as possible&n; *&n; *&t;... but do not OOM-kill anyone&n; *&n; *&t;Notice: all userland should be stopped at this point, or &n; *&t;livelock is possible.&n; */
+DECL|function|free_some_memory
+r_static
+r_void
+id|free_some_memory
+c_func
+(paren
+r_void
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Freeing memory: &quot;
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|shrink_all_memory
+c_func
+(paren
+l_int|10000
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;.&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;|&bslash;n&quot;
+)paren
+suffix:semicolon
+id|blk_run_queues
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;pm_suspend_disk - The granpappy of power management.&n; *&t;&n; *&t;If we&squot;re going through the firmware, then get it over with quickly.&n; *&n; *&t;If not, then call swsusp to do it&squot;s thing, then figure out how&n; *&t;to power down the system.&n; */
 DECL|function|pm_suspend_disk
 r_static
@@ -534,6 +586,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|sys_sync
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -579,6 +636,19 @@ r_goto
 id|Thaw
 suffix:semicolon
 )brace
+multiline_comment|/* Free memory before shutting down devices. */
+r_if
+c_cond
+(paren
+id|state
+op_eq
+id|PM_SUSPEND_DISK
+)paren
+id|free_some_memory
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
