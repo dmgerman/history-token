@@ -8,12 +8,6 @@ DECL|struct|sctp_ulpevent
 r_struct
 id|sctp_ulpevent
 (brace
-DECL|member|asoc
-r_struct
-id|sctp_association
-op_star
-id|asoc
-suffix:semicolon
 DECL|member|sndrcvinfo
 r_struct
 id|sctp_sndrcvinfo

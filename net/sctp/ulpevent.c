@@ -1664,14 +1664,13 @@ id|skb-&gt;sk
 op_assign
 id|asoc-&gt;base.sk
 suffix:semicolon
-id|event-&gt;asoc
+id|event-&gt;sndrcvinfo.sinfo_assoc_id
 op_assign
+id|sctp_assoc2id
+c_func
 (paren
-r_struct
-id|sctp_association
-op_star
-)paren
 id|asoc
+)paren
 suffix:semicolon
 id|skb-&gt;destructor
 op_assign
@@ -1695,7 +1694,7 @@ id|event
 id|sctp_association_put
 c_func
 (paren
-id|event-&gt;asoc
+id|event-&gt;sndrcvinfo.sinfo_assoc_id
 )paren
 suffix:semicolon
 )brace
@@ -1822,7 +1821,7 @@ suffix:semicolon
 id|sctp_assoc_rwnd_increase
 c_func
 (paren
-id|event-&gt;asoc
+id|event-&gt;sndrcvinfo.sinfo_assoc_id
 comma
 id|skb_headlen
 c_func

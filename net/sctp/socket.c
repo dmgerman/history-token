@@ -4294,7 +4294,7 @@ multiline_comment|/* When only partial message is copied to the user, increase&n
 id|sctp_assoc_rwnd_increase
 c_func
 (paren
-id|event-&gt;asoc
+id|event-&gt;sndrcvinfo.sinfo_assoc_id
 comma
 id|copied
 )paren
@@ -14655,7 +14655,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|event-&gt;asoc
+id|event-&gt;sndrcvinfo.sinfo_assoc_id
 op_eq
 id|assoc
 )paren
@@ -14757,7 +14757,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|event-&gt;asoc
+id|event-&gt;sndrcvinfo.sinfo_assoc_id
 op_eq
 id|assoc
 )paren

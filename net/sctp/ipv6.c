@@ -2711,6 +2711,15 @@ id|sctp_addr
 op_star
 id|addr
 suffix:semicolon
+r_struct
+id|sctp_association
+op_star
+id|asoc
+suffix:semicolon
+id|asoc
+op_assign
+id|event-&gt;sndrcvinfo.sinfo_assoc_id
+suffix:semicolon
 id|sctp_inet6_msgname
 c_func
 (paren
@@ -2733,13 +2742,13 @@ op_assign
 id|htons
 c_func
 (paren
-id|event-&gt;asoc-&gt;peer.port
+id|asoc-&gt;peer.port
 )paren
 suffix:semicolon
 id|addr
 op_assign
 op_amp
-id|event-&gt;asoc-&gt;peer.primary_addr
+id|asoc-&gt;peer.primary_addr
 suffix:semicolon
 multiline_comment|/* Note: If we go to a common v6 format, this code&n;&t;&t; * will change.&n;&t;&t; */
 multiline_comment|/* Map ipv4 address into v4-mapped-on-v6 address.  */
@@ -2749,7 +2758,7 @@ c_cond
 id|sctp_sk
 c_func
 (paren
-id|event-&gt;asoc-&gt;base.sk
+id|asoc-&gt;base.sk
 )paren
 op_member_access_from_pointer
 id|v4mapped
@@ -2783,7 +2792,7 @@ suffix:semicolon
 id|sin6from
 op_assign
 op_amp
-id|event-&gt;asoc-&gt;peer.primary_addr.v6
+id|asoc-&gt;peer.primary_addr.v6
 suffix:semicolon
 id|ipv6_addr_copy
 c_func
