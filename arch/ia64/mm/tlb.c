@@ -725,7 +725,7 @@ id|status
 suffix:semicolon
 id|purge.mask
 op_assign
-l_int|0x15557000
+l_int|0x115557000
 suffix:semicolon
 )brace
 id|purge.max_bits
