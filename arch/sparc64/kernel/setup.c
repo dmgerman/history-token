@@ -129,12 +129,12 @@ r_int
 id|n
 )paren
 (brace
-id|prom_printf
+id|prom_write
 c_func
 (paren
-l_string|&quot;%s&quot;
-comma
 id|s
+comma
+id|n
 )paren
 suffix:semicolon
 )brace
