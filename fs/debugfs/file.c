@@ -344,6 +344,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_star
 id|val
 )paren
 id|buf
