@@ -718,9 +718,17 @@ id|GFP_KERNEL
 )paren
 )paren
 )paren
+(brace
+id|up
+(paren
+op_amp
+id|dvb_i2c_mutex
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
+)brace
 id|INIT_LIST_HEAD
 c_func
 (paren
