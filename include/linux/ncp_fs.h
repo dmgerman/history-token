@@ -659,8 +659,8 @@ id|max_reply_size
 suffix:semicolon
 DECL|function|ncp_request
 r_static
-r_int
 r_inline
+r_int
 id|ncp_request
 c_func
 (paren

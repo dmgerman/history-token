@@ -1973,8 +1973,8 @@ mdefine_line|#define SERR_NSI    1
 DECL|macro|SERR_EOM
 mdefine_line|#define SERR_EOM    2
 r_static
-r_void
 r_inline
+r_void
 id|mangle_address
 c_func
 (paren
@@ -4177,8 +4177,8 @@ suffix:semicolon
 multiline_comment|/* &n; * Mangle IP address.&n; * &t;- begin points to the start of the snmp messgae&n; *      - addr points to the start of the address&n; */
 DECL|function|mangle_address
 r_static
-r_void
 r_inline
+r_void
 id|mangle_address
 c_func
 (paren

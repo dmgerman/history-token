@@ -1818,8 +1818,8 @@ suffix:semicolon
 )brace
 DECL|function|setup_sigcontext
 r_static
-r_int
 r_inline
+r_int
 id|setup_sigcontext
 c_func
 (paren

@@ -6453,10 +6453,10 @@ id|sonycd535_setup
 )paren
 suffix:semicolon
 macro_line|#endif /* MODULE */
+r_static
 r_void
 id|__exit
 DECL|function|sony535_exit
-r_static
 id|sony535_exit
 c_func
 (paren

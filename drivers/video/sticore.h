@@ -31,8 +31,8 @@ DECL|macro|PTR_STI
 mdefine_line|#define PTR_STI(p)&t;(p)
 DECL|function|STI_CALL
 r_static
-r_int
 r_inline
+r_int
 id|STI_CALL
 c_func
 (paren

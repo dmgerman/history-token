@@ -1354,8 +1354,8 @@ suffix:semicolon
 )brace
 DECL|function|do_trap
 r_static
-r_void
 r_inline
+r_void
 id|do_trap
 c_func
 (paren

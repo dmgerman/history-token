@@ -5103,8 +5103,8 @@ comma
 )brace
 suffix:semicolon
 r_static
-r_int
 r_inline
+r_int
 DECL|function|plip_searchfor
 id|plip_searchfor
 c_func

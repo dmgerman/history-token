@@ -2615,8 +2615,8 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_void
 r_inline
+r_void
 DECL|function|outw
 id|outw
 c_func

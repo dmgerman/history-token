@@ -4092,8 +4092,8 @@ id|ret
 suffix:semicolon
 )brace
 r_static
-r_void
 r_inline
+r_void
 DECL|function|i596_handle_CU_completion
 id|i596_handle_CU_completion
 c_func

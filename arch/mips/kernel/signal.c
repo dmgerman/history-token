@@ -1450,8 +1450,8 @@ id|current
 suffix:semicolon
 )brace
 r_static
-r_int
 r_inline
+r_int
 DECL|function|setup_sigcontext
 id|setup_sigcontext
 c_func

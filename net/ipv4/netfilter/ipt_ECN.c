@@ -14,8 +14,8 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 multiline_comment|/* set ECT codepoint from IP header.&n; * &t;return 0 in case there was no ECT codepoint&n; * &t;return 1 in case ECT codepoint has been overwritten&n; * &t;return &lt; 0 in case there was error */
 r_static
-r_int
 r_inline
+r_int
 DECL|function|set_ect_ip
 id|set_ect_ip
 c_func
@@ -209,8 +209,8 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_int
 r_inline
+r_int
 DECL|function|set_ect_tcp
 id|set_ect_tcp
 c_func

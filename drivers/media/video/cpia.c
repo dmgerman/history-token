@@ -7483,8 +7483,8 @@ suffix:semicolon
 )brace
 DECL|function|free_frames
 r_static
-r_void
 r_inline
+r_void
 id|free_frames
 c_func
 (paren

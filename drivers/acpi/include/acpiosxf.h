@@ -339,7 +339,7 @@ op_star
 id|pci_id
 comma
 id|u32
-r_register
+id|reg
 comma
 r_void
 op_star
@@ -357,7 +357,7 @@ op_star
 id|pci_id
 comma
 id|u32
-r_register
+id|reg
 comma
 id|acpi_integer
 id|value

@@ -59,8 +59,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|des_keymap
-r_const
 r_static
+r_const
 id|u32
 id|des_keymap
 (braket
@@ -1094,8 +1094,8 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|rotors
-r_const
 r_static
+r_const
 id|u8
 id|rotors
 (braket
@@ -2641,8 +2641,8 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|parity
-r_const
 r_static
+r_const
 id|u8
 id|parity
 (braket

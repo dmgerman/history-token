@@ -3376,8 +3376,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
 r_static
-r_int
 r_inline
+r_int
 DECL|function|copy_two_channel_adc_to_user
 id|copy_two_channel_adc_to_user
 c_func
@@ -3553,8 +3553,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* return the total bytes that is copied */
 r_static
-r_int
 r_inline
+r_int
 DECL|function|copy_adc_to_user
 id|copy_adc_to_user
 c_func
@@ -4149,8 +4149,8 @@ id|ret
 suffix:semicolon
 )brace
 r_static
-r_int
 r_inline
+r_int
 DECL|function|copy_two_channel_dac_from_user
 id|copy_two_channel_dac_from_user
 c_func
@@ -4333,8 +4333,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* return the total bytes that is copied */
 r_static
-r_int
 r_inline
+r_int
 DECL|function|copy_dac_from_user
 id|copy_dac_from_user
 c_func

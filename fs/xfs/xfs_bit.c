@@ -1118,8 +1118,8 @@ multiline_comment|/* f8 .. ff */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * xfs_highbit32: get high bit set out of 32-bit argument, -1 if none set.&n; */
-r_int
 r_inline
+r_int
 DECL|function|xfs_highbit32
 id|xfs_highbit32
 c_func
