@@ -670,7 +670,7 @@ id|dev_info
 (paren
 id|hcd-&gt;self.controller
 comma
-l_string|&quot;irq %s, %s %p&bslash;n&quot;
+l_string|&quot;irq %s, %s 0x%lx&bslash;n&quot;
 comma
 id|bufp
 comma
@@ -685,7 +685,7 @@ l_string|&quot;pci mem&quot;
 suffix:colon
 l_string|&quot;io base&quot;
 comma
-id|base
+id|resource
 )paren
 suffix:semicolon
 id|usb_bus_init
