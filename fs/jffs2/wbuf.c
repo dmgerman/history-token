@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; * Copyright (C) 2004 Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; * Modified debugged and enhanced by Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: wbuf.c,v 1.76 2004/11/05 12:41:10 jwboyer Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; * Copyright (C) 2004 Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; * Modified debugged and enhanced by Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: wbuf.c,v 1.77 2004/11/16 20:36:12 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
