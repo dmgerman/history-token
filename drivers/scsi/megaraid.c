@@ -730,6 +730,12 @@ op_logical_and
 (paren
 id|subsysvid
 op_ne
+id|INTEL_SUBSYS_VID
+)paren
+op_logical_and
+(paren
+id|subsysvid
+op_ne
 id|LSI_SUBSYS_VID
 )paren
 )paren

@@ -62,6 +62,8 @@ DECL|macro|HP_SUBSYS_VID
 mdefine_line|#define&t;HP_SUBSYS_VID&t;&t;&t;0x103C
 DECL|macro|LSI_SUBSYS_VID
 mdefine_line|#define LSI_SUBSYS_VID&t;&t;&t;0x1000
+DECL|macro|INTEL_SUBSYS_VID
+mdefine_line|#define INTEL_SUBSYS_VID&t;&t;0x8086
 DECL|macro|HBA_SIGNATURE
 mdefine_line|#define HBA_SIGNATURE&t;      &t;&t;0x3344
 DECL|macro|HBA_SIGNATURE_471
