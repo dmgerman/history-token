@@ -3294,11 +3294,11 @@ r_return
 id|TRUE
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * setup_lcn_allocator - initialize the cluster allocator&n; * @vol:&t;volume structure for which to setup the lcn allocator&n; *&n; * Setup the cluster (lcn) allocator to the starting values.&n; */
-DECL|function|setup_lcn_allocator
+multiline_comment|/**&n; * ntfs_setup_allocators - initialize the cluster and mft allocators&n; * @vol:&t;volume structure for which to setup the allocators&n; *&n; * Setup the cluster (lcn) and mft allocators to the starting values.&n; */
+DECL|function|ntfs_setup_allocators
 r_static
 r_void
-id|setup_lcn_allocator
+id|ntfs_setup_allocators
 c_func
 (paren
 id|ntfs_volume
@@ -3541,6 +3541,24 @@ r_int
 r_int
 )paren
 id|vol-&gt;data2_zone_pos
+)paren
+suffix:semicolon
+multiline_comment|/* Set the mft data allocation position to mft record 24. */
+id|vol-&gt;mft_data_pos
+op_assign
+l_int|24
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;vol-&gt;mft_data_pos = 0x%llx&quot;
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|vol-&gt;mft_data_pos
 )paren
 suffix:semicolon
 macro_line|#endif /* NTFS_RW */
@@ -9283,8 +9301,8 @@ op_star
 id|bh-&gt;b_data
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize the cluster allocator. */
-id|setup_lcn_allocator
+multiline_comment|/* Initialize the cluster and mft allocators. */
+id|ntfs_setup_allocators
 c_func
 (paren
 id|vol
