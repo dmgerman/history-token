@@ -120,6 +120,8 @@ DECL|macro|CPU_FTR_CAN_NAP
 mdefine_line|#define CPU_FTR_CAN_NAP&t;&t;&t;0x00000400
 DECL|macro|CPU_FTR_L3CR
 mdefine_line|#define CPU_FTR_L3CR&t;&t;&t;0x00000800
+DECL|macro|CPU_FTR_NO_DPM
+mdefine_line|#define CPU_FTR_NO_DPM&t;&t;&t;0x00008000
 macro_line|#ifdef __ASSEMBLY__
 DECL|macro|BEGIN_FTR_SECTION
 mdefine_line|#define BEGIN_FTR_SECTION&t;&t;98:
