@@ -15,8 +15,8 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/ecard.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &quot;../../scsi/scsi.h&quot;
-macro_line|#include &quot;../../scsi/hosts.h&quot;
+macro_line|#include &quot;../scsi.h&quot;
+macro_line|#include &quot;../hosts.h&quot;
 macro_line|#include &quot;fas216.h&quot;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
@@ -1526,11 +1526,6 @@ r_int
 id|inout
 )paren
 (brace
-r_int
-id|pos
-comma
-id|begin
-suffix:semicolon
 r_struct
 id|Scsi_Host
 op_star
@@ -1541,9 +1536,14 @@ id|eesoxscsi_info
 op_star
 id|info
 suffix:semicolon
-id|Scsi_Device
+r_char
 op_star
-id|scd
+id|p
+op_assign
+id|buffer
+suffix:semicolon
+r_int
+id|pos
 suffix:semicolon
 id|host
 op_assign
@@ -1589,23 +1589,19 @@ op_star
 )paren
 id|host-&gt;hostdata
 suffix:semicolon
-id|begin
-op_assign
-l_int|0
-suffix:semicolon
-id|pos
-op_assign
+id|p
+op_add_assign
 id|sprintf
 c_func
 (paren
-id|buffer
+id|p
 comma
 l_string|&quot;EESOX SCSI driver v%s&bslash;n&quot;
 comma
 id|VERSION
 )paren
 suffix:semicolon
-id|pos
+id|p
 op_add_assign
 id|fas216_print_host
 c_func
@@ -1613,19 +1609,15 @@ c_func
 op_amp
 id|info-&gt;info
 comma
-id|buffer
-op_plus
-id|pos
+id|p
 )paren
 suffix:semicolon
-id|pos
+id|p
 op_add_assign
 id|sprintf
 c_func
 (paren
-id|buffer
-op_plus
-id|pos
+id|p
 comma
 l_string|&quot;Term    : o%s&bslash;n&quot;
 comma
@@ -1652,22 +1644,27 @@ op_plus
 id|pos
 )paren
 suffix:semicolon
-op_star
-id|start
-op_assign
-id|buffer
-op_plus
+id|p
+op_add_assign
+id|fas216_print_stats
+c_func
 (paren
-id|offset
-op_minus
-id|begin
+op_amp
+id|info-&gt;info
+comma
+id|p
 )paren
 suffix:semicolon
-id|pos
-op_sub_assign
-id|offset
-op_minus
-id|begin
+id|p
+op_add_assign
+id|fas216_print_devices
+c_func
+(paren
+op_amp
+id|info-&gt;info
+comma
+id|p
+)paren
 suffix:semicolon
 r_if
 c_cond

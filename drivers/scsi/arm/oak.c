@@ -9,8 +9,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/ecard.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &quot;../../scsi/scsi.h&quot;
-macro_line|#include &quot;../../scsi/hosts.h&quot;
+macro_line|#include &quot;../scsi.h&quot;
+macro_line|#include &quot;../hosts.h&quot;
 DECL|macro|AUTOSENSE
 mdefine_line|#define AUTOSENSE
 multiline_comment|/*#define PSEUDO_DMA*/
@@ -62,7 +62,7 @@ DECL|macro|BOARD_NORMAL
 mdefine_line|#define BOARD_NORMAL&t;0
 DECL|macro|BOARD_NCR53C400
 mdefine_line|#define BOARD_NCR53C400&t;1
-macro_line|#include &quot;../../scsi/NCR5380.h&quot;
+macro_line|#include &quot;../NCR5380.h&quot;
 DECL|macro|START_DMA_INITIATOR_RECEIVE_REG
 macro_line|#undef START_DMA_INITIATOR_RECEIVE_REG
 DECL|macro|START_DMA_INITIATOR_RECEIVE_REG
@@ -372,7 +372,7 @@ DECL|macro|oakscsi_write
 mdefine_line|#define oakscsi_write(instance,reg,val)&t;(outb((val), (instance)-&gt;io_port + (reg)))
 DECL|macro|STAT
 macro_line|#undef STAT
-macro_line|#include &quot;../../scsi/NCR5380.c&quot;
+macro_line|#include &quot;../NCR5380.c&quot;
 DECL|variable|oakscsi_template
 r_static
 id|Scsi_Host_Template

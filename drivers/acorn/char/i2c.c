@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/rtc.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardware/ioc.h&gt;
@@ -1247,6 +1248,7 @@ dot
 id|client_unregister
 op_assign
 id|ioc_client_unreg
+comma
 dot
 id|dev
 op_assign
