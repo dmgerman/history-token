@@ -1426,6 +1426,13 @@ id|Scsi_Cmnd
 )paren
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|newSCpnt-&gt;eh_timeout
+)paren
+suffix:semicolon
 id|newSCpnt-&gt;host
 op_assign
 id|SDpnt-&gt;host
@@ -4017,6 +4024,13 @@ r_sizeof
 (paren
 id|Scsi_Cmnd
 )paren
+)paren
+suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|SCpnt-&gt;eh_timeout
 )paren
 suffix:semicolon
 id|SCpnt-&gt;host
