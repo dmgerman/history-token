@@ -328,7 +328,7 @@ id|address
 r_goto
 id|bad_area
 suffix:semicolon
-multiline_comment|/*&n; * Ok, we have a good vm_area for this memory access, so&n; * we can handle it..&n; */
+multiline_comment|/* Ok, we have a good vm_area for this memory access, so&n;&t;   we can handle it.  */
 id|good_area
 suffix:colon
 r_if
@@ -398,7 +398,7 @@ suffix:semicolon
 )brace
 id|survive
 suffix:colon
-multiline_comment|/*&n;&t; * If for any reason at all we couldn&squot;t handle the fault,&n;&t; * make sure we exit gracefully rather than endlessly redo&n;&t; * the fault.&n;&t; */
+multiline_comment|/* If for any reason at all we couldn&squot;t handle the fault,&n;&t;   make sure we exit gracefully rather than endlessly redo&n;&t;   the fault.  */
 id|fault
 op_assign
 id|handle_mm_fault
@@ -444,7 +444,7 @@ id|do_sigbus
 suffix:semicolon
 r_return
 suffix:semicolon
-multiline_comment|/*&n; * Something tried to access memory that isn&squot;t in our memory map..&n; * Fix it, but check if it&squot;s kernel or user first..&n; */
+multiline_comment|/* Something tried to access memory that isn&squot;t in our memory map.&n;&t;   Fix it, but check if it&squot;s kernel or user first.  */
 id|bad_area
 suffix:colon
 id|up_read
@@ -533,7 +533,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Oops. The kernel tried to access some bad page. We&squot;ll have to&n; * terminate things with extreme prejudice.&n; */
+multiline_comment|/* Oops. The kernel tried to access some bad page. We&squot;ll have to&n;&t;   terminate things with extreme prejudice.  */
 id|printk
 c_func
 (paren
@@ -569,7 +569,7 @@ c_func
 id|SIGKILL
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * We ran out of memory, or some other thing happened to us that made&n; * us unable to handle the page fault gracefully.&n; */
+multiline_comment|/* We ran out of memory, or some other thing happened to us that&n;&t;   made us unable to handle the page fault gracefully.  */
 id|out_of_memory
 suffix:colon
 r_if
@@ -628,7 +628,7 @@ id|SIGKILL
 suffix:semicolon
 id|do_sigbus
 suffix:colon
-multiline_comment|/*&n;&t; * Send a sigbus, regardless of whether we were in kernel&n;&t; * or user mode.&n;&t; */
+multiline_comment|/* Send a sigbus, regardless of whether we were in kernel&n;&t;   or user mode.  */
 id|force_sig
 c_func
 (paren

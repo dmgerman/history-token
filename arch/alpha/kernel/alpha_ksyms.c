@@ -808,13 +808,6 @@ c_func
 id|sys_setsid
 )paren
 suffix:semicolon
-DECL|variable|sys_sync
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sys_sync
-)paren
-suffix:semicolon
 DECL|variable|sys_wait4
 id|EXPORT_SYMBOL
 c_func
