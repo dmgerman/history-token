@@ -472,6 +472,41 @@ r_struct
 id|viodasd_waitevent
 id|we
 suffix:semicolon
+id|u16
+id|flags
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|d-&gt;read_only
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|fil
+op_ne
+l_int|NULL
+)paren
+op_logical_and
+(paren
+id|fil-&gt;f_mode
+op_amp
+id|FMODE_WRITE
+)paren
+)paren
+r_return
+op_minus
+id|EROFS
+suffix:semicolon
+id|flags
+op_assign
+id|vioblockflags_ro
+suffix:semicolon
+)brace
 id|init_completion
 c_func
 (paren
@@ -535,7 +570,15 @@ id|d
 op_lshift
 l_int|48
 )paren
-multiline_comment|/* | ((u64)flags &lt;&lt; 32) */
+op_or
+(paren
+(paren
+id|u64
+)paren
+id|flags
+op_lshift
+l_int|32
+)paren
 comma
 l_int|0
 comma
@@ -1701,6 +1744,13 @@ id|request_queue
 op_star
 id|q
 suffix:semicolon
+id|u16
+id|flags
+op_assign
+l_int|0
+suffix:semicolon
+id|retry
+suffix:colon
 id|init_completion
 c_func
 (paren
@@ -1765,7 +1815,7 @@ op_or
 (paren
 id|u64
 )paren
-id|vioblockflags_ro
+id|flags
 op_lshift
 l_int|32
 )paren
@@ -1814,8 +1864,25 @@ id|we.rc
 op_ne
 l_int|0
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|flags
+op_ne
+l_int|0
+)paren
 r_return
 suffix:semicolon
+multiline_comment|/* try again with read only flag set */
+id|flags
+op_assign
+id|vioblockflags_ro
+suffix:semicolon
+r_goto
+id|retry
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1908,7 +1975,7 @@ op_or
 (paren
 id|u64
 )paren
-id|vioblockflags_ro
+id|flags
 op_lshift
 l_int|32
 )paren
@@ -1948,7 +2015,7 @@ c_func
 (paren
 id|VIOD_KERN_INFO
 l_string|&quot;disk %d: %lu sectors (%lu MB) &quot;
-l_string|&quot;CHS=%d/%d/%d sector size %d&bslash;n&quot;
+l_string|&quot;CHS=%d/%d/%d sector size %d%s&bslash;n&quot;
 comma
 id|dev_no
 comma
@@ -1991,6 +2058,13 @@ comma
 r_int
 )paren
 id|d-&gt;bytes_per_sector
+comma
+id|d-&gt;read_only
+ques
+c_cond
+l_string|&quot; (RO)&quot;
+suffix:colon
+l_string|&quot;&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* create the request queue for the disk */
