@@ -34,12 +34,16 @@ mdefine_line|#define MODULE_START&t;(MODULE_END - 16*1048576)
 macro_line|#if TASK_SIZE &gt; MODULE_START
 macro_line|#error Top of user space clashes with start of module space
 macro_line|#endif
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * The DMA mask corresponding to the maximum bus address allocatable&n; * using GFP_DMA.  The default here places no restriction on DMA&n; * allocations.  This must be the smallest DMA mask in the system,&n; * so a successful GFP_DMA allocation will always satisfy this.&n; */
 macro_line|#ifndef ISA_DMA_THRESHOLD
 DECL|macro|ISA_DMA_THRESHOLD
 mdefine_line|#define ISA_DMA_THRESHOLD&t;(0xffffffffULL)
 macro_line|#endif
-macro_line|#ifndef __ASSEMBLY__
+macro_line|#ifndef arch_adjust_zones
+DECL|macro|arch_adjust_zones
+mdefine_line|#define arch_adjust_zones(node,size,holes) do { } while (0)
+macro_line|#endif
 multiline_comment|/*&n; * PFNs are used to describe any physical page; this means&n; * PFN 0 == physical address 0.&n; *&n; * This is the PFN of the first RAM page in the kernel&n; * direct-mapped view.  We assume this is the first page&n; * of RAM in the mem_map as well.&n; */
 DECL|macro|PHYS_PFN_OFFSET
 mdefine_line|#define PHYS_PFN_OFFSET&t;(PHYS_OFFSET &gt;&gt; PAGE_SHIFT)
