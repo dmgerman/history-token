@@ -880,6 +880,14 @@ op_logical_neg
 id|pool-&gt;closing
 )paren
 (brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|pool-&gt;lock
+)paren
+suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 3, 0)
 multiline_comment|/* change semaphore to allow other clients&n;&t;&t;   to access device file */
 r_if
 c_cond
@@ -897,16 +905,15 @@ id|file
 )paren
 )paren
 suffix:semicolon
-id|snd_seq_sleep_in_lock
+macro_line|#endif
+id|interruptible_sleep_on
 c_func
 (paren
 op_amp
 id|pool-&gt;output_sleep
-comma
-op_amp
-id|pool-&gt;lock
 )paren
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 3, 0)
 multiline_comment|/* restore semaphore again */
 r_if
 c_cond
@@ -922,6 +929,14 @@ c_func
 (paren
 id|file
 )paren
+)paren
+suffix:semicolon
+macro_line|#endif
+id|spin_lock
+c_func
+(paren
+op_amp
+id|pool-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/* interrupted? */
