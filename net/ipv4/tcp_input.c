@@ -8729,7 +8729,7 @@ op_logical_neg
 id|before
 c_func
 (paren
-id|orig_seq
+id|seq
 comma
 id|tp-&gt;snd_up
 )paren
