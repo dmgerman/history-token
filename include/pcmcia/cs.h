@@ -816,31 +816,6 @@ DECL|typedef|error_info_t
 )brace
 id|error_info_t
 suffix:semicolon
-multiline_comment|/* Special stuff for binding drivers to sockets */
-DECL|struct|bind_req_t
-r_typedef
-r_struct
-id|bind_req_t
-(brace
-DECL|member|Socket
-r_struct
-id|pcmcia_socket
-op_star
-id|Socket
-suffix:semicolon
-DECL|member|Function
-id|u_char
-id|Function
-suffix:semicolon
-DECL|member|dev_info
-id|dev_info_t
-op_star
-id|dev_info
-suffix:semicolon
-DECL|typedef|bind_req_t
-)brace
-id|bind_req_t
-suffix:semicolon
 multiline_comment|/* Flag to bind to all functions */
 DECL|macro|BIND_FN_ALL
 mdefine_line|#define BIND_FN_ALL&t;0xff
@@ -1163,6 +1138,9 @@ id|GetNextWindow
 comma
 id|GetMemPage
 )brace
+suffix:semicolon
+r_struct
+id|pcmcia_socket
 suffix:semicolon
 r_int
 id|pcmcia_access_configuration_register
