@@ -1096,9 +1096,9 @@ r_struct
 id|super_block
 op_star
 comma
-r_int
+id|u64
 comma
-r_int
+id|u64
 )paren
 suffix:semicolon
 r_extern
@@ -1116,9 +1116,9 @@ r_struct
 id|super_block
 op_star
 comma
-r_int
+id|u64
 comma
-r_int
+id|u64
 )paren
 suffix:semicolon
 r_extern
