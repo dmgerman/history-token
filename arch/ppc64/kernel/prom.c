@@ -5963,7 +5963,7 @@ c_func
 id|cpu_online_map
 )paren
 op_assign
-l_int|1
+l_int|1UL
 op_lshift
 id|_prom-&gt;cpu
 suffix:semicolon
