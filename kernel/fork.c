@@ -780,6 +780,10 @@ op_amp
 id|file-&gt;f_mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
+id|tmp-&gt;vm_truncate_count
+op_assign
+id|mpnt-&gt;vm_truncate_count
+suffix:semicolon
 id|flush_dcache_mmap_lock
 c_func
 (paren
