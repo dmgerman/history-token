@@ -233,9 +233,17 @@ c_cond
 op_logical_neg
 id|link-&gt;priv
 )paren
+(brace
+id|kfree
+c_func
+(paren
+id|link
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
