@@ -419,17 +419,6 @@ id|olddma
 )paren
 (brace
 multiline_comment|/* no wraparound, dump olddma..newdma */
-r_if
-c_cond
-(paren
-id|mem
-(braket
-id|olddma
-)braket
-op_eq
-l_int|0x47
-)paren
-(brace
 id|dvb_dmx_swfilter_packets
 c_func
 (paren
@@ -450,21 +439,9 @@ l_int|188
 )paren
 suffix:semicolon
 )brace
-)brace
 r_else
 (brace
 multiline_comment|/* wraparound, dump olddma..buflen and 0..newdma */
-r_if
-c_cond
-(paren
-id|mem
-(braket
-id|olddma
-)braket
-op_eq
-l_int|0x47
-)paren
-(brace
 id|dvb_dmx_swfilter_packets
 c_func
 (paren
@@ -484,18 +461,6 @@ op_div
 l_int|188
 )paren
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|mem
-(braket
-l_int|0
-)braket
-op_eq
-l_int|0x47
-)paren
-(brace
 id|dvb_dmx_swfilter_packets
 c_func
 (paren
@@ -509,7 +474,6 @@ op_div
 l_int|188
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/****************************************************************************&n; * DVB API SECTION&n; ****************************************************************************/

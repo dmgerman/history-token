@@ -935,10 +935,10 @@ r_struct
 id|dvb_net
 id|dvb_net
 suffix:semicolon
-DECL|member|vd
+DECL|member|v4l_dev
 r_struct
 id|video_device
-id|vd
+id|v4l_dev
 suffix:semicolon
 DECL|member|dev
 r_struct
