@@ -4,9 +4,9 @@ DECL|macro|_SONYPI_PRIV_H_
 mdefine_line|#define _SONYPI_PRIV_H_
 macro_line|#ifdef __KERNEL__
 DECL|macro|SONYPI_DRIVER_MAJORVERSION
-mdefine_line|#define SONYPI_DRIVER_MAJORVERSION&t;1
+mdefine_line|#define SONYPI_DRIVER_MAJORVERSION&t; 1
 DECL|macro|SONYPI_DRIVER_MINORVERSION
-mdefine_line|#define SONYPI_DRIVER_MINORVERSION&t;8
+mdefine_line|#define SONYPI_DRIVER_MINORVERSION&t;10
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;linux/sonypi.h&quot;
@@ -280,23 +280,27 @@ DECL|macro|SONYPI_CAMERA_ROMVERSION
 mdefine_line|#define SONYPI_CAMERA_ROMVERSION &t;&t;9
 multiline_comment|/* key press event data (ioport2) */
 DECL|macro|SONYPI_TYPE1_JOGGER_EV
-mdefine_line|#define SONYPI_TYPE1_JOGGER_EV&t;0x10
+mdefine_line|#define SONYPI_TYPE1_JOGGER_EV&t;&t;0x10
 DECL|macro|SONYPI_TYPE2_JOGGER_EV
-mdefine_line|#define SONYPI_TYPE2_JOGGER_EV&t;0x08
-DECL|macro|SONYPI_CAPTURE_EV
-mdefine_line|#define SONYPI_CAPTURE_EV&t;0x60
+mdefine_line|#define SONYPI_TYPE2_JOGGER_EV&t;&t;0x08
+DECL|macro|SONYPI_TYPE1_CAPTURE_EV
+mdefine_line|#define SONYPI_TYPE1_CAPTURE_EV&t;&t;0x60
+DECL|macro|SONYPI_TYPE2_CAPTURE_EV
+mdefine_line|#define SONYPI_TYPE2_CAPTURE_EV&t;&t;0x08
 DECL|macro|SONYPI_TYPE1_FNKEY_EV
-mdefine_line|#define SONYPI_TYPE1_FNKEY_EV&t;0x20
+mdefine_line|#define SONYPI_TYPE1_FNKEY_EV&t;&t;0x20
 DECL|macro|SONYPI_TYPE2_FNKEY_EV
-mdefine_line|#define SONYPI_TYPE2_FNKEY_EV&t;0x08
-DECL|macro|SONYPI_BLUETOOTH_EV
-mdefine_line|#define SONYPI_BLUETOOTH_EV&t;0x30
+mdefine_line|#define SONYPI_TYPE2_FNKEY_EV&t;&t;0x08
+DECL|macro|SONYPI_TYPE1_BLUETOOTH_EV
+mdefine_line|#define SONYPI_TYPE1_BLUETOOTH_EV&t;0x30
+DECL|macro|SONYPI_TYPE2_BLUETOOTH_EV
+mdefine_line|#define SONYPI_TYPE2_BLUETOOTH_EV&t;0x08
 DECL|macro|SONYPI_TYPE1_PKEY_EV
-mdefine_line|#define SONYPI_TYPE1_PKEY_EV&t;0x40
+mdefine_line|#define SONYPI_TYPE1_PKEY_EV&t;&t;0x40
 DECL|macro|SONYPI_BACK_EV
-mdefine_line|#define SONYPI_BACK_EV&t;&t;0x08
+mdefine_line|#define SONYPI_BACK_EV&t;&t;&t;0x08
 DECL|macro|SONYPI_LID_EV
-mdefine_line|#define SONYPI_LID_EV&t;&t;0x38
+mdefine_line|#define SONYPI_LID_EV&t;&t;&t;0x38
 DECL|struct|sonypi_event
 r_struct
 id|sonypi_event
@@ -594,6 +598,18 @@ id|SONYPI_EVENT_BLUETOOTH_PRESSED
 )brace
 comma
 (brace
+l_int|0x59
+comma
+id|SONYPI_EVENT_BLUETOOTH_ON
+)brace
+comma
+(brace
+l_int|0x5a
+comma
+id|SONYPI_EVENT_BLUETOOTH_OFF
+)brace
+comma
+(brace
 l_int|0x00
 comma
 l_int|0x00
@@ -734,6 +750,10 @@ suffix:semicolon
 DECL|member|camera_power
 r_int
 id|camera_power
+suffix:semicolon
+DECL|member|bluetooth_power
+r_int
+id|bluetooth_power
 suffix:semicolon
 DECL|member|lock
 r_struct

@@ -3565,9 +3565,13 @@ c_cond
 op_logical_neg
 id|led_active
 op_logical_and
+id|time_after
+c_func
+(paren
 id|jiffies
-OG
+comma
 id|led_next_time
+)paren
 )paren
 (brace
 multiline_comment|/* light the network leds depending on the current speed. */
@@ -4893,9 +4897,13 @@ c_cond
 op_logical_neg
 id|led_active
 op_logical_and
+id|time_after
+c_func
+(paren
 id|jiffies
-OG
+comma
 id|led_next_time
+)paren
 )paren
 (brace
 multiline_comment|/* light the network leds depending on the current speed. */
@@ -4994,7 +5002,13 @@ id|led_active
 op_logical_and
 id|jiffies
 OG
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
 id|led_next_time
+)paren
 )paren
 (brace
 id|e100_set_network_leds

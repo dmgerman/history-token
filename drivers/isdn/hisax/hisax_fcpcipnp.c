@@ -183,6 +183,12 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 singleline_comment|// ----------------------------------------------------------------------
 DECL|macro|AVM_INDEX
 mdefine_line|#define  AVM_INDEX              0x04

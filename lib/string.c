@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  linux/lib/string.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
-multiline_comment|/*&n; * stupid library routines.. The optimized versions should generally be found&n; * as inline code in &lt;asm-xx/string.h&gt;&n; *&n; * These are buggy as well..&n; *&n; * * Fri Jun 25 1999, Ingo Oeser &lt;ioe@informatik.tu-chemnitz.de&gt;&n; * -  Added strsep() which will replace strtok() soon (because strsep() is&n; *    reentrant and should be faster). Use only strsep() in new code, please.&n; */
+multiline_comment|/*&n; * stupid library routines.. The optimized versions should generally be found&n; * as inline code in &lt;asm-xx/string.h&gt;&n; *&n; * These are buggy as well..&n; *&n; * * Fri Jun 25 1999, Ingo Oeser &lt;ioe@informatik.tu-chemnitz.de&gt;&n; * -  Added strsep() which will replace strtok() soon (because strsep() is&n; *    reentrant and should be faster). Use only strsep() in new code, please.&n; *&n; * * Sat Feb 09 2002, Jason Thomas &lt;jason@topic.com.au&gt;,&n; *                    Matthew Hawkins &lt;matt@mh.dropbear.id.au&gt;&n; * -  Kissed strtok() goodbye&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
@@ -135,11 +135,6 @@ id|c2
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|variable|___strtok
-r_char
-op_star
-id|___strtok
-suffix:semicolon
 macro_line|#ifndef __HAVE_ARCH_STRCPY
 multiline_comment|/**&n; * strcpy - Copy a %NUL terminated string&n; * @dest: Where to copy the string to&n; * @src: Where to copy the string from&n; */
 DECL|function|strcpy
@@ -882,115 +877,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifndef __HAVE_ARCH_STRTOK
-multiline_comment|/**&n; * strtok - Split a string into tokens&n; * @s: The string to be searched&n; * @ct: The characters to search for&n; *&n; * WARNING: strtok is deprecated, use strsep instead.&n; */
-DECL|function|strtok
-r_char
-op_star
-id|strtok
-c_func
-(paren
-r_char
-op_star
-id|s
-comma
-r_const
-r_char
-op_star
-id|ct
-)paren
-(brace
-r_char
-op_star
-id|sbegin
-comma
-op_star
-id|send
-suffix:semicolon
-id|sbegin
-op_assign
-id|s
-ques
-c_cond
-id|s
-suffix:colon
-id|___strtok
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sbegin
-)paren
-(brace
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-id|sbegin
-op_add_assign
-id|strspn
-c_func
-(paren
-id|sbegin
-comma
-id|ct
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_star
-id|sbegin
-op_eq
-l_char|&squot;&bslash;0&squot;
-)paren
-(brace
-id|___strtok
-op_assign
-l_int|NULL
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-id|send
-op_assign
-id|strpbrk
-c_func
-(paren
-id|sbegin
-comma
-id|ct
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|send
-op_logical_and
-op_star
-id|send
-op_ne
-l_char|&squot;&bslash;0&squot;
-)paren
-op_star
-id|send
-op_increment
-op_assign
-l_char|&squot;&bslash;0&squot;
-suffix:semicolon
-id|___strtok
-op_assign
-id|send
-suffix:semicolon
-r_return
-(paren
-id|sbegin
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRSEP
 multiline_comment|/**&n; * strsep - Split a string into tokens&n; * @s: The string to be searched&n; * @ct: The characters to search for&n; *&n; * strsep() updates @s to point after the token, ready for the next call.&n; *&n; * It returns empty tokens, too, behaving exactly like the libc function&n; * of that name. In fact, it was stolen from glibc2 and de-fancy-fied.&n; * Same semantics, slimmer shape. ;)&n; */
 DECL|function|strsep
@@ -1352,7 +1238,6 @@ op_star
 id|su2
 suffix:semicolon
 r_int
-r_char
 id|res
 op_assign
 l_int|0

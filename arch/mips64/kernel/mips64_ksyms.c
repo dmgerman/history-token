@@ -154,13 +154,6 @@ c_func
 id|memmove
 )paren
 suffix:semicolon
-DECL|variable|simple_strtol
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|simple_strtol
-)paren
-suffix:semicolon
 DECL|variable|strcat
 id|EXPORT_SYMBOL_NOVERS
 c_func
@@ -203,11 +196,11 @@ c_func
 id|strrchr
 )paren
 suffix:semicolon
-DECL|variable|strtok
+DECL|variable|strsep
 id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
-id|strtok
+id|strsep
 )paren
 suffix:semicolon
 DECL|variable|strpbrk

@@ -386,6 +386,32 @@ id|u_platform
 op_assign
 id|p
 suffix:semicolon
+macro_line|#if defined(__i386__) &amp;&amp; defined(CONFIG_SMP)
+multiline_comment|/*&n;&t; * In some cases (e.g. Hyper-Threading), we want to avoid L1 evictions&n;&t; * by the processes running on the same package. One thing we can do&n;&t; * is to shuffle the initial stack for them.&n;&t; *&n;&t; * The conditionals here are unneeded, but kept in to make the&n;&t; * code behaviour the same as pre change unless we have hyperthreaded&n;&t; * processors. This should be cleaned up before 2.6&n;&t; */
+r_if
+c_cond
+(paren
+id|smp_num_siblings
+OG
+l_int|1
+)paren
+(brace
+id|u_platform
+op_assign
+id|u_platform
+op_minus
+(paren
+(paren
+id|current-&gt;pid
+op_mod
+l_int|64
+)paren
+op_lshift
+l_int|7
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif&t;
 multiline_comment|/*&n;&t; * Force 16 byte _final_ alignment here for generality.&n;&t; */
 id|sp
 op_assign

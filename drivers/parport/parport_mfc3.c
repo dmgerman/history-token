@@ -1709,6 +1709,12 @@ c_func
 l_string|&quot;Multiface 3 Parallel Port&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|module_init
 c_func
 (paren

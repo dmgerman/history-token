@@ -62,6 +62,39 @@ r_static
 r_int
 id|wdt_expect_close
 suffix:semicolon
+macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+id|MODULE_PARM
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_NOWAYOUT)&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *&t;Whack the dog&n; */
 DECL|function|wdt_timer_ping
 r_static
@@ -382,6 +415,15 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|nowayout
+)paren
+(brace
+id|MOD_INC_USE_COUNT
+suffix:semicolon
+)brace
 multiline_comment|/* Good, fire up the show */
 id|wdt_is_open
 op_assign
@@ -436,6 +478,9 @@ r_if
 c_cond
 (paren
 id|wdt_expect_close
+op_logical_and
+op_logical_neg
+id|nowayout
 )paren
 (brace
 id|wdt_turnoff

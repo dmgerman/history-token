@@ -1701,11 +1701,6 @@ c_func
 id|tsk
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|sem_exit
 c_func
 (paren

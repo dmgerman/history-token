@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/char/shwdt.c&n; *&n; * Watchdog driver for integrated watchdog in the SuperH 3/4 processors.&n; *&n; * Copyright (C) 2001 Paul Mundt &lt;lethal@chaoticdreams.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * drivers/char/shwdt.c&n; *&n; * Watchdog driver for integrated watchdog in the SuperH 3/4 processors.&n; *&n; * Copyright (C) 2001 Paul Mundt &lt;lethal@chaoticdreams.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * 14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *     Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -100,6 +100,39 @@ r_static
 r_int
 r_int
 id|next_heartbeat
+suffix:semicolon
+macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+id|MODULE_PARM
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_NOWAYOUT)&quot;
+)paren
 suffix:semicolon
 multiline_comment|/**&n; *&t;sh_wdt_write_cnt - Write to Counter&n; *&n; *&t;@val: Value to write&n; *&n; *&t;Writes the given value @val to the lower byte of the timer counter.&n; *&t;The upper byte is set manually on each write.&n; */
 DECL|function|sh_wdt_write_cnt
@@ -355,6 +388,15 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|nowayout
+)paren
+(brace
+id|MOD_INC_USE_COUNT
+suffix:semicolon
+)brace
 id|sh_wdt_start
 c_func
 (paren
@@ -403,13 +445,19 @@ op_eq
 id|WATCHDOG_MINOR
 )paren
 (brace
-macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nowayout
+)paren
+(brace
 id|sh_wdt_stop
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
+)brace
 id|clear_bit
 c_func
 (paren

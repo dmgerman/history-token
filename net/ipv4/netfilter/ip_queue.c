@@ -2023,7 +2023,7 @@ id|MSG_DONTWAIT
 suffix:semicolon
 )brace
 DECL|macro|RCV_SKB_FAIL
-mdefine_line|#define RCV_SKB_FAIL(err) do { netlink_ack(skb, nlh, (err)); return; } while (0);
+mdefine_line|#define RCV_SKB_FAIL(err) do { netlink_ack(skb, nlh, (err)); return; } while (0)
 DECL|function|netlink_receive_user_skb
 r_static
 id|__inline__

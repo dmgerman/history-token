@@ -5,6 +5,7 @@ macro_line|#include &quot;../scsi/scsi.h&quot;
 macro_line|#include &quot;../scsi/hosts.h&quot; 
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &quot;cciss_scsi.h&quot;
 multiline_comment|/* some prototypes... */
 r_static

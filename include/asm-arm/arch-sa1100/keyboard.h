@@ -6,9 +6,9 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/arch/assabet.h&gt;
 DECL|macro|kbd_disable_irq
-mdefine_line|#define kbd_disable_irq()&t;do { } while(0);
+mdefine_line|#define kbd_disable_irq()&t;do { } while(0)
 DECL|macro|kbd_enable_irq
-mdefine_line|#define kbd_enable_irq()&t;do { } while(0);
+mdefine_line|#define kbd_enable_irq()&t;do { } while(0)
 r_extern
 r_int
 id|sa1111_kbd_init_hw

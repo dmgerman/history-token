@@ -994,7 +994,7 @@ r_int
 id|reg
 suffix:semicolon
 DECL|macro|restore_gp_reg
-mdefine_line|#define restore_gp_reg(i) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;err |= __get_user(reg, &amp;sc-&gt;sc_regs[i]);&t;&t;&t;&bslash;&n;&t;regs-&gt;regs[i] = reg;&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0);
+mdefine_line|#define restore_gp_reg(i) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;err |= __get_user(reg, &amp;sc-&gt;sc_regs[i]);&t;&t;&t;&bslash;&n;&t;regs-&gt;regs[i] = reg;&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
 id|restore_gp_reg
 c_func
 (paren

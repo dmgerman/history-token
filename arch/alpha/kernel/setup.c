@@ -1789,6 +1789,12 @@ op_assign
 id|_end
 suffix:semicolon
 multiline_comment|/* end of kernel */
+r_char
+op_star
+id|args
+op_assign
+id|command_line
+suffix:semicolon
 id|hwrpb
 op_assign
 (paren
@@ -1916,32 +1922,34 @@ op_assign
 id|command_line
 suffix:semicolon
 multiline_comment|/* &n;&t; * Process command-line arguments.&n;&t; */
-r_for
+r_while
 c_loop
 (paren
+(paren
 id|p
 op_assign
-id|strtok
+id|strsep
 c_func
 (paren
-id|command_line
+op_amp
+id|args
 comma
 l_string|&quot; &bslash;t&quot;
 )paren
-suffix:semicolon
-id|p
-suffix:semicolon
-id|p
-op_assign
-id|strtok
-c_func
-(paren
+)paren
+op_ne
 l_int|NULL
-comma
-l_string|&quot; &bslash;t&quot;
-)paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+op_star
+id|p
+)paren
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2057,7 +2065,7 @@ r_continue
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Replace the command line, now that we&squot;ve killed it with strtok.  */
+multiline_comment|/* Replace the command line, now that we&squot;ve killed it with strsep.  */
 id|strcpy
 c_func
 (paren

@@ -22,6 +22,8 @@ DECL|macro|RESCHEDULE_VECTOR
 mdefine_line|#define RESCHEDULE_VECTOR&t;0xfc
 DECL|macro|CALL_FUNCTION_VECTOR
 mdefine_line|#define CALL_FUNCTION_VECTOR&t;0xfb
+DECL|macro|THERMAL_APIC_VECTOR
+mdefine_line|#define THERMAL_APIC_VECTOR&t;0xf0
 multiline_comment|/*&n; * Local APIC timer IRQ vector is on a different priority level,&n; * to work around the &squot;lost local interrupt if more than 2 IRQ&n; * sources per level&squot; errata.&n; */
 DECL|macro|LOCAL_TIMER_VECTOR
 mdefine_line|#define LOCAL_TIMER_VECTOR&t;0xef

@@ -9371,15 +9371,19 @@ id|ENXIO
 suffix:semicolon
 )brace
 multiline_comment|/* for DYNCONF, allocating IO, DMA and IRQ should not be done until &n;&t; * the config parameters have been set using MTSETCONFIG.&n;&t; */
+multiline_comment|/* Grab the IO region. */
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|QIC02_TAPE_PORT
 comma
 id|QIC02_TAPE_PORT_RANGE
+comma
+id|TPQIC02_NAME
 )paren
 )paren
 (brace
@@ -9426,6 +9430,14 @@ comma
 id|QIC02_TAPE_IRQ
 )paren
 suffix:semicolon
+id|release_region
+c_func
+(paren
+id|QIC02_TAPE_PORT
+comma
+id|QIC02_TAPE_PORT_RANGE
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EBUSY
@@ -9461,22 +9473,19 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
-multiline_comment|/* Grab the IO region. We already made sure it&squot;s available. */
-id|request_region
+id|release_region
 c_func
 (paren
 id|QIC02_TAPE_PORT
 comma
 id|QIC02_TAPE_PORT_RANGE
-comma
-id|TPQIC02_NAME
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
 multiline_comment|/* Setup the page-address for the dma transfer. */
 id|buffaddr
 op_assign

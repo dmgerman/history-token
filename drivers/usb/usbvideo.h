@@ -1322,10 +1322,10 @@ id|file
 comma
 r_int
 r_int
-id|ioctlnr
+id|cmd
 comma
-r_void
-op_star
+r_int
+r_int
 id|arg
 )paren
 suffix:semicolon

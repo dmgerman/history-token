@@ -19,6 +19,7 @@ macro_line|#include &quot;sgi.h&quot;
 macro_line|#include &quot;sun.h&quot;
 macro_line|#include &quot;ibm.h&quot;
 macro_line|#include &quot;ultrix.h&quot;
+macro_line|#include &quot;efi.h&quot;
 DECL|variable|warn_no_part
 r_int
 id|warn_no_part
@@ -58,6 +59,11 @@ op_assign
 macro_line|#ifdef CONFIG_ACORN_PARTITION
 id|acorn_partition
 comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_EFI_PARTITION
+id|efi_partition
+comma
+multiline_comment|/* this must come before msdos */
 macro_line|#endif
 macro_line|#ifdef CONFIG_LDM_PARTITION
 id|ldm_partition

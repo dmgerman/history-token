@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/fs/hpfs/super.c&n; *&n; *  Mikulas Patocka (mikulas@artax.karlin.mff.cuni.cz), 1998-1999&n; *&n; *  mouning, unmounting, error handling&n; */
+multiline_comment|/*&n; *  linux/fs/hpfs/super.c&n; *&n; *  Mikulas Patocka (mikulas@artax.karlin.mff.cuni.cz), 1998-1999&n; *&n; *  mounting, unmounting, error handling&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;hpfs_fn.h&quot;
 macro_line|#include &lt;linux/module.h&gt;
@@ -1106,34 +1106,34 @@ r_return
 l_int|1
 suffix:semicolon
 multiline_comment|/*printk(&quot;Parsing opts: &squot;%s&squot;&bslash;n&quot;,opts);*/
-r_for
+r_while
 c_loop
+(paren
 (paren
 id|p
 op_assign
-id|strtok
+id|strsep
 c_func
 (paren
+op_amp
 id|opts
 comma
 l_string|&quot;,&quot;
 )paren
-suffix:semicolon
-id|p
-op_ne
-l_int|0
-suffix:semicolon
-id|p
-op_assign
-id|strtok
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;,&quot;
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+op_star
+id|p
+)paren
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren

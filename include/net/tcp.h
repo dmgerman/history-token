@@ -6936,6 +6936,6 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|macro|TCP_CHECK_TIMER
-mdefine_line|#define TCP_CHECK_TIMER(sk) do { } while (0);
+mdefine_line|#define TCP_CHECK_TIMER(sk) do { } while (0)
 macro_line|#endif&t;/* _TCP_H */
 eof
