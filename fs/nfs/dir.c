@@ -3090,7 +3090,9 @@ id|page
 )paren
 )paren
 (brace
-id|desc.ptr
+r_void
+op_star
+id|kaddr
 op_assign
 id|kmap_atomic
 c_func
@@ -3099,6 +3101,10 @@ id|page
 comma
 id|KM_USER0
 )paren
+suffix:semicolon
+id|desc.ptr
+op_assign
+id|kaddr
 suffix:semicolon
 id|res
 op_assign
@@ -3116,7 +3122,7 @@ suffix:semicolon
 id|kunmap_atomic
 c_func
 (paren
-id|desc.ptr
+id|kaddr
 comma
 id|KM_USER0
 )paren

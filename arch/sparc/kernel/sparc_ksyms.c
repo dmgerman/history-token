@@ -414,6 +414,13 @@ c_func
 id|sparc_valid_addr_bitmap
 )paren
 suffix:semicolon
+DECL|variable|phys_base
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|phys_base
+)paren
+suffix:semicolon
 multiline_comment|/* Atomic operations. */
 DECL|variable|_atomic_add
 id|EXPORT_SYMBOL_PRIVATE
