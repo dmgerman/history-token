@@ -389,10 +389,6 @@ r_int
 id|timeout
 )paren
 suffix:semicolon
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 multiline_comment|/*&n; * tmp_buf is used as a temporary buffer by serial_write.  We need to&n; * lock it in case the copy_from_user blocks while swapping in a page,&n; * and some other program tries to do a serial write at the same time.&n; * Since the lock will only come under contention when the system is&n; * swapping and available memory is low, it makes sense to share one&n; * buffer across all the serial ports, since it significantly saves&n; * memory if large numbers of serial ports are open.&n; */
 DECL|variable|tmp_buf
 r_static
@@ -3713,12 +3709,14 @@ c_func
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
@@ -3767,12 +3765,14 @@ id|c
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|c
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
@@ -6056,9 +6056,12 @@ id|timeout
 )paren
 id|char_time
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|char_time
 comma
 id|timeout
