@@ -1204,6 +1204,26 @@ l_int|1
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * It&squot;s time to move the inline table to an external&n;&t;&t; * page and begin to build the xtree&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|dbAlloc
+c_func
+(paren
+id|ip
+comma
+l_int|0
+comma
+id|sbi-&gt;nbperpage
+comma
+op_amp
+id|xaddr
+)paren
+)paren
+r_goto
+id|clean_up
+suffix:semicolon
+multiline_comment|/* No space */
 multiline_comment|/*&n;&t;&t; * Save the table, we&squot;re going to overwrite it with the&n;&t;&t; * xtree root&n;&t;&t; */
 r_struct
 id|dir_table_slot
@@ -1236,10 +1256,6 @@ id|ip
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Allocate the first block &amp; add it to the xtree&n;&t;&t; */
-id|xaddr
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1263,6 +1279,7 @@ l_int|0
 )paren
 )paren
 (brace
+multiline_comment|/* This really shouldn&squot;t fail */
 id|jfs_warn
 c_func
 (paren
@@ -3336,9 +3353,17 @@ id|xaddr
 )paren
 )paren
 )paren
+(brace
+id|DT_PUTPAGE
+c_func
+(paren
+id|smp
+)paren
+suffix:semicolon
 r_goto
 id|freeKeyName
 suffix:semicolon
+)brace
 id|pxdlist.maxnpxd
 op_assign
 l_int|1
