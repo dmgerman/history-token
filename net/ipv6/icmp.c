@@ -32,15 +32,14 @@ macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-DECL|variable|icmpv6_statistics
+id|DEFINE_SNMP_STAT
+c_func
+(paren
 r_struct
 id|icmpv6_mib
+comma
 id|icmpv6_statistics
-(braket
-id|NR_CPUS
-op_star
-l_int|2
-)braket
+)paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;ICMP socket for flow control.&n; */
 DECL|variable|icmpv6_socket
@@ -1243,21 +1242,10 @@ id|type
 op_le
 id|ICMPV6_PARAMPROB
 )paren
-(paren
-op_amp
-(paren
-id|icmpv6_statistics
-(braket
-id|smp_processor_id
+id|ICMP6_STATS_PTR_BH
 c_func
 (paren
-)paren
-op_star
-l_int|2
-)braket
-dot
 id|Icmp6OutDestUnreachs
-)paren
 )paren
 (braket
 id|type
@@ -2102,18 +2090,9 @@ id|type
 op_le
 id|ICMPV6_PARAMPROB
 )paren
-(paren
-op_amp
-id|icmpv6_statistics
-(braket
-id|smp_processor_id
+id|ICMP6_STATS_PTR_BH
 c_func
 (paren
-)paren
-op_star
-l_int|2
-)braket
-dot
 id|Icmp6InDestUnreachs
 )paren
 (braket
@@ -2135,18 +2114,9 @@ id|type
 op_le
 id|NDISC_REDIRECT
 )paren
-(paren
-op_amp
-id|icmpv6_statistics
-(braket
-id|smp_processor_id
+id|ICMP6_STATS_PTR_BH
 c_func
 (paren
-)paren
-op_star
-l_int|2
-)braket
-dot
 id|Icmp6InEchos
 )paren
 (braket

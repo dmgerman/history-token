@@ -18,26 +18,13 @@ macro_line|#endif
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#endif
 macro_line|#endif
-macro_line|#ifdef CONFIG_CLUSTERED_APIC
+macro_line|#ifdef CONFIG_X86_NUMAQ
 DECL|macro|INT_DELIVERY_MODE
 mdefine_line|#define INT_DELIVERY_MODE 0     /* physical delivery on LOCAL quad */
 macro_line|#else
 DECL|macro|INT_DELIVERY_MODE
 mdefine_line|#define INT_DELIVERY_MODE 1     /* logical delivery broadcast to all procs */
 macro_line|#endif
-macro_line|#ifndef clustered_apic_mode
-macro_line|#ifdef CONFIG_CLUSTERED_APIC
-DECL|macro|clustered_apic_mode
-mdefine_line|#define clustered_apic_mode (1)
-DECL|macro|esr_disable
-mdefine_line|#define esr_disable (1)
-macro_line|#else /* !CONFIG_CLUSTERED_APIC */
-DECL|macro|clustered_apic_mode
-mdefine_line|#define clustered_apic_mode (0)
-DECL|macro|esr_disable
-mdefine_line|#define esr_disable (0)
-macro_line|#endif /* CONFIG_CLUSTERED_APIC */
-macro_line|#endif 
 DECL|macro|BAD_APICID
 mdefine_line|#define BAD_APICID 0xFFu
 macro_line|#ifdef CONFIG_SMP
@@ -150,41 +137,8 @@ id|zap_low_mappings
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Some lowlevel functions might want to know about&n; * the real APIC ID &lt;-&gt; CPU # mapping.&n; */
 DECL|macro|MAX_APICID
 mdefine_line|#define MAX_APICID 256
-r_extern
-r_volatile
-r_int
-id|cpu_to_physical_apicid
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-r_extern
-r_volatile
-r_int
-id|physical_apicid_to_cpu
-(braket
-id|MAX_APICID
-)braket
-suffix:semicolon
-r_extern
-r_volatile
-r_int
-id|cpu_to_logical_apicid
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-r_extern
-r_volatile
-r_int
-id|logical_apicid_to_cpu
-(braket
-id|MAX_APICID
-)braket
-suffix:semicolon
 multiline_comment|/*&n; * This function is needed by all SMP systems. It must _always_ be valid&n; * from the initial startup. We map APIC_BASE very early in page_setup(),&n; * so this is correct in the x86 case.&n; */
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (current_thread_info()-&gt;cpu)
@@ -238,6 +192,52 @@ id|cpu_callout_map
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Mapping from cpu number to logical apicid */
+r_extern
+r_volatile
+id|u8
+id|cpu_2_logical_apicid
+(braket
+)braket
+suffix:semicolon
+DECL|function|cpu_to_logical_apicid
+r_static
+r_inline
+r_int
+id|cpu_to_logical_apicid
+c_func
+(paren
+r_int
+id|cpu
+)paren
+(brace
+r_return
+(paren
+r_int
+)paren
+id|cpu_2_logical_apicid
+(braket
+id|cpu
+)braket
+suffix:semicolon
+)brace
+r_extern
+r_void
+id|map_cpu_to_logical_apicid
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|unmap_cpu_to_logical_apicid
+c_func
+(paren
+r_int
+id|cpu
+)paren
+suffix:semicolon
 DECL|function|any_online_cpu
 r_extern
 r_inline

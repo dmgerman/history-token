@@ -248,17 +248,14 @@ DECL|function|module_frob_arch_sections
 id|module_frob_arch_sections
 c_func
 (paren
-r_const
 id|Elf64_Ehdr
 op_star
 id|hdr
 comma
-r_const
 id|Elf64_Shdr
 op_star
 id|sechdrs
 comma
-r_const
 r_char
 op_star
 id|secstrings
@@ -278,7 +275,6 @@ id|Elf64_Rela
 op_star
 id|rela
 suffix:semicolon
-r_const
 id|Elf64_Shdr
 op_star
 id|esechdrs
@@ -288,8 +284,7 @@ id|symtab
 comma
 op_star
 id|s
-suffix:semicolon
-id|Elf64_Shdr
+comma
 op_star
 id|got
 suffix:semicolon
@@ -357,10 +352,6 @@ id|s-&gt;sh_name
 (brace
 id|got
 op_assign
-(paren
-id|Elf64_Shdr
-op_star
-)paren
 id|s
 suffix:semicolon
 id|me-&gt;arch.gotsecindex

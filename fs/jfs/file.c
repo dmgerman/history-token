@@ -354,6 +354,16 @@ op_assign
 id|generic_file_read
 comma
 dot
+id|aio_read
+op_assign
+id|generic_file_aio_read
+comma
+dot
+id|aio_write
+op_assign
+id|generic_file_aio_write
+comma
+dot
 id|mmap
 op_assign
 id|generic_file_mmap

@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
-macro_line|#include &lt;../drivers/base/fs/fs.h&gt;&t;/* Eeeeewwwww */
 macro_line|#include &quot;check.h&quot;
 macro_line|#include &quot;acorn.h&quot;
 macro_line|#include &quot;amiga.h&quot;
@@ -1651,19 +1650,13 @@ r_struct
 id|subsystem
 id|block_subsys
 suffix:semicolon
-DECL|variable|part_subsys
+DECL|variable|ktype_part
 r_static
 r_struct
-id|subsystem
-id|part_subsys
+id|kobj_type
+id|ktype_part
 op_assign
 (brace
-dot
-id|parent
-op_assign
-op_amp
-id|block_subsys
-comma
 dot
 id|default_attrs
 op_assign
@@ -1676,32 +1669,6 @@ op_amp
 id|part_sysfs_ops
 comma
 )brace
-suffix:semicolon
-DECL|function|part_subsys_init
-r_static
-r_int
-id|__init
-id|part_subsys_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|subsystem_register
-c_func
-(paren
-op_amp
-id|part_subsys
-)paren
-suffix:semicolon
-)brace
-DECL|variable|part_subsys_init
-id|__initcall
-c_func
-(paren
-id|part_subsys_init
-)paren
 suffix:semicolon
 DECL|function|delete_partition
 r_void
@@ -1834,10 +1801,10 @@ op_assign
 op_amp
 id|disk-&gt;kobj
 suffix:semicolon
-id|p-&gt;kobj.subsys
+id|p-&gt;kobj.ktype
 op_assign
 op_amp
-id|part_subsys
+id|ktype_part
 suffix:semicolon
 id|kobject_register
 c_func
@@ -1931,6 +1898,9 @@ suffix:semicolon
 r_int
 id|j
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 id|strncpy
 c_func
 (paren
@@ -1962,12 +1932,21 @@ id|s
 op_assign
 l_char|&squot;!&squot;
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
 id|kobject_add
 c_func
 (paren
 op_amp
 id|disk-&gt;kobj
 )paren
+)paren
+)paren
+r_return
 suffix:semicolon
 id|disk_sysfs_symlinks
 c_func

@@ -275,24 +275,13 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;device_subsys - structure to be registered with kobject core.&n; */
-DECL|variable|device_subsys
+DECL|variable|ktype_device
+r_static
 r_struct
-id|subsystem
-id|device_subsys
+id|kobj_type
+id|ktype_device
 op_assign
 (brace
-dot
-id|kobj
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;devices&quot;
-comma
-)brace
-comma
 dot
 id|release
 op_assign
@@ -310,6 +299,16 @@ op_assign
 id|dev_default_attrs
 comma
 )brace
+suffix:semicolon
+multiline_comment|/**&n; *&t;device_subsys - structure to be registered with kobject core.&n; */
+id|decl_subsys
+c_func
+(paren
+id|devices
+comma
+op_amp
+id|ktype_device
+)paren
 suffix:semicolon
 multiline_comment|/**&n; *&t;device_create_file - create sysfs attribute file for device.&n; *&t;@dev:&t;device.&n; *&t;@attr:&t;device attribute descriptor.&n; */
 DECL|function|device_create_file
@@ -547,10 +546,13 @@ comma
 id|KOBJ_NAME_LEN
 )paren
 suffix:semicolon
-id|dev-&gt;kobj.subsys
-op_assign
-op_amp
-id|device_subsys
+id|kobj_set_kset_s
+c_func
+(paren
+id|dev
+comma
+id|devices_subsys
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -889,7 +891,7 @@ id|subsystem_register
 c_func
 (paren
 op_amp
-id|device_subsys
+id|devices_subsys
 )paren
 suffix:semicolon
 )brace

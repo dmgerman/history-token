@@ -293,16 +293,6 @@ DECL|member|capacity
 id|sector_t
 id|capacity
 suffix:semicolon
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-DECL|member|full_list
-r_struct
-id|list_head
-id|full_list
-suffix:semicolon
 DECL|member|flags
 r_int
 id|flags

@@ -184,6 +184,12 @@ r_int
 id|netdev_fastroute_obstacles
 suffix:semicolon
 macro_line|#endif
+DECL|variable|net_subsys
+r_static
+r_struct
+id|subsystem
+id|net_subsys
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n;&n;&t;&t;Protocol management and registration routines&n;&n;*******************************************************************************/
 multiline_comment|/*&n; *&t;For efficiency&n; */
 DECL|variable|netdev_nit
@@ -6942,7 +6948,17 @@ id|ifr-&gt;ifr_hwaddr.sa_data
 comma
 id|dev-&gt;dev_addr
 comma
-id|MAX_ADDR_LEN
+id|min
+c_func
+(paren
+r_sizeof
+id|ifr-&gt;ifr_hwaddr.sa_data
+comma
+(paren
+r_int
+)paren
+id|dev-&gt;addr_len
+)paren
 )paren
 suffix:semicolon
 id|ifr-&gt;ifr_hwaddr.sa_family
@@ -7044,7 +7060,17 @@ id|dev-&gt;broadcast
 comma
 id|ifr-&gt;ifr_hwaddr.sa_data
 comma
-id|MAX_ADDR_LEN
+id|min
+c_func
+(paren
+r_sizeof
+id|ifr-&gt;ifr_hwaddr.sa_data
+comma
+(paren
+r_int
+)paren
+id|dev-&gt;addr_len
+)paren
 )paren
 suffix:semicolon
 id|notifier_call_chain
@@ -8419,9 +8445,32 @@ comma
 l_string|&quot;register&quot;
 )paren
 suffix:semicolon
+id|snprintf
+c_func
+(paren
+id|dev-&gt;kobj.name
+comma
+id|KOBJ_NAME_LEN
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|kobj_set_kset_s
+c_func
+(paren
+id|dev
+comma
+id|net_subsys
+)paren
+suffix:semicolon
 id|ret
 op_assign
-l_int|0
+id|kobject_register
+c_func
+(paren
+op_amp
+id|dev-&gt;kobj
+)paren
 suffix:semicolon
 id|out
 suffix:colon
@@ -8815,6 +8864,13 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|kobject_unregister
+c_func
+(paren
+op_amp
+id|dev-&gt;kobj
+)paren
+suffix:semicolon
 multiline_comment|/* Last reference is our one */
 r_if
 c_cond
@@ -9008,6 +9064,15 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_NET_DIVERT */
+r_static
+id|decl_subsys
+c_func
+(paren
+id|net
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *       This is called single threaded during boot, so no need&n; *       to take the rtnl semaphore.&n; */
 DECL|function|net_dev_init
 r_static
@@ -9053,6 +9118,13 @@ c_func
 )paren
 r_goto
 id|out
+suffix:semicolon
+id|subsystem_register
+c_func
+(paren
+op_amp
+id|net_subsys
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_DIVERT
 id|dv_init

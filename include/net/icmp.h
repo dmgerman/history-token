@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/icmp.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
+macro_line|#include &lt;net/snmp.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 DECL|struct|icmp_err
 r_struct
@@ -30,15 +31,14 @@ id|icmp_err_convert
 (braket
 )braket
 suffix:semicolon
-r_extern
+id|DECLARE_SNMP_STAT
+c_func
+(paren
 r_struct
 id|icmp_mib
+comma
 id|icmp_statistics
-(braket
-id|NR_CPUS
-op_star
-l_int|2
-)braket
+)paren
 suffix:semicolon
 DECL|macro|ICMP_INC_STATS
 mdefine_line|#define ICMP_INC_STATS(field)&t;&t;SNMP_INC_STATS(icmp_statistics, field)
@@ -46,6 +46,12 @@ DECL|macro|ICMP_INC_STATS_BH
 mdefine_line|#define ICMP_INC_STATS_BH(field)&t;SNMP_INC_STATS_BH(icmp_statistics, field)
 DECL|macro|ICMP_INC_STATS_USER
 mdefine_line|#define ICMP_INC_STATS_USER(field) &t;SNMP_INC_STATS_USER(icmp_statistics, field)
+DECL|macro|ICMP_INC_STATS_FIELD
+mdefine_line|#define ICMP_INC_STATS_FIELD(offt)&t;&t;&t;&t;&t;&bslash;&n;&t;(*((unsigned long *) ((void *)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;     per_cpu_ptr(icmp_statistics[!in_softirq()],&bslash;&n;&t;&t;&t;&t;&t; smp_processor_id())) + offt))++;
+DECL|macro|ICMP_INC_STATS_BH_FIELD
+mdefine_line|#define ICMP_INC_STATS_BH_FIELD(offt)&t;&t;&t;&t;&t;&bslash;&n;&t;(*((unsigned long *) ((void *)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;     per_cpu_ptr(icmp_statistics[0],&t;&t;&bslash;&n;&t;&t;&t;&t;&t; smp_processor_id())) + offt))++;
+DECL|macro|ICMP_INC_STATS_USER_FIELD
+mdefine_line|#define ICMP_INC_STATS_USER_FIELD(offt)&t;&t;&t;&t;&t;&bslash;&n;&t;(*((unsigned long *) ((void *)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;     per_cpu_ptr(icmp_statistics[1],&t;&t;&bslash;&n;&t;&t;&t;&t;&t; smp_processor_id())) + offt))++;
 r_extern
 r_void
 id|icmp_send

@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_NETDEVICE_H
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/if_packet.h&gt;
+macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -48,7 +49,7 @@ DECL|macro|net_xmit_errno
 mdefine_line|#define net_xmit_errno(e)&t;((e) != NET_XMIT_CN ? -ENOBUFS : 0)
 macro_line|#endif
 DECL|macro|MAX_ADDR_LEN
-mdefine_line|#define MAX_ADDR_LEN&t;8&t;&t;/* Largest hardware address length */
+mdefine_line|#define MAX_ADDR_LEN&t;32&t;&t;/* Largest hardware address length */
 multiline_comment|/*&n; *&t;Compute the worst case header length according to the protocols&n; *&t;used.&n; */
 macro_line|#if !defined(CONFIG_AX25) &amp;&amp; !defined(CONFIG_AX25_MODULE) &amp;&amp; !defined(CONFIG_TR)
 DECL|macro|LL_MAX_HEADER
@@ -1270,6 +1271,12 @@ op_star
 id|divert
 suffix:semicolon
 macro_line|#endif /* CONFIG_NET_DIVERT */
+multiline_comment|/* generic object representation */
+DECL|member|kobj
+r_struct
+id|kobject
+id|kobj
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|packet_type

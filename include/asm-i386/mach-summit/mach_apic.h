@@ -5,6 +5,8 @@ r_extern
 r_int
 id|x86_summit
 suffix:semicolon
+DECL|macro|esr_disable
+mdefine_line|#define esr_disable (1)
 DECL|macro|XAPIC_DEST_CPUS_MASK
 mdefine_line|#define XAPIC_DEST_CPUS_MASK    0x0Fu
 DECL|macro|XAPIC_DEST_CLUSTER_MASK
@@ -106,6 +108,26 @@ comma
 id|nr_ioapics
 )paren
 suffix:semicolon
+)brace
+DECL|function|apicid_to_node
+r_static
+r_inline
+r_int
+id|apicid_to_node
+c_func
+(paren
+r_int
+id|logical_apicid
+)paren
+(brace
+r_return
+(paren
+id|logical_apicid
+op_rshift
+l_int|5
+)paren
+suffix:semicolon
+multiline_comment|/* 2 clusterids per CEC */
 )brace
 DECL|function|cpu_present_to_apicid
 r_static
@@ -209,8 +231,6 @@ id|apicid
 )paren
 suffix:semicolon
 )brace
-DECL|macro|WAKE_SECONDARY_VIA_INIT
-mdefine_line|#define WAKE_SECONDARY_VIA_INIT
 DECL|function|setup_portio_remap
 r_static
 r_inline
@@ -221,6 +241,23 @@ c_func
 r_void
 )paren
 (brace
+)brace
+DECL|function|check_phys_apicid_present
+r_static
+r_inline
+r_int
+id|check_phys_apicid_present
+c_func
+(paren
+r_int
+id|boot_cpu_physical_apicid
+)paren
+(brace
+r_return
+(paren
+l_int|1
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif /* __ASM_MACH_APIC_H */
 eof
