@@ -3793,9 +3793,9 @@ id|aureon51_eeprom
 id|__devinitdata
 op_assign
 (brace
-l_int|0x2a
+l_int|0x0a
 comma
-multiline_comment|/* SYSCONF: clock 512, mpu401, spdif-in/ADC, 3DACs */
+multiline_comment|/* SYSCONF: clock 512, spdif-in/ADC, 3DACs */
 l_int|0x80
 comma
 multiline_comment|/* ACLINK: I2S */
@@ -3844,9 +3844,9 @@ id|aureon71_eeprom
 id|__devinitdata
 op_assign
 (brace
-l_int|0x2b
+l_int|0x0b
 comma
-multiline_comment|/* SYSCONF: clock 512, mpu401, spdif-in/ADC, 4DACs */
+multiline_comment|/* SYSCONF: clock 512, spdif-in/ADC, 4DACs */
 l_int|0x80
 comma
 multiline_comment|/* ACLINK: I2S */
@@ -3895,9 +3895,9 @@ id|prodigy71_eeprom
 id|__devinitdata
 op_assign
 (brace
-l_int|0x2b
+l_int|0x0b
 comma
-multiline_comment|/* SYSCONF: clock 512, mpu401, spdif-in/ADC, 4DACs */
+multiline_comment|/* SYSCONF: clock 512, spdif-in/ADC, 4DACs */
 l_int|0x80
 comma
 multiline_comment|/* ACLINK: I2S */
