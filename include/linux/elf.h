@@ -285,6 +285,8 @@ DECL|macro|AT_HWCAP
 mdefine_line|#define AT_HWCAP  16    /* arch dependent hints at CPU capabilities */
 DECL|macro|AT_CLKTCK
 mdefine_line|#define AT_CLKTCK 17&t;/* frequency at which times() increments */
+DECL|macro|AT_SECURE
+mdefine_line|#define AT_SECURE 23   /* secure mode boolean */
 DECL|struct|dynamic
 r_typedef
 r_struct

@@ -532,6 +532,29 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|cap_bprm_secureexec
+r_int
+id|cap_bprm_secureexec
+(paren
+r_struct
+id|linux_binprm
+op_star
+id|bprm
+)paren
+(brace
+multiline_comment|/* If/when this module is enhanced to incorporate capability&n;&t;   bits on files, the test below should be extended to also perform a &n;&t;   test between the old and new capability sets.  For now,&n;&t;   it simply preserves the legacy decision algorithm used by&n;&t;   the old userland. */
+r_return
+(paren
+id|current-&gt;euid
+op_ne
+id|current-&gt;uid
+op_logical_or
+id|current-&gt;egid
+op_ne
+id|current-&gt;gid
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* moved from kernel/sys.c. */
 multiline_comment|/* &n; * cap_emulate_setxuid() fixes the effective / permitted capabilities of&n; * a process after a call to setuid, setreuid, or setresuid.&n; *&n; *  1) When set*uiding _from_ one of {r,e,s}uid == 0 _to_ all of&n; *  {r,e,s}uid != 0, the permitted and effective capabilities are&n; *  cleared.&n; *&n; *  2) When set*uiding _from_ euid == 0 _to_ euid != 0, the effective&n; *  capabilities of the process are cleared.&n; *&n; *  3) When set*uiding _from_ euid != 0 _to_ euid == 0, the effective&n; *  capabilities are set to the permitted capabilities.&n; *&n; *  fsuid is handled elsewhere. fsuid == 0 and {r,e,s}uid!= 0 should &n; *  never happen.&n; *&n; *  -astor &n; *&n; * cevans - New behaviour, Oct &squot;99&n; * A process may, via prctl(), elect to keep its capabilities when it&n; * calls setuid() and switches away from uid==0. Both permitted and&n; * effective sets will be retained.&n; * Without this change, it was impossible for a daemon to drop only some&n; * of its privilege. The call to setuid(!=0) would drop all privileges!&n; * Keeping uid 0 is not an option because uid 0 owns too many vital&n; * files..&n; * Thanks to Olaf Kirch and Peter Benie for spotting this.&n; */
 DECL|function|cap_emulate_setxuid
@@ -881,6 +904,13 @@ c_func
 id|cap_bprm_compute_creds
 )paren
 suffix:semicolon
+DECL|variable|cap_bprm_secureexec
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cap_bprm_secureexec
+)paren
+suffix:semicolon
 DECL|variable|cap_task_post_setuid
 id|EXPORT_SYMBOL
 c_func
@@ -954,6 +984,11 @@ dot
 id|bprm_set_security
 op_assign
 id|cap_bprm_set_security
+comma
+dot
+id|bprm_secureexec
+op_assign
+id|cap_bprm_secureexec
 comma
 dot
 id|task_post_setuid
