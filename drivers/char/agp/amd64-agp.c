@@ -1770,6 +1770,15 @@ l_string|&quot;B2&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+l_int|0x14
+suffix:colon
+id|revstring
+op_assign
+l_string|&quot;B3&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|revstring
