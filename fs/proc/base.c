@@ -337,7 +337,7 @@ id|S_IFREG
 op_or
 id|S_IRUGO
 op_or
-id|S_IWUSR
+id|S_IWUGO
 )paren
 comma
 id|E
@@ -350,8 +350,6 @@ comma
 id|S_IFREG
 op_or
 id|S_IRUGO
-op_or
-id|S_IWUSR
 )paren
 comma
 id|E
@@ -365,7 +363,7 @@ id|S_IFREG
 op_or
 id|S_IRUGO
 op_or
-id|S_IWUSR
+id|S_IWUGO
 )paren
 comma
 id|E
@@ -379,7 +377,7 @@ id|S_IFREG
 op_or
 id|S_IRUGO
 op_or
-id|S_IWUSR
+id|S_IWUGO
 )paren
 comma
 (brace
