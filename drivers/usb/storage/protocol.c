@@ -605,7 +605,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/***********************************************************************&n; * Scatter-gather transfer buffer access routines&n; ***********************************************************************/
-multiline_comment|/* Copy a buffer of length buflen to/from the srb&squot;s transfer buffer.&n; * Update the index and offset variables so that the next copy will&n; * pick up from where this one left off. */
+multiline_comment|/* Copy a buffer of length buflen to/from the srb&squot;s transfer buffer.&n; * (Note: for scatter-gather transfers (srb-&gt;use_sg &gt; 0), srb-&gt;request_buffer&n; * points to a list of s-g entries and we ignore srb-&gt;request_bufflen.&n; * For non-scatter-gather transfers, srb-&gt;request_buffer points to the&n; * transfer buffer itself and srb-&gt;request_bufflen is the buffer&squot;s length.)&n; * Update the *index and *offset variables so that the next copy will&n; * pick up from where this one left off. */
 DECL|function|usb_stor_access_xfer_buf
 r_int
 r_int
@@ -644,6 +644,7 @@ r_int
 r_int
 id|cnt
 suffix:semicolon
+multiline_comment|/* If not using scatter-gather, just transfer the data directly.&n;&t; * Make certain it will fit in the available buffer space. */
 r_if
 c_cond
 (paren
@@ -725,6 +726,7 @@ id|offset
 op_add_assign
 id|cnt
 suffix:semicolon
+multiline_comment|/* Using scatter-gather.  We have to go through the list one entry&n;&t; * at a time.  Each s-g entry contains some number of pages, and&n;&t; * each page has to be kmap()&squot;ed separately.  If the page is already&n;&t; * in kernel-addressable memory then kmap() will return its address.&n;&t; * If the page is not directly accessible -- such as a user buffer&n;&t; * located in high memory -- then kmap() will map it to a temporary&n;&t; * position in the kernel&squot;s virtual address space. */
 )brace
 r_else
 (brace
@@ -743,6 +745,7 @@ op_plus
 op_star
 id|index
 suffix:semicolon
+multiline_comment|/* This loop handles a single s-g list entry, which may&n;&t;&t; * include multiple pages.  Find the initial page structure&n;&t;&t; * and the starting offset within the page, and update&n;&t;&t; * the *offset and *index values for the next loop. */
 id|cnt
 op_assign
 l_int|0
@@ -814,6 +817,7 @@ op_minus
 id|cnt
 )paren
 (brace
+multiline_comment|/* Transfer ends within this s-g entry */
 id|sglen
 op_assign
 id|buflen
@@ -828,19 +832,21 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* Transfer continues to next s-g entry */
 op_star
 id|offset
 op_assign
 l_int|0
 suffix:semicolon
 op_increment
-id|sg
-suffix:semicolon
-op_increment
 op_star
 id|index
 suffix:semicolon
+op_increment
+id|sg
+suffix:semicolon
 )brace
+multiline_comment|/* Transfer the data for all the pages in this&n;&t;&t;&t; * s-g entry.  For each page: call kmap(), do the&n;&t;&t;&t; * transfer, and call kunmap() immediately after. */
 r_while
 c_loop
 (paren
@@ -920,6 +926,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
+multiline_comment|/* Start at the beginning of the next page */
 id|poff
 op_assign
 l_int|0
@@ -938,11 +945,12 @@ suffix:semicolon
 )brace
 )brace
 )brace
+multiline_comment|/* Return the amount actually transferred */
 r_return
 id|cnt
 suffix:semicolon
 )brace
-multiline_comment|/* Store the contents of buffer into srb&squot;s transfer buffer and set the&n; * residue. */
+multiline_comment|/* Store the contents of buffer into srb&squot;s transfer buffer and set the&n; * SCSI residue. */
 DECL|function|usb_stor_set_xfer_buf
 r_void
 id|usb_stor_set_xfer_buf

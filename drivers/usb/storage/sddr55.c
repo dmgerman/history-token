@@ -544,7 +544,11 @@ comma
 id|offset
 suffix:semicolon
 singleline_comment|// Since we only read in one block at a time, we have to create
-singleline_comment|// a bounce buffer if the transfer uses scatter-gather.
+singleline_comment|// a bounce buffer if the transfer uses scatter-gather.  We will
+singleline_comment|// move the data a piece at a time between the bounce buffer and
+singleline_comment|// the actual transfer buffer.  If we&squot;re not using scatter-gather,
+singleline_comment|// we can simply update the transfer buffer pointer to get the
+singleline_comment|// same effect.
 r_if
 c_cond
 (paren
@@ -917,6 +921,7 @@ id|leave
 suffix:semicolon
 )brace
 )brace
+singleline_comment|// Store the data (s-g) or update the pointer (!s-g)
 r_if
 c_cond
 (paren
@@ -1094,7 +1099,11 @@ id|USB_STOR_TRANSPORT_FAILED
 suffix:semicolon
 )brace
 singleline_comment|// Since we only write one block at a time, we have to create
-singleline_comment|// a bounce buffer if the transfer uses scatter-gather.
+singleline_comment|// a bounce buffer if the transfer uses scatter-gather.  We will
+singleline_comment|// move the data a piece at a time between the bounce buffer and
+singleline_comment|// the actual transfer buffer.  If we&squot;re not using scatter-gather,
+singleline_comment|// we can simply update the transfer buffer pointer to get the
+singleline_comment|// same effect.
 r_if
 c_cond
 (paren
@@ -1200,6 +1209,7 @@ id|pages
 op_lshift
 id|info-&gt;pageshift
 suffix:semicolon
+singleline_comment|// Get the data from the transfer buffer (s-g)
 r_if
 c_cond
 (paren
@@ -1816,6 +1826,7 @@ id|lba
 op_mod
 l_int|1000
 suffix:semicolon
+singleline_comment|// Update the transfer buffer pointer (!s-g)
 r_if
 c_cond
 (paren

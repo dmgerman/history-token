@@ -291,7 +291,11 @@ op_star
 id|info-&gt;ssize
 suffix:semicolon
 singleline_comment|// Since we don&squot;t read more than 64 KB at a time, we have to create
-singleline_comment|// a bounce buffer if the transfer uses scatter-gather.
+singleline_comment|// a bounce buffer if the transfer uses scatter-gather.  We will
+singleline_comment|// move the data a piece at a time between the bounce buffer and
+singleline_comment|// the actual transfer buffer.  If we&squot;re not using scatter-gather,
+singleline_comment|// we can simply update the transfer buffer pointer to get the
+singleline_comment|// same effect.
 id|alloclen
 op_assign
 id|min
@@ -490,6 +494,7 @@ comma
 id|len
 )paren
 suffix:semicolon
+singleline_comment|// Store the data (s-g) or update the pointer (!s-g)
 r_if
 c_cond
 (paren
@@ -653,7 +658,11 @@ op_star
 id|info-&gt;ssize
 suffix:semicolon
 singleline_comment|// Since we don&squot;t write more than 64 KB at a time, we have to create
-singleline_comment|// a bounce buffer if the transfer uses scatter-gather.
+singleline_comment|// a bounce buffer if the transfer uses scatter-gather.  We will
+singleline_comment|// move the data a piece at a time between the bounce buffer and
+singleline_comment|// the actual transfer buffer.  If we&squot;re not using scatter-gather,
+singleline_comment|// we can simply update the transfer buffer pointer to get the
+singleline_comment|// same effect.
 id|alloclen
 op_assign
 id|min
@@ -715,6 +724,7 @@ id|info-&gt;ssize
 op_amp
 l_int|0xff
 suffix:semicolon
+singleline_comment|// Get the data from the transfer buffer (s-g)
 r_if
 c_cond
 (paren
@@ -931,6 +941,7 @@ c_func
 l_string|&quot;jumpshot_write_data:  Gah!  Waitcount = 10.  Bad write!?&bslash;n&quot;
 )paren
 suffix:semicolon
+singleline_comment|// Update the transfer buffer pointer (!s-g)
 r_if
 c_cond
 (paren

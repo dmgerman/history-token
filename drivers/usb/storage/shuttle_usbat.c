@@ -1985,6 +1985,12 @@ id|srb-&gt;transfersize
 )paren
 suffix:semicolon
 )brace
+singleline_comment|// Since we only read in one block at a time, we have to create
+singleline_comment|// a bounce buffer if the transfer uses scatter-gather.  We will
+singleline_comment|// move the data a piece at a time between the bounce buffer and
+singleline_comment|// the actual transfer buffer.  If we&squot;re not using scatter-gather,
+singleline_comment|// we can simply update the transfer buffer pointer to get the
+singleline_comment|// same effect.
 id|len
 op_assign
 (paren
@@ -2309,7 +2315,7 @@ id|USB_STOR_TRANSPORT_GOOD
 )paren
 r_break
 suffix:semicolon
-singleline_comment|// Transfer the received data into the srb buffer
+singleline_comment|// Store the data (s-g) or update the pointer (!s-g)
 r_if
 c_cond
 (paren
