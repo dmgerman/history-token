@@ -6094,12 +6094,6 @@ id|contwr
 suffix:semicolon
 multiline_comment|/* continued write of in-core log? */
 r_int
-id|firstwr
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* first write of transaction */
-r_int
 id|error
 suffix:semicolon
 r_int
@@ -6414,11 +6408,6 @@ op_complement
 id|XLOG_TIC_INITED
 suffix:semicolon
 multiline_comment|/* clear bit */
-id|firstwr
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* increment log ops below */
 id|record_cnt
 op_increment
 suffix:semicolon
@@ -6720,10 +6709,6 @@ ques
 c_cond
 id|copy_len
 suffix:colon
-l_int|0
-suffix:semicolon
-id|firstwr
-op_assign
 l_int|0
 suffix:semicolon
 r_if

@@ -2655,7 +2655,6 @@ op_and_assign
 op_complement
 id|XFS_BLI_STALE
 suffix:semicolon
-multiline_comment|/* note this will have to change for page_buf interface... unstale isn&squot;t really an option RMC */
 id|ASSERT
 c_func
 (paren
