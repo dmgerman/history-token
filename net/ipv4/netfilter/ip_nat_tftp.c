@@ -18,7 +18,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;tfpt NAT helper&quot;
+l_string|&quot;tftp NAT helper&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

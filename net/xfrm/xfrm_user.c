@@ -2059,10 +2059,6 @@ multiline_comment|/* IPCOMP spi is 16-bits. */
 r_if
 c_cond
 (paren
-id|p-&gt;min
-op_ge
-l_int|0x10000
-op_logical_or
 id|p-&gt;max
 op_ge
 l_int|0x10000
@@ -2070,6 +2066,8 @@ l_int|0x10000
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+r_break
 suffix:semicolon
 r_default
 suffix:colon
@@ -2224,9 +2222,17 @@ c_func
 (paren
 id|x
 comma
+id|htonl
+c_func
+(paren
 id|p-&gt;min
+)paren
 comma
+id|htonl
+c_func
+(paren
 id|p-&gt;max
+)paren
 )paren
 suffix:semicolon
 r_if
