@@ -782,13 +782,6 @@ id|__arch_strnlen_user
 )paren
 suffix:semicolon
 multiline_comment|/* consistent area handling */
-DECL|variable|pci_alloc_consistent
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pci_alloc_consistent
-)paren
-suffix:semicolon
 DECL|variable|consistent_alloc
 id|EXPORT_SYMBOL
 c_func
