@@ -273,6 +273,18 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|peer_cachep
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;cannot create inet_peer_cache&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* All the timers, started at system startup tend&n;&t;   to synchronize. Perturb it a bit.&n;&t; */
 id|peer_periodic_timer.expires
 op_assign
