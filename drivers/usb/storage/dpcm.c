@@ -42,13 +42,13 @@ c_func
 (paren
 l_string|&quot;dpcm_transport: LUN=%d&bslash;n&quot;
 comma
-id|srb-&gt;lun
+id|srb-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 r_switch
 c_cond
 (paren
-id|srb-&gt;lun
+id|srb-&gt;device-&gt;lun
 )paren
 (brace
 r_case
@@ -70,11 +70,11 @@ l_int|1
 suffix:colon
 multiline_comment|/*&n;     * LUN 1 corresponds to the SmartMedia card reader.&n;     */
 multiline_comment|/*&n;     * Set the LUN to 0 (just in case).&n;     */
-id|srb-&gt;lun
+id|srb-&gt;device-&gt;lun
 op_assign
 l_int|0
 suffix:semicolon
-id|us-&gt;srb-&gt;lun
+id|us-&gt;srb-&gt;device-&gt;lun
 op_assign
 l_int|0
 suffix:semicolon
@@ -88,11 +88,11 @@ comma
 id|us
 )paren
 suffix:semicolon
-id|srb-&gt;lun
+id|srb-&gt;device-&gt;lun
 op_assign
 l_int|1
 suffix:semicolon
-id|us-&gt;srb-&gt;lun
+id|us-&gt;srb-&gt;device-&gt;lun
 op_assign
 l_int|1
 suffix:semicolon
@@ -107,7 +107,7 @@ c_func
 (paren
 l_string|&quot;dpcm_transport: Invalid LUN %d&bslash;n&quot;
 comma
-id|srb-&gt;lun
+id|srb-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 r_return

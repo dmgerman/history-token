@@ -777,7 +777,7 @@ id|atomic_inc
 c_func
 (paren
 op_amp
-id|scmnd-&gt;host-&gt;host_active
+id|scmnd-&gt;device-&gt;host-&gt;host_active
 )paren
 suffix:semicolon
 id|atomic_inc
@@ -877,13 +877,13 @@ c_func
 (paren
 l_string|&quot;Activating command for device %d (%d)&bslash;n&quot;
 comma
-id|scmnd-&gt;target
+id|scmnd-&gt;device-&gt;id
 comma
 id|atomic_read
 c_func
 (paren
 op_amp
-id|scmnd-&gt;host-&gt;host_active
+id|scmnd-&gt;device-&gt;host-&gt;host_active
 )paren
 )paren
 )paren
@@ -959,7 +959,7 @@ id|atomic_dec
 c_func
 (paren
 op_amp
-id|SCpnt-&gt;host-&gt;host_active
+id|SCpnt-&gt;device-&gt;host-&gt;host_active
 )paren
 suffix:semicolon
 id|atomic_dec
@@ -979,16 +979,16 @@ c_func
 (paren
 l_string|&quot;Deactivating command for device %d (active=%d, failed=%d)&bslash;n&quot;
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
 id|atomic_read
 c_func
 (paren
 op_amp
-id|SCpnt-&gt;host-&gt;host_active
+id|SCpnt-&gt;device-&gt;host-&gt;host_active
 )paren
 comma
-id|SCpnt-&gt;host-&gt;host_failed
+id|SCpnt-&gt;device-&gt;host-&gt;host_failed
 )paren
 )paren
 suffix:semicolon
@@ -1159,25 +1159,9 @@ op_amp
 id|newSCpnt-&gt;eh_timeout
 )paren
 suffix:semicolon
-id|newSCpnt-&gt;host
-op_assign
-id|SDpnt-&gt;host
-suffix:semicolon
 id|newSCpnt-&gt;device
 op_assign
 id|SDpnt
-suffix:semicolon
-id|newSCpnt-&gt;target
-op_assign
-id|SDpnt-&gt;id
-suffix:semicolon
-id|newSCpnt-&gt;lun
-op_assign
-id|SDpnt-&gt;lun
-suffix:semicolon
-id|newSCpnt-&gt;channel
-op_assign
-id|SDpnt-&gt;channel
 suffix:semicolon
 id|newSCpnt-&gt;request
 op_assign
@@ -1303,7 +1287,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|scsi_device
@@ -1487,7 +1471,7 @@ macro_line|#endif
 macro_line|#endif
 id|host
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
 id|ASSERT_LOCK
 c_func
@@ -1542,7 +1526,7 @@ l_int|0x1f
 )paren
 op_or
 (paren
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 op_lshift
 l_int|5
 op_amp
@@ -1623,11 +1607,11 @@ c_func
 l_string|&quot;scsi_dispatch_cmnd (host = %d, channel = %d, target = %d, &quot;
 l_string|&quot;command = %p, buffer = %p, &bslash;nbufflen = %d, done = %p)&bslash;n&quot;
 comma
-id|SCpnt-&gt;host-&gt;host_no
+id|SCpnt-&gt;device-&gt;host-&gt;host_no
 comma
-id|SCpnt-&gt;channel
+id|SCpnt-&gt;device-&gt;channel
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
 id|SCpnt-&gt;cmnd
 comma
@@ -1677,7 +1661,7 @@ c_func
 id|SCpnt
 )paren
 op_le
-id|SCpnt-&gt;host-&gt;max_cmd_len
+id|SCpnt-&gt;device-&gt;host-&gt;max_cmd_len
 )paren
 (brace
 id|spin_lock_irqsave
@@ -2099,11 +2083,6 @@ r_int
 id|i
 suffix:semicolon
 r_int
-id|target
-op_assign
-id|SDpnt-&gt;id
-suffix:semicolon
-r_int
 id|size
 op_assign
 id|COMMAND_SIZE
@@ -2135,7 +2114,7 @@ id|host-&gt;host_no
 comma
 id|SDpnt-&gt;channel
 comma
-id|target
+id|SDpnt-&gt;id
 comma
 id|buffer
 comma
@@ -2326,7 +2305,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
 id|ASSERT_LOCK
 c_func
@@ -2598,7 +2577,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
 id|ASSERT_LOCK
 c_func
@@ -2625,11 +2604,6 @@ comma
 (brace
 r_int
 id|i
-suffix:semicolon
-r_int
-id|target
-op_assign
-id|SCpnt-&gt;target
 suffix:semicolon
 r_int
 id|size
@@ -2661,9 +2635,9 @@ l_string|&quot;command : &quot;
 comma
 id|host-&gt;host_no
 comma
-id|SCpnt-&gt;channel
+id|SCpnt-&gt;device-&gt;channel
 comma
-id|target
+id|SCpnt-&gt;device-&gt;id
 comma
 id|buffer
 comma
@@ -3141,9 +3115,9 @@ c_func
 (paren
 l_string|&quot;Command finished %d %d 0x%x&bslash;n&quot;
 comma
-id|SCpnt-&gt;host-&gt;host_busy
+id|SCpnt-&gt;device-&gt;host-&gt;host_busy
 comma
-id|SCpnt-&gt;host-&gt;host_failed
+id|SCpnt-&gt;device-&gt;host-&gt;host_failed
 comma
 id|SCpnt-&gt;result
 )paren
@@ -3171,9 +3145,9 @@ c_func
 (paren
 l_string|&quot;Command needs retry %d %d 0x%x&bslash;n&quot;
 comma
-id|SCpnt-&gt;host-&gt;host_busy
+id|SCpnt-&gt;device-&gt;host-&gt;host_busy
 comma
-id|SCpnt-&gt;host-&gt;host_failed
+id|SCpnt-&gt;device-&gt;host-&gt;host_failed
 comma
 id|SCpnt-&gt;result
 )paren
@@ -3236,12 +3210,12 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|SCpnt-&gt;host-&gt;host_active
+id|SCpnt-&gt;device-&gt;host-&gt;host_active
 )paren
 comma
-id|SCpnt-&gt;host-&gt;host_busy
+id|SCpnt-&gt;device-&gt;host-&gt;host_busy
 comma
-id|SCpnt-&gt;host-&gt;host_failed
+id|SCpnt-&gt;device-&gt;host-&gt;host_failed
 )paren
 )paren
 suffix:semicolon
@@ -3280,7 +3254,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SCpnt-&gt;host-&gt;eh_wait
+id|SCpnt-&gt;device-&gt;host-&gt;eh_wait
 op_ne
 l_int|NULL
 )paren
@@ -3306,7 +3280,7 @@ suffix:semicolon
 id|scsi_host_failed_inc_and_test
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 suffix:semicolon
 )brace
@@ -3395,7 +3369,7 @@ id|SRpnt
 suffix:semicolon
 id|host
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
 id|device
 op_assign
@@ -3725,25 +3699,9 @@ op_amp
 id|SCpnt-&gt;eh_timeout
 )paren
 suffix:semicolon
-id|SCpnt-&gt;host
-op_assign
-id|SDpnt-&gt;host
-suffix:semicolon
 id|SCpnt-&gt;device
 op_assign
 id|SDpnt
-suffix:semicolon
-id|SCpnt-&gt;target
-op_assign
-id|SDpnt-&gt;id
-suffix:semicolon
-id|SCpnt-&gt;lun
-op_assign
-id|SDpnt-&gt;lun
-suffix:semicolon
-id|SCpnt-&gt;channel
-op_assign
-id|SDpnt-&gt;channel
 suffix:semicolon
 id|SCpnt-&gt;request
 op_assign
@@ -5283,6 +5241,13 @@ r_struct
 id|Scsi_Host
 op_star
 id|shpnt
+suffix:semicolon
+r_struct
+id|list_head
+id|spnt
+comma
+op_star
+id|prev_spnt
 suffix:semicolon
 multiline_comment|/*&n;&t; * Next, detach the devices from the driver.&n;&t; */
 r_for
