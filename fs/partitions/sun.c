@@ -19,7 +19,8 @@ id|bdev
 (brace
 r_int
 id|i
-comma
+suffix:semicolon
+id|__be16
 id|csum
 suffix:semicolon
 r_int
@@ -27,8 +28,7 @@ id|slot
 op_assign
 l_int|1
 suffix:semicolon
-r_int
-r_int
+id|__be16
 op_star
 id|ush
 suffix:semicolon
@@ -86,18 +86,15 @@ l_int|246
 )braket
 suffix:semicolon
 multiline_comment|/* Boot information etc. */
-r_int
-r_int
+id|__be16
 id|rspeed
 suffix:semicolon
 multiline_comment|/* Disk rotational speed */
-r_int
-r_int
+id|__be16
 id|pcylcount
 suffix:semicolon
 multiline_comment|/* Physical cylinder count */
-r_int
-r_int
+id|__be16
 id|sparecyl
 suffix:semicolon
 multiline_comment|/* extra sects per cylinder */
@@ -109,28 +106,23 @@ l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* More magic... */
-r_int
-r_int
+id|__be16
 id|ilfact
 suffix:semicolon
 multiline_comment|/* Interleave factor */
-r_int
-r_int
+id|__be16
 id|ncyl
 suffix:semicolon
 multiline_comment|/* Data cylinder count */
-r_int
-r_int
+id|__be16
 id|nacyl
 suffix:semicolon
 multiline_comment|/* Alt. cylinder count */
-r_int
-r_int
+id|__be16
 id|ntrks
 suffix:semicolon
 multiline_comment|/* Tracks per cylinder */
-r_int
-r_int
+id|__be16
 id|nsect
 suffix:semicolon
 multiline_comment|/* Sectors per track */
@@ -145,10 +137,10 @@ multiline_comment|/* Even more magic... */
 r_struct
 id|sun_partition
 (brace
-id|__u32
+id|__be32
 id|start_cylinder
 suffix:semicolon
-id|__u32
+id|__be32
 id|num_sectors
 suffix:semicolon
 )brace
@@ -157,13 +149,11 @@ id|partitions
 l_int|8
 )braket
 suffix:semicolon
-r_int
-r_int
+id|__be16
 id|magic
 suffix:semicolon
 multiline_comment|/* Magic number */
-r_int
-r_int
+id|__be16
 id|csum
 suffix:semicolon
 multiline_comment|/* Label xor&squot;d checksum */
@@ -246,8 +236,7 @@ id|ush
 op_assign
 (paren
 (paren
-r_int
-r_int
+id|__be16
 op_star
 )paren
 (paren
@@ -270,8 +259,7 @@ id|ush
 op_ge
 (paren
 (paren
-r_int
-r_int
+id|__be16
 op_star
 )paren
 id|label

@@ -2240,7 +2240,7 @@ c_cond
 (paren
 op_star
 (paren
-id|u16
+id|__le16
 op_star
 )paren
 (paren

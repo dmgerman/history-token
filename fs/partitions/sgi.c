@@ -6,17 +6,17 @@ r_struct
 id|sgi_disklabel
 (brace
 DECL|member|magic_mushroom
-id|s32
+id|__be32
 id|magic_mushroom
 suffix:semicolon
 multiline_comment|/* Big fat spliff... */
 DECL|member|root_part_num
-id|s16
+id|__be16
 id|root_part_num
 suffix:semicolon
 multiline_comment|/* Root partition number */
 DECL|member|swap_part_num
-id|s16
+id|__be16
 id|swap_part_num
 suffix:semicolon
 multiline_comment|/* Swap partition number */
@@ -49,12 +49,12 @@ l_int|8
 suffix:semicolon
 multiline_comment|/* Name of volume */
 DECL|member|block_num
-id|s32
+id|__be32
 id|block_num
 suffix:semicolon
 multiline_comment|/* Logical block number */
 DECL|member|num_bytes
-id|s32
+id|__be32
 id|num_bytes
 suffix:semicolon
 multiline_comment|/* How big, in bytes */
@@ -70,17 +70,17 @@ r_struct
 id|sgi_partition
 (brace
 DECL|member|num_blocks
-id|u32
+id|__be32
 id|num_blocks
 suffix:semicolon
 multiline_comment|/* Size in logical blocks */
 DECL|member|first_block
-id|u32
+id|__be32
 id|first_block
 suffix:semicolon
 multiline_comment|/* First logical block */
 DECL|member|type
-id|s32
+id|__be32
 id|type
 suffix:semicolon
 multiline_comment|/* Type of this partition */
@@ -92,12 +92,12 @@ l_int|16
 )braket
 suffix:semicolon
 DECL|member|csum
-id|s32
+id|__be32
 id|csum
 suffix:semicolon
 multiline_comment|/* Disk label checksum */
 DECL|member|_unused1
-id|s32
+id|__be32
 id|_unused1
 suffix:semicolon
 multiline_comment|/* Padding */
@@ -123,7 +123,8 @@ r_int
 id|i
 comma
 id|csum
-comma
+suffix:semicolon
+id|__be32
 id|magic
 suffix:semicolon
 r_int
@@ -133,12 +134,13 @@ l_int|1
 suffix:semicolon
 r_int
 r_int
-op_star
-id|ui
-comma
 id|start
 comma
 id|blocks
+suffix:semicolon
+id|__be32
+op_star
+id|ui
 comma
 id|cs
 suffix:semicolon
@@ -213,7 +215,7 @@ op_ne
 id|SGI_LABEL_MAGIC
 )paren
 (brace
-multiline_comment|/*printk(&quot;Dev %s SGI disklabel: bad magic %08x&bslash;n&quot;,&n;&t;&t;       bdevname(bdev, b), magic);*/
+multiline_comment|/*printk(&quot;Dev %s SGI disklabel: bad magic %08x&bslash;n&quot;,&n;&t;&t;       bdevname(bdev, b), be32_to_cpu(magic));*/
 id|put_dev_sector
 c_func
 (paren
@@ -228,8 +230,7 @@ id|ui
 op_assign
 (paren
 (paren
-r_int
-r_int
+id|__be32
 op_star
 )paren
 (paren
@@ -252,8 +253,7 @@ id|ui
 op_ge
 (paren
 (paren
-r_int
-r_int
+id|__be32
 op_star
 )paren
 id|label

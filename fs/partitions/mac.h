@@ -9,26 +9,26 @@ r_struct
 id|mac_partition
 (brace
 DECL|member|signature
-id|__u16
+id|__be16
 id|signature
 suffix:semicolon
 multiline_comment|/* expected to be MAC_PARTITION_MAGIC */
 DECL|member|res1
-id|__u16
+id|__be16
 id|res1
 suffix:semicolon
 DECL|member|map_count
-id|__u32
+id|__be32
 id|map_count
 suffix:semicolon
 multiline_comment|/* # blocks in partition map */
 DECL|member|start_block
-id|__u32
+id|__be32
 id|start_block
 suffix:semicolon
 multiline_comment|/* absolute starting block # of partition */
 DECL|member|block_count
-id|__u32
+id|__be32
 id|block_count
 suffix:semicolon
 multiline_comment|/* number of blocks in partition */
@@ -49,46 +49,46 @@ l_int|32
 suffix:semicolon
 multiline_comment|/* string type description */
 DECL|member|data_start
-id|__u32
+id|__be32
 id|data_start
 suffix:semicolon
 multiline_comment|/* rel block # of first data block */
 DECL|member|data_count
-id|__u32
+id|__be32
 id|data_count
 suffix:semicolon
 multiline_comment|/* number of data blocks */
 DECL|member|status
-id|__u32
+id|__be32
 id|status
 suffix:semicolon
 multiline_comment|/* partition status bits */
 DECL|member|boot_start
-id|__u32
+id|__be32
 id|boot_start
 suffix:semicolon
 DECL|member|boot_size
-id|__u32
+id|__be32
 id|boot_size
 suffix:semicolon
 DECL|member|boot_load
-id|__u32
+id|__be32
 id|boot_load
 suffix:semicolon
 DECL|member|boot_load2
-id|__u32
+id|__be32
 id|boot_load2
 suffix:semicolon
 DECL|member|boot_entry
-id|__u32
+id|__be32
 id|boot_entry
 suffix:semicolon
 DECL|member|boot_entry2
-id|__u32
+id|__be32
 id|boot_entry2
 suffix:semicolon
 DECL|member|boot_cksum
-id|__u32
+id|__be32
 id|boot_cksum
 suffix:semicolon
 DECL|member|processor
@@ -112,16 +112,16 @@ r_struct
 id|mac_driver_desc
 (brace
 DECL|member|signature
-id|__u16
+id|__be16
 id|signature
 suffix:semicolon
 multiline_comment|/* expected to be MAC_DRIVER_MAGIC */
 DECL|member|block_size
-id|__u16
+id|__be16
 id|block_size
 suffix:semicolon
 DECL|member|block_count
-id|__u32
+id|__be32
 id|block_count
 suffix:semicolon
 multiline_comment|/* ... more stuff */
