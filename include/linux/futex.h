@@ -8,5 +8,27 @@ DECL|macro|FUTEX_WAKE
 mdefine_line|#define FUTEX_WAKE (1)
 DECL|macro|FUTEX_FD
 mdefine_line|#define FUTEX_FD (2)
+r_extern
+id|asmlinkage
+r_int
+id|sys_futex
+c_func
+(paren
+r_void
+op_star
+id|uaddr
+comma
+r_int
+id|op
+comma
+r_int
+id|val
+comma
+r_struct
+id|timespec
+op_star
+id|utime
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

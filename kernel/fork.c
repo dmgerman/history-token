@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/futex.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1405,6 +1406,7 @@ c_cond
 (paren
 id|tsk-&gt;user_tid
 )paren
+(brace
 multiline_comment|/*&n;&t;&t; * We dont check the error code - if userspace has&n;&t;&t; * not set up a proper pointer then tough luck.&n;&t;&t; */
 id|put_user
 c_func
@@ -1414,6 +1416,19 @@ comma
 id|tsk-&gt;user_tid
 )paren
 suffix:semicolon
+id|sys_futex
+c_func
+(paren
+id|tsk-&gt;user_tid
+comma
+id|FUTEX_WAKE
+comma
+l_int|1
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|function|copy_mm
 r_static
