@@ -3481,12 +3481,13 @@ id|priv
 op_assign
 id|port-&gt;physport-&gt;private_data
 suffix:semicolon
-multiline_comment|/* Special case: a timeout of zero means we cannot call schedule(). */
+multiline_comment|/* Special case: a timeout of zero means we cannot call schedule().&n;&t; * Also if O_NONBLOCK is set then use the default implementation. */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|port-&gt;physport-&gt;cad-&gt;timeout
+op_le
+id|PARPORT_INACTIVITY_O_NONBLOCK
 )paren
 r_return
 id|parport_ieee1284_write_compat
@@ -3775,12 +3776,13 @@ id|priv
 op_assign
 id|port-&gt;physport-&gt;private_data
 suffix:semicolon
-multiline_comment|/* Special case: a timeout of zero means we cannot call schedule(). */
+multiline_comment|/* Special case: a timeout of zero means we cannot call schedule().&n;&t; * Also if O_NONBLOCK is set then use the default implementation. */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|port-&gt;physport-&gt;cad-&gt;timeout
+op_le
+id|PARPORT_INACTIVITY_O_NONBLOCK
 )paren
 r_return
 id|parport_ieee1284_ecp_write_data
@@ -4250,12 +4252,13 @@ comma
 id|port
 )paren
 suffix:semicolon
-multiline_comment|/* Special case: a timeout of zero means we cannot call schedule(). */
+multiline_comment|/* Special case: a timeout of zero means we cannot call schedule().&n;&t; * Also if O_NONBLOCK is set then use the default implementation. */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|port-&gt;cad-&gt;timeout
+op_le
+id|PARPORT_INACTIVITY_O_NONBLOCK
 )paren
 r_return
 id|parport_ieee1284_ecp_read_data

@@ -1618,6 +1618,8 @@ r_int
 id|len
 )paren
 suffix:semicolon
+DECL|macro|PARPORT_INACTIVITY_O_NONBLOCK
+mdefine_line|#define PARPORT_INACTIVITY_O_NONBLOCK 1
 r_extern
 r_int
 id|parport_set_timeout
