@@ -1,11 +1,11 @@
 multiline_comment|/* 8139cp.c: A Linux PCI Ethernet driver for the RealTek 8139C+ chips. */
-multiline_comment|/*&n;&t;Copyright 2001,2002 Jeff Garzik &lt;jgarzik@pobox.com&gt;&n;&n;&t;Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com) [tg3.c]&n;&t;Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com) [sungem.c]&n;&t;Copyright 2001 Manfred Spraul&t;&t;&t;&t;    [natsemi.c]&n;&t;Copyright 1999-2001 by Donald Becker.&t;&t;&t;    [natsemi.c]&n;       &t;Written 1997-2001 by Donald Becker.&t;&t;&t;    [8139too.c]&n;&t;Copyright 1998-2001 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;. [acenic.c]&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;See the file COPYING in this distribution for more information.&n;&n;&t;Contributors:&n;&t;&n;&t;&t;Wake-on-LAN support - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;PCI suspend/resume  - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;LinkChg interrupt   - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;&t;&n;&t;TODO, in rough priority order:&n;&t;* Test Tx checksumming thoroughly&n;&t;* dev-&gt;tx_timeout&n;&t;* Constants (module parms?) for Rx work limit&n;&t;* Complete reset on PciErr&n;&t;* Consider Rx interrupt mitigation using TimerIntr&n;&t;* Handle netif_rx return value&n;&t;* Investigate using skb-&gt;priority with h/w VLAN priority&n;&t;* Investigate using High Priority Tx Queue with skb-&gt;priority&n;&t;* Adjust Rx FIFO threshold and Max Rx DMA burst on Rx FIFO error&n;&t;* Adjust Tx FIFO threshold and Max Tx DMA burst on Tx FIFO error&n;&t;* Implement Tx software interrupt mitigation via&n;&t;  Tx descriptor bit&n;&t;* The real minimum of CP_MIN_MTU is 4 bytes.  However,&n;&t;  for this to be supported, one must(?) turn on packet padding.&n;&t;* Support external MII transceivers&n;&n; */
+multiline_comment|/*&n;&t;Copyright 2001,2002 Jeff Garzik &lt;jgarzik@pobox.com&gt;&n;&n;&t;Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com) [tg3.c]&n;&t;Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com) [sungem.c]&n;&t;Copyright 2001 Manfred Spraul&t;&t;&t;&t;    [natsemi.c]&n;&t;Copyright 1999-2001 by Donald Becker.&t;&t;&t;    [natsemi.c]&n;       &t;Written 1997-2001 by Donald Becker.&t;&t;&t;    [8139too.c]&n;&t;Copyright 1998-2001 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;. [acenic.c]&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;See the file COPYING in this distribution for more information.&n;&n;&t;Contributors:&n;&t;&n;&t;&t;Wake-on-LAN support - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;PCI suspend/resume  - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;LinkChg interrupt   - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;&t;&n;&t;TODO, in rough priority order:&n;&t;* Test Tx checksumming thoroughly&n;&t;* dev-&gt;tx_timeout&n;&t;* Constants (module parms?) for Rx work limit&n;&t;* Complete reset on PciErr&n;&t;* Consider Rx interrupt mitigation using TimerIntr&n;&t;* Handle netif_rx return value&n;&t;* Investigate using skb-&gt;priority with h/w VLAN priority&n;&t;* Investigate using High Priority Tx Queue with skb-&gt;priority&n;&t;* Adjust Rx FIFO threshold and Max Rx DMA burst on Rx FIFO error&n;&t;* Adjust Tx FIFO threshold and Max Tx DMA burst on Tx FIFO error&n;&t;* Implement Tx software interrupt mitigation via&n;&t;  Tx descriptor bit&n;&t;* The real minimum of CP_MIN_MTU is 4 bytes.  However,&n;&t;  for this to be supported, one must(?) turn on packet padding.&n;&t;* Support external MII transceivers&n;&n;&t;NOTES:&n;&t;* TX checksumming is considered experimental.  It is off by&n;&t;  default, use ethtool to turn it on.&n;&n; */
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&quot;8139cp&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&quot;0.5&quot;
+mdefine_line|#define DRV_VERSION&t;&t;&quot;1.0&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&t;&quot;Aug 26, 2003&quot;
+mdefine_line|#define DRV_RELDATE&t;&t;&quot;Aug 30, 2003&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -25,9 +25,6 @@ macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-multiline_comment|/* experimental TX checksumming feature enable/disable */
-DECL|macro|CP_TX_CHECKSUM
-macro_line|#undef CP_TX_CHECKSUM
 multiline_comment|/* VLAN tagging feature enable/disable */
 macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
 DECL|macro|CP_VLAN_TAG_USED
@@ -3477,7 +3474,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CP_TX_CHECKSUM
 r_if
 c_cond
 (paren
@@ -3557,7 +3553,6 @@ c_func
 suffix:semicolon
 )brace
 r_else
-macro_line|#endif
 id|txd-&gt;opts1
 op_assign
 id|cpu_to_le32
@@ -3637,7 +3632,6 @@ id|first_entry
 op_assign
 id|entry
 suffix:semicolon
-macro_line|#ifdef CP_TX_CHECKSUM
 r_const
 r_struct
 id|iphdr
@@ -3646,7 +3640,6 @@ id|ip
 op_assign
 id|skb-&gt;nh.iph
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* We must give this initial chunk to the device last.&n;&t;&t; * Otherwise we could race with the device.&n;&t;&t; */
 id|first_eor
 op_assign
@@ -3802,7 +3795,6 @@ id|RingEnd
 suffix:colon
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CP_TX_CHECKSUM
 r_if
 c_cond
 (paren
@@ -3852,7 +3844,6 @@ c_func
 suffix:semicolon
 )brace
 r_else
-macro_line|#endif
 id|ctrl
 op_assign
 id|eor
@@ -3989,7 +3980,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CP_TX_CHECKSUM
 r_if
 c_cond
 (paren
@@ -4057,7 +4047,6 @@ c_func
 suffix:semicolon
 )brace
 r_else
-macro_line|#endif
 id|txd-&gt;opts1
 op_assign
 id|cpu_to_le32
@@ -8568,14 +8557,6 @@ suffix:semicolon
 id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CP_TX_CHECKSUM
-id|dev-&gt;features
-op_or_assign
-id|NETIF_F_SG
-op_or
-id|NETIF_F_IP_CSUM
 suffix:semicolon
 macro_line|#endif
 macro_line|#if CP_VLAN_TAG_USED
