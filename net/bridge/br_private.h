@@ -736,16 +736,6 @@ suffix:semicolon
 multiline_comment|/* br_ioctl.c */
 r_extern
 r_int
-id|br_ioctl_deviceless_stub
-c_func
-(paren
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|br_dev_ioctl
 c_func
 (paren
@@ -761,6 +751,20 @@ id|rq
 comma
 r_int
 id|cmd
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|br_ioctl_deviceless_stub
+c_func
+(paren
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
 )paren
 suffix:semicolon
 multiline_comment|/* br_netfilter.c */

@@ -247,6 +247,9 @@ id|ioctl_hook
 (paren
 r_int
 r_int
+comma
+r_int
+r_int
 )paren
 )paren
 suffix:semicolon

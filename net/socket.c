@@ -2618,6 +2618,10 @@ id|br_ioctl_hook
 (paren
 r_int
 r_int
+id|cmd
+comma
+r_int
+r_int
 id|arg
 )paren
 op_assign
@@ -2634,6 +2638,9 @@ op_star
 id|hook
 )paren
 (paren
+r_int
+r_int
+comma
 r_int
 r_int
 )paren
@@ -2981,6 +2988,12 @@ suffix:colon
 r_case
 id|SIOCSIFBR
 suffix:colon
+r_case
+id|SIOCBRADDBR
+suffix:colon
+r_case
+id|SIOCBRDELBR
+suffix:colon
 id|err
 op_assign
 op_minus
@@ -3015,6 +3028,8 @@ op_assign
 id|br_ioctl_hook
 c_func
 (paren
+id|cmd
+comma
 id|arg
 )paren
 suffix:semicolon
