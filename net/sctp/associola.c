@@ -295,27 +295,27 @@ id|sp-&gt;assocparams.sasoc_asocmaxrxt
 suffix:semicolon
 id|asoc-&gt;rto_initial
 op_assign
+id|MSECS_TO_JIFFIES
+c_func
+(paren
 id|sp-&gt;rtoinfo.srto_initial
-op_star
-id|HZ
-op_div
-l_int|1000
+)paren
 suffix:semicolon
 id|asoc-&gt;rto_max
 op_assign
+id|MSECS_TO_JIFFIES
+c_func
+(paren
 id|sp-&gt;rtoinfo.srto_max
-op_star
-id|HZ
-op_div
-l_int|1000
+)paren
 suffix:semicolon
 id|asoc-&gt;rto_min
 op_assign
+id|MSECS_TO_JIFFIES
+c_func
+(paren
 id|sp-&gt;rtoinfo.srto_min
-op_star
-id|HZ
-op_div
-l_int|1000
+)paren
 suffix:semicolon
 id|asoc-&gt;overall_error_count
 op_assign
@@ -403,11 +403,11 @@ id|sp-&gt;initmsg.sinit_max_attempts
 suffix:semicolon
 id|asoc-&gt;max_init_timeo
 op_assign
+id|MSECS_TO_JIFFIES
+c_func
+(paren
 id|sp-&gt;initmsg.sinit_max_init_timeo
-op_star
-id|HZ
-op_div
-l_int|1000
+)paren
 suffix:semicolon
 multiline_comment|/* Allocate storage for the ssnmap after the inbound and outbound&n;&t; * streams have been negotiated during Init.&n;&t; */
 id|asoc-&gt;ssnmap
@@ -543,6 +543,11 @@ id|asoc-&gt;peer.transport_addr_list
 suffix:semicolon
 multiline_comment|/* RFC 2960 5.1 Normal Establishment of an Association&n;&t; *&n;&t; * After the reception of the first data chunk in an&n;&t; * association the endpoint must immediately respond with a&n;&t; * sack to acknowledge the data chunk.  Subsequent&n;&t; * acknowledgements should be done as described in Section&n;&t; * 6.2.&n;&t; *&n;&t; * [We implement this by telling a new association that it&n;&t; * already received one packet.]&n;&t; */
 id|asoc-&gt;peer.sack_needed
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Assume that the peer recongizes ASCONF until reported otherwise&n;&t; * via an ERROR chunk.&n;&t; */
+id|asoc-&gt;peer.asconf_capable
 op_assign
 l_int|1
 suffix:semicolon
@@ -1247,9 +1252,11 @@ suffix:semicolon
 multiline_comment|/* Initialize the peer&squot;s heartbeat interval based on the&n;&t; * sock configured value.&n;&t; */
 id|peer-&gt;hb_interval
 op_assign
+id|MSECS_TO_JIFFIES
+c_func
+(paren
 id|sp-&gt;paddrparam.spp_hbinterval
-op_star
-id|HZ
+)paren
 suffix:semicolon
 multiline_comment|/* Set the path max_retrans.  */
 id|peer-&gt;max_retrans
