@@ -4135,7 +4135,6 @@ suffix:semicolon
 DECL|function|asus_hotk_remove
 r_static
 r_int
-id|__exit
 id|asus_hotk_remove
 c_func
 (paren
