@@ -32,11 +32,6 @@ mdefine_line|#define PRID_VR4131_REV2_2&t;0x00000c83
 multiline_comment|/* VR4133 0x00000c84- */
 DECL|macro|PRID_VR4133
 mdefine_line|#define PRID_VR4133&t;&t;0x00000c84
-multiline_comment|/*&n; * Memory resource&n; */
-DECL|macro|IO_MEM_RESOURCE_START
-mdefine_line|#define IO_MEM_RESOURCE_START&t;0UL
-DECL|macro|IO_MEM_RESOURCE_END
-mdefine_line|#define IO_MEM_RESOURCE_END&t;0x1fffffffUL
 multiline_comment|/*&n; * Bus Control Uint&n; */
 r_extern
 r_int
@@ -250,9 +245,151 @@ id|irq
 )paren
 )paren
 suffix:semicolon
+DECL|macro|PIUINT_COMMAND
+mdefine_line|#define PIUINT_COMMAND&t;&t;0x0040
+DECL|macro|PIUINT_DATA
+mdefine_line|#define PIUINT_DATA&t;&t;0x0020
+DECL|macro|PIUINT_PAGE1
+mdefine_line|#define PIUINT_PAGE1&t;&t;0x0010
+DECL|macro|PIUINT_PAGE0
+mdefine_line|#define PIUINT_PAGE0&t;&t;0x0008
+DECL|macro|PIUINT_DATALOST
+mdefine_line|#define PIUINT_DATALOST&t;&t;0x0004
+DECL|macro|PIUINT_STATUSCHANGE
+mdefine_line|#define PIUINT_STATUSCHANGE&t;0x0001
+r_extern
+r_void
+id|vr41xx_enable_piuint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|vr41xx_disable_piuint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+suffix:semicolon
+DECL|macro|AIUINT_INPUT_DMAEND
+mdefine_line|#define AIUINT_INPUT_DMAEND&t;0x0800
+DECL|macro|AIUINT_INPUT_DMAHALT
+mdefine_line|#define AIUINT_INPUT_DMAHALT&t;0x0400
+DECL|macro|AIUINT_INPUT_DATALOST
+mdefine_line|#define AIUINT_INPUT_DATALOST&t;0x0200
+DECL|macro|AIUINT_INPUT_DATA
+mdefine_line|#define AIUINT_INPUT_DATA&t;0x0100
+DECL|macro|AIUINT_OUTPUT_DMAEND
+mdefine_line|#define AIUINT_OUTPUT_DMAEND&t;0x0008
+DECL|macro|AIUINT_OUTPUT_DMAHALT
+mdefine_line|#define AIUINT_OUTPUT_DMAHALT&t;0x0004
+DECL|macro|AIUINT_OUTPUT_NODATA
+mdefine_line|#define AIUINT_OUTPUT_NODATA&t;0x0002
+r_extern
+r_void
+id|vr41xx_enable_aiuint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|vr41xx_disable_aiuint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+suffix:semicolon
+DECL|macro|KIUINT_DATALOST
+mdefine_line|#define KIUINT_DATALOST&t;&t;0x0004
+DECL|macro|KIUINT_DATAREADY
+mdefine_line|#define KIUINT_DATAREADY&t;0x0002
+DECL|macro|KIUINT_SCAN
+mdefine_line|#define KIUINT_SCAN&t;&t;0x0001
+r_extern
+r_void
+id|vr41xx_enable_kiuint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|vr41xx_disable_kiuint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+suffix:semicolon
+DECL|macro|DSIUINT_CTS
+mdefine_line|#define DSIUINT_CTS&t;&t;0x0800
+DECL|macro|DSIUINT_RXERR
+mdefine_line|#define DSIUINT_RXERR&t;&t;0x0400
+DECL|macro|DSIUINT_RX
+mdefine_line|#define DSIUINT_RX&t;&t;0x0200
+DECL|macro|DSIUINT_TX
+mdefine_line|#define DSIUINT_TX&t;&t;0x0100
+DECL|macro|DSIUINT_ALL
+mdefine_line|#define DSIUINT_ALL&t;&t;0x0f00
 r_extern
 r_void
 id|vr41xx_enable_dsiuint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|vr41xx_disable_dsiuint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+suffix:semicolon
+DECL|macro|FIRINT_UNIT
+mdefine_line|#define FIRINT_UNIT&t;&t;0x0010
+DECL|macro|FIRINT_RX_DMAEND
+mdefine_line|#define FIRINT_RX_DMAEND&t;0x0008
+DECL|macro|FIRINT_RX_DMAHALT
+mdefine_line|#define FIRINT_RX_DMAHALT&t;0x0004
+DECL|macro|FIRINT_TX_DMAEND
+mdefine_line|#define FIRINT_TX_DMAEND&t;0x0002
+DECL|macro|FIRINT_TX_DMAHALT
+mdefine_line|#define FIRINT_TX_DMAHALT&t;0x0001
+r_extern
+r_void
+id|vr41xx_enable_firint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|vr41xx_disable_firint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|vr41xx_enable_pciint
 c_func
 (paren
 r_void
@@ -260,7 +397,71 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|vr41xx_disable_dsiuint
+id|vr41xx_disable_pciint
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|vr41xx_enable_scuint
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|vr41xx_disable_scuint
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|macro|CSIINT_TX_DMAEND
+mdefine_line|#define CSIINT_TX_DMAEND&t;0x0040
+DECL|macro|CSIINT_TX_DMAHALT
+mdefine_line|#define CSIINT_TX_DMAHALT&t;0x0020
+DECL|macro|CSIINT_TX_DATA
+mdefine_line|#define CSIINT_TX_DATA&t;&t;0x0010
+DECL|macro|CSIINT_TX_FIFOEMPTY
+mdefine_line|#define CSIINT_TX_FIFOEMPTY&t;0x0008
+DECL|macro|CSIINT_RX_DMAEND
+mdefine_line|#define CSIINT_RX_DMAEND&t;0x0004
+DECL|macro|CSIINT_RX_DMAHALT
+mdefine_line|#define CSIINT_RX_DMAHALT&t;0x0002
+DECL|macro|CSIINT_RX_FIFOEMPTY
+mdefine_line|#define CSIINT_RX_FIFOEMPTY&t;0x0001
+r_extern
+r_void
+id|vr41xx_enable_csiint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|vr41xx_disable_csiint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|vr41xx_enable_bcuint
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|vr41xx_disable_bcuint
 c_func
 (paren
 r_void
@@ -465,57 +666,206 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * PCI Control Unit&n; */
-DECL|struct|vr41xx_pci_address_space
+DECL|macro|PCI_MASTER_ADDRESS_MASK
+mdefine_line|#define PCI_MASTER_ADDRESS_MASK&t;0x7fffffffU
+DECL|struct|pci_master_address_conversion
 r_struct
-id|vr41xx_pci_address_space
+id|pci_master_address_conversion
 (brace
-DECL|member|internal_base
-id|u32
-id|internal_base
+DECL|member|bus_base_address
+r_uint32
+id|bus_base_address
 suffix:semicolon
 DECL|member|address_mask
-id|u32
+r_uint32
 id|address_mask
 suffix:semicolon
-DECL|member|pci_base
-id|u32
-id|pci_base
+DECL|member|pci_base_address
+r_uint32
+id|pci_base_address
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|vr41xx_pci_address_map
+DECL|struct|pci_target_address_conversion
 r_struct
-id|vr41xx_pci_address_map
+id|pci_target_address_conversion
 (brace
-DECL|member|mem1
-r_struct
-id|vr41xx_pci_address_space
-op_star
-id|mem1
+DECL|member|address_mask
+r_uint32
+id|address_mask
 suffix:semicolon
-DECL|member|mem2
-r_struct
-id|vr41xx_pci_address_space
-op_star
-id|mem2
+DECL|member|bus_base_address
+r_uint32
+id|bus_base_address
 suffix:semicolon
-DECL|member|io
+)brace
+suffix:semicolon
+r_typedef
+r_enum
+(brace
+DECL|enumerator|CANNOT_LOCK_FROM_DEVICE
+id|CANNOT_LOCK_FROM_DEVICE
+comma
+DECL|enumerator|CAN_LOCK_FROM_DEVICE
+id|CAN_LOCK_FROM_DEVICE
+comma
+DECL|typedef|pci_exclusive_access_t
+)brace
+id|pci_exclusive_access_t
+suffix:semicolon
+DECL|struct|pci_mailbox_address
 r_struct
-id|vr41xx_pci_address_space
+id|pci_mailbox_address
+(brace
+DECL|member|base_address
+r_uint32
+id|base_address
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|pci_target_address_window
+r_struct
+id|pci_target_address_window
+(brace
+DECL|member|base_address
+r_uint32
+id|base_address
+suffix:semicolon
+)brace
+suffix:semicolon
+r_typedef
+r_enum
+(brace
+DECL|enumerator|PCI_ARBITRATION_MODE_FAIR
+id|PCI_ARBITRATION_MODE_FAIR
+comma
+DECL|enumerator|PCI_ARBITRATION_MODE_ALTERNATE_0
+id|PCI_ARBITRATION_MODE_ALTERNATE_0
+comma
+DECL|enumerator|PCI_ARBITRATION_MODE_ALTERNATE_B
+id|PCI_ARBITRATION_MODE_ALTERNATE_B
+comma
+DECL|typedef|pci_arbiter_priority_control_t
+)brace
+id|pci_arbiter_priority_control_t
+suffix:semicolon
+r_typedef
+r_enum
+(brace
+DECL|enumerator|PCI_TAKE_AWAY_GNT_DISABLE
+id|PCI_TAKE_AWAY_GNT_DISABLE
+comma
+DECL|enumerator|PCI_TAKE_AWAY_GNT_ENABLE
+id|PCI_TAKE_AWAY_GNT_ENABLE
+comma
+DECL|typedef|pci_take_away_gnt_mode_t
+)brace
+id|pci_take_away_gnt_mode_t
+suffix:semicolon
+DECL|struct|pci_controller_unit_setup
+r_struct
+id|pci_controller_unit_setup
+(brace
+DECL|member|master_memory1
+r_struct
+id|pci_master_address_conversion
 op_star
-id|io
+id|master_memory1
+suffix:semicolon
+DECL|member|master_memory2
+r_struct
+id|pci_master_address_conversion
+op_star
+id|master_memory2
+suffix:semicolon
+DECL|member|target_memory1
+r_struct
+id|pci_target_address_conversion
+op_star
+id|target_memory1
+suffix:semicolon
+DECL|member|target_memory2
+r_struct
+id|pci_target_address_conversion
+op_star
+id|target_memory2
+suffix:semicolon
+DECL|member|master_io
+r_struct
+id|pci_master_address_conversion
+op_star
+id|master_io
+suffix:semicolon
+DECL|member|exclusive_access
+id|pci_exclusive_access_t
+id|exclusive_access
+suffix:semicolon
+DECL|member|pci_clock_max
+r_uint32
+id|pci_clock_max
+suffix:semicolon
+DECL|member|wait_time_limit_from_irdy_to_trdy
+r_uint8
+id|wait_time_limit_from_irdy_to_trdy
+suffix:semicolon
+multiline_comment|/* Only VR4122 is supported */
+DECL|member|mailbox
+r_struct
+id|pci_mailbox_address
+op_star
+id|mailbox
+suffix:semicolon
+DECL|member|target_window1
+r_struct
+id|pci_target_address_window
+op_star
+id|target_window1
+suffix:semicolon
+DECL|member|target_window2
+r_struct
+id|pci_target_address_window
+op_star
+id|target_window2
+suffix:semicolon
+DECL|member|master_latency_timer
+r_uint8
+id|master_latency_timer
+suffix:semicolon
+DECL|member|retry_limit
+r_uint8
+id|retry_limit
+suffix:semicolon
+DECL|member|arbiter_priority_control
+id|pci_arbiter_priority_control_t
+id|arbiter_priority_control
+suffix:semicolon
+DECL|member|take_away_gnt_mode
+id|pci_take_away_gnt_mode_t
+id|take_away_gnt_mode
+suffix:semicolon
+DECL|member|mem_resource
+r_struct
+id|resource
+op_star
+id|mem_resource
+suffix:semicolon
+DECL|member|io_resource
+r_struct
+id|resource
+op_star
+id|io_resource
 suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
 r_void
-id|vr41xx_pciu_init
+id|vr41xx_pciu_setup
 c_func
 (paren
 r_struct
-id|vr41xx_pci_address_map
+id|pci_controller_unit_setup
 op_star
-id|map
+id|setup
 )paren
 suffix:semicolon
 macro_line|#endif /* __NEC_VR41XX_H */

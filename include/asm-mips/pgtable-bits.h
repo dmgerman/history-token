@@ -48,7 +48,7 @@ DECL|macro|_PAGE_SILENT_WRITE
 mdefine_line|#define _PAGE_SILENT_WRITE          (1&lt;&lt;8)
 DECL|macro|_CACHE_MASK
 mdefine_line|#define _CACHE_MASK                 (7&lt;&lt;9)
-macro_line|#if defined(CONFIG_CPU_SB1)
+macro_line|#ifdef CONFIG_CPU_SB1
 multiline_comment|/* No penalty for being coherent on the SB1, so just&n;   use it for &quot;noncoherent&quot; spaces, too.  Shouldn&squot;t hurt. */
 DECL|macro|_CACHE_UNCACHED
 mdefine_line|#define _CACHE_UNCACHED             (2&lt;&lt;9)
@@ -58,6 +58,27 @@ DECL|macro|_CACHE_CACHABLE_NONCOHERENT
 mdefine_line|#define _CACHE_CACHABLE_NONCOHERENT (5&lt;&lt;9)
 DECL|macro|_CACHE_UNCACHED_ACCELERATED
 mdefine_line|#define _CACHE_UNCACHED_ACCELERATED (7&lt;&lt;9)
+macro_line|#elif defined(CONFIG_CPU_RM9000)
+DECL|macro|_CACHE_WT
+mdefine_line|#define _CACHE_WT&t;&t;&t;(0 &lt;&lt; 9)
+DECL|macro|_CACHE_WTWA
+mdefine_line|#define _CACHE_WTWA&t;&t;&t;(1 &lt;&lt; 9)
+DECL|macro|_CACHE_UC_B
+mdefine_line|#define _CACHE_UC_B&t;&t;&t;(2 &lt;&lt; 9)
+DECL|macro|_CACHE_WB
+mdefine_line|#define _CACHE_WB&t;&t;&t;(3 &lt;&lt; 9)
+DECL|macro|_CACHE_CWBEA
+mdefine_line|#define _CACHE_CWBEA&t;&t;&t;(4 &lt;&lt; 9)
+DECL|macro|_CACHE_CWB
+mdefine_line|#define _CACHE_CWB&t;&t;&t;(5 &lt;&lt; 9)
+DECL|macro|_CACHE_UCNB
+mdefine_line|#define _CACHE_UCNB&t;&t;&t;(6 &lt;&lt; 9)
+DECL|macro|_CACHE_FPC
+mdefine_line|#define _CACHE_FPC&t;&t;&t;(7 &lt;&lt; 9)
+DECL|macro|_CACHE_UNCACHED
+mdefine_line|#define _CACHE_UNCACHED&t;&t;&t;_CACHE_UC_B
+DECL|macro|_CACHE_CACHABLE_NONCOHERENT
+mdefine_line|#define _CACHE_CACHABLE_NONCOHERENT&t;_CACHE_UC_B
 macro_line|#else
 DECL|macro|_CACHE_CACHABLE_NO_WA
 mdefine_line|#define _CACHE_CACHABLE_NO_WA       (0&lt;&lt;9)  /* R4600 only              */
@@ -89,6 +110,9 @@ mdefine_line|#define PAGE_CACHABLE_DEFAULT&t;_CACHE_UNCACHED
 macro_line|#elif defined(CONFIG_DMA_NONCOHERENT)
 DECL|macro|PAGE_CACHABLE_DEFAULT
 mdefine_line|#define PAGE_CACHABLE_DEFAULT&t;_CACHE_CACHABLE_NONCOHERENT
+macro_line|#elif defined(CONFIG_CPU_RM9000)
+DECL|macro|PAGE_CACHABLE_DEFAULT
+mdefine_line|#define PAGE_CACHABLE_DEFAULT&t;_CACHE_CWBEA
 macro_line|#else
 DECL|macro|PAGE_CACHABLE_DEFAULT
 mdefine_line|#define PAGE_CACHABLE_DEFAULT&t;_CACHE_CACHABLE_COW

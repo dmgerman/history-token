@@ -106,6 +106,8 @@ id|len
 op_sub_assign
 id|l
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 id|buf
@@ -404,6 +406,8 @@ id|len
 op_sub_assign
 id|l
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 id|buf
@@ -594,6 +598,8 @@ id|len
 op_sub_assign
 id|l
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 id|l
@@ -824,6 +830,8 @@ id|len
 op_sub_assign
 id|l
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 id|l
@@ -1524,6 +1532,8 @@ id|len
 op_sub_assign
 id|l
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 id|l

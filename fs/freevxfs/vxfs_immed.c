@@ -2,24 +2,9 @@ multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All ri
 multiline_comment|/*&n; * Veritas filesystem driver - support for &squot;immed&squot; inodes.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &quot;vxfs.h&quot;
 macro_line|#include &quot;vxfs_inode.h&quot;
-r_static
-r_int
-id|vxfs_immed_readlink
-c_func
-(paren
-r_struct
-id|dentry
-op_star
-comma
-r_char
-id|__user
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 r_static
 r_int
 id|vxfs_immed_follow_link
@@ -58,7 +43,7 @@ op_assign
 dot
 id|readlink
 op_assign
-id|vxfs_immed_readlink
+id|generic_readlink
 comma
 dot
 id|follow_link
@@ -81,54 +66,6 @@ id|vxfs_immed_readpage
 comma
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * vxfs_immed_readlink - read immed symlink&n; * @dp:&t;&t;dentry for the link&n; * @bp:&t;&t;output buffer&n; * @buflen:&t;length of @bp&n; *&n; * Description:&n; *   vxfs_immed_readlink calls vfs_readlink to read the link&n; *   described by @dp into userspace.&n; *&n; * Returns:&n; *   Number of bytes successfully copied to userspace.&n; */
-r_static
-r_int
-DECL|function|vxfs_immed_readlink
-id|vxfs_immed_readlink
-c_func
-(paren
-r_struct
-id|dentry
-op_star
-id|dp
-comma
-r_char
-id|__user
-op_star
-id|bp
-comma
-r_int
-id|buflen
-)paren
-(brace
-r_struct
-id|vxfs_inode_info
-op_star
-id|vip
-op_assign
-id|VXFS_INO
-c_func
-(paren
-id|dp-&gt;d_inode
-)paren
-suffix:semicolon
-r_return
-(paren
-id|vfs_readlink
-c_func
-(paren
-id|dp
-comma
-id|bp
-comma
-id|buflen
-comma
-id|vip-&gt;vii_immed.vi_immed
-)paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/**&n; * vxfs_immed_follow_link - follow immed symlink&n; * @dp:&t;&t;dentry for the link&n; * @np:&t;&t;pathname lookup data for the current path walk&n; *&n; * Description:&n; *   vxfs_immed_follow_link restarts the pathname lookup with&n; *   the data obtained from @dp.&n; *&n; * Returns:&n; *   Zero on success, else a negative error code.&n; */
 r_static
 r_int
@@ -158,16 +95,16 @@ c_func
 id|dp-&gt;d_inode
 )paren
 suffix:semicolon
-r_return
-(paren
-id|vfs_follow_link
+id|nd_set_link
 c_func
 (paren
 id|np
 comma
 id|vip-&gt;vii_immed.vi_immed
 )paren
-)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * vxfs_immed_readpage - read part of an immed inode into pagecache&n; * @file:&t;file context (unused)&n; * @page:&t;page frame to fill in.&n; *&n; * Description:&n; *   vxfs_immed_readpage reads a part of the immed area of the&n; *   file that hosts @pp into the pagecache.&n; *&n; * Returns:&n; *   Zero on success, else a negative error code.&n; *&n; * Locking status:&n; *   @page is locked and will be unlocked.&n; */

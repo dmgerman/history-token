@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/sh/boot/compressed/misc.c&n; * &n; * This is a collection of several routines from gzip-1.0.3 &n; * adapted for Linux.&n; *&n; * malloc by Hannu Savolainen 1993 and Matthias Urlichs 1994&n; *&n; * Adapted for SH by Stuart Menefy, Aug 1999&n; *&n; * Modified to use standard LinuxSH BIOS by Greg Banks 7Jul2000&n; */
+multiline_comment|/*&n; * arch/sh/boot/compressed/misc.c&n; *&n; * This is a collection of several routines from gzip-1.0.3&n; * adapted for Linux.&n; *&n; * malloc by Hannu Savolainen 1993 and Matthias Urlichs 1994&n; *&n; * Adapted for SH by Stuart Menefy, Aug 1999&n; *&n; * Modified to use standard LinuxSH BIOS by Greg Banks 7Jul2000&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_SH_STANDARD_BIOS
@@ -248,8 +248,7 @@ op_star
 op_star
 )paren
 suffix:semicolon
-r_static
-r_void
+r_int
 id|puts
 c_func
 (paren
@@ -422,7 +421,6 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SH_STANDARD_BIOS
 DECL|function|strlen
-r_static
 r_int
 id|strlen
 c_func
@@ -453,7 +451,7 @@ id|i
 suffix:semicolon
 )brace
 DECL|function|puts
-r_void
+r_int
 id|puts
 c_func
 (paren
@@ -463,22 +461,30 @@ op_star
 id|s
 )paren
 (brace
-id|sh_bios_console_write
-c_func
-(paren
-id|s
-comma
+r_int
+id|len
+op_assign
 id|strlen
 c_func
 (paren
 id|s
 )paren
+suffix:semicolon
+id|sh_bios_console_write
+c_func
+(paren
+id|s
+comma
+id|len
 )paren
+suffix:semicolon
+r_return
+id|len
 suffix:semicolon
 )brace
 macro_line|#else
 DECL|function|puts
-r_void
+r_int
 id|puts
 c_func
 (paren
@@ -489,6 +495,9 @@ id|s
 )paren
 (brace
 multiline_comment|/* This should be updated to use the sh-sci routines */
+r_return
+l_int|0
+suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|memset

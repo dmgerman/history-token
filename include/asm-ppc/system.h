@@ -296,14 +296,6 @@ dot
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|abs
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|cacheable_memzero
 c_func

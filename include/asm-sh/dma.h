@@ -1,10 +1,11 @@
-multiline_comment|/*&n; * include/asm-sh/dma.h&n; *&n; * Copyright (C) 2003  Paul Mundt&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/*&n; * include/asm-sh/dma.h&n; *&n; * Copyright (C) 2003, 2004  Paul Mundt&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
 macro_line|#ifndef __ASM_SH_DMA_H
 DECL|macro|__ASM_SH_DMA_H
 mdefine_line|#define __ASM_SH_DMA_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;asm/cpu/dma.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/* The maximum address that we can perform a DMA transfer to on this platform */
@@ -20,30 +21,56 @@ macro_line|#else
 DECL|macro|MAX_DMA_CHANNELS
 macro_line|#  define MAX_DMA_CHANNELS&t;(CONFIG_NR_ONCHIP_DMA_CHANNELS)
 macro_line|#endif
-multiline_comment|/* &n; * Read and write modes can mean drastically different things depending on the&n; * channel configuration. Consult your DMAC documentation and module&n; * implementation for further clues.&n; */
+multiline_comment|/*&n; * Read and write modes can mean drastically different things depending on the&n; * channel configuration. Consult your DMAC documentation and module&n; * implementation for further clues.&n; */
 DECL|macro|DMA_MODE_READ
 mdefine_line|#define DMA_MODE_READ&t;&t;0x00
 DECL|macro|DMA_MODE_WRITE
 mdefine_line|#define DMA_MODE_WRITE&t;&t;0x01
 DECL|macro|DMA_MODE_MASK
 mdefine_line|#define DMA_MODE_MASK&t;&t;0x01
+DECL|macro|DMA_AUTOINIT
+mdefine_line|#define DMA_AUTOINIT&t;&t;0x10
+multiline_comment|/*&n; * DMAC (dma_info) flags&n; */
+r_enum
+(brace
+DECL|enumerator|DMAC_CHANNELS_CONFIGURED
+id|DMAC_CHANNELS_CONFIGURED
+op_assign
+l_int|0x00
+comma
+DECL|enumerator|DMAC_CHANNELS_TEI_CAPABLE
+id|DMAC_CHANNELS_TEI_CAPABLE
+op_assign
+l_int|0x01
+comma
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * DMA channel capabilities / flags&n; */
+r_enum
+(brace
+DECL|enumerator|DMA_CONFIGURED
+id|DMA_CONFIGURED
+op_assign
+l_int|0x00
+comma
+DECL|enumerator|DMA_TEI_CAPABLE
+id|DMA_TEI_CAPABLE
+op_assign
+l_int|0x01
+comma
+)brace
+suffix:semicolon
 r_extern
 id|spinlock_t
 id|dma_spin_lock
 suffix:semicolon
 r_struct
-id|dma_info
+id|dma_channel
 suffix:semicolon
 DECL|struct|dma_ops
 r_struct
 id|dma_ops
 (brace
-DECL|member|name
-r_const
-r_char
-op_star
-id|name
-suffix:semicolon
 DECL|member|request
 r_int
 (paren
@@ -52,9 +79,9 @@ id|request
 )paren
 (paren
 r_struct
-id|dma_info
+id|dma_channel
 op_star
-id|info
+id|chan
 )paren
 suffix:semicolon
 DECL|member|free
@@ -65,9 +92,9 @@ id|free
 )paren
 (paren
 r_struct
-id|dma_info
+id|dma_channel
 op_star
-id|info
+id|chan
 )paren
 suffix:semicolon
 DECL|member|get_residue
@@ -78,9 +105,9 @@ id|get_residue
 )paren
 (paren
 r_struct
-id|dma_info
+id|dma_channel
 op_star
-id|info
+id|chan
 )paren
 suffix:semicolon
 DECL|member|xfer
@@ -91,9 +118,9 @@ id|xfer
 )paren
 (paren
 r_struct
-id|dma_info
+id|dma_channel
 op_star
-id|info
+id|chan
 )paren
 suffix:semicolon
 DECL|member|configure
@@ -104,9 +131,9 @@ id|configure
 )paren
 (paren
 r_struct
-id|dma_info
+id|dma_channel
 op_star
-id|info
+id|chan
 comma
 r_int
 r_int
@@ -115,15 +142,16 @@ id|flags
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|dma_info
+DECL|struct|dma_channel
 r_struct
-id|dma_info
+id|dma_channel
 (brace
 DECL|member|dev_id
-r_const
 r_char
-op_star
 id|dev_id
+(braket
+l_int|16
+)braket
 suffix:semicolon
 DECL|member|chan
 r_int
@@ -150,19 +178,10 @@ r_int
 r_int
 id|dar
 suffix:semicolon
-DECL|member|configured
+DECL|member|flags
 r_int
 r_int
-id|configured
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|tei_capable
-r_int
-r_int
-id|tei_capable
-suffix:colon
-l_int|1
+id|flags
 suffix:semicolon
 DECL|member|busy
 id|atomic_t
@@ -177,14 +196,54 @@ DECL|member|wait_queue
 id|wait_queue_head_t
 id|wait_queue
 suffix:semicolon
+DECL|member|dev
+r_struct
+id|sys_device
+id|dev
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|dma_info
+r_struct
+id|dma_info
+(brace
+DECL|member|name
+r_const
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|nr_channels
+r_int
+r_int
+id|nr_channels
+suffix:semicolon
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
 DECL|member|ops
 r_struct
 id|dma_ops
 op_star
 id|ops
 suffix:semicolon
+DECL|member|channels
+r_struct
+id|dma_channel
+op_star
+id|channels
+suffix:semicolon
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|to_dma_channel
+mdefine_line|#define to_dma_channel(channel) container_of(channel, struct dma_channel, dev)
 multiline_comment|/* arch/sh/drivers/dma/dma-api.c */
 r_extern
 r_int
@@ -267,6 +326,18 @@ id|chan
 )paren
 suffix:semicolon
 r_extern
+r_struct
+id|dma_channel
+op_star
+id|get_dma_channel
+c_func
+(paren
+r_int
+r_int
+id|chan
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|dma_wait_for_completion
 c_func
@@ -296,18 +367,35 @@ id|register_dmac
 c_func
 (paren
 r_struct
-id|dma_ops
+id|dma_info
 op_star
-id|ops
+id|info
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|unregister_dmac
+c_func
+(paren
 r_struct
 id|dma_info
-id|dma_info
-(braket
-)braket
+op_star
+id|info
+)paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SYSFS
+multiline_comment|/* arch/sh/drivers/dma/dma-sysfs.c */
+r_extern
+r_int
+id|dma_create_sysfs_files
+c_func
+(paren
+r_struct
+id|dma_channel
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
 r_extern
 r_int
@@ -315,7 +403,7 @@ id|isa_dma_bridge_buggy
 suffix:semicolon
 macro_line|#else
 DECL|macro|isa_dma_bridge_buggy
-mdefine_line|#define isa_dma_bridge_buggy &t;(0)
+mdefine_line|#define isa_dma_bridge_buggy&t;(0)
 macro_line|#endif
 macro_line|#endif /* __ASM_SH_DMA_H */
 eof

@@ -152,6 +152,7 @@ r_void
 )paren
 (brace
 r_int
+r_int
 id|total
 op_assign
 l_int|0
@@ -160,6 +161,7 @@ id|reserved
 op_assign
 l_int|0
 suffix:semicolon
+r_int
 r_int
 id|shared
 op_assign
@@ -196,7 +198,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Free swap:       %6dkB&bslash;n&quot;
+l_string|&quot;Free swap:       %6ldkB&bslash;n&quot;
 comma
 id|nr_swap_pages
 op_lshift
@@ -287,7 +289,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%d pages of RAM&bslash;n&quot;
+l_string|&quot;%ld pages of RAM&bslash;n&quot;
 comma
 id|total
 )paren
@@ -295,7 +297,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%d reserved pages&bslash;n&quot;
+l_string|&quot;%ld reserved pages&bslash;n&quot;
 comma
 id|reserved
 )paren
@@ -303,7 +305,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%d pages shared&bslash;n&quot;
+l_string|&quot;%ld pages shared&bslash;n&quot;
 comma
 id|shared
 )paren
@@ -311,7 +313,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%d pages swap cached&bslash;n&quot;
+l_string|&quot;%ld pages swap cached&bslash;n&quot;
 comma
 id|cached
 )paren

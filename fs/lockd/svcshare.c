@@ -276,6 +276,8 @@ op_assign
 op_star
 id|shpp
 )paren
+op_ne
+l_int|0
 suffix:semicolon
 id|shpp
 op_assign

@@ -3,6 +3,7 @@ macro_line|#ifndef _LINUX_ROUTE_H
 DECL|macro|_LINUX_ROUTE_H
 mdefine_line|#define _LINUX_ROUTE_H
 macro_line|#include &lt;linux/if.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/* This structure gets passed by the SIOCADDRT and SIOCDELRT calls. */
 DECL|struct|rtentry
 r_struct
@@ -57,6 +58,7 @@ suffix:semicolon
 multiline_comment|/* +1 for binary compatibility!&t;*/
 DECL|member|rt_dev
 r_char
+id|__user
 op_star
 id|rt_dev
 suffix:semicolon

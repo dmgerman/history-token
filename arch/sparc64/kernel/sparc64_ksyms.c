@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/compat.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
@@ -210,12 +211,6 @@ r_const
 r_char
 op_star
 )paren
-suffix:semicolon
-r_extern
-r_char
-id|saved_command_line
-(braket
-)braket
 suffix:semicolon
 r_extern
 r_void

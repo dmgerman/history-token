@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ptrace.c,v 1.14 2003/11/28 23:05:43 kkojima Exp $&n; *&n; * linux/arch/sh/kernel/ptrace.c&n; *&n; * Original x86 implementation:&n; *&t;By Ross Biro 1/23/92&n; *&t;edited by Linus Torvalds&n; *&n; * SuperH version:   Copyright (C) 1999, 2000  Kaz Kojima &amp; Niibe Yutaka&n; *&n; */
+multiline_comment|/* $Id: ptrace.c,v 1.15 2004/05/07 05:32:05 sugioka Exp $&n; *&n; * linux/arch/sh/kernel/ptrace.c&n; *&n; * Original x86 implementation:&n; *&t;By Ross Biro 1/23/92&n; *&t;edited by Linus Torvalds&n; *&n; * SuperH version:   Copyright (C) 1999, 2000  Kaz Kojima &amp; Niibe Yutaka&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1025,32 +1025,6 @@ id|child
 comma
 id|data
 )paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|PTRACE_SETOPTIONS
-suffix:colon
-r_if
-c_cond
-(paren
-id|data
-op_amp
-id|PTRACE_O_TRACESYSGOOD
-)paren
-id|child-&gt;ptrace
-op_or_assign
-id|PT_TRACESYSGOOD
-suffix:semicolon
-r_else
-id|child-&gt;ptrace
-op_and_assign
-op_complement
-id|PT_TRACESYSGOOD
-suffix:semicolon
-id|ret
-op_assign
-l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon

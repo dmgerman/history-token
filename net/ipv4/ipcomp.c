@@ -2016,7 +2016,7 @@ suffix:semicolon
 DECL|variable|ipcomp4_protocol
 r_static
 r_struct
-id|inet_protocol
+id|net_protocol
 id|ipcomp4_protocol
 op_assign
 (brace

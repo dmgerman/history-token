@@ -180,7 +180,7 @@ suffix:semicolon
 DECL|variable|pim_protocol
 r_static
 r_struct
-id|inet_protocol
+id|net_protocol
 id|pim_protocol
 suffix:semicolon
 DECL|variable|ipmr_expire_timer
@@ -8201,7 +8201,7 @@ macro_line|#ifdef CONFIG_IP_PIMSM_V2
 DECL|variable|pim_protocol
 r_static
 r_struct
-id|inet_protocol
+id|net_protocol
 id|pim_protocol
 op_assign
 (brace

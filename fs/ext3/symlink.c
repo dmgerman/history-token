@@ -2,56 +2,8 @@ multiline_comment|/*&n; *  linux/fs/ext3/symlink.c&n; *&n; * Only fast symlinks 
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/jbd.h&gt;
 macro_line|#include &lt;linux/ext3_fs.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &quot;xattr.h&quot;
-r_static
-r_int
-DECL|function|ext3_readlink
-id|ext3_readlink
-c_func
-(paren
-r_struct
-id|dentry
-op_star
-id|dentry
-comma
-r_char
-id|__user
-op_star
-id|buffer
-comma
-r_int
-id|buflen
-)paren
-(brace
-r_struct
-id|ext3_inode_info
-op_star
-id|ei
-op_assign
-id|EXT3_I
-c_func
-(paren
-id|dentry-&gt;d_inode
-)paren
-suffix:semicolon
-r_return
-id|vfs_readlink
-c_func
-(paren
-id|dentry
-comma
-id|buffer
-comma
-id|buflen
-comma
-(paren
-r_char
-op_star
-)paren
-id|ei-&gt;i_data
-)paren
-suffix:semicolon
-)brace
 DECL|function|ext3_follow_link
 r_static
 r_int
@@ -80,8 +32,7 @@ c_func
 id|dentry-&gt;d_inode
 )paren
 suffix:semicolon
-r_return
-id|vfs_follow_link
+id|nd_set_link
 c_func
 (paren
 id|nd
@@ -93,6 +44,9 @@ op_star
 id|ei-&gt;i_data
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|ext3_symlink_inode_operations
 r_struct
@@ -103,12 +57,17 @@ op_assign
 dot
 id|readlink
 op_assign
-id|page_readlink
+id|generic_readlink
 comma
 dot
 id|follow_link
 op_assign
-id|page_follow_link
+id|page_follow_link_light
+comma
+dot
+id|put_link
+op_assign
+id|page_put_link
 comma
 dot
 id|setxattr
@@ -141,15 +100,13 @@ op_assign
 dot
 id|readlink
 op_assign
-id|ext3_readlink
+id|generic_readlink
 comma
-multiline_comment|/* BKL not held.  Don&squot;t need */
 dot
 id|follow_link
 op_assign
 id|ext3_follow_link
 comma
-multiline_comment|/* BKL not held.  Don&squot;t need */
 dot
 id|setxattr
 op_assign

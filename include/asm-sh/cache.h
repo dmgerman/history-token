@@ -39,10 +39,10 @@ r_int
 r_int
 id|linesz
 suffix:semicolon
-DECL|member|way_shift
+DECL|member|way_incr
 r_int
 r_int
-id|way_shift
+id|way_incr
 suffix:semicolon
 DECL|member|entry_shift
 r_int

@@ -3556,7 +3556,7 @@ suffix:semicolon
 DECL|variable|sit_protocol
 r_static
 r_struct
-id|inet_protocol
+id|net_protocol
 id|sit_protocol
 op_assign
 (brace

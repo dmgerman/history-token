@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-ebsa110/core.c&n; *&n; *  Copyright (C) 1998-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Extra MM routines for the EBSA-110 architecture&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -518,10 +519,11 @@ id|ebsa110_timer_interrupt
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Set up timer interrupt.&n; */
-DECL|function|ebsa110_time_init
+DECL|function|ebsa110_init_time
+r_static
 r_void
 id|__init
-id|ebsa110_time_init
+id|ebsa110_init_time
 c_func
 (paren
 r_void

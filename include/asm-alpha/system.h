@@ -39,8 +39,6 @@ DECL|macro|PARAM
 mdefine_line|#define PARAM&t;&t;&t;ZERO_PGE
 DECL|macro|COMMAND_LINE
 mdefine_line|#define COMMAND_LINE&t;&t;((char*)(PARAM + 0x0000))
-DECL|macro|COMMAND_LINE_SIZE
-mdefine_line|#define COMMAND_LINE_SIZE&t;256
 DECL|macro|INITRD_START
 mdefine_line|#define INITRD_START&t;&t;(*(unsigned long *) (PARAM+0x100))
 DECL|macro|INITRD_SIZE

@@ -19,12 +19,6 @@ macro_line|#include &lt;asm/mpc10x.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/prep_nvram.h&gt;
 r_extern
-r_char
-id|saved_command_line
-(braket
-)braket
-suffix:semicolon
-r_extern
 r_void
 id|lopec_find_bridges
 c_func

@@ -84,6 +84,10 @@ mdefine_line|#define might_sleep() do {} while(0)
 DECL|macro|might_sleep_if
 mdefine_line|#define might_sleep_if(cond) do {} while (0)
 macro_line|#endif
+DECL|macro|abs
+mdefine_line|#define abs(x) ({&t;&t;&t;&t;&bslash;&n;&t;&t;int __x = (x);&t;&t;&t;&bslash;&n;&t;&t;(__x &lt; 0) ? -__x : __x;&t;&t;&bslash;&n;&t;})
+DECL|macro|labs
+mdefine_line|#define labs(x) ({&t;&t;&t;&t;&bslash;&n;&t;&t;long __x = (x);&t;&t;&t;&bslash;&n;&t;&t;(__x &lt; 0) ? -__x : __x;&t;&t;&bslash;&n;&t;})
 r_extern
 r_struct
 id|notifier_block
@@ -142,14 +146,6 @@ comma
 r_int
 )paren
 id|ATTRIB_NORET
-suffix:semicolon
-r_extern
-r_int
-id|abs
-c_func
-(paren
-r_int
-)paren
 suffix:semicolon
 r_extern
 r_int

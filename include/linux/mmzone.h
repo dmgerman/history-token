@@ -220,11 +220,13 @@ id|list_head
 id|inactive_list
 suffix:semicolon
 DECL|member|nr_scan_active
-id|atomic_t
+r_int
+r_int
 id|nr_scan_active
 suffix:semicolon
 DECL|member|nr_scan_inactive
-id|atomic_t
+r_int
+r_int
 id|nr_scan_inactive
 suffix:semicolon
 DECL|member|nr_active

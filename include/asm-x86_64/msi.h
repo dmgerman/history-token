@@ -9,12 +9,7 @@ DECL|macro|MSI_DEST_MODE
 mdefine_line|#define MSI_DEST_MODE&t;&t;&t;MSI_LOGICAL_MODE
 DECL|macro|MSI_TARGET_CPU_SHIFT
 mdefine_line|#define MSI_TARGET_CPU_SHIFT&t;&t;12
-macro_line|#ifdef CONFIG_SMP
 DECL|macro|MSI_TARGET_CPU
-mdefine_line|#define MSI_TARGET_CPU&t;&t;logical_smp_processor_id()
-macro_line|#else
-DECL|macro|MSI_TARGET_CPU
-mdefine_line|#define MSI_TARGET_CPU&t;&t;TARGET_CPUS
-macro_line|#endif
+mdefine_line|#define MSI_TARGET_CPU&t;&t;&t;TARGET_CPUS
 macro_line|#endif /* ASM_MSI_H */
 eof

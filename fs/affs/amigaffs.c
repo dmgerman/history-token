@@ -1038,6 +1038,8 @@ op_member_access_from_pointer
 id|link_chain
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 r_if

@@ -33,6 +33,7 @@ id|sys_pipe
 c_func
 (paren
 id|nabi_no_regargs
+r_volatile
 r_struct
 id|pt_regs
 id|regs

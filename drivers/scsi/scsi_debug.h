@@ -63,6 +63,7 @@ comma
 r_int
 comma
 r_void
+id|__user
 op_star
 )paren
 suffix:semicolon

@@ -86,14 +86,14 @@ DECL|macro|INT_SET
 mdefine_line|#define INT_SET(reference,arch,valueref) &bslash;&n;    (__builtin_constant_p(valueref) ? &bslash;&n;&t;(void)( (reference) = ( ((arch) != ARCH_NOCONVERT) ? (INT_SWAP((reference),(valueref))) : (valueref)) ) : &bslash;&n;&t;(void)( &bslash;&n;&t;    ((reference) = (valueref)), &bslash;&n;&t;    ( ((arch) != ARCH_NOCONVERT) ? (reference) = INT_SWAP((reference),(reference)) : 0 ) &bslash;&n;&t;) &bslash;&n;    )
 multiline_comment|/* does not return a value */
 DECL|macro|INT_MOD_EXPR
-mdefine_line|#define INT_MOD_EXPR(reference,arch,code) &bslash;&n;    (void)(((arch) == ARCH_NOCONVERT) &bslash;&n;&t;? &bslash;&n;&t;    ((reference) code) &bslash;&n;&t;: &bslash;&n;&t;    ( &bslash;&n;&t;&t;(reference) = INT_GET((reference),arch) , &bslash;&n;&t;&t;((reference) code), &bslash;&n;&t;&t;INT_SET(reference, arch, reference) &bslash;&n;&t;    ) &bslash;&n;    )
+mdefine_line|#define INT_MOD_EXPR(reference,arch,code) &bslash;&n;    (((arch) == ARCH_NOCONVERT) &bslash;&n;&t;? &bslash;&n;&t;    (void)((reference) code) &bslash;&n;&t;: &bslash;&n;&t;    (void)( &bslash;&n;&t;&t;(reference) = INT_GET((reference),arch) , &bslash;&n;&t;&t;((reference) code), &bslash;&n;&t;&t;INT_SET(reference, arch, reference) &bslash;&n;&t;    ) &bslash;&n;    )
 multiline_comment|/* does not return a value */
 DECL|macro|INT_MOD
 mdefine_line|#define INT_MOD(reference,arch,delta) &bslash;&n;    (void)( &bslash;&n;&t;INT_MOD_EXPR(reference,arch,+=(delta)) &bslash;&n;    )
 multiline_comment|/*&n; * INT_COPY - copy a value between two locations with the&n; *&t;      _same architecture_ but _potentially different sizes_&n; *&n; *&t;    if the types of the two parameters are equal or they are&n; *&t;&t;in native architecture, a simple copy is done&n; *&n; *&t;    otherwise, architecture conversions are done&n; *&n; */
 multiline_comment|/* does not return a value */
 DECL|macro|INT_COPY
-mdefine_line|#define INT_COPY(dst,src,arch) &bslash;&n;    (void)( &bslash;&n;&t;((sizeof(dst) == sizeof(src)) || ((arch) == ARCH_NOCONVERT)) &bslash;&n;&t;    ? &bslash;&n;&t;&t;((dst) = (src)) &bslash;&n;&t;    : &bslash;&n;&t;&t;INT_SET(dst, arch, INT_GET(src, arch)) &bslash;&n;    )
+mdefine_line|#define INT_COPY(dst,src,arch) &bslash;&n;    ( &bslash;&n;&t;((sizeof(dst) == sizeof(src)) || ((arch) == ARCH_NOCONVERT)) &bslash;&n;&t;    ? &bslash;&n;&t;&t;(void)((dst) = (src)) &bslash;&n;&t;    : &bslash;&n;&t;&t;INT_SET(dst, arch, INT_GET(src, arch)) &bslash;&n;    )
 multiline_comment|/*&n; * INT_XLATE - copy a value in either direction between two locations&n; *&t;       with different architectures&n; *&n; *&t;&t;    dir &lt; 0&t;- copy from memory to buffer (native to arch)&n; *&t;&t;    dir &gt; 0&t;- copy from buffer to memory (arch to native)&n; */
 multiline_comment|/* does not return a value */
 DECL|macro|INT_XLATE

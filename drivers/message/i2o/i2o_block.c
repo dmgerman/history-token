@@ -2669,6 +2669,18 @@ id|dev
 op_assign
 id|disk-&gt;private_data
 suffix:semicolon
+r_void
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
+suffix:semicolon
 multiline_comment|/* Anyone capable of this syscall can do *real bad* things */
 r_if
 c_cond
@@ -2729,11 +2741,7 @@ r_return
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|argp
 comma
 op_amp
 id|g
@@ -2761,9 +2769,10 @@ id|dev-&gt;rcache
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -2777,9 +2786,10 @@ id|dev-&gt;wcache
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case

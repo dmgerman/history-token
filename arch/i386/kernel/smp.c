@@ -170,11 +170,14 @@ r_int
 r_int
 id|mask
 op_assign
-id|cpus_coerce
+id|cpus_addr
 c_func
 (paren
 id|cpumask
 )paren
+(braket
+l_int|0
+)braket
 suffix:semicolon
 r_int
 r_int

@@ -297,11 +297,6 @@ multiline_comment|/*ticks*/
 suffix:semicolon
 r_extern
 r_char
-op_star
-id|saved_command_line
-suffix:semicolon
-r_extern
-r_char
 id|m68k_debug_device
 (braket
 )braket

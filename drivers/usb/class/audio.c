@@ -33,19 +33,6 @@ DECL|macro|SND_DEV_DSP16
 mdefine_line|#define SND_DEV_DSP16   5
 DECL|macro|dprintk
 mdefine_line|#define dprintk(x)
-DECL|macro|abs
-macro_line|#undef abs
-r_extern
-r_int
-id|abs
-c_func
-(paren
-r_int
-id|__x
-)paren
-id|__attribute_const__
-suffix:semicolon
-multiline_comment|/* Shut up warning */
 multiline_comment|/* --------------------------------------------------------------------- */
 multiline_comment|/*&n; * Linked list of all audio devices...&n; */
 DECL|variable|audiodevs
@@ -621,36 +608,6 @@ DECL|macro|AFMT_BYTESSHIFT
 mdefine_line|#define AFMT_BYTESSHIFT(x) ((AFMT_ISSTEREO(x) ? 1 : 0) + (AFMT_IS16BIT(x) ? 1 : 0))
 DECL|macro|AFMT_BYTES
 mdefine_line|#define AFMT_BYTES(x)      (1&lt;&lt;AFMT_BYTESSHFIT(x))
-multiline_comment|/* --------------------------------------------------------------------- */
-multiline_comment|/* prevent picking up a bogus abs macro */
-DECL|macro|abs
-macro_line|#undef abs
-DECL|function|abs
-r_static
-r_inline
-r_int
-id|abs
-c_func
-(paren
-r_int
-id|x
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|x
-OL
-l_int|0
-)paren
-r_return
-op_minus
-id|x
-suffix:semicolon
-r_return
-id|x
-suffix:semicolon
-)brace
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|ld2
 r_static

@@ -29,6 +29,8 @@ DECL|macro|BI
 mdefine_line|#define BI(x,y) &bslash;&n;&t;BUILD_IRQ(x##y)
 DECL|macro|BUILD_16_IRQS
 mdefine_line|#define BUILD_16_IRQS(x) &bslash;&n;&t;BI(x,0) BI(x,1) BI(x,2) BI(x,3) &bslash;&n;&t;BI(x,4) BI(x,5) BI(x,6) BI(x,7) &bslash;&n;&t;BI(x,8) BI(x,9) BI(x,a) BI(x,b) &bslash;&n;&t;BI(x,c) BI(x,d) BI(x,e) BI(x,f)
+DECL|macro|BUILD_14_IRQS
+mdefine_line|#define BUILD_14_IRQS(x) &bslash;&n;&t;BI(x,0) BI(x,1) BI(x,2) BI(x,3) &bslash;&n;&t;BI(x,4) BI(x,5) BI(x,6) BI(x,7) &bslash;&n;&t;BI(x,8) BI(x,9) BI(x,a) BI(x,b) &bslash;&n;&t;BI(x,c) BI(x,d)
 multiline_comment|/*&n; * ISA PIC or low IO-APIC triggered (INTA-cycle or APIC) interrupts:&n; * (these are usually mapped to vectors 0x20-0x2f)&n; */
 id|BUILD_16_IRQS
 c_func
@@ -102,15 +104,26 @@ c_func
 (paren
 l_int|0xd
 )paren
+macro_line|#ifdef CONFIG_PCI_USE_VECTOR
+id|BUILD_14_IRQS
+c_func
+(paren
+l_int|0xe
+)paren
+macro_line|#endif
 macro_line|#endif
 DECL|macro|BUILD_16_IRQS
 macro_line|#undef BUILD_16_IRQS
+DECL|macro|BUILD_14_IRQS
+macro_line|#undef BUILD_14_IRQS
 DECL|macro|BI
 macro_line|#undef BI
 DECL|macro|IRQ
 mdefine_line|#define IRQ(x,y) &bslash;&n;&t;IRQ##x##y##_interrupt
 DECL|macro|IRQLIST_16
 mdefine_line|#define IRQLIST_16(x) &bslash;&n;&t;IRQ(x,0), IRQ(x,1), IRQ(x,2), IRQ(x,3), &bslash;&n;&t;IRQ(x,4), IRQ(x,5), IRQ(x,6), IRQ(x,7), &bslash;&n;&t;IRQ(x,8), IRQ(x,9), IRQ(x,a), IRQ(x,b), &bslash;&n;&t;IRQ(x,c), IRQ(x,d), IRQ(x,e), IRQ(x,f)
+DECL|macro|IRQLIST_14
+mdefine_line|#define IRQLIST_14(x) &bslash;&n;&t;IRQ(x,0), IRQ(x,1), IRQ(x,2), IRQ(x,3), &bslash;&n;&t;IRQ(x,4), IRQ(x,5), IRQ(x,6), IRQ(x,7), &bslash;&n;&t;IRQ(x,8), IRQ(x,9), IRQ(x,a), IRQ(x,b), &bslash;&n;&t;IRQ(x,c), IRQ(x,d)
 DECL|variable|interrupt
 r_void
 (paren
@@ -209,6 +222,14 @@ c_func
 (paren
 l_int|0xd
 )paren
+macro_line|#ifdef CONFIG_PCI_USE_VECTOR
+comma
+id|IRQLIST_14
+c_func
+(paren
+l_int|0xe
+)paren
+macro_line|#endif
 macro_line|#endif
 )brace
 suffix:semicolon
@@ -216,6 +237,8 @@ DECL|macro|IRQ
 macro_line|#undef IRQ
 DECL|macro|IRQLIST_16
 macro_line|#undef IRQLIST_16
+DECL|macro|IRQLIST_14
+macro_line|#undef IRQLIST_14
 multiline_comment|/*&n; * This is the &squot;legacy&squot; 8259A Programmable Interrupt Controller,&n; * present in the majority of PC/AT boxes.&n; * plus some generic x86 specific things if generic specifics makes&n; * any sense at all.&n; * this file should become arch/i386/kernel/irq.c when the old irq.c&n; * moves to arch independent land&n; */
 DECL|variable|i8259A_lock
 id|spinlock_t
@@ -1131,7 +1154,7 @@ id|no_action
 comma
 l_int|0
 comma
-l_int|0
+id|CPU_MASK_NONE
 comma
 l_string|&quot;cascade&quot;
 comma

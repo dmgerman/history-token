@@ -1469,6 +1469,9 @@ id|p-&gt;t_c
 comma
 id|p-&gt;burst
 comma
+(paren
+r_void
+)paren
 l_int|0
 )paren
 suffix:semicolon
@@ -2510,6 +2513,9 @@ id|p-&gt;t_c
 comma
 id|p-&gt;burst
 comma
+(paren
+r_void
+)paren
 l_int|0
 )paren
 suffix:semicolon

@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
@@ -50,14 +51,7 @@ DECL|variable|command_line
 r_char
 id|command_line
 (braket
-l_int|512
-)braket
-suffix:semicolon
-DECL|variable|saved_command_line
-r_char
-id|saved_command_line
-(braket
-l_int|512
+id|COMMAND_LINE_SIZE
 )braket
 suffix:semicolon
 r_extern

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-v850/irq.h -- Machine interrupt handling&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/irq.h -- Machine interrupt handling&n; *&n; *  Copyright (C) 2001,02,04  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,04  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#ifndef __V850_IRQ_H__
 DECL|macro|__V850_IRQ_H__
 mdefine_line|#define __V850_IRQ_H__
@@ -118,13 +118,7 @@ r_int
 id|irq
 )paren
 suffix:semicolon
-macro_line|#endif /* !__ASSEMBLY__ */
-r_struct
-id|irqaction
-suffix:semicolon
-r_struct
-id|pt_regs
-suffix:semicolon
+r_extern
 r_int
 id|handle_IRQ_event
 c_func
@@ -141,5 +135,6 @@ id|irqaction
 op_star
 )paren
 suffix:semicolon
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __V850_IRQ_H__ */
 eof

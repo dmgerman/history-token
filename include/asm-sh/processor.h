@@ -27,11 +27,13 @@ DECL|enumerator|CPU_SH7604
 id|CPU_SH7604
 comma
 multiline_comment|/* SH-3 types */
+DECL|enumerator|CPU_SH7705
 DECL|enumerator|CPU_SH7707
 DECL|enumerator|CPU_SH7708
 DECL|enumerator|CPU_SH7708S
 DECL|enumerator|CPU_SH7708R
-DECL|enumerator|CPU_SH7709
+id|CPU_SH7705
+comma
 id|CPU_SH7707
 comma
 id|CPU_SH7708
@@ -40,11 +42,12 @@ id|CPU_SH7708S
 comma
 id|CPU_SH7708R
 comma
-id|CPU_SH7709
-comma
+DECL|enumerator|CPU_SH7709
 DECL|enumerator|CPU_SH7709A
 DECL|enumerator|CPU_SH7729
 DECL|enumerator|CPU_SH7300
+id|CPU_SH7709
+comma
 id|CPU_SH7709A
 comma
 id|CPU_SH7729
@@ -550,7 +553,9 @@ DECL|macro|KSTK_EIP
 mdefine_line|#define KSTK_EIP(tsk)  ((tsk)-&gt;thread.pc)
 DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk)  ((tsk)-&gt;thread.sp)
+DECL|macro|cpu_sleep
+mdefine_line|#define cpu_sleep()&t;__asm__ __volatile__ (&quot;sleep&quot; : : : &quot;memory&quot;)
 DECL|macro|cpu_relax
-mdefine_line|#define cpu_relax()&t;__asm__ __volatile__ (&quot;sleep&quot; : : : &quot;memory&quot;)
+mdefine_line|#define cpu_relax()&t;do { } while (0)
 macro_line|#endif /* __ASM_SH_PROCESSOR_H */
 eof

@@ -33,12 +33,6 @@ c_func
 )paren
 suffix:semicolon
 r_extern
-r_char
-id|saved_command_line
-(braket
-)braket
-suffix:semicolon
-r_extern
 r_void
 id|pplus_setup_hose
 c_func

@@ -126,8 +126,6 @@ DECL|macro|PROC_CHANGE_PENALTY
 mdefine_line|#define PROC_CHANGE_PENALTY&t;20
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (current_thread_info()-&gt;cpu)
-DECL|macro|cpu_online
-mdefine_line|#define cpu_online(cpu) cpu_isset(cpu, cpu_online_map)
 r_extern
 r_int
 id|__cpu_up

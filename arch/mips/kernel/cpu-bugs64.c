@@ -737,6 +737,8 @@ id|handler
 suffix:semicolon
 r_int
 id|v
+comma
+id|tmp
 suffix:semicolon
 id|printk
 c_func
@@ -768,20 +770,27 @@ l_string|&quot;.set&t;push&bslash;n&bslash;t&quot;
 l_string|&quot;.set&t;noat&bslash;n&bslash;t&quot;
 l_string|&quot;.set&t;noreorder&bslash;n&bslash;t&quot;
 l_string|&quot;.set&t;nomacro&bslash;n&bslash;t&quot;
+l_string|&quot;addiu&t;%1, $0, %2&bslash;n&bslash;t&quot;
+l_string|&quot;dsrl&t;%1, %1, 1&bslash;n&bslash;t&quot;
 macro_line|#ifdef HAVE_AS_SET_DADDI
 l_string|&quot;.set&t;daddi&bslash;n&bslash;t&quot;
 macro_line|#endif
-l_string|&quot;daddi&t;%0, %1, %2&bslash;n&bslash;t&quot;
+l_string|&quot;daddi&t;%0, %1, %3&bslash;n&bslash;t&quot;
 l_string|&quot;.set&t;pop&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
 id|v
 )paren
-suffix:colon
-l_string|&quot;r&quot;
+comma
+l_string|&quot;=&amp;r&quot;
 (paren
-l_int|0x7fffffffffffedcd
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;I&quot;
+(paren
+l_int|0xffffffffffffdb9a
 )paren
 comma
 l_string|&quot;I&quot;
@@ -844,16 +853,23 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;daddi&t;%0, %1, %2&quot;
+l_string|&quot;addiu&t;%1, $0, %2&bslash;n&bslash;t&quot;
+l_string|&quot;dsrl&t;%1, %1, 1&bslash;n&bslash;t&quot;
+l_string|&quot;daddi&t;%0, %1, %3&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
 id|v
 )paren
-suffix:colon
-l_string|&quot;r&quot;
+comma
+l_string|&quot;=&amp;r&quot;
 (paren
-l_int|0x7fffffffffffedcd
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;I&quot;
+(paren
+l_int|0xffffffffffffdb9a
 )paren
 comma
 l_string|&quot;I&quot;
@@ -923,6 +939,8 @@ r_int
 id|v
 comma
 id|w
+comma
+id|tmp
 suffix:semicolon
 id|printk
 c_func
@@ -938,11 +956,13 @@ l_string|&quot;.set&t;push&bslash;n&bslash;t&quot;
 l_string|&quot;.set&t;noat&bslash;n&bslash;t&quot;
 l_string|&quot;.set&t;noreorder&bslash;n&bslash;t&quot;
 l_string|&quot;.set&t;nomacro&bslash;n&bslash;t&quot;
+l_string|&quot;addiu&t;%2, $0, %3&bslash;n&bslash;t&quot;
+l_string|&quot;dsrl&t;%2, %2, 1&bslash;n&bslash;t&quot;
 macro_line|#ifdef HAVE_AS_SET_DADDI
 l_string|&quot;.set&t;daddi&bslash;n&bslash;t&quot;
 macro_line|#endif
-l_string|&quot;daddiu&t;%0, %2, %3&bslash;n&bslash;t&quot;
-l_string|&quot;addiu&t;%1, $0, %3&bslash;n&bslash;t&quot;
+l_string|&quot;daddiu&t;%0, %2, %4&bslash;n&bslash;t&quot;
+l_string|&quot;addiu&t;%1, $0, %4&bslash;n&bslash;t&quot;
 l_string|&quot;daddu&t;%1, %2&bslash;n&bslash;t&quot;
 l_string|&quot;.set&t;pop&quot;
 suffix:colon
@@ -955,10 +975,15 @@ l_string|&quot;=&amp;r&quot;
 (paren
 id|w
 )paren
-suffix:colon
-l_string|&quot;r&quot;
+comma
+l_string|&quot;=&amp;r&quot;
 (paren
-l_int|0x7fffffffffffedcd
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;I&quot;
+(paren
+l_int|0xffffffffffffdb9a
 )paren
 comma
 l_string|&quot;I&quot;
@@ -993,8 +1018,10 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;daddiu&t;%0, %2, %3&bslash;n&bslash;t&quot;
-l_string|&quot;addiu&t;%1, $0, %3&bslash;n&bslash;t&quot;
+l_string|&quot;addiu&t;%2, $0, %3&bslash;n&bslash;t&quot;
+l_string|&quot;dsrl&t;%2, %2, 1&bslash;n&bslash;t&quot;
+l_string|&quot;daddiu&t;%0, %2, %4&bslash;n&bslash;t&quot;
+l_string|&quot;addiu&t;%1, $0, %4&bslash;n&bslash;t&quot;
 l_string|&quot;daddu&t;%1, %2&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -1006,10 +1033,15 @@ l_string|&quot;=&amp;r&quot;
 (paren
 id|w
 )paren
-suffix:colon
-l_string|&quot;r&quot;
+comma
+l_string|&quot;=&amp;r&quot;
 (paren
-l_int|0x7fffffffffffedcd
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;I&quot;
+(paren
+l_int|0xffffffffffffdb9a
 )paren
 comma
 l_string|&quot;I&quot;

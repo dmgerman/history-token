@@ -1340,7 +1340,7 @@ suffix:semicolon
 multiline_comment|/* Get a new skb... force flag on. */
 id|buff
 op_assign
-id|tcp_alloc_skb
+id|sk_stream_alloc_skb
 c_func
 (paren
 id|sk
@@ -2448,7 +2448,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tcp_memory_pressure
+id|tcp_prot.memory_pressure
 )paren
 id|tp-&gt;rcv_ssthresh
 op_assign

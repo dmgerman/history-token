@@ -1,0 +1,100 @@
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2004 by Ralf Baechle&n; *&n; */
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;asm/gt64240.h&gt;
+macro_line|#include &lt;asm/pci_channel.h&gt;
+r_extern
+r_struct
+id|pci_ops
+id|titan_pci_ops
+suffix:semicolon
+DECL|variable|py_mem_resource
+r_static
+r_struct
+id|resource
+id|py_mem_resource
+op_assign
+(brace
+l_string|&quot;Titan PCI MEM&quot;
+comma
+l_int|0xe0000000UL
+comma
+l_int|0xe3ffffffUL
+comma
+id|IORESOURCE_MEM
+)brace
+suffix:semicolon
+DECL|variable|py_io_resource
+r_static
+r_struct
+id|resource
+id|py_io_resource
+op_assign
+(brace
+l_string|&quot;Titan IO MEM&quot;
+comma
+l_int|0x00000000UL
+comma
+l_int|0x00ffffffUL
+comma
+id|IORESOURCE_IO
+comma
+)brace
+suffix:semicolon
+DECL|variable|py_controller
+r_static
+r_struct
+id|pci_controller
+id|py_controller
+op_assign
+(brace
+dot
+id|pci_ops
+op_assign
+op_amp
+id|titan_pci_ops
+comma
+dot
+id|mem_resource
+op_assign
+op_amp
+id|py_mem_resource
+comma
+dot
+id|mem_offset
+op_assign
+l_int|0x10000000UL
+comma
+dot
+id|io_resource
+op_assign
+op_amp
+id|py_io_resource
+comma
+dot
+id|io_offset
+op_assign
+l_int|0x00000000UL
+)brace
+suffix:semicolon
+DECL|function|pmc_yosemite_setup
+r_static
+r_int
+id|__init
+id|pmc_yosemite_setup
+c_func
+(paren
+r_void
+)paren
+(brace
+id|register_pci_controller
+c_func
+(paren
+op_amp
+id|py_controller
+)paren
+suffix:semicolon
+)brace
+eof

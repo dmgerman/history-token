@@ -5298,52 +5298,18 @@ id|de-&gt;size
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The ISO-9660 filesystem only stores 32 bits for file size.&n;&t; * mkisofs handles files up to 2GB-2 = 2147483646 = 0x7FFFFFFE bytes&n;&t; * in size. This is according to the large file summit paper from 1996.&n;&t; * WARNING: ISO-9660 filesystems &gt; 1 GB and even &gt; 2 GB are fully&n;&t; *&t;    legal. Do not prevent to use DVD&squot;s schilling@fokus.gmd.de&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|inode-&gt;i_size
-template_param
-l_int|0x7FFFFFFE
-)paren
-op_logical_and
-id|sbi-&gt;s_cruft
-op_eq
-l_char|&squot;n&squot;
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Warning: defective CD-ROM.  &quot;
-l_string|&quot;Enabling &bslash;&quot;cruft&bslash;&quot; mount option.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|sbi-&gt;s_cruft
-op_assign
-l_char|&squot;y&squot;
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Some dipshit decided to store some other bit of information&n;&t; * in the high byte of the file length.  Catch this and holler.&n;&t; * WARNING: this will make it impossible for a file to be &gt; 16MB&n;&t; * on the CDROM.&n;&t; */
+multiline_comment|/*&n;&t; * Some dipshit decided to store some other bit of information&n;&t; * in the high byte of the file length.  Truncate size in case&n;&t; * this CDROM was mounted with the cruft option.&n;&t; */
 r_if
 c_cond
 (paren
 id|sbi-&gt;s_cruft
 op_eq
 l_char|&squot;y&squot;
-op_logical_and
-id|inode-&gt;i_size
-op_amp
-l_int|0xff000000
 )paren
-(brace
 id|inode-&gt;i_size
 op_and_assign
 l_int|0x00ffffff
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
