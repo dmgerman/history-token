@@ -1422,16 +1422,6 @@ id|adapter-&gt;itr
 )paren
 (brace
 r_case
-op_minus
-l_int|1
-suffix:colon
-id|adapter-&gt;itr
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
 l_int|0
 suffix:colon
 id|DPRINTK
@@ -1465,6 +1455,10 @@ id|opt.name
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+op_minus
+l_int|1
+suffix:colon
 r_default
 suffix:colon
 id|e1000_validate_option
@@ -1487,7 +1481,7 @@ r_else
 (brace
 id|adapter-&gt;itr
 op_assign
-l_int|1
+id|opt.def
 suffix:semicolon
 )brace
 )brace
