@@ -2228,6 +2228,13 @@ id|link-&gt;priv
 op_assign
 id|info
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|link-&gt;release
+)paren
+suffix:semicolon
 id|link-&gt;release.function
 op_assign
 op_amp
