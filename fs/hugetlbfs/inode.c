@@ -241,6 +241,12 @@ op_star
 id|page
 )paren
 (brace
+id|unlock_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL

@@ -36,36 +36,6 @@ DECL|macro|F_SETLK64
 mdefine_line|#define F_SETLK64       13
 DECL|macro|F_SETLKW64
 mdefine_line|#define F_SETLKW64      14    
-DECL|struct|flock32
-r_struct
-id|flock32
-(brace
-DECL|member|l_type
-r_int
-id|l_type
-suffix:semicolon
-DECL|member|l_whence
-r_int
-id|l_whence
-suffix:semicolon
-DECL|member|l_start
-id|compat_off_t
-id|l_start
-suffix:semicolon
-DECL|member|l_len
-id|compat_off_t
-id|l_len
-suffix:semicolon
-DECL|member|l_pid
-id|compat_pid_t
-id|l_pid
-suffix:semicolon
-DECL|member|__unused
-r_int
-id|__unused
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|statfs32
 r_struct
 id|statfs32
