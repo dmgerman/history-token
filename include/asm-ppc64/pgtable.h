@@ -64,11 +64,6 @@ DECL|macro|IMALLOC_BASE
 mdefine_line|#define IMALLOC_BASE      (0xE000000080000000ul)  
 DECL|macro|IMALLOC_END
 mdefine_line|#define IMALLOC_END       (IMALLOC_BASE + PGTABLE_EA_MASK)
-multiline_comment|/*&n; * Define the address range mapped virt &lt;-&gt; physical&n; */
-DECL|macro|KRANGE_START
-mdefine_line|#define KRANGE_START KERNELBASE
-DECL|macro|KRANGE_END
-mdefine_line|#define KRANGE_END   (KRANGE_START + PGTABLE_EA_MASK)
 multiline_comment|/*&n; * Define the user address range&n; */
 DECL|macro|USER_START
 mdefine_line|#define USER_START (0UL)
