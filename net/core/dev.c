@@ -1632,7 +1632,6 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_KMOD
 multiline_comment|/**&n; *&t;dev_load &t;- load a network module&n; *&t;@name: name of interface&n; *&n; *&t;If a network interface is not present and the process has suitable&n; *&t;privileges this function loads the module. If module loading is not&n; *&t;available in this kernel then it becomes a nop.&n; */
 DECL|function|dev_load
 r_void
@@ -1670,25 +1669,6 @@ id|name
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|dev_load
-r_static
-r_inline
-r_void
-(def_block
-id|dev_load
-c_func
-(paren
-r_const
-r_char
-op_star
-id|unused
-)paren
-(brace
-suffix:semicolon
-)brace
-)def_block
-macro_line|#endif
 DECL|function|default_rebuild_header
 r_static
 r_int
