@@ -2068,8 +2068,6 @@ id|ip
 (brace
 r_int
 id|filetype
-comma
-id|committype
 suffix:semicolon
 id|tblock_t
 op_star
@@ -2141,19 +2139,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef _STILL_TO_PORT
-multiline_comment|/*&n;&t; *      free from block allocation map:&n;&t; *&n;&t; * if there is no cache control element associated with &n;&t; * the file, free resources in both persistent and work map;&n;&t; * otherwise just persistent map. &n;&t; */
-r_if
-c_cond
-(paren
-id|ip-&gt;i_cacheid
-)paren
-(brace
-id|committype
-op_assign
-id|COMMIT_PMAP
-suffix:semicolon
-multiline_comment|/* mark for iClose() to free from working map */
 id|set_cflag
 c_func
 (paren
@@ -2162,26 +2147,6 @@ comma
 id|ip
 )paren
 suffix:semicolon
-)brace
-r_else
-id|committype
-op_assign
-id|COMMIT_PWMAP
-suffix:semicolon
-macro_line|#else&t;&t;&t;&t;/* _STILL_TO_PORT */
-id|set_cflag
-c_func
-(paren
-id|COMMIT_Freewmap
-comma
-id|ip
-)paren
-suffix:semicolon
-id|committype
-op_assign
-id|COMMIT_PMAP
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* _STILL_TO_PORT */
 multiline_comment|/* mark transaction of block map update type */
 id|tblk
 op_assign
@@ -2193,7 +2158,7 @@ id|tid
 suffix:semicolon
 id|tblk-&gt;xflag
 op_or_assign
-id|committype
+id|COMMIT_PMAP
 suffix:semicolon
 multiline_comment|/*&n;&t; * free EA&n;&t; */
 r_if
@@ -2209,37 +2174,6 @@ id|ea.flag
 op_amp
 id|DXD_EXTENT
 )paren
-(brace
-macro_line|#ifdef _STILL_TO_PORT
-multiline_comment|/* free EA pages from cache */
-r_if
-c_cond
-(paren
-id|committype
-op_eq
-id|COMMIT_PWMAP
-)paren
-id|bmExtentInvalidate
-c_func
-(paren
-id|ip
-comma
-id|addressDXD
-c_func
-(paren
-op_amp
-id|ip-&gt;i_ea
-)paren
-comma
-id|lengthDXD
-c_func
-(paren
-op_amp
-id|ip-&gt;i_ea
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* _STILL_TO_PORT */
 multiline_comment|/* acquire maplock on EA to be freed from block map */
 id|txEA
 c_func
@@ -2260,24 +2194,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|committype
-op_eq
-id|COMMIT_PWMAP
-)paren
-id|JFS_IP
-c_func
-(paren
-id|ip
-)paren
-op_member_access_from_pointer
-id|ea.flag
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * free ACL&n;&t; */
 r_if
 c_cond
@@ -2292,37 +2208,6 @@ id|acl.flag
 op_amp
 id|DXD_EXTENT
 )paren
-(brace
-macro_line|#ifdef _STILL_TO_PORT
-multiline_comment|/* free ACL pages from cache */
-r_if
-c_cond
-(paren
-id|committype
-op_eq
-id|COMMIT_PWMAP
-)paren
-id|bmExtentInvalidate
-c_func
-(paren
-id|ip
-comma
-id|addressDXD
-c_func
-(paren
-op_amp
-id|ip-&gt;i_acl
-)paren
-comma
-id|lengthDXD
-c_func
-(paren
-op_amp
-id|ip-&gt;i_acl
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* _STILL_TO_PORT */
 multiline_comment|/* acquire maplock on EA to be freed from block map */
 id|txEA
 c_func
@@ -2343,24 +2228,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|committype
-op_eq
-id|COMMIT_PWMAP
-)paren
-id|JFS_IP
-c_func
-(paren
-id|ip
-)paren
-op_member_access_from_pointer
-id|acl.flag
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * free xtree/data (truncate to zero length):&n;&t; * free xtree/data pages from cache if COMMIT_PWMAP, &n;&t; * free xtree/data blocks from persistent block map, and&n;&t; * free xtree/data blocks from working block map if COMMIT_PWMAP;&n;&t; */
 r_if
 c_cond
