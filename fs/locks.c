@@ -4085,26 +4085,13 @@ id|fl-&gt;fl_break_time
 op_assign
 id|break_time
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|fl-&gt;fl_lmops
-op_logical_and
-id|fl-&gt;fl_lmops-&gt;fl_break
-)paren
+multiline_comment|/* lease must have lmops break callback */
 id|fl-&gt;fl_lmops
 op_member_access_from_pointer
 id|fl_break
 c_func
 (paren
 id|fl
-)paren
-suffix:semicolon
-r_else
-multiline_comment|/* lease must have lmops break callback */
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
