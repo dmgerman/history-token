@@ -3,8 +3,14 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#if defined(CONFIG_VIDEO_CX88_DVB) || defined(CONFIG_VIDEO_CX88_DVB_MODULE)
+DECL|macro|WITH_DVB
+macro_line|# define WITH_DVB 1
+macro_line|#endif
 macro_line|#include &quot;cx88.h&quot;
+macro_line|#ifdef WITH_DVB
 macro_line|#include &quot;cx22702.h&quot;
+macro_line|#endif
 multiline_comment|/* ------------------------------------------------------------------ */
 multiline_comment|/* board config info                                                  */
 DECL|variable|cx88_boards
@@ -2711,6 +2717,7 @@ l_string|&quot;no&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef WITH_DVB
 DECL|function|hauppauge_eeprom_dvb
 r_static
 r_int
@@ -2880,6 +2887,7 @@ op_assign
 l_int|0x43
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* ----------------------------------------------------------------------- */
 multiline_comment|/* some GDI (was: Modular Technology) specific stuff                       */
 r_static
@@ -3663,6 +3671,7 @@ l_int|0x00000101
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef WITH_DVB
 r_case
 id|CX88_BOARD_HAUPPAUGE_DVB_T1
 suffix:colon
@@ -3714,6 +3723,7 @@ l_int|0x43
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif
 )brace
 r_if
 c_cond
