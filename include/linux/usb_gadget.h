@@ -1057,7 +1057,7 @@ id|driver
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* utility to simplify dealing with string descriptors */
-multiline_comment|/**&n; * struct usb_string - wraps a C string and its USB id&n; * @id:the (nonzero) ID for this string&n; * @s:the string, in ISO-8859/1 characters&n; *&n; * If you&squot;re using usb_gadget_get_string(), use this to wrap a string&n; * together with its ID.&n; */
+multiline_comment|/**&n; * struct usb_string - wraps a C string and its USB id&n; * @id:the (nonzero) ID for this string&n; * @s:the string, in UTF-8 encoding&n; *&n; * If you&squot;re using usb_gadget_get_string(), use this to wrap a string&n; * together with its ID.&n; */
 DECL|struct|usb_string
 r_struct
 id|usb_string
