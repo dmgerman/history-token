@@ -2321,7 +2321,7 @@ id|pb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;pagebuf_find&n; *&n; *&t;pagebuf_find returns a buffer matching the specified range of&n; *&t;data for the specified target, if any of the relevant blocks&n; *&t;are in memory.&t;The buffer may have unallocated holes, if&n; *&t;some, but not all, of the blocks are in memory.&t; Even where&n; *&t;pages are present in the buffer, not all of every page may be&n; *&t;valid.&t;The file system may use pagebuf_segment to visit the&n; *&t;various segments of the buffer.&n; */
+multiline_comment|/*&n; *&t;pagebuf_find&n; *&n; *&t;pagebuf_find returns a buffer matching the specified range of&n; *&t;data for the specified target, if any of the relevant blocks&n; *&t;are in memory.&t;The buffer may have unallocated holes, if&n; *&t;some, but not all, of the blocks are in memory.&t; Even where&n; *&t;pages are present in the buffer, not all of every page may be&n; *&t;valid.&n; */
 id|page_buf_t
 op_star
 DECL|function|pagebuf_find
@@ -2364,7 +2364,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;pagebuf_get&n; *&n; *&t;pagebuf_get assembles a buffer covering the specified range.&n; *&t;Some or all of the blocks in the range may be valid.  The file&n; *&t;system may use pagebuf_segment to visit the various segments&n; *&t;of the buffer.&t;Storage in memory for all portions of the&n; *&t;buffer will be allocated, although backing storage may not be.&n; *&t;If PBF_READ is set in flags, pagebuf_read&n; */
+multiline_comment|/*&n; *&t;pagebuf_get&n; *&n; *&t;pagebuf_get assembles a buffer covering the specified range.&n; *&t;Some or all of the blocks in the range may be valid.  Storage&n; *&t;in memory for all portions of the buffer will be allocated,&n; *&t;although backing storage may not be.  If PBF_READ is set in&n; *&t;flags, pagebuf_iostart is called also.&n; */
 id|page_buf_t
 op_star
 DECL|function|pagebuf_get
@@ -4484,11 +4484,6 @@ id|pb
 multiline_comment|/* buffer to convey to device&t;*/
 (brace
 r_int
-id|status
-op_assign
-l_int|0
-suffix:semicolon
-r_int
 id|i
 comma
 id|map_i
@@ -4573,7 +4568,7 @@ l_int|1
 )paren
 suffix:semicolon
 r_return
-id|status
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Set the count to 1 initially, this will stop an I/O&n;&t; * completion callout which happens before we have started&n;&t; * all the I/O from calling pagebuf_iodone too early.&n;&t; */
@@ -4968,6 +4963,10 @@ op_eq
 l_int|1
 )paren
 (brace
+id|pb-&gt;pb_locked
+op_assign
+l_int|0
+suffix:semicolon
 id|pagebuf_iodone
 c_func
 (paren
@@ -4978,13 +4977,6 @@ l_int|0
 suffix:semicolon
 )brace
 r_return
-id|status
-OL
-l_int|0
-ques
-c_cond
-id|status
-suffix:colon
 l_int|0
 suffix:semicolon
 )brace
