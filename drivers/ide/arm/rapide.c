@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/rapide.c&n; *&n; * Copyright (c) 1996-2002 Russell King.&n; */
+multiline_comment|/*&n; * linux/drivers/ide/arm/rapide.c&n; *&n; * Copyright (c) 1996-2002 Russell King.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
@@ -86,9 +86,6 @@ id|hw.io_ports
 id|i
 )braket
 op_assign
-(paren
-id|ide_ioreg_t
-)paren
 id|port
 suffix:semicolon
 id|port
