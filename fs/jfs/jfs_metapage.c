@@ -17,6 +17,7 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 macro_line|#ifdef CONFIG_JFS_STATISTICS
+r_static
 r_struct
 (brace
 DECL|member|pagealloc
