@@ -722,19 +722,22 @@ suffix:semicolon
 DECL|member|shmem
 r_struct
 id|myri_shmem
+id|__iomem
 op_star
 id|shmem
 suffix:semicolon
 multiline_comment|/* Shared data structures.    */
 DECL|member|cregs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|cregs
 suffix:semicolon
 multiline_comment|/* Control register space.    */
 DECL|member|rqack
 r_struct
 id|recvq
+id|__iomem
 op_star
 id|rqack
 suffix:semicolon
@@ -742,6 +745,7 @@ multiline_comment|/* Where we ack rx&squot;s.         */
 DECL|member|rq
 r_struct
 id|recvq
+id|__iomem
 op_star
 id|rq
 suffix:semicolon
@@ -749,6 +753,7 @@ multiline_comment|/* Where we put buffers.      */
 DECL|member|sq
 r_struct
 id|sendq
+id|__iomem
 op_star
 id|sq
 suffix:semicolon
@@ -766,8 +771,9 @@ id|tx_old
 suffix:semicolon
 multiline_comment|/* To speed up tx cleaning.   */
 DECL|member|lregs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|lregs
 suffix:semicolon
 multiline_comment|/* Quick ptr to LANAI regs.   */
@@ -801,25 +807,19 @@ suffix:semicolon
 multiline_comment|/* Interface stats.           */
 multiline_comment|/* These are less frequently accessed. */
 DECL|member|regs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|regs
 suffix:semicolon
 multiline_comment|/* MyriCOM register space.    */
 DECL|member|lanai
-r_int
-r_int
+r_void
+id|__iomem
 op_star
 id|lanai
 suffix:semicolon
 multiline_comment|/* View 2 of register space.  */
-DECL|member|lanai3
-r_int
-r_int
-op_star
-id|lanai3
-suffix:semicolon
-multiline_comment|/* View 3 of register space.  */
 DECL|member|myri_bursts
 r_int
 r_int
