@@ -7190,9 +7190,9 @@ op_assign
 r_int
 r_int
 )paren
-id|mod-&gt;module_core
+id|mod-&gt;module_init
 op_plus
-id|mod-&gt;core_size
+id|mod-&gt;init_size
 suffix:semicolon
 r_else
 id|nextval
@@ -7201,9 +7201,9 @@ op_assign
 r_int
 r_int
 )paren
-id|mod-&gt;module_init
+id|mod-&gt;module_core
 op_plus
-id|mod-&gt;init_size
+id|mod-&gt;core_size
 suffix:semicolon
 multiline_comment|/* Scan for closest preceeding symbol, and next symbol. (ELF&n;           starts real symbols at 1). */
 r_for
