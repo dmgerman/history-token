@@ -374,8 +374,8 @@ DECL|macro|skel_int1_qh
 mdefine_line|#define skel_int1_qh&t;&t;skelqh[7]
 DECL|macro|skel_ls_control_qh
 mdefine_line|#define skel_ls_control_qh&t;skelqh[8]
-DECL|macro|skel_hs_control_qh
-mdefine_line|#define skel_hs_control_qh&t;skelqh[9]
+DECL|macro|skel_fs_control_qh
+mdefine_line|#define skel_fs_control_qh&t;skelqh[9]
 DECL|macro|skel_bulk_qh
 mdefine_line|#define skel_bulk_qh&t;&t;skelqh[10]
 DECL|macro|skel_term_qh

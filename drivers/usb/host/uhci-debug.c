@@ -1077,7 +1077,7 @@ l_string|&quot;skel_int1_qh&quot;
 comma
 l_string|&quot;skel_ls_control_qh&quot;
 comma
-l_string|&quot;skel_hs_control_qh&quot;
+l_string|&quot;skel_fs_control_qh&quot;
 comma
 l_string|&quot;skel_bulk_qh&quot;
 comma
