@@ -64,7 +64,7 @@ DECL|macro|DEBUG
 mdefine_line|#define DEBUG(n, args...) do { } while (0)
 macro_line|#endif
 r_static
-r_void
+id|irqreturn_t
 id|i365_count_irq
 c_func
 (paren
@@ -2420,7 +2420,7 @@ id|irq_sock
 suffix:semicolon
 DECL|function|i365_count_irq
 r_static
-r_void
+id|irqreturn_t
 id|i365_count_irq
 c_func
 (paren
@@ -2457,6 +2457,9 @@ l_string|&quot;-&gt; hit on irq %d&bslash;n&quot;
 comma
 id|irq
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|test_irq
@@ -2979,22 +2982,6 @@ r_return
 id|ns
 op_div
 id|cycle_time
-suffix:semicolon
-)brace
-DECL|function|to_ns
-r_static
-r_int
-id|to_ns
-c_func
-(paren
-r_int
-id|cycles
-)paren
-(brace
-r_return
-id|cycle_time
-op_star
-id|cycles
 suffix:semicolon
 )brace
 multiline_comment|/*====================================================================*/
@@ -4813,7 +4800,7 @@ id|last_detect_jiffies
 suffix:semicolon
 DECL|function|pcic_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|pcic_interrupt
 c_func
 (paren
@@ -4849,6 +4836,11 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|DEBUG
 c_func
 (paren
@@ -4919,6 +4911,10 @@ id|irq
 )paren
 )paren
 r_continue
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 id|ISA_LOCK
 c_func
@@ -5182,6 +5178,13 @@ c_func
 l_int|4
 comma
 l_string|&quot;i82365: interrupt done&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace

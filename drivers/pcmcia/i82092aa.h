@@ -1,6 +1,7 @@
 macro_line|#ifndef _INCLUDE_GUARD_i82092aa_H_
 DECL|macro|_INCLUDE_GUARD_i82092aa_H_
 mdefine_line|#define _INCLUDE_GUARD_i82092aa_H_
+macro_line|#include &lt;linux/interrupt.h&gt;
 multiline_comment|/* $Id: i82092aa.h,v 1.1.1.1 2001/09/19 14:53:15 dwmw2 Exp $ */
 multiline_comment|/* Debuging defines */
 macro_line|#ifdef NOTRACE
@@ -57,7 +58,7 @@ id|socketno
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|i82092aa_interrupt
 c_func
 (paren

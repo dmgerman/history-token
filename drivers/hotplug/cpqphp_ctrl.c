@@ -3284,17 +3284,16 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cpqhp_ctrl_intr
-r_void
+id|irqreturn_t
 id|cpqhp_ctrl_intr
 c_func
 (paren
 r_int
 id|IRQ
 comma
-r_struct
-id|controller
+r_void
 op_star
-id|ctrl
+id|data
 comma
 r_struct
 id|pt_regs
@@ -3302,6 +3301,13 @@ op_star
 id|regs
 )paren
 (brace
+r_struct
+id|controller
+op_star
+id|ctrl
+op_assign
+id|data
+suffix:semicolon
 id|u8
 id|schedule_flag
 op_assign
@@ -3341,6 +3347,7 @@ l_int|0x000C
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -3547,6 +3554,9 @@ l_string|&quot;Signal event_semaphore&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * cpqhp_slot_create - Creates a node and adds it to the proper bus.&n; * @busnumber - bus where new node is to be located&n; *&n; * Returns pointer to the new node or NULL if unsuccessful&n; */
 DECL|function|cpqhp_slot_create

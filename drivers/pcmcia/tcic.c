@@ -222,7 +222,7 @@ l_string|&quot;i&quot;
 suffix:semicolon
 multiline_comment|/*====================================================================*/
 r_static
-r_void
+id|irqreturn_t
 id|tcic_interrupt
 c_func
 (paren
@@ -784,7 +784,7 @@ id|irq_hits
 suffix:semicolon
 DECL|function|tcic_irq_count
 r_static
-r_void
+id|irqreturn_t
 id|__init
 id|tcic_irq_count
 c_func
@@ -804,6 +804,9 @@ id|regs
 (brace
 id|irq_hits
 op_increment
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|try_irq
@@ -2620,7 +2623,7 @@ l_int|NULL
 suffix:semicolon
 DECL|function|tcic_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|tcic_interrupt
 c_func
 (paren
@@ -2676,6 +2679,7 @@ l_string|&quot;tcic: reentered interrupt handler!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_else
@@ -2996,6 +3000,9 @@ l_int|2
 comma
 l_string|&quot;tcic: interrupt done&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* tcic_interrupt */

@@ -3,6 +3,7 @@ macro_line|#ifndef _CPQPHP_H
 DECL|macro|_CPQPHP_H
 mdefine_line|#define _CPQPHP_H
 macro_line|#include &quot;pci_hotplug.h&quot;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;&t;&t;/* for read? and write? functions */
 macro_line|#if !defined(CONFIG_HOTPLUG_PCI_COMPAQ_MODULE)
 DECL|macro|MY_NAME
@@ -1827,16 +1828,15 @@ id|event_pointer
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|cpqhp_ctrl_intr
 (paren
 r_int
 id|IRQ
 comma
-r_struct
-id|controller
+r_void
 op_star
-id|ctrl_input
+id|data
 comma
 r_struct
 id|pt_regs
