@@ -15,15 +15,11 @@ DECL|macro|MTHCA_ECR_CLR_BASE
 mdefine_line|#define MTHCA_ECR_CLR_BASE     0x80708
 DECL|macro|MTHCA_ECR_CLR_SIZE
 mdefine_line|#define MTHCA_ECR_CLR_SIZE     0x00008
-DECL|macro|MTHCA_ECR_OFFSET
-mdefine_line|#define MTHCA_ECR_OFFSET       (MTHCA_ECR_BASE     - MTHCA_HCR_BASE)
-DECL|macro|MTHCA_ECR_CLR_OFFSET
-mdefine_line|#define MTHCA_ECR_CLR_OFFSET   (MTHCA_ECR_CLR_BASE - MTHCA_HCR_BASE)
+DECL|macro|MTHCA_MAP_ECR_SIZE
+mdefine_line|#define MTHCA_MAP_ECR_SIZE     (MTHCA_ECR_SIZE + MTHCA_ECR_CLR_SIZE)
 DECL|macro|MTHCA_CLR_INT_BASE
 mdefine_line|#define MTHCA_CLR_INT_BASE     0xf00d8
 DECL|macro|MTHCA_CLR_INT_SIZE
 mdefine_line|#define MTHCA_CLR_INT_SIZE     0x00008
-DECL|macro|MTHCA_MAP_HCR_SIZE
-mdefine_line|#define MTHCA_MAP_HCR_SIZE     (MTHCA_ECR_CLR_BASE   + &bslash;&n;&t;&t;&t;        MTHCA_ECR_CLR_SIZE   - &bslash;&n;&t;&t;&t;        MTHCA_HCR_BASE)
 macro_line|#endif /* MTHCA_CONFIG_REG_H */
 eof

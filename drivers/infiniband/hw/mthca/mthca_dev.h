@@ -691,6 +691,12 @@ id|__iomem
 op_star
 id|hcr
 suffix:semicolon
+DECL|member|ecr_base
+r_void
+id|__iomem
+op_star
+id|ecr_base
+suffix:semicolon
 DECL|member|clr_base
 r_void
 id|__iomem

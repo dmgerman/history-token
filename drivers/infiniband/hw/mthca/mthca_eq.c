@@ -1318,9 +1318,7 @@ op_assign
 id|readl
 c_func
 (paren
-id|dev-&gt;hcr
-op_plus
-id|MTHCA_ECR_OFFSET
+id|dev-&gt;ecr_base
 op_plus
 l_int|4
 )paren
@@ -1338,9 +1336,11 @@ c_func
 (paren
 id|ecr
 comma
-id|dev-&gt;hcr
+id|dev-&gt;ecr_base
 op_plus
-id|MTHCA_ECR_CLR_OFFSET
+id|MTHCA_ECR_CLR_BASE
+op_minus
+id|MTHCA_ECR_BASE
 op_plus
 l_int|4
 )paren
