@@ -4,6 +4,14 @@ multiline_comment|/*&n; The Aureal Hardware EQ is found on AU8810 and AU8830 chi
 macro_line|#include &quot;au88x0.h&quot;
 macro_line|#include &quot;au88x0_eq.h&quot;
 macro_line|#include &quot;au88x0_eqdata.c&quot;
+DECL|macro|VORTEX_EQ_BASE
+mdefine_line|#define VORTEX_EQ_BASE&t; 0x2b000
+DECL|macro|VORTEX_EQ_DEST
+mdefine_line|#define VORTEX_EQ_DEST   (VORTEX_EQ_BASE + 0x410)
+DECL|macro|VORTEX_EQ_SOURCE
+mdefine_line|#define VORTEX_EQ_SOURCE (VORTEX_EQ_BASE + 0x430)
+DECL|macro|VORTEX_EQ_CTRL
+mdefine_line|#define VORTEX_EQ_CTRL   (VORTEX_EQ_BASE + 0x440)
 multiline_comment|/* CEqHw.s */
 DECL|function|vortex_EqHw_SetTimeConsts
 r_static
@@ -16,10 +24,10 @@ op_star
 id|vortex
 comma
 id|u16
-id|a
+id|gain
 comma
 id|u16
-id|b
+id|level
 )paren
 (brace
 id|hwwrite
@@ -29,7 +37,7 @@ id|vortex-&gt;mmio
 comma
 l_int|0x2b3c4
 comma
-id|a
+id|gain
 )paren
 suffix:semicolon
 id|hwwrite
@@ -39,7 +47,7 @@ id|vortex-&gt;mmio
 comma
 l_int|0x2b3c8
 comma
-id|b
+id|level
 )paren
 suffix:semicolon
 )brace
@@ -54,7 +62,7 @@ op_star
 id|vortex
 comma
 id|u16
-id|a
+id|coefs
 (braket
 )braket
 )paren
@@ -104,7 +112,7 @@ id|n
 op_star
 l_int|0x30
 comma
-id|a
+id|coefs
 (braket
 id|i
 op_plus
@@ -123,7 +131,7 @@ id|n
 op_star
 l_int|0x30
 comma
-id|a
+id|coefs
 (braket
 id|i
 op_plus
@@ -150,7 +158,7 @@ id|n
 op_star
 l_int|0x30
 comma
-id|a
+id|coefs
 (braket
 id|i
 op_plus
@@ -169,7 +177,7 @@ id|n
 op_star
 l_int|0x30
 comma
-id|a
+id|coefs
 (braket
 id|i
 op_plus
@@ -179,7 +187,7 @@ l_int|3
 suffix:semicolon
 id|eax
 op_assign
-id|a
+id|coefs
 (braket
 id|i
 op_plus
@@ -193,7 +201,7 @@ r_else
 r_if
 c_cond
 (paren
-id|a
+id|coefs
 (braket
 l_int|2
 op_plus
@@ -210,7 +218,7 @@ r_else
 id|eax
 op_assign
 op_complement
-id|a
+id|coefs
 (braket
 l_int|2
 op_plus
@@ -236,7 +244,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|a
+id|coefs
 (braket
 l_int|3
 op_plus
@@ -253,7 +261,7 @@ r_else
 id|eax
 op_assign
 op_complement
-id|a
+id|coefs
 (braket
 l_int|3
 op_plus
@@ -279,7 +287,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|a
+id|coefs
 (braket
 l_int|4
 op_plus
@@ -296,7 +304,7 @@ r_else
 id|eax
 op_assign
 op_complement
-id|a
+id|coefs
 (braket
 l_int|4
 op_plus
@@ -335,7 +343,7 @@ op_star
 id|vortex
 comma
 id|u16
-id|a
+id|coefs
 (braket
 )braket
 )paren
@@ -385,7 +393,7 @@ id|n
 op_star
 l_int|0x30
 comma
-id|a
+id|coefs
 (braket
 l_int|0
 op_plus
@@ -404,7 +412,7 @@ id|n
 op_star
 l_int|0x30
 comma
-id|a
+id|coefs
 (braket
 l_int|1
 op_plus
@@ -431,7 +439,7 @@ id|n
 op_star
 l_int|0x30
 comma
-id|a
+id|coefs
 (braket
 l_int|2
 op_plus
@@ -450,7 +458,7 @@ id|n
 op_star
 l_int|0x30
 comma
-id|a
+id|coefs
 (braket
 l_int|3
 op_plus
@@ -460,7 +468,7 @@ id|i
 suffix:semicolon
 id|eax
 op_assign
-id|a
+id|coefs
 (braket
 l_int|4
 op_plus
@@ -474,7 +482,7 @@ r_else
 r_if
 c_cond
 (paren
-id|a
+id|coefs
 (braket
 l_int|2
 op_plus
@@ -492,7 +500,7 @@ id|eax
 op_assign
 op_complement
 (paren
-id|a
+id|coefs
 (braket
 l_int|2
 op_plus
@@ -519,7 +527,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|a
+id|coefs
 (braket
 l_int|3
 op_plus
@@ -536,7 +544,7 @@ r_else
 id|eax
 op_assign
 op_complement
-id|a
+id|coefs
 (braket
 l_int|3
 op_plus
@@ -562,7 +570,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|a
+id|coefs
 (braket
 l_int|4
 op_plus
@@ -579,7 +587,7 @@ r_else
 id|eax
 op_assign
 op_complement
-id|a
+id|coefs
 (braket
 l_int|4
 op_plus
@@ -643,8 +651,6 @@ op_assign
 l_int|0
 comma
 id|ebx
-op_assign
-l_int|0
 suffix:semicolon
 id|hwwrite
 c_func
@@ -811,8 +817,6 @@ op_assign
 l_int|0
 comma
 id|ebx
-op_assign
-l_int|0
 suffix:semicolon
 id|hwwrite
 c_func
@@ -2379,7 +2383,7 @@ c_func
 (paren
 id|vortex-&gt;mmio
 comma
-l_int|0x2b440
+id|VORTEX_EQ_CTRL
 comma
 l_int|0xf001
 )paren
@@ -2401,7 +2405,7 @@ c_func
 (paren
 id|vortex-&gt;mmio
 comma
-l_int|0x2b440
+id|VORTEX_EQ_CTRL
 comma
 l_int|0xf000
 )paren
@@ -2441,7 +2445,7 @@ c_func
 (paren
 id|vortex-&gt;mmio
 comma
-l_int|0x2b410
+id|VORTEX_EQ_DEST
 op_plus
 (paren
 id|i
@@ -2471,7 +2475,7 @@ c_func
 (paren
 id|vortex-&gt;mmio
 comma
-l_int|0x2b430
+id|VORTEX_EQ_SOURCE
 op_plus
 (paren
 id|i
@@ -2516,7 +2520,7 @@ c_func
 (paren
 id|vortex-&gt;mmio
 comma
-l_int|0x2b410
+id|VORTEX_EQ_DEST
 op_plus
 (paren
 id|i
@@ -3358,14 +3362,6 @@ l_int|0
 r_return
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|0
-OL
-id|count
-)paren
-(brace
 r_for
 c_loop
 (paren
@@ -3391,7 +3387,6 @@ id|gains
 id|i
 )braket
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
