@@ -10,6 +10,8 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -296,6 +298,66 @@ suffix:semicolon
 multiline_comment|/* | PPCDBG_BUSWALK | PPCDBG_PHBINIT | PPCDBG_MM | PPCDBG_MMINIT | PPCDBG_TCEINIT | PPCDBG_TCE */
 suffix:semicolon
 )brace
+DECL|variable|udbg_console
+r_static
+r_struct
+id|console
+id|udbg_console
+op_assign
+(brace
+id|name
+suffix:colon
+l_string|&quot;udbg&quot;
+comma
+id|write
+suffix:colon
+id|udbg_console_write
+comma
+id|flags
+suffix:colon
+id|CON_PRINTBUFFER
+comma
+id|index
+suffix:colon
+op_minus
+l_int|1
+comma
+)brace
+suffix:semicolon
+DECL|variable|early_console_initialized
+r_static
+r_int
+id|early_console_initialized
+suffix:semicolon
+DECL|function|disable_early_printk
+r_void
+id|__init
+id|disable_early_printk
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|early_console_initialized
+)paren
+r_return
+suffix:semicolon
+id|unregister_console
+c_func
+(paren
+op_amp
+id|udbg_console
+)paren
+suffix:semicolon
+id|early_console_initialized
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Do some initial setup of the system.  The paramters are those which &n; * were passed in from the bootloader.&n; */
 DECL|function|setup_system
 r_void
@@ -427,270 +489,158 @@ r_break
 suffix:semicolon
 macro_line|#endif
 )brace
-id|udbg_puts
+r_if
+c_cond
+(paren
+id|naca-&gt;platform
+op_amp
+id|PLATFORM_PSERIES
+)paren
+(brace
+id|early_console_initialized
+op_assign
+l_int|1
+suffix:semicolon
+id|register_console
 c_func
 (paren
-l_string|&quot;&bslash;n-----------------------------------------------------&bslash;n&quot;
+op_amp
+id|udbg_console
 )paren
 suffix:semicolon
-id|udbg_puts
+)brace
+id|printk
 c_func
 (paren
-l_string|&quot;Naca Info...&bslash;n&bslash;n&quot;
+l_string|&quot;Starting Linux PPC64 %s&bslash;n&quot;
+comma
+id|UTS_RELEASE
 )paren
 suffix:semicolon
-id|udbg_puts
+id|printk
 c_func
 (paren
-l_string|&quot;naca                       = 0x&quot;
+l_string|&quot;-----------------------------------------------------&bslash;n&quot;
 )paren
 suffix:semicolon
-id|udbg_puthex
+id|printk
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
+l_string|&quot;naca                       = 0x%p&bslash;n&quot;
+comma
 id|naca
 )paren
 suffix:semicolon
-id|udbg_putc
+macro_line|#if 0
+id|printk
 c_func
 (paren
-l_char|&squot;&bslash;n&squot;
+l_string|&quot;naca-&gt;processorCount       = 0x%x&bslash;n&quot;
+comma
+id|naca-&gt;processorCount
 )paren
 suffix:semicolon
-id|udbg_puts
+macro_line|#endif
+id|printk
 c_func
 (paren
-l_string|&quot;naca-&gt;physicalMemorySize   = 0x&quot;
-)paren
-suffix:semicolon
-id|udbg_puthex
-c_func
-(paren
+l_string|&quot;naca-&gt;physicalMemorySize   = 0x%lx&bslash;n&quot;
+comma
 id|naca-&gt;physicalMemorySize
 )paren
 suffix:semicolon
-id|udbg_putc
+id|printk
 c_func
 (paren
-l_char|&squot;&bslash;n&squot;
-)paren
-suffix:semicolon
-id|udbg_puts
-c_func
-(paren
-l_string|&quot;naca-&gt;dCacheL1LineSize     = 0x&quot;
-)paren
-suffix:semicolon
-id|udbg_puthex
-c_func
-(paren
+l_string|&quot;naca-&gt;dCacheL1LineSize     = 0x%x&bslash;n&quot;
+comma
 id|naca-&gt;dCacheL1LineSize
 )paren
 suffix:semicolon
-id|udbg_putc
+id|printk
 c_func
 (paren
-l_char|&squot;&bslash;n&squot;
-)paren
-suffix:semicolon
-id|udbg_puts
-c_func
-(paren
-l_string|&quot;naca-&gt;dCacheL1LogLineSize  = 0x&quot;
-)paren
-suffix:semicolon
-id|udbg_puthex
-c_func
-(paren
+l_string|&quot;naca-&gt;dCacheL1LogLineSize  = 0x%x&bslash;n&quot;
+comma
 id|naca-&gt;dCacheL1LogLineSize
 )paren
 suffix:semicolon
-id|udbg_putc
+id|printk
 c_func
 (paren
-l_char|&squot;&bslash;n&squot;
-)paren
-suffix:semicolon
-id|udbg_puts
-c_func
-(paren
-l_string|&quot;naca-&gt;dCacheL1LinesPerPage = 0x&quot;
-)paren
-suffix:semicolon
-id|udbg_puthex
-c_func
-(paren
+l_string|&quot;naca-&gt;dCacheL1LinesPerPage = 0x%x&bslash;n&quot;
+comma
 id|naca-&gt;dCacheL1LinesPerPage
 )paren
 suffix:semicolon
-id|udbg_putc
+id|printk
 c_func
 (paren
-l_char|&squot;&bslash;n&squot;
-)paren
-suffix:semicolon
-id|udbg_puts
-c_func
-(paren
-l_string|&quot;naca-&gt;iCacheL1LineSize     = 0x&quot;
-)paren
-suffix:semicolon
-id|udbg_puthex
-c_func
-(paren
+l_string|&quot;naca-&gt;iCacheL1LineSize     = 0x%x&bslash;n&quot;
+comma
 id|naca-&gt;iCacheL1LineSize
 )paren
 suffix:semicolon
-id|udbg_putc
+id|printk
 c_func
 (paren
-l_char|&squot;&bslash;n&squot;
-)paren
-suffix:semicolon
-id|udbg_puts
-c_func
-(paren
-l_string|&quot;naca-&gt;iCacheL1LogLineSize  = 0x&quot;
-)paren
-suffix:semicolon
-id|udbg_puthex
-c_func
-(paren
+l_string|&quot;naca-&gt;iCacheL1LogLineSize  = 0x%x&bslash;n&quot;
+comma
 id|naca-&gt;iCacheL1LogLineSize
 )paren
 suffix:semicolon
-id|udbg_putc
+id|printk
 c_func
 (paren
-l_char|&squot;&bslash;n&squot;
-)paren
-suffix:semicolon
-id|udbg_puts
-c_func
-(paren
-l_string|&quot;naca-&gt;iCacheL1LinesPerPage = 0x&quot;
-)paren
-suffix:semicolon
-id|udbg_puthex
-c_func
-(paren
+l_string|&quot;naca-&gt;iCacheL1LinesPerPage = 0x%x&bslash;n&quot;
+comma
 id|naca-&gt;iCacheL1LinesPerPage
 )paren
 suffix:semicolon
-id|udbg_putc
+id|printk
 c_func
 (paren
-l_char|&squot;&bslash;n&squot;
-)paren
-suffix:semicolon
-id|udbg_puts
-c_func
-(paren
-l_string|&quot;naca-&gt;pftSize              = 0x&quot;
-)paren
-suffix:semicolon
-id|udbg_puthex
-c_func
-(paren
+l_string|&quot;naca-&gt;pftSize              = 0x%lx&bslash;n&quot;
+comma
 id|naca-&gt;pftSize
 )paren
 suffix:semicolon
-id|udbg_putc
+id|printk
 c_func
 (paren
-l_char|&squot;&bslash;n&squot;
+l_string|&quot;naca-&gt;debug_switch         = 0x%lx&bslash;n&quot;
+comma
+id|naca-&gt;debug_switch
 )paren
 suffix:semicolon
-id|udbg_puts
+id|printk
 c_func
 (paren
-l_string|&quot;naca-&gt;serialPortAddr       = 0x&quot;
-)paren
-suffix:semicolon
-id|udbg_puthex
-c_func
-(paren
-id|naca-&gt;serialPortAddr
-)paren
-suffix:semicolon
-id|udbg_putc
-c_func
-(paren
-l_char|&squot;&bslash;n&squot;
-)paren
-suffix:semicolon
-id|udbg_puts
-c_func
-(paren
-l_string|&quot;naca-&gt;interrupt_controller = 0x&quot;
-)paren
-suffix:semicolon
-id|udbg_puthex
-c_func
-(paren
+l_string|&quot;naca-&gt;interrupt_controller = 0x%d&bslash;n&quot;
+comma
 id|naca-&gt;interrupt_controller
 )paren
 suffix:semicolon
-id|udbg_putc
+id|printk
 c_func
 (paren
-l_char|&squot;&bslash;n&squot;
-)paren
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;&bslash;nHTAB Info ...&bslash;n&bslash;n&quot;
-)paren
-suffix:semicolon
-id|udbg_puts
-c_func
-(paren
-l_string|&quot;htab_data.htab             = 0x&quot;
-)paren
-suffix:semicolon
-id|udbg_puthex
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
+l_string|&quot;htab_data.htab             = 0x%p&bslash;n&quot;
+comma
 id|htab_data.htab
 )paren
 suffix:semicolon
-id|udbg_putc
+id|printk
 c_func
 (paren
-l_char|&squot;&bslash;n&squot;
-)paren
-suffix:semicolon
-id|udbg_puts
-c_func
-(paren
-l_string|&quot;htab_data.num_ptegs        = 0x&quot;
-)paren
-suffix:semicolon
-id|udbg_puthex
-c_func
-(paren
+l_string|&quot;htab_data.num_ptegs        = 0x%lx&bslash;n&quot;
+comma
 id|htab_data.htab_num_ptegs
 )paren
 suffix:semicolon
-id|udbg_putc
+id|printk
 c_func
 (paren
-l_char|&squot;&bslash;n&squot;
-)paren
-suffix:semicolon
-id|udbg_puts
-c_func
-(paren
-l_string|&quot;&bslash;n-----------------------------------------------------&bslash;n&quot;
+l_string|&quot;-----------------------------------------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if

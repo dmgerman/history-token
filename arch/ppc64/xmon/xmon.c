@@ -118,7 +118,6 @@ id|address
 suffix:semicolon
 DECL|member|instr
 r_int
-r_int
 id|instr
 suffix:semicolon
 DECL|member|count
