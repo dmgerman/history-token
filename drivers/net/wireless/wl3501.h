@@ -1527,10 +1527,6 @@ r_int
 r_char
 id|rssi
 suffix:semicolon
-DECL|member|card_start
-r_int
-id|card_start
-suffix:semicolon
 DECL|member|adhoc_times
 id|u8
 id|adhoc_times
