@@ -6998,7 +6998,8 @@ r_int
 id|set
 comma
 id|i
-comma
+suffix:semicolon
+r_int
 id|fd
 suffix:semicolon
 id|j
