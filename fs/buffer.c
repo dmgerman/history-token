@@ -8462,35 +8462,6 @@ c_func
 id|try_to_free_buffers
 )paren
 suffix:semicolon
-multiline_comment|/* ================== Debugging =================== */
-DECL|function|show_buffers
-r_void
-id|show_buffers
-c_func
-(paren
-r_void
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Buffer memory:   %6dkB&bslash;n&quot;
-comma
-id|atomic_read
-c_func
-(paren
-op_amp
-id|buffermem_pages
-)paren
-op_lshift
-(paren
-id|PAGE_SHIFT
-op_minus
-l_int|10
-)paren
-)paren
-suffix:semicolon
-)brace
 DECL|function|block_sync_page
 r_int
 id|block_sync_page

@@ -7725,14 +7725,6 @@ r_struct
 id|inode_operations
 id|simple_dir_inode_operations
 suffix:semicolon
-r_extern
-r_void
-id|show_buffers
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 r_extern
 r_int
