@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_MMZONE_H_
 DECL|macro|_ASM_MMZONE_H_
 mdefine_line|#define _ASM_MMZONE_H_
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 r_extern
 r_struct
@@ -30,8 +31,6 @@ id|numa_memory_lookup_table
 (braket
 )braket
 suffix:semicolon
-DECL|macro|MAX_NUMNODES
-mdefine_line|#define MAX_NUMNODES 16
 DECL|macro|MAX_MEMORY
 mdefine_line|#define MAX_MEMORY (1UL &lt;&lt; 41)
 multiline_comment|/* 256MB regions */
@@ -169,6 +168,9 @@ DECL|macro|discontigmem_pfn_to_page
 mdefine_line|#define discontigmem_pfn_to_page(pfn) &bslash;&n;({ &bslash;&n;&t;unsigned long __tmp = pfn; &bslash;&n;&t;(node_mem_map(pfn_to_nid(__tmp)) + &bslash;&n;&t; node_localnr(__tmp, pfn_to_nid(__tmp))); &bslash;&n;})
 DECL|macro|discontigmem_page_to_pfn
 mdefine_line|#define discontigmem_page_to_pfn(p) &bslash;&n;({ &bslash;&n;&t;struct page *__tmp = p; &bslash;&n;&t;(((__tmp) - page_zone(__tmp)-&gt;zone_mem_map) + &bslash;&n;&t; page_zone(__tmp)-&gt;zone_start_pfn); &bslash;&n;})
+multiline_comment|/* XXX fix for discontiguous physical memory */
+DECL|macro|discontigmem_pfn_valid
+mdefine_line|#define discontigmem_pfn_valid(pfn)&t;&t;((pfn) &lt; num_physpages)
 macro_line|#endif /* CONFIG_DISCONTIGMEM */
 macro_line|#endif /* _ASM_MMZONE_H_ */
 eof
