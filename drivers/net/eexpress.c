@@ -7752,14 +7752,6 @@ id|dev-&gt;priv
 op_assign
 l_int|NULL
 suffix:semicolon
-id|release_region
-c_func
-(paren
-id|dev-&gt;base_addr
-comma
-id|EEXP_IO_EXTENT
-)paren
-suffix:semicolon
 )brace
 )brace
 )brace

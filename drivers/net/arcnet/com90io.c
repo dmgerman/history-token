@@ -903,6 +903,10 @@ id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* Reserve the I/O region - guaranteed to work by check_region */
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -912,7 +916,21 @@ id|ARCNET_TOTAL_SIZE
 comma
 l_string|&quot;arcnet (COM90xx-IO)&quot;
 )paren
+)paren
+(brace
+id|free_irq
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
 multiline_comment|/* Initialize the rest of the device structure. */
 id|dev-&gt;priv
 op_assign
