@@ -104,10 +104,16 @@ comma
 id|bv-&gt;bv_len
 )paren
 suffix:semicolon
+id|flush_dcache_page
+c_func
+(paren
+id|bv-&gt;bv_page
+)paren
+suffix:semicolon
 id|bvec_kunmap_irq
 c_func
 (paren
-id|bv
+id|data
 comma
 op_amp
 id|flags
