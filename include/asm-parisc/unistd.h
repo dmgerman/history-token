@@ -1138,10 +1138,10 @@ DECL|macro|__NR_capget
 mdefine_line|#define __NR_capget             (__NR_Linux + 106)
 DECL|macro|__NR_capset
 mdefine_line|#define __NR_capset             (__NR_Linux + 107)
-DECL|macro|__NR_pread
-mdefine_line|#define __NR_pread              (__NR_Linux + 108)
-DECL|macro|__NR_pwrite
-mdefine_line|#define __NR_pwrite             (__NR_Linux + 109)
+DECL|macro|__NR_pread64
+mdefine_line|#define __NR_pread64            (__NR_Linux + 108)
+DECL|macro|__NR_pwrite64
+mdefine_line|#define __NR_pwrite64           (__NR_Linux + 109)
 DECL|macro|__NR_getcwd
 mdefine_line|#define __NR_getcwd             (__NR_Linux + 110)
 DECL|macro|__NR_vhangup

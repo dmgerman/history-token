@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  linux/mm/oom_kill.c&n; * &n; *  Copyright (C)  1998,2
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
-macro_line|#include &lt;linux/swapctl.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 multiline_comment|/* #define DEBUG */
 multiline_comment|/**&n; * int_sqrt - oom_kill.c internal function, rough approximation to sqrt&n; * @x: integer of which to calculate the sqrt&n; * &n; * A very rough approximation to the sqrt() function.&n; */

@@ -301,6 +301,13 @@ c_func
 id|kmem_cache_free
 )paren
 suffix:semicolon
+DECL|variable|kmem_cache_size
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmem_cache_size
+)paren
+suffix:semicolon
 DECL|variable|kmalloc
 id|EXPORT_SYMBOL
 c_func

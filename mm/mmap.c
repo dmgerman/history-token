@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
-macro_line|#include &lt;linux/swapctl.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
@@ -307,40 +306,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|vm_unacct_vma
-r_void
-id|vm_unacct_vma
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-)paren
-(brace
-r_int
-id|len
-op_assign
-id|vma-&gt;vm_end
-op_minus
-id|vma-&gt;vm_start
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|vma-&gt;vm_flags
-op_amp
-id|VM_ACCOUNT
-)paren
-id|vm_unacct_memory
-c_func
-(paren
-id|len
-op_rshift
-id|PAGE_SHIFT
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Remove one vm structure from the inode&squot;s i_mapping address space. */
 DECL|function|__remove_shared_vm_struct
 r_static
@@ -612,8 +577,6 @@ comma
 id|oldbrk
 op_minus
 id|newbrk
-comma
-l_int|1
 )paren
 )paren
 r_goto
@@ -2179,8 +2142,6 @@ comma
 id|addr
 comma
 id|len
-comma
-l_int|1
 )paren
 )paren
 r_return
@@ -2217,49 +2178,42 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sysctl_overcommit_memory
-OG
-l_int|1
-)paren
-id|vm_flags
-op_and_assign
-op_complement
-id|MAP_NORESERVE
-suffix:semicolon
-multiline_comment|/* Private writable mapping? Check memory availability.. */
-r_if
-c_cond
-(paren
-(paren
-(paren
-(paren
-id|vm_flags
-op_amp
-(paren
-id|VM_SHARED
-op_or
-id|VM_WRITE
-)paren
-)paren
-op_eq
-id|VM_WRITE
-)paren
-op_logical_or
-(paren
-id|file
-op_eq
-l_int|NULL
-)paren
-)paren
-op_logical_and
 op_logical_neg
 (paren
 id|flags
 op_amp
 id|MAP_NORESERVE
 )paren
+op_logical_or
+id|sysctl_overcommit_memory
+OG
+l_int|1
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|vm_flags
+op_amp
+id|VM_SHARED
+)paren
+(brace
+multiline_comment|/* Check memory availability in shmem_file_setup? */
+id|vm_flags
+op_or_assign
+id|VM_ACCOUNT
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|vm_flags
+op_amp
+id|VM_WRITE
+)paren
+(brace
+multiline_comment|/* Private writable mapping: check memory availability */
 id|charged
 op_assign
 id|len
@@ -2284,6 +2238,7 @@ id|vm_flags
 op_or_assign
 id|VM_ACCOUNT
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Can we just expand an old anonymous mapping? */
 r_if
@@ -2486,9 +2441,9 @@ r_else
 r_if
 c_cond
 (paren
-id|flags
+id|vm_flags
 op_amp
-id|MAP_SHARED
+id|VM_SHARED
 )paren
 (brace
 id|error
@@ -2508,6 +2463,31 @@ r_goto
 id|free_vma
 suffix:semicolon
 )brace
+multiline_comment|/* We set VM_ACCOUNT in a shared mapping&squot;s vm_flags, to inform&n;&t; * shmem_zero_setup (perhaps called through /dev/zero&squot;s -&gt;mmap)&n;&t; * that memory reservation must be checked; but that reservation&n;&t; * belongs to shared memory object, not to vma: so now clear it.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|vm_flags
+op_amp
+(paren
+id|VM_SHARED
+op_or
+id|VM_ACCOUNT
+)paren
+)paren
+op_eq
+(paren
+id|VM_SHARED
+op_or
+id|VM_ACCOUNT
+)paren
+)paren
+id|vma-&gt;vm_flags
+op_and_assign
+op_complement
+id|VM_ACCOUNT
+suffix:semicolon
 multiline_comment|/* Can addr have changed??&n;&t; *&n;&t; * Answer: Yes, several device drivers can do it in their&n;&t; *         f_op-&gt;mmap method. -DaveM&n;&t; */
 id|addr
 op_assign
@@ -3961,9 +3941,6 @@ comma
 r_int
 r_int
 id|end
-comma
-r_int
-id|acct
 )paren
 (brace
 id|mmu_gather_t
@@ -4027,13 +4004,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|acct
-op_logical_and
-(paren
 id|mpnt-&gt;vm_flags
 op_amp
 id|VM_ACCOUNT
-)paren
 )paren
 (brace
 id|len
@@ -4380,9 +4353,6 @@ id|start
 comma
 r_int
 id|len
-comma
-r_int
-id|acct
 )paren
 (brace
 r_int
@@ -4592,8 +4562,6 @@ comma
 id|start
 comma
 id|end
-comma
-id|acct
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -4657,8 +4625,6 @@ comma
 id|addr
 comma
 id|len
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|up_write
@@ -4815,8 +4781,6 @@ comma
 id|addr
 comma
 id|len
-comma
-l_int|1
 )paren
 )paren
 r_return
@@ -5193,10 +5157,16 @@ id|mpnt-&gt;vm_flags
 op_amp
 id|VM_ACCOUNT
 )paren
-id|vm_unacct_vma
+id|vm_unacct_memory
 c_func
 (paren
-id|mpnt
+(paren
+id|end
+op_minus
+id|start
+)paren
+op_rshift
+id|PAGE_SHIFT
 )paren
 suffix:semicolon
 id|mm-&gt;map_count

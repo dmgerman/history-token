@@ -1505,7 +1505,7 @@ suffix:semicolon
 DECL|macro|have_of
 mdefine_line|#define have_of (_machine == _MACH_chrp || _machine == _MACH_Pmac)
 DECL|macro|cpu_relax
-mdefine_line|#define cpu_relax()&t;do { } while (0)
+mdefine_line|#define cpu_relax()&t;barrier()
 multiline_comment|/*&n; * Prefetch macros.&n; */
 DECL|macro|ARCH_HAS_PREFETCH
 mdefine_line|#define ARCH_HAS_PREFETCH

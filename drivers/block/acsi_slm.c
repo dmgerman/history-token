@@ -4133,7 +4133,7 @@ r_void
 r_if
 c_cond
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|MAJOR_NR
@@ -4185,7 +4185,7 @@ id|KERN_ERR
 l_string|&quot;Unable to get SLM ST-Ram buffer.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|MAJOR_NR
@@ -4318,7 +4318,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|MAJOR_NR

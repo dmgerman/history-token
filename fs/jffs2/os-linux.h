@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * The original JFFS, from which the design for JFFS2 was derived,&n; * was designed and implemented by Axis Communications AB.&n; *&n; * The contents of this file are subject to the Red Hat eCos Public&n; * License Version 1.1 (the &quot;Licence&quot;); you may not use this file&n; * except in compliance with the Licence.  You may obtain a copy of&n; * the Licence at http://www.redhat.com/&n; *&n; * Software distributed under the Licence is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.&n; * See the Licence for the specific language governing rights and&n; * limitations under the Licence.&n; *&n; * The Original Code is JFFS2 - Journalling Flash File System, version 2&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the RHEPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the RHEPL or the GPL.&n; *&n; * $Id: os-linux.h,v 1.16 2002/03/17 10:18:42 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: os-linux.h,v 1.19 2002/05/20 14:56:38 dwmw2 Exp $&n; *&n; */
 macro_line|#ifndef __JFFS2_OS_LINUX_H__
 DECL|macro|__JFFS2_OS_LINUX_H__
 mdefine_line|#define __JFFS2_OS_LINUX_H__
@@ -139,6 +139,10 @@ DECL|macro|jffs2_write_nand_badblock
 mdefine_line|#define jffs2_write_nand_badblock(c,jeb) do { ; } while(0)
 DECL|macro|jffs2_flash_writev
 mdefine_line|#define jffs2_flash_writev jffs2_flash_direct_writev
+DECL|macro|jffs2_wbuf_timeout
+mdefine_line|#define jffs2_wbuf_timeout NULL
+DECL|macro|jffs2_wbuf_process
+mdefine_line|#define jffs2_wbuf_process NULL
 macro_line|#else /* NAND support present */
 DECL|macro|jffs2_can_mark_obsolete
 mdefine_line|#define jffs2_can_mark_obsolete(c) (c-&gt;mtd-&gt;type == MTD_NORFLASH || c-&gt;mtd-&gt;type == MTD_RAM)
@@ -286,6 +290,24 @@ r_struct
 id|jffs2_eraseblock
 op_star
 id|jeb
+)paren
+suffix:semicolon
+r_void
+id|jffs2_wbuf_timeout
+c_func
+(paren
+r_int
+r_int
+id|data
+)paren
+suffix:semicolon
+r_void
+id|jffs2_wbuf_process
+c_func
+(paren
+r_void
+op_star
+id|data
 )paren
 suffix:semicolon
 macro_line|#endif /* NAND */

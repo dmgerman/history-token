@@ -1741,7 +1741,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Send RARP request packet over a signle interface.&n; */
+multiline_comment|/*&n; *  Send RARP request packet over a single interface.&n; */
 DECL|function|ic_rarp_send_if
 r_static
 r_void

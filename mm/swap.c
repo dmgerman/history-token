@@ -3,7 +3,6 @@ multiline_comment|/*&n; * This file contains the default values for the opereati
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
-macro_line|#include &lt;linux/swapctl.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
@@ -13,22 +12,6 @@ multiline_comment|/* How many pages do we try to swap or page in/out together? *
 DECL|variable|page_cluster
 r_int
 id|page_cluster
-suffix:semicolon
-DECL|variable|pager_daemon
-id|pager_daemon_t
-id|pager_daemon
-op_assign
-(brace
-l_int|512
-comma
-multiline_comment|/* base number for calculating the number of tries */
-id|SWAP_CLUSTER_MAX
-comma
-multiline_comment|/* minimum number of tries */
-l_int|8
-comma
-multiline_comment|/* do swap I/O in clusters of this size */
-)brace
 suffix:semicolon
 multiline_comment|/*&n; * Move an inactive page to the active list.&n; */
 DECL|function|activate_page_nolock

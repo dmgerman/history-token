@@ -251,10 +251,10 @@ DECL|macro|__NR_readv
 mdefine_line|#define __NR_readv&t;&t;&t;1146
 DECL|macro|__NR_writev
 mdefine_line|#define __NR_writev&t;&t;&t;1147
-DECL|macro|__NR_pread
-mdefine_line|#define __NR_pread&t;&t;&t;1148
-DECL|macro|__NR_pwrite
-mdefine_line|#define __NR_pwrite&t;&t;&t;1149
+DECL|macro|__NR_pread64
+mdefine_line|#define __NR_pread64&t;&t;&t;1148
+DECL|macro|__NR_pwrite64
+mdefine_line|#define __NR_pwrite64&t;&t;&t;1149
 DECL|macro|__NR__sysctl
 mdefine_line|#define __NR__sysctl&t;&t;&t;1150
 DECL|macro|__NR_mmap

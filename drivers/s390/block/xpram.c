@@ -1574,7 +1574,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Register xpram major.&n;&t; */
 id|rc
 op_assign
-id|devfs_register_blkdev
+id|register_blkdev
 c_func
 (paren
 id|XPRAM_MAJOR
@@ -1748,7 +1748,7 @@ c_func
 id|XPRAM_MAJOR
 )paren
 suffix:semicolon
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|XPRAM_MAJOR

@@ -1741,7 +1741,7 @@ multiline_comment|/* register device */
 r_if
 c_cond
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 (paren
 id|TIUSB_MAJOR
 comma
@@ -1793,7 +1793,7 @@ OL
 l_int|0
 )paren
 (brace
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 (paren
 id|TIUSB_MAJOR
 comma
@@ -1836,7 +1836,7 @@ id|devfs_unregister
 id|devfs_handle
 )paren
 suffix:semicolon
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 (paren
 id|TIUSB_MAJOR
 comma

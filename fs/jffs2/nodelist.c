@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * The original JFFS, from which the design for JFFS2 was derived,&n; * was designed and implemented by Axis Communications AB.&n; *&n; * The contents of this file are subject to the Red Hat eCos Public&n; * License Version 1.1 (the &quot;Licence&quot;); you may not use this file&n; * except in compliance with the Licence.  You may obtain a copy of&n; * the Licence at http://www.redhat.com/&n; *&n; * Software distributed under the Licence is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.&n; * See the Licence for the specific language governing rights and&n; * limitations under the Licence.&n; *&n; * The Original Code is JFFS2 - Journalling Flash File System, version 2&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the RHEPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the RHEPL or the GPL.&n; *&n; * $Id: nodelist.c,v 1.42 2002/03/11 11:17:29 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.c,v 1.47 2002/06/26 01:25:30 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -270,7 +270,7 @@ r_new
 suffix:semicolon
 id|out
 suffix:colon
-id|D1
+id|D2
 c_func
 (paren
 r_while
@@ -1529,23 +1529,6 @@ op_amp
 id|c-&gt;inocache_lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|c-&gt;inocache_last
-op_logical_and
-id|c-&gt;inocache_last-&gt;ino
-op_eq
-id|ino
-)paren
-(brace
-id|ret
-op_assign
-id|c-&gt;inocache_last
-suffix:semicolon
-)brace
-r_else
-(brace
 id|ret
 op_assign
 id|c-&gt;inocache_list
@@ -1583,7 +1566,6 @@ id|ret
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 id|spin_unlock
 c_func
 (paren
@@ -1710,10 +1692,6 @@ id|prev
 op_assign
 r_new
 suffix:semicolon
-id|c-&gt;inocache_last
-op_assign
-r_new
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -1822,17 +1800,6 @@ op_assign
 id|old-&gt;next
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|c-&gt;inocache_last
-op_eq
-id|old
-)paren
-id|c-&gt;inocache_last
-op_assign
-l_int|NULL
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -1929,10 +1896,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|c-&gt;inocache_last
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 DECL|function|jffs2_free_raw_node_refs
 r_void

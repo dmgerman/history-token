@@ -498,7 +498,7 @@ id|partial
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * AKPM: the PagePrivate test here seems a bit bogus.  It bypasses the&n; * mapping&squot;s -&gt;invalidatepage, which may still want to be called.&n; */
+multiline_comment|/*&n; * If truncate can remove the fs-private metadata from the page, it&n; * removes the page from the LRU immediately.  This because some other thread&n; * of control (eg, sendfile) may have a reference to the page.  But dropping&n; * the final reference to an LRU page in interrupt context is illegal - it may&n; * deadlock over pagemap_lru_lock.&n; */
 DECL|function|truncate_complete_page
 r_static
 r_void
@@ -511,17 +511,16 @@ op_star
 id|page
 )paren
 (brace
-multiline_comment|/* Drop fs-specific data so the page might become freeable. */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|PagePrivate
 c_func
 (paren
 id|page
 )paren
-op_logical_and
-op_logical_neg
+op_logical_or
 id|do_invalidatepage
 c_func
 (paren
@@ -530,23 +529,12 @@ comma
 l_int|0
 )paren
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|current-&gt;flags
-op_amp
-id|PF_INVALIDATE
-)paren
-id|printk
+id|lru_cache_del
 c_func
 (paren
-l_string|&quot;%s: buffer heads were leaked&bslash;n&quot;
-comma
-id|current-&gt;comm
+id|page
 )paren
 suffix:semicolon
-)brace
 id|ClearPageDirty
 c_func
 (paren
@@ -4929,8 +4917,9 @@ id|vm_operations_struct
 id|generic_file_vm_ops
 op_assign
 (brace
+dot
 id|nopage
-suffix:colon
+op_assign
 id|filemap_nopage
 comma
 )brace

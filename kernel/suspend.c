@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * linux/kernel/suspend.c&n; *&n; * This file is to realize architecture-independent&n; * machine suspend feature using pretty near only high-level routines&n; *&n; * Copyright (C) 1998-2001 Gabor Kuti &lt;seasons@fornax.hu&gt;&n; * Copyright (C) 1998,2001,2002 Pavel Machek &lt;pavel@suse.cz&gt;&n; *&n; * I&squot;d like to thank the following people for their work:&n; * &n; * Pavel Machek &lt;pavel@ucw.cz&gt;:&n; * Modifications, defectiveness pointing, being with me at the very beginning,&n; * suspend to swap space, stop all tasks. Port to 2.4.18-ac and 2.5.17.&n; *&n; * Steve Doddi &lt;dirk@loth.demon.co.uk&gt;: &n; * Support the possibility of hardware state restoring.&n; *&n; * Raph &lt;grey.havens@earthling.net&gt;:&n; * Support for preserving states of network devices and virtual console&n; * (including X and svgatextmode)&n; *&n; * Kurt Garloff &lt;garloff@suse.de&gt;:&n; * Straightened the critical function in order to prevent compilers from&n; * playing tricks with local variables.&n; *&n; * Andreas Mohr &lt;a.mohr@mailto.de&gt;&n; *&n; * Alex Badea &lt;vampire@go.ro&gt;:&n; * Fixed runaway init&n; *&n; * More state savers are welcome. Especially for the scsi layer...&n; *&n; * For TODOs,FIXMEs also look in Documentation/swsusp.txt&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/swapctl.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
@@ -37,6 +36,14 @@ r_struct
 id|task_struct
 op_star
 id|t
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sys_sync
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 DECL|variable|software_suspend_enabled
@@ -3319,7 +3326,6 @@ id|name_suspend
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * We try to swap out as much as we can then make a copy of the&n; * occupied pages in memory so we can make a copy of kernel state&n; * atomically, the I/O needed by saving won&squot;t bother us anymore. &n; */
 DECL|function|do_software_suspend
 r_void
 id|do_software_suspend
@@ -3359,6 +3365,7 @@ c_func
 )paren
 )paren
 (brace
+multiline_comment|/* At this point, all user processes and &quot;dangerous&quot;&n;                   kernel threads are stopped. Free some memory, as we&n;                   need half of memory free. */
 id|free_some_memory
 c_func
 (paren
@@ -3376,6 +3383,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Save state of all device drivers, and stop them. */
 r_if
 c_cond
 (paren
@@ -3387,6 +3395,7 @@ op_eq
 l_int|0
 )paren
 (brace
+multiline_comment|/* If stopping device drivers worked, we proceed basically into&n;&t;&t;&t; * suspend_save_image.&n;&t;&t;&t; *&n;&t;&t;&t; * do_magic(0) returns after system is resumed.&n;&t;&t;&t; *&n;&t;&t;&t; * do_magic() copies all &quot;used&quot; memory to &quot;free&quot; memory, then&n;&t;&t;&t; * unsuspends all device drivers, and writes memory to disk&n;&t;&t;&t; * using normal kernel mechanism.&n;&t;&t;&t; */
 id|do_magic
 c_func
 (paren
@@ -3394,7 +3403,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* This function returns after machine woken up from resume */
 id|PRINTK
 c_func
 (paren
@@ -4186,12 +4194,12 @@ op_star
 id|buf
 )paren
 (brace
+macro_line|#if 0
 r_struct
 id|buffer_head
 op_star
 id|bh
 suffix:semicolon
-macro_line|#if 0
 id|BUG_ON
 (paren
 id|pos

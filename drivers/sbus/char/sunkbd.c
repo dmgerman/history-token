@@ -7039,7 +7039,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 (paren
 id|KBD_MAJOR
 comma

@@ -710,6 +710,9 @@ r_int
 )paren
 suffix:semicolon
 macro_line|#ifndef HAVE_ARCH_GET_SIGNAL_TO_DELIVER
+r_struct
+id|pt_regs
+suffix:semicolon
 r_extern
 r_int
 id|get_signal_to_deliver

@@ -227,6 +227,10 @@ r_int
 id|major
 suffix:semicolon
 multiline_comment|/* major number of driver */
+DECL|member|first_minor
+r_int
+id|first_minor
+suffix:semicolon
 DECL|member|major_name
 r_const
 r_char
@@ -246,12 +250,6 @@ op_star
 id|part
 suffix:semicolon
 multiline_comment|/* [indexed by minor] */
-DECL|member|sizes
-r_int
-op_star
-id|sizes
-suffix:semicolon
-multiline_comment|/* [idem], device size in blocks */
 DECL|member|nr_real
 r_int
 id|nr_real

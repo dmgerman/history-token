@@ -1,7 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 1996 - 1999 Gadi Oxman &lt;gadio@netvision.net.il&gt;&n; */
-multiline_comment|/*&n; * Emulation of a SCSI host adapter for IDE ATAPI devices.&n; *&n; * With this driver, one can use the Linux SCSI drivers instead of the&n; * native IDE ATAPI drivers.&n; *&n; * Ver 0.1   Dec  3 96   Initial version.&n; * Ver 0.2   Jan 26 97   Fixed bug in cleanup_module() and added emulation&n; *                        of MODE_SENSE_6/MODE_SELECT_6 for cdroms. Thanks&n; *                        to Janos Farkas for pointing this out.&n; *                       Avoid using bitfields in structures for m68k.&n; *                       Added Scatter/Gather and DMA support.&n; * Ver 0.4   Dec  7 97   Add support for ATAPI PD/CD drives.&n; *                       Use variable timeout for each command.&n; * Ver 0.5   Jan  2 98   Fix previous PD/CD support.&n; *                       Allow disabling of SCSI-6 to SCSI-10 transformation.&n; * Ver 0.6   Jan 27 98   Allow disabling of SCSI command translation layer&n; *                        for access through /dev/sg.&n; *                       Fix MODE_SENSE_6/MODE_SELECT_6/INQUIRY translation.&n; * Ver 0.7   Dec 04 98   Ignore commands where lun != 0 to avoid multiple&n; *                        detection of devices with CONFIG_SCSI_MULTI_LUN&n; * Ver 0.8   Feb 05 99   Optical media need translation too. Reverse 0.7.&n; * Ver 0.9   Jul 04 99   Fix a bug in SG_SET_TRANSFORM.&n; */
-DECL|macro|IDESCSI_VERSION
-mdefine_line|#define IDESCSI_VERSION &quot;0.9&quot;
+multiline_comment|/*&n; * Copyright (C) 1996 - 1999 Gadi Oxman &lt;gadio@netvision.net.il&gt;&n; *&n; * Emulation of a SCSI host adapter for IDE ATAPI devices.&n; *&n; * With this driver, one can use the Linux SCSI drivers instead of the&n; * native IDE ATAPI drivers.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -2390,16 +2387,15 @@ id|drive
 r_if
 c_cond
 (paren
-id|ide_unregister_subdriver
+id|ata_unregister_device
+c_func
 (paren
 id|drive
 )paren
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 id|scsi_unregister_host
 c_func
 (paren
@@ -3689,6 +3685,7 @@ id|host
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-scsi: %s: Can&squot;t allocate a scsi host structure&bslash;n&quot;
@@ -3712,7 +3709,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ide_register_subdriver
+id|ata_register_device
 c_func
 (paren
 id|drive
@@ -3723,6 +3720,7 @@ id|ata_ops
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-scsi: %s: Failed to register the driver with ide.c&bslash;n&quot;
