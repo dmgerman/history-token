@@ -3229,9 +3229,9 @@ l_int|4
 op_assign
 (brace
 multiline_comment|/* OUTSEL */
-l_int|0x9040
+l_int|0xfc70
 comma
-multiline_comment|/* CL:FR, SR:FR, LO:DS, LI:FR, MI:DS */
+multiline_comment|/* CL:MX, SR:MX, LO:DS, LI:MX, MI:DS */
 multiline_comment|/* IOMISC */
 l_int|0x2102
 comma
