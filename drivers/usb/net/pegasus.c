@@ -4831,7 +4831,6 @@ c_func
 op_amp
 id|pegasus-&gt;mii
 comma
-op_amp
 id|ecmd
 )paren
 suffix:semicolon
@@ -4910,17 +4909,7 @@ op_star
 id|dev
 )paren
 (brace
-id|pegasus_t
-op_star
-id|pegasus
-op_assign
-id|netdev_priv
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* return pegasus-&gt;msg_enable; FIXME */
+multiline_comment|/*&n;&t; * pegasus_t *pegasus = netdev_priv(dev);&n;&t; * return pegasus-&gt;msg_enable; FIXME&n;&t; */
 r_return
 l_int|0
 suffix:semicolon
@@ -4940,17 +4929,7 @@ id|u32
 id|v
 )paren
 (brace
-id|pegasus_t
-op_star
-id|pegasus
-op_assign
-id|netdev_priv
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* pegasus-&gt;msg_enable = edata.data; FIXME */
+multiline_comment|/*&n;&t; * pegasus_t *pegasus = netdev_priv(dev);&n;&t; * pegasus-&gt;msg_enable = edata.data; FIXME&n;&t; */
 )brace
 DECL|variable|ops
 r_static
