@@ -11380,7 +11380,7 @@ suffix:semicolon
 r_int
 id|__user
 op_star
-id|int_user_arg
+id|user_arg
 op_assign
 (paren
 r_int
@@ -11578,7 +11578,7 @@ c_func
 (paren
 id|SOUND_VERSION
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_if
@@ -11657,7 +11657,7 @@ c_func
 (paren
 id|val
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_case
@@ -11697,7 +11697,7 @@ c_func
 (paren
 id|val
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_case
@@ -11747,7 +11747,7 @@ c_func
 (paren
 id|val
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_case
@@ -11803,7 +11803,7 @@ c_func
 (paren
 id|val
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_case
@@ -11815,7 +11815,7 @@ c_func
 (paren
 id|SOUND_CAP_EXCL_INPUT
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_default
@@ -11878,7 +11878,7 @@ id|j
 dot
 id|value
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 )brace
@@ -11933,7 +11933,7 @@ c_func
 (paren
 id|val
 comma
-id|int_user_arg
+id|user_arg
 )paren
 )paren
 r_return
@@ -12013,7 +12013,7 @@ c_func
 (paren
 id|val
 comma
-id|int_user_arg
+id|user_arg
 )paren
 )paren
 r_return
@@ -12048,7 +12048,7 @@ id|j
 dot
 id|value
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 )brace
@@ -13584,7 +13584,7 @@ suffix:semicolon
 r_int
 id|__user
 op_star
-id|int_user_arg
+id|user_arg
 op_assign
 (paren
 r_int
@@ -13693,7 +13693,7 @@ c_func
 (paren
 id|SOUND_VERSION
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_case
@@ -13742,7 +13742,7 @@ id|DSP_CAP_MMAP
 op_or
 id|DSP_CAP_BATCH
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_case
@@ -13812,7 +13812,7 @@ c_func
 (paren
 id|val
 comma
-id|int_user_arg
+id|user_arg
 )paren
 )paren
 r_return
@@ -13884,7 +13884,7 @@ id|as-&gt;usbin.dma.srate
 suffix:colon
 id|as-&gt;usbout.dma.srate
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_case
@@ -13898,7 +13898,7 @@ c_func
 (paren
 id|val
 comma
-id|int_user_arg
+id|user_arg
 )paren
 )paren
 r_return
@@ -13966,7 +13966,7 @@ c_func
 (paren
 id|val
 comma
-id|int_user_arg
+id|user_arg
 )paren
 )paren
 r_return
@@ -14059,7 +14059,7 @@ l_int|2
 suffix:colon
 l_int|1
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_case
@@ -14082,7 +14082,7 @@ id|AFMT_S16_LE
 op_or
 id|AFMT_S16_BE
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_case
@@ -14097,7 +14097,7 @@ c_func
 (paren
 id|val
 comma
-id|int_user_arg
+id|user_arg
 )paren
 )paren
 r_return
@@ -14214,7 +14214,7 @@ op_amp
 op_complement
 id|AFMT_STEREO
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_case
@@ -14266,7 +14266,7 @@ c_func
 (paren
 id|val
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_case
@@ -14280,7 +14280,7 @@ c_func
 (paren
 id|val
 comma
-id|int_user_arg
+id|user_arg
 )paren
 )paren
 r_return
@@ -14669,7 +14669,7 @@ c_func
 (paren
 id|val
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_case
@@ -14883,7 +14883,7 @@ c_func
 (paren
 id|as-&gt;usbout.dma.fragsize
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 )brace
@@ -14909,7 +14909,7 @@ c_func
 (paren
 id|as-&gt;usbin.dma.fragsize
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_case
@@ -14923,7 +14923,7 @@ c_func
 (paren
 id|val
 comma
-id|int_user_arg
+id|user_arg
 )paren
 )paren
 r_return
@@ -15083,7 +15083,7 @@ c_func
 (paren
 id|val
 comma
-id|int_user_arg
+id|user_arg
 )paren
 )paren
 r_return
@@ -15152,7 +15152,7 @@ id|as-&gt;usbin.dma.srate
 suffix:colon
 id|as-&gt;usbout.dma.srate
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_case
@@ -15186,7 +15186,7 @@ l_int|2
 suffix:colon
 l_int|1
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_case
@@ -15220,7 +15220,7 @@ l_int|16
 suffix:colon
 l_int|8
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_case

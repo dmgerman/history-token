@@ -5117,7 +5117,7 @@ r_int
 r_int
 id|__user
 op_star
-id|int_user_arg
+id|user_arg
 op_assign
 (paren
 r_int
@@ -5257,7 +5257,7 @@ id|put_user
 (paren
 id|u
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_break
@@ -5285,7 +5285,7 @@ id|put_user
 (paren
 id|u
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_break
@@ -5375,7 +5375,7 @@ id|put_user
 (paren
 id|u
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_break
@@ -5399,7 +5399,7 @@ id|put_user
 (paren
 id|u
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_break
@@ -5429,7 +5429,7 @@ id|get_user
 (paren
 id|u
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_if
@@ -5600,7 +5600,7 @@ id|put_user
 (paren
 id|u
 comma
-id|int_user_arg
+id|user_arg
 )paren
 suffix:semicolon
 r_break
