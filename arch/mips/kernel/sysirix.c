@@ -26,7 +26,6 @@ macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/inventory.h&gt;
 multiline_comment|/* 2,191 lines of complete and utter shit coming up... */

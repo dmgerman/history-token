@@ -59,5 +59,11 @@ mdefine_line|#define SLOT_SHIFT      &t;(27)
 DECL|macro|SLOT_MIN_MEM_SIZE
 mdefine_line|#define SLOT_MIN_MEM_SIZE&t;(32*1024*1024)
 macro_line|#endif
+DECL|macro|CPUS_PER_NODE
+mdefine_line|#define CPUS_PER_NODE&t;&t;2&t;/* CPUs on a single hub */
+DECL|macro|CPUS_PER_NODE_SHFT
+mdefine_line|#define CPUS_PER_NODE_SHFT&t;1&t;/* Bits to shift in the node number */
+DECL|macro|CPUS_PER_SUBNODE
+mdefine_line|#define CPUS_PER_SUBNODE&t;2&t;/* CPUs on a single hub PI */
 macro_line|#endif /* _ASM_SN_SN0_ARCH_H */
 eof

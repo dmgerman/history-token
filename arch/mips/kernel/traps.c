@@ -4067,7 +4067,7 @@ comma
 l_int|0x80
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Only some CPUs have the watch exceptions or a dedicated&n;&t; * interrupt vector.&n;&t; */
+multiline_comment|/*&n;&t; * Only some CPUs have the watch exceptions.&n;&t; */
 r_if
 c_cond
 (paren

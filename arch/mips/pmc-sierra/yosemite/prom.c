@@ -610,7 +610,7 @@ multiline_comment|/* Clear the semaphore */
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren

@@ -22,13 +22,6 @@ DECL|macro|setleds
 mdefine_line|#define setleds(t0,t1,c0,c1,c2,c3)
 macro_line|#endif /* LEDS_PHYS */
 macro_line|#else
-r_void
-id|swarm_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#ifdef LEDS_PHYS
 r_extern
 r_void

@@ -228,6 +228,15 @@ id|SMP_RESCHEDULE_YOURSELF
 )paren
 suffix:semicolon
 )brace
+r_extern
+id|asmlinkage
+r_void
+id|smp_call_function_interrupt
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#endif /* __ASM_SMP_H */
 eof

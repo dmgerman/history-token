@@ -23,5 +23,9 @@ DECL|macro|TO_MSPEC
 mdefine_line|#define TO_MSPEC(x)&t;&t;(MSPEC_BASE | ((x) &amp; TO_PHYS_MASK))
 DECL|macro|TO_HSPEC
 mdefine_line|#define TO_HSPEC(x)&t;&t;(HSPEC_BASE | ((x) &amp; TO_PHYS_MASK))
+DECL|macro|PAGE_OFFSET
+mdefine_line|#define PAGE_OFFSET&t;&t;CAC_BASE
+DECL|macro|HIGHMEM_START
+mdefine_line|#define HIGHMEM_START&t;&t;(~0UL)
 macro_line|#endif /* _ASM_MACH_SPACES_H */
 eof

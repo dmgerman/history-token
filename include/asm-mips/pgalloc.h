@@ -484,30 +484,6 @@ suffix:semicolon
 DECL|macro|__pmd_free_tlb
 mdefine_line|#define __pmd_free_tlb(tlb,x)&t;pmd_free(x)
 macro_line|#endif
-multiline_comment|/*&n; * Used for the b0rked handling of kernel pagetables on the 64-bit kernel.&n; */
-r_extern
-id|pte_t
-id|kptbl
-(braket
-(paren
-id|PAGE_SIZE
-op_lshift
-id|PGD_ORDER
-)paren
-op_div
-r_sizeof
-(paren
-id|pte_t
-)paren
-)braket
-suffix:semicolon
-r_extern
-id|pmd_t
-id|kpmdtbl
-(braket
-id|PTRS_PER_PMD
-)braket
-suffix:semicolon
 DECL|macro|check_pgt_cache
 mdefine_line|#define check_pgt_cache()&t;do { } while (0)
 macro_line|#endif /* _ASM_PGALLOC_H */

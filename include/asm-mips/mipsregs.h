@@ -766,6 +766,11 @@ DECL|macro|__read_ulong_c0_register
 mdefine_line|#define __read_ulong_c0_register(reg, sel)&t;&t;&t;&t;&bslash;&n;&t;((sizeof(unsigned long) == 4) ?&t;&t;&t;&t;&t;&bslash;&n;&t;__read_32bit_c0_register(reg, sel) :&t;&t;&t;&t;&bslash;&n;&t;__read_64bit_c0_register(reg, sel))
 DECL|macro|__write_ulong_c0_register
 mdefine_line|#define __write_ulong_c0_register(reg, sel, val)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sizeof(unsigned long) == 4)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__write_32bit_c0_register(reg, sel, val);&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__write_64bit_c0_register(reg, sel, val);&t;&t;&bslash;&n;} while (0)
+multiline_comment|/*&n; * On The RM7000 these are use to access cop0 set 1 registers&n; */
+DECL|macro|__read_32bit_c0_ctrl_register
+mdefine_line|#define __read_32bit_c0_ctrl_register(source)&t;&t;&t;&t;&bslash;&n;({ int __res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;cfc0&bslash;t%0, &quot; #source &quot;&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (__res));&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|__write_32bit_c0_ctrl_register
+mdefine_line|#define __write_32bit_c0_ctrl_register(register, value)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;ctc0&bslash;t%z0, &quot; #register &quot;&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;: : &quot;Jr&quot; ((unsigned int)value));&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * These versions are only needed for systems with more than 38 bits of&n; * physical address space running the 32-bit kernel.  That&squot;s none atm :-)&n; */
 DECL|macro|__read_64bit_c0_split
 mdefine_line|#define __read_64bit_c0_split(source, sel)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long long val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;local_irq_save(flags);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sel == 0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips64&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmfc0&bslash;t%M0, &quot; #source &quot;&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dsll&bslash;t%L0, %M0, 32&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dsrl&bslash;t%M0, %M0, 32&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dsrl&bslash;t%L0, %L0, 32&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (val));&t;&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips64&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmfc0&bslash;t%M0, &quot; #source &quot;, &quot; #sel &quot;&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;dsll&bslash;t%L0, %M0, 32&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dsrl&bslash;t%M0, %M0, 32&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dsrl&bslash;t%L0, %L0, 32&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (val));&t;&t;&t;&t;&t;&bslash;&n;&t;local_irq_restore(flags);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;val;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
@@ -918,13 +923,37 @@ mdefine_line|#define read_c0_xcontext()&t;__read_ulong_c0_register($20, 0)
 DECL|macro|write_c0_xcontext
 mdefine_line|#define write_c0_xcontext(val)&t;__write_ulong_c0_register($20, 0, val)
 DECL|macro|read_c0_intcontrol
-mdefine_line|#define read_c0_intcontrol()&t;__read_32bit_c0_register($20, 1)
+mdefine_line|#define read_c0_intcontrol()&t;__read_32bit_c0_ctrl_register($20)
 DECL|macro|write_c0_intcontrol
-mdefine_line|#define write_c0_intcontrol(val) __write_32bit_c0_register($20, 1, val)
+mdefine_line|#define write_c0_intcontrol(val) __write_32bit_c0_ctrl_register($20, val)
 DECL|macro|read_c0_framemask
 mdefine_line|#define read_c0_framemask()&t;__read_32bit_c0_register($21, 0)
 DECL|macro|write_c0_framemask
 mdefine_line|#define write_c0_framemask(val)&t;__write_32bit_c0_register($21, 0, val)
+DECL|macro|read_c0_diag
+mdefine_line|#define read_c0_diag()&t;&t;__read_32bit_c0_register($22, 0)
+DECL|macro|write_c0_diag
+mdefine_line|#define write_c0_diag(val)&t;__write_32bit_c0_register($22, 0, val)
+DECL|macro|read_c0_diag1
+mdefine_line|#define read_c0_diag1()&t;&t;__read_32bit_c0_register($22, 1)
+DECL|macro|write_c0_diag1
+mdefine_line|#define write_c0_diag1(val)&t;__write_32bit_c0_register($22, 1, val)
+DECL|macro|read_c0_diag2
+mdefine_line|#define read_c0_diag2()&t;&t;__read_32bit_c0_register($22, 2)
+DECL|macro|write_c0_diag2
+mdefine_line|#define write_c0_diag2(val)&t;__write_32bit_c0_register($22, 2, val)
+DECL|macro|read_c0_diag3
+mdefine_line|#define read_c0_diag3()&t;&t;__read_32bit_c0_register($22, 3)
+DECL|macro|write_c0_diag3
+mdefine_line|#define write_c0_diag3(val)&t;__write_32bit_c0_register($22, 3, val)
+DECL|macro|read_c0_diag4
+mdefine_line|#define read_c0_diag4()&t;&t;__read_32bit_c0_register($22, 4)
+DECL|macro|write_c0_diag4
+mdefine_line|#define write_c0_diag4(val)&t;__write_32bit_c0_register($22, 4, val)
+DECL|macro|read_c0_diag5
+mdefine_line|#define read_c0_diag5()&t;&t;__read_32bit_c0_register($22, 5)
+DECL|macro|write_c0_diag5
+mdefine_line|#define write_c0_diag5(val)&t;__write_32bit_c0_register($22, 5, val)
 DECL|macro|read_c0_debug
 mdefine_line|#define read_c0_debug()&t;&t;__read_32bit_c0_register($23, 0)
 DECL|macro|write_c0_debug
@@ -962,7 +991,7 @@ mdefine_line|#define write_c0_errorepc(val)&t;__write_ulong_c0_register($30, 0, 
 multiline_comment|/*&n; * Macros to access the floating point coprocessor control registers&n; */
 DECL|macro|read_32bit_cp1_register
 mdefine_line|#define read_32bit_cp1_register(source)                         &bslash;&n;({ int __res;                                                   &bslash;&n;&t;__asm__ __volatile__(                                   &bslash;&n;&t;&quot;.set&bslash;tpush&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;treorder&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;        &quot;cfc1&bslash;t%0,&quot;STR(source)&quot;&bslash;n&bslash;t&quot;                            &bslash;&n;&t;&quot;.set&bslash;tpop&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;        : &quot;=r&quot; (__res));                                        &bslash;&n;        __res;})
-multiline_comment|/*&n; * TLB operations.&n; */
+multiline_comment|/*&n; * TLB operations.&n; *&n; * It is responsibility of the caller to take care of any TLB hazards.&n; */
 DECL|function|tlb_probe
 r_static
 r_inline
@@ -973,11 +1002,6 @@ c_func
 r_void
 )paren
 (brace
-id|rm9000_tlb_hazard
-c_func
-(paren
-)paren
-suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
@@ -985,11 +1009,6 @@ c_func
 l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
 l_string|&quot;tlbp&bslash;n&bslash;t&quot;
 l_string|&quot;.set reorder&quot;
-)paren
-suffix:semicolon
-id|rm9000_tlb_hazard
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -1003,11 +1022,6 @@ c_func
 r_void
 )paren
 (brace
-id|rm9000_tlb_hazard
-c_func
-(paren
-)paren
-suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
@@ -1015,11 +1029,6 @@ c_func
 l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
 l_string|&quot;tlbr&bslash;n&bslash;t&quot;
 l_string|&quot;.set reorder&quot;
-)paren
-suffix:semicolon
-id|rm9000_tlb_hazard
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -1033,11 +1042,6 @@ c_func
 r_void
 )paren
 (brace
-id|rm9000_tlb_hazard
-c_func
-(paren
-)paren
-suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
@@ -1045,11 +1049,6 @@ c_func
 l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
 l_string|&quot;tlbwi&bslash;n&bslash;t&quot;
 l_string|&quot;.set reorder&quot;
-)paren
-suffix:semicolon
-id|rm9000_tlb_hazard
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -1063,11 +1062,6 @@ c_func
 r_void
 )paren
 (brace
-id|rm9000_tlb_hazard
-c_func
-(paren
-)paren
-suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
@@ -1077,42 +1071,29 @@ l_string|&quot;tlbwr&bslash;n&bslash;t&quot;
 l_string|&quot;.set reorder&quot;
 )paren
 suffix:semicolon
-id|rm9000_tlb_hazard
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Manipulate bits in a c0 register.&n; */
 DECL|macro|__BUILD_SET_C0
-mdefine_line|#define __BUILD_SET_C0(name,register)&t;&t;&t;&t;&bslash;&n;static inline unsigned int&t;&t;&t;&t;&t;&bslash;&n;set_c0_##name(unsigned int set)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int res;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;res = read_c0_##name();&t;&t;&t;&t;&t;&bslash;&n;&t;res |= set;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write_c0_##name(res);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return res;&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline unsigned int&t;&t;&t;&t;&t;&bslash;&n;clear_c0_##name(unsigned int clear)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int res;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;res = read_c0_##name();&t;&t;&t;&t;&t;&bslash;&n;&t;res &amp;= ~clear;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write_c0_##name(res);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return res;&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline unsigned int&t;&t;&t;&t;&t;&bslash;&n;change_c0_##name(unsigned int change, unsigned int new)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int res;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;res = read_c0_##name();&t;&t;&t;&t;&t;&bslash;&n;&t;res &amp;= ~change;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;res |= (new &amp; change);&t;&t;&t;&t;&t;&bslash;&n;&t;write_c0_##name(res);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return res;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define __BUILD_SET_C0(name)&t;&t;&t;&t;&t;&bslash;&n;static inline unsigned int&t;&t;&t;&t;&t;&bslash;&n;set_c0_##name(unsigned int set)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int res;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;res = read_c0_##name();&t;&t;&t;&t;&t;&bslash;&n;&t;res |= set;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write_c0_##name(res);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return res;&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline unsigned int&t;&t;&t;&t;&t;&bslash;&n;clear_c0_##name(unsigned int clear)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int res;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;res = read_c0_##name();&t;&t;&t;&t;&t;&bslash;&n;&t;res &amp;= ~clear;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write_c0_##name(res);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return res;&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline unsigned int&t;&t;&t;&t;&t;&bslash;&n;change_c0_##name(unsigned int change, unsigned int new)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int res;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;res = read_c0_##name();&t;&t;&t;&t;&t;&bslash;&n;&t;res &amp;= ~change;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;res |= (new &amp; change);&t;&t;&t;&t;&t;&bslash;&n;&t;write_c0_##name(res);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return res;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 id|__BUILD_SET_C0
 c_func
 (paren
 id|status
-comma
-id|CP0_STATUS
 )paren
 id|__BUILD_SET_C0
 c_func
 (paren
 id|cause
-comma
-id|CP0_CAUSE
 )paren
 id|__BUILD_SET_C0
 c_func
 (paren
 id|config
-comma
-id|CP0_CONFIG
 )paren
 id|__BUILD_SET_C0
 c_func
 (paren
 id|intcontrol
-comma
-id|CP0_CONFIG
 )paren
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_MIPSREGS_H */

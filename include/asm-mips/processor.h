@@ -8,10 +8,10 @@ macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/cachectl.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
+macro_line|#include &lt;asm/prefetch.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#ifdef CONFIG_SGI_IP27
 macro_line|#include &lt;asm/sn/types.h&gt;
-macro_line|#include &lt;asm/sn/intr_public.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * Descriptor for a cache&n; */
 DECL|struct|cache_desc
@@ -97,12 +97,6 @@ r_char
 id|p_slice
 suffix:semicolon
 multiline_comment|/* Physical position on node board */
-DECL|member|p_intmasks
-r_struct
-id|hub_intmasks_s
-id|p_intmasks
-suffix:semicolon
-multiline_comment|/* SN0 per-CPU interrupt masks */
 macro_line|#endif
 macro_line|#if 0
 r_int
@@ -186,6 +180,12 @@ id|cache_desc
 id|tcache
 suffix:semicolon
 multiline_comment|/* Tertiary/split secondary cache */
+DECL|member|data
+r_void
+op_star
+id|data
+suffix:semicolon
+multiline_comment|/* Additional data */
 )brace
 id|__attribute__
 c_func
@@ -571,5 +571,43 @@ r_return
 l_int|0ULL
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_CPU_HAS_PREFETCH
+DECL|macro|ARCH_HAS_PREFETCH
+mdefine_line|#define ARCH_HAS_PREFETCH
+DECL|function|prefetch
+r_extern
+r_inline
+r_void
+id|prefetch
+c_func
+(paren
+r_const
+r_void
+op_star
+id|addr
+)paren
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;&t;.set&t;mips4&t;&t;&bslash;n&quot;
+l_string|&quot;&t;pref&t;%0, (%1)&t;&bslash;n&quot;
+l_string|&quot;&t;.set&t;mips0&t;&t;&bslash;n&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;i&quot;
+(paren
+id|Pref_Load
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|addr
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#endif /* _ASM_PROCESSOR_H */
 eof

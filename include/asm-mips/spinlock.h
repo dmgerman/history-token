@@ -367,5 +367,67 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|function|_raw_write_trylock
+r_static
+r_inline
+r_int
+id|_raw_write_trylock
+c_func
+(paren
+id|rwlock_t
+op_star
+id|rw
+)paren
+(brace
+r_int
+r_int
+id|tmp
+suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# _raw_write_trylock&bslash;n&quot;
+l_string|&quot;li&bslash;t%2, 0&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;tll&bslash;t%1, %3&bslash;n&bslash;t&quot;
+l_string|&quot;bnez&bslash;t%1, 2f&bslash;n&bslash;t&quot;
+l_string|&quot;lui&bslash;t%1, 0x8000&bslash;n&bslash;t&quot;
+l_string|&quot;sc&bslash;t%1, %0&bslash;n&bslash;t&quot;
+l_string|&quot;beqz&bslash;t%1, 1b&bslash;n&bslash;t&quot;
+l_string|&quot;sync&bslash;n&bslash;t&quot;
+l_string|&quot;li&bslash;t%2, 1&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;treorder&bslash;n&quot;
+l_string|&quot;2:&quot;
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+id|rw-&gt;lock
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|ret
+)paren
+suffix:colon
+l_string|&quot;m&quot;
+(paren
+id|rw-&gt;lock
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 macro_line|#endif /* _ASM_SPINLOCK_H */
 eof

@@ -5,7 +5,6 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|function|remap_area_pte
 r_static
@@ -668,6 +667,8 @@ id|PAGE_ALIGN
 c_func
 (paren
 id|last_addr
+op_plus
+l_int|1
 )paren
 op_minus
 id|phys_addr

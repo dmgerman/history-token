@@ -1,9 +1,30 @@
-multiline_comment|/*&n; * FILE NAME&n; *&t;arch/mips/vr41xx/nec-eagle/irq.c&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;Interrupt routines for the NEC Eagle/Hawk board.&n; *&n; * Author: Yoichi Yuasa&n; *         yyuasa@mvista.com or source@mvista.com&n; *&n; * Copyright 2002 MontaVista Software Inc.&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the&n; *  Free Software Foundation; either version 2 of the License, or (at your&n; *  option) any later version.&n; *&n; *  THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&n; *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,&n; *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS&n; *  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND&n; *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n; *  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n; *  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-multiline_comment|/*&n; * Changes:&n; *  MontaVista Software Inc. &lt;yyuasa@mvista.com&gt; or &lt;source@mvista.com&gt;&n; *  - Added support for NEC Hawk.&n; *&n; *  MontaVista Software Inc. &lt;yyuasa@mvista.com&gt; or &lt;source@mvista.com&gt;&n; *  - New creation, NEC Eagle is supported.&n; */
+multiline_comment|/*&n; *  irq.c,  Interrupt routines for the NEC Eagle/Hawk board.&n; *&n; *  Copyright (C) 2002  MontaVista Software, Inc.&n; *    Author: Yoichi Yuasa &lt;yyuasa@mvista.com, or source@mvista.com&gt;&n; *  Copyright (C) 2004  Yoichi Yuasa &lt;yuasa@hh.iij4u.or.jp&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * Changes:&n; *  MontaVista Software Inc. &lt;yyuasa@mvista.com&gt; or &lt;source@mvista.com&gt;&n; *  - New creation, NEC Eagle is supported.&n; *  - Added support for NEC Hawk.&n; *&n; *  Yoichi Yuasa &lt;yuasa@hh.iij4u.or.jp&gt;&n; *  - Changed from board_irq_init to driver module.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/vr41xx/eagle.h&gt;
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;IRQ module driver for NEC Eagle/Hawk&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Yoichi Yuasa &lt;yyuasa@mvista.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|enable_pciint_irq
 r_static
 r_void
@@ -15,7 +36,7 @@ r_int
 id|irq
 )paren
 (brace
-id|u8
+r_uint8
 id|val
 suffix:semicolon
 id|val
@@ -29,7 +50,7 @@ suffix:semicolon
 id|val
 op_or_assign
 (paren
-id|u8
+r_uint8
 )paren
 l_int|1
 op_lshift
@@ -59,7 +80,7 @@ r_int
 id|irq
 )paren
 (brace
-id|u8
+r_uint8
 id|val
 suffix:semicolon
 id|val
@@ -75,7 +96,7 @@ op_and_assign
 op_complement
 (paren
 (paren
-id|u8
+r_uint8
 )paren
 l_int|1
 op_lshift
@@ -166,21 +187,41 @@ id|hw_interrupt_type
 id|pciint_irq_type
 op_assign
 (brace
+dot
+r_typename
+op_assign
 l_string|&quot;PCIINT&quot;
 comma
+dot
+id|startup
+op_assign
 id|startup_pciint_irq
 comma
+dot
+id|shutdown
+op_assign
 id|shutdown_pciint_irq
 comma
+dot
+id|enable
+op_assign
 id|enable_pciint_irq
 comma
+dot
+id|disable
+op_assign
 id|disable_pciint_irq
 comma
+dot
+id|ack
+op_assign
 id|ack_pciint_irq
 comma
+dot
+id|end
+op_assign
 id|end_pciint_irq
 comma
-l_int|NULL
 )brace
 suffix:semicolon
 DECL|function|enable_sdbint_irq
@@ -194,7 +235,7 @@ r_int
 id|irq
 )paren
 (brace
-id|u8
+r_uint8
 id|val
 suffix:semicolon
 id|val
@@ -208,7 +249,7 @@ suffix:semicolon
 id|val
 op_or_assign
 (paren
-id|u8
+r_uint8
 )paren
 l_int|1
 op_lshift
@@ -238,7 +279,7 @@ r_int
 id|irq
 )paren
 (brace
-id|u8
+r_uint8
 id|val
 suffix:semicolon
 id|val
@@ -254,7 +295,7 @@ op_and_assign
 op_complement
 (paren
 (paren
-id|u8
+r_uint8
 )paren
 l_int|1
 op_lshift
@@ -345,21 +386,41 @@ id|hw_interrupt_type
 id|sdbint_irq_type
 op_assign
 (brace
+dot
+r_typename
+op_assign
 l_string|&quot;SDBINT&quot;
 comma
+dot
+id|startup
+op_assign
 id|startup_sdbint_irq
 comma
+dot
+id|shutdown
+op_assign
 id|shutdown_sdbint_irq
 comma
+dot
+id|enable
+op_assign
 id|enable_sdbint_irq
 comma
+dot
+id|disable
+op_assign
 id|disable_sdbint_irq
 comma
+dot
+id|ack
+op_assign
 id|ack_sdbint_irq
 comma
+dot
+id|end
+op_assign
 id|end_sdbint_irq
 comma
-l_int|NULL
 )brace
 suffix:semicolon
 DECL|function|eagle_get_irq_number
@@ -372,7 +433,7 @@ r_int
 id|irq
 )paren
 (brace
-id|u8
+r_uint8
 id|sdbint
 comma
 id|pciint
@@ -490,8 +551,9 @@ id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|eagle_irq_init
-r_void
-id|__init
+r_static
+r_int
+id|__devinit
 id|eagle_irq_init
 c_func
 (paren
@@ -500,6 +562,8 @@ r_void
 (brace
 r_int
 id|i
+comma
+id|retval
 suffix:semicolon
 id|writeb
 c_func
@@ -619,6 +683,8 @@ op_assign
 op_amp
 id|pciint_irq_type
 suffix:semicolon
+id|retval
+op_assign
 id|vr41xx_cascade_irq
 c_func
 (paren
@@ -627,5 +693,57 @@ comma
 id|eagle_get_irq_number
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_ne
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;eagle: Cannot cascade IRQ %d&bslash;n&quot;
+comma
+id|FPGA_CASCADE_IRQ
+)paren
+suffix:semicolon
+r_return
+id|retval
+suffix:semicolon
 )brace
+DECL|function|eagle_irq_exit
+r_static
+r_void
+id|__devexit
+id|eagle_irq_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|free_irq
+c_func
+(paren
+id|FPGA_CASCADE_IRQ
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+DECL|variable|eagle_irq_init
+id|module_init
+c_func
+(paren
+id|eagle_irq_init
+)paren
+suffix:semicolon
+DECL|variable|eagle_irq_exit
+id|module_exit
+c_func
+(paren
+id|eagle_irq_exit
+)paren
+suffix:semicolon
 eof

@@ -1,46 +1,38 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000 by Ralf Baechle&n; * Copyright (C) 2000 by Silicon Graphics, Inc.&n; *&n; * On SGI IP27 the ARC memory configuration data is completly bogus but&n; * alternate easier to use mechanisms are available.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000 by Ralf Baechle&n; * Copyright (C) 2000 by Silicon Graphics, Inc.&n; * Copyright (C) 2004 by Christoph Hellwig&n; *&n; * On SGI IP27 the ARC memory configuration data is completly bogus but&n; * alternate easier to use mechanisms are available.&n; */
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
+macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/bootinfo.h&gt;
-macro_line|#include &lt;asm/addrspace.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
-macro_line|#include &lt;asm/sn/types.h&gt;
-macro_line|#include &lt;asm/sn/addrs.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/hub.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
-macro_line|#include &lt;asm/sn/arch.h&gt;
-macro_line|#include &lt;asm/mmzone.h&gt;
-macro_line|#include &lt;asm/sections.h&gt;
-multiline_comment|/* ip27-klnuma.c   */
-r_extern
-id|pfn_t
-id|node_getfirstfree
-c_func
-(paren
-id|cnodeid_t
-id|cnode
-)paren
-suffix:semicolon
+macro_line|#include &lt;asm/sn/sn_private.h&gt;
 DECL|macro|PFN_UP
-mdefine_line|#define PFN_UP(x)&t;(((x) + PAGE_SIZE-1) &gt;&gt; PAGE_SHIFT)
+mdefine_line|#define PFN_UP(x)&t;&t;(((x) + PAGE_SIZE-1) &gt;&gt; PAGE_SHIFT)
+DECL|macro|SLOT_PFNSHIFT
+mdefine_line|#define SLOT_PFNSHIFT           (SLOT_SHIFT - PAGE_SHIFT)
+DECL|macro|PFN_NASIDSHFT
+mdefine_line|#define PFN_NASIDSHFT           (NASID_SHFT - PAGE_SHIFT)
 DECL|macro|SLOT_IGNORED
-mdefine_line|#define SLOT_IGNORED&t;0xffff
+mdefine_line|#define SLOT_IGNORED&t;&t;0xffff
 DECL|variable|slot_lastfilled_cache
+r_static
 r_int
+id|__initdata
 id|slot_lastfilled_cache
 (braket
 id|MAX_COMPACT_NODES
 )braket
 suffix:semicolon
 DECL|variable|slot_psize_cache
+r_static
 r_int
 r_int
+id|__initdata
 id|slot_psize_cache
 (braket
 id|MAX_COMPACT_NODES
@@ -50,8 +42,10 @@ id|MAX_MEM_SLOTS
 )braket
 suffix:semicolon
 DECL|variable|plat_node_bdata
+r_static
 r_struct
 id|bootmem_data
+id|__initdata
 id|plat_node_bdata
 (braket
 id|MAX_COMPACT_NODES
@@ -75,37 +69,51 @@ id|hub_data
 id|MAX_COMPACT_NODES
 )braket
 suffix:semicolon
-DECL|function|numa_debug
-r_int
-id|numa_debug
+DECL|function|slot_getbasepfn
+r_static
+id|pfn_t
+id|__init
+id|slot_getbasepfn
 c_func
 (paren
-r_void
+id|cnodeid_t
+id|cnode
+comma
+r_int
+id|slot
 )paren
 (brace
-id|printk
+id|nasid_t
+id|nasid
+op_assign
+id|COMPACT_TO_NASID_NODEID
 c_func
 (paren
-l_string|&quot;NUMA debug&bslash;n&quot;
+id|cnode
 )paren
-suffix:semicolon
-op_star
-(paren
-r_int
-op_star
-)paren
-l_int|0
-op_assign
-l_int|0
 suffix:semicolon
 r_return
-l_int|0
+(paren
+(paren
+id|pfn_t
+)paren
+id|nasid
+op_lshift
+id|PFN_NASIDSHFT
+)paren
+op_or
+(paren
+id|slot
+op_lshift
+id|SLOT_PFNSHIFT
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Return the number of pages of memory provided by the given slot&n; * on the specified node.&n; */
 DECL|function|slot_getsize
 r_static
 id|pfn_t
+id|__init
 id|slot_getsize
 c_func
 (paren
@@ -133,6 +141,7 @@ multiline_comment|/*&n; * Return highest slot filled&n; */
 DECL|function|node_getlastslot
 r_static
 r_int
+id|__init
 id|node_getlastslot
 c_func
 (paren
@@ -154,6 +163,7 @@ multiline_comment|/*&n; * Return the pfn of the last free page of memory on a no
 DECL|function|node_getmaxclick
 r_static
 id|pfn_t
+id|__init
 id|node_getmaxclick
 c_func
 (paren
@@ -174,11 +184,7 @@ c_loop
 id|slot
 op_assign
 (paren
-id|node_getnumslots
-c_func
-(paren
-id|node
-)paren
+id|MAX_MEM_SLOTS
 op_minus
 l_int|1
 )paren
@@ -240,6 +246,7 @@ suffix:semicolon
 DECL|function|slot_psize_compute
 r_static
 id|pfn_t
+id|__init
 id|slot_psize_compute
 c_func
 (paren
@@ -393,29 +400,17 @@ suffix:semicolon
 )brace
 DECL|function|szmem
 r_static
-id|pfn_t
+r_void
+id|__init
 id|szmem
 c_func
 (paren
 r_void
 )paren
 (brace
-id|cnodeid_t
-id|node
-suffix:semicolon
-r_int
-id|slot
-comma
-id|numslots
-suffix:semicolon
 id|pfn_t
-id|num_pages
-op_assign
-l_int|0
-comma
 id|slot_psize
-suffix:semicolon
-id|pfn_t
+comma
 id|slot0sz
 op_assign
 l_int|0
@@ -424,7 +419,16 @@ id|nodebytes
 suffix:semicolon
 multiline_comment|/* Hack to detect problem configs */
 r_int
+id|slot
+comma
 id|ignore
+suffix:semicolon
+id|cnodeid_t
+id|node
+suffix:semicolon
+id|num_physpages
+op_assign
+l_int|0
 suffix:semicolon
 r_for
 c_loop
@@ -441,14 +445,6 @@ id|node
 op_increment
 )paren
 (brace
-id|numslots
-op_assign
-id|node_getnumslots
-c_func
-(paren
-id|node
-)paren
-suffix:semicolon
 id|ignore
 op_assign
 id|nodebytes
@@ -464,7 +460,7 @@ l_int|0
 suffix:semicolon
 id|slot
 OL
-id|numslots
+id|MAX_MEM_SLOTS
 suffix:semicolon
 id|slot
 op_increment
@@ -494,7 +490,11 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * We need to refine the hack when we have replicated&n;&t;&t;&t; * kernel text.&n;&t;&t;&t; */
 id|nodebytes
 op_add_assign
-id|SLOT_SIZE
+(paren
+l_int|1LL
+op_lshift
+id|SLOT_SHIFT
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -553,12 +553,12 @@ id|SLOT_IGNORED
 suffix:semicolon
 id|slot
 op_assign
-id|numslots
+id|MAX_MEM_SLOTS
 suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|num_pages
+id|num_physpages
 op_add_assign
 id|slot_psize
 suffix:semicolon
@@ -590,19 +590,8 @@ id|slot
 suffix:semicolon
 )brace
 )brace
-r_return
-id|num_pages
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Currently, the intranode memory hole support assumes that each slot&n; * contains at least 32 MBytes of memory. We assume all bootmem data&n; * fits on the first slot.&n; */
-r_extern
-r_void
-id|mlreset
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|prom_meminit
 r_void
 id|__init
@@ -620,8 +609,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|num_physpages
-op_assign
 id|szmem
 c_func
 (paren
@@ -711,12 +698,30 @@ id|hub_data
 id|node
 )braket
 op_assign
+(paren
+r_struct
+id|hub_data
+op_star
+)paren
+(paren
 id|node_data
 (braket
 id|node
 )braket
 op_plus
 l_int|1
+)paren
+suffix:semicolon
+id|cpus_clear
+c_func
+(paren
+id|hub_data
+(braket
+id|node
+)braket
+op_member_access_from_pointer
+id|h_cpus
+)paren
 suffix:semicolon
 id|slot_freepfn
 op_add_assign

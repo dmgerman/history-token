@@ -10,30 +10,11 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/au1000.h&gt;
-macro_line|#include &lt;asm/db1x00.h&gt;
-r_extern
-r_struct
-id|rtc_ops
-id|no_rtc_ops
-suffix:semicolon
-DECL|variable|bcsr
-r_static
-id|BCSR
-op_star
-r_const
-id|bcsr
-op_assign
-(paren
-id|BCSR
-op_star
-)paren
-l_int|0xB3000000
-suffix:semicolon
+macro_line|#include &lt;asm/mach-au1x00/au1000.h&gt;
+macro_line|#include &lt;asm/mach-pb1x00/pb1550.h&gt;
 DECL|function|board_setup
 r_void
 id|__init
@@ -46,13 +27,7 @@ r_void
 id|u32
 id|pin_func
 suffix:semicolon
-id|rtc_ops
-op_assign
-op_amp
-id|no_rtc_ops
-suffix:semicolon
-macro_line|#ifdef CONFIG_AU1X00_USB_DEVICE
-singleline_comment|// 2nd USB port is USB device
+multiline_comment|/* Enable PSC1 SYNC for AC97.  Normaly done in audio driver,&n;&t; * but it is board specific code, so put it here.&n;&t; */
 id|pin_func
 op_assign
 id|au_readl
@@ -60,14 +35,17 @@ c_func
 (paren
 id|SYS_PINFUNC
 )paren
-op_amp
+suffix:semicolon
+id|au_sync
+c_func
 (paren
-id|u32
 )paren
-(paren
-op_complement
-l_int|0x8000
-)paren
+suffix:semicolon
+id|pin_func
+op_or_assign
+id|SYS_PF_MUST_BE_SET
+op_or
+id|SYS_PF_PSC1_S1
 suffix:semicolon
 id|au_writel
 c_func
@@ -77,7 +55,6 @@ comma
 id|SYS_PINFUNC
 )paren
 suffix:semicolon
-macro_line|#endif
 id|au_writel
 c_func
 (paren
@@ -92,6 +69,11 @@ l_int|0x10
 )paren
 suffix:semicolon
 multiline_comment|/* turn off pcmcia power */
+id|au_sync
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren

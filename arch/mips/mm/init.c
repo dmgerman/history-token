@@ -19,9 +19,10 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/cachectl.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 id|DEFINE_PER_CPU
 c_func
@@ -582,7 +583,7 @@ id|low
 id|printk
 c_func
 (paren
-l_string|&quot; %dk highmem ignored&quot;
+l_string|&quot; %ldk highmem ignored&quot;
 comma
 id|high
 op_minus
@@ -747,16 +748,6 @@ comma
 id|ram
 suffix:semicolon
 macro_line|#ifdef CONFIG_HIGHMEM
-id|highstart_pfn
-op_assign
-(paren
-id|KSEG1
-op_minus
-id|KSEG0
-)paren
-op_rshift
-id|PAGE_SHIFT
-suffix:semicolon
 id|highmem_start_page
 op_assign
 id|mem_map
@@ -908,6 +899,20 @@ c_func
 id|page
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_LIMITED_DMA
+id|set_page_address
+c_func
+(paren
+id|page
+comma
+id|lowmem_page_address
+c_func
+(paren
+id|page
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|set_bit
 c_func
 (paren

@@ -15,7 +15,6 @@ macro_line|#include &lt;linux/vt_kern.h&gt;&t;&t;/* For unblank_screen() */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/branch.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

@@ -488,8 +488,6 @@ op_assign
 id|MIPS_CPU_TLB
 op_or
 id|MIPS_CPU_NOFPUEX
-op_or
-id|MIPS_CPU_LLSC
 suffix:semicolon
 r_if
 c_cond
@@ -554,8 +552,6 @@ op_assign
 id|MIPS_CPU_TLB
 op_or
 id|MIPS_CPU_NOFPUEX
-op_or
-id|MIPS_CPU_LLSC
 suffix:semicolon
 r_if
 c_cond
@@ -1718,6 +1714,15 @@ suffix:colon
 id|c-&gt;cputype
 op_assign
 id|CPU_AU1100
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|3
+suffix:colon
+id|c-&gt;cputype
+op_assign
+id|CPU_AU1550
 suffix:semicolon
 r_break
 suffix:semicolon

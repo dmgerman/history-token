@@ -35,7 +35,7 @@ suffix:semicolon
 r_extern
 id|asmlinkage
 r_void
-id|mipsIRQ
+id|lasatIRQ
 c_func
 (paren
 r_void
@@ -424,11 +424,6 @@ op_star
 id|regs
 )paren
 (brace
-r_struct
-id|irqaction
-op_star
-id|action
-suffix:semicolon
 r_int
 r_int
 id|int_status
@@ -528,12 +523,6 @@ suffix:semicolon
 r_case
 id|MACH_LASAT_200
 suffix:colon
-id|printk
-c_func
-(paren
-l_string|&quot;**** MACH_LASAT_200 interrupt routines&bslash;n&quot;
-)paren
-suffix:semicolon
 id|lasat_int_status
 op_assign
 (paren
@@ -580,7 +569,7 @@ c_func
 (paren
 l_int|0
 comma
-id|mipsIRQ
+id|lasatIRQ
 )paren
 suffix:semicolon
 r_for

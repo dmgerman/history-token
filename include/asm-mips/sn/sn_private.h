@@ -96,5 +96,13 @@ c_func
 id|cnodeid_t
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|mlreset
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* __ASM_SN_SN_PRIVATE_H */
 eof

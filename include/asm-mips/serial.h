@@ -134,12 +134,23 @@ macro_line|#else
 DECL|macro|HUB6_SERIAL_PORT_DFNS
 mdefine_line|#define HUB6_SERIAL_PORT_DFNS
 macro_line|#endif
-macro_line|#ifdef CONFIG_MCA
-DECL|macro|MCA_SERIAL_PORT_DFNS
-mdefine_line|#define MCA_SERIAL_PORT_DFNS&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x3220, 3, STD_COM_FLAGS },&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x3228, 3, STD_COM_FLAGS },&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x4220, 3, STD_COM_FLAGS },&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x4228, 3, STD_COM_FLAGS },&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x5220, 3, STD_COM_FLAGS },&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x5228, 3, STD_COM_FLAGS },
+macro_line|#ifdef CONFIG_MOMENCO_JAGUAR_ATX
+multiline_comment|/* Ordinary NS16552 duart with a 20MHz crystal.  */
+DECL|macro|JAGUAR_ATX_UART_CLK
+mdefine_line|#define JAGUAR_ATX_UART_CLK&t;20000000
+DECL|macro|JAGUAR_ATX_BASE_BAUD
+mdefine_line|#define JAGUAR_ATX_BASE_BAUD&t;(JAGUAR_ATX_UART_CLK / 16)
+DECL|macro|JAGUAR_ATX_SERIAL1_IRQ
+mdefine_line|#define JAGUAR_ATX_SERIAL1_IRQ&t;6
+DECL|macro|JAGUAR_ATX_SERIAL1_BASE
+mdefine_line|#define JAGUAR_ATX_SERIAL1_BASE&t;0xfd000023L
+DECL|macro|_JAGUAR_ATX_SERIAL_INIT
+mdefine_line|#define _JAGUAR_ATX_SERIAL_INIT(int, base)&t;&t;&t;&t;&bslash;&n;&t;{ baud_base: JAGUAR_ATX_BASE_BAUD, irq: int,&t;&t;&t;&bslash;&n;&t;  flags: (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST),&t;&t;&bslash;&n;&t;  iomem_base: (u8 *) base, iomem_reg_shift: 2,&t;&t;&t;&bslash;&n;&t;  io_type: SERIAL_IO_MEM }
+DECL|macro|MOMENCO_JAGUAR_ATX_SERIAL_PORT_DEFNS
+mdefine_line|#define MOMENCO_JAGUAR_ATX_SERIAL_PORT_DEFNS&t;&t;&t;&t;&bslash;&n;&t;_JAGUAR_ATX_SERIAL_INIT(JAGUAR_ATX_SERIAL1_IRQ, JAGUAR_ATX_SERIAL1_BASE)
 macro_line|#else
-DECL|macro|MCA_SERIAL_PORT_DFNS
-mdefine_line|#define MCA_SERIAL_PORT_DFNS
+DECL|macro|MOMENCO_JAGUAR_ATX_SERIAL_PORT_DEFNS
+mdefine_line|#define MOMENCO_JAGUAR_ATX_SERIAL_PORT_DEFNS
 macro_line|#endif
 macro_line|#ifdef CONFIG_MOMENCO_OCELOT
 multiline_comment|/* Ordinary NS16552 duart with a 20MHz crystal.  */

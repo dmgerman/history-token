@@ -490,7 +490,7 @@ id|MPCIINTREG
 )paren
 suffix:semicolon
 multiline_comment|/* Supply VTClock to PCIU */
-id|vr41xx_clock_supply
+id|vr41xx_supply_clock
 c_func
 (paren
 id|PCIU_CLOCK
@@ -575,7 +575,7 @@ l_string|&quot;Warning: PCI Clock is over 33MHz.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Supply PCI clock by PCI bus */
-id|vr41xx_clock_supply
+id|vr41xx_supply_clock
 c_func
 (paren
 id|PCI_CLOCK

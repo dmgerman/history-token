@@ -4,8 +4,8 @@ DECL|macro|__ASM_IP32_INTS_H
 mdefine_line|#define __ASM_IP32_INTS_H
 multiline_comment|/*&n; * This list reflects the assignment of interrupt numbers to&n; * interrupting events.  Order is fairly irrelevant to handling&n; * priority.  This differs from irix.&n; */
 multiline_comment|/* CPU */
-DECL|macro|CLOCK_IRQ
-mdefine_line|#define CLOCK_IRQ&t;&t;&t;0
+DECL|macro|IP32_R4K_TIMER_IRQ
+mdefine_line|#define IP32_R4K_TIMER_IRQ&t;&t;0
 multiline_comment|/* MACE */
 DECL|macro|MACE_VID_IN1_IRQ
 mdefine_line|#define MACE_VID_IN1_IRQ&t;&t;1

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright 2002 Momentum Computer Inc.&n; * Author: Matthew Dharm &lt;mdharm@momenco.com&gt;&n; *&n; * Louis Hamilton, Red Hat, Inc.&n; * hamilton@redhat.com  [MIPS64 modifications]&n; *&n; * Based on Ocelot Linux port, which is&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * Copyright 2002 Momentum Computer Inc.&n; * Author: Matthew Dharm &lt;mdharm@momenco.com&gt;&n; *&n; * Louis Hamilton, Red Hat, Inc.&n; * hamilton@redhat.com  [MIPS64 modifications]&n; *&n; * Based on Ocelot Linux port, which is&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; * Added changes for SMP - Manish Lachwani (lachwani@pmc-sierra.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -8,6 +8,14 @@ macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/mv64340.h&gt;
 macro_line|#include &quot;jaguar_atx_fpga.h&quot;
+r_extern
+r_void
+id|ja_setup_console
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|struct|callvectors
 r_struct
 id|callvectors
@@ -27,6 +35,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/*&t; 0 */
 DECL|member|close
 r_int
 (paren
@@ -37,6 +46,7 @@ id|close
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/*&t; 4 */
 DECL|member|read
 r_int
 (paren
@@ -52,6 +62,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/*&t; 8 */
 DECL|member|write
 r_int
 (paren
@@ -67,6 +78,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/*&t;12 */
 DECL|member|lseek
 id|off_t
 (paren
@@ -81,6 +93,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/*&t;16 */
 DECL|member|printf
 r_int
 (paren
@@ -97,6 +110,7 @@ dot
 dot
 )paren
 suffix:semicolon
+multiline_comment|/*&t;20 */
 DECL|member|cacheflush
 r_void
 (paren
@@ -107,6 +121,7 @@ id|cacheflush
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/*&t;24 */
 DECL|member|gets
 r_char
 op_star
@@ -119,6 +134,7 @@ r_char
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/*&t;28 */
 )brace
 suffix:semicolon
 DECL|variable|debug_vectors
@@ -137,16 +153,6 @@ r_int
 r_int
 id|cpu_clock
 suffix:semicolon
-macro_line|#ifdef CONFIG_MV64340_ETH
-r_extern
-r_int
-r_char
-id|prom_mac_addr_base
-(braket
-l_int|6
-)braket
-suffix:semicolon
-macro_line|#endif
 DECL|function|get_system_type
 r_const
 r_char
@@ -162,6 +168,14 @@ l_string|&quot;Momentum Jaguar-ATX&quot;
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_MV64340_ETH
+r_extern
+r_int
+r_char
+id|prom_mac_addr_base
+(braket
+l_int|6
+)braket
+suffix:semicolon
 DECL|function|burn_clocks
 r_static
 r_void
@@ -528,7 +542,7 @@ op_star
 id|puc
 op_increment
 suffix:semicolon
-id|ul
+id|l
 op_assign
 (paren
 r_int
@@ -776,9 +790,24 @@ op_star
 )paren
 id|fw_arg2
 suffix:semicolon
+r_struct
+id|callvectors
+op_star
+id|cv
+op_assign
+(paren
+r_struct
+id|callvectors
+op_star
+)paren
+id|fw_arg3
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+macro_line|#ifdef CONFIG_SERIAL_8250_CONSOLE
+singleline_comment|//&t;ja_setup_console();&t;/* The very first thing.  */
+macro_line|#endif
 macro_line|#ifdef CONFIG_MIPS64
 r_char
 op_star
@@ -1236,20 +1265,9 @@ id|prom_mac_addr_base
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifndef CONFIG_MIPS64
-id|debug_vectors
-op_member_access_from_pointer
-id|printf
-c_func
-(paren
-l_string|&quot;Booting Linux kernel...&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|prom_free_prom_memory
-r_int
-r_int
+r_void
 id|__init
 id|prom_free_prom_memory
 c_func
@@ -1257,8 +1275,116 @@ c_func
 r_void
 )paren
 (brace
-r_return
-l_int|0
+)brace
+DECL|function|prom_fixup_mem_map
+r_void
+id|__init
+id|prom_fixup_mem_map
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+(brace
+)brace
+multiline_comment|/*&n; * SMP support&n; */
+DECL|function|prom_setup_smp
+r_int
+id|prom_setup_smp
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|num_cpus
+op_assign
+l_int|2
 suffix:semicolon
+multiline_comment|/*&n;&t; * We know that the RM9000 on the Jaguar ATX board has 2 cores.&n;&t; * Hence, this can be hardcoded for now.&n;&t; */
+r_return
+id|num_cpus
+suffix:semicolon
+)brace
+DECL|function|prom_boot_secondary
+r_int
+id|prom_boot_secondary
+c_func
+(paren
+r_int
+id|cpu
+comma
+r_int
+r_int
+id|sp
+comma
+r_int
+r_int
+id|gp
+)paren
+(brace
+multiline_comment|/* Clear the semaphore */
+op_star
+(paren
+r_volatile
+r_uint32
+op_star
+)paren
+(paren
+l_int|0xbb000a68
+)paren
+op_assign
+l_int|0x80000000
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+DECL|function|prom_init_secondary
+r_void
+id|prom_init_secondary
+c_func
+(paren
+r_void
+)paren
+(brace
+id|clear_c0_config
+c_func
+(paren
+id|CONF_CM_CMASK
+)paren
+suffix:semicolon
+id|set_c0_config
+c_func
+(paren
+l_int|0x2
+)paren
+suffix:semicolon
+id|clear_c0_status
+c_func
+(paren
+id|ST0_IM
+)paren
+suffix:semicolon
+id|set_c0_status
+c_func
+(paren
+l_int|0x1ffff
+)paren
+suffix:semicolon
+)brace
+DECL|function|prom_smp_finish
+r_void
+id|prom_smp_finish
+c_func
+(paren
+r_void
+)paren
+(brace
 )brace
 eof

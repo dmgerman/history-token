@@ -21,13 +21,12 @@ id|addr
 )paren
 (brace
 r_return
-id|readb
-c_func
-(paren
 id|mace-&gt;isa.rtc
-op_plus
+(braket
 id|addr
-)paren
+op_lshift
+l_int|8
+)braket
 suffix:semicolon
 )brace
 DECL|function|CMOS_WRITE
@@ -46,17 +45,19 @@ r_int
 id|addr
 )paren
 (brace
-id|writeb
-c_func
-(paren
-id|data
-comma
 id|mace-&gt;isa.rtc
-op_plus
+(braket
 id|addr
-)paren
+op_lshift
+l_int|8
+)braket
+op_assign
+id|data
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: Do it right. For now just assume that noone lives in 20th century&n; * and no O2 user in 22th century ;-) */
+DECL|macro|mc146818_decode_year
+mdefine_line|#define mc146818_decode_year(year) ((year) + 2000)
 DECL|macro|RTC_ALWAYS_BCD
 mdefine_line|#define RTC_ALWAYS_BCD&t;0
 macro_line|#endif /* __ASM_MACH_IP32_MC146818RTC_H */

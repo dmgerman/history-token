@@ -25,7 +25,7 @@ id|irq
 id|set_c0_intcontrol
 c_func
 (paren
-l_int|1
+l_int|0x100
 op_lshift
 (paren
 id|irq
@@ -50,7 +50,7 @@ id|irq
 id|clear_c0_intcontrol
 c_func
 (paren
-l_int|1
+l_int|0x100
 op_lshift
 (paren
 id|irq
@@ -244,6 +244,13 @@ id|base
 r_int
 id|i
 suffix:semicolon
+id|clear_c0_intcontrol
+c_func
+(paren
+l_int|0x00000f00
+)paren
+suffix:semicolon
+multiline_comment|/* Mask all */
 r_for
 c_loop
 (paren

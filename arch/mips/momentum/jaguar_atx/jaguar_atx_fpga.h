@@ -2,14 +2,6 @@ multiline_comment|/*&n; * Jaguar-ATX Board Register Definitions&n; *&n; * (C) 20
 macro_line|#ifndef __JAGUAR_ATX_FPGA_H__
 DECL|macro|__JAGUAR_ATX_FPGA_H__
 mdefine_line|#define __JAGUAR_ATX_FPGA_H__
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_MIPS64
-DECL|macro|JAGUAR_ATX_CS0_ADDR
-mdefine_line|#define JAGUAR_ATX_CS0_ADDR (0xfffffffffc000000)
-macro_line|#else
-DECL|macro|JAGUAR_ATX_CS0_ADDR
-mdefine_line|#define JAGUAR_ATX_CS0_ADDR (0xfc000000)
-macro_line|#endif
 DECL|macro|JAGUAR_ATX_REG_BOARDREV
 mdefine_line|#define JAGUAR_ATX_REG_BOARDREV&t;&t;0x0
 DECL|macro|JAGUAR_ATX_REG_FPGA_REV
@@ -40,9 +32,16 @@ DECL|macro|JAGUAR_ATX_REG_RESERVED5
 mdefine_line|#define JAGUAR_ATX_REG_RESERVED5&t;0xe
 DECL|macro|JAGUAR_ATX_REG_RESERVED6
 mdefine_line|#define JAGUAR_ATX_REG_RESERVED6&t;0xf
+DECL|macro|JAGUAR_ATX_CS0_ADDR
+mdefine_line|#define JAGUAR_ATX_CS0_ADDR&t;&t;0xfc000000L
+r_extern
+r_int
+r_int
+id|ja_fpga_base
+suffix:semicolon
 DECL|macro|JAGUAR_FPGA_WRITE
-mdefine_line|#define JAGUAR_FPGA_WRITE(x,y) writeb(x,JAGUAR_ATX_CS0_ADDR+JAGUAR_ATX_REG_##y)
+mdefine_line|#define JAGUAR_FPGA_WRITE(x,y) writeb(x, ja_fpga_base + JAGUAR_ATX_REG_##y)
 DECL|macro|JAGUAR_FPGA_READ
-mdefine_line|#define JAGUAR_FPGA_READ(x) readb(JAGUAR_ATX_CS0_ADDR + JAGUAR_ATX_REG_##x)
+mdefine_line|#define JAGUAR_FPGA_READ(x) readb(ja_fpga_base + JAGUAR_ATX_REG_##x)
 macro_line|#endif
 eof

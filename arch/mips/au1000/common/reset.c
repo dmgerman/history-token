@@ -672,6 +672,201 @@ suffix:semicolon
 multiline_comment|/* sys_pininputen */
 r_break
 suffix:semicolon
+r_case
+l_int|0x03000000
+suffix:colon
+multiline_comment|/* Au1550 */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb1a00004
+)paren
+suffix:semicolon
+multiline_comment|/* psc 0 */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb1b00004
+)paren
+suffix:semicolon
+multiline_comment|/* psc 1 */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb0a00004
+)paren
+suffix:semicolon
+multiline_comment|/* psc 2 */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb0b00004
+)paren
+suffix:semicolon
+multiline_comment|/* psc 3 */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb017fffc
+)paren
+suffix:semicolon
+multiline_comment|/* usbh_enable */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb0200058
+)paren
+suffix:semicolon
+multiline_comment|/* usbd_enable */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb4004104
+)paren
+suffix:semicolon
+multiline_comment|/* mac dma */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb4004114
+)paren
+suffix:semicolon
+multiline_comment|/* mac dma */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb4004124
+)paren
+suffix:semicolon
+multiline_comment|/* mac dma */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb4004134
+)paren
+suffix:semicolon
+multiline_comment|/* mac dma */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb1520000
+)paren
+suffix:semicolon
+multiline_comment|/* macen0 */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb1520004
+)paren
+suffix:semicolon
+multiline_comment|/* macen1 */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb1100100
+)paren
+suffix:semicolon
+multiline_comment|/* uart0_enable */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb1200100
+)paren
+suffix:semicolon
+multiline_comment|/* uart1_enable */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb1400100
+)paren
+suffix:semicolon
+multiline_comment|/* uart3_enable */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb1900020
+)paren
+suffix:semicolon
+multiline_comment|/* sys_freqctrl0 */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb1900024
+)paren
+suffix:semicolon
+multiline_comment|/* sys_freqctrl1 */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb1900028
+)paren
+suffix:semicolon
+multiline_comment|/* sys_clksrc */
+id|au_writel
+c_func
+(paren
+l_int|0x10
+comma
+l_int|0xb1900060
+)paren
+suffix:semicolon
+multiline_comment|/* sys_cpupll */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb1900064
+)paren
+suffix:semicolon
+multiline_comment|/* sys_auxpll */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb1900100
+)paren
+suffix:semicolon
+multiline_comment|/* sys_pininputen */
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 r_break
@@ -713,6 +908,33 @@ l_int|0xAE00001C
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#if defined(CONFIG_MIPS_PB1550)
+multiline_comment|/* reset entire system */
+id|au_writew
+c_func
+(paren
+id|au_readw
+c_func
+(paren
+l_int|0xAF00001C
+)paren
+op_amp
+op_complement
+(paren
+l_int|1
+op_lshift
+l_int|15
+)paren
+comma
+l_int|0xAF00001C
+)paren
+suffix:semicolon
+id|au_sync
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|__asm__
 id|__volatile__
 c_func
@@ -734,6 +956,47 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#if defined(CONFIG_MIPS_PB1550)
+multiline_comment|/* power off system */
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n** Powering off Pb1550&bslash;n&quot;
+)paren
+suffix:semicolon
+id|au_writew
+c_func
+(paren
+id|au_readw
+c_func
+(paren
+l_int|0xAF00001C
+)paren
+op_or
+(paren
+l_int|3
+op_lshift
+l_int|14
+)paren
+comma
+l_int|0xAF00001C
+)paren
+suffix:semicolon
+id|au_sync
+c_func
+(paren
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+(brace
+suffix:semicolon
+)brace
+multiline_comment|/* should not get here */
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -741,6 +1004,26 @@ id|KERN_NOTICE
 l_string|&quot;&bslash;n** You can safely turn off the power&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MIPS_MIRAGE
+id|au_writel
+c_func
+(paren
+(paren
+l_int|1
+op_lshift
+l_int|26
+)paren
+op_or
+(paren
+l_int|1
+op_lshift
+l_int|10
+)paren
+comma
+id|GPIO2_OUTPUT
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_PM
 id|au_sleep
 c_func

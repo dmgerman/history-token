@@ -660,7 +660,40 @@ suffix:semicolon
 DECL|macro|N_MACHTYPES
 mdefine_line|#define N_MACHTYPES&t;&t;2
 multiline_comment|/* for calibration of delays */
+multiline_comment|/* the lasat_ndelay function is necessary because it is used at an&n; * early stage of the boot process where ndelay is not calibrated.&n; * It is used for the bit-banging rtc and eeprom drivers */
 macro_line|#include &lt;asm/delay.h&gt;
+multiline_comment|/* calculating with the slowest board with 100 MHz clock */
+DECL|macro|LASAT_100_DIVIDER
+mdefine_line|#define LASAT_100_DIVIDER 20
+multiline_comment|/* All 200&squot;s run at 250 MHz clock */
+DECL|macro|LASAT_200_DIVIDER
+mdefine_line|#define LASAT_200_DIVIDER 8
+r_extern
+r_int
+r_int
+id|lasat_ndelay_divider
+suffix:semicolon
+DECL|function|lasat_ndelay
+r_static
+r_inline
+r_void
+id|lasat_ndelay
+c_func
+(paren
+r_int
+r_int
+id|ns
+)paren
+(brace
+id|__delay
+c_func
+(paren
+id|ns
+op_div
+id|lasat_ndelay_divider
+)paren
+suffix:semicolon
+)brace
 r_extern
 r_void
 (paren

@@ -31,6 +31,11 @@ DECL|macro|ASID_INC
 mdefine_line|#define ASID_INC&t;0x40
 DECL|macro|ASID_MASK
 mdefine_line|#define ASID_MASK&t;0xfc0
+macro_line|#elif defined(CONFIG_CPU_RM9000)
+DECL|macro|ASID_INC
+mdefine_line|#define ASID_INC&t;0x1
+DECL|macro|ASID_MASK
+mdefine_line|#define ASID_MASK&t;0xfff
 macro_line|#else /* FIXME: not correct for R6000, R8000 */
 DECL|macro|ASID_INC
 mdefine_line|#define ASID_INC&t;0x1

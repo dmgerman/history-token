@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_HIGHMEM_H
 DECL|macro|_ASM_HIGHMEM_H
 mdefine_line|#define _ASM_HIGHMEM_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/kmap_types.h&gt;
@@ -65,7 +66,12 @@ op_star
 id|page
 )paren
 suffix:semicolon
-r_extern
+multiline_comment|/*&n; * CONFIG_LIMITED_DMA is for systems with DMA limitations such as Momentum&squot;s&n; * Jaguar ATX.  This option exploits the highmem code in the kernel so is&n; * always enabled together with CONFIG_HIGHMEM but at this time doesn&squot;t&n; * actually add highmem functionality.&n; */
+macro_line|#ifdef CONFIG_LIMITED_DMA
+multiline_comment|/*&n; * These are the default functions for the no-highmem case from&n; * &lt;linux/highmem.h&gt;&n; */
+DECL|function|kmap
+r_static
+r_inline
 r_void
 op_star
 id|kmap
@@ -76,19 +82,25 @@ id|page
 op_star
 id|page
 )paren
-suffix:semicolon
-r_extern
-r_void
-id|kunmap
+(brace
+id|might_sleep
 c_func
 (paren
-r_struct
-id|page
-op_star
+)paren
+suffix:semicolon
+r_return
+id|page_address
+c_func
+(paren
 id|page
 )paren
 suffix:semicolon
-r_extern
+)brace
+DECL|macro|kunmap
+mdefine_line|#define kunmap(page) do { (void) (page); } while (0)
+DECL|function|kmap_atomic
+r_static
+r_inline
 r_void
 op_star
 id|kmap_atomic
@@ -103,10 +115,79 @@ r_enum
 id|km_type
 id|type
 )paren
+(brace
+r_return
+id|page_address
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
+DECL|function|kunmap_atomic
+r_static
+r_inline
+r_void
+id|kunmap_atomic
+c_func
+(paren
+r_void
+op_star
+id|kvaddr
+comma
+r_enum
+id|km_type
+id|type
+)paren
+(brace
+)brace
+DECL|macro|kmap_atomic_to_page
+mdefine_line|#define kmap_atomic_to_page(ptr) virt_to_page(ptr)
+DECL|macro|flush_cache_kmaps
+mdefine_line|#define flush_cache_kmaps()&t;do { } while (0)
+macro_line|#else /* LIMITED_DMA */
+r_extern
+r_void
+op_star
+id|__kmap
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
 suffix:semicolon
 r_extern
 r_void
-id|kunmap_atomic
+id|__kunmap
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
+r_extern
+r_void
+op_star
+id|__kmap_atomic
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_enum
+id|km_type
+id|type
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__kunmap_atomic
 c_func
 (paren
 r_void
@@ -122,7 +203,7 @@ r_extern
 r_struct
 id|page
 op_star
-id|kmap_atomic_to_page
+id|__kmap_atomic_to_page
 c_func
 (paren
 r_void
@@ -130,8 +211,19 @@ op_star
 id|ptr
 )paren
 suffix:semicolon
+DECL|macro|kmap
+mdefine_line|#define kmap&t;&t;&t;__kmap
+DECL|macro|kunmap
+mdefine_line|#define kunmap&t;&t;&t;__kunmap
+DECL|macro|kmap_atomic
+mdefine_line|#define kmap_atomic&t;&t;__kmap_atomic
+DECL|macro|kunmap_atomic
+mdefine_line|#define kunmap_atomic&t;&t;__kunmap_atomic
+DECL|macro|kmap_atomic_to_page
+mdefine_line|#define kmap_atomic_to_page&t;__kmap_atomic_to_page
 DECL|macro|flush_cache_kmaps
 mdefine_line|#define flush_cache_kmaps()&t;flush_cache_all()
+macro_line|#endif /* LIMITED_DMA */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_HIGHMEM_H */
 eof

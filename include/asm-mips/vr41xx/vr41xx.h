@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-mips/vr41xx/vr41xx.h&n; *&n; * Include file for NEC VR4100 series.&n; *&n; * Copyright (C) 1999 Michael Klar&n; * Copyright (C) 2001, 2002 Paul Mundt&n; * Copyright (C) 2002 MontaVista Software, Inc.&n; * Copyright (C) 2002 TimeSys Corp.&n; * Copyright (C) 2003 Yoichi Yuasa &lt;yuasa@hh.iij4u.or.jp&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * include/asm-mips/vr41xx/vr41xx.h&n; *&n; * Include file for NEC VR4100 series.&n; *&n; * Copyright (C) 1999 Michael Klar&n; * Copyright (C) 2001, 2002 Paul Mundt&n; * Copyright (C) 2002 MontaVista Software, Inc.&n; * Copyright (C) 2002 TimeSys Corp.&n; * Copyright (C) 2003-2004 Yoichi Yuasa &lt;yuasa@hh.iij4u.or.jp&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; */
 macro_line|#ifndef __NEC_VR41XX_H
 DECL|macro|__NEC_VR41XX_H
 mdefine_line|#define __NEC_VR41XX_H
@@ -32,15 +32,12 @@ mdefine_line|#define PRID_VR4131_REV2_2&t;0x00000c83
 multiline_comment|/* VR4133 0x00000c84- */
 DECL|macro|PRID_VR4133
 mdefine_line|#define PRID_VR4133&t;&t;0x00000c84
+multiline_comment|/*&n; * Memory resource&n; */
+DECL|macro|IO_MEM_RESOURCE_START
+mdefine_line|#define IO_MEM_RESOURCE_START&t;0UL
+DECL|macro|IO_MEM_RESOURCE_END
+mdefine_line|#define IO_MEM_RESOURCE_END&t;0x1fffffffUL
 multiline_comment|/*&n; * Bus Control Uint&n; */
-r_extern
-r_void
-id|vr41xx_bcu_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 r_int
 r_int
@@ -60,34 +57,7 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Clock Mask Unit&n; */
-r_extern
-r_void
-id|vr41xx_cmu_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|vr41xx_clock_supply
-c_func
-(paren
-r_int
-r_int
-id|clock
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|vr41xx_clock_mask
-c_func
-(paren
-r_int
-r_int
-id|clock
-)paren
-suffix:semicolon
+r_typedef
 r_enum
 (brace
 DECL|enumerator|PIU_CLOCK
@@ -128,7 +98,27 @@ id|ETHER0_CLOCK
 comma
 DECL|enumerator|ETHER1_CLOCK
 id|ETHER1_CLOCK
+DECL|typedef|vr41xx_clock_t
 )brace
+id|vr41xx_clock_t
+suffix:semicolon
+r_extern
+r_void
+id|vr41xx_supply_clock
+c_func
+(paren
+id|vr41xx_clock_t
+id|clock
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|vr41xx_mask_clock
+c_func
+(paren
+id|vr41xx_clock_t
+id|clock
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Interrupt Control Unit&n; */
 multiline_comment|/* CPU core Interrupt Numbers */
@@ -227,16 +217,6 @@ mdefine_line|#define GIU_IRQ_LAST&t;&t;GIU_IRQ(31)
 DECL|macro|GIU_IRQ_TO_PIN
 mdefine_line|#define GIU_IRQ_TO_PIN(x)&t;((x) - GIU_IRQ_BASE)&t;/* Pin 0-31 */
 r_extern
-r_void
-(paren
-op_star
-id|board_irq_init
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|vr41xx_set_intassign
 c_func
@@ -271,14 +251,6 @@ id|irq
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Power Management Unit&n; */
-r_extern
-r_void
-id|vr41xx_pmu_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * RTC&n; */
 r_extern
 r_void
@@ -525,26 +497,6 @@ r_struct
 id|vr41xx_pci_address_map
 op_star
 id|map
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * MISC&n; */
-r_extern
-r_void
-id|vr41xx_time_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|vr41xx_timer_setup
-c_func
-(paren
-r_struct
-id|irqaction
-op_star
-id|irq
 )paren
 suffix:semicolon
 macro_line|#endif /* __NEC_VR41XX_H */

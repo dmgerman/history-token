@@ -127,7 +127,7 @@ op_star
 id|irq
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_64BIT_PHYS_ADDR) &amp;&amp; defined(CONFIG_SOC_AU1500)
+macro_line|#if defined(CONFIG_64BIT_PHYS_ADDR) &amp;&amp; (defined(CONFIG_SOC_AU1500) || defined(CONFIG_SOC_AU1550))
 r_extern
 id|phys_t
 (paren
@@ -188,6 +188,16 @@ r_char
 op_star
 id|argptr
 suffix:semicolon
+r_int
+r_int
+id|prid
+comma
+id|cpupll
+comma
+id|bclk
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* Various early Au1000 Errata corrected by this */
 id|set_c0_config
 c_func
@@ -204,6 +214,256 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* board specific setup */
+id|prid
+op_assign
+id|read_c0_prid
+c_func
+(paren
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|prid
+)paren
+(brace
+r_case
+l_int|0x00030100
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Au1000 DA &quot;
+)paren
+suffix:semicolon
+id|bclk
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x00030201
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Au1000 HA &quot;
+)paren
+suffix:semicolon
+id|bclk
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x00030202
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Au1000 HB &quot;
+)paren
+suffix:semicolon
+id|bclk
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x00030203
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Au1000 HC &quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x00030204
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Au1000 HD &quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x01030200
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Au1500 AB &quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x01030201
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Au1500 AC &quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x01030202
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Au1500 AD &quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x02030200
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Au1100 AB &quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x02030201
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Au1100 BA &quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x02030202
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Au1100 BC &quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x02030203
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Au1100 BD &quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x02030204
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Au1100 BE &quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x03030200
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Au1550 AA &quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Unknown Au1x00! &quot;
+)paren
+suffix:semicolon
+id|bclk
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|cpupll
+op_assign
+(paren
+id|au_readl
+c_func
+(paren
+l_int|0xB1900060
+)paren
+op_amp
+l_int|0x3F
+)paren
+op_star
+l_int|12
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;(PRId %08X) @ %dMHZ&bslash;n&quot;
+comma
+id|prid
+comma
+id|cpupll
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bclk
+)paren
+(brace
+multiline_comment|/* Enable BCLK switching */
+id|bclk
+op_assign
+id|au_readl
+c_func
+(paren
+l_int|0xB190003C
+)paren
+suffix:semicolon
+id|au_writel
+c_func
+(paren
+id|bclk
+op_or
+l_int|0x60
+comma
+l_int|0xB190003C
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;BCLK switching enabled!&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 id|argptr
 op_assign
 id|prom_getcmdline
@@ -417,7 +677,7 @@ id|board_timer_setup
 op_assign
 id|au1xxx_timer_setup
 suffix:semicolon
-macro_line|#if defined(CONFIG_64BIT_PHYS_ADDR) &amp;&amp; defined(CONFIG_SOC_AU1500)
+macro_line|#if defined(CONFIG_64BIT_PHYS_ADDR) &amp;&amp; (defined(CONFIG_SOC_AU1500) || defined(CONFIG_SOC_AU1550))
 id|fixup_bigphys_addr
 op_assign
 id|au1500_fixup_bigphys_addr
@@ -663,7 +923,7 @@ c_func
 id|au1x00_setup
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_64BIT_PHYS_ADDR) &amp;&amp; defined(CONFIG_SOC_AU1500)
+macro_line|#if defined(CONFIG_64BIT_PHYS_ADDR) &amp;&amp; (defined(CONFIG_SOC_AU1500) || defined(CONFIG_SOC_AU1550))
 multiline_comment|/* This routine should be valid for all Au1500 based boards */
 DECL|function|au1500_fixup_bigphys_addr
 r_static

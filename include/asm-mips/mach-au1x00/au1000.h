@@ -481,6 +481,18 @@ DECL|macro|MEM_STTIME3
 mdefine_line|#define MEM_STTIME3                0xB4001034
 DECL|macro|MEM_STADDR3
 mdefine_line|#define MEM_STADDR3                0xB4001038
+macro_line|#ifdef CONFIG_SOC_AU1550
+DECL|macro|MEM_STNDCTL
+mdefine_line|#define MEM_STNDCTL                0xB4001100
+DECL|macro|MEM_STSTAT
+mdefine_line|#define MEM_STSTAT                 0xB4001104
+DECL|macro|MEM_STNAND_CMD
+mdefine_line|#define MEM_STNAND_CMD                  (0x0)
+DECL|macro|MEM_STNAND_ADDR
+mdefine_line|#define MEM_STNAND_ADDR                 (0x4)
+DECL|macro|MEM_STNAND_DATA
+mdefine_line|#define MEM_STNAND_DATA                (0x20)
+macro_line|#endif
 multiline_comment|/* Interrupt Controller 0 */
 DECL|macro|IC0_CFG0RD
 mdefine_line|#define IC0_CFG0RD                 0xB0400040
@@ -1776,6 +1788,35 @@ DECL|macro|SYS_PF_CS
 mdefine_line|#define SYS_PF_CS&t;&t;&t;(1&lt;&lt;16)&t;/* EXTCLK0/32khz to gpio2 */
 DECL|macro|SYS_PF_EX0
 mdefine_line|#define SYS_PF_EX0&t;&t;&t;(1&lt;&lt;9)&t;/* gpio2/clock */
+multiline_comment|/* Au1550 Only.  Redefines lots of pins */
+DECL|macro|SYS_PF_PSC2_MASK
+mdefine_line|#define SYS_PF_PSC2_MASK&t;&t;(7 &lt;&lt; 17)
+DECL|macro|SYS_PF_PSC2_AC97
+mdefine_line|#define SYS_PF_PSC2_AC97&t;&t;(0)
+DECL|macro|SYS_PF_PSC2_SPI
+mdefine_line|#define SYS_PF_PSC2_SPI&t;&t;(0)
+DECL|macro|SYS_PF_PSC2_I2S
+mdefine_line|#define SYS_PF_PSC2_I2S&t;&t;(1 &lt;&lt; 17)
+DECL|macro|SYS_PF_PSC2_SMBUS
+mdefine_line|#define SYS_PF_PSC2_SMBUS&t;&t;(3 &lt;&lt; 17)
+DECL|macro|SYS_PF_PSC2_GPIO
+mdefine_line|#define SYS_PF_PSC2_GPIO&t;&t;(7 &lt;&lt; 17)
+DECL|macro|SYS_PF_PSC3_MASK
+mdefine_line|#define SYS_PF_PSC3_MASK&t;&t;(7 &lt;&lt; 20)
+DECL|macro|SYS_PF_PSC3_AC97
+mdefine_line|#define SYS_PF_PSC3_AC97&t;&t;(0)
+DECL|macro|SYS_PF_PSC3_SPI
+mdefine_line|#define SYS_PF_PSC3_SPI&t;&t;(0)
+DECL|macro|SYS_PF_PSC3_I2S
+mdefine_line|#define SYS_PF_PSC3_I2S&t;&t;(1 &lt;&lt; 20)
+DECL|macro|SYS_PF_PSC3_SMBUS
+mdefine_line|#define SYS_PF_PSC3_SMBUS&t;&t;(3 &lt;&lt; 20)
+DECL|macro|SYS_PF_PSC3_GPIO
+mdefine_line|#define SYS_PF_PSC3_GPIO&t;&t;(7 &lt;&lt; 20)
+DECL|macro|SYS_PF_PSC1_S1
+mdefine_line|#define SYS_PF_PSC1_S1&t;&t;(1 &lt;&lt; 1)
+DECL|macro|SYS_PF_MUST_BE_SET
+mdefine_line|#define SYS_PF_MUST_BE_SET&t;&t;((1 &lt;&lt; 5) | (1 &lt;&lt; 2))
 DECL|macro|SYS_TRIOUTRD
 mdefine_line|#define SYS_TRIOUTRD              0xB1900100
 DECL|macro|SYS_TRIOUTCLR
@@ -1790,7 +1831,7 @@ DECL|macro|SYS_PINSTATERD
 mdefine_line|#define SYS_PINSTATERD            0xB1900110
 DECL|macro|SYS_PININPUTEN
 mdefine_line|#define SYS_PININPUTEN            0xB1900110
-multiline_comment|/* GPIO2, Au1500 only */
+multiline_comment|/* GPIO2, Au1500, Au1550 only */
 DECL|macro|GPIO2_BASE
 mdefine_line|#define GPIO2_BASE                0xB1700000
 DECL|macro|GPIO2_DIR
@@ -2000,6 +2041,15 @@ DECL|macro|AC97C_RS
 mdefine_line|#define AC97C_RS              (1&lt;&lt;1)
 DECL|macro|AC97C_CE
 mdefine_line|#define AC97C_CE              (1&lt;&lt;0)
+multiline_comment|/* Secure Digital (SD) Controller */
+DECL|macro|SD0_XMIT_FIFO
+mdefine_line|#define SD0_XMIT_FIFO&t;0xB0600000
+DECL|macro|SD0_RECV_FIFO
+mdefine_line|#define SD0_RECV_FIFO&t;0xB0600004
+DECL|macro|SD1_XMIT_FIFO
+mdefine_line|#define SD1_XMIT_FIFO&t;0xB0680000
+DECL|macro|SD1_RECV_FIFO
+mdefine_line|#define SD1_RECV_FIFO&t;0xB0680004
 macro_line|#if defined (CONFIG_SOC_AU1500) || defined(CONFIG_SOC_AU1550)
 multiline_comment|/* Au1500 PCI Controller */
 DECL|macro|Au1500_CFG_BASE
@@ -2071,6 +2121,10 @@ DECL|macro|IOMEM_RESOURCE_START
 mdefine_line|#define IOMEM_RESOURCE_START  0x10000000
 DECL|macro|IOMEM_RESOURCE_END
 mdefine_line|#define IOMEM_RESOURCE_END    0xffffffff
+multiline_comment|/*&n;   * Borrowed from the PPC arch:&n;   * The following macro is used to lookup irqs in a standard table&n;   * format for those PPC systems that do not already have PCI&n;   * interrupts properly routed.&n;   */
+multiline_comment|/* FIXME - double check this from asm-ppc/pci-bridge.h */
+DECL|macro|PCI_IRQ_TABLE_LOOKUP
+mdefine_line|#define PCI_IRQ_TABLE_LOOKUP                            &bslash;&n;  ({ long _ctl_ = -1;                                 &bslash;&n;      if (idsel &gt;= min_idsel &amp;&amp; idsel &lt;= max_idsel &amp;&amp; pin &lt;= irqs_per_slot)    &bslash;&n;&t;       _ctl_ = pci_irq_table[idsel - min_idsel][pin-1];               &bslash;&n;&t;&t;      _ctl_; })
 macro_line|#else /* Au1000 and Au1100 */
 multiline_comment|/* don&squot;t allow any legacy ports probing */
 DECL|macro|IOPORT_RESOURCE_START

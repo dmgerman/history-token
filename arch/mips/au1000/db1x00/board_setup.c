@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mach-au1x00/au1000.h&gt;
 macro_line|#include &lt;asm/mach-db1x00/db1x00.h&gt;
+multiline_comment|/* not correct for db1550 */
 DECL|variable|bcsr
 r_static
 id|BCSR
@@ -44,6 +45,7 @@ id|pin_func
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* not valid for 1550 */
 macro_line|#ifdef CONFIG_AU1X00_USB_DEVICE
 singleline_comment|// 2nd USB port is USB device
 id|pin_func
@@ -125,6 +127,130 @@ l_int|0xAE000010
 )paren
 suffix:semicolon
 multiline_comment|/* turn off pcmcia power */
+macro_line|#ifdef CONFIG_MIPS_MIRAGE
+multiline_comment|/* enable GPIO[31:0] inputs */
+id|au_writel
+c_func
+(paren
+l_int|0
+comma
+id|SYS_PININPUTEN
+)paren
+suffix:semicolon
+multiline_comment|/* GPIO[20] is output, tristate the other input primary GPIO&squot;s */
+id|au_writel
+c_func
+(paren
+(paren
+id|u32
+)paren
+(paren
+op_complement
+(paren
+l_int|1
+op_lshift
+l_int|20
+)paren
+)paren
+comma
+id|SYS_TRIOUTCLR
+)paren
+suffix:semicolon
+multiline_comment|/* set GPIO[210:208] instead of SSI_0 */
+id|pin_func
+op_assign
+id|au_readl
+c_func
+(paren
+id|SYS_PINFUNC
+)paren
+op_or
+(paren
+id|u32
+)paren
+(paren
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* set GPIO[215:211] for LED&squot;s */
+id|pin_func
+op_or_assign
+(paren
+id|u32
+)paren
+(paren
+(paren
+l_int|5
+op_lshift
+l_int|2
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* set GPIO[214:213] for more LED&squot;s */
+id|pin_func
+op_or_assign
+(paren
+id|u32
+)paren
+(paren
+(paren
+l_int|5
+op_lshift
+l_int|12
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* set GPIO[207:200] instead of PCMCIA/LCD */
+id|pin_func
+op_or_assign
+(paren
+id|u32
+)paren
+(paren
+(paren
+l_int|3
+op_lshift
+l_int|17
+)paren
+)paren
+suffix:semicolon
+id|au_writel
+c_func
+(paren
+id|pin_func
+comma
+id|SYS_PINFUNC
+)paren
+suffix:semicolon
+multiline_comment|/* Enable speaker amplifier.  This should&n;&t; * be part of the audio driver.&n;&t; */
+id|au_writel
+c_func
+(paren
+id|au_readl
+c_func
+(paren
+id|GPIO2_DIR
+)paren
+op_or
+l_int|0x200
+comma
+id|GPIO2_DIR
+)paren
+suffix:semicolon
+id|au_writel
+c_func
+(paren
+l_int|0x02000200
+comma
+id|GPIO2_OUTPUT
+)paren
+suffix:semicolon
+macro_line|#endif
+id|au_sync
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_MIPS_DB1000
 id|printk
 c_func
@@ -162,6 +288,14 @@ id|printk
 c_func
 (paren
 l_string|&quot;AMD Alchemy Mirage Board&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS_DB1550
+id|printk
+c_func
+(paren
+l_string|&quot;AMD Alchemy Au1550/Db1550 Board&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

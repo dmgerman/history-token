@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright 2002 Momentum Computer&n; * Author: Matthew Dharm &lt;mdharm@momenco.com&gt;&n; *&n; * Copyright (C) 2003 Ralf Baechle (ralf@linux-mips.org)&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * Copyright 2002 Momentum Computer&n; * Author: Matthew Dharm &lt;mdharm@momenco.com&gt;&n; *&n; * Copyright (C) 2003, 2004 Ralf Baechle (ralf@linux-mips.org)&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -63,19 +63,13 @@ l_int|16
 )paren
 op_or
 (paren
-id|dev
-op_lshift
-l_int|11
-)paren
-op_or
-(paren
-id|func
+id|devfn
 op_lshift
 l_int|8
 )paren
 op_or
 (paren
-id|offset
+id|reg
 op_amp
 l_int|0xfc
 )paren
@@ -100,18 +94,19 @@ id|size
 r_case
 l_int|1
 suffix:colon
+op_star
+id|val
+op_assign
 id|MV_READ_8
 c_func
 (paren
 id|data_reg
 op_plus
 (paren
-id|offset
+id|reg
 op_amp
 l_int|0x3
 )paren
-comma
-id|val
 )paren
 suffix:semicolon
 r_break
@@ -119,18 +114,19 @@ suffix:semicolon
 r_case
 l_int|2
 suffix:colon
+op_star
+id|val
+op_assign
 id|MV_READ_16
 c_func
 (paren
 id|data_reg
 op_plus
 (paren
-id|offset
+id|reg
 op_amp
 l_int|0x3
 )paren
-comma
-id|val
 )paren
 suffix:semicolon
 r_break
@@ -138,12 +134,13 @@ suffix:semicolon
 r_case
 l_int|4
 suffix:colon
+op_star
+id|val
+op_assign
 id|MV_READ
 c_func
 (paren
 id|data_reg
-comma
-id|val
 )paren
 suffix:semicolon
 r_break
@@ -217,7 +214,7 @@ l_int|8
 )paren
 op_or
 (paren
-id|offset
+id|reg
 op_amp
 l_int|0xfc
 )paren
@@ -249,7 +246,7 @@ c_func
 id|data_reg
 op_plus
 (paren
-id|offset
+id|reg
 op_amp
 l_int|0x3
 )paren
@@ -269,7 +266,7 @@ c_func
 id|data_reg
 op_plus
 (paren
-id|offset
+id|reg
 op_amp
 l_int|0x3
 )paren
@@ -299,7 +296,7 @@ id|PCIBIOS_SUCCESSFUL
 suffix:semicolon
 )brace
 DECL|macro|BUILD_PCI_OPS
-mdefine_line|#define BUILD_PCI_OPS(host)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static int mv64340_bus ## host ## _read_config(struct pci_bus *bus,&t;&bslash;&n;&t;unsigned int devfn, int reg, int size, u32 * val)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return mv64340_read_config(bus, devfn, reg, size, val,&t;&t;&bslash;&n;&t;           MV64340_PCI_ ## host ## _CONFIG_ADDR;&t;&t;&bslash;&n;&t;           MV64340_PCI_ ## host ## _CONFIG_DATA_VIRTUAL_REG);&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static int mv64340_bus ## host ## _write_config(struct pci_bus *bus,&t;&bslash;&n;&t;unsigned int devfn, int reg, int size, u32 val)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return mv64340_write_config(bus, devfn, reg, size, val,&t;&t;&bslash;&n;&t;           MV64340_PCI_ ## host ## _CONFIG_ADDR;&t;&t;&bslash;&n;&t;           MV64340_PCI_ ## host ## _CONFIG_DATA_VIRTUAL_REG);&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;struct pci_ops mv64340_bus ## host ## _pci_ops = {&t;&t;&t;&bslash;&n;&t;.read&t;= mv64340_bus ## host ## _read_config,&t;&t;&t;&bslash;&n;&t;.write&t;= mv64340_bus ## host ## _write_config&t;&t;&t;&bslash;&n;};
+mdefine_line|#define BUILD_PCI_OPS(host)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static int mv64340_bus ## host ## _read_config(struct pci_bus *bus,&t;&bslash;&n;&t;unsigned int devfn, int reg, int size, u32 * val)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return mv64340_read_config(bus, devfn, reg, size, val,&t;&t;&bslash;&n;&t;           MV64340_PCI_ ## host ## _CONFIG_ADDR,&t;&t;&bslash;&n;&t;           MV64340_PCI_ ## host ## _CONFIG_DATA_VIRTUAL_REG);&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static int mv64340_bus ## host ## _write_config(struct pci_bus *bus,&t;&bslash;&n;&t;unsigned int devfn, int reg, int size, u32 val)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return mv64340_write_config(bus, devfn, reg, size, val,&t;&t;&bslash;&n;&t;           MV64340_PCI_ ## host ## _CONFIG_ADDR,&t;&t;&bslash;&n;&t;           MV64340_PCI_ ## host ## _CONFIG_DATA_VIRTUAL_REG);&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;struct pci_ops mv64340_bus ## host ## _pci_ops = {&t;&t;&t;&bslash;&n;&t;.read&t;= mv64340_bus ## host ## _read_config,&t;&t;&t;&bslash;&n;&t;.write&t;= mv64340_bus ## host ## _write_config&t;&t;&t;&bslash;&n;};
 id|BUILD_PCI_OPS
 c_func
 (paren

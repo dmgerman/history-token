@@ -1,38 +1,9 @@
 multiline_comment|/*&n; * arch/mips/vr41xx/nec-eagle/setup.c&n; *&n; * Setup for the NEC Eagle/Hawk board.&n; *&n; * Author: Yoichi Yuasa &lt;yyuasa@mvista.com, or source@mvista.com&gt;&n; *&n; * 2001-2004 (c) MontaVista, Software, Inc. This file is licensed under&n; * the terms of the GNU General Public License version 2. This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
-macro_line|#include &lt;linux/root_dev.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pci_channel.h&gt;
-macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/vr41xx/eagle.h&gt;
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-r_extern
-r_int
-r_int
-id|initrd_start
-comma
-id|initrd_end
-suffix:semicolon
-r_extern
-r_void
-op_star
-id|__rd_start
-comma
-op_star
-id|__rd_end
-suffix:semicolon
-macro_line|#endif
-r_extern
-r_void
-id|eagle_irq_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 r_extern
 r_void
@@ -162,6 +133,20 @@ id|vr41xx_pci_io
 )brace
 suffix:semicolon
 macro_line|#endif
+DECL|function|get_system_type
+r_const
+r_char
+op_star
+id|get_system_type
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_string|&quot;NEC SDB-VR4122/VR4131(Eagle/Hawk)&quot;
+suffix:semicolon
+)brace
 DECL|function|nec_eagle_setup
 r_static
 r_int
@@ -184,65 +169,6 @@ suffix:semicolon
 id|ioport_resource.end
 op_assign
 id|IO_PORT_RESOURCE_END
-suffix:semicolon
-id|iomem_resource.start
-op_assign
-id|IO_MEM1_RESOURCE_START
-suffix:semicolon
-id|iomem_resource.end
-op_assign
-id|IO_MEM2_RESOURCE_END
-suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-id|ROOT_DEV
-op_assign
-id|Root_RAM0
-suffix:semicolon
-id|initrd_start
-op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|__rd_start
-suffix:semicolon
-id|initrd_end
-op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|__rd_end
-suffix:semicolon
-macro_line|#endif
-id|board_time_init
-op_assign
-id|vr41xx_time_init
-suffix:semicolon
-id|board_timer_setup
-op_assign
-id|vr41xx_timer_setup
-suffix:semicolon
-id|board_irq_init
-op_assign
-id|eagle_irq_init
-suffix:semicolon
-id|vr41xx_bcu_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|vr41xx_cmu_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|vr41xx_pmu_init
-c_func
-(paren
-)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SERIAL_8250
 id|vr41xx_dsiu_init

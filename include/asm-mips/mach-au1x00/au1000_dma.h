@@ -27,6 +27,8 @@ DECL|macro|DMA_DID_BIT
 mdefine_line|#define DMA_DID_BIT&t;&t;16
 DECL|macro|DMA_DID_MASK
 mdefine_line|#define DMA_DID_MASK&t;&t;(0x0f &lt;&lt; DMA_DID_BIT)
+DECL|macro|DMA_DS
+mdefine_line|#define DMA_DS&t;&t;&t;(1&lt;&lt;15)
 DECL|macro|DMA_BE
 mdefine_line|#define DMA_BE&t;&t;&t;(1&lt;&lt;13)
 DECL|macro|DMA_DR
@@ -134,6 +136,27 @@ id|DMA_ID_I2S_RX
 comma
 DECL|enumerator|DMA_NUM_DEV
 id|DMA_NUM_DEV
+)brace
+suffix:semicolon
+multiline_comment|/* DMA Device ID&squot;s for 2nd bank (AU1100) follow */
+r_enum
+(brace
+DECL|enumerator|DMA_ID_SD0_TX
+id|DMA_ID_SD0_TX
+op_assign
+l_int|0
+comma
+DECL|enumerator|DMA_ID_SD0_RX
+id|DMA_ID_SD0_RX
+comma
+DECL|enumerator|DMA_ID_SD1_TX
+id|DMA_ID_SD1_TX
+comma
+DECL|enumerator|DMA_ID_SD1_RX
+id|DMA_ID_SD1_RX
+comma
+DECL|enumerator|DMA_NUM_DEV_BANK2
+id|DMA_NUM_DEV_BANK2
 )brace
 suffix:semicolon
 DECL|struct|dma_chan
@@ -294,7 +317,7 @@ r_if
 c_cond
 (paren
 id|dmanr
-OG
+op_ge
 id|NUM_AU1000_DMA_CHANNELS
 op_logical_or
 id|au1000_dma_table
@@ -1021,6 +1044,16 @@ c_cond
 op_logical_neg
 id|chan
 )paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|chan-&gt;mode
+op_amp
+id|DMA_DS
+)paren
+multiline_comment|/* second bank of device ids */
 r_return
 suffix:semicolon
 r_if

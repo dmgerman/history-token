@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/au1000.h&gt;
-macro_line|#include &lt;asm/db1x00.h&gt;
 r_extern
 r_struct
 id|rtc_ops
