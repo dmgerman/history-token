@@ -64,7 +64,7 @@ id|khubd_wait
 suffix:semicolon
 DECL|variable|khubd_pid
 r_static
-r_int
+id|pid_t
 id|khubd_pid
 op_assign
 l_int|0
@@ -4644,7 +4644,7 @@ c_func
 r_void
 )paren
 (brace
-r_int
+id|pid_t
 id|pid
 suffix:semicolon
 r_if
