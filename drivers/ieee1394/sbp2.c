@@ -2170,7 +2170,7 @@ id|scsi_id
 )paren
 (brace
 multiline_comment|/* Login failed too, just fail, and the backend&n;&t;&t;&t; * will call our sbp2_remove for us */
-id|SBP2_ERR
+id|SBP2_INFO
 c_func
 (paren
 l_string|&quot;sbp2_reconnect_device failed!&quot;
@@ -2466,7 +2466,7 @@ c_func
 op_amp
 id|sbp2_highlevel
 comma
-id|host
+id|ud-&gt;ne-&gt;host
 comma
 op_amp
 id|sbp2_physdma_ops
@@ -3995,7 +3995,7 @@ id|HZ
 )paren
 )paren
 (brace
-id|SBP2_ERR
+id|SBP2_INFO
 c_func
 (paren
 l_string|&quot;Error querying logins to SBP-2 device - timed out&quot;
@@ -4014,7 +4014,7 @@ op_ne
 id|scsi_id-&gt;query_logins_orb_dma
 )paren
 (brace
-id|SBP2_ERR
+id|SBP2_INFO
 c_func
 (paren
 l_string|&quot;Error querying logins to SBP-2 device - timed out&quot;
@@ -4047,7 +4047,7 @@ id|scsi_id-&gt;status_block.ORB_offset_hi_misc
 )paren
 )paren
 (brace
-id|SBP2_ERR
+id|SBP2_INFO
 c_func
 (paren
 l_string|&quot;Error querying logins to SBP-2 device - timed out&quot;
@@ -4082,7 +4082,7 @@ r_int
 id|scsi_id-&gt;query_logins_response-&gt;length_max_logins
 )paren
 suffix:semicolon
-id|SBP2_INFO
+id|SBP2_DEBUG
 c_func
 (paren
 l_string|&quot;Query logins to SBP-2 device successful&quot;
@@ -4096,7 +4096,7 @@ c_func
 id|scsi_id-&gt;query_logins_response-&gt;length_max_logins
 )paren
 suffix:semicolon
-id|SBP2_INFO
+id|SBP2_DEBUG
 c_func
 (paren
 l_string|&quot;Maximum concurrent logins supported: %d&quot;
@@ -4112,7 +4112,7 @@ c_func
 id|scsi_id-&gt;query_logins_response-&gt;length_max_logins
 )paren
 suffix:semicolon
-id|SBP2_INFO
+id|SBP2_DEBUG
 c_func
 (paren
 l_string|&quot;Number of active logins: %d&quot;
@@ -4204,7 +4204,7 @@ id|scsi_id
 )paren
 )paren
 (brace
-id|SBP2_ERR
+id|SBP2_INFO
 c_func
 (paren
 l_string|&quot;Device does not support any more concurrent logins&quot;
@@ -9311,6 +9311,33 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+DECL|function|sbp2scsi_slave_configure
+r_static
+r_int
+id|sbp2scsi_slave_configure
+(paren
+r_struct
+id|scsi_device
+op_star
+id|sdev
+)paren
+(brace
+id|blk_queue_dma_alignment
+c_func
+(paren
+id|sdev-&gt;request_queue
+comma
+(paren
+l_int|512
+op_minus
+l_int|1
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Called by scsi stack when something has really gone wrong.  Usually&n; * called when a command has timed-out for some reason.&n; */
 DECL|function|sbp2scsi_abort
 r_static
@@ -9768,6 +9795,11 @@ dot
 id|eh_host_reset_handler
 op_assign
 id|sbp2scsi_reset
+comma
+dot
+id|slave_configure
+op_assign
+id|sbp2scsi_slave_configure
 comma
 dot
 id|this_id
