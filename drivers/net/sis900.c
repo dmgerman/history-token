@@ -1,4 +1,4 @@
-multiline_comment|/* sis900.c: A SiS 900/7016 PCI Fast Ethernet driver for Linux.&n;   Copyright 1999 Silicon Integrated System Corporation &n;   Revision:&t;1.08.02&t;Jan. 4 2002&n;   &n;   Modified from the driver which is originally written by Donald Becker.&n;   &n;   This software may be used and distributed according to the terms&n;   of the GNU General Public License (GPL), incorporated herein by reference.&n;   Drivers based on this skeleton fall under the GPL and must retain&n;   the authorship (implicit copyright) notice.&n;   &n;   References:&n;   SiS 7016 Fast Ethernet PCI Bus 10/100 Mbps LAN Controller with OnNow Support,&n;   preliminary Rev. 1.0 Jan. 14, 1998&n;   SiS 900 Fast Ethernet PCI Bus 10/100 Mbps LAN Single Chip with OnNow Support,&n;   preliminary Rev. 1.0 Nov. 10, 1998&n;   SiS 7014 Single Chip 100BASE-TX/10BASE-T Physical Layer Solution,&n;   preliminary Rev. 1.0 Jan. 18, 1998&n;   http://www.sis.com.tw/support/databook.htm&n;&n;   Rev 1.08.02 Jan. 4 2002 Matt Domsch &lt;Matt_Domsch@dell.com&gt; update to use library crc32 function&n;   Rev 1.08.01 Aug. 25 2001 Hui-Fen Hsu update for 630ET &amp; workaround for ICS1893 PHY&n;   Rev 1.08.00 Jun. 11 2001 Hui-Fen Hsu workaround for RTL8201 PHY and some bug fix&n;   Rev 1.07.11 Apr.  2 2001 Hui-Fen Hsu updates PCI drivers to use the new pci_set_dma_mask for kernel 2.4.3&n;   Rev 1.07.10 Mar.  1 2001 Hui-Fen Hsu &lt;hfhsu@sis.com.tw&gt; some bug fix &amp; 635M/B support &n;   Rev 1.07.09 Feb.  9 2001 Dave Jones &lt;davej@suse.de&gt; PCI enable cleanup&n;   Rev 1.07.08 Jan.  8 2001 Lei-Chun Chang added RTL8201 PHY support&n;   Rev 1.07.07 Nov. 29 2000 Lei-Chun Chang added kernel-doc extractable documentation and 630 workaround fix&n;   Rev 1.07.06 Nov.  7 2000 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; some bug fix and cleaning&n;   Rev 1.07.05 Nov.  6 2000 metapirat&lt;metapirat@gmx.de&gt; contribute media type select by ifconfig&n;   Rev 1.07.04 Sep.  6 2000 Lei-Chun Chang added ICS1893 PHY support&n;   Rev 1.07.03 Aug. 24 2000 Lei-Chun Chang (lcchang@sis.com.tw) modified 630E eqaulizer workaround rule&n;   Rev 1.07.01 Aug. 08 2000 Ollie Lho minor update for SiS 630E and SiS 630E A1&n;   Rev 1.07    Mar. 07 2000 Ollie Lho bug fix in Rx buffer ring&n;   Rev 1.06.04 Feb. 11 2000 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; softnet and init for kernel 2.4&n;   Rev 1.06.03 Dec. 23 1999 Ollie Lho Third release&n;   Rev 1.06.02 Nov. 23 1999 Ollie Lho bug in mac probing fixed&n;   Rev 1.06.01 Nov. 16 1999 Ollie Lho CRC calculation provide by Joseph Zbiciak (im14u2c@primenet.com)&n;   Rev 1.06 Nov. 4 1999 Ollie Lho (ollie@sis.com.tw) Second release&n;   Rev 1.05.05 Oct. 29 1999 Ollie Lho (ollie@sis.com.tw) Single buffer Tx/Rx&n;   Chin-Shan Li (lcs@sis.com.tw) Added AMD Am79c901 HomePNA PHY support&n;   Rev 1.05 Aug. 7 1999 Jim Huang (cmhuang@sis.com.tw) Initial release&n;*/
+multiline_comment|/* sis900.c: A SiS 900/7016 PCI Fast Ethernet driver for Linux.&n;   Copyright 1999 Silicon Integrated System Corporation &n;   Revision:&t;1.08.02&t;Jan. 4 2002&n;   &n;   Modified from the driver which is originally written by Donald Becker.&n;   &n;   This software may be used and distributed according to the terms&n;   of the GNU General Public License (GPL), incorporated herein by reference.&n;   Drivers based on this skeleton fall under the GPL and must retain&n;   the authorship (implicit copyright) notice.&n;   &n;   References:&n;   SiS 7016 Fast Ethernet PCI Bus 10/100 Mbps LAN Controller with OnNow Support,&n;   preliminary Rev. 1.0 Jan. 14, 1998&n;   SiS 900 Fast Ethernet PCI Bus 10/100 Mbps LAN Single Chip with OnNow Support,&n;   preliminary Rev. 1.0 Nov. 10, 1998&n;   SiS 7014 Single Chip 100BASE-TX/10BASE-T Physical Layer Solution,&n;   preliminary Rev. 1.0 Jan. 18, 1998&n;   http://www.sis.com.tw/support/databook.htm&n;&n;   Rev 1.08.02 Nov. 30 2001 Hui-Fen Hsu workaround for EDB &amp; bug fix for dhcp problem&n;               Jan.  4 2002 Matt Domsch &lt;Matt_Domsch@dell.com&gt; update to use library crc32 function&n;   Rev 1.08.01 Aug. 25 2001 Hui-Fen Hsu update for 630ET &amp; workaround for ICS1893 PHY&n;   Rev 1.08.00 Jun. 11 2001 Hui-Fen Hsu workaround for RTL8201 PHY and some bug fix&n;   Rev 1.07.11 Apr.  2 2001 Hui-Fen Hsu updates PCI drivers to use the new pci_set_dma_mask for kernel 2.4.3&n;   Rev 1.07.10 Mar.  1 2001 Hui-Fen Hsu &lt;hfhsu@sis.com.tw&gt; some bug fix &amp; 635M/B support &n;   Rev 1.07.09 Feb.  9 2001 Dave Jones &lt;davej@suse.de&gt; PCI enable cleanup&n;   Rev 1.07.08 Jan.  8 2001 Lei-Chun Chang added RTL8201 PHY support&n;   Rev 1.07.07 Nov. 29 2000 Lei-Chun Chang added kernel-doc extractable documentation and 630 workaround fix&n;   Rev 1.07.06 Nov.  7 2000 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; some bug fix and cleaning&n;   Rev 1.07.05 Nov.  6 2000 metapirat&lt;metapirat@gmx.de&gt; contribute media type select by ifconfig&n;   Rev 1.07.04 Sep.  6 2000 Lei-Chun Chang added ICS1893 PHY support&n;   Rev 1.07.03 Aug. 24 2000 Lei-Chun Chang (lcchang@sis.com.tw) modified 630E eqaulizer workaround rule&n;   Rev 1.07.01 Aug. 08 2000 Ollie Lho minor update for SiS 630E and SiS 630E A1&n;   Rev 1.07    Mar. 07 2000 Ollie Lho bug fix in Rx buffer ring&n;   Rev 1.06.04 Feb. 11 2000 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; softnet and init for kernel 2.4&n;   Rev 1.06.03 Dec. 23 1999 Ollie Lho Third release&n;   Rev 1.06.02 Nov. 23 1999 Ollie Lho bug in mac probing fixed&n;   Rev 1.06.01 Nov. 16 1999 Ollie Lho CRC calculation provide by Joseph Zbiciak (im14u2c@primenet.com)&n;   Rev 1.06 Nov. 4 1999 Ollie Lho (ollie@sis.com.tw) Second release&n;   Rev 1.05.05 Oct. 29 1999 Ollie Lho (ollie@sis.com.tw) Single buffer Tx/Rx&n;   Chin-Shan Li (lcs@sis.com.tw) Added AMD Am79c901 HomePNA PHY support&n;   Rev 1.05 Aug. 7 1999 Jim Huang (cmhuang@sis.com.tw) Initial release&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -15,12 +15,18 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;      /* Processor type for cache alignment. */
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;&t;/* User space memory access functions */
 macro_line|#include &quot;sis900.h&quot;
+DECL|macro|SIS900_MODULE_NAME
+mdefine_line|#define SIS900_MODULE_NAME &quot;sis900&quot;
+DECL|macro|SIS900_DRV_VERSION
+mdefine_line|#define SIS900_DRV_VERSION &quot;v1.08.02 1/4/2002&quot;
 DECL|variable|__devinitdata
 r_static
 r_char
@@ -30,7 +36,9 @@ id|version
 id|__devinitdata
 op_assign
 id|KERN_INFO
-l_string|&quot;sis900.c: v1.08.02  1/4/2002&bslash;n&quot;
+l_string|&quot;sis900.c: &quot;
+id|SIS900_DRV_VERSION
+l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 DECL|variable|max_interrupt_work
 r_static
@@ -3844,6 +3852,17 @@ c_func
 id|net_dev
 )paren
 suffix:semicolon
+multiline_comment|/* Workaround for EDB */
+id|sis900_set_mode
+c_func
+(paren
+id|ioaddr
+comma
+id|HW_SPEED_10_MBPS
+comma
+id|FDX_CAPABLE_HALF_SELECTED
+)paren
+suffix:semicolon
 multiline_comment|/* Enable all known interrupts by setting the interrupt mask. */
 id|outl
 c_func
@@ -5050,6 +5069,12 @@ comma
 id|revision
 )paren
 suffix:semicolon
+id|netif_start_queue
+c_func
+(paren
+id|net_dev
+)paren
+suffix:semicolon
 )brace
 id|sis_priv-&gt;timer.expires
 op_assign
@@ -6173,6 +6198,24 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+multiline_comment|/* Don&squot;t transmit data before the complete of auto-negotiation */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sis_priv-&gt;autong_complete
+)paren
+(brace
+id|netif_stop_queue
+c_func
+(paren
+id|net_dev
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 id|spin_lock_irqsave
 c_func
 (paren
@@ -7599,6 +7642,125 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;netdev_ethtool_ioctl: - For the basic support of ethtool&n; *&t;@net_dev: the net device to command for&n; *&t;@useraddr: start address of interface request&n; *&n; *&t;Process ethtool command such as &quot;ehtool -i&quot; to show information&n; */
+DECL|function|netdev_ethtool_ioctl
+r_static
+r_int
+id|netdev_ethtool_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|net_dev
+comma
+r_void
+op_star
+id|useraddr
+)paren
+(brace
+r_struct
+id|sis900_private
+op_star
+id|sis_priv
+op_assign
+id|net_dev-&gt;priv
+suffix:semicolon
+id|u32
+id|ethcmd
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+(paren
+op_amp
+id|ethcmd
+comma
+id|useraddr
+comma
+r_sizeof
+(paren
+id|ethcmd
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ethcmd
+)paren
+(brace
+r_case
+id|ETHTOOL_GDRVINFO
+suffix:colon
+(brace
+r_struct
+id|ethtool_drvinfo
+id|info
+op_assign
+(brace
+id|ETHTOOL_GDRVINFO
+)brace
+suffix:semicolon
+id|strcpy
+(paren
+id|info.driver
+comma
+id|SIS900_MODULE_NAME
+)paren
+suffix:semicolon
+id|strcpy
+(paren
+id|info.version
+comma
+id|SIS900_DRV_VERSION
+)paren
+suffix:semicolon
+id|strcpy
+(paren
+id|info.bus_info
+comma
+id|sis_priv-&gt;pci_dev-&gt;slot_name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+(paren
+id|useraddr
+comma
+op_amp
+id|info
+comma
+r_sizeof
+(paren
+id|info
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_default
+suffix:colon
+r_break
+suffix:semicolon
+)brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;mii_ioctl: - process MII i/o control command &n; *&t;@net_dev: the net device to command for&n; *&t;@rq: parameter for command&n; *&t;@cmd: the i/o command&n; *&n; *&t;Process MII command like read/write MII register&n; */
 DECL|function|mii_ioctl
 r_static
@@ -7646,6 +7808,22 @@ c_cond
 id|cmd
 )paren
 (brace
+r_case
+id|SIOCETHTOOL
+suffix:colon
+r_return
+id|netdev_ethtool_ioctl
+c_func
+(paren
+id|net_dev
+comma
+(paren
+r_void
+op_star
+)paren
+id|rq-&gt;ifr_data
+)paren
+suffix:semicolon
 r_case
 id|SIOCGMIIPHY
 suffix:colon
@@ -8731,8 +8909,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-DECL|macro|SIS900_MODULE_NAME
-mdefine_line|#define SIS900_MODULE_NAME &quot;sis900&quot;
 DECL|variable|sis900_pci_driver
 r_static
 r_struct
