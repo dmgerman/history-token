@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/drivers/char/vt.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
 multiline_comment|/*&n; * Hopefully this will be a rather complete VT102 implementation.&n; *&n; * Beeping thanks to John T Kohl.&n; *&n; * Virtual Consoles, Screen Blanking, Screen Dumping, Color, Graphics&n; *   Chars, and VT100 enhancements by Peter MacDonald.&n; *&n; * Copy and paste function by Andrew Haylett,&n; *   some enhancements by Alessandro Rubini.&n; *&n; * Code to check for different video-cards mostly by Galen Hunt,&n; * &lt;g-hunt@ee.utah.edu&gt;&n; *&n; * Rudimentary ISO 10646/Unicode/UTF-8 character set support by&n; * Markus Kuhn, &lt;mskuhn@immd4.informatik.uni-erlangen.de&gt;.&n; *&n; * Dynamic allocation of consoles, aeb@cwi.nl, May 1994&n; * Resizing of consoles, aeb, 940926&n; *&n; * Code for xterm like mouse click reporting by Peter Orbaek 20-Jul-94&n; * &lt;poe@daimi.aau.dk&gt;&n; *&n; * User-defined bell sound, new setterm control sequences and printk&n; * redirection by Martin Mares &lt;mj@k332.feld.cvut.cz&gt; 19-Nov-95&n; *&n; * APM screenblank bug fixed Takashi Manabe &lt;manabe@roy.dsl.tutics.tut.jp&gt;&n; *&n; * Merge with the abstract console driver by Geert Uytterhoeven&n; * &lt;geert@linux-m68k.org&gt;, Jan 1997.&n; *&n; *   Original m68k console driver modifications by&n; *&n; *     - Arno Griffioen &lt;arno@usn.nl&gt;&n; *     - David Carter &lt;carter@cs.bris.ac.uk&gt;&n; * &n; *   Note that the abstract console driver allows all consoles to be of&n; *   potentially different sizes, so the following variables depend on the&n; *   current console (currcons):&n; *&n; *     - video_num_columns&n; *     - video_num_lines&n; *     - video_size_row&n; *     - can_do_color&n; *&n; *   The abstract console driver provides a generic interface for a text&n; *   console. It supports VGA text mode, frame buffer based graphical consoles&n; *   and special graphics processors that are only accessible through some&n; *   registers (e.g. a TMS340x0 GSP).&n; *&n; *   The interface to the hardware is specified using a special structure&n; *   (struct consw) which contains function pointers to console operations&n; *   (see &lt;linux/console.h&gt; for more information).&n; *&n; * Support for changeable cursor shape&n; * by Pavel Machek &lt;pavel@atrey.karlin.mff.cuni.cz&gt;, August 1997&n; *&n; * Ported to i386 and con_scrolldelta fixed&n; * by Emmanuel Marty &lt;core@ggi-project.org&gt;, April 1998&n; *&n; * Resurrected character buffers in videoram plus lots of other trickery&n; * by Martin Mares &lt;mj@atrey.karlin.mff.cuni.cz&gt;, July 1998&n; *&n; * Removed old-style timers, introduced console_timer, made timer&n; * deletion SMP-safe.  17Jun00, Andrew Morton &lt;andrewm@uow.edu.au&gt;&n; *&n; * Removed console_lock, enabled interrupts across all console operations&n; * 13 March 2001, Andrew Morton&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
@@ -10863,12 +10864,18 @@ c_func
 id|lines
 comma
 (paren
+id|s32
+op_star
+)paren
+(paren
+(paren
 r_char
 op_star
 )paren
 id|arg
 op_plus
-l_int|1
+l_int|4
+)paren
 )paren
 )paren
 (brace
