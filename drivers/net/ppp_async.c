@@ -4017,6 +4017,13 @@ id|data
 (braket
 l_int|1
 )braket
+op_logical_and
+id|data
+(braket
+l_int|1
+)braket
+op_ge
+l_int|2
 )paren
 (brace
 r_switch

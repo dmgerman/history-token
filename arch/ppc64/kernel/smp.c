@@ -1623,16 +1623,15 @@ id|cpu
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* At boot, don&squot;t bother with non-present cpus -JSCHOPP */
 r_if
 c_cond
 (paren
-id|system_state
-OL
-id|SYSTEM_RUNNING
+id|smp_ops-&gt;cpu_bootable
 op_logical_and
 op_logical_neg
-id|cpu_present
+id|smp_ops
+op_member_access_from_pointer
+id|cpu_bootable
 c_func
 (paren
 id|cpu
@@ -1640,7 +1639,7 @@ id|cpu
 )paren
 r_return
 op_minus
-id|ENOENT
+id|EINVAL
 suffix:semicolon
 id|paca
 (braket
@@ -2057,11 +2056,6 @@ id|current
 comma
 id|old_mask
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * We know at boot the maximum number of cpus we can add to&n;&t; * a partition and set cpu_possible_map accordingly. cpu_present_map&n;&t; * needs to match for the hotplug code to allow us to hot add&n;&t; * any offline cpus.&n;&t; */
-id|cpu_present_map
-op_assign
-id|cpu_possible_map
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_HOTPLUG_CPU

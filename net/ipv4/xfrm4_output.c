@@ -150,10 +150,10 @@ l_int|0
 suffix:semicolon
 id|top_iph-&gt;ttl
 op_assign
-id|dst_path_metric
+id|dst_metric
 c_func
 (paren
-id|dst
+id|dst-&gt;child
 comma
 id|RTAX_HOPLIMIT
 )paren

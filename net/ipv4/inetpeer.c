@@ -110,14 +110,17 @@ op_star
 id|HZ
 suffix:semicolon
 multiline_comment|/* usual time to live: 10 min */
-multiline_comment|/* Exported for inet_putpeer inline function.  */
 DECL|variable|inet_peer_unused_head
+r_static
 r_struct
 id|inet_peer
 op_star
 id|inet_peer_unused_head
-comma
+suffix:semicolon
+multiline_comment|/* Exported for inet_putpeer inline function.  */
 DECL|variable|inet_peer_unused_tailp
+r_struct
+id|inet_peer
 op_star
 op_star
 id|inet_peer_unused_tailp

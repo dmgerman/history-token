@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
+macro_line|#include &lt;linux/posix-timers.h&gt;
 macro_line|#include &lt;asm/s390_ext.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 DECL|macro|VTIMER_MAGIC
@@ -217,6 +218,12 @@ suffix:semicolon
 id|scheduler_tick
 c_func
 (paren
+)paren
+suffix:semicolon
+id|run_posix_cpu_timers
+c_func
+(paren
+id|tsk
 )paren
 suffix:semicolon
 )brace

@@ -493,7 +493,8 @@ DECL|macro|__NR_statfs64
 mdefine_line|#define __NR_statfs64&t;&t;265
 DECL|macro|__NR_fstatfs64
 mdefine_line|#define __NR_fstatfs64&t;&t;266
-multiline_comment|/* Number 267 is reserved for new sys_remap_file_pages */
+DECL|macro|__NR_remap_file_pages
+mdefine_line|#define __NR_remap_file_pages&t;267
 multiline_comment|/* Number 268 is reserved for new sys_mbind */
 multiline_comment|/* Number 269 is reserved for new sys_get_mempolicy */
 multiline_comment|/* Number 270 is reserved for new sys_set_mempolicy */
@@ -516,8 +517,10 @@ DECL|macro|__NR_request_key
 mdefine_line|#define __NR_request_key&t;279
 DECL|macro|__NR_keyctl
 mdefine_line|#define __NR_keyctl&t;&t;280
+DECL|macro|__NR_waitid
+mdefine_line|#define __NR_waitid&t;&t;281
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls 281
+mdefine_line|#define NR_syscalls 282
 multiline_comment|/* &n; * There are some system calls that are not present on 64 bit, some&n; * have a different name although they do the same (e.g. __NR_chown32&n; * is __NR_chown on 64 bit).&n; */
 macro_line|#ifdef __s390x__
 DECL|macro|__NR_time
@@ -622,8 +625,6 @@ DECL|macro|__NR_setfsuid32
 macro_line|#undef  __NR_setfsuid32
 DECL|macro|__NR_setfsgid32
 macro_line|#undef  __NR_setfsgid32
-DECL|macro|__NR_getdents64
-macro_line|#undef  __NR_getdents64
 DECL|macro|__NR_fcntl64
 macro_line|#undef  __NR_fcntl64
 DECL|macro|__NR_sendfile64

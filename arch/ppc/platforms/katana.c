@@ -2064,14 +2064,14 @@ op_assign
 macro_line|#if defined(CONFIG_SERIAL_MPSC)
 (brace
 id|MPSC_CTLR_NAME
-l_string|&quot;0&quot;
+l_string|&quot;.0&quot;
 comma
 id|katana_fixup_mpsc_pdata
 )brace
 comma
 (brace
 id|MPSC_CTLR_NAME
-l_string|&quot;1&quot;
+l_string|&quot;.1&quot;
 comma
 id|katana_fixup_mpsc_pdata
 )brace
@@ -2080,21 +2080,21 @@ macro_line|#endif
 macro_line|#if defined(CONFIG_MV643XX_ETH)
 (brace
 id|MV643XX_ETH_NAME
-l_string|&quot;0&quot;
+l_string|&quot;.0&quot;
 comma
 id|katana_fixup_eth_pdata
 )brace
 comma
 (brace
 id|MV643XX_ETH_NAME
-l_string|&quot;1&quot;
+l_string|&quot;.1&quot;
 comma
 id|katana_fixup_eth_pdata
 )brace
 comma
 (brace
 id|MV643XX_ETH_NAME
-l_string|&quot;2&quot;
+l_string|&quot;.2&quot;
 comma
 id|katana_fixup_eth_pdata
 )brace

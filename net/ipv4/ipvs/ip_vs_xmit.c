@@ -593,7 +593,7 @@ suffix:semicolon
 multiline_comment|/* MTU checking */
 id|mtu
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp
@@ -895,7 +895,7 @@ suffix:semicolon
 multiline_comment|/* MTU checking */
 id|mtu
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp
@@ -1246,7 +1246,7 @@ id|rt-&gt;u.dst.dev
 suffix:semicolon
 id|mtu
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp
@@ -1715,7 +1715,7 @@ suffix:semicolon
 multiline_comment|/* MTU checking */
 id|mtu
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp
@@ -1996,7 +1996,7 @@ suffix:semicolon
 multiline_comment|/* MTU checking */
 id|mtu
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp

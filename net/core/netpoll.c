@@ -893,6 +893,8 @@ op_assign
 id|eth_len
 op_plus
 id|ETH_HLEN
+op_plus
+id|NET_IP_ALIGN
 suffix:semicolon
 id|skb
 op_assign

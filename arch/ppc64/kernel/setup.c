@@ -755,17 +755,6 @@ id|j
 op_increment
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Only spin up secondary threads if SMT is enabled.&n;&t;&t;&t; * We must leave space in the logical map for the&n;&t;&t;&t; * threads.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|j
-op_eq
-l_int|0
-op_logical_or
-id|smt_enabled_at_boot
-)paren
-(brace
 id|cpu_set
 c_func
 (paren
@@ -785,7 +774,6 @@ id|j
 )braket
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1847,14 +1835,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PSERIES
+macro_line|#ifdef CONFIG_PPC_RTAS
 multiline_comment|/*&n;&t; * Initialize RTAS if available&n;&t; */
 id|rtas_initialize
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PPC_PSERIES */
+macro_line|#endif /* CONFIG_PPC_RTAS */
 multiline_comment|/*&n;&t; * Check if we have an initrd provided via the device-tree&n;&t; */
 id|check_for_initrd
 c_func
@@ -5109,6 +5097,51 @@ id|p
 )paren
 (brace
 multiline_comment|/* ensure xmon is enabled */
+r_if
+c_cond
+(paren
+id|p
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|p
+comma
+l_string|&quot;on&quot;
+comma
+l_int|2
+)paren
+op_eq
+l_int|0
+)paren
+id|xmon_init
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|p
+comma
+l_string|&quot;early&quot;
+comma
+l_int|5
+)paren
+op_ne
+l_int|0
+)paren
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|xmon_init
 c_func
 (paren

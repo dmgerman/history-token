@@ -987,11 +987,13 @@ DECL|macro|__HAVE_ARCH_PTE_SAME
 mdefine_line|#define __HAVE_ARCH_PTE_SAME
 DECL|macro|__HAVE_ARCH_PGD_OFFSET_GATE
 mdefine_line|#define __HAVE_ARCH_PGD_OFFSET_GATE
-multiline_comment|/*&n; * Override for pgd_addr_end() to deal with the virtual address space holes&n; * in each region.  Virtual address bits are used like this:&n; *      +--------+------+--------+-----+-----+--------+&n; *      | pgdhi3 | rsvd | pgdlow | pmd | pte | offset |&n; *      +--------+------+--------+-----+-----+--------+&n; *  The high bit of &squot;pgdlow&squot; must be sign extended across the &squot;rsvd&squot; bits.&n; */
-DECL|macro|IA64_PGD_SIGNEXTEND
-mdefine_line|#define IA64_PGD_SIGNEXTEND (PGDIR_SIZE &lt;&lt; (PAGE_SHIFT-7))
+multiline_comment|/*&n; * Override for pgd_addr_end() to deal with the virtual address space holes&n; * in each region.  In regions 0..4 virtual address bits are used like this:&n; *      +--------+------+--------+-----+-----+--------+&n; *      | pgdhi3 | rsvd | pgdlow | pmd | pte | offset |&n; *      +--------+------+--------+-----+-----+--------+&n; *  &squot;pgdlow&squot; overflows to pgdhi3 (a.k.a. region bits) leaving rsvd==0&n; */
+DECL|macro|IA64_PGD_OVERFLOW
+mdefine_line|#define IA64_PGD_OVERFLOW (PGDIR_SIZE &lt;&lt; (PAGE_SHIFT-6))
 DECL|macro|pgd_addr_end
-mdefine_line|#define pgd_addr_end(addr, end)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;unsigned long __boundary = ((addr) + PGDIR_SIZE) &amp; PGDIR_MASK;&t;&bslash;&n;&t;if (__boundary &amp; IA64_PGD_SIGNEXTEND)&t;&t;&t;&t;&bslash;&n;&t;&t;__boundary |= (RGN_SIZE - 1) &amp; ~(IA64_PGD_SIGNEXTEND-1);&bslash;&n;&t;(__boundary - 1 &lt; (end) - 1)? __boundary: (end);&t;&t;&bslash;&n;})
+mdefine_line|#define pgd_addr_end(addr, end)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;unsigned long __boundary = ((addr) + PGDIR_SIZE) &amp; PGDIR_MASK;&t;&bslash;&n; &t;if (REGION_NUMBER(__boundary) &lt; 5 &amp;&amp; &t;&t;&t;&t;&bslash;&n;&t;    __boundary &amp; IA64_PGD_OVERFLOW)&t;&t;&t;&t;&bslash;&n;&t;&t;__boundary += (RGN_SIZE - 1) &amp; ~(IA64_PGD_OVERFLOW - 1);&bslash;&n;&t;(__boundary - 1 &lt; (end) - 1)? __boundary: (end);&t;&t;&bslash;&n;})
+DECL|macro|pmd_addr_end
+mdefine_line|#define pmd_addr_end(addr, end)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;unsigned long __boundary = ((addr) + PMD_SIZE) &amp; PMD_MASK;&t;&bslash;&n; &t;if (REGION_NUMBER(__boundary) &lt; 5 &amp;&amp;&t;&t;&t;&t;&bslash;&n;&t;    __boundary &amp; IA64_PGD_OVERFLOW)&t;&t;&t;&t;&bslash;&n;&t;&t;__boundary += (RGN_SIZE - 1) &amp; ~(IA64_PGD_OVERFLOW - 1);&bslash;&n;&t;(__boundary - 1 &lt; (end) - 1)? __boundary: (end);&t;&t;&bslash;&n;})
 macro_line|#include &lt;asm-generic/pgtable-nopud.h&gt;
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
 macro_line|#endif /* _ASM_IA64_PGTABLE_H */

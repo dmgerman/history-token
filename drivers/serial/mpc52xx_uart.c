@@ -29,7 +29,7 @@ id|MPC52xx_PSC_MAXNUM
 suffix:semicolon
 multiline_comment|/* Rem: - We use the read_status_mask as a shadow of&n;&t; *        psc-&gt;mpc52xx_psc_imr&n;&t; *      - It&squot;s important that is array is all zero on start as we&n;&t; *        use it to know if it&squot;s initialized or not ! If it&squot;s not sure&n;&t; *        it&squot;s cleared, then a memset(...,0,...) should be added to&n;&t; *        the console_init&n;&t; */
 DECL|macro|PSC
-mdefine_line|#define PSC(port) ((struct mpc52xx_psc *)((port)-&gt;membase))
+mdefine_line|#define PSC(port) ((struct mpc52xx_psc __iomem *)((port)-&gt;membase))
 multiline_comment|/* Forward declaration of the interruption handling routine */
 r_static
 id|irqreturn_t
@@ -426,6 +426,7 @@ id|port
 (brace
 r_struct
 id|mpc52xx_psc
+id|__iomem
 op_star
 id|psc
 op_assign
@@ -561,6 +562,7 @@ id|port
 (brace
 r_struct
 id|mpc52xx_psc
+id|__iomem
 op_star
 id|psc
 op_assign
@@ -627,6 +629,7 @@ id|old
 (brace
 r_struct
 id|mpc52xx_psc
+id|__iomem
 op_star
 id|psc
 op_assign
@@ -1964,6 +1967,7 @@ id|flow
 (brace
 r_struct
 id|mpc52xx_psc
+id|__iomem
 op_star
 id|psc
 op_assign
@@ -2117,6 +2121,7 @@ id|co-&gt;index
 suffix:semicolon
 r_struct
 id|mpc52xx_psc
+id|__iomem
 op_star
 id|psc
 op_assign

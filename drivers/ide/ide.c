@@ -5029,6 +5029,10 @@ r_int
 id|generic_ide_ioctl
 c_func
 (paren
+id|ide_drive_t
+op_star
+id|drive
+comma
 r_struct
 id|file
 op_star
@@ -5048,12 +5052,6 @@ r_int
 id|arg
 )paren
 (brace
-id|ide_drive_t
-op_star
-id|drive
-op_assign
-id|bdev-&gt;bd_disk-&gt;private_data
-suffix:semicolon
 id|ide_settings_t
 op_star
 id|setting

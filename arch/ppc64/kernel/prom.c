@@ -4682,7 +4682,7 @@ id|iommu_force_on
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PSERIES
+macro_line|#ifdef CONFIG_PPC_RTAS
 multiline_comment|/* To help early debugging via the front panel, we retreive a minimal&n;&t; * set of RTAS infos now if available&n;&t; */
 (brace
 id|u64
@@ -4767,7 +4767,7 @@ id|prop
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_PPC_PSERIES */
+macro_line|#endif /* CONFIG_PPC_RTAS */
 multiline_comment|/* break now */
 r_return
 l_int|1
