@@ -3926,6 +3926,13 @@ id|esp-&gt;snip
 op_assign
 l_int|0
 suffix:semicolon
+id|init_waitqueue_head
+c_func
+(paren
+op_amp
+id|esp-&gt;reset_queue
+)paren
+suffix:semicolon
 multiline_comment|/* Debugging... */
 r_for
 c_loop
@@ -8233,6 +8240,13 @@ id|esp-&gt;resetting_bus
 op_assign
 l_int|0
 suffix:semicolon
+id|wake_up
+c_func
+(paren
+op_amp
+id|esp-&gt;reset_queue
+)paren
+suffix:semicolon
 multiline_comment|/* Ok, now it is safe to get commands going once more. */
 r_if
 c_cond
@@ -8296,10 +8310,6 @@ c_func
 id|Scsi_Cmnd
 op_star
 id|SCptr
-comma
-r_int
-r_int
-id|how
 )paren
 (brace
 r_struct
@@ -8343,8 +8353,20 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|wait_event
+c_func
+(paren
+id|esp-&gt;reset_queue
+comma
+(paren
+id|esp-&gt;resetting_bus
+op_eq
+l_int|0
+)paren
+)paren
+suffix:semicolon
 r_return
-id|SCSI_RESET_PENDING
+id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* Internal ESP done function. */
