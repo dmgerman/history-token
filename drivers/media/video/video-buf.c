@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * generic helper functions for video4linux capture buffers, to handle&n; * memory management and PCI DMA.  Right now bttv + saa7134 use it.&n; *&n; * The functions expect the hardware being able to scatter gatter&n; * (i.e. the buffers are not linear in physical memory, but fragmented&n; * into PAGE_SIZE chunks).  They also assume the driver does not need&n; * to touch the video data (thus it is probably not useful for USB 1.1&n; * as data often must be uncompressed by the drivers).&n; * &n; * (c) 2001-2004 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SUSE Labs]&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; */
+multiline_comment|/*&n; * $Id: video-buf.c,v 1.12 2004/10/11 14:53:13 kraxel Exp $&n; *&n; * generic helper functions for video4linux capture buffers, to handle&n; * memory management and PCI DMA.  Right now bttv + saa7134 use it.&n; *&n; * The functions expect the hardware being able to scatter gatter&n; * (i.e. the buffers are not linear in physical memory, but fragmented&n; * into PAGE_SIZE chunks).  They also assume the driver does not need&n; * to touch the video data (thus it is probably not useful for USB 1.1&n; * as data often must be uncompressed by the drivers).&n; * &n; * (c) 2001-2004 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SUSE Labs]&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -2003,10 +2003,9 @@ DECL|function|videobuf_queue_cancel
 id|videobuf_queue_cancel
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_queue
@@ -2134,7 +2133,7 @@ op_member_access_from_pointer
 id|buf_release
 c_func
 (paren
-id|file
+id|priv
 comma
 id|q-&gt;bufs
 (braket
@@ -2398,10 +2397,9 @@ DECL|function|videobuf_reqbufs
 id|videobuf_reqbufs
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_queue
@@ -2519,7 +2517,7 @@ op_member_access_from_pointer
 id|buf_setup
 c_func
 (paren
-id|file
+id|priv
 comma
 op_amp
 id|count
@@ -2561,7 +2559,7 @@ op_assign
 id|videobuf_mmap_setup
 c_func
 (paren
-id|file
+id|priv
 comma
 id|q
 comma
@@ -2689,10 +2687,9 @@ DECL|function|videobuf_qbuf
 id|videobuf_qbuf
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_queue
@@ -2899,7 +2896,7 @@ op_member_access_from_pointer
 id|buf_release
 c_func
 (paren
-id|file
+id|priv
 comma
 id|buf
 )paren
@@ -2940,7 +2937,7 @@ op_member_access_from_pointer
 id|buf_prepare
 c_func
 (paren
-id|file
+id|priv
 comma
 id|buf
 comma
@@ -2986,7 +2983,7 @@ op_member_access_from_pointer
 id|buf_queue
 c_func
 (paren
-id|file
+id|priv
 comma
 id|buf
 )paren
@@ -3022,10 +3019,9 @@ DECL|function|videobuf_dqbuf
 id|videobuf_dqbuf
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_queue
@@ -3036,6 +3032,9 @@ r_struct
 id|v4l2_buffer
 op_star
 id|b
+comma
+r_int
+id|nonblocking
 )paren
 (brace
 r_struct
@@ -3114,9 +3113,7 @@ c_func
 (paren
 id|buf
 comma
-id|file-&gt;f_flags
-op_amp
-id|O_NONBLOCK
+id|nonblocking
 comma
 l_int|1
 )paren
@@ -3224,10 +3221,9 @@ r_int
 id|videobuf_streamon
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_queue
@@ -3330,7 +3326,7 @@ op_member_access_from_pointer
 id|buf_queue
 c_func
 (paren
-id|file
+id|priv
 comma
 id|buf
 )paren
@@ -3362,10 +3358,9 @@ r_int
 id|videobuf_streamoff
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_queue
@@ -3398,7 +3393,7 @@ suffix:semicolon
 id|videobuf_queue_cancel
 c_func
 (paren
-id|file
+id|priv
 comma
 id|q
 )paren
@@ -3430,10 +3425,9 @@ DECL|function|videobuf_read_zerocopy
 id|videobuf_read_zerocopy
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_queue
@@ -3519,7 +3513,7 @@ op_member_access_from_pointer
 id|buf_prepare
 c_func
 (paren
-id|file
+id|priv
 comma
 id|q-&gt;read_buf
 comma
@@ -3550,7 +3544,7 @@ op_member_access_from_pointer
 id|buf_queue
 c_func
 (paren
-id|file
+id|priv
 comma
 id|q-&gt;read_buf
 )paren
@@ -3618,7 +3612,7 @@ op_member_access_from_pointer
 id|buf_release
 c_func
 (paren
-id|file
+id|priv
 comma
 id|q-&gt;read_buf
 )paren
@@ -3642,10 +3636,9 @@ id|ssize_t
 id|videobuf_read_one
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_queue
@@ -3663,6 +3656,9 @@ comma
 id|loff_t
 op_star
 id|ppos
+comma
+r_int
+id|nonblocking
 )paren
 (brace
 r_enum
@@ -3703,7 +3699,7 @@ op_member_access_from_pointer
 id|buf_setup
 c_func
 (paren
-id|file
+id|priv
 comma
 op_amp
 id|nbufs
@@ -3724,11 +3720,7 @@ op_ge
 id|size
 op_logical_and
 op_logical_neg
-(paren
-id|file-&gt;f_flags
-op_amp
-id|O_NONBLOCK
-)paren
+id|nonblocking
 )paren
 (brace
 id|retval
@@ -3736,7 +3728,7 @@ op_assign
 id|videobuf_read_zerocopy
 c_func
 (paren
-id|file
+id|priv
 comma
 id|q
 comma
@@ -3816,7 +3808,7 @@ op_member_access_from_pointer
 id|buf_prepare
 c_func
 (paren
-id|file
+id|priv
 comma
 id|q-&gt;read_buf
 comma
@@ -3846,7 +3838,7 @@ op_member_access_from_pointer
 id|buf_queue
 c_func
 (paren
-id|file
+id|priv
 comma
 id|q-&gt;read_buf
 )paren
@@ -3872,9 +3864,7 @@ c_func
 (paren
 id|q-&gt;read_buf
 comma
-id|file-&gt;f_flags
-op_amp
-id|O_NONBLOCK
+id|nonblocking
 comma
 l_int|1
 )paren
@@ -3912,7 +3902,7 @@ op_member_access_from_pointer
 id|buf_release
 c_func
 (paren
-id|file
+id|priv
 comma
 id|q-&gt;read_buf
 )paren
@@ -4001,7 +3991,7 @@ op_member_access_from_pointer
 id|buf_release
 c_func
 (paren
-id|file
+id|priv
 comma
 id|q-&gt;read_buf
 )paren
@@ -4035,10 +4025,9 @@ r_int
 id|videobuf_read_start
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_queue
@@ -4073,7 +4062,7 @@ op_member_access_from_pointer
 id|buf_setup
 c_func
 (paren
-id|file
+id|priv
 comma
 op_amp
 id|count
@@ -4117,7 +4106,7 @@ op_assign
 id|videobuf_mmap_setup
 c_func
 (paren
-id|file
+id|priv
 comma
 id|q
 comma
@@ -4166,7 +4155,7 @@ op_member_access_from_pointer
 id|buf_prepare
 c_func
 (paren
-id|file
+id|priv
 comma
 id|q-&gt;bufs
 (braket
@@ -4227,7 +4216,7 @@ op_member_access_from_pointer
 id|buf_queue
 c_func
 (paren
-id|file
+id|priv
 comma
 id|q-&gt;bufs
 (braket
@@ -4256,10 +4245,9 @@ r_void
 id|videobuf_read_stop
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_queue
@@ -4273,7 +4261,7 @@ suffix:semicolon
 id|videobuf_queue_cancel
 c_func
 (paren
-id|file
+id|priv
 comma
 id|q
 )paren
@@ -4343,10 +4331,9 @@ id|ssize_t
 id|videobuf_read_stream
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_queue
@@ -4367,6 +4354,9 @@ id|ppos
 comma
 r_int
 id|vbihack
+comma
+r_int
+id|nonblocking
 )paren
 (brace
 r_int
@@ -4384,6 +4374,16 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
 id|down
 c_func
@@ -4417,7 +4417,7 @@ op_assign
 id|videobuf_read_start
 c_func
 (paren
-id|file
+id|priv
 comma
 id|q
 )paren
@@ -4486,9 +4486,7 @@ c_func
 (paren
 id|q-&gt;read_buf
 comma
-id|file-&gt;f_flags
-op_amp
-id|O_NONBLOCK
+id|nonblocking
 comma
 l_int|1
 )paren
@@ -4686,7 +4684,7 @@ op_member_access_from_pointer
 id|buf_queue
 c_func
 (paren
-id|file
+id|priv
 comma
 id|q-&gt;read_buf
 )paren
@@ -4737,6 +4735,10 @@ r_struct
 id|file
 op_star
 id|file
+comma
+r_void
+op_star
+id|priv
 comma
 r_struct
 id|videobuf_queue
@@ -4810,7 +4812,7 @@ id|q-&gt;reading
 id|videobuf_read_start
 c_func
 (paren
-id|file
+id|priv
 comma
 id|q
 )paren
@@ -5243,10 +5245,9 @@ r_int
 id|videobuf_mmap_setup
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_queue
@@ -5278,7 +5279,7 @@ op_assign
 id|videobuf_mmap_free
 c_func
 (paren
-id|file
+id|priv
 comma
 id|q
 )paren
@@ -5409,10 +5410,9 @@ r_int
 id|videobuf_mmap_free
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_queue
@@ -5488,7 +5488,7 @@ op_member_access_from_pointer
 id|buf_release
 c_func
 (paren
-id|file
+id|priv
 comma
 id|q-&gt;bufs
 (braket
