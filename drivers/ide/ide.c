@@ -433,6 +433,15 @@ op_assign
 l_int|0x80
 suffix:semicolon
 multiline_comment|/* disable all swdma */
+id|sema_init
+c_func
+(paren
+op_amp
+id|hwif-&gt;gendev_rel_sem
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|default_hwif_iops
 c_func
 (paren
@@ -563,6 +572,15 @@ c_func
 (paren
 op_amp
 id|drive-&gt;list
+)paren
+suffix:semicolon
+id|sema_init
+c_func
+(paren
+op_amp
+id|drive-&gt;gendev_rel_sem
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -2680,6 +2698,13 @@ op_amp
 id|drive-&gt;gendev
 )paren
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|drive-&gt;gendev_rel_sem
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -2781,6 +2806,13 @@ c_func
 (paren
 op_amp
 id|hwif-&gt;gendev
+)paren
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|hwif-&gt;gendev_rel_sem
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Remove us from the kernel&squot;s knowledge&n;&t; */
