@@ -426,7 +426,8 @@ DECL|macro|__NR_alloc_hugepages
 mdefine_line|#define __NR_alloc_hugepages&t;&t;1234
 DECL|macro|__NR_free_hugepages
 mdefine_line|#define __NR_free_hugepages&t;&t;1235
-multiline_comment|/* 1236 currently unused */
+DECL|macro|__NR_exit_group
+mdefine_line|#define __NR_exit_group&t;&t;&t;1236
 multiline_comment|/* 1237 currently unused */
 DECL|macro|__NR_io_setup
 mdefine_line|#define __NR_io_setup&t;&t;&t;1238

@@ -502,5 +502,11 @@ DECL|macro|tlb_start_vma
 mdefine_line|#define tlb_start_vma(tlb, vma)&t;&t;&t;do { } while (0)
 DECL|macro|tlb_end_vma
 mdefine_line|#define tlb_end_vma(tlb, vma)&t;&t;&t;do { } while (0)
+DECL|macro|tlb_remove_tlb_entry
+mdefine_line|#define tlb_remove_tlb_entry(tlb, ptep, addr)&t;__tlb_remove_tlb_entry(tlb, ptep, addr)
+DECL|macro|pte_free_tlb
+mdefine_line|#define pte_free_tlb(tlb, ptep)&t;&t;&t;__pte_free_tlb(tlb, ptep)
+DECL|macro|pmd_free_tlb
+mdefine_line|#define pmd_free_tlb(tlb, ptep)&t;&t;&t;__pmd_free_tlb(tlb, ptep)
 macro_line|#endif /* _ASM_IA64_TLB_H */
 eof

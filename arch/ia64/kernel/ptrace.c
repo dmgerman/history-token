@@ -1833,6 +1833,9 @@ suffix:semicolon
 r_struct
 id|task_struct
 op_star
+id|g
+comma
+op_star
 id|p
 suffix:semicolon
 r_struct
@@ -1945,9 +1948,11 @@ id|tasklist_lock
 )paren
 suffix:semicolon
 (brace
-id|for_each_task
+id|do_each_thread
 c_func
 (paren
+id|g
+comma
 id|p
 )paren
 (brace
@@ -2023,6 +2028,14 @@ id|pt
 suffix:semicolon
 )brace
 )brace
+id|while_each_thread
+c_func
+(paren
+id|g
+comma
+id|p
+)paren
+suffix:semicolon
 )brace
 id|read_unlock
 c_func
