@@ -1094,11 +1094,7 @@ id|k
 dot
 id|index
 op_assign
-(paren
 id|j
-op_lshift
-l_int|8
-)paren
 suffix:semicolon
 id|k
 op_increment
