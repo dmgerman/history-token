@@ -1169,8 +1169,8 @@ id|j
 )braket
 )paren
 (brace
-multiline_comment|/* FIXME - uncomment the following&n;&t;&t;&t;&t;&t; * usb_unlink_urb call when the host&n;&t;&t;&t;&t;&t; * controllers get fixed to set&n;&t;&t;&t;&t;&t; * urb-&gt;dev = NULL after the urb is&n;&t;&t;&t;&t;&t; * finished.  Otherwise this call&n;&t;&t;&t;&t;&t; * oopses. */
-multiline_comment|/* usb_unlink_urb(write_urbs[j]); */
+multiline_comment|/* FIXME - uncomment the following&n;&t;&t;&t;&t;&t; * usb_kill_urb call when the host&n;&t;&t;&t;&t;&t; * controllers get fixed to set&n;&t;&t;&t;&t;&t; * urb-&gt;dev = NULL after the urb is&n;&t;&t;&t;&t;&t; * finished.  Otherwise this call&n;&t;&t;&t;&t;&t; * oopses. */
+multiline_comment|/* usb_kill_urb(write_urbs[j]); */
 r_if
 c_cond
 (paren
@@ -1678,12 +1678,14 @@ id|rc
 )paren
 suffix:semicolon
 multiline_comment|/* shutdown our bulk reads and writes */
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;write_urb
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;read_urb
 )paren
@@ -1691,7 +1693,8 @@ suffix:semicolon
 multiline_comment|/* unlink our write pool */
 multiline_comment|/* FIXME */
 multiline_comment|/* wgg - do I need this? I think so. */
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;interrupt_in_urb
 )paren
@@ -3830,7 +3833,8 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;read_urb
 )paren

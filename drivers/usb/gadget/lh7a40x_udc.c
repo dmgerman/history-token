@@ -62,8 +62,6 @@ op_assign
 l_string|&quot;ep0-control&quot;
 suffix:semicolon
 multiline_comment|/*&n;  Local definintions.&n;*/
-DECL|macro|UDC_PROC_FILE
-mdefine_line|#define UDC_PROC_FILE
 macro_line|#ifndef NO_STATES
 DECL|variable|state_names
 r_static
@@ -748,7 +746,7 @@ mdefine_line|#define set_portc_ddr(bit, val) (val ? usb_set(_BIT(bit), GPIO_PORT
 multiline_comment|/*&n; * LPD7A404 GPIO&squot;s:&n; * Port C bit 1 = USB Port 1 Power Enable&n; * Port C bit 2 = USB Port 1 Data Carrier Detect&n; */
 DECL|macro|is_usb_connected
 mdefine_line|#define is_usb_connected() &t;&t;get_portc_pdr(2)
-macro_line|#ifdef UDC_PROC_FILE
+macro_line|#ifdef CONFIG_USB_GADGET_DEBUG_FILES
 DECL|variable|proc_node_name
 r_static
 r_const
@@ -981,12 +979,12 @@ DECL|macro|create_proc_files
 mdefine_line|#define create_proc_files() &t;create_proc_read_entry(proc_node_name, 0, NULL, udc_proc_read, dev)
 DECL|macro|remove_proc_files
 mdefine_line|#define remove_proc_files() &t;remove_proc_entry(proc_node_name, NULL)
-macro_line|#else&t;&t;&t;&t;/* !UDC_PROC_FILE */
+macro_line|#else&t;/* !CONFIG_USB_GADGET_DEBUG_FILES */
 DECL|macro|create_proc_files
 mdefine_line|#define create_proc_files() do {} while (0)
 DECL|macro|remove_proc_files
 mdefine_line|#define remove_proc_files() do {} while (0)
-macro_line|#endif&t;&t;&t;&t;/* UDC_PROC_FILE */
+macro_line|#endif&t;/* CONFIG_USB_GADGET_DEBUG_FILES */
 multiline_comment|/*&n; * &t;udc_disable - disable USB device controller&n; */
 DECL|function|udc_disable
 r_static

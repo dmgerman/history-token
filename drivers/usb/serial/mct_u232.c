@@ -1763,17 +1763,20 @@ id|port-&gt;serial-&gt;dev
 )paren
 (brace
 multiline_comment|/* shutdown our urbs */
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;write_urb
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;read_urb
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;interrupt_in_urb
 )paren

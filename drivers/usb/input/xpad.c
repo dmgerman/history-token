@@ -840,7 +840,7 @@ op_logical_neg
 op_decrement
 id|xpad-&gt;open_count
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|xpad-&gt;irq_in
@@ -1430,7 +1430,7 @@ c_cond
 id|xpad
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|xpad-&gt;irq_in

@@ -265,6 +265,12 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
 id|schedule_timeout
 (paren
 id|HZ

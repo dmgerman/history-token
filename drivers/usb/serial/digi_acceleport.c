@@ -5610,7 +5610,8 @@ id|DIGI_CLOSE_TIMEOUT
 )paren
 suffix:semicolon
 multiline_comment|/* shutdown any outstanding bulk writes */
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;write_urb
 )paren
@@ -6172,7 +6173,7 @@ id|i
 op_increment
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|serial-&gt;port
@@ -6183,7 +6184,7 @@ op_member_access_from_pointer
 id|read_urb
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|serial-&gt;port

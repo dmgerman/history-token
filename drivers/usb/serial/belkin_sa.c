@@ -706,7 +706,7 @@ c_cond
 id|retval
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|port-&gt;read_urb
@@ -753,17 +753,20 @@ id|port-&gt;number
 )paren
 suffix:semicolon
 multiline_comment|/* shutdown our bulk reads and writes */
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;write_urb
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;read_urb
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;interrupt_in_urb
 )paren
