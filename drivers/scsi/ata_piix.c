@@ -1072,7 +1072,7 @@ suffix:semicolon
 multiline_comment|/* check BIOS cable detect results */
 id|mask
 op_assign
-id|ap-&gt;port_no
+id|ap-&gt;hard_port_no
 op_eq
 l_int|0
 ques
@@ -1148,7 +1148,7 @@ comma
 op_amp
 id|piix_enable_bits
 (braket
-id|ap-&gt;port_no
+id|ap-&gt;hard_port_no
 )braket
 )paren
 )paren
@@ -1233,13 +1233,13 @@ op_assign
 (paren
 id|PIIX_PORT_PRESENT
 op_lshift
-id|ap-&gt;port_no
+id|ap-&gt;hard_port_no
 )paren
 op_or
 (paren
 id|PIIX_PORT_ENABLED
 op_lshift
-id|ap-&gt;port_no
+id|ap-&gt;hard_port_no
 )paren
 suffix:semicolon
 id|pci_read_config_byte
@@ -1311,7 +1311,7 @@ op_logical_or
 (paren
 id|i
 op_eq
-id|ap-&gt;port_no
+id|ap-&gt;hard_port_no
 )paren
 )paren
 r_return
@@ -1427,7 +1427,7 @@ r_int
 r_int
 id|master_port
 op_assign
-id|ap-&gt;port_no
+id|ap-&gt;hard_port_no
 ques
 c_cond
 l_int|0x42
@@ -1530,7 +1530,7 @@ suffix:semicolon
 id|slave_data
 op_and_assign
 (paren
-id|ap-&gt;port_no
+id|ap-&gt;hard_port_no
 ques
 c_cond
 l_int|0x0f
@@ -1562,7 +1562,7 @@ l_int|1
 )braket
 op_lshift
 (paren
-id|ap-&gt;port_no
+id|ap-&gt;hard_port_no
 ques
 c_cond
 l_int|4
@@ -1670,7 +1670,7 @@ suffix:semicolon
 id|u8
 id|maslave
 op_assign
-id|ap-&gt;port_no
+id|ap-&gt;hard_port_no
 ques
 c_cond
 l_int|0x42
@@ -1687,7 +1687,7 @@ r_int
 id|drive_dn
 op_assign
 (paren
-id|ap-&gt;port_no
+id|ap-&gt;hard_port_no
 ques
 c_cond
 l_int|2
