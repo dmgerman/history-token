@@ -2,7 +2,7 @@ multiline_comment|/*&n; * PCBIT-D device driver definitions&n; *&n; * Copyright 
 macro_line|#ifndef PCBIT_H
 DECL|macro|PCBIT_H
 mdefine_line|#define PCBIT_H
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 DECL|macro|MAX_PCBIT_CARDS
 mdefine_line|#define MAX_PCBIT_CARDS 4
 DECL|macro|BLOCK_TIMER
@@ -189,7 +189,7 @@ id|error_recover_timer
 suffix:semicolon
 DECL|member|qdelivery
 r_struct
-id|tq_struct
+id|work_struct
 id|qdelivery
 suffix:semicolon
 DECL|member|w_busy

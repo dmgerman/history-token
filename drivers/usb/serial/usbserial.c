@@ -3449,11 +3449,11 @@ op_star
 id|port
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|port-&gt;tqueue
+id|port-&gt;work
 )paren
 suffix:semicolon
 )brace
@@ -4905,13 +4905,16 @@ id|port-&gt;magic
 op_assign
 id|USB_SERIAL_PORT_MAGIC
 suffix:semicolon
-id|port-&gt;tqueue.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|port-&gt;work
+comma
 id|usb_serial_port_softint
-suffix:semicolon
-id|port-&gt;tqueue.data
-op_assign
+comma
 id|port
+)paren
 suffix:semicolon
 id|init_MUTEX
 (paren
@@ -6847,8 +6850,9 @@ id|port-&gt;open_count
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - port not opened&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port not opened&quot;
 )paren
 suffix:semicolon
 r_goto

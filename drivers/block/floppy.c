@@ -44,7 +44,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 DECL|macro|FDPATCHES
 mdefine_line|#define FDPATCHES
 macro_line|#include &lt;linux/fdreg.h&gt;
@@ -3944,11 +3944,16 @@ r_void
 )paren
 (brace
 )brace
-DECL|variable|floppy_tq
 r_static
-r_struct
-id|tq_struct
-id|floppy_tq
+id|DECLARE_WORK
+c_func
+(paren
+id|floppy_work
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 DECL|function|schedule_bh
 r_static
@@ -3967,23 +3972,22 @@ op_star
 )paren
 )paren
 (brace
-id|floppy_tq.routine
-op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
-r_void
-op_star
-)paren
-id|handler
-suffix:semicolon
-id|schedule_task
+id|PREPARE_WORK
 c_func
 (paren
 op_amp
-id|floppy_tq
+id|floppy_work
+comma
+id|handler
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|schedule_work
+c_func
+(paren
+op_amp
+id|floppy_work
 )paren
 suffix:semicolon
 )brace
@@ -4006,8 +4010,12 @@ id|do_floppy
 op_assign
 l_int|NULL
 suffix:semicolon
-id|floppy_tq.routine
-op_assign
+id|PREPARE_WORK
+c_func
+(paren
+op_amp
+id|floppy_work
+comma
 (paren
 r_void
 op_star
@@ -4017,6 +4025,9 @@ r_void
 op_star
 )paren
 id|empty
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 id|del_timer
 c_func
@@ -7675,14 +7686,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|floppy_tq.sync
+id|floppy_work.pending
 )paren
 id|printk
 c_func
 (paren
-l_string|&quot;floppy_tq.routine=%p&bslash;n&quot;
+l_string|&quot;floppy_work.func=%p&bslash;n&quot;
 comma
-id|floppy_tq.routine
+id|floppy_work.func
 )paren
 suffix:semicolon
 r_if
@@ -19168,7 +19179,7 @@ c_func
 l_string|&quot;no floppy controllers found&bslash;n&quot;
 )paren
 suffix:semicolon
-id|flush_scheduled_tasks
+id|flush_scheduled_work
 c_func
 (paren
 )paren
@@ -19964,12 +19975,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|floppy_tq.sync
+id|floppy_work.pending
 )paren
 id|printk
 c_func
 (paren
-l_string|&quot;task queue still active&bslash;n&quot;
+l_string|&quot;work still pending&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

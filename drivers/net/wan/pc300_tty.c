@@ -142,18 +142,18 @@ id|tty_struct
 op_star
 id|tty
 suffix:semicolon
-DECL|member|tty_tx_task_queue
+DECL|member|tty_tx_work
 r_struct
-id|tq_struct
-id|tty_tx_task_queue
+id|work_struct
+id|tty_tx_work
 suffix:semicolon
-multiline_comment|/* tx task - tx interrupt */
-DECL|member|tty_rx_task_queue
+multiline_comment|/* tx work - tx interrupt */
+DECL|member|tty_rx_work
 r_struct
-id|tq_struct
-id|tty_rx_task_queue
+id|work_struct
+id|tty_rx_work
 suffix:semicolon
-multiline_comment|/* rx task - rx interrupt */
+multiline_comment|/* rx work - rx interrupt */
 DECL|typedef|st_cpc_tty_area
 )brace
 id|st_cpc_tty_area
@@ -349,7 +349,7 @@ id|tty
 suffix:semicolon
 r_static
 r_void
-id|cpc_tty_rx_task
+id|cpc_tty_rx_work
 c_func
 (paren
 r_void
@@ -359,7 +359,7 @@ id|data
 suffix:semicolon
 r_static
 r_void
-id|cpc_tty_tx_task
+id|cpc_tty_tx_work
 c_func
 (paren
 r_void
@@ -1129,29 +1129,35 @@ id|cpc_tty-&gt;pc300dev
 op_assign
 id|pc300dev
 suffix:semicolon
-id|cpc_tty-&gt;tty_tx_task_queue.routine
-op_assign
-id|cpc_tty_tx_task
-suffix:semicolon
-id|cpc_tty-&gt;tty_tx_task_queue.data
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|cpc_tty-&gt;tty_tx_work
+comma
+id|cpc_tty_tx_work
+comma
 (paren
 r_void
 op_star
 )paren
 id|cpc_tty
+)paren
 suffix:semicolon
-id|cpc_tty-&gt;tty_rx_task_queue.routine
-op_assign
-id|cpc_tty_rx_task
-suffix:semicolon
-id|cpc_tty-&gt;tty_rx_task_queue.data
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|cpc_tty-&gt;tty_rx_work
+comma
+id|cpc_tty_rx_work
+comma
 (paren
 r_void
 op_star
 )paren
 id|port
+)paren
 suffix:semicolon
 id|cpc_tty-&gt;buf_rx.first
 op_assign
@@ -2855,11 +2861,11 @@ id|cpc_tty-&gt;pc300dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * PC300 TTY RX task routine&n; * This routine treats RX task&n; * o verify read buffer&n; * o call the line disc. read&n; * o free memory&n; */
-DECL|function|cpc_tty_rx_task
+multiline_comment|/*&n; * PC300 TTY RX work routine&n; * This routine treats RX work&n; * o verify read buffer&n; * o call the line disc. read&n; * o free memory&n; */
+DECL|function|cpc_tty_rx_work
 r_static
 r_void
-id|cpc_tty_rx_task
+id|cpc_tty_rx_work
 c_func
 (paren
 r_void
@@ -3039,7 +3045,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * PC300 TTY RX task routine&n; *&n; * This routine treats RX interrupt. &n; * o read all frames in card&n; * o verify the frame size&n; * o read the frame in rx buffer&n; */
+multiline_comment|/*&n; * PC300 TTY RX work routine&n; *&n; * This routine treats RX interrupt. &n; * o read all frames in card&n; * o verify the frame size&n; * o read the frame in rx buffer&n; */
 DECL|function|cpc_tty_rx_disc_frame
 r_static
 r_void
@@ -3924,12 +3930,12 @@ op_assign
 r_new
 suffix:semicolon
 )brace
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
 (paren
-id|cpc_tty-&gt;tty_rx_task_queue
+id|cpc_tty-&gt;tty_rx_work
 )paren
 )paren
 suffix:semicolon
@@ -3939,11 +3945,11 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * PC300 TTY TX task routine&n; * &n; * This routine treats TX interrupt. &n; * o if need call line discipline wakeup&n; * o call wake_up_interruptible&n; */
-DECL|function|cpc_tty_tx_task
+multiline_comment|/*&n; * PC300 TTY TX work routine&n; * &n; * This routine treats TX interrupt. &n; * o if need call line discipline wakeup&n; * o call wake_up_interruptible&n; */
+DECL|function|cpc_tty_tx_work
 r_static
 r_void
-id|cpc_tty_tx_task
+id|cpc_tty_tx_work
 c_func
 (paren
 r_void
@@ -3969,7 +3975,7 @@ suffix:semicolon
 id|CPC_TTY_DBG
 c_func
 (paren
-l_string|&quot;%s: cpc_tty_tx_task init&bslash;n&quot;
+l_string|&quot;%s: cpc_tty_tx_work init&bslash;n&quot;
 comma
 id|cpc_tty-&gt;name
 )paren
@@ -4950,12 +4956,12 @@ id|cpc_tty
 r_return
 suffix:semicolon
 )brace
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
 (paren
-id|cpc_tty-&gt;tty_tx_task_queue
+id|cpc_tty-&gt;tty_tx_work
 )paren
 )paren
 suffix:semicolon

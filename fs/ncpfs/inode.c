@@ -1304,7 +1304,7 @@ op_amp
 id|server-&gt;timeout_tm
 )paren
 suffix:semicolon
-id|flush_scheduled_tasks
+id|flush_scheduled_work
 c_func
 (paren
 )paren
@@ -2472,7 +2472,7 @@ id|server-&gt;rcv.state
 op_assign
 l_int|0
 suffix:semicolon
-id|INIT_TQUEUE
+id|INIT_WORK
 c_func
 (paren
 op_amp
@@ -2483,7 +2483,7 @@ comma
 id|server
 )paren
 suffix:semicolon
-id|INIT_TQUEUE
+id|INIT_WORK
 c_func
 (paren
 op_amp
@@ -2501,7 +2501,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|INIT_TQUEUE
+id|INIT_WORK
 c_func
 (paren
 op_amp
@@ -2512,7 +2512,7 @@ comma
 id|server
 )paren
 suffix:semicolon
-id|INIT_TQUEUE
+id|INIT_WORK
 c_func
 (paren
 op_amp

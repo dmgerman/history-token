@@ -1213,7 +1213,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 multiline_comment|/* Initialize process for timed wbuf flush */
-id|INIT_TQUEUE
+id|INIT_WORK
 c_func
 (paren
 op_amp

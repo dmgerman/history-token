@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
@@ -370,10 +370,10 @@ id|wait_queue_head_t
 id|dp_close_wait
 suffix:semicolon
 multiline_comment|/* wait queue for close */
-DECL|member|dp_wakeup_task
+DECL|member|dp_wakeup_work
 r_struct
-id|tq_struct
-id|dp_wakeup_task
+id|work_struct
+id|dp_wakeup_work
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -4753,11 +4753,11 @@ id|port
 suffix:semicolon
 multiline_comment|/* also queue up a wakeup at scheduler time, in case we */
 multiline_comment|/* lost the race in write_chan(). */
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|priv-&gt;dp_wakeup_task
+id|priv-&gt;dp_wakeup_work
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -6023,27 +6023,18 @@ op_amp
 id|priv-&gt;dp_close_wait
 )paren
 suffix:semicolon
-id|INIT_LIST_HEAD
+id|INIT_WORK
 c_func
 (paren
 op_amp
-id|priv-&gt;dp_wakeup_task.list
-)paren
-suffix:semicolon
-id|priv-&gt;dp_wakeup_task.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;dp_wakeup_task.routine
-op_assign
+id|priv-&gt;dp_wakeup_work
+comma
 (paren
 r_void
 op_star
 )paren
 id|digi_wakeup_write_lock
-suffix:semicolon
-id|priv-&gt;dp_wakeup_task.data
-op_assign
+comma
 (paren
 r_void
 op_star
@@ -6054,6 +6045,7 @@ id|serial-&gt;port
 (braket
 id|i
 )braket
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* initialize write wait queue for this port */

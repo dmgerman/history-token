@@ -1,7 +1,7 @@
 multiline_comment|/* $Id: tpam_queues.c,v 1.1.2.2 2001/09/23 22:25:03 kai Exp $&n; *&n; * Turbo PAM ISDN driver for Linux. (Kernel Driver)&n; *&n; * Copyright 2001 Stelian Pop &lt;stelian.pop@fr.alcove.com&gt;, Alc&#xfffd;ve&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For all support questions please contact: &lt;support@auvertech.fr&gt;&n; *&n; */
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;tpam.h&quot;
@@ -55,20 +55,11 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* queue the board&squot;s send task struct for immediate treatment */
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|card-&gt;send_tq
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 )brace
@@ -114,20 +105,11 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* queue the channel&squot;s send task struct for immediate treatment */
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|channel-&gt;card-&gt;send_tq
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 )brace
@@ -583,20 +565,11 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|card-&gt;recv_tq
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 )brace
@@ -628,20 +601,11 @@ id|card-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/* schedule the send queue for execution */
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|card-&gt;send_tq
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 r_return

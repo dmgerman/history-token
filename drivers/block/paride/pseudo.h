@@ -4,7 +4,7 @@ DECL|macro|PS_VERSION
 mdefine_line|#define PS_VERSION&t;&quot;1.02&quot;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 r_static
 r_void
 id|ps_timer_int
@@ -104,17 +104,16 @@ suffix:colon
 id|ps_timer_int
 )brace
 suffix:semicolon
-DECL|variable|ps_tq
 r_static
-r_struct
-id|tq_struct
+id|DECLARE_WORK
+c_func
+(paren
 id|ps_tq
-op_assign
-(brace
-id|routine
-suffix:colon
+comma
 id|ps_tq_int
-)brace
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 DECL|function|ps_set_intr
 r_static
@@ -202,7 +201,7 @@ id|ps_tq_active
 op_assign
 l_int|1
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -378,7 +377,7 @@ id|ps_tq_active
 op_assign
 l_int|1
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp

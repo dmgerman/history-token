@@ -213,7 +213,7 @@ l_string|&quot;jffs2_wbuf_timeout(): timer expired&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp

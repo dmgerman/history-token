@@ -3,7 +3,7 @@ macro_line|#ifndef _LINUX_REISER_FS_SB
 DECL|macro|_LINUX_REISER_FS_SB
 mdefine_line|#define _LINUX_REISER_FS_SB
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#endif
 multiline_comment|/* struct reiserfs_super_block accessors/mutators&n; * since this is a disk structure, it will always be in &n; * little endian format. */
 DECL|macro|sb_block_count

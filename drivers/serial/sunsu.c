@@ -1216,9 +1216,9 @@ id|TTY_FLIPBUF_SIZE
 )paren
 )paren
 (brace
-id|tty-&gt;flip.tqueue
+id|tty-&gt;flip.work
 dot
-id|routine
+id|func
 c_func
 (paren
 (paren

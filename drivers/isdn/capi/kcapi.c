@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/capi.h&gt;
 macro_line|#include &lt;linux/kernelcapi.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -177,13 +177,13 @@ suffix:semicolon
 DECL|variable|tq_state_notify
 r_static
 r_struct
-id|tq_struct
+id|work_struct
 id|tq_state_notify
 suffix:semicolon
 DECL|variable|tq_recv_notify
 r_static
 r_struct
-id|tq_struct
+id|work_struct
 id|tq_recv_notify
 suffix:semicolon
 multiline_comment|/* -------- ref counting -------------------------------------- */
@@ -814,7 +814,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -1406,20 +1406,11 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|tq_recv_notify
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 r_return
@@ -3698,21 +3689,27 @@ op_amp
 id|recv_queue
 )paren
 suffix:semicolon
-id|tq_state_notify.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|tq_state_notify
+comma
 id|notify_handler
+comma
+l_int|NULL
+)paren
 suffix:semicolon
-id|tq_state_notify.data
-op_assign
-l_int|0
-suffix:semicolon
-id|tq_recv_notify.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|tq_recv_notify
+comma
 id|recv_handler
-suffix:semicolon
-id|tq_recv_notify.data
-op_assign
-l_int|0
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 id|kcapi_proc_init
 c_func

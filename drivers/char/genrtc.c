@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/rtc.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/rtc.h&gt;
@@ -103,7 +103,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_GEN_RTC_X
 DECL|variable|genrtc_task
 r_struct
-id|tq_struct
+id|work_struct
 id|genrtc_task
 suffix:semicolon
 DECL|variable|timer_task
@@ -143,7 +143,7 @@ r_volatile
 r_int
 id|stask_active
 suffix:semicolon
-multiline_comment|/* schedule_task */
+multiline_comment|/* schedule_work */
 DECL|variable|ttask_active
 r_static
 r_volatile
@@ -255,7 +255,7 @@ r_else
 r_if
 c_cond
 (paren
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -335,7 +335,7 @@ r_if
 c_cond
 (paren
 (paren
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -800,9 +800,16 @@ id|lostint
 op_assign
 l_int|0
 suffix:semicolon
-id|genrtc_task.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|genrtc_task
+comma
 id|genrtc_troutine
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 id|oldsecs
 op_assign
@@ -825,7 +832,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp

@@ -1423,11 +1423,11 @@ id|kfree
 id|urb-&gt;transfer_buffer
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|port-&gt;tqueue
+id|port-&gt;work
 )paren
 suffix:semicolon
 )brace

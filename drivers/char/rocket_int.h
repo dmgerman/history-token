@@ -1135,11 +1135,6 @@ r_struct
 id|termios
 id|callout_termios
 suffix:semicolon
-DECL|member|tqueue
-r_struct
-id|tq_struct
-id|tqueue
-suffix:semicolon
 DECL|member|open_wait
 id|wait_queue_head_t
 id|open_wait

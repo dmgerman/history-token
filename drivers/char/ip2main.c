@@ -4093,8 +4093,12 @@ suffix:semicolon
 )brace
 id|ex_exit
 suffix:colon
-id|pB-&gt;tqueue_interrupt.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|pB-&gt;tqueue_interrupt
+comma
 (paren
 r_void
 (paren
@@ -4106,10 +4110,9 @@ op_star
 )paren
 )paren
 id|ip2_interrupt_bh
-suffix:semicolon
-id|pB-&gt;tqueue_interrupt.data
-op_assign
+comma
 id|pB
+)paren
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -5267,23 +5270,14 @@ id|pB
 )paren
 suffix:semicolon
 singleline_comment|//&t;&t;&t;Park the board on the immediate queue for processing.
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|pB-&gt;tqueue_interrupt
-comma
-op_amp
-id|tq_immediate
 )paren
 suffix:semicolon
 singleline_comment|//&t;&t;&t;Make sure the immediate queue is flagged to fire.
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
-)paren
-suffix:semicolon
 )brace
 macro_line|#else
 singleline_comment|//&t;&t;We are using immediate servicing here.  This sucks and can
