@@ -247,13 +247,13 @@ multiline_comment|/*&n;&t; * Make sure all metadata makes it to disk before we m
 id|filemap_fdatawrite
 c_func
 (paren
-id|sbi-&gt;direct_inode-&gt;i_mapping
+id|bdev_mapping
 )paren
 suffix:semicolon
 id|filemap_fdatawait
 c_func
 (paren
-id|sbi-&gt;direct_inode-&gt;i_mapping
+id|bdev_mapping
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * ensure all file system file pages are propagated to their&n;&t; * home blocks on disk (and their in-memory buffer pages are &n;&t; * invalidated) BEFORE updating file system superblock state&n;&t; * (to signify file system is unmounted cleanly, and thus in &n;&t; * consistent state) and log superblock active file system &n;&t; * list (to signify skip logredo()).&n;&t; */
@@ -368,6 +368,12 @@ id|sbi-&gt;ipimap
 suffix:semicolon
 multiline_comment|/*&n;&t; * Note that we have to do this even if sync_blockdev() will&n;&t; * do exactly the same a few instructions later:  We can&squot;t&n;&t; * mark the superblock clean before everything is flushed to&n;&t; * disk.&n;&t; */
 id|filemap_fdatawrite
+c_func
+(paren
+id|bdev_mapping
+)paren
+suffix:semicolon
+id|filemap_fdatawait
 c_func
 (paren
 id|bdev_mapping
