@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;video/vga.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|variable|vga_lock
 r_static
@@ -32,24 +33,6 @@ mdefine_line|#define CAN_LOAD_PALETTE&t;/* undefine if the user must not do this
 multiline_comment|/* You really do _NOT_ want to define this, unless you have buggy&n; * Trident VGA which will resize cursor when moving it between column&n; * 15 &amp; 16. If you define this and your VGA is OK, inverse bug will&n; * appear.&n; */
 DECL|macro|TRIDENT_GLITCH
 macro_line|#undef TRIDENT_GLITCH
-DECL|macro|dac_reg
-mdefine_line|#define dac_reg&t;&t;0x3c8
-DECL|macro|dac_val
-mdefine_line|#define dac_val&t;&t;0x3c9
-DECL|macro|attrib_port
-mdefine_line|#define attrib_port&t;0x3c0
-DECL|macro|seq_port_reg
-mdefine_line|#define seq_port_reg&t;0x3c4
-DECL|macro|seq_port_val
-mdefine_line|#define seq_port_val&t;0x3c5
-DECL|macro|gr_port_reg
-mdefine_line|#define gr_port_reg&t;0x3ce
-DECL|macro|gr_port_val
-mdefine_line|#define gr_port_val&t;0x3cf
-DECL|macro|video_misc_rd
-mdefine_line|#define video_misc_rd&t;0x3cc
-DECL|macro|video_misc_wr
-mdefine_line|#define video_misc_wr&t;0x3c2
 multiline_comment|/*&n; *  Interface used by the world&n; */
 r_static
 r_const
@@ -149,7 +132,7 @@ c_func
 r_struct
 id|vc_data
 op_star
-id|c
+id|vc
 comma
 r_int
 r_char
@@ -664,19 +647,19 @@ id|ORIG_VIDEO_MODE
 op_eq
 l_int|7
 )paren
-multiline_comment|/* Is this a monochrome display? */
 (brace
+multiline_comment|/* Is this a monochrome display? */
 id|vga_vram_base
 op_assign
 l_int|0xb0000
 suffix:semicolon
 id|vga_video_port_reg
 op_assign
-l_int|0x3b4
+id|VGA_CRT_IM
 suffix:semicolon
 id|vga_video_port_val
 op_assign
-l_int|0x3b5
+id|VGA_CRT_DM
 suffix:semicolon
 r_if
 c_cond
@@ -793,8 +776,8 @@ suffix:semicolon
 )brace
 )brace
 r_else
-multiline_comment|/* If not, it is color. */
 (brace
+multiline_comment|/* If not, it is color. */
 id|vga_can_do_color
 op_assign
 l_int|1
@@ -805,11 +788,11 @@ l_int|0xb8000
 suffix:semicolon
 id|vga_video_port_reg
 op_assign
-l_int|0x3d4
+id|VGA_CRT_IC
 suffix:semicolon
 id|vga_video_port_val
 op_assign
-l_int|0x3d5
+id|VGA_CRT_DC
 suffix:semicolon
 r_if
 c_cond
@@ -913,6 +896,7 @@ op_assign
 l_int|0xb0000
 suffix:semicolon
 id|outb_p
+c_func
 (paren
 l_int|6
 comma
@@ -920,6 +904,7 @@ l_int|0x3ce
 )paren
 suffix:semicolon
 id|outb_p
+c_func
 (paren
 l_int|6
 comma
@@ -944,11 +929,13 @@ op_increment
 )paren
 (brace
 id|inb_p
+c_func
 (paren
 l_int|0x3da
 )paren
 suffix:semicolon
 id|outb_p
+c_func
 (paren
 id|i
 comma
@@ -956,6 +943,7 @@ l_int|0x3c0
 )paren
 suffix:semicolon
 id|outb_p
+c_func
 (paren
 id|i
 comma
@@ -964,6 +952,7 @@ l_int|0x3c0
 suffix:semicolon
 )brace
 id|outb_p
+c_func
 (paren
 l_int|0x20
 comma
@@ -987,6 +976,7 @@ op_increment
 )paren
 (brace
 id|outb_p
+c_func
 (paren
 id|color_table
 (braket
@@ -997,6 +987,7 @@ l_int|0x3c8
 )paren
 suffix:semicolon
 id|outb_p
+c_func
 (paren
 id|default_red
 (braket
@@ -1007,6 +998,7 @@ l_int|0x3c9
 )paren
 suffix:semicolon
 id|outb_p
+c_func
 (paren
 id|default_grn
 (braket
@@ -1017,6 +1009,7 @@ l_int|0x3c9
 )paren
 suffix:semicolon
 id|outb_p
+c_func
 (paren
 id|default_blu
 (braket
@@ -1088,7 +1081,7 @@ c_func
 id|vga_vram_end
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Find out if there is a graphics card present.&n;&t; *&t;Are there smarter methods around?&n;&t; */
+multiline_comment|/*&n;&t; *      Find out if there is a graphics card present.&n;&t; *      Are there smarter methods around?&n;&t; */
 id|p
 op_assign
 (paren
@@ -2236,7 +2229,7 @@ c_func
 r_struct
 id|vc_data
 op_star
-id|c
+id|vc
 comma
 r_int
 r_char
@@ -2266,53 +2259,65 @@ id|i
 op_increment
 )paren
 (brace
-id|outb_p
+id|vga_w
+c_func
 (paren
+l_int|NULL
+comma
+id|VGA_PEL_IW
+comma
 id|table
 (braket
 id|i
 )braket
-comma
-id|dac_reg
 )paren
 suffix:semicolon
-id|outb_p
+id|vga_w
+c_func
 (paren
-id|c-&gt;vc_palette
+l_int|NULL
+comma
+id|VGA_PEL_D
+comma
+id|vc-&gt;vc_palette
 (braket
 id|j
 op_increment
 )braket
 op_rshift
 l_int|2
-comma
-id|dac_val
 )paren
 suffix:semicolon
-id|outb_p
+id|vga_w
+c_func
 (paren
-id|c-&gt;vc_palette
+l_int|NULL
+comma
+id|VGA_PEL_D
+comma
+id|vc-&gt;vc_palette
 (braket
 id|j
 op_increment
 )braket
 op_rshift
 l_int|2
-comma
-id|dac_val
 )paren
 suffix:semicolon
-id|outb_p
+id|vga_w
+c_func
 (paren
-id|c-&gt;vc_palette
+l_int|NULL
+comma
+id|VGA_PEL_D
+comma
+id|vc-&gt;vc_palette
 (braket
 id|j
 op_increment
 )braket
 op_rshift
 l_int|2
-comma
-id|dac_val
 )paren
 suffix:semicolon
 )brace
@@ -2326,7 +2331,7 @@ c_func
 r_struct
 id|vc_data
 op_star
-id|c
+id|vc
 comma
 r_int
 r_char
@@ -2348,7 +2353,7 @@ op_logical_neg
 id|CON_IS_VISIBLE
 c_func
 (paren
-id|c
+id|vc
 )paren
 )paren
 r_return
@@ -2358,7 +2363,7 @@ suffix:semicolon
 id|vga_set_palette
 c_func
 (paren
-id|c
+id|vc
 comma
 id|table
 )paren
@@ -2480,10 +2485,12 @@ id|vga_lock
 suffix:semicolon
 id|vga_state.SeqCtrlIndex
 op_assign
-id|inb_p
+id|vga_r
 c_func
 (paren
-id|seq_port_reg
+l_int|NULL
+comma
+id|VGA_SEQ_I
 )paren
 suffix:semicolon
 id|vga_state.CrtCtrlIndex
@@ -2496,10 +2503,12 @@ id|vga_video_port_reg
 suffix:semicolon
 id|vga_state.CrtMiscIO
 op_assign
-id|inb_p
+id|vga_r
 c_func
 (paren
-id|video_misc_rd
+l_int|NULL
+comma
+id|VGA_MIS_R
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -2645,21 +2654,14 @@ c_func
 id|vga_video_port_val
 )paren
 suffix:semicolon
-id|outb_p
-c_func
-(paren
-l_int|0x01
-comma
-id|seq_port_reg
-)paren
-suffix:semicolon
-multiline_comment|/* ClockingMode */
 id|vga_state.ClockingMode
 op_assign
-id|inb_p
+id|vga_rseq
 c_func
 (paren
-id|seq_port_val
+l_int|NULL
+comma
+id|VGA_SEQ_CLOCK_MODE
 )paren
 suffix:semicolon
 )brace
@@ -2672,22 +2674,16 @@ op_amp
 id|vga_lock
 )paren
 suffix:semicolon
-id|outb_p
+id|vga_wseq
 c_func
 (paren
-l_int|0x01
+l_int|NULL
 comma
-id|seq_port_reg
-)paren
-suffix:semicolon
-id|outb_p
-c_func
-(paren
+id|VGA_SEQ_CLOCK_MODE
+comma
 id|vga_state.ClockingMode
 op_or
 l_int|0x20
-comma
-id|seq_port_val
 )paren
 suffix:semicolon
 multiline_comment|/* test for vertical retrace in process.... */
@@ -2702,14 +2698,16 @@ l_int|0x80
 op_eq
 l_int|0x80
 )paren
-id|outb_p
+id|vga_w
 c_func
 (paren
+l_int|NULL
+comma
+id|VGA_MIS_W
+comma
 id|vga_state.CrtMiscIO
 op_amp
-l_int|0xef
-comma
-id|video_misc_wr
+l_int|0xEF
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set &lt;End of vertical retrace&gt; to minimum (0) and&n;&t; * &lt;Start of vertical Retrace&gt; to maximum (incl. overflow)&n;&t; * Result: turn off vertical sync (VSync) pulse.&n;&t; */
@@ -2825,12 +2823,14 @@ suffix:semicolon
 multiline_comment|/* minimum (0) */
 )brace
 multiline_comment|/* restore both index registers */
-id|outb_p
+id|vga_w
 c_func
 (paren
-id|vga_state.SeqCtrlIndex
+l_int|NULL
 comma
-id|seq_port_reg
+id|VGA_SEQ_I
+comma
+id|vga_state.SeqCtrlIndex
 )paren
 suffix:semicolon
 id|outb_p
@@ -2866,12 +2866,14 @@ op_amp
 id|vga_lock
 )paren
 suffix:semicolon
-id|outb_p
+id|vga_w
 c_func
 (paren
-id|vga_state.CrtMiscIO
+l_int|NULL
 comma
-id|video_misc_wr
+id|VGA_MIS_W
+comma
+id|vga_state.CrtMiscIO
 )paren
 suffix:semicolon
 id|outb_p
@@ -3010,30 +3012,26 @@ comma
 id|vga_video_port_val
 )paren
 suffix:semicolon
-id|outb_p
-c_func
-(paren
-l_int|0x01
-comma
-id|seq_port_reg
-)paren
-suffix:semicolon
 multiline_comment|/* ClockingMode */
-id|outb_p
+id|vga_wseq
 c_func
 (paren
-id|vga_state.ClockingMode
+l_int|NULL
 comma
-id|seq_port_val
+id|VGA_SEQ_CLOCK_MODE
+comma
+id|vga_state.ClockingMode
 )paren
 suffix:semicolon
 multiline_comment|/* restore index/control registers */
-id|outb_p
+id|vga_w
 c_func
 (paren
-id|vga_state.SeqCtrlIndex
+l_int|NULL
 comma
-id|seq_port_reg
+id|VGA_SEQ_I
+comma
+id|vga_state.SeqCtrlIndex
 )paren
 suffix:semicolon
 id|outb_p
@@ -3058,7 +3056,8 @@ r_void
 id|vga_pal_blank
 c_func
 (paren
-r_void
+id|caddr_t
+id|regs
 )paren
 (brace
 r_int
@@ -3079,32 +3078,44 @@ id|i
 op_increment
 )paren
 (brace
-id|outb_p
+id|vga_w
+c_func
 (paren
+l_int|NULL
+comma
+id|VGA_PEL_IW
+comma
 id|i
-comma
-id|dac_reg
 )paren
 suffix:semicolon
-id|outb_p
+id|vga_w
+c_func
 (paren
-l_int|0
+l_int|NULL
 comma
-id|dac_val
+id|VGA_PEL_D
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|outb_p
+id|vga_w
+c_func
 (paren
-l_int|0
+l_int|NULL
 comma
-id|dac_val
+id|VGA_PEL_D
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|outb_p
+id|vga_w
+c_func
 (paren
-l_int|0
+l_int|NULL
 comma
-id|dac_val
+id|VGA_PEL_D
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -3195,6 +3206,7 @@ id|VIDEO_TYPE_VGAC
 id|vga_pal_blank
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 id|vga_palette_blanked
@@ -3294,9 +3306,9 @@ DECL|macro|blackwmap
 mdefine_line|#define blackwmap 0xa0000
 DECL|macro|cmapsz
 mdefine_line|#define cmapsz 8192
+DECL|function|vgacon_do_font_op
 r_static
 r_int
-DECL|function|vgacon_do_font_op
 id|vgacon_do_font_op
 c_func
 (paren
@@ -3417,7 +3429,7 @@ l_int|0x04
 suffix:colon
 l_int|0x00
 suffix:semicolon
-macro_line|#else&t;
+macro_line|#else
 multiline_comment|/*&n;&t; * The default font is kept in slot 0 and is never touched.&n;&t; * A custom font is loaded in slot 2 (256 ch) or 2:3 (512 ch)&n;&t; */
 r_if
 c_cond
@@ -3478,127 +3490,83 @@ op_amp
 id|vga_lock
 )paren
 suffix:semicolon
-id|outb_p
+multiline_comment|/* First, the Sequencer */
+id|vga_wseq
 c_func
 (paren
-l_int|0x00
+l_int|NULL
 comma
-id|seq_port_reg
-)paren
-suffix:semicolon
-multiline_comment|/* First, the sequencer */
-id|outb_p
-c_func
-(paren
-l_int|0x01
+id|VGA_SEQ_RESET
 comma
-id|seq_port_val
-)paren
-suffix:semicolon
-multiline_comment|/* Synchronous reset */
-id|outb_p
-c_func
-(paren
-l_int|0x02
-comma
-id|seq_port_reg
-)paren
-suffix:semicolon
-id|outb_p
-c_func
-(paren
-l_int|0x04
-comma
-id|seq_port_val
+l_int|0x1
 )paren
 suffix:semicolon
 multiline_comment|/* CPU writes only to map 2 */
-id|outb_p
+id|vga_wseq
 c_func
 (paren
+l_int|NULL
+comma
+id|VGA_SEQ_PLANE_WRITE
+comma
 l_int|0x04
-comma
-id|seq_port_reg
-)paren
-suffix:semicolon
-id|outb_p
-c_func
-(paren
-l_int|0x07
-comma
-id|seq_port_val
 )paren
 suffix:semicolon
 multiline_comment|/* Sequential addressing */
-id|outb_p
+id|vga_wseq
 c_func
 (paren
-l_int|0x00
+l_int|NULL
 comma
-id|seq_port_reg
-)paren
-suffix:semicolon
-id|outb_p
-c_func
-(paren
-l_int|0x03
+id|VGA_SEQ_MEMORY_MODE
 comma
-id|seq_port_val
+l_int|0x07
 )paren
 suffix:semicolon
 multiline_comment|/* Clear synchronous reset */
-id|outb_p
+id|vga_wseq
 c_func
 (paren
-l_int|0x04
+l_int|NULL
 comma
-id|gr_port_reg
+id|VGA_SEQ_RESET
+comma
+l_int|0x03
 )paren
 suffix:semicolon
-multiline_comment|/* Now, the graphics controller */
-id|outb_p
+multiline_comment|/* Now, the graphics controller, select map 2 */
+id|vga_wgfx
 c_func
 (paren
+l_int|NULL
+comma
+id|VGA_GFX_PLANE_READ
+comma
 l_int|0x02
-comma
-id|gr_port_val
-)paren
-suffix:semicolon
-multiline_comment|/* select map 2 */
-id|outb_p
-c_func
-(paren
-l_int|0x05
-comma
-id|gr_port_reg
-)paren
-suffix:semicolon
-id|outb_p
-c_func
-(paren
-l_int|0x00
-comma
-id|gr_port_val
 )paren
 suffix:semicolon
 multiline_comment|/* disable odd-even addressing */
-id|outb_p
+id|vga_wgfx
 c_func
 (paren
-l_int|0x06
+l_int|NULL
 comma
-id|gr_port_reg
-)paren
-suffix:semicolon
-id|outb_p
-c_func
-(paren
+id|VGA_GFX_MODE
+comma
 l_int|0x00
-comma
-id|gr_port_val
 )paren
 suffix:semicolon
 multiline_comment|/* map start at A000:0000 */
+id|vga_wgfx
+c_func
+(paren
+l_int|NULL
+comma
+id|VGA_GFX_MISC
+comma
+l_int|0x00
+)paren
+suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
@@ -3758,151 +3726,99 @@ op_amp
 id|vga_lock
 )paren
 suffix:semicolon
-id|outb_p
+multiline_comment|/* First, the sequencer, Synchronous reset */
+id|vga_wseq
 c_func
 (paren
-l_int|0x00
+l_int|NULL
 comma
-id|seq_port_reg
-)paren
-suffix:semicolon
-multiline_comment|/* First, the sequencer */
-id|outb_p
-c_func
-(paren
+id|VGA_SEQ_RESET
+comma
 l_int|0x01
-comma
-id|seq_port_val
-)paren
-suffix:semicolon
-multiline_comment|/* Synchronous reset */
-id|outb_p
-c_func
-(paren
-l_int|0x02
-comma
-id|seq_port_reg
-)paren
-suffix:semicolon
-id|outb_p
-c_func
-(paren
-l_int|0x03
-comma
-id|seq_port_val
 )paren
 suffix:semicolon
 multiline_comment|/* CPU writes to maps 0 and 1 */
-id|outb_p
+id|vga_wseq
 c_func
 (paren
-l_int|0x04
+l_int|NULL
 comma
-id|seq_port_reg
-)paren
-suffix:semicolon
-id|outb_p
-c_func
-(paren
+id|VGA_SEQ_PLANE_WRITE
+comma
 l_int|0x03
-comma
-id|seq_port_val
 )paren
 suffix:semicolon
 multiline_comment|/* odd-even addressing */
+id|vga_wseq
+c_func
+(paren
+l_int|NULL
+comma
+id|VGA_SEQ_MEMORY_MODE
+comma
+l_int|0x03
+)paren
+suffix:semicolon
+multiline_comment|/* Character Map Select */
 r_if
 c_cond
 (paren
 id|set
 )paren
-(brace
-id|outb_p
+id|vga_wseq
 c_func
 (paren
-l_int|0x03
+l_int|NULL
 comma
-id|seq_port_reg
-)paren
-suffix:semicolon
-multiline_comment|/* Character Map Select */
-id|outb_p
-c_func
-(paren
+id|VGA_SEQ_CHARACTER_MAP
+comma
 id|font_select
-comma
-id|seq_port_val
-)paren
-suffix:semicolon
-)brace
-id|outb_p
-c_func
-(paren
-l_int|0x00
-comma
-id|seq_port_reg
-)paren
-suffix:semicolon
-id|outb_p
-c_func
-(paren
-l_int|0x03
-comma
-id|seq_port_val
 )paren
 suffix:semicolon
 multiline_comment|/* clear synchronous reset */
-id|outb_p
+id|vga_wseq
 c_func
 (paren
-l_int|0x04
+l_int|NULL
 comma
-id|gr_port_reg
+id|VGA_SEQ_RESET
+comma
+l_int|0x03
 )paren
 suffix:semicolon
-multiline_comment|/* Now, the graphics controller */
-id|outb_p
+multiline_comment|/* Now, the graphics controller, select map 0 for CPU */
+id|vga_wgfx
 c_func
 (paren
+l_int|NULL
+comma
+id|VGA_GFX_PLANE_READ
+comma
 l_int|0x00
-comma
-id|gr_port_val
-)paren
-suffix:semicolon
-multiline_comment|/* select map 0 for CPU */
-id|outb_p
-c_func
-(paren
-l_int|0x05
-comma
-id|gr_port_reg
-)paren
-suffix:semicolon
-id|outb_p
-c_func
-(paren
-l_int|0x10
-comma
-id|gr_port_val
 )paren
 suffix:semicolon
 multiline_comment|/* enable even-odd addressing */
-id|outb_p
+id|vga_wgfx
 c_func
 (paren
-l_int|0x06
+l_int|NULL
 comma
-id|gr_port_reg
-)paren
-suffix:semicolon
-id|outb_p
-c_func
-(paren
-id|beg
+id|VGA_GFX_MODE
 comma
-id|gr_port_val
+l_int|0x10
 )paren
 suffix:semicolon
 multiline_comment|/* map starts at b800:0 or b000:0 */
+id|vga_wgfx
+c_func
+(paren
+l_int|NULL
+comma
+id|VGA_GFX_MISC
+comma
+id|beg
+)paren
+suffix:semicolon
 multiline_comment|/* if 512 char mode is already enabled don&squot;t re-enable it. */
 r_if
 c_cond
@@ -3918,10 +3834,10 @@ id|vga_512_chars
 )paren
 )paren
 (brace
-multiline_comment|/* attribute controller */
 r_int
 id|i
 suffix:semicolon
+multiline_comment|/* attribute controller */
 r_for
 c_loop
 (paren
@@ -3981,24 +3897,20 @@ id|video_port_status
 )paren
 suffix:semicolon
 multiline_comment|/* clear address flip-flop */
-id|outb_p
-(paren
-l_int|0x12
-comma
-id|attrib_port
-)paren
-suffix:semicolon
 multiline_comment|/* color plane enable register */
-id|outb_p
+id|vga_wattr
+c_func
 (paren
+l_int|NULL
+comma
+id|VGA_ATC_PLANE_ENABLE
+comma
 id|ch512
 ques
 c_cond
 l_int|0x07
 suffix:colon
 l_int|0x0f
-comma
-id|attrib_port
 )paren
 suffix:semicolon
 multiline_comment|/* Wilton (1987) mentions the following; I don&squot;t know what&n;&t;&t;   it means, but it works, and it appears necessary */
@@ -4008,11 +3920,14 @@ c_func
 id|video_port_status
 )paren
 suffix:semicolon
-id|outb_p
+id|vga_wattr
+c_func
 (paren
-l_int|0x20
+l_int|NULL
 comma
-id|attrib_port
+id|VGA_AR_ENABLE_DISPLAY
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -4028,9 +3943,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Adjust the screen to fit a font of a certain height&n; */
+DECL|function|vgacon_adjust_height
 r_static
 r_int
-DECL|function|vgacon_adjust_height
 id|vgacon_adjust_height
 c_func
 (paren
