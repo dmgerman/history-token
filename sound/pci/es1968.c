@@ -4200,7 +4200,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* clear WP interupts */
+multiline_comment|/* clear WP interrupts */
 id|outw
 c_func
 (paren
@@ -4766,7 +4766,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* clear WP interupts */
+multiline_comment|/* clear WP interrupts */
 id|outw
 c_func
 (paren
@@ -7621,7 +7621,7 @@ op_plus
 l_int|0x04
 )paren
 suffix:semicolon
-multiline_comment|/* clear WP interupts */
+multiline_comment|/* clear WP interrupts */
 id|outw
 c_func
 (paren

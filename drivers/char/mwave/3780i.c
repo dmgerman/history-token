@@ -2715,7 +2715,7 @@ comma
 id|pusIPCSource
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;* Disable DSP to PC interrupts, read the interupt register,&n;&t;* clear the pending IPC bits, and reenable DSP to PC interrupts&n;&t;*/
+multiline_comment|/*&n;&t;* Disable DSP to PC interrupts, read the interrupt register,&n;&t;* clear the pending IPC bits, and reenable DSP to PC interrupts&n;&t;*/
 id|spin_lock_irqsave
 c_func
 (paren

@@ -119,7 +119,7 @@ r_int
 op_star
 id|ii
 suffix:semicolon
-multiline_comment|/* Copy interupt vectors as instructed by multi_intv_install_table. */
+multiline_comment|/* Copy interrupt vectors as instructed by multi_intv_install_table. */
 r_for
 c_loop
 (paren

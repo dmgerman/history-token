@@ -5054,7 +5054,7 @@ op_assign
 id|next_rfd
 suffix:semicolon
 )brace
-multiline_comment|/* re-enable BL/FDA Exhaust interupts. */
+multiline_comment|/* re-enable BL/FDA Exhaust interrupts. */
 r_if
 c_cond
 (paren

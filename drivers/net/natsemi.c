@@ -11439,7 +11439,7 @@ c_cond
 id|wol
 )paren
 (brace
-multiline_comment|/* restart the NIC in WOL mode.&n;&t;&t;&t;&t; * The nic must be stopped for this.&n;&t;&t;&t;&t; * FIXME: use the WOL interupt&n;&t;&t;&t;&t; */
+multiline_comment|/* restart the NIC in WOL mode.&n;&t;&t;&t;&t; * The nic must be stopped for this.&n;&t;&t;&t;&t; * FIXME: use the WOL interrupt&n;&t;&t;&t;&t; */
 id|enable_wol_mode
 c_func
 (paren

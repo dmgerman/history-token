@@ -596,7 +596,7 @@ suffix:semicolon
 multiline_comment|/* Initiator&squot;s transaction tag */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Initiator mode SCB shared data area.&n; * If the embedded CDB is 12 bytes or less, we embed&n; * the sense buffer address in the SCB.  This allows&n; * us to retrieve sense information without interupting&n; * the host in packetized mode.&n; */
+multiline_comment|/*&n; * Initiator mode SCB shared data area.&n; * If the embedded CDB is 12 bytes or less, we embed&n; * the sense buffer address in the SCB.  This allows&n; * us to retrieve sense information without interrupting&n; * the host in packetized mode.&n; */
 DECL|typedef|sense_addr_t
 r_typedef
 r_uint32

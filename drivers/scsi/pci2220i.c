@@ -10167,7 +10167,7 @@ id|zr
 op_plus
 id|RTR_INT_CONTROL_STATUS
 suffix:semicolon
-singleline_comment|// 16 bit interupt control and status
+singleline_comment|// 16 bit interrupt control and status
 id|padapter-&gt;regScratchPad
 op_assign
 id|zr

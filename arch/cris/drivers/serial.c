@@ -5232,7 +5232,7 @@ macro_line|#ifdef SERIAL_DEBUG_INTR
 id|printk
 c_func
 (paren
-l_string|&quot;** OK, disabling ser_interupts&bslash;n&quot;
+l_string|&quot;** OK, disabling ser_interrupts&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

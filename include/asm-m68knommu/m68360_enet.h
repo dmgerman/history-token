@@ -127,7 +127,7 @@ mdefine_line|#define DISFC    0x00000000
 DECL|macro|PADS
 mdefine_line|#define PADS     0x00000000
 DECL|macro|RET_LIM
-mdefine_line|#define RET_LIM  0x000f     /* retry 15 times to send a frame before interupt */
+mdefine_line|#define RET_LIM  0x000f     /* retry 15 times to send a frame before interrupt */
 DECL|macro|ETH_MFLR
 mdefine_line|#define ETH_MFLR 0x05ee     /* 1518 max frame size */
 DECL|macro|MINFLR

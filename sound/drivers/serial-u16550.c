@@ -873,7 +873,7 @@ id|uart-&gt;buff_in_count
 op_decrement
 suffix:semicolon
 )brace
-multiline_comment|/* This loop should be called with interrupts disabled&n; * We don&squot;t want to interrupt this, &n; * as we&squot;re already handling an interupt &n; */
+multiline_comment|/* This loop should be called with interrupts disabled&n; * We don&squot;t want to interrupt this, &n; * as we&squot;re already handling an interrupt &n; */
 DECL|function|snd_uart16550_io_loop
 r_static
 r_void
@@ -1178,7 +1178,7 @@ id|uart
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* NOTES ON SERVICING INTERUPTS&n; * ---------------------------&n; * After receiving a interrupt, it is important to indicate to the UART that&n; * this has been done. &n; * For a Rx interupt, this is done by reading the received byte.&n; * For a Tx interupt this is done by either:&n; * a) Writing a byte&n; * b) Reading the IIR&n; * It is particularly important to read the IIR if a Tx interupt is received&n; * when there is no data in tx_buff[], as in this case there no other&n; * indication that the interupt has been serviced, and it remains outstanding&n; * indefinitely. This has the curious side effect that and no further interupts&n; * will be generated from this device AT ALL!!.&n; * It is also desirable to clear outstanding interupts when the device is&n; * opened/closed.&n; *&n; *&n; * Note that some devices need OUT2 to be set before they will generate&n; * interrupts at all. (Possibly tied to an internal pull-up on CTS?)&n; */
+multiline_comment|/* NOTES ON SERVICING INTERUPTS&n; * ---------------------------&n; * After receiving a interrupt, it is important to indicate to the UART that&n; * this has been done. &n; * For a Rx interrupt, this is done by reading the received byte.&n; * For a Tx interrupt this is done by either:&n; * a) Writing a byte&n; * b) Reading the IIR&n; * It is particularly important to read the IIR if a Tx interrupt is received&n; * when there is no data in tx_buff[], as in this case there no other&n; * indication that the interrupt has been serviced, and it remains outstanding&n; * indefinitely. This has the curious side effect that and no further interrupts&n; * will be generated from this device AT ALL!!.&n; * It is also desirable to clear outstanding interrupts when the device is&n; * opened/closed.&n; *&n; *&n; * Note that some devices need OUT2 to be set before they will generate&n; * interrupts at all. (Possibly tied to an internal pull-up on CTS?)&n; */
 DECL|function|snd_uart16550_interrupt
 r_static
 r_void
@@ -1243,7 +1243,7 @@ op_plus
 id|UART_IIR
 )paren
 suffix:semicolon
-multiline_comment|/* indicate to the UART that the interupt has been serviced */
+multiline_comment|/* indicate to the UART that the interrupt has been serviced */
 id|snd_uart16550_io_loop
 c_func
 (paren
@@ -1542,7 +1542,7 @@ multiline_comment|/* Clear transmitter FIFO */
 op_or
 id|UART_FCR_TRIGGER_4
 multiline_comment|/* Set FIFO trigger at 4-bytes */
-multiline_comment|/* NOTE: interupt generated after T=(time)4-bytes&n;&t; * if less than UART_FCR_TRIGGER bytes received&n;&t; */
+multiline_comment|/* NOTE: interrupt generated after T=(time)4-bytes&n;&t; * if less than UART_FCR_TRIGGER bytes received&n;&t; */
 comma
 id|uart-&gt;base
 op_plus
@@ -1758,14 +1758,14 @@ l_int|0
 op_amp
 id|UART_IER_RDI
 )paren
-multiline_comment|/* Disable Receiver data interupt */
+multiline_comment|/* Disable Receiver data interrupt */
 op_or
 (paren
 l_int|0
 op_amp
 id|UART_IER_THRI
 )paren
-multiline_comment|/* Disable Transmitter holding register empty interupt */
+multiline_comment|/* Disable Transmitter holding register empty interrupt */
 suffix:semicolon
 )brace
 r_else
@@ -1804,7 +1804,7 @@ id|UART_IER_MSI
 multiline_comment|/* Enable Modem status interrupt */
 op_or
 id|UART_IER_THRI
-multiline_comment|/* Enable Transmitter holding register empty interupt */
+multiline_comment|/* Enable Transmitter holding register empty interrupt */
 suffix:semicolon
 )brace
 r_else
@@ -1812,10 +1812,10 @@ r_else
 id|byte
 op_assign
 id|UART_IER_RDI
-multiline_comment|/* Enable Receiver data interupt */
+multiline_comment|/* Enable Receiver data interrupt */
 op_or
 id|UART_IER_THRI
-multiline_comment|/* Enable Transmitter holding register empty interupt */
+multiline_comment|/* Enable Transmitter holding register empty interrupt */
 suffix:semicolon
 )brace
 id|outb
@@ -1890,14 +1890,14 @@ l_int|0
 op_amp
 id|UART_IER_RDI
 )paren
-multiline_comment|/* Disable Receiver data interupt */
+multiline_comment|/* Disable Receiver data interrupt */
 op_or
 (paren
 l_int|0
 op_amp
 id|UART_IER_THRI
 )paren
-multiline_comment|/* Disable Transmitter holding register empty interupt */
+multiline_comment|/* Disable Transmitter holding register empty interrupt */
 comma
 id|uart-&gt;base
 op_plus
@@ -2009,7 +2009,7 @@ op_plus
 id|UART_IIR
 )paren
 suffix:semicolon
-multiline_comment|/* Clear any outstanding interupts */
+multiline_comment|/* Clear any outstanding interrupts */
 multiline_comment|/* Restore old divisor */
 r_if
 c_cond
