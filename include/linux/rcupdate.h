@@ -126,17 +126,11 @@ r_int
 id|quiescbatch
 suffix:semicolon
 multiline_comment|/* Batch # for grace period */
-DECL|member|qsctr
+DECL|member|passed_quiesc
 r_int
-id|qsctr
+id|passed_quiesc
 suffix:semicolon
 multiline_comment|/* User-mode/idle loop etc. */
-DECL|member|last_qsctr
-r_int
-id|last_qsctr
-suffix:semicolon
-multiline_comment|/* value of qsctr at beginning */
-multiline_comment|/* of rcu grace period */
 DECL|member|qs_pending
 r_int
 id|qs_pending
@@ -221,7 +215,7 @@ r_struct
 id|rcu_ctrlblk
 id|rcu_bh_ctrlblk
 suffix:semicolon
-multiline_comment|/*&n; * Increment the quiscent state counter.&n; */
+multiline_comment|/*&n; * Increment the quiescent state counter.&n; * The counter is a bit degenerated: We do not need to know&n; * how many quiescent states passed, just if there was at least&n; * one since the start of the grace period. Thus just a flag.&n; */
 DECL|function|rcu_qsctr_inc
 r_static
 r_inline
@@ -247,8 +241,9 @@ comma
 id|cpu
 )paren
 suffix:semicolon
-id|rdp-&gt;qsctr
-op_increment
+id|rdp-&gt;passed_quiesc
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 DECL|function|rcu_bh_qsctr_inc
@@ -276,8 +271,9 @@ comma
 id|cpu
 )paren
 suffix:semicolon
-id|rdp-&gt;qsctr
-op_increment
+id|rdp-&gt;passed_quiesc
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 DECL|function|__rcu_pending

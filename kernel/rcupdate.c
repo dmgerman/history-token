@@ -551,14 +551,14 @@ op_ne
 id|rcp-&gt;cur
 )paren
 (brace
-multiline_comment|/* new grace period: record qsctr value. */
+multiline_comment|/* start new grace period: */
 id|rdp-&gt;qs_pending
 op_assign
 l_int|1
 suffix:semicolon
-id|rdp-&gt;last_qsctr
+id|rdp-&gt;passed_quiesc
 op_assign
-id|rdp-&gt;qsctr
+l_int|0
 suffix:semicolon
 id|rdp-&gt;quiescbatch
 op_assign
@@ -576,13 +576,12 @@ id|rdp-&gt;qs_pending
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* &n;&t; * Races with local timer interrupt - in the worst case&n;&t; * we may miss one quiescent state of that CPU. That is&n;&t; * tolerable. So no need to disable interrupts.&n;&t; */
+multiline_comment|/* &n;&t; * Was there a quiescent state since the beginning of the grace&n;&t; * period? If no, then exit and wait for the next call.&n;&t; */
 r_if
 c_cond
 (paren
-id|rdp-&gt;qsctr
-op_eq
-id|rdp-&gt;last_qsctr
+op_logical_neg
+id|rdp-&gt;passed_quiesc
 )paren
 r_return
 suffix:semicolon
