@@ -83,6 +83,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|shost_class
+r_static
 r_struct
 r_class
 id|shost_class
