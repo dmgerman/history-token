@@ -1,4 +1,6 @@
 multiline_comment|/*&n; * kernel/power/pmdisk.c - Suspend-to-disk implmentation&n; *&n; * This STD implementation is initially derived from swsusp (suspend-to-swap).&n; * The original copyright on that was: &n; *&n; * Copyright (C) 1998-2001 Gabor Kuti &lt;seasons@fornax.hu&gt;&n; * Copyright (C) 1998,2001,2002 Pavel Machek &lt;pavel@suse.cz&gt;&n; *&n; * The additional parts are: &n; * &n; * Copyright (C) 2003 Patrick Mochel&n; * Copyright (C) 2003 Open Source Development Lab&n; * &n; * This file is released under the GPLv2. &n; *&n; * For more information, please see the text files in Documentation/power/&n; *&n; */
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
@@ -166,29 +168,6 @@ id|name_resume
 op_assign
 l_string|&quot;Resume Machine: &quot;
 suffix:semicolon
-multiline_comment|/*&n; * Debug&n; */
-DECL|macro|DEBUG_DEFAULT
-mdefine_line|#define&t;DEBUG_DEFAULT
-DECL|macro|DEBUG_PROCESS
-macro_line|#undef&t;DEBUG_PROCESS
-DECL|macro|DEBUG_SLOW
-macro_line|#undef&t;DEBUG_SLOW
-DECL|macro|TEST_SWSUSP
-mdefine_line|#define TEST_SWSUSP 0&t;&t;/* Set to 1 to reboot instead of halt machine after suspension */
-macro_line|#ifdef DEBUG_DEFAULT
-DECL|macro|PRINTK
-macro_line|# define PRINTK(f, a...)       printk(f, ## a)
-macro_line|#else
-DECL|macro|PRINTK
-macro_line|# define PRINTK(f, a...)
-macro_line|#endif
-macro_line|#ifdef DEBUG_SLOW
-DECL|macro|MDELAY
-mdefine_line|#define MDELAY(a) mdelay(a)
-macro_line|#else
-DECL|macro|MDELAY
-mdefine_line|#define MDELAY(a)
-macro_line|#endif
 multiline_comment|/*&n; * Saving part...&n; */
 DECL|function|fill_suspend_header
 r_static
@@ -303,21 +282,14 @@ r_int
 r_int
 id|root_swap
 suffix:semicolon
-DECL|macro|MARK_SWAP_SUSPEND
-mdefine_line|#define MARK_SWAP_SUSPEND 0
-DECL|macro|MARK_SWAP_RESUME
-mdefine_line|#define MARK_SWAP_RESUME 2
 DECL|function|mark_swapfiles
 r_static
-r_void
+r_int
 id|mark_swapfiles
 c_func
 (paren
 id|swp_entry_t
 id|prev
-comma
-r_int
-id|mode
 )paren
 (brace
 id|swp_entry_t
@@ -342,6 +314,8 @@ l_int|0xFFFF
 )paren
 multiline_comment|/* ignored */
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 id|page
 op_assign
@@ -357,11 +331,9 @@ c_cond
 op_logical_neg
 id|page
 )paren
-id|panic
-c_func
-(paren
-l_string|&quot;Out of memory in mark_swapfiles&quot;
-)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|cur
 op_assign
@@ -392,77 +364,6 @@ comma
 id|page
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|mode
-op_eq
-id|MARK_SWAP_RESUME
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|memcmp
-c_func
-(paren
-l_string|&quot;S1&quot;
-comma
-id|cur-&gt;swh.magic.magic
-comma
-l_int|2
-)paren
-)paren
-id|memcpy
-c_func
-(paren
-id|cur-&gt;swh.magic.magic
-comma
-l_string|&quot;SWAP-SPACE&quot;
-comma
-l_int|10
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|memcmp
-c_func
-(paren
-l_string|&quot;S2&quot;
-comma
-id|cur-&gt;swh.magic.magic
-comma
-l_int|2
-)paren
-)paren
-id|memcpy
-c_func
-(paren
-id|cur-&gt;swh.magic.magic
-comma
-l_string|&quot;SWAPSPACE2&quot;
-comma
-l_int|10
-)paren
-suffix:semicolon
-r_else
-id|printk
-c_func
-(paren
-l_string|&quot;%sUnable to find suspended-data signature (%.10s - misspelled?&bslash;n&quot;
-comma
-id|name_resume
-comma
-id|cur-&gt;swh.magic.magic
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
 r_if
 c_cond
 (paren
@@ -517,21 +418,24 @@ l_int|10
 )paren
 suffix:semicolon
 r_else
-id|panic
+(brace
+id|pr_debug
 c_func
 (paren
-l_string|&quot;&bslash;nSwapspace is not swapspace (%.10s)&bslash;n&quot;
-comma
-id|cur-&gt;swh.magic.magic
+l_string|&quot;pmdisk: Partition is not swap space.&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+multiline_comment|/* prev is the first/last swap page of the resume area */
 id|cur-&gt;link.next
 op_assign
 id|prev
 suffix:semicolon
-multiline_comment|/* prev is the first/last swap page of the resume area */
 multiline_comment|/* link.next lies *no more* in last 4/8 bytes of magic */
-)brace
 id|rw_swap_page_sync
 c_func
 (paren
@@ -547,6 +451,9 @@ c_func
 (paren
 id|page
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|read_swapfiles
@@ -626,11 +533,10 @@ op_logical_neg
 id|len
 )paren
 (brace
-id|printk
+id|pr_debug
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;resume= option should be used to set suspend device&quot;
+l_string|&quot;pmdisk: Default resume partition not set.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -685,31 +591,6 @@ id|i
 suffix:semicolon
 )brace
 r_else
-(brace
-macro_line|#if 0
-id|printk
-c_func
-(paren
-l_string|&quot;Resume: device %s (%x != %x) ignored&bslash;n&quot;
-comma
-id|swap_info
-(braket
-id|i
-)braket
-dot
-id|swap_file-&gt;d_name.name
-comma
-id|swap_info
-(braket
-id|i
-)braket
-dot
-id|swap_device
-comma
-id|resume_device
-)paren
-suffix:semicolon
-macro_line|#endif
 id|swapfile_used
 (braket
 id|i
@@ -720,13 +601,13 @@ suffix:semicolon
 )brace
 )brace
 )brace
-)brace
 id|swap_list_unlock
 c_func
 (paren
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* This is called after saving image so modification&n;   will be lost after resume... and that&squot;s what we want. */
 DECL|function|lock_swapdevices
 r_static
 r_void
@@ -735,7 +616,6 @@ c_func
 (paren
 r_void
 )paren
-multiline_comment|/* This is called after saving image so modification&n;&t;&t;&t;&t;      will be lost after resume... and that&squot;s what we want. */
 (brace
 r_int
 id|i
@@ -1300,20 +1180,12 @@ id|mark_swapfiles
 c_func
 (paren
 id|prev
-comma
-id|MARK_SWAP_SUSPEND
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 l_string|&quot;|&bslash;n&quot;
-)paren
-suffix:semicolon
-id|MDELAY
-c_func
-(paren
-l_int|1000
 )paren
 suffix:semicolon
 id|free_page
@@ -1500,7 +1372,7 @@ id|__nosave_end
 )paren
 )paren
 (brace
-id|PRINTK
+id|pr_debug
 c_func
 (paren
 l_string|&quot;[nosave %lx]&quot;
@@ -1867,10 +1739,10 @@ id|pm_pagedir_nosave
 op_assign
 l_int|NULL
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
-l_string|&quot;/critical section: Counting pages to copy&quot;
+l_string|&quot;pmdisk: /critical section: Counting pages to copy.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pmdisk_pages
@@ -1887,10 +1759,10 @@ id|pmdisk_pages
 op_plus
 id|PAGES_FOR_IO
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
-l_string|&quot; (pages needed: %d+%d=%d free: %d)&bslash;n&quot;
+l_string|&quot;pmdisk: (pages needed: %d+%d=%d free: %d)&bslash;n&quot;
 comma
 id|pmdisk_pages
 comma
@@ -1915,16 +1787,13 @@ OL
 id|nr_needed_pages
 )paren
 (brace
-id|printk
+id|pr_debug
 c_func
 (paren
-id|KERN_CRIT
-l_string|&quot;%sCouldn&squot;t get enough free pages, on %d pages short&bslash;n&quot;
-comma
-id|name_suspend
+l_string|&quot;pmdisk: Not enough free pages: Need %d, Have %d&bslash;n&quot;
 comma
 id|nr_needed_pages
-op_minus
+comma
 id|nr_free_pages
 c_func
 (paren
@@ -1936,7 +1805,8 @@ op_assign
 l_int|0xFFFF
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|si_swapinfo
@@ -1955,24 +1825,22 @@ OL
 id|nr_needed_pages
 )paren
 (brace
-id|printk
+id|pr_debug
 c_func
 (paren
-id|KERN_CRIT
-l_string|&quot;%sThere&squot;s not enough swap space available, on %ld pages short&bslash;n&quot;
-comma
-id|name_suspend
+l_string|&quot;pmdisk: Not enough swap space. Need %d, Have %d&bslash;n&quot;
 comma
 id|nr_needed_pages
-op_minus
+comma
 id|i.freeswap
 )paren
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|ENOSPC
 suffix:semicolon
 )brace
-id|PRINTK
+id|pr_debug
 c_func
 (paren
 l_string|&quot;Alloc pagedir&bslash;n&quot;
@@ -1996,23 +1864,21 @@ id|pm_pagedir_nosave
 )paren
 (brace
 multiline_comment|/* Shouldn&squot;t happen */
-id|printk
+id|pr_debug
 c_func
 (paren
-id|KERN_CRIT
-l_string|&quot;%sCouldn&squot;t allocate enough pages&bslash;n&quot;
-comma
-id|name_suspend
+l_string|&quot;pmdisk: Couldn&squot;t allocate pagedir&bslash;n&quot;
 )paren
 suffix:semicolon
 id|panic
 c_func
 (paren
-l_string|&quot;Really should not happen&quot;
+l_string|&quot;pmdisk: Couldn&squot;t allocate pagedir&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|nr_copy_pages_check
@@ -2047,10 +1913,10 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * End of critical section. From now on, we can write to memory,&n;&t; * but we should not touch disk. This specially means we must _not_&n;&t; * touch swap space! Except we must write out our image of course.&n;&t; */
-id|printk
+id|pr_debug
 c_func
 (paren
-l_string|&quot;critical section/: done (%d pages copied)&bslash;n&quot;
+l_string|&quot;pmdisk: critical section/: done (%d pages copied)&bslash;n&quot;
 comma
 id|pmdisk_pages
 )paren
@@ -2411,10 +2277,10 @@ comma
 op_star
 id|f
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
-l_string|&quot;Relocating pagedir&quot;
+l_string|&quot;pmdisk: Relocating pagedir&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2436,10 +2302,10 @@ id|pagedir_order
 )paren
 )paren
 (brace
-id|printk
+id|pr_debug
 c_func
 (paren
-l_string|&quot;not necessary&bslash;n&quot;
+l_string|&quot;pmdisk: Relocation not necessary&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2611,9 +2477,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s%s&bslash;n&quot;
-comma
-id|name_resume
+l_string|&quot;pmdisk: Resume mismatch: %s&bslash;n&quot;
 comma
 id|reason
 )paren
@@ -2950,7 +2814,7 @@ id|PAGE_SIZE
 id|printk
 c_func
 (paren
-l_string|&quot;ERROR: adding page to bio at %ld&bslash;n&quot;
+l_string|&quot;pmdisk: ERROR: adding page to bio at %ld&bslash;n&quot;
 comma
 id|page_off
 )paren
@@ -3231,7 +3095,7 @@ l_int|10
 )paren
 )paren
 (brace
-id|printk
+id|pr_debug
 c_func
 (paren
 id|KERN_ERR
@@ -3249,7 +3113,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|pr_debug
 c_func
 (paren
 id|KERN_ERR
@@ -3284,18 +3148,12 @@ id|cur
 r_goto
 id|Done
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;%sSignature found, resuming&bslash;n&quot;
 comma
 id|name_resume
-)paren
-suffix:semicolon
-id|MDELAY
-c_func
-(paren
-l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -3400,7 +3258,7 @@ r_goto
 id|Done
 suffix:semicolon
 )brace
-id|PRINTK
+id|pr_debug
 c_func
 (paren
 l_string|&quot;%sReading pagedir, &quot;
@@ -3652,11 +3510,11 @@ r_void
 r_int
 id|error
 suffix:semicolon
-macro_line|#if defined (CONFIG_HIGHMEM) || defined (COFNIG_DISCONTIGMEM)
-id|printk
+macro_line|#if defined (CONFIG_HIGHMEM) || defined (CONFIG_DISCONTIGMEM)
+id|pr_debug
 c_func
 (paren
-l_string|&quot;pmdisk is not supported with high- or discontig-mem.&bslash;n&quot;
+l_string|&quot;pmdisk: not supported with high- or discontig-mem.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3730,12 +3588,6 @@ r_void
 r_int
 id|error
 suffix:semicolon
-r_char
-id|b
-(braket
-id|BDEVNAME_SIZE
-)braket
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3758,20 +3610,12 @@ c_func
 id|resume_file
 )paren
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
-l_string|&quot;pmdisk: Resume From Partition: %s, Device: %s&bslash;n&quot;
+l_string|&quot;pmdisk: Resume From Partition: %s&bslash;n&quot;
 comma
 id|resume_file
-comma
-id|__bdevname
-c_func
-(paren
-id|resume_device
-comma
-id|b
-)paren
 )paren
 suffix:semicolon
 id|resume_bdev
@@ -3836,14 +3680,14 @@ c_cond
 op_logical_neg
 id|error
 )paren
-id|PRINTK
+id|pr_debug
 c_func
 (paren
 l_string|&quot;Reading resume file was successful&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;%sError %d resuming&bslash;n&quot;
@@ -3851,12 +3695,6 @@ comma
 id|name_resume
 comma
 id|error
-)paren
-suffix:semicolon
-id|MDELAY
-c_func
-(paren
-l_int|1000
 )paren
 suffix:semicolon
 r_return
@@ -3907,7 +3745,7 @@ c_func
 r_void
 )paren
 (brace
-id|PRINTK
+id|pr_debug
 c_func
 (paren
 l_string|&quot;Freeing prev allocated pagedir&bslash;n&quot;
