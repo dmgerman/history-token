@@ -2566,6 +2566,12 @@ c_func
 r_void
 )paren
 (brace
+id|mempool_destroy
+c_func
+(paren
+id|cifs_mid_poolp
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2580,12 +2586,6 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;cifs_destroy_mids: error not all structures were freed&bslash;n&quot;
-)paren
-suffix:semicolon
-id|mempool_destroy
-c_func
-(paren
-id|cifs_mid_poolp
 )paren
 suffix:semicolon
 r_if
