@@ -1878,7 +1878,6 @@ id|PCI_DEVICE_ID_SERVERWORKS_CSB6IDE2
 )paren
 )paren
 (brace
-singleline_comment|//&t;&t;u32 pioreg = 0, dmareg = 0;
 multiline_comment|/* Third Channel Test */
 r_if
 c_cond
@@ -1895,7 +1894,6 @@ l_int|1
 )paren
 )paren
 (brace
-macro_line|#if 1
 r_struct
 id|pci_dev
 op_star
@@ -1961,7 +1959,6 @@ id|reg4c
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 id|outb_p
 c_func
 (paren
@@ -1979,30 +1976,6 @@ l_int|0x0c01
 )paren
 suffix:semicolon
 macro_line|#if 0
-multiline_comment|/* WE need to figure out how to get the correct one */
-id|printk
-c_func
-(paren
-l_string|&quot;%s: interrupt %d&bslash;n&quot;
-comma
-id|name
-comma
-id|dev-&gt;irq
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;irq
-op_ne
-l_int|0x0B
-)paren
-id|dev-&gt;irq
-op_assign
-l_int|0x0B
-suffix:semicolon
-macro_line|#endif
-macro_line|#if 0
 id|printk
 c_func
 (paren
@@ -2015,7 +1988,6 @@ op_member_access_from_pointer
 r_class
 )paren
 suffix:semicolon
-macro_line|#else
 r_if
 c_cond
 (paren
@@ -2109,6 +2081,19 @@ id|reg41
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t;&t; * This is a device pin issue on CSB6.&n;&t;&t;&t; * Since there will be a future raid mode,&n;&t;&t;&t; * early versions of the chipset require the&n;&t;&t;&t; * interrupt pin to be set, and it is a compatibility&n;&t;&t;&t; * mode issue.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|dev
+op_member_access_from_pointer
+r_class
+op_rshift
+l_int|8
+)paren
+op_eq
+id|PCI_CLASS_STORAGE_IDE
+)paren
 id|dev-&gt;irq
 op_assign
 l_int|0
@@ -2775,24 +2760,6 @@ op_assign
 id|ON_BOARD
 suffix:semicolon
 )brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|dev
-op_member_access_from_pointer
-r_class
-op_rshift
-l_int|8
-)paren
-op_ne
-id|PCI_CLASS_STORAGE_IDE
-)paren
-r_return
-suffix:semicolon
-)brace
 macro_line|#if 0
 r_if
 c_cond
@@ -3019,16 +2986,6 @@ id|probe
 op_assign
 id|svwks_init_one
 comma
-macro_line|#if 0&t;/* FIXME: implement */
-dot
-id|suspend
-op_assign
-comma
-dot
-id|resume
-op_assign
-comma
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|svwks_ide_init
