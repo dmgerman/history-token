@@ -363,7 +363,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if CONFIG_DIRECT_IO_ACCESS
+macro_line|#ifdef CONFIG_DIRECT_IO_ACCESS
 id|SCR
 op_assign
 l_int|0x10
