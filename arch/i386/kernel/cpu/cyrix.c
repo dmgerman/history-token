@@ -717,10 +717,6 @@ id|ccr3
 comma
 id|ccr4
 suffix:semicolon
-r_int
-r_int
-id|cr0
-suffix:semicolon
 id|local_irq_save
 c_func
 (paren
