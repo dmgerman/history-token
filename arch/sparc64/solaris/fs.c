@@ -2204,7 +2204,7 @@ id|buf
 )paren
 (brace
 r_struct
-id|statfs
+id|kstatfs
 id|s
 suffix:semicolon
 r_int
@@ -2456,7 +2456,7 @@ id|buf
 )paren
 (brace
 r_struct
-id|statfs
+id|kstatfs
 id|s
 suffix:semicolon
 r_int
