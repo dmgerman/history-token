@@ -993,7 +993,13 @@ c_func
 (paren
 id|cur-&gt;bc_tp
 comma
+id|INT_GET
+c_func
+(paren
 id|agf-&gt;agf_seqno
+comma
+id|ARCH_CONVERT
+)paren
 comma
 id|bno
 comma
@@ -2587,7 +2593,13 @@ c_func
 (paren
 id|cur-&gt;bc_tp
 comma
+id|INT_GET
+c_func
+(paren
 id|agf-&gt;agf_seqno
+comma
+id|ARCH_CONVERT
+)paren
 comma
 id|bno
 comma
