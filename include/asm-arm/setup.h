@@ -458,5 +458,33 @@ r_struct
 id|meminfo
 id|meminfo
 suffix:semicolon
+multiline_comment|/*&n; * Early command line parameters.&n; */
+DECL|struct|early_params
+r_struct
+id|early_params
+(brace
+DECL|member|arg
+r_const
+r_char
+op_star
+id|arg
+suffix:semicolon
+DECL|member|fn
+r_void
+(paren
+op_star
+id|fn
+)paren
+(paren
+r_char
+op_star
+op_star
+id|p
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|__early_param
+mdefine_line|#define __early_param(name,fn)&t;&t;&t;&t;&bslash;&n;static struct early_params __early_##fn&t;&t;&t;&bslash;&n;__attribute__((section(&quot;__early_param&quot;), unused)) =&t;&bslash;&n;&t;{ name, fn }
 macro_line|#endif
 eof
