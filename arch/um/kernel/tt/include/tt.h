@@ -189,6 +189,9 @@ id|task
 comma
 r_int
 id|pid
+comma
+r_int
+id|local_using_sysemu
 )paren
 suffix:semicolon
 r_extern

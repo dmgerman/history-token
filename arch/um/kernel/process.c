@@ -1197,13 +1197,6 @@ id|n
 comma
 id|status
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|mode_tt
-)paren
-r_return
-suffix:semicolon
 id|printk
 c_func
 (paren
