@@ -59,6 +59,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: dump of %d bytes of data at 0x%p&bslash;n&bslash;n&quot;
 comma
 id|label
@@ -221,6 +222,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s&bslash;n&quot;
 comma
 id|line
@@ -287,27 +289,6 @@ id|buf_start
 op_assign
 id|buf
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;nEntering cifs_debug_data_read:  buf=0x%p, beginBuffer=0x%p, offset=%ld, count=%d, eof=%d, data=0x%p&bslash;n&quot;
-comma
-id|buf
-comma
-op_star
-id|beginBuffer
-comma
-id|offset
-comma
-id|count
-comma
-op_star
-id|eof
-comma
-id|data
-)paren
-suffix:semicolon
-multiline_comment|/* BB remove */
 id|length
 op_assign
 id|sprintf
@@ -380,7 +361,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;n%d) Name: %s  Domain: %s HowManyMounts: %d ServerOS: %s  ServerNOS: %s&bslash;n&bslash;tCapabilities: 0x%x&quot;
+l_string|&quot;&bslash;n%d) Name: %s  Domain: %s Mounts: %d ServerOS: %s  ServerNOS: %s&bslash;n&bslash;tCapabilities: 0x%x&quot;
 comma
 id|i
 comma
@@ -449,14 +430,6 @@ suffix:semicolon
 id|buf
 op_increment
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;nTotal Buffer so far: %s&bslash;n&quot;
-comma
-id|buf_start
-)paren
-suffix:semicolon
 id|length
 op_assign
 id|sprintf
@@ -514,7 +487,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;n%d) %s UseCount: %d on FS: %s with characteristics: 0x%x Attributes: 0x%x&bslash;n&bslash;tPathComponentLengthMax: %d&quot;
+l_string|&quot;&bslash;n%d) %s Uses: %d on FS: %s with characteristics: 0x%x Attributes: 0x%x&bslash;n&bslash;tPathComponentMax: %d&quot;
 comma
 id|i
 comma

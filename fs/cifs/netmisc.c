@@ -5057,14 +5057,6 @@ id|idx
 op_assign
 l_int|0
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;nStatus code returned: 0x%08x &quot;
-comma
-id|status_code
-)paren
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -5104,6 +5096,11 @@ l_int|0xFFFFFF
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
+l_string|&quot;Status code returned 0x%08x %s&bslash;n&quot;
+comma
+id|status_code
+comma
 id|nt_errs
 (braket
 id|idx
@@ -5330,20 +5327,7 @@ id|smb-&gt;Status.DosError.Error
 suffix:semicolon
 )brace
 multiline_comment|/* old style errors */
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot; !!Mapping smb error code %d &quot;
-comma
-id|smberrcode
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* DOS class smb error codes - map DOS */
-multiline_comment|/* BB special case reconnect tid and reconnect uid here? */
 r_if
 c_cond
 (paren
@@ -5498,14 +5482,15 @@ multiline_comment|/* else try the next error mapping one to see if it will match
 )brace
 )brace
 multiline_comment|/* else ERRHRD class errors or junk  - return EIO */
-multiline_comment|/* BB get smb-&gt;error_class and code lookup in table if ERR_STATUS is not&n;&t;   set in this frame else translate newer NT Status code - in both cases &n;&t;   change to equivalent posix error BB */
 id|cFYI
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot; to POSIX err %d !!&quot;
+l_string|&quot; !!Mapping smb error code %d to POSIX err %d !!&quot;
+comma
+id|smberrcode
 comma
 id|rc
 )paren

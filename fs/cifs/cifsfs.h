@@ -387,6 +387,16 @@ r_int
 suffix:semicolon
 r_extern
 r_int
+id|cifs_flush
+c_func
+(paren
+r_struct
+id|file
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|cifs_file_mmap
 c_func
 (paren
