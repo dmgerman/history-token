@@ -5947,10 +5947,6 @@ id|bio
 comma
 id|BIO_RW_AHEAD
 )paren
-op_logical_or
-id|current-&gt;flags
-op_amp
-id|PF_READAHEAD
 suffix:semicolon
 id|again
 suffix:colon
