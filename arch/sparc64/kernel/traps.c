@@ -23,6 +23,7 @@ macro_line|#include &lt;asm/estate.h&gt;
 macro_line|#include &lt;asm/chafsr.h&gt;
 macro_line|#include &lt;asm/psrcompat.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif
@@ -2885,16 +2886,13 @@ id|ecache_flush_size
 op_rshift
 l_int|1
 suffix:semicolon
-id|__asm__
-id|__volatile__
+id|tick1
+op_assign
+id|tick_ops
+op_member_access_from_pointer
+id|get_tick
 c_func
 (paren
-l_string|&quot;rd %%tick, %0&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|tick1
-)paren
 )paren
 suffix:semicolon
 id|__asm__
@@ -2931,16 +2929,13 @@ id|flush_linesize
 )paren
 )paren
 suffix:semicolon
-id|__asm__
-id|__volatile__
+id|tick2
+op_assign
+id|tick_ops
+op_member_access_from_pointer
+id|get_tick
 c_func
 (paren
-l_string|&quot;rd %%tick, %0&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|tick2
-)paren
 )paren
 suffix:semicolon
 id|raw
