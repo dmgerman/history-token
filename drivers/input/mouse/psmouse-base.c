@@ -1941,6 +1941,12 @@ id|param
 l_int|2
 )braket
 suffix:semicolon
+id|intellimouse_detect
+c_func
+(paren
+id|psmouse
+)paren
+suffix:semicolon
 id|param
 (braket
 l_int|0
