@@ -1349,11 +1349,11 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* Event handler for inet device events.&n; * Basically, whenever there is an event, we re-build our local address list.&n; */
-DECL|function|sctp_netdev_event
+multiline_comment|/* Event handler for inet address addition/deletion events.&n; * Basically, whenever there is an event, we re-build our local address list.&n; */
+DECL|function|sctp_inetaddr_event
 r_static
 r_int
-id|sctp_netdev_event
+id|sctp_inetaddr_event
 c_func
 (paren
 r_struct
@@ -1969,17 +1969,17 @@ id|sctp_ipv4_specific
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Registration for netdev events.  */
-DECL|variable|sctp_netdev_notifier
+multiline_comment|/* Notifier for inetaddr addition/deletion events.  */
+DECL|variable|sctp_inetaddr_notifier
 r_struct
 id|notifier_block
-id|sctp_netdev_notifier
+id|sctp_inetaddr_notifier
 op_assign
 (brace
 dot
 id|notifier_call
 op_assign
-id|sctp_netdev_event
+id|sctp_inetaddr_event
 comma
 )brace
 suffix:semicolon
@@ -2821,11 +2821,19 @@ id|sctp_proto.local_addr_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+multiline_comment|/* Register notifiers for inet and inet6 address events. */
 id|register_inetaddr_notifier
 c_func
 (paren
 op_amp
-id|sctp_netdev_notifier
+id|sctp_inetaddr_notifier
+)paren
+suffix:semicolon
+id|register_inet6addr_notifier
+c_func
+(paren
+op_amp
+id|sctp_inetaddr_notifier
 )paren
 suffix:semicolon
 id|sctp_get_local_addr_list
@@ -2923,14 +2931,22 @@ r_void
 )paren
 (brace
 multiline_comment|/* BUG.  This should probably do something useful like clean&n;&t; * up all the remaining associations and all that memory.&n;&t; */
-multiline_comment|/* Free the local address list.  */
+multiline_comment|/* Unregister notifiers for inet and inet6 address events. */
 id|unregister_inetaddr_notifier
 c_func
 (paren
 op_amp
-id|sctp_netdev_notifier
+id|sctp_inetaddr_notifier
 )paren
 suffix:semicolon
+id|unregister_inet6addr_notifier
+c_func
+(paren
+op_amp
+id|sctp_inetaddr_notifier
+)paren
+suffix:semicolon
+multiline_comment|/* Free the local address list.  */
 id|sctp_free_local_addr_list
 c_func
 (paren
