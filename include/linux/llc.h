@@ -209,29 +209,6 @@ DECL|macro|LLC_SAP_DYN_TRIES
 mdefine_line|#define LLC_SAP_DYN_TRIES&t;4
 DECL|macro|llc_ui_skb_cb
 mdefine_line|#define llc_ui_skb_cb(__skb) ((struct sockaddr_llc *)&amp;((__skb)-&gt;cb[0]))
-macro_line|#ifdef CONFIG_LLC_UI
-r_extern
-r_int
-id|llc_ui_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|llc_ui_exit
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#else
-DECL|macro|llc_ui_init
-mdefine_line|#define llc_ui_init()
-DECL|macro|llc_ui_exit
-mdefine_line|#define llc_ui_exit()
-macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __LINUX_LLC_H */
 eof
