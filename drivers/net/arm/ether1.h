@@ -8,6 +8,8 @@ macro_line|#ifndef NET_DEBUG
 DECL|macro|NET_DEBUG
 mdefine_line|#define NET_DEBUG 0
 macro_line|#endif
+DECL|macro|priv
+mdefine_line|#define priv(dev)&t;((struct ether1_priv *)netdev_priv(dev))
 multiline_comment|/* Page register */
 DECL|macro|REG_PAGE
 mdefine_line|#define REG_PAGE&t;(dev-&gt;base_addr + 0x00)

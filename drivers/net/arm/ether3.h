@@ -15,6 +15,8 @@ macro_line|#ifndef NET_DEBUG
 DECL|macro|NET_DEBUG
 mdefine_line|#define NET_DEBUG &t;0
 macro_line|#endif
+DECL|macro|priv
+mdefine_line|#define priv(dev)&t;((struct dev_priv *)netdev_priv(dev))
 multiline_comment|/* Command register definitions &amp; bits */
 DECL|macro|REG_COMMAND
 mdefine_line|#define REG_COMMAND&t;&t;(dev-&gt;base_addr + 0x00)
