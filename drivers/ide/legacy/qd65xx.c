@@ -845,9 +845,11 @@ id|d
 suffix:semicolon
 id|pio
 op_assign
-id|IDE_MIN
+id|min_t
 c_func
 (paren
+id|u8
+comma
 id|pio
 comma
 l_int|4
