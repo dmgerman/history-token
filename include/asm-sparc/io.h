@@ -11,7 +11,7 @@ DECL|macro|page_to_phys
 mdefine_line|#define page_to_phys(page)&t;((page - mem_map) &lt;&lt; PAGE_SHIFT)
 DECL|function|flip_dword
 r_static
-id|__inline__
+r_inline
 id|u32
 id|flip_dword
 (paren
@@ -71,7 +71,7 @@ suffix:semicolon
 )brace
 DECL|function|flip_word
 r_static
-id|__inline__
+r_inline
 id|u16
 id|flip_word
 (paren
@@ -104,7 +104,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Memory mapped I/O to PCI&n; *&n; * Observe that ioremap returns void* cookie, but accessors, such&n; * as readb, take unsigned long as address, by API. This mismatch&n; * happened historically. The ioremap is much older than accessors,&n; * so at one time ioremap&squot;s cookie was used as address (*a = val).&n; * When accessors came about, they were designed to be compatible across&n; * buses, so that drivers can select proper ones like sunhme.c did.&n; * To make that easier, they use same aruments (ulong) for sbus, pci, isa.&n; * The offshot is, we must cast readb et. al. arguments with a #define.&n; */
 DECL|function|__raw_readb
 r_static
-id|__inline__
+r_inline
 id|u8
 id|__raw_readb
 c_func
@@ -126,7 +126,7 @@ suffix:semicolon
 )brace
 DECL|function|__raw_readw
 r_static
-id|__inline__
+r_inline
 id|u16
 id|__raw_readw
 c_func
@@ -148,7 +148,7 @@ suffix:semicolon
 )brace
 DECL|function|__raw_readl
 r_static
-id|__inline__
+r_inline
 id|u32
 id|__raw_readl
 c_func
@@ -170,7 +170,7 @@ suffix:semicolon
 )brace
 DECL|function|__raw_writeb
 r_static
-id|__inline__
+r_inline
 r_void
 id|__raw_writeb
 c_func
@@ -196,7 +196,7 @@ suffix:semicolon
 )brace
 DECL|function|__raw_writew
 r_static
-id|__inline__
+r_inline
 r_void
 id|__raw_writew
 c_func
@@ -222,7 +222,7 @@ suffix:semicolon
 )brace
 DECL|function|__raw_writel
 r_static
-id|__inline__
+r_inline
 r_void
 id|__raw_writel
 c_func
@@ -246,35 +246,195 @@ op_assign
 id|b
 suffix:semicolon
 )brace
+DECL|function|__readb
+r_static
+r_inline
+id|u8
+id|__readb
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
+op_star
+(paren
+r_volatile
+id|u8
+op_star
+)paren
+id|addr
+suffix:semicolon
+)brace
+DECL|function|__readw
+r_static
+r_inline
+id|u16
+id|__readw
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
+id|flip_word
+c_func
+(paren
+op_star
+(paren
+r_volatile
+id|u16
+op_star
+)paren
+id|addr
+)paren
+suffix:semicolon
+)brace
+DECL|function|__readl
+r_static
+r_inline
+id|u32
+id|__readl
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
+id|flip_dword
+c_func
+(paren
+op_star
+(paren
+r_volatile
+id|u32
+op_star
+)paren
+id|addr
+)paren
+suffix:semicolon
+)brace
+DECL|function|__writeb
+r_static
+r_inline
+r_void
+id|__writeb
+c_func
+(paren
+id|u8
+id|b
+comma
+r_int
+r_int
+id|addr
+)paren
+(brace
+op_star
+(paren
+r_volatile
+id|u8
+op_star
+)paren
+id|addr
+op_assign
+id|b
+suffix:semicolon
+)brace
+DECL|function|__writew
+r_static
+r_inline
+r_void
+id|__writew
+c_func
+(paren
+id|u16
+id|b
+comma
+r_int
+r_int
+id|addr
+)paren
+(brace
+op_star
+(paren
+r_volatile
+id|u16
+op_star
+)paren
+id|addr
+op_assign
+id|flip_word
+c_func
+(paren
+id|b
+)paren
+suffix:semicolon
+)brace
+DECL|function|__writel
+r_static
+r_inline
+r_void
+id|__writel
+c_func
+(paren
+id|u32
+id|b
+comma
+r_int
+r_int
+id|addr
+)paren
+(brace
+op_star
+(paren
+r_volatile
+id|u32
+op_star
+)paren
+id|addr
+op_assign
+id|flip_dword
+c_func
+(paren
+id|b
+)paren
+suffix:semicolon
+)brace
 DECL|macro|readb
-mdefine_line|#define readb(addr)&t;(*(volatile u8 *)(addr))
+mdefine_line|#define readb(addr)&t;__readb((unsigned long)(addr))
 DECL|macro|readw
-mdefine_line|#define readw(addr)&t;flip_word(*(volatile u16 *)(addr))
+mdefine_line|#define readw(addr)&t;__readw((unsigned long)(addr))
 DECL|macro|readl
-mdefine_line|#define readl(addr)&t;flip_dword(*(volatile u32 *)(addr))
+mdefine_line|#define readl(addr)&t;__readl((unsigned long)(addr))
 DECL|macro|writeb
-mdefine_line|#define writeb(b, a)&t;(*(volatile u8 *)(a) = b)
+mdefine_line|#define writeb(b, addr)&t;__writeb((b),(unsigned long)(addr))
 DECL|macro|writew
-mdefine_line|#define writew(b, a)&t;(*(volatile u16 *)(a) = flip_word(b))
+mdefine_line|#define writew(b, addr)&t;__writew((b),(unsigned long)(addr))
 DECL|macro|writel
-mdefine_line|#define writel(b, a)&t;(*(volatile u32 *)(a) = flip_dword(b))
+mdefine_line|#define writel(b, addr)&t;__writel((b),(unsigned long)(addr))
 multiline_comment|/*&n; * I/O space operations&n; *&n; * Arrangement on a Sun is somewhat complicated.&n; *&n; * First of all, we want to use standard Linux drivers&n; * for keyboard, PC serial, etc. These drivers think&n; * they access I/O space and use inb/outb.&n; * On the other hand, EBus bridge accepts PCI *memory*&n; * cycles and converts them into ISA *I/O* cycles.&n; * Ergo, we want inb &amp; outb to generate PCI memory cycles.&n; *&n; * If we want to issue PCI *I/O* cycles, we do this&n; * with a low 64K fixed window in PCIC. This window gets&n; * mapped somewhere into virtual kernel space and we&n; * can use inb/outb again.&n; */
 DECL|macro|inb_local
-mdefine_line|#define inb_local(addr)&t;&t;readb(addr)
+mdefine_line|#define inb_local(addr)&t;&t;__readb(addr)
 DECL|macro|inb
-mdefine_line|#define inb(addr)&t;&t;readb(addr)
+mdefine_line|#define inb(addr)&t;&t;__readb(addr)
 DECL|macro|inw
-mdefine_line|#define inw(addr)&t;&t;readw(addr)
+mdefine_line|#define inw(addr)&t;&t;__readw(addr)
 DECL|macro|inl
-mdefine_line|#define inl(addr)&t;&t;readl(addr)
+mdefine_line|#define inl(addr)&t;&t;__readl(addr)
 DECL|macro|outb_local
-mdefine_line|#define outb_local(b, addr)&t;writeb(b, addr)
+mdefine_line|#define outb_local(b, addr)&t;__writeb(b, addr)
 DECL|macro|outb
-mdefine_line|#define outb(b, addr)&t;&t;writeb(b, addr)
+mdefine_line|#define outb(b, addr)&t;&t;__writeb(b, addr)
 DECL|macro|outw
-mdefine_line|#define outw(b, addr)&t;&t;writew(b, addr)
+mdefine_line|#define outw(b, addr)&t;&t;__writew(b, addr)
 DECL|macro|outl
-mdefine_line|#define outl(b, addr)&t;&t;writel(b, addr)
+mdefine_line|#define outl(b, addr)&t;&t;__writel(b, addr)
 DECL|macro|inb_p
 mdefine_line|#define inb_p inb
 DECL|macro|outb_p
@@ -403,7 +563,7 @@ mdefine_line|#define IO_SPACE_LIMIT 0xffffffff
 multiline_comment|/*&n; * SBus accessors.&n; *&n; * SBus has only one, memory mapped, I/O space.&n; * We do not need to flip bytes for SBus of course.&n; */
 DECL|function|_sbus_readb
 r_static
-id|__inline__
+r_inline
 id|u8
 id|_sbus_readb
 c_func
@@ -425,7 +585,7 @@ suffix:semicolon
 )brace
 DECL|function|_sbus_readw
 r_static
-id|__inline__
+r_inline
 id|u16
 id|_sbus_readw
 c_func
@@ -447,7 +607,7 @@ suffix:semicolon
 )brace
 DECL|function|_sbus_readl
 r_static
-id|__inline__
+r_inline
 id|u32
 id|_sbus_readl
 c_func
@@ -469,7 +629,7 @@ suffix:semicolon
 )brace
 DECL|function|_sbus_writeb
 r_static
-id|__inline__
+r_inline
 r_void
 id|_sbus_writeb
 c_func
@@ -495,7 +655,7 @@ suffix:semicolon
 )brace
 DECL|function|_sbus_writew
 r_static
-id|__inline__
+r_inline
 r_void
 id|_sbus_writew
 c_func
@@ -521,7 +681,7 @@ suffix:semicolon
 )brace
 DECL|function|_sbus_writel
 r_static
-id|__inline__
+r_inline
 r_void
 id|_sbus_writel
 c_func
