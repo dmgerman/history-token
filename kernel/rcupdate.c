@@ -513,8 +513,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|cpus_empty
+c_func
+(paren
 id|rcu_ctrlblk.rcu_cpu_mask
+)paren
 )paren
 r_goto
 id|unlock
