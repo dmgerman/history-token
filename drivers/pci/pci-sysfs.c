@@ -91,7 +91,7 @@ c_func
 id|dev
 )paren
 op_member_access_from_pointer
-id|bus-&gt;number
+id|bus
 )paren
 suffix:semicolon
 r_int

@@ -272,15 +272,11 @@ op_assign
 id|pcibus_to_cpumask
 c_func
 (paren
-(paren
 id|to_pci_bus
 c_func
 (paren
 id|class_dev
 )paren
-)paren
-op_member_access_from_pointer
-id|number
 )paren
 suffix:semicolon
 r_int
