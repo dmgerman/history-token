@@ -819,7 +819,11 @@ l_string|&quot;PCI: Assigning IRQ %02d to %s&bslash;n&quot;
 comma
 id|irq
 comma
-id|dev-&gt;dev.name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 id|pci_write_config_byte
