@@ -922,7 +922,7 @@ id|bd_private
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Radix-tre tags, for tagging dirty and writeback pages within the pagecache&n; * radix trees&n; */
+multiline_comment|/*&n; * Radix-tree tags, for tagging dirty and writeback pages within the pagecache&n; * radix trees&n; */
 DECL|macro|PAGECACHE_TAG_DIRTY
 mdefine_line|#define PAGECACHE_TAG_DIRTY&t;0
 DECL|macro|PAGECACHE_TAG_WRITEBACK
