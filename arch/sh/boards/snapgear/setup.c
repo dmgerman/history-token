@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/mach/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/cpu/timer.h&gt;
 r_extern
 r_void
 (paren
@@ -250,11 +251,6 @@ mdefine_line|#define TMU1_TCR_INIT&t;0
 macro_line|#endif
 mdefine_line|#define TMU_TSTR_INIT&t;1
 mdefine_line|#define TMU1_TCR_CALIB&t;0x0000
-mdefine_line|#define TMU_TOCR&t;0xffd80000&t;/* Byte access */
-mdefine_line|#define TMU_TSTR&t;0xffd80004&t;/* Byte access */
-mdefine_line|#define TMU1_TCOR&t;0xffd80014&t;/* Long access */
-mdefine_line|#define TMU1_TCNT&t;0xffd80018&t;/* Long access */
-mdefine_line|#define TMU1_TCR&t;0xffd8001c&t;/* Word access */
 macro_line|#ifdef FAST_POLL_INTR
 r_static
 r_void

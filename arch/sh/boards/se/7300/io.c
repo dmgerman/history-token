@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * linux/arch/sh/boards/se/7300/io.c&n; *&n; * Copyright (C) 2003 YOSHII Takashi &lt;yoshii-takashi@hitachi-ul.co.jp&gt;&n; */
+multiline_comment|/*&n; * arch/sh/boards/se/7300/io.c&n; *&n; * Copyright (C) 2003 YOSHII Takashi &lt;yoshii-takashi@hitachi-ul.co.jp&gt;&n; * Based on arch/sh/kernel/io_shmse.c&n; *&n; * I/O routine for SH-Mobile3 73180 SolutionEngine.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;asm/se7300/se7300.h&gt;
+macro_line|#include &lt;asm/mach/se7300.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|badio
 mdefine_line|#define badio(fn, a) panic(&quot;bad i/o operation %s for %08lx.&quot;, #fn, a)

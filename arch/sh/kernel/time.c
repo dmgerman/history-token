@@ -21,6 +21,7 @@ macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/rtc.h&gt;
 macro_line|#include &lt;asm/freq.h&gt;
+macro_line|#include &lt;asm/cpu/timer.h&gt;
 macro_line|#ifdef CONFIG_SH_KGDB
 macro_line|#include &lt;asm/kgdb.h&gt;
 macro_line|#endif
@@ -34,54 +35,12 @@ DECL|macro|TMU_TSTR_INIT
 mdefine_line|#define TMU_TSTR_INIT&t;1
 DECL|macro|TMU0_TCR_CALIB
 mdefine_line|#define TMU0_TCR_CALIB&t;0x0000
-macro_line|#if defined(CONFIG_CPU_SH3)
-macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7300)
-DECL|macro|TMU_TSTR
-mdefine_line|#define TMU_TSTR        0xA412FE92      /* Byte access */
-DECL|macro|TMU0_TCOR
-mdefine_line|#define TMU0_TCOR       0xA412FE94      /* Long access */
-DECL|macro|TMU0_TCNT
-mdefine_line|#define TMU0_TCNT       0xA412FE98      /* Long access */
-DECL|macro|TMU0_TCR
-mdefine_line|#define TMU0_TCR        0xA412FE9C      /* Word access */
-DECL|macro|TMU1_TCOR
-mdefine_line|#define TMU1_TCOR&t;0xA412FEA0&t;/* Long access */
-DECL|macro|TMU1_TCNT
-mdefine_line|#define TMU1_TCNT&t;0xA412FEA4&t;/* Long access */
-DECL|macro|TMU1_TCR
-mdefine_line|#define TMU1_TCR&t;0xA412FEA8&t;/* Word access */
-DECL|macro|FRQCR
-mdefine_line|#define FRQCR           0xA415FF80
-macro_line|#else
-DECL|macro|TMU_TOCR
-mdefine_line|#define TMU_TOCR&t;0xfffffe90&t;/* Byte access */
-DECL|macro|TMU_TSTR
-mdefine_line|#define TMU_TSTR&t;0xfffffe92&t;/* Byte access */
-DECL|macro|TMU0_TCOR
-mdefine_line|#define TMU0_TCOR&t;0xfffffe94&t;/* Long access */
-DECL|macro|TMU0_TCNT
-mdefine_line|#define TMU0_TCNT&t;0xfffffe98&t;/* Long access */
-DECL|macro|TMU0_TCR
-mdefine_line|#define TMU0_TCR&t;0xfffffe9c&t;/* Word access */
-macro_line|#endif
-macro_line|#elif defined(CONFIG_CPU_SH4)
-DECL|macro|TMU_TOCR
-mdefine_line|#define TMU_TOCR&t;0xffd80000&t;/* Byte access */
-DECL|macro|TMU_TSTR
-mdefine_line|#define TMU_TSTR&t;0xffd80004&t;/* Byte access */
-DECL|macro|TMU0_TCOR
-mdefine_line|#define TMU0_TCOR&t;0xffd80008&t;/* Long access */
-DECL|macro|TMU0_TCNT
-mdefine_line|#define TMU0_TCNT&t;0xffd8000c&t;/* Long access */
-DECL|macro|TMU0_TCR
-mdefine_line|#define TMU0_TCR&t;0xffd80010&t;/* Word access */
 macro_line|#ifdef CONFIG_CPU_SUBTYPE_ST40STB1
 DECL|macro|CLOCKGEN_MEMCLKCR
 mdefine_line|#define CLOCKGEN_MEMCLKCR 0xbb040038
 DECL|macro|MEMCLKCR_RATIO_MASK
 mdefine_line|#define MEMCLKCR_RATIO_MASK 0x7
 macro_line|#endif /* CONFIG_CPU_SUBTYPE_ST40STB1 */
-macro_line|#endif /* CONFIG_CPU_SH3 or CONFIG_CPU_SH4 */
 r_extern
 r_int
 r_int
