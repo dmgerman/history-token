@@ -6748,7 +6748,30 @@ comma
 id|val
 )paren
 suffix:semicolon
-multiline_comment|/* 24 Jun 2004 according AMD, in order to change the PHY,&n;     * DANAS (or DISPM for 79C976) must be set; then select the speed,&n;     * duplex, and/or enable auto negotiation, and clear DANAS */
+multiline_comment|/* Skip PHY selection on AT2701FX, looses link otherwise */
+r_if
+c_cond
+(paren
+id|lp-&gt;pci_dev-&gt;subsystem_vendor
+op_eq
+id|PCI_VENDOR_ID_AT
+op_logical_and
+id|lp-&gt;pci_dev-&gt;subsystem_device
+op_eq
+id|PCI_SUBDEVICE_ID_AT_2701FX
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;pcnet32: Skipping PHY selection.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* 24 Jun 2004 according AMD, in order to change the PHY,&n;         * DANAS (or DISPM for 79C976) must be set; then select the speed,&n;         * duplex, and/or enable auto negotiation, and clear DANAS */
 r_if
 c_cond
 (paren
@@ -6896,6 +6919,7 @@ comma
 id|val
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 macro_line|#ifdef DO_DXSUFLO
