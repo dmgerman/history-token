@@ -781,10 +781,10 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ATAPI devices can cause the SL82C105 DMA state machine to go gaga.&n; * Winbond recommend that the DMA state machine is reset prior to&n; * setting the bus master DMA enable bit.&n; *&n; * The generic IDE core will have disabled the BMEN bit before this&n; * function is called.&n; */
-DECL|function|sl82c105_ide_dma_begin
+DECL|function|sl82c105_ide_dma_start
 r_static
-r_int
-id|sl82c105_ide_dma_begin
+r_void
+id|sl82c105_ide_dma_start
 c_func
 (paren
 id|ide_drive_t
@@ -809,15 +809,13 @@ id|dev
 op_assign
 id|hwif-&gt;pci_dev
 suffix:semicolon
-singleline_comment|//&t;DBG((&quot;sl82c105_ide_dma_begin(drive:%s)&bslash;n&quot;, drive-&gt;name));
 id|sl82c105_reset_host
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-r_return
-id|__ide_dma_begin
+id|ide_dma_start
 c_func
 (paren
 id|drive
@@ -1670,10 +1668,10 @@ op_assign
 op_amp
 id|sl82c105_ide_dma_lost_irq
 suffix:semicolon
-id|hwif-&gt;ide_dma_begin
+id|hwif-&gt;dma_start
 op_assign
 op_amp
-id|sl82c105_ide_dma_begin
+id|sl82c105_ide_dma_start
 suffix:semicolon
 id|hwif-&gt;ide_dma_timeout
 op_assign

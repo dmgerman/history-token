@@ -2609,11 +2609,12 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ali15x3_dma_write&t;-&t;do a DMA IDE write&n; *&t;@drive:&t;drive to issue write for&n; *&n; *&t;Returns 1 if the DMA write cannot be performed, zero on &n; *&t;success.&n; */
-DECL|function|ali15x3_dma_write
+multiline_comment|/**&n; *&t;ali15x3_dma_setup&t;-&t;begin a DMA phase&n; *&t;@drive:&t;target device&n; *&n; *&t;Returns 1 if the DMA cannot be performed, zero on success.&n; */
+DECL|function|ali15x3_dma_setup
 r_static
 r_int
-id|ali15x3_dma_write
+id|ali15x3_dma_setup
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -2623,24 +2624,31 @@ id|drive
 r_if
 c_cond
 (paren
-(paren
 id|m5229_revision
 OL
 l_int|0xC2
-)paren
 op_logical_and
-(paren
 id|drive-&gt;media
 op_ne
 id|ide_disk
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|rq_data_dir
+c_func
+(paren
+id|drive-&gt;hwif-&gt;hwgroup-&gt;rq
 )paren
 )paren
 r_return
 l_int|1
 suffix:semicolon
 multiline_comment|/* try PIO instead of DMA */
+)brace
 r_return
-id|__ide_dma_write
+id|ide_dma_setup
 c_func
 (paren
 id|drive
@@ -3236,10 +3244,10 @@ op_assign
 op_amp
 id|ali15x3_config_drive_for_dma
 suffix:semicolon
-id|hwif-&gt;ide_dma_write
+id|hwif-&gt;dma_setup
 op_assign
 op_amp
-id|ali15x3_dma_write
+id|ali15x3_dma_setup
 suffix:semicolon
 r_if
 c_cond
