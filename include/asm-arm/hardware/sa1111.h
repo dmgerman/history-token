@@ -210,7 +210,6 @@ DECL|macro|_SAITR
 mdefine_line|#define _SAITR          _SA1111( 0x065c )
 DECL|macro|_SADR
 mdefine_line|#define _SADR           _SA1111( 0x0680 )
-macro_line|#if LANGUAGE == C
 DECL|macro|SACR0
 mdefine_line|#define SACR0&t;&t;__CCREG(0x0600)
 DECL|macro|SACR1
@@ -259,7 +258,6 @@ DECL|macro|SAITR
 mdefine_line|#define SAITR&t;&t;__CCREG(0x065c)
 DECL|macro|SADR
 mdefine_line|#define SADR&t;&t;__CCREG(0x0680)
-macro_line|#endif  /* LANGUAGE == C */
 DECL|macro|SACR0_ENB
 mdefine_line|#define SACR0_ENB&t;(1&lt;&lt;0)
 DECL|macro|SACR0_BCKD
@@ -443,7 +441,6 @@ DECL|macro|_PC_SDR
 mdefine_line|#define _PC_SDR&t;&t;_SA1111( 0x1028 )
 DECL|macro|_PC_SSR
 mdefine_line|#define _PC_SSR&t;&t;_SA1111( 0x102c )
-macro_line|#if LANGUAGE == C
 DECL|macro|PA_DDR
 mdefine_line|#define PA_DDR&t;&t;__CCREG(0x1000)
 DECL|macro|PA_DRR
@@ -474,7 +471,6 @@ DECL|macro|PC_SDR
 mdefine_line|#define PC_SDR&t;&t;__CCREG(0x1028)
 DECL|macro|PC_SSR
 mdefine_line|#define PC_SSR&t;&t;__CCREG(0x102c)
-macro_line|#endif  /* LANGUAGE == C */
 multiline_comment|/*&n; * Interrupt Controller&n; *&n; * Registers&n; *    INTTEST0&t;&t;Test register 0&n; *    INTTEST1&t;&t;Test register 1&n; *    INTEN0&t;&t;Interrupt Enable register 0&n; *    INTEN1&t;&t;Interrupt Enable register 1&n; *    INTPOL0&t;&t;Interrupt Polarity selection 0&n; *    INTPOL1&t;&t;Interrupt Polarity selection 1&n; *    INTTSTSEL&t;&t;Interrupt source selection&n; *    INTSTATCLR0&t;Interrupt Status/Clear 0&n; *    INTSTATCLR1&t;Interrupt Status/Clear 1&n; *    INTSET0&t;&t;Interrupt source set 0&n; *    INTSET1&t;&t;Interrupt source set 1&n; *    WAKE_EN0&t;&t;Wake-up source enable 0&n; *    WAKE_EN1&t;&t;Wake-up source enable 1&n; *    WAKE_POL0&t;&t;Wake-up polarity selection 0&n; *    WAKE_POL1&t;&t;Wake-up polarity selection 1&n; */
 DECL|macro|SA1111_INTC
 mdefine_line|#define SA1111_INTC&t;&t;0x1600
