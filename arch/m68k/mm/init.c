@@ -272,9 +272,11 @@ r_int
 r_int
 id|tmp
 suffix:semicolon
+macro_line|#ifndef CONFIG_SUN3
 r_int
 id|i
 suffix:semicolon
+macro_line|#endif
 id|max_mapnr
 op_assign
 id|num_physpages
