@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file define the new driver API for Wireless Extensions&n; *&n; * Version :&t;3&t;17.1.02&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; * Copyright (c) 2001-2002 Jean Tourrilhes, All Rights Reserved.&n; */
+multiline_comment|/*&n; * This file define the new driver API for Wireless Extensions&n; *&n; * Version :&t;4&t;21.6.02&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; * Copyright (c) 2001-2002 Jean Tourrilhes, All Rights Reserved.&n; */
 macro_line|#ifndef _IW_HANDLER_H
 DECL|macro|_IW_HANDLER_H
 mdefine_line|#define _IW_HANDLER_H
@@ -11,8 +11,8 @@ macro_line|#include &lt;linux/wireless.h&gt;&t;&t;/* IOCTL user space API */
 multiline_comment|/***************************** VERSION *****************************/
 multiline_comment|/*&n; * This constant is used to know which version of the driver API is&n; * available. Hopefully, this will be pretty stable and no changes&n; * will be needed...&n; * I just plan to increment with each new version.&n; */
 DECL|macro|IW_HANDLER_VERSION
-mdefine_line|#define IW_HANDLER_VERSION&t;3
-multiline_comment|/*&n; * Changes :&n; *&n; * V2 to V3&n; * --------&n; *&t;- Move event definition in &lt;linux/wireless.h&gt;&n; *&t;- Add Wireless Event support :&n; *&t;&t;o wireless_send_event() prototype&n; *&t;&t;o iwe_stream_add_event/point() inline functions&n; */
+mdefine_line|#define IW_HANDLER_VERSION&t;4
+multiline_comment|/*&n; * Changes :&n; *&n; * V2 to V3&n; * --------&n; *&t;- Move event definition in &lt;linux/wireless.h&gt;&n; *&t;- Add Wireless Event support :&n; *&t;&t;o wireless_send_event() prototype&n; *&t;&t;o iwe_stream_add_event/point() inline functions&n; * V3 to V4&n; * --------&n; *&t;- Reshuffle IW_HEADER_TYPE_XXX to map IW_PRIV_TYPE_XXX changes&n; */
 multiline_comment|/**************************** CONSTANTS ****************************/
 multiline_comment|/* Special error message for the driver to indicate that we&n; * should do a commit after return from the iw_handler */
 DECL|macro|EIWCOMMIT
@@ -29,14 +29,14 @@ DECL|macro|IW_HEADER_TYPE_UINT
 mdefine_line|#define IW_HEADER_TYPE_UINT&t;4&t;/* __u32 */
 DECL|macro|IW_HEADER_TYPE_FREQ
 mdefine_line|#define IW_HEADER_TYPE_FREQ&t;5&t;/* struct iw_freq */
-DECL|macro|IW_HEADER_TYPE_POINT
-mdefine_line|#define IW_HEADER_TYPE_POINT&t;6&t;/* struct iw_point */
-DECL|macro|IW_HEADER_TYPE_PARAM
-mdefine_line|#define IW_HEADER_TYPE_PARAM&t;7&t;/* struct iw_param */
 DECL|macro|IW_HEADER_TYPE_ADDR
-mdefine_line|#define IW_HEADER_TYPE_ADDR&t;8&t;/* struct sockaddr */
+mdefine_line|#define IW_HEADER_TYPE_ADDR&t;6&t;/* struct sockaddr */
+DECL|macro|IW_HEADER_TYPE_POINT
+mdefine_line|#define IW_HEADER_TYPE_POINT&t;8&t;/* struct iw_point */
+DECL|macro|IW_HEADER_TYPE_PARAM
+mdefine_line|#define IW_HEADER_TYPE_PARAM&t;9&t;/* struct iw_param */
 DECL|macro|IW_HEADER_TYPE_QUAL
-mdefine_line|#define IW_HEADER_TYPE_QUAL&t;9&t;/* struct iw_quality */
+mdefine_line|#define IW_HEADER_TYPE_QUAL&t;10&t;/* struct iw_quality */
 multiline_comment|/* Handling flags */
 multiline_comment|/* Most are not implemented. I just use them as a reminder of some&n; * cool features we might need one day ;-) */
 DECL|macro|IW_DESCR_FLAG_NONE

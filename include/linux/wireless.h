@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file define a set of standard wireless extensions&n; *&n; * Version :&t;14&t;25.1.02&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; * Copyright (c) 1997-2002 Jean Tourrilhes, All Rights Reserved.&n; */
+multiline_comment|/*&n; * This file define a set of standard wireless extensions&n; *&n; * Version :&t;15&t;12.7.02&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; * Copyright (c) 1997-2002 Jean Tourrilhes, All Rights Reserved.&n; */
 macro_line|#ifndef _LINUX_WIRELESS_H
 DECL|macro|_LINUX_WIRELESS_H
 mdefine_line|#define _LINUX_WIRELESS_H
@@ -11,19 +11,21 @@ macro_line|#include &lt;linux/if.h&gt;&t;&t;&t;/* for IFNAMSIZ and co... */
 multiline_comment|/***************************** VERSION *****************************/
 multiline_comment|/*&n; * This constant is used to know the availability of the wireless&n; * extensions and to know which version of wireless extensions it is&n; * (there is some stuff that will be added in the future...)&n; * I just plan to increment with each new version.&n; */
 DECL|macro|WIRELESS_EXT
-mdefine_line|#define WIRELESS_EXT&t;14
-multiline_comment|/*&n; * Changes :&n; *&n; * V2 to V3&n; * --------&n; *&t;Alan Cox start some incompatibles changes. I&squot;ve integrated a bit more.&n; *&t;- Encryption renamed to Encode to avoid US regulation problems&n; *&t;- Frequency changed from float to struct to avoid problems on old 386&n; *&n; * V3 to V4&n; * --------&n; *&t;- Add sensitivity&n; *&n; * V4 to V5&n; * --------&n; *&t;- Missing encoding definitions in range&n; *&t;- Access points stuff&n; *&n; * V5 to V6&n; * --------&n; *&t;- 802.11 support (ESSID ioctls)&n; *&n; * V6 to V7&n; * --------&n; *&t;- define IW_ESSID_MAX_SIZE and IW_MAX_AP&n; *&n; * V7 to V8&n; * --------&n; *&t;- Changed my e-mail address&n; *&t;- More 802.11 support (nickname, rate, rts, frag)&n; *&t;- List index in frequencies&n; *&n; * V8 to V9&n; * --------&n; *&t;- Support for &squot;mode of operation&squot; (ad-hoc, managed...)&n; *&t;- Support for unicast and multicast power saving&n; *&t;- Change encoding to support larger tokens (&gt;64 bits)&n; *&t;- Updated iw_params (disable, flags) and use it for NWID&n; *&t;- Extracted iw_point from iwreq for clarity&n; *&n; * V9 to V10&n; * ---------&n; *&t;- Add PM capability to range structure&n; *&t;- Add PM modifier : MAX/MIN/RELATIVE&n; *&t;- Add encoding option : IW_ENCODE_NOKEY&n; *&t;- Add TxPower ioctls (work like TxRate)&n; *&n; * V10 to V11&n; * ----------&n; *&t;- Add WE version in range (help backward/forward compatibility)&n; *&t;- Add retry ioctls (work like PM)&n; *&n; * V11 to V12&n; * ----------&n; *&t;- Add SIOCSIWSTATS to get /proc/net/wireless programatically&n; *&t;- Add DEV PRIVATE IOCTL to avoid collisions in SIOCDEVPRIVATE space&n; *&t;- Add new statistics (frag, retry, beacon)&n; *&t;- Add average quality (for user space calibration)&n; *&n; * V12 to V13&n; * ----------&n; *&t;- Document creation of new driver API.&n; *&t;- Extract union iwreq_data from struct iwreq (for new driver API).&n; *&t;- Rename SIOCSIWNAME as SIOCSIWCOMMIT&n; *&n; * V13 to V14&n; * ----------&n; *&t;- Wireless Events support : define struct iw_event&n; *&t;- Define additional specific event numbers&n; *&t;- Add &quot;addr&quot; and &quot;param&quot; fields in union iwreq_data&n; *&t;- AP scanning stuff (SIOCSIWSCAN and friends)&n; */
+mdefine_line|#define WIRELESS_EXT&t;15
+multiline_comment|/*&n; * Changes :&n; *&n; * V2 to V3&n; * --------&n; *&t;Alan Cox start some incompatibles changes. I&squot;ve integrated a bit more.&n; *&t;- Encryption renamed to Encode to avoid US regulation problems&n; *&t;- Frequency changed from float to struct to avoid problems on old 386&n; *&n; * V3 to V4&n; * --------&n; *&t;- Add sensitivity&n; *&n; * V4 to V5&n; * --------&n; *&t;- Missing encoding definitions in range&n; *&t;- Access points stuff&n; *&n; * V5 to V6&n; * --------&n; *&t;- 802.11 support (ESSID ioctls)&n; *&n; * V6 to V7&n; * --------&n; *&t;- define IW_ESSID_MAX_SIZE and IW_MAX_AP&n; *&n; * V7 to V8&n; * --------&n; *&t;- Changed my e-mail address&n; *&t;- More 802.11 support (nickname, rate, rts, frag)&n; *&t;- List index in frequencies&n; *&n; * V8 to V9&n; * --------&n; *&t;- Support for &squot;mode of operation&squot; (ad-hoc, managed...)&n; *&t;- Support for unicast and multicast power saving&n; *&t;- Change encoding to support larger tokens (&gt;64 bits)&n; *&t;- Updated iw_params (disable, flags) and use it for NWID&n; *&t;- Extracted iw_point from iwreq for clarity&n; *&n; * V9 to V10&n; * ---------&n; *&t;- Add PM capability to range structure&n; *&t;- Add PM modifier : MAX/MIN/RELATIVE&n; *&t;- Add encoding option : IW_ENCODE_NOKEY&n; *&t;- Add TxPower ioctls (work like TxRate)&n; *&n; * V10 to V11&n; * ----------&n; *&t;- Add WE version in range (help backward/forward compatibility)&n; *&t;- Add retry ioctls (work like PM)&n; *&n; * V11 to V12&n; * ----------&n; *&t;- Add SIOCSIWSTATS to get /proc/net/wireless programatically&n; *&t;- Add DEV PRIVATE IOCTL to avoid collisions in SIOCDEVPRIVATE space&n; *&t;- Add new statistics (frag, retry, beacon)&n; *&t;- Add average quality (for user space calibration)&n; *&n; * V12 to V13&n; * ----------&n; *&t;- Document creation of new driver API.&n; *&t;- Extract union iwreq_data from struct iwreq (for new driver API).&n; *&t;- Rename SIOCSIWNAME as SIOCSIWCOMMIT&n; *&n; * V13 to V14&n; * ----------&n; *&t;- Wireless Events support : define struct iw_event&n; *&t;- Define additional specific event numbers&n; *&t;- Add &quot;addr&quot; and &quot;param&quot; fields in union iwreq_data&n; *&t;- AP scanning stuff (SIOCSIWSCAN and friends)&n; *&n; * V14 to V15&n; * ----------&n; *&t;- Add IW_PRIV_TYPE_ADDR for struct sockaddr private arg&n; *&t;- Make struct iw_freq signed (both m &amp; e), add explicit padding&n; *&t;- Add IWEVCUSTOM for driver specific event/scanning token&n; *&t;- Add IW_MAX_GET_SPY for driver returning a lot of addresses&n; *&t;- Add IW_TXPOW_RANGE for range of Tx Powers&n; *&t;- Add IWEVREGISTERED &amp; IWEVEXPIRED events for Access Points&n; *&t;- Add IW_MODE_MONITOR for passive monitor&n; */
 multiline_comment|/**************************** CONSTANTS ****************************/
 multiline_comment|/* -------------------------- IOCTL LIST -------------------------- */
-multiline_comment|/* Basic operations */
+multiline_comment|/* Wireless Identification */
 DECL|macro|SIOCSIWCOMMIT
 mdefine_line|#define SIOCSIWCOMMIT&t;0x8B00&t;&t;/* Commit pending changes to driver */
 DECL|macro|SIOCGIWNAME
 mdefine_line|#define SIOCGIWNAME&t;0x8B01&t;&t;/* get name == wireless protocol */
+multiline_comment|/* SIOCGIWNAME is used to verify the presence of Wireless Extensions.&n; * Common values : &quot;IEEE 802.11-DS&quot;, &quot;IEEE 802.11-FH&quot;, &quot;IEEE 802.11b&quot;...&n; * Don&squot;t put the name of your driver there, it&squot;s useless. */
+multiline_comment|/* Basic operations */
 DECL|macro|SIOCSIWNWID
-mdefine_line|#define SIOCSIWNWID&t;0x8B02&t;&t;/* set network id (the cell) */
+mdefine_line|#define SIOCSIWNWID&t;0x8B02&t;&t;/* set network id (pre-802.11) */
 DECL|macro|SIOCGIWNWID
-mdefine_line|#define SIOCGIWNWID&t;0x8B03&t;&t;/* get network id */
+mdefine_line|#define SIOCGIWNWID&t;0x8B03&t;&t;/* get network id (the cell) */
 DECL|macro|SIOCSIWFREQ
 mdefine_line|#define SIOCSIWFREQ&t;0x8B04&t;&t;/* set channel/frequency (Hz) */
 DECL|macro|SIOCGIWFREQ
@@ -49,7 +51,8 @@ DECL|macro|SIOCSIWSTATS
 mdefine_line|#define SIOCSIWSTATS&t;0x8B0E&t;&t;/* Unused */
 DECL|macro|SIOCGIWSTATS
 mdefine_line|#define SIOCGIWSTATS&t;0x8B0F&t;&t;/* Get /proc/net/wireless stats */
-multiline_comment|/* Mobile IP support */
+multiline_comment|/* SIOCGIWSTATS is strictly used between user space and the kernel, and&n; * is never passed to the driver (i.e. the driver will never see it). */
+multiline_comment|/* Mobile IP support (statistics per MAC address) */
 DECL|macro|SIOCSIWSPY
 mdefine_line|#define SIOCSIWSPY&t;0x8B10&t;&t;/* set spy addresses */
 DECL|macro|SIOCGIWSPY
@@ -60,9 +63,9 @@ mdefine_line|#define SIOCSIWAP&t;0x8B14&t;&t;/* set access point MAC addresses *
 DECL|macro|SIOCGIWAP
 mdefine_line|#define SIOCGIWAP&t;0x8B15&t;&t;/* get access point MAC addresses */
 DECL|macro|SIOCGIWAPLIST
-mdefine_line|#define SIOCGIWAPLIST&t;0x8B17&t;&t;/* get list of access point in range */
+mdefine_line|#define SIOCGIWAPLIST&t;0x8B17&t;&t;/* Deprecated in favor of scanning */
 DECL|macro|SIOCSIWSCAN
-mdefine_line|#define SIOCSIWSCAN&t;0x8B18&t;&t;/* trigger scanning */
+mdefine_line|#define SIOCSIWSCAN&t;0x8B18&t;&t;/* trigger scanning (list cells) */
 DECL|macro|SIOCGIWSCAN
 mdefine_line|#define SIOCGIWSCAN&t;0x8B19&t;&t;/* get scanning results */
 multiline_comment|/* 802.11 specific support */
@@ -74,7 +77,7 @@ DECL|macro|SIOCSIWNICKN
 mdefine_line|#define SIOCSIWNICKN&t;0x8B1C&t;&t;/* set node name/nickname */
 DECL|macro|SIOCGIWNICKN
 mdefine_line|#define SIOCGIWNICKN&t;0x8B1D&t;&t;/* get node name/nickname */
-multiline_comment|/* As the ESSID and NICKN are strings up to 32 bytes long, it doesn&squot;t fit&n; * within the &squot;iwreq&squot; structure, so we need to use the &squot;data&squot; member to&n; * point to a string in user space, like it is done for RANGE...&n; * The &quot;flags&quot; member indicate if the ESSID is active or not (promiscuous).&n; */
+multiline_comment|/* As the ESSID and NICKN are strings up to 32 bytes long, it doesn&squot;t fit&n; * within the &squot;iwreq&squot; structure, so we need to use the &squot;data&squot; member to&n; * point to a string in user space, like it is done for RANGE... */
 multiline_comment|/* Other parameters useful in 802.11 and some other devices */
 DECL|macro|SIOCSIWRATE
 mdefine_line|#define SIOCSIWRATE&t;0x8B20&t;&t;/* set default bit rate (bps) */
@@ -130,7 +133,13 @@ multiline_comment|/* Most events use the same identifier as ioctl requests */
 DECL|macro|IWEVTXDROP
 mdefine_line|#define IWEVTXDROP&t;0x8C00&t;&t;/* Packet dropped to excessive retry */
 DECL|macro|IWEVQUAL
-mdefine_line|#define IWEVQUAL&t;0x8C01&t;&t;/* Quality part of statistics */
+mdefine_line|#define IWEVQUAL&t;0x8C01&t;&t;/* Quality part of statistics (scan) */
+DECL|macro|IWEVCUSTOM
+mdefine_line|#define IWEVCUSTOM&t;0x8C02&t;&t;/* Driver specific ascii string */
+DECL|macro|IWEVREGISTERED
+mdefine_line|#define IWEVREGISTERED&t;0x8C03&t;&t;/* Discovered a new node (AP mode) */
+DECL|macro|IWEVEXPIRED
+mdefine_line|#define IWEVEXPIRED&t;0x8C04&t;&t;/* Expired a node (AP mode) */
 DECL|macro|IWEVFIRST
 mdefine_line|#define IWEVFIRST&t;0x8C00
 multiline_comment|/* ------------------------- PRIVATE INFO ------------------------- */
@@ -146,7 +155,9 @@ mdefine_line|#define IW_PRIV_TYPE_CHAR&t;0x2000&t;/* Char as character */
 DECL|macro|IW_PRIV_TYPE_INT
 mdefine_line|#define IW_PRIV_TYPE_INT&t;0x4000&t;/* 32 bits int */
 DECL|macro|IW_PRIV_TYPE_FLOAT
-mdefine_line|#define IW_PRIV_TYPE_FLOAT&t;0x5000
+mdefine_line|#define IW_PRIV_TYPE_FLOAT&t;0x5000&t;/* struct iw_freq */
+DECL|macro|IW_PRIV_TYPE_ADDR
+mdefine_line|#define IW_PRIV_TYPE_ADDR&t;0x6000&t;/* struct sockaddr */
 DECL|macro|IW_PRIV_SIZE_FIXED
 mdefine_line|#define IW_PRIV_SIZE_FIXED&t;0x0800&t;/* Variable or fixed nuber of args */
 DECL|macro|IW_PRIV_SIZE_MASK
@@ -163,9 +174,12 @@ mdefine_line|#define IW_MAX_BITRATES&t;&t;8
 multiline_comment|/* Maximum tx powers in the range struct */
 DECL|macro|IW_MAX_TXPOWER
 mdefine_line|#define IW_MAX_TXPOWER&t;&t;8
+multiline_comment|/* Note : if you more than 8 TXPowers, just set the max and min or&n; * a few of them in the struct iw_range. */
 multiline_comment|/* Maximum of address that you may set with SPY */
 DECL|macro|IW_MAX_SPY
-mdefine_line|#define IW_MAX_SPY&t;&t;8
+mdefine_line|#define IW_MAX_SPY&t;&t;8&t;/* set */
+DECL|macro|IW_MAX_GET_SPY
+mdefine_line|#define IW_MAX_GET_SPY&t;&t;64&t;/* get */
 multiline_comment|/* Maximum of address that you may get in the&n;   list of access points in range */
 DECL|macro|IW_MAX_AP
 mdefine_line|#define IW_MAX_AP&t;&t;8
@@ -185,6 +199,8 @@ DECL|macro|IW_MODE_REPEAT
 mdefine_line|#define IW_MODE_REPEAT&t;4&t;/* Wireless Repeater (forwarder) */
 DECL|macro|IW_MODE_SECOND
 mdefine_line|#define IW_MODE_SECOND&t;5&t;/* Secondary master/repeater (backup) */
+DECL|macro|IW_MODE_MONITOR
+mdefine_line|#define IW_MODE_MONITOR&t;6&t;/* Passive monitor (listen only) */
 multiline_comment|/* Maximum number of size of encoding token available&n; * they are listed in the range structure */
 DECL|macro|IW_MAX_ENCODING_SIZES
 mdefine_line|#define IW_MAX_ENCODING_SIZES&t;8
@@ -238,10 +254,14 @@ mdefine_line|#define IW_POWER_MAX&t;&t;0x0002&t;/* Value is a maximum */
 DECL|macro|IW_POWER_RELATIVE
 mdefine_line|#define IW_POWER_RELATIVE&t;0x0004&t;/* Value is not in seconds/ms/us */
 multiline_comment|/* Transmit Power flags available */
+DECL|macro|IW_TXPOW_TYPE
+mdefine_line|#define IW_TXPOW_TYPE&t;&t;0x00FF&t;/* Type of value */
 DECL|macro|IW_TXPOW_DBM
 mdefine_line|#define IW_TXPOW_DBM&t;&t;0x0000&t;/* Value is in dBm */
 DECL|macro|IW_TXPOW_MWATT
 mdefine_line|#define IW_TXPOW_MWATT&t;&t;0x0001&t;/* Value is in mW */
+DECL|macro|IW_TXPOW_RANGE
+mdefine_line|#define IW_TXPOW_RANGE&t;&t;0x1000&t;/* Range of value between min/max */
 multiline_comment|/* Retry limits and lifetime flags available */
 DECL|macro|IW_RETRY_ON
 mdefine_line|#define IW_RETRY_ON&t;&t;0x0000&t;/* No details... */
@@ -281,6 +301,9 @@ mdefine_line|#define IW_SCAN_THIS_RATE&t;0x0080&t;/* Scan only this Bit-Rate */
 multiline_comment|/* Maximum size of returned data */
 DECL|macro|IW_SCAN_MAX_DATA
 mdefine_line|#define IW_SCAN_MAX_DATA&t;4096&t;/* In bytes */
+multiline_comment|/* Max number of char in custom event - use multiple of them if needed */
+DECL|macro|IW_CUSTOM_MAX
+mdefine_line|#define IW_CUSTOM_MAX&t;&t;256&t;/* In bytes */
 multiline_comment|/****************************** TYPES ******************************/
 multiline_comment|/* --------------------------- SUBTYPES --------------------------- */
 multiline_comment|/*&n; *&t;Generic format for most parameters that fit in an int&n; */
@@ -338,12 +361,12 @@ r_struct
 id|iw_freq
 (brace
 DECL|member|m
-id|__u32
+id|__s32
 id|m
 suffix:semicolon
 multiline_comment|/* Mantissa */
 DECL|member|e
-id|__u16
+id|__s16
 id|e
 suffix:semicolon
 multiline_comment|/* Exponent */
@@ -352,6 +375,11 @@ id|__u8
 id|i
 suffix:semicolon
 multiline_comment|/* List index (when in range struct) */
+DECL|member|pad
+id|__u8
+id|pad
+suffix:semicolon
+multiline_comment|/* Unused - just for alignement */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Quality of the link&n; */
