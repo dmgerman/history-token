@@ -2417,7 +2417,7 @@ c_cond
 id|readl
 c_func
 (paren
-id|dev-&gt;base_addr
+id|ioaddr
 op_plus
 id|PHYIDENTIFIER
 )paren
@@ -2598,7 +2598,7 @@ c_func
 (paren
 id|ADVERTISE_FULL
 comma
-id|dev-&gt;base_addr
+id|ioaddr
 op_plus
 id|ANARANLPAR
 )paren
@@ -3790,7 +3790,7 @@ c_func
 (paren
 l_int|0
 comma
-id|dev-&gt;base_addr
+id|ioaddr
 op_plus
 id|RXPDR
 )paren
@@ -5082,7 +5082,7 @@ c_func
 (paren
 l_int|0
 comma
-id|dev-&gt;base_addr
+id|ioaddr
 op_plus
 id|RXPDR
 )paren
@@ -5129,7 +5129,7 @@ c_func
 (paren
 l_int|0
 comma
-id|dev-&gt;base_addr
+id|ioaddr
 op_plus
 id|TXPDR
 )paren
@@ -6076,7 +6076,10 @@ id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|ioaddr
-comma
+op_assign
+id|dev-&gt;base_addr
+suffix:semicolon
+r_int
 id|boguscnt
 op_assign
 id|max_interrupt_work
@@ -6104,18 +6107,10 @@ c_func
 (paren
 l_int|0
 comma
-id|dev-&gt;base_addr
+id|ioaddr
 op_plus
 id|IMR
 )paren
-suffix:semicolon
-id|ioaddr
-op_assign
-id|dev-&gt;base_addr
-suffix:semicolon
-id|np
-op_assign
-id|dev-&gt;priv
 suffix:semicolon
 r_do
 (brace
