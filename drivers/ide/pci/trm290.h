@@ -6,19 +6,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 r_extern
 r_void
-id|init_setup_trm290
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
-id|ide_pci_device_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|init_hwif_trm290
 c_func
 (paren
@@ -36,6 +23,7 @@ id|__initdata
 op_assign
 (brace
 (brace
+multiline_comment|/* 0 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_TEKRAM
@@ -47,10 +35,6 @@ comma
 id|name
 suffix:colon
 l_string|&quot;TRM290&quot;
-comma
-id|init_setup
-suffix:colon
-id|init_setup_trm290
 comma
 id|init_chipset
 suffix:colon

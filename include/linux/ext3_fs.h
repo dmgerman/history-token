@@ -78,11 +78,11 @@ macro_line|# define EXT3_BLOCK_SIZE_BITS(s)&t;((s)-&gt;s_log_block_size + 10)
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 DECL|macro|EXT3_ADDR_PER_BLOCK_BITS
-mdefine_line|#define&t;EXT3_ADDR_PER_BLOCK_BITS(s)&t;((s)-&gt;u.ext3_sb.s_addr_per_block_bits)
+mdefine_line|#define&t;EXT3_ADDR_PER_BLOCK_BITS(s)&t;(EXT3_SB(s)-&gt;s_addr_per_block_bits)
 DECL|macro|EXT3_INODE_SIZE
-mdefine_line|#define EXT3_INODE_SIZE(s)&t;&t;((s)-&gt;u.ext3_sb.s_inode_size)
+mdefine_line|#define EXT3_INODE_SIZE(s)&t;&t;(EXT3_SB(s)-&gt;s_inode_size)
 DECL|macro|EXT3_FIRST_INO
-mdefine_line|#define EXT3_FIRST_INO(s)&t;&t;((s)-&gt;u.ext3_sb.s_first_ino)
+mdefine_line|#define EXT3_FIRST_INO(s)&t;&t;(EXT3_SB(s)-&gt;s_first_ino)
 macro_line|#else
 DECL|macro|EXT3_INODE_SIZE
 mdefine_line|#define EXT3_INODE_SIZE(s)&t;(((s)-&gt;s_rev_level == EXT3_GOOD_OLD_REV) ? &bslash;&n;&t;&t;&t;&t; EXT3_GOOD_OLD_INODE_SIZE : &bslash;&n;&t;&t;&t;&t; (s)-&gt;s_inode_size)
@@ -98,9 +98,9 @@ DECL|macro|EXT3_MIN_FRAG_LOG_SIZE
 mdefine_line|#define EXT3_MIN_FRAG_LOG_SIZE&t;&t;  10
 macro_line|#ifdef __KERNEL__
 DECL|macro|EXT3_FRAG_SIZE
-macro_line|# define EXT3_FRAG_SIZE(s)&t;&t;((s)-&gt;u.ext3_sb.s_frag_size)
+macro_line|# define EXT3_FRAG_SIZE(s)&t;&t;(EXT3_SB(s)-&gt;s_frag_size)
 DECL|macro|EXT3_FRAGS_PER_BLOCK
-macro_line|# define EXT3_FRAGS_PER_BLOCK(s)&t;((s)-&gt;u.ext3_sb.s_frags_per_block)
+macro_line|# define EXT3_FRAGS_PER_BLOCK(s)&t;(EXT3_SB(s)-&gt;s_frags_per_block)
 macro_line|#else
 DECL|macro|EXT3_FRAG_SIZE
 macro_line|# define EXT3_FRAG_SIZE(s)&t;&t;(EXT3_MIN_FRAG_SIZE &lt;&lt; (s)-&gt;s_log_frag_size)
@@ -218,13 +218,13 @@ suffix:semicolon
 multiline_comment|/*&n; * Macro-instructions used to manage group descriptors&n; */
 macro_line|#ifdef __KERNEL__
 DECL|macro|EXT3_BLOCKS_PER_GROUP
-macro_line|# define EXT3_BLOCKS_PER_GROUP(s)&t;((s)-&gt;u.ext3_sb.s_blocks_per_group)
+macro_line|# define EXT3_BLOCKS_PER_GROUP(s)&t;(EXT3_SB(s)-&gt;s_blocks_per_group)
 DECL|macro|EXT3_DESC_PER_BLOCK
-macro_line|# define EXT3_DESC_PER_BLOCK(s)&t;&t;((s)-&gt;u.ext3_sb.s_desc_per_block)
+macro_line|# define EXT3_DESC_PER_BLOCK(s)&t;&t;(EXT3_SB(s)-&gt;s_desc_per_block)
 DECL|macro|EXT3_INODES_PER_GROUP
-macro_line|# define EXT3_INODES_PER_GROUP(s)&t;((s)-&gt;u.ext3_sb.s_inodes_per_group)
+macro_line|# define EXT3_INODES_PER_GROUP(s)&t;(EXT3_SB(s)-&gt;s_inodes_per_group)
 DECL|macro|EXT3_DESC_PER_BLOCK_BITS
-macro_line|# define EXT3_DESC_PER_BLOCK_BITS(s)&t;((s)-&gt;u.ext3_sb.s_desc_per_block_bits)
+macro_line|# define EXT3_DESC_PER_BLOCK_BITS(s)&t;(EXT3_SB(s)-&gt;s_desc_per_block_bits)
 macro_line|#else
 DECL|macro|EXT3_BLOCKS_PER_GROUP
 macro_line|# define EXT3_BLOCKS_PER_GROUP(s)&t;((s)-&gt;s_blocks_per_group)
@@ -623,7 +623,7 @@ mdefine_line|#define clear_opt(o, opt)&t;&t;o &amp;= ~EXT3_MOUNT_##opt
 DECL|macro|set_opt
 mdefine_line|#define set_opt(o, opt)&t;&t;&t;o |= EXT3_MOUNT_##opt
 DECL|macro|test_opt
-mdefine_line|#define test_opt(sb, opt)&t;&t;((sb)-&gt;u.ext3_sb.s_mount_opt &amp; &bslash;&n;&t;&t;&t;&t;&t; EXT3_MOUNT_##opt)
+mdefine_line|#define test_opt(sb, opt)&t;&t;(EXT3_SB(sb)-&gt;s_mount_opt &amp; &bslash;&n;&t;&t;&t;&t;&t; EXT3_MOUNT_##opt)
 macro_line|#else
 DECL|macro|EXT2_MOUNT_NOLOAD
 mdefine_line|#define EXT2_MOUNT_NOLOAD&t;&t;EXT3_MOUNT_NOLOAD
@@ -908,8 +908,25 @@ multiline_comment|/* Padding to the end of the block */
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-DECL|macro|EXT3_SB
-mdefine_line|#define EXT3_SB(sb)&t;(&amp;((sb)-&gt;u.ext3_sb))
+DECL|function|EXT3_SB
+r_static
+r_inline
+r_struct
+id|ext3_sb_info
+op_star
+id|EXT3_SB
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_return
+id|sb-&gt;u.generic_sbp
+suffix:semicolon
+)brace
 DECL|function|EXT3_I
 r_static
 r_inline

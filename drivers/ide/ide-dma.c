@@ -537,6 +537,13 @@ id|stat
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ide_dma_intr
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|ide_dma_intr
+)paren
+suffix:semicolon
 DECL|function|ide_build_sglist
 r_static
 r_int
@@ -1377,6 +1384,13 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* revert to PIO for this request */
 )brace
+DECL|variable|ide_build_dmatable
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|ide_build_dmatable
+)paren
+suffix:semicolon
 multiline_comment|/* Teardown mappings after DMA has completed.  */
 DECL|function|ide_destroy_dmatable
 r_void
@@ -1453,6 +1467,13 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|ide_destroy_dmatable
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|ide_destroy_dmatable
+)paren
+suffix:semicolon
 DECL|function|config_drive_for_dma
 r_static
 r_int
@@ -4686,4 +4707,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ide_setup_dma
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|ide_setup_dma
+)paren
+suffix:semicolon
 eof

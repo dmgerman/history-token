@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/mptbase.c&n; *      High performance SCSI + LAN / Fibre Channel device drivers.&n; *      This is the Fusion MPT base driver which supports multiple&n; *      (SCSI + LAN) specialized protocol drivers.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      There are lots of people not mentioned below that deserve credit&n; *      and thanks but won&squot;t get it here - sorry in advance that you&n; *      got overlooked.&n; *&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A special thanks to Noah Romer (LSI Logic) for tons of work&n; *      and tough debugging on the LAN driver, especially early on;-)&n; *      And to Roger Hickerson (LSI Logic) for tirelessly supporting&n; *      this driver project.&n; *&n; *      A special thanks to Pamela Delaney (LSI Logic) for tons of work&n; *      and countless enhancements while adding support for the 1030&n; *      chip family.  Pam has been instrumental in the development of&n; *      of the 2.xx.xx series fusion drivers, and her contributions are&n; *      far too numerous to hope to list in one place.&n; *&n; *      All manner of help from Stephen Shirron (LSI Logic):&n; *      low-level FC analysis, debug + various fixes in FCxx firmware,&n; *      initial port to alpha platform, various driver code optimizations,&n; *      being a faithful sounding board on all sorts of issues &amp; ideas,&n; *      etc.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      Special thanks goes to the I2O LAN driver people at the&n; *      University of Helsinki, who, unbeknownst to them, provided&n; *      the inspiration and initial structure for this driver.&n; *&n; *      A really huge debt of gratitude is owed to Eddie C. Dost&n; *      for gobs of hard work fixing and optimizing LAN code.&n; *      THANK YOU!&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptbase.c,v 1.119 2002/06/20 13:28:15 pdelaney Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/mptbase.c&n; *      High performance SCSI + LAN / Fibre Channel device drivers.&n; *      This is the Fusion MPT base driver which supports multiple&n; *      (SCSI + LAN) specialized protocol drivers.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      There are lots of people not mentioned below that deserve credit&n; *      and thanks but won&squot;t get it here - sorry in advance that you&n; *      got overlooked.&n; *&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A special thanks to Noah Romer (LSI Logic) for tons of work&n; *      and tough debugging on the LAN driver, especially early on;-)&n; *      And to Roger Hickerson (LSI Logic) for tirelessly supporting&n; *      this driver project.&n; *&n; *      A special thanks to Pamela Delaney (LSI Logic) for tons of work&n; *      and countless enhancements while adding support for the 1030&n; *      chip family.  Pam has been instrumental in the development of&n; *      of the 2.xx.xx series fusion drivers, and her contributions are&n; *      far too numerous to hope to list in one place.&n; *&n; *      All manner of help from Stephen Shirron (LSI Logic):&n; *      low-level FC analysis, debug + various fixes in FCxx firmware,&n; *      initial port to alpha platform, various driver code optimizations,&n; *      being a faithful sounding board on all sorts of issues &amp; ideas,&n; *      etc.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      Special thanks goes to the I2O LAN driver people at the&n; *      University of Helsinki, who, unbeknownst to them, provided&n; *      the inspiration and initial structure for this driver.&n; *&n; *      A really huge debt of gratitude is owed to Eddie C. Dost&n; *      for gobs of hard work fixing and optimizing LAN code.&n; *      THANK YOU!&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptbase.c,v 1.121 2002/07/23 18:56:59 pdelaney Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -1539,6 +1539,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* No reply flush! */
 )brace
+macro_line|#ifdef MPT_DEBUG_IRQ
 r_if
 c_cond
 (paren
@@ -1553,7 +1554,7 @@ r_int
 id|FC929
 )paren
 (brace
-multiline_comment|/* Verify mf, mf are reasonable.&n;&t;&t;&t; */
+multiline_comment|/* Verify mf, mr are reasonable.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1709,6 +1710,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 multiline_comment|/*  Check for (valid) IO callback!  */
 r_if
 c_cond
@@ -5787,7 +5789,7 @@ c_cond
 id|ioc-&gt;upload_fw
 )paren
 (brace
-id|dprintk
+id|ddlprintk
 c_func
 (paren
 (paren
@@ -6525,6 +6527,54 @@ comma
 id|NO_SLEEP
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|this-&gt;cached_fw
+op_ne
+l_int|NULL
+)paren
+(brace
+id|ddlprintk
+c_func
+(paren
+(paren
+id|KERN_INFO
+id|MYNAM
+l_string|&quot;: Pushing FW onto adapter&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|state
+op_assign
+id|mpt_downloadboot
+c_func
+(paren
+id|this
+comma
+id|NO_SLEEP
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|MYNAM
+l_string|&quot;: firmware downloadboot failure (%d)!&bslash;n&quot;
+comma
+id|state
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Disable adapter interrupts! */
 id|CHIPREG_WRITE32
@@ -7348,9 +7398,55 @@ id|MPI_IOC_STATE_MASK
 op_eq
 id|MPI_IOC_STATE_READY
 )paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+r_int
+)paren
+id|ioc-&gt;chip_type
+op_le
+(paren
+r_int
+)paren
+id|FC929
+)paren
 r_return
 l_int|0
 suffix:semicolon
+r_else
+(brace
+multiline_comment|/* Workaround from broken 1030 FW.&n;&t;&t;&t; * Force a diagnostic reset if fails.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|r
+op_assign
+id|SendIocReset
+c_func
+(paren
+id|ioc
+comma
+id|MPI_FUNCTION_IOC_MESSAGE_UNIT_RESET
+comma
+id|sleepFlag
+)paren
+)paren
+op_eq
+l_int|0
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_else
+id|statefault
+op_assign
+l_int|4
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/*&n;&t; *&t;Check to see if IOC is in FAULT state.&n;&t; */
 r_if
 c_cond
@@ -8696,6 +8792,21 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+id|ddlprintk
+c_func
+(paren
+(paren
+id|MYIOC_s_INFO_FMT
+l_string|&quot;flags %d, upload_fw %d &bslash;n&quot;
+comma
+id|ioc-&gt;name
+comma
+id|ioc_init.Flags
+comma
+id|ioc-&gt;upload_fw
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9971,7 +10082,7 @@ id|ioc-&gt;alloc_total
 op_add_assign
 id|alloc_sz
 suffix:semicolon
-id|dprintk
+id|ddlprintk
 c_func
 (paren
 (paren
@@ -10315,7 +10426,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-id|dprintk
+id|ddlprintk
 c_func
 (paren
 (paren
@@ -10362,7 +10473,7 @@ op_logical_or
 id|freeMem
 )paren
 (brace
-id|dprintk
+id|ddlprintk
 c_func
 (paren
 (paren
@@ -10476,7 +10587,7 @@ suffix:semicolon
 r_int
 id|left_u32s
 suffix:semicolon
-id|dprintk
+id|ddlprintk
 c_func
 (paren
 (paren
@@ -10511,7 +10622,7 @@ op_amp
 id|ioc-&gt;alt_ioc-&gt;chip-&gt;Diagnostic
 )paren
 suffix:semicolon
-id|dprintk
+id|ddlprintk
 c_func
 (paren
 (paren
@@ -10527,7 +10638,7 @@ id|diag1val
 )paren
 suffix:semicolon
 macro_line|#endif
-id|dprintk
+id|ddlprintk
 c_func
 (paren
 (paren
@@ -10547,7 +10658,7 @@ c_cond
 (paren
 id|ioc-&gt;alt_ioc
 )paren
-id|dprintk
+id|ddlprintk
 c_func
 (paren
 (paren
@@ -10581,7 +10692,7 @@ r_if
 c_cond
 (paren
 id|ioc-&gt;cached_fw
-op_eq
+op_ne
 l_int|NULL
 )paren
 id|pCached
@@ -10599,7 +10710,11 @@ c_cond
 (paren
 id|ioc-&gt;alt_ioc
 op_logical_and
+(paren
 id|ioc-&gt;alt_ioc-&gt;cached_fw
+op_ne
+l_int|NULL
+)paren
 )paren
 id|pCached
 op_assign
@@ -10610,7 +10725,7 @@ op_star
 )paren
 id|ioc-&gt;alt_ioc-&gt;cached_fw
 suffix:semicolon
-id|dprintk
+id|ddlprintk
 c_func
 (paren
 (paren
@@ -10619,7 +10734,7 @@ l_string|&quot;DbGb2: FW Image @ %p&bslash;n&quot;
 comma
 id|ioc-&gt;name
 comma
-id|FwHdr
+id|pCached
 )paren
 )paren
 suffix:semicolon
@@ -10785,7 +10900,7 @@ op_amp
 id|ioc-&gt;alt_ioc-&gt;chip-&gt;Diagnostic
 )paren
 suffix:semicolon
-id|dprintk
+id|ddlprintk
 c_func
 (paren
 (paren
@@ -10801,7 +10916,7 @@ id|diag1val
 )paren
 suffix:semicolon
 macro_line|#endif
-id|dprintk
+id|ddlprintk
 c_func
 (paren
 (paren
@@ -10848,7 +10963,7 @@ op_amp
 id|ioc-&gt;alt_ioc-&gt;chip-&gt;Diagnostic
 )paren
 suffix:semicolon
-id|dprintk
+id|ddlprintk
 c_func
 (paren
 (paren
@@ -10864,30 +10979,6 @@ id|diag1val
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Write the LoadStartAddress to the DiagRw Address Register&n;&t; * using Programmed IO&n;&t; */
-id|CHIPREG_PIO_WRITE32
-c_func
-(paren
-op_amp
-id|ioc-&gt;pio_chip-&gt;DiagRwAddress
-comma
-id|FwHdr-&gt;LoadStartAddress
-)paren
-suffix:semicolon
-id|dprintk
-c_func
-(paren
-(paren
-id|MYIOC_s_INFO_FMT
-l_string|&quot;LoadStart addr written 0x%x &bslash;n&quot;
-comma
-id|ioc-&gt;name
-comma
-id|FwHdr-&gt;LoadStartAddress
-)paren
-)paren
-suffix:semicolon
-macro_line|#if 1
 multiline_comment|/* max_idx = 1 + maximum valid buffer index&n;&t; */
 id|max_idx
 op_assign
@@ -10943,7 +11034,30 @@ id|nextImage
 op_assign
 id|FwHdr-&gt;NextImageHeaderOffset
 suffix:semicolon
-id|dprintk
+multiline_comment|/* Write the LoadStartAddress to the DiagRw Address Register&n;&t; * using Programmed IO&n;&t; */
+id|CHIPREG_PIO_WRITE32
+c_func
+(paren
+op_amp
+id|ioc-&gt;pio_chip-&gt;DiagRwAddress
+comma
+id|FwHdr-&gt;LoadStartAddress
+)paren
+suffix:semicolon
+id|ddlprintk
+c_func
+(paren
+(paren
+id|MYIOC_s_INFO_FMT
+l_string|&quot;LoadStart addr written 0x%x &bslash;n&quot;
+comma
+id|ioc-&gt;name
+comma
+id|FwHdr-&gt;LoadStartAddress
+)paren
+)paren
+suffix:semicolon
+id|ddlprintk
 c_func
 (paren
 (paren
@@ -11367,7 +11481,7 @@ op_div
 l_int|4
 suffix:semicolon
 )brace
-id|dprintk
+id|ddlprintk
 c_func
 (paren
 (paren
@@ -11463,101 +11577,8 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-macro_line|#else
-r_while
-c_loop
-(paren
-id|nextImage
-)paren
-(brace
-multiline_comment|/* Set the pointer to the extended image&n;&t;&t; */
-id|ExtHdr
-op_assign
-(paren
-id|MpiExtImageHeader_t
-op_star
-)paren
-(paren
-(paren
-r_char
-op_star
-)paren
-id|FwHdr
-op_plus
-id|nextImage
-)paren
-suffix:semicolon
-id|CHIPREG_PIO_WRITE32
-c_func
-(paren
-op_amp
-id|ioc-&gt;pio_chip-&gt;DiagRwAddress
-comma
-id|ExtHdr-&gt;LoadStartAddress
-)paren
-suffix:semicolon
-id|count
-op_assign
-(paren
-id|ExtHdr-&gt;ImageSize
-op_plus
-l_int|3
-)paren
-op_div
-l_int|4
-suffix:semicolon
-id|ptru32
-op_assign
-(paren
-id|u32
-op_star
-)paren
-id|ExtHdr
-suffix:semicolon
-id|dprintk
-c_func
-(paren
-(paren
-id|MYIOC_s_INFO_FMT
-l_string|&quot;Write Ext Image: 0x%x u32&squot;s @ %p&bslash;n&quot;
-comma
-id|ioc-&gt;name
-comma
-id|count
-comma
-id|ptru32
-)paren
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|count
-op_decrement
-)paren
-(brace
-id|CHIPREG_PIO_WRITE32
-c_func
-(paren
-op_amp
-id|ioc-&gt;pio_chip-&gt;DiagRwData
-comma
-op_star
-id|ptru32
-)paren
-suffix:semicolon
-id|ptru32
-op_increment
-suffix:semicolon
-)brace
-id|nextImage
-op_assign
-id|ExtHdr-&gt;NextImageHeaderOffset
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Write the IopResetVectorRegAddr */
-id|dprintk
+id|ddlprintk
 c_func
 (paren
 (paren
@@ -11578,7 +11599,7 @@ id|FwHdr-&gt;IopResetRegAddr
 )paren
 suffix:semicolon
 multiline_comment|/* Write the IopResetVectorValue */
-id|dprintk
+id|ddlprintk
 c_func
 (paren
 (paren
@@ -11982,6 +12003,15 @@ c_func
 op_amp
 id|ioc-&gt;chip-&gt;WriteSequence
 comma
+l_int|0xFF
+)paren
+suffix:semicolon
+id|CHIPREG_WRITE32
+c_func
+(paren
+op_amp
+id|ioc-&gt;chip-&gt;WriteSequence
+comma
 id|MPI_WRSEQ_1ST_KEY_VALUE
 )paren
 suffix:semicolon
@@ -12137,6 +12167,22 @@ id|diag1val
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Write the PreventIocBoot bit */
+macro_line|#if 1
+r_if
+c_cond
+(paren
+(paren
+id|ioc-&gt;cached_fw
+)paren
+op_logical_or
+(paren
+id|ioc-&gt;alt_ioc
+op_logical_and
+id|ioc-&gt;alt_ioc-&gt;cached_fw
+)paren
+)paren
+(brace
+macro_line|#else
 r_if
 c_cond
 (paren
@@ -12145,6 +12191,7 @@ op_amp
 id|MPI_IOCFACTS_FLAGS_FW_DOWNLOAD_BOOT
 )paren
 (brace
+macro_line|#endif
 id|diag0val
 op_or_assign
 id|MPI_DIAG_PREVENT_IOC_BOOT
@@ -12310,6 +12357,22 @@ suffix:semicolon
 )brace
 multiline_comment|/* FIXME?  Examine results here? */
 )brace
+macro_line|#if 1
+r_if
+c_cond
+(paren
+(paren
+id|ioc-&gt;cached_fw
+)paren
+op_logical_or
+(paren
+id|ioc-&gt;alt_ioc
+op_logical_and
+id|ioc-&gt;alt_ioc-&gt;cached_fw
+)paren
+)paren
+(brace
+macro_line|#else
 r_if
 c_cond
 (paren
@@ -12318,6 +12381,7 @@ op_amp
 id|MPI_IOCFACTS_FLAGS_FW_DOWNLOAD_BOOT
 )paren
 (brace
+macro_line|#endif
 multiline_comment|/* If the DownloadBoot operation fails, the&n;&t;&t;&t; * IOC will be left unusable. This is a fatal error&n;&t;&t;&t; * case.  _diag_reset will return &lt; 0&n;&t;&t;&t; */
 r_for
 c_loop
@@ -20422,6 +20486,19 @@ id|ioc-&gt;name
 )paren
 suffix:semicolon
 )brace
+id|ioc-&gt;reload_fw
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ioc-&gt;alt_ioc
+)paren
+id|ioc-&gt;alt_ioc-&gt;reload_fw
+op_assign
+l_int|0
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -21538,16 +21615,119 @@ id|u32
 id|log_info
 )paren
 (brace
-multiline_comment|/* FIXME! */
+id|u32
+id|info
+op_assign
+id|log_info
+op_amp
+l_int|0x00FF0000
+suffix:semicolon
+r_char
+op_star
+id|desc
+op_assign
+l_string|&quot;unknown&quot;
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|info
+)paren
+(brace
+r_case
+l_int|0x00010000
+suffix:colon
+id|desc
+op_assign
+l_string|&quot;bug! MID not found&quot;
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ioc-&gt;reload_fw
+op_eq
+l_int|0
+)paren
+id|ioc-&gt;reload_fw
+op_increment
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x00020000
+suffix:colon
+id|desc
+op_assign
+l_string|&quot;Parity Error&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x00030000
+suffix:colon
+id|desc
+op_assign
+l_string|&quot;ASYNC Outbound Overrun&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x00040000
+suffix:colon
+id|desc
+op_assign
+l_string|&quot;SYNC Offset Error&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x00050000
+suffix:colon
+id|desc
+op_assign
+l_string|&quot;BM Change&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x00060000
+suffix:colon
+id|desc
+op_assign
+l_string|&quot;Msg In Overflow&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x00070000
+suffix:colon
+id|desc
+op_assign
+l_string|&quot;DMA Error&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x00080000
+suffix:colon
+id|desc
+op_assign
+l_string|&quot;Outbound DMA Overrun&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
 id|MYIOC_s_INFO_FMT
-l_string|&quot;LogInfo(0x%08x)&bslash;n&quot;
+l_string|&quot;LogInfo(0x%08x): F/W: %s&bslash;n&quot;
 comma
 id|ioc-&gt;name
 comma
 id|log_info
+comma
+id|desc
 )paren
 suffix:semicolon
 )brace

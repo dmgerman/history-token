@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -49,7 +50,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 507 $ James Goodwin &lt;jamesg@filanet.com&gt;&quot;
+l_string|&quot;$Rev: 545 $ James Goodwin &lt;jamesg@filanet.com&gt;&quot;
 suffix:semicolon
 multiline_comment|/*&n; * Module load parameter definitions&n; */
 multiline_comment|/*&n; * Change sbp2_max_speed on module load if you have a bad IEEE-1394 controller&n; * that has trouble running 2KB packets at 400mb.&n; *&n; * NOTE: On certain OHCI parts I have seen short packets on async transmit&n; * (probably due to PCI latency/throughput issues with the part). You can&n; * bump down the speed if you are running into problems.&n; *&n; * Valid values:&n; * sbp2_max_speed = 2 (default: max speed 400mb)&n; * sbp2_max_speed = 1 (max speed 200mb)&n; * sbp2_max_speed = 0 (max speed 100mb)&n; */
@@ -197,6 +198,30 @@ id|sbp2_exclusive_login
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/*&n; * SCSI inquiry hack for really badly behaved sbp2 devices. Turn this on if your sbp2 device&n; * is not properly handling the SCSI inquiry command. This hack makes the inquiry look more&n; * like a typical MS Windows inquiry.&n; */
+id|MODULE_PARM
+c_func
+(paren
+id|sbp2_force_inquiry_hack
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|sbp2_force_inquiry_hack
+comma
+l_string|&quot;Force SCSI inquiry hack (default = 0)&quot;
+)paren
+suffix:semicolon
+DECL|variable|sbp2_force_inquiry_hack
+r_static
+r_int
+id|sbp2_force_inquiry_hack
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n; * Export information about protocols/devices supported by this driver.&n; */
 DECL|variable|sbp2_id_table
 r_static
@@ -208,20 +233,23 @@ id|sbp2_id_table
 op_assign
 (brace
 (brace
+dot
 id|match_flags
-suffix:colon
+op_assign
 id|IEEE1394_MATCH_SPECIFIER_ID
 op_or
 id|IEEE1394_MATCH_VERSION
 comma
+dot
 id|specifier_id
-suffix:colon
+op_assign
 id|SBP2_UNIT_SPEC_ID_ENTRY
 op_amp
 l_int|0xffffff
 comma
+dot
 id|version
-suffix:colon
+op_assign
 id|SBP2_SW_VERSION_ENTRY
 op_amp
 l_int|0xffffff
@@ -336,8 +364,6 @@ mdefine_line|#define sbp2_spin_lock(lock, flags)&t;do {save_flags(flags); cli();
 DECL|macro|sbp2_spin_unlock
 mdefine_line|#define sbp2_spin_unlock(lock, flags)&t;do {restore_flags(flags);} while (0)
 macro_line|#endif
-multiline_comment|/*&n; * SCSI inquiry hack for really badly behaved sbp2 devices. Turn this on if your sbp2 device&n; * is not properly handling the SCSI inquiry command. This hack makes the inquiry look more &n; * like a typical MS Windows inquiry.&n; */
-multiline_comment|/* #define SBP2_FORCE_36_BYTE_INQUIRY */
 multiline_comment|/*&n; * Globals&n; */
 DECL|variable|scsi_driver_template
 r_static
@@ -382,12 +408,14 @@ id|hpsb_highlevel_ops
 id|sbp2_hl_ops
 op_assign
 (brace
+dot
 id|add_host
-suffix:colon
+op_assign
 id|sbp2_add_host
 comma
+dot
 id|remove_host
-suffix:colon
+op_assign
 id|sbp2_remove_host
 comma
 )brace
@@ -399,8 +427,9 @@ id|hpsb_address_ops
 id|sbp2_ops
 op_assign
 (brace
+dot
 id|write
-suffix:colon
+op_assign
 id|sbp2_handle_status_write
 )brace
 suffix:semicolon
@@ -412,12 +441,14 @@ id|hpsb_address_ops
 id|sbp2_physdma_ops
 op_assign
 (brace
+dot
 id|read
-suffix:colon
+op_assign
 id|sbp2_handle_physdma_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|sbp2_handle_physdma_write
 comma
 )brace
@@ -430,25 +461,45 @@ id|hpsb_protocol_driver
 id|sbp2_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;SBP2 Driver&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|sbp2_id_table
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|sbp2_probe
 comma
+dot
 id|disconnect
-suffix:colon
+op_assign
 id|sbp2_disconnect
 comma
+dot
 id|update
-suffix:colon
+op_assign
 id|sbp2_update
+)brace
+suffix:semicolon
+multiline_comment|/* List of device firmware&squot;s that require a forced 36 byte inquiry. Note&n; * the final 0x0 needs to be there for denoting end of list.  */
+DECL|variable|sbp2_broken_inquiry_list
+r_static
+id|u32
+id|sbp2_broken_inquiry_list
+(braket
+)braket
+op_assign
+(brace
+l_int|0x00002800
+comma
+multiline_comment|/* Stefan Richter &lt;richtest@bauwesen.tu-cottbus.de&gt; */
+l_int|0x0
 )brace
 suffix:semicolon
 multiline_comment|/**************************************&n; * General utility functions&n; **************************************/
@@ -5340,7 +5391,7 @@ suffix:semicolon
 r_case
 id|SBP2_FIRMWARE_REVISION_KEY
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Firmware revision (used to find broken&n;&t;&t;&t; * devices). If the vendor id is 0xa0b8&n;&t;&t;&t; * (Symbios vendor id), then we have a&n;&t;&t;&t; * bridge with 128KB max transfer size&n;&t;&t;&t; * limitation.&n;&t;&t;&t; */
+multiline_comment|/* Firmware revision */
 id|scsi_id-&gt;sbp2_firmware_revision
 op_assign
 id|CONFIG_ROM_VALUE
@@ -5364,6 +5415,20 @@ r_int
 id|scsi_id-&gt;sbp2_firmware_revision
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* This is the start of our broken device checking. We try to hack&n;&t; * around oddities and known defects.  */
+id|scsi_id-&gt;workarounds
+op_assign
+l_int|0x0
+suffix:semicolon
+multiline_comment|/* If the vendor id is 0xa0b8 (Symbios vendor id), then we have a&n;&t; * bridge with 128KB max transfer size limitation. For sanity, we&n;&t; * only voice this when the current sbp2_max_sectors setting&n;&t; * exceeds the 128k limit. By default, that is not the case.&n;&t; *&n;&t; * It would be really nice if we could detect this before the scsi&n;&t; * host gets initialized. That way we can down-force the&n;&t; * sbp2_max_sectors to account for it. That is not currently&n;&t; * possible.  */
 r_if
 c_cond
 (paren
@@ -5374,21 +5439,100 @@ l_int|0xffff00
 )paren
 op_eq
 id|SBP2_128KB_BROKEN_FIRMWARE
+op_logical_and
+(paren
+id|sbp2_max_sectors
+op_star
+l_int|512
+)paren
+OG
+(paren
+l_int|128
+op_star
+l_int|1024
+)paren
 )paren
 (brace
 id|SBP2_WARN
 c_func
 (paren
-l_string|&quot;warning: Bridge chipset supports 128KB max transfer size&quot;
+l_string|&quot;Node &quot;
+id|NODE_BUS_FMT
+l_string|&quot;: Bridge only supports 128KB max transfer size.&quot;
+comma
+id|NODE_BUS_ARGS
+c_func
+(paren
+id|scsi_id-&gt;ne-&gt;nodeid
+)paren
 )paren
 suffix:semicolon
+id|SBP2_WARN
+c_func
+(paren
+l_string|&quot;WARNING: Current sbp2_max_sectors setting is larger than 128KB (%d sectors)!&quot;
+comma
+id|sbp2_max_sectors
+)paren
+suffix:semicolon
+id|scsi_id-&gt;workarounds
+op_or_assign
+id|SBP2_BREAKAGE_128K_MAX_TRANSFER
+suffix:semicolon
 )brace
+multiline_comment|/* Check for a blacklisted set of devices that require us to force&n;&t; * a 36 byte host inquiry. This can be overriden as a module param&n;&t; * (to force all hosts).&n;&t; *&n;&t; * XXX If this does not detect your firmware as being defective,&n;&t; * but using the sbp2_force_inquiry_hack allows your device to&n;&t; * work, please submit the value of your firmware revision to the&n;&t; * linux1394-devel mailing list.  */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|sbp2_broken_inquiry_list
+(braket
+id|i
+)braket
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|scsi_id-&gt;sbp2_firmware_revision
+op_amp
+l_int|0xffff00
+)paren
+op_eq
+id|sbp2_broken_inquiry_list
+(braket
+id|i
+)braket
+)paren
+(brace
+id|SBP2_WARN
+c_func
+(paren
+l_string|&quot;Node &quot;
+id|NODE_BUS_FMT
+l_string|&quot;: Using 36byte inquiry workaround&quot;
+comma
+id|NODE_BUS_ARGS
+c_func
+(paren
+id|scsi_id-&gt;ne-&gt;nodeid
+)paren
+)paren
+suffix:semicolon
+id|scsi_id-&gt;workarounds
+op_or_assign
+id|SBP2_BREAKAGE_INQUIRY_HACK
+suffix:semicolon
 r_break
 suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
+singleline_comment|// No need to continue.
 )brace
 )brace
 )brace
@@ -7039,7 +7183,15 @@ op_eq
 id|INQUIRY
 )paren
 (brace
-macro_line|#ifdef SBP2_FORCE_36_BYTE_INQUIRY
+r_if
+c_cond
+(paren
+id|sbp2_force_inquiry_hack
+op_logical_or
+id|scsi_id-&gt;workarounds
+op_amp
+id|SBP2_BREAKAGE_INQUIRY_HACK
+)paren
 id|request_bufflen
 op_assign
 id|cmd
@@ -7049,7 +7201,7 @@ l_int|4
 op_assign
 l_int|0x24
 suffix:semicolon
-macro_line|#else
+r_else
 id|request_bufflen
 op_assign
 id|cmd
@@ -7057,7 +7209,6 @@ id|cmd
 l_int|4
 )braket
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n;&t; * Now actually fill in the comamnd orb and sbp2 s/g list&n;&t; */
 id|sbp2_create_command_orb
@@ -9535,7 +9686,25 @@ id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Called by scsi stack to get bios parameters (used by fdisk, and at boot).&n; */
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,28)
 DECL|function|sbp2scsi_biosparam
+r_static
+r_int
+id|sbp2scsi_biosparam
+(paren
+id|Scsi_Disk
+op_star
+id|disk
+comma
+id|kdev_t
+id|dev
+comma
+r_int
+id|geom
+(braket
+)braket
+)paren
+macro_line|#else
 r_static
 r_int
 id|sbp2scsi_biosparam
@@ -9554,6 +9723,7 @@ id|geom
 (braket
 )braket
 )paren
+macro_line|#endif
 (brace
 r_int
 id|heads
@@ -9656,11 +9826,33 @@ l_string|&quot;sbp2scsi_detect&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Call sbp2_init to register with the ieee1394 stack. This&n;&t; * results in a callback to sbp2_add_host for each ieee1394&n;&t; * host controller currently registered, and for each of those&n;&t; * we register a scsi host with the scsi stack.&n;&t; */
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|io_request_lock
+)paren
+suffix:semicolon
 id|sbp2_init
 c_func
 (paren
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|io_request_lock
+)paren
+suffix:semicolon
+macro_line|#else
+id|sbp2_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* We return the number of hosts registered. */
 r_return
 id|scsi_driver_template.present
@@ -9788,67 +9980,82 @@ id|Scsi_Host_Template
 id|scsi_driver_template
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;IEEE-1394 SBP-2 protocol driver&quot;
 comma
+dot
 id|info
-suffix:colon
+op_assign
 id|sbp2scsi_info
 comma
+dot
 id|detect
-suffix:colon
+op_assign
 id|sbp2scsi_detect
 comma
+dot
 id|queuecommand
-suffix:colon
+op_assign
 id|sbp2scsi_queuecommand
 comma
+dot
 id|eh_abort_handler
-suffix:colon
+op_assign
 id|sbp2scsi_abort
 comma
+dot
 id|eh_device_reset_handler
-suffix:colon
+op_assign
 id|sbp2scsi_reset
 comma
+dot
 id|eh_bus_reset_handler
-suffix:colon
+op_assign
 id|sbp2scsi_reset
 comma
+dot
 id|eh_host_reset_handler
-suffix:colon
+op_assign
 id|sbp2scsi_reset
 comma
+dot
 id|bios_param
-suffix:colon
+op_assign
 id|sbp2scsi_biosparam
 comma
+dot
 id|this_id
-suffix:colon
+op_assign
 op_minus
 l_int|1
 comma
+dot
 id|sg_tablesize
-suffix:colon
+op_assign
 id|SBP2_MAX_SG_ELEMENTS
 comma
+dot
 id|use_clustering
-suffix:colon
+op_assign
 id|SBP2_CLUSTERING
 comma
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+dot
 id|use_new_eh_code
-suffix:colon
+op_assign
 id|TRUE
 comma
 macro_line|#endif
+dot
 id|emulated
-suffix:colon
+op_assign
 l_int|1
 comma
+dot
 id|proc_name
-suffix:colon
+op_assign
 id|SBP2_DEVICE_NAME
 comma
 )brace

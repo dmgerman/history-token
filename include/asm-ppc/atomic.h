@@ -174,6 +174,8 @@ r_return
 id|t
 suffix:semicolon
 )brace
+DECL|macro|atomic_add_negative
+mdefine_line|#define atomic_add_negative(a, v)&t;(atomic_add_return((a), (v)) &lt; 0)
 DECL|function|atomic_sub
 r_static
 id|__inline__
