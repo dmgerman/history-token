@@ -1456,9 +1456,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|rc
 )paren
 r_return
+op_logical_neg
 id|rc
 suffix:semicolon
 singleline_comment|// set the Edge Level Control Register (ELCR)
