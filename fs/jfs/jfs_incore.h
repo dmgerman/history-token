@@ -199,6 +199,15 @@ l_int|128
 )braket
 suffix:semicolon
 multiline_comment|/* 128: inline symlink */
+multiline_comment|/* _inline_ea may overlay the last part of&n;&t;&t;&t; * file._xtroot if maxentry = XTROOTINITSLOT&n;&t;&t;&t; */
+DECL|member|_inline_ea
+id|unchar
+id|_inline_ea
+(braket
+l_int|128
+)braket
+suffix:semicolon
+multiline_comment|/* 128: inline extended attr */
 DECL|member|link
 )brace
 id|link
@@ -224,6 +233,8 @@ DECL|macro|i_dtroot
 mdefine_line|#define i_dtroot u.dir._dtroot
 DECL|macro|i_inline
 mdefine_line|#define i_inline u.link._inline
+DECL|macro|i_inline_ea
+mdefine_line|#define i_inline_ea u.link._inline_ea
 DECL|macro|IREAD_LOCK
 mdefine_line|#define IREAD_LOCK(ip)&t;&t;down_read(&amp;JFS_IP(ip)-&gt;rdwrlock)
 DECL|macro|IREAD_UNLOCK

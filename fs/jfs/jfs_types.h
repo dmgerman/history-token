@@ -227,6 +227,10 @@ DECL|macro|lengthDXD
 mdefine_line|#define&t;lengthDXD&t;lengthPXD
 DECL|macro|addressDXD
 mdefine_line|#define&t;addressDXD&t;addressPXD
+DECL|macro|DXDsize
+mdefine_line|#define DXDsize(dxd, size32) ((dxd)-&gt;size = cpu_to_le32(size32))
+DECL|macro|sizeDXD
+mdefine_line|#define sizeDXD(dxd)&t;le32_to_cpu((dxd)-&gt;size)
 multiline_comment|/*&n; *      directory entry argument&n; */
 DECL|struct|component_name
 r_typedef
