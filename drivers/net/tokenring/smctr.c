@@ -14229,9 +14229,6 @@ id|i
 op_increment
 )paren
 (brace
-suffix:semicolon
-)brace
-(brace
 r_if
 c_cond
 (paren
