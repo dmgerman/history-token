@@ -19,7 +19,7 @@ macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/l2cap.h&gt;
 macro_line|#include &lt;net/bluetooth/rfcomm.h&gt;
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;1.3&quot;
+mdefine_line|#define VERSION &quot;1.4&quot;
 macro_line|#ifndef CONFIG_BT_RFCOMM_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG

@@ -428,6 +428,10 @@ DECL|member|mscex
 id|u8
 id|mscex
 suffix:semicolon
+DECL|member|link_mode
+id|u32
+id|link_mode
+suffix:semicolon
 DECL|member|mtu
 id|uint
 id|mtu
@@ -848,6 +852,39 @@ id|rc_channel
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|RFCOMM_CONNINFO
+mdefine_line|#define RFCOMM_CONNINFO&t;0x02
+DECL|struct|rfcomm_conninfo
+r_struct
+id|rfcomm_conninfo
+(brace
+DECL|member|hci_handle
+id|__u16
+id|hci_handle
+suffix:semicolon
+DECL|member|dev_class
+id|__u8
+id|dev_class
+(braket
+l_int|3
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|RFCOMM_LM
+mdefine_line|#define RFCOMM_LM&t;0x03
+DECL|macro|RFCOMM_LM_MASTER
+mdefine_line|#define RFCOMM_LM_MASTER&t;0x0001
+DECL|macro|RFCOMM_LM_AUTH
+mdefine_line|#define RFCOMM_LM_AUTH&t;&t;0x0002
+DECL|macro|RFCOMM_LM_ENCRYPT
+mdefine_line|#define RFCOMM_LM_ENCRYPT&t;0x0004
+DECL|macro|RFCOMM_LM_TRUSTED
+mdefine_line|#define RFCOMM_LM_TRUSTED&t;0x0008
+DECL|macro|RFCOMM_LM_RELIABLE
+mdefine_line|#define RFCOMM_LM_RELIABLE&t;0x0010
+DECL|macro|RFCOMM_LM_SECURE
+mdefine_line|#define RFCOMM_LM_SECURE&t;0x0020
 DECL|macro|rfcomm_pi
 mdefine_line|#define rfcomm_pi(sk)   ((struct rfcomm_pinfo *)sk-&gt;sk_protinfo)
 DECL|struct|rfcomm_pinfo
@@ -863,6 +900,10 @@ suffix:semicolon
 DECL|member|channel
 id|u8
 id|channel
+suffix:semicolon
+DECL|member|link_mode
+id|u32
+id|link_mode
 suffix:semicolon
 )brace
 suffix:semicolon
