@@ -1131,11 +1131,11 @@ id|result
 suffix:semicolon
 )brace
 DECL|macro|hweight32
-mdefine_line|#define hweight32(x) hweight64 ((x) &amp; 0xfffffffful)
+mdefine_line|#define hweight32(x)&t;(unsigned int) hweight64((x) &amp; 0xfffffffful)
 DECL|macro|hweight16
-mdefine_line|#define hweight16(x) hweight64 ((x) &amp; 0xfffful)
+mdefine_line|#define hweight16(x)&t;(unsigned int) hweight64((x) &amp; 0xfffful)
 DECL|macro|hweight8
-mdefine_line|#define hweight8(x)  hweight64 ((x) &amp; 0xfful)
+mdefine_line|#define hweight8(x)&t;(unsigned int) hweight64((x) &amp; 0xfful)
 macro_line|#endif /* __KERNEL__ */
 r_extern
 r_int
