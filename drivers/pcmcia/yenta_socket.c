@@ -58,6 +58,29 @@ op_star
 id|socket
 )paren
 suffix:semicolon
+DECL|variable|override_bios
+r_static
+r_int
+r_int
+id|override_bios
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|override_bios
+comma
+id|uint
+comma
+l_int|0000
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|override_bios
+comma
+l_string|&quot;yenta ignore bios resource allocation&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Generate easy-to-use ways of reading a cardbus sockets&n; * regular memory space (&quot;cb_xxx&quot;), configuration space&n; * (&quot;config_xxx&quot;) and compatibility space (&quot;exca_xxxx&quot;)&n; */
 DECL|function|cb_readl
 r_static
@@ -3185,6 +3208,9 @@ op_logical_and
 id|end
 OG
 id|start
+op_logical_and
+op_logical_neg
+id|override_bios
 )paren
 (brace
 id|res-&gt;start
