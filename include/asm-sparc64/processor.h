@@ -12,7 +12,6 @@ macro_line|#include &lt;asm/pstate.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/delay.h&gt;
 multiline_comment|/* Bus types */
 DECL|macro|EISA_bus
 mdefine_line|#define EISA_bus 0
