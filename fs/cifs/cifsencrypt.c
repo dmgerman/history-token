@@ -534,12 +534,6 @@ id|rn
 op_eq
 l_int|NULL
 )paren
-op_logical_or
-(paren
-id|password
-op_eq
-l_int|NULL
-)paren
 )paren
 r_return
 op_minus
@@ -635,7 +629,7 @@ suffix:semicolon
 id|E_md4hash
 c_func
 (paren
-id|ses-&gt;password_with_pad
+id|ses-&gt;password
 comma
 id|temp_hash
 )paren

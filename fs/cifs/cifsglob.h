@@ -415,12 +415,10 @@ op_plus
 l_int|1
 )braket
 suffix:semicolon
-DECL|member|password_with_pad
+DECL|member|password
 r_char
-id|password_with_pad
-(braket
-id|CIFS_ENCPWD_SIZE
-)braket
+op_star
+id|password
 suffix:semicolon
 )brace
 suffix:semicolon

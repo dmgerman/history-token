@@ -298,6 +298,17 @@ c_func
 id|buf_to_free-&gt;serverNOS
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|buf_to_free-&gt;password
+)paren
+id|kfree
+c_func
+(paren
+id|buf_to_free-&gt;password
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
