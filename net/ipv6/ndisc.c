@@ -5545,7 +5545,7 @@ id|ND_PRINTK0
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ICMP6 RA: got illegal option with RA&quot;
+l_string|&quot;ICMP6 RA: got invalid option with RA&quot;
 )paren
 suffix:semicolon
 )brace

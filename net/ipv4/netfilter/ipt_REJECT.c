@@ -1954,7 +1954,7 @@ id|IPT_INV_PROTO
 id|DEBUGP
 c_func
 (paren
-l_string|&quot;REJECT: TCP_RESET illegal for non-tcp&bslash;n&quot;
+l_string|&quot;REJECT: TCP_RESET invalid for non-tcp&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
