@@ -2209,7 +2209,6 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 r_int
 id|ipv6_advmss
