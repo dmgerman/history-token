@@ -17,6 +17,18 @@ id|acpi_device
 op_star
 id|acpi_root
 suffix:semicolon
+r_extern
+r_struct
+id|acpi_device
+op_star
+id|fixed_pwr_button
+suffix:semicolon
+r_extern
+r_struct
+id|acpi_device
+op_star
+id|fixed_sleep_button
+suffix:semicolon
 DECL|macro|ACPI_BUS_CLASS
 mdefine_line|#define ACPI_BUS_CLASS&t;&t;&t;&quot;system_bus&quot;
 DECL|macro|ACPI_BUS_HID
@@ -3262,6 +3274,14 @@ c_func
 l_string|&quot;acpi_bus_scan_fixed&quot;
 )paren
 suffix:semicolon
+id|fixed_pwr_button
+op_assign
+l_int|NULL
+suffix:semicolon
+id|fixed_sleep_button
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3289,7 +3309,7 @@ id|acpi_bus_add
 c_func
 (paren
 op_amp
-id|device
+id|fixed_pwr_button
 comma
 id|acpi_root
 comma
@@ -3311,7 +3331,7 @@ id|acpi_bus_add
 c_func
 (paren
 op_amp
-id|device
+id|fixed_sleep_button
 comma
 id|acpi_root
 comma
