@@ -45,7 +45,7 @@ multiline_comment|/* Driver customization:&n; */
 DECL|macro|__HAVE_RELEASE
 mdefine_line|#define __HAVE_RELEASE&t;&t;1
 DECL|macro|DRIVER_RELEASE
-mdefine_line|#define DRIVER_RELEASE() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;i810_reclaim_buffers( dev, priv-&gt;pid );&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define DRIVER_RELEASE() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;i810_reclaim_buffers( filp );&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* DMA customization:&n; */
 DECL|macro|__HAVE_DMA
 mdefine_line|#define __HAVE_DMA&t;&t;1

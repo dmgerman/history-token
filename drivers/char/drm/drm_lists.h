@@ -227,11 +227,11 @@ id|left
 id|DRM_ERROR
 c_func
 (paren
-l_string|&quot;Overflow while adding buffer %d from pid %d&bslash;n&quot;
+l_string|&quot;Overflow while adding buffer %d from filp %p&bslash;n&quot;
 comma
 id|buf-&gt;idx
 comma
-id|buf-&gt;pid
+id|buf-&gt;filp
 )paren
 suffix:semicolon
 r_return

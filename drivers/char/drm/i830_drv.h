@@ -183,6 +183,38 @@ r_int
 r_int
 id|cpp
 suffix:semicolon
+DECL|member|do_boxes
+r_int
+id|do_boxes
+suffix:semicolon
+DECL|member|dma_used
+r_int
+id|dma_used
+suffix:semicolon
+DECL|member|current_page
+r_int
+id|current_page
+suffix:semicolon
+DECL|member|page_flipping
+r_int
+id|page_flipping
+suffix:semicolon
+DECL|member|irq_queue
+id|wait_queue_head_t
+id|irq_queue
+suffix:semicolon
+DECL|member|irq_received
+id|atomic_t
+id|irq_received
+suffix:semicolon
+DECL|member|irq_emitted
+id|atomic_t
+id|irq_emitted
+suffix:semicolon
+DECL|member|use_mi_batchbuffer_start
+r_int
+id|use_mi_batchbuffer_start
+suffix:semicolon
 DECL|typedef|drm_i830_private_t
 )brace
 id|drm_i830_private_t
@@ -278,12 +310,10 @@ r_void
 id|i830_reclaim_buffers
 c_func
 (paren
-id|drm_device_t
+r_struct
+id|file
 op_star
-id|dev
-comma
-id|pid_t
-id|pid
+id|filp
 )paren
 suffix:semicolon
 r_extern
@@ -456,6 +486,150 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|i830_flip_bufs
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|i830_getparam
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|i830_setparam
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
+multiline_comment|/* i830_irq.c */
+r_extern
+r_int
+id|i830_irq_emit
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|i830_irq_wait
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|i830_wait_irq
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+comma
+r_int
+id|irq_nr
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|i830_emit_irq
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+)paren
+suffix:semicolon
 DECL|macro|I830_BASE
 mdefine_line|#define I830_BASE(reg)&t;&t;((unsigned long) &bslash;&n;&t;&t;&t;&t;dev_priv-&gt;mmio_map-&gt;handle)
 DECL|macro|I830_ADDR
@@ -472,6 +646,34 @@ DECL|macro|I830_READ16
 mdefine_line|#define I830_READ16(reg) &t;I830_DEREF16(reg)
 DECL|macro|I830_WRITE16
 mdefine_line|#define I830_WRITE16(reg,val)&t;do { I830_DEREF16(reg) = val; } while (0)
+DECL|macro|I830_VERBOSE
+mdefine_line|#define I830_VERBOSE 0
+DECL|macro|RING_LOCALS
+mdefine_line|#define RING_LOCALS&t;unsigned int outring, ringmask, outcount; &bslash;&n;                        volatile char *virt;
+DECL|macro|BEGIN_LP_RING
+mdefine_line|#define BEGIN_LP_RING(n) do {&t;&t;&t;&t;&bslash;&n;&t;if (I830_VERBOSE)&t;&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;BEGIN_LP_RING(%d) in %s&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;  n, __FUNCTION__);&t;&t;&bslash;&n;&t;if (dev_priv-&gt;ring.space &lt; n*4)&t;&t;&t;&bslash;&n;&t;&t;i830_wait_ring(dev, n*4, __FUNCTION__);&t;&t;&bslash;&n;&t;outcount = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;outring = dev_priv-&gt;ring.tail;&t;&t;&t;&bslash;&n;&t;ringmask = dev_priv-&gt;ring.tail_mask;&t;&t;&bslash;&n;&t;virt = dev_priv-&gt;ring.virtual_start;&t;&t;&bslash;&n;} while (0)
+DECL|macro|OUT_RING
+mdefine_line|#define OUT_RING(n) do {&t;&t;&t;&t;&t;&bslash;&n;&t;if (I830_VERBOSE) printk(&quot;   OUT_RING %x&bslash;n&quot;, (int)(n));&t;&bslash;&n;&t;*(volatile unsigned int *)(virt + outring) = n;&t;&t;&bslash;&n;        outcount++;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;outring += 4;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;outring &amp;= ringmask;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|ADVANCE_LP_RING
+mdefine_line|#define ADVANCE_LP_RING() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (I830_VERBOSE) printk(&quot;ADVANCE_LP_RING %x&bslash;n&quot;, outring);&t;&bslash;&n;&t;dev_priv-&gt;ring.tail = outring;&t;&t;&t;&t;&t;&bslash;&n;&t;dev_priv-&gt;ring.space -= outcount * 4;&t;&t;&t;&t;&bslash;&n;&t;I830_WRITE(LP_RING + RING_TAIL, outring);&t;&t;&t;&bslash;&n;} while(0)
+r_extern
+r_int
+id|i830_wait_ring
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+comma
+r_int
+id|n
+comma
+r_const
+r_char
+op_star
+id|caller
+)paren
+suffix:semicolon
 DECL|macro|GFX_OP_USER_INTERRUPT
 mdefine_line|#define GFX_OP_USER_INTERRUPT &t;&t;((0&lt;&lt;29)|(2&lt;&lt;23))
 DECL|macro|GFX_OP_BREAKPOINT_INTERRUPT
@@ -482,6 +684,10 @@ DECL|macro|CMD_STORE_DWORD_IDX
 mdefine_line|#define CMD_STORE_DWORD_IDX&t;&t;((0x21&lt;&lt;23) | 0x1)
 DECL|macro|CMD_OP_BATCH_BUFFER
 mdefine_line|#define CMD_OP_BATCH_BUFFER  ((0x0&lt;&lt;29)|(0x30&lt;&lt;23)|0x1)
+DECL|macro|STATE3D_LOAD_STATE_IMMEDIATE_2
+mdefine_line|#define STATE3D_LOAD_STATE_IMMEDIATE_2      ((0x3&lt;&lt;29)|(0x1d&lt;&lt;24)|(0x03&lt;&lt;16))
+DECL|macro|LOAD_TEXTURE_MAP0
+mdefine_line|#define LOAD_TEXTURE_MAP0                   (1&lt;&lt;11)
 DECL|macro|INST_PARSER_CLIENT
 mdefine_line|#define INST_PARSER_CLIENT   0x00000000
 DECL|macro|INST_OP_FLUSH
@@ -504,6 +710,8 @@ DECL|macro|I830REG_INT_MASK_R
 mdefine_line|#define I830REG_INT_MASK_R &t;0x020a8
 DECL|macro|I830REG_INT_ENABLE_R
 mdefine_line|#define I830REG_INT_ENABLE_R&t;0x020a0
+DECL|macro|I830_IRQ_RESERVED
+mdefine_line|#define I830_IRQ_RESERVED ((1&lt;&lt;13)|(3&lt;&lt;2))
 DECL|macro|LP_RING
 mdefine_line|#define LP_RING     &t;&t;0x2030
 DECL|macro|HP_RING
@@ -578,6 +786,10 @@ DECL|macro|GFX_OP_PRIMITIVE
 mdefine_line|#define GFX_OP_PRIMITIVE         ((0x3&lt;&lt;29)|(0x1f&lt;&lt;24))
 DECL|macro|CMD_OP_DESTBUFFER_INFO
 mdefine_line|#define CMD_OP_DESTBUFFER_INFO&t; ((0x3&lt;&lt;29)|(0x1d&lt;&lt;24)|(0x8e&lt;&lt;16)|1)
+DECL|macro|CMD_OP_DISPLAYBUFFER_INFO
+mdefine_line|#define CMD_OP_DISPLAYBUFFER_INFO ((0x0&lt;&lt;29)|(0x14&lt;&lt;23)|2)
+DECL|macro|ASYNC_FLIP
+mdefine_line|#define ASYNC_FLIP                (1&lt;&lt;22)
 DECL|macro|CMD_3D
 mdefine_line|#define CMD_3D                          (0x3&lt;&lt;29)
 DECL|macro|STATE3D_CONST_BLEND_COLOR_CMD
@@ -626,5 +838,13 @@ DECL|macro|MI_BATCH_BUFFER_END
 mdefine_line|#define MI_BATCH_BUFFER_END &t;(0xA&lt;&lt;23)
 DECL|macro|MI_BATCH_NON_SECURE
 mdefine_line|#define MI_BATCH_NON_SECURE&t;(1)
+DECL|macro|MI_WAIT_FOR_EVENT
+mdefine_line|#define MI_WAIT_FOR_EVENT       ((0x3&lt;&lt;23))
+DECL|macro|MI_WAIT_FOR_PLANE_A_FLIP
+mdefine_line|#define MI_WAIT_FOR_PLANE_A_FLIP      (1&lt;&lt;2) 
+DECL|macro|MI_WAIT_FOR_PLANE_A_SCANLINES
+mdefine_line|#define MI_WAIT_FOR_PLANE_A_SCANLINES (1&lt;&lt;1) 
+DECL|macro|MI_LOAD_SCAN_LINES_INCL
+mdefine_line|#define MI_LOAD_SCAN_LINES_INCL  ((0x12&lt;&lt;23))
 macro_line|#endif
 eof

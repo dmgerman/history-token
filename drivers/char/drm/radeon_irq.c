@@ -39,12 +39,19 @@ suffix:semicolon
 id|u32
 id|stat
 suffix:semicolon
+multiline_comment|/* Only consider the bits we&squot;re interested in - others could be used&n;&t; * outside the DRM&n;&t; */
 id|stat
 op_assign
 id|RADEON_READ
 c_func
 (paren
 id|RADEON_GEN_INT_STATUS
+)paren
+op_amp
+(paren
+id|RADEON_SW_INT_TEST
+op_or
+id|RADEON_CRTC_VBLANK_STAT
 )paren
 suffix:semicolon
 r_if
@@ -105,7 +112,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Acknowledge all the bits in GEN_INT_STATUS -- seem to get&n;&t; * more than we asked for...&n;&t; */
+multiline_comment|/* Acknowledge interrupts we handle */
 id|RADEON_WRITE
 c_func
 (paren
@@ -134,6 +141,12 @@ id|RADEON_READ
 c_func
 (paren
 id|RADEON_GEN_INT_STATUS
+)paren
+op_amp
+(paren
+id|RADEON_SW_INT_TEST_ACK
+op_or
+id|RADEON_CRTC_VBLANK_STAT
 )paren
 suffix:semicolon
 r_if
@@ -468,6 +481,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 r_if

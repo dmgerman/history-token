@@ -771,6 +771,10 @@ c_func
 (paren
 id|PMemBlock
 )paren
+(paren
+r_int
+r_int
+)paren
 id|agp.free
 )paren
 suffix:semicolon
@@ -921,6 +925,10 @@ c_func
 (paren
 (paren
 id|PMemBlock
+)paren
+(paren
+r_int
+r_int
 )paren
 id|agp.free
 )paren
@@ -1339,6 +1347,10 @@ c_func
 (paren
 (paren
 id|PMemBlock
+)paren
+(paren
+r_int
+r_int
 )paren
 id|item
 )paren

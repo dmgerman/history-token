@@ -3143,6 +3143,10 @@ id|dev_priv-&gt;ring.high_mark
 op_assign
 l_int|128
 suffix:semicolon
+id|dev_priv-&gt;ring.ring_rptr
+op_assign
+id|dev_priv-&gt;ring_rptr
+suffix:semicolon
 id|dev_priv-&gt;sarea_priv-&gt;last_frame
 op_assign
 l_int|0
@@ -3467,6 +3471,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 r_if
@@ -3534,6 +3540,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 id|DRM_COPY_FROM_USER_IOCTL
@@ -3636,6 +3644,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 r_if
@@ -3702,6 +3712,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 r_if
@@ -3745,6 +3757,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 r_return
@@ -3892,6 +3906,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 id|DRM_COPY_FROM_USER_IOCTL
@@ -4214,7 +4230,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|buf-&gt;pid
+id|buf-&gt;filp
 op_eq
 l_int|0
 )paren
@@ -4447,6 +4463,9 @@ r_int
 id|r128_cce_get_buffers
 c_func
 (paren
+id|DRMFILE
+id|filp
+comma
 id|drm_device_t
 op_star
 id|dev
@@ -4499,9 +4518,9 @@ c_func
 id|EAGAIN
 )paren
 suffix:semicolon
-id|buf-&gt;pid
+id|buf-&gt;filp
 op_assign
-id|DRM_CURRENTPID
+id|filp
 suffix:semicolon
 r_if
 c_cond
@@ -4595,6 +4614,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 id|DRM_COPY_FROM_USER_IOCTL
@@ -4685,6 +4706,8 @@ op_assign
 id|r128_cce_get_buffers
 c_func
 (paren
+id|filp
+comma
 id|dev
 comma
 op_amp
