@@ -103,8 +103,8 @@ r_int
 r_int
 id|ip_ct_tcp_timeout_close_wait
 op_assign
-l_int|3
-id|DAYS
+l_int|60
+id|SECS
 suffix:semicolon
 DECL|variable|ip_ct_tcp_timeout_last_ack
 r_int
