@@ -5563,7 +5563,7 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 r_goto
-id|__end
+id|__end_lock
 suffix:semicolon
 )brace
 id|init_waitqueue_entry
@@ -5737,7 +5737,7 @@ id|snd_ctl_event_t
 )paren
 suffix:semicolon
 )brace
-id|__end
+id|__end_lock
 suffix:colon
 id|spin_unlock_irq
 c_func
@@ -5746,6 +5746,8 @@ op_amp
 id|ctl-&gt;read_lock
 )paren
 suffix:semicolon
+id|__end
+suffix:colon
 r_return
 id|result
 OG
