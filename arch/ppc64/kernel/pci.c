@@ -1965,6 +1965,7 @@ r_int
 id|phb_io_base_phys
 comma
 r_void
+id|__iomem
 op_star
 id|phb_io_base_virt
 )paren
@@ -2985,6 +2986,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|start_virt

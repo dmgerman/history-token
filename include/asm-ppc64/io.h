@@ -694,6 +694,7 @@ id|addr
 suffix:semicolon
 r_extern
 r_void
+id|__iomem
 op_star
 id|reserve_phb_iospace
 c_func
