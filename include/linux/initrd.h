@@ -40,4 +40,9 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|real_root_dev
+suffix:semicolon
 eof

@@ -183,6 +183,7 @@ mdefine_line|#define N_SYNC_PPP&t;14&t;/* synchronous PPP */
 DECL|macro|N_HCI
 mdefine_line|#define N_HCI&t;&t;15  /* Bluetooth HCI UART */
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/module.h&gt;
 multiline_comment|/*&n; * c_cc characters in the termio structure.  Oh, how I love being&n; * backwardly compatible.  Notice that character 4 and 5 are&n; * interpreted differently depending on whether ICANON is set in&n; * c_lflag.  If it&squot;s set, they are used as _VEOF and _VEOL, otherwise&n; * as _VMIN and V_TIME.  This is for compatibility with OSF/1 (which&n; * is compatible with sysV)...&n; */
 DECL|macro|_VMIN
 mdefine_line|#define _VMIN&t;4
@@ -201,6 +202,8 @@ DECL|macro|user_termios_to_kernel_termios
 mdefine_line|#define user_termios_to_kernel_termios(k, u) &bslash;&n;({ &bslash;&n;&t;get_user((k)-&gt;c_iflag, &amp;(u)-&gt;c_iflag); &bslash;&n;&t;get_user((k)-&gt;c_oflag, &amp;(u)-&gt;c_oflag); &bslash;&n;&t;get_user((k)-&gt;c_cflag, &amp;(u)-&gt;c_cflag); &bslash;&n;&t;get_user((k)-&gt;c_lflag, &amp;(u)-&gt;c_lflag); &bslash;&n;&t;get_user((k)-&gt;c_line,  &amp;(u)-&gt;c_line); &bslash;&n;&t;copy_from_user((k)-&gt;c_cc, (u)-&gt;c_cc, NCCS); &bslash;&n;&t;if((k)-&gt;c_lflag &amp; ICANON) { &bslash;&n;&t;&t;get_user((k)-&gt;c_cc[VEOF], &amp;(u)-&gt;c_cc[VEOF]); &bslash;&n;&t;&t;get_user((k)-&gt;c_cc[VEOL], &amp;(u)-&gt;c_cc[VEOL]); &bslash;&n;&t;} else { &bslash;&n;&t;&t;get_user((k)-&gt;c_cc[VMIN],  &amp;(u)-&gt;c_cc[_VMIN]); &bslash;&n;&t;&t;get_user((k)-&gt;c_cc[VTIME], &amp;(u)-&gt;c_cc[_VTIME]); &bslash;&n;&t;} &bslash;&n;&t;0; &bslash;&n;})
 DECL|macro|kernel_termios_to_user_termios
 mdefine_line|#define kernel_termios_to_user_termios(u, k) &bslash;&n;({ &bslash;&n;&t;put_user((k)-&gt;c_iflag, &amp;(u)-&gt;c_iflag); &bslash;&n;&t;put_user((k)-&gt;c_oflag, &amp;(u)-&gt;c_oflag); &bslash;&n;&t;put_user((k)-&gt;c_cflag, &amp;(u)-&gt;c_cflag); &bslash;&n;&t;put_user((k)-&gt;c_lflag, &amp;(u)-&gt;c_lflag); &bslash;&n;&t;put_user((k)-&gt;c_line, &amp;(u)-&gt;c_line); &bslash;&n;&t;copy_to_user((u)-&gt;c_cc, (k)-&gt;c_cc, NCCS); &bslash;&n;&t;if(!((k)-&gt;c_lflag &amp; ICANON)) { &bslash;&n;&t;&t;put_user((k)-&gt;c_cc[VMIN],  &amp;(u)-&gt;c_cc[_VMIN]); &bslash;&n;&t;&t;put_user((k)-&gt;c_cc[VTIME], &amp;(u)-&gt;c_cc[_VTIME]); &bslash;&n;&t;} else { &bslash;&n;&t;&t;put_user((k)-&gt;c_cc[VEOF], &amp;(u)-&gt;c_cc[VEOF]); &bslash;&n;&t;&t;put_user((k)-&gt;c_cc[VEOL], &amp;(u)-&gt;c_cc[VEOL]); &bslash;&n;&t;} &bslash;&n;&t;0; &bslash;&n;})
+DECL|macro|MODULE_ALIAS_LDISC
+mdefine_line|#define MODULE_ALIAS_LDISC(ldisc) &bslash;&n;&t;MODULE_ALIAS(&quot;tty-ldisc-&quot; __stringify(ldisc))
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif /* _SPARC64_TERMIOS_H */
 eof

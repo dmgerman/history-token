@@ -8465,7 +8465,7 @@ id|lp-&gt;mmio
 suffix:semicolon
 id|err_free_dev
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

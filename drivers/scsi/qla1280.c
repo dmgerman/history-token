@@ -13562,7 +13562,7 @@ multiline_comment|/* Enable simple tag queuing if device supports it. */
 r_if
 c_cond
 (paren
-id|cmd-&gt;device-&gt;tagged_queue
+id|cmd-&gt;device-&gt;simple_tags
 )paren
 id|pkt-&gt;control_flags
 op_or_assign
@@ -14953,7 +14953,7 @@ multiline_comment|/* Enable simple tag queuing if device supports it. */
 r_if
 c_cond
 (paren
-id|cmd-&gt;device-&gt;tagged_queue
+id|cmd-&gt;device-&gt;simple_tags
 )paren
 id|pkt-&gt;control_flags
 op_or_assign
@@ -18728,7 +18728,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|device-&gt;tagged_queue
+id|device-&gt;simple_tags
 )paren
 id|printk
 c_func

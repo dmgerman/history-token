@@ -7482,13 +7482,6 @@ op_star
 id|count
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-r_extern
-r_int
-r_int
-id|real_root_dev
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_int
 id|inode_change_ok

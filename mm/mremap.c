@@ -1999,7 +1999,7 @@ c_cond
 (paren
 id|vma-&gt;vm_flags
 op_amp
-id|VM_SHARED
+id|VM_MAYSHARE
 )paren
 id|map_flags
 op_or_assign

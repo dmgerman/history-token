@@ -1,7 +1,6 @@
 multiline_comment|/* &n; * Quick &amp; dirty crypto testing module.&n; *&n; * This will only exist until we have a better testing mechanism&n; * (e.g. a char device).&n; *&n; * Copyright (c) 2002 James Morris &lt;jmorris@intercode.com.au&gt;&n; * Copyright (c) 2002 Jean-Francois Dive &lt;jef@linuxbe.org&gt;&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option) &n; * any later version.&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;

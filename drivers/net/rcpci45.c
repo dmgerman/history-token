@@ -785,7 +785,7 @@ id|pDpa-&gt;msgbuf_dma
 suffix:semicolon
 id|err_out_free_dev
 suffix:colon
-id|kfree
+id|free_netdev
 (paren
 id|dev
 )paren

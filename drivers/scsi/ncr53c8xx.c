@@ -11576,36 +11576,6 @@ id|cp-&gt;cmd
 op_assign
 id|cmd
 suffix:semicolon
-multiline_comment|/*---------------------------------------------------&n;&t;**&n;&t;**&t;Enable tagged queue if asked by scsi ioctl&n;&t;**&n;&t;**----------------------------------------------------&n;&t;*/
-macro_line|#if 0&t;/* This stuff was only useful for linux-1.2.13 */
-r_if
-c_cond
-(paren
-id|lp
-op_logical_and
-op_logical_neg
-id|lp-&gt;numtags
-op_logical_and
-id|cmd-&gt;device
-op_logical_and
-id|cmd-&gt;device-&gt;tagged_queue
-)paren
-(brace
-id|lp-&gt;numtags
-op_assign
-id|tp-&gt;usrtags
-suffix:semicolon
-id|ncr_setup_tags
-(paren
-id|np
-comma
-id|cmd-&gt;device-&gt;id
-comma
-id|cmd-&gt;device-&gt;lun
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*----------------------------------------------------&n;&t;**&n;&t;**&t;Build the identify / tag / sdtr message&n;&t;**&n;&t;**----------------------------------------------------&n;&t;*/
 id|idmsg
 op_assign

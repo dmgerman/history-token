@@ -2623,7 +2623,7 @@ id|hmp-&gt;tx_ring_dma
 suffix:semicolon
 id|err_out_cleardev
 suffix:colon
-id|kfree
+id|free_netdev
 (paren
 id|dev
 )paren

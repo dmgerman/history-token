@@ -2122,7 +2122,7 @@ id|pci_dev
 suffix:semicolon
 id|err_out
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|net_dev
