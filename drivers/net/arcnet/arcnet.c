@@ -1905,9 +1905,14 @@ id|D_NORMAL
 comma
 l_string|&quot;arcnet_header: Yikes!  diff (%d) is not 2!&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
+(paren
 id|skb-&gt;nh.raw
 op_minus
 id|skb-&gt;mac.raw
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -2065,9 +2070,14 @@ id|D_NORMAL
 comma
 l_string|&quot;rebuild_header: shouldn&squot;t be here! (hdrsize=%d)&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
+(paren
 id|skb-&gt;nh.raw
 op_minus
 id|skb-&gt;mac.raw
+)paren
 )paren
 suffix:semicolon
 r_return

@@ -36,6 +36,9 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &quot;lanstreamer.h&quot;
+macro_line|#if (BITS_PER_LONG == 64)
+macro_line|#error broken on 64-bit: stores pointer to rx_ring-&gt;buffer in 32-bit int
+macro_line|#endif
 multiline_comment|/* I&squot;ve got to put some intelligence into the version number so that Peter and I know&n; * which version of the code somebody has got. &n; * Version Number = a.b.c.d  where a.b.c is the level of code and d is the latest author.&n; * So 0.0.1.pds = Peter, 0.0.1.mlp = Mike&n; * &n; * Official releases will only have an a.b.c version number format.&n; */
 DECL|variable|version
 r_static
