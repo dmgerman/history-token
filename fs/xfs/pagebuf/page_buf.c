@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; *&t;page_buf.c&n; *&n; *&t;The page_buf module provides an abstract buffer cache model on top of&n; *&t;the Linux page cache.  Cached metadata blocks for a file system are&n; *&t;hashed to the inode for the block device.  The page_buf module&n; *&t;assembles buffer (page_buf_t) objects on demand to aggregate such&n; *&t;cached pages for I/O.&n; *&n; *&n; *&t;Written by Steve Lord, Jim Mostek, Russell Cattelan&n; *&t;&t;    and Rajagopal Ananthanarayanan (&quot;ananth&quot;) at SGI.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -12,6 +11,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;support/debug.h&gt;
 macro_line|#include &lt;support/kmem.h&gt;
 macro_line|#include &quot;page_buf_internal.h&quot;
@@ -244,164 +244,6 @@ id|pb-&gt;pb_buffer_length
 suffix:semicolon
 )brace
 macro_line|#endif&t;/* PAGEBUF_TRACE */
-macro_line|#ifdef PAGEBUF_TRACKING
-DECL|macro|MAX_PB
-mdefine_line|#define MAX_PB&t;10000
-DECL|variable|pb_array
-id|page_buf_t
-op_star
-id|pb_array
-(braket
-id|MAX_PB
-)braket
-suffix:semicolon
-DECL|variable|pb_array
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pb_array
-)paren
-suffix:semicolon
-r_void
-DECL|function|pb_tracking_get
-id|pb_tracking_get
-c_func
-(paren
-id|page_buf_t
-op_star
-id|pb
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-(paren
-id|pb_array
-(braket
-id|i
-)braket
-op_ne
-l_int|0
-)paren
-op_logical_and
-(paren
-id|i
-OL
-id|MAX_PB
-)paren
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-)brace
-r_if
-c_cond
-(paren
-id|i
-op_eq
-id|MAX_PB
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;pb 0x%p not recorded in pb_array&bslash;n&quot;
-comma
-id|pb
-)paren
-suffix:semicolon
-r_else
-(brace
-singleline_comment|//printk(&quot;pb_get 0x%p in pb_array[%d]&bslash;n&quot;, pb, i);
-id|pb_array
-(braket
-id|i
-)braket
-op_assign
-id|pb
-suffix:semicolon
-)brace
-)brace
-r_void
-DECL|function|pb_tracking_free
-id|pb_tracking_free
-c_func
-(paren
-id|page_buf_t
-op_star
-id|pb
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-(paren
-id|pb_array
-(braket
-id|i
-)braket
-op_ne
-id|pb
-)paren
-op_logical_and
-(paren
-id|i
-OL
-id|MAX_PB
-)paren
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-)brace
-r_if
-c_cond
-(paren
-id|i
-OL
-id|MAX_PB
-)paren
-(brace
-singleline_comment|//printk(&quot;pb_free 0x%p from pb_array[%d]&bslash;n&quot;, pb, i);
-id|pb_array
-(braket
-id|i
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-r_else
-id|printk
-c_func
-(paren
-l_string|&quot;Freed unmonitored pagebuf 0x%p&bslash;n&quot;
-comma
-id|pb
-)paren
-suffix:semicolon
-)brace
-macro_line|#else
-DECL|macro|pb_tracking_get
-mdefine_line|#define pb_tracking_get(pb)&t;do { } while (0)
-DECL|macro|pb_tracking_free
-mdefine_line|#define pb_tracking_free(pb)&t;do { } while (0)
-macro_line|#endif&t;/* PAGEBUF_TRACKING */
 multiline_comment|/*&n; *&t;File wide globals&n; */
 DECL|variable|pagebuf_cache
 id|STATIC
@@ -422,6 +264,13 @@ c_func
 (paren
 r_int
 )paren
+suffix:semicolon
+DECL|variable|pagebuf_workqueue
+id|STATIC
+r_struct
+id|workqueue_struct
+op_star
+id|pagebuf_workqueue
 suffix:semicolon
 multiline_comment|/*&n; * Pagebuf module configuration parameters, exported via&n; * /proc/sys/vm/pagebuf&n; */
 DECL|variable|pagebuf_min
@@ -491,13 +340,6 @@ DECL|variable|pbstats
 r_struct
 id|pbstats
 id|pbstats
-suffix:semicolon
-multiline_comment|/*&n; * Queue for delayed I/O completion.&n; */
-DECL|variable|pagebuf_workqueue
-r_struct
-id|workqueue_struct
-op_star
-id|pagebuf_workqueue
 suffix:semicolon
 multiline_comment|/*&n; * Pagebuf allocation / freeing.&n; */
 DECL|macro|pb_to_gfp
@@ -860,12 +702,6 @@ op_or
 id|PBF_DONT_BLOCK
 op_or
 id|PBF_READ_AHEAD
-)paren
-suffix:semicolon
-id|pb_tracking_get
-c_func
-(paren
-id|pb
 )paren
 suffix:semicolon
 id|memset
@@ -1379,12 +1215,6 @@ id|_PBF_MEM_ALLOCATED
 suffix:semicolon
 )brace
 )brace
-id|pb_tracking_free
-c_func
-(paren
-id|pb
-)paren
-suffix:semicolon
 id|pagebuf_deallocate
 c_func
 (paren
@@ -4118,9 +3948,10 @@ l_int|0
 r_break
 suffix:semicolon
 )brace
-id|blk_run_queues
+id|pagebuf_run_queues
 c_func
 (paren
+id|pb
 )paren
 suffix:semicolon
 id|schedule
@@ -4233,6 +4064,9 @@ c_func
 id|page_buf_t
 op_star
 id|pb
+comma
+r_int
+id|schedule
 )paren
 (brace
 id|pb-&gt;pb_flags
@@ -4290,6 +4124,12 @@ id|PBF_ASYNC
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|schedule
+)paren
+(brace
 id|INIT_WORK
 c_func
 (paren
@@ -4310,6 +4150,16 @@ op_amp
 id|pb-&gt;pb_iodone_work
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|pagebuf_iodone_work
+c_func
+(paren
+id|pb
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -4791,14 +4641,10 @@ id|atomic_dec_and_test
 c_func
 (paren
 op_amp
-id|PBP
-c_func
-(paren
-id|pb
+id|pb-&gt;pb_io_remaining
 )paren
-op_member_access_from_pointer
-id|pb_io_remaining
-)paren
+op_eq
+l_int|1
 )paren
 (brace
 id|pb-&gt;pb_locked
@@ -4809,6 +4655,8 @@ id|pagebuf_iodone
 c_func
 (paren
 id|pb
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -4938,13 +4786,7 @@ id|atomic_set
 c_func
 (paren
 op_amp
-id|PBP
-c_func
-(paren
-id|pb
-)paren
-op_member_access_from_pointer
-id|pb_io_remaining
+id|pb-&gt;pb_io_remaining
 comma
 l_int|1
 )paren
@@ -5040,13 +4882,7 @@ id|atomic_inc
 c_func
 (paren
 op_amp
-id|PBP
-c_func
-(paren
-id|pb
-)paren
-op_member_access_from_pointer
-id|pb_io_remaining
+id|pb-&gt;pb_io_remaining
 )paren
 suffix:semicolon
 id|submit_bio
@@ -5166,13 +5002,7 @@ id|atomic_inc
 c_func
 (paren
 op_amp
-id|PBP
-c_func
-(paren
-id|pb
-)paren
-op_member_access_from_pointer
-id|pb_io_remaining
+id|pb-&gt;pb_io_remaining
 )paren
 suffix:semicolon
 id|nr_pages
@@ -5355,13 +5185,7 @@ id|atomic_dec_and_test
 c_func
 (paren
 op_amp
-id|PBP
-c_func
-(paren
-id|pb
-)paren
-op_member_access_from_pointer
-id|pb_io_remaining
+id|pb-&gt;pb_io_remaining
 )paren
 op_eq
 l_int|1
@@ -5371,29 +5195,8 @@ id|pagebuf_iodone
 c_func
 (paren
 id|pb
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-(paren
-id|pb-&gt;pb_flags
-op_amp
-(paren
-id|PBF_SYNC
-op_or
-id|PBF_ASYNC
-)paren
-)paren
-op_eq
-id|PBF_SYNC
-)paren
-(brace
-id|blk_run_queues
-c_func
-(paren
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -5433,9 +5236,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|blk_run_queues
+id|pagebuf_run_queues
 c_func
 (paren
+id|pb
 )paren
 suffix:semicolon
 id|down
@@ -5934,12 +5738,6 @@ id|pb-&gt;pb_list
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
-id|pb_daemon-&gt;pb_delwri_cnt
-op_increment
-suffix:semicolon
-)brace
 id|list_add_tail
 c_func
 (paren
@@ -6031,9 +5829,6 @@ id|pb-&gt;pb_flags
 op_and_assign
 op_complement
 id|PBF_DELWRI
-suffix:semicolon
-id|pb_daemon-&gt;pb_delwri_cnt
-op_decrement
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -6450,16 +6245,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|count
-)paren
-id|blk_run_queues
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|as_list_len
 OG
 l_int|0
@@ -6467,6 +6252,17 @@ l_int|0
 id|purge_addresses
 c_func
 (paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+)paren
+id|pagebuf_run_queues
+c_func
+(paren
+l_int|NULL
 )paren
 suffix:semicolon
 id|force_flush
@@ -6745,9 +6541,10 @@ op_amp
 id|pb_daemon-&gt;pb_delwrite_lock
 )paren
 suffix:semicolon
-id|blk_run_queues
+id|pagebuf_run_queues
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -6880,14 +6677,6 @@ id|pb_daemon-&gt;active
 op_assign
 l_int|1
 suffix:semicolon
-id|pb_daemon-&gt;io_active
-op_assign
-l_int|1
-suffix:semicolon
-id|pb_daemon-&gt;pb_delwri_cnt
-op_assign
-l_int|0
-suffix:semicolon
 id|pb_daemon-&gt;pb_delwrite_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
@@ -6963,10 +6752,6 @@ id|pagebuf_workqueue
 )paren
 suffix:semicolon
 id|pb_daemon-&gt;active
-op_assign
-l_int|0
-suffix:semicolon
-id|pb_daemon-&gt;io_active
 op_assign
 l_int|0
 suffix:semicolon
@@ -7654,7 +7439,6 @@ id|pb_hash
 suffix:semicolon
 )brace
 macro_line|#ifdef PAGEBUF_TRACE
-macro_line|# if 1
 id|pb_trace.buf
 op_assign
 (paren
@@ -7674,26 +7458,6 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-macro_line|# else
-multiline_comment|/* Alternatively, for really really long trace bufs */
-id|pb_trace.buf
-op_assign
-(paren
-id|pagebuf_trace_t
-op_star
-)paren
-id|vmalloc
-c_func
-(paren
-id|PB_TRACE_BUFSIZE
-op_star
-r_sizeof
-(paren
-id|pagebuf_trace_t
-)paren
-)paren
-suffix:semicolon
-macro_line|# endif
 id|memset
 c_func
 (paren

@@ -97,7 +97,7 @@ comma
 id|current
 )paren
 suffix:semicolon
-id|set_current_state
+id|__set_current_state
 c_func
 (paren
 id|TASK_UNINTERRUPTIBLE
@@ -154,12 +154,6 @@ suffix:semicolon
 id|schedule
 c_func
 (paren
-)paren
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
 )paren
 suffix:semicolon
 id|spin_lock

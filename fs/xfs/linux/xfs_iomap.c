@@ -186,10 +186,7 @@ id|nimaps
 suffix:semicolon
 r_int
 id|is_xfs
-op_assign
-l_int|1
 suffix:semicolon
-multiline_comment|/* This will be a variable at some point */
 id|xfs_bmbt_irec_t
 id|imap
 (braket
@@ -200,16 +197,23 @@ id|xfs_trans_t
 op_star
 id|tp
 suffix:semicolon
+id|mp
+op_assign
+id|ip-&gt;i_mount
+suffix:semicolon
 id|io
 op_assign
 op_amp
 id|ip-&gt;i_iocore
 suffix:semicolon
-id|mp
+id|is_xfs
 op_assign
-id|ip-&gt;i_mount
+id|IO_IS_XFS
+c_func
+(paren
+id|io
+)paren
 suffix:semicolon
-multiline_comment|/* is_xfs = IO_IS_XFS(io); */
 id|ASSERT
 c_func
 (paren
@@ -995,6 +999,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|offset_fsb
 op_ge
 id|imap
@@ -1003,6 +1008,7 @@ id|i
 )braket
 dot
 id|br_startoff
+)paren
 op_logical_and
 (paren
 id|offset_fsb
@@ -1733,8 +1739,6 @@ c_loop
 (paren
 id|im
 op_assign
-l_int|0
-comma
 id|pbm
 op_assign
 l_int|0
@@ -1855,14 +1859,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|imap-&gt;br_state
-op_eq
-id|XFS_EXT_UNWRITTEN
+id|ISUNWRITTEN
+c_func
+(paren
+id|imap
 )paren
+)paren
+(brace
 id|pbmapp-&gt;pbm_flags
 op_or_assign
 id|PBMF_UNWRITTEN
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -2110,7 +2118,7 @@ id|error
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * xfs_iomap_write: return pagebuf_bmap_t&squot;s telling higher layers&n; *&t;where to write.&n; * There are 2 main cases:&n; *&t;1 the extents already exist&n; *&t;2 must allocate.&n; *&t;There are 3 cases when we allocate:&n; *&t;&t;delay allocation (doesn&squot;t really allocate or use transactions)&n; *&t;&t;direct allocation (no previous delay allocation&n; *&t;&t;convert delay to real allocations&n; */
+multiline_comment|/*&n; * xfs_iomap_write: return pagebuf_bmap_t&squot;s telling higher layers&n; *&t;where to write.&n; * There are 2 main cases:&n; *&t;1 the extents already exist&n; *&t;2 must allocate.&n; *&t;There are 3 cases when we allocate:&n; *&t;&t;delay allocation (doesn&squot;t really allocate or use transactions)&n; *&t;&t;direct allocation (no previous delay allocation)&n; *&t;&t;convert delay to real allocations&n; */
 id|STATIC
 r_int
 DECL|function|xfs_iomap_write
@@ -3023,8 +3031,8 @@ id|isize
 op_assign
 id|io-&gt;io_new_size
 suffix:semicolon
-r_if
-c_cond
+id|aeof
+op_assign
 (paren
 (paren
 id|offset
@@ -3034,19 +3042,12 @@ id|count
 OG
 id|isize
 )paren
-(brace
-id|aeof
-op_assign
+ques
+c_cond
 l_int|1
-suffix:semicolon
-)brace
-r_else
-(brace
-id|aeof
-op_assign
+suffix:colon
 l_int|0
 suffix:semicolon
-)brace
 id|offset_fsb
 op_assign
 id|XFS_B_TO_FSBT
@@ -3203,11 +3204,9 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_goto
 id|error_out
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3641,10 +3640,10 @@ op_ne
 l_int|1
 )paren
 (brace
-id|printk
+multiline_comment|/* NEED MORE WORK FOR MULTIPLE BMAPS (which are new) */
+id|BUG
 c_func
 (paren
-l_string|&quot;NEED MORE WORK FOR MULTIPLE BMAPS (which are new)&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
-macro_line|#include &lt;linux/workqueue.h&gt;
 DECL|enum|xfs_buffer_state
 DECL|enumerator|BH_Delay
 r_enum
@@ -469,7 +468,7 @@ r_typedef
 id|page_buf_bmap_t
 id|pb_bmap_t
 suffix:semicolon
-multiline_comment|/*&n; *&t;page_buf_t:  Buffer structure for page cache-based buffers&n; *&n; * This buffer structure is used by the page cache buffer management routines&n; * to refer to an assembly of pages forming a logical buffer.  The actual&n; * I/O is performed with buffer_head or bio structures, as required by drivers,&n; * for drivers which do not understand this structure.  The buffer structure is&n; * used on temporary basis only, and discarded when released.  &n; *&n; * The real data storage is recorded in the page cache.&t; Metadata is&n; * hashed to the inode for the block device on which the file system resides.&n; * File data is hashed to the inode for the file.  Pages which are only&n; * partially filled with data have bits set in their block_map entry&n; * to indicate which disk blocks in the page are not valid.&n; */
+multiline_comment|/*&n; *&t;page_buf_t:  Buffer structure for page cache-based buffers&n; *&n; * This buffer structure is used by the page cache buffer management routines&n; * to refer to an assembly of pages forming a logical buffer.  The actual&n; * I/O is performed with buffer_head or bio structures, as required by drivers,&n; * for drivers which do not understand this structure. The buffer structure is&n; * used on temporary basis only, and discarded when released.  &n; *&n; * The real data storage is recorded in the page cache.&t; Metadata is&n; * hashed to the inode for the block device on which the file system resides.&n; * File data is hashed to the inode for the file.  Pages which are only&n; * partially filled with data have bits set in their block_map entry&n; * to indicate which disk blocks in the page are not valid.&n; */
 r_struct
 id|page_buf_s
 suffix:semicolon
@@ -579,6 +578,11 @@ r_struct
 id|work_struct
 id|pb_iodone_work
 suffix:semicolon
+DECL|member|pb_io_remaining
+id|atomic_t
+id|pb_io_remaining
+suffix:semicolon
+multiline_comment|/* #outstanding I/O requests */
 DECL|member|pb_iodone
 id|page_buf_iodone_t
 id|pb_iodone
@@ -877,16 +881,6 @@ suffix:semicolon
 multiline_comment|/* buffer to lock&t;&t;*/
 r_extern
 r_void
-id|pagebuf_target_clear
-c_func
-(paren
-r_struct
-id|pb_target
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|pagebuf_unlock
 c_func
 (paren
@@ -928,9 +922,12 @@ c_func
 multiline_comment|/* mark buffer I/O complete&t;*/
 id|page_buf_t
 op_star
+comma
+multiline_comment|/* buffer to mark&t;&t;*/
+r_int
 )paren
 suffix:semicolon
-multiline_comment|/* buffer to mark&t;&t;*/
+multiline_comment|/* run completion locally, or in&n;&t;&t;&t;&t;&t; * a helper thread. &t;&t;*/
 r_extern
 r_void
 id|pagebuf_ioerror
@@ -1143,11 +1140,36 @@ id|pb
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_struct
-id|workqueue_struct
+DECL|function|pagebuf_run_queues
+r_static
+id|__inline__
+r_void
+id|pagebuf_run_queues
+c_func
+(paren
+id|page_buf_t
 op_star
-id|pagebuf_workqueue
+id|pb
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pb
+op_logical_or
+id|atomic_read
+c_func
+(paren
+op_amp
+id|pb-&gt;pb_io_remaining
+)paren
+)paren
+id|blk_run_queues
+c_func
+(paren
+)paren
 suffix:semicolon
+)brace
 macro_line|#endif /* __PAGE_BUF_H__ */
 eof

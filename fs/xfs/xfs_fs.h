@@ -517,23 +517,25 @@ suffix:semicolon
 DECL|macro|XFS_FSOP_GEOM_VERSION
 mdefine_line|#define XFS_FSOP_GEOM_VERSION&t;0
 DECL|macro|XFS_FSOP_GEOM_FLAGS_ATTR
-mdefine_line|#define XFS_FSOP_GEOM_FLAGS_ATTR&t;0x01&t;/* attributes in use&t;*/
+mdefine_line|#define XFS_FSOP_GEOM_FLAGS_ATTR&t;0x0001&t;/* attributes in use&t;*/
 DECL|macro|XFS_FSOP_GEOM_FLAGS_NLINK
-mdefine_line|#define XFS_FSOP_GEOM_FLAGS_NLINK&t;0x02&t;/* 32-bit nlink values&t;*/
+mdefine_line|#define XFS_FSOP_GEOM_FLAGS_NLINK&t;0x0002&t;/* 32-bit nlink values&t;*/
 DECL|macro|XFS_FSOP_GEOM_FLAGS_QUOTA
-mdefine_line|#define XFS_FSOP_GEOM_FLAGS_QUOTA&t;0x04&t;/* quotas enabled&t;*/
+mdefine_line|#define XFS_FSOP_GEOM_FLAGS_QUOTA&t;0x0004&t;/* quotas enabled&t;*/
 DECL|macro|XFS_FSOP_GEOM_FLAGS_IALIGN
-mdefine_line|#define XFS_FSOP_GEOM_FLAGS_IALIGN&t;0x08&t;/* inode alignment&t;*/
+mdefine_line|#define XFS_FSOP_GEOM_FLAGS_IALIGN&t;0x0008&t;/* inode alignment&t;*/
 DECL|macro|XFS_FSOP_GEOM_FLAGS_DALIGN
-mdefine_line|#define XFS_FSOP_GEOM_FLAGS_DALIGN&t;0x10&t;/* large data alignment */
+mdefine_line|#define XFS_FSOP_GEOM_FLAGS_DALIGN&t;0x0010&t;/* large data alignment */
 DECL|macro|XFS_FSOP_GEOM_FLAGS_SHARED
-mdefine_line|#define XFS_FSOP_GEOM_FLAGS_SHARED&t;0x20&t;/* read-only shared&t;*/
+mdefine_line|#define XFS_FSOP_GEOM_FLAGS_SHARED&t;0x0020&t;/* read-only shared&t;*/
 DECL|macro|XFS_FSOP_GEOM_FLAGS_EXTFLG
-mdefine_line|#define XFS_FSOP_GEOM_FLAGS_EXTFLG&t;0x40&t;/* special extent flag&t;*/
+mdefine_line|#define XFS_FSOP_GEOM_FLAGS_EXTFLG&t;0x0040&t;/* special extent flag&t;*/
 DECL|macro|XFS_FSOP_GEOM_FLAGS_DIRV2
-mdefine_line|#define XFS_FSOP_GEOM_FLAGS_DIRV2&t;0x80&t;/* directory version 2&t;*/
+mdefine_line|#define XFS_FSOP_GEOM_FLAGS_DIRV2&t;0x0080&t;/* directory version 2&t;*/
 DECL|macro|XFS_FSOP_GEOM_FLAGS_LOGV2
-mdefine_line|#define XFS_FSOP_GEOM_FLAGS_LOGV2      0x100&t;/* log format version 2 */
+mdefine_line|#define XFS_FSOP_GEOM_FLAGS_LOGV2&t;0x0100&t;/* log format version 2&t;*/
+DECL|macro|XFS_FSOP_GEOM_FLAGS_SECTOR
+mdefine_line|#define XFS_FSOP_GEOM_FLAGS_SECTOR&t;0x0200&t;/* sector sizes &gt;1BB&t;*/
 multiline_comment|/*&n; * Minimum and maximum sizes need for growth checks&n; */
 DECL|macro|XFS_MIN_AG_BLOCKS
 mdefine_line|#define XFS_MIN_AG_BLOCKS&t;64

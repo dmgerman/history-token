@@ -438,6 +438,9 @@ suffix:semicolon
 r_int
 id|pf_flags
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -491,9 +494,8 @@ op_or_assign
 id|PF_NOWARN
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Add it to the swap cache and mark it dirty&n;&t;&t; */
-r_switch
-c_cond
-(paren
+id|err
+op_assign
 id|add_to_page_cache
 c_func
 (paren
@@ -504,16 +506,43 @@ id|swapper_space
 comma
 id|entry.val
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|pf_flags
+op_amp
+id|PF_NOWARN
+)paren
+)paren
+id|current-&gt;flags
+op_and_assign
+op_complement
+id|PF_NOWARN
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pf_flags
+op_amp
+id|PF_MEMALLOC
+)paren
+id|current-&gt;flags
+op_or_assign
+id|PF_MEMALLOC
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|err
 )paren
 (brace
 r_case
 l_int|0
 suffix:colon
 multiline_comment|/* Success */
-id|current-&gt;flags
-op_assign
-id|pf_flags
-suffix:semicolon
 id|SetPageUptodate
 c_func
 (paren
@@ -546,10 +575,6 @@ op_minus
 id|EEXIST
 suffix:colon
 multiline_comment|/* Raced with &quot;speculative&quot; read_swap_cache_async */
-id|current-&gt;flags
-op_assign
-id|pf_flags
-suffix:semicolon
 id|INC_CACHE_INFO
 c_func
 (paren
@@ -567,10 +592,6 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* -ENOMEM radix-tree allocation failure */
-id|current-&gt;flags
-op_assign
-id|pf_flags
-suffix:semicolon
 id|swap_free
 c_func
 (paren
@@ -1077,6 +1098,11 @@ op_star
 id|pagep
 op_assign
 id|pages
+suffix:semicolon
+id|lru_add_drain
+c_func
+(paren
+)paren
 suffix:semicolon
 r_while
 c_loop

@@ -225,7 +225,7 @@ mdefine_line|#define xfs_errortag_add(tag, mp)&t;&t;(ENOSYS)
 DECL|macro|xfs_errortag_clearall
 mdefine_line|#define xfs_errortag_clearall(mp)&t;&t;(ENOSYS)
 macro_line|#endif /* (DEBUG || INDUCE_IO_ERROR) */
-multiline_comment|/*&n; * XFS panic tags -- allow a call to xfs_cmn_err() be turned into&n; *&t;&t;&t;a panic by setting xfs_panic_mask in the&n; *&t;&t;&t;stune file.&n; */
+multiline_comment|/*&n; * XFS panic tags -- allow a call to xfs_cmn_err() be turned into&n; *&t;&t;&t;a panic by setting xfs_panic_mask in a&n; *&t;&t;&t;sysctl.  update xfs_max[XFS_PARAM] if&n; *&t;&t;&t;more are added.&n; */
 DECL|macro|XFS_NO_PTAG
 mdefine_line|#define&t;&t;XFS_NO_PTAG&t;&t;&t;0LL
 DECL|macro|XFS_PTAG_IFLUSH
@@ -234,6 +234,14 @@ DECL|macro|XFS_PTAG_LOGRES
 mdefine_line|#define&t;&t;XFS_PTAG_LOGRES&t;&t;&t;0x0000000000000002LL
 DECL|macro|XFS_PTAG_AILDELETE
 mdefine_line|#define&t;&t;XFS_PTAG_AILDELETE&t;&t;0x0000000000000004LL
+DECL|macro|XFS_PTAG_AVAILABLE
+mdefine_line|#define&t;&t;XFS_PTAG_AVAILABLE&t;&t;0x0000000000000008LL
+DECL|macro|XFS_PTAG_SHUTDOWN_CORRUPT
+mdefine_line|#define&t;&t;XFS_PTAG_SHUTDOWN_CORRUPT&t;0x0000000000000010LL
+DECL|macro|XFS_PTAG_SHUTDOWN_IOERROR
+mdefine_line|#define&t;&t;XFS_PTAG_SHUTDOWN_IOERROR&t;0x0000000000000020LL
+DECL|macro|XFS_PTAG_SHUTDOWN_LOGERROR
+mdefine_line|#define&t;&t;XFS_PTAG_SHUTDOWN_LOGERROR&t;0x0000000000000040LL
 r_struct
 id|xfs_mount
 suffix:semicolon

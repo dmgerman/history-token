@@ -92,12 +92,14 @@ comma
 id|line
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_KALLSYMS
 id|printk
 c_func
 (paren
 l_string|&quot;Pass this trace through ksymoops for reporting&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 id|dump_stack
 c_func
 (paren
@@ -10118,6 +10120,13 @@ c_func
 (paren
 id|bh
 )paren
+op_logical_and
+op_logical_neg
+id|buffer_req
+c_func
+(paren
+id|bh
+)paren
 )paren
 (brace
 r_if
@@ -10264,6 +10273,13 @@ c_cond
 (paren
 op_logical_neg
 id|buffer_uptodate
+c_func
+(paren
+id|bh
+)paren
+op_logical_and
+op_logical_neg
+id|buffer_req
 c_func
 (paren
 id|bh

@@ -423,6 +423,17 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|rotate_reclaimable_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|swap_setup
 c_func

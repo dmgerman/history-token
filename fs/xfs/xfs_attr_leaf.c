@@ -14357,7 +14357,7 @@ id|dblkno
 comma
 id|dblkcnt
 comma
-l_int|0
+id|XFS_BUF_LOCK
 )paren
 suffix:semicolon
 id|xfs_trans_binval
