@@ -188,9 +188,9 @@ mdefine_line|#define ZD1201SIWMAXASSOC SIOCIWFIRSTPRIV+4
 DECL|macro|ZD1201GIWMAXASSOC
 mdefine_line|#define ZD1201GIWMAXASSOC ZD1201SIWMAXASSOC+1
 DECL|macro|ZD1201_FW_TIMEOUT
-mdefine_line|#define ZD1201_FW_TIMEOUT&t;(1*HZ)
+mdefine_line|#define ZD1201_FW_TIMEOUT&t;(1000)
 DECL|macro|ZD1201_TX_TIMEOUT
-mdefine_line|#define ZD1201_TX_TIMEOUT&t;(2*HZ)
+mdefine_line|#define ZD1201_TX_TIMEOUT&t;(2000)
 DECL|macro|ZD1201_USB_CMDREQ
 mdefine_line|#define ZD1201_USB_CMDREQ&t;0
 DECL|macro|ZD1201_USB_RESREQ
