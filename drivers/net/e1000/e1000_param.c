@@ -587,7 +587,7 @@ suffix:semicolon
 id|e1000_mac_type
 id|mac_type
 op_assign
-id|adapter-&gt;shared.mac_type
+id|adapter-&gt;hw.mac_type
 suffix:semicolon
 id|opt.arg.r.max
 op_assign
@@ -678,7 +678,7 @@ suffix:semicolon
 id|e1000_mac_type
 id|mac_type
 op_assign
-id|adapter-&gt;shared.mac_type
+id|adapter-&gt;hw.mac_type
 suffix:semicolon
 id|opt.arg.r.max
 op_assign
@@ -864,9 +864,9 @@ op_amp
 id|opt
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.fc
+id|adapter-&gt;hw.fc
 op_assign
-id|adapter-&gt;shared.original_fc
+id|adapter-&gt;hw.original_fc
 op_assign
 id|fc
 suffix:semicolon
@@ -991,7 +991,7 @@ suffix:semicolon
 id|e1000_mac_type
 id|mac_type
 op_assign
-id|adapter-&gt;shared.mac_type
+id|adapter-&gt;hw.mac_type
 suffix:semicolon
 id|opt.def
 op_assign
@@ -1036,7 +1036,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|adapter-&gt;shared.media_type
+id|adapter-&gt;hw.media_type
 )paren
 (brace
 r_case
@@ -1413,7 +1413,7 @@ l_string|&quot;AutoNeg specified along with Speed or Duplex, &quot;
 l_string|&quot;parameter ignored&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 id|AUTONEG_ADV_DEFAULT
 suffix:semicolon
@@ -1708,7 +1708,7 @@ op_amp
 id|opt
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 id|an
 suffix:semicolon
@@ -1724,7 +1724,7 @@ id|dplx
 r_case
 l_int|0
 suffix:colon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|1
 suffix:semicolon
@@ -1773,11 +1773,11 @@ id|KERN_INFO
 l_string|&quot;Using Autonegotiation at Half Duplex only&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|1
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 id|ADVERTISE_10_HALF
 op_or
@@ -1802,11 +1802,11 @@ id|KERN_INFO
 l_string|&quot;Using Autonegotiation at Full Duplex only&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|1
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 id|ADVERTISE_10_FULL
 op_or
@@ -1833,11 +1833,11 @@ id|KERN_INFO
 l_string|&quot;Using Autonegotiation at 10 Mbps only&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|1
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 id|ADVERTISE_10_HALF
 op_or
@@ -1857,15 +1857,15 @@ id|KERN_INFO
 l_string|&quot;Forcing to 10 Mbps Half Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|0
 suffix:semicolon
-id|adapter-&gt;shared.forced_speed_duplex
+id|adapter-&gt;hw.forced_speed_duplex
 op_assign
 id|e1000_10_half
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 l_int|0
 suffix:semicolon
@@ -1883,15 +1883,15 @@ id|KERN_INFO
 l_string|&quot;Forcing to 10 Mbps Full Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|0
 suffix:semicolon
-id|adapter-&gt;shared.forced_speed_duplex
+id|adapter-&gt;hw.forced_speed_duplex
 op_assign
 id|e1000_10_full
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 l_int|0
 suffix:semicolon
@@ -1914,11 +1914,11 @@ id|KERN_INFO
 l_string|&quot;Using Autonegotiation at 100 Mbps only&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|1
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 id|ADVERTISE_100_HALF
 op_or
@@ -1938,15 +1938,15 @@ id|KERN_INFO
 l_string|&quot;Forcing to 100 Mbps Half Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|0
 suffix:semicolon
-id|adapter-&gt;shared.forced_speed_duplex
+id|adapter-&gt;hw.forced_speed_duplex
 op_assign
 id|e1000_100_half
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 l_int|0
 suffix:semicolon
@@ -1964,15 +1964,15 @@ id|KERN_INFO
 l_string|&quot;Forcing to 100 Mbps Full Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|0
 suffix:semicolon
-id|adapter-&gt;shared.forced_speed_duplex
+id|adapter-&gt;hw.forced_speed_duplex
 op_assign
 id|e1000_100_full
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 l_int|0
 suffix:semicolon
@@ -1995,11 +1995,11 @@ id|KERN_INFO
 l_string|&quot;Using Autonegotiation at 1000 Mbps Full Duplex only&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|1
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 id|ADVERTISE_1000_FULL
 suffix:semicolon
@@ -2024,11 +2024,11 @@ id|KERN_INFO
 l_string|&quot;Using Autonegotiation at 1000 Mbps Full Duplex only&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|1
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 id|ADVERTISE_1000_FULL
 suffix:semicolon
@@ -2046,11 +2046,11 @@ id|KERN_INFO
 l_string|&quot;Using Autonegotiation at 1000 Mbps Full Duplex only&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|1
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 id|ADVERTISE_1000_FULL
 suffix:semicolon
@@ -2128,7 +2128,7 @@ op_amp
 id|opt
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.mdix
+id|adapter-&gt;hw.mdix
 op_assign
 id|mdix
 suffix:semicolon
@@ -2177,7 +2177,7 @@ op_amp
 id|opt
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.disable_polarity_correction
+id|adapter-&gt;hw.disable_polarity_correction
 op_assign
 id|dpc
 suffix:semicolon
@@ -2191,7 +2191,7 @@ c_func
 (paren
 op_amp
 (paren
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 )paren
 )paren
 OL

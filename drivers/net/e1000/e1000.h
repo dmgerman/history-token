@@ -281,10 +281,10 @@ id|net_device_stats
 id|net_stats
 suffix:semicolon
 multiline_comment|/* structs defined in e1000_hw.h */
-DECL|member|shared
+DECL|member|hw
 r_struct
 id|e1000_hw
-id|shared
+id|hw
 suffix:semicolon
 DECL|member|stats
 r_struct

@@ -2047,7 +2047,7 @@ c_func
 (paren
 id|buf
 comma
-id|adapter-&gt;shared.media_type
+id|adapter-&gt;hw.media_type
 op_eq
 id|e1000_media_type_copper
 ques
@@ -2460,10 +2460,10 @@ id|adapter
 r_struct
 id|e1000_hw
 op_star
-id|shared
+id|hw
 op_assign
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 suffix:semicolon
 r_struct
 id|list_head
@@ -2520,7 +2520,7 @@ c_func
 l_string|&quot;PCI_Vendor&quot;
 comma
 op_amp
-id|shared-&gt;vendor_id
+id|hw-&gt;vendor_id
 )paren
 suffix:semicolon
 id|LIST_ADD_H
@@ -2529,7 +2529,7 @@ c_func
 l_string|&quot;PCI_Device_ID&quot;
 comma
 op_amp
-id|shared-&gt;device_id
+id|hw-&gt;device_id
 )paren
 suffix:semicolon
 id|LIST_ADD_H
@@ -2538,7 +2538,7 @@ c_func
 l_string|&quot;PCI_Subsystem_Vendor&quot;
 comma
 op_amp
-id|shared-&gt;subsystem_vendor_id
+id|hw-&gt;subsystem_vendor_id
 )paren
 suffix:semicolon
 id|LIST_ADD_H
@@ -2547,7 +2547,7 @@ c_func
 l_string|&quot;PCI_Subsystem_ID&quot;
 comma
 op_amp
-id|shared-&gt;subsystem_id
+id|hw-&gt;subsystem_id
 )paren
 suffix:semicolon
 id|LIST_ADD_H
@@ -2556,7 +2556,7 @@ c_func
 l_string|&quot;PCI_Revision_ID&quot;
 comma
 op_amp
-id|shared-&gt;revision_id
+id|hw-&gt;revision_id
 )paren
 suffix:semicolon
 id|LIST_ADD_U
@@ -2581,7 +2581,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|adapter-&gt;shared.mac_type
+id|adapter-&gt;hw.mac_type
 op_ge
 id|e1000_82543
 )paren
@@ -2592,7 +2592,7 @@ c_func
 l_string|&quot;PCI_Bus_Type&quot;
 comma
 op_amp
-id|shared-&gt;bus_type
+id|hw-&gt;bus_type
 comma
 id|e1000_proc_bus_type
 )paren
@@ -2603,7 +2603,7 @@ c_func
 l_string|&quot;PCI_Bus_Speed&quot;
 comma
 op_amp
-id|shared-&gt;bus_speed
+id|hw-&gt;bus_speed
 comma
 id|e1000_proc_bus_speed
 )paren
@@ -2614,7 +2614,7 @@ c_func
 l_string|&quot;PCI_Bus_Width&quot;
 comma
 op_amp
-id|shared-&gt;bus_width
+id|hw-&gt;bus_width
 comma
 id|e1000_proc_bus_width
 )paren
@@ -2652,7 +2652,7 @@ c_func
 (paren
 l_string|&quot;Permanent_HWaddr&quot;
 comma
-id|adapter-&gt;shared.perm_mac_addr
+id|adapter-&gt;hw.perm_mac_addr
 comma
 id|e1000_proc_hwaddr
 )paren
@@ -2958,7 +2958,7 @@ multiline_comment|/* The 82542 does not have an alignment error count register *
 r_if
 c_cond
 (paren
-id|adapter-&gt;shared.mac_type
+id|adapter-&gt;hw.mac_type
 op_ge
 id|e1000_82543
 )paren
@@ -3046,7 +3046,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|adapter-&gt;shared.media_type
+id|adapter-&gt;hw.media_type
 op_eq
 id|e1000_media_type_copper
 )paren

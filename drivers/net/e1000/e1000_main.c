@@ -1255,7 +1255,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|PBA
 comma
@@ -1268,43 +1268,43 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|PBA
 comma
 id|E1000_DEFAULT_PBA
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.fc
+id|adapter-&gt;hw.fc
 op_assign
-id|adapter-&gt;shared.original_fc
+id|adapter-&gt;hw.original_fc
 suffix:semicolon
 id|e1000_reset_hw
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 )paren
 suffix:semicolon
 id|e1000_init_hw
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 )paren
 suffix:semicolon
 id|e1000_reset_adaptive
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 )paren
 suffix:semicolon
 id|e1000_phy_get_info
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 op_amp
 id|adapter-&gt;phy_info
@@ -1520,7 +1520,7 @@ id|adapter-&gt;pdev
 op_assign
 id|pdev
 suffix:semicolon
-id|adapter-&gt;shared.back
+id|adapter-&gt;hw.back
 op_assign
 id|adapter
 suffix:semicolon
@@ -1544,7 +1544,7 @@ comma
 id|BAR_0
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.hw_addr
+id|adapter-&gt;hw.hw_addr
 op_assign
 id|ioremap
 c_func
@@ -1558,7 +1558,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|adapter-&gt;shared.hw_addr
+id|adapter-&gt;hw.hw_addr
 )paren
 (brace
 r_goto
@@ -1643,7 +1643,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|adapter-&gt;shared.mac_type
+id|adapter-&gt;hw.mac_type
 op_ge
 id|e1000_82543
 )paren
@@ -1681,7 +1681,7 @@ id|e1000_validate_eeprom_checksum
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 )paren
 OL
 l_int|0
@@ -1696,7 +1696,7 @@ id|e1000_read_mac_addr
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 )paren
 suffix:semicolon
 id|memcpy
@@ -1704,7 +1704,7 @@ c_func
 (paren
 id|netdev-&gt;dev_addr
 comma
-id|adapter-&gt;shared.mac_addr
+id|adapter-&gt;hw.mac_addr
 comma
 id|netdev-&gt;addr_len
 )paren
@@ -1728,7 +1728,7 @@ id|e1000_read_part_num
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 op_amp
 (paren
@@ -1740,7 +1740,7 @@ id|e1000_get_bus_info
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 )paren
 suffix:semicolon
 id|init_timer
@@ -1843,7 +1843,7 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-id|adapter-&gt;shared.hw_addr
+id|adapter-&gt;hw.hw_addr
 )paren
 suffix:semicolon
 id|err_ioremap
@@ -1909,7 +1909,7 @@ id|e1000_phy_hw_reset
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 )paren
 suffix:semicolon
 id|e1000_proc_dev_free
@@ -1921,7 +1921,7 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-id|adapter-&gt;shared.hw_addr
+id|adapter-&gt;hw.hw_addr
 )paren
 suffix:semicolon
 id|pci_release_regions
@@ -1956,10 +1956,10 @@ id|adapter
 r_struct
 id|e1000_hw
 op_star
-id|shared
+id|hw
 op_assign
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 suffix:semicolon
 r_struct
 id|net_device
@@ -1981,35 +1981,35 @@ op_star
 id|vendor
 op_assign
 op_amp
-id|shared-&gt;vendor_id
+id|hw-&gt;vendor_id
 suffix:semicolon
 r_uint16
 op_star
 id|device
 op_assign
 op_amp
-id|shared-&gt;device_id
+id|hw-&gt;device_id
 suffix:semicolon
 r_uint16
 op_star
 id|subvendor
 op_assign
 op_amp
-id|shared-&gt;subsystem_vendor_id
+id|hw-&gt;subsystem_vendor_id
 suffix:semicolon
 r_uint16
 op_star
 id|subsystem
 op_assign
 op_amp
-id|shared-&gt;subsystem_id
+id|hw-&gt;subsystem_id
 suffix:semicolon
 r_uint8
 op_star
 id|revision
 op_assign
 op_amp
-id|shared-&gt;revision_id
+id|hw-&gt;revision_id
 suffix:semicolon
 id|pci_read_config_word
 c_func
@@ -2069,14 +2069,14 @@ comma
 id|PCI_COMMAND
 comma
 op_amp
-id|shared-&gt;pci_cmd_word
+id|hw-&gt;pci_cmd_word
 )paren
 suffix:semicolon
 id|adapter-&gt;rx_buffer_len
 op_assign
 id|E1000_RXBUFFER_2048
 suffix:semicolon
-id|shared-&gt;max_frame_size
+id|hw-&gt;max_frame_size
 op_assign
 id|netdev-&gt;mtu
 op_plus
@@ -2084,7 +2084,7 @@ id|ENET_HEADER_SIZE
 op_plus
 id|CRC_LENGTH
 suffix:semicolon
-id|shared-&gt;min_frame_size
+id|hw-&gt;min_frame_size
 op_assign
 id|MINIMUM_ETHERNET_PACKET_SIZE
 op_plus
@@ -2111,7 +2111,7 @@ id|revision
 r_case
 id|E1000_82542_2_0_REV_ID
 suffix:colon
-id|shared-&gt;mac_type
+id|hw-&gt;mac_type
 op_assign
 id|e1000_82542_rev2_0
 suffix:semicolon
@@ -2120,7 +2120,7 @@ suffix:semicolon
 r_case
 id|E1000_82542_2_1_REV_ID
 suffix:colon
-id|shared-&gt;mac_type
+id|hw-&gt;mac_type
 op_assign
 id|e1000_82542_rev2_1
 suffix:semicolon
@@ -2128,7 +2128,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|shared-&gt;mac_type
+id|hw-&gt;mac_type
 op_assign
 id|e1000_82542_rev2_0
 suffix:semicolon
@@ -2147,7 +2147,7 @@ suffix:colon
 r_case
 id|E1000_DEV_ID_82543GC_COPPER
 suffix:colon
-id|shared-&gt;mac_type
+id|hw-&gt;mac_type
 op_assign
 id|e1000_82543
 suffix:semicolon
@@ -2165,7 +2165,7 @@ suffix:colon
 r_case
 id|E1000_DEV_ID_82544GC_LOM
 suffix:colon
-id|shared-&gt;mac_type
+id|hw-&gt;mac_type
 op_assign
 id|e1000_82544
 suffix:semicolon
@@ -2174,7 +2174,7 @@ suffix:semicolon
 r_case
 id|E1000_DEV_ID_82540EM
 suffix:colon
-id|shared-&gt;mac_type
+id|hw-&gt;mac_type
 op_assign
 id|e1000_82540
 suffix:semicolon
@@ -2190,19 +2190,19 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/* flow control settings */
-id|shared-&gt;fc_high_water
+id|hw-&gt;fc_high_water
 op_assign
 id|FC_DEFAULT_HI_THRESH
 suffix:semicolon
-id|shared-&gt;fc_low_water
+id|hw-&gt;fc_low_water
 op_assign
 id|FC_DEFAULT_LO_THRESH
 suffix:semicolon
-id|shared-&gt;fc_pause_time
+id|hw-&gt;fc_pause_time
 op_assign
 id|FC_DEFAULT_TX_TIMER
 suffix:semicolon
-id|shared-&gt;fc_send_xon
+id|hw-&gt;fc_send_xon
 op_assign
 l_int|1
 suffix:semicolon
@@ -2210,7 +2210,7 @@ multiline_comment|/* Media type - copper or fiber */
 r_if
 c_cond
 (paren
-id|shared-&gt;mac_type
+id|hw-&gt;mac_type
 op_ge
 id|e1000_82543
 )paren
@@ -2221,7 +2221,7 @@ op_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|STATUS
 )paren
@@ -2234,20 +2234,20 @@ op_amp
 id|E1000_STATUS_TBIMODE
 )paren
 (brace
-id|shared-&gt;media_type
+id|hw-&gt;media_type
 op_assign
 id|e1000_media_type_fiber
 suffix:semicolon
 )brace
 r_else
-id|shared-&gt;media_type
+id|hw-&gt;media_type
 op_assign
 id|e1000_media_type_copper
 suffix:semicolon
 )brace
 r_else
 (brace
-id|shared-&gt;media_type
+id|hw-&gt;media_type
 op_assign
 id|e1000_media_type_fiber
 suffix:semicolon
@@ -2255,26 +2255,26 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|shared-&gt;mac_type
+id|hw-&gt;mac_type
 OL
 id|e1000_82543
 )paren
 (brace
-id|shared-&gt;report_tx_early
+id|hw-&gt;report_tx_early
 op_assign
 l_int|0
 suffix:semicolon
 )brace
 r_else
-id|shared-&gt;report_tx_early
+id|hw-&gt;report_tx_early
 op_assign
 l_int|1
 suffix:semicolon
-id|shared-&gt;wait_autoneg_complete
+id|hw-&gt;wait_autoneg_complete
 op_assign
 id|FALSE
 suffix:semicolon
-id|shared-&gt;tbi_compatibility_en
+id|hw-&gt;tbi_compatibility_en
 op_assign
 id|TRUE
 suffix:semicolon
@@ -2625,7 +2625,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|TDBAL
 comma
@@ -2640,7 +2640,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|TDBAH
 comma
@@ -2655,7 +2655,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|TDLEN
 comma
@@ -2667,7 +2667,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|TDH
 comma
@@ -2678,7 +2678,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|TDT
 comma
@@ -2689,7 +2689,7 @@ multiline_comment|/* Set the default values for the Tx Inter Packet Gap timer */
 r_switch
 c_cond
 (paren
-id|adapter-&gt;shared.mac_type
+id|adapter-&gt;hw.mac_type
 )paren
 (brace
 r_case
@@ -2723,7 +2723,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|adapter-&gt;shared.media_type
+id|adapter-&gt;hw.media_type
 op_eq
 id|e1000_media_type_fiber
 )paren
@@ -2755,7 +2755,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|TIPG
 comma
@@ -2767,7 +2767,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|TIDV
 comma
@@ -2815,7 +2815,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|TCTL
 comma
@@ -2843,7 +2843,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|adapter-&gt;shared.report_tx_early
+id|adapter-&gt;hw.report_tx_early
 op_eq
 l_int|1
 )paren
@@ -3038,7 +3038,7 @@ op_or
 id|E1000_RCTL_RDMTS_HALF
 op_or
 (paren
-id|adapter-&gt;shared.mc_filter_type
+id|adapter-&gt;hw.mc_filter_type
 op_lshift
 id|E1000_RCTL_MO_SHIFT
 )paren
@@ -3046,7 +3046,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|adapter-&gt;shared.tbi_compatibility_on
+id|adapter-&gt;hw.tbi_compatibility_on
 op_eq
 l_int|1
 )paren
@@ -3117,7 +3117,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RCTL
 comma
@@ -3167,7 +3167,7 @@ id|E1000_READ_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RCTL
 )paren
@@ -3176,7 +3176,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RCTL
 comma
@@ -3190,7 +3190,7 @@ multiline_comment|/* set the Receive Delay Timer Register */
 r_if
 c_cond
 (paren
-id|adapter-&gt;shared.mac_type
+id|adapter-&gt;hw.mac_type
 op_eq
 id|e1000_82540
 )paren
@@ -3199,7 +3199,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RADV
 comma
@@ -3210,7 +3210,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RDTR
 comma
@@ -3226,7 +3226,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|ITR
 comma
@@ -3240,7 +3240,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RDTR
 comma
@@ -3253,7 +3253,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RDBAL
 comma
@@ -3268,7 +3268,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RDBAH
 comma
@@ -3283,7 +3283,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RDLEN
 comma
@@ -3295,7 +3295,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RDH
 comma
@@ -3306,7 +3306,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RDT
 comma
@@ -3318,7 +3318,7 @@ r_if
 c_cond
 (paren
 (paren
-id|adapter-&gt;shared.mac_type
+id|adapter-&gt;hw.mac_type
 op_ge
 id|e1000_82543
 )paren
@@ -3336,7 +3336,7 @@ id|E1000_READ_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RXCSUM
 )paren
@@ -3349,7 +3349,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RXCSUM
 comma
@@ -3362,7 +3362,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RCTL
 comma
@@ -3577,7 +3577,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|TDH
 comma
@@ -3588,7 +3588,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|TDT
 comma
@@ -3798,7 +3798,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RDH
 comma
@@ -3809,7 +3809,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RDT
 comma
@@ -3849,7 +3849,7 @@ suffix:semicolon
 r_uint16
 id|pci_command_word
 op_assign
-id|adapter-&gt;shared.pci_cmd_word
+id|adapter-&gt;hw.pci_cmd_word
 suffix:semicolon
 r_uint32
 id|rctl
@@ -3884,7 +3884,7 @@ id|E1000_READ_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RCTL
 )paren
@@ -3897,7 +3897,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RCTL
 comma
@@ -3959,7 +3959,7 @@ suffix:semicolon
 r_uint16
 id|pci_command_word
 op_assign
-id|adapter-&gt;shared.pci_cmd_word
+id|adapter-&gt;hw.pci_cmd_word
 suffix:semicolon
 r_uint32
 id|rctl
@@ -3970,7 +3970,7 @@ id|E1000_READ_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RCTL
 )paren
@@ -3984,7 +3984,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RCTL
 comma
@@ -4077,7 +4077,7 @@ multiline_comment|/* 82542 2.0 needs to be in reset to write receive address reg
 r_if
 c_cond
 (paren
-id|adapter-&gt;shared.mac_type
+id|adapter-&gt;hw.mac_type
 op_eq
 id|e1000_82542_rev2_0
 )paren
@@ -4102,7 +4102,7 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|adapter-&gt;shared.mac_addr
+id|adapter-&gt;hw.mac_addr
 comma
 id|addr-&gt;sa_data
 comma
@@ -4113,9 +4113,9 @@ id|e1000_rar_set
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
-id|adapter-&gt;shared.mac_addr
+id|adapter-&gt;hw.mac_addr
 comma
 l_int|0
 )paren
@@ -4123,7 +4123,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|adapter-&gt;shared.mac_type
+id|adapter-&gt;hw.mac_type
 op_eq
 id|e1000_82542_rev2_0
 )paren
@@ -4162,10 +4162,10 @@ suffix:semicolon
 r_struct
 id|e1000_hw
 op_star
-id|shared
+id|hw
 op_assign
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 suffix:semicolon
 r_struct
 id|dev_mc_list
@@ -4187,7 +4187,7 @@ op_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|RCTL
 )paren
@@ -4243,7 +4243,7 @@ suffix:semicolon
 id|E1000_WRITE_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|RCTL
 comma
@@ -4254,7 +4254,7 @@ multiline_comment|/* 82542 2.0 needs to be in reset to write receive address reg
 r_if
 c_cond
 (paren
-id|shared-&gt;mac_type
+id|hw-&gt;mac_type
 op_eq
 id|e1000_82542_rev2_0
 )paren
@@ -4295,7 +4295,7 @@ id|mc_ptr
 id|e1000_rar_set
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|mc_ptr-&gt;dmi_addr
 comma
@@ -4312,7 +4312,7 @@ r_else
 id|E1000_WRITE_REG_ARRAY
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|RA
 comma
@@ -4326,7 +4326,7 @@ suffix:semicolon
 id|E1000_WRITE_REG_ARRAY
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|RA
 comma
@@ -4362,7 +4362,7 @@ op_increment
 id|E1000_WRITE_REG_ARRAY
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|MTA
 comma
@@ -4389,7 +4389,7 @@ op_assign
 id|e1000_hash_mc_addr
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|mc_ptr-&gt;dmi_addr
 )paren
@@ -4397,7 +4397,7 @@ suffix:semicolon
 id|e1000_mta_set
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|hash_value
 )paren
@@ -4406,7 +4406,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|shared-&gt;mac_type
+id|hw-&gt;mac_type
 op_eq
 id|e1000_82542_rev2_0
 )paren
@@ -4449,7 +4449,7 @@ id|e1000_phy_get_info
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 op_amp
 id|adapter-&gt;phy_info
@@ -4493,7 +4493,7 @@ id|e1000_check_for_link
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 )paren
 suffix:semicolon
 r_if
@@ -4503,7 +4503,7 @@ id|E1000_READ_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|STATUS
 )paren
@@ -4526,7 +4526,7 @@ id|e1000_get_speed_and_duplex
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 op_amp
 id|adapter-&gt;link_speed
@@ -4754,7 +4754,7 @@ id|E1000_READ_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|STATUS
 )paren
@@ -5184,7 +5184,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|TDT
 comma
@@ -5352,7 +5352,7 @@ r_else
 r_if
 c_cond
 (paren
-id|adapter-&gt;shared.mac_type
+id|adapter-&gt;hw.mac_type
 OL
 id|e1000_82543
 )paren
@@ -5460,7 +5460,7 @@ id|netdev-&gt;mtu
 op_assign
 id|new_mtu
 suffix:semicolon
-id|adapter-&gt;shared.max_frame_size
+id|adapter-&gt;hw.max_frame_size
 op_assign
 id|max_frame
 suffix:semicolon
@@ -5484,10 +5484,10 @@ id|adapter
 r_struct
 id|e1000_hw
 op_star
-id|shared
+id|hw
 op_assign
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 suffix:semicolon
 r_int
 r_int
@@ -5513,7 +5513,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|CRCERRS
 )paren
@@ -5523,7 +5523,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|GPRC
 )paren
@@ -5533,7 +5533,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|GORCL
 )paren
@@ -5543,7 +5543,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|GORCH
 )paren
@@ -5553,7 +5553,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|BPRC
 )paren
@@ -5563,7 +5563,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|MPRC
 )paren
@@ -5573,7 +5573,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|ROC
 )paren
@@ -5583,7 +5583,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|PRC64
 )paren
@@ -5593,7 +5593,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|PRC127
 )paren
@@ -5603,7 +5603,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|PRC255
 )paren
@@ -5613,7 +5613,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|PRC511
 )paren
@@ -5623,7 +5623,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|PRC1023
 )paren
@@ -5633,7 +5633,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|PRC1522
 )paren
@@ -5653,7 +5653,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|SYMERRS
 )paren
@@ -5663,7 +5663,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|MPC
 )paren
@@ -5673,7 +5673,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|SCC
 )paren
@@ -5683,7 +5683,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|ECOL
 )paren
@@ -5693,7 +5693,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|MCC
 )paren
@@ -5703,7 +5703,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|LATECOL
 )paren
@@ -5713,7 +5713,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|COLC
 )paren
@@ -5723,7 +5723,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|DC
 )paren
@@ -5733,7 +5733,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|SEC
 )paren
@@ -5743,7 +5743,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|RLEC
 )paren
@@ -5753,7 +5753,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|XONRXC
 )paren
@@ -5763,7 +5763,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|XONTXC
 )paren
@@ -5773,7 +5773,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|XOFFRXC
 )paren
@@ -5783,7 +5783,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|XOFFTXC
 )paren
@@ -5793,7 +5793,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|FCRUC
 )paren
@@ -5803,7 +5803,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|GPTC
 )paren
@@ -5813,7 +5813,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|GOTCL
 )paren
@@ -5823,7 +5823,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|GOTCH
 )paren
@@ -5833,7 +5833,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|RNBC
 )paren
@@ -5843,7 +5843,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|RUC
 )paren
@@ -5853,7 +5853,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|RFC
 )paren
@@ -5863,7 +5863,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|RJC
 )paren
@@ -5873,7 +5873,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|TORL
 )paren
@@ -5883,7 +5883,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|TORH
 )paren
@@ -5893,7 +5893,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|TOTL
 )paren
@@ -5903,7 +5903,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|TOTH
 )paren
@@ -5913,7 +5913,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|TPR
 )paren
@@ -5923,7 +5923,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|TPT
 )paren
@@ -5933,7 +5933,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|PTC64
 )paren
@@ -5943,7 +5943,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|PTC127
 )paren
@@ -5953,7 +5953,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|PTC255
 )paren
@@ -5963,7 +5963,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|PTC511
 )paren
@@ -5973,7 +5973,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|PTC1023
 )paren
@@ -5983,7 +5983,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|PTC1522
 )paren
@@ -5993,7 +5993,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|MPTC
 )paren
@@ -6003,7 +6003,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|BPTC
 )paren
@@ -6011,7 +6011,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|adapter-&gt;shared.mac_type
+id|adapter-&gt;hw.mac_type
 op_ge
 id|e1000_82543
 )paren
@@ -6021,7 +6021,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|ALGNERRC
 )paren
@@ -6031,7 +6031,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|RXERRC
 )paren
@@ -6041,7 +6041,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|TNCRS
 )paren
@@ -6051,7 +6051,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|CEXTERR
 )paren
@@ -6061,7 +6061,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|TSCTC
 )paren
@@ -6071,7 +6071,7 @@ op_add_assign
 id|E1000_READ_REG
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|TSCTFC
 )paren
@@ -6163,7 +6163,7 @@ multiline_comment|/* Phy Stats */
 r_if
 c_cond
 (paren
-id|shared-&gt;media_type
+id|hw-&gt;media_type
 op_eq
 id|e1000_media_type_copper
 )paren
@@ -6182,7 +6182,7 @@ op_logical_neg
 id|e1000_read_phy_reg
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|PHY_1000T_STATUS
 comma
@@ -6208,7 +6208,7 @@ op_logical_neg
 id|e1000_read_phy_reg
 c_func
 (paren
-id|shared
+id|hw
 comma
 id|M88E1000_RX_ERR_CNTR
 comma
@@ -6249,7 +6249,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|IMC
 comma
@@ -6294,7 +6294,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|IMS
 comma
@@ -6359,7 +6359,7 @@ id|E1000_READ_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|ICR
 )paren
@@ -6379,7 +6379,7 @@ id|E1000_ICR_LSC
 )paren
 (brace
 multiline_comment|/* run the watchdog ASAP */
-id|adapter-&gt;shared.get_link_status
+id|adapter-&gt;hw.get_link_status
 op_assign
 l_int|1
 suffix:semicolon
@@ -6871,7 +6871,7 @@ id|TBI_ACCEPT
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|rx_desc-&gt;status
 comma
@@ -6896,7 +6896,7 @@ id|e1000_tbi_adjust_stats
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 op_amp
 id|adapter-&gt;stats
@@ -7270,7 +7270,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|RDT
 comma
@@ -7378,7 +7378,7 @@ r_if
 c_cond
 (paren
 (paren
-id|adapter-&gt;shared.mac_type
+id|adapter-&gt;hw.mac_type
 OL
 id|e1000_82543
 )paren
@@ -7459,7 +7459,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|adapter-&gt;shared.mac_type
+id|adapter-&gt;hw.mac_type
 OL
 id|e1000_82544
 )paren
@@ -7487,7 +7487,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|WUC
 comma
@@ -7498,7 +7498,7 @@ id|E1000_WRITE_REG
 c_func
 (paren
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 comma
 id|WUFC
 comma
@@ -7517,7 +7517,7 @@ c_func
 r_struct
 id|e1000_hw
 op_star
-id|shared
+id|hw
 comma
 r_uint32
 id|reg
@@ -7532,7 +7532,7 @@ id|e1000_adapter
 op_star
 id|adapter
 op_assign
-id|shared-&gt;back
+id|hw-&gt;back
 suffix:semicolon
 id|pci_write_config_word
 c_func
