@@ -57,4 +57,9 @@ DECL|macro|SAMSUNG_VENDOR_ID
 mdefine_line|#define SAMSUNG_VENDOR_ID       0x04e8
 DECL|macro|SAMSUNG_PRODUCT_ID
 mdefine_line|#define SAMSUNG_PRODUCT_ID      0x8001
+multiline_comment|/* Pharos / Microsoft GPS puck */
+DECL|macro|PHAROS_VENDOR_ID
+mdefine_line|#define PHAROS_VENDOR_ID       0x067b
+DECL|macro|PHAROS_PRODUCT_ID
+mdefine_line|#define PHAROS_PRODUCT_ID      0xaaa0
 eof
