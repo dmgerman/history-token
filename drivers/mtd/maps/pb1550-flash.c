@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Flash memory access on Alchemy Pb1550 board&n; * &n; * $Id: pb1550-flash.c,v 1.4 2004/07/14 17:45:40 dwmw2 Exp $&n; *&n; * (C) 2004 Embedded Edge, LLC, based on pb1550-flash.c:&n; * (C) 2003 Pete Popov &lt;ppopov@pacbell.net&gt;&n; * &n; */
+multiline_comment|/*&n; * Flash memory access on Alchemy Pb1550 board&n; * &n; * $Id: pb1550-flash.c,v 1.5 2004/09/16 23:27:13 gleixner Exp $&n; *&n; * (C) 2004 Embedded Edge, LLC, based on pb1550-flash.c:&n; * (C) 2003 Pete Popov &lt;ppopov@pacbell.net&gt;&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -470,8 +470,9 @@ suffix:semicolon
 id|pb1550_map.virt
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap
 c_func

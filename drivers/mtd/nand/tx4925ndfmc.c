@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/tx4925ndfmc.c&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   Toshiba RBTX4925 reference board, which is a SmartMediaCard. It supports &n; *   16MiB, 32MiB and 64MiB cards.&n; *&n; * Author: MontaVista Software, Inc.  source@mvista.com&n; *&n; * Derived from drivers/mtd/autcpu12.c&n; *       Copyright (c) 2001 Thomas Gleixner (gleixner@autronix.de)&n; *&n; * $Id: tx4925ndfmc.c,v 1.3 2004/07/20 02:44:26 dwmw2 Exp $&n; *&n; * Copyright (C) 2001 Toshiba Corporation &n; * &n; * 2003 (c) MontaVista Software, Inc. This file is licensed under&n; * the terms of the GNU General Public License version 2. This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; *&n; */
+multiline_comment|/*&n; *  drivers/mtd/tx4925ndfmc.c&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   Toshiba RBTX4925 reference board, which is a SmartMediaCard. It supports &n; *   16MiB, 32MiB and 64MiB cards.&n; *&n; * Author: MontaVista Software, Inc.  source@mvista.com&n; *&n; * Derived from drivers/mtd/autcpu12.c&n; *       Copyright (c) 2001 Thomas Gleixner (gleixner@autronix.de)&n; *&n; * $Id: tx4925ndfmc.c,v 1.5 2004/10/05 13:50:20 gleixner Exp $&n; *&n; * Copyright (C) 2001 Toshiba Corporation &n; * &n; * 2003 (c) MontaVista Software, Inc. This file is licensed under&n; * the terms of the GNU General Public License version 2. This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; *&n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -1366,8 +1366,9 @@ multiline_comment|/* Set address of NAND IO lines */
 id|this-&gt;IO_ADDR_R
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 op_amp
 (paren
@@ -1377,8 +1378,9 @@ suffix:semicolon
 id|this-&gt;IO_ADDR_W
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 op_amp
 (paren
@@ -1454,46 +1456,6 @@ id|err
 op_assign
 op_minus
 id|ENXIO
-suffix:semicolon
-r_goto
-id|out_ior
-suffix:semicolon
-)brace
-multiline_comment|/* Allocate memory for internal data buffer */
-id|this-&gt;data_buf
-op_assign
-id|kmalloc
-(paren
-r_sizeof
-(paren
-id|u_char
-)paren
-op_star
-(paren
-id|tx4925ndfmc_mtd-&gt;oobblock
-op_plus
-id|tx4925ndfmc_mtd-&gt;oobsize
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|this-&gt;data_buf
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;Unable to allocate NAND data buffer for RBTX4925.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|err
-op_assign
-op_minus
-id|ENOMEM
 suffix:semicolon
 r_goto
 id|out_ior
@@ -1635,20 +1597,13 @@ op_minus
 id|ENXIO
 suffix:semicolon
 r_goto
-id|out_buf
+id|out_ior
 suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* ifdef CONFIG_MTD_CMDLINE_PARTS */
 r_goto
 id|out
-suffix:semicolon
-id|out_buf
-suffix:colon
-id|kfree
-(paren
-id|this-&gt;data_buf
-)paren
 suffix:semicolon
 id|out_ior
 suffix:colon
@@ -1676,39 +1631,10 @@ id|tx4925ndfmc_cleanup
 r_void
 )paren
 (brace
-r_struct
-id|nand_chip
-op_star
-id|this
-op_assign
-(paren
-r_struct
-id|nand_chip
-op_star
-)paren
-op_amp
-id|tx4925ndfmc_mtd
-(braket
-l_int|1
-)braket
-suffix:semicolon
-multiline_comment|/* Unregister partitions */
-id|del_mtd_partitions
-c_func
+multiline_comment|/* Release resources, unregister device */
+id|nand_release
 (paren
 id|tx4925ndfmc_mtd
-)paren
-suffix:semicolon
-multiline_comment|/* Unregister the device */
-id|del_mtd_device
-(paren
-id|tx4925ndfmc_mtd
-)paren
-suffix:semicolon
-multiline_comment|/* Free internal data buffers */
-id|kfree
-(paren
-id|this-&gt;data_buf
 )paren
 suffix:semicolon
 multiline_comment|/* Free the MTD device structure */

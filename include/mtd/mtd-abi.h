@@ -1,7 +1,11 @@
-multiline_comment|/*&n; * $Id: mtd-abi.h,v 1.5 2004/06/22 09:29:35 gleixner Exp $&n; *&n; * Portions of MTD ABI definition which are shared by kernel and user space &n; */
+multiline_comment|/*&n; * $Id: mtd-abi.h,v 1.6 2004/08/09 13:38:30 dwmw2 Exp $&n; *&n; * Portions of MTD ABI definition which are shared by kernel and user space &n; */
 macro_line|#ifndef __MTD_ABI_H__
 DECL|macro|__MTD_ABI_H__
 mdefine_line|#define __MTD_ABI_H__
+macro_line|#ifndef __KERNEL__ /* Urgh. The whole point of splitting this out into&n;&t;&t;    separate files was to avoid #ifdef __KERNEL__ */
+DECL|macro|__user
+mdefine_line|#define __user
+macro_line|#endif
 DECL|struct|erase_info_user
 r_struct
 id|erase_info_user

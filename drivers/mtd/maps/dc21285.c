@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * MTD map driver for flash on the DC21285 (the StrongARM-110 companion chip)&n; *&n; * (C) 2000  Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; * &n; * $Id: dc21285.c,v 1.20 2004/07/12 22:38:29 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * MTD map driver for flash on the DC21285 (the StrongARM-110 companion chip)&n; *&n; * (C) 2000  Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; * &n; * $Id: dc21285.c,v 1.21 2004/09/16 23:27:13 gleixner Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -739,8 +739,9 @@ multiline_comment|/* Let&squot;s map the flash area */
 id|dc21285_map.map_priv_1
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap
 c_func

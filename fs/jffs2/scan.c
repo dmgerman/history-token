@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: scan.c,v 1.110 2004/06/17 17:15:31 gleixner Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: scan.c,v 1.112 2004/09/12 09:56:13 gleixner Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -306,6 +306,22 @@ r_else
 id|buf_size
 op_assign
 id|PAGE_SIZE
+suffix:semicolon
+multiline_comment|/* Respect kmalloc limitations */
+r_if
+c_cond
+(paren
+id|buf_size
+OG
+l_int|128
+op_star
+l_int|1024
+)paren
+id|buf_size
+op_assign
+l_int|128
+op_star
+l_int|1024
 suffix:semicolon
 id|D1
 c_func
@@ -874,6 +890,8 @@ id|c-&gt;used_size
 op_logical_and
 (paren
 (paren
+id|c-&gt;nr_free_blocks
+op_plus
 id|empty_blocks
 op_plus
 id|bad_blocks

@@ -1,4 +1,4 @@
-multiline_comment|/* &n;   Common Flash Interface probe code.&n;   (C) 2000 Red Hat. GPL&squot;d.&n;   $Id: cfi_probe.c,v 1.77 2004/07/14 08:38:44 dwmw2 Exp $&n;*/
+multiline_comment|/* &n;   Common Flash Interface probe code.&n;   (C) 2000 Red Hat. GPL&squot;d.&n;   $Id: cfi_probe.c,v 1.79 2004/10/20 23:04:01 dwmw2 Exp $&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -1222,6 +1222,18 @@ r_return
 l_string|&quot;AMD/Fujitsu Extended&quot;
 suffix:semicolon
 r_case
+id|P_ID_WINBOND
+suffix:colon
+r_return
+l_string|&quot;Winbond Standard&quot;
+suffix:semicolon
+r_case
+id|P_ID_ST_ADV
+suffix:colon
+r_return
+l_string|&quot;ST Advanced&quot;
+suffix:semicolon
+r_case
 id|P_ID_MITSUBISHI_STD
 suffix:colon
 r_return
@@ -1232,6 +1244,24 @@ id|P_ID_MITSUBISHI_EXT
 suffix:colon
 r_return
 l_string|&quot;Mitsubishi Extended&quot;
+suffix:semicolon
+r_case
+id|P_ID_SST_PAGE
+suffix:colon
+r_return
+l_string|&quot;SST Page Write&quot;
+suffix:semicolon
+r_case
+id|P_ID_INTEL_PERFORMANCE
+suffix:colon
+r_return
+l_string|&quot;Intel Performance Code&quot;
+suffix:semicolon
+r_case
+id|P_ID_INTEL_DATA
+suffix:colon
+r_return
+l_string|&quot;Intel Data&quot;
 suffix:semicolon
 r_case
 id|P_ID_RESERVED
@@ -1648,6 +1678,17 @@ id|printk
 c_func
 (paren
 l_string|&quot;  - x32-only asynchronous interface&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|4
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;  - supports x16 and x32 via Word# with asynchronous interface&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break

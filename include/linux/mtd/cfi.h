@@ -1,4 +1,4 @@
-multiline_comment|/* Common Flash Interface structures &n; * See http://support.intel.com/design/flash/technote/index.htm&n; * $Id: cfi.h,v 1.45 2004/07/20 02:44:27 dwmw2 Exp $&n; */
+multiline_comment|/* Common Flash Interface structures &n; * See http://support.intel.com/design/flash/technote/index.htm&n; * $Id: cfi.h,v 1.48 2004/10/20 23:08:05 dwmw2 Exp $&n; */
 macro_line|#ifndef __MTD_CFI_H__
 DECL|macro|__MTD_CFI_H__
 mdefine_line|#define __MTD_CFI_H__
@@ -457,25 +457,31 @@ id|packed
 )paren
 suffix:semicolon
 DECL|macro|P_ID_NONE
-mdefine_line|#define P_ID_NONE 0
+mdefine_line|#define P_ID_NONE               0x0000
 DECL|macro|P_ID_INTEL_EXT
-mdefine_line|#define P_ID_INTEL_EXT 1
+mdefine_line|#define P_ID_INTEL_EXT          0x0001
 DECL|macro|P_ID_AMD_STD
-mdefine_line|#define P_ID_AMD_STD 2
+mdefine_line|#define P_ID_AMD_STD            0x0002
 DECL|macro|P_ID_INTEL_STD
-mdefine_line|#define P_ID_INTEL_STD 3
+mdefine_line|#define P_ID_INTEL_STD          0x0003
 DECL|macro|P_ID_AMD_EXT
-mdefine_line|#define P_ID_AMD_EXT 4
+mdefine_line|#define P_ID_AMD_EXT            0x0004
+DECL|macro|P_ID_WINBOND
+mdefine_line|#define P_ID_WINBOND            0x0006
 DECL|macro|P_ID_ST_ADV
-mdefine_line|#define P_ID_ST_ADV 32
+mdefine_line|#define P_ID_ST_ADV             0x0020
 DECL|macro|P_ID_MITSUBISHI_STD
-mdefine_line|#define P_ID_MITSUBISHI_STD 256
+mdefine_line|#define P_ID_MITSUBISHI_STD     0x0100
 DECL|macro|P_ID_MITSUBISHI_EXT
-mdefine_line|#define P_ID_MITSUBISHI_EXT 257
+mdefine_line|#define P_ID_MITSUBISHI_EXT     0x0101
 DECL|macro|P_ID_SST_PAGE
-mdefine_line|#define P_ID_SST_PAGE 258
+mdefine_line|#define P_ID_SST_PAGE           0x0102
+DECL|macro|P_ID_INTEL_PERFORMANCE
+mdefine_line|#define P_ID_INTEL_PERFORMANCE  0x0200
+DECL|macro|P_ID_INTEL_DATA
+mdefine_line|#define P_ID_INTEL_DATA         0x0210
 DECL|macro|P_ID_RESERVED
-mdefine_line|#define P_ID_RESERVED 65535
+mdefine_line|#define P_ID_RESERVED           0xffff
 DECL|macro|CFI_MODE_CFI
 mdefine_line|#define CFI_MODE_CFI&t;1
 DECL|macro|CFI_MODE_JEDEC
@@ -1186,9 +1192,9 @@ id|fixup
 )paren
 (paren
 r_struct
-id|map_info
+id|mtd_info
 op_star
-id|map
+id|mtd
 comma
 r_void
 op_star
@@ -1206,9 +1212,32 @@ DECL|macro|CFI_MFR_ANY
 mdefine_line|#define CFI_MFR_ANY 0xffff
 DECL|macro|CFI_ID_ANY
 mdefine_line|#define CFI_ID_ANY  0xffff
+DECL|macro|CFI_MFR_AMD
+mdefine_line|#define CFI_MFR_AMD 0x0001
+DECL|macro|CFI_MFR_ST
+mdefine_line|#define CFI_MFR_ST  0x0020 &t;/* STMicroelectronics */
 r_void
 id|cfi_fixup
 c_func
+(paren
+r_struct
+id|mtd_info
+op_star
+id|mtd
+comma
+r_struct
+id|cfi_fixup
+op_star
+id|fixups
+)paren
+suffix:semicolon
+DECL|typedef|varsize_frob_t
+r_typedef
+r_int
+(paren
+op_star
+id|varsize_frob_t
+)paren
 (paren
 r_struct
 id|map_info
@@ -1216,9 +1245,43 @@ op_star
 id|map
 comma
 r_struct
-id|cfi_fixup
+id|flchip
 op_star
-id|fixups
+id|chip
+comma
+r_int
+r_int
+id|adr
+comma
+r_int
+id|len
+comma
+r_void
+op_star
+id|thunk
+)paren
+suffix:semicolon
+r_int
+id|cfi_varsize_frob
+c_func
+(paren
+r_struct
+id|mtd_info
+op_star
+id|mtd
+comma
+id|varsize_frob_t
+id|frob
+comma
+id|loff_t
+id|ofs
+comma
+r_int
+id|len
+comma
+r_void
+op_star
+id|thunk
 )paren
 suffix:semicolon
 macro_line|#endif /* __MTD_CFI_H__ */

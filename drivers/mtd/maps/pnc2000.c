@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;pnc2000.c - mapper for Photron PNC-2000 board.&n; *&n; * Copyright (C) 2000 Crossnet Co. &lt;info@crossnet.co.jp&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: pnc2000.c,v 1.15 2004/07/12 21:59:44 dwmw2 Exp $&n; */
+multiline_comment|/*&n; *&t;pnc2000.c - mapper for Photron PNC-2000 board.&n; *&n; * Copyright (C) 2000 Crossnet Co. &lt;info@crossnet.co.jp&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: pnc2000.c,v 1.16 2004/09/16 23:27:13 gleixner Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -40,6 +40,11 @@ comma
 dot
 id|virt
 op_assign
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|WINDOW_ADDR
 comma
 )brace

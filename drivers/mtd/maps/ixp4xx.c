@@ -196,7 +196,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Unaligned writes are ignored, causing the 8-bit&n; * probe to fail and proceed to the 16-bit probe (which succeeds).&n; */
+multiline_comment|/* &n; * Unaligned writes are ignored, causing the 8-bit&n; * probe to fail and proceed to the 16-bit probe (which succeeds).&n; */
 DECL|function|ixp4xx_probe_write16
 r_static
 r_void
@@ -243,7 +243,7 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Fast write16 function without the probing check above&n; */
+multiline_comment|/* &n; * Fast write16 function without the probing check above&n; */
 DECL|function|ixp4xx_write16
 r_static
 r_void

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/nand/edb7312.c&n; *&n; *  Copyright (C) 2002 Marius Gr&#xfffd;ger (mag@sysgo.de)&n; *&n; *  Derived from drivers/mtd/nand/autcpu12.c&n; *       Copyright (c) 2001 Thomas Gleixner (gleixner@autronix.de)&n; *&n; * $Id: edb7312.c,v 1.8 2004/07/12 15:03:26 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   CLEP7312 board which utilizes the Toshiba TC58V64AFT part. This is&n; *   a 64Mibit (8MiB x 8 bits) NAND flash device.&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand/edb7312.c&n; *&n; *  Copyright (C) 2002 Marius Gr&#xfffd;ger (mag@sysgo.de)&n; *&n; *  Derived from drivers/mtd/nand/autcpu12.c&n; *       Copyright (c) 2001 Thomas Gleixner (gleixner@autronix.de)&n; *&n; * $Id: edb7312.c,v 1.10 2004/10/05 13:50:20 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   CLEP7312 board which utilizes the Toshiba TC58V64AFT part. This is&n; *   a 64Mibit (8MiB x 8 bits) NAND flash device.&n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -30,22 +30,37 @@ multiline_comment|/*&n; * Module stuff&n; */
 DECL|variable|ep7312_fio_pbase
 r_static
 r_int
+r_int
 id|ep7312_fio_pbase
 op_assign
 id|EP7312_FIO_PBASE
 suffix:semicolon
 DECL|variable|ep7312_pxdr
 r_static
-r_int
+r_void
+id|__iomem
+op_star
 id|ep7312_pxdr
 op_assign
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|EP7312_PXDR
 suffix:semicolon
 DECL|variable|ep7312_pxddr
 r_static
-r_int
+r_void
+id|__iomem
+op_star
 id|ep7312_pxddr
 op_assign
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|EP7312_PXDDR
 suffix:semicolon
 macro_line|#ifdef MODULE
@@ -350,7 +365,9 @@ id|mtd_parts
 op_assign
 l_int|0
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ep7312_fio_base
 suffix:semicolon
 multiline_comment|/* Allocate memory for MTD device structure and private data */
@@ -396,8 +413,9 @@ multiline_comment|/* map physical adress */
 id|ep7312_fio_base
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap
 c_func
@@ -552,59 +570,7 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-multiline_comment|/* Allocate memory for internal data buffer */
-id|this-&gt;data_buf
-op_assign
-id|kmalloc
-(paren
-r_sizeof
-(paren
-id|u_char
-)paren
-op_star
-(paren
-id|ep7312_mtd-&gt;oobblock
-op_plus
-id|ep7312_mtd-&gt;oobsize
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|this-&gt;data_buf
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Unable to allocate NAND data buffer for EDB7312.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|iounmap
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|ep7312_fio_base
-)paren
-suffix:semicolon
-id|kfree
-(paren
-id|ep7312_mtd
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
-macro_line|#ifdef CONFIG_PARTITIONS
+macro_line|#ifdef CONFIG_MTD_PARTITIONS
 id|ep7312_mtd-&gt;name
 op_assign
 l_string|&quot;edb7312-nand&quot;
@@ -720,10 +686,10 @@ id|ep7312_mtd
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* Unregister the device */
-id|del_mtd_device
+multiline_comment|/* Release resources, unregister device */
+id|nand_release
 (paren
-id|ep7312_mtd
+id|ap7312_mtd
 )paren
 suffix:semicolon
 multiline_comment|/* Free internal data buffer */

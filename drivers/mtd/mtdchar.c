@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: mtdchar.c,v 1.64 2004/08/09 13:59:46 dwmw2 Exp $&n; *&n; * Character-device access to raw MTD devices.&n; *&n; */
+multiline_comment|/*&n; * $Id: mtdchar.c,v 1.65 2004/09/23 23:45:47 gleixner Exp $&n; *&n; * Character-device access to raw MTD devices.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -666,11 +666,19 @@ comma
 id|kbuf
 )paren
 suffix:semicolon
+multiline_comment|/* Nand returns -EBADMSG on ecc errors, but it returns&n;&t;&t; * the data. For our userspace tools it is important&n;&t;&t; * to dump areas with ecc errors ! &n;&t;&t; * Userspace software which accesses NAND this way&n;&t;&t; * must be aware of the fact that it deals with NAND&n;&t;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|ret
+op_logical_or
+(paren
+id|ret
+op_eq
+op_minus
+id|EBADMSG
+)paren
 )paren
 (brace
 op_star
