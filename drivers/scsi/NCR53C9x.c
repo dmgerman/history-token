@@ -3610,7 +3610,7 @@ op_assign
 id|esp-&gt;ehost-&gt;host_queue
 suffix:semicolon
 r_struct
-id|ESP_device
+id|esp_device
 op_star
 id|esp_dev
 suffix:semicolon
@@ -4236,7 +4236,7 @@ op_assign
 id|esp-&gt;eregs
 suffix:semicolon
 r_struct
-id|ESP_device
+id|esp_device
 op_star
 id|esp_dev
 suffix:semicolon
@@ -4332,9 +4332,8 @@ multiline_comment|/*&n;&t; * If esp_dev == NULL then we need to allocate a struc
 r_if
 c_cond
 (paren
+op_logical_neg
 id|esp_dev
-op_eq
-l_int|NULL
 )paren
 (brace
 id|esp_dev
@@ -4345,7 +4344,7 @@ c_func
 r_sizeof
 (paren
 r_struct
-id|ESP_device
+id|esp_device
 )paren
 comma
 id|GFP_ATOMIC
@@ -4354,9 +4353,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|esp_dev
-op_eq
-l_int|NULL
 )paren
 (brace
 multiline_comment|/* We&squot;re SOL.  Print a message and bail */
@@ -4364,7 +4362,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;esp: no mem for ESP_device %d/%d&bslash;n&quot;
+l_string|&quot;esp: no mem for esp_device %d/%d&bslash;n&quot;
 comma
 id|target
 comma
@@ -4402,7 +4400,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|ESP_device
+id|esp_device
 )paren
 )paren
 suffix:semicolon
@@ -7041,7 +7039,7 @@ op_assign
 id|sp-&gt;device
 suffix:semicolon
 r_struct
-id|ESP_device
+id|esp_device
 op_star
 id|esp_dev
 op_assign
@@ -8173,7 +8171,7 @@ op_assign
 id|esp-&gt;current_SC
 suffix:semicolon
 r_struct
-id|ESP_device
+id|esp_device
 op_star
 id|esp_dev
 op_assign
@@ -8975,7 +8973,7 @@ id|COMMAND_COMPLETE
 )paren
 (brace
 r_struct
-id|ESP_device
+id|esp_device
 op_star
 id|esp_dev
 op_assign
@@ -10236,7 +10234,7 @@ op_assign
 id|esp-&gt;current_SC
 suffix:semicolon
 r_struct
-id|ESP_device
+id|esp_device
 op_star
 id|esp_dev
 op_assign
@@ -10684,7 +10682,7 @@ op_assign
 id|esp-&gt;current_SC
 suffix:semicolon
 r_struct
-id|ESP_device
+id|esp_device
 op_star
 id|esp_dev
 op_assign
@@ -11661,7 +11659,7 @@ id|EXTENDED_MESSAGE
 )paren
 (brace
 r_struct
-id|ESP_device
+id|esp_device
 op_star
 id|esp_dev
 op_assign
@@ -11730,7 +11728,7 @@ op_star
 id|SCptr
 comma
 r_struct
-id|ESP_device
+id|esp_device
 op_star
 id|esp_dev
 )paren
@@ -12002,7 +12000,7 @@ op_assign
 id|esp-&gt;current_SC
 suffix:semicolon
 r_struct
-id|ESP_device
+id|esp_device
 op_star
 id|esp_dev
 op_assign
@@ -14017,7 +14015,7 @@ op_logical_neg
 (paren
 (paren
 r_struct
-id|ESP_device
+id|esp_device
 op_star
 )paren
 id|esp-&gt;current_SC-&gt;device-&gt;hostdata

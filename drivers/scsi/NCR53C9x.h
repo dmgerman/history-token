@@ -525,9 +525,9 @@ l_int|0x09
 )brace
 suffix:semicolon
 multiline_comment|/* We allocate one of these for each scsi device and attach it to&n; * SDptr-&gt;hostdata for use in the driver&n; */
-DECL|struct|ESP_device
+DECL|struct|esp_device
 r_struct
-id|ESP_device
+id|esp_device
 (brace
 DECL|member|sync_min_period
 r_int
