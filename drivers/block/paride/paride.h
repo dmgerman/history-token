@@ -76,6 +76,7 @@ suffix:semicolon
 multiline_comment|/* number of ports reserved */
 DECL|member|private
 r_int
+r_int
 r_private
 suffix:semicolon
 multiline_comment|/* for protocol module */
