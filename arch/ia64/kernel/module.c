@@ -1921,11 +1921,15 @@ DECL|function|patch_plt
 id|patch_plt
 (paren
 r_struct
+id|module
+op_star
+id|mod
+comma
+r_struct
 id|plt_entry
 op_star
 id|plt
 comma
-r_int
 r_int
 id|target_ip
 comma
@@ -1940,6 +1944,8 @@ c_cond
 id|apply_imm64
 c_func
 (paren
+id|mod
+comma
 (paren
 r_struct
 id|insn
@@ -1960,6 +1966,8 @@ op_logical_and
 id|apply_imm64
 c_func
 (paren
+id|mod
+comma
 (paren
 r_struct
 id|insn
@@ -4603,6 +4611,7 @@ id|mod-&gt;arch.gp
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * XXX Should have an arch-hook for running this after final section&n;&t;&t; *     addresses have been selected...&n;&t;&t; */
+multiline_comment|/* See if gp can cover the entire core module:  */
 r_uint64
 id|gp
 op_assign
@@ -4618,21 +4627,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|mod-&gt;arch.got-&gt;sh_addr
-op_plus
-id|mod-&gt;arch.got-&gt;sh_size
-)paren
-op_minus
-id|gp
+id|mod-&gt;core_size
 op_ge
 id|MAX_LTOFF
 )paren
+multiline_comment|/*&n;&t;&t;&t; * This takes advantage of fact that SHF_ARCH_SMALL gets allocated&n;&t;&t;&t; * at the end of the module.&n;&t;&t;&t; */
 id|gp
 op_assign
-id|mod-&gt;arch.got-&gt;sh_addr
+(paren
+r_uint64
+)paren
+id|mod-&gt;module_core
 op_plus
-id|mod-&gt;arch.got-&gt;sh_size
+id|mod-&gt;core_size
 op_minus
 id|MAX_LTOFF
 op_div
@@ -4781,9 +4788,9 @@ c_func
 id|KERN_ERR
 l_string|&quot;module %s: REL relocs in section %u unsupported&bslash;n&quot;
 comma
-id|relsec
-comma
 id|mod-&gt;name
+comma
+id|relsec
 )paren
 suffix:semicolon
 r_return
