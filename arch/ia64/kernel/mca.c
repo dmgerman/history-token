@@ -698,7 +698,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;r11-15 %016lx %016lx %016lx %016lx&bslash;n&quot;
+l_string|&quot;r12-15 %016lx %016lx %016lx %016lx&bslash;n&quot;
 comma
 id|minstate-&gt;pmsa_gr
 (braket
