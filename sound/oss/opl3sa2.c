@@ -98,7 +98,6 @@ r_static
 r_int
 id|opl3sa2_cards_num
 suffix:semicolon
-multiline_comment|/* = 0 */
 r_typedef
 r_struct
 (brace

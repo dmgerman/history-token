@@ -13,12 +13,8 @@ DECL|variable|input_opened
 r_static
 r_int
 id|midi_busy
-op_assign
-l_int|0
 comma
 id|input_opened
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|my_dev
 r_static

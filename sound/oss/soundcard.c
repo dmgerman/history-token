@@ -62,10 +62,6 @@ id|dma_alloc_map
 (braket
 id|MAX_DMA_CHANNELS
 )braket
-op_assign
-(brace
-l_int|0
-)brace
 suffix:semicolon
 DECL|macro|DMA_MAP_UNAVAIL
 mdefine_line|#define DMA_MAP_UNAVAIL&t;&t;0
@@ -94,8 +90,6 @@ DECL|variable|num_mixer_volumes
 r_static
 r_int
 id|num_mixer_volumes
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|load_mixer_volumes
 r_int
@@ -2543,15 +2537,11 @@ DECL|variable|dmabuf
 r_static
 r_int
 id|dmabuf
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|dmabug
 r_static
 r_int
 id|dmabug
-op_assign
-l_int|0
 suffix:semicolon
 id|MODULE_PARM
 c_func

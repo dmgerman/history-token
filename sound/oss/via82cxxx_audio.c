@@ -586,8 +586,6 @@ DECL|variable|via_num_cards
 r_static
 r_int
 id|via_num_cards
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/****************************************************************&n; *&n; * prototypes&n; *&n; *&n; */
 r_static
@@ -12279,8 +12277,6 @@ suffix:semicolon
 r_static
 r_int
 id|printed_version
-op_assign
-l_int|0
 suffix:semicolon
 id|DPRINTK
 (paren

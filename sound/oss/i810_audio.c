@@ -75,30 +75,22 @@ DECL|variable|ftsodell
 r_static
 r_int
 id|ftsodell
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|strict_clocking
 r_static
 r_int
 id|strict_clocking
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|clocking
 r_static
 r_int
 r_int
 id|clocking
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|spdif_locked
 r_static
 r_int
 id|spdif_locked
-op_assign
-l_int|0
 suffix:semicolon
 singleline_comment|//#define DEBUG
 singleline_comment|//#define DEBUG2

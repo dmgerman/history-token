@@ -4863,8 +4863,6 @@ r_static
 r_int
 r_int
 id|count
-op_assign
-l_int|0
 suffix:semicolon
 id|status
 op_assign

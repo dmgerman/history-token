@@ -13,24 +13,18 @@ DECL|variable|sb_initialized
 r_static
 r_int
 id|sb_initialized
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 DECL|variable|kilroy_was_here
 r_static
 r_int
 id|kilroy_was_here
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Don&squot;t detect twice */
 DECL|variable|mpu_initialized
 r_static
 r_int
 id|mpu_initialized
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|lock
 r_static
@@ -44,8 +38,6 @@ r_static
 r_int
 op_star
 id|opl3sa_osp
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|function|opl3sa_read
 r_static

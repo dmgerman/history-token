@@ -57,8 +57,6 @@ DECL|variable|debug
 r_static
 r_int
 id|debug
-op_assign
-l_int|0
 suffix:semicolon
 DECL|macro|M_printk
 mdefine_line|#define M_printk(args...) {if (debug) printk(args);}
@@ -71,8 +69,6 @@ DECL|variable|dsps_order
 r_static
 r_int
 id|dsps_order
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* whether or not we mess around with power management */
 DECL|variable|use_pm

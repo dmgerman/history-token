@@ -68,8 +68,6 @@ DECL|variable|db16
 r_static
 r_int
 id|db16
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Has a Gus16 AD1848 on it */
 macro_line|#endif
@@ -847,8 +845,6 @@ DECL|variable|gus16
 r_static
 r_int
 id|gus16
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SOUND_GUSMAX
@@ -856,8 +852,6 @@ DECL|variable|no_wave_dma
 r_static
 r_int
 id|no_wave_dma
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Set if no dma is to be used for the&n;                                   wave table (GF1 chip) */
 macro_line|#endif

@@ -1865,16 +1865,12 @@ r_static
 r_char
 op_star
 id|q40_pp
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|q40_sc
 r_static
 r_int
 r_int
 id|q40_sc
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|Q40PlayNextFrame
 r_static

@@ -21,8 +21,6 @@ r_static
 r_int
 r_int
 id|pcm_speed
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* sampling rate */
 DECL|variable|pcm_channels
@@ -48,8 +46,6 @@ r_static
 r_int
 r_char
 id|pcm_filter
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* filter FLAG */
 DECL|variable|pcm_mode
@@ -65,8 +61,6 @@ r_static
 r_int
 r_int
 id|pcm_count
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|pcm_bitsok
 r_static
@@ -81,8 +75,6 @@ DECL|variable|pcm_busy
 r_static
 r_int
 id|pcm_busy
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|pas_audiodev
 r_int
@@ -95,8 +87,6 @@ DECL|variable|open_mode
 r_static
 r_int
 id|open_mode
-op_assign
-l_int|0
 suffix:semicolon
 r_extern
 id|spinlock_t

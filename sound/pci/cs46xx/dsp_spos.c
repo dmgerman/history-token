@@ -4571,8 +4571,6 @@ DECL|variable|debug_tree
 r_static
 r_int
 id|debug_tree
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|_dsp_create_task_tree
 r_static
@@ -4676,8 +4674,6 @@ DECL|variable|debug_scb
 r_static
 r_int
 id|debug_scb
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|_dsp_create_scb
 r_static

@@ -152,22 +152,16 @@ DECL|variable|pas_intr_mask
 r_static
 r_int
 id|pas_intr_mask
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|pas_irq
 r_static
 r_int
 id|pas_irq
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|pas_sb_base
 r_static
 r_int
 id|pas_sb_base
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|pas_lock
 id|spinlock_t
@@ -180,8 +174,6 @@ DECL|variable|joystick
 r_static
 r_int
 id|joystick
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#else
 DECL|variable|joystick
@@ -205,8 +197,6 @@ DECL|variable|symphony
 r_static
 r_int
 id|symphony
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef BROKEN_BUS_CLOCK
@@ -222,8 +212,6 @@ DECL|variable|broken_bus_clock
 r_static
 r_int
 id|broken_bus_clock
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 DECL|variable|cfg

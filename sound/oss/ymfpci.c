@@ -11618,15 +11618,11 @@ DECL|variable|mpu_io
 r_static
 r_int
 id|mpu_io
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|synth_io
 r_static
 r_int
 id|synth_io
-op_assign
-l_int|0
 suffix:semicolon
 id|MODULE_PARM
 c_func

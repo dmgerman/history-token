@@ -33,8 +33,6 @@ DECL|variable|cards
 r_static
 r_int
 id|cards
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; *&t;Install the actual card. This is an example&n; */
 DECL|function|mycard_install

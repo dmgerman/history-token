@@ -48,16 +48,12 @@ DECL|variable|inTicket
 r_static
 id|u16
 id|inTicket
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* check sync between intr &amp; write */
 DECL|variable|outTicket
 r_static
 id|u16
 id|outTicket
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* --------------------------------------------------------------------- */
@@ -8166,8 +8162,6 @@ r_static
 r_int
 r_int
 id|devindex
-op_assign
-l_int|0
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func

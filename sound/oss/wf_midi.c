@@ -915,8 +915,6 @@ r_struct
 id|wf_mpu_config
 op_star
 id|input_dev
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|midi_input_info

@@ -196,8 +196,6 @@ DECL|variable|number_of_tx_cmd_buffers
 r_static
 r_int
 id|number_of_tx_cmd_buffers
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|awacs_rx_cmd_space
 r_static
@@ -217,8 +215,6 @@ DECL|variable|number_of_rx_cmd_buffers
 r_static
 r_int
 id|number_of_rx_cmd_buffers
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Cached values of AWACS registers (we can&squot;t read them).&n; * Except on the burgundy (and screamer). XXX&n; */
 DECL|variable|awacs_reg
@@ -237,29 +233,21 @@ DECL|variable|spk_vol
 r_static
 r_int
 id|spk_vol
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|line_vol
 r_static
 r_int
 id|line_vol
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|passthru_vol
 r_static
 r_int
 id|passthru_vol
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|ip_gain
 r_static
 r_int
 id|ip_gain
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* mic preamp settings */
 DECL|variable|rec_lev
@@ -274,8 +262,6 @@ DECL|variable|mic_lev
 r_static
 r_int
 id|mic_lev
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|cd_lev
 r_static
@@ -289,8 +275,6 @@ DECL|variable|line_lev
 r_static
 r_int
 id|line_lev
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Stuff for outputting a beep.  The values range from -327 to +327&n; * so we can multiply by an amplitude in the range 0..100 to get a&n; * signed short value to put in the output buffer.&n; */
 DECL|variable|beep_wform
@@ -961,15 +945,11 @@ DECL|variable|beep_playing
 r_static
 r_int
 id|beep_playing
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|awacs_beep_state
 r_static
 r_int
 id|awacs_beep_state
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|beep_buf
 r_static
@@ -4237,8 +4217,6 @@ multiline_comment|/* != 0 when we are dealing with a DEAD xfer */
 r_static
 r_int
 id|emergency_in_use
-op_assign
-l_int|0
 suffix:semicolon
 id|spin_lock
 c_func

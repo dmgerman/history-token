@@ -286,24 +286,18 @@ r_struct
 id|btaudio
 op_star
 id|btaudios
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|debug
 r_static
 r_int
 r_int
 id|debug
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|irq_debug
 r_static
 r_int
 r_int
 id|irq_debug
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* -------------------------------------------------------------- */
 DECL|macro|BUF_DEFAULT
@@ -4445,8 +4439,6 @@ DECL|variable|rate
 r_static
 r_int
 id|rate
-op_assign
-l_int|0
 suffix:semicolon
 DECL|macro|BTA_OSPREY200
 mdefine_line|#define BTA_OSPREY200 1
