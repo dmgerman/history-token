@@ -191,6 +191,11 @@ DECL|macro|ACPI_DIV_64_BY_32
 mdefine_line|#define ACPI_DIV_64_BY_32(n_hi, n_lo, d32, q32, r32) &bslash;&n;        asm(&quot;divl %2;&quot;        &bslash;&n;        :&quot;=a&quot;(q32), &quot;=d&quot;(r32) &bslash;&n;        :&quot;r&quot;(d32),            &bslash;&n;        &quot;0&quot;(n_lo), &quot;1&quot;(n_hi))
 DECL|macro|ACPI_SHIFT_RIGHT_64
 mdefine_line|#define ACPI_SHIFT_RIGHT_64(n_hi, n_lo) &bslash;&n;    asm(&quot;shrl   $1,%2;&quot;             &bslash;&n;        &quot;rcrl   $1,%3;&quot;             &bslash;&n;        :&quot;=r&quot;(n_hi), &quot;=r&quot;(n_lo)     &bslash;&n;        :&quot;0&quot;(n_hi), &quot;1&quot;(n_lo))
+multiline_comment|/*&n; * Refer Intel ACPI _PDC support document for bit definitions&n; */
+DECL|macro|ACPI_PDC_EST_CAPABILITY_SMP
+mdefine_line|#define ACPI_PDC_EST_CAPABILITY_SMP &t;0xa
+DECL|macro|ACPI_PDC_EST_CAPABILITY_MSR
+mdefine_line|#define ACPI_PDC_EST_CAPABILITY_MSR&t;0x1
 macro_line|#ifdef CONFIG_ACPI_BOOT 
 r_extern
 r_int

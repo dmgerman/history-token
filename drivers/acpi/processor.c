@@ -3265,6 +3265,12 @@ op_minus
 id|EINVAL
 )paren
 suffix:semicolon
+id|acpi_processor_set_pdc
+c_func
+(paren
+id|pr
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|acpi_get_handle
@@ -3306,12 +3312,6 @@ id|ENODEV
 )paren
 suffix:semicolon
 )brace
-id|acpi_processor_set_pdc
-c_func
-(paren
-id|pr
-)paren
-suffix:semicolon
 id|result
 op_assign
 id|acpi_processor_get_performance_control
