@@ -76,9 +76,9 @@ DECL|macro|_PAGE_FILE
 mdefine_line|#define _PAGE_FILE&t;&t;(1 &lt;&lt; 1)&t;&t;/* see swap &amp; file pte remarks below */
 DECL|macro|_PFN_MASK
 mdefine_line|#define _PFN_MASK&t;&t;_PAGE_PPN_MASK
-multiline_comment|/* Mask of bits which may be changed by pte_modify(): */
+multiline_comment|/* Mask of bits which may be changed by pte_modify(); the odd bits are there for _PAGE_PROTNONE */
 DECL|macro|_PAGE_CHG_MASK
-mdefine_line|#define _PAGE_CHG_MASK&t;&t;_PAGE_AR_MASK
+mdefine_line|#define _PAGE_CHG_MASK&t;(_PAGE_P | _PAGE_PROTNONE | _PAGE_PL_MASK | _PAGE_AR_MASK | _PAGE_ED)
 DECL|macro|_PAGE_SIZE_4K
 mdefine_line|#define _PAGE_SIZE_4K&t;12
 DECL|macro|_PAGE_SIZE_8K
