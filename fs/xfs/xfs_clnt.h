@@ -113,5 +113,7 @@ DECL|macro|XFSMNT_DMAPI
 mdefine_line|#define XFSMNT_DMAPI&t;&t;0x02000000&t;/* enable dmapi/xdsm */
 DECL|macro|XFSMNT_NOLOGFLUSH
 mdefine_line|#define XFSMNT_NOLOGFLUSH&t;0x04000000&t;/* Don&squot;t flush for log blocks */
+DECL|macro|XFSMNT_IDELETE
+mdefine_line|#define XFSMNT_IDELETE&t;&t;0x08000000&t;/* inode cluster delete */
 macro_line|#endif&t;/* __XFS_CLNT_H__ */
 eof

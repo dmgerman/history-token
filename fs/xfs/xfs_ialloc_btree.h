@@ -430,7 +430,6 @@ id|stat
 )paren
 suffix:semicolon
 multiline_comment|/* success/failure */
-macro_line|#ifdef _NOTYET_
 multiline_comment|/*&n; * Delete the record pointed to by cur.&n; * The cursor refers to the place where the record was (could be inserted)&n; * when the operation returns.&n; */
 r_int
 multiline_comment|/* error */
@@ -449,7 +448,6 @@ id|stat
 )paren
 suffix:semicolon
 multiline_comment|/* success/failure */
-macro_line|#endif&t;/* _NOTYET_ */
 multiline_comment|/*&n; * Get the data from the pointed-to record.&n; */
 r_int
 multiline_comment|/* error */

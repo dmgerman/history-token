@@ -1622,6 +1622,8 @@ DECL|macro|XFS_MOUNT_NOUUID
 mdefine_line|#define XFS_MOUNT_NOUUID&t;0x00010000&t;/* ignore uuid during mount */
 DECL|macro|XFS_MOUNT_NOLOGFLUSH
 mdefine_line|#define XFS_MOUNT_NOLOGFLUSH&t;0x00020000
+DECL|macro|XFS_MOUNT_IDELETE
+mdefine_line|#define XFS_MOUNT_IDELETE&t;0x00040000&t;/* delete empty inode clusters*/
 multiline_comment|/*&n; * Default minimum read and write sizes.&n; */
 DECL|macro|XFS_READIO_LOG_LARGE
 mdefine_line|#define XFS_READIO_LOG_LARGE&t;16

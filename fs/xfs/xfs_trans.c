@@ -1183,14 +1183,6 @@ id|field
 r_case
 id|XFS_TRANS_SB_ICOUNT
 suffix:colon
-id|ASSERT
-c_func
-(paren
-id|delta
-OG
-l_int|0
-)paren
-suffix:semicolon
 id|tp-&gt;t_icount_delta
 op_add_assign
 id|delta

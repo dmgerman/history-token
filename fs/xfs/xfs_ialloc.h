@@ -159,9 +159,25 @@ comma
 multiline_comment|/* transaction pointer */
 id|xfs_ino_t
 id|inode
+comma
+multiline_comment|/* inode to be freed */
+r_struct
+id|xfs_bmap_free
+op_star
+id|flist
+comma
+multiline_comment|/* extents to free */
+r_int
+op_star
+r_delete
+comma
+multiline_comment|/* set if inode cluster was deleted */
+id|xfs_ino_t
+op_star
+id|first_ino
 )paren
 suffix:semicolon
-multiline_comment|/* inode to be freed */
+multiline_comment|/* first inode in deleted cluster */
 multiline_comment|/*&n; * Return the location of the inode in bno/len/off,&n; * for mapping it into a buffer.&n; */
 r_int
 id|xfs_dilocate

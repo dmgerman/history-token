@@ -960,6 +960,17 @@ op_assign
 id|ap-&gt;iosizelog
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ap-&gt;flags
+op_amp
+id|XFSMNT_IDELETE
+)paren
+id|mp-&gt;m_flags
+op_or_assign
+id|XFS_MOUNT_IDELETE
+suffix:semicolon
 multiline_comment|/*&n;&t; * no recovery flag requires a read-only mount&n;&t; */
 r_if
 c_cond
@@ -5182,6 +5193,8 @@ DECL|macro|MNTOPT_OSYNCISOSYNC
 mdefine_line|#define MNTOPT_OSYNCISOSYNC &quot;osyncisosync&quot; /* o_sync is REALLY o_sync */
 DECL|macro|MNTOPT_64BITINODE
 mdefine_line|#define MNTOPT_64BITINODE   &quot;inode64&quot;  /* inodes can be allocated anywhere */
+DECL|macro|MNTOPT_IKEEP
+mdefine_line|#define MNTOPT_IKEEP&t;&quot;ikeep&quot;&t;&t;/* free empty inode clusters */
 r_int
 DECL|function|xfs_parseargs
 id|xfs_parseargs
@@ -5238,6 +5251,11 @@ suffix:semicolon
 r_int
 id|iosize
 suffix:semicolon
+id|args-&gt;flags
+op_or_assign
+id|XFSMNT_IDELETE
+suffix:semicolon
+multiline_comment|/* default to on */
 r_if
 c_cond
 (paren
@@ -5952,6 +5970,26 @@ id|MNTOPT_NOLOGFLUSH
 id|args-&gt;flags
 op_or_assign
 id|XFSMNT_NOLOGFLUSH
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|this_char
+comma
+id|MNTOPT_IKEEP
+)paren
+)paren
+(brace
+id|args-&gt;flags
+op_and_assign
+op_complement
+id|XFSMNT_IDELETE
 suffix:semicolon
 )brace
 r_else

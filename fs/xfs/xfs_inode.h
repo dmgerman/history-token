@@ -326,7 +326,7 @@ multiline_comment|/*&n; * Inode hashing and hash bucket locking.&n; */
 DECL|macro|XFS_BUCKETS
 mdefine_line|#define XFS_BUCKETS(mp) (37*(mp)-&gt;m_sb.sb_agcount-1)
 DECL|macro|XFS_IHASH
-mdefine_line|#define XFS_IHASH(mp,ino) ((mp)-&gt;m_ihash + (((uint)ino) % (mp)-&gt;m_ihsize))
+mdefine_line|#define XFS_IHASH(mp,ino) ((mp)-&gt;m_ihash + (((uint)(ino)) % (mp)-&gt;m_ihsize))
 multiline_comment|/*&n; * This is the xfs inode cluster hash.  This hash is used by xfs_iflush to&n; * find inodes that share a cluster and can be flushed to disk at the same&n; * time.&n; */
 DECL|struct|xfs_chashlist
 r_typedef
@@ -870,8 +870,10 @@ DECL|macro|XFS_IQUIESCE
 mdefine_line|#define XFS_IQUIESCE    0x0004  /* we have started quiescing for this inode */
 DECL|macro|XFS_IRECLAIM
 mdefine_line|#define XFS_IRECLAIM    0x0008  /* we have started reclaiming this inode    */
+DECL|macro|XFS_ISTALE
+mdefine_line|#define XFS_ISTALE&t;0x0010&t;/* inode has been staled */
 DECL|macro|XFS_IRECLAIMABLE
-mdefine_line|#define XFS_IRECLAIMABLE 0x0010 /* inode can be reclaimed */
+mdefine_line|#define XFS_IRECLAIMABLE 0x0020 /* inode can be reclaimed */
 multiline_comment|/*&n; * Flags for inode locking.&n; */
 DECL|macro|XFS_IOLOCK_EXCL
 mdefine_line|#define&t;XFS_IOLOCK_EXCL&t;&t;0x001
@@ -1355,6 +1357,10 @@ id|xfs_trans
 op_star
 comma
 id|xfs_inode_t
+op_star
+comma
+r_struct
+id|xfs_bmap_free
 op_star
 )paren
 suffix:semicolon
