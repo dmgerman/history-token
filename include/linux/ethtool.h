@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ethtool.h: Defines for Linux ethtool.&n; *&n; * Copyright (C) 1998 David S. Miller (davem@redhat.com)&n; * Copyright 2001 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n; * Portions Copyright 2001 Sun Microsystems (thockin@sun.com)&n; */
+multiline_comment|/*&n; * ethtool.h: Defines for Linux ethtool.&n; *&n; * Copyright (C) 1998 David S. Miller (davem@redhat.com)&n; * Copyright 2001 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n; * Portions Copyright 2001 Sun Microsystems (thockin@sun.com)&n; * Portions Copyright 2002 Intel (eli.kupermann@intel.com,&n; *                                christopher.leech@intel.com,&n; *                                scott.feldman@intel.com)&n; */
 macro_line|#ifndef _LINUX_ETHTOOL_H
 DECL|macro|_LINUX_ETHTOOL_H
 mdefine_line|#define _LINUX_ETHTOOL_H
@@ -587,6 +587,8 @@ DECL|macro|ETHTOOL_TEST
 mdefine_line|#define ETHTOOL_TEST&t;&t;0x0000001a /* execute NIC self-test, priv. */
 DECL|macro|ETHTOOL_GSTRINGS
 mdefine_line|#define ETHTOOL_GSTRINGS&t;0x0000001b /* get specified string set */
+DECL|macro|ETHTOOL_PHYS_ID
+mdefine_line|#define ETHTOOL_PHYS_ID&t;&t;0x0000001c /* identify the NIC */
 multiline_comment|/* compatibility with older code */
 DECL|macro|SPARC_ETH_GSET
 mdefine_line|#define SPARC_ETH_GSET&t;&t;ETHTOOL_GSET
