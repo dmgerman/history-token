@@ -1444,6 +1444,35 @@ op_assign
 id|array
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Put task to the end of the run list without the overhead of dequeue&n; * followed by enqueue.&n; */
+DECL|function|requeue_task
+r_static
+r_void
+id|requeue_task
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|p
+comma
+id|prio_array_t
+op_star
+id|array
+)paren
+(brace
+id|list_move_tail
+c_func
+(paren
+op_amp
+id|p-&gt;run_list
+comma
+id|array-&gt;queue
+op_plus
+id|p-&gt;prio
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Used by the migration code - we pull tasks from the head of the&n; * remote queue so we want these tasks to show up at the head of the&n; * local queue:&n; */
 DECL|function|enqueue_task_head
 r_static
@@ -7365,15 +7394,7 @@ id|p
 )paren
 suffix:semicolon
 multiline_comment|/* put it at the end of the queue: */
-id|dequeue_task
-c_func
-(paren
-id|p
-comma
-id|rq-&gt;active
-)paren
-suffix:semicolon
-id|enqueue_task
+id|requeue_task
 c_func
 (paren
 id|p
@@ -11484,6 +11505,14 @@ comma
 id|yld_exp_empty
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|array
+op_ne
+id|target
+)paren
+(brace
 id|dequeue_task
 c_func
 (paren
@@ -11498,6 +11527,17 @@ c_func
 id|current
 comma
 id|target
+)paren
+suffix:semicolon
+)brace
+r_else
+multiline_comment|/*&n;&t;&t; * requeue_task is cheaper so perform that if possible.&n;&t;&t; */
+id|requeue_task
+c_func
+(paren
+id|current
+comma
+id|array
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Since we are going to call schedule() anyway, there&squot;s&n;&t; * no need to preempt or enable interrupts:&n;&t; */
