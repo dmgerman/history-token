@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;linux/eisa.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;53c700.h&quot;
@@ -1206,6 +1207,8 @@ id|io_addr
 op_plus
 l_int|0xc88
 )paren
+op_amp
+l_int|0x07
 suffix:semicolon
 )brace
 r_if
