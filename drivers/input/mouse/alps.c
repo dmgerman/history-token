@@ -41,18 +41,7 @@ id|alps_model_data
 )braket
 op_assign
 (brace
-(brace
-(brace
-l_int|0x33
-comma
-l_int|0x02
-comma
-l_int|0x0a
-)brace
-comma
-id|ALPS_MODEL_GLIDEPOINT
-)brace
-comma
+multiline_comment|/*&t;{ { 0x33, 0x02, 0x0a },&t;ALPS_MODEL_GLIDEPOINT },&t;*/
 (brace
 (brace
 l_int|0x53
@@ -137,30 +126,8 @@ comma
 id|ALPS_MODEL_GLIDEPOINT
 )brace
 comma
-(brace
-(brace
-l_int|0x63
-comma
-l_int|0x02
-comma
-l_int|0x3c
-)brace
-comma
-id|ALPS_MODEL_GLIDEPOINT
-)brace
-comma
-(brace
-(brace
-l_int|0x63
-comma
-l_int|0x02
-comma
-l_int|0x50
-)brace
-comma
-id|ALPS_MODEL_GLIDEPOINT
-)brace
-comma
+multiline_comment|/*&t;{ { 0x63, 0x02, 0x3c },&t;ALPS_MODEL_GLIDEPOINT },&t;*/
+multiline_comment|/*&t;{ { 0x63, 0x02, 0x50 },&t;ALPS_MODEL_GLIDEPOINT },&t;*/
 (brace
 (brace
 l_int|0x63

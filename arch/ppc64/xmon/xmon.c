@@ -2534,6 +2534,7 @@ r_int
 id|val
 )paren
 (brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 r_if
 c_cond
 (paren
@@ -2570,6 +2571,7 @@ id|rc
 suffix:semicolon
 )brace
 r_else
+macro_line|#endif
 id|set_dabr
 c_func
 (paren

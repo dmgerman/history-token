@@ -2527,11 +2527,11 @@ id|tp-&gt;write_seq
 op_assign
 l_int|1
 suffix:semicolon
-id|tp-&gt;ts_recent
+id|tp-&gt;rx_opt.ts_recent
 op_assign
 id|tw-&gt;tw_ts_recent
 suffix:semicolon
-id|tp-&gt;ts_recent_stamp
+id|tp-&gt;rx_opt.ts_recent_stamp
 op_assign
 id|tw-&gt;tw_ts_recent_stamp
 suffix:semicolon
@@ -3412,7 +3412,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tp-&gt;ts_recent_stamp
+id|tp-&gt;rx_opt.ts_recent_stamp
 op_logical_and
 id|inet-&gt;daddr
 op_ne
@@ -3420,11 +3420,11 @@ id|daddr
 )paren
 (brace
 multiline_comment|/* Reset inherited state */
-id|tp-&gt;ts_recent
+id|tp-&gt;rx_opt.ts_recent
 op_assign
 l_int|0
 suffix:semicolon
-id|tp-&gt;ts_recent_stamp
+id|tp-&gt;rx_opt.ts_recent_stamp
 op_assign
 l_int|0
 suffix:semicolon
@@ -3439,7 +3439,7 @@ c_cond
 id|sysctl_tcp_tw_recycle
 op_logical_and
 op_logical_neg
-id|tp-&gt;ts_recent_stamp
+id|tp-&gt;rx_opt.ts_recent_stamp
 op_logical_and
 id|rt-&gt;rt_dst
 op_eq
@@ -3457,7 +3457,7 @@ c_func
 id|rt
 )paren
 suffix:semicolon
-multiline_comment|/* VJ&squot;s idea. We save last timestamp seen from&n;&t;&t; * the destination in peer table, when entering state TIME-WAIT&n;&t;&t; * and initialize ts_recent from it, when trying new connection.&n;&t;&t; */
+multiline_comment|/* VJ&squot;s idea. We save last timestamp seen from&n;&t;&t; * the destination in peer table, when entering state TIME-WAIT&n;&t;&t; * and initialize rx_opt.ts_recent from it, when trying new connection.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3470,11 +3470,11 @@ op_ge
 id|xtime.tv_sec
 )paren
 (brace
-id|tp-&gt;ts_recent_stamp
+id|tp-&gt;rx_opt.ts_recent_stamp
 op_assign
 id|peer-&gt;tcp_ts_stamp
 suffix:semicolon
-id|tp-&gt;ts_recent
+id|tp-&gt;rx_opt.ts_recent
 op_assign
 id|peer-&gt;tcp_ts
 suffix:semicolon
@@ -3501,7 +3501,7 @@ id|tp-&gt;ext_header_len
 op_assign
 id|inet-&gt;opt-&gt;optlen
 suffix:semicolon
-id|tp-&gt;mss_clamp
+id|tp-&gt;rx_opt.mss_clamp
 op_assign
 l_int|536
 suffix:semicolon
@@ -5907,8 +5907,8 @@ id|skb
 )paren
 (brace
 r_struct
-id|tcp_sock
-id|tp
+id|tcp_options_received
+id|tmp_opt
 suffix:semicolon
 r_struct
 id|open_request
@@ -6049,14 +6049,14 @@ id|tcp_clear_options
 c_func
 (paren
 op_amp
-id|tp
+id|tmp_opt
 )paren
 suffix:semicolon
-id|tp.mss_clamp
+id|tmp_opt.mss_clamp
 op_assign
 l_int|536
 suffix:semicolon
-id|tp.user_mss
+id|tmp_opt.user_mss
 op_assign
 id|tcp_sk
 c_func
@@ -6064,7 +6064,7 @@ c_func
 id|sk
 )paren
 op_member_access_from_pointer
-id|user_mss
+id|rx_opt.user_mss
 suffix:semicolon
 id|tcp_parse_options
 c_func
@@ -6072,7 +6072,7 @@ c_func
 id|skb
 comma
 op_amp
-id|tp
+id|tmp_opt
 comma
 l_int|0
 )paren
@@ -6087,10 +6087,10 @@ id|tcp_clear_options
 c_func
 (paren
 op_amp
-id|tp
+id|tmp_opt
 )paren
 suffix:semicolon
-id|tp.saw_tstamp
+id|tmp_opt.saw_tstamp
 op_assign
 l_int|0
 suffix:semicolon
@@ -6098,25 +6098,25 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tp.saw_tstamp
+id|tmp_opt.saw_tstamp
 op_logical_and
 op_logical_neg
-id|tp.rcv_tsval
+id|tmp_opt.rcv_tsval
 )paren
 (brace
 multiline_comment|/* Some OSes (unknown ones, but I see them on web server, which&n;&t;&t; * contains information interesting only for windows&squot;&n;&t;&t; * users) do not send their stamp in SYN. It is easy case.&n;&t;&t; * We simply do not advertise TS support.&n;&t;&t; */
-id|tp.saw_tstamp
+id|tmp_opt.saw_tstamp
 op_assign
 l_int|0
 suffix:semicolon
-id|tp.tstamp_ok
+id|tmp_opt.tstamp_ok
 op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|tp.tstamp_ok
+id|tmp_opt.tstamp_ok
 op_assign
-id|tp.saw_tstamp
+id|tmp_opt.saw_tstamp
 suffix:semicolon
 id|tcp_openreq_init
 c_func
@@ -6124,7 +6124,7 @@ c_func
 id|req
 comma
 op_amp
-id|tp
+id|tmp_opt
 comma
 id|skb
 )paren
@@ -6215,7 +6215,7 @@ multiline_comment|/* VJ&squot;s idea. We save last timestamp seen&n;&t;&t; * fro
 r_if
 c_cond
 (paren
-id|tp.saw_tstamp
+id|tmp_opt.saw_tstamp
 op_logical_and
 id|sysctl_tcp_tw_recycle
 op_logical_and
@@ -8490,7 +8490,7 @@ id|s32
 (paren
 id|peer-&gt;tcp_ts
 op_minus
-id|tp-&gt;ts_recent
+id|tp-&gt;rx_opt.ts_recent
 )paren
 op_le
 l_int|0
@@ -8504,17 +8504,17 @@ id|xtime.tv_sec
 op_logical_and
 id|peer-&gt;tcp_ts_stamp
 op_le
-id|tp-&gt;ts_recent_stamp
+id|tp-&gt;rx_opt.ts_recent_stamp
 )paren
 )paren
 (brace
 id|peer-&gt;tcp_ts_stamp
 op_assign
-id|tp-&gt;ts_recent_stamp
+id|tp-&gt;rx_opt.ts_recent_stamp
 suffix:semicolon
 id|peer-&gt;tcp_ts
 op_assign
-id|tp-&gt;ts_recent
+id|tp-&gt;rx_opt.ts_recent
 suffix:semicolon
 )brace
 r_if
