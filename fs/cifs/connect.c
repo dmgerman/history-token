@@ -2724,6 +2724,11 @@ op_star
 id|csocket
 )paren
 suffix:semicolon
+op_star
+id|csocket
+op_assign
+l_int|NULL
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -2909,6 +2914,11 @@ c_func
 op_star
 id|csocket
 )paren
+suffix:semicolon
+op_star
+id|csocket
+op_assign
+l_int|NULL
 suffix:semicolon
 r_return
 id|rc
