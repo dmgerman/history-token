@@ -320,6 +320,14 @@ comma
 (brace
 l_int|0x046d
 comma
+l_int|0xc219
+comma
+id|ff_rumble
+)brace
+comma
+(brace
+l_int|0x046d
+comma
 l_int|0xc283
 comma
 id|ff_joystick

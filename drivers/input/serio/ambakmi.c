@@ -547,7 +547,7 @@ id|serio
 )paren
 )paren
 suffix:semicolon
-id|io-&gt;type
+id|io-&gt;id.type
 op_assign
 id|SERIO_8042
 suffix:semicolon

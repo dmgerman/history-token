@@ -293,11 +293,6 @@ r_int
 id|open
 suffix:semicolon
 multiline_comment|/* open counter */
-DECL|member|present
-r_int
-id|present
-suffix:semicolon
-multiline_comment|/* device plugged in? */
 DECL|member|old_data
 r_int
 r_char
@@ -896,7 +891,7 @@ l_int|0x03
 comma
 id|EV_KEY
 comma
-id|KEY_PROG1
+id|KEY_TV
 comma
 l_int|1
 )brace
@@ -911,7 +906,7 @@ l_int|0x04
 comma
 id|EV_KEY
 comma
-id|KEY_PROG2
+id|KEY_DVD
 comma
 l_int|1
 )brace
@@ -1061,7 +1056,7 @@ l_int|0x1e
 comma
 id|EV_KEY
 comma
-id|KEY_ENTER
+id|KEY_OK
 comma
 l_int|1
 )brace
@@ -1115,9 +1110,9 @@ multiline_comment|/* MUTE  */
 (brace
 id|KIND_FILTERED
 comma
-l_int|0xd1
+l_int|0xd0
 comma
-l_int|0x0c
+l_int|0x0b
 comma
 id|EV_KEY
 comma
@@ -1130,9 +1125,9 @@ multiline_comment|/* CH + */
 (brace
 id|KIND_FILTERED
 comma
-l_int|0xd0
+l_int|0xd1
 comma
-l_int|0x0b
+l_int|0x0c
 comma
 id|EV_KEY
 comma
@@ -1166,7 +1161,7 @@ l_int|0x25
 comma
 id|EV_KEY
 comma
-id|KEY_PLAYCD
+id|KEY_PLAY
 comma
 l_int|1
 )brace
@@ -1769,58 +1764,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ati_remote
-op_eq
-l_int|NULL
-)paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;ati_remote: %s: object is NULL!&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|ati_remote-&gt;open
-op_le
-l_int|0
-)paren
-id|dev_dbg
-c_func
-(paren
-op_amp
-id|ati_remote-&gt;interface-&gt;dev
-comma
-l_string|&quot;%s: Not open.&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_else
+op_logical_neg
 op_decrement
 id|ati_remote-&gt;open
-suffix:semicolon
-multiline_comment|/* If still present, disconnect will call delete. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ati_remote-&gt;present
-op_logical_and
-op_logical_neg
-id|ati_remote-&gt;open
 )paren
-id|ati_remote_delete
+id|usb_kill_urb
 c_func
 (paren
-id|ati_remote
+id|ati_remote-&gt;irq_urb
 )paren
 suffix:semicolon
 )brace
@@ -4076,10 +4027,6 @@ comma
 id|ati_remote
 )paren
 suffix:semicolon
-id|ati_remote-&gt;present
-op_assign
-l_int|1
-suffix:semicolon
 id|error
 suffix:colon
 r_if
@@ -4156,18 +4103,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Mark device as unplugged */
-id|ati_remote-&gt;present
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* If device is still open, ati_remote_close will call delete. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ati_remote-&gt;open
-)paren
 id|ati_remote_delete
 c_func
 (paren

@@ -271,6 +271,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|evbug_init
+r_static
 r_int
 id|__init
 id|evbug_init
@@ -291,6 +292,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|evbug_exit
+r_static
 r_void
 id|__exit
 id|evbug_exit

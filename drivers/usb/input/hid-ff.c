@@ -114,6 +114,15 @@ id|hid_lgff_init
 )brace
 comma
 singleline_comment|// Logitech MOMO force wheel
+(brace
+l_int|0x46d
+comma
+l_int|0xc219
+comma
+id|hid_lgff_init
+)brace
+comma
+singleline_comment|// Logitech Cordless rumble pad 2
 macro_line|#endif
 macro_line|#ifdef CONFIG_HID_PID
 (brace

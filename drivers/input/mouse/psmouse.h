@@ -123,7 +123,7 @@ id|type
 suffix:semicolon
 DECL|member|model
 r_int
-r_char
+r_int
 id|model
 suffix:semicolon
 DECL|member|last
