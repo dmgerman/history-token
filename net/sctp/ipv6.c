@@ -1924,6 +1924,10 @@ id|newsk-&gt;backlog_rcv
 op_assign
 id|sk-&gt;prot-&gt;backlog_rcv
 suffix:semicolon
+id|newsk-&gt;shutdown
+op_assign
+id|sk-&gt;shutdown
+suffix:semicolon
 id|newsctp6sk
 op_assign
 (paren

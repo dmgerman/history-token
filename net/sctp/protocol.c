@@ -1817,6 +1817,10 @@ id|newsk-&gt;reuse
 op_assign
 id|sk-&gt;reuse
 suffix:semicolon
+id|newsk-&gt;shutdown
+op_assign
+id|sk-&gt;shutdown
+suffix:semicolon
 id|newsk-&gt;destruct
 op_assign
 id|inet_sock_destruct
