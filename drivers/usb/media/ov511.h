@@ -456,33 +456,6 @@ id|SEN_SAA7111A
 comma
 )brace
 suffix:semicolon
-singleline_comment|// Not implemented yet
-macro_line|#if 0
-multiline_comment|/* Sensor classes */
-r_enum
-(brace
-id|SCL_UNKNOWN
-comma
-id|SCL_OV7610
-comma
-multiline_comment|/* 7610, 76BE, 7620AE (for now) */
-id|SCL_OV7620
-comma
-id|SCL_OV6620
-comma
-id|SCL_OV6630
-comma
-multiline_comment|/* 6630, 6630AE, 6630AF */
-id|SCL_OV8600
-comma
-id|SCL_KS0127
-comma
-multiline_comment|/* SEN_KS0127, SEN_KS0127B */
-id|SCL_SAA7111A
-comma
-)brace
-suffix:semicolon
-macro_line|#endif
 r_enum
 (brace
 DECL|enumerator|STATE_SCANNING
@@ -508,10 +481,6 @@ comma
 DECL|enumerator|BUF_ALLOCATED
 id|BUF_ALLOCATED
 comma
-DECL|enumerator|BUF_PEND_DEALLOC
-id|BUF_PEND_DEALLOC
-comma
-multiline_comment|/* ov511-&gt;buf_timer is set */
 )brace
 suffix:semicolon
 multiline_comment|/* --------- Definition of ioctl interface --------- */
@@ -1201,11 +1170,6 @@ r_int
 id|sensor
 suffix:semicolon
 multiline_comment|/* Type of image sensor chip (SEN_*) */
-DECL|member|sclass
-r_int
-id|sclass
-suffix:semicolon
-multiline_comment|/* Type of image sensor chip (SCL_*) */
 DECL|member|packet_size
 r_int
 id|packet_size
@@ -1260,11 +1224,6 @@ DECL|member|buf_lock
 r_struct
 id|semaphore
 id|buf_lock
-suffix:semicolon
-DECL|member|buf_timer
-r_struct
-id|timer_list
-id|buf_timer
 suffix:semicolon
 DECL|member|decomp_ops
 r_struct

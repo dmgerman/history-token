@@ -3,6 +3,7 @@ macro_line|#ifndef _DV_1394_PRIVATE_H
 DECL|macro|_DV_1394_PRIVATE_H
 mdefine_line|#define _DV_1394_PRIVATE_H
 macro_line|#include &quot;ieee1394.h&quot;
+macro_line|#include &quot;ohci1394.h&quot;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 multiline_comment|/* data structures private to the dv1394 driver */
@@ -239,9 +240,13 @@ id|omi-&gt;q
 l_int|0
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|0x02000000
 op_or
 l_int|8
+)paren
 suffix:semicolon
 multiline_comment|/* OUTPUT_MORE_IMMEDIATE; 8 is the size of the IT header */
 id|omi-&gt;q
@@ -271,6 +276,9 @@ id|omi-&gt;q
 l_int|4
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 (paren
 l_int|0x0
 op_lshift
@@ -299,21 +307,23 @@ op_or
 (paren
 id|sync_tag
 )paren
+)paren
 suffix:semicolon
+multiline_comment|/* reserved field; mimic behavior of my Sony DSR-40 */
 id|omi-&gt;q
 (braket
 l_int|5
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
+(paren
 id|payload_size
 op_lshift
 l_int|16
-suffix:semicolon
-id|omi-&gt;q
-(braket
-l_int|5
-)braket
-op_or_assign
+)paren
+op_or
 (paren
 l_int|0x7F
 op_lshift
@@ -321,8 +331,8 @@ l_int|8
 )paren
 op_or
 l_int|0xA0
+)paren
 suffix:semicolon
-multiline_comment|/* reserved field; mimic behavior of my Sony DSR-40 */
 id|omi-&gt;q
 (braket
 l_int|6
@@ -364,22 +374,22 @@ id|om-&gt;q
 l_int|0
 )braket
 op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* OUTPUT_MORE */
-id|om-&gt;q
-(braket
-l_int|0
-)braket
-op_or_assign
+id|cpu_to_le32
+c_func
+(paren
 id|data_size
+)paren
 suffix:semicolon
 id|om-&gt;q
 (braket
 l_int|1
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|data_phys_addr
+)paren
 suffix:semicolon
 id|om-&gt;q
 (braket
@@ -423,17 +433,12 @@ r_int
 id|data_phys_addr
 )paren
 (brace
-id|ol-&gt;q
-(braket
-l_int|0
-)braket
+id|u32
+id|temp
 op_assign
 l_int|0
 suffix:semicolon
-id|ol-&gt;q
-(braket
-l_int|0
-)braket
+id|temp
 op_or_assign
 l_int|1
 op_lshift
@@ -447,10 +452,7 @@ id|want_timestamp
 )paren
 (brace
 multiline_comment|/* controller will update timestamp at DMA time */
-id|ol-&gt;q
-(braket
-l_int|0
-)braket
+id|temp
 op_or_assign
 l_int|1
 op_lshift
@@ -463,39 +465,45 @@ c_cond
 id|want_interrupt
 )paren
 (brace
-id|ol-&gt;q
-(braket
-l_int|0
-)braket
+id|temp
 op_or_assign
 l_int|3
 op_lshift
 l_int|20
 suffix:semicolon
 )brace
-id|ol-&gt;q
-(braket
-l_int|0
-)braket
+id|temp
 op_or_assign
 l_int|3
 op_lshift
 l_int|18
 suffix:semicolon
 multiline_comment|/* must take branch */
+id|temp
+op_or_assign
+id|data_size
+suffix:semicolon
 id|ol-&gt;q
 (braket
 l_int|0
 )braket
-op_or_assign
-id|data_size
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|temp
+)paren
 suffix:semicolon
 id|ol-&gt;q
 (braket
 l_int|1
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|data_phys_addr
+)paren
 suffix:semicolon
 id|ol-&gt;q
 (braket
@@ -537,20 +545,15 @@ r_int
 id|data_phys_addr
 )paren
 (brace
-id|im-&gt;q
-(braket
-l_int|0
-)braket
+id|u32
+id|temp
 op_assign
 l_int|2
 op_lshift
 l_int|28
 suffix:semicolon
 multiline_comment|/* INPUT_MORE */
-id|im-&gt;q
-(braket
-l_int|0
-)braket
+id|temp
 op_or_assign
 l_int|8
 op_lshift
@@ -562,20 +565,14 @@ c_cond
 (paren
 id|want_interrupt
 )paren
-id|im-&gt;q
-(braket
-l_int|0
-)braket
+id|temp
 op_or_assign
 l_int|0
 op_lshift
 l_int|20
 suffix:semicolon
 multiline_comment|/* interrupts, i=0 in packet-per-buffer mode */
-id|im-&gt;q
-(braket
-l_int|0
-)braket
+id|temp
 op_or_assign
 l_int|0x0
 op_lshift
@@ -583,19 +580,31 @@ l_int|16
 suffix:semicolon
 multiline_comment|/* disable branch to address for packet-per-buffer mode */
 multiline_comment|/* disable wait on sync field, not used in DV :-( */
+id|temp
+op_or_assign
+id|data_size
+suffix:semicolon
 id|im-&gt;q
 (braket
 l_int|0
 )braket
-op_or_assign
-id|data_size
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|temp
+)paren
 suffix:semicolon
 id|im-&gt;q
 (braket
 l_int|1
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|data_phys_addr
+)paren
 suffix:semicolon
 id|im-&gt;q
 (braket
@@ -635,40 +644,29 @@ r_int
 id|data_phys_addr
 )paren
 (brace
-id|il-&gt;q
-(braket
-l_int|0
-)braket
+id|u32
+id|temp
 op_assign
 l_int|3
 op_lshift
 l_int|28
 suffix:semicolon
 multiline_comment|/* INPUT_LAST */
-id|il-&gt;q
-(braket
-l_int|0
-)braket
+id|temp
 op_or_assign
 l_int|8
 op_lshift
 l_int|24
 suffix:semicolon
 multiline_comment|/* s = 1, update xferStatus and resCount */
-id|il-&gt;q
-(braket
-l_int|0
-)braket
+id|temp
 op_or_assign
 l_int|3
 op_lshift
 l_int|20
 suffix:semicolon
 multiline_comment|/* enable interrupts */
-id|il-&gt;q
-(braket
-l_int|0
-)braket
+id|temp
 op_or_assign
 l_int|0xC
 op_lshift
@@ -676,26 +674,42 @@ l_int|16
 suffix:semicolon
 multiline_comment|/* enable branch to address */
 multiline_comment|/* disable wait on sync field, not used in DV :-( */
+id|temp
+op_or_assign
+id|data_size
+suffix:semicolon
 id|il-&gt;q
 (braket
 l_int|0
 )braket
-op_or_assign
-id|data_size
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|temp
+)paren
 suffix:semicolon
 id|il-&gt;q
 (braket
 l_int|1
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|data_phys_addr
+)paren
 suffix:semicolon
 id|il-&gt;q
 (braket
 l_int|2
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|1
+)paren
 suffix:semicolon
 multiline_comment|/* branchAddress (filled in later) and Z = 1 descriptor in next block */
 id|il-&gt;q
@@ -703,7 +717,11 @@ id|il-&gt;q
 l_int|3
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|data_size
+)paren
 suffix:semicolon
 multiline_comment|/* xferStatus &amp; resCount, resCount must be initialize to data_size */
 )brace
@@ -1206,6 +1224,11 @@ DECL|member|ohci_it_ctx
 r_int
 id|ohci_it_ctx
 suffix:semicolon
+DECL|member|it_tasklet
+r_struct
+id|ohci1394_iso_tasklet
+id|it_tasklet
+suffix:semicolon
 multiline_comment|/* register offsets for current IT DMA context, 0 if not in use */
 DECL|member|ohci_IsoXmitContextControlSet
 id|u32
@@ -1220,6 +1243,11 @@ id|u32
 id|ohci_IsoXmitCommandPtr
 suffix:semicolon
 multiline_comment|/* OHCI card IR DMA context number, -1 if not in use */
+DECL|member|ir_tasklet
+r_struct
+id|ohci1394_iso_tasklet
+id|ir_tasklet
+suffix:semicolon
 DECL|member|ohci_ir_ctx
 r_int
 id|ohci_ir_ctx
@@ -1249,7 +1277,7 @@ r_int
 r_int
 id|open
 suffix:semicolon
-multiline_comment|/* &n;&t;   2) the spinlock - this provides mutual exclusion between the interrupt&n;&t;   handler and process-context operations. Generally you must take the&n;&t;   spinlock under the following conditions:&n;&t;     1) DMA (and hence the interrupt handler) may be running&n;&t;     AND&n;&t;     2) you need to operate on the video_card, especially active_frame&n;&n;&t;     It is OK to play with video_card without taking the spinlock if&n;&t;     you are certain that DMA is not running. Even if DMA is running,&n;&t;     it is OK to *read* active_frame with the lock, then drop it&n;&t;     immediately. This is safe because the interrupt handler will never&n;&t;     advance active_frame onto a frame that is not READY (and the spinlock&n;&t;     must be held while marking a frame READY).&n;&t; */
+multiline_comment|/* &n;&t;   2) the spinlock - this provides mutual exclusion between the interrupt&n;&t;   handler and process-context operations. Generally you must take the&n;&t;   spinlock under the following conditions:&n;&t;     1) DMA (and hence the interrupt handler) may be running&n;&t;     AND&n;&t;     2) you need to operate on the video_card, especially active_frame&n;&n;&t;     It is OK to play with video_card without taking the spinlock if&n;&t;     you are certain that DMA is not running. Even if DMA is running,&n;&t;     it is OK to *read* active_frame with the lock, then drop it&n;&t;     immediately. This is safe because the interrupt handler will never&n;&t;     advance active_frame onto a frame that is not READY (and the spinlock&n;&t;     must be held while marking a frame READY).&n;&n;&t;     spinlock is also used to protect ohci_it_ctx and ohci_ir_ctx,&n;&t;     which can be accessed from both process and interrupt context&n;&t; */
 DECL|member|spinlock
 id|spinlock_t
 id|spinlock
@@ -1477,7 +1505,7 @@ multiline_comment|/* NTSC empty packet rate accurate to within 0.01%, &n;   cali
 DECL|macro|CIP_N_NTSC
 mdefine_line|#define CIP_N_NTSC   68000000
 DECL|macro|CIP_D_NTSC
-mdefine_line|#define CIP_D_NTSC 1000000000
+mdefine_line|#define CIP_D_NTSC 1068000000
 DECL|macro|CIP_N_PAL
 mdefine_line|#define CIP_N_PAL  1
 DECL|macro|CIP_D_PAL

@@ -252,14 +252,9 @@ comma
 id|pcl
 suffix:semicolon
 DECL|member|queue
-DECL|member|queue_last
 r_struct
-id|hpsb_packet
-op_star
+id|list_head
 id|queue
-comma
-op_star
-id|queue_last
 suffix:semicolon
 DECL|member|queue_lock
 id|spinlock_t

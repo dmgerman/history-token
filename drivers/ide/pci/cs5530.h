@@ -63,19 +63,6 @@ comma
 suffix:semicolon
 macro_line|#endif /* DISPLAY_CS5530_TIMINGS &amp;&amp; CONFIG_PROC_FS */
 r_static
-r_void
-id|init_setup_cs5530
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
-id|ide_pci_device_t
-op_star
-)paren
-suffix:semicolon
-r_static
 r_int
 r_int
 id|init_chipset_cs5530
@@ -121,6 +108,7 @@ id|__initdata
 op_assign
 (brace
 (brace
+multiline_comment|/* 0 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_CYRIX
@@ -132,10 +120,6 @@ comma
 id|name
 suffix:colon
 l_string|&quot;CS5530&quot;
-comma
-id|init_setup
-suffix:colon
-id|init_setup_cs5530
 comma
 id|init_chipset
 suffix:colon

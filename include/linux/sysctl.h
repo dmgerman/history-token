@@ -409,6 +409,12 @@ op_assign
 l_int|55
 comma
 multiline_comment|/* int: PID # limit */
+DECL|enumerator|KERN_HUGETLB_PAGE_NUM
+id|KERN_HUGETLB_PAGE_NUM
+op_assign
+l_int|56
+comma
+multiline_comment|/* int: Number of available Huge Pages */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */
@@ -516,6 +522,11 @@ op_assign
 l_int|17
 comma
 multiline_comment|/* percent of RAM to allow overcommit in */
+DECL|enumerator|VM_PAGEBUF
+id|VM_PAGEBUF
+op_assign
+l_int|18
+multiline_comment|/* struct: Control pagebuf parameters */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_NET names: */
@@ -2045,6 +2056,12 @@ op_assign
 l_int|16
 comma
 multiline_comment|/* disc quota usage statistics */
+DECL|enumerator|FS_XFS
+id|FS_XFS
+op_assign
+l_int|17
+comma
+multiline_comment|/* struct: control xfs parameters */
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/fs/quota/ */

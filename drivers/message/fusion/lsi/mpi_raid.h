@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) 2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_RAID.H&n; *          Title:  MPI RAID message and structures&n; *  Creation Date:  February 27, 2001&n; *&n; *    MPI Version:  01.02.04&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  02-27-01  01.01.01  Original release for this file.&n; *  03-27-01  01.01.02  Added structure offset comments.&n; *  08-08-01  01.02.01  Original release for v1.2 work.&n; *  09-28-01  01.02.02  Major rework for MPI v1.2 Integrated RAID changes.&n; *  10-04-01  01.02.03  Added ActionData defines for&n; *                      MPI_RAID_ACTION_DELETE_VOLUME action.&n; *  11-01-01  01.02.04  Added define for MPI_RAID_ACTION_ADATA_DO_NOT_SYNC.&n; *  --------------------------------------------------------------------------&n; */
+multiline_comment|/*&n; *  Copyright (c) 2001-2002 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_RAID.H&n; *          Title:  MPI RAID message and structures&n; *  Creation Date:  February 27, 2001&n; *&n; *    MPI_RAID.H Version:  01.02.07&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  02-27-01  01.01.01  Original release for this file.&n; *  03-27-01  01.01.02  Added structure offset comments.&n; *  08-08-01  01.02.01  Original release for v1.2 work.&n; *  09-28-01  01.02.02  Major rework for MPI v1.2 Integrated RAID changes.&n; *  10-04-01  01.02.03  Added ActionData defines for&n; *                      MPI_RAID_ACTION_DELETE_VOLUME action.&n; *  11-01-01  01.02.04  Added define for MPI_RAID_ACTION_ADATA_DO_NOT_SYNC.&n; *  03-14-02  01.02.05  Added define for MPI_RAID_ACTION_ADATA_LOW_LEVEL_INIT.&n; *  05-07-02  01.02.06  Added define for MPI_RAID_ACTION_ACTIVATE_VOLUME,&n; *                      MPI_RAID_ACTION_INACTIVATE_VOLUME, and&n; *                      MPI_RAID_ACTION_ADATA_INACTIVATE_ALL.&n; *  07-12-02  01.02.07  Added structures for Mailbox request and reply.&n; *  --------------------------------------------------------------------------&n; */
 macro_line|#ifndef MPI_RAID_H
 DECL|macro|MPI_RAID_H
 mdefine_line|#define MPI_RAID_H
@@ -119,14 +119,23 @@ DECL|macro|MPI_RAID_ACTION_FAIL_PHYSDISK
 mdefine_line|#define MPI_RAID_ACTION_FAIL_PHYSDISK               (0x0F)
 DECL|macro|MPI_RAID_ACTION_REPLACE_PHYSDISK
 mdefine_line|#define MPI_RAID_ACTION_REPLACE_PHYSDISK            (0x10)
+DECL|macro|MPI_RAID_ACTION_ACTIVATE_VOLUME
+mdefine_line|#define MPI_RAID_ACTION_ACTIVATE_VOLUME             (0x11)
+DECL|macro|MPI_RAID_ACTION_INACTIVATE_VOLUME
+mdefine_line|#define MPI_RAID_ACTION_INACTIVATE_VOLUME           (0x12)
 multiline_comment|/* ActionDataWord defines for use with MPI_RAID_ACTION_CREATE_VOLUME action */
 DECL|macro|MPI_RAID_ACTION_ADATA_DO_NOT_SYNC
 mdefine_line|#define MPI_RAID_ACTION_ADATA_DO_NOT_SYNC           (0x00000001)
+DECL|macro|MPI_RAID_ACTION_ADATA_LOW_LEVEL_INIT
+mdefine_line|#define MPI_RAID_ACTION_ADATA_LOW_LEVEL_INIT        (0x00000002)
 multiline_comment|/* ActionDataWord defines for use with MPI_RAID_ACTION_DELETE_VOLUME action */
 DECL|macro|MPI_RAID_ACTION_ADATA_KEEP_PHYS_DISKS
 mdefine_line|#define MPI_RAID_ACTION_ADATA_KEEP_PHYS_DISKS       (0x00000000)
 DECL|macro|MPI_RAID_ACTION_ADATA_DEL_PHYS_DISKS
 mdefine_line|#define MPI_RAID_ACTION_ADATA_DEL_PHYS_DISKS        (0x00000001)
+multiline_comment|/* ActionDataWord defines for use with MPI_RAID_ACTION_ACTIVATE_VOLUME action */
+DECL|macro|MPI_RAID_ACTION_ADATA_INACTIVATE_ALL
+mdefine_line|#define MPI_RAID_ACTION_ADATA_INACTIVATE_ALL        (0x00000001)
 multiline_comment|/* RAID Action reply message */
 DECL|struct|_MSG_RAID_ACTION_REPLY
 r_typedef
@@ -462,6 +471,144 @@ id|SCSIIORaidPassthroughReply_t
 comma
 id|MPI_POINTER
 id|pSCSIIORaidPassthroughReply_t
+suffix:semicolon
+multiline_comment|/****************************************************************************/
+multiline_comment|/* Mailbox reqeust structure */
+multiline_comment|/****************************************************************************/
+DECL|struct|_MSG_MAILBOX_REQUEST
+r_typedef
+r_struct
+id|_MSG_MAILBOX_REQUEST
+(brace
+DECL|member|Reserved1
+id|U16
+id|Reserved1
+suffix:semicolon
+DECL|member|ChainOffset
+id|U8
+id|ChainOffset
+suffix:semicolon
+DECL|member|Function
+id|U8
+id|Function
+suffix:semicolon
+DECL|member|Reserved2
+id|U16
+id|Reserved2
+suffix:semicolon
+DECL|member|Reserved3
+id|U8
+id|Reserved3
+suffix:semicolon
+DECL|member|MsgFlags
+id|U8
+id|MsgFlags
+suffix:semicolon
+DECL|member|Command
+id|U8
+id|Command
+(braket
+l_int|10
+)braket
+suffix:semicolon
+DECL|member|Reserved4
+id|U16
+id|Reserved4
+suffix:semicolon
+DECL|member|SGL
+id|SGE_IO_UNION
+id|SGL
+suffix:semicolon
+DECL|typedef|MSG_MAILBOX_REQUEST
+DECL|typedef|PTR_MSG_MAILBOX_REQUEST
+)brace
+id|MSG_MAILBOX_REQUEST
+comma
+id|MPI_POINTER
+id|PTR_MSG_MAILBOX_REQUEST
+comma
+DECL|typedef|MailboxRequest_t
+DECL|typedef|pMailboxRequest_t
+id|MailboxRequest_t
+comma
+id|MPI_POINTER
+id|pMailboxRequest_t
+suffix:semicolon
+multiline_comment|/* Mailbox reply structure */
+DECL|struct|_MSG_MAILBOX_REPLY
+r_typedef
+r_struct
+id|_MSG_MAILBOX_REPLY
+(brace
+DECL|member|Reserved1
+id|U16
+id|Reserved1
+suffix:semicolon
+multiline_comment|/* 00h */
+DECL|member|MsgLength
+id|U8
+id|MsgLength
+suffix:semicolon
+multiline_comment|/* 02h */
+DECL|member|Function
+id|U8
+id|Function
+suffix:semicolon
+multiline_comment|/* 03h */
+DECL|member|Reserved2
+id|U16
+id|Reserved2
+suffix:semicolon
+multiline_comment|/* 04h */
+DECL|member|Reserved3
+id|U8
+id|Reserved3
+suffix:semicolon
+multiline_comment|/* 06h */
+DECL|member|MsgFlags
+id|U8
+id|MsgFlags
+suffix:semicolon
+multiline_comment|/* 07h */
+DECL|member|MsgContext
+id|U32
+id|MsgContext
+suffix:semicolon
+multiline_comment|/* 08h */
+DECL|member|MailboxStatus
+id|U16
+id|MailboxStatus
+suffix:semicolon
+multiline_comment|/* 0Ch */
+DECL|member|IOCStatus
+id|U16
+id|IOCStatus
+suffix:semicolon
+multiline_comment|/* 0Eh */
+DECL|member|IOCLogInfo
+id|U32
+id|IOCLogInfo
+suffix:semicolon
+multiline_comment|/* 10h */
+DECL|member|Reserved4
+id|U32
+id|Reserved4
+suffix:semicolon
+multiline_comment|/* 14h */
+DECL|typedef|MSG_MAILBOX_REPLY
+DECL|typedef|PTR_MSG_MAILBOX_REPLY
+)brace
+id|MSG_MAILBOX_REPLY
+comma
+id|MPI_POINTER
+id|PTR_MSG_MAILBOX_REPLY
+comma
+DECL|typedef|MailboxReply_t
+DECL|typedef|pMailboxReply_t
+id|MailboxReply_t
+comma
+id|MPI_POINTER
+id|pMailboxReply_t
 suffix:semicolon
 macro_line|#endif
 eof

@@ -202,7 +202,13 @@ OG
 id|le32_to_cpu
 c_func
 (paren
-id|dir-&gt;i_sb-&gt;u.ext3_sb.s_es-&gt;s_inodes_count
+id|EXT3_SB
+c_func
+(paren
+id|dir-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|s_es-&gt;s_inodes_count
 )paren
 )paren
 id|error_msg

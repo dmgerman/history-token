@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_TARG.H&n; *          Title:  MPI Target mode messages and structures&n; *  Creation Date:  June 22, 2000&n; *&n; *    MPI Version:  01.02.04&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  06-06-00  01.00.01  Update version number for 1.0 release.&n; *  06-22-00  01.00.02  Added _MSG_TARGET_CMD_BUFFER_POST_REPLY structure.&n; *                      Corrected DECSRIPTOR typo to DESCRIPTOR.&n; *  11-02-00  01.01.01  Original release for post 1.0 work&n; *                      Modified target mode to use IoIndex instead of&n; *                      HostIndex and IocIndex. Added Alias.&n; *  01-09-01  01.01.02  Added defines for TARGET_ASSIST_FLAGS_REPOST_CMD_BUFFER&n; *                      and TARGET_STATUS_SEND_FLAGS_REPOST_CMD_BUFFER.&n; *  02-20-01  01.01.03  Started using MPI_POINTER.&n; *                      Added structures for MPI_TARGET_SCSI_SPI_CMD_BUFFER and&n; *                      MPI_TARGET_FCP_CMD_BUFFER.&n; *  03-27-01  01.01.04  Added structure offset comments.&n; *  08-08-01  01.02.01  Original release for v1.2 work.&n; *  09-28-01  01.02.02  Added structure for MPI_TARGET_SCSI_SPI_STATUS_IU.&n; *                      Added PriorityReason field to some replies and&n; *                      defined more PriorityReason codes.&n; *                      Added some defines for to support previous version&n; *                      of MPI.&n; *  10-04-01  01.02.03  Added PriorityReason to MSG_TARGET_ERROR_REPLY.&n; *  11-01-01  01.02.04  Added define for TARGET_STATUS_SEND_FLAGS_HIGH_PRIORITY.&n; *  --------------------------------------------------------------------------&n; */
+multiline_comment|/*&n; *  Copyright (c) 2000-2002 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_TARG.H&n; *          Title:  MPI Target mode messages and structures&n; *  Creation Date:  June 22, 2000&n; *&n; *    MPI_TARG.H Version:  01.02.06&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  06-06-00  01.00.01  Update version number for 1.0 release.&n; *  06-22-00  01.00.02  Added _MSG_TARGET_CMD_BUFFER_POST_REPLY structure.&n; *                      Corrected DECSRIPTOR typo to DESCRIPTOR.&n; *  11-02-00  01.01.01  Original release for post 1.0 work&n; *                      Modified target mode to use IoIndex instead of&n; *                      HostIndex and IocIndex. Added Alias.&n; *  01-09-01  01.01.02  Added defines for TARGET_ASSIST_FLAGS_REPOST_CMD_BUFFER&n; *                      and TARGET_STATUS_SEND_FLAGS_REPOST_CMD_BUFFER.&n; *  02-20-01  01.01.03  Started using MPI_POINTER.&n; *                      Added structures for MPI_TARGET_SCSI_SPI_CMD_BUFFER and&n; *                      MPI_TARGET_FCP_CMD_BUFFER.&n; *  03-27-01  01.01.04  Added structure offset comments.&n; *  08-08-01  01.02.01  Original release for v1.2 work.&n; *  09-28-01  01.02.02  Added structure for MPI_TARGET_SCSI_SPI_STATUS_IU.&n; *                      Added PriorityReason field to some replies and&n; *                      defined more PriorityReason codes.&n; *                      Added some defines for to support previous version&n; *                      of MPI.&n; *  10-04-01  01.02.03  Added PriorityReason to MSG_TARGET_ERROR_REPLY.&n; *  11-01-01  01.02.04  Added define for TARGET_STATUS_SEND_FLAGS_HIGH_PRIORITY.&n; *  03-14-02  01.02.05  Modified MPI_TARGET_FCP_RSP_BUFFER to get the proper&n; *                      byte ordering.&n; *  05-31-02  01.02.06  Modified TARGET_MODE_REPLY_ALIAS_MASK to only include&n; *                      one bit.&n; *                      Added AliasIndex field to MPI_TARGET_FCP_CMD_BUFFER.&n; *  --------------------------------------------------------------------------&n; */
 macro_line|#ifndef MPI_TARG_H
 DECL|macro|MPI_TARG_H
 mdefine_line|#define MPI_TARG_H
@@ -433,6 +433,21 @@ id|U32
 id|FcpDl
 suffix:semicolon
 multiline_comment|/* 1Ch */
+DECL|member|AliasIndex
+id|U8
+id|AliasIndex
+suffix:semicolon
+multiline_comment|/* 20h */
+DECL|member|Reserved1
+id|U8
+id|Reserved1
+suffix:semicolon
+multiline_comment|/* 21h */
+DECL|member|Reserved2
+id|U16
+id|Reserved2
+suffix:semicolon
+multiline_comment|/* 22h */
 DECL|typedef|MPI_TARGET_FCP_CMD_BUFFER
 DECL|typedef|PTR_MPI_TARGET_FCP_CMD_BUFFER
 )brace
@@ -800,6 +815,7 @@ DECL|macro|TARGET_STATUS_SEND_FLAGS_HIGH_PRIORITY
 mdefine_line|#define TARGET_STATUS_SEND_FLAGS_HIGH_PRIORITY      (0x04)
 DECL|macro|TARGET_STATUS_SEND_FLAGS_REPOST_CMD_BUFFER
 mdefine_line|#define TARGET_STATUS_SEND_FLAGS_REPOST_CMD_BUFFER  (0x80)
+multiline_comment|/*&n; * NOTE: FCP_RSP data is big-endian. When used on a little-endian system, this&n; * structure properly orders the bytes.&n; */
 DECL|struct|_MPI_TARGET_FCP_RSP_BUFFER
 r_typedef
 r_struct
@@ -813,16 +829,6 @@ l_int|8
 )braket
 suffix:semicolon
 multiline_comment|/* 00h */
-DECL|member|FcpStatus
-id|U8
-id|FcpStatus
-suffix:semicolon
-multiline_comment|/* 08h */
-DECL|member|FcpFlags
-id|U8
-id|FcpFlags
-suffix:semicolon
-multiline_comment|/* 09h */
 DECL|member|Reserved1
 id|U8
 id|Reserved1
@@ -830,7 +836,17 @@ id|Reserved1
 l_int|2
 )braket
 suffix:semicolon
+multiline_comment|/* 08h */
+DECL|member|FcpFlags
+id|U8
+id|FcpFlags
+suffix:semicolon
 multiline_comment|/* 0Ah */
+DECL|member|FcpStatus
+id|U8
+id|FcpStatus
+suffix:semicolon
+multiline_comment|/* 0Bh */
 DECL|member|FcpResid
 id|U32
 id|FcpResid
@@ -878,6 +894,7 @@ comma
 id|MPI_POINTER
 id|pMpiTargetFcpRspBuffer
 suffix:semicolon
+multiline_comment|/*&n; * NOTE: The SPI status IU is big-endian. When used on a little-endian system,&n; * this structure properly orders the bytes.&n; */
 DECL|struct|_MPI_TARGET_SCSI_SPI_STATUS_IU
 r_typedef
 r_struct
@@ -1106,7 +1123,7 @@ mdefine_line|#define TARGET_MODE_REPLY_INITIATOR_INDEX_MASK  (0x03FFC000)
 DECL|macro|TARGET_MODE_REPLY_INITIATOR_INDEX_SHIFT
 mdefine_line|#define TARGET_MODE_REPLY_INITIATOR_INDEX_SHIFT (14)
 DECL|macro|TARGET_MODE_REPLY_ALIAS_MASK
-mdefine_line|#define TARGET_MODE_REPLY_ALIAS_MASK            (0x0C000000)
+mdefine_line|#define TARGET_MODE_REPLY_ALIAS_MASK            (0x04000000)
 DECL|macro|TARGET_MODE_REPLY_ALIAS_SHIFT
 mdefine_line|#define TARGET_MODE_REPLY_ALIAS_SHIFT           (26)
 DECL|macro|TARGET_MODE_REPLY_PORT_MASK

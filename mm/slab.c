@@ -1137,7 +1137,10 @@ id|slab_t
 suffix:semicolon
 id|offslab_limit
 op_div_assign
-l_int|2
+r_sizeof
+(paren
+id|kmem_bufctl_t
+)paren
 suffix:semicolon
 )brace
 id|sizes-&gt;cs_dmacachep

@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
-macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &quot;usb.h&quot;
 DECL|macro|USB_STORAGE
 mdefine_line|#define USB_STORAGE &quot;usb-storage: &quot;
 macro_line|#ifdef CONFIG_USB_STORAGE_DEBUG

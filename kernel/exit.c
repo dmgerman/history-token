@@ -177,7 +177,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -191,7 +190,6 @@ c_func
 id|p
 )paren
 suffix:semicolon
-macro_line|#endif
 id|atomic_dec
 c_func
 (paren

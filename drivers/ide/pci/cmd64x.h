@@ -163,19 +163,6 @@ comma
 suffix:semicolon
 macro_line|#endif  /* defined(DISPLAY_CMD64X_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS) */
 r_static
-r_void
-id|init_setup_cmd64x
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
-id|ide_pci_device_t
-op_star
-)paren
-suffix:semicolon
-r_static
 r_int
 r_int
 id|init_chipset_cmd64x
@@ -221,6 +208,7 @@ id|__initdata
 op_assign
 (brace
 (brace
+multiline_comment|/* 0 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_CMD
@@ -232,10 +220,6 @@ comma
 id|name
 suffix:colon
 l_string|&quot;CMD643&quot;
-comma
-id|init_setup
-suffix:colon
-id|init_setup_cmd64x
 comma
 id|init_chipset
 suffix:colon
@@ -292,6 +276,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 1 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_CMD
@@ -303,10 +288,6 @@ comma
 id|name
 suffix:colon
 l_string|&quot;CMD646&quot;
-comma
-id|init_setup
-suffix:colon
-id|init_setup_cmd64x
 comma
 id|init_chipset
 suffix:colon
@@ -363,6 +344,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 2 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_CMD
@@ -374,10 +356,6 @@ comma
 id|name
 suffix:colon
 l_string|&quot;CMD648&quot;
-comma
-id|init_setup
-suffix:colon
-id|init_setup_cmd64x
 comma
 id|init_chipset
 suffix:colon
@@ -445,10 +423,6 @@ comma
 id|name
 suffix:colon
 l_string|&quot;CMD649&quot;
-comma
-id|init_setup
-suffix:colon
-id|init_setup_cmd64x
 comma
 id|init_chipset
 suffix:colon
