@@ -2,6 +2,8 @@ multiline_comment|/*&n; *&t;Executive OSM&n; *&n; * &t;Copyright (C) 1999-2002&t
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/i2o.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+DECL|macro|OSM_NAME
+mdefine_line|#define OSM_NAME &quot;exec-osm&quot;
 DECL|variable|i2o_exec_driver
 r_struct
 id|i2o_driver
@@ -587,7 +589,9 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;timedout reply received!&bslash;n&quot;
+l_string|&quot;%s: timedout reply received!&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 id|i2o_dma_free
@@ -633,7 +637,9 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;i2o: Bogus reply in POST WAIT (tr-context: %08x)!&bslash;n&quot;
+l_string|&quot;%s: Bogus reply in POST WAIT (tr-context: %08x)!&bslash;n&quot;
+comma
+id|c-&gt;name
 comma
 id|context
 )paren
@@ -998,10 +1004,9 @@ op_star
 id|evt
 )paren
 (brace
-id|printk
+id|osm_info
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;Event received from device: %d&bslash;n&quot;
 comma
 id|evt-&gt;i2o_dev-&gt;lct_data.tid
@@ -1425,7 +1430,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;exec-osm&quot;
+id|OSM_NAME
 comma
 dot
 id|reply
