@@ -710,10 +710,9 @@ comma
 id|srb-&gt;request_bufflen
 )paren
 suffix:semicolon
-id|show_trace
+id|BUG
 c_func
 (paren
-l_int|NULL
 )paren
 suffix:semicolon
 )brace
