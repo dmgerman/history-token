@@ -7,9 +7,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
-macro_line|#if MAX_RT_PRIO != 128 || MAX_PRIO != 168
-macro_line|# error update this function.
-macro_line|#endif
 DECL|function|sched_find_first_bit
 r_static
 r_inline
@@ -96,14 +93,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|unlikely
-c_func
-(paren
 id|b
 (braket
 l_int|3
 )braket
-)paren
 )paren
 r_return
 id|__ffs
@@ -117,14 +110,6 @@ l_int|3
 op_plus
 l_int|96
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|b
-(braket
-l_int|4
-)braket
-)paren
 r_return
 id|__ffs
 c_func
@@ -134,20 +119,6 @@ id|b
 l_int|4
 )braket
 )paren
-op_plus
-l_int|128
-suffix:semicolon
-r_return
-id|__ffs
-c_func
-(paren
-id|b
-(braket
-l_int|5
-)braket
-)paren
-op_plus
-l_int|32
 op_plus
 l_int|128
 suffix:semicolon
