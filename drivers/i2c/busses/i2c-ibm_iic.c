@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/i2c/i2c-ibm_iic.c&n; *&n; * Support for the IIC peripheral on IBM PPC 4xx&n; *&n; * Copyright (c) 2003 Zultys Technologies.&n; * Eugene Surovegin &lt;eugene.surovegin@zultys.com&gt; or &lt;ebs@ebshome.net&gt;&n; *&n; * Based on original work by &n; * &t;Ian DaSilva  &lt;idasilva@mvista.com&gt;&n; *      Armin Kuster &lt;akuster@mvista.com&gt;&n; * &t;Matt Porter  &lt;mporter@mvista.com&gt;&n; *&n; *      Copyright 2000-2003 MontaVista Software Inc.&n; *&n; * Original driver version was highly leveraged from i2c-elektor.c&n; *&n; *   &t;Copyright 1995-97 Simon G. Vogl&n; *                1998-99 Hans Berglund&n; *&n; *   &t;With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt; &n; *&t;and even Frodo Looijaard &lt;frodol@dds.nl&gt;&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
+multiline_comment|/*&n; * drivers/i2c/i2c-ibm_iic.c&n; *&n; * Support for the IIC peripheral on IBM PPC 4xx&n; *&n; * Copyright (c) 2003, 2004 Zultys Technologies.&n; * Eugene Surovegin &lt;eugene.surovegin@zultys.com&gt; or &lt;ebs@ebshome.net&gt;&n; *&n; * Based on original work by &n; * &t;Ian DaSilva  &lt;idasilva@mvista.com&gt;&n; *      Armin Kuster &lt;akuster@mvista.com&gt;&n; * &t;Matt Porter  &lt;mporter@mvista.com&gt;&n; *&n; *      Copyright 2000-2003 MontaVista Software Inc.&n; *&n; * Original driver version was highly leveraged from i2c-elektor.c&n; *&n; *   &t;Copyright 1995-97 Simon G. Vogl&n; *                1998-99 Hans Berglund&n; *&n; *   &t;With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt; &n; *&t;and even Frodo Looijaard &lt;frodol@dds.nl&gt;&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/ocp.h&gt;
 macro_line|#include &lt;asm/ibm4xx.h&gt;
 macro_line|#include &quot;i2c-ibm_iic.h&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;2.0&quot;
+mdefine_line|#define DRIVER_VERSION &quot;2.01&quot;
 id|MODULE_DESCRIPTION
 c_func
 (paren
@@ -2339,19 +2339,30 @@ id|i2c_adapter
 op_star
 id|adap
 suffix:semicolon
+r_struct
+id|ocp_func_iic_data
+op_star
+id|iic_data
+op_assign
+id|ocp-&gt;def-&gt;additions
+suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|bd_t
-op_star
-id|bd
-op_assign
+r_if
+c_cond
 (paren
-id|bd_t
-op_star
+op_logical_neg
+id|iic_data
 )paren
-op_amp
-id|__res
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ibm-iic%d: missing additional data!&bslash;n&quot;
+comma
+id|ocp-&gt;def-&gt;index
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2378,7 +2389,9 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;ibm-iic: failed to allocate device data&bslash;n&quot;
+l_string|&quot;ibm-iic%d: failed to allocate device data&bslash;n&quot;
+comma
+id|ocp-&gt;def-&gt;index
 )paren
 suffix:semicolon
 r_return
@@ -2402,7 +2415,7 @@ id|dev
 suffix:semicolon
 id|dev-&gt;idx
 op_assign
-id|ocp-&gt;num
+id|ocp-&gt;def-&gt;index
 suffix:semicolon
 id|ocp_set_drvdata
 c_func
@@ -2422,7 +2435,7 @@ op_assign
 id|ioremap
 c_func
 (paren
-id|ocp-&gt;paddr
+id|ocp-&gt;def-&gt;paddr
 comma
 r_sizeof
 (paren
@@ -2466,7 +2479,7 @@ c_cond
 op_minus
 l_int|1
 suffix:colon
-id|ocp-&gt;irq
+id|ocp-&gt;def-&gt;irq
 suffix:semicolon
 r_if
 c_cond
@@ -2539,25 +2552,6 @@ id|dev-&gt;idx
 )paren
 suffix:semicolon
 multiline_comment|/* Board specific settings */
-id|BUG_ON
-c_func
-(paren
-id|dev-&gt;idx
-op_ge
-r_sizeof
-(paren
-id|bd-&gt;bi_iic_fast
-)paren
-op_div
-r_sizeof
-(paren
-id|bd-&gt;bi_iic_fast
-(braket
-l_int|0
-)braket
-)paren
-)paren
-suffix:semicolon
 id|dev-&gt;fast_mode
 op_assign
 id|iic_force_fast
@@ -2565,10 +2559,14 @@ ques
 c_cond
 l_int|1
 suffix:colon
-id|bd-&gt;bi_iic_fast
-(braket
-id|dev-&gt;idx
-)braket
+(paren
+id|iic_data
+ques
+c_cond
+id|iic_data-&gt;fast_mode
+suffix:colon
+l_int|0
+)paren
 suffix:semicolon
 multiline_comment|/* clckdiv is the same for *all* IIC interfaces, &n;&t; * but I&squot;d rather make a copy than introduce another global. --ebs&n;&t; */
 id|dev-&gt;clckdiv
@@ -2576,7 +2574,7 @@ op_assign
 id|iic_clckdiv
 c_func
 (paren
-id|bd-&gt;bi_opb_busfreq
+id|ocp_sys_info.opb_bus_freq
 )paren
 suffix:semicolon
 id|DBG
@@ -2903,7 +2901,7 @@ op_assign
 id|OCP_VENDOR_IBM
 comma
 dot
-id|device
+id|function
 op_assign
 id|OCP_FUNC_IIC
 )brace
@@ -2934,7 +2932,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;ocp_iic&quot;
+l_string|&quot;iic&quot;
 comma
 dot
 id|id_table
@@ -2989,7 +2987,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|ocp_module_init
+id|ocp_register_driver
 c_func
 (paren
 op_amp
