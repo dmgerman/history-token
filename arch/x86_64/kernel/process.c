@@ -1339,12 +1339,6 @@ r_int
 id|childregs
 suffix:semicolon
 )brace
-id|p-&gt;set_child_tid
-op_assign
-id|p-&gt;clear_child_tid
-op_assign
-l_int|NULL
-suffix:semicolon
 id|p-&gt;thread.rsp
 op_assign
 (paren

@@ -325,12 +325,6 @@ op_star
 id|regs
 suffix:semicolon
 multiline_comment|/* struct copy of pt_regs */
-id|p-&gt;set_child_tid
-op_assign
-id|p-&gt;clear_child_tid
-op_assign
-l_int|NULL
-suffix:semicolon
 id|childregs-&gt;r10
 op_assign
 l_int|0
