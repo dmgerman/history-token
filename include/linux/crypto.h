@@ -85,7 +85,7 @@ op_star
 id|ctx
 comma
 r_const
-id|__u8
+id|u8
 op_star
 id|key
 comma
@@ -108,11 +108,11 @@ r_void
 op_star
 id|ctx
 comma
-id|__u8
+id|u8
 op_star
 id|dst
 comma
-id|__u8
+id|u8
 op_star
 id|src
 )paren
@@ -128,11 +128,11 @@ r_void
 op_star
 id|ctx
 comma
-id|__u8
+id|u8
 op_star
 id|dst
 comma
-id|__u8
+id|u8
 op_star
 id|src
 )paren
@@ -171,7 +171,7 @@ op_star
 id|ctx
 comma
 r_const
-id|__u8
+id|u8
 op_star
 id|data
 comma
@@ -190,7 +190,7 @@ r_void
 op_star
 id|ctx
 comma
-id|__u8
+id|u8
 op_star
 id|out
 )paren
@@ -239,7 +239,7 @@ id|list_head
 id|cra_list
 suffix:semicolon
 DECL|member|cra_id
-id|__u32
+id|u32
 id|cra_id
 suffix:semicolon
 DECL|member|cra_blocksize
@@ -315,7 +315,7 @@ op_star
 id|cit_iv
 suffix:semicolon
 DECL|member|cit_mode
-id|__u32
+id|u32
 id|cit_mode
 suffix:semicolon
 DECL|member|cit_setkey
@@ -331,7 +331,7 @@ op_star
 id|tfm
 comma
 r_const
-id|__u8
+id|u8
 op_star
 id|key
 comma
@@ -433,7 +433,7 @@ id|crypto_tfm
 op_star
 id|tfm
 comma
-id|__u8
+id|u8
 op_star
 id|out
 )paren
@@ -458,7 +458,7 @@ comma
 r_int
 id|nsg
 comma
-id|__u8
+id|u8
 op_star
 id|out
 )paren
@@ -475,7 +475,7 @@ id|crypto_tfm
 op_star
 id|tfm
 comma
-id|__u8
+id|u8
 op_star
 id|key
 comma
@@ -490,7 +490,7 @@ comma
 r_int
 id|nsg
 comma
-id|__u8
+id|u8
 op_star
 id|out
 )paren
@@ -584,7 +584,7 @@ op_star
 id|crypto_alloc_tfm
 c_func
 (paren
-id|__u32
+id|u32
 id|id
 )paren
 suffix:semicolon
@@ -668,7 +668,7 @@ id|crypto_tfm
 op_star
 id|tfm
 comma
-id|__u8
+id|u8
 op_star
 id|out
 )paren
@@ -704,7 +704,7 @@ comma
 r_int
 id|nsg
 comma
-id|__u8
+id|u8
 op_star
 id|out
 )paren
@@ -736,7 +736,7 @@ id|crypto_tfm
 op_star
 id|tfm
 comma
-id|__u8
+id|u8
 op_star
 id|key
 comma
@@ -751,7 +751,7 @@ comma
 r_int
 id|nsg
 comma
-id|__u8
+id|u8
 op_star
 id|out
 )paren
@@ -788,7 +788,7 @@ op_star
 id|tfm
 comma
 r_const
-id|__u8
+id|u8
 op_star
 id|key
 comma
@@ -892,7 +892,7 @@ id|crypto_tfm
 op_star
 id|tfm
 comma
-id|__u8
+id|u8
 op_star
 id|src
 comma
@@ -1013,7 +1013,7 @@ suffix:semicolon
 DECL|function|crypto_tfm_type
 r_static
 r_inline
-id|__u32
+id|u32
 id|crypto_tfm_type
 c_func
 (paren

@@ -144,7 +144,7 @@ id|crypto_tfm
 op_star
 id|tfm
 comma
-id|__u8
+id|u8
 op_star
 id|out
 )paren
@@ -181,7 +181,7 @@ comma
 r_int
 id|nsg
 comma
-id|__u8
+id|u8
 op_star
 id|out
 )paren
@@ -297,7 +297,7 @@ id|crypto_tfm
 op_star
 id|tfm
 comma
-id|__u8
+id|u8
 op_star
 id|key
 comma
@@ -312,7 +312,7 @@ comma
 r_int
 id|nsg
 comma
-id|__u8
+id|u8
 op_star
 id|out
 )paren

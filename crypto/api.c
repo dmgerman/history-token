@@ -411,7 +411,7 @@ op_star
 id|crypto_alg_lookup
 c_func
 (paren
-id|__u32
+id|u32
 id|algid
 )paren
 (brace
@@ -568,7 +568,7 @@ op_star
 id|crypto_alloc_tfm
 c_func
 (paren
-id|__u32
+id|u32
 id|id
 )paren
 (brace

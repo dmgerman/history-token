@@ -23,14 +23,14 @@ r_struct
 id|des_ctx
 (brace
 DECL|member|iv
-id|__u8
+id|u8
 id|iv
 (braket
 id|DES_BLOCK_SIZE
 )braket
 suffix:semicolon
 DECL|member|expkey
-id|__u32
+id|u32
 id|expkey
 (braket
 id|DES_EXPKEY_WORDS
@@ -43,14 +43,14 @@ r_struct
 id|des3_ede_ctx
 (brace
 DECL|member|iv
-id|__u8
+id|u8
 id|iv
 (braket
 id|DES_BLOCK_SIZE
 )braket
 suffix:semicolon
 DECL|member|expkey
-id|__u32
+id|u32
 id|expkey
 (braket
 id|DES3_EDE_EXPKEY_WORDS
@@ -61,7 +61,7 @@ suffix:semicolon
 DECL|variable|des_keymap
 r_const
 r_static
-id|__u32
+id|u32
 id|des_keymap
 (braket
 )braket
@@ -1096,7 +1096,7 @@ suffix:semicolon
 DECL|variable|rotors
 r_const
 r_static
-r_char
+id|u8
 id|rotors
 (braket
 )braket
@@ -2643,7 +2643,7 @@ suffix:semicolon
 DECL|variable|parity
 r_const
 r_static
-r_char
+id|u8
 id|parity
 (braket
 )braket
@@ -3169,20 +3169,20 @@ r_void
 id|des_small_fips_encrypt
 c_func
 (paren
-id|__u32
+id|u32
 op_star
 id|expkey
 comma
-id|__u8
+id|u8
 op_star
 id|dst
 comma
-id|__u8
+id|u8
 op_star
 id|src
 )paren
 (brace
-id|__u32
+id|u32
 id|x
 comma
 id|y
@@ -3418,7 +3418,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -3447,7 +3447,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -3476,7 +3476,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -3505,7 +3505,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -3547,7 +3547,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -3576,7 +3576,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -3605,7 +3605,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -3634,7 +3634,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -3670,7 +3670,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -3699,7 +3699,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -3728,7 +3728,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -3757,7 +3757,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -3799,7 +3799,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -3828,7 +3828,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -3857,7 +3857,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -3886,7 +3886,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -3922,7 +3922,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -3951,7 +3951,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -3980,7 +3980,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4009,7 +4009,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4051,7 +4051,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4080,7 +4080,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4109,7 +4109,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4138,7 +4138,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4174,7 +4174,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4203,7 +4203,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4232,7 +4232,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4261,7 +4261,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4303,7 +4303,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4332,7 +4332,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4361,7 +4361,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4390,7 +4390,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4426,7 +4426,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4455,7 +4455,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4484,7 +4484,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4513,7 +4513,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4555,7 +4555,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4584,7 +4584,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4613,7 +4613,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4642,7 +4642,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4678,7 +4678,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4707,7 +4707,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4736,7 +4736,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4765,7 +4765,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4807,7 +4807,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4836,7 +4836,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4865,7 +4865,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4894,7 +4894,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4930,7 +4930,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4959,7 +4959,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -4988,7 +4988,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5017,7 +5017,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5059,7 +5059,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5088,7 +5088,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5117,7 +5117,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5146,7 +5146,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5182,7 +5182,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5211,7 +5211,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5240,7 +5240,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5269,7 +5269,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5311,7 +5311,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5340,7 +5340,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5369,7 +5369,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5398,7 +5398,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5434,7 +5434,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5463,7 +5463,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5492,7 +5492,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5521,7 +5521,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5563,7 +5563,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5592,7 +5592,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5621,7 +5621,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5650,7 +5650,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5686,7 +5686,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5715,7 +5715,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5744,7 +5744,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5773,7 +5773,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5815,7 +5815,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5844,7 +5844,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5873,7 +5873,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5902,7 +5902,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5938,7 +5938,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5967,7 +5967,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -5996,7 +5996,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6025,7 +6025,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6067,7 +6067,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6096,7 +6096,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6125,7 +6125,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6154,7 +6154,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6190,7 +6190,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6219,7 +6219,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6248,7 +6248,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6277,7 +6277,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6319,7 +6319,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6348,7 +6348,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6377,7 +6377,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6406,7 +6406,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6442,7 +6442,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6471,7 +6471,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6500,7 +6500,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6529,7 +6529,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6571,7 +6571,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6600,7 +6600,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6629,7 +6629,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6658,7 +6658,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6694,7 +6694,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6723,7 +6723,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6752,7 +6752,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6781,7 +6781,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6823,7 +6823,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6852,7 +6852,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6881,7 +6881,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6910,7 +6910,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6946,7 +6946,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -6975,7 +6975,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -7004,7 +7004,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -7033,7 +7033,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -7075,7 +7075,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -7104,7 +7104,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -7133,7 +7133,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -7162,7 +7162,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -7198,7 +7198,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -7227,7 +7227,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -7256,7 +7256,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -7285,7 +7285,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -7327,7 +7327,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -7356,7 +7356,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -7385,7 +7385,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -7414,7 +7414,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -7658,20 +7658,20 @@ r_void
 id|des_small_fips_decrypt
 c_func
 (paren
-id|__u32
+id|u32
 op_star
 id|expkey
 comma
-id|__u8
+id|u8
 op_star
 id|dst
 comma
-id|__u8
+id|u8
 op_star
 id|src
 )paren
 (brace
-id|__u32
+id|u32
 id|x
 comma
 id|y
@@ -7917,7 +7917,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -7946,7 +7946,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -7975,7 +7975,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8004,7 +8004,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8040,7 +8040,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8069,7 +8069,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8098,7 +8098,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8127,7 +8127,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8169,7 +8169,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8198,7 +8198,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8227,7 +8227,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8256,7 +8256,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8292,7 +8292,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8321,7 +8321,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8350,7 +8350,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8379,7 +8379,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8421,7 +8421,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8450,7 +8450,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8479,7 +8479,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8508,7 +8508,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8544,7 +8544,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8573,7 +8573,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8602,7 +8602,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8631,7 +8631,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8673,7 +8673,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8702,7 +8702,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8731,7 +8731,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8760,7 +8760,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8796,7 +8796,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8825,7 +8825,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8854,7 +8854,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8883,7 +8883,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8925,7 +8925,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8954,7 +8954,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -8983,7 +8983,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9012,7 +9012,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9048,7 +9048,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9077,7 +9077,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9106,7 +9106,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9135,7 +9135,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9177,7 +9177,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9206,7 +9206,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9235,7 +9235,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9264,7 +9264,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9300,7 +9300,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9329,7 +9329,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9358,7 +9358,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9387,7 +9387,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9429,7 +9429,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9458,7 +9458,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9487,7 +9487,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9516,7 +9516,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9552,7 +9552,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9581,7 +9581,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9610,7 +9610,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9639,7 +9639,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9681,7 +9681,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9710,7 +9710,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9739,7 +9739,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9768,7 +9768,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9804,7 +9804,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9833,7 +9833,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9862,7 +9862,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9891,7 +9891,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9933,7 +9933,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9962,7 +9962,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -9991,7 +9991,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10020,7 +10020,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10056,7 +10056,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10085,7 +10085,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10114,7 +10114,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10143,7 +10143,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10185,7 +10185,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10214,7 +10214,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10243,7 +10243,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10272,7 +10272,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10308,7 +10308,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10337,7 +10337,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10366,7 +10366,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10395,7 +10395,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10437,7 +10437,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10466,7 +10466,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10495,7 +10495,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10524,7 +10524,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10560,7 +10560,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10589,7 +10589,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10618,7 +10618,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10647,7 +10647,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10689,7 +10689,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10718,7 +10718,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10747,7 +10747,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10776,7 +10776,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10812,7 +10812,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10841,7 +10841,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10870,7 +10870,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10899,7 +10899,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10941,7 +10941,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10970,7 +10970,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -10999,7 +10999,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11028,7 +11028,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11064,7 +11064,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11093,7 +11093,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11122,7 +11122,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11151,7 +11151,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11193,7 +11193,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11222,7 +11222,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11251,7 +11251,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11280,7 +11280,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11316,7 +11316,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11345,7 +11345,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11374,7 +11374,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11403,7 +11403,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11445,7 +11445,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11474,7 +11474,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11503,7 +11503,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11532,7 +11532,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11568,7 +11568,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11597,7 +11597,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11626,7 +11626,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11655,7 +11655,7 @@ id|x
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11697,7 +11697,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11726,7 +11726,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11755,7 +11755,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11784,7 +11784,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11820,7 +11820,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11849,7 +11849,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11878,7 +11878,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -11907,7 +11907,7 @@ id|y
 op_xor_assign
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -12148,12 +12148,12 @@ r_int
 id|setkey
 c_func
 (paren
-id|__u32
+id|u32
 op_star
 id|expkey
 comma
 r_const
-id|__u8
+id|u8
 op_star
 id|key
 comma
@@ -12166,23 +12166,23 @@ id|flags
 )paren
 (brace
 r_const
-id|__u8
+id|u8
 op_star
 id|k
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|b0
 comma
 op_star
 id|b1
 suffix:semicolon
-id|__u32
+id|u32
 id|n
 comma
 id|w
 suffix:semicolon
-id|__u8
+id|u8
 id|bits0
 (braket
 l_int|56
@@ -13332,7 +13332,7 @@ op_star
 id|ctx
 comma
 r_const
-id|__u8
+id|u8
 op_star
 id|key
 comma
@@ -13377,11 +13377,11 @@ r_void
 op_star
 id|ctx
 comma
-id|__u8
+id|u8
 op_star
 id|dst
 comma
-id|__u8
+id|u8
 op_star
 id|src
 )paren
@@ -13416,11 +13416,11 @@ r_void
 op_star
 id|ctx
 comma
-id|__u8
+id|u8
 op_star
 id|dst
 comma
-id|__u8
+id|u8
 op_star
 id|src
 )paren
@@ -13457,7 +13457,7 @@ op_star
 id|ctx
 comma
 r_const
-id|__u8
+id|u8
 op_star
 id|key
 comma
@@ -13621,11 +13621,11 @@ r_void
 op_star
 id|ctx
 comma
-id|__u8
+id|u8
 op_star
 id|dst
 comma
-id|__u8
+id|u8
 op_star
 id|src
 )paren
@@ -13690,11 +13690,11 @@ r_void
 op_star
 id|ctx
 comma
-id|__u8
+id|u8
 op_star
 id|dst
 comma
-id|__u8
+id|u8
 op_star
 id|src
 )paren

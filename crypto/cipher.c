@@ -18,10 +18,10 @@ id|cryptfn_t
 r_void
 op_star
 comma
-id|__u8
+id|u8
 op_star
 comma
-id|__u8
+id|u8
 op_star
 )paren
 suffix:semicolon
@@ -36,7 +36,7 @@ r_struct
 id|crypto_tfm
 op_star
 comma
-id|__u8
+id|u8
 op_star
 comma
 id|cryptfn_t
@@ -52,19 +52,19 @@ r_void
 id|xor_64
 c_func
 (paren
-id|__u8
+id|u8
 op_star
 id|a
 comma
 r_const
-id|__u8
+id|u8
 op_star
 id|b
 )paren
 (brace
 (paren
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 id|a
@@ -75,7 +75,7 @@ l_int|0
 op_xor_assign
 (paren
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 id|b
@@ -86,7 +86,7 @@ l_int|0
 suffix:semicolon
 (paren
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 id|a
@@ -97,7 +97,7 @@ l_int|1
 op_xor_assign
 (paren
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 id|b
@@ -172,7 +172,7 @@ id|crypto_tfm
 op_star
 id|tfm
 comma
-id|__u8
+id|u8
 op_star
 id|buf
 comma
@@ -419,7 +419,7 @@ id|crypto_tfm
 op_star
 id|tfm
 comma
-id|__u8
+id|u8
 op_star
 id|buf
 comma
@@ -471,7 +471,7 @@ id|crypto_tfm
 op_star
 id|tfm
 comma
-id|__u8
+id|u8
 op_star
 id|buf
 comma
@@ -511,7 +511,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Generic encrypt/decrypt wrapper for ciphers.&n; *&n; * If we find a a remnant at the end of a frag, we have to encrypt or&n; * decrypt across possibly multiple page boundaries via a temporary&n; * block, then continue processing with a chunk offset until the end&n; * of a frag is block aligned.&n; */
+multiline_comment|/* &n; * Generic encrypt/decrypt wrapper for ciphers.&n; *&n; * If we find a a remnant at the end of a frag, we have to encrypt or&n; * decrypt across possibly multiple page boundaries via a temporary&n; * block, then continue processing with a chunk offset until the end&n; * of a frag is block aligned.&n; *&n; * The code is further complicated by having to remap a page after&n; * processing a block then yielding.  The data will be offset from the&n; * start of page at the scatterlist offset, the chunking offset (coff)&n; * and the block offset (boff).&n; */
 DECL|function|crypt
 r_static
 r_int
@@ -555,7 +555,7 @@ c_func
 id|tfm
 )paren
 suffix:semicolon
-id|__u8
+id|u8
 id|tmp
 (braket
 id|CRYPTO_MAX_BLOCK_SIZE
@@ -605,6 +605,10 @@ op_increment
 (brace
 r_int
 id|n
+op_assign
+l_int|0
+comma
+id|boff
 op_assign
 l_int|0
 suffix:semicolon
@@ -768,6 +772,11 @@ c_func
 id|tfm
 )paren
 suffix:semicolon
+multiline_comment|/* remap and point to recalculated offset */
+id|boff
+op_add_assign
+id|bsize
+suffix:semicolon
 id|p
 op_assign
 id|crypto_kmap
@@ -791,10 +800,8 @@ dot
 id|offset
 op_plus
 id|coff
-suffix:semicolon
-id|p
-op_add_assign
-id|bsize
+op_plus
+id|boff
 suffix:semicolon
 id|len
 op_sub_assign
@@ -853,7 +860,7 @@ id|crypto_tfm
 op_star
 id|tfm
 comma
-id|__u8
+id|u8
 op_star
 id|block
 comma
@@ -905,7 +912,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|__u8
+id|u8
 id|buf
 (braket
 id|CRYPTO_MAX_BLOCK_SIZE
@@ -970,7 +977,7 @@ id|crypto_tfm
 op_star
 id|tfm
 comma
-id|__u8
+id|u8
 op_star
 id|block
 comma
@@ -1004,7 +1011,7 @@ op_star
 id|tfm
 comma
 r_const
-id|__u8
+id|u8
 op_star
 id|key
 comma
