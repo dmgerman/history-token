@@ -1,10 +1,9 @@
 multiline_comment|/*&n; * common keywest i2c layer&n; *&n; * Copyright (c) by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-dev.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;pmac.h&quot;
 multiline_comment|/*&n; * we have to keep a static variable here since i2c attach_adapter&n; * callback cannot pass a private data.&n; */
@@ -119,6 +118,7 @@ l_int|6
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/* ignored */
 id|new_client
 op_assign
 id|kmalloc
@@ -199,9 +199,18 @@ id|keywest_ctx
 OL
 l_int|0
 )paren
+(brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;tumbler: cannot initialize the MCS&bslash;n&quot;
+)paren
+suffix:semicolon
 r_goto
 id|__err
 suffix:semicolon
+)brace
 multiline_comment|/* Tell the i2c layer a new client has arrived */
 r_if
 c_cond
@@ -213,6 +222,13 @@ id|new_client
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;tumbler: cannot attach i2c client&bslash;n&quot;
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -347,6 +363,10 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
+id|keywest_ctx
+op_assign
+id|i2c
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -373,10 +393,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-id|keywest_ctx
-op_assign
-id|i2c
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

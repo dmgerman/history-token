@@ -1770,20 +1770,24 @@ id|pci_driver
 id|driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Yamaha DS-XG PCI&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|snd_ymfpci_ids
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|snd_card_ymfpci_probe
 comma
+dot
 id|remove
-suffix:colon
+op_assign
 id|__devexit_p
 c_func
 (paren
@@ -1791,12 +1795,14 @@ id|snd_card_ymfpci_remove
 )paren
 comma
 macro_line|#ifdef CONFIG_PM
+dot
 id|suspend
-suffix:colon
+op_assign
 id|snd_card_ymfpci_suspend
 comma
+dot
 id|resume
-suffix:colon
+op_assign
 id|snd_card_ymfpci_resume
 comma
 macro_line|#endif&t;

@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * Scatter-Gather PCM access&n; *&n; *  Copyright (c) by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
@@ -218,6 +216,18 @@ id|snd_sg_buf
 op_star
 id|sgbuf
 suffix:semicolon
+multiline_comment|/* return in case, when sgbuf is not initialized */
+r_if
+c_cond
+(paren
+id|substream-&gt;dma_private
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|sgbuf
 op_assign
 id|snd_magic_cast
@@ -344,6 +354,11 @@ comma
 id|pages
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|substream-&gt;runtime
+)paren
 id|substream-&gt;runtime-&gt;dma_bytes
 op_assign
 id|size
@@ -494,6 +509,11 @@ id|sgbuf-&gt;size
 op_assign
 id|size
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|substream-&gt;runtime
+)paren
 id|substream-&gt;runtime-&gt;dma_bytes
 op_assign
 id|size

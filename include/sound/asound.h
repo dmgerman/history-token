@@ -119,11 +119,15 @@ DECL|enumerator|SNDRV_HWDEP_IFACE_ICS2115
 id|SNDRV_HWDEP_IFACE_ICS2115
 comma
 multiline_comment|/* Wavetable synth */
+DECL|enumerator|SNDRV_HWDEP_IFACE_SSCAPE
+id|SNDRV_HWDEP_IFACE_SSCAPE
+comma
+multiline_comment|/* Ensoniq SoundScape ISA card (MC68EC000) */
 multiline_comment|/* Don&squot;t forget to change the following: */
 DECL|enumerator|SNDRV_HWDEP_IFACE_LAST
 id|SNDRV_HWDEP_IFACE_LAST
 op_assign
-id|SNDRV_HWDEP_IFACE_ICS2115
+id|SNDRV_HWDEP_IFACE_SSCAPE
 comma
 )brace
 suffix:semicolon

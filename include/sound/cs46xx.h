@@ -2351,7 +2351,14 @@ DECL|macro|CS46XX_SECONDARY_CODEC_OFFSET
 mdefine_line|#define CS46XX_SECONDARY_CODEC_OFFSET&t;&t;0x80
 DECL|macro|CS46XX_DSP_CAPTURE_CHANNEL
 mdefine_line|#define CS46XX_DSP_CAPTURE_CHANNEL          1
-multiline_comment|/*&n; *&n; */
+multiline_comment|/* capture */
+DECL|macro|CS46XX_DSP_CAPTURE_CHANNEL
+mdefine_line|#define CS46XX_DSP_CAPTURE_CHANNEL          1
+multiline_comment|/* mixer */
+DECL|macro|CS46XX_MIXER_SPDIF_INPUT_ELEMENT
+mdefine_line|#define CS46XX_MIXER_SPDIF_INPUT_ELEMENT    1
+DECL|macro|CS46XX_MIXER_SPDIF_OUTPUT_ELEMENT
+mdefine_line|#define CS46XX_MIXER_SPDIF_OUTPUT_ELEMENT   2
 DECL|typedef|cs46xx_t
 r_typedef
 r_struct
@@ -2722,6 +2729,17 @@ comma
 r_int
 )paren
 suffix:semicolon
+DECL|member|mixer_init
+r_void
+(paren
+op_star
+id|mixer_init
+)paren
+(paren
+id|cs46xx_t
+op_star
+)paren
+suffix:semicolon
 DECL|member|acpi_dev
 r_struct
 id|pci_dev
@@ -2757,7 +2775,18 @@ op_star
 id|pm_dev
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_SND_CS46XX_DEBUG_GPIO
+DECL|member|current_gpio
+r_int
+id|current_gpio
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
+DECL|member|spos_mutex
+r_struct
+id|semaphore
+id|spos_mutex
+suffix:semicolon
 DECL|member|dsp_spos_instance
 id|dsp_spos_instance_t
 op_star

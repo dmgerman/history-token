@@ -1,6 +1,4 @@
 multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *                   Creative Labs, Inc.&n; *  Routines for control of EMU10K1 chips&n; *&n; *  BUGS:&n; *    --&n; *&n; *  TODO:&n; *    --&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -2407,13 +2405,17 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+r_int
+id|is_audigy
+suffix:semicolon
 r_static
 id|snd_device_ops_t
 id|ops
 op_assign
 (brace
+dot
 id|dev_free
-suffix:colon
+op_assign
 id|snd_emu10k1_dev_free
 comma
 )brace
@@ -2422,6 +2424,15 @@ op_star
 id|remu
 op_assign
 l_int|NULL
+suffix:semicolon
+singleline_comment|// is_audigy = (int)pci-&gt;driver_data;
+id|is_audigy
+op_assign
+(paren
+id|pci-&gt;device
+op_eq
+l_int|0x0004
+)paren
 suffix:semicolon
 multiline_comment|/* enable PCI device */
 r_if
@@ -2442,40 +2453,16 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-multiline_comment|/* check, if we can restrict PCI DMA transfers to 31 bits */
+multiline_comment|/* set the DMA transfer mask */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|pci_dma_supported
-c_func
-(paren
-id|pci
-comma
-l_int|0x7fffffff
-)paren
+id|is_audigy
 )paren
 (brace
-id|snd_printk
-c_func
-(paren
-l_string|&quot;architecture does not support 31bit PCI busmaster DMA&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENXIO
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
-id|pci_get_drvdata
-c_func
-(paren
-id|pci
-)paren
-)paren
 id|pci_set_dma_mask
 c_func
 (paren
@@ -2483,17 +2470,52 @@ id|pci
 comma
 l_int|0xffffffff
 )paren
+OL
+l_int|0
+)paren
+(brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;architecture does not support 32bit PCI busmaster DMA&bslash;n&quot;
+)paren
 suffix:semicolon
-multiline_comment|/* audigy */
+r_return
+op_minus
+id|ENXIO
+suffix:semicolon
+)brace
+)brace
 r_else
+(brace
+r_if
+c_cond
+(paren
 id|pci_set_dma_mask
 c_func
 (paren
 id|pci
 comma
-l_int|0x7fffffff
+l_int|0x1fffffff
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;architecture does not support 29bit PCI busmaster DMA&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|ENXIO
+suffix:semicolon
+)brace
+)brace
 id|emu
 op_assign
 id|snd_magic_kcalloc
@@ -2611,22 +2633,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|// emu-&gt;audigy = (int)pci-&gt;driver_data;
-r_if
-c_cond
-(paren
-id|pci-&gt;device
-op_eq
-l_int|0x0004
-)paren
 id|emu-&gt;audigy
 op_assign
-l_int|1
+id|is_audigy
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|emu-&gt;audigy
+id|is_audigy
 )paren
 id|emu-&gt;gpr_base
 op_assign

@@ -51,8 +51,12 @@ DECL|macro|CS4231_PLY_LWR_CNT
 mdefine_line|#define CS4231_PLY_LWR_CNT&t;0x0f&t;/* playback lower base count */
 DECL|macro|CS4231_ALT_FEATURE_1
 mdefine_line|#define CS4231_ALT_FEATURE_1&t;0x10&t;/* alternate #1 feature enable */
+DECL|macro|AD1845_AF1_MIC_LEFT
+mdefine_line|#define AD1845_AF1_MIC_LEFT&t;0x10&t;/* alternate #1 feature + MIC left */
 DECL|macro|CS4231_ALT_FEATURE_2
 mdefine_line|#define CS4231_ALT_FEATURE_2&t;0x11&t;/* alternate #2 feature enable */
+DECL|macro|AD1845_AF2_MIC_RIGHT
+mdefine_line|#define AD1845_AF2_MIC_RIGHT&t;0x11&t;/* alternate #2 feature + MIC right */
 DECL|macro|CS4231_LEFT_LINE_IN
 mdefine_line|#define CS4231_LEFT_LINE_IN&t;0x12&t;/* left line input control */
 DECL|macro|CS4231_RIGHT_LINE_IN
@@ -63,8 +67,12 @@ DECL|macro|CS4231_TIMER_HIGH
 mdefine_line|#define CS4231_TIMER_HIGH&t;0x15&t;/* timer high byte */
 DECL|macro|CS4231_LEFT_MIC_INPUT
 mdefine_line|#define CS4231_LEFT_MIC_INPUT&t;0x16&t;/* left MIC input control register (InterWave only) */
+DECL|macro|AD1845_UPR_FREQ_SEL
+mdefine_line|#define AD1845_UPR_FREQ_SEL&t;0x16&t;/* upper byte of frequency select */
 DECL|macro|CS4231_RIGHT_MIC_INPUT
 mdefine_line|#define CS4231_RIGHT_MIC_INPUT&t;0x17&t;/* right MIC input control register (InterWave only) */
+DECL|macro|AD1845_LWR_FREQ_SEL
+mdefine_line|#define AD1845_LWR_FREQ_SEL&t;0x17&t;/* lower byte of frequency select */
 DECL|macro|CS4236_EXT_REG
 mdefine_line|#define CS4236_EXT_REG&t;&t;0x17&t;/* extended register access */
 DECL|macro|CS4231_IRQ_STATUS
@@ -77,12 +85,16 @@ DECL|macro|CS4231_MONO_CTRL
 mdefine_line|#define CS4231_MONO_CTRL&t;0x1a&t;/* mono input/output control */
 DECL|macro|CS4231_LINE_RIGHT_OUTPUT
 mdefine_line|#define CS4231_LINE_RIGHT_OUTPUT 0x1b&t;/* right line output control register (InterWave only) */
+DECL|macro|AD1845_PWR_DOWN
+mdefine_line|#define AD1845_PWR_DOWN&t;&t;0x1b&t;/* power down control */
 DECL|macro|CS4235_LEFT_MASTER
 mdefine_line|#define CS4235_LEFT_MASTER&t;0x1b&t;/* left master output control */
 DECL|macro|CS4231_REC_FORMAT
 mdefine_line|#define CS4231_REC_FORMAT&t;0x1c&t;/* clock and data format - record - bits 7-0 MCE */
 DECL|macro|CS4231_PLY_VAR_FREQ
 mdefine_line|#define CS4231_PLY_VAR_FREQ&t;0x1d&t;/* playback variable frequency */
+DECL|macro|AD1845_CLOCK
+mdefine_line|#define AD1845_CLOCK&t;&t;0x1d&t;/* crystal clock select and total power down */
 DECL|macro|CS4235_RIGHT_MASTER
 mdefine_line|#define CS4235_RIGHT_MASTER&t;0x1d&t;/* right master output control */
 DECL|macro|CS4231_REC_UPR_CNT
@@ -255,6 +267,8 @@ DECL|macro|CS4231_HW_CS4231
 mdefine_line|#define CS4231_HW_CS4231        0x0100&t;/* CS4231 chip */
 DECL|macro|CS4231_HW_CS4231A
 mdefine_line|#define CS4231_HW_CS4231A       0x0101&t;/* CS4231A chip */
+DECL|macro|CS4231_HW_AD1845
+mdefine_line|#define CS4231_HW_AD1845&t;0x0102&t;/* AD1845 chip */
 DECL|macro|CS4231_HW_CS4232_MASK
 mdefine_line|#define CS4231_HW_CS4232_MASK   0x0200&t;/* CS4232 serie (has control ports) */
 DECL|macro|CS4231_HW_CS4232
@@ -864,7 +878,7 @@ id|chip
 suffix:semicolon
 multiline_comment|/*&n; *  mixer library&n; */
 DECL|macro|CS4231_SINGLE
-mdefine_line|#define CS4231_SINGLE(xname, xindex, reg, shift, mask, invert) &bslash;&n;{ iface: SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  info: snd_cs4231_info_single, &bslash;&n;  get: snd_cs4231_get_single, put: snd_cs4231_put_single, &bslash;&n;  private_value: reg | (shift &lt;&lt; 8) | (mask &lt;&lt; 16) | (invert &lt;&lt; 24) }
+mdefine_line|#define CS4231_SINGLE(xname, xindex, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_cs4231_info_single, &bslash;&n;  .get = snd_cs4231_get_single, .put = snd_cs4231_put_single, &bslash;&n;  .private_value = reg | (shift &lt;&lt; 8) | (mask &lt;&lt; 16) | (invert &lt;&lt; 24) }
 r_int
 id|snd_cs4231_info_single
 c_func
@@ -905,7 +919,7 @@ id|ucontrol
 )paren
 suffix:semicolon
 DECL|macro|CS4231_DOUBLE
-mdefine_line|#define CS4231_DOUBLE(xname, xindex, left_reg, right_reg, shift_left, shift_right, mask, invert) &bslash;&n;{ iface: SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  info: snd_cs4231_info_double, &bslash;&n;  get: snd_cs4231_get_double, put: snd_cs4231_put_double, &bslash;&n;  private_value: left_reg | (right_reg &lt;&lt; 8) | (shift_left &lt;&lt; 16) | (shift_right &lt;&lt; 19) | (mask &lt;&lt; 24) | (invert &lt;&lt; 22) }
+mdefine_line|#define CS4231_DOUBLE(xname, xindex, left_reg, right_reg, shift_left, shift_right, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_cs4231_info_double, &bslash;&n;  .get = snd_cs4231_get_double, .put = snd_cs4231_put_double, &bslash;&n;  .private_value = left_reg | (right_reg &lt;&lt; 8) | (shift_left &lt;&lt; 16) | (shift_right &lt;&lt; 19) | (mask &lt;&lt; 24) | (invert &lt;&lt; 22) }
 r_int
 id|snd_cs4231_info_double
 c_func

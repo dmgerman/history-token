@@ -236,6 +236,10 @@ DECL|member|ref_count
 r_int
 id|ref_count
 suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|deleted
 r_int
 id|deleted
@@ -341,11 +345,6 @@ id|segment_desc_t
 id|code
 suffix:semicolon
 multiline_comment|/* PCM playback */
-DECL|member|pcm_mutex
-r_struct
-id|semaphore
-id|pcm_mutex
-suffix:semicolon
 DECL|member|master_mix_scb
 id|dsp_scb_descriptor_t
 op_star
@@ -418,11 +417,6 @@ op_star
 id|proc_sample_dump_info_entry
 suffix:semicolon
 multiline_comment|/* SCB&squot;s descriptors */
-DECL|member|scb_mutex
-r_struct
-id|semaphore
-id|scb_mutex
-suffix:semicolon
 DECL|member|nscb
 r_int
 id|nscb
@@ -473,6 +467,55 @@ suffix:semicolon
 DECL|member|spdif_status_in
 r_int
 id|spdif_status_in
+suffix:semicolon
+DECL|member|spdif_input_volume
+id|u32
+id|spdif_input_volume
+suffix:semicolon
+multiline_comment|/* SPDIF input sample rate converter */
+DECL|member|spdif_in_src
+id|dsp_scb_descriptor_t
+op_star
+id|spdif_in_src
+suffix:semicolon
+multiline_comment|/* SPDIF input asynch. receiver */
+DECL|member|asynch_rx_scb
+id|dsp_scb_descriptor_t
+op_star
+id|asynch_rx_scb
+suffix:semicolon
+multiline_comment|/* Capture record mixer SCB */
+DECL|member|record_mixer_scb
+id|dsp_scb_descriptor_t
+op_star
+id|record_mixer_scb
+suffix:semicolon
+multiline_comment|/* CODEC input SCB */
+DECL|member|codec_in_scb
+id|dsp_scb_descriptor_t
+op_star
+id|codec_in_scb
+suffix:semicolon
+multiline_comment|/* reference snooper */
+DECL|member|ref_snoop_scb
+id|dsp_scb_descriptor_t
+op_star
+id|ref_snoop_scb
+suffix:semicolon
+multiline_comment|/* record sources */
+DECL|member|pcm_input
+id|dsp_scb_descriptor_t
+op_star
+id|pcm_input
+suffix:semicolon
+DECL|member|adc_input
+id|dsp_scb_descriptor_t
+op_star
+id|adc_input
+suffix:semicolon
+DECL|member|spdif_in_sample_rate
+r_int
+id|spdif_in_sample_rate
 suffix:semicolon
 DECL|typedef|dsp_spos_instance_t
 )brace

@@ -1834,18 +1834,19 @@ id|page
 op_star
 id|page
 suffix:semicolon
-macro_line|#ifndef CONFIG_DISCONTIGMEM&t;
-r_if
-c_cond
+macro_line|#ifdef CONFIG_DISCONTIGMEM
+id|panic
+c_func
+(paren
+l_string|&quot;Discontingmem not supported&quot;
+)paren
+suffix:semicolon
+macro_line|#else
+id|BUG_ON
 (paren
 id|max_mapnr
 op_ne
 id|num_physpages
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;mapnr is not expected&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1858,7 +1859,7 @@ l_int|0
 suffix:semicolon
 id|pfn
 OL
-id|num_physpages
+id|max_mapnr
 suffix:semicolon
 id|pfn
 op_increment
@@ -3128,6 +3129,12 @@ op_ne
 id|pagedir_order
 )paren
 suffix:semicolon
+id|__flush_tlb_global
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Even mappings of &quot;global&quot; things (vmalloc) need to be fixed */
 id|PRINTK
 c_func
 (paren
@@ -3144,12 +3151,6 @@ r_int
 id|pagedir_save
 )paren
 suffix:semicolon
-id|__flush_tlb_global
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Even mappings of &quot;global&quot; things (vmalloc) need to be fixed */
 id|drivers_resume
 c_func
 (paren
@@ -3280,12 +3281,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|drivers_resume
-c_func
-(paren
-id|RESUME_PHASE2
-)paren
-suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -3310,12 +3305,6 @@ r_int
 id|pagedir_nosave
 comma
 id|pagedir_order
-)paren
-suffix:semicolon
-id|drivers_resume
-c_func
-(paren
-id|RESUME_PHASE1
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -4339,6 +4328,9 @@ id|name_resume
 comma
 id|resume_file
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_extern

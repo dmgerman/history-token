@@ -363,20 +363,38 @@ suffix:semicolon
 r_case
 id|PMAC_TUMBLER
 suffix:colon
-id|strcpy
+r_case
+id|PMAC_SNAPPER
+suffix:colon
+id|name_ext
+op_assign
+id|chip-&gt;model
+op_eq
+id|PMAC_TUMBLER
+ques
+c_cond
+l_string|&quot;Tumbler&quot;
+suffix:colon
+l_string|&quot;Snapper&quot;
+suffix:semicolon
+id|sprintf
 c_func
 (paren
 id|card-&gt;driver
 comma
-l_string|&quot;PMac Tumbler&quot;
+l_string|&quot;PMac %s&quot;
+comma
+id|name_ext
 )paren
 suffix:semicolon
-id|strcpy
+id|sprintf
 c_func
 (paren
 id|card-&gt;shortname
 comma
-l_string|&quot;PowerMac Tumbler&quot;
+l_string|&quot;PowerMac %s&quot;
+comma
+id|name_ext
 )paren
 suffix:semicolon
 id|sprintf

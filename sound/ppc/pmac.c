@@ -1,11 +1,10 @@
 multiline_comment|/*&n; * PMac DBDMA lowlevel functions&n; *&n; * Copyright (c) by Takashi Iwai &lt;tiwai@suse.de&gt;&n; * code based on dmasound.c.&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;pmac.h&quot;
 macro_line|#include &lt;sound/pcm_params.h&gt;
@@ -835,9 +834,14 @@ id|RUN
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* continuous DMA memory type doesn&squot;t provide the physical address,&n;&t; * so we need to resolve the address here...&n;&t; */
 id|offset
 op_assign
-id|runtime-&gt;dma_addr
+id|virt_to_bus
+c_func
+(paren
+id|runtime-&gt;dma_area
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -1725,8 +1729,9 @@ id|snd_pcm_hardware_t
 id|snd_pmac_playback
 op_assign
 (brace
+dot
 id|info
-suffix:colon
+op_assign
 (paren
 id|SNDRV_PCM_INFO_INTERLEAVED
 op_or
@@ -1802,8 +1807,9 @@ id|snd_pcm_hardware_t
 id|snd_pmac_capture
 op_assign
 (brace
+dot
 id|info
-suffix:colon
+op_assign
 (paren
 id|SNDRV_PCM_INFO_INTERLEAVED
 op_or
@@ -2717,14 +2723,12 @@ op_star
 id|pcm
 )paren
 (brace
-macro_line|#if 0
 id|snd_pcm_lib_preallocate_free_for_all
 c_func
 (paren
 id|pcm
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|snd_pmac_pcm_new
 r_int
@@ -2868,7 +2872,6 @@ id|chip-&gt;capture.cur_freqs
 op_assign
 id|chip-&gt;freqs_ok
 suffix:semicolon
-macro_line|#if 0
 multiline_comment|/* preallocate 64k buffer */
 id|snd_pcm_lib_preallocate_pages_for_all
 c_func
@@ -2886,7 +2889,6 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -5621,7 +5623,41 @@ id|sound
 comma
 l_string|&quot;tumbler&quot;
 )paren
-op_logical_or
+)paren
+(brace
+id|chip-&gt;model
+op_assign
+id|PMAC_TUMBLER
+suffix:semicolon
+id|chip-&gt;can_capture
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* no capture */
+id|chip-&gt;can_duplex
+op_assign
+l_int|0
+suffix:semicolon
+singleline_comment|// chip-&gt;can_byte_swap = 0; /* FIXME: check this */
+id|chip-&gt;num_freqs
+op_assign
+l_int|2
+suffix:semicolon
+id|chip-&gt;freq_table
+op_assign
+id|tumbler_freqs
+suffix:semicolon
+id|chip-&gt;control_mask
+op_assign
+id|MASK_IEPC
+op_or
+l_int|0x11
+suffix:semicolon
+multiline_comment|/* disable IEE */
+)brace
+r_if
+c_cond
+(paren
 id|device_is_compatible
 c_func
 (paren
@@ -5633,7 +5669,7 @@ l_string|&quot;snapper&quot;
 (brace
 id|chip-&gt;model
 op_assign
-id|PMAC_TUMBLER
+id|PMAC_SNAPPER
 suffix:semicolon
 id|chip-&gt;can_capture
 op_assign

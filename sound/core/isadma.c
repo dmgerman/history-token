@@ -2,12 +2,9 @@ multiline_comment|/*&n; *  ISA DMA support functions&n; *  Copyright (c) by Jaro
 multiline_comment|/*&n; * Defining following add some delay. Maybe this helps for some broken&n; * ISA DMA controllers.&n; */
 DECL|macro|HAVE_REALLY_SLOW_DMA_CONTROLLER
 macro_line|#undef HAVE_REALLY_SLOW_DMA_CONTROLLER
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#ifdef CONFIG_ISA
 multiline_comment|/*&n; *&n; */
 DECL|function|snd_dma_program
 r_void
@@ -215,5 +212,4 @@ r_return
 id|result
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ISA */
 eof
