@@ -87,6 +87,16 @@ comma
 id|USB_DEVICE
 c_func
 (paren
+id|ATEN_VENDOR_ID2
+comma
+id|ATEN_PRODUCT_ID
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
 id|ELCOM_VENDOR_ID
 comma
 id|ELCOM_PRODUCT_ID
