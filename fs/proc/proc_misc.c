@@ -23,6 +23,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1960,6 +1961,8 @@ comma
 l_string|&quot;&bslash;nctxt %lu&bslash;n&quot;
 l_string|&quot;btime %lu&bslash;n&quot;
 l_string|&quot;processes %lu&bslash;n&quot;
+l_string|&quot;procs_running %lu&bslash;n&quot;
+l_string|&quot;procs_blocked %u&bslash;n&quot;
 comma
 id|nr_context_switches
 c_func
@@ -1973,6 +1976,18 @@ op_div
 id|HZ
 comma
 id|total_forks
+comma
+id|nr_running
+c_func
+(paren
+)paren
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|nr_iowait_tasks
+)paren
 )paren
 suffix:semicolon
 r_return
