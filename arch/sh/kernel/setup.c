@@ -1826,11 +1826,7 @@ id|p
 comma
 l_string|&quot;bogomips&bslash;t: %lu.%02lu&bslash;n&bslash;n&quot;
 comma
-(paren
 id|loops_per_jiffy
-op_plus
-l_int|2500
-)paren
 op_div
 (paren
 l_int|500000
@@ -1839,11 +1835,7 @@ id|HZ
 )paren
 comma
 (paren
-(paren
 id|loops_per_jiffy
-op_plus
-l_int|2500
-)paren
 op_div
 (paren
 l_int|5000

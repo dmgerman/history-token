@@ -42,5 +42,26 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|sh_bios_get_node_addr
+c_func
+(paren
+r_int
+r_char
+op_star
+id|node_addr
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|sh_bios_shutdown
+c_func
+(paren
+r_int
+r_int
+id|how
+)paren
+suffix:semicolon
 macro_line|#endif /* __ASM_SH_BIOS_H */
 eof

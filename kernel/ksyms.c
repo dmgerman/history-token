@@ -2061,6 +2061,13 @@ c_func
 id|brw_kiovec
 )paren
 suffix:semicolon
+DECL|variable|kiobuf_wait_for_io
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kiobuf_wait_for_io
+)paren
+suffix:semicolon
 multiline_comment|/* dma handling */
 DECL|variable|request_dma
 id|EXPORT_SYMBOL

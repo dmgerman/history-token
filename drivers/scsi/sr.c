@@ -2893,6 +2893,8 @@ id|printk
 c_func
 (paren
 l_string|&quot;sr%i: scsi-1 drive&bslash;n&quot;
+comma
+id|i
 )paren
 suffix:semicolon
 r_return

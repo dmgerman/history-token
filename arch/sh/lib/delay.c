@@ -45,9 +45,31 @@ r_int
 id|xloops
 )paren
 (brace
+id|__asm__
+c_func
+(paren
+l_string|&quot;dmulu.l&t;%0, %2&bslash;n&bslash;t&quot;
+l_string|&quot;sts&t;mach, %0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
 id|xloops
-op_mul_assign
+)paren
+suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|xloops
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
 id|current_cpu_data.loops_per_jiffy
+)paren
+suffix:colon
+l_string|&quot;macl&quot;
+comma
+l_string|&quot;mach&quot;
+)paren
 suffix:semicolon
 id|__delay
 c_func

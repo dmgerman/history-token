@@ -131,9 +131,9 @@ mdefine_line|#define cdinfo(type, fmt, args...)
 macro_line|#endif
 multiline_comment|/* These are used to simplify getting data in from and back to user land */
 DECL|macro|IOCTL_IN
-mdefine_line|#define IOCTL_IN(arg, type, in)&t;&t;&t;&t;&t;&bslash;&n;&t;if (copy_from_user(&amp;in, (type *) arg, sizeof in))&t;&bslash;&n;&t;&t;return -EFAULT;
+mdefine_line|#define IOCTL_IN(arg, type, in)&t;&t;&t;&t;&t;&bslash;&n;&t;if (copy_from_user(&amp;(in), (type *) (arg), sizeof (in)))&t;&bslash;&n;&t;&t;return -EFAULT;
 DECL|macro|IOCTL_OUT
-mdefine_line|#define IOCTL_OUT(arg, type, out) &bslash;&n;&t;if (copy_to_user((type *) arg, &amp;out, sizeof out))&t;&bslash;&n;&t;&t;return -EFAULT;
+mdefine_line|#define IOCTL_OUT(arg, type, out) &bslash;&n;&t;if (copy_to_user((type *) (arg), &amp;(out), sizeof (out)))&t;&bslash;&n;&t;&t;return -EFAULT;
 multiline_comment|/* The (cdo-&gt;capability &amp; ~cdi-&gt;mask &amp; CDC_XXX) construct was used in&n;   a lot of places. This macro makes the code more clear. */
 DECL|macro|CDROM_CAN
 mdefine_line|#define CDROM_CAN(type) (cdi-&gt;ops-&gt;capability &amp; ~cdi-&gt;mask &amp; (type))

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: actypes.h - Common data types for the entire ACPI subsystem&n; *       $Revision: 162 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: actypes.h - Common data types for the entire ACPI subsystem&n; *       $Revision: 163 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTYPES_H__
 DECL|macro|__ACTYPES_H__
@@ -397,10 +397,11 @@ DECL|macro|ACPI_STATE_S3
 mdefine_line|#define ACPI_STATE_S3                   (u8) 3
 DECL|macro|ACPI_STATE_S4
 mdefine_line|#define ACPI_STATE_S4                   (u8) 4
-DECL|macro|ACPI_STATE_S4_bIOS
-mdefine_line|#define ACPI_STATE_S4_bIOS              (u8) 5
 DECL|macro|ACPI_STATE_S5
-mdefine_line|#define ACPI_STATE_S5                   (u8) 6
+mdefine_line|#define ACPI_STATE_S5                   (u8) 5
+multiline_comment|/* let&squot;s pretend S4_bIOS didn&squot;t exist for now. ASG */
+DECL|macro|ACPI_STATE_S4_bIOS
+mdefine_line|#define ACPI_STATE_S4_bIOS              (u8) 6
 DECL|macro|ACPI_S_STATES_MAX
 mdefine_line|#define ACPI_S_STATES_MAX               ACPI_STATE_S5
 multiline_comment|/*&n; *  Table types.  These values are passed to the table related APIs&n; */

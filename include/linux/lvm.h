@@ -1,22 +1,18 @@
-multiline_comment|/*&n; * include/linux/lvm.h&n; * kernel/lvm.h&n; * tools/lib/lvm.h&n; *&n; * Copyright (C) 1997 - 2000  Heinz Mauelshagen, Sistina Software&n; *&n; * February-November 1997&n; * May-July 1998&n; * January-March,July,September,October,Dezember 1999&n; * January,February,July,November 2000&n; *&n; * lvm is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * lvm is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA. &n; *&n; */
-multiline_comment|/*&n; * Changelog&n; *&n; *    10/10/1997 - beginning of new structure creation&n; *    12/05/1998 - incorporated structures from lvm_v1.h and deleted lvm_v1.h&n; *    07/06/1998 - avoided LVM_KMALLOC_MAX define by using vmalloc/vfree&n; *                 instead of kmalloc/kfree&n; *    01/07/1998 - fixed wrong LVM_MAX_SIZE&n; *    07/07/1998 - extended pe_t structure by ios member (for statistic)&n; *    02/08/1998 - changes for official char/block major numbers&n; *    07/08/1998 - avoided init_module() and cleanup_module() to be static&n; *    29/08/1998 - seprated core and disk structure type definitions&n; *    01/09/1998 - merged kernel integration version (mike)&n; *    20/01/1999 - added LVM_PE_DISK_OFFSET macro for use in&n; *                 vg_read_with_pv_and_lv(), pv_move_pe(), pv_show_pe_text()...&n; *    18/02/1999 - added definition of time_disk_t structure for;&n; *                 keeps time stamps on disk for nonatomic writes (future)&n; *    15/03/1999 - corrected LV() and VG() macro definition to use argument&n; *                 instead of minor&n; *    03/07/1999 - define for genhd.c name handling&n; *    23/07/1999 - implemented snapshot part&n; *    08/12/1999 - changed LVM_LV_SIZE_MAX macro to reflect current 1TB limit&n; *    01/01/2000 - extended lv_v2 core structure by wait_queue member&n; *    12/02/2000 - integrated Andrea Arcagnelli&squot;s snapshot work&n; *    18/02/2000 - seperated user and kernel space parts by &n; *                 #ifdef them with __KERNEL__&n; *    08/03/2000 - implemented cluster/shared bits for vg_access&n; *    26/06/2000 - implemented snapshot persistency and resizing support&n; *    02/11/2000 - added hash table size member to lv structure&n; *    12/11/2000 - removed unneeded timestamp definitions&n; *&n; */
+multiline_comment|/*&n; * include/linux/lvm.h&n; * kernel/lvm.h&n; * tools/lib/lvm.h&n; *&n; * Copyright (C) 1997 - 2000  Heinz Mauelshagen, Sistina Software&n; *&n; * February-November 1997&n; * May-July 1998&n; * January-March,July,September,October,Dezember 1999&n; * January,February,July,November 2000&n; * January 2001&n; *&n; * lvm is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * lvm is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA. &n; *&n; */
+multiline_comment|/*&n; * Changelog&n; *&n; *    10/10/1997 - beginning of new structure creation&n; *    12/05/1998 - incorporated structures from lvm_v1.h and deleted lvm_v1.h&n; *    07/06/1998 - avoided LVM_KMALLOC_MAX define by using vmalloc/vfree&n; *                 instead of kmalloc/kfree&n; *    01/07/1998 - fixed wrong LVM_MAX_SIZE&n; *    07/07/1998 - extended pe_t structure by ios member (for statistic)&n; *    02/08/1998 - changes for official char/block major numbers&n; *    07/08/1998 - avoided init_module() and cleanup_module() to be static&n; *    29/08/1998 - seprated core and disk structure type definitions&n; *    01/09/1998 - merged kernel integration version (mike)&n; *    20/01/1999 - added LVM_PE_DISK_OFFSET macro for use in&n; *                 vg_read_with_pv_and_lv(), pv_move_pe(), pv_show_pe_text()...&n; *    18/02/1999 - added definition of time_disk_t structure for;&n; *                 keeps time stamps on disk for nonatomic writes (future)&n; *    15/03/1999 - corrected LV() and VG() macro definition to use argument&n; *                 instead of minor&n; *    03/07/1999 - define for genhd.c name handling&n; *    23/07/1999 - implemented snapshot part&n; *    08/12/1999 - changed LVM_LV_SIZE_MAX macro to reflect current 1TB limit&n; *    01/01/2000 - extended lv_v2 core structure by wait_queue member&n; *    12/02/2000 - integrated Andrea Arcagnelli&squot;s snapshot work&n; *    18/02/2000 - seperated user and kernel space parts by &n; *                 #ifdef them with __KERNEL__&n; *    08/03/2000 - implemented cluster/shared bits for vg_access&n; *    26/06/2000 - implemented snapshot persistency and resizing support&n; *    02/11/2000 - added hash table size member to lv structure&n; *    12/11/2000 - removed unneeded timestamp definitions&n; *    24/12/2000 - removed LVM_TO_{CORE,DISK}*, use cpu_{from, to}_le*&n; *                 instead - Christoph Hellwig&n; *&n; */
 macro_line|#ifndef _LVM_H_INCLUDE
 DECL|macro|_LVM_H_INCLUDE
 mdefine_line|#define _LVM_H_INCLUDE
 DECL|macro|_LVM_KERNEL_H_VERSION
-mdefine_line|#define&t;_LVM_KERNEL_H_VERSION&t;&quot;LVM 0.9 (13/11/2000)&quot;
-macro_line|#include &lt;linux/config.h&gt;
+mdefine_line|#define&t;_LVM_KERNEL_H_VERSION&t;&quot;LVM 0.9.1_beta2 (18/01/2001)&quot;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;endian.h&gt;
 multiline_comment|/*&n; * preprocessor definitions&n; */
 multiline_comment|/* if you like emergency reset code in the driver */
 DECL|macro|LVM_TOTAL_RESET
 mdefine_line|#define&t;LVM_TOTAL_RESET
 macro_line|#ifdef __KERNEL__
-DECL|macro|LVM_GET_INODE
-mdefine_line|#define LVM_GET_INODE
 DECL|macro|LVM_HD_NAME
-macro_line|#undef&t;LVM_HD_NAME /* display nice names in /proc/partitions */
+macro_line|#undef LVM_HD_NAME /* display nice names in /proc/partitions */
 multiline_comment|/* lots of debugging output (see driver source)&n;   #define DEBUG_LVM_GET_INFO&n;   #define DEBUG&n;   #define DEBUG_MAP&n;   #define DEBUG_MAP_SIZE&n;   #define DEBUG_IOCTL&n;   #define DEBUG_READ&n;   #define DEBUG_GENDISK&n;   #define DEBUG_VG_CREATE&n;   #define DEBUG_LVM_BLK_OPEN&n;   #define DEBUG_KFREE&n; */
 macro_line|#endif&t;&t;&t;&t;/* #ifdef __KERNEL__ */
 macro_line|#ifndef __KERNEL__
@@ -135,7 +131,7 @@ macro_line|#undef MAX_LV
 DECL|macro|MAX_LV
 mdefine_line|#define MAX_LV ABS_MAX_LV
 macro_line|#endif
-multiline_comment|/*&n; * VGDA: default disk spaces and offsets&n; *&n; *   there&squot;s space after the structures for later extensions.&n; *&n; *   offset            what                                size&n; *   ---------------   ----------------------------------  ------------&n; *   0                 physical volume structure           ~500 byte&n; *&n; *   1K                volume group structure              ~200 byte&n; *&n; *   5K                time stamp structure                ~&n; *&n; *   6K                namelist of physical volumes        128 byte each&n; *&n; *   6k + n * 128byte  n logical volume structures         ~300 byte each&n; *&n; *   + m * 328byte     m physical extent alloc. structs    4 byte each&n; *&n; *   End of disk -     first physical extent               typical 4 megabyte&n; *   PE total *&n; *   PE size&n; *&n; *&n; */
+multiline_comment|/*&n; * VGDA: default disk spaces and offsets&n; *&n; *   there&squot;s space after the structures for later extensions.&n; *&n; *   offset            what                                size&n; *   ---------------   ----------------------------------  ------------&n; *   0                 physical volume structure           ~500 byte&n; *&n; *   1K                volume group structure              ~200 byte&n; *&n; *   6K                namelist of physical volumes        128 byte each&n; *&n; *   6k + n * ~300byte n logical volume structures         ~300 byte each&n; *&n; *   + m * 4byte       m physical extent alloc. structs    4 byte each&n; *&n; *   End of disk -     first physical extent               typically 4 megabyte&n; *   PE total *&n; *   PE size&n; *&n; *&n; */
 multiline_comment|/* DONT TOUCH THESE !!! */
 multiline_comment|/* base of PV structure in disk partition */
 DECL|macro|LVM_PV_DISK_BASE
@@ -182,7 +178,7 @@ mdefine_line|#define&t;LVM_DEFAULT_PE_SIZE&t;( 4096L * 1024 / SECTOR_SIZE)&t;/* 
 DECL|macro|LVM_DEFAULT_STRIPE_SIZE
 mdefine_line|#define&t;LVM_DEFAULT_STRIPE_SIZE&t;16L&t;/* 16 KB  */
 DECL|macro|LVM_MIN_STRIPE_SIZE
-mdefine_line|#define&t;LVM_MIN_STRIPE_SIZE&t;( PAGE_SIZE&gt;&gt;9)&t;&t;/* PAGESIZE in sectors */
+mdefine_line|#define&t;LVM_MIN_STRIPE_SIZE&t;( PAGE_SIZE/SECTOR_SIZE)&t;/* PAGESIZE in sectors */
 DECL|macro|LVM_MAX_STRIPE_SIZE
 mdefine_line|#define&t;LVM_MAX_STRIPE_SIZE&t;( 512L * 1024 / SECTOR_SIZE)&t;/* 512 KB in sectors */
 DECL|macro|LVM_MAX_STRIPES
@@ -219,36 +215,6 @@ DECL|macro|LVM_GET_COW_TABLE_CHUNKS_PER_PE
 mdefine_line|#define LVM_GET_COW_TABLE_CHUNKS_PER_PE(vg, lv) ( &bslash;&n;&t;vg-&gt;pe_size / lv-&gt;lv_chunk_size)
 DECL|macro|LVM_GET_COW_TABLE_ENTRIES_PER_PE
 mdefine_line|#define LVM_GET_COW_TABLE_ENTRIES_PER_PE(vg, lv) ( &bslash;&n;{ &bslash;&n;&t;int COW_table_entries_per_PE; &bslash;&n;&t;int COW_table_chunks_per_PE; &bslash;&n;&bslash;&n;&t;COW_table_entries_per_PE = LVM_GET_COW_TABLE_CHUNKS_PER_PE(vg, lv); &bslash;&n;&t;COW_table_chunks_per_PE = ( COW_table_entries_per_PE * sizeof(lv_COW_table_disk_t) / SECTOR_SIZE + lv-&gt;lv_chunk_size - 1) / lv-&gt;lv_chunk_size; &bslash;&n;&t;COW_table_entries_per_PE - COW_table_chunks_per_PE;})
-multiline_comment|/* to disk and to core data conversion macros */
-macro_line|#if __BYTE_ORDER == __BIG_ENDIAN
-DECL|macro|LVM_TO_CORE16
-mdefine_line|#define LVM_TO_CORE16(x) ( &bslash;&n;        ((uint16_t)((((uint16_t)(x) &amp; 0x00FFU) &lt;&lt; 8) | &bslash;&n;                    (((uint16_t)(x) &amp; 0xFF00U) &gt;&gt; 8))))
-DECL|macro|LVM_TO_DISK16
-mdefine_line|#define LVM_TO_DISK16(x) LVM_TO_CORE16(x)
-DECL|macro|LVM_TO_CORE32
-mdefine_line|#define LVM_TO_CORE32(x) ( &bslash;&n;        ((uint32_t)((((uint32_t)(x) &amp; 0x000000FFU) &lt;&lt; 24) | &bslash;&n;                    (((uint32_t)(x) &amp; 0x0000FF00U) &lt;&lt; 8))) &bslash;&n;                    (((uint32_t)(x) &amp; 0x00FF0000U) &gt;&gt; 8))) &bslash;&n;                    (((uint32_t)(x) &amp; 0xFF000000U) &gt;&gt; 24))))
-DECL|macro|LVM_TO_DISK32
-mdefine_line|#define LVM_TO_DISK32(x) LVM_TO_CORE32(x)
-DECL|macro|LVM_TO_CORE64
-mdefine_line|#define LVM_TO_CORE64(x) &bslash;&n;        ((uint64_t)((((uint64_t)(x) &amp; 0x00000000000000FFULL) &lt;&lt; 56) | &bslash;&n;                    (((uint64_t)(x) &amp; 0x000000000000FF00ULL) &lt;&lt; 40) | &bslash;&n;                    (((uint64_t)(x) &amp; 0x0000000000FF0000ULL) &lt;&lt; 24) | &bslash;&n;                    (((uint64_t)(x) &amp; 0x00000000FF000000ULL) &lt;&lt;  8) | &bslash;&n;                    (((uint64_t)(x) &amp; 0x000000FF00000000ULL) &gt;&gt;  8) | &bslash;&n;                    (((uint64_t)(x) &amp; 0x0000FF0000000000ULL) &gt;&gt; 24) | &bslash;&n;                    (((uint64_t)(x) &amp; 0x00FF000000000000ULL) &gt;&gt; 40) | &bslash;&n;                    (((uint64_t)(x) &amp; 0xFF00000000000000ULL) &gt;&gt; 56))) 
-DECL|macro|LVM_TO_DISK64
-mdefine_line|#define LVM_TO_DISK64(x) LVM_TO_CORE64(x)
-macro_line|#elif __BYTE_ORDER == __LITTLE_ENDIAN
-DECL|macro|LVM_TO_CORE16
-mdefine_line|#define LVM_TO_CORE16(x) x
-DECL|macro|LVM_TO_DISK16
-mdefine_line|#define LVM_TO_DISK16(x) x
-DECL|macro|LVM_TO_CORE32
-mdefine_line|#define LVM_TO_CORE32(x) x
-DECL|macro|LVM_TO_DISK32
-mdefine_line|#define LVM_TO_DISK32(x) x
-DECL|macro|LVM_TO_CORE64
-mdefine_line|#define LVM_TO_CORE64(x) x
-DECL|macro|LVM_TO_DISK64
-mdefine_line|#define LVM_TO_DISK64(x) x
-macro_line|#else
-macro_line|#error &quot;__BYTE_ORDER must be defined as __LITTLE_ENDIAN or __BIG_ENDIAN&quot;
-macro_line|#endif /* #if __BYTE_ORDER == __BIG_ENDIAN */
 multiline_comment|/*&n; * ioctls&n; */
 multiline_comment|/* volume group */
 DECL|macro|VG_CREATE
@@ -1163,6 +1129,10 @@ DECL|member|vg
 r_void
 op_star
 id|vg
+suffix:semicolon
+DECL|member|lv_allocated_snapshot_le
+id|uint
+id|lv_allocated_snapshot_le
 suffix:semicolon
 macro_line|#else
 DECL|member|dummy

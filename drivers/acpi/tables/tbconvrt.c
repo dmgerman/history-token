@@ -537,10 +537,10 @@ multiline_comment|/* FADT2-&gt;Flush_size = 0; */
 multiline_comment|/* Processor&squot;s memory cache line width, in bytes */
 multiline_comment|/* No 0.71 equivalence. Leave pre-zeroed. */
 multiline_comment|/* FADT2-&gt;Flush_stride = 0; */
-multiline_comment|/* Processor&#xfffd;s duty cycle index in processor&squot;s P_CNT reg*/
+multiline_comment|/* Processor&squot;s duty cycle index in processor&squot;s P_CNT reg*/
 multiline_comment|/* No 0.71 equivalence. Leave pre-zeroed. */
 multiline_comment|/* FADT2-&gt;Duty_offset = 0; */
-multiline_comment|/* Processor&#xfffd;s duty cycle value bit width in P_CNT register.*/
+multiline_comment|/* Processor&squot;s duty cycle value bit width in P_CNT register.*/
 multiline_comment|/* No 0.71 equivalence. Leave pre-zeroed. */
 multiline_comment|/* FADT2-&gt;Duty_width = 0; */
 multiline_comment|/* Since there isn&squot;t any equivalence in 0.71 */

@@ -1,11 +1,13 @@
-multiline_comment|/* $Id: sh_bios.c,v 1.3 2000/09/30 03:43:30 gniibe Exp $&n; *&n; *  linux/arch/sh/kernel/sh_bios.c&n; *  C interface for trapping into the standard LinuxSH BIOS.&n; *&n; *  Copyright (C) 2000 Greg Banks, Mitch Davis&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/* $Id: sh_bios.c,v 1.5 2001/01/08 08:42:32 gniibe Exp $&n; *&n; *  linux/arch/sh/kernel/sh_bios.c&n; *  C interface for trapping into the standard LinuxSH BIOS.&n; *&n; *  Copyright (C) 2000 Greg Banks, Mitch Davis&n; *&n; */
 macro_line|#include &lt;asm/sh_bios.h&gt;
-macro_line|#ifdef CONFIG_SH_STANDARD_BIOS
 DECL|macro|BIOS_CALL_CONSOLE_WRITE
 mdefine_line|#define BIOS_CALL_CONSOLE_WRITE     &t;0
 DECL|macro|BIOS_CALL_READ_BLOCK
-mdefine_line|#define BIOS_CALL_READ_BLOCK     &t;1   &t;/* not implemented */
+mdefine_line|#define BIOS_CALL_READ_BLOCK     &t;1
+DECL|macro|BIOS_CALL_ETH_NODE_ADDR
+mdefine_line|#define BIOS_CALL_ETH_NODE_ADDR&t;&t;10
+DECL|macro|BIOS_CALL_SHUTDOWN
+mdefine_line|#define BIOS_CALL_SHUTDOWN&t;&t;11
 DECL|macro|BIOS_CALL_CHAR_OUT
 mdefine_line|#define BIOS_CALL_CHAR_OUT     &t;    &t;0x1f  &t;/* TODO: hack */
 DECL|macro|BIOS_CALL_GDB_GET_MODE_PTR
@@ -298,5 +300,57 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|function|sh_bios_get_node_addr
+r_void
+id|sh_bios_get_node_addr
+(paren
+r_int
+r_char
+op_star
+id|node_addr
+)paren
+(brace
+id|sh_bios_call
+c_func
+(paren
+id|BIOS_CALL_ETH_NODE_ADDR
+comma
+l_int|0
+comma
+(paren
+r_int
+)paren
+id|node_addr
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+DECL|function|sh_bios_shutdown
+r_void
+id|sh_bios_shutdown
+c_func
+(paren
+r_int
+r_int
+id|how
+)paren
+(brace
+id|sh_bios_call
+c_func
+(paren
+id|BIOS_CALL_SHUTDOWN
+comma
+id|how
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 eof

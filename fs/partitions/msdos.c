@@ -12,7 +12,7 @@ macro_line|#endif /* CONFIG_BLK_DEV_IDE */
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;check.h&quot;
 macro_line|#include &quot;msdos.h&quot;
-macro_line|#if CONFIG_BLK_DEV_MD &amp;&amp; CONFIG_AUTODETECT_RAID
+macro_line|#if CONFIG_BLK_DEV_MD
 r_extern
 r_void
 id|md_autodetect_dev
@@ -380,7 +380,7 @@ op_star
 id|sector_size
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_BLK_DEV_MD &amp;&amp; CONFIG_AUTODETECT_RAID
+macro_line|#if CONFIG_BLK_DEV_MD
 r_if
 c_cond
 (paren
@@ -1965,7 +1965,7 @@ op_star
 id|sector_size
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_BLK_DEV_MD &amp;&amp; CONFIG_AUTODETECT_RAID
+macro_line|#if CONFIG_BLK_DEV_MD
 r_if
 c_cond
 (paren

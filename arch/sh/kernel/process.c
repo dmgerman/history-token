@@ -3,6 +3,7 @@ multiline_comment|/*&n; * This file handles the architecture-dependent parts of 
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;stdarg.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -20,6 +21,7 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -27,7 +29,9 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
-macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#ifdef CONFIG_SH_STANDARD_BIOS
+macro_line|#include &lt;asm/sh_bios.h&gt;
+macro_line|#endif
 DECL|variable|hlt_counter
 r_static
 r_int
@@ -145,7 +149,14 @@ op_star
 id|__unused
 )paren
 (brace
-multiline_comment|/* Need to set MMU_TTB?? */
+macro_line|#ifdef CONFIG_SH_STANDARD_BIOS
+id|sh_bios_shutdown
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|machine_halt
 r_void
@@ -155,6 +166,14 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_SH_STANDARD_BIOS
+id|sh_bios_shutdown
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|machine_power_off
 r_void
@@ -185,7 +204,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;PC  : %08lx SP  : %08lx SR  : %08lx TEA : %08lx&bslash;n&quot;
+l_string|&quot;PC  : %08lx SP  : %08lx SR  : %08lx TEA : %08x&bslash;n&quot;
 comma
 id|regs-&gt;pc
 comma
@@ -474,17 +493,17 @@ c_func
 (paren
 l_string|&quot;trapa&t;#0x12&bslash;n&bslash;t&quot;
 multiline_comment|/* Linux/SH system call */
-l_string|&quot;tst&t;#0xff, $r0&bslash;n&bslash;t&quot;
+l_string|&quot;tst&t;#0xff, r0&bslash;n&bslash;t&quot;
 multiline_comment|/* child or parent? */
 l_string|&quot;bf&t;1f&bslash;n&bslash;t&quot;
 multiline_comment|/* parent - jump */
-l_string|&quot;jsr&t;@$r9&bslash;n&bslash;t&quot;
+l_string|&quot;jsr&t;@r9&bslash;n&bslash;t&quot;
 multiline_comment|/* call fn */
-l_string|&quot; mov&t;$r8, $r4&bslash;n&bslash;t&quot;
+l_string|&quot; mov&t;r8, r4&bslash;n&bslash;t&quot;
 multiline_comment|/* push argument */
-l_string|&quot;mov&t;$r0, $r4&bslash;n&bslash;t&quot;
+l_string|&quot;mov&t;r0, r4&bslash;n&bslash;t&quot;
 multiline_comment|/* return value to arg of exit */
-l_string|&quot;mov&t;%1, $r3&bslash;n&bslash;t&quot;
+l_string|&quot;mov&t;%1, r3&bslash;n&bslash;t&quot;
 multiline_comment|/* exit */
 l_string|&quot;trapa&t;#0x11&bslash;n&quot;
 l_string|&quot;1:&quot;
@@ -1019,7 +1038,7 @@ multiline_comment|/*&n;&t; * Restore the kernel mode register&n;&t; *   &t;k7 (r
 id|asm
 r_volatile
 (paren
-l_string|&quot;ldc&t;%0, $r7_bank&quot;
+l_string|&quot;ldc&t;%0, r7_bank&quot;
 suffix:colon
 multiline_comment|/* no output */
 suffix:colon
@@ -1430,7 +1449,7 @@ suffix:semicolon
 id|asm
 c_func
 (paren
-l_string|&quot;stc&t;$sr, %0&quot;
+l_string|&quot;stc&t;sr, %0&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren

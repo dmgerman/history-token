@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: cmxface - External interfaces for &quot;global&quot; ACPI functions&n; *              $Revision: 58 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: cmxface - External interfaces for &quot;global&quot; ACPI functions&n; *              $Revision: 62 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -510,10 +510,9 @@ op_star
 )paren
 id|out_buffer-&gt;pointer
 suffix:semicolon
-multiline_comment|/* TBD [Future]: need a version number, or use the version string */
 id|info_ptr-&gt;acpi_ca_version
 op_assign
-l_int|0x1234
+id|ACPI_CA_VERSION
 suffix:semicolon
 multiline_comment|/* System flags (ACPI capabilities) */
 id|info_ptr-&gt;flags
@@ -521,12 +520,39 @@ op_assign
 id|acpi_gbl_system_flags
 suffix:semicolon
 multiline_comment|/* Timer resolution - 24 or 32 bits  */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_gbl_FADT
+)paren
+(brace
 id|info_ptr-&gt;timer_resolution
 op_assign
-id|acpi_hw_pmt_resolution
-(paren
-)paren
+l_int|0
 suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|acpi_gbl_FADT-&gt;tmr_val_ext
+op_eq
+l_int|0
+)paren
+(brace
+id|info_ptr-&gt;timer_resolution
+op_assign
+l_int|24
+suffix:semicolon
+)brace
+r_else
+(brace
+id|info_ptr-&gt;timer_resolution
+op_assign
+l_int|32
+suffix:semicolon
+)brace
 multiline_comment|/* Clear the reserved fields */
 id|info_ptr-&gt;reserved1
 op_assign

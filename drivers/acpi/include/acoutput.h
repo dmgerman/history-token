@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acoutput.h -- debug output&n; *       $Revision: 68 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acoutput.h -- debug output&n; *       $Revision: 69 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACOUTPUT_H__
 DECL|macro|__ACOUTPUT_H__
@@ -45,6 +45,8 @@ DECL|macro|BATTERY
 mdefine_line|#define BATTERY                     0x00040000
 DECL|macro|DEBUGGER
 mdefine_line|#define DEBUGGER                    0x00100000
+DECL|macro|COMPILER
+mdefine_line|#define COMPILER                    0x00200000
 DECL|macro|ALL_COMPONENTS
 mdefine_line|#define ALL_COMPONENTS              0x001FFFFF
 DECL|macro|COMPONENT_DEFAULT

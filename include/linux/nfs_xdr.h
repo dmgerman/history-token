@@ -262,8 +262,7 @@ op_star
 id|fattr
 suffix:semicolon
 DECL|member|count
-r_int
-r_int
+id|__u32
 id|count
 suffix:semicolon
 DECL|member|eof
@@ -286,7 +285,7 @@ op_star
 id|fh
 suffix:semicolon
 DECL|member|offset
-id|__u32
+id|__u64
 id|offset
 suffix:semicolon
 DECL|member|count

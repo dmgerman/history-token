@@ -803,12 +803,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|page_cache_release
 c_func
 (paren

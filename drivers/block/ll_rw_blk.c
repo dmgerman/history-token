@@ -28,14 +28,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-r_extern
-r_int
-id|lvm_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * For the allocated request tables&n; */
 DECL|variable|request_cachep
 r_static
@@ -3640,7 +3632,7 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * First step of what used to be end_request&n; *&n; * 0 means continue with end_that_request_last,&n; * 1 means we are done&n; */
+multiline_comment|/**&n; * end_that_request_first - end I/O on one buffer.&n; * @req:      the request being processed&n; * @uptodate: 0 for I/O error&n; * @name:     the name printed for an I/O error&n; *&n; * Description:&n; *     Ends I/O on the first buffer attached to @req, and sets it up&n; *     for the next buffer_head (if any) in the cluster.&n; *     &n; * Return:&n; *     0 - we are done with this request, call end_that_request_last()&n; *     1 - still buffers pending for this request&n; *&n; * Caveat: &n; *     Drivers implementing their own end_request handling must call&n; *     blk_finished_io() appropriately.&n; **/
 DECL|function|end_that_request_first
 r_int
 id|end_that_request_first
@@ -3978,49 +3970,22 @@ suffix:semicolon
 id|low_queued_sectors
 op_assign
 id|high_queued_sectors
+op_div
+l_int|3
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|high_queued_sectors
 op_minus
+id|low_queued_sectors
+OG
 id|MB
 c_func
 (paren
 l_int|128
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|low_queued_sectors
-OL
-l_int|0
 )paren
-id|low_queued_sectors
-op_assign
-id|total_ram
-op_div
-l_int|2
-suffix:semicolon
-multiline_comment|/*&n;&t; * for big RAM machines (&gt;= 384MB), use more for I/O&n;&t; */
-r_if
-c_cond
-(paren
-id|total_ram
-op_ge
-id|MB
-c_func
-(paren
-l_int|384
-)paren
-)paren
-(brace
-id|high_queued_sectors
-op_assign
-(paren
-id|total_ram
-op_star
-l_int|4
-)paren
-op_div
-l_int|5
-suffix:semicolon
 id|low_queued_sectors
 op_assign
 id|high_queued_sectors
@@ -4031,7 +3996,6 @@ c_func
 l_int|128
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * make it sectors (512b)&n;&t; */
 id|high_queued_sectors
 op_lshift_assign
@@ -4367,13 +4331,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SUN_JSFLASH
 id|jsfd_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_LVM
-id|lvm_init
 c_func
 (paren
 )paren

@@ -353,12 +353,12 @@ DECL|member|duty_offset
 id|u8
 id|duty_offset
 suffix:semicolon
-multiline_comment|/* Processor&#xfffd;s duty cycle index in processor&squot;s P_CNT reg*/
+multiline_comment|/* Processor_&#xfffd;s duty cycle index in processor&squot;s P_CNT reg*/
 DECL|member|duty_width
 id|u8
 id|duty_width
 suffix:semicolon
-multiline_comment|/* Processor&#xfffd;s duty cycle value bit width in P_CNT register.*/
+multiline_comment|/* Processor_&#xfffd;s duty cycle value bit width in P_CNT register.*/
 DECL|member|day_alrm
 id|u8
 id|day_alrm

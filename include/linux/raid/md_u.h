@@ -12,6 +12,8 @@ DECL|macro|GET_DISK_INFO
 mdefine_line|#define GET_DISK_INFO&t;&t;_IOR (MD_MAJOR, 0x12, mdu_disk_info_t)
 DECL|macro|PRINT_RAID_DEBUG
 mdefine_line|#define PRINT_RAID_DEBUG&t;_IO (MD_MAJOR, 0x13)
+DECL|macro|RAID_AUTORUN
+mdefine_line|#define RAID_AUTORUN&t;&t;_IO (MD_MAJOR, 0x14)
 multiline_comment|/* configuration */
 DECL|macro|CLEAR_ARRAY
 mdefine_line|#define CLEAR_ARRAY&t;&t;_IO (MD_MAJOR, 0x20)

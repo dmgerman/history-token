@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * kernel/lvm-snap.c&n; *&n; * Copyright (C) 2000 Andrea Arcangeli &lt;andrea@suse.de&gt; SuSE&n; *                    Heinz Mauelshagen, Sistina Software (persistent snapshots)&n; *&n; * LVM snapshot driver is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * LVM snapshot driver is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA. &n; *&n; */
+multiline_comment|/*&n; * Changelog&n; *&n; *    05/07/2000 - implemented persistent snapshot support&n; *    23/11/2000 - used cpu_to_le64 rather than my own macro&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
@@ -6,6 +7,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/lvm.h&gt;
+macro_line|#include &quot;lvm-snap.h&quot;
 DECL|variable|lvm_snap_version
 r_static
 r_char
@@ -18,7 +20,7 @@ id|unused
 )paren
 )paren
 op_assign
-l_string|&quot;LVM 0.9 snapshot code (13/11/2000)&bslash;n&quot;
+l_string|&quot;LVM 0.9.1_beta2 snapshot code (18/01/2001)&bslash;n&quot;
 suffix:semicolon
 r_extern
 r_const
@@ -895,7 +897,7 @@ id|id
 dot
 id|pv_org_number
 op_assign
-id|LVM_TO_DISK64
+id|cpu_to_le64
 c_func
 (paren
 id|lvm_pv_get_number
@@ -919,7 +921,7 @@ id|id
 dot
 id|pv_org_rsector
 op_assign
-id|LVM_TO_DISK64
+id|cpu_to_le64
 c_func
 (paren
 id|lv_snap-&gt;lv_block_exception
@@ -937,7 +939,7 @@ id|id
 dot
 id|pv_snap_number
 op_assign
-id|LVM_TO_DISK64
+id|cpu_to_le64
 c_func
 (paren
 id|lvm_pv_get_number
@@ -961,7 +963,7 @@ id|id
 dot
 id|pv_snap_rsector
 op_assign
-id|LVM_TO_DISK64
+id|cpu_to_le64
 c_func
 (paren
 id|lv_snap-&gt;lv_block_exception
@@ -1195,7 +1197,7 @@ id|idx_COW_table
 dot
 id|pv_org_number
 op_assign
-id|LVM_TO_DISK64
+id|cpu_to_le64
 c_func
 (paren
 id|lvm_pv_get_number
@@ -1219,7 +1221,7 @@ id|idx_COW_table
 dot
 id|pv_org_rsector
 op_assign
-id|LVM_TO_DISK64
+id|cpu_to_le64
 c_func
 (paren
 id|lv_snap-&gt;lv_block_exception
@@ -1237,7 +1239,7 @@ id|idx_COW_table
 dot
 id|pv_snap_number
 op_assign
-id|LVM_TO_DISK64
+id|cpu_to_le64
 c_func
 (paren
 id|lvm_pv_get_number
@@ -1256,7 +1258,7 @@ id|idx_COW_table
 dot
 id|pv_snap_rsector
 op_assign
-id|LVM_TO_DISK64
+id|cpu_to_le64
 c_func
 (paren
 id|lv_snap-&gt;lv_block_exception
@@ -2507,6 +2509,12 @@ c_cond
 id|lv-&gt;lv_iobuf
 )paren
 (brace
+id|kiobuf_wait_for_io
+c_func
+(paren
+id|lv-&gt;lv_iobuf
+)paren
+suffix:semicolon
 id|unmap_kiobuf
 c_func
 (paren

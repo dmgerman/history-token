@@ -821,7 +821,7 @@ multiline_comment|/* Get IRQ number */
 id|asm
 r_volatile
 (paren
-l_string|&quot;stc&t;$r2_bank, %0&bslash;n&bslash;t&quot;
+l_string|&quot;stc&t;r2_bank, %0&bslash;n&bslash;t&quot;
 l_string|&quot;shlr2&t;%0&bslash;n&bslash;t&quot;
 l_string|&quot;shlr2&t;%0&bslash;n&bslash;t&quot;
 l_string|&quot;shlr&t;%0&bslash;n&bslash;t&quot;

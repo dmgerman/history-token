@@ -1,12 +1,12 @@
-multiline_comment|/*&n; * kernel/lvm.c&n; *&n; * Copyright (C) 1997 - 2000  Heinz Mauelshagen, Sistina Software&n; *&n; * February-November 1997&n; * April-May,July-August,November 1998&n; * January-March,May,July,September,October 1999&n; * January,February,July,September-November 2000&n; *&n; *&n; * LVM driver is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * LVM driver is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA. &n; *&n; */
-multiline_comment|/*&n; * Changelog&n; *&n; *    09/11/1997 - added chr ioctls VG_STATUS_GET_COUNT&n; *                 and VG_STATUS_GET_NAMELIST&n; *    18/01/1998 - change lvm_chr_open/close lock handling&n; *    30/04/1998 - changed LV_STATUS ioctl to LV_STATUS_BYNAME and&n; *               - added   LV_STATUS_BYINDEX ioctl&n; *               - used lvm_status_byname_req_t and&n; *                      lvm_status_byindex_req_t vars&n; *    04/05/1998 - added multiple device support&n; *    08/05/1998 - added support to set/clear extendable flag in volume group&n; *    09/05/1998 - changed output of lvm_proc_get_global_info() because of&n; *                 support for free (eg. longer) logical volume names&n; *    12/05/1998 - added spin_locks (thanks to Pascal van Dam&n; *                 &lt;pascal@ramoth.xs4all.nl&gt;)&n; *    25/05/1998 - fixed handling of locked PEs in lvm_map() and lvm_chr_ioctl()&n; *    26/05/1998 - reactivated verify_area by access_ok&n; *    07/06/1998 - used vmalloc/vfree instead of kmalloc/kfree to go&n; *                 beyond 128/256 KB max allocation limit per call&n; *               - #ifdef blocked spin_lock calls to avoid compile errors&n; *                 with 2.0.x&n; *    11/06/1998 - another enhancement to spinlock code in lvm_chr_open()&n; *                 and use of LVM_VERSION_CODE instead of my own macros&n; *                 (thanks to  Michael Marxmeier &lt;mike@msede.com&gt;)&n; *    07/07/1998 - added statistics in lvm_map()&n; *    08/07/1998 - saved statistics in lvm_do_lv_extend_reduce()&n; *    25/07/1998 - used __initfunc macro&n; *    02/08/1998 - changes for official char/block major numbers&n; *    07/08/1998 - avoided init_module() and cleanup_module() to be static&n; *    30/08/1998 - changed VG lv_open counter from sum of LV lv_open counters&n; *                 to sum of LVs open (no matter how often each is)&n; *    01/09/1998 - fixed lvm_gendisk.part[] index error&n; *    07/09/1998 - added copying of lv_current_pe-array&n; *                 in LV_STATUS_BYINDEX ioctl&n; *    17/11/1998 - added KERN_* levels to printk&n; *    13/01/1999 - fixed LV index bug in lvm_do_lv_create() which hit lvrename&n; *    07/02/1999 - fixed spinlock handling bug in case of LVM_RESET&n; *                 by moving spinlock code from lvm_chr_open()&n; *                 to lvm_chr_ioctl()&n; *               - added LVM_LOCK_LVM ioctl to lvm_chr_ioctl()&n; *               - allowed LVM_RESET and retrieval commands to go ahead;&n; *                 only other update ioctls are blocked now&n; *               - fixed pv-&gt;pe to NULL for pv_status&n; *               - using lv_req structure in lvm_chr_ioctl() now&n; *               - fixed NULL ptr reference bug in lvm_do_lv_extend_reduce()&n; *                 caused by uncontiguous PV array in lvm_chr_ioctl(VG_REDUCE)&n; *    09/02/1999 - changed BLKRASET and BLKRAGET in lvm_chr_ioctl() to&n; *                 handle lgoical volume private read ahead sector&n; *               - implemented LV read_ahead handling with lvm_blk_read()&n; *                 and lvm_blk_write()&n; *    10/02/1999 - implemented 2.[12].* support function lvm_hd_name()&n; *                 to be used in drivers/block/genhd.c by disk_name()&n; *    12/02/1999 - fixed index bug in lvm_blk_ioctl(), HDIO_GETGEO&n; *               - enhanced gendisk insert/remove handling&n; *    16/02/1999 - changed to dynamic block minor number allocation to&n; *                 have as much as 99 volume groups with 256 logical volumes&n; *                 as the grand total; this allows having 1 volume group with&n; *                 up to 256 logical volumes in it&n; *    21/02/1999 - added LV open count information to proc filesystem&n; *               - substituted redundant LVM_RESET code by calls&n; *                 to lvm_do_vg_remove()&n; *    22/02/1999 - used schedule_timeout() to be more responsive&n; *                 in case of lvm_do_vg_remove() with lots of logical volumes&n; *    19/03/1999 - fixed NULL pointer bug in module_init/lvm_init&n; *    17/05/1999 - used DECLARE_WAIT_QUEUE_HEAD macro (&gt;2.3.0)&n; *               - enhanced lvm_hd_name support&n; *    03/07/1999 - avoided use of KERNEL_VERSION macro based ifdefs and&n; *                 memcpy_tofs/memcpy_fromfs macro redefinitions&n; *    06/07/1999 - corrected reads/writes statistic counter copy in case&n; *                 of striped logical volume&n; *    28/07/1999 - implemented snapshot logical volumes&n; *                 - lvm_chr_ioctl&n; *                   - LV_STATUS_BYINDEX&n; *                   - LV_STATUS_BYNAME&n; *                 - lvm_do_lv_create&n; *                 - lvm_do_lv_remove&n; *                 - lvm_map&n; *                 - new lvm_snapshot_remap_block&n; *                 - new lvm_snapshot_remap_new_block&n; *    08/10/1999 - implemented support for multiple snapshots per&n; *                 original logical volume&n; *    12/10/1999 - support for 2.3.19&n; *    11/11/1999 - support for 2.3.28&n; *    21/11/1999 - changed lvm_map() interface to buffer_head based&n; *    19/12/1999 - support for 2.3.33&n; *    01/01/2000 - changed locking concept in lvm_map(),&n; *                 lvm_do_vg_create() and lvm_do_lv_remove()&n; *    15/01/2000 - fixed PV_FLUSH bug in lvm_chr_ioctl()&n; *    24/01/2000 - ported to 2.3.40 including Alan Cox&squot;s pointer changes etc.&n; *    29/01/2000 - used kmalloc/kfree again for all small structures&n; *    20/01/2000 - cleaned up lvm_chr_ioctl by moving code&n; *                 to seperated functions&n; *               - avoided &quot;/dev/&quot; in proc filesystem output&n; *               - avoided inline strings functions lvm_strlen etc.&n; *    14/02/2000 - support for 2.3.43&n; *               - integrated Andrea Arcagneli&squot;s snapshot code&n; *    25/06/2000 - james (chip) , IKKHAYD! roffl&n; *    26/06/2000 - enhanced lv_extend_reduce for snapshot logical volume support&n; *    06/09/2000 - added devfs support&n; *    07/09/2000 - changed IOP version to 9&n; *               - started to add new char ioctl LV_STATUS_BYDEV_T to support&n; *                 getting an lv_t based on the dev_t of the Logical Volume&n; *    14/09/2000 - enhanced lvm_do_lv_create to upcall VFS functions&n; *                 to sync and lock, activate snapshot and unlock the FS&n; *                 (to support journaled filesystems)&n; *    18/09/2000 - hardsector size support&n; *    27/09/2000 - implemented lvm_do_lv_rename() and lvm_do_vg_rename()&n; *    30/10/2000 - added Andi Kleen&squot;s LV_BMAP ioctl to support LILO&n; *    01/11/2000 - added memory information on hash tables to&n; *                 lvm_proc_get_global_info()&n; *    02/11/2000 - implemented /proc/lvm/ hierarchy&n; *    07/12/2000 - make sure lvm_make_request_fn returns correct value - 0 or 1 - NeilBrown&n; *&n; */
+multiline_comment|/*&n; * kernel/lvm.c&n; *&n; * Copyright (C) 1997 - 2000  Heinz Mauelshagen, Sistina Software&n; *&n; * February-November 1997&n; * April-May,July-August,November 1998&n; * January-March,May,July,September,October 1999&n; * January,February,July,September-November 2000&n; * January 2001&n; *&n; *&n; * LVM driver is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * LVM driver is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; */
+multiline_comment|/*&n; * Changelog&n; *&n; *    09/11/1997 - added chr ioctls VG_STATUS_GET_COUNT&n; *                 and VG_STATUS_GET_NAMELIST&n; *    18/01/1998 - change lvm_chr_open/close lock handling&n; *    30/04/1998 - changed LV_STATUS ioctl to LV_STATUS_BYNAME and&n; *               - added   LV_STATUS_BYINDEX ioctl&n; *               - used lvm_status_byname_req_t and&n; *                      lvm_status_byindex_req_t vars&n; *    04/05/1998 - added multiple device support&n; *    08/05/1998 - added support to set/clear extendable flag in volume group&n; *    09/05/1998 - changed output of lvm_proc_get_global_info() because of&n; *                 support for free (eg. longer) logical volume names&n; *    12/05/1998 - added spin_locks (thanks to Pascal van Dam&n; *                 &lt;pascal@ramoth.xs4all.nl&gt;)&n; *    25/05/1998 - fixed handling of locked PEs in lvm_map() and lvm_chr_ioctl()&n; *    26/05/1998 - reactivated verify_area by access_ok&n; *    07/06/1998 - used vmalloc/vfree instead of kmalloc/kfree to go&n; *                 beyond 128/256 KB max allocation limit per call&n; *               - #ifdef blocked spin_lock calls to avoid compile errors&n; *                 with 2.0.x&n; *    11/06/1998 - another enhancement to spinlock code in lvm_chr_open()&n; *                 and use of LVM_VERSION_CODE instead of my own macros&n; *                 (thanks to  Michael Marxmeier &lt;mike@msede.com&gt;)&n; *    07/07/1998 - added statistics in lvm_map()&n; *    08/07/1998 - saved statistics in lvm_do_lv_extend_reduce()&n; *    25/07/1998 - used __initfunc macro&n; *    02/08/1998 - changes for official char/block major numbers&n; *    07/08/1998 - avoided init_module() and cleanup_module() to be static&n; *    30/08/1998 - changed VG lv_open counter from sum of LV lv_open counters&n; *                 to sum of LVs open (no matter how often each is)&n; *    01/09/1998 - fixed lvm_gendisk.part[] index error&n; *    07/09/1998 - added copying of lv_current_pe-array&n; *                 in LV_STATUS_BYINDEX ioctl&n; *    17/11/1998 - added KERN_* levels to printk&n; *    13/01/1999 - fixed LV index bug in lvm_do_lv_create() which hit lvrename&n; *    07/02/1999 - fixed spinlock handling bug in case of LVM_RESET&n; *                 by moving spinlock code from lvm_chr_open()&n; *                 to lvm_chr_ioctl()&n; *               - added LVM_LOCK_LVM ioctl to lvm_chr_ioctl()&n; *               - allowed LVM_RESET and retrieval commands to go ahead;&n; *                 only other update ioctls are blocked now&n; *               - fixed pv-&gt;pe to NULL for pv_status&n; *               - using lv_req structure in lvm_chr_ioctl() now&n; *               - fixed NULL ptr reference bug in lvm_do_lv_extend_reduce()&n; *                 caused by uncontiguous PV array in lvm_chr_ioctl(VG_REDUCE)&n; *    09/02/1999 - changed BLKRASET and BLKRAGET in lvm_chr_ioctl() to&n; *                 handle lgoical volume private read ahead sector&n; *               - implemented LV read_ahead handling with lvm_blk_read()&n; *                 and lvm_blk_write()&n; *    10/02/1999 - implemented 2.[12].* support function lvm_hd_name()&n; *                 to be used in drivers/block/genhd.c by disk_name()&n; *    12/02/1999 - fixed index bug in lvm_blk_ioctl(), HDIO_GETGEO&n; *               - enhanced gendisk insert/remove handling&n; *    16/02/1999 - changed to dynamic block minor number allocation to&n; *                 have as much as 99 volume groups with 256 logical volumes&n; *                 as the grand total; this allows having 1 volume group with&n; *                 up to 256 logical volumes in it&n; *    21/02/1999 - added LV open count information to proc filesystem&n; *               - substituted redundant LVM_RESET code by calls&n; *                 to lvm_do_vg_remove()&n; *    22/02/1999 - used schedule_timeout() to be more responsive&n; *                 in case of lvm_do_vg_remove() with lots of logical volumes&n; *    19/03/1999 - fixed NULL pointer bug in module_init/lvm_init&n; *    17/05/1999 - used DECLARE_WAIT_QUEUE_HEAD macro (&gt;2.3.0)&n; *               - enhanced lvm_hd_name support&n; *    03/07/1999 - avoided use of KERNEL_VERSION macro based ifdefs and&n; *                 memcpy_tofs/memcpy_fromfs macro redefinitions&n; *    06/07/1999 - corrected reads/writes statistic counter copy in case&n; *                 of striped logical volume&n; *    28/07/1999 - implemented snapshot logical volumes&n; *                 - lvm_chr_ioctl&n; *                   - LV_STATUS_BYINDEX&n; *                   - LV_STATUS_BYNAME&n; *                 - lvm_do_lv_create&n; *                 - lvm_do_lv_remove&n; *                 - lvm_map&n; *                 - new lvm_snapshot_remap_block&n; *                 - new lvm_snapshot_remap_new_block&n; *    08/10/1999 - implemented support for multiple snapshots per&n; *                 original logical volume&n; *    12/10/1999 - support for 2.3.19&n; *    11/11/1999 - support for 2.3.28&n; *    21/11/1999 - changed lvm_map() interface to buffer_head based&n; *    19/12/1999 - support for 2.3.33&n; *    01/01/2000 - changed locking concept in lvm_map(),&n; *                 lvm_do_vg_create() and lvm_do_lv_remove()&n; *    15/01/2000 - fixed PV_FLUSH bug in lvm_chr_ioctl()&n; *    24/01/2000 - ported to 2.3.40 including Alan Cox&squot;s pointer changes etc.&n; *    29/01/2000 - used kmalloc/kfree again for all small structures&n; *    20/01/2000 - cleaned up lvm_chr_ioctl by moving code&n; *                 to seperated functions&n; *               - avoided &quot;/dev/&quot; in proc filesystem output&n; *               - avoided inline strings functions lvm_strlen etc.&n; *    14/02/2000 - support for 2.3.43&n; *               - integrated Andrea Arcagneli&squot;s snapshot code&n; *    25/06/2000 - james (chip) , IKKHAYD! roffl&n; *    26/06/2000 - enhanced lv_extend_reduce for snapshot logical volume support&n; *    06/09/2000 - added devfs support&n; *    07/09/2000 - changed IOP version to 9&n; *               - started to add new char ioctl LV_STATUS_BYDEV_T to support&n; *                 getting an lv_t based on the dev_t of the Logical Volume&n; *    14/09/2000 - enhanced lvm_do_lv_create to upcall VFS functions&n; *                 to sync and lock, activate snapshot and unlock the FS&n; *                 (to support journaled filesystems)&n; *    18/09/2000 - hardsector size support&n; *    27/09/2000 - implemented lvm_do_lv_rename() and lvm_do_vg_rename()&n; *    30/10/2000 - added Andi Kleen&squot;s LV_BMAP ioctl to support LILO&n; *    01/11/2000 - added memory information on hash tables to&n; *                 lvm_proc_get_global_info()&n; *    02/11/2000 - implemented /proc/lvm/ hierarchy&n; *    22/11/2000 - changed lvm_do_create_proc_entry_of_pv () to work&n; *                 with devfs&n; *    26/11/2000 - corrected #ifdef locations for PROC_FS&n; *    28/11/2000 - fixed lvm_do_vg_extend() NULL pointer BUG&n; *               - fixed lvm_do_create_proc_entry_of_pv() buffer tampering BUG&n; *    08/01/2001 - Removed conditional compiles related to PROC_FS,&n; *                 procfs is always supported now. (JT)&n; *    12/01/2001 - avoided flushing logical volume in case of shrinking&n; *                 because of unecessary overhead in case of heavy updates&n; *&n; */
 DECL|variable|lvm_version
 r_static
 r_char
 op_star
 id|lvm_version
 op_assign
-l_string|&quot;LVM version 0.9  by Heinz Mauelshagen  (13/11/2000)&bslash;n&quot;
+l_string|&quot;LVM version 0.9.1_beta2  by Heinz Mauelshagen  (18/01/2001)&bslash;n&quot;
 suffix:semicolon
 DECL|variable|lvm_short_version
 r_static
@@ -14,7 +14,7 @@ r_char
 op_star
 id|lvm_short_version
 op_assign
-l_string|&quot;version 0.9 (13/11/2000)&quot;
+l_string|&quot;version 0.9.1_beta2 (18/01/2001)&quot;
 suffix:semicolon
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR&t;LVM_BLK_MAJOR
@@ -54,49 +54,36 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/lvm.h&gt;
+macro_line|#include &quot;lvm-snap.h&quot;
 DECL|macro|LVM_CORRECT_READ_AHEAD
 mdefine_line|#define&t;LVM_CORRECT_READ_AHEAD( a) &bslash;&n;   if      ( a &lt; LVM_MIN_READ_AHEAD || &bslash;&n;             a &gt; LVM_MAX_READ_AHEAD) a = LVM_MAX_READ_AHEAD;
 macro_line|#ifndef WRITEA
 DECL|macro|WRITEA
 macro_line|#  define WRITEA WRITE
 macro_line|#endif
-multiline_comment|/*&n; * External function prototypes&n; */
-macro_line|#ifdef MODULE
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+multiline_comment|/* debug macros */
+macro_line|#ifdef DEBUG_IOCTL
+DECL|macro|P_IOCTL
+mdefine_line|#define P_IOCTL(fmt, args...) printk(KERN_DEBUG &quot;lvm ioctl: &quot; fmt, ## args)
 macro_line|#else
-r_extern
-r_int
-id|lvm_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+DECL|macro|P_IOCTL
+mdefine_line|#define P_IOCTL(fmt, args...)
 macro_line|#endif
-r_static
-r_void
-id|lvm_dummy_device_request
-c_func
-(paren
-id|request_queue_t
-op_star
-)paren
-suffix:semicolon
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define&t;DEVICE_REQUEST&t;lvm_dummy_device_request
+macro_line|#ifdef DEBUG_MAP
+DECL|macro|P_MAP
+mdefine_line|#define P_MAP(fmt, args...) printk(KERN_DEBUG &quot;lvm map: &quot; fmt, ## args)
+macro_line|#else
+DECL|macro|P_MAP
+mdefine_line|#define P_MAP(fmt, args...)
+macro_line|#endif
+macro_line|#ifdef DEBUG_KFREE
+DECL|macro|P_KFREE
+mdefine_line|#define P_KFREE(fmt, args...) printk(KERN_DEBUG &quot;lvm kfree: &quot; fmt, ## args)
+macro_line|#else
+DECL|macro|P_KFREE
+mdefine_line|#define P_KFREE(fmt, args...)
+macro_line|#endif
+multiline_comment|/*&n; * External function prototypes&n; */
 r_static
 r_int
 id|lvm_make_request_fn
@@ -218,7 +205,6 @@ comma
 id|ulong
 )paren
 suffix:semicolon
-macro_line|#if defined CONFIG_LVM_PROC_FS &amp;&amp; defined CONFIG_PROC_FS
 r_int
 id|lvm_proc_read_vg_info
 c_func
@@ -309,13 +295,19 @@ op_star
 )paren
 suffix:semicolon
 r_void
+id|lvm_do_create_devfs_entry_of_vg
+(paren
+id|vg_t
+op_star
+)paren
+suffix:semicolon
+r_void
 id|lvm_do_create_proc_entry_of_vg
 (paren
 id|vg_t
 op_star
 )paren
 suffix:semicolon
-r_inline
 r_void
 id|lvm_do_remove_proc_entry_of_vg
 (paren
@@ -323,7 +315,6 @@ id|vg_t
 op_star
 )paren
 suffix:semicolon
-r_inline
 r_void
 id|lvm_do_create_proc_entry_of_lv
 (paren
@@ -334,7 +325,6 @@ id|lv_t
 op_star
 )paren
 suffix:semicolon
-r_inline
 r_void
 id|lvm_do_remove_proc_entry_of_lv
 (paren
@@ -345,7 +335,6 @@ id|lv_t
 op_star
 )paren
 suffix:semicolon
-r_inline
 r_void
 id|lvm_do_create_proc_entry_of_pv
 (paren
@@ -356,7 +345,6 @@ id|pv_t
 op_star
 )paren
 suffix:semicolon
-r_inline
 r_void
 id|lvm_do_remove_proc_entry_of_pv
 (paren
@@ -367,151 +355,22 @@ id|pv_t
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef LVM_HD_NAME
-r_void
-id|lvm_hd_name
-c_func
-(paren
-r_char
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* End external function prototypes */
 multiline_comment|/*&n; * Internal function prototypes&n; */
+r_static
+r_void
+id|lvm_cleanup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_static
 r_void
 id|lvm_init_vars
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-multiline_comment|/* external snapshot calls */
-r_extern
-r_inline
-r_int
-id|lvm_get_blksize
-c_func
-(paren
-id|kdev_t
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|lvm_snapshot_alloc
-c_func
-(paren
-id|lv_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|lvm_snapshot_fill_COW_page
-c_func
-(paren
-id|vg_t
-op_star
-comma
-id|lv_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|lvm_snapshot_COW
-c_func
-(paren
-id|kdev_t
-comma
-id|ulong
-comma
-id|ulong
-comma
-id|ulong
-comma
-id|lv_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|lvm_snapshot_remap_block
-c_func
-(paren
-id|kdev_t
-op_star
-comma
-id|ulong
-op_star
-comma
-id|ulong
-comma
-id|lv_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|lvm_snapshot_release
-c_func
-(paren
-id|lv_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|lvm_write_COW_table_block
-c_func
-(paren
-id|vg_t
-op_star
-comma
-id|lv_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_inline
-r_void
-id|lvm_hash_link
-c_func
-(paren
-id|lv_block_exception_t
-op_star
-comma
-id|kdev_t
-comma
-id|ulong
-comma
-id|lv_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|lvm_snapshot_alloc_hash_table
-c_func
-(paren
-id|lv_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|lvm_drop_snapshot
-c_func
-(paren
-id|lv_t
-op_star
-comma
-r_char
-op_star
 )paren
 suffix:semicolon
 macro_line|#ifdef LVM_HD_NAME
@@ -781,24 +640,24 @@ id|gendisk
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef LVM_GET_INODE
 r_static
-r_struct
-id|inode
+r_char
 op_star
-id|lvm_get_inode
-c_func
+id|lvm_show_uuid
 (paren
-r_int
+r_char
+op_star
 )paren
 suffix:semicolon
+macro_line|#ifdef LVM_HD_NAME
 r_void
-id|lvm_clear_inode
+id|lvm_hd_name
 c_func
 (paren
-r_struct
-id|inode
+r_char
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -813,7 +672,6 @@ id|vg
 id|ABS_MAX_VG
 )braket
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_DEVFS_FS
 DECL|variable|lvm_devfs_handle
 r_static
 id|devfs_handle_t
@@ -843,7 +701,6 @@ id|lv_devfs_handle
 id|MAX_LV
 )braket
 suffix:semicolon
-macro_line|#endif
 DECL|variable|pvp
 r_static
 id|pv_t
@@ -1005,13 +862,6 @@ r_static
 id|DECLARE_WAIT_QUEUE_HEAD
 c_func
 (paren
-id|lvm_snapshot_wait
-)paren
-suffix:semicolon
-r_static
-id|DECLARE_WAIT_QUEUE_HEAD
-c_func
-(paren
 id|lvm_wait
 )paren
 suffix:semicolon
@@ -1036,7 +886,6 @@ id|lvm_snapshot_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-macro_line|#if defined CONFIG_LVM_PROC_FS &amp;&amp; defined CONFIG_PROC_FS
 DECL|variable|lvm_proc_dir
 r_static
 r_struct
@@ -1063,7 +912,6 @@ id|pde
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif
 DECL|variable|lvm_chr_fops
 r_static
 r_struct
@@ -1085,8 +933,6 @@ id|lvm_chr_ioctl
 comma
 )brace
 suffix:semicolon
-DECL|macro|BLOCK_DEVICE_OPERATIONS
-mdefine_line|#define BLOCK_DEVICE_OPERATIONS
 multiline_comment|/* block device operations structure needed for 2.3.38? and above */
 DECL|variable|lvm_blk_dops
 r_static
@@ -1181,38 +1027,14 @@ comma
 multiline_comment|/* pointer to next gendisk struct (internal) */
 )brace
 suffix:semicolon
-macro_line|#ifdef MODULE
-multiline_comment|/*&n; * Module initialization...&n; */
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-macro_line|#else
 multiline_comment|/*&n; * Driver initialization...&n; */
-macro_line|#ifdef __initfunc
-id|__initfunc
-c_func
-(paren
+DECL|function|lvm_init
 r_int
 id|lvm_init
 c_func
 (paren
 r_void
 )paren
-)paren
-macro_line|#else
-r_int
-id|__init
-id|lvm_init
-c_func
-(paren
-r_void
-)paren
-macro_line|#endif
-macro_line|#endif&t;&t;&t;&t;/* #ifdef MODULE */
 (brace
 r_struct
 id|gendisk
@@ -1252,7 +1074,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-macro_line|#ifdef BLOCK_DEVICE_OPERATIONS
 r_if
 c_cond
 (paren
@@ -1269,24 +1090,6 @@ id|lvm_blk_dops
 OL
 l_int|0
 )paren
-macro_line|#else
-r_if
-c_cond
-(paren
-id|register_blkdev
-c_func
-(paren
-id|MAJOR_NR
-comma
-id|lvm_name
-comma
-op_amp
-id|lvm_blk_fops
-)paren
-OL
-l_int|0
-)paren
-macro_line|#endif
 (brace
 id|printk
 c_func
@@ -1323,7 +1126,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-macro_line|#ifdef&t;CONFIG_DEVFS_FS
 id|lvm_devfs_handle
 op_assign
 id|devfs_register
@@ -1353,8 +1155,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if defined CONFIG_LVM_PROC_FS &amp;&amp; defined CONFIG_PROC_FS
 id|lvm_proc_dir
 op_assign
 id|create_proc_entry
@@ -1411,7 +1211,6 @@ op_amp
 id|lvm_proc_get_global_info
 suffix:semicolon
 )brace
-macro_line|#endif
 id|lvm_init_vars
 c_func
 (paren
@@ -1483,18 +1282,6 @@ op_assign
 id|lvm_hd_name
 suffix:semicolon
 macro_line|#endif
-id|blk_init_queue
-c_func
-(paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
-comma
-id|DEVICE_REQUEST
-)paren
-suffix:semicolon
 id|blk_queue_make_request
 c_func
 (paren
@@ -1530,12 +1317,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* init_module() / lvm_init() */
-macro_line|#ifdef MODULE
-multiline_comment|/*&n; * Module cleanup...&n; */
-DECL|function|cleanup_module
+multiline_comment|/* lvm_init() */
+multiline_comment|/*&n; * cleanup...&n; */
+DECL|function|lvm_cleanup
+r_static
 r_void
-id|cleanup_module
+id|lvm_cleanup
 c_func
 (paren
 r_void
@@ -1553,13 +1340,11 @@ id|gendisk_ptr_prev
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_DEVFS_FS
 id|devfs_unregister
 (paren
 id|lvm_devfs_handle
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1608,16 +1393,6 @@ id|lvm_name
 )paren
 suffix:semicolon
 )brace
-id|blk_cleanup_queue
-c_func
-(paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
-)paren
-suffix:semicolon
 id|gendisk_ptr
 op_assign
 id|gendisk_ptr_prev
@@ -1685,7 +1460,6 @@ id|MAJOR_NR
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#if defined CONFIG_LVM_PROC_FS &amp;&amp; defined CONFIG_PROC_FS
 id|remove_proc_entry
 c_func
 (paren
@@ -1711,7 +1485,6 @@ op_amp
 id|proc_root
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef LVM_HD_NAME
 multiline_comment|/* reference from linux/drivers/block/genhd.c */
 id|lvm_hd_name_ptr
@@ -1731,22 +1504,9 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* void cleanup_module() */
-macro_line|#endif&t;/* #ifdef MODULE */
+multiline_comment|/* lvm_cleanup() */
 multiline_comment|/*&n; * support function to initialize lvm variables&n; */
-macro_line|#ifdef __initfunc
-DECL|function|__initfunc
-id|__initfunc
-c_func
-(paren
-r_void
-id|lvm_init_vars
-c_func
-(paren
-r_void
-)paren
-)paren
-macro_line|#else
+DECL|function|lvm_init_vars
 r_void
 id|__init
 id|lvm_init_vars
@@ -1754,7 +1514,6 @@ c_func
 (paren
 r_void
 )paren
-macro_line|#endif
 (brace
 r_int
 id|v
@@ -2010,11 +1769,9 @@ r_void
 )paren
 id|lvm_lock
 suffix:semicolon
-macro_line|#ifdef DEBUG_IOCTL
-id|printk
+id|P_IOCTL
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s -- lvm_chr_ioctl: command: 0x%X  MINOR: %d  &quot;
 l_string|&quot;VG#: %d  mode: 0x%X&bslash;n&quot;
 comma
@@ -2033,7 +1790,6 @@ comma
 id|file-&gt;f_mode
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef LVM_TOTAL_RESET
 r_if
 c_cond
@@ -3014,14 +2770,6 @@ multiline_comment|/* Check inactive LV and open for read/write */
 r_if
 c_cond
 (paren
-id|file-&gt;f_mode
-op_amp
-id|O_RDWR
-)paren
-(brace
-r_if
-c_cond
-(paren
 op_logical_neg
 (paren
 id|lv_ptr-&gt;lv_status
@@ -3042,19 +2790,17 @@ id|lv_ptr-&gt;lv_access
 op_amp
 id|LV_WRITE
 )paren
+op_logical_and
+(paren
+id|file-&gt;f_mode
+op_amp
+id|FMODE_WRITE
+)paren
 )paren
 r_return
 op_minus
 id|EACCES
 suffix:semicolon
-)brace
-macro_line|#ifndef BLOCK_DEVICE_OPERATIONS
-id|file-&gt;f_op
-op_assign
-op_amp
-id|lvm_blk_fops
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* be sure to increment VG counter */
 r_if
 c_cond
@@ -3189,11 +2935,9 @@ op_star
 )paren
 id|a
 suffix:semicolon
-macro_line|#ifdef DEBUG_IOCTL
-id|printk
+id|P_IOCTL
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s -- lvm_blk_ioctl MINOR: %d  command: 0x%X  arg: %X  &quot;
 l_string|&quot;VG#: %dl  LV#: %d&bslash;n&quot;
 comma
@@ -3221,7 +2965,6 @@ id|minor
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -3232,11 +2975,9 @@ r_case
 id|BLKGETSIZE
 suffix:colon
 multiline_comment|/* return device size */
-macro_line|#ifdef DEBUG_IOCTL
-id|printk
+id|P_IOCTL
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s -- lvm_blk_ioctl -- BLKGETSIZE: %u&bslash;n&quot;
 comma
 id|lvm_name
@@ -3244,7 +2985,6 @@ comma
 id|lv_ptr-&gt;lv_size
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3284,17 +3024,14 @@ r_return
 op_minus
 id|EACCES
 suffix:semicolon
-macro_line|#ifdef DEBUG_IOCTL
-id|printk
+id|P_IOCTL
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s -- lvm_blk_ioctl -- BLKFLSBUF&bslash;n&quot;
 comma
 id|lvm_name
 )paren
 suffix:semicolon
-macro_line|#endif
 id|fsync_dev
 c_func
 (paren
@@ -3327,11 +3064,9 @@ r_return
 op_minus
 id|EACCES
 suffix:semicolon
-macro_line|#ifdef DEBUG_IOCTL
-id|printk
+id|P_IOCTL
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s -- lvm_blk_ioctl -- BLKRASET: %d sectors for %02X:%02X&bslash;n&quot;
 comma
 id|lvm_name
@@ -3350,7 +3085,6 @@ comma
 id|minor
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3378,17 +3112,14 @@ r_case
 id|BLKRAGET
 suffix:colon
 multiline_comment|/* get current read ahead setting */
-macro_line|#ifdef DEBUG_IOCTL
-id|printk
+id|P_IOCTL
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s -- lvm_blk_ioctl -- BLKRAGET&bslash;n&quot;
 comma
 id|lvm_name
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3414,17 +3145,14 @@ r_case
 id|HDIO_GETGEO
 suffix:colon
 multiline_comment|/* get disk geometry */
-macro_line|#ifdef DEBUG_IOCTL
-id|printk
+id|P_IOCTL
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s -- lvm_blk_ioctl -- HDIO_GETGEO&bslash;n&quot;
 comma
 id|lvm_name
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3555,11 +3283,9 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG_IOCTL
-id|printk
+id|P_IOCTL
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s -- lvm_blk_ioctl -- cylinders: %d&bslash;n&quot;
 comma
 id|lvm_name
@@ -3571,7 +3297,6 @@ op_div
 id|sectors
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -4631,7 +4356,6 @@ r_return
 id|sz
 suffix:semicolon
 )brace
-macro_line|#if defined CONFIG_LVM_PROC_FS &amp;&amp; defined CONFIG_PROC_FS
 multiline_comment|/*&n; * Support functions /proc-Filesystem&n; */
 DECL|macro|LVM_PROC_BUF
 mdefine_line|#define  LVM_PROC_BUF   ( i == 0 ? dummy_buf : &amp;buf[sz])
@@ -4929,11 +4653,9 @@ op_ne
 l_int|NULL
 )paren
 (brace
-macro_line|#ifdef DEBUG_KFREE
-id|printk
+id|P_KFREE
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s -- vfree %d&bslash;n&quot;
 comma
 id|lvm_name
@@ -4941,7 +4663,6 @@ comma
 id|__LINE__
 )paren
 suffix:semicolon
-macro_line|#endif
 id|lock_kernel
 c_func
 (paren
@@ -5597,7 +5318,6 @@ id|count
 suffix:semicolon
 )brace
 multiline_comment|/* lvm_proc_get_global_info() */
-macro_line|#endif /* #if defined CONFIG_LVM_PROC_FS &amp;&amp; defined CONFIG_PROC_FS */
 multiline_comment|/*&n; * provide VG information&n; */
 DECL|function|lvm_proc_read_vg_info
 r_int
@@ -5837,7 +5557,11 @@ id|sz
 comma
 l_string|&quot;uuid:         %s&bslash;n&quot;
 comma
+id|lvm_show_uuid
+c_func
+(paren
 id|vg-&gt;vg_uuid
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -6196,7 +5920,11 @@ id|sz
 comma
 l_string|&quot;uuid:         %s&bslash;n&quot;
 comma
+id|lvm_show_uuid
+c_func
+(paren
 id|pv-&gt;pv_uuid
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -6354,11 +6082,9 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG_MAP
-id|printk
+id|P_MAP
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s - lvm_map minor:%d  *rdev: %02d:%02d  *rsector: %lu  &quot;
 l_string|&quot;size:%lu&bslash;n&quot;
 comma
@@ -6383,7 +6109,6 @@ comma
 id|size
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6474,12 +6199,11 @@ id|index
 dot
 id|dev
 suffix:semicolon
-macro_line|#ifdef DEBUG_MAP
-id|printk
+id|P_MAP
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;lv_current_pe[%ld].pe: %ld  rdev: %02d:%02d  rsector:%ld&bslash;n&quot;
+l_string|&quot;lv_current_pe[%ld].pe: %ld  rdev: %02d:%02d  &quot;
+l_string|&quot;rsector:%ld&bslash;n&quot;
 comma
 id|index
 comma
@@ -6505,7 +6229,6 @@ comma
 id|rsector_tmp
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* striped mapping */
 )brace
 r_else
@@ -6604,11 +6327,9 @@ dot
 id|dev
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG_MAP
-id|printk
+id|P_MAP
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;lv_current_pe[%ld].pe: %ld  rdev: %02d:%02d  rsector:%ld&bslash;n&quot;
 l_string|&quot;stripe_length: %ld  stripe_index: %ld&bslash;n&quot;
 comma
@@ -6640,7 +6361,6 @@ comma
 id|stripe_index
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* handle physical extents on the move */
 r_if
 c_cond
@@ -6741,6 +6461,14 @@ op_amp
 id|LV_SNAPSHOT_ORG
 )paren
 (brace
+multiline_comment|/* Serializes the access to the lv_snapshot_next list */
+id|down
+c_func
+(paren
+op_amp
+id|lv-&gt;lv_snapshot_sem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6787,11 +6515,12 @@ id|LV_ACTIVE
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/* Serializes the COW with the accesses to the snapshot device */
 id|down
 c_func
 (paren
 op_amp
-id|lv-&gt;lv_snapshot_org-&gt;lv_snapshot_sem
+id|lv_ptr-&gt;lv_snapshot_sem
 )paren
 suffix:semicolon
 multiline_comment|/* do we still have exception storage for this snapshot free? */
@@ -6877,11 +6606,18 @@ id|up
 c_func
 (paren
 op_amp
-id|lv-&gt;lv_snapshot_org-&gt;lv_snapshot_sem
+id|lv_ptr-&gt;lv_snapshot_sem
 )paren
 suffix:semicolon
 )brace
 )brace
+id|up
+c_func
+(paren
+op_amp
+id|lv-&gt;lv_snapshot_sem
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -7036,44 +6772,6 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * this one never should be called...&n; */
-DECL|function|lvm_dummy_device_request
-r_static
-r_void
-id|lvm_dummy_device_request
-c_func
-(paren
-id|request_queue_t
-op_star
-id|t
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_EMERG
-l_string|&quot;%s -- oops, got lvm request for %02d:%02d [sector: %lu]&bslash;n&quot;
-comma
-id|lvm_name
-comma
-id|MAJOR
-c_func
-(paren
-id|CURRENT-&gt;rq_dev
-)paren
-comma
-id|MINOR
-c_func
-(paren
-id|CURRENT-&gt;rq_dev
-)paren
-comma
-id|CURRENT-&gt;sector
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * make request function&n; */
 DECL|function|lvm_make_request_fn
 r_static
@@ -7094,8 +6792,7 @@ op_star
 id|bh
 )paren
 (brace
-r_if
-c_cond
+r_return
 (paren
 id|lvm_map
 c_func
@@ -7107,15 +6804,12 @@ id|rw
 OL
 l_int|0
 )paren
-r_return
+ques
+c_cond
 l_int|0
-suffix:semicolon
-multiline_comment|/* failure, buffer_IO_error has been called, don&squot;t recurse */
-r_else
-r_return
+suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* all ok, mapping done, call lower level driver */
 )brace
 multiline_comment|/********************************************************************&n; *&n; * Character device support functions&n; *&n; ********************************************************************/
 multiline_comment|/*&n; * character device support function logical volume manager lock&n; */
@@ -7149,11 +6843,9 @@ op_ne
 id|current-&gt;pid
 )paren
 (brace
-macro_line|#ifdef DEBUG_IOCTL
-id|printk
+id|P_IOCTL
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;lvm_do_lock_lvm: %s is locked by pid %d ...&bslash;n&quot;
 comma
 id|lvm_name
@@ -7161,7 +6853,6 @@ comma
 id|lock
 )paren
 suffix:semicolon
-macro_line|#endif
 id|spin_unlock
 c_func
 (paren
@@ -8045,6 +7736,11 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|lvm_do_create_devfs_entry_of_vg
+(paren
+id|vg_ptr
+)paren
+suffix:semicolon
 multiline_comment|/* Second path to correct snapshot logical volumes which are not&n;&t;   in place during first path above */
 r_for
 c_loop
@@ -8128,65 +7824,11 @@ id|EFAULT
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef&t;CONFIG_DEVFS_FS
-id|vg_devfs_handle
-(braket
-id|vg_ptr-&gt;vg_number
-)braket
-op_assign
-id|devfs_mk_dir
-c_func
-(paren
-l_int|0
-comma
-id|vg_ptr-&gt;vg_name
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|ch_devfs_handle
-(braket
-id|vg_ptr-&gt;vg_number
-)braket
-op_assign
-id|devfs_register
-c_func
-(paren
-id|vg_devfs_handle
-(braket
-id|vg_ptr-&gt;vg_number
-)braket
-comma
-l_string|&quot;group&quot;
-comma
-id|DEVFS_FL_DEFAULT
-comma
-id|LVM_CHAR_MAJOR
-comma
-id|vg_ptr-&gt;vg_number
-comma
-id|S_IFCHR
-op_or
-id|S_IRUSR
-op_or
-id|S_IWUSR
-op_or
-id|S_IRGRP
-comma
-op_amp
-id|lvm_chr_fops
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined CONFIG_LVM_PROC_FS &amp;&amp; defined CONFIG_PROC_FS
 id|lvm_do_create_proc_entry_of_vg
 (paren
 id|vg_ptr
 )paren
 suffix:semicolon
-macro_line|#endif
 id|vfree
 c_func
 (paren
@@ -8297,13 +7939,6 @@ comma
 id|p
 )paren
 suffix:semicolon
-id|lvm_do_create_proc_entry_of_pv
-(paren
-id|vg_ptr
-comma
-id|pv_ptr
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8314,32 +7949,25 @@ l_int|0
 r_return
 id|ret
 suffix:semicolon
-multiline_comment|/* We don&squot;t need the PE list&n;&t;&t;&t;&t;   in kernel space like LVs pe_t list */
-id|pv_ptr-&gt;pe
+id|pv_ptr
 op_assign
-l_int|NULL
-suffix:semicolon
-id|vg_ptr-&gt;pv_cur
-op_increment
-suffix:semicolon
-id|vg_ptr-&gt;pv_act
-op_increment
+id|vg_ptr-&gt;pv
+(braket
+id|p
+)braket
 suffix:semicolon
 id|vg_ptr-&gt;pe_total
 op_add_assign
 id|pv_ptr-&gt;pe_total
 suffix:semicolon
-macro_line|#ifdef LVM_GET_INODE
-multiline_comment|/* insert a dummy inode for fs_may_mount */
-id|pv_ptr-&gt;inode
-op_assign
-id|lvm_get_inode
+id|lvm_do_create_proc_entry_of_pv
 c_func
 (paren
-id|pv_ptr-&gt;pv_dev
+id|vg_ptr
+comma
+id|pv_ptr
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -8458,16 +8086,6 @@ l_int|0
 r_return
 op_minus
 id|EPERM
-suffix:semicolon
-id|vg_ptr-&gt;pe_total
-op_sub_assign
-id|pv_ptr-&gt;pe_total
-suffix:semicolon
-id|vg_ptr-&gt;pv_cur
-op_decrement
-suffix:semicolon
-id|vg_ptr-&gt;pv_act
-op_decrement
 suffix:semicolon
 id|lvm_do_pv_remove
 c_func
@@ -8614,13 +8232,11 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-macro_line|#if defined CONFIG_LVM_PROC_FS &amp;&amp; defined CONFIG_PROC_FS
 id|lvm_do_remove_proc_entry_of_vg
 (paren
 id|vg_ptr
 )paren
 suffix:semicolon
-macro_line|#endif
 id|strncpy
 (paren
 id|vg_ptr-&gt;vg_name
@@ -8802,13 +8418,11 @@ id|NAME_LEN
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined CONFIG_LVM_PROC_FS &amp;&amp; defined CONFIG_PROC_FS
 id|lvm_do_create_proc_entry_of_vg
 (paren
 id|vg_ptr
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -9026,11 +8640,9 @@ op_ne
 l_int|NULL
 )paren
 (brace
-macro_line|#ifdef DEBUG_KFREE
-id|printk
+id|P_KFREE
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s -- kfree %d&bslash;n&quot;
 comma
 id|lvm_name
@@ -9038,7 +8650,6 @@ comma
 id|__LINE__
 )paren
 suffix:semicolon
-macro_line|#endif
 id|lvm_do_pv_remove
 c_func
 (paren
@@ -9049,7 +8660,6 @@ id|i
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef&t;CONFIG_DEVFS_FS
 id|devfs_unregister
 (paren
 id|ch_devfs_handle
@@ -9066,19 +8676,14 @@ id|vg_ptr-&gt;vg_number
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if defined CONFIG_LVM_PROC_FS &amp;&amp; defined CONFIG_PROC_FS
 id|lvm_do_remove_proc_entry_of_vg
 (paren
 id|vg_ptr
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef DEBUG_KFREE
-id|printk
+id|P_KFREE
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s -- kfree %d&bslash;n&quot;
 comma
 id|lvm_name
@@ -9086,7 +8691,6 @@ comma
 id|__LINE__
 )paren
 suffix:semicolon
-macro_line|#endif
 id|kfree
 c_func
 (paren
@@ -9224,17 +8828,6 @@ suffix:semicolon
 id|vg_ptr-&gt;pv_cur
 op_increment
 suffix:semicolon
-macro_line|#ifdef LVM_GET_INODE
-multiline_comment|/* insert a dummy inode for fs_may_mount */
-id|pv_ptr-&gt;inode
-op_assign
-id|lvm_get_inode
-c_func
-(paren
-id|pv_ptr-&gt;pv_dev
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -9264,7 +8857,6 @@ id|vg_ptr-&gt;pv
 id|p
 )braket
 suffix:semicolon
-macro_line|#if defined CONFIG_LVM_PROC_FS &amp;&amp; defined CONFIG_PROC_FS
 id|lvm_do_remove_proc_entry_of_pv
 (paren
 id|vg_ptr
@@ -9272,7 +8864,6 @@ comma
 id|pv_ptr
 )paren
 suffix:semicolon
-macro_line|#endif
 id|vg_ptr-&gt;pe_total
 op_sub_assign
 id|pv_ptr-&gt;pe_total
@@ -9691,11 +9282,9 @@ comma
 id|__LINE__
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_KFREE
-id|printk
+id|P_KFREE
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s -- kfree %d&bslash;n&quot;
 comma
 id|lvm_name
@@ -9703,23 +9292,13 @@ comma
 id|__LINE__
 )paren
 suffix:semicolon
-macro_line|#endif
 id|kfree
 c_func
 (paren
 id|lv_ptr
 )paren
 suffix:semicolon
-id|vg
-(braket
-id|VG_CHR
-c_func
-(paren
-id|minor
-)paren
-)braket
-op_member_access_from_pointer
-id|lv
+id|vg_ptr-&gt;lv
 (braket
 id|l
 )braket
@@ -9900,11 +9479,9 @@ comma
 id|__LINE__
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_KFREE
-id|printk
+id|P_KFREE
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s -- kfree %d&bslash;n&quot;
 comma
 id|lvm_name
@@ -9912,7 +9489,6 @@ comma
 id|__LINE__
 )paren
 suffix:semicolon
-macro_line|#endif
 id|kfree
 c_func
 (paren
@@ -9957,16 +9533,7 @@ c_func
 id|lv_ptr
 )paren
 suffix:semicolon
-id|vg
-(braket
-id|VG_CHR
-c_func
-(paren
-id|minor
-)paren
-)braket
-op_member_access_from_pointer
-id|lv
+id|vg_ptr-&gt;lv
 (braket
 id|l
 )braket
@@ -9991,32 +9558,6 @@ id|lv_ptr-&gt;lv_snapshot_org
 op_assign
 id|lv_ptr
 suffix:semicolon
-id|lv_ptr-&gt;lv_snapshot_prev
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* walk thrugh the snapshot list */
-r_while
-c_loop
-(paren
-id|lv_ptr-&gt;lv_snapshot_next
-op_ne
-l_int|NULL
-)paren
-id|lv_ptr
-op_assign
-id|lv_ptr-&gt;lv_snapshot_next
-suffix:semicolon
-multiline_comment|/* now lv_ptr points to the last existing snapshot in the chain */
-id|vg_ptr-&gt;lv
-(braket
-id|l
-)braket
-op_member_access_from_pointer
-id|lv_snapshot_prev
-op_assign
-id|lv_ptr
-suffix:semicolon
 multiline_comment|/* our new one now back points to the previous last in the chain&n;&t;&t;&t;&t;   which can be the original logical volume */
 id|lv_ptr
 op_assign
@@ -10026,17 +9567,13 @@ id|l
 )braket
 suffix:semicolon
 multiline_comment|/* now lv_ptr points to our new last snapshot logical volume */
-id|lv_ptr-&gt;lv_snapshot_org
-op_assign
-id|lv_ptr-&gt;lv_snapshot_prev-&gt;lv_snapshot_org
-suffix:semicolon
-id|lv_ptr-&gt;lv_snapshot_next
-op_assign
-l_int|NULL
-suffix:semicolon
 id|lv_ptr-&gt;lv_current_pe
 op_assign
 id|lv_ptr-&gt;lv_snapshot_org-&gt;lv_current_pe
+suffix:semicolon
+id|lv_ptr-&gt;lv_allocated_snapshot_le
+op_assign
+id|lv_ptr-&gt;lv_allocated_le
 suffix:semicolon
 id|lv_ptr-&gt;lv_allocated_le
 op_assign
@@ -10057,6 +9594,11 @@ suffix:semicolon
 id|lv_ptr-&gt;lv_stripesize
 op_assign
 id|lv_ptr-&gt;lv_snapshot_org-&gt;lv_stripesize
+suffix:semicolon
+multiline_comment|/* Update the VG PE(s) used by snapshot reserve space. */
+id|vg_ptr-&gt;pe_allocated
+op_add_assign
+id|lv_ptr-&gt;lv_allocated_snapshot_le
 suffix:semicolon
 r_if
 c_cond
@@ -10086,16 +9628,7 @@ c_func
 id|lv_ptr
 )paren
 suffix:semicolon
-id|vg
-(braket
-id|VG_CHR
-c_func
-(paren
-id|minor
-)paren
-)braket
-op_member_access_from_pointer
-id|lv
+id|vg_ptr-&gt;lv
 (braket
 id|l
 )braket
@@ -10297,7 +9830,6 @@ id|lv_ptr-&gt;lv_status
 op_assign
 id|lv_status_save
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_DEVFS_FS
 (brace
 r_char
 op_star
@@ -10306,7 +9838,7 @@ comma
 op_star
 id|lv_buf
 op_assign
-l_int|NULL
+id|lv-&gt;lv_name
 suffix:semicolon
 id|strtok
 c_func
@@ -10376,8 +9908,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#if defined CONFIG_LVM_PROC_FS &amp;&amp; defined CONFIG_PROC_FS
 id|lvm_do_create_proc_entry_of_lv
 (paren
 id|vg_ptr
@@ -10385,7 +9915,6 @@ comma
 id|lv_ptr
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* optionally add our new snapshot LV */
 r_if
 c_cond
@@ -10395,11 +9924,20 @@ op_amp
 id|LV_SNAPSHOT
 )paren
 (brace
+id|lv_t
+op_star
+id|org
+op_assign
+id|lv_ptr-&gt;lv_snapshot_org
+comma
+op_star
+id|last
+suffix:semicolon
 multiline_comment|/* sync the original logical volume */
 id|fsync_dev
 c_func
 (paren
-id|lv_ptr-&gt;lv_snapshot_org-&gt;lv_dev
+id|org-&gt;lv_dev
 )paren
 suffix:semicolon
 macro_line|#ifdef&t;LVM_VFS_ENHANCEMENT
@@ -10407,11 +9945,18 @@ multiline_comment|/* VFS function call to sync and lock the filesystem */
 id|fsync_dev_lockfs
 c_func
 (paren
-id|lv_ptr-&gt;lv_snapshot_org-&gt;lv_dev
+id|org-&gt;lv_dev
 )paren
 suffix:semicolon
 macro_line|#endif
-id|lv_ptr-&gt;lv_snapshot_org-&gt;lv_access
+id|down
+c_func
+(paren
+op_amp
+id|org-&gt;lv_snapshot_sem
+)paren
+suffix:semicolon
+id|org-&gt;lv_access
 op_or_assign
 id|LV_SNAPSHOT_ORG
 suffix:semicolon
@@ -10420,10 +9965,36 @@ op_and_assign
 op_complement
 id|LV_SNAPSHOT_ORG
 suffix:semicolon
-multiline_comment|/* put ourselve into the chain */
-id|lv_ptr-&gt;lv_snapshot_prev-&gt;lv_snapshot_next
+multiline_comment|/* this can only hide an userspace bug */
+multiline_comment|/* Link in the list of snapshot volumes */
+r_for
+c_loop
+(paren
+id|last
+op_assign
+id|org
+suffix:semicolon
+id|last-&gt;lv_snapshot_next
+suffix:semicolon
+id|last
+op_assign
+id|last-&gt;lv_snapshot_next
+)paren
+suffix:semicolon
+id|lv_ptr-&gt;lv_snapshot_prev
+op_assign
+id|last
+suffix:semicolon
+id|last-&gt;lv_snapshot_next
 op_assign
 id|lv_ptr
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|org-&gt;lv_snapshot_sem
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* activate the logical volume */
@@ -10638,6 +10209,77 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|lv_ptr-&gt;lv_access
+op_amp
+id|LV_SNAPSHOT
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Atomically make the the snapshot invisible&n;&t;&t; * to the original lv before playing with it.&n;&t;&t; */
+id|lv_t
+op_star
+id|org
+op_assign
+id|lv_ptr-&gt;lv_snapshot_org
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|org-&gt;lv_snapshot_sem
+)paren
+suffix:semicolon
+multiline_comment|/* remove this snapshot logical volume from the chain */
+id|lv_ptr-&gt;lv_snapshot_prev-&gt;lv_snapshot_next
+op_assign
+id|lv_ptr-&gt;lv_snapshot_next
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|lv_ptr-&gt;lv_snapshot_next
+op_ne
+l_int|NULL
+)paren
+(brace
+id|lv_ptr-&gt;lv_snapshot_next-&gt;lv_snapshot_prev
+op_assign
+id|lv_ptr-&gt;lv_snapshot_prev
+suffix:semicolon
+)brace
+id|up
+c_func
+(paren
+op_amp
+id|org-&gt;lv_snapshot_sem
+)paren
+suffix:semicolon
+multiline_comment|/* no more snapshots? */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|org-&gt;lv_snapshot_next
+)paren
+id|org-&gt;lv_access
+op_and_assign
+op_complement
+id|LV_SNAPSHOT_ORG
+suffix:semicolon
+id|lvm_snapshot_release
+c_func
+(paren
+id|lv_ptr
+)paren
+suffix:semicolon
+multiline_comment|/* Update the VG PE(s) used by snapshot reserve space. */
+id|vg_ptr-&gt;pe_allocated
+op_sub_assign
+id|lv_ptr-&gt;lv_allocated_snapshot_le
+suffix:semicolon
+)brace
 id|lv_ptr-&gt;lv_status
 op_or_assign
 id|LV_SPINDOWN
@@ -10728,7 +10370,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* correct the PE count in PVs if this is no snapshot logical volume */
+multiline_comment|/* correct the PE count in PVs if this is not a snapshot&n;           logical volume */
 r_if
 c_cond
 (paren
@@ -10807,49 +10449,7 @@ c_func
 id|lv_ptr-&gt;lv_current_pe
 )paren
 suffix:semicolon
-multiline_comment|/* LV_SNAPSHOT */
 )brace
-r_else
-(brace
-multiline_comment|/* remove this snapshot logical volume from the chain */
-id|lv_ptr-&gt;lv_snapshot_prev-&gt;lv_snapshot_next
-op_assign
-id|lv_ptr-&gt;lv_snapshot_next
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|lv_ptr-&gt;lv_snapshot_next
-op_ne
-l_int|NULL
-)paren
-(brace
-id|lv_ptr-&gt;lv_snapshot_next-&gt;lv_snapshot_prev
-op_assign
-id|lv_ptr-&gt;lv_snapshot_prev
-suffix:semicolon
-)brace
-multiline_comment|/* no more snapshots? */
-r_if
-c_cond
-(paren
-id|lv_ptr-&gt;lv_snapshot_org-&gt;lv_snapshot_next
-op_eq
-l_int|NULL
-)paren
-id|lv_ptr-&gt;lv_snapshot_org-&gt;lv_access
-op_and_assign
-op_complement
-id|LV_SNAPSHOT_ORG
-suffix:semicolon
-id|lvm_snapshot_release
-c_func
-(paren
-id|lv_ptr
-)paren
-suffix:semicolon
-)brace
-macro_line|#ifdef&t;CONFIG_DEVFS_FS
 id|devfs_unregister
 c_func
 (paren
@@ -10859,8 +10459,6 @@ id|lv_ptr-&gt;lv_number
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if defined CONFIG_LVM_PROC_FS &amp;&amp; defined CONFIG_PROC_FS
 id|lvm_do_remove_proc_entry_of_lv
 (paren
 id|vg_ptr
@@ -10868,12 +10466,9 @@ comma
 id|lv_ptr
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef DEBUG_KFREE
-id|printk
+id|P_KFREE
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s -- kfree %d&bslash;n&quot;
 comma
 id|lvm_name
@@ -10881,7 +10476,6 @@ comma
 id|__LINE__
 )paren
 suffix:semicolon
-macro_line|#endif
 id|kfree
 c_func
 (paren
@@ -11240,7 +10834,7 @@ c_func
 (paren
 id|lv_ptr
 comma
-l_string|&quot;hash_alloc&quot;
+l_string|&quot;no memory for hash table&quot;
 )paren
 suffix:semicolon
 id|up
@@ -11263,7 +10857,8 @@ id|lvs_hash_table_old
 )paren
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 r_for
@@ -11395,28 +10990,6 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s -- fsync_dev and &quot;
-l_string|&quot;invalidate_buffers for %s [%s] in %s&bslash;n&quot;
-comma
-id|lvm_name
-comma
-id|lv_ptr-&gt;lv_name
-comma
-id|kdevname
-c_func
-(paren
-id|lv_ptr-&gt;lv_dev
-)paren
-comma
-id|vg_ptr-&gt;vg_name
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* reduce allocation counters on PV(s) */
 r_for
 c_loop
@@ -11516,20 +11089,6 @@ multiline_comment|/* save # of old allocated logical extents */
 id|old_allocated_le
 op_assign
 id|lv_ptr-&gt;lv_allocated_le
-suffix:semicolon
-multiline_comment|/* in case of shrinking -&gt; let&squot;s flush */
-r_if
-c_cond
-(paren
-id|end
-OG
-id|lv-&gt;lv_current_le
-)paren
-id|fsync_dev
-c_func
-(paren
-id|lv_ptr-&gt;lv_dev
-)paren
 suffix:semicolon
 multiline_comment|/* copy preloaded LV */
 id|memcpy
@@ -12543,7 +12102,6 @@ op_eq
 id|lv-&gt;lv_dev
 )paren
 (brace
-macro_line|#if defined CONFIG_LVM_PROC_FS &amp;&amp; defined CONFIG_PROC_FS
 id|lvm_do_remove_proc_entry_of_lv
 (paren
 id|vg_ptr
@@ -12551,7 +12109,6 @@ comma
 id|lv_ptr
 )paren
 suffix:semicolon
-macro_line|#endif
 id|strncpy
 c_func
 (paren
@@ -12562,7 +12119,6 @@ comma
 id|NAME_LEN
 )paren
 suffix:semicolon
-macro_line|#if defined CONFIG_LVM_PROC_FS &amp;&amp; defined CONFIG_PROC_FS
 id|lvm_do_create_proc_entry_of_lv
 (paren
 id|vg_ptr
@@ -12570,7 +12126,6 @@ comma
 id|lv_ptr
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 )brace
@@ -12876,9 +12431,69 @@ id|ENXIO
 suffix:semicolon
 )brace
 multiline_comment|/* lvm_do_pv_status() */
+multiline_comment|/*&n; * create a devfs entry for a volume group&n; */
+DECL|function|lvm_do_create_devfs_entry_of_vg
+r_void
+id|lvm_do_create_devfs_entry_of_vg
+(paren
+id|vg_t
+op_star
+id|vg_ptr
+)paren
+(brace
+id|vg_devfs_handle
+(braket
+id|vg_ptr-&gt;vg_number
+)braket
+op_assign
+id|devfs_mk_dir
+c_func
+(paren
+l_int|0
+comma
+id|vg_ptr-&gt;vg_name
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ch_devfs_handle
+(braket
+id|vg_ptr-&gt;vg_number
+)braket
+op_assign
+id|devfs_register
+c_func
+(paren
+id|vg_devfs_handle
+(braket
+id|vg_ptr-&gt;vg_number
+)braket
+comma
+l_string|&quot;group&quot;
+comma
+id|DEVFS_FL_DEFAULT
+comma
+id|LVM_CHAR_MAJOR
+comma
+id|vg_ptr-&gt;vg_number
+comma
+id|S_IFCHR
+op_or
+id|S_IRUSR
+op_or
+id|S_IWUSR
+op_or
+id|S_IRGRP
+comma
+op_amp
+id|lvm_chr_fops
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * create a /proc entry for a logical volume&n; */
 DECL|function|lvm_do_create_proc_entry_of_lv
-r_inline
 r_void
 id|lvm_do_create_proc_entry_of_lv
 (paren
@@ -12961,7 +12576,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * remove a /proc entry for a logical volume&n; */
 DECL|function|lvm_do_remove_proc_entry_of_lv
-r_inline
 r_void
 id|lvm_do_remove_proc_entry_of_lv
 (paren
@@ -13023,7 +12637,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * create a /proc entry for a physical volume&n; */
 DECL|function|lvm_do_create_proc_entry_of_pv
-r_inline
 r_void
 id|lvm_do_create_proc_entry_of_pv
 (paren
@@ -13036,41 +12649,90 @@ op_star
 id|pv_ptr
 )paren
 (brace
+r_int
+id|offset
+op_assign
+l_int|0
+suffix:semicolon
 r_char
 op_star
 id|basename
 suffix:semicolon
+r_char
+id|buffer
+(braket
+id|NAME_LEN
+)braket
+suffix:semicolon
 id|basename
 op_assign
-id|strrchr
-c_func
-(paren
 id|pv_ptr-&gt;pv_name
-comma
-l_char|&squot;/&squot;
-)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
+id|strncmp
+c_func
+(paren
 id|basename
-op_eq
-l_int|NULL
+comma
+l_string|&quot;/dev/&quot;
+comma
+l_int|5
 )paren
+op_eq
+l_int|0
+)paren
+id|offset
+op_assign
+l_int|5
+suffix:semicolon
+id|strncpy
+c_func
+(paren
+id|buffer
+comma
+id|basename
+op_plus
+id|offset
+comma
+r_sizeof
+(paren
+id|buffer
+)paren
+)paren
+suffix:semicolon
 id|basename
 op_assign
-id|pv_ptr-&gt;pv_name
+id|buffer
 suffix:semicolon
-r_else
+r_while
+c_loop
+(paren
+(paren
 id|basename
-op_increment
+op_assign
+id|strchr
+(paren
+id|basename
+comma
+l_char|&squot;/&squot;
+)paren
+)paren
+op_ne
+l_int|NULL
+)paren
+op_star
+id|basename
+op_assign
+l_char|&squot;_&squot;
 suffix:semicolon
 id|pde
 op_assign
 id|create_proc_entry
 c_func
 (paren
-id|basename
+id|buffer
 comma
 id|S_IFREG
 comma
@@ -13097,7 +12759,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * remove a /proc entry for a physical volume&n; */
 DECL|function|lvm_do_remove_proc_entry_of_pv
-r_inline
 r_void
 id|lvm_do_remove_proc_entry_of_pv
 (paren
@@ -13168,7 +12829,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * create a /proc entry for a volume group&n; */
-macro_line|#if defined CONFIG_LVM_PROC_FS &amp;&amp; defined CONFIG_PROC_FS
 DECL|function|lvm_do_create_proc_entry_of_vg
 r_void
 id|lvm_do_create_proc_entry_of_vg
@@ -13244,7 +12904,7 @@ op_assign
 id|vg_ptr
 suffix:semicolon
 )brace
-id|vg_ptr-&gt;lv_subdir_pde
+id|pde
 op_assign
 id|create_proc_entry
 c_func
@@ -13256,27 +12916,18 @@ comma
 id|vg_ptr-&gt;vg_dir_pde
 )paren
 suffix:semicolon
-id|vg_ptr-&gt;pv_subdir_pde
-op_assign
-id|create_proc_entry
-c_func
-(paren
-id|LVM_PV_SUBDIR
-comma
-id|S_IFDIR
-comma
-id|vg_ptr-&gt;vg_dir_pde
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
-id|vg_ptr-&gt;pv_subdir_pde
+id|pde
 op_ne
 l_int|NULL
 )paren
 (brace
+id|vg_ptr-&gt;lv_subdir_pde
+op_assign
+id|pde
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -13316,6 +12967,31 @@ id|lv_ptr
 )paren
 suffix:semicolon
 )brace
+)brace
+id|pde
+op_assign
+id|create_proc_entry
+c_func
+(paren
+id|LVM_PV_SUBDIR
+comma
+id|S_IFDIR
+comma
+id|vg_ptr-&gt;vg_dir_pde
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pde
+op_ne
+l_int|NULL
+)paren
+(brace
+id|vg_ptr-&gt;pv_subdir_pde
+op_assign
+id|pde
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -13354,6 +13030,7 @@ comma
 id|pv_ptr
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 )brace
@@ -13506,24 +13183,8 @@ id|lvm_proc_vg_subdir
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 multiline_comment|/*&n; * support function initialize gendisk variables&n; */
-macro_line|#ifdef __initfunc
-DECL|function|__initfunc
-id|__initfunc
-c_func
-(paren
-r_void
-id|lvm_geninit
-c_func
-(paren
-r_struct
-id|gendisk
-op_star
-id|lvm_gdisk
-)paren
-)paren
-macro_line|#else
+DECL|function|lvm_geninit
 r_void
 id|__init
 id|lvm_geninit
@@ -13534,7 +13195,6 @@ id|gendisk
 op_star
 id|lvm_gdisk
 )paren
-macro_line|#endif
 (brace
 r_int
 id|i
@@ -13625,74 +13285,135 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* lvm_gen_init() */
-macro_line|#ifdef LVM_GET_INODE
-multiline_comment|/*&n; * support function to get an empty inode&n; *&n; * Gets an empty inode to be inserted into the inode hash,&n; * so that a physical volume can&squot;t be mounted.&n; * This is analog to drivers/block/md.c&n; *&n; * Is this the real thing?&n; *&n; */
-DECL|function|lvm_get_inode
-r_struct
-id|inode
+multiline_comment|/*&n; * return a pointer to a &squot;-&squot; padded uuid&n; */
+DECL|function|lvm_show_uuid
+r_static
+r_char
 op_star
-id|lvm_get_inode
-c_func
+id|lvm_show_uuid
 (paren
+r_char
+op_star
+id|uuidstr
+)paren
+(brace
 r_int
-id|dev
+id|i
+comma
+id|j
+suffix:semicolon
+r_static
+r_char
+id|uuid
+(braket
+id|NAME_LEN
+)braket
+op_assign
+(brace
+l_int|0
+comma
+)brace
+suffix:semicolon
+id|memset
+(paren
+id|uuid
+comma
+l_int|0
+comma
+id|NAME_LEN
+)paren
+suffix:semicolon
+id|i
+op_assign
+l_int|6
+suffix:semicolon
+id|memcpy
+(paren
+id|uuid
+comma
+id|uuidstr
+comma
+id|i
+)paren
+suffix:semicolon
+id|uuidstr
+op_add_assign
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|j
+op_assign
+l_int|0
+suffix:semicolon
+id|j
+OL
+l_int|6
+suffix:semicolon
+id|j
+op_increment
 )paren
 (brace
-r_struct
-id|inode
-op_star
-id|inode_this
+id|uuid
+(braket
+id|i
+op_increment
+)braket
 op_assign
-l_int|NULL
+l_char|&squot;-&squot;
 suffix:semicolon
-multiline_comment|/* Lock the device by inserting a dummy inode. */
-id|inode_this
-op_assign
-id|get_empty_inode
-c_func
+id|memcpy
 (paren
+op_amp
+id|uuid
+(braket
+id|i
+)braket
+comma
+id|uuidstr
+comma
+l_int|4
 )paren
 suffix:semicolon
-id|inode_this-&gt;i_dev
-op_assign
-id|dev
+id|uuidstr
+op_add_assign
+l_int|4
 suffix:semicolon
-id|insert_inode_hash
-c_func
+id|i
+op_add_assign
+l_int|4
+suffix:semicolon
+)brace
+id|memcpy
 (paren
-id|inode_this
+op_amp
+id|uuid
+(braket
+id|i
+)braket
+comma
+id|uuidstr
+comma
+l_int|2
 )paren
 suffix:semicolon
 r_return
-id|inode_this
+id|uuid
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * support function to clear an inode&n; *&n; */
-DECL|function|lvm_clear_inode
-r_void
-id|lvm_clear_inode
+DECL|variable|lvm_init
+id|module_init
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
+id|lvm_init
 )paren
-(brace
-macro_line|#ifdef I_FREEING
-id|inode-&gt;i_state
-op_or_assign
-id|I_FREEING
 suffix:semicolon
-macro_line|#endif
-id|clear_inode
+DECL|variable|lvm_cleanup
+id|module_exit
 c_func
 (paren
-id|inode
+id|lvm_cleanup
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-macro_line|#endif /* #ifdef LVM_GET_INODE */
 eof

@@ -494,6 +494,13 @@ id|physical_address
 )paren
 suffix:semicolon
 id|ACPI_STATUS
+id|acpi_enter_sleep_state
+(paren
+id|u8
+id|sleep_state
+)paren
+suffix:semicolon
+id|ACPI_STATUS
 id|acpi_get_processor_throttling_info
 (paren
 id|ACPI_HANDLE

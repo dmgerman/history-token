@@ -1433,7 +1433,7 @@ op_logical_neg
 id|po
 )paren
 r_goto
-id|abort_put
+m_abort
 suffix:semicolon
 id|sk
 op_assign
@@ -1445,8 +1445,6 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|abort_put
-suffix:colon
 id|sock_put
 c_func
 (paren

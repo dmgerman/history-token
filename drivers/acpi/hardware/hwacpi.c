@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: hwacpi - ACPI hardware functions - mode and timer&n; *              $Revision: 35 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: hwacpi - ACPI Hardware Initialization/Mode Interface&n; *              $Revision: 36 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -491,64 +491,6 @@ r_return
 id|acpi_gbl_system_flags
 op_amp
 id|SYS_MODES_MASK
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_pmt_ticks&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      Current value of the ACPI PMT (timer)&n; *&n; * DESCRIPTION: Obtains current value of ACPI PMT&n; *&n; ******************************************************************************/
-id|u32
-DECL|function|acpi_hw_pmt_ticks
-id|acpi_hw_pmt_ticks
-(paren
-r_void
-)paren
-(brace
-id|u32
-id|ticks
-suffix:semicolon
-id|ticks
-op_assign
-id|acpi_os_in32
-(paren
-(paren
-id|ACPI_IO_ADDRESS
-)paren
-id|ACPI_GET_ADDRESS
-(paren
-id|acpi_gbl_FADT-&gt;Xpm_tmr_blk.address
-)paren
-)paren
-suffix:semicolon
-r_return
-(paren
-id|ticks
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_pmt_resolution&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      Number of bits of resolution in the PMT (either 24 or 32)&n; *&n; * DESCRIPTION: Obtains resolution of the ACPI PMT (either 24bit or 32bit)&n; *&n; ******************************************************************************/
-id|u32
-DECL|function|acpi_hw_pmt_resolution
-id|acpi_hw_pmt_resolution
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-l_int|0
-op_eq
-id|acpi_gbl_FADT-&gt;tmr_val_ext
-)paren
-(brace
-r_return
-(paren
-l_int|24
-)paren
-suffix:semicolon
-)brace
-r_return
-(paren
-l_int|32
 )paren
 suffix:semicolon
 )brace

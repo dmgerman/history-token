@@ -7335,11 +7335,11 @@ id|hisax_pci_tbl
 id|__initdata
 op_assign
 (brace
-macro_line|#ifdef CONFIG_HISAX_FRTIZPCI
+macro_line|#ifdef CONFIG_HISAX_FRITZPCI
 (brace
 id|PCI_VENDOR_ID_AVM
 comma
-id|PCI_DEVICE_ID_AVM_FRITZ
+id|PCI_DEVICE_ID_AVM_A1
 comma
 id|PCI_ANY_ID
 comma

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psxface - Parser external interfaces&n; *              $Revision: 39 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psxface - Parser external interfaces&n; *              $Revision: 40 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -211,6 +211,18 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Init new op with the method name and pointer back to the NS node */
+id|acpi_ps_set_name
+(paren
+id|op
+comma
+id|method_node-&gt;name
+)paren
+suffix:semicolon
+id|op-&gt;node
+op_assign
+id|method_node
+suffix:semicolon
 multiline_comment|/*&n;&t; * The walk of the parse tree is where we actually execute the method&n;&t; */
 id|status
 op_assign

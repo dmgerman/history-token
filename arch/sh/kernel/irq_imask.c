@@ -138,16 +138,16 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;ldc&t;%2, $r6_bank&bslash;n&bslash;t&quot;
-l_string|&quot;stc&t;$sr, %0&bslash;n&bslash;t&quot;
+l_string|&quot;ldc&t;%2, r6_bank&bslash;n&bslash;t&quot;
+l_string|&quot;stc&t;sr, %0&bslash;n&bslash;t&quot;
 l_string|&quot;and&t;#0xf0, %0&bslash;n&bslash;t&quot;
 l_string|&quot;shlr2&t;%0&bslash;n&bslash;t&quot;
 l_string|&quot;cmp/eq&t;#0x3c, %0&bslash;n&bslash;t&quot;
 l_string|&quot;bt/s&t;1f&t;! CLI-ed&bslash;n&bslash;t&quot;
-l_string|&quot; stc&t;$sr, %0&bslash;n&bslash;t&quot;
+l_string|&quot; stc&t;sr, %0&bslash;n&bslash;t&quot;
 l_string|&quot;and&t;%1, %0&bslash;n&bslash;t&quot;
 l_string|&quot;or&t;%2, %0&bslash;n&bslash;t&quot;
-l_string|&quot;ldc&t;%0, $sr&bslash;n&quot;
+l_string|&quot;ldc&t;%0, sr&bslash;n&quot;
 l_string|&quot;1:&quot;
 suffix:colon
 l_string|&quot;=&amp;z&quot;

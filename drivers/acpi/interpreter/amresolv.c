@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: amresolv - AML Interpreter object resolution&n; *              $Revision: 80 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: amresolv - AML Interpreter object resolution&n; *              $Revision: 81 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -234,7 +234,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_aml_resolve_to_value&n; *&n; * PARAMETERS:  **Stack_ptr         - Points to entry on Obj_stack, which can&n; *                                    be either an (ACPI_OPERAND_OBJECT  *)&n; *                                    or an ACPI_HANDLE.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert Reference entries on Obj_stack to Rvalues&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_aml_resolve_to_value&n; *&n; * PARAMETERS:  **Stack_ptr         - Points to entry on Obj_stack, which can&n; *                                    be either an (ACPI_OPERAND_OBJECT  *)&n; *                                    or an ACPI_HANDLE.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert Reference objects to values&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_aml_resolve_to_value
 id|acpi_aml_resolve_to_value

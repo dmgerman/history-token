@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: hwregs - Read/write access functions for the various ACPI&n; *                       control and status registers.&n; *              $Revision: 87 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: hwregs - Read/write access functions for the various ACPI&n; *                       control and status registers.&n; *              $Revision: 88 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -28,13 +28,12 @@ l_string|&quot;&bslash;&bslash;_S3_&quot;
 comma
 l_string|&quot;&bslash;&bslash;_S4_&quot;
 comma
-l_string|&quot;&bslash;&bslash;_S4_b&quot;
-comma
 l_string|&quot;&bslash;&bslash;_S5_&quot;
+comma
+l_string|&quot;&bslash;&bslash;_S4_b&quot;
 )brace
 suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_get_bit_shift&n; *&n; * PARAMETERS:  Mask            - Input mask to determine bit shift from.&n; *                                Must have at least 1 bit set.&n; *&n; * RETURN:      Bit location of the lsb of the mask&n; *&n; * DESCRIPTION: Returns the bit number for the low order bit that&squot;s set.&n; *&n; ******************************************************************************/
-r_static
 id|u32
 DECL|function|acpi_hw_get_bit_shift
 id|acpi_hw_get_bit_shift
@@ -1301,16 +1300,8 @@ r_case
 id|PM1_CONTROL
 suffix:colon
 multiline_comment|/* 16-bit access */
-r_if
-c_cond
-(paren
-id|register_id
-op_ne
-id|SLP_TYPE_B
-)paren
-(brace
 id|value
-op_or_assign
+op_assign
 id|acpi_hw_low_level_read
 (paren
 l_int|16
@@ -1321,15 +1312,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|register_id
-op_ne
-id|SLP_TYPE_A
-)paren
-(brace
 id|value
 op_or_assign
 id|acpi_hw_low_level_read
@@ -1342,7 +1324,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -1624,67 +1605,6 @@ r_case
 id|PM1_CONTROL
 suffix:colon
 multiline_comment|/* 16-bit access */
-multiline_comment|/*&n;&t;&t; * If SLP_TYP_A or SLP_TYP_B, only write to one reg block.&n;&t;&t; * Otherwise, write to both.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|register_id
-op_eq
-id|SLP_TYPE_A
-)paren
-(brace
-id|acpi_hw_low_level_write
-(paren
-l_int|16
-comma
-id|value
-comma
-op_amp
-id|acpi_gbl_FADT-&gt;Xpm1a_cnt_blk
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|register_id
-op_eq
-id|SLP_TYPE_B
-)paren
-(brace
-id|acpi_hw_low_level_write
-(paren
-l_int|16
-comma
-id|value
-comma
-op_amp
-id|acpi_gbl_FADT-&gt;Xpm1b_cnt_blk
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* disable/re-enable interrupts if sleeping */
-r_if
-c_cond
-(paren
-id|register_id
-op_eq
-id|SLP_EN
-)paren
-(brace
-id|disable
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 id|acpi_hw_low_level_write
 (paren
 l_int|16
@@ -1709,21 +1629,42 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_if
-c_cond
+r_break
+suffix:semicolon
+r_case
+id|PM1_a_CONTROL
+suffix:colon
+multiline_comment|/* 16-bit access */
+id|acpi_hw_low_level_write
 (paren
-id|register_id
-op_eq
-id|SLP_EN
-)paren
-(brace
-id|enable
-c_func
-(paren
+l_int|16
+comma
+id|value
+comma
+op_amp
+id|acpi_gbl_FADT-&gt;Xpm1a_cnt_blk
+comma
+l_int|0
 )paren
 suffix:semicolon
-)brace
-)brace
+r_break
+suffix:semicolon
+r_case
+id|PM1_b_CONTROL
+suffix:colon
+multiline_comment|/* 16-bit access */
+id|acpi_hw_low_level_write
+(paren
+l_int|16
+comma
+id|value
+comma
+op_amp
+id|acpi_gbl_FADT-&gt;Xpm1b_cnt_blk
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case

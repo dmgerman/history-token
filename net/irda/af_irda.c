@@ -8176,6 +8176,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|irda_proto_init
+id|module_init
+c_func
+(paren
+id|irda_proto_init
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irda_proto_cleanup (void)&n; *&n; *    Remove IrDA protocol layer&n; *&n; */
 macro_line|#ifdef MODULE
 DECL|function|irda_proto_cleanup
@@ -8222,13 +8229,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-DECL|variable|irda_proto_init
-id|module_init
-c_func
-(paren
-id|irda_proto_init
-)paren
-suffix:semicolon
 DECL|variable|irda_proto_cleanup
 id|module_exit
 c_func

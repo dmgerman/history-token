@@ -5,6 +5,7 @@ macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,0)
 macro_line|#error &quot;This driver works only with kernel 2.4.0 or higher!&quot;
 macro_line|#endif
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
@@ -27,7 +28,7 @@ macro_line|#include &quot;ibmmca.h&quot;
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* current version of this driver-source: */
 DECL|macro|IBMMCA_SCSI_DRIVER_VERSION
-mdefine_line|#define IBMMCA_SCSI_DRIVER_VERSION &quot;4.0a&quot;
+mdefine_line|#define IBMMCA_SCSI_DRIVER_VERSION &quot;4.0b&quot;
 DECL|macro|IBMLOCK
 mdefine_line|#define IBMLOCK spin_lock_irqsave(&amp;io_request_lock, flags);
 DECL|macro|IBMUNLOCK
@@ -1099,7 +1100,6 @@ id|boot_options
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#include &lt;linux/module.h&gt;
 id|MODULE_PARM
 c_func
 (paren
@@ -14575,14 +14575,12 @@ comma
 id|option_setup
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-multiline_comment|/* Eventually this will go into an include file, but this will be later */
 DECL|variable|driver_template
+r_static
 id|Scsi_Host_Template
 id|driver_template
 op_assign
 id|IBMMCA
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
-macro_line|#endif
 eof

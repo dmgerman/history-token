@@ -1360,12 +1360,6 @@ c_func
 l_string|&quot;acpi_ec_region_setup&quot;
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;acpi_ec_region_setup&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

@@ -279,6 +279,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
+id|UnlockPage
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

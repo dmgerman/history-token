@@ -173,11 +173,6 @@ r_int
 r_int
 id|segsize_loc
 suffix:semicolon
-DECL|member|at_eor
-r_int
-r_char
-id|at_eor
-suffix:semicolon
 DECL|member|nonagle
 r_int
 r_char

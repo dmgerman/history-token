@@ -2821,6 +2821,22 @@ id|KERN_ERR
 l_string|&quot;pcnet32: No access methods&bslash;n&quot;
 )paren
 suffix:semicolon
+id|pci_free_consistent
+c_func
+(paren
+id|lp-&gt;pci_dev
+comma
+r_sizeof
+(paren
+op_star
+id|lp
+)paren
+comma
+id|lp
+comma
+id|lp-&gt;dma_addr
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -3088,6 +3104,22 @@ id|printk
 c_func
 (paren
 l_string|&quot;, failed to detect IRQ line.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|pci_free_consistent
+c_func
+(paren
+id|lp-&gt;pci_dev
+comma
+r_sizeof
+(paren
+op_star
+id|lp
+)paren
+comma
+id|lp
+comma
+id|lp-&gt;dma_addr
 )paren
 suffix:semicolon
 r_return

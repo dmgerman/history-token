@@ -40,6 +40,8 @@ DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(start, end)&t;&t;do { } while (0)
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma,pg)&t;&t;do { } while (0)
+DECL|macro|flush_cache_sigtramp
+mdefine_line|#define flush_cache_sigtramp(vaddr)&t;&t;do { } while (0)
 macro_line|#elif defined(__SH4__)
 multiline_comment|/*&n; *  Caches are broken on SH-4, so we need them.&n; */
 r_extern
@@ -147,6 +149,16 @@ op_star
 id|pg
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|flush_cache_sigtramp
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Basically we have the same two-level (which is the logical three level&n; * Linux page table layout folded) page tables as the i386.&n; */
 multiline_comment|/*&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
@@ -240,13 +252,8 @@ mdefine_line|#define _PAGE_FLAGS_HARDWARE_MASK&t;0x1ffff1fe
 multiline_comment|/* Hardware flags: SZ=1 (4k-byte) */
 DECL|macro|_PAGE_FLAGS_HARD
 mdefine_line|#define _PAGE_FLAGS_HARD&t;&t;0x00000010
-macro_line|#if defined(__sh3__)
-DECL|macro|_PAGE_SHARED
-mdefine_line|#define _PAGE_SHARED&t;_PAGE_HW_SHARED
-macro_line|#elif defined(__SH4__)
 DECL|macro|_PAGE_SHARED
 mdefine_line|#define _PAGE_SHARED&t;_PAGE_U0_SHARED
-macro_line|#endif
 DECL|macro|_PAGE_TABLE
 mdefine_line|#define _PAGE_TABLE&t;(_PAGE_PRESENT | _PAGE_RW | _PAGE_USER | _PAGE_ACCESSED | _PAGE_DIRTY)
 DECL|macro|_KERNPG_TABLE

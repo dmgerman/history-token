@@ -8,35 +8,6 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#endif /* __KERNEL__ */
-multiline_comment|/*&n; * System sleep states&n; */
-r_enum
-(brace
-DECL|enumerator|ACPI_S0
-id|ACPI_S0
-comma
-multiline_comment|/* working */
-DECL|enumerator|ACPI_S1
-id|ACPI_S1
-comma
-multiline_comment|/* sleep */
-DECL|enumerator|ACPI_S2
-id|ACPI_S2
-comma
-multiline_comment|/* sleep */
-DECL|enumerator|ACPI_S3
-id|ACPI_S3
-comma
-multiline_comment|/* sleep */
-DECL|enumerator|ACPI_S4
-id|ACPI_S4
-comma
-multiline_comment|/* non-volatile sleep */
-DECL|enumerator|ACPI_S5
-id|ACPI_S5
-comma
-multiline_comment|/* soft-off */
-)brace
-suffix:semicolon
 DECL|typedef|acpi_sstate_t
 r_typedef
 r_int

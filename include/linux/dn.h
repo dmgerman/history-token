@@ -315,6 +315,5 @@ DECL|macro|OSIOCSNETADDR
 mdefine_line|#define OSIOCSNETADDR _IOW(DECNET_IOCTL_BASE, 0xe0, int)
 DECL|macro|OSIOCGNETADDR
 mdefine_line|#define OSIOCGNETADDR _IOR(DECNET_IOCTL_BASE, 0xe1, int)
-multiline_comment|/* #define SIOCATEOR _IOR(DECNET_IOCTL_BASE, 0x01, int) */
 macro_line|#endif /* _LINUX_DN_H */
 eof

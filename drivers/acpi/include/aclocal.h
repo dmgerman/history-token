@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: aclocal.h - Internal data types used across the ACPI subsystem&n; *       $Revision: 97 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: aclocal.h - Internal data types used across the ACPI subsystem&n; *       $Revision: 100 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACLOCAL_H__
 DECL|macro|__ACLOCAL_H__
@@ -61,7 +61,7 @@ DECL|macro|MAX_MTX
 mdefine_line|#define MAX_MTX                     12
 DECL|macro|NUM_MTX
 mdefine_line|#define NUM_MTX                     MAX_MTX+1
-macro_line|#ifdef ACPI_DEBUG
+macro_line|#if defined(ACPI_DEBUG) || defined(ENABLE_DEBUGGER)
 macro_line|#ifdef DEFINE_ACPI_GLOBALS
 multiline_comment|/* Names for the mutexes used in the subsystem */
 DECL|variable|acpi_gbl_mutex_names
@@ -1061,6 +1061,12 @@ id|u8
 op_star
 id|aml_last_while
 suffix:semicolon
+DECL|member|op_info
+id|ACPI_OPCODE_INFO
+op_star
+id|op_info
+suffix:semicolon
+multiline_comment|/* Info on current opcode */
 DECL|member|descending_callback
 id|ACPI_PARSE_DOWNWARDS
 id|descending_callback
@@ -1143,6 +1149,11 @@ DECL|member|return_used
 id|u8
 id|return_used
 suffix:semicolon
+DECL|member|opcode
+id|u16
+id|opcode
+suffix:semicolon
+multiline_comment|/* Current AML opcode */
 DECL|member|prev_arg_types
 id|u32
 id|prev_arg_types
@@ -1321,22 +1332,26 @@ DECL|macro|PM1_EN
 mdefine_line|#define PM1_EN                      0x0200
 DECL|macro|PM1_CONTROL
 mdefine_line|#define PM1_CONTROL                 0x0300
+DECL|macro|PM1_a_CONTROL
+mdefine_line|#define PM1_a_CONTROL               0x0400
+DECL|macro|PM1_b_CONTROL
+mdefine_line|#define PM1_b_CONTROL               0x0500
 DECL|macro|PM2_CONTROL
-mdefine_line|#define PM2_CONTROL                 0x0400
+mdefine_line|#define PM2_CONTROL                 0x0600
 DECL|macro|PM_TIMER
-mdefine_line|#define PM_TIMER                    0x0500
+mdefine_line|#define PM_TIMER                    0x0700
 DECL|macro|PROCESSOR_BLOCK
-mdefine_line|#define PROCESSOR_BLOCK             0x0600
+mdefine_line|#define PROCESSOR_BLOCK             0x0800
 DECL|macro|GPE0_STS_BLOCK
-mdefine_line|#define GPE0_STS_BLOCK              0x0700
+mdefine_line|#define GPE0_STS_BLOCK              0x0900
 DECL|macro|GPE0_EN_BLOCK
-mdefine_line|#define GPE0_EN_BLOCK               0x0800
+mdefine_line|#define GPE0_EN_BLOCK               0x0A00
 DECL|macro|GPE1_STS_BLOCK
-mdefine_line|#define GPE1_STS_BLOCK              0x0900
+mdefine_line|#define GPE1_STS_BLOCK              0x0B00
 DECL|macro|GPE1_EN_BLOCK
-mdefine_line|#define GPE1_EN_BLOCK               0x0A00
+mdefine_line|#define GPE1_EN_BLOCK               0x0C00
 DECL|macro|SMI_CMD_BLOCK
-mdefine_line|#define SMI_CMD_BLOCK               0x0B00
+mdefine_line|#define SMI_CMD_BLOCK               0x0D00
 multiline_comment|/*&n; * Address space bitmasks for mmio or io spaces&n; */
 DECL|macro|SMI_CMD_ADDRESS_SPACE
 mdefine_line|#define SMI_CMD_ADDRESS_SPACE       0x01

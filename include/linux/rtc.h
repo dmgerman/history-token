@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * Generic RTC interface.&n; * This version contains the part of the user interface to the Real Time Clock&n; * service. It is used with both the legacy mc146818 and also  EFI&n; * Struct rtc_time and first 12 ioctl by Paul Gortmaker, 1996 - separated out&n; * from &lt;linux/mc146818rtc.h&gt; to this file for 2.4 kernels.&n; * &n; * Copyright (C) 1999 Hewlett-Packard Co.&n; * Copyright (C) 1999 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; */
-macro_line|#ifndef _LINUX_RTC_H
+macro_line|#ifndef _LINUX_RTC_H_
 DECL|macro|_LINUX_RTC_H_
 mdefine_line|#define _LINUX_RTC_H_
 multiline_comment|/*&n; * The struct used to pass data via the following ioctl. Similar to the&n; * struct tm in &lt;time.h&gt;, but it needs to be here so that the kernel &n; * source is self contained, allowing cross-compiles, etc. etc.&n; */

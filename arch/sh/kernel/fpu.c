@@ -17,43 +17,43 @@ id|tsk
 id|asm
 r_volatile
 (paren
-l_string|&quot;sts.l&t;$fpul, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;sts.l&t;$fpscr, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;lds&t;%1, $fpscr&bslash;n&bslash;t&quot;
+l_string|&quot;sts.l&t;fpul, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;sts.l&t;fpscr, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;lds&t;%1, fpscr&bslash;n&bslash;t&quot;
 l_string|&quot;frchg&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr15, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr14, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr13, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr12, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr11, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr10, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr9, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr8, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr7, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr6, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr5, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr4, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr3, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr2, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr1, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr0, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr15, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr14, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr13, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr12, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr11, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr10, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr9, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr8, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr7, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr6, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr5, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr4, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr3, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr2, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr1, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr0, @-%0&bslash;n&bslash;t&quot;
 l_string|&quot;frchg&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr15, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr14, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr13, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr12, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr11, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr10, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr9, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr8, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr7, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr6, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr5, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr4, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr3, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr2, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr1, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;$fr0, @-%0&quot;
+l_string|&quot;fmov.s&t;fr15, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr14, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr13, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr12, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr11, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr10, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr9, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr8, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr7, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr6, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr5, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr4, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr3, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr2, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr1, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr0, @-%0&quot;
 suffix:colon
 multiline_comment|/* no output */
 suffix:colon
@@ -103,43 +103,43 @@ id|tsk
 id|asm
 r_volatile
 (paren
-l_string|&quot;lds&t;%1, $fpscr&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr1&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr2&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr3&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr4&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr5&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr6&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr7&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr8&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr9&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr10&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr11&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr12&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr13&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr14&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr15&bslash;n&bslash;t&quot;
+l_string|&quot;lds&t;%1, fpscr&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr1&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr2&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr3&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr4&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr5&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr6&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr7&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr8&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr9&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr10&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr11&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr12&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr13&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr14&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr15&bslash;n&bslash;t&quot;
 l_string|&quot;frchg&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr1&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr2&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr3&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr4&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr5&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr6&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr7&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr8&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr9&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr10&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr11&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr12&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr13&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr14&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;@%0+, $fr15&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr1&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr2&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr3&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr4&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr5&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr6&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr7&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr8&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr9&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr10&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr11&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr12&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr13&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr14&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;@%0+, fr15&bslash;n&bslash;t&quot;
 l_string|&quot;frchg&bslash;n&bslash;t&quot;
-l_string|&quot;lds.l&t;@%0+, $fpscr&bslash;n&bslash;t&quot;
-l_string|&quot;lds.l&t;@%0+, $fpul&bslash;n&bslash;t&quot;
+l_string|&quot;lds.l&t;@%0+, fpscr&bslash;n&bslash;t&quot;
+l_string|&quot;lds.l&t;@%0+, fpul&bslash;n&bslash;t&quot;
 suffix:colon
 multiline_comment|/* no output */
 suffix:colon
@@ -170,41 +170,41 @@ r_void
 id|asm
 r_volatile
 (paren
-l_string|&quot;lds&t;%0, $fpul&bslash;n&bslash;t&quot;
-l_string|&quot;lds&t;%1, $fpscr&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr0&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr1&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr2&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr3&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr4&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr5&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr6&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr7&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr8&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr9&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr10&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr11&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr12&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr13&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr14&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr15&bslash;n&bslash;t&quot;
+l_string|&quot;lds&t;%0, fpul&bslash;n&bslash;t&quot;
+l_string|&quot;lds&t;%1, fpscr&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr0&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr1&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr2&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr3&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr4&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr5&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr6&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr7&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr8&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr9&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr10&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr11&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr12&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr13&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr14&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr15&bslash;n&bslash;t&quot;
 l_string|&quot;frchg&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr0&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr1&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr2&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr3&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr4&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr5&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr6&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr7&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr8&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr9&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr10&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr11&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr12&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr13&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr14&bslash;n&bslash;t&quot;
-l_string|&quot;fsts&t;$fpul, $fr15&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr0&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr1&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr2&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr3&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr4&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr5&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr6&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr7&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr8&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr9&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr10&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr11&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr12&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr13&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr14&bslash;n&bslash;t&quot;
+l_string|&quot;fsts&t;fpul, fr15&bslash;n&bslash;t&quot;
 l_string|&quot;frchg&quot;
 suffix:colon
 multiline_comment|/* no output */
@@ -362,7 +362,7 @@ op_amp
 id|PF_USEDFPU
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * This weird situation can be occurred.&n;&t;&t;&t; *&n;&t;&t;&t; * There&squot;s race condition in __cli:&n;&t;&t;&t; *&n;&t;&t;&t; *   (1) $SR --&gt; register&n;&t;&t;&t; *   (2) Set IMASK of register&n;&t;&t;&t; *   (3) $SR &lt;-- register&n;&t;&t;&t; *&n;&t;&t;&t; * Between (1) and (2), or (2) and (3) getting&n;&t;&t;&t; * interrupt, and interrupt handler (or&n;&t;&t;&t; * softirq) may use FPU.&n;&t;&t;&t; *&n;&t;&t;&t; * Then, SR.FD is overwritten by (3).&n;&t;&t;&t; *&n;&t;&t;&t; * This results init_task.PF_USEDFPU is on,&n;&t;&t;&t; * with SR.FD == 1.&n;&t;&t;&t; *&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * This weird situation can be occurred.&n;&t;&t;&t; *&n;&t;&t;&t; * There&squot;s race condition in __cli:&n;&t;&t;&t; *&n;&t;&t;&t; *   (1) SR --&gt; register&n;&t;&t;&t; *   (2) Set IMASK of register&n;&t;&t;&t; *   (3) SR &lt;-- register&n;&t;&t;&t; *&n;&t;&t;&t; * Between (1) and (2), or (2) and (3) getting&n;&t;&t;&t; * interrupt, and interrupt handler (or&n;&t;&t;&t; * softirq) may use FPU.&n;&t;&t;&t; *&n;&t;&t;&t; * Then, SR.FD is overwritten by (3).&n;&t;&t;&t; *&n;&t;&t;&t; * This results init_task.PF_USEDFPU is on,&n;&t;&t;&t; * with SR.FD == 1.&n;&t;&t;&t; *&n;&t;&t;&t; */
 id|release_fpu
 c_func
 (paren

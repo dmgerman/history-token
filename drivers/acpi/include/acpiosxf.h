@@ -154,6 +154,18 @@ id|u32
 id|length
 )paren
 suffix:semicolon
+id|ACPI_STATUS
+id|acpi_os_get_physical_address
+(paren
+r_void
+op_star
+id|logical_address
+comma
+id|ACPI_PHYSICAL_ADDRESS
+op_star
+id|physical_address
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Interrupt handlers&n; */
 id|ACPI_STATUS
 id|acpi_os_install_interrupt_handler

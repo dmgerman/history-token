@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sbus.c,v 1.91 2000/11/08 05:04:06 davem Exp $&n; * sbus.c:  SBus support routines.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: sbus.c,v 1.92 2001/01/25 17:15:59 davem Exp $&n; * sbus.c:  SBus support routines.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/malloc.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -1096,21 +1096,8 @@ op_eq
 id|num_ranges
 )paren
 (brace
-id|prom_printf
-c_func
-(paren
-l_string|&quot;sbus_apply_ranges: Cannot find matching &quot;
-l_string|&quot;range nregs[%d] nranges[%d].&bslash;n&quot;
-comma
-id|num_regs
-comma
-id|num_ranges
-)paren
-suffix:semicolon
-id|prom_halt
-c_func
-(paren
-)paren
+multiline_comment|/* We used to flag this as an error.  Actually&n;&t;&t;&t;&t; * some devices do not report the regs as we expect.&n;&t;&t;&t;&t; * For example, see SUNW,pln device.  In that case&n;&t;&t;&t;&t; * the reg property is in a format internal to that&n;&t;&t;&t;&t; * node, ie. it is not in the SBUS register space&n;&t;&t;&t;&t; * per se. -DaveM&n;&t;&t;&t;&t; */
+r_return
 suffix:semicolon
 )brace
 id|regs

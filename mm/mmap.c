@@ -3487,6 +3487,12 @@ id|mm-&gt;locked_vm
 op_assign
 l_int|0
 suffix:semicolon
+id|flush_cache_mm
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -3549,16 +3555,6 @@ c_func
 id|mpnt
 )paren
 suffix:semicolon
-id|flush_cache_range
-c_func
-(paren
-id|mm
-comma
-id|start
-comma
-id|end
-)paren
-suffix:semicolon
 id|zap_page_range
 c_func
 (paren
@@ -3593,6 +3589,12 @@ op_assign
 id|next
 suffix:semicolon
 )brace
+id|flush_tlb_mm
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
 multiline_comment|/* This is just debugging */
 r_if
 c_cond

@@ -25,7 +25,7 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;stc&t;$r7_bank, %0&quot;
+l_string|&quot;stc&t;r7_bank, %0&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren

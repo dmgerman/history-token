@@ -5713,16 +5713,6 @@ c_func
 id|agp_bridge.previous_size
 )paren
 suffix:semicolon
-id|pci_write_config_dword
-c_func
-(paren
-id|agp_bridge.dev
-comma
-id|VIA_ATTBASE
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|pci_write_config_byte
 c_func
 (paren
@@ -5733,6 +5723,7 @@ comma
 id|previous_size-&gt;size_value
 )paren
 suffix:semicolon
+multiline_comment|/* Do not disable by writing 0 to VIA_ATTBASE, it screws things up&n;&t; * during reinitialization.&n;&t; */
 )brace
 DECL|function|via_tlbflush
 r_static
@@ -9715,15 +9706,11 @@ id|PFX
 l_string|&quot;agpgart: Detected an &quot;
 l_string|&quot;Intel i815, but could not find the&quot;
 l_string|&quot; secondary device.&bslash;n&quot;
+l_string|&quot;Assuming user has added an external AGP&quot;
+l_string|&quot; card&bslash;n&quot;
 )paren
 suffix:semicolon
-id|agp_bridge.type
-op_assign
-id|NOT_SUPPORTED
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
+r_break
 suffix:semicolon
 )brace
 id|printk
