@@ -4756,12 +4756,6 @@ id|awd.done
 op_assign
 l_int|0
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
 id|add_wait_queue
 c_func
 (paren
@@ -4784,7 +4778,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_ATOMIC
+id|GFP_NOIO
 )paren
 suffix:semicolon
 r_if
@@ -4798,12 +4792,6 @@ id|usb_free_urb
 c_func
 (paren
 id|urb
-)paren
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
 )paren
 suffix:semicolon
 id|remove_wait_queue
@@ -4828,6 +4816,13 @@ op_logical_and
 op_logical_neg
 id|awd.done
 )paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 id|timeout
 op_assign
 id|schedule_timeout
@@ -4836,6 +4831,7 @@ c_func
 id|timeout
 )paren
 suffix:semicolon
+)brace
 id|set_current_state
 c_func
 (paren
