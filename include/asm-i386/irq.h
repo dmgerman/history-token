@@ -69,6 +69,19 @@ id|task_struct
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|can_request_irq
+c_func
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+id|flags
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 DECL|macro|ARCH_HAS_NMI_WATCHDOG
 mdefine_line|#define ARCH_HAS_NMI_WATCHDOG&t;&t;/* See include/linux/nmi.h */

@@ -2204,6 +2204,30 @@ r_else
 r_if
 c_cond
 (paren
+id|sense_key
+op_eq
+id|BLANK_CHECK
+)paren
+(brace
+multiline_comment|/* Disk appears blank ?? */
+id|ide_dump_status
+(paren
+id|drive
+comma
+l_string|&quot;media error (blank)&quot;
+comma
+id|stat
+)paren
+suffix:semicolon
+id|do_end_request
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
 (paren
 id|err
 op_amp

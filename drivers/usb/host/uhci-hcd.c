@@ -9186,6 +9186,17 @@ r_int
 )paren
 id|hcd-&gt;regs
 suffix:semicolon
+multiline_comment|/* Turn off all interrupts */
+id|outw
+c_func
+(paren
+l_int|0
+comma
+id|uhci-&gt;io_addr
+op_plus
+id|USBINTR
+)paren
+suffix:semicolon
 multiline_comment|/* Maybe kick BIOS off this hardware.  Then reset, so we won&squot;t get&n;&t; * interrupts from any previous setup.&n;&t; */
 id|reset_hc
 c_func
