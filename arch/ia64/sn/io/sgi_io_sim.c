@@ -12,36 +12,6 @@ DECL|variable|master_procid
 id|cpuid_t
 id|master_procid
 suffix:semicolon
-DECL|variable|arg_maxnodes
-r_char
-id|arg_maxnodes
-(braket
-l_int|4
-)braket
-suffix:semicolon
-multiline_comment|/*&n; * Return non-zero if the given variable was specified&n; */
-r_int
-DECL|function|is_specified
-id|is_specified
-c_func
-(paren
-r_char
-op_star
-id|s
-)paren
-(brace
-r_return
-(paren
-id|strlen
-c_func
-(paren
-id|s
-)paren
-op_ne
-l_int|0
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Routines provided by ml/SN/promif.c.&n; */
 DECL|variable|console_nasid
 id|nasid_t
