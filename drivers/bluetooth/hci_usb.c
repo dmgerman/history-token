@@ -1073,6 +1073,10 @@ id|urb-&gt;complete
 op_assign
 id|hci_usb_rx_complete
 suffix:semicolon
+id|urb-&gt;interval
+op_assign
+id|husb-&gt;isoc_in_ep-&gt;desc.bInterval
+suffix:semicolon
 id|urb-&gt;transfer_buffer_length
 op_assign
 id|size
@@ -2232,6 +2236,10 @@ suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
 id|URB_ISO_ASAP
+suffix:semicolon
+id|urb-&gt;interval
+op_assign
+id|husb-&gt;isoc_out_ep-&gt;desc.bInterval
 suffix:semicolon
 id|urb-&gt;transfer_buffer
 op_assign
