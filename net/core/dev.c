@@ -5628,6 +5628,10 @@ op_star
 id|pos
 )paren
 (brace
+op_increment
+op_star
+id|pos
+suffix:semicolon
 r_return
 id|v
 op_eq
@@ -5812,7 +5816,7 @@ op_star
 )paren
 l_int|1
 )paren
-id|seq_printf
+id|seq_puts
 c_func
 (paren
 id|seq
