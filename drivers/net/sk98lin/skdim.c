@@ -609,21 +609,6 @@ id|SystemLoad
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-r_int
-r_int
-id|SKNumCpus
-op_assign
-id|smp_num_cpus
-suffix:semicolon
-macro_line|#else
-r_int
-r_int
-id|SKNumCpus
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* unsigned int  NbrCpu      = 0; */
 multiline_comment|/*&n;&t;** The following lines have been commented out, because&n;&t;** from kernel 2.5.44 onwards, the kernel-owned structure&n;&t;**&n;&t;**      struct kernel_stat kstat&n;&t;**&n;&t;** is not marked as an exported symbol in the file&n;&t;**&n;&t;**      kernel/ksyms.c &n;&t;**&n;&t;** As a consequence, using this driver as KLM is not possible&n;&t;** and any access of the structure kernel_stat via the &n;&t;** dedicated macros kstat_cpu(i).cpustat.xxx is to be avoided.&n;&t;**&n;&t;** The kstat-information might be added again in future &n;&t;** versions of the 2.5.xx kernel, but for the time being, &n;&t;** number of interrupts will serve as indication how much &n;&t;** load we currently have... &n;&t;**&n;&t;** for (NbrCpu = 0; NbrCpu &lt; num_online_cpus(); NbrCpu++) {&n;&t;**&t;UserTime   = UserTime   + kstat_cpu(NbrCpu).cpustat.user;&n;&t;**&t;NiceTime   = NiceTime   + kstat_cpu(NbrCpu).cpustat.nice;&n;&t;**&t;SystemTime = SystemTime + kstat_cpu(NbrCpu).cpustat.system;&n;&t;** }&n;&t;*/
 id|SK_U64

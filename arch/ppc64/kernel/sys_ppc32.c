@@ -3437,6 +3437,10 @@ c_func
 id|stat-&gt;rdev
 )paren
 )paren
+r_return
+op_minus
+id|EOVERFLOW
+suffix:semicolon
 id|err
 op_assign
 id|put_user

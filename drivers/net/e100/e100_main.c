@@ -1,6 +1,6 @@
 multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;*******************************************************************************/
 multiline_comment|/**********************************************************************&n;*                                                                     *&n;* INTEL CORPORATION                                                   *&n;*                                                                     *&n;* This software is supplied under the terms of the license included   *&n;* above.  All use of this driver must be in accordance with the terms *&n;* of that license.                                                    *&n;*                                                                     *&n;* Module Name:  e100_main.c                                           *&n;*                                                                     *&n;* Abstract:     Functions for the driver entry points like load,      *&n;*               unload, open and close. All board specific calls made *&n;*               by the network interface section of the driver.       *&n;*                                                                     *&n;* Environment:  This file is intended to be specific to the Linux     *&n;*               operating system.                                     *&n;*                                                                     *&n;**********************************************************************/
-multiline_comment|/* Change Log&n; * &n; * 2.3.18       07/08/03&n; * o Bug fix: read skb-&gt;len after freeing skb&n; *   [Andrew Morton] akpm@zip.com.au&n; * o Bug fix: 82557 (with National PHY) timeout during init&n; *   [Adam Kropelin] akropel1@rochester.rr.com&n; * o Feature add: allow to change Wake On LAN when EEPROM disabled&n; * &n; * 2.3.13       05/08/03&n; * o Feature remove: /proc/net/PRO_LAN_Adapters support gone completely&n; * o Feature remove: IDIAG support (use ethtool -t instead)&n; * o Cleanup: fixed spelling mistakes found by community&n; * o Feature add: ethtool cable diag test&n; * o Feature add: ethtool parameter support (ring size, xsum, flow ctrl)&n; * o Cleanup: move e100_asf_enable under CONFIG_PM to avoid warning&n; *   [Stephen Rothwell (sfr@canb.auug.org.au)]&n; * o Bug fix: don&squot;t call any netif_carrier_* until netdev registered.&n; *   [Andrew Morton (akpm@digeo.com)]&n; * o Cleanup: replace (skb-&gt;len - skb-&gt;data_len) with skb_headlen(skb)&n; *   [jmorris@intercode.com.au]&n; * o Bug fix: cleanup of Tx skbs after running ethtool diags&n; * o Bug fix: incorrect reporting of ethtool diag overall results&n; * o Bug fix: must hold xmit_lock before stopping queue in ethtool&n; *   operations that require reset h/w and driver structures.&n; * o Bug fix: statistic command failure would stop statistic collection.&n; * &n; * 2.2.21&t;02/11/03&n; */
+multiline_comment|/* Change Log&n; * &n; * 2.3.30       09/21/03&n; * o Bug fix (Bugzilla 97908): Loading e100 was causing crash on Itanium2&n; *   with HP chipset&n; * o Bug fix (Bugzilla 101583): e100 can&squot;t pass traffic with ipv6&n; * o Bug fix (Bugzilla 101360): PRO/10+ can&squot;t pass traffic&n; * &n; * 2.3.27       08/08/03&n; * o Bug fix: read skb-&gt;len after freeing skb&n; *   [Andrew Morton] akpm@zip.com.au&n; * o Bug fix: 82557 (with National PHY) timeout during init&n; *   [Adam Kropelin] akropel1@rochester.rr.com&n; * o Feature add: allow to change Wake On LAN when EEPROM disabled&n; * &n; * 2.3.13       05/08/03&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
@@ -432,7 +432,7 @@ id|e100_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;2.3.18-k1&quot;
+l_string|&quot;2.3.30-k1&quot;
 suffix:semicolon
 DECL|variable|e100_full_driver_name
 r_const
@@ -2486,26 +2486,6 @@ op_amp
 id|pcid-&gt;dev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|rc
-op_assign
-id|e100_alloc_space
-c_func
-(paren
-id|bdp
-)paren
-)paren
-op_ne
-l_int|0
-)paren
-(brace
-r_goto
-id|err_dev
-suffix:semicolon
-)brace
 id|bdp-&gt;flags
 op_assign
 l_int|0
@@ -2602,7 +2582,27 @@ l_int|0
 )paren
 (brace
 r_goto
-id|err_dealloc
+id|err_dev
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|rc
+op_assign
+id|e100_alloc_space
+c_func
+(paren
+id|bdp
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+r_goto
+id|err_pci
 suffix:semicolon
 )brace
 r_if
@@ -2784,7 +2784,7 @@ id|dev-&gt;features
 op_assign
 id|NETIF_F_SG
 op_or
-id|NETIF_F_HW_CSUM
+id|NETIF_F_IP_CSUM
 op_or
 id|NETIF_F_HW_VLAN_TX
 op_or
@@ -2807,7 +2807,7 @@ l_int|0
 )paren
 (brace
 r_goto
-id|err_pci
+id|err_dealloc
 suffix:semicolon
 )brace
 id|e100_check_options
@@ -2996,6 +2996,14 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|err_dealloc
+suffix:colon
+id|e100_dealloc_space
+c_func
+(paren
+id|bdp
+)paren
+suffix:semicolon
 id|err_pci
 suffix:colon
 id|iounmap
@@ -3014,14 +3022,6 @@ id|pci_disable_device
 c_func
 (paren
 id|pcid
-)paren
-suffix:semicolon
-id|err_dealloc
-suffix:colon
-id|e100_dealloc_space
-c_func
-(paren
-id|bdp
 )paren
 suffix:semicolon
 id|err_dev
@@ -5779,6 +5779,22 @@ op_or_assign
 id|DF_UCODE_LOADED
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+(paren
+id|u8
+)paren
+id|bdp-&gt;rev_id
+OL
+id|D101A4_REV_ID
+)paren
+id|e100_config_init_82557
+c_func
+(paren
+id|bdp
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -3089,15 +3089,7 @@ id|hw-&gt;autoneg_failed
 op_assign
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hw-&gt;media_type
-op_eq
-id|e1000_media_type_fiber
-)paren
-(brace
-multiline_comment|/* AutoNeg failed to achieve a link, so we&squot;ll call&n;                 * e1000_check_for_link. This routine will force the link up if&n;                 * we detect a signal. This will allow us to communicate with&n;                 * non-autonegotiating link partners.&n;                 */
+multiline_comment|/* AutoNeg failed to achieve a link, so we&squot;ll call&n;             * e1000_check_for_link. This routine will force the link up if&n;             * we detect a signal. This will allow us to communicate with&n;             * non-autonegotiating link partners.&n;             */
 r_if
 c_cond
 (paren
@@ -3126,7 +3118,6 @@ id|hw-&gt;autoneg_failed
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -5180,12 +5171,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Write back the modified PHY MII control register. */
-id|udelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5208,6 +5193,12 @@ r_return
 id|ret_val
 suffix:semicolon
 )brace
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 multiline_comment|/* The wait_autoneg_complete flag may be a little misleading here.&n;     * Since we are forcing speed and duplex, Auto-Neg is not enabled.&n;     * But we do want to delay for a period while forcing only so we&n;     * don&squot;t generate false No Link messages.  So we will wait here&n;     * only if the user has set wait_autoneg_complete to 1, which is&n;     * the default.&n;     */
 r_if
 c_cond
@@ -6351,6 +6342,7 @@ r_else
 r_if
 c_cond
 (paren
+(paren
 id|hw-&gt;original_fc
 op_eq
 id|e1000_fc_none
@@ -6358,6 +6350,9 @@ op_logical_or
 id|hw-&gt;original_fc
 op_eq
 id|e1000_fc_tx_pause
+)paren
+op_logical_or
+id|hw-&gt;fc_strict_ieee
 )paren
 (brace
 id|hw-&gt;fc
@@ -6372,12 +6367,6 @@ l_string|&quot;Flow Control = NONE.&bslash;r&bslash;n&quot;
 suffix:semicolon
 )brace
 r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hw-&gt;fc_strict_ieee
-)paren
 (brace
 id|hw-&gt;fc
 op_assign
@@ -6891,18 +6880,11 @@ r_if
 c_cond
 (paren
 (paren
+(paren
+(paren
 id|hw-&gt;media_type
 op_eq
 id|e1000_media_type_fiber
-)paren
-op_logical_and
-(paren
-op_logical_neg
-(paren
-id|status
-op_amp
-id|E1000_STATUS_LU
-)paren
 )paren
 op_logical_and
 (paren
@@ -6913,6 +6895,23 @@ id|E1000_CTRL_SWDPIN1
 )paren
 op_eq
 id|signal
+)paren
+)paren
+op_logical_or
+(paren
+id|hw-&gt;media_type
+op_eq
+id|e1000_media_type_internal_serdes
+)paren
+)paren
+op_logical_and
+(paren
+op_logical_neg
+(paren
+id|status
+op_amp
+id|E1000_STATUS_LU
+)paren
 )paren
 op_logical_and
 (paren
@@ -7024,9 +7023,17 @@ r_if
 c_cond
 (paren
 (paren
+(paren
 id|hw-&gt;media_type
 op_eq
 id|e1000_media_type_fiber
+)paren
+op_logical_or
+(paren
+id|hw-&gt;media_type
+op_eq
+id|e1000_media_type_internal_serdes
+)paren
 )paren
 op_logical_and
 (paren

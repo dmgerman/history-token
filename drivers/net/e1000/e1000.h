@@ -87,12 +87,12 @@ DECL|macro|E1000_TX_HEAD_ADDR_SHIFT
 mdefine_line|#define E1000_TX_HEAD_ADDR_SHIFT 7
 DECL|macro|E1000_PBA_TX_MASK
 mdefine_line|#define E1000_PBA_TX_MASK 0xFFFF0000
-multiline_comment|/* Flow Control High-Watermark: 43464 bytes */
-DECL|macro|E1000_FC_HIGH_THRESH
-mdefine_line|#define E1000_FC_HIGH_THRESH 0xA9C8
-multiline_comment|/* Flow Control Low-Watermark: 43456 bytes */
-DECL|macro|E1000_FC_LOW_THRESH
-mdefine_line|#define E1000_FC_LOW_THRESH 0xA9C0
+multiline_comment|/* Flow Control High-Watermark: 5688 bytes below Rx FIFO size */
+DECL|macro|E1000_FC_HIGH_DIFF
+mdefine_line|#define E1000_FC_HIGH_DIFF 0x1638
+multiline_comment|/* Flow Control Low-Watermark: 5696 bytes below Rx FIFO size */
+DECL|macro|E1000_FC_LOW_DIFF
+mdefine_line|#define E1000_FC_LOW_DIFF 0x1640
 multiline_comment|/* Flow Control Pause Time: 858 usec */
 DECL|macro|E1000_FC_PAUSE_TIME
 mdefine_line|#define E1000_FC_PAUSE_TIME 0x0680

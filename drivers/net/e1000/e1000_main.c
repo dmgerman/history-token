@@ -1,6 +1,6 @@
 multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 macro_line|#include &quot;e1000.h&quot;
-multiline_comment|/* Change Log&n; *&n; * 5.2.16&t;8/8/03&n; *   o Added support for new controllers: 82545GM, 82546GB, 82541/7_B1&n; *   o Bug fix: reset h/w before first EEPROM read because we don&squot;t know&n; *     who may have been messing with the device before we got there.&n; *     [Dave Johnson (ddj -a-t- cascv.brown.edu)]&n; *   o Bug fix: read the correct work from EEPROM to detect programmed&n; *     WoL settings.&n; *   o Bug fix: TSO would hang if space left in FIFO was being miscalculated&n; *     when mss dropped without a correspoding drop in the DMA buffer size.&n; *   o ASF for Fiber nics isn&squot;t supported.&n; *   o Bug fix: Workaround added for potential hang with 82544 running in&n; *     PCI-X if send buffer terminates within an evenly-aligned dword.&n; *   o Feature: Add support for ethtool flow control setting.&n; *   o Feature: Add support for ethtool TSO setting.&n; *   o Feature: Increase default Tx Descriptor count to 1024 for &gt;= 82544.&n; *   &n; * 5.1.13&t;5/28/03&n; *   o Bug fix: request_irq() failure resulted in freeing resources twice!&n; *     [Don Fry (brazilnut@us.ibm.com)]&n; *   o Bug fix: fix VLAN support on ppc64 [Mark Rakes (mrakes@vivato.net)]&n; *   o Bug fix: missing Tx cleanup opportunities during interrupt handling.&n; *   o Bug fix: alloc_etherdev failure didn&squot;t cleanup regions in probe.&n; *   o Cleanup: s/int/unsigned int/ for descriptor ring indexes.&n; *   &n; * 5.1.11&t;5/6/03&n; */
+multiline_comment|/* Change Log&n; *&n; * 5.2.18&t;9/13/03&n; *   o Bug fix: SERDES devices might be connected to a back-plane&n; *     switch that doesn&squot;t support auto-neg, so add the capability&n; *     to force 1000/Full.&n; *   o Bug fix: Flow control settings for hi/lo watermark didn&squot;t&n; *     consider changes in the Rx FIFO size, which could occur with&n; *     Jumbo Frames or with the reduced FIFO in 82547.&n; *   o Better propagation of error codes. [Janice Girouard &n; *     (janiceg@us.ibm.com)].&n; *&n; * 5.2.16&t;8/8/03&n; *   o Added support for new controllers: 82545GM, 82546GB, 82541/7_B1&n; *   o Bug fix: reset h/w before first EEPROM read because we don&squot;t know&n; *     who may have been messing with the device before we got there.&n; *     [Dave Johnson (ddj -a-t- cascv.brown.edu)]&n; *   o Bug fix: read the correct work from EEPROM to detect programmed&n; *     WoL settings.&n; *   o Bug fix: TSO would hang if space left in FIFO was being miscalculated&n; *     when mss dropped without a correspoding drop in the DMA buffer size.&n; *   o ASF for Fiber nics isn&squot;t supported.&n; *   o Bug fix: Workaround added for potential hang with 82544 running in&n; *     PCI-X if send buffer terminates within an evenly-aligned dword.&n; *   o Feature: Add support for ethtool flow control setting.&n; *   o Feature: Add support for ethtool TSO setting.&n; *   o Feature: Increase default Tx Descriptor count to 1024 for &gt;= 82544.&n; *   &n; * 5.1.13&t;5/28/03&n; */
 DECL|variable|e1000_driver_name
 r_char
 id|e1000_driver_name
@@ -23,7 +23,7 @@ id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;5.2.16-k1&quot;
+l_string|&quot;5.2.19-k1&quot;
 suffix:semicolon
 DECL|variable|e1000_copyright
 r_char
@@ -1462,6 +1462,9 @@ id|netdev
 op_assign
 id|adapter-&gt;netdev
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 multiline_comment|/* hardware has been reset, we need to reload some things */
 id|e1000_set_multi
 c_func
@@ -1502,6 +1505,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|err
+op_assign
 id|request_irq
 c_func
 (paren
@@ -1519,10 +1525,10 @@ comma
 id|netdev
 )paren
 )paren
+)paren
 (brace
 r_return
-op_minus
-l_int|1
+id|err
 suffix:semicolon
 )brace
 id|mod_timer
@@ -1739,6 +1745,27 @@ comma
 id|pba
 )paren
 suffix:semicolon
+multiline_comment|/* flow control settings */
+id|adapter-&gt;hw.fc_high_water
+op_assign
+id|pba
+op_minus
+id|E1000_FC_HIGH_DIFF
+suffix:semicolon
+id|adapter-&gt;hw.fc_low_water
+op_assign
+id|pba
+op_minus
+id|E1000_FC_LOW_DIFF
+suffix:semicolon
+id|adapter-&gt;hw.fc_pause_time
+op_assign
+id|E1000_FC_PAUSE_TIME
+suffix:semicolon
+id|adapter-&gt;hw.fc_send_xon
+op_assign
+l_int|1
+suffix:semicolon
 id|adapter-&gt;hw.fc
 op_assign
 id|adapter-&gt;hw.original_fc
@@ -1844,6 +1871,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 r_uint16
 id|eeprom_data
 suffix:semicolon
@@ -1851,7 +1881,7 @@ r_if
 c_cond
 (paren
 (paren
-id|i
+id|err
 op_assign
 id|pci_enable_device
 c_func
@@ -1862,7 +1892,7 @@ id|pdev
 )paren
 (brace
 r_return
-id|i
+id|err
 suffix:semicolon
 )brace
 r_if
@@ -1870,7 +1900,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|i
+id|err
 op_assign
 id|pci_set_dma_mask
 c_func
@@ -1893,7 +1923,7 @@ r_if
 c_cond
 (paren
 (paren
-id|i
+id|err
 op_assign
 id|pci_set_dma_mask
 c_func
@@ -1912,7 +1942,7 @@ l_string|&quot;No usable DMA configuration, aborting&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|i
+id|err
 suffix:semicolon
 )brace
 id|pci_using_dac
@@ -1924,7 +1954,7 @@ r_if
 c_cond
 (paren
 (paren
-id|i
+id|err
 op_assign
 id|pci_request_regions
 c_func
@@ -1937,7 +1967,7 @@ id|e1000_driver_name
 )paren
 (brace
 r_return
-id|i
+id|err
 suffix:semicolon
 )brace
 id|pci_set_master
@@ -1965,6 +1995,11 @@ op_logical_neg
 id|netdev
 )paren
 (brace
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_goto
 id|err_alloc_etherdev
 suffix:semicolon
@@ -2045,6 +2080,11 @@ op_logical_neg
 id|adapter-&gt;hw.hw_addr
 )paren
 (brace
+id|err
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
 r_goto
 id|err_ioremap
 suffix:semicolon
@@ -2209,10 +2249,14 @@ multiline_comment|/* setup the private structure */
 r_if
 c_cond
 (paren
+(paren
+id|err
+op_assign
 id|e1000_sw_init
 c_func
 (paren
 id|adapter
+)paren
 )paren
 )paren
 (brace
@@ -2311,6 +2355,11 @@ id|KERN_ERR
 l_string|&quot;The EEPROM Checksum Is Not Valid&bslash;n&quot;
 )paren
 suffix:semicolon
+id|err
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
 r_goto
 id|err_eeprom
 suffix:semicolon
@@ -2344,6 +2393,11 @@ id|netdev-&gt;dev_addr
 )paren
 )paren
 (brace
+id|err
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
 r_goto
 id|err_eeprom
 suffix:semicolon
@@ -2604,7 +2658,7 @@ id|adapter-&gt;hw.hw_addr
 suffix:semicolon
 id|err_ioremap
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|netdev
@@ -2619,8 +2673,7 @@ id|pdev
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENOMEM
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_remove - Device Removal Routine&n; * @pdev: PCI device information struct&n; *&n; * e1000_remove is called by the PCI subsystem to alert the driver&n; * that it should release a PCI device.  The could be caused by a&n; * Hot-Plug event, or because the driver is going to be removed from&n; * memory.&n; **/
@@ -2848,7 +2901,7 @@ l_string|&quot;Unknown MAC Type&bslash;n&quot;
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* initialize eeprom parameters */
@@ -2857,23 +2910,6 @@ c_func
 (paren
 id|hw
 )paren
-suffix:semicolon
-multiline_comment|/* flow control settings */
-id|hw-&gt;fc_high_water
-op_assign
-id|E1000_FC_HIGH_THRESH
-suffix:semicolon
-id|hw-&gt;fc_low_water
-op_assign
-id|E1000_FC_LOW_THRESH
-suffix:semicolon
-id|hw-&gt;fc_pause_time
-op_assign
-id|E1000_FC_PAUSE_TIME
-suffix:semicolon
-id|hw-&gt;fc_send_xon
-op_assign
-l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -3006,14 +3042,21 @@ id|adapter
 op_assign
 id|netdev-&gt;priv
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 multiline_comment|/* allocate transmit descriptors */
 r_if
 c_cond
 (paren
+(paren
+id|err
+op_assign
 id|e1000_setup_tx_resources
 c_func
 (paren
 id|adapter
+)paren
 )paren
 )paren
 (brace
@@ -3025,10 +3068,14 @@ multiline_comment|/* allocate receive descriptors */
 r_if
 c_cond
 (paren
+(paren
+id|err
+op_assign
 id|e1000_setup_rx_resources
 c_func
 (paren
 id|adapter
+)paren
 )paren
 )paren
 (brace
@@ -3039,10 +3086,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|err
+op_assign
 id|e1000_up
 c_func
 (paren
 id|adapter
+)paren
 )paren
 )paren
 (brace
@@ -3078,8 +3129,7 @@ id|adapter
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|EBUSY
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_close - Disables a network interface&n; * @netdev: network interface device structure&n; *&n; * Returns 0, this is not allowed to fail&n; *&n; * The close entry point is called when an interface is de-activated&n; * by the OS.  The hardware is still under the drivers control, but&n; * needs to be disabled.  A global MAC reset is issued to stop the&n; * hardware, and all transmit and receive resources are freed.&n; **/
@@ -6513,6 +6563,7 @@ c_cond
 (paren
 id|mss
 )paren
+(brace
 id|max_per_txd
 op_assign
 id|min
@@ -6525,6 +6576,7 @@ comma
 id|max_per_txd
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|nr_frags
 op_assign
@@ -9710,7 +9762,7 @@ r_return
 id|cleaned
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * e1000_alloc_rx_buffers - Replace used receive buffers&n; * @data: address of board private structure&n; **/
+multiline_comment|/**&n; * e1000_alloc_rx_buffers - Replace used receive buffers&n; * @adapter: address of board private structure&n; **/
 r_static
 r_void
 DECL|function|e1000_alloc_rx_buffers
