@@ -572,12 +572,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|__pnp_remove_device
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 )brace
 )def_block
 )brace
