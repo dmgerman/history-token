@@ -2672,11 +2672,12 @@ op_increment
 r_if
 c_cond
 (paren
-id|node_data
-(braket
+id|NODE_DATA
+c_func
+(paren
 id|nid
-)braket
-dot
+)paren
+op_member_access_from_pointer
 id|node_spanned_pages
 op_ne
 l_int|0
