@@ -1933,8 +1933,18 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_SECURITY
-multiline_comment|/* capable prototype and code are in security.[hc] if CONFIG_SECURITY */
+macro_line|#ifdef CONFIG_SECURITY
+multiline_comment|/* code is in security.c */
+r_extern
+r_int
+id|capable
+c_func
+(paren
+r_int
+id|cap
+)paren
+suffix:semicolon
+macro_line|#else
 DECL|function|capable
 r_static
 r_inline

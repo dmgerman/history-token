@@ -4137,14 +4137,6 @@ op_star
 id|ops
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|capable
-(paren
-r_int
-id|cap
-)paren
-suffix:semicolon
 macro_line|#else /* CONFIG_SECURITY */
 multiline_comment|/*&n; * This is the default capabilities functionality.  Most of these functions&n; * are just stubbed out, but a few must call the proper capable code.&n; */
 DECL|function|security_scaffolding_startup
