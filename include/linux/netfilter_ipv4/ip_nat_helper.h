@@ -124,11 +124,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
-r_struct
-id|list_head
-id|helpers
-suffix:semicolon
-r_extern
 r_int
 id|ip_nat_helper_register
 c_func
@@ -148,6 +143,20 @@ r_struct
 id|ip_nat_helper
 op_star
 id|me
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|ip_nat_helper
+op_star
+id|ip_nat_find_helper
+c_func
+(paren
+r_const
+r_struct
+id|ip_conntrack_tuple
+op_star
+id|tuple
 )paren
 suffix:semicolon
 multiline_comment|/* These return true or false. */

@@ -83,6 +83,12 @@ id|inet6_dev
 op_star
 id|idev
 suffix:semicolon
+DECL|member|rt
+r_struct
+id|rt6_info
+op_star
+id|rt
+suffix:semicolon
 DECL|member|lst_next
 r_struct
 id|inet6_ifaddr
@@ -357,6 +363,12 @@ r_struct
 id|inet6_dev
 op_star
 id|aca_idev
+suffix:semicolon
+DECL|member|aca_rt
+r_struct
+id|rt6_info
+op_star
+id|aca_rt
 suffix:semicolon
 DECL|member|aca_next
 r_struct

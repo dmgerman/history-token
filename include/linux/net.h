@@ -830,6 +830,14 @@ r_int
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|net_random_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|kernel_sendmsg
 c_func

@@ -80,13 +80,15 @@ id|hotdrop
 (brace
 r_struct
 id|tcphdr
-id|tcph
+id|_tcph
+comma
+op_star
+id|th
 suffix:semicolon
-multiline_comment|/* In practice, TCP match does this, so can&squot;t fail.  But let&squot;s&n;           be good citizens. */
-r_if
-c_cond
-(paren
-id|skb_copy_bits
+multiline_comment|/* In practice, TCP match does this, so can&squot;t fail.  But let&squot;s&n;&t; * be good citizens.&n;&t; */
+id|th
+op_assign
+id|skb_header_pointer
 c_func
 (paren
 id|skb
@@ -95,16 +97,21 @@ id|skb-&gt;nh.iph-&gt;ihl
 op_star
 l_int|4
 comma
-op_amp
-id|tcph
-comma
 r_sizeof
 (paren
-id|tcph
+id|_tcph
 )paren
+comma
+op_amp
+id|_tcph
 )paren
-OL
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|th
+op_eq
+l_int|NULL
 )paren
 (brace
 op_star
@@ -135,7 +142,7 @@ id|IPT_ECN_OP_MATCH_ECE
 r_if
 c_cond
 (paren
-id|tcph.ece
+id|th-&gt;ece
 op_eq
 l_int|1
 )paren
@@ -148,7 +155,7 @@ r_else
 r_if
 c_cond
 (paren
-id|tcph.ece
+id|th-&gt;ece
 op_eq
 l_int|0
 )paren
@@ -176,7 +183,7 @@ id|IPT_ECN_OP_MATCH_CWR
 r_if
 c_cond
 (paren
-id|tcph.cwr
+id|th-&gt;cwr
 op_eq
 l_int|1
 )paren
@@ -189,7 +196,7 @@ r_else
 r_if
 c_cond
 (paren
-id|tcph.cwr
+id|th-&gt;cwr
 op_eq
 l_int|0
 )paren

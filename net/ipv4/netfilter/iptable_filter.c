@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * This is the 1999 rewrite of IP Firewalling, aiming for kernel 2.3.x.&n; *&n; * Copyright (C) 1999 Paul `Rusty&squot; Russell &amp; Michael J. Neuling&n; * Copyright (C) 2000-2004 Netfilter Core Team &lt;coreteam@netfilter.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
 id|MODULE_LICENSE
 c_func
@@ -873,12 +874,14 @@ id|forward
 op_assign
 id|NF_ACCEPT
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|forward
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0000
 )paren
 suffix:semicolon
 DECL|function|init

@@ -10877,6 +10877,11 @@ op_logical_neg
 id|dev_boot_phase
 )paren
 suffix:semicolon
+id|net_random_init
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

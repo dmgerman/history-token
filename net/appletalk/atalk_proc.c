@@ -5,12 +5,6 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/atalk.h&gt;
-macro_line|#ifdef CONFIG_PROC_FS
-r_extern
-r_struct
-id|file_operations
-id|atalk_seq_arp_fops
-suffix:semicolon
 DECL|function|atalk_get_interface_idx
 r_static
 id|__inline__
@@ -1393,29 +1387,4 @@ id|proc_net
 )paren
 suffix:semicolon
 )brace
-macro_line|#else /* CONFIG_PROC_FS */
-DECL|function|atalk_proc_init
-r_int
-id|__init
-id|atalk_proc_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|atalk_proc_exit
-r_void
-id|__exit
-id|atalk_proc_exit
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
-macro_line|#endif /* CONFIG_PROC_FS */
 eof
