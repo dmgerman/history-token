@@ -195,13 +195,6 @@ c_func
 id|mpnt
 )paren
 suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|mpnt-&gt;shared
-)paren
-suffix:semicolon
 id|mpnt-&gt;vm_private_data
 op_assign
 (paren
