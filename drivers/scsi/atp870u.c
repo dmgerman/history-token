@@ -24,6 +24,7 @@ r_struct
 id|scsi_host_template
 id|atp870u_template
 suffix:semicolon
+r_static
 r_void
 id|send_s870
 c_func
@@ -38,6 +39,7 @@ r_char
 id|c
 )paren
 suffix:semicolon
+r_static
 r_void
 id|is885
 c_func
@@ -56,6 +58,7 @@ r_char
 id|c
 )paren
 suffix:semicolon
+r_static
 r_void
 id|tscam_885
 c_func
@@ -2910,7 +2913,7 @@ id|target_id
 dot
 id|curr_req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;working
 (braket
@@ -3718,6 +3721,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;atp870u_queuecommand&t;-&t;Queue SCSI command&n; *&t;@req_p: request block&n; *&t;@done: completion function&n; *&n; *&t;Queue a command to the ATP queue. Called with the host lock held.&n; */
 DECL|function|atp870u_queuecommand
+r_static
 r_int
 id|atp870u_queuecommand
 c_func
@@ -4099,6 +4103,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;send_s870&t;-&t;send a command to the controller&n; *&t;@host: host&n; *&n; *&t;On entry there is work queued to be done. We move some of that work to the&n; *&t;controller itself. &n; *&n; *&t;Caller holds the host lock.&n; */
 DECL|function|send_s870
+r_static
 r_void
 id|send_s870
 c_func
@@ -7181,6 +7186,10 @@ l_int|0x80
 op_eq
 l_int|0x00
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|tmport
 op_sub_assign
@@ -7630,6 +7639,10 @@ l_int|0x80
 )paren
 op_eq
 l_int|0
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tmport
@@ -8085,6 +8098,7 @@ id|TCM_SYNC
 suffix:semicolon
 )brace
 DECL|function|is870
+r_static
 r_void
 id|is870
 c_func
@@ -8651,6 +8665,10 @@ l_int|0x80
 op_eq
 l_int|0x00
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|tmport
 op_sub_assign
@@ -8659,7 +8677,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|inb
 c_func
 (paren
@@ -8667,9 +8684,7 @@ id|tmport
 )paren
 op_ne
 l_int|0x11
-)paren
 op_logical_and
-(paren
 id|inb
 c_func
 (paren
@@ -8678,11 +8693,8 @@ id|tmport
 op_ne
 l_int|0x8e
 )paren
-)paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -8693,6 +8705,10 @@ id|tmport
 )paren
 op_ne
 l_int|0x8e
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|dev-&gt;active_id
@@ -8764,6 +8780,10 @@ l_int|0x80
 )paren
 op_eq
 l_int|0x00
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tmport
@@ -8983,6 +9003,10 @@ l_int|0x80
 op_eq
 l_int|0x00
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|tmport
 op_sub_assign
@@ -8991,7 +9015,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|inb
 c_func
 (paren
@@ -8999,9 +9022,7 @@ id|tmport
 )paren
 op_ne
 l_int|0x11
-)paren
 op_logical_and
-(paren
 id|inb
 c_func
 (paren
@@ -9010,11 +9031,8 @@ id|tmport
 op_ne
 l_int|0x8e
 )paren
-)paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -9025,6 +9043,10 @@ id|tmport
 )paren
 op_ne
 l_int|0x8e
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tmport
@@ -9040,7 +9062,6 @@ id|dev-&gt;chip_ver
 op_eq
 l_int|4
 )paren
-(brace
 id|outb
 c_func
 (paren
@@ -9049,7 +9070,6 @@ comma
 id|tmport
 )paren
 suffix:semicolon
-)brace
 id|tmport
 op_assign
 id|wkport
@@ -9233,6 +9253,10 @@ l_int|0x80
 )paren
 op_eq
 l_int|0x00
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tmport
@@ -9550,6 +9574,10 @@ l_int|0x80
 op_eq
 l_int|0x00
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|tmport
 op_sub_assign
@@ -9558,7 +9586,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|inb
 c_func
 (paren
@@ -9566,9 +9593,7 @@ id|tmport
 )paren
 op_ne
 l_int|0x11
-)paren
 op_logical_and
-(paren
 id|inb
 c_func
 (paren
@@ -9577,11 +9602,8 @@ id|tmport
 op_ne
 l_int|0x8e
 )paren
-)paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -9592,6 +9614,10 @@ id|tmport
 )paren
 op_ne
 l_int|0x8e
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|try_wide
@@ -9702,6 +9728,10 @@ l_int|0x80
 )paren
 op_eq
 l_int|0x00
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|j
@@ -10084,6 +10114,10 @@ l_int|0x80
 )paren
 op_eq
 l_int|0x00
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tmport
@@ -10482,6 +10516,10 @@ l_int|0x80
 op_eq
 l_int|0x00
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|tmport
 op_sub_assign
@@ -10490,7 +10528,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|inb
 c_func
 (paren
@@ -10498,9 +10535,7 @@ id|tmport
 )paren
 op_ne
 l_int|0x11
-)paren
 op_logical_and
-(paren
 id|inb
 c_func
 (paren
@@ -10509,11 +10544,8 @@ id|tmport
 op_ne
 l_int|0x8e
 )paren
-)paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -10524,6 +10556,10 @@ id|tmport
 )paren
 op_ne
 l_int|0x8e
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|try_sync
@@ -10696,6 +10732,10 @@ l_int|0x80
 )paren
 op_eq
 l_int|0x00
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|j
@@ -10999,6 +11039,10 @@ l_int|0x80
 op_eq
 l_int|0x00
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|j
 op_assign
@@ -11124,6 +11168,10 @@ l_int|0x80
 )paren
 op_eq
 l_int|0x00
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tmport
@@ -11948,6 +11996,10 @@ l_int|0x80
 op_eq
 l_int|0x00
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|tmport
 op_sub_assign
@@ -11956,7 +12008,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|inb
 c_func
 (paren
@@ -11964,9 +12015,7 @@ id|tmport
 )paren
 op_ne
 l_int|0x11
-)paren
 op_logical_and
-(paren
 id|inb
 c_func
 (paren
@@ -11975,11 +12024,8 @@ id|tmport
 op_ne
 l_int|0x8e
 )paren
-)paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -11990,6 +12036,10 @@ id|tmport
 )paren
 op_ne
 l_int|0x8e
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|dev-&gt;active_id
@@ -12061,6 +12111,10 @@ l_int|0x80
 )paren
 op_eq
 l_int|0x00
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tmport
@@ -12280,6 +12334,10 @@ l_int|0x80
 op_eq
 l_int|0x00
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|tmport
 op_sub_assign
@@ -12288,7 +12346,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|inb
 c_func
 (paren
@@ -12296,9 +12353,7 @@ id|tmport
 )paren
 op_ne
 l_int|0x11
-)paren
 op_logical_and
-(paren
 id|inb
 c_func
 (paren
@@ -12307,11 +12362,8 @@ id|tmport
 op_ne
 l_int|0x8e
 )paren
-)paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -12322,6 +12374,10 @@ id|tmport
 )paren
 op_ne
 l_int|0x8e
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tmport
@@ -12522,6 +12578,10 @@ l_int|0x80
 op_eq
 l_int|0x00
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|tmport
 op_sub_assign
@@ -12538,11 +12598,9 @@ id|tmport
 op_ne
 l_int|0x16
 )paren
-(brace
 r_goto
 id|sel_ok
 suffix:semicolon
-)brace
 id|inq_ok
 suffix:colon
 id|mbuf
@@ -12865,6 +12923,10 @@ l_int|0x80
 op_eq
 l_int|0x00
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|tmport
 op_sub_assign
@@ -12873,7 +12935,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|inb
 c_func
 (paren
@@ -12881,9 +12942,7 @@ id|tmport
 )paren
 op_ne
 l_int|0x11
-)paren
 op_logical_and
-(paren
 id|inb
 c_func
 (paren
@@ -12892,11 +12951,8 @@ id|tmport
 op_ne
 l_int|0x8e
 )paren
-)paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -12907,6 +12963,10 @@ id|tmport
 )paren
 op_ne
 l_int|0x8e
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|try_u3
@@ -13017,6 +13077,10 @@ l_int|0x80
 )paren
 op_eq
 l_int|0x00
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|j
@@ -13400,6 +13464,10 @@ l_int|0x80
 op_eq
 l_int|0x00
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|tmport
 op_sub_assign
@@ -13718,6 +13786,10 @@ l_int|0x80
 op_eq
 l_int|0x00
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|tmport
 op_sub_assign
@@ -13726,7 +13798,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|inb
 c_func
 (paren
@@ -13734,9 +13805,7 @@ id|tmport
 )paren
 op_ne
 l_int|0x11
-)paren
 op_logical_and
-(paren
 id|inb
 c_func
 (paren
@@ -13745,11 +13814,8 @@ id|tmport
 op_ne
 l_int|0x8e
 )paren
-)paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -13760,6 +13826,10 @@ id|tmport
 )paren
 op_ne
 l_int|0x8e
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|try_wide
@@ -13870,6 +13940,10 @@ l_int|0x80
 )paren
 op_eq
 l_int|0x00
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|j
@@ -14252,6 +14326,10 @@ l_int|0x80
 )paren
 op_eq
 l_int|0x00
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tmport
@@ -14737,6 +14815,10 @@ l_int|0x80
 op_eq
 l_int|0x00
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|tmport
 op_sub_assign
@@ -14779,6 +14861,10 @@ id|tmport
 )paren
 op_ne
 l_int|0x8e
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|try_sync
@@ -14982,6 +15068,10 @@ l_int|0x80
 )paren
 op_eq
 l_int|0x00
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|j
@@ -15285,6 +15375,10 @@ l_int|0x80
 op_eq
 l_int|0x00
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|j
 op_assign
@@ -15410,6 +15504,10 @@ l_int|0x80
 )paren
 op_eq
 l_int|0x00
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tmport
@@ -18100,6 +18198,10 @@ l_int|0x80
 op_eq
 l_int|0
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|tmport
 op_sub_assign
@@ -18220,6 +18322,10 @@ l_int|0x80
 )paren
 op_eq
 l_int|0
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tmport
@@ -19201,6 +19307,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* The abort command does not leave the device in a clean state where&n;   it is available to be used again.  Until this gets worked out, we will&n;   leave it commented out.  */
 DECL|function|atp870u_abort
+r_static
 r_int
 id|atp870u_abort
 c_func
@@ -19509,6 +19616,7 @@ id|SUCCESS
 suffix:semicolon
 )brace
 DECL|function|atp870u_info
+r_static
 r_const
 r_char
 op_star
@@ -19539,30 +19647,6 @@ suffix:semicolon
 r_return
 id|buffer
 suffix:semicolon
-)brace
-DECL|function|atp870u_set_info
-r_int
-id|atp870u_set_info
-c_func
-(paren
-r_char
-op_star
-id|buffer
-comma
-r_int
-id|length
-comma
-r_struct
-id|Scsi_Host
-op_star
-id|HBAptr
-)paren
-(brace
-r_return
-op_minus
-id|ENOSYS
-suffix:semicolon
-multiline_comment|/* Currently this is a no-op */
 )brace
 DECL|macro|BLS
 mdefine_line|#define BLS buffer + len + size
@@ -19629,7 +19713,7 @@ id|inout
 )paren
 r_return
 op_minus
-id|ENOSYS
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -19638,7 +19722,6 @@ id|offset
 op_eq
 l_int|0
 )paren
-(brace
 id|memset
 c_func
 (paren
@@ -19652,7 +19735,6 @@ id|buff
 )paren
 )paren
 suffix:semicolon
-)brace
 id|size
 op_add_assign
 id|sprintf
@@ -20295,6 +20377,7 @@ id|atp870u_driver
 suffix:semicolon
 )brace
 DECL|function|tscam_885
+r_static
 r_void
 id|tscam_885
 c_func
@@ -20332,6 +20415,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|is885
+r_static
 r_void
 id|is885
 c_func
@@ -20899,6 +20983,10 @@ l_int|0x80
 op_eq
 l_int|0x00
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|tmport
 op_sub_assign
@@ -20941,6 +21029,10 @@ id|tmport
 )paren
 op_ne
 l_int|0x8e
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|dev-&gt;active_id
@@ -21012,6 +21104,10 @@ l_int|0x80
 )paren
 op_eq
 l_int|0x00
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tmport
@@ -21231,6 +21327,10 @@ l_int|0x80
 op_eq
 l_int|0x00
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|tmport
 op_sub_assign
@@ -21273,6 +21373,10 @@ id|tmport
 )paren
 op_ne
 l_int|0x8e
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tmport
@@ -21472,6 +21576,10 @@ l_int|0x80
 )paren
 op_eq
 l_int|0x00
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tmport
@@ -21816,6 +21924,10 @@ l_int|0x80
 op_eq
 l_int|0x00
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|tmport
 op_sub_assign
@@ -21858,6 +21970,10 @@ id|tmport
 )paren
 op_ne
 l_int|0x8e
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|try_u3
@@ -21949,6 +22065,11 @@ op_add_assign
 l_int|0x06
 suffix:semicolon
 )brace
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 id|tmport
 op_sub_assign
@@ -21968,6 +22089,10 @@ l_int|0x80
 )paren
 op_eq
 l_int|0x00
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|j
@@ -22087,6 +22212,11 @@ op_add_assign
 l_int|0x06
 suffix:semicolon
 )brace
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 id|tmport
 op_sub_assign
@@ -22691,6 +22821,10 @@ l_int|0x80
 op_eq
 l_int|0x00
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|tmport
 op_sub_assign
@@ -22733,6 +22867,10 @@ id|tmport
 )paren
 op_ne
 l_int|0x8e
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|try_wide
@@ -22824,6 +22962,11 @@ op_add_assign
 l_int|0x06
 suffix:semicolon
 )brace
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 id|tmport
 op_sub_assign
@@ -22843,6 +22986,10 @@ l_int|0x80
 )paren
 op_eq
 l_int|0x00
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|j
@@ -22962,6 +23109,11 @@ op_add_assign
 l_int|0x06
 suffix:semicolon
 )brace
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 id|tmport
 op_sub_assign
@@ -23225,6 +23377,10 @@ l_int|0x80
 )paren
 op_eq
 l_int|0x00
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tmport
@@ -23710,6 +23866,10 @@ l_int|0x80
 op_eq
 l_int|0x00
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|tmport
 op_sub_assign
@@ -23752,6 +23912,10 @@ id|tmport
 )paren
 op_ne
 l_int|0x8e
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|try_sync
@@ -23956,6 +24120,10 @@ l_int|0x80
 op_eq
 l_int|0x00
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|j
 op_assign
@@ -24074,6 +24242,11 @@ op_add_assign
 l_int|0x06
 suffix:semicolon
 )brace
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 id|tmport
 op_sub_assign
@@ -24383,6 +24556,10 @@ l_int|0x80
 )paren
 op_eq
 l_int|0x00
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tmport
