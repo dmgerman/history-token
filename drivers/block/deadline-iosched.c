@@ -27,9 +27,8 @@ r_static
 r_int
 id|fifo_batch
 op_assign
-l_int|32
+l_int|16
 suffix:semicolon
-multiline_comment|/* 4 seeks, or 64 contig */
 DECL|variable|seek_cost
 r_static
 r_int
