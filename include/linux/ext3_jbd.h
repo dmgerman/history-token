@@ -289,11 +289,16 @@ suffix:semicolon
 )brace
 r_static
 r_inline
-r_void
-DECL|function|ext3_journal_forget
-id|ext3_journal_forget
+r_int
+DECL|function|__ext3_journal_forget
+id|__ext3_journal_forget
 c_func
 (paren
+r_const
+r_char
+op_star
+id|where
+comma
 id|handle_t
 op_star
 id|handle
@@ -304,6 +309,9 @@ op_star
 id|bh
 )paren
 (brace
+r_int
+id|err
+op_assign
 id|journal_forget
 c_func
 (paren
@@ -311,6 +319,28 @@ id|handle
 comma
 id|bh
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+id|ext3_journal_abort_handle
+c_func
+(paren
+id|where
+comma
+id|__FUNCTION__
+comma
+id|bh
+comma
+id|handle
+comma
+id|err
+)paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 r_static
@@ -499,6 +529,8 @@ DECL|macro|ext3_journal_get_create_access
 mdefine_line|#define ext3_journal_get_create_access(handle, bh) &bslash;&n;&t;__ext3_journal_get_create_access(__FUNCTION__, (handle), (bh))
 DECL|macro|ext3_journal_dirty_metadata
 mdefine_line|#define ext3_journal_dirty_metadata(handle, bh) &bslash;&n;&t;__ext3_journal_dirty_metadata(__FUNCTION__, (handle), (bh))
+DECL|macro|ext3_journal_forget
+mdefine_line|#define ext3_journal_forget(handle, bh) &bslash;&n;&t;__ext3_journal_forget(__FUNCTION__, (handle), (bh))
 r_int
 id|ext3_journal_dirty_data
 c_func

@@ -172,6 +172,7 @@ comma
 l_string|&quot;call journal_forget&quot;
 )paren
 suffix:semicolon
+r_return
 id|ext3_journal_forget
 c_func
 (paren
