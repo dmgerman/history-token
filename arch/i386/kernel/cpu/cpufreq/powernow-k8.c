@@ -3412,7 +3412,7 @@ l_string|&quot;Too many lo freq table entries&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
-id|err_out
+id|err_out_mem
 suffix:semicolon
 )brace
 r_if
@@ -3523,6 +3523,14 @@ l_int|0
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|err_out_mem
+suffix:colon
+id|kfree
+c_func
+(paren
+id|powernow_table
+)paren
 suffix:semicolon
 id|err_out
 suffix:colon
