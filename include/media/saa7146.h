@@ -135,6 +135,8 @@ suffix:semicolon
 multiline_comment|/* name of the device */
 DECL|macro|SAA7146_USE_I2C_IRQ
 mdefine_line|#define SAA7146_USE_I2C_IRQ&t;0x1
+DECL|macro|SAA7146_I2C_SHORT_DELAY
+mdefine_line|#define SAA7146_I2C_SHORT_DELAY&t;0x2
 DECL|member|flags
 r_int
 id|flags
@@ -492,7 +494,7 @@ op_star
 id|pt
 )paren
 suffix:semicolon
-r_void
+r_int
 id|saa7146_pgtable_build_single
 c_func
 (paren
@@ -550,6 +552,16 @@ id|u32
 id|data
 )paren
 suffix:semicolon
+r_int
+id|saa7146_wait_for_debi_done
+c_func
+(paren
+r_struct
+id|saa7146_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* some memory sizes */
 DECL|macro|SAA7146_I2C_MEM
 mdefine_line|#define SAA7146_I2C_MEM&t;&t;( 1*PAGE_SIZE)
@@ -580,6 +592,9 @@ DECL|macro|SAA7146_GPIO_OUTLO
 mdefine_line|#define SAA7146_GPIO_OUTLO 0x40
 DECL|macro|SAA7146_GPIO_OUTHI
 mdefine_line|#define SAA7146_GPIO_OUTHI 0x50
+multiline_comment|/* debi defines */
+DECL|macro|DEBINOSWAP
+mdefine_line|#define DEBINOSWAP 0x000e0000
 multiline_comment|/* define for the register programming sequencer (rps) */
 DECL|macro|CMD_NOP
 mdefine_line|#define CMD_NOP&t;&t;0x00000000  /* No operation */

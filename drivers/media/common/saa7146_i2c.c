@@ -1584,6 +1584,14 @@ c_cond
 id|count
 OG
 l_int|3
+op_logical_or
+l_int|0
+op_ne
+(paren
+id|SAA7146_I2C_SHORT_DELAY
+op_amp
+id|dev-&gt;ext-&gt;flags
+)paren
 )paren
 id|short_delay
 op_assign
@@ -1966,6 +1974,21 @@ id|bitrate
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* enable i2c-port pins */
+id|saa7146_write
+c_func
+(paren
+id|dev
+comma
+id|MC1
+comma
+(paren
+id|MASK_08
+op_or
+id|MASK_24
+)paren
+)paren
+suffix:semicolon
 id|dev-&gt;i2c_bitrate
 op_assign
 id|bitrate
@@ -2006,6 +2029,12 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0))
+id|i2c_adapter-&gt;data
+op_assign
+id|dev
+suffix:semicolon
+macro_line|#else
 id|i2c_set_adapdata
 c_func
 (paren
@@ -2014,12 +2043,7 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|i2c_adapter
-op_member_access_from_pointer
-r_class
-op_assign
-id|I2C_ADAP_CLASS_TV_ANALOG
-suffix:semicolon
+macro_line|#endif
 id|i2c_adapter-&gt;algo
 op_assign
 op_amp
@@ -2041,6 +2065,15 @@ id|i2c_adapter-&gt;retries
 op_assign
 id|SAA7146_I2C_RETRIES
 suffix:semicolon
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0))
+macro_line|#else
+id|i2c_adapter
+op_member_access_from_pointer
+r_class
+op_assign
+id|I2C_ADAP_CLASS_TV_ANALOG
+suffix:semicolon
+macro_line|#endif
 )brace
 r_return
 l_int|0
