@@ -86,11 +86,6 @@ l_int|2
 suffix:semicolon
 r_enum
 (brace
-DECL|enumerator|MTHCA_MPT_ENTRY_SIZE
-id|MTHCA_MPT_ENTRY_SIZE
-op_assign
-l_int|0x40
-comma
 DECL|enumerator|MTHCA_EQ_CONTEXT_SIZE
 id|MTHCA_EQ_CONTEXT_SIZE
 op_assign
@@ -120,6 +115,18 @@ DECL|enumerator|MTHCA_MGM_ENTRY_SIZE
 id|MTHCA_MGM_ENTRY_SIZE
 op_assign
 l_int|0x40
+comma
+multiline_comment|/* Arbel FW gives us these, but we need them for Tavor */
+DECL|enumerator|MTHCA_MPT_ENTRY_SIZE
+id|MTHCA_MPT_ENTRY_SIZE
+op_assign
+l_int|0x40
+comma
+DECL|enumerator|MTHCA_MTT_SEG_SIZE
+id|MTHCA_MTT_SEG_SIZE
+op_assign
+l_int|0x40
+comma
 )brace
 suffix:semicolon
 r_enum
