@@ -1068,6 +1068,16 @@ op_assign
 id|k2_bmdma_start_mmio
 comma
 dot
+id|bmdma_stop
+op_assign
+id|ata_bmdma_stop
+comma
+dot
+id|bmdma_status
+op_assign
+id|ata_bmdma_status
+comma
+dot
 id|qc_prep
 op_assign
 id|ata_qc_prep
