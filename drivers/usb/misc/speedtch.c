@@ -261,6 +261,11 @@ r_int
 r_int
 id|num_entire
 suffix:semicolon
+DECL|member|pdu_padding
+r_int
+r_int
+id|pdu_padding
+suffix:semicolon
 DECL|member|cell_header
 r_int
 r_char
@@ -268,11 +273,6 @@ id|cell_header
 (braket
 id|ATM_CELL_HEADER
 )braket
-suffix:semicolon
-DECL|member|pdu_padding
-r_int
-r_int
-id|pdu_padding
 suffix:semicolon
 DECL|member|aal5_trailer
 r_int
@@ -1823,15 +1823,10 @@ id|ATM_CELL_PAYLOAD
 op_minus
 id|ATM_AAL5_TRAILER
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
 (paren
 op_decrement
 id|ctrl-&gt;num_cells
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -2692,9 +2687,6 @@ id|udsl_send_buffer
 op_star
 id|buf
 suffix:semicolon
-r_int
-id|err
-suffix:semicolon
 r_struct
 id|udsl_instance_data
 op_star
@@ -2707,10 +2699,6 @@ op_star
 )paren
 id|data
 suffix:semicolon
-r_int
-r_int
-id|num_written
-suffix:semicolon
 r_struct
 id|sk_buff
 op_star
@@ -2720,6 +2708,13 @@ r_struct
 id|udsl_sender
 op_star
 id|snd
+suffix:semicolon
+r_int
+id|err
+suffix:semicolon
+r_int
+r_int
+id|num_written
 suffix:semicolon
 id|made_progress
 suffix:colon
@@ -2918,6 +2913,7 @@ id|instance-&gt;filled_send_buffers
 suffix:semicolon
 r_return
 suffix:semicolon
+multiline_comment|/* bail out */
 )brace
 id|spin_lock_irq
 (paren
@@ -2950,11 +2946,9 @@ id|instance-&gt;sndqueue
 )paren
 )paren
 )paren
-(brace
 r_return
 suffix:semicolon
 multiline_comment|/* done - no more skbs */
-)brace
 id|skb
 op_assign
 id|instance-&gt;current_skb
