@@ -901,18 +901,13 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;%s - for port %d (%d chars [%x]), flip=%d&quot;
+l_string|&quot;%s - for port %d (%d chars), flip=%d&quot;
 comma
 id|__FUNCTION__
 comma
 id|port-&gt;number
 comma
 id|count
-comma
-id|buf
-(braket
-l_int|0
-)braket
 comma
 id|p_priv-&gt;out_flip
 )paren
