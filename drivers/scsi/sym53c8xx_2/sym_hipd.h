@@ -1576,12 +1576,11 @@ multiline_comment|/* Verbosity for this controller*/
 multiline_comment|/*&n;&t; *  CCB lists and queue.&n;&t; */
 DECL|member|ccbh
 id|ccb_p
+op_star
 id|ccbh
-(braket
-id|CCB_HASH_SIZE
-)braket
 suffix:semicolon
-multiline_comment|/* CCB hashed by DSA value&t;*/
+multiline_comment|/* CCBs hashed by DSA value&t;*/
+multiline_comment|/* CCB_HASH_SIZE lists of CCBs&t;*/
 DECL|member|free_ccbq
 id|SYM_QUEHEAD
 id|free_ccbq

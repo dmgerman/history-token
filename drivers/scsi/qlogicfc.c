@@ -5950,7 +5950,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -6285,7 +6285,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -6311,6 +6311,13 @@ op_star
 id|regs
 )paren
 (brace
+r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|dev_id
+suffix:semicolon
 r_int
 r_int
 id|flags
@@ -6319,7 +6326,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -6338,7 +6345,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|flags
 )paren

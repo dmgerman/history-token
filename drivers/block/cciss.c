@@ -5546,7 +5546,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|creq-&gt;nr_segments
+id|creq-&gt;nr_phys_segments
 OG
 id|MAXSGENTRIES
 )paren
@@ -9494,6 +9494,18 @@ id|hba
 id|i
 )braket
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|hba
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|lock
+)paren
+suffix:semicolon
 id|blk_init_queue
 c_func
 (paren
@@ -9523,7 +9535,17 @@ op_member_access_from_pointer
 id|pdev-&gt;dma_mask
 )paren
 suffix:semicolon
-id|blk_queue_max_segments
+multiline_comment|/* This is a hardware imposed limit. */
+id|blk_queue_max_hw_segments
+c_func
+(paren
+id|q
+comma
+id|MAXSGENTRIES
+)paren
+suffix:semicolon
+multiline_comment|/* This is a limit in the driver and could be eliminated. */
+id|blk_queue_max_phys_segments
 c_func
 (paren
 id|q

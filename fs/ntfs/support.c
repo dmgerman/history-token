@@ -669,14 +669,12 @@ op_logical_neg
 (paren
 id|bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 comma
 id|cluster
-comma
-id|vol-&gt;cluster_size
 )paren
 )paren
 )paren

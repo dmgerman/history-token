@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: esp.h,v 1.28 2000/03/30 01:33:17 davem Exp $&n; * esp.h:  Defines and structures for the Sparc ESP (Enhanced SCSI&n; *         Processor) driver under Linux.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: esp.h,v 1.29 2001/12/11 04:55:47 davem Exp $&n; * esp.h:  Defines and structures for the Sparc ESP (Enhanced SCSI&n; *         Processor) driver under Linux.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#ifndef _SPARC_ESP_H
 DECL|macro|_SPARC_ESP_H
 mdefine_line|#define _SPARC_ESP_H
@@ -108,10 +108,6 @@ DECL|struct|esp
 r_struct
 id|esp
 (brace
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
 DECL|member|eregs
 r_int
 r_int
@@ -912,7 +908,7 @@ id|SDptr
 )paren
 suffix:semicolon
 DECL|macro|SCSI_SPARC_ESP
-mdefine_line|#define SCSI_SPARC_ESP {                                        &bslash;&n;&t;&t;proc_name:      &quot;esp&quot;,&t;&t;&t;&t;&bslash;&n;&t;&t;proc_info:      &amp;esp_proc_info,&t;&t;&t;&bslash;&n;&t;&t;name:           &quot;Sun ESP 100/100a/200&quot;,&t;&t;&bslash;&n;&t;&t;detect:         esp_detect,&t;&t;&t;&bslash;&n;&t;&t;revoke:&t;&t;esp_revoke,&t;&t;&t;&bslash;&n;&t;&t;info:           esp_info,&t;&t;&t;&bslash;&n;&t;&t;command:        esp_command,&t;&t;&t;&bslash;&n;&t;&t;queuecommand:   esp_queue,&t;&t;&t;&bslash;&n;&t;&t;abort:          esp_abort,&t;&t;&t;&bslash;&n;&t;&t;reset:          esp_reset,&t;&t;&t;&bslash;&n;&t;&t;can_queue:      7,&t;&t;&t;&t;&bslash;&n;&t;&t;this_id:        7,&t;&t;&t;&t;&bslash;&n;&t;&t;sg_tablesize:   SG_ALL,&t;&t;&t;&t;&bslash;&n;&t;&t;cmd_per_lun:    1,&t;&t;&t;&t;&bslash;&n;&t;&t;use_clustering: ENABLE_CLUSTERING,&t;&t;&bslash;&n;}
+mdefine_line|#define SCSI_SPARC_ESP {                                        &bslash;&n;&t;&t;proc_name:      &quot;esp&quot;,&t;&t;&t;&t;&bslash;&n;&t;&t;proc_info:      &amp;esp_proc_info,&t;&t;&t;&bslash;&n;&t;&t;name:           &quot;Sun ESP 100/100a/200&quot;,&t;&t;&bslash;&n;&t;&t;detect:         esp_detect,&t;&t;&t;&bslash;&n;&t;&t;revoke:&t;&t;esp_revoke,&t;&t;&t;&bslash;&n;&t;&t;info:           esp_info,&t;&t;&t;&bslash;&n;&t;&t;command:        esp_command,&t;&t;&t;&bslash;&n;&t;&t;queuecommand:   esp_queue,&t;&t;&t;&bslash;&n;&t;&t;abort:          esp_abort,&t;&t;&t;&bslash;&n;&t;&t;reset:          esp_reset,&t;&t;&t;&bslash;&n;&t;&t;can_queue:      7,&t;&t;&t;&t;&bslash;&n;&t;&t;this_id:        7,&t;&t;&t;&t;&bslash;&n;&t;&t;sg_tablesize:   SG_ALL,&t;&t;&t;&t;&bslash;&n;&t;&t;cmd_per_lun:    1,&t;&t;&t;&t;&bslash;&n;&t;&t;use_clustering: ENABLE_CLUSTERING,&t;&t;&bslash;&n;&t;&t;highmem_io:&t;1,&t;&t;&t;&t;&bslash;&n;}
 multiline_comment|/* For our interrupt engine. */
 DECL|macro|for_each_esp
 mdefine_line|#define for_each_esp(esp) &bslash;&n;        for((esp) = espchain; (esp); (esp) = (esp)-&gt;next)

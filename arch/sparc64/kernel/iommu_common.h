@@ -1,7 +1,8 @@
-multiline_comment|/* $Id: iommu_common.h,v 1.4 2001/10/09 02:24:33 davem Exp $&n; * iommu_common.h: UltraSparc SBUS/PCI common iommu declarations.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: iommu_common.h,v 1.5 2001/12/11 09:41:01 davem Exp $&n; * iommu_common.h: UltraSparc SBUS/PCI common iommu declarations.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 multiline_comment|/*&n; * These give mapping size of each iommu pte/tlb.&n; */

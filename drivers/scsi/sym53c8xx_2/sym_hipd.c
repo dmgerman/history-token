@@ -16497,8 +16497,11 @@ id|clrack
 )paren
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
 id|out_stuck
 suffix:colon
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Acquire a control block&n; */
@@ -18184,8 +18187,11 @@ id|lp-&gt;itlq_tbl
 )paren
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
 id|fail
 suffix:colon
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Queue a SCSI IO to the controller.&n; */
@@ -19809,6 +19815,32 @@ id|np-&gt;scriptz0
 r_goto
 id|attach_failed
 suffix:semicolon
+multiline_comment|/*&n;&t; *  Allocate the array of lists of CCBs hashed by DSA.&n;&t; */
+id|np-&gt;ccbh
+op_assign
+id|sym_calloc
+c_func
+(paren
+r_sizeof
+(paren
+id|ccb_p
+op_star
+)paren
+op_star
+id|CCB_HASH_SIZE
+comma
+l_string|&quot;CCBH&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|np-&gt;ccbh
+)paren
+r_goto
+id|attach_failed
+suffix:semicolon
 multiline_comment|/*&n;&t; *  Initialyze the CCB free and busy queues.&n;&t; */
 id|sym_que_init
 c_func
@@ -20613,6 +20645,27 @@ l_string|&quot;CCB&quot;
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|np-&gt;ccbh
+)paren
+id|sym_mfree
+c_func
+(paren
+id|np-&gt;ccbh
+comma
+r_sizeof
+(paren
+id|ccb_p
+op_star
+)paren
+op_star
+id|CCB_HASH_SIZE
+comma
+l_string|&quot;CCBH&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

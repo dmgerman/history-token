@@ -639,8 +639,6 @@ c_func
 id|inode-&gt;i_sb
 comma
 id|block
-comma
-id|inode-&gt;i_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if
@@ -1064,8 +1062,6 @@ c_func
 id|inode-&gt;i_sb
 comma
 id|inode-&gt;i_ino
-comma
-id|inode-&gt;i_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if
@@ -1085,8 +1081,6 @@ c_func
 id|inode-&gt;i_sb
 comma
 id|newblock
-comma
-id|inode-&gt;i_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if
@@ -1779,14 +1773,12 @@ id|bh
 suffix:semicolon
 id|bh
 op_assign
-id|getblk
+id|sb_getblk
 c_func
 (paren
-id|dummy.b_dev
+id|inode-&gt;i_sb
 comma
 id|dummy.b_blocknr
-comma
-id|inode-&gt;i_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if
@@ -4864,8 +4856,6 @@ id|inode
 comma
 l_int|0
 )paren
-comma
-id|inode-&gt;i_sb-&gt;s_blocksize
 )paren
 )paren
 )paren
@@ -6685,8 +6675,6 @@ id|inode
 comma
 l_int|0
 )paren
-comma
-id|inode-&gt;i_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if
@@ -8583,8 +8571,6 @@ id|bloc
 comma
 l_int|0
 )paren
-comma
-id|inode-&gt;i_sb-&gt;s_blocksize
 )paren
 )paren
 )paren
@@ -8743,8 +8729,6 @@ id|bloc
 comma
 l_int|0
 )paren
-comma
-id|inode-&gt;i_sb-&gt;s_blocksize
 )paren
 )paren
 )paren
@@ -9430,8 +9414,6 @@ id|bloc
 comma
 l_int|0
 )paren
-comma
-id|inode-&gt;i_sb-&gt;s_blocksize
 )paren
 )paren
 )paren
@@ -9823,8 +9805,6 @@ id|bloc
 comma
 l_int|0
 )paren
-comma
-id|inode-&gt;i_sb-&gt;s_blocksize
 )paren
 )paren
 )paren
@@ -10520,8 +10500,6 @@ id|bloc
 comma
 l_int|0
 )paren
-comma
-id|inode-&gt;i_sb-&gt;s_blocksize
 )paren
 )paren
 )paren
@@ -10982,8 +10960,6 @@ id|bloc
 comma
 l_int|0
 )paren
-comma
-id|inode-&gt;i_sb-&gt;s_blocksize
 )paren
 )paren
 )paren
@@ -11200,8 +11176,6 @@ id|nbloc
 comma
 l_int|0
 )paren
-comma
-id|inode-&gt;i_sb-&gt;s_blocksize
 )paren
 )paren
 )paren

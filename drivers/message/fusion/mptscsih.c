@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;&t;&t;/* for io_request_lock (spinlock) decl */
+macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
 macro_line|#include &quot;../../scsi/sd.h&quot;
@@ -727,7 +727,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|sc-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -744,7 +744,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|sc-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1349,7 +1349,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|sc-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1366,7 +1366,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|sc-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -3195,7 +3195,7 @@ id|SCpnt-&gt;result
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&t;&t;&t;spin_lock(&amp;io_request_lock);&t;*/
+multiline_comment|/*&t;&t;&t;spin_lock(&amp;SCpnt-&gt;host-&gt;host_lock);&t;*/
 id|SCpnt
 op_member_access_from_pointer
 id|scsi_done
@@ -3204,7 +3204,7 @@ c_func
 id|SCpnt
 )paren
 suffix:semicolon
-multiline_comment|/*&t;&t;&t;spin_unlock(&amp;io_request_lock);&t;*/
+multiline_comment|/*&t;&t;&t;spin_unlock(&amp;SCpnt-&gt;host-&gt;host_lock);&t;*/
 r_return
 l_int|0
 suffix:semicolon
@@ -4756,7 +4756,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -4773,7 +4773,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -4857,7 +4857,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -4874,7 +4874,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -5150,7 +5150,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -5167,7 +5167,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -5441,7 +5441,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -5458,7 +5458,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -6315,7 +6315,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -6332,7 +6332,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -6541,7 +6541,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -6558,7 +6558,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren

@@ -992,8 +992,6 @@ c_func
 id|dir-&gt;i_sb
 comma
 id|block
-comma
-id|dir-&gt;i_sb-&gt;s_blocksize
 )paren
 )paren
 )paren
@@ -1982,8 +1980,6 @@ c_func
 id|dir-&gt;i_sb
 comma
 id|block
-comma
-id|dir-&gt;i_sb-&gt;s_blocksize
 )paren
 )paren
 )paren
@@ -2434,8 +2430,6 @@ c_func
 id|dir-&gt;i_sb
 comma
 id|block
-comma
-id|dir-&gt;i_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 id|fibh-&gt;soffset
@@ -4331,8 +4325,6 @@ c_func
 id|dir-&gt;i_sb
 comma
 id|block
-comma
-id|dir-&gt;i_sb-&gt;s_blocksize
 )paren
 )paren
 )paren
@@ -5208,8 +5200,6 @@ c_func
 id|inode-&gt;i_sb
 comma
 id|block
-comma
-id|inode-&gt;i_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 id|lock_buffer
@@ -5277,8 +5267,6 @@ c_func
 id|inode-&gt;i_sb
 comma
 id|block
-comma
-id|inode-&gt;i_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 )brace

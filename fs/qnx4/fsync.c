@@ -10,8 +10,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/qnx4_fs.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-DECL|macro|blocksize
-mdefine_line|#define blocksize QNX4_BLOCK_SIZE
 multiline_comment|/*&n; * The functions for qnx4 fs file synchronization.&n; */
 macro_line|#ifdef CONFIG_QNX4FS_RW
 DECL|function|sync_block
@@ -60,15 +58,13 @@ id|block
 suffix:semicolon
 id|bh
 op_assign
-id|get_hash_table
+id|sb_get_hash_table
 c_func
 (paren
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb
 comma
 op_star
 id|block
-comma
-id|blocksize
 )paren
 suffix:semicolon
 r_if
@@ -257,14 +253,12 @@ suffix:semicolon
 op_star
 id|bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb
 comma
 id|tmp
-comma
-id|blocksize
 )paren
 suffix:semicolon
 r_if

@@ -272,8 +272,6 @@ c_func
 id|inode-&gt;i_sb
 comma
 id|inode-&gt;i_ino
-comma
-id|inode-&gt;i_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if
@@ -300,10 +298,10 @@ r_else
 (brace
 id|bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb
 comma
 id|udf_block_map
 c_func
@@ -312,8 +310,6 @@ id|inode
 comma
 l_int|0
 )paren
-comma
-id|inode-&gt;i_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if

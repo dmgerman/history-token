@@ -52,8 +52,6 @@ DECL|macro|TYPE_0_CMD_BLK_LENGTH
 mdefine_line|#define TYPE_0_CMD_BLK_LENGTH 2
 DECL|macro|TYPE_1_CMD_BLK_LENGTH
 mdefine_line|#define TYPE_1_CMD_BLK_LENGTH 4
-DECL|macro|PS2ESDI_LOCK
-mdefine_line|#define PS2ESDI_LOCK (&amp;((BLK_DEFAULT_QUEUE(MAJOR_NR))-&gt;queue_lock))
 r_static
 r_void
 id|reset_ctrl
@@ -469,6 +467,13 @@ id|ctl
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|variable|ps2esdi_lock
+r_static
+id|spinlock_t
+id|ps2esdi_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 macro_line|#if 0
 macro_line|#if 0&t;&t;&t;&t;/* try both - I don&squot;t know which one is better... UB */
 r_static
@@ -714,6 +719,9 @@ id|MAJOR_NR
 )paren
 comma
 id|DEVICE_REQUEST
+comma
+op_amp
+id|ps2esdi_lock
 )paren
 suffix:semicolon
 id|read_ahead
@@ -4611,7 +4619,7 @@ l_int|1
 id|spin_lock_irqsave
 c_func
 (paren
-id|PS2ESDI_LOCK
+id|ps2esdi_LOCK
 comma
 id|flags
 )paren
@@ -4635,7 +4643,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|PS2ESDI_LOCK
+id|ps2esdi_LOCK
 comma
 id|flags
 )paren

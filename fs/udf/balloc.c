@@ -302,8 +302,6 @@ id|loc
 comma
 id|block
 )paren
-comma
-id|sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if
@@ -2348,8 +2346,6 @@ id|nbloc
 comma
 l_int|0
 )paren
-comma
-id|sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 id|atomic_inc
@@ -2881,8 +2877,6 @@ id|nbloc
 comma
 l_int|0
 )paren
-comma
-id|sb-&gt;s_blocksize
 )paren
 )paren
 )paren
@@ -3491,8 +3485,6 @@ id|bloc
 comma
 l_int|0
 )paren
-comma
-id|sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 id|eloc.logicalBlockNum
@@ -3937,8 +3929,6 @@ id|bloc
 comma
 l_int|0
 )paren
-comma
-id|sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 id|atomic_inc

@@ -1761,14 +1761,12 @@ suffix:semicolon
 multiline_comment|/* Find out which kind of FS we have */
 id|boot_bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 comma
 l_int|0
-comma
-id|sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if

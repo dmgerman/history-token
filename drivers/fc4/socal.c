@@ -2249,7 +2249,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|s-&gt;lock
 comma
 id|flags
 )paren
@@ -2375,7 +2375,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|s-&gt;lock
 comma
 id|flags
 )paren
@@ -3765,6 +3765,13 @@ r_sizeof
 r_struct
 id|socal
 )paren
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|s-&gt;lock
 )paren
 suffix:semicolon
 id|s-&gt;socal_no

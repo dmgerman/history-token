@@ -411,6 +411,13 @@ r_char
 op_star
 id|raw_buf
 suffix:semicolon
+DECL|variable|amiflop_lock
+r_static
+id|spinlock_t
+id|amiflop_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|macro|RAW_BUF_SIZE
 mdefine_line|#define RAW_BUF_SIZE 30000  /* size of raw disk data */
 multiline_comment|/*&n; * These are global variables, as that&squot;s the easiest way to give&n; * information to interrupts. They are the data used for the current&n; * request.&n; */
@@ -9842,6 +9849,9 @@ id|MAJOR_NR
 )paren
 comma
 id|DEVICE_REQUEST
+comma
+op_amp
+id|amiflop_lock
 )paren
 suffix:semicolon
 id|blksize_size

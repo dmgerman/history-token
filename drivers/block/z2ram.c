@@ -107,6 +107,13 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+DECL|variable|z2ram_lock
+r_static
+id|spinlock_t
+id|z2ram_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 r_static
 r_void
 DECL|function|do_z2_request
@@ -1195,7 +1202,10 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUEST
+id|DEVICE_REQUES
+comma
+op_amp
+id|z2ram_lock
 )paren
 suffix:semicolon
 id|blksize_size

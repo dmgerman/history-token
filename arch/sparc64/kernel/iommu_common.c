@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: iommu_common.c,v 1.6 2001/10/09 02:24:33 davem Exp $&n; * iommu_common.c: UltraSparc SBUS/PCI common iommu code.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: iommu_common.c,v 1.8 2001/12/11 11:13:06 davem Exp $&n; * iommu_common.c: UltraSparc SBUS/PCI common iommu code.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &quot;iommu_common.h&quot;
 multiline_comment|/* You are _strongly_ advised to enable the following debugging code&n; * any time you make changes to the sg code below, run it for a while&n; * with filesystems mounted read-only before buying the farm... -DaveM&n; */
 macro_line|#ifdef VERIFY_SG
@@ -304,7 +304,20 @@ op_assign
 r_int
 r_int
 )paren
+(paren
 id|sg-&gt;address
+ques
+c_cond
+id|sg-&gt;address
+suffix:colon
+id|page_address
+c_func
+(paren
+id|sg-&gt;page
+)paren
+op_plus
+id|sg-&gt;offset
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -539,7 +552,20 @@ op_assign
 r_int
 r_int
 )paren
+(paren
 id|sg-&gt;address
+ques
+c_cond
+id|sg-&gt;address
+suffix:colon
+id|page_address
+c_func
+(paren
+id|sg-&gt;page
+)paren
+op_plus
+id|sg-&gt;offset
+)paren
 suffix:semicolon
 id|sglen
 op_assign
@@ -902,7 +928,20 @@ op_assign
 r_int
 r_int
 )paren
+(paren
 id|sg-&gt;address
+ques
+c_cond
+id|sg-&gt;address
+suffix:colon
+id|page_address
+c_func
+(paren
+id|sg-&gt;page
+)paren
+op_plus
+id|sg-&gt;offset
+)paren
 suffix:semicolon
 id|prev
 op_add_assign
@@ -926,7 +965,20 @@ id|u32
 r_int
 r_int
 )paren
+(paren
 id|sg-&gt;address
+ques
+c_cond
+id|sg-&gt;address
+suffix:colon
+id|page_address
+c_func
+(paren
+id|sg-&gt;page
+)paren
+op_plus
+id|sg-&gt;offset
+)paren
 op_amp
 (paren
 id|IO_PAGE_SIZE
@@ -955,7 +1007,20 @@ op_assign
 r_int
 r_int
 )paren
+(paren
 id|sg-&gt;address
+ques
+c_cond
+id|sg-&gt;address
+suffix:colon
+id|page_address
+c_func
+(paren
+id|sg-&gt;page
+)paren
+op_plus
+id|sg-&gt;offset
+)paren
 suffix:semicolon
 r_if
 c_cond

@@ -11396,8 +11396,7 @@ comma
 op_star
 id|cached_page
 suffix:semicolon
-r_int
-r_int
+id|ssize_t
 id|written
 suffix:semicolon
 r_int

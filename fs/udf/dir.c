@@ -469,8 +469,6 @@ c_func
 id|dir-&gt;i_sb
 comma
 id|block
-comma
-id|dir-&gt;i_sb-&gt;s_blocksize
 )paren
 )paren
 )paren
@@ -579,8 +577,6 @@ c_func
 id|dir-&gt;i_sb
 comma
 id|block
-comma
-id|dir-&gt;i_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if

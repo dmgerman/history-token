@@ -774,6 +774,10 @@ DECL|struct|soc
 r_struct
 id|soc
 (brace
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|port
 id|soc_port
 id|port

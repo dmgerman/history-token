@@ -2,6 +2,12 @@ multiline_comment|/*&n; * 2.5 block I/O model&n; *&n; * Copyright (C) 2001 Jens 
 macro_line|#ifndef __LINUX_BIO_H
 DECL|macro|__LINUX_BIO_H
 mdefine_line|#define __LINUX_BIO_H
+multiline_comment|/* Platforms may set this to teach the BIO layer about IOMMU hardware. */
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#ifndef BIO_VMERGE_BOUNDARY
+DECL|macro|BIO_VMERGE_BOUNDARY
+mdefine_line|#define BIO_VMERGE_BOUNDARY&t;0
+macro_line|#endif
 DECL|macro|BIO_DEBUG
 mdefine_line|#define BIO_DEBUG
 macro_line|#ifdef BIO_DEBUG
@@ -111,12 +117,18 @@ r_int
 id|bi_idx
 suffix:semicolon
 multiline_comment|/* current index into bvl_vec */
-DECL|member|bi_hw_seg
+multiline_comment|/* Number of segments in this BIO after&n;&t; * physical address coalescing is performed.&n;&t; */
+DECL|member|bi_phys_segments
 r_int
 r_int
-id|bi_hw_seg
+id|bi_phys_segments
 suffix:semicolon
-multiline_comment|/* actual mapped segments */
+multiline_comment|/* Number of segments after physical and DMA remapping&n;&t; * hardware coalescing is performed.&n;&t; */
+DECL|member|bi_hw_segments
+r_int
+r_int
+id|bi_hw_segments
+suffix:semicolon
 DECL|member|bi_size
 r_int
 r_int
@@ -211,8 +223,10 @@ DECL|macro|__BVEC_END
 mdefine_line|#define __BVEC_END(bio)&t;&t;bio_iovec_idx((bio), (bio)-&gt;bi_vcnt - 1)
 DECL|macro|__BVEC_START
 mdefine_line|#define __BVEC_START(bio)&t;bio_iovec_idx((bio), 0)
-DECL|macro|BIO_CONTIG
-mdefine_line|#define BIO_CONTIG(bio, nxt) &bslash;&n;&t;BIOVEC_MERGEABLE(__BVEC_END((bio)), __BVEC_START((nxt)))
+DECL|macro|BIOVEC_PHYS_MERGEABLE
+mdefine_line|#define BIOVEC_PHYS_MERGEABLE(vec1, vec2)&t;&bslash;&n;&t;((bvec_to_phys((vec1)) + (vec1)-&gt;bv_len) == bvec_to_phys((vec2)))
+DECL|macro|BIOVEC_VIRT_MERGEABLE
+mdefine_line|#define BIOVEC_VIRT_MERGEABLE(vec1, vec2)&t;&bslash;&n;&t;((((bvec_to_phys((vec1)) + (vec1)-&gt;bv_len) | bvec_to_phys((vec2))) &amp; (BIO_VMERGE_BOUNDARY - 1)) == 0)
 DECL|macro|__BIO_SEG_BOUNDARY
 mdefine_line|#define __BIO_SEG_BOUNDARY(addr1, addr2, mask) &bslash;&n;&t;(((addr1) | (mask)) == (((addr2) - 1) | (mask)))
 DECL|macro|BIOVEC_SEG_BOUNDARY
@@ -267,6 +281,21 @@ r_int
 suffix:semicolon
 r_struct
 id|request_queue
+suffix:semicolon
+r_extern
+r_inline
+r_int
+id|bio_phys_segments
+c_func
+(paren
+r_struct
+id|request_queue
+op_star
+comma
+r_struct
+id|bio
+op_star
+)paren
 suffix:semicolon
 r_extern
 r_inline

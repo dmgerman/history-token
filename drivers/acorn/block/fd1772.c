@@ -5635,13 +5635,4 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|floppy_eject
-r_void
-id|floppy_eject
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
 eof

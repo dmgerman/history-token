@@ -163,7 +163,7 @@ r_return
 id|temp
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&n; * The SCSI_IOCTL_SEND_COMMAND ioctl sends a command out to the SCSI host.&n; * The IOCTL_NORMAL_TIMEOUT and NORMAL_RETRIES  variables are used.  &n; * &n; * dev is the SCSI device struct ptr, *(int *) arg is the length of the&n; * input data, if any, not including the command string &amp; counts, &n; * *((int *)arg + 1) is the output buffer size in bytes.&n; * &n; * *(char *) ((int *) arg)[2] the actual command byte.   &n; * &n; * Note that if more than MAX_BUF bytes are requested to be transferred,&n; * the ioctl will fail with error EINVAL.  MAX_BUF can be increased in&n; * the future by increasing the size that scsi_malloc will accept.&n; * &n; * This size *does not* include the initial lengths that were passed.&n; * &n; * The SCSI command is read from the memory location immediately after the&n; * length words, and the input data is right after the command.  The SCSI&n; * routines know the command size based on the opcode decode.  &n; * &n; * The output area is then filled in starting from the command byte. &n; */
+multiline_comment|/*&n;&n; * The SCSI_IOCTL_SEND_COMMAND ioctl sends a command out to the SCSI host.&n; * The IOCTL_NORMAL_TIMEOUT and NORMAL_RETRIES  variables are used.  &n; * &n; * dev is the SCSI device struct ptr, *(int *) arg is the length of the&n; * input data, if any, not including the command string &amp; counts, &n; * *((int *)arg + 1) is the output buffer size in bytes.&n; * &n; * *(char *) ((int *) arg)[2] the actual command byte.   &n; * &n; * Note that if more than MAX_BUF bytes are requested to be transferred,&n; * the ioctl will fail with error EINVAL.&n; * &n; * This size *does not* include the initial lengths that were passed.&n; * &n; * The SCSI command is read from the memory location immediately after the&n; * length words, and the input data is right after the command.  The SCSI&n; * routines know the command size based on the opcode decode.  &n; * &n; * The output area is then filled in starting from the command byte. &n; */
 DECL|function|ioctl_internal_command
 r_static
 r_int
@@ -526,6 +526,10 @@ id|result
 suffix:semicolon
 r_int
 id|data_direction
+comma
+id|gfp_mask
+op_assign
+id|GFP_KERNEL
 suffix:semicolon
 r_if
 c_cond
@@ -536,6 +540,15 @@ id|sic
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;host-&gt;unchecked_isa_dma
+)paren
+id|gfp_mask
+op_or_assign
+id|GFP_DMA
 suffix:semicolon
 multiline_comment|/*&n;&t; * Verify that we can read at least this much.&n;&t; */
 r_if
@@ -687,10 +700,12 @@ op_assign
 r_char
 op_star
 )paren
-id|scsi_malloc
+id|kmalloc
 c_func
 (paren
 id|buf_needed
+comma
+id|gfp_mask
 )paren
 suffix:semicolon
 r_if
@@ -1082,12 +1097,10 @@ c_cond
 (paren
 id|buf
 )paren
-id|scsi_free
+id|kfree
 c_func
 (paren
 id|buf
-comma
-id|buf_needed
 )paren
 suffix:semicolon
 r_return

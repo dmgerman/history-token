@@ -284,14 +284,12 @@ op_logical_neg
 (paren
 id|bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 comma
 id|loc
-comma
-id|sb-&gt;s_blocksize
 )paren
 )paren
 )paren

@@ -606,8 +606,6 @@ c_func
 (paren
 id|inode
 comma
-id|bufsize
-comma
 id|block
 )paren
 suffix:semicolon
@@ -769,8 +767,6 @@ id|isofs_bread
 c_func
 (paren
 id|inode
-comma
-id|bufsize
 comma
 id|block
 )paren

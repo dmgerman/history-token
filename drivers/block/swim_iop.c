@@ -188,6 +188,13 @@ comma
 l_int|2880
 )brace
 suffix:semicolon
+DECL|variable|swim_iop_lock
+r_static
+id|spinlock_t
+id|swim_iop_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|variable|drive_names
 r_static
 r_char
@@ -575,6 +582,9 @@ id|MAJOR_NR
 )paren
 comma
 id|DEVICE_REQUEST
+comma
+op_amp
+id|swim_iop_lock
 )paren
 suffix:semicolon
 id|blksize_size

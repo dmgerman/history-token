@@ -503,7 +503,7 @@ id|pool
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * mempool_alloc - allocate an element from a specific memory pool&n; * @pool:      pointer to the memory pool which was allocated via&n; *             mempool_create().&n; * @gfp_mask:  the usual allocation bitmask.&n; *&n; * this function only sleeps if the alloc_fn function sleeps or&n; * returns NULL. Note that due to preallocation, this function&n; * *never* fails.&n; */
+multiline_comment|/**&n; * mempool_alloc - allocate an element from a specific memory pool&n; * @pool:      pointer to the memory pool which was allocated via&n; *             mempool_create().&n; * @gfp_mask:  the usual allocation bitmask.&n; *&n; * this function only sleeps if the alloc_fn function sleeps or&n; * returns NULL. Note that due to preallocation, this function&n; * *never* fails when called from process contexts. (it might&n; * fail if called from an IRQ context.)&n; */
 DECL|function|mempool_alloc
 r_void
 op_star
@@ -548,7 +548,11 @@ op_assign
 id|gfp_mask
 op_amp
 op_complement
+(paren
 id|__GFP_WAIT
+op_or
+id|__GFP_IO
+)paren
 suffix:semicolon
 id|repeat_alloc
 suffix:colon
@@ -582,19 +586,19 @@ multiline_comment|/*&n;&t; * If the pool is less than 50% full then try harder&n
 r_if
 c_cond
 (paren
+(paren
 id|gfp_mask
 op_ne
 id|gfp_nowait
 )paren
-(brace
-r_if
-c_cond
+op_logical_and
 (paren
 id|pool-&gt;curr_nr
 op_le
 id|pool-&gt;min_nr
 op_div
 l_int|2
+)paren
 )paren
 (brace
 id|element
@@ -624,12 +628,6 @@ r_return
 id|element
 suffix:semicolon
 )brace
-)brace
-r_else
-multiline_comment|/* we must not sleep */
-r_return
-l_int|NULL
-suffix:semicolon
 multiline_comment|/*&n;&t; * Kick the VM at this point.&n;&t; */
 id|wakeup_bdflush
 c_func
@@ -685,6 +683,33 @@ r_return
 id|element
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|pool-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* We must not sleep in the GFP_ATOMIC case */
+r_if
+c_cond
+(paren
+id|gfp_mask
+op_eq
+id|gfp_nowait
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+id|run_task_queue
+c_func
+(paren
+op_amp
+id|tq_disk
+)paren
+suffix:semicolon
 id|add_wait_queue_exclusive
 c_func
 (paren
@@ -701,6 +726,15 @@ c_func
 id|current
 comma
 id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|pool-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|curr_nr
@@ -722,20 +756,11 @@ c_cond
 op_logical_neg
 id|curr_nr
 )paren
-(brace
-id|run_task_queue
-c_func
-(paren
-op_amp
-id|tq_disk
-)paren
-suffix:semicolon
 id|schedule
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 id|current-&gt;state
 op_assign
 id|TASK_RUNNING

@@ -268,16 +268,14 @@ c_cond
 (paren
 id|bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 comma
 id|start
 op_plus
 id|offset
-comma
-id|QNX4_BLOCK_SIZE
 )paren
 )paren
 op_eq
@@ -413,14 +411,12 @@ suffix:semicolon
 multiline_comment|/* CHECKME */
 id|bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 comma
 id|start
-comma
-id|QNX4_BLOCK_SIZE
 )paren
 suffix:semicolon
 r_if
@@ -591,14 +587,12 @@ suffix:semicolon
 multiline_comment|/* CHECKME */
 id|bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 comma
 id|start
-comma
-id|QNX4_BLOCK_SIZE
 )paren
 suffix:semicolon
 r_if

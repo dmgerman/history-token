@@ -476,6 +476,13 @@ id|DriveType
 op_assign
 id|TYPE_HD
 suffix:semicolon
+DECL|variable|ataflop_lock
+r_static
+id|spinlock_t
+id|ataflop_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 multiline_comment|/* Array for translating minors into disk formats */
 r_static
 r_struct
@@ -8078,6 +8085,9 @@ id|MAJOR_NR
 )paren
 comma
 id|DEVICE_REQUEST
+comma
+op_amp
+id|ataflop_lock
 )paren
 suffix:semicolon
 id|printk

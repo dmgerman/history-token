@@ -5176,6 +5176,10 @@ r_goto
 id|ntfs_read_super_vol
 suffix:semicolon
 )brace
+id|sb-&gt;s_blocksize
+op_assign
+id|blocksize
+suffix:semicolon
 multiline_comment|/* Read the super block (boot block). */
 r_if
 c_cond
@@ -5184,14 +5188,12 @@ op_logical_neg
 (paren
 id|bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 comma
 l_int|0
-comma
-id|blocksize
 )paren
 )paren
 )paren
@@ -5451,16 +5453,14 @@ op_logical_neg
 (paren
 id|bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 comma
 id|vol-&gt;mft_lcn
 op_plus
 id|i
-comma
-id|vol-&gt;cluster_size
 )paren
 )paren
 )paren

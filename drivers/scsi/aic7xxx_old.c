@@ -9444,7 +9444,12 @@ r_if
 c_cond
 (paren
 (paren
-id|cmd-&gt;request.cmd
+id|rq_data_dir
+c_func
+(paren
+op_amp
+id|cmd-&gt;request
+)paren
 op_eq
 id|WRITE
 )paren
@@ -14636,7 +14641,12 @@ comma
 id|cmd-&gt;underflow
 comma
 (paren
-id|cmd-&gt;request.cmd
+id|rq_data_dir
+c_func
+(paren
+op_amp
+id|cmd-&gt;request
+)paren
 op_eq
 id|WRITE
 )paren

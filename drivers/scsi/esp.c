@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: esp.c,v 1.99 2001/02/13 01:17:01 davem Exp $&n; * esp.c:  EnhancedScsiProcessor Sun SCSI driver code.&n; *&n; * Copyright (C) 1995, 1998 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: esp.c,v 1.100 2001/12/11 04:55:48 davem Exp $&n; * esp.c:  EnhancedScsiProcessor Sun SCSI driver code.&n; *&n; * Copyright (C) 1995, 1998 David S. Miller (davem@caip.rutgers.edu)&n; */
 multiline_comment|/* TODO:&n; *&n; * 1) Maybe disable parity checking in config register one for SCSI1&n; *    targets.  (Gilmore says parity error on the SBus can lock up&n; *    old sun4c&squot;s)&n; * 2) Add support for DMA2 pipelining.&n; * 3) Add tagged queueing.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -3922,14 +3922,6 @@ id|esp
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* Driver spinlock... */
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|esp-&gt;lock
-)paren
-suffix:semicolon
 multiline_comment|/* Command queues... */
 id|esp-&gt;current_SC
 op_assign
@@ -7209,10 +7201,6 @@ id|esp
 op_star
 id|esp
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 multiline_comment|/* Set up func ptr and initial driver cmd-phase. */
 id|SCpnt-&gt;scsi_done
 op_assign
@@ -7285,15 +7273,6 @@ id|SCpnt-&gt;SCp.sent_command
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|esp-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Place into our queue. */
 r_if
 c_cond
@@ -7358,15 +7337,6 @@ id|esp_exec_cmd
 c_func
 (paren
 id|esp
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|esp-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -7807,7 +7777,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|esp-&gt;lock
+id|esp-&gt;ehost-&gt;host_lock
 comma
 id|flags
 )paren
@@ -7864,7 +7834,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|esp-&gt;lock
+id|esp-&gt;ehost-&gt;host_lock
 comma
 id|flags
 )paren
@@ -7975,15 +7945,6 @@ id|this-&gt;host_scribble
 op_assign
 l_int|NULL
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|esp-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|esp_release_dmabufs
 c_func
 (paren
@@ -8017,6 +7978,15 @@ c_func
 id|esp-&gt;dregs
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|esp-&gt;ehost-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|SCSI_ABORT_SUCCESS
 suffix:semicolon
@@ -8045,7 +8015,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|esp-&gt;lock
+id|esp-&gt;ehost-&gt;host_lock
 comma
 id|flags
 )paren
@@ -8070,7 +8040,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|esp-&gt;lock
+id|esp-&gt;ehost-&gt;host_lock
 comma
 id|flags
 )paren
@@ -8111,13 +8081,6 @@ id|esp-&gt;current_SC
 op_assign
 l_int|NULL
 suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|esp-&gt;lock
-)paren
-suffix:semicolon
 id|esp_release_dmabufs
 c_func
 (paren
@@ -8134,33 +8097,12 @@ op_lshift
 l_int|16
 )paren
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|io_request_lock
-)paren
-suffix:semicolon
 id|sp
 op_member_access_from_pointer
 id|scsi_done
 c_func
 (paren
 id|sp
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|io_request_lock
-)paren
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|esp-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -8188,13 +8130,6 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|esp-&gt;lock
-)paren
-suffix:semicolon
 id|esp_release_dmabufs
 c_func
 (paren
@@ -8211,33 +8146,12 @@ op_lshift
 l_int|16
 )paren
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|io_request_lock
-)paren
-suffix:semicolon
 id|sp
 op_member_access_from_pointer
 id|scsi_done
 c_func
 (paren
 id|sp
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|io_request_lock
-)paren
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|esp-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -8336,7 +8250,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|esp-&gt;lock
+id|esp-&gt;ehost-&gt;host_lock
 comma
 id|flags
 )paren
@@ -8354,7 +8268,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|esp-&gt;lock
+id|esp-&gt;ehost-&gt;host_lock
 comma
 id|flags
 )paren
@@ -8389,13 +8303,6 @@ id|esp-&gt;current_SC
 op_assign
 l_int|NULL
 suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|esp-&gt;lock
-)paren
-suffix:semicolon
 id|esp_release_dmabufs
 c_func
 (paren
@@ -8408,13 +8315,6 @@ id|done_SC-&gt;result
 op_assign
 id|error
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|io_request_lock
-)paren
-suffix:semicolon
 id|done_SC
 op_member_access_from_pointer
 id|scsi_done
@@ -8423,21 +8323,7 @@ c_func
 id|done_SC
 )paren
 suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|io_request_lock
-)paren
-suffix:semicolon
 multiline_comment|/* Bus is free, issue any commands in the queue. */
-id|spin_lock
-c_func
-(paren
-op_amp
-id|esp-&gt;lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -17932,7 +17818,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|esp-&gt;lock
+id|esp-&gt;ehost-&gt;host_lock
 comma
 id|flags
 )paren
@@ -17993,7 +17879,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|esp-&gt;lock
+id|esp-&gt;ehost-&gt;host_lock
 comma
 id|flags
 )paren

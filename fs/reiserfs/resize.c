@@ -110,16 +110,14 @@ suffix:semicolon
 multiline_comment|/* check the device size */
 id|bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|s-&gt;s_dev
+id|s
 comma
 id|block_count_new
 op_minus
 l_int|1
-comma
-id|s-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if

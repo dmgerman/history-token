@@ -237,14 +237,12 @@ id|block
 suffix:semicolon
 id|bp
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|ip-&gt;i_dev
+id|ip-&gt;i_sb
 comma
 id|pblock
-comma
-id|ip-&gt;i_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_return
@@ -265,7 +263,7 @@ id|inode
 op_star
 id|ip
 comma
-r_int
+id|sector_t
 id|iblock
 comma
 r_struct

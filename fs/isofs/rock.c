@@ -22,7 +22,7 @@ mdefine_line|#define CHECK_CE&t;       &t;&t;&t;&bslash;&n;      {cont_extent = 
 DECL|macro|SETUP_ROCK_RIDGE
 mdefine_line|#define SETUP_ROCK_RIDGE(DE,CHR,LEN)&t;      &t;&t;      &t;&bslash;&n;  {LEN= sizeof(struct iso_directory_record) + DE-&gt;name_len[0];&t;&bslash;&n;  if(LEN &amp; 1) LEN++;&t;&t;&t;&t;&t;&t;&bslash;&n;  CHR = ((unsigned char *) DE) + LEN;&t;&t;&t;&t;&bslash;&n;  LEN = *((unsigned char *) DE) - LEN;                          &bslash;&n;  if (inode-&gt;i_sb-&gt;u.isofs_sb.s_rock_offset!=-1)                &bslash;&n;  {                                                             &bslash;&n;     LEN-=inode-&gt;i_sb-&gt;u.isofs_sb.s_rock_offset;                &bslash;&n;     CHR+=inode-&gt;i_sb-&gt;u.isofs_sb.s_rock_offset;                &bslash;&n;     if (LEN&lt;0) LEN=0;                                          &bslash;&n;  }                                                             &bslash;&n;}                                     
 DECL|macro|MAYBE_CONTINUE
-mdefine_line|#define MAYBE_CONTINUE(LABEL,DEV) &bslash;&n;  {if (buffer) kfree(buffer); &bslash;&n;  if (cont_extent){ &bslash;&n;    int block, offset, offset1; &bslash;&n;    struct buffer_head * pbh; &bslash;&n;    buffer = kmalloc(cont_size,GFP_KERNEL); &bslash;&n;    if (!buffer) goto out; &bslash;&n;    block = cont_extent; &bslash;&n;    offset = cont_offset; &bslash;&n;    offset1 = 0; &bslash;&n;    pbh = bread(DEV-&gt;i_dev, block, ISOFS_BUFFER_SIZE(DEV)); &bslash;&n;    if(pbh){       &bslash;&n;      memcpy(buffer + offset1, pbh-&gt;b_data + offset, cont_size - offset1); &bslash;&n;      brelse(pbh); &bslash;&n;      chr = (unsigned char *) buffer; &bslash;&n;      len = cont_size; &bslash;&n;      cont_extent = 0; &bslash;&n;      cont_size = 0; &bslash;&n;      cont_offset = 0; &bslash;&n;      goto LABEL; &bslash;&n;    }    &bslash;&n;    printk(&quot;Unable to read rock-ridge attributes&bslash;n&quot;);    &bslash;&n;  }}
+mdefine_line|#define MAYBE_CONTINUE(LABEL,DEV) &bslash;&n;  {if (buffer) kfree(buffer); &bslash;&n;  if (cont_extent){ &bslash;&n;    int block, offset, offset1; &bslash;&n;    struct buffer_head * pbh; &bslash;&n;    buffer = kmalloc(cont_size,GFP_KERNEL); &bslash;&n;    if (!buffer) goto out; &bslash;&n;    block = cont_extent; &bslash;&n;    offset = cont_offset; &bslash;&n;    offset1 = 0; &bslash;&n;    pbh = sb_bread(DEV-&gt;i_sb, block); &bslash;&n;    if(pbh){       &bslash;&n;      memcpy(buffer + offset1, pbh-&gt;b_data + offset, cont_size - offset1); &bslash;&n;      brelse(pbh); &bslash;&n;      chr = (unsigned char *) buffer; &bslash;&n;      len = cont_size; &bslash;&n;      cont_extent = 0; &bslash;&n;      cont_size = 0; &bslash;&n;      cont_offset = 0; &bslash;&n;      goto LABEL; &bslash;&n;    }    &bslash;&n;    printk(&quot;Unable to read rock-ridge attributes&bslash;n&quot;);    &bslash;&n;  }}
 multiline_comment|/* This is the inner layer of the get filename routine, and is called&n;   for each system area and continuation record related to the file */
 DECL|function|find_rock_ridge_relocation
 r_int
@@ -2128,14 +2128,12 @@ c_func
 suffix:semicolon
 id|bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb
 comma
 id|block
-comma
-id|bufsize
 )paren
 suffix:semicolon
 r_if

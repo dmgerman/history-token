@@ -111,14 +111,12 @@ id|QNX4_BLOCK_SIZE_BITS
 suffix:semicolon
 id|bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb
 comma
 id|blknum
-comma
-id|QNX4_BLOCK_SIZE
 )paren
 suffix:semicolon
 r_if

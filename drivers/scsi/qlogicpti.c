@@ -7146,7 +7146,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|qpti-&gt;qhost-&gt;host_lock
 )paren
 suffix:semicolon
 r_do
@@ -7188,7 +7188,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|qpti-&gt;qhost-&gt;host_lock
 )paren
 suffix:semicolon
 )brace

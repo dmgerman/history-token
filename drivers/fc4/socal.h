@@ -648,6 +648,10 @@ DECL|struct|socal
 r_struct
 id|socal
 (brace
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|port
 id|socal_port
 id|port

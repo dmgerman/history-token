@@ -23,14 +23,6 @@ macro_line|#include &lt;asm/q40_master.h&gt;
 macro_line|#include &lt;asm/keyboard.h&gt;
 r_extern
 r_void
-id|floppy_eject
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|floppy_setup
 c_func
 (paren

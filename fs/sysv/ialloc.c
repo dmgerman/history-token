@@ -138,14 +138,12 @@ suffix:semicolon
 op_star
 id|bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 comma
 id|block
-comma
-id|sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if

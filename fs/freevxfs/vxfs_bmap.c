@@ -366,10 +366,10 @@ id|off
 suffix:semicolon
 id|bp
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|ip-&gt;i_dev
+id|ip-&gt;i_sb
 comma
 id|indir
 op_plus
@@ -382,8 +382,6 @@ c_func
 id|ip-&gt;i_sb
 )paren
 )paren
-comma
-id|ip-&gt;i_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: io.h,v 1.40 2001/11/10 09:24:56 davem Exp $ */
+multiline_comment|/* $Id: io.h,v 1.46 2001/12/13 04:16:52 davem Exp $ */
 macro_line|#ifndef __SPARC64_IO_H
 DECL|macro|__SPARC64_IO_H
 mdefine_line|#define __SPARC64_IO_H
@@ -40,6 +40,7 @@ id|addr
 suffix:semicolon
 DECL|macro|bus_to_virt
 mdefine_line|#define bus_to_virt bus_to_virt_not_defined_use_pci_map
+multiline_comment|/* BIO layer definitions. */
 r_extern
 r_int
 r_int
@@ -47,8 +48,8 @@ id|phys_base
 suffix:semicolon
 DECL|macro|page_to_phys
 mdefine_line|#define page_to_phys(page)&t;((((page) - mem_map) &lt;&lt; PAGE_SHIFT)+phys_base)
-DECL|macro|BIOVEC_MERGEABLE
-mdefine_line|#define BIOVEC_MERGEABLE(vec1, vec2)&t;&bslash;&n;&t;((((bvec_to_phys((vec1)) + (vec1)-&gt;bv_len) | bvec_to_phys((vec2))) &amp; (DMA_CHUNK_SIZE - 1)) == 0)
+DECL|macro|BIO_VMERGE_BOUNDARY
+mdefine_line|#define BIO_VMERGE_BOUNDARY&t;8192
 multiline_comment|/* Different PCI controllers we support have their PCI MEM space&n; * mapped to an either 2GB (Psycho) or 4GB (Sabre) aligned area,&n; * so need to chop off the top 33 or 32 bits.&n; */
 r_extern
 r_int
@@ -1095,6 +1096,8 @@ DECL|macro|__raw_readw
 mdefine_line|#define __raw_readw(__addr)&t;&t;(_raw_readw((unsigned long)(__addr)))
 DECL|macro|__raw_readl
 mdefine_line|#define __raw_readl(__addr)&t;&t;(_raw_readl((unsigned long)(__addr)))
+DECL|macro|__raw_readq
+mdefine_line|#define __raw_readq(__addr)&t;&t;(_raw_readq((unsigned long)(__addr)))
 DECL|macro|__raw_writeb
 mdefine_line|#define __raw_writeb(__b, __addr)&t;(_raw_writeb((u8)(__b), (unsigned long)(__addr)))
 DECL|macro|__raw_writew
@@ -1658,7 +1661,7 @@ mdefine_line|#define ioremap(__offset, __size)&t;((void *)(__offset))
 DECL|macro|ioremap_nocache
 mdefine_line|#define ioremap_nocache(X,Y)&t;&t;ioremap((X),(Y))
 DECL|macro|iounmap
-mdefine_line|#define iounmap(__addr)&t;&t;&t;do { } while(0)
+mdefine_line|#define iounmap(__addr)&t;&t;&t;do { (void)(__addr); } while(0)
 multiline_comment|/* Similarly for SBUS. */
 DECL|macro|sbus_ioremap
 mdefine_line|#define sbus_ioremap(__res, __offset, __size, __name) &bslash;&n;({&t;unsigned long __ret; &bslash;&n;&t;__ret  = (__res)-&gt;start + (((__res)-&gt;flags &amp; 0x1ffUL) &lt;&lt; 32UL); &bslash;&n;&t;__ret += (unsigned long) (__offset); &bslash;&n;&t;if (! request_region((__ret), (__size), (__name))) &bslash;&n;&t;&t;__ret = 0UL; &bslash;&n;&t;__ret; &bslash;&n;})

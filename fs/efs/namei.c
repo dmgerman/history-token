@@ -86,10 +86,10 @@ op_increment
 (brace
 id|bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb
 comma
 id|efs_bmap
 c_func
@@ -98,8 +98,6 @@ id|inode
 comma
 id|block
 )paren
-comma
-id|EFS_DIRBSIZE
 )paren
 suffix:semicolon
 r_if

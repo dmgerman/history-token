@@ -521,14 +521,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|printk
-c_func
-(paren
-l_string|&quot;DMA free %d sectors.&bslash;n&quot;
-comma
-id|scsi_dma_free_sectors
-)paren
-suffix:semicolon
 )brace
 DECL|function|scsi_debug_queuecommand
 r_int
@@ -3056,11 +3048,6 @@ op_star
 id|info
 )paren
 (brace
-r_int
-id|size
-op_assign
-id|disk-&gt;capacity
-suffix:semicolon
 id|info
 (braket
 l_int|0

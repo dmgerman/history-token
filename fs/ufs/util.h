@@ -1007,7 +1007,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * These functions manipulate ufs buffers&n; */
 DECL|macro|ubh_bread
-mdefine_line|#define ubh_bread(dev,fragment,size) _ubh_bread_(uspi,dev,fragment,size)  
+mdefine_line|#define ubh_bread(sb,fragment,size) _ubh_bread_(uspi,sb,fragment,size)  
 r_extern
 r_struct
 id|ufs_buffer_head
@@ -1019,7 +1019,9 @@ r_struct
 id|ufs_sb_private_info
 op_star
 comma
-id|kdev_t
+r_struct
+id|super_block
+op_star
 comma
 r_int
 comma
@@ -1037,7 +1039,9 @@ r_struct
 id|ufs_sb_private_info
 op_star
 comma
-id|kdev_t
+r_struct
+id|super_block
+op_star
 comma
 r_int
 comma

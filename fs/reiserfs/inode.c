@@ -8508,7 +8508,7 @@ id|address_space
 op_star
 id|as
 comma
-id|sector_t
+r_int
 id|block
 )paren
 (brace

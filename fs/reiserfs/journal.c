@@ -3076,14 +3076,12 @@ id|JOURNAL_BLOCK_COUNT
 suffix:semicolon
 id|tbh
 op_assign
-id|get_hash_table
+id|sb_get_hash_table
 c_func
 (paren
-id|s-&gt;s_dev
+id|s
 comma
 id|bn
-comma
-id|s-&gt;s_blocksize
 )paren
 suffix:semicolon
 multiline_comment|/* kill this sanity check */
@@ -3263,14 +3261,12 @@ id|JOURNAL_BLOCK_COUNT
 suffix:semicolon
 id|tbh
 op_assign
-id|get_hash_table
+id|sb_get_hash_table
 c_func
 (paren
-id|s-&gt;s_dev
+id|s
 comma
 id|bn
-comma
-id|s-&gt;s_blocksize
 )paren
 suffix:semicolon
 id|wait_on_buffer
@@ -6430,10 +6426,10 @@ suffix:semicolon
 multiline_comment|/* ok, we have a journal description block, lets see if the transaction was valid */
 id|c_bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|p_s_sb-&gt;s_dev
+id|p_s_sb
 comma
 id|reiserfs_get_journal_block
 c_func
@@ -6456,8 +6452,6 @@ l_int|1
 op_mod
 id|JOURNAL_BLOCK_COUNT
 )paren
-comma
-id|p_s_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if
@@ -6739,14 +6733,12 @@ id|i
 suffix:semicolon
 id|d_bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|p_s_sb-&gt;s_dev
+id|p_s_sb
 comma
 id|cur_dblock
-comma
-id|p_s_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if
@@ -6893,10 +6885,10 @@ suffix:semicolon
 )brace
 id|c_bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|p_s_sb-&gt;s_dev
+id|p_s_sb
 comma
 id|reiserfs_get_journal_block
 c_func
@@ -6919,8 +6911,6 @@ l_int|1
 op_mod
 id|JOURNAL_BLOCK_COUNT
 )paren
-comma
-id|p_s_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if
@@ -7131,10 +7121,10 @@ id|log_blocks
 id|i
 )braket
 op_assign
-id|getblk
+id|sb_getblk
 c_func
 (paren
-id|p_s_sb-&gt;s_dev
+id|p_s_sb
 comma
 id|reiserfs_get_journal_block
 c_func
@@ -7151,8 +7141,6 @@ id|i
 )paren
 op_mod
 id|JOURNAL_BLOCK_COUNT
-comma
-id|p_s_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if
@@ -7168,10 +7156,10 @@ id|real_blocks
 id|i
 )braket
 op_assign
-id|getblk
+id|sb_getblk
 c_func
 (paren
-id|p_s_sb-&gt;s_dev
+id|p_s_sb
 comma
 id|le32_to_cpu
 c_func
@@ -7181,8 +7169,6 @@ id|desc-&gt;j_realblock
 id|i
 )braket
 )paren
-comma
-id|p_s_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 )brace
@@ -7193,10 +7179,10 @@ id|real_blocks
 id|i
 )braket
 op_assign
-id|getblk
+id|sb_getblk
 c_func
 (paren
-id|p_s_sb-&gt;s_dev
+id|p_s_sb
 comma
 id|le32_to_cpu
 c_func
@@ -7208,8 +7194,6 @@ op_minus
 id|JOURNAL_TRANS_HALF
 )braket
 )paren
-comma
-id|p_s_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 )brace
@@ -7851,10 +7835,10 @@ id|p_s_sb
 op_member_access_from_pointer
 id|j_header_bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|p_s_sb-&gt;s_dev
+id|p_s_sb
 comma
 id|reiserfs_get_journal_block
 c_func
@@ -7863,8 +7847,6 @@ id|p_s_sb
 )paren
 op_plus
 id|JOURNAL_BLOCK_COUNT
-comma
-id|p_s_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if
@@ -7970,10 +7952,10 @@ suffix:semicolon
 multiline_comment|/* now, we try to read the first unflushed offset.  If it is not valid, &n;    ** there is nothing more we can do, and it makes no sense to read &n;    ** through the whole log.&n;    */
 id|d_bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|p_s_sb-&gt;s_dev
+id|p_s_sb
 comma
 id|reiserfs_get_journal_block
 c_func
@@ -7986,8 +7968,6 @@ c_func
 (paren
 id|jh-&gt;j_first_unflushed_offset
 )paren
-comma
-id|p_s_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 id|ret
@@ -8086,14 +8066,12 @@ id|JOURNAL_BLOCK_COUNT
 (brace
 id|d_bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|p_s_sb-&gt;s_dev
+id|p_s_sb
 comma
 id|cur_dblock
-comma
-id|p_s_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 id|ret
@@ -13115,14 +13093,12 @@ id|th-&gt;t_super
 (brace
 id|bh
 op_assign
-id|get_hash_table
+id|sb_get_hash_table
 c_func
 (paren
-id|p_s_sb-&gt;s_dev
+id|p_s_sb
 comma
 id|blocknr
-comma
-id|p_s_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if
@@ -13161,14 +13137,12 @@ suffix:semicolon
 )brace
 id|bh
 op_assign
-id|get_hash_table
+id|sb_get_hash_table
 c_func
 (paren
-id|p_s_sb-&gt;s_dev
+id|p_s_sb
 comma
 id|blocknr
-comma
-id|p_s_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 multiline_comment|/* if it is journal new, we just remove it from this transaction */
@@ -14098,10 +14072,10 @@ suffix:semicolon
 multiline_comment|/* setup description block */
 id|d_bh
 op_assign
-id|getblk
+id|sb_getblk
 c_func
 (paren
-id|p_s_sb-&gt;s_dev
+id|p_s_sb
 comma
 id|reiserfs_get_journal_block
 c_func
@@ -14116,8 +14090,6 @@ id|p_s_sb
 )paren
 op_member_access_from_pointer
 id|j_start
-comma
-id|p_s_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 id|mark_buffer_uptodate
@@ -14182,10 +14154,10 @@ suffix:semicolon
 multiline_comment|/* setup commit block.  Don&squot;t write (keep it clean too) this one until after everyone else is written */
 id|c_bh
 op_assign
-id|getblk
+id|sb_getblk
 c_func
 (paren
-id|p_s_sb-&gt;s_dev
+id|p_s_sb
 comma
 id|reiserfs_get_journal_block
 c_func
@@ -14216,8 +14188,6 @@ l_int|1
 op_mod
 id|JOURNAL_BLOCK_COUNT
 )paren
-comma
-id|p_s_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 id|commit
@@ -14960,10 +14930,10 @@ id|tmp_bh
 suffix:semicolon
 id|tmp_bh
 op_assign
-id|getblk
+id|sb_getblk
 c_func
 (paren
-id|p_s_sb-&gt;s_dev
+id|p_s_sb
 comma
 id|reiserfs_get_journal_block
 c_func
@@ -14980,8 +14950,6 @@ id|jindex
 op_mod
 id|JOURNAL_BLOCK_COUNT
 )paren
-comma
-id|p_s_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 id|mark_buffer_uptodate

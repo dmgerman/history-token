@@ -1863,7 +1863,7 @@ op_assign
 id|ubh_bread
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 comma
 id|uspi-&gt;s_csaddr
 op_plus
@@ -2031,17 +2031,16 @@ id|sb-&gt;u.ufs_sb.s_ucg
 id|i
 )braket
 op_assign
-id|bread
+id|sb_bread
+c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 comma
 id|ufs_cgcmin
 c_func
 (paren
 id|i
 )paren
-comma
-id|sb-&gt;s_blocksize
 )paren
 )paren
 )paren
@@ -2368,8 +2367,9 @@ suffix:semicolon
 id|ubh
 op_assign
 id|ubh_bread
+c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 comma
 id|uspi-&gt;s_csaddr
 op_plus
@@ -3263,6 +3263,10 @@ comma
 id|block_size
 )paren
 suffix:semicolon
+id|sb-&gt;s_blocksize
+op_assign
+id|block_size
+suffix:semicolon
 multiline_comment|/*&n;&t; * read ufs super block from device&n;&t; */
 id|ubh
 op_assign
@@ -3270,7 +3274,7 @@ id|ubh_bread_uspi
 (paren
 id|uspi
 comma
-id|sb-&gt;s_dev
+id|sb
 comma
 id|uspi-&gt;s_sbbase
 op_plus

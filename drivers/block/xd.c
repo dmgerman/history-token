@@ -274,6 +274,13 @@ op_lshift
 l_int|6
 )braket
 suffix:semicolon
+DECL|variable|xd_lock
+r_static
+id|spinlock_t
+id|xd_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 r_extern
 r_struct
 id|block_device_operations
@@ -555,6 +562,9 @@ id|MAJOR_NR
 )paren
 comma
 id|DEVICE_REQUEST
+comma
+op_amp
+id|xd_lock
 )paren
 suffix:semicolon
 id|read_ahead

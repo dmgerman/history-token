@@ -16688,6 +16688,13 @@ DECL|variable|ide_devfs_handle
 id|devfs_handle_t
 id|ide_devfs_handle
 suffix:semicolon
+DECL|variable|ide_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ide_lock
+)paren
+suffix:semicolon
 DECL|variable|ide_probe
 id|EXPORT_SYMBOL
 c_func
@@ -16890,6 +16897,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|__ide_end_request
+)paren
+suffix:semicolon
+DECL|variable|ide_revalidate_drive
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ide_revalidate_drive
 )paren
 suffix:semicolon
 DECL|variable|ide_revalidate_disk

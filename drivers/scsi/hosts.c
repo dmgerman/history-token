@@ -216,7 +216,6 @@ DECL|function|scsi_register
 r_struct
 id|Scsi_Host
 op_star
-(def_block
 id|scsi_register
 c_func
 (paren
@@ -845,7 +844,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-)def_block
 r_int
 DECL|function|scsi_register_device
 id|scsi_register_device

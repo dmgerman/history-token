@@ -727,15 +727,5 @@ multiline_comment|/* flicker motor-on bit before reading a sector. Experimental 
 DECL|macro|FDEJECT
 mdefine_line|#define FDEJECT _IO(2, 0x5a)
 multiline_comment|/* eject the disk */
-macro_line|#ifdef __KERNEL__
-multiline_comment|/* eject the boot floppy (if we need the drive for a different root floppy) */
-r_void
-id|floppy_eject
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 eof

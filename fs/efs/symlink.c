@@ -80,10 +80,10 @@ id|EIO
 suffix:semicolon
 id|bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb
 comma
 id|efs_bmap
 c_func
@@ -92,8 +92,6 @@ id|inode
 comma
 l_int|0
 )paren
-comma
-id|EFS_BLOCKSIZE
 )paren
 suffix:semicolon
 r_if
@@ -140,10 +138,10 @@ id|EFS_BLOCKSIZE
 (brace
 id|bh
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb
 comma
 id|efs_bmap
 c_func
@@ -152,8 +150,6 @@ id|inode
 comma
 l_int|1
 )paren
-comma
-id|EFS_BLOCKSIZE
 )paren
 suffix:semicolon
 r_if

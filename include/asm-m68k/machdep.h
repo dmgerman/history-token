@@ -392,16 +392,6 @@ r_extern
 r_void
 (paren
 op_star
-id|mach_floppy_eject
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-(paren
-op_star
 id|mach_heartbeat
 )paren
 (paren

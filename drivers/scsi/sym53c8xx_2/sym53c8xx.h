@@ -118,18 +118,16 @@ mdefine_line|#define SYM53C8XX {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;name:&t;&t;&t
 macro_line|#endif /* defined(HOSTS_C) || defined(MODULE) */ 
 multiline_comment|/*&n; *  Translate kernel configuration parameters&n; *  into corresponding driver parameters.&n; */
 macro_line|#if !defined(HOSTS_C)
-multiline_comment|/*&n; *  Use normal IO if configured. Forced for alpha and powerpc.&n; *  Powerpc fails copying to on-chip RAM using memcpy_toio().&n; *  Forced to MMIO for sparc.&n; */
+multiline_comment|/*&n; *  Use normal IO if configured.&n; *  Normal IO forced for alpha.&n; *  Forced to MMIO for sparc.&n; */
 macro_line|#if defined(__alpha__)
 DECL|macro|SYM_CONF_IOMAPPED
 mdefine_line|#define&t;SYM_CONF_IOMAPPED
-macro_line|#elif defined(__powerpc__)
-DECL|macro|SYM_CONF_IOMAPPED
-mdefine_line|#define&t;SYM_CONF_IOMAPPED
-DECL|macro|SYM_OPT_NO_BUS_MEMORY_MAPPING
-mdefine_line|#define SYM_OPT_NO_BUS_MEMORY_MAPPING
 macro_line|#elif defined(__sparc__)
 DECL|macro|SYM_CONF_IOMAPPED
 macro_line|#undef SYM_CONF_IOMAPPED
+multiline_comment|/* #elif defined(__powerpc__) */
+multiline_comment|/* #define&t;SYM_CONF_IOMAPPED */
+multiline_comment|/* #define SYM_OPT_NO_BUS_MEMORY_MAPPING */
 macro_line|#elif defined(CONFIG_SCSI_SYM53C8XX_IOMAPPED)
 DECL|macro|SYM_CONF_IOMAPPED
 mdefine_line|#define&t;SYM_CONF_IOMAPPED

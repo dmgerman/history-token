@@ -1585,6 +1585,14 @@ comma
 id|HFS_SECTOR_SIZE
 )paren
 suffix:semicolon
+id|s-&gt;s_blocksize_bits
+op_assign
+id|HFS_SECTOR_SIZE_BITS
+suffix:semicolon
+id|s-&gt;s_blocksize
+op_assign
+id|HFS_SECTOR_SIZE
+suffix:semicolon
 macro_line|#ifdef CONFIG_MAC_PARTITION
 multiline_comment|/* check to see if we&squot;re in a partition */
 id|mdb
@@ -1754,14 +1762,6 @@ suffix:semicolon
 id|s-&gt;s_magic
 op_assign
 id|HFS_SUPER_MAGIC
-suffix:semicolon
-id|s-&gt;s_blocksize_bits
-op_assign
-id|HFS_SECTOR_SIZE_BITS
-suffix:semicolon
-id|s-&gt;s_blocksize
-op_assign
-id|HFS_SECTOR_SIZE
 suffix:semicolon
 id|s-&gt;s_op
 op_assign

@@ -4279,10 +4279,10 @@ suffix:semicolon
 multiline_comment|/* Search for the buffer in cache. */
 id|p_s_un_bh
 op_assign
-id|get_hash_table
+id|sb_get_hash_table
 c_func
 (paren
-id|p_s_sb-&gt;s_dev
+id|p_s_sb
 comma
 id|get_block_num
 c_func
@@ -4291,8 +4291,6 @@ id|p_n_unfm_pointer
 comma
 l_int|0
 )paren
-comma
-id|n_blk_size
 )paren
 suffix:semicolon
 r_if

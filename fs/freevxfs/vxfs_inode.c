@@ -209,14 +209,12 @@ id|VXFS_ISIZE
 suffix:semicolon
 id|bp
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|sbp-&gt;s_dev
+id|sbp
 comma
 id|block
-comma
-id|sbp-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if

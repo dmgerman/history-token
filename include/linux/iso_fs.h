@@ -1795,9 +1795,6 @@ op_star
 comma
 r_int
 r_int
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
 r_extern
@@ -1841,8 +1838,8 @@ DECL|macro|free_s
 mdefine_line|#define free_s leak_check_free_s
 DECL|macro|malloc
 mdefine_line|#define malloc leak_check_malloc
-DECL|macro|bread
-mdefine_line|#define bread leak_check_bread
+DECL|macro|sb_bread
+mdefine_line|#define sb_bread leak_check_bread
 DECL|macro|brelse
 mdefine_line|#define brelse leak_check_brelse
 r_extern
@@ -1876,14 +1873,13 @@ op_star
 id|leak_check_bread
 c_func
 (paren
-r_int
-id|dev
+r_struct
+id|super_block
+op_star
+id|sb
 comma
 r_int
 id|block
-comma
-r_int
-id|size
 )paren
 suffix:semicolon
 r_extern

@@ -1803,7 +1803,7 @@ id|SDpnt-&gt;online
 op_assign
 id|TRUE
 suffix:semicolon
-id|initialize_merge_fn
+id|scsi_initialize_merge_fn
 c_func
 (paren
 id|SDpnt
@@ -2097,11 +2097,6 @@ multiline_comment|/* What to do now ?? */
 )brace
 )brace
 )brace
-id|scsi_resize_dma_pool
-c_func
-(paren
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3621,7 +3616,7 @@ id|SDpnt-&gt;host
 op_assign
 id|shpnt
 suffix:semicolon
-id|initialize_merge_fn
+id|scsi_initialize_merge_fn
 c_func
 (paren
 id|SDpnt

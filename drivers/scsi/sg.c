@@ -12754,24 +12754,16 @@ id|num_sect
 op_le
 id|sg_pool_secs_avail
 )paren
-op_logical_and
-(paren
-id|scsi_dma_free_sectors
-OG
-(paren
-id|SG_LOW_POOL_THRESHHOLD
-op_plus
-id|num_sect
-)paren
-)paren
 )paren
 (brace
 id|resp
 op_assign
-id|scsi_malloc
+id|kmalloc
 c_func
 (paren
 id|rqSz
+comma
+id|page_mask
 )paren
 suffix:semicolon
 r_if
@@ -13299,12 +13291,10 @@ id|size
 op_div
 id|SG_SECTOR_SZ
 suffix:semicolon
-id|scsi_free
+id|kfree
 c_func
 (paren
 id|buff
-comma
-id|size
 )paren
 suffix:semicolon
 id|sg_pool_secs_avail
@@ -15278,10 +15268,7 @@ suffix:semicolon
 id|PRINT_PROC
 c_func
 (paren
-l_string|&quot; scsi_dma_free_sectors=%u sg_pool_secs_aval=%d &quot;
-l_string|&quot;def_reserved_size=%d&bslash;n&quot;
-comma
-id|scsi_dma_free_sectors
+l_string|&quot; sg_pool_secs_aval=%d def_reserved_size=%d&bslash;n&quot;
 comma
 id|sg_pool_secs_avail
 comma

@@ -595,14 +595,14 @@ id|rq-&gt;q
 op_logical_and
 id|nents
 OG
-id|rq-&gt;nr_segments
+id|rq-&gt;nr_phys_segments
 )paren
 id|printk
 c_func
 (paren
-l_string|&quot;ide-dma: received %d segments, build %d&bslash;n&quot;
+l_string|&quot;ide-dma: received %d phys segments, build %d&bslash;n&quot;
 comma
-id|rq-&gt;nr_segments
+id|rq-&gt;nr_phys_segments
 comma
 id|nents
 )paren

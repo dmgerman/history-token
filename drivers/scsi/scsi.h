@@ -597,6 +597,34 @@ op_star
 id|secs
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * sg list allocations&n; */
+r_struct
+id|scatterlist
+op_star
+id|scsi_alloc_sgtable
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+comma
+r_int
+id|gfp_mask
+)paren
+suffix:semicolon
+r_void
+id|scsi_free_sgtable
+c_func
+(paren
+r_struct
+id|scatterlist
+op_star
+id|sgl
+comma
+r_int
+id|index
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Prototypes for functions in scsi_dma.c&n; */
 r_void
 id|scsi_resize_dma_pool
@@ -635,22 +663,22 @@ suffix:semicolon
 multiline_comment|/*&n; * Prototypes for functions in scsi_merge.c&n; */
 r_extern
 r_void
-id|recount_segments
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|initialize_merge_fn
+id|scsi_initialize_merge_fn
 c_func
 (paren
 id|Scsi_Device
 op_star
 id|SDpnt
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|scsi_init_io
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Prototypes for functions in scsi_queue.c&n; */
@@ -1173,18 +1201,6 @@ r_int
 id|device_busy
 suffix:semicolon
 multiline_comment|/* commands actually active on low-level */
-DECL|member|scsi_init_io_fn
-r_int
-(paren
-op_star
-id|scsi_init_io_fn
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* Used to initialize&n;&t;&t;&t;&t;&t;&t;   new request */
 DECL|member|device_queue
 id|Scsi_Cmnd
 op_star

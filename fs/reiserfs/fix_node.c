@@ -3663,14 +3663,12 @@ c_cond
 (paren
 id|left
 op_assign
-id|get_hash_table
+id|sb_get_hash_table
 c_func
 (paren
-id|p_s_sb-&gt;s_dev
+id|p_s_sb
 comma
 id|n_left_neighbor_blocknr
-comma
-id|p_s_sb-&gt;s_blocksize
 )paren
 )paren
 )paren

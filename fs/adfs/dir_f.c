@@ -716,14 +716,12 @@ id|dir-&gt;bh
 id|blk
 )braket
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 comma
 id|phys
-comma
-id|sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if

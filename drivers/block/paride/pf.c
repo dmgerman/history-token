@@ -1048,7 +1048,15 @@ op_amp
 id|pf_spin_lock
 )paren
 suffix:semicolon
-id|blk_queue_max_segments
+id|blk_queue_max_phys_segments
+c_func
+(paren
+id|q
+comma
+id|cluster
+)paren
+suffix:semicolon
+id|blk_queue_max_hw_segments
 c_func
 (paren
 id|q

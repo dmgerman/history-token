@@ -25,7 +25,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
@@ -506,10 +505,10 @@ id|ram_va
 suffix:semicolon
 multiline_comment|/* RAM  kernel virtual address&t;*/
 DECL|member|io_port
-id|u32
+id|u_long
 id|io_port
 suffix:semicolon
-multiline_comment|/* IO port address&t;&t;*/
+multiline_comment|/* IO port address cookie&t;*/
 DECL|member|io_ws
 id|u_short
 id|io_ws

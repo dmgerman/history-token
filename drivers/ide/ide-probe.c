@@ -2858,10 +2858,23 @@ comma
 id|max_sectors
 )paren
 suffix:semicolon
-multiline_comment|/* IDE DMA can do PRD_ENTRIES number of segments */
-id|q-&gt;max_segments
-op_assign
+multiline_comment|/* IDE DMA can do PRD_ENTRIES number of segments. */
+id|blk_queue_max_hw_segments
+c_func
+(paren
+id|q
+comma
 id|PRD_ENTRIES
+)paren
+suffix:semicolon
+multiline_comment|/* This is a driver limit and could be eliminated. */
+id|blk_queue_max_phys_segments
+c_func
+(paren
+id|q
+comma
+id|PRD_ENTRIES
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This routine sets up the irq for an ide interface, and creates a new&n; * hwgroup for the irq/hwif if none was previously assigned.&n; *&n; * Much of the code is for correctly detecting/handling irq sharing&n; * and irq serialization situations.  This is somewhat complex because&n; * it handles static as well as dynamic (PCMCIA) IDE interfaces.&n; *&n; * The SA_INTERRUPT in sa_flags means ide_intr() is always entered with&n; * interrupts completely disabled.  This can be bad for interrupt latency,&n; * but anything else has led to problems on some machines.  We re-enable&n; * interrupts as much as we can safely do in most places.&n; */

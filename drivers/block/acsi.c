@@ -490,6 +490,13 @@ r_char
 op_star
 id|CurrentBuffer
 suffix:semicolon
+DECL|variable|acsi_lock
+r_static
+id|spinlock_t
+id|acsi_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|macro|SET_TIMER
 mdefine_line|#define SET_TIMER()&t;mod_timer(&amp;acsi_timer, jiffies + ACSI_TIMEOUT)
 DECL|macro|CLEAR_TIMER
@@ -7237,6 +7244,9 @@ id|MAJOR_NR
 )paren
 comma
 id|DEVICE_REQUEST
+comma
+op_amp
+id|acsi_lock
 )paren
 suffix:semicolon
 id|read_ahead
