@@ -161,6 +161,10 @@ r_struct
 id|timer_list
 id|arp_timer
 suffix:semicolon
+DECL|member|kill_timers
+r_int
+id|kill_timers
+suffix:semicolon
 DECL|member|stats
 r_struct
 id|net_device_stats
