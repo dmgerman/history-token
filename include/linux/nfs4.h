@@ -988,6 +988,9 @@ comma
 DECL|enumerator|NFSPROC4_CLNT_LOCKU
 id|NFSPROC4_CLNT_LOCKU
 comma
+DECL|enumerator|NFSPROC4_CLNT_ACCESS
+id|NFSPROC4_CLNT_ACCESS
+comma
 )brace
 suffix:semicolon
 macro_line|#endif
