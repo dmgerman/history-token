@@ -2294,41 +2294,6 @@ suffix:semicolon
 multiline_comment|/* WD RESET */
 multiline_comment|/*      WriteReg(cs, HFCD_DATA, HFCD_CTMT, cs-&gt;hw.hfcsx.ctmt | 0x80);&n;   add_timer(&amp;cs-&gt;hw.hfcsx.timer);&n; */
 )brace
-multiline_comment|/*********************************/
-multiline_comment|/* schedule a new D-channel task */
-multiline_comment|/*********************************/
-r_static
-r_void
-DECL|function|sched_event_D_sx
-id|sched_event_D_sx
-c_func
-(paren
-r_struct
-id|IsdnCardState
-op_star
-id|cs
-comma
-r_int
-id|event
-)paren
-(brace
-id|test_and_set_bit
-c_func
-(paren
-id|event
-comma
-op_amp
-id|cs-&gt;event
-)paren
-suffix:semicolon
-id|schedule_work
-c_func
-(paren
-op_amp
-id|cs-&gt;work
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/************************************************/
 multiline_comment|/* select a b-channel entry matching and active */
 multiline_comment|/************************************************/
@@ -2498,7 +2463,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|sched_event_D_sx
+id|sched_d_event
 c_func
 (paren
 id|cs
@@ -3909,7 +3874,7 @@ id|cs-&gt;dc.hfcsx.ph_state
 op_assign
 id|exval
 suffix:semicolon
-id|sched_event_D_sx
+id|sched_d_event
 c_func
 (paren
 id|cs
@@ -3948,7 +3913,7 @@ id|cs-&gt;hw.hfcsx.nt_timer
 OL
 l_int|0
 )paren
-id|sched_event_D_sx
+id|sched_d_event
 c_func
 (paren
 id|cs
@@ -4411,7 +4376,7 @@ op_amp
 id|cs-&gt;HW_Flags
 )paren
 )paren
-id|sched_event_D_sx
+id|sched_d_event
 c_func
 (paren
 id|cs
@@ -4556,7 +4521,7 @@ suffix:semicolon
 )brace
 )brace
 r_else
-id|sched_event_D_sx
+id|sched_d_event
 c_func
 (paren
 id|cs
