@@ -6357,6 +6357,7 @@ id|cachep-&gt;flags
 op_amp
 id|SLAB_POISON
 )paren
+(brace
 id|check_poison_obj
 c_func
 (paren
@@ -6365,6 +6366,17 @@ comma
 id|objp
 )paren
 suffix:semicolon
+id|poison_obj
+c_func
+(paren
+id|cachep
+comma
+id|objp
+comma
+id|POISON_BEFORE
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
