@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * PXA250/210 Power Management Routines&n; *&n; * Original code for the SA11x0:&n; * Copyright (c) 2001 Cliff Brake &lt;cbrake@accelent.com&gt;&n; *&n; * Modified for the PXA250 by Nicolas Pitre:&n; * Copyright (c) 2002 Monta Vista Software, Inc.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -154,28 +155,18 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
+r_int
+id|delta
+suffix:semicolon
+r_int
 id|i
 suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-id|clf
-c_func
-(paren
-)paren
-suffix:semicolon
-id|leds_event
-c_func
-(paren
-id|led_stop
-)paren
-suffix:semicolon
 multiline_comment|/* preserve current time */
-id|RCNR
+id|delta
 op_assign
 id|xtime.tv_sec
+op_minus
+id|RCNR
 suffix:semicolon
 multiline_comment|/*&n;&t; * Temporary solution.  This won&squot;t be necessary once&n;&t; * we move pxa support into the serial driver&n;&t; * Save the FF UART&n;&t; */
 id|SAVE
@@ -710,6 +701,8 @@ multiline_comment|/* restore current time */
 id|xtime.tv_sec
 op_assign
 id|RCNR
+op_plus
+id|delta
 suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
@@ -720,17 +713,6 @@ l_string|&quot;*** made it back from resume&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|leds_event
-c_func
-(paren
-id|led_start
-)paren
-suffix:semicolon
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
