@@ -72,6 +72,16 @@ op_assign
 id|cap_bprm_secureexec
 comma
 dot
+id|inode_setxattr
+op_assign
+id|cap_inode_setxattr
+comma
+dot
+id|inode_removexattr
+op_assign
+id|cap_inode_removexattr
+comma
+dot
 id|task_post_setuid
 op_assign
 id|cap_task_post_setuid
