@@ -1071,6 +1071,16 @@ id|BLIST_LARGELUN
 )brace
 comma
 (brace
+l_string|&quot;IBM&quot;
+comma
+l_string|&quot;2105&quot;
+comma
+l_int|NULL
+comma
+id|BLIST_RETRY_HWERROR
+)brace
+comma
+(brace
 l_string|&quot;iomega&quot;
 comma
 l_string|&quot;jaz 1GB&quot;
@@ -1434,6 +1444,16 @@ id|BLIST_FORCELUN
 )brace
 comma
 multiline_comment|/* DDS3 &amp; DDS4 autoloaders */
+(brace
+l_string|&quot;ST650211&quot;
+comma
+l_string|&quot;CF&quot;
+comma
+l_int|NULL
+comma
+id|BLIST_RETRY_HWERROR
+)brace
+comma
 (brace
 l_string|&quot;SUN&quot;
 comma
