@@ -5638,6 +5638,12 @@ comma
 id|clp-&gt;cl_clientid.cl_id
 )paren
 suffix:semicolon
+id|nfs4_put_delegation
+c_func
+(paren
+id|dp
+)paren
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * The file_lock is being reapd.&n; *&n; * Called by locks_free_lock() with lock_kernel() held.&n; */
