@@ -36,7 +36,7 @@ op_star
 id|skb
 )paren
 (brace
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_enqueue): card=%d&bslash;n&quot;
@@ -79,7 +79,7 @@ op_star
 id|skb
 )paren
 (brace
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_enqueue_data): card=%d, channel=%d&bslash;n&quot;
@@ -165,7 +165,7 @@ id|skb_header
 op_star
 id|skbh
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_irq): IRQ received, card=%d&bslash;n&quot;
@@ -227,7 +227,7 @@ id|ackupload
 )paren
 (brace
 multiline_comment|/* it is a new message from the board */
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_irq): message received, card=%d&bslash;n&quot;
@@ -588,7 +588,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* it is a ack from the board */
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_irq): message acknowledged, card=%d&bslash;n&quot;
@@ -774,7 +774,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_recv_tq): &quot;
@@ -910,7 +910,7 @@ suffix:semicolon
 id|u32
 id|waiting_too_long
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_sendpacket), card=%d, channel=%d&bslash;n&quot;
@@ -949,7 +949,7 @@ id|channel-&gt;sendq
 )paren
 )paren
 (brace
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_sendpacket): &quot;
@@ -972,7 +972,7 @@ op_logical_neg
 id|channel-&gt;readytoreceive
 )paren
 (brace
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_sendpacket): &quot;
@@ -1011,7 +1011,7 @@ c_cond
 id|card-&gt;busy
 )paren
 (brace
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_sendpacket): &quot;
@@ -1062,7 +1062,7 @@ id|card-&gt;sendq
 )paren
 )paren
 (brace
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_sendpacket): &quot;
@@ -1090,7 +1090,7 @@ c_cond
 id|card-&gt;busy
 )paren
 (brace
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_sendpacket): &quot;
@@ -1182,7 +1182,7 @@ op_star
 )paren
 id|skb-&gt;data
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_sendpacket): &quot;
