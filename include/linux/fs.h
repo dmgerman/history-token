@@ -518,6 +518,7 @@ macro_line|#include &lt;linux/smb_fs_i.h&gt;
 macro_line|#include &lt;linux/hfs_fs_i.h&gt;
 macro_line|#include &lt;linux/adfs_fs_i.h&gt;
 macro_line|#include &lt;linux/qnx4_fs_i.h&gt;
+macro_line|#include &lt;linux/reiserfs_fs_i.h&gt;
 macro_line|#include &lt;linux/bfs_fs_i.h&gt;
 macro_line|#include &lt;linux/udf_fs_i.h&gt;
 macro_line|#include &lt;linux/ncp_fs_i.h&gt;
@@ -1111,6 +1112,11 @@ r_struct
 id|qnx4_inode_info
 id|qnx4_i
 suffix:semicolon
+DECL|member|reiserfs_i
+r_struct
+id|reiserfs_inode_info
+id|reiserfs_i
+suffix:semicolon
 DECL|member|bfs_i
 r_struct
 id|bfs_inode_info
@@ -1152,132 +1158,6 @@ id|u
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Inode state bits.. */
-DECL|macro|I_DIRTY_SYNC
-mdefine_line|#define I_DIRTY_SYNC&t;&t;1 /* Not dirty enough for O_DATASYNC */
-DECL|macro|I_DIRTY_DATASYNC
-mdefine_line|#define I_DIRTY_DATASYNC&t;2 /* Data-related inode changes pending */
-DECL|macro|I_DIRTY_PAGES
-mdefine_line|#define I_DIRTY_PAGES&t;&t;4 /* Data-related inode changes pending */
-DECL|macro|I_LOCK
-mdefine_line|#define I_LOCK&t;&t;&t;8
-DECL|macro|I_FREEING
-mdefine_line|#define I_FREEING&t;&t;16
-DECL|macro|I_CLEAR
-mdefine_line|#define I_CLEAR&t;&t;&t;32
-DECL|macro|I_DIRTY
-mdefine_line|#define I_DIRTY (I_DIRTY_SYNC | I_DIRTY_DATASYNC | I_DIRTY_PAGES)
-r_extern
-r_void
-id|__mark_inode_dirty
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-DECL|function|mark_inode_dirty
-r_static
-r_inline
-r_void
-id|mark_inode_dirty
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|inode-&gt;i_state
-op_amp
-id|I_DIRTY
-)paren
-op_ne
-id|I_DIRTY
-)paren
-id|__mark_inode_dirty
-c_func
-(paren
-id|inode
-comma
-id|I_DIRTY
-)paren
-suffix:semicolon
-)brace
-DECL|function|mark_inode_dirty_sync
-r_static
-r_inline
-r_void
-id|mark_inode_dirty_sync
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|inode-&gt;i_state
-op_amp
-id|I_DIRTY_SYNC
-)paren
-)paren
-id|__mark_inode_dirty
-c_func
-(paren
-id|inode
-comma
-id|I_DIRTY_SYNC
-)paren
-suffix:semicolon
-)brace
-DECL|function|mark_inode_dirty_pages
-r_static
-r_inline
-r_void
-id|mark_inode_dirty_pages
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|inode
-op_logical_and
-op_logical_neg
-(paren
-id|inode-&gt;i_state
-op_amp
-id|I_DIRTY_PAGES
-)paren
-)paren
-id|__mark_inode_dirty
-c_func
-(paren
-id|inode
-comma
-id|I_DIRTY_PAGES
-)paren
-suffix:semicolon
-)brace
 DECL|struct|fown_struct
 r_struct
 id|fown_struct
@@ -1989,6 +1869,7 @@ macro_line|#include &lt;linux/smb_fs_sb.h&gt;
 macro_line|#include &lt;linux/hfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/adfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/qnx4_fs_sb.h&gt;
+macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/bfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/udf_fs_sb.h&gt;
 macro_line|#include &lt;linux/ncp_fs_sb.h&gt;
@@ -2187,6 +2068,11 @@ DECL|member|qnx4_sb
 r_struct
 id|qnx4_sb_info
 id|qnx4_sb
+suffix:semicolon
+DECL|member|reiserfs_sb
+r_struct
+id|reiserfs_sb_info
+id|reiserfs_sb
 suffix:semicolon
 DECL|member|bfs_sb
 r_struct
@@ -3073,6 +2959,34 @@ id|inode
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* reiserfs kludge.  reiserfs needs 64 bits of information to&n;    &t;** find an inode.  We are using the read_inode2 call to get&n;   &t;** that information.  We don&squot;t like this, and are waiting on some&n;   &t;** VFS changes for the real solution.&n;   &t;** iget4 calls read_inode2, iff it is defined&n;   &t;*/
+DECL|member|read_inode2
+r_void
+(paren
+op_star
+id|read_inode2
+)paren
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_void
+op_star
+)paren
+suffix:semicolon
+DECL|member|dirty_inode
+r_void
+(paren
+op_star
+id|dirty_inode
+)paren
+(paren
+r_struct
+id|inode
+op_star
+)paren
+suffix:semicolon
 DECL|member|write_inode
 r_void
 (paren
@@ -3128,6 +3042,30 @@ r_void
 (paren
 op_star
 id|write_super
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+)paren
+suffix:semicolon
+DECL|member|write_super_lockfs
+r_void
+(paren
+op_star
+id|write_super_lockfs
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+)paren
+suffix:semicolon
+DECL|member|unlockfs
+r_void
+(paren
+op_star
+id|unlockfs
 )paren
 (paren
 r_struct
@@ -3195,6 +3133,132 @@ op_star
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Inode state bits.. */
+DECL|macro|I_DIRTY_SYNC
+mdefine_line|#define I_DIRTY_SYNC&t;&t;1 /* Not dirty enough for O_DATASYNC */
+DECL|macro|I_DIRTY_DATASYNC
+mdefine_line|#define I_DIRTY_DATASYNC&t;2 /* Data-related inode changes pending */
+DECL|macro|I_DIRTY_PAGES
+mdefine_line|#define I_DIRTY_PAGES&t;&t;4 /* Data-related inode changes pending */
+DECL|macro|I_LOCK
+mdefine_line|#define I_LOCK&t;&t;&t;8
+DECL|macro|I_FREEING
+mdefine_line|#define I_FREEING&t;&t;16
+DECL|macro|I_CLEAR
+mdefine_line|#define I_CLEAR&t;&t;&t;32
+DECL|macro|I_DIRTY
+mdefine_line|#define I_DIRTY (I_DIRTY_SYNC | I_DIRTY_DATASYNC | I_DIRTY_PAGES)
+r_extern
+r_void
+id|__mark_inode_dirty
+c_func
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|function|mark_inode_dirty
+r_static
+r_inline
+r_void
+id|mark_inode_dirty
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|inode-&gt;i_state
+op_amp
+id|I_DIRTY
+)paren
+op_ne
+id|I_DIRTY
+)paren
+id|__mark_inode_dirty
+c_func
+(paren
+id|inode
+comma
+id|I_DIRTY
+)paren
+suffix:semicolon
+)brace
+DECL|function|mark_inode_dirty_sync
+r_static
+r_inline
+r_void
+id|mark_inode_dirty_sync
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|inode-&gt;i_state
+op_amp
+id|I_DIRTY_SYNC
+)paren
+)paren
+id|__mark_inode_dirty
+c_func
+(paren
+id|inode
+comma
+id|I_DIRTY_SYNC
+)paren
+suffix:semicolon
+)brace
+DECL|function|mark_inode_dirty_pages
+r_static
+r_inline
+r_void
+id|mark_inode_dirty_pages
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|inode
+op_logical_and
+op_logical_neg
+(paren
+id|inode-&gt;i_state
+op_amp
+id|I_DIRTY_PAGES
+)paren
+)paren
+id|__mark_inode_dirty
+c_func
+(paren
+id|inode
+comma
+id|I_DIRTY_PAGES
+)paren
+suffix:semicolon
+)brace
 DECL|struct|dquot_operations
 r_struct
 id|dquot_operations
@@ -4126,6 +4190,18 @@ r_struct
 id|buffer_head
 op_star
 id|buf
+)paren
+suffix:semicolon
+multiline_comment|/* reiserfs_writepage needs this */
+r_extern
+r_void
+id|set_buffer_async_io
+c_func
+(paren
+r_struct
+id|buffer_head
+op_star
+id|bh
 )paren
 suffix:semicolon
 DECL|macro|BUF_CLEAN

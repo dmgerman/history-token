@@ -3394,6 +3394,22 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+DECL|function|set_buffer_async_io
+r_void
+id|set_buffer_async_io
+c_func
+(paren
+r_struct
+id|buffer_head
+op_star
+id|bh
+)paren
+(brace
+id|bh-&gt;b_end_io
+op_assign
+id|end_buffer_io_async
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Synchronise all the inode&squot;s dirty buffers to the disk.&n; *&n; * We have conflicting pressures: we want to make sure that all&n; * initially dirty buffers get waited on, but that any subsequently&n; * dirtied buffers don&squot;t.  After all, we don&squot;t want fsync to last&n; * forever if somebody is actively writing to the file.&n; *&n; * Do this in two main stages: first we copy dirty buffers to a&n; * temporary inode list, queueing the writes as we go.  Then we clean&n; * up, waiting for those writes to complete.&n; * &n; * During this second stage, any subsequent updates to the file may end&n; * up refiling the buffer on the original inode&squot;s dirty list again, so&n; * there is a chance we will end up with a buffer queued for write but&n; * not yet completed on that list.  So, as a final cleanup we go through&n; * the osync code to catch these locked, dirty buffers without requeuing&n; * any newly dirty buffers for write.&n; */
 DECL|function|fsync_inode_buffers
 r_int
@@ -9806,6 +9822,12 @@ r_goto
 id|cleaned_buffers_try_again
 suffix:semicolon
 )brace
+id|wakeup_bdflush
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 )brace
 r_return
 l_int|0

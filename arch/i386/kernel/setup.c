@@ -8166,7 +8166,7 @@ l_int|3
 suffix:semicolon
 multiline_comment|/*&n;&t; * The vendor-specific functions might have changed features.  Now&n;&t; * we do &quot;generic changes.&quot;&n;&t; */
 multiline_comment|/* TSC disabled? */
-macro_line|#ifdef CONFIG_TSC
+macro_line|#ifndef CONFIG_X86_TSC
 r_if
 c_cond
 (paren
