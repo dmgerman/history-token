@@ -408,6 +408,7 @@ r_char
 id|ia64_mv_readb_t
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -418,6 +419,7 @@ r_int
 id|ia64_mv_readw_t
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -428,6 +430,7 @@ r_int
 id|ia64_mv_readl_t
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -438,6 +441,7 @@ r_int
 id|ia64_mv_readq_t
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -448,6 +452,7 @@ r_char
 id|ia64_mv_readb_relaxed_t
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -458,6 +463,7 @@ r_int
 id|ia64_mv_readw_relaxed_t
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -468,6 +474,7 @@ r_int
 id|ia64_mv_readl_relaxed_t
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -478,6 +485,7 @@ r_int
 id|ia64_mv_readq_relaxed_t
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 suffix:semicolon

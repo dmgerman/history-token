@@ -412,6 +412,7 @@ DECL|function|___sn_readb
 id|___sn_readb
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -427,6 +428,7 @@ op_star
 r_volatile
 r_int
 r_char
+id|__force
 op_star
 )paren
 id|addr
@@ -458,6 +460,7 @@ DECL|function|___sn_readw
 id|___sn_readw
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -473,6 +476,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -504,6 +508,7 @@ DECL|function|___sn_readl
 id|___sn_readl
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -519,6 +524,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -550,6 +556,7 @@ DECL|function|___sn_readq
 id|___sn_readq
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -565,6 +572,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
