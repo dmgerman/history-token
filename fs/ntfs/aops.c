@@ -3187,11 +3187,36 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rec_block
-op_eq
+id|likely
+c_func
+(paren
 id|block
+OL
+id|rec_block
+)paren
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t; * This block is not the first one in the record.  We&n;&t;&t;&t; * ignore the buffer&squot;s dirty state because we could&n;&t;&t;&t; * have raced with a parallel mark_ntfs_record_dirty().&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rec_is_dirty
+)paren
+r_continue
+suffix:semicolon
+)brace
+r_else
+multiline_comment|/* if (block == rec_block) */
+(brace
+id|BUG_ON
+c_func
+(paren
+id|block
+OG
+id|rec_block
+)paren
+suffix:semicolon
 multiline_comment|/* This block is the first one in the record. */
 id|rec_block
 op_add_assign
@@ -3208,7 +3233,7 @@ id|bh
 )paren
 )paren
 (brace
-multiline_comment|/* Clean buffers are not written out. */
+multiline_comment|/* Clean records are not written out. */
 id|rec_is_dirty
 op_assign
 id|FALSE
@@ -3219,38 +3244,6 @@ suffix:semicolon
 id|rec_is_dirty
 op_assign
 id|TRUE
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* This block is not the first one in the record. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|buffer_dirty
-c_func
-(paren
-id|bh
-)paren
-)paren
-(brace
-multiline_comment|/* Clean buffers are not written out. */
-id|BUG_ON
-c_func
-(paren
-id|rec_is_dirty
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|rec_is_dirty
-)paren
 suffix:semicolon
 )brace
 id|BUG_ON
@@ -3643,30 +3636,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-op_logical_neg
-id|test_clear_buffer_dirty
-c_func
-(paren
-id|tbh
-)paren
-)paren
-)paren
-(brace
-id|unlock_buffer
+multiline_comment|/* The buffer dirty state is now irrelevant, just clean it. */
+id|clear_buffer_dirty
 c_func
 (paren
 id|tbh
 )paren
 suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
 id|BUG_ON
 c_func
 (paren
