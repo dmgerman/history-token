@@ -489,7 +489,9 @@ id|iobase
 suffix:semicolon
 multiline_comment|/* in/out[bwl] */
 DECL|member|membase
+r_int
 r_char
+id|__iomem
 op_star
 id|membase
 suffix:semicolon
