@@ -20,41 +20,9 @@ macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/firmware.h&gt;
 macro_line|#include &quot;usb_atm.h&quot;
-multiline_comment|/*&n;#define DEBUG&n;#define VERBOSE_DEBUG&n;*/
-macro_line|#if !defined (DEBUG) &amp;&amp; defined (CONFIG_USB_DEBUG)
-DECL|macro|DEBUG
-macro_line|#&t;define DEBUG
-macro_line|#endif
-macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#if defined(CONFIG_FW_LOADER) || defined(CONFIG_FW_LOADER_MODULE)
 DECL|macro|USE_FW_LOADER
 macro_line|#&t;define USE_FW_LOADER
-macro_line|#endif
-macro_line|#ifdef VERBOSE_DEBUG
-r_static
-r_int
-id|udsl_print_packet
-c_func
-(paren
-r_const
-r_int
-r_char
-op_star
-id|data
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
-DECL|macro|PACKETDEBUG
-mdefine_line|#define PACKETDEBUG(arg...)&t;udsl_print_packet (arg)
-DECL|macro|vdbg
-mdefine_line|#define vdbg(arg...)&t;&t;dbg (arg)
-macro_line|#else
-DECL|macro|PACKETDEBUG
-mdefine_line|#define PACKETDEBUG(arg...)
-DECL|macro|vdbg
-mdefine_line|#define vdbg(arg...)
 macro_line|#endif
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR&t;&quot;Johan Verrept, Duncan Sands &lt;duncan.sands@free.fr&gt;&quot;
