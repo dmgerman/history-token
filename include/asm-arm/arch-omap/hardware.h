@@ -324,6 +324,21 @@ mdefine_line|#define MPUI_DSP_BOOT_CONFIG&t;&t;(MPUI_BASE + 0x18)
 DECL|macro|MPUI_DSP_API_CONFIG
 mdefine_line|#define MPUI_DSP_API_CONFIG&t;&t;(MPUI_BASE + 0x1c)
 macro_line|#ifndef __ASSEMBLER__
+multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Serial ports&n; * ---------------------------------------------------------------------------&n; */
+DECL|macro|OMAP_UART1_BASE
+mdefine_line|#define OMAP_UART1_BASE&t;&t;(unsigned char *)0xfffb0000
+DECL|macro|OMAP_UART2_BASE
+mdefine_line|#define OMAP_UART2_BASE&t;&t;(unsigned char *)0xfffb0800
+DECL|macro|OMAP_UART3_BASE
+mdefine_line|#define OMAP_UART3_BASE&t;&t;(unsigned char *)0xfffb9800
+DECL|macro|OMAP_MAX_NR_PORTS
+mdefine_line|#define OMAP_MAX_NR_PORTS&t;3
+DECL|macro|OMAP1510_BASE_BAUD
+mdefine_line|#define OMAP1510_BASE_BAUD&t;(12000000/16)
+DECL|macro|OMAP16XX_BASE_BAUD
+mdefine_line|#define OMAP16XX_BASE_BAUD&t;(48000000/16)
+DECL|macro|is_omap_port
+mdefine_line|#define is_omap_port(p)&t;({int __ret = 0;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;if (p == (char*)IO_ADDRESS(OMAP_UART1_BASE) ||&t;&bslash;&n;&t;&t;&t;    p == (char*)IO_ADDRESS(OMAP_UART2_BASE) ||&t;&bslash;&n;&t;&t;&t;    p == (char*)IO_ADDRESS(OMAP_UART3_BASE))&t;&bslash;&n;&t;&t;&t;&t;__ret = 1;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__ret;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;})
 multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Processor specific defines&n; * ---------------------------------------------------------------------------&n; */
 macro_line|#ifdef CONFIG_ARCH_OMAP730
 macro_line|#include &quot;omap730.h&quot;

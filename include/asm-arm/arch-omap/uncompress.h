@@ -2,7 +2,7 @@ multiline_comment|/*&n; * linux/include/asm-arm/arch-omap/uncompress.h&n; *&n; *
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
-macro_line|#include &lt;asm/arch/serial.h&gt;
+macro_line|#include &lt;asm/arch/hardware.h&gt;
 DECL|variable|system_rev
 r_int
 r_int
