@@ -1503,7 +1503,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|result
 suffix:semicolon
 )brace
 r_static
