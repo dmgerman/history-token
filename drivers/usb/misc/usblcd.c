@@ -355,6 +355,9 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|bytes_read
+suffix:semicolon
 id|dev
 op_assign
 (paren
@@ -391,7 +394,7 @@ id|count
 )paren
 comma
 op_amp
-id|count
+id|bytes_read
 comma
 l_int|10000
 )paren
@@ -414,7 +417,7 @@ id|buffer
 comma
 id|dev-&gt;bulk_in_buffer
 comma
-id|count
+id|bytes_read
 )paren
 )paren
 id|retval
@@ -425,7 +428,7 @@ suffix:semicolon
 r_else
 id|retval
 op_assign
-id|count
+id|bytes_read
 suffix:semicolon
 )brace
 r_return
