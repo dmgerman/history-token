@@ -376,8 +376,6 @@ macro_line|#include &lt;linux/page-flags.h&gt;
 multiline_comment|/*&n; * Methods to modify the page usage count.&n; *&n; * What counts for a page usage:&n; * - cache mapping   (page-&gt;mapping)&n; * - private data    (page-&gt;private)&n; * - page mapped in a task&squot;s page tables, each mapping&n; *   is counted separately&n; *&n; * Also, many kernel routines increase the page count before a critical&n; * routine so they can be sure the page doesn&squot;t go away from under them.&n; */
 DECL|macro|put_page_testzero
 mdefine_line|#define put_page_testzero(p)&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;BUG_ON(page_count(p) == 0);&t;&t;&bslash;&n;&t;&t;atomic_dec_and_test(&amp;(p)-&gt;count);&t;&bslash;&n;&t;})
-DECL|macro|page_count
-mdefine_line|#define page_count(p)&t;&t;atomic_read(&amp;(p)-&gt;count)
 DECL|macro|set_page_count
 mdefine_line|#define set_page_count(p,v) &t;atomic_set(&amp;(p)-&gt;count, v)
 DECL|macro|__put_page
@@ -397,6 +395,50 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HUGETLB_PAGE
+DECL|function|page_count
+r_static
+r_inline
+r_int
+id|page_count
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|p
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|PageCompound
+c_func
+(paren
+id|p
+)paren
+)paren
+id|p
+op_assign
+(paren
+r_struct
+id|page
+op_star
+)paren
+id|p-&gt;lru.next
+suffix:semicolon
+r_return
+id|atomic_read
+c_func
+(paren
+op_amp
+(paren
+id|p
+)paren
+op_member_access_from_pointer
+id|count
+)paren
+suffix:semicolon
+)brace
 DECL|function|get_page
 r_static
 r_inline
@@ -542,6 +584,8 @@ id|page
 suffix:semicolon
 )brace
 macro_line|#else&t;&t;/* CONFIG_HUGETLB_PAGE */
+DECL|macro|page_count
+mdefine_line|#define page_count(p)&t;&t;atomic_read(&amp;(p)-&gt;count)
 DECL|function|get_page
 r_static
 r_inline
