@@ -918,6 +918,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_X86_TSC
 multiline_comment|/* disable flag for tsc.  Takes effect by clearing the TSC cpu flag&n; * in cpu/common.c */
 DECL|function|tsc_setup
 r_static
@@ -939,6 +940,32 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|function|tsc_setup
+r_static
+r_int
+id|__init
+id|tsc_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;notsc: Kernel compiled with CONFIG_X86_TSC, &quot;
+l_string|&quot;cannot disable TSC.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif
 id|__setup
 c_func
 (paren
