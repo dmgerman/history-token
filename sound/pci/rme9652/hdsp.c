@@ -13516,6 +13516,12 @@ op_star
 id|hdsp
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|hdsp-&gt;res_port
+)paren
+(brace
 multiline_comment|/* stop the audio, and cancel all interrupts */
 id|hdsp-&gt;control_register
 op_and_assign
@@ -13539,6 +13545,7 @@ comma
 id|hdsp-&gt;control_register
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

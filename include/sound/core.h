@@ -4,6 +4,7 @@ mdefine_line|#define __SOUND_CORE_H
 multiline_comment|/*&n; *  Main header file for the ALSA driver&n; *  Copyright (c) 1994-2001 by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;linux/sched.h&gt;&t;&t;/* wake_up() */
 macro_line|#include &lt;asm/semaphore.h&gt;&t;&t;/* struct semaphore */
+macro_line|#include &lt;linux/rwsem.h&gt;&t;&t;/* struct rw_semaphore */
 multiline_comment|/* Typedef&squot;s */
 DECL|typedef|snd_timestamp_t
 r_typedef
@@ -465,16 +466,17 @@ r_int
 id|last_numid
 suffix:semicolon
 multiline_comment|/* last used numeric ID */
-DECL|member|control_rwlock
-id|rwlock_t
-id|control_rwlock
+DECL|member|controls_rwsem
+r_struct
+id|rw_semaphore
+id|controls_rwsem
 suffix:semicolon
-multiline_comment|/* control list lock */
-DECL|member|control_owner_lock
+multiline_comment|/* controls list lock */
+DECL|member|ctl_files_rwlock
 id|rwlock_t
-id|control_owner_lock
+id|ctl_files_rwlock
 suffix:semicolon
-multiline_comment|/* control list lock */
+multiline_comment|/* ctl_files list lock */
 DECL|member|controls_count
 r_int
 id|controls_count

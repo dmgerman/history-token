@@ -3596,11 +3596,11 @@ id|card
 op_assign
 id|pcm-&gt;card
 suffix:semicolon
-id|read_lock
+id|down_read
 c_func
 (paren
 op_amp
-id|card-&gt;control_rwlock
+id|card-&gt;controls_rwsem
 )paren
 suffix:semicolon
 id|list_for_each
@@ -3636,11 +3636,11 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|read_unlock
+id|up_read
 c_func
 (paren
 op_amp
-id|card-&gt;control_rwlock
+id|card-&gt;controls_rwsem
 )paren
 suffix:semicolon
 r_if

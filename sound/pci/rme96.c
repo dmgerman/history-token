@@ -732,7 +732,7 @@ id|substream
 suffix:semicolon
 r_static
 r_void
-id|__init
+id|__devinit
 id|snd_rme96_proc_init
 c_func
 (paren
@@ -6274,7 +6274,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
-id|__init
+id|__devinit
 DECL|function|snd_rme96_create
 id|snd_rme96_create
 c_func
@@ -7524,7 +7524,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
-id|__init
+id|__devinit
 DECL|function|snd_rme96_proc_init
 id|snd_rme96_proc_init
 c_func

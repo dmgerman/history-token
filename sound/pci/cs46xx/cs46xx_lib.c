@@ -15352,7 +15352,7 @@ DECL|variable|cards
 r_static
 r_struct
 id|cs_card_type
-id|__initdata
+id|__devinitdata
 id|cards
 (braket
 )braket
