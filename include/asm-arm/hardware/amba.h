@@ -117,7 +117,7 @@ r_struct
 id|amba_device
 op_star
 comma
-id|u32
+id|pm_message_t
 )paren
 suffix:semicolon
 DECL|member|resume

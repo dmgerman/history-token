@@ -767,7 +767,7 @@ r_struct
 id|sa1111_dev
 op_star
 comma
-id|u32
+id|pm_message_t
 )paren
 suffix:semicolon
 DECL|member|resume
