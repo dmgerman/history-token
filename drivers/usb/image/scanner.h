@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * Driver for USB Scanners (linux-2.5.54)&n; *&n; * Copyright (C) 1999, 2000, 2001, 2002 David E. Nelson&n; *&n; * Brian Beattie &lt;beattie@beattie-home.net&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * 05/21/02 Currently maintained by Brian Beattie &lt;beattie@beattie-home.net&gt;&n; *&n; *&n; */
+multiline_comment|/*&n; * Driver for USB Scanners (linux-2.5.60)&n; *&n; * Copyright (C) 1999, 2000, 2001, 2002 David E. Nelson&n; * Previously maintained by Brian Beattie&n; *&n; * Current maintainer: Henning Meier-Geinitz &lt;henning@meier-geinitz.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; * For documentation, see Documentation/usb/scanner.txt.&n; * Website: http://www.meier-geinitz.de/kernel/&n; * Please contact the maintainer if your scanner is not detected by this&n; * driver automatically.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -38,7 +39,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Brian Beattie, beattie@beattie-home.net&quot;
+l_string|&quot;Henning Meier-Geinitz, henning@meier-geinitz.de&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
