@@ -67,7 +67,7 @@ r_if
 c_cond
 (paren
 id|regno
-OG
+op_ge
 l_int|16
 )paren
 r_return
@@ -157,7 +157,7 @@ r_if
 c_cond
 (paren
 id|regno
-OG
+op_ge
 l_int|16
 )paren
 r_return
