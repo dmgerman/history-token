@@ -8,8 +8,8 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/openprom.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 multiline_comment|/* Reset and reboot the machine with the command &squot;bcommand&squot;. */
-r_void
 DECL|function|prom_reboot
+r_void
 id|prom_reboot
 c_func
 (paren
@@ -19,6 +19,7 @@ id|bcommand
 )paren
 (brace
 id|p1275_cmd
+c_func
 (paren
 l_string|&quot;boot&quot;
 comma
@@ -43,8 +44,8 @@ id|bcommand
 suffix:semicolon
 )brace
 multiline_comment|/* Forth evaluate the expression contained in &squot;fstring&squot;. */
-r_void
 DECL|function|prom_feval
+r_void
 id|prom_feval
 c_func
 (paren
@@ -66,11 +67,10 @@ l_int|0
 op_eq
 l_int|0
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 id|p1275_cmd
+c_func
 (paren
 l_string|&quot;interpret&quot;
 comma
@@ -95,7 +95,6 @@ id|fstring
 suffix:semicolon
 )brace
 multiline_comment|/* We want to do this more nicely some day. */
-macro_line|#ifdef CONFIG_SUN_CONSOLE
 r_extern
 r_void
 (paren
@@ -110,7 +109,6 @@ r_extern
 r_int
 id|serial_console
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
@@ -130,8 +128,8 @@ r_void
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Drop into the prom, with the chance to continue with the &squot;go&squot;&n; * prom command.&n; */
-r_void
 DECL|function|prom_cmdline
+r_void
 id|prom_cmdline
 c_func
 (paren
@@ -148,7 +146,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SUN_CONSOLE
 r_if
 c_cond
 (paren
@@ -157,14 +154,12 @@ id|serial_console
 op_logical_and
 id|prom_palette
 )paren
-(brace
 id|prom_palette
+c_func
 (paren
 l_int|1
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 id|smp_capture
 c_func
@@ -173,6 +168,7 @@ c_func
 suffix:semicolon
 macro_line|#endif
 id|p1275_cmd
+c_func
 (paren
 l_string|&quot;enter&quot;
 comma
@@ -191,20 +187,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|spin_unlock_wait
-c_func
-(paren
-op_amp
-id|__br_write_locks
-(braket
-id|BR_GLOBALIRQ_LOCK
-)braket
-dot
-id|lock
-)paren
-suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SUN_CONSOLE
 r_if
 c_cond
 (paren
@@ -213,14 +196,12 @@ id|serial_console
 op_logical_and
 id|prom_palette
 )paren
-(brace
 id|prom_palette
+c_func
 (paren
 l_int|0
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 id|local_irq_restore
 c_func
 (paren
@@ -239,8 +220,8 @@ r_void
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Drop into the prom, but completely terminate the program.&n; * No chance of continuing.&n; */
-r_void
 DECL|function|prom_halt
+r_void
 id|prom_halt
 c_func
 (paren
@@ -263,6 +244,7 @@ macro_line|#endif
 id|again
 suffix:colon
 id|p1275_cmd
+c_func
 (paren
 l_string|&quot;exit&quot;
 comma
@@ -280,8 +262,8 @@ id|again
 suffix:semicolon
 multiline_comment|/* PROM is out to get me -DaveM */
 )brace
-r_void
 DECL|function|prom_halt_power_off
+r_void
 id|prom_halt_power_off
 c_func
 (paren
@@ -302,6 +284,7 @@ l_int|8000
 suffix:semicolon
 macro_line|#endif
 id|p1275_cmd
+c_func
 (paren
 l_string|&quot;SUNW,power-off&quot;
 comma
@@ -316,13 +299,14 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* if nothing else helps, we just halt */
 id|prom_halt
+c_func
 (paren
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/* Set prom sync handler to call function &squot;funcp&squot;. */
-r_void
 DECL|function|prom_setcallback
+r_void
 id|prom_setcallback
 c_func
 (paren
@@ -336,11 +320,10 @@ c_cond
 op_logical_neg
 id|funcp
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 id|p1275_cmd
+c_func
 (paren
 l_string|&quot;set-callback&quot;
 comma
@@ -365,9 +348,9 @@ id|funcp
 suffix:semicolon
 )brace
 multiline_comment|/* Get the idprom and stuff it into buffer &squot;idbuf&squot;.  Returns the&n; * format type.  &squot;num_bytes&squot; is the number of bytes that your idbuf&n; * has space for.  Returns 0xff on error.&n; */
+DECL|function|prom_get_idprom
 r_int
 r_char
-DECL|function|prom_get_idprom
 id|prom_get_idprom
 c_func
 (paren
@@ -408,11 +391,9 @@ op_minus
 l_int|1
 )paren
 )paren
-(brace
 r_return
 l_int|0xff
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -429,21 +410,19 @@ comma
 id|num_bytes
 )paren
 )paren
-(brace
 r_return
 id|idbuf
 (braket
 l_int|0
 )braket
 suffix:semicolon
-)brace
 r_return
 l_int|0xff
 suffix:semicolon
 )brace
 multiline_comment|/* Get the major prom version number. */
-r_int
 DECL|function|prom_version
+r_int
 id|prom_version
 c_func
 (paren
@@ -455,8 +434,8 @@ id|PROM_P1275
 suffix:semicolon
 )brace
 multiline_comment|/* Get the prom plugin-revision. */
-r_int
 DECL|function|prom_getrev
+r_int
 id|prom_getrev
 c_func
 (paren
@@ -468,8 +447,8 @@ id|prom_rev
 suffix:semicolon
 )brace
 multiline_comment|/* Get the prom firmware print revision. */
-r_int
 DECL|function|prom_getprev
+r_int
 id|prom_getprev
 c_func
 (paren
@@ -567,13 +546,11 @@ id|ret
 op_eq
 l_int|0
 )paren
-(brace
 id|mmu_ihandle_cache
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 r_else
 id|mmu_ihandle_cache
 op_assign
@@ -1010,7 +987,6 @@ id|align
 op_eq
 l_int|0
 )paren
-(brace
 r_return
 id|p1275_cmd
 c_func
@@ -1046,7 +1022,6 @@ comma
 id|align
 )paren
 suffix:semicolon
-)brace
 r_else
 r_return
 id|p1275_cmd

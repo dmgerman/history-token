@@ -4020,7 +4020,7 @@ id|pos
 id|ssize_t
 (paren
 op_star
-id|sys_pread
+id|sys_pread64
 )paren
 (paren
 r_int
@@ -4054,11 +4054,11 @@ id|loff_t
 id|SYS
 c_func
 (paren
-id|pread
+id|pread64
 )paren
 suffix:semicolon
 r_return
-id|sys_pread
+id|sys_pread64
 c_func
 (paren
 id|fd
@@ -4098,7 +4098,7 @@ id|pos
 id|ssize_t
 (paren
 op_star
-id|sys_pwrite
+id|sys_pwrite64
 )paren
 (paren
 r_int
@@ -4132,11 +4132,11 @@ id|loff_t
 id|SYS
 c_func
 (paren
-id|pwrite
+id|pwrite64
 )paren
 suffix:semicolon
 r_return
-id|sys_pwrite
+id|sys_pwrite64
 c_func
 (paren
 id|fd

@@ -52,7 +52,7 @@ DECL|macro|FLPY_TCNTOFF
 mdefine_line|#define FLPY_TCNTOFF&t;&bslash;&n;do {&t;if (AUXREG) &bslash;&n;&t;&t;sbus_writeb((sbus_readb(AUXREG) | &bslash;&n;&t;&t;&t;     AUXIO_ORMEIN) &amp; (~AUXIO_FLPY_TCNT), &bslash;&n;&t;&t;&t;    AUXREG); &bslash;&n;} while(0)
 macro_line|#ifndef __ASSEMBLY__
 DECL|function|set_auxio
-r_extern
+r_static
 id|__inline__
 r_void
 id|set_auxio
@@ -75,15 +75,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -128,7 +123,7 @@ id|AUXREG
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

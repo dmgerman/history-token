@@ -516,13 +516,6 @@ id|__global_restore_flags
 )paren
 suffix:semicolon
 multiline_comment|/* Misc SMP information */
-DECL|variable|smp_num_cpus
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|smp_num_cpus
-)paren
-suffix:semicolon
 DECL|variable|__cpu_number_map
 id|EXPORT_SYMBOL
 c_func

@@ -120,6 +120,8 @@ DECL|macro|IBF_ACTIVE
 mdefine_line|#define IBF_ACTIVE&t;0x04&t;/* This interrupt is active and has a handler.&t; */
 DECL|macro|IBF_MULTI
 mdefine_line|#define IBF_MULTI&t;0x08&t;/* On PCI, indicates shared bucket.&t;&t; */
+DECL|macro|IBF_INPROGRESS
+mdefine_line|#define IBF_INPROGRESS&t;0x10&t;/* IRQ is being serviced.&t;&t;&t; */
 DECL|macro|NUM_IVECS
 mdefine_line|#define NUM_IVECS&t;8192
 r_extern
@@ -188,6 +190,8 @@ suffix:semicolon
 )brace
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS    15
+DECL|macro|irq_cannonicalize
+mdefine_line|#define irq_cannonicalize(irq)&t;(irq)
 r_extern
 r_void
 id|disable_irq

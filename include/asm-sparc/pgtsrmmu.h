@@ -3,6 +3,7 @@ macro_line|#ifndef _SPARC_PGTSRMMU_H
 DECL|macro|_SPARC_PGTSRMMU_H
 mdefine_line|#define _SPARC_PGTSRMMU_H
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/thread_info.h&gt;&t;/* TI_UWINMASK for WINDOW_FLUSH */
 multiline_comment|/* PMD_SHIFT determines the size of the area a second-level page table can map */
 DECL|macro|SRMMU_PMD_SHIFT
 mdefine_line|#define SRMMU_PMD_SHIFT         18
@@ -93,7 +94,7 @@ mdefine_line|#define SRMMU_FAULT_STATUS       0x00000300
 DECL|macro|SRMMU_FAULT_ADDR
 mdefine_line|#define SRMMU_FAULT_ADDR         0x00000400
 DECL|macro|WINDOW_FLUSH
-mdefine_line|#define WINDOW_FLUSH(tmp1, tmp2)&t;&t;&t;&t;&t;&bslash;&n;&t;mov&t;0, tmp1;&t;&t;&t;&t;&t;&t;&bslash;&n;98:&t;ld&t;[%g6 + AOFF_task_thread + AOFF_thread_uwinmask], tmp2;&t;&bslash;&n;&t;orcc&t;%g0, tmp2, %g0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;add&t;tmp1, 1, tmp1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;bne&t;98b;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; save&t;%sp, -64, %sp;&t;&t;&t;&t;&t;&t;&bslash;&n;99:&t;subcc&t;tmp1, 1, tmp1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;bne&t;99b;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; restore %g0, %g0, %g0;
+mdefine_line|#define WINDOW_FLUSH(tmp1, tmp2)&t;&t;&t;&t;&t;&bslash;&n;&t;mov&t;0, tmp1;&t;&t;&t;&t;&t;&t;&bslash;&n;98:&t;ld&t;[%g6 + TI_UWINMASK], tmp2;&t;&t;&t;&t;&bslash;&n;&t;orcc&t;%g0, tmp2, %g0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;add&t;tmp1, 1, tmp1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;bne&t;98b;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; save&t;%sp, -64, %sp;&t;&t;&t;&t;&t;&t;&bslash;&n;99:&t;subcc&t;tmp1, 1, tmp1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;bne&t;99b;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; restore %g0, %g0, %g0;
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Accessing the MMU control register. */
 DECL|function|srmmu_get_mmureg

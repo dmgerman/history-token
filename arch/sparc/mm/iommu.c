@@ -1,9 +1,10 @@
-multiline_comment|/* $Id: iommu.c,v 1.22 2001/12/17 07:05:09 davem Exp $&n; * iommu.c:  IOMMU specific routines for memory management.&n; *&n; * Copyright (C) 1995 David S. Miller  (davem@caip.rutgers.edu)&n; * Copyright (C) 1995 Pete Zaitcev&n; * Copyright (C) 1996 Eddie C. Dost    (ecd@skynet.be)&n; * Copyright (C) 1997,1998 Jakub Jelinek    (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*&n; * iommu.c:  IOMMU specific routines for memory management.&n; *&n; * Copyright (C) 1995 David S. Miller  (davem@caip.rutgers.edu)&n; * Copyright (C) 1995,2002 Pete Zaitcev     (zaitcev@yahoo.com)&n; * Copyright (C) 1996 Eddie C. Dost    (ecd@skynet.be)&n; * Copyright (C) 1997,1998 Jakub Jelinek    (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;&t;/* pte_offset_map =&gt; kmap_atomic */
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -11,6 +12,8 @@ macro_line|#include &lt;asm/sbus.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mxcc.h&gt;
 macro_line|#include &lt;asm/mbus.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/* srmmu.c */
 r_extern
 r_int
@@ -1402,7 +1405,7 @@ id|addr
 suffix:semicolon
 id|ptep
 op_assign
-id|pte_offset
+id|pte_offset_map
 c_func
 (paren
 id|pmdp
@@ -1410,6 +1413,7 @@ comma
 id|addr
 )paren
 suffix:semicolon
+multiline_comment|/* XXX What if we run out of atomic maps above */
 id|set_pte
 c_func
 (paren

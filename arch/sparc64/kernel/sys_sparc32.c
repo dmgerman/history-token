@@ -21426,10 +21426,10 @@ r_typedef
 id|__kernel_ssize_t32
 id|ssize_t32
 suffix:semicolon
-DECL|function|sys32_pread
+DECL|function|sys32_pread64
 id|asmlinkage
 id|ssize_t32
-id|sys32_pread
+id|sys32_pread64
 c_func
 (paren
 r_int
@@ -21481,10 +21481,10 @@ id|poslo
 )paren
 suffix:semicolon
 )brace
-DECL|function|sys32_pwrite
+DECL|function|sys32_pwrite64
 id|asmlinkage
 id|ssize_t32
-id|sys32_pwrite
+id|sys32_pwrite64
 c_func
 (paren
 r_int
