@@ -1098,6 +1098,15 @@ c_func
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pte_chain
+)paren
+r_goto
+id|out_sig
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1255,6 +1264,8 @@ op_amp
 id|tsk-&gt;mm-&gt;page_table_lock
 )paren
 suffix:semicolon
+id|out_sig
+suffix:colon
 id|__free_page
 c_func
 (paren
