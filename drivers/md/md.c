@@ -4758,7 +4758,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: rdev %s, SZ:%08llu F:%d S:%d DN:%d &quot;
+l_string|&quot;md: rdev %s, SZ:%08llu F:%d S:%d DN:%u&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -4904,6 +4904,12 @@ c_func
 (paren
 id|rdev-&gt;bdev
 )paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ITERATE_RDEV
