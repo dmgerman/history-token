@@ -431,6 +431,64 @@ c_func
 r_void
 )paren
 (brace
+r_extern
+r_int
+r_int
+id|processor_id
+suffix:semicolon
+multiline_comment|/*&n;&t; * On IXP2400 CPUs we need to use MT_IXP2000_DEVICE for&n;&t; * tweaking the PMDs so XCB=101. On IXP2800s we use the normal&n;&t; * PMD flags.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|processor_id
+op_amp
+l_int|0xfffffff0
+)paren
+op_eq
+l_int|0x69054190
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Enabling IXP2400 erratum #66 workaround&bslash;n&quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ARRAY_SIZE
+c_func
+(paren
+id|ixp2000_io_desc
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|ixp2000_io_desc
+(braket
+id|i
+)braket
+dot
+id|type
+op_assign
+id|MT_IXP2000_DEVICE
+suffix:semicolon
+)brace
+)brace
 id|iotable_init
 c_func
 (paren
@@ -645,6 +703,8 @@ c_func
 id|IXP2000_T1_CLD
 comma
 id|ticks_per_jiffy
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 id|ixp2000_reg_write
@@ -684,8 +744,6 @@ suffix:semicolon
 id|next_jiffy_time
 op_assign
 l_int|0xffffffff
-op_minus
-id|ticks_per_jiffy
 suffix:semicolon
 multiline_comment|/* register for interrupt */
 id|setup_irq
@@ -1504,7 +1562,7 @@ comma
 id|ixp2000_GPIO_irq_handler
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Enable PCI irq&n;&t; */
+multiline_comment|/*&n;&t; * Enable PCI irqs.  The actual PCI[AB] decoding is done in&n;&t; * entry-macro.S, so we don&squot;t need a chained handler for the&n;&t; * PCI interrupt source.&n;&t; */
 id|ixp2000_reg_write
 c_func
 (paren

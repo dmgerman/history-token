@@ -10,7 +10,6 @@ macro_line|#include &lt;asm/arch/gpio.h&gt;
 macro_line|#include &lt;asm/arch/mux.h&gt;
 macro_line|#include &lt;asm/arch/usb.h&gt;
 macro_line|#include &lt;asm/arch/board.h&gt;
-macro_line|#include &lt;asm/arch/serial.h&gt;
 macro_line|#include &quot;common.h&quot;
 DECL|variable|generic_serial_ports
 r_static

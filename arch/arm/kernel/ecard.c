@@ -689,6 +689,10 @@ c_func
 (paren
 id|mm
 comma
+(paren
+r_int
+r_int
+)paren
 id|IO_BASE
 )paren
 suffix:semicolon

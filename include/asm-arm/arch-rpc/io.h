@@ -230,21 +230,11 @@ id|port
 )paren
 id|ret
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|PCIO_BASE
 suffix:semicolon
 r_else
 id|ret
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|IO_BASE
 suffix:semicolon
 r_return
@@ -304,7 +294,7 @@ mdefine_line|#define __outlc(value,port)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;
 DECL|macro|__inlc
 mdefine_line|#define __inlc(port)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long result;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__PORT_PCIO((port)))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;ldr&t;%0, [%1, %2]&t;@ inlc&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (result) : &quot;r&quot; (PCIO_BASE), &quot;Jr&quot; ((port) &lt;&lt; 2));&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;ldr&t;%0, [%1, %2]&t;@ inlc&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (result) : &quot;r&quot; (IO_BASE), &quot;r&quot; ((port) &lt;&lt; 2));&t;&t;&bslash;&n;&t;result;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__ioaddrc
-mdefine_line|#define __ioaddrc(port)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((void __iomem *)(__PORT_PCIO((port)) ? PCIO_BASE : IO_BASE) + ((port) &lt;&lt; 2))
+mdefine_line|#define __ioaddrc(port)&t;&t;&bslash;&n;&t;((__PORT_PCIO(port) ? PCIO_BASE : IO_BASE) + ((port) &lt;&lt; 2))
 DECL|macro|inb
 mdefine_line|#define inb(p)&t; &t;(__builtin_constant_p((p)) ? __inbc(p)    : __inb(p))
 DECL|macro|inw
