@@ -67,6 +67,36 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROM_CONSOLE
+r_extern
+r_void
+id|prom_con_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MDA_CONSOLE
+r_extern
+r_void
+id|mda_console_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
+r_extern
+r_int
+id|fb_console_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|console_table
 r_static
 r_struct
@@ -11989,6 +12019,27 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROM_CONSOLE
+id|prom_con_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MDA_CONSOLE
+id|mda_console_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
+id|fb_console_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif&t;
 id|con_init_devfs
 c_func
 (paren

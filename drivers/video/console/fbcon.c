@@ -761,11 +761,10 @@ id|cursor_timer
 )paren
 suffix:semicolon
 )brace
-DECL|function|fbconsole_setup
-r_static
+DECL|function|fb_console_setup
 r_int
 id|__init
-id|fbconsole_setup
+id|fb_console_setup
 c_func
 (paren
 r_char
@@ -1111,7 +1110,7 @@ c_func
 (paren
 l_string|&quot;fbcon=&quot;
 comma
-id|fbconsole_setup
+id|fb_console_setup
 )paren
 suffix:semicolon
 DECL|function|gen_set_disp
@@ -2412,6 +2411,11 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
+r_struct
 id|fb_info
 op_star
 id|info
@@ -2465,6 +2469,49 @@ id|info
 )paren
 r_return
 l_int|NULL
+suffix:semicolon
+id|info-&gt;currcon
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|owner
+op_assign
+id|info-&gt;fbops-&gt;owner
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|owner
+)paren
+id|__MOD_INC_USE_COUNT
+c_func
+(paren
+id|owner
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;fbops-&gt;fb_open
+op_logical_and
+id|info-&gt;fbops
+op_member_access_from_pointer
+id|fb_open
+c_func
+(paren
+id|info
+comma
+l_int|0
+)paren
+op_logical_and
+id|owner
+)paren
+id|__MOD_DEC_USE_COUNT
+c_func
+(paren
+id|owner
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3289,7 +3336,7 @@ op_assign
 id|font-&gt;data
 suffix:semicolon
 )brace
-macro_line|#ifdef FBCON_FONTWIDTH8_ONLY&t;&t;
+macro_line|#ifdef FONTWIDTH8_ONLY&t;&t;
 r_if
 c_cond
 (paren
@@ -4007,7 +4054,7 @@ op_assign
 id|font-&gt;data
 suffix:semicolon
 )brace
-macro_line|#ifdef FBCON_FONTWIDTH8_ONLY&t;&t;
+macro_line|#ifdef FONTWIDTH8_ONLY&t;&t;
 r_if
 c_cond
 (paren
@@ -9572,7 +9619,7 @@ id|i
 comma
 id|j
 suffix:semicolon
-macro_line|#ifdef CONFIG_FBCON_FONTWIDTH8_ONLY
+macro_line|#ifdef CONFIG_FONTWIDTH8_ONLY
 r_if
 c_cond
 (paren
@@ -9680,7 +9727,7 @@ id|j
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifndef CONFIG_FBCON_FONTWIDTH8_ONLY
+macro_line|#ifndef CONFIG_FONTWIDTH8_ONLY
 r_else
 r_if
 c_cond
@@ -10742,7 +10789,7 @@ comma
 op_star
 id|p
 suffix:semicolon
-macro_line|#ifdef CONFIG_FBCON_FONTWIDTH8_ONLY
+macro_line|#ifdef CONFIG_FONTWIDTH8_ONLY
 r_if
 c_cond
 (paren
@@ -10921,7 +10968,7 @@ id|h
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifndef CONFIG_FBCON_FONTWIDTH8_ONLY
+macro_line|#ifndef CONFIG_FONTWIDTH8_ONLY
 r_else
 r_if
 c_cond
@@ -13465,11 +13512,10 @@ id|fbcon_getxy
 comma
 )brace
 suffix:semicolon
-DECL|function|fbconsole_init
-r_static
+DECL|function|fb_console_init
 r_int
 id|__init
-id|fbconsole_init
+id|fb_console_init
 c_func
 (paren
 r_void
@@ -13492,29 +13538,35 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|fbconsole_exit
-r_static
+DECL|function|fb_console_exit
 r_void
 id|__exit
-id|fbconsole_exit
+id|fb_console_exit
 c_func
 (paren
 r_void
 )paren
 (brace
+id|give_up_console
+c_func
+(paren
+op_amp
+id|fb_con
+)paren
+suffix:semicolon
 )brace
-DECL|variable|fbconsole_init
+DECL|variable|fb_console_init
 id|module_init
 c_func
 (paren
-id|fbconsole_init
+id|fb_console_init
 )paren
 suffix:semicolon
-DECL|variable|fbconsole_exit
+DECL|variable|fb_console_exit
 id|module_exit
 c_func
 (paren
-id|fbconsole_exit
+id|fb_console_exit
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  Visible symbols for modules&n; */

@@ -146,7 +146,7 @@ id|newidx
 suffix:semicolon
 DECL|macro|fontheight
 mdefine_line|#define fontheight(p) ((p)-&gt;_fontheight)
-macro_line|#ifdef CONFIG_FBCON_FONTWIDTH8_ONLY
+macro_line|#ifdef CONFIG_FONTWIDTH8_ONLY
 multiline_comment|/* fontwidth w is supported by dispsw */
 DECL|macro|FONTWIDTH
 mdefine_line|#define FONTWIDTH(w)&t;(1 &lt;&lt; ((8) - 1))
