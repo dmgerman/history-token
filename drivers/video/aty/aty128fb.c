@@ -8936,10 +8936,10 @@ DECL|macro|ATY_MIRROR_CRT_ON
 mdefine_line|#define ATY_MIRROR_CRT_ON&t;0x00000002
 multiline_comment|/* out param: u32*&t;backlight value: 0 to 15 */
 DECL|macro|FBIO_ATY128_GET_MIRROR
-mdefine_line|#define FBIO_ATY128_GET_MIRROR&t;_IOR(&squot;@&squot;, 1, sizeof(__u32*))
+mdefine_line|#define FBIO_ATY128_GET_MIRROR&t;_IOR(&squot;@&squot;, 1, __u32*)
 multiline_comment|/* in param: u32*&t;backlight value: 0 to 15 */
 DECL|macro|FBIO_ATY128_SET_MIRROR
-mdefine_line|#define FBIO_ATY128_SET_MIRROR&t;_IOW(&squot;@&squot;, 2, sizeof(__u32*))
+mdefine_line|#define FBIO_ATY128_SET_MIRROR&t;_IOW(&squot;@&squot;, 2, __u32*)
 DECL|function|aty128fb_ioctl
 r_static
 r_int

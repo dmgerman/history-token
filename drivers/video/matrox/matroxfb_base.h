@@ -46,7 +46,7 @@ macro_line|#include &quot;../console/fbcon.h&quot;
 macro_line|#if defined(CONFIG_PPC_PMAC)
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
-macro_line|#include &lt;video/macmodes.h&gt;
+macro_line|#include &quot;../macmodes.h&quot;
 macro_line|#endif
 multiline_comment|/* always compile support for 32MB... It cost almost nothing */
 DECL|macro|CONFIG_FB_MATROX_32MB
