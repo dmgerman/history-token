@@ -4093,10 +4093,6 @@ id|phys_domain-&gt;span
 op_assign
 id|nodemask
 suffix:semicolon
-id|phys_domain-&gt;flags
-op_or_assign
-id|SD_FLAG_IDLE
-suffix:semicolon
 op_star
 id|node_domain
 op_assign
@@ -4180,6 +4176,10 @@ comma
 id|cpu-&gt;cpumask
 )paren
 suffix:semicolon
+id|cpu-&gt;cpu_power
+op_assign
+id|SCHED_LOAD_SCALE
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4229,6 +4229,17 @@ id|j
 suffix:semicolon
 id|cpumask_t
 id|nodemask
+suffix:semicolon
+r_struct
+id|sched_group
+op_star
+id|node
+op_assign
+op_amp
+id|sched_group_nodes
+(braket
+id|i
+)braket
 suffix:semicolon
 id|cpus_and
 c_func
@@ -4308,6 +4319,29 @@ suffix:semicolon
 id|cpu-&gt;cpumask
 op_assign
 id|cpu_domain-&gt;span
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Make each extra sibling increase power by 10% of&n;&t;&t;&t; * the basic CPU. This is very arbitrary.&n;&t;&t;&t; */
+id|cpu-&gt;cpu_power
+op_assign
+id|SCHED_LOAD_SCALE
+op_plus
+id|SCHED_LOAD_SCALE
+op_star
+(paren
+id|cpus_weight
+c_func
+(paren
+id|cpu-&gt;cpumask
+)paren
+op_minus
+l_int|1
+)paren
+op_div
+l_int|10
+suffix:semicolon
+id|node-&gt;cpu_power
+op_add_assign
+id|cpu-&gt;cpu_power
 suffix:semicolon
 r_if
 c_cond
@@ -4403,6 +4437,7 @@ id|cpu-&gt;cpumask
 op_assign
 id|nodemask
 suffix:semicolon
+multiline_comment|/* -&gt;cpu_power already setup */
 r_if
 c_cond
 (paren
@@ -4659,10 +4694,6 @@ id|phys_domain-&gt;span
 op_assign
 id|cpu_online_map
 suffix:semicolon
-id|phys_domain-&gt;flags
-op_or_assign
-id|SD_FLAG_IDLE
-suffix:semicolon
 )brace
 multiline_comment|/* Set up CPU (sibling) groups */
 id|for_each_cpu_mask
@@ -4738,6 +4769,10 @@ id|j
 comma
 id|cpu-&gt;cpumask
 )paren
+suffix:semicolon
+id|cpu-&gt;cpu_power
+op_assign
+id|SCHED_LOAD_SCALE
 suffix:semicolon
 r_if
 c_cond
@@ -4821,6 +4856,25 @@ suffix:semicolon
 id|cpu-&gt;cpumask
 op_assign
 id|cpu_domain-&gt;span
+suffix:semicolon
+multiline_comment|/* See SMT+NUMA setup for comment */
+id|cpu-&gt;cpu_power
+op_assign
+id|SCHED_LOAD_SCALE
+op_plus
+id|SCHED_LOAD_SCALE
+op_star
+(paren
+id|cpus_weight
+c_func
+(paren
+id|cpu-&gt;cpumask
+)paren
+op_minus
+l_int|1
+)paren
+op_div
+l_int|10
 suffix:semicolon
 r_if
 c_cond

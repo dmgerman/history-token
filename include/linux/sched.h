@@ -1558,6 +1558,10 @@ mdefine_line|#define PF_LESS_THROTTLE 0x00100000&t;/* Throttle me less: I clean 
 DECL|macro|PF_SYNCWRITE
 mdefine_line|#define PF_SYNCWRITE&t;0x00200000&t;/* I am doing a sync write */
 macro_line|#ifdef CONFIG_SMP
+DECL|macro|SCHED_LOAD_SHIFT
+mdefine_line|#define SCHED_LOAD_SHIFT 7&t;/* increase resolution of load calculations */
+DECL|macro|SCHED_LOAD_SCALE
+mdefine_line|#define SCHED_LOAD_SCALE (1UL &lt;&lt; SCHED_LOAD_SHIFT)
 DECL|macro|SD_FLAG_NEWIDLE
 mdefine_line|#define SD_FLAG_NEWIDLE&t;&t;1&t;/* Balance when about to become idle */
 DECL|macro|SD_FLAG_EXEC
@@ -1566,8 +1570,6 @@ DECL|macro|SD_FLAG_WAKE
 mdefine_line|#define SD_FLAG_WAKE&t;&t;4&t;/* Balance on task wakeup */
 DECL|macro|SD_FLAG_FASTMIGRATE
 mdefine_line|#define SD_FLAG_FASTMIGRATE&t;8&t;/* Sync wakes put task on waking CPU */
-DECL|macro|SD_FLAG_IDLE
-mdefine_line|#define SD_FLAG_IDLE&t;&t;16&t;/* Should not have all CPUs idle */
 DECL|struct|sched_group
 r_struct
 id|sched_group
@@ -1582,6 +1584,12 @@ multiline_comment|/* Must be a circular list */
 DECL|member|cpumask
 id|cpumask_t
 id|cpumask
+suffix:semicolon
+multiline_comment|/*&n;&t; * CPU power of this group, SCHED_LOAD_SCALE being max power for a&n;&t; * single CPU. This should be read only (except for setup). Although&n;&t; * it will need to be written to at cpu hot(un)plug time, perhaps the&n;&t; * cpucontrol semaphore will provide enough exclusion?&n;&t; */
+DECL|member|cpu_power
+r_int
+r_int
+id|cpu_power
 suffix:semicolon
 )brace
 suffix:semicolon
