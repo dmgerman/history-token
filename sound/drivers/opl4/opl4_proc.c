@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Functions for the OPL4 proc file&n; * Copyright (c) 2003 by Clemens Ladisch &lt;clemens@ladisch.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 macro_line|#include &quot;opl4_local.h&quot;
+macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|snd_opl4_mem_proc_open
@@ -212,12 +213,10 @@ l_int|0
 (brace
 id|buf
 op_assign
-id|kmalloc
+id|vmalloc
 c_func
 (paren
 id|size
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -267,7 +266,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-id|kfree
+id|vfree
 c_func
 (paren
 id|buf
@@ -365,12 +364,10 @@ l_int|0
 (brace
 id|buf
 op_assign
-id|kmalloc
+id|vmalloc
 c_func
 (paren
 id|size
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -420,7 +417,7 @@ comma
 id|size
 )paren
 suffix:semicolon
-id|kfree
+id|vfree
 c_func
 (paren
 id|buf
