@@ -1,5 +1,4 @@
 multiline_comment|/*&n;** hppb.c:&n;**      HP-PB bus driver for the NOVA and K-Class systems.&n;**&n;**      (c) Copyright 2002 Ryan Bradetich&n;**      (c) Copyright 2002 Hewlett-Packard Company&n;**&n;** This program is free software; you can redistribute it and/or modify&n;** it under the terms of the GNU General Public License as published by&n;** the Free Software Foundation; either version 2 of the License, or&n;** (at your option) any later version.&n;**&n;** This Driver currently only supports the console (port 0) on the MUX.&n;** Additional work will be needed on this driver to enable the full&n;** functionality of the MUX.&n;**&n;*/
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;

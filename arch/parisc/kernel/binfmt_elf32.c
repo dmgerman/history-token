@@ -13,7 +13,6 @@ suffix:semicolon
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/elfcore.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;&t;&t;/* struct compat_timeval */
 DECL|macro|elf_prstatus
