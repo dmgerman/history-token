@@ -1468,6 +1468,10 @@ id|zone-&gt;nr_inactive
 op_sub_assign
 id|nr_taken
 suffix:semicolon
+id|zone-&gt;pages_scanned
+op_add_assign
+id|nr_taken
+suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
@@ -2548,7 +2552,7 @@ id|nr_mapped
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is the direct reclaim path, for page-allocating processes.  We only&n; * try to reclaim pages from zones which will satisfy the caller&squot;s allocation&n; * request.&n; *&n; * We reclaim from a zone even if that zone is over pages_high.  Because:&n; * a) The caller may be trying to free *extra* pages to satisfy a higher-order&n; *    allocation or&n; * b) The zones may be over pages_high but they must go *over* pages_high to&n; *    satisfy the `incremental min&squot; zone defense algorithm.&n; *&n; * Returns the number of reclaimed pages.&n; */
+multiline_comment|/*&n; * This is the direct reclaim path, for page-allocating processes.  We only&n; * try to reclaim pages from zones which will satisfy the caller&squot;s allocation&n; * request.&n; *&n; * We reclaim from a zone even if that zone is over pages_high.  Because:&n; * a) The caller may be trying to free *extra* pages to satisfy a higher-order&n; *    allocation or&n; * b) The zones may be over pages_high but they must go *over* pages_high to&n; *    satisfy the `incremental min&squot; zone defense algorithm.&n; *&n; * Returns the number of reclaimed pages.&n; *&n; * If a zone is deemed to be full of pinned pages then just give it a light&n; * scan then give up on it.&n; */
 r_static
 r_int
 DECL|function|shrink_caches
@@ -2633,6 +2637,18 @@ suffix:semicolon
 r_int
 id|max_scan
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|zone-&gt;all_unreclaimable
+op_logical_and
+id|priority
+op_ne
+id|DEF_PRIORITY
+)paren
+r_continue
+suffix:semicolon
+multiline_comment|/* Let kswapd poll it */
 multiline_comment|/*&n;&t;&t; * If we cannot reclaim `nr_pages&squot; pages by scanning twice&n;&t;&t; * that many pages then fall back to the next zone.&n;&t;&t; */
 id|max_scan
 op_assign
@@ -2869,7 +2885,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * For kswapd, balance_pgdat() will work across all this node&squot;s zones until&n; * they are all at pages_high.&n; *&n; * If `nr_pages&squot; is non-zero then it is the number of pages which are to be&n; * reclaimed, regardless of the zone occupancies.  This is a software suspend&n; * special.&n; *&n; * Returns the number of pages which were actually freed.&n; */
+multiline_comment|/*&n; * For kswapd, balance_pgdat() will work across all this node&squot;s zones until&n; * they are all at pages_high.&n; *&n; * If `nr_pages&squot; is non-zero then it is the number of pages which are to be&n; * reclaimed, regardless of the zone occupancies.  This is a software suspend&n; * special.&n; *&n; * Returns the number of pages which were actually freed.&n; *&n; * There is special handling here for zones which are full of pinned pages.&n; * This can happen if the pages are all mlocked, or if they are all used by&n; * device drivers (say, ZONE_DMA).  Or if they are all in use by hugetlb.&n; * What we do is to detect the case where all pages in the zone have been&n; * scanned twice and there has been zero successful reclaim.  Mark the zone as&n; * dead and from now on, only perform a short scan.  Basically we&squot;re polling&n; * the zone for when the problem goes away.&n; */
 DECL|function|balance_pgdat
 r_static
 r_int
@@ -2952,6 +2968,17 @@ id|max_scan
 suffix:semicolon
 r_int
 id|to_reclaim
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|zone-&gt;all_unreclaimable
+op_logical_and
+id|priority
+op_ne
+id|DEF_PRIORITY
+)paren
+r_continue
 suffix:semicolon
 r_if
 c_cond
@@ -3062,6 +3089,26 @@ id|nr_mapped
 comma
 id|GFP_KSWAPD
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|zone-&gt;all_unreclaimable
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|zone-&gt;pages_scanned
+OG
+id|zone-&gt;present_pages
+op_star
+l_int|2
+)paren
+id|zone-&gt;all_unreclaimable
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 r_if
@@ -3239,6 +3286,48 @@ c_func
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n; * A zone is low on free memory, so wake its kswapd task to service it.&n; */
+DECL|function|wakeup_kswapd
+r_void
+id|wakeup_kswapd
+c_func
+(paren
+r_struct
+id|zone
+op_star
+id|zone
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|zone-&gt;free_pages
+OG
+id|zone-&gt;pages_low
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|waitqueue_active
+c_func
+(paren
+op_amp
+id|zone-&gt;zone_pgdat-&gt;kswapd_wait
+)paren
+)paren
+r_return
+suffix:semicolon
+id|wake_up_interruptible
+c_func
+(paren
+op_amp
+id|zone-&gt;zone_pgdat-&gt;kswapd_wait
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
 multiline_comment|/*&n; * Try to free `nr_pages&squot; of memory, system-wide.  Returns the number of freed&n; * pages.&n; */
 DECL|function|shrink_all_memory
@@ -3333,12 +3422,6 @@ r_void
 id|pg_data_t
 op_star
 id|pgdat
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Starting kswapd&bslash;n&quot;
-)paren
 suffix:semicolon
 id|swap_setup
 c_func

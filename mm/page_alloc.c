@@ -613,7 +613,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Frees a list of pages. &n; * Assumes all pages on list are in same zone, and of same order.&n; * count is the number of pages to free, or 0 for all on the list.&n; */
+multiline_comment|/*&n; * Frees a list of pages. &n; * Assumes all pages on list are in same zone, and of same order.&n; * count is the number of pages to free, or 0 for all on the list.&n; *&n; * If the zone was previously in an &quot;all pages pinned&quot; state then look to&n; * see if this freeing clears that state.&n; *&n; * And clear the zone&squot;s pages_scanned counter, to hold off the &quot;all pages are&n; * pinned&quot; detection logic.&n; */
 r_static
 r_int
 DECL|function|free_pages_bulk
@@ -691,6 +691,14 @@ id|zone-&gt;lock
 comma
 id|flags
 )paren
+suffix:semicolon
+id|zone-&gt;all_unreclaimable
+op_assign
+l_int|0
+suffix:semicolon
+id|zone-&gt;pages_scanned
+op_assign
+l_int|0
 suffix:semicolon
 r_while
 c_loop
@@ -2075,39 +2083,15 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
-r_struct
-id|zone
-op_star
-id|z
-op_assign
+id|wakeup_kswapd
+c_func
+(paren
 id|zones
 (braket
 id|i
 )braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|z-&gt;free_pages
-op_le
-id|z-&gt;pages_low
-op_logical_and
-id|waitqueue_active
-c_func
-(paren
-op_amp
-id|z-&gt;zone_pgdat-&gt;kswapd_wait
-)paren
-)paren
-id|wake_up_interruptible
-c_func
-(paren
-op_amp
-id|z-&gt;zone_pgdat-&gt;kswapd_wait
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Go through the zonelist again, taking __GFP_HIGH into account */
 id|min
 op_assign
