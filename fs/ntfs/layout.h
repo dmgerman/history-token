@@ -837,27 +837,27 @@ op_assign
 id|const_cpu_to_le32
 c_func
 (paren
-l_int|0
+l_int|0x00
 )paren
 comma
-multiline_comment|/* Collate by binary&n;&t;&t;&t;&t;&t;compare where the first byte is most&n;&t;&t;&t;&t;&t;significant. */
+multiline_comment|/* Collate by&n;&t;&t;&t;&t;&t;binary compare where the first byte is&n;&t;&t;&t;&t;&t;most significant. */
 DECL|enumerator|COLLATION_FILE_NAME
 id|COLLATION_FILE_NAME
 op_assign
 id|const_cpu_to_le32
 c_func
 (paren
-l_int|1
+l_int|0x01
 )paren
 comma
-multiline_comment|/* Collate file names&n;&t;&t;&t;&t;&t;as Unicode strings. */
+multiline_comment|/* Collate file&n;&t;&t;&t;&t;&t;names as Unicode strings. */
 DECL|enumerator|COLLATION_UNICODE_STRING
 id|COLLATION_UNICODE_STRING
 op_assign
 id|const_cpu_to_le32
 c_func
 (paren
-l_int|2
+l_int|0x02
 )paren
 comma
 multiline_comment|/* Collate Unicode&n;&t;&t;&t;&t;&t;strings by comparing their binary&n;&t;&t;&t;&t;&t;Unicode values, except that when a&n;&t;&t;&t;&t;&t;character can be uppercased, the upper&n;&t;&t;&t;&t;&t;case value collates before the lower&n;&t;&t;&t;&t;&t;case one. */
@@ -867,7 +867,7 @@ op_assign
 id|const_cpu_to_le32
 c_func
 (paren
-l_int|16
+l_int|0x10
 )paren
 comma
 DECL|enumerator|COLLATION_NTOFS_SID
@@ -876,7 +876,7 @@ op_assign
 id|const_cpu_to_le32
 c_func
 (paren
-l_int|17
+l_int|0x11
 )paren
 comma
 DECL|enumerator|COLLATION_NTOFS_SECURITY_HASH
@@ -885,7 +885,7 @@ op_assign
 id|const_cpu_to_le32
 c_func
 (paren
-l_int|18
+l_int|0x12
 )paren
 comma
 DECL|enumerator|COLLATION_NTOFS_ULONGS
@@ -894,7 +894,7 @@ op_assign
 id|const_cpu_to_le32
 c_func
 (paren
-l_int|19
+l_int|0x13
 )paren
 comma
 DECL|typedef|COLLATION_RULES
