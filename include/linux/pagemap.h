@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/gfp.h&gt;
 multiline_comment|/*&n; * Bits in mapping-&gt;flags.  The lower __GFP_BITS_SHIFT bits are the page&n; * allocation mode flags.&n; */
@@ -566,13 +567,33 @@ c_func
 r_void
 )paren
 (brace
-r_return
+r_int
+id|ret
+op_assign
 id|atomic_read
 c_func
 (paren
 op_amp
 id|nr_pagecache
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|ret
+OL
+l_int|0
+)paren
+)paren
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|linear_page_index
