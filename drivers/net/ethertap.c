@@ -297,7 +297,7 @@ c_cond
 id|err
 )paren
 r_goto
-id|out1
+id|out_free
 suffix:semicolon
 id|tap_map
 (braket
@@ -309,9 +309,9 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|out1
+id|out_free
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
