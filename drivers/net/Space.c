@@ -108,13 +108,14 @@ id|dev
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|express_probe
-c_func
-(paren
 r_struct
 id|net_device
 op_star
+id|express_probe
+c_func
+(paren
+r_int
+id|unit
 )paren
 suffix:semicolon
 r_extern
@@ -1096,14 +1097,6 @@ l_int|0
 comma
 multiline_comment|/* ICL EtherTeam 16i/32 */
 macro_line|#endif
-macro_line|#ifdef CONFIG_EEXPRESS&t;&t;/* Intel EtherExpress */
-(brace
-id|express_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 (brace
 l_int|NULL
 comma
@@ -1122,6 +1115,14 @@ id|isa_probes2
 id|__initdata
 op_assign
 (brace
+macro_line|#ifdef CONFIG_EEXPRESS&t;&t;/* Intel EtherExpress */
+(brace
+id|express_probe
+comma
+l_int|0
+)brace
+comma
+macro_line|#endif
 macro_line|#ifdef CONFIG_EEXPRESS_PRO&t;/* Intel EtherExpress Pro/10 */
 (brace
 id|eepro_probe
