@@ -79,6 +79,21 @@ comma
 id|clock_setup
 )paren
 suffix:semicolon
+multiline_comment|/* The chosen timesource has been found to be bad.&n; * Fall back to a known good timesource (the PIT)&n; */
+DECL|function|clock_fallback
+r_void
+id|clock_fallback
+c_func
+(paren
+r_void
+)paren
+(brace
+id|cur_timer
+op_assign
+op_amp
+id|timer_pit
+suffix:semicolon
+)brace
 multiline_comment|/* iterates through the list of timers, returning the first &n; * one that initializes successfully.&n; */
 DECL|function|select_timer
 r_struct

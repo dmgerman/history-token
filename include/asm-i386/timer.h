@@ -76,6 +76,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|clock_fallback
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* Modifiers for buggy PIT handling */
 r_extern
 r_int
