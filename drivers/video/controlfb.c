@@ -2428,6 +2428,16 @@ id|device_node
 op_star
 id|dp
 suffix:semicolon
+id|control_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;controlfb&quot;
+)paren
+)paren
+suffix:semicolon
 id|dp
 op_assign
 id|find_devices
@@ -2458,6 +2468,13 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
+DECL|variable|control_init
+id|module_init
+c_func
+(paren
+id|control_init
+)paren
+suffix:semicolon
 multiline_comment|/* Work out which banks of VRAM we have installed. */
 multiline_comment|/* danj: I guess the card just ignores writes to nonexistant VRAM... */
 DECL|function|find_vram_size

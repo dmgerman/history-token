@@ -109,7 +109,7 @@ id|sbi-&gt;s_root_bh
 op_member_access_from_pointer
 id|bm_flag
 op_assign
-id|be32_to_cpu
+id|cpu_to_be32
 c_func
 (paren
 l_int|1
@@ -238,7 +238,7 @@ id|sbi-&gt;s_root_bh
 op_member_access_from_pointer
 id|bm_flag
 op_assign
-id|be32_to_cpu
+id|cpu_to_be32
 c_func
 (paren
 id|clean
@@ -1815,7 +1815,7 @@ c_func
 (paren
 op_star
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|boot_bh-&gt;b_data

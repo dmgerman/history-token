@@ -7522,6 +7522,35 @@ op_star
 id|file
 )paren
 (brace
+r_struct
+id|files_struct
+op_star
+id|files
+op_assign
+id|current-&gt;files
+suffix:semicolon
+multiline_comment|/* &n;&t; * there ie no fd_uninstall(), so we do it here&n;&t; */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|files-&gt;file_lock
+)paren
+suffix:semicolon
+id|files-&gt;fd
+(braket
+id|fd
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|files-&gt;file_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9053,9 +9082,7 @@ id|ctx
 r_goto
 id|error
 suffix:semicolon
-id|req-&gt;ctx_fd
-op_assign
-id|ctx-&gt;ctx_fd
+id|ret
 op_assign
 id|pfm_alloc_fd
 c_func
@@ -9067,12 +9094,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|req-&gt;ctx_fd
+id|ret
 OL
 l_int|0
 )paren
 r_goto
 id|error_file
+suffix:semicolon
+id|req-&gt;ctx_fd
+op_assign
+id|ctx-&gt;ctx_fd
+op_assign
+id|ret
 suffix:semicolon
 multiline_comment|/*&n;&t; * attach context to file&n;&t; */
 id|filp-&gt;private_data
@@ -13860,16 +13893,13 @@ id|is_system
 op_assign
 id|ctx-&gt;ctx_fl_system
 suffix:semicolon
+multiline_comment|/*&n;&t; * context must be attached to issue the stop command (includes LOADED,MASKED,ZOMBIE)&n;&t; */
 r_if
 c_cond
 (paren
 id|state
-op_ne
-id|PFM_CTX_LOADED
-op_logical_and
-id|state
-op_ne
-id|PFM_CTX_MASKED
+op_eq
+id|PFM_CTX_UNLOADED
 )paren
 r_return
 op_minus
@@ -21374,24 +21404,10 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-r_if
-c_cond
+multiline_comment|/*&n;&t; * can access PMU is task is the owner of the PMU state on the current CPU&n;&t; * or if we are running on the CPU bound to the context in system-wide mode&n;&t; * (that is not necessarily the task the context is attached to in this mode).&n;&t; * In system-wide we always have can_access_pmu true because a task running on an&n;&t; * invalid processor is flagged earlier in the call stack (see pfm_stop).&n;&t; */
+id|can_access_pmu
+op_assign
 (paren
-id|task
-op_eq
-id|current
-)paren
-(brace
-macro_line|#else
-multiline_comment|/*&n;&t; * in UP, the state can still be in the registers&n;&t; */
-r_if
-c_cond
-(paren
-id|task
-op_eq
-id|current
-op_logical_or
 id|GET_PMU_OWNER
 c_func
 (paren
@@ -21399,12 +21415,24 @@ c_func
 op_eq
 id|task
 )paren
-(brace
-macro_line|#endif
-id|can_access_pmu
-op_assign
-l_int|1
+op_logical_or
+(paren
+id|ctx-&gt;ctx_fl_system
+op_logical_and
+id|ctx-&gt;ctx_cpu
+op_eq
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|can_access_pmu
+)paren
+(brace
 multiline_comment|/*&n;&t;&t; * Mark the PMU as not owned&n;&t;&t; * This will cause the interrupt handler to do nothing in case an overflow&n;&t;&t; * interrupt was in-flight&n;&t;&t; * This also guarantees that pmc0 will contain the final state&n;&t;&t; * It virtually gives us full control on overflow processing from that point&n;&t;&t; * on.&n;&t;&t; */
 id|SET_PMU_OWNER
 c_func
@@ -21412,6 +21440,14 @@ c_func
 l_int|NULL
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+id|DPRINT
+c_func
+(paren
+(paren
+l_string|&quot;releasing ownership&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * read current overflow status:&n;&t;&t; *&n;&t;&t; * we are guaranteed to read the final stable state&n;&t;&t; */

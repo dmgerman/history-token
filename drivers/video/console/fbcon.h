@@ -108,27 +108,6 @@ id|mode
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* drivers/video/console/fbcon.c */
-r_extern
-r_int
-r_char
-id|con2fb_map
-(braket
-id|MAX_NR_CONSOLES
-)braket
-suffix:semicolon
-r_extern
-r_int
-id|set_con2fb_map
-c_func
-(paren
-r_int
-id|unit
-comma
-r_int
-id|newidx
-)paren
-suffix:semicolon
 multiline_comment|/*&n;     *  Attribute Decoding&n;     */
 multiline_comment|/* Color */
 DECL|macro|attr_fgcol

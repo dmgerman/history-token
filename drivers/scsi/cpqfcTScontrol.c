@@ -268,19 +268,6 @@ id|cpqfcHBAdata-&gt;fcLQ_dma_handle
 )paren
 suffix:semicolon
 multiline_comment|/* printk(&quot;@ %p (%u elements)&bslash;n&quot;, cpqfcHBAdata-&gt;fcLQ, FC_LINKQ_DEPTH); */
-id|memset
-c_func
-(paren
-id|cpqfcHBAdata-&gt;fcLQ
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|FC_LINK_QUE
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

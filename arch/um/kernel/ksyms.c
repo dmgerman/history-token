@@ -502,7 +502,7 @@ id|rw
 )paren
 suffix:semicolon
 DECL|variable|__write_lock_failed
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|__write_lock_failed
@@ -523,7 +523,7 @@ id|rw
 )paren
 suffix:semicolon
 DECL|variable|__read_lock_failed
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|__read_lock_failed

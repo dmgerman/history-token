@@ -561,6 +561,8 @@ comma
 id|entry
 comma
 id|GFP_ATOMIC
+op_or
+id|__GFP_NOWARN
 )paren
 suffix:semicolon
 r_if

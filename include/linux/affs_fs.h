@@ -205,20 +205,6 @@ suffix:semicolon
 multiline_comment|/* bitmap. c */
 r_extern
 id|u32
-id|affs_count_free_bits
-c_func
-(paren
-id|u32
-id|blocksize
-comma
-r_const
-r_void
-op_star
-id|data
-)paren
-suffix:semicolon
-r_extern
-id|u32
 id|affs_count_free_blocks
 c_func
 (paren

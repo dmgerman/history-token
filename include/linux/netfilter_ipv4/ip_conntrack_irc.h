@@ -28,17 +28,8 @@ id|ip_ct_irc_master
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
 DECL|macro|IRC_PORT
 mdefine_line|#define IRC_PORT&t;6667
-multiline_comment|/* Protects irc part of conntracks */
-DECL|variable|ip_irc_lock
-id|DECLARE_LOCK_EXTERN
-c_func
-(paren
-id|ip_irc_lock
-)paren
-suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _IP_CONNTRACK_IRC_H */
 eof

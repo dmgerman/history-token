@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -1361,8 +1362,6 @@ op_star
 id|mask
 )paren
 suffix:semicolon
-DECL|macro|jiffies_from_ms
-mdefine_line|#define jiffies_from_ms(a) ((((a) * HZ)/1000)+1)
 DECL|variable|mgslpc_device_list
 r_static
 id|MGSLPC_INFO
@@ -1579,10 +1578,6 @@ r_int
 id|timeout
 )paren
 suffix:semicolon
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 multiline_comment|/* PCMCIA prototypes */
 r_static
 r_void
@@ -4638,17 +4633,19 @@ id|fifo_count
 (brace
 id|c
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 l_int|2
 comma
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|fifo_count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|info-&gt;tx_count
@@ -7076,12 +7073,12 @@ suffix:semicolon
 (brace
 id|c
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|TXBUFSIZE
@@ -11327,9 +11324,12 @@ id|timeout
 )paren
 id|char_time
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|char_time
 comma
 id|timeout
@@ -15298,7 +15298,7 @@ id|info-&gt;tx_timer.expires
 op_assign
 id|jiffies
 op_plus
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|5000
@@ -16915,7 +16915,7 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10

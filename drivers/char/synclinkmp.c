@@ -1038,8 +1038,6 @@ DECL|macro|OVRN
 mdefine_line|#define OVRN&t;BIT3
 DECL|macro|CRCE
 mdefine_line|#define CRCE&t;BIT2
-DECL|macro|jiffies_from_ms
-mdefine_line|#define jiffies_from_ms(a) ((((a) * HZ)/1000)+1)
 multiline_comment|/*&n; * Global linked list of SyncLink devices&n; */
 DECL|variable|synclinkmp_device_list
 r_static
@@ -1295,10 +1293,6 @@ suffix:semicolon
 multiline_comment|/* number of characters left in xmit buffer before we ask for more */
 DECL|macro|WAKEUP_CHARS
 mdefine_line|#define WAKEUP_CHARS 256
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) ((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 multiline_comment|/* tty callbacks */
 r_static
 r_int
@@ -3973,12 +3967,14 @@ suffix:semicolon
 (brace
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|info-&gt;max_frame_size
@@ -4598,9 +4594,12 @@ id|timeout
 )paren
 id|char_time
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|char_time
 comma
 id|timeout
@@ -11738,7 +11737,7 @@ id|info-&gt;status_timer.expires
 op_assign
 id|jiffies
 op_plus
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10
@@ -18685,7 +18684,7 @@ id|info-&gt;tx_timer.expires
 op_assign
 id|jiffies
 op_plus
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|5000
@@ -20969,9 +20968,11 @@ id|StartIndex
 dot
 id|virt_addr
 comma
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|framesize
 comma
 id|SCABUFSIZE
@@ -21032,7 +21033,7 @@ id|copy_count
 r_int
 id|partial_count
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|copy_count
@@ -21243,9 +21244,11 @@ id|info
 comma
 id|buf
 comma
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
 id|SCABUFSIZE
@@ -21267,9 +21270,12 @@ suffix:semicolon
 (brace
 id|copy_count
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|count
 comma
 id|SCABUFSIZE
@@ -21807,7 +21813,7 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10
@@ -22359,7 +22365,7 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10
@@ -23582,7 +23588,7 @@ id|info-&gt;status_timer.expires
 op_assign
 id|jiffies
 op_plus
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10

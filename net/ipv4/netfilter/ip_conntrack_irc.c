@@ -48,6 +48,13 @@ id|irc_buffer
 l_int|65536
 )braket
 suffix:semicolon
+r_static
+id|DECLARE_LOCK
+c_func
+(paren
+id|irc_buffer_lock
+)paren
+suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -144,13 +151,6 @@ l_string|&quot;SCHAT &quot;
 suffix:semicolon
 DECL|macro|MINMATCHLEN
 mdefine_line|#define MINMATCHLEN&t;5
-DECL|variable|ip_irc_lock
-id|DECLARE_LOCK
-c_func
-(paren
-id|ip_irc_lock
-)paren
-suffix:semicolon
 DECL|variable|ip_conntrack_irc
 r_struct
 id|module
@@ -467,7 +467,7 @@ id|LOCK_BH
 c_func
 (paren
 op_amp
-id|ip_irc_lock
+id|irc_buffer_lock
 )paren
 suffix:semicolon
 id|ib_ptr
@@ -972,7 +972,7 @@ id|UNLOCK_BH
 c_func
 (paren
 op_amp
-id|ip_irc_lock
+id|irc_buffer_lock
 )paren
 suffix:semicolon
 r_return
@@ -1304,13 +1304,6 @@ id|PROVIDES_CONNTRACK
 c_func
 (paren
 id|irc
-)paren
-suffix:semicolon
-DECL|variable|ip_irc_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_irc_lock
 )paren
 suffix:semicolon
 DECL|variable|init

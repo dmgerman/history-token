@@ -5803,6 +5803,16 @@ id|pm2fb_id_table
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  Initialization&n; */
+r_int
+id|__init
+id|pm2fb_setup
+c_func
+(paren
+r_char
+op_star
+id|options
+)paren
+suffix:semicolon
 DECL|function|pm2fb_init
 r_int
 id|__init
@@ -5812,6 +5822,18 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef MODULE
+id|pm2fb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;pm2fb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|pci_module_init
 c_func
@@ -5949,7 +5971,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* ------------------------------------------------------------------------- */
-macro_line|#ifdef MODULE
 DECL|variable|pm2fb_init
 id|module_init
 c_func
@@ -5957,7 +5978,6 @@ c_func
 id|pm2fb_init
 )paren
 suffix:semicolon
-macro_line|#endif 
 DECL|variable|pm2fb_exit
 id|module_exit
 c_func

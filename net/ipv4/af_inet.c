@@ -2947,6 +2947,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|inet_family_ops
+r_static
 r_struct
 id|net_proto_family
 id|inet_family_ops
@@ -4250,13 +4251,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|inet_dgram_ops
-)paren
-suffix:semicolon
-DECL|variable|inet_family_ops
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|inet_family_ops
 )paren
 suffix:semicolon
 DECL|variable|inet_getname

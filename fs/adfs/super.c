@@ -153,7 +153,11 @@ multiline_comment|/* we cannot have such a large disc that we&n;&t; * are unable
 r_if
 c_cond
 (paren
+id|le32_to_cpu
+c_func
+(paren
 id|dr-&gt;disc_size_high
+)paren
 op_rshift
 id|dr-&gt;log2secsize
 )paren
@@ -1489,7 +1493,11 @@ dot
 id|dm_endbit
 op_assign
 (paren
+id|le32_to_cpu
+c_func
+(paren
 id|dr-&gt;disc_size_high
+)paren
 op_lshift
 (paren
 l_int|32
@@ -1499,7 +1507,11 @@ id|dr-&gt;log2bpmb
 )paren
 op_plus
 (paren
+id|le32_to_cpu
+c_func
+(paren
 id|dr-&gt;disc_size
+)paren
 op_rshift
 id|dr-&gt;log2bpmb
 )paren
@@ -2121,7 +2133,11 @@ id|asb-&gt;s_version
 (brace
 id|root_obj.size
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|dr-&gt;root_size
+)paren
 suffix:semicolon
 id|asb-&gt;s_dir
 op_assign

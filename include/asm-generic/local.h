@@ -3,8 +3,8 @@ DECL|macro|_ASM_GENERIC_LOCAL_H
 mdefine_line|#define _ASM_GENERIC_LOCAL_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
+macro_line|#include &lt;linux/hardirq.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 multiline_comment|/* An unsigned long type for operations which are atomic for a single&n; * CPU.  Usually used in combination with per-cpu variables. */
 macro_line|#if BITS_PER_LONG == 32
 multiline_comment|/* Implement in terms of atomics. */

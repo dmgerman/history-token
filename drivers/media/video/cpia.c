@@ -3,6 +3,7 @@ multiline_comment|/* define _CPIA_DEBUG_ for verbose debug output (see cpia.h) *
 multiline_comment|/* #define _CPIA_DEBUG_  1 */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -78,6 +79,36 @@ l_string|&quot;video&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|colorspace_conv
+r_static
+r_int
+r_int
+id|colorspace_conv
+op_assign
+l_int|0
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|colorspace_conv
+comma
+id|ushort
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|colorspace_conv
+comma
+l_string|&quot;&bslash;n&lt;n&gt; Colorspace conversion:&quot;
+l_string|&quot;&bslash;n0 = disable&quot;
+l_string|&quot;&bslash;n1 = enable&quot;
+l_string|&quot;&bslash;nDefault value is 0&quot;
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 DECL|macro|ABOUT
 mdefine_line|#define ABOUT &quot;V4L-Driver for Vision CPiA based cameras&quot;
 macro_line|#ifndef VID_HARDWARE_CPIA
@@ -6640,6 +6671,37 @@ id|u16
 id|depth
 )paren
 (brace
+r_if
+c_cond
+(paren
+(paren
+id|palette
+op_eq
+id|VIDEO_PALETTE_YUV422
+op_logical_and
+id|depth
+op_eq
+l_int|16
+)paren
+op_logical_or
+(paren
+id|palette
+op_eq
+id|VIDEO_PALETTE_YUYV
+op_logical_and
+id|depth
+op_eq
+l_int|16
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|colorspace_conv
+)paren
 r_return
 (paren
 id|palette
@@ -6694,32 +6756,15 @@ op_logical_or
 (paren
 id|palette
 op_eq
-id|VIDEO_PALETTE_YUV422
-op_logical_and
-id|depth
-op_eq
-l_int|16
-)paren
-op_logical_or
-(paren
-id|palette
-op_eq
-id|VIDEO_PALETTE_YUYV
-op_logical_and
-id|depth
-op_eq
-l_int|16
-)paren
-op_logical_or
-(paren
-id|palette
-op_eq
 id|VIDEO_PALETTE_UYVY
 op_logical_and
 id|depth
 op_eq
 l_int|16
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|match_videosize
@@ -18809,6 +18854,17 @@ comma
 id|CPIA_MIN_VER
 comma
 id|CPIA_PATCH_VER
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Since in-kernel colorspace conversion is not &quot;
+l_string|&quot;allowed, it is disabled by default now. Users should fix the &quot;
+l_string|&quot;applications in case they don&squot;t work without conversion &quot;
+l_string|&quot;reenabled by setting the &squot;colorspace_conv&squot; module &quot;
+l_string|&quot;parameter to 1&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS

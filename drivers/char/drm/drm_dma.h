@@ -1,15 +1,6 @@
 multiline_comment|/**&n; * &bslash;file drm_dma.h &n; * DMA IOCTL and function support&n; *&n; * &bslash;author Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; * &bslash;author Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
 multiline_comment|/*&n; * Created: Fri Mar 19 14:30:16 1999 by faith@valinux.com&n; *&n; * Copyright 1999, 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#include &quot;drmP.h&quot;
-macro_line|#ifndef __HAVE_DMA_WAITQUEUE
-DECL|macro|__HAVE_DMA_WAITQUEUE
-mdefine_line|#define __HAVE_DMA_WAITQUEUE&t;0
-macro_line|#endif
-macro_line|#ifndef __HAVE_DMA_RECLAIM
-DECL|macro|__HAVE_DMA_RECLAIM
-mdefine_line|#define __HAVE_DMA_RECLAIM&t;0
-macro_line|#endif
-macro_line|#if __HAVE_DMA
 multiline_comment|/**&n; * Initialize the DMA data.&n; * &n; * &bslash;param dev DRM device.&n; * &bslash;return zero on success or a negative value on failure.&n; *&n; * Allocate and initialize a drm_device_dma structure.&n; */
 DECL|function|dma_setup
 r_int
@@ -402,23 +393,6 @@ comma
 id|DRM_MEM_BUFS
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_DMA_FREELIST
-id|DRM
-c_func
-(paren
-id|freelist_destroy
-)paren
-(paren
-op_amp
-id|dma-&gt;bufs
-(braket
-id|i
-)braket
-dot
-id|freelist
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_if
@@ -540,7 +514,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__HAVE_DMA_WAITQUEUE
+id|drm_core_check_feature
+c_func
+(paren
+id|dev
+comma
+id|DRIVER_DMA_QUEUE
+)paren
 op_logical_and
 id|waitqueue_active
 c_func
@@ -558,46 +538,14 @@ id|buf-&gt;dma_wait
 )paren
 suffix:semicolon
 )brace
-macro_line|#if __HAVE_DMA_FREELIST
-r_else
-(brace
-id|drm_device_dma_t
-op_star
-id|dma
-op_assign
-id|dev-&gt;dma
-suffix:semicolon
-multiline_comment|/* If processes are waiting, the last one&n;&t;&t;&t;&t;   to wake will put the buffer on the free&n;&t;&t;&t;&t;   list.  If no processes are waiting, we&n;&t;&t;&t;&t;   put the buffer on the freelist here. */
-id|DRM
-c_func
-(paren
-id|freelist_put
-)paren
-(paren
-id|dev
-comma
-op_amp
-id|dma-&gt;bufs
-(braket
-id|buf-&gt;order
-)braket
-dot
-id|freelist
-comma
-id|buf
-)paren
-suffix:semicolon
 )brace
-macro_line|#endif
-)brace
-macro_line|#if !__HAVE_DMA_RECLAIM
 multiline_comment|/**&n; * Reclaim the buffers.&n; *&n; * &bslash;param filp file pointer.&n; *&n; * Frees each buffer associated with &bslash;p filp not already on the hardware.&n; */
-DECL|function|reclaim_buffers
+DECL|function|core_reclaim_buffers
 r_void
 id|DRM
 c_func
 (paren
-id|reclaim_buffers
+id|core_reclaim_buffers
 )paren
 (paren
 r_struct
@@ -716,88 +664,4 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif
-macro_line|#if !__HAVE_IRQ
-multiline_comment|/* This stub DRM_IOCTL_CONTROL handler is for the drivers that used to require&n; * IRQs for DMA but no longer do.  It maintains compatibility with the X Servers&n; * that try to use the control ioctl by simply returning success.&n; */
-DECL|function|control
-r_int
-id|DRM
-c_func
-(paren
-id|control
-)paren
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-(brace
-id|drm_control_t
-id|ctl
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|copy_from_user
-c_func
-(paren
-op_amp
-id|ctl
-comma
-(paren
-id|drm_control_t
-id|__user
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-id|ctl
-)paren
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|ctl.func
-)paren
-(brace
-r_case
-id|DRM_INST_HANDLER
-suffix:colon
-r_case
-id|DRM_UNINST_HANDLER
-suffix:colon
-r_return
-l_int|0
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
-macro_line|#endif /* __HAVE_DMA */
 eof

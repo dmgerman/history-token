@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/init_task.h&gt;
 macro_line|#include &lt;linux/prctl.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -29,7 +30,6 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallHpt.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
@@ -1212,6 +1212,48 @@ id|p-&gt;thread.ksp
 op_assign
 id|sp
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_SLB
+)paren
+(brace
+r_int
+r_int
+id|sp_vsid
+op_assign
+id|get_kernel_vsid
+c_func
+(paren
+id|sp
+)paren
+suffix:semicolon
+id|sp_vsid
+op_lshift_assign
+id|SLB_VSID_SHIFT
+suffix:semicolon
+id|sp_vsid
+op_or_assign
+id|SLB_VSID_KERNEL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_16M_PAGE
+)paren
+id|sp_vsid
+op_or_assign
+id|SLB_VSID_L
+suffix:semicolon
+id|p-&gt;thread.ksp_vsid
+op_assign
+id|sp_vsid
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * The PPC64 ABI makes use of a TOC to contain function &n;&t; * pointers.  The function (ret_from_except) is actually a pointer&n;&t; * to the TOC entry.  The first entry is a pointer to the actual&n;&t; * function.&n; &t; */
 id|kregs-&gt;nip
 op_assign

@@ -128,8 +128,23 @@ DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) ((VM_MASK &amp; (regs)-&gt;eflags) || (3 &amp; (regs)-&gt;xcs))
 DECL|macro|instruction_pointer
 mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;eip)
+macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_FRAME_POINTER)
+r_extern
+r_int
+r_int
+id|profile_pc
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+macro_line|#else
 DECL|macro|profile_pc
 mdefine_line|#define profile_pc(regs) instruction_pointer(regs)
+macro_line|#endif
 macro_line|#endif
 macro_line|#endif
 eof

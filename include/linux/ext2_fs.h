@@ -129,41 +129,41 @@ r_struct
 id|ext2_group_desc
 (brace
 DECL|member|bg_block_bitmap
-id|__u32
+id|__le32
 id|bg_block_bitmap
 suffix:semicolon
 multiline_comment|/* Blocks bitmap block */
 DECL|member|bg_inode_bitmap
-id|__u32
+id|__le32
 id|bg_inode_bitmap
 suffix:semicolon
 multiline_comment|/* Inodes bitmap block */
 DECL|member|bg_inode_table
-id|__u32
+id|__le32
 id|bg_inode_table
 suffix:semicolon
 multiline_comment|/* Inodes table block */
 DECL|member|bg_free_blocks_count
-id|__u16
+id|__le16
 id|bg_free_blocks_count
 suffix:semicolon
 multiline_comment|/* Free blocks count */
 DECL|member|bg_free_inodes_count
-id|__u16
+id|__le16
 id|bg_free_inodes_count
 suffix:semicolon
 multiline_comment|/* Free inodes count */
 DECL|member|bg_used_dirs_count
-id|__u16
+id|__le16
 id|bg_used_dirs_count
 suffix:semicolon
 multiline_comment|/* Directories count */
 DECL|member|bg_pad
-id|__u16
+id|__le16
 id|bg_pad
 suffix:semicolon
 DECL|member|bg_reserved
-id|__u32
+id|__le32
 id|bg_reserved
 (braket
 l_int|3
@@ -262,57 +262,57 @@ r_struct
 id|ext2_inode
 (brace
 DECL|member|i_mode
-id|__u16
+id|__le16
 id|i_mode
 suffix:semicolon
 multiline_comment|/* File mode */
 DECL|member|i_uid
-id|__u16
+id|__le16
 id|i_uid
 suffix:semicolon
 multiline_comment|/* Low 16 bits of Owner Uid */
 DECL|member|i_size
-id|__u32
+id|__le32
 id|i_size
 suffix:semicolon
 multiline_comment|/* Size in bytes */
 DECL|member|i_atime
-id|__u32
+id|__le32
 id|i_atime
 suffix:semicolon
 multiline_comment|/* Access time */
 DECL|member|i_ctime
-id|__u32
+id|__le32
 id|i_ctime
 suffix:semicolon
 multiline_comment|/* Creation time */
 DECL|member|i_mtime
-id|__u32
+id|__le32
 id|i_mtime
 suffix:semicolon
 multiline_comment|/* Modification time */
 DECL|member|i_dtime
-id|__u32
+id|__le32
 id|i_dtime
 suffix:semicolon
 multiline_comment|/* Deletion Time */
 DECL|member|i_gid
-id|__u16
+id|__le16
 id|i_gid
 suffix:semicolon
 multiline_comment|/* Low 16 bits of Group Id */
 DECL|member|i_links_count
-id|__u16
+id|__le16
 id|i_links_count
 suffix:semicolon
 multiline_comment|/* Links count */
 DECL|member|i_blocks
-id|__u32
+id|__le32
 id|i_blocks
 suffix:semicolon
 multiline_comment|/* Blocks count */
 DECL|member|i_flags
-id|__u32
+id|__le32
 id|i_flags
 suffix:semicolon
 multiline_comment|/* File flags */
@@ -321,7 +321,7 @@ r_union
 r_struct
 (brace
 DECL|member|l_i_reserved1
-id|__u32
+id|__le32
 id|l_i_reserved1
 suffix:semicolon
 DECL|member|linux1
@@ -331,7 +331,7 @@ suffix:semicolon
 r_struct
 (brace
 DECL|member|h_i_translator
-id|__u32
+id|__le32
 id|h_i_translator
 suffix:semicolon
 DECL|member|hurd1
@@ -341,7 +341,7 @@ suffix:semicolon
 r_struct
 (brace
 DECL|member|m_i_reserved1
-id|__u32
+id|__le32
 id|m_i_reserved1
 suffix:semicolon
 DECL|member|masix1
@@ -354,7 +354,7 @@ id|osd1
 suffix:semicolon
 multiline_comment|/* OS dependent 1 */
 DECL|member|i_block
-id|__u32
+id|__le32
 id|i_block
 (braket
 id|EXT2_N_BLOCKS
@@ -362,22 +362,22 @@ id|EXT2_N_BLOCKS
 suffix:semicolon
 multiline_comment|/* Pointers to blocks */
 DECL|member|i_generation
-id|__u32
+id|__le32
 id|i_generation
 suffix:semicolon
 multiline_comment|/* File version (for NFS) */
 DECL|member|i_file_acl
-id|__u32
+id|__le32
 id|i_file_acl
 suffix:semicolon
 multiline_comment|/* File ACL */
 DECL|member|i_dir_acl
-id|__u32
+id|__le32
 id|i_dir_acl
 suffix:semicolon
 multiline_comment|/* Directory ACL */
 DECL|member|i_faddr
-id|__u32
+id|__le32
 id|i_faddr
 suffix:semicolon
 multiline_comment|/* Fragment address */
@@ -400,12 +400,12 @@ id|__u16
 id|i_pad1
 suffix:semicolon
 DECL|member|l_i_uid_high
-id|__u16
+id|__le16
 id|l_i_uid_high
 suffix:semicolon
 multiline_comment|/* these 2 fields    */
 DECL|member|l_i_gid_high
-id|__u16
+id|__le16
 id|l_i_gid_high
 suffix:semicolon
 multiline_comment|/* were reserved2[0] */
@@ -430,19 +430,19 @@ id|h_i_fsize
 suffix:semicolon
 multiline_comment|/* Fragment size */
 DECL|member|h_i_mode_high
-id|__u16
+id|__le16
 id|h_i_mode_high
 suffix:semicolon
 DECL|member|h_i_uid_high
-id|__u16
+id|__le16
 id|h_i_uid_high
 suffix:semicolon
 DECL|member|h_i_gid_high
-id|__u16
+id|__le16
 id|h_i_gid_high
 suffix:semicolon
 DECL|member|h_i_author
-id|__u32
+id|__le32
 id|h_i_author
 suffix:semicolon
 DECL|member|hurd2
@@ -583,158 +583,158 @@ r_struct
 id|ext2_super_block
 (brace
 DECL|member|s_inodes_count
-id|__u32
+id|__le32
 id|s_inodes_count
 suffix:semicolon
 multiline_comment|/* Inodes count */
 DECL|member|s_blocks_count
-id|__u32
+id|__le32
 id|s_blocks_count
 suffix:semicolon
 multiline_comment|/* Blocks count */
 DECL|member|s_r_blocks_count
-id|__u32
+id|__le32
 id|s_r_blocks_count
 suffix:semicolon
 multiline_comment|/* Reserved blocks count */
 DECL|member|s_free_blocks_count
-id|__u32
+id|__le32
 id|s_free_blocks_count
 suffix:semicolon
 multiline_comment|/* Free blocks count */
 DECL|member|s_free_inodes_count
-id|__u32
+id|__le32
 id|s_free_inodes_count
 suffix:semicolon
 multiline_comment|/* Free inodes count */
 DECL|member|s_first_data_block
-id|__u32
+id|__le32
 id|s_first_data_block
 suffix:semicolon
 multiline_comment|/* First Data Block */
 DECL|member|s_log_block_size
-id|__u32
+id|__le32
 id|s_log_block_size
 suffix:semicolon
 multiline_comment|/* Block size */
 DECL|member|s_log_frag_size
-id|__s32
+id|__le32
 id|s_log_frag_size
 suffix:semicolon
 multiline_comment|/* Fragment size */
 DECL|member|s_blocks_per_group
-id|__u32
+id|__le32
 id|s_blocks_per_group
 suffix:semicolon
 multiline_comment|/* # Blocks per group */
 DECL|member|s_frags_per_group
-id|__u32
+id|__le32
 id|s_frags_per_group
 suffix:semicolon
 multiline_comment|/* # Fragments per group */
 DECL|member|s_inodes_per_group
-id|__u32
+id|__le32
 id|s_inodes_per_group
 suffix:semicolon
 multiline_comment|/* # Inodes per group */
 DECL|member|s_mtime
-id|__u32
+id|__le32
 id|s_mtime
 suffix:semicolon
 multiline_comment|/* Mount time */
 DECL|member|s_wtime
-id|__u32
+id|__le32
 id|s_wtime
 suffix:semicolon
 multiline_comment|/* Write time */
 DECL|member|s_mnt_count
-id|__u16
+id|__le16
 id|s_mnt_count
 suffix:semicolon
 multiline_comment|/* Mount count */
 DECL|member|s_max_mnt_count
-id|__s16
+id|__le16
 id|s_max_mnt_count
 suffix:semicolon
 multiline_comment|/* Maximal mount count */
 DECL|member|s_magic
-id|__u16
+id|__le16
 id|s_magic
 suffix:semicolon
 multiline_comment|/* Magic signature */
 DECL|member|s_state
-id|__u16
+id|__le16
 id|s_state
 suffix:semicolon
 multiline_comment|/* File system state */
 DECL|member|s_errors
-id|__u16
+id|__le16
 id|s_errors
 suffix:semicolon
 multiline_comment|/* Behaviour when detecting errors */
 DECL|member|s_minor_rev_level
-id|__u16
+id|__le16
 id|s_minor_rev_level
 suffix:semicolon
 multiline_comment|/* minor revision level */
 DECL|member|s_lastcheck
-id|__u32
+id|__le32
 id|s_lastcheck
 suffix:semicolon
 multiline_comment|/* time of last check */
 DECL|member|s_checkinterval
-id|__u32
+id|__le32
 id|s_checkinterval
 suffix:semicolon
 multiline_comment|/* max. time between checks */
 DECL|member|s_creator_os
-id|__u32
+id|__le32
 id|s_creator_os
 suffix:semicolon
 multiline_comment|/* OS */
 DECL|member|s_rev_level
-id|__u32
+id|__le32
 id|s_rev_level
 suffix:semicolon
 multiline_comment|/* Revision level */
 DECL|member|s_def_resuid
-id|__u16
+id|__le16
 id|s_def_resuid
 suffix:semicolon
 multiline_comment|/* Default uid for reserved blocks */
 DECL|member|s_def_resgid
-id|__u16
+id|__le16
 id|s_def_resgid
 suffix:semicolon
 multiline_comment|/* Default gid for reserved blocks */
 multiline_comment|/*&n;&t; * These fields are for EXT2_DYNAMIC_REV superblocks only.&n;&t; *&n;&t; * Note: the difference between the compatible feature set and&n;&t; * the incompatible feature set is that if there is a bit set&n;&t; * in the incompatible feature set that the kernel doesn&squot;t&n;&t; * know about, it should refuse to mount the filesystem.&n;&t; * &n;&t; * e2fsck&squot;s requirements are more strict; if it doesn&squot;t know&n;&t; * about a feature in either the compatible or incompatible&n;&t; * feature set, it must abort and not try to meddle with&n;&t; * things it doesn&squot;t understand...&n;&t; */
 DECL|member|s_first_ino
-id|__u32
+id|__le32
 id|s_first_ino
 suffix:semicolon
 multiline_comment|/* First non-reserved inode */
 DECL|member|s_inode_size
-id|__u16
+id|__le16
 id|s_inode_size
 suffix:semicolon
 multiline_comment|/* size of inode structure */
 DECL|member|s_block_group_nr
-id|__u16
+id|__le16
 id|s_block_group_nr
 suffix:semicolon
 multiline_comment|/* block group # of this superblock */
 DECL|member|s_feature_compat
-id|__u32
+id|__le32
 id|s_feature_compat
 suffix:semicolon
 multiline_comment|/* compatible feature set */
 DECL|member|s_feature_incompat
-id|__u32
+id|__le32
 id|s_feature_incompat
 suffix:semicolon
 multiline_comment|/* incompatible feature set */
 DECL|member|s_feature_ro_compat
-id|__u32
+id|__le32
 id|s_feature_ro_compat
 suffix:semicolon
 multiline_comment|/* readonly-compatible feature set */
@@ -763,7 +763,7 @@ l_int|64
 suffix:semicolon
 multiline_comment|/* directory where last mounted */
 DECL|member|s_algorithm_usage_bitmap
-id|__u32
+id|__le32
 id|s_algorithm_usage_bitmap
 suffix:semicolon
 multiline_comment|/* For compression */
@@ -828,11 +828,11 @@ id|__u16
 id|s_reserved_word_pad
 suffix:semicolon
 DECL|member|s_default_mount_opts
-id|__u32
+id|__le32
 id|s_default_mount_opts
 suffix:semicolon
 DECL|member|s_first_meta_bg
-id|__u32
+id|__le32
 id|s_first_meta_bg
 suffix:semicolon
 multiline_comment|/* First metablock block group */
@@ -964,17 +964,17 @@ r_struct
 id|ext2_dir_entry
 (brace
 DECL|member|inode
-id|__u32
+id|__le32
 id|inode
 suffix:semicolon
 multiline_comment|/* Inode number */
 DECL|member|rec_len
-id|__u16
+id|__le16
 id|rec_len
 suffix:semicolon
 multiline_comment|/* Directory entry length */
 DECL|member|name_len
-id|__u16
+id|__le16
 id|name_len
 suffix:semicolon
 multiline_comment|/* Name length */
@@ -994,12 +994,12 @@ r_struct
 id|ext2_dir_entry_2
 (brace
 DECL|member|inode
-id|__u32
+id|__le32
 id|inode
 suffix:semicolon
 multiline_comment|/* Inode number */
 DECL|member|rec_len
-id|__u16
+id|__le16
 id|rec_len
 suffix:semicolon
 multiline_comment|/* Directory entry length */

@@ -594,7 +594,7 @@ suffix:semicolon
 )brace
 id|cfi-&gt;descTag.descCRC
 op_assign
-id|cpu_to_le32
+id|cpu_to_le16
 c_func
 (paren
 id|crc
@@ -845,7 +845,7 @@ id|dir-&gt;i_size
 op_rshift
 l_int|2
 suffix:semicolon
-id|lb_addr
+id|kernel_lb_addr
 id|bloc
 comma
 id|eloc
@@ -1483,7 +1483,7 @@ l_int|3
 )paren
 )paren
 (brace
-id|lb_addr
+id|kernel_lb_addr
 id|lb
 op_assign
 (brace
@@ -1726,7 +1726,7 @@ suffix:semicolon
 r_int
 id|block
 suffix:semicolon
-id|lb_addr
+id|kernel_lb_addr
 id|bloc
 comma
 id|eloc
@@ -3395,7 +3395,7 @@ id|inode
 suffix:semicolon
 op_star
 (paren
-r_uint32
+id|__le32
 op_star
 )paren
 (paren
@@ -3668,7 +3668,7 @@ id|inode
 suffix:semicolon
 op_star
 (paren
-r_uint32
+id|__le32
 op_star
 )paren
 (paren
@@ -3955,7 +3955,7 @@ id|dir
 suffix:semicolon
 op_star
 (paren
-r_uint32
+id|__le32
 op_star
 )paren
 (paren
@@ -4102,7 +4102,7 @@ id|inode
 suffix:semicolon
 op_star
 (paren
-r_uint32
+id|__le32
 op_star
 )paren
 (paren
@@ -4245,7 +4245,7 @@ suffix:semicolon
 r_int
 id|block
 suffix:semicolon
-id|lb_addr
+id|kernel_lb_addr
 id|bloc
 comma
 id|eloc
@@ -4662,7 +4662,7 @@ id|fi
 comma
 id|cfi
 suffix:semicolon
-id|lb_addr
+id|kernel_lb_addr
 id|tloc
 suffix:semicolon
 id|retval
@@ -4895,7 +4895,7 @@ r_struct
 id|fileIdentDesc
 id|cfi
 suffix:semicolon
-id|lb_addr
+id|kernel_lb_addr
 id|tloc
 suffix:semicolon
 id|retval
@@ -5215,7 +5215,7 @@ id|bh
 op_assign
 l_int|NULL
 suffix:semicolon
-id|lb_addr
+id|kernel_lb_addr
 id|bloc
 comma
 id|eloc
@@ -5854,7 +5854,7 @@ id|lvhd-&gt;uniqueID
 suffix:semicolon
 op_star
 (paren
-r_uint32
+id|__le32
 op_star
 )paren
 (paren
@@ -6184,7 +6184,7 @@ id|lvhd-&gt;uniqueID
 suffix:semicolon
 op_star
 (paren
-r_uint32
+id|__le32
 op_star
 )paren
 (paren
@@ -6414,7 +6414,7 @@ op_assign
 op_minus
 id|ENOENT
 suffix:semicolon
-id|lb_addr
+id|kernel_lb_addr
 id|tloc
 suffix:semicolon
 id|lock_kernel
@@ -6698,7 +6698,7 @@ id|end_rename
 suffix:semicolon
 id|tloc
 op_assign
-id|cpu_to_lelb
+id|lelb_to_cpu
 c_func
 (paren
 id|dir_fi-&gt;icb.extLocation
@@ -6914,7 +6914,7 @@ id|dir_fi
 (brace
 id|dir_fi-&gt;icb.extLocation
 op_assign
-id|lelb_to_cpu
+id|cpu_to_lelb
 c_func
 (paren
 id|UDF_I_LOCATION
@@ -6940,7 +6940,7 @@ r_struct
 id|fileIdentDesc
 )paren
 op_plus
-id|cpu_to_le16
+id|le16_to_cpu
 c_func
 (paren
 id|dir_fi-&gt;lengthOfImpUse

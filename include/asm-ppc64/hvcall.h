@@ -174,14 +174,18 @@ DECL|macro|H_SEND_CRQ
 mdefine_line|#define H_SEND_CRQ&t;&t;0x108
 DECL|macro|H_COPY_RDMA
 mdefine_line|#define H_COPY_RDMA             0x110
-DECL|macro|H_POLL_PENDING
-mdefine_line|#define H_POLL_PENDING&t;        0x1D8
+DECL|macro|H_STUFF_TCE
+mdefine_line|#define H_STUFF_TCE&t;&t;0x138
+DECL|macro|H_PUT_TCE_INDIRECT
+mdefine_line|#define H_PUT_TCE_INDIRECT&t;0x13C
 DECL|macro|H_VTERM_PARTNER_INFO
 mdefine_line|#define H_VTERM_PARTNER_INFO&t;0x150
 DECL|macro|H_REGISTER_VTERM
-mdefine_line|#define H_REGISTER_VTERM&t;&t;0x154
+mdefine_line|#define H_REGISTER_VTERM&t;0x154
 DECL|macro|H_FREE_VTERM
-mdefine_line|#define H_FREE_VTERM&t;&t;&t;0x158
+mdefine_line|#define H_FREE_VTERM&t;&t;0x158
+DECL|macro|H_POLL_PENDING
+mdefine_line|#define H_POLL_PENDING&t;        0x1D8
 multiline_comment|/* plpar_hcall() -- Generic call interface using above opcodes&n; *&n; * The actual call interface is a hypervisor call instruction with&n; * the opcode in R3 and input args in R4-R7.&n; * Status is returned in R3 with variable output values in R4-R11.&n; * Only H_PTE_READ with H_READ_4 uses R6-R11 so we ignore it for now&n; * and return only two out args which MUST ALWAYS BE PROVIDED.&n; */
 r_int
 id|plpar_hcall

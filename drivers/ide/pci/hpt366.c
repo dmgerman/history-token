@@ -4018,16 +4018,6 @@ l_int|0x57
 suffix:colon
 l_int|0x53
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hwif
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
 singleline_comment|//&t;hwif-&gt;bus_state = state;
 id|pci_read_config_byte
 c_func
@@ -4186,16 +4176,6 @@ l_int|0
 suffix:semicolon
 id|u16
 id|tri_reg
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hwif
-)paren
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 id|hwif-&gt;bus_state
 op_assign

@@ -229,7 +229,19 @@ id|printk
 c_func
 (paren
 id|KERN_EMERG
-l_string|&quot;flags:0x%08lx mapping:%p mapcount:%d count:%d&bslash;n&quot;
+l_string|&quot;flags:0x%0*lx mapping:%p mapcount:%d count:%d&bslash;n&quot;
+comma
+(paren
+r_int
+)paren
+(paren
+l_int|2
+op_star
+r_sizeof
+(paren
+id|page_flags_t
+)paren
+)paren
 comma
 (paren
 r_int

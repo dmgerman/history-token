@@ -710,7 +710,7 @@ l_int|3
 suffix:semicolon
 id|sum
 op_add_assign
-id|TEA_DELTA
+id|XTEA_DELTA
 suffix:semicolon
 id|z
 op_add_assign

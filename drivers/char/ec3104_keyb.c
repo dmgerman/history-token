@@ -1290,12 +1290,10 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 id|msr

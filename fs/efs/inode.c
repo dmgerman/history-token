@@ -4,24 +4,6 @@ macro_line|#include &lt;linux/efs_fs_sb.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-r_extern
-r_int
-id|efs_get_block
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-id|sector_t
-comma
-r_struct
-id|buffer_head
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 DECL|function|efs_readpage
 r_static
 r_int
@@ -77,6 +59,7 @@ id|efs_get_block
 suffix:semicolon
 )brace
 DECL|variable|efs_aops
+r_static
 r_struct
 id|address_space_operations
 id|efs_aops

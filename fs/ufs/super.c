@@ -2025,6 +2025,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read on-disk structures associated with cylinder groups&n; */
 DECL|function|ufs_read_cylinder_structures
+r_static
 r_int
 id|ufs_read_cylinder_structures
 (paren
@@ -2665,6 +2666,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Put on-disk structures associated with cylinder groups and &n; * write them back to disk&n; */
 DECL|function|ufs_put_cylinder_structures
+r_static
 r_void
 id|ufs_put_cylinder_structures
 (paren
@@ -5343,6 +5345,7 @@ id|ENOMEM
 suffix:semicolon
 )brace
 DECL|function|ufs_write_super
+r_static
 r_void
 id|ufs_write_super
 (paren
@@ -5505,6 +5508,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|ufs_put_super
+r_static
 r_void
 id|ufs_put_super
 (paren
@@ -5570,6 +5574,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|ufs_remount
+r_static
 r_int
 id|ufs_remount
 (paren
@@ -5925,6 +5930,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ufs_statfs
+r_static
 r_int
 id|ufs_statfs
 (paren

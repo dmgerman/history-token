@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;net/neighbour.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;net/flow.h&gt;
@@ -5549,6 +5550,11 @@ id|dn_dev_parms
 )paren
 )paren
 suffix:semicolon
+id|smp_wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|dev-&gt;dn_ptr
 op_assign
 id|dn_db
@@ -5937,6 +5943,15 @@ op_amp
 id|dn_neigh_table
 comma
 id|dn_db-&gt;neigh_parms
+)paren
+suffix:semicolon
+id|neigh_ifdown
+c_func
+(paren
+op_amp
+id|dn_neigh_table
+comma
+id|dev
 )paren
 suffix:semicolon
 r_if

@@ -7,14 +7,6 @@ multiline_comment|/* This remains constant for all DRM template files.&n; */
 DECL|macro|DRM
 mdefine_line|#define DRM(x) i915_##x
 multiline_comment|/* General customization:&n; */
-DECL|macro|__HAVE_AGP
-mdefine_line|#define __HAVE_AGP&t;&t;1
-DECL|macro|__MUST_HAVE_AGP
-mdefine_line|#define __MUST_HAVE_AGP&t;&t;1
-DECL|macro|__HAVE_MTRR
-mdefine_line|#define __HAVE_MTRR&t;&t;1
-DECL|macro|__HAVE_CTX_BITMAP
-mdefine_line|#define __HAVE_CTX_BITMAP&t;1
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR&t;&t;&quot;Tungsten Graphics, Inc.&quot;
 DECL|macro|DRIVER_NAME
@@ -42,19 +34,7 @@ DECL|macro|__HAVE_COUNTER8
 mdefine_line|#define __HAVE_COUNTER8         _DRM_STAT_SECONDARY
 DECL|macro|__HAVE_COUNTER9
 mdefine_line|#define __HAVE_COUNTER9         _DRM_STAT_DMA
-multiline_comment|/* Driver customization:&n; */
-DECL|macro|DRIVER_PRETAKEDOWN
-mdefine_line|#define DRIVER_PRETAKEDOWN() do {&t;&t;&t;&t;&t;&bslash;&n;&t;if ( dev-&gt;dev_private ) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;drm_i915_private_t *dev_priv = dev-&gt;dev_private;&t;&bslash;&n;&t;        i915_mem_takedown( &amp;(dev_priv-&gt;agp_heap) );             &bslash;&n; &t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;i915_dma_cleanup( dev );&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-multiline_comment|/* When a client dies:&n; *    - Free any alloced agp memory.&n; */
-DECL|macro|DRIVER_PRERELEASE
-mdefine_line|#define DRIVER_PRERELEASE() &t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( dev-&gt;dev_private ) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;drm_i915_private_t *dev_priv = dev-&gt;dev_private;&t;&bslash;&n;                i915_mem_release( dev, filp, dev_priv-&gt;agp_heap );&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* We use our own dma mechanisms, not the drm template code.  However,&n; * the shared IRQ code is useful to us:&n; */
-DECL|macro|__HAVE_DMA
-mdefine_line|#define __HAVE_DMA&t;&t;0
-DECL|macro|__HAVE_IRQ
-mdefine_line|#define __HAVE_IRQ&t;&t;1
-DECL|macro|__HAVE_SHARED_IRQ
-mdefine_line|#define __HAVE_SHARED_IRQ&t;1
 DECL|macro|__HAVE_PM
 mdefine_line|#define __HAVE_PM&t;&t;1
 macro_line|#endif

@@ -6,13 +6,10 @@ macro_line|#include &quot;i830_drm.h&quot;
 macro_line|#include &quot;i830_drv.h&quot;
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* For task queue support */
 macro_line|#include &lt;linux/delay.h&gt;
-DECL|function|irq_handler
+DECL|function|i830_driver_irq_handler
 id|irqreturn_t
-id|DRM
+id|i830_driver_irq_handler
 c_func
-(paren
-id|irq_handler
-)paren
 (paren
 id|DRM_IRQ_ARGS
 )paren
@@ -628,13 +625,10 @@ id|irqwait.irq_seq
 suffix:semicolon
 )brace
 multiline_comment|/* drm_dma.h hooks&n;*/
-DECL|function|driver_irq_preinstall
+DECL|function|i830_driver_irq_preinstall
 r_void
-id|DRM
+id|i830_driver_irq_preinstall
 c_func
-(paren
-id|driver_irq_preinstall
-)paren
 (paren
 id|drm_device_t
 op_star
@@ -701,13 +695,10 @@ id|dev_priv-&gt;irq_queue
 )paren
 suffix:semicolon
 )brace
-DECL|function|driver_irq_postinstall
+DECL|function|i830_driver_irq_postinstall
 r_void
-id|DRM
+id|i830_driver_irq_postinstall
 c_func
-(paren
-id|driver_irq_postinstall
-)paren
 (paren
 id|drm_device_t
 op_star
@@ -733,13 +724,10 @@ l_int|0x2
 )paren
 suffix:semicolon
 )brace
-DECL|function|driver_irq_uninstall
+DECL|function|i830_driver_irq_uninstall
 r_void
-id|DRM
+id|i830_driver_irq_uninstall
 c_func
-(paren
-id|driver_irq_uninstall
-)paren
 (paren
 id|drm_device_t
 op_star

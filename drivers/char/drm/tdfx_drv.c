@@ -2,6 +2,7 @@ multiline_comment|/* tdfx_drv.c -- tdfx driver -*- linux-c -*-&n; * Created: Thu
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;tdfx.h&quot;
 macro_line|#include &quot;drmP.h&quot;
+macro_line|#include &quot;drm_agpsupport.h&quot;
 macro_line|#include &quot;drm_auth.h&quot;
 macro_line|#include &quot;drm_bufs.h&quot;
 macro_line|#include &quot;drm_context.h&quot;
@@ -11,9 +12,29 @@ macro_line|#include &quot;drm_drv.h&quot;
 macro_line|#include &quot;drm_fops.h&quot;
 macro_line|#include &quot;drm_init.h&quot;
 macro_line|#include &quot;drm_ioctl.h&quot;
+macro_line|#include &quot;drm_irq.h&quot;
 macro_line|#include &quot;drm_lock.h&quot;
 macro_line|#include &quot;drm_memory.h&quot;
 macro_line|#include &quot;drm_proc.h&quot;
 macro_line|#include &quot;drm_vm.h&quot;
 macro_line|#include &quot;drm_stub.h&quot;
+macro_line|#include &quot;drm_scatter.h&quot;
+DECL|function|driver_register_fns
+r_void
+id|DRM
+c_func
+(paren
+id|driver_register_fns
+)paren
+(paren
+id|drm_device_t
+op_star
+id|dev
+)paren
+(brace
+id|dev-&gt;driver_features
+op_assign
+id|DRIVER_USE_MTRR
+suffix:semicolon
+)brace
 eof

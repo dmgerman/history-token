@@ -4229,7 +4229,7 @@ l_int|16
 )paren
 )paren
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -4332,7 +4332,7 @@ id|dev_priv-&gt;ring.tail
 op_assign
 id|cur_read_ptr
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -5191,10 +5191,12 @@ id|EINVAL
 )paren
 suffix:semicolon
 )brace
-id|DRM_FIND_MAP
+id|dev_priv-&gt;mmio
+op_assign
+id|drm_core_findmap
 c_func
 (paren
-id|dev_priv-&gt;mmio
+id|dev
 comma
 id|init-&gt;mmio_offset
 )paren
@@ -5234,10 +5236,12 @@ id|EINVAL
 )paren
 suffix:semicolon
 )brace
-id|DRM_FIND_MAP
+id|dev_priv-&gt;cp_ring
+op_assign
+id|drm_core_findmap
 c_func
 (paren
-id|dev_priv-&gt;cp_ring
+id|dev
 comma
 id|init-&gt;ring_offset
 )paren
@@ -5277,10 +5281,12 @@ id|EINVAL
 )paren
 suffix:semicolon
 )brace
-id|DRM_FIND_MAP
+id|dev_priv-&gt;ring_rptr
+op_assign
+id|drm_core_findmap
 c_func
 (paren
-id|dev_priv-&gt;ring_rptr
+id|dev
 comma
 id|init-&gt;ring_rptr_offset
 )paren
@@ -5320,10 +5326,12 @@ id|EINVAL
 )paren
 suffix:semicolon
 )brace
-id|DRM_FIND_MAP
+id|dev-&gt;agp_buffer_map
+op_assign
+id|drm_core_findmap
 c_func
 (paren
-id|dev_priv-&gt;buffers
+id|dev
 comma
 id|init-&gt;buffers_offset
 )paren
@@ -5332,7 +5340,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev_priv-&gt;buffers
+id|dev-&gt;agp_buffer_map
 )paren
 (brace
 id|DRM_ERROR
@@ -5369,10 +5377,12 @@ c_cond
 id|init-&gt;gart_textures_offset
 )paren
 (brace
-id|DRM_FIND_MAP
+id|dev_priv-&gt;gart_textures
+op_assign
+id|drm_core_findmap
 c_func
 (paren
-id|dev_priv-&gt;gart_textures
+id|dev
 comma
 id|init-&gt;gart_textures_offset
 )paren
@@ -5429,7 +5439,7 @@ op_plus
 id|init-&gt;sarea_priv_offset
 )paren
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -5437,7 +5447,7 @@ op_logical_neg
 id|dev_priv-&gt;is_pci
 )paren
 (brace
-id|DRM_IOREMAP
+id|drm_core_ioremap
 c_func
 (paren
 id|dev_priv-&gt;cp_ring
@@ -5445,7 +5455,7 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|DRM_IOREMAP
+id|drm_core_ioremap
 c_func
 (paren
 id|dev_priv-&gt;ring_rptr
@@ -5453,10 +5463,10 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|DRM_IOREMAP
+id|drm_core_ioremap
 c_func
 (paren
-id|dev_priv-&gt;buffers
+id|dev-&gt;agp_buffer_map
 comma
 id|dev
 )paren
@@ -5471,7 +5481,7 @@ op_logical_neg
 id|dev_priv-&gt;ring_rptr-&gt;handle
 op_logical_or
 op_logical_neg
-id|dev_priv-&gt;buffers-&gt;handle
+id|dev-&gt;agp_buffer_map-&gt;handle
 )paren
 (brace
 id|DRM_ERROR
@@ -5522,13 +5532,13 @@ op_star
 )paren
 id|dev_priv-&gt;ring_rptr-&gt;offset
 suffix:semicolon
-id|dev_priv-&gt;buffers-&gt;handle
+id|dev-&gt;agp_buffer_map-&gt;handle
 op_assign
 (paren
 r_void
 op_star
 )paren
-id|dev_priv-&gt;buffers-&gt;offset
+id|dev-&gt;agp_buffer_map-&gt;offset
 suffix:semicolon
 id|DRM_DEBUG
 c_func
@@ -5549,9 +5559,9 @@ suffix:semicolon
 id|DRM_DEBUG
 c_func
 (paren
-l_string|&quot;dev_priv-&gt;buffers-&gt;handle %p&bslash;n&quot;
+l_string|&quot;dev-&gt;agp_buffer_map-&gt;handle %p&bslash;n&quot;
 comma
-id|dev_priv-&gt;buffers-&gt;handle
+id|dev-&gt;agp_buffer_map-&gt;handle
 )paren
 suffix:semicolon
 )brace
@@ -5655,7 +5665,7 @@ c_func
 id|RADEON_CONFIG_APER_SIZE
 )paren
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -5665,7 +5675,7 @@ id|dev_priv-&gt;is_pci
 id|dev_priv-&gt;gart_buffers_offset
 op_assign
 (paren
-id|dev_priv-&gt;buffers-&gt;offset
+id|dev-&gt;agp_buffer_map-&gt;offset
 op_minus
 id|dev-&gt;agp-&gt;base
 op_plus
@@ -5677,7 +5687,7 @@ macro_line|#endif
 id|dev_priv-&gt;gart_buffers_offset
 op_assign
 (paren
-id|dev_priv-&gt;buffers-&gt;offset
+id|dev-&gt;agp_buffer_map-&gt;offset
 op_minus
 id|dev-&gt;sg-&gt;handle
 op_plus
@@ -5767,7 +5777,7 @@ id|dev_priv-&gt;ring.high_mark
 op_assign
 id|RADEON_RING_HIGH_MARK
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -5898,7 +5908,6 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_IRQ
 multiline_comment|/* Make sure interrupts are disabled here because the uninstall ioctl&n;&t; * may not have been called from userspace and after dev_private&n;&t; * is freed, it&squot;s too late.&n;&t; */
 r_if
 c_cond
@@ -5914,7 +5923,6 @@ id|irq_uninstall
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5927,7 +5935,7 @@ id|dev_priv
 op_assign
 id|dev-&gt;dev_private
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -5942,7 +5950,7 @@ id|dev_priv-&gt;cp_ring
 op_ne
 l_int|NULL
 )paren
-id|DRM_IOREMAPFREE
+id|drm_core_ioremapfree
 c_func
 (paren
 id|dev_priv-&gt;cp_ring
@@ -5957,7 +5965,7 @@ id|dev_priv-&gt;ring_rptr
 op_ne
 l_int|NULL
 )paren
-id|DRM_IOREMAPFREE
+id|drm_core_ioremapfree
 c_func
 (paren
 id|dev_priv-&gt;ring_rptr
@@ -5968,14 +5976,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev_priv-&gt;buffers
+id|dev-&gt;agp_buffer_map
 op_ne
 l_int|NULL
 )paren
-id|DRM_IOREMAPFREE
+id|drm_core_ioremapfree
 c_func
 (paren
-id|dev_priv-&gt;buffers
+id|dev-&gt;agp_buffer_map
 comma
 id|dev
 )paren
@@ -6078,7 +6086,7 @@ c_func
 l_string|&quot;Starting radeon_do_resume_cp()&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren

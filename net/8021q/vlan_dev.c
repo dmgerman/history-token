@@ -598,7 +598,7 @@ id|stats-&gt;rx_errors
 op_increment
 suffix:semicolon
 )brace
-id|rcu_read_lock
+id|rcu_read_unlock
 c_func
 (paren
 )paren

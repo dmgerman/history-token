@@ -226,16 +226,6 @@ id|__u16
 id|dport
 )paren
 suffix:semicolon
-r_extern
-id|__u32
-id|secure_ipv6_id
-c_func
-(paren
-id|__u32
-op_star
-id|daddr
-)paren
-suffix:semicolon
 macro_line|#ifndef MODULE
 r_extern
 r_struct

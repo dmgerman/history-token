@@ -5068,6 +5068,17 @@ id|iclog
 suffix:semicolon
 multiline_comment|/* put cycle number in every block */
 multiline_comment|/* real byte length */
+r_if
+c_cond
+(paren
+id|XFS_SB_VERSION_HASLOGV2
+c_func
+(paren
+op_amp
+id|log-&gt;l_mp-&gt;m_sb
+)paren
+)paren
+(brace
 id|INT_SET
 c_func
 (paren
@@ -5080,6 +5091,20 @@ op_plus
 id|iclog-&gt;ic_roundoff
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|INT_SET
+c_func
+(paren
+id|iclog-&gt;ic_header.h_len
+comma
+id|ARCH_CONVERT
+comma
+id|iclog-&gt;ic_offset
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* put ops count in correct order */
 id|ops
 op_assign

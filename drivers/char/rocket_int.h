@@ -1436,10 +1436,6 @@ DECL|macro|TTY_ROCKET_MAJOR
 mdefine_line|#define TTY_ROCKET_MAJOR&t;46
 DECL|macro|CUA_ROCKET_MAJOR
 mdefine_line|#define CUA_ROCKET_MAJOR&t;47
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 macro_line|#ifdef PCI_VENDOR_ID_RP
 DECL|macro|PCI_VENDOR_ID_RP
 macro_line|#undef PCI_VENDOR_ID_RP

@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/string.h&gt;
 DECL|function|lelb_to_cpu
 r_static
 r_inline
-id|lb_addr
+id|kernel_lb_addr
 id|lelb_to_cpu
 c_func
 (paren
@@ -14,7 +14,7 @@ id|lb_addr
 id|in
 )paren
 (brace
-id|lb_addr
+id|kernel_lb_addr
 id|out
 suffix:semicolon
 id|out.logicalBlockNum
@@ -44,7 +44,7 @@ id|lb_addr
 id|cpu_to_lelb
 c_func
 (paren
-id|lb_addr
+id|kernel_lb_addr
 id|in
 )paren
 (brace
@@ -74,7 +74,7 @@ suffix:semicolon
 DECL|function|lets_to_cpu
 r_static
 r_inline
-id|timestamp
+id|kernel_timestamp
 id|lets_to_cpu
 c_func
 (paren
@@ -82,7 +82,7 @@ id|timestamp
 id|in
 )paren
 (brace
-id|timestamp
+id|kernel_timestamp
 id|out
 suffix:semicolon
 id|memcpy
@@ -191,7 +191,7 @@ suffix:semicolon
 DECL|function|lela_to_cpu
 r_static
 r_inline
-id|long_ad
+id|kernel_long_ad
 id|lela_to_cpu
 c_func
 (paren
@@ -199,7 +199,7 @@ id|long_ad
 id|in
 )paren
 (brace
-id|long_ad
+id|kernel_long_ad
 id|out
 suffix:semicolon
 id|out.extLength
@@ -229,7 +229,7 @@ id|long_ad
 id|cpu_to_lela
 c_func
 (paren
-id|long_ad
+id|kernel_long_ad
 id|in
 )paren
 (brace
@@ -259,7 +259,7 @@ suffix:semicolon
 DECL|function|leea_to_cpu
 r_static
 r_inline
-id|extent_ad
+id|kernel_extent_ad
 id|leea_to_cpu
 c_func
 (paren
@@ -267,7 +267,7 @@ id|extent_ad
 id|in
 )paren
 (brace
-id|extent_ad
+id|kernel_extent_ad
 id|out
 suffix:semicolon
 id|out.extLength
@@ -297,7 +297,7 @@ id|timestamp
 id|cpu_to_lets
 c_func
 (paren
-id|timestamp
+id|kernel_timestamp
 id|in
 )paren
 (brace

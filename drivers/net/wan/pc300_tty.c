@@ -3134,6 +3134,8 @@ suffix:semicolon
 id|st_cpc_rx_buf
 op_star
 r_new
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 r_char

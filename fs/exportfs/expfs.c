@@ -1159,12 +1159,13 @@ c_func
 id|result
 )paren
 suffix:semicolon
+multiline_comment|/* It might be justifiable to return ESTALE here,&n;&t; * but the filehandle at-least looks reasonable good&n;&t; * and it just be a permission problem, so returning&n;&t; * -EACCESS is safer&n;&t; */
 r_return
 id|ERR_PTR
 c_func
 (paren
 op_minus
-id|ESTALE
+id|EACCES
 )paren
 suffix:semicolon
 id|err_target

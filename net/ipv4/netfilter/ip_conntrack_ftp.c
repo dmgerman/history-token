@@ -38,7 +38,7 @@ id|ftp_buffer
 l_int|65536
 )braket
 suffix:semicolon
-DECL|variable|ip_ftp_lock
+r_static
 id|DECLARE_LOCK
 c_func
 (paren
@@ -2452,13 +2452,6 @@ id|PROVIDES_CONNTRACK
 c_func
 (paren
 id|ftp
-)paren
-suffix:semicolon
-DECL|variable|ip_ftp_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_ftp_lock
 )paren
 suffix:semicolon
 DECL|variable|init

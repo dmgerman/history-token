@@ -17,7 +17,7 @@ DECL|macro|ASYNC_ORDER
 mdefine_line|#define ASYNC_ORDER  0
 macro_line|#endif
 macro_line|#else /* __s390x__ */
-macro_line|#ifndef __SMALL_STACK_STACK
+macro_line|#ifndef __SMALL_STACK
 DECL|macro|THREAD_ORDER
 mdefine_line|#define THREAD_ORDER 2
 DECL|macro|ASYNC_ORDER

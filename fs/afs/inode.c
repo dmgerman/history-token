@@ -240,8 +240,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* end afs_inode_map_status() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * attempt to fetch the status of an inode, coelescing multiple simultaneous fetches&n; */
+multiline_comment|/*&n; * attempt to fetch the status of an inode, coelescing multiple simultaneous&n; * fetches&n; */
 DECL|function|afs_inode_fetch_status
+r_static
 r_int
 id|afs_inode_fetch_status
 c_func

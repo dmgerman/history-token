@@ -40,8 +40,6 @@ mdefine_line|#define VERSION            &quot;1.3.0.1-LK&quot;
 multiline_comment|/* This major needs to be submitted to Linux to join the majors list */
 DECL|macro|DIGIINFOMAJOR
 mdefine_line|#define DIGIINFOMAJOR       35  /* For Digi specific ioctl */ 
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
 DECL|macro|MAXCARDS
 mdefine_line|#define MAXCARDS 7
 DECL|macro|epcaassert
@@ -2835,7 +2833,7 @@ suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------------------&n;&t;&t;&t;In this case bytesAvailable has been passed into pc_write and&n;&t;&t;&t;represents the amount of data that needs to be written.  dataLen&n;&t;&t;&t;represents the amount of space available on the card.  Whichever&n;&t;&t;&t;value is smaller will be the amount actually written. &n;&t;&t;&t;bytesAvailable will then take on this newly calculated value.&n;&t;&t;---------------------------------------------------------------------- */
 id|bytesAvailable
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|dataLen
@@ -2996,7 +2994,7 @@ multiline_comment|/* End head has wrapped around */
 multiline_comment|/* -------------------------------------------------------------------&n;&t;&t;&t;Check the space on the card.  If we have more data than &n;&t;&t;&t;space; reduce the amount of data to fit the space.&n;&t;---------------------------------------------------------------------- */
 id|bytesAvailable
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|remain
@@ -3022,7 +3020,7 @@ multiline_comment|/* Begin while there is data to copy onto card */
 multiline_comment|/* -----------------------------------------------------------------&n;&t;&t;&t;If head is not wrapped, the below will make sure the first &n;&t;&t;&t;data copy fills to the end of card buffer.&n;&t;&t;------------------------------------------------------------------- */
 id|dataLen
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|bytesAvailable
@@ -10853,8 +10851,6 @@ multiline_comment|/* End if clear_bit */
 )brace
 )brace
 multiline_comment|/* End EPCA_MAGIC */
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 multiline_comment|/* End do_softint */
 multiline_comment|/* ------------------------------------------------------------&n;&t;pc_stop and pc_start provide software flow control to the &n;&t;routine and the pc_ioctl routine.&n;---------------------------------------------------------------- */

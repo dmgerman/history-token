@@ -211,11 +211,14 @@ multiline_comment|/*  2 */
 l_string|&quot;T (stopped)&quot;
 comma
 multiline_comment|/*  4 */
-l_string|&quot;Z (zombie)&quot;
+l_string|&quot;T (tracing stop)&quot;
 comma
 multiline_comment|/*  8 */
-l_string|&quot;X (dead)&quot;
+l_string|&quot;Z (zombie)&quot;
+comma
 multiline_comment|/* 16 */
+l_string|&quot;X (dead)&quot;
+multiline_comment|/* 32 */
 )brace
 suffix:semicolon
 DECL|function|get_task_state
@@ -251,6 +254,8 @@ op_or
 id|TASK_DEAD
 op_or
 id|TASK_STOPPED
+op_or
+id|TASK_TRACED
 )paren
 suffix:semicolon
 r_const

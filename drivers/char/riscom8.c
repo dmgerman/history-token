@@ -28,10 +28,6 @@ DECL|macro|RC_REPORT_OVERRUN
 macro_line|#undef RC_REPORT_OVERRUN
 DECL|macro|RISCOM_LEGAL_FLAGS
 mdefine_line|#define RISCOM_LEGAL_FLAGS &bslash;&n;&t;(ASYNC_HUP_NOTIFY   | ASYNC_SAK          | ASYNC_SPLIT_TERMIOS   | &bslash;&n;&t; ASYNC_SPD_HI       | ASYNC_SPEED_VHI    | ASYNC_SESSION_LOCKOUT | &bslash;&n;&t; ASYNC_PGRP_LOCKOUT | ASYNC_CALLOUT_NOHUP)
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) ((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 DECL|macro|RS_EVENT_WRITE_WAKEUP
 mdefine_line|#define RS_EVENT_WRITE_WAKEUP&t;0
 DECL|variable|IRQ_to_board
@@ -2120,9 +2116,11 @@ suffix:semicolon
 )brace
 id|count
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|port-&gt;break_length
 comma
 l_int|0xff
@@ -5501,12 +5499,14 @@ c_func
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
@@ -5570,12 +5570,14 @@ c_func
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|c
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
@@ -5662,12 +5664,14 @@ c_func
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE

@@ -2444,8 +2444,6 @@ op_star
 id|info
 )paren
 suffix:semicolon
-DECL|macro|jiffies_from_ms
-mdefine_line|#define jiffies_from_ms(a) ((((a) * HZ)/1000)+1)
 multiline_comment|/* set non-zero on successful registration with PCI subsystem */
 DECL|variable|pci_registered
 r_static
@@ -2823,10 +2821,6 @@ r_int
 id|timeout
 )paren
 suffix:semicolon
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 multiline_comment|/*&n; * 1st function defined in .text section. Calling this function in&n; * init_module() followed by a breakpoint allows a remote debugger&n; * (gdb) to get the .text address for the add-symbol-file command.&n; * This allows remote debugging of dynamically loadable modules.&n; */
 DECL|function|mgsl_get_text_ptr
 r_void
@@ -7617,12 +7611,14 @@ l_int|1
 (brace
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
@@ -7694,12 +7690,14 @@ id|flags
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|c
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
@@ -7795,12 +7793,14 @@ id|flags
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
@@ -12080,9 +12080,12 @@ id|timeout
 )paren
 id|char_time
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|char_time
 comma
 id|timeout
@@ -15172,7 +15175,7 @@ id|info-&gt;tx_timer
 comma
 id|jiffies
 op_plus
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|5000
@@ -20373,7 +20376,7 @@ id|info-&gt;tx_timer.expires
 op_assign
 id|jiffies
 op_plus
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|5000
@@ -22766,9 +22769,11 @@ id|StartIndex
 dot
 id|virt_addr
 comma
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|framesize
 comma
 id|DMABUFFERSIZE
@@ -23350,9 +23355,11 @@ id|CurrentIndex
 dot
 id|virt_addr
 comma
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|framesize
 comma
 id|DMABUFFERSIZE
@@ -23539,9 +23546,11 @@ id|info
 comma
 id|Buffer
 comma
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|BufferSize
 comma
 id|DMABUFFERSIZE
@@ -24263,7 +24272,7 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10
@@ -24699,7 +24708,7 @@ id|EndTime
 op_assign
 id|jiffies
 op_plus
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|100
@@ -24929,7 +24938,7 @@ id|EndTime
 op_assign
 id|jiffies
 op_plus
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|100
@@ -25098,7 +25107,7 @@ id|EndTime
 op_assign
 id|jiffies
 op_plus
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|100
@@ -25242,7 +25251,7 @@ id|EndTime
 op_assign
 id|jiffies
 op_plus
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|100

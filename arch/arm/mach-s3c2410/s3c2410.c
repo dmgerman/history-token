@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/arch/regs-clock.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
 macro_line|#include &quot;s3c2410.h&quot;
+macro_line|#include &quot;cpu.h&quot;
 DECL|variable|s3c2410_clock_tick_rate
 r_int
 id|s3c2410_clock_tick_rate
@@ -49,14 +50,6 @@ r_int
 r_int
 id|s3c2410_pclk
 suffix:semicolon
-macro_line|#ifndef MHZ
-DECL|macro|MHZ
-mdefine_line|#define MHZ (1000*1000)
-macro_line|#endif
-DECL|macro|print_mhz
-mdefine_line|#define print_mhz(m) ((m) / MHZ), ((m / 1000) % 1000)
-DECL|macro|IODESC_ENT
-mdefine_line|#define IODESC_ENT(x) { S3C2410_VA_##x, S3C2410_PA_##x, S3C2410_SZ_##x, MT_DEVICE }
 DECL|variable|__initdata
 r_static
 r_struct
@@ -67,18 +60,6 @@ id|s3c2410_iodesc
 id|__initdata
 op_assign
 (brace
-id|IODESC_ENT
-c_func
-(paren
-id|IRQ
-)paren
-comma
-id|IODESC_ENT
-c_func
-(paren
-id|MEMCTRL
-)paren
-comma
 id|IODESC_ENT
 c_func
 (paren
@@ -112,15 +93,14 @@ comma
 id|IODESC_ENT
 c_func
 (paren
-id|GPIO
+id|ADC
 )paren
 comma
 id|IODESC_ENT
 c_func
 (paren
-id|ADC
+id|WATCHDOG
 )paren
-comma
 )brace
 suffix:semicolon
 DECL|variable|s3c_uart0_resource
@@ -424,7 +404,7 @@ op_star
 id|mach_desc
 comma
 r_int
-id|size
+id|mach_size
 )paren
 (brace
 r_int
@@ -449,7 +429,17 @@ c_func
 (paren
 id|mach_desc
 comma
-id|size
+id|mach_size
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;machine_initted %p,%d&bslash;n&quot;
+comma
+id|mach_desc
+comma
+id|mach_size
 )paren
 suffix:semicolon
 multiline_comment|/* now we&squot;ve got our machine bits initialised, work out what&n;&t; * clocks we&squot;ve got */
@@ -562,8 +552,26 @@ op_assign
 id|b
 suffix:semicolon
 )brace
+DECL|function|s3c2410_init_uarts
+r_void
+id|s3c2410_init_uarts
+c_func
+(paren
+r_struct
+id|s3c2410_uartcfg
+op_star
+id|cfg
+comma
+r_int
+id|no
+)paren
+(brace
+id|s3c2410_uartcfgs
+op_assign
+id|cfg
+suffix:semicolon
+)brace
 DECL|function|s3c2410_init
-r_static
 r_int
 id|__init
 id|s3c2410_init
@@ -656,11 +664,4 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|variable|s3c2410_init
-id|arch_initcall
-c_func
-(paren
-id|s3c2410_init
-)paren
-suffix:semicolon
 eof

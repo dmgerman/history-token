@@ -381,7 +381,6 @@ suffix:semicolon
 )brace
 DECL|macro|__pa
 mdefine_line|#define __pa(x) ((unsigned long)(x)-PAGE_OFFSET)
-multiline_comment|/* Not 100% correct, for use by /dev/mem only */
 r_extern
 r_int
 id|page_is_ram
@@ -389,7 +388,7 @@ c_func
 (paren
 r_int
 r_int
-id|physaddr
+id|pfn
 )paren
 suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */

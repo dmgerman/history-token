@@ -6860,6 +6860,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|sa1100fb_init
+id|module_init
+c_func
+(paren
+id|sa1100fb_init
+)paren
+suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren

@@ -14,10 +14,10 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/hardirq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#ifndef CONFIG_ARCH_S390X
 DECL|macro|__FAIL_ADDR_MASK
 mdefine_line|#define __FAIL_ADDR_MASK 0x7ffff000

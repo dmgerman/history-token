@@ -84,6 +84,45 @@ DECL|macro|SOCK_ASYNC_WAITDATA
 mdefine_line|#define SOCK_ASYNC_WAITDATA&t;1
 DECL|macro|SOCK_NOSPACE
 mdefine_line|#define SOCK_NOSPACE&t;&t;2
+multiline_comment|/** sock_type - Socket types&n; *&n; * @SOCK_STREAM - stream (connection) socket&n; * @SOCK_DGRAM - datagram (conn.less) socket&n; * @SOCK_RAW - raw socket&n; * @SOCK_RDM - reliably-delivered message&n; * @SOCK_SEQPACKET - sequential packet socket &n; * @SOCK_PACKET - linux specific way of getting packets at the dev level.&n; *&t;&t;  For writing rarp and other similar things on the user level.&n; */
+DECL|enum|sock_type
+r_enum
+id|sock_type
+(brace
+DECL|enumerator|SOCK_STREAM
+id|SOCK_STREAM
+op_assign
+l_int|1
+comma
+DECL|enumerator|SOCK_DGRAM
+id|SOCK_DGRAM
+op_assign
+l_int|2
+comma
+DECL|enumerator|SOCK_RAW
+id|SOCK_RAW
+op_assign
+l_int|3
+comma
+DECL|enumerator|SOCK_RDM
+id|SOCK_RDM
+op_assign
+l_int|4
+comma
+DECL|enumerator|SOCK_SEQPACKET
+id|SOCK_SEQPACKET
+op_assign
+l_int|5
+comma
+DECL|enumerator|SOCK_PACKET
+id|SOCK_PACKET
+op_assign
+l_int|10
+comma
+)brace
+suffix:semicolon
+DECL|macro|SOCK_MAX
+mdefine_line|#define SOCK_MAX (SOCK_PACKET + 1)
 multiline_comment|/**&n; *  struct socket - general BSD socket&n; *  @state - socket state (%SS_CONNECTED, etc)&n; *  @flags - socket flags (%SOCK_ASYNC_NOSPACE, etc)&n; *  @ops - protocol specific socket operations&n; *  @fasync_list - Asynchronous wake up list&n; *  @file - File back pointer for gc&n; *  @sk - internal networking protocol agnostic socket representation&n; *  @wait - wait queue for several uses&n; *  @type - socket type (%SOCK_STREAM, etc)&n; *  @passcred - credentials (used only in Unix Sockets (aka PF_LOCAL))&n; */
 DECL|struct|socket
 r_struct

@@ -294,6 +294,18 @@ op_assign
 id|do_posix_clock_monotonic_settime
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_TIME_INTERPOLATION
+multiline_comment|/* Clocks are more accurate with time interpolators */
+id|clock_realtime.res
+op_assign
+id|clock_monotonic.res
+op_assign
+id|time_interpolator_resolution
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|register_posix_clock
 c_func
 (paren

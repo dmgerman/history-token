@@ -9738,6 +9738,11 @@ id|f-&gt;fmt.pix.height
 op_assign
 id|maxh
 suffix:semicolon
+id|f-&gt;fmt.pix.width
+op_and_assign
+op_complement
+l_int|0x03
+suffix:semicolon
 id|f-&gt;fmt.pix.bytesperline
 op_assign
 (paren

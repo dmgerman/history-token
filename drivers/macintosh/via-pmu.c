@@ -31,7 +31,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
@@ -261,12 +260,6 @@ id|bright_req_1
 comma
 id|bright_req_2
 suffix:semicolon
-DECL|variable|async_req_locks
-r_static
-r_int
-r_int
-id|async_req_locks
-suffix:semicolon
 DECL|variable|vias
 r_static
 r_struct
@@ -363,6 +356,12 @@ DECL|variable|can_sleep
 r_static
 r_int
 id|can_sleep
+suffix:semicolon
+DECL|variable|async_req_locks
+r_static
+r_int
+r_int
+id|async_req_locks
 suffix:semicolon
 macro_line|#endif /* CONFIG_PMAC_PBOOK */
 DECL|variable|pmu_irq_stats
@@ -3646,42 +3645,10 @@ c_cond
 id|proc_pmu_root
 )paren
 (brace
+macro_line|#ifdef CONFIG_PMAC_PBOOK
 r_int
 id|i
 suffix:semicolon
-id|proc_pmu_info
-op_assign
-id|create_proc_read_entry
-c_func
-(paren
-l_string|&quot;info&quot;
-comma
-l_int|0
-comma
-id|proc_pmu_root
-comma
-id|proc_get_info
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|proc_pmu_irqstats
-op_assign
-id|create_proc_read_entry
-c_func
-(paren
-l_string|&quot;interrupts&quot;
-comma
-l_int|0
-comma
-id|proc_pmu_root
-comma
-id|proc_get_irqstats
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_PMAC_PBOOK
 r_for
 c_loop
 (paren
@@ -3738,6 +3705,38 @@ id|i
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PMAC_PBOOK */
+id|proc_pmu_info
+op_assign
+id|create_proc_read_entry
+c_func
+(paren
+l_string|&quot;info&quot;
+comma
+l_int|0
+comma
+id|proc_pmu_root
+comma
+id|proc_get_info
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|proc_pmu_irqstats
+op_assign
+id|create_proc_read_entry
+c_func
+(paren
+l_string|&quot;interrupts&quot;
+comma
+l_int|0
+comma
+id|proc_pmu_root
+comma
+id|proc_get_irqstats
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 id|proc_pmu_options
 op_assign
 id|create_proc_entry

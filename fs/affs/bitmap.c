@@ -50,6 +50,7 @@ comma
 l_int|4
 )brace
 suffix:semicolon
+r_static
 id|u32
 DECL|function|affs_count_free_bits
 id|affs_count_free_bits
@@ -284,7 +285,7 @@ id|mask
 comma
 id|tmp
 suffix:semicolon
-id|u32
+id|__be32
 op_star
 id|data
 suffix:semicolon
@@ -398,7 +399,7 @@ suffix:semicolon
 id|data
 op_assign
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|bh-&gt;b_data
@@ -448,7 +449,7 @@ c_func
 (paren
 op_star
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|bh-&gt;b_data
@@ -456,7 +457,7 @@ id|bh-&gt;b_data
 suffix:semicolon
 op_star
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|bh-&gt;b_data
@@ -598,7 +599,7 @@ id|buffer_head
 op_star
 id|bh
 suffix:semicolon
-id|u32
+id|__be32
 op_star
 id|data
 comma
@@ -877,7 +878,7 @@ suffix:semicolon
 id|data
 op_assign
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|bh-&gt;b_data
@@ -891,7 +892,7 @@ suffix:semicolon
 id|enddata
 op_assign
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 (paren
@@ -963,12 +964,8 @@ r_while
 c_loop
 (paren
 op_logical_neg
-(paren
-id|tmp
-op_assign
 op_star
 id|data
-)paren
 )paren
 suffix:semicolon
 id|tmp
@@ -976,7 +973,8 @@ op_assign
 id|be32_to_cpu
 c_func
 (paren
-id|tmp
+op_star
+id|data
 )paren
 suffix:semicolon
 id|mask
@@ -1096,7 +1094,7 @@ c_func
 (paren
 op_star
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|bh-&gt;b_data
@@ -1104,7 +1102,7 @@ id|bh-&gt;b_data
 suffix:semicolon
 op_star
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|bh-&gt;b_data
@@ -1219,7 +1217,7 @@ id|bh
 op_assign
 l_int|NULL
 suffix:semicolon
-id|u32
+id|__be32
 op_star
 id|bmap_blk
 suffix:semicolon
@@ -1381,7 +1379,7 @@ suffix:semicolon
 id|bmap_blk
 op_assign
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|sbi-&gt;s_root_bh-&gt;b_data
@@ -1593,7 +1591,7 @@ suffix:semicolon
 id|bmap_blk
 op_assign
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|bmap_bh-&gt;b_data
@@ -1677,7 +1675,7 @@ c_func
 (paren
 (paren
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|bh-&gt;b_data
@@ -1696,7 +1694,7 @@ suffix:semicolon
 singleline_comment|//if (old != new) {
 (paren
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|bh-&gt;b_data
@@ -1713,8 +1711,8 @@ r_new
 suffix:semicolon
 multiline_comment|/* fix checksum */
 singleline_comment|//new -= old;
-singleline_comment|//old = be32_to_cpu(*(u32 *)bh-&gt;b_data);
-singleline_comment|//*(u32 *)bh-&gt;b_data = cpu_to_be32(old - new);
+singleline_comment|//old = be32_to_cpu(*(__be32 *)bh-&gt;b_data);
+singleline_comment|//*(__be32 *)bh-&gt;b_data = cpu_to_be32(old - new);
 singleline_comment|//mark_buffer_dirty(bh);
 singleline_comment|//}
 multiline_comment|/* correct offset for the bitmap count below */
@@ -1732,7 +1730,7 @@ l_int|4
 )paren
 (paren
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|bh-&gt;b_data
@@ -1745,7 +1743,7 @@ l_int|0
 suffix:semicolon
 (paren
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|bh-&gt;b_data
@@ -1758,7 +1756,7 @@ l_int|0
 suffix:semicolon
 (paren
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|bh-&gt;b_data

@@ -143,6 +143,6 @@ suffix:semicolon
 DECL|macro|do_each_task_pid
 mdefine_line|#define do_each_task_pid(who, type, task)&t;&t;&t;&t;&bslash;&n;&t;if ((task = find_task_by_pid_type(type, who))) {&t;&t;&bslash;&n;&t;&t;prefetch((task)-&gt;pids[type].pid_list.next);&t;&t;&bslash;&n;&t;&t;do {
 DECL|macro|while_each_task_pid
-mdefine_line|#define while_each_task_pid(who, type, task)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;task = pid_task((task)-&gt;pids[type].pid_list.next,&bslash;&n;&t;&t;&t;&t;&t;&t;type);&t;&t;&t;&bslash;&n;&t;&t;&t;prefetch((task)-&gt;pids[type].pid_list.next);&t;&bslash;&n;&t;&t;} while (hlist_unhashed(&amp;(task)-&gt;pids[type].pid_chain));&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;
+mdefine_line|#define while_each_task_pid(who, type, task)&t;&t;&t;&t;&bslash;&n;&t;&t;} while (task = pid_task((task)-&gt;pids[type].pid_list.next,&bslash;&n;&t;&t;&t;&t;&t;&t;type),&t;&t;&t;&bslash;&n;&t;&t;&t;prefetch((task)-&gt;pids[type].pid_list.next),&t;&bslash;&n;&t;&t;&t;hlist_unhashed(&amp;(task)-&gt;pids[type].pid_chain));&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;
 macro_line|#endif /* _LINUX_PID_H */
 eof

@@ -272,6 +272,7 @@ r_int
 r_int
 id|ip_ct_log_invalid
 suffix:semicolon
+macro_line|#ifdef CONFIG_SYSCTL
 macro_line|#ifdef DEBUG_INVALID_PACKETS
 DECL|macro|LOG_INVALID
 mdefine_line|#define LOG_INVALID(proto) &bslash;&n;&t;(ip_ct_log_invalid == (proto) || ip_ct_log_invalid == IPPROTO_RAW)
@@ -279,5 +280,9 @@ macro_line|#else
 DECL|macro|LOG_INVALID
 mdefine_line|#define LOG_INVALID(proto) &bslash;&n;&t;((ip_ct_log_invalid == (proto) || ip_ct_log_invalid == IPPROTO_RAW) &bslash;&n;&t; &amp;&amp; net_ratelimit())
 macro_line|#endif
+macro_line|#else
+DECL|macro|LOG_INVALID
+mdefine_line|#define LOG_INVALID(proto) 0
+macro_line|#endif /* CONFIG_SYSCTL */
 macro_line|#endif /*_IP_CONNTRACK_PROTOCOL_H*/
 eof

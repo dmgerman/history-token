@@ -596,6 +596,15 @@ DECL|macro|RTAS_DEBUG
 mdefine_line|#define RTAS_DEBUG KERN_DEBUG &quot;RTAS: &quot;
 DECL|macro|RTAS_ERROR_LOG_MAX
 mdefine_line|#define RTAS_ERROR_LOG_MAX 2048
+multiline_comment|/*&n; * Return the firmware-specified size of the error log buffer&n; *  for all rtas calls that require an error buffer argument.&n; *  This includes &squot;check-exception&squot; and &squot;rtas-last-error&squot;.&n; */
+r_extern
+r_int
+id|rtas_get_error_log_max
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* Event Scan Parameters */
 DECL|macro|EVENT_SCAN_ALL_EVENTS
 mdefine_line|#define EVENT_SCAN_ALL_EVENTS&t;0xf0000000

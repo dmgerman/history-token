@@ -71,6 +71,7 @@ id|SPIN_LOCK_UNLOCKED
 )brace
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * This is updated when the user sets irq affinity via /proc&n; */
 DECL|variable|pending_irq_cpumask
 id|cpumask_t
@@ -93,6 +94,7 @@ id|NR_IRQS
 )paren
 )braket
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_IA64_GENERIC
 DECL|function|__ia64_irq_desc
 id|irq_desc_t

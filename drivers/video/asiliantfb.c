@@ -3417,6 +3417,13 @@ id|asiliantfb_driver
 )paren
 suffix:semicolon
 )brace
+DECL|variable|asiliantfb_init
+id|module_init
+c_func
+(paren
+id|asiliantfb_init
+)paren
+suffix:semicolon
 DECL|function|asiliantfb_exit
 r_static
 r_void

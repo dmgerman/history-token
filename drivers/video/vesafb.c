@@ -1906,6 +1906,16 @@ r_void
 r_int
 id|ret
 suffix:semicolon
+id|vesafb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;vesafb&quot;
+)paren
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|driver_register
@@ -1948,6 +1958,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|vesafb_init
+id|module_init
+c_func
+(paren
+id|vesafb_init
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */
 id|MODULE_LICENSE
 c_func

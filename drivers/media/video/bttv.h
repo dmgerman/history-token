@@ -220,6 +220,14 @@ DECL|macro|BTTV_PICOLO_TETRA_CHIP
 mdefine_line|#define BTTV_PICOLO_TETRA_CHIP 0x79
 DECL|macro|BTTV_AVDVBT_771
 mdefine_line|#define BTTV_AVDVBT_771     0x7b
+DECL|macro|BTTV_AVDVBT_761
+mdefine_line|#define BTTV_AVDVBT_761     0x7c
+DECL|macro|BTTV_MATRIX_VISIONSQ
+mdefine_line|#define BTTV_MATRIX_VISIONSQ  0x7d
+DECL|macro|BTTV_MATRIX_VISIONSLC
+mdefine_line|#define BTTV_MATRIX_VISIONSLC 0x7e
+DECL|macro|BTTV_APAC_VIEWCOMP
+mdefine_line|#define BTTV_APAC_VIEWCOMP  0x7f
 multiline_comment|/* i2c address list */
 DECL|macro|I2C_TSA5522
 mdefine_line|#define I2C_TSA5522        0xc2
@@ -809,6 +817,27 @@ r_struct
 id|bttv_sub_device
 op_star
 id|sub
+)paren
+suffix:semicolon
+DECL|member|i2c_info
+r_void
+(paren
+op_star
+id|i2c_info
+)paren
+(paren
+r_struct
+id|bttv_sub_device
+op_star
+id|sub
+comma
+r_struct
+id|i2c_client
+op_star
+id|client
+comma
+r_int
+id|attach
 )paren
 suffix:semicolon
 )brace

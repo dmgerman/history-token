@@ -95,8 +95,23 @@ mdefine_line|#define __SIGNAL_FRAMESIZE&t;64
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|instruction_pointer
 mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;nip)
+macro_line|#ifdef CONFIG_SMP
+r_extern
+r_int
+r_int
+id|profile_pc
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+macro_line|#else
 DECL|macro|profile_pc
 mdefine_line|#define profile_pc(regs) instruction_pointer(regs)
+macro_line|#endif
 DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) (((regs)-&gt;msr &amp; MSR_PR) != 0)
 DECL|macro|force_successful_syscall_return

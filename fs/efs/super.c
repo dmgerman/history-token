@@ -7,6 +7,40 @@ macro_line|#include &lt;linux/efs_fs_sb.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
+r_static
+r_int
+id|efs_statfs
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|s
+comma
+r_struct
+id|kstatfs
+op_star
+id|buf
+)paren
+suffix:semicolon
+r_static
+r_int
+id|efs_fill_super
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|s
+comma
+r_void
+op_star
+id|d
+comma
+r_int
+id|silent
+)paren
+suffix:semicolon
 DECL|function|efs_get_sb
 r_static
 r_struct
@@ -289,6 +323,7 @@ l_string|&quot;efs_inode_cache: not all structures were freed&bslash;n&quot;
 suffix:semicolon
 )brace
 DECL|function|efs_put_super
+r_static
 r_void
 id|efs_put_super
 c_func
@@ -1034,6 +1069,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|efs_fill_super
+r_static
 r_int
 id|efs_fill_super
 c_func
@@ -1373,6 +1409,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|efs_statfs
+r_static
 r_int
 id|efs_statfs
 c_func

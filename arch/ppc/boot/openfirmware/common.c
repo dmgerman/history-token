@@ -1,8 +1,8 @@
 multiline_comment|/*&n; * Copyright (C) Paul Mackerras 1997.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
-macro_line|#include &quot;zlib.h&quot;
 macro_line|#include &quot;nonstdio.h&quot;
 macro_line|#include &quot;of1275.h&quot;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/zlib.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/* Information from the linker */
@@ -80,13 +80,6 @@ op_star
 id|zalloc
 c_func
 (paren
-r_void
-op_star
-id|x
-comma
-r_int
-id|items
-comma
 r_int
 id|size
 )paren
@@ -103,10 +96,6 @@ id|mpp
 comma
 op_star
 id|mp
-suffix:semicolon
-id|size
-op_mul_assign
-id|items
 suffix:semicolon
 id|size
 op_assign
@@ -218,76 +207,6 @@ r_return
 id|p
 suffix:semicolon
 )brace
-DECL|function|zfree
-r_static
-r_void
-id|zfree
-c_func
-(paren
-r_void
-op_star
-id|x
-comma
-r_void
-op_star
-id|addr
-comma
-r_int
-id|nb
-)paren
-(brace
-r_struct
-id|memchunk
-op_star
-id|mp
-op_assign
-id|addr
-suffix:semicolon
-id|nb
-op_assign
-(paren
-id|nb
-op_plus
-l_int|7
-)paren
-op_amp
-op_minus
-l_int|8
-suffix:semicolon
-id|heap_use
-op_sub_assign
-id|nb
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|avail_ram
-op_eq
-id|addr
-op_plus
-id|nb
-)paren
-(brace
-id|avail_ram
-op_assign
-id|addr
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|mp-&gt;size
-op_assign
-id|nb
-suffix:semicolon
-id|mp-&gt;next
-op_assign
-id|freechunks
-suffix:semicolon
-id|freechunks
-op_assign
-id|mp
-suffix:semicolon
-)brace
 DECL|macro|HEAD_CRC
 mdefine_line|#define HEAD_CRC&t;2
 DECL|macro|EXTRA_FIELD
@@ -298,8 +217,6 @@ DECL|macro|COMMENT
 mdefine_line|#define COMMENT&t;&t;0x10
 DECL|macro|RESERVED
 mdefine_line|#define RESERVED&t;0xe0
-DECL|macro|DEFLATED
-mdefine_line|#define DEFLATED&t;8
 DECL|function|gunzip
 r_void
 id|gunzip
@@ -352,7 +269,7 @@ id|src
 l_int|2
 )braket
 op_ne
-id|DEFLATED
+id|Z_DEFLATED
 op_logical_or
 (paren
 id|flags
@@ -484,17 +401,21 @@ m_exit
 )paren
 suffix:semicolon
 )brace
-id|s.zalloc
+multiline_comment|/* Initialize ourself. */
+id|s.workspace
 op_assign
 id|zalloc
-suffix:semicolon
-id|s.zfree
-op_assign
-id|zfree
+c_func
+(paren
+id|zlib_inflate_workspacesize
+c_func
+(paren
+)paren
+)paren
 suffix:semicolon
 id|r
 op_assign
-id|inflateInit2
+id|zlib_inflateInit2
 c_func
 (paren
 op_amp
@@ -515,7 +436,7 @@ id|Z_OK
 id|printf
 c_func
 (paren
-l_string|&quot;inflateInit2 returned %d&bslash;n&bslash;r&quot;
+l_string|&quot;zlib_inflateInit2 returned %d&bslash;n&bslash;r&quot;
 comma
 id|r
 )paren
@@ -548,7 +469,7 @@ id|dstlen
 suffix:semicolon
 id|r
 op_assign
-id|inflate
+id|zlib_inflate
 c_func
 (paren
 op_amp
@@ -596,7 +517,7 @@ op_star
 )paren
 id|dst
 suffix:semicolon
-id|inflateEnd
+id|zlib_inflateEnd
 c_func
 (paren
 op_amp

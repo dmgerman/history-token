@@ -44,16 +44,6 @@ c_func
 id|outer_iph
 )paren
 )paren
-op_logical_and
-id|INET_ECN_is_not_ce
-c_func
-(paren
-id|ip6_get_dsfield
-c_func
-(paren
-id|inner_iph
-)paren
-)paren
 )paren
 id|IP6_ECN_set_ce
 c_func

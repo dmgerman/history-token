@@ -8185,7 +8185,7 @@ r_sizeof
 id|dma_addr_t
 )paren
 OG
-l_int|32
+l_int|4
 )paren
 op_logical_and
 op_logical_neg

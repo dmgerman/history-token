@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-vr1000.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Machine support for Thorcom VR1000 board. Designed for Thorcom by&n; * Simtec Electronics, http://www.simtec.co.uk/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     21-Aug-2004 BJD  Added struct s3c2410_board&n; *     06-Aug-2004 BJD  Fixed call to time initialisation&n; *     05-Apr-2004 BJD  Copied to make mach-vr1000.c&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-vr1000.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Machine support for Thorcom VR1000 board. Designed for Thorcom by&n; * Simtec Electronics, http://www.simtec.co.uk/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     04-Sep-2004 BJD  Added new uart init, and io init&n; *     21-Aug-2004 BJD  Added struct s3c2410_board&n; *     06-Aug-2004 BJD  Fixed call to time initialisation&n; *     05-Apr-2004 BJD  Copied to make mach-vr1000.c&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -18,6 +18,7 @@ singleline_comment|//#include &lt;asm/debug-ll.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
 macro_line|#include &quot;s3c2410.h&quot;
 macro_line|#include &quot;devs.h&quot;
+macro_line|#include &quot;cpu.h&quot;
 multiline_comment|/* macros for virtual address mods for the io space entries */
 DECL|macro|VA_C5
 mdefine_line|#define VA_C5(item) ((item) + BAST_VAM_CS5)
@@ -685,7 +686,7 @@ c_func
 r_void
 )paren
 (brace
-id|s3c2410_map_io
+id|s3c24xx_init_io
 c_func
 (paren
 id|vr1000_iodesc
@@ -697,9 +698,17 @@ id|vr1000_iodesc
 )paren
 )paren
 suffix:semicolon
-id|s3c2410_uartcfgs
-op_assign
+id|s3c2410_init_uarts
+c_func
+(paren
 id|vr1000_uartcfgs
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|vr1000_uartcfgs
+)paren
+)paren
 suffix:semicolon
 id|s3c2410_set_board
 c_func
@@ -718,7 +727,6 @@ c_func
 r_void
 )paren
 (brace
-singleline_comment|//llprintk(&quot;vr1000init_irq:&bslash;n&quot;);
 id|s3c2410_init_irq
 c_func
 (paren

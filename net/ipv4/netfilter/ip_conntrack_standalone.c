@@ -86,6 +86,7 @@ id|data
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PROC_FS
 r_static
 r_int
 r_int
@@ -1534,6 +1535,7 @@ id|seq_release_private
 comma
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|function|ip_confirm
 r_static
 r_int
@@ -3181,7 +3183,14 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-macro_line|#endif
+DECL|variable|ip_ct_log_invalid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_ct_log_invalid
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_SYSCTL */
 DECL|function|init_or_cleanup
 r_static
 r_int
@@ -3192,6 +3201,7 @@ r_int
 id|init
 )paren
 (brace
+macro_line|#ifdef CONFIG_PROC_FS
 r_struct
 id|proc_dir_entry
 op_star
@@ -3203,6 +3213,7 @@ comma
 op_star
 id|proc_stat
 suffix:semicolon
+macro_line|#endif
 r_int
 id|ret
 op_assign
@@ -3234,16 +3245,18 @@ l_int|0
 r_goto
 id|cleanup_nothing
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 id|proc
 op_assign
-id|proc_net_create
+id|proc_net_fops_create
 c_func
 (paren
 l_string|&quot;ip_conntrack&quot;
 comma
 l_int|0440
 comma
-l_int|NULL
+op_amp
+id|ct_file_ops
 )paren
 suffix:semicolon
 r_if
@@ -3255,21 +3268,17 @@ id|proc
 r_goto
 id|cleanup_init
 suffix:semicolon
-id|proc-&gt;proc_fops
-op_assign
-op_amp
-id|ct_file_ops
-suffix:semicolon
 id|proc_exp
 op_assign
-id|proc_net_create
+id|proc_net_fops_create
 c_func
 (paren
 l_string|&quot;ip_conntrack_expect&quot;
 comma
 l_int|0440
 comma
-l_int|NULL
+op_amp
+id|exp_file_ops
 )paren
 suffix:semicolon
 r_if
@@ -3280,11 +3289,6 @@ id|proc_exp
 )paren
 r_goto
 id|cleanup_proc
-suffix:semicolon
-id|proc_exp-&gt;proc_fops
-op_assign
-op_amp
-id|exp_file_ops
 suffix:semicolon
 id|proc_stat
 op_assign
@@ -3312,6 +3316,7 @@ id|proc_stat-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
+macro_line|#endif
 id|ret
 op_assign
 id|nf_register_hook
@@ -3596,6 +3601,7 @@ id|ip_conntrack_defrag_ops
 suffix:semicolon
 id|cleanup_proc_stat
 suffix:colon
+macro_line|#ifdef CONFIG_PROC_FS
 id|proc_net_remove
 c_func
 (paren
@@ -3620,6 +3626,7 @@ l_string|&quot;ip_conntrack&quot;
 suffix:semicolon
 id|cleanup_init
 suffix:colon
+macro_line|#endif /* CONFIG_PROC_FS */
 id|ip_conntrack_cleanup
 c_func
 (paren
@@ -4030,13 +4037,6 @@ id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|ip_conntrack_put
-)paren
-suffix:semicolon
-DECL|variable|ip_ct_log_invalid
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_ct_log_invalid
 )paren
 suffix:semicolon
 eof

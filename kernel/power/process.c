@@ -53,6 +53,12 @@ id|p-&gt;state
 op_eq
 id|TASK_STOPPED
 )paren
+op_logical_or
+(paren
+id|p-&gt;state
+op_eq
+id|TASK_TRACED
+)paren
 )paren
 r_return
 l_int|0
@@ -230,6 +236,12 @@ c_cond
 id|p-&gt;flags
 op_amp
 id|PF_FROZEN
+)paren
+op_logical_or
+(paren
+id|p-&gt;state
+op_eq
+id|TASK_TRACED
 )paren
 op_logical_or
 (paren

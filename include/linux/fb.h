@@ -1224,6 +1224,15 @@ mdefine_line|#define FB_EVENT_RESUME&t;&t;&t;0x03
 multiline_comment|/*      An entry from the modelist was removed */
 DECL|macro|FB_EVENT_MODE_DELETE
 mdefine_line|#define FB_EVENT_MODE_DELETE            0x04
+multiline_comment|/*      A driver registered itself */
+DECL|macro|FB_EVENT_FB_REGISTERED
+mdefine_line|#define FB_EVENT_FB_REGISTERED          0x05
+multiline_comment|/*      get console to framebuffer mapping */
+DECL|macro|FB_EVENT_GET_CONSOLE_MAP
+mdefine_line|#define FB_EVENT_GET_CONSOLE_MAP        0x06
+multiline_comment|/*      set console to framebuffer mapping */
+DECL|macro|FB_EVENT_SET_CONSOLE_MAP
+mdefine_line|#define FB_EVENT_SET_CONSOLE_MAP        0x07
 DECL|struct|fb_event
 r_struct
 id|fb_event
@@ -2298,6 +2307,17 @@ r_struct
 id|fb_info
 op_star
 id|info
+)paren
+suffix:semicolon
+r_extern
+r_char
+op_star
+id|fb_get_options
+c_func
+(paren
+r_char
+op_star
+id|name
 )paren
 suffix:semicolon
 r_extern

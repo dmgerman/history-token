@@ -6,7 +6,7 @@ macro_line|#include &quot;drmP.h&quot;
 multiline_comment|/**&n; * Cut down version of drm_memory_debug.h, which used to be called&n; * drm_memory.h.  If you want the debug functionality, change 0 to 1&n; * below.&n; */
 DECL|macro|DEBUG_MEMORY
 mdefine_line|#define DEBUG_MEMORY 0
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#ifdef HAVE_PAGE_AGP
 macro_line|#include &lt;asm/agp.h&gt;
@@ -384,7 +384,74 @@ op_lshift
 id|PAGE_SHIFT
 suffix:semicolon
 )brace
-macro_line|#endif /* __REALLY_HAVE_AGP */
+macro_line|#else /* __OS_HAS_AGP */
+DECL|function|drm_lookup_map
+r_static
+r_inline
+id|drm_map_t
+op_star
+id|drm_lookup_map
+c_func
+(paren
+r_int
+r_int
+id|offset
+comma
+r_int
+r_int
+id|size
+comma
+id|drm_device_t
+op_star
+id|dev
+)paren
+(brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|agp_remap
+r_static
+r_inline
+r_void
+op_star
+id|agp_remap
+c_func
+(paren
+r_int
+r_int
+id|offset
+comma
+r_int
+r_int
+id|size
+comma
+id|drm_device_t
+op_star
+id|dev
+)paren
+(brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|drm_follow_page
+r_static
+r_inline
+r_int
+r_int
+id|drm_follow_page
+(paren
+r_void
+op_star
+id|vaddr
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|drm_ioremap
 r_static
 r_inline
@@ -406,10 +473,15 @@ op_star
 id|dev
 )paren
 (brace
-macro_line|#if __REALLY_HAVE_AGP
 r_if
 c_cond
 (paren
+id|drm_core_has_AGP
+c_func
+(paren
+id|dev
+)paren
+op_logical_and
 id|dev-&gt;agp
 op_logical_and
 id|dev-&gt;agp-&gt;cant_use_aperture
@@ -450,7 +522,6 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 r_return
 id|ioremap
 c_func
@@ -482,10 +553,15 @@ op_star
 id|dev
 )paren
 (brace
-macro_line|#if __REALLY_HAVE_AGP
 r_if
 c_cond
 (paren
+id|drm_core_has_AGP
+c_func
+(paren
+id|dev
+)paren
+op_logical_and
 id|dev-&gt;agp
 op_logical_and
 id|dev-&gt;agp-&gt;cant_use_aperture
@@ -526,7 +602,6 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 r_return
 id|ioremap_nocache
 c_func
@@ -557,11 +632,16 @@ op_star
 id|dev
 )paren
 (brace
-macro_line|#if __REALLY_HAVE_AGP
 multiline_comment|/*&n;&t; * This is a bit ugly.  It would be much cleaner if the DRM API would use separate&n;&t; * routines for handling mappings in the AGP space.  Hopefully this can be done in&n;&t; * a future revision of the interface...&n;&t; */
 r_if
 c_cond
 (paren
+id|drm_core_has_AGP
+c_func
+(paren
+id|dev
+)paren
+op_logical_and
 id|dev-&gt;agp
 op_logical_and
 id|dev-&gt;agp-&gt;cant_use_aperture
@@ -644,7 +724,6 @@ r_return
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 id|iounmap
 c_func
 (paren
@@ -1201,7 +1280,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 multiline_comment|/** Wrapper around agp_allocate_memory() */
 DECL|function|alloc_agp
 id|DRM_AGP_MEM

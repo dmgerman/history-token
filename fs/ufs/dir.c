@@ -16,6 +16,30 @@ macro_line|#else
 DECL|macro|UFSD
 mdefine_line|#define UFSD(x)
 macro_line|#endif
+r_static
+r_int
+id|ufs_check_dir_entry
+(paren
+r_const
+r_char
+op_star
+comma
+r_struct
+id|inode
+op_star
+comma
+r_struct
+id|ufs_dir_entry
+op_star
+comma
+r_struct
+id|buffer_head
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * NOTE! unlike strncmp, ufs_match returns 1 for success, 0 for failure.&n; *&n; * len &lt;= UFS_MAXNAMLEN and de != NULL are guaranteed by caller.&n; */
 DECL|function|ufs_match
 r_static
@@ -1251,8 +1275,9 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|function|ufs_check_dir_entry
+r_static
 r_int
+DECL|function|ufs_check_dir_entry
 id|ufs_check_dir_entry
 (paren
 r_const

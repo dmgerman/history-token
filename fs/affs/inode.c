@@ -953,7 +953,7 @@ c_cond
 (paren
 id|tail-&gt;stype
 op_eq
-id|be32_to_cpu
+id|cpu_to_be32
 c_func
 (paren
 id|ST_ROOT
@@ -2149,7 +2149,7 @@ c_cond
 id|inode_bh
 )paren
 (brace
-id|u32
+id|__be32
 id|chain
 suffix:semicolon
 id|chain

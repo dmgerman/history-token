@@ -2630,6 +2630,13 @@ id|full_name
 )paren
 suffix:semicolon
 )brace
+DECL|variable|offb_init
+id|module_init
+c_func
+(paren
+id|offb_init
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

@@ -174,7 +174,7 @@ id|__u32
 id|magic
 suffix:semicolon
 DECL|macro|RISCIX_MAGIC
-mdefine_line|#define RISCIX_MAGIC&t;(0x4a657320)
+mdefine_line|#define RISCIX_MAGIC&t;cpu_to_le32(0x4a657320)
 DECL|member|date
 id|__u32
 id|date

@@ -2,17 +2,6 @@ multiline_comment|/**&n; * &bslash;file drm_irq.h &n; * IRQ support&n; *&n; * &b
 multiline_comment|/*&n; * Created: Fri Mar 19 14:30:16 1999 by faith@valinux.com&n; *&n; * Copyright 1999, 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* For task queue support */
-macro_line|#ifndef __HAVE_SHARED_IRQ
-DECL|macro|__HAVE_SHARED_IRQ
-mdefine_line|#define __HAVE_SHARED_IRQ&t;0
-macro_line|#endif
-macro_line|#if __HAVE_SHARED_IRQ
-DECL|macro|DRM_IRQ_TYPE
-mdefine_line|#define DRM_IRQ_TYPE&t;&t;SA_SHIRQ
-macro_line|#else
-DECL|macro|DRM_IRQ_TYPE
-mdefine_line|#define DRM_IRQ_TYPE&t;&t;0
-macro_line|#endif
 multiline_comment|/**&n; * Get interrupt from bus id.&n; * &n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument, pointing to a drm_irq_busid structure.&n; * &bslash;return zero on success or a negative number on failure.&n; * &n; * Finds the PCI device with the specified bus id and gets its IRQ number.&n; * This IOCTL is deprecated, and will now return EINVAL for any busid not equal&n; * to that of the device that this DRM instance attached to.&n; */
 DECL|function|irq_by_busid
 r_int
@@ -67,6 +56,22 @@ id|arg
 suffix:semicolon
 id|drm_irq_busid_t
 id|p
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drm_core_check_feature
+c_func
+(paren
+id|dev
+comma
+id|DRIVER_HAVE_IRQ
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -163,7 +168,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if __HAVE_IRQ
 multiline_comment|/**&n; * Install IRQ handler.&n; *&n; * &bslash;param dev DRM device.&n; * &bslash;param irq IRQ number.&n; *&n; * Initializes the IRQ related data, and setups drm_device::vbl_queue. Installs the handler, calling the driver&n; * &bslash;c DRM(driver_irq_preinstall)() and &bslash;c DRM(driver_irq_postinstall)() functions&n; * before and after the installation.&n; */
 DECL|function|irq_install
 r_int
@@ -180,6 +184,28 @@ id|dev
 (brace
 r_int
 id|ret
+suffix:semicolon
+r_int
+r_int
+id|sh_flags
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drm_core_check_feature
+c_func
+(paren
+id|dev
+comma
+id|DRIVER_HAVE_IRQ
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -258,7 +284,6 @@ comma
 id|dev-&gt;irq
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_DMA
 id|dev-&gt;dma-&gt;next_buffer
 op_assign
 l_int|NULL
@@ -271,25 +296,18 @@ id|dev-&gt;dma-&gt;this_buffer
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef __HAVE_IRQ_BH
-id|INIT_WORK
+r_if
+c_cond
+(paren
+id|drm_core_check_feature
 c_func
 (paren
-op_amp
-id|dev-&gt;work
-comma
-id|DRM
-c_func
-(paren
-id|irq_immediate_bh
-)paren
-comma
 id|dev
+comma
+id|DRIVER_IRQ_VBL
 )paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef __HAVE_VBL_IRQ
+)paren
+(brace
 id|init_waitqueue_head
 c_func
 (paren
@@ -315,18 +333,32 @@ id|dev-&gt;vbl_pending
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
+)brace
 multiline_comment|/* Before installing handler */
-id|DRM
+id|dev-&gt;fn_tbl
+dot
+id|irq_preinstall
 c_func
-(paren
-id|driver_irq_preinstall
-)paren
 (paren
 id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Install handler */
+r_if
+c_cond
+(paren
+id|drm_core_check_feature
+c_func
+(paren
+id|dev
+comma
+id|DRIVER_IRQ_SHARED
+)paren
+)paren
+id|sh_flags
+op_assign
+id|SA_SHIRQ
+suffix:semicolon
 id|ret
 op_assign
 id|request_irq
@@ -334,13 +366,9 @@ c_func
 (paren
 id|dev-&gt;irq
 comma
-id|DRM
-c_func
-(paren
-id|irq_handler
-)paren
+id|dev-&gt;fn_tbl.irq_handler
 comma
-id|DRM_IRQ_TYPE
+id|sh_flags
 comma
 id|dev-&gt;devname
 comma
@@ -378,11 +406,10 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* After installing handler */
-id|DRM
+id|dev-&gt;fn_tbl
+dot
+id|irq_postinstall
 c_func
-(paren
-id|driver_irq_postinstall
-)paren
 (paren
 id|dev
 )paren
@@ -407,6 +434,22 @@ id|dev
 (brace
 r_int
 id|irq_enabled
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drm_core_check_feature
+c_func
+(paren
+id|dev
+comma
+id|DRIVER_HAVE_IRQ
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 id|down
 c_func
@@ -450,11 +493,10 @@ comma
 id|dev-&gt;irq
 )paren
 suffix:semicolon
-id|DRM
+id|dev-&gt;fn_tbl
+dot
+id|irq_uninstall
 c_func
-(paren
-id|driver_irq_uninstall
-)paren
 (paren
 id|dev
 )paren
@@ -514,6 +556,7 @@ suffix:semicolon
 id|drm_control_t
 id|ctl
 suffix:semicolon
+multiline_comment|/* if we haven&squot;t irq we fallback for compatibility reasons - this used to be a separate function in drm_dma.h */
 r_if
 c_cond
 (paren
@@ -552,6 +595,21 @@ suffix:colon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|drm_core_check_feature
+c_func
+(paren
+id|dev
+comma
+id|DRIVER_HAVE_IRQ
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|dev-&gt;if_version
 OL
 id|DRM_IF_VERSION
@@ -583,6 +641,21 @@ suffix:semicolon
 r_case
 id|DRM_UNINST_HANDLER
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drm_core_check_feature
+c_func
+(paren
+id|dev
+comma
+id|DRIVER_HAVE_IRQ
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_return
 id|DRM
 c_func
@@ -601,7 +674,6 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef __HAVE_VBL_IRQ
 multiline_comment|/**&n; * Wait for VBLANK.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param data user argument, pointing to a drm_wait_vblank structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Verifies the IRQ is installed. &n; *&n; * If a signal is requested checks if this task has already scheduled the same signal&n; * for the same vblank sequence number - nothing to be done in&n; * that case. If the number of tasks waiting for the interrupt exceeds 100 the&n; * function fails. Otherwise adds a new entry to drm_device::vbl_sigs for this&n; * task.&n; *&n; * If a signal is not requested, then calls vblank_wait().&n; */
 DECL|function|wait_vblank
 r_int
@@ -653,6 +725,22 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drm_core_check_feature
+c_func
+(paren
+id|dev
+comma
+id|DRIVER_IRQ_VBL
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -919,13 +1007,17 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|dev-&gt;fn_tbl.vblank_wait
+)paren
 id|ret
 op_assign
-id|DRM
-c_func
-(paren
+id|dev-&gt;fn_tbl
+dot
 id|vblank_wait
-)paren
+c_func
 (paren
 id|dev
 comma
@@ -1105,6 +1197,4 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* __HAVE_VBL_IRQ */
-macro_line|#endif /* __HAVE_IRQ */
 eof

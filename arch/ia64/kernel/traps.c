@@ -6,8 +6,8 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;&t;&t;/* For unblank_screen() */
 macro_line|#include &lt;linux/module.h&gt;       /* for EXPORT_SYMBOL */
+macro_line|#include &lt;linux/hardirq.h&gt;
 macro_line|#include &lt;asm/fpswa.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;

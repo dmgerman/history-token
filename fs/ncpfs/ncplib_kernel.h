@@ -741,32 +741,6 @@ macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_NCPFS_NLS
 r_int
-r_char
-id|ncp__tolower
-c_func
-(paren
-r_struct
-id|nls_table
-op_star
-comma
-r_int
-r_char
-)paren
-suffix:semicolon
-r_int
-r_char
-id|ncp__toupper
-c_func
-(paren
-r_struct
-id|nls_table
-op_star
-comma
-r_int
-r_char
-)paren
-suffix:semicolon
-r_int
 id|ncp__io2vol
 c_func
 (paren
@@ -825,9 +799,11 @@ mdefine_line|#define NCP_ESC&t;&t;&t;&squot;:&squot;
 DECL|macro|NCP_IO_TABLE
 mdefine_line|#define NCP_IO_TABLE(dentry)&t;(NCP_SERVER((dentry)-&gt;d_inode)-&gt;nls_io)
 DECL|macro|ncp_tolower
-mdefine_line|#define ncp_tolower(t, c)&t;ncp__tolower(t, c)
+mdefine_line|#define ncp_tolower(t, c)&t;nls_tolower(t, c)
 DECL|macro|ncp_toupper
-mdefine_line|#define ncp_toupper(t, c)&t;ncp__toupper(t, c)
+mdefine_line|#define ncp_toupper(t, c)&t;nls_toupper(t, c)
+DECL|macro|ncp_strnicmp
+mdefine_line|#define ncp_strnicmp(t, s1, s2, len) &bslash;&n;&t;nls_strnicmp(t, s1, s2, len)
 DECL|macro|ncp_io2vol
 mdefine_line|#define ncp_io2vol(S,m,i,n,k,U)&t;ncp__io2vol(S,m,i,n,k,U)
 DECL|macro|ncp_vol2io
@@ -889,7 +865,9 @@ DECL|macro|ncp_io2vol
 mdefine_line|#define ncp_io2vol(S,m,i,n,k,U)&t;ncp__io2vol(m,i,n,k,U)
 DECL|macro|ncp_vol2io
 mdefine_line|#define ncp_vol2io(S,m,i,n,k,U)&t;ncp__vol2io(m,i,n,k,U)
-macro_line|#endif /* CONFIG_NCPFS_NLS */
+DECL|function|ncp_strnicmp
+r_static
+r_inline
 r_int
 id|ncp_strnicmp
 c_func
@@ -897,20 +875,59 @@ c_func
 r_struct
 id|nls_table
 op_star
+id|t
 comma
 r_const
 r_int
 r_char
 op_star
+id|s1
 comma
 r_const
 r_int
 r_char
 op_star
+id|s2
 comma
 r_int
+id|len
 )paren
+(brace
+r_while
+c_loop
+(paren
+id|len
+op_decrement
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|tolower
+c_func
+(paren
+op_star
+id|s1
+op_increment
+)paren
+op_ne
+id|tolower
+c_func
+(paren
+op_star
+id|s2
+op_increment
+)paren
+)paren
+r_return
+l_int|1
 suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_NCPFS_NLS */
 DECL|macro|NCP_GET_AGE
 mdefine_line|#define NCP_GET_AGE(dentry)&t;(jiffies - (dentry)-&gt;d_time)
 DECL|macro|NCP_MAX_AGE

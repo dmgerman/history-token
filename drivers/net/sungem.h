@@ -72,6 +72,8 @@ DECL|macro|GREG_STAT_TXNR_SHIFT
 mdefine_line|#define GREG_STAT_TXNR_SHIFT&t;19
 DECL|macro|GREG_STAT_ABNORMAL
 mdefine_line|#define GREG_STAT_ABNORMAL&t;(GREG_STAT_RXNOBUF | GREG_STAT_RXTAGERR | &bslash;&n;&t;&t;&t;&t; GREG_STAT_PCS | GREG_STAT_TXMAC | GREG_STAT_RXMAC | &bslash;&n;&t;&t;&t;&t; GREG_STAT_MAC | GREG_STAT_MIF | GREG_STAT_PCIERR)
+DECL|macro|GREG_STAT_NAPI
+mdefine_line|#define GREG_STAT_NAPI&t;&t;(GREG_STAT_TXALL  | GREG_STAT_TXINTME | &bslash;&n;&t;&t;&t;&t; GREG_STAT_RXDONE | GREG_STAT_ABNORMAL)
 multiline_comment|/* The layout of GREG_IMASK and GREG_IACK is identical to GREG_STAT.&n; * Bits set in GREG_IMASK will prevent that interrupt type from being&n; * signalled to the cpu.  GREG_IACK can be used to clear specific top-level&n; * interrupt conditions in GREG_STAT, ie. it only works for bits 0 through 6.&n; * Setting the bit will clear that interrupt, clear bits will have no effect&n; * on GREG_STAT.&n; */
 multiline_comment|/* Global PCI Error Status Register */
 DECL|macro|GREG_PCIESTAT_BADACK
@@ -1070,6 +1072,10 @@ suffix:semicolon
 DECL|member|msg_enable
 id|u32
 id|msg_enable
+suffix:semicolon
+DECL|member|status
+id|u32
+id|status
 suffix:semicolon
 DECL|member|net_stats
 r_struct

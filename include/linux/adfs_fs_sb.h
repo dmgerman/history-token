@@ -82,8 +82,7 @@ id|s_log2sharesize
 suffix:semicolon
 multiline_comment|/* log2 share size&t;&t;&t; */
 DECL|member|s_version
-r_int
-r_int
+id|__le32
 id|s_version
 suffix:semicolon
 multiline_comment|/* disc format version&t;&t;&t; */

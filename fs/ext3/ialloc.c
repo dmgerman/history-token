@@ -175,12 +175,6 @@ r_struct
 id|ext3_sb_info
 op_star
 id|sbi
-op_assign
-id|EXT3_SB
-c_func
-(paren
-id|sb
-)paren
 suffix:semicolon
 r_int
 id|fatal
@@ -249,6 +243,14 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|sbi
+op_assign
+id|EXT3_SB
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
 id|ino
 op_assign
 id|inode-&gt;i_ino

@@ -41,9 +41,9 @@ macro_line|# define __REGP(x)&t;((__regbase *)((x)&amp;~4095))-&gt;offset[((x)&a
 DECL|macro|__REG
 macro_line|# define __REG(x)&t;__REGP(io_p2v(x))
 macro_line|#endif
-multiline_comment|/* Let&squot;s kick gcc&squot;s ass again... */
+multiline_comment|/* With indexed regs we don&squot;t want to feed the index through io_p2v()&n;   especially if it is a variable, otherwise horrible code will result. */
 DECL|macro|__REG2
-macro_line|# define __REG2(x,y)&t;&bslash;&n;&t;( __builtin_constant_p(y) ? (__REG((x) + (y))) &bslash;&n;&t;&t;&t;&t;  : (*(volatile u32 *)((u32)&amp;__REG(x) + (y))) )
+macro_line|# define __REG2(x,y)     (*(volatile u32 *)((u32)&amp;__REG(x) + (y)))
 DECL|macro|__PREG
 macro_line|# define __PREG(x)&t;(io_v2p((u32)&amp;(x)))
 macro_line|#else

@@ -110,18 +110,17 @@ id|idlen
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * find end of fragment&n;&t;&t; */
 (brace
-id|u32
-id|v
-comma
+id|__le32
 op_star
 id|_map
 op_assign
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|map
 suffix:semicolon
+id|u32
 id|v
 op_assign
 id|le32_to_cpu
@@ -416,18 +415,17 @@ id|idlen
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * find end of fragment&n;&t;&t; */
 (brace
-id|u32
-id|v
-comma
+id|__le32
 op_star
 id|_map
 op_assign
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|map
 suffix:semicolon
+id|u32
 id|v
 op_assign
 id|le32_to_cpu

@@ -2,6 +2,7 @@ multiline_comment|/**&n; * &bslash;file drm_vm.h&n; * Memory mapping for DRM&n; 
 multiline_comment|/*&n; * Created: Mon Jan  4 08:58:31 1999 by faith@valinux.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#include &quot;drmP.h&quot;
 multiline_comment|/**&n; * &bslash;c nopage method for AGP virtual memory.&n; *&n; * &bslash;param vma virtual memory area.&n; * &bslash;param address access address.&n; * &bslash;return pointer to the page structure.&n; * &n; * Find the right map and if it&squot;s AGP memory find the real physical page to&n; * map, get the page, increment the use count and return it.&n; */
+macro_line|#if __OS_HAS_AGP
 DECL|function|do_vm_nopage
 r_static
 id|__inline__
@@ -24,7 +25,6 @@ r_int
 id|address
 )paren
 (brace
-macro_line|#if __REALLY_HAVE_AGP
 id|drm_file_t
 op_star
 id|priv
@@ -53,6 +53,19 @@ op_star
 id|list
 suffix:semicolon
 multiline_comment|/*&n;         * Find the right map&n;         */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drm_core_has_AGP
+c_func
+(paren
+id|dev
+)paren
+)paren
+r_goto
+id|vm_nopage_error
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -266,12 +279,39 @@ suffix:semicolon
 )brace
 id|vm_nopage_error
 suffix:colon
-macro_line|#endif /* __REALLY_HAVE_AGP */
 r_return
 id|NOPAGE_SIGBUS
 suffix:semicolon
 multiline_comment|/* Disallow mremap */
 )brace
+macro_line|#else /* __OS_HAS_AGP */
+DECL|function|do_vm_nopage
+r_static
+id|__inline__
+r_struct
+id|page
+op_star
+id|DRM
+c_func
+(paren
+id|do_vm_nopage
+)paren
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|address
+)paren
+(brace
+r_return
+id|NOPAGE_SIGBUS
+suffix:semicolon
+)brace
+macro_line|#endif /* __OS_HAS_AGP */
 multiline_comment|/**&n; * &bslash;c nopage method for shared virtual memory.&n; *&n; * &bslash;param vma virtual memory area.&n; * &bslash;param address access address.&n; * &bslash;return pointer to the page structure.&n; * &n; * Get the the mapping, find the real physical page to map, get the page, and&n; * return it.&n; */
 DECL|function|do_vm_shm_nopage
 r_static
@@ -637,10 +677,15 @@ suffix:colon
 r_case
 id|_DRM_FRAME_BUFFER
 suffix:colon
-macro_line|#if __REALLY_HAVE_MTRR
 r_if
 c_cond
 (paren
+id|drm_core_has_MTRR
+c_func
+(paren
+id|dev
+)paren
+op_logical_and
 id|map-&gt;mtrr
 op_ge
 l_int|0
@@ -670,7 +715,6 @@ id|retcode
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 id|DRM
 c_func
 (paren
@@ -1908,19 +1952,51 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifndef DRIVER_GET_MAP_OFS
-DECL|macro|DRIVER_GET_MAP_OFS
-mdefine_line|#define DRIVER_GET_MAP_OFS()&t;(map-&gt;offset)
-macro_line|#endif
-macro_line|#ifndef DRIVER_GET_REG_OFS
+DECL|function|core_get_map_ofs
+r_int
+r_int
+id|DRM
+c_func
+(paren
+id|core_get_map_ofs
+)paren
+(paren
+id|drm_map_t
+op_star
+id|map
+)paren
+(brace
+r_return
+id|map-&gt;offset
+suffix:semicolon
+)brace
+DECL|function|core_get_reg_ofs
+r_int
+r_int
+id|DRM
+c_func
+(paren
+id|core_get_reg_ofs
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+)paren
+(brace
 macro_line|#ifdef __alpha__
-DECL|macro|DRIVER_GET_REG_OFS
-mdefine_line|#define DRIVER_GET_REG_OFS()&t;(dev-&gt;hose-&gt;dense_mem_base -&t;&bslash;&n;&t;&t;&t;&t; dev-&gt;hose-&gt;mem_space-&gt;start)
+r_return
+id|dev-&gt;hose-&gt;dense_mem_base
+op_minus
+id|dev-&gt;hose-&gt;mem_space-&gt;start
+suffix:semicolon
 macro_line|#else
-DECL|macro|DRIVER_GET_REG_OFS
-mdefine_line|#define DRIVER_GET_REG_OFS()&t;0
+r_return
+l_int|0
+suffix:semicolon
 macro_line|#endif
-macro_line|#endif
+)brace
 multiline_comment|/**&n; * mmap DMA memory.&n; *&n; * &bslash;param filp file pointer.&n; * &bslash;param vma virtual memory area.&n; * &bslash;return zero on success or a negative number on failure.&n; * &n; * If the virtual memory area has no offset associated with it then it&squot;s a DMA&n; * area, so calls mmap_dma(). Otherwise searches the map in drm_device::maplist,&n; * checks that the restricted flag is not set, sets the virtual memory operations&n; * according to the mapping type and remaps the pages. Finally sets the file&n; * pointer and calls vm_open().&n; */
 DECL|function|mmap
 r_int
@@ -2010,7 +2086,7 @@ c_func
 (paren
 id|vma
 )paren
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 op_logical_and
 (paren
 op_logical_neg
@@ -2074,9 +2150,12 @@ r_continue
 suffix:semicolon
 id|off
 op_assign
-id|DRIVER_GET_MAP_OFS
+id|dev-&gt;fn_tbl
+dot
+id|get_map_ofs
 c_func
 (paren
+id|map
 )paren
 suffix:semicolon
 r_if
@@ -2205,10 +2284,15 @@ id|map-&gt;type
 r_case
 id|_DRM_AGP
 suffix:colon
-macro_line|#if __REALLY_HAVE_AGP
 r_if
 c_cond
 (paren
+id|drm_core_has_AGP
+c_func
+(paren
+id|dev
+)paren
+op_logical_and
 id|dev-&gt;agp-&gt;cant_use_aperture
 )paren
 (brace
@@ -2235,7 +2319,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* fall through to _DRM_FRAME_BUFFER... */
 r_case
 id|_DRM_FRAME_BUFFER
@@ -2327,9 +2410,12 @@ suffix:semicolon
 macro_line|#endif
 id|offset
 op_assign
-id|DRIVER_GET_REG_OFS
+id|dev-&gt;fn_tbl
+dot
+id|get_reg_ofs
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 macro_line|#ifdef __sparc__

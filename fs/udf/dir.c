@@ -273,7 +273,7 @@ id|bha
 l_int|16
 )braket
 suffix:semicolon
-id|lb_addr
+id|kernel_lb_addr
 id|bloc
 comma
 id|eloc
@@ -968,7 +968,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|lb_addr
+id|kernel_lb_addr
 id|tloc
 op_assign
 id|lelb_to_cpu

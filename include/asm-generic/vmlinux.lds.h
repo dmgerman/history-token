@@ -12,4 +12,6 @@ DECL|macro|SECURITY_INIT
 mdefine_line|#define SECURITY_INIT&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.security_initcall.init : {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;VMLINUX_SYMBOL(__security_initcall_start) = .;&t;&t;&bslash;&n;&t;&t;*(.security_initcall.init) &t;&t;&t;&t;&bslash;&n;&t;&t;VMLINUX_SYMBOL(__security_initcall_end) = .;&t;&t;&bslash;&n;&t;}
 DECL|macro|SCHED_TEXT
 mdefine_line|#define SCHED_TEXT&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;VMLINUX_SYMBOL(__sched_text_start) = .;&t;&t;&t;&bslash;&n;&t;&t;*(.sched.text)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;VMLINUX_SYMBOL(__sched_text_end) = .;
+DECL|macro|LOCK_TEXT
+mdefine_line|#define LOCK_TEXT&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;VMLINUX_SYMBOL(__lock_text_start) = .;&t;&t;&t;&bslash;&n;&t;&t;*(.spinlock.text)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;VMLINUX_SYMBOL(__lock_text_end) = .;
 eof

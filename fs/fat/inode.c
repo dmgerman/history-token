@@ -49,6 +49,7 @@ id|FAT_HASH_SIZE
 )braket
 suffix:semicolon
 DECL|variable|fat_inode_lock
+r_static
 id|spinlock_t
 id|fat_inode_lock
 op_assign
@@ -2650,10 +2651,11 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * a FAT file handle with fhtype 3 is&n; *  0/  i_ino - for fast, reliable lookup if still in the cache&n; *  1/  i_generation - to see if i_ino is still valid&n; *          bit 0 == 0 iff directory&n; *  2/  i_pos(8-39) - if ino has changed, but still in cache&n; *  3/  i_pos(4-7)|i_logstart - to semi-verify inode found at i_pos&n; *  4/  i_pos(0-3)|parent-&gt;i_logstart - maybe used to hunt for the file on disc&n; *&n; * Hack for NFSv2: Maximum FAT entry number is 28bits and maximum&n; * i_pos is 40bits (blocknr(32) + dir offset(8)), so two 4bits&n; * of i_logstart is used to store the directory entry offset.&n; */
-DECL|function|fat_decode_fh
+r_static
 r_struct
 id|dentry
 op_star
+DECL|function|fat_decode_fh
 id|fat_decode_fh
 c_func
 (paren
@@ -2742,6 +2744,7 @@ id|context
 suffix:semicolon
 )brace
 DECL|function|fat_get_dentry
+r_static
 r_struct
 id|dentry
 op_star
@@ -2983,8 +2986,9 @@ r_return
 id|result
 suffix:semicolon
 )brace
-DECL|function|fat_encode_fh
+r_static
 r_int
+DECL|function|fat_encode_fh
 id|fat_encode_fh
 c_func
 (paren
@@ -3155,6 +3159,7 @@ l_int|3
 suffix:semicolon
 )brace
 DECL|function|fat_get_parent
+r_static
 r_struct
 id|dentry
 op_star
@@ -6321,22 +6326,6 @@ op_amp
 id|raw_entry-&gt;date
 )paren
 suffix:semicolon
-id|raw_entry-&gt;time
-op_assign
-id|CT_LE_W
-c_func
-(paren
-id|raw_entry-&gt;time
-)paren
-suffix:semicolon
-id|raw_entry-&gt;date
-op_assign
-id|CT_LE_W
-c_func
-(paren
-id|raw_entry-&gt;date
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6372,22 +6361,6 @@ op_member_access_from_pointer
 id|i_ctime_ms
 suffix:semicolon
 multiline_comment|/* use i_ctime.tv_nsec? */
-id|raw_entry-&gt;ctime
-op_assign
-id|CT_LE_W
-c_func
-(paren
-id|raw_entry-&gt;ctime
-)paren
-suffix:semicolon
-id|raw_entry-&gt;cdate
-op_assign
-id|CT_LE_W
-c_func
-(paren
-id|raw_entry-&gt;cdate
-)paren
-suffix:semicolon
 )brace
 id|spin_unlock
 c_func

@@ -22,7 +22,6 @@ macro_line|#include &lt;asm/i387.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mmx.h&gt;
@@ -312,28 +311,28 @@ id|apm_info
 )paren
 suffix:semicolon
 DECL|variable|__down_failed
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|__down_failed
 )paren
 suffix:semicolon
 DECL|variable|__down_failed_interruptible
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|__down_failed_interruptible
 )paren
 suffix:semicolon
 DECL|variable|__down_failed_trylock
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|__down_failed_trylock
 )paren
 suffix:semicolon
 DECL|variable|__up_wakeup
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|__up_wakeup
@@ -377,21 +376,21 @@ id|__const_udelay
 )paren
 suffix:semicolon
 DECL|variable|__get_user_1
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|__get_user_1
 )paren
 suffix:semicolon
 DECL|variable|__get_user_2
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|__get_user_2
 )paren
 suffix:semicolon
 DECL|variable|__get_user_4
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|__get_user_4
@@ -568,14 +567,14 @@ id|cpu_callout_map
 )paren
 suffix:semicolon
 DECL|variable|__write_lock_failed
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|__write_lock_failed
 )paren
 suffix:semicolon
 DECL|variable|__read_lock_failed
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|__read_lock_failed
@@ -686,7 +685,7 @@ id|__kernel_size_t
 )paren
 suffix:semicolon
 DECL|variable|memcmp
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|memcmp

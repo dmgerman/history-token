@@ -14141,6 +14141,16 @@ c_func
 (paren
 id|__FUNCTION__
 )paren
+id|matroxfb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;matroxfb&quot;
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -14176,6 +14186,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|matroxfb_init
+id|module_init
+c_func
+(paren
+id|matroxfb_init
+)paren
+suffix:semicolon
 macro_line|#else
 multiline_comment|/* *************************** init module code **************************** */
 id|MODULE_AUTHOR

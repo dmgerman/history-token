@@ -71,26 +71,5 @@ DECL|macro|SO_ACCEPTCONN
 mdefine_line|#define SO_ACCEPTCONN          30
 DECL|macro|SO_PEERSEC
 mdefine_line|#define SO_PEERSEC             31
-macro_line|#if defined(__KERNEL__)
-multiline_comment|/* Socket types. */
-DECL|macro|SOCK_STREAM
-mdefine_line|#define SOCK_STREAM     1               /* stream (connection) socket   */
-DECL|macro|SOCK_DGRAM
-mdefine_line|#define SOCK_DGRAM      2               /* datagram (conn.less) socket  */
-DECL|macro|SOCK_RAW
-mdefine_line|#define SOCK_RAW        3               /* raw socket                   */
-DECL|macro|SOCK_RDM
-mdefine_line|#define SOCK_RDM        4               /* reliably-delivered message   */
-DECL|macro|SOCK_SEQPACKET
-mdefine_line|#define SOCK_SEQPACKET  5               /* sequential packet socket     */
-DECL|macro|SOCK_PACKET
-mdefine_line|#define SOCK_PACKET     10              /* linux specific way of        */
-multiline_comment|/* getting packets at the dev   */
-multiline_comment|/* level.  For writing rarp and */
-multiline_comment|/* other similar things on the  */
-multiline_comment|/* user level.                  */
-DECL|macro|SOCK_MAX
-mdefine_line|#define        SOCK_MAX        (SOCK_PACKET+1)
-macro_line|#endif
 macro_line|#endif /* _ASM_SOCKET_H */
 eof

@@ -799,7 +799,7 @@ r_struct
 id|prio_tree_root
 id|i_mmap
 suffix:semicolon
-multiline_comment|/* tree of private mappings */
+multiline_comment|/* tree of private and shared mappings */
 DECL|member|i_mmap_nonlinear
 r_struct
 id|list_head
@@ -2196,6 +2196,22 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|flock_lock_file_wait
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_struct
+id|file_lock
+op_star
+id|fl
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|__break_lease
 c_func
 (paren
@@ -3468,6 +3484,24 @@ comma
 r_int
 r_int
 id|arg
+)paren
+suffix:semicolon
+DECL|member|flock
+r_int
+(paren
+op_star
+id|flock
+)paren
+(paren
+r_struct
+id|file
+op_star
+comma
+r_int
+comma
+r_struct
+id|file_lock
+op_star
 )paren
 suffix:semicolon
 )brace

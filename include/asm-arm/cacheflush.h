@@ -131,6 +131,20 @@ r_int
 r_int
 )paren
 suffix:semicolon
+DECL|member|coherent_user_range
+r_void
+(paren
+op_star
+id|coherent_user_range
+)paren
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
 DECL|member|flush_kern_dcache_page
 r_void
 (paren
@@ -201,6 +215,8 @@ DECL|macro|__cpuc_flush_user_range
 mdefine_line|#define __cpuc_flush_user_range&t;&t;cpu_cache.flush_user_range
 DECL|macro|__cpuc_coherent_kern_range
 mdefine_line|#define __cpuc_coherent_kern_range&t;cpu_cache.coherent_kern_range
+DECL|macro|__cpuc_coherent_user_range
+mdefine_line|#define __cpuc_coherent_user_range&t;cpu_cache.coherent_user_range
 DECL|macro|__cpuc_flush_dcache_page
 mdefine_line|#define __cpuc_flush_dcache_page&t;cpu_cache.flush_kern_dcache_page
 multiline_comment|/*&n; * These are private to the dma-mapping API.  Do not use directly.&n; * Their sole purpose is to ensure that data held in the cache&n; * is visible to DMA, or data written by DMA to system memory is&n; * visible to the CPU.&n; */
@@ -219,6 +235,8 @@ DECL|macro|__cpuc_flush_user_range
 mdefine_line|#define __cpuc_flush_user_range&t;&t;__glue(_CACHE,_flush_user_cache_range)
 DECL|macro|__cpuc_coherent_kern_range
 mdefine_line|#define __cpuc_coherent_kern_range&t;__glue(_CACHE,_coherent_kern_range)
+DECL|macro|__cpuc_coherent_user_range
+mdefine_line|#define __cpuc_coherent_user_range&t;__glue(_CACHE,_coherent_user_range)
 DECL|macro|__cpuc_flush_dcache_page
 mdefine_line|#define __cpuc_flush_dcache_page&t;__glue(_CACHE,_flush_kern_dcache_page)
 r_extern
@@ -255,6 +273,18 @@ suffix:semicolon
 r_extern
 r_void
 id|__cpuc_coherent_kern_range
+c_func
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__cpuc_coherent_user_range
 c_func
 (paren
 r_int
@@ -448,6 +478,9 @@ id|vma-&gt;vm_flags
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n; * flush_cache_user_range is used when we want to ensure that the&n; * Harvard caches are synchronised for the user space address range.&n; * This is used for the ARM private sys_cacheflush system call.&n; */
+DECL|macro|flush_cache_user_range
+mdefine_line|#define flush_cache_user_range(vma,start,end) &bslash;&n;&t;__cpuc_coherent_user_range((start) &amp; PAGE_MASK, PAGE_ALIGN(end))
 multiline_comment|/*&n; * Perform necessary cache operations to ensure that data previously&n; * stored within this range of addresses can be executed by the CPU.&n; */
 DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(s,e)&t;&t;__cpuc_coherent_kern_range(s,e)

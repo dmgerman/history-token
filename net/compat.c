@@ -2350,6 +2350,7 @@ r_int
 id|optlen
 )paren
 (brace
+multiline_comment|/* SO_SET_REPLACE seems to be the same in all levels */
 r_if
 c_cond
 (paren
@@ -2375,6 +2376,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|level
+op_eq
+id|SOL_SOCKET
+op_logical_and
 id|optname
 op_eq
 id|SO_ATTACH_FILTER
@@ -2397,6 +2402,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|level
+op_eq
+id|SOL_SOCKET
+op_logical_and
+(paren
 id|optname
 op_eq
 id|SO_RCVTIMEO
@@ -2404,6 +2414,7 @@ op_logical_or
 id|optname
 op_eq
 id|SO_SNDTIMEO
+)paren
 )paren
 r_return
 id|do_set_sock_timeout

@@ -2,8 +2,8 @@ multiline_comment|/*&n; * Generate definitions needed by assembly language modul
 macro_line|#include &lt;linux/sched.h&gt; 
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/errno.h&gt; 
+macro_line|#include &lt;linux/hardirq.h&gt;
 macro_line|#include &lt;asm/pda.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/thread_info.h&gt;

@@ -2399,6 +2399,9 @@ c_func
 id|KERN_ERR
 l_string|&quot;VFS: Inserting already present quota entry (block %u).&bslash;n&quot;
 comma
+id|le32_to_cpu
+c_func
+(paren
 id|ref
 (braket
 id|GETIDINDEX
@@ -2409,6 +2412,7 @@ comma
 id|depth
 )paren
 )braket
+)paren
 )paren
 suffix:semicolon
 id|ret

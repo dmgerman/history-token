@@ -23,7 +23,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 multiline_comment|/* -------------------debug macros -------------------------------------- */
 multiline_comment|/* #undef VRC5477_AC97_DEBUG */
 DECL|macro|VRC5477_AC97_DEBUG

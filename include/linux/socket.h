@@ -321,8 +321,6 @@ DECL|macro|SCM_RIGHTS
 mdefine_line|#define&t;SCM_RIGHTS&t;0x01&t;&t;/* rw: access rights (array of int) */
 DECL|macro|SCM_CREDENTIALS
 mdefine_line|#define SCM_CREDENTIALS 0x02&t;&t;/* rw: struct ucred&t;&t;*/
-DECL|macro|SCM_CONNECT
-mdefine_line|#define SCM_CONNECT&t;0x03&t;&t;/* rw: struct scm_connect&t;*/
 DECL|struct|ucred
 r_struct
 id|ucred

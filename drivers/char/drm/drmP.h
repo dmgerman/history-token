@@ -38,45 +38,35 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &quot;drm.h&quot;
+DECL|macro|__OS_HAS_AGP
+mdefine_line|#define __OS_HAS_AGP (defined(CONFIG_AGP) || (defined(CONFIG_AGP_MODULE) &amp;&amp; defined(MODULE)))
+DECL|macro|__OS_HAS_MTRR
+mdefine_line|#define __OS_HAS_MTRR (defined(CONFIG_MTRR))
 macro_line|#include &quot;drm_os_linux.h&quot;
 multiline_comment|/***********************************************************************/
 multiline_comment|/** &bslash;name DRM template customization defaults */
 multiline_comment|/*@{*/
-macro_line|#ifndef __HAVE_AGP
-DECL|macro|__HAVE_AGP
-mdefine_line|#define __HAVE_AGP&t;&t;0
-macro_line|#endif
-macro_line|#ifndef __HAVE_MTRR
-DECL|macro|__HAVE_MTRR
-mdefine_line|#define __HAVE_MTRR&t;&t;0
-macro_line|#endif
-macro_line|#ifndef __HAVE_CTX_BITMAP
-DECL|macro|__HAVE_CTX_BITMAP
-mdefine_line|#define __HAVE_CTX_BITMAP&t;0
-macro_line|#endif
-macro_line|#ifndef __HAVE_DMA
-DECL|macro|__HAVE_DMA
-mdefine_line|#define __HAVE_DMA&t;&t;0
-macro_line|#endif
-macro_line|#ifndef __HAVE_IRQ
-DECL|macro|__HAVE_IRQ
-mdefine_line|#define __HAVE_IRQ&t;&t;0
-macro_line|#endif
-macro_line|#ifndef __HAVE_DMA_WAITLIST
-DECL|macro|__HAVE_DMA_WAITLIST
-mdefine_line|#define __HAVE_DMA_WAITLIST&t;0
-macro_line|#endif
-macro_line|#ifndef __HAVE_DMA_FREELIST
-DECL|macro|__HAVE_DMA_FREELIST
-mdefine_line|#define __HAVE_DMA_FREELIST&t;0
-macro_line|#endif
-DECL|macro|__REALLY_HAVE_AGP
-mdefine_line|#define __REALLY_HAVE_AGP&t;(__HAVE_AGP &amp;&amp; (defined(CONFIG_AGP) || &bslash;&n;&t;&t;&t;&t;&t;&t;defined(CONFIG_AGP_MODULE)))
-DECL|macro|__REALLY_HAVE_MTRR
-mdefine_line|#define __REALLY_HAVE_MTRR&t;(__HAVE_MTRR &amp;&amp; defined(CONFIG_MTRR))
-DECL|macro|__REALLY_HAVE_SG
-mdefine_line|#define __REALLY_HAVE_SG&t;(__HAVE_SG)
-multiline_comment|/*@}*/
+multiline_comment|/* driver capabilities and requirements mask */
+DECL|macro|DRIVER_USE_AGP
+mdefine_line|#define DRIVER_USE_AGP     0x1
+DECL|macro|DRIVER_REQUIRE_AGP
+mdefine_line|#define DRIVER_REQUIRE_AGP 0x2
+DECL|macro|DRIVER_USE_MTRR
+mdefine_line|#define DRIVER_USE_MTRR    0x4
+DECL|macro|DRIVER_PCI_DMA
+mdefine_line|#define DRIVER_PCI_DMA     0x8
+DECL|macro|DRIVER_SG
+mdefine_line|#define DRIVER_SG          0x10
+DECL|macro|DRIVER_HAVE_DMA
+mdefine_line|#define DRIVER_HAVE_DMA    0x20
+DECL|macro|DRIVER_HAVE_IRQ
+mdefine_line|#define DRIVER_HAVE_IRQ    0x40
+DECL|macro|DRIVER_IRQ_SHARED
+mdefine_line|#define DRIVER_IRQ_SHARED  0x80
+DECL|macro|DRIVER_IRQ_VBL
+mdefine_line|#define DRIVER_IRQ_VBL     0x100
+DECL|macro|DRIVER_DMA_QUEUE
+mdefine_line|#define DRIVER_DMA_QUEUE   0x200
 multiline_comment|/***********************************************************************/
 multiline_comment|/** &bslash;name Begin the DRM... */
 multiline_comment|/*@{*/
@@ -340,22 +330,6 @@ DECL|macro|DRM_PROC_PRINT
 mdefine_line|#define DRM_PROC_PRINT(fmt, arg...)&t;&t;&t;&t;&t;&bslash;&n;   len += sprintf(&amp;buf[len], fmt , ##arg);&t;&t;&t;&t;&bslash;&n;   if (len &gt; DRM_PROC_LIMIT) { *eof = 1; return len - offset; }
 DECL|macro|DRM_PROC_PRINT_RET
 mdefine_line|#define DRM_PROC_PRINT_RET(ret, fmt, arg...)&t;&t;&t;&t;&bslash;&n;   len += sprintf(&amp;buf[len], fmt , ##arg);&t;&t;&t;&t;&bslash;&n;   if (len &gt; DRM_PROC_LIMIT) { ret; *eof = 1; return len - offset; }
-multiline_comment|/*@}*/
-multiline_comment|/***********************************************************************/
-multiline_comment|/** &bslash;name Mapping helper macros */
-multiline_comment|/*@{*/
-DECL|macro|DRM_IOREMAP
-mdefine_line|#define DRM_IOREMAP(map, dev)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(map)-&gt;handle = DRM(ioremap)( (map)-&gt;offset, (map)-&gt;size, (dev) )
-DECL|macro|DRM_IOREMAP_NOCACHE
-mdefine_line|#define DRM_IOREMAP_NOCACHE(map, dev)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(map)-&gt;handle = DRM(ioremap_nocache)((map)-&gt;offset, (map)-&gt;size, (dev))
-DECL|macro|DRM_IOREMAPFREE
-mdefine_line|#define DRM_IOREMAPFREE(map, dev)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ( (map)-&gt;handle &amp;&amp; (map)-&gt;size )&t;&t;&t;&t;&bslash;&n;&t;&t;&t;DRM(ioremapfree)( (map)-&gt;handle, (map)-&gt;size, (dev) );&t;&bslash;&n;&t;} while (0)
-multiline_comment|/**&n; * Find mapping.&n; *&n; * &bslash;param _map matching mapping if found, untouched otherwise.&n; * &bslash;param _o offset.&n; *&n; * Expects the existence of a local variable named &bslash;p dev pointing to the&n; * drm_device structure.&n; */
-DECL|macro|DRM_FIND_MAP
-mdefine_line|#define DRM_FIND_MAP(_map, _o)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct list_head *_list;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;list_for_each( _list, &amp;dev-&gt;maplist-&gt;head ) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;drm_map_list_t *_entry = list_entry( _list, drm_map_list_t, head );&t;&bslash;&n;&t;&t;if ( _entry-&gt;map &amp;&amp;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     _entry-&gt;map-&gt;offset == (_o) ) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;(_map) = _entry-&gt;map;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; &t;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
-multiline_comment|/**&n; * Drop mapping.&n; *&n; * &bslash;sa #DRM_FIND_MAP.&n; */
-DECL|macro|DRM_DROP_MAP
-mdefine_line|#define DRM_DROP_MAP(_map)
 multiline_comment|/*@}*/
 multiline_comment|/***********************************************************************/
 multiline_comment|/** &bslash;name Internal types and structures */
@@ -851,11 +825,11 @@ r_int
 r_int
 id|lock_count
 suffix:semicolon
-macro_line|#ifdef DRIVER_FILE_FIELDS
-DECL|member|DRIVER_FILE_FIELDS
-id|DRIVER_FILE_FIELDS
+DECL|member|driver_priv
+r_void
+op_star
+id|driver_priv
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|drm_file_t
 )brace
 id|drm_file_t
@@ -1065,7 +1039,6 @@ DECL|typedef|drm_device_dma_t
 )brace
 id|drm_device_dma_t
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
 multiline_comment|/** &n; * AGP memory entry.  Stored as a doubly linked list.&n; */
 DECL|struct|drm_agp_mem
 r_typedef
@@ -1166,7 +1139,6 @@ DECL|typedef|drm_agp_head_t
 )brace
 id|drm_agp_head_t
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/**&n; * Scatter-gather memory.&n; */
 DECL|struct|drm_sg_mem
 r_typedef
@@ -1275,7 +1247,6 @@ DECL|typedef|drm_ctx_list_t
 )brace
 id|drm_ctx_list_t
 suffix:semicolon
-macro_line|#ifdef __HAVE_VBL_IRQ
 DECL|struct|drm_vbl_sig
 r_typedef
 r_struct
@@ -1306,7 +1277,369 @@ DECL|typedef|drm_vbl_sig_t
 )brace
 id|drm_vbl_sig_t
 suffix:semicolon
-macro_line|#endif
+multiline_comment|/** &n; * DRM device functions structure&n; */
+r_struct
+id|drm_device
+suffix:semicolon
+DECL|struct|drm_driver_fn
+r_struct
+id|drm_driver_fn
+(brace
+DECL|member|preinit
+r_int
+(paren
+op_star
+id|preinit
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+)paren
+suffix:semicolon
+DECL|member|postinit
+r_int
+(paren
+op_star
+id|postinit
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+)paren
+suffix:semicolon
+DECL|member|prerelease
+r_void
+(paren
+op_star
+id|prerelease
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+comma
+r_struct
+id|file
+op_star
+id|filp
+)paren
+suffix:semicolon
+DECL|member|pretakedown
+r_void
+(paren
+op_star
+id|pretakedown
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+)paren
+suffix:semicolon
+DECL|member|postcleanup
+r_int
+(paren
+op_star
+id|postcleanup
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+)paren
+suffix:semicolon
+DECL|member|presetup
+r_int
+(paren
+op_star
+id|presetup
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+)paren
+suffix:semicolon
+DECL|member|postsetup
+r_int
+(paren
+op_star
+id|postsetup
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+)paren
+suffix:semicolon
+DECL|member|open_helper
+r_int
+(paren
+op_star
+id|open_helper
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+comma
+id|drm_file_t
+op_star
+)paren
+suffix:semicolon
+DECL|member|free_filp_priv
+r_void
+(paren
+op_star
+id|free_filp_priv
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+comma
+id|drm_file_t
+op_star
+)paren
+suffix:semicolon
+DECL|member|release
+r_void
+(paren
+op_star
+id|release
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+comma
+r_struct
+id|file
+op_star
+id|filp
+)paren
+suffix:semicolon
+DECL|member|dma_ready
+r_void
+(paren
+op_star
+id|dma_ready
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+)paren
+suffix:semicolon
+DECL|member|dma_quiescent
+r_int
+(paren
+op_star
+id|dma_quiescent
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+)paren
+suffix:semicolon
+DECL|member|context_ctor
+r_int
+(paren
+op_star
+id|context_ctor
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+comma
+r_int
+id|context
+)paren
+suffix:semicolon
+DECL|member|context_dtor
+r_int
+(paren
+op_star
+id|context_dtor
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+comma
+r_int
+id|context
+)paren
+suffix:semicolon
+DECL|member|kernel_context_switch
+r_int
+(paren
+op_star
+id|kernel_context_switch
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+comma
+r_int
+id|old
+comma
+r_int
+r_new
+)paren
+suffix:semicolon
+DECL|member|kernel_context_switch_unlock
+r_void
+(paren
+op_star
+id|kernel_context_switch_unlock
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+comma
+id|drm_lock_t
+op_star
+id|lock
+)paren
+suffix:semicolon
+DECL|member|vblank_wait
+r_int
+(paren
+op_star
+id|vblank_wait
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+comma
+r_int
+r_int
+op_star
+id|sequence
+)paren
+suffix:semicolon
+multiline_comment|/* these have to be filled in */
+DECL|member|irq_handler
+id|irqreturn_t
+(paren
+op_star
+id|irq_handler
+)paren
+(paren
+id|DRM_IRQ_ARGS
+)paren
+suffix:semicolon
+DECL|member|irq_preinstall
+r_void
+(paren
+op_star
+id|irq_preinstall
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+DECL|member|irq_postinstall
+r_void
+(paren
+op_star
+id|irq_postinstall
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+DECL|member|irq_uninstall
+r_void
+(paren
+op_star
+id|irq_uninstall
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+DECL|member|reclaim_buffers
+r_void
+(paren
+op_star
+id|reclaim_buffers
+)paren
+(paren
+r_struct
+id|file
+op_star
+id|filp
+)paren
+suffix:semicolon
+DECL|member|get_map_ofs
+r_int
+r_int
+(paren
+op_star
+id|get_map_ofs
+)paren
+(paren
+id|drm_map_t
+op_star
+id|map
+)paren
+suffix:semicolon
+DECL|member|get_reg_ofs
+r_int
+r_int
+(paren
+op_star
+id|get_reg_ofs
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+DECL|member|set_version
+r_void
+(paren
+op_star
+id|set_version
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+comma
+id|drm_set_version_t
+op_star
+id|sv
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/**&n; * DRM device structure.&n; */
 DECL|struct|drm_device
 r_typedef
@@ -1602,7 +1935,6 @@ id|work
 suffix:semicolon
 multiline_comment|/** &bslash;name VBLANK IRQ support */
 multiline_comment|/*@{*/
-macro_line|#ifdef __HAVE_VBL_IRQ
 DECL|member|vbl_queue
 id|wait_queue_head_t
 id|vbl_queue
@@ -1626,7 +1958,6 @@ r_int
 r_int
 id|vbl_pending
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*@}*/
 DECL|member|ctx_start
 id|cycles_t
@@ -1679,14 +2010,12 @@ id|wait_queue_head_t
 id|buf_writers
 suffix:semicolon
 multiline_comment|/**&lt; Processes waiting to ctx switch */
-macro_line|#if __REALLY_HAVE_AGP
 DECL|member|agp
 id|drm_agp_head_t
 op_star
 id|agp
 suffix:semicolon
 multiline_comment|/**&lt; AGP data */
-macro_line|#endif
 DECL|member|pdev
 r_struct
 id|pci_dev
@@ -1759,9 +2088,128 @@ DECL|member|sigmask
 id|sigset_t
 id|sigmask
 suffix:semicolon
+DECL|member|fn_tbl
+r_struct
+id|drm_driver_fn
+id|fn_tbl
+suffix:semicolon
+DECL|member|agp_buffer_map
+id|drm_local_map_t
+op_star
+id|agp_buffer_map
+suffix:semicolon
+DECL|member|dev_priv_size
+r_int
+id|dev_priv_size
+suffix:semicolon
+DECL|member|driver_features
+id|u32
+id|driver_features
+suffix:semicolon
 DECL|typedef|drm_device_t
 )brace
 id|drm_device_t
+suffix:semicolon
+DECL|function|drm_core_check_feature
+r_static
+id|__inline__
+r_int
+id|drm_core_check_feature
+c_func
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+comma
+r_int
+id|feature
+)paren
+(brace
+r_return
+(paren
+(paren
+id|dev-&gt;driver_features
+op_amp
+id|feature
+)paren
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+)paren
+suffix:semicolon
+)brace
+macro_line|#if __OS_HAS_AGP
+DECL|function|drm_core_has_AGP
+r_static
+r_inline
+r_int
+id|drm_core_has_AGP
+c_func
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+)paren
+(brace
+r_return
+id|drm_core_check_feature
+c_func
+(paren
+id|dev
+comma
+id|DRIVER_USE_AGP
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|macro|drm_core_has_AGP
+mdefine_line|#define drm_core_has_AGP(dev) (0)
+macro_line|#endif
+macro_line|#if __OS_HAS_MTRR
+DECL|function|drm_core_has_MTRR
+r_static
+r_inline
+r_int
+id|drm_core_has_MTRR
+c_func
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+)paren
+(brace
+r_return
+id|drm_core_check_feature
+c_func
+(paren
+id|dev
+comma
+id|DRIVER_USE_MTRR
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|macro|drm_core_has_MTRR
+mdefine_line|#define drm_core_has_MTRR(dev) (0)
+macro_line|#endif
+r_extern
+r_void
+id|DRM
+c_func
+(paren
+id|driver_register_fns
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+)paren
 suffix:semicolon
 multiline_comment|/******************************************************************/
 multiline_comment|/** &bslash;name Internal function definitions */
@@ -2352,7 +2800,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
 r_extern
 id|DRM_AGP_MEM
 op_star
@@ -2415,7 +2862,6 @@ op_star
 id|handle
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Misc. IOCTL support (drm_ioctl.h) */
 r_extern
 r_int
@@ -2831,7 +3277,6 @@ r_int
 r_new
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_CTX_BITMAP
 r_extern
 r_int
 id|DRM
@@ -2858,7 +3303,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 r_extern
 r_int
 id|DRM
@@ -3234,7 +3678,6 @@ r_int
 id|arg
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_DMA
 r_extern
 r_int
 id|DRM
@@ -3428,9 +3871,7 @@ op_star
 id|filp
 )paren
 suffix:semicolon
-macro_line|#endif /* __HAVE_DMA */
 multiline_comment|/* IRQ support (drm_irq.h) */
-macro_line|#if __HAVE_IRQ || __HAVE_DMA
 r_extern
 r_int
 id|DRM
@@ -3458,8 +3899,6 @@ r_int
 id|arg
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if __HAVE_IRQ
 r_extern
 r_int
 id|DRM
@@ -3536,7 +3975,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef __HAVE_VBL_IRQ
 r_extern
 r_int
 id|DRM
@@ -3595,24 +4033,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef __HAVE_IRQ_BH
-r_extern
-r_void
-id|DRM
-c_func
-(paren
-id|irq_immediate_bh
-)paren
-(paren
-r_void
-op_star
-id|dev
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
-macro_line|#if __REALLY_HAVE_AGP
 multiline_comment|/* AGP/GART support (drm_agpsupport.h) */
 r_extern
 id|drm_agp_head_t
@@ -3922,7 +4342,6 @@ op_star
 id|handle
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Stub support (drm_stub.h) */
 r_int
 id|DRM
@@ -4009,7 +4428,6 @@ op_star
 id|dev_root
 )paren
 suffix:semicolon
-macro_line|#ifdef __HAVE_SG
 multiline_comment|/* Scatter Gather Support (drm_scatter.h) */
 r_extern
 r_void
@@ -4078,7 +4496,6 @@ r_int
 id|arg
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* ATI PCIGART support (ati_pcigart.h) */
 r_extern
 r_int
@@ -4122,7 +4539,224 @@ id|dma_addr_t
 id|bus_addr
 )paren
 suffix:semicolon
+multiline_comment|/* Inline replacements for DRM_IOREMAP macros */
+DECL|function|drm_core_ioremap
+r_static
+id|__inline__
+r_void
+id|drm_core_ioremap
+c_func
+(paren
+r_struct
+id|drm_map
+op_star
+id|map
+comma
+r_struct
+id|drm_device
+op_star
+id|dev
+)paren
+(brace
+id|map-&gt;handle
+op_assign
+id|DRM
+c_func
+(paren
+id|ioremap
+)paren
+(paren
+id|map-&gt;offset
+comma
+id|map-&gt;size
+comma
+id|dev
+)paren
+suffix:semicolon
+)brace
+DECL|function|drm_core_ioremap_nocache
+r_static
+id|__inline__
+r_void
+id|drm_core_ioremap_nocache
+c_func
+(paren
+r_struct
+id|drm_map
+op_star
+id|map
+comma
+r_struct
+id|drm_device
+op_star
+id|dev
+)paren
+(brace
+id|map-&gt;handle
+op_assign
+id|DRM
+c_func
+(paren
+id|ioremap_nocache
+)paren
+(paren
+id|map-&gt;offset
+comma
+id|map-&gt;size
+comma
+id|dev
+)paren
+suffix:semicolon
+)brace
+DECL|function|drm_core_ioremapfree
+r_static
+id|__inline__
+r_void
+id|drm_core_ioremapfree
+c_func
+(paren
+r_struct
+id|drm_map
+op_star
+id|map
+comma
+r_struct
+id|drm_device
+op_star
+id|dev
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|map-&gt;handle
+op_logical_and
+id|map-&gt;size
+)paren
+id|DRM
+c_func
+(paren
+id|ioremapfree
+)paren
+(paren
+id|map-&gt;handle
+comma
+id|map-&gt;size
+comma
+id|dev
+)paren
+suffix:semicolon
+)brace
+DECL|function|drm_core_findmap
+r_static
+id|__inline__
+r_struct
+id|drm_map
+op_star
+id|drm_core_findmap
+c_func
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|offset
+)paren
+(brace
+r_struct
+id|list_head
+op_star
+id|_list
+suffix:semicolon
+id|list_for_each
+c_func
+(paren
+id|_list
+comma
+op_amp
+id|dev-&gt;maplist-&gt;head
+)paren
+(brace
+id|drm_map_list_t
+op_star
+id|_entry
+op_assign
+id|list_entry
+c_func
+(paren
+id|_list
+comma
+id|drm_map_list_t
+comma
+id|head
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|_entry-&gt;map
+op_logical_and
+id|_entry-&gt;map-&gt;offset
+op_eq
+id|offset
+)paren
+(brace
+r_return
+id|_entry-&gt;map
+suffix:semicolon
+)brace
+)brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|drm_core_dropmap
+r_static
+id|__inline__
+r_void
+id|drm_core_dropmap
+c_func
+(paren
+r_struct
+id|drm_map
+op_star
+id|map
+)paren
+(brace
+)brace
 multiline_comment|/*@}*/
+r_extern
+r_int
+r_int
+id|DRM
+c_func
+(paren
+id|core_get_map_ofs
+)paren
+(paren
+id|drm_map_t
+op_star
+id|map
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|DRM
+c_func
+(paren
+id|core_get_reg_ofs
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof
