@@ -517,6 +517,7 @@ id|byte
 id|inpp
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -524,6 +525,7 @@ id|word
 id|inppw
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -531,6 +533,7 @@ r_void
 id|inppw_buffer
 (paren
 r_void
+id|__iomem
 op_star
 comma
 r_void
@@ -543,6 +546,7 @@ r_void
 id|outppw
 (paren
 r_void
+id|__iomem
 op_star
 comma
 id|word
@@ -552,6 +556,7 @@ r_void
 id|outppw_buffer
 (paren
 r_void
+id|__iomem
 op_star
 comma
 r_void
@@ -564,6 +569,7 @@ r_void
 id|outpp
 (paren
 r_void
+id|__iomem
 op_star
 comma
 id|word

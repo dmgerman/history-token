@@ -513,6 +513,7 @@ comma
 id|i
 suffix:semicolon
 id|byte
+id|__iomem
 op_star
 id|p
 suffix:semicolon
@@ -3474,6 +3475,7 @@ id|a-&gt;xdi_mbox.data
 )paren
 (brace
 id|byte
+id|__iomem
 op_star
 id|p
 op_assign
@@ -3485,6 +3487,7 @@ id|a-&gt;xdi_adapter
 )paren
 suffix:semicolon
 id|byte
+id|__iomem
 op_star
 id|src
 op_assign
@@ -4007,6 +4010,7 @@ id|limit
 )paren
 (brace
 id|byte
+id|__iomem
 op_star
 id|p
 op_assign
@@ -4017,6 +4021,7 @@ id|IoAdapter
 )paren
 suffix:semicolon
 id|byte
+id|__iomem
 op_star
 id|mem
 op_assign
@@ -4119,6 +4124,7 @@ id|features
 (brace
 r_volatile
 id|word
+id|__iomem
 op_star
 id|signature
 suffix:semicolon
@@ -4131,6 +4137,7 @@ r_int
 id|i
 suffix:semicolon
 id|byte
+id|__iomem
 op_star
 id|p
 suffix:semicolon
@@ -4155,6 +4162,7 @@ op_assign
 (paren
 r_volatile
 id|word
+id|__iomem
 op_star
 )paren
 (paren
@@ -4530,6 +4538,7 @@ op_amp
 id|IoAdapter-&gt;a
 suffix:semicolon
 id|byte
+id|__iomem
 op_star
 id|p
 suffix:semicolon
@@ -4633,10 +4642,12 @@ suffix:semicolon
 macro_line|#else
 id|dword
 r_volatile
+id|__iomem
 op_star
 id|qBriIrq
 suffix:semicolon
 id|byte
+id|__iomem
 op_star
 id|p
 suffix:semicolon
@@ -4658,6 +4669,7 @@ op_assign
 (paren
 id|dword
 r_volatile
+id|__iomem
 op_star
 )paren
 (paren

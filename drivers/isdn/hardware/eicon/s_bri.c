@@ -25,6 +25,7 @@ id|IoAdapter
 )paren
 (brace
 id|byte
+id|__iomem
 op_star
 id|addrHi
 comma
@@ -52,6 +53,7 @@ id|Xdesc
 id|xlogDesc
 suffix:semicolon
 id|byte
+id|__iomem
 op_star
 id|Port
 suffix:semicolon
@@ -541,6 +543,7 @@ id|IoAdapter
 )paren
 (brace
 id|byte
+id|__iomem
 op_star
 id|p
 op_assign
@@ -577,6 +580,7 @@ id|IoAdapter
 )paren
 (brace
 id|byte
+id|__iomem
 op_star
 id|p
 op_assign
@@ -2812,6 +2816,7 @@ id|IoAdapter
 )paren
 (brace
 id|byte
+id|__iomem
 op_star
 id|p
 suffix:semicolon
@@ -2900,6 +2905,7 @@ id|IoAdapter
 )paren
 (brace
 id|byte
+id|__iomem
 op_star
 id|p
 suffix:semicolon
