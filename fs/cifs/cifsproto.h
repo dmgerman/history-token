@@ -1763,6 +1763,10 @@ r_int
 id|buflen
 comma
 r_const
+r_int
+id|acl_type
+comma
+r_const
 r_struct
 id|nls_table
 op_star

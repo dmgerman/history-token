@@ -83,6 +83,8 @@ DECL|macro|ERRnotconnected
 mdefine_line|#define ERRnotconnected 233
 DECL|macro|ERRmoredata
 mdefine_line|#define ERRmoredata    234
+DECL|macro|ERReasnotsupported
+mdefine_line|#define ERReasnotsupported 282
 DECL|macro|ErrQuota
 mdefine_line|#define ErrQuota 0x200&t;&t;/* The operation would cause a quota limit to be exceeded. */
 DECL|macro|ErrNotALink

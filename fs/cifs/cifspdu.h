@@ -4808,7 +4808,7 @@ id|__u8
 id|cifs_e_perm
 suffix:semicolon
 DECL|member|cifs_uid
-id|__u64
+id|__le64
 id|cifs_uid
 suffix:semicolon
 multiline_comment|/* or gid */
@@ -4838,7 +4838,7 @@ r_struct
 id|cifs_posix_ace
 id|ace_array
 (braket
-l_int|1
+l_int|0
 )braket
 suffix:semicolon
 multiline_comment|/* followed by&n;&t;struct cifs_posix_ace default_ace_arraay[] */

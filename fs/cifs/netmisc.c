@@ -240,6 +240,13 @@ id|EOVERFLOW
 )brace
 comma
 (brace
+id|ERReasnotsupported
+comma
+op_minus
+id|EOPNOTSUPP
+)brace
+comma
+(brace
 id|ErrQuota
 comma
 op_minus
@@ -1545,7 +1552,7 @@ comma
 (brace
 id|ERRDOS
 comma
-l_int|282
+id|ERReasnotsupported
 comma
 id|NT_STATUS_EAS_NOT_SUPPORTED
 )brace
