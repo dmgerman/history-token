@@ -85,7 +85,8 @@ c_func
 id|dev
 )paren
 suffix:colon
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|attach
@@ -151,8 +152,6 @@ id|drv
 (brace
 r_int
 id|error
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -205,8 +204,11 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/* return boolean:  did driver bind? */
 r_return
 id|error
+op_eq
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * device_attach - try to associated device with a driver&n; * @drv:&t;current driver to try&n; * @data:&t;device in disguise&n; *&n; * This function is used as a callback to bus_for_each_drv.&n; * It calls the bus&squot;s match callback to check if the driver supports&n; * the device. If so, it calls the found_match() function above to &n; * take care of all the details.&n; */
@@ -268,6 +270,7 @@ comma
 id|drv
 )paren
 suffix:semicolon
+multiline_comment|/* stop bus_for_each_drv() once a driver binds to the device */
 r_return
 id|error
 suffix:semicolon
@@ -405,11 +408,6 @@ op_star
 )paren
 id|data
 suffix:semicolon
-r_int
-id|error
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -432,8 +430,6 @@ comma
 id|drv
 )paren
 )paren
-id|error
-op_assign
 id|found_match
 c_func
 (paren
@@ -443,8 +439,9 @@ id|drv
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* continue bus_for_each_dev(), to attach to other devices */
 r_return
-id|error
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|driver_attach
