@@ -4464,12 +4464,11 @@ singleline_comment|// prototype did. You should be able to tell which portion by
 singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions contain no code
 singleline_comment|// used as a template unless they are so labeled.
 singleline_comment|//
-DECL|function|reiserfs_read_super
+DECL|function|reiserfs_fill_super
 r_static
-r_struct
-id|super_block
-op_star
-id|reiserfs_read_super
+r_int
+id|reiserfs_fill_super
+c_func
 (paren
 r_struct
 id|super_block
@@ -4571,7 +4570,8 @@ l_int|0
 )paren
 (brace
 r_return
-l_int|NULL
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 r_if
@@ -4587,7 +4587,8 @@ l_string|&quot;reserfs: resize option for remount only&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|size
@@ -4638,7 +4639,7 @@ id|REISERFS_DISK_OFFSET_IN_BYTES
 id|printk
 c_func
 (paren
-l_string|&quot;sh-2021: reiserfs_read_super: can not find reiserfs on %s&bslash;n&quot;
+l_string|&quot;sh-2021: reiserfs_fill_super: can not find reiserfs on %s&bslash;n&quot;
 comma
 id|s-&gt;s_id
 )paren
@@ -4680,7 +4681,7 @@ id|s
 (brace
 id|printk
 (paren
-l_string|&quot;reiserfs_read_super: unable to read bitmap&bslash;n&quot;
+l_string|&quot;reiserfs_fill_super: unable to read bitmap&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4719,7 +4720,7 @@ id|old_format
 id|printk
 c_func
 (paren
-l_string|&quot;sh-2022: reiserfs_read_super: unable to initialize journal space&bslash;n&quot;
+l_string|&quot;sh-2022: reiserfs_fill_super: unable to initialize journal space&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4747,7 +4748,7 @@ id|s
 id|printk
 c_func
 (paren
-l_string|&quot;reiserfs_read_super: unable to reread meta blocks after journal init&bslash;n&quot;
+l_string|&quot;reiserfs_fill_super: unable to reread meta blocks after journal init&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4826,7 +4827,7 @@ id|root_inode
 (brace
 id|printk
 (paren
-l_string|&quot;reiserfs_read_super: get root inode failed&bslash;n&quot;
+l_string|&quot;reiserfs_fill_super: get root inode failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -5239,7 +5240,7 @@ id|s-&gt;u.reiserfs_sb.s_wait
 )paren
 suffix:semicolon
 r_return
-id|s
+l_int|0
 suffix:semicolon
 id|error
 suffix:colon
@@ -5355,7 +5356,8 @@ id|s
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 singleline_comment|//
@@ -5451,16 +5453,71 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|reiserfs_get_sb
 r_static
-id|DECLARE_FSTYPE_DEV
+r_struct
+id|super_block
+op_star
+id|reiserfs_get_sb
 c_func
 (paren
-id|reiserfs_fs_type
+r_struct
+id|file_system_type
+op_star
+id|fs_type
 comma
+r_int
+id|flags
+comma
+r_char
+op_star
+id|dev_name
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+r_return
+id|get_sb_bdev
+c_func
+(paren
+id|fs_type
+comma
+id|flags
+comma
+id|dev_name
+comma
+id|data
+comma
+id|reiserfs_fill_super
+)paren
+suffix:semicolon
+)brace
+DECL|variable|reiserfs_fs_type
+r_static
+r_struct
+id|file_system_type
+id|reiserfs_fs_type
+op_assign
+(brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
+id|name
+suffix:colon
 l_string|&quot;reiserfs&quot;
 comma
-id|reiserfs_read_super
-)paren
+id|get_sb
+suffix:colon
+id|reiserfs_get_sb
+comma
+id|fs_flags
+suffix:colon
+id|FS_REQUIRES_DEV
+comma
+)brace
 suffix:semicolon
 singleline_comment|//
 singleline_comment|// this is exactly what 2.3.99-pre9&squot;s init_ext2_fs is

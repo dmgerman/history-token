@@ -84,10 +84,8 @@ id|address_space_operations
 id|efs_symlink_aops
 suffix:semicolon
 r_extern
-r_struct
-id|super_block
-op_star
-id|efs_read_super
+r_int
+id|efs_fill_super
 c_func
 (paren
 r_struct

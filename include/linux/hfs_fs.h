@@ -1038,10 +1038,8 @@ r_int
 suffix:semicolon
 multiline_comment|/* super.c */
 r_extern
-r_struct
-id|super_block
-op_star
-id|hfs_read_super
+r_int
+id|hfs_fill_super
 c_func
 (paren
 r_struct

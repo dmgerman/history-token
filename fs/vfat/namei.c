@@ -6600,11 +6600,9 @@ id|fat_notify_change
 comma
 )brace
 suffix:semicolon
-DECL|function|vfat_read_super
-r_struct
-id|super_block
-op_star
-id|vfat_read_super
+DECL|function|vfat_fill_super
+r_int
+id|vfat_fill_super
 c_func
 (paren
 r_struct
@@ -6660,7 +6658,11 @@ id|res
 )paren
 )paren
 r_return
-l_int|NULL
+id|PTR_ERR
+c_func
+(paren
+id|res
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6687,7 +6689,8 @@ id|sb-&gt;s_id
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 r_if
@@ -6784,7 +6787,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-id|res
+l_int|0
 suffix:semicolon
 )brace
 eof
