@@ -436,6 +436,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|nfs4_state_shutdown
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 id|out
 suffix:colon
@@ -911,6 +916,11 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* release read-ahead cache */
+id|nfs4_state_shutdown
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 id|list_del
 c_func

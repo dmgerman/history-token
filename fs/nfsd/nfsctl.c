@@ -2426,11 +2426,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|nfs4_state_shutdown
-c_func
-(paren
-)paren
-suffix:semicolon
 id|unregister_filesystem
 c_func
 (paren
