@@ -814,6 +814,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|us-&gt;irq_urb
+comma
+id|GFP_NOIO
 )paren
 suffix:semicolon
 id|US_DEBUGP

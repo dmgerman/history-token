@@ -1619,6 +1619,8 @@ c_cond
 id|usb_submit_urb
 (paren
 id|mdc800-&gt;irq_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 (brace
@@ -1938,6 +1940,8 @@ c_cond
 id|usb_submit_urb
 (paren
 id|mdc800-&gt;download_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 (brace
@@ -2351,6 +2355,8 @@ c_cond
 id|usb_submit_urb
 (paren
 id|mdc800-&gt;write_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 (brace

@@ -1247,12 +1247,15 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* send the data out the bulk port */
+multiline_comment|/* a character device write uses GFP_KERNEL,&n;&t; unless a spinlock is held */
 id|retval
 op_assign
 id|usb_submit_urb
 c_func
 (paren
 id|dev-&gt;write_urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if

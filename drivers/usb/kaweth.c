@@ -1515,6 +1515,9 @@ r_struct
 id|kaweth_device
 op_star
 id|kaweth
+comma
+r_int
+id|mem_flags
 )paren
 (brace
 r_int
@@ -1568,6 +1571,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|kaweth-&gt;rx_urb
+comma
+id|mem_flags
 )paren
 )paren
 )paren
@@ -1695,6 +1700,8 @@ id|kaweth_resubmit_rx_urb
 c_func
 (paren
 id|kaweth
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_return
@@ -1756,6 +1763,8 @@ id|kaweth_resubmit_rx_urb
 c_func
 (paren
 id|kaweth
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_return
@@ -1782,6 +1791,8 @@ id|kaweth_resubmit_rx_urb
 c_func
 (paren
 id|kaweth
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_return
@@ -1841,6 +1852,8 @@ id|kaweth_resubmit_rx_urb
 c_func
 (paren
 id|kaweth
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 )brace
@@ -1883,10 +1896,14 @@ c_func
 l_string|&quot;Opening network device.&quot;
 )paren
 suffix:semicolon
+id|MOD_INC_USE_COUNT
+suffix:semicolon
 id|kaweth_resubmit_rx_urb
 c_func
 (paren
 id|kaweth
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 id|netif_start_queue
@@ -1894,8 +1911,6 @@ c_func
 (paren
 id|net
 )paren
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|kaweth_async_set_rx_mode
 c_func
@@ -2165,6 +2180,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|kaweth-&gt;tx_urb
+comma
+id|GFP_ATOMIC
 )paren
 )paren
 )paren
@@ -3536,6 +3553,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
