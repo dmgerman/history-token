@@ -217,15 +217,15 @@ id|sysent
 )braket
 op_assign
 (brace
-l_int|0x55
-comma
-multiline_comment|/* push %ebp */
 l_int|0x51
 comma
 multiline_comment|/* push %ecx */
 l_int|0x52
 comma
 multiline_comment|/* push %edx */
+l_int|0x55
+comma
+multiline_comment|/* push %ebp */
 l_int|0x89
 comma
 l_int|0xe5
@@ -236,15 +236,22 @@ comma
 l_int|0x34
 comma
 multiline_comment|/* sysenter */
+multiline_comment|/* System call restart point is here! (SYSENTER_RETURN - 2) */
+l_int|0xeb
+comma
+l_int|0xfa
+comma
+multiline_comment|/* jmp to &quot;movl %esp,%ebp&quot; */
+multiline_comment|/* System call normal return point is here! (SYSENTER_RETURN in entry.S) */
+l_int|0x5d
+comma
+multiline_comment|/* pop %ebp */
 l_int|0x5a
 comma
 multiline_comment|/* pop %edx */
 l_int|0x59
 comma
 multiline_comment|/* pop %ecx */
-l_int|0x5d
-comma
-multiline_comment|/* pop %ebp */
 l_int|0xc3
 multiline_comment|/* ret */
 )brace
