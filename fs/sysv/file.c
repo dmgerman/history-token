@@ -39,6 +39,10 @@ id|truncate
 suffix:colon
 id|sysv_truncate
 comma
+id|getattr
+suffix:colon
+id|sysv_getattr
+comma
 )brace
 suffix:semicolon
 DECL|function|sysv_sync_file

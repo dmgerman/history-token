@@ -711,6 +711,7 @@ op_star
 id|drive
 )paren
 (brace
+r_static
 r_const
 r_char
 op_star
@@ -722,6 +723,8 @@ op_assign
 l_string|&quot;QUANTUM FIREBALLlct08 08&quot;
 comma
 l_string|&quot;QUANTUM FIREBALLP KA6.4&quot;
+comma
+l_string|&quot;QUANTUM FIREBALLP KA9.1&quot;
 comma
 l_string|&quot;QUANTUM FIREBALLP LM20.4&quot;
 comma

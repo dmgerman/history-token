@@ -1587,17 +1587,11 @@ id|entropy
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if defined (__i386__)
+macro_line|#if defined (__i386__) || defined (__x86_64__)
 r_if
 c_cond
 (paren
-id|test_bit
-c_func
-(paren
-id|X86_FEATURE_TSC
-comma
-id|boot_cpu_data.x86_capability
-)paren
+id|cpu_has_tsc
 )paren
 (brace
 id|__u32
@@ -1623,22 +1617,6 @@ op_assign
 id|jiffies
 suffix:semicolon
 )brace
-macro_line|#elif defined (__x86_64__)
-id|__u32
-id|high
-suffix:semicolon
-id|rdtsc
-c_func
-(paren
-id|time
-comma
-id|high
-)paren
-suffix:semicolon
-id|num
-op_xor_assign
-id|high
-suffix:semicolon
 macro_line|#else
 id|time
 op_assign

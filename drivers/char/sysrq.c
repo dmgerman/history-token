@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/kbd_kern.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 r_extern
@@ -1247,6 +1248,76 @@ l_string|&quot;Kill All Tasks&quot;
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
+DECL|function|sysrq_handle_swsusp
+r_static
+r_void
+id|sysrq_handle_swsusp
+c_func
+(paren
+r_int
+id|key
+comma
+r_struct
+id|pt_regs
+op_star
+id|pt_regs
+comma
+r_struct
+id|kbd_struct
+op_star
+id|kbd
+comma
+r_struct
+id|tty_struct
+op_star
+id|tty
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|software_suspend_enabled
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Software Suspend is not possible now&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|software_suspend
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|sysrq_swsusp_op
+r_static
+r_struct
+id|sysrq_key_op
+id|sysrq_swsusp_op
+op_assign
+(brace
+id|handler
+suffix:colon
+id|sysrq_handle_swsusp
+comma
+id|help_msg
+suffix:colon
+l_string|&quot;suspenD&quot;
+comma
+id|action_msg
+suffix:colon
+l_string|&quot;Software suspend&bslash;n&quot;
+comma
+)brace
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* END SIGNAL SYSRQ HANDLERS BLOCK */
 multiline_comment|/* Key Operations table and lock */
 DECL|variable|sysrq_key_table_lock
@@ -1320,9 +1391,16 @@ comma
 multiline_comment|/* c */
 l_int|NULL
 comma
+macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
+multiline_comment|/* d */
+op_amp
+id|sysrq_swsusp_op
+comma
+macro_line|#else
 multiline_comment|/* d */
 l_int|NULL
 comma
+macro_line|#endif
 multiline_comment|/* e */
 op_amp
 id|sysrq_term_op

@@ -681,9 +681,12 @@ id|virtaddr
 suffix:semicolon
 id|pmd_dir
 op_assign
-id|pmd_alloc_kernel
+id|pmd_alloc
 c_func
 (paren
+op_amp
+id|init_mm
+comma
 id|pgd_dir
 comma
 id|virtaddr
@@ -745,6 +748,9 @@ op_assign
 id|pte_alloc_kernel
 c_func
 (paren
+op_amp
+id|init_mm
+comma
 id|pmd_dir
 comma
 id|virtaddr
@@ -1053,7 +1059,7 @@ suffix:semicolon
 )brace
 id|pte_dir
 op_assign
-id|pte_offset
+id|pte_offset_kernel
 c_func
 (paren
 id|pmd_dir
@@ -1368,7 +1374,7 @@ suffix:semicolon
 )brace
 id|pte_dir
 op_assign
-id|pte_offset
+id|pte_offset_kernel
 c_func
 (paren
 id|pmd_dir

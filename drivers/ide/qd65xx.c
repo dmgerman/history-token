@@ -224,7 +224,7 @@ c_cond
 (paren
 id|system_bus_speed
 op_le
-l_int|33
+l_int|33333
 )paren
 (brace
 id|active_cycle
@@ -238,7 +238,7 @@ id|active_time
 op_star
 id|system_bus_speed
 op_div
-l_int|1000
+l_int|1000000
 op_plus
 l_int|1
 comma
@@ -258,7 +258,7 @@ id|recovery_time
 op_star
 id|system_bus_speed
 op_div
-l_int|1000
+l_int|1000000
 op_plus
 l_int|1
 comma
@@ -281,7 +281,7 @@ id|active_time
 op_star
 id|system_bus_speed
 op_div
-l_int|1000
+l_int|1000000
 op_plus
 l_int|1
 comma
@@ -301,7 +301,7 @@ id|recovery_time
 op_star
 id|system_bus_speed
 op_div
-l_int|1000
+l_int|1000000
 op_plus
 l_int|1
 comma
@@ -348,7 +348,7 @@ id|active_time
 op_star
 id|system_bus_speed
 op_div
-l_int|1000
+l_int|1000000
 op_plus
 l_int|1
 comma
@@ -369,7 +369,7 @@ id|recovery_time
 op_star
 id|system_bus_speed
 op_div
-l_int|1000
+l_int|1000000
 op_plus
 l_int|1
 comma

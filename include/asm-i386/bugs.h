@@ -461,13 +461,7 @@ id|boot_cpu_data.x86_vendor
 op_eq
 id|X86_VENDOR_INTEL
 op_logical_and
-id|test_bit
-c_func
-(paren
-id|X86_FEATURE_APIC
-comma
-id|boot_cpu_data.x86_capability
-)paren
+id|cpu_has_apic
 op_logical_and
 id|boot_cpu_data.x86
 op_eq

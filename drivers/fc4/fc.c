@@ -1,7 +1,7 @@
 multiline_comment|/* fc.c: Generic Fibre Channel and FC4 SCSI driver.&n; *&n; * Copyright (C) 1997,1998,1999 Jakub Jelinek (jj@ultra.linux.cz)&n; * Copyright (C) 1997,1998 Jirka Hanika (geo@ff.cuni.cz)&n; *&n; * There are two kinds of Fibre Channel adapters used in Linux. Either&n; * the adapter is &quot;smart&quot; and does all FC bookkeeping by itself and&n; * just presents a standard SCSI interface to the operating system&n; * (that&squot;s e.g. the case with Qlogic FC cards), or leaves most of the FC&n; * bookkeeping to the OS (e.g. soc, socal). Drivers for the former adapters&n; * will look like normal SCSI drivers (with the exception of max_id will be&n; * usually 127), the latter on the other side allows SCSI, IP over FC and other&n; * protocols. This driver tree is for the latter adapters.&n; *&n; * This file should support both Point-to-Point and Arbitrated Loop topologies.&n; *&n; * Sources:&n; *&t;Fibre Channel Physical &amp; Signaling Interface (FC-PH), dpANS, 1994&n; *&t;dpANS Fibre Channel Protocol for SCSI (X3.269-199X), Rev. 012, 1995&n; *&t;Fibre Channel Arbitrated Loop (FC-AL), Rev. 4.5, 1995&n; *&t;Fibre Channel Private Loop SCSI Direct Attach (FC-PLDA), Rev. 2.1, 1997&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

@@ -2486,6 +2486,7 @@ r_int
 r_int
 id|xcall_call_function
 suffix:semicolon
+multiline_comment|/*&n; * You must not call this function with disabled interrupts or from a&n; * hardware interrupt handler or from a bottom half handler.&n; */
 DECL|function|smp_call_function
 r_int
 id|smp_call_function
@@ -2557,7 +2558,7 @@ id|data.wait
 op_assign
 id|wait
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -2623,7 +2624,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -2635,7 +2636,7 @@ l_int|0
 suffix:semicolon
 id|out_timeout
 suffix:colon
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -3501,9 +3502,9 @@ id|smp_flush_tlb_range
 c_func
 (paren
 r_struct
-id|vm_area_struct
+id|mm_struct
 op_star
-id|vma
+id|mm
 comma
 r_int
 r_int
@@ -3513,14 +3514,6 @@ r_int
 r_int
 id|end
 )paren
-(brace
-r_struct
-id|mm_struct
-op_star
-id|mm
-op_assign
-id|vma-&gt;vm_mm
-suffix:semicolon
 (brace
 id|u32
 id|ctx
@@ -3617,7 +3610,6 @@ id|start
 )paren
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|smp_flush_tlb_kernel_range
 r_void

@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/*&n; * The &quot;priority&quot; of VM scanning is how much of the queues we&n; * will scan in one go. A value of 6 for DEF_PRIORITY implies&n; * that we&squot;ll scan 1/64th of the queues (&quot;queue_length &gt;&gt; 6&quot;)&n; * during a normal aging round.&n; */
@@ -2953,6 +2954,8 @@ multiline_comment|/*&n;&t; * Tell the memory management that we&squot;re a &quot
 id|tsk-&gt;flags
 op_or_assign
 id|PF_MEMALLOC
+op_or
+id|PF_KERNTHREAD
 suffix:semicolon
 multiline_comment|/*&n;&t; * Kswapd main loop.&n;&t; */
 r_for
@@ -2962,6 +2965,19 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+id|refrigerator
+c_func
+(paren
+id|PF_IOTHREAD
+)paren
+suffix:semicolon
 id|__set_current_state
 c_func
 (paren
@@ -2991,11 +3007,13 @@ c_func
 (paren
 )paren
 )paren
+(brace
 id|schedule
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 id|__set_current_state
 c_func
 (paren

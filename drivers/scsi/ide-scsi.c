@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/atapi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -22,92 +23,6 @@ macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;scsi/sg.h&gt;
 DECL|macro|IDESCSI_DEBUG_LOG
 mdefine_line|#define IDESCSI_DEBUG_LOG&t;&t;0
-DECL|struct|idescsi_pc_s
-r_typedef
-r_struct
-id|idescsi_pc_s
-(brace
-DECL|member|c
-id|u8
-id|c
-(braket
-l_int|12
-)braket
-suffix:semicolon
-multiline_comment|/* Actual packet bytes */
-DECL|member|request_transfer
-r_int
-id|request_transfer
-suffix:semicolon
-multiline_comment|/* Bytes to transfer */
-DECL|member|actually_transferred
-r_int
-id|actually_transferred
-suffix:semicolon
-multiline_comment|/* Bytes actually transferred */
-DECL|member|buffer_size
-r_int
-id|buffer_size
-suffix:semicolon
-multiline_comment|/* Size of our data buffer */
-DECL|member|buffer
-id|byte
-op_star
-id|buffer
-suffix:semicolon
-multiline_comment|/* Data buffer */
-DECL|member|current_position
-id|byte
-op_star
-id|current_position
-suffix:semicolon
-multiline_comment|/* Pointer into the above buffer */
-DECL|member|sg
-r_struct
-id|scatterlist
-op_star
-id|sg
-suffix:semicolon
-multiline_comment|/* Scatter gather table */
-DECL|member|b_count
-r_int
-id|b_count
-suffix:semicolon
-multiline_comment|/* Bytes transferred from current entry */
-DECL|member|scsi_cmd
-id|Scsi_Cmnd
-op_star
-id|scsi_cmd
-suffix:semicolon
-multiline_comment|/* SCSI command */
-DECL|member|done
-r_void
-(paren
-op_star
-id|done
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* Scsi completion routine */
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* Status/Action flags */
-DECL|member|timeout
-r_int
-r_int
-id|timeout
-suffix:semicolon
-multiline_comment|/* Command timeout */
-DECL|typedef|idescsi_pc_t
-)brace
-id|idescsi_pc_t
-suffix:semicolon
 multiline_comment|/*&n; *&t;Packet command status bits.&n; */
 DECL|macro|PC_DMA_IN_PROGRESS
 mdefine_line|#define PC_DMA_IN_PROGRESS&t;&t;0&t;/* 1 while DMA in progress */
@@ -127,12 +42,14 @@ r_typedef
 r_struct
 (brace
 DECL|member|drive
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 suffix:semicolon
 DECL|member|pc
-id|idescsi_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 suffix:semicolon
@@ -170,71 +87,20 @@ DECL|macro|IDESCSI_IREASON_COD
 mdefine_line|#define IDESCSI_IREASON_COD&t;0x1&t;&t;/* Information transferred is command */
 DECL|macro|IDESCSI_IREASON_IO
 mdefine_line|#define IDESCSI_IREASON_IO&t;0x2&t;&t;/* The device requests us to read */
-DECL|function|idescsi_discard_data
-r_static
-r_void
-id|idescsi_discard_data
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-r_int
-r_int
-id|bcount
-)paren
-(brace
-r_while
-c_loop
-(paren
-id|bcount
-op_decrement
-)paren
-id|IN_BYTE
-(paren
-id|IDE_DATA_REG
-)paren
-suffix:semicolon
-)brace
-DECL|function|idescsi_output_zeros
-r_static
-r_void
-id|idescsi_output_zeros
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-r_int
-r_int
-id|bcount
-)paren
-(brace
-r_while
-c_loop
-(paren
-id|bcount
-op_decrement
-)paren
-id|OUT_BYTE
-(paren
-l_int|0
-comma
-id|IDE_DATA_REG
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *&t;PIO data transfer routines using the scatter gather table.&n; */
 DECL|function|idescsi_input_buffers
 r_static
 r_void
 id|idescsi_input_buffers
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
-id|idescsi_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 comma
@@ -259,16 +125,16 @@ id|bcount
 r_if
 c_cond
 (paren
-id|pc-&gt;sg
+id|pc-&gt;s.sg
 op_minus
 (paren
 r_struct
 id|scatterlist
 op_star
 )paren
-id|pc-&gt;scsi_cmd-&gt;request_buffer
+id|pc-&gt;s.scsi_cmd-&gt;request_buffer
 OG
-id|pc-&gt;scsi_cmd-&gt;use_sg
+id|pc-&gt;s.scsi_cmd-&gt;use_sg
 )paren
 (brace
 id|printk
@@ -277,7 +143,8 @@ id|KERN_ERR
 l_string|&quot;ide-scsi: scatter gather table too small, discarding data&bslash;n&quot;
 )paren
 suffix:semicolon
-id|idescsi_discard_data
+id|atapi_discard_data
+c_func
 (paren
 id|drive
 comma
@@ -292,9 +159,9 @@ op_assign
 id|min
 c_func
 (paren
-id|pc-&gt;sg-&gt;length
+id|pc-&gt;s.sg-&gt;length
 op_minus
-id|pc-&gt;b_count
+id|pc-&gt;s.b_count
 comma
 id|bcount
 )paren
@@ -304,10 +171,10 @@ op_assign
 id|page_address
 c_func
 (paren
-id|pc-&gt;sg-&gt;page
+id|pc-&gt;s.sg-&gt;page
 )paren
 op_plus
-id|pc-&gt;sg-&gt;offset
+id|pc-&gt;s.sg-&gt;offset
 suffix:semicolon
 id|atapi_read
 c_func
@@ -316,7 +183,7 @@ id|drive
 comma
 id|buf
 op_plus
-id|pc-&gt;b_count
+id|pc-&gt;s.b_count
 comma
 id|count
 )paren
@@ -325,22 +192,22 @@ id|bcount
 op_sub_assign
 id|count
 suffix:semicolon
-id|pc-&gt;b_count
+id|pc-&gt;s.b_count
 op_add_assign
 id|count
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|pc-&gt;b_count
+id|pc-&gt;s.b_count
 op_eq
-id|pc-&gt;sg-&gt;length
+id|pc-&gt;s.sg-&gt;length
 )paren
 (brace
-id|pc-&gt;sg
+id|pc-&gt;s.sg
 op_increment
 suffix:semicolon
-id|pc-&gt;b_count
+id|pc-&gt;s.b_count
 op_assign
 l_int|0
 suffix:semicolon
@@ -351,12 +218,15 @@ DECL|function|idescsi_output_buffers
 r_static
 r_void
 id|idescsi_output_buffers
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
-id|idescsi_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 comma
@@ -381,16 +251,16 @@ id|bcount
 r_if
 c_cond
 (paren
-id|pc-&gt;sg
+id|pc-&gt;s.sg
 op_minus
 (paren
 r_struct
 id|scatterlist
 op_star
 )paren
-id|pc-&gt;scsi_cmd-&gt;request_buffer
+id|pc-&gt;s.scsi_cmd-&gt;request_buffer
 OG
-id|pc-&gt;scsi_cmd-&gt;use_sg
+id|pc-&gt;s.scsi_cmd-&gt;use_sg
 )paren
 (brace
 id|printk
@@ -399,7 +269,8 @@ id|KERN_ERR
 l_string|&quot;ide-scsi: scatter gather table too small, padding with zeros&bslash;n&quot;
 )paren
 suffix:semicolon
-id|idescsi_output_zeros
+id|atapi_write_zeros
+c_func
 (paren
 id|drive
 comma
@@ -414,9 +285,9 @@ op_assign
 id|min
 c_func
 (paren
-id|pc-&gt;sg-&gt;length
+id|pc-&gt;s.sg-&gt;length
 op_minus
-id|pc-&gt;b_count
+id|pc-&gt;s.b_count
 comma
 id|bcount
 )paren
@@ -426,10 +297,10 @@ op_assign
 id|page_address
 c_func
 (paren
-id|pc-&gt;sg-&gt;page
+id|pc-&gt;s.sg-&gt;page
 )paren
 op_plus
-id|pc-&gt;sg-&gt;offset
+id|pc-&gt;s.sg-&gt;offset
 suffix:semicolon
 id|atapi_write
 c_func
@@ -438,7 +309,7 @@ id|drive
 comma
 id|buf
 op_plus
-id|pc-&gt;b_count
+id|pc-&gt;s.b_count
 comma
 id|count
 )paren
@@ -447,22 +318,22 @@ id|bcount
 op_sub_assign
 id|count
 suffix:semicolon
-id|pc-&gt;b_count
+id|pc-&gt;s.b_count
 op_add_assign
 id|count
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|pc-&gt;b_count
+id|pc-&gt;s.b_count
 op_eq
-id|pc-&gt;sg-&gt;length
+id|pc-&gt;s.sg-&gt;length
 )paren
 (brace
-id|pc-&gt;sg
+id|pc-&gt;s.sg
 op_increment
 suffix:semicolon
-id|pc-&gt;b_count
+id|pc-&gt;s.b_count
 op_assign
 l_int|0
 suffix:semicolon
@@ -475,12 +346,15 @@ r_static
 r_inline
 r_void
 id|idescsi_transform_pc1
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
-id|idescsi_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 )paren
@@ -490,16 +364,18 @@ op_star
 id|c
 op_assign
 id|pc-&gt;c
-comma
+suffix:semicolon
+r_char
 op_star
 id|scsi_buf
 op_assign
 id|pc-&gt;buffer
-comma
+suffix:semicolon
+id|u8
 op_star
 id|sc
 op_assign
-id|pc-&gt;scsi_cmd-&gt;cmnd
+id|pc-&gt;s.scsi_cmd-&gt;cmnd
 suffix:semicolon
 r_char
 op_star
@@ -858,12 +734,15 @@ r_static
 r_inline
 r_void
 id|idescsi_transform_pc2
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
-id|idescsi_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 )paren
@@ -878,13 +757,13 @@ id|u8
 op_star
 id|sc
 op_assign
-id|pc-&gt;scsi_cmd-&gt;cmnd
+id|pc-&gt;s.scsi_cmd-&gt;cmnd
 suffix:semicolon
 id|u8
 op_star
 id|scsi_buf
 op_assign
-id|pc-&gt;scsi_cmd-&gt;request_buffer
+id|pc-&gt;s.scsi_cmd-&gt;request_buffer
 suffix:semicolon
 r_if
 c_cond
@@ -1166,12 +1045,14 @@ id|scsi
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-id|idescsi_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 op_assign
 (paren
-id|idescsi_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 )paren
 id|rq-&gt;special
@@ -1246,7 +1127,7 @@ op_ge
 id|ERROR_MAX
 )paren
 (brace
-id|pc-&gt;scsi_cmd-&gt;result
+id|pc-&gt;s.scsi_cmd-&gt;result
 op_assign
 id|DID_ERROR
 op_lshift
@@ -1263,7 +1144,7 @@ l_string|&quot;ide-scsi: %s: I/O error for %lu&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
-id|pc-&gt;scsi_cmd-&gt;serial_number
+id|pc-&gt;s.scsi_cmd-&gt;serial_number
 )paren
 suffix:semicolon
 )brace
@@ -1274,7 +1155,7 @@ c_cond
 id|rq-&gt;errors
 )paren
 (brace
-id|pc-&gt;scsi_cmd-&gt;result
+id|pc-&gt;s.scsi_cmd-&gt;result
 op_assign
 (paren
 id|CHECK_CONDITION
@@ -1299,13 +1180,13 @@ l_string|&quot;ide-scsi: %s: check condition for %lu&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
-id|pc-&gt;scsi_cmd-&gt;serial_number
+id|pc-&gt;s.scsi_cmd-&gt;serial_number
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
-id|pc-&gt;scsi_cmd-&gt;result
+id|pc-&gt;s.scsi_cmd-&gt;result
 op_assign
 id|DID_OK
 op_lshift
@@ -1330,7 +1211,7 @@ l_string|&quot;ide-scsi: %s: suc %lu&quot;
 comma
 id|drive-&gt;name
 comma
-id|pc-&gt;scsi_cmd-&gt;serial_number
+id|pc-&gt;s.scsi_cmd-&gt;serial_number
 )paren
 suffix:semicolon
 r_if
@@ -1363,7 +1244,7 @@ l_string|&quot;, rst = &quot;
 suffix:semicolon
 id|scsi_buf
 op_assign
-id|pc-&gt;scsi_cmd-&gt;request_buffer
+id|pc-&gt;s.scsi_cmd-&gt;request_buffer
 suffix:semicolon
 id|hexdump
 c_func
@@ -1375,7 +1256,7 @@ c_func
 (paren
 l_int|16U
 comma
-id|pc-&gt;scsi_cmd-&gt;request_bufflen
+id|pc-&gt;s.scsi_cmd-&gt;request_bufflen
 )paren
 )paren
 suffix:semicolon
@@ -1391,7 +1272,7 @@ suffix:semicolon
 )brace
 id|host
 op_assign
-id|pc-&gt;scsi_cmd-&gt;host
+id|pc-&gt;s.scsi_cmd-&gt;host
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -1401,12 +1282,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|pc
-op_member_access_from_pointer
+id|pc-&gt;s
+dot
 id|done
 c_func
 (paren
-id|pc-&gt;scsi_cmd
+id|pc-&gt;s.scsi_cmd
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -1450,7 +1331,8 @@ r_int
 id|get_timeout
 c_func
 (paren
-id|idescsi_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 )paren
@@ -1465,7 +1347,7 @@ r_int
 )paren
 id|WAIT_CMD
 comma
-id|pc-&gt;timeout
+id|pc-&gt;s.timeout
 op_minus
 id|jiffies
 )paren
@@ -1503,7 +1385,8 @@ suffix:semicolon
 r_int
 id|bcount
 suffix:semicolon
-id|idescsi_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 op_assign
@@ -1520,11 +1403,12 @@ id|KERN_INFO
 l_string|&quot;ide-scsi: Reached idescsi_pc_intr interrupt handler&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDESCSI_DEBUG_LOG */
+macro_line|#endif
 r_if
 c_cond
 (paren
 id|test_and_clear_bit
+c_func
 (paren
 id|PC_DMA_IN_PROGRESS
 comma
@@ -1541,7 +1425,7 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif /* IDESCSI_DEBUG_LOG */
+macro_line|#endif
 id|pc-&gt;actually_transferred
 op_assign
 id|pc-&gt;request_transfer
@@ -1722,7 +1606,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pc-&gt;sg
+id|pc-&gt;s.sg
 )paren
 id|idescsi_input_buffers
 c_func
@@ -1765,7 +1649,8 @@ id|pc-&gt;current_position
 op_add_assign
 id|temp
 suffix:semicolon
-id|idescsi_discard_data
+id|atapi_discard_data
+c_func
 (paren
 id|drive
 comma
@@ -1801,7 +1686,7 @@ id|KERN_NOTICE
 l_string|&quot;ide-scsi: The scsi wants to send us more data than expected - allowing transfer&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDESCSI_DEBUG_LOG */
+macro_line|#endif
 )brace
 )brace
 r_if
@@ -1824,7 +1709,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pc-&gt;sg
+id|pc-&gt;s.sg
 )paren
 id|idescsi_input_buffers
 (paren
@@ -1861,7 +1746,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pc-&gt;sg
+id|pc-&gt;s.sg
 )paren
 id|idescsi_output_buffers
 (paren
@@ -1937,7 +1822,8 @@ id|scsi
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-id|idescsi_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 op_assign
@@ -2062,7 +1948,8 @@ id|request
 op_star
 id|rq
 comma
-id|idescsi_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 )paren
@@ -2332,7 +2219,7 @@ comma
 id|rq-&gt;current_nr_sectors
 )paren
 suffix:semicolon
-macro_line|#endif /* IDESCSI_DEBUG_LOG */
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2350,7 +2237,8 @@ comma
 id|rq
 comma
 (paren
-id|idescsi_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 )paren
 id|rq-&gt;special
@@ -2434,7 +2322,8 @@ suffix:semicolon
 )brace
 DECL|variable|idescsi_drives
 r_static
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|idescsi_drives
 (braket
@@ -2455,8 +2344,10 @@ DECL|function|idescsi_setup
 r_static
 r_void
 id|idescsi_setup
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -2468,8 +2359,6 @@ r_int
 id|id
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|idescsi_drives
 (braket
 id|id
@@ -2556,8 +2445,10 @@ DECL|function|idescsi_cleanup
 r_static
 r_int
 id|idescsi_cleanup
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -2598,7 +2489,8 @@ r_void
 id|idescsi_revalidate
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|_dummy
 )paren
@@ -2668,7 +2560,8 @@ c_func
 r_void
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 suffix:semicolon
@@ -3015,7 +2908,8 @@ op_star
 id|host
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 suffix:semicolon
@@ -3092,7 +2986,8 @@ op_star
 id|arg
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 op_assign
@@ -3302,8 +3197,10 @@ r_static
 r_inline
 r_int
 id|idescsi_set_direction
+c_func
 (paren
-id|idescsi_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 )paren
@@ -3327,6 +3224,7 @@ r_case
 id|READ_12
 suffix:colon
 id|clear_bit
+c_func
 (paren
 id|PC_WRITING
 comma
@@ -3347,6 +3245,7 @@ r_case
 id|WRITE_12
 suffix:colon
 id|set_bit
+c_func
 (paren
 id|PC_WRITING
 comma
@@ -3373,11 +3272,13 @@ op_star
 id|idescsi_dma_bio
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
-id|idescsi_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 )paren
@@ -3397,14 +3298,14 @@ suffix:semicolon
 r_int
 id|segments
 op_assign
-id|pc-&gt;scsi_cmd-&gt;use_sg
+id|pc-&gt;s.scsi_cmd-&gt;use_sg
 suffix:semicolon
 r_struct
 id|scatterlist
 op_star
 id|sg
 op_assign
-id|pc-&gt;scsi_cmd-&gt;request_buffer
+id|pc-&gt;s.scsi_cmd-&gt;request_buffer
 suffix:semicolon
 r_if
 c_cond
@@ -3473,7 +3374,7 @@ op_rshift
 l_int|10
 )paren
 suffix:semicolon
-macro_line|#endif /* IDESCSI_DEBUG_LOG */
+macro_line|#endif
 r_while
 c_loop
 (paren
@@ -3554,7 +3455,7 @@ op_rshift
 l_int|10
 )paren
 suffix:semicolon
-macro_line|#endif /* IDESCSI_DEBUG_LOG */
+macro_line|#endif
 id|bh-&gt;bi_io_vec
 (braket
 l_int|0
@@ -3565,7 +3466,7 @@ op_assign
 id|virt_to_page
 c_func
 (paren
-id|pc-&gt;scsi_cmd-&gt;request_buffer
+id|pc-&gt;s.scsi_cmd-&gt;request_buffer
 )paren
 suffix:semicolon
 id|bh-&gt;bi_io_vec
@@ -3588,7 +3489,7 @@ op_assign
 r_int
 r_int
 )paren
-id|pc-&gt;scsi_cmd-&gt;request_buffer
+id|pc-&gt;s.scsi_cmd-&gt;request_buffer
 op_amp
 op_complement
 id|PAGE_MASK
@@ -3609,7 +3510,8 @@ r_int
 id|should_transform
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -3675,7 +3577,8 @@ op_star
 )paren
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 op_assign
@@ -3695,7 +3598,8 @@ id|rq
 op_assign
 l_int|NULL
 suffix:semicolon
-id|idescsi_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 op_assign
@@ -3727,10 +3631,12 @@ suffix:semicolon
 id|pc
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
-id|idescsi_pc_t
+op_star
+id|pc
 )paren
 comma
 id|GFP_ATOMIC
@@ -3739,11 +3645,12 @@ suffix:semicolon
 id|rq
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|request
+op_star
+id|rq
 )paren
 comma
 id|GFP_ATOMIC
@@ -3805,7 +3712,7 @@ id|pc-&gt;buffer
 op_assign
 l_int|NULL
 suffix:semicolon
-id|pc-&gt;sg
+id|pc-&gt;s.sg
 op_assign
 id|cmd-&gt;request_buffer
 suffix:semicolon
@@ -3816,12 +3723,12 @@ id|pc-&gt;buffer
 op_assign
 id|cmd-&gt;request_buffer
 suffix:semicolon
-id|pc-&gt;sg
+id|pc-&gt;s.sg
 op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|pc-&gt;b_count
+id|pc-&gt;s.b_count
 op_assign
 l_int|0
 suffix:semicolon
@@ -3831,15 +3738,15 @@ id|pc-&gt;buffer_size
 op_assign
 id|cmd-&gt;request_bufflen
 suffix:semicolon
-id|pc-&gt;scsi_cmd
+id|pc-&gt;s.scsi_cmd
 op_assign
 id|cmd
 suffix:semicolon
-id|pc-&gt;done
+id|pc-&gt;s.done
 op_assign
 id|done
 suffix:semicolon
-id|pc-&gt;timeout
+id|pc-&gt;s.timeout
 op_assign
 id|jiffies
 op_plus
@@ -4056,7 +3963,8 @@ op_star
 id|parm
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 op_assign
@@ -4206,7 +4114,8 @@ c_func
 r_void
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 suffix:semicolon

@@ -8706,15 +8706,91 @@ op_star
 id|bh
 )paren
 (brace
-singleline_comment|//  int size = sizeof (struct virtual_item); /* for new item in case of insert */
-singleline_comment|//  int i, nr_items;
-singleline_comment|//  struct item_head * ih;
-singleline_comment|// this is enough for _ALL_ currently possible cases. In 4 k block
-singleline_comment|// one may put &lt; 170 empty items. Each virtual item eats 12
-singleline_comment|// byte. The biggest direntry item may have &lt; 256 entries. Each
-singleline_comment|// entry would eat 2 byte of virtual node space
-r_return
+r_int
+id|max_num_of_items
+suffix:semicolon
+r_int
+id|max_num_of_entries
+suffix:semicolon
+r_int
+r_int
+id|blocksize
+op_assign
 id|sb-&gt;s_blocksize
+suffix:semicolon
+DECL|macro|MIN_NAME_LEN
+mdefine_line|#define MIN_NAME_LEN 1
+id|max_num_of_items
+op_assign
+(paren
+id|blocksize
+op_minus
+id|BLKH_SIZE
+)paren
+op_div
+(paren
+id|IH_SIZE
+op_plus
+id|MIN_ITEM_LEN
+)paren
+suffix:semicolon
+id|max_num_of_entries
+op_assign
+(paren
+id|blocksize
+op_minus
+id|BLKH_SIZE
+op_minus
+id|IH_SIZE
+)paren
+op_div
+(paren
+id|DEH_SIZE
+op_plus
+id|MIN_NAME_LEN
+)paren
+suffix:semicolon
+r_return
+r_sizeof
+(paren
+r_struct
+id|virtual_node
+)paren
+op_plus
+id|max
+c_func
+(paren
+id|max_num_of_items
+op_star
+r_sizeof
+(paren
+r_struct
+id|virtual_item
+)paren
+comma
+r_sizeof
+(paren
+r_struct
+id|virtual_item
+)paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|direntry_uarea
+)paren
+op_plus
+(paren
+id|max_num_of_entries
+op_minus
+l_int|1
+)paren
+op_star
+r_sizeof
+(paren
+id|__u16
+)paren
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* maybe we should fail balancing we are going to perform when kmalloc&n;   fails several times. But now it will loop until kmalloc gets&n;   required memory */

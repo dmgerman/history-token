@@ -37,6 +37,7 @@ macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#if defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -1366,6 +1367,13 @@ c_func
 id|generic_read_dir
 )paren
 suffix:semicolon
+DECL|variable|generic_fillattr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_fillattr
+)paren
+suffix:semicolon
 DECL|variable|generic_file_llseek
 id|EXPORT_SYMBOL
 c_func
@@ -1518,6 +1526,27 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|lock_may_write
+)paren
+suffix:semicolon
+DECL|variable|dcache_dir_open
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dcache_dir_open
+)paren
+suffix:semicolon
+DECL|variable|dcache_dir_close
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dcache_dir_close
+)paren
+suffix:semicolon
+DECL|variable|dcache_dir_lseek
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dcache_dir_lseek
 )paren
 suffix:semicolon
 DECL|variable|dcache_readdir
@@ -2801,6 +2830,20 @@ c_func
 id|seq_lseek
 )paren
 suffix:semicolon
+DECL|variable|single_open
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|single_open
+)paren
+suffix:semicolon
+DECL|variable|single_release
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|single_release
+)paren
+suffix:semicolon
 multiline_comment|/* Program loader interfaces */
 DECL|variable|setup_arg_pages
 id|EXPORT_SYMBOL
@@ -3035,20 +3078,6 @@ id|strsep
 )paren
 suffix:semicolon
 multiline_comment|/* software interrupts */
-DECL|variable|tasklet_hi_vec
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tasklet_hi_vec
-)paren
-suffix:semicolon
-DECL|variable|tasklet_vec
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tasklet_vec
-)paren
-suffix:semicolon
 DECL|variable|bh_task_vec
 id|EXPORT_SYMBOL
 c_func

@@ -648,12 +648,12 @@ id|c-&gt;x86
 OL
 l_int|6
 op_logical_or
-id|test_bit
+id|cpu_has
 c_func
 (paren
-id|X86_FEATURE_IA64
+id|c
 comma
-id|c-&gt;x86_capability
+id|X86_FEATURE_IA64
 )paren
 )paren
 (brace

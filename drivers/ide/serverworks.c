@@ -1317,7 +1317,8 @@ id|byte
 id|speed
 )paren
 (brace
-id|byte
+r_static
+id|u8
 id|udma_modes
 (braket
 )braket
@@ -1336,7 +1337,8 @@ comma
 l_int|0x05
 )brace
 suffix:semicolon
-id|byte
+r_static
+id|u8
 id|dma_modes
 (braket
 )braket
@@ -1349,7 +1351,8 @@ comma
 l_int|0x20
 )brace
 suffix:semicolon
-id|byte
+r_static
+id|u8
 id|pio_modes
 (braket
 )braket
@@ -1410,7 +1413,7 @@ id|dma_base
 op_assign
 id|hwif-&gt;dma_base
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
 r_int
 id|err
 suffix:semicolon

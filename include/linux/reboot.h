@@ -10,7 +10,7 @@ DECL|macro|LINUX_REBOOT_MAGIC2A
 mdefine_line|#define&t;LINUX_REBOOT_MAGIC2A&t;85072278
 DECL|macro|LINUX_REBOOT_MAGIC2B
 mdefine_line|#define&t;LINUX_REBOOT_MAGIC2B&t;369367448
-multiline_comment|/*&n; * Commands accepted by the _reboot() system call.&n; *&n; * RESTART     Restart system using default command and mode.&n; * HALT        Stop OS and give system control to ROM monitor, if any.&n; * CAD_ON      Ctrl-Alt-Del sequence causes RESTART command.&n; * CAD_OFF     Ctrl-Alt-Del sequence sends SIGINT to init task.&n; * POWER_OFF   Stop OS and remove all power from system, if possible.&n; * RESTART2    Restart system using given command string.&n; */
+multiline_comment|/*&n; * Commands accepted by the _reboot() system call.&n; *&n; * RESTART     Restart system using default command and mode.&n; * HALT        Stop OS and give system control to ROM monitor, if any.&n; * CAD_ON      Ctrl-Alt-Del sequence causes RESTART command.&n; * CAD_OFF     Ctrl-Alt-Del sequence sends SIGINT to init task.&n; * POWER_OFF   Stop OS and remove all power from system, if possible.&n; * RESTART2    Restart system using given command string.&n; * SW_SUSPEND  Suspend system using Software Suspend if compiled in&n; */
 DECL|macro|LINUX_REBOOT_CMD_RESTART
 mdefine_line|#define&t;LINUX_REBOOT_CMD_RESTART&t;0x01234567
 DECL|macro|LINUX_REBOOT_CMD_HALT
@@ -23,6 +23,8 @@ DECL|macro|LINUX_REBOOT_CMD_POWER_OFF
 mdefine_line|#define&t;LINUX_REBOOT_CMD_POWER_OFF&t;0x4321FEDC
 DECL|macro|LINUX_REBOOT_CMD_RESTART2
 mdefine_line|#define&t;LINUX_REBOOT_CMD_RESTART2&t;0xA1B2C3D4
+DECL|macro|LINUX_REBOOT_CMD_SW_SUSPEND
+mdefine_line|#define&t;LINUX_REBOOT_CMD_SW_SUSPEND&t;0xD000FCE2
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/notifier.h&gt;
 r_extern
@@ -71,6 +73,20 @@ c_func
 (paren
 r_void
 )paren
+suffix:semicolon
+multiline_comment|/*&n; * Architecture-independent suspend facility&n; */
+r_extern
+r_void
+id|software_suspend
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_char
+id|software_suspend_enabled
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif /* _LINUX_REBOOT_H */

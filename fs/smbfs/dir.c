@@ -190,9 +190,9 @@ id|rename
 suffix:colon
 id|smb_rename
 comma
-id|revalidate
+id|getattr
 suffix:colon
-id|smb_revalidate_inode
+id|smb_getattr
 comma
 id|setattr
 suffix:colon

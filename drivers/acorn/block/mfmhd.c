@@ -3342,34 +3342,6 @@ comma
 id|Busy
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|QUEUE_EMPTY
-)paren
-(brace
-id|DBG
-c_func
-(paren
-l_string|&quot;mfm_request: Exited due to NULL Current 1&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|CURRENT-&gt;rq_status
-op_eq
-id|RQ_INACTIVE
-)paren
-(brace
-multiline_comment|/* Hmm - seems to be happening a lot on 1.3.45 */
-multiline_comment|/*console_printf(&quot;mfm_request: Exited due to INACTIVE Current&bslash;n&quot;); */
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* If we are still processing then return; we will get called again */
 r_if
 c_cond
@@ -3420,19 +3392,23 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;mfm_request: before INIT_REQUEST&bslash;n&quot;
+l_string|&quot;mfm_request: before blk_queue_empty&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|QUEUE_EMPTY
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;mfm_request: Exiting due to !CURRENT (pre)&bslash;n&quot;
+l_string|&quot;mfm_request: Exiting due to empty queue (pre)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|CLEAR_INTR
@@ -3444,9 +3420,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-suffix:semicolon
-id|INIT_REQUEST
-suffix:semicolon
 id|DBG
 c_func
 (paren

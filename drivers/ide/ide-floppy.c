@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/atapi.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -39,109 +40,9 @@ mdefine_line|#define IDEFLOPPY_WAIT_CMD&t;&t;(5 * WAIT_CMD)
 multiline_comment|/*&n; *&t;After each failed packet command we issue a request sense command&n; *&t;and retry the packet command IDEFLOPPY_MAX_PC_RETRIES times.&n; */
 DECL|macro|IDEFLOPPY_MAX_PC_RETRIES
 mdefine_line|#define IDEFLOPPY_MAX_PC_RETRIES&t;3
-multiline_comment|/*&n; *&t;With each packet command, we allocate a buffer of&n; *&t;IDEFLOPPY_PC_BUFFER_SIZE bytes.&n; */
-DECL|macro|IDEFLOPPY_PC_BUFFER_SIZE
-mdefine_line|#define IDEFLOPPY_PC_BUFFER_SIZE&t;256
 multiline_comment|/*&n; *&t;In various places in the driver, we need to allocate storage&n; *&t;for packet commands and requests, which will remain valid while&n; *&t;we leave the driver to wait for an interrupt or a timeout event.&n; */
 DECL|macro|IDEFLOPPY_PC_STACK
 mdefine_line|#define IDEFLOPPY_PC_STACK&t;&t;(10 + IDEFLOPPY_MAX_PC_RETRIES)
-multiline_comment|/*&n; *&t;Our view of a packet command.&n; */
-DECL|struct|idefloppy_packet_command_s
-r_typedef
-r_struct
-id|idefloppy_packet_command_s
-(brace
-DECL|member|c
-id|u8
-id|c
-(braket
-l_int|12
-)braket
-suffix:semicolon
-multiline_comment|/* Actual packet bytes */
-DECL|member|retries
-r_int
-id|retries
-suffix:semicolon
-multiline_comment|/* On each retry, we increment retries */
-DECL|member|error
-r_int
-id|error
-suffix:semicolon
-multiline_comment|/* Error code */
-DECL|member|request_transfer
-r_int
-id|request_transfer
-suffix:semicolon
-multiline_comment|/* Bytes to transfer */
-DECL|member|actually_transferred
-r_int
-id|actually_transferred
-suffix:semicolon
-multiline_comment|/* Bytes actually transferred */
-DECL|member|buffer_size
-r_int
-id|buffer_size
-suffix:semicolon
-multiline_comment|/* Size of our data buffer */
-DECL|member|b_data
-r_char
-op_star
-id|b_data
-suffix:semicolon
-multiline_comment|/* Pointer which runs on the buffers */
-DECL|member|b_count
-r_int
-id|b_count
-suffix:semicolon
-multiline_comment|/* Missing/Available data on the current buffer */
-DECL|member|buffer
-id|byte
-op_star
-id|buffer
-suffix:semicolon
-multiline_comment|/* Data buffer */
-DECL|member|current_position
-id|byte
-op_star
-id|current_position
-suffix:semicolon
-multiline_comment|/* Pointer into the above buffer */
-DECL|member|callback
-r_void
-(paren
-op_star
-id|callback
-)paren
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_struct
-id|request
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* Called when this packet command is completed */
-DECL|member|pc_buffer
-id|byte
-id|pc_buffer
-(braket
-id|IDEFLOPPY_PC_BUFFER_SIZE
-)braket
-suffix:semicolon
-multiline_comment|/* Temporary buffer */
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* Status/Action bit flags: long for set_bit */
-DECL|typedef|idefloppy_pc_t
-)brace
-id|idefloppy_pc_t
-suffix:semicolon
 multiline_comment|/*&n; *&t;Packet command flag bits.&n; */
 DECL|macro|PC_ABORT
 mdefine_line|#define&t;PC_ABORT&t;&t;&t;0&t;/* Set when an error is considered normal - We won&squot;t retry */
@@ -515,24 +416,28 @@ r_typedef
 r_struct
 (brace
 DECL|member|drive
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 suffix:semicolon
 DECL|member|pc
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 suffix:semicolon
 multiline_comment|/* Current packet command */
 DECL|member|failed_pc
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|failed_pc
 suffix:semicolon
 multiline_comment|/* Last failed packet command */
 DECL|member|pc_stack
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 id|pc_stack
 (braket
 id|IDEFLOPPY_PC_STACK
@@ -1820,63 +1725,6 @@ DECL|macro|IDEFLOPPY_MIN
 mdefine_line|#define IDEFLOPPY_MIN(a,b)&t;((a)&lt;(b) ? (a):(b))
 DECL|macro|IDEFLOPPY_MAX
 mdefine_line|#define&t;IDEFLOPPY_MAX(a,b)&t;((a)&gt;(b) ? (a):(b))
-multiline_comment|/*&n; *&t;Too bad. The drive wants to send us data which we are not ready to accept.&n; *&t;Just throw it away.&n; */
-DECL|function|idefloppy_discard_data
-r_static
-r_void
-id|idefloppy_discard_data
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-r_int
-r_int
-id|bcount
-)paren
-(brace
-r_while
-c_loop
-(paren
-id|bcount
-op_decrement
-)paren
-id|IN_BYTE
-(paren
-id|IDE_DATA_REG
-)paren
-suffix:semicolon
-)brace
-macro_line|#if IDEFLOPPY_DEBUG_BUGS
-DECL|function|idefloppy_write_zeros
-r_static
-r_void
-id|idefloppy_write_zeros
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-r_int
-r_int
-id|bcount
-)paren
-(brace
-r_while
-c_loop
-(paren
-id|bcount
-op_decrement
-)paren
-id|OUT_BYTE
-(paren
-l_int|0
-comma
-id|IDE_DATA_REG
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* IDEFLOPPY_DEBUG_BUGS */
 multiline_comment|/*&n; *&t;idefloppy_end_request is used to finish servicing a request.&n; *&n; *&t;For read/write requests, we will call ide_end_request to pass to the&n; *&t;next buffer.&n; */
 DECL|function|idefloppy_end_request
 r_static
@@ -2025,7 +1873,8 @@ id|request
 op_star
 id|rq
 comma
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 comma
@@ -2112,7 +1961,8 @@ comma
 id|bcount
 )paren
 suffix:semicolon
-id|idefloppy_discard_data
+id|atapi_discard_data
+c_func
 (paren
 id|drive
 comma
@@ -2125,6 +1975,7 @@ suffix:semicolon
 id|count
 op_assign
 id|IDEFLOPPY_MIN
+c_func
 (paren
 id|bio-&gt;bi_size
 op_minus
@@ -2175,7 +2026,8 @@ id|request
 op_star
 id|rq
 comma
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 comma
@@ -2269,7 +2121,7 @@ comma
 id|bcount
 )paren
 suffix:semicolon
-id|idefloppy_write_zeros
+id|atapi_write_zeros
 (paren
 id|drive
 comma
@@ -2282,6 +2134,7 @@ suffix:semicolon
 id|count
 op_assign
 id|IDEFLOPPY_MIN
+c_func
 (paren
 id|pc-&gt;b_count
 comma
@@ -2317,6 +2170,7 @@ DECL|function|idefloppy_update_buffers
 r_static
 r_void
 id|idefloppy_update_buffers
+c_func
 (paren
 r_struct
 id|ata_device
@@ -2327,10 +2181,6 @@ r_struct
 id|request
 op_star
 id|rq
-comma
-id|idefloppy_pc_t
-op_star
-id|pc
 )paren
 (brace
 r_struct
@@ -2362,18 +2212,21 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
 multiline_comment|/*&n; *&t;idefloppy_queue_pc_head generates a new packet command request in front&n; *&t;of the request queue, before the current request, so that it will be&n; *&t;processed immediately, on the next pass through the driver.&n; */
 DECL|function|idefloppy_queue_pc_head
 r_static
 r_void
 id|idefloppy_queue_pc_head
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 comma
@@ -2388,6 +2241,7 @@ id|ide_init_drive_cmd
 id|rq
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: --mdcki */
 id|rq-&gt;buffer
 op_assign
 (paren
@@ -2415,11 +2269,14 @@ suffix:semicolon
 )brace
 DECL|function|idefloppy_next_pc_storage
 r_static
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|idefloppy_next_pc_storage
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -2458,8 +2315,10 @@ r_struct
 id|request
 op_star
 id|idefloppy_next_rq_storage
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -2497,8 +2356,10 @@ DECL|function|idefloppy_analyze_error
 r_static
 r_void
 id|idefloppy_analyze_error
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -2591,7 +2452,7 @@ comma
 id|result-&gt;ascq
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
+macro_line|#endif
 )brace
 DECL|function|idefloppy_request_sense_callback
 r_static
@@ -2623,7 +2484,7 @@ id|KERN_INFO
 l_string|&quot;ide-floppy: Reached idefloppy_request_sense_callback&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2632,6 +2493,7 @@ id|floppy-&gt;pc-&gt;error
 )paren
 (brace
 id|idefloppy_analyze_error
+c_func
 (paren
 id|drive
 comma
@@ -2704,7 +2566,7 @@ id|KERN_INFO
 l_string|&quot;ide-floppy: Reached idefloppy_pc_callback&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
+macro_line|#endif
 id|idefloppy_end_request
 c_func
 (paren
@@ -2721,66 +2583,20 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;idefloppy_init_pc initializes a packet command.&n; */
-DECL|function|idefloppy_init_pc
-r_static
-r_void
-id|idefloppy_init_pc
-(paren
-id|idefloppy_pc_t
-op_star
-id|pc
-)paren
-(brace
-id|memset
-(paren
-id|pc-&gt;c
-comma
-l_int|0
-comma
-l_int|12
-)paren
-suffix:semicolon
-id|pc-&gt;retries
-op_assign
-l_int|0
-suffix:semicolon
-id|pc-&gt;flags
-op_assign
-l_int|0
-suffix:semicolon
-id|pc-&gt;request_transfer
-op_assign
-l_int|0
-suffix:semicolon
-id|pc-&gt;buffer
-op_assign
-id|pc-&gt;pc_buffer
-suffix:semicolon
-id|pc-&gt;buffer_size
-op_assign
-id|IDEFLOPPY_PC_BUFFER_SIZE
-suffix:semicolon
-id|pc-&gt;b_data
-op_assign
-l_int|NULL
-suffix:semicolon
-id|pc-&gt;callback
-op_assign
-id|idefloppy_pc_callback
-suffix:semicolon
-)brace
 DECL|function|idefloppy_create_request_sense_cmd
 r_static
 r_void
 id|idefloppy_create_request_sense_cmd
+c_func
 (paren
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 )paren
 (brace
-id|idefloppy_init_pc
+id|atapi_init_pc
+c_func
 (paren
 id|pc
 )paren
@@ -2814,13 +2630,16 @@ DECL|function|idefloppy_retry_pc
 r_static
 r_void
 id|idefloppy_retry_pc
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
 (brace
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 suffix:semicolon
@@ -2835,6 +2654,7 @@ suffix:semicolon
 id|error.all
 op_assign
 id|IN_BYTE
+c_func
 (paren
 id|IDE_ERROR_REG
 )paren
@@ -2842,6 +2662,7 @@ suffix:semicolon
 id|pc
 op_assign
 id|idefloppy_next_pc_storage
+c_func
 (paren
 id|drive
 )paren
@@ -2849,11 +2670,13 @@ suffix:semicolon
 id|rq
 op_assign
 id|idefloppy_next_rq_storage
+c_func
 (paren
 id|drive
 )paren
 suffix:semicolon
 id|idefloppy_create_request_sense_cmd
+c_func
 (paren
 id|pc
 )paren
@@ -2902,7 +2725,8 @@ suffix:semicolon
 id|idefloppy_ireason_reg_t
 id|ireason
 suffix:semicolon
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 op_assign
@@ -2964,8 +2788,6 @@ c_func
 id|drive
 comma
 id|rq
-comma
-id|pc
 )paren
 suffix:semicolon
 )brace
@@ -3025,6 +2847,7 @@ c_cond
 id|status.b.check
 op_logical_or
 id|test_bit
+c_func
 (paren
 id|PC_DMA_ERROR
 comma
@@ -3043,7 +2866,7 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
+macro_line|#endif
 id|rq-&gt;errors
 op_increment
 suffix:semicolon
@@ -3114,6 +2937,7 @@ r_if
 c_cond
 (paren
 id|test_and_clear_bit
+c_func
 (paren
 id|PC_DMA_IN_PROGRESS
 comma
@@ -3188,6 +3012,7 @@ c_cond
 id|ireason.b.io
 op_eq
 id|test_bit
+c_func
 (paren
 id|PC_WRITING
 comma
@@ -3232,6 +3057,7 @@ c_cond
 (paren
 op_logical_neg
 id|test_bit
+c_func
 (paren
 id|PC_WRITING
 comma
@@ -3269,7 +3095,7 @@ id|KERN_ERR
 l_string|&quot;ide-floppy: The floppy wants to send us more data than expected - discarding data&bslash;n&quot;
 )paren
 suffix:semicolon
-id|idefloppy_discard_data
+id|atapi_discard_data
 (paren
 id|drive
 comma
@@ -3299,7 +3125,7 @@ id|KERN_NOTICE
 l_string|&quot;ide-floppy: The floppy wants to send us more data than expected - allowing transfer&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
+macro_line|#endif
 )brace
 )brace
 r_if
@@ -3681,7 +3507,8 @@ id|request
 op_star
 id|rq
 comma
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 )paren
@@ -3724,13 +3551,14 @@ id|IDEFLOPPY_REQUEST_SENSE_CMD
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-floppy: possible ide-floppy.c bug - Two request sense in serial were issued&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* IDEFLOPPY_DEBUG_BUGS */
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3762,6 +3590,7 @@ OG
 id|IDEFLOPPY_MAX_PC_RETRIES
 op_logical_or
 id|test_bit
+c_func
 (paren
 id|PC_ABORT
 comma
@@ -3776,6 +3605,7 @@ c_cond
 (paren
 op_logical_neg
 id|test_bit
+c_func
 (paren
 id|PC_ABORT
 comma
@@ -3789,6 +3619,7 @@ c_cond
 (paren
 op_logical_neg
 id|test_bit
+c_func
 (paren
 id|PC_SUPPRESS_ERROR
 comma
@@ -3948,7 +3779,7 @@ id|rq
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4004,6 +3835,7 @@ id|dma_ok
 (brace
 multiline_comment|/* Begin DMA, if necessary */
 id|set_bit
+c_func
 (paren
 id|PC_DMA_IN_PROGRESS
 comma
@@ -4020,7 +3852,7 @@ id|rq
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
 multiline_comment|/* Can we transfer the packet when we get the interrupt or wait? */
 r_if
 c_cond
@@ -4148,8 +3980,10 @@ DECL|function|idefloppy_create_prevent_cmd
 r_static
 r_void
 id|idefloppy_create_prevent_cmd
+c_func
 (paren
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 comma
@@ -4166,8 +4000,8 @@ comma
 id|prevent
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
-id|idefloppy_init_pc
+macro_line|#endif
+id|atapi_init_pc
 (paren
 id|pc
 )paren
@@ -4186,18 +4020,25 @@ l_int|4
 op_assign
 id|prevent
 suffix:semicolon
+id|pc-&gt;callback
+op_assign
+id|idefloppy_pc_callback
+suffix:semicolon
 )brace
 DECL|function|idefloppy_create_read_capacity_cmd
 r_static
 r_void
 id|idefloppy_create_read_capacity_cmd
+c_func
 (paren
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 )paren
 (brace
-id|idefloppy_init_pc
+id|atapi_init_pc
+c_func
 (paren
 id|pc
 )paren
@@ -4227,13 +4068,19 @@ id|pc-&gt;request_transfer
 op_assign
 l_int|255
 suffix:semicolon
+id|pc-&gt;callback
+op_assign
+id|idefloppy_pc_callback
+suffix:semicolon
 )brace
 DECL|function|idefloppy_create_format_unit_cmd
 r_static
 r_void
 id|idefloppy_create_format_unit_cmd
+c_func
 (paren
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 comma
@@ -4247,7 +4094,7 @@ r_int
 id|flags
 )paren
 (brace
-id|idefloppy_init_pc
+id|atapi_init_pc
 (paren
 id|pc
 )paren
@@ -4366,21 +4213,27 @@ op_amp
 id|pc-&gt;flags
 )paren
 suffix:semicolon
+id|pc-&gt;callback
+op_assign
+id|idefloppy_pc_callback
+suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;A mode sense command is used to &quot;sense&quot; floppy parameters.&n; */
 DECL|function|idefloppy_create_mode_sense_cmd
 r_static
 r_void
 id|idefloppy_create_mode_sense_cmd
+c_func
 (paren
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 comma
-id|byte
+id|u8
 id|page_code
 comma
-id|byte
+id|u8
 id|type
 )paren
 (brace
@@ -4393,7 +4246,8 @@ r_sizeof
 id|idefloppy_mode_parameter_header_t
 )paren
 suffix:semicolon
-id|idefloppy_init_pc
+id|atapi_init_pc
+c_func
 (paren
 id|pc
 )paren
@@ -4459,8 +4313,10 @@ l_string|&quot;ide-floppy: unsupported page code in create_mode_sense_cmd&bslash
 suffix:semicolon
 )brace
 id|put_unaligned
+c_func
 (paren
 id|htons
+c_func
 (paren
 id|length
 )paren
@@ -4481,13 +4337,19 @@ id|pc-&gt;request_transfer
 op_assign
 id|length
 suffix:semicolon
+id|pc-&gt;callback
+op_assign
+id|idefloppy_pc_callback
+suffix:semicolon
 )brace
 DECL|function|idefloppy_create_start_stop_cmd
 r_static
 r_void
 id|idefloppy_create_start_stop_cmd
+c_func
 (paren
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 comma
@@ -4495,7 +4357,8 @@ r_int
 id|start
 )paren
 (brace
-id|idefloppy_init_pc
+id|atapi_init_pc
+c_func
 (paren
 id|pc
 )paren
@@ -4514,6 +4377,10 @@ l_int|4
 op_assign
 id|start
 suffix:semicolon
+id|pc-&gt;callback
+op_assign
+id|idefloppy_pc_callback
+suffix:semicolon
 )brace
 DECL|function|idefloppy_create_test_unit_ready_cmd
 r_static
@@ -4521,12 +4388,13 @@ r_void
 id|idefloppy_create_test_unit_ready_cmd
 c_func
 (paren
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 )paren
 (brace
-id|idefloppy_init_pc
+id|atapi_init_pc
 c_func
 (paren
 id|pc
@@ -4539,6 +4407,10 @@ l_int|0
 op_assign
 id|IDEFLOPPY_TEST_UNIT_READY_CMD
 suffix:semicolon
+id|pc-&gt;callback
+op_assign
+id|idefloppy_pc_callback
+suffix:semicolon
 )brace
 DECL|function|idefloppy_create_rw_cmd
 r_static
@@ -4550,7 +4422,8 @@ id|idefloppy_floppy_t
 op_star
 id|floppy
 comma
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 comma
@@ -4606,8 +4479,8 @@ comma
 id|blocks
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
-id|idefloppy_init_pc
+macro_line|#endif
+id|atapi_init_pc
 c_func
 (paren
 id|pc
@@ -4640,6 +4513,7 @@ suffix:colon
 id|IDEFLOPPY_WRITE12_CMD
 suffix:semicolon
 id|put_unaligned
+c_func
 (paren
 id|htonl
 (paren
@@ -4676,6 +4550,7 @@ suffix:colon
 id|IDEFLOPPY_WRITE10_CMD
 suffix:semicolon
 id|put_unaligned
+c_func
 (paren
 id|htons
 (paren
@@ -4696,8 +4571,10 @@ l_int|7
 suffix:semicolon
 )brace
 id|put_unaligned
+c_func
 (paren
 id|htonl
+c_func
 (paren
 id|block
 )paren
@@ -4741,6 +4618,7 @@ op_amp
 id|REQ_RW
 )paren
 id|set_bit
+c_func
 (paren
 id|PC_WRITING
 comma
@@ -4761,6 +4639,7 @@ op_star
 id|floppy-&gt;block_size
 suffix:semicolon
 id|set_bit
+c_func
 (paren
 id|PC_DMA_RECOMMENDED
 comma
@@ -4796,7 +4675,8 @@ id|floppy
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 suffix:semicolon
@@ -4959,10 +4839,12 @@ op_amp
 id|IDEFLOPPY_RQ
 )paren
 (brace
+multiline_comment|/* FIXME: --mdcki */
 id|pc
 op_assign
 (paren
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 )paren
 id|rq-&gt;buffer
@@ -5009,12 +4891,15 @@ DECL|function|idefloppy_queue_pc_tail
 r_static
 r_int
 id|idefloppy_queue_pc_tail
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 op_star
 id|pc
 )paren
@@ -5029,6 +4914,7 @@ op_amp
 id|rq
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: --mdcki */
 id|rq.buffer
 op_assign
 (paren
@@ -5058,8 +4944,10 @@ DECL|function|idefloppy_get_flexible_disk_page
 r_static
 r_int
 id|idefloppy_get_flexible_disk_page
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -5070,7 +4958,8 @@ id|floppy
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 id|pc
 suffix:semicolon
 id|idefloppy_mode_parameter_header_t
@@ -5288,7 +5177,8 @@ r_int
 id|idefloppy_get_capability_page
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -5299,7 +5189,8 @@ id|floppy
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 id|pc
 suffix:semicolon
 id|idefloppy_mode_parameter_header_t
@@ -5315,6 +5206,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|idefloppy_create_mode_sense_cmd
+c_func
 (paren
 op_amp
 id|pc
@@ -5384,8 +5276,10 @@ DECL|function|idefloppy_get_capacity
 r_static
 r_int
 id|idefloppy_get_capacity
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -5396,7 +5290,8 @@ id|floppy
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 id|pc
 suffix:semicolon
 id|idefloppy_capacity_header_t
@@ -5780,8 +5675,10 @@ DECL|function|idefloppy_get_format_capacities
 r_static
 r_int
 id|idefloppy_get_format_capacities
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -5801,7 +5698,8 @@ id|arg
 )paren
 multiline_comment|/* Cheater */
 (brace
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 id|pc
 suffix:semicolon
 id|idefloppy_capacity_header_t
@@ -5862,6 +5760,7 @@ id|EINVAL
 )paren
 suffix:semicolon
 id|idefloppy_create_read_capacity_cmd
+c_func
 (paren
 op_amp
 id|pc
@@ -5871,6 +5770,7 @@ r_if
 c_cond
 (paren
 id|idefloppy_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -6058,7 +5958,8 @@ r_int
 id|idefloppy_begin_format
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -6086,7 +5987,8 @@ suffix:semicolon
 r_int
 id|flags
 suffix:semicolon
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 id|pc
 suffix:semicolon
 r_if
@@ -6154,6 +6056,7 @@ r_if
 c_cond
 (paren
 id|idefloppy_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -6161,14 +6064,10 @@ op_amp
 id|pc
 )paren
 )paren
-(brace
 r_return
-(paren
 op_minus
 id|EIO
-)paren
 suffix:semicolon
-)brace
 r_return
 (paren
 l_int|0
@@ -6182,7 +6081,8 @@ r_int
 id|idefloppy_get_format_progress
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -6207,7 +6107,8 @@ id|floppy
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 id|pc
 suffix:semicolon
 r_int
@@ -6342,8 +6243,10 @@ DECL|function|idefloppy_ioctl
 r_static
 r_int
 id|idefloppy_ioctl
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -6366,7 +6269,8 @@ r_int
 id|arg
 )paren
 (brace
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 id|pc
 suffix:semicolon
 id|idefloppy_floppy_t
@@ -6431,6 +6335,7 @@ id|floppy-&gt;flags
 )paren
 (brace
 id|idefloppy_create_prevent_cmd
+c_func
 (paren
 op_amp
 id|pc
@@ -6442,6 +6347,7 @@ suffix:semicolon
 r_void
 )paren
 id|idefloppy_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -6647,6 +6553,7 @@ DECL|function|idefloppy_open
 r_static
 r_int
 id|idefloppy_open
+c_func
 (paren
 r_struct
 id|inode
@@ -6658,7 +6565,8 @@ id|file
 op_star
 id|filp
 comma
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -6669,7 +6577,8 @@ id|floppy
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 id|pc
 suffix:semicolon
 macro_line|#if IDEFLOPPY_DEBUG_LOG
@@ -6679,7 +6588,7 @@ id|KERN_INFO
 l_string|&quot;Reached idefloppy_open&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
+macro_line|#endif
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_if
@@ -6872,6 +6781,7 @@ DECL|function|idefloppy_release
 r_static
 r_void
 id|idefloppy_release
+c_func
 (paren
 r_struct
 id|inode
@@ -6883,12 +6793,14 @@ id|file
 op_star
 id|filp
 comma
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
 (brace
-id|idefloppy_pc_t
+r_struct
+id|atapi_packet_command
 id|pc
 suffix:semicolon
 macro_line|#if IDEFLOPPY_DEBUG_LOG
@@ -6898,7 +6810,7 @@ id|KERN_INFO
 l_string|&quot;Reached idefloppy_release&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6972,8 +6884,10 @@ DECL|function|idefloppy_check_media_change
 r_static
 r_int
 id|idefloppy_check_media_change
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -6986,6 +6900,7 @@ id|drive-&gt;driver_data
 suffix:semicolon
 r_return
 id|test_and_clear_bit
+c_func
 (paren
 id|IDEFLOPPY_MEDIA_CHANGED
 comma
@@ -7000,8 +6915,10 @@ r_static
 r_int
 r_int
 id|idefloppy_capacity
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -7029,8 +6946,10 @@ DECL|function|idefloppy_identify_device
 r_static
 r_int
 id|idefloppy_identify_device
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -7901,8 +7820,10 @@ DECL|function|idefloppy_setup
 r_static
 r_void
 id|idefloppy_setup
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -8103,8 +8024,10 @@ DECL|function|idefloppy_cleanup
 r_static
 r_int
 id|idefloppy_cleanup
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -8205,11 +8128,13 @@ r_static
 r_void
 id|__exit
 id|idefloppy_exit
+c_func
 (paren
 r_void
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 suffix:semicolon
@@ -8245,6 +8170,7 @@ r_if
 c_cond
 (paren
 id|idefloppy_cleanup
+c_func
 (paren
 id|drive
 )paren
@@ -8267,11 +8193,13 @@ multiline_comment|/*&n; *&t;idefloppy_init will register the driver for each flo
 DECL|function|idefloppy_init
 r_int
 id|idefloppy_init
+c_func
 (paren
 r_void
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 suffix:semicolon

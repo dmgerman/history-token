@@ -19,6 +19,9 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+DECL|macro|ACPI_C
+mdefine_line|#define ACPI_C
+macro_line|#include &lt;asm/suspend.h&gt;
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 r_extern
@@ -1552,6 +1555,63 @@ id|KERN_DEBUG
 l_string|&quot;ACPI: have wakeup address 0x%8.8lx&bslash;n&quot;
 comma
 id|acpi_wakeup_address
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * (KG): Since we affect stack here, we make this function as flat and easy&n; * as possible in order to not provoke gcc to use local variables on the stack.&n; * Note that on resume, all (expect nosave) variables will have the state from&n; * the time of writing (suspend_save_image) and the registers (including the&n; * stack pointer, but excluding the instruction pointer) will be loaded with &n; * the values saved at save_processor_context() time.&n; */
+DECL|function|do_suspend_magic
+r_void
+id|do_suspend_magic
+c_func
+(paren
+r_int
+id|resume
+)paren
+(brace
+multiline_comment|/* DANGER WILL ROBINSON!&n;&t; *&n;&t; * If this function is too difficult for gcc to optimize, it will crash and burn!&n;&t; * see above.&n;&t; *&n;&t; * DO NOT TOUCH.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|resume
+)paren
+(brace
+id|save_processor_context
+c_func
+(paren
+)paren
+suffix:semicolon
+id|acpi_save_register_state
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+op_logical_and
+id|acpi_sleep_done
+)paren
+suffix:semicolon
+id|acpi_enter_sleep_state
+c_func
+(paren
+l_int|3
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|acpi_sleep_done
+suffix:colon
+id|restore_processor_context
+c_func
+(paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;CPU context restored...&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

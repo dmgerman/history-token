@@ -244,14 +244,9 @@ suffix:semicolon
 r_int
 id|cpu
 suffix:semicolon
-id|preempt_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 id|cpu
 op_assign
-id|smp_processor_id
+id|get_cpu
 c_func
 (paren
 )paren
@@ -279,7 +274,7 @@ id|count
 op_assign
 l_int|0
 suffix:semicolon
-id|preempt_enable
+id|put_cpu
 c_func
 (paren
 )paren
@@ -293,7 +288,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|preempt_enable
+id|put_cpu
 c_func
 (paren
 )paren

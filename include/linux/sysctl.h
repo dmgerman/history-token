@@ -1998,6 +1998,12 @@ op_assign
 l_int|15
 comma
 multiline_comment|/* int: maximum time to wait for a lease break */
+DECL|enumerator|FS_DQSTATS
+id|FS_DQSTATS
+op_assign
+l_int|16
+comma
+multiline_comment|/* int: disc quota suage statistics */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_DEBUG names: */

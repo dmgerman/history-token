@@ -24,10 +24,6 @@ DECL|macro|SUPPORT_SLOW_DATA_PORTS
 macro_line|# define SUPPORT_SLOW_DATA_PORTS&t;1&t;/* 0 to reduce kernel size */
 macro_line|#endif
 multiline_comment|/* Right now this is only needed by a promise controlled.&n; */
-macro_line|#ifndef DISK_RECOVERY_TIME&t;&t;/* off=0; on=access_delay_time */
-DECL|macro|DISK_RECOVERY_TIME
-macro_line|# define DISK_RECOVERY_TIME&t;0&t;/*  for hardware that needs it */
-macro_line|#endif
 macro_line|#ifndef OK_TO_RESET_CONTROLLER&t;&t;/* 1 needed for good error recovery */
 DECL|macro|OK_TO_RESET_CONTROLLER
 macro_line|# define OK_TO_RESET_CONTROLLER&t;0&t;/* 0 for use with AH2372A/B interface */
@@ -245,6 +241,9 @@ id|ide_pmac
 comma
 DECL|enumerator|ide_etrax100
 id|ide_etrax100
+comma
+DECL|enumerator|ide_acorn
+id|ide_acorn
 DECL|typedef|hwif_chipset_t
 )brace
 id|hwif_chipset_t
@@ -1053,6 +1052,13 @@ id|spinlock_t
 op_star
 id|lock
 suffix:semicolon
+DECL|member|active
+r_int
+r_int
+op_star
+id|active
+suffix:semicolon
+multiline_comment|/* active processing request */
 DECL|member|handler
 id|ide_startstop_t
 (paren
@@ -1106,12 +1112,6 @@ op_star
 id|drive
 suffix:semicolon
 multiline_comment|/* last serviced drive */
-DECL|member|active
-r_int
-r_int
-id|active
-suffix:semicolon
-multiline_comment|/* active processing request */
 DECL|member|io_ports
 id|ide_ioreg_t
 id|io_ports
@@ -1663,14 +1663,6 @@ r_char
 id|bus_state
 suffix:semicolon
 multiline_comment|/* power state of the IDE bus */
-macro_line|#if (DISK_RECOVERY_TIME &gt; 0)
-DECL|member|last_time
-r_int
-r_int
-id|last_time
-suffix:semicolon
-multiline_comment|/* time when previous rq was done */
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Register new hardware with ide&n; */
@@ -2033,6 +2025,7 @@ op_star
 comma
 r_int
 comma
+r_int
 r_int
 )paren
 suffix:semicolon
@@ -2623,16 +2616,15 @@ id|ide_fops
 (braket
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
 multiline_comment|/* Probe for devices attached to the systems host controllers.&n; */
 r_extern
 r_int
 id|ideprobe_init
+c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDISK
 r_extern
 r_int
@@ -2960,6 +2952,106 @@ id|drive
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
+r_void
+id|udma_pci_enable
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+id|drive
+comma
+r_int
+id|on
+comma
+r_int
+id|verbose
+)paren
+suffix:semicolon
+r_int
+id|udma_pci_start
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
+)paren
+suffix:semicolon
+r_int
+id|udma_pci_stop
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+id|drive
+)paren
+suffix:semicolon
+r_int
+id|udma_pci_read
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
+)paren
+suffix:semicolon
+r_int
+id|udma_pci_write
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
+)paren
+suffix:semicolon
+r_int
+id|udma_pci_irq_status
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+id|drive
+)paren
+suffix:semicolon
+r_void
+id|udma_pci_timeout
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+id|drive
+)paren
+suffix:semicolon
+r_void
+id|udma_pci_irq_lost
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|udma_new_table

@@ -148,13 +148,13 @@ id|permission
 suffix:colon
 id|nfs_permission
 comma
-id|revalidate
+id|getattr
 suffix:colon
-id|nfs_revalidate
+id|nfs_getattr
 comma
 id|setattr
 suffix:colon
-id|nfs_notify_change
+id|nfs_setattr
 comma
 )brace
 suffix:semicolon

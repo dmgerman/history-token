@@ -113,10 +113,10 @@ id|time
 op_star
 id|bus_speed
 op_plus
-l_int|999
+l_int|999999
 )paren
 op_div
-l_int|1000
+l_int|1000000
 op_minus
 l_int|1
 suffix:semicolon

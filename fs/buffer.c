@@ -14,20 +14,10 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &lt;linux/hash.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 DECL|macro|BH_ENTRY
 mdefine_line|#define BH_ENTRY(list) list_entry((list), struct buffer_head, b_assoc_buffers)
-multiline_comment|/* This is used by some architectures to estimate available memory. */
-DECL|variable|buffermem_pages
-id|atomic_t
-id|buffermem_pages
-op_assign
-id|ATOMIC_INIT
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Hashed waitqueue_head&squot;s for wait_on_buffer()&n; */
 DECL|macro|BH_WAIT_TABLE_ORDER
 mdefine_line|#define BH_WAIT_TABLE_ORDER&t;7
@@ -324,6 +314,13 @@ id|bh
 )paren
 suffix:semicolon
 )brace
+DECL|variable|tq_bdflush
+id|DECLARE_TASK_QUEUE
+c_func
+(paren
+id|tq_bdflush
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Block until a buffer comes unlocked.  This doesn&squot;t stop it&n; * from becoming locked again - you have to lock it yourself&n; * if you want to preserve its state.&n; */
 DECL|function|__wait_on_buffer
 r_void
@@ -459,31 +456,6 @@ op_star
 id|head
 )paren
 (brace
-r_struct
-id|inode
-op_star
-id|inode
-op_assign
-id|page-&gt;mapping-&gt;host
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|inode
-op_logical_and
-id|S_ISBLK
-c_func
-(paren
-id|inode-&gt;i_mode
-)paren
-)paren
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|buffermem_pages
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -526,43 +498,6 @@ op_star
 id|page
 )paren
 (brace
-r_struct
-id|address_space
-op_star
-id|mapping
-op_assign
-id|page-&gt;mapping
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mapping
-)paren
-(brace
-r_struct
-id|inode
-op_star
-id|inode
-op_assign
-id|mapping-&gt;host
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|S_ISBLK
-c_func
-(paren
-id|inode-&gt;i_mode
-)paren
-)paren
-id|atomic_dec
-c_func
-(paren
-op_amp
-id|buffermem_pages
-)paren
-suffix:semicolon
-)brace
 id|clear_page_buffers
 c_func
 (paren

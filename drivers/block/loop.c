@@ -15,8 +15,9 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/loop.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;linux/loop.h&gt;&t;&t;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR LOOP_MAJOR
 DECL|variable|max_loop
@@ -2210,6 +2211,10 @@ l_string|&quot;loop%d&quot;
 comma
 id|lo-&gt;lo_number
 )paren
+suffix:semicolon
+id|current-&gt;flags
+op_or_assign
+id|PF_IOTHREAD
 suffix:semicolon
 id|spin_lock_irq
 c_func

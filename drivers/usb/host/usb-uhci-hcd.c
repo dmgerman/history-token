@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -77,9 +77,6 @@ mdefine_line|#define init_dbg dbg
 multiline_comment|/*--------------------------------------------------------------------------*/
 singleline_comment|//                   NO serviceable parts below!
 multiline_comment|/*--------------------------------------------------------------------------*/
-singleline_comment|// How much URBs with -&gt;next are walked
-DECL|macro|MAX_NEXT_COUNT
-mdefine_line|#define MAX_NEXT_COUNT 2048
 DECL|variable|devs
 r_static
 r_struct

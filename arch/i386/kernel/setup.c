@@ -237,6 +237,11 @@ id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|saved_videomode
+suffix:semicolon
 multiline_comment|/*&n; * This is set up by the setup-routine at boot-time&n; */
 DECL|macro|PARAM
 mdefine_line|#define PARAM&t;((unsigned char *)empty_zero_page)
@@ -260,6 +265,8 @@ DECL|macro|MOUNT_ROOT_RDONLY
 mdefine_line|#define MOUNT_ROOT_RDONLY (*(unsigned short *) (PARAM+0x1F2))
 DECL|macro|RAMDISK_FLAGS
 mdefine_line|#define RAMDISK_FLAGS (*(unsigned short *) (PARAM+0x1F8))
+DECL|macro|VIDEO_MODE
+mdefine_line|#define VIDEO_MODE (*(unsigned short *) (PARAM+0x1FA))
 DECL|macro|ORIG_ROOT_DEV
 mdefine_line|#define ORIG_ROOT_DEV (*(unsigned short *) (PARAM+0x1FC))
 DECL|macro|AUX_DEVICE_INFO
@@ -2453,6 +2460,20 @@ id|apm_info.bios
 op_assign
 id|APM_BIOS_INFO
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_SLEEP
+id|saved_videomode
+op_assign
+id|VIDEO_MODE
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Video mode to be used for restore is %lx&bslash;n&quot;
+comma
+id|saved_videomode
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4773,12 +4794,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_bit
+id|cpu_has
 c_func
 (paren
-id|X86_FEATURE_XMM
+id|c
 comma
-id|c-&gt;x86_capability
+id|X86_FEATURE_XMM
 )paren
 )paren
 (brace
@@ -8604,12 +8625,12 @@ macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
-id|test_bit
+id|cpu_has
 c_func
 (paren
-id|X86_FEATURE_HT
+id|c
 comma
-id|c-&gt;x86_capability
+id|X86_FEATURE_HT
 )paren
 )paren
 (brace
@@ -9556,12 +9577,12 @@ id|c
 r_if
 c_cond
 (paren
-id|test_bit
+id|cpu_has
 c_func
 (paren
-id|X86_FEATURE_PN
+id|c
 comma
-id|c-&gt;x86_capability
+id|X86_FEATURE_PN
 )paren
 op_logical_and
 id|disable_x86_serial_nr
@@ -11334,12 +11355,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_bit
+id|cpu_has
 c_func
 (paren
-id|X86_FEATURE_TSC
+id|c
 comma
-id|c-&gt;x86_capability
+id|X86_FEATURE_TSC
 )paren
 )paren
 (brace
