@@ -400,9 +400,9 @@ id|TEMP1_FROM_REG
 )paren
 suffix:semicolon
 DECL|macro|set_temp1
-mdefine_line|#define set_temp1(value, reg) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm90_data *data = i2c_get_clientdata(client); &bslash;&n;&t;data-&gt;value = TEMP1_TO_REG(simple_strtol(buf, NULL, 10)); &bslash;&n;&t;i2c_smbus_write_byte_data(client, reg, data-&gt;value); &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define set_temp1(value, reg) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm90_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n;&t;data-&gt;value = TEMP1_TO_REG(val); &bslash;&n;&t;i2c_smbus_write_byte_data(client, reg, data-&gt;value); &bslash;&n;&t;return count; &bslash;&n;}
 DECL|macro|set_temp2
-mdefine_line|#define set_temp2(value, regh, regl) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm90_data *data = i2c_get_clientdata(client); &bslash;&n;&t;data-&gt;value = TEMP2_TO_REG(simple_strtol(buf, NULL, 10)); &bslash;&n;&t;i2c_smbus_write_byte_data(client, regh, data-&gt;value &gt;&gt; 8); &bslash;&n;&t;i2c_smbus_write_byte_data(client, regl, data-&gt;value &amp; 0xff); &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define set_temp2(value, regh, regl) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm90_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n;&t;data-&gt;value = TEMP2_TO_REG(val); &bslash;&n;&t;i2c_smbus_write_byte_data(client, regh, data-&gt;value &gt;&gt; 8); &bslash;&n;&t;i2c_smbus_write_byte_data(client, regl, data-&gt;value &amp; 0xff); &bslash;&n;&t;return count; &bslash;&n;}
 id|set_temp1
 c_func
 (paren
