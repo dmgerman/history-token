@@ -1101,6 +1101,16 @@ l_string|&quot;9030: Array no longer protected due to missing or failed disk uni
 )brace
 comma
 (brace
+l_int|0x066B8200
+comma
+l_int|0
+comma
+l_int|1
+comma
+l_string|&quot;9042: Corrupt array parity detected on specified device&quot;
+)brace
+comma
+(brace
 l_int|0x07270000
 comma
 l_int|0
