@@ -67,20 +67,17 @@ comma
 DECL|enumerator|SIS_315
 id|SIS_315
 comma
-DECL|enumerator|SIS_550
-id|SIS_550
-comma
 DECL|enumerator|SIS_315PRO
 id|SIS_315PRO
 comma
-DECL|enumerator|SIS_640
-id|SIS_640
-comma
-DECL|enumerator|SIS_740
-id|SIS_740
+DECL|enumerator|SIS_550
+id|SIS_550
 comma
 DECL|enumerator|SIS_650
 id|SIS_650
+comma
+DECL|enumerator|SIS_740
+id|SIS_740
 comma
 DECL|enumerator|SIS_330
 id|SIS_330
@@ -406,11 +403,40 @@ DECL|member|lockaccel
 id|spinlock_t
 id|lockaccel
 suffix:semicolon
+DECL|member|pcibus
+r_int
+r_int
+id|pcibus
+suffix:semicolon
+DECL|member|pcislot
+r_int
+r_int
+id|pcislot
+suffix:semicolon
+DECL|member|pcifunc
+r_int
+r_int
+id|pcifunc
+suffix:semicolon
+DECL|member|accel
+r_int
+id|accel
+suffix:semicolon
+DECL|member|subsysvendor
+r_int
+r_int
+id|subsysvendor
+suffix:semicolon
+DECL|member|subsysdevice
+r_int
+r_int
+id|subsysdevice
+suffix:semicolon
 DECL|member|reserved
 r_char
 id|reserved
 (braket
-l_int|256
+l_int|236
 )braket
 suffix:semicolon
 )brace
@@ -419,7 +445,9 @@ multiline_comment|/* TW: Addtional IOCTL for communication sisfb &lt;&gt; X driv
 multiline_comment|/*     If changing this, vgatypes.h must also be changed (for X driver)    */
 multiline_comment|/* TW: ioctl for identifying and giving some info (esp. memory heap start) */
 DECL|macro|SISFB_GET_INFO
-mdefine_line|#define SISFB_GET_INFO&t;  _IOR(&squot;n&squot;,0xF8,sizeof(__u32))
+mdefine_line|#define SISFB_GET_INFO&t;  &t;_IOR(&squot;n&squot;,0xF8,sizeof(__u32))
+DECL|macro|SISFB_GET_VBRSTATUS
+mdefine_line|#define SISFB_GET_VBRSTATUS  &t;_IOR(&squot;n&squot;,0xF9,sizeof(__u32))
 multiline_comment|/* TW: Structure argument for SISFB_GET_INFO ioctl  */
 DECL|typedef|sisfb_info
 DECL|typedef|psisfb_info
@@ -481,11 +509,50 @@ r_int
 r_char
 id|sisfb_patchlevel
 suffix:semicolon
+DECL|member|sisfb_caps
+r_int
+r_char
+id|sisfb_caps
+suffix:semicolon
+multiline_comment|/* Sisfb capabilities */
+DECL|member|sisfb_tqlen
+r_int
+id|sisfb_tqlen
+suffix:semicolon
+multiline_comment|/* turbo queue length (in KB) */
+DECL|member|sisfb_pcibus
+r_int
+r_int
+id|sisfb_pcibus
+suffix:semicolon
+multiline_comment|/* The card&squot;s PCI ID */
+DECL|member|sisfb_pcislot
+r_int
+r_int
+id|sisfb_pcislot
+suffix:semicolon
+DECL|member|sisfb_pcifunc
+r_int
+r_int
+id|sisfb_pcifunc
+suffix:semicolon
+DECL|member|sisfb_lcdpdc
+r_int
+r_char
+id|sisfb_lcdpdc
+suffix:semicolon
+multiline_comment|/* PanelDelayCompensation */
+DECL|member|sisfb_lcda
+r_int
+r_char
+id|sisfb_lcda
+suffix:semicolon
+multiline_comment|/* Detected status of LCDA for low res/text modes */
 DECL|member|reserved
 r_char
 id|reserved
 (braket
-l_int|253
+l_int|235
 )braket
 suffix:semicolon
 multiline_comment|/* for future use */

@@ -21,10 +21,28 @@ DECL|macro|VB_SIS301LV
 mdefine_line|#define VB_SIS301LV     &t;0x0008
 DECL|macro|VB_SIS302LV
 mdefine_line|#define VB_SIS302LV     &t;0x0010
+DECL|macro|VB_SIS30xLV
+mdefine_line|#define VB_SIS30xLV&t;&t;VB_SIS301LV
+DECL|macro|VB_SIS30xNEW
+mdefine_line|#define VB_SIS30xNEW&t;&t;VB_SIS302LV
 DECL|macro|VB_NoLCD
 mdefine_line|#define VB_NoLCD        &t;0x8000
 DECL|macro|VB_SIS301BLV302BLV
 mdefine_line|#define VB_SIS301BLV302BLV      (VB_SIS301B|VB_SIS302B|VB_SIS301LV|VB_SIS302LV)
+DECL|macro|VB_SIS301B302B
+mdefine_line|#define VB_SIS301B302B          (VB_SIS301B|VB_SIS302B)
+DECL|macro|VB_SIS301LV302LV
+mdefine_line|#define VB_SIS301LV302LV        (VB_SIS301LV|VB_SIS302LV)
+DECL|macro|IS_SIS650740
+mdefine_line|#define IS_SIS650740            ((HwDeviceExtension-&gt;jChipType &gt;= SIS_650) &amp;&amp; (HwDeviceExtension-&gt;jChipType &lt; SIS_330))
+DECL|macro|IS_SIS650
+mdefine_line|#define IS_SIS650&t;&t;(HwDeviceExtension-&gt;jChipType == SIS_650)
+DECL|macro|IS_SIS740
+mdefine_line|#define IS_SIS740&t;&t;(HwDeviceExtension-&gt;jChipType == SIS_740)
+DECL|macro|IS_SIS330
+mdefine_line|#define IS_SIS330&t;&t;(HwDeviceExtension-&gt;jChipType == SIS_330)
+DECL|macro|IS_SIS550
+mdefine_line|#define IS_SIS550&t;&t;(HwDeviceExtension-&gt;jChipType == SIS_550)
 DECL|macro|CRT1Len
 mdefine_line|#define CRT1Len                 17
 DECL|macro|LVDSCRT1Len
@@ -53,11 +71,11 @@ mdefine_line|#define ModeInfoFlag            0x07
 DECL|macro|IsTextMode
 mdefine_line|#define IsTextMode              0x07
 DECL|macro|DACInfoFlag
-mdefine_line|#define DACInfoFlag             0x18
+mdefine_line|#define DACInfoFlag             0x0018
 DECL|macro|MemoryInfoFlag
-mdefine_line|#define MemoryInfoFlag          0x1E0
+mdefine_line|#define MemoryInfoFlag          0x01E0
 DECL|macro|MemorySizeShift
-mdefine_line|#define MemorySizeShift         0x05
+mdefine_line|#define MemorySizeShift         5
 multiline_comment|/* modeflag */
 DECL|macro|Charx8Dot
 mdefine_line|#define Charx8Dot               0x0200
@@ -91,9 +109,11 @@ mdefine_line|#define NoSupportLCD            0x0058
 DECL|macro|SupportCHTV
 mdefine_line|#define SupportCHTV &t;&t;0x0800
 DECL|macro|SupportTV1024
-mdefine_line|#define SupportTV1024           0x0800  /*301b*/            
+mdefine_line|#define SupportTV1024           0x0800            
 DECL|macro|InterlaceMode
 mdefine_line|#define InterlaceMode           0x0080
+DECL|macro|SupportHiVisionTV2
+mdefine_line|#define SupportHiVisionTV2      0x1000
 DECL|macro|SyncPP
 mdefine_line|#define SyncPP                  0x0000
 DECL|macro|SyncPN
@@ -117,8 +137,6 @@ DECL|macro|SetSimuScanMode
 mdefine_line|#define SetSimuScanMode         0x0001   /* CR 30 */
 DECL|macro|SwitchToCRT2
 mdefine_line|#define SwitchToCRT2            0x0002
-DECL|macro|SetCRT2ToTV
-mdefine_line|#define SetCRT2ToTV             0x009C
 DECL|macro|SetCRT2ToAVIDEO
 mdefine_line|#define SetCRT2ToAVIDEO         0x0004
 DECL|macro|SetCRT2ToSVIDEO
@@ -131,6 +149,8 @@ DECL|macro|SetCRT2ToRAMDAC
 mdefine_line|#define SetCRT2ToRAMDAC         0x0040
 DECL|macro|SetCRT2ToHiVisionTV
 mdefine_line|#define SetCRT2ToHiVisionTV     0x0080
+DECL|macro|SetCRT2ToTV
+mdefine_line|#define SetCRT2ToTV             0x009C   /* alias */
 DECL|macro|SetNTSCTV
 mdefine_line|#define SetNTSCTV               0x0000   /* CR 31 */
 DECL|macro|SetPALTV
@@ -167,23 +187,57 @@ DECL|macro|TVOverScanShift
 mdefine_line|#define TVOverScanShift         4
 DECL|macro|ClearBufferFlag
 mdefine_line|#define ClearBufferFlag         0x20
-multiline_comment|/* CR32 (Newer 630, and 310/325 series)&n;&n;   [0]   VB connected with CVBS&n;   [1]   VB connected with SVHS&n;   [2]   VB connected with SCART&n;   [3]   VB connected with LCD&n;   [4]   VB connected with CRT2 (secondary VGA)&n;   [5]   CRT1 monitor is connected&n;   [6]   VB connected with Hi-Vision TV&n;   [7]   VB connected with DVI combo connector&n;&n;&n;   CR37&n;&n;   [0]   Set 24/18 bit (0/1) RGB to LVDS/TMDS transmitter (set by BIOS)&n;   [3:1] External chip&n;         300 series:&n;&t;    001   SiS301 (never seen)&n;&t;    010   LVDS&n;&t;    011   LVDS + Tumpion Zurac&n;&t;    100   LVDS + Chrontel 7005&n;&t;    110   Chrontel 7005&n;&t;  310/325 series&n;&t;    001   SiS30x (never seen)&n;&t;    010   LVDS&n;&t;    011   LVDS + Chrontel 7019&n;&t;  All other combinations reserved&n;   [4]    LVDS: Expanding(0)/Non-expanding(1) LCD display&n;          30x:  SiS30x(0)/LCD monitor(1) scaling display&n;   [5]    LCD polarity select&n;          0: VESA DMT Standard&n;&t;  1: EDID 2.x defined&n;   [6]    LCD honrizontal polarity select&n;          0: High active&n;&t;  1: Low active&n;   [7]    LCD vertical polarity select&n;          0: High active&n;&t;  1: Low active&n;*/
+multiline_comment|/* CR32 (Newer 630, and 310/325 series)&n;&n;   [0]   VB connected with CVBS&n;   [1]   VB connected with SVHS&n;   [2]   VB connected with SCART&n;   [3]   VB connected with LCD&n;   [4]   VB connected with CRT2 (secondary VGA)&n;   [5]   CRT1 monitor is connected&n;   [6]   VB connected with Hi-Vision TV&n;   [7]   VB connected with DVI combo connector&n;&n;&n;   CR37&n;&n;   [0]   Set 24/18 bit (0/1) RGB to LVDS/TMDS transmitter (set by BIOS)&n;   [3:1] External chip&n;         300 series:&n;&t;    001   SiS301 (never seen)&n;&t;    010   LVDS&n;&t;    011   LVDS + Tumpion Zurac&n;&t;    100   LVDS + Chrontel 7005&n;&t;    110   Chrontel 7005&n;&t;  310/325 series&n;&t;    001   SiS30x (never seen)&n;&t;    010   LVDS&n;&t;    011   LVDS + Chrontel 7019&n;&t;  All other combinations reserved&n;   [4]    LVDS: 0: Panel Link expands / 1: Panel Link does not expand&n;          30x:  0: Bridge scales      / 1: Bridge does not scale = Panel scales (if possible)&n;   [5]    LCD polarity select&n;          0: VESA DMT Standard&n;&t;  1: EDID 2.x defined&n;   [6]    LCD horizontal polarity select&n;          0: High active&n;&t;  1: Low active&n;   [7]    LCD vertical polarity select&n;          0: High active&n;&t;  1: Low active&n;*/
+multiline_comment|/* CR37: LCDInfo */
+DECL|macro|LCDRGB18Bit
+mdefine_line|#define LCDRGB18Bit           0x0001
+DECL|macro|LCDNonExpanding
+mdefine_line|#define LCDNonExpanding       0x0010
+DECL|macro|DontExpandLCD
+mdefine_line|#define DontExpandLCD&t;      LCDNonExpanding
+DECL|macro|LCDNonExpandingShift
+mdefine_line|#define LCDNonExpandingShift       4
+DECL|macro|DontExpandLCDShift
+mdefine_line|#define DontExpandLCDShift    LCDNonExpandingShift
+DECL|macro|LCDSync
+mdefine_line|#define LCDSync               0x0020
+DECL|macro|LCDPass11
+mdefine_line|#define LCDPass11             0x0100 
+DECL|macro|LCDSyncBit
+mdefine_line|#define LCDSyncBit            0x00e0
+DECL|macro|LCDSyncShift
+mdefine_line|#define LCDSyncShift               6
+multiline_comment|/* CR38 (310/325 series) */
 DECL|macro|EnableDualEdge
-mdefine_line|#define EnableDualEdge &t;&t;0x01   /* CR38 (310/325 series) */
-multiline_comment|/* #define PAL_NTSC             0x01      (only on 315PRO) */
+mdefine_line|#define EnableDualEdge &t;&t;0x01   
 DECL|macro|SetToLCDA
-mdefine_line|#define SetToLCDA&t;&t;0x02   /* TW: LCD channel A (302 only) */
-DECL|macro|SetYPbPr
-mdefine_line|#define SetYPbPr                0x10   /* TW: ? */
-DECL|macro|EnablePALMN
-mdefine_line|#define EnablePALMN             0x40
+mdefine_line|#define SetToLCDA&t;&t;0x02   /* LCD channel A (302B/LV and 650+LVDS only) */
+DECL|macro|EnableSiSHiVision
+mdefine_line|#define EnableSiSHiVision       0x04   /* HiVision (HDTV) on SiS bridge */
+DECL|macro|EnableLVDSScart
+mdefine_line|#define EnableLVDSScart         0x04   /* Scart on Ch7019 (unofficial definition - TW) */
+DECL|macro|EnableLVDSHiVision
+mdefine_line|#define EnableLVDSHiVision      0x08   /* YPbPr color format (480i HDTV); only on 650/Ch7019 systems */
+DECL|macro|SiSHiVision1
+mdefine_line|#define SiSHiVision1            0x10   /* See SetHiVision() */
+DECL|macro|SiSHiVision2
+mdefine_line|#define SiSHiVision2            0x20
+DECL|macro|EnablePALM
+mdefine_line|#define EnablePALM              0x40   /* 1 = Set PALM */
 DECL|macro|EnablePALN
-mdefine_line|#define EnablePALN              0x80
-multiline_comment|/* CR79 (310/325 series only)&n;   [3-0] Notify driver&n;         0001 Mode Switch event (set by BIOS)&n;&t; 0010 Epansion On/Off event&n;&t; 0011 TV UnderScan/OverScan event&n;&t; 0100 Set Brightness event&n;&t; 0101 Set Contrast event&n;&t; 0110 Set Mute event&n;&t; 0111 Set Volume Up/Down event&n;   [4]   Enable Backlight Control by BIOS/driver (set by driver)&n;   [5]   PAL/NTSC (set by BIOS)&n;   [6]   Expansion On/Off (set by BIOS)&n;   [7]   TV UnderScan/OverScan (set by BIOS)&n;*/
+mdefine_line|#define EnablePALN              0x80   /* 1 = Set PALN */
 DECL|macro|SetSCARTOutput
 mdefine_line|#define SetSCARTOutput          0x01
 DECL|macro|BoardTVType
 mdefine_line|#define BoardTVType             0x02
+DECL|macro|EnablePALMN
+mdefine_line|#define EnablePALMN             0x40   /* Romflag: 1 = Allow PALM/PALN */
+multiline_comment|/* CR39 (650) */
+DECL|macro|LCDPass1_1
+mdefine_line|#define LCDPass1_1&t;&t;0x01   /* LVDS only; set by driver to pass 1:1 data to LVDS output  */
+DECL|macro|Enable302LV_DualLink
+mdefine_line|#define Enable302LV_DualLink    0x04   /* 30xNEW (302LV) only; set by mode switching function */
+multiline_comment|/* CR79 (310/325 series only)&n;   [3-0] Notify driver&n;         0001 Mode Switch event (set by BIOS)&n;&t; 0010 Epansion On/Off event&n;&t; 0011 TV UnderScan/OverScan event&n;&t; 0100 Set Brightness event&n;&t; 0101 Set Contrast event&n;&t; 0110 Set Mute event&n;&t; 0111 Set Volume Up/Down event&n;   [4]   Enable Backlight Control by BIOS/driver &n;         (set by driver; set means that the BIOS should&n;&t; not touch the backlight registers because eg.&n;&t; the driver already switched off the backlight)&n;   [5]   PAL/NTSC (set by BIOS)&n;   [6]   Expansion On/Off (set by BIOS; copied to CR32[4])&n;   [7]   TV UnderScan/OverScan (set by BIOS)&n;*/
 multiline_comment|/* SetFlag */
 DECL|macro|ProgrammingCRT2
 mdefine_line|#define ProgrammingCRT2         0x01
@@ -199,10 +253,8 @@ DECL|macro|SetDispDevSwitchFlag
 mdefine_line|#define SetDispDevSwitchFlag    0x20
 DECL|macro|CheckWinDos
 mdefine_line|#define CheckWinDos             0x40
-DECL|macro|SetJDOSMode
-mdefine_line|#define SetJDOSMode             0x80
-DECL|macro|CRT2IsVGA
-mdefine_line|#define CRT2IsVGA&t;        0x80  /* TW: Not sure about this name... */
+DECL|macro|SetDOSMode
+mdefine_line|#define SetDOSMode              0x80
 multiline_comment|/* LCDResInfo */
 DECL|macro|Panel300_800x600
 mdefine_line|#define Panel300_800x600        0x01&t;/* CR36 */
@@ -218,7 +270,6 @@ DECL|macro|Panel300_1024x600
 mdefine_line|#define Panel300_1024x600       0x06
 DECL|macro|Panel300_1152x768
 mdefine_line|#define Panel300_1152x768       0x07
-multiline_comment|/* #define Panel300_1600x1200      0x06  OLD */
 DECL|macro|Panel300_320x480
 mdefine_line|#define Panel300_320x480        0x08 &t;/* fstn - TW: This is fake, can be any */
 DECL|macro|Panel310_800x600
@@ -236,15 +287,39 @@ mdefine_line|#define Panel310_1152x864       0x06
 DECL|macro|Panel310_1280x960
 mdefine_line|#define Panel310_1280x960       0x07
 DECL|macro|Panel310_1152x768
-mdefine_line|#define Panel310_1152x768       0x08
+mdefine_line|#define Panel310_1152x768       0x08&t;/* LVDS only */
 DECL|macro|Panel310_1400x1050
 mdefine_line|#define Panel310_1400x1050      0x09
 DECL|macro|Panel310_1280x768
-mdefine_line|#define Panel310_1280x768       0x0a
+mdefine_line|#define Panel310_1280x768       0x0a    /* LVDS only */
 DECL|macro|Panel310_1600x1200
 mdefine_line|#define Panel310_1600x1200      0x0b
 DECL|macro|Panel310_320x480
-mdefine_line|#define Panel310_320x480        0x0c           /* fstn - TW: This is fake, can be any */
+mdefine_line|#define Panel310_320x480        0x0c    /* fstn - TW: This is fake, can be any */
+DECL|macro|Panel_800x600
+mdefine_line|#define Panel_800x600           0x01&t;/* Unified values */
+DECL|macro|Panel_1024x768
+mdefine_line|#define Panel_1024x768          0x02
+DECL|macro|Panel_1280x1024
+mdefine_line|#define Panel_1280x1024         0x03
+DECL|macro|Panel_640x480
+mdefine_line|#define Panel_640x480           0x04
+DECL|macro|Panel_1024x600
+mdefine_line|#define Panel_1024x600          0x05
+DECL|macro|Panel_1152x864
+mdefine_line|#define Panel_1152x864          0x06
+DECL|macro|Panel_1280x960
+mdefine_line|#define Panel_1280x960          0x07
+DECL|macro|Panel_1152x768
+mdefine_line|#define Panel_1152x768          0x08&t;/* LVDS only */
+DECL|macro|Panel_1400x1050
+mdefine_line|#define Panel_1400x1050         0x09
+DECL|macro|Panel_1280x768
+mdefine_line|#define Panel_1280x768          0x0a    /* LVDS only */
+DECL|macro|Panel_1600x1200
+mdefine_line|#define Panel_1600x1200         0x0b
+DECL|macro|Panel_320x480
+mdefine_line|#define Panel_320x480           0x0c    /* fstn - TW: This is fake, can be any */
 DECL|macro|ExtChipType
 mdefine_line|#define ExtChipType             0x0e
 DECL|macro|ExtChip301
@@ -256,24 +331,9 @@ mdefine_line|#define ExtChipTrumpion         0x06
 DECL|macro|ExtChipCH7005
 mdefine_line|#define ExtChipCH7005           0x08
 DECL|macro|ExtChipMitacTV
-mdefine_line|#define ExtChipMitacTV          0x0a            /* TW: Incorrect, 0x0a = Chrontel 7005 only */
+mdefine_line|#define ExtChipMitacTV          0x0a    /* TW: Incorrect, 0x0a = Chrontel 7005 only */
 DECL|macro|IsM650
-mdefine_line|#define IsM650                  0x80   &t;&t;/* TW: CR5F */
-multiline_comment|/* LCDInfo */
-DECL|macro|LCDRGB18Bit
-mdefine_line|#define LCDRGB18Bit             0x01
-DECL|macro|LCDNonExpandingShift
-mdefine_line|#define LCDNonExpandingShift    0x04
-DECL|macro|LCDNonExpanding
-mdefine_line|#define LCDNonExpanding         0x10
-DECL|macro|LCDSync
-mdefine_line|#define LCDSync                 0x20
-multiline_comment|/* TW: What is.. */
-multiline_comment|/*  0x100   */
-DECL|macro|LCDSyncBit
-mdefine_line|#define LCDSyncBit              0xe0
-DECL|macro|LCDSyncShift
-mdefine_line|#define LCDSyncShift            6
+mdefine_line|#define IsM650                  0x80   &t;/* TW: CR5F */
 DECL|macro|LCDDataLen
 mdefine_line|#define LCDDataLen              8
 DECL|macro|HiTVDataLen

@@ -166,6 +166,10 @@ DECL|macro|FB_ACCEL_ATI_RADEON
 mdefine_line|#define FB_ACCEL_ATI_RADEON&t;38&t;/* ATI Radeon family&t;&t;*/
 DECL|macro|FB_ACCEL_I810
 mdefine_line|#define FB_ACCEL_I810           39      /* Intel 810/815                */
+DECL|macro|FB_ACCEL_SIS_GLAMOUR_2
+mdefine_line|#define FB_ACCEL_SIS_GLAMOUR_2  40&t;/* SiS 315, 650, 740&t;&t;*/
+DECL|macro|FB_ACCEL_SIS_XABRE
+mdefine_line|#define FB_ACCEL_SIS_XABRE      41&t;/* SiS 330 (&quot;Xabre&quot;)&t;&t;*/
 DECL|macro|FB_ACCEL_NEOMAGIC_NM2070
 mdefine_line|#define FB_ACCEL_NEOMAGIC_NM2070 90&t;/* NeoMagic NM2070              */
 DECL|macro|FB_ACCEL_NEOMAGIC_NM2090
@@ -935,7 +939,6 @@ multiline_comment|/* spinlock                      */
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 r_struct
@@ -1233,24 +1236,6 @@ id|info
 comma
 r_int
 id|angle
-)paren
-suffix:semicolon
-multiline_comment|/* perform polling on fb device */
-DECL|member|fb_poll
-r_int
-(paren
-op_star
-id|fb_poll
-)paren
-(paren
-r_struct
-id|fb_info
-op_star
-id|info
-comma
-id|poll_table
-op_star
-id|wait
 )paren
 suffix:semicolon
 multiline_comment|/* wait for blit idle, optional */
