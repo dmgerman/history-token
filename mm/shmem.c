@@ -1038,15 +1038,6 @@ id|swp_entry_t
 op_star
 id|entry
 suffix:semicolon
-r_static
-r_const
-id|swp_entry_t
-id|unswapped
-op_assign
-(brace
-l_int|0
-)brace
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1105,12 +1096,15 @@ op_eq
 id|SGP_READ
 )paren
 r_return
+id|shmem_swp_map
+c_func
 (paren
-id|swp_entry_t
-op_star
+id|ZERO_PAGE
+c_func
+(paren
+l_int|0
 )paren
-op_amp
-id|unswapped
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Test free_blocks against 1 not 0, since we have 1 data&n;&t;&t; * page (and perhaps indirect index pages) yet to allocate:&n;&t;&t; * a waste to allocate index if we cannot allocate data.&n;&t;&t; */
 id|spin_lock
