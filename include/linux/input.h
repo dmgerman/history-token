@@ -811,28 +811,24 @@ DECL|macro|KEY_LAST
 mdefine_line|#define KEY_LAST&t;&t;0x195
 DECL|macro|KEY_AB
 mdefine_line|#define KEY_AB&t;&t;&t;0x196
-DECL|macro|KEY_PLAY
-mdefine_line|#define KEY_PLAY&t;&t;0x197
+DECL|macro|KEY_NEXT
+mdefine_line|#define KEY_NEXT&t;&t;0x197
 DECL|macro|KEY_RESTART
 mdefine_line|#define KEY_RESTART&t;&t;0x198
 DECL|macro|KEY_SLOW
 mdefine_line|#define KEY_SLOW&t;&t;0x199
 DECL|macro|KEY_SHUFFLE
 mdefine_line|#define KEY_SHUFFLE&t;&t;0x19a
-DECL|macro|KEY_FASTFORWARD
-mdefine_line|#define KEY_FASTFORWARD&t;&t;0x19b
+DECL|macro|KEY_BREAK
+mdefine_line|#define KEY_BREAK&t;&t;0x1ab
 DECL|macro|KEY_PREVIOUS
 mdefine_line|#define KEY_PREVIOUS&t;&t;0x19c
-DECL|macro|KEY_NEXT
-mdefine_line|#define KEY_NEXT&t;&t;0x19d
 DECL|macro|KEY_DIGITS
-mdefine_line|#define KEY_DIGITS&t;&t;0x19e
+mdefine_line|#define KEY_DIGITS&t;&t;0x19d
 DECL|macro|KEY_TEEN
-mdefine_line|#define KEY_TEEN&t;&t;0x19f
+mdefine_line|#define KEY_TEEN&t;&t;0x19e
 DECL|macro|KEY_TWEN
-mdefine_line|#define KEY_TWEN&t;&t;0x1a0
-DECL|macro|KEY_BREAK
-mdefine_line|#define KEY_BREAK&t;&t;0x1a1
+mdefine_line|#define KEY_TWEN&t;&t;0x1af
 DECL|macro|KEY_MAX
 mdefine_line|#define KEY_MAX&t;&t;&t;0x1ff
 multiline_comment|/*&n; * Relative axes&n; */
