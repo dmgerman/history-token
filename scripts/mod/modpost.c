@@ -143,14 +143,6 @@ comma
 r_const
 r_char
 op_star
-id|file
-comma
-r_int
-id|line
-comma
-r_const
-r_char
-op_star
 id|expr
 )paren
 (brace
@@ -164,11 +156,7 @@ id|ptr
 id|fatal
 c_func
 (paren
-l_string|&quot;Memory allocation failure %s line %d: %s.&bslash;n&quot;
-comma
-id|file
-comma
-id|line
+l_string|&quot;modpost: Memory allocation failure: %s.&bslash;n&quot;
 comma
 id|expr
 )paren
