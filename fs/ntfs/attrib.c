@@ -2609,6 +2609,19 @@ id|ctx
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * The attribute was not found.  Before we return, we want to ensure&n;&t; * @ctx-&gt;mrec and @ctx-&gt;attr indicate the position at which the&n;&t; * attribute should be inserted in the base mft record.  Since we also&n;&t; * want to preserve @ctx-&gt;al_entry we cannot reinitialize the search&n;&t; * context using ntfs_attr_reinit_search_ctx() as this would set&n;&t; * @ctx-&gt;al_entry to NULL.  Thus we do the necessary bits manually (see&n;&t; * ntfs_attr_init_search_ctx() below).  Note, we _only_ preserve&n;&t; * @ctx-&gt;al_entry as the remaining fields (base_*) are identical to&n;&t; * their non base_ counterparts and we cannot set @ctx-&gt;base_attr&n;&t; * correctly yet as we do not know what @ctx-&gt;attr will be set to by&n;&t; * the call to ntfs_attr_find() below.&n;&t; */
+r_if
+c_cond
+(paren
+id|ni
+op_ne
+id|base_ni
+)paren
+id|unmap_extent_mft_record
+c_func
+(paren
+id|ni
+)paren
+suffix:semicolon
 id|ctx-&gt;mrec
 op_assign
 id|ctx-&gt;base_mrec
@@ -2639,7 +2652,7 @@ id|TRUE
 suffix:semicolon
 id|ctx-&gt;ntfs_ino
 op_assign
-id|ctx-&gt;base_ntfs_ino
+id|base_ni
 suffix:semicolon
 id|ctx-&gt;base_ntfs_ino
 op_assign
