@@ -1501,8 +1501,9 @@ id|PROBE
 comma
 id|INFO
 comma
-l_string|&quot;AutoNeg other than Full/1000 is &quot;
-l_string|&quot;not valid for fiber adapters, parameter ignored&bslash;n&quot;
+l_string|&quot;AutoNeg other than 1000/Full is &quot;
+l_string|&quot;not valid for fiber adapters, &quot;
+l_string|&quot;parameter ignored&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2154,7 +2155,8 @@ id|PROBE
 comma
 id|INFO
 comma
-l_string|&quot;Using Autonegotiation at Half Duplex only&bslash;n&quot;
+l_string|&quot;Using Autonegotiation at &quot;
+l_string|&quot;Half Duplex only&bslash;n&quot;
 )paren
 suffix:semicolon
 id|adapter-&gt;hw.autoneg
@@ -2191,7 +2193,8 @@ id|PROBE
 comma
 id|INFO
 comma
-l_string|&quot;Using Autonegotiation at Full Duplex only&bslash;n&quot;
+l_string|&quot;Using Autonegotiation at &quot;
+l_string|&quot;Full Duplex only&bslash;n&quot;
 )paren
 suffix:semicolon
 id|adapter-&gt;hw.autoneg
@@ -2220,7 +2223,8 @@ id|PROBE
 comma
 id|INFO
 comma
-l_string|&quot;10 Mbps Speed specified without Duplex&bslash;n&quot;
+l_string|&quot;10 Mbps Speed specified &quot;
+l_string|&quot;without Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
 id|DPRINTK
@@ -2319,7 +2323,8 @@ id|PROBE
 comma
 id|INFO
 comma
-l_string|&quot;100 Mbps Speed specified without Duplex&bslash;n&quot;
+l_string|&quot;100 Mbps Speed specified &quot;
+l_string|&quot;without Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
 id|DPRINTK
@@ -2329,7 +2334,8 @@ id|PROBE
 comma
 id|INFO
 comma
-l_string|&quot;Using Autonegotiation at 100 Mbps only&bslash;n&quot;
+l_string|&quot;Using Autonegotiation at &quot;
+l_string|&quot;100 Mbps only&bslash;n&quot;
 )paren
 suffix:semicolon
 id|adapter-&gt;hw.autoneg
@@ -2418,7 +2424,8 @@ id|PROBE
 comma
 id|INFO
 comma
-l_string|&quot;1000 Mbps Speed specified without Duplex&bslash;n&quot;
+l_string|&quot;1000 Mbps Speed specified without &quot;
+l_string|&quot;Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
 id|DPRINTK
@@ -2428,7 +2435,8 @@ id|PROBE
 comma
 id|INFO
 comma
-l_string|&quot;Using Autonegotiation at 1000 Mbps Full Duplex only&bslash;n&quot;
+l_string|&quot;Using Autonegotiation at 1000 Mbps &quot;
+l_string|&quot;Full Duplex only&bslash;n&quot;
 )paren
 suffix:semicolon
 id|adapter-&gt;hw.autoneg
@@ -2465,7 +2473,8 @@ id|PROBE
 comma
 id|INFO
 comma
-l_string|&quot;Using Autonegotiation at 1000 Mbps Full Duplex only&bslash;n&quot;
+l_string|&quot;Using Autonegotiation at 1000 Mbps &quot;
+l_string|&quot;Full Duplex only&bslash;n&quot;
 )paren
 suffix:semicolon
 id|adapter-&gt;hw.autoneg
