@@ -225,7 +225,7 @@ id|conf-&gt;nr_strip_zones
 suffix:semicolon
 id|conf-&gt;strip_zone
 op_assign
-id|vmalloc
+id|kmalloc
 c_func
 (paren
 r_sizeof
@@ -235,6 +235,8 @@ id|strip_zone
 )paren
 op_star
 id|conf-&gt;nr_strip_zones
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -643,7 +645,7 @@ l_int|0
 suffix:semicolon
 m_abort
 suffix:colon
-id|vfree
+id|kfree
 c_func
 (paren
 id|conf-&gt;strip_zone
@@ -800,13 +802,15 @@ id|tmp
 suffix:semicolon
 id|conf
 op_assign
-id|vmalloc
+id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
 id|raid0_conf_t
 )paren
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -947,7 +951,7 @@ id|raid0_hash
 suffix:semicolon
 id|conf-&gt;hash_table
 op_assign
-id|vmalloc
+id|kmalloc
 (paren
 r_sizeof
 (paren
@@ -956,6 +960,8 @@ id|raid0_hash
 )paren
 op_star
 id|nb_zone
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -1134,7 +1140,7 @@ l_int|0
 suffix:semicolon
 id|out_free_zone_conf
 suffix:colon
-id|vfree
+id|kfree
 c_func
 (paren
 id|conf-&gt;strip_zone
@@ -1146,7 +1152,7 @@ l_int|NULL
 suffix:semicolon
 id|out_free_conf
 suffix:colon
-id|vfree
+id|kfree
 c_func
 (paren
 id|conf
@@ -1184,7 +1190,7 @@ c_func
 id|mddev
 )paren
 suffix:semicolon
-id|vfree
+id|kfree
 (paren
 id|conf-&gt;hash_table
 )paren
@@ -1193,7 +1199,7 @@ id|conf-&gt;hash_table
 op_assign
 l_int|NULL
 suffix:semicolon
-id|vfree
+id|kfree
 (paren
 id|conf-&gt;strip_zone
 )paren
@@ -1202,7 +1208,7 @@ id|conf-&gt;strip_zone
 op_assign
 l_int|NULL
 suffix:semicolon
-id|vfree
+id|kfree
 (paren
 id|conf
 )paren
