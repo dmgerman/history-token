@@ -1,6 +1,6 @@
 multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2002 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;*******************************************************************************/
 multiline_comment|/**********************************************************************&n;*                                                                     *&n;* INTEL CORPORATION                                                   *&n;*                                                                     *&n;* This software is supplied under the terms of the license included   *&n;* above.  All use of this driver must be in accordance with the terms *&n;* of that license.                                                    *&n;*                                                                     *&n;* Module Name:  e100_main.c                                           *&n;*                                                                     *&n;* Abstract:     Functions for the driver entry points like load,      *&n;*               unload, open and close. All board specific calls made *&n;*               by the network interface section of the driver.       *&n;*                                                                     *&n;* Environment:  This file is intended to be specific to the Linux     *&n;*               operating system.                                     *&n;*                                                                     *&n;**********************************************************************/
-multiline_comment|/* Change Log&n; *&n; * 2.1.24       10/7/02&n; *   o Bug fix: Wrong files under /proc/net/PRO_LAN_Adapters/ when interface&n; *     name is changed&n; *   o Bug fix: Rx skb corruption when Rx polling code and Rx interrupt code&n; *     are executing during stress traffic at shared interrupt system. &n; *     Removed Rx polling code&n; *   o Added detailed printk if selftest failed when insmod&n; *   o Removed misleading printks&n; *&n; * 2.1.12       8/2/02&n; *   o Feature: ethtool register dump&n; *   o Bug fix: Driver passes wrong name to /proc/interrupts&n; *   o Bug fix: Ethernet bridging not working &n; *   o Bug fix: Promiscuous mode is not working&n; *   o Bug fix: Checked return value from copy_from_user (William Stinson,&n; *     wstinson@infonie.fr)&n; *   o Bug fix: ARP wake on LAN fails&n; *   o Bug fix: mii-diag does not update driver level&squot;s speed, duplex and&n; *     re-configure flow control&n; *   o Bug fix: Ethtool shows wrong speed/duplex when not connected&n; *   o Bug fix: Ethtool shows wrong speed/duplex when reconnected if forced &n; *     speed/duplex&n; *   o Bug fix: PHY loopback diagnostic fails&n; *&n; * 2.1.6        7/5/02&n; */
+multiline_comment|/* Change Log&n; *&n; * 2.1.29&t;12/20/02&n; *   o Bug fix: Device command timeout due to SMBus processing during init&n; *   o Bug fix: Not setting/clearing I (Interrupt) bit in tcb correctly&n; *   o Bug fix: Not using EEPROM WoL setting as default in ethtool&n; *   o Bug fix: Not able to set autoneg on using ethtool when interface down&n; *   o Bug fix: Not able to change speed/duplex using ethtool/mii&n; *     when interface up&n; *   o Bug fix: Ethtool shows autoneg on when forced to 100/Full&n; *   o Bug fix: Compiler error when CONFIG_PROC_FS not defined&n; *   o Bug fix: 2.5.44 e100 doesn&squot;t load with preemptive kernel enabled&n; *     (sleep while holding spinlock)&n; *   o Bug fix: 2.1.24-k1 doesn&squot;t display complete statistics&n; *   o Bug fix: System panic due to NULL watchdog timer dereference during&n; *     ifconfig down, rmmod and insmod&n; *&n; * 2.1.24       10/7/02&n; *   o Bug fix: Wrong files under /proc/net/PRO_LAN_Adapters/ when interface&n; *     name is changed&n; *   o Bug fix: Rx skb corruption when Rx polling code and Rx interrupt code&n; *     are executing during stress traffic at shared interrupt system. &n; *     Removed Rx polling code&n; *   o Added detailed printk if selftest failed when insmod&n; *   o Removed misleading printks&n; *&n; * 2.1.12       8/2/02&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
@@ -383,7 +383,7 @@ id|e100_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;2.1.24-k2&quot;
+l_string|&quot;2.1.29-k1&quot;
 suffix:semicolon
 DECL|variable|e100_full_driver_name
 r_const
@@ -2798,7 +2798,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;e100: Corrupted EERPROM on instance #%d&bslash;n&quot;
+l_string|&quot;e100: Corrupted EEPROM on instance #%d&bslash;n&quot;
 comma
 id|e100nics
 )paren
@@ -10797,67 +10797,6 @@ op_star
 id|bdp
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|netif_carrier_ok
-c_func
-(paren
-id|bdp-&gt;device
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;  Mem:0x%08lx  IRQ:%d  Speed:%d Mbps  Dx:%s&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|bdp-&gt;device-&gt;mem_start
-comma
-id|bdp-&gt;device-&gt;irq
-comma
-id|bdp-&gt;cur_line_speed
-comma
-(paren
-id|bdp-&gt;cur_dplx_mode
-op_eq
-id|FULL_DUPLEX
-)paren
-ques
-c_cond
-l_string|&quot;Full&quot;
-suffix:colon
-l_string|&quot;Half&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;  Mem:0x%08lx  IRQ:%d  Speed:%d Mbps  Dx:%s&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|bdp-&gt;device-&gt;mem_start
-comma
-id|bdp-&gt;device-&gt;irq
-comma
-l_int|0
-comma
-l_string|&quot;N/A&quot;
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Print the string if checksum Offloading was enabled */
 r_if
 c_cond
