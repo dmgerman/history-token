@@ -307,6 +307,18 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Prevent parent user process from sending signals to child.&n;&t;   Otherwise, if the modprobe program does not exist, it might&n;&t;   be possible to get a user defined signal handler to execute&n;&t;   as the super user right after the execve fails if you time&n;&t;   the signal just right.&n;&t;*/
+id|flush_signals
+c_func
+(paren
+id|curtask
+)paren
+suffix:semicolon
+id|flush_signal_handlers
+c_func
+(paren
+id|curtask
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -319,18 +331,6 @@ c_func
 (paren
 op_amp
 id|curtask-&gt;blocked
-)paren
-suffix:semicolon
-id|flush_signals
-c_func
-(paren
-id|curtask
-)paren
-suffix:semicolon
-id|flush_signal_handlers
-c_func
-(paren
-id|curtask
 )paren
 suffix:semicolon
 id|recalc_sigpending

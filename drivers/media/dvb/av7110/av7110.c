@@ -1416,6 +1416,7 @@ macro_line|#if 0
 id|daemonize
 c_func
 (paren
+l_string|&quot;arm_mon&quot;
 )paren
 suffix:semicolon
 macro_line|#else
@@ -1431,7 +1432,6 @@ id|current-&gt;pgrp
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif
 id|sigfillset
 c_func
 (paren
@@ -1447,6 +1447,7 @@ comma
 l_string|&quot;arm_mon&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 id|av7110-&gt;arm_thread
 op_assign
 id|current

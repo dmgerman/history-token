@@ -315,14 +315,13 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
+l_string|&quot;kseriod&quot;
 )paren
 suffix:semicolon
-id|strcpy
+id|allow_signal
 c_func
 (paren
-id|current-&gt;comm
-comma
-l_string|&quot;kseriod&quot;
+id|SIGTERM
 )paren
 suffix:semicolon
 r_do
