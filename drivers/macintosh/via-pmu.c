@@ -3138,10 +3138,12 @@ comma
 id|pmu_version
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_PPC64
 id|sys_ctrler
 op_assign
 id|SYS_CTRLER_PMU
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
@@ -3422,6 +3424,7 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+macro_line|#ifndef CONFIG_PPC64
 id|request_OF_resource
 c_func
 (paren
@@ -3432,6 +3435,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
 multiline_comment|/* Enable backlight */
 id|register_backlight_controller
@@ -4140,6 +4144,7 @@ r_return
 id|pmu_kind
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_PPC64
 DECL|function|wakeup_decrementer
 r_static
 r_inline
@@ -4171,6 +4176,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|pmu_set_server_mode
 r_static
 r_void
@@ -8022,7 +8028,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef CONFIG_XMON
+macro_line|#if defined(CONFIG_XMON) &amp;&amp; !defined(CONFIG_PPC64)
 r_if
 c_cond
 (paren
@@ -8061,7 +8067,7 @@ r_return
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_XMON */
+macro_line|#endif /* defined(CONFIG_XMON) &amp;&amp; !defined(CONFIG_PPC64) */
 macro_line|#ifdef CONFIG_ADB
 multiline_comment|/*&n;&t;&t;&t; * XXX On the [23]400 the PMU gives us an up&n;&t;&t;&t; * event for keycodes 0x74 or 0x75 when the PC&n;&t;&t;&t; * card eject buttons are released, so we&n;&t;&t;&t; * ignore those events.&n;&t;&t;&t; */
 r_if
