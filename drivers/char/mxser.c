@@ -2541,10 +2541,6 @@ op_star
 id|info
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|retval
 suffix:semicolon
 r_int
