@@ -2101,7 +2101,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/* auerchain_control_msg - Builds a control urb, sends it off and waits for completion&n;   acp: pointer to the auerchain&n;   dev: pointer to the usb device to send the message to&n;   pipe: endpoint &quot;pipe&quot; to send the message to&n;   request: USB message request value&n;   requesttype: USB message request type value&n;   value: USB message value&n;   index: USB message index value&n;   data: pointer to the data to send&n;   size: length in bytes of the data to send&n;   timeout: time to wait for the message to complete before timing out (if 0 the wait is forever)&n;&n;   This function sends a simple control message to a specified endpoint&n;   and waits for the message to complete, or timeout.&n;&n;   If successful, it returns the transfered length, othwise a negative error number.&n;&n;   Don&squot;t use this function from within an interrupt context, like a&n;   bottom half handler.  If you need a asyncronous message, or need to send&n;   a message from within interrupt context, use auerchain_submit_urb()&n;*/
+multiline_comment|/* auerchain_control_msg - Builds a control urb, sends it off and waits for completion&n;   acp: pointer to the auerchain&n;   dev: pointer to the usb device to send the message to&n;   pipe: endpoint &quot;pipe&quot; to send the message to&n;   request: USB message request value&n;   requesttype: USB message request type value&n;   value: USB message value&n;   index: USB message index value&n;   data: pointer to the data to send&n;   size: length in bytes of the data to send&n;   timeout: time to wait for the message to complete before timing out (if 0 the wait is forever)&n;&n;   This function sends a simple control message to a specified endpoint&n;   and waits for the message to complete, or timeout.&n;&n;   If successful, it returns the transferred length, otherwise a negative error number.&n;&n;   Don&squot;t use this function from within an interrupt context, like a&n;   bottom half handler.  If you need an asynchronous message, or need to send&n;   a message from within interrupt context, use auerchain_submit_urb()&n;*/
 DECL|function|auerchain_control_msg
 r_static
 r_int
@@ -2685,7 +2685,7 @@ l_int|0
 suffix:semicolon
 id|bl_fail
 suffix:colon
-multiline_comment|/* not enought memory. Free allocated elements */
+multiline_comment|/* not enough memory. Free allocated elements */
 id|dbg
 (paren
 l_string|&quot;auerbuf_setup: no more memory&quot;
@@ -3730,7 +3730,7 @@ id|dbg
 l_string|&quot;auerswald_int_complete: no data buffer available&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* can we do something more?&n;&t;&t;   This is a big problem: if this int packet is ignored, the&n;&t;&t;   device will wait forever and not signal any more data.&n;&t;&t;   The only real solution is: having enought buffers!&n;&t;&t;   Or perhaps temporary disabling the int endpoint?&n;&t;&t;*/
+multiline_comment|/* can we do something more?&n;&t;&t;   This is a big problem: if this int packet is ignored, the&n;&t;&t;   device will wait forever and not signal any more data.&n;&t;&t;   The only real solution is: having enough buffers!&n;&t;&t;   Or perhaps temporary disabling the int endpoint?&n;&t;&t;*/
 r_goto
 m_exit
 suffix:semicolon
@@ -3905,7 +3905,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* This function is called to activate the interrupt&n;   endpoint. This function returns 0 if successfull or an error code.&n;   NOTE: no mutex please!&n;*/
+multiline_comment|/* This function is called to activate the interrupt&n;   endpoint. This function returns 0 if successful or an error code.&n;   NOTE: no mutex please!&n;*/
 DECL|function|auerswald_int_open
 r_static
 r_int
@@ -4104,7 +4104,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* This function is called to deactivate the interrupt&n;   endpoint. This function returns 0 if successfull or an error code.&n;   NOTE: no mutex please!&n;*/
+multiline_comment|/* This function is called to deactivate the interrupt&n;   endpoint. This function returns 0 if successful or an error code.&n;   NOTE: no mutex please!&n;*/
 DECL|function|auerswald_int_release
 r_static
 r_int
@@ -6223,7 +6223,7 @@ op_minus
 id|ERESTARTSYS
 suffix:semicolon
 )brace
-multiline_comment|/* try to read the incomming data again */
+multiline_comment|/* try to read the incoming data again */
 r_goto
 id|doreadlist
 suffix:semicolon
@@ -7670,7 +7670,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/* Disconnect driver from a served device&n;&n;   This function is called whenever a device which was served by this driver&n;   is disconnected.&n;&n;   The argument  dev specifies the device context and the  driver_context&n;   returns a pointer to the previously registered  driver_context of the&n;   probe function. After returning from the disconnect function the USB&n;   framework completly deallocates all data structures associated with&n;   this device. So especially the usb_device structure must not be used&n;   any longer by the usb driver.&n;*/
+multiline_comment|/* Disconnect driver from a served device&n;&n;   This function is called whenever a device which was served by this driver&n;   is disconnected.&n;&n;   The argument  dev specifies the device context and the  driver_context&n;   returns a pointer to the previously registered  driver_context of the&n;   probe function. After returning from the disconnect function the USB&n;   framework completely deallocates all data structures associated with&n;   this device. So especially the usb_device structure must not be used&n;   any longer by the usb driver.&n;*/
 DECL|function|auerswald_disconnect
 r_static
 r_void

@@ -306,7 +306,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|list_add
+id|list_add_tail
 c_func
 (paren
 op_amp

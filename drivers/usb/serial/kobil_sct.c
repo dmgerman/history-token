@@ -978,6 +978,12 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|transfer_buffer
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
@@ -1007,6 +1013,12 @@ op_logical_neg
 id|port-&gt;write_urb-&gt;transfer_buffer
 )paren
 (brace
+id|kfree
+c_func
+(paren
+id|transfer_buffer
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1

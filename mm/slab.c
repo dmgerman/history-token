@@ -461,9 +461,23 @@ mdefine_line|#define POISON_AFTER&t;0x6b&t;/* for use-after-free poisoning */
 DECL|macro|POISON_END
 mdefine_line|#define&t;POISON_END&t;0xa5&t;/* end-byte of poisoning */
 macro_line|#endif
-multiline_comment|/* maximum size of an obj (in 2^order pages) */
+multiline_comment|/*&n; * Maximum size of an obj (in 2^order pages)&n; * and absolute limit for the gfp order.&n; */
+macro_line|#if defined(CONFIG_LARGE_ALLOCS)
+DECL|macro|MAX_OBJ_ORDER
+mdefine_line|#define&t;MAX_OBJ_ORDER&t;13&t;/* up to 32Mb */
+DECL|macro|MAX_GFP_ORDER
+mdefine_line|#define&t;MAX_GFP_ORDER&t;13&t;/* up to 32Mb */
+macro_line|#elif defined(CONFIG_MMU)
 DECL|macro|MAX_OBJ_ORDER
 mdefine_line|#define&t;MAX_OBJ_ORDER&t;5&t;/* 32 pages */
+DECL|macro|MAX_GFP_ORDER
+mdefine_line|#define&t;MAX_GFP_ORDER&t;5&t;/* 32 pages */
+macro_line|#else
+DECL|macro|MAX_OBJ_ORDER
+mdefine_line|#define&t;MAX_OBJ_ORDER&t;8&t;/* up to 1Mb */
+DECL|macro|MAX_GFP_ORDER
+mdefine_line|#define&t;MAX_GFP_ORDER&t;8&t;/* up to 1Mb */
+macro_line|#endif
 multiline_comment|/*&n; * Do not go above this order unless 0 objects fit into the slab.&n; */
 DECL|macro|BREAK_GFP_ORDER_HI
 mdefine_line|#define&t;BREAK_GFP_ORDER_HI&t;2
@@ -476,9 +490,6 @@ id|slab_break_gfp_order
 op_assign
 id|BREAK_GFP_ORDER_LO
 suffix:semicolon
-multiline_comment|/*&n; * Absolute limit for the gfp order&n; */
-DECL|macro|MAX_GFP_ORDER
-mdefine_line|#define&t;MAX_GFP_ORDER&t;5&t;/* 32 pages */
 multiline_comment|/* Macros for storing/retrieving the cachep and or slab from the&n; * global &squot;mem_map&squot;. These are used to find the slab an obj belongs to.&n; * With kfree(), these are used to find the cache which an obj belongs to.&n; */
 DECL|macro|SET_PAGE_CACHE
 mdefine_line|#define&t;SET_PAGE_CACHE(pg,x)  ((pg)-&gt;list.next = (struct list_head *)(x))
@@ -645,6 +656,74 @@ comma
 l_int|NULL
 )brace
 comma
+macro_line|#ifndef CONFIG_MMU
+(brace
+l_int|262144
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+comma
+(brace
+l_int|524288
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+comma
+(brace
+l_int|1048576
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+comma
+macro_line|#ifdef CONFIG_LARGE_ALLOCS
+(brace
+l_int|2097152
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+comma
+(brace
+l_int|4194304
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+comma
+(brace
+l_int|8388608
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+comma
+(brace
+l_int|16777216
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+comma
+(brace
+l_int|33554432
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+comma
+macro_line|#endif /* CONFIG_LARGE_ALLOCS */
+macro_line|#endif /* CONFIG_MMU */
 (brace
 l_int|0
 comma
@@ -772,6 +851,59 @@ c_func
 (paren
 l_string|&quot;size-131072&quot;
 )paren
+comma
+macro_line|#ifndef CONFIG_MMU
+id|CN
+c_func
+(paren
+l_string|&quot;size-262144&quot;
+)paren
+comma
+id|CN
+c_func
+(paren
+l_string|&quot;size-524288&quot;
+)paren
+comma
+id|CN
+c_func
+(paren
+l_string|&quot;size-1048576&quot;
+)paren
+comma
+macro_line|#ifdef CONFIG_LARGE_ALLOCS
+id|CN
+c_func
+(paren
+l_string|&quot;size-2097152&quot;
+)paren
+comma
+id|CN
+c_func
+(paren
+l_string|&quot;size-4194304&quot;
+)paren
+comma
+id|CN
+c_func
+(paren
+l_string|&quot;size-8388608&quot;
+)paren
+comma
+id|CN
+c_func
+(paren
+l_string|&quot;size-16777216&quot;
+)paren
+comma
+id|CN
+c_func
+(paren
+l_string|&quot;size-33554432&quot;
+)paren
+comma
+macro_line|#endif /* CONFIG_LARGE_ALLOCS */
+macro_line|#endif /* CONFIG_MMU */
 )brace
 suffix:semicolon
 DECL|macro|CN

@@ -194,7 +194,7 @@ multiline_comment|/* This yields a string that ld.so will use to load implementa
 DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM&t;(NULL)
 DECL|macro|ELF_PLAT_INIT
-mdefine_line|#define ELF_PLAT_INIT(_r)&t;do { &bslash;&n;&t;memset(_r-&gt;gpr, 0, sizeof(_r-&gt;gpr)); &bslash;&n;&t;_r-&gt;ctr = _r-&gt;link = _r-&gt;xer = _r-&gt;ccr = 0; &bslash;&n;} while (0)
+mdefine_line|#define ELF_PLAT_INIT(_r, load_addr)&t;do { &bslash;&n;&t;memset(_r-&gt;gpr, 0, sizeof(_r-&gt;gpr)); &bslash;&n;&t;_r-&gt;ctr = _r-&gt;link = _r-&gt;xer = _r-&gt;ccr = 0; &bslash;&n;&t;_r-&gt;gpr[2] = load_addr; &bslash;&n;} while (0)
 macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long new_flags = 0;&t;&t;&t;&t;&bslash;&n;&t;if ((ex).e_ident[EI_CLASS] == ELFCLASS32)&t;&t;&bslash;&n;&t;&t;new_flags = _TIF_32BIT;&t;&t;&t;&t;&bslash;&n;&t;if ((current_thread_info()-&gt;flags &amp; _TIF_32BIT)&t;&t;&bslash;&n;&t;    != new_flags)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_thread_flag(TIF_ABI_PENDING);&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;clear_thread_flag(TIF_ABI_PENDING);&t;&t;&bslash;&n;&t;if (ibcs2)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_personality(PER_SVR4);&t;&t;&t;&bslash;&n;&t;else if (current-&gt;personality != PER_LINUX32)&t;&t;&bslash;&n;&t;&t;set_personality(PER_LINUX);&t;&t;&t;&bslash;&n;} while (0)

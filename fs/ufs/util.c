@@ -194,6 +194,12 @@ id|j
 )braket
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|ubh
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon

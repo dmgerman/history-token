@@ -60,6 +60,11 @@ r_typedef
 id|s32
 id|compat_off_t
 suffix:semicolon
+DECL|typedef|compat_loff_t
+r_typedef
+id|s64
+id|compat_loff_t
+suffix:semicolon
 DECL|typedef|compat_nlink_t
 r_typedef
 id|u16
@@ -350,7 +355,7 @@ multiline_comment|/* at least 32 bits */
 DECL|macro|_COMPAT_NSIG
 mdefine_line|#define _COMPAT_NSIG&t;&t;64
 DECL|macro|_COMPAT_NSIG_BPW
-mdefine_line|#define _COMPAT_NSIG_BPW&t;BITS_PER_LONG
+mdefine_line|#define _COMPAT_NSIG_BPW&t;32
 DECL|typedef|compat_sigset_word
 r_typedef
 id|u32

@@ -77,7 +77,7 @@ DECL|macro|EISA_OUT
 mdefine_line|#define EISA_OUT(size)
 macro_line|#endif
 DECL|macro|PCI_PORT_IN
-mdefine_line|#define PCI_PORT_IN(type, size) &bslash;&n;u##size in##type (int addr) &bslash;&n;{ &bslash;&n;&t;int b = PCI_PORT_HBA(addr); &bslash;&n;&t;u##size d = (u##size) -1; &bslash;&n;&t;EISA_IN(size); &bslash;&n;&t;ASSERT(pci_port); /* make sure services are defined */ &bslash;&n;&t;ASSERT(parisc_pci_hba[b]); /* make sure ioaddr are &quot;fixed up&quot; */ &bslash;&n;&t;if (parisc_pci_hba[b] == NULL) { &bslash;&n;&t;&t;printk(KERN_WARNING &quot;&bslash;nPCI or EISA Host Bus Adapter %d not registered. in&quot; #size &quot;(0x%x) returning -1&bslash;n&quot;, b, addr); &bslash;&n;&t;} else { &bslash;&n;&t;&t;d = pci_port-&gt;in##type(parisc_pci_hba[b], PCI_PORT_ADDR(addr)); &bslash;&n;&t;} &bslash;&n;&t;return d; &bslash;&n;}
+mdefine_line|#define PCI_PORT_IN(type, size) &bslash;&n;u##size in##type (int addr) &bslash;&n;{ &bslash;&n;&t;int b = PCI_PORT_HBA(addr); &bslash;&n;&t;EISA_IN(size); &bslash;&n;&t;if (!parisc_pci_hba[b]) return (u##size) -1; &bslash;&n;&t;return pci_port-&gt;in##type(parisc_pci_hba[b], PCI_PORT_ADDR(addr)); &bslash;&n;}
 id|PCI_PORT_IN
 c_func
 (paren
@@ -100,7 +100,7 @@ comma
 l_int|32
 )paren
 DECL|macro|PCI_PORT_OUT
-mdefine_line|#define PCI_PORT_OUT(type, size) &bslash;&n;void out##type (u##size d, int addr) &bslash;&n;{ &bslash;&n;&t;int b = PCI_PORT_HBA(addr); &bslash;&n;&t;EISA_OUT(size); &bslash;&n;&t;ASSERT(pci_port); &bslash;&n;&t;pci_port-&gt;out##type(parisc_pci_hba[b], PCI_PORT_ADDR(addr), d); &bslash;&n;}
+mdefine_line|#define PCI_PORT_OUT(type, size) &bslash;&n;void out##type (u##size d, int addr) &bslash;&n;{ &bslash;&n;&t;int b = PCI_PORT_HBA(addr); &bslash;&n;&t;EISA_OUT(size); &bslash;&n;&t;if (!parisc_pci_hba[b]) return; &bslash;&n;&t;pci_port-&gt;out##type(parisc_pci_hba[b], PCI_PORT_ADDR(addr), d); &bslash;&n;}
 id|PCI_PORT_OUT
 c_func
 (paren
@@ -643,8 +643,6 @@ id|pcibios_resource_to_bus
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|macro|MAX
-mdefine_line|#define MAX(val1, val2)   ((val1) &gt; (val2) ? (val1) : (val2))
 multiline_comment|/*&n;** pcibios align resources() is called everytime generic PCI code&n;** wants to generate a new address. The process of looking for&n;** an available address, each candidate is first &quot;aligned&quot; and&n;** then checked if the resource is available until a match is found.&n;**&n;** Since we are just checking candidates, don&squot;t use any fields other&n;** than res-&gt;start.&n;*/
 r_void
 id|__devinit
@@ -733,7 +731,7 @@ suffix:semicolon
 multiline_comment|/* Align to largest of MIN or input size */
 id|mask
 op_assign
-id|MAX
+id|max
 c_func
 (paren
 id|alignment
