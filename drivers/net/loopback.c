@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;&t;/* For the statistics structure. */
@@ -636,6 +637,45 @@ r_return
 id|stats
 suffix:semicolon
 )brace
+DECL|function|loopback_get_link
+id|u32
+id|loopback_get_link
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+DECL|variable|loopback_ethtool_ops
+r_static
+r_struct
+id|ethtool_ops
+id|loopback_ethtool_ops
+op_assign
+(brace
+dot
+id|get_link
+op_assign
+id|loopback_get_link
+comma
+dot
+id|get_tso
+op_assign
+id|ethtool_op_get_tso
+comma
+dot
+id|set_tso
+op_assign
+id|ethtool_op_set_tso
+comma
+)brace
+suffix:semicolon
 DECL|variable|loopback_dev
 r_struct
 id|net_device
@@ -727,6 +767,12 @@ op_or
 id|NETIF_F_HIGHDMA
 op_or
 id|NETIF_F_LLTX
+comma
+dot
+id|ethtool_ops
+op_assign
+op_amp
+id|loopback_ethtool_ops
 comma
 )brace
 suffix:semicolon
