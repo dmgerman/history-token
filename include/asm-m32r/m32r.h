@@ -1,8 +1,7 @@
 macro_line|#ifndef _ASM_M32R_M32R_H_
 DECL|macro|_ASM_M32R_M32R_H_
 mdefine_line|#define _ASM_M32R_M32R_H_
-multiline_comment|/*&n; * Mitsubishi M32R processor&n; * Copyright (C) 1997-2002, Mitsubishi Electric Corporation&n; */
-multiline_comment|/* $Id$ */
+multiline_comment|/*&n; * Renesas M32R processor&n; *&n; * Copyright (C) 2003, 2004  Renesas Technology Corp.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* Chip type */
 macro_line|#if defined(CONFIG_CHIP_XNUX_MP) || defined(CONFIG_CHIP_XNUX2_MP)
