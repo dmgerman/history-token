@@ -2395,7 +2395,13 @@ id|dentry
 suffix:semicolon
 id|dentry
 op_assign
-id|u-&gt;protinfo.af_unix.dentry
+id|unix_sk
+c_func
+(paren
+id|u
+)paren
+op_member_access_from_pointer
+id|dentry
 suffix:semicolon
 r_if
 c_cond
