@@ -594,10 +594,6 @@ r_int
 id|addr
 comma
 r_int
-r_int
-id|flags
-comma
-r_int
 id|kind
 )paren
 (brace
@@ -730,7 +726,7 @@ suffix:semicolon
 id|strlcpy
 c_func
 (paren
-id|client-&gt;dev.name
+id|client-&gt;name
 comma
 l_string|&quot;bt819&quot;
 comma
@@ -807,7 +803,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: bt819_attach: init status %d&bslash;n&quot;
 comma
-id|decoder-&gt;client-&gt;dev.name
+id|decoder-&gt;client-&gt;name
 comma
 id|i
 )paren
@@ -821,7 +817,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: bt819_attach: chip version %x&bslash;n&quot;
 comma
-id|decoder-&gt;client-&gt;dev.name
+id|decoder-&gt;client-&gt;name
 comma
 id|i2c_smbus_read_byte_data
 c_func
@@ -1125,7 +1121,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s-bt819: get status %x&bslash;n&quot;
 comma
-id|decoder-&gt;client-&gt;dev.name
+id|decoder-&gt;client-&gt;name
 comma
 op_star
 id|iarg
@@ -1159,7 +1155,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s-bt819: set norm %x&bslash;n&quot;
 comma
-id|decoder-&gt;client-&gt;dev.name
+id|decoder-&gt;client-&gt;name
 comma
 op_star
 id|iarg
@@ -1448,7 +1444,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s-bt819: set input %x&bslash;n&quot;
 comma
-id|decoder-&gt;client-&gt;dev.name
+id|decoder-&gt;client-&gt;name
 comma
 op_star
 id|iarg
@@ -1567,7 +1563,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s-bt819: set output %x&bslash;n&quot;
 comma
-id|decoder-&gt;client-&gt;dev.name
+id|decoder-&gt;client-&gt;name
 comma
 op_star
 id|iarg
@@ -1620,7 +1616,7 @@ id|printk
 id|KERN_INFO
 l_string|&quot;%s-bt819: enable output %x&bslash;n&quot;
 comma
-id|decoder-&gt;client-&gt;dev.name
+id|decoder-&gt;client-&gt;name
 comma
 op_star
 id|iarg
@@ -1696,7 +1692,7 @@ id|printk
 id|KERN_INFO
 l_string|&quot;%s-bt819: set picture brightness %d contrast %d colour %d&bslash;n&quot;
 comma
-id|decoder-&gt;client-&gt;dev.name
+id|decoder-&gt;client-&gt;name
 comma
 id|pic-&gt;brightness
 comma
@@ -1991,15 +1987,9 @@ op_amp
 id|i2c_driver_bt819
 comma
 dot
-id|dev
-op_assign
-(brace
-dot
 id|name
 op_assign
 l_string|&quot;bt819_client&quot;
-comma
-)brace
 comma
 )brace
 suffix:semicolon

@@ -848,15 +848,9 @@ op_amp
 id|i2c_driver_tuner
 comma
 dot
-id|dev
-op_assign
-(brace
-dot
 id|name
 op_assign
 l_string|&quot;SAB3036&quot;
-comma
-)brace
 comma
 )brace
 suffix:semicolon

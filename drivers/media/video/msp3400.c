@@ -7059,7 +7059,7 @@ suffix:semicolon
 id|snprintf
 c_func
 (paren
-id|c-&gt;dev.name
+id|c-&gt;name
 comma
 id|DEVICE_NAME_SIZE
 comma

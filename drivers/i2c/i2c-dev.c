@@ -2262,15 +2262,9 @@ id|i2cdev_client_template
 op_assign
 (brace
 dot
-id|dev
-op_assign
-(brace
-dot
 id|name
 op_assign
 l_string|&quot;I2C /dev entry&quot;
-comma
-)brace
 comma
 dot
 id|id

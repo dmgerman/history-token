@@ -871,7 +871,7 @@ id|KERN_DEBUG
 l_string|&quot;i2c-core.o: &quot;
 l_string|&quot;detaching client %s:&bslash;n&quot;
 comma
-id|client-&gt;dev.name
+id|client-&gt;name
 )paren
 )paren
 suffix:semicolon
@@ -1320,7 +1320,7 @@ id|KERN_ERR
 l_string|&quot;i2c-core.o: client_unregister [%s] failed, &quot;
 l_string|&quot;client not detached&quot;
 comma
-id|client-&gt;dev.name
+id|client-&gt;name
 )paren
 suffix:semicolon
 r_goto
