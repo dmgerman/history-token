@@ -1491,7 +1491,7 @@ suffix:semicolon
 macro_line|#endif
 r_extern
 r_void
-id|irix_io_init
+id|sgi_master_io_infr_init
 c_func
 (paren
 r_void
@@ -1510,7 +1510,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|irix_io_init
+id|sgi_master_io_infr_init
 c_func
 (paren
 )paren
