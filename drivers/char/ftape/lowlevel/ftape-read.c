@@ -2318,6 +2318,26 @@ l_int|128
 macro_line|#endif
 )paren
 (brace
+r_char
+id|segperheadz
+op_assign
+id|ftape_segments_per_head
+ques
+c_cond
+l_char|&squot; &squot;
+suffix:colon
+l_char|&squot;?&squot;
+suffix:semicolon
+r_char
+id|segpercylz
+op_assign
+id|ftape_segments_per_cylinder
+ques
+c_cond
+l_char|&squot; &squot;
+suffix:colon
+l_char|&squot;?&squot;
+suffix:semicolon
 id|TRACE
 c_func
 (paren
@@ -2351,7 +2371,7 @@ c_func
 (paren
 id|ft_t_err
 comma
-l_string|&quot;required = %d/%d/%d/%d/%d/%d&quot;
+l_string|&quot;required = %d/%d/%d/%d%c/%d%c/%d&quot;
 comma
 id|ft_format_code
 comma
@@ -2359,6 +2379,9 @@ id|ft_segments_per_track
 comma
 id|ft_tracks_per_tape
 comma
+id|ftape_segments_per_head
+ques
+c_cond
 (paren
 (paren
 id|ft_segments_per_track
@@ -2370,7 +2393,20 @@ l_int|1
 op_div
 id|ftape_segments_per_head
 )paren
+suffix:colon
+(paren
+id|ft_segments_per_track
+op_star
+id|ft_tracks_per_tape
+op_minus
+l_int|1
+)paren
 comma
+id|segperheadz
+comma
+id|ftape_segments_per_cylinder
+ques
+c_cond
 (paren
 id|ftape_segments_per_head
 op_div
@@ -2378,6 +2414,12 @@ id|ftape_segments_per_cylinder
 op_minus
 l_int|1
 )paren
+suffix:colon
+id|ftape_segments_per_head
+op_minus
+l_int|1
+comma
+id|segpercylz
 comma
 (paren
 id|ftape_segments_per_cylinder

@@ -20,13 +20,6 @@ c_func
 id|journal_start
 )paren
 suffix:semicolon
-DECL|variable|journal_try_start
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|journal_try_start
-)paren
-suffix:semicolon
 DECL|variable|journal_restart
 id|EXPORT_SYMBOL
 c_func

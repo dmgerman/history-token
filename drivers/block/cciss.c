@@ -1486,7 +1486,7 @@ r_if
 c_cond
 (paren
 id|ctlr
-OG
+op_ge
 id|MAX_CTLR
 op_logical_or
 id|hba

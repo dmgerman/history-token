@@ -478,11 +478,6 @@ l_int|0
 op_assign
 id|root-&gt;rnode
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|root-&gt;rnode
-)paren
 id|node-&gt;count
 op_assign
 l_int|1

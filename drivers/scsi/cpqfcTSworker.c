@@ -1063,7 +1063,7 @@ r_if
 c_cond
 (paren
 id|x_ID
-OG
+op_ge
 id|TACH_SEST_LEN
 )paren
 singleline_comment|// (in)sanity check
