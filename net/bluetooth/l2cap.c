@@ -720,7 +720,7 @@ c_func
 id|sk
 )paren
 op_member_access_from_pointer
-id|psm
+id|sport
 op_eq
 id|psm
 op_logical_and
@@ -1753,6 +1753,16 @@ id|sk
 )paren
 op_member_access_from_pointer
 id|psm
+op_assign
+id|la-&gt;l2_psm
+suffix:semicolon
+id|l2cap_pi
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|sport
 op_assign
 id|la-&gt;l2_psm
 suffix:semicolon
