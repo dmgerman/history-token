@@ -19,8 +19,15 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&quot;e100&quot;
+macro_line|#ifndef CONFIG_E100_NAPI
+DECL|macro|DRV_EXT
+mdefine_line|#define DRV_EXT
+macro_line|#else
+DECL|macro|DRV_EXT
+mdefine_line|#define DRV_EXT&t;&t;&quot;-NAPI&quot;
+macro_line|#endif
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&quot;3.0.18&quot;
+mdefine_line|#define DRV_VERSION&t;&t;&quot;3.0.27-k2&quot;DRV_EXT
 DECL|macro|DRV_DESCRIPTION
 mdefine_line|#define DRV_DESCRIPTION&t;&t;&quot;Intel(R) PRO/100 Network Driver&quot;
 DECL|macro|DRV_COPYRIGHT
