@@ -7,6 +7,18 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Handykey Twiddler keyboard as a joystick driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Constants.&n; */
 DECL|macro|TWIDJOY_MAX_LENGTH
 mdefine_line|#define TWIDJOY_MAX_LENGTH 5
@@ -470,7 +482,7 @@ suffix:semicolon
 multiline_comment|/*&n; * twidjoy_interrupt() is called by the low level driver when characters&n; * are ready for us. We then buffer them for further processing, or call the&n; * packet processing routine.&n; */
 DECL|function|twidjoy_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|twidjoy_interrupt
 c_func
 (paren
@@ -487,7 +499,7 @@ r_int
 r_int
 id|flags
 comma
-id|struc
+r_struct
 id|pt_regs
 op_star
 id|regs
@@ -528,6 +540,7 @@ op_eq
 l_int|0
 )paren
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 multiline_comment|/* wrong MSB -- ignore this byte */
 r_if
@@ -567,6 +580,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * twidjoy_disconnect() is the opposite of twidjoy_connect()&n; */
