@@ -1021,6 +1021,8 @@ id|tp-&gt;t_mountp
 comma
 id|tp-&gt;t_ticket
 comma
+l_int|NULL
+comma
 id|log_flags
 )paren
 suffix:semicolon
@@ -2255,6 +2257,10 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
+r_void
+op_star
+id|commit_iclog
+suffix:semicolon
 r_int
 id|shutdown
 suffix:semicolon
@@ -2365,6 +2371,8 @@ c_func
 id|mp
 comma
 id|tp-&gt;t_ticket
+comma
+l_int|NULL
 comma
 id|log_flags
 )paren
@@ -2603,6 +2611,9 @@ id|mp
 comma
 id|tp-&gt;t_ticket
 comma
+op_amp
+id|commit_iclog
+comma
 id|log_flags
 )paren
 suffix:semicolon
@@ -2629,6 +2640,9 @@ c_func
 id|mp
 comma
 id|tp-&gt;t_ticket
+comma
+op_amp
+id|commit_iclog
 comma
 id|log_flags
 )paren
@@ -2755,12 +2769,14 @@ id|tp-&gt;t_logcb.cb_arg
 op_assign
 id|tp
 suffix:semicolon
+id|error
+op_assign
 id|xfs_log_notify
 c_func
 (paren
 id|mp
 comma
-id|commit_lsn
+id|commit_iclog
 comma
 op_amp
 (paren
@@ -2801,12 +2817,15 @@ id|tp-&gt;t_logcb.cb_arg
 op_assign
 id|tp
 suffix:semicolon
+multiline_comment|/* We need to pass the iclog buffer which was used for the&n;&t; * transaction commit record into this function, attach&n;&t; * the callback to it, and then release it. This will guarantee&n;&t; * that we do callbacks on the transaction in the correct order.&n;&t; */
+id|error
+op_assign
 id|xfs_log_notify
 c_func
 (paren
 id|mp
 comma
-id|commit_lsn
+id|commit_iclog
 comma
 op_amp
 (paren
@@ -2822,6 +2841,12 @@ c_cond
 id|sync
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error
+)paren
 id|error
 op_assign
 id|xfs_log_force
@@ -3481,6 +3506,8 @@ c_func
 id|tp-&gt;t_mountp
 comma
 id|tp-&gt;t_ticket
+comma
+l_int|NULL
 comma
 id|log_flags
 )paren
