@@ -998,11 +998,11 @@ c_func
 id|__wait_on_buffer
 )paren
 suffix:semicolon
-DECL|variable|generic_direct_IO
+DECL|variable|blockdev_direct_IO
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|generic_direct_IO
+id|blockdev_direct_IO
 )paren
 suffix:semicolon
 DECL|variable|block_write_full_page
