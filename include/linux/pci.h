@@ -3029,6 +3029,37 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|pci_name_bus
+r_static
+r_inline
+r_int
+id|pci_name_bus
+c_func
+(paren
+r_char
+op_star
+id|name
+comma
+r_struct
+id|pci_bus
+op_star
+id|bus
+)paren
+(brace
+id|sprintf
+c_func
+(paren
+id|name
+comma
+l_string|&quot;%02x&quot;
+comma
+id|bus-&gt;number
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif
 macro_line|#endif /* !CONFIG_PCI */
 multiline_comment|/* these helpers provide future and backwards compatibility&n; * for accessing popular PCI BAR info */
