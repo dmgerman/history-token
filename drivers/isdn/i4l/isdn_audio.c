@@ -2,6 +2,7 @@ multiline_comment|/* Linux ISDN subsystem, audio conversion and compression&n; *
 macro_line|#include &lt;linux/isdn.h&gt;
 macro_line|#include &quot;isdn_audio.h&quot;
 macro_line|#include &quot;isdn_common.h&quot;
+macro_line|#include &quot;isdn_tty.h&quot;
 multiline_comment|/*&n; * Misc. lookup-tables.&n; */
 multiline_comment|/* ulaw -&gt; signed 16-bit */
 DECL|variable|isdn_audio_ulaw_to_s16
@@ -4713,10 +4714,10 @@ c_func
 id|info-&gt;isdn_slot
 )paren
 suffix:semicolon
-id|isdn_slot_queue_tail
+id|isdn_tty_queue_tail
 c_func
 (paren
-id|info-&gt;isdn_slot
+id|info
 comma
 id|skb
 comma
@@ -5269,10 +5270,10 @@ c_func
 id|info-&gt;isdn_slot
 )paren
 suffix:semicolon
-id|isdn_slot_queue_tail
+id|isdn_tty_queue_tail
 c_func
 (paren
-id|info-&gt;isdn_slot
+id|info
 comma
 id|skb
 comma

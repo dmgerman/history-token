@@ -731,6 +731,17 @@ r_int
 id|isdn_slot
 suffix:semicolon
 multiline_comment|/* Index to isdn-driver/channel   */
+DECL|member|rpqueue
+r_struct
+id|sk_buff_head
+id|rpqueue
+suffix:semicolon
+multiline_comment|/* Queue of recv&squot;d packets        */
+DECL|member|rcvcount
+r_int
+id|rcvcount
+suffix:semicolon
+multiline_comment|/* Byte-counters for B rx         */
 DECL|member|ncarrier
 r_int
 id|ncarrier
@@ -818,6 +829,12 @@ id|xmit_lock
 suffix:semicolon
 multiline_comment|/* Semaphore for isdn_tty_write   */
 macro_line|#ifdef CONFIG_ISDN_AUDIO
+DECL|member|DLEflag
+r_int
+r_int
+id|DLEflag
+suffix:semicolon
+multiline_comment|/* Insert DLE at next read     */
 DECL|member|vonline
 r_int
 id|vonline
