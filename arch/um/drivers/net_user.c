@@ -976,6 +976,13 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pid
+OG
+l_int|0
+)paren
 id|CATCH_EINTR
 c_func
 (paren

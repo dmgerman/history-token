@@ -182,7 +182,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* XXX The alloc_stack here breaks if this is called in the tracing thread */
+multiline_comment|/* Returns either the pid of the child process we run or -E* on failure.&n; * XXX The alloc_stack here breaks if this is called in the tracing thread */
 DECL|function|run_helper
 r_int
 id|run_helper
@@ -231,7 +231,7 @@ id|fds
 l_int|2
 )braket
 comma
-id|err
+id|ret
 comma
 id|n
 suffix:semicolon
@@ -285,7 +285,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|err
+id|ret
 op_assign
 id|os_pipe
 c_func
@@ -300,7 +300,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
+id|ret
 OL
 l_int|0
 )paren
@@ -308,17 +308,17 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;run_helper : pipe failed, err = %d&bslash;n&quot;
+l_string|&quot;run_helper : pipe failed, ret = %d&bslash;n&quot;
 comma
 op_minus
-id|err
+id|ret
 )paren
 suffix:semicolon
 r_goto
 id|out_free
 suffix:semicolon
 )brace
-id|err
+id|ret
 op_assign
 id|os_set_exec_close
 c_func
@@ -334,7 +334,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
+id|ret
 OL
 l_int|0
 )paren
@@ -342,10 +342,10 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;run_helper : setting FD_CLOEXEC failed, err = %d&bslash;n&quot;
+l_string|&quot;run_helper : setting FD_CLOEXEC failed, ret = %d&bslash;n&quot;
 comma
 op_minus
-id|err
+id|ret
 )paren
 suffix:semicolon
 r_goto
@@ -423,7 +423,7 @@ comma
 id|errno
 )paren
 suffix:semicolon
-id|err
+id|ret
 op_assign
 op_minus
 id|errno
@@ -441,6 +441,15 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
+id|fds
+(braket
+l_int|1
+)braket
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/*Read the errno value from the child.*/
 id|n
 op_assign
 id|os_read_file
@@ -452,11 +461,11 @@ l_int|0
 )braket
 comma
 op_amp
-id|err
+id|ret
 comma
 r_sizeof
 (paren
-id|err
+id|ret
 )paren
 )paren
 suffix:semicolon
@@ -471,13 +480,13 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;run_helper : read on pipe failed, err = %d&bslash;n&quot;
+l_string|&quot;run_helper : read on pipe failed, ret = %d&bslash;n&quot;
 comma
 op_minus
 id|n
 )paren
 suffix:semicolon
-id|err
+id|ret
 op_assign
 id|n
 suffix:semicolon
@@ -515,18 +524,41 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-id|pid
+id|ret
 op_assign
 op_minus
 id|errno
 suffix:semicolon
 )brace
-id|err
+r_else
+(brace
+id|ret
 op_assign
 id|pid
 suffix:semicolon
+)brace
 id|out_close
 suffix:colon
+r_if
+c_cond
+(paren
+id|fds
+(braket
+l_int|1
+)braket
+op_ne
+op_minus
+l_int|1
+)paren
+id|os_close_file
+c_func
+(paren
+id|fds
+(braket
+l_int|1
+)braket
+)paren
+suffix:semicolon
 id|os_close_file
 c_func
 (paren
@@ -562,7 +594,7 @@ op_assign
 id|stack
 suffix:semicolon
 r_return
-id|err
+id|ret
 suffix:semicolon
 )brace
 DECL|function|run_helper_thread
