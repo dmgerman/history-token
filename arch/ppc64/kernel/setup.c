@@ -1422,6 +1422,16 @@ l_int|0
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_CMDLINE
+id|strcpy
+c_func
+(paren
+id|cmd_line
+comma
+id|CONFIG_CMDLINE
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_CMDLINE */
 id|chosen
 op_assign
 id|find_devices
@@ -1456,6 +1466,13 @@ c_cond
 id|p
 op_ne
 l_int|NULL
+op_logical_and
+id|p
+(braket
+l_int|0
+)braket
+op_ne
+l_int|0
 )paren
 id|strncpy
 c_func
