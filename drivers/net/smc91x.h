@@ -207,6 +207,38 @@ id|reg
 suffix:semicolon
 )brace
 )brace
+macro_line|#elif&t;defined(CONFIG_ARCH_OMAP)
+multiline_comment|/* We can only do 16-bit reads and writes in the static memory space. */
+DECL|macro|SMC_CAN_USE_8BIT
+mdefine_line|#define SMC_CAN_USE_8BIT&t;0
+DECL|macro|SMC_CAN_USE_16BIT
+mdefine_line|#define SMC_CAN_USE_16BIT&t;1
+DECL|macro|SMC_CAN_USE_32BIT
+mdefine_line|#define SMC_CAN_USE_32BIT&t;0
+DECL|macro|SMC_IO_SHIFT
+mdefine_line|#define SMC_IO_SHIFT&t;&t;0
+DECL|macro|SMC_NOWAIT
+mdefine_line|#define SMC_NOWAIT&t;&t;1
+DECL|macro|SMC_inb
+mdefine_line|#define SMC_inb(a, r)&t;&t;readb((a) + (r))
+DECL|macro|SMC_outb
+mdefine_line|#define SMC_outb(v, a, r)&t;writeb(v, (a) + (r))
+DECL|macro|SMC_inw
+mdefine_line|#define SMC_inw(a, r)&t;&t;readw((a) + (r))
+DECL|macro|SMC_outw
+mdefine_line|#define SMC_outw(v, a, r)&t;writew(v, (a) + (r))
+DECL|macro|SMC_insw
+mdefine_line|#define SMC_insw(a, r, p, l)&t;readsw((a) + (r), p, l)
+DECL|macro|SMC_outsw
+mdefine_line|#define SMC_outsw(a, r, p, l)&t;writesw((a) + (r), p, l)
+DECL|macro|SMC_inl
+mdefine_line|#define SMC_inl(a, r)&t;&t;readl((a) + (r))
+DECL|macro|SMC_outl
+mdefine_line|#define SMC_outl(v, a, r)&t;writel(v, (a) + (r))
+DECL|macro|SMC_insl
+mdefine_line|#define SMC_insl(a, r, p, l)&t;readsl((a) + (r), p, l)
+DECL|macro|SMC_outsl
+mdefine_line|#define SMC_outsl(a, r, p, l)&t;writesl((a) + (r), p, l)
 macro_line|#elif&t;defined(CONFIG_ISA)
 DECL|macro|SMC_CAN_USE_8BIT
 mdefine_line|#define SMC_CAN_USE_8BIT&t;1
@@ -837,6 +869,8 @@ mdefine_line|#define SMC_IO_SHIFT&t;0
 macro_line|#endif
 DECL|macro|SMC_IO_EXTENT
 mdefine_line|#define SMC_IO_EXTENT&t;(16 &lt;&lt; SMC_IO_SHIFT)
+DECL|macro|SMC_DATA_EXTENT
+mdefine_line|#define SMC_DATA_EXTENT (4)
 multiline_comment|/*&n; . Bank Select Register:&n; .&n; .&t;&t;yyyy yyyy 0000 00xx&n; .&t;&t;xx &t;&t;= bank number&n; .&t;&t;yyyy yyyy&t;= 0x33, for identification purposes.&n;*/
 DECL|macro|BANK_SELECT
 mdefine_line|#define BANK_SELECT&t;&t;(14 &lt;&lt; SMC_IO_SHIFT)
@@ -1587,26 +1621,37 @@ DECL|macro|SMC_GET_PKT_HDR
 mdefine_line|#define SMC_GET_PKT_HDR(status, length)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(status) = SMC_inw( ioaddr, DATA_REG );&t;&t;&t;&bslash;&n;&t;&t;(length) = SMC_inw( ioaddr, DATA_REG );&t;&t;&t;&bslash;&n;&t;} while (0)
 macro_line|#endif
 macro_line|#if SMC_CAN_USE_32BIT
-DECL|macro|SMC_PUSH_DATA
-mdefine_line|#define SMC_PUSH_DATA(p, l)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;char *__ptr = (p);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int __len = (l);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (__len &gt;= 2 &amp;&amp; (unsigned long)__ptr &amp; 2) {&t;&t;&bslash;&n;&t;&t;&t;__len -= 2;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;SMC_outw( *(u16 *)__ptr, ioaddr, DATA_REG );&t;&bslash;&n;&t;&t;&t;__ptr += 2;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;SMC_outsl( ioaddr, DATA_REG, __ptr, __len &gt;&gt; 2);&t;&bslash;&n;&t;&t;if (__len &amp; 2) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__ptr += (__len &amp; ~3);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;SMC_outw( *((u16 *)__ptr), ioaddr, DATA_REG );&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
-DECL|macro|SMC_PULL_DATA
-mdefine_line|#define SMC_PULL_DATA(p, l)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;char *__ptr = (p);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int __len = (l);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((unsigned long)__ptr &amp; 2) {&t;&t;&t;&t;&bslash;&n;&t;&t;&t;/*&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t; * We want 32bit alignment here.&t;&t;&bslash;&n;&t;&t;&t; * Since some buses perform a full 32bit&t;&bslash;&n;&t;&t;&t; * fetch even for 16bit data we can&squot;t use&t;&bslash;&n;&t;&t;&t; * SMC_inw() here.  Back both source (on chip&t;&bslash;&n;&t;&t;&t; * and destination) pointers of 2 bytes.&t;&bslash;&n;&t;&t;&t; */&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__ptr -= 2;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__len += 2;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;SMC_SET_PTR( 2|PTR_READ|PTR_RCV|PTR_AUTOINC );&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__len += 2;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;SMC_insl( ioaddr, DATA_REG, __ptr, __len &gt;&gt; 2);&t;&t;&bslash;&n;&t;} while (0)
+DECL|macro|_SMC_PUSH_DATA
+mdefine_line|#define _SMC_PUSH_DATA(p, l)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;char *__ptr = (p);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int __len = (l);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (__len &gt;= 2 &amp;&amp; (unsigned long)__ptr &amp; 2) {&t;&t;&bslash;&n;&t;&t;&t;__len -= 2;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;SMC_outw( *(u16 *)__ptr, ioaddr, DATA_REG );&t;&bslash;&n;&t;&t;&t;__ptr += 2;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;SMC_outsl( ioaddr, DATA_REG, __ptr, __len &gt;&gt; 2);&t;&bslash;&n;&t;&t;if (__len &amp; 2) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__ptr += (__len &amp; ~3);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;SMC_outw( *((u16 *)__ptr), ioaddr, DATA_REG );&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+DECL|macro|_SMC_PULL_DATA
+mdefine_line|#define _SMC_PULL_DATA(p, l)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;char *__ptr = (p);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int __len = (l);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((unsigned long)__ptr &amp; 2) {&t;&t;&t;&t;&bslash;&n;&t;&t;&t;/*&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t; * We want 32bit alignment here.&t;&t;&bslash;&n;&t;&t;&t; * Since some buses perform a full 32bit&t;&bslash;&n;&t;&t;&t; * fetch even for 16bit data we can&squot;t use&t;&bslash;&n;&t;&t;&t; * SMC_inw() here.  Back both source (on chip&t;&bslash;&n;&t;&t;&t; * and destination) pointers of 2 bytes.&t;&bslash;&n;&t;&t;&t; */&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__ptr -= 2;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__len += 2;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;SMC_SET_PTR( 2|PTR_READ|PTR_RCV|PTR_AUTOINC );&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__len += 2;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;SMC_insl( ioaddr, DATA_REG, __ptr, __len &gt;&gt; 2);&t;&t;&bslash;&n;&t;} while (0)
 macro_line|#elif SMC_CAN_USE_16BIT
-DECL|macro|SMC_PUSH_DATA
-mdefine_line|#define SMC_PUSH_DATA(p, l)&t;SMC_outsw( ioaddr, DATA_REG, p, (l) &gt;&gt; 1 )
-DECL|macro|SMC_PULL_DATA
-mdefine_line|#define SMC_PULL_DATA(p, l)&t;SMC_insw ( ioaddr, DATA_REG, p, (l) &gt;&gt; 1 )
+DECL|macro|_SMC_PUSH_DATA
+mdefine_line|#define _SMC_PUSH_DATA(p, l)&t;SMC_outsw( ioaddr, DATA_REG, p, (l) &gt;&gt; 1 )
+DECL|macro|_SMC_PULL_DATA
+mdefine_line|#define _SMC_PULL_DATA(p, l)&t;SMC_insw ( ioaddr, DATA_REG, p, (l) &gt;&gt; 1 )
 macro_line|#elif SMC_CAN_USE_8BIT
-DECL|macro|SMC_PUSH_DATA
-mdefine_line|#define SMC_PUSH_DATA(p, l)&t;SMC_outsb( ioaddr, DATA_REG, p, l )
-DECL|macro|SMC_PULL_DATA
-mdefine_line|#define SMC_PULL_DATA(p, l)&t;SMC_insb ( ioaddr, DATA_REG, p, l )
+DECL|macro|_SMC_PUSH_DATA
+mdefine_line|#define _SMC_PUSH_DATA(p, l)&t;SMC_outsb( ioaddr, DATA_REG, p, l )
+DECL|macro|_SMC_PULL_DATA
+mdefine_line|#define _SMC_PULL_DATA(p, l)&t;SMC_insb ( ioaddr, DATA_REG, p, l )
 macro_line|#endif
 macro_line|#if ! SMC_CAN_USE_16BIT
 DECL|macro|SMC_outw
 mdefine_line|#define SMC_outw(x, ioaddr, reg)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int __val16 = (x);&t;&t;&t;&t;&bslash;&n;&t;&t;SMC_outb( __val16, ioaddr, reg );&t;&t;&t;&bslash;&n;&t;&t;SMC_outb( __val16 &gt;&gt; 8, ioaddr, reg + (1 &lt;&lt; SMC_IO_SHIFT));&bslash;&n;&t;} while (0)
 DECL|macro|SMC_inw
 mdefine_line|#define SMC_inw(ioaddr, reg)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int __val16;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__val16 =  SMC_inb( ioaddr, reg );&t;&t;&t;&bslash;&n;&t;&t;__val16 |= SMC_inb( ioaddr, reg + (1 &lt;&lt; SMC_IO_SHIFT)) &lt;&lt; 8; &bslash;&n;&t;&t;__val16;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+macro_line|#endif
+macro_line|#if SMC_CAN_USE_DATACS
+DECL|macro|SMC_PUSH_DATA
+mdefine_line|#define SMC_PUSH_DATA(p, l)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( lp-&gt;datacs ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned char *__ptr = (p);&t;&t;&t;&t;&bslash;&n;&t;&t;int __len = (l);&t;&t;&t;&t;&t;&bslash;&n; &t;&t;if (__len &gt;= 2 &amp;&amp; (unsigned long)__ptr &amp; 2) {&t;&t;&bslash;&n; &t;&t;&t;__len -= 2;&t;&t;&t;&t;&t;&bslash;&n; &t;&t;&t;SMC_outw( *((u16 *)__ptr), ioaddr, DATA_REG );&t;&bslash;&n; &t;&t;&t;__ptr += 2;&t;&t;&t;&t;&t;&bslash;&n; &t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;outsl(lp-&gt;datacs, __ptr, __len &gt;&gt; 2);&t;&t;&t;&bslash;&n; &t;&t;if (__len &amp; 2) {&t;&t;&t;&t;&t;&bslash;&n; &t;&t;&t;__ptr += (__len &amp; ~3);&t;&t;&t;&t;&bslash;&n; &t;&t;&t;SMC_outw( *((u16 *)__ptr), ioaddr, DATA_REG );&t;&bslash;&n; &t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} else {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_SMC_PUSH_DATA(p, l);&t;&t;&t;&t;&t;&bslash;&n;&t;}
+DECL|macro|SMC_PULL_DATA
+mdefine_line|#define SMC_PULL_DATA(p, l)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( lp-&gt;datacs ) { &t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned char *__ptr = (p);&t;&t;&t;&t;&bslash;&n;&t;&t;int __len = (l);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((unsigned long)__ptr &amp; 2) {&t;&t;&t; &t;&bslash;&n;&t;&t;&t;/*&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t; * We want 32bit alignment here.&t;&t;&bslash;&n;&t;&t;&t; * Since some buses perform a full 32bit&t;&bslash;&n;&t;&t;&t; * fetch even for 16bit data we can&squot;t use&t;&bslash;&n;&t;&t;&t; * SMC_inw() here.  Back both source (on chip&t;&bslash;&n;&t;&t;&t; * and destination) pointers of 2 bytes.&t;&bslash;&n;&t;&t;&t; */&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__ptr -= 2;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__len += 2;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;SMC_SET_PTR( 2|PTR_READ|PTR_RCV|PTR_AUTOINC ); &t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__len += 2;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;insl( lp-&gt;datacs, __ptr, __len &gt;&gt; 2);&t;&t;&t;&bslash;&n;&t;} else {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_SMC_PULL_DATA(p, l);&t;&t;&t;&t;&t;&bslash;&n;&t;}
+macro_line|#else
+DECL|macro|SMC_PUSH_DATA
+mdefine_line|#define SMC_PUSH_DATA(p, l) _SMC_PUSH_DATA(p, l)
+DECL|macro|SMC_PULL_DATA
+mdefine_line|#define SMC_PULL_DATA(p, l) _SMC_PULL_DATA(p, l)
 macro_line|#endif
 macro_line|#if !defined (SMC_INTERRUPT_PREAMBLE)
 DECL|macro|SMC_INTERRUPT_PREAMBLE
