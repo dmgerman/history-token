@@ -5550,6 +5550,24 @@ comma
 l_string|&quot;remove journal_head&quot;
 )paren
 suffix:semicolon
+id|J_ASSERT_BH
+c_func
+(paren
+id|bh
+comma
+op_logical_neg
+id|jh-&gt;b_frozen_data
+)paren
+suffix:semicolon
+id|J_ASSERT_BH
+c_func
+(paren
+id|bh
+comma
+op_logical_neg
+id|jh-&gt;b_committed_data
+)paren
+suffix:semicolon
 id|bh-&gt;b_private
 op_assign
 l_int|NULL

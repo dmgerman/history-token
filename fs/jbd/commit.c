@@ -487,6 +487,24 @@ comma
 l_string|&quot;reserved, unused: refile&quot;
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * A journal_get_undo_access()+journal_release_buffer() may&n;&t;&t; * leave undo-committed data.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|jh-&gt;b_committed_data
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|jh-&gt;b_committed_data
+)paren
+suffix:semicolon
+id|jh-&gt;b_committed_data
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 id|journal_refile_buffer
 c_func
 (paren
