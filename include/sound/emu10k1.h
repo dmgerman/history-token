@@ -2866,6 +2866,46 @@ op_star
 id|emu
 )paren
 suffix:semicolon
+multiline_comment|/* fx8010 irq handler */
+r_int
+id|snd_emu10k1_fx8010_register_irq_handler
+c_func
+(paren
+id|emu10k1_t
+op_star
+id|emu
+comma
+id|snd_fx8010_irq_handler_t
+op_star
+id|handler
+comma
+r_int
+r_char
+id|gpr_running
+comma
+r_void
+op_star
+id|private_data
+comma
+id|snd_emu10k1_fx8010_irq_t
+op_star
+op_star
+id|r_irq
+)paren
+suffix:semicolon
+r_int
+id|snd_emu10k1_fx8010_unregister_irq_handler
+c_func
+(paren
+id|emu10k1_t
+op_star
+id|emu
+comma
+id|snd_emu10k1_fx8010_irq_t
+op_star
+id|irq
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * ---- FX8010 ----&n; */
 DECL|macro|EMU10K1_CARD_CREATIVE
