@@ -1559,6 +1559,7 @@ op_star
 id|iocb
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1866,6 +1867,11 @@ op_assign
 dot
 id|iov_base
 op_assign
+(paren
+r_char
+id|__user
+op_star
+)paren
 id|buf
 comma
 dot

@@ -1342,6 +1342,7 @@ id|info
 comma
 r_struct
 id|mgsl_icount
+id|__user
 op_star
 id|user_icount
 )paren
@@ -1356,6 +1357,7 @@ op_star
 id|info
 comma
 id|MGSL_PARAMS
+id|__user
 op_star
 id|user_params
 )paren
@@ -1370,6 +1372,7 @@ op_star
 id|info
 comma
 id|MGSL_PARAMS
+id|__user
 op_star
 id|new_params
 )paren
@@ -1384,6 +1387,7 @@ op_star
 id|info
 comma
 r_int
+id|__user
 op_star
 id|idle_mode
 )paren
@@ -1447,6 +1451,7 @@ op_star
 id|info
 comma
 r_int
+id|__user
 op_star
 id|mask
 )paren
@@ -1743,15 +1748,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n; * 1st function defined in .text section. Calling this function in&n; * init_module() followed by a breakpoint allows a remote debugger&n; * (gdb) to get the .text address for the add-symbol-file command.&n; * This allows remote debugging of dynamically loadable modules.&n; */
-r_static
-r_void
-op_star
-id|mgslpc_get_text_ptr
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|mgslpc_get_text_ptr
 r_static
 r_void
@@ -1759,6 +1755,7 @@ op_star
 id|mgslpc_get_text_ptr
 c_func
 (paren
+r_void
 )paren
 (brace
 r_return
@@ -8098,6 +8095,7 @@ id|info
 comma
 r_struct
 id|mgsl_icount
+id|__user
 op_star
 id|user_icount
 )paren
@@ -8162,6 +8160,7 @@ op_star
 id|info
 comma
 id|MGSL_PARAMS
+id|__user
 op_star
 id|user_params
 )paren
@@ -8225,6 +8224,7 @@ op_star
 id|info
 comma
 id|MGSL_PARAMS
+id|__user
 op_star
 id|new_params
 )paren
@@ -8358,6 +8358,7 @@ op_star
 id|info
 comma
 r_int
+id|__user
 op_star
 id|idle_mode
 )paren
@@ -8489,6 +8490,7 @@ op_star
 id|info
 comma
 r_int
+id|__user
 op_star
 id|if_mode
 )paren
@@ -8933,6 +8935,7 @@ op_star
 id|info
 comma
 r_int
+id|__user
 op_star
 id|mask_ptr
 )paren
@@ -10325,10 +10328,23 @@ suffix:semicolon
 multiline_comment|/* kernel counter temps */
 r_struct
 id|serial_icounter_struct
+id|__user
 op_star
 id|p_cuser
 suffix:semicolon
 multiline_comment|/* user space */
+r_void
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
+suffix:semicolon
 r_int
 r_int
 id|flags
@@ -10348,11 +10364,7 @@ c_func
 (paren
 id|info
 comma
-(paren
-id|MGSL_PARAMS
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -10364,11 +10376,7 @@ c_func
 (paren
 id|info
 comma
-(paren
-id|MGSL_PARAMS
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -10380,11 +10388,7 @@ c_func
 (paren
 id|info
 comma
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -10411,11 +10415,7 @@ c_func
 (paren
 id|info
 comma
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -10482,12 +10482,7 @@ c_func
 (paren
 id|info
 comma
-(paren
-r_struct
-id|mgsl_icount
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -10499,11 +10494,7 @@ c_func
 (paren
 id|info
 comma
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -10548,12 +10539,7 @@ id|flags
 suffix:semicolon
 id|p_cuser
 op_assign
-(paren
-r_struct
-id|serial_icounter_struct
-op_star
-)paren
-id|arg
+id|argp
 suffix:semicolon
 id|PUT_USER
 c_func
