@@ -70,12 +70,18 @@ r_int
 id|wb_timeout
 suffix:semicolon
 multiline_comment|/* when to read/write/commit */
+DECL|member|wb_index
+r_int
+r_int
+id|wb_index
+suffix:semicolon
+multiline_comment|/* Offset within mapping */
 DECL|member|wb_offset
 r_int
 r_int
 id|wb_offset
 comma
-multiline_comment|/* Offset of read/write */
+multiline_comment|/* Offset within page */
 DECL|member|wb_bytes
 id|wb_bytes
 comma

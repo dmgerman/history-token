@@ -641,11 +641,7 @@ r_int
 r_int
 id|index
 op_assign
-id|page_index
-c_func
-(paren
-id|page
-)paren
+id|page-&gt;index
 suffix:semicolon
 r_int
 r_int

@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;
 macro_line|#include &lt;linux/nfs2.h&gt;
 macro_line|#include &lt;linux/nfs3.h&gt;
+macro_line|#include &lt;linux/nfs_page.h&gt;
 macro_line|#include &lt;linux/nfs_xdr.h&gt;
 multiline_comment|/*&n; * Enable debugging support for nfs client.&n; * Requires RPC_DEBUG.&n; */
 macro_line|#ifdef RPC_DEBUG
@@ -377,20 +378,26 @@ suffix:semicolon
 )brace
 r_static
 r_inline
-DECL|function|page_index
-r_int
-r_int
-id|page_index
+DECL|function|req_offset
+id|loff_t
+id|req_offset
 c_func
 (paren
 r_struct
-id|page
+id|nfs_page
 op_star
-id|page
+id|req
 )paren
 (brace
 r_return
-id|page-&gt;index
+(paren
+(paren
+id|loff_t
+)paren
+id|req-&gt;wb_index
+)paren
+op_lshift
+id|PAGE_CACHE_SHIFT
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * linux/fs/nfs/inode.c&n; */
@@ -1025,11 +1032,7 @@ id|inode
 comma
 l_int|0
 comma
-id|page_index
-c_func
-(paren
-id|page
-)paren
+id|page-&gt;index
 comma
 l_int|1
 comma
