@@ -1460,7 +1460,7 @@ c_func
 (paren
 id|card
 comma
-id|SNDRV_DEV_LOWLEVEL
+id|SNDRV_DEV_CODEC
 comma
 id|opl3
 comma

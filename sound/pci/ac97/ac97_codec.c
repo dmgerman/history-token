@@ -11600,7 +11600,7 @@ c_func
 (paren
 id|card
 comma
-id|SNDRV_DEV_LOWLEVEL
+id|SNDRV_DEV_BUS
 comma
 id|bus
 comma
@@ -13433,7 +13433,7 @@ c_func
 (paren
 id|card
 comma
-id|SNDRV_DEV_LOWLEVEL
+id|SNDRV_DEV_CODEC
 comma
 id|ac97
 comma

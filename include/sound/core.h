@@ -102,6 +102,12 @@ comma
 DECL|enumerator|SNDRV_DEV_INFO
 id|SNDRV_DEV_INFO
 comma
+DECL|enumerator|SNDRV_DEV_BUS
+id|SNDRV_DEV_BUS
+comma
+DECL|enumerator|SNDRV_DEV_CODEC
+id|SNDRV_DEV_CODEC
+comma
 DECL|enumerator|SNDRV_DEV_LOWLEVEL
 id|SNDRV_DEV_LOWLEVEL
 op_assign
