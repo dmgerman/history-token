@@ -10438,7 +10438,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_DEVFS */
 DECL|function|dv1394_devfs_del
 r_void
 id|dv1394_devfs_del
@@ -10503,6 +10502,7 @@ id|p
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif /* CONFIG_DEVFS */
 multiline_comment|/*** IEEE1394 HPSB CALLBACKS ***********************************************/
 DECL|function|dv1394_init
 r_static
