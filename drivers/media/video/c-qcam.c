@@ -3512,6 +3512,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|function|init_cqcam
+r_static
 r_int
 id|init_cqcam
 c_func
@@ -3755,6 +3756,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|close_cqcam
+r_static
 r_void
 id|close_cqcam
 c_func

@@ -1379,6 +1379,7 @@ macro_line|#endif
 multiline_comment|/* ------------------------------------------------------------------ */
 multiline_comment|/* nr of (saa7134-)pages for the given buffer size */
 DECL|function|saa7134_buffer_pages
+r_static
 r_int
 id|saa7134_buffer_pages
 c_func

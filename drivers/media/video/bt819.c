@@ -145,6 +145,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* for values, see the bt819 datasheet */
 DECL|variable|timing_data
+r_static
 r_struct
 id|timing
 id|timing_data

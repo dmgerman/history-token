@@ -1287,6 +1287,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Reset the QuickCam and program for brightness, contrast,&n; * white-balance, and resolution. */
 DECL|function|qc_set
+r_static
 r_void
 id|qc_set
 c_func
@@ -2056,6 +2057,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* requests a scan from the camera.  It sends the correct instructions&n; * to the camera and then reads back the correct number of bytes.  In&n; * previous versions of this routine the return structure contained&n; * the raw output from the camera, and there was a &squot;qc_convertscan&squot;&n; * function that converted that to a useful format.  In version 0.3 I&n; * rolled qc_convertscan into qc_scan and now I only return the&n; * converted scan.  The format is just an one-dimensional array of&n; * characters, one for each pixel, with 0=black up to n=white, where&n; * n=2^(bit depth)-1.  Ask me for more details if you don&squot;t understand&n; * this. */
 DECL|function|qc_capture
+r_static
 r_int
 id|qc_capture
 c_func
@@ -3403,6 +3405,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|function|init_bwqcam
+r_static
 r_int
 id|init_bwqcam
 c_func
@@ -3577,6 +3580,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|close_bwqcam
+r_static
 r_void
 id|close_bwqcam
 c_func

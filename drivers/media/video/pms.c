@@ -4231,6 +4231,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|pms_device
+r_static
 r_struct
 id|pms_device
 id|pms_device

@@ -3050,6 +3050,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|BTTV_CTLS
+r_static
 r_const
 r_int
 id|BTTV_CTLS
@@ -3569,6 +3570,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* used to switch between the bt848&squot;s analog/digital video capture modes */
 DECL|function|bt848A_set_timing
+r_static
 r_void
 id|bt848A_set_timing
 c_func
@@ -14392,6 +14394,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|bttv_vbi_template
+r_static
 r_struct
 id|video_device
 id|bttv_vbi_template

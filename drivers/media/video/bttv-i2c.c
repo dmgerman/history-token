@@ -1068,6 +1068,7 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|bttv_i2c_xfer
+r_static
 r_int
 id|bttv_i2c_xfer
 c_func

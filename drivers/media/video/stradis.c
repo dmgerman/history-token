@@ -132,21 +132,6 @@ DECL|macro|debAudio
 mdefine_line|#define debAudio&t;(NewCard ? nDebAudio : oDebAudio)
 DECL|macro|debDMA
 mdefine_line|#define debDMA&t;&t;(NewCard ? nDebDMA : oDebDMA)
-macro_line|#ifdef DEBUG
-DECL|function|stradis_driver
-r_int
-id|stradis_driver
-c_func
-(paren
-r_void
-)paren
-multiline_comment|/* for the benefit of ksymoops */
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#ifdef USE_RESCUE_EEPROM_SDM275
 DECL|variable|rescue_eeprom
 r_static
