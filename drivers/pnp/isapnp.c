@@ -5122,12 +5122,47 @@ c_func
 id|csn
 )paren
 suffix:semicolon
-macro_line|#if 1&t;/* to avoid malfunction when the isapnptools package is used */
+macro_line|#if 1
+multiline_comment|/* to avoid malfunction when the isapnptools package is used */
+multiline_comment|/* we must set RDP to our value again */
+multiline_comment|/* it is possible to set RDP only in the isolation phase */
+multiline_comment|/*   Jens Thoms Toerring &lt;Jens.Toerring@physik.fu-berlin.de&gt; */
+id|isapnp_write_byte
+c_func
+(paren
+l_int|0x02
+comma
+l_int|0x04
+)paren
+suffix:semicolon
+multiline_comment|/* clear CSN of card */
+id|mdelay
+c_func
+(paren
+l_int|2
+)paren
+suffix:semicolon
+multiline_comment|/* is this necessary? */
+id|isapnp_wake
+c_func
+(paren
+id|csn
+)paren
+suffix:semicolon
+multiline_comment|/* bring card into sleep state */
+id|isapnp_wake
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* bring card into isolation state */
 id|isapnp_set_rdp
 c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* reset the RDP port */
 id|udelay
 c_func
 (paren
@@ -5135,19 +5170,22 @@ l_int|1000
 )paren
 suffix:semicolon
 multiline_comment|/* delay 1000us */
-id|write_address
+id|isapnp_write_byte
 c_func
 (paren
-l_int|0x01
+l_int|0x06
+comma
+id|csn
 )paren
 suffix:semicolon
+multiline_comment|/* reset CSN to previous value */
 id|udelay
 c_func
 (paren
-l_int|1000
+l_int|250
 )paren
 suffix:semicolon
-multiline_comment|/* delay 1000us */
+multiline_comment|/* is this necessary? */
 macro_line|#endif
 r_if
 c_cond
@@ -12433,6 +12471,15 @@ id|device_driver
 id|isapnp_device_driver
 op_assign
 (brace
+dot
+id|devices
+op_assign
+id|LIST_HEAD_INIT
+c_func
+(paren
+id|isapnp_device_driver.devices
+)paren
+comma
 )brace
 suffix:semicolon
 DECL|function|isapnp_init_device_tree

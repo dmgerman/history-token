@@ -10,9 +10,9 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
-macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;support/debug.h&gt;
 macro_line|#include &lt;support/kmem.h&gt;
 macro_line|#include &quot;page_buf_internal.h&quot;
 DECL|macro|SECTOR_SHIFT
@@ -1862,14 +1862,16 @@ id|nbytes
 op_rshift
 id|SECTOR_SHIFT
 suffix:semicolon
-m_assert
+id|ASSERT
+c_func
 (paren
 id|blocksize
 OL
 id|PAGE_CACHE_SIZE
 )paren
 suffix:semicolon
-m_assert
+id|ASSERT
+c_func
 (paren
 op_logical_neg
 (paren
@@ -4730,14 +4732,16 @@ id|j
 comma
 id|range
 suffix:semicolon
-m_assert
+id|ASSERT
+c_func
 (paren
 id|blocksize
 OL
 id|PAGE_CACHE_SIZE
 )paren
 suffix:semicolon
-m_assert
+id|ASSERT
+c_func
 (paren
 op_logical_neg
 (paren
@@ -5824,7 +5828,8 @@ op_amp
 id|csize
 )paren
 suffix:semicolon
-m_assert
+id|ASSERT
+c_func
 (paren
 (paren
 (paren
@@ -6136,7 +6141,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|sigfillset
@@ -6155,7 +6160,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 multiline_comment|/* Migrate to the right CPU */
@@ -6460,7 +6465,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|sigfillset
@@ -6479,7 +6484,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|strcpy

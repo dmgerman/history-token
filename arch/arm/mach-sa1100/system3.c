@@ -17,7 +17,6 @@ macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &quot;generic.h&quot;
-macro_line|#include &quot;sa1111.h&quot;
 macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG 1
@@ -1057,8 +1056,6 @@ op_assign
 id|sa1111_init
 c_func
 (paren
-l_int|NULL
-comma
 id|PT_SA1111_BASE
 comma
 id|IRQ_SYSTEM3_SA1111
@@ -1134,7 +1131,7 @@ suffix:semicolon
 multiline_comment|/**********************************************************************&n; *  Exported Functions&n; */
 multiline_comment|/**********************************************************************&n; *  kernel magic macros&n; */
 DECL|variable|system3_init
-id|__initcall
+id|arch_initcall
 c_func
 (paren
 id|system3_init

@@ -231,6 +231,8 @@ DECL|macro|HERMES_RXSTAT_UNDECRYPTABLE
 mdefine_line|#define&t;HERMES_RXSTAT_UNDECRYPTABLE&t;(0x0002)
 DECL|macro|HERMES_RXSTAT_MACPORT
 mdefine_line|#define&t;HERMES_RXSTAT_MACPORT&t;&t;(0x0700)
+DECL|macro|HERMES_RXSTAT_PCF
+mdefine_line|#define HERMES_RXSTAT_PCF&t;&t;(0x1000)&t;/* Frame was received in CF period */
 DECL|macro|HERMES_RXSTAT_MSGTYPE
 mdefine_line|#define&t;HERMES_RXSTAT_MSGTYPE&t;&t;(0xE000)
 DECL|macro|HERMES_RXSTAT_1042
@@ -507,6 +509,37 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+DECL|macro|HERMES_LINKSTATUS_NOT_CONNECTED
+mdefine_line|#define HERMES_LINKSTATUS_NOT_CONNECTED   (0x0000)  
+DECL|macro|HERMES_LINKSTATUS_CONNECTED
+mdefine_line|#define HERMES_LINKSTATUS_CONNECTED       (0x0001)
+DECL|macro|HERMES_LINKSTATUS_DISCONNECTED
+mdefine_line|#define HERMES_LINKSTATUS_DISCONNECTED    (0x0002)
+DECL|macro|HERMES_LINKSTATUS_AP_CHANGE
+mdefine_line|#define HERMES_LINKSTATUS_AP_CHANGE       (0x0003)
+DECL|macro|HERMES_LINKSTATUS_AP_OUT_OF_RANGE
+mdefine_line|#define HERMES_LINKSTATUS_AP_OUT_OF_RANGE (0x0004)
+DECL|macro|HERMES_LINKSTATUS_AP_IN_RANGE
+mdefine_line|#define HERMES_LINKSTATUS_AP_IN_RANGE     (0x0005)
+DECL|macro|HERMES_LINKSTATUS_ASSOC_FAILED
+mdefine_line|#define HERMES_LINKSTATUS_ASSOC_FAILED    (0x0006)
+DECL|struct|hermes_linkstatus
+r_struct
+id|hermes_linkstatus
+(brace
+DECL|member|linkstatus
+id|u16
+id|linkstatus
+suffix:semicolon
+multiline_comment|/* Link status */
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 singleline_comment|// #define HERMES_DEBUG_BUFFER 1
 DECL|macro|HERMES_DEBUG_BUFSIZE
 mdefine_line|#define HERMES_DEBUG_BUFSIZE 4096
@@ -647,7 +680,7 @@ id|reg_spacing
 )paren
 suffix:semicolon
 r_int
-id|hermes_reset
+id|hermes_init
 c_func
 (paren
 id|hermes_t
@@ -815,36 +848,6 @@ op_eq
 id|HERMES_MAGIC
 suffix:semicolon
 )brace
-DECL|function|hermes_enable_interrupt
-r_static
-r_inline
-r_void
-id|hermes_enable_interrupt
-c_func
-(paren
-id|hermes_t
-op_star
-id|hw
-comma
-id|u16
-id|events
-)paren
-(brace
-id|hw-&gt;inten
-op_or_assign
-id|events
-suffix:semicolon
-id|hermes_write_regn
-c_func
-(paren
-id|hw
-comma
-id|INTEN
-comma
-id|hw-&gt;inten
-)paren
-suffix:semicolon
-)brace
 DECL|function|hermes_set_irqmask
 r_static
 r_inline
@@ -976,7 +979,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|macro|HERMES_BYTES_TO_RECLEN
-mdefine_line|#define HERMES_BYTES_TO_RECLEN(n) ( ((n) % 2) ? (((n)+1)/2)+1 : ((n)/2)+1 )
+mdefine_line|#define HERMES_BYTES_TO_RECLEN(n) ( (((n)+1)/2) + 1 )
 DECL|macro|HERMES_RECLEN_TO_BYTES
 mdefine_line|#define HERMES_RECLEN_TO_BYTES(n) ( ((n)-1) * 2 )
 multiline_comment|/* Note that for the next two, the count is in 16-bit words, not bytes */

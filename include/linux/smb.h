@@ -188,6 +188,10 @@ DECL|member|f_gid
 id|gid_t
 id|f_gid
 suffix:semicolon
+DECL|member|f_rdev
+id|dev_t
+id|f_rdev
+suffix:semicolon
 DECL|member|f_size
 id|loff_t
 id|f_size
@@ -213,6 +217,10 @@ DECL|member|f_blocks
 r_int
 r_int
 id|f_blocks
+suffix:semicolon
+DECL|member|f_unix
+r_int
+id|f_unix
 suffix:semicolon
 )brace
 suffix:semicolon

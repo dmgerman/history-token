@@ -224,7 +224,7 @@ id|PCIPCI_TRITON
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *&t;VIA Apollo KT133 needs PCI latency patch&n; *&t;Made according to a windows driver based patch by George E. Breese&n; *&t;see PCI Latency Adjust on http://www.viahardware.com/download/viatweak.shtm&n; *      Also see http://home.tiscalinet.de/au-ja/review-kt133a-1-en.html for&n; *      the info on which Mr Breese based his work.&n; *&n; *&t;Updated based on further information from the site and also on&n; *&t;information provided by VIA &n; */
+multiline_comment|/*&n; *&t;VIA Apollo KT133 needs PCI latency patch&n; *&t;Made according to a windows driver based patch by George E. Breese&n; *&t;see PCI Latency Adjust on http://www.viahardware.com/download/viatweak.shtm&n; *      Also see http://www.au-ja.org/review-kt133a-1-en.phtml for&n; *      the info on which Mr Breese based his work.&n; *&n; *&t;Updated based on further information from the site and also on&n; *&t;information provided by VIA &n; */
 DECL|function|quirk_vialatency
 r_static
 r_void

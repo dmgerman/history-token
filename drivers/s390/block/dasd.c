@@ -975,7 +975,7 @@ c_func
 (paren
 id|device-&gt;name
 comma
-id|gdp-&gt;major_name
+id|gdp-&gt;disk_name
 )paren
 suffix:semicolon
 multiline_comment|/* Find a discipline for the device. */

@@ -129,6 +129,8 @@ DECL|macro|snd_pcm_oss_file_t_magic
 mdefine_line|#define snd_pcm_oss_file_t_magic&t;&t;0xa15a0105
 DECL|macro|snd_mixer_oss_t_magic
 mdefine_line|#define snd_mixer_oss_t_magic&t;&t;&t;0xa15a0106
+DECL|macro|snd_pcm_sgbuf_t_magic
+mdefine_line|#define snd_pcm_sgbuf_t_magic&t;&t;&t;0xa15a0107
 DECL|macro|snd_info_private_data_t_magic
 mdefine_line|#define snd_info_private_data_t_magic&t;&t;0xa15a0201
 DECL|macro|snd_ctl_file_t_magic
@@ -159,6 +161,8 @@ DECL|macro|es1938_t_magic
 mdefine_line|#define es1938_t_magic&t;&t;&t;&t;0xa15a1301
 DECL|macro|cs46xx_t_magic
 mdefine_line|#define cs46xx_t_magic&t;&t;&t;&t;0xa15a1401
+DECL|macro|cs46xx_pcm_t_magic
+mdefine_line|#define cs46xx_pcm_t_magic&t;&t;&t;0xa15a1402
 DECL|macro|ensoniq_t_magic
 mdefine_line|#define ensoniq_t_magic&t;&t;&t;&t;0xa15a1501
 DECL|macro|sonicvibes_t_magic

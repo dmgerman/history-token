@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *&t;Linux INET6 implementation &n; *&t;Forwarding Information Database&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: ip6_fib.c,v 1.25 2001/10/31 21:55:55 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * &t;Changes:&n; * &t;Yuji SEKIYA @USAGI:&t;Support default route on router node;&n; * &t;&t;&t;&t;remove ip6_null_entry from the top of&n; * &t;&t;&t;&t;routing table.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -691,16 +692,6 @@ id|fn
 op_assign
 id|root
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|plen
-op_eq
-l_int|0
-)paren
-r_return
-id|fn
-suffix:semicolon
 r_do
 (brace
 id|key
@@ -1150,6 +1141,45 @@ op_assign
 op_amp
 id|fn-&gt;leaf
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|fn-&gt;fn_flags
+op_amp
+id|RTN_TL_ROOT
+op_logical_and
+id|fn-&gt;leaf
+op_eq
+op_amp
+id|ip6_null_entry
+op_logical_and
+op_logical_neg
+(paren
+id|rt-&gt;rt6i_flags
+op_amp
+(paren
+id|RTF_DEFAULT
+op_or
+id|RTF_ADDRCONF
+op_or
+id|RTF_ALLONLINK
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * The top fib of ip6 routing table includes ip6_null_entry.&n;&t;&t; */
+id|fn-&gt;leaf
+op_assign
+id|rt
+suffix:semicolon
+id|rt-&gt;u.next
+op_assign
+l_int|NULL
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -1265,6 +1295,8 @@ id|iter-&gt;u.next
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *&t;insert node&n;&t; */
+id|out
+suffix:colon
 id|rt-&gt;u.next
 op_assign
 id|iter
@@ -2070,6 +2102,10 @@ c_cond
 id|fn
 op_eq
 l_int|NULL
+op_logical_or
+id|fn-&gt;fn_flags
+op_amp
+id|RTN_TL_ROOT
 )paren
 id|fn
 op_assign
@@ -3017,6 +3053,22 @@ suffix:semicolon
 id|rt-&gt;u.next
 op_assign
 l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fn-&gt;leaf
+op_eq
+l_int|NULL
+op_logical_and
+id|fn-&gt;fn_flags
+op_amp
+id|RTN_TL_ROOT
+)paren
+id|fn-&gt;leaf
+op_assign
+op_amp
+id|ip6_null_entry
 suffix:semicolon
 multiline_comment|/* If it was last route, expunge its radix tree node */
 r_if

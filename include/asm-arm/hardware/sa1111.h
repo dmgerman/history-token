@@ -39,20 +39,12 @@ DECL|macro|SA1111_SMCR
 mdefine_line|#define SA1111_SMCR&t;0x0004
 DECL|macro|SA1111_SKID
 mdefine_line|#define SA1111_SKID&t;0x0008
-DECL|macro|_SBI_SKCR
-mdefine_line|#define _SBI_SKCR&t;_SA1111(SA1111_SKCR)
-DECL|macro|_SBI_SMCR
-mdefine_line|#define _SBI_SMCR&t;_SA1111(SA1111_SMCR)
-DECL|macro|_SBI_SKID
-mdefine_line|#define _SBI_SKID&t;_SA1111(SA1111_SKID)
-macro_line|#if LANGUAGE == C
 DECL|macro|SBI_SKCR
 mdefine_line|#define SBI_SKCR&t;__CCREG(SA1111_SKCR)
 DECL|macro|SBI_SMCR
 mdefine_line|#define SBI_SMCR&t;__CCREG(SA1111_SMCR)
 DECL|macro|SBI_SKID
 mdefine_line|#define SBI_SKID&t;__CCREG(SA1111_SKID)
-macro_line|#endif  /* LANGUAGE == C */
 DECL|macro|SKCR_PLL_BYPASS
 mdefine_line|#define SKCR_PLL_BYPASS&t;(1&lt;&lt;0)
 DECL|macro|SKCR_RCLKEN
@@ -115,31 +107,12 @@ DECL|macro|SA1111_SKPTC
 mdefine_line|#define SA1111_SKPTC&t;0x0210
 DECL|macro|SA1111_SKPEN0
 mdefine_line|#define SA1111_SKPEN0&t;0x0214
-DECL|macro|SA1111_SKPWN0
-mdefine_line|#define SA1111_SKPWN0&t;0x0218
+DECL|macro|SA1111_SKPWM0
+mdefine_line|#define SA1111_SKPWM0&t;0x0218
 DECL|macro|SA1111_SKPEN1
 mdefine_line|#define SA1111_SKPEN1&t;0x021c
 DECL|macro|SA1111_SKPWM1
 mdefine_line|#define SA1111_SKPWM1&t;0x0220
-DECL|macro|_SKPCR
-mdefine_line|#define _SKPCR&t;&t;_SA1111(SA1111_SKPCR)
-DECL|macro|_SKCDR
-mdefine_line|#define _SKCDR&t;&t;_SA1111(SA1111_SKCDR)
-DECL|macro|_SKAUD
-mdefine_line|#define _SKAUD&t;&t;_SA1111(SA1111_SKAUD)
-DECL|macro|_SKPMC
-mdefine_line|#define _SKPMC&t;&t;_SA1111(SA1111_SKPMC)
-DECL|macro|_SKPTC
-mdefine_line|#define _SKPTC&t;&t;_SA1111(SA1111_SKPTC)
-DECL|macro|_SKPEN0
-mdefine_line|#define _SKPEN0&t;&t;_SA1111(SA1111_SKPEN0)
-DECL|macro|_SKPWM0
-mdefine_line|#define _SKPWM0&t;&t;_SA1111(SA1111_SKPWM0)
-DECL|macro|_SKPEN1
-mdefine_line|#define _SKPEN1&t;&t;_SA1111(SA1111_SKPEN1)
-DECL|macro|_SKPWM1
-mdefine_line|#define _SKPWM1&t;&t;_SA1111(SA1111_SKPWM1)
-macro_line|#if LANGUAGE == C
 DECL|macro|SKPCR
 mdefine_line|#define SKPCR&t;&t;__CCREG(SA1111_SKPCR)
 DECL|macro|SKCDR
@@ -158,7 +131,6 @@ DECL|macro|SKPEN1
 mdefine_line|#define SKPEN1&t;&t;__CCREG(SA1111_SKPEN1)
 DECL|macro|SKPWM1
 mdefine_line|#define SKPWM1&t;&t;__CCREG(SA1111_SKPWM1)
-macro_line|#endif  /* LANGUAGE == C */
 DECL|macro|SKPCR_UCLKEN
 mdefine_line|#define SKPCR_UCLKEN&t;(1&lt;&lt;0)
 DECL|macro|SKPCR_ACCLKEN
@@ -178,26 +150,15 @@ mdefine_line|#define SKPCR_DCLKEN&t;(1&lt;&lt;7)
 DECL|macro|SKPCR_PWMCLKEN
 mdefine_line|#define SKPCR_PWMCLKEN&t;(1&lt;&lt;8)
 multiline_comment|/*&n; * USB Host controller&n; */
-DECL|macro|_USB_OHCI_OP_BASE
-mdefine_line|#define _USB_OHCI_OP_BASE&t;_SA1111( 0x400 )
-DECL|macro|_USB_STATUS
-mdefine_line|#define _USB_STATUS&t;&t;_SA1111( 0x518 )
-DECL|macro|_USB_RESET
-mdefine_line|#define _USB_RESET&t;&t;_SA1111( 0x51c )
-DECL|macro|_USB_INTERRUPTEST
-mdefine_line|#define _USB_INTERRUPTEST&t;_SA1111( 0x520 )
-DECL|macro|_USB_EXTENT
-mdefine_line|#define _USB_EXTENT&t;&t;(_USB_INTERRUPTEST - _USB_OHCI_OP_BASE + 4)
-macro_line|#if LANGUAGE == C
-DECL|macro|USB_OHCI_OP_BASE
-mdefine_line|#define USB_OHCI_OP_BASE&t;__CCREG(0x0400)
-DECL|macro|USB_STATUS
-mdefine_line|#define USB_STATUS&t;&t;__CCREG(0x0518)
-DECL|macro|USB_RESET
-mdefine_line|#define USB_RESET&t;&t;__CCREG(0x051c)
-DECL|macro|USB_INTERRUPTEST
-mdefine_line|#define USB_INTERRUPTEST&t;__CCReG(0x0520)
-macro_line|#endif  /* LANGUAGE == C */
+DECL|macro|SA1111_USB
+mdefine_line|#define SA1111_USB&t;&t;0x0400
+multiline_comment|/*&n; * Offsets from SA1111_USB_BASE&n; */
+DECL|macro|SA1111_USB_STATUS
+mdefine_line|#define SA1111_USB_STATUS&t;0x0118
+DECL|macro|SA1111_USB_RESET
+mdefine_line|#define SA1111_USB_RESET&t;0x011c
+DECL|macro|SA1111_USB_IRQTEST
+mdefine_line|#define SA1111_USB_IRQTEST&t;0x0120
 DECL|macro|USB_RESET_FORCEIFRESET
 mdefine_line|#define USB_RESET_FORCEIFRESET&t;(1 &lt;&lt; 0)
 DECL|macro|USB_RESET_FORCEHCRESET
@@ -539,99 +500,70 @@ DECL|macro|PC_SSR
 mdefine_line|#define PC_SSR&t;&t;__CCREG(0x102c)
 macro_line|#endif  /* LANGUAGE == C */
 multiline_comment|/*&n; * Interrupt Controller&n; *&n; * Registers&n; *    INTTEST0&t;&t;Test register 0&n; *    INTTEST1&t;&t;Test register 1&n; *    INTEN0&t;&t;Interrupt Enable register 0&n; *    INTEN1&t;&t;Interrupt Enable register 1&n; *    INTPOL0&t;&t;Interrupt Polarity selection 0&n; *    INTPOL1&t;&t;Interrupt Polarity selection 1&n; *    INTTSTSEL&t;&t;Interrupt source selection&n; *    INTSTATCLR0&t;Interrupt Status/Clear 0&n; *    INTSTATCLR1&t;Interrupt Status/Clear 1&n; *    INTSET0&t;&t;Interrupt source set 0&n; *    INTSET1&t;&t;Interrupt source set 1&n; *    WAKE_EN0&t;&t;Wake-up source enable 0&n; *    WAKE_EN1&t;&t;Wake-up source enable 1&n; *    WAKE_POL0&t;&t;Wake-up polarity selection 0&n; *    WAKE_POL1&t;&t;Wake-up polarity selection 1&n; */
+DECL|macro|SA1111_INTC
+mdefine_line|#define SA1111_INTC&t;&t;0x1600
+multiline_comment|/*&n; * These are offsets from the above base.&n; */
 DECL|macro|SA1111_INTTEST0
-mdefine_line|#define SA1111_INTTEST0&t;&t;0x1600
+mdefine_line|#define SA1111_INTTEST0&t;&t;0x0000
 DECL|macro|SA1111_INTTEST1
-mdefine_line|#define SA1111_INTTEST1&t;&t;0x1604
+mdefine_line|#define SA1111_INTTEST1&t;&t;0x0004
 DECL|macro|SA1111_INTEN0
-mdefine_line|#define SA1111_INTEN0&t;&t;0x1608
+mdefine_line|#define SA1111_INTEN0&t;&t;0x0008
 DECL|macro|SA1111_INTEN1
-mdefine_line|#define SA1111_INTEN1&t;&t;0x160c
+mdefine_line|#define SA1111_INTEN1&t;&t;0x000c
 DECL|macro|SA1111_INTPOL0
-mdefine_line|#define SA1111_INTPOL0&t;&t;0x1610
+mdefine_line|#define SA1111_INTPOL0&t;&t;0x0010
 DECL|macro|SA1111_INTPOL1
-mdefine_line|#define SA1111_INTPOL1&t;&t;0x1614
+mdefine_line|#define SA1111_INTPOL1&t;&t;0x0014
 DECL|macro|SA1111_INTTSTSEL
-mdefine_line|#define SA1111_INTTSTSEL&t;0x1618
+mdefine_line|#define SA1111_INTTSTSEL&t;0x0018
 DECL|macro|SA1111_INTSTATCLR0
-mdefine_line|#define SA1111_INTSTATCLR0&t;0x161c
+mdefine_line|#define SA1111_INTSTATCLR0&t;0x001c
 DECL|macro|SA1111_INTSTATCLR1
-mdefine_line|#define SA1111_INTSTATCLR1&t;0x1620
+mdefine_line|#define SA1111_INTSTATCLR1&t;0x0020
 DECL|macro|SA1111_INTSET0
-mdefine_line|#define SA1111_INTSET0&t;&t;0x1624
+mdefine_line|#define SA1111_INTSET0&t;&t;0x0024
 DECL|macro|SA1111_INTSET1
-mdefine_line|#define SA1111_INTSET1&t;&t;0x1628
-DECL|macro|SA1111_WAKE_EN0
-mdefine_line|#define SA1111_WAKE_EN0&t;&t;0x162c
-DECL|macro|SA1111_WAKE_EN1
-mdefine_line|#define SA1111_WAKE_EN1&t;&t;0x1630
-DECL|macro|SA1111_WAKE_POL0
-mdefine_line|#define SA1111_WAKE_POL0&t;0x1634
-DECL|macro|SA1111_WAKE_POL1
-mdefine_line|#define SA1111_WAKE_POL1&t;0x1638
-DECL|macro|_INTTEST0
-mdefine_line|#define _INTTEST0&t;_SA1111(SA1111_INTTEST0)
-DECL|macro|_INTTEST1
-mdefine_line|#define _INTTEST1&t;_SA1111(SA1111_INTTEST1)
-DECL|macro|_INTEN0
-mdefine_line|#define _INTEN0&t;&t;_SA1111(SA1111_INTEN0)
-DECL|macro|_INTEN1
-mdefine_line|#define _INTEN1&t;&t;_SA1111(SA1111_INTEN1)
-DECL|macro|_INTPOL0
-mdefine_line|#define _INTPOL0&t;_SA1111(SA1111_INTPOL0)
-DECL|macro|_INTPOL1
-mdefine_line|#define _INTPOL1&t;_SA1111(SA1111_INTPOL1)
-DECL|macro|_INTTSTSEL
-mdefine_line|#define _INTTSTSEL&t;_SA1111(SA1111_INTTSTSEL)
-DECL|macro|_INTSTATCLR0
-mdefine_line|#define _INTSTATCLR0&t;_SA1111(SA1111_INTSTATCLR0)
-DECL|macro|_INTSTATCLR1
-mdefine_line|#define _INTSTATCLR1&t;_SA1111(SA1111_INTSTATCLR1)
-DECL|macro|_INTSET0
-mdefine_line|#define _INTSET0&t;_SA1111(SA1111_INTSET0)
-DECL|macro|_INTSET1
-mdefine_line|#define _INTSET1&t;_SA1111(SA1111_INTSET1)
-DECL|macro|_WAKE_EN0
-mdefine_line|#define _WAKE_EN0&t;_SA1111(SA1111_WAKE_EN0)
-DECL|macro|_WAKE_EN1
-mdefine_line|#define _WAKE_EN1&t;_SA1111(SA1111_WAKE_EN1)
-DECL|macro|_WAKE_POL0
-mdefine_line|#define _WAKE_POL0&t;_SA1111(SA1111_WAKE_POL0)
-DECL|macro|_WAKE_POL1
-mdefine_line|#define _WAKE_POL1&t;_SA1111(SA1111_WAKE_POL1)
-macro_line|#if LANGUAGE == C
+mdefine_line|#define SA1111_INTSET1&t;&t;0x0028
+DECL|macro|SA1111_WAKEEN0
+mdefine_line|#define SA1111_WAKEEN0&t;&t;0x002c
+DECL|macro|SA1111_WAKEEN1
+mdefine_line|#define SA1111_WAKEEN1&t;&t;0x0030
+DECL|macro|SA1111_WAKEPOL0
+mdefine_line|#define SA1111_WAKEPOL0&t;&t;0x0034
+DECL|macro|SA1111_WAKEPOL1
+mdefine_line|#define SA1111_WAKEPOL1&t;&t;0x0038
 DECL|macro|INTTEST0
-mdefine_line|#define INTTEST0&t;__CCREG(SA1111_INTTEST0)
+mdefine_line|#define INTTEST0&t;__CCREG(SA1111_INTC + SA1111_INTTEST0)
 DECL|macro|INTTEST1
-mdefine_line|#define INTTEST1&t;__CCREG(SA1111_INTTEST1)
+mdefine_line|#define INTTEST1&t;__CCREG(SA1111_INTC + SA1111_INTTEST1)
 DECL|macro|INTEN0
-mdefine_line|#define INTEN0&t;&t;__CCREG(SA1111_INTEN0)
+mdefine_line|#define INTEN0&t;&t;__CCREG(SA1111_INTC + SA1111_INTEN0)
 DECL|macro|INTEN1
-mdefine_line|#define INTEN1&t;&t;__CCREG(SA1111_INTEN1)
+mdefine_line|#define INTEN1&t;&t;__CCREG(SA1111_INTC + SA1111_INTEN1)
 DECL|macro|INTPOL0
-mdefine_line|#define INTPOL0&t;&t;__CCREG(SA1111_INTPOL0)
+mdefine_line|#define INTPOL0&t;&t;__CCREG(SA1111_INTC + SA1111_INTPOL0)
 DECL|macro|INTPOL1
-mdefine_line|#define INTPOL1&t;&t;__CCREG(SA1111_INTPOL1)
+mdefine_line|#define INTPOL1&t;&t;__CCREG(SA1111_INTC + SA1111_INTPOL1)
 DECL|macro|INTTSTSEL
-mdefine_line|#define INTTSTSEL&t;__CCREG(SA1111_INTTSTSEL)
+mdefine_line|#define INTTSTSEL&t;__CCREG(SA1111_INTC + SA1111_INTTSTSEL)
 DECL|macro|INTSTATCLR0
-mdefine_line|#define INTSTATCLR0&t;__CCREG(SA1111_INTSTATCLR0)
+mdefine_line|#define INTSTATCLR0&t;__CCREG(SA1111_INTC + SA1111_INTSTATCLR0)
 DECL|macro|INTSTATCLR1
-mdefine_line|#define INTSTATCLR1&t;__CCREG(SA1111_INTSTATCLR1)
+mdefine_line|#define INTSTATCLR1&t;__CCREG(SA1111_INTC + SA1111_INTSTATCLR1)
 DECL|macro|INTSET0
-mdefine_line|#define INTSET0&t;&t;__CCREG(SA1111_INTSET0)
+mdefine_line|#define INTSET0&t;&t;__CCREG(SA1111_INTC + SA1111_INTSET0)
 DECL|macro|INTSET1
-mdefine_line|#define INTSET1&t;&t;__CCREG(SA1111_INTSET1)
+mdefine_line|#define INTSET1&t;&t;__CCREG(SA1111_INTC + SA1111_INTSET1)
 DECL|macro|WAKE_EN0
-mdefine_line|#define WAKE_EN0&t;__CCREG(SA1111_WAKE_EN0)
+mdefine_line|#define WAKE_EN0&t;__CCREG(SA1111_INTC + SA1111_WAKEEN0)
 DECL|macro|WAKE_EN1
-mdefine_line|#define WAKE_EN1&t;__CCREG(SA1111_WAKE_EN1)
+mdefine_line|#define WAKE_EN1&t;__CCREG(SA1111_INTC + SA1111_WAKEEN1)
 DECL|macro|WAKE_POL0
-mdefine_line|#define WAKE_POL0&t;__CCREG(SA1111_WAKE_POL0)
+mdefine_line|#define WAKE_POL0&t;__CCREG(SA1111_INTC + SA1111_WAKEPOL0)
 DECL|macro|WAKE_POL1
-mdefine_line|#define WAKE_POL1&t;__CCREG(SA1111_WAKE_POL1)
-macro_line|#endif  /* LANGUAGE == C */
-multiline_comment|/*&n; * PS/2 Trackpad and Mouse Interfaces&n; *&n; * Registers   (prefix kbd applies to trackpad interface, mse to mouse)&n; *    KBDCR     Control Register&n; *    KBDSTAT       Status Register&n; *    KBDDATA       Transmit/Receive Data register&n; *    KBDCLKDIV     Clock Division Register&n; *    KBDPRECNT     Clock Precount Register&n; *    KBDTEST1      Test register 1&n; *    KBDTEST2      Test register 2&n; *    KBDTEST3      Test register 3&n; *    KBDTEST4      Test register 4&n; *    MSECR&n; *    MSESTAT&n; *    MSEDATA&n; *    MSECLKDIV&n; *    MSEPRECNT&n; *    MSETEST1&n; *    MSETEST2&n; *    MSETEST3&n; *    MSETEST4&n; *&n; */
+mdefine_line|#define WAKE_POL1&t;__CCREG(SA1111_INTC + SA1111_WAKEPOL1)
+multiline_comment|/*&n; * PS/2 Trackpad and Mouse Interfaces&n; *&n; * Registers&n; *    PS2CR&t;&t;Control Register&n; *    PS2STAT&t;&t;Status Register&n; *    PS2DATA&t;&t;Transmit/Receive Data register&n; *    PS2CLKDIV&t;&t;Clock Division Register&n; *    PS2PRECNT&t;&t;Clock Precount Register&n; *    PS2TEST1&t;&t;Test register 1&n; *    PS2TEST2&t;&t;Test register 2&n; *    PS2TEST3&t;&t;Test register 3&n; *    PS2TEST4&t;&t;Test register 4&n; */
 DECL|macro|SA1111_KBD
 mdefine_line|#define SA1111_KBD&t;&t;0x0a00
 DECL|macro|SA1111_MSE
@@ -672,20 +604,15 @@ mdefine_line|#define PS2STAT_KBD&t;&t;0x0002
 DECL|macro|PS2STAT_KBC
 mdefine_line|#define PS2STAT_KBC&t;&t;0x0001
 multiline_comment|/*&n; * PCMCIA Interface&n; *&n; * Registers&n; *    PCSR&t;Status Register&n; *    PCCR&t;Control Register&n; *    PCSSR&t;Sleep State Register&n; */
-DECL|macro|_PCCR
-mdefine_line|#define _PCCR&t;&t;_SA1111( 0x1800 )
-DECL|macro|_PCSSR
-mdefine_line|#define _PCSSR&t;&t;_SA1111( 0x1804 )
-DECL|macro|_PCSR
-mdefine_line|#define _PCSR&t;&t;_SA1111( 0x1808 )
-macro_line|#if LANGUAGE == C
-DECL|macro|PCCR
-mdefine_line|#define PCCR&t;&t;__CCREG(0x1800)
-DECL|macro|PCSSR
-mdefine_line|#define PCSSR&t;&t;__CCREG(0x1804)
-DECL|macro|PCSR
-mdefine_line|#define PCSR&t;&t;__CCREG(0x1808)
-macro_line|#endif  /* LANGUAGE == C */
+DECL|macro|SA1111_PCMCIA
+mdefine_line|#define SA1111_PCMCIA&t;0x1600
+multiline_comment|/*&n; * These are offsets from the above base.&n; */
+DECL|macro|SA1111_PCCR
+mdefine_line|#define SA1111_PCCR&t;0x0000
+DECL|macro|SA1111_PCSSR
+mdefine_line|#define SA1111_PCSSR&t;0x0004
+DECL|macro|SA1111_PCSR
+mdefine_line|#define SA1111_PCSR&t;0x0008
 DECL|macro|PCSR_S0_READY
 mdefine_line|#define PCSR_S0_READY&t;(1&lt;&lt;0)
 DECL|macro|PCSR_S1_READY
@@ -734,50 +661,180 @@ DECL|macro|PCSSR_S0_SLEEP
 mdefine_line|#define PCSSR_S0_SLEEP&t;(1&lt;&lt;0)
 DECL|macro|PCSSR_S1_SLEEP
 mdefine_line|#define PCSSR_S1_SLEEP&t;(1&lt;&lt;1)
-DECL|struct|sa1111_device
+r_extern
 r_struct
-id|sa1111_device
+id|bus_type
+id|sa1111_bus_type
+suffix:semicolon
+DECL|macro|SA1111_DEVID_SBI
+mdefine_line|#define SA1111_DEVID_SBI&t;0
+DECL|macro|SA1111_DEVID_SK
+mdefine_line|#define SA1111_DEVID_SK&t;&t;1
+DECL|macro|SA1111_DEVID_USB
+mdefine_line|#define SA1111_DEVID_USB&t;2
+DECL|macro|SA1111_DEVID_SAC
+mdefine_line|#define SA1111_DEVID_SAC&t;3
+DECL|macro|SA1111_DEVID_SSP
+mdefine_line|#define SA1111_DEVID_SSP&t;4
+DECL|macro|SA1111_DEVID_PS2
+mdefine_line|#define SA1111_DEVID_PS2&t;5
+DECL|macro|SA1111_DEVID_GPIO
+mdefine_line|#define SA1111_DEVID_GPIO&t;6
+DECL|macro|SA1111_DEVID_INT
+mdefine_line|#define SA1111_DEVID_INT&t;7
+DECL|macro|SA1111_DEVID_PCMCIA
+mdefine_line|#define SA1111_DEVID_PCMCIA&t;8
+DECL|struct|sa1111_dev
+r_struct
+id|sa1111_dev
 (brace
 DECL|member|dev
 r_struct
 id|device
 id|dev
 suffix:semicolon
-DECL|member|resource
+DECL|member|devid
+r_int
+r_int
+id|devid
+suffix:semicolon
+DECL|member|res
 r_struct
 id|resource
-id|resource
+id|res
 suffix:semicolon
-DECL|member|base
+DECL|member|mapbase
 r_void
 op_star
-id|base
+id|mapbase
+suffix:semicolon
+DECL|member|skpcr_mask
+r_int
+r_int
+id|skpcr_mask
+suffix:semicolon
+DECL|member|irq
+r_int
+r_int
+id|irq
+(braket
+l_int|6
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
-r_extern
+DECL|macro|SA1111_DEV
+mdefine_line|#define SA1111_DEV(_d)&t;container_of((_d), struct sa1111_dev, dev)
+DECL|struct|sa1111_driver
 r_struct
-id|sa1111_device
-op_star
-id|sa1111
+id|sa1111_driver
+(brace
+DECL|member|drv
+r_struct
+id|device_driver
+id|drv
+suffix:semicolon
+DECL|member|devid
+r_int
+r_int
+id|devid
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|SA1111_DRV
+mdefine_line|#define SA1111_DRV(_d)&t;container_of((_d), struct sa1111_driver, drv)
+DECL|macro|SA1111_DRIVER_NAME
+mdefine_line|#define SA1111_DRIVER_NAME(_sadev) ((_sadev)-&gt;dev.driver-&gt;name)
+multiline_comment|/*&n; * Probe for a SA1111 chip.&n; */
+r_extern
+r_int
+id|sa1111_init
+c_func
+(paren
+r_int
+r_int
+id|phys
+comma
+r_int
+r_int
+id|irq
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * These frob the SKPCR register.&n; */
 r_void
 id|sa1111_enable_device
 c_func
 (paren
-r_int
-r_int
-id|mask
+r_struct
+id|sa1111_dev
+op_star
 )paren
 suffix:semicolon
 r_void
 id|sa1111_disable_device
 c_func
 (paren
+r_struct
+id|sa1111_dev
+op_star
+)paren
+suffix:semicolon
 r_int
 r_int
-id|mask
+id|sa1111_pll_clock
+c_func
+(paren
+r_struct
+id|sa1111_dev
+op_star
+)paren
+suffix:semicolon
+DECL|macro|SA1111_AUDIO_ACLINK
+mdefine_line|#define SA1111_AUDIO_ACLINK&t;0
+DECL|macro|SA1111_AUDIO_I2S
+mdefine_line|#define SA1111_AUDIO_I2S&t;1
+r_void
+id|sa1111_select_audio_mode
+c_func
+(paren
+r_struct
+id|sa1111_dev
+op_star
+id|sadev
+comma
+r_int
+id|mode
+)paren
+suffix:semicolon
+r_int
+id|sa1111_set_audio_rate
+c_func
+(paren
+r_struct
+id|sa1111_dev
+op_star
+id|sadev
+comma
+r_int
+id|rate
+)paren
+suffix:semicolon
+r_int
+id|sa1111_get_audio_rate
+c_func
+(paren
+r_struct
+id|sa1111_dev
+op_star
+id|sadev
+)paren
+suffix:semicolon
+r_int
+id|sa1111_check_dma_bug
+c_func
+(paren
+id|dma_addr_t
+id|addr
 )paren
 suffix:semicolon
 macro_line|#endif  /* _ASM_ARCH_SA1111 */

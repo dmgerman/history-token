@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This file includes part of the implementation of the add-IP extension,&n; * based on &lt;draft-ietf-tsvwg-addip-sctp-02.txt&gt; June 29, 2001,&n; * for the SCTP kernel reference Implementation.&n; * &n; * These functions work with the state functions in sctp_sm_statefuns.c&n; * to implement the state operations.  These functions implement the&n; * steps which require modifying existing data structures.&n; * &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    C. Robin              &lt;chris@hundredacre.ac.uk&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Dajiang Zhang&t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This file includes part of the implementation of the add-IP extension,&n; * based on &lt;draft-ietf-tsvwg-addip-sctp-02.txt&gt; June 29, 2001,&n; * for the SCTP kernel reference Implementation.&n; *&n; * These functions work with the state functions in sctp_sm_statefuns.c&n; * to implement the state operations.  These functions implement the&n; * steps which require modifying existing data structures.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    C. Robin              &lt;chris@hundredacre.ac.uk&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Dajiang Zhang&t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
@@ -4227,6 +4227,10 @@ comma
 op_star
 id|temp
 suffix:semicolon
+r_char
+op_star
+id|cookie
+suffix:semicolon
 multiline_comment|/* We must include the address that the INIT packet came from.&n;&t; * This is the only address that matters for an INIT packet.&n;&t; * When processing a COOKIE ECHO, we retrieve the from address&n;&t; * of the INIT from the cookie.&n;&t; */
 multiline_comment|/* This implementation defaults to making the first transport&n;&t; * added as the primary transport.  The source address seems to&n;&t; * be a a better choice than any of the embedded addresses.&n;&t; */
 r_if
@@ -4380,6 +4384,47 @@ id|asoc-&gt;peer.rwnd
 op_assign
 id|asoc-&gt;peer.i.a_rwnd
 suffix:semicolon
+multiline_comment|/* Copy cookie in case we need to resend COOKIE-ECHO. */
+id|cookie
+op_assign
+id|asoc-&gt;peer.cookie
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cookie
+)paren
+(brace
+id|asoc-&gt;peer.cookie
+op_assign
+id|kmalloc
+c_func
+(paren
+id|asoc-&gt;peer.cookie_len
+comma
+id|priority
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|asoc-&gt;peer.cookie
+)paren
+r_goto
+id|clean_up
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|asoc-&gt;peer.cookie
+comma
+id|cookie
+comma
+id|asoc-&gt;peer.cookie_len
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* RFC 2960 7.2.1 The initial value of ssthresh MAY be arbitrarily&n;&t; * high (for example, implementations MAY use the size of the receiver&n;&t; * advertised window).&n;&t; */
 id|list_for_each
 c_func
@@ -4657,7 +4702,7 @@ suffix:colon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;unimplmented SCTP_HOST_NAME_ADDRESS&bslash;n&quot;
+l_string|&quot;unimplemented SCTP_HOST_NAME_ADDRESS&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -4783,7 +4828,7 @@ suffix:colon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;unimplmented &quot;
+l_string|&quot;unimplemented &quot;
 l_string|&quot;SCTP_PARAM_HEATBEAT_INFO&bslash;n&quot;
 )paren
 suffix:semicolon

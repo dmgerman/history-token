@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/generic.c&n; *&n; * Author: Nicolas Pitre&n; *&n; * Code common to all SA11x0 machines.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Since this file should be linked before any other machine specific file,&n; * the __initcall() here will be executed first.  This serves as default&n; * initialization stuff for SA1100 machines which can be overriden later if&n; * need be.&n; */
+multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/generic.c&n; *&n; * Author: Nicolas Pitre&n; *&n; * Code common to all SA11x0 machines.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -98,13 +98,15 @@ c_loop
 (paren
 id|i
 op_assign
-id|NR_FREQS
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 id|i
-OG
-l_int|0
+OL
+id|ARRAY_SIZE
+c_func
+(paren
+id|cclk_frequency_100khz
+)paren
 suffix:semicolon
 id|i
 op_decrement
@@ -116,7 +118,7 @@ id|cclk_frequency_100khz
 (braket
 id|i
 )braket
-op_le
+op_ge
 id|khz
 )paren
 r_break
@@ -125,33 +127,49 @@ r_return
 id|i
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Validate the speed in khz.  If we can&squot;t generate the precise&n; * frequency requested, round it down (to be on the safe side).&n; */
-DECL|function|sa11x0_validatespeed
-r_int
-r_int
-id|sa11x0_validatespeed
+multiline_comment|/*&n; * Validate the policy.  We aren&squot;t able to do any fancy in-kernel&n; * scaling, so we force min=max, and set the policy to &quot;performance&quot;.&n; * If we can&squot;t generate the precise frequency requested, round it up.&n; */
+DECL|function|sa11x0_verify_speed
+r_void
+id|sa11x0_verify_speed
 c_func
 (paren
-r_int
-r_int
-id|cpu
-comma
-r_int
-r_int
-id|khz
+r_struct
+id|cpufreq_policy
+op_star
+id|policy
 )paren
 (brace
-r_return
+r_if
+c_cond
+(paren
+id|policy-&gt;max
+OG
+id|policy-&gt;max_cpu_freq
+)paren
+id|policy-&gt;max
+op_assign
+id|policy-&gt;max_cpu_freq
+suffix:semicolon
+id|policy-&gt;max
+op_assign
 id|cclk_frequency_100khz
 (braket
 id|sa11x0_freq_to_ppcr
 c_func
 (paren
-id|khz
+id|policy-&gt;max
 )paren
 )braket
 op_star
 l_int|100
+suffix:semicolon
+id|policy-&gt;min
+op_assign
+id|policy-&gt;max
+suffix:semicolon
+id|policy-&gt;policy
+op_assign
+id|CPUFREQ_POLICY_POWERSAVE
 suffix:semicolon
 )brace
 DECL|function|sa11x0_getspeed
@@ -277,7 +295,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|sa1100_init
-id|__initcall
+id|core_initcall
 c_func
 (paren
 id|sa1100_init

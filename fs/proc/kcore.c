@@ -65,12 +65,14 @@ id|file_operations
 id|proc_kcore_operations
 op_assign
 (brace
+dot
 id|read
-suffix:colon
+op_assign
 id|read_kcore
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|open_kcore
 comma
 )brace

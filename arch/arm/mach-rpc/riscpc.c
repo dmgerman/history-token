@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
@@ -182,6 +183,15 @@ c_func
 (paren
 id|rpc_io_desc
 )paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Turn off floppy.&n;&t; */
+id|outb
+c_func
+(paren
+l_int|0xc
+comma
+l_int|0x3f2
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * RiscPC can&squot;t handle half-word loads and stores&n;&t; */

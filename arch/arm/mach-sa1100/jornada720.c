@@ -10,7 +10,6 @@ macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#include &quot;generic.h&quot;
-macro_line|#include &quot;sa1111.h&quot;
 DECL|macro|JORTUCR_VAL
 mdefine_line|#define JORTUCR_VAL&t;0x20000400
 DECL|macro|JORSKCR_INIT
@@ -110,28 +109,18 @@ id|PPC_LDD3
 op_or
 id|PPC_LDD4
 suffix:semicolon
-multiline_comment|/* initialize extra IRQs */
-id|set_GPIO_IRQ_edge
+r_return
+id|sa1111_init
 c_func
 (paren
-id|GPIO_GPIO1
+l_int|0x40000000
 comma
-id|GPIO_RISING_EDGE
-)paren
-suffix:semicolon
-id|sa1111_init_irq
-c_func
-(paren
 id|IRQ_GPIO1
 )paren
 suffix:semicolon
-multiline_comment|/* chained on GPIO 1 */
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|variable|jornada720_init
-id|__initcall
+id|arch_initcall
 c_func
 (paren
 id|jornada720_init

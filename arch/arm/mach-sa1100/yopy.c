@@ -203,7 +203,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|yopy_hw_init
-id|__initcall
+id|arch_initcall
 c_func
 (paren
 id|yopy_hw_init

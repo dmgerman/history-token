@@ -2708,9 +2708,12 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#else
+id|do_gettimeofday
+c_func
+(paren
+op_amp
 id|skb-&gt;stamp
-op_assign
-id|xtime
+)paren
 suffix:semicolon
 macro_line|#endif
 macro_line|#if 0

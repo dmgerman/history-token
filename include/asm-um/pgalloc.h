@@ -3,6 +3,7 @@ macro_line|#ifndef __UM_PGALLOC_H
 DECL|macro|__UM_PGALLOC_H
 mdefine_line|#define __UM_PGALLOC_H
 macro_line|#include &quot;linux/mm.h&quot;
+macro_line|#include &quot;asm/fixmap.h&quot;
 DECL|macro|pmd_populate_kernel
 mdefine_line|#define pmd_populate_kernel(mm, pmd, pte) &bslash;&n;&t;&t;set_pmd(pmd, __pmd(_PAGE_TABLE + (unsigned long) __pa(pte)))
 DECL|function|pmd_populate
@@ -37,14 +38,10 @@ c_func
 (paren
 id|_PAGE_TABLE
 op_plus
-id|phys_addr
-c_func
-(paren
 id|page_to_phys
 c_func
 (paren
 id|pte
-)paren
 )paren
 )paren
 )paren

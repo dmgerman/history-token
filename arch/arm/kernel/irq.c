@@ -1,11 +1,11 @@
 multiline_comment|/*&n; *  linux/arch/arm/kernel/irq.c&n; *&n; *  Copyright (C) 1992 Linus Torvalds&n; *  Modifications for ARM processor Copyright (C) 1995-2000 Russell King.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  This file contains the code used by various IRQ handling routines:&n; *  asking for different IRQ&squot;s should be done through these routines&n; *  instead of just grabbing them. Thus setups with different IRQ numbers&n; *  shouldn&squot;t result in any weird surprises, and installing new handlers&n; *  should be easier.&n; *&n; *  IRQ&squot;s are in fact implemented a bit like signal handlers for the kernel.&n; *  Naturally it&squot;s not a 1:1 relation, but there are similarities.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -698,11 +698,6 @@ id|desc-&gt;triggered
 op_assign
 l_int|1
 suffix:semicolon
-id|irq_enter
-c_func
-(paren
-)paren
-suffix:semicolon
 id|kstat.irqs
 (braket
 id|cpu
@@ -729,11 +724,6 @@ comma
 id|desc-&gt;action
 comma
 id|regs
-)paren
-suffix:semicolon
-id|irq_exit
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -801,11 +791,6 @@ id|desc-&gt;running
 op_assign
 l_int|1
 suffix:semicolon
-id|irq_enter
-c_func
-(paren
-)paren
-suffix:semicolon
 id|kstat.irqs
 (braket
 id|cpu
@@ -870,11 +855,8 @@ r_while
 c_loop
 (paren
 id|desc-&gt;pending
-)paren
-suffix:semicolon
-id|irq_exit
-c_func
-(paren
+op_logical_and
+id|desc-&gt;enabled
 )paren
 suffix:semicolon
 id|desc-&gt;running
@@ -986,11 +968,6 @@ id|desc-&gt;enabled
 )paren
 )paren
 (brace
-id|irq_enter
-c_func
-(paren
-)paren
-suffix:semicolon
 id|kstat.irqs
 (braket
 id|cpu
@@ -1050,11 +1027,6 @@ id|irq
 )paren
 suffix:semicolon
 )brace
-id|irq_exit
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * do_IRQ handles all hardware IRQ&squot;s.  Decoded IRQs should not&n; * come via this function.  Instead, they should provide their&n; * own &squot;handler&squot;&n; */
@@ -1095,6 +1067,11 @@ op_assign
 op_amp
 id|bad_irq_desc
 suffix:semicolon
+id|irq_enter
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1121,19 +1098,7 @@ op_amp
 id|irq_controller_lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|softirq_pending
-c_func
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-)paren
-)paren
-id|do_softirq
+id|irq_exit
 c_func
 (paren
 )paren
@@ -1958,7 +1923,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;free_irq - free an interrupt&n; *&t;@irq: Interrupt line to free&n; *&t;@dev_id: Device identity to free&n; *&n; *&t;Remove an interrupt handler. The handler is removed and if the&n; *&t;interrupt line is no longer in use by any driver it is disabled.&n; *&t;On a shared IRQ the caller must ensure the interrupt is disabled&n; *&t;on the card it drives before calling this function.&n; *&n; *&t;This function may be called from interrupt context.&n; */
+multiline_comment|/**&n; *&t;free_irq - free an interrupt&n; *&t;@irq: Interrupt line to free&n; *&t;@dev_id: Device identity to free&n; *&n; *&t;Remove an interrupt handler. The handler is removed and if the&n; *&t;interrupt line is no longer in use by any driver it is disabled.&n; *&t;On a shared IRQ the caller must ensure the interrupt is disabled&n; *&t;on the card it drives before calling this function.&n; *&n; *&t;This function must not be called from interrupt context.&n; */
 DECL|function|free_irq
 r_void
 id|free_irq
@@ -2073,16 +2038,25 @@ id|p
 op_assign
 id|action-&gt;next
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|action
-)paren
-suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|irq_controller_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|action
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -2099,17 +2073,22 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|out
-suffix:colon
-id|spin_unlock_irqrestore
+)brace
+r_else
+(brace
+id|synchronize_irq
 c_func
 (paren
-op_amp
-id|irq_controller_lock
-comma
-id|flags
+id|irq
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|action
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Start the interrupt probing.  Unlike other architectures,&n; * we don&squot;t return a mask of interrupts from probe_irq_on,&n; * but return the number of interrupts enabled for the probe.&n; * The interrupts which have been enabled for probing is&n; * instead recorded in the irq_desc structure.&n; */
 DECL|function|probe_irq_on

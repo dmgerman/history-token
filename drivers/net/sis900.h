@@ -654,10 +654,10 @@ op_assign
 l_int|16
 )brace
 suffix:semicolon
-multiline_comment|/* For SiS962, request the eeprom software access */
-DECL|enum|sis962_eeprom_command
+multiline_comment|/* For SiS962 or SiS963, request the eeprom software access */
+DECL|enum|sis96x_eeprom_command
 r_enum
-id|sis962_eeprom_command
+id|sis96x_eeprom_command
 (brace
 DECL|enumerator|EEREQ
 DECL|enumerator|EEDONE
@@ -1222,9 +1222,9 @@ id|SIS635A_900_REV
 op_assign
 l_int|0x90
 comma
-DECL|enumerator|SIS962_900_REV
+DECL|enumerator|SIS96x_900_REV
 DECL|enumerator|SIS900B_900_REV
-id|SIS962_900_REV
+id|SIS96x_900_REV
 op_assign
 l_int|0X91
 comma

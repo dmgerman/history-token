@@ -149,15 +149,13 @@ multiline_comment|/* Original control data*/
 suffix:semicolon
 multiline_comment|/*&n; *&t;The per LAPB connection control structure.&n; */
 DECL|struct|lapb_cb
-r_typedef
 r_struct
 id|lapb_cb
 (brace
-DECL|member|next
+DECL|member|node
 r_struct
-id|lapb_cb
-op_star
-id|next
+id|list_head
+id|node
 suffix:semicolon
 DECL|member|token
 r_void
@@ -247,9 +245,11 @@ r_int
 r_char
 id|frmr_type
 suffix:semicolon
-DECL|typedef|lapb_cb
+DECL|member|refcnt
+id|atomic_t
+id|refcnt
+suffix:semicolon
 )brace
-id|lapb_cb
 suffix:semicolon
 multiline_comment|/* lapb_iface.c */
 r_extern
@@ -257,8 +257,10 @@ r_void
 id|lapb_connect_confirmation
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 comma
 r_int
 )paren
@@ -268,8 +270,10 @@ r_void
 id|lapb_connect_indication
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 comma
 r_int
 )paren
@@ -279,8 +283,10 @@ r_void
 id|lapb_disconnect_confirmation
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 comma
 r_int
 )paren
@@ -290,8 +296,10 @@ r_void
 id|lapb_disconnect_indication
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 comma
 r_int
 )paren
@@ -301,8 +309,10 @@ r_int
 id|lapb_data_indication
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 comma
 r_struct
 id|sk_buff
@@ -314,8 +324,10 @@ r_int
 id|lapb_data_transmit
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 comma
 r_struct
 id|sk_buff
@@ -328,8 +340,10 @@ r_void
 id|lapb_data_input
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 comma
 r_struct
 id|sk_buff
@@ -342,8 +356,10 @@ r_void
 id|lapb_kick
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 )paren
 suffix:semicolon
 r_extern
@@ -351,8 +367,10 @@ r_void
 id|lapb_transmit_buffer
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 comma
 r_struct
 id|sk_buff
@@ -366,8 +384,10 @@ r_void
 id|lapb_establish_data_link
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 )paren
 suffix:semicolon
 r_extern
@@ -375,8 +395,10 @@ r_void
 id|lapb_enquiry_response
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 )paren
 suffix:semicolon
 r_extern
@@ -384,8 +406,10 @@ r_void
 id|lapb_timeout_response
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 )paren
 suffix:semicolon
 r_extern
@@ -393,8 +417,10 @@ r_void
 id|lapb_check_iframes_acked
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 comma
 r_int
 r_int
@@ -405,8 +431,10 @@ r_void
 id|lapb_check_need_response
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 comma
 r_int
 comma
@@ -419,8 +447,10 @@ r_void
 id|lapb_clear_queues
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 )paren
 suffix:semicolon
 r_extern
@@ -428,8 +458,10 @@ r_void
 id|lapb_frames_acked
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 comma
 r_int
 r_int
@@ -440,8 +472,10 @@ r_void
 id|lapb_requeue_frames
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 )paren
 suffix:semicolon
 r_extern
@@ -449,8 +483,10 @@ r_int
 id|lapb_validate_nr
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 comma
 r_int
 r_int
@@ -461,8 +497,10 @@ r_void
 id|lapb_decode
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 comma
 r_struct
 id|sk_buff
@@ -478,8 +516,10 @@ r_void
 id|lapb_send_control
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 comma
 r_int
 comma
@@ -493,8 +533,10 @@ r_void
 id|lapb_transmit_frmr
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 )paren
 suffix:semicolon
 multiline_comment|/* lapb_timer.c */
@@ -503,8 +545,10 @@ r_void
 id|lapb_start_t1timer
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 )paren
 suffix:semicolon
 r_extern
@@ -512,8 +556,10 @@ r_void
 id|lapb_start_t2timer
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 )paren
 suffix:semicolon
 r_extern
@@ -521,8 +567,10 @@ r_void
 id|lapb_stop_t1timer
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 )paren
 suffix:semicolon
 r_extern
@@ -530,8 +578,10 @@ r_void
 id|lapb_stop_t2timer
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 )paren
 suffix:semicolon
 r_extern
@@ -539,8 +589,10 @@ r_int
 id|lapb_t1timer_running
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
+id|lapb
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Debug levels.&n; *&t;0 = Off&n; *&t;1 = State Changes&n; *&t;2 = Packets I/O and State Changes&n; *&t;3 = Hex dumps, Packets I/O and State Changes.&n; */

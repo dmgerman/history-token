@@ -103,50 +103,6 @@ DECL|macro|node_size
 mdefine_line|#define node_size(nid)&t;&t;(NODE_DATA(nid)-&gt;node_size)
 DECL|macro|node_localnr
 mdefine_line|#define node_localnr(pfn, nid)&t;((pfn) - NODE_DATA(nid)-&gt;node_start_pfn)
-macro_line|#ifdef CONFIG_NUMA
-DECL|function|__cpu_to_node
-r_static
-r_inline
-r_int
-id|__cpu_to_node
-c_func
-(paren
-r_int
-id|cpu
-)paren
-(brace
-r_int
-id|node
-suffix:semicolon
-id|node
-op_assign
-id|numa_cpu_lookup_table
-(braket
-id|cpu
-)braket
-suffix:semicolon
-macro_line|#ifdef DEBUG_NUMA
-r_if
-c_cond
-(paren
-id|node
-op_eq
-op_minus
-l_int|1
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-id|node
-suffix:semicolon
-)brace
-DECL|macro|numa_node_id
-mdefine_line|#define numa_node_id()&t;__cpu_to_node(smp_processor_id())
-macro_line|#endif /* CONFIG_NUMA */
 multiline_comment|/*&n; * Following are macros that each numa implmentation must define.&n; */
 multiline_comment|/*&n; * Given a kernel address, find the home node of the underlying memory.&n; */
 DECL|macro|kvaddr_to_nid

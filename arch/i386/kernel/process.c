@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -357,17 +358,6 @@ comma
 id|idle_setup
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|show_trace
-c_func
-(paren
-r_int
-r_int
-op_star
-id|esp
-)paren
-suffix:semicolon
 DECL|function|show_regs
 r_void
 id|show_regs
@@ -428,6 +418,14 @@ id|smp_processor_id
 c_func
 (paren
 )paren
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;EIP is at %s&bslash;n&quot;
+comma
+id|regs-&gt;eip
 )paren
 suffix:semicolon
 r_if

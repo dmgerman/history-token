@@ -1168,6 +1168,43 @@ id|Scsi_Host_Template
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * host_busy inc/dec/test functions&n; */
+r_extern
+r_void
+id|scsi_host_busy_inc
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+comma
+id|Scsi_Device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_host_busy_dec_and_test
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+comma
+id|Scsi_Device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_host_failed_inc_and_test
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This is an ugly hack.  If we expect to be able to load devices at run time,&n; * we need to leave extra room in some of the data structures.&t;Doing a&n; * realloc to enlarge the structures would be riddled with race conditions,&n; * so until a better solution is discovered, we use this crude approach&n; *&n; * Even bigger hack for SparcSTORAGE arrays. Those are at least 6 disks, but&n; * usually up to 30 disks, so everyone would need to change this. -jj&n; *&n; * Note: These things are all evil and all need to go away.  My plan is to&n; * tackle the character devices first, as there aren&squot;t any locking implications&n; * in the block device layer.   The block devices will require more work.&n; *&n; * The generics driver has been updated to resize as required.  So as the tape&n; * driver. Two down, two more to go.&n; */
 macro_line|#ifndef CONFIG_SD_EXTRA_DEVS
 DECL|macro|CONFIG_SD_EXTRA_DEVS

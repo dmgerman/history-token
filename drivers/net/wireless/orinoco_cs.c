@@ -1,4 +1,4 @@
-multiline_comment|/* orinoco_cs.c 0.11b&t;- (formerly known as dldwd_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; * &n; * Copyright notice &amp; release notes in file orinoco.c&n; */
+multiline_comment|/* orinoco_cs.c 0.13a&t;- (formerly known as dldwd_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; * &n; * Copyright notice &amp; release notes in file orinoco.c&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef  __IN_PCMCIA_PACKAGE__
 macro_line|#include &lt;pcmcia/k_compat.h&gt;
@@ -20,7 +20,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/wireless.h&gt;
-macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
@@ -28,19 +28,10 @@ macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
 macro_line|#include &lt;pcmcia/ds.h&gt;
 macro_line|#include &lt;pcmcia/bus_ops.h&gt;
-macro_line|#include &quot;hermes.h&quot;
 macro_line|#include &quot;orinoco.h&quot;
-multiline_comment|/*====================================================================*/
-DECL|variable|__initdata
-r_static
-r_char
-id|version
-(braket
-)braket
-id|__initdata
-op_assign
-l_string|&quot;orinoco_cs.c 0.11b (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
-suffix:semicolon
+multiline_comment|/********************************************************************/
+multiline_comment|/* Module stuff&t;&t;&t;&t;&t;&t;&t;    */
+multiline_comment|/********************************************************************/
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -61,7 +52,7 @@ l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
+multiline_comment|/* Module parameters */
 multiline_comment|/* The old way: bit map of interrupts to choose from */
 multiline_comment|/* This means pick from 15, 14, 12, 11, 10, 9, 7, 5, 4, and 3 */
 DECL|variable|irq_mask
@@ -84,15 +75,6 @@ op_assign
 op_minus
 l_int|1
 )brace
-suffix:semicolon
-multiline_comment|/* Do a Pcmcia soft reset (may help some cards) */
-DECL|variable|reset_cor
-r_static
-r_int
-id|reset_cor
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 multiline_comment|/* Some D-Link cards have buggy CIS. They do work at 5v properly, but&n; * don&squot;t have any CIS entry for it. This workaround it... */
 DECL|variable|ignore_cis_vcc
@@ -120,20 +102,26 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|reset_cor
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
 id|ignore_cis_vcc
 comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Pcmcia specific structure */
+multiline_comment|/********************************************************************/
+multiline_comment|/* Magic constants&t;&t;&t;&t;&t;&t;    */
+multiline_comment|/********************************************************************/
+multiline_comment|/*&n; * The dev_info variable is the &quot;key&quot; that is used to match up this&n; * device driver with appropriate cards, through the card&n; * configuration database.&n; */
+DECL|variable|dev_info
+r_static
+id|dev_info_t
+id|dev_info
+op_assign
+l_string|&quot;orinoco_cs&quot;
+suffix:semicolon
+multiline_comment|/********************************************************************/
+multiline_comment|/* Data structures&t;&t;&t;&t;&t;&t;    */
+multiline_comment|/********************************************************************/
+multiline_comment|/* PCMCIA specific device information (goes in the card field of&n; * struct orinoco_private */
 DECL|struct|orinoco_pccard
 r_struct
 id|orinoco_pccard
@@ -146,30 +134,38 @@ DECL|member|node
 id|dev_node_t
 id|node
 suffix:semicolon
+multiline_comment|/* Used to handle hard reset */
+DECL|member|hard_reset_queue
+id|wait_queue_head_t
+id|hard_reset_queue
+suffix:semicolon
+DECL|member|hard_reset_flag
+r_int
+id|hard_reset_flag
+suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Function prototypes&n; */
-multiline_comment|/* struct net_device methods */
+multiline_comment|/*&n; * A linked list of &quot;instances&quot; of the device.  Each actual PCMCIA&n; * card corresponds to one device instance, and is described by one&n; * dev_link_t structure (defined in ds.h).&n; */
+DECL|variable|dev_list
 r_static
-r_int
-id|orinoco_cs_open
-c_func
-(paren
-r_struct
-id|net_device
+id|dev_link_t
 op_star
-id|dev
-)paren
+id|dev_list
 suffix:semicolon
+multiline_comment|/* = NULL */
+multiline_comment|/********************************************************************/
+multiline_comment|/* Function prototypes&t;&t;&t;&t;&t;&t;    */
+multiline_comment|/********************************************************************/
+multiline_comment|/* device methods */
 r_static
 r_int
-id|orinoco_cs_stop
+id|orinoco_cs_hard_reset
 c_func
 (paren
 r_struct
-id|net_device
+id|orinoco_private
 op_star
-id|dev
+id|priv
 )paren
 suffix:semicolon
 multiline_comment|/* PCMCIA gumpf */
@@ -226,23 +222,77 @@ id|dev_link_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n;   The dev_info variable is the &quot;key&quot; that is used to match up this&n;   device driver with appropriate cards, through the card configuration&n;   database.&n;*/
-DECL|variable|dev_info
+multiline_comment|/********************************************************************/
+multiline_comment|/* Device methods     &t;&t;&t;&t;&t;&t;    */
+multiline_comment|/********************************************************************/
 r_static
-id|dev_info_t
-id|dev_info
+r_int
+DECL|function|orinoco_cs_hard_reset
+id|orinoco_cs_hard_reset
+c_func
+(paren
+r_struct
+id|orinoco_private
+op_star
+id|priv
+)paren
+(brace
+r_struct
+id|orinoco_pccard
+op_star
+id|card
 op_assign
-l_string|&quot;orinoco_cs&quot;
+id|priv-&gt;card
 suffix:semicolon
-multiline_comment|/*&n;   A linked list of &quot;instances&quot; of the dummy device.  Each actual&n;   PCMCIA card corresponds to one device instance, and is described&n;   by one dev_link_t structure (defined in ds.h).&n;&n;   You may not want to use a linked list for this -- for example, the&n;   memory card driver uses an array of dev_link_t pointers, where minor&n;   device numbers are used to derive the corresponding array index.&n;*/
-DECL|variable|dev_list
-r_static
 id|dev_link_t
 op_star
-id|dev_list
+id|link
+op_assign
+op_amp
+id|card-&gt;link
 suffix:semicolon
-multiline_comment|/* = NULL */
-multiline_comment|/*====================================================================*/
+r_int
+id|err
+suffix:semicolon
+id|card-&gt;hard_reset_flag
+op_assign
+l_int|0
+suffix:semicolon
+id|err
+op_assign
+id|CardServices
+c_func
+(paren
+id|ResetCard
+comma
+id|link-&gt;handle
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
+suffix:semicolon
+id|wait_event_interruptible
+c_func
+(paren
+id|card-&gt;hard_reset_queue
+comma
+id|card-&gt;hard_reset_flag
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/********************************************************************/
+multiline_comment|/* PCMCIA stuff     &t;&t;&t;&t;&t;&t;    */
+multiline_comment|/********************************************************************/
 r_static
 r_void
 DECL|function|cs_error
@@ -280,512 +330,6 @@ id|err
 )paren
 suffix:semicolon
 )brace
-r_static
-r_int
-DECL|function|orinoco_cs_open
-id|orinoco_cs_open
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-r_struct
-id|orinoco_private
-op_star
-id|priv
-op_assign
-(paren
-r_struct
-id|orinoco_private
-op_star
-)paren
-id|dev-&gt;priv
-suffix:semicolon
-r_struct
-id|orinoco_pccard
-op_star
-id|card
-op_assign
-(paren
-r_struct
-id|orinoco_pccard
-op_star
-)paren
-id|priv-&gt;card
-suffix:semicolon
-id|dev_link_t
-op_star
-id|link
-op_assign
-op_amp
-id|card-&gt;link
-suffix:semicolon
-r_int
-id|err
-suffix:semicolon
-id|TRACE_ENTER
-c_func
-(paren
-id|dev-&gt;name
-)paren
-suffix:semicolon
-id|link-&gt;open
-op_increment
-suffix:semicolon
-id|netif_device_attach
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|err
-op_assign
-id|orinoco_reset
-c_func
-(paren
-id|priv
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-id|orinoco_cs_stop
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_else
-id|netif_start_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|TRACE_EXIT
-c_func
-(paren
-id|dev-&gt;name
-)paren
-suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
-r_static
-r_int
-DECL|function|orinoco_cs_stop
-id|orinoco_cs_stop
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-r_struct
-id|orinoco_private
-op_star
-id|priv
-op_assign
-(paren
-r_struct
-id|orinoco_private
-op_star
-)paren
-id|dev-&gt;priv
-suffix:semicolon
-r_struct
-id|orinoco_pccard
-op_star
-id|card
-op_assign
-(paren
-r_struct
-id|orinoco_pccard
-op_star
-)paren
-id|priv-&gt;card
-suffix:semicolon
-id|dev_link_t
-op_star
-id|link
-op_assign
-op_amp
-id|card-&gt;link
-suffix:semicolon
-id|TRACE_ENTER
-c_func
-(paren
-id|dev-&gt;name
-)paren
-suffix:semicolon
-id|netif_stop_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|orinoco_shutdown
-c_func
-(paren
-id|priv
-)paren
-suffix:semicolon
-id|link-&gt;open
-op_decrement
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_STALE_CONFIG
-)paren
-id|mod_timer
-c_func
-(paren
-op_amp
-id|link-&gt;release
-comma
-id|jiffies
-op_plus
-id|HZ
-op_div
-l_int|20
-)paren
-suffix:semicolon
-id|TRACE_EXIT
-c_func
-(paren
-id|dev-&gt;name
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Do a soft reset of the Pcmcia card using the Configuration Option Register&n; * Can&squot;t do any harm, and actually may do some good on some cards...&n; * In fact, this seem necessary for Spectrum cards...&n; */
-r_static
-r_int
-DECL|function|orinoco_cs_cor_reset
-id|orinoco_cs_cor_reset
-c_func
-(paren
-r_struct
-id|orinoco_private
-op_star
-id|priv
-)paren
-(brace
-r_struct
-id|orinoco_pccard
-op_star
-id|card
-op_assign
-(paren
-r_struct
-id|orinoco_pccard
-op_star
-)paren
-id|priv-&gt;card
-suffix:semicolon
-id|dev_link_t
-op_star
-id|link
-op_assign
-op_amp
-id|card-&gt;link
-suffix:semicolon
-id|conf_reg_t
-id|reg
-suffix:semicolon
-id|u_int
-id|default_cor
-suffix:semicolon
-id|TRACE_ENTER
-c_func
-(paren
-id|priv-&gt;ndev-&gt;name
-)paren
-suffix:semicolon
-multiline_comment|/* Doing it if hardware is gone is guaranteed crash */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_CONFIG
-)paren
-)paren
-(brace
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-multiline_comment|/* Save original COR value */
-id|reg.Function
-op_assign
-l_int|0
-suffix:semicolon
-id|reg.Action
-op_assign
-id|CS_READ
-suffix:semicolon
-id|reg.Offset
-op_assign
-id|CISREG_COR
-suffix:semicolon
-id|reg.Value
-op_assign
-l_int|0
-suffix:semicolon
-id|CardServices
-c_func
-(paren
-id|AccessConfigurationRegister
-comma
-id|link-&gt;handle
-comma
-op_amp
-id|reg
-)paren
-suffix:semicolon
-id|default_cor
-op_assign
-id|reg.Value
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|2
-comma
-l_string|&quot;orinoco : orinoco_cs_cor_reset() : cor=0x%X&bslash;n&quot;
-comma
-id|default_cor
-)paren
-suffix:semicolon
-multiline_comment|/* Soft-Reset card */
-id|reg.Action
-op_assign
-id|CS_WRITE
-suffix:semicolon
-id|reg.Offset
-op_assign
-id|CISREG_COR
-suffix:semicolon
-id|reg.Value
-op_assign
-(paren
-id|default_cor
-op_or
-id|COR_SOFT_RESET
-)paren
-suffix:semicolon
-id|CardServices
-c_func
-(paren
-id|AccessConfigurationRegister
-comma
-id|link-&gt;handle
-comma
-op_amp
-id|reg
-)paren
-suffix:semicolon
-multiline_comment|/* Wait until the card has acknowledged our reset */
-multiline_comment|/* FIXME: mdelay() is deprecated -dgibson */
-id|mdelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#if 0 /* This seems to help on Symbol cards, but we&squot;re not sure why,&n;       and we don&squot;t know what it will do to other cards */
-id|reg.Action
-op_assign
-id|CS_READ
-suffix:semicolon
-id|reg.Offset
-op_assign
-id|CISREG_CCSR
-suffix:semicolon
-id|CardServices
-c_func
-(paren
-id|AccessConfigurationRegister
-comma
-id|link-&gt;handle
-comma
-op_amp
-id|reg
-)paren
-suffix:semicolon
-multiline_comment|/* Write 7 (RUN) to CCSR, but preserve the original bit 4 */
-id|reg.Action
-op_assign
-id|CS_WRITE
-suffix:semicolon
-id|reg.Offset
-op_assign
-id|CISREG_CCSR
-suffix:semicolon
-id|reg.Value
-op_assign
-l_int|7
-op_or
-(paren
-id|reg.Value
-op_amp
-l_int|0x10
-)paren
-suffix:semicolon
-id|CardServices
-c_func
-(paren
-id|AccessConfigurationRegister
-comma
-id|link-&gt;handle
-comma
-op_amp
-id|reg
-)paren
-suffix:semicolon
-id|mdelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Restore original COR configuration index */
-id|reg.Action
-op_assign
-id|CS_WRITE
-suffix:semicolon
-id|reg.Offset
-op_assign
-id|CISREG_COR
-suffix:semicolon
-id|reg.Value
-op_assign
-(paren
-id|default_cor
-op_amp
-op_complement
-id|COR_SOFT_RESET
-)paren
-suffix:semicolon
-id|CardServices
-c_func
-(paren
-id|AccessConfigurationRegister
-comma
-id|link-&gt;handle
-comma
-op_amp
-id|reg
-)paren
-suffix:semicolon
-multiline_comment|/* Wait until the card has finished restarting */
-multiline_comment|/* FIXME: mdelay() is deprecated -dgibson */
-id|mdelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-id|TRACE_EXIT
-c_func
-(paren
-id|priv-&gt;ndev-&gt;name
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_static
-r_int
-DECL|function|orinoco_cs_hard_reset
-id|orinoco_cs_hard_reset
-c_func
-(paren
-r_struct
-id|orinoco_private
-op_star
-id|priv
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|priv-&gt;broken_cor_reset
-)paren
-r_return
-id|orinoco_cs_cor_reset
-c_func
-(paren
-id|priv
-)paren
-suffix:semicolon
-r_else
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#if 0 /* We&squot;d like to use ResetCard, but we can&squot;t for the moment - it sleeps */
-multiline_comment|/* Not sure what the second parameter is supposed to be - the &n;&t;   PCMCIA code doesn&squot;t actually use it */
-r_if
-c_cond
-(paren
-id|in_interrupt
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Not resetting card, in_interrupt() is true&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Doing ResetCard&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|CardServices
-c_func
-(paren
-id|ResetCard
-comma
-id|link-&gt;handle
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-)brace
 multiline_comment|/* Remove zombie instances (card removed, detach pending) */
 r_static
 r_void
@@ -806,7 +350,7 @@ suffix:semicolon
 id|TRACE_ENTER
 c_func
 (paren
-l_string|&quot;orinoco&quot;
+l_string|&quot;&quot;
 )paren
 suffix:semicolon
 r_for
@@ -834,6 +378,7 @@ id|link-&gt;state
 op_amp
 id|DEV_STALE_LINK
 )paren
+(brace
 id|orinoco_cs_detach
 c_func
 (paren
@@ -841,14 +386,15 @@ id|link
 )paren
 suffix:semicolon
 )brace
+)brace
 id|TRACE_EXIT
 c_func
 (paren
-l_string|&quot;orinoco&quot;
+l_string|&quot;&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*======================================================================&n;  orinoco_cs_attach() creates an &quot;instance&quot; of the driver, allocating&n;  local data structures for one device.  The device is registered&n;  with Card Services.&n;  &n;  The dev_link structure is initialized, but we don&squot;t actually&n;  configure the card at this point -- we wait until we receive a&n;  card insertion event.&n;  ======================================================================*/
+multiline_comment|/*&n; * This creates an &quot;instance&quot; of the driver, allocating local data&n; * structures for one device.  The device is registered with Card&n; * Services.&n; * &n; * The dev_link structure is initialized, but we don&squot;t actually&n; * configure the card at this point -- we wait until we receive a card&n; * insertion event.  */
 r_static
 id|dev_link_t
 op_star
@@ -886,12 +432,6 @@ id|ret
 comma
 id|i
 suffix:semicolon
-id|TRACE_ENTER
-c_func
-(paren
-l_string|&quot;orinoco&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* A bit of cleanup */
 id|flush_stale_links
 c_func
@@ -908,6 +448,8 @@ r_sizeof
 op_star
 id|card
 )paren
+comma
+id|orinoco_cs_hard_reset
 )paren
 suffix:semicolon
 r_if
@@ -927,18 +469,12 @@ id|card
 op_assign
 id|priv-&gt;card
 suffix:semicolon
-multiline_comment|/* Overrides */
-id|dev-&gt;open
-op_assign
-id|orinoco_cs_open
-suffix:semicolon
-id|dev-&gt;stop
-op_assign
-id|orinoco_cs_stop
-suffix:semicolon
-id|priv-&gt;hard_reset
-op_assign
-id|orinoco_cs_hard_reset
+id|init_waitqueue_head
+c_func
+(paren
+op_amp
+id|card-&gt;hard_reset_queue
+)paren
 suffix:semicolon
 multiline_comment|/* Link both structures together */
 id|link
@@ -948,7 +484,7 @@ id|card-&gt;link
 suffix:semicolon
 id|link-&gt;priv
 op_assign
-id|priv
+id|dev
 suffix:semicolon
 multiline_comment|/* Initialize the dev_link_t structure */
 id|link-&gt;release.function
@@ -1017,7 +553,7 @@ id|link-&gt;irq.Handler
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t;   General socket configuration defaults can go here.  In this&n;&t;   client, we assume very little, and rely on the CIS for almost&n;&t;   everything.  In most clients, many details (i.e., number, sizes,&n;&t;   and attributes of IO windows) are fixed by the nature of the&n;&t;   device, and can be hard-wired here.&n;&t; */
+multiline_comment|/* General socket configuration defaults can go here.  In this&n;&t; * client, we assume very little, and rely on the CIS for&n;&t; * almost everything.  In most clients, many details (i.e.,&n;&t; * number, sizes, and attributes of IO windows) are fixed by&n;&t; * the nature of the device, and can be hard-wired here. */
 id|link-&gt;conf.Attributes
 op_assign
 l_int|0
@@ -1027,6 +563,7 @@ op_assign
 id|INT_MEMORY_AND_IO
 suffix:semicolon
 multiline_comment|/* Register with Card Services */
+multiline_comment|/* FIXME: need a lock? */
 id|link-&gt;next
 op_assign
 id|dev_list
@@ -1069,6 +606,7 @@ id|client_reg.Version
 op_assign
 l_int|0x0210
 suffix:semicolon
+multiline_comment|/* FIXME: what does this mean? */
 id|client_reg.event_callback_args.client_data
 op_assign
 id|link
@@ -1111,28 +649,16 @@ c_func
 id|link
 )paren
 suffix:semicolon
-id|link
-op_assign
+r_return
 l_int|NULL
 suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
 )brace
-id|out
-suffix:colon
-id|TRACE_EXIT
-c_func
-(paren
-l_string|&quot;orinoco&quot;
-)paren
-suffix:semicolon
 r_return
 id|link
 suffix:semicolon
 )brace
 multiline_comment|/* orinoco_cs_attach */
-multiline_comment|/*======================================================================&n;  This deletes a driver &quot;instance&quot;.  The device is de-registered&n;  with Card Services.  If it has been released, all local data&n;  structures are freed.  Otherwise, the structures will be freed&n;  when the device is released.&n;  ======================================================================*/
+multiline_comment|/*&n; * This deletes a driver &quot;instance&quot;.  The device is de-registered with&n; * Card Services.  If it has been released, all local data structures&n; * are freed.  Otherwise, the structures will be freed when the device&n; * is released.&n; */
 r_static
 r_void
 DECL|function|orinoco_cs_detach
@@ -1150,24 +676,11 @@ op_star
 id|linkp
 suffix:semicolon
 r_struct
-id|orinoco_private
-op_star
-id|priv
-op_assign
-id|link-&gt;priv
-suffix:semicolon
-r_struct
 id|net_device
 op_star
 id|dev
 op_assign
-id|priv-&gt;ndev
-suffix:semicolon
-id|TRACE_ENTER
-c_func
-(paren
-l_string|&quot;orinoco&quot;
-)paren
+id|link-&gt;priv
 suffix:semicolon
 multiline_comment|/* Locate device structure */
 r_for
@@ -1209,9 +722,15 @@ id|linkp
 op_eq
 l_int|NULL
 )paren
-r_goto
-id|out
+(brace
+id|BUG
+c_func
+(paren
+)paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;   If the device is currently configured and active, we won&squot;t&n;&t;   actually delete it yet.  Instead, it is marked so that when&n;&t;   the release() function is called, that will trigger a proper&n;&t;   detach().&n;&t; */
 r_if
 c_cond
@@ -1237,8 +756,7 @@ id|link-&gt;state
 op_or_assign
 id|DEV_STALE_LINK
 suffix:semicolon
-r_goto
-id|out
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Break the link with Card Services */
@@ -1286,7 +804,7 @@ l_int|0
 comma
 l_string|&quot;orinoco_cs: About to unregister net device %p&bslash;n&quot;
 comma
-id|priv-&gt;ndev
+id|dev
 )paren
 suffix:semicolon
 id|unregister_netdev
@@ -1302,21 +820,13 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|out
-suffix:colon
-id|TRACE_EXIT
-c_func
-(paren
-l_string|&quot;orinoco&quot;
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* orinoco_cs_detach */
-multiline_comment|/*======================================================================&n;  orinoco_cs_config() is scheduled to run after a CARD_INSERTION event&n;  is received, to configure the PCMCIA socket, and to make the&n;  device available to the system.&n;  ======================================================================*/
+multiline_comment|/*&n; * orinoco_cs_config() is scheduled to run after a CARD_INSERTION&n; * event is received, to configure the PCMCIA socket, and to make the&n; * device available to the system.&n; */
 DECL|macro|CS_CHECK
-mdefine_line|#define CS_CHECK(fn, args...) &bslash;&n;while ((last_ret=CardServices(last_fn=(fn),args))!=0) goto cs_failed
+mdefine_line|#define CS_CHECK(fn, args...) &bslash;&n;&t;while ((last_ret=CardServices(last_fn=(fn),args))!=0) goto cs_failed
 DECL|macro|CFG_CHECK
-mdefine_line|#define CFG_CHECK(fn, args...) &bslash;&n;if (CardServices(fn, args) != 0) goto next_entry
+mdefine_line|#define CFG_CHECK(fn, args...) &bslash;&n;&t;if (CardServices(fn, args) != 0) goto next_entry
 r_static
 r_void
 DECL|function|orinoco_cs_config
@@ -1328,6 +838,13 @@ op_star
 id|link
 )paren
 (brace
+r_struct
+id|net_device
+op_star
+id|dev
+op_assign
+id|link-&gt;priv
+suffix:semicolon
 id|client_handle_t
 id|handle
 op_assign
@@ -1338,18 +855,13 @@ id|orinoco_private
 op_star
 id|priv
 op_assign
-id|link-&gt;priv
+id|dev-&gt;priv
 suffix:semicolon
 r_struct
 id|orinoco_pccard
 op_star
 id|card
 op_assign
-(paren
-r_struct
-id|orinoco_pccard
-op_star
-)paren
 id|priv-&gt;card
 suffix:semicolon
 id|hermes_t
@@ -1358,19 +870,6 @@ id|hw
 op_assign
 op_amp
 id|priv-&gt;hw
-suffix:semicolon
-r_struct
-id|net_device
-op_star
-id|ndev
-op_assign
-id|priv-&gt;ndev
-suffix:semicolon
-id|tuple_t
-id|tuple
-suffix:semicolon
-id|cisparse_t
-id|parse
 suffix:semicolon
 r_int
 id|last_fn
@@ -1386,21 +885,14 @@ suffix:semicolon
 id|config_info_t
 id|conf
 suffix:semicolon
-id|cistpl_cftable_entry_t
-id|dflt
-op_assign
-(brace
-l_int|0
-)brace
-suffix:semicolon
 id|cisinfo_t
 id|info
 suffix:semicolon
-id|TRACE_ENTER
-c_func
-(paren
-l_string|&quot;orinoco&quot;
-)paren
+id|tuple_t
+id|tuple
+suffix:semicolon
+id|cisparse_t
+id|parse
 suffix:semicolon
 id|CS_CHECK
 c_func
@@ -1413,7 +905,7 @@ op_amp
 id|info
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;   This reads the card&squot;s CONFIG tuple to find its configuration&n;&t;   registers.&n;&t; */
+multiline_comment|/*&n;&t; * This reads the card&squot;s CONFIG tuple to find its&n;&t; * configuration registers.&n;&t; */
 id|tuple.DesiredTuple
 op_assign
 id|CISTPL_CONFIG
@@ -1505,19 +997,7 @@ id|link-&gt;conf.Vcc
 op_assign
 id|conf.Vcc
 suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;orinoco_cs_config: ConfigBase = 0x%x link-&gt;conf.Vcc = %d&bslash;n&quot;
-comma
-id|link-&gt;conf.ConfigBase
-comma
-id|link-&gt;conf.Vcc
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;   In this loop, we scan the CIS for configuration table entries,&n;&t;   each of which describes a valid card configuration, including&n;&t;   voltage, IO window, memory window, and interrupt settings.&n;&n;&t;   We make no assumptions about the card to be configured: we use&n;&t;   just the information available in the CIS.  In an ideal world,&n;&t;   this would work for any PCMCIA card, but it requires a complete&n;&t;   and accurate CIS.  In practice, a driver usually &quot;knows&quot; most of&n;&t;   these things without consulting the CIS, and most client drivers&n;&t;   will only use the CIS to fill in implementation-defined details.&n;&t; */
+multiline_comment|/*&n;&t; * In this loop, we scan the CIS for configuration table&n;&t; * entries, each of which describes a valid card&n;&t; * configuration, including voltage, IO window, memory window,&n;&t; * and interrupt settings.&n;&t; *&n;&t; * We make no assumptions about the card to be configured: we&n;&t; * use just the information available in the CIS.  In an ideal&n;&t; * world, this would work for any PCMCIA card, but it requires&n;&t; * a complete and accurate CIS.  In practice, a driver usually&n;&t; * &quot;knows&quot; most of these things without consulting the CIS,&n;&t; * and most client drivers will only use the CIS to fill in&n;&t; * implementation-defined details.&n;&t; */
 id|tuple.DesiredTuple
 op_assign
 id|CISTPL_CFTABLE_ENTRY
@@ -1548,6 +1028,15 @@ op_amp
 id|parse.cftable_entry
 )paren
 suffix:semicolon
+id|cistpl_cftable_entry_t
+id|dflt
+op_assign
+(brace
+id|index
+suffix:colon
+l_int|0
+)brace
+suffix:semicolon
 id|CFG_CHECK
 c_func
 (paren
@@ -1571,18 +1060,6 @@ id|tuple
 comma
 op_amp
 id|parse
-)paren
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;orinoco_cs_config: index = 0x%x, flags = 0x%x&bslash;n&quot;
-comma
-id|cfg-&gt;index
-comma
-id|cfg-&gt;flags
 )paren
 suffix:semicolon
 r_if
@@ -1630,7 +1107,7 @@ id|CCSR_AUDIO_ENA
 suffix:semicolon
 )brace
 multiline_comment|/* Use power settings for Vcc and Vpp if present */
-multiline_comment|/*  Note that the CIS values need to be rescaled */
+multiline_comment|/* Note that the CIS values need to be rescaled */
 r_if
 c_cond
 (paren
@@ -1784,14 +1261,6 @@ id|CISTPL_POWER_VNOM
 )braket
 op_div
 l_int|10000
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;orinoco_cs_config: We seem to have configured Vcc and Vpp&bslash;n&quot;
-)paren
 suffix:semicolon
 multiline_comment|/* Do we need to allocate an interrupt? */
 r_if
@@ -1998,7 +1467,7 @@ id|cs_failed
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;   Allocate an interrupt line.  Note that this does not assign a&n;&t;   handler to the interrupt, unless the &squot;Handler&squot; member of the&n;&t;   irq structure is initialized.&n;&t; */
+multiline_comment|/*&n;&t; * Allocate an interrupt line.  Note that this does not assign&n;&t; * a handler to the interrupt, unless the &squot;Handler&squot; member of&n;&t; * the irq structure is initialized.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2081,7 +1550,7 @@ id|link-&gt;irq
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* We initialize the hermes structure before completing PCMCIA&n;&t;   configuration just in case the interrupt handler gets&n;&t;   called. */
+multiline_comment|/* We initialize the hermes structure before completing PCMCIA&n;&t; * configuration just in case the interrupt handler gets&n;&t; * called. */
 id|hermes_struct_init
 c_func
 (paren
@@ -2094,7 +1563,7 @@ comma
 id|HERMES_16BIT_REGSPACING
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;   This actually configures the PCMCIA socket -- setting up&n;&t;   the I/O windows and the interrupt mapping, and putting the&n;&t;   card and host interface into &quot;Memory and IO&quot; mode.&n;&t; */
+multiline_comment|/*&n;&t; * This actually configures the PCMCIA socket -- setting up&n;&t; * the I/O windows and the interrupt mapping, and putting the&n;&t; * card and host interface into &quot;Memory and IO&quot; mode.&n;&t; */
 id|CS_CHECK
 c_func
 (paren
@@ -2106,16 +1575,29 @@ op_amp
 id|link-&gt;conf
 )paren
 suffix:semicolon
-id|ndev-&gt;base_addr
+multiline_comment|/* Ok, we have the configuration, prepare to register the netdev */
+id|dev-&gt;base_addr
 op_assign
 id|link-&gt;io.BasePort1
 suffix:semicolon
-id|ndev-&gt;irq
+id|dev-&gt;irq
 op_assign
 id|link-&gt;irq.AssignedIRQ
 suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|card-&gt;node.major
+op_assign
+id|card-&gt;node.minor
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* register_netdev will give us an ethX name */
-id|ndev-&gt;name
+id|dev-&gt;name
 (braket
 l_int|0
 )braket
@@ -2129,7 +1611,7 @@ c_cond
 id|register_netdev
 c_func
 (paren
-id|ndev
+id|dev
 )paren
 op_ne
 l_int|0
@@ -2146,13 +1628,25 @@ r_goto
 id|failed
 suffix:semicolon
 )brace
+multiline_comment|/* At this point, the dev_node_t structure(s) needs to be&n;&t; * initialized and arranged in a linked list at link-&gt;dev. */
 id|strcpy
 c_func
 (paren
 id|card-&gt;node.dev_name
 comma
-id|ndev-&gt;name
+id|dev-&gt;name
 )paren
+suffix:semicolon
+id|link-&gt;dev
+op_assign
+op_amp
+id|card-&gt;node
+suffix:semicolon
+multiline_comment|/* link-&gt;dev being non-NULL is also&n;                                    used to indicate that the&n;                                    net_device has been registered */
+id|link-&gt;state
+op_and_assign
+op_complement
+id|DEV_CONFIG_PENDING
 suffix:semicolon
 multiline_comment|/* Finally, report what we&squot;ve done */
 id|printk
@@ -2161,7 +1655,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;%s: index 0x%02x: Vcc %d.%d&quot;
 comma
-id|ndev-&gt;name
+id|dev-&gt;name
 comma
 id|link-&gt;conf.ConfigIndex
 comma
@@ -2259,7 +1753,7 @@ c_cond
 id|orinoco_proc_dev_init
 c_func
 (paren
-id|priv
+id|dev
 )paren
 op_ne
 l_int|0
@@ -2271,57 +1765,13 @@ c_func
 id|KERN_ERR
 l_string|&quot;orinoco_cs: Failed to create /proc node for %s&bslash;n&quot;
 comma
-id|ndev-&gt;name
+id|dev-&gt;name
 )paren
 suffix:semicolon
 r_goto
 id|failed
 suffix:semicolon
 )brace
-multiline_comment|/* Note to myself : this replace MOD_INC_USE_COUNT/MOD_DEC_USE_COUNT */
-id|SET_MODULE_OWNER
-c_func
-(paren
-id|ndev
-)paren
-suffix:semicolon
-multiline_comment|/* Let reset_cor parameter override determine_firmware()&squot;s guess */
-r_if
-c_cond
-(paren
-id|reset_cor
-op_ne
-op_minus
-l_int|1
-)paren
-id|priv-&gt;broken_cor_reset
-op_assign
-op_logical_neg
-id|reset_cor
-suffix:semicolon
-multiline_comment|/*&n;&t;   At this point, the dev_node_t structure(s) need to be&n;&t;   initialized and arranged in a linked list at link-&gt;dev.&n;&t; */
-id|card-&gt;node.major
-op_assign
-id|card-&gt;node.minor
-op_assign
-l_int|0
-suffix:semicolon
-id|link-&gt;dev
-op_assign
-op_amp
-id|card-&gt;node
-suffix:semicolon
-id|link-&gt;state
-op_and_assign
-op_complement
-id|DEV_CONFIG_PENDING
-suffix:semicolon
-id|TRACE_EXIT
-c_func
-(paren
-l_string|&quot;orinoco&quot;
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 id|cs_failed
@@ -2347,15 +1797,9 @@ id|u_long
 id|link
 )paren
 suffix:semicolon
-id|TRACE_EXIT
-c_func
-(paren
-l_string|&quot;orinoco&quot;
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* orinoco_cs_config */
-multiline_comment|/*======================================================================&n;  After a card is removed, orinoco_cs_release() will unregister the&n;  device, and release the PCMCIA configuration.  If the device is&n;  still open, this will be postponed until it is closed.&n;  ======================================================================*/
+multiline_comment|/*&n; * After a card is removed, orinoco_cs_release() will unregister the&n; * device, and release the PCMCIA configuration.  If the device is&n; * still open, this will be postponed until it is closed.&n; */
 r_static
 r_void
 DECL|function|orinoco_cs_release
@@ -2377,23 +1821,24 @@ op_star
 id|arg
 suffix:semicolon
 r_struct
+id|net_device
+op_star
+id|dev
+op_assign
+id|link-&gt;priv
+suffix:semicolon
+r_struct
 id|orinoco_private
 op_star
 id|priv
 op_assign
-id|link-&gt;priv
-suffix:semicolon
-id|TRACE_ENTER
-c_func
-(paren
-id|link-&gt;dev-&gt;dev_name
-)paren
+id|dev-&gt;priv
 suffix:semicolon
 multiline_comment|/*&n;&t;   If the device is currently in use, we won&squot;t release until it&n;&t;   is actually closed, because until then, we can&squot;t be sure that&n;&t;   no one will try to access the device or its data structures.&n;&t; */
 r_if
 c_cond
 (paren
-id|link-&gt;open
+id|priv-&gt;open
 )paren
 (brace
 id|DEBUG
@@ -2417,7 +1862,7 @@ multiline_comment|/* Unregister proc entry */
 id|orinoco_proc_dev_cleanup
 c_func
 (paren
-id|priv
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Don&squot;t bother checking to see if these succeed or not */
@@ -2466,15 +1911,9 @@ op_and_assign
 op_complement
 id|DEV_CONFIG
 suffix:semicolon
-id|TRACE_EXIT
-c_func
-(paren
-id|link-&gt;dev-&gt;dev_name
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* orinoco_cs_release */
-multiline_comment|/*======================================================================&n;  The card status event handler.  Mostly, this schedules other&n;  stuff to run after an event is received.&n;&n;  When a CARD_REMOVAL event is received, we immediately set a&n;  private flag to block future accesses to this device.  All the&n;  functions that actually access the device should check this flag&n;  to make sure the card is still present.&n;  ======================================================================*/
+multiline_comment|/*&n; * The card status event handler.  Mostly, this schedules other stuff&n; * to run after an event is received.&n; */
 r_static
 r_int
 DECL|function|orinoco_cs_event
@@ -2499,29 +1938,27 @@ op_assign
 id|args-&gt;client_data
 suffix:semicolon
 r_struct
-id|orinoco_private
-op_star
-id|priv
-op_assign
-(paren
-r_struct
-id|orinoco_private
-op_star
-)paren
-id|link-&gt;priv
-suffix:semicolon
-r_struct
 id|net_device
 op_star
 id|dev
 op_assign
-id|priv-&gt;ndev
+id|link-&gt;priv
 suffix:semicolon
-id|TRACE_ENTER
-c_func
-(paren
-l_string|&quot;orinoco&quot;
-)paren
+r_struct
+id|orinoco_private
+op_star
+id|priv
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+r_int
+id|err
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 r_switch
 c_cond
@@ -2545,33 +1982,36 @@ op_amp
 id|DEV_CONFIG
 )paren
 (brace
-id|netif_stop_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-)brace
-id|orinoco_shutdown
+id|orinoco_lock
 c_func
 (paren
 id|priv
+comma
+op_amp
+id|flags
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_CONFIG
-)paren
-(brace
 id|netif_device_detach
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+id|priv-&gt;hw_unavailable
+op_assign
+l_int|1
+suffix:semicolon
+id|orinoco_unlock
+c_func
+(paren
+id|priv
+comma
+op_amp
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/*  &t;&t;&t;if (link-&gt;open) */
+multiline_comment|/*  &t;&t;&t;&t;orinoco_cs_stop(dev); */
 id|mod_timer
 c_func
 (paren
@@ -2616,12 +2056,6 @@ multiline_comment|/* Fall through... */
 r_case
 id|CS_EVENT_RESET_PHYSICAL
 suffix:colon
-id|orinoco_shutdown
-c_func
-(paren
-id|priv
-)paren
-suffix:semicolon
 multiline_comment|/* Mark the device as stopped, to block IO until later */
 r_if
 c_cond
@@ -2631,16 +2065,66 @@ op_amp
 id|DEV_CONFIG
 )paren
 (brace
+id|err
+op_assign
+id|orinoco_lock
+c_func
+(paren
+id|priv
+comma
+op_amp
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|link-&gt;open
+id|err
 )paren
 (brace
-id|netif_stop_queue
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: hw_unavailable on SUSPEND/RESET_PHYSICAL&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|err
+op_assign
+id|__orinoco_down
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: %s: Error %d downing interface&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|event
+op_eq
+id|CS_EVENT_PM_SUSPEND
+ques
+c_cond
+l_string|&quot;SUSPEND&quot;
+suffix:colon
+l_string|&quot;RESET_PHYSICAL&quot;
+comma
+id|err
 )paren
 suffix:semicolon
 id|netif_device_detach
@@ -2649,7 +2133,19 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-)brace
+id|priv-&gt;hw_unavailable
+op_assign
+l_int|1
+suffix:semicolon
+id|orinoco_unlock
+c_func
+(paren
+id|priv
+comma
+op_amp
+id|flags
+)paren
+suffix:semicolon
 id|CardServices
 c_func
 (paren
@@ -2692,72 +2188,117 @@ op_amp
 id|link-&gt;conf
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;open
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|orinoco_reset
+multiline_comment|/* FIXME: should we double check that this is&n;&t;&t;&t; * the same card as we had before */
+id|err
+op_assign
+id|orinoco_reinit_firmware
 c_func
 (paren
-id|priv
+id|dev
 )paren
-op_eq
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: Error %d re-initializing firmware&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|err
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|priv-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|netif_device_attach
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-id|netif_start_queue
+id|priv-&gt;hw_unavailable
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|priv-&gt;open
+)paren
+(brace
+id|err
+op_assign
+id|__orinoco_up
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
+r_if
+c_cond
+(paren
+id|err
+)paren
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Error resetting device on PCMCIA event&bslash;n&quot;
+l_string|&quot;%s: Error %d restarting card&bslash;n&quot;
 comma
 id|dev-&gt;name
+comma
+id|err
 )paren
 suffix:semicolon
-id|orinoco_cs_stop
+)brace
+id|orinoco_unlock
 c_func
 (paren
-id|dev
+id|priv
+comma
+op_amp
+id|flags
 )paren
 suffix:semicolon
 )brace
-)brace
-)brace
-multiline_comment|/*&n;&t;&t;   In a normal driver, additional code may go here to restore&n;&t;&t;   the device state and restart IO. &n;&t;&t; */
 r_break
 suffix:semicolon
 )brace
-id|TRACE_EXIT
-c_func
-(paren
-l_string|&quot;orinoco&quot;
-)paren
-suffix:semicolon
 r_return
-l_int|0
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/* orinoco_cs_event */
+multiline_comment|/********************************************************************/
+multiline_comment|/* Module initialization&t;&t;&t;&t;&t;    */
+multiline_comment|/********************************************************************/
+multiline_comment|/* Can&squot;t be declared &quot;const&quot; or the whole __initdata section will&n; * become const */
+DECL|variable|__initdata
+r_static
+r_char
+id|version
+(braket
+)braket
+id|__initdata
+op_assign
+l_string|&quot;orinoco_cs.c 0.13a (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
+suffix:semicolon
 r_static
 r_int
 id|__init
@@ -2770,12 +2311,6 @@ r_void
 (brace
 id|servinfo_t
 id|serv
-suffix:semicolon
-id|TRACE_ENTER
-c_func
-(paren
-l_string|&quot;orinoco&quot;
-)paren
 suffix:semicolon
 id|printk
 c_func
@@ -2829,12 +2364,6 @@ op_amp
 id|orinoco_cs_detach
 )paren
 suffix:semicolon
-id|TRACE_EXIT
-c_func
-(paren
-l_string|&quot;orinoco&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2849,12 +2378,6 @@ c_func
 r_void
 )paren
 (brace
-id|TRACE_ENTER
-c_func
-(paren
-l_string|&quot;orinoco&quot;
-)paren
-suffix:semicolon
 id|unregister_pccard_driver
 c_func
 (paren
@@ -2913,12 +2436,6 @@ id|dev_list
 )paren
 suffix:semicolon
 )brace
-id|TRACE_EXIT
-c_func
-(paren
-l_string|&quot;orinoco&quot;
-)paren
-suffix:semicolon
 )brace
 DECL|variable|init_orinoco_cs
 id|module_init

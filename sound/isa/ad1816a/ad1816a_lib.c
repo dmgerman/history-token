@@ -4685,7 +4685,7 @@ id|AD1816A_MIC_GAIN_ATT
 comma
 l_int|8
 comma
-l_int|63
+l_int|31
 comma
 l_int|1
 )paren

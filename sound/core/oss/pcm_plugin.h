@@ -1015,16 +1015,6 @@ id|r_plugin
 )paren
 suffix:semicolon
 r_int
-r_int
-id|snd_pcm_plug_formats
-c_func
-(paren
-r_int
-r_int
-id|formats
-)paren
-suffix:semicolon
-r_int
 id|snd_pcm_plug_format_plugins
 c_func
 (paren
@@ -1048,8 +1038,8 @@ c_func
 r_int
 id|format
 comma
-r_int
-r_int
+id|snd_mask_t
+op_star
 id|format_mask
 )paren
 suffix:semicolon

@@ -492,7 +492,7 @@ m_offsetof
 r_struct
 id|icmp_mib
 comma
-id|__pad
+id|dummy
 )paren
 op_div
 r_sizeof

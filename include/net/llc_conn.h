@@ -25,12 +25,6 @@ DECL|struct|llc_opt
 r_struct
 id|llc_opt
 (brace
-DECL|member|node
-r_struct
-id|list_head
-id|node
-suffix:semicolon
-multiline_comment|/* entry in sap-&gt;sk_list.list */
 DECL|member|sk
 r_struct
 id|sock
@@ -220,35 +214,10 @@ id|u32
 id|rx_pdu_hdr
 suffix:semicolon
 multiline_comment|/* used for saving header of last pdu&n;&t;&t;&t;&t;&t;      received and caused sending FRMR.&n;&t;&t;&t;&t;&t;      Used for resending FRMR */
-macro_line|#ifdef DEBUG_LLC_CONN_ALLOC
-DECL|member|f_alloc
-r_char
-op_star
-id|f_alloc
-comma
-multiline_comment|/* function that allocated this connection */
-DECL|member|f_free
-op_star
-id|f_free
-suffix:semicolon
-multiline_comment|/* function that freed this connection */
-DECL|member|l_alloc
-r_int
-id|l_alloc
-comma
-multiline_comment|/* line that allocated this connection */
-DECL|member|l_free
-id|l_free
-suffix:semicolon
-multiline_comment|/* line that freed this connection */
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|llc_sk
 mdefine_line|#define llc_sk(__sk) ((struct llc_opt *)(__sk)-&gt;protinfo)
-r_struct
-id|llc_conn_state_ev
-suffix:semicolon
 r_extern
 r_struct
 id|sock
@@ -447,6 +416,38 @@ r_struct
 id|llc_addr
 op_star
 id|laddr
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|sock
+op_star
+id|llc_lookup_dgram
+c_func
+(paren
+r_struct
+id|llc_sap
+op_star
+id|sap
+comma
+r_struct
+id|llc_addr
+op_star
+id|laddr
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|llc_save_primitive
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+id|u8
+id|prim
 )paren
 suffix:semicolon
 r_extern

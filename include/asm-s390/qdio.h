@@ -82,8 +82,6 @@ DECL|macro|QDIO_CLEANUP_CLEAR_TIMEOUT
 mdefine_line|#define QDIO_CLEANUP_CLEAR_TIMEOUT 20000
 DECL|macro|QDIO_CLEANUP_HALT_TIMEOUT
 mdefine_line|#define QDIO_CLEANUP_HALT_TIMEOUT 10000
-DECL|macro|QDIO_BH
-mdefine_line|#define QDIO_BH AURORA_BH
 DECL|macro|QDIO_IRQ_BUCKETS
 mdefine_line|#define QDIO_IRQ_BUCKETS 256 /* heavy..., but does only use a few bytes, but&n;&t;&t;&t;      be rather faster in cases of collisions&n;&t;&t;&t;      (if there really is a collision, it is&n;&t;&t;&t;      on every (traditional) interrupt and every&n;&t;&t;&t;      do_QDIO, so we rather are generous */
 DECL|macro|QDIO_QETH_QFMT

@@ -366,6 +366,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * blk_queue_prep_rq - set a prepare_request function for queue&n; * @q:&t;&t;queue&n; * @pfn:&t;prepare_request function&n; *&n; * It&squot;s possible for a queue to register a prepare_request callback which&n; * is invoked before the request is handed to the request_fn. The goal of&n; * the function is to prepare a request for I/O, it can be used to build a&n; * cdb from the request data for instance.&n; *&n; */
 DECL|function|blk_queue_prep_rq
 r_void
 id|blk_queue_prep_rq
@@ -383,6 +384,26 @@ id|pfn
 id|q-&gt;prep_rq_fn
 op_assign
 id|pfn
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * blk_queue_merge_bvec - set a merge_bvec function for queue&n; * @q:&t;&t;queue&n; * @mbfn:&t;merge_bvec_fn&n; *&n; * Usually queues have static limitations on the max sectors or segments that&n; * we can put in a request. Stacking drivers may have some settings that&n; * are dynamic, and thus we have to query the queue whether it is ok to&n; * add a new bio_vec to a bio at a given offset or not. If the block device&n; * has such limitations, it needs to register a merge_bvec_fn to control&n; * the size of bio&squot;s sent to it. Per default now merge_bvec_fn is defined for&n; * a queue, and only the fixed limits are honored.&n; *&n; */
+DECL|function|blk_queue_merge_bvec
+r_void
+id|blk_queue_merge_bvec
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+comma
+id|merge_bvec_fn
+op_star
+id|mbfn
+)paren
+(brace
+id|q-&gt;merge_bvec_fn
+op_assign
+id|mbfn
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * blk_queue_make_request - define an alternate make_request function for a device&n; * @q:  the request queue for the device to be affected&n; * @mfn: the alternate make_request function&n; *&n; * Description:&n; *    The normal way for &amp;struct bios to be passed to a device&n; *    driver is for them to be collected into requests on a request&n; *    queue, and then to allow the device driver to select requests&n; *    off that queue when it is ready.  This works well for many block&n; *    devices. However some block devices (typically virtual devices&n; *    such as md or lvm) do not benefit from the processing on the&n; *    request queue, and are served best by having the requests passed&n; *    directly to them.  This can be achieved by providing a function&n; *    to blk_queue_make_request().&n; *&n; * Caveat:&n; *    The driver that does this *must* be able to deal appropriately&n; *    with buffers in &quot;highmemory&quot;. This can be accomplished by either calling&n; *    bio_kmap() to get a temporary kernel mapping, or by calling&n; *    blk_queue_bounce() to create a buffer in normal memory.&n; **/
@@ -5408,10 +5429,6 @@ id|q-&gt;queue_lock
 suffix:semicolon
 id|again
 suffix:colon
-id|req
-op_assign
-l_int|NULL
-suffix:semicolon
 id|insert_here
 op_assign
 l_int|NULL
@@ -5452,7 +5469,7 @@ c_func
 id|q
 comma
 op_amp
-id|req
+id|insert_here
 comma
 id|bio
 )paren
@@ -5466,6 +5483,14 @@ id|el_ret
 r_case
 id|ELEVATOR_BACK_MERGE
 suffix:colon
+id|req
+op_assign
+id|list_entry_rq
+c_func
+(paren
+id|insert_here
+)paren
+suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -5548,6 +5573,14 @@ suffix:semicolon
 r_case
 id|ELEVATOR_FRONT_MERGE
 suffix:colon
+id|req
+op_assign
+id|list_entry_rq
+c_func
+(paren
+id|insert_here
+)paren
+suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -5653,17 +5686,6 @@ multiline_comment|/*&n;&t;&t; * elevator says don&squot;t/can&squot;t merge. get
 r_case
 id|ELEVATOR_NO_MERGE
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * use elevator hints as to where to insert the&n;&t;&t;&t; * request. if no hints, just add it to the back&n;&t;&t;&t; * of the queue&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|req
-)paren
-id|insert_here
-op_assign
-op_amp
-id|req-&gt;queuelist
-suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -6107,7 +6129,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|BUG_ON
+r_if
+c_cond
+(paren
+id|unlikely
 c_func
 (paren
 id|bio_sectors
@@ -6118,7 +6143,26 @@ id|bio
 OG
 id|q-&gt;max_sectors
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;bio too big (%u &gt; %u)&bslash;n&quot;
+comma
+id|bio_sectors
+c_func
+(paren
+id|bio
+)paren
+comma
+id|q-&gt;max_sectors
+)paren
 suffix:semicolon
+r_goto
+id|end_io
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * If this device has partitions, remap block n&n;&t;&t; * of partition p to block n+start(p) of the disk.&n;&t;&t; */
 id|blk_partition_remap
 c_func
@@ -6136,12 +6180,6 @@ c_func
 id|q
 comma
 id|bio
-)paren
-suffix:semicolon
-id|blk_put_queue
-c_func
-(paren
-id|q
 )paren
 suffix:semicolon
 )brace
@@ -7137,6 +7175,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|blk_queue_prep_rq
+)paren
+suffix:semicolon
+DECL|variable|blk_queue_merge_bvec
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|blk_queue_merge_bvec
 )paren
 suffix:semicolon
 DECL|variable|blk_queue_find_tag

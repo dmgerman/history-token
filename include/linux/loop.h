@@ -192,6 +192,10 @@ DECL|member|lo_pending
 id|atomic_t
 id|lo_pending
 suffix:semicolon
+DECL|member|lo_queue
+id|request_queue_t
+id|lo_queue
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|typedef|transfer_proc_t

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;i810-tco 0.04:&t;TCO timer driver for i8xx chipsets&n; *&n; *&t;(c) Copyright 2000 kernel concepts &lt;nils@kernelconcepts.de&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.kernelconcepts.de&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;Neither kernel concepts nor Nils Faerber admit liability nor provide &n; *&t;warranty for any of this software. This material is provided &n; *&t;&quot;AS-IS&quot; and at no charge.&t;&n; *&n; *&t;(c) Copyright 2000&t;kernel concepts &lt;nils@kernelconcepts.de&gt;&n; *&t;&t;&t;&t;developed for&n; *                              Jentro AG, Haar/Munich (Germany)&n; *&n; *&t;TCO timer driver for i8xx chipsets&n; *&t;based on softdog.c by Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *&t;The TCO timer is implemented in the following I/O controller hubs:&n; *&t;(See the intel documentation on http://developer.intel.com.)&n; *&t;82801AA &amp; 82801AB  chip : document number 290655-003, 290677-004,&n; *&t;82801BA &amp; 82801BAM chip : document number 290687-002, 298242-005,&n; *&t;82801CA &amp; 82801CAM chip : document number 290716-001, 290718-001&n; *&n; *  20000710 Nils Faerber&n; *&t;Initial Version 0.01&n; *  20000728 Nils Faerber&n; *      0.02 Fix for SMI_EN-&gt;TCO_EN bit, some cleanups&n; *  20011214 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *&t;0.03 Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *&t;     Didn&squot;t add timeout option as i810_margin already exists.&n; *  20020224 Joel Becker, Wim Van Sebroeck&n; *&t;0.04 Support for 82801CA(M) chipset, timer margin needs to be &gt; 3,&n; *&t;     add support for WDIOC_SETTIMEOUT and WDIOC_GETTIMEOUT.&n; */
+multiline_comment|/*&n; *&t;i810-tco 0.05:&t;TCO timer driver for i8xx chipsets&n; *&n; *&t;(c) Copyright 2000 kernel concepts &lt;nils@kernelconcepts.de&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.kernelconcepts.de&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;Neither kernel concepts nor Nils Faerber admit liability nor provide&n; *&t;warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; *&n; *&t;(c) Copyright 2000&t;kernel concepts &lt;nils@kernelconcepts.de&gt;&n; *&t;&t;&t;&t;developed for&n; *                              Jentro AG, Haar/Munich (Germany)&n; *&n; *&t;TCO timer driver for i8xx chipsets&n; *&t;based on softdog.c by Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *&t;The TCO timer is implemented in the following I/O controller hubs:&n; *&t;(See the intel documentation on http://developer.intel.com.)&n; *&t;82801AA &amp; 82801AB  chip : document number 290655-003, 290677-004,&n; *&t;82801BA &amp; 82801BAM chip : document number 290687-002, 298242-005,&n; *&t;82801CA &amp; 82801CAM chip : document number 290716-001, 290718-001,&n; *&t;82801DB &amp; 82801E   chip : document number 290744-001, 273599-001&n; *&n; *  20000710 Nils Faerber&n; *&t;Initial Version 0.01&n; *  20000728 Nils Faerber&n; *&t;0.02 Fix for SMI_EN-&gt;TCO_EN bit, some cleanups&n; *  20011214 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *&t;0.03 Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *&t;     Didn&squot;t add timeout option as i810_margin already exists.&n; *  20020224 Joel Becker, Wim Van Sebroeck&n; *&t;0.04 Support for 82801CA(M) chipset, timer margin needs to be &gt; 3,&n; *&t;     add support for WDIOC_SETTIMEOUT and WDIOC_GETTIMEOUT.&n; *  20020412 Rob Radez &lt;rob@osinvestor.com&gt;, Wim Van Sebroeck&n; *&t;0.05 Fix possible timer_alive race, add expect close support,&n; *&t;     clean up ioctls (WDIOC_GETSTATUS, WDIOC_GETBOOTSTATUS and&n; *&t;     WDIOC_SETOPTIONS), made i810tco_getdevice __init,&n; *&t;     removed boot_status, removed tco_timer_read,&n; *&t;     added support for 82801DB and 82801E chipset, general cleanup.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -15,11 +15,11 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;i810-tco.h&quot;
 multiline_comment|/* Module and version information */
 DECL|macro|TCO_VERSION
-mdefine_line|#define TCO_VERSION &quot;0.04&quot;
+mdefine_line|#define TCO_VERSION &quot;0.05&quot;
 DECL|macro|TCO_MODULE_NAME
 mdefine_line|#define TCO_MODULE_NAME &quot;i810 TCO timer&quot;
 DECL|macro|TCO_DRIVER_NAME
-mdefine_line|#define TCO_DRIVER_NAME   TCO_MODULE_NAME &quot; , &quot; TCO_VERSION
+mdefine_line|#define TCO_DRIVER_NAME   TCO_MODULE_NAME &quot;, v&quot; TCO_VERSION
 multiline_comment|/* Default expire timeout */
 DECL|macro|TIMER_MARGIN
 mdefine_line|#define TIMER_MARGIN&t;50&t;/* steps of 0.6sec, 3&lt;n&lt;64. Default is 30 seconds */
@@ -44,6 +44,7 @@ id|TIMER_MARGIN
 suffix:semicolon
 multiline_comment|/* steps of 0.6sec */
 id|MODULE_PARM
+c_func
 (paren
 id|i810_margin
 comma
@@ -55,7 +56,7 @@ c_func
 (paren
 id|i810_margin
 comma
-l_string|&quot;Watchdog timeout in steps of 0.6sec, 3&lt;n&lt;64. Default = 50 (30 seconds)&quot;
+l_string|&quot;i810-tco timeout in steps of 0.6sec, 3&lt;n&lt;64. Default = 50 (30 seconds)&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
@@ -95,12 +96,13 @@ multiline_comment|/*&n; *&t;Timer active flag&n; */
 DECL|variable|timer_alive
 r_static
 r_int
+r_int
 id|timer_alive
 suffix:semicolon
-DECL|variable|boot_status
+DECL|variable|tco_expect_close
 r_static
-r_int
-id|boot_status
+r_char
+id|tco_expect_close
 suffix:semicolon
 multiline_comment|/*&n; * Some TCO specific functions&n; */
 multiline_comment|/*&n; * Start the timer countdown&n; */
@@ -378,25 +380,6 @@ id|tco_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Read the current timer value&n; */
-DECL|function|tco_timer_read
-r_static
-r_int
-r_char
-id|tco_timer_read
-(paren
-r_void
-)paren
-(brace
-r_return
-(paren
-id|inb
-(paren
-id|TCO1_RLD
-)paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *&t;Allow only one person to hold it open&n; */
 DECL|function|i810tco_open
 r_static
@@ -417,21 +400,19 @@ id|file
 r_if
 c_cond
 (paren
+id|test_and_set_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|timer_alive
+)paren
 )paren
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|nowayout
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; *      Reload and activate timer&n;&t; */
 id|tco_timer_reload
 (paren
@@ -440,10 +421,6 @@ suffix:semicolon
 id|tco_timer_start
 (paren
 )paren
-suffix:semicolon
-id|timer_alive
-op_assign
-l_int|1
 suffix:semicolon
 r_return
 l_int|0
@@ -469,6 +446,11 @@ multiline_comment|/*&n;&t; *      Shut off the timer.&n;&t; */
 r_if
 c_cond
 (paren
+id|tco_expect_close
+op_eq
+l_int|42
+op_logical_and
+op_logical_neg
 id|nowayout
 )paren
 (brace
@@ -476,11 +458,35 @@ id|tco_timer_stop
 (paren
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|tco_timer_reload
+(paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+id|TCO_MODULE_NAME
+l_string|&quot;: Unexpected close, not stopping watchdog!&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+id|clear_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|timer_alive
+)paren
+suffix:semicolon
+id|tco_expect_close
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -521,13 +527,71 @@ r_return
 op_minus
 id|ESPIPE
 suffix:semicolon
-multiline_comment|/*&n;&t; *      Refresh the timer.&n;&t; */
+multiline_comment|/* See if we got the magic character &squot;V&squot; and reload the timer */
 r_if
 c_cond
 (paren
 id|len
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
+id|tco_expect_close
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* scan to see wether or not we got the magic character */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+op_ne
+id|len
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|u8
+id|c
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|c
+comma
+id|data
+op_plus
+id|i
+)paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|c
+op_eq
+l_char|&squot;V&squot;
+)paren
+id|tco_expect_close
+op_assign
+l_int|42
+suffix:semicolon
+)brace
+multiline_comment|/* someone wrote to us, we should reload the timer */
 id|tco_timer_reload
 (paren
 )paren
@@ -569,19 +633,34 @@ id|new_margin
 comma
 id|u_margin
 suffix:semicolon
+r_int
+id|options
+comma
+id|retval
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_static
 r_struct
 id|watchdog_info
 id|ident
 op_assign
 (brace
+id|options
+suffix:colon
 id|WDIOF_SETTIMEOUT
 op_or
 id|WDIOF_KEEPALIVEPING
 comma
+id|firmware_version
+suffix:colon
 l_int|0
 comma
+id|identity
+suffix:colon
 l_string|&quot;i810 TCO timer&quot;
+comma
 )brace
 suffix:semicolon
 r_switch
@@ -630,31 +709,13 @@ suffix:semicolon
 r_case
 id|WDIOC_GETSTATUS
 suffix:colon
-r_return
-id|put_user
-(paren
-id|tco_timer_read
-(paren
-)paren
-comma
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-r_int
-)paren
-id|arg
-)paren
-suffix:semicolon
 r_case
 id|WDIOC_GETBOOTSTATUS
 suffix:colon
 r_return
 id|put_user
 (paren
-id|boot_status
+l_int|0
 comma
 (paren
 r_int
@@ -662,6 +723,68 @@ op_star
 )paren
 id|arg
 )paren
+suffix:semicolon
+r_case
+id|WDIOC_SETOPTIONS
+suffix:colon
+r_if
+c_cond
+(paren
+id|get_user
+(paren
+id|options
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|options
+op_amp
+id|WDIOS_DISABLECARD
+)paren
+(brace
+id|tco_timer_stop
+(paren
+)paren
+suffix:semicolon
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|options
+op_amp
+id|WDIOS_ENABLECARD
+)paren
+(brace
+id|tco_timer_reload
+(paren
+)paren
+suffix:semicolon
+id|tco_timer_start
+(paren
+)paren
+suffix:semicolon
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_return
+id|retval
 suffix:semicolon
 r_case
 id|WDIOC_KEEPALIVE
@@ -680,7 +803,6 @@ r_if
 c_cond
 (paren
 id|get_user
-c_func
 (paren
 id|u_margin
 comma
@@ -730,7 +852,6 @@ r_if
 c_cond
 (paren
 id|tco_timer_settimer
-c_func
 (paren
 (paren
 r_int
@@ -748,7 +869,6 @@ op_assign
 id|new_margin
 suffix:semicolon
 id|tco_timer_reload
-c_func
 (paren
 )paren
 suffix:semicolon
@@ -758,7 +878,6 @@ id|WDIOC_GETTIMEOUT
 suffix:colon
 r_return
 id|put_user
-c_func
 (paren
 (paren
 r_int
@@ -858,6 +977,28 @@ comma
 )brace
 comma
 (brace
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_82801DB_0
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_82801E_0
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
 l_int|0
 comma
 )brace
@@ -882,6 +1023,7 @@ DECL|function|i810tco_getdevice
 r_static
 r_int
 r_char
+id|__init
 id|i810tco_getdevice
 (paren
 r_void
@@ -1094,16 +1236,6 @@ comma
 id|TCO1_STS
 )paren
 suffix:semicolon
-id|boot_status
-op_assign
-(paren
-r_int
-)paren
-id|inb
-(paren
-id|TCO2_STS
-)paren
-suffix:semicolon
 id|outb
 (paren
 l_int|3
@@ -1155,12 +1287,19 @@ id|miscdevice
 id|i810tco_miscdev
 op_assign
 (brace
+id|minor
+suffix:colon
 id|WATCHDOG_MINOR
 comma
+id|name
+suffix:colon
 l_string|&quot;watchdog&quot;
 comma
+id|fops
+suffix:colon
 op_amp
 id|i810tco_fops
+comma
 )brace
 suffix:semicolon
 DECL|function|watchdog_init
@@ -1271,7 +1410,7 @@ id|printk
 (paren
 id|KERN_INFO
 id|TCO_DRIVER_NAME
-l_string|&quot;: timer margin: %d sec (0x%04x)&bslash;n&quot;
+l_string|&quot;: timer margin: %d sec (0x%04x) (nowayout=%d)&bslash;n&quot;
 comma
 (paren
 r_int
@@ -1285,6 +1424,8 @@ l_int|10
 )paren
 comma
 id|TCOBASE
+comma
+id|nowayout
 )paren
 suffix:semicolon
 r_return
@@ -1358,6 +1499,18 @@ id|module_exit
 c_func
 (paren
 id|watchdog_cleanup
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Nils Faerber&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;TCO timer driver for i8xx chipsets&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

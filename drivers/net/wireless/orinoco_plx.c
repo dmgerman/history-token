@@ -1,4 +1,4 @@
-multiline_comment|/* orinoco_plx.c 0.11b&n; * &n; * Driver for Prism II devices which would usually be driven by orinoco_cs,&n; * but are connected to the PCI bus by a PLX9052. &n; *&n; * Copyright (C) 2001 Daniel Barlow &lt;dan@telent.net&gt;&n; *&n; * The contents of this file are subject to the Mozilla Public License&n; * Version 1.1 (the &quot;License&quot;); you may not use this file except in&n; * compliance with the License. You may obtain a copy of the License&n; * at http://www.mozilla.org/MPL/&n; *&n; * Software distributed under the License is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See&n; * the License for the specific language governing rights and&n; * limitations under the License.&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the MPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the MPL or the GPL.&n;&n; * Caution: this is experimental and probably buggy.  For success and&n; * failure reports for different cards and adaptors, see&n; * orinoco_plx_pci_id_table near the end of the file.  If you have a&n; * card we don&squot;t have the PCI id for, and looks like it should work,&n; * drop me mail with the id and &quot;it works&quot;/&quot;it doesn&squot;t work&quot;.&n; *&n; * Note: if everything gets detected fine but it doesn&squot;t actually send&n; * or receive packets, your first port of call should probably be to   &n; * try newer firmware in the card.  Especially if you&squot;re doing Ad-Hoc&n; * modes&n; *&n; * The actual driving is done by orinoco.c, this is just resource&n; * allocation stuff.  The explanation below is courtesy of Ryan Niemi&n; * on the linux-wlan-ng list at&n; * http://archives.neohapsis.com/archives/dev/linux-wlan/2001-q1/0026.html&n;&n;The PLX9052-based cards (WL11000 and several others) are a different&n;beast than the usual PCMCIA-based PRISM2 configuration expected by&n;wlan-ng. Here&squot;s the general details on how the WL11000 PCI adapter&n;works:&n;&n; - Two PCI I/O address spaces, one 0x80 long which contains the PLX9052&n;   registers, and one that&squot;s 0x40 long mapped to the PCMCIA slot I/O&n;   address space.&n;&n; - One PCI memory address space, mapped to the PCMCIA memory space&n;   (containing the CIS).&n;&n;After identifying the I/O and memory space, you can read through the&n;memory space to confirm the CIS&squot;s device ID or manufacturer ID to make&n;sure it&squot;s the expected card. Keep in mind that the PCMCIA spec specifies&n;the CIS as the lower 8 bits of each word read from the CIS, so to read the&n;bytes of the CIS, read every other byte (0,2,4,...). Passing that test,&n;you need to enable the I/O address space on the PCMCIA card via the PCMCIA&n;COR register. This is the first byte following the CIS. In my case&n;(which may not have any relation to what&squot;s on the PRISM2 cards), COR was&n;at offset 0x800 within the PCI memory space. Write 0x41 to the COR&n;register to enable I/O mode and to select level triggered interrupts. To&n;confirm you actually succeeded, read the COR register back and make sure&n;it actually got set to 0x41, incase you have an unexpected card inserted.&n;&n;Following that, you can treat the second PCI I/O address space (the one&n;that&squot;s not 0x80 in length) as the PCMCIA I/O space.&n;&n;Note that in the Eumitcom&squot;s source for their drivers, they register the&n;interrupt as edge triggered when registering it with the Windows kernel. I&n;don&squot;t recall how to register edge triggered on Linux (if it can be done at&n;all). But in some experimentation, I don&squot;t see much operational&n;difference between using either interrupt mode. Don&squot;t mess with the&n;interrupt mode in the COR register though, as the PLX9052 wants level&n;triggers with the way the serial EEPROM configures it on the WL11000.&n;&n;There&squot;s some other little quirks related to timing that I bumped into, but&n;I don&squot;t recall right now. Also, there&squot;s two variants of the WL11000 I&squot;ve&n;seen, revision A1 and T2. These seem to differ slightly in the timings&n;configured in the wait-state generator in the PLX9052. There have also&n;been some comments from Eumitcom that cards shouldn&squot;t be hot swapped,&n;apparently due to risk of cooking the PLX9052. I&squot;m unsure why they&n;believe this, as I can&squot;t see anything in the design that would really&n;cause a problem, except for crashing drivers not written to expect it. And&n;having developed drivers for the WL11000, I&squot;d say it&squot;s quite tricky to&n;write code that will successfully deal with a hot unplug. Very odd things&n;happen on the I/O side of things. But anyway, be warned. Despite that,&n;I&squot;ve hot-swapped a number of times during debugging and driver development&n;for various reasons (stuck WAIT# line after the radio card&squot;s firmware&n;locks up).&n;&n;Hope this is enough info for someone to add PLX9052 support to the wlan-ng&n;card. In the case of the WL11000, the PCI ID&squot;s are 0x1639/0x0200, with&n;matching subsystem ID&squot;s. Other PLX9052-based manufacturers other than&n;Eumitcom (or on cards other than the WL11000) may have different PCI ID&squot;s.&n;&n;If anyone needs any more specific info, let me know. I haven&squot;t had time&n;to implement support myself yet, and with the way things are going, might&n;not have time for a while..&n;&n;---end of mail---&n;*/
+multiline_comment|/* orinoco_plx.c 0.13a&n; * &n; * Driver for Prism II devices which would usually be driven by orinoco_cs,&n; * but are connected to the PCI bus by a PLX9052. &n; *&n; * Copyright (C) 2001 Daniel Barlow &lt;dan@telent.net&gt;&n; *&n; * The contents of this file are subject to the Mozilla Public License&n; * Version 1.1 (the &quot;License&quot;); you may not use this file except in&n; * compliance with the License. You may obtain a copy of the License&n; * at http://www.mozilla.org/MPL/&n; *&n; * Software distributed under the License is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See&n; * the License for the specific language governing rights and&n; * limitations under the License.&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the MPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the MPL or the GPL.&n;&n; * Caution: this is experimental and probably buggy.  For success and&n; * failure reports for different cards and adaptors, see&n; * orinoco_plx_pci_id_table near the end of the file.  If you have a&n; * card we don&squot;t have the PCI id for, and looks like it should work,&n; * drop me mail with the id and &quot;it works&quot;/&quot;it doesn&squot;t work&quot;.&n; *&n; * Note: if everything gets detected fine but it doesn&squot;t actually send&n; * or receive packets, your first port of call should probably be to   &n; * try newer firmware in the card.  Especially if you&squot;re doing Ad-Hoc&n; * modes&n; *&n; * The actual driving is done by orinoco.c, this is just resource&n; * allocation stuff.  The explanation below is courtesy of Ryan Niemi&n; * on the linux-wlan-ng list at&n; * http://archives.neohapsis.com/archives/dev/linux-wlan/2001-q1/0026.html&n;&n;The PLX9052-based cards (WL11000 and several others) are a different&n;beast than the usual PCMCIA-based PRISM2 configuration expected by&n;wlan-ng. Here&squot;s the general details on how the WL11000 PCI adapter&n;works:&n;&n; - Two PCI I/O address spaces, one 0x80 long which contains the PLX9052&n;   registers, and one that&squot;s 0x40 long mapped to the PCMCIA slot I/O&n;   address space.&n;&n; - One PCI memory address space, mapped to the PCMCIA memory space&n;   (containing the CIS).&n;&n;After identifying the I/O and memory space, you can read through the&n;memory space to confirm the CIS&squot;s device ID or manufacturer ID to make&n;sure it&squot;s the expected card. Keep in mind that the PCMCIA spec specifies&n;the CIS as the lower 8 bits of each word read from the CIS, so to read the&n;bytes of the CIS, read every other byte (0,2,4,...). Passing that test,&n;you need to enable the I/O address space on the PCMCIA card via the PCMCIA&n;COR register. This is the first byte following the CIS. In my case&n;(which may not have any relation to what&squot;s on the PRISM2 cards), COR was&n;at offset 0x800 within the PCI memory space. Write 0x41 to the COR&n;register to enable I/O mode and to select level triggered interrupts. To&n;confirm you actually succeeded, read the COR register back and make sure&n;it actually got set to 0x41, incase you have an unexpected card inserted.&n;&n;Following that, you can treat the second PCI I/O address space (the one&n;that&squot;s not 0x80 in length) as the PCMCIA I/O space.&n;&n;Note that in the Eumitcom&squot;s source for their drivers, they register the&n;interrupt as edge triggered when registering it with the Windows kernel. I&n;don&squot;t recall how to register edge triggered on Linux (if it can be done at&n;all). But in some experimentation, I don&squot;t see much operational&n;difference between using either interrupt mode. Don&squot;t mess with the&n;interrupt mode in the COR register though, as the PLX9052 wants level&n;triggers with the way the serial EEPROM configures it on the WL11000.&n;&n;There&squot;s some other little quirks related to timing that I bumped into, but&n;I don&squot;t recall right now. Also, there&squot;s two variants of the WL11000 I&squot;ve&n;seen, revision A1 and T2. These seem to differ slightly in the timings&n;configured in the wait-state generator in the PLX9052. There have also&n;been some comments from Eumitcom that cards shouldn&squot;t be hot swapped,&n;apparently due to risk of cooking the PLX9052. I&squot;m unsure why they&n;believe this, as I can&squot;t see anything in the design that would really&n;cause a problem, except for crashing drivers not written to expect it. And&n;having developed drivers for the WL11000, I&squot;d say it&squot;s quite tricky to&n;write code that will successfully deal with a hot unplug. Very odd things&n;happen on the I/O side of things. But anyway, be warned. Despite that,&n;I&squot;ve hot-swapped a number of times during debugging and driver development&n;for various reasons (stuck WAIT# line after the radio card&squot;s firmware&n;locks up).&n;&n;Hope this is enough info for someone to add PLX9052 support to the wlan-ng&n;card. In the case of the WL11000, the PCI ID&squot;s are 0x1639/0x0200, with&n;matching subsystem ID&squot;s. Other PLX9052-based manufacturers other than&n;Eumitcom (or on cards other than the WL11000) may have different PCI ID&squot;s.&n;&n;If anyone needs any more specific info, let me know. I haven&squot;t had time&n;to implement support myself yet, and with the way things are going, might&n;not have time for a while..&n;&n;---end of mail---&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -24,36 +24,6 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
 macro_line|#include &quot;hermes.h&quot;
 macro_line|#include &quot;orinoco.h&quot;
-DECL|variable|__initdata
-r_static
-r_char
-id|version
-(braket
-)braket
-id|__initdata
-op_assign
-l_string|&quot;orinoco_plx.c 0.11b (Daniel Barlow &lt;dan@telent.net&gt;)&quot;
-suffix:semicolon
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Daniel Barlow &lt;dan@telent.net&gt;&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;Driver for wireless LAN cards using the PLX9052 PCI bridge&quot;
-)paren
-suffix:semicolon
-macro_line|#ifdef MODULE_LICENSE
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;Dual MPL/GPL&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|dev_info
 r_static
 r_char
@@ -71,147 +41,6 @@ DECL|macro|PLX_INTCSR
 mdefine_line|#define PLX_INTCSR       0x4c /* Interrupt Control and Status Register */
 DECL|macro|PLX_INTCSR_INTEN
 mdefine_line|#define PLX_INTCSR_INTEN (1&lt;&lt;6) /* Interrupt Enable bit */
-DECL|function|orinoco_plx_open
-r_static
-r_int
-id|orinoco_plx_open
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-r_struct
-id|orinoco_private
-op_star
-id|priv
-op_assign
-(paren
-r_struct
-id|orinoco_private
-op_star
-)paren
-id|dev-&gt;priv
-suffix:semicolon
-r_int
-id|err
-suffix:semicolon
-id|netif_device_attach
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|err
-op_assign
-id|orinoco_reset
-c_func
-(paren
-id|priv
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: orinoco_reset failed in orinoco_plx_open()&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-r_else
-id|netif_start_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
-DECL|function|orinoco_plx_stop
-r_static
-r_int
-id|orinoco_plx_stop
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-r_struct
-id|orinoco_private
-op_star
-id|priv
-op_assign
-(paren
-r_struct
-id|orinoco_private
-op_star
-)paren
-id|dev-&gt;priv
-suffix:semicolon
-id|netif_stop_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|orinoco_shutdown
-c_func
-(paren
-id|priv
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_static
-r_void
-DECL|function|orinoco_plx_interrupt
-id|orinoco_plx_interrupt
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-id|orinoco_interrupt
-c_func
-(paren
-id|irq
-comma
-(paren
-r_struct
-id|orinoco_private
-op_star
-)paren
-id|dev_id
-comma
-id|regs
-)paren
-suffix:semicolon
-)brace
 DECL|variable|cis_magic
 r_static
 r_const
@@ -305,12 +134,6 @@ l_int|0
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-id|TRACE_ENTER
-c_func
-(paren
-l_string|&quot;orinoco_plx&quot;
-)paren
 suffix:semicolon
 id|err
 op_assign
@@ -646,6 +469,8 @@ id|alloc_orinocodev
 c_func
 (paren
 l_int|0
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -671,14 +496,6 @@ suffix:semicolon
 id|dev-&gt;base_addr
 op_assign
 id|pccard_ioaddr
-suffix:semicolon
-id|dev-&gt;open
-op_assign
-id|orinoco_plx_open
-suffix:semicolon
-id|dev-&gt;stop
-op_assign
-id|orinoco_plx_stop
 suffix:semicolon
 id|SET_MODULE_OWNER
 c_func
@@ -729,7 +546,7 @@ c_func
 (paren
 id|pdev-&gt;irq
 comma
-id|orinoco_plx_interrupt
+id|orinoco_interrupt
 comma
 id|SA_SHIRQ
 comma
@@ -791,7 +608,7 @@ op_assign
 id|orinoco_proc_dev_init
 c_func
 (paren
-id|priv
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -801,12 +618,6 @@ id|err
 )paren
 r_goto
 id|fail
-suffix:semicolon
-id|TRACE_EXIT
-c_func
-(paren
-l_string|&quot;orinoco_plx&quot;
-)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -830,7 +641,7 @@ id|priv
 id|orinoco_proc_dev_cleanup
 c_func
 (paren
-id|priv
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -894,12 +705,6 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-id|TRACE_EXIT
-c_func
-(paren
-l_string|&quot;orinoco_plx&quot;
-)paren
-suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -935,12 +740,6 @@ id|priv
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|TRACE_ENTER
-c_func
-(paren
-l_string|&quot;orinoco_plx&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -955,7 +754,7 @@ suffix:semicolon
 id|orinoco_proc_dev_cleanup
 c_func
 (paren
-id|priv
+id|dev
 )paren
 suffix:semicolon
 id|unregister_netdev
@@ -1009,12 +808,6 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-id|TRACE_EXIT
-c_func
-(paren
-l_string|&quot;orinoco_plx&quot;
-)paren
-suffix:semicolon
 )brace
 DECL|variable|__devinitdata
 r_static
@@ -1026,18 +819,6 @@ id|orinoco_plx_pci_id_table
 id|__devinitdata
 op_assign
 (brace
-(brace
-l_int|0x10b7
-comma
-l_int|0x7770
-comma
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
-)brace
-comma
-multiline_comment|/* 3ComAirConnect */
 (brace
 l_int|0x111a
 comma
@@ -1147,9 +928,9 @@ comma
 comma
 multiline_comment|/* Belkin F5D6000 tested by&n;&t;&t;&t;&t;&t;&t;&t;   Brendan W. McAdams &lt;rit@jacked-in.org&gt; */
 (brace
-l_int|0x126c
+l_int|0x10b7
 comma
-l_int|0x8030
+l_int|0x7770
 comma
 id|PCI_ANY_ID
 comma
@@ -1157,7 +938,7 @@ id|PCI_ANY_ID
 comma
 )brace
 comma
-multiline_comment|/* Nortel emobility */
+multiline_comment|/* 3Com AirConnect PCI tested by&n;&t;&t;&t;&t;&t;&t;&t;   Damien Persohn &lt;damien@persohn.net&gt; */
 (brace
 l_int|0
 comma
@@ -1204,8 +985,48 @@ c_func
 id|orinoco_plx_remove_one
 )paren
 comma
+dot
+id|suspend
+op_assign
+l_int|0
+comma
+dot
+id|resume
+op_assign
+l_int|0
+comma
 )brace
 suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_char
+id|version
+(braket
+)braket
+id|__initdata
+op_assign
+l_string|&quot;orinoco_plx.c 0.13a (Daniel Barlow &lt;dan@telent.net&gt;, David Gibson &lt;hermes@gibson.dropbear.id.au&gt;)&quot;
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Daniel Barlow &lt;dan@telent.net&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Driver for wireless LAN cards using the PLX9052 PCI bridge&quot;
+)paren
+suffix:semicolon
+macro_line|#ifdef MODULE_LICENSE
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual MPL/GPL&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|function|orinoco_plx_init
 r_static
 r_int

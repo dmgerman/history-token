@@ -63,7 +63,7 @@ DECL|typedef|snd_virmidi_t
 id|snd_virmidi_t
 suffix:semicolon
 DECL|macro|SNDRV_VIRMIDI_SUBSCRIBE
-mdefine_line|#define SNDRV_VIRMIDI_SUBSCRIBE&t;(1&lt;&lt;0)
+mdefine_line|#define SNDRV_VIRMIDI_SUBSCRIBE&t;&t;(1&lt;&lt;0)
 DECL|macro|SNDRV_VIRMIDI_USE
 mdefine_line|#define SNDRV_VIRMIDI_USE&t;&t;(1&lt;&lt;1)
 multiline_comment|/*&n; * device record:&n; * Each virtual midi device has one device instance.  It contains&n; * common information and the linked-list of opened files, &n; */
@@ -120,11 +120,11 @@ id|filelist
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* sequencer mode:&n; * ATTACH = input/output events from midi device are routed to the&n; *          attached sequencer port.  sequencer port is not created&n; *          by virmidi itself.&n; * DISPATCH = input/output events are routed to subscribers.&n; *            sequencer port is created in virmidi.&n; */
+multiline_comment|/* sequencer mode:&n; * ATTACH = input/output events from midi device are routed to the&n; *          attached sequencer port.  sequencer port is not created&n; *          by virmidi itself.&n; *          the input to rawmidi must be processed by passing the&n; *          incoming events via snd_virmidi_receive()&n; * DISPATCH = input/output events are routed to subscribers.&n; *            sequencer port is created in virmidi.&n; */
 DECL|macro|SNDRV_VIRMIDI_SEQ_NONE
 mdefine_line|#define SNDRV_VIRMIDI_SEQ_NONE&t;&t;0
 DECL|macro|SNDRV_VIRMIDI_SEQ_ATTACH
-mdefine_line|#define SNDRV_VIRMIDI_SEQ_ATTACH&t;&t;1
+mdefine_line|#define SNDRV_VIRMIDI_SEQ_ATTACH&t;1
 DECL|macro|SNDRV_VIRMIDI_SEQ_DISPATCH
 mdefine_line|#define SNDRV_VIRMIDI_SEQ_DISPATCH&t;2
 r_int
@@ -142,6 +142,19 @@ id|snd_rawmidi_t
 op_star
 op_star
 id|rrmidi
+)paren
+suffix:semicolon
+r_int
+id|snd_virmidi_receive
+c_func
+(paren
+id|snd_rawmidi_t
+op_star
+id|rmidi
+comma
+id|snd_seq_event_t
+op_star
+id|ev
 )paren
 suffix:semicolon
 macro_line|#endif /* __SOUND_SEQ_VIRMIDI */
