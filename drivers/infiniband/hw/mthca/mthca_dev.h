@@ -681,6 +681,11 @@ c_func
 (paren
 id|doorbell_lock
 )paren
+r_struct
+id|semaphore
+id|cap_mask_mutex
+suffix:semicolon
+DECL|member|hcr
 r_void
 id|__iomem
 op_star
