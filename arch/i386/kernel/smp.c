@@ -1172,7 +1172,7 @@ op_assign
 op_amp
 id|data
 suffix:semicolon
-id|wmb
+id|mb
 c_func
 (paren
 )paren
