@@ -32,6 +32,9 @@ comma
 DECL|enumerator|KM_PTE1
 id|KM_PTE1
 comma
+DECL|enumerator|KM_PTE2
+id|KM_PTE2
+comma
 DECL|enumerator|KM_IRQ0
 id|KM_IRQ0
 comma
