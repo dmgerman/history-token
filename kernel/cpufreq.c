@@ -2479,9 +2479,9 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|macro|cpufreq_sysctl_init
-mdefine_line|#define cpufreq_sysctl_init()
+mdefine_line|#define cpufreq_sysctl_init() do {} while(0)
 DECL|macro|cpufreq_sysctl_exit
-mdefine_line|#define cpufreq_sysctl_exit()
+mdefine_line|#define cpufreq_sysctl_exit() do {} while(0)
 macro_line|#endif /* CONFIG_SYSCTL */
 macro_line|#endif /* CONFIG_CPU_FREQ_24_API */
 multiline_comment|/*********************************************************************&n; *                     NOTIFIER LISTS INTERFACE                      *&n; *********************************************************************/
@@ -3167,7 +3167,7 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|macro|adjust_jiffies
-mdefine_line|#define adjust_jiffies(...)
+mdefine_line|#define adjust_jiffies(x...) do {} while (0)
 macro_line|#endif
 multiline_comment|/**&n; * cpufreq_notify_transition - call notifier chain and adjust_jiffies on frequency transition&n; *&n; * This function calls the transition notifiers and the &quot;adjust_jiffies&quot; function. It is called&n; * twice on all CPU frequency changes that have external effects. &n; */
 DECL|function|cpufreq_notify_transition
@@ -3799,6 +3799,6 @@ id|cpufreq_restore
 suffix:semicolon
 macro_line|#else
 DECL|macro|cpufreq_restore
-mdefine_line|#define cpufreq_restore()
+mdefine_line|#define cpufreq_restore() do {} while (0)
 macro_line|#endif /* CONFIG_PM */
 eof
