@@ -76,6 +76,12 @@ op_assign
 l_int|50
 suffix:semicolon
 multiline_comment|/* default is 50% */
+DECL|variable|sysctl_max_map_count
+r_int
+id|sysctl_max_map_count
+op_assign
+id|DEFAULT_MAX_MAP_COUNT
+suffix:semicolon
 DECL|variable|vm_committed_space
 id|atomic_t
 id|vm_committed_space
@@ -98,6 +104,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|sysctl_overcommit_ratio
+)paren
+suffix:semicolon
+DECL|variable|sysctl_max_map_count
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sysctl_max_map_count
 )paren
 suffix:semicolon
 DECL|variable|vm_committed_space
@@ -2199,7 +2212,7 @@ c_cond
 (paren
 id|mm-&gt;map_count
 OG
-id|MAX_MAP_COUNT
+id|sysctl_max_map_count
 )paren
 r_return
 op_minus
@@ -5041,7 +5054,7 @@ c_cond
 (paren
 id|mm-&gt;map_count
 op_ge
-id|MAX_MAP_COUNT
+id|sysctl_max_map_count
 )paren
 r_return
 op_minus
@@ -5811,7 +5824,7 @@ c_cond
 (paren
 id|mm-&gt;map_count
 OG
-id|MAX_MAP_COUNT
+id|sysctl_max_map_count
 )paren
 r_return
 op_minus
