@@ -393,10 +393,10 @@ id|Elf_Sym
 op_star
 id|symtab
 suffix:semicolon
-DECL|member|num_kallsyms
+DECL|member|num_symtab
 r_int
 r_int
-id|num_kallsyms
+id|num_symtab
 suffix:semicolon
 DECL|member|strtab
 r_char
