@@ -107,6 +107,15 @@ l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* this must be identical */
+DECL|member|mres
+r_struct
+id|sndrv_mask
+id|mres
+(braket
+l_int|5
+)braket
+suffix:semicolon
+multiline_comment|/* reserved masks */
 DECL|member|intervals
 r_struct
 id|sndrv_interval32
@@ -119,6 +128,15 @@ op_plus
 l_int|1
 )braket
 suffix:semicolon
+DECL|member|ires
+r_struct
+id|sndrv_interval
+id|ires
+(braket
+l_int|9
+)braket
+suffix:semicolon
+multiline_comment|/* reserved intervals */
 DECL|member|rmask
 id|u32
 id|rmask

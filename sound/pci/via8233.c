@@ -1374,6 +1374,12 @@ l_int|1
 op_lshift
 l_int|0
 )paren
+op_or
+(paren
+l_int|1
+op_lshift
+l_int|4
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon

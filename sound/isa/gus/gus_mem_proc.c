@@ -231,11 +231,11 @@ suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-multiline_comment|/* SEEK_END */
+multiline_comment|/* SEEK_END, offset is negative */
 id|file-&gt;f_pos
 op_assign
 id|priv-&gt;size
-op_minus
+op_plus
 id|offset
 suffix:semicolon
 r_break
