@@ -927,6 +927,10 @@ id|probe_ent-&gt;pio_mask
 op_assign
 l_int|0x1f
 suffix:semicolon
+id|probe_ent-&gt;mwdma_mask
+op_assign
+l_int|0x07
+suffix:semicolon
 id|probe_ent-&gt;udma_mask
 op_assign
 l_int|0x7f

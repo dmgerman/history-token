@@ -8,8 +8,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/ata.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 multiline_comment|/*&n; * compile-time options&n; */
-DECL|macro|ATA_FORCE_PIO
-macro_line|#undef ATA_FORCE_PIO&t;&t;/* do not configure or use DMA */
 DECL|macro|ATA_DEBUG
 macro_line|#undef ATA_DEBUG&t;&t;/* debugging output */
 DECL|macro|ATA_VERBOSE_DEBUG
@@ -145,33 +143,13 @@ l_int|1
 )paren
 comma
 multiline_comment|/* device currently in PIO mode */
-DECL|enumerator|ATA_DFLAG_MASTER
-id|ATA_DFLAG_MASTER
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|2
-)paren
-comma
-multiline_comment|/* is device 0? */
-DECL|enumerator|ATA_DFLAG_WCACHE
-id|ATA_DFLAG_WCACHE
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|3
-)paren
-comma
-multiline_comment|/* has write cache we can&n;&t;&t;&t;&t;&t;     * (hopefully) flush? */
 DECL|enumerator|ATA_DFLAG_LOCK_SECTORS
 id|ATA_DFLAG_LOCK_SECTORS
 op_assign
 (paren
 l_int|1
 op_lshift
-l_int|4
+l_int|2
 )paren
 comma
 multiline_comment|/* don&squot;t adjust max_sectors */
@@ -292,16 +270,6 @@ l_int|1
 )paren
 comma
 multiline_comment|/* cmd not yet ack&squot;d to scsi lyer */
-DECL|enumerator|ATA_QCFLAG_DMA
-id|ATA_QCFLAG_DMA
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|2
-)paren
-comma
-multiline_comment|/* data delivered via DMA */
 DECL|enumerator|ATA_QCFLAG_SG
 id|ATA_QCFLAG_SG
 op_assign
@@ -441,6 +409,22 @@ DECL|enumerator|PORT_DISABLED
 id|PORT_DISABLED
 op_assign
 l_int|2
+comma
+multiline_comment|/* encoding various smaller bitmaps into a single&n;&t; * unsigned long bitmap&n;&t; */
+DECL|enumerator|ATA_SHIFT_UDMA
+id|ATA_SHIFT_UDMA
+op_assign
+l_int|0
+comma
+DECL|enumerator|ATA_SHIFT_MWDMA
+id|ATA_SHIFT_MWDMA
+op_assign
+l_int|8
+comma
+DECL|enumerator|ATA_SHIFT_PIO
+id|ATA_SHIFT_PIO
+op_assign
+l_int|11
 comma
 )brace
 suffix:semicolon
@@ -630,6 +614,11 @@ r_int
 r_int
 id|pio_mask
 suffix:semicolon
+DECL|member|mwdma_mask
+r_int
+r_int
+id|mwdma_mask
+suffix:semicolon
 DECL|member|udma_mask
 r_int
 r_int
@@ -752,6 +741,18 @@ id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
+DECL|member|tf
+r_struct
+id|ata_taskfile
+id|tf
+suffix:semicolon
+DECL|member|cdb
+id|u8
+id|cdb
+(braket
+id|ATAPI_CDB_LEN
+)braket
+suffix:semicolon
 DECL|member|flags
 r_int
 r_int
@@ -791,11 +792,6 @@ DECL|member|cursg_ofs
 r_int
 r_int
 id|cursg_ofs
-suffix:semicolon
-DECL|member|tf
-r_struct
-id|ata_taskfile
-id|tf
 suffix:semicolon
 DECL|member|sgent
 r_struct
@@ -887,15 +883,23 @@ id|ATA_ID_WORDS
 suffix:semicolon
 multiline_comment|/* IDENTIFY xxx DEVICE data */
 DECL|member|pio_mode
-r_int
-r_int
+id|u8
 id|pio_mode
 suffix:semicolon
-DECL|member|udma_mode
-r_int
-r_int
-id|udma_mode
+DECL|member|dma_mode
+id|u8
+id|dma_mode
 suffix:semicolon
+DECL|member|xfer_mode
+id|u8
+id|xfer_mode
+suffix:semicolon
+DECL|member|xfer_shift
+r_int
+r_int
+id|xfer_shift
+suffix:semicolon
+multiline_comment|/* ATA_SHIFT_xxx */
 multiline_comment|/* cache info about current transfer mode */
 DECL|member|xfer_protocol
 id|u8
@@ -992,6 +996,11 @@ r_int
 r_int
 id|pio_mask
 suffix:semicolon
+DECL|member|mwdma_mask
+r_int
+r_int
+id|mwdma_mask
+suffix:semicolon
 DECL|member|udma_mask
 r_int
 r_int
@@ -1003,6 +1012,11 @@ r_int
 id|cbl
 suffix:semicolon
 multiline_comment|/* cable type; ATA_CBL_xxx */
+DECL|member|cdb_len
+r_int
+r_int
+id|cdb_len
+suffix:semicolon
 DECL|member|device
 r_struct
 id|ata_device
@@ -1113,16 +1127,13 @@ comma
 r_struct
 id|ata_device
 op_star
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
-DECL|member|set_udmamode
+DECL|member|set_dmamode
 r_void
 (paren
 op_star
-id|set_udmamode
+id|set_dmamode
 )paren
 (paren
 r_struct
@@ -1132,9 +1143,6 @@ comma
 r_struct
 id|ata_device
 op_star
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
 DECL|member|tf_load
@@ -1420,6 +1428,11 @@ DECL|member|pio_mask
 r_int
 r_int
 id|pio_mask
+suffix:semicolon
+DECL|member|mwdma_mask
+r_int
+r_int
+id|mwdma_mask
 suffix:semicolon
 DECL|member|udma_mask
 r_int
@@ -2352,11 +2365,6 @@ op_star
 id|qc
 )paren
 (brace
-id|qc-&gt;flags
-op_and_assign
-op_complement
-id|ATA_QCFLAG_DMA
-suffix:semicolon
 id|qc-&gt;tf.ctl
 op_or_assign
 id|ATA_NIEN
