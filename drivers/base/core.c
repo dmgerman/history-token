@@ -14,12 +14,14 @@ id|device
 id|device_root
 op_assign
 (brace
+dot
 id|bus_id
-suffix:colon
+op_assign
 l_string|&quot;root&quot;
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;System root&quot;
 comma
 )brace
