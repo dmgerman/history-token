@@ -9200,11 +9200,11 @@ c_func
 r_int
 id|how
 comma
-id|old_sigset_t32
+id|compat_old_sigset_t
 op_star
 id|set
 comma
-id|old_sigset_t32
+id|compat_old_sigset_t
 op_star
 id|oset
 )paren
@@ -9331,11 +9331,11 @@ c_func
 r_int
 id|how
 comma
-id|sigset_t32
+id|compat_sigset_t
 op_star
 id|set
 comma
-id|sigset_t32
+id|compat_sigset_t
 op_star
 id|oset
 comma
@@ -9346,7 +9346,7 @@ id|sigsetsize
 id|sigset_t
 id|s
 suffix:semicolon
-id|sigset_t32
+id|compat_sigset_t
 id|s32
 suffix:semicolon
 r_int
@@ -9378,7 +9378,7 @@ id|set
 comma
 r_sizeof
 (paren
-id|sigset_t32
+id|compat_sigset_t
 )paren
 )paren
 )paren
@@ -9679,7 +9679,7 @@ id|s32
 comma
 r_sizeof
 (paren
-id|sigset_t32
+id|compat_sigset_t
 )paren
 )paren
 )paren
@@ -9709,7 +9709,7 @@ r_int
 id|sys32_sigpending
 c_func
 (paren
-id|old_sigset_t32
+id|compat_old_sigset_t
 op_star
 id|set
 )paren
@@ -9785,7 +9785,7 @@ r_int
 id|sys32_rt_sigpending
 c_func
 (paren
-id|sigset_t32
+id|compat_sigset_t
 op_star
 id|set
 comma
@@ -9796,7 +9796,7 @@ id|sigsetsize
 id|sigset_t
 id|s
 suffix:semicolon
-id|sigset_t32
+id|compat_sigset_t
 id|s32
 suffix:semicolon
 r_int
@@ -9965,7 +9965,7 @@ id|s32
 comma
 r_sizeof
 (paren
-id|sigset_t32
+id|compat_sigset_t
 )paren
 )paren
 )paren
@@ -9998,7 +9998,7 @@ DECL|function|sys32_rt_sigtimedwait
 id|sys32_rt_sigtimedwait
 c_func
 (paren
-id|sigset_t32
+id|compat_sigset_t
 op_star
 id|uthese
 comma
@@ -10023,7 +10023,7 @@ suffix:semicolon
 id|sigset_t
 id|these
 suffix:semicolon
-id|sigset_t32
+id|compat_sigset_t
 id|these32
 suffix:semicolon
 r_struct
@@ -10065,7 +10065,7 @@ id|uthese
 comma
 r_sizeof
 (paren
-id|sigset_t32
+id|compat_sigset_t
 )paren
 )paren
 )paren

@@ -36,12 +36,6 @@ DECL|macro|F_SETLK64
 mdefine_line|#define F_SETLK64       13
 DECL|macro|F_SETLKW64
 mdefine_line|#define F_SETLKW64      14    
-DECL|typedef|old_sigset_t32
-r_typedef
-id|__u32
-id|old_sigset_t32
-suffix:semicolon
-multiline_comment|/* at least 32 bits */
 DECL|struct|old_sigaction32
 r_struct
 id|old_sigaction32
@@ -52,7 +46,7 @@ id|sa_handler
 suffix:semicolon
 multiline_comment|/* Really a pointer, but need to deal with 32 bits */
 DECL|member|sa_mask
-id|old_sigset_t32
+id|compat_old_sigset_t
 id|sa_mask
 suffix:semicolon
 multiline_comment|/* A 32 bit mask */
@@ -66,22 +60,6 @@ id|sa_restorer
 suffix:semicolon
 multiline_comment|/* Another 32 bit pointer */
 )brace
-suffix:semicolon
-DECL|macro|_SIGCONTEXT_NSIG_WORDS32
-mdefine_line|#define _SIGCONTEXT_NSIG_WORDS32    2 
-r_typedef
-r_struct
-(brace
-DECL|member|sig
-id|__u32
-id|sig
-(braket
-id|_SIGCONTEXT_NSIG_WORDS32
-)braket
-suffix:semicolon
-DECL|typedef|sigset_t32
-)brace
-id|sigset_t32
 suffix:semicolon
 DECL|union|sigval32
 r_typedef
@@ -435,7 +413,7 @@ DECL|member|oldmask
 id|__u32
 id|oldmask
 (braket
-id|_SIGCONTEXT_NSIG_WORDS32
+id|_COMPAT_NSIG_WORDS
 )braket
 suffix:semicolon
 DECL|member|sregs
@@ -465,7 +443,7 @@ id|sa_restorer
 suffix:semicolon
 multiline_comment|/* pointer */
 DECL|member|sa_mask
-id|sigset_t32
+id|compat_sigset_t
 id|sa_mask
 suffix:semicolon
 multiline_comment|/* mask last for extensibility */
@@ -514,7 +492,7 @@ id|_sigregs32
 id|uc_mcontext
 suffix:semicolon
 DECL|member|uc_sigmask
-id|sigset_t32
+id|compat_sigset_t
 id|uc_sigmask
 suffix:semicolon
 multiline_comment|/* mask last for extensibility */
