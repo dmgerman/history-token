@@ -2668,13 +2668,6 @@ c_func
 id|vsscanf
 )paren
 suffix:semicolon
-DECL|variable|kdevname
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kdevname
-)paren
-suffix:semicolon
 DECL|variable|__bdevname
 id|EXPORT_SYMBOL
 c_func

@@ -11913,6 +11913,10 @@ id|console_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
 suffix:semicolon
+id|console_driver.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|console_driver.name
 op_assign
 l_string|&quot;vc/%d&quot;

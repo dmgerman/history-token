@@ -749,16 +749,12 @@ DECL|macro|ACPI_WRITE
 mdefine_line|#define ACPI_WRITE                      1
 DECL|macro|ACPI_IO_MASK
 mdefine_line|#define ACPI_IO_MASK                    1
-multiline_comment|/*&n; * acpi_event Types: Fixed &amp; General Purpose&n; */
+multiline_comment|/*&n; * Acpi Event Types: Fixed &amp; General Purpose&n; */
 DECL|typedef|acpi_event_type
 r_typedef
 id|u32
 id|acpi_event_type
 suffix:semicolon
-DECL|macro|ACPI_EVENT_FIXED
-mdefine_line|#define ACPI_EVENT_FIXED                0
-DECL|macro|ACPI_EVENT_GPE
-mdefine_line|#define ACPI_EVENT_GPE                  1
 multiline_comment|/*&n; * Fixed events&n; */
 DECL|macro|ACPI_EVENT_PMTIMER
 mdefine_line|#define ACPI_EVENT_PMTIMER              0
@@ -784,11 +780,15 @@ DECL|macro|ACPI_EVENT_LEVEL_TRIGGERED
 mdefine_line|#define ACPI_EVENT_LEVEL_TRIGGERED      1
 DECL|macro|ACPI_EVENT_EDGE_TRIGGERED
 mdefine_line|#define ACPI_EVENT_EDGE_TRIGGERED       2
-multiline_comment|/*&n; * GPEs&n; */
+multiline_comment|/*&n; * Flags for GPE and Lock interfaces&n; */
 DECL|macro|ACPI_EVENT_WAKE_ENABLE
-mdefine_line|#define ACPI_EVENT_WAKE_ENABLE          0x1
+mdefine_line|#define ACPI_EVENT_WAKE_ENABLE          0x2
 DECL|macro|ACPI_EVENT_WAKE_DISABLE
-mdefine_line|#define ACPI_EVENT_WAKE_DISABLE         0x1
+mdefine_line|#define ACPI_EVENT_WAKE_DISABLE         0x2
+DECL|macro|ACPI_NOT_ISR
+mdefine_line|#define ACPI_NOT_ISR                    0x1
+DECL|macro|ACPI_ISR
+mdefine_line|#define ACPI_ISR                        0x0
 multiline_comment|/*&n; * acpi_event Status:&n; * -------------&n; * The encoding of acpi_event_status is illustrated below.&n; * Note that a set bit (1) indicates the property is TRUE&n; * (e.g. if bit 0 is set then the event is enabled).&n; * +-------------+-+-+-+&n; * |   Bits 31:3 |2|1|0|&n; * +-------------+-+-+-+&n; *          |     | | |&n; *          |     | | +- Enabled?&n; *          |     | +--- Enabled for wake?&n; *          |     +----- Set?&n; *          +----------- &lt;Reserved&gt;&n; */
 DECL|typedef|acpi_event_status
 r_typedef
@@ -1145,6 +1145,35 @@ id|NUM_ACPI_TABLES
 )braket
 suffix:semicolon
 )brace
+suffix:semicolon
+multiline_comment|/*&n; * Types specific to the OS service interfaces&n; */
+r_typedef
+id|u32
+DECL|typedef|OSD_HANDLER
+(paren
+id|ACPI_SYSTEM_XFACE
+op_star
+id|OSD_HANDLER
+)paren
+(paren
+r_void
+op_star
+id|context
+)paren
+suffix:semicolon
+r_typedef
+r_void
+DECL|typedef|OSD_EXECUTION_CALLBACK
+(paren
+id|ACPI_SYSTEM_XFACE
+op_star
+id|OSD_EXECUTION_CALLBACK
+)paren
+(paren
+r_void
+op_star
+id|context
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Various handlers and callback procedures&n; */
 r_typedef

@@ -126,8 +126,6 @@ DECL|macro|TIOCGETD
 mdefine_line|#define TIOCGETD&t;_IOR(&squot;T&squot;, 36, int) /* 0x5424 */
 DECL|macro|TCSBRKP
 mdefine_line|#define TCSBRKP&t;&t;_IOW(&squot;T&squot;, 37, int) /* 0x5425 */&t;/* Needed for POSIX tcsendbreak() */
-DECL|macro|TIOCTTYGSTRUCT
-mdefine_line|#define TIOCTTYGSTRUCT&t;_IOR(&squot;T&squot;, 38, struct tty_struct) /* 0x5426 */ /* For debugging only */
 DECL|macro|TIOCSBRK
 mdefine_line|#define TIOCSBRK&t;_IO(&squot;T&squot;, 39) /* 0x5427 */ /* BSD compatibility */
 DECL|macro|TIOCCBRK

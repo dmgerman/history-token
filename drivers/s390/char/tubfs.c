@@ -513,11 +513,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|tub_inc_use_count
-c_func
-(paren
-)paren
-suffix:semicolon
 id|fp-&gt;private_data
 op_assign
 id|ip
@@ -615,11 +610,6 @@ id|tubp-&gt;fs_pid
 op_assign
 l_int|0
 suffix:semicolon
-id|tub_dec_use_count
-c_func
-(paren
-)paren
-suffix:semicolon
 id|tubp-&gt;intv
 op_assign
 l_int|NULL
@@ -685,11 +675,6 @@ suffix:semicolon
 id|tubp-&gt;fs_pid
 op_assign
 l_int|0
-suffix:semicolon
-id|tub_dec_use_count
-c_func
-(paren
-)paren
 suffix:semicolon
 id|tubp-&gt;intv
 op_assign

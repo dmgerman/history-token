@@ -2,6 +2,7 @@ multiline_comment|/*&n; * bin.c - binary file operations for sysfs.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;sysfs.h&quot;
 DECL|variable|bin_fops
 r_static

@@ -4683,6 +4683,10 @@ id|tty3215_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
 suffix:semicolon
+id|tty3215_driver.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|tty3215_driver.driver_name
 op_assign
 l_string|&quot;tty3215&quot;

@@ -36,16 +36,6 @@ comma
 l_string|&quot;l&quot;
 )paren
 suffix:semicolon
-DECL|variable|__initdata
-r_static
-r_const
-r_char
-op_star
-id|mode_option
-id|__initdata
-op_assign
-l_int|NULL
-suffix:semicolon
 DECL|variable|fb_info
 r_static
 r_struct
@@ -1479,7 +1469,7 @@ comma
 op_amp
 id|fb_info
 comma
-id|mode_option
+l_int|NULL
 comma
 l_int|NULL
 comma

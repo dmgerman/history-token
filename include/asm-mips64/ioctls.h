@@ -104,6 +104,16 @@ multiline_comment|/* #define TIOCSETAF&t;_IOW(&squot;t&squot;, 22, struct termio
 multiline_comment|/* #define TIOCGETD&t;_IOR(&squot;t&squot;, 26, int)&t;get line discipline */
 multiline_comment|/* #define TIOCSETD&t;_IOW(&squot;t&squot;, 27, int)&t;set line discipline */
 multiline_comment|/* 127-124 compat */
+DECL|macro|TIOCSBRK
+mdefine_line|#define TIOCSBRK&t;0x5427  /* BSD compatibility */
+DECL|macro|TIOCCBRK
+mdefine_line|#define TIOCCBRK&t;0x5428  /* BSD compatibility */
+DECL|macro|TIOCGSID
+mdefine_line|#define TIOCGSID&t;0x7416  /* Return the session ID of FD */
+DECL|macro|TIOCGPTN
+mdefine_line|#define TIOCGPTN&t;_IOR(&squot;T&squot;,0x30, unsigned int) /* Get Pty Number (of pty-mux device) */
+DECL|macro|TIOCSPTLCK
+mdefine_line|#define TIOCSPTLCK&t;_IOW(&squot;T&squot;,0x31, int)  /* Lock/unlock Pty */
 multiline_comment|/* I hope the range from 0x5480 on is free ... */
 DECL|macro|TIOCSCTTY
 mdefine_line|#define TIOCSCTTY&t;0x5480&t;&t;/* become controlling tty */
@@ -119,18 +129,6 @@ DECL|macro|TIOCSSERIAL
 mdefine_line|#define TIOCSSERIAL&t;0x5485
 DECL|macro|TCSBRKP
 mdefine_line|#define TCSBRKP&t;&t;0x5486&t;/* Needed for POSIX tcsendbreak() */
-DECL|macro|TIOCTTYGSTRUCT
-mdefine_line|#define TIOCTTYGSTRUCT&t;0x5487  /* For debugging only */
-DECL|macro|TIOCSBRK
-mdefine_line|#define TIOCSBRK&t;0x5427  /* BSD compatibility */
-DECL|macro|TIOCCBRK
-mdefine_line|#define TIOCCBRK&t;0x5428  /* BSD compatibility */
-DECL|macro|TIOCGSID
-mdefine_line|#define TIOCGSID&t;0x7416  /* Return the session ID of FD */
-DECL|macro|TIOCGPTN
-mdefine_line|#define TIOCGPTN&t;_IOR(&squot;T&squot;,0x30, unsigned int) /* Get Pty Number (of pty-mux device) */
-DECL|macro|TIOCSPTLCK
-mdefine_line|#define TIOCSPTLCK&t;_IOW(&squot;T&squot;,0x31, int)  /* Lock/unlock Pty */
 DECL|macro|TIOCSERCONFIG
 mdefine_line|#define TIOCSERCONFIG&t;0x5488
 DECL|macro|TIOCSERGWILD
