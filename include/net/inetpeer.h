@@ -97,12 +97,6 @@ r_extern
 r_struct
 id|inet_peer
 op_star
-id|inet_peer_unused_head
-suffix:semicolon
-r_extern
-r_struct
-id|inet_peer
-op_star
 op_star
 id|inet_peer_unused_tailp
 suffix:semicolon
