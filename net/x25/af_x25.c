@@ -75,6 +75,7 @@ id|x25_proto_ops
 suffix:semicolon
 DECL|variable|null_x25_address
 r_static
+r_struct
 id|x25_address
 id|null_x25_address
 op_assign
@@ -92,10 +93,12 @@ r_char
 op_star
 id|p
 comma
+r_struct
 id|x25_address
 op_star
 id|called_addr
 comma
+r_struct
 id|x25_address
 op_star
 id|calling_addr
@@ -317,10 +320,12 @@ r_char
 op_star
 id|p
 comma
+r_struct
 id|x25_address
 op_star
 id|called_addr
 comma
+r_struct
 id|x25_address
 op_star
 id|calling_addr
@@ -868,6 +873,7 @@ op_star
 id|x25_find_listener
 c_func
 (paren
+r_struct
 id|x25_address
 op_star
 id|addr
@@ -3089,6 +3095,7 @@ id|x25_cb
 op_star
 id|makex25
 suffix:semicolon
+r_struct
 id|x25_address
 id|source_addr
 comma

@@ -300,6 +300,7 @@ r_int
 id|frametype
 )paren
 (brace
+r_struct
 id|x25_address
 id|source_addr
 comma
