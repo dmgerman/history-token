@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_bdev() */
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1618,6 +1619,7 @@ r_struct
 id|ata_taskfile
 id|args
 suffix:semicolon
+multiline_comment|/* XXX I don&squot;t think this is up to the lowlevel drivers..  --hch */
 id|invalidate_bdev
 c_func
 (paren

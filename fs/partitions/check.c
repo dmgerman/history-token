@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/raid/md.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* for invalidate_bdev() */
 macro_line|#include &quot;check.h&quot;
 macro_line|#include &quot;acorn.h&quot;
 macro_line|#include &quot;amiga.h&quot;

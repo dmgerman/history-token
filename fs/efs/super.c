@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/efs_fs.h&gt;
 macro_line|#include &lt;linux/efs_vh.h&gt;
 macro_line|#include &lt;linux/efs_fs_sb.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 DECL|function|efs_get_sb
 r_static
 r_struct

@@ -63,6 +63,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_buffers() */
 multiline_comment|/*&n; * PS/2 floppies have much slower step rates than regular floppies.&n; * It&squot;s been recommended that take about 1/4 of the default speed&n; * in some more extreme cases.&n; */
 DECL|variable|slow_floppy
 r_static
@@ -16285,6 +16286,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+multiline_comment|/* umm, invalidate_buffers() in -&gt;open??  --hch */
 id|invalidate_buffers
 c_func
 (paren

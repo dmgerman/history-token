@@ -4,6 +4,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 multiline_comment|/* this is one and only function that is used outside (do_balance.c) */
 r_int
 id|balance_internal

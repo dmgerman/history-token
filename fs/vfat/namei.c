@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 DECL|macro|DEBUG_LEVEL
 mdefine_line|#define DEBUG_LEVEL 0
 macro_line|#if (DEBUG_LEVEL &gt;= 1)

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 multiline_comment|/* args for the create parameter of reiserfs_get_block */
 DECL|macro|GET_BLOCK_NO_CREATE
 mdefine_line|#define GET_BLOCK_NO_CREATE 0 /* don&squot;t create new blocks or convert tails */

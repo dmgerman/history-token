@@ -6225,7 +6225,6 @@ r_return
 id|res
 suffix:semicolon
 )brace
-macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_FS_H */
 eof

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for wakeup_bdflush() */
 DECL|function|add_element
 r_static
 r_void

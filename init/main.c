@@ -121,6 +121,14 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|buffer_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|radix_tree_init
 c_func
 (paren

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All ri
 macro_line|#ident &quot;$Id: vxfs_olt.c,v 1.10 2002/01/02 23:03:58 hch Exp hch $&quot;
 multiline_comment|/* &n; * Veritas filesystem driver - object location table support.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &quot;vxfs.h&quot;
 macro_line|#include &quot;vxfs_olt.h&quot;

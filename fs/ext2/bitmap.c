@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/ext2/bitmap.c&n; *&n; * Copyright (C) 1992, 1993, 1994, 1995&n; * Remy Card (card@masi.ibp.fr)&n; * Laboratoire MASI - Institut Blaise Pascal&n; * Universite Pierre et Marie Curie (Paris VI)&n; */
-macro_line|#include &quot;ext2.h&quot;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 DECL|variable|nibblemap
 r_static
 r_int

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 DECL|function|reiserfs_resize
 r_int
 id|reiserfs_resize

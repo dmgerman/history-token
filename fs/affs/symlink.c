@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/affs_fs.h&gt;
 macro_line|#include &lt;linux/amigaffs.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 DECL|function|affs_symlink_readpage
 r_static
 r_int
