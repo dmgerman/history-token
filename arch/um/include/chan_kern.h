@@ -4,7 +4,9 @@ DECL|macro|__CHAN_KERN_H__
 mdefine_line|#define __CHAN_KERN_H__
 macro_line|#include &quot;linux/tty.h&quot;
 macro_line|#include &quot;linux/list.h&quot;
+macro_line|#include &quot;linux/console.h&quot;
 macro_line|#include &quot;chan_user.h&quot;
+macro_line|#include &quot;line.h&quot;
 DECL|struct|chan
 r_struct
 id|chan
@@ -91,10 +93,6 @@ id|tty
 comma
 r_int
 id|irq
-comma
-r_void
-op_star
-id|dev
 )paren
 suffix:semicolon
 r_extern
@@ -176,6 +174,27 @@ id|len
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|console_open_chan
+c_func
+(paren
+r_struct
+id|line
+op_star
+id|line
+comma
+r_struct
+id|console
+op_star
+id|co
+comma
+r_struct
+id|chan_opts
+op_star
+id|opts
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|close_chan
 c_func
@@ -196,9 +215,10 @@ id|list_head
 op_star
 id|chans
 comma
-r_void
+r_struct
+id|tty_struct
 op_star
-id|line
+id|tty
 )paren
 suffix:semicolon
 r_extern
@@ -211,9 +231,10 @@ id|list_head
 op_star
 id|chans
 comma
-r_void
+r_struct
+id|tty_struct
 op_star
-id|data
+id|tty
 )paren
 suffix:semicolon
 r_extern
