@@ -266,6 +266,8 @@ DECL|macro|RTM_F_CLONED
 mdefine_line|#define RTM_F_CLONED&t;&t;0x200&t;/* This route is cloned&t;&t;*/
 DECL|macro|RTM_F_EQUALIZE
 mdefine_line|#define RTM_F_EQUALIZE&t;&t;0x400&t;/* Multipath equalizer: NI&t;*/
+DECL|macro|RTM_F_PREFIX
+mdefine_line|#define RTM_F_PREFIX&t;&t;0x800&t;/* Prefix addresses&t;&t;*/
 multiline_comment|/* Reserved table identifiers */
 DECL|enum|rt_class_t
 r_enum
