@@ -43,6 +43,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|sysfs_root
+r_static
 r_struct
 id|sysfs_dirent
 id|sysfs_root
