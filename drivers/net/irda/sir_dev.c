@@ -867,7 +867,7 @@ id|dev-&gt;irlap
 id|WARNING
 c_func
 (paren
-l_string|&quot;%s - too early: %p / %d!&bslash;n&quot;
+l_string|&quot;%s - too early: %p / %zd!&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -906,7 +906,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s; rx-drop: %d&bslash;n&quot;
+l_string|&quot;%s; rx-drop: %zd&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma

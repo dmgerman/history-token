@@ -4121,7 +4121,15 @@ l_int|0x8000
 macro_line|#ifdef CONFIG_PPP_FILTER
 multiline_comment|/* check if we should pass this packet */
 multiline_comment|/* the filter instructions are constructed assuming&n;&t;&t;   a four-byte PPP header on each packet */
+(brace
+id|u_int16_t
 op_star
+id|p
+op_assign
+(paren
+id|u_int16_t
+op_star
+)paren
 id|skb_push
 c_func
 (paren
@@ -4129,9 +4137,19 @@ id|skb
 comma
 l_int|2
 )paren
-op_assign
-l_int|1
 suffix:semicolon
+op_star
+id|p
+op_assign
+id|htons
+c_func
+(paren
+l_int|4
+)paren
+suffix:semicolon
+multiline_comment|/* indicate outbound in DLT_LINUX_SLL */
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6556,7 +6574,15 @@ multiline_comment|/* network protocol frame - give it to the kernel */
 macro_line|#ifdef CONFIG_PPP_FILTER
 multiline_comment|/* check if the packet passes the pass and active filters */
 multiline_comment|/* the filter instructions are constructed assuming&n;&t;&t;   a four-byte PPP header on each packet */
+(brace
+id|u_int16_t
 op_star
+id|p
+op_assign
+(paren
+id|u_int16_t
+op_star
+)paren
 id|skb_push
 c_func
 (paren
@@ -6564,9 +6590,14 @@ id|skb
 comma
 l_int|2
 )paren
+suffix:semicolon
+op_star
+id|p
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* indicate inbound in DLT_LINUX_SLL */
+)brace
 r_if
 c_cond
 (paren

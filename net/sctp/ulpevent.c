@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * These functions manipulate an sctp event.   The struct ulpevent is used&n; * to carry notifications and data to the ULP (sockets).&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2004&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * These functions manipulate an sctp event.   The struct ulpevent is used&n; * to carry notifications and data to the ULP (sockets).&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sctp/structs.h&gt;
@@ -1160,11 +1160,8 @@ r_struct
 id|sctp_ulpevent
 op_star
 id|event
-suffix:semicolon
-r_struct
-id|sctp_sndrcvinfo
-op_star
-id|info
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|sk_buff
@@ -1246,14 +1243,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|event-&gt;iif
-op_assign
-id|sctp_chunk_iif
-c_func
-(paren
-id|chunk
-)paren
-suffix:semicolon
 id|sctp_ulpevent_receive_data
 c_func
 (paren
@@ -1262,18 +1251,7 @@ comma
 id|asoc
 )paren
 suffix:semicolon
-id|info
-op_assign
-(paren
-r_struct
-id|sctp_sndrcvinfo
-op_star
-)paren
-op_amp
-id|event-&gt;sndrcvinfo
-suffix:semicolon
-multiline_comment|/* Sockets API Extensions for SCTP&n;&t; * Section 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n;&t; *&n;&t; * sinfo_stream: 16 bits (unsigned integer)&n;&t; *&n;&t; * For recvmsg() the SCTP stack places the message&squot;s stream number in&n;&t; * this value.&n;&t; */
-id|info-&gt;sinfo_stream
+id|event-&gt;stream
 op_assign
 id|ntohs
 c_func
@@ -1281,8 +1259,7 @@ c_func
 id|chunk-&gt;subh.data_hdr-&gt;stream
 )paren
 suffix:semicolon
-multiline_comment|/* Sockets API Extensions for SCTP&n;&t; * Section 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n;&t; *&n;&t; * sinfo_ssn: 16 bits (unsigned integer)&n;&t; *&n;&t; * For recvmsg() this value contains the stream sequence number that&n;&t; * the remote endpoint placed in the DATA chunk.  For fragmented&n;&t; * messages this is the same number for all deliveries of the message&n;&t; * (if more than one recvmsg() is needed to read the message).&n;&t; */
-id|info-&gt;sinfo_ssn
+id|event-&gt;ssn
 op_assign
 id|ntohs
 c_func
@@ -1290,12 +1267,10 @@ c_func
 id|chunk-&gt;subh.data_hdr-&gt;ssn
 )paren
 suffix:semicolon
-multiline_comment|/* Sockets API Extensions for SCTP&n;&t; * Section 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n;&t; *&n;&t; * sinfo_ppid: 32 bits (unsigned integer)&n;&t; *&n;&t; * In recvmsg() this value is&n;&t; * the same information that was passed by the upper layer in the peer&n;&t; * application.  Please note that byte order issues are NOT accounted&n;&t; * for and this information is passed opaquely by the SCTP stack from&n;&t; * one end to the other.&n;&t; */
-id|info-&gt;sinfo_ppid
+id|event-&gt;ppid
 op_assign
 id|chunk-&gt;subh.data_hdr-&gt;ppid
 suffix:semicolon
-multiline_comment|/* Sockets API Extensions for SCTP&n;&t; * Section 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n;&t; *&n;&t; * sinfo_flags: 16 bits (unsigned integer)&n;&t; *&n;&t; * This field may contain any of the following flags and is composed of&n;&t; * a bitwise OR of these values.&n;&t; *&n;&t; * recvmsg() flags:&n;&t; *&n;&t; * MSG_UNORDERED - This flag is present when the message was sent&n;&t; *                 non-ordered.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1304,12 +1279,11 @@ op_amp
 id|SCTP_DATA_UNORDERED
 )paren
 (brace
-id|info-&gt;sinfo_flags
+id|event-&gt;flags
 op_or_assign
 id|MSG_UNORDERED
 suffix:semicolon
-multiline_comment|/* sinfo_cumtsn: 32 bit (unsigned integer)&n;&t;&t; *&n;&t;&t; * This field will hold the current cumulative TSN as&n;&t;&t; * known by the underlying SCTP layer.  Note this field is&n;&t;&t; * ignored when sending and only valid for a receive&n;&t;&t; * operation when sinfo_flags are set to MSG_UNORDERED.&n;&t;&t; */
-id|info-&gt;sinfo_cumtsn
+id|event-&gt;cumtsn
 op_assign
 id|sctp_tsnmap_get_ctsn
 c_func
@@ -1319,13 +1293,7 @@ id|asoc-&gt;peer.tsn_map
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Note:  For reassembly, we need to have the fragmentation bits.&n;&t; * For now, merge these into the msg_flags, since those bit&n;&t; * possitions are not used.&n;&t; */
-id|event-&gt;msg_flags
-op_or_assign
-id|chunk-&gt;chunk_hdr-&gt;flags
-suffix:semicolon
-multiline_comment|/* With 04 draft, tsn moves into sndrcvinfo. */
-id|info-&gt;sinfo_tsn
+id|event-&gt;tsn
 op_assign
 id|ntohl
 c_func
@@ -1333,27 +1301,22 @@ c_func
 id|chunk-&gt;subh.data_hdr-&gt;tsn
 )paren
 suffix:semicolon
-multiline_comment|/* Context is not used on receive. */
-id|info-&gt;sinfo_context
-op_assign
-l_int|0
+id|event-&gt;msg_flags
+op_or_assign
+id|chunk-&gt;chunk_hdr-&gt;flags
 suffix:semicolon
-multiline_comment|/* Sockets API Extensions for SCTP&n;&t; * Section 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n;&t; *&n;&t; * sinfo_assoc_id: sizeof (sctp_assoc_t)&n;&t; *&n;&t; * The association handle field, sinfo_assoc_id, holds the identifier&n;&t; * for the association announced in the COMMUNICATION_UP notification.&n;&t; * All notifications for a given association have the same identifier.&n;&t; * Ignored for TCP-style sockets.&n;&t; */
-id|info-&gt;sinfo_assoc_id
+id|event-&gt;iif
 op_assign
-id|sctp_assoc2id
+id|sctp_chunk_iif
 c_func
 (paren
-id|asoc
+id|chunk
 )paren
-suffix:semicolon
-r_return
-id|event
 suffix:semicolon
 id|fail
 suffix:colon
 r_return
-l_int|NULL
+id|event
 suffix:semicolon
 )brace
 multiline_comment|/* Create a partial delivery related event.&n; *&n; * 5.3.1.7 SCTP_PARTIAL_DELIVERY_EVENT&n; *&n; *   When a reciever is engaged in a partial delivery of a&n; *   message this notification will be used to inidicate&n; *   various events.&n; */
@@ -1560,17 +1523,69 @@ op_star
 id|msghdr
 )paren
 (brace
+r_struct
+id|sctp_sndrcvinfo
+id|sinfo
+suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|sctp_ulpevent_is_notification
 c_func
 (paren
 id|event
 )paren
 )paren
-(brace
+r_return
+suffix:semicolon
+multiline_comment|/* Sockets API Extensions for SCTP&n; &t; * Section 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n; &t; *&n; &t; * sinfo_stream: 16 bits (unsigned integer)&n; &t; *&n; &t; * For recvmsg() the SCTP stack places the message&squot;s stream number in&n; &t; * this value.&n; &t;*/
+id|sinfo.sinfo_stream
+op_assign
+id|event-&gt;stream
+suffix:semicolon
+multiline_comment|/* sinfo_ssn: 16 bits (unsigned integer)&n;&t; *&n;&t; * For recvmsg() this value contains the stream sequence number that&n;&t; * the remote endpoint placed in the DATA chunk.  For fragmented&n;&t; * messages this is the same number for all deliveries of the message&n;&t; * (if more than one recvmsg() is needed to read the message).&n;&t; */
+id|sinfo.sinfo_ssn
+op_assign
+id|event-&gt;ssn
+suffix:semicolon
+multiline_comment|/* sinfo_ppid: 32 bits (unsigned integer)&n;&t; *&n;&t; * In recvmsg() this value is&n;&t; * the same information that was passed by the upper layer in the peer&n;&t; * application.  Please note that byte order issues are NOT accounted&n;&t; * for and this information is passed opaquely by the SCTP stack from&n;&t; * one end to the other.&n;&t; */
+id|sinfo.sinfo_ppid
+op_assign
+id|event-&gt;ppid
+suffix:semicolon
+multiline_comment|/* sinfo_flags: 16 bits (unsigned integer)&n;&t; *&n;&t; * This field may contain any of the following flags and is composed of&n;&t; * a bitwise OR of these values.&n;&t; *&n;&t; * recvmsg() flags:&n;&t; *&n;&t; * MSG_UNORDERED - This flag is present when the message was sent&n;&t; *                 non-ordered.&n;&t; */
+id|sinfo.sinfo_flags
+op_assign
+id|event-&gt;flags
+suffix:semicolon
+multiline_comment|/* sinfo_tsn: 32 bit (unsigned integer)&n;&t; *&n;&t; * For the receiving side, this field holds a TSN that was &n;&t; * assigned to one of the SCTP Data Chunks.&n;&t; */
+id|sinfo.sinfo_tsn
+op_assign
+id|event-&gt;tsn
+suffix:semicolon
+multiline_comment|/* sinfo_cumtsn: 32 bit (unsigned integer)&n;&t; *&n;&t; * This field will hold the current cumulative TSN as&n;&t; * known by the underlying SCTP layer.  Note this field is&n;&t; * ignored when sending and only valid for a receive&n;&t; * operation when sinfo_flags are set to MSG_UNORDERED.&n;&t; */
+id|sinfo.sinfo_cumtsn
+op_assign
+id|event-&gt;cumtsn
+suffix:semicolon
+multiline_comment|/* sinfo_assoc_id: sizeof (sctp_assoc_t)&n;&t; *&n;&t; * The association handle field, sinfo_assoc_id, holds the identifier&n;&t; * for the association announced in the COMMUNICATION_UP notification.&n;&t; * All notifications for a given association have the same identifier.&n;&t; * Ignored for one-to-one style sockets.&n;&t; */
+id|sinfo.sinfo_assoc_id
+op_assign
+id|sctp_assoc2id
+c_func
+(paren
+id|event-&gt;asoc
+)paren
+suffix:semicolon
+multiline_comment|/* These fields are not used while receiving. */
+id|sinfo.sinfo_context
+op_assign
+l_int|0
+suffix:semicolon
+id|sinfo.sinfo_timetolive
+op_assign
+l_int|0
+suffix:semicolon
 id|put_cmsg
 c_func
 (paren
@@ -1591,10 +1606,9 @@ r_void
 op_star
 )paren
 op_amp
-id|event-&gt;sndrcvinfo
+id|sinfo
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Stub skb destructor.  */
 DECL|function|sctp_stub_rfree
@@ -1660,13 +1674,14 @@ id|skb-&gt;sk
 op_assign
 id|asoc-&gt;base.sk
 suffix:semicolon
-id|event-&gt;sndrcvinfo.sinfo_assoc_id
+id|event-&gt;asoc
 op_assign
-id|sctp_assoc2id
-c_func
 (paren
-id|asoc
+r_struct
+id|sctp_association
+op_star
 )paren
+id|asoc
 suffix:semicolon
 id|skb-&gt;destructor
 op_assign
@@ -1690,7 +1705,7 @@ id|event
 id|sctp_association_put
 c_func
 (paren
-id|event-&gt;sndrcvinfo.sinfo_assoc_id
+id|event-&gt;asoc
 )paren
 suffix:semicolon
 )brace
@@ -1817,7 +1832,7 @@ suffix:semicolon
 id|sctp_assoc_rwnd_increase
 c_func
 (paren
-id|event-&gt;sndrcvinfo.sinfo_assoc_id
+id|event-&gt;asoc
 comma
 id|skb_headlen
 c_func

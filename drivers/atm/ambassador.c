@@ -237,7 +237,7 @@ id|DBG_FLOW
 op_or
 id|DBG_REGS
 comma
-l_string|&quot;wr: %08x &lt;- %08x&quot;
+l_string|&quot;wr: %08zx &lt;- %08x&quot;
 comma
 id|addr
 comma
@@ -316,7 +316,7 @@ id|DBG_FLOW
 op_or
 id|DBG_REGS
 comma
-l_string|&quot;rd: %08x -&gt; %08x&quot;
+l_string|&quot;rd: %08zx -&gt; %08x&quot;
 comma
 id|addr
 comma
@@ -359,7 +359,7 @@ id|DBG_FLOW
 op_or
 id|DBG_REGS
 comma
-l_string|&quot;wr: %08x &lt;- %08x b[%08x]&quot;
+l_string|&quot;wr: %08zx &lt;- %08x b[%08x]&quot;
 comma
 id|addr
 comma
@@ -448,7 +448,7 @@ id|DBG_FLOW
 op_or
 id|DBG_REGS
 comma
-l_string|&quot;rd: %08x -&gt; %08x b[%08x]&quot;
+l_string|&quot;rd: %08zx -&gt; %08x b[%08x]&quot;
 comma
 id|addr
 comma

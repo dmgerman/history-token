@@ -64,7 +64,7 @@ l_string|&quot;port numbers of tftp servers&quot;
 suffix:semicolon
 macro_line|#endif
 macro_line|#if 0
-mdefine_line|#define DEBUGP(format, args...) printk(__FILE__ &quot;:&quot; __FUNCTION__ &quot;: &quot; &bslash;&n;&t;&t;&t;&t;       format, ## args)
+mdefine_line|#define DEBUGP(format, args...) printk(&quot;%s:%s:&quot; format, &bslash;&n;                                       __FILE__, __FUNCTION__ , ## args)
 macro_line|#else
 DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(format, args...)
@@ -247,6 +247,31 @@ id|ct
 comma
 op_amp
 id|exp
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|TFTP_OPCODE_DATA
+suffix:colon
+r_case
+id|TFTP_OPCODE_ACK
+suffix:colon
+id|DEBUGP
+c_func
+(paren
+l_string|&quot;Data/ACK opcode&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|TFTP_OPCODE_ERROR
+suffix:colon
+id|DEBUGP
+c_func
+(paren
+l_string|&quot;Error opcode&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break

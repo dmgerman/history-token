@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2003 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This abstraction carries sctp events to the ULP (sockets).&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2004&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This abstraction carries sctp events to the ULP (sockets).&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
@@ -845,7 +845,7 @@ id|ctsn
 suffix:semicolon
 id|tsn
 op_assign
-id|event-&gt;sndrcvinfo.sinfo_tsn
+id|event-&gt;tsn
 suffix:semicolon
 multiline_comment|/* See if it belongs at the end. */
 id|pos
@@ -891,7 +891,7 @@ id|pos
 suffix:semicolon
 id|ctsn
 op_assign
-id|cevent-&gt;sndrcvinfo.sinfo_tsn
+id|cevent-&gt;tsn
 suffix:semicolon
 r_if
 c_cond
@@ -941,7 +941,7 @@ id|pos
 suffix:semicolon
 id|ctsn
 op_assign
-id|cevent-&gt;sndrcvinfo.sinfo_tsn
+id|cevent-&gt;tsn
 suffix:semicolon
 r_if
 c_cond
@@ -1229,7 +1229,7 @@ id|pos
 suffix:semicolon
 id|ctsn
 op_assign
-id|cevent-&gt;sndrcvinfo.sinfo_tsn
+id|cevent-&gt;tsn
 suffix:semicolon
 r_switch
 c_cond
@@ -1433,7 +1433,7 @@ id|pos
 suffix:semicolon
 id|ctsn
 op_assign
-id|cevent-&gt;sndrcvinfo.sinfo_tsn
+id|cevent-&gt;tsn
 suffix:semicolon
 r_switch
 c_cond
@@ -1637,7 +1637,7 @@ suffix:semicolon
 multiline_comment|/* Do not even bother unless this is the next tsn to&n;&t;&t; * be delivered.&n;&t;&t; */
 id|ctsn
 op_assign
-id|event-&gt;sndrcvinfo.sinfo_tsn
+id|event-&gt;tsn
 suffix:semicolon
 id|ctsnap
 op_assign
@@ -1761,7 +1761,7 @@ id|pos
 suffix:semicolon
 id|ctsn
 op_assign
-id|cevent-&gt;sndrcvinfo.sinfo_tsn
+id|cevent-&gt;tsn
 suffix:semicolon
 r_switch
 c_cond
@@ -1910,11 +1910,11 @@ id|cssn
 suffix:semicolon
 id|sid
 op_assign
-id|event-&gt;sndrcvinfo.sinfo_stream
+id|event-&gt;stream
 suffix:semicolon
 id|ssn
 op_assign
-id|event-&gt;sndrcvinfo.sinfo_ssn
+id|event-&gt;ssn
 suffix:semicolon
 id|in
 op_assign
@@ -1944,11 +1944,11 @@ id|pos-&gt;cb
 suffix:semicolon
 id|csid
 op_assign
-id|cevent-&gt;sndrcvinfo.sinfo_stream
+id|cevent-&gt;stream
 suffix:semicolon
 id|cssn
 op_assign
-id|cevent-&gt;sndrcvinfo.sinfo_ssn
+id|cevent-&gt;ssn
 suffix:semicolon
 multiline_comment|/* Have we gone too far?  */
 r_if
@@ -2092,11 +2092,11 @@ suffix:semicolon
 )brace
 id|sid
 op_assign
-id|event-&gt;sndrcvinfo.sinfo_stream
+id|event-&gt;stream
 suffix:semicolon
 id|ssn
 op_assign
-id|event-&gt;sndrcvinfo.sinfo_ssn
+id|event-&gt;ssn
 suffix:semicolon
 id|cevent
 op_assign
@@ -2109,11 +2109,11 @@ id|pos-&gt;cb
 suffix:semicolon
 id|csid
 op_assign
-id|cevent-&gt;sndrcvinfo.sinfo_stream
+id|cevent-&gt;stream
 suffix:semicolon
 id|cssn
 op_assign
-id|cevent-&gt;sndrcvinfo.sinfo_ssn
+id|cevent-&gt;ssn
 suffix:semicolon
 r_if
 c_cond
@@ -2194,11 +2194,11 @@ id|pos-&gt;cb
 suffix:semicolon
 id|csid
 op_assign
-id|cevent-&gt;sndrcvinfo.sinfo_stream
+id|cevent-&gt;stream
 suffix:semicolon
 id|cssn
 op_assign
-id|cevent-&gt;sndrcvinfo.sinfo_ssn
+id|cevent-&gt;ssn
 suffix:semicolon
 r_if
 c_cond
@@ -2290,11 +2290,11 @@ suffix:semicolon
 multiline_comment|/* Note: The stream ID must be verified before this routine.  */
 id|sid
 op_assign
-id|event-&gt;sndrcvinfo.sinfo_stream
+id|event-&gt;stream
 suffix:semicolon
 id|ssn
 op_assign
-id|event-&gt;sndrcvinfo.sinfo_ssn
+id|event-&gt;ssn
 suffix:semicolon
 id|in
 op_assign
@@ -2428,7 +2428,7 @@ id|skb
 suffix:semicolon
 id|tsn
 op_assign
-id|event-&gt;sndrcvinfo.sinfo_tsn
+id|event-&gt;tsn
 suffix:semicolon
 id|sctp_ulpevent_free
 c_func
@@ -2537,7 +2537,7 @@ id|skb
 suffix:semicolon
 id|tsn
 op_assign
-id|event-&gt;sndrcvinfo.sinfo_tsn
+id|event-&gt;tsn
 suffix:semicolon
 id|sctp_ulpevent_free
 c_func

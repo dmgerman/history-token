@@ -37,13 +37,13 @@ mdefine_line|#define ULOG_NL_EVENT&t;&t;111&t;&t;/* Harald&squot;s favorite numb
 DECL|macro|ULOG_MAXNLGROUPS
 mdefine_line|#define ULOG_MAXNLGROUPS&t;32&t;&t;/* numer of nlgroups */
 macro_line|#if 0
-mdefine_line|#define DEBUGP(format, args...)&t;printk(__FILE__ &quot;:&quot; __FUNCTION__ &quot;:&quot; &bslash;&n;&t;&t;&t;&t;       format, ## args)
+mdefine_line|#define DEBUGP(format, args...) printk(&quot;%s:%s:&quot; format, &bslash;&n;                                       __FILE__, __FUNCTION__ , ## args)
 macro_line|#else
 DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(format, args...)
 macro_line|#endif
 DECL|macro|PRINTR
-mdefine_line|#define PRINTR(format, args...) do { if (net_ratelimit()) printk(format, ## args); } while (0)
+mdefine_line|#define PRINTR(format, args...) do { if (net_ratelimit()) printk(format , ## args); } while (0)
 DECL|variable|nlbufsiz
 r_static
 r_int

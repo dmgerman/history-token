@@ -159,7 +159,7 @@ op_assign
 id|THIS_MODULE
 suffix:semicolon
 macro_line|#if 0
-mdefine_line|#define DEBUGP(format, args...) printk(KERN_DEBUG __FILE__ &quot;:&quot; __FUNCTION__ &bslash;&n;&t;&t;&t;&t;&t;&quot;:&quot; format, ## args)
+mdefine_line|#define DEBUGP(format, args...) printk(KERN_DEBUG &quot;%s:%s:&quot; format, &bslash;&n;                                       __FILE__, __FUNCTION__ , ## args)
 macro_line|#else
 DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(format, args...)
