@@ -22,13 +22,13 @@ mdefine_line|#define BUFFER_S2_SIZE       SMALL_BUFFER_SIZE    /* size of small 
 DECL|macro|BUFFER_L2_SIZE
 mdefine_line|#define BUFFER_L2_SIZE       LARGE_BUFFER_SIZE    /* size of large buffers, scheme 2 */
 DECL|macro|BUFFER_S1_NBR
-mdefine_line|#define BUFFER_S1_NBR        (RBD_BLK_SIZE * 2)
+mdefine_line|#define BUFFER_S1_NBR        (RBD_BLK_SIZE * 6)
 DECL|macro|BUFFER_L1_NBR
-mdefine_line|#define BUFFER_L1_NBR        (RBD_BLK_SIZE * 2)
+mdefine_line|#define BUFFER_L1_NBR        (RBD_BLK_SIZE * 4)
 DECL|macro|BUFFER_S2_NBR
-mdefine_line|#define BUFFER_S2_NBR        (RBD_BLK_SIZE * 2)
+mdefine_line|#define BUFFER_S2_NBR        (RBD_BLK_SIZE * 6)
 DECL|macro|BUFFER_L2_NBR
-mdefine_line|#define BUFFER_L2_NBR        (RBD_BLK_SIZE * 2)
+mdefine_line|#define BUFFER_L2_NBR        (RBD_BLK_SIZE * 4)
 DECL|macro|QUEUE_SIZE_CMD
 mdefine_line|#define QUEUE_SIZE_CMD       16&t;     /* command queue capacity       */
 DECL|macro|QUEUE_SIZE_RX
@@ -36,9 +36,13 @@ mdefine_line|#define QUEUE_SIZE_RX&t;     64&t;     /* receive queue capacity   
 DECL|macro|QUEUE_SIZE_TX
 mdefine_line|#define QUEUE_SIZE_TX&t;     256     /* transmit queue capacity      */
 DECL|macro|QUEUE_SIZE_BS
-mdefine_line|#define QUEUE_SIZE_BS        16&t;     /* buffer supply queue capacity */
+mdefine_line|#define QUEUE_SIZE_BS        32&t;     /* buffer supply queue capacity */
+DECL|macro|FORE200E_VPI_BITS
+mdefine_line|#define FORE200E_VPI_BITS     0
+DECL|macro|FORE200E_VCI_BITS
+mdefine_line|#define FORE200E_VCI_BITS    10
 DECL|macro|NBR_CONNECT
-mdefine_line|#define NBR_CONNECT          1024    /* number of ATM connections     */
+mdefine_line|#define NBR_CONNECT          (1 &lt;&lt; (FORE200E_VPI_BITS + FORE200E_VCI_BITS)) /* number of connections */
 DECL|macro|TSD_FIXED
 mdefine_line|#define TSD_FIXED            2
 DECL|macro|TSD_EXTENSION
@@ -436,6 +440,8 @@ DECL|typedef|tpd_haddr_t
 )brace
 id|tpd_haddr_t
 suffix:semicolon
+DECL|macro|TPD_HADDR_SHIFT
+mdefine_line|#define TPD_HADDR_SHIFT 5  /* addr aligned on 32 byte boundary */
 multiline_comment|/* cp resident transmit queue entry */
 DECL|struct|cp_txq_entry
 r_typedef
@@ -1440,46 +1446,51 @@ id|cp_txq_entry
 op_star
 id|cp_entry
 suffix:semicolon
-multiline_comment|/* addr of cp resident tx queue entry */
+multiline_comment|/* addr of cp resident tx queue entry       */
 DECL|member|status
 r_enum
 id|status
 op_star
 id|status
 suffix:semicolon
-multiline_comment|/* addr of host resident status       */
+multiline_comment|/* addr of host resident status             */
 DECL|member|tpd
 r_struct
 id|tpd
 op_star
 id|tpd
 suffix:semicolon
-multiline_comment|/* addr of transmit PDU descriptor    */
+multiline_comment|/* addr of transmit PDU descriptor          */
 DECL|member|tpd_dma
 id|u32
 id|tpd_dma
 suffix:semicolon
-multiline_comment|/* DMA address of tpd                 */
+multiline_comment|/* DMA address of tpd                       */
 DECL|member|skb
 r_struct
 id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-multiline_comment|/* related skb                        */
-DECL|member|vcc
-r_struct
-id|atm_vcc
-op_star
-id|vcc
-suffix:semicolon
-multiline_comment|/* related vcc                        */
+multiline_comment|/* related skb                              */
 DECL|member|data
 r_void
 op_star
 id|data
 suffix:semicolon
-multiline_comment|/* copy of misaligned data            */
+multiline_comment|/* copy of misaligned data                  */
+DECL|member|incarn
+r_int
+r_int
+id|incarn
+suffix:semicolon
+multiline_comment|/* vc_map incarnation when submitted for tx */
+DECL|member|vc_map
+r_struct
+id|fore200e_vc_map
+op_star
+id|vc_map
+suffix:semicolon
 DECL|typedef|host_txq_entry_t
 )brace
 id|host_txq_entry_t
@@ -1655,6 +1666,19 @@ id|chunk
 id|data
 suffix:semicolon
 multiline_comment|/* data buffer             */
+macro_line|#ifdef FORE200E_BSQ_DEBUG
+DECL|member|index
+r_int
+r_int
+id|index
+suffix:semicolon
+multiline_comment|/* buffer # in queue       */
+DECL|member|supplied
+r_int
+id|supplied
+suffix:semicolon
+multiline_comment|/* &squot;buffer supplied&squot; flag  */
+macro_line|#endif
 DECL|typedef|buffer_t
 )brace
 id|buffer_t
@@ -1720,6 +1744,11 @@ r_int
 id|head
 suffix:semicolon
 multiline_comment|/* head of tx queue                       */
+DECL|member|tail
+r_int
+id|tail
+suffix:semicolon
+multiline_comment|/* tail of tx queue                       */
 DECL|member|tpd
 r_struct
 id|chunk
@@ -1816,17 +1845,19 @@ op_star
 id|buffer
 suffix:semicolon
 multiline_comment|/* array of rx buffers                       */
-DECL|member|free
-r_int
-id|free
+DECL|member|freebuf
+r_struct
+id|buffer
+op_star
+id|freebuf
 suffix:semicolon
-multiline_comment|/* index of first free rx buffer             */
-DECL|member|count
+multiline_comment|/* list of free rx buffers                   */
+DECL|member|freebuf_count
 r_volatile
 r_int
-id|count
+id|freebuf_count
 suffix:semicolon
-multiline_comment|/* count of supplied rx buffers              */
+multiline_comment|/* count of free rx buffers                  */
 DECL|typedef|host_bsq_t
 )brace
 id|host_bsq_t
@@ -2735,6 +2766,31 @@ macro_line|#  define FORE200E_DMA_TODEVICE      PCI_DMA_TODEVICE
 DECL|macro|FORE200E_DMA_FROMDEVICE
 macro_line|#  define FORE200E_DMA_FROMDEVICE    PCI_DMA_FROMDEVICE
 macro_line|#endif
+multiline_comment|/* vc mapping */
+DECL|struct|fore200e_vc_map
+r_typedef
+r_struct
+id|fore200e_vc_map
+(brace
+DECL|member|vcc
+r_struct
+id|atm_vcc
+op_star
+id|vcc
+suffix:semicolon
+multiline_comment|/* vcc entry              */
+DECL|member|incarn
+r_int
+r_int
+id|incarn
+suffix:semicolon
+multiline_comment|/* vcc incarnation number */
+DECL|typedef|fore200e_vc_map_t
+)brace
+id|fore200e_vc_map_t
+suffix:semicolon
+DECL|macro|FORE200E_VC_MAP
+mdefine_line|#define FORE200E_VC_MAP(fore200e, vpi, vci)  &bslash;&n;        (&amp; (fore200e)-&gt;vc_map[ ((vpi) &lt;&lt; FORE200E_VCI_BITS) | (vci) ])
 multiline_comment|/* per-device data */
 DECL|struct|fore200e
 r_typedef
@@ -2882,12 +2938,45 @@ id|semaphore
 id|rate_sf
 suffix:semicolon
 multiline_comment|/* protects rate reservation ops      */
-DECL|member|tasklet
+DECL|member|q_lock
+id|spinlock_t
+id|q_lock
+suffix:semicolon
+multiline_comment|/* protects queue ops                 */
+macro_line|#ifdef FORE200E_USE_TASKLET
+DECL|member|tx_tasklet
 r_struct
 id|tasklet_struct
-id|tasklet
+id|tx_tasklet
 suffix:semicolon
-multiline_comment|/* performs interrupt work            */
+multiline_comment|/* performs tx interrupt work         */
+DECL|member|rx_tasklet
+r_struct
+id|tasklet_struct
+id|rx_tasklet
+suffix:semicolon
+multiline_comment|/* performs rx interrupt work         */
+macro_line|#endif
+DECL|member|tx_sat
+r_int
+r_int
+id|tx_sat
+suffix:semicolon
+multiline_comment|/* tx queue saturation count          */
+DECL|member|incarn_count
+r_int
+r_int
+id|incarn_count
+suffix:semicolon
+DECL|member|vc_map
+r_struct
+id|fore200e_vc_map
+id|vc_map
+(braket
+id|NBR_CONNECT
+)braket
+suffix:semicolon
+multiline_comment|/* vc mapping                         */
 DECL|typedef|fore200e_t
 )brace
 id|fore200e_t
@@ -2930,6 +3019,18 @@ r_int
 id|tx_max_pdu
 suffix:semicolon
 multiline_comment|/* size of largest PDU transmitted    */
+DECL|member|tx_pdu
+r_int
+r_int
+id|tx_pdu
+suffix:semicolon
+multiline_comment|/* nbr of tx pdus                     */
+DECL|member|rx_pdu
+r_int
+r_int
+id|rx_pdu
+suffix:semicolon
+multiline_comment|/* nbr of rx pdus                     */
 DECL|typedef|fore200e_vcc_t
 )brace
 id|fore200e_vcc_t
