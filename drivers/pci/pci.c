@@ -2387,6 +2387,7 @@ id|pci_setup
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_ISA) || defined(CONFIG_EISA)
+multiline_comment|/* FIXME: Some boxes have multiple ISA bridges! */
 DECL|variable|isa_bridge
 r_struct
 id|pci_dev
