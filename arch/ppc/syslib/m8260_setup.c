@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  Modified for MBX using prep/chrp/pmac functions by Dan (dmalek@jlc.net)&n; *  Further modified for generic 8xx and 8260 by Dan.&n; */
+multiline_comment|/*&n; *  arch/ppc/syslib/m8260_setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  Modified for MBX using prep/chrp/pmac functions by Dan (dmalek@jlc.net)&n; *  Further modified for generic 8xx and 8260 by Dan.&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -355,17 +355,14 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|m8260_show_percpuinfo
-id|m8260_show_percpuinfo
+DECL|function|m8260_show_cpuinfo
+id|m8260_show_cpuinfo
 c_func
 (paren
 r_struct
 id|seq_file
 op_star
 id|m
-comma
-r_int
-id|i
 )paren
 (brace
 id|bd_t
@@ -385,9 +382,23 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;core clock&bslash;t: %ld MHz&bslash;n&quot;
-l_string|&quot;CPM  clock&bslash;t: %ld MHz&bslash;n&quot;
-l_string|&quot;bus  clock&bslash;t: %ld MHz&bslash;n&quot;
+l_string|&quot;vendor&bslash;t&bslash;t: %s&bslash;n&quot;
+l_string|&quot;machine&bslash;t&bslash;t: %s&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;mem size&bslash;t&bslash;t: 0x%08x&bslash;n&quot;
+l_string|&quot;console baud&bslash;t&bslash;t: %d&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;core clock&bslash;t: %u MHz&bslash;n&quot;
+l_string|&quot;CPM  clock&bslash;t: %u MHz&bslash;n&quot;
+l_string|&quot;bus  clock&bslash;t: %u MHz&bslash;n&quot;
+comma
+id|CPUINFO_VENDOR
+comma
+id|CPUINFO_MACHINE
+comma
+id|bp-&gt;bi_memsize
+comma
+id|bp-&gt;bi_baudrate
 comma
 id|bp-&gt;bi_intfreq
 op_div
@@ -691,9 +702,9 @@ id|ppc_md.setup_arch
 op_assign
 id|m8260_setup_arch
 suffix:semicolon
-id|ppc_md.show_percpuinfo
+id|ppc_md.show_cpuinfo
 op_assign
-id|m8260_show_percpuinfo
+id|m8260_show_cpuinfo
 suffix:semicolon
 id|ppc_md.irq_canonicalize
 op_assign

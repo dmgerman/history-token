@@ -15,17 +15,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_int
-r_char
-id|__res
-(braket
-r_sizeof
-(paren
-id|bd_t
-)paren
-)braket
-suffix:semicolon
-r_extern
 r_void
 id|m8260_init
 c_func
@@ -51,49 +40,6 @@ r_int
 id|r7
 )paren
 suffix:semicolon
-r_static
-r_int
-DECL|function|ep8260_show_cpuinfo
-id|ep8260_show_cpuinfo
-c_func
-(paren
-r_struct
-id|seq_file
-op_star
-id|m
-)paren
-(brace
-id|bd_t
-op_star
-id|binfo
-op_assign
-(paren
-id|bd_t
-op_star
-)paren
-id|__res
-suffix:semicolon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;vendor&bslash;t&bslash;t: RPC&bslash;n&quot;
-l_string|&quot;machine&bslash;t&bslash;t: EP8260 PPC&bslash;n&quot;
-l_string|&quot;&bslash;n&quot;
-l_string|&quot;mem size&bslash;t&bslash;t: 0x%08x&bslash;n&quot;
-l_string|&quot;console baud&bslash;t&bslash;t: %d&bslash;n&quot;
-l_string|&quot;&bslash;n&quot;
-comma
-id|binfo-&gt;bi_memsize
-comma
-id|binfo-&gt;bi_baudrate
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_static
 r_void
 id|__init
@@ -159,10 +105,6 @@ id|r7
 )paren
 suffix:semicolon
 multiline_comment|/* Anything special for this platform */
-id|ppc_md.show_cpuinfo
-op_assign
-id|ep8260_show_cpuinfo
-suffix:semicolon
 id|callback_setup_arch
 op_assign
 id|ppc_md.setup_arch

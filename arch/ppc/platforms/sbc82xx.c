@@ -80,49 +80,6 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_int
-DECL|function|sbc82xx_show_cpuinfo
-id|sbc82xx_show_cpuinfo
-c_func
-(paren
-r_struct
-id|seq_file
-op_star
-id|m
-)paren
-(brace
-id|bd_t
-op_star
-id|binfo
-op_assign
-(paren
-id|bd_t
-op_star
-)paren
-id|__res
-suffix:semicolon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;vendor&bslash;t&bslash;t: Wind River&bslash;n&quot;
-l_string|&quot;machine&bslash;t&bslash;t: SBC PowerQUICC II&bslash;n&quot;
-l_string|&quot;&bslash;n&quot;
-l_string|&quot;mem size&bslash;t&bslash;t: 0x%08lx&bslash;n&quot;
-l_string|&quot;console baud&bslash;t&bslash;t: %ld&bslash;n&quot;
-l_string|&quot;&bslash;n&quot;
-comma
-id|binfo-&gt;bi_memsize
-comma
-id|binfo-&gt;bi_baudrate
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_static
 r_void
 id|__init
 DECL|function|sbc82xx_setup_arch
@@ -974,10 +931,6 @@ op_complement
 l_int|3
 suffix:semicolon
 multiline_comment|/* Anything special for this platform */
-id|ppc_md.show_cpuinfo
-op_assign
-id|sbc82xx_show_cpuinfo
-suffix:semicolon
 id|callback_setup_arch
 op_assign
 id|ppc_md.setup_arch
