@@ -4269,7 +4269,7 @@ comma
 id|VORTEX_TOTAL_SIZE
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 (paren
 id|dev
 )paren
@@ -15870,7 +15870,7 @@ comma
 id|vp-&gt;io_size
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -16059,7 +16059,7 @@ comma
 id|VORTEX_TOTAL_SIZE
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 (paren
 id|compaq_net_device
 )paren

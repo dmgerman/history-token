@@ -8649,7 +8649,7 @@ comma
 id|CORKSCREW_TOTAL_SIZE
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|root_corkscrew_dev

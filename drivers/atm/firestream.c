@@ -4486,42 +4486,6 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_void
-id|fs_feedback
-c_func
-(paren
-r_struct
-id|atm_vcc
-op_star
-id|vcc
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-comma
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|dest
-comma
-r_int
-id|len
-)paren
-(brace
-id|func_enter
-(paren
-)paren
-suffix:semicolon
-id|func_exit
-(paren
-)paren
-suffix:semicolon
-)brace
-r_static
 r_int
 id|fs_change_qos
 c_func
@@ -4584,11 +4548,9 @@ op_assign
 id|THIS_MODULE
 comma
 macro_line|#endif
-multiline_comment|/*                 fs_sg_send */
 multiline_comment|/* ioctl:          fs_ioctl, */
 multiline_comment|/* getsockopt:     fs_getsockopt, */
 multiline_comment|/* setsockopt:     fs_setsockopt, */
-multiline_comment|/* feedback:       fs_feedback, */
 multiline_comment|/* change_qos:     fs_change_qos, */
 multiline_comment|/* For now implement these internally here... */
 multiline_comment|/* phy_put:        fs_phy_put, */

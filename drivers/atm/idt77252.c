@@ -9475,6 +9475,7 @@ l_int|0x1ff
 suffix:semicolon
 )brace
 r_static
+r_inline
 r_int
 DECL|function|idt77252_send_skb
 id|idt77252_send_skb

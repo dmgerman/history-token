@@ -13288,29 +13288,12 @@ op_assign
 id|lanai_send
 comma
 dot
-id|sg_send
-op_assign
-l_int|NULL
-comma
-multiline_comment|/* no scatter-gather on card */
-dot
-id|send_oam
-op_assign
-l_int|NULL
-comma
-multiline_comment|/* OAM support not in linux yet */
-dot
 id|phy_put
 op_assign
 l_int|NULL
 comma
 dot
 id|phy_get
-op_assign
-l_int|NULL
-comma
-dot
-id|feedback
 op_assign
 l_int|NULL
 comma

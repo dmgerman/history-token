@@ -5330,6 +5330,12 @@ id|unregister_netdev
 id|dev-&gt;net
 )paren
 suffix:semicolon
+id|free_netdev
+c_func
+(paren
+id|dev-&gt;net
+)paren
+suffix:semicolon
 multiline_comment|/* assuming we used keventd, it must quiesce too */
 id|flush_scheduled_work
 (paren
