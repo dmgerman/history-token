@@ -6448,7 +6448,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pci_dma_error
+id|pci_dma_mapping_error
 c_func
 (paren
 id|dma_address
