@@ -1,5 +1,5 @@
-multiline_comment|/*&n; *  ebtables&n; *&n; *  Author:&n; *  Bart De Schuymer&t;&t;&lt;bart.de.schuymer@pandora.be&gt;&n; *&n; *  ebtables.c,v 2.0, July, 2002&n; *&n; *  This code is stongly inspired on the iptables code which is&n; *  Copyright (C) 1999 Paul `Rusty&squot; Russell &amp; Michael J. Neuling&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; */
-singleline_comment|// used for print_string
+multiline_comment|/*&n; *  ebtables&n; *&n; *  Author:&n; *  Bart De Schuymer&t;&t;&lt;bdschuym@pandora.be&gt;&n; *&n; *  ebtables.c,v 2.0, July, 2002&n; *&n; *  This code is stongly inspired on the iptables code which is&n; *  Copyright (C) 1999 Paul `Rusty&squot; Russell &amp; Michael J. Neuling&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/* used for print_string */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -10,19 +10,16 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
-singleline_comment|// needed for logical [in,out]-dev filtering
+multiline_comment|/* needed for logical [in,out]-dev filtering */
 macro_line|#include &quot;../br_private.h&quot;
-singleline_comment|// list_named_find
+multiline_comment|/* list_named_find */
 DECL|macro|ASSERT_READ_LOCK
 mdefine_line|#define ASSERT_READ_LOCK(x)
 DECL|macro|ASSERT_WRITE_LOCK
 mdefine_line|#define ASSERT_WRITE_LOCK(x)
 macro_line|#include &lt;linux/netfilter_ipv4/listhelp.h&gt;
-macro_line|#if 0 
-singleline_comment|// use this for remote debugging
-singleline_comment|// Copyright (C) 1998 by Ori Pomerantz
-singleline_comment|// Print the string to the appropriate tty, the one
-singleline_comment|// the current task uses
+macro_line|#if 0
+multiline_comment|/* use this for remote debugging&n; * Copyright (C) 1998 by Ori Pomerantz&n; * Print the string to the appropriate tty, the one&n; * the current task uses&n; */
 r_static
 r_void
 id|print_string
@@ -97,16 +94,13 @@ mdefine_line|#define BUGPRINT(args) print_string(args);
 macro_line|#else
 DECL|macro|BUGPRINT
 mdefine_line|#define BUGPRINT(format, args...) printk(&quot;kernel msg: ebtables bug: please &quot;&bslash;&n;                                         &quot;report to author: &quot;format, ## args)
-singleline_comment|// #define BUGPRINT(format, args...)
+multiline_comment|/* #define BUGPRINT(format, args...) */
 macro_line|#endif
 DECL|macro|MEMPRINT
 mdefine_line|#define MEMPRINT(format, args...) printk(&quot;kernel msg: ebtables &quot;&bslash;&n;                                         &quot;: out of memory: &quot;format, ## args)
-singleline_comment|// #define MEMPRINT(format, args...)
-singleline_comment|// Each cpu has its own set of counters, so there is no need for write_lock in
-singleline_comment|// the softirq
-singleline_comment|// For reading or updating the counters, the user context needs to
-singleline_comment|// get a write_lock
-singleline_comment|// The size of each set of counters is altered to get cache alignment
+multiline_comment|/* #define MEMPRINT(format, args...) */
+multiline_comment|/*&n; * Each cpu has its own set of counters, so there is no need for write_lock in&n; * the softirq&n; * For reading or updating the counters, the user context needs to&n; * get a write_lock&n; */
+multiline_comment|/* The size of each set of counters is altered to get cache alignment */
 DECL|macro|SMP_ALIGN
 mdefine_line|#define SMP_ALIGN(x) (((x) + SMP_CACHE_BYTES-1) &amp; ~(SMP_CACHE_BYTES-1))
 DECL|macro|COUNTER_OFFSET
@@ -218,7 +212,7 @@ comma
 id|w-&gt;watcher_size
 )paren
 suffix:semicolon
-singleline_comment|// watchers don&squot;t give a verdict
+multiline_comment|/* watchers don&squot;t give a verdict */
 r_return
 l_int|0
 suffix:semicolon
@@ -323,7 +317,7 @@ suffix:semicolon
 )brace
 DECL|macro|FWINV2
 mdefine_line|#define FWINV2(bool,invflg) ((bool) ^ !!(e-&gt;invflags &amp; invflg))
-singleline_comment|// process standard matches
+multiline_comment|/* process standard matches */
 DECL|function|ebt_basic_match
 r_static
 r_inline
@@ -644,7 +638,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|// Do some firewalling
+multiline_comment|/* Do some firewalling */
 DECL|function|ebt_do_table
 r_int
 r_int
@@ -832,7 +826,7 @@ id|hook
 op_member_access_from_pointer
 id|counter_offset
 suffix:semicolon
-singleline_comment|// base for chain jumps
+multiline_comment|/* base for chain jumps */
 id|base
 op_assign
 r_private
@@ -893,7 +887,7 @@ l_int|0
 r_goto
 id|letscontinue
 suffix:semicolon
-singleline_comment|// increase counter
+multiline_comment|/* increase counter */
 (paren
 id|counter_base
 op_plus
@@ -914,8 +908,7 @@ op_add_assign
 op_star
 id|pskb.len
 suffix:semicolon
-singleline_comment|// these should only watch: not modify, nor tell us
-singleline_comment|// what to do with the packet
+multiline_comment|/* these should only watch: not modify, nor tell us&n;&t;&t;   what to do with the packet */
 id|EBT_WATCHER_ITERATE
 c_func
 (paren
@@ -950,7 +943,7 @@ op_plus
 id|point-&gt;target_offset
 )paren
 suffix:semicolon
-singleline_comment|// standard target
+multiline_comment|/* standard target */
 r_if
 c_cond
 (paren
@@ -1054,7 +1047,7 @@ c_func
 l_string|&quot;RETURN on base chain&quot;
 )paren
 suffix:semicolon
-singleline_comment|// act like this is EBT_CONTINUE
+multiline_comment|/* act like this is EBT_CONTINUE */
 r_goto
 id|letscontinue
 suffix:semicolon
@@ -1063,7 +1056,7 @@ macro_line|#endif
 id|sp
 op_decrement
 suffix:semicolon
-singleline_comment|// put all the local variables right
+multiline_comment|/* put all the local variables right */
 id|i
 op_assign
 id|cs
@@ -1141,7 +1134,7 @@ id|NF_DROP
 suffix:semicolon
 )brace
 macro_line|#endif
-singleline_comment|// jump to a udc
+multiline_comment|/* jump to a udc */
 id|cs
 (braket
 id|sp
@@ -1277,7 +1270,7 @@ id|i
 op_increment
 suffix:semicolon
 )brace
-singleline_comment|// I actually like this :)
+multiline_comment|/* I actually like this :) */
 r_if
 c_cond
 (paren
@@ -1318,7 +1311,7 @@ r_return
 id|NF_DROP
 suffix:semicolon
 )brace
-singleline_comment|// If it succeeds, returns element and locks mutex
+multiline_comment|/* If it succeeds, returns element and locks mutex */
 r_static
 r_inline
 r_void
@@ -1789,14 +1782,26 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|match-&gt;me
-)paren
-id|__MOD_INC_USE_COUNT
+op_logical_neg
+id|try_module_get
 c_func
 (paren
 id|match-&gt;me
 )paren
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|ebt_mutex
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|up
 c_func
 (paren
@@ -1834,12 +1839,7 @@ c_func
 l_string|&quot;match-&gt;check failed&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|match-&gt;me
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|match-&gt;me
@@ -1963,14 +1963,26 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|watcher-&gt;me
-)paren
-id|__MOD_INC_USE_COUNT
+op_logical_neg
+id|try_module_get
 c_func
 (paren
 id|watcher-&gt;me
 )paren
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|ebt_mutex
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|up
 c_func
 (paren
@@ -2008,12 +2020,7 @@ c_func
 l_string|&quot;watcher-&gt;check failed&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|watcher-&gt;me
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|watcher-&gt;me
@@ -2034,8 +2041,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|// this one is very careful, as it is the first function
-singleline_comment|// to parse the userspace data
+multiline_comment|/*&n; * this one is very careful, as it is the first function&n; * to parse the userspace data&n; */
 r_static
 r_inline
 r_int
@@ -2152,8 +2158,7 @@ id|newinfo-&gt;entries
 r_break
 suffix:semicolon
 )brace
-singleline_comment|// beginning of a new chain
-singleline_comment|// if i == NF_BR_NUMHOOKS it must be a user defined chain
+multiline_comment|/* beginning of a new chain&n;&t;   if i == NF_BR_NUMHOOKS it must be a user defined chain */
 r_if
 c_cond
 (paren
@@ -2181,8 +2186,7 @@ op_ne
 l_int|0
 )paren
 (brace
-singleline_comment|// we make userspace set this right,
-singleline_comment|// so there is no misunderstanding
+multiline_comment|/* we make userspace set this right,&n;&t;&t;&t;   so there is no misunderstanding */
 id|BUGPRINT
 c_func
 (paren
@@ -2195,8 +2199,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-singleline_comment|// this checks if the previous chain has as many entries
-singleline_comment|// as it said it has
+multiline_comment|/* this checks if the previous chain has as many entries&n;&t;&t;   as it said it has */
 r_if
 c_cond
 (paren
@@ -2219,7 +2222,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-singleline_comment|// before we look at the struct, be sure it is not too big
+multiline_comment|/* before we look at the struct, be sure it is not too big */
 r_if
 c_cond
 (paren
@@ -2282,7 +2285,7 @@ op_ne
 id|EBT_ACCEPT
 )paren
 (brace
-singleline_comment|// only RETURN from udc
+multiline_comment|/* only RETURN from udc */
 r_if
 c_cond
 (paren
@@ -2323,7 +2326,7 @@ id|i
 op_eq
 id|NF_BR_NUMHOOKS
 )paren
-singleline_comment|// it&squot;s a user defined chain
+multiline_comment|/* it&squot;s a user defined chain */
 (paren
 op_star
 id|udc_cnt
@@ -2395,7 +2398,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|// a plain old entry, heh
+multiline_comment|/* a plain old entry, heh */
 r_if
 c_cond
 (paren
@@ -2427,7 +2430,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-singleline_comment|// this is not checked anywhere else
+multiline_comment|/* this is not checked anywhere else */
 r_if
 c_cond
 (paren
@@ -2489,8 +2492,7 @@ id|hookmask
 suffix:semicolon
 )brace
 suffix:semicolon
-singleline_comment|// we need these positions to check that the jumps to a different part of the
-singleline_comment|// entries is a jump to the beginning of a new chain.
+multiline_comment|/*&n; * we need these positions to check that the jumps to a different part of the&n; * entries is a jump to the beginning of a new chain.&n; */
 r_static
 r_inline
 r_int
@@ -2532,7 +2534,7 @@ id|udc
 r_int
 id|i
 suffix:semicolon
-singleline_comment|// we&squot;re only interested in chain starts
+multiline_comment|/* we&squot;re only interested in chain starts */
 r_if
 c_cond
 (paren
@@ -2593,7 +2595,7 @@ id|e
 r_break
 suffix:semicolon
 )brace
-singleline_comment|// only care about udc
+multiline_comment|/* only care about udc */
 r_if
 c_cond
 (paren
@@ -2619,7 +2621,7 @@ op_star
 )paren
 id|e
 suffix:semicolon
-singleline_comment|// these initialisations are depended on later in check_chainloops()
+multiline_comment|/* these initialisations are depended on later in check_chainloops() */
 id|udc
 (braket
 op_star
@@ -2699,12 +2701,7 @@ comma
 id|m-&gt;match_size
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|m-&gt;u.match-&gt;me
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|m-&gt;u.match-&gt;me
@@ -2763,12 +2760,7 @@ comma
 id|w-&gt;watcher_size
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|w-&gt;u.watcher-&gt;me
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|w-&gt;u.watcher-&gt;me
@@ -2815,7 +2807,7 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
-singleline_comment|// we&squot;re done
+multiline_comment|/* we&squot;re done */
 r_if
 c_cond
 (paren
@@ -2886,12 +2878,7 @@ comma
 id|t-&gt;target_size
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|t-&gt;u.target-&gt;me
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|t-&gt;u.target-&gt;me
@@ -2969,7 +2956,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-singleline_comment|// Don&squot;t mess with the struct ebt_entries
+multiline_comment|/* don&squot;t mess with the struct ebt_entries */
 r_if
 c_cond
 (paren
@@ -3051,7 +3038,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-singleline_comment|// what hook do we belong to?
+multiline_comment|/* what hook do we belong to? */
 r_for
 c_loop
 (paren
@@ -3110,8 +3097,7 @@ r_else
 r_break
 suffix:semicolon
 )brace
-singleline_comment|// (1 &lt;&lt; NF_BR_NUMHOOKS) tells the check functions the rule is on
-singleline_comment|// a base chain
+multiline_comment|/* (1 &lt;&lt; NF_BR_NUMHOOKS) tells the check functions the rule is on&n;&t;   a base chain */
 r_if
 c_cond
 (paren
@@ -3318,14 +3304,25 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|target-&gt;me
-)paren
-id|__MOD_INC_USE_COUNT
+op_logical_neg
+id|try_module_get
 c_func
 (paren
 id|target-&gt;me
 )paren
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|ebt_mutex
+)paren
 suffix:semicolon
+r_goto
+id|cleanup_watchers
+suffix:semicolon
+)brace
 id|up
 c_func
 (paren
@@ -3450,12 +3447,7 @@ l_int|0
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|t-&gt;u.target-&gt;me
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|t-&gt;u.target-&gt;me
@@ -3509,10 +3501,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-singleline_comment|// checks for loops and sets the hook mask for udc
-singleline_comment|// the hook mask for udc tells us from which base chains the udc can be
-singleline_comment|// accessed. This mask is a parameter to the check() functions of the extensions
+multiline_comment|/*&n; * checks for loops and sets the hook mask for udc&n; * the hook mask for udc tells us from which base chains the udc can be&n; * accessed. This mask is a parameter to the check() functions of the extensions&n; */
 DECL|function|check_chainloops
+r_static
 r_int
 id|check_chainloops
 c_func
@@ -3588,7 +3579,7 @@ op_minus
 l_int|1
 )paren
 (brace
-singleline_comment|// end of udc, go back one &squot;recursion&squot; step
+multiline_comment|/* end of udc, go back one &squot;recursion&squot; step */
 r_if
 c_cond
 (paren
@@ -3597,7 +3588,7 @@ op_eq
 id|nentries
 )paren
 (brace
-singleline_comment|// put back values of the time when this chain was called
+multiline_comment|/* put back values of the time when this chain was called */
 id|e
 op_assign
 id|cl_s
@@ -3648,7 +3639,7 @@ id|chain_nr
 dot
 id|cs.n
 suffix:semicolon
-singleline_comment|// make sure we won&squot;t see a loop that isn&squot;t one
+multiline_comment|/* make sure we won&squot;t see a loop that isn&squot;t one */
 id|cl_s
 (braket
 id|chain_nr
@@ -3756,7 +3747,7 @@ op_ge
 l_int|0
 )paren
 (brace
-singleline_comment|// jump to another chain
+multiline_comment|/* jump to another chain */
 r_struct
 id|ebt_entries
 op_star
@@ -3801,7 +3792,7 @@ id|cs.chaininfo
 )paren
 r_break
 suffix:semicolon
-singleline_comment|// bad destination or loop
+multiline_comment|/* bad destination or loop */
 r_if
 c_cond
 (paren
@@ -3843,7 +3834,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-singleline_comment|// this can&squot;t be 0, so the above test is correct
+multiline_comment|/* this can&squot;t be 0, so the above test is correct */
 id|cl_s
 (braket
 id|i
@@ -3904,7 +3895,7 @@ id|chain_nr
 op_assign
 id|i
 suffix:semicolon
-singleline_comment|// this udc is accessible from the base chain for hooknr
+multiline_comment|/* this udc is accessible from the base chain for hooknr */
 id|cl_s
 (braket
 id|i
@@ -3941,7 +3932,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|// do the parsing of the table/chains/entries/matches/watchers/targets, heh
+multiline_comment|/* do the parsing of the table/chains/entries/matches/watchers/targets, heh */
 DECL|function|translate_table
 r_static
 r_int
@@ -3979,7 +3970,7 @@ id|cl_s
 op_assign
 l_int|NULL
 suffix:semicolon
-singleline_comment|// used in the checking for chain loops
+multiline_comment|/* used in the checking for chain loops */
 id|i
 op_assign
 l_int|0
@@ -4051,8 +4042,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-singleline_comment|// make sure chains are ordered after each other in same order
-singleline_comment|// as their corresponding hooks
+multiline_comment|/* make sure chains are ordered after each other in same order&n;&t;   as their corresponding hooks */
 r_for
 c_loop
 (paren
@@ -4145,28 +4135,27 @@ id|newinfo-&gt;nentries
 op_assign
 id|repl-&gt;nentries
 suffix:semicolon
-singleline_comment|// do some early checkings and initialize some things
+multiline_comment|/* do some early checkings and initialize some things */
 id|i
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// holds the expected nr. of entries for the chain
+multiline_comment|/* holds the expected nr. of entries for the chain */
 id|j
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// holds the up to now counted entries for the chain
+multiline_comment|/* holds the up to now counted entries for the chain */
 id|k
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// holds the total nr. of entries, should equal
-singleline_comment|// newinfo-&gt;nentries afterwards
+multiline_comment|/* holds the total nr. of entries, should equal&n;&t;          newinfo-&gt;nentries afterwards */
 id|udc_cnt
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// will hold the nr. of user defined chains (udc)
+multiline_comment|/* will hold the nr. of user defined chains (udc) */
 id|ret
 op_assign
 id|EBT_ENTRY_ITERATE
@@ -4252,7 +4241,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-singleline_comment|// check if all valid hooks have a chain
+multiline_comment|/* check if all valid hooks have a chain */
 r_for
 c_loop
 (paren
@@ -4301,16 +4290,14 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// Get the location of the udc, put them in an array
-singleline_comment|// While we&squot;re at it, allocate the chainstack
+multiline_comment|/* get the location of the udc, put them in an array&n;&t;   while we&squot;re at it, allocate the chainstack */
 r_if
 c_cond
 (paren
 id|udc_cnt
 )paren
 (brace
-singleline_comment|// this will get free&squot;d in do_replace()/ebt_register_table()
-singleline_comment|// if an error occurs
+multiline_comment|/* this will get free&squot;d in do_replace()/ebt_register_table()&n;&t;&t;   if an error occurs */
 id|newinfo-&gt;chainstack
 op_assign
 (paren
@@ -4447,7 +4434,7 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// the i&squot;th udc
+multiline_comment|/* the i&squot;th udc */
 id|EBT_ENTRY_ITERATE
 c_func
 (paren
@@ -4469,7 +4456,7 @@ comma
 id|cl_s
 )paren
 suffix:semicolon
-singleline_comment|// sanity check
+multiline_comment|/* sanity check */
 r_if
 c_cond
 (paren
@@ -4496,7 +4483,7 @@ id|EFAULT
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// Check for loops
+multiline_comment|/* Check for loops */
 r_for
 c_loop
 (paren
@@ -4559,16 +4546,8 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-singleline_comment|// we now know the following (along with E=mc&#xfffd;):
-singleline_comment|// - the nr of entries in each chain is right
-singleline_comment|// - the size of the allocated space is right
-singleline_comment|// - all valid hooks have a corresponding chain
-singleline_comment|// - there are no loops
-singleline_comment|// - wrong data can still be on the level of a single entry
-singleline_comment|// - could be there are jumps to places that are not the
-singleline_comment|//   beginning of a chain. This can only occur in chains that
-singleline_comment|//   are not accessible from any base chains, so we don&squot;t care.
-singleline_comment|// used to know what we need to clean up if something goes wrong
+multiline_comment|/* we now know the following (along with E=mc&#xfffd;):&n;&t;   - the nr of entries in each chain is right&n;&t;   - the size of the allocated space is right&n;&t;   - all valid hooks have a corresponding chain&n;&t;   - there are no loops&n;&t;   - wrong data can still be on the level of a single entry&n;&t;   - could be there are jumps to places that are not the&n;&t;     beginning of a chain. This can only occur in chains that&n;&t;     are not accessible from any base chains, so we don&squot;t care. */
+multiline_comment|/* used to know what we need to clean up if something goes wrong */
 id|i
 op_assign
 l_int|0
@@ -4635,7 +4614,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-singleline_comment|// called under write_lock
+multiline_comment|/* called under write_lock */
 DECL|function|get_counters
 r_static
 r_void
@@ -4667,7 +4646,7 @@ id|ebt_counter
 op_star
 id|counter_base
 suffix:semicolon
-singleline_comment|// counters of cpu 0
+multiline_comment|/* counters of cpu 0 */
 id|memcpy
 c_func
 (paren
@@ -4684,7 +4663,7 @@ op_star
 id|nentries
 )paren
 suffix:semicolon
-singleline_comment|// add other counters to those of cpu 0
+multiline_comment|/* add other counters to those of cpu 0 */
 r_for
 c_loop
 (paren
@@ -4758,7 +4737,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-singleline_comment|// replace the table
+multiline_comment|/* replace the table */
 DECL|function|do_replace
 r_static
 r_int
@@ -4802,7 +4781,7 @@ id|counterstmp
 op_assign
 l_int|NULL
 suffix:semicolon
-singleline_comment|// used to be able to unlock earlier
+multiline_comment|/* used to be able to unlock earlier */
 r_struct
 id|ebt_table_info
 op_star
@@ -4987,8 +4966,7 @@ r_goto
 id|free_entries
 suffix:semicolon
 )brace
-singleline_comment|// the user wants counters back
-singleline_comment|// the check on the size is done later, when we have the lock
+multiline_comment|/* the user wants counters back&n;&t;   the check on the size is done later, when we have the lock */
 r_if
 c_cond
 (paren
@@ -5036,7 +5014,7 @@ id|counterstmp
 op_assign
 l_int|NULL
 suffix:semicolon
-singleline_comment|// this can get initialized by translate_table()
+multiline_comment|/* this can get initialized by translate_table() */
 id|newinfo-&gt;chainstack
 op_assign
 l_int|NULL
@@ -5085,7 +5063,7 @@ id|t
 r_goto
 id|free_iterate
 suffix:semicolon
-singleline_comment|// the table doesn&squot;t like it
+multiline_comment|/* the table doesn&squot;t like it */
 r_if
 c_cond
 (paren
@@ -5137,14 +5115,14 @@ r_goto
 id|free_unlock
 suffix:semicolon
 )brace
-singleline_comment|// we have the mutex lock, so no danger in reading this pointer
+multiline_comment|/* we have the mutex lock, so no danger in reading this pointer */
 id|table
 op_assign
 id|t
 op_member_access_from_pointer
 r_private
 suffix:semicolon
-singleline_comment|// we need an atomic snapshot of the counters
+multiline_comment|/* we need an atomic snapshot of the counters */
 id|write_lock_bh
 c_func
 (paren
@@ -5195,10 +5173,7 @@ op_amp
 id|ebt_mutex
 )paren
 suffix:semicolon
-singleline_comment|// So, a user can change the chains while having messed up her counter
-singleline_comment|// allocation. Only reason why this is done is because this way the lock
-singleline_comment|// is held only once, while this doesn&squot;t bring the kernel into a
-singleline_comment|// dangerous state.
+multiline_comment|/* so, a user can change the chains while having messed up her counter&n;&t;   allocation. Only reason why this is done is because this way the lock&n;&t;   is held only once, while this doesn&squot;t bring the kernel into a&n;&t;   dangerous state. */
 r_if
 c_cond
 (paren
@@ -5238,7 +5213,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// decrease module count and free resources
+multiline_comment|/* decrease module count and free resources */
 id|EBT_ENTRY_ITERATE
 c_func
 (paren
@@ -5349,7 +5324,7 @@ c_func
 id|counterstmp
 )paren
 suffix:semicolon
-singleline_comment|// can be initialized in translate_table()
+multiline_comment|/* can be initialized in translate_table() */
 r_if
 c_cond
 (paren
@@ -5482,8 +5457,6 @@ op_amp
 id|ebt_mutex
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -5521,8 +5494,6 @@ c_func
 op_amp
 id|ebt_mutex
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|ebt_register_match
@@ -5591,8 +5562,6 @@ op_amp
 id|ebt_mutex
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -5630,8 +5599,6 @@ c_func
 op_amp
 id|ebt_mutex
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|ebt_register_watcher
@@ -5700,8 +5667,6 @@ op_amp
 id|ebt_mutex
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -5739,8 +5704,6 @@ c_func
 op_amp
 id|ebt_mutex
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|ebt_register_table
@@ -5892,7 +5855,7 @@ comma
 id|countersize
 )paren
 suffix:semicolon
-singleline_comment|// fill in newinfo and parse the entries
+multiline_comment|/* fill in newinfo and parse the entries */
 id|newinfo-&gt;chainstack
 op_assign
 l_int|NULL
@@ -6024,8 +5987,6 @@ c_func
 op_amp
 id|ebt_mutex
 )paren
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -6243,10 +6204,8 @@ op_member_access_from_pointer
 r_private
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
-singleline_comment|// userspace just supplied us with counters
+multiline_comment|/* userspace just supplied us with counters */
 DECL|function|update_counters
 r_static
 r_int
@@ -6457,7 +6416,7 @@ r_goto
 id|unlock_mutex
 suffix:semicolon
 )brace
-singleline_comment|// we want an atomic add of the counters
+multiline_comment|/* we want an atomic add of the counters */
 id|write_lock_bh
 c_func
 (paren
@@ -6465,7 +6424,7 @@ op_amp
 id|t-&gt;lock
 )paren
 suffix:semicolon
-singleline_comment|// we add to the counters of the first cpu
+multiline_comment|/* we add to the counters of the first cpu */
 r_for
 c_loop
 (paren
@@ -6811,7 +6770,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|// called with ebt_mutex down
+multiline_comment|/* called with ebt_mutex down */
 DECL|function|copy_everything_to_user
 r_static
 r_int
@@ -7025,7 +6984,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-singleline_comment|// userspace might not need the counters
+multiline_comment|/* userspace might not need the counters */
 r_if
 c_cond
 (paren
@@ -7181,7 +7140,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-singleline_comment|// set the match/watcher/target names right
+multiline_comment|/* set the match/watcher/target names right */
 r_return
 id|EBT_ENTRY_ITERATE
 c_func
@@ -7623,7 +7582,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Ebtables v2.0 registered&quot;
+id|KERN_NOTICE
+l_string|&quot;Ebtables v2.0 registered&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7650,7 +7610,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Ebtables v2.0 unregistered&quot;
+id|KERN_NOTICE
+l_string|&quot;Ebtables v2.0 unregistered&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
