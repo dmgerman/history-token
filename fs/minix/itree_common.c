@@ -1957,7 +1957,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_return
-id|blocks
+id|res
 suffix:semicolon
 )brace
 eof
