@@ -725,6 +725,11 @@ id|DoPrintInterfaceChange
 op_assign
 id|SK_TRUE
 suffix:semicolon
+r_extern
+r_struct
+id|ethtool_ops
+id|SkGeEthtoolOps
+suffix:semicolon
 multiline_comment|/* local variables **********************************************************/
 DECL|variable|TxQueueAddr
 r_static
@@ -20160,6 +20165,15 @@ op_amp
 id|pdev-&gt;dev
 )paren
 suffix:semicolon
+id|SET_ETHTOOL_OPS
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|SkGeEthtoolOps
+)paren
+suffix:semicolon
 macro_line|#ifdef SK_ZEROCOPY
 macro_line|#ifdef USE_SK_TX_CHECKSUM
 r_if
@@ -20489,6 +20503,24 @@ id|dev-&gt;flags
 op_and_assign
 op_complement
 id|IFF_RUNNING
+suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|pdev-&gt;dev
+)paren
+suffix:semicolon
+id|SET_ETHTOOL_OPS
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|SkGeEthtoolOps
+)paren
 suffix:semicolon
 macro_line|#ifdef SK_ZEROCOPY
 macro_line|#ifdef USE_SK_TX_CHECKSUM
