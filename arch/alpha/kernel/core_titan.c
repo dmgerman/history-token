@@ -2447,6 +2447,7 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_ALPHA_GENERIC
 DECL|variable|titan_ioremap
 id|EXPORT_SYMBOL
 c_func
@@ -2461,6 +2462,7 @@ c_func
 id|titan_iounmap
 )paren
 suffix:semicolon
+macro_line|#endif
 "&f;"
 multiline_comment|/*&n; * AGP GART Support.&n; */
 macro_line|#include &lt;linux/agp_backend.h&gt;

@@ -1921,17 +1921,17 @@ DECL|macro|vulp
 macro_line|#undef vulp
 macro_line|#ifdef __WANT_IO_DEF
 DECL|macro|__inb
-mdefine_line|#define __inb(p)&t;&t;alpha_mv.mv_inb((unsigned long)(p))
+mdefine_line|#define __inb(p)&t;&t;marvel_inb((unsigned long)(p))
 DECL|macro|__inw
-mdefine_line|#define __inw(p)&t;&t;alpha_mv.mv_inw((unsigned long)(p))
+mdefine_line|#define __inw(p)&t;&t;marvel_inw((unsigned long)(p))
 DECL|macro|__inl
-mdefine_line|#define __inl(p)&t;&t;alpha_mv.mv_inl((unsigned long)(p))
+mdefine_line|#define __inl(p)&t;&t;marvel_inl((unsigned long)(p))
 DECL|macro|__outb
-mdefine_line|#define __outb(x,p)&t;&t;alpha_mv.mv_outb((x),(unsigned long)(p))
+mdefine_line|#define __outb(x,p)&t;&t;marvel_outb((x),(unsigned long)(p))
 DECL|macro|__outw
-mdefine_line|#define __outw(x,p)&t;&t;alpha_mv.mv_outw((x),(unsigned long)(p))
+mdefine_line|#define __outw(x,p)&t;&t;marvel_outw((x),(unsigned long)(p))
 DECL|macro|__outl
-mdefine_line|#define __outl(x,p)&t;&t;alpha_mv.mv_outl((x),(unsigned long)(p))
+mdefine_line|#define __outl(x,p)&t;&t;marvel_outl((x),(unsigned long)(p))
 DECL|macro|__readb
 mdefine_line|#define __readb(a)&t;&t;marvel_readb((unsigned long)(a))
 DECL|macro|__readw
@@ -1949,39 +1949,22 @@ mdefine_line|#define __writel(x,a)&t;&t;marvel_writel((x),(unsigned long)(a))
 DECL|macro|__writeq
 mdefine_line|#define __writeq(x,a)&t;&t;marvel_writeq((x),(unsigned long)(a))
 DECL|macro|__ioremap
-mdefine_line|#define __ioremap(a,s)&t;&t;alpha_mv.mv_ioremap((unsigned long)(a),(s))
+mdefine_line|#define __ioremap(a,s)&t;&t;marvel_ioremap((unsigned long)(a),(s))
 DECL|macro|__iounmap
-mdefine_line|#define __iounmap(a)&t;&t;alpha_mv.mv_iounmap((unsigned long)(a))
+mdefine_line|#define __iounmap(a)&t;&t;marvel_iounmap((unsigned long)(a))
 DECL|macro|__is_ioaddr
 mdefine_line|#define __is_ioaddr(a)&t;&t;marvel_is_ioaddr((unsigned long)(a))
-DECL|macro|inb
-mdefine_line|#define inb(port)&t;&t;__inb((port))
-DECL|macro|inw
-mdefine_line|#define inw(port)&t;&t;__inw((port))
-DECL|macro|inl
-mdefine_line|#define inl(port)&t;&t;__inl((port))
-DECL|macro|outb
-mdefine_line|#define outb(v, port)&t;&t;__outb((v),(port))
-DECL|macro|outw
-mdefine_line|#define outw(v, port)&t;&t;__outw((v),(port))
-DECL|macro|outl
-mdefine_line|#define outl(v, port)&t;&t;__outl((v),(port))
-DECL|macro|__raw_readb
-mdefine_line|#define __raw_readb(a)&t;&t;__readb((unsigned long)(a))
-DECL|macro|__raw_readw
-mdefine_line|#define __raw_readw(a)&t;&t;__readw((unsigned long)(a))
-DECL|macro|__raw_readl
-mdefine_line|#define __raw_readl(a)&t;&t;__readl((unsigned long)(a))
-DECL|macro|__raw_readq
-mdefine_line|#define __raw_readq(a)&t;&t;__readq((unsigned long)(a))
-DECL|macro|__raw_writeb
-mdefine_line|#define __raw_writeb(v,a)&t;__writeb((v),(unsigned long)(a))
-DECL|macro|__raw_writew
-mdefine_line|#define __raw_writew(v,a)&t;__writew((v),(unsigned long)(a))
-DECL|macro|__raw_writel
-mdefine_line|#define __raw_writel(v,a)&t;__writel((v),(unsigned long)(a))
-DECL|macro|__raw_writeq
-mdefine_line|#define __raw_writeq(v,a)&t;__writeq((v),(unsigned long)(a))
+multiline_comment|/* Disable direct inlining of these calls with the debug checks present.  */
+macro_line|#if 0
+mdefine_line|#define __raw_readb(a)&t;&t;__readb(a)
+mdefine_line|#define __raw_readw(a)&t;&t;__readw(a)
+mdefine_line|#define __raw_readl(a)&t;&t;__readl(a)
+mdefine_line|#define __raw_readq(a)&t;&t;__readq(a)
+mdefine_line|#define __raw_writeb(v,a)&t;__writeb(v,a)
+mdefine_line|#define __raw_writew(v,a)&t;__writew(v,a)
+mdefine_line|#define __raw_writel(v,a)&t;__writel(v,a)
+mdefine_line|#define __raw_writeq(v,a)&t;__writeq(v,a)
+macro_line|#endif
 macro_line|#endif /* __WANT_IO_DEF */
 macro_line|#ifdef __IO_EXTERN_INLINE
 DECL|macro|__EXTERN_INLINE

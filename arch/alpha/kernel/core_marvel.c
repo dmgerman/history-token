@@ -1,5 +1,11 @@
 multiline_comment|/*&n; *&t;linux/arch/alpha/kernel/core_marvel.c&n; *&n; * Code common to all Marvel based systems.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+DECL|macro|__EXTERN_INLINE
+mdefine_line|#define __EXTERN_INLINE inline
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/core_marvel.h&gt;
+DECL|macro|__EXTERN_INLINE
+macro_line|#undef __EXTERN_INLINE
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -8,6 +14,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/rtc.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
@@ -16,13 +23,7 @@ macro_line|#include &lt;asm/gct.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/rtc.h&gt;
-DECL|macro|__EXTERN_INLINE
-mdefine_line|#define __EXTERN_INLINE inline
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/core_marvel.h&gt;
-DECL|macro|__EXTERN_INLINE
-macro_line|#undef __EXTERN_INLINE
-macro_line|#include &lt;linux/bootmem.h&gt;&t;/* this must be *after* io.h / core_marvel.h */
+macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &quot;proto.h&quot;
 macro_line|#include &quot;pci_impl.h&quot;
 "&f;"
@@ -2623,6 +2624,22 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_ALPHA_GENERIC
+DECL|variable|marvel_ioremap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|marvel_ioremap
+)paren
+suffix:semicolon
+DECL|variable|marvel_iounmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|marvel_iounmap
+)paren
+suffix:semicolon
+macro_line|#endif
 "&f;"
 multiline_comment|/*&n; * SRMCons support&n; *&n; * Marvel doesn&squot;t have a real serial console -- it&squot;s either graphics or &n; * server management based. If we&squot;re running on the server management based&n; * console, allow the srmcons callback driver to be a console device.&n; */
 r_int
