@@ -4653,7 +4653,7 @@ c_func
 (paren
 id|swap
 comma
-l_string|&quot;%*s %s&bslash;t%d&bslash;t%ld&bslash;t%d&bslash;n&quot;
+l_string|&quot;%*s%s&bslash;t%d&bslash;t%ld&bslash;t%d&bslash;n&quot;
 comma
 id|len
 OL
