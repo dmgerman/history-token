@@ -59,5 +59,16 @@ mdefine_line|#define MEYEIOC_STILLCAPT&t;_IO  (&squot;v&squot;, BASE_VIDIOCPRIVA
 multiline_comment|/* get a jpeg compressed snapshot */
 DECL|macro|MEYEIOC_STILLJCAPT
 mdefine_line|#define MEYEIOC_STILLJCAPT&t;_IOR (&squot;v&squot;, BASE_VIDIOCPRIVATE+5, int)
+multiline_comment|/* V4L2 private controls */
+DECL|macro|V4L2_CID_AGC
+mdefine_line|#define V4L2_CID_AGC&t;&t;V4L2_CID_PRIVATE_BASE
+DECL|macro|V4L2_CID_SHARPNESS
+mdefine_line|#define V4L2_CID_SHARPNESS&t;(V4L2_CID_PRIVATE_BASE + 1)
+DECL|macro|V4L2_CID_PICTURE
+mdefine_line|#define V4L2_CID_PICTURE&t;(V4L2_CID_PRIVATE_BASE + 2)
+DECL|macro|V4L2_CID_JPEGQUAL
+mdefine_line|#define V4L2_CID_JPEGQUAL&t;(V4L2_CID_PRIVATE_BASE + 3)
+DECL|macro|V4L2_CID_FRAMERATE
+mdefine_line|#define V4L2_CID_FRAMERATE&t;(V4L2_CID_PRIVATE_BASE + 4)
 macro_line|#endif
 eof

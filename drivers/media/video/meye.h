@@ -391,6 +391,18 @@ r_int
 id|size
 suffix:semicolon
 multiline_comment|/* size of jpg frame */
+DECL|member|timestamp
+r_struct
+id|timeval
+id|timestamp
+suffix:semicolon
+multiline_comment|/* timestamp */
+DECL|member|sequence
+r_int
+r_int
+id|sequence
+suffix:semicolon
+multiline_comment|/* sequence number */
 )brace
 suffix:semicolon
 multiline_comment|/* size of kfifos containings buffer indices */
@@ -474,6 +486,14 @@ id|grab_buffer
 id|MEYE_MAX_BUFNBRS
 )braket
 suffix:semicolon
+DECL|member|vma_use_count
+r_int
+id|vma_use_count
+(braket
+id|MEYE_MAX_BUFNBRS
+)braket
+suffix:semicolon
+multiline_comment|/* mmap count */
 multiline_comment|/* other */
 DECL|member|lock
 r_struct
