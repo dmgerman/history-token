@@ -102,8 +102,6 @@ multiline_comment|/* byte alignment */
 comma
 l_int|0
 multiline_comment|/* no page-crossing issues */
-comma
-id|SLAB_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -142,8 +140,6 @@ multiline_comment|/* byte alignment */
 comma
 l_int|0
 multiline_comment|/* no page-crossing issues */
-comma
-id|SLAB_KERNEL
 )paren
 suffix:semicolon
 r_if
