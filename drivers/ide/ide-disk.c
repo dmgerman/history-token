@@ -10326,6 +10326,11 @@ id|g-&gt;de
 op_assign
 id|drive-&gt;de
 suffix:semicolon
+id|g-&gt;driverfs_dev
+op_assign
+op_amp
+id|drive-&gt;gendev
+suffix:semicolon
 id|g-&gt;flags
 op_assign
 id|drive-&gt;removable
