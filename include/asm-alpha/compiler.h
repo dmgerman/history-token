@@ -2,26 +2,48 @@ macro_line|#ifndef __ALPHA_COMPILER_H
 DECL|macro|__ALPHA_COMPILER_H
 mdefine_line|#define __ALPHA_COMPILER_H
 multiline_comment|/* &n; * Herein are macros we use when describing various patterns we want to GCC.&n; * In all cases we can get better schedules out of the compiler if we hide&n; * as little as possible inside inline assembly.  However, we want to be&n; * able to know what we&squot;ll get out before giving up inline assembly.  Thus&n; * these tests and macros.&n; */
-macro_line|#if 0
-mdefine_line|#define __kernel_insbl(val, shift) &bslash;&n;  (((unsigned long)(val) &amp; 0xfful) &lt;&lt; ((shift) * 8))
-mdefine_line|#define __kernel_inswl(val, shift) &bslash;&n;  (((unsigned long)(val) &amp; 0xfffful) &lt;&lt; ((shift) * 8))
-mdefine_line|#define __kernel_insql(val, shift) &bslash;&n;  ((unsigned long)(val) &lt;&lt; ((shift) * 8))
+macro_line|#if __GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &gt;= 4 || __GNUC__ &gt; 3
+DECL|macro|__kernel_insbl
+macro_line|# define __kernel_insbl(val, shift)&t;__builtin_alpha_insbl(val, shift)
+DECL|macro|__kernel_inswl
+macro_line|# define __kernel_inswl(val, shift)&t;__builtin_alpha_inswl(val, shift)
+DECL|macro|__kernel_insql
+macro_line|# define __kernel_insql(val, shift)&t;__builtin_alpha_insql(val, shift)
+DECL|macro|__kernel_inslh
+macro_line|# define __kernel_inslh(val, shift)&t;__builtin_alpha_inslh(val, shift)
+DECL|macro|__kernel_extbl
+macro_line|# define __kernel_extbl(val, shift)&t;__builtin_alpha_extbl(val, shift)
+DECL|macro|__kernel_extwl
+macro_line|# define __kernel_extwl(val, shift)&t;__builtin_alpha_extwl(val, shift)
+DECL|macro|__kernel_cmpbge
+macro_line|# define __kernel_cmpbge(a, b)&t;&t;__builtin_alpha_cmpbge(a, b)
+DECL|macro|__kernel_cttz
+macro_line|# define __kernel_cttz(x)&t;&t;__builtin_ctz(x)
+DECL|macro|__kernel_ctlz
+macro_line|# define __kernel_ctlz(x)&t;&t;__builtin_clz(x)
+DECL|macro|__kernel_ctpop
+macro_line|# define __kernel_ctpop(x)&t;&t;__builtin_popcount(x)
 macro_line|#else
 DECL|macro|__kernel_insbl
-mdefine_line|#define __kernel_insbl(val, shift)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __kir;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__(&quot;insbl %2,%1,%0&quot; : &quot;=r&quot;(__kir) : &quot;rI&quot;(shift), &quot;r&quot;(val));&t;&bslash;&n;     __kir; })
+macro_line|# define __kernel_insbl(val, shift)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __kir;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__(&quot;insbl %2,%1,%0&quot; : &quot;=r&quot;(__kir) : &quot;rI&quot;(shift), &quot;r&quot;(val));&t;&bslash;&n;     __kir; })
 DECL|macro|__kernel_inswl
-mdefine_line|#define __kernel_inswl(val, shift)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __kir;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__(&quot;inswl %2,%1,%0&quot; : &quot;=r&quot;(__kir) : &quot;rI&quot;(shift), &quot;r&quot;(val));&t;&bslash;&n;     __kir; })
+macro_line|# define __kernel_inswl(val, shift)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __kir;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__(&quot;inswl %2,%1,%0&quot; : &quot;=r&quot;(__kir) : &quot;rI&quot;(shift), &quot;r&quot;(val));&t;&bslash;&n;     __kir; })
 DECL|macro|__kernel_insql
-mdefine_line|#define __kernel_insql(val, shift)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __kir;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__(&quot;insql %2,%1,%0&quot; : &quot;=r&quot;(__kir) : &quot;rI&quot;(shift), &quot;r&quot;(val));&t;&bslash;&n;     __kir; })
-macro_line|#endif
-macro_line|#if 0 &amp;&amp; (__GNUC__ &gt; 2 || __GNUC_MINOR__ &gt;= 92)
-mdefine_line|#define __kernel_extbl(val, shift)  (((val) &gt;&gt; (((shift) &amp; 7) * 8)) &amp; 0xfful)
-mdefine_line|#define __kernel_extwl(val, shift)  (((val) &gt;&gt; (((shift) &amp; 7) * 8)) &amp; 0xfffful)
-macro_line|#else
+macro_line|# define __kernel_insql(val, shift)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __kir;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__(&quot;insql %2,%1,%0&quot; : &quot;=r&quot;(__kir) : &quot;rI&quot;(shift), &quot;r&quot;(val));&t;&bslash;&n;     __kir; })
+DECL|macro|__kernel_inslh
+macro_line|# define __kernel_inslh(val, shift)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __kir;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__(&quot;inslh %2,%1,%0&quot; : &quot;=r&quot;(__kir) : &quot;rI&quot;(shift), &quot;r&quot;(val));&t;&bslash;&n;     __kir; })
 DECL|macro|__kernel_extbl
-mdefine_line|#define __kernel_extbl(val, shift)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __kir;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__(&quot;extbl %2,%1,%0&quot; : &quot;=r&quot;(__kir) : &quot;rI&quot;(shift), &quot;r&quot;(val));&t;&bslash;&n;     __kir; })
+macro_line|# define __kernel_extbl(val, shift)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __kir;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__(&quot;extbl %2,%1,%0&quot; : &quot;=r&quot;(__kir) : &quot;rI&quot;(shift), &quot;r&quot;(val));&t;&bslash;&n;     __kir; })
 DECL|macro|__kernel_extwl
-mdefine_line|#define __kernel_extwl(val, shift)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __kir;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__(&quot;extwl %2,%1,%0&quot; : &quot;=r&quot;(__kir) : &quot;rI&quot;(shift), &quot;r&quot;(val));&t;&bslash;&n;     __kir; })
+macro_line|# define __kernel_extwl(val, shift)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __kir;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__(&quot;extwl %2,%1,%0&quot; : &quot;=r&quot;(__kir) : &quot;rI&quot;(shift), &quot;r&quot;(val));&t;&bslash;&n;     __kir; })
+DECL|macro|__kernel_cmpbge
+macro_line|# define __kernel_cmpbge(a, b)&t;&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __kir;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__(&quot;cmpbge %r2,%1,%0&quot; : &quot;=r&quot;(__kir) : &quot;rI&quot;(b), &quot;rJ&quot;(val));&t;&bslash;&n;     __kir; })
+DECL|macro|__kernel_cttz
+macro_line|# define __kernel_cttz(x)&t;&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __kir;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__(&quot;cttz %1,%0&quot; : &quot;=r&quot;(__kir) : &quot;r&quot;(x));&t;&t;&t;&bslash;&n;     __kir; })
+DECL|macro|__kernel_ctlz
+macro_line|# define __kernel_ctlz(x)&t;&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __kir;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__(&quot;ctlz %1,%0&quot; : &quot;=r&quot;(__kir) : &quot;r&quot;(x));&t;&t;&t;&bslash;&n;     __kir; })
+DECL|macro|__kernel_ctpop
+macro_line|# define __kernel_ctpop(x)&t;&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __kir;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__(&quot;ctpop %1,%0&quot; : &quot;=r&quot;(__kir) : &quot;r&quot;(x));&t;&t;&t;&bslash;&n;     __kir; })
 macro_line|#endif
 multiline_comment|/* &n; * Beginning with EGCS 1.1, GCC defines __alpha_bwx__ when the BWX &n; * extension is enabled.  Previous versions did not define anything&n; * we could test during compilation -- too bad, so sad.&n; */
 macro_line|#if defined(__alpha_bwx__)
