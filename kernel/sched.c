@@ -8459,12 +8459,6 @@ op_star
 id|p
 )paren
 (brace
-r_int
-r_int
-id|free
-op_assign
-l_int|0
-suffix:semicolon
 id|task_t
 op_star
 id|relative
@@ -8520,22 +8514,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-(paren
-r_int
-)paren
 id|state
-)paren
 OL
-r_sizeof
+id|ARRAY_SIZE
+c_func
 (paren
 id|stat_nam
-)paren
-op_div
-r_sizeof
-(paren
-r_char
-op_star
 )paren
 )paren
 id|printk
@@ -8551,7 +8535,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot; &quot;
+l_string|&quot;?&quot;
 )paren
 suffix:semicolon
 macro_line|#if (BITS_PER_LONG == 32)
@@ -8609,58 +8593,10 @@ id|p
 )paren
 suffix:semicolon
 macro_line|#endif
-(brace
-r_int
-r_int
-op_star
-id|n
-op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-id|p-&gt;thread_info
-op_plus
-l_int|1
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-op_logical_neg
-op_star
-id|n
-)paren
-id|n
-op_increment
-suffix:semicolon
-id|free
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|n
-op_minus
-(paren
-r_int
-r_int
-)paren
-(paren
-id|p-&gt;thread_info
-op_plus
-l_int|1
-)paren
-suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
-l_string|&quot;%5lu %5d %6d &quot;
-comma
-id|free
+l_string|&quot;%5d %6d &quot;
 comma
 id|p-&gt;pid
 comma
@@ -8799,13 +8735,13 @@ id|printk
 c_func
 (paren
 l_string|&quot;&bslash;n&quot;
-l_string|&quot;                         free                        sibling&bslash;n&quot;
+l_string|&quot;                                               sibling&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;  task             PC    stack   pid father child younger older&bslash;n&quot;
+l_string|&quot;  task             PC      pid father child younger older&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#else
@@ -8813,13 +8749,13 @@ id|printk
 c_func
 (paren
 l_string|&quot;&bslash;n&quot;
-l_string|&quot;                                 free                        sibling&bslash;n&quot;
+l_string|&quot;                                                       sibling&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;  task                 PC        stack   pid father child younger older&bslash;n&quot;
+l_string|&quot;  task                 PC          pid father child younger older&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
