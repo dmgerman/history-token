@@ -2514,7 +2514,10 @@ l_int|7
 )braket
 op_assign
 (paren
-id|IPR_HOSTRCB_SZ
+r_sizeof
+(paren
+id|hostrcb-&gt;hcam
+)paren
 op_rshift
 l_int|8
 )paren
@@ -2526,7 +2529,10 @@ id|ioarcb-&gt;cmd_pkt.cdb
 l_int|8
 )braket
 op_assign
-id|IPR_HOSTRCB_SZ
+r_sizeof
+(paren
+id|hostrcb-&gt;hcam
+)paren
 op_amp
 l_int|0xff
 suffix:semicolon
@@ -2535,7 +2541,10 @@ op_assign
 id|cpu_to_be32
 c_func
 (paren
-id|IPR_HOSTRCB_SZ
+r_sizeof
+(paren
+id|hostrcb-&gt;hcam
+)paren
 )paren
 suffix:semicolon
 id|ioarcb-&gt;read_ioadl_len
@@ -2562,7 +2571,10 @@ c_func
 (paren
 id|IPR_IOADL_FLAGS_READ_LAST
 op_or
-id|IPR_HOSTRCB_SZ
+r_sizeof
+(paren
+id|hostrcb-&gt;hcam
+)paren
 )paren
 suffix:semicolon
 id|ipr_cmd-&gt;ioadl
@@ -2720,7 +2732,7 @@ suffix:semicolon
 id|cfgte
 op_assign
 op_amp
-id|hostrcb-&gt;ccn.cfgte
+id|hostrcb-&gt;hcam.ccn.cfgte
 suffix:semicolon
 id|list_for_each_entry
 c_func
@@ -2846,7 +2858,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hostrcb-&gt;notify_type
+id|hostrcb-&gt;hcam.notify_type
 op_eq
 id|IPR_HOST_RCB_NOTIF_TYPE_REM_ENTRY
 )paren
@@ -3146,7 +3158,7 @@ op_star
 id|error
 op_assign
 op_amp
-id|hostrcb-&gt;error.type_02_error
+id|hostrcb-&gt;hcam.error.type_02_error
 suffix:semicolon
 id|ipr_err
 c_func
@@ -3287,7 +3299,7 @@ op_assign
 id|be32_to_cpu
 c_func
 (paren
-id|hostrcb-&gt;error.type_03_error.errors_logged
+id|hostrcb-&gt;hcam.error.type_03_error.errors_logged
 )paren
 suffix:semicolon
 id|ipr_err
@@ -3298,7 +3310,7 @@ comma
 id|be32_to_cpu
 c_func
 (paren
-id|hostrcb-&gt;error.type_03_error.errors_detected
+id|hostrcb-&gt;hcam.error.type_03_error.errors_detected
 )paren
 comma
 id|errors_logged
@@ -3306,7 +3318,7 @@ id|errors_logged
 suffix:semicolon
 id|dev_entry
 op_assign
-id|hostrcb-&gt;error.type_03_error.dev_entry
+id|hostrcb-&gt;hcam.error.type_03_error.dev_entry
 suffix:semicolon
 r_for
 c_loop
@@ -3525,7 +3537,7 @@ suffix:semicolon
 id|error
 op_assign
 op_amp
-id|hostrcb-&gt;error.type_04_error
+id|hostrcb-&gt;hcam.error.type_04_error
 suffix:semicolon
 id|ipr_err_separator
 suffix:semicolon
@@ -3729,7 +3741,7 @@ op_assign
 id|be32_to_cpu
 c_func
 (paren
-id|hostrcb-&gt;length
+id|hostrcb-&gt;hcam.length
 )paren
 suffix:semicolon
 r_if
@@ -3783,7 +3795,7 @@ comma
 id|be32_to_cpu
 c_func
 (paren
-id|hostrcb-&gt;raw.data
+id|hostrcb-&gt;hcam.raw.data
 (braket
 id|i
 )braket
@@ -3792,7 +3804,7 @@ comma
 id|be32_to_cpu
 c_func
 (paren
-id|hostrcb-&gt;raw.data
+id|hostrcb-&gt;hcam.raw.data
 (braket
 id|i
 op_plus
@@ -3803,7 +3815,7 @@ comma
 id|be32_to_cpu
 c_func
 (paren
-id|hostrcb-&gt;raw.data
+id|hostrcb-&gt;hcam.raw.data
 (braket
 id|i
 op_plus
@@ -3814,7 +3826,7 @@ comma
 id|be32_to_cpu
 c_func
 (paren
-id|hostrcb-&gt;raw.data
+id|hostrcb-&gt;hcam.raw.data
 (braket
 id|i
 op_plus
@@ -3903,7 +3915,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hostrcb-&gt;notify_type
+id|hostrcb-&gt;hcam.notify_type
 op_ne
 id|IPR_HOST_RCB_NOTIF_TYPE_ERROR_LOG_ENTRY
 )paren
@@ -3912,7 +3924,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hostrcb-&gt;notifications_lost
+id|hostrcb-&gt;hcam.notifications_lost
 op_eq
 id|IPR_HOST_RCB_NOTIFICATIONS_LOST
 )paren
@@ -3930,7 +3942,7 @@ op_assign
 id|be32_to_cpu
 c_func
 (paren
-id|hostrcb-&gt;error.failing_dev_ioasc
+id|hostrcb-&gt;hcam.error.failing_dev_ioasc
 )paren
 suffix:semicolon
 r_if
@@ -3951,7 +3963,7 @@ c_func
 (paren
 id|ioa_cfg-&gt;host
 comma
-id|hostrcb-&gt;error.failing_dev_res_addr.bus
+id|hostrcb-&gt;hcam.error.failing_dev_res_addr.bus
 )paren
 suffix:semicolon
 )brace
@@ -3983,7 +3995,7 @@ id|ipr_is_device
 c_func
 (paren
 op_amp
-id|hostrcb-&gt;error.failing_dev_res_addr
+id|hostrcb-&gt;hcam.error.failing_dev_res_addr
 )paren
 )paren
 (brace
@@ -3992,7 +4004,7 @@ c_func
 (paren
 id|ioa_cfg
 comma
-id|hostrcb-&gt;error.failing_dev_res_addr
+id|hostrcb-&gt;hcam.error.failing_dev_res_addr
 comma
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -4040,7 +4052,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|hostrcb-&gt;overlay_id
+id|hostrcb-&gt;hcam.overlay_id
 )paren
 (brace
 r_case
@@ -4121,7 +4133,7 @@ id|ioa_cfg-&gt;pdev-&gt;dev
 comma
 l_string|&quot;Unknown error received. Overlay ID: %d&bslash;n&quot;
 comma
-id|hostrcb-&gt;overlay_id
+id|hostrcb-&gt;hcam.overlay_id
 )paren
 suffix:semicolon
 r_break
@@ -17836,11 +17848,15 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|hostrcb
+op_amp
+id|hostrcb-&gt;hcam
 comma
 l_int|0
 comma
-id|IPR_HOSTRCB_SZ
+r_sizeof
+(paren
+id|hostrcb-&gt;hcam
+)paren
 )paren
 suffix:semicolon
 id|rc
@@ -17865,7 +17881,8 @@ comma
 id|u32
 op_star
 )paren
-id|hostrcb
+op_amp
+id|hostrcb-&gt;hcam
 comma
 id|min
 c_func
@@ -17875,7 +17892,10 @@ comma
 (paren
 r_int
 )paren
-id|IPR_HOSTRCB_SZ
+r_sizeof
+(paren
+id|hostrcb-&gt;hcam
+)paren
 )paren
 op_div
 r_sizeof
@@ -19968,6 +19988,14 @@ id|ioa_cfg-&gt;hostrcb_dma
 (braket
 id|i
 )braket
+op_plus
+m_offsetof
+(paren
+r_struct
+id|ipr_hostrcb
+comma
+id|hcam
+)paren
 suffix:semicolon
 id|list_add_tail
 c_func

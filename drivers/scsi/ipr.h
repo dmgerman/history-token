@@ -1908,9 +1908,9 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
-DECL|struct|ipr_hostrcb
+DECL|struct|ipr_hcam
 r_struct
-id|ipr_hostrcb
+id|ipr_hcam
 (brace
 DECL|member|op_code
 id|u8
@@ -2008,16 +2008,6 @@ id|raw
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Driver added data */
-DECL|member|hostrcb_dma
-id|u32
-id|hostrcb_dma
-suffix:semicolon
-DECL|member|queue
-r_struct
-id|list_head
-id|queue
-suffix:semicolon
 )brace
 id|__attribute__
 c_func
@@ -2032,8 +2022,26 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
-DECL|macro|IPR_HOSTRCB_SZ
-mdefine_line|#define IPR_HOSTRCB_SZ offsetof(struct ipr_hostrcb, hostrcb_dma)
+DECL|struct|ipr_hostrcb
+r_struct
+id|ipr_hostrcb
+(brace
+DECL|member|hcam
+r_struct
+id|ipr_hcam
+id|hcam
+suffix:semicolon
+DECL|member|hostrcb_dma
+id|u32
+id|hostrcb_dma
+suffix:semicolon
+DECL|member|queue
+r_struct
+id|list_head
+id|queue
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* IPR smart dump table structures */
 DECL|struct|ipr_sdt_entry
 r_struct
