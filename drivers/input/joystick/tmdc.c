@@ -30,9 +30,9 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|macro|TMDC_MAX_START
-mdefine_line|#define TMDC_MAX_START&t;&t;400&t;/* 400 us */
+mdefine_line|#define TMDC_MAX_START&t;&t;600&t;/* 600 us */
 DECL|macro|TMDC_MAX_STROBE
-mdefine_line|#define TMDC_MAX_STROBE&t;&t;45&t;/* 45 us */
+mdefine_line|#define TMDC_MAX_STROBE&t;&t;60&t;/* 60 us */
 DECL|macro|TMDC_MAX_LENGTH
 mdefine_line|#define TMDC_MAX_LENGTH&t;&t;13
 DECL|macro|TMDC_MODE_M3DI

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: sidewinder.c,v 1.29 2002/01/22 20:28:51 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2001 Vojtech Pavlik&n; */
+multiline_comment|/*&n; *  Copyright (c) 1998-2005 Vojtech Pavlik&n; */
 multiline_comment|/*&n; * Microsoft SideWinder joystick family driver for Linux&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/delay.h&gt;
@@ -30,13 +30,16 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * These are really magic values. Changing them can make a problem go away,&n; * as well as break everything.&n; */
-multiline_comment|/* #define SW_DEBUG */
+DECL|macro|SW_DEBUG
+macro_line|#undef SW_DEBUG
+DECL|macro|SW_DEBUG_DATA
+macro_line|#undef SW_DEBUG_DATA
 DECL|macro|SW_START
-mdefine_line|#define SW_START&t;400&t;/* The time we wait for the first bit [400 us] */
+mdefine_line|#define SW_START&t;600&t;/* The time we wait for the first bit [600 us] */
 DECL|macro|SW_STROBE
-mdefine_line|#define SW_STROBE&t;45&t;/* Max time per bit [45 us] */
+mdefine_line|#define SW_STROBE&t;60&t;/* Max time per bit [60 us] */
 DECL|macro|SW_TIMEOUT
-mdefine_line|#define SW_TIMEOUT&t;4000&t;/* Wait for everything to settle [4 ms] */
+mdefine_line|#define SW_TIMEOUT&t;6&t;/* Wait for everything to settle [6 ms] */
 DECL|macro|SW_KICK
 mdefine_line|#define SW_KICK&t;&t;45&t;/* Wait after A0 fall till kick [45 us] */
 DECL|macro|SW_END
@@ -608,6 +611,8 @@ c_func
 id|gameport
 comma
 id|SW_TIMEOUT
+op_star
+l_int|1000
 )paren
 suffix:colon
 l_int|0
@@ -905,7 +910,7 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Done - relax */
-macro_line|#ifdef SW_DEBUG
+macro_line|#ifdef SW_DEBUG_DATA
 (brace
 r_int
 id|j
@@ -1125,6 +1130,8 @@ c_func
 id|gameport
 comma
 id|SW_TIMEOUT
+op_star
+l_int|1000
 )paren
 suffix:semicolon
 r_while
@@ -2658,7 +2665,7 @@ id|SW_ID_3DP
 )paren
 (brace
 multiline_comment|/* 3D Pro can be in analog mode */
-id|udelay
+id|mdelay
 c_func
 (paren
 l_int|3
@@ -2673,7 +2680,7 @@ id|sw-&gt;gameport
 )paren
 suffix:semicolon
 )brace
-id|udelay
+id|mdelay
 c_func
 (paren
 id|SW_TIMEOUT
@@ -2694,7 +2701,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Read normal data packet */
-id|udelay
+id|mdelay
 c_func
 (paren
 id|SW_TIMEOUT
@@ -3366,7 +3373,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Read normal packet */
-id|udelay
+id|msleep
 c_func
 (paren
 id|SW_TIMEOUT
@@ -3397,7 +3404,7 @@ id|gameport
 )paren
 suffix:semicolon
 multiline_comment|/* Switch to digital */
-id|udelay
+id|msleep
 c_func
 (paren
 id|SW_TIMEOUT
@@ -3418,7 +3425,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Retry reading packet */
-id|udelay
+id|msleep
 c_func
 (paren
 id|SW_TIMEOUT
@@ -3489,12 +3496,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|j
+op_le
+l_int|0
 )paren
 (brace
 multiline_comment|/* Read ID failed. Happens in 1-bit mode on PP */
-id|udelay
+id|msleep
 c_func
 (paren
 id|SW_TIMEOUT
@@ -3515,6 +3523,16 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Retry reading packet */
+id|m
+op_or_assign
+id|sw_guess_mode
+c_func
+(paren
+id|buf
+comma
+id|i
+)paren
+suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -3541,7 +3559,7 @@ r_goto
 id|fail2
 suffix:semicolon
 )brace
-id|udelay
+id|msleep
 c_func
 (paren
 id|SW_TIMEOUT
@@ -3590,7 +3608,7 @@ r_do
 id|k
 op_decrement
 suffix:semicolon
-id|udelay
+id|msleep
 c_func
 (paren
 id|SW_TIMEOUT

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: adi.c,v 1.23 2002/01/22 20:26:17 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2001 Vojtech Pavlik&n; */
+multiline_comment|/*&n; *  Copyright (c) 1998-2005 Vojtech Pavlik&n; */
 multiline_comment|/*&n; * Logitech ADI joystick family driver for Linux&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/delay.h&gt;
@@ -52,7 +52,7 @@ mdefine_line|#define ADI_MAX_NAME_LENGTH&t;48
 DECL|macro|ADI_MAX_CNAME_LENGTH
 mdefine_line|#define ADI_MAX_CNAME_LENGTH&t;16
 DECL|macro|ADI_MAX_PHYS_LENGTH
-mdefine_line|#define ADI_MAX_PHYS_LENGTH&t;32
+mdefine_line|#define ADI_MAX_PHYS_LENGTH&t;64
 DECL|macro|ADI_FLAG_HAT
 mdefine_line|#define ADI_FLAG_HAT&t;&t;0x04
 DECL|macro|ADI_FLAG_10BIT
@@ -1681,7 +1681,7 @@ id|seq
 )braket
 op_assign
 (brace
-l_int|3
+l_int|4
 comma
 op_minus
 l_int|2
@@ -1762,6 +1762,7 @@ id|i
 OL
 l_int|0
 )paren
+(brace
 id|mdelay
 c_func
 (paren
@@ -1772,6 +1773,20 @@ id|i
 )braket
 )paren
 suffix:semicolon
+id|udelay
+c_func
+(paren
+op_minus
+id|seq
+(braket
+id|i
+)braket
+op_star
+l_int|14
+)paren
+suffix:semicolon
+multiline_comment|/* It looks like mdelay() is off by approx 1.4% */
+)brace
 )brace
 )brace
 DECL|function|adi_id_decode
@@ -2215,10 +2230,12 @@ id|adi-&gt;id
 suffix:colon
 id|ADI_ID_MAX
 suffix:semicolon
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|buf
+comma
+id|ADI_MAX_PHYS_LENGTH
 comma
 id|adi_names
 (braket
@@ -2228,20 +2245,24 @@ comma
 id|adi-&gt;id
 )paren
 suffix:semicolon
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|adi-&gt;name
+comma
+id|ADI_MAX_NAME_LENGTH
 comma
 l_string|&quot;Logitech %s&quot;
 comma
 id|buf
 )paren
 suffix:semicolon
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|adi-&gt;phys
+comma
+id|ADI_MAX_PHYS_LENGTH
 comma
 l_string|&quot;%s/input%d&quot;
 comma
