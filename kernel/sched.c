@@ -8542,14 +8542,14 @@ macro_line|#if (BITS_PER_LONG == 32)
 r_if
 c_cond
 (paren
-id|p
+id|state
 op_eq
-id|current
+id|TASK_RUNNING
 )paren
 id|printk
 c_func
 (paren
-l_string|&quot; current  &quot;
+l_string|&quot; running &quot;
 )paren
 suffix:semicolon
 r_else
@@ -8569,14 +8569,14 @@ macro_line|#else
 r_if
 c_cond
 (paren
-id|p
+id|state
 op_eq
-id|current
+id|TASK_RUNNING
 )paren
 id|printk
 c_func
 (paren
-l_string|&quot;   current task   &quot;
+l_string|&quot;  running task   &quot;
 )paren
 suffix:semicolon
 r_else
@@ -8706,6 +8706,13 @@ c_func
 l_string|&quot; (NOTLB)&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|state
+op_ne
+id|TASK_RUNNING
+)paren
 id|show_stack
 c_func
 (paren
