@@ -10575,10 +10575,7 @@ op_star
 id|fown
 comma
 r_int
-id|fd
-comma
-r_int
-id|reason
+id|signum
 )paren
 (brace
 r_struct
@@ -10634,7 +10631,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|fown-&gt;signum
+id|signum
 )paren
 id|perm
 op_assign
@@ -10651,7 +10648,7 @@ op_assign
 id|signal_to_av
 c_func
 (paren
-id|fown-&gt;signum
+id|signum
 )paren
 suffix:semicolon
 r_return
