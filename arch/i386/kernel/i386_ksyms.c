@@ -528,6 +528,13 @@ id|__read_lock_failed
 )paren
 suffix:semicolon
 multiline_comment|/* Global SMP stuff */
+DECL|variable|synchronize_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|synchronize_irq
+)paren
+suffix:semicolon
 DECL|variable|smp_call_function
 id|EXPORT_SYMBOL
 c_func

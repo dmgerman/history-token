@@ -98,6 +98,7 @@ multiline_comment|/*      Local vars.&n; */
 DECL|variable|busy_flag
 r_static
 r_int
+r_int
 id|busy_flag
 suffix:semicolon
 DECL|variable|orig_sigmask

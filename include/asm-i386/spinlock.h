@@ -68,7 +68,7 @@ DECL|macro|spin_lock_init
 mdefine_line|#define spin_lock_init(x)&t;do { *(x) = SPIN_LOCK_UNLOCKED; } while(0)
 multiline_comment|/*&n; * Simple spin lock operations.  There are two variants, one clears IRQ&squot;s&n; * on the local processor, one does not.&n; *&n; * We make no fairness assumptions. They have a cost.&n; */
 DECL|macro|spin_is_locked
-mdefine_line|#define spin_is_locked(x)&t;(*(volatile char *)(&amp;(x)-&gt;lock) &lt;= 0)
+mdefine_line|#define spin_is_locked(x)&t;(*(volatile signed char *)(&amp;(x)-&gt;lock) &lt;= 0)
 DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(x)&t;do { barrier(); } while(spin_is_locked(x))
 DECL|macro|spin_lock_string
