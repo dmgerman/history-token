@@ -46,6 +46,10 @@ mdefine_line|#define VSC_SATA_TF_ALTSTATUS_OFFSET&t;0x28
 DECL|macro|VSC_SATA_TF_CTL_OFFSET
 mdefine_line|#define VSC_SATA_TF_CTL_OFFSET&t;&t;0x29
 multiline_comment|/* DMA base */
+DECL|macro|VSC_SATA_UP_DESCRIPTOR_OFFSET
+mdefine_line|#define VSC_SATA_UP_DESCRIPTOR_OFFSET&t;0x64
+DECL|macro|VSC_SATA_UP_DATA_BUFFER_OFFSET
+mdefine_line|#define VSC_SATA_UP_DATA_BUFFER_OFFSET&t;0x6C
 DECL|macro|VSC_SATA_DMA_CMD_OFFSET
 mdefine_line|#define VSC_SATA_DMA_CMD_OFFSET&t;&t;0x70
 multiline_comment|/* SCRs base */
@@ -1023,6 +1027,26 @@ op_assign
 id|base
 op_plus
 id|VSC_SATA_SCR_STATUS_OFFSET
+suffix:semicolon
+id|writel
+c_func
+(paren
+l_int|0
+comma
+id|base
+op_plus
+id|VSC_SATA_UP_DESCRIPTOR_OFFSET
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+l_int|0
+comma
+id|base
+op_plus
+id|VSC_SATA_UP_DATA_BUFFER_OFFSET
+)paren
 suffix:semicolon
 )brace
 DECL|function|vsc_sata_init_one
