@@ -1282,45 +1282,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|emu-&gt;APS
-)paren
-(brace
-multiline_comment|/* enable analog output */
-r_if
-c_cond
-(paren
-op_logical_neg
 id|emu-&gt;audigy
 )paren
 (brace
-r_int
-r_int
-id|reg
-op_assign
-id|inl
-c_func
-(paren
-id|emu-&gt;port
-op_plus
-id|HCFG
-)paren
-suffix:semicolon
-id|outl
-c_func
-(paren
-id|reg
-op_or
-id|HCFG_GPOUT0
-comma
-id|emu-&gt;port
-op_plus
-id|HCFG
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
+multiline_comment|/* enable analog output */
 r_int
 r_int
 id|reg
@@ -1345,7 +1310,6 @@ op_plus
 id|A_IOCFG
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;&t; *  Initialize the effect engine&n;&t; */
 r_if
