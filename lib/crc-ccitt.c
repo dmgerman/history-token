@@ -1,12 +1,12 @@
-multiline_comment|/*&n; *&t;linux/lib/crc16.c&n; *&n; *&t;This source code is licensed under the GNU General Public License,&n; *&t;Version 2. See the file COPYING for more details.&n; */
+multiline_comment|/*&n; *&t;linux/lib/crc-ccitt.c&n; *&n; *&t;This source code is licensed under the GNU General Public License,&n; *&t;Version 2. See the file COPYING for more details.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/crc16.h&gt;
+macro_line|#include &lt;linux/crc-ccitt.h&gt;
 multiline_comment|/*&n; * This mysterious table is just the CRC of each possible byte. It can be&n; * computed using the standard bit-at-a-time methods. The polynomial can&n; * be seen in entry 128, 0x8408. This corresponds to x^0 + x^5 + x^12.&n; * Add the implicit x^16, and you have the standard CRC-CCITT.&n; */
-DECL|variable|crc16_table
+DECL|variable|crc_ccitt_table
 id|u16
 r_const
-id|crc16_table
+id|crc_ccitt_table
 (braket
 l_int|256
 )braket
@@ -525,17 +525,17 @@ comma
 l_int|0x0f78
 )brace
 suffix:semicolon
-DECL|variable|crc16_table
+DECL|variable|crc_ccitt_table
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|crc16_table
+id|crc_ccitt_table
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;crc16 - recompute the CRC for the data buffer&n; *&t;@crc - previous CRC value&n; *&t;@buffer - data pointer&n; *&t;@len - number of bytes in the buffer&n; */
-DECL|function|crc16
+multiline_comment|/**&n; *&t;crc_ccitt - recompute the CRC for the data buffer&n; *&t;@crc - previous CRC value&n; *&t;@buffer - data pointer&n; *&t;@len - number of bytes in the buffer&n; */
+DECL|function|crc_ccitt
 id|u16
-id|crc16
+id|crc_ccitt
 c_func
 (paren
 id|u16
@@ -558,7 +558,7 @@ op_decrement
 )paren
 id|crc
 op_assign
-id|crc16_byte
+id|crc_ccitt_byte
 c_func
 (paren
 id|crc
@@ -572,17 +572,17 @@ r_return
 id|crc
 suffix:semicolon
 )brace
-DECL|variable|crc16
+DECL|variable|crc_ccitt
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|crc16
+id|crc_ccitt
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;CRC16 calculations&quot;
+l_string|&quot;CRC-CCITT calculations&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

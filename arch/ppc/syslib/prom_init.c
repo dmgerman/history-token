@@ -424,7 +424,6 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|variable|__initdata
-r_static
 r_char
 op_star
 id|of_stdout_device
@@ -4715,6 +4714,17 @@ id|i
 )braket
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SERIAL_CORE_CONSOLE
+multiline_comment|/* Relocate the of stdout for console autodetection */
+id|of_stdout_device
+op_assign
+id|PTRUNRELOC
+c_func
+(paren
+id|of_stdout_device
+)paren
+suffix:semicolon
+macro_line|#endif
 id|prom_print
 c_func
 (paren

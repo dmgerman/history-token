@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;asm/gentrap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
@@ -480,7 +481,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Trace:&quot;
+l_string|&quot;Trace:&bslash;n&quot;
 )paren
 suffix:semicolon
 r_while
@@ -546,11 +547,23 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%lx%c&quot;
+l_string|&quot;[&lt;%lx&gt;]&quot;
 comma
 id|tmp
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot; %s&quot;
 comma
-l_char|&squot; &squot;
+id|tmp
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if

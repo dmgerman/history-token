@@ -338,10 +338,10 @@ id|current
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This routine handles page faults.  It determines the address,&n; * and the problem, and then passes it off to one of the appropriate&n; * routines.&n; *&n; * error_code:&n; *   04       Protection           -&gt;  Write-Protection  (suprression)&n; *   10       Segment translation  -&gt;  Not present       (nullification)&n; *   11       Page translation     -&gt;  Not present       (nullification)&n; *   3b       Region third trans.  -&gt;  Not present       (nullification)&n; */
-DECL|function|do_exception
 r_extern
 r_inline
 r_void
+DECL|function|do_exception
 id|do_exception
 c_func
 (paren
@@ -353,6 +353,9 @@ comma
 r_int
 r_int
 id|error_code
+comma
+r_int
+id|is_protection
 )paren
 (brace
 r_struct
@@ -400,9 +403,7 @@ multiline_comment|/* &n;         * Check for low-address protection.  This needs
 r_if
 c_cond
 (paren
-id|error_code
-op_eq
-l_int|4
+id|is_protection
 op_logical_and
 op_logical_neg
 (paren
@@ -568,9 +569,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|error_code
-op_ne
-l_int|4
+op_logical_neg
+id|is_protection
 )paren
 (brace
 multiline_comment|/* page not present, check vm flags */
@@ -625,9 +625,7 @@ id|vma
 comma
 id|address
 comma
-id|error_code
-op_eq
-l_int|4
+id|is_protection
 )paren
 )paren
 (brace
@@ -672,6 +670,15 @@ c_func
 (paren
 op_amp
 id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * The instruction that caused the program check will&n;&t; * be repeated. Don&squot;t signal single step via SIGTRAP.&n;&t; */
+id|clear_tsk_thread_flag
+c_func
+(paren
+id|current
+comma
+id|TIF_SINGLE_STEP
 )paren
 suffix:semicolon
 r_return
@@ -920,12 +927,14 @@ c_func
 id|regs
 comma
 l_int|4
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|function|do_segment_exception
+DECL|function|do_dat_exception
 r_void
-id|do_segment_exception
+id|do_dat_exception
 c_func
 (paren
 r_struct
@@ -943,60 +952,15 @@ c_func
 (paren
 id|regs
 comma
-l_int|0x10
-)paren
-suffix:semicolon
-)brace
-DECL|function|do_page_exception
-r_void
-id|do_page_exception
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-r_int
-r_int
 id|error_code
-)paren
-(brace
-id|do_exception
-c_func
-(paren
-id|regs
+op_amp
+l_int|0xff
 comma
-l_int|0x11
+l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ARCH_S390X
-r_void
-DECL|function|do_region_exception
-id|do_region_exception
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-r_int
-r_int
-id|error_code
-)paren
-(brace
-id|do_exception
-c_func
-(paren
-id|regs
-comma
-l_int|0x3b
-)paren
-suffix:semicolon
-)brace
-macro_line|#else /* CONFIG_ARCH_S390X */
+macro_line|#ifndef CONFIG_ARCH_S390X
 DECL|struct|_pseudo_wait_t
 r_typedef
 r_struct
@@ -1281,6 +1245,15 @@ c_func
 (paren
 op_amp
 id|pseudo_wait_spinlock
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * The instruction that caused the program check will&n;&t;&t; * be repeated. Don&squot;t signal single step via SIGTRAP.&n;&t;&t; */
+id|clear_tsk_thread_flag
+c_func
+(paren
+id|current
+comma
+id|TIF_SINGLE_STEP
 )paren
 suffix:semicolon
 multiline_comment|/* go to sleep */

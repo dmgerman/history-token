@@ -3,6 +3,7 @@ macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;stddef.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
@@ -508,6 +509,13 @@ multiline_comment|/* 0x480 I-SLB */
 )brace
 )brace
 suffix:semicolon
+DECL|variable|itLpNaca
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|itLpNaca
+)paren
+suffix:semicolon
 multiline_comment|/* May be filled in by the hypervisor so cannot end up in the BSS */
 DECL|variable|xItIplParmsReal
 r_struct
@@ -540,6 +548,13 @@ c_func
 l_string|&quot;.data&quot;
 )paren
 )paren
+)paren
+suffix:semicolon
+DECL|variable|xItExtVpdPanel
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xItExtVpdPanel
 )paren
 suffix:semicolon
 DECL|macro|maxPhysicalProcessors

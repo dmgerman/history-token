@@ -713,6 +713,31 @@ id|nd-&gt;mnt
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * umount() mustn&squot;t call path_release()/mntput() as that would clear&n; * mnt_expiry_mark&n; */
+DECL|function|path_release_on_umount
+r_void
+id|path_release_on_umount
+c_func
+(paren
+r_struct
+id|nameidata
+op_star
+id|nd
+)paren
+(brace
+id|dput
+c_func
+(paren
+id|nd-&gt;dentry
+)paren
+suffix:semicolon
+id|_mntput
+c_func
+(paren
+id|nd-&gt;mnt
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Internal lookup() using the new generic dcache.&n; * SMP-safe&n; */
 DECL|function|cached_lookup
 r_static

@@ -10,18 +10,6 @@ macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/dmi.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-DECL|variable|dmi_broken
-r_int
-r_int
-id|dmi_broken
-suffix:semicolon
-DECL|variable|dmi_broken
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|dmi_broken
-)paren
-suffix:semicolon
 DECL|variable|es7000_plat
 r_int
 id|es7000_plat
@@ -788,35 +776,6 @@ c_func
 id|KERN_WARNING
 l_string|&quot;Toshiba with broken keyboard detected. If your keyboard sometimes generates 3 keypresses instead of one, see http://davyd.ucc.asn.au/projects/toshiba/README&bslash;n&quot;
 )paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Toshiba fails to preserve interrupts over S1&n; */
-DECL|function|init_ints_after_s1
-r_static
-id|__init
-r_int
-id|init_ints_after_s1
-c_func
-(paren
-r_struct
-id|dmi_blacklist
-op_star
-id|d
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Toshiba with broken S1 detected.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|dmi_broken
-op_or_assign
-id|BROKEN_INIT_AFTER_S1
 suffix:semicolon
 r_return
 l_int|0

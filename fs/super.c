@@ -3360,6 +3360,12 @@ id|mnt-&gt;mnt_parent
 op_assign
 id|mnt
 suffix:semicolon
+id|mnt-&gt;mnt_namespace
+op_assign
+id|current
+op_member_access_from_pointer
+r_namespace
+suffix:semicolon
 id|up_write
 c_func
 (paren
@@ -3432,6 +3438,13 @@ op_star
 id|sb
 suffix:semicolon
 )brace
+DECL|variable|do_kern_mount
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|do_kern_mount
+)paren
+suffix:semicolon
 DECL|function|kern_mount
 r_struct
 id|vfsmount
