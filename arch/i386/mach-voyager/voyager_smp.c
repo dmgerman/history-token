@@ -2100,44 +2100,20 @@ id|idle
 )paren
 suffix:semicolon
 multiline_comment|/* init_tasks (in sched.c) is indexed logically */
-macro_line|#if 0
-singleline_comment|// for AC kernels
-id|stack_start.esp
-op_assign
-(paren
-id|THREAD_SIZE
-op_plus
-(paren
-id|__u8
-op_star
-)paren
-id|TSK_TO_KSTACK
-c_func
-(paren
-id|idle
-)paren
-)paren
-suffix:semicolon
-macro_line|#else
 id|stack_start.esp
 op_assign
 (paren
 r_void
 op_star
 )paren
+id|idle-&gt;thread.esp
+suffix:semicolon
+id|irq_ctx_init
+c_func
 (paren
-l_int|1024
-op_plus
-id|PAGE_SIZE
-op_plus
-(paren
-r_char
-op_star
-)paren
-id|idle-&gt;thread_info
+id|cpu
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Note: Don&squot;t modify initial ss override */
 id|VDEBUG
 c_func
