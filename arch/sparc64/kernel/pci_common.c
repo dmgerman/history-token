@@ -151,6 +151,10 @@ id|PCI_DEVICE_ID_SUN_SCHIZO
 op_logical_or
 id|pdev-&gt;device
 op_eq
+id|PCI_DEVICE_ID_SUN_TOMATILLO
+op_logical_or
+id|pdev-&gt;device
+op_eq
 id|PCI_DEVICE_ID_SUN_SABRE
 op_logical_or
 id|pdev-&gt;device
