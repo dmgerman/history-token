@@ -118,6 +118,7 @@ l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_
 suffix:semicolon
 multiline_comment|/* This is kicking the watchdog by simply re-writing the timeout to reg. 0xF2 */
 DECL|function|kick_wdog
+r_static
 r_int
 id|kick_wdog
 c_func
@@ -673,7 +674,7 @@ op_star
 id|ppos
 )paren
 (brace
-multiline_comment|/*  Can&squot;t seek (pwrite) on this device  */
+multiline_comment|/* Can&squot;t seek (pwrite) on this device  */
 r_if
 c_cond
 (paren
@@ -716,7 +717,7 @@ l_int|0
 suffix:semicolon
 id|i
 op_ne
-id|len
+id|count
 suffix:semicolon
 id|i
 op_increment
@@ -733,7 +734,7 @@ c_func
 (paren
 id|c
 comma
-id|data
+id|buf
 op_plus
 id|i
 )paren
@@ -760,15 +761,30 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
 )brace
 r_return
-l_int|0
+id|count
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *      wdt977_ioctl:&n; *      @inode: inode of the device&n; *      @file: file handle to the device&n; *      @cmd: watchdog command&n; *      @arg: argument pointer&n; *&n; *      The watchdog API defines a common set of functions for all watchdogs&n; *      according to their available features.&n; */
+DECL|variable|ident
+r_static
+r_struct
+id|watchdog_info
+id|ident
+op_assign
+(brace
+dot
+id|options
+op_assign
+id|WDIOF_SETTIMEOUT
+comma
+dot
+id|identity
+op_assign
+l_string|&quot;Winbond 83977&quot;
+)brace
+suffix:semicolon
 DECL|function|wdt977_ioctl
 r_static
 r_int
@@ -794,17 +810,6 @@ r_int
 id|arg
 )paren
 (brace
-r_static
-r_struct
-id|watchdog_info
-id|ident
-op_assign
-(brace
-id|identity
-suffix:colon
-l_string|&quot;Winbond 83977&quot;
-)brace
-suffix:semicolon
 r_int
 id|temp
 suffix:semicolon
@@ -1085,10 +1090,19 @@ id|miscdevice
 id|wdt977_miscdev
 op_assign
 (brace
+dot
+id|minor
+op_assign
 id|WATCHDOG_MINOR
 comma
+dot
+id|name
+op_assign
 l_string|&quot;watchdog&quot;
 comma
+dot
+id|fops
+op_assign
 op_amp
 id|wdt977_fops
 )brace
@@ -1164,6 +1178,12 @@ id|module_exit
 c_func
 (paren
 id|nwwatchdog_exit
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;W83977AF Watchdog driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
