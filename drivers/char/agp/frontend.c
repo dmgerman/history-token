@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * AGPGART driver frontend&n; * Copyright (C) 2002-2003 Dave Jones&n; * Copyright (C) 1999 Jeff Hartmann&n; * Copyright (C) 1999 Precision Insight, Inc.&n; * Copyright (C) 1999 Xi Graphics, Inc.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * JEFF HARTMANN, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM,&n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR&n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE&n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; */
+multiline_comment|/*&n; * AGPGART driver frontend&n; * Copyright (C) 2004 Silicon Graphics, Inc.&n; * Copyright (C) 2002-2003 Dave Jones&n; * Copyright (C) 1999 Jeff Hartmann&n; * Copyright (C) 1999 Precision Insight, Inc.&n; * Copyright (C) 1999 Xi Graphics, Inc.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * JEFF HARTMANN, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM,&n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR&n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE&n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -1059,6 +1059,8 @@ op_assign
 id|agp_allocate_memory
 c_func
 (paren
+id|agp_bridge
+comma
 id|pg_count
 comma
 id|type
@@ -1485,6 +1487,7 @@ suffix:semicolon
 id|agp_backend_release
 c_func
 (paren
+id|agp_bridge
 )paren
 suffix:semicolon
 )brace
@@ -1665,6 +1668,7 @@ suffix:semicolon
 id|agp_backend_release
 c_func
 (paren
+id|agp_bridge
 )paren
 suffix:semicolon
 )brace
@@ -2166,6 +2170,8 @@ suffix:semicolon
 id|agp_copy_info
 c_func
 (paren
+id|agp_bridge
+comma
 op_amp
 id|kerninfo
 )paren
@@ -2923,6 +2929,8 @@ suffix:semicolon
 id|agp_copy_info
 c_func
 (paren
+id|agp_bridge
+comma
 op_amp
 id|kerninfo
 )paren
@@ -3005,9 +3013,6 @@ op_star
 id|priv
 )paren
 (brace
-r_int
-id|ret
-suffix:semicolon
 r_struct
 id|agp_controller
 op_star
@@ -3049,27 +3054,42 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-id|ret
-op_assign
-id|agp_backend_acquire
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|ret
-op_eq
-l_int|0
+op_logical_neg
+id|agp_bridge
 )paren
+(brace
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|agp_bridge-&gt;agp_in_use
+)paren
+)paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|agp_bridge-&gt;agp_in_use
+)paren
+suffix:semicolon
 id|agp_fe.backend_acquired
 op_assign
 id|TRUE
-suffix:semicolon
-r_else
-r_return
-id|ret
 suffix:semicolon
 id|controller
 op_assign
@@ -3119,6 +3139,7 @@ suffix:semicolon
 id|agp_backend_release
 c_func
 (paren
+id|agp_bridge
 )paren
 suffix:semicolon
 r_return
@@ -3243,6 +3264,8 @@ suffix:semicolon
 id|agp_enable
 c_func
 (paren
+id|agp_bridge
+comma
 id|mode.agp_mode
 )paren
 suffix:semicolon
