@@ -5304,7 +5304,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|generic_file_vm_ops
-r_static
 r_struct
 id|vm_operations_struct
 id|generic_file_vm_ops

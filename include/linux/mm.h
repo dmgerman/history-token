@@ -1134,6 +1134,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SHMEM
 r_struct
 id|page
 op_star
@@ -1185,24 +1186,6 @@ r_int
 id|addr
 )paren
 suffix:semicolon
-r_struct
-id|file
-op_star
-id|shmem_file_setup
-c_func
-(paren
-r_char
-op_star
-id|name
-comma
-id|loff_t
-id|size
-comma
-r_int
-r_int
-id|flags
-)paren
-suffix:semicolon
 r_int
 id|shmem_lock
 c_func
@@ -1219,6 +1202,34 @@ r_struct
 id|user_struct
 op_star
 id|user
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|shmem_nopage
+mdefine_line|#define shmem_nopage filemap_nopage
+DECL|macro|shmem_lock
+mdefine_line|#define shmem_lock(a, b) /* always in memory, no need to lock */
+DECL|macro|shmem_set_policy
+mdefine_line|#define shmem_set_policy(a, b) (0)
+DECL|macro|shmem_get_policy
+mdefine_line|#define shmem_get_policy(a, b) (NULL)
+macro_line|#endif
+r_struct
+id|file
+op_star
+id|shmem_file_setup
+c_func
+(paren
+r_char
+op_star
+id|name
+comma
+id|loff_t
+id|size
+comma
+r_int
+r_int
+id|flags
 )paren
 suffix:semicolon
 r_int
