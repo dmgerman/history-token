@@ -431,9 +431,9 @@ DECL|struct|xfrm_usersa_id
 r_struct
 id|xfrm_usersa_id
 (brace
-DECL|member|saddr
+DECL|member|daddr
 id|xfrm_address_t
-id|saddr
+id|daddr
 suffix:semicolon
 DECL|member|spi
 id|__u32
