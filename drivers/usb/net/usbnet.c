@@ -11882,6 +11882,27 @@ comma
 )brace
 comma
 (brace
+singleline_comment|// corega FEther USB2-TX
+id|USB_DEVICE
+(paren
+l_int|0x07aa
+comma
+l_int|0x0017
+)paren
+comma
+dot
+id|driver_info
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|ax8817x_info
+comma
+)brace
+comma
+(brace
 singleline_comment|// Surecom EP-1427X-2
 id|USB_DEVICE
 (paren
