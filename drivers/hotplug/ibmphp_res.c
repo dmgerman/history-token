@@ -108,6 +108,13 @@ c_func
 id|gbuses
 )paren
 suffix:semicolon
+DECL|variable|ibmphp_res_head
+id|LIST_HEAD
+c_func
+(paren
+id|ibmphp_res_head
+)paren
+suffix:semicolon
 DECL|function|alloc_error_bus
 r_static
 r_struct
@@ -120,6 +127,12 @@ r_struct
 id|ebda_pci_rsrc
 op_star
 id|curr
+comma
+id|u8
+id|busno
+comma
+r_int
+id|flag
 )paren
 (brace
 r_struct
@@ -127,6 +140,29 @@ id|bus_node
 op_star
 id|newbus
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|curr
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|flag
+)paren
+)paren
+(brace
+id|err
+(paren
+l_string|&quot;NULL pointer passed &bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 id|newbus
 op_assign
 id|kmalloc
@@ -169,6 +205,16 @@ id|bus_node
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|flag
+)paren
+id|newbus-&gt;busno
+op_assign
+id|busno
+suffix:semicolon
+r_else
 id|newbus-&gt;busno
 op_assign
 id|curr-&gt;bus_num
@@ -203,6 +249,24 @@ id|curr
 r_struct
 id|resource_node
 op_star
+id|rs
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|curr
+)paren
+(brace
+id|err
+(paren
+l_string|&quot;NULL passed to allocate &bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 id|rs
 op_assign
 id|kmalloc
@@ -1342,6 +1406,10 @@ op_assign
 id|alloc_error_bus
 (paren
 id|curr
+comma
+l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1436,6 +1504,10 @@ op_assign
 id|alloc_error_bus
 (paren
 id|curr
+comma
+l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1527,6 +1599,10 @@ op_assign
 id|alloc_error_bus
 (paren
 id|curr
+comma
+l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1568,11 +1644,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|debug
-(paren
-l_string|&quot;after the while loop in rsrc_init &bslash;n&quot;
-)paren
-suffix:semicolon
 id|list_for_each
 (paren
 id|tmp
@@ -1611,11 +1682,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-id|debug
-(paren
-l_string|&quot;b4 once_over in rsrc_init &bslash;n&quot;
-)paren
-suffix:semicolon
 id|rc
 op_assign
 id|once_over
@@ -1630,11 +1696,6 @@ id|rc
 )paren
 r_return
 id|rc
-suffix:semicolon
-id|debug
-(paren
-l_string|&quot;after once_over in rsrc_init &bslash;n&quot;
-)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -2330,7 +2391,7 @@ id|range
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; * This routine adds a resource to the list of resources to the appropriate bus &n; * based on their resource type and sorted by their starting addresses.  It assigns&n; * the ptrs to next and nextRange if needed.&n; *&n; * Input: 3 diff. resources (nulled out if not needed)&n; * Output: ptrs assigned (to the node)&n; * 0 or -1&n; *******************************************************************************/
+multiline_comment|/*******************************************************************************&n; * This routine adds a resource to the list of resources to the appropriate bus &n; * based on their resource type and sorted by their starting addresses.  It assigns&n; * the ptrs to next and nextRange if needed.&n; *&n; * Input: resource ptr&n; * Output: ptrs assigned (to the node)&n; * 0 or -1&n; *******************************************************************************/
 DECL|function|ibmphp_add_resource
 r_int
 id|ibmphp_add_resource
@@ -2377,6 +2438,23 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|res
+)paren
+(brace
+id|err
+(paren
+l_string|&quot;NULL passed to add &bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 id|bus_cur
 op_assign
 id|find_bus_wprev
@@ -2396,7 +2474,7 @@ id|bus_cur
 )paren
 (brace
 multiline_comment|/* didn&squot;t find a bus, smth&squot;s wrong!!! */
-id|err
+id|debug
 (paren
 l_string|&quot;no bus in the system, either pci_dev&squot;s wrong or allocation failed&bslash;n&quot;
 )paren
@@ -2957,6 +3035,23 @@ id|type
 op_assign
 l_string|&quot;&quot;
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|res
+)paren
+(brace
+id|err
+(paren
+l_string|&quot;resource to remove is NULL &bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 id|bus_cur
 op_assign
 id|find_bus_wprev
@@ -3053,7 +3148,6 @@ c_loop
 id|res_cur
 )paren
 (brace
-multiline_comment|/* ???????????DO WE _NEED_ TO BE CHECKING FOR END AS WELL?????????? */
 r_if
 c_cond
 (paren
@@ -3694,7 +3788,7 @@ id|bus_cur
 )paren
 (brace
 multiline_comment|/* didn&squot;t find a bus, smth&squot;s wrong!!! */
-id|err
+id|debug
 (paren
 l_string|&quot;no bus in the system, either pci_dev&squot;s wrong or allocation failed &bslash;n&quot;
 )paren
@@ -5266,7 +5360,7 @@ op_logical_neg
 id|prev_bus
 )paren
 (brace
-id|err
+id|debug
 (paren
 l_string|&quot;something terribly wrong. Cannot find parent bus to the one to remove&bslash;n&quot;
 )paren
@@ -5764,7 +5858,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * find the resource node in the bus &n; * Input: Resource needed, start address of the resource, type or resource&n; */
+multiline_comment|/*&n; * find the resource node in the bus &n; * Input: Resource needed, start address of the resource, type of resource&n; */
 DECL|function|ibmphp_find_resource
 r_int
 id|ibmphp_find_resource
@@ -5800,6 +5894,23 @@ id|type
 op_assign
 l_string|&quot;&quot;
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bus
+)paren
+(brace
+id|err
+(paren
+l_string|&quot;The bus passed in NULL to find resource &bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -5947,7 +6058,7 @@ op_logical_neg
 id|res_cur
 )paren
 (brace
-id|err
+id|debug
 (paren
 l_string|&quot;SOS...cannot find %s resource in the bus. &bslash;n&quot;
 comma
@@ -5962,7 +6073,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|err
+id|debug
 (paren
 l_string|&quot;SOS... cannot find %s resource in the bus. &bslash;n&quot;
 comma
@@ -6877,6 +6988,11 @@ id|list_head
 op_star
 id|tmp
 suffix:semicolon
+id|debug_pci
+(paren
+l_string|&quot;*****************START**********************&bslash;n&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6921,35 +7037,35 @@ comma
 id|bus_list
 )paren
 suffix:semicolon
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;This is bus # %d.  There are &bslash;n&quot;
 comma
 id|bus_cur-&gt;busno
 )paren
 suffix:semicolon
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;IORanges = %d&bslash;t&quot;
 comma
 id|bus_cur-&gt;noIORanges
 )paren
 suffix:semicolon
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;MemRanges = %d&bslash;t&quot;
 comma
 id|bus_cur-&gt;noMemRanges
 )paren
 suffix:semicolon
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;PFMemRanges = %d&bslash;n&quot;
 comma
 id|bus_cur-&gt;noPFMemRanges
 )paren
 suffix:semicolon
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;The IO Ranges are as follows:&bslash;n&quot;
 )paren
@@ -6979,14 +7095,14 @@ id|i
 op_increment
 )paren
 (brace
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;rangeno is %d&bslash;n&quot;
 comma
 id|range-&gt;rangeno
 )paren
 suffix:semicolon
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;[%x - %x]&bslash;n&quot;
 comma
@@ -7001,7 +7117,7 @@ id|range-&gt;next
 suffix:semicolon
 )brace
 )brace
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;The Mem Ranges are as follows:&bslash;n&quot;
 )paren
@@ -7031,14 +7147,14 @@ id|i
 op_increment
 )paren
 (brace
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;rangeno is %d&bslash;n&quot;
 comma
 id|range-&gt;rangeno
 )paren
 suffix:semicolon
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;[%x - %x]&bslash;n&quot;
 comma
@@ -7053,7 +7169,7 @@ id|range-&gt;next
 suffix:semicolon
 )brace
 )brace
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;The PFMem Ranges are as follows:&bslash;n&quot;
 )paren
@@ -7083,14 +7199,14 @@ id|i
 op_increment
 )paren
 (brace
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;rangeno is %d&bslash;n&quot;
 comma
 id|range-&gt;rangeno
 )paren
 suffix:semicolon
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;[%x - %x]&bslash;n&quot;
 comma
@@ -7105,12 +7221,12 @@ id|range-&gt;next
 suffix:semicolon
 )brace
 )brace
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;The resources on this bus are as follows&bslash;n&quot;
 )paren
 suffix:semicolon
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;IO...&bslash;n&quot;
 )paren
@@ -7131,14 +7247,14 @@ c_loop
 id|res
 )paren
 (brace
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;The range # is %d&bslash;n&quot;
 comma
 id|res-&gt;rangeno
 )paren
 suffix:semicolon
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;The bus, devfnc is %d, %x&bslash;n&quot;
 comma
@@ -7147,7 +7263,7 @@ comma
 id|res-&gt;devfunc
 )paren
 suffix:semicolon
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;[%x - %x], len=%x&bslash;n&quot;
 comma
@@ -7182,7 +7298,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;Mem...&bslash;n&quot;
 )paren
@@ -7203,14 +7319,14 @@ c_loop
 id|res
 )paren
 (brace
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;The range # is %d&bslash;n&quot;
 comma
 id|res-&gt;rangeno
 )paren
 suffix:semicolon
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;The bus, devfnc is %d, %x&bslash;n&quot;
 comma
@@ -7219,7 +7335,7 @@ comma
 id|res-&gt;devfunc
 )paren
 suffix:semicolon
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;[%x - %x], len=%x&bslash;n&quot;
 comma
@@ -7254,7 +7370,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;PFMem...&bslash;n&quot;
 )paren
@@ -7275,14 +7391,14 @@ c_loop
 id|res
 )paren
 (brace
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;The range # is %d&bslash;n&quot;
 comma
 id|res-&gt;rangeno
 )paren
 suffix:semicolon
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;The bus, devfnc is %d, %x&bslash;n&quot;
 comma
@@ -7291,7 +7407,7 @@ comma
 id|res-&gt;devfunc
 )paren
 suffix:semicolon
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;[%x - %x], len=%x&bslash;n&quot;
 comma
@@ -7326,7 +7442,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;PFMemFromMem...&bslash;n&quot;
 )paren
@@ -7347,14 +7463,14 @@ c_loop
 id|res
 )paren
 (brace
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;The range # is %d&bslash;n&quot;
 comma
 id|res-&gt;rangeno
 )paren
 suffix:semicolon
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;The bus, devfnc is %d, %x&bslash;n&quot;
 comma
@@ -7363,7 +7479,7 @@ comma
 id|res-&gt;devfunc
 )paren
 suffix:semicolon
-id|debug
+id|debug_pci
 (paren
 l_string|&quot;[%x - %x], len=%x&bslash;n&quot;
 comma
@@ -7381,8 +7497,117 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|debug_pci
+(paren
+l_string|&quot;***********************END***********************&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
-multiline_comment|/* This routine will read the windows for any PPB we have and update the&n; * range info for the secondary bus, and will also input this info into&n; * primary bus, since BIOS doesn&squot;t. This is for PPB that are in the system&n; * on bootup&n; * Input: primary busno&n; * Returns: none&n; * Note: this function doesn&squot;t take into account IO restrictions etc,&n; *&t; so will only work for bridges with no video/ISA devices behind them It&n; *&t; also will not work for onboard PPB&squot;s that can have more than 1 *bus&n; *&t; behind them All these are TO DO.&n; *&t; Also need to add more error checkings... (from fnc returns etc)&n; */
+DECL|function|range_exists_already
+r_int
+r_static
+id|range_exists_already
+(paren
+r_struct
+id|range_node
+op_star
+id|range
+comma
+r_struct
+id|bus_node
+op_star
+id|bus_cur
+comma
+id|u8
+id|type
+)paren
+(brace
+r_struct
+id|range_node
+op_star
+id|range_cur
+op_assign
+l_int|NULL
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|type
+)paren
+(brace
+r_case
+id|IO
+suffix:colon
+id|range_cur
+op_assign
+id|bus_cur-&gt;rangeIO
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MEM
+suffix:colon
+id|range_cur
+op_assign
+id|bus_cur-&gt;rangeMem
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PFMEM
+suffix:colon
+id|range_cur
+op_assign
+id|bus_cur-&gt;rangePFMem
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|err
+(paren
+l_string|&quot;wrong type passed to find out if range already exists &bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|range_cur
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|range_cur-&gt;start
+op_eq
+id|range-&gt;start
+)paren
+op_logical_and
+(paren
+id|range_cur-&gt;end
+op_eq
+id|range-&gt;end
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+id|range_cur
+op_assign
+id|range_cur-&gt;next
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* This routine will read the windows for any PPB we have and update the&n; * range info for the secondary bus, and will also input this info into&n; * primary bus, since BIOS doesn&squot;t. This is for PPB that are in the system&n; * on bootup.  For bridged cards that were added during previous load of the&n; * driver, only the ranges and the bus structure are added, the devices are&n; * added from NVRAM&n; * Input: primary busno&n; * Returns: none&n; * Note: this function doesn&squot;t take into account IO restrictions etc,&n; *&t; so will only work for bridges with no video/ISA devices behind them It&n; *&t; also will not work for onboard PPB&squot;s that can have more than 1 *bus&n; *&t; behind them All these are TO DO.&n; *&t; Also need to add more error checkings... (from fnc returns etc)&n; */
 DECL|function|update_bridge_ranges
 r_static
 r_int
@@ -7465,6 +7690,16 @@ id|bus_cur
 op_assign
 op_star
 id|bus
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bus_cur
+)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 id|busno
 op_assign
@@ -7613,6 +7848,30 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* this bus structure doesn&squot;t exist yet, PPB was configured during previous loading of ibmphp */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bus_sec
+)paren
+(brace
+id|bus_sec
+op_assign
+id|alloc_error_bus
+(paren
+l_int|NULL
+comma
+id|sec_busno
+comma
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* the rest will be populated during NVRAM call */
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|pci_read_config_byte_nodev
 (paren
 id|ibmphp_pci_root_ops
@@ -7787,6 +8046,21 @@ id|bus_sec-&gt;noIORanges
 OG
 l_int|0
 )paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|range_exists_already
+(paren
+id|range
+comma
+id|bus_sec
+comma
+id|IO
+)paren
+)paren
+(brace
 id|add_range
 (paren
 id|IO
@@ -7796,6 +8070,23 @@ comma
 id|bus_sec
 )paren
 suffix:semicolon
+op_increment
+id|bus_sec-&gt;noIORanges
+suffix:semicolon
+)brace
+r_else
+(brace
+id|kfree
+(paren
+id|range
+)paren
+suffix:semicolon
+id|range
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+)brace
 r_else
 (brace
 multiline_comment|/* 1st IO Range on the bus */
@@ -7807,15 +8098,31 @@ id|bus_sec-&gt;rangeIO
 op_assign
 id|range
 suffix:semicolon
-)brace
 op_increment
 id|bus_sec-&gt;noIORanges
 suffix:semicolon
+)brace
 id|fix_resources
 (paren
 id|bus_sec
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ibmphp_find_resource
+(paren
+id|bus_cur
+comma
+id|start_address
+comma
+op_amp
+id|io
+comma
+id|IO
+)paren
+)paren
+(brace
 id|io
 op_assign
 id|kmalloc
@@ -7911,6 +8218,7 @@ id|ibmphp_add_resource
 id|io
 )paren
 suffix:semicolon
+)brace
 )brace
 id|pci_read_config_word_nodev
 (paren
@@ -8042,6 +8350,21 @@ id|bus_sec-&gt;noMemRanges
 OG
 l_int|0
 )paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|range_exists_already
+(paren
+id|range
+comma
+id|bus_sec
+comma
+id|MEM
+)paren
+)paren
+(brace
 id|add_range
 (paren
 id|MEM
@@ -8051,6 +8374,23 @@ comma
 id|bus_sec
 )paren
 suffix:semicolon
+op_increment
+id|bus_sec-&gt;noMemRanges
+suffix:semicolon
+)brace
+r_else
+(brace
+id|kfree
+(paren
+id|range
+)paren
+suffix:semicolon
+id|range
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+)brace
 r_else
 (brace
 multiline_comment|/* 1st Mem Range on the bus */
@@ -8062,15 +8402,31 @@ id|bus_sec-&gt;rangeMem
 op_assign
 id|range
 suffix:semicolon
-)brace
 op_increment
 id|bus_sec-&gt;noMemRanges
 suffix:semicolon
+)brace
 id|fix_resources
 (paren
 id|bus_sec
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ibmphp_find_resource
+(paren
+id|bus_cur
+comma
+id|start_address
+comma
+op_amp
+id|mem
+comma
+id|MEM
+)paren
+)paren
+(brace
 id|mem
 op_assign
 id|kmalloc
@@ -8166,6 +8522,7 @@ id|ibmphp_add_resource
 id|mem
 )paren
 suffix:semicolon
+)brace
 )brace
 id|pci_read_config_word_nodev
 (paren
@@ -8353,6 +8710,21 @@ id|bus_sec-&gt;noPFMemRanges
 OG
 l_int|0
 )paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|range_exists_already
+(paren
+id|range
+comma
+id|bus_sec
+comma
+id|PFMEM
+)paren
+)paren
+(brace
 id|add_range
 (paren
 id|PFMEM
@@ -8362,6 +8734,23 @@ comma
 id|bus_sec
 )paren
 suffix:semicolon
+op_increment
+id|bus_sec-&gt;noPFMemRanges
+suffix:semicolon
+)brace
+r_else
+(brace
+id|kfree
+(paren
+id|range
+)paren
+suffix:semicolon
+id|range
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+)brace
 r_else
 (brace
 multiline_comment|/* 1st PFMem Range on the bus */
@@ -8373,15 +8762,31 @@ id|bus_sec-&gt;rangePFMem
 op_assign
 id|range
 suffix:semicolon
-)brace
 op_increment
 id|bus_sec-&gt;noPFMemRanges
 suffix:semicolon
+)brace
 id|fix_resources
 (paren
 id|bus_sec
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ibmphp_find_resource
+(paren
+id|bus_cur
+comma
+id|start_address
+comma
+op_amp
+id|pfmem
+comma
+id|PFMEM
+)paren
+)paren
+(brace
 id|pfmem
 op_assign
 id|kmalloc
@@ -8481,6 +8886,7 @@ id|ibmphp_add_resource
 id|pfmem
 )paren
 suffix:semicolon
+)brace
 )brace
 r_break
 suffix:semicolon
