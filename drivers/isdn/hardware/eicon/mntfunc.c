@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: mntfunc.c,v 1.1.2.2 2002/10/02 14:38:37 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * Maint module&n; *&n; * Copyright 2000,2001 by Armin Schindler (mac@melware.de)&n; * Copyright 2000,2001 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: mntfunc.c,v 1.15 2003/08/25 14:49:53 schindler Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * Maint module&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
 macro_line|#include &quot;divasync.h&quot;
@@ -7,7 +7,7 @@ macro_line|#include &quot;debug_if.h&quot;
 r_extern
 r_char
 op_star
-id|DRIVERRELEASE
+id|DRIVERRELEASE_MNT
 suffix:semicolon
 DECL|macro|DBG_MINIMUM
 mdefine_line|#define DBG_MINIMUM  (DL_LOG + DL_FTL + DL_ERR)
@@ -150,12 +150,6 @@ dot
 (brace
 multiline_comment|/* dummy debug function */
 )brace
-DECL|variable|dprintf
-id|DIVA_DI_PRINTF
-id|dprintf
-op_assign
-id|no_printf
-suffix:semicolon
 macro_line|#include &quot;debuglib.c&quot;
 multiline_comment|/*&n; * stop debug&n; */
 DECL|function|stop_dbg
@@ -277,7 +271,7 @@ c_func
 (paren
 l_string|&quot;MAINT&quot;
 comma
-id|DRIVERRELEASE
+id|DRIVERRELEASE_MNT
 comma
 id|DBG_DEFAULT
 )paren
@@ -432,6 +426,10 @@ id|IDI_SYNC_REQ_DIDD_REGISTER_ADAPTER_NOTIFY
 suffix:semicolon
 id|req.didd_notify.info.callback
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|didd_callback
 suffix:semicolon
 id|req.didd_notify.info.context

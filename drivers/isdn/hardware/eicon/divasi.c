@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: divasi.c,v 1.1.2.7 2001/05/01 15:48:05 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * User Mode IDI Interface &n; *&n; * Copyright 2000-2002 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2002 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divasi.c,v 1.25 2003/09/09 06:46:29 schindler Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * User Mode IDI Interface &n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
@@ -21,14 +20,12 @@ r_char
 op_star
 id|main_revision
 op_assign
-l_string|&quot;$Revision: 1.1.2.7 $&quot;
+l_string|&quot;$Revision: 1.25 $&quot;
 suffix:semicolon
 DECL|variable|major
 r_static
 r_int
 id|major
-op_assign
-l_int|242
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
@@ -54,22 +51,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|major
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|major
-comma
-l_string|&quot;Major number for /dev/DivasIDI&quot;
-)paren
-suffix:semicolon
 DECL|struct|_diva_um_idi_os_context
 r_typedef
 r_struct
@@ -92,6 +73,10 @@ DECL|member|aborted
 r_int
 id|aborted
 suffix:semicolon
+DECL|member|adapter_nr
+r_int
+id|adapter_nr
+suffix:semicolon
 DECL|typedef|diva_um_idi_os_context_t
 )brace
 id|diva_um_idi_os_context_t
@@ -112,10 +97,18 @@ id|DRIVERLNAME
 op_assign
 l_string|&quot;diva_idi&quot;
 suffix:semicolon
-DECL|variable|DRIVERRELEASE
+DECL|variable|DEVNAME
+r_static
 r_char
 op_star
-id|DRIVERRELEASE
+id|DEVNAME
+op_assign
+l_string|&quot;DivasIDI&quot;
+suffix:semicolon
+DECL|variable|DRIVERRELEASE_IDI
+r_char
+op_star
+id|DRIVERRELEASE_IDI
 op_assign
 l_string|&quot;2.0&quot;
 suffix:semicolon
@@ -319,92 +312,12 @@ r_int
 id|data
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * malloc&n; */
-DECL|function|diva_os_malloc
-r_void
-op_star
-id|diva_os_malloc
-c_func
-(paren
-r_int
-r_int
-id|flags
-comma
-r_int
-r_int
-id|size
-)paren
-(brace
-r_void
-op_star
-id|ret
-op_assign
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|size
-)paren
-(brace
-id|ret
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|vmalloc
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|size
-)paren
-suffix:semicolon
-)brace
-r_return
-(paren
-id|ret
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * free&n; */
-DECL|function|diva_os_free
-r_void
-id|diva_os_free
-c_func
-(paren
-r_int
-r_int
-id|unused
-comma
-r_void
-op_star
-id|ptr
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|ptr
-)paren
-(brace
-id|vfree
-c_func
-(paren
-id|ptr
-)paren
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/*&n; * proc entry&n; */
 r_extern
 r_struct
 id|proc_dir_entry
 op_star
-id|proc_net_isdn_eicon
+id|proc_net_eicon
 suffix:semicolon
 DECL|variable|um_idi_proc_entry
 r_static
@@ -495,7 +408,7 @@ id|len
 comma
 l_string|&quot;release  : %s&bslash;n&quot;
 comma
-id|DRIVERRELEASE
+id|DRIVERRELEASE_IDI
 )paren
 suffix:semicolon
 id|strcpy
@@ -536,6 +449,20 @@ comma
 l_string|&quot;build    : %s&bslash;n&quot;
 comma
 id|DIVA_BUILD
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|page
+op_plus
+id|len
+comma
+l_string|&quot;major    : %d&bslash;n&quot;
+comma
+id|major
 )paren
 suffix:semicolon
 r_if
@@ -611,7 +538,7 @@ id|S_IRUGO
 op_or
 id|S_IWUSR
 comma
-id|proc_net_isdn_eicon
+id|proc_net_eicon
 )paren
 suffix:semicolon
 r_if
@@ -659,7 +586,7 @@ c_func
 (paren
 id|DRIVERLNAME
 comma
-id|proc_net_isdn_eicon
+id|proc_net_eicon
 )paren
 suffix:semicolon
 id|um_idi_proc_entry
@@ -723,7 +650,7 @@ r_void
 id|devfs_remove
 c_func
 (paren
-l_string|&quot;DivasIDI&quot;
+id|DEVNAME
 )paren
 suffix:semicolon
 id|unregister_chrdev
@@ -731,7 +658,7 @@ c_func
 (paren
 id|major
 comma
-l_string|&quot;DivasIDI&quot;
+id|DEVNAME
 )paren
 suffix:semicolon
 )brace
@@ -748,16 +675,22 @@ r_void
 r_if
 c_cond
 (paren
+(paren
+id|major
+op_assign
 id|register_chrdev
 c_func
 (paren
-id|major
+l_int|0
 comma
-l_string|&quot;DivasIDI&quot;
+id|DEVNAME
 comma
 op_amp
 id|divas_idi_fops
 )paren
+)paren
+OL
+l_int|0
 )paren
 (brace
 id|printk
@@ -792,7 +725,7 @@ id|S_IRUSR
 op_or
 id|S_IWUSR
 comma
-l_string|&quot;DivasIDI&quot;
+id|DEVNAME
 )paren
 suffix:semicolon
 r_return
@@ -840,7 +773,7 @@ l_string|&quot;%s: Rel:%s  Rev:&quot;
 comma
 id|DRIVERLNAME
 comma
-id|DRIVERRELEASE
+id|DRIVERRELEASE_IDI
 )paren
 suffix:semicolon
 id|strcpy
@@ -854,7 +787,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s  Build: %s Major: %d&bslash;n&quot;
+l_string|&quot;%s  Build: %s&bslash;n&quot;
 comma
 id|getrev
 c_func
@@ -863,8 +796,6 @@ id|tmprev
 )paren
 comma
 id|DIVA_BUILD
-comma
-id|major
 )paren
 suffix:semicolon
 r_if
@@ -959,6 +890,17 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: started with major %d&bslash;n&quot;
+comma
+id|DRIVERLNAME
+comma
+id|major
+)paren
+suffix:semicolon
 id|out
 suffix:colon
 r_return
@@ -1443,6 +1385,10 @@ id|p_os-&gt;aborted
 op_assign
 l_int|0
 suffix:semicolon
+id|p_os-&gt;adapter_nr
+op_assign
+id|adapter_nr
+suffix:semicolon
 r_return
 (paren
 l_int|1
@@ -1914,15 +1860,13 @@ op_star
 id|file
 )paren
 (brace
+id|diva_um_idi_os_context_t
+op_star
+id|p_os
+suffix:semicolon
 r_int
 r_int
 id|adapter_nr
-op_assign
-id|iminor
-c_func
-(paren
-id|inode
-)paren
 suffix:semicolon
 r_int
 id|ret
@@ -1947,6 +1891,38 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|p_os
+op_assign
+(paren
+id|diva_um_idi_os_context_t
+op_star
+)paren
+id|diva_um_id_get_os_context
+c_func
+(paren
+id|file-&gt;private_data
+)paren
+)paren
+)paren
+(brace
+id|ret
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+id|adapter_nr
+op_assign
+id|p_os-&gt;adapter_nr
+suffix:semicolon
 r_if
 c_cond
 (paren

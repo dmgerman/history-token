@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: divasmain.c,v 1.1.2.8 2001/05/01 15:48:05 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2002 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2002 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divasmain.c,v 1.39 2003/09/09 07:42:05 schindler Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/config.h&gt;
@@ -7,14 +7,12 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
-macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
@@ -29,20 +27,20 @@ macro_line|#include &quot;dlist.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
 macro_line|#include &quot;divasync.h&quot;
 macro_line|#include &quot;diva.h&quot;
-macro_line|#include &quot;diva_pci.h&quot;
 macro_line|#include &quot;di.h&quot;
 macro_line|#include &quot;io.h&quot;
 macro_line|#include &quot;xdi_msg.h&quot;
 macro_line|#include &quot;xdi_adapter.h&quot;
 macro_line|#include &quot;xdi_vers.h&quot;
 macro_line|#include &quot;diva_dma.h&quot;
+macro_line|#include &quot;diva_pci.h&quot;
 DECL|variable|main_revision
 r_static
 r_char
 op_star
 id|main_revision
 op_assign
-l_string|&quot;$Revision: 1.1.2.8 $&quot;
+l_string|&quot;$Revision: 1.39 $&quot;
 suffix:semicolon
 DECL|variable|errno
 r_int
@@ -54,8 +52,11 @@ DECL|variable|major
 r_static
 r_int
 id|major
-op_assign
-l_int|240
+suffix:semicolon
+DECL|variable|dbgmask
+r_static
+r_int
+id|dbgmask
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
@@ -78,7 +79,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|major
+id|dbgmask
 comma
 l_string|&quot;i&quot;
 )paren
@@ -86,9 +87,9 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|major
+id|dbgmask
 comma
-l_string|&quot;Major number for /dev/Divas&quot;
+l_string|&quot;initial debug mask&quot;
 )paren
 suffix:semicolon
 DECL|variable|DRIVERNAME
@@ -107,10 +108,18 @@ id|DRIVERLNAME
 op_assign
 l_string|&quot;divas&quot;
 suffix:semicolon
-DECL|variable|DRIVERRELEASE
+DECL|variable|DEVNAME
+r_static
 r_char
 op_star
-id|DRIVERRELEASE
+id|DEVNAME
+op_assign
+l_string|&quot;Divas&quot;
+suffix:semicolon
+DECL|variable|DRIVERRELEASE_DIVAS
+r_char
+op_star
+id|DRIVERRELEASE_DIVAS
 op_assign
 l_string|&quot;2.0&quot;
 suffix:semicolon
@@ -166,7 +175,8 @@ r_int
 id|divasfunc_init
 c_func
 (paren
-r_void
+r_int
+id|dbgmask
 )paren
 suffix:semicolon
 r_extern
@@ -176,6 +186,11 @@ c_func
 (paren
 r_void
 )paren
+suffix:semicolon
+DECL|variable|devfs_handle
+r_static
+id|devfs_handle_t
+id|devfs_handle
 suffix:semicolon
 DECL|struct|_diva_os_thread_dpc
 r_typedef
@@ -236,13 +251,14 @@ DECL|macro|PCI_DEVICE_ID_EICON_BRI2M_2_VOIP
 mdefine_line|#define PCI_DEVICE_ID_EICON_BRI2M_2_VOIP     0xE01B
 macro_line|#endif
 multiline_comment|/*&n;  This table should be sorted by PCI device ID&n;  */
-DECL|variable|divas_pci_tbl
+DECL|variable|__devinitdata
 r_static
 r_struct
 id|pci_device_id
 id|divas_pci_tbl
 (braket
 )braket
+id|__devinitdata
 op_assign
 (brace
 multiline_comment|/* Diva Server BRI-2M PCI 0xE010 */
@@ -574,56 +590,6 @@ r_return
 id|rev
 suffix:semicolon
 )brace
-DECL|function|diva_os_sleep
-r_void
-id|diva_os_sleep
-c_func
-(paren
-id|dword
-id|mSec
-)paren
-(brace
-r_int
-r_int
-id|timeout
-op_assign
-id|HZ
-op_star
-id|mSec
-op_div
-l_int|1000
-op_plus
-l_int|1
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|timeout
-)paren
-suffix:semicolon
-)brace
-DECL|function|diva_os_wait
-r_void
-id|diva_os_wait
-c_func
-(paren
-id|dword
-id|mSec
-)paren
-(brace
-id|mdelay
-c_func
-(paren
-id|mSec
-)paren
-suffix:semicolon
-)brace
 DECL|function|diva_log_info
 r_void
 id|diva_log_info
@@ -714,11 +680,11 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;%s: %s(%s) %s(%s)&bslash;n&quot;
+l_string|&quot;%s: %s(%s) %s(%s) major=%d&bslash;n&quot;
 comma
 id|DRIVERLNAME
 comma
-id|DRIVERRELEASE
+id|DRIVERRELEASE_DIVAS
 comma
 id|getrev
 c_func
@@ -729,87 +695,10 @@ comma
 id|diva_xdi_common_code_build
 comma
 id|DIVA_BUILD
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*********************************************************&n; ** malloc / free&n; *********************************************************/
-DECL|function|diva_os_malloc
-r_void
-op_star
-id|diva_os_malloc
-c_func
-(paren
-r_int
-r_int
-id|flags
 comma
-r_int
-r_int
-id|size
-)paren
-(brace
-r_void
-op_star
-id|ret
-op_assign
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|size
-)paren
-(brace
-id|ret
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|vmalloc
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|size
+id|major
 )paren
 suffix:semicolon
-)brace
-r_return
-(paren
-id|ret
-)paren
-suffix:semicolon
-)brace
-DECL|function|diva_os_free
-r_void
-id|diva_os_free
-c_func
-(paren
-r_int
-r_int
-id|unused
-comma
-r_void
-op_star
-id|ptr
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|ptr
-)paren
-(brace
-id|vfree
-c_func
-(paren
-id|ptr
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;    Nonify user mode helper about card failure&n;   -------------------------------------------------------------------------- */
 DECL|macro|TRAP_PROG
@@ -987,6 +876,19 @@ op_logical_neg
 id|context-&gt;card_failed
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: adapter %d trapped !&bslash;n&quot;
+comma
+id|DRIVERLNAME
+comma
+id|ANum
+op_plus
+l_int|1
+)paren
+suffix:semicolon
 id|context-&gt;card_failed
 op_assign
 id|ANum
@@ -2037,6 +1939,10 @@ DECL|function|diva_os_register_io_port
 id|diva_os_register_io_port
 c_func
 (paren
+r_void
+op_star
+id|adapter
+comma
 r_int
 id|on
 comma
@@ -2052,6 +1958,9 @@ r_const
 r_char
 op_star
 id|name
+comma
+r_int
+id|id
 )paren
 (brace
 r_if
@@ -2115,6 +2024,13 @@ op_star
 id|divasa_remap_pci_bar
 c_func
 (paren
+id|diva_os_xdi_adapter_t
+op_star
+id|a
+comma
+r_int
+id|id
+comma
 r_int
 r_int
 id|bar
@@ -3271,7 +3187,7 @@ r_void
 id|devfs_remove
 c_func
 (paren
-l_string|&quot;Divas&quot;
+id|DEVNAME
 )paren
 suffix:semicolon
 id|unregister_chrdev
@@ -3279,7 +3195,7 @@ c_func
 (paren
 id|major
 comma
-l_string|&quot;Divas&quot;
+id|DEVNAME
 )paren
 suffix:semicolon
 )brace
@@ -3296,16 +3212,22 @@ r_void
 r_if
 c_cond
 (paren
+(paren
+id|major
+op_assign
 id|register_chrdev
 c_func
 (paren
-id|major
+l_int|0
 comma
-l_string|&quot;Divas&quot;
+id|DEVNAME
 comma
 op_amp
 id|divas_fops
 )paren
+)paren
+OL
+l_int|0
 )paren
 (brace
 id|printk
@@ -3340,7 +3262,7 @@ id|S_IRUSR
 op_or
 id|S_IWUSR
 comma
-l_string|&quot;Divas&quot;
+id|DEVNAME
 )paren
 suffix:semicolon
 r_return
@@ -3717,7 +3639,7 @@ l_string|&quot;%s: Rel:%s  Rev:&quot;
 comma
 id|DRIVERLNAME
 comma
-id|DRIVERRELEASE
+id|DRIVERRELEASE_DIVAS
 )paren
 suffix:semicolon
 id|strcpy
@@ -3731,7 +3653,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s  Build: %s(%s) Major: %d&bslash;n&quot;
+l_string|&quot;%s  Build: %s(%s)&bslash;n&quot;
 comma
 id|getrev
 c_func
@@ -3742,8 +3664,6 @@ comma
 id|diva_xdi_common_code_build
 comma
 id|DIVA_BUILD
-comma
-id|major
 )paren
 suffix:semicolon
 id|printk
@@ -3763,14 +3683,6 @@ l_string|&quot;BRI/PCI &quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_ISDN_DIVAS_4BRIPCI
-id|printk
-c_func
-(paren
-l_string|&quot;4BRI/PCI &quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_ISDN_DIVAS_PRIPCI
 id|printk
 c_func
@@ -3782,7 +3694,7 @@ macro_line|#endif
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;adapters&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3792,6 +3704,7 @@ op_logical_neg
 id|divasfunc_init
 c_func
 (paren
+id|dbgmask
 )paren
 )paren
 (brace
@@ -3823,11 +3736,13 @@ c_func
 )paren
 )paren
 (brace
+macro_line|#ifdef MODULE
 id|divasfunc_exit
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|ret
 op_assign
 op_minus
@@ -3847,6 +3762,7 @@ c_func
 )paren
 )paren
 (brace
+macro_line|#ifdef MODULE
 id|remove_divas_proc
 c_func
 (paren
@@ -3862,6 +3778,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -3895,6 +3812,7 @@ id|diva_pci_driver
 )paren
 )paren
 (brace
+macro_line|#ifdef MODULE
 id|remove_divas_proc
 c_func
 (paren
@@ -3910,6 +3828,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -3923,6 +3842,17 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: started with major %d&bslash;n&quot;
+comma
+id|DRIVERLNAME
+comma
+id|major
+)paren
+suffix:semicolon
 id|out
 suffix:colon
 r_return

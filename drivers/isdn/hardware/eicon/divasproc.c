@@ -1,10 +1,9 @@
-multiline_comment|/* $Id: divasproc.c,v 1.1.2.4 2001/02/16 08:40:36 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; * /proc functions&n; *&n; * Copyright 2000-2002 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2002 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divasproc.c,v 1.18 2003/09/09 06:46:29 schindler Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; * /proc functions&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;debuglib.h&quot;
 macro_line|#include &quot;dlist.h&quot;
@@ -13,7 +12,6 @@ macro_line|#undef ID_MASK
 DECL|macro|N_DATA
 macro_line|#undef N_DATA
 macro_line|#include &quot;pc.h&quot;
-macro_line|#include &quot;diva_pci.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
 macro_line|#include &quot;divasync.h&quot;
 macro_line|#include &quot;di.h&quot;
@@ -21,6 +19,7 @@ macro_line|#include &quot;io.h&quot;
 macro_line|#include &quot;xdi_msg.h&quot;
 macro_line|#include &quot;xdi_adapter.h&quot;
 macro_line|#include &quot;diva.h&quot;
+macro_line|#include &quot;diva_pci.h&quot;
 r_extern
 id|PISDN_ADAPTER
 id|IoAdapters
@@ -100,7 +99,7 @@ r_extern
 r_struct
 id|proc_dir_entry
 op_star
-id|proc_net_isdn_eicon
+id|proc_net_eicon
 suffix:semicolon
 DECL|variable|divas_proc_entry
 r_static
@@ -499,7 +498,7 @@ id|S_IFREG
 op_or
 id|S_IRUGO
 comma
-id|proc_net_isdn_eicon
+id|proc_net_eicon
 )paren
 suffix:semicolon
 r_if
@@ -547,7 +546,7 @@ c_func
 (paren
 id|divas_proc_name
 comma
-id|proc_net_isdn_eicon
+id|proc_net_eicon
 )paren
 suffix:semicolon
 id|divas_proc_entry
@@ -1682,28 +1681,6 @@ id|tmp
 l_int|16
 )braket
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|in_interrupt
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;divasproc: create_proc in_interrupt, not creating&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
 id|sprintf
 c_func
 (paren
@@ -1730,7 +1707,7 @@ id|tmp
 comma
 id|S_IFDIR
 comma
-id|proc_net_isdn_eicon
+id|proc_net_eicon
 )paren
 )paren
 )paren
@@ -1996,7 +1973,7 @@ c_func
 (paren
 id|tmp
 comma
-id|proc_net_isdn_eicon
+id|proc_net_eicon
 )paren
 suffix:semicolon
 id|DBG_TRC

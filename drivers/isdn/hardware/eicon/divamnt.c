@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: divamnt.c,v 1.1.2.4 2001/05/01 15:48:05 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * Maint module&n; *&n; * Copyright 2000-2002 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2002 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divamnt.c,v 1.27 2003/09/09 06:46:29 schindler Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * Maint module&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
@@ -21,14 +20,12 @@ r_char
 op_star
 id|main_revision
 op_assign
-l_string|&quot;$Revision: 1.1.2.4 $&quot;
+l_string|&quot;$Revision: 1.27 $&quot;
 suffix:semicolon
 DECL|variable|major
 r_static
 r_int
 id|major
-op_assign
-l_int|241
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
@@ -52,22 +49,6 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|major
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|major
-comma
-l_string|&quot;Major number for /dev/DivasMAINT&quot;
 )paren
 suffix:semicolon
 DECL|variable|buffer_length
@@ -115,10 +96,18 @@ id|DRIVERLNAME
 op_assign
 l_string|&quot;diva_mnt&quot;
 suffix:semicolon
-DECL|variable|DRIVERRELEASE
+DECL|variable|DEVNAME
+r_static
 r_char
 op_star
-id|DRIVERRELEASE
+id|DEVNAME
+op_assign
+l_string|&quot;DivasMAINT&quot;
+suffix:semicolon
+DECL|variable|DRIVERRELEASE_MNT
+r_char
+op_star
+id|DRIVERRELEASE_MNT
 op_assign
 l_string|&quot;2.0&quot;
 suffix:semicolon
@@ -249,60 +238,7 @@ r_return
 id|rev
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * memory alloc&n; */
-DECL|function|diva_os_malloc
-r_void
-op_star
-id|diva_os_malloc
-c_func
-(paren
-r_int
-r_int
-id|flags
-comma
-r_int
-r_int
-id|size
-)paren
-(brace
-r_return
-(paren
-id|vmalloc
-c_func
-(paren
-id|size
-)paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|diva_os_free
-r_void
-id|diva_os_free
-c_func
-(paren
-r_int
-r_int
-id|flags
-comma
-r_void
-op_star
-id|ptr
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|ptr
-)paren
-(brace
-id|vfree
-c_func
-(paren
-id|ptr
-)paren
-suffix:semicolon
-)brace
-)brace
+multiline_comment|/*&n; * buffer alloc&n; */
 DECL|function|diva_os_malloc_tbuffer
 r_void
 op_star
@@ -357,41 +293,6 @@ id|ptr
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/*&n; * sleep msec&n; */
-DECL|function|diva_os_sleep
-r_void
-id|diva_os_sleep
-c_func
-(paren
-id|dword
-id|mSec
-)paren
-(brace
-r_int
-r_int
-id|timeout
-op_assign
-id|HZ
-op_star
-id|mSec
-op_div
-l_int|1000
-op_plus
-l_int|1
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|timeout
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * kernel/user space copy functions&n; */
 DECL|function|diva_os_copy_to_user
@@ -610,7 +511,7 @@ r_extern
 r_struct
 id|proc_dir_entry
 op_star
-id|proc_net_isdn_eicon
+id|proc_net_eicon
 suffix:semicolon
 DECL|variable|maint_proc_entry
 r_static
@@ -1489,7 +1390,7 @@ id|S_IRUGO
 op_or
 id|S_IWUSR
 comma
-id|proc_net_isdn_eicon
+id|proc_net_eicon
 )paren
 suffix:semicolon
 r_if
@@ -1538,7 +1439,7 @@ c_func
 (paren
 l_string|&quot;maint&quot;
 comma
-id|proc_net_isdn_eicon
+id|proc_net_eicon
 )paren
 suffix:semicolon
 id|maint_proc_entry
@@ -1674,7 +1575,7 @@ r_void
 id|devfs_remove
 c_func
 (paren
-l_string|&quot;DivasMAINT&quot;
+id|DEVNAME
 )paren
 suffix:semicolon
 id|unregister_chrdev
@@ -1682,7 +1583,7 @@ c_func
 (paren
 id|major
 comma
-l_string|&quot;DivasMAINT&quot;
+id|DEVNAME
 )paren
 suffix:semicolon
 )brace
@@ -1699,16 +1600,22 @@ r_void
 r_if
 c_cond
 (paren
+(paren
+id|major
+op_assign
 id|register_chrdev
 c_func
 (paren
-id|major
+l_int|0
 comma
-l_string|&quot;DivasMAINT&quot;
+id|DEVNAME
 comma
 op_amp
 id|divas_maint_fops
 )paren
+)paren
+OL
+l_int|0
 )paren
 (brace
 id|printk
@@ -1743,7 +1650,7 @@ id|S_IRUSR
 op_or
 id|S_IWUSR
 comma
-l_string|&quot;DivasMAINT&quot;
+id|DEVNAME
 )paren
 suffix:semicolon
 r_return
@@ -1828,7 +1735,7 @@ l_string|&quot;%s: Rel:%s  Rev:&quot;
 comma
 id|DRIVERLNAME
 comma
-id|DRIVERRELEASE
+id|DRIVERRELEASE_MNT
 )paren
 suffix:semicolon
 id|strcpy
@@ -1842,7 +1749,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s  Build: %s  Major: %d&bslash;n&quot;
+l_string|&quot;%s  Build: %s &bslash;n&quot;
 comma
 id|getrev
 c_func
@@ -1851,8 +1758,6 @@ id|tmprev
 )paren
 comma
 id|DIVA_BUILD
-comma
-id|major
 )paren
 suffix:semicolon
 r_if
@@ -1958,13 +1863,17 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: trace buffer = %p - %d kBytes, %s &bslash;n&quot;
+l_string|&quot;%s: trace buffer = %p - %d kBytes, %s (Major: %d)&bslash;n&quot;
 comma
 id|DRIVERLNAME
 comma
 id|buffer
 comma
+(paren
 id|buffer_length
+op_div
+l_int|1024
+)paren
 comma
 (paren
 id|diva_dbg_mem
@@ -1976,6 +1885,8 @@ c_cond
 l_string|&quot;internal&quot;
 suffix:colon
 l_string|&quot;external&quot;
+comma
+id|major
 )paren
 suffix:semicolon
 id|out

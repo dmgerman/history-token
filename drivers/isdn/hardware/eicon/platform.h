@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: platform.h,v 1.1.2.6 2001/05/01 15:48:05 armin Exp $&n; *&n; * platform.h&n; * &n; *&n; * Copyright 2000-2002  by Armin Schindler (mac@melware.de)&n; * Copyright 2000  Eicon Networks &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: platform.h,v 1.31 2003/09/08 15:15:22 schindler Exp $&n; *&n; * platform.h&n; * &n; *&n; * Copyright 2000-2003  by Armin Schindler (mac@melware.de)&n; * Copyright 2000  Eicon Networks &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#ifndef&t;__PLATFORM_H__
 DECL|macro|__PLATFORM_H__
 mdefine_line|#define&t;__PLATFORM_H__
@@ -11,21 +11,27 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;cardtype.h&quot;
+multiline_comment|/* activate debuglib for modules only */
+macro_line|#ifndef MODULE
+DECL|macro|DIVA_NO_DEBUGLIB
+mdefine_line|#define DIVA_NO_DEBUGLIB
+macro_line|#endif
 DECL|macro|DIVA_INIT_FUNCTION
 mdefine_line|#define DIVA_INIT_FUNCTION  __init
 DECL|macro|DIVA_EXIT_FUNCTION
 mdefine_line|#define DIVA_EXIT_FUNCTION  __exit
 DECL|macro|DIVA_USER_MODE_CARD_CONFIG
 mdefine_line|#define DIVA_USER_MODE_CARD_CONFIG 1
-DECL|macro|XDI_USE_XLOG
-mdefine_line|#define XDI_USE_XLOG 1
 DECL|macro|USE_EXTENDED_DEBUGS
 mdefine_line|#define&t;USE_EXTENDED_DEBUGS 1
 DECL|macro|MAX_ADAPTER
@@ -36,11 +42,6 @@ DECL|macro|MEMORY_SPACE_TYPE
 mdefine_line|#define MEMORY_SPACE_TYPE  0
 DECL|macro|PORT_SPACE_TYPE
 mdefine_line|#define PORT_SPACE_TYPE    1
-macro_line|#include &quot;debuglib.h&quot;
-DECL|macro|dtrc
-mdefine_line|#define dtrc(p) DBG_PRV0(p)
-DECL|macro|dbug
-mdefine_line|#define dbug(a,p) DBG_PRV1(p)
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#ifndef&t;byte
 DECL|macro|byte
@@ -217,10 +218,11 @@ dot
 dot
 )paren
 suffix:semicolon
-r_extern
-id|DIVA_DI_PRINTF
-id|dprintf
-suffix:semicolon
+macro_line|#include &quot;debuglib.h&quot;
+DECL|macro|dtrc
+mdefine_line|#define dtrc(p) DBG_PRV0(p)
+DECL|macro|dbug
+mdefine_line|#define dbug(a,p) DBG_PRV1(p)
 DECL|typedef|E_INFO
 r_typedef
 r_struct
@@ -279,6 +281,9 @@ id|card
 )paren
 suffix:semicolon
 multiline_comment|/*&n;** memory allocation&n;*/
+DECL|function|diva_os_malloc
+r_static
+id|__inline__
 r_void
 op_star
 id|diva_os_malloc
@@ -291,7 +296,45 @@ r_int
 r_int
 id|size
 )paren
+(brace
+r_void
+op_star
+id|ret
+op_assign
+l_int|NULL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|size
+)paren
+(brace
+id|ret
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|vmalloc
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|size
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+id|ret
+)paren
+suffix:semicolon
+)brace
+DECL|function|diva_os_free
+r_static
+id|__inline__
 r_void
 id|diva_os_free
 (paren
@@ -303,7 +346,21 @@ r_void
 op_star
 id|ptr
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|ptr
+)paren
+(brace
+id|vfree
+c_func
+(paren
+id|ptr
+)paren
 suffix:semicolon
+)brace
+)brace
 multiline_comment|/*&n;** use skbuffs for message buffer&n;*/
 DECL|typedef|diva_os_message_buffer_s
 r_typedef
@@ -340,6 +397,9 @@ mdefine_line|#define DIVA_MESSAGE_BUFFER_LEN(x) x-&gt;len
 DECL|macro|DIVA_MESSAGE_BUFFER_DATA
 mdefine_line|#define DIVA_MESSAGE_BUFFER_DATA(x) x-&gt;data
 multiline_comment|/*&n;** mSeconds waiting&n;*/
+DECL|function|diva_os_sleep
+r_static
+id|__inline__
 r_void
 id|diva_os_sleep
 c_func
@@ -347,7 +407,35 @@ c_func
 id|dword
 id|mSec
 )paren
+(brace
+r_int
+r_int
+id|timeout
+op_assign
+id|HZ
+op_star
+id|mSec
+op_div
+l_int|1000
+op_plus
+l_int|1
 suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|timeout
+)paren
+suffix:semicolon
+)brace
+DECL|function|diva_os_wait
+r_static
+id|__inline__
 r_void
 id|diva_os_wait
 c_func
@@ -355,7 +443,14 @@ c_func
 id|dword
 id|mSec
 )paren
+(brace
+id|mdelay
+c_func
+(paren
+id|mSec
+)paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n;**  PCI Configuration space access&n;*/
 r_void
 id|PCIwrite
@@ -409,6 +504,10 @@ multiline_comment|/*&n;**  I/O Port utilities&n;*/
 r_int
 id|diva_os_register_io_port
 (paren
+r_void
+op_star
+id|adapter
+comma
 r_int
 r_register
 comma
@@ -424,6 +523,9 @@ r_const
 r_char
 op_star
 id|name
+comma
+r_int
+id|id
 )paren
 suffix:semicolon
 multiline_comment|/*&n;**  I/O port access abstraction&n;*/
@@ -537,8 +639,6 @@ id|irq
 suffix:semicolon
 DECL|macro|diva_os_in_irq
 mdefine_line|#define diva_os_in_irq() in_irq()
-multiline_comment|/*&n;** module locking&n;*/
-multiline_comment|/* &n;#define DIVA_LOCK_MODULE MOD_INC_USE_COUNT&n;#define DIVA_UNLOCK_MODULE MOD_DEC_USE_COUNT&n;*/
 multiline_comment|/*&n;**  Spin Lock framework&n;*/
 DECL|typedef|diva_os_spin_lock_magic_t
 r_typedef

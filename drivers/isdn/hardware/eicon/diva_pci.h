@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: diva_pci.h,v 1.1.2.2 2001/02/12 20:23:46 armin Exp $ */
+multiline_comment|/* $Id: diva_pci.h,v 1.6 2003/01/04 15:29:45 schindler Exp $ */
 macro_line|#ifndef __DIVA_PCI_INTERFACE_H__
 DECL|macro|__DIVA_PCI_INTERFACE_H__
 mdefine_line|#define __DIVA_PCI_INTERFACE_H__
@@ -7,6 +7,13 @@ op_star
 id|divasa_remap_pci_bar
 c_func
 (paren
+id|diva_os_xdi_adapter_t
+op_star
+id|a
+comma
+r_int
+id|id
+comma
 r_int
 r_int
 id|bar
