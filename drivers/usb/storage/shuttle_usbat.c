@@ -1,6 +1,5 @@
 multiline_comment|/* Driver for SCM Microsystems USB-ATAPI cable&n; *&n; * $Id: shuttle_usbat.c,v 1.17 2002/04/22 03:39:43 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 2000, 2001 Robert Baruch (autophile@starband.net)&n; *&n; * Developed with the assistance of:&n; *   (c) 2002 Alan Stern &lt;stern@rowland.org&gt;&n; *&n; * Many originally ATAPI devices were slightly modified to meet the USB&n; * market by using some kind of translation from ATAPI to USB on the host,&n; * and the peripheral would translate from USB back to ATAPI.&n; *&n; * SCM Microsystems (www.scmmicro.com) makes a device, sold to OEM&squot;s only, &n; * which does the USB-to-ATAPI conversion.  By obtaining the data sheet on&n; * their device under nondisclosure agreement, I have been able to write&n; * this driver for Linux.&n; *&n; * The chip used in the device can also be used for EPP and ISA translation&n; * as well. This driver is only guaranteed to work with the ATAPI&n; * translation.&n; *&n; * The only peripheral that I know of (as of 27 Mar 2001) that uses this&n; * device is the Hewlett-Packard 8200e/8210e/8230e CD-Writer Plus.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &quot;transport.h&quot;
-macro_line|#include &quot;raw_bulk.h&quot;
 macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;debug.h&quot;
@@ -1837,18 +1836,13 @@ r_int
 r_int
 id|sector
 suffix:semicolon
-r_struct
-id|scatterlist
-op_star
-id|sg
-op_assign
-l_int|NULL
-suffix:semicolon
+r_int
 r_int
 id|sg_segment
 op_assign
 l_int|0
 suffix:semicolon
+r_int
 r_int
 id|sg_offset
 op_assign
@@ -2009,6 +2003,22 @@ comma
 id|len
 )paren
 suffix:semicolon
+id|len
+op_assign
+id|min
+c_func
+(paren
+id|len
+comma
+id|srb-&gt;request_bufflen
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|srb-&gt;use_sg
+)paren
+(brace
 id|buffer
 op_assign
 id|kmalloc
@@ -2029,6 +2039,12 @@ l_int|NULL
 singleline_comment|// bloody hell!
 r_return
 id|USB_STOR_TRANSPORT_FAILED
+suffix:semicolon
+)brace
+r_else
+id|buffer
+op_assign
+id|srb-&gt;request_buffer
 suffix:semicolon
 id|sector
 op_assign
@@ -2078,21 +2094,6 @@ id|transferred
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|srb-&gt;use_sg
-)paren
-(brace
-id|sg
-op_assign
-(paren
-r_struct
-id|scatterlist
-op_star
-)paren
-id|srb-&gt;request_buffer
-suffix:semicolon
 id|sg_segment
 op_assign
 l_int|0
@@ -2103,7 +2104,6 @@ op_assign
 l_int|0
 suffix:semicolon
 singleline_comment|// the scatter/gather list
-)brace
 r_while
 c_loop
 (paren
@@ -2315,14 +2315,14 @@ c_cond
 (paren
 id|srb-&gt;use_sg
 )paren
-id|us_copy_to_sgbuf
+id|usb_stor_access_xfer_buf
 c_func
 (paren
 id|buffer
 comma
 id|len
 comma
-id|sg
+id|srb
 comma
 op_amp
 id|sg_segment
@@ -2330,21 +2330,13 @@ comma
 op_amp
 id|sg_offset
 comma
-id|srb-&gt;use_sg
+id|TO_XFER_BUF
 )paren
 suffix:semicolon
 r_else
-id|memcpy
-c_func
-(paren
-id|srb-&gt;request_buffer
-op_plus
-id|transferred
-comma
 id|buffer
-comma
+op_add_assign
 id|len
-)paren
 suffix:semicolon
 singleline_comment|// Update the amount transferred and the sector number
 id|transferred
@@ -2359,6 +2351,11 @@ id|srb-&gt;transfersize
 suffix:semicolon
 )brace
 singleline_comment|// while transferred != srb-&gt;request_bufflen
+r_if
+c_cond
+(paren
+id|srb-&gt;use_sg
+)paren
 id|kfree
 c_func
 (paren
