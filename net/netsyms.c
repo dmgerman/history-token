@@ -758,6 +758,13 @@ c_func
 id|neigh_compat_output
 )paren
 suffix:semicolon
+DECL|variable|neigh_changeaddr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|neigh_changeaddr
+)paren
+suffix:semicolon
 multiline_comment|/*&t;dst_entry&t;*/
 DECL|variable|dst_alloc
 id|EXPORT_SYMBOL
@@ -2192,6 +2199,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|unregister_netdevice
+)paren
+suffix:semicolon
+DECL|variable|free_netdev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|free_netdev
 )paren
 suffix:semicolon
 DECL|variable|synchronize_net

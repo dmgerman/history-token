@@ -8384,7 +8384,7 @@ comma
 id|lp-&gt;dma_addr
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|pcnet32_dev

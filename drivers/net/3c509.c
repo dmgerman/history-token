@@ -1353,7 +1353,7 @@ comma
 id|EL3_IO_EXTENT
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 (paren
 id|dev
 )paren

@@ -690,12 +690,12 @@ suffix:semicolon
 multiline_comment|/* linkage */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * ioctl, getsockopt, setsockopt, and sg_send are optional and can be set to&n; * NULL. */
 multiline_comment|/* OF: send_Oam Flags */
 DECL|macro|ATM_OF_IMMED
-mdefine_line|#define ATM_OF_IMMED&t;1&t;/* Attempt immediate delivery */
+mdefine_line|#define ATM_OF_IMMED  1&t;&t;/* Attempt immediate delivery */
 DECL|macro|ATM_OF_INRATE
-mdefine_line|#define ATM_OF_INRATE&t;2&t;/* Attempt in-rate delivery */
+mdefine_line|#define ATM_OF_INRATE 2&t;&t;/* Attempt in-rate delivery */
+multiline_comment|/*&n; * ioctl, getsockopt, and setsockopt are optional and can be set to NULL.&n; */
 DECL|struct|atmdev_ops
 r_struct
 id|atmdev_ops
@@ -837,69 +837,6 @@ op_star
 id|skb
 )paren
 suffix:semicolon
-DECL|member|sg_send
-r_int
-(paren
-op_star
-id|sg_send
-)paren
-(paren
-r_struct
-id|atm_vcc
-op_star
-id|vcc
-comma
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|size
-)paren
-suffix:semicolon
-macro_line|#if 0 /* keep the current hack for now */
-r_int
-(paren
-op_star
-id|send_iovec
-)paren
-(paren
-r_struct
-id|atm_vcc
-op_star
-id|vcc
-comma
-r_struct
-id|iovec
-op_star
-id|iov
-comma
-r_int
-id|size
-comma
-r_void
-(paren
-op_star
-id|discard
-)paren
-(paren
-r_struct
-id|atm_vcc
-op_star
-id|vcc
-comma
-r_void
-op_star
-id|user
-)paren
-comma
-r_void
-op_star
-id|user
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|member|send_oam
 r_int
 (paren
@@ -957,35 +894,6 @@ comma
 r_int
 r_int
 id|addr
-)paren
-suffix:semicolon
-DECL|member|feedback
-r_void
-(paren
-op_star
-id|feedback
-)paren
-(paren
-r_struct
-id|atm_vcc
-op_star
-id|vcc
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-comma
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|dest
-comma
-r_int
-id|len
 )paren
 suffix:semicolon
 DECL|member|change_qos

@@ -201,6 +201,11 @@ r_void
 r_int
 id|i
 suffix:semicolon
+r_struct
+id|proc_dir_entry
+op_star
+id|d
+suffix:semicolon
 id|proc_irda
 op_assign
 id|proc_mkdir
@@ -242,6 +247,9 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
+id|d
+op_assign
 id|create_proc_info_entry
 c_func
 (paren
@@ -264,6 +272,16 @@ dot
 id|fn
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|d
+)paren
+id|d-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Function irda_proc_unregister (void)&n; *&n; *    Unregister irda entry in /proc file system&n; *&n; */
 DECL|function|irda_proc_unregister

@@ -15513,7 +15513,7 @@ id|hp-&gt;happy_dev
 suffix:semicolon
 )brace
 macro_line|#endif
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
