@@ -434,10 +434,12 @@ id|b-&gt;adapter
 op_assign
 id|matrox_i2c_adapter_template
 suffix:semicolon
-id|sprintf
+id|snprintf
 c_func
 (paren
-id|b-&gt;adapter.name
+id|b-&gt;adapter.dev.name
+comma
+id|DEVICE_NAME_SIZE
 comma
 id|name
 comma
@@ -704,7 +706,7 @@ id|DDC1B_DATA
 comma
 id|DDC1B_CLK
 comma
-l_string|&quot;DDC:fb%u #0 on i2c-matroxfb&quot;
+l_string|&quot;DDC:fb%u #0&quot;
 )paren
 suffix:semicolon
 r_break
@@ -725,7 +727,7 @@ id|DDC1_DATA
 comma
 id|DDC1_CLK
 comma
-l_string|&quot;DDC:fb%u #0 on i2c-matroxfb&quot;
+l_string|&quot;DDC:fb%u #0&quot;
 )paren
 suffix:semicolon
 r_break
@@ -763,7 +765,7 @@ id|DDC2_DATA
 comma
 id|DDC2_CLK
 comma
-l_string|&quot;DDC:fb%u #1 on i2c-matroxfb&quot;
+l_string|&quot;DDC:fb%u #1&quot;
 )paren
 suffix:semicolon
 r_if
@@ -811,7 +813,7 @@ id|MAT_DATA
 comma
 id|MAT_CLK
 comma
-l_string|&quot;MAVEN:fb%u on i2c-matroxfb&quot;
+l_string|&quot;MAVEN:fb%u&quot;
 )paren
 suffix:semicolon
 r_if

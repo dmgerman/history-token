@@ -558,11 +558,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|name
-op_assign
-l_string|&quot;PCF8584 ISA adapter&quot;
-comma
-dot
 id|id
 op_assign
 id|I2C_HW_P_ELEK
@@ -572,6 +567,17 @@ id|algo_data
 op_assign
 op_amp
 id|pcf_isa_data
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;PCF8584 ISA adapter&quot;
+comma
+)brace
 comma
 )brace
 suffix:semicolon

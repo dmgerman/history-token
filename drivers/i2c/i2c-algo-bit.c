@@ -5,6 +5,7 @@ multiline_comment|/*   Copyright (C) 1995-2000 Simon G. Vogl&n;&n;    This progr
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt; and even&n;   Frodo Looijaard &lt;frodol@dds.nl&gt; */
 multiline_comment|/* $Id: i2c-algo-bit.c,v 1.44 2003/01/21 08:08:16 kmalkki Exp $ */
+multiline_comment|/* #define DEBUG 1 */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -1477,13 +1478,13 @@ suffix:semicolon
 id|DEB2
 c_func
 (paren
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-algo-bit.o: %s sendbytes: writing %2.2X&bslash;n&quot;
+op_amp
+id|i2c_adap-&gt;dev
 comma
-id|i2c_adap-&gt;name
+l_string|&quot;sendbytes: writing %2.2X&bslash;n&quot;
 comma
 id|c
 op_amp
@@ -1535,13 +1536,13 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* arbitration or no acknowledge */
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2c-algo-bit.o: %s sendbytes: error - bailout.&bslash;n&quot;
+op_amp
+id|i2c_adap-&gt;dev
 comma
-id|i2c_adap-&gt;name
+l_string|&quot;sendbytes: error - bailout.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|i2c_stop
@@ -2432,7 +2433,7 @@ c_func
 (paren
 id|bit_adap
 comma
-id|adap-&gt;name
+id|adap-&gt;dev.name
 )paren
 suffix:semicolon
 r_if
@@ -2450,13 +2451,13 @@ suffix:semicolon
 id|DEB2
 c_func
 (paren
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-algo-bit.o: hw routines for %s registered.&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
 comma
-id|adap-&gt;name
+l_string|&quot;hw routines registered.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon

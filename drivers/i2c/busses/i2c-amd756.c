@@ -1146,11 +1146,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|name
-op_assign
-l_string|&quot;unset&quot;
-comma
-dot
 id|id
 op_assign
 id|I2C_ALGO_SMBUS
@@ -1162,6 +1157,17 @@ id|algo
 op_assign
 op_amp
 id|smbus_algorithm
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;unset&quot;
+comma
+)brace
 comma
 )brace
 suffix:semicolon
@@ -1500,10 +1506,12 @@ op_assign
 op_amp
 id|pdev-&gt;dev
 suffix:semicolon
-id|sprintf
+id|snprintf
 c_func
 (paren
-id|amd756_adapter.name
+id|amd756_adapter.dev.name
+comma
+id|DEVICE_NAME_SIZE
 comma
 l_string|&quot;SMBus AMD75x adapter at %04x&quot;
 comma
