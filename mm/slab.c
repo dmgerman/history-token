@@ -4358,6 +4358,12 @@ id|cachep-&gt;name
 op_assign
 id|name
 suffix:semicolon
+multiline_comment|/* Don&squot;t let CPUs to come and go */
+id|lock_cpu_hotplug
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4622,6 +4628,11 @@ op_amp
 id|cache_chain_sem
 )paren
 suffix:semicolon
+id|unlock_cpu_hotplug
+c_func
+(paren
+)paren
+suffix:semicolon
 id|BUG
 c_func
 (paren
@@ -4652,6 +4663,11 @@ c_func
 (paren
 op_amp
 id|cache_chain_sem
+)paren
+suffix:semicolon
+id|unlock_cpu_hotplug
+c_func
+(paren
 )paren
 suffix:semicolon
 id|opps
@@ -5189,6 +5205,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Don&squot;t let CPUs to come and go */
+id|lock_cpu_hotplug
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Find the cache in the chain of caches. */
 id|down
 c_func
@@ -5254,6 +5276,11 @@ op_amp
 id|cache_chain_sem
 )paren
 suffix:semicolon
+id|unlock_cpu_hotplug
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -5300,6 +5327,11 @@ op_amp
 id|cache_cache
 comma
 id|cachep
+)paren
+suffix:semicolon
+id|unlock_cpu_hotplug
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
