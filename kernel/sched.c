@@ -2416,13 +2416,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|variable|kick_process
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|kick_process
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Return a low guess at the load of a migration-source cpu.&n; *&n; * We want to under-estimate the load of migration sources, to&n; * balance conservatively.&n; */
 DECL|function|source_load
 r_static
