@@ -2914,6 +2914,10 @@ op_star
 id|t
 suffix:semicolon
 r_struct
+id|netlink_callback
+id|dcb
+suffix:semicolon
+r_struct
 id|rtattr
 op_star
 id|x
@@ -3132,7 +3136,8 @@ c_func
 (paren
 id|skb
 comma
-l_int|NULL
+op_amp
+id|dcb
 comma
 id|RTM_DELACTION
 comma
