@@ -406,9 +406,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;nAu1x00 PCMCIA (CS release %s)&bslash;n&quot;
-comma
-id|CS_RELEASE
+l_string|&quot;&bslash;nAu1x00 PCMCIA&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_64BIT_PHYS_ADDR

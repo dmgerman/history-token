@@ -3926,9 +3926,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;SA11xx PCMCIA (CS release %s)&bslash;n&quot;
-comma
-id|CS_RELEASE
+l_string|&quot;SA11xx PCMCIA&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret

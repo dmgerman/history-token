@@ -63,8 +63,7 @@ r_char
 op_star
 id|release
 op_assign
-l_string|&quot;Linux Kernel Card Services &quot;
-id|CS_RELEASE
+l_string|&quot;Linux Kernel Card Services&quot;
 suffix:semicolon
 DECL|variable|options
 r_static
@@ -87,9 +86,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Linux Kernel Card Services &quot;
-id|CS_RELEASE
-l_string|&quot;&bslash;n  options:&quot;
+l_string|&quot;Linux Kernel Card Services&bslash;noptions:&quot;
 id|OPTIONS
 )paren
 suffix:semicolon

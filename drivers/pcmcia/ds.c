@@ -36,8 +36,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;PCMCIA Driver Services &quot;
-id|CS_RELEASE
+l_string|&quot;PCMCIA Driver Services&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
