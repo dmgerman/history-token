@@ -217,6 +217,10 @@ c_func
 (paren
 l_string|&quot;flags:0x%08lx mapping:%p mapped:%d count:%d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|page-&gt;flags
 comma
 id|page-&gt;mapping
