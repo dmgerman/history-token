@@ -26,7 +26,7 @@ multiline_comment|/*&n; * Remaining dev_t-handling stuff&n; */
 DECL|macro|SD_MAJORS
 mdefine_line|#define SD_MAJORS&t;8
 DECL|macro|SD_MAJOR
-mdefine_line|#define SD_MAJOR(i)&t;((i) ? SCSI_DISK1_MAJOR+(i) : SCSI_DISK0_MAJOR)
+mdefine_line|#define SD_MAJOR(i)&t;((i) ? SCSI_DISK1_MAJOR-1+(i) : SCSI_DISK0_MAJOR)
 multiline_comment|/*&n; * Time out in seconds for disks and Magneto-opticals (which are slower).&n; */
 DECL|macro|SD_TIMEOUT
 mdefine_line|#define SD_TIMEOUT&t;&t;(30 * HZ)
