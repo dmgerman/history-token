@@ -10033,10 +10033,6 @@ l_int|1
 op_lshift
 id|PARTN_BITS
 suffix:semicolon
-id|g-&gt;minor_shift
-op_assign
-id|PARTN_BITS
-suffix:semicolon
 id|strcpy
 c_func
 (paren
