@@ -92,17 +92,17 @@ DECL|macro|SPIN_LOCK_UNLOCKED
 mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) { 0 }
 macro_line|#endif
 DECL|macro|spin_lock_init
-mdefine_line|#define spin_lock_init(lock)&t;do { } while(0)
+mdefine_line|#define spin_lock_init(lock)&t;do { (void)(lock); } while(0)
 DECL|macro|_raw_spin_lock
 mdefine_line|#define _raw_spin_lock(lock)&t;(void)(lock) /* Not &quot;unused variable&quot;. */
 DECL|macro|spin_is_locked
-mdefine_line|#define spin_is_locked(lock)&t;(0)
+mdefine_line|#define spin_is_locked(lock)&t;((void)(lock), 0)
 DECL|macro|_raw_spin_trylock
-mdefine_line|#define _raw_spin_trylock(lock)&t;({1; })
+mdefine_line|#define _raw_spin_trylock(lock)&t;((void)(lock), 1)
 DECL|macro|spin_unlock_wait
-mdefine_line|#define spin_unlock_wait(lock)&t;do { } while(0)
+mdefine_line|#define spin_unlock_wait(lock)&t;do { (void)(lock); } while(0)
 DECL|macro|_raw_spin_unlock
-mdefine_line|#define _raw_spin_unlock(lock)&t;do { } while(0)
+mdefine_line|#define _raw_spin_unlock(lock)&t;do { (void)(lock); } while(0)
 macro_line|#elif (DEBUG_SPINLOCKS &lt; 2)
 r_typedef
 r_struct
