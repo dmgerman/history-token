@@ -32,10 +32,10 @@ op_star
 id|s
 )paren
 (brace
-id|s-&gt;parent
+id|s-&gt;kobj.kset
 op_assign
 op_amp
-id|firmware_subsys
+id|firmware_subsys.kset
 suffix:semicolon
 r_return
 id|subsystem_register

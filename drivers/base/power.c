@@ -55,7 +55,7 @@ c_func
 id|node
 comma
 op_amp
-id|device_subsys.list
+id|device_subsys.kset.list
 )paren
 (brace
 r_struct
@@ -156,7 +156,7 @@ c_func
 id|node
 comma
 op_amp
-id|device_subsys.list
+id|device_subsys.kset.list
 )paren
 (brace
 r_struct
@@ -247,7 +247,7 @@ c_func
 id|entry
 comma
 op_amp
-id|device_subsys.list
+id|device_subsys.kset.list
 )paren
 (brace
 r_struct

@@ -45,7 +45,7 @@ id|sysfs_create_link
 c_func
 (paren
 op_amp
-id|data-&gt;intf-&gt;subsys.kobj
+id|data-&gt;intf-&gt;subsys.kset.kobj
 comma
 op_amp
 id|data-&gt;dev-&gt;kobj
@@ -89,7 +89,7 @@ id|sysfs_remove_link
 c_func
 (paren
 op_amp
-id|data-&gt;intf-&gt;subsys.kobj
+id|data-&gt;intf-&gt;subsys.kset.kobj
 comma
 id|name
 )paren
@@ -460,7 +460,7 @@ c_func
 id|entry
 comma
 op_amp
-id|intf-&gt;subsys.list
+id|intf-&gt;subsys.kset.list
 )paren
 (brace
 r_struct
@@ -583,7 +583,7 @@ c_func
 id|node
 comma
 op_amp
-id|cls-&gt;subsys.list
+id|cls-&gt;subsys.kset.list
 )paren
 (brace
 r_struct
