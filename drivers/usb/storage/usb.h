@@ -220,6 +220,8 @@ DECL|macro|US_FLIDX_IP_WANTED
 mdefine_line|#define US_FLIDX_IP_WANTED   17  /* 0x00020000&t;is an IRQ expected?&t;    */
 DECL|macro|US_FLIDX_CAN_CANCEL
 mdefine_line|#define US_FLIDX_CAN_CANCEL  18  /* 0x00040000  okay to cancel current_urb? */
+DECL|macro|US_FLIDX_CANCEL_SG
+mdefine_line|#define US_FLIDX_CANCEL_SG   19  /* 0x00080000&t;okay to cancel current_sg?  */
 multiline_comment|/* processing state machine states */
 DECL|macro|US_STATE_IDLE
 mdefine_line|#define US_STATE_IDLE&t;&t;1
@@ -526,6 +528,13 @@ op_star
 id|dr
 suffix:semicolon
 multiline_comment|/* control requests&t; */
+DECL|member|current_sg
+r_struct
+id|usb_sg_request
+op_star
+id|current_sg
+suffix:semicolon
+multiline_comment|/* scatter-gather USB   */
 multiline_comment|/* the semaphore for sleeping the control thread */
 DECL|member|sema
 r_struct

@@ -2629,23 +2629,59 @@ suffix:semicolon
 r_int
 id|j
 suffix:semicolon
-multiline_comment|/* USB v1.1 5.5.3 */
-multiline_comment|/* We read the first 8 bytes from the device descriptor to get to */
-multiline_comment|/*  the bMaxPacketSize0 field. Then we set the maximum packet size */
-multiline_comment|/*  for the control pipe, and retrieve the rest */
+multiline_comment|/* USB 2.0 section 5.5.3 talks about ep0 maxpacket ...&n;&t; * it&squot;s fixed size except for full speed devices.&n;&t; */
+r_switch
+c_cond
+(paren
+id|dev-&gt;speed
+)paren
+(brace
+r_case
+id|USB_SPEED_HIGH
+suffix:colon
+multiline_comment|/* fixed at 64 */
+id|i
+op_assign
+l_int|64
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|USB_SPEED_FULL
+suffix:colon
+multiline_comment|/* 8, 16, 32, or 64 */
+multiline_comment|/* to determine the ep0 maxpacket size, read the first 8&n;&t;&t; * bytes from the device descriptor to get bMaxPacketSize0;&n;&t;&t; * then correct our initial (small) guess.&n;&t;&t; */
+singleline_comment|// FALLTHROUGH
+r_case
+id|USB_SPEED_LOW
+suffix:colon
+multiline_comment|/* fixed at 8 */
+id|i
+op_assign
+l_int|8
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|dev-&gt;epmaxpacketin
 (braket
 l_int|0
 )braket
 op_assign
-l_int|8
+id|i
 suffix:semicolon
 id|dev-&gt;epmaxpacketout
 (braket
 l_int|0
 )braket
 op_assign
-l_int|8
+id|i
 suffix:semicolon
 r_for
 c_loop
@@ -2743,6 +2779,7 @@ l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/* Let the SET_ADDRESS settle */
+multiline_comment|/* high and low speed devices don&squot;t need this... */
 id|err
 op_assign
 id|usb_get_descriptor
@@ -2827,6 +2864,14 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|dev-&gt;speed
+op_eq
+id|USB_SPEED_FULL
+)paren
+(brace
 id|dev-&gt;epmaxpacketin
 (braket
 l_int|0
@@ -2841,6 +2886,7 @@ l_int|0
 op_assign
 id|dev-&gt;descriptor.bMaxPacketSize0
 suffix:semicolon
+)brace
 id|err
 op_assign
 id|usb_get_device_descriptor
