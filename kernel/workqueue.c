@@ -1068,6 +1068,15 @@ id|init_completion
 c_func
 (paren
 op_amp
+id|cwq
+op_member_access_from_pointer
+m_exit
+)paren
+suffix:semicolon
+id|init_completion
+c_func
+(paren
+op_amp
 id|startup.done
 )paren
 suffix:semicolon
@@ -1282,30 +1291,7 @@ c_cond
 id|cwq-&gt;thread
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;Cleaning up workqueue thread for %i&bslash;n&quot;
-comma
-id|cpu
-)paren
-suffix:semicolon
-multiline_comment|/* Initiate an exit and wait for it: */
-id|init_completion
-c_func
-(paren
-op_amp
-id|cwq
-op_member_access_from_pointer
-m_exit
-)paren
-suffix:semicolon
-id|wmb
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Thread must see !cwq-&gt;thread after completion init */
+multiline_comment|/* Tell thread to exit and wait for it. */
 id|cwq-&gt;thread
 op_assign
 l_int|NULL

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Simple MTD partitioning layer&n; *&n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: mtdpart.c,v 1.39 2003/05/21 15:15:03 dwmw2 Exp $&n; *&n; * &t;02-21-2002&t;Thomas Gleixner &lt;gleixner@autronix.de&gt;&n; *&t;&t;&t;added support for read_oob, write_oob&n; */
+multiline_comment|/*&n; * Simple MTD partitioning layer&n; *&n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: mtdpart.c,v 1.41 2003/06/18 14:53:02 dwmw2 Exp $&n; *&n; * &t;02-21-2002&t;Thomas Gleixner &lt;gleixner@autronix.de&gt;&n; *&t;&t;&t;added support for read_oob, write_oob&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -565,7 +565,7 @@ id|mtd
 )paren
 suffix:semicolon
 r_return
-id|part-&gt;master-&gt;read_user_prot_reg
+id|part-&gt;master-&gt;read_fact_prot_reg
 (paren
 id|part-&gt;master
 comma

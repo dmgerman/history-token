@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Linux driver for Disk-On-Chip 2000 and Millennium&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2000.c,v 1.52 2003/05/20 21:03:07 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Linux driver for Disk-On-Chip 2000 and Millennium&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2000.c,v 1.53 2003/06/11 09:45:19 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
@@ -2258,6 +2258,10 @@ suffix:semicolon
 id|mtd-&gt;flags
 op_assign
 id|MTD_CAP_NANDFLASH
+suffix:semicolon
+id|mtd-&gt;ecctype
+op_assign
+id|MTD_ECC_RS_DiskOnChip
 suffix:semicolon
 id|mtd-&gt;size
 op_assign

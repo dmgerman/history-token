@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ebony.c,v 1.7 2003/05/21 12:45:18 dwmw2 Exp $&n; * &n; * Mapping for Ebony user flash&n; *&n; * Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * Copyright 2002 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * $Id: ebony.c,v 1.8 2003/06/23 11:48:18 dwmw2 Exp $&n; * &n; * Mapping for Ebony user flash&n; *&n; * Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * Copyright 2002 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -139,8 +139,6 @@ comma
 )brace
 )brace
 suffix:semicolon
-DECL|macro|NB_OF
-mdefine_line|#define NB_OF(x)  (sizeof(x)/sizeof(x[0]))
 DECL|function|init_ebony
 r_int
 id|__init
@@ -361,7 +359,7 @@ id|flash
 comma
 id|ebony_small_partitions
 comma
-id|NB_OF
+id|ARRAY_SIZE
 c_func
 (paren
 id|ebony_small_partitions
@@ -453,7 +451,7 @@ id|flash
 comma
 id|ebony_large_partitions
 comma
-id|NB_OF
+id|ARRAY_SIZE
 c_func
 (paren
 id|ebony_large_partitions

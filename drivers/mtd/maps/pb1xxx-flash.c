@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Flash memory access on Alchemy Pb1xxx boards&n; * &n; * (C) 2001 Pete Popov &lt;ppopov@mvista.com&gt;&n; * &n; * $Id: pb1xxx-flash.c,v 1.8 2003/05/21 12:45:19 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Flash memory access on Alchemy Pb1xxx boards&n; * &n; * (C) 2001 Pete Popov &lt;ppopov@mvista.com&gt;&n; * &n; * $Id: pb1xxx-flash.c,v 1.9 2003/06/23 11:48:18 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -374,8 +374,6 @@ macro_line|#endif
 macro_line|#else
 macro_line|#error Unsupported board
 macro_line|#endif
-DECL|macro|NB_OF
-mdefine_line|#define NB_OF(x)  (sizeof(x)/sizeof(x[0]))
 DECL|variable|parsed_parts
 r_static
 r_struct
@@ -429,7 +427,7 @@ id|pb1xxx_partitions
 suffix:semicolon
 id|nb_parts
 op_assign
-id|NB_OF
+id|ARRAY_SIZE
 c_func
 (paren
 id|pb1xxx_partitions

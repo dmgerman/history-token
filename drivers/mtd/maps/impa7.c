@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: impa7.c,v 1.8 2003/05/21 12:45:18 dwmw2 Exp $&n; *&n; * Handle mapping of the NOR flash on implementa A7 boards&n; *&n; * Copyright 2002 SYSGO Real-Time Solutions GmbH&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; * $Id: impa7.c,v 1.9 2003/06/23 11:47:43 dwmw2 Exp $&n; *&n; * Handle mapping of the NOR flash on implementa A7 boards&n; *&n; * Copyright 2002 SYSGO Real-Time Solutions GmbH&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -121,15 +121,13 @@ l_int|0x00000000
 comma
 )brace
 suffix:semicolon
-DECL|macro|NB_OF
-mdefine_line|#define NB_OF(x) (sizeof (x) / sizeof (x[0]))
-macro_line|#endif
 DECL|variable|mtd_parts_nb
 r_static
 r_int
 id|mtd_parts_nb
-op_assign
-l_int|0
+(braket
+id|NUM_FLASHBANKS
+)braket
 suffix:semicolon
 DECL|variable|mtd_parts
 r_static
@@ -137,9 +135,11 @@ r_struct
 id|mtd_partition
 op_star
 id|mtd_parts
-op_assign
-l_int|0
+(braket
+id|NUM_FLASHBANKS
+)braket
 suffix:semicolon
+macro_line|#endif
 DECL|variable|probes
 r_static
 r_const
@@ -219,12 +219,6 @@ id|WINDOW_SIZE1
 )brace
 comma
 )brace
-suffix:semicolon
-r_char
-id|mtdid
-(braket
-l_int|10
-)braket
 suffix:semicolon
 r_int
 id|devicesfound
@@ -410,20 +404,14 @@ id|owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-id|add_mtd_device
-c_func
-(paren
-id|impa7_mtd
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
 id|devicesfound
 op_increment
 suffix:semicolon
 macro_line|#ifdef CONFIG_MTD_PARTITIONS
 id|mtd_parts_nb
+(braket
+id|i
+)braket
 op_assign
 id|parse_mtd_partitions
 c_func
@@ -437,6 +425,9 @@ id|probes
 comma
 op_amp
 id|mtd_parts
+(braket
+id|i
+)braket
 comma
 l_int|0
 )paren
@@ -445,29 +436,33 @@ r_if
 c_cond
 (paren
 id|mtd_parts_nb
+(braket
+id|i
+)braket
 OG
 l_int|0
 )paren
+(brace
 id|part_type
 op_assign
 l_string|&quot;command line&quot;
 suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|mtd_parts_nb
-op_le
-l_int|0
-)paren
+)brace
+r_else
 (brace
 id|mtd_parts
+(braket
+id|i
+)braket
 op_assign
 id|static_partitions
 suffix:semicolon
 id|mtd_parts_nb
+(braket
+id|i
+)braket
 op_assign
-id|NB_OF
+id|ARRAY_SIZE
 c_func
 (paren
 id|static_partitions
@@ -478,25 +473,6 @@ op_assign
 l_string|&quot;static&quot;
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|mtd_parts_nb
-op_le
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-id|MSG_PREFIX
-l_string|&quot;no partition info available&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
 id|printk
 c_func
 (paren
@@ -516,11 +492,26 @@ id|i
 )braket
 comma
 id|mtd_parts
+(braket
+id|i
+)braket
 comma
 id|mtd_parts_nb
+(braket
+id|i
+)braket
 )paren
 suffix:semicolon
-)brace
+macro_line|#else
+id|add_mtd_device
+c_func
+(paren
+id|impa7_mtd
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
 macro_line|#endif
 )brace
 r_else
@@ -589,6 +580,17 @@ id|i
 )braket
 )paren
 (brace
+macro_line|#ifdef CONFIG_MTD_PARTITIONS
+id|del_mtd_partitions
+c_func
+(paren
+id|impa7_mtd
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+macro_line|#else
 id|del_mtd_device
 c_func
 (paren
@@ -598,6 +600,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
+macro_line|#endif
 id|map_destroy
 c_func
 (paren
@@ -607,18 +610,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|impa7_map
-(braket
-id|i
-)braket
-dot
-id|virt
-)paren
-(brace
 id|iounmap
 c_func
 (paren
