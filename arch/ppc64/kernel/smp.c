@@ -30,11 +30,10 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &lt;asm/machdep.h&gt;
+macro_line|#include &lt;asm/xics.h&gt;
 DECL|variable|smp_threads_ready
 r_int
 id|smp_threads_ready
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|cache_decay_ticks
 r_int
@@ -106,45 +105,6 @@ comma
 r_int
 id|wait
 )paren
-suffix:semicolon
-r_void
-id|xics_setup_cpu
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|xics_cause_IPI
-c_func
-(paren
-r_int
-id|cpu
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * XICS only has a single IPI, so encode the messages per CPU&n; */
-DECL|struct|xics_ipi_struct
-r_struct
-id|xics_ipi_struct
-(brace
-DECL|member|value
-r_volatile
-r_int
-r_int
-id|value
-suffix:semicolon
-DECL|variable|____cacheline_aligned
-)brace
-id|____cacheline_aligned
-suffix:semicolon
-DECL|variable|__cacheline_aligned
-r_struct
-id|xics_ipi_struct
-id|xics_ipi_message
-(braket
-id|NR_CPUS
-)braket
-id|__cacheline_aligned
 suffix:semicolon
 DECL|macro|smp_message_pass
 mdefine_line|#define smp_message_pass(t,m,d,w) smp_ops-&gt;message_pass((t),(m),(d),(w))
