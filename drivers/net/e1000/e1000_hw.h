@@ -782,6 +782,16 @@ op_star
 id|hw
 )paren
 suffix:semicolon
+r_int32
+id|e1000_force_mac_fc
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+)paren
+suffix:semicolon
 multiline_comment|/* PHY */
 r_int32
 id|e1000_read_phy_reg

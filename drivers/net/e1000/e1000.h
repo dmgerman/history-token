@@ -266,6 +266,10 @@ r_struct
 id|work_struct
 id|tx_timeout_task
 suffix:semicolon
+DECL|member|fc_autoneg
+r_uint8
+id|fc_autoneg
+suffix:semicolon
 DECL|member|blink_timer
 r_struct
 id|timer_list

@@ -79,17 +79,6 @@ id|hw
 )paren
 suffix:semicolon
 r_static
-r_int32
-id|e1000_force_mac_fc
-c_func
-(paren
-r_struct
-id|e1000_hw
-op_star
-id|hw
-)paren
-suffix:semicolon
-r_static
 r_void
 id|e1000_raise_mdi_clk
 c_func
@@ -5645,7 +5634,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Forces the MAC&squot;s flow control settings.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Sets the TFCE and RFCE bits in the device control register to reflect&n; * the adapter settings. TFCE and RFCE need to be explicitly set by&n; * software when a Copper PHY is used because autonegotiation is managed&n; * by the PHY rather than the MAC. Software must also configure these&n; * bits when link is forced on a fiber connection.&n; *****************************************************************************/
-r_static
 r_int32
 DECL|function|e1000_force_mac_fc
 id|e1000_force_mac_fc
@@ -5786,7 +5774,7 @@ id|ctrl
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|E1000_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Configures flow control settings after link is established&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Should be called immediately after a valid link has been established.&n; * Forces MAC flow control settings if link was forced. When in MII/GMII mode&n; * and autonegotiation is enabled, the MAC flow control settings will be set&n; * based on the flow control negotiated by the PHY. In TBI mode, the TFCE&n; * and RFCE bits will be automaticaly set to the negotiated flow control mode.&n; *****************************************************************************/
