@@ -94,7 +94,7 @@ id|kobj_probe_t
 op_star
 comma
 r_struct
-id|subsystem
+id|semaphore
 op_star
 )paren
 suffix:semicolon

@@ -1414,7 +1414,7 @@ c_func
 id|base_probe
 comma
 op_amp
-id|block_subsys
+id|block_subsys_sem
 )paren
 suffix:semicolon
 id|blk_dev_init
