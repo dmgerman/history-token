@@ -252,6 +252,12 @@ id|file_operations
 id|cifs_file_ops
 suffix:semicolon
 r_extern
+r_struct
+id|file_operations
+id|cifs_file_direct_ops
+suffix:semicolon
+multiline_comment|/* if directio mount */
+r_extern
 r_int
 id|cifs_open
 c_func

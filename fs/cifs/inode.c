@@ -356,6 +356,7 @@ id|cifsInfo-&gt;time
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* this is ok to set on every inode revalidate */
 id|atomic_set
 c_func
 (paren
@@ -365,7 +366,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* ok to set on every refresh of inode */
 id|inode-&gt;i_atime
 op_assign
 id|cifs_NTtimeToUnix
@@ -589,10 +589,9 @@ comma
 id|end_of_file
 )paren
 suffix:semicolon
-multiline_comment|/* blksize needs to be multiple of two. So safer to default to blksize&n;&t;and blkbits set in superblock so 2**blkbits and blksize will match */
-multiline_comment|/*&t;&t;inode-&gt;i_blksize =&n;&t;&t;    (pTcon-&gt;ses-&gt;server-&gt;maxBuf - MAX_CIFS_HDR_SIZE) &amp; 0xFFFFFE00;*/
-multiline_comment|/* This seems incredibly stupid but it turns out that&n;&t;&t;i_blocks is not related to (i_size / i_blksize), instead a&n;&t;&t;size of 512 is required to be used for calculating num blocks */
-multiline_comment|/*&t;&t;inode-&gt;i_blocks = &n;&t;                (inode-&gt;i_blksize - 1 + num_of_bytes) &gt;&gt; inode-&gt;i_blkbits;*/
+multiline_comment|/* blksize needs to be multiple of two. So safer to default to&n;&t;&t;blksize and blkbits set in superblock so 2**blkbits and blksize&n;&t;&t;will match rather than setting to:&n;&t;&t;(pTcon-&gt;ses-&gt;server-&gt;maxBuf - MAX_CIFS_HDR_SIZE) &amp; 0xFFFFFE00;*/
+multiline_comment|/* This seems incredibly stupid but it turns out that i_blocks&n;&t;&t;   is not related to (i_size / i_blksize), instead 512 byte size&n;&t;&t;   is required for calculating num blocks */
+multiline_comment|/* inode-&gt;i_blocks = &n;&t;                (inode-&gt;i_blksize - 1 + num_of_bytes) &gt;&gt; inode-&gt;i_blkbits;*/
 multiline_comment|/* 512 bytes (2**9) is the fake blocksize that must be used */
 multiline_comment|/* for this calculation */
 id|inode-&gt;i_blocks
@@ -621,7 +620,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Server inconsistency Error: it says allocation size less than end of file &quot;
+l_string|&quot;allocation size less than end of file &quot;
 )paren
 )paren
 suffix:semicolon
@@ -668,6 +667,21 @@ op_assign
 op_amp
 id|cifs_file_inode_ops
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cifs_sb-&gt;mnt_cifs_flags
+op_amp
+id|CIFS_MOUNT_DIRECT_IO
+)paren
+(brace
+id|inode-&gt;i_fop
+op_assign
+op_amp
+id|cifs_file_direct_ops
+suffix:semicolon
+)brace
+r_else
 id|inode-&gt;i_fop
 op_assign
 op_amp
@@ -886,7 +900,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;No need to revalidate inode sizes on cached file &quot;
+l_string|&quot;No need to revalidate cached inode sizes&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1146,7 +1160,7 @@ multiline_comment|/* Is an i_ino of zero legal? */
 multiline_comment|/* Are there sanity checks we can use to ensure that&n;&t;&t;&t;the server is really filling in that field? */
 multiline_comment|/* We can not use the IndexNumber from either&n;&t;&t;&t;Windows or Samba as it is frequently set to zero */
 multiline_comment|/* There may be higher info levels that work but&n;&t;&t;&t;Are there Windows server or network appliances&n;&t;&t;&t;for which IndexNumber field is not guaranteed unique? */
-multiline_comment|/* if(cifs_sb-&gt;mnt_cifs_flags &amp; CIFS_MOUNT_SERVER_INUM) {&n;&t;&t;&t;&t;(*pinode)-&gt;i_ino = &n;&t;&t;&t;&t;&t;(unsigned long)pfindData-&gt;IndexNumber;&n;&t;&t;&t;} */
+multiline_comment|/* if(cifs_sb-&gt;mnt_cifs_flags &amp; CIFS_MOUNT_SERVER_INUM){&n;&t;&t;&t;&t;(*pinode)-&gt;i_ino = &n;&t;&t;&t;&t;&t;(unsigned long)pfindData-&gt;IndexNumber;&n;&t;&t;&t;} */
 multiline_comment|/*NB: ino incremented to unique num in new_inode*/
 id|insert_inode_hash
 c_func
@@ -1201,8 +1215,7 @@ id|cifsInfo-&gt;time
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* blksize needs to be multiple of two. So safer to default to blksize&n;        and blkbits set in superblock so 2**blkbits and blksize will match */
-multiline_comment|/*&t;&t;inode-&gt;i_blksize =&n;&t;&t;    (pTcon-&gt;ses-&gt;server-&gt;maxBuf - MAX_CIFS_HDR_SIZE) &amp; 0xFFFFFE00;*/
+multiline_comment|/* blksize needs to be multiple of two. So safer to default to&n;&t;&t;blksize and blkbits set in superblock so 2**blkbits and blksize&n;&t;&t;will match rather than setting to:&n;&t;&t;(pTcon-&gt;ses-&gt;server-&gt;maxBuf - MAX_CIFS_HDR_SIZE) &amp; 0xFFFFFE00;*/
 multiline_comment|/* Linux can not store file creation time unfortunately so we ignore it */
 id|inode-&gt;i_atime
 op_assign
@@ -1426,6 +1439,21 @@ op_assign
 op_amp
 id|cifs_file_inode_ops
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cifs_sb-&gt;mnt_cifs_flags
+op_amp
+id|CIFS_MOUNT_DIRECT_IO
+)paren
+(brace
+id|inode-&gt;i_fop
+op_assign
+op_amp
+id|cifs_file_direct_ops
+suffix:semicolon
+)brace
+r_else
 id|inode-&gt;i_fop
 op_assign
 op_amp
