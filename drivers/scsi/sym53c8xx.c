@@ -2,7 +2,7 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n;**&t;Supported SCSI features:&n;**&t;    Synchronous data transfers&n;**&t;    Wide16 SCSI BUS&n;**&t;    Disconnection/Reselection&n;**&t;    Tagged command queuing&n;**&t;    SCSI Parity checking&n;**&n;**&t;Supported NCR/SYMBIOS chips:&n;**&t;&t;53C810A&t;  (8 bits, Fast 10,&t; no rom BIOS) &n;**&t;&t;53C825A&t;  (Wide,   Fast 10,&t; on-board rom BIOS)&n;**&t;&t;53C860&t;  (8 bits, Fast 20,&t; no rom BIOS)&n;**&t;&t;53C875&t;  (Wide,   Fast 20,&t; on-board rom BIOS)&n;**&t;&t;53C876&t;  (Wide,   Fast 20 Dual, on-board rom BIOS)&n;**&t;&t;53C895&t;  (Wide,   Fast 40,&t; on-board rom BIOS)&n;**&t;&t;53C895A&t;  (Wide,   Fast 40,&t; on-board rom BIOS)&n;**&t;&t;53C896&t;  (Wide,   Fast 40 Dual, on-board rom BIOS)&n;**&t;&t;53C897&t;  (Wide,   Fast 40 Dual, on-board rom BIOS)&n;**&t;&t;53C1510D  (Wide,   Fast 40 Dual, on-board rom BIOS)&n;**&t;&t;53C1010&t;  (Wide,   Fast 80 Dual, on-board rom BIOS)&n;**&t;&t;53C1010_66(Wide,   Fast 80 Dual, on-board rom BIOS, 33/66MHz PCI)&n;**&n;**&t;Other features:&n;**&t;&t;Memory mapped IO&n;**&t;&t;Module&n;**&t;&t;Shared IRQ&n;*/
 multiline_comment|/*&n;**&t;Name and version of the driver&n;*/
 DECL|macro|SCSI_NCR_DRIVER_NAME
-mdefine_line|#define SCSI_NCR_DRIVER_NAME&t;&quot;sym53c8xx-1.7.3a-20010304&quot;
+mdefine_line|#define SCSI_NCR_DRIVER_NAME&t;&quot;sym53c8xx-1.7.3c-20010512&quot;
 DECL|macro|SCSI_NCR_DEBUG_FLAGS
 mdefine_line|#define SCSI_NCR_DEBUG_FLAGS&t;(0)
 DECL|macro|NAME53C
@@ -1009,6 +1009,10 @@ multiline_comment|/* Does not make sense in earlier kernels */
 macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,4,0)
 DECL|macro|pci_enable_device
 mdefine_line|#define pci_enable_device(pdev)&t;&t;(0)
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,4,4)
+DECL|macro|scsi_set_pci_device
+mdefine_line|#define&t;scsi_set_pci_device(inst, pdev)&t;(0)
 macro_line|#endif
 multiline_comment|/*==========================================================&n;**&n;**&t;Debugging tags&n;**&n;**==========================================================&n;*/
 DECL|macro|DEBUG_ALLOC
@@ -9701,7 +9705,7 @@ comma
 (brace
 id|SCR_LOAD_REL
 (paren
-id|scratcha1
+id|scratcha
 comma
 l_int|4
 )paren
@@ -19284,7 +19288,7 @@ op_assign
 id|cmd
 suffix:semicolon
 multiline_comment|/*---------------------------------------------------&n;&t;**&n;&t;**&t;Enable tagged queue if asked by scsi ioctl&n;&t;**&n;&t;**----------------------------------------------------&n;&t;*/
-macro_line|#if 0&t;/* This stuff was only usefull for linux-1.2.13 */
+macro_line|#if 0&t;/* This stuff was only useful for linux-1.2.13 */
 r_if
 c_cond
 (paren
@@ -20573,6 +20577,29 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|np-&gt;features
+op_amp
+id|FE_ISTAT1
+)paren
+op_logical_or
+op_logical_neg
+(paren
+id|INB
+(paren
+id|nc_istat1
+)paren
+op_amp
+id|SRUN
+)paren
+)paren
+r_goto
+id|do_chip_reset
+suffix:semicolon
 id|OUTB
 (paren
 id|nc_istat
@@ -20585,7 +20612,7 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|1000000
+l_int|100000
 suffix:semicolon
 id|i
 suffix:semicolon
@@ -20613,9 +20640,8 @@ id|INW
 id|nc_sist
 )paren
 suffix:semicolon
-r_continue
-suffix:semicolon
 )brace
+r_else
 r_if
 c_cond
 (paren
@@ -20624,6 +20650,27 @@ op_amp
 id|DIP
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|INB
+(paren
+id|nc_dstat
+)paren
+op_amp
+id|ABRT
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|UDELAY
+c_func
+(paren
+l_int|5
+)paren
+suffix:semicolon
+)brace
 id|OUTB
 (paren
 id|nc_istat
@@ -20631,15 +20678,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|INB
-(paren
-id|nc_dstat
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
 r_if
 c_cond
 (paren
@@ -20649,15 +20687,20 @@ id|i
 id|printk
 c_func
 (paren
-l_string|&quot;%s: unable to abort current chip operation.&bslash;n&quot;
+l_string|&quot;%s: unable to abort current chip operation, &quot;
+l_string|&quot;ISTAT=0x%02x.&bslash;n&quot;
 comma
 id|ncr_name
 c_func
 (paren
 id|np
 )paren
+comma
+id|istat
 )paren
 suffix:semicolon
+id|do_chip_reset
+suffix:colon
 id|ncr_chip_reset
 c_func
 (paren
@@ -21843,7 +21886,7 @@ comma
 id|cp-&gt;lun
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;**&t;On standard INQUIRY response (EVPD and CmDt &n;&t;&t;**&t;not set), setup logical unit according to &n;&t;&t;**&t;announced capabilities (we need the 1rst 7 bytes).&n;&t;&t;*/
+multiline_comment|/*&n;&t;&t;**&t;On standard INQUIRY response (EVPD and CmDt &n;&t;&t;**&t;not set), setup logical unit according to &n;&t;&t;**&t;announced capabilities (we need the 1rst 8 bytes).&n;&t;&t;*/
 r_if
 c_cond
 (paren
@@ -21864,11 +21907,10 @@ op_amp
 l_int|0x3
 )paren
 op_logical_and
-id|cmd-&gt;cmnd
-(braket
-l_int|4
-)braket
-op_ge
+id|cmd-&gt;request_bufflen
+op_minus
+id|cp-&gt;resid
+OG
 l_int|7
 op_logical_and
 op_logical_neg
@@ -23681,7 +23723,7 @@ id|div
 op_plus
 l_int|1
 suffix:semicolon
-macro_line|#if 0&t;/* This optimization does not seem very usefull */
+macro_line|#if 0&t;/* This optimization does not seem very useful */
 id|per
 op_assign
 (paren
@@ -26257,7 +26299,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* SCSI_NCR_PCIQ_BROKEN_INTR */
 )brace
-multiline_comment|/*==========================================================&n;**&n;**&t;log message for real hard errors&n;**&n;**&t;&quot;ncr0 targ 0?: ERROR (ds:si) (so-si-sd) (sxfer/scntl3) @ name (dsp:dbc).&quot;&n;**&t;&quot;&t;      reg: r0 r1 r2 r3 r4 r5 r6 ..... rf.&quot;&n;**&n;**&t;exception register:&n;**&t;&t;ds:&t;dstat&n;**&t;&t;si:&t;sist&n;**&n;**&t;SCSI bus lines:&n;**&t;&t;so:&t;control lines as driver by NCR.&n;**&t;&t;si:&t;control lines as seen by NCR.&n;**&t;&t;sd:&t;scsi data lines as seen by NCR.&n;**&n;**&t;wide/fastmode:&n;**&t;&t;sxfer:&t;(see the manual)&n;**&t;&t;scntl3:&t;(see the manual)&n;**&n;**&t;current script command:&n;**&t;&t;dsp:&t;script adress (relative to start of script).&n;**&t;&t;dbc:&t;first word of script command.&n;**&n;**&t;First 24 register of the chip:&n;**&t;&t;r0..rf&n;**&n;**==========================================================&n;*/
+multiline_comment|/*==========================================================&n;**&n;**&t;log message for real hard errors&n;**&n;**&t;&quot;ncr0 targ 0?: ERROR (ds:si) (so-si-sd) (sxfer/scntl3) @ name (dsp:dbc).&quot;&n;**&t;&quot;&t;      reg: r0 r1 r2 r3 r4 r5 r6 ..... rf.&quot;&n;**&n;**&t;exception register:&n;**&t;&t;ds:&t;dstat&n;**&t;&t;si:&t;sist&n;**&n;**&t;SCSI bus lines:&n;**&t;&t;so:&t;control lines as driver by NCR.&n;**&t;&t;si:&t;control lines as seen by NCR.&n;**&t;&t;sd:&t;scsi data lines as seen by NCR.&n;**&n;**&t;wide/fastmode:&n;**&t;&t;sxfer:&t;(see the manual)&n;**&t;&t;scntl3:&t;(see the manual)&n;**&n;**&t;current script command:&n;**&t;&t;dsp:&t;script address (relative to start of script).&n;**&t;&t;dbc:&t;first word of script command.&n;**&n;**&t;First 24 register of the chip:&n;**&t;&t;r0..rf&n;**&n;**==========================================================&n;*/
 DECL|function|ncr_log_hard_error
 r_static
 r_void
@@ -29095,7 +29137,7 @@ c_func
 id|cp
 )paren
 suffix:semicolon
-id|printf
+id|printk
 (paren
 l_string|&quot;MA interrupt with WSR set - &quot;
 l_string|&quot;pm-&gt;sg.addr=%x - pm-&gt;sg.size=%d&bslash;n&quot;
@@ -30962,19 +31004,13 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-m_assert
-(paren
-id|k
-op_ne
-op_minus
-l_int|1
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;**&t;If job removed, repair the start queue.&n;&t;&t;&t;*/
 r_if
 c_cond
 (paren
 id|k
 op_ne
+op_minus
 l_int|1
 )paren
 (brace
@@ -30994,6 +31030,7 @@ op_assign
 id|k
 suffix:semicolon
 multiline_comment|/* Start queue pointer */
+)brace
 id|cp-&gt;host_status
 op_assign
 id|HS_ABORTED
@@ -31010,7 +31047,6 @@ comma
 id|cp
 )paren
 suffix:semicolon
-)brace
 )brace
 r_break
 suffix:semicolon
@@ -32615,7 +32651,7 @@ l_string|&quot;.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*===================================================================&n;**&n;**&t;Negotiation for WIDE and SYNCHRONOUS DATA TRANSFER.&n;**&n;**===================================================================&n;**&n;**&t;Was Sie schon immer ueber transfermode negotiation wissen wollten ...&n;**&n;**&t;We try to negotiate sync and wide transfer only after&n;**&t;a successfull inquire command. We look at byte 7 of the&n;**&t;inquire data to determine the capabilities of the target.&n;**&n;**&t;When we try to negotiate, we append the negotiation message&n;**&t;to the identify and (maybe) simple tag message.&n;**&t;The host status field is set to HS_NEGOTIATE to mark this&n;**&t;situation.&n;**&n;**&t;If the target doesn&squot;t answer this message immediately&n;**&t;(as required by the standard), the SIR_NEGO_FAILED interrupt&n;**&t;will be raised eventually.&n;**&t;The handler removes the HS_NEGOTIATE status, and sets the&n;**&t;negotiated value to the default (async / nowide).&n;**&n;**&t;If we receive a matching answer immediately, we check it&n;**&t;for validity, and set the values.&n;**&n;**&t;If we receive a Reject message immediately, we assume the&n;**&t;negotiation has failed, and fall back to standard values.&n;**&n;**&t;If we receive a negotiation message while not in HS_NEGOTIATE&n;**&t;state, it&squot;s a target initiated negotiation. We prepare a&n;**&t;(hopefully) valid answer, set our parameters, and send back &n;**&t;this answer to the target.&n;**&n;**&t;If the target doesn&squot;t fetch the answer (no message out phase),&n;**&t;we assume the negotiation has failed, and fall back to default&n;**&t;settings (SIR_NEGO_PROTO interrupt).&n;**&n;**&t;When we set the values, we adjust them in all ccbs belonging &n;**&t;to this target, in the controller&squot;s register, and in the &quot;phys&quot;&n;**&t;field of the controller&squot;s struct ncb.&n;**&n;**---------------------------------------------------------------------&n;*/
+multiline_comment|/*===================================================================&n;**&n;**&t;Negotiation for WIDE and SYNCHRONOUS DATA TRANSFER.&n;**&n;**===================================================================&n;**&n;**&t;Was Sie schon immer ueber transfermode negotiation wissen wollten ...&n;**&n;**&t;We try to negotiate sync and wide transfer only after&n;**&t;a successful inquire command. We look at byte 7 of the&n;**&t;inquire data to determine the capabilities of the target.&n;**&n;**&t;When we try to negotiate, we append the negotiation message&n;**&t;to the identify and (maybe) simple tag message.&n;**&t;The host status field is set to HS_NEGOTIATE to mark this&n;**&t;situation.&n;**&n;**&t;If the target doesn&squot;t answer this message immediately&n;**&t;(as required by the standard), the SIR_NEGO_FAILED interrupt&n;**&t;will be raised eventually.&n;**&t;The handler removes the HS_NEGOTIATE status, and sets the&n;**&t;negotiated value to the default (async / nowide).&n;**&n;**&t;If we receive a matching answer immediately, we check it&n;**&t;for validity, and set the values.&n;**&n;**&t;If we receive a Reject message immediately, we assume the&n;**&t;negotiation has failed, and fall back to standard values.&n;**&n;**&t;If we receive a negotiation message while not in HS_NEGOTIATE&n;**&t;state, it&squot;s a target initiated negotiation. We prepare a&n;**&t;(hopefully) valid answer, set our parameters, and send back &n;**&t;this answer to the target.&n;**&n;**&t;If the target doesn&squot;t fetch the answer (no message out phase),&n;**&t;we assume the negotiation has failed, and fall back to default&n;**&t;settings (SIR_NEGO_PROTO interrupt).&n;**&n;**&t;When we set the values, we adjust them in all ccbs belonging &n;**&t;to this target, in the controller&squot;s register, and in the &quot;phys&quot;&n;**&t;field of the controller&squot;s struct ncb.&n;**&n;**---------------------------------------------------------------------&n;*/
 multiline_comment|/*==========================================================&n;**&n;**&t;ncr chip handler for SYNCHRONOUS DATA TRANSFER &n;**&t;REQUEST (SDTR) message.&n;**&n;**==========================================================&n;**&n;**&t;Read comments above.&n;**&n;**----------------------------------------------------------&n;*/
 DECL|function|ncr_sync_nego
 r_static
@@ -35310,7 +35346,7 @@ suffix:colon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*==========================================================&n;**&n;**&n;**&t;Aquire a control block&n;**&n;**&n;**==========================================================&n;*/
+multiline_comment|/*==========================================================&n;**&n;**&n;**&t;Acquire a control block&n;**&n;**&n;**==========================================================&n;*/
 DECL|function|ncr_get_ccb
 r_static
 id|ccb_p
@@ -37466,6 +37502,9 @@ id|host_wr
 comma
 id|pc
 suffix:semicolon
+id|u_char
+id|dstat
+suffix:semicolon
 r_int
 id|i
 comma
@@ -37499,6 +37538,20 @@ id|err
 suffix:semicolon
 )brace
 macro_line|#endif
+id|restart_test
+suffix:colon
+multiline_comment|/*&n;&t;**&t;Enable Master Parity Checking as we intend &n;&t;**&t;to enable it for normal operations.&n;&t;*/
+id|OUTB
+(paren
+id|nc_ctest4
+comma
+(paren
+id|np-&gt;rv_ctest4
+op_amp
+id|MPEE
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;**&t;init&n;&t;*/
 id|pc
 op_assign
@@ -37580,6 +37633,100 @@ id|DIP
 )paren
 r_break
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+op_ge
+id|NCR_SNOOP_TIMEOUT
+)paren
+(brace
+id|printk
+(paren
+l_string|&quot;CACHE TEST FAILED: timeout.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+(paren
+l_int|0x20
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n;&t;**&t;Check for fatal DMA errors.&n;&t;*/
+id|dstat
+op_assign
+id|INB
+(paren
+id|nc_dstat
+)paren
+suffix:semicolon
+macro_line|#if 1&t;/* Band aiding for broken hardwares that fail PCI parity */
+r_if
+c_cond
+(paren
+(paren
+id|dstat
+op_amp
+id|MDPE
+)paren
+op_logical_and
+(paren
+id|np-&gt;rv_ctest4
+op_amp
+id|MPEE
+)paren
+)paren
+(brace
+id|printk
+(paren
+l_string|&quot;%s: PCI DATA PARITY ERROR DETECTED - &quot;
+l_string|&quot;DISABLING MASTER DATA PARITY CHECKING.&bslash;n&quot;
+comma
+id|ncr_name
+c_func
+(paren
+id|np
+)paren
+)paren
+suffix:semicolon
+id|np-&gt;rv_ctest4
+op_and_assign
+op_complement
+id|MPEE
+suffix:semicolon
+r_goto
+id|restart_test
+suffix:semicolon
+)brace
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|dstat
+op_amp
+(paren
+id|MDPE
+op_or
+id|BF
+op_or
+id|IID
+)paren
+)paren
+(brace
+id|printk
+(paren
+l_string|&quot;CACHE TEST FAILED: DMA error (dstat=0x%02x).&quot;
+comma
+id|dstat
+)paren
+suffix:semicolon
+r_return
+(paren
+l_int|0x80
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;**&t;Save termination position.&n;&t;*/
 id|pc
 op_assign
@@ -37610,27 +37757,6 @@ id|INL
 (paren
 id|nc_temp
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t;**&t;check for timeout&n;&t;*/
-r_if
-c_cond
-(paren
-id|i
-op_ge
-id|NCR_SNOOP_TIMEOUT
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;CACHE TEST FAILED: timeout.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|0x20
-)paren
-suffix:semicolon
-)brace
 suffix:semicolon
 multiline_comment|/*&n;&t;**&t;Check termination position.&n;&t;*/
 r_if
@@ -45672,7 +45798,7 @@ id|gpcntl
 op_assign
 id|old_gpcntl
 op_amp
-l_int|0xfc
+l_int|0x1c
 suffix:semicolon
 multiline_comment|/* set up GPREG &amp; GPCNTL to set GPIO0 and GPIO1 in to known state */
 id|OUTB

@@ -4141,10 +4141,6 @@ comma
 id|h
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|mbytes
 op_assign
 id|max_mapnr
@@ -4416,6 +4412,10 @@ op_eq
 l_int|0
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|l
 op_assign
 (paren
@@ -4434,15 +4434,10 @@ op_lshift
 l_int|1
 )paren
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|__cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|__asm__
@@ -4465,7 +4460,7 @@ comma
 id|h
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -4536,6 +4531,10 @@ op_eq
 l_int|0
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|l
 op_assign
 (paren
@@ -4554,15 +4553,10 @@ op_lshift
 l_int|16
 )paren
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|__cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|__asm__
@@ -4585,7 +4579,7 @@ comma
 id|h
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -4665,7 +4659,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Read Cyrix DEVID registers (DIR) to get more detailed info. about the CPU&n; */
 DECL|function|do_cyrix_devid
 r_static
-r_inline
 r_void
 id|do_cyrix_devid
 c_func
@@ -4687,10 +4680,15 @@ id|ccr2
 comma
 id|ccr3
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 multiline_comment|/* we test for DEVID by checking whether CCR3 is writable */
-id|cli
+id|local_irq_save
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|ccr3
@@ -4822,9 +4820,10 @@ id|CX86_DIR1
 )paren
 suffix:semicolon
 )brace
-id|sti
+id|local_irq_restore
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -5008,9 +5007,14 @@ id|ccr3
 comma
 id|ccr5
 suffix:semicolon
-id|cli
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|local_irq_save
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|ccr3
@@ -5071,9 +5075,10 @@ id|ccr3
 )paren
 suffix:semicolon
 multiline_comment|/* disable MAPEN */
-id|sti
+id|local_irq_restore
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -8593,6 +8598,10 @@ id|ccr3
 comma
 id|ccr4
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -8600,9 +8609,10 @@ id|KERN_INFO
 l_string|&quot;Enabling CPUID on Cyrix processor.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_save
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|ccr3
@@ -8656,9 +8666,10 @@ id|ccr3
 )paren
 suffix:semicolon
 multiline_comment|/* disable MAPEN */
-id|sti
+id|local_irq_restore
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 )brace

@@ -2087,11 +2087,7 @@ multiline_comment|/*&n;&t; * If we don&squot;t have enough free pages, we loop b
 r_if
 c_cond
 (paren
-(paren
 id|CAN_DO_IO
-op_logical_or
-id|CAN_DO_FS
-)paren
 op_logical_and
 op_logical_neg
 id|launder_loop

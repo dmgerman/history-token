@@ -334,6 +334,13 @@ r_int
 r_int
 id|sg_tablesize
 suffix:semicolon
+multiline_comment|/*&n;     * if the host adapter has limitations beside segment count&n;     */
+DECL|member|max_sectors
+r_int
+r_int
+r_int
+id|max_sectors
+suffix:semicolon
 multiline_comment|/*&n;     * True if this host adapter can make good use of linked commands.&n;     * This will allow more than one command to be queued to a given&n;     * unit on a given host.  Set this to the maximum number of command&n;     * blocks to be provided for each device.  Set this to 1 for one&n;     * command block per lun, 2 for two, etc.  Do not set this to 0.&n;     * You should make sure that the host adapter will do the right thing&n;     * before you try setting this above 1.&n;     */
 DECL|member|cmd_per_lun
 r_int
@@ -559,6 +566,12 @@ r_int
 r_int
 r_int
 id|sg_tablesize
+suffix:semicolon
+DECL|member|max_sectors
+r_int
+r_int
+r_int
+id|max_sectors
 suffix:semicolon
 DECL|member|in_recovery
 r_int
@@ -1088,7 +1101,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|scsi_unregister_module
 c_func
 (paren

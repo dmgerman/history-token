@@ -451,7 +451,7 @@ comma
 l_string|&quot;Compile Options:&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_AIC7XXX_OLD_TCQ_ON_BY_DEFAULT
+macro_line|#ifdef CONFIG_AIC7XXX_TCQ_ON_BY_DEFAULT
 id|size
 op_add_assign
 id|sprintf

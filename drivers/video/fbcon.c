@@ -5331,11 +5331,6 @@ comma
 id|d
 )paren
 suffix:semicolon
-id|console_conditional_schedule
-c_func
-(paren
-)paren
-suffix:semicolon
 id|s
 op_increment
 suffix:semicolon
@@ -5382,11 +5377,6 @@ id|line
 )paren
 comma
 id|x
-)paren
-suffix:semicolon
-id|console_conditional_schedule
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if

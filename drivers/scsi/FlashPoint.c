@@ -1459,8 +1459,8 @@ DECL|macro|HBA_AUTO_SENSE_FAIL
 mdefine_line|#define  HBA_AUTO_SENSE_FAIL        0x1B  
 DECL|macro|HBA_TQ_REJECTED
 mdefine_line|#define  HBA_TQ_REJECTED            0x1C  
-DECL|macro|HBA_UNSUPORTED_MSG
-mdefine_line|#define  HBA_UNSUPORTED_MSG         0x1D  
+DECL|macro|HBA_UNSUPPORTED_MSG
+mdefine_line|#define  HBA_UNSUPPORTED_MSG         0x1D  
 DECL|macro|HBA_HW_ERROR
 mdefine_line|#define  HBA_HW_ERROR               0x20  
 DECL|macro|HBA_ATN_NOT_RESPONDED

@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/unistd.h&gt;
@@ -2699,7 +2700,7 @@ id|SCpnt-&gt;serial_number
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * First, see whether this command already timed out.  If so, we ignore&n;&t; * the response.  We treat it as if the command never finished.&n;&t; *&n;&t; * Since serial_number is now 0, the error handler cound detect this&n;&t; * situation and avoid to call the the low level driver abort routine.&n;&t; * (DB)&n;         *&n;         * FIXME(eric) - I believe that this test is now redundant, due to&n;         * the test of the return status of del_timer().&n;&t; */
+multiline_comment|/*&n;&t; * First, see whether this command already timed out.  If so, we ignore&n;&t; * the response.  We treat it as if the command never finished.&n;&t; *&n;&t; * Since serial_number is now 0, the error handler cound detect this&n;&t; * situation and avoid to call the low level driver abort routine.&n;&t; * (DB)&n;         *&n;         * FIXME(eric) - I believe that this test is now redundant, due to&n;         * the test of the return status of del_timer().&n;&t; */
 r_if
 c_cond
 (paren
@@ -3384,7 +3385,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|scsi_unregister_host
 c_func
 (paren
@@ -4273,6 +4274,9 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -4282,7 +4286,17 @@ id|buf
 comma
 id|length
 )paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|err
 op_assign
 op_minus
@@ -4308,7 +4322,9 @@ c_cond
 (paren
 id|buffer
 (braket
-id|length
+id|PAGE_SIZE
+op_minus
+l_int|1
 )braket
 )paren
 r_goto
@@ -5366,6 +5382,17 @@ r_return
 l_int|1
 suffix:semicolon
 multiline_comment|/* Must be already loaded, or&n;&t;&t;&t;&t; * no detect routine available&n;&t;&t;&t;&t; */
+multiline_comment|/* If max_sectors isn&squot;t set, default to max */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tpnt-&gt;max_sectors
+)paren
+id|tpnt-&gt;max_sectors
+op_assign
+id|MAX_SECTORS
+suffix:semicolon
 id|pcount
 op_assign
 id|next_scsi_host
@@ -5916,10 +5943,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Similarly, this entry point should be called by a loadable module if it&n; * is trying to remove a low level scsi driver from the system.&n; *&n; * Note - there is a fatal flaw in the deregister module function.&n; * There is no way to return a code that says &squot;I cannot be unloaded now&squot;.&n; * The system relies entirely upon usage counts that are maintained,&n; * and the assumption is that if the usage count is 0, then the module&n; * can be unloaded.&n; */
+multiline_comment|/*&n; * Similarly, this entry point should be called by a loadable module if it&n; * is trying to remove a low level scsi driver from the system.&n; */
 DECL|function|scsi_unregister_host
 r_static
-r_void
+r_int
 id|scsi_unregister_host
 c_func
 (paren
@@ -5970,6 +5997,12 @@ l_int|10
 )braket
 suffix:semicolon
 multiline_comment|/* host_no&gt;=10^9? I don&squot;t think so. */
+multiline_comment|/* get the big kernel lock, so we don&squot;t race with open() */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * First verify that this host adapter is completely free with no pending&n;&t; * commands &n;&t; */
 r_for
 c_loop
@@ -6014,7 +6047,8 @@ c_func
 id|SDpnt-&gt;host-&gt;hostt-&gt;module
 )paren
 )paren
-r_return
+r_goto
+id|err_out
 suffix:semicolon
 multiline_comment|/* &n;&t;&t;&t; * FIXME(eric) - We need to find a way to notify the&n;&t;&t;&t; * low level driver that we are shutting down - via the&n;&t;&t;&t; * special device entry that still needs to get added. &n;&t;&t;&t; *&n;&t;&t;&t; * Is detach interface below good enough for this?&n;&t;&t;&t; */
 )brace
@@ -6198,7 +6232,8 @@ id|KERN_ERR
 l_string|&quot;Device busy???&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|err_out
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t;&t;&t; * No, this device is really free.  Mark it as such, and&n;&t;&t;&t;&t; * continue on.&n;&t;&t;&t;&t; */
@@ -6296,7 +6331,8 @@ comma
 id|SDpnt-&gt;attached
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|err_out
 suffix:semicolon
 )brace
 id|devfs_unregister
@@ -6706,6 +6742,25 @@ suffix:semicolon
 )brace
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+id|err_out
+suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 )brace
 r_static
 r_int
@@ -6984,6 +7039,11 @@ id|Scsi_Device_Template
 op_star
 id|prev_spnt
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * If we are busy, this is not going to fly.&n;&t; */
 r_if
 c_cond
@@ -6996,8 +7056,8 @@ id|tpnt-&gt;module
 op_ne
 l_int|0
 )paren
-r_return
-l_int|0
+r_goto
+id|error_out
 suffix:semicolon
 multiline_comment|/*&n;&t; * Next, detach the devices from the driver.&n;&t; */
 r_for
@@ -7107,9 +7167,25 @@ id|spnt-&gt;next
 suffix:semicolon
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Final cleanup for the driver is done in the driver sources in the&n;&t; * cleanup function.&n;&t; */
 r_return
 l_int|0
+suffix:semicolon
+id|error_out
+suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* This function should be called by drivers which needs to register&n; * with the midlevel scsi system. As of 2.4.0-test9pre3 this is our&n; * main device/hosts register function&t;/mathiasen&n; */
@@ -7195,7 +7271,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Reverse the actions taken above&n; */
 DECL|function|scsi_unregister_module
-r_void
+r_int
 id|scsi_unregister_module
 c_func
 (paren
@@ -7207,6 +7283,11 @@ op_star
 id|ptr
 )paren
 (brace
+r_int
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -7216,6 +7297,8 @@ id|module_type
 r_case
 id|MODULE_SCSI_HA
 suffix:colon
+id|retval
+op_assign
 id|scsi_unregister_host
 c_func
 (paren
@@ -7231,6 +7314,8 @@ suffix:semicolon
 r_case
 id|MODULE_SCSI_DEV
 suffix:colon
+id|retval
+op_assign
 id|scsi_unregister_device
 c_func
 (paren
@@ -7251,12 +7336,14 @@ suffix:colon
 r_case
 id|MODULE_SCSI_IOCTL
 suffix:colon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
-r_break
 suffix:semicolon
 )brace
 r_return
+id|retval
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PROC_FS

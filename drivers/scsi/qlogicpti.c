@@ -3907,6 +3907,10 @@ id|qpti-&gt;qhost-&gt;this_id
 op_assign
 id|qpti-&gt;scsi_id
 suffix:semicolon
+id|qpti-&gt;qhost-&gt;max_sectors
+op_assign
+l_int|64
+suffix:semicolon
 id|printk
 c_func
 (paren

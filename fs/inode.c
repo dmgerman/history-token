@@ -2495,7 +2495,7 @@ op_logical_neg
 (paren
 id|gfp_mask
 op_amp
-id|__GFP_IO
+id|__GFP_FS
 )paren
 )paren
 r_return

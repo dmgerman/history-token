@@ -2282,6 +2282,10 @@ id|host-&gt;this_id
 op_assign
 id|hostdata-&gt;host_param.initiator_scsi_id
 suffix:semicolon
+id|host-&gt;max_sectors
+op_assign
+l_int|64
+suffix:semicolon
 r_if
 c_cond
 (paren

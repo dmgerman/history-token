@@ -26,6 +26,7 @@ id|ent
 )paren
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
+macro_line|#include &lt;linux/module.h&gt;
 r_static
 r_void
 id|ahc_linux_pci_dev_remove
@@ -37,7 +38,7 @@ op_star
 id|pdev
 )paren
 suffix:semicolon
-multiline_comment|/* We do our own ID filtering.  So, grab all SCSI storage class devices. */
+multiline_comment|/* We do our own ID filtering.  So we grab all Adaptec SCSI storage class&n; * devices here.&n; */
 DECL|variable|ahc_linux_pci_id_table
 r_static
 r_struct
@@ -87,6 +88,14 @@ comma
 l_int|0
 )brace
 )brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|ahc_linux_pci_id_table
+)paren
 suffix:semicolon
 DECL|variable|aic7xxx_pci_driver
 r_struct

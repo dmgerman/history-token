@@ -898,6 +898,10 @@ macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,4,0)
 DECL|macro|pci_enable_device
 mdefine_line|#define pci_enable_device(pdev)&t;&t;(0)
 macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,4,4)
+DECL|macro|scsi_set_pci_device
+mdefine_line|#define&t;scsi_set_pci_device(inst, pdev)&t;(0)
+macro_line|#endif
 multiline_comment|/*==========================================================&n;**&n;**&t;SMP threading.&n;**&n;**&t;Assuming that SMP systems are generally high end &n;**&t;systems and may use several SCSI adapters, we are &n;**&t;using one lock per controller instead of some global &n;**&t;one. For the moment (linux-2.1.95), driver&squot;s entry &n;**&t;points are called with the &squot;io_request_lock&squot; lock &n;**&t;held, so:&n;**&t;- We are uselessly loosing a couple of micro-seconds &n;**&t;  to lock the controller data structure.&n;**&t;- But the driver is not broken by design for SMP and &n;**&t;  so can be more resistant to bugs or bad changes in &n;**&t;  the IO sub-system code.&n;**&t;- A small advantage could be that the interrupt code &n;**&t;  is grained as wished (e.g.: by controller).&n;**&n;**==========================================================&n;*/
 macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,93)
 DECL|variable|DRIVER_SMP_LOCK
@@ -4029,7 +4033,7 @@ id|gpcntl
 op_assign
 id|old_gpcntl
 op_amp
-l_int|0xfc
+l_int|0x1c
 suffix:semicolon
 multiline_comment|/* set up GPREG &amp; GPCNTL to set GPIO0 and GPIO1 in to known state */
 id|OUTB

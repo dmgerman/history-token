@@ -2,7 +2,7 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n;**&t;Supported SCSI-II features:&n;**&t;    Synchronous negotiation&n;**&t;    Wide negotiation        (depends on the NCR Chip)&n;**&t;    Enable disconnection&n;**&t;    Tagged command queuing&n;**&t;    Parity checking&n;**&t;    Etc...&n;**&n;**&t;Supported NCR/SYMBIOS chips:&n;**&t;&t;53C810&t;&t;(8 bits, Fast SCSI-2, no rom BIOS) &n;**&t;&t;53C815&t;&t;(8 bits, Fast SCSI-2, on board rom BIOS)&n;**&t;&t;53C820&t;&t;(Wide,   Fast SCSI-2, no rom BIOS)&n;**&t;&t;53C825&t;&t;(Wide,   Fast SCSI-2, on board rom BIOS)&n;**&t;&t;53C860&t;&t;(8 bits, Fast 20,     no rom BIOS)&n;**&t;&t;53C875&t;&t;(Wide,   Fast 20,     on board rom BIOS)&n;**&t;&t;53C895&t;&t;(Wide,   Fast 40,     on board rom BIOS)&n;**&t;&t;53C895A&t;&t;(Wide,   Fast 40,     on board rom BIOS)&n;**&t;&t;53C896&t;&t;(Wide,   Fast 40,     on board rom BIOS)&n;**&t;&t;53C897&t;&t;(Wide,   Fast 40,     on board rom BIOS)&n;**&t;&t;53C1510D&t;(Wide,   Fast 40,     on board rom BIOS)&n;**&n;**&t;Other features:&n;**&t;&t;Memory mapped IO (linux-1.3.X and above only)&n;**&t;&t;Module&n;**&t;&t;Shared IRQ (since linux-1.3.72)&n;*/
 multiline_comment|/*&n;**&t;Name and version of the driver&n;*/
 DECL|macro|SCSI_NCR_DRIVER_NAME
-mdefine_line|#define SCSI_NCR_DRIVER_NAME&t;&quot;ncr53c8xx-3.4.3-20010212&quot;
+mdefine_line|#define SCSI_NCR_DRIVER_NAME&t;&quot;ncr53c8xx-3.4.3b-20010512&quot;
 DECL|macro|SCSI_NCR_DEBUG_FLAGS
 mdefine_line|#define SCSI_NCR_DEBUG_FLAGS&t;(0)
 multiline_comment|/*==========================================================&n;**&n;**      Include files&n;**&n;**==========================================================&n;*/
@@ -7288,7 +7288,7 @@ id|ncb
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n;**&t;Print something which allows to retrieve the controler type, unit,&n;**&t;target, lun concerned by a kernel message.&n;*/
+multiline_comment|/*&n;**&t;Print something which allows to retrieve the controller type, unit,&n;**&t;target, lun concerned by a kernel message.&n;*/
 DECL|function|PRINT_TARGET
 r_static
 r_void
@@ -11546,7 +11546,7 @@ op_assign
 id|cmd
 suffix:semicolon
 multiline_comment|/*---------------------------------------------------&n;&t;**&n;&t;**&t;Enable tagged queue if asked by scsi ioctl&n;&t;**&n;&t;**----------------------------------------------------&n;&t;*/
-macro_line|#if 0&t;/* This stuff was only usefull for linux-1.2.13 */
+macro_line|#if 0&t;/* This stuff was only useful for linux-1.2.13 */
 r_if
 c_cond
 (paren
@@ -16363,7 +16363,7 @@ id|div
 op_plus
 l_int|1
 suffix:semicolon
-macro_line|#if 0&t;/* This optimization does not seem very usefull */
+macro_line|#if 0&t;/* This optimization does not seem very useful */
 id|per
 op_assign
 (paren
@@ -19484,7 +19484,7 @@ id|rest
 op_amp
 l_int|0x7f
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;**&t;The data in the dma fifo has not been transfered to&n;&t;&t;**&t;the target -&gt; add the amount to the rest&n;&t;&t;**&t;and clear the data.&n;&t;&t;**&t;Check the sstat2 register in case of wide transfer.&n;&t;&t;*/
+multiline_comment|/*&n;&t;&t;**&t;The data in the dma fifo has not been transferred to&n;&t;&t;**&t;the target -&gt; add the amount to the rest&n;&t;&t;**&t;and clear the data.&n;&t;&t;**&t;Check the sstat2 register in case of wide transfer.&n;&t;&t;*/
 id|rest
 op_add_assign
 id|delta
@@ -21544,7 +21544,7 @@ c_cond
 id|num
 )paren
 (brace
-multiline_comment|/*-----------------------------------------------------------------------------&n;**&n;**&t;Was Sie schon immer ueber transfermode negotiation wissen wollten ...&n;**&n;**&t;We try to negotiate sync and wide transfer only after&n;**&t;a successfull inquire command. We look at byte 7 of the&n;**&t;inquire data to determine the capabilities of the target.&n;**&n;**&t;When we try to negotiate, we append the negotiation message&n;**&t;to the identify and (maybe) simple tag message.&n;**&t;The host status field is set to HS_NEGOTIATE to mark this&n;**&t;situation.&n;**&n;**&t;If the target doesn&squot;t answer this message immidiately&n;**&t;(as required by the standard), the SIR_NEGO_FAIL interrupt&n;**&t;will be raised eventually.&n;**&t;The handler removes the HS_NEGOTIATE status, and sets the&n;**&t;negotiated value to the default (async / nowide).&n;**&n;**&t;If we receive a matching answer immediately, we check it&n;**&t;for validity, and set the values.&n;**&n;**&t;If we receive a Reject message immediately, we assume the&n;**&t;negotiation has failed, and fall back to standard values.&n;**&n;**&t;If we receive a negotiation message while not in HS_NEGOTIATE&n;**&t;state, it&squot;s a target initiated negotiation. We prepare a&n;**&t;(hopefully) valid answer, set our parameters, and send back &n;**&t;this answer to the target.&n;**&n;**&t;If the target doesn&squot;t fetch the answer (no message out phase),&n;**&t;we assume the negotiation has failed, and fall back to default&n;**&t;settings.&n;**&n;**&t;When we set the values, we adjust them in all ccbs belonging &n;**&t;to this target, in the controller&squot;s register, and in the &quot;phys&quot;&n;**&t;field of the controller&squot;s struct ncb.&n;**&n;**&t;Possible cases:&t;&t;   hs  sir   msg_in value  send   goto&n;**&t;We try to negotiate:&n;**&t;-&gt; target doesnt&squot;t msgin   NEG FAIL  noop   defa.  -      dispatch&n;**&t;-&gt; target rejected our msg NEG FAIL  reject defa.  -      dispatch&n;**&t;-&gt; target answered  (ok)   NEG SYNC  sdtr   set    -      clrack&n;**&t;-&gt; target answered (!ok)   NEG SYNC  sdtr   defa.  REJ---&gt;msg_bad&n;**&t;-&gt; target answered  (ok)   NEG WIDE  wdtr   set    -      clrack&n;**&t;-&gt; target answered (!ok)   NEG WIDE  wdtr   defa.  REJ---&gt;msg_bad&n;**&t;-&gt; any other msgin&t;   NEG FAIL  noop   defa.  -      dispatch&n;**&n;**&t;Target tries to negotiate:&n;**&t;-&gt; incoming message&t;   --- SYNC  sdtr   set    SDTR   -&n;**&t;-&gt; incoming message&t;   --- WIDE  wdtr   set    WDTR   -&n;**      We sent our answer:&n;**&t;-&gt; target doesn&squot;t msgout   --- PROTO ?      defa.  -      dispatch&n;**&n;**-----------------------------------------------------------------------------&n;*/
+multiline_comment|/*-----------------------------------------------------------------------------&n;**&n;**&t;Was Sie schon immer ueber transfermode negotiation wissen wollten ...&n;**&n;**&t;We try to negotiate sync and wide transfer only after&n;**&t;a successful inquire command. We look at byte 7 of the&n;**&t;inquire data to determine the capabilities of the target.&n;**&n;**&t;When we try to negotiate, we append the negotiation message&n;**&t;to the identify and (maybe) simple tag message.&n;**&t;The host status field is set to HS_NEGOTIATE to mark this&n;**&t;situation.&n;**&n;**&t;If the target doesn&squot;t answer this message immidiately&n;**&t;(as required by the standard), the SIR_NEGO_FAIL interrupt&n;**&t;will be raised eventually.&n;**&t;The handler removes the HS_NEGOTIATE status, and sets the&n;**&t;negotiated value to the default (async / nowide).&n;**&n;**&t;If we receive a matching answer immediately, we check it&n;**&t;for validity, and set the values.&n;**&n;**&t;If we receive a Reject message immediately, we assume the&n;**&t;negotiation has failed, and fall back to standard values.&n;**&n;**&t;If we receive a negotiation message while not in HS_NEGOTIATE&n;**&t;state, it&squot;s a target initiated negotiation. We prepare a&n;**&t;(hopefully) valid answer, set our parameters, and send back &n;**&t;this answer to the target.&n;**&n;**&t;If the target doesn&squot;t fetch the answer (no message out phase),&n;**&t;we assume the negotiation has failed, and fall back to default&n;**&t;settings.&n;**&n;**&t;When we set the values, we adjust them in all ccbs belonging &n;**&t;to this target, in the controller&squot;s register, and in the &quot;phys&quot;&n;**&t;field of the controller&squot;s struct ncb.&n;**&n;**&t;Possible cases:&t;&t;   hs  sir   msg_in value  send   goto&n;**&t;We try to negotiate:&n;**&t;-&gt; target doesnt&squot;t msgin   NEG FAIL  noop   defa.  -      dispatch&n;**&t;-&gt; target rejected our msg NEG FAIL  reject defa.  -      dispatch&n;**&t;-&gt; target answered  (ok)   NEG SYNC  sdtr   set    -      clrack&n;**&t;-&gt; target answered (!ok)   NEG SYNC  sdtr   defa.  REJ---&gt;msg_bad&n;**&t;-&gt; target answered  (ok)   NEG WIDE  wdtr   set    -      clrack&n;**&t;-&gt; target answered (!ok)   NEG WIDE  wdtr   defa.  REJ---&gt;msg_bad&n;**&t;-&gt; any other msgin&t;   NEG FAIL  noop   defa.  -      dispatch&n;**&n;**&t;Target tries to negotiate:&n;**&t;-&gt; incoming message&t;   --- SYNC  sdtr   set    SDTR   -&n;**&t;-&gt; incoming message&t;   --- WIDE  wdtr   set    WDTR   -&n;**      We sent our answer:&n;**&t;-&gt; target doesn&squot;t msgout   --- PROTO ?      defa.  -      dispatch&n;**&n;**-----------------------------------------------------------------------------&n;*/
 r_case
 id|SIR_NEGO_FAILED
 suffix:colon
@@ -22539,7 +22539,7 @@ id|OUTONB_STD
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*==========================================================&n;**&n;**&n;**&t;Aquire a control block&n;**&n;**&n;**==========================================================&n;*/
+multiline_comment|/*==========================================================&n;**&n;**&n;**&t;Acquire a control block&n;**&n;**&n;**==========================================================&n;*/
 DECL|function|ncr_get_ccb
 r_static
 id|ccb_p

@@ -442,6 +442,13 @@ id|SCpnt-&gt;sense_buffer
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|SCpnt-&gt;device-&gt;scsi_level
+op_le
+id|SCSI_2
+)paren
 id|SCpnt-&gt;cmnd
 (braket
 l_int|1

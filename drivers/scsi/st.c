@@ -1388,6 +1388,13 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|SRpnt-&gt;sr_device-&gt;scsi_level
+op_le
+id|SCSI_2
+)paren
 id|cmd
 (braket
 l_int|1
@@ -18589,6 +18596,8 @@ comma
 id|mode
 comma
 id|target_nbr
+comma
+id|dev_num
 suffix:semicolon
 r_int
 r_int
@@ -19035,6 +19044,10 @@ id|i
 op_assign
 id|tpnt
 suffix:semicolon
+id|dev_num
+op_assign
+id|i
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -19451,6 +19464,23 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Attached scsi tape st%d at scsi%d, channel %d, id %d, lun %d&bslash;n&quot;
+comma
+id|dev_num
+comma
+id|SDp-&gt;host-&gt;host_no
+comma
+id|SDp-&gt;channel
+comma
+id|SDp-&gt;id
+comma
+id|SDp-&gt;lun
+)paren
+suffix:semicolon
 multiline_comment|/* See if we need to allocate more static buffers */
 id|target_nbr
 op_assign
@@ -19539,23 +19569,8 @@ id|SDp
 r_return
 l_int|0
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Detected scsi tape st%d at scsi%d, channel %d, id %d, lun %d&bslash;n&quot;
-comma
 id|st_template.dev_noticed
 op_increment
-comma
-id|SDp-&gt;host-&gt;host_no
-comma
-id|SDp-&gt;channel
-comma
-id|SDp-&gt;id
-comma
-id|SDp-&gt;lun
-)paren
 suffix:semicolon
 r_return
 l_int|1

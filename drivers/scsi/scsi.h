@@ -1443,6 +1443,11 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* unable to process commands because&n;&t;&t;&t;&t;   host busy */
+singleline_comment|// Flag to allow revalidate to succeed in sd_open
+DECL|member|allow_revalidate
+r_int
+id|allow_revalidate
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * The Scsi_Cmnd structure is used by scsi.c internally, and for communication&n; * with low level drivers that support multiple outstanding commands.&n; */
@@ -1614,7 +1619,7 @@ DECL|member|sr_underflow
 r_int
 id|sr_underflow
 suffix:semicolon
-multiline_comment|/* Return error if less than&n;&t;&t;&t;&t;   this amount is transfered */
+multiline_comment|/* Return error if less than&n;&t;&t;&t;&t;   this amount is transferred */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * FIXME(eric) - one of the great regrets that I have is that I failed to define&n; * these structure elements as something like sc_foo instead of foo.  This would&n; * make it so much easier to grep through sources and so forth.  I propose that&n; * all new elements that get added to these structures follow this convention.&n; * As time goes on and as people have the stomach for it, it should be possible to &n; * go back and retrofit at least some of the elements here with with the prefix.&n; */
@@ -1839,7 +1844,7 @@ DECL|member|underflow
 r_int
 id|underflow
 suffix:semicolon
-multiline_comment|/* Return error if less than&n;&t;&t;&t;&t;   this amount is transfered */
+multiline_comment|/* Return error if less than&n;&t;&t;&t;&t;   this amount is transferred */
 DECL|member|old_underflow
 r_int
 id|old_underflow

@@ -2221,12 +2221,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|time_init
+id|softirq_init
 c_func
 (paren
 )paren
 suffix:semicolon
-id|softirq_init
+id|time_init
 c_func
 (paren
 )paren
