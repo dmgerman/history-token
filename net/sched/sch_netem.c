@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
 multiline_comment|/*&t;Network emulator&n; *&n; *&t;This scheduler can alters spacing and order&n; *&t;Similar to NISTnet and BSD Dummynet.&n; */
 DECL|struct|netem_sched_data
@@ -113,6 +114,8 @@ multiline_comment|/* Random packet drop 0 =&gt; none, ~0 =&gt; all */
 r_if
 c_cond
 (paren
+id|q-&gt;loss
+op_logical_and
 id|q-&gt;loss
 op_ge
 id|net_random
