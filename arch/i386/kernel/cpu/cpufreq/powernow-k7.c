@@ -2800,7 +2800,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|powernow_init
-id|module_init
+id|late_initcall
 c_func
 (paren
 id|powernow_init
