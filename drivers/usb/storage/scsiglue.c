@@ -6,12 +6,12 @@ macro_line|#include &quot;transport.h&quot;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 multiline_comment|/***********************************************************************&n; * Host functions &n; ***********************************************************************/
-DECL|function|usb_storage_info
+DECL|function|host_info
 r_static
 r_const
 r_char
 op_star
-id|usb_storage_info
+id|host_info
 c_func
 (paren
 r_struct
@@ -24,273 +24,37 @@ r_return
 l_string|&quot;SCSI emulation for USB Mass Storage devices&quot;
 suffix:semicolon
 )brace
-macro_line|#if 0
-multiline_comment|/* detect a virtual adapter (always works)&n; * Synchronization: 2.4: with the io_request_lock&n; * &t;&t;&t;2.5: no locks.&n; * fortunately we don&squot;t care.&n; * */
+DECL|function|slave_configure
 r_static
 r_int
-id|usb_storage_detect
-c_func
+id|slave_configure
 (paren
 r_struct
-id|SHT
+id|scsi_device
 op_star
-id|sht
+id|sdev
 )paren
 (brace
-r_struct
-id|us_data
-op_star
-id|us
-suffix:semicolon
-r_char
-id|local_name
-(braket
-l_int|32
-)braket
-suffix:semicolon
-multiline_comment|/* This is not nice at all, but how else are we to get the&n;&t; * data here? */
-id|us
+multiline_comment|/* set device to use 10-byte commands where possible */
+id|sdev-&gt;use_10_for_ms
 op_assign
-(paren
-r_struct
-id|us_data
-op_star
-)paren
-id|sht-&gt;proc_dir
-suffix:semicolon
-multiline_comment|/* set up the name of our subdirectory under /proc/scsi/ */
-id|sprintf
-c_func
-(paren
-id|local_name
-comma
-l_string|&quot;usb-storage-%d&quot;
-comma
-id|us-&gt;host_number
-)paren
-suffix:semicolon
-id|sht-&gt;proc_name
-op_assign
-id|kmalloc
-(paren
-id|strlen
-c_func
-(paren
-id|local_name
-)paren
-op_plus
-l_int|1
-comma
-id|GFP_ATOMIC
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sht-&gt;proc_name
-)paren
-r_return
-l_int|0
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|sht-&gt;proc_name
-comma
-id|local_name
-)paren
-suffix:semicolon
-multiline_comment|/* we start with no /proc directory entry */
-id|sht-&gt;proc_dir
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* register the host */
-id|us-&gt;host
-op_assign
-id|scsi_register
-c_func
-(paren
-id|sht
-comma
-r_sizeof
-(paren
-id|us
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|us-&gt;host
-)paren
-(brace
-r_struct
-id|usb_interface
-op_star
-id|iface
-suffix:semicolon
-id|us-&gt;host-&gt;hostdata
-(braket
-l_int|0
-)braket
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|us
-suffix:semicolon
-id|us-&gt;host_no
-op_assign
-id|us-&gt;host-&gt;host_no
-suffix:semicolon
-id|iface
-op_assign
-id|usb_ifnum_to_if
-c_func
-(paren
-id|us-&gt;pusb_dev
-comma
-id|us-&gt;ifnum
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|iface
-)paren
-id|scsi_set_device
-c_func
-(paren
-id|us-&gt;host
-comma
-op_amp
-id|iface-&gt;dev
-)paren
-suffix:semicolon
-r_return
 l_int|1
 suffix:semicolon
-)brace
-multiline_comment|/* odd... didn&squot;t register properly.  Abort and free pointers */
-id|kfree
-c_func
-(paren
-id|sht-&gt;proc_name
-)paren
-suffix:semicolon
-id|sht-&gt;proc_name
+id|sdev-&gt;use_10_for_rw
 op_assign
-l_int|NULL
+l_int|1
 suffix:semicolon
+multiline_comment|/* this is to satisify the compiler, tho I don&squot;t think the &n;&t; * return code is ever checked anywhere. */
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Release all resources used by the virtual host&n; *&n; * NOTE: There is no contention here, because we&squot;re already deregistered&n; * the driver and we&squot;re doing each virtual host in turn, not in parallel&n; * Synchronization: BKL, no spinlock.&n; */
-r_static
-r_int
-id|usb_storage_release
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-id|psh
-)paren
-(brace
-r_struct
-id|us_data
-op_star
-id|us
-op_assign
-(paren
-r_struct
-id|us_data
-op_star
-)paren
-id|psh-&gt;hostdata
-(braket
-l_int|0
-)braket
-suffix:semicolon
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;release() called for host %s&bslash;n&quot;
-comma
-id|us-&gt;htmplt.name
-)paren
-suffix:semicolon
-multiline_comment|/* Kill the control threads&n;&t; *&n;&t; * Enqueue the command, wake up the thread, and wait for &n;&t; * notification that it has exited.&n;&t; */
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- sending exit command to thread&bslash;n&quot;
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_ne
-id|US_STATE_IDLE
-)paren
-suffix:semicolon
-id|us-&gt;srb
-op_assign
-l_int|NULL
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;sema
-)paren
-)paren
-suffix:semicolon
-id|wait_for_completion
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;notify
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* remove the pointer to the data structure we were using */
-(paren
-r_struct
-id|us_data
-op_star
-)paren
-id|psh-&gt;hostdata
-(braket
-l_int|0
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* we always have a successful release */
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* queue a command */
 multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
-DECL|function|usb_storage_queuecommand
+DECL|function|queuecommand
 r_static
 r_int
-id|usb_storage_queuecommand
+id|queuecommand
 c_func
 (paren
 id|Scsi_Cmnd
@@ -326,7 +90,9 @@ suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;queuecommand() called&bslash;n&quot;
+l_string|&quot;%s called&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|srb-&gt;host_scribble
@@ -395,10 +161,10 @@ suffix:semicolon
 multiline_comment|/***********************************************************************&n; * Error handling functions&n; ***********************************************************************/
 multiline_comment|/* Command abort */
 multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
-DECL|function|usb_storage_command_abort
+DECL|function|command_abort
 r_static
 r_int
-id|usb_storage_command_abort
+id|command_abort
 c_func
 (paren
 id|Scsi_Cmnd
@@ -541,10 +307,10 @@ suffix:semicolon
 )brace
 multiline_comment|/* This invokes the transport reset mechanism to reset the state of the&n; * device */
 multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
-DECL|function|usb_storage_device_reset
+DECL|function|device_reset
 r_static
 r_int
-id|usb_storage_device_reset
+id|device_reset
 c_func
 (paren
 id|Scsi_Cmnd
@@ -661,10 +427,10 @@ suffix:semicolon
 multiline_comment|/* This resets the device&squot;s USB port. */
 multiline_comment|/* It refuses to work if there&squot;s more than one interface in&n; * the device, so that other users are not affected. */
 multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
-DECL|function|usb_storage_bus_reset
+DECL|function|bus_reset
 r_static
 r_int
-id|usb_storage_bus_reset
+id|bus_reset
 c_func
 (paren
 id|Scsi_Cmnd
@@ -846,10 +612,10 @@ DECL|macro|SPRINTF
 macro_line|#undef SPRINTF
 DECL|macro|SPRINTF
 mdefine_line|#define SPRINTF(args...) &bslash;&n;&t;do { if (pos &lt; buffer+length) pos += sprintf(pos, ## args); } while (0)
-DECL|function|usb_storage_proc_info
+DECL|function|proc_info
 r_static
 r_int
-id|usb_storage_proc_info
+id|proc_info
 (paren
 r_struct
 id|Scsi_Host
@@ -1105,7 +871,7 @@ comma
 dot
 id|proc_info
 op_assign
-id|usb_storage_proc_info
+id|proc_info
 comma
 dot
 id|proc_dir
@@ -1115,7 +881,7 @@ comma
 dot
 id|info
 op_assign
-id|usb_storage_info
+id|host_info
 comma
 dot
 id|ioctl
@@ -1142,23 +908,23 @@ comma
 dot
 id|queuecommand
 op_assign
-id|usb_storage_queuecommand
+id|queuecommand
 comma
 multiline_comment|/* error and abort handlers */
 dot
 id|eh_abort_handler
 op_assign
-id|usb_storage_command_abort
+id|command_abort
 comma
 dot
 id|eh_device_reset_handler
 op_assign
-id|usb_storage_device_reset
+id|device_reset
 comma
 dot
 id|eh_bus_reset_handler
 op_assign
-id|usb_storage_bus_reset
+id|bus_reset
 comma
 dot
 id|eh_host_reset_handler
@@ -1203,7 +969,7 @@ comma
 dot
 id|slave_configure
 op_assign
-l_int|NULL
+id|slave_configure
 comma
 dot
 id|slave_destroy
