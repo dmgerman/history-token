@@ -3101,8 +3101,6 @@ id|access
 r_void
 op_star
 id|pgdir
-op_assign
-l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -3413,13 +3411,13 @@ op_amp
 id|hash_table_lock
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * At this point we have found a pte (which was present).&n;&t; * The spinlocks prevent this status from changing&n;&t; * The hash_table_lock prevents the _PAGE_HASHPTE status&n;&t; * from changing (RPN, DIRTY and ACCESSED too)&n;&t; * The page_table_lock prevents the pte from being &n;&t; * invalidated or modified&n;&t; */
+multiline_comment|/*&n;&t; * At this point, we have a pte (old_pte) which can be used to build&n;&t; * or update an HPTE. There are 2 cases:&n;&t; *&n;&t; * 1. There is a valid (present) pte with no associated HPTE (this is &n;&t; *&t;the most common case)&n;&t; * 2. There is a valid (present) pte with an associated HPTE. The&n;&t; *&t;current values of the pp bits in the HPTE prevent access&n;&t; *&t;because we are doing software DIRTY bit management and the&n;&t; *&t;page is currently not DIRTY. &n;&t; */
 id|old_pte
 op_assign
 op_star
 id|ptep
 suffix:semicolon
-multiline_comment|/*&n;&t; * At this point we have found a pte (which was present).&n;&t; * The spinlocks prevent this status from changing&n;&t; * The hash_table_lock prevents the _PAGE_HASHPTE status&n;&t; * from changing (RPN, DIRTY and ACCESSED too)&n;&t; * The page_table_lock prevents the pte from being &n;&t; * invalidated or modified&n;&t; */
-multiline_comment|/*&n;&t; * At this point, we have a pte (old_pte) which can be used to build&n;&t; * or update an HPTE. There are 2 cases:&n;&t; *&n;&t; * 1. There is a valid (present) pte with no associated HPTE (this is &n;&t; *&t;the most common case)&n;&t; * 2. There is a valid (present) pte with an associated HPTE. The&n;&t; *&t;current values of the pp bits in the HPTE prevent access&n;&t; *&t;because we are doing software DIRTY bit management and the&n;&t; *&t;page is currently not DIRTY. &n;&t; */
 id|new_pte
 op_assign
 id|old_pte

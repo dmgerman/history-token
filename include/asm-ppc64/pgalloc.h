@@ -298,5 +298,7 @@ suffix:semicolon
 )brace
 DECL|macro|pte_free_kernel
 mdefine_line|#define pte_free_kernel(pte)&t;pte_free(pte)
+DECL|macro|check_pgt_cache
+mdefine_line|#define check_pgt_cache()&t;do { } while (0)
 macro_line|#endif /* _PPC64_PGALLOC_H */
 eof
