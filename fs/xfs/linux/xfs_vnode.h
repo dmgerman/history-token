@@ -1781,6 +1781,13 @@ id|vp-&gt;v_lock
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Update modify/access/change times on the vnode&n; */
+DECL|macro|VN_MTIMESET
+mdefine_line|#define VN_MTIMESET(vp, tvp)&t;(LINVFS_GET_IP(vp)-&gt;i_mtime = *(tvp))
+DECL|macro|VN_ATIMESET
+mdefine_line|#define VN_ATIMESET(vp, tvp)&t;(LINVFS_GET_IP(vp)-&gt;i_atime = *(tvp))
+DECL|macro|VN_CTIMESET
+mdefine_line|#define VN_CTIMESET(vp, tvp)&t;(LINVFS_GET_IP(vp)-&gt;i_ctime = *(tvp))
 multiline_comment|/*&n; * Some useful predicates.&n; */
 DECL|macro|VN_MAPPED
 mdefine_line|#define VN_MAPPED(vp)&t;&bslash;&n;&t;(!list_empty(&amp;(LINVFS_GET_IP(vp)-&gt;i_mapping-&gt;i_mmap)) || &bslash;&n;&t;(!list_empty(&amp;(LINVFS_GET_IP(vp)-&gt;i_mapping-&gt;i_mmap_shared))))
