@@ -7938,7 +7938,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef NTFS_RW
-multiline_comment|/**&n; * ntfs_truncate - called when the i_size of an ntfs inode is changed&n; * @vi:&t;&t;inode for which the i_size was changed&n; *&n; * We don&squot;t support i_size changes yet.&n; *&n; * The kernel guarantees that @vi is a regular file (S_ISREG() is true) and&n; * that the change is allowed.&n; *&n; * This implies for us that @vi is a file inode rather than a directory, index,&n; * or attribute inode as well as that @vi is a base inode.&n; *&n; * Called with -&gt;i_sem held.  In all but one case -&gt;i_alloc_sem is held for&n; * writing.  The only case where -&gt;i_alloc_sem is not held is&n; * mm/filemap.c::generic_file_buffered_write() where vmtruncate() is called&n; * with the current i_size as the offset which means that it is a noop as far&n; * as ntfs_truncate() is concerned.&n; */
+multiline_comment|/**&n; * ntfs_truncate - called when the i_size of an ntfs inode is changed&n; * @vi:&t;&t;inode for which the i_size was changed&n; *&n; * We do not support i_size changes yet.&n; *&n; * The kernel guarantees that @vi is a regular file (S_ISREG() is true) and&n; * that the change is allowed.&n; *&n; * This implies for us that @vi is a file inode rather than a directory, index,&n; * or attribute inode as well as that @vi is a base inode.&n; *&n; * Called with -&gt;i_sem held.  In all but one case -&gt;i_alloc_sem is held for&n; * writing.  The only case where -&gt;i_alloc_sem is not held is&n; * mm/filemap.c::generic_file_buffered_write() where vmtruncate() is called&n; * with the current i_size as the offset which means that it is a noop as far&n; * as ntfs_truncate() is concerned.&n; */
 DECL|function|ntfs_truncate
 r_void
 id|ntfs_truncate
@@ -8775,7 +8775,7 @@ op_assign
 id|TRUE
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If we just modified the standard information attribute we need to&n;&t; * mark the mft record it is in dirty.  We do this manually so that&n;&t; * mark_inode_dirty() is not called which would redirty the inode and&n;&t; * hence result in an infinite loop of trying to write the inode.&n;&t; * There is no need to mark the base inode nor the base mft record&n;&t; * dirty, since we are going to write this mft record below in any case&n;&t; * and the base mft record may actually not have been modified so it&n;&t; * might not need to be written out.&n;&t; */
+multiline_comment|/*&n;&t; * If we just modified the standard information attribute we need to&n;&t; * mark the mft record it is in dirty.  We do this manually so that&n;&t; * mark_inode_dirty() is not called which would redirty the inode and&n;&t; * hence result in an infinite loop of trying to write the inode.&n;&t; * There is no need to mark the base inode nor the base mft record&n;&t; * dirty, since we are going to write this mft record below in any case&n;&t; * and the base mft record may actually not have been modified so it&n;&t; * might not need to be written out.&n;&t; * NOTE: It is not a problem when the inode for $MFT itself is being&n;&t; * written out as mark_ntfs_record_dirty() will only set I_DIRTY_PAGES&n;&t; * on the $MFT inode and hence ntfs_write_inode() will not be&n;&t; * re-invoked because of it which in turn is ok since the dirtied mft&n;&t; * record will be cleaned and written out to disk below, i.e. before&n;&t; * this function returns.&n;&t; */
 r_if
 c_cond
 (paren
@@ -8788,10 +8788,14 @@ c_func
 id|ctx-&gt;ntfs_ino
 )paren
 )paren
-id|__set_page_dirty_nobuffers
+id|mark_ntfs_record_dirty
 c_func
 (paren
+id|ctx-&gt;ntfs_ino
+comma
 id|ctx-&gt;ntfs_ino-&gt;page
+comma
+id|ctx-&gt;ntfs_ino-&gt;page_ofs
 )paren
 suffix:semicolon
 id|ntfs_attr_put_search_ctx
