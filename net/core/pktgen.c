@@ -32,7 +32,7 @@ macro_line|#include &lt;asm/timex.h&gt;
 DECL|macro|cycles
 mdefine_line|#define cycles()&t;((u32)get_cycles())
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;pktgen version 1.2.1&quot;
+mdefine_line|#define VERSION &quot;pktgen version 1.3&quot;
 DECL|variable|__initdata
 r_static
 r_char
@@ -41,7 +41,7 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;pktgen.c: v1.2.1: Packet Generator for packet performance testing.&bslash;n&quot;
+l_string|&quot;pktgen.c: v1.3: Packet Generator for packet performance testing.&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* Used to help with determining the pkts on receive */
 DECL|macro|PKTGEN_MAGIC
@@ -3222,20 +3222,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* TODO:  Is this worth printing out (other than for debug?) */
-id|printk
-c_func
-(paren
-l_string|&quot;fp = %llu&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-r_int
-)paren
-id|fp
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
