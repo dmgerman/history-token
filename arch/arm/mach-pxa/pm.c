@@ -186,6 +186,15 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+macro_line|#ifdef CONFIG_IWMMXT
+multiline_comment|/* force any iWMMXt context to ram **/
+id|iwmmxt_task_disable
+c_func
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* preserve current time */
 id|rtc.tv_sec
 op_assign
