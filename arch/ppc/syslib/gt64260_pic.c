@@ -1130,7 +1130,16 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|rc
+suffix:semicolon
 multiline_comment|/* Register CPU interface error interrupt handler */
+r_if
+c_cond
+(paren
+(paren
+id|rc
+op_assign
 id|request_irq
 c_func
 (paren
@@ -1143,6 +1152,16 @@ comma
 id|CPU_INTR_STR
 comma
 l_int|0
+)paren
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Can&squot;t register cpu error handler: %d&quot;
+comma
+id|rc
 )paren
 suffix:semicolon
 id|mv64x60_write
@@ -1168,6 +1187,12 @@ l_int|0x000000fe
 )paren
 suffix:semicolon
 multiline_comment|/* Register PCI 0 error interrupt handler */
+r_if
+c_cond
+(paren
+(paren
+id|rc
+op_assign
 id|request_irq
 c_func
 (paren
@@ -1184,6 +1209,16 @@ r_void
 op_star
 )paren
 l_int|0
+)paren
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Can&squot;t register pci 0 error handler: %d&quot;
+comma
+id|rc
 )paren
 suffix:semicolon
 id|mv64x60_write
@@ -1209,6 +1244,12 @@ l_int|0x003c0c24
 )paren
 suffix:semicolon
 multiline_comment|/* Register PCI 1 error interrupt handler */
+r_if
+c_cond
+(paren
+(paren
+id|rc
+op_assign
 id|request_irq
 c_func
 (paren
@@ -1225,6 +1266,16 @@ r_void
 op_star
 )paren
 l_int|1
+)paren
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Can&squot;t register pci 1 error handler: %d&quot;
+comma
+id|rc
 )paren
 suffix:semicolon
 id|mv64x60_write
