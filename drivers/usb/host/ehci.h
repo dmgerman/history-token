@@ -652,6 +652,8 @@ r_int
 id|start
 suffix:semicolon
 multiline_comment|/* where polling starts */
+DECL|macro|NO_FRAME
+mdefine_line|#define NO_FRAME ((unsigned short)~0)&t;&t;&t;/* pick new start */
 )brace
 id|__attribute__
 (paren
