@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Bond several ethernet interfaces into a Cisco, running &squot;Etherchannel&squot;.&n; *&n; * Portions are (c) Copyright 1995 Simon &quot;Guru Aleph-Null&quot; Janes&n; * NCM: Network and Communications Management, Inc.&n; *&n; * BUT, I&squot;m the one who modified it for ethernet, so:&n; * (c) Copyright 1999, Thomas Davis, tadavis@lbl.gov&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU Public License, incorporated herein by reference.&n; *&n; *&n; * 2003/03/18 - Amir Noam &lt;amir.noam at intel dot com&gt;,&n; *&t;&t;Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for IEEE 802.3ad Dynamic link aggregation mode.&n; *&n; * 2003/05/01 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Code beautification and style changes (mainly in comments).&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for Transmit load balancing mode.&n; *&n; * 2003/09/24 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Code cleanup and style changes&n; */
+multiline_comment|/*&n; * Bond several ethernet interfaces into a Cisco, running &squot;Etherchannel&squot;.&n; *&n; * Portions are (c) Copyright 1995 Simon &quot;Guru Aleph-Null&quot; Janes&n; * NCM: Network and Communications Management, Inc.&n; *&n; * BUT, I&squot;m the one who modified it for ethernet, so:&n; * (c) Copyright 1999, Thomas Davis, tadavis@lbl.gov&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU Public License, incorporated herein by reference.&n; *&n; *&n; * 2003/03/18 - Amir Noam &lt;amir.noam at intel dot com&gt;,&n; *&t;&t;Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for IEEE 802.3ad Dynamic link aggregation mode.&n; *&n; * 2003/05/01 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Code beautification and style changes (mainly in comments).&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for Transmit load balancing mode.&n; *&n; * 2003/12/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Code cleanup and style changes&n; */
 macro_line|#ifndef _LINUX_BONDING_H
 DECL|macro|_LINUX_BONDING_H
 mdefine_line|#define _LINUX_BONDING_H
@@ -8,9 +8,9 @@ macro_line|#include &lt;linux/if_bonding.h&gt;
 macro_line|#include &quot;bond_3ad.h&quot;
 macro_line|#include &quot;bond_alb.h&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;2.5.0&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;2.5.3&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;December 1, 2003&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;December 30, 2003&quot;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;bonding&quot;
 DECL|macro|DRV_DESCRIPTION
