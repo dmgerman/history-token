@@ -4646,6 +4646,16 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+id|tg3_writephy
+c_func
+(paren
+id|tp
+comma
+id|MII_TG3_AUX_CTRL
+comma
+l_int|0x0400
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
