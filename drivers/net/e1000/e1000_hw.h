@@ -2911,10 +2911,6 @@ DECL|member|phy_spd_default
 r_uint16
 id|phy_spd_default
 suffix:semicolon
-DECL|member|dsp_reset_counter
-r_uint16
-id|dsp_reset_counter
-suffix:semicolon
 DECL|member|autoneg_advertised
 r_uint16
 id|autoneg_advertised

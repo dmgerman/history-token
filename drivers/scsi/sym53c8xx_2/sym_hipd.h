@@ -45,14 +45,6 @@ DECL|macro|sym_verbose
 mdefine_line|#define sym_verbose&t;(np-&gt;verbose)
 macro_line|#endif
 multiline_comment|/*&n; *  These ones should have been already defined.&n; */
-macro_line|#ifndef offsetof
-DECL|macro|offsetof
-mdefine_line|#define offsetof(t, m)&t;((size_t) (&amp;((t *)0)-&gt;m))
-macro_line|#endif
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a, b) (((a) &lt; (b)) ? (a) : (b))
-macro_line|#endif
 macro_line|#ifndef assert
 DECL|macro|assert
 mdefine_line|#define&t;assert(expression) { &bslash;&n;&t;if (!(expression)) { &bslash;&n;&t;&t;(void)panic( &bslash;&n;&t;&t;&t;&quot;assertion &bslash;&quot;%s&bslash;&quot; failed: file &bslash;&quot;%s&bslash;&quot;, line %d&bslash;n&quot;, &bslash;&n;&t;&t;&t;#expression, &bslash;&n;&t;&t;&t;__FILE__, __LINE__); &bslash;&n;&t;} &bslash;&n;}

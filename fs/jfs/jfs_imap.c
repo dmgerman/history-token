@@ -2979,14 +2979,14 @@ op_amp
 id|JFS_DASD_ENABLED
 )paren
 )paren
-id|bcopy
+id|memcpy
 c_func
 (paren
 op_amp
-id|ip-&gt;i_DASD
+id|dp-&gt;di_DASD
 comma
 op_amp
-id|dp-&gt;di_DASD
+id|ip-&gt;i_DASD
 comma
 r_sizeof
 (paren

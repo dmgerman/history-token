@@ -6254,12 +6254,6 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|ioc_list
-)paren
-(brace
 r_struct
 id|proc_dir_entry
 op_star
@@ -6277,6 +6271,14 @@ l_string|&quot;bus/mckinley&quot;
 comma
 l_int|0
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dir
+)paren
+r_return
 suffix:semicolon
 id|entry
 op_assign
@@ -6322,7 +6324,6 @@ op_assign
 op_amp
 id|ioc_map_fops
 suffix:semicolon
-)brace
 )brace
 macro_line|#endif
 r_static
@@ -6666,6 +6667,15 @@ c_func
 op_amp
 id|acpi_sba_ioc_driver
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ioc_list
+)paren
+r_return
+l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 (brace

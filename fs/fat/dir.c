@@ -3949,6 +3949,7 @@ op_assign
 (paren
 r_struct
 id|dirent
+id|__user
 op_star
 )paren
 id|arg

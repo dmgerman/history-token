@@ -29,7 +29,6 @@ macro_line|#include &lt;asm/ibm4xx.h&gt;
 macro_line|#else
 multiline_comment|/*&n; * XXX Assume for now it has PC-style ISA serial ports.&n; * This is true for PReP and CHRP at least.&n; */
 macro_line|#include &lt;asm/pc_serial.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#if defined(CONFIG_MAC_SERIAL)
 DECL|macro|SERIAL_DEV_OFFSET
 mdefine_line|#define SERIAL_DEV_OFFSET&t;((_machine == _MACH_prep || _machine == _MACH_chrp) ? 0 : 2)

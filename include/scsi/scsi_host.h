@@ -381,13 +381,6 @@ id|emulated
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* &n;&t; * True if the driver wishes to use the generic block layer&n;&t; * tag queueing functions&n;&t; */
-DECL|member|use_blk_tcq
-r_int
-id|use_blk_tcq
-suffix:colon
-l_int|1
-suffix:semicolon
 multiline_comment|/*&n;&t; * Countdown for host blocking with no commands outstanding&n;&t; */
 DECL|member|max_host_blocked
 r_int
@@ -635,12 +628,6 @@ id|use_clustering
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|highmem_io
-r_int
-id|highmem_io
-suffix:colon
-l_int|1
-suffix:semicolon
 DECL|member|use_blk_tcq
 r_int
 id|use_blk_tcq
@@ -720,6 +707,12 @@ DECL|member|sht_legacy_list
 r_struct
 id|list_head
 id|sht_legacy_list
+suffix:semicolon
+multiline_comment|/*&n;&t; * This mutex serializes all scsi scanning activity from kernel- and&n;&t; * userspace.&n;&t; */
+DECL|member|scan_mutex
+r_struct
+id|semaphore
+id|scan_mutex
 suffix:semicolon
 multiline_comment|/*&n;&t; * We should ensure that this is aligned, both for better performance&n;&t; * and also because some compilers (m68k) don&squot;t automatically force&n;&t; * alignment to a long boundary.&n;&t; */
 DECL|member|hostdata

@@ -3,7 +3,6 @@ macro_line|#ifndef _ASM_SN_XTALK_XTALK_PRIVATE_H
 DECL|macro|_ASM_SN_XTALK_XTALK_PRIVATE_H
 mdefine_line|#define _ASM_SN_XTALK_XTALK_PRIVATE_H
 macro_line|#include &lt;asm/sn/ioerror.h&gt;        /* for error function and arg types */
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
 multiline_comment|/*&n; * xtalk_private.h -- private definitions for xtalk&n; * crosstalk drivers should NOT include this file.&n; */

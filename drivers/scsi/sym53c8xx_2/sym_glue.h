@@ -2,42 +2,20 @@ multiline_comment|/*&n; * Device driver for the SYMBIOS/LSILOGIC 53C8XX and 53C1
 macro_line|#ifndef SYM_GLUE_H
 DECL|macro|SYM_GLUE_H
 mdefine_line|#define SYM_GLUE_H
-macro_line|#if 0
-mdefine_line|#define SYM_CONF_DMA_ADDRESSING_MODE 2
-macro_line|#endif
-macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef __sparc__
 macro_line|#  include &lt;asm/irq.h&gt;
 macro_line|#endif
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &quot;../scsi.h&quot;
-macro_line|#include &quot;../hosts.h&quot;
-macro_line|#include &lt;linux/types.h&gt;
-DECL|typedef|vm_offset_t
-r_typedef
-id|u_long
-id|vm_offset_t
-suffix:semicolon
-macro_line|#ifndef bcopy
-DECL|macro|bcopy
-mdefine_line|#define bcopy(s, d, n)&t;memcpy((d), (s), (n))
-macro_line|#endif
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &quot;../scsi.h&quot;&t;&t;/* XXX: DID_* */
 macro_line|#ifndef bzero
 DECL|macro|bzero
 mdefine_line|#define bzero(d, n)&t;memset((d), 0, (n))
@@ -47,7 +25,6 @@ DECL|macro|bcmp
 mdefine_line|#define bcmp(a, b, n)&t;memcmp((a), (b), (n))
 macro_line|#endif
 multiline_comment|/*&n; *  General driver includes.&n; */
-macro_line|#include &quot;sym53c8xx.h&quot;
 macro_line|#include &quot;sym_misc.h&quot;
 macro_line|#include &quot;sym_conf.h&quot;
 macro_line|#include &quot;sym_defs.h&quot;
@@ -121,45 +98,19 @@ id|sym_hcb
 op_star
 id|hcb_p
 suffix:semicolon
-DECL|typedef|stcb_p
-r_typedef
-r_struct
-id|sym_stcb
-op_star
-id|stcb_p
-suffix:semicolon
-DECL|typedef|slcb_p
-r_typedef
-r_struct
-id|sym_slcb
-op_star
-id|slcb_p
-suffix:semicolon
-DECL|typedef|sccb_p
-r_typedef
-r_struct
-id|sym_sccb
-op_star
-id|sccb_p
-suffix:semicolon
-DECL|typedef|shcb_p
-r_typedef
-r_struct
-id|sym_shcb
-op_star
-id|shcb_p
-suffix:semicolon
 multiline_comment|/*&n; *  Define a reference to the O/S dependent IO request.&n; */
 DECL|typedef|cam_ccb_p
 r_typedef
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cam_ccb_p
 suffix:semicolon
 multiline_comment|/* Generic */
 DECL|typedef|cam_scsiio_p
 r_typedef
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cam_scsiio_p
 suffix:semicolon
@@ -183,28 +134,6 @@ mdefine_line|#define&t;writew_b2l&t;writew
 DECL|macro|writel_b2l
 mdefine_line|#define&t;writel_b2l&t;writel
 macro_line|#else&t;/* little endian */
-macro_line|#if defined(__i386__)&t;/* i386 implements full FLAT memory/MMIO model */
-DECL|macro|inw_raw
-mdefine_line|#define&t;inw_raw&t;&t;inw
-DECL|macro|inl_raw
-mdefine_line|#define&t;inl_raw&t;&t;inl
-DECL|macro|outw_raw
-mdefine_line|#define&t;outw_raw&t;outw
-DECL|macro|outl_raw
-mdefine_line|#define&t;outl_raw&t;outl
-DECL|macro|readb_raw
-mdefine_line|#define readb_raw(a)&t;(*(volatile unsigned char *) (a))
-DECL|macro|readw_raw
-mdefine_line|#define readw_raw(a)&t;(*(volatile unsigned short *) (a))
-DECL|macro|readl_raw
-mdefine_line|#define readl_raw(a)&t;(*(volatile unsigned int *) (a))
-DECL|macro|writeb_raw
-mdefine_line|#define writeb_raw(b,a)&t;((*(volatile unsigned char *) (a)) = (b))
-DECL|macro|writew_raw
-mdefine_line|#define writew_raw(b,a)&t;((*(volatile unsigned short *) (a)) = (b))
-DECL|macro|writel_raw
-mdefine_line|#define writel_raw(b,a)&t;((*(volatile unsigned int *) (a)) = (b))
-macro_line|#else&t;/* Other little-endian */
 DECL|macro|inw_raw
 mdefine_line|#define&t;inw_raw&t;&t;inw
 DECL|macro|inl_raw
@@ -221,8 +150,7 @@ DECL|macro|writew_raw
 mdefine_line|#define&t;writew_raw&t;writew
 DECL|macro|writel_raw
 mdefine_line|#define&t;writel_raw&t;writel
-macro_line|#endif
-macro_line|#endif
+macro_line|#endif /* endian */
 macro_line|#ifdef&t;SYM_CONF_CHIP_BIG_ENDIAN
 macro_line|#error&t;&quot;Chips in BIG ENDIAN addressing mode are not (yet) supported&quot;
 macro_line|#endif
@@ -438,12 +366,14 @@ op_star
 id|host
 suffix:semicolon
 DECL|member|mmio_va
-id|vm_offset_t
+r_void
+op_star
 id|mmio_va
 suffix:semicolon
 multiline_comment|/* MMIO kernel virtual address&t;*/
 DECL|member|ram_va
-id|vm_offset_t
+r_void
+op_star
 id|ram_va
 suffix:semicolon
 multiline_comment|/* RAM  kernel virtual address&t;*/
@@ -497,8 +427,9 @@ multiline_comment|/*&n; *  Return the name of the controller.&n; */
 DECL|macro|sym_name
 mdefine_line|#define sym_name(np) (np)-&gt;s.inst_name
 multiline_comment|/*&n; *  Data structure used as input for the NVRAM reading.&n; *  Must resolve the IO macros and sym_name(), when  &n; *  used as sub-field &squot;s&squot; of another structure.&n; */
-r_typedef
+DECL|struct|sym_slot
 r_struct
+id|sym_slot
 (brace
 DECL|member|base
 id|u_long
@@ -526,7 +457,8 @@ id|u_long
 id|io_port
 suffix:semicolon
 DECL|member|mmio_va
-id|vm_offset_t
+r_void
+op_star
 id|mmio_va
 suffix:semicolon
 DECL|member|inst_name
@@ -536,18 +468,11 @@ id|inst_name
 l_int|16
 )braket
 suffix:semicolon
-DECL|typedef|sym_slot
 )brace
-id|sym_slot
 suffix:semicolon
-DECL|typedef|sym_nvram
-r_typedef
+DECL|struct|sym_device
 r_struct
-id|sym_nvram
-id|sym_nvram
-suffix:semicolon
-r_typedef
-r_struct
+id|sym_device
 (brace
 DECL|member|pdev
 r_struct
@@ -556,6 +481,7 @@ op_star
 id|pdev
 suffix:semicolon
 DECL|member|s
+r_struct
 id|sym_slot
 id|s
 suffix:semicolon
@@ -565,6 +491,7 @@ id|sym_pci_chip
 id|chip
 suffix:semicolon
 DECL|member|nvram
+r_struct
 id|sym_nvram
 op_star
 id|nvram
@@ -583,16 +510,11 @@ id|u_char
 id|pqs_pds
 suffix:semicolon
 macro_line|#endif
-DECL|member|attach_done
-r_int
-id|attach_done
-suffix:semicolon
-DECL|typedef|sym_device
 )brace
-id|sym_device
 suffix:semicolon
 DECL|typedef|sdev_p
 r_typedef
+r_struct
 id|sym_device
 op_star
 id|sdev_p
@@ -822,7 +744,8 @@ DECL|function|sym_set_cam_status
 id|sym_set_cam_status
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|ccb
 comma
@@ -856,7 +779,8 @@ DECL|function|sym_get_cam_status
 id|sym_get_cam_status
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|ccb
 )paren
@@ -918,7 +842,8 @@ r_int
 id|resid
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 op_assign
@@ -1042,7 +967,6 @@ id|hcb_p
 id|np
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;SYM_OPT_SNIFF_INQUIRY
 r_void
 id|sym_sniff_inquiry
 c_func
@@ -1050,7 +974,8 @@ c_func
 id|hcb_p
 id|np
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -1058,6 +983,5 @@ r_int
 id|resid
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* SYM_GLUE_H */
 eof

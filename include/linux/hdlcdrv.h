@@ -1228,15 +1228,12 @@ id|hdlcdrv_state
 op_star
 )paren
 suffix:semicolon
-r_int
-id|hdlcdrv_register_hdlcdrv
-c_func
-(paren
 r_struct
 id|net_device
 op_star
-id|dev
-comma
+id|hdlcdrv_register
+c_func
+(paren
 r_const
 r_struct
 id|hdlcdrv_ops
@@ -1247,6 +1244,7 @@ r_int
 r_int
 id|privsize
 comma
+r_const
 r_char
 op_star
 id|ifname
@@ -1264,8 +1262,8 @@ r_int
 id|dma
 )paren
 suffix:semicolon
-r_int
-id|hdlcdrv_unregister_hdlcdrv
+r_void
+id|hdlcdrv_unregister
 c_func
 (paren
 r_struct

@@ -110,14 +110,6 @@ l_string|&quot; between 1 and 16384)&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * This mutex serializes all scsi scanning activity from kernel- and&n; * userspace.  It could easily be made per-host but I&squot;d like to avoid&n; * the overhead for now.&n; */
-r_static
-id|DECLARE_MUTEX
-c_func
-(paren
-id|scsi_scan_mutex
-)paren
-suffix:semicolon
 multiline_comment|/**&n; * scsi_unlock_floptical - unlock device via a special MODE SENSE command&n; * @sreq:&t;used to send the command&n; * @result:&t;area to store the result of the MODE SENSE&n; *&n; * Description:&n; *     Send a vendor specific MODE SENSE (not a MODE SELECT) command using&n; *     @sreq to unlock a device, storing the (unused) results into result.&n; *     Called for BLIST_KEY devices.&n; **/
 DECL|function|scsi_unlock_floptical
 r_static
@@ -560,6 +552,15 @@ r_sizeof
 op_star
 id|sdev
 )paren
+)paren
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|sdev-&gt;access_count
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|sdev-&gt;vendor
@@ -3414,7 +3415,7 @@ id|down
 c_func
 (paren
 op_amp
-id|scsi_scan_mutex
+id|shost-&gt;scan_mutex
 )paren
 suffix:semicolon
 id|res
@@ -3458,7 +3459,7 @@ id|up
 c_func
 (paren
 op_amp
-id|scsi_scan_mutex
+id|shost-&gt;scan_mutex
 )paren
 suffix:semicolon
 r_return
@@ -3899,7 +3900,7 @@ id|down
 c_func
 (paren
 op_amp
-id|scsi_scan_mutex
+id|shost-&gt;scan_mutex
 )paren
 suffix:semicolon
 r_if
@@ -3956,7 +3957,7 @@ id|up
 c_func
 (paren
 op_amp
-id|scsi_scan_mutex
+id|shost-&gt;scan_mutex
 )paren
 suffix:semicolon
 r_return

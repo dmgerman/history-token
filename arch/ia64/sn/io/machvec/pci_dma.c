@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -37,7 +36,7 @@ id|pcibr_dmamap_t
 suffix:semicolon
 r_static
 r_struct
-id|sn_dma_maps_s
+id|pcibr_dmamap_s
 op_star
 id|find_sn_dma_map
 c_func
@@ -103,7 +102,7 @@ r_int
 id|i
 suffix:semicolon
 r_struct
-id|sn_dma_maps_s
+id|pcibr_dmamap_s
 op_star
 id|sn_dma_map
 op_assign
@@ -168,10 +167,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sn_dma_map-&gt;dma_addr
+id|sn_dma_map-&gt;bd_dma_addr
 )paren
 (brace
-id|sn_dma_map-&gt;dma_addr
+id|sn_dma_map-&gt;bd_dma_addr
 op_assign
 op_minus
 l_int|1
@@ -198,21 +197,7 @@ id|pcibr_dmamap_t
 id|dma_map
 )paren
 (brace
-r_struct
-id|sn_dma_maps_s
-op_star
-id|sn_dma_map
-suffix:semicolon
-id|sn_dma_map
-op_assign
-(paren
-r_struct
-id|sn_dma_maps_s
-op_star
-)paren
-id|dma_map
-suffix:semicolon
-id|sn_dma_map-&gt;dma_addr
+id|dma_map-&gt;bd_dma_addr
 op_assign
 l_int|0
 suffix:semicolon
@@ -220,7 +205,7 @@ suffix:semicolon
 multiline_comment|/**&n; * find_sn_dma_map - find an ATE associated with @dma_addr and @busnum&n; * @dma_addr: DMA address to look for&n; * @busnum: PCI bus to look on&n; *&n; * Finds the ATE associated with @dma_addr and @busnum.&n; */
 r_static
 r_struct
-id|sn_dma_maps_s
+id|pcibr_dmamap_s
 op_star
 DECL|function|find_sn_dma_map
 id|find_sn_dma_map
@@ -235,7 +220,7 @@ id|busnum
 )paren
 (brace
 r_struct
-id|sn_dma_maps_s
+id|pcibr_dmamap_s
 op_star
 id|sn_dma_map
 op_assign
@@ -272,7 +257,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|sn_dma_map-&gt;dma_addr
+id|sn_dma_map-&gt;bd_dma_addr
 op_eq
 id|dma_addr
 )paren
@@ -322,15 +307,10 @@ r_int
 r_int
 id|phys_addr
 suffix:semicolon
-id|pciio_dmamap_t
+id|pcibr_dmamap_t
 id|dma_map
 op_assign
 l_int|0
-suffix:semicolon
-r_struct
-id|sn_dma_maps_s
-op_star
-id|sn_dma_map
 suffix:semicolon
 op_star
 id|dma_handle
@@ -404,7 +384,7 @@ multiline_comment|/*&n;&t; * This will try to use a Direct Map register to do th
 op_star
 id|dma_handle
 op_assign
-id|pciio_dmatrans_addr
+id|pcibr_dmatrans_addr
 c_func
 (paren
 id|vhdl
@@ -476,7 +456,7 @@ id|dma_handle
 (brace
 id|dma_map
 op_assign
-id|pciio_dmamap_alloc
+id|pcibr_dmamap_alloc
 c_func
 (paren
 id|vhdl
@@ -528,7 +508,7 @@ op_assign
 (paren
 id|dma_addr_t
 )paren
-id|pciio_dmamap_addr
+id|pcibr_dmamap_addr
 c_func
 (paren
 id|dma_map
@@ -538,16 +518,7 @@ comma
 id|size
 )paren
 suffix:semicolon
-id|sn_dma_map
-op_assign
-(paren
-r_struct
-id|sn_dma_maps_s
-op_star
-)paren
-id|dma_map
-suffix:semicolon
-id|sn_dma_map-&gt;dma_addr
+id|dma_map-&gt;bd_dma_addr
 op_assign
 op_star
 id|dma_handle
@@ -580,9 +551,9 @@ id|dma_handle
 )paren
 (brace
 r_struct
-id|sn_dma_maps_s
+id|pcibr_dmamap_s
 op_star
-id|sn_dma_map
+id|dma_map
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -596,7 +567,7 @@ c_func
 id|dma_handle
 )paren
 )paren
-id|sn_dma_map
+id|dma_map
 op_assign
 id|find_sn_dma_map
 c_func
@@ -610,33 +581,24 @@ multiline_comment|/*&n;&t; * and free it if necessary...&n;&t; */
 r_if
 c_cond
 (paren
-id|sn_dma_map
+id|dma_map
 )paren
 (brace
-id|pciio_dmamap_done
+id|pcibr_dmamap_done
 c_func
 (paren
-(paren
-id|pciio_dmamap_t
-)paren
-id|sn_dma_map
+id|dma_map
 )paren
 suffix:semicolon
-id|pciio_dmamap_free
+id|pcibr_dmamap_free
 c_func
 (paren
-(paren
-id|pciio_dmamap_t
-)paren
-id|sn_dma_map
+id|dma_map
 )paren
 suffix:semicolon
-id|sn_dma_map-&gt;dma_addr
+id|dma_map-&gt;bd_dma_addr
 op_assign
-(paren
-id|dma_addr_t
-)paren
-l_int|NULL
+l_int|0
 suffix:semicolon
 )brace
 id|free_pages
@@ -694,13 +656,8 @@ id|sn_device_sysdata
 op_star
 id|device_sysdata
 suffix:semicolon
-id|pciio_dmamap_t
+id|pcibr_dmamap_t
 id|dma_map
-suffix:semicolon
-r_struct
-id|sn_dma_maps_s
-op_star
-id|sn_dma_map
 suffix:semicolon
 r_struct
 id|scatterlist
@@ -791,7 +748,7 @@ id|hwdev
 (brace
 id|sg-&gt;dma_address
 op_assign
-id|pciio_dmatrans_addr
+id|pcibr_dmatrans_addr
 c_func
 (paren
 id|vhdl
@@ -842,7 +799,7 @@ id|hwdev
 (brace
 id|sg-&gt;dma_address
 op_assign
-id|pciio_dmatrans_addr
+id|pcibr_dmatrans_addr
 c_func
 (paren
 id|vhdl
@@ -889,7 +846,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * It is a 32 bit card and we cannot do direct mapping,&n;&t;&t; * so we use an ATE.&n;&t;&t; */
 id|dma_map
 op_assign
-id|pciio_dmamap_alloc
+id|pcibr_dmamap_alloc
 c_func
 (paren
 id|vhdl
@@ -961,7 +918,7 @@ suffix:semicolon
 )brace
 id|sg-&gt;dma_address
 op_assign
-id|pciio_dmamap_addr
+id|pcibr_dmamap_addr
 c_func
 (paren
 id|dma_map
@@ -975,16 +932,7 @@ id|sg-&gt;dma_length
 op_assign
 id|sg-&gt;length
 suffix:semicolon
-id|sn_dma_map
-op_assign
-(paren
-r_struct
-id|sn_dma_maps_s
-op_star
-)paren
-id|dma_map
-suffix:semicolon
-id|sn_dma_map-&gt;dma_addr
+id|dma_map-&gt;bd_dma_addr
 op_assign
 id|sg-&gt;dma_address
 suffix:semicolon
@@ -1020,9 +968,9 @@ r_int
 id|i
 suffix:semicolon
 r_struct
-id|sn_dma_maps_s
+id|pcibr_dmamap_s
 op_star
-id|sn_dma_map
+id|dma_map
 suffix:semicolon
 multiline_comment|/* can&squot;t go anywhere w/o a direction in life */
 r_if
@@ -1065,11 +1013,7 @@ id|sg-&gt;dma_address
 )paren
 )paren
 (brace
-id|sn_dma_map
-op_assign
-l_int|NULL
-suffix:semicolon
-id|sn_dma_map
+id|dma_map
 op_assign
 id|find_sn_dma_map
 c_func
@@ -1082,33 +1026,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sn_dma_map
+id|dma_map
 )paren
 (brace
-id|pciio_dmamap_done
+id|pcibr_dmamap_done
 c_func
 (paren
-(paren
-id|pciio_dmamap_t
-)paren
-id|sn_dma_map
+id|dma_map
 )paren
 suffix:semicolon
-id|pciio_dmamap_free
+id|pcibr_dmamap_free
 c_func
 (paren
-(paren
-id|pciio_dmamap_t
-)paren
-id|sn_dma_map
+id|dma_map
 )paren
 suffix:semicolon
-id|sn_dma_map-&gt;dma_addr
+id|dma_map-&gt;bd_dma_addr
 op_assign
-(paren
-id|dma_addr_t
-)paren
-l_int|NULL
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -1125,7 +1060,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; * sn_pci_map_single - map a single region for DMA&n; * @hwdev: device to map for&n; * @ptr: kernel virtual address of the region to map&n; * @size: size of the region&n; * @direction: DMA direction&n; *&n; * Map the region pointed to by @ptr for DMA and return the&n; * DMA address.   Also known as platform_pci_map_single() by&n; * the IA64 machvec code.&n; *&n; * We map this to the one step pciio_dmamap_trans interface rather than&n; * the two step pciio_dmamap_alloc/pciio_dmamap_addr because we have&n; * no way of saving the dmamap handle from the alloc to later free&n; * (which is pretty much unacceptable).&n; *&n; * TODO: simplify our interface;&n; *       get rid of dev_desc and vhdl (seems redundant given a pci_dev);&n; *       figure out how to save dmamap handle so can use two step.&n; */
+multiline_comment|/**&n; * sn_pci_map_single - map a single region for DMA&n; * @hwdev: device to map for&n; * @ptr: kernel virtual address of the region to map&n; * @size: size of the region&n; * @direction: DMA direction&n; *&n; * Map the region pointed to by @ptr for DMA and return the&n; * DMA address.   Also known as platform_pci_map_single() by&n; * the IA64 machvec code.&n; *&n; * We map this to the one step pcibr_dmamap_trans interface rather than&n; * the two step pciio_dmamap_alloc/pciio_dmamap_addr because we have&n; * no way of saving the dmamap handle from the alloc to later free&n; * (which is pretty much unacceptable).&n; *&n; * TODO: simplify our interface;&n; *       get rid of dev_desc and vhdl (seems redundant given a pci_dev);&n; *       figure out how to save dmamap handle so can use two step.&n; */
 id|dma_addr_t
 DECL|function|sn_pci_map_single
 id|sn_pci_map_single
@@ -1162,15 +1097,10 @@ id|sn_device_sysdata
 op_star
 id|device_sysdata
 suffix:semicolon
-id|pciio_dmamap_t
+id|pcibr_dmamap_t
 id|dma_map
 op_assign
 l_int|NULL
-suffix:semicolon
-r_struct
-id|sn_dma_maps_s
-op_star
-id|sn_dma_map
 suffix:semicolon
 r_if
 c_cond
@@ -1237,7 +1167,7 @@ id|hwdev
 multiline_comment|/* This device supports 64 bit DMA addresses. */
 id|dma_addr
 op_assign
-id|pciio_dmatrans_addr
+id|pcibr_dmatrans_addr
 c_func
 (paren
 id|vhdl
@@ -1285,7 +1215,7 @@ id|hwdev
 (brace
 id|dma_addr
 op_assign
-id|pciio_dmatrans_addr
+id|pcibr_dmatrans_addr
 c_func
 (paren
 id|vhdl
@@ -1330,7 +1260,7 @@ l_int|NULL
 suffix:semicolon
 id|dma_map
 op_assign
-id|pciio_dmamap_alloc
+id|pcibr_dmamap_alloc
 c_func
 (paren
 id|vhdl
@@ -1381,7 +1311,7 @@ op_assign
 (paren
 id|dma_addr_t
 )paren
-id|pciio_dmamap_addr
+id|pcibr_dmamap_addr
 c_func
 (paren
 id|dma_map
@@ -1391,16 +1321,7 @@ comma
 id|size
 )paren
 suffix:semicolon
-id|sn_dma_map
-op_assign
-(paren
-r_struct
-id|sn_dma_maps_s
-op_star
-)paren
-id|dma_map
-suffix:semicolon
-id|sn_dma_map-&gt;dma_addr
+id|dma_map-&gt;bd_dma_addr
 op_assign
 id|dma_addr
 suffix:semicolon
@@ -1435,9 +1356,9 @@ id|direction
 )paren
 (brace
 r_struct
-id|sn_dma_maps_s
+id|pcibr_dmamap_s
 op_star
-id|sn_dma_map
+id|dma_map
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1463,7 +1384,7 @@ c_func
 id|dma_addr
 )paren
 )paren
-id|sn_dma_map
+id|dma_map
 op_assign
 id|find_sn_dma_map
 c_func
@@ -1477,33 +1398,24 @@ multiline_comment|/*&n;&t; * and free it if necessary...&n;&t; */
 r_if
 c_cond
 (paren
-id|sn_dma_map
+id|dma_map
 )paren
 (brace
-id|pciio_dmamap_done
+id|pcibr_dmamap_done
 c_func
 (paren
-(paren
-id|pciio_dmamap_t
-)paren
-id|sn_dma_map
+id|dma_map
 )paren
 suffix:semicolon
-id|pciio_dmamap_free
+id|pcibr_dmamap_free
 c_func
 (paren
-(paren
-id|pciio_dmamap_t
-)paren
-id|sn_dma_map
+id|dma_map
 )paren
 suffix:semicolon
-id|sn_dma_map-&gt;dma_addr
+id|dma_map-&gt;bd_dma_addr
 op_assign
-(paren
-id|dma_addr_t
-)paren
-l_int|NULL
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -1586,7 +1498,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PCI
 multiline_comment|/*&n; * New generic DMA routines just wrap sn2 PCI routines until we&n; * support other bus types (if ever).&n; */
 r_int
 DECL|function|sn_dma_supported
@@ -2260,7 +2171,6 @@ c_func
 id|sn_dma_sync_sg
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PCI */
 DECL|variable|sn_pci_unmap_single
 id|EXPORT_SYMBOL
 c_func

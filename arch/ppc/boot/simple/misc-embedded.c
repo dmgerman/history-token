@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/residual.h&gt;
 macro_line|#if defined(CONFIG_4xx)
 macro_line|#include &lt;asm/ibm4xx.h&gt;

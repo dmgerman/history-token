@@ -72,16 +72,7 @@ id|mcontext
 op_star
 id|uc_regs
 suffix:semicolon
-multiline_comment|/* backward compat */
-DECL|member|uc_oldsigmask
-id|sigset_t
-id|uc_oldsigmask
-suffix:semicolon
-multiline_comment|/* backward compat */
-DECL|member|uc_pad2
-r_int
-id|uc_pad2
-suffix:semicolon
+multiline_comment|/* points to uc_mcontext field */
 DECL|member|uc_sigmask
 id|sigset_t
 id|uc_sigmask
@@ -92,6 +83,13 @@ r_int
 id|uc_maskext
 (braket
 l_int|30
+)braket
+suffix:semicolon
+DECL|member|uc_pad2
+r_int
+id|uc_pad2
+(braket
+l_int|3
 )braket
 suffix:semicolon
 DECL|member|uc_mcontext

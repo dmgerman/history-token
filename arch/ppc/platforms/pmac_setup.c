@@ -28,7 +28,7 @@ macro_line|#include &lt;linux/pmu.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/reg.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/system.h&gt;

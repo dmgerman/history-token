@@ -1753,7 +1753,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xffffffffffffffff
+l_int|0xffffffffffffffffULL
 )paren
 suffix:semicolon
 id|adapter-&gt;has_64bit_addr

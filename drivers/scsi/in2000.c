@@ -6219,10 +6219,6 @@ id|key
 comma
 r_int
 op_star
-id|flags
-comma
-r_int
-op_star
 id|val
 comma
 r_char
@@ -6529,9 +6525,6 @@ id|check_setup_args
 c_func
 (paren
 l_string|&quot;ioport&quot;
-comma
-op_amp
-id|flags
 comma
 op_amp
 id|val
@@ -7093,9 +7086,6 @@ c_func
 l_string|&quot;nosync&quot;
 comma
 op_amp
-id|flags
-comma
-op_amp
 id|val
 comma
 id|buf
@@ -7112,9 +7102,6 @@ id|check_setup_args
 c_func
 (paren
 l_string|&quot;period&quot;
-comma
-op_amp
-id|flags
 comma
 op_amp
 id|val
@@ -7146,9 +7133,6 @@ id|check_setup_args
 c_func
 (paren
 l_string|&quot;disconnect&quot;
-comma
-op_amp
-id|flags
 comma
 op_amp
 id|val
@@ -7191,9 +7175,6 @@ c_func
 l_string|&quot;noreset&quot;
 comma
 op_amp
-id|flags
-comma
-op_amp
 id|val
 comma
 id|buf
@@ -7212,9 +7193,6 @@ c_func
 l_string|&quot;level2&quot;
 comma
 op_amp
-id|flags
-comma
-op_amp
 id|val
 comma
 id|buf
@@ -7231,9 +7209,6 @@ id|check_setup_args
 c_func
 (paren
 l_string|&quot;debug&quot;
-comma
-op_amp
-id|flags
 comma
 op_amp
 id|val
@@ -7257,9 +7232,6 @@ id|check_setup_args
 c_func
 (paren
 l_string|&quot;proc&quot;
-comma
-op_amp
-id|flags
 comma
 op_amp
 id|val

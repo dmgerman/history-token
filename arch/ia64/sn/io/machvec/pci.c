@@ -21,7 +21,6 @@ macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
 multiline_comment|/*&n; * These routines are only used during sn_pci_init for probing each bus, and&n; * can probably be removed with a little more cleanup now that the SAL routines&n; * work on sn2.&n; */
-macro_line|#ifdef CONFIG_PCI
 r_extern
 id|vertex_hdl_t
 id|devfn_to_vertex
@@ -202,21 +201,4 @@ id|sn_write_config
 comma
 )brace
 suffix:semicolon
-macro_line|#else
-DECL|variable|pci_root_buses
-r_struct
-id|list_head
-id|pci_root_buses
-suffix:semicolon
-DECL|variable|pci_root_buses
-r_struct
-id|list_head
-id|pci_root_buses
-suffix:semicolon
-DECL|variable|pci_devices
-r_struct
-id|list_head
-id|pci_devices
-suffix:semicolon
-macro_line|#endif /* CONFIG_PCI */
 eof

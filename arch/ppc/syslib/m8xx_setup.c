@@ -22,7 +22,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/reg.h&gt;
 macro_line|#include &lt;asm/residual.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -674,32 +674,17 @@ op_or_assign
 l_int|0x00000080
 suffix:semicolon
 multiline_comment|/* Clear the ME bit in MSR to cause checkstop on machine check&n;&t;*/
-id|__asm__
+id|mtmsr
 c_func
 (paren
-l_string|&quot;mfmsr %0&quot;
-suffix:colon
-l_string|&quot;=r&quot;
+id|mfmsr
+c_func
 (paren
 id|msr
 )paren
-)paren
-suffix:semicolon
-id|msr
-op_and_assign
+op_amp
 op_complement
 l_int|0x1000
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;mtmsr %0&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|msr
-)paren
 )paren
 suffix:semicolon
 id|dummy
