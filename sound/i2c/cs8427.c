@@ -1337,6 +1337,17 @@ id|bus
 )paren
 suffix:semicolon
 multiline_comment|/* turn on run bit and rock&squot;n&squot;roll */
+r_if
+c_cond
+(paren
+id|reset_timeout
+OL
+l_int|1
+)paren
+id|reset_timeout
+op_assign
+l_int|1
+suffix:semicolon
 id|chip-&gt;reset_timeout
 op_assign
 id|reset_timeout
@@ -1630,9 +1641,7 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-id|HZ
-op_div
-l_int|100
+l_int|1
 )paren
 suffix:semicolon
 )brace

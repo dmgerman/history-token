@@ -136,10 +136,10 @@ l_int|1
 )paren
 )braket
 op_assign
-l_int|50
+l_int|500
 )brace
 suffix:semicolon
-multiline_comment|/* CS8427 S/PDIF transciever reset timeout value in HZ/100 */
+multiline_comment|/* CS8427 S/PDIF transciever reset timeout value in msec */
 id|MODULE_PARM
 c_func
 (paren
@@ -281,7 +281,7 @@ c_func
 (paren
 id|cs8427_timeout
 comma
-l_string|&quot;Define reset timeout for cs8427 chip in HZ/100 resolution.&quot;
+l_string|&quot;Define reset timeout for cs8427 chip in msec resolution.&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_SYNTAX
@@ -290,7 +290,7 @@ c_func
 id|cs8427_timeout
 comma
 id|SNDRV_ENABLED
-l_string|&quot;, allows:{{1,100}},default=50,skill:advanced&quot;
+l_string|&quot;, allows:{{1,1000}},default=500,skill:advanced&quot;
 )paren
 suffix:semicolon
 macro_line|#ifndef PCI_VENDOR_ID_ICE
@@ -1939,7 +1939,7 @@ op_star
 id|HZ
 )paren
 op_div
-l_int|100
+l_int|1000
 comma
 op_amp
 id|ice-&gt;cs8427
@@ -13850,11 +13850,11 @@ c_cond
 (paren
 id|cs8427_timeout
 OG
-l_int|100
+l_int|1000
 )paren
 id|cs8427_timeout
 op_assign
-l_int|100
+l_int|1000
 suffix:semicolon
 id|ice-&gt;cs8427_timeout
 op_assign
