@@ -66,6 +66,10 @@ id|kmem_zone_t
 op_star
 id|qm_dqtrxzone
 suffix:semicolon
+DECL|variable|xfs_qm_shaker
+id|kmem_shaker_t
+id|xfs_qm_shaker
+suffix:semicolon
 id|STATIC
 r_void
 id|xfs_qm_list_init
@@ -131,12 +135,6 @@ macro_line|#else
 DECL|macro|XQM_LIST_PRINT
 mdefine_line|#define XQM_LIST_PRINT(l, NXT, title) do { } while (0)
 macro_line|#endif
-DECL|variable|xfs_qm_shrinker
-r_struct
-id|shrinker
-op_star
-id|xfs_qm_shrinker
-suffix:semicolon
 multiline_comment|/*&n; * Initialize the XQM structure.&n; * Note that there is not one quota manager per file system.&n; */
 id|STATIC
 r_struct
@@ -340,13 +338,11 @@ id|xqm-&gt;qm_dqzone
 op_assign
 id|qm_dqzone
 suffix:semicolon
-id|xfs_qm_shrinker
+id|xfs_qm_shaker
 op_assign
-id|set_shrinker
+id|kmem_shake_register
 c_func
 (paren
-id|DEFAULT_SEEKS
-comma
 id|xfs_qm_shake
 )paren
 suffix:semicolon
@@ -448,10 +444,10 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-id|remove_shrinker
+id|kmem_shake_deregister
 c_func
 (paren
-id|xfs_qm_shrinker
+id|xfs_qm_shaker
 )paren
 suffix:semicolon
 id|hsize
@@ -7101,8 +7097,10 @@ id|restarts
 op_ge
 id|XFS_QM_RECLAIM_MAX_RESTARTS
 )paren
-r_goto
-id|out
+r_return
+(paren
+id|nreclaimed
+)paren
 suffix:semicolon
 id|XQM_STATS_INC
 c_func
@@ -7334,8 +7332,10 @@ id|restarts
 op_ge
 id|XFS_QM_RECLAIM_MAX_RESTARTS
 )paren
-r_goto
-id|out
+r_return
+(paren
+id|nreclaimed
+)paren
 suffix:semicolon
 r_goto
 id|tryagain
@@ -7462,13 +7462,13 @@ c_func
 id|xfs_Gqm
 )paren
 suffix:semicolon
-id|out
-suffix:colon
 r_return
+(paren
 id|nreclaimed
+)paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The shake manager routine called by shaked() when memory is&n; * running low.&n; */
+multiline_comment|/*&n; * The kmem_shake interface is invoked when memory is running low.&n; */
 multiline_comment|/* ARGSUSED */
 id|STATIC
 r_int
@@ -7495,14 +7495,16 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|kmem_shake_allow
+c_func
 (paren
 id|gfp_mask
-op_amp
-id|__GFP_WAIT
 )paren
 )paren
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -7511,7 +7513,9 @@ op_logical_neg
 id|xfs_Gqm
 )paren
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 id|nfree
 op_assign
@@ -7550,7 +7554,9 @@ OL
 id|ndquot
 )paren
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 id|ndqused
 op_mul_assign
