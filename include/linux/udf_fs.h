@@ -2,24 +2,14 @@ multiline_comment|/*&n; * udf_fs.h&n; *&n; * PURPOSE&n; *  Included by fs/filesy
 macro_line|#ifndef _UDF_FS_H
 DECL|macro|_UDF_FS_H
 mdefine_line|#define _UDF_FS_H 1
-macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|UDF_PREALLOCATE
 mdefine_line|#define UDF_PREALLOCATE
 DECL|macro|UDF_DEFAULT_PREALLOC_BLOCKS
 mdefine_line|#define UDF_DEFAULT_PREALLOC_BLOCKS&t;8
 DECL|macro|UDFFS_DATE
-mdefine_line|#define UDFFS_DATE&t;&t;&t;&quot;2002/03/11&quot;
+mdefine_line|#define UDFFS_DATE&t;&t;&t;&quot;2002/11/15&quot;
 DECL|macro|UDFFS_VERSION
-mdefine_line|#define UDFFS_VERSION&t;&t;&t;&quot;0.9.6&quot;
-macro_line|#if !defined(UDFFS_RW)
-macro_line|#if defined(CONFIG_UDF_RW)
-DECL|macro|UDFFS_RW
-mdefine_line|#define UDFFS_RW&t;&t;&t;1
-macro_line|#else /* !defined(CONFIG_UDF_RW) */
-DECL|macro|UDFFS_RW
-mdefine_line|#define UDFFS_RW&t;&t;&t;0
-macro_line|#endif /* defined(CONFIG_UDF_RW) */
-macro_line|#endif /* !defined(UDFFS_RW) */
+mdefine_line|#define UDFFS_VERSION&t;&t;&t;&quot;0.9.7&quot;
 DECL|macro|UDFFS_DEBUG
 mdefine_line|#define UDFFS_DEBUG
 macro_line|#ifdef UDFFS_DEBUG
