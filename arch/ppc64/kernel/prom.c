@@ -8509,6 +8509,17 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|np-&gt;iommu_table
+)paren
+id|iommu_free_table
+c_func
+(paren
+id|np
+)paren
+suffix:semicolon
 id|write_lock
 c_func
 (paren

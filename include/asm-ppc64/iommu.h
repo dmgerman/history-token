@@ -308,6 +308,18 @@ op_star
 id|dn
 )paren
 suffix:semicolon
+multiline_comment|/* Frees table for an individual device node */
+r_extern
+r_void
+id|iommu_free_table
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|dn
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_PPC_MULTIPLATFORM */
 macro_line|#ifdef CONFIG_PPC_ISERIES
 multiline_comment|/* Walks all buses and creates iommu tables */
