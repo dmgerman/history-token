@@ -1190,15 +1190,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -1339,7 +1334,7 @@ id|dev_id
 op_assign
 id|node
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1442,15 +1437,10 @@ id|bad_interrupt
 r_goto
 id|not_found
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -1480,7 +1470,7 @@ op_ne
 id|dev_id
 )paren
 (brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1537,7 +1527,7 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1602,7 +1592,7 @@ op_star
 id|list
 )paren
 (brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1688,7 +1678,7 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* Mark it as free for reallocation */
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

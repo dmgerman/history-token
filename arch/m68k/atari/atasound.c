@@ -72,15 +72,10 @@ suffix:semicolon
 r_int
 id|period
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Disable generator A in mixer control.  */
@@ -246,7 +241,7 @@ op_assign
 id|tmp
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
