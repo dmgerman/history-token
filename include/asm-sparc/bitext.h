@@ -2,7 +2,7 @@ multiline_comment|/*&n; * bitext.h: Bit string operations on the sparc, specific
 macro_line|#ifndef _SPARC_BITEXT_H
 DECL|macro|_SPARC_BITEXT_H
 mdefine_line|#define _SPARC_BITEXT_H
-macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 DECL|struct|bit_map
 r_struct
 id|bit_map
