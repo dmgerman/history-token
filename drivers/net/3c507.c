@@ -705,7 +705,8 @@ c_func
 (paren
 id|dev
 comma
-id|io
+op_star
+id|port
 )paren
 suffix:semicolon
 r_if
