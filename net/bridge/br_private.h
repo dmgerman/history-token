@@ -11,6 +11,10 @@ DECL|macro|BR_HASH_SIZE
 mdefine_line|#define BR_HASH_SIZE (1 &lt;&lt; BR_HASH_BITS)
 DECL|macro|BR_HOLD_TIME
 mdefine_line|#define BR_HOLD_TIME (1*HZ)
+DECL|macro|BR_PORT_BITS
+mdefine_line|#define BR_PORT_BITS&t;10
+DECL|macro|BR_MAX_PORTS
+mdefine_line|#define BR_MAX_PORTS&t;(1&lt;&lt;BR_PORT_BITS)
 DECL|typedef|bridge_id
 r_typedef
 r_struct

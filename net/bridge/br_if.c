@@ -8,9 +8,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &quot;br_private.h&quot;
-multiline_comment|/* Limited to 256 ports because of STP protocol pdu */
-DECL|macro|BR_MAX_PORTS
-mdefine_line|#define  BR_MAX_PORTS&t;256
 multiline_comment|/*&n; * Determine initial path cost based on speed.&n; * using recommendations from 802.1d standard&n; *&n; * Need to simulate user ioctl because not all device&squot;s that support&n; * ethtool, use ethtool_ops.  Also, since driver might sleep need to&n; * not be holding any locks.&n; */
 DECL|function|br_initial_port_cost
 r_static
@@ -576,10 +573,11 @@ r_return
 id|br
 suffix:semicolon
 )brace
-DECL|function|free_port
+multiline_comment|/* find an available port number */
+DECL|function|find_portno
 r_static
 r_int
-id|free_port
+id|find_portno
 c_func
 (paren
 r_struct
@@ -597,34 +595,57 @@ op_star
 id|p
 suffix:semicolon
 r_int
+r_int
+op_star
 id|inuse
-(braket
-id|BR_MAX_PORTS
-op_div
+suffix:semicolon
+id|inuse
+op_assign
+id|kmalloc
+c_func
 (paren
+id|BITS_TO_LONGS
+c_func
+(paren
+id|BR_MAX_PORTS
+)paren
+op_star
 r_sizeof
 (paren
 r_int
+r_int
 )paren
-op_star
-l_int|8
+comma
+id|GFP_ATOMIC
 )paren
-)braket
 suffix:semicolon
-multiline_comment|/* find free port number */
-id|memset
+r_if
+c_cond
+(paren
+op_logical_neg
+id|inuse
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|CLEAR_BITMAP
 c_func
 (paren
 id|inuse
 comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|inuse
-)paren
+id|BR_MAX_PORTS
 )paren
 suffix:semicolon
+id|set_bit
+c_func
+(paren
+l_int|0
+comma
+id|inuse
+)paren
+suffix:semicolon
+multiline_comment|/* zero is reserved */
 id|list_for_each_entry
 c_func
 (paren
@@ -655,18 +676,23 @@ comma
 id|BR_MAX_PORTS
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|kfree
+c_func
+(paren
+id|inuse
+)paren
+suffix:semicolon
+r_return
 (paren
 id|index
 op_ge
 id|BR_MAX_PORTS
 )paren
-r_return
+ques
+c_cond
 op_minus
 id|EXFULL
-suffix:semicolon
-r_return
+suffix:colon
 id|index
 suffix:semicolon
 )brace
@@ -704,7 +730,7 @@ id|p
 suffix:semicolon
 id|index
 op_assign
-id|free_port
+id|find_portno
 c_func
 (paren
 id|br
@@ -787,7 +813,9 @@ id|cost
 suffix:semicolon
 id|p-&gt;priority
 op_assign
-l_int|0x80
+l_int|0x8000
+op_rshift
+id|BR_PORT_BITS
 suffix:semicolon
 id|dev-&gt;br_port
 op_assign
