@@ -12,17 +12,6 @@ DECL|macro|DC395x_H
 mdefine_line|#define DC395x_H
 multiline_comment|/************************************************************************/
 multiline_comment|/*&t;&t;&t;&t;&t;&t;&t;&t;&t;*/
-multiline_comment|/*&t;Name, Banner and Version&t;&t;&t;&t;&t;*/
-multiline_comment|/*&t;&t;&t;&t;&t;&t;&t;&t;&t;*/
-multiline_comment|/************************************************************************/
-DECL|macro|DC395X_NAME
-mdefine_line|#define DC395X_NAME&t;&t;&t;&quot;dc395x&quot;
-DECL|macro|DC395X_BANNER
-mdefine_line|#define DC395X_BANNER&t;&t;&t;&quot;Tekram DC395(U/UW/F), DC315(U) - ASIC TRM-S1040&quot;
-DECL|macro|DC395X_VERSION
-mdefine_line|#define DC395X_VERSION&t;&t;&t;&quot;v2.04, 2003/05/19&quot;
-multiline_comment|/************************************************************************/
-multiline_comment|/*&t;&t;&t;&t;&t;&t;&t;&t;&t;*/
 multiline_comment|/*&t;Initial values&t;&t;&t;&t;&t;&t;&t;*/
 multiline_comment|/*&t;&t;&t;&t;&t;&t;&t;&t;&t;*/
 multiline_comment|/************************************************************************/

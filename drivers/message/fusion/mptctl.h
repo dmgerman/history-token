@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/mptioctl.h&n; *      Fusion MPT misc device (ioctl) driver.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      (see also mptbase.c)&n; *&n; *  Copyright (c) 1999-2003 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:mpt_linux_developer@lsil.com)&n; *&n; *  $Id: mptctl.h,v 1.13 2002/12/03 21:26:33 pdelaney Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/mptioctl.h&n; *      Fusion MPT misc device (ioctl) driver.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      (see also mptbase.c)&n; *&n; *  Copyright (c) 1999-2004 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:mpt_linux_developer@lsil.com)&n; *&n; *  $Id: mptctl.h,v 1.13 2002/12/03 21:26:33 pdelaney Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 macro_line|#ifndef MPTCTL_H_INCLUDED
@@ -637,6 +637,8 @@ DECL|macro|HP_IOC_MAGIC
 mdefine_line|#define HP_IOC_MAGIC &squot;Z&squot;
 DECL|macro|HP_GETHOSTINFO
 mdefine_line|#define HP_GETHOSTINFO&t;&t;_IOR(HP_IOC_MAGIC, 20, hp_host_info_t)
+DECL|macro|HP_GETHOSTINFO1
+mdefine_line|#define HP_GETHOSTINFO1&t;&t;_IOR(HP_IOC_MAGIC, 20, hp_host_info_rev0_t)
 DECL|macro|HP_GETTARGETINFO
 mdefine_line|#define HP_GETTARGETINFO&t;_IOR(HP_IOC_MAGIC, 21, hp_target_info_t)
 multiline_comment|/* All HP IOCTLs must include this header&n; */
@@ -674,7 +676,7 @@ DECL|typedef|hp_header_t
 )brace
 id|hp_header_t
 suffix:semicolon
-multiline_comment|/*&n; *  Header:&n; *  iocnum &t;required (input)&n; *  host &t;ignored&t;&n; *  channe&t;ignored&n; *  id&t;&t;ignored&n; *  lun&t;&t;ignored&n; */
+multiline_comment|/*&n; *  Header:&n; *  iocnum &t;required (input)&n; *  host &t;ignored&n; *  channe&t;ignored&n; *  id&t;&t;ignored&n; *  lun&t;&t;ignored&n; */
 DECL|struct|_hp_host_info
 r_typedef
 r_struct
@@ -767,7 +769,100 @@ DECL|typedef|hp_host_info_t
 )brace
 id|hp_host_info_t
 suffix:semicolon
-multiline_comment|/*&n; *  Header:&n; *  iocnum &t;required (input)&n; *  host &t;required&t;&n; *  channel&t;required&t;(bus number)&n; *  id&t;&t;required&n; *  lun&t;&t;ignored&n; *&n; *  All error values between 0 and 0xFFFF in size.&n; */
+multiline_comment|/* replace ulongs with uints, need to preserve backwards&n; * compatibility.&n; */
+DECL|struct|_hp_host_info_rev0
+r_typedef
+r_struct
+id|_hp_host_info_rev0
+(brace
+DECL|member|hdr
+id|hp_header_t
+id|hdr
+suffix:semicolon
+DECL|member|vendor
+id|u16
+id|vendor
+suffix:semicolon
+DECL|member|device
+id|u16
+id|device
+suffix:semicolon
+DECL|member|subsystem_vendor
+id|u16
+id|subsystem_vendor
+suffix:semicolon
+DECL|member|subsystem_id
+id|u16
+id|subsystem_id
+suffix:semicolon
+DECL|member|devfn
+id|u8
+id|devfn
+suffix:semicolon
+DECL|member|bus
+id|u8
+id|bus
+suffix:semicolon
+DECL|member|host_no
+id|ushort
+id|host_no
+suffix:semicolon
+multiline_comment|/* SCSI Host number, if scsi driver not loaded*/
+DECL|member|fw_version
+id|u8
+id|fw_version
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* string */
+DECL|member|serial_number
+id|u8
+id|serial_number
+(braket
+l_int|24
+)braket
+suffix:semicolon
+multiline_comment|/* string */
+DECL|member|ioc_status
+id|u32
+id|ioc_status
+suffix:semicolon
+DECL|member|bus_phys_width
+id|u32
+id|bus_phys_width
+suffix:semicolon
+DECL|member|base_io_addr
+id|u32
+id|base_io_addr
+suffix:semicolon
+DECL|member|rsvd
+id|u32
+id|rsvd
+suffix:semicolon
+DECL|member|hard_resets
+r_int
+r_int
+id|hard_resets
+suffix:semicolon
+multiline_comment|/* driver initiated resets */
+DECL|member|soft_resets
+r_int
+r_int
+id|soft_resets
+suffix:semicolon
+multiline_comment|/* ioc, external resets */
+DECL|member|timeouts
+r_int
+r_int
+id|timeouts
+suffix:semicolon
+multiline_comment|/* num timeouts */
+DECL|typedef|hp_host_info_rev0_t
+)brace
+id|hp_host_info_rev0_t
+suffix:semicolon
+multiline_comment|/*&n; *  Header:&n; *  iocnum &t;required (input)&n; *  host &t;required&n; *  channel&t;required&t;(bus number)&n; *  id&t;&t;required&n; *  lun&t;&t;ignored&n; *&n; *  All error values between 0 and 0xFFFF in size.&n; */
 DECL|struct|_hp_target_info
 r_typedef
 r_struct

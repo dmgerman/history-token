@@ -22,6 +22,9 @@ suffix:semicolon
 r_struct
 id|scsi_host_cmd_pool
 suffix:semicolon
+r_struct
+id|scsi_transport_template
+suffix:semicolon
 multiline_comment|/*&n; * The various choices mean:&n; * NONE: Self evident.&t;Host adapter is not capable of scatter-gather.&n; * ALL:&t; Means that the host adapter module can do scatter-gather,&n; *&t; and that there is no limit to the size of the table to which&n; *&t; we scatter/gather data.&n; * Anything else:  Indicates the maximum number of chains that can be&n; *&t; used in one scatter-gather request.&n; */
 DECL|macro|SG_NONE
 mdefine_line|#define SG_NONE 0
@@ -541,6 +544,12 @@ r_struct
 id|scsi_host_template
 op_star
 id|hostt
+suffix:semicolon
+DECL|member|transportt
+r_struct
+id|scsi_transport_template
+op_star
+id|transportt
 suffix:semicolon
 DECL|member|host_busy
 r_volatile

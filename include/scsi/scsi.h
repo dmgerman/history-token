@@ -3,6 +3,9 @@ macro_line|#ifndef _SCSI_SCSI_H
 DECL|macro|_SCSI_SCSI_H
 mdefine_line|#define _SCSI_SCSI_H
 macro_line|#include &lt;linux/types.h&gt;
+multiline_comment|/*&n; *&t;The maximum sg list length SCSI can cope with&n; *&t;(currently must be a power of 2 between 32 and 256)&n; */
+DECL|macro|SCSI_MAX_PHYS_SEGMENTS
+mdefine_line|#define SCSI_MAX_PHYS_SEGMENTS&t;MAX_PHYS_SEGMENTS
 multiline_comment|/*&n; *&t;SCSI command lengths&n; */
 r_extern
 r_const
@@ -318,6 +321,8 @@ DECL|macro|TYPE_COMM
 mdefine_line|#define TYPE_COMM           0x09    /* Communications device */
 DECL|macro|TYPE_ENCLOSURE
 mdefine_line|#define TYPE_ENCLOSURE      0x0d    /* Enclosure Services Device */
+DECL|macro|TYPE_RAID
+mdefine_line|#define TYPE_RAID           0x0c
 DECL|macro|TYPE_NO_LUN
 mdefine_line|#define TYPE_NO_LUN         0x7f
 multiline_comment|/*&n; * standard mode-select header prepended to all mode-select commands&n; */
@@ -466,6 +471,8 @@ DECL|macro|DID_PASSTHROUGH
 mdefine_line|#define DID_PASSTHROUGH 0x0a&t;/* Force command past mid-layer            */
 DECL|macro|DID_SOFT_ERROR
 mdefine_line|#define DID_SOFT_ERROR  0x0b&t;/* The low level driver just wish a retry  */
+DECL|macro|DID_IMM_RETRY
+mdefine_line|#define DID_IMM_RETRY   0x0c&t;/* Retry without decrementing retry count  */
 DECL|macro|DRIVER_OK
 mdefine_line|#define DRIVER_OK       0x00&t;/* Driver status                           */
 multiline_comment|/*&n; *  These indicate the error that occurred, and what is available.&n; */

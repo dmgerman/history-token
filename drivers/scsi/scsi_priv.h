@@ -641,6 +641,11 @@ r_void
 suffix:semicolon
 r_extern
 r_struct
+id|scsi_transport_template
+id|blank_transport_template
+suffix:semicolon
+r_extern
+r_struct
 r_class
 id|sdev_class
 suffix:semicolon
