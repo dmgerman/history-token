@@ -1227,7 +1227,7 @@ c_func
 r_void
 )paren
 (brace
-id|remove_driver
+id|driver_unregister
 c_func
 (paren
 op_amp
