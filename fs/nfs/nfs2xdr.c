@@ -524,7 +524,7 @@ op_assign
 id|htonl
 c_func
 (paren
-id|attr-&gt;ia_atime
+id|attr-&gt;ia_atime.tv_sec
 )paren
 suffix:semicolon
 op_star
@@ -576,7 +576,7 @@ op_assign
 id|htonl
 c_func
 (paren
-id|attr-&gt;ia_mtime
+id|attr-&gt;ia_mtime.tv_sec
 )paren
 suffix:semicolon
 op_star

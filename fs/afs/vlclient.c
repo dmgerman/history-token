@@ -1358,7 +1358,10 @@ suffix:semicolon
 multiline_comment|/* success */
 id|entry-&gt;ctime
 op_assign
-id|xtime.tv_sec
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|ret
 op_assign
@@ -2061,7 +2064,10 @@ macro_line|#endif
 multiline_comment|/* success */
 id|entry-&gt;ctime
 op_assign
-id|xtime.tv_sec
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|ret
 op_assign
@@ -2892,7 +2898,7 @@ macro_line|#endif
 multiline_comment|/* success */
 id|entry-&gt;ctime
 op_assign
-id|xtime.tv_sec
+id|CURRENT_TIME
 suffix:semicolon
 id|ret
 op_assign

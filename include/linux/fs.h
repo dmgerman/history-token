@@ -14,19 +14,19 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
-macro_line|#include &lt;linux/stddef.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/radix-tree.h&gt;
-macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-r_struct
-id|poll_table_struct
-suffix:semicolon
 r_struct
 id|iovec
 suffix:semicolon
 r_struct
 id|nameidata
+suffix:semicolon
+r_struct
+id|pipe_inode_info
+suffix:semicolon
+r_struct
+id|poll_table_struct
 suffix:semicolon
 r_struct
 id|vm_area_struct
@@ -375,8 +375,6 @@ r_int
 id|create
 )paren
 suffix:semicolon
-macro_line|#include &lt;linux/pipe_fs_i.h&gt;
-multiline_comment|/* #include &lt;linux/umsdos_fs_i.h&gt; */
 multiline_comment|/*&n; * Attribute flags.  These should be or-ed together to figure out what&n; * has been changed!&n; */
 DECL|macro|ATTR_MODE
 mdefine_line|#define ATTR_MODE&t;1
@@ -431,15 +429,18 @@ id|loff_t
 id|ia_size
 suffix:semicolon
 DECL|member|ia_atime
-id|time_t
+r_struct
+id|timespec
 id|ia_atime
 suffix:semicolon
 DECL|member|ia_mtime
-id|time_t
+r_struct
+id|timespec
 id|ia_mtime
 suffix:semicolon
 DECL|member|ia_ctime
-id|time_t
+r_struct
+id|timespec
 id|ia_ctime
 suffix:semicolon
 DECL|member|ia_attr_flags
@@ -985,15 +986,18 @@ id|loff_t
 id|i_size
 suffix:semicolon
 DECL|member|i_atime
-id|time_t
+r_struct
+id|timespec
 id|i_atime
 suffix:semicolon
 DECL|member|i_mtime
-id|time_t
+r_struct
+id|timespec
 id|i_mtime
 suffix:semicolon
 DECL|member|i_ctime
-id|time_t
+r_struct
+id|timespec
 id|i_ctime
 suffix:semicolon
 DECL|member|i_blkbits
@@ -1151,8 +1155,6 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* will die */
 macro_line|#include &lt;linux/coda_fs_i.h&gt;
-macro_line|#include &lt;linux/ext3_fs_i.h&gt;
-macro_line|#include &lt;linux/efs_fs_i.h&gt;
 DECL|struct|fown_struct
 r_struct
 id|fown_struct
@@ -1876,13 +1878,18 @@ id|flags
 )paren
 suffix:semicolon
 r_extern
-id|time_t
+r_void
 id|lease_get_mtime
 c_func
 (paren
 r_struct
 id|inode
 op_star
+comma
+r_struct
+id|timespec
+op_star
+id|time
 )paren
 suffix:semicolon
 r_extern
@@ -6903,6 +6910,20 @@ comma
 r_struct
 id|iattr
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|inode_update_time
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_int
+id|ctime_too
 )paren
 suffix:semicolon
 DECL|function|parent_ino

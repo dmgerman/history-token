@@ -1866,9 +1866,9 @@ l_string|&quot;atime %#lx, mtime %#lx, ctime %#lx, attr_flags %#x&bslash;n&quot;
 comma
 id|iattr-&gt;ia_atime
 comma
-id|iattr-&gt;ia_mtime
+id|iattr-&gt;ia_mtime.tv_sec
 comma
-id|iattr-&gt;ia_ctime
+id|iattr-&gt;ia_ctime.tv_sec
 comma
 id|iattr-&gt;ia_attr_flags
 )paren

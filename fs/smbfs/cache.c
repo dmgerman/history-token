@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/dirent.h&gt;
 macro_line|#include &lt;linux/smb_fs.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &quot;smb_debug.h&quot;
 macro_line|#include &quot;proto.h&quot;

@@ -811,7 +811,10 @@ id|d-&gt;d_btimer
 comma
 id|ARCH_CONVERT
 comma
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_plus
 id|XFS_QI_BTIMELIMIT
 c_func
@@ -973,7 +976,10 @@ id|d-&gt;d_itimer
 comma
 id|ARCH_CONVERT
 comma
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_plus
 id|XFS_QI_ITIMELIMIT
 c_func

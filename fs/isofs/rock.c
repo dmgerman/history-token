@@ -1148,7 +1148,7 @@ op_amp
 id|TF_CREATE
 )paren
 (brace
-id|inode-&gt;i_ctime
+id|inode-&gt;i_ctime.tv_sec
 op_assign
 id|iso_date
 c_func
@@ -1163,6 +1163,10 @@ id|time
 comma
 l_int|0
 )paren
+suffix:semicolon
+id|inode-&gt;i_ctime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -1173,7 +1177,7 @@ op_amp
 id|TF_MODIFY
 )paren
 (brace
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 op_assign
 id|iso_date
 c_func
@@ -1188,6 +1192,10 @@ id|time
 comma
 l_int|0
 )paren
+suffix:semicolon
+id|inode-&gt;i_mtime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -1198,7 +1206,7 @@ op_amp
 id|TF_ACCESS
 )paren
 (brace
-id|inode-&gt;i_atime
+id|inode-&gt;i_atime.tv_sec
 op_assign
 id|iso_date
 c_func
@@ -1214,6 +1222,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|inode-&gt;i_atime.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -1223,7 +1235,7 @@ op_amp
 id|TF_ATTRIBUTES
 )paren
 (brace
-id|inode-&gt;i_ctime
+id|inode-&gt;i_ctime.tv_sec
 op_assign
 id|iso_date
 c_func
@@ -1238,6 +1250,10 @@ id|time
 comma
 l_int|0
 )paren
+suffix:semicolon
+id|inode-&gt;i_ctime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_break

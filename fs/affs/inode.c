@@ -761,11 +761,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 op_assign
-id|inode-&gt;i_atime
+id|inode-&gt;i_atime.tv_sec
 op_assign
-id|inode-&gt;i_ctime
+id|inode-&gt;i_ctime.tv_sec
 op_assign
 (paren
 id|be32_to_cpu
@@ -818,6 +818,14 @@ op_plus
 id|sys_tz.tz_minuteswest
 op_star
 l_int|60
+suffix:semicolon
+id|inode-&gt;i_mtime.tv_nsec
+op_assign
+id|inode-&gt;i_ctime.tv_nsec
+op_assign
+id|inode-&gt;i_atime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 id|affs_brelse
 c_func
@@ -965,7 +973,7 @@ id|ST_ROOT
 id|secs_to_datestamp
 c_func
 (paren
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 comma
 op_amp
 id|AFFS_ROOT_TAIL
@@ -1007,7 +1015,7 @@ suffix:semicolon
 id|secs_to_datestamp
 c_func
 (paren
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 comma
 op_amp
 id|tail-&gt;change

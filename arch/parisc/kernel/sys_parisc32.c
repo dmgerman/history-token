@@ -2826,7 +2826,10 @@ id|tloc
 id|time_t
 id|now
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|time_t32
 id|now32

@@ -2618,7 +2618,7 @@ comma
 id|ufs_inode-&gt;ui_size
 )paren
 suffix:semicolon
-id|inode-&gt;i_atime
+id|inode-&gt;i_atime.tv_sec
 op_assign
 id|fs32_to_cpu
 c_func
@@ -2628,7 +2628,7 @@ comma
 id|ufs_inode-&gt;ui_atime.tv_sec
 )paren
 suffix:semicolon
-id|inode-&gt;i_ctime
+id|inode-&gt;i_ctime.tv_sec
 op_assign
 id|fs32_to_cpu
 c_func
@@ -2638,7 +2638,7 @@ comma
 id|ufs_inode-&gt;ui_ctime.tv_sec
 )paren
 suffix:semicolon
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 op_assign
 id|fs32_to_cpu
 c_func
@@ -2647,6 +2647,18 @@ id|sb
 comma
 id|ufs_inode-&gt;ui_mtime.tv_sec
 )paren
+suffix:semicolon
+id|inode-&gt;i_mtime.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
+id|inode-&gt;i_atime.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
+id|inode-&gt;i_ctime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 id|inode-&gt;i_blocks
 op_assign
@@ -3166,7 +3178,7 @@ c_func
 (paren
 id|sb
 comma
-id|inode-&gt;i_atime
+id|inode-&gt;i_atime.tv_sec
 )paren
 suffix:semicolon
 id|ufs_inode-&gt;ui_atime.tv_usec
@@ -3180,7 +3192,7 @@ c_func
 (paren
 id|sb
 comma
-id|inode-&gt;i_ctime
+id|inode-&gt;i_ctime.tv_sec
 )paren
 suffix:semicolon
 id|ufs_inode-&gt;ui_ctime.tv_usec
@@ -3194,7 +3206,7 @@ c_func
 (paren
 id|sb
 comma
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 )paren
 suffix:semicolon
 id|ufs_inode-&gt;ui_mtime.tv_usec

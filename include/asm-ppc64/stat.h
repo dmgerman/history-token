@@ -115,30 +115,30 @@ r_int
 r_int
 id|st_atime
 suffix:semicolon
-DECL|member|__unused1
+DECL|member|st_atime_nsec
 r_int
 r_int
-id|__unused1
+id|st_atime_nsec
 suffix:semicolon
 DECL|member|st_mtime
 r_int
 r_int
 id|st_mtime
 suffix:semicolon
-DECL|member|__unused2
+DECL|member|st_mtime_nsec
 r_int
 r_int
-id|__unused2
+id|st_mtime_nsec
 suffix:semicolon
 DECL|member|st_ctime
 r_int
 r_int
 id|st_ctime
 suffix:semicolon
-DECL|member|__unused3
+DECL|member|st_ctime_nsec
 r_int
 r_int
-id|__unused3
+id|st_ctime_nsec
 suffix:semicolon
 DECL|member|__unused4
 r_int
@@ -157,6 +157,8 @@ id|__unused6
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|STAT_HAVE_NSEC
+mdefine_line|#define STAT_HAVE_NSEC 1
 multiline_comment|/* This matches struct stat64 in glibc2.1. */
 DECL|struct|stat64
 r_struct
@@ -229,30 +231,27 @@ r_int
 id|st_atime
 suffix:semicolon
 multiline_comment|/* Time of last access.  */
-DECL|member|__unused1
+DECL|member|st_atime_nsec
 r_int
-r_int
-id|__unused1
+id|st_atime_nsec
 suffix:semicolon
 DECL|member|st_mtime
 r_int
 id|st_mtime
 suffix:semicolon
 multiline_comment|/* Time of last modification.  */
-DECL|member|__unused2
+DECL|member|st_mtime_nsec
 r_int
-r_int
-id|__unused2
+id|st_mtime_nsec
 suffix:semicolon
 DECL|member|st_ctime
 r_int
 id|st_ctime
 suffix:semicolon
 multiline_comment|/* Time of last status change.  */
-DECL|member|__unused3
+DECL|member|st_ctime_nsec
 r_int
-r_int
-id|__unused3
+id|st_ctime_nsec
 suffix:semicolon
 DECL|member|__unused4
 r_int

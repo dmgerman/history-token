@@ -5096,7 +5096,10 @@ id|xid
 )paren
 id|xid
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_lshift
 l_int|12
 suffix:semicolon

@@ -298,7 +298,10 @@ suffix:semicolon
 )brace
 id|shp-&gt;shm_atim
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|shp-&gt;shm_lprid
 op_assign
@@ -474,7 +477,10 @@ id|current-&gt;pid
 suffix:semicolon
 id|shp-&gt;shm_dtim
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|shp-&gt;shm_nattch
 op_decrement
@@ -833,7 +839,10 @@ l_int|0
 suffix:semicolon
 id|shp-&gt;shm_ctim
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|shp-&gt;shm_segsz
 op_assign
@@ -2482,7 +2491,10 @@ id|S_IRWXUGO
 suffix:semicolon
 id|shp-&gt;shm_ctim
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon

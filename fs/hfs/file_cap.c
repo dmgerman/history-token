@@ -235,7 +235,10 @@ suffix:semicolon
 id|hfs_put_nl
 c_func
 (paren
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 comma
 id|meta-&gt;fi_utime
 )paren

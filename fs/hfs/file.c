@@ -1787,7 +1787,10 @@ op_assign
 id|hfs_u_to_mtime
 c_func
 (paren
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|hfs_cat_mark_dirty

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * getopt.c&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &quot;getopt.h&quot;
 multiline_comment|/**&n; *&t;smb_getopt - option parser&n; *&t;@caller: name of the caller, for error messages&n; *&t;@options: the options string&n; *&t;@opts: an array of &amp;struct option entries controlling parser operations&n; *&t;@optopt: output; will contain the current option&n; *&t;@optarg: output; will contain the value (if one exists)&n; *&t;@flag: output; may be NULL; should point to a long for or&squot;ing flags&n; *&t;@value: output; may be NULL; will be overwritten with the integer value&n; *&t;&t;of the current argument.&n; *&n; *&t;Helper to parse options on the format used by mount (&quot;a=b,c=d,e,f&quot;).&n; *&t;Returns opts-&gt;val if a matching entry in the &squot;opts&squot; array is found,&n; *&t;0 when no more tokens are found, -1 if an error is encountered.&n; */
 DECL|function|smb_getopt

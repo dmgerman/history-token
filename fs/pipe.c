@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/pipe_fs_i.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ioctls.h&gt;
 multiline_comment|/*&n; * We use a start+len construction, which provides full use of the &n; * allocated memory.&n; * -- Florian Coosmann (FGC)&n; * &n; * Reads with count = 0 should always return 0.&n; * -- Julian Bradfield 1999-06-07.&n; *&n; * FIFOs and Pipes now generate SIGIO for both readers and writers.&n; * -- Jeremy Elson &lt;jelson@circlemud.org&gt; 2001-08-16&n; *&n; * pipe_read &amp; write cleanup&n; * -- Manfred Spraul &lt;manfred@colorfullife.com&gt; 2002-05-09&n; */
