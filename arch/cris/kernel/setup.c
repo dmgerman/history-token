@@ -45,8 +45,6 @@ id|_edata
 comma
 id|_end
 suffix:semicolon
-DECL|macro|COMMAND_LINE_SIZE
-mdefine_line|#define COMMAND_LINE_SIZE 256
 DECL|variable|command_line
 r_static
 r_char
@@ -59,13 +57,6 @@ op_assign
 l_int|0
 comma
 )brace
-suffix:semicolon
-DECL|variable|saved_command_line
-r_char
-id|saved_command_line
-(braket
-id|COMMAND_LINE_SIZE
-)braket
 suffix:semicolon
 r_extern
 r_const

@@ -162,8 +162,6 @@ mdefine_line|#define INITRD_SIZE (*(unsigned long *) (PARAM+0x014))
 multiline_comment|/* ... */
 DECL|macro|COMMAND_LINE
 mdefine_line|#define COMMAND_LINE ((char *) (PARAM+0x100))
-DECL|macro|COMMAND_LINE_SIZE
-mdefine_line|#define COMMAND_LINE_SIZE 256
 DECL|macro|RAMDISK_IMAGE_START_MASK
 mdefine_line|#define RAMDISK_IMAGE_START_MASK  &t;0x07FF
 DECL|macro|RAMDISK_PROMPT_FLAG
@@ -182,13 +180,6 @@ op_assign
 l_int|0
 comma
 )brace
-suffix:semicolon
-DECL|variable|saved_command_line
-r_char
-id|saved_command_line
-(braket
-id|COMMAND_LINE_SIZE
-)braket
 suffix:semicolon
 DECL|variable|standard_io_resources
 r_struct

@@ -213,13 +213,6 @@ DECL|variable|powersave_nap
 r_int
 id|powersave_nap
 suffix:semicolon
-DECL|variable|saved_command_line
-r_char
-id|saved_command_line
-(braket
-id|COMMAND_LINE_SIZE
-)braket
-suffix:semicolon
 DECL|variable|aux_device_present
 r_int
 r_char

@@ -232,13 +232,6 @@ id|command_line
 id|COMMAND_LINE_SIZE
 )braket
 suffix:semicolon
-DECL|variable|saved_command_line
-r_char
-id|saved_command_line
-(braket
-id|COMMAND_LINE_SIZE
-)braket
-suffix:semicolon
 multiline_comment|/*&n; * The format of &quot;screen_info&quot; is strange, and due to early&n; * i386-setup code. This is just enough to make the console&n; * code think we&squot;re on a VGA color display.&n; */
 DECL|variable|screen_info
 r_struct

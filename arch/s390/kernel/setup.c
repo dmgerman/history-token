@@ -143,13 +143,6 @@ l_int|0
 comma
 )brace
 suffix:semicolon
-DECL|variable|saved_command_line
-r_char
-id|saved_command_line
-(braket
-id|COMMAND_LINE_SIZE
-)braket
-suffix:semicolon
 DECL|variable|code_resource
 r_static
 r_struct

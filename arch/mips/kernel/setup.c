@@ -112,13 +112,6 @@ id|command_line
 id|CL_SIZE
 )braket
 suffix:semicolon
-DECL|variable|saved_command_line
-r_char
-id|saved_command_line
-(braket
-id|CL_SIZE
-)braket
-suffix:semicolon
 DECL|variable|arcs_cmdline
 r_char
 id|arcs_cmdline
