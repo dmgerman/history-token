@@ -2947,16 +2947,27 @@ op_or
 id|toggle
 suffix:semicolon
 )brace
-multiline_comment|/* help for troubleshooting: */
+multiline_comment|/* help for troubleshooting:  report anything that&n;&t; * looks odd ... that doesn&squot;t include protocol stalls&n;&t; * (or maybe some other things)&n;&t; */
+r_if
+c_cond
+(paren
+id|cc
+op_ne
+id|TD_CC_STALL
+op_logical_or
+op_logical_neg
+id|usb_pipecontrol
+(paren
+id|urb-&gt;pipe
+)paren
+)paren
 id|ohci_dbg
 (paren
 id|ohci
 comma
-l_string|&quot;urb %p usb-%s-%s ep-%d-%s cc %d --&gt; status %d&bslash;n&quot;
+l_string|&quot;urb %p path %s ep%d%s %08x cc %d --&gt; status %d&bslash;n&quot;
 comma
 id|urb
-comma
-id|urb-&gt;dev-&gt;bus-&gt;bus_name
 comma
 id|urb-&gt;dev-&gt;devpath
 comma
@@ -2971,9 +2982,14 @@ id|urb-&gt;pipe
 )paren
 ques
 c_cond
-l_string|&quot;IN&quot;
+l_string|&quot;in&quot;
 suffix:colon
-l_string|&quot;OUT&quot;
+l_string|&quot;out&quot;
+comma
+id|le32_to_cpu
+(paren
+id|td-&gt;hwINFO
+)paren
 comma
 id|cc
 comma
