@@ -1770,6 +1770,8 @@ c_func
 op_amp
 id|ji-&gt;ea
 )paren
+op_lshift
+id|sb-&gt;s_blocksize_bits
 comma
 l_int|1
 )paren
