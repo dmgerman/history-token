@@ -70,6 +70,16 @@ DECL|macro|S3C2440_UCON_PCLK2
 mdefine_line|#define S3C2440_UCON_PCLK2&t;  (2&lt;&lt;10)
 DECL|macro|S3C2440_UCON_FCLK
 mdefine_line|#define S3C2440_UCON_FCLK&t;  (3&lt;&lt;10)
+DECL|macro|S3C2440_UCON2_FCLK_EN
+mdefine_line|#define S3C2440_UCON2_FCLK_EN&t;  (1&lt;&lt;15)
+DECL|macro|S3C2440_UCON0_DIVMASK
+mdefine_line|#define S3C2440_UCON0_DIVMASK&t;  (15 &lt;&lt; 12)
+DECL|macro|S3C2440_UCON1_DIVMASK
+mdefine_line|#define S3C2440_UCON1_DIVMASK&t;  (15 &lt;&lt; 12)
+DECL|macro|S3C2440_UCON2_DIVMASK
+mdefine_line|#define S3C2440_UCON2_DIVMASK&t;  (7 &lt;&lt; 12)
+DECL|macro|S3C2440_UCON_DIVSHIFT
+mdefine_line|#define S3C2440_UCON_DIVSHIFT&t;  (12)
 DECL|macro|S3C2410_UCON_UCLK
 mdefine_line|#define S3C2410_UCON_UCLK&t;  (1&lt;&lt;10)
 DECL|macro|S3C2410_UCON_SBREAK
