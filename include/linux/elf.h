@@ -85,10 +85,16 @@ DECL|macro|PT_SHLIB
 mdefine_line|#define PT_SHLIB   5
 DECL|macro|PT_PHDR
 mdefine_line|#define PT_PHDR    6
+DECL|macro|PT_LOOS
+mdefine_line|#define PT_LOOS&t;   0x60000000
+DECL|macro|PT_HIOS
+mdefine_line|#define PT_HIOS&t;   0x6fffffff
 DECL|macro|PT_LOPROC
 mdefine_line|#define PT_LOPROC  0x70000000
 DECL|macro|PT_HIPROC
 mdefine_line|#define PT_HIPROC  0x7fffffff
+DECL|macro|PT_GNU_EH_FRAME
+mdefine_line|#define PT_GNU_EH_FRAME&t;&t;0x6474e550
 DECL|macro|PT_MIPS_REGINFO
 mdefine_line|#define PT_MIPS_REGINFO&t;&t;0x70000000
 multiline_comment|/* Flags in the e_flags field of the header */

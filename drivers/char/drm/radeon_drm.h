@@ -745,30 +745,6 @@ suffix:semicolon
 r_typedef
 r_struct
 (brace
-DECL|member|next
-DECL|member|prev
-r_int
-r_char
-id|next
-comma
-id|prev
-suffix:semicolon
-DECL|member|in_use
-r_int
-r_char
-id|in_use
-suffix:semicolon
-DECL|member|age
-r_int
-id|age
-suffix:semicolon
-DECL|typedef|drm_radeon_tex_region_t
-)brace
-id|drm_radeon_tex_region_t
-suffix:semicolon
-r_typedef
-r_struct
-(brace
 multiline_comment|/* The channel for communication of state information to the&n;&t; * kernel on firing a vertex buffer with either of the&n;&t; * obsoleted vertex/index ioctls.&n;&t; */
 DECL|member|context_state
 id|drm_radeon_context_regs_t
@@ -826,7 +802,7 @@ r_int
 id|last_clear
 suffix:semicolon
 DECL|member|tex_list
-id|drm_radeon_tex_region_t
+id|drm_tex_region_t
 id|tex_list
 (braket
 id|RADEON_NR_TEX_HEAPS
@@ -838,6 +814,7 @@ l_int|1
 )braket
 suffix:semicolon
 DECL|member|tex_age
+r_int
 r_int
 id|tex_age
 (braket
