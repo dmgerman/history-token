@@ -2951,7 +2951,7 @@ DECL|member|mmio
 r_int
 id|mmio
 suffix:semicolon
-multiline_comment|/* hosts iomio (0), mmio (1) or custom (2) select */
+multiline_comment|/* hosts iomio (0) or custom (2) select */
 DECL|member|rqsize
 r_int
 id|rqsize
