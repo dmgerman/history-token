@@ -278,8 +278,8 @@ multiline_comment|/* These routines (csz_insert_finish and csz_insert_start) are
 multiline_comment|/* Insert flow &quot;this&quot; to the list &quot;b&quot; before&n;   flow with greater finish number.&n; */
 macro_line|#if 0
 multiline_comment|/* Scan forward */
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|csz_insert_finish
 c_func
@@ -364,8 +364,8 @@ suffix:semicolon
 macro_line|#else
 multiline_comment|/* Scan backward */
 DECL|function|csz_insert_finish
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|csz_insert_finish
 c_func
@@ -450,8 +450,8 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Insert flow &quot;this&quot; to the list &quot;b&quot; before&n;   flow with greater start number.&n; */
 DECL|function|csz_insert_start
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|csz_insert_start
 c_func

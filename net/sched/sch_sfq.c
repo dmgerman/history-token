@@ -403,8 +403,8 @@ id|h2
 suffix:semicolon
 )brace
 DECL|function|sfq_link
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|sfq_link
 c_func
@@ -484,8 +484,8 @@ id|x
 suffix:semicolon
 )brace
 DECL|function|sfq_dec
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|sfq_dec
 c_func
@@ -571,8 +571,8 @@ id|x
 suffix:semicolon
 )brace
 DECL|function|sfq_inc
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|sfq_inc
 c_func
