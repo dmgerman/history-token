@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
+macro_line|#include &lt;linux/reiserfs_acl.h&gt;
 macro_line|#include &lt;linux/reiserfs_xattr.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|macro|INC_DIR_INODE_NLINK
@@ -2521,6 +2522,9 @@ r_struct
 id|reiserfs_transaction_handle
 id|th
 suffix:semicolon
+r_int
+id|locked
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2561,8 +2565,25 @@ id|retval
 r_return
 id|retval
 suffix:semicolon
+id|locked
+op_assign
+id|reiserfs_cache_default_acl
+(paren
+id|dir
+)paren
+suffix:semicolon
 id|reiserfs_write_lock
 c_func
+(paren
+id|dir-&gt;i_sb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|locked
+)paren
+id|reiserfs_write_lock_xattrs
 (paren
 id|dir-&gt;i_sb
 )paren
@@ -2597,6 +2618,16 @@ comma
 id|dentry
 comma
 id|inode
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|locked
+)paren
+id|reiserfs_write_unlock_xattrs
+(paren
+id|dir-&gt;i_sb
 )paren
 suffix:semicolon
 r_if
@@ -2764,6 +2795,9 @@ id|JOURNAL_PER_BALANCE_CNT
 op_star
 l_int|3
 suffix:semicolon
+r_int
+id|locked
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2818,8 +2852,25 @@ id|retval
 r_return
 id|retval
 suffix:semicolon
+id|locked
+op_assign
+id|reiserfs_cache_default_acl
+(paren
+id|dir
+)paren
+suffix:semicolon
 id|reiserfs_write_lock
 c_func
+(paren
+id|dir-&gt;i_sb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|locked
+)paren
+id|reiserfs_write_lock_xattrs
 (paren
 id|dir-&gt;i_sb
 )paren
@@ -2854,6 +2905,16 @@ comma
 id|dentry
 comma
 id|inode
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|locked
+)paren
+id|reiserfs_write_unlock_xattrs
+(paren
+id|dir-&gt;i_sb
 )paren
 suffix:semicolon
 r_if
@@ -3027,6 +3088,9 @@ id|JOURNAL_PER_BALANCE_CNT
 op_star
 l_int|3
 suffix:semicolon
+r_int
+id|locked
+suffix:semicolon
 macro_line|#ifdef DISPLACE_NEW_PACKING_LOCALITIES
 multiline_comment|/* set flag that new packing locality created and new blocks for the content     * of that directory are not displaced yet */
 id|REISERFS_I
@@ -3086,8 +3150,25 @@ id|retval
 r_return
 id|retval
 suffix:semicolon
+id|locked
+op_assign
+id|reiserfs_cache_default_acl
+(paren
+id|dir
+)paren
+suffix:semicolon
 id|reiserfs_write_lock
 c_func
+(paren
+id|dir-&gt;i_sb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|locked
+)paren
+id|reiserfs_write_lock_xattrs
 (paren
 id|dir-&gt;i_sb
 )paren
@@ -3136,6 +3217,16 @@ comma
 id|dentry
 comma
 id|inode
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|locked
+)paren
+id|reiserfs_write_unlock_xattrs
+(paren
+id|dir-&gt;i_sb
 )paren
 suffix:semicolon
 r_if
@@ -4218,6 +4309,7 @@ id|symname
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* We would inherit the default ACL here, but symlinks don&squot;t get ACLs */
 id|journal_begin
 c_func
 (paren

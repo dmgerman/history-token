@@ -1272,6 +1272,9 @@ comma
 DECL|enumerator|REISERFS_XATTRS_USER
 id|REISERFS_XATTRS_USER
 comma
+DECL|enumerator|REISERFS_POSIXACL
+id|REISERFS_POSIXACL
+comma
 DECL|enumerator|REISERFS_TEST1
 id|REISERFS_TEST1
 comma
@@ -1324,8 +1327,10 @@ DECL|macro|reiserfs_xattrs
 mdefine_line|#define reiserfs_xattrs(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_XATTRS))
 DECL|macro|reiserfs_xattrs_user
 mdefine_line|#define reiserfs_xattrs_user(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_XATTRS_USER))
+DECL|macro|reiserfs_posixacl
+mdefine_line|#define reiserfs_posixacl(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_POSIXACL))
 DECL|macro|reiserfs_xattrs_optional
-mdefine_line|#define reiserfs_xattrs_optional(s) reiserfs_xattrs_user(s)
+mdefine_line|#define reiserfs_xattrs_optional(s) (reiserfs_xattrs_user(s) || reiserfs_posixacl(s))
 r_void
 id|reiserfs_file_buffer
 (paren

@@ -5,6 +5,9 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/xattr.h&gt;
 macro_line|#include &lt;linux/reiserfs_xattr.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#ifdef CONFIG_REISERFS_FS_POSIX_ACL
+macro_line|# include &lt;linux/reiserfs_acl.h&gt;
+macro_line|#endif
 DECL|macro|XATTR_USER_PREFIX
 mdefine_line|#define XATTR_USER_PREFIX &quot;user.&quot;
 r_static
@@ -66,7 +69,7 @@ id|EOPNOTSUPP
 suffix:semicolon
 id|error
 op_assign
-id|permission
+id|reiserfs_permission_locked
 (paren
 id|inode
 comma
@@ -184,7 +187,7 @@ id|EPERM
 suffix:semicolon
 id|error
 op_assign
-id|permission
+id|reiserfs_permission_locked
 (paren
 id|inode
 comma
@@ -293,7 +296,7 @@ id|EPERM
 suffix:semicolon
 id|error
 op_assign
-id|permission
+id|reiserfs_permission_locked
 (paren
 id|inode
 comma

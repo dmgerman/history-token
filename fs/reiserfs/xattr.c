@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * linux/fs/reiserfs/xattr.c&n; *&n; * Copyright (c) 2002 by Jeff Mahoney, &lt;jeffm@suse.com&gt;&n; *&n; */
-multiline_comment|/*&n; * In order to implement EAs in a clean, backwards compatible manner,&n; * they are implemented as files in a &quot;private&quot; directory.&n; * Each EA is in it&squot;s own file, with the directory layout like so (/ is assumed&n; * to be relative to fs root). Inside the /.reiserfs_priv/xattrs directory,&n; * directories named using the capital-hex form of the objectid and&n; * generation number are used. Inside each directory are individual files&n; * named with the name of the extended attribute.&n; *&n; * So, for objectid 12648430, we could have:&n; * /.reiserfs_priv/xattrs/C0FFEE.0/user.Content-Type&n; * .. or similar.&n; *&n; * The file contents are the text of the EA. The size is known based on the&n; * stat data describing the file.&n; *&n; */
+multiline_comment|/*&n; * In order to implement EA/ACLs in a clean, backwards compatible manner,&n; * they are implemented as files in a &quot;private&quot; directory.&n; * Each EA is in it&squot;s own file, with the directory layout like so (/ is assumed&n; * to be relative to fs root). Inside the /.reiserfs_priv/xattrs directory,&n; * directories named using the capital-hex form of the objectid and&n; * generation number are used. Inside each directory are individual files&n; * named with the name of the extended attribute.&n; *&n; * So, for objectid 12648430, we could have:&n; * /.reiserfs_priv/xattrs/C0FFEE.0/system.posix_acl_access&n; * /.reiserfs_priv/xattrs/C0FFEE.0/system.posix_acl_default&n; * /.reiserfs_priv/xattrs/C0FFEE.0/user.Content-Type&n; * .. or similar.&n; *&n; * The file contents are the text of the EA. The size is known based on the&n; * stat data describing the file.&n; *&n; * In the case of system.posix_acl_access and system.posix_acl_default, since&n; * these are special cases for filesystem ACLs, they are interpreted by the&n; * kernel, in addition, they are negatively and positively cached and attached&n; * to the inode so that unnecessary lookups are avoided.&n; */
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/xattr.h&gt;
 macro_line|#include &lt;linux/reiserfs_xattr.h&gt;
+macro_line|#include &lt;linux/reiserfs_acl.h&gt;
 macro_line|#include &lt;linux/mbcache.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
@@ -4840,6 +4841,26 @@ op_amp
 id|xattr_handlers
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_REISERFS_FS_POSIX_ACL
+id|list_add_tail
+(paren
+op_amp
+id|posix_acl_access_handler.handlers
+comma
+op_amp
+id|xattr_handlers
+)paren
+suffix:semicolon
+id|list_add_tail
+(paren
+op_amp
+id|posix_acl_default_handler.handlers
+comma
+op_amp
+id|xattr_handlers
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Run initializers, if available */
 id|list_for_each
 (paren
@@ -5073,7 +5094,7 @@ id|s
 multiline_comment|/* Old format filesystem, but optional xattrs have been enabled&n;     * at mount time. Error out. */
 id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs: xattrs not supported on pre v3.6 &quot;
+l_string|&quot;reiserfs: xattrs/ACLs not supported on pre v3.6 &quot;
 l_string|&quot;format filesystem. Failing mount.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5313,7 +5334,7 @@ multiline_comment|/* xattrs are unavailable */
 multiline_comment|/* If we&squot;re read-only it just means that the dir hasn&squot;t been&n;           * created. Not an error -- just no xattrs on the fs. We&squot;ll&n;           * check again if we go read-write */
 id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs: xattrs enabled and couldn&squot;t &quot;
+l_string|&quot;reiserfs: xattrs/ACLs enabled and couldn&squot;t &quot;
 l_string|&quot;find/create .reiserfs_priv. Failing mount.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5365,14 +5386,51 @@ id|s_mount_opt
 )paren
 )paren
 suffix:semicolon
+id|clear_bit
+(paren
+id|REISERFS_POSIXACL
+comma
+op_amp
+(paren
+id|REISERFS_SB
+c_func
+(paren
+id|s
+)paren
+op_member_access_from_pointer
+id|s_mount_opt
+)paren
+)paren
+suffix:semicolon
 )brace
+multiline_comment|/* The super_block MS_POSIXACL must mirror the (no)acl mount option. */
+id|s-&gt;s_flags
+op_assign
+id|s-&gt;s_flags
+op_amp
+op_complement
+id|MS_POSIXACL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reiserfs_posixacl
+(paren
+id|s
+)paren
+)paren
+id|s-&gt;s_flags
+op_or_assign
+id|MS_POSIXACL
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
 )brace
+r_static
 r_int
-DECL|function|reiserfs_permission
-id|reiserfs_permission
+DECL|function|__reiserfs_permission
+id|__reiserfs_permission
 (paren
 r_struct
 id|inode
@@ -5386,6 +5444,9 @@ r_struct
 id|nameidata
 op_star
 id|nd
+comma
+r_int
+id|need_lock
 )paren
 (brace
 id|umode_t
@@ -5469,11 +5530,161 @@ id|current-&gt;fsuid
 op_eq
 id|inode-&gt;i_uid
 )paren
+(brace
 id|mode
 op_rshift_assign
 l_int|6
 suffix:semicolon
+macro_line|#ifdef CONFIG_REISERFS_FS_POSIX_ACL
+)brace
 r_else
+r_if
+c_cond
+(paren
+id|reiserfs_posixacl
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_logical_and
+id|get_inode_sd_version
+(paren
+id|inode
+)paren
+op_ne
+id|STAT_DATA_V1
+)paren
+(brace
+r_struct
+id|posix_acl
+op_star
+id|acl
+suffix:semicolon
+multiline_comment|/* ACL can&squot;t contain additional permissions if&n;&t;&t;   the ACL_MASK entry is 0 */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|mode
+op_amp
+id|S_IRWXG
+)paren
+)paren
+r_goto
+id|check_groups
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|need_lock
+)paren
+id|reiserfs_read_lock_xattrs
+(paren
+id|inode-&gt;i_sb
+)paren
+suffix:semicolon
+id|acl
+op_assign
+id|reiserfs_get_acl
+(paren
+id|inode
+comma
+id|ACL_TYPE_ACCESS
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|need_lock
+)paren
+id|reiserfs_read_unlock_xattrs
+(paren
+id|inode-&gt;i_sb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+(paren
+id|acl
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|PTR_ERR
+(paren
+id|acl
+)paren
+op_eq
+op_minus
+id|ENODATA
+)paren
+r_goto
+id|check_groups
+suffix:semicolon
+r_return
+id|PTR_ERR
+(paren
+id|acl
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|acl
+)paren
+(brace
+r_int
+id|err
+op_assign
+id|posix_acl_permission
+(paren
+id|inode
+comma
+id|acl
+comma
+id|mask
+)paren
+suffix:semicolon
+id|posix_acl_release
+(paren
+id|acl
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|EACCES
+)paren
+(brace
+r_goto
+id|check_capabilities
+suffix:semicolon
+)brace
+r_return
+id|err
+suffix:semicolon
+)brace
+r_else
+(brace
+r_goto
+id|check_groups
+suffix:semicolon
+)brace
+macro_line|#endif
+)brace
+r_else
+(brace
+id|check_groups
+suffix:colon
 r_if
 c_cond
 (paren
@@ -5487,6 +5698,7 @@ id|mode
 op_rshift_assign
 l_int|3
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * If the DACs are ok we don&squot;t need any capability check.&n;&t; */
 r_if
 c_cond
@@ -5512,6 +5724,8 @@ id|mask
 r_return
 l_int|0
 suffix:semicolon
+id|check_capabilities
+suffix:colon
 multiline_comment|/*&n;&t; * Read/write DACs are always overridable.&n;&t; * Executable DACs are overridable if at least one exec bit is set.&n;&t; */
 r_if
 c_cond
@@ -5582,6 +5796,68 @@ suffix:semicolon
 r_return
 op_minus
 id|EACCES
+suffix:semicolon
+)brace
+r_int
+DECL|function|reiserfs_permission
+id|reiserfs_permission
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_int
+id|mask
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
+)paren
+(brace
+r_return
+id|__reiserfs_permission
+(paren
+id|inode
+comma
+id|mask
+comma
+id|nd
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_int
+DECL|function|reiserfs_permission_locked
+id|reiserfs_permission_locked
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_int
+id|mask
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
+)paren
+(brace
+r_return
+id|__reiserfs_permission
+(paren
+id|inode
+comma
+id|mask
+comma
+id|nd
+comma
+l_int|0
+)paren
 suffix:semicolon
 )brace
 eof
