@@ -339,116 +339,125 @@ l_string|&quot;VIA Rhine full duplex setting(s) (1)&quot;
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This driver is designed for the VIA 86c100A Rhine-II PCI Fast Ethernet&n;controller.&n;&n;II. Board-specific settings&n;&n;Boards with this chip are functional only in a bus-master PCI slot.&n;&n;Many operational settings are loaded from the EEPROM to the Config word at&n;offset 0x78. For most of these settings, this driver assumes that they are&n;correct.&n;If this driver is compiled to use PCI memory space operations the EEPROM&n;must be configured to enable memory ops.&n;&n;III. Driver operation&n;&n;IIIa. Ring buffers&n;&n;This driver uses two statically allocated fixed-size descriptor lists&n;formed into rings by a branch from the final descriptor to the beginning of&n;the list. The ring sizes are set at compile time by RX/TX_RING_SIZE.&n;&n;IIIb/c. Transmit/Receive Structure&n;&n;This driver attempts to use a zero-copy receive and transmit scheme.&n;&n;Alas, all data buffers are required to start on a 32 bit boundary, so&n;the driver must often copy transmit packets into bounce buffers.&n;&n;The driver allocates full frame size skbuffs for the Rx ring buffers at&n;open() time and passes the skb-&gt;data field to the chip as receive data&n;buffers. When an incoming frame is less than RX_COPYBREAK bytes long,&n;a fresh skbuff is allocated and the frame is copied to the new skbuff.&n;When the incoming frame is larger, the skbuff is passed directly up the&n;protocol stack. Buffers consumed this way are replaced by newly allocated&n;skbuffs in the last phase of rhine_rx().&n;&n;The RX_COPYBREAK value is chosen to trade-off the memory wasted by&n;using a full-sized skbuff for small frames vs. the copying costs of larger&n;frames. New boards are typically used in generously configured machines&n;and the underfilled buffers have negligible impact compared to the benefit of&n;a single allocation size, so the default value of zero results in never&n;copying packets. When copying is done, the cost is usually mitigated by using&n;a combined copy/checksum routine. Copying also preloads the cache, which is&n;most useful with small frames.&n;&n;Since the VIA chips are only able to transfer data to buffers on 32 bit&n;boundaries, the IP header at offset 14 in an ethernet frame isn&squot;t&n;longword aligned for further processing. Copying these unaligned buffers&n;has the beneficial effect of 16-byte aligning the IP header.&n;&n;IIId. Synchronization&n;&n;The driver runs as two independent, single-threaded flows of control. One&n;is the send-packet routine, which enforces single-threaded use by the&n;dev-&gt;priv-&gt;lock spinlock. The other thread is the interrupt handler, which&n;is single threaded by the hardware and interrupt handling software.&n;&n;The send packet thread has partial control over the Tx ring. It locks the&n;dev-&gt;priv-&gt;lock whenever it&squot;s queuing a Tx packet. If the next slot in the ring&n;is not available it stops the transmit queue by calling netif_stop_queue.&n;&n;The interrupt handler has exclusive control over the Rx ring and records stats&n;from the Tx ring. After reaping the stats, it marks the Tx queue entry as&n;empty by incrementing the dirty_tx mark. If at least half of the entries in&n;the Rx ring are available the transmit queue is woken up if it was stopped.&n;&n;IV. Notes&n;&n;IVb. References&n;&n;Preliminary VT86C100A manual from http://www.via.com.tw/&n;http://www.scyld.com/expert/100mbps.html&n;http://www.scyld.com/expert/NWay.html&n;ftp://ftp.via.com.tw/public/lan/Products/NIC/VT86C100A/Datasheet/VT86C100A03.pdf&n;ftp://ftp.via.com.tw/public/lan/Products/NIC/VT6102/Datasheet/VT6102_021.PDF&n;&n;&n;IVc. Errata&n;&n;The VT86C100A manual is not reliable information.&n;The 3043 chip does not handle unaligned transmit or receive buffers, resulting&n;in significant performance degradation for bounce buffer copies on transmit&n;and unaligned IP headers on receive.&n;The chip does not pad to minimum transmit length.&n;&n;*/
 multiline_comment|/* This table drives the PCI probe routines. It&squot;s mostly boilerplate in all&n;   of the drivers, and will likely be provided by some future kernel.&n;   Note the matching code -- the first table entry matchs all 56** cards but&n;   second only the 1234 card.&n;*/
-DECL|enum|rhine_chips
+DECL|enum|rhine_revs
 r_enum
-id|rhine_chips
+id|rhine_revs
 (brace
 DECL|enumerator|VT86C100A
 id|VT86C100A
 op_assign
-l_int|0
+l_int|0x00
 comma
 DECL|enumerator|VT6102
 id|VT6102
+op_assign
+l_int|0x40
+comma
+DECL|enumerator|VT8231
+id|VT8231
+op_assign
+l_int|0x50
+comma
+multiline_comment|/* Integrated MAC */
+DECL|enumerator|VT8233
+id|VT8233
+op_assign
+l_int|0x60
+comma
+multiline_comment|/* Integrated MAC */
+DECL|enumerator|VT8235
+id|VT8235
+op_assign
+l_int|0x74
+comma
+multiline_comment|/* Integrated MAC */
+DECL|enumerator|VT8237
+id|VT8237
+op_assign
+l_int|0x78
+comma
+multiline_comment|/* Integrated MAC */
+DECL|enumerator|VTunknown0
+id|VTunknown0
+op_assign
+l_int|0x7C
 comma
 DECL|enumerator|VT6105
 id|VT6105
+op_assign
+l_int|0x80
+comma
+DECL|enumerator|VT6105_B0
+id|VT6105_B0
+op_assign
+l_int|0x83
+comma
+DECL|enumerator|VT6105L
+id|VT6105L
+op_assign
+l_int|0x8A
+comma
+DECL|enumerator|VT6107
+id|VT6107
+op_assign
+l_int|0x8C
+comma
+DECL|enumerator|VTunknown1
+id|VTunknown1
+op_assign
+l_int|0x8E
 comma
 DECL|enumerator|VT6105M
 id|VT6105M
+op_assign
+l_int|0x90
+comma
 )brace
 suffix:semicolon
-DECL|struct|rhine_chip_info
-r_struct
-id|rhine_chip_info
-(brace
-DECL|member|name
-r_const
-r_char
-op_star
-id|name
-suffix:semicolon
-DECL|member|io_size
-r_int
-id|io_size
-suffix:semicolon
-DECL|member|drv_flags
-r_int
-id|drv_flags
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|enum|chip_capability_flags
+DECL|enum|rhine_quirks
 r_enum
-id|chip_capability_flags
+id|rhine_quirks
 (brace
-DECL|enumerator|HasDavicomPhy
-id|HasDavicomPhy
+DECL|enumerator|rqWOL
+id|rqWOL
 op_assign
-l_int|4
+l_int|0x0001
 comma
-DECL|enumerator|ReqTxAlign
-DECL|enumerator|HasWOL
-id|ReqTxAlign
+multiline_comment|/* Wake-On-LAN support */
+DECL|enumerator|rqForceReset
+id|rqForceReset
 op_assign
-l_int|0x10
+l_int|0x0002
 comma
-id|HasWOL
+DECL|enumerator|rqDavicomPhy
+id|rqDavicomPhy
 op_assign
-l_int|0x20
+l_int|0x0020
 comma
+DECL|enumerator|rq6patterns
+id|rq6patterns
+op_assign
+l_int|0x0040
+comma
+multiline_comment|/* 6 instead of 4 patterns for WOL */
+DECL|enumerator|rqStatusWBRace
+id|rqStatusWBRace
+op_assign
+l_int|0x0080
+comma
+multiline_comment|/* Tx Status Writeback Error possible */
+DECL|enumerator|rqRhineI
+id|rqRhineI
+op_assign
+l_int|0x0100
+comma
+multiline_comment|/* See comment below */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * rqRhineI: VT86C100A (aka Rhine-I) uses different bits to enable&n; * MMIO as well as for the collision counter and the Tx FIFO underflow&n; * indicator. In addition, Tx and Rx buffers need to 4 byte aligned.&n; */
 multiline_comment|/* Beware of PCI posted writes */
 DECL|macro|IOSYNC
 mdefine_line|#define IOSYNC&t;do { readb(dev-&gt;base_addr + StationAddr); } while (0)
-multiline_comment|/* directly indexed by enum rhine_chips, above */
-DECL|variable|__devinitdata
-r_static
-r_struct
-id|rhine_chip_info
-id|rhine_chip_info
-(braket
-)braket
-id|__devinitdata
-op_assign
-(brace
-(brace
-l_string|&quot;VIA VT86C100A Rhine&quot;
-comma
-l_int|128
-comma
-id|ReqTxAlign
-op_or
-id|HasDavicomPhy
-)brace
-comma
-(brace
-l_string|&quot;VIA VT6102 Rhine-II&quot;
-comma
-l_int|256
-comma
-id|HasWOL
-)brace
-comma
-(brace
-l_string|&quot;VIA VT6105 Rhine-III&quot;
-comma
-l_int|256
-comma
-id|HasWOL
-)brace
-comma
-(brace
-l_string|&quot;VIA VT6105M Rhine-III&quot;
-comma
-l_int|256
-comma
-id|HasWOL
-)brace
-comma
-)brace
-suffix:semicolon
 DECL|variable|rhine_pci_tbl
 r_static
 r_struct
@@ -471,9 +480,9 @@ l_int|0
 comma
 l_int|0
 comma
-id|VT86C100A
 )brace
 comma
+multiline_comment|/* VT86C100A */
 (brace
 l_int|0x1106
 comma
@@ -487,9 +496,9 @@ l_int|0
 comma
 l_int|0
 comma
-id|VT6102
 )brace
 comma
+multiline_comment|/* VT6102 */
 (brace
 l_int|0x1106
 comma
@@ -503,7 +512,6 @@ l_int|0
 comma
 l_int|0
 comma
-id|VT6105
 )brace
 comma
 multiline_comment|/* 6105{,L,LOM} */
@@ -520,12 +528,10 @@ l_int|0
 comma
 l_int|0
 comma
-id|VT6105M
 )brace
 comma
+multiline_comment|/* VT6105M */
 (brace
-l_int|0
-comma
 )brace
 multiline_comment|/* terminate list */
 )brace
@@ -1102,12 +1108,9 @@ id|spinlock_t
 id|lock
 suffix:semicolon
 multiline_comment|/* Frequently used values: keep some adjacent for cache effect. */
-DECL|member|chip_id
-DECL|member|drv_flags
-r_int
-id|chip_id
-comma
-id|drv_flags
+DECL|member|quirks
+id|u32
+id|quirks
 suffix:semicolon
 DECL|member|rx_head_desc
 r_struct
@@ -1435,9 +1438,9 @@ multiline_comment|/* On Rhine-II, Bit 3 indicates Tx descriptor write-back race.
 r_if
 c_cond
 (paren
-id|rp-&gt;chip_id
-op_eq
-id|VT6102
+id|rp-&gt;quirks
+op_amp
+id|rqStatusWBRace
 )paren
 id|intr_status
 op_or_assign
@@ -1466,8 +1469,8 @@ id|net_device
 op_star
 id|dev
 comma
-r_int
-id|chip_id
+id|u32
+id|quirks
 comma
 r_char
 op_star
@@ -1514,9 +1517,9 @@ multiline_comment|/* Rhine-II needs to be forced sometimes */
 r_if
 c_cond
 (paren
-id|chip_id
-op_eq
-id|VT6102
+id|quirks
+op_amp
+id|rqForceReset
 )paren
 id|writeb
 c_func
@@ -1590,8 +1593,8 @@ c_func
 r_int
 id|ioaddr
 comma
-r_int
-id|chip_id
+id|u32
+id|quirks
 )paren
 (brace
 r_int
@@ -1600,9 +1603,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|chip_id
-op_eq
-id|VT86C100A
+id|quirks
+op_amp
+id|rqRhineI
 )paren
 (brace
 multiline_comment|/* More recent docs say that this bit is reserved ... */
@@ -1791,13 +1794,11 @@ id|option
 comma
 id|rc
 suffix:semicolon
-r_int
-id|chip_id
-op_assign
-(paren
-r_int
-)paren
-id|ent-&gt;driver_data
+id|u8
+id|pci_rev
+suffix:semicolon
+id|u32
+id|quirks
 suffix:semicolon
 r_static
 r_int
@@ -1827,6 +1828,11 @@ r_int
 id|ioaddr0
 suffix:semicolon
 macro_line|#endif
+r_const
+r_char
+op_star
+id|name
+suffix:semicolon
 multiline_comment|/* when built into the kernel, we only print version if device is found */
 macro_line|#ifndef MODULE
 r_static
@@ -1864,15 +1870,89 @@ id|card_idx
 suffix:colon
 l_int|0
 suffix:semicolon
+id|pci_read_config_byte
+c_func
+(paren
+id|pdev
+comma
+id|PCI_REVISION_ID
+comma
+op_amp
+id|pci_rev
+)paren
+suffix:semicolon
 id|io_size
 op_assign
-id|rhine_chip_info
-(braket
-id|chip_id
-)braket
-dot
-id|io_size
+l_int|256
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pci_rev
+OL
+id|VT6102
+)paren
+(brace
+id|quirks
+op_assign
+id|rqRhineI
+op_or
+id|rqDavicomPhy
+suffix:semicolon
+id|io_size
+op_assign
+l_int|128
+suffix:semicolon
+id|name
+op_assign
+l_string|&quot;VT86C100A Rhine&quot;
+suffix:semicolon
+)brace
+r_else
+(brace
+id|quirks
+op_assign
+id|rqWOL
+op_or
+id|rqForceReset
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pci_rev
+OL
+id|VT6105
+)paren
+(brace
+id|name
+op_assign
+l_string|&quot;Rhine II&quot;
+suffix:semicolon
+id|quirks
+op_or_assign
+id|rqStatusWBRace
+suffix:semicolon
+multiline_comment|/* Rhine-II exclusive */
+)brace
+r_else
+(brace
+id|name
+op_assign
+l_string|&quot;Rhine III&quot;
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pci_rev
+op_ge
+id|VT6105_B0
+)paren
+id|quirks
+op_or_assign
+id|rq6patterns
+suffix:semicolon
+)brace
+)brace
 id|rc
 op_assign
 id|pci_enable_device
@@ -2070,7 +2150,7 @@ c_func
 (paren
 id|ioaddr0
 comma
-id|chip_id
+id|quirks
 )paren
 suffix:semicolon
 id|ioaddr
@@ -2204,14 +2284,9 @@ multiline_comment|/* D-Link provided reset code (with comment additions) */
 r_if
 c_cond
 (paren
-id|rhine_chip_info
-(braket
-id|chip_id
-)braket
-dot
-id|drv_flags
+id|quirks
 op_amp
-id|HasWOL
+id|rqWOL
 )paren
 (brace
 r_int
@@ -2300,7 +2375,7 @@ c_func
 (paren
 id|dev
 comma
-id|chip_id
+id|quirks
 comma
 id|shortname
 )paren
@@ -2319,7 +2394,7 @@ c_func
 (paren
 id|ioaddr0
 comma
-id|chip_id
+id|quirks
 )paren
 suffix:semicolon
 macro_line|#else
@@ -2391,9 +2466,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|chip_id
-op_eq
-id|VT6102
+id|quirks
+op_amp
+id|rqWOL
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * for 3065D, EEPROM reloaded will cause bit 0 in MAC_REG_CFGA&n;&t;&t; * turned on. it makes MAC receive magic packet&n;&t;&t; * automatically. So, we turn it off. (D-Link)&n;&t;&t; */
@@ -2463,22 +2538,13 @@ op_amp
 id|rp-&gt;lock
 )paren
 suffix:semicolon
-id|rp-&gt;chip_id
-op_assign
-id|chip_id
-suffix:semicolon
-id|rp-&gt;drv_flags
-op_assign
-id|rhine_chip_info
-(braket
-id|chip_id
-)braket
-dot
-id|drv_flags
-suffix:semicolon
 id|rp-&gt;pdev
 op_assign
 id|pdev
+suffix:semicolon
+id|rp-&gt;quirks
+op_assign
+id|quirks
 suffix:semicolon
 id|rp-&gt;mii_if.dev
 op_assign
@@ -2556,9 +2622,9 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|rp-&gt;drv_flags
+id|rp-&gt;quirks
 op_amp
-id|ReqTxAlign
+id|rqRhineI
 )paren
 id|dev-&gt;features
 op_or_assign
@@ -2640,15 +2706,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: %s at 0x%lx, &quot;
+l_string|&quot;%s: VIA %s at 0x%lx, &quot;
 comma
 id|dev-&gt;name
 comma
-id|rhine_chip_info
-(braket
-id|chip_id
-)braket
-dot
 id|name
 comma
 macro_line|#ifdef USE_MMIO
@@ -3063,9 +3124,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rp-&gt;drv_flags
+id|rp-&gt;quirks
 op_amp
-id|ReqTxAlign
+id|rqRhineI
 )paren
 (brace
 id|rp-&gt;tx_bufs
@@ -4516,7 +4577,7 @@ c_func
 (paren
 id|dev
 comma
-id|rp-&gt;chip_id
+id|rp-&gt;quirks
 comma
 id|dev-&gt;name
 )paren
@@ -5043,7 +5104,7 @@ c_func
 (paren
 id|dev
 comma
-id|rp-&gt;chip_id
+id|rp-&gt;quirks
 comma
 id|dev-&gt;name
 )paren
@@ -5163,9 +5224,9 @@ r_if
 c_cond
 (paren
 (paren
-id|rp-&gt;drv_flags
+id|rp-&gt;quirks
 op_amp
-id|ReqTxAlign
+id|rqRhineI
 )paren
 op_logical_and
 (paren
@@ -5922,9 +5983,9 @@ c_cond
 (paren
 (paren
 (paren
-id|rp-&gt;chip_id
-op_eq
-id|VT86C100A
+id|rp-&gt;quirks
+op_amp
+id|rqRhineI
 )paren
 op_logical_and
 id|txstatus
@@ -5972,9 +6033,9 @@ r_else
 r_if
 c_cond
 (paren
-id|rp-&gt;chip_id
-op_eq
-id|VT86C100A
+id|rp-&gt;quirks
+op_amp
+id|rqRhineI
 )paren
 id|rp-&gt;stats.collisions
 op_add_assign
@@ -6978,9 +7039,9 @@ multiline_comment|/* Link failed, restart autonegotiation. */
 r_if
 c_cond
 (paren
-id|rp-&gt;drv_flags
+id|rp-&gt;quirks
 op_amp
-id|HasDavicomPhy
+id|rqRhineI
 )paren
 id|mdio_write
 c_func
