@@ -2229,7 +2229,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|GOOD
+id|SAM_STAT_GOOD
 suffix:semicolon
 r_else
 (brace
@@ -2252,7 +2252,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|CHECK_CONDITION
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 id|set_sense
 c_func
@@ -2516,7 +2516,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|GOOD
+id|SAM_STAT_GOOD
 suffix:semicolon
 r_else
 (brace
@@ -2539,7 +2539,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|CHECK_CONDITION
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 id|set_sense
 c_func
@@ -3158,7 +3158,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|QUEUE_FULL
+id|SAM_STAT_TASK_SET_FULL
 suffix:semicolon
 id|aac_io_done
 c_func
@@ -3751,7 +3751,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|QUEUE_FULL
+id|SAM_STAT_TASK_SET_FULL
 suffix:semicolon
 id|aac_io_done
 c_func
@@ -4095,7 +4095,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|CHECK_CONDITION
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 id|set_sense
 c_func
@@ -4262,7 +4262,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|GOOD
+id|SAM_STAT_GOOD
 suffix:semicolon
 id|__aac_io_done
 c_func
@@ -4397,7 +4397,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|GOOD
+id|SAM_STAT_GOOD
 suffix:semicolon
 id|__aac_io_done
 c_func
@@ -4423,6 +4423,81 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;MODE SENSE command.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|mode_buf
+op_assign
+id|scsicmd-&gt;request_buffer
+suffix:semicolon
+id|mode_buf
+(braket
+l_int|0
+)braket
+op_assign
+l_int|3
+suffix:semicolon
+multiline_comment|/* Mode data length */
+id|mode_buf
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Medium type - default */
+id|mode_buf
+(braket
+l_int|2
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Device-specific param, bit 8: 0/1 = write enabled/protected */
+id|mode_buf
+(braket
+l_int|3
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Block descriptor length */
+id|scsicmd-&gt;result
+op_assign
+id|DID_OK
+op_lshift
+l_int|16
+op_or
+id|COMMAND_COMPLETE
+op_lshift
+l_int|8
+op_or
+id|SAM_STAT_GOOD
+suffix:semicolon
+id|__aac_io_done
+c_func
+(paren
+id|scsicmd
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_case
+id|MODE_SENSE_10
+suffix:colon
+(brace
+r_char
+op_star
+id|mode_buf
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+(paren
+id|KERN_DEBUG
+l_string|&quot;MODE SENSE 10 byte command.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -4504,7 +4579,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|GOOD
+id|SAM_STAT_GOOD
 suffix:semicolon
 id|__aac_io_done
 c_func
@@ -4574,7 +4649,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|GOOD
+id|SAM_STAT_GOOD
 suffix:semicolon
 id|__aac_io_done
 c_func
@@ -4632,7 +4707,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|GOOD
+id|SAM_STAT_GOOD
 suffix:semicolon
 id|__aac_io_done
 c_func
@@ -4675,7 +4750,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|GOOD
+id|SAM_STAT_GOOD
 suffix:semicolon
 id|__aac_io_done
 c_func
@@ -4804,7 +4879,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|CHECK_CONDITION
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 id|set_sense
 c_func
@@ -5541,7 +5616,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|CHECK_CONDITION
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 id|memcpy
 c_func
@@ -6135,7 +6210,7 @@ id|len
 suffix:semicolon
 id|scsicmd-&gt;result
 op_or_assign
-id|CHECK_CONDITION
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 id|len
 op_assign
@@ -6728,7 +6803,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|QUEUE_FULL
+id|SAM_STAT_TASK_SET_FULL
 suffix:semicolon
 id|__aac_io_done
 c_func
