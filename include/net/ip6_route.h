@@ -81,6 +81,17 @@ id|fl
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|ip6_route_me_harder
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|ip6_route_init
 c_func

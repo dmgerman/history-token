@@ -411,10 +411,9 @@ id|ip6_output_finish
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_NETFILTER
-DECL|function|route6_me_harder
-r_static
+DECL|function|ip6_route_me_harder
 r_int
-id|route6_me_harder
+id|ip6_route_me_harder
 c_func
 (paren
 r_struct
@@ -503,7 +502,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;route6_me_harder: No more route.&bslash;n&quot;
+l_string|&quot;ip6_route_me_harder: No more route.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -552,7 +551,7 @@ id|NFC_ALTERED
 r_if
 c_cond
 (paren
-id|route6_me_harder
+id|ip6_route_me_harder
 c_func
 (paren
 id|skb
