@@ -5061,6 +5061,11 @@ comma
 id|func-&gt;busno
 )paren
 suffix:semicolon
+id|kfree
+(paren
+id|amount_needed
+)paren
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
