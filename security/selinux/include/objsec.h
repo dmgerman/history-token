@@ -208,6 +208,15 @@ r_struct
 id|semaphore
 id|sem
 suffix:semicolon
+DECL|member|isec_head
+r_struct
+id|list_head
+id|isec_head
+suffix:semicolon
+DECL|member|isec_lock
+id|spinlock_t
+id|isec_lock
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|msg_security_struct
