@@ -205,6 +205,10 @@ DECL|enumerator|SCTP_CMD_PROCESS_FWDTSN
 id|SCTP_CMD_PROCESS_FWDTSN
 comma
 multiline_comment|/* Skips were reported, so process further. */
+DECL|enumerator|SCTP_CMD_CLEAR_INIT_TAG
+id|SCTP_CMD_CLEAR_INIT_TAG
+comma
+multiline_comment|/* Clears association peer&squot;s inittag. */
 DECL|enumerator|SCTP_CMD_LAST
 id|SCTP_CMD_LAST
 DECL|typedef|sctp_verb_t
