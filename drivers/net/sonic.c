@@ -300,7 +300,7 @@ op_assign
 id|vdma_alloc
 c_func
 (paren
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
 id|skb-&gt;data
@@ -778,7 +778,7 @@ id|entry
 )braket
 )paren
 (brace
-id|dev_kfree_skb
+id|dev_kfree_skb_irq
 c_func
 (paren
 id|lp-&gt;tx_skb
