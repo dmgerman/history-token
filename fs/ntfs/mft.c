@@ -1,12 +1,14 @@
 multiline_comment|/**&n; * mft.c - NTFS kernel mft record operations. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS&n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
-macro_line|#include &quot;bitmap.h&quot;
-macro_line|#include &quot;lcnalloc.h&quot;
+macro_line|#include &quot;attrib.h&quot;
 macro_line|#include &quot;aops.h&quot;
+macro_line|#include &quot;bitmap.h&quot;
 macro_line|#include &quot;debug.h&quot;
-macro_line|#include &quot;mft.h&quot;
+macro_line|#include &quot;dir.h&quot;
+macro_line|#include &quot;lcnalloc.h&quot;
 macro_line|#include &quot;malloc.h&quot;
+macro_line|#include &quot;mft.h&quot;
 macro_line|#include &quot;ntfs.h&quot;
 multiline_comment|/**&n; * map_mft_record_page - map the page in which a specific mft record resides&n; * @ni:&t;&t;ntfs inode whose mft record page to map&n; *&n; * This maps the page in which the mft record of the ntfs inode @ni is situated&n; * and returns a pointer to the mft record within the mapped page.&n; *&n; * Return value needs to be checked with IS_ERR() and if that is true PTR_ERR()&n; * contains the negative error code returned.&n; */
 DECL|function|map_mft_record_page
