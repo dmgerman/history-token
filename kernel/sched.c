@@ -1884,7 +1884,7 @@ id|run_list
 suffix:semicolon
 multiline_comment|/*&n;&t; * We do not migrate tasks that are:&n;&t; * 1) running (obviously), or&n;&t; * 2) cannot be migrated to this CPU due to cpus_allowed, or&n;&t; * 3) are cache-hot on their current CPU.&n;&t; */
 DECL|macro|CAN_MIGRATE_TASK
-mdefine_line|#define CAN_MIGRATE_TASK(p,rq,this_cpu)&t;&t;&t;&t;&t;&bslash;&n;&t;((jiffies - (p)-&gt;sleep_timestamp &gt; cache_decay_ticks) &amp;&amp;&t;&bslash;&n;&t;&t;((p) != (rq)-&gt;curr) &amp;&amp;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;((p)-&gt;cpus_allowed &amp; (1 &lt;&lt; (this_cpu))))
+mdefine_line|#define CAN_MIGRATE_TASK(p,rq,this_cpu)&t;&t;&t;&t;&t;&bslash;&n;&t;((jiffies - (p)-&gt;sleep_timestamp &gt; cache_decay_ticks) &amp;&amp;&t;&bslash;&n;&t;&t;((p) != (rq)-&gt;curr) &amp;&amp;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;((p)-&gt;cpus_allowed &amp; (1UL &lt;&lt; (this_cpu))))
 r_if
 c_cond
 (paren
@@ -2494,7 +2494,7 @@ op_amp
 id|rq-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * if entering from preempt_schedule, off a kernel preemption,&n;&t; * go straight to picking the next task.&n;&t; */
+multiline_comment|/*&n;&t; * if entering off a kernel preemption go straight&n;&t; * to picking the next task.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2772,7 +2772,7 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PREEMPT
-multiline_comment|/*&n; * this is is the entry point to schedule() from in-kernel preemption.&n; */
+multiline_comment|/*&n; * this is is the entry point to schedule() from in-kernel preemption&n; * off of preempt_enable.  Kernel preemptions off return from interrupt&n; * occur there and call schedule directly.&n; */
 DECL|function|preempt_schedule
 id|asmlinkage
 r_void
@@ -2815,11 +2815,6 @@ suffix:semicolon
 id|ti-&gt;preempt_count
 op_assign
 l_int|0
-suffix:semicolon
-id|barrier
-c_func
-(paren
-)paren
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PREEMPT */
@@ -5967,7 +5962,7 @@ DECL|typedef|migration_req_t
 )brace
 id|migration_req_t
 suffix:semicolon
-multiline_comment|/*&n; * Change a given task&squot;s CPU affinity. Migrate the process to a&n; * proper CPU and schedule it away if the CPU it&squot;s executing on&n; * is removed from the allowed bitmask.&n; *&n; * NOTE: the caller must have a valid reference to the task, the&n; * task must not exit() &amp; deallocate itself prematurely.&n; */
+multiline_comment|/*&n; * Change a given task&squot;s CPU affinity. Migrate the process to a&n; * proper CPU and schedule it away if the CPU it&squot;s executing on&n; * is removed from the allowed bitmask.&n; *&n; * NOTE: the caller must have a valid reference to the task, the&n; * task must not exit() &amp; deallocate itself prematurely.  The&n; * call is not atomic; no spinlocks may be held.&n; */
 DECL|function|set_cpus_allowed
 r_void
 id|set_cpus_allowed
