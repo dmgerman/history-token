@@ -464,8 +464,23 @@ DECL|typedef|stack_t32
 )brace
 id|stack_t32
 suffix:semicolon
-DECL|macro|HAVE_ARCH_GET_SIGNAL_TO_DELIVER
-mdefine_line|#define HAVE_ARCH_GET_SIGNAL_TO_DELIVER
+DECL|struct|signal_deliver_cookie
+r_struct
+id|signal_deliver_cookie
+(brace
+DECL|member|restart_syscall
+r_int
+id|restart_syscall
+suffix:semicolon
+DECL|member|orig_i0
+r_int
+r_int
+id|orig_i0
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|ptrace_signal_deliver
+mdefine_line|#define ptrace_signal_deliver(REGS, COOKIE) &bslash;&n;do {&t;struct signal_deliver_cookie *cp = (COOKIE); &bslash;&n;&t;if (cp-&gt;restart_syscall &amp;&amp; &bslash;&n;&t;    (regs-&gt;u_regs[UREG_I0] == ERESTARTNOHAND || &bslash;&n;&t;     regs-&gt;u_regs[UREG_I0] == ERESTARTSYS || &bslash;&n;&t;     regs-&gt;u_regs[UREG_I0] == ERESTARTNOINTR)) { &bslash;&n;&t;&t;/* replay the system call when we are done */ &bslash;&n;&t;&t;regs-&gt;u_regs[UREG_I0] = cp-&gt;orig_i0; &bslash;&n;&t;&t;regs-&gt;tpc -= 4; &bslash;&n;&t;&t;regs-&gt;tnpc -= 4; &bslash;&n;&t;&t;cp-&gt;restart_syscall = 0; &bslash;&n;&t;} &bslash;&n;&t;if (cp-&gt;restart_syscall &amp;&amp; &bslash;&n;&t;    regs-&gt;u_regs[UREG_I0] == ERESTART_RESTARTBLOCK) { &bslash;&n;&t;&t;regs-&gt;u_regs[UREG_G1] = __NR_restart_syscall; &bslash;&n;&t;&t;regs-&gt;tpc -= 4; &bslash;&n;&t;&t;regs-&gt;tnpc -= 4; &bslash;&n;&t;&t;cp-&gt;restart_syscall = 0; &bslash;&n;&t;} &bslash;&n;} while (0)
 DECL|macro|HAVE_ARCH_SYS_PAUSE
 mdefine_line|#define HAVE_ARCH_SYS_PAUSE
 macro_line|#endif

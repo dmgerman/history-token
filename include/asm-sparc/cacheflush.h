@@ -270,7 +270,7 @@ DECL|macro|flush_sig_insns
 mdefine_line|#define flush_sig_insns(mm,insn_addr) BTFIXUP_CALL(flush_sig_insns)(mm,insn_addr)
 r_extern
 r_void
-id|flush_page_to_ram
+id|sparc_flush_page_to_ram
 c_func
 (paren
 r_struct
@@ -279,7 +279,9 @@ op_star
 id|page
 )paren
 suffix:semicolon
+DECL|macro|flush_page_to_ram
+mdefine_line|#define flush_page_to_ram(page)&t;&t;&t;do { } while (0)
 DECL|macro|flush_dcache_page
-mdefine_line|#define flush_dcache_page(page)&t;&t;&t;do { } while (0)
+mdefine_line|#define flush_dcache_page(page)&t;&t;&t;sparc_flush_page_to_ram(page)
 macro_line|#endif /* _SPARC_CACHEFLUSH_H */
 eof

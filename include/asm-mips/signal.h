@@ -272,6 +272,8 @@ DECL|macro|_BRK_THREADBP
 mdefine_line|#define _BRK_THREADBP&t;11&t;/* For threads, user bp (used by debuggers) */
 DECL|macro|BRK_MULOVF
 mdefine_line|#define BRK_MULOVF&t;1023&t;/* Multiply overflow */
+DECL|macro|ptrace_signal_deliver
+mdefine_line|#define ptrace_signal_deliver(regs, cookie) do { } while (0)
 macro_line|#endif /* defined (__KERNEL__) */
 macro_line|#endif /* _ASM_SIGNAL_H */
 eof

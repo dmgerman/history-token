@@ -565,6 +565,8 @@ id|oldset
 )paren
 )paren
 suffix:semicolon
+DECL|macro|ptrace_signal_deliver
+mdefine_line|#define ptrace_signal_deliver(regs, cookie) do { } while (0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof
