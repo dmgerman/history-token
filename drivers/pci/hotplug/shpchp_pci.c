@@ -92,6 +92,7 @@ c_cond
 (paren
 id|num
 )paren
+(brace
 id|dbg
 c_func
 (paren
@@ -110,6 +111,7 @@ c_func
 id|ctrl-&gt;pci_dev-&gt;subordinate
 )paren
 suffix:semicolon
+)brace
 id|func-&gt;pci_dev
 op_assign
 id|pci_find_slot
