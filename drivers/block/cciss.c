@@ -10495,10 +10495,7 @@ suffix:semicolon
 id|release_io_mem
 c_func
 (paren
-id|hba
-(braket
-id|i
-)braket
+id|c
 )paren
 suffix:semicolon
 r_return
