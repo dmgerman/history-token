@@ -2633,9 +2633,12 @@ c_func
 id|newsk
 )paren
 suffix:semicolon
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|newsk-&gt;sk_dst_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|atomic_set
 c_func
@@ -2711,9 +2714,12 @@ id|newsk-&gt;sk_send_head
 op_assign
 l_int|NULL
 suffix:semicolon
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|newsk-&gt;sk_callback_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|skb_queue_head_init
 c_func
@@ -3925,13 +3931,4 @@ c_func
 id|tcp_tw_deschedule
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SYSCTL
-DECL|variable|sysctl_tcp_tw_recycle
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sysctl_tcp_tw_recycle
-)paren
-suffix:semicolon
-macro_line|#endif
 eof

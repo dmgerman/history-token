@@ -1,37 +1,6 @@
 macro_line|#ifndef _H8300_UCONTEXT_H
 DECL|macro|_H8300_UCONTEXT_H
 mdefine_line|#define _H8300_UCONTEXT_H
-DECL|typedef|greg_t
-r_typedef
-r_int
-id|greg_t
-suffix:semicolon
-DECL|macro|NGREG
-mdefine_line|#define NGREG 10
-DECL|typedef|gregset_t
-r_typedef
-id|greg_t
-id|gregset_t
-(braket
-id|NGREG
-)braket
-suffix:semicolon
-DECL|struct|mcontext
-r_struct
-id|mcontext
-(brace
-DECL|member|version
-r_int
-id|version
-suffix:semicolon
-DECL|member|gregs
-id|gregset_t
-id|gregs
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|macro|MCONTEXT_VERSION
-mdefine_line|#define MCONTEXT_VERSION 1
 DECL|struct|ucontext
 r_struct
 id|ucontext
@@ -53,7 +22,7 @@ id|uc_stack
 suffix:semicolon
 DECL|member|uc_mcontext
 r_struct
-id|mcontext
+id|sigcontext
 id|uc_mcontext
 suffix:semicolon
 DECL|member|uc_sigmask

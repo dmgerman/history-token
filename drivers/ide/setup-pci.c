@@ -1662,6 +1662,9 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#ifndef CONFIG_IDEDMA_PCI_AUTO
+macro_line|#warning CONFIG_IDEDMA_PCI_AUTO=n support is obsolete, and will be removed soon.
+macro_line|#endif
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PCI*/
 multiline_comment|/**&n; *&t;ide_setup_pci_controller&t;-&t;set up IDE PCI&n; *&t;@dev: PCI device&n; *&t;@d: IDE PCI data&n; *&t;@noisy: verbose flag&n; *&t;@config: returned as 1 if we configured the hardware&n; *&n; *&t;Set up the PCI and controller side of the IDE interface. This brings&n; *&t;up the PCI side of the device, checks that the device is enabled&n; *&t;and enables it if need be&n; */
 DECL|function|ide_setup_pci_controller
@@ -2447,7 +2450,7 @@ l_int|0xf0
 op_ne
 l_int|0xf0
 )paren
-id|probe_hwif_init
+id|probe_hwif_init_with_fixup
 c_func
 (paren
 op_amp
@@ -2455,6 +2458,8 @@ id|ide_hwifs
 (braket
 id|index_list.b.low
 )braket
+comma
+id|d-&gt;fixup
 )paren
 suffix:semicolon
 r_if
@@ -2468,7 +2473,7 @@ l_int|0xf0
 op_ne
 l_int|0xf0
 )paren
-id|probe_hwif_init
+id|probe_hwif_init_with_fixup
 c_func
 (paren
 op_amp
@@ -2476,6 +2481,8 @@ id|ide_hwifs
 (braket
 id|index_list.b.high
 )braket
+comma
+id|d-&gt;fixup
 )paren
 suffix:semicolon
 id|create_proc_ide_interfaces

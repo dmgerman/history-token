@@ -4,6 +4,9 @@ DECL|macro|_ASM_THREAD_INFO_H
 mdefine_line|#define _ASM_THREAD_INFO_H
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#ifdef __KERNEL__
+multiline_comment|/*&n; * Size of kernel stack for each process. This must be a power of 2...&n; */
+DECL|macro|THREAD_SIZE
+mdefine_line|#define THREAD_SIZE&t;&t;8192&t;/* 2 pages */
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * low level task data.&n; * If you change this, change the TI_* offsets below to match.&n; */
 DECL|struct|thread_info
@@ -54,9 +57,6 @@ DECL|macro|init_thread_info
 mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
 DECL|macro|init_stack
 mdefine_line|#define init_stack&t;&t;(init_thread_union.stack)
-multiline_comment|/*&n; * Size of kernel stack for each process. This must be a power of 2...&n; */
-DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE&t;&t;8192&t;/* 2 pages */
 multiline_comment|/* how to get the thread information struct from C */
 DECL|function|current_thread_info
 r_static

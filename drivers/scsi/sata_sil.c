@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/libata.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;sata_sil&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.54&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;0.8&quot;
 r_enum
 (brace
 DECL|enumerator|sil_3112
@@ -840,6 +840,13 @@ comma
 id|sil_pci_tbl
 )paren
 suffix:semicolon
+DECL|variable|DRV_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_VERSION
+)paren
+suffix:semicolon
 DECL|function|sil_post_set_mode
 r_static
 r_void
@@ -1597,9 +1604,13 @@ op_amp
 id|probe_ent-&gt;node
 )paren
 suffix:semicolon
-id|probe_ent-&gt;pdev
+id|probe_ent-&gt;dev
 op_assign
+id|pci_dev_to_dev
+c_func
+(paren
 id|pdev
+)paren
 suffix:semicolon
 id|probe_ent-&gt;port_ops
 op_assign

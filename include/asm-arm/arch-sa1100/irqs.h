@@ -251,11 +251,11 @@ DECL|macro|IRQ_LOCOMO_SPI_OVRN
 mdefine_line|#define IRQ_LOCOMO_SPI_OVRN&t;(IRQ_BOARD_END + 20)
 DECL|macro|IRQ_LOCOMO_SPI_TEND
 mdefine_line|#define IRQ_LOCOMO_SPI_TEND&t;(IRQ_BOARD_END + 21)
-multiline_comment|/*&n; * Figure out the MAX IRQ number.&n; *&n; * If we have an SA1111, the max IRQ is S1_BVD1_STSCHG+1.&n; * If we have an LoCoMo, the max IRQ is IRQ_LOCOMO_SPI_TEND+1&n; * If graphicsclient or graphicsmaster, we don&squot;t have a SA1111.&n; * Otherwise, we have the standard IRQs only.&n; */
+multiline_comment|/*&n; * Figure out the MAX IRQ number.&n; *&n; * If we have an SA1111, the max IRQ is S1_BVD1_STSCHG+1.&n; * If we have an LoCoMo, the max IRQ is IRQ_LOCOMO_SPI_TEND+1&n; * Otherwise, we have the standard IRQs only.&n; */
 macro_line|#ifdef CONFIG_SA1111
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;(IRQ_S1_BVD1_STSCHG + 1)
-macro_line|#elif defined(CONFIG_SA1100_GRAPHICSCLIENT) || &bslash;&n;      defined(CONFIG_SA1100_GRAPHICSMASTER) || &bslash;&n;      defined(CONFIG_SA1100_H3800)
+macro_line|#elif defined(CONFIG_SA1100_H3800)
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;(IRQ_BOARD_END)
 macro_line|#elif defined(CONFIG_SHARP_LOCOMO)
@@ -272,11 +272,6 @@ DECL|macro|IRQ_NEPONSET_USAR
 mdefine_line|#define IRQ_NEPONSET_USAR&t;(IRQ_BOARD_START + 1)
 DECL|macro|IRQ_NEPONSET_SA1111
 mdefine_line|#define IRQ_NEPONSET_SA1111&t;(IRQ_BOARD_START + 2)
-multiline_comment|/* PT Digital Board Interrupts (CONFIG_SA1100_PT_SYSTEM3) */
-DECL|macro|IRQ_SYSTEM3_SA1111
-mdefine_line|#define IRQ_SYSTEM3_SA1111&t;(IRQ_BOARD_START + 0)
-DECL|macro|IRQ_SYSTEM3_SMC9196
-mdefine_line|#define IRQ_SYSTEM3_SMC9196&t;(IRQ_BOARD_START + 1)
 multiline_comment|/* LoCoMo Interrupts (CONFIG_SHARP_LOCOMO) */
 DECL|macro|IRQ_LOCOMO_KEY_BASE
 mdefine_line|#define IRQ_LOCOMO_KEY_BASE&t;(IRQ_BOARD_START + 0)

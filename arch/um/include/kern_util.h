@@ -127,8 +127,7 @@ r_int
 id|do_signal
 c_func
 (paren
-r_int
-id|error
+r_void
 )paren
 suffix:semicolon
 r_extern
@@ -255,6 +254,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_int
 r_int
 id|page_mask
 c_func
@@ -986,16 +986,6 @@ suffix:semicolon
 r_extern
 r_int
 id|cpu
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-r_int
-id|time_stamp
 c_func
 (paren
 r_void

@@ -448,7 +448,7 @@ id|r-&gt;tcpdiag_inode
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_IPV6
+macro_line|#ifdef CONFIG_IP_TCPDIAG_IPV6
 r_if
 c_cond
 (paren
@@ -519,7 +519,7 @@ l_int|0
 op_assign
 id|inet-&gt;daddr
 suffix:semicolon
-macro_line|#ifdef CONFIG_IPV6
+macro_line|#ifdef CONFIG_IP_TCPDIAG_IPV6
 r_if
 c_cond
 (paren
@@ -856,7 +856,7 @@ r_int
 id|dif
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IPV6
+macro_line|#ifdef CONFIG_IP_TCPDIAG_IPV6
 r_extern
 r_struct
 id|sock
@@ -884,6 +884,40 @@ r_int
 id|dif
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|function|tcp_v6_lookup
+r_static
+r_inline
+r_struct
+id|sock
+op_star
+id|tcp_v6_lookup
+c_func
+(paren
+r_struct
+id|in6_addr
+op_star
+id|saddr
+comma
+id|u16
+id|sport
+comma
+r_struct
+id|in6_addr
+op_star
+id|daddr
+comma
+id|u16
+id|dport
+comma
+r_int
+id|dif
+)paren
+(brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 macro_line|#endif
 DECL|function|tcpdiag_get_exact
 r_static
@@ -958,7 +992,7 @@ id|req-&gt;id.tcpdiag_if
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_IPV6
+macro_line|#ifdef CONFIG_IP_TCPDIAG_IPV6
 r_else
 r_if
 c_cond
@@ -2021,7 +2055,7 @@ id|entry.family
 op_assign
 id|sk-&gt;sk_family
 suffix:semicolon
-macro_line|#ifdef CONFIG_IPV6
+macro_line|#ifdef CONFIG_IP_TCPDIAG_IPV6
 r_if
 c_cond
 (paren
@@ -2345,7 +2379,7 @@ id|r-&gt;tcpdiag_inode
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_IPV6
+macro_line|#ifdef CONFIG_IP_TCPDIAG_IPV6
 r_if
 c_cond
 (paren
@@ -2664,7 +2698,7 @@ id|bc
 (brace
 id|entry.saddr
 op_assign
-macro_line|#ifdef CONFIG_IPV6
+macro_line|#ifdef CONFIG_IP_TCPDIAG_IPV6
 (paren
 id|entry.family
 op_eq
@@ -2680,7 +2714,7 @@ id|req-&gt;af.v4_req.loc_addr
 suffix:semicolon
 id|entry.daddr
 op_assign
-macro_line|#ifdef CONFIG_IPV6
+macro_line|#ifdef CONFIG_IP_TCPDIAG_IPV6
 (paren
 id|entry.family
 op_eq
@@ -3777,7 +3811,8 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|tcpdiag_init
-r_void
+r_static
+r_int
 id|__init
 id|tcpdiag_init
 c_func
@@ -3802,11 +3837,49 @@ id|tcpnl
 op_eq
 l_int|NULL
 )paren
-id|panic
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|tcpdiag_exit
+r_static
+r_void
+id|__exit
+id|tcpdiag_exit
 c_func
 (paren
-l_string|&quot;tcpdiag_init: Cannot create netlink socket.&quot;
+r_void
+)paren
+(brace
+id|sock_release
+c_func
+(paren
+id|tcpnl-&gt;sk_socket
 )paren
 suffix:semicolon
 )brace
+DECL|variable|tcpdiag_init
+id|module_init
+c_func
+(paren
+id|tcpdiag_init
+)paren
+suffix:semicolon
+DECL|variable|tcpdiag_exit
+id|module_exit
+c_func
+(paren
+id|tcpdiag_exit
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

@@ -760,6 +760,12 @@ comma
 id|npages
 )paren
 suffix:semicolon
+id|flush_cache_all
+c_func
+(paren
+)paren
+suffix:semicolon
+singleline_comment|// hack to fix dma errors with hypersparc
 r_return
 id|busa0
 suffix:semicolon

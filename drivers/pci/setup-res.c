@@ -153,7 +153,7 @@ r_new
 op_or_assign
 id|res-&gt;flags
 op_amp
-id|PCI_ROM_ADDRESS_ENABLE
+id|IORESOURCE_ROM_ENABLE
 suffix:semicolon
 id|reg
 op_assign

@@ -4,6 +4,7 @@ macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
+macro_line|#include &lt;sys/ptrace.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &quot;os.h&quot;
@@ -430,6 +431,48 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+DECL|function|os_kill_ptraced_process
+r_void
+id|os_kill_ptraced_process
+c_func
+(paren
+r_int
+id|pid
+comma
+r_int
+id|reap_child
+)paren
+(brace
+id|ptrace
+c_func
+(paren
+id|PTRACE_KILL
+comma
+id|pid
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reap_child
+)paren
+(brace
+id|CATCH_EINTR
+c_func
+(paren
+id|waitpid
+c_func
+(paren
+id|pid
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
 DECL|function|os_usr1_process
 r_void
 id|os_usr1_process
@@ -448,7 +491,16 @@ id|SIGUSR1
 )paren
 suffix:semicolon
 )brace
-DECL|function|os_getpid
+multiline_comment|/*Don&squot;t use the glibc version, which caches the result in TLS. It misses some&n; * syscalls, and also breaks with clone(), which does not unshare the TLS.*/
+DECL|function|_syscall0
+r_inline
+id|_syscall0
+c_func
+(paren
+id|pid_t
+comma
+id|getpid
+)paren
 r_int
 id|os_getpid
 c_func

@@ -999,7 +999,7 @@ id|blank
 )paren
 (brace
 r_case
-l_int|0
+id|FB_BLANK_UNBLANK
 suffix:colon
 multiline_comment|/* Unblanking */
 id|val
@@ -1032,19 +1032,19 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|1
+id|FB_BLANK_NORMAL
 suffix:colon
 multiline_comment|/* Normal blanking */
 r_case
-l_int|2
+id|FB_BLANK_VSYNC_SUSPEND
 suffix:colon
 multiline_comment|/* VESA blank (vsync off) */
 r_case
-l_int|3
+id|FB_BLANK_HSYNC_SUSPEND
 suffix:colon
 multiline_comment|/* VESA blank (hsync off) */
 r_case
-l_int|4
+id|FB_BLANK_POWERDOWN
 suffix:colon
 multiline_comment|/* Poweroff */
 id|val
@@ -2514,11 +2514,6 @@ id|all-&gt;info.fbops
 op_assign
 op_amp
 id|leo_ops
-suffix:semicolon
-id|all-&gt;info.currcon
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 id|all-&gt;info.par
 op_assign

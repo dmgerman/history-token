@@ -1121,7 +1121,8 @@ id|np-&gt;rcv_saddr
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+op_logical_neg
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -1392,8 +1393,7 @@ id|PF_INET6
 r_if
 c_cond
 (paren
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -1402,8 +1402,7 @@ comma
 id|saddr
 )paren
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -1594,6 +1593,13 @@ r_return
 id|sk
 suffix:semicolon
 )brace
+DECL|variable|tcp_v6_lookup
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|tcp_v6_lookup
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Open request hash tables.&n; */
 DECL|function|tcp_v6_synq_hash
 r_static
@@ -1799,8 +1805,7 @@ id|family
 op_eq
 id|AF_INET6
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -1809,8 +1814,7 @@ comma
 id|raddr
 )paren
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -2119,8 +2123,7 @@ id|sk2-&gt;sk_family
 op_eq
 id|PF_INET6
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -2129,8 +2132,7 @@ comma
 id|saddr
 )paren
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -2824,7 +2826,8 @@ c_cond
 (paren
 id|tp-&gt;ts_recent_stamp
 op_logical_and
-id|ipv6_addr_cmp
+op_logical_neg
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -10259,6 +10262,11 @@ dot
 id|name
 op_assign
 l_string|&quot;TCPv6&quot;
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|close

@@ -811,7 +811,7 @@ id|pci_dev
 op_star
 id|dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_WINBOND
@@ -887,6 +887,12 @@ l_int|4
 )braket
 dot
 id|start
+suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -1130,39 +1136,6 @@ suffix:semicolon
 )brace
 macro_line|#endif /* BLK_DEV_IDE */
 r_static
-r_int
-id|__init
-DECL|function|lopec_request_cascade
-id|lopec_request_cascade
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/* We have a cascade on OpenPIC IRQ 0, Linux IRQ 16 */
-id|openpic_hookup_cascade
-c_func
-(paren
-id|NUM_8259_INTERRUPTS
-comma
-l_string|&quot;82c59 cascade&quot;
-comma
-op_amp
-id|i8259_irq
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|variable|lopec_request_cascade
-id|arch_initcall
-c_func
-(paren
-id|lopec_request_cascade
-)paren
-suffix:semicolon
-r_static
 r_void
 id|__init
 DECL|function|lopec_init_IRQ
@@ -1190,6 +1163,18 @@ suffix:semicolon
 id|mpc10x_set_openpic
 c_func
 (paren
+)paren
+suffix:semicolon
+multiline_comment|/* We have a cascade on OpenPIC IRQ 0, Linux IRQ 16 */
+id|openpic_hookup_cascade
+c_func
+(paren
+id|NUM_8259_INTERRUPTS
+comma
+l_string|&quot;82c59 cascade&quot;
+comma
+op_amp
+id|i8259_irq
 )paren
 suffix:semicolon
 multiline_comment|/* Map i8259 interrupts */

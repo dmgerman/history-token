@@ -314,7 +314,7 @@ id|skb-&gt;cb
 op_member_access_from_pointer
 id|urb
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|urb
@@ -3043,9 +3043,12 @@ id|bfusb-&gt;bulk_pkt_size
 op_assign
 id|bulk_out_ep-&gt;desc.wMaxPacketSize
 suffix:semicolon
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|bfusb-&gt;lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|bfusb-&gt;reassembly
 op_assign

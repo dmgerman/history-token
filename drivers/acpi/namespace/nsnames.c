@@ -317,6 +317,19 @@ id|next_node
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|size
+)paren
+(brace
+id|size
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Root node case */
+)brace
 r_return
 (paren
 id|size
@@ -324,6 +337,7 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* +1 for null string terminator */
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_handle_to_pathname&n; *&n; * PARAMETERS:  target_handle           - Handle of named object whose name is&n; *                                        to be found&n; *              Buffer                  - Where the pathname is returned&n; *&n; * RETURN:      Status, Buffer is filled with pathname if status is AE_OK&n; *&n; * DESCRIPTION: Build and return a full namespace pathname&n; *&n; ******************************************************************************/
 id|acpi_status

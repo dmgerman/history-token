@@ -1,22 +1,23 @@
 multiline_comment|/*&n; *  linux/drivers/char/sa1100.c&n; *&n; *  Driver for SA11x0 serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright (C) 2000 Deep Blue Solutions Ltd.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *  $Id: sa1100.c,v 1.50 2002/07/29 14:41:04 rmk Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/serial.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;linux/sysrq.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/hardware.h&gt;
-macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#if defined(CONFIG_SERIAL_SA1100_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
 DECL|macro|SUPPORT_SYSRQ
 mdefine_line|#define SUPPORT_SYSRQ
 macro_line|#endif
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/sysrq.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 multiline_comment|/* We&squot;ve been assigned a range on the &quot;Low-density serial ports&quot; major */
 DECL|macro|SERIAL_SA1100_MAJOR
 mdefine_line|#define SERIAL_SA1100_MAJOR&t;204
@@ -632,20 +633,15 @@ id|ignore_char
 suffix:semicolon
 id|error_return
 suffix:colon
-op_star
-id|tty-&gt;flip.flag_buf_ptr
-op_increment
-op_assign
-id|flg
-suffix:semicolon
-op_star
-id|tty-&gt;flip.char_buf_ptr
-op_increment
-op_assign
+id|tty_insert_flip_char
+c_func
+(paren
+id|tty
+comma
 id|ch
-suffix:semicolon
-id|tty-&gt;flip.count
-op_increment
+comma
+id|flg
+)paren
 suffix:semicolon
 id|ignore_char
 suffix:colon
@@ -798,30 +794,15 @@ id|UTSR1_ROR
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * overrun does *not* affect the character&n;&t;&t; * we read from the FIFO&n;&t;&t; */
-op_star
-id|tty-&gt;flip.flag_buf_ptr
-op_increment
-op_assign
-id|flg
-suffix:semicolon
-op_star
-id|tty-&gt;flip.char_buf_ptr
-op_increment
-op_assign
-id|ch
-suffix:semicolon
-id|tty-&gt;flip.count
-op_increment
-suffix:semicolon
-r_if
-c_cond
+id|tty_insert_flip_char
+c_func
 (paren
-id|tty-&gt;flip.count
-op_ge
-id|TTY_FLIPBUF_SIZE
+id|tty
+comma
+id|ch
+comma
+id|flg
 )paren
-r_goto
-id|ignore_char
 suffix:semicolon
 id|ch
 op_assign

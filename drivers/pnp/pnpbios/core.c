@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/kmod.h&gt;
+macro_line|#include &lt;linux/kobject_uevent.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/dmi.h&gt;
@@ -2349,6 +2349,14 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pnpbios_disabled
+)paren
+r_return
+l_int|0
+suffix:semicolon
 macro_line|#ifdef CONFIG_HOTPLUG
 id|init_completion
 c_func

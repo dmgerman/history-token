@@ -3,7 +3,7 @@ macro_line|#ifndef _SMC91X_H_
 DECL|macro|_SMC91X_H_
 mdefine_line|#define _SMC91X_H_
 multiline_comment|/*&n; * Define your architecture specific bus configuration parameters here.&n; */
-macro_line|#if&t;defined(CONFIG_SA1100_GRAPHICSCLIENT) || &bslash;&n;&t;defined(CONFIG_SA1100_PFS168) || &bslash;&n;&t;defined(CONFIG_SA1100_FLEXANET) || &bslash;&n;&t;defined(CONFIG_SA1100_GRAPHICSMASTER) || &bslash;&n;&t;defined(CONFIG_ARCH_LUBBOCK)
+macro_line|#if&t;defined(CONFIG_ARCH_LUBBOCK)
 multiline_comment|/* We can only do 16-bit reads and writes in the static memory space. */
 DECL|macro|SMC_CAN_USE_8BIT
 mdefine_line|#define SMC_CAN_USE_8BIT&t;0

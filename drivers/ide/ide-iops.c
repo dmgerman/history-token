@@ -3391,13 +3391,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|ide_ata66_check
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_ata66_check
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Backside of HDIO_DRIVE_CMD call of SETFEATURES_XFER.&n; * 1 : Safe to update drive-&gt;id DMA registers.&n; * 0 : OOPs not allowed.&n; */
 DECL|function|set_transfer
 r_int
@@ -3457,14 +3450,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|set_transfer
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|set_transfer
-)paren
-suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 DECL|function|ide_auto_reduce_xfer
+r_static
 id|u8
 id|ide_auto_reduce_xfer
 (paren
@@ -3545,13 +3533,7 @@ id|XFER_PIO_4
 suffix:semicolon
 )brace
 )brace
-DECL|variable|ide_auto_reduce_xfer
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_auto_reduce_xfer
-)paren
-suffix:semicolon
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/*&n; * Update the &n; */
 DECL|function|ide_driveid_update
 r_int
@@ -3910,13 +3892,6 @@ l_int|1
 suffix:semicolon
 macro_line|#endif
 )brace
-DECL|variable|ide_driveid_update
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_driveid_update
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Similar to ide_wait_stat(), except it never calls ide_error internally.&n; * This is a kludge to handle the new ide_config_drive_speed() function,&n; * and should not otherwise be used anywhere.  Eventually, the tuneproc&squot;s&n; * should be updated to return ide_startstop_t, in which case we can get&n; * rid of this abomination again.  :)   -ml&n; *&n; * It is gone..........&n; *&n; * const char *msg == consider adding for verbose errors.&n; */
 DECL|function|ide_config_drive_speed
 r_int
@@ -4461,6 +4436,7 @@ id|ide_config_drive_speed
 suffix:semicolon
 multiline_comment|/*&n; * This should get invoked any time we exit the driver to&n; * wait for an interrupt response from a drive.  handler() points&n; * at the appropriate code to handle the next interrupt, and a&n; * timer is started to prevent us from waiting forever in case&n; * something goes wrong (see the ide_timer_expiry() handler later on).&n; *&n; * See also ide_execute_command&n; */
 DECL|function|__ide_set_handler
+r_static
 r_void
 id|__ide_set_handler
 (paren
@@ -4536,13 +4512,6 @@ id|hwgroup-&gt;timer
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__ide_set_handler
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__ide_set_handler
-)paren
-suffix:semicolon
 DECL|function|ide_set_handler
 r_void
 id|ide_set_handler

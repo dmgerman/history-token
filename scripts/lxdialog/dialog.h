@@ -5,6 +5,10 @@ macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;ctype.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;string.h&gt;
+macro_line|#ifdef __sun__
+DECL|macro|CURS_MACROS
+mdefine_line|#define CURS_MACROS
+macro_line|#endif
 macro_line|#include CURSES_LOC
 multiline_comment|/*&n; * Colors in ncurses 1.9.9e do not work properly since foreground and&n; * background colors are OR&squot;d rather than separately masked.  This version&n; * of dialog was hacked to work with ncurses 1.9.9e, making it incompatible&n; * with standard curses.  The simplest fix (to make this work with standard&n; * curses) uses the wbkgdset() function, not used in the original hack.&n; * Turn it off if we&squot;re building with 1.9.9e, since it just confuses things.&n; */
 macro_line|#if defined(NCURSES_VERSION) &amp;&amp; defined(_NEED_WRAP) &amp;&amp; !defined(GCC_PRINTFLIKE)

@@ -23941,12 +23941,14 @@ op_star
 id|ncr53c8xx
 suffix:semicolon
 multiline_comment|/* command line passed by insmod */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ncr53c8xx
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif

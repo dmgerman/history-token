@@ -1,0 +1,66 @@
+macro_line|#ifndef ACPI_PNP_H
+DECL|macro|ACPI_PNP_H
+mdefine_line|#define ACPI_PNP_H
+macro_line|#include &lt;acpi/acpi_bus.h&gt;
+macro_line|#include &lt;linux/acpi.h&gt;
+macro_line|#include &lt;linux/pnp.h&gt;
+r_void
+op_star
+id|pnpacpi_kmalloc
+c_func
+(paren
+r_int
+id|size
+comma
+r_int
+id|f
+)paren
+suffix:semicolon
+id|acpi_status
+id|pnpacpi_parse_allocated_resource
+c_func
+(paren
+id|acpi_handle
+comma
+r_struct
+id|pnp_resource_table
+op_star
+)paren
+suffix:semicolon
+id|acpi_status
+id|pnpacpi_parse_resource_option_data
+c_func
+(paren
+id|acpi_handle
+comma
+r_struct
+id|pnp_dev
+op_star
+)paren
+suffix:semicolon
+r_int
+id|pnpacpi_encode_resources
+c_func
+(paren
+r_struct
+id|pnp_resource_table
+op_star
+comma
+r_struct
+id|acpi_buffer
+op_star
+)paren
+suffix:semicolon
+r_int
+id|pnpacpi_build_resource_template
+c_func
+(paren
+id|acpi_handle
+comma
+r_struct
+id|acpi_buffer
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
+eof

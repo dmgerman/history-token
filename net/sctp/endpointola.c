@@ -219,9 +219,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|ep-&gt;base.addr_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Remember who we are attached to.  */
 id|ep-&gt;base.sk

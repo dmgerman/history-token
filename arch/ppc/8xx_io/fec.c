@@ -5853,7 +5853,7 @@ multiline_comment|/* Install our interrupt handler.&n;&t;*/
 r_if
 c_cond
 (paren
-id|request_8xxirq
+id|request_irq
 c_func
 (paren
 id|FEC_INTERRUPT
@@ -5940,7 +5940,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|request_8xxirq
+id|request_irq
 c_func
 (paren
 id|PHY_INTERRUPT

@@ -11909,7 +11909,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-macro_line|#if (!defined(__sparc__) &amp;&amp; !defined(CONFIG_PPC))
+macro_line|#if (!defined(__sparc__) &amp;&amp; !defined(CONFIG_PPC_PMAC))
 multiline_comment|/* Fetch MAC address from vital product data of PCI ROM. */
 DECL|function|find_eth_addr_in_vpd
 r_static

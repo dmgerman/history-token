@@ -36,8 +36,6 @@ DECL|variable|i2o_drivers_lock
 r_static
 id|spinlock_t
 id|i2o_drivers_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|variable|i2o_drivers
 r_static
@@ -1131,6 +1129,13 @@ r_int
 id|rc
 op_assign
 l_int|0
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|i2o_drivers_lock
+)paren
 suffix:semicolon
 r_if
 c_cond

@@ -3,7 +3,7 @@ DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA&t;&t;&t;ZFCP_LOG_AREA_SCSI
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_SCSI_REVISION
-mdefine_line|#define ZFCP_SCSI_REVISION &quot;$Revision: 1.71 $&quot;
+mdefine_line|#define ZFCP_SCSI_REVISION &quot;$Revision: 1.72 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_void
@@ -1301,7 +1301,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * function:    zfcp_unit_tgt_lookup&n; *&n; * purpose:&n; *&n; * returns:&n; *&n; * context:&t;&n; */
 r_static
 r_struct
 id|zfcp_port
@@ -1351,6 +1350,7 @@ suffix:semicolon
 )brace
 r_return
 (paren
+r_struct
 id|zfcp_port
 op_star
 )paren
@@ -2284,7 +2284,7 @@ c_func
 (paren
 id|unit
 comma
-id|LOGICAL_UNIT_RESET
+id|FCP_LOGICAL_UNIT_RESET
 )paren
 suffix:semicolon
 r_if
@@ -2346,7 +2346,7 @@ c_func
 (paren
 id|unit
 comma
-id|TARGET_RESET
+id|FCP_TARGET_RESET
 )paren
 suffix:semicolon
 r_if
@@ -3354,4 +3354,18 @@ l_int|NULL
 suffix:semicolon
 DECL|macro|ZFCP_LOG_AREA
 macro_line|#undef ZFCP_LOG_AREA
+DECL|variable|zfcp_data
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|zfcp_data
+)paren
+suffix:semicolon
+DECL|variable|zfcp_scsi_command_sync
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|zfcp_scsi_command_sync
+)paren
+suffix:semicolon
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: time.c,v 1.3 2004/06/01 05:38:42 starvik Exp $&n; *&n; *  linux/arch/cris/arch-v10/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *  Copyright (C) 1999-2002 Axis Communications AB&n; *&n; */
+multiline_comment|/* $Id: time.c,v 1.5 2004/09/29 06:12:46 starvik Exp $&n; *&n; *  linux/arch/cris/arch-v10/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *  Copyright (C) 1999-2002 Axis Communications AB&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
@@ -525,6 +525,17 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * timer_interrupt() needs to keep up the real-time clock,&n; * as well as call the &quot;do_timer()&quot; routine every clocktick&n; */
 singleline_comment|//static unsigned short myjiff; /* used by our debug routine print_timestamp */
+r_extern
+r_void
+id|cris_do_profile
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
 r_static
 r_inline
 id|irqreturn_t
@@ -660,18 +671,13 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-id|update_process_times
-c_func
-(paren
-id|user_mode
+id|cris_do_profile
 c_func
 (paren
 id|regs
 )paren
-)paren
 suffix:semicolon
-macro_line|#endif
+multiline_comment|/* Save profiling information */
 multiline_comment|/*&n;&t; * If we have an externally synchronized Linux clock, then update&n;&t; * CMOS clock accordingly every ~11 minutes. Set_rtc_mmss() has to be&n;&t; * called as close as possible to 500 ms before the new second starts.&n;&t; *&n;&t; * The division here is not time critical since it will run once in &n;&t; * 11 minutes&n;&t; */
 r_if
 c_cond

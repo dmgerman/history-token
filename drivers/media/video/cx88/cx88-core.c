@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: cx88-core.c,v 1.13 2004/10/12 07:33:22 kraxel Exp $&n; *&n; * device driver for Conexant 2388x based TV cards&n; * driver core&n; *&n; * (c) 2003 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: cx88-core.c,v 1.15 2004/10/25 11:26:36 kraxel Exp $&n; *&n; * device driver for Conexant 2388x based TV cards&n; * driver core&n; *&n; * (c) 2003 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -106,32 +106,6 @@ op_assign
 id|UNSET
 )brace
 suffix:semicolon
-DECL|variable|tuner_num
-r_static
-r_int
-id|tuner_num
-suffix:semicolon
-id|module_param_array
-c_func
-(paren
-id|tuner
-comma
-r_int
-comma
-op_amp
-id|tuner_num
-comma
-l_int|0444
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|tuner
-comma
-l_string|&quot;tuner type&quot;
-)paren
-suffix:semicolon
 DECL|variable|card
 r_static
 r_int
@@ -156,10 +130,17 @@ op_assign
 id|UNSET
 )brace
 suffix:semicolon
-DECL|variable|card_num
-r_static
+id|module_param_array
+c_func
+(paren
+id|tuner
+comma
 r_int
-id|card_num
+comma
+l_int|NULL
+comma
+l_int|0444
+)paren
 suffix:semicolon
 id|module_param_array
 c_func
@@ -168,10 +149,17 @@ id|card
 comma
 r_int
 comma
-op_amp
-id|card_num
+l_int|NULL
 comma
 l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|tuner
+comma
+l_string|&quot;tuner type&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1517,7 +1505,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------------ */
 multiline_comment|/* our SRAM memory layout                                             */
-multiline_comment|/* we are going to put all thr risc programs into host memory, so we&n; * can use the whole SDRAM for the DMA fifos.  To simplify things, we&n; * use a static memory layout.  That surely will waste memory in case&n; * we don&squot;t use all DMA channels at the same time (which will be the&n; * case most of the time).  But that still gives us enougth FIFO space&n; * to be able to deal with insane long pci latencies ...&n; *&n; * FIFO space allocations:&n; *    channel  21    (y video)  - 10.0k&n; *    channel  22    (u video)  -  2.0k&n; *    channel  23    (v video)  -  2.0k&n; *    channel  24    (vbi)      -  4.0k&n; *    channels 25+26 (audio)    -  0.5k&n; *    channel  28    (mpeg)     -  4.0k&n; *    TOTAL                     = 25.5k&n; *&n; * Every channel has 160 bytes control data (64 bytes instruction&n; * queue and 6 CDT entries), which is close to 2k total.&n; * &n; * Address layout:&n; *    0x0000 - 0x03ff    CMDs / reserved&n; *    0x0400 - 0x0bff    instruction queues + CDs&n; *    0x0c00 -           FIFOs&n; */
+multiline_comment|/* we are going to put all thr risc programs into host memory, so we&n; * can use the whole SDRAM for the DMA fifos.  To simplify things, we&n; * use a static memory layout.  That surely will waste memory in case&n; * we don&squot;t use all DMA channels at the same time (which will be the&n; * case most of the time).  But that still gives us enougth FIFO space&n; * to be able to deal with insane long pci latencies ...&n; *&n; * FIFO space allocations:&n; *    channel  21    (y video)  - 10.0k&n; *    channel  22    (u video)  -  2.0k&n; *    channel  23    (v video)  -  2.0k&n; *    channel  24    (vbi)      -  4.0k&n; *    channels 25+26 (audio)    -  0.5k&n; *    channel  28    (mpeg)     -  4.0k&n; *    TOTAL                     = 25.5k&n; *&n; * Every channel has 160 bytes control data (64 bytes instruction&n; * queue and 6 CDT entries), which is close to 2k total.&n; *&n; * Address layout:&n; *    0x0000 - 0x03ff    CMDs / reserved&n; *    0x0400 - 0x0bff    instruction queues + CDs&n; *    0x0c00 -           FIFOs&n; */
 DECL|variable|cx88_sram_channels
 r_struct
 id|sram_channel

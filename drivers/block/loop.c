@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/drivers/block/loop.c&n; *&n; *  Written by Theodore Ts&squot;o, 3/29/93&n; *&n; * Copyright 1993 by Theodore Ts&squot;o.  Redistribution of this file is&n; * permitted under the GNU General Public License.&n; *&n; * DES encryption plus some minor changes by Werner Almesberger, 30-MAY-1993&n; * more DES encryption plus IDEA encryption by Nicholas J. Leon, June 20, 1996&n; *&n; * Modularized and updated for 1.1.16 kernel - Mitch Dsouza 28th May 1994&n; * Adapted for 1.3.59 kernel - Andries Brouwer, 1 Feb 1996&n; *&n; * Fixed do_loop_request() re-entrancy - Vincent.Renardias@waw.com Mar 20, 1997&n; *&n; * Added devfs support - Richard Gooch &lt;rgooch@atnf.csiro.au&gt; 16-Jan-1998&n; *&n; * Handle sparse backing files correctly - Kenn Humborg, Jun 28, 1998&n; *&n; * Loadable modules and other fixes by AK, 1998&n; *&n; * Make real block number available to downstream transfer functions, enables&n; * CBC (and relatives) mode encryption requiring unique IVs per data block.&n; * Reed H. Petty, rhp@draper.net&n; *&n; * Maximum number of loop devices now dynamic via max_loop module parameter.&n; * Russell Kroll &lt;rkroll@exploits.org&gt; 19990701&n; *&n; * Maximum number of loop devices when compiled-in now selectable by passing&n; * max_loop=&lt;1-255&gt; to the kernel on boot.&n; * Erik I. Bols&#xfffd;, &lt;eriki@himolde.no&gt;, Oct 31, 1999&n; *&n; * Completely rewrite request handling to be make_request_fn style and&n; * non blocking, pushing work to a helper thread. Lots of fixes from&n; * Al Viro too.&n; * Jens Axboe &lt;axboe@suse.de&gt;, Nov 2000&n; *&n; * Support up to 256 loop devices&n; * Heinz Mauelshagen &lt;mge@sistina.com&gt;, Feb 2002&n; *&n; * Still To Fix:&n; * - Advisory locking is ignored here.&n; * - Should use an own CAP_* category instead of CAP_SYS_ADMIN&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
@@ -4674,12 +4675,14 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * And now the modules code and kernel interface.&n; */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|max_loop
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

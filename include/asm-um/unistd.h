@@ -31,14 +31,11 @@ id|env
 )paren
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+multiline_comment|/* We get __ARCH_WANT_OLD_STAT and __ARCH_WANT_STAT64 from the base arch */
 DECL|macro|__ARCH_WANT_IPC_PARSE_VERSION
 mdefine_line|#define __ARCH_WANT_IPC_PARSE_VERSION
 DECL|macro|__ARCH_WANT_OLD_READDIR
 mdefine_line|#define __ARCH_WANT_OLD_READDIR
-DECL|macro|__ARCH_WANT_OLD_STAT
-mdefine_line|#define __ARCH_WANT_OLD_STAT
-DECL|macro|__ARCH_WANT_STAT64
-mdefine_line|#define __ARCH_WANT_STAT64
 DECL|macro|__ARCH_WANT_SYS_ALARM
 mdefine_line|#define __ARCH_WANT_SYS_ALARM
 DECL|macro|__ARCH_WANT_SYS_GETHOSTNAME
@@ -258,7 +255,7 @@ id|sys_setsid
 DECL|function|lseek
 r_static
 r_inline
-r_int
+id|off_t
 id|lseek
 c_func
 (paren
@@ -445,23 +442,6 @@ r_int
 r_int
 op_star
 id|fildes
-)paren
-suffix:semicolon
-r_int
-id|sys_ptrace
-c_func
-(paren
-r_int
-id|request
-comma
-r_int
-id|pid
-comma
-r_int
-id|addr
-comma
-r_int
-id|data
 )paren
 suffix:semicolon
 r_struct

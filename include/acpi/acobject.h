@@ -49,6 +49,7 @@ id|value
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Note: The String and Buffer object must be identical through the Pointer&n; * element.  There is code that depends on this.&n; */
 DECL|struct|acpi_object_string
 r_struct
 id|acpi_object_string

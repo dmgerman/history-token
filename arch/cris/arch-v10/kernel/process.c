@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: process.c,v 1.6 2004/05/11 12:28:25 starvik Exp $&n; * &n; *  linux/arch/cris/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (C) 2000-2002  Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen (bjornw@axis.com)&n; *             Mikael Starvik (starvik@axis.com)&n; *&n; * This file handles the architecture-dependent parts of process handling..&n; */
+multiline_comment|/* $Id: process.c,v 1.9 2004/10/19 13:07:37 starvik Exp $&n; * &n; *  linux/arch/cris/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (C) 2000-2002  Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen (bjornw@axis.com)&n; *             Mikael Starvik (starvik@axis.com)&n; *&n; * This file handles the architecture-dependent parts of process handling..&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
@@ -32,6 +32,17 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+)brace
+multiline_comment|/*&n; * Free current thread data structures etc..&n; */
+DECL|function|exit_thread
+r_void
+id|exit_thread
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* Nothing needs to be done.  */
 )brace
 multiline_comment|/* if the watchdog is enabled, we can simply disable interrupts and go&n; * into an eternal loop, and the watchdog will reset the CPU after 0.1s&n; * if on the other hand the watchdog wasn&squot;t enabled, we just enable it and wait&n; */
 DECL|function|hard_reset_now
@@ -325,6 +336,12 @@ op_star
 id|regs
 suffix:semicolon
 multiline_comment|/* struct copy of pt_regs */
+id|p-&gt;set_child_tid
+op_assign
+id|p-&gt;clear_child_tid
+op_assign
+l_int|NULL
+suffix:semicolon
 id|childregs-&gt;r10
 op_assign
 l_int|0
@@ -666,11 +683,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * These bracket the sleeping functions..&n; */
-DECL|macro|first_sched
-mdefine_line|#define first_sched&t;((unsigned long)__sched_text_start)
-DECL|macro|last_sched
-mdefine_line|#define last_sched&t;((unsigned long)__sched_text_end)
 DECL|function|get_wchan
 r_int
 r_int
@@ -788,13 +800,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|in_sched_functions
+c_func
+(paren
 id|eip
-OL
-id|first_sched
-op_logical_or
-id|eip
-op_ge
-id|last_sched
+)paren
 )paren
 r_return
 id|eip

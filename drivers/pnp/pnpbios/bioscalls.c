@@ -429,7 +429,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;PnPBIOS: You may need to reboot with the &bslash;&quot;nobiospnp&bslash;&quot; option to operate stably&bslash;n&quot;
+l_string|&quot;PnPBIOS: You may need to reboot with the &bslash;&quot;pnpbios=off&bslash;&quot; option to operate stably&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk

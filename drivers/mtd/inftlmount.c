@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * inftlmount.c -- INFTL mount code with extensive checks.&n; *&n; * Author: Greg Ungerer (gerg@snapgear.com)&n; * (C) Copyright 2002-2003, Greg Ungerer (gerg@snapgear.com)&n; *&n; * Based heavily on the nftlmount.c code which is:&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; *&n; * $Id: inftlmount.c,v 1.14 2004/08/09 13:57:42 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/* &n; * inftlmount.c -- INFTL mount code with extensive checks.&n; *&n; * Author: Greg Ungerer (gerg@snapgear.com)&n; * (C) Copyright 2002-2003, Greg Ungerer (gerg@snapgear.com)&n; *&n; * Based heavily on the nftlmount.c code which is:&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; *&n; * $Id: inftlmount.c,v 1.15 2004/11/05 21:55:55 kalev Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
@@ -20,7 +20,7 @@ id|inftlmountrev
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.14 $&quot;
+l_string|&quot;$Revision: 1.15 $&quot;
 suffix:semicolon
 multiline_comment|/*&n; * find_boot_record: Find the INFTL Media Header and its Spare copy which&n; *&t;contains the various device information of the INFTL partition and&n; *&t;Bad Unit Table. Update the PUtable[] table according to the Bad&n; *&t;Unit Table. PUtable[] is used for management of Erase Unit in&n; *&t;other routines in inftlcore.c and inftlmount.c.&n; */
 DECL|function|find_boot_record
@@ -686,6 +686,10 @@ op_assign
 op_amp
 id|inftl-&gt;instr
 suffix:semicolon
+id|instr-&gt;mtd
+op_assign
+id|inftl-&gt;mbd.mtd
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; * &t;Most likely this is using the&n;&t;&t;&t;&t; * &t;undocumented qiuck mount feature.&n;&t;&t;&t;&t; * &t;We don&squot;t support that, we will need&n;&t;&t;&t;&t; * &t;to erase the hidden block for full&n;&t;&t;&t;&t; * &t;compatibility.&n;&t;&t;&t;&t; */
 id|instr-&gt;addr
 op_assign
@@ -1335,6 +1339,10 @@ id|inftl-&gt;instr
 suffix:semicolon
 r_int
 id|physblock
+suffix:semicolon
+id|instr-&gt;mtd
+op_assign
+id|inftl-&gt;mbd.mtd
 suffix:semicolon
 id|DEBUG
 c_func

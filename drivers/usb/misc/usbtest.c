@@ -5481,7 +5481,6 @@ id|ctx-&gt;done
 )paren
 suffix:semicolon
 )brace
-r_else
 id|done
 suffix:colon
 id|spin_unlock
@@ -6036,9 +6035,17 @@ id|i
 op_eq
 l_int|0
 )paren
+(brace
+id|spin_unlock_irq
+(paren
+op_amp
+id|context.lock
+)paren
+suffix:semicolon
 r_goto
 id|fail
 suffix:semicolon
+)brace
 id|simple_free_urb
 (paren
 id|urbs

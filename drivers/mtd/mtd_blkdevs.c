@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: mtd_blkdevs.c,v 1.23 2004/08/19 01:54:36 tpoynor Exp $&n; *&n; * (C) 2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * Interface to Linux 2.5 block layer for MTD &squot;translation layers&squot;.&n; *&n; */
+multiline_comment|/*&n; * $Id: mtd_blkdevs.c,v 1.24 2004/11/16 18:28:59 dwmw2 Exp $&n; *&n; * (C) 2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * Interface to Linux 2.5 block layer for MTD &squot;translation layers&squot;.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -522,6 +522,7 @@ id|tr-&gt;blkcore_priv-&gt;thread_wq
 suffix:semicolon
 )brace
 DECL|function|blktrans_open
+r_static
 r_int
 id|blktrans_open
 c_func
@@ -638,6 +639,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|blktrans_release
+r_static
 r_int
 id|blktrans_release
 c_func
@@ -1390,6 +1392,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|blktrans_notify_remove
+r_static
 r_void
 id|blktrans_notify_remove
 c_func
@@ -1482,6 +1485,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|blktrans_notify_add
+r_static
 r_void
 id|blktrans_notify_add
 c_func

@@ -5,6 +5,7 @@ multiline_comment|/*&n; *&t;Video for Linux Two&n; *&n; *&t;Header file for v4l 
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/time.h&gt; /* need struct timeval */
 macro_line|#endif
+macro_line|#include &lt;linux/compiler.h&gt; /* need __user */
 multiline_comment|/*&n; *&t;M I S C E L L A N E O U S&n; */
 multiline_comment|/*  Four-character-code (FOURCC) */
 DECL|macro|v4l2_fourcc
@@ -471,6 +472,8 @@ mdefine_line|#define V4L2_PIX_FMT_MPEG     v4l2_fourcc(&squot;M&squot;,&squot;P&
 multiline_comment|/*  Vendor-specific formats   */
 DECL|macro|V4L2_PIX_FMT_WNVA
 mdefine_line|#define V4L2_PIX_FMT_WNVA     v4l2_fourcc(&squot;W&squot;,&squot;N&squot;,&squot;V&squot;,&squot;A&squot;) /* Winnov hw compress */
+DECL|macro|V4L2_PIX_FMT_SN9C10X
+mdefine_line|#define V4L2_PIX_FMT_SN9C10X  v4l2_fourcc(&squot;S&squot;,&squot;9&squot;,&squot;1&squot;,&squot;0&squot;) /* SN9C10x compression */
 multiline_comment|/*&n; *&t;F O R M A T   E N U M E R A T I O N&n; */
 DECL|struct|v4l2_fmtdesc
 r_struct

@@ -605,8 +605,10 @@ op_amp
 id|hdev-&gt;class_dev
 suffix:semicolon
 r_int
+r_int
 id|i
-comma
+suffix:semicolon
+r_int
 id|err
 suffix:semicolon
 id|BT_DBG

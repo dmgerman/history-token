@@ -27,9 +27,34 @@ macro_line|#include &lt;net/inet_ecn.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
+r_int
+id|sctp_inetaddr_event
+c_func
+(paren
 r_struct
 id|notifier_block
-id|sctp_inetaddr_notifier
+op_star
+comma
+r_int
+r_int
+comma
+r_void
+op_star
+)paren
+suffix:semicolon
+DECL|variable|sctp_inet6addr_notifier
+r_static
+r_struct
+id|notifier_block
+id|sctp_inet6addr_notifier
+op_assign
+(brace
+dot
+id|notifier_call
+op_assign
+id|sctp_inetaddr_event
+comma
+)brace
 suffix:semicolon
 multiline_comment|/* ICMP error handler. */
 DECL|function|sctp_v6_err
@@ -1901,7 +1926,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+op_logical_neg
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -4072,7 +4098,7 @@ id|register_inet6addr_notifier
 c_func
 (paren
 op_amp
-id|sctp_inetaddr_notifier
+id|sctp_inet6addr_notifier
 )paren
 suffix:semicolon
 id|rc
@@ -4140,7 +4166,7 @@ id|unregister_inet6addr_notifier
 c_func
 (paren
 op_amp
-id|sctp_inetaddr_notifier
+id|sctp_inet6addr_notifier
 )paren
 suffix:semicolon
 id|sk_free_slab

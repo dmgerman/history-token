@@ -39,7 +39,7 @@ c_cond
 id|base
 )paren
 (brace
-macro_line|#if defined(CONFIG_PLAT_M32700UT)
+macro_line|#if defined(CONFIG_PLAT_M32700UT) || defined(CONFIG_PLAT_MAPPI2)
 r_case
 l_int|0x1f0
 suffix:colon

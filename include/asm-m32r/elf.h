@@ -28,80 +28,10 @@ DECL|macro|R_M32R_LO16
 mdefine_line|#define&t;R_M32R_LO16&t;&t;9
 DECL|macro|R_M32R_SDA16
 mdefine_line|#define&t;R_M32R_SDA16&t;&t;10
-macro_line|#ifdef OLD_TYPE
-DECL|macro|R_M32R_GOT24
-mdefine_line|#define&t;R_M32R_GOT24&t;&t;11
-DECL|macro|R_M32R_26_PLTREL
-mdefine_line|#define&t;R_M32R_26_PLTREL&t;12
-DECL|macro|R_M32R_GOT16_HI_ULO
-mdefine_line|#define&t;R_M32R_GOT16_HI_ULO&t;13
-DECL|macro|R_M32R_GOT16_HI_SLO
-mdefine_line|#define&t;R_M32R_GOT16_HI_SLO&t;14
-DECL|macro|R_M32R_GOT16_LO
-mdefine_line|#define&t;R_M32R_GOT16_LO&t;&t;15
-DECL|macro|R_M32R_GOTPC24
-mdefine_line|#define&t;R_M32R_GOTPC24&t;&t;16
-DECL|macro|R_M32R_COPY
-mdefine_line|#define&t;R_M32R_COPY&t;&t;17
-DECL|macro|R_M32R_GLOB_DAT
-mdefine_line|#define&t;R_M32R_GLOB_DAT&t;&t;18
-DECL|macro|R_M32R_JMP_SLOT
-mdefine_line|#define&t;R_M32R_JMP_SLOT&t;&t;19
-DECL|macro|R_M32R_RELATIVE
-mdefine_line|#define&t;R_M32R_RELATIVE&t;&t;20
-DECL|macro|R_M32R_GNU_VTINHERIT
-mdefine_line|#define&t;R_M32R_GNU_VTINHERIT&t;21
-DECL|macro|R_M32R_GNU_VTENTRY
-mdefine_line|#define&t;R_M32R_GNU_VTENTRY&t;22
-DECL|macro|R_M32R_16_RELA
-mdefine_line|#define R_M32R_16_RELA&t;&t;R_M32R_16
-DECL|macro|R_M32R_32_RELA
-mdefine_line|#define R_M32R_32_RELA&t;&t;R_M32R_32
-DECL|macro|R_M32R_24_RELA
-mdefine_line|#define R_M32R_24_RELA&t;&t;R_M32R_24
-DECL|macro|R_M32R_10_PCREL_RELA
-mdefine_line|#define R_M32R_10_PCREL_RELA&t;R_M32R_10_PCREL
-DECL|macro|R_M32R_18_PCREL_RELA
-mdefine_line|#define R_M32R_18_PCREL_RELA&t;R_M32R_18_PCREL
-DECL|macro|R_M32R_26_PCREL_RELA
-mdefine_line|#define R_M32R_26_PCREL_RELA&t;R_M32R_26_PCREL
-DECL|macro|R_M32R_HI16_ULO_RELA
-mdefine_line|#define R_M32R_HI16_ULO_RELA&t;R_M32R_HI16_ULO
-DECL|macro|R_M32R_HI16_SLO_RELA
-mdefine_line|#define R_M32R_HI16_SLO_RELA&t;R_M32R_HI16_SLO
-DECL|macro|R_M32R_LO16_RELA
-mdefine_line|#define R_M32R_LO16_RELA&t;R_M32R_LO16
-DECL|macro|R_M32R_SDA16_RELA
-mdefine_line|#define R_M32R_SDA16_RELA&t;R_M32R_SDA16
-macro_line|#else /* not OLD_TYPE */
 DECL|macro|R_M32R_GNU_VTINHERIT
 mdefine_line|#define&t;R_M32R_GNU_VTINHERIT&t;11
 DECL|macro|R_M32R_GNU_VTENTRY
 mdefine_line|#define&t;R_M32R_GNU_VTENTRY&t;12
-DECL|macro|R_M32R_GOT24_SAMPLE
-mdefine_line|#define&t;R_M32R_GOT24_SAMPLE&t;&t;11 /* comflict */
-DECL|macro|R_M32R_26_PLTREL_SAMPLE
-mdefine_line|#define&t;R_M32R_26_PLTREL_SAMPLE&t;12 /* comflict */
-DECL|macro|R_M32R_GOT16_HI_ULO_SAMPLE
-mdefine_line|#define&t;R_M32R_GOT16_HI_ULO_SAMPLE&t;13
-DECL|macro|R_M32R_GOT16_HI_SLO_SAMPLE
-mdefine_line|#define&t;R_M32R_GOT16_HI_SLO_SAMPLE&t;14
-DECL|macro|R_M32R_GOT16_LO_SAMPLE
-mdefine_line|#define&t;R_M32R_GOT16_LO_SAMPLE&t;&t;15
-DECL|macro|R_M32R_GOTPC24_SAMPLE
-mdefine_line|#define&t;R_M32R_GOTPC24_SAMPLE&t;&t;16
-DECL|macro|R_M32R_COPY_SAMPLE
-mdefine_line|#define&t;R_M32R_COPY_SAMPLE&t;&t;17
-DECL|macro|R_M32R_GLOB_DAT_SAMPLE
-mdefine_line|#define&t;R_M32R_GLOB_DAT_SAMPLE&t;&t;18
-DECL|macro|R_M32R_JMP_SLOT_SAMPLE
-mdefine_line|#define&t;R_M32R_JMP_SLOT_SAMPLE&t;&t;19
-DECL|macro|R_M32R_RELATIVE_SAMPLE
-mdefine_line|#define&t;R_M32R_RELATIVE_SAMPLE&t;&t;20
-DECL|macro|R_M32R_GNU_VTINHERIT_SAMPLE
-mdefine_line|#define&t;R_M32R_GNU_VTINHERIT_SAMPLE&t;21
-DECL|macro|R_M32R_GNU_VTENTRY_SAMPLE
-mdefine_line|#define&t;R_M32R_GNU_VTENTRY_SAMPLE&t;22
 DECL|macro|R_M32R_16_RELA
 mdefine_line|#define R_M32R_16_RELA&t;&t;33
 DECL|macro|R_M32R_32_RELA
@@ -154,7 +84,6 @@ DECL|macro|R_M32R_GOTPC_HI_SLO
 mdefine_line|#define R_M32R_GOTPC_HI_SLO&t;60
 DECL|macro|R_M32R_GOTPC_LO
 mdefine_line|#define R_M32R_GOTPC_LO&t;&t;61
-macro_line|#endif /* not OLD_TYPE */
 DECL|macro|R_M32R_NUM
 mdefine_line|#define R_M32R_NUM&t;&t;256
 multiline_comment|/*&n; * ELF register definitions..&n; */
@@ -214,7 +143,7 @@ DECL|macro|ELF_ET_DYN_BASE
 mdefine_line|#define ELF_ET_DYN_BASE         (TASK_SIZE / 3 * 2)
 multiline_comment|/* regs is struct pt_regs, pr_reg is elf_gregset_t (which is&n;   now struct_user_regs, they are different) */
 DECL|macro|ELF_CORE_COPY_REGS
-mdefine_line|#define ELF_CORE_COPY_REGS(pr_reg, regs)  &bslash;&n;&t;memcpy((char *)&amp;pr_reg, (char *)&amp;regs, sizeof (struct pt_regs));
+mdefine_line|#define ELF_CORE_COPY_REGS(pr_reg, regs)  &bslash;&n;&t;memcpy((char *)pr_reg, (char *)regs, sizeof (struct pt_regs));
 multiline_comment|/* This yields a mask that user programs can use to figure out what&n;   instruction set this CPU supports.  */
 DECL|macro|ELF_HWCAP
 mdefine_line|#define ELF_HWCAP&t;(0)

@@ -1012,9 +1012,12 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|policy-&gt;lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|init_timer
 c_func

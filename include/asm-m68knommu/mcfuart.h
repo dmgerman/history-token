@@ -24,7 +24,7 @@ mdefine_line|#define&t;MCFUART_BASE1&t;&t;0x140&t;&t;/* Base address of UART1 */
 DECL|macro|MCFUART_BASE2
 mdefine_line|#define&t;MCFUART_BASE2&t;&t;0x180&t;&t;/* Base address of UART2 */
 macro_line|#endif
-macro_line|#elif defined(CONFIG_M5282)
+macro_line|#elif defined(CONFIG_M527x) || defined(CONFIG_M528x)
 DECL|macro|MCFUART_BASE1
 mdefine_line|#define MCFUART_BASE1&t;&t;0x200           /* Base address of UART1 */
 DECL|macro|MCFUART_BASE2

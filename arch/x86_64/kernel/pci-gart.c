@@ -145,7 +145,7 @@ mdefine_line|#define GPTE_DECODE(x) (((x) &amp; 0xfffff000) | (((u64)(x) &amp; 0
 DECL|macro|to_pages
 mdefine_line|#define to_pages(addr,size) &bslash;&n;&t;(round_up(((addr) &amp; ~PAGE_MASK) + (size), PAGE_SIZE) &gt;&gt; PAGE_SHIFT)
 DECL|macro|for_all_nb
-mdefine_line|#define for_all_nb(dev) &bslash;&n;&t;dev = NULL;&t;&bslash;&n;&t;while ((dev = pci_find_device(PCI_VENDOR_ID_AMD, 0x1103, dev))!=NULL)&bslash;&n;&t;     if (dev-&gt;bus-&gt;number == 0 &amp;&amp; &t;&t;&t;&t;     &bslash;&n;&t;&t;    (PCI_SLOT(dev-&gt;devfn) &gt;= 24) &amp;&amp; (PCI_SLOT(dev-&gt;devfn) &lt;= 31))
+mdefine_line|#define for_all_nb(dev) &bslash;&n;&t;dev = NULL;&t;&bslash;&n;&t;while ((dev = pci_get_device(PCI_VENDOR_ID_AMD, 0x1103, dev))!=NULL)&bslash;&n;&t;     if (dev-&gt;bus-&gt;number == 0 &amp;&amp; &t;&t;&t;&t;     &bslash;&n;&t;&t;    (PCI_SLOT(dev-&gt;devfn) &gt;= 24) &amp;&amp; (PCI_SLOT(dev-&gt;devfn) &lt;= 31))
 DECL|variable|northbridges
 r_static
 r_struct
@@ -885,6 +885,42 @@ c_cond
 id|high
 )paren
 (brace
+id|free_pages
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|memory
+comma
+id|get_order
+c_func
+(paren
+id|size
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|swiotlb
+)paren
+(brace
+r_return
+id|swiotlb_alloc_coherent
+c_func
+(paren
+id|dev
+comma
+id|size
+comma
+id|dma_handle
+comma
+id|gfp
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -904,8 +940,8 @@ r_goto
 id|again
 suffix:semicolon
 )brace
-r_goto
-id|free
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 id|mmu
@@ -996,8 +1032,6 @@ comma
 id|size
 )paren
 suffix:semicolon
-id|free
-suffix:colon
 id|free_pages
 c_func
 (paren
@@ -1014,7 +1048,6 @@ id|size
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* XXX Could use the swiotlb pool here too */
 r_return
 l_int|NULL
 suffix:semicolon
@@ -1041,6 +1074,27 @@ id|dma_addr_t
 id|bus
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|swiotlb
+)paren
+(brace
+id|swiotlb_free_coherent
+c_func
+(paren
+id|dev
+comma
+id|size
+comma
+id|vaddr
+comma
+id|bus
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|dma_unmap_single
 c_func
 (paren

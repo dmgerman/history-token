@@ -488,11 +488,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|barrier
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*  The master has cleared me to execute  */
 r_if
@@ -544,11 +539,6 @@ id|data-&gt;gate
 )paren
 (brace
 id|cpu_relax
-c_func
-(paren
-)paren
-suffix:semicolon
-id|barrier
 c_func
 (paren
 )paren
@@ -686,11 +676,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|barrier
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* ok, reset count and toggle gate */
 id|atomic_set
@@ -757,11 +742,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|barrier
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 id|atomic_set
 c_func
@@ -799,11 +779,6 @@ id|data.count
 )paren
 (brace
 id|cpu_relax
-c_func
-(paren
-)paren
-suffix:semicolon
-id|barrier
 c_func
 (paren
 )paren

@@ -12,41 +12,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
-r_extern
-r_void
-id|__init
-id|init_hw_h7202
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__init
-id|h7202_init_irq
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__init
-id|h7202_init_time
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__init
-id|h720x_map_io
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+macro_line|#include &quot;common.h&quot;
 DECL|variable|cirrus_resources
 r_static
 r_struct
@@ -262,11 +228,12 @@ c_func
 (paren
 id|h7202_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|h7202_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|h7202_timer
+comma
 id|INIT_MACHINE
 c_func
 (paren

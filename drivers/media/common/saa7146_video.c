@@ -5256,8 +5256,6 @@ r_return
 id|videobuf_reqbufs
 c_func
 (paren
-id|file
-comma
 id|q
 comma
 id|req
@@ -5318,8 +5316,6 @@ op_assign
 id|videobuf_qbuf
 c_func
 (paren
-id|file
-comma
 id|q
 comma
 id|buf
@@ -5362,8 +5358,6 @@ op_assign
 id|videobuf_dqbuf
 c_func
 (paren
-id|file
-comma
 id|q
 comma
 id|buf
@@ -5435,8 +5429,6 @@ op_assign
 id|videobuf_streamon
 c_func
 (paren
-id|file
-comma
 id|q
 )paren
 suffix:semicolon
@@ -5516,8 +5508,6 @@ op_assign
 id|videobuf_streamoff
 c_func
 (paren
-id|file
-comma
 id|q
 )paren
 suffix:semicolon
@@ -5622,8 +5612,6 @@ op_assign
 id|videobuf_mmap_setup
 c_func
 (paren
-id|file
-comma
 id|q
 comma
 id|gbuffers
@@ -5797,9 +5785,10 @@ r_int
 id|buffer_prepare
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_struct
 id|videobuf_buffer
@@ -5816,7 +5805,7 @@ id|file
 op_star
 id|file
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 r_struct
 id|saa7146_fh
@@ -6228,9 +6217,10 @@ r_int
 id|buffer_setup
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_int
 r_int
@@ -6248,7 +6238,7 @@ id|file
 op_star
 id|file
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 r_struct
 id|saa7146_fh
@@ -6336,9 +6326,10 @@ r_void
 id|buffer_queue
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_struct
 id|videobuf_buffer
@@ -6351,7 +6342,7 @@ id|file
 op_star
 id|file
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 r_struct
 id|saa7146_fh
@@ -6414,9 +6405,10 @@ r_void
 id|buffer_release
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_struct
 id|videobuf_buffer
@@ -6429,7 +6421,7 @@ id|file
 op_star
 id|file
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 r_struct
 id|saa7146_fh
@@ -6675,6 +6667,8 @@ r_sizeof
 r_struct
 id|saa7146_buf
 )paren
+comma
+id|file
 )paren
 suffix:semicolon
 id|init_MUTEX
@@ -6989,8 +6983,6 @@ op_assign
 id|videobuf_read_one
 c_func
 (paren
-id|file
-comma
 op_amp
 id|fh-&gt;video_q
 comma

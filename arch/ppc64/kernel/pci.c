@@ -4,14 +4,9 @@ macro_line|#undef DEBUG
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/capability.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -20,11 +15,8 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/ppcdebug.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
-macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
+macro_line|#include &lt;asm/udbg.h&gt;
 macro_line|#include &quot;pci.h&quot;
 macro_line|#ifdef DEBUG
 DECL|macro|DBG
@@ -47,7 +39,7 @@ id|pci_assign_all_buses
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* legal IO pages under MAX_ISA_PORT.  This is to ensure we don&squot;t touch&n;   devices we don&squot;t have access to. */
+multiline_comment|/*&n; * legal IO pages under MAX_ISA_PORT.  This is to ensure we don&squot;t touch&n; * devices we don&squot;t have access to.&n; */
 DECL|variable|io_page_mask
 r_int
 r_int
@@ -181,118 +173,6 @@ comma
 id|PCI_ANY_ID
 comma
 id|fixup_broken_pcnet32
-)paren
-suffix:semicolon
-DECL|function|fixup_windbond_82c105
-r_static
-r_void
-id|fixup_windbond_82c105
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-multiline_comment|/* Assume the windbond 82c105 is the IDE controller on a&n;&t; * p610.  We should probably be more careful in case&n;&t; * someone tries to plug in a similar adapter.&n;&t; */
-r_int
-id|i
-suffix:semicolon
-r_int
-r_int
-id|reg
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Using INTC for W82c105 IDE controller.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|pci_read_config_dword
-c_func
-(paren
-id|dev
-comma
-l_int|0x40
-comma
-op_amp
-id|reg
-)paren
-suffix:semicolon
-multiline_comment|/* Enable LEGIRQ to use INTC instead of ISA interrupts */
-id|pci_write_config_dword
-c_func
-(paren
-id|dev
-comma
-l_int|0x40
-comma
-id|reg
-op_or
-(paren
-l_int|1
-op_lshift
-l_int|11
-)paren
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|DEVICE_COUNT_RESOURCE
-suffix:semicolon
-op_increment
-id|i
-)paren
-(brace
-multiline_comment|/* zap the 2nd function of the winbond chip */
-r_if
-c_cond
-(paren
-id|dev-&gt;resource
-(braket
-id|i
-)braket
-dot
-id|flags
-op_amp
-id|IORESOURCE_IO
-op_logical_and
-id|dev-&gt;bus-&gt;number
-op_eq
-l_int|0
-op_logical_and
-id|dev-&gt;devfn
-op_eq
-l_int|0x81
-)paren
-id|dev-&gt;resource
-(braket
-id|i
-)braket
-dot
-id|flags
-op_and_assign
-op_complement
-id|IORESOURCE_IO
-suffix:semicolon
-)brace
-)brace
-id|DECLARE_PCI_FIXUP_HEADER
-c_func
-(paren
-id|PCI_VENDOR_ID_WINBOND
-comma
-id|PCI_DEVICE_ID_WINBOND_82C105
-comma
-id|fixup_windbond_82c105
 )paren
 suffix:semicolon
 DECL|function|pcibios_resource_to_bus
@@ -551,198 +431,26 @@ op_assign
 id|start
 suffix:semicolon
 )brace
-DECL|function|phb_set_model
+DECL|variable|hose_spinlock
 r_static
+id|spinlock_t
+id|hose_spinlock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+multiline_comment|/*&n; * pci_controller(phb) initialized common variables.&n; */
+DECL|function|pci_setup_pci_controller
 r_void
-id|phb_set_model
+id|__devinit
+id|pci_setup_pci_controller
 c_func
 (paren
 r_struct
 id|pci_controller
 op_star
 id|hose
-comma
-r_enum
-id|phb_types
-id|controller_type
 )paren
 (brace
-r_char
-op_star
-id|model
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|controller_type
-)paren
-(brace
-macro_line|#ifdef CONFIG_PPC_ISERIES
-r_case
-id|phb_type_hypervisor
-suffix:colon
-id|model
-op_assign
-l_string|&quot;PHB HV&quot;
-suffix:semicolon
-r_break
-suffix:semicolon
-macro_line|#endif
-r_case
-id|phb_type_python
-suffix:colon
-id|model
-op_assign
-l_string|&quot;PHB PY&quot;
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|phb_type_speedwagon
-suffix:colon
-id|model
-op_assign
-l_string|&quot;PHB SW&quot;
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|phb_type_winnipeg
-suffix:colon
-id|model
-op_assign
-l_string|&quot;PHB WP&quot;
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|phb_type_apple
-suffix:colon
-id|model
-op_assign
-l_string|&quot;PHB APPLE&quot;
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|model
-op_assign
-l_string|&quot;PHB UK&quot;
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|strlen
-c_func
-(paren
-id|model
-)paren
-OL
-l_int|8
-)paren
-(brace
-id|strcpy
-c_func
-(paren
-id|hose-&gt;what
-comma
-id|model
-)paren
-suffix:semicolon
-)brace
-r_else
-id|memcpy
-c_func
-(paren
-id|hose-&gt;what
-comma
-id|model
-comma
-l_int|7
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Allocate pci_controller(phb) initialized common variables.&n; */
-DECL|function|pci_alloc_pci_controller
-r_struct
-id|pci_controller
-op_star
-id|__init
-id|pci_alloc_pci_controller
-c_func
-(paren
-r_enum
-id|phb_types
-id|controller_type
-)paren
-(brace
-r_struct
-id|pci_controller
-op_star
-id|hose
-suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_ISERIES
-id|hose
-op_assign
-(paren
-r_struct
-id|pci_controller
-op_star
-)paren
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|pci_controller
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-macro_line|#else
-id|hose
-op_assign
-(paren
-r_struct
-id|pci_controller
-op_star
-)paren
-id|alloc_bootmem
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|pci_controller
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|hose
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;PCI: Allocate pci_controller failed.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -757,21 +465,12 @@ id|pci_controller
 )paren
 )paren
 suffix:semicolon
-id|phb_set_model
+id|spin_lock
 c_func
 (paren
-id|hose
-comma
-id|controller_type
+op_amp
+id|hose_spinlock
 )paren
-suffix:semicolon
-id|hose-&gt;is_dynamic
-op_assign
-l_int|0
-suffix:semicolon
-id|hose-&gt;type
-op_assign
-id|controller_type
 suffix:semicolon
 id|hose-&gt;global_number
 op_assign
@@ -788,113 +487,12 @@ op_amp
 id|hose_list
 )paren
 suffix:semicolon
-r_return
-id|hose
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Dymnamically allocate pci_controller(phb), initialize common variables.&n; */
-DECL|function|pci_alloc_phb_dynamic
-r_struct
-id|pci_controller
-op_star
-id|pci_alloc_phb_dynamic
-c_func
-(paren
-r_enum
-id|phb_types
-id|controller_type
-)paren
-(brace
-r_struct
-id|pci_controller
-op_star
-id|hose
-suffix:semicolon
-id|hose
-op_assign
-(paren
-r_struct
-id|pci_controller
-op_star
-)paren
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|pci_controller
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hose
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;PCI: Allocate pci_controller failed.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-id|memset
-c_func
-(paren
-id|hose
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|pci_controller
-)paren
-)paren
-suffix:semicolon
-id|phb_set_model
-c_func
-(paren
-id|hose
-comma
-id|controller_type
-)paren
-suffix:semicolon
-id|hose-&gt;is_dynamic
-op_assign
-l_int|1
-suffix:semicolon
-id|hose-&gt;type
-op_assign
-id|controller_type
-suffix:semicolon
-id|hose-&gt;global_number
-op_assign
-id|global_phb_number
-op_increment
-suffix:semicolon
-id|list_add_tail
+id|spin_unlock
 c_func
 (paren
 op_amp
-id|hose-&gt;list_node
-comma
-op_amp
-id|hose_list
+id|hose_spinlock
 )paren
-suffix:semicolon
-r_return
-id|hose
 suffix:semicolon
 )brace
 DECL|function|pcibios_claim_one_bus
@@ -2548,11 +2146,9 @@ c_func
 id|size
 )paren
 suffix:semicolon
-id|PPCDBG
+id|DBG
 c_func
 (paren
-id|PPCDBG_PHBINIT
-comma
 l_string|&quot;phb%d io_base_phys 0x%lx io_base_virt 0x%lx&bslash;n&quot;
 comma
 id|hose-&gt;global_number
@@ -2687,11 +2283,9 @@ comma
 id|_PAGE_NO_CACHE
 )paren
 suffix:semicolon
-id|PPCDBG
+id|DBG
 c_func
 (paren
-id|PPCDBG_PHBINIT
-comma
 l_string|&quot;phb%d io_base_phys 0x%lx io_base_virt 0x%lx&bslash;n&quot;
 comma
 id|hose-&gt;global_number
@@ -3148,7 +2742,7 @@ id|hose-&gt;bus
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*********************************************************************** &n; * pci_find_hose_for_OF_device&n; *&n; * This function finds the PHB that matching device_node in the &n; * OpenFirmware by scanning all the pci_controllers.&n; * &n; ***********************************************************************/
+multiline_comment|/*&n; * This function finds the PHB that matching device_node in the &n; * OpenFirmware by scanning all the pci_controllers.&n; */
 DECL|function|pci_find_hose_for_OF_device
 r_struct
 id|pci_controller
@@ -3524,12 +3118,6 @@ id|bus
 )paren
 suffix:semicolon
 r_struct
-id|list_head
-op_star
-id|ln
-suffix:semicolon
-multiline_comment|/* XXX or bus-&gt;parent? */
-r_struct
 id|pci_dev
 op_star
 id|dev
@@ -3569,18 +3157,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|res-&gt;flags
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* No I/O resource for this PHB? */
-r_if
-c_cond
-(paren
+op_logical_and
 id|request_resource
 c_func
 (paren
@@ -3627,22 +3205,6 @@ id|hose-&gt;mem_resources
 id|i
 )braket
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|res-&gt;flags
-op_logical_and
-id|i
-op_eq
-l_int|0
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* No memory resource for this PHB? */
 id|bus-&gt;resource
 (braket
 id|i
@@ -3715,7 +3277,6 @@ id|bus
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* XXX Need to check why Alpha doesnt do this - Anton */
 r_if
 c_cond
 (paren
@@ -3724,34 +3285,17 @@ id|pci_probe_only
 )paren
 r_return
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|ln
-op_assign
-id|bus-&gt;devices.next
-suffix:semicolon
-id|ln
-op_ne
-op_amp
-id|bus-&gt;devices
-suffix:semicolon
-id|ln
-op_assign
-id|ln-&gt;next
-)paren
-(brace
-r_struct
-id|pci_dev
-op_star
-id|dev
-op_assign
-id|pci_dev_b
+id|list_for_each_entry
 c_func
 (paren
-id|ln
+id|dev
+comma
+op_amp
+id|bus-&gt;devices
+comma
+id|bus_list
 )paren
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -3782,7 +3326,7 @@ c_func
 id|pcibios_fixup_bus
 )paren
 suffix:semicolon
-multiline_comment|/******************************************************************&n; * pci_read_irq_line&n; *&n; * Reads the Interrupt Pin to determine if interrupt is use by card.&n; * If the interrupt is used, then gets the interrupt line from the &n; * openfirmware and sets it in the pci_dev and pci_config line.&n; *&n; ******************************************************************/
+multiline_comment|/*&n; * Reads the interrupt pin to determine if interrupt is use by card.&n; * If the interrupt is used, then gets the interrupt line from the &n; * openfirmware and sets it in the pci_dev and pci_config line.&n; */
 DECL|function|pci_read_irq_line
 r_int
 id|pci_read_irq_line
@@ -3820,25 +3364,9 @@ id|intpin
 op_eq
 l_int|0
 )paren
-(brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_BUSWALK
-comma
-l_string|&quot;&bslash;tDevice: %s No Interrupt used by device.&bslash;n&quot;
-comma
-id|pci_name
-c_func
-(paren
-id|pci_dev
-)paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
 id|node
 op_assign
 id|pci_device_to_OF_node
@@ -3854,26 +3382,10 @@ id|node
 op_eq
 l_int|NULL
 )paren
-(brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_BUSWALK
-comma
-l_string|&quot;&bslash;tDevice: %s Device Node not found.&bslash;n&quot;
-comma
-id|pci_name
-c_func
-(paren
-id|pci_dev
-)paren
-)paren
-suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3881,26 +3393,10 @@ id|node-&gt;n_intrs
 op_eq
 l_int|0
 )paren
-(brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_BUSWALK
-comma
-l_string|&quot;&bslash;tDevice: %s No Device OF interrupts defined.&bslash;n&quot;
-comma
-id|pci_name
-c_func
-(paren
-id|pci_dev
-)paren
-)paren
-suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 id|pci_dev-&gt;irq
 op_assign
 id|node-&gt;intrs
@@ -3916,22 +3412,6 @@ c_func
 id|pci_dev
 comma
 id|PCI_INTERRUPT_LINE
-comma
-id|pci_dev-&gt;irq
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_BUSWALK
-comma
-l_string|&quot;&bslash;tDevice: %s pci_dev-&gt;irq = 0x%02X&bslash;n&quot;
-comma
-id|pci_name
-c_func
-(paren
-id|pci_dev
-)paren
 comma
 id|pci_dev-&gt;irq
 )paren

@@ -1368,18 +1368,6 @@ r_struct
 id|dev_pm_info
 id|power
 suffix:semicolon
-DECL|member|power_state
-id|u32
-id|power_state
-suffix:semicolon
-multiline_comment|/* Current operating state. In&n;&t;&t;&t;&t;&t;   ACPI-speak, this is D0-D3, D0&n;&t;&t;&t;&t;&t;   being fully functional, and D3&n;&t;&t;&t;&t;&t;   being off. */
-DECL|member|saved_state
-r_int
-r_char
-op_star
-id|saved_state
-suffix:semicolon
-multiline_comment|/* saved device state */
 DECL|member|detach_state
 id|u32
 id|detach_state
@@ -1573,7 +1561,23 @@ op_star
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Manual binding of a device to driver. See drivers/base/bus.c &n; * for information on use.&n; */
+multiline_comment|/*&n; * Manual binding of a device to driver. See drivers/base/bus.c&n; * for information on use.&n; */
+r_extern
+r_int
+id|driver_probe_device
+c_func
+(paren
+r_struct
+id|device_driver
+op_star
+id|drv
+comma
+r_struct
+id|device
+op_star
+id|dev
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|device_bind_driver
@@ -1588,6 +1592,17 @@ suffix:semicolon
 r_extern
 r_void
 id|device_release_driver
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|device_attach
 c_func
 (paren
 r_struct

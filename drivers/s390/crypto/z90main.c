@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/s390/misc/z90main.c&n; *&n; *  z90crypt 1.3.2&n; *&n; *  Copyright (C)  2001, 2004 IBM Corporation&n; *  Author(s): Robert Burroughs (burrough@us.ibm.com)&n; *             Eric Rossman (edrossma@us.ibm.com)&n; *&n; *  Hotplug &amp; misc device support: Jochen Roehrig (roehrig@de.ibm.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *  linux/drivers/s390/crypto/z90main.c&n; *&n; *  z90crypt 1.3.2&n; *&n; *  Copyright (C)  2001, 2004 IBM Corporation&n; *  Author(s): Robert Burroughs (burrough@us.ibm.com)&n; *             Eric Rossman (edrossma@us.ibm.com)&n; *&n; *  Hotplug &amp; misc device support: Jochen Roehrig (roehrig@de.ibm.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;       
 singleline_comment|// copy_(from|to)_user
 macro_line|#include &lt;linux/compat.h&gt;
@@ -11,6 +11,7 @@ singleline_comment|// for tasklets
 macro_line|#include &lt;linux/ioctl32.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/kobject_uevent.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -28,11 +29,11 @@ macro_line|#if LINUX_VERSION_CODE &gt; VERSION_CODE(2,7,0) /* version &gt; 2.6 *
 macro_line|#  error &quot;This kernel is too recent: not supported by this file&quot;
 macro_line|#endif
 DECL|macro|VERSION_Z90MAIN_C
-mdefine_line|#define VERSION_Z90MAIN_C &quot;$Revision: 1.54 $&quot;
+mdefine_line|#define VERSION_Z90MAIN_C &quot;$Revision: 1.57 $&quot;
 DECL|variable|__initdata
 r_static
 r_char
-id|z90cmain_version
+id|z90main_version
 (braket
 )braket
 id|__initdata
@@ -47,7 +48,7 @@ l_string|&quot;)&quot;
 suffix:semicolon
 r_extern
 r_char
-id|z90chardware_version
+id|z90hardware_version
 (braket
 )braket
 suffix:semicolon
@@ -76,7 +77,7 @@ mdefine_line|#define REG_NAME&t;&quot;z90crypt&quot;
 multiline_comment|/**&n; * Cleanup should run every CLEANUPTIME seconds and should clean up requests&n; * older than CLEANUPTIME seconds in the past.&n; */
 macro_line|#ifndef CLEANUPTIME
 DECL|macro|CLEANUPTIME
-mdefine_line|#define CLEANUPTIME 15
+mdefine_line|#define CLEANUPTIME 20
 macro_line|#endif
 multiline_comment|/**&n; * Config should run every CONFIGTIME seconds&n; */
 macro_line|#ifndef CONFIGTIME
@@ -2388,7 +2389,7 @@ c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
-id|z90cmain_version
+id|z90main_version
 )paren
 suffix:semicolon
 id|PRINTKN
@@ -2396,7 +2397,7 @@ c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
-id|z90chardware_version
+id|z90hardware_version
 )paren
 suffix:semicolon
 id|PDEBUG
@@ -10200,10 +10201,10 @@ op_ne
 id|index
 )paren
 (brace
-id|PRINTK
+id|PRINTKC
 c_func
 (paren
-l_string|&quot;Corrupt dev ptr in receive_from_AP&bslash;n&quot;
+l_string|&quot;Corrupt dev ptr&bslash;n&quot;
 )paren
 suffix:semicolon
 id|z90crypt.terminating

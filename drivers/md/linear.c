@@ -445,13 +445,14 @@ op_star
 id|rdev
 suffix:semicolon
 r_int
-id|size
-comma
 id|i
 comma
 id|nb_zone
 comma
 id|cnt
+suffix:semicolon
+id|sector_t
+id|size
 suffix:semicolon
 r_int
 r_int
@@ -888,6 +889,13 @@ c_func
 id|mddev
 )paren
 suffix:semicolon
+id|blk_sync_queue
+c_func
+(paren
+id|mddev-&gt;queue
+)paren
+suffix:semicolon
+multiline_comment|/* the unplug fn references &squot;conf&squot;*/
 id|kfree
 c_func
 (paren
@@ -1074,7 +1082,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;linear_make_request: Block %llu out of bounds on &quot;
-l_string|&quot;dev %s size %ld offset %ld&bslash;n&quot;
+l_string|&quot;dev %s size %llu offset %llu&bslash;n&quot;
 comma
 (paren
 r_int
@@ -1091,8 +1099,18 @@ comma
 id|b
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|tmp_dev-&gt;size
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|tmp_dev-&gt;offset
 )paren
 suffix:semicolon

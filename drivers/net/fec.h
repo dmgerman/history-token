@@ -1,11 +1,11 @@
 multiline_comment|/****************************************************************************/
-multiline_comment|/*&n; *&t;fec.h  --  Fast Ethernet Controller for Motorola ColdFire 5272&n; *&t;&t;   and 5282..&n; *&n; *&t;(C) Copyright 2000-2003, Greg Ungerer (gerg@snapgear.com)&n; *&t;(C) Copyright 2000-2001, Lineo (www.lineo.com)&n; */
+multiline_comment|/*&n; *&t;fec.h  --  Fast Ethernet Controller for Motorola ColdFire 5270,&n;&t;&t;   5271, 5272, 5274, 5275, 5280 and 5282.&n; *&n; *&t;(C) Copyright 2000-2003, Greg Ungerer (gerg@snapgear.com)&n; *&t;(C) Copyright 2000-2001, Lineo (www.lineo.com)&n; */
 multiline_comment|/****************************************************************************/
 macro_line|#ifndef FEC_H
 DECL|macro|FEC_H
 mdefine_line|#define&t;FEC_H
 multiline_comment|/****************************************************************************/
-macro_line|#ifdef CONFIG_M5282
+macro_line|#if defined(CONFIG_M527x) || defined(CONFIG_M528x)
 multiline_comment|/*&n; *&t;Just figures, Motorola would have to change the offsets for&n; *&t;registers in the same peripheral device on different models&n; *&t;of the ColdFire!&n; */
 DECL|struct|fec
 r_typedef

@@ -44,6 +44,12 @@ r_struct
 id|semaphore
 id|dpm_sem
 suffix:semicolon
+multiline_comment|/*&n; * Used to serialize changes to the dpm_* lists.&n; */
+r_extern
+r_struct
+id|semaphore
+id|dpm_list_sem
+suffix:semicolon
 multiline_comment|/*&n; * The PM lists.&n; */
 r_extern
 r_struct

@@ -128,20 +128,14 @@ op_star
 id|time_elapsed
 )paren
 (brace
-id|u32
-id|delta_ticks
-op_assign
-l_int|0
-suffix:semicolon
-r_union
-id|uint64_overlay
-id|normalized_ticks
-suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
+id|u32
+id|delta_ticks
+suffix:semicolon
 id|acpi_integer
-id|out_quotient
+id|quotient
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
@@ -161,7 +155,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Compute Tick Delta:&n;&t; * Handle (max one) timer rollovers on 24- versus 32-bit timers.&n;&t; */
+multiline_comment|/*&n;&t; * Compute Tick Delta:&n;&t; * Handle (max one) timer rollovers on 24-bit versus 32-bit timers.&n;&t; */
 r_if
 c_cond
 (paren
@@ -228,6 +222,7 @@ suffix:semicolon
 )brace
 )brace
 r_else
+multiline_comment|/* start_ticks == end_ticks */
 (brace
 op_star
 id|time_elapsed
@@ -240,9 +235,11 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Compute Duration (Requires a 64-bit divide):&n;&t; *&n;&t; * time_elapsed = (delta_ticks * 1000000) / PM_TIMER_FREQUENCY;&n;&t; */
-id|normalized_ticks.full
+multiline_comment|/*&n;&t; * Compute Duration (Requires a 64-bit multiply and divide):&n;&t; *&n;&t; * time_elapsed = (delta_ticks * 1000000) / PM_TIMER_FREQUENCY;&n;&t; */
+id|status
 op_assign
+id|acpi_ut_short_divide
+(paren
 (paren
 (paren
 id|u64
@@ -251,18 +248,11 @@ id|delta_ticks
 )paren
 op_star
 l_int|1000000
-suffix:semicolon
-id|status
-op_assign
-id|acpi_ut_short_divide
-(paren
-op_amp
-id|normalized_ticks.full
 comma
 id|PM_TIMER_FREQUENCY
 comma
 op_amp
-id|out_quotient
+id|quotient
 comma
 l_int|NULL
 )paren
@@ -273,7 +263,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|out_quotient
+id|quotient
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren

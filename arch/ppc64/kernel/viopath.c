@@ -1631,7 +1631,7 @@ op_amp
 id|Semaphore
 suffix:semicolon
 )brace
-id|mf_allocateLpEvents
+id|mf_allocate_lp_events
 c_func
 (paren
 id|remoteLp
@@ -2176,7 +2176,7 @@ op_assign
 op_amp
 id|Semaphore
 suffix:semicolon
-id|mf_deallocateLpEvents
+id|mf_deallocate_lp_events
 c_func
 (paren
 id|remoteLp

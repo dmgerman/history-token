@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ixp2000.c,v 1.3 2004/09/16 23:27:13 gleixner Exp $&n; *&n; * drivers/mtd/maps/ixp2000.c&n; *&n; * Mapping for the Intel XScale IXP2000 based systems&n; *&n; * Copyright (C) 2002 Intel Corp.&n; * Copyright (C) 2003-2004 MontaVista Software, Inc.&n; *&n; * Original Author: Naeem M Afzal &lt;naeem.m.afzal@intel.com&gt;&n; * Maintainer: Deepak Saxena &lt;dsaxena@plexity.net&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; * &n; */
+multiline_comment|/*&n; * $Id: ixp2000.c,v 1.5 2004/11/16 17:15:48 dsaxena Exp $&n; *&n; * drivers/mtd/maps/ixp2000.c&n; *&n; * Mapping for the Intel XScale IXP2000 based systems&n; *&n; * Copyright (C) 2002 Intel Corp.&n; * Copyright (C) 2003-2004 MontaVista Software, Inc.&n; *&n; * Original Author: Naeem M Afzal &lt;naeem.m.afzal@intel.com&gt;&n; * Maintainer: Deepak Saxena &lt;dsaxena@plexity.net&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; * &n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -808,11 +808,6 @@ suffix:semicolon
 )brace
 id|info-&gt;map.map_priv_1
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -857,7 +852,7 @@ l_int|1
 suffix:semicolon
 macro_line|#if defined(__ARMEB__)
 multiline_comment|/*&n;&t; * Enable erratum 44 workaround for NPUs with broken slowport&n;&t; */
-id|errata44_workaround
+id|erratum44_workaround
 op_assign
 id|ixp2000_has_broken_slowport
 c_func

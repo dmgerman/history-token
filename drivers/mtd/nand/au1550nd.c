@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/nand/au1550nd.c&n; *&n; *  Copyright (C) 2004 Embedded Edge, LLC&n; *&n; * $Id: au1550nd.c,v 1.9 2004/10/20 05:58:30 ppopov Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand/au1550nd.c&n; *&n; *  Copyright (C) 2004 Embedded Edge, LLC&n; *&n; * $Id: au1550nd.c,v 1.11 2004/11/04 12:53:10 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -916,12 +916,6 @@ multiline_comment|/* assert (force assert) chip enable */
 id|au_writel
 c_func
 (paren
-id|au_readl
-c_func
-(paren
-id|MEM_STNDCTL
-)paren
-op_or
 (paren
 l_int|1
 op_lshift
@@ -937,6 +931,8 @@ id|MEM_STNDCTL
 suffix:semicolon
 r_break
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|NAND_CTL_CLRNCE
 suffix:colon
@@ -944,25 +940,12 @@ multiline_comment|/* deassert chip enable */
 id|au_writel
 c_func
 (paren
-id|au_readl
-c_func
-(paren
-id|MEM_STNDCTL
-)paren
-op_amp
-op_complement
-(paren
-l_int|1
-op_lshift
-(paren
-l_int|4
-op_plus
-id|NAND_CS
-)paren
-)paren
+l_int|0
 comma
 id|MEM_STNDCTL
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1135,42 +1118,10 @@ op_assign
 id|this
 suffix:semicolon
 multiline_comment|/* MEM_STNDCTL: disable ints, disable nand boot */
-multiline_comment|/* disable interrupts */
 id|au_writel
 c_func
 (paren
-id|au_readl
-c_func
-(paren
-id|MEM_STNDCTL
-)paren
-op_amp
-op_complement
-(paren
-l_int|1
-op_lshift
-l_int|8
-)paren
-comma
-id|MEM_STNDCTL
-)paren
-suffix:semicolon
-multiline_comment|/* disable NAND boot */
-id|au_writel
-c_func
-(paren
-id|au_readl
-c_func
-(paren
-id|MEM_STNDCTL
-)paren
-op_amp
-op_complement
-(paren
-l_int|1
-op_lshift
 l_int|0
-)paren
 comma
 id|MEM_STNDCTL
 )paren
@@ -1367,11 +1318,6 @@ c_func
 suffix:semicolon
 id|p_nand
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap
 c_func
 (paren

@@ -2065,6 +2065,14 @@ DECL|macro|GPIO79_nCS_3
 mdefine_line|#define GPIO79_nCS_3&t;&t;79&t;/* chip select 3 */
 DECL|macro|GPIO80_nCS_4
 mdefine_line|#define GPIO80_nCS_4&t;&t;80&t;/* chip select 4 */
+DECL|macro|GPIO81_NSCLK
+mdefine_line|#define GPIO81_NSCLK&t;&t;81&t;/* NSSP clock */
+DECL|macro|GPIO82_NSFRM
+mdefine_line|#define GPIO82_NSFRM&t;&t;82&t;/* NSSP Frame */
+DECL|macro|GPIO83_NSTXD
+mdefine_line|#define GPIO83_NSTXD&t;&t;83&t;/* NSSP transmit */
+DECL|macro|GPIO84_NSRXD
+mdefine_line|#define GPIO84_NSRXD&t;&t;84&t;/* NSSP receive */
 DECL|macro|GPIO85_nPCE_1
 mdefine_line|#define GPIO85_nPCE_1&t;&t;85&t;/* Card Enable for Card Space (PXA27x) */
 DECL|macro|GPIO92_MMCDAT0
@@ -2106,6 +2114,10 @@ DECL|macro|GPIO_MD_MASK_DIR
 mdefine_line|#define GPIO_MD_MASK_DIR&t;0x080
 DECL|macro|GPIO_MD_MASK_FN
 mdefine_line|#define GPIO_MD_MASK_FN&t;&t;0x300
+DECL|macro|GPIO_DFLT_LOW
+mdefine_line|#define GPIO_DFLT_LOW&t;&t;0x400
+DECL|macro|GPIO_DFLT_HIGH
+mdefine_line|#define GPIO_DFLT_HIGH&t;&t;0x800
 DECL|macro|GPIO1_RTS_MD
 mdefine_line|#define GPIO1_RTS_MD&t;&t;( 1 | GPIO_ALT_FN_1_IN)
 DECL|macro|GPIO6_MMCCLK_MD
@@ -2298,6 +2310,22 @@ DECL|macro|GPIO79_pSKTSEL_MD
 mdefine_line|#define GPIO79_pSKTSEL_MD&t;(79 | GPIO_ALT_FN_1_OUT)
 DECL|macro|GPIO80_nCS_4_MD
 mdefine_line|#define GPIO80_nCS_4_MD&t;&t;(80 | GPIO_ALT_FN_2_OUT)
+DECL|macro|GPIO81_NSSP_CLK_OUT
+mdefine_line|#define GPIO81_NSSP_CLK_OUT &t;(81 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO81_NSSP_CLK_IN
+mdefine_line|#define GPIO81_NSSP_CLK_IN  &t;(81 | GPIO_ALT_FN_1_IN)
+DECL|macro|GPIO82_NSSP_FRM_OUT
+mdefine_line|#define GPIO82_NSSP_FRM_OUT &t;(82 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO82_NSSP_FRM_IN
+mdefine_line|#define GPIO82_NSSP_FRM_IN  &t;(82 | GPIO_ALT_FN_1_IN)
+DECL|macro|GPIO83_NSSP_TX
+mdefine_line|#define GPIO83_NSSP_TX      &t;(83 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO83_NSSP_RX
+mdefine_line|#define GPIO83_NSSP_RX      &t;(83 | GPIO_ALT_FN_2_IN)
+DECL|macro|GPIO84_NSSP_TX
+mdefine_line|#define GPIO84_NSSP_TX      &t;(84 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO84_NSSP_RX
+mdefine_line|#define GPIO84_NSSP_RX      &t;(84 | GPIO_ALT_FN_2_IN)
 DECL|macro|GPIO85_nPCE_1_MD
 mdefine_line|#define GPIO85_nPCE_1_MD&t;(85 | GPIO_ALT_FN_1_OUT)
 DECL|macro|GPIO92_MMCDAT0_MD
@@ -2482,6 +2510,42 @@ DECL|macro|RCSR_WDR
 mdefine_line|#define RCSR_WDR&t;(1 &lt;&lt; 1)&t;/* Watchdog Reset */
 DECL|macro|RCSR_HWR
 mdefine_line|#define RCSR_HWR&t;(1 &lt;&lt; 0)&t;/* Hardware Reset */
+DECL|macro|PWER_GPIO
+mdefine_line|#define PWER_GPIO(Nb)&t;(1 &lt;&lt; Nb)&t;/* GPIO [0..15] wake-up enable     */
+DECL|macro|PWER_GPIO0
+mdefine_line|#define PWER_GPIO0&t;PWER_GPIO (0)&t;/* GPIO  [0] wake-up enable        */
+DECL|macro|PWER_GPIO1
+mdefine_line|#define PWER_GPIO1&t;PWER_GPIO (1)&t;/* GPIO  [1] wake-up enable        */
+DECL|macro|PWER_GPIO2
+mdefine_line|#define PWER_GPIO2&t;PWER_GPIO (2)&t;/* GPIO  [2] wake-up enable        */
+DECL|macro|PWER_GPIO3
+mdefine_line|#define PWER_GPIO3&t;PWER_GPIO (3)&t;/* GPIO  [3] wake-up enable        */
+DECL|macro|PWER_GPIO4
+mdefine_line|#define PWER_GPIO4&t;PWER_GPIO (4)&t;/* GPIO  [4] wake-up enable        */
+DECL|macro|PWER_GPIO5
+mdefine_line|#define PWER_GPIO5&t;PWER_GPIO (5)&t;/* GPIO  [5] wake-up enable        */
+DECL|macro|PWER_GPIO6
+mdefine_line|#define PWER_GPIO6&t;PWER_GPIO (6)&t;/* GPIO  [6] wake-up enable        */
+DECL|macro|PWER_GPIO7
+mdefine_line|#define PWER_GPIO7&t;PWER_GPIO (7)&t;/* GPIO  [7] wake-up enable        */
+DECL|macro|PWER_GPIO8
+mdefine_line|#define PWER_GPIO8&t;PWER_GPIO (8)&t;/* GPIO  [8] wake-up enable        */
+DECL|macro|PWER_GPIO9
+mdefine_line|#define PWER_GPIO9&t;PWER_GPIO (9)&t;/* GPIO  [9] wake-up enable        */
+DECL|macro|PWER_GPIO10
+mdefine_line|#define PWER_GPIO10&t;PWER_GPIO (10)&t;/* GPIO [10] wake-up enable        */
+DECL|macro|PWER_GPIO11
+mdefine_line|#define PWER_GPIO11&t;PWER_GPIO (11)&t;/* GPIO [11] wake-up enable        */
+DECL|macro|PWER_GPIO12
+mdefine_line|#define PWER_GPIO12&t;PWER_GPIO (12)&t;/* GPIO [12] wake-up enable        */
+DECL|macro|PWER_GPIO13
+mdefine_line|#define PWER_GPIO13&t;PWER_GPIO (13)&t;/* GPIO [13] wake-up enable        */
+DECL|macro|PWER_GPIO14
+mdefine_line|#define PWER_GPIO14&t;PWER_GPIO (14)&t;/* GPIO [14] wake-up enable        */
+DECL|macro|PWER_GPIO15
+mdefine_line|#define PWER_GPIO15&t;PWER_GPIO (15)&t;/* GPIO [15] wake-up enable        */
+DECL|macro|PWER_RTC
+mdefine_line|#define PWER_RTC&t;0x80000000&t;/* RTC alarm wake-up enable        */
 multiline_comment|/*&n; * SSP Serial Port Registers&n; * PXA250, PXA255, PXA26x and PXA27x SSP controllers are all slightly different.&n; * PXA255, PXA26x and PXA27x have extra ports, registers and bits.&n; */
 multiline_comment|/* Common PXA2xx bits first */
 DECL|macro|SSCR0_DSS

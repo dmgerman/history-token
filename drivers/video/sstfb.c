@@ -6960,11 +6960,6 @@ op_assign
 op_amp
 id|sstfb_ops
 suffix:semicolon
-id|info-&gt;currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|info-&gt;pseudo_palette
 op_assign
 op_amp

@@ -925,7 +925,7 @@ DECL|macro|TCP_IPV4_TW_MATCH
 mdefine_line|#define TCP_IPV4_TW_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;((tcptw_sk(__sk)-&gt;tw_daddr&t;&t;== (__saddr))&t;&amp;&amp;&t;&bslash;&n;&t; (tcptw_sk(__sk)-&gt;tw_rcv_saddr&t;&t;== (__daddr))&t;&amp;&amp;&t;&bslash;&n;&t; ((*((__u32 *)&amp;(tcptw_sk(__sk)-&gt;tw_dport))) == (__ports)) &amp;&amp;&t;&bslash;&n;&t; (!((__sk)-&gt;sk_bound_dev_if) || ((__sk)-&gt;sk_bound_dev_if == (__dif))))
 macro_line|#endif /* 64-bit arch */
 DECL|macro|TCP_IPV6_MATCH
-mdefine_line|#define TCP_IPV6_MATCH(__sk, __saddr, __daddr, __ports, __dif)&t;   &bslash;&n;&t;(((*((__u32 *)&amp;(inet_sk(__sk)-&gt;dport)))== (__ports))   &t;&amp;&amp; &bslash;&n;&t; ((__sk)-&gt;sk_family&t;&t;== AF_INET6)&t;&t;&amp;&amp; &bslash;&n;&t; !ipv6_addr_cmp(&amp;inet6_sk(__sk)-&gt;daddr, (__saddr))&t;&amp;&amp; &bslash;&n;&t; !ipv6_addr_cmp(&amp;inet6_sk(__sk)-&gt;rcv_saddr, (__daddr))&t;&amp;&amp; &bslash;&n;&t; (!((__sk)-&gt;sk_bound_dev_if) || ((__sk)-&gt;sk_bound_dev_if == (__dif))))
+mdefine_line|#define TCP_IPV6_MATCH(__sk, __saddr, __daddr, __ports, __dif)&t;   &bslash;&n;&t;(((*((__u32 *)&amp;(inet_sk(__sk)-&gt;dport)))== (__ports))   &t;&amp;&amp; &bslash;&n;&t; ((__sk)-&gt;sk_family&t;&t;== AF_INET6)&t;&t;&amp;&amp; &bslash;&n;&t; ipv6_addr_equal(&amp;inet6_sk(__sk)-&gt;daddr, (__saddr))&t;&amp;&amp; &bslash;&n;&t; ipv6_addr_equal(&amp;inet6_sk(__sk)-&gt;rcv_saddr, (__daddr))&t;&amp;&amp; &bslash;&n;&t; (!((__sk)-&gt;sk_bound_dev_if) || ((__sk)-&gt;sk_bound_dev_if == (__dif))))
 multiline_comment|/* These can have wildcards, don&squot;t try too hard. */
 DECL|function|tcp_lhashfn
 r_static
@@ -3166,13 +3166,15 @@ r_int
 id|large
 )paren
 suffix:semicolon
+macro_line|#ifdef TCP_DEBUG
 r_extern
 r_const
 r_char
-id|timer_bug_msg
+id|tcp_timer_bug_msg
 (braket
 )braket
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* tcp_diag.c */
 r_extern
 r_void
@@ -3310,12 +3312,14 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+macro_line|#ifdef TCP_DEBUG
 id|printk
 c_func
 (paren
-id|timer_bug_msg
+id|tcp_timer_bug_msg
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 suffix:semicolon
 )brace
@@ -3449,12 +3453,14 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+macro_line|#ifdef TCP_DEBUG
 id|printk
 c_func
 (paren
-id|timer_bug_msg
+id|tcp_timer_bug_msg
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 )brace

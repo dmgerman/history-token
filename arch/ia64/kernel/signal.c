@@ -1401,28 +1401,11 @@ l_int|63
 op_eq
 l_int|0
 )paren
-(brace
-multiline_comment|/* if cr_ifs isn&squot;t valid, we got here through a syscall */
+multiline_comment|/* if cr_ifs doesn&squot;t have the valid bit set, we got here through a syscall */
 id|flags
 op_or_assign
 id|IA64_SC_FLAG_IN_SYSCALL
 suffix:semicolon
-id|cfm
-op_assign
-id|scr-&gt;ar_pfs
-op_amp
-(paren
-(paren
-l_int|1UL
-op_lshift
-l_int|38
-)paren
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-)brace
-r_else
 id|cfm
 op_assign
 id|ifs

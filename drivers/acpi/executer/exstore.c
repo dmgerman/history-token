@@ -156,7 +156,12 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Destination is not a Reference or Constant object [%p]&bslash;n&quot;
+l_string|&quot;Target is not a Reference or Constant object - %s [%p]&bslash;n&quot;
+comma
+id|acpi_ut_get_object_type_name
+(paren
+id|dest_desc
+)paren
 comma
 id|dest_desc
 )paren
@@ -269,7 +274,14 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;**** Write to Debug Object: ****:&bslash;n&bslash;n&quot;
+l_string|&quot;**** Write to Debug Object: Object %p %s ****:&bslash;n&bslash;n&quot;
+comma
+id|source_desc
+comma
+id|acpi_ut_get_object_type_name
+(paren
+id|source_desc
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -287,6 +299,30 @@ id|source_desc
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_ut_valid_internal_object
+(paren
+id|source_desc
+)paren
+)paren
+(brace
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_DEBUG_OBJECT
+comma
+l_string|&quot;%p, Invalid Internal Object!&bslash;n&quot;
+comma
+id|source_desc
+)paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -299,6 +335,31 @@ id|source_desc
 r_case
 id|ACPI_TYPE_INTEGER
 suffix:colon
+r_if
+c_cond
+(paren
+id|acpi_gbl_integer_byte_width
+op_eq
+l_int|4
+)paren
+(brace
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_DEBUG_OBJECT
+comma
+l_string|&quot;0x%8.8X&bslash;n&quot;
+comma
+(paren
+id|u32
+)paren
+id|source_desc-&gt;integer.value
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|ACPI_DEBUG_PRINT_RAW
 (paren
 (paren
@@ -313,6 +374,7 @@ id|source_desc-&gt;integer.value
 )paren
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -323,7 +385,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_DEBUG_OBJECT
 comma
-l_string|&quot;Length 0x%.2X&quot;
+l_string|&quot;[0x%.2X]&quot;
 comma
 (paren
 id|u32
@@ -358,7 +420,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_DEBUG_OBJECT
 comma
-l_string|&quot;Length 0x%.2X, &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
+l_string|&quot;[0x%.2X] &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
 id|source_desc-&gt;string.length
 comma
@@ -376,7 +438,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_DEBUG_OBJECT
 comma
-l_string|&quot;Size 0x%.2X Elements Ptr - %p&bslash;n&quot;
+l_string|&quot;[0x%.2X] Elements Ptr - %p&bslash;n&quot;
 comma
 id|source_desc-&gt;package.count
 comma

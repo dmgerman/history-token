@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: saa7134-i2c.c,v 1.5 2004/10/06 17:30:51 kraxel Exp $&n; *&n; * device driver for philips saa7134 based TV cards&n; * i2c interface support&n; *&n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: saa7134-i2c.c,v 1.7 2004/11/07 13:17:15 kraxel Exp $&n; *&n; * device driver for philips saa7134 based TV cards&n; * i2c interface support&n; *&n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -16,12 +16,14 @@ id|i2c_debug
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|i2c_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -40,12 +42,14 @@ id|i2c_scan
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|i2c_scan
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1411,6 +1415,38 @@ r_return
 id|I2C_FUNC_SMBUS_EMUL
 suffix:semicolon
 )brace
+macro_line|#ifndef I2C_PEC
+DECL|function|inc_use
+r_static
+r_void
+id|inc_use
+c_func
+(paren
+r_struct
+id|i2c_adapter
+op_star
+id|adap
+)paren
+(brace
+id|MOD_INC_USE_COUNT
+suffix:semicolon
+)brace
+DECL|function|dec_use
+r_static
+r_void
+id|dec_use
+c_func
+(paren
+r_struct
+id|i2c_adapter
+op_star
+id|adap
+)paren
+(brace
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|attach_inform
 r_static
 r_int

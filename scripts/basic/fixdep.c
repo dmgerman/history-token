@@ -504,6 +504,7 @@ id|INT_CONF
 id|p
 op_assign
 (paren
+r_int
 r_char
 op_star
 )paren
@@ -525,6 +526,7 @@ id|INT_ONFI
 id|p
 op_assign
 (paren
+r_int
 r_char
 op_star
 )paren
@@ -548,6 +550,7 @@ id|INT_NFIG
 id|p
 op_assign
 (paren
+r_int
 r_char
 op_star
 )paren
@@ -571,6 +574,7 @@ id|INT_FIG_
 id|p
 op_assign
 (paren
+r_int
 r_char
 op_star
 )paren

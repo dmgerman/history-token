@@ -1606,7 +1606,7 @@ id|blank
 )paren
 (brace
 r_case
-l_int|0
+id|FB_BLANK_UNBLANK
 suffix:colon
 multiline_comment|/* unblank */
 id|gbe_turn_on
@@ -1617,7 +1617,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|1
+id|FB_BLANK_NORMAL
 suffix:colon
 multiline_comment|/* blank */
 id|gbe_turn_off
@@ -4864,11 +4864,6 @@ id|TILE_SHIFT
 )paren
 op_plus
 id|i
-suffix:semicolon
-id|fb_info.currcon
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 id|fb_info.fbops
 op_assign

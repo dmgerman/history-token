@@ -13,6 +13,8 @@ DECL|macro|LDREGM
 mdefine_line|#define LDREGM&t;ldd,mb
 DECL|macro|STREGM
 mdefine_line|#define STREGM&t;std,ma
+DECL|macro|SHRREG
+mdefine_line|#define SHRREG  shrd
 DECL|macro|RP_OFFSET
 mdefine_line|#define RP_OFFSET&t;16
 DECL|macro|FRAME_SIZE
@@ -40,9 +42,18 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_PA20
 DECL|macro|BL
 mdefine_line|#define BL&t;&t;b,l
+macro_line|# ifdef CONFIG_PARISC64
+DECL|macro|LEVEL
+macro_line|#  define LEVEL&t;&t;2.0w
+macro_line|# else
+DECL|macro|LEVEL
+macro_line|#  define LEVEL&t;&t;2.0
+macro_line|# endif
 macro_line|#else
 DECL|macro|BL
 mdefine_line|#define BL&t;&t;bl
+DECL|macro|LEVEL
+mdefine_line|#define LEVEL&t;&t;1.1
 macro_line|#endif
 macro_line|#ifdef __ASSEMBLY__
 macro_line|#ifdef __LP64__

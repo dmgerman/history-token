@@ -125,7 +125,9 @@ l_int|16
 suffix:semicolon
 multiline_comment|/* for Riva128 */
 DECL|member|ctrl_base
-id|caddr_t
+id|u8
+id|__iomem
+op_star
 id|ctrl_base
 suffix:semicolon
 multiline_comment|/* virtual control register base addr */

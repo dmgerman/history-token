@@ -176,6 +176,11 @@ id|pmi_pal
 r_void
 )paren
 suffix:semicolon
+DECL|variable|depth
+r_static
+r_int
+id|depth
+suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|vesafb_pan_display
 r_static
@@ -323,11 +328,6 @@ id|green
 comma
 r_int
 id|blue
-comma
-r_struct
-id|fb_var_screeninfo
-op_star
-id|var
 )paren
 (brace
 macro_line|#ifdef __i386__
@@ -350,7 +350,7 @@ id|shift
 op_assign
 l_int|16
 op_minus
-id|var-&gt;green.length
+id|depth
 suffix:semicolon
 r_if
 c_cond
@@ -529,9 +529,6 @@ comma
 id|green
 comma
 id|blue
-comma
-op_amp
-id|info-&gt;var
 )paren
 suffix:semicolon
 r_break
@@ -1690,6 +1687,27 @@ id|vesafb_defined.transp.length
 op_assign
 id|screen_info.rsvd_size
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|vesafb_defined.bits_per_pixel
+op_le
+l_int|8
+)paren
+(brace
+id|depth
+op_assign
+id|vesafb_defined.green.length
+suffix:semicolon
+id|vesafb_defined.red.length
+op_assign
+id|vesafb_defined.green.length
+op_assign
+id|vesafb_defined.blue.length
+op_assign
+id|vesafb_defined.bits_per_pixel
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren

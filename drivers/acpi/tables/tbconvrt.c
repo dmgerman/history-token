@@ -8,6 +8,10 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;tbconvrt&quot;
 )paren
+DECL|variable|acpi_fadt_is_v1
+id|u8
+id|acpi_fadt_is_v1
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_get_table_count&n; *&n; * PARAMETERS:  RSDP            - Pointer to the RSDP&n; *              RSDT            - Pointer to the RSDT/XSDT&n; *&n; * RETURN:      The number of tables pointed to by the RSDT or XSDT.&n; *&n; * DESCRIPTION: Calculate the number of tables.  Automatically handles either&n; *              an RSDT or XSDT.&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_tb_get_table_count
@@ -325,6 +329,10 @@ id|original_fadt
 (brace
 multiline_comment|/* ACPI 1.0 FACS */
 multiline_comment|/* The BIOS stored FADT should agree with Revision 1.0 */
+id|acpi_fadt_is_v1
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;&t; * Copy the table header and the common part of the tables.&n;&t; *&n;&t; * The 2.0 table is an extension of the 1.0 table, so the entire 1.0&n;&t; * table can be copied first, then expand some fields to 64 bits.&n;&t; */
 id|ACPI_MEMCPY
 (paren
@@ -360,7 +368,12 @@ id|local_fadt-&gt;prefer_PM_profile
 op_assign
 id|PM_UNSPECIFIED
 suffix:semicolon
-multiline_comment|/*&n;&t; * Processor Performance State Control. This is the value OSPM writes to&n;&t; * the SMI_CMD register to assume processor performance state control&n;&t; * responsibility. There isn&squot;t any equivalence in 1.0, leave it zeroed.&n;&t; */
+multiline_comment|/*&n;&t; * Processor Performance State Control. This is the value OSPM writes to&n;&t; * the SMI_CMD register to assume processor performance state control&n;&t; * responsibility. There isn&squot;t any equivalence in 1.0, but as many 1.x&n;&t; * ACPI tables contain _PCT and _PSS we also keep this value, unless&n;&t; * acpi_strict is set.&n;&t; */
+r_if
+c_cond
+(paren
+id|acpi_strict
+)paren
 id|local_fadt-&gt;pstate_cnt
 op_assign
 l_int|0
@@ -370,11 +383,63 @@ id|local_fadt-&gt;cst_cnt
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Since there isn&squot;t any equivalence in 1.0 and since it highly likely&n;&t; * that a 1.0 system has legacy support.&n;&t; */
+multiline_comment|/*&n;&t; * FADT Rev 2 was an interim FADT released between ACPI 1.0 and ACPI 2.0.&n;&t; * It primarily adds the FADT reset mechanism.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|original_fadt-&gt;revision
+op_eq
+l_int|2
+)paren
+op_logical_and
+(paren
+id|original_fadt-&gt;length
+op_eq
+r_sizeof
+(paren
+r_struct
+id|fadt_descriptor_rev2_minus
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Grab the entire generic address struct, plus the 1-byte reset value&n;&t;&t; * that immediately follows.&n;&t;&t; */
+id|ACPI_MEMCPY
+(paren
+op_amp
+id|local_fadt-&gt;reset_register
+comma
+op_amp
+(paren
+(paren
+r_struct
+id|fadt_descriptor_rev2_minus
+op_star
+)paren
+id|original_fadt
+)paren
+op_member_access_from_pointer
+id|reset_register
+comma
+r_sizeof
+(paren
+r_struct
+id|acpi_generic_address
+)paren
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t; * Since there isn&squot;t any equivalence in 1.0 and since it is highly&n;&t;&t; * likely that a 1.0 system has legacy support.&n;&t;&t; */
 id|local_fadt-&gt;iapc_boot_arch
 op_assign
 id|BAF_LEGACY_DEVICES
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Convert the V1.0 block addresses to V2.0 GAS structures&n;&t; */
 id|acpi_tb_init_generic_address
 (paren
@@ -885,33 +950,7 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;tb_convert_table_fadt&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * acpi_gbl_FADT is valid&n;&t; * Allocate and zero the 2.0 FADT buffer&n;&t; */
-id|local_fadt
-op_assign
-id|ACPI_MEM_CALLOCATE
-(paren
-r_sizeof
-(paren
-r_struct
-id|fadt_descriptor_rev2
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|local_fadt
-op_eq
-l_int|NULL
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|AE_NO_MEMORY
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * FADT length and version validation.  The table must be at least as&n;&t; * long as the version 1.0 FADT&n;&t; */
+multiline_comment|/*&n;&t; * acpi_gbl_FADT is valid. Validate the FADT length. The table must be&n;&t; * at least as long as the version 1.0 FADT&n;&t; */
 r_if
 c_cond
 (paren
@@ -927,7 +966,7 @@ id|fadt_descriptor_rev1
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Invalid FADT table length: 0x%X&bslash;n&quot;
+l_string|&quot;FADT is invalid, too short: 0x%X&bslash;n&quot;
 comma
 id|acpi_gbl_FADT-&gt;length
 )paren
@@ -936,6 +975,31 @@ suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_INVALID_TABLE_LENGTH
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Allocate buffer for the ACPI 2.0(+) FADT */
+id|local_fadt
+op_assign
+id|ACPI_MEM_CALLOCATE
+(paren
+r_sizeof
+(paren
+r_struct
+id|fadt_descriptor_rev2
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|local_fadt
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace

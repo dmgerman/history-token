@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/serial_8250.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
@@ -392,6 +393,87 @@ comma
 comma
 )brace
 suffix:semicolon
+DECL|variable|serial_platform_data
+r_static
+r_struct
+id|plat_serial8250_port
+id|serial_platform_data
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|mapbase
+op_assign
+l_int|0x03010fe0
+comma
+dot
+id|irq
+op_assign
+l_int|10
+comma
+dot
+id|uartclk
+op_assign
+l_int|1843200
+comma
+dot
+id|regshift
+op_assign
+l_int|2
+comma
+dot
+id|iotype
+op_assign
+id|UPIO_MEM
+comma
+dot
+id|flags
+op_assign
+id|UPF_BOOT_AUTOCONF
+op_or
+id|UPF_IOREMAP
+op_or
+id|UPF_SKIP_TEST
+comma
+)brace
+comma
+(brace
+)brace
+comma
+)brace
+suffix:semicolon
+DECL|variable|serial_device
+r_static
+r_struct
+id|platform_device
+id|serial_device
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;serial8250&quot;
+comma
+dot
+id|id
+op_assign
+l_int|0
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|platform_data
+op_assign
+id|serial_platform_data
+comma
+)brace
+comma
+)brace
+suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_struct
@@ -408,6 +490,9 @@ id|iomd_device
 comma
 op_amp
 id|kbd_device
+comma
+op_amp
+id|serial_device
 comma
 op_amp
 id|acornfb_device

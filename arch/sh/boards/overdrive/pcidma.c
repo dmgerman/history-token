@@ -38,7 +38,7 @@ c_func
 l_string|&quot;BUG: pci_alloc_consistent() called - not yet supported&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* We ALWAYS need DMA memory on the overdrive hardware,&n;&t; * due to it&squot;s extreme wierdness&n;&t; * Need to flush the cache here as well, since the memory&n;&t; * can still be seen through the cache!&n;&t; */
+multiline_comment|/* We ALWAYS need DMA memory on the overdrive hardware,&n;&t; * due to it&squot;s extreme weirdness&n;&t; * Need to flush the cache here as well, since the memory&n;&t; * can still be seen through the cache!&n;&t; */
 id|gfp
 op_or_assign
 id|GFP_DMA

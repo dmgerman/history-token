@@ -70,11 +70,6 @@ suffix:semicolon
 multiline_comment|/* The various operations structs defined throughout the driver files. */
 r_extern
 r_struct
-id|super_operations
-id|ntfs_sops
-suffix:semicolon
-r_extern
-r_struct
 id|address_space_operations
 id|ntfs_aops
 suffix:semicolon
@@ -164,16 +159,6 @@ suffix:semicolon
 multiline_comment|/* From fs/ntfs/super.c */
 DECL|macro|default_upcase_len
 mdefine_line|#define default_upcase_len 0x10000
-r_extern
-id|ntfschar
-op_star
-id|default_upcase
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|ntfs_nr_upcase_users
-suffix:semicolon
 r_extern
 r_struct
 id|semaphore

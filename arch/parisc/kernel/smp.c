@@ -918,6 +918,11 @@ id|lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+r_int
+id|retries
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1050,6 +1055,8 @@ c_func
 id|IPI_CALL_FUNC
 )paren
 suffix:semicolon
+id|retry
+suffix:colon
 multiline_comment|/*  Wait for response  */
 id|timeout
 op_assign
@@ -1081,16 +1088,6 @@ id|barrier
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* We either got one or timed out. Release the lock */
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
-id|smp_call_function_data
-op_assign
-l_int|NULL
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1107,19 +1104,31 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;SMP CALL FUNCTION TIMED OUT! (cpu=%d)&bslash;n&quot;
+l_string|&quot;SMP CALL FUNCTION TIMED OUT! (cpu=%d), try %d&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
 (paren
 )paren
+comma
+op_increment
+id|retries
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|ETIMEDOUT
+r_goto
+id|retry
 suffix:semicolon
 )brace
+multiline_comment|/* We either got one or timed out. Release the lock */
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|smp_call_function_data
+op_assign
+l_int|NULL
+suffix:semicolon
 r_while
 c_loop
 (paren

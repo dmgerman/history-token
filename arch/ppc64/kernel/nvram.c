@@ -70,14 +70,13 @@ id|nvram_error_log_size
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|no_more_logging
-r_volatile
+DECL|variable|no_logging
 r_int
-id|no_more_logging
+id|no_logging
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* Until we initialize everything,&n;&t;&t;&t;&t;   * make sure we don&squot;t try logging&n;&t;&t;&t;&t;   * anything */
+multiline_comment|/* Until we initialize everything,&n;&t;&t;&t; * make sure we don&squot;t try logging&n;&t;&t;&t; * anything */
 r_extern
 r_volatile
 r_int
@@ -2458,7 +2457,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|no_more_logging
+id|no_logging
 )paren
 (brace
 r_return

@@ -3002,6 +3002,14 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|priv-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 r_case
@@ -3013,6 +3021,14 @@ c_func
 l_string|&quot;%s - 6 bits/byte not supported&quot;
 comma
 id|__FUNCTION__
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|priv-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return

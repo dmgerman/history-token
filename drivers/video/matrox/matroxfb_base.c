@@ -4129,6 +4129,14 @@ id|PMINFO2
 suffix:semicolon
 )brace
 )brace
+id|ACCESS_FBINFO
+c_func
+(paren
+id|initialized
+)paren
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -6118,7 +6126,7 @@ id|blank
 )paren
 (brace
 r_case
-l_int|1
+id|FB_BLANK_NORMAL
 suffix:colon
 id|seq
 op_assign
@@ -6132,7 +6140,7 @@ r_break
 suffix:semicolon
 multiline_comment|/* works ??? */
 r_case
-l_int|2
+id|FB_BLANK_VSYNC_SUSPEND
 suffix:colon
 id|seq
 op_assign
@@ -6145,7 +6153,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|3
+id|FB_BLANK_HSYNC_SUSPEND
 suffix:colon
 id|seq
 op_assign
@@ -6158,7 +6166,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|4
+id|FB_BLANK_POWERDOWN
 suffix:colon
 id|seq
 op_assign
@@ -8306,6 +8314,29 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+r_static
+r_struct
+id|pci_device_id
+id|intel_82437
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|PCI_DEVICE
+c_func
+(paren
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_82437
+)paren
+)brace
+comma
+(brace
+)brace
+comma
+)brace
+suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -9077,14 +9108,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pci_find_device
+id|pci_dev_present
 c_func
 (paren
-id|PCI_VENDOR_ID_INTEL
-comma
-id|PCI_DEVICE_ID_INTEL_82437
-comma
-l_int|NULL
+id|intel_82437
 )paren
 )paren
 (brace
@@ -9262,15 +9289,6 @@ id|devflags.ydstorg
 )paren
 op_assign
 l_int|0
-suffix:semicolon
-id|ACCESS_FBINFO
-c_func
-(paren
-id|fbcon.currcon
-)paren
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 id|ACCESS_FBINFO
 c_func
@@ -10187,19 +10205,18 @@ id|fbcon.fix.id
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* there is no console on this fb... but we have to initialize hardware&n;&t; * until someone tells me what is proper thing to do */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ACCESS_FBINFO
 c_func
 (paren
-id|fbcon.currcon
+id|initialized
 )paren
-OL
-l_int|0
 )paren
 (brace
-multiline_comment|/* there is no console on this fb... but we have to initialize hardware&n;&t;&t; * until someone tells me what is proper thing to do */
 id|printk
 c_func
 (paren
@@ -10213,7 +10230,7 @@ id|fbcon.node
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* We have to use FB_ACTIVATE_FORCE, as we had to put vesafb_defined to the fbcon.var&n;&t;&t; * already before, so register_framebuffer works correctly. */
+multiline_comment|/* We have to use FB_ACTIVATE_FORCE, as we had to put vesafb_defined to the fbcon.var&n; &t;&t; * already before, so register_framebuffer works correctly. */
 id|vesafb_defined.activate
 op_or_assign
 id|FB_ACTIVATE_FORCE

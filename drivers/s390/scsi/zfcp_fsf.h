@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * &n; * linux/drivers/s390/scsi/zfcp_fsf.h&n; * &n; * FCP adapter driver for IBM eServer zSeries &n; * &n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt; &n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt; &n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt; &n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt; &n; *            Andreas Herrmann &lt;aherrman@de.ibm.com&gt;&n; * &n; * This program is free software; you can redistribute it and/or modify &n; * it under the terms of the GNU General Public License as published by &n; * the Free Software Foundation; either version 2, or (at your option) &n; * any later version. &n; * &n; * This program is distributed in the hope that it will be useful, &n; * but WITHOUT ANY WARRANTY; without even the implied warranty of &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the &n; * GNU General Public License for more details. &n; * &n; * You should have received a copy of the GNU General Public License &n; * along with this program; if not, write to the Free Software &n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; */
+multiline_comment|/* &n; * &n; * linux/drivers/s390/scsi/zfcp_fsf.h&n; * &n; * FCP adapter driver for IBM eServer zSeries &n; * &n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt; &n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt; &n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt; &n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *            Andreas Herrmann &lt;aherrman@de.ibm.com&gt;&n; *            Volker Sameske &lt;sameske@de.ibm.com&gt;&n; * &n; * This program is free software; you can redistribute it and/or modify &n; * it under the terms of the GNU General Public License as published by &n; * the Free Software Foundation; either version 2, or (at your option) &n; * any later version. &n; * &n; * This program is distributed in the hope that it will be useful, &n; * but WITHOUT ANY WARRANTY; without even the implied warranty of &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the &n; * GNU General Public License for more details. &n; * &n; * You should have received a copy of the GNU General Public License &n; * along with this program; if not, write to the Free Software &n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; */
 macro_line|#ifndef FSF_H
 DECL|macro|FSF_H
 mdefine_line|#define FSF_H
@@ -201,6 +201,8 @@ DECL|macro|FSF_STATUS_READ_PORT_CLOSED
 mdefine_line|#define FSF_STATUS_READ_PORT_CLOSED&t;&t;0x00000001
 DECL|macro|FSF_STATUS_READ_INCOMING_ELS
 mdefine_line|#define FSF_STATUS_READ_INCOMING_ELS&t;&t;0x00000002
+DECL|macro|FSF_STATUS_READ_SENSE_DATA_AVAIL
+mdefine_line|#define FSF_STATUS_READ_SENSE_DATA_AVAIL        0x00000003
 DECL|macro|FSF_STATUS_READ_BIT_ERROR_THRESHOLD
 mdefine_line|#define FSF_STATUS_READ_BIT_ERROR_THRESHOLD&t;0x00000004
 DECL|macro|FSF_STATUS_READ_LINK_DOWN
@@ -261,6 +263,8 @@ DECL|macro|FSF_FEATURE_QTCB_SUPPRESSION
 mdefine_line|#define FSF_FEATURE_QTCB_SUPPRESSION            0x00000001
 DECL|macro|FSF_FEATURE_CFDC
 mdefine_line|#define FSF_FEATURE_CFDC&t;&t;&t;0x00000002
+DECL|macro|FSF_FEATURE_LUN_SHARING
+mdefine_line|#define FSF_FEATURE_LUN_SHARING&t;&t;&t;0x00000004
 DECL|macro|FSF_FEATURE_HBAAPI_MANAGEMENT
 mdefine_line|#define FSF_FEATURE_HBAAPI_MANAGEMENT           0x00000010
 DECL|macro|FSF_FEATURE_ELS_CT_CHAINED_SBALS
@@ -268,6 +272,8 @@ mdefine_line|#define FSF_FEATURE_ELS_CT_CHAINED_SBALS        0x00000020
 multiline_comment|/* option */
 DECL|macro|FSF_OPEN_LUN_SUPPRESS_BOXING
 mdefine_line|#define FSF_OPEN_LUN_SUPPRESS_BOXING&t;&t;0x00000001
+DECL|macro|FSF_OPEN_LUN_REPLICATE_SENSE
+mdefine_line|#define FSF_OPEN_LUN_REPLICATE_SENSE&t;&t;0x00000002
 multiline_comment|/* adapter types */
 DECL|macro|FSF_ADAPTER_TYPE_FICON
 mdefine_line|#define FSF_ADAPTER_TYPE_FICON                  0x00000001
@@ -313,6 +319,13 @@ DECL|macro|FSF_IOSTAT_FABRIC_RJT
 mdefine_line|#define FSF_IOSTAT_FABRIC_RJT&t;&t;&t;0x00000005
 DECL|macro|FSF_IOSTAT_LS_RJT
 mdefine_line|#define FSF_IOSTAT_LS_RJT&t;&t;&t;0x00000009
+multiline_comment|/* open LUN access flags*/
+DECL|macro|FSF_UNIT_ACCESS_OPEN_LUN_ALLOWED
+mdefine_line|#define FSF_UNIT_ACCESS_OPEN_LUN_ALLOWED&t;0x01000000
+DECL|macro|FSF_UNIT_ACCESS_EXCLUSIVE
+mdefine_line|#define FSF_UNIT_ACCESS_EXCLUSIVE&t;&t;0x02000000
+DECL|macro|FSF_UNIT_ACCESS_OUTBOUND_TRANSFER
+mdefine_line|#define FSF_UNIT_ACCESS_OUTBOUND_TRANSFER&t;0x10000000
 r_struct
 id|fsf_queue_designator
 suffix:semicolon
@@ -994,11 +1007,15 @@ DECL|member|timeout
 id|u8
 id|timeout
 suffix:semicolon
+DECL|member|lun_access_info
+id|u32
+id|lun_access_info
+suffix:semicolon
 DECL|member|res4
 id|u8
 id|res4
 (braket
-l_int|184
+l_int|180
 )braket
 suffix:semicolon
 DECL|member|els1_length

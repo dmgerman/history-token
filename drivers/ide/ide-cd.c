@@ -1005,6 +1005,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * ide_error() takes action based on the error returned by the drive.&n; */
 DECL|function|ide_cdrom_error
+r_static
 id|ide_startstop_t
 id|ide_cdrom_error
 (paren
@@ -1222,6 +1223,7 @@ id|ide_stopped
 suffix:semicolon
 )brace
 DECL|function|ide_cdrom_abort
+r_static
 id|ide_startstop_t
 id|ide_cdrom_abort
 (paren
@@ -13759,6 +13761,7 @@ id|idecd_revalidate_disk
 suffix:semicolon
 multiline_comment|/* options */
 DECL|variable|ignore
+r_static
 r_char
 op_star
 id|ignore

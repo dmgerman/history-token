@@ -3048,7 +3048,7 @@ id|sp-&gt;r_start
 op_assign
 id|jiffies
 suffix:semicolon
-multiline_comment|/* time the request was recieved */
+multiline_comment|/* time the request was received */
 id|sp-&gt;u_start
 op_assign
 l_int|0

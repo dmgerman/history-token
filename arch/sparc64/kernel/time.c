@@ -4294,6 +4294,10 @@ id|shift
 op_assign
 l_int|16
 comma
+dot
+id|mask
+op_assign
+l_int|0xffffffffffffffffLL
 )brace
 suffix:semicolon
 multiline_comment|/* The quotient formula is taken from the IA64 port. */

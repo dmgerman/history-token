@@ -2,6 +2,15 @@ multiline_comment|/*&n; * kobject_uevent.h - list of kobject user events that ca
 macro_line|#ifndef _KOBJECT_EVENT_H_
 DECL|macro|_KOBJECT_EVENT_H_
 mdefine_line|#define _KOBJECT_EVENT_H_
+DECL|macro|HOTPLUG_PATH_LEN
+mdefine_line|#define HOTPLUG_PATH_LEN&t;256
+multiline_comment|/* path to the hotplug userspace helper executed on an event */
+r_extern
+r_char
+id|hotplug_path
+(braket
+)braket
+suffix:semicolon
 multiline_comment|/*&n; * If you add an action here, you must also add the proper string to the&n; * lib/kobject_uevent.c file.&n; */
 DECL|typedef|kobject_action_t
 r_typedef
@@ -73,6 +82,16 @@ id|kobject_action_t
 l_int|0x06
 comma
 multiline_comment|/* offline event for hotplug devices */
+DECL|enumerator|KOBJ_ONLINE
+id|KOBJ_ONLINE
+op_assign
+(paren
+id|__force
+id|kobject_action_t
+)paren
+l_int|0x07
+comma
+multiline_comment|/* online event for hotplug devices */
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_KOBJECT_UEVENT

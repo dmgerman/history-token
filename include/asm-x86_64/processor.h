@@ -1202,5 +1202,10 @@ DECL|macro|stack_current
 mdefine_line|#define stack_current() &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct thread_info *ti;&t;&t;&t;&t;&t;&bslash;&n;&t;asm(&quot;andq %%rsp,%0; &quot;:&quot;=r&quot; (ti) : &quot;0&quot; (CURRENT_MASK));&t;&bslash;&n;&t;ti-&gt;task;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|cache_line_size
 mdefine_line|#define cache_line_size() (boot_cpu_data.x86_cache_alignment)
+r_extern
+r_int
+r_int
+id|boot_option_idle_override
+suffix:semicolon
 macro_line|#endif /* __ASM_X86_64_PROCESSOR_H */
 eof

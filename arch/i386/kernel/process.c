@@ -16,7 +16,7 @@ macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/a.out.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -54,6 +54,20 @@ suffix:semicolon
 DECL|variable|hlt_counter
 r_int
 id|hlt_counter
+suffix:semicolon
+DECL|variable|boot_option_idle_override
+r_int
+r_int
+id|boot_option_idle_override
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|boot_option_idle_override
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|boot_option_idle_override
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Return saved PC of a blocked thread.&n; */
 DECL|function|thread_saved_pc
@@ -561,6 +575,10 @@ op_assign
 id|default_idle
 suffix:semicolon
 )brace
+id|boot_option_idle_override
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -674,7 +692,7 @@ c_func
 (paren
 )paren
 comma
-id|UTS_RELEASE
+id|system_utsname.release
 )paren
 suffix:semicolon
 id|printk

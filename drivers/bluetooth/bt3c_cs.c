@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
@@ -33,7 +34,8 @@ multiline_comment|/* ======================== Module parameters ================
 multiline_comment|/* Bit map of interrupts to choose from */
 DECL|variable|irq_mask
 r_static
-id|u_int
+r_int
+r_int
 id|irq_mask
 op_assign
 l_int|0xffff
@@ -51,20 +53,26 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|irq_mask
 comma
-l_string|&quot;i&quot;
+id|uint
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|irq_list
 comma
-l_string|&quot;1-4i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -140,6 +148,7 @@ DECL|typedef|bt3c_info_t
 )brace
 id|bt3c_info_t
 suffix:semicolon
+r_static
 r_void
 id|bt3c_config
 c_func
@@ -149,6 +158,7 @@ op_star
 id|link
 )paren
 suffix:semicolon
+r_static
 r_void
 id|bt3c_release
 c_func
@@ -158,6 +168,7 @@ op_star
 id|link
 )paren
 suffix:semicolon
+r_static
 r_int
 id|bt3c_event
 c_func
@@ -180,6 +191,7 @@ id|dev_info
 op_assign
 l_string|&quot;bt3c_cs&quot;
 suffix:semicolon
+r_static
 id|dev_link_t
 op_star
 id|bt3c_attach
@@ -188,6 +200,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_static
 r_void
 id|bt3c_detach
 c_func
@@ -234,6 +247,7 @@ mdefine_line|#define ADDR_H   3
 DECL|macro|CONTROL
 mdefine_line|#define CONTROL  4
 DECL|function|bt3c_address
+r_static
 r_inline
 r_void
 id|bt3c_address
@@ -278,6 +292,7 @@ id|ADDR_H
 suffix:semicolon
 )brace
 DECL|function|bt3c_put
+r_static
 r_inline
 r_void
 id|bt3c_put
@@ -322,6 +337,7 @@ id|DATA_H
 suffix:semicolon
 )brace
 DECL|function|bt3c_io_write
+r_static
 r_inline
 r_void
 id|bt3c_io_write
@@ -358,6 +374,7 @@ id|value
 suffix:semicolon
 )brace
 DECL|function|bt3c_get
+r_static
 r_inline
 r_int
 r_int
@@ -398,6 +415,7 @@ id|value
 suffix:semicolon
 )brace
 DECL|function|bt3c_read
+r_static
 r_inline
 r_int
 r_int
@@ -1628,13 +1646,6 @@ r_void
 )paren
 (brace
 r_static
-r_char
-op_star
-id|kobj_name
-op_assign
-l_string|&quot;bt3c&quot;
-suffix:semicolon
-r_static
 r_struct
 id|device
 id|dev
@@ -1647,28 +1658,13 @@ l_string|&quot;pcmcia&quot;
 comma
 )brace
 suffix:semicolon
-id|dev.kobj.k_name
-op_assign
-id|kmalloc
+id|kobject_set_name
 c_func
 (paren
-id|strlen
-c_func
-(paren
-id|kobj_name
-)paren
-op_plus
-l_int|1
+op_amp
+id|dev.kobj
 comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|dev.kobj.k_name
-comma
-id|kobj_name
+l_string|&quot;bt3c&quot;
 )paren
 suffix:semicolon
 id|kobject_init
@@ -2219,6 +2215,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|bt3c_open
+r_static
 r_int
 id|bt3c_open
 c_func
@@ -2463,6 +2460,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|bt3c_close
+r_static
 r_int
 id|bt3c_close
 c_func
@@ -2525,6 +2523,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|bt3c_attach
+r_static
 id|dev_link_t
 op_star
 id|bt3c_attach
@@ -2767,6 +2766,7 @@ id|link
 suffix:semicolon
 )brace
 DECL|function|bt3c_detach
+r_static
 r_void
 id|bt3c_detach
 c_func
@@ -3036,6 +3036,7 @@ id|parse
 suffix:semicolon
 )brace
 DECL|function|bt3c_config
+r_static
 r_void
 id|bt3c_config
 c_func
@@ -3667,6 +3668,7 @@ id|link
 suffix:semicolon
 )brace
 DECL|function|bt3c_release
+r_static
 r_void
 id|bt3c_release
 c_func
@@ -3730,6 +3732,7 @@ id|DEV_CONFIG
 suffix:semicolon
 )brace
 DECL|function|bt3c_event
+r_static
 r_int
 id|bt3c_event
 c_func

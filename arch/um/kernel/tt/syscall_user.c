@@ -12,13 +12,6 @@ macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;syscall_user.h&quot;
 macro_line|#include &quot;tt.h&quot;
-multiline_comment|/* XXX Bogus */
-DECL|macro|ERESTARTSYS
-mdefine_line|#define ERESTARTSYS&t;512
-DECL|macro|ERESTARTNOINTR
-mdefine_line|#define ERESTARTNOINTR&t;513
-DECL|macro|ERESTARTNOHAND
-mdefine_line|#define ERESTARTNOHAND&t;514
 DECL|function|syscall_handler_tt
 r_void
 id|syscall_handler_tt
@@ -80,7 +73,7 @@ c_func
 (paren
 id|regs
 comma
-l_int|1
+l_int|0
 )paren
 suffix:semicolon
 id|result
@@ -108,44 +101,12 @@ comma
 id|result
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|result
-op_eq
-op_minus
-id|ERESTARTNOHAND
-)paren
-op_logical_or
-(paren
-id|result
-op_eq
-op_minus
-id|ERESTARTSYS
-)paren
-op_logical_or
-(paren
-id|result
-op_eq
-op_minus
-id|ERESTARTNOINTR
-)paren
-)paren
-(brace
-id|do_signal
-c_func
-(paren
-id|result
-)paren
-suffix:semicolon
-)brace
 id|syscall_trace
 c_func
 (paren
 id|regs
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
 id|record_syscall_end
@@ -168,6 +129,9 @@ id|task
 comma
 r_int
 id|pid
+comma
+r_int
+id|local_using_sysemu
 )paren
 (brace
 r_int
@@ -235,7 +199,7 @@ c_cond
 (paren
 id|syscall
 OL
-l_int|1
+l_int|0
 )paren
 (brace
 r_return
@@ -289,6 +253,16 @@ c_func
 (paren
 l_string|&quot;I&squot;m tracing myself and I can&squot;t get out&quot;
 )paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|local_using_sysemu
+)paren
+(brace
+r_return
+l_int|1
 suffix:semicolon
 )brace
 r_if

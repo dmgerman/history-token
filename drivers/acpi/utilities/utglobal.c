@@ -228,14 +228,16 @@ DECL|variable|acpi_dbg_level
 id|u32
 id|acpi_dbg_level
 op_assign
-l_int|0
+id|ACPI_DEBUG_DEFAULT
 suffix:semicolon
 multiline_comment|/* Debug switch - layer (component) mask */
 DECL|variable|acpi_dbg_layer
 id|u32
 id|acpi_dbg_layer
 op_assign
-l_int|0
+id|ACPI_COMPONENT_DEFAULT
+op_or
+id|ACPI_ALL_DRIVERS
 suffix:semicolon
 DECL|variable|acpi_gbl_nesting_level
 id|u32
@@ -2324,6 +2326,10 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|acpi_gbl_device_notify.handler
+op_assign
+l_int|NULL
+suffix:semicolon
+id|acpi_gbl_exception_handler
 op_assign
 l_int|NULL
 suffix:semicolon

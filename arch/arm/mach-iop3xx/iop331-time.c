@@ -11,14 +11,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/time.h&gt;
-DECL|macro|IOP331_TIME_SYNC
-macro_line|#undef IOP331_TIME_SYNC
-DECL|variable|iop331_latch
-r_static
-r_int
-r_int
-id|iop331_latch
-suffix:semicolon
 DECL|function|get_elapsed
 r_static
 r_inline
@@ -31,7 +23,7 @@ r_void
 )paren
 (brace
 r_return
-id|iop331_latch
+id|LATCH
 op_minus
 op_star
 id|IOP331_TU_TCR0
@@ -98,7 +90,7 @@ l_int|1
 (brace
 id|elapsed
 op_add_assign
-id|iop331_latch
+id|LATCH
 suffix:semicolon
 )brace
 r_else
@@ -111,7 +103,7 @@ l_int|1
 )paren
 id|elapsed
 op_assign
-id|iop331_latch
+id|LATCH
 op_plus
 id|get_elapsed
 c_func
@@ -135,7 +127,7 @@ l_int|1000
 )paren
 )paren
 op_div
-id|iop331_latch
+id|LATCH
 suffix:semicolon
 r_return
 id|usec
@@ -163,13 +155,13 @@ id|regs
 id|u32
 id|tisr
 suffix:semicolon
-macro_line|#ifdef IOP331_TIME_SYNC
-id|u32
-id|passed
+id|write_seqlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
 suffix:semicolon
-DECL|macro|TM_THRESH
-mdefine_line|#define TM_THRESH (iop331_latch*2)
-macro_line|#endif
 id|asm
 r_volatile
 (paren
@@ -197,80 +189,19 @@ id|tisr
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef IOP331_TIME_SYNC
-id|passed
-op_assign
-l_int|0xffffffff
-op_minus
-op_star
-id|IOP331_TU_TCR1
-suffix:semicolon
-r_do
-(brace
-id|do_timer
+id|timer_tick
 c_func
 (paren
 id|regs
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|passed
-OL
-id|TM_THRESH
-)paren
-(brace
-r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|passed
-OG
-id|iop331_latch
-)paren
-(brace
-id|passed
-op_sub_assign
-id|iop331_latch
-suffix:semicolon
-)brace
-r_else
-id|passed
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-(brace
-suffix:semicolon
-)brace
-id|asm
-r_volatile
-(paren
-l_string|&quot;mcr p6, 0, %0, c3, c1, 0&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-l_int|0xffffffff
-)paren
-)paren
-suffix:semicolon
-macro_line|#else
-id|do_timer
+id|write_sequnlock
 c_func
 (paren
-id|regs
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|IRQ_HANDLED
 suffix:semicolon
@@ -311,18 +242,6 @@ r_void
 id|u32
 id|timer_ctl
 suffix:semicolon
-id|iop331_latch
-op_assign
-(paren
-id|CLOCK_TICK_RATE
-op_plus
-id|HZ
-op_div
-l_int|2
-)paren
-op_div
-id|HZ
-suffix:semicolon
 id|setup_irq
 c_func
 (paren
@@ -350,7 +269,7 @@ suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
 (paren
-id|iop331_latch
+id|LATCH
 )paren
 )paren
 suffix:semicolon
@@ -366,43 +285,6 @@ id|timer_ctl
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef IOP331_TIME_SYNC
-multiline_comment|/* Setup second timer */
-multiline_comment|/* setup counter */
-id|timer_ctl
-op_assign
-id|IOP331_TMR_EN
-op_or
-id|IOP331_TMR_PRIVILEGED
-op_or
-id|IOP331_TMR_RATIO_1_1
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;mcr p6, 0, %0, c3, c1, 0&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-l_int|0xffffffff
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* setup control */
-id|asm
-r_volatile
-(paren
-l_string|&quot;mcr p6, 0, %0, c1, c1, 0&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|timer_ctl
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|variable|iop331_timer
 r_struct

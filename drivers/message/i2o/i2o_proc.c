@@ -937,6 +937,7 @@ l_string|&quot;CARDBUS&quot;
 )brace
 suffix:semicolon
 DECL|function|i2o_seq_show_hrt
+r_static
 r_int
 id|i2o_seq_show_hrt
 c_func
@@ -1431,6 +1432,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|i2o_seq_show_lct
+r_static
 r_int
 id|i2o_seq_show_lct
 c_func
@@ -2063,6 +2065,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|i2o_seq_show_status
+r_static
 r_int
 id|i2o_seq_show_status
 c_func
@@ -2804,6 +2807,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|i2o_seq_show_hw
+r_static
 r_int
 id|i2o_seq_show_hw
 c_func
@@ -3153,6 +3157,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Executive group 0003h - Executing DDM List (table) */
 DECL|function|i2o_seq_show_ddm_table
+r_static
 r_int
 id|i2o_seq_show_ddm_table
 c_func
@@ -3499,6 +3504,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Executive group 0004h - Driver Store (scalar) */
 DECL|function|i2o_seq_show_driver_store
+r_static
 r_int
 id|i2o_seq_show_driver_store
 c_func
@@ -3620,6 +3626,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Executive group 0005h - Driver Store Table (table) */
 DECL|function|i2o_seq_show_drivers_stored
+r_static
 r_int
 id|i2o_seq_show_drivers_stored
 c_func
@@ -4011,6 +4018,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Generic group F000h - Params Descriptor (table) */
 DECL|function|i2o_seq_show_groups
+r_static
 r_int
 id|i2o_seq_show_groups
 c_func
@@ -4395,6 +4403,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Generic group F001h - Physical Device Table (table) */
 DECL|function|i2o_seq_show_phys_device
+r_static
 r_int
 id|i2o_seq_show_phys_device
 c_func
@@ -4581,6 +4590,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Generic group F002h - Claimed Table (table) */
 DECL|function|i2o_seq_show_claimed
+r_static
 r_int
 id|i2o_seq_show_claimed
 c_func
@@ -4767,6 +4777,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Generic group F003h - User Table (table) */
 DECL|function|i2o_seq_show_users
+r_static
 r_int
 id|i2o_seq_show_users
 c_func
@@ -5035,6 +5046,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Generic group F005h - Private message extensions (table) (optional) */
 DECL|function|i2o_seq_show_priv_msgs
+r_static
 r_int
 id|i2o_seq_show_priv_msgs
 c_func
@@ -5262,6 +5274,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Generic group F006h - Authorized User Table (table) */
 DECL|function|i2o_seq_show_authorized_users
+r_static
 r_int
 id|i2o_seq_show_authorized_users
 c_func
@@ -5448,6 +5461,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Generic group F100h - Device Identity (scalar) */
 DECL|function|i2o_seq_show_dev_identity
+r_static
 r_int
 id|i2o_seq_show_dev_identity
 c_func
@@ -5735,6 +5749,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|i2o_seq_show_dev_name
+r_static
 r_int
 id|i2o_seq_show_dev_name
 c_func
@@ -5779,6 +5794,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Generic group F101h - DDM Identity (scalar) */
 DECL|function|i2o_seq_show_ddm_identity
+r_static
 r_int
 id|i2o_seq_show_ddm_identity
 c_func
@@ -5969,6 +5985,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Generic group F102h - User Information (scalar) */
 DECL|function|i2o_seq_show_uinfo
+r_static
 r_int
 id|i2o_seq_show_uinfo
 c_func
@@ -6142,6 +6159,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Generic group F103h - SGL Operating Limits (scalar) */
 DECL|function|i2o_seq_show_sgl_limits
+r_static
 r_int
 id|i2o_seq_show_sgl_limits
 c_func
@@ -6445,6 +6463,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Generic group F200h - Sensors (scalar) */
 DECL|function|i2o_seq_show_sensors
+r_static
 r_int
 id|i2o_seq_show_sensors
 c_func

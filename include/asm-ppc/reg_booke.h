@@ -59,10 +59,10 @@ mdefine_line|#define MSR_PMM&t;&t;(1&lt;&lt;2)&t;/* Performance monitor mark bit
 multiline_comment|/* Default MSR for kernel mode. */
 macro_line|#if defined (CONFIG_40x)
 DECL|macro|MSR_KERNEL
-mdefine_line|#define MSR_KERNEL&t;(MSR_ME|MSR_RI|MSR_IR|MSR_DR|MSR_CE|MSR_DE)
+mdefine_line|#define MSR_KERNEL&t;(MSR_ME|MSR_RI|MSR_IR|MSR_DR|MSR_CE)
 macro_line|#elif defined(CONFIG_BOOKE)
 DECL|macro|MSR_KERNEL
-mdefine_line|#define MSR_KERNEL&t;(MSR_ME|MSR_RI|MSR_CE|MSR_DE)
+mdefine_line|#define MSR_KERNEL&t;(MSR_ME|MSR_RI|MSR_CE)
 macro_line|#endif
 multiline_comment|/* Special Purpose Registers (SPRNs)*/
 DECL|macro|SPRN_DECAR

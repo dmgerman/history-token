@@ -7249,6 +7249,17 @@ id|u32
 id|level
 )paren
 suffix:semicolon
+r_static
+r_void
+id|msp_wake_thread
+c_func
+(paren
+r_struct
+id|i2c_client
+op_star
+id|client
+)paren
+suffix:semicolon
 DECL|variable|driver
 r_static
 r_struct
@@ -7931,11 +7942,10 @@ id|KERN_WARNING
 l_string|&quot;msp34xx: kernel_thread() failed&bslash;n&quot;
 )paren
 suffix:semicolon
-id|wake_up_interruptible
+id|msp_wake_thread
 c_func
 (paren
-op_amp
-id|msp-&gt;wq
+id|c
 )paren
 suffix:semicolon
 )brace

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *    Unaligned memory access handler&n; *&n; *    Copyri
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* #define DEBUG_UNALIGNED 1 */
 macro_line|#ifdef DEBUG_UNALIGNED
 DECL|macro|DPRINTF
@@ -17,6 +18,8 @@ macro_line|#else
 DECL|macro|RFMT
 mdefine_line|#define RFMT &quot;%08lx&quot;
 macro_line|#endif
+DECL|macro|FIXUP_BRANCH
+mdefine_line|#define FIXUP_BRANCH(lbl) &bslash;&n;&t;&quot;&bslash;tldil L%%&quot; #lbl &quot;, %%r1&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;&bslash;tldo R%%&quot; #lbl &quot;(%%r1), %%r1&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;&bslash;tbv,n %%r0(%%r1)&bslash;n&quot;
 multiline_comment|/* 1111 1100 0000 0000 0001 0011 1100 0000 */
 DECL|macro|OPCODE1
 mdefine_line|#define OPCODE1(a,b,c)&t;((a)&lt;&lt;26|(b)&lt;&lt;12|(c)&lt;&lt;6) 
@@ -226,15 +229,24 @@ l_string|&quot;&t;mtsp&t;%4, %%sr1&bslash;n&quot;
 l_string|&quot;1:&t;ldbs&t;0(%%sr1,%3), %%r20&bslash;n&quot;
 l_string|&quot;2:&t;ldbs&t;1(%%sr1,%3), %0&bslash;n&quot;
 l_string|&quot;&t;depw&t;%%r20, 23, 24, %0&bslash;n&quot;
-l_string|&quot;&t;cmpclr,= %%r0, %%r0, %1&bslash;n&quot;
-l_string|&quot;3:&t;ldo&t;-2(%%r0), %1&bslash;n&quot;
-l_string|&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+l_string|&quot;&t;copy&t;%%r0, %1&bslash;n&quot;
+l_string|&quot;3:&t;&bslash;n&quot;
+l_string|&quot;&t;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+l_string|&quot;4:&t;ldi&t;-2, %1&bslash;n&quot;
+id|FIXUP_BRANCH
+c_func
+(paren
+l_int|3
+id|b
+)paren
+l_string|&quot;&t;.previous&bslash;n&quot;
+l_string|&quot;&t;.section __ex_table,&bslash;&quot;aw&bslash;&quot;&bslash;n&quot;
 macro_line|#ifdef __LP64__
-l_string|&quot;&t;.dword&t;1b,(3b-1b)&bslash;n&quot;
-l_string|&quot;&t;.dword  2b,(3b-2b)&bslash;n&quot;
+l_string|&quot;&t;.dword&t;1b,4b&bslash;n&quot;
+l_string|&quot;&t;.dword  2b,4b&bslash;n&quot;
 macro_line|#else
-l_string|&quot;&t;.word&t;1b,(3b-1b)&bslash;n&quot;
-l_string|&quot;&t;.word&t;2b,(3b-2b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;1b,4b&bslash;n&quot;
+l_string|&quot;&t;.word&t;2b,4b&bslash;n&quot;
 macro_line|#endif
 l_string|&quot;&t;.previous&bslash;n&quot;
 suffix:colon
@@ -353,15 +365,24 @@ l_string|&quot;2:&t;ldw&t;4(%%sr1,%3),%%r20&bslash;n&quot;
 l_string|&quot;&t;subi&t;32,%%r19,%%r19&bslash;n&quot;
 l_string|&quot;&t;mtctl&t;%%r19,11&bslash;n&quot;
 l_string|&quot;&t;vshd&t;%0,%%r20,%0&bslash;n&quot;
-l_string|&quot;&t;cmpclr,= %%r0, %%r0, %1&bslash;n&quot;
-l_string|&quot;3:&t;ldo&t;-2(%%r0), %1&bslash;n&quot;
-l_string|&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+l_string|&quot;&t;copy&t;%%r0, %1&bslash;n&quot;
+l_string|&quot;3:&t;&bslash;n&quot;
+l_string|&quot;&t;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+l_string|&quot;4:&t;ldi&t;-2, %1&bslash;n&quot;
+id|FIXUP_BRANCH
+c_func
+(paren
+l_int|3
+id|b
+)paren
+l_string|&quot;&t;.previous&bslash;n&quot;
+l_string|&quot;&t;.section __ex_table,&bslash;&quot;aw&bslash;&quot;&bslash;n&quot;
 macro_line|#ifdef __LP64__
-l_string|&quot;&t;.dword&t;1b,(3b-1b)&bslash;n&quot;
-l_string|&quot;&t;.dword  2b,(3b-2b)&bslash;n&quot;
+l_string|&quot;&t;.dword&t;1b,4b&bslash;n&quot;
+l_string|&quot;&t;.dword  2b,4b&bslash;n&quot;
 macro_line|#else
-l_string|&quot;&t;.word&t;1b,(3b-1b)&bslash;n&quot;
-l_string|&quot;&t;.word&t;2b,(3b-2b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;1b,4b&bslash;n&quot;
+l_string|&quot;&t;.word&t;2b,4b&bslash;n&quot;
 macro_line|#endif
 l_string|&quot;&t;.previous&bslash;n&quot;
 suffix:colon
@@ -515,15 +536,24 @@ l_string|&quot;2:&t;ldd&t;8(%%sr1,%3),%%r20&bslash;n&quot;
 l_string|&quot;&t;subi&t;64,%%r19,%%r19&bslash;n&quot;
 l_string|&quot;&t;mtsar&t;%%r19&bslash;n&quot;
 l_string|&quot;&t;shrpd&t;%0,%%r20,%%sar,%0&bslash;n&quot;
-l_string|&quot;&t;cmpclr,= %%r0, %%r0, %1&bslash;n&quot;
-l_string|&quot;3:&t;ldo&t;-2(%%r0), %1&bslash;n&quot;
-l_string|&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+l_string|&quot;&t;copy&t;%%r0, %1&bslash;n&quot;
+l_string|&quot;3:&t;&bslash;n&quot;
+l_string|&quot;&t;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+l_string|&quot;4:&t;ldi&t;-2, %1&bslash;n&quot;
+id|FIXUP_BRANCH
+c_func
+(paren
+l_int|3
+id|b
+)paren
+l_string|&quot;&t;.previous&bslash;n&quot;
+l_string|&quot;&t;.section __ex_table,&bslash;&quot;aw&bslash;&quot;&bslash;n&quot;
 macro_line|#ifdef __LP64__
-l_string|&quot;&t;.dword&t;1b,(3b-1b)&bslash;n&quot;
-l_string|&quot;&t;.dword  2b,(3b-2b)&bslash;n&quot;
+l_string|&quot;&t;.dword&t;1b,4b&bslash;n&quot;
+l_string|&quot;&t;.dword  2b,4b&bslash;n&quot;
 macro_line|#else
-l_string|&quot;&t;.word&t;1b,(3b-1b)&bslash;n&quot;
-l_string|&quot;&t;.word&t;2b,(3b-2b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;1b,4b&bslash;n&quot;
+l_string|&quot;&t;.word&t;2b,4b&bslash;n&quot;
 macro_line|#endif
 l_string|&quot;&t;.previous&bslash;n&quot;
 suffix:colon
@@ -583,17 +613,26 @@ l_string|&quot;&t;subi&t;32,%%r19,%%r19&bslash;n&quot;
 l_string|&quot;&t;mtsar&t;%%r19&bslash;n&quot;
 l_string|&quot;&t;vshd&t;%0,%1,%0&bslash;n&quot;
 l_string|&quot;&t;vshd&t;%1,%%r20,%1&bslash;n&quot;
-l_string|&quot;&t;cmpclr,= %%r0, %%r0, %2&bslash;n&quot;
-l_string|&quot;4:&t;ldo&t;-2(%%r0), %2&bslash;n&quot;
-l_string|&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+l_string|&quot;&t;copy&t;%%r0, %2&bslash;n&quot;
+l_string|&quot;4:&t;&bslash;n&quot;
+l_string|&quot;&t;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+l_string|&quot;5:&t;ldi&t;-2, %2&bslash;n&quot;
+id|FIXUP_BRANCH
+c_func
+(paren
+l_int|4
+id|b
+)paren
+l_string|&quot;&t;.previous&bslash;n&quot;
+l_string|&quot;&t;.section __ex_table,&bslash;&quot;aw&bslash;&quot;&bslash;n&quot;
 macro_line|#ifdef __LP64__
-l_string|&quot;&t;.dword&t;1b,(4b-1b)&bslash;n&quot;
-l_string|&quot;&t;.dword  2b,(4b-2b)&bslash;n&quot;
-l_string|&quot;&t;.dword&t;3b,(4b-3b)&bslash;n&quot;
+l_string|&quot;&t;.dword&t;1b,5b&bslash;n&quot;
+l_string|&quot;&t;.dword  2b,5b&bslash;n&quot;
+l_string|&quot;&t;.dword&t;3b,5b&bslash;n&quot;
 macro_line|#else
-l_string|&quot;&t;.word&t;1b,(4b-1b)&bslash;n&quot;
-l_string|&quot;&t;.word&t;2b,(4b-2b)&bslash;n&quot;
-l_string|&quot;&t;.word&t;3b,(4b-3b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;1b,5b&bslash;n&quot;
+l_string|&quot;&t;.word&t;2b,5b&bslash;n&quot;
+l_string|&quot;&t;.word&t;3b,5b&bslash;n&quot;
 macro_line|#endif
 l_string|&quot;&t;.previous&bslash;n&quot;
 suffix:colon
@@ -756,15 +795,24 @@ l_string|&quot;&t;mtsp %3, %%sr1&bslash;n&quot;
 l_string|&quot;&t;extrw,u %1, 23, 8, %%r19&bslash;n&quot;
 l_string|&quot;1:&t;stb %1, 1(%%sr1, %2)&bslash;n&quot;
 l_string|&quot;2:&t;stb %%r19, 0(%%sr1, %2)&bslash;n&quot;
-l_string|&quot;&t;cmpclr,= %%r0, %%r0, %0&bslash;n&quot;
-l_string|&quot;3:&t;ldo&t;-2(%%r0), %0&bslash;n&quot;
-l_string|&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+l_string|&quot;&t;copy&t;%%r0, %0&bslash;n&quot;
+l_string|&quot;3:&t;&bslash;n&quot;
+l_string|&quot;&t;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+l_string|&quot;4:&t;ldi&t;-2, %0&bslash;n&quot;
+id|FIXUP_BRANCH
+c_func
+(paren
+l_int|3
+id|b
+)paren
+l_string|&quot;&t;.previous&bslash;n&quot;
+l_string|&quot;&t;.section __ex_table,&bslash;&quot;aw&bslash;&quot;&bslash;n&quot;
 macro_line|#ifdef __LP64__
-l_string|&quot;&t;.dword&t;1b,(3b-1b)&bslash;n&quot;
-l_string|&quot;&t;.dword  2b,(3b-2b)&bslash;n&quot;
+l_string|&quot;&t;.dword&t;1b,4b&bslash;n&quot;
+l_string|&quot;&t;.dword  2b,4b&bslash;n&quot;
 macro_line|#else
-l_string|&quot;&t;.word&t;1b,(3b-1b)&bslash;n&quot;
-l_string|&quot;&t;.word&t;2b,(3b-2b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;1b,4b&bslash;n&quot;
+l_string|&quot;&t;.word&t;2b,4b&bslash;n&quot;
 macro_line|#endif
 l_string|&quot;&t;.previous&bslash;n&quot;
 suffix:colon
@@ -896,15 +944,24 @@ l_string|&quot;&t;or&t;%%r22, %%r20, %%r20&bslash;n&quot;
 l_string|&quot;&t;or&t;%%r1, %%r21, %%r21&bslash;n&quot;
 l_string|&quot;&t;stw&t;%%r20,0(%%sr1,%2)&bslash;n&quot;
 l_string|&quot;&t;stw&t;%%r21,4(%%sr1,%2)&bslash;n&quot;
-l_string|&quot;&t;cmpclr,= %%r0, %%r0, %0&bslash;n&quot;
-l_string|&quot;3:&t;ldo&t;-2(%%r0), %0&bslash;n&quot;
-l_string|&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+l_string|&quot;&t;copy&t;%%r0, %0&bslash;n&quot;
+l_string|&quot;3:&t;&bslash;n&quot;
+l_string|&quot;&t;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+l_string|&quot;4:&t;ldi&t;-2, %0&bslash;n&quot;
+id|FIXUP_BRANCH
+c_func
+(paren
+l_int|3
+id|b
+)paren
+l_string|&quot;&t;.previous&bslash;n&quot;
+l_string|&quot;&t;.section __ex_table,&bslash;&quot;aw&bslash;&quot;&bslash;n&quot;
 macro_line|#ifdef __LP64__
-l_string|&quot;&t;.dword&t;1b,(3b-1b)&bslash;n&quot;
-l_string|&quot;&t;.dword  2b,(3b-2b)&bslash;n&quot;
+l_string|&quot;&t;.dword&t;1b,4b&bslash;n&quot;
+l_string|&quot;&t;.dword  2b,4b&bslash;n&quot;
 macro_line|#else
-l_string|&quot;&t;.word&t;1b,(3b-1b)&bslash;n&quot;
-l_string|&quot;&t;.word&t;2b,(3b-2b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;1b,4b&bslash;n&quot;
+l_string|&quot;&t;.word&t;2b,4b&bslash;n&quot;
 macro_line|#endif
 l_string|&quot;&t;.previous&bslash;n&quot;
 suffix:colon
@@ -1046,19 +1103,28 @@ l_string|&quot;&t;or&t;%%r22, %%r20, %%r20&bslash;n&quot;
 l_string|&quot;&t;or&t;%%r1, %%r21, %%r21&bslash;n&quot;
 l_string|&quot;3:&t;std&t;%%r20,0(%%sr1,%2)&bslash;n&quot;
 l_string|&quot;4:&t;std&t;%%r21,8(%%sr1,%2)&bslash;n&quot;
-l_string|&quot;&t;cmpclr,= %%r0, %%r0, %0&bslash;n&quot;
-l_string|&quot;5:&t;ldo&t;-2(%%r0), %0&bslash;n&quot;
-l_string|&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+l_string|&quot;&t;copy&t;%%r0, %0&bslash;n&quot;
+l_string|&quot;5:&t;&bslash;n&quot;
+l_string|&quot;&t;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+l_string|&quot;6:&t;ldi&t;-2, %0&bslash;n&quot;
+id|FIXUP_BRANCH
+c_func
+(paren
+l_int|5
+id|b
+)paren
+l_string|&quot;&t;.previous&bslash;n&quot;
+l_string|&quot;&t;.section __ex_table,&bslash;&quot;aw&bslash;&quot;&bslash;n&quot;
 macro_line|#ifdef __LP64__
-l_string|&quot;&t;.dword&t;1b,(5b-1b)&bslash;n&quot;
-l_string|&quot;&t;.dword  2b,(5b-2b)&bslash;n&quot;
-l_string|&quot;&t;.dword&t;3b,(5b-3b)&bslash;n&quot;
-l_string|&quot;&t;.dword  4b,(5b-4b)&bslash;n&quot;
+l_string|&quot;&t;.dword&t;1b,6b&bslash;n&quot;
+l_string|&quot;&t;.dword  2b,6b&bslash;n&quot;
+l_string|&quot;&t;.dword&t;3b,6b&bslash;n&quot;
+l_string|&quot;&t;.dword  4b,6b&bslash;n&quot;
 macro_line|#else
-l_string|&quot;&t;.word&t;1b,(5b-1b)&bslash;n&quot;
-l_string|&quot;&t;.word&t;2b,(5b-2b)&bslash;n&quot;
-l_string|&quot;&t;.word&t;3b,(5b-3b)&bslash;n&quot;
-l_string|&quot;&t;.word&t;4b,(5b-4b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;1b,6b&bslash;n&quot;
+l_string|&quot;&t;.word&t;2b,6b&bslash;n&quot;
+l_string|&quot;&t;.word&t;3b,6b&bslash;n&quot;
+l_string|&quot;&t;.word&t;4b,6b&bslash;n&quot;
 macro_line|#endif
 l_string|&quot;&t;.previous&bslash;n&quot;
 suffix:colon
@@ -1133,21 +1199,30 @@ l_string|&quot;&t;or&t;%2, %%r21, %2&bslash;n&quot;
 l_string|&quot;3:&t;stw&t;%1,0(%%sr1,%1)&bslash;n&quot;
 l_string|&quot;4:&t;stw&t;%%r1,4(%%sr1,%3)&bslash;n&quot;
 l_string|&quot;5:&t;stw&t;%2,8(%%sr1,%3)&bslash;n&quot;
-l_string|&quot;&t;cmpclr,= %%r0, %%r0, %0&bslash;n&quot;
-l_string|&quot;6:&t;ldo&t;-2(%%r0), %0&bslash;n&quot;
-l_string|&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+l_string|&quot;&t;copy&t;%%r0, %0&bslash;n&quot;
+l_string|&quot;6:&t;&bslash;n&quot;
+l_string|&quot;&t;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+l_string|&quot;7:&t;ldi&t;-2, %0&bslash;n&quot;
+id|FIXUP_BRANCH
+c_func
+(paren
+l_int|6
+id|b
+)paren
+l_string|&quot;&t;.previous&bslash;n&quot;
+l_string|&quot;&t;.section __ex_table,&bslash;&quot;aw&bslash;&quot;&bslash;n&quot;
 macro_line|#ifdef __LP64__
-l_string|&quot;&t;.dword&t;1b,(6b-1b)&bslash;n&quot;
-l_string|&quot;&t;.dword  2b,(6b-2b)&bslash;n&quot;
-l_string|&quot;&t;.dword&t;3b,(6b-3b)&bslash;n&quot;
-l_string|&quot;&t;.dword  4b,(6b-4b)&bslash;n&quot;
-l_string|&quot;&t;.dword  5b,(6b-5b)&bslash;n&quot;
+l_string|&quot;&t;.dword&t;1b,7b&bslash;n&quot;
+l_string|&quot;&t;.dword  2b,7b&bslash;n&quot;
+l_string|&quot;&t;.dword&t;3b,7b&bslash;n&quot;
+l_string|&quot;&t;.dword  4b,7b&bslash;n&quot;
+l_string|&quot;&t;.dword  5b,7b&bslash;n&quot;
 macro_line|#else
-l_string|&quot;&t;.word&t;1b,(6b-1b)&bslash;n&quot;
-l_string|&quot;&t;.word&t;2b,(6b-2b)&bslash;n&quot;
-l_string|&quot;&t;.word&t;3b,(6b-3b)&bslash;n&quot;
-l_string|&quot;&t;.word&t;4b,(6b-4b)&bslash;n&quot;
-l_string|&quot;&t;.word  &t;5b,(6b-5b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;1b,7b&bslash;n&quot;
+l_string|&quot;&t;.word&t;2b,7b&bslash;n&quot;
+l_string|&quot;&t;.word&t;3b,7b&bslash;n&quot;
+l_string|&quot;&t;.word&t;4b,7b&bslash;n&quot;
+l_string|&quot;&t;.word  &t;5b,7b&bslash;n&quot;
 macro_line|#endif
 l_string|&quot;&t;.previous&bslash;n&quot;
 suffix:colon
@@ -1637,37 +1712,6 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|regs-&gt;isr
-op_ne
-id|regs-&gt;sr
-(braket
-l_int|7
-)braket
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_CRIT
-l_string|&quot;isr verification failed (isr: &quot;
-id|RFMT
-l_string|&quot;, sr7: &quot;
-id|RFMT
-l_string|&quot;&bslash;n&quot;
-comma
-id|regs-&gt;isr
-comma
-id|regs-&gt;sr
-(braket
-l_int|7
-)braket
-)paren
-suffix:semicolon
-multiline_comment|/* don&squot;t kill him though, since he has appropriate access to the page, or we&n;&t;&t; * would never have gotten here.&n;&t;&t; */
 )brace
 multiline_comment|/* TODO: make this cleaner... */
 r_switch

@@ -106,8 +106,8 @@ comma
 l_string|&quot;Failed to get index context.&quot;
 )paren
 suffix:semicolon
-r_return
-id|FALSE
+r_goto
+id|err_out
 suffix:semicolon
 )brace
 id|err
@@ -324,6 +324,11 @@ id|TRUE
 suffix:semicolon
 id|err_out
 suffix:colon
+r_if
+c_cond
+(paren
+id|ictx
+)paren
 id|ntfs_index_ctx_put
 c_func
 (paren

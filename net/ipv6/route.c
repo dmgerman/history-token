@@ -3995,13 +3995,6 @@ c_func
 l_int|NULL
 )paren
 suffix:semicolon
-id|dst_release
-c_func
-(paren
-op_amp
-id|rt-&gt;u.dst
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|fib6_del
@@ -4012,6 +4005,13 @@ comma
 id|nlh
 comma
 id|_rtattr
+)paren
+suffix:semicolon
+id|dst_release
+c_func
+(paren
+op_amp
+id|rt-&gt;u.dst
 )paren
 suffix:semicolon
 id|write_unlock_bh
@@ -4132,7 +4132,8 @@ id|rtmsg-&gt;rtmsg_flags
 op_amp
 id|RTF_GATEWAY
 op_logical_and
-id|ipv6_addr_cmp
+op_logical_neg
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -4282,7 +4283,8 @@ multiline_comment|/*&n;&t; *&t;RFC 2461 specifies that redirects should only be&
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+op_logical_neg
+id|ipv6_addr_equal
 c_func
 (paren
 id|saddr
@@ -4329,8 +4331,7 @@ id|rt1-&gt;u.next
 r_if
 c_cond
 (paren
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 id|saddr
@@ -5125,7 +5126,7 @@ id|dev
 op_eq
 id|rt-&gt;rt6i_dev
 op_logical_and
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -5133,8 +5134,6 @@ id|rt-&gt;rt6i_gateway
 comma
 id|addr
 )paren
-op_eq
-l_int|0
 )paren
 r_break
 suffix:semicolon

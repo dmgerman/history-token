@@ -157,7 +157,7 @@ comma
 multiline_comment|/* VLAN receive method */
 )brace
 suffix:semicolon
-multiline_comment|/* Bits of netdev state that are propogated from real device to virtual */
+multiline_comment|/* Bits of netdev state that are propagated from real device to virtual */
 DECL|macro|VLAN_LINK_STATE_MASK
 mdefine_line|#define VLAN_LINK_STATE_MASK &bslash;&n;&t;((1&lt;&lt;__LINK_STATE_PRESENT)|(1&lt;&lt;__LINK_STATE_NOCARRIER))
 multiline_comment|/* End of global variables definitions. */
@@ -1832,7 +1832,7 @@ id|event
 r_case
 id|NETDEV_CHANGE
 suffix:colon
-multiline_comment|/* Propogate real device state to vlan devices */
+multiline_comment|/* Propagate real device state to vlan devices */
 id|flgs
 op_assign
 id|dev-&gt;state

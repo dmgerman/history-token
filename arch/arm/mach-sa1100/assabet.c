@@ -2,12 +2,14 @@ multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/assabet.c&n; *&n; * Author:
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;linux/mtd/mtd.h&gt;
+macro_line|#include &lt;linux/mtd/partitions.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -16,6 +18,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
+macro_line|#include &lt;asm/mach/flash.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#include &lt;asm/arch/assabet.h&gt;
@@ -170,6 +173,241 @@ id|ASSABET_BCR_LCD_ON
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef ASSABET_REV_4
+multiline_comment|/*&n; * Phase 4 Assabet has two 28F160B3 flash parts in bank 0:&n; */
+DECL|variable|assabet_partitions
+r_static
+r_struct
+id|mtd_partition
+id|assabet_partitions
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;bootloader&quot;
+comma
+dot
+id|size
+op_assign
+l_int|0x00020000
+comma
+dot
+id|offset
+op_assign
+l_int|0
+comma
+dot
+id|mask_flags
+op_assign
+id|MTD_WRITEABLE
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;bootloader params&quot;
+comma
+dot
+id|size
+op_assign
+l_int|0x00020000
+comma
+dot
+id|offset
+op_assign
+id|MTDPART_OFS_APPEND
+comma
+dot
+id|mask_flags
+op_assign
+id|MTD_WRITEABLE
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;jffs&quot;
+comma
+dot
+id|size
+op_assign
+id|MTDPART_SIZ_FULL
+comma
+dot
+id|offset
+op_assign
+id|MTDPART_OFS_APPEND
+comma
+)brace
+)brace
+suffix:semicolon
+macro_line|#else
+multiline_comment|/*&n; * Phase 5 Assabet has two 28F128J3A flash parts in bank 0:&n; */
+DECL|variable|assabet_partitions
+r_static
+r_struct
+id|mtd_partition
+id|assabet_partitions
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;bootloader&quot;
+comma
+dot
+id|size
+op_assign
+l_int|0x00040000
+comma
+dot
+id|offset
+op_assign
+l_int|0
+comma
+dot
+id|mask_flags
+op_assign
+id|MTD_WRITEABLE
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;bootloader params&quot;
+comma
+dot
+id|size
+op_assign
+l_int|0x00040000
+comma
+dot
+id|offset
+op_assign
+id|MTDPART_OFS_APPEND
+comma
+dot
+id|mask_flags
+op_assign
+id|MTD_WRITEABLE
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;jffs&quot;
+comma
+dot
+id|size
+op_assign
+id|MTDPART_SIZ_FULL
+comma
+dot
+id|offset
+op_assign
+id|MTDPART_OFS_APPEND
+comma
+)brace
+)brace
+suffix:semicolon
+macro_line|#endif
+DECL|variable|assabet_flash_data
+r_static
+r_struct
+id|flash_platform_data
+id|assabet_flash_data
+op_assign
+(brace
+dot
+id|map_name
+op_assign
+l_string|&quot;cfi_probe&quot;
+comma
+dot
+id|parts
+op_assign
+id|assabet_partitions
+comma
+dot
+id|nr_parts
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|assabet_partitions
+)paren
+comma
+)brace
+suffix:semicolon
+DECL|variable|assabet_flash_resources
+r_static
+r_struct
+id|resource
+id|assabet_flash_resources
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|start
+op_assign
+id|SA1100_CS0_PHYS
+comma
+dot
+id|end
+op_assign
+id|SA1100_CS0_PHYS
+op_plus
+id|SZ_32M
+op_minus
+l_int|1
+comma
+dot
+id|flags
+op_assign
+id|IORESOURCE_MEM
+comma
+)brace
+comma
+(brace
+dot
+id|start
+op_assign
+id|SA1100_CS1_PHYS
+comma
+dot
+id|end
+op_assign
+id|SA1100_CS1_PHYS
+op_plus
+id|SZ_32M
+op_minus
+l_int|1
+comma
+dot
+id|flags
+op_assign
+id|IORESOURCE_MEM
+comma
+)brace
+)brace
+suffix:semicolon
 DECL|function|assabet_init
 r_static
 r_void
@@ -269,6 +507,21 @@ l_string|&quot;hasn&squot;t been configured in the kernel&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 )brace
+id|sa11x0_set_flash_data
+c_func
+(paren
+op_amp
+id|assabet_flash_data
+comma
+id|assabet_flash_resources
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|assabet_flash_resources
+)paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * On Assabet, we must probe for the Neponset board _before_&n; * paging_init() has occurred to actually determine the amount&n; * of RAM available.  To do so, we map the appropriate IO section&n; * in the page table here in order to access GPIO registers.&n; */
 DECL|function|map_sa1100_gpio_regs
@@ -928,10 +1181,10 @@ op_assign
 op_amp
 id|sa1100_timer
 comma
-id|INIT_MACHINE
-c_func
-(paren
+dot
+id|init_machine
+op_assign
 id|assabet_init
-)paren
+comma
 id|MACHINE_END
 eof

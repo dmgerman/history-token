@@ -1116,13 +1116,16 @@ id|blank
 )paren
 (brace
 r_case
-id|VESA_POWERDOWN
+id|FB_BLANK_POWERDOWN
 suffix:colon
 r_case
-id|VESA_VSYNC_SUSPEND
+id|FB_BLANK_VSYNC_SUSPEND
 suffix:colon
 r_case
-id|VESA_HSYNC_SUSPEND
+id|FB_BLANK_HSYNC_SUSPEND
+suffix:colon
+r_case
+id|FB_BLANK_NORMAL
 suffix:colon
 r_if
 c_cond
@@ -1177,7 +1180,7 @@ singleline_comment|//TODO if (pxafb_blank_helper) pxafb_blank_helper(blank);
 r_break
 suffix:semicolon
 r_case
-id|VESA_NO_BLANKING
+id|FB_BLANK_UNBLANK
 suffix:colon
 singleline_comment|//TODO if (pxafb_blank_helper) pxafb_blank_helper(blank);
 r_if
@@ -3787,11 +3790,6 @@ op_assign
 id|FBINFO_DEFAULT
 suffix:semicolon
 id|fbi-&gt;fb.node
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|fbi-&gt;fb.currcon
 op_assign
 op_minus
 l_int|1

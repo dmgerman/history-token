@@ -2540,7 +2540,7 @@ r_static
 r_char
 id|manufacturer
 (braket
-l_int|40
+l_int|50
 )braket
 suffix:semicolon
 DECL|variable|serial
@@ -2626,12 +2626,14 @@ r_int
 id|index
 )paren
 (brace
+macro_line|#ifdef CONFIG_USB_GADGET_DUALSPEED
 r_enum
 id|usb_device_speed
 id|speed
 op_assign
 id|gadget-&gt;speed
 suffix:semicolon
+macro_line|#endif
 r_int
 id|len
 suffix:semicolon
@@ -13846,6 +13848,7 @@ id|rc
 suffix:semicolon
 )brace
 DECL|function|store_ro
+r_static
 id|ssize_t
 id|store_ro
 c_func
@@ -13982,6 +13985,7 @@ id|rc
 suffix:semicolon
 )brace
 DECL|function|store_file
+r_static
 id|ssize_t
 id|store_file
 c_func

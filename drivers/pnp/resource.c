@@ -382,12 +382,12 @@ op_increment
 r_if
 c_cond
 (paren
-id|data-&gt;map
-op_amp
+id|test_bit
+c_func
 (paren
-l_int|1
-op_lshift
 id|i
+comma
+id|data-&gt;map
 )paren
 )paren
 id|pcibios_penalize_isa_irq
@@ -1905,6 +1905,7 @@ r_int
 id|idx
 )paren
 (brace
+macro_line|#ifndef CONFIG_IA64
 r_int
 id|tmp
 suffix:semicolon
@@ -2153,6 +2154,12 @@ suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
+macro_line|#else
+multiline_comment|/* IA64 hasn&squot;t legacy DMA */
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|variable|pnp_register_dependent_option
 id|EXPORT_SYMBOL

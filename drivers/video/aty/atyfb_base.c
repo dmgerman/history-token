@@ -999,7 +999,7 @@ comma
 dot
 id|fb_cursor
 op_assign
-id|atyfb_cursor
+id|soft_cursor
 comma
 macro_line|#ifdef __sparc__
 dot
@@ -3031,7 +3031,7 @@ c_func
 l_string|&quot;setting up CRTC&bslash;n&quot;
 )paren
 suffix:semicolon
-id|PRINTKI
+id|DPRINTK
 c_func
 (paren
 l_string|&quot;set primary CRT to %ix%i %c%c composite %c&bslash;n&quot;
@@ -3278,7 +3278,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|PRINTKI
+id|DPRINTK
 c_func
 (paren
 l_string|&quot;set secondary CRT to %ix%i %c%c&bslash;n&quot;
@@ -9109,9 +9109,9 @@ multiline_comment|/* To stop the swapper from even considering these pages. */
 id|vma-&gt;vm_flags
 op_or_assign
 (paren
-id|VM_SHM
+id|VM_IO
 op_or
-id|VM_LOCKED
+id|VM_RESERVED
 )paren
 suffix:semicolon
 r_if
@@ -9372,10 +9372,6 @@ id|map_size
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-id|vma-&gt;vm_flags
-op_or_assign
-id|VM_IO
 suffix:semicolon
 r_if
 c_cond
@@ -10099,10 +10095,10 @@ r_return
 id|timeout
 ques
 c_cond
-op_minus
-l_int|1
-suffix:colon
 l_int|0
+suffix:colon
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 DECL|function|atyfb_pci_suspend
@@ -10166,7 +10162,7 @@ l_int|2
 op_logical_or
 id|state
 op_eq
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 )paren
 r_return
 l_int|0
@@ -10201,9 +10197,7 @@ multiline_comment|/* Blank display and LCD */
 id|atyfb_blank
 c_func
 (paren
-id|VESA_POWERDOWN
-op_plus
-l_int|1
+id|FB_BLANK_POWERDOWN
 comma
 id|info
 )paren
@@ -10240,7 +10234,7 @@ suffix:semicolon
 id|atyfb_blank
 c_func
 (paren
-l_int|0
+id|FB_BLANK_UNBLANK
 comma
 id|info
 )paren
@@ -10268,7 +10262,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_assign
 id|state
 suffix:semicolon
@@ -10314,7 +10308,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_eq
 l_int|0
 )paren
@@ -10329,7 +10323,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_eq
 l_int|2
 )paren
@@ -10369,7 +10363,7 @@ suffix:semicolon
 id|atyfb_blank
 c_func
 (paren
-l_int|0
+id|FB_BLANK_UNBLANK
 comma
 id|info
 )paren
@@ -10379,7 +10373,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_assign
 l_int|0
 suffix:semicolon
@@ -10858,6 +10852,28 @@ op_plus
 l_int|0xc0
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_PMAC
+multiline_comment|/* The Apple iBook1 uses non-standard memory frequencies. We detect it&n;&t; * and set the frequency manually. */
+r_if
+c_cond
+(paren
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;PowerBook2,1&quot;
+)paren
+)paren
+(brace
+id|par-&gt;pll_limits.mclk
+op_assign
+l_int|70
+suffix:semicolon
+id|par-&gt;pll_limits.xclk
+op_assign
+l_int|53
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -12922,23 +12938,26 @@ comma
 id|par
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|blank
-OG
-l_int|0
-)paren
 r_switch
 c_cond
 (paren
 id|blank
-op_minus
-l_int|1
 )paren
 (brace
 r_case
-id|VESA_NO_BLANKING
+id|FB_BLANK_UNBLANK
+suffix:colon
+id|gen_cntl
+op_and_assign
+op_complement
+(paren
+l_int|0x4c
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|FB_BLANK_NORMAL
 suffix:colon
 id|gen_cntl
 op_or_assign
@@ -12947,7 +12966,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|VESA_VSYNC_SUSPEND
+id|FB_BLANK_VSYNC_SUSPEND
 suffix:colon
 id|gen_cntl
 op_or_assign
@@ -12956,7 +12975,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|VESA_HSYNC_SUSPEND
+id|FB_BLANK_HSYNC_SUSPEND
 suffix:colon
 id|gen_cntl
 op_or_assign
@@ -12965,7 +12984,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|VESA_POWERDOWN
+id|FB_BLANK_POWERDOWN
 suffix:colon
 id|gen_cntl
 op_or_assign
@@ -12974,14 +12993,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-r_else
-id|gen_cntl
-op_and_assign
-op_complement
-(paren
-l_int|0x4c
-)paren
-suffix:semicolon
 id|aty_st_8
 c_func
 (paren

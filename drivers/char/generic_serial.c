@@ -57,12 +57,14 @@ mdefine_line|#define RELEASEIT restore_flags (flags)
 macro_line|#endif
 DECL|macro|RS_EVENT_WRITE_WAKEUP
 mdefine_line|#define RS_EVENT_WRITE_WAKEUP&t;1
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|gs_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 DECL|function|gs_put_char

@@ -1404,6 +1404,9 @@ comma
 DECL|enumerator|TCA_STATS2
 id|TCA_STATS2
 comma
+DECL|enumerator|TCA_ACT_STATS
+id|TCA_ACT_STATS
+comma
 DECL|enumerator|__TCA_MAX
 id|__TCA_MAX
 )brace

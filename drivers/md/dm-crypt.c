@@ -2290,9 +2290,8 @@ r_if
 c_cond
 (paren
 (paren
+op_logical_neg
 id|key_size
-op_eq
-l_int|0
 op_logical_and
 id|strcmp
 c_func
@@ -2308,6 +2307,9 @@ op_ne
 l_int|0
 )paren
 op_logical_or
+(paren
+id|key_size
+op_logical_and
 id|crypt_decode_key
 c_func
 (paren
@@ -2322,6 +2324,7 @@ id|key_size
 )paren
 OL
 l_int|0
+)paren
 )paren
 (brace
 id|ti-&gt;error

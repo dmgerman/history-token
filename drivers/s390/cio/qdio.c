@@ -21,7 +21,7 @@ macro_line|#include &quot;qdio.h&quot;
 macro_line|#include &quot;ioasm.h&quot;
 macro_line|#include &quot;chsc.h&quot;
 DECL|macro|VERSION_QDIO_C
-mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.88 $&quot;
+mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.89 $&quot;
 multiline_comment|/****************** MODULE PARAMETER VARIABLES ********************/
 id|MODULE_AUTHOR
 c_func
@@ -5352,8 +5352,6 @@ id|qdio_q
 )paren
 comma
 id|GFP_KERNEL
-op_or
-id|GFP_DMA
 )paren
 suffix:semicolon
 r_if
@@ -5395,8 +5393,6 @@ c_func
 id|PAGE_SIZE
 comma
 id|GFP_KERNEL
-op_or
-id|GFP_DMA
 )paren
 suffix:semicolon
 r_if
@@ -5451,8 +5447,6 @@ id|qdio_q
 )paren
 comma
 id|GFP_KERNEL
-op_or
-id|GFP_DMA
 )paren
 suffix:semicolon
 r_if
@@ -5488,8 +5482,6 @@ c_func
 id|PAGE_SIZE
 comma
 id|GFP_KERNEL
-op_or
-id|GFP_DMA
 )paren
 suffix:semicolon
 r_if

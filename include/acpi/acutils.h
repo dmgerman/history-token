@@ -249,6 +249,23 @@ id|count
 )paren
 suffix:semicolon
 r_int
+id|acpi_ut_memcmp
+(paren
+r_const
+r_char
+op_star
+id|buffer1
+comma
+r_const
+r_char
+op_star
+id|buffer2
+comma
+id|acpi_size
+id|count
+)paren
+suffix:semicolon
+r_int
 id|acpi_ut_strncmp
 (paren
 r_const
@@ -1164,6 +1181,15 @@ id|acpi_size
 id|buffer_size
 )paren
 suffix:semicolon
+r_union
+id|acpi_operand_object
+op_star
+id|acpi_ut_create_string_object
+(paren
+id|acpi_size
+id|string_size
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * ut_ref_cnt - Object reference count management&n; */
 r_void
 id|acpi_ut_add_reference
@@ -1404,11 +1430,9 @@ id|acpi_status
 id|acpi_ut_divide
 (paren
 id|acpi_integer
-op_star
 id|in_dividend
 comma
 id|acpi_integer
-op_star
 id|in_divisor
 comma
 id|acpi_integer
@@ -1424,7 +1448,6 @@ id|acpi_status
 id|acpi_ut_short_divide
 (paren
 id|acpi_integer
-op_star
 id|in_dividend
 comma
 id|u32
@@ -1468,6 +1491,9 @@ op_star
 id|ret_integer
 )paren
 suffix:semicolon
+multiline_comment|/* Values for Base above (16=Hex, 10=Decimal) */
+DECL|macro|ACPI_ANY_BASE
+mdefine_line|#define ACPI_ANY_BASE        0
 r_char
 op_star
 id|acpi_ut_strupr

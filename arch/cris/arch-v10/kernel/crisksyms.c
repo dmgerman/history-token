@@ -1,0 +1,70 @@
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/arch/svinto.h&gt;
+multiline_comment|/* Export shadow registers for the CPU I/O pins */
+DECL|variable|genconfig_shadow
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|genconfig_shadow
+)paren
+suffix:semicolon
+DECL|variable|port_pa_data_shadow
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|port_pa_data_shadow
+)paren
+suffix:semicolon
+DECL|variable|port_pa_dir_shadow
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|port_pa_dir_shadow
+)paren
+suffix:semicolon
+DECL|variable|port_pb_data_shadow
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|port_pb_data_shadow
+)paren
+suffix:semicolon
+DECL|variable|port_pb_dir_shadow
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|port_pb_dir_shadow
+)paren
+suffix:semicolon
+DECL|variable|port_pb_config_shadow
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|port_pb_config_shadow
+)paren
+suffix:semicolon
+DECL|variable|port_g_data_shadow
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|port_g_data_shadow
+)paren
+suffix:semicolon
+multiline_comment|/* Cache flush functions */
+DECL|variable|flush_etrax_cache
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_etrax_cache
+)paren
+suffix:semicolon
+DECL|variable|prepare_rx_descriptor
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|prepare_rx_descriptor
+)paren
+suffix:semicolon
+eof

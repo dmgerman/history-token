@@ -1311,7 +1311,7 @@ DECL|macro|ffs
 mdefine_line|#define ffs(x) generic_ffs(x)
 macro_line|#else
 multiline_comment|/*&n; * On ARMv5 and above those functions can be implemented around&n; * the clz instruction for much better code efficiency.&n; */
-r_extern
+r_static
 id|__inline__
 r_int
 id|generic_fls

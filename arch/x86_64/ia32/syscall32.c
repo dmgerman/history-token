@@ -54,11 +54,10 @@ r_char
 op_star
 id|syscall32_page
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|use_sysenter
 r_static
 r_int
 id|use_sysenter
-id|__initdata
 op_assign
 op_minus
 l_int|1

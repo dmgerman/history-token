@@ -95,7 +95,7 @@ mdefine_line|#define lbmGC&t;&t;0x0080&t;/* lbmIODone to perform post-GC process
 DECL|macro|lbmDIRECT
 mdefine_line|#define lbmDIRECT&t;0x0100
 multiline_comment|/*&n; * Global list of active external journals&n; */
-DECL|variable|jfs_external_logs
+r_static
 id|LIST_HEAD
 c_func
 (paren
@@ -103,6 +103,7 @@ id|jfs_external_logs
 )paren
 suffix:semicolon
 DECL|variable|dummy_log
+r_static
 r_struct
 id|jfs_log
 op_star
@@ -110,7 +111,7 @@ id|dummy_log
 op_assign
 l_int|NULL
 suffix:semicolon
-DECL|variable|jfs_log_sem
+r_static
 id|DECLARE_MUTEX
 c_func
 (paren
@@ -402,6 +403,7 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;statistics&n; */
 macro_line|#ifdef CONFIG_JFS_STATISTICS
 DECL|struct|lmStat
+r_static
 r_struct
 id|lmStat
 (brace
@@ -4455,6 +4457,14 @@ multiline_comment|/*&n;&t; *      unwind on error&n;&t; */
 id|errout30
 suffix:colon
 multiline_comment|/* release log page */
+id|log-&gt;wqueue
+op_assign
+l_int|NULL
+suffix:semicolon
+id|bp-&gt;l_wqnext
+op_assign
+l_int|NULL
+suffix:semicolon
 id|lbmFree
 c_func
 (paren

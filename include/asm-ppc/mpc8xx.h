@@ -80,45 +80,6 @@ suffix:semicolon
 r_struct
 id|pt_regs
 suffix:semicolon
-r_extern
-r_int
-id|request_8xxirq
-c_func
-(paren
-r_int
-r_int
-id|irq
-comma
-r_void
-(paren
-op_star
-id|handler
-)paren
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-comma
-r_int
-r_int
-id|flags
-comma
-r_const
-r_char
-op_star
-id|device
-comma
-r_void
-op_star
-id|dev_id
-)paren
-suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* CONFIG_8xx */
 macro_line|#endif /* __CONFIG_8xx_DEFS */

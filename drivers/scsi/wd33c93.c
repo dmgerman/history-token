@@ -72,12 +72,14 @@ r_char
 op_star
 id|setup_strings
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|setup_strings
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_static

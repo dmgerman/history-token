@@ -511,6 +511,14 @@ id|context
 )paren
 suffix:semicolon
 id|acpi_status
+id|acpi_install_exception_handler
+(paren
+id|acpi_exception_handler
+id|handler
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Event interfaces&n; */
+id|acpi_status
 id|acpi_acquire_global_lock
 (paren
 id|u16

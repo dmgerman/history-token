@@ -1,4 +1,4 @@
-multiline_comment|/*&n;**  PCI Lower Bus Adapter (LBA) manager&n;**&n;**&t;(c) Copyright 1999,2000 Grant Grundler&n;**&t;(c) Copyright 1999,2000 Hewlett-Packard Company&n;**&n;**&t;This program is free software; you can redistribute it and/or modify&n;**&t;it under the terms of the GNU General Public License as published by&n;**      the Free Software Foundation; either version 2 of the License, or&n;**      (at your option) any later version.&n;**&n;**&n;** This module primarily provides access to PCI bus (config/IOport&n;** spaces) on platforms with an SBA/LBA chipset. A/B/C/J/L/N-class&n;** with 4 digit model numbers - eg C3000 (and A400...sigh).&n;**&n;** LBA driver isn&squot;t as simple as the Dino driver because:&n;**   (a) this chip has substantial bug fixes between revisions&n;**       (Only one Dino bug has a software workaround :^(  )&n;**   (b) has more options which we don&squot;t (yet) support (DMA hints, OLARD)&n;**   (c) IRQ support lives in the I/O SAPIC driver (not with PCI driver)&n;**   (d) play nicely with both PAT and &quot;Legacy&quot; PA-RISC firmware (PDC).&n;**       (dino only deals with &quot;Legacy&quot; PDC)&n;**&n;** LBA driver passes the I/O SAPIC HPA to the I/O SAPIC driver.&n;** (I/O SAPIC is integratd in the LBA chip).&n;**&n;** FIXME: Add support to SBA and LBA drivers for DMA hint sets&n;** FIXME: Add support for PCI card hot-plug (OLARD).&n;*/
+multiline_comment|/*&n;**&n;**  PCI Lower Bus Adapter (LBA) manager&n;**&n;**&t;(c) Copyright 1999,2000 Grant Grundler&n;**&t;(c) Copyright 1999,2000 Hewlett-Packard Company&n;**&n;**&t;This program is free software; you can redistribute it and/or modify&n;**&t;it under the terms of the GNU General Public License as published by&n;**      the Free Software Foundation; either version 2 of the License, or&n;**      (at your option) any later version.&n;**&n;**&n;** This module primarily provides access to PCI bus (config/IOport&n;** spaces) on platforms with an SBA/LBA chipset. A/B/C/J/L/N-class&n;** with 4 digit model numbers - eg C3000 (and A400...sigh).&n;**&n;** LBA driver isn&squot;t as simple as the Dino driver because:&n;**   (a) this chip has substantial bug fixes between revisions&n;**       (Only one Dino bug has a software workaround :^(  )&n;**   (b) has more options which we don&squot;t (yet) support (DMA hints, OLARD)&n;**   (c) IRQ support lives in the I/O SAPIC driver (not with PCI driver)&n;**   (d) play nicely with both PAT and &quot;Legacy&quot; PA-RISC firmware (PDC).&n;**       (dino only deals with &quot;Legacy&quot; PDC)&n;**&n;** LBA driver passes the I/O SAPIC HPA to the I/O SAPIC driver.&n;** (I/O SAPIC is integratd in the LBA chip).&n;**&n;** FIXME: Add support to SBA and LBA drivers for DMA hint sets&n;** FIXME: Add support for PCI card hot-plug (OLARD).&n;*/
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -74,7 +74,7 @@ mdefine_line|#define ASSERT(expr)
 macro_line|#endif
 multiline_comment|/*&n;** Config accessor functions only pass in the 8-bit bus number and not&n;** the 8-bit &quot;PCI Segment&quot; number. Each LBA will be assigned a PCI bus&n;** number based on what firmware wrote into the scratch register.&n;**&n;** The &quot;secondary&quot; bus number is set to this before calling&n;** pci_register_ops(). If any PPB&squot;s are present, the scan will&n;** discover them and update the &quot;secondary&quot; and &quot;subordinate&quot;&n;** fields in the pci_bus structure.&n;**&n;** Changes in the configuration *may* result in a different&n;** bus number for each LBA depending on what firmware does.&n;*/
 DECL|macro|MODULE_NAME
-mdefine_line|#define MODULE_NAME &quot;lba&quot;
+mdefine_line|#define MODULE_NAME &quot;LBA&quot;
 DECL|macro|LBA_FUNC_ID
 mdefine_line|#define LBA_FUNC_ID&t;0x0000&t;/* function id */
 DECL|macro|LBA_FCLASS
@@ -139,6 +139,8 @@ DECL|macro|LBA_EIOS_BASE
 mdefine_line|#define LBA_EIOS_BASE&t;0x0260&t;/* Extra I/O port space */
 DECL|macro|LBA_EIOS_MASK
 mdefine_line|#define LBA_EIOS_MASK&t;0x0268
+DECL|macro|LBA_GLOBAL_MASK
+mdefine_line|#define LBA_GLOBAL_MASK&t;0x0270&t;/* Mercury only: Global Address Mask */
 DECL|macro|LBA_DMA_CTL
 mdefine_line|#define LBA_DMA_CTL&t;0x0278&t;/* firmware sets this */
 DECL|macro|LBA_IBASE
@@ -164,13 +166,8 @@ mdefine_line|#define LBA_ROPE_CTL     0x06A0
 DECL|macro|LBA_IOSAPIC_BASE
 mdefine_line|#define LBA_IOSAPIC_BASE&t;0x800 /* Offset of IRQ logic */
 multiline_comment|/* non-postable I/O port space, densely packed */
-macro_line|#ifdef CONFIG_PARISC64
-DECL|macro|LBA_ASTRO_PORT_BASE
-mdefine_line|#define LBA_ASTRO_PORT_BASE&t;(0xfffffffffee00000UL)
-macro_line|#else
-DECL|macro|LBA_ASTRO_PORT_BASE
-mdefine_line|#define LBA_ASTRO_PORT_BASE&t;(0xfee00000UL)
-macro_line|#endif
+DECL|macro|LBA_PORT_BASE
+mdefine_line|#define LBA_PORT_BASE&t;(PCI_F_EXTEND | 0xfee00000UL)
 DECL|macro|ELROY_HVERS
 mdefine_line|#define ELROY_HVERS&t;0x782
 DECL|macro|MERCURY_HVERS
@@ -338,10 +335,10 @@ mdefine_line|#define LBA_CFG_DEV(tok)  ((u8) ((tok)&gt;&gt;11) &amp; 0x1f)
 DECL|macro|LBA_CFG_FUNC
 mdefine_line|#define LBA_CFG_FUNC(tok) ((u8) ((tok)&gt;&gt;8 ) &amp; 0x7)
 multiline_comment|/*&n;** Extract LBA (Rope) number from HPA&n;** REVISIT: 16 ropes for Stretch/Ike?&n;*/
-DECL|macro|ROPES_PER_SBA
-mdefine_line|#define ROPES_PER_SBA&t;8
+DECL|macro|ROPES_PER_IOC
+mdefine_line|#define ROPES_PER_IOC&t;8
 DECL|macro|LBA_NUM
-mdefine_line|#define LBA_NUM(x)    ((((unsigned long) x) &gt;&gt; 13) &amp; (ROPES_PER_SBA-1))
+mdefine_line|#define LBA_NUM(x)    ((((unsigned long) x) &gt;&gt; 13) &amp; (ROPES_PER_IOC-1))
 r_static
 r_void
 DECL|function|lba_dump_res
@@ -537,7 +534,7 @@ mdefine_line|#define LBA_FATAL_ERROR 0x10
 DECL|macro|LBA_CFG_MASTER_ABORT_CHECK
 mdefine_line|#define LBA_CFG_MASTER_ABORT_CHECK(d, base, tok, error) {&t;&t;&bslash;&n;    u32 error_status = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;    /*&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;     * Set clear enable (CE) bit. Unset by HW when new&t;&t;&t;&bslash;&n;     * errors are logged -- LBA HW ERS section 14.3.3).&t;&t;&bslash;&n;     */&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    WRITE_REG32(status_control | CLEAR_ERRLOG_ENABLE, base + LBA_STAT_CTL); &bslash;&n;    error_status = READ_REG32(base + LBA_ERROR_STATUS);&t;&t;&bslash;&n;    if ((error_status &amp; 0x1f) != 0) {&t;&t;&t;&t;&t;&bslash;&n;&t;/*&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; * Fail the config read request.&t;&t;&t;&t;&bslash;&n;&t; */&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;error = 1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((error_status &amp; LBA_FATAL_ERROR) == 0) {&t;&t;&t;&bslash;&n;&t;    /*&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;     * Clear error status (if fatal bit not set) by setting&t;&bslash;&n;&t;     * clear error log bit (CL).&t;&t;&t;&t;&bslash;&n;&t;     */&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;    WRITE_REG32(status_control | CLEAR_ERRLOG, base + LBA_STAT_CTL); &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|LBA_CFG_TR4_ADDR_SETUP
-mdefine_line|#define LBA_CFG_TR4_ADDR_SETUP(d, addr) &bslash;&n;    WRITE_REG32(((addr) &amp; ~3), (d)-&gt;hba.base_addr + LBA_PCI_CFG_ADDR)
+mdefine_line|#define LBA_CFG_TR4_ADDR_SETUP(d, addr) &bslash;&n;    WRITE_REG32(((addr) &amp; ~3), (d)-&gt;hba.base_addr + LBA_PCI_CFG_ADDR); &bslash;&n;    lba_t32 = READ_REG32((d)-&gt;hba.base_addr + LBA_PCI_CFG_ADDR)
 DECL|macro|LBA_CFG_ADDR_SETUP
 mdefine_line|#define LBA_CFG_ADDR_SETUP(d, addr) {&t;&t;&t;&t;&bslash;&n;    WRITE_REG32(((addr) &amp; ~3), (d)-&gt;hba.base_addr + LBA_PCI_CFG_ADDR);&t;&bslash;&n;    /*&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;     * HPREVISIT:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;     *       --&t;Potentially could skip this once DMA bug fixed.&t;&t;&bslash;&n;     *&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;     * Read address register to ensure that LBA is the bus master,&t;&bslash;&n;     * which implies that DMA traffic has stopped when DMA arb is off.&t;&bslash;&n;     */&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    lba_t32 = READ_REG32((d)-&gt;hba.base_addr + LBA_PCI_CFG_ADDR);&t;&t;&bslash;&n;}
 DECL|macro|LBA_CFG_RESTORE
@@ -801,7 +798,8 @@ r_return
 id|data
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PARISC64
+macro_line|#if USE_PAT_PDC_CFG
+multiline_comment|/* PAT PDC needs to be relocated in order to perform properly.&n; * tg3 driver does about 1600 PCI Cfg writes to initialize the card.&n; * On 440Mhz A500, PDC takes ~20ms/write, or ~30 seconds per card.&n; * On PA8800, that takes about 5ms/write (8 seconds).&n; * But relocating PDC will burn at least 4MB of RAM.&n; * Easier/Cheaper to just maintain our own mercury cfg ops.&n; */
 DECL|macro|pat_cfg_addr
 mdefine_line|#define pat_cfg_addr(bus, devfn, addr) (((bus) &lt;&lt; 16) | ((devfn) &lt;&lt; 8) | (addr))
 DECL|function|pat_cfg_read
@@ -1077,11 +1075,502 @@ id|pat_cfg_write
 comma
 )brace
 suffix:semicolon
-macro_line|#else
-multiline_comment|/* keep the compiler from complaining about undeclared variables */
-DECL|macro|pat_cfg_ops
-mdefine_line|#define pat_cfg_ops lba_cfg_ops
 macro_line|#endif
+macro_line|#ifdef CONFIG_PARISC64
+DECL|function|mercury_cfg_read
+r_static
+r_int
+id|mercury_cfg_read
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
+comma
+r_int
+r_int
+id|devfn
+comma
+r_int
+id|pos
+comma
+r_int
+id|size
+comma
+id|u32
+op_star
+id|data
+)paren
+(brace
+r_struct
+id|lba_device
+op_star
+id|d
+op_assign
+id|LBA_DEV
+c_func
+(paren
+id|parisc_walk_tree
+c_func
+(paren
+id|bus-&gt;bridge
+)paren
+)paren
+suffix:semicolon
+id|u32
+id|local_bus
+op_assign
+(paren
+id|bus-&gt;parent
+op_eq
+l_int|NULL
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+id|bus-&gt;secondary
+suffix:semicolon
+id|u32
+id|tok
+op_assign
+id|LBA_CFG_TOK
+c_func
+(paren
+id|local_bus
+comma
+id|devfn
+)paren
+suffix:semicolon
+multiline_comment|/* Basic Algorithm&n;&t;** Should only get here on fully working LBA rev.&n;&t;** This is how simple the original LBA code should have been.&n;&t;*/
+id|LBA_CFG_TR4_ADDR_SETUP
+c_func
+(paren
+id|d
+comma
+id|tok
+op_or
+id|pos
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|size
+)paren
+(brace
+r_case
+l_int|1
+suffix:colon
+op_star
+(paren
+id|u8
+op_star
+)paren
+id|data
+op_assign
+id|READ_REG8
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_PCI_CFG_DATA
+op_plus
+(paren
+id|pos
+op_amp
+l_int|3
+)paren
+)paren
+suffix:semicolon
+id|DBG_CFG
+c_func
+(paren
+l_string|&quot;%s(%x+%2x) -&gt; 0x%x (c)&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|tok
+comma
+id|pos
+comma
+op_star
+(paren
+id|u8
+op_star
+)paren
+id|data
+)paren
+suffix:semicolon
+r_return
+op_star
+(paren
+id|u8
+op_star
+)paren
+id|data
+op_eq
+(paren
+id|u8
+)paren
+op_complement
+l_int|0U
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+op_star
+(paren
+id|u16
+op_star
+)paren
+id|data
+op_assign
+id|READ_REG16
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_PCI_CFG_DATA
+op_plus
+(paren
+id|pos
+op_amp
+l_int|2
+)paren
+)paren
+suffix:semicolon
+id|DBG_CFG
+c_func
+(paren
+l_string|&quot;%s(%x+%2x) -&gt; 0x%x (c)&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|tok
+comma
+id|pos
+comma
+op_star
+(paren
+id|u16
+op_star
+)paren
+id|data
+)paren
+suffix:semicolon
+r_return
+op_star
+(paren
+id|u16
+op_star
+)paren
+id|data
+op_eq
+(paren
+id|u16
+)paren
+op_complement
+l_int|0U
+suffix:semicolon
+r_case
+l_int|4
+suffix:colon
+op_star
+(paren
+id|u32
+op_star
+)paren
+id|data
+op_assign
+id|READ_REG32
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_PCI_CFG_DATA
+)paren
+suffix:semicolon
+id|DBG_CFG
+c_func
+(paren
+l_string|&quot;%s(%x+%2x) -&gt; 0x%x (c)&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|tok
+comma
+id|pos
+comma
+op_star
+id|data
+)paren
+suffix:semicolon
+r_return
+op_star
+id|data
+op_eq
+op_complement
+l_int|0U
+suffix:semicolon
+)brace
+id|DBG_CFG
+c_func
+(paren
+l_string|&quot;%s(%x+%2x) -&gt; bad size (%d)&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|tok
+comma
+id|pos
+comma
+id|size
+)paren
+suffix:semicolon
+op_star
+id|data
+op_assign
+op_complement
+l_int|0U
+suffix:semicolon
+r_return
+op_logical_neg
+id|PCIBIOS_SUCCESSFUL
+suffix:semicolon
+multiline_comment|/* failed */
+)brace
+multiline_comment|/*&n; * LBA 4.0 config write code implements non-postable semantics&n; * by doing a read of CONFIG ADDR after the write.&n; */
+DECL|function|mercury_cfg_write
+r_static
+r_int
+id|mercury_cfg_write
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
+comma
+r_int
+r_int
+id|devfn
+comma
+r_int
+id|pos
+comma
+r_int
+id|size
+comma
+id|u32
+id|data
+)paren
+(brace
+r_struct
+id|lba_device
+op_star
+id|d
+op_assign
+id|LBA_DEV
+c_func
+(paren
+id|parisc_walk_tree
+c_func
+(paren
+id|bus-&gt;bridge
+)paren
+)paren
+suffix:semicolon
+r_int
+r_int
+id|data_reg
+op_assign
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_PCI_CFG_DATA
+suffix:semicolon
+id|u32
+id|local_bus
+op_assign
+(paren
+id|bus-&gt;parent
+op_eq
+l_int|NULL
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+id|bus-&gt;secondary
+suffix:semicolon
+id|u32
+id|tok
+op_assign
+id|LBA_CFG_TOK
+c_func
+(paren
+id|local_bus
+comma
+id|devfn
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+(paren
+id|tok
+op_amp
+l_int|0xff
+)paren
+op_eq
+l_int|0
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|pos
+OL
+l_int|0x100
+)paren
+suffix:semicolon
+id|DBG_CFG
+c_func
+(paren
+l_string|&quot;%s(%x+%2x) &lt;- 0x%x (c)&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|tok
+comma
+id|pos
+comma
+id|data
+)paren
+suffix:semicolon
+multiline_comment|/* Basic Algorithm */
+id|LBA_CFG_TR4_ADDR_SETUP
+c_func
+(paren
+id|d
+comma
+id|tok
+op_or
+id|pos
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|size
+)paren
+(brace
+r_case
+l_int|1
+suffix:colon
+id|WRITE_REG8
+(paren
+id|data
+comma
+id|data_reg
+op_plus
+(paren
+id|pos
+op_amp
+l_int|3
+)paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+id|WRITE_REG16
+c_func
+(paren
+id|data
+comma
+id|data_reg
+op_plus
+(paren
+id|pos
+op_amp
+l_int|2
+)paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|4
+suffix:colon
+id|WRITE_REG32
+c_func
+(paren
+id|data
+comma
+id|data_reg
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|DBG_CFG
+c_func
+(paren
+l_string|&quot;%s(%x+%2x) WTF! size %d&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|tok
+comma
+id|pos
+comma
+id|size
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* flush posted write */
+id|lba_t32
+op_assign
+id|READ_U32
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_PCI_CFG_ADDR
+)paren
+suffix:semicolon
+r_return
+id|PCIBIOS_SUCCESSFUL
+suffix:semicolon
+)brace
+DECL|variable|mercury_cfg_ops
+r_static
+r_struct
+id|pci_ops
+id|mercury_cfg_ops
+op_assign
+(brace
+dot
+id|read
+op_assign
+id|mercury_cfg_read
+comma
+dot
+id|write
+op_assign
+id|mercury_cfg_write
+comma
+)brace
+suffix:semicolon
+macro_line|#else
+DECL|macro|mercury_cfg_ops
+mdefine_line|#define mercury_cfg_ops lba_cfg_ops
+macro_line|#endif /* CONFIG_PARISC64 */
 DECL|function|lba_cfg_read
 r_static
 r_int
@@ -2129,6 +2618,8 @@ r_else
 multiline_comment|/* Host-PCI Bridge */
 r_int
 id|err
+comma
+id|i
 suffix:semicolon
 id|DBG
 c_func
@@ -2186,11 +2677,6 @@ OL
 l_int|0
 )paren
 (brace
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 id|lba_dump_res
 c_func
 (paren
@@ -2200,6 +2686,54 @@ comma
 l_int|2
 )paren
 suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ldev-&gt;hba.elmmio_space.start
+)paren
+(brace
+id|err
+op_assign
+id|request_resource
+c_func
+(paren
+op_amp
+id|iomem_resource
+comma
+op_amp
+(paren
+id|ldev-&gt;hba.elmmio_space
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;FAILED: lba_fixup_bus() request for &quot;
+l_string|&quot;elmmio_space [%lx/%lx]&bslash;n&quot;
+comma
+id|ldev-&gt;hba.elmmio_space.start
+comma
+id|ldev-&gt;hba.elmmio_space.end
+)paren
+suffix:semicolon
+multiline_comment|/* lba_dump_res(&amp;iomem_resource, 2); */
+multiline_comment|/* BUG(); */
+)brace
 )brace
 id|err
 op_assign
@@ -2223,22 +2757,22 @@ OL
 l_int|0
 )paren
 (brace
-id|BUG
+multiline_comment|/*   FIXME  overlaps with elmmio will fail here.&n;&t;&t;&t; *   Need to prune (or disable) the distributed range.&n;&t;&t;&t; *&n;&t;&t;&t; *   BEWARE: conflicts with this lmmio range may be&n;&t;&t;&t; *   elmmio range which is pointing down another rope.&n;&t;&t;&t; */
+id|printk
 c_func
 (paren
-)paren
-suffix:semicolon
-id|lba_dump_res
-c_func
-(paren
-op_amp
-id|iomem_resource
+l_string|&quot;FAILED: lba_fixup_bus() request for &quot;
+l_string|&quot;lmmio_space [%lx/%lx]&bslash;n&quot;
 comma
-l_int|2
+id|ldev-&gt;hba.lmmio_space.start
+comma
+id|ldev-&gt;hba.lmmio_space.end
 )paren
 suffix:semicolon
+multiline_comment|/* lba_dump_res(&amp;iomem_resource, 2); */
 )brace
 macro_line|#ifdef CONFIG_PARISC64
+multiline_comment|/* GMMIO is  distributed range. Every LBA/Rope gets part it. */
 r_if
 c_cond
 (paren
@@ -2267,9 +2801,15 @@ OL
 l_int|0
 )paren
 (brace
-id|BUG
+id|printk
 c_func
 (paren
+l_string|&quot;FAILED: lba_fixup_bus() request for &quot;
+l_string|&quot;gmmio_space [%lx/%lx]&bslash;n&quot;
+comma
+id|ldev-&gt;hba.gmmio_space.start
+comma
+id|ldev-&gt;hba.gmmio_space.end
 )paren
 suffix:semicolon
 id|lba_dump_res
@@ -2281,17 +2821,12 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-)brace
-id|bus-&gt;resource
-(braket
-l_int|2
-)braket
-op_assign
-op_amp
+id|BUG
+c_func
 (paren
-id|ldev-&gt;hba.gmmio_space
 )paren
 suffix:semicolon
+)brace
 )brace
 macro_line|#endif
 multiline_comment|/* advertize Host bridge resources to PCI bus */
@@ -2313,6 +2848,42 @@ op_assign
 op_amp
 (paren
 id|ldev-&gt;hba.lmmio_space
+)paren
+suffix:semicolon
+id|i
+op_assign
+l_int|2
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ldev-&gt;hba.elmmio_space.start
+)paren
+id|bus-&gt;resource
+(braket
+id|i
+op_increment
+)braket
+op_assign
+op_amp
+(paren
+id|ldev-&gt;hba.elmmio_space
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ldev-&gt;hba.gmmio_space.start
+)paren
+id|bus-&gt;resource
+(braket
+id|i
+op_increment
+)braket
+op_assign
+op_amp
+(paren
+id|ldev-&gt;hba.gmmio_space
 )paren
 suffix:semicolon
 )brace
@@ -2476,6 +3047,21 @@ id|DBG
 c_func
 (paren
 l_string|&quot;[%lx/%lx]&bslash;n&quot;
+comma
+id|res-&gt;start
+comma
+id|res-&gt;end
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|DBG
+c_func
+(paren
+l_string|&quot;lba_fixup_bus() WTF? 0x%lx [%lx/%lx] XXX&quot;
+comma
+id|res-&gt;flags
 comma
 id|res-&gt;start
 comma
@@ -2678,7 +3264,7 @@ comma
 suffix:semicolon
 multiline_comment|/*******************************************************&n;**&n;** LBA Sprockets &quot;I/O Port&quot; Space Accessor Functions&n;**&n;** This set of accessor functions is intended for use with&n;** &quot;legacy firmware&quot; (ie Sprockets on Allegro/Forte boxes).&n;**&n;** Many PCI devices don&squot;t require use of I/O port space (eg Tulip,&n;** NCR720) since they export the same registers to both MMIO and&n;** I/O port space. In general I/O port space is slower than&n;** MMIO since drivers are designed so PIO writes can be posted.&n;**&n;********************************************************/
 DECL|macro|LBA_PORT_IN
-mdefine_line|#define LBA_PORT_IN(size, mask) &bslash;&n;static u##size lba_astro_in##size (struct pci_hba_data *d, u16 addr) &bslash;&n;{ &bslash;&n;&t;u##size t; &bslash;&n;&t;t = READ_REG##size(LBA_ASTRO_PORT_BASE + addr); &bslash;&n;&t;DBG_PORT(&quot; 0x%x&bslash;n&quot;, t); &bslash;&n;&t;return (t); &bslash;&n;}
+mdefine_line|#define LBA_PORT_IN(size, mask) &bslash;&n;static u##size lba_astro_in##size (struct pci_hba_data *d, u16 addr) &bslash;&n;{ &bslash;&n;&t;u##size t; &bslash;&n;&t;t = READ_REG##size(LBA_PORT_BASE + addr); &bslash;&n;&t;DBG_PORT(&quot; 0x%x&bslash;n&quot;, t); &bslash;&n;&t;return (t); &bslash;&n;}
 id|LBA_PORT_IN
 c_func
 (paren
@@ -2702,7 +3288,7 @@ l_int|0
 )paren
 multiline_comment|/*&n;** BUG X4107:  Ordering broken - DMA RD return can bypass PIO WR&n;**&n;** Fixed in Elroy 2.2. The READ_U32(..., LBA_FUNC_ID) below is&n;** guarantee non-postable completion semantics - not avoid X4107.&n;** The READ_U32 only guarantees the write data gets to elroy but&n;** out to the PCI bus. We can&squot;t read stuff from I/O port space&n;** since we don&squot;t know what has side-effects. Attempting to read&n;** from configuration space would be suicidal given the number of&n;** bugs in that elroy functionality.&n;**&n;**      Description:&n;**          DMA read results can improperly pass PIO writes (X4107).  The&n;**          result of this bug is that if a processor modifies a location in&n;**          memory after having issued PIO writes, the PIO writes are not&n;**          guaranteed to be completed before a PCI device is allowed to see&n;**          the modified data in a DMA read.&n;**&n;**          Note that IKE bug X3719 in TR1 IKEs will result in the same&n;**          symptom.&n;**&n;**      Workaround:&n;**          The workaround for this bug is to always follow a PIO write with&n;**          a PIO read to the same bus before starting DMA on that PCI bus.&n;**&n;*/
 DECL|macro|LBA_PORT_OUT
-mdefine_line|#define LBA_PORT_OUT(size, mask) &bslash;&n;static void lba_astro_out##size (struct pci_hba_data *d, u16 addr, u##size val) &bslash;&n;{ &bslash;&n;&t;ASSERT(d != NULL); &bslash;&n;&t;DBG_PORT(&quot;%s(0x%p, 0x%x, 0x%x)&bslash;n&quot;, __FUNCTION__, d, addr, val); &bslash;&n;&t;WRITE_REG##size(val, LBA_ASTRO_PORT_BASE + addr); &bslash;&n;&t;if (LBA_DEV(d)-&gt;hw_rev &lt; 3) &bslash;&n;&t;&t;lba_t32 = READ_U32(d-&gt;base_addr + LBA_FUNC_ID); &bslash;&n;}
+mdefine_line|#define LBA_PORT_OUT(size, mask) &bslash;&n;static void lba_astro_out##size (struct pci_hba_data *d, u16 addr, u##size val) &bslash;&n;{ &bslash;&n;&t;ASSERT(d != NULL); &bslash;&n;&t;DBG_PORT(&quot;%s(0x%p, 0x%x, 0x%x)&bslash;n&quot;, __FUNCTION__, d, addr, val); &bslash;&n;&t;WRITE_REG##size(val, LBA_PORT_BASE + addr); &bslash;&n;&t;if (LBA_DEV(d)-&gt;hw_rev &lt; 3) &bslash;&n;&t;&t;lba_t32 = READ_U32(d-&gt;base_addr + LBA_FUNC_ID); &bslash;&n;}
 id|LBA_PORT_OUT
 c_func
 (paren
@@ -2769,7 +3355,7 @@ multiline_comment|/*******************************************************&n;**&
 DECL|macro|LBA_PORT_IN
 macro_line|#undef LBA_PORT_IN
 DECL|macro|LBA_PORT_IN
-mdefine_line|#define LBA_PORT_IN(size, mask) &bslash;&n;static u##size lba_pat_in##size (struct pci_hba_data *l, u16 addr) &bslash;&n;{ &bslash;&n;&t;u##size t; &bslash;&n;&t;ASSERT(bus != NULL); &bslash;&n;&t;DBG_PORT(&quot;%s(0x%p, 0x%x) -&gt;&quot;, __FUNCTION__, l, addr); &bslash;&n;&t;t = READ_REG##size(PIOP_TO_GMMIO(LBA_DEV(l), addr)); &bslash;&n;&t;DBG_PORT(&quot; 0x%x&bslash;n&quot;, t); &bslash;&n;&t;return (t); &bslash;&n;}
+mdefine_line|#define LBA_PORT_IN(size, mask) &bslash;&n;static u##size lba_pat_in##size (struct pci_hba_data *l, u16 addr) &bslash;&n;{ &bslash;&n;&t;u##size t; &bslash;&n;&t;DBG_PORT(&quot;%s(0x%p, 0x%x) -&gt;&quot;, __FUNCTION__, l, addr); &bslash;&n;&t;t = READ_REG##size(PIOP_TO_GMMIO(LBA_DEV(l), addr)); &bslash;&n;&t;DBG_PORT(&quot; 0x%x&bslash;n&quot;, t); &bslash;&n;&t;return (t); &bslash;&n;}
 id|LBA_PORT_IN
 c_func
 (paren
@@ -2794,7 +3380,7 @@ l_int|0
 DECL|macro|LBA_PORT_OUT
 macro_line|#undef LBA_PORT_OUT
 DECL|macro|LBA_PORT_OUT
-mdefine_line|#define LBA_PORT_OUT(size, mask) &bslash;&n;static void lba_pat_out##size (struct pci_hba_data *l, u16 addr, u##size val) &bslash;&n;{ &bslash;&n;&t;void *where = (void *) PIOP_TO_GMMIO(LBA_DEV(l), addr); &bslash;&n;&t;ASSERT(bus != NULL); &bslash;&n;&t;DBG_PORT(&quot;%s(0x%p, 0x%x, 0x%x)&bslash;n&quot;, __FUNCTION__, l, addr, val); &bslash;&n;&t;WRITE_REG##size(val, where); &bslash;&n;&t;/* flush the I/O down to the elroy at least */ &bslash;&n;&t;lba_t32 = READ_U32(l-&gt;base_addr + LBA_FUNC_ID); &bslash;&n;}
+mdefine_line|#define LBA_PORT_OUT(size, mask) &bslash;&n;static void lba_pat_out##size (struct pci_hba_data *l, u16 addr, u##size val) &bslash;&n;{ &bslash;&n;&t;void *where = (void *) PIOP_TO_GMMIO(LBA_DEV(l), addr); &bslash;&n;&t;DBG_PORT(&quot;%s(0x%p, 0x%x, 0x%x)&bslash;n&quot;, __FUNCTION__, l, addr, val); &bslash;&n;&t;WRITE_REG##size(val, where); &bslash;&n;&t;/* flush the I/O down to the elroy at least */ &bslash;&n;&t;lba_t32 = READ_U32(l-&gt;base_addr + LBA_FUNC_ID); &bslash;&n;}
 id|LBA_PORT_OUT
 c_func
 (paren
@@ -3088,6 +3674,26 @@ r_case
 id|PAT_LMMIO
 suffix:colon
 multiline_comment|/* used to fix up pre-initialized MEM BARs */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|lba_dev-&gt;hba.lmmio_space.start
+)paren
+(brace
+id|sprintf
+c_func
+(paren
+id|lba_dev-&gt;hba.lmmio_name
+comma
+l_string|&quot;PCI%02x LMMIO&quot;
+comma
+(paren
+r_int
+)paren
+id|lba_dev-&gt;hba.bus_num.start
+)paren
+suffix:semicolon
 id|lba_dev-&gt;hba.lmmio_space_offset
 op_assign
 id|p-&gt;start
@@ -3103,8 +3709,55 @@ id|lba_dev-&gt;hba.lmmio_space
 suffix:semicolon
 id|r-&gt;name
 op_assign
-l_string|&quot;LBA LMMIO&quot;
+id|lba_dev-&gt;hba.lmmio_name
 suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|lba_dev-&gt;hba.elmmio_space.start
+)paren
+(brace
+id|sprintf
+c_func
+(paren
+id|lba_dev-&gt;hba.elmmio_name
+comma
+l_string|&quot;PCI%02x ELMMIO&quot;
+comma
+(paren
+r_int
+)paren
+id|lba_dev-&gt;hba.bus_num.start
+)paren
+suffix:semicolon
+id|r
+op_assign
+op_amp
+(paren
+id|lba_dev-&gt;hba.elmmio_space
+)paren
+suffix:semicolon
+id|r-&gt;name
+op_assign
+id|lba_dev-&gt;hba.elmmio_name
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|MODULE_NAME
+l_string|&quot; only supports 2 LMMIO resources!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|r-&gt;start
 op_assign
 id|p-&gt;start
@@ -3131,6 +3784,19 @@ r_case
 id|PAT_GMMIO
 suffix:colon
 multiline_comment|/* MMIO space &gt; 4GB phys addr; for 64-bit BAR */
+id|sprintf
+c_func
+(paren
+id|lba_dev-&gt;hba.gmmio_name
+comma
+l_string|&quot;PCI%02x GMMIO&quot;
+comma
+(paren
+r_int
+)paren
+id|lba_dev-&gt;hba.bus_num.start
+)paren
+suffix:semicolon
 id|r
 op_assign
 op_amp
@@ -3140,7 +3806,7 @@ id|lba_dev-&gt;hba.gmmio_space
 suffix:semicolon
 id|r-&gt;name
 op_assign
-l_string|&quot;LBA GMMIO&quot;
+id|lba_dev-&gt;hba.gmmio_name
 suffix:semicolon
 id|r-&gt;start
 op_assign
@@ -3189,6 +3855,19 @@ id|lba_dev-&gt;iop_base
 op_assign
 id|p-&gt;start
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|lba_dev-&gt;hba.io_name
+comma
+l_string|&quot;PCI%02x Ports&quot;
+comma
+(paren
+r_int
+)paren
+id|lba_dev-&gt;hba.bus_num.start
+)paren
+suffix:semicolon
 id|r
 op_assign
 op_amp
@@ -3198,7 +3877,7 @@ id|lba_dev-&gt;hba.io_space
 suffix:semicolon
 id|r-&gt;name
 op_assign
-l_string|&quot;LBA I/O Port&quot;
+id|lba_dev-&gt;hba.io_name
 suffix:semicolon
 id|r-&gt;start
 op_assign
@@ -3258,6 +3937,34 @@ mdefine_line|#define lba_pat_port_ops lba_astro_port_ops
 DECL|macro|lba_pat_resources
 mdefine_line|#define lba_pat_resources(pa_dev, lba_dev)
 macro_line|#endif&t;/* CONFIG_PARISC64 */
+r_extern
+r_void
+id|sba_distributed_lmmio
+c_func
+(paren
+r_struct
+id|parisc_device
+op_star
+comma
+r_struct
+id|resource
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|sba_directed_lmmio
+c_func
+(paren
+r_struct
+id|parisc_device
+op_star
+comma
+r_struct
+id|resource
+op_star
+)paren
+suffix:semicolon
 r_static
 r_void
 DECL|function|lba_legacy_resources
@@ -3281,24 +3988,12 @@ op_star
 id|r
 suffix:semicolon
 r_int
-r_int
-id|rsize
-suffix:semicolon
-r_int
 id|lba_num
 suffix:semicolon
-macro_line|#ifdef CONFIG_PARISC64
-multiline_comment|/*&n;&t;** Sign extend all BAR values on &quot;legacy&quot; platforms.&n;&t;** &quot;Sprockets&quot; PDC (Forte/Allegro) initializes everything&n;&t;** for &quot;legacy&quot; 32-bit OS (HPUX 10.20).&n;&t;** Upper 32-bits of 64-bit BAR will be zero too.&n;&t;*/
 id|lba_dev-&gt;hba.lmmio_space_offset
 op_assign
-l_int|0xffffffff00000000UL
+id|PCI_F_EXTEND
 suffix:semicolon
-macro_line|#else
-id|lba_dev-&gt;hba.lmmio_space_offset
-op_assign
-l_int|0UL
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t;** With &quot;legacy&quot; firmware, the lowest byte of FW_SCRATCH&n;&t;** represents bus-&gt;secondary and the second byte represents&n;&t;** bus-&gt;subsidiary (i.e. highest PPB programmed by firmware).&n;&t;** PCI bus walk *should* end up with the same result.&n;&t;** FIXME: But we don&squot;t have sanity checks in PCI or LBA.&n;&t;*/
 id|lba_num
 op_assign
@@ -3337,7 +4032,7 @@ l_int|8
 op_amp
 l_int|0xff
 suffix:semicolon
-multiline_comment|/* Set up local PCI Bus resources - we don&squot;t really need&n;&t;** them for Legacy boxes but it&squot;s nice to see in /proc.&n;&t;*/
+multiline_comment|/* Set up local PCI Bus resources - we don&squot;t need them for&n;&t;** Legacy boxes but it&squot;s nice to see in /proc/iomem.&n;&t;*/
 id|r
 op_assign
 op_amp
@@ -3345,15 +4040,69 @@ op_amp
 id|lba_dev-&gt;hba.lmmio_space
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|lba_dev-&gt;hba.lmmio_name
+comma
+l_string|&quot;PCI%02x LMMIO&quot;
+comma
+(paren
+r_int
+)paren
+id|lba_dev-&gt;hba.bus_num.start
+)paren
+suffix:semicolon
 id|r-&gt;name
 op_assign
-l_string|&quot;LBA PCI LMMIO&quot;
+id|lba_dev-&gt;hba.lmmio_name
+suffix:semicolon
+macro_line|#if 1
+multiline_comment|/* We want the CPU -&gt; IO routing of addresses.&n;&t; * The SBA BASE/MASK registers control CPU -&gt; IO routing.&n;&t; * Ask SBA what is routed to this rope/LBA.&n;&t; */
+id|sba_distributed_lmmio
+c_func
+(paren
+id|pa_dev
+comma
+id|r
+)paren
+suffix:semicolon
+macro_line|#else
+multiline_comment|/*&n;&t; * The LBA BASE/MASK registers control IO -&gt; System routing.&n;&t; *&n;&t; * The following code works but doesn&squot;t get us what we want.&n;&t; * Well, only because firmware (v5.0) on C3000 doesn&squot;t program&n;&t; * the LBA BASE/MASE registers to be the exact inverse of &n;&t; * the corresponding SBA registers. Other Astro/Pluto&n;&t; * based platform firmware may do it right.&n;&t; *&n;&t; * Should someone want to mess with MSI, they may need to&n;&t; * reprogram LBA BASE/MASK registers. Thus preserve the code&n;&t; * below until MSI is known to work on C3000/A500/N4000/RP3440.&n;&t; *&n;&t; * Using the code below, /proc/iomem shows:&n;&t; * ...&n;&t; * f0000000-f0ffffff : PCI00 LMMIO&n;&t; *   f05d0000-f05d0000 : lcd_data&n;&t; *   f05d0008-f05d0008 : lcd_cmd&n;&t; * f1000000-f1ffffff : PCI01 LMMIO&n;&t; * f4000000-f4ffffff : PCI02 LMMIO&n;&t; *   f4000000-f4001fff : sym53c8xx&n;&t; *   f4002000-f4003fff : sym53c8xx&n;&t; *   f4004000-f40043ff : sym53c8xx&n;&t; *   f4005000-f40053ff : sym53c8xx&n;&t; *   f4007000-f4007fff : ohci_hcd&n;&t; *   f4008000-f40083ff : tulip&n;&t; * f6000000-f6ffffff : PCI03 LMMIO&n;&t; * f8000000-fbffffff : PCI00 ELMMIO&n;&t; *   fa100000-fa4fffff : stifb mmio&n;&t; *   fb000000-fb1fffff : stifb fb&n;&t; *&n;&t; * But everything listed under PCI02 actually lives under PCI00.&n;&t; * This is clearly wrong.&n;&t; *&n;&t; * Asking SBA how things are routed tells the correct story:&n;&t; * LMMIO_BASE/MASK/ROUTE f4000001 fc000000 00000000&n;&t; * DIR0_BASE/MASK/ROUTE fa000001 fe000000 00000006&n;&t; * DIR1_BASE/MASK/ROUTE f9000001 ff000000 00000004&n;&t; * DIR2_BASE/MASK/ROUTE f0000000 fc000000 00000000&n;&t; * DIR3_BASE/MASK/ROUTE f0000000 fc000000 00000000&n;&t; *&n;&t; * Which looks like this in /proc/iomem:&n;&t; * f4000000-f47fffff : PCI00 LMMIO&n;&t; *   f4000000-f4001fff : sym53c8xx&n;&t; *   ...[deteled core devices - same as above]...&n;&t; *   f4008000-f40083ff : tulip&n;&t; * f4800000-f4ffffff : PCI01 LMMIO&n;&t; * f6000000-f67fffff : PCI02 LMMIO&n;&t; * f7000000-f77fffff : PCI03 LMMIO&n;&t; * f9000000-f9ffffff : PCI02 ELMMIO&n;&t; * fa000000-fbffffff : PCI03 ELMMIO&n;&t; *   fa100000-fa4fffff : stifb mmio&n;&t; *   fb000000-fb1fffff : stifb fb&n;&t; *&n;&t; * ie all Built-in core are under now correctly under PCI00.&n;&t; * The &quot;PCI02 ELMMIO&quot; directed range is for:&n;&t; *  +-[02]---03.0  3Dfx Interactive, Inc. Voodoo 2&n;&t; *&n;&t; * All is well now.&n;&t; */
+id|r-&gt;start
+op_assign
+(paren
+r_int
+)paren
+id|READ_REG32
+c_func
+(paren
+id|pa_dev-&gt;hpa
+op_plus
+id|LBA_LMMIO_BASE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|r-&gt;start
+op_amp
+l_int|1
+)paren
+(brace
+r_int
+r_int
+id|rsize
 suffix:semicolon
 id|r-&gt;flags
 op_assign
 id|IORESOURCE_MEM
 suffix:semicolon
-multiline_comment|/* Ignore &quot;Range Enable&quot; bit in the BASE register */
+multiline_comment|/* mmio_mask also clears Enable bit */
+id|r-&gt;start
+op_and_assign
+id|mmio_mask
+suffix:semicolon
 id|r-&gt;start
 op_assign
 id|PCI_HOST_ADDR
@@ -3365,21 +4114,7 @@ c_func
 id|lba_dev
 )paren
 comma
-(paren
-(paren
-r_int
-)paren
-id|READ_REG32
-c_func
-(paren
-id|pa_dev-&gt;hpa
-op_plus
-id|LBA_LMMIO_BASE
-)paren
-)paren
-op_amp
-op_complement
-l_int|1UL
+id|r-&gt;start
 )paren
 suffix:semicolon
 id|rsize
@@ -3392,17 +4127,19 @@ id|pa_dev-&gt;hpa
 op_plus
 id|LBA_LMMIO_MASK
 )paren
-op_plus
-l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;** Each rope only gets part of the distributed range.&n;&t;** Adjust &quot;window&quot; for this rope&n;&t;*/
+multiline_comment|/*&n;&t;&t;** Each rope only gets part of the distributed range.&n;&t;&t;** Adjust &quot;window&quot; for this rope.&n;&t;&t;*/
 id|rsize
 op_div_assign
-id|ROPES_PER_SBA
+id|ROPES_PER_IOC
 suffix:semicolon
 id|r-&gt;start
 op_add_assign
+(paren
 id|rsize
+op_plus
+l_int|1
+)paren
 op_star
 id|LBA_NUM
 c_func
@@ -3415,10 +4152,20 @@ op_assign
 id|r-&gt;start
 op_plus
 id|rsize
-op_minus
-l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;** XXX FIXME - ignore LBA_ELMMIO_BASE for now&n;&t;** &quot;Directed&quot; ranges are used when the &quot;distributed range&quot; isn&squot;t&n;&t;** sufficient for all devices below a given LBA.  Typically devices&n;&t;** like graphics cards or X25 may need a directed range when the&n;&t;** bus has multiple slots (ie multiple devices) or the device&n;&t;** needs more than the typical 4 or 8MB a distributed range offers.&n;&t;**&n;&t;** The main reason for ignoring it now frigging complications.&n;&t;** Directed ranges may overlap (and have precedence) over&n;&t;** distributed ranges. Ie a distributed range assigned to a unused&n;&t;** rope may be used by a directed range on a different rope.&n;&t;** Support for graphics devices may require fixing this&n;&t;** since they may be assigned a directed range which overlaps&n;&t;** an existing (but unused portion of) distributed range.&n;&t;*/
+)brace
+r_else
+(brace
+id|r-&gt;end
+op_assign
+id|r-&gt;start
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Not enabled. */
+)brace
+macro_line|#endif
+multiline_comment|/*&n;&t;** &quot;Directed&quot; ranges are used when the &quot;distributed range&quot; isn&squot;t&n;&t;** sufficient for all devices below a given LBA.  Typically devices&n;&t;** like graphics cards or X25 may need a directed range when the&n;&t;** bus has multiple slots (ie multiple devices) or the device&n;&t;** needs more than the typical 4 or 8MB a distributed range offers.&n;&t;**&n;&t;** The main reason for ignoring it now frigging complications.&n;&t;** Directed ranges may overlap (and have precedence) over&n;&t;** distributed ranges. Or a distributed range assigned to a unused&n;&t;** rope may be used by a directed range on a different rope.&n;&t;** Support for graphics devices may require fixing this&n;&t;** since they may be assigned a directed range which overlaps&n;&t;** an existing (but unused portion of) distributed range.&n;&t;*/
 id|r
 op_assign
 op_amp
@@ -3426,14 +4173,34 @@ op_amp
 id|lba_dev-&gt;hba.elmmio_space
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|lba_dev-&gt;hba.elmmio_name
+comma
+l_string|&quot;PCI%02x ELMMIO&quot;
+comma
+(paren
+r_int
+)paren
+id|lba_dev-&gt;hba.bus_num.start
+)paren
+suffix:semicolon
 id|r-&gt;name
 op_assign
-l_string|&quot;extra LBA PCI LMMIO&quot;
+id|lba_dev-&gt;hba.elmmio_name
 suffix:semicolon
-id|r-&gt;flags
-op_assign
-id|IORESOURCE_MEM
+macro_line|#if 1
+multiline_comment|/* See comment which precedes call to sba_directed_lmmio() */
+id|sba_directed_lmmio
+c_func
+(paren
+id|pa_dev
+comma
+id|r
+)paren
 suffix:semicolon
+macro_line|#else
 id|r-&gt;start
 op_assign
 id|READ_REG32
@@ -3444,11 +4211,6 @@ op_plus
 id|LBA_ELMMIO_BASE
 )paren
 suffix:semicolon
-id|r-&gt;end
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* check Range Enable bit */
 r_if
 c_cond
 (paren
@@ -3457,19 +4219,35 @@ op_amp
 l_int|1
 )paren
 (brace
-multiline_comment|/* First baby step to getting Direct Ranges listed in /proc.&n;&t;&t;** AFAIK, only Sprockets PDC will setup a directed Range.&n;&t;&t;*/
+r_int
+r_int
+id|rsize
+suffix:semicolon
+id|r-&gt;flags
+op_assign
+id|IORESOURCE_MEM
+suffix:semicolon
+multiline_comment|/* mmio_mask also clears Enable bit */
 id|r-&gt;start
 op_and_assign
-op_complement
-l_int|1
+id|mmio_mask
 suffix:semicolon
-id|r-&gt;end
-op_assign
 id|r-&gt;start
+op_assign
+id|PCI_HOST_ADDR
+c_func
+(paren
+id|HBA_DATA
+c_func
+(paren
+id|lba_dev
+)paren
+comma
+id|r-&gt;start
+)paren
 suffix:semicolon
-id|r-&gt;end
-op_add_assign
-op_complement
+id|rsize
+op_assign
 id|READ_REG32
 c_func
 (paren
@@ -3478,20 +4256,15 @@ op_plus
 id|LBA_ELMMIO_MASK
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;WARNING: Ignoring enabled ELMMIO BASE 0x%0lx  SIZE 0x%lx&bslash;n&quot;
-comma
-id|r-&gt;start
-comma
 id|r-&gt;end
+op_assign
+id|r-&gt;start
 op_plus
-l_int|1
-)paren
+op_complement
+id|rsize
 suffix:semicolon
 )brace
+macro_line|#endif
 id|r
 op_assign
 op_amp
@@ -3499,9 +4272,22 @@ op_amp
 id|lba_dev-&gt;hba.io_space
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|lba_dev-&gt;hba.io_name
+comma
+l_string|&quot;PCI%02x Ports&quot;
+comma
+(paren
+r_int
+)paren
+id|lba_dev-&gt;hba.bus_num.start
+)paren
+suffix:semicolon
 id|r-&gt;name
 op_assign
-l_string|&quot;LBA PCI I/O Ports&quot;
+id|lba_dev-&gt;hba.io_name
 suffix:semicolon
 id|r-&gt;flags
 op_assign
@@ -4326,21 +5112,23 @@ id|dev-&gt;dev
 comma
 id|lba_dev-&gt;hba.bus_num.start
 comma
-id|is_pdc_pat
+id|IS_ELROY
 c_func
 (paren
+id|dev
 )paren
 ques
 c_cond
 op_amp
-id|pat_cfg_ops
+id|lba_cfg_ops
 suffix:colon
 op_amp
-id|lba_cfg_ops
+id|mercury_cfg_ops
 comma
 l_int|NULL
 )paren
 suffix:semicolon
+multiline_comment|/* This is in lieu of calling pci_assign_unassigned_resources() */
 r_if
 c_cond
 (paren
@@ -4351,6 +5139,18 @@ c_func
 )paren
 (brace
 multiline_comment|/* assign resources to un-initialized devices */
+id|DBG_PAT
+c_func
+(paren
+l_string|&quot;LBA pci_bus_size_bridges()&bslash;n&quot;
+)paren
+suffix:semicolon
+id|pci_bus_size_bridges
+c_func
+(paren
+id|lba_bus
+)paren
+suffix:semicolon
 id|DBG_PAT
 c_func
 (paren
@@ -4396,6 +5196,12 @@ l_int|2
 suffix:semicolon
 macro_line|#endif
 )brace
+id|pci_enable_bridges
+c_func
+(paren
+id|lba_bus
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;** Once PCI register ops has walked the bus, access to config&n;&t;** space is restricted. Avoids master aborts on config cycles.&n;&t;** Early LBA revs go fatal on *any* master abort.&n;&t;*/
 r_if
 c_cond

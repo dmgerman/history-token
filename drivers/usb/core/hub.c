@@ -5399,19 +5399,23 @@ id|delay
 )paren
 suffix:semicolon
 multiline_comment|/* return on disconnect or reset */
-r_if
+r_switch
 c_cond
 (paren
 id|status
-op_eq
-op_minus
-id|ENOTCONN
-op_logical_or
-id|status
-op_eq
-l_int|0
 )paren
 (brace
+r_case
+l_int|0
+suffix:colon
+r_case
+op_minus
+id|ENOTCONN
+suffix:colon
+r_case
+op_minus
+id|ENODEV
+suffix:colon
 id|clear_port_feature
 c_func
 (paren
@@ -5823,7 +5827,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Devices on USB hub ports have only one &quot;suspend&quot; state, corresponding&n; * to ACPI D2 (PM_SUSPEND_MEM), &quot;may cause the device to lose some context&quot;.&n; * State transitions include:&n; *&n; *   - suspend, resume ... when the VBUS power link stays live&n; *   - suspend, disconnect ... VBUS lost&n; *&n; * Once VBUS drop breaks the circuit, the port it&squot;s using has to go through&n; * normal re-enumeration procedures, starting with enabling VBUS power.&n; * Other than re-initializing the hub (plug/unplug, except for root hubs),&n; * Linux (2.6) currently has NO mechanisms to initiate that:  no khubd&n; * timer, no SRP, no requests through sysfs.&n; */
 DECL|function|__usb_suspend_device
-r_static
 r_int
 id|__usb_suspend_device
 (paren
@@ -5856,14 +5859,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|state
-op_le
-id|udev-&gt;dev.power.power_state
-op_logical_or
-id|state
-OL
-id|PM_SUSPEND_MEM
-op_logical_or
 id|udev-&gt;state
 op_eq
 id|USB_STATE_SUSPENDED
@@ -6051,10 +6046,6 @@ comma
 l_string|&quot;no poweroff yet, suspending instead&bslash;n&quot;
 )paren
 suffix:semicolon
-id|state
-op_assign
-id|PM_SUSPEND_MEM
-suffix:semicolon
 )brace
 multiline_comment|/* &quot;global suspend&quot; of the HC-to-USB interface (root hub), or&n;&t; * &quot;selective suspend&quot; of just one hub-device link.&n;&t; */
 r_if
@@ -6078,6 +6069,7 @@ id|bus
 op_logical_and
 id|bus-&gt;op-&gt;hub_suspend
 )paren
+(brace
 id|status
 op_assign
 id|bus-&gt;op-&gt;hub_suspend
@@ -6085,6 +6077,22 @@ id|bus-&gt;op-&gt;hub_suspend
 id|bus
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+op_eq
+l_int|0
+)paren
+id|usb_set_device_state
+c_func
+(paren
+id|udev
+comma
+id|USB_STATE_SUSPENDED
+)paren
+suffix:semicolon
+)brace
 r_else
 id|status
 op_assign
@@ -6103,21 +6111,17 @@ comma
 id|port
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|status
-op_eq
-l_int|0
-)paren
-id|udev-&gt;dev.power.power_state
-op_assign
-id|state
-suffix:semicolon
 r_return
 id|status
 suffix:semicolon
 )brace
+DECL|variable|__usb_suspend_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__usb_suspend_device
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * usb_suspend_device - suspend a usb device&n; * @udev: device that&squot;s no longer in active use&n; * @state: PM_SUSPEND_MEM to suspend&n; * Context: must be able to sleep; device not locked&n; *&n; * Suspends a USB device that isn&squot;t in active use, conserving power.&n; * Devices may wake out of a suspend, if anything important happens,&n; * using the remote wakeup mechanism.  They may also be taken out of&n; * suspend by the host, using usb_resume_device().  It&squot;s also routine&n; * to disconnect devices while they are suspended.&n; *&n; * Suspending OTG devices may trigger HNP, if that&squot;s been enabled&n; * between a pair of dual-role devices.  That will change roles, such&n; * as from A-Host to A-Peripheral or from B-Host back to B-Peripheral.&n; *&n; * Returns 0 on success, else negative errno.&n; */
 DECL|function|usb_suspend_device
 r_int
@@ -6206,10 +6210,6 @@ id|udev-&gt;dev
 comma
 l_string|&quot;usb resume&bslash;n&quot;
 )paren
-suffix:semicolon
-id|udev-&gt;dev.power.power_state
-op_assign
-id|PM_SUSPEND_ON
 suffix:semicolon
 multiline_comment|/* usb ch9 identifies four variants of SUSPENDED, based on what&n;&t; * state the device resumes to.  Linux currently won&squot;t see the&n;&t; * first two on the host side; they&squot;d be inside hub_port_init()&n;&t; * during many timeouts, but khubd can&squot;t suspend until later.&n;&t; */
 id|udev-&gt;state
@@ -6751,6 +6751,7 @@ id|bus
 op_logical_and
 id|bus-&gt;op-&gt;hub_resume
 )paren
+(brace
 id|status
 op_assign
 id|bus-&gt;op-&gt;hub_resume
@@ -6758,6 +6759,7 @@ id|bus-&gt;op-&gt;hub_resume
 id|bus
 )paren
 suffix:semicolon
+)brace
 r_else
 id|status
 op_assign
@@ -6779,11 +6781,18 @@ c_func
 l_int|10
 )paren
 suffix:semicolon
+id|usb_set_device_state
+(paren
+id|udev
+comma
+id|USB_STATE_CONFIGURED
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|hub_resume
 (paren
-id|bus-&gt;root_hub
+id|udev
 op_member_access_from_pointer
 id|actconfig-&gt;interface
 (braket
@@ -6802,6 +6811,7 @@ op_eq
 id|USB_STATE_SUSPENDED
 )paren
 (brace
+singleline_comment|// NOTE this fails if parent is also suspended...
 id|status
 op_assign
 id|hub_port_resume
@@ -6818,10 +6828,6 @@ r_else
 id|status
 op_assign
 l_int|0
-suffix:semicolon
-id|udev-&gt;dev.power.power_state
-op_assign
-id|PM_SUSPEND_ON
 suffix:semicolon
 )brace
 r_if
@@ -6851,6 +6857,14 @@ id|udev
 )paren
 suffix:semicolon
 multiline_comment|/* rebind drivers that had no suspend() */
+r_if
+c_cond
+(paren
+id|status
+op_eq
+l_int|0
+)paren
+(brace
 id|usb_lock_all_devices
 c_func
 (paren
@@ -6868,6 +6882,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 r_return
 id|status
 suffix:semicolon
@@ -7116,6 +7131,16 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|intf-&gt;dev.power.power_state
+op_eq
+id|PM_SUSPEND_ON
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -7212,6 +7237,10 @@ c_cond
 (paren
 op_logical_neg
 id|udev
+op_logical_or
+id|status
+OL
+l_int|0
 )paren
 r_continue
 suffix:semicolon
@@ -7772,43 +7801,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|retval
-op_assign
-id|clear_port_feature
-c_func
-(paren
-id|hdev
-comma
-id|port
-op_plus
-l_int|1
-comma
-id|USB_PORT_FEAT_SUSPEND
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-OL
-l_int|0
-op_logical_and
-id|retval
-op_ne
-op_minus
-id|EPIPE
-)paren
-id|dev_dbg
-c_func
-(paren
-op_amp
-id|udev-&gt;dev
-comma
-l_string|&quot;can&squot;t clear suspend; %d&bslash;n&quot;
-comma
-id|retval
-)paren
-suffix:semicolon
 multiline_comment|/* Some low speed devices have problems with the quick delay, so */
 multiline_comment|/*  be a bit pessimistic with those devices. RHbug #23670 */
 r_if
@@ -8430,17 +8422,6 @@ id|i
 op_assign
 id|udev-&gt;descriptor.bMaxPacketSize0
 suffix:semicolon
-id|dev_dbg
-c_func
-(paren
-op_amp
-id|udev-&gt;dev
-comma
-l_string|&quot;ep0 maxpacket = %d&bslash;n&quot;
-comma
-id|i
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8452,6 +8433,17 @@ op_ne
 id|i
 )paren
 (brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|udev-&gt;dev
+comma
+l_string|&quot;ep0 maxpacket = %d&bslash;n&quot;
+comma
+id|i
+)paren
+suffix:semicolon
 id|usb_disable_endpoint
 c_func
 (paren
@@ -9079,6 +9071,49 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#ifdef  CONFIG_USB_SUSPEND
+multiline_comment|/* If something is connected, but the port is suspended, wake it up.. */
+r_if
+c_cond
+(paren
+id|portstatus
+op_amp
+id|USB_PORT_STAT_SUSPEND
+)paren
+(brace
+id|status
+op_assign
+id|hub_port_resume
+c_func
+(paren
+id|hdev
+comma
+id|port
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+OL
+l_int|0
+)paren
+id|dev_dbg
+c_func
+(paren
+id|hub_dev
+comma
+l_string|&quot;can&squot;t clear suspend on port %d; %d&bslash;n&quot;
+comma
+id|port
+op_plus
+l_int|1
+comma
+id|status
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -9661,6 +9696,40 @@ c_func
 (paren
 op_amp
 id|hub_event_lock
+)paren
+suffix:semicolon
+id|dev_dbg
+c_func
+(paren
+id|hub_dev
+comma
+l_string|&quot;state %d ports %d chg %04x evt %04x&bslash;n&quot;
+comma
+id|hdev-&gt;state
+comma
+id|hub-&gt;descriptor
+ques
+c_cond
+id|hub-&gt;descriptor-&gt;bNbrPorts
+suffix:colon
+l_int|0
+comma
+multiline_comment|/* NOTE: expects max 15 ports... */
+(paren
+id|u16
+)paren
+id|hub-&gt;change_bits
+(braket
+l_int|0
+)braket
+comma
+(paren
+id|u16
+)paren
+id|hub-&gt;event_bits
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 multiline_comment|/* Lock the device, then check to see if we were&n;&t;&t; * disconnected while waiting for the lock to succeed. */

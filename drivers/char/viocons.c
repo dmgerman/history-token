@@ -2753,7 +2753,7 @@ id|printk
 c_func
 (paren
 id|VIOCONS_KERN_WARN
-l_string|&quot;wierd...got open ack without atomic&bslash;n&quot;
+l_string|&quot;weird...got open ack without atomic&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

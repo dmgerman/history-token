@@ -1606,7 +1606,6 @@ id|pgdat
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|function|init_bootmem
 r_int
 r_int
@@ -1634,8 +1633,11 @@ r_return
 id|init_bootmem_core
 c_func
 (paren
-op_amp
-id|contig_page_data
+id|NODE_DATA
+c_func
+(paren
+l_int|0
+)paren
 comma
 id|start
 comma
@@ -1663,7 +1665,13 @@ id|size
 id|reserve_bootmem_core
 c_func
 (paren
-id|contig_page_data.bdata
+id|NODE_DATA
+c_func
+(paren
+l_int|0
+)paren
+op_member_access_from_pointer
+id|bdata
 comma
 id|addr
 comma
@@ -1689,7 +1697,13 @@ id|size
 id|free_bootmem_core
 c_func
 (paren
-id|contig_page_data.bdata
+id|NODE_DATA
+c_func
+(paren
+l_int|0
+)paren
+op_member_access_from_pointer
+id|bdata
 comma
 id|addr
 comma
@@ -1710,12 +1724,14 @@ r_return
 id|free_all_bootmem_core
 c_func
 (paren
-op_amp
-id|contig_page_data
+id|NODE_DATA
+c_func
+(paren
+l_int|0
+)paren
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 DECL|function|__alloc_bootmem
 r_void
 op_star

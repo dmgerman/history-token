@@ -3,6 +3,8 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
+DECL|macro|dprintk
+mdefine_line|#define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_CORE, &quot;freq-table&quot;, msg)
 multiline_comment|/*********************************************************************&n; *                     FREQUENCY TABLE HELPERS                       *&n; *********************************************************************/
 DECL|function|cpufreq_frequency_table_cpuinfo
 r_int
@@ -79,7 +81,34 @@ id|freq
 op_eq
 id|CPUFREQ_ENTRY_INVALID
 )paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;table entry %u is invalid, skipping&bslash;n&quot;
+comma
+id|i
+)paren
+suffix:semicolon
 r_continue
+suffix:semicolon
+)brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;table entry %u: %u kHz, %u index&bslash;n&quot;
+comma
+id|i
+comma
+id|freq
+comma
+id|table
+(braket
+id|i
+)braket
+dot
+id|index
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -174,6 +203,18 @@ r_int
 id|count
 op_assign
 l_int|0
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;request for verification of policy (%u - %u kHz) for cpu %u&bslash;n&quot;
+comma
+id|policy-&gt;min
+comma
+id|policy-&gt;max
+comma
+id|policy-&gt;cpu
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -300,6 +341,18 @@ comma
 id|policy-&gt;cpuinfo.max_freq
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;verification lead to (%u - %u kHz) for cpu %u&bslash;n&quot;
+comma
+id|policy-&gt;min
+comma
+id|policy-&gt;max
+comma
+id|policy-&gt;cpu
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -369,6 +422,18 @@ suffix:semicolon
 r_int
 r_int
 id|i
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;request for target %u kHz (relation: %u) for cpu %u&bslash;n&quot;
+comma
+id|target_freq
+comma
+id|relation
+comma
+id|policy-&gt;cpu
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -619,6 +684,31 @@ id|index
 op_assign
 id|optimal.index
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;target is %u (%u kHz, %u)&bslash;n&quot;
+comma
+op_star
+id|index
+comma
+id|table
+(braket
+op_star
+id|index
+)braket
+dot
+id|frequency
+comma
+id|table
+(braket
+op_star
+id|index
+)braket
+dot
+id|index
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -793,6 +883,11 @@ dot
 id|mode
 op_assign
 l_int|0444
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 )brace
 comma
 dot
@@ -825,6 +920,16 @@ r_int
 id|cpu
 )paren
 (brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;setting show_table for cpu %u to %p&bslash;n&quot;
+comma
+id|cpu
+comma
+id|table
+)paren
+suffix:semicolon
 id|show_table
 (braket
 id|cpu
@@ -850,6 +955,14 @@ r_int
 id|cpu
 )paren
 (brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;clearing show_table for cpu %u&bslash;n&quot;
+comma
+id|cpu
+)paren
+suffix:semicolon
 id|show_table
 (braket
 id|cpu

@@ -25,19 +25,6 @@ macro_line|#ifndef CONFIG_PPC64
 macro_line|#include &lt;asm/mediabay.h&gt;
 macro_line|#endif
 macro_line|#include &quot;ide-timing.h&quot;
-r_extern
-r_void
-id|ide_do_request
-c_func
-(paren
-id|ide_hwgroup_t
-op_star
-id|hwgroup
-comma
-r_int
-id|masked_irq
-)paren
-suffix:semicolon
 DECL|macro|IDE_PMAC_DEBUG
 mdefine_line|#define IDE_PMAC_DEBUG
 DECL|macro|DMA_WAIT_TIMEOUT
@@ -5618,7 +5605,7 @@ c_cond
 (paren
 id|state
 op_ne
-id|mdev-&gt;ofdev.dev.power_state
+id|mdev-&gt;ofdev.dev.power.power_state
 op_logical_and
 id|state
 op_ge
@@ -5640,7 +5627,7 @@ id|rc
 op_eq
 l_int|0
 )paren
-id|mdev-&gt;ofdev.dev.power_state
+id|mdev-&gt;ofdev.dev.power.power_state
 op_assign
 id|state
 suffix:semicolon
@@ -5684,7 +5671,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mdev-&gt;ofdev.dev.power_state
+id|mdev-&gt;ofdev.dev.power.power_state
 op_ne
 l_int|0
 )paren
@@ -5704,7 +5691,7 @@ id|rc
 op_eq
 l_int|0
 )paren
-id|mdev-&gt;ofdev.dev.power_state
+id|mdev-&gt;ofdev.dev.power.power_state
 op_assign
 l_int|0
 suffix:semicolon
@@ -6124,7 +6111,7 @@ c_cond
 (paren
 id|state
 op_ne
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_logical_and
 id|state
 op_ge
@@ -6146,7 +6133,7 @@ id|rc
 op_eq
 l_int|0
 )paren
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_assign
 id|state
 suffix:semicolon
@@ -6189,7 +6176,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_ne
 l_int|0
 )paren
@@ -6209,7 +6196,7 @@ id|rc
 op_eq
 l_int|0
 )paren
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_assign
 l_int|0
 suffix:semicolon

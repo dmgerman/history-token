@@ -8165,7 +8165,9 @@ comma
 )brace
 suffix:semicolon
 DECL|function|as_init
+r_static
 r_int
+id|__init
 id|as_init
 c_func
 (paren
@@ -8245,7 +8247,9 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|as_exit
+r_static
 r_void
+id|__exit
 id|as_exit
 c_func
 (paren

@@ -27,6 +27,10 @@ macro_line|#include &quot;gzip.h&quot;
 DECL|macro|STATIC
 mdefine_line|#define STATIC
 macro_line|#endif /* !STATIC */
+macro_line|#ifndef INIT
+DECL|macro|INIT
+mdefine_line|#define INIT
+macro_line|#endif
 DECL|macro|slide
 mdefine_line|#define slide window
 multiline_comment|/* Huffman code lookup table entry--this entry is four bytes for machines&n;   that have 16-bit pointers (e.g. PC&squot;s in the small or medium model).&n;   Valid extra bits are 0..13.  e == 15 is EOB (end of block), e == 16&n;   means that v is a literal, 16 &lt; e &lt; 32 means that v is a pointer to&n;   the next table, which codes e - 16 bits, and lastly e == 99 indicates&n;   an unused code.  If a code with e == 99 is looked up, this implies an&n;   error in the data. */
@@ -67,6 +71,7 @@ suffix:semicolon
 multiline_comment|/* Function prototypes */
 id|STATIC
 r_int
+id|INIT
 id|huft_build
 id|OF
 c_func
@@ -99,6 +104,7 @@ op_star
 suffix:semicolon
 id|STATIC
 r_int
+id|INIT
 id|huft_free
 id|OF
 c_func
@@ -112,6 +118,7 @@ op_star
 suffix:semicolon
 id|STATIC
 r_int
+id|INIT
 id|inflate_codes
 id|OF
 c_func
@@ -133,6 +140,7 @@ r_int
 suffix:semicolon
 id|STATIC
 r_int
+id|INIT
 id|inflate_stored
 id|OF
 c_func
@@ -144,6 +152,7 @@ r_void
 suffix:semicolon
 id|STATIC
 r_int
+id|INIT
 id|inflate_fixed
 id|OF
 c_func
@@ -155,6 +164,7 @@ r_void
 suffix:semicolon
 id|STATIC
 r_int
+id|INIT
 id|inflate_dynamic
 id|OF
 c_func
@@ -166,6 +176,7 @@ r_void
 suffix:semicolon
 id|STATIC
 r_int
+id|INIT
 id|inflate_block
 id|OF
 c_func
@@ -178,6 +189,7 @@ op_star
 suffix:semicolon
 id|STATIC
 r_int
+id|INIT
 id|inflate
 id|OF
 c_func
@@ -630,6 +642,7 @@ multiline_comment|/* track memory usage */
 DECL|function|huft_build
 id|STATIC
 r_int
+id|INIT
 id|huft_build
 c_func
 (paren
@@ -1831,6 +1844,7 @@ suffix:semicolon
 DECL|function|huft_free
 id|STATIC
 r_int
+id|INIT
 id|huft_free
 c_func
 (paren
@@ -1900,6 +1914,7 @@ suffix:semicolon
 DECL|function|inflate_codes
 id|STATIC
 r_int
+id|INIT
 id|inflate_codes
 c_func
 (paren
@@ -2509,6 +2524,7 @@ multiline_comment|/* Input underrun */
 DECL|function|inflate_stored
 id|STATIC
 r_int
+id|INIT
 id|inflate_stored
 c_func
 (paren
@@ -2706,6 +2722,7 @@ DECL|function|inflate_fixed
 id|STATIC
 r_int
 id|noinline
+id|INIT
 id|inflate_fixed
 c_func
 (paren
@@ -2977,6 +2994,7 @@ DECL|function|inflate_dynamic
 id|STATIC
 r_int
 id|noinline
+id|INIT
 id|inflate_dynamic
 c_func
 (paren
@@ -3846,6 +3864,7 @@ multiline_comment|/* Input underrun */
 DECL|function|inflate_block
 id|STATIC
 r_int
+id|INIT
 id|inflate_block
 c_func
 (paren
@@ -3995,6 +4014,7 @@ multiline_comment|/* Input underrun */
 DECL|function|inflate
 id|STATIC
 r_int
+id|INIT
 id|inflate
 c_func
 (paren
@@ -4164,6 +4184,7 @@ mdefine_line|#define CRC_VALUE (crc ^ 0xffffffffUL)
 multiline_comment|/*&n; * Code to compute the CRC-32 table. Borrowed from &n; * gzip-1.0.3/makecrc.c.&n; */
 r_static
 r_void
+id|INIT
 DECL|function|makecrc
 id|makecrc
 c_func
@@ -4380,6 +4401,7 @@ multiline_comment|/*&n; * Do the uncompression!&n; */
 DECL|function|gunzip
 r_static
 r_int
+id|INIT
 id|gunzip
 c_func
 (paren

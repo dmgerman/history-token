@@ -2547,7 +2547,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Driver Initialisation failed&quot;
+l_string|&quot;%s: Driver Initialisation failed&bslash;n&quot;
 comma
 id|__FILE__
 )paren

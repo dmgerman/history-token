@@ -785,11 +785,11 @@ id|mode
 comma
 id|clockfreq
 op_div
-l_int|100
+l_int|1000
 comma
 id|clockfreq
 op_mod
-l_int|100
+l_int|1000
 comma
 (paren
 id|loops_per_jiffy

@@ -10,7 +10,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nseval&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_evaluate_relative&n; *&n; * PARAMETERS:  Handle              - The relative containing object&n; *              Pathname            - Name of method to execute, If NULL, the&n; *                                    handle is the object to execute&n; *              Params              - List of parameters to pass to the method,&n; *                                    terminated by NULL.  Params itself may be&n; *                                    NULL if no parameters are being passed.&n; *              return_object       - Where to put method&squot;s return value (if&n; *                                    any).  If NULL, no value is returned.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find and execute the requested method using the handle as a&n; *              scope&n; *&n; * MUTEX:       Locks Namespace&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_evaluate_relative&n; *&n; * PARAMETERS:  Pathname            - Name of method to execute, If NULL, the&n; *                                    handle is the object to execute&n; *              Info                - Method info block&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find and execute the requested method using the handle as a&n; *              scope&n; *&n; * MUTEX:       Locks Namespace&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_evaluate_relative
 id|acpi_ns_evaluate_relative
@@ -224,7 +224,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Now that we have a handle to the object, we can attempt&n;&t; * to evaluate it.&n;&t; */
+multiline_comment|/*&n;&t; * Now that we have a handle to the object, we can attempt to evaluate it.&n;&t; */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -285,7 +285,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_evaluate_by_name&n; *&n; * PARAMETERS:  Pathname            - Fully qualified pathname to the object&n; *              Info                - Contains:&n; *              return_object       - Where to put method&squot;s return value (if&n; *                                    any).  If NULL, no value is returned.&n; *              Params              - List of parameters to pass to the method,&n; *                                    terminated by NULL.  Params itself may be&n; *                                    NULL if no parameters are being passed.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find and execute the requested method passing the given&n; *              parameters&n; *&n; * MUTEX:       Locks Namespace&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_evaluate_by_name&n; *&n; * PARAMETERS:  Pathname            - Fully qualified pathname to the object&n; *              Info                - Contains:&n; *                  return_object   - Where to put method&squot;s return value (if&n; *                                    any).  If NULL, no value is returned.&n; *                  Params          - List of parameters to pass to the method,&n; *                                    terminated by NULL.  Params itself may be&n; *                                    NULL if no parameters are being passed.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find and execute the requested method passing the given&n; *              parameters&n; *&n; * MUTEX:       Locks Namespace&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_evaluate_by_name
 id|acpi_ns_evaluate_by_name
@@ -415,7 +415,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Now that we have a handle to the object, we can attempt&n;&t; * to evaluate it.&n;&t; */
+multiline_comment|/*&n;&t; * Now that we have a handle to the object, we can attempt to evaluate it.&n;&t; */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -576,7 +576,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * For a method alias, we must grab the actual method node&n;&t; * so that proper scoping context will be established&n;&t; * before execution.&n;&t; */
+multiline_comment|/*&n;&t; * For a method alias, we must grab the actual method node so that proper&n;&t; * scoping context will be established before execution.&n;&t; */
 r_if
 c_cond
 (paren
@@ -599,7 +599,7 @@ id|info-&gt;node-&gt;object
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Two major cases here:&n;&t; * 1) The object is an actual control method -- execute it.&n;&t; * 2) The object is not a method -- just return it&squot;s current&n;&t; *      value&n;&t; *&n;&t; * In both cases, the namespace is unlocked by the&n;&t; *  acpi_ns* procedure&n;&t; */
+multiline_comment|/*&n;&t; * Two major cases here:&n;&t; * 1) The object is an actual control method -- execute it.&n;&t; * 2) The object is not a method -- just return it&squot;s current value&n;&t; *&n;&t; * In both cases, the namespace is unlocked by the acpi_ns* procedure&n;&t; */
 r_if
 c_cond
 (paren
@@ -622,7 +622,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * Case 2) Object is NOT a method, just return its&n;&t;&t; * current value&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Case 2) Object is NOT a method, just return its current value&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ns_get_object_value
@@ -631,7 +631,7 @@ id|info
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Check if there is a return value on the stack that must&n;&t; * be dealt with&n;&t; */
+multiline_comment|/*&n;&t; * Check if there is a return value on the stack that must be dealt with&n;&t; */
 r_if
 c_cond
 (paren
@@ -646,14 +646,14 @@ op_assign
 id|AE_OK
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Namespace was unlocked by the handling acpi_ns* function,&n;&t; * so we just return&n;&t; */
+multiline_comment|/*&n;&t; * Namespace was unlocked by the handling acpi_ns* function, so we&n;&t; * just return&n;&t; */
 id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_execute_control_method&n; *&n; * PARAMETERS:  method_node         - The method to execute&n; *              Params              - List of parameters to pass to the method,&n; *                                    terminated by NULL.  Params itself may be&n; *                                    NULL if no parameters are being passed.&n; *              return_obj_desc     - List of result objects to be returned&n; *                                    from the method.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute the requested method passing the given parameters&n; *&n; * MUTEX:       Assumes namespace is locked&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_execute_control_method&n; *&n; * PARAMETERS:  Info            - Method info block (w/params)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute the requested method passing the given parameters&n; *&n; * MUTEX:       Assumes namespace is locked&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_execute_control_method
 id|acpi_ns_execute_control_method
@@ -805,7 +805,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_get_object_value&n; *&n; * PARAMETERS:  Node                - The object&n; *              return_obj_desc     - Where the objects value is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Return the current value of the object&n; *&n; * MUTEX:       Assumes namespace is locked, leaves namespace unlocked&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_get_object_value&n; *&n; * PARAMETERS:  Info            - Method info block (w/params)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Return the current value of the object&n; *&n; * MUTEX:       Assumes namespace is locked, leaves namespace unlocked&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_get_object_value
 id|acpi_ns_get_object_value
@@ -833,8 +833,8 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;ns_get_object_value&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Objects require additional resolution steps (e.g., the&n;&t; * Node may be a field that must be read, etc.) -- we can&squot;t just grab&n;&t; * the object out of the node.&n;&t; */
-multiline_comment|/*&n;&t; * Use resolve_node_to_value() to get the associated value. This call&n;&t; * always deletes obj_desc (allocated above).&n;&t; *&n;&t; * NOTE: we can get away with passing in NULL for a walk state&n;&t; * because obj_desc is guaranteed to not be a reference to either&n;&t; * a method local or a method argument (because this interface can only be&n;&t; * called from the acpi_evaluate external interface, never called from&n;&t; * a running control method.)&n;&t; *&n;&t; * Even though we do not directly invoke the interpreter&n;&t; * for this, we must enter it because we could access an opregion.&n;&t; * The opregion access code assumes that the interpreter&n;&t; * is locked.&n;&t; *&n;&t; * We must release the namespace lock before entering the&n;&t; * intepreter.&n;&t; */
+multiline_comment|/*&n;&t; * Objects require additional resolution steps (e.g., the Node may be a&n;&t; * field that must be read, etc.) -- we can&squot;t just grab the object out of&n;&t; * the node.&n;&t; */
+multiline_comment|/*&n;&t; * Use resolve_node_to_value() to get the associated value. This call always&n;&t; * deletes obj_desc (allocated above).&n;&t; *&n;&t; * NOTE: we can get away with passing in NULL for a walk state because&n;&t; * obj_desc is guaranteed to not be a reference to either a method local or&n;&t; * a method argument (because this interface can only be called from the&n;&t; * acpi_evaluate external interface, never called from a running method.)&n;&t; *&n;&t; * Even though we do not directly invoke the interpreter for this, we must&n;&t; * enter it because we could access an opregion. The opregion access code&n;&t; * assumes that the interpreter is locked.&n;&t; *&n;&t; * We must release the namespace lock before entering the intepreter.&n;&t; */
 id|status
 op_assign
 id|acpi_ut_release_mutex
@@ -882,7 +882,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If acpi_ex_resolve_node_to_value() succeeded, the return value was&n;&t;&t; * placed in resolved_node.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If acpi_ex_resolve_node_to_value() succeeded, the return value was placed&n;&t;&t; * in resolved_node.&n;&t;&t; */
 id|acpi_ex_exit_interpreter
 (paren
 )paren

@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/libata.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;ata_piix&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.02&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.03&quot;
 r_enum
 (brace
 DECL|enumerator|PIIX_IOCFG
@@ -1027,6 +1027,13 @@ comma
 id|piix_pci_tbl
 )paren
 suffix:semicolon
+DECL|variable|DRV_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_VERSION
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;piix_pata_cbl_detect - Probe host controller cable detect info&n; *&t;@ap: Port for which cable detect info is desired&n; *&n; *&t;Read 80c cable indicator from ATA PCI device&squot;s PCI config&n; *&t;register.  This register is normally set by firmware (BIOS).&n; *&n; *&t;LOCKING:&n; *&t;None (inherited from caller).&n; */
 DECL|function|piix_pata_cbl_detect
 r_static
@@ -1045,7 +1052,11 @@ id|pci_dev
 op_star
 id|pdev
 op_assign
-id|ap-&gt;host_set-&gt;pdev
+id|to_pci_dev
+c_func
+(paren
+id|ap-&gt;host_set-&gt;dev
+)paren
 suffix:semicolon
 id|u8
 id|tmp
@@ -1135,6 +1146,17 @@ op_star
 id|ap
 )paren
 (brace
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+id|to_pci_dev
+c_func
+(paren
+id|ap-&gt;host_set-&gt;dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1142,7 +1164,7 @@ op_logical_neg
 id|pci_test_config_bits
 c_func
 (paren
-id|ap-&gt;host_set-&gt;pdev
+id|pdev
 comma
 op_amp
 id|piix_enable_bits
@@ -1206,7 +1228,11 @@ id|pci_dev
 op_star
 id|pdev
 op_assign
-id|ap-&gt;host_set-&gt;pdev
+id|to_pci_dev
+c_func
+(paren
+id|ap-&gt;host_set-&gt;dev
+)paren
 suffix:semicolon
 r_int
 id|combined
@@ -1410,7 +1436,11 @@ id|pci_dev
 op_star
 id|dev
 op_assign
-id|ap-&gt;host_set-&gt;pdev
+id|to_pci_dev
+c_func
+(paren
+id|ap-&gt;host_set-&gt;dev
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -1664,7 +1694,11 @@ id|pci_dev
 op_star
 id|dev
 op_assign
-id|ap-&gt;host_set-&gt;pdev
+id|to_pci_dev
+c_func
+(paren
+id|ap-&gt;host_set-&gt;dev
+)paren
 suffix:semicolon
 id|u8
 id|maslave

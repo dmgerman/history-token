@@ -2249,7 +2249,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INIT
 comma
-l_string|&quot;GPE %02X to %02X [%4.4s] %u regs at %8.8X%8.8X on int 0x%X&bslash;n&quot;
+l_string|&quot;GPE %02X to %02X [%4.4s] %u regs on int 0x%X&bslash;n&quot;
 comma
 (paren
 id|u32
@@ -2276,11 +2276,6 @@ comma
 id|gpe_device-&gt;name.ascii
 comma
 id|gpe_block-&gt;register_count
-comma
-id|ACPI_FORMAT_UINT64
-(paren
-id|gpe_block-&gt;block_address.address
-)paren
 comma
 id|interrupt_level
 )paren

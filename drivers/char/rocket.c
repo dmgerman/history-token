@@ -161,7 +161,6 @@ suffix:semicolon
 DECL|variable|support_low_speed
 r_static
 r_int
-r_int
 id|support_low_speed
 suffix:semicolon
 DECL|variable|modem1
@@ -450,12 +449,14 @@ c_func
 l_string|&quot;Comtrol RocketPort driver&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|board1
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -466,12 +467,14 @@ comma
 l_string|&quot;I/O port for (ISA) board #1&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|board2
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -482,12 +485,14 @@ comma
 l_string|&quot;I/O port for (ISA) board #2&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|board3
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -498,12 +503,14 @@ comma
 l_string|&quot;I/O port for (ISA) board #3&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|board4
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -514,12 +521,14 @@ comma
 l_string|&quot;I/O port for (ISA) board #4&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|controller
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -530,12 +539,14 @@ comma
 l_string|&quot;I/O port for (ISA) rocketport controller&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|support_low_speed
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -546,12 +557,14 @@ comma
 l_string|&quot;1 means support 50 baud, 0 means support 460400 baud&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|modem1
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -562,12 +575,14 @@ comma
 l_string|&quot;1 means (ISA) board #1 is a RocketModem&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|modem2
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -578,12 +593,14 @@ comma
 l_string|&quot;1 means (ISA) board #2 is a RocketModem&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|modem3
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -594,12 +611,14 @@ comma
 l_string|&quot;1 means (ISA) board #3 is a RocketModem&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|modem4
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -610,12 +629,16 @@ comma
 l_string|&quot;1 means (ISA) board #4 is a RocketModem&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|pc104_1
 comma
-l_string|&quot;1-8i&quot;
+id|ulong
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -626,12 +649,16 @@ comma
 l_string|&quot;set interface types for ISA(PC104) board #1 (e.g. pc104_1=232,232,485,485,...&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|pc104_2
 comma
-l_string|&quot;1-8i&quot;
+id|ulong
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -642,12 +669,16 @@ comma
 l_string|&quot;set interface types for ISA(PC104) board #2 (e.g. pc104_2=232,232,485,485,...&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|pc104_3
 comma
-l_string|&quot;1-8i&quot;
+id|ulong
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -658,12 +689,16 @@ comma
 l_string|&quot;set interface types for ISA(PC104) board #3 (e.g. pc104_3=232,232,485,485,...&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|pc104_4
 comma
-l_string|&quot;1-8i&quot;
+id|ulong
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -11291,7 +11326,6 @@ l_int|4
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/***********************************************************************&n;&t;&t;Copyright 1994 Comtrol Corporation.&n;&t;&t;&t;All Rights Reserved.&n;&n;The following source code is subject to Comtrol Corporation&squot;s&n;Developer&squot;s License Agreement.&n;&n;This source code is protected by United States copyright law and &n;international copyright treaties.&n;&n;This source code may only be used to develop software products that&n;will operate with Comtrol brand hardware.&n;&n;You may not reproduce nor distribute this source code in its original&n;form but must produce a derivative work which includes portions of&n;this source code only.&n;&n;The portions of this source code which you use in your derivative&n;work must bear Comtrol&squot;s copyright notice:&n;&n;&t;&t;Copyright 1994 Comtrol Corporation.&n;&n;***********************************************************************/
 macro_line|#ifndef TRUE
 DECL|macro|TRUE
 mdefine_line|#define TRUE 1
