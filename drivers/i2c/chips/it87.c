@@ -584,10 +584,6 @@ r_struct
 id|semaphore
 id|lock
 suffix:semicolon
-DECL|member|sysctl_id
-r_int
-id|sysctl_id
-suffix:semicolon
 DECL|member|type
 r_enum
 id|chips
@@ -2253,6 +2249,8 @@ r_struct
 id|i2c_client
 op_star
 id|new_client
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|it87_data
@@ -2305,27 +2303,29 @@ id|I2C_FUNC_SMBUS_BYTE_DATA
 r_goto
 id|ERROR0
 suffix:semicolon
+multiline_comment|/* Reserve the ISA region */
 r_if
 c_cond
 (paren
 id|is_isa
 )paren
-(brace
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|address
 comma
 id|IT87_EXTENT
+comma
+id|name
 )paren
 )paren
 r_goto
 id|ERROR0
 suffix:semicolon
-)brace
 multiline_comment|/* Probe whether there is anything available on this address. Already&n;&t;   done for SMBus clients */
 r_if
 c_cond
@@ -2368,7 +2368,7 @@ op_ne
 id|i
 )paren
 r_goto
-id|ERROR0
+id|ERROR1
 suffix:semicolon
 r_if
 c_cond
@@ -2384,7 +2384,7 @@ op_ne
 id|i
 )paren
 r_goto
-id|ERROR0
+id|ERROR1
 suffix:semicolon
 r_if
 c_cond
@@ -2400,7 +2400,7 @@ op_ne
 id|i
 )paren
 r_goto
-id|ERROR0
+id|ERROR1
 suffix:semicolon
 DECL|macro|REALLY_SLOW_IO
 macro_line|#undef REALLY_SLOW_IO
@@ -2505,7 +2505,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
-id|ERROR0
+id|ERROR1
 suffix:semicolon
 )brace
 id|data
@@ -2700,22 +2700,6 @@ r_goto
 id|ERROR1
 suffix:semicolon
 )brace
-multiline_comment|/* Reserve the ISA region */
-r_if
-c_cond
-(paren
-id|is_isa
-)paren
-id|request_region
-c_func
-(paren
-id|address
-comma
-id|IT87_EXTENT
-comma
-id|name
-)paren
-suffix:semicolon
 multiline_comment|/* Fill in the remaining client fields and put it into the global list */
 id|strncpy
 c_func
@@ -2762,7 +2746,7 @@ id|new_client
 )paren
 )paren
 r_goto
-id|ERROR2
+id|ERROR1
 suffix:semicolon
 multiline_comment|/* register sysfs hooks */
 id|device_create_file
@@ -3085,8 +3069,14 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|ERROR2
+id|ERROR1
 suffix:colon
+id|kfree
+c_func
+(paren
+id|new_client
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3098,14 +3088,6 @@ c_func
 id|address
 comma
 id|IT87_EXTENT
-)paren
-suffix:semicolon
-id|ERROR1
-suffix:colon
-id|kfree
-c_func
-(paren
-id|new_client
 )paren
 suffix:semicolon
 id|ERROR0
