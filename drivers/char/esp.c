@@ -7769,10 +7769,6 @@ op_star
 )paren
 id|tty-&gt;driver_data
 suffix:semicolon
-r_int
-r_int
-id|arg
-suffix:semicolon
 r_if
 c_cond
 (paren
