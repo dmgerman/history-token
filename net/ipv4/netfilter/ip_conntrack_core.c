@@ -549,6 +549,7 @@ comma
 id|atomic_read
 c_func
 (paren
+op_amp
 id|exp-&gt;use
 )paren
 )paren
@@ -559,6 +560,7 @@ c_func
 id|atomic_read
 c_func
 (paren
+op_amp
 id|exp-&gt;use
 )paren
 )paren
@@ -2279,7 +2281,7 @@ id|ip_conntrack_lock
 suffix:semicolon
 id|h
 op_assign
-id|LIST_FIND
+id|LIST_FIND_B
 c_func
 (paren
 id|chain
@@ -2829,6 +2831,23 @@ op_amp
 id|ip_conntrack_expect_tuple_lock
 )paren
 suffix:semicolon
+multiline_comment|/* If master is not in hash table yet (ie. packet hasn&squot;t left&n;&t;   this machine yet), how can other end know about expected?&n;&t;   Hence these are not the droids you are looking for (if&n;&t;   master ct never got confirmed, we&squot;d hold a reference to it&n;&t;   and weird things would happen to future packets). */
+r_if
+c_cond
+(paren
+id|expected
+op_logical_and
+op_logical_neg
+id|is_confirmed
+c_func
+(paren
+id|expected-&gt;expectant
+)paren
+)paren
+id|expected
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/* Look up the conntrack helper for master connections only */
 r_if
 c_cond
@@ -2865,17 +2884,10 @@ id|expected
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* If master is not in hash table yet (ie. packet hasn&squot;t left&n;&t;   this machine yet), how can other end know about expected?&n;&t;   Hence these are not the droids you are looking for (if&n;&t;   master ct never got confirmed, we&squot;d hold a reference to it&n;&t;   and weird things would happen to future packets). */
 r_if
 c_cond
 (paren
 id|expected
-op_logical_and
-id|is_confirmed
-c_func
-(paren
-id|expected-&gt;expectant
-)paren
 )paren
 (brace
 id|DEBUGP
@@ -5678,7 +5690,12 @@ op_assign
 id|inet-&gt;rcv_saddr
 comma
 (brace
+dot
+id|tcp
+op_assign
+(brace
 id|inet-&gt;sport
+)brace
 )brace
 )brace
 comma
@@ -5686,7 +5703,12 @@ comma
 id|inet-&gt;daddr
 comma
 (brace
+dot
+id|tcp
+op_assign
+(brace
 id|inet-&gt;dport
+)brace
 )brace
 comma
 id|IPPROTO_TCP

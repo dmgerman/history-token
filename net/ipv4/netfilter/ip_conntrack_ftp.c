@@ -2012,6 +2012,10 @@ l_int|3
 )paren
 comma
 (brace
+dot
+id|tcp
+op_assign
+(brace
 id|htons
 c_func
 (paren
@@ -2027,6 +2031,7 @@ id|array
 l_int|5
 )braket
 )paren
+)brace
 )brace
 comma
 id|IPPROTO_TCP
@@ -2054,7 +2059,12 @@ comma
 l_int|0xFFFFFFFF
 comma
 (brace
+dot
+id|tcp
+op_assign
+(brace
 l_int|0xFFFF
+)brace
 )brace
 comma
 l_int|0xFFFF

@@ -10,6 +10,9 @@ DECL|macro|LIST_FIND
 mdefine_line|#define LIST_FIND(head, cmpfn, type, args...)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const struct list_head *__i = (head);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ASSERT_READ_LOCK(head);&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__i = __i-&gt;next;&t;&t;&t;&bslash;&n;&t;&t;if (__i == (head)) {&t;&t;&t;&bslash;&n;&t;&t;&t;__i = NULL;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&bslash;&n;&t;} while (!cmpfn((const type)__i , ## args));&t;&bslash;&n;&t;(type)__i;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|LIST_FIND_W
 mdefine_line|#define LIST_FIND_W(head, cmpfn, type, args...)&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const struct list_head *__i = (head);&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ASSERT_WRITE_LOCK(head);&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__i = __i-&gt;next;&t;&t;&bslash;&n;&t;&t;if (__i == (head)) {&t;&t;&bslash;&n;&t;&t;&t;__i = NULL;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&bslash;&n;&t;} while (!cmpfn((type)__i , ## args));&t;&bslash;&n;&t;(type)__i;&t;&t;&t;&t;&bslash;&n;})
+multiline_comment|/* Just like LIST_FIND but we search backwards */
+DECL|macro|LIST_FIND_B
+mdefine_line|#define LIST_FIND_B(head, cmpfn, type, args...)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const struct list_head *__i = (head);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ASSERT_READ_LOCK(head);&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__i = __i-&gt;prev;&t;&t;&t;&bslash;&n;&t;&t;if (__i == (head)) {&t;&t;&t;&bslash;&n;&t;&t;&t;__i = NULL;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&bslash;&n;&t;} while (!cmpfn((const type)__i , ## args));&t;&bslash;&n;&t;(type)__i;&t;&t;&t;&t;&t;&bslash;&n;})
 r_static
 r_inline
 r_int

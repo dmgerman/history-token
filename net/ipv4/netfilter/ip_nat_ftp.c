@@ -361,11 +361,16 @@ r_union
 id|ip_conntrack_manip_proto
 )paren
 (brace
+dot
+id|tcp
+op_assign
+(brace
 id|htons
 c_func
 (paren
 id|exp_ftp_info-&gt;port
 )paren
+)brace
 )brace
 )paren
 suffix:semicolon
