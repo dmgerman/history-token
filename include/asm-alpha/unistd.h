@@ -682,8 +682,14 @@ DECL|macro|__NR_semtimedop
 mdefine_line|#define __NR_semtimedop&t;&t;&t;423
 DECL|macro|__NR_tgkill
 mdefine_line|#define __NR_tgkill&t;&t;&t;424
+DECL|macro|__NR_stat64
+mdefine_line|#define __NR_stat64&t;&t;&t;425
+DECL|macro|__NR_lstat64
+mdefine_line|#define __NR_lstat64&t;&t;&t;426
+DECL|macro|__NR_fstat64
+mdefine_line|#define __NR_fstat64&t;&t;&t;427
 DECL|macro|NR_SYSCALLS
-mdefine_line|#define NR_SYSCALLS&t;&t;&t;425
+mdefine_line|#define NR_SYSCALLS&t;&t;&t;428
 macro_line|#if defined(__GNUC__)
 DECL|macro|_syscall_return
 mdefine_line|#define _syscall_return(type)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return (_sc_err ? errno = _sc_ret, _sc_ret = -1L : 0), (type) _sc_ret
