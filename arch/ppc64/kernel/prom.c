@@ -8582,7 +8582,11 @@ c_func
 id|cmd_line
 )paren
 comma
+id|RELOC
+c_func
+(paren
 id|CONFIG_CMDLINE
+)paren
 comma
 r_sizeof
 (paren
