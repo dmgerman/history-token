@@ -305,7 +305,6 @@ c_cond
 (paren
 id|play
 )paren
-(brace
 id|set_bit
 c_func
 (paren
@@ -315,9 +314,7 @@ op_amp
 id|effect-&gt;flags
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|clear_bit
 c_func
 (paren
@@ -327,7 +324,6 @@ op_amp
 id|effect-&gt;flags
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|hid_pid_erase
 r_static
@@ -510,7 +506,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|ret
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Erase all effects this process owns */
@@ -550,7 +546,8 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*NOTE: no need to lock here. The only times EFFECT_USED is&n;&t;  modified is when effects are uploaded or when an effect is&n;&t;  erased. But a process cannot close its dev/input/eventX fd&n;&t;  and perform ioctls on the same fd all at the same time */
+multiline_comment|/*NOTE: no need to lock here. The only times EFFECT_USED is&n;&t;   modified is when effects are uploaded or when an effect is&n;&t;   erased. But a process cannot close its dev/input/eventX fd&n;&t;   and perform ioctls on the same fd all at the same time */
+multiline_comment|/*FIXME: multiple threads, anyone? */
 r_for
 c_loop
 (paren
@@ -659,8 +656,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-op_assign
-l_int|0
 suffix:semicolon
 id|dev_dbg
 c_func
@@ -891,12 +886,10 @@ dot
 id|flags
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
-)brace
 id|is_update
 op_assign
 id|FF_PID_TRUE
@@ -1077,9 +1070,11 @@ r_private
 op_assign
 id|hid-&gt;ff_private
 op_assign
-id|kmalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
 r_struct
@@ -1097,27 +1092,8 @@ r_private
 )paren
 r_return
 op_minus
-l_int|1
+id|ENOMEM
 suffix:semicolon
-id|memset
-c_func
-(paren
-r_private
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|hid_ff_pid
-)paren
-)paren
-suffix:semicolon
-id|hid-&gt;ff_private
-op_assign
-r_private
-suffix:semicolon
-multiline_comment|/* &squot;cause memset can move the block away */
 r_private
 op_member_access_from_pointer
 id|hid
