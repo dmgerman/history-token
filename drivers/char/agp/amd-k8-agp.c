@@ -1245,7 +1245,9 @@ suffix:semicolon
 )brace
 id|printk
 (paren
-l_string|&quot;Detected AMD 8151 AGP Bridge rev %s&quot;
+id|KERN_INFO
+id|PFX
+l_string|&quot;Detected AMD 8151 AGP Bridge rev %s&bslash;n&quot;
 comma
 id|revstring
 )paren
@@ -1259,6 +1261,13 @@ OL
 l_int|0x13
 )paren
 (brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Correcting AGP revision (reports 3.5, is really 3.0)&bslash;n&quot;
+)paren
+suffix:semicolon
 id|bridge-&gt;major_version
 op_assign
 l_int|3
