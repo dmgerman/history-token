@@ -369,6 +369,12 @@ op_star
 id|port_num
 op_assign
 id|p
+op_plus
+id|start_port
+c_func
+(paren
+id|device
+)paren
 suffix:semicolon
 r_if
 c_cond
