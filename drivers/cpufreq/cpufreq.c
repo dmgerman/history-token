@@ -469,6 +469,14 @@ comma
 id|max
 )paren
 suffix:semicolon
+id|show_one
+c_func
+(paren
+id|scaling_cur_freq
+comma
+id|cur
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * cpufreq_per_cpu_attr_write() / store_##file_name() - sysfs write access&n; */
 DECL|macro|store_one
 mdefine_line|#define store_one(file_name, object)&t;&t;&t;&bslash;&n;static ssize_t store_##file_name&t;&t;&t;&t;&t;&bslash;&n;(struct cpufreq_policy * policy, const char *buf, size_t count)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int ret = -EINVAL;&t;&t;&t;&t;&t;&bslash;&n;&t;struct cpufreq_policy new_policy;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ret = cpufreq_get_policy(&amp;new_policy, policy-&gt;cpu);&t;&t;&bslash;&n;&t;if (ret)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ret = sscanf (buf, &quot;%u&quot;, &amp;new_policy.object);&t;&t;&t;&bslash;&n;&t;if (ret != 1)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ret = cpufreq_set_policy(&amp;new_policy);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return ret ? ret : count;&t;&t;&t;&t;&t;&bslash;&n;}
@@ -863,6 +871,13 @@ id|define_one_ro
 c_func
 (paren
 id|scaling_driver
+)paren
+suffix:semicolon
+DECL|variable|scaling_cur_freq
+id|define_one_ro
+c_func
+(paren
+id|scaling_cur_freq
 )paren
 suffix:semicolon
 DECL|variable|scaling_min_freq
@@ -1416,6 +1431,21 @@ id|drv_attr
 op_increment
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|cpufreq_driver-&gt;target
+)paren
+id|sysfs_create_file
+c_func
+(paren
+op_amp
+id|policy-&gt;kobj
+comma
+op_amp
+id|scaling_cur_freq.attr
+)paren
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
