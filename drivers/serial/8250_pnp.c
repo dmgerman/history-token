@@ -5,14 +5,10 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/serial.h&gt;
-macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
-macro_line|#include &lt;linux/8250.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;asm/serial.h&gt;
+macro_line|#include &quot;8250.h&quot;
 DECL|macro|UNKNOWN_DEV
 mdefine_line|#define UNKNOWN_DEV 0x3000
 DECL|variable|pnp_dev_table
@@ -66,7 +62,8 @@ multiline_comment|/* Rockwell 56K ACF II Fax+Data+Voice Modem */
 (brace
 l_string|&quot;AKY1021&quot;
 comma
-id|SPCI_FL_NO_SHIRQ
+l_int|0
+multiline_comment|/*SPCI_FL_NO_SHIRQ*/
 )brace
 comma
 multiline_comment|/* AZT3005 PnP SOUND DEVICE */
@@ -1290,8 +1287,8 @@ id|dev_id
 )paren
 (brace
 r_struct
-id|serial_struct
-id|serial_req
+id|uart_port
+id|port
 suffix:semicolon
 r_int
 id|ret
@@ -1336,17 +1333,18 @@ id|memset
 c_func
 (paren
 op_amp
-id|serial_req
+id|port
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-id|serial_req
+r_struct
+id|uart_port
 )paren
 )paren
 suffix:semicolon
-id|serial_req.irq
+id|port.irq
 op_assign
 id|pnp_irq
 c_func
@@ -1356,7 +1354,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|serial_req.port
+id|port.iobase
 op_assign
 id|pnp_port_start
 c_func
@@ -1365,23 +1363,6 @@ id|dev
 comma
 l_int|0
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|HIGH_BITS_OFFSET
-)paren
-id|serial_req.port_high
-op_assign
-id|pnp_port_start
-c_func
-(paren
-id|dev
-comma
-l_int|0
-)paren
-op_rshift
-id|HIGH_BITS_OFFSET
 suffix:semicolon
 macro_line|#ifdef SERIAL_DEBUG_PNP
 id|printk
@@ -1389,31 +1370,36 @@ c_func
 (paren
 l_string|&quot;Setup PNP port: port %x, irq %d, type %d&bslash;n&quot;
 comma
-id|serial_req.port
+id|port.iobase
 comma
-id|serial_req.irq
+id|port.irq
 comma
-id|serial_req.io_type
+id|port.iotype
 )paren
 suffix:semicolon
 macro_line|#endif
-id|serial_req.flags
+id|port.flags
 op_assign
 id|UPF_SKIP_TEST
 op_or
-id|UPF_AUTOPROBE
+id|UPF_BOOT_AUTOCONF
 suffix:semicolon
-id|serial_req.baud_base
+id|port.uartclk
 op_assign
-l_int|115200
+l_int|1843200
+suffix:semicolon
+id|port.dev
+op_assign
+op_amp
+id|dev-&gt;dev
 suffix:semicolon
 id|line
 op_assign
-id|register_serial
+id|serial8250_register_port
 c_func
 (paren
 op_amp
-id|serial_req
+id|port
 )paren
 suffix:semicolon
 r_if
@@ -1481,7 +1467,7 @@ c_cond
 (paren
 id|line
 )paren
-id|unregister_serial
+id|serial8250_unregister_port
 c_func
 (paren
 id|line

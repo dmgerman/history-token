@@ -100,6 +100,38 @@ l_string|&quot;dead&quot;
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef KEY_DEBUGGING
+DECL|function|__key_check
+r_void
+id|__key_check
+c_func
+(paren
+r_const
+r_struct
+id|key
+op_star
+id|key
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;__key_check: key %p {%08x} should be {%08x}&bslash;n&quot;
+comma
+id|key
+comma
+id|key-&gt;magic
+comma
+id|KEY_DEBUG_MAGIC
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * get the key quota record for a user, allocating a new record if one doesn&squot;t&n; * already exist&n; */
 DECL|function|key_user_lookup
@@ -2192,13 +2224,6 @@ r_goto
 id|found
 suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|key_serial_lock
-)paren
-suffix:semicolon
 id|not_found
 suffix:colon
 id|key
@@ -2250,6 +2275,8 @@ op_amp
 id|key-&gt;usage
 )paren
 suffix:semicolon
+id|error
+suffix:colon
 id|spin_unlock
 c_func
 (paren
@@ -2257,8 +2284,6 @@ op_amp
 id|key_serial_lock
 )paren
 suffix:semicolon
-id|error
-suffix:colon
 r_return
 id|key
 suffix:semicolon

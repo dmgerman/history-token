@@ -1175,21 +1175,6 @@ id|ocp_func_emac_data
 op_star
 id|emacdata
 suffix:semicolon
-macro_line|#if !defined(CONFIG_BDI_SWITCH)
-multiline_comment|/*&n;&t; * The Abatron BDI JTAG debugger does not tolerate others&n;&t; * mucking with the debug registers.&n;&t; */
-id|mtspr
-c_func
-(paren
-id|SPRN_DBCR0
-comma
-(paren
-id|DBCR0_TDE
-op_or
-id|DBCR0_IDM
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Set mac_addr for each EMAC */
 id|vpd_base
 op_assign

@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/8250.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -19,6 +18,7 @@ DECL|macro|SUPPORT_SYSRQ
 mdefine_line|#define SUPPORT_SYSRQ
 macro_line|#endif
 macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &quot;8250.h&quot;
 multiline_comment|/*&n; * Debugging.&n; */
 macro_line|#if 0
 mdefine_line|#define DEBUG_AUTOCONF(fmt...)&t;printk(fmt)
@@ -5259,71 +5259,6 @@ id|line
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is for ISAPNP only.&n; */
-DECL|function|serial8250_get_irq_map
-r_void
-id|serial8250_get_irq_map
-c_func
-(paren
-r_int
-r_int
-op_star
-id|map
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|UART_NR
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|serial8250_ports
-(braket
-id|i
-)braket
-dot
-id|port.type
-op_ne
-id|PORT_UNKNOWN
-op_logical_and
-id|serial8250_ports
-(braket
-id|i
-)braket
-dot
-id|port.irq
-OL
-l_int|16
-)paren
-op_star
-id|map
-op_or_assign
-l_int|1
-op_lshift
-id|serial8250_ports
-(braket
-id|i
-)braket
-dot
-id|port.irq
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/**&n; *&t;serial8250_suspend_port - suspend one serial port&n; *&t;@line:  serial line number&n; *      @level: the level of port suspension, as per uart_suspend_port&n; *&n; *&t;Suspend one serial port.&n; */
 DECL|function|serial8250_suspend_port
 r_void
@@ -5527,13 +5462,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|unregister_serial
-)paren
-suffix:semicolon
-DECL|variable|serial8250_get_irq_map
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|serial8250_get_irq_map
 )paren
 suffix:semicolon
 DECL|variable|serial8250_suspend_port

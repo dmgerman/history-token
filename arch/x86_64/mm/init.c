@@ -2387,6 +2387,16 @@ c_func
 suffix:semicolon
 macro_line|#endif
 )brace
+r_extern
+r_char
+id|__initdata_begin
+(braket
+)braket
+comma
+id|__initdata_end
+(braket
+)braket
+suffix:semicolon
 DECL|function|free_initmem
 r_void
 id|free_initmem
@@ -2452,7 +2462,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_INIT_DEBUG
 id|memset
 c_func
 (paren
@@ -2476,7 +2485,6 @@ comma
 id|PAGE_SIZE
 )paren
 suffix:semicolon
-macro_line|#endif
 id|free_page
 c_func
 (paren
@@ -2487,6 +2495,18 @@ id|totalram_pages
 op_increment
 suffix:semicolon
 )brace
+id|memset
+c_func
+(paren
+id|__initdata_begin
+comma
+l_int|0xba
+comma
+id|__initdata_end
+op_minus
+id|__initdata_begin
+)paren
+suffix:semicolon
 id|printk
 (paren
 l_string|&quot;Freeing unused kernel memory: %luk freed&bslash;n&quot;

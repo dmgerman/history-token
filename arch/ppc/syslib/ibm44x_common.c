@@ -519,5 +519,28 @@ op_assign
 id|gen550_kgdb_map_scc
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n;&t; * The Abatron BDI JTAG debugger does not tolerate others&n;&t; * mucking with the debug registers.&n;&t; */
+macro_line|#if !defined(CONFIG_BDI_SWITCH)
+multiline_comment|/* Enable internal debug mode */
+id|mtspr
+c_func
+(paren
+id|SPRN_DBCR0
+comma
+(paren
+id|DBCR0_IDM
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Clear any residual debug events */
+id|mtspr
+c_func
+(paren
+id|SPRN_DBSR
+comma
+l_int|0xffffffff
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 eof

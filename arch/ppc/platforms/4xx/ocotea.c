@@ -898,21 +898,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if !defined(CONFIG_BDI_SWITCH)
-multiline_comment|/*&n;&t; * The Abatron BDI JTAG debugger does not tolerate others&n;&t; * mucking with the debug registers.&n;&t; */
-id|mtspr
-c_func
-(paren
-id|SPRN_DBCR0
-comma
-(paren
-id|DBCR0_TDE
-op_or
-id|DBCR0_IDM
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Setup TODC access */
 id|TODC_INIT
 c_func

@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_BUFFER_HEAD_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|enum|bh_state_bits
@@ -354,6 +355,25 @@ c_func
 r_struct
 id|page
 op_star
+)paren
+suffix:semicolon
+r_struct
+id|buffer_head
+op_star
+id|alloc_page_buffers
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+r_int
+id|size
+comma
+r_int
+id|retry
 )paren
 suffix:semicolon
 r_void
@@ -1002,6 +1022,47 @@ id|loff_t
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * inline definitions&n; */
+DECL|function|attach_page_buffers
+r_static
+r_inline
+r_void
+id|attach_page_buffers
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_struct
+id|buffer_head
+op_star
+id|head
+)paren
+(brace
+id|page_cache_get
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|SetPagePrivate
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|page
+op_member_access_from_pointer
+r_private
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|head
+suffix:semicolon
+)brace
 DECL|function|get_bh
 r_static
 r_inline

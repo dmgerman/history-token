@@ -18,16 +18,6 @@ id|line
 )paren
 suffix:semicolon
 r_void
-id|serial8250_get_irq_map
-c_func
-(paren
-r_int
-r_int
-op_star
-id|map
-)paren
-suffix:semicolon
-r_void
 id|serial8250_suspend_port
 c_func
 (paren
@@ -161,5 +151,13 @@ mdefine_line|#define SERIAL8250_SHARE_IRQS 1
 macro_line|#else
 DECL|macro|SERIAL8250_SHARE_IRQS
 mdefine_line|#define SERIAL8250_SHARE_IRQS 0
+macro_line|#endif
+macro_line|#if defined(__alpha__) &amp;&amp; !defined(CONFIG_PCI)
+multiline_comment|/*&n; * Digital did something really horribly wrong with the OUT1 and OUT2&n; * lines on at least some ALPHA&squot;s.  The failure mode is that if either&n; * is cleared, the machine locks up with endless interrupts.&n; */
+DECL|macro|ALPHA_KLUDGE_MCR
+mdefine_line|#define ALPHA_KLUDGE_MCR  (UART_MCR_OUT2 | UART_MCR_OUT1)
+macro_line|#else
+DECL|macro|ALPHA_KLUDGE_MCR
+mdefine_line|#define ALPHA_KLUDGE_MCR 0
 macro_line|#endif
 eof

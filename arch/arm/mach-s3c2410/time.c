@@ -281,26 +281,10 @@ op_or_assign
 id|S3C2410_TCFG1_MUX4_TCLK1
 suffix:semicolon
 )brace
-multiline_comment|/* for the h1940, we use the pclk from the core to generate&n;&t; * the timer values. since 67.5MHz is not a value we can directly&n;&t; * generate the timer value from, we need to pre-scale and&n;&t; * divied before using it.&n;&t; *&n;&t; * overall divsior to get 200Hz is 337500&n;&t; *   we can fit tcnt if we pre-scale by 6, producing a tick rate&n;&t; *   of 11.25MHz, and a tcnt of 56250.&n;&t; */
-r_if
-c_cond
-(paren
-id|machine_is_h1940
-c_func
-(paren
-)paren
-op_logical_or
-id|machine_is_smdk2410
-c_func
-(paren
-)paren
-op_logical_or
-id|machine_is_rx3715
-c_func
-(paren
-)paren
-)paren
+r_else
 (brace
+multiline_comment|/* for the h1940 (and others), we use the pclk from the core&n;&t;&t; * to generate the timer values. since values around 50 to&n;&t;&t; * 70MHz are not values we can directly generate the timer&n;&t;&t; * value from, we need to pre-scaleand divide before using it.&n;&t;&t; */
+multiline_comment|/* this is used as default if no other timer can be found */
 id|timer_ticks_usec
 op_assign
 id|s3c24xx_pclk

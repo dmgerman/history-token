@@ -1709,7 +1709,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This routine handles page faults.  It determines the address,&n; * and the problem, and then passes it off to one of the appropriate&n; * routines.&n; */
+multiline_comment|/*&n; * This routine is called as a last resort when everything else&n; * has gone clearly wrong. We get called for faults in kernel space,&n; * and HPMC&squot;s.&n; */
 DECL|function|parisc_terminate
 r_void
 id|parisc_terminate
@@ -1883,16 +1883,13 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Gutter the processor! */
-r_for
-c_loop
+multiline_comment|/* Call kernel panic() so reboot timeouts work properly &n;&t; * FIXME: This function should be on the list of&n;&t; * panic notifiers, and we should call panic&n;&t; * directly from the location that we wish. &n;&t; * e.g. We should not call panic from&n;&t; * parisc_terminate, but rather the oter way around.&n;&t; * This hack works, prints the panic message twice,&n;&t; * and it enables reboot timers!&n;&t; */
+id|panic
+c_func
 (paren
-suffix:semicolon
-suffix:semicolon
+id|msg
 )paren
-(brace
 suffix:semicolon
-)brace
 )brace
 DECL|function|handle_interruption
 r_void
@@ -1943,6 +1940,92 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Security check:&n;&t; * If the priority level is still user, and the&n;&t; * faulting space is not equal to the active space&n;&t; * then the user is attempting something in a space&n;&t; * that does not belong to them. Kill the process.&n;&t; *&n;&t; * This is normally the situation when the user&n;&t; * attempts to jump into the kernel space at the&n;&t; * wrong offset, be it at the gateway page or a&n;&t; * random location.&n;&t; *&n;&t; * We cannot normally signal the process because it&n;&t; * could *be* on the gateway page, and processes&n;&t; * executing on the gateway page can&squot;t have signals&n;&t; * delivered.&n;&t; * &n;&t; * We merely readjust the address into the users&n;&t; * space, at a destination address of zero, and&n;&t; * allow processing to continue.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+(paren
+r_int
+r_int
+)paren
+id|regs-&gt;iaoq
+(braket
+l_int|0
+)braket
+op_amp
+l_int|3
+)paren
+op_logical_and
+(paren
+(paren
+r_int
+r_int
+)paren
+id|regs-&gt;iasq
+(braket
+l_int|0
+)braket
+op_ne
+(paren
+r_int
+r_int
+)paren
+id|regs-&gt;sr
+(braket
+l_int|7
+)braket
+)paren
+)paren
+(brace
+multiline_comment|/* Kill the user process later */
+id|regs-&gt;iaoq
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0
+op_or
+l_int|3
+suffix:semicolon
+id|regs-&gt;iaoq
+(braket
+l_int|1
+)braket
+op_assign
+id|regs-&gt;iaoq
+(braket
+l_int|0
+)braket
+op_plus
+l_int|4
+suffix:semicolon
+id|regs-&gt;iasq
+(braket
+l_int|0
+)braket
+op_assign
+id|regs-&gt;iasq
+(braket
+l_int|0
+)braket
+op_assign
+id|regs-&gt;sr
+(braket
+l_int|7
+)braket
+suffix:semicolon
+id|regs-&gt;gr
+(braket
+l_int|0
+)braket
+op_and_assign
+op_complement
+id|PSW_B
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 macro_line|#if 0
 id|printk
 c_func
@@ -2012,10 +2095,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|regs-&gt;iasq
-(braket
-l_int|0
-)braket
+id|user_space
+c_func
+(paren
+id|regs
+)paren
 )paren
 id|handle_gdb_break
 c_func
@@ -2321,6 +2405,7 @@ id|si.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;iaoq
@@ -2342,7 +2427,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-r_else
 multiline_comment|/* The kernel doesn&squot;t want to handle condition codes */
 r_break
 suffix:semicolon
@@ -2384,8 +2468,7 @@ r_case
 l_int|17
 suffix:colon
 multiline_comment|/* Non-access data TLB miss fault/Non-access data page fault */
-multiline_comment|/* TODO: Still need to add slow path emulation code here */
-multiline_comment|/* TODO: Understand what is meant by the TODO listed&n;&t;&t;         above this one. (Carlos) */
+multiline_comment|/* FIXME: &n;&t;&t; &t; Still need to add slow path emulation code here!&n;&t;&t;         If the insn used a non-shadow register, then the tlb&n;&t;&t;&t; handlers could not have their side-effect (e.g. probe&n;&t;&t;&t; writing to a target register) emulated since rfir would&n;&t;&t;&t; erase the changes to said register. Instead we have to&n;&t;&t;&t; setup everything, call this function we are in, and emulate&n;&t;&t;&t; by hand. Technically we need to emulate:&n;&t;&t;&t; fdc,fdce,pdc,&quot;fic,4f&quot;,prober,probeir,probew, probeiw&n;&t;&t;*/
 id|fault_address
 op_assign
 id|regs-&gt;ior
@@ -2477,10 +2560,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|regs-&gt;iasq
-(braket
-l_int|0
-)braket
+id|user_space
+c_func
+(paren
+id|regs
+)paren
 )paren
 id|handle_gdb_break
 c_func

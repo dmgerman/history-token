@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/keyboard.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -3734,9 +3735,11 @@ id|info-&gt;port
 )paren
 r_return
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|save_flags
 c_func
@@ -4620,14 +4623,14 @@ c_cond
 id|info-&gt;close_delay
 )paren
 (brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
+c_func
+(paren
+id|jiffies_to_msecs
 c_func
 (paren
 id|info-&gt;close_delay
+)paren
 )paren
 suffix:semicolon
 )brace

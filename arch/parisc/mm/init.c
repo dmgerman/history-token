@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/pci.h&gt;&t;&t;/* for hppa_dma_ops and pcxl_dma_op
 macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;&t;/* for node_online_map */
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/pdc_chassis.h&gt;
@@ -3611,6 +3612,64 @@ id|i
 dot
 id|pages
 suffix:semicolon
+macro_line|#ifdef CONFIG_DISCONTIGMEM
+multiline_comment|/* Need to initialize the pfnnid_map before we can initialize&n;&t;&t;   the zone */
+(brace
+r_int
+id|j
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|j
+op_assign
+(paren
+id|pmem_ranges
+(braket
+id|i
+)braket
+dot
+id|start_pfn
+op_rshift
+id|PFNNID_SHIFT
+)paren
+suffix:semicolon
+id|j
+op_le
+(paren
+(paren
+id|pmem_ranges
+(braket
+id|i
+)braket
+dot
+id|start_pfn
+op_plus
+id|pmem_ranges
+(braket
+id|i
+)braket
+dot
+id|pages
+)paren
+op_rshift
+id|PFNNID_SHIFT
+)paren
+suffix:semicolon
+id|j
+op_increment
+)paren
+(brace
+id|pfnnid_map
+(braket
+id|j
+)braket
+op_assign
+id|i
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 id|free_area_init_node
 c_func
 (paren
@@ -3631,55 +3690,9 @@ id|i
 dot
 id|start_pfn
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DISCONTIGMEM
-(brace
-r_int
-id|j
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|j
-op_assign
-(paren
-id|node_start_pfn
-c_func
-(paren
-id|i
-)paren
-op_rshift
-id|PFNNID_SHIFT
-)paren
-suffix:semicolon
-id|j
-op_le
-(paren
-id|node_end_pfn
-c_func
-(paren
-id|i
-)paren
-op_rshift
-id|PFNNID_SHIFT
-)paren
-suffix:semicolon
-id|j
-op_increment
-)paren
-(brace
-id|pfnnid_map
-(braket
-id|j
-)braket
-op_assign
-id|i
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 )brace
 )brace
 macro_line|#ifdef CONFIG_PA20

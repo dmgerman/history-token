@@ -27,6 +27,7 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pda.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
+macro_line|#include &lt;asm/nmi.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 r_extern
 r_struct
@@ -1775,6 +1776,75 @@ id|err
 )paren
 suffix:semicolon
 )brace
+DECL|function|die_nmi
+r_void
+id|die_nmi
+c_func
+(paren
+r_char
+op_star
+id|str
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+id|oops_begin
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * We are in trouble anyway, lets at least try&n;&t; * to get a message out.&n;&t; */
+id|printk
+c_func
+(paren
+id|str
+comma
+id|safe_smp_processor_id
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+id|show_registers
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|panic_on_timeout
+op_logical_or
+id|panic_on_oops
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;nmi watchdog&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;console shuts up ...&bslash;n&quot;
+)paren
+suffix:semicolon
+id|oops_end
+c_func
+(paren
+)paren
+suffix:semicolon
+id|do_exit
+c_func
+(paren
+id|SIGSEGV
+)paren
+suffix:semicolon
+)brace
 DECL|function|get_cr2
 r_static
 r_inline
@@ -2573,10 +2643,9 @@ r_int
 r_char
 id|reason
 op_assign
-id|inb
+id|get_nmi_reason
 c_func
 (paren
-l_int|0x61
 )paren
 suffix:semicolon
 r_if
@@ -2669,6 +2738,7 @@ id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* AK: following checks seem to be broken on modern chipsets. FIXME */
 r_if
 c_cond
 (paren
@@ -3903,6 +3973,7 @@ op_amp
 id|alignment_check
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_MCE
 id|set_intr_gate_ist
 c_func
 (paren
@@ -3914,6 +3985,7 @@ comma
 id|MCE_STACK
 )paren
 suffix:semicolon
+macro_line|#endif
 id|set_intr_gate
 c_func
 (paren
