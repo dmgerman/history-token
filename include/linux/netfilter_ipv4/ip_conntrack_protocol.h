@@ -3,9 +3,9 @@ macro_line|#ifndef _IP_CONNTRACK_PROTOCOL_H
 DECL|macro|_IP_CONNTRACK_PROTOCOL_H
 mdefine_line|#define _IP_CONNTRACK_PROTOCOL_H
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack.h&gt;
-multiline_comment|/* length of buffer to which print_tuple/print_conntrack members are&n; * writing */
-DECL|macro|IP_CT_PRINT_BUFLEN
-mdefine_line|#define IP_CT_PRINT_BUFLEN 100
+r_struct
+id|seq_file
+suffix:semicolon
 DECL|struct|ip_conntrack_protocol
 r_struct
 id|ip_conntrack_protocol
@@ -72,18 +72,17 @@ op_star
 id|orig
 )paren
 suffix:semicolon
-multiline_comment|/* Print out the per-protocol part of the tuple. */
+multiline_comment|/* Print out the per-protocol part of the tuple. Return like seq_* */
 DECL|member|print_tuple
-r_int
 r_int
 (paren
 op_star
 id|print_tuple
 )paren
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
 comma
 r_const
 r_struct
@@ -94,15 +93,14 @@ suffix:semicolon
 multiline_comment|/* Print out the private part of the conntrack. */
 DECL|member|print_conntrack
 r_int
-r_int
 (paren
 op_star
 id|print_conntrack
 )paren
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
 comma
 r_const
 r_struct

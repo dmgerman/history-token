@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/icmp.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
@@ -235,13 +236,13 @@ multiline_comment|/* Print out the per-protocol part of the tuple. */
 DECL|function|icmp_print_tuple
 r_static
 r_int
-r_int
 id|icmp_print_tuple
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
+id|s
 comma
 r_const
 r_struct
@@ -251,10 +252,10 @@ id|tuple
 )paren
 (brace
 r_return
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
+id|s
 comma
 l_string|&quot;type=%u code=%u id=%u &quot;
 comma
@@ -274,13 +275,13 @@ multiline_comment|/* Print out the private part of the conntrack. */
 DECL|function|icmp_print_conntrack
 r_static
 r_int
-r_int
 id|icmp_print_conntrack
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
+id|s
 comma
 r_const
 r_struct

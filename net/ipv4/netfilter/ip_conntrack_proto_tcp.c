@@ -682,13 +682,13 @@ multiline_comment|/* Print out the per-protocol part of the tuple. */
 DECL|function|tcp_print_tuple
 r_static
 r_int
-r_int
 id|tcp_print_tuple
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
+id|s
 comma
 r_const
 r_struct
@@ -698,10 +698,10 @@ id|tuple
 )paren
 (brace
 r_return
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
+id|s
 comma
 l_string|&quot;sport=%hu dport=%hu &quot;
 comma
@@ -723,13 +723,13 @@ multiline_comment|/* Print out the private part of the conntrack. */
 DECL|function|tcp_print_conntrack
 r_static
 r_int
-r_int
 id|tcp_print_conntrack
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
+id|s
 comma
 r_const
 r_struct
@@ -761,10 +761,10 @@ id|tcp_lock
 )paren
 suffix:semicolon
 r_return
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
+id|s
 comma
 l_string|&quot;%s &quot;
 comma
