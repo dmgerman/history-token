@@ -1864,7 +1864,6 @@ comma
 id|US_FL_SINGLE_LUN
 )paren
 comma
-macro_line|#if !defined(CONFIG_BLK_DEV_UB) &amp;&amp; !defined(CONFIG_BLK_DEV_UB_MODULE)
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -1889,7 +1888,6 @@ comma
 id|US_FL_IGNORE_SER
 )paren
 comma
-macro_line|#endif
 id|UNUSUAL_DEV
 c_func
 (paren

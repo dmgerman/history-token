@@ -336,7 +336,6 @@ id|US_PR_BULK
 )paren
 )brace
 comma
-macro_line|#if !defined(CONFIG_BLK_DEV_UB) &amp;&amp; !defined(CONFIG_BLK_DEV_UB_MODULE)
 (brace
 id|USB_INTERFACE_INFO
 c_func
@@ -349,7 +348,6 @@ id|US_PR_BULK
 )paren
 )brace
 comma
-macro_line|#endif
 multiline_comment|/* Terminating entry */
 (brace
 )brace
@@ -587,7 +585,6 @@ op_assign
 id|US_PR_BULK
 )brace
 comma
-macro_line|#if !defined(CONFIG_BLK_DEV_UB) &amp;&amp; !defined(CONFIG_BLK_DEV_UB_MODULE)
 (brace
 dot
 id|useProtocol
@@ -600,7 +597,6 @@ op_assign
 id|US_PR_BULK
 )brace
 comma
-macro_line|#endif
 multiline_comment|/* Terminating entry */
 (brace
 l_int|NULL
