@@ -1059,6 +1059,15 @@ id|i2cdevs
 l_int|3
 )braket
 suffix:semicolon
+multiline_comment|/* AC97 register cache for Aureon */
+DECL|member|stac9744
+r_int
+r_int
+id|stac9744
+(braket
+l_int|64
+)braket
+suffix:semicolon
 multiline_comment|/* Hoontech-specific setting */
 DECL|struct|hoontech_spec
 r_struct

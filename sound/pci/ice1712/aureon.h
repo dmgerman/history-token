@@ -40,6 +40,16 @@ DECL|macro|AUREON_HP_SEL
 mdefine_line|#define AUREON_HP_SEL&t;&t;(1 &lt;&lt; 14)
 DECL|macro|AUREON_WM_CS
 mdefine_line|#define AUREON_WM_CS&t;&t;(1 &lt;&lt; 12)
+DECL|macro|AUREON_AC97_COMMIT
+mdefine_line|#define AUREON_AC97_COMMIT&t;(1 &lt;&lt; 11)
+DECL|macro|AUREON_AC97_ADDR
+mdefine_line|#define AUREON_AC97_ADDR&t;(1 &lt;&lt; 10)
+DECL|macro|AUREON_AC97_DATA_LOW
+mdefine_line|#define AUREON_AC97_DATA_LOW&t;(1 &lt;&lt; 9)
+DECL|macro|AUREON_AC97_DATA_HIGH
+mdefine_line|#define AUREON_AC97_DATA_HIGH&t;(1 &lt;&lt; 8)
+DECL|macro|AUREON_AC97_DATA_MASK
+mdefine_line|#define AUREON_AC97_DATA_MASK&t;0xFF
 multiline_comment|/* Prodigy has different pin assignment for chip select */
 DECL|macro|PRODIGY_CS8415_CS
 mdefine_line|#define PRODIGY_CS8415_CS&t;(1 &lt;&lt; 23)
