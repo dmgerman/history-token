@@ -576,6 +576,10 @@ DECL|member|ident
 id|__u8
 id|ident
 suffix:semicolon
+DECL|member|sport
+id|__u16
+id|sport
+suffix:semicolon
 DECL|member|conn
 r_struct
 id|l2cap_conn
