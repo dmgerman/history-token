@@ -7677,10 +7677,6 @@ op_assign
 l_int|16
 suffix:semicolon
 macro_line|#endif
-id|instance-&gt;highmem_io
-op_assign
-l_int|1
-suffix:semicolon
 id|SYM_UNLOCK_HCB
 c_func
 (paren
@@ -10566,11 +10562,6 @@ dot
 id|use_clustering
 op_assign
 id|DISABLE_CLUSTERING
-comma
-dot
-id|highmem_io
-op_assign
-l_int|1
 comma
 macro_line|#ifdef SYM_LINUX_PROC_INFO_SUPPORT
 dot

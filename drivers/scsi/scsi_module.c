@@ -78,8 +78,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|sht-&gt;present
+id|list_empty
+c_func
+(paren
+op_amp
+id|sht-&gt;legacy_hosts
+)paren
 )paren
 r_return
 op_minus

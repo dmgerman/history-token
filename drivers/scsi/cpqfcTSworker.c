@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 DECL|macro|SHUTDOWN_SIGS
@@ -2933,7 +2934,7 @@ id|Exchanges-&gt;fcExchange
 id|x_ID
 )braket
 dot
-id|Cmnd-&gt;target
+id|Cmnd-&gt;device-&gt;id
 op_eq
 id|ScsiNexus-&gt;target
 )paren
@@ -2944,7 +2945,7 @@ id|Exchanges-&gt;fcExchange
 id|x_ID
 )braket
 dot
-id|Cmnd-&gt;channel
+id|Cmnd-&gt;device-&gt;channel
 op_eq
 id|ScsiNexus-&gt;channel
 )paren
@@ -7005,7 +7006,7 @@ id|Scsi_Host
 op_star
 id|HostAdapter
 op_assign
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 suffix:semicolon
 id|CPQFCHBA
 op_star
@@ -7682,7 +7683,7 @@ op_assign
 id|CPQFCHBA
 op_star
 )paren
-id|Cmnd-&gt;host-&gt;hostdata
+id|Cmnd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 singleline_comment|// Was this command a cpqfc passthru ioctl ?
 r_if
@@ -7692,11 +7693,11 @@ id|Cmnd-&gt;sc_request
 op_ne
 l_int|NULL
 op_logical_and
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 op_ne
 l_int|NULL
 op_logical_and
-id|Cmnd-&gt;host-&gt;hostdata
+id|Cmnd-&gt;device-&gt;host-&gt;hostdata
 op_ne
 l_int|NULL
 op_logical_and
@@ -7707,7 +7708,7 @@ c_func
 id|CPQFCHBA
 op_star
 )paren
-id|Cmnd-&gt;host-&gt;hostdata
+id|Cmnd-&gt;device-&gt;host-&gt;hostdata
 comma
 id|Cmnd-&gt;sc_request-&gt;upper_private_data
 )paren
@@ -7788,9 +7789,19 @@ suffix:semicolon
 id|PFC_LOGGEDIN_PORT
 id|pLoggedInPort
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|Cmnd
+op_assign
+l_int|NULL
+suffix:semicolon
+r_struct
+id|scsi_device
+op_star
+id|ScsiDev
+op_assign
+l_int|NULL
 suffix:semicolon
 id|LONG
 id|x_ID
@@ -7865,29 +7876,43 @@ id|Done
 suffix:semicolon
 )brace
 singleline_comment|// forget it - FC device not a &quot;target&quot;
-singleline_comment|// now use the port&squot;s Scsi Command buffer for the 
-singleline_comment|// Report Luns Command
+id|ScsiDev
+op_assign
+id|scsi_get_host_dev
+(paren
+id|cpqfcHBAdata-&gt;HostAdapter
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ScsiDev
+)paren
+r_goto
+id|Done
+suffix:semicolon
 id|Cmnd
 op_assign
-op_amp
-id|pLoggedInPort-&gt;ScsiCmnd
+id|scsi_get_command
+(paren
+id|ScsiDev
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|Cmnd
+)paren
+r_goto
+id|Done
 suffix:semicolon
 id|ucBuff
 op_assign
 id|pLoggedInPort-&gt;ReportLunsPayload
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|Cmnd
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|Scsi_Cmnd
-)paren
-)paren
 suffix:semicolon
 id|memset
 c_func
@@ -7902,10 +7927,6 @@ suffix:semicolon
 id|Cmnd-&gt;scsi_done
 op_assign
 id|ScsiReportLunsDone
-suffix:semicolon
-id|Cmnd-&gt;host
-op_assign
-id|cpqfcHBAdata-&gt;HostAdapter
 suffix:semicolon
 id|Cmnd-&gt;request_buffer
 op_assign
@@ -7945,11 +7966,11 @@ id|Cmnd-&gt;cmd_len
 op_assign
 l_int|12
 suffix:semicolon
-id|Cmnd-&gt;channel
+id|Cmnd-&gt;device-&gt;channel
 op_assign
 id|pLoggedInPort-&gt;ScsiNexus.channel
 suffix:semicolon
-id|Cmnd-&gt;target
+id|Cmnd-&gt;device-&gt;id
 op_assign
 id|pLoggedInPort-&gt;ScsiNexus.target
 suffix:semicolon
@@ -8034,6 +8055,26 @@ suffix:semicolon
 )brace
 id|Done
 suffix:colon
+r_if
+c_cond
+(paren
+id|Cmnd
+)paren
+id|scsi_put_command
+(paren
+id|Cmnd
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ScsiDev
+)paren
+id|scsi_free_host_dev
+(paren
+id|ScsiDev
+)paren
+suffix:semicolon
 )brace
 DECL|function|CompleteBoardLockCmnd
 r_static
@@ -8892,13 +8933,13 @@ c_cond
 (paren
 id|pLoggedInPort-&gt;ScsiNexus.target
 op_eq
-id|Cmnd-&gt;target
+id|Cmnd-&gt;device-&gt;id
 )paren
 op_logical_and
 (paren
 id|pLoggedInPort-&gt;ScsiNexus.channel
 op_eq
-id|Cmnd-&gt;channel
+id|Cmnd-&gt;device-&gt;channel
 )paren
 )paren
 (brace
@@ -8911,11 +8952,11 @@ id|Cmnd-&gt;sc_request
 op_ne
 l_int|NULL
 op_logical_and
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 op_ne
 l_int|NULL
 op_logical_and
-id|Cmnd-&gt;host-&gt;hostdata
+id|Cmnd-&gt;device-&gt;host-&gt;hostdata
 op_ne
 l_int|NULL
 op_logical_and
@@ -8926,7 +8967,7 @@ c_func
 id|CPQFCHBA
 op_star
 )paren
-id|Cmnd-&gt;host-&gt;hostdata
+id|Cmnd-&gt;device-&gt;host-&gt;hostdata
 comma
 id|Cmnd-&gt;sc_request-&gt;upper_private_data
 )paren
@@ -8948,7 +8989,7 @@ suffix:semicolon
 singleline_comment|// Cmnd-&gt;SCp.have_data_in = pd-&gt;pdrive;
 id|Cmnd-&gt;SCp.have_data_in
 op_assign
-id|Cmnd-&gt;lun
+id|Cmnd-&gt;device-&gt;lun
 suffix:semicolon
 )brace
 r_else
@@ -8978,7 +9019,7 @@ l_int|1
 r_if
 c_cond
 (paren
-id|Cmnd-&gt;lun
+id|Cmnd-&gt;device-&gt;lun
 OG
 r_sizeof
 (paren
@@ -8993,7 +9034,7 @@ id|Cmnd-&gt;SCp.have_data_in
 op_assign
 id|pLoggedInPort-&gt;ScsiNexus.lun
 (braket
-id|Cmnd-&gt;lun
+id|Cmnd-&gt;device-&gt;lun
 )braket
 suffix:semicolon
 r_if
@@ -9001,7 +9042,7 @@ c_cond
 (paren
 id|pLoggedInPort-&gt;ScsiNexus.lun
 (braket
-id|Cmnd-&gt;lun
+id|Cmnd-&gt;device-&gt;lun
 )braket
 op_eq
 l_int|0xFF
@@ -9015,7 +9056,7 @@ singleline_comment|//&t;pLoggedInPort-&gt;ScsiNexus.lun[Cmnd-&gt;lun]);
 r_else
 id|Cmnd-&gt;SCp.have_data_in
 op_assign
-id|Cmnd-&gt;lun
+id|Cmnd-&gt;device-&gt;lun
 suffix:semicolon
 singleline_comment|// Linux &amp; target luns match
 )brace
@@ -9358,13 +9399,13 @@ r_if
 c_cond
 (paren
 (paren
-id|Cmnd-&gt;target
+id|Cmnd-&gt;device-&gt;id
 op_eq
 id|pLoggedInPort-&gt;ScsiNexus.target
 )paren
 op_logical_and
 (paren
-id|Cmnd-&gt;channel
+id|Cmnd-&gt;device-&gt;channel
 op_eq
 id|pLoggedInPort-&gt;ScsiNexus.channel
 )paren

@@ -3361,19 +3361,15 @@ r_if
 c_cond
 (paren
 id|sdev
-op_logical_and
+)paren
+(brace
 id|scsi_remove_device
 c_func
 (paren
 id|sdev
 )paren
-)paren
-id|SBP2_ERR
-c_func
-(paren
-l_string|&quot;scsi_remove_device failed&quot;
-)paren
 suffix:semicolon
+)brace
 id|sbp2util_remove_command_orb_pool
 c_func
 (paren
