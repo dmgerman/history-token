@@ -1841,17 +1841,16 @@ id|ret
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * i8042_enable_mux_mode checks whether the controller has an active&n; * multiplexor and puts the chip into Multiplexed (as opposed to&n; * Legacy) mode.&n; */
-DECL|function|i8042_enable_mux_mode
+multiline_comment|/*&n; * i8042_set_mux_mode checks whether the controller has an active&n; * multiplexor and puts the chip into Multiplexed (1) or Legacy (0) mode.&n; */
+DECL|function|i8042_set_mux_mode
 r_static
 r_int
-id|i8042_enable_mux_mode
+id|i8042_set_mux_mode
 c_func
 (paren
-r_struct
-id|i8042_values
-op_star
-id|values
+r_int
+r_int
+id|mode
 comma
 r_int
 r_char
@@ -1896,7 +1895,12 @@ l_int|1
 suffix:semicolon
 id|param
 op_assign
+id|mode
+ques
+c_cond
 l_int|0x56
+suffix:colon
+l_int|0xf6
 suffix:semicolon
 r_if
 c_cond
@@ -1920,7 +1924,12 @@ l_int|1
 suffix:semicolon
 id|param
 op_assign
+id|mode
+ques
+c_cond
 l_int|0xa4
+suffix:colon
+l_int|0xa5
 suffix:semicolon
 r_if
 c_cond
@@ -1936,7 +1945,14 @@ id|I8042_CMD_AUX_LOOP
 op_logical_or
 id|param
 op_eq
+(paren
+id|mode
+ques
+c_cond
 l_int|0x5b
+suffix:colon
+l_int|0x5a
+)paren
 )paren
 r_return
 op_minus
@@ -2074,10 +2090,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|i8042_enable_mux_mode
+id|i8042_set_mux_mode
 c_func
 (paren
-id|values
+l_int|1
 comma
 op_amp
 id|mux_version
@@ -2087,8 +2103,8 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* Workaround for broken chips which seem to support MUX, but in reality don&squot;t. */
-multiline_comment|/* They all report version 10.12 */
+multiline_comment|/* Workaround for interference with USB Legacy emulation */
+multiline_comment|/* that causes a v10.12 MUX to be found. */
 r_if
 c_cond
 (paren
@@ -2718,16 +2734,16 @@ c_func
 r_void
 )paren
 (brace
+r_int
+r_char
+id|param
+suffix:semicolon
+multiline_comment|/*&n; * Reset the controller if requested.&n; */
 r_if
 c_cond
 (paren
 id|i8042_reset
 )paren
-(brace
-r_int
-r_char
-id|param
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2747,7 +2763,15 @@ id|KERN_ERR
 l_string|&quot;i8042.c: i8042 controller reset timeout.&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
+multiline_comment|/*&n; * Disable MUX mode if present.&n; */
+id|i8042_set_mux_mode
+c_func
+(paren
+l_int|0
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Restore the original control register setting.&n; */
 id|i8042_ctr
 op_assign
@@ -3081,11 +3105,10 @@ id|i8042_mux_present
 r_if
 c_cond
 (paren
-id|i8042_enable_mux_mode
+id|i8042_set_mux_mode
 c_func
 (paren
-op_amp
-id|i8042_aux_values
+l_int|1
 comma
 l_int|NULL
 )paren
