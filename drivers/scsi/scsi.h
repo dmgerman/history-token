@@ -615,15 +615,30 @@ id|reason
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|scsi_queue_next_request
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+comma
+r_struct
+id|scsi_cmnd
+op_star
+id|cmd
+)paren
+suffix:semicolon
+r_extern
 id|request_queue_t
 op_star
 id|scsi_alloc_queue
 c_func
 (paren
 r_struct
-id|Scsi_Host
+id|scsi_device
 op_star
-id|shost
+id|sdev
 )paren
 suffix:semicolon
 r_extern
@@ -1340,6 +1355,23 @@ r_char
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * scsi_target: representation of a scsi target, for now, this is only&n; * used for single_lun devices.&n; */
+DECL|struct|scsi_target
+r_struct
+id|scsi_target
+(brace
+DECL|member|starget_busy
+r_int
+r_int
+id|starget_busy
+suffix:semicolon
+DECL|member|starget_refcnt
+r_int
+r_int
+id|starget_refcnt
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; *  The scsi_device struct contains what we know about each given scsi&n; *  device.&n; *&n; * FIXME(eric) - One of the great regrets that I have is that I failed to&n; * define these structure elements as something like sdev_foo instead of foo.&n; * This would make it so much easier to grep through sources and so forth.&n; * I propose that all new elements that get added to these structures follow&n; * this convention.  As time goes on and as people have the stomach for it,&n; * it should be possible to go back and retrofit at least some of the elements&n; * here with with the prefix.&n; */
 DECL|struct|scsi_device
 r_struct
@@ -1381,6 +1413,11 @@ r_int
 id|device_busy
 suffix:semicolon
 multiline_comment|/* commands actually active on low-level */
+DECL|member|sdev_lock
+id|spinlock_t
+id|sdev_lock
+suffix:semicolon
+multiline_comment|/* also the request queue_lock */
 DECL|member|list_lock
 id|spinlock_t
 id|list_lock
@@ -1391,6 +1428,11 @@ id|list_head
 id|cmd_list
 suffix:semicolon
 multiline_comment|/* queue of in use SCSI Command structures */
+DECL|member|starved_entry
+r_struct
+id|list_head
+id|starved_entry
+suffix:semicolon
 DECL|member|current_cmnd
 id|Scsi_Cmnd
 op_star
@@ -1511,6 +1553,13 @@ suffix:semicolon
 multiline_comment|/* current tag */
 singleline_comment|//&t;unsigned char sync_min_period;&t;/* Not less than this period */
 singleline_comment|//&t;unsigned char sync_max_offset;&t;/* Not greater than this offset */
+DECL|member|sdev_target
+r_struct
+id|scsi_target
+op_star
+id|sdev_target
+suffix:semicolon
+multiline_comment|/* used only for single_lun */
 DECL|member|online
 r_int
 id|online
@@ -1668,13 +1717,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* support remapping  */
-DECL|member|starved
-r_int
-id|starved
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* unable to process commands because&n;&t;&t;&t;&t;   host busy */
 singleline_comment|//&t;unsigned sync:1;&t;/* Sync transfer state, managed by host */
 singleline_comment|//&t;unsigned wide:1;&t;/* WIDE transfer state, managed by host */
 DECL|member|device_blocked
