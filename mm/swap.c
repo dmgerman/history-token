@@ -154,7 +154,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|TestClearPageWriteback
+id|test_clear_page_writeback
 c_func
 (paren
 id|page

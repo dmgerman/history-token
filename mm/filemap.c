@@ -1057,16 +1057,11 @@ id|page
 )paren
 )paren
 (brace
-id|smp_mb__before_clear_bit
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|TestClearPageWriteback
+id|test_clear_page_writeback
 c_func
 (paren
 id|page

@@ -428,7 +428,7 @@ c_func
 id|pswpout
 )paren
 suffix:semicolon
-id|SetPageWriteback
+id|set_page_writeback
 c_func
 (paren
 id|page

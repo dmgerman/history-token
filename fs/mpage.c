@@ -2187,7 +2187,7 @@ id|page
 )paren
 )paren
 suffix:semicolon
-id|SetPageWriteback
+id|set_page_writeback
 c_func
 (paren
 id|page
