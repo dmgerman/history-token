@@ -3291,9 +3291,9 @@ suffix:semicolon
 id|dev-&gt;watchdog_timeo
 op_assign
 (paren
+l_int|5
+op_star
 id|HZ
-op_rshift
-l_int|1
 )paren
 suffix:semicolon
 id|lp-&gt;next
