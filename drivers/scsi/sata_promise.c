@@ -14,7 +14,7 @@ macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;sata_promise&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.89&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;0.90&quot;
 r_enum
 (brace
 DECL|enumerator|PDC_PRD_TBL

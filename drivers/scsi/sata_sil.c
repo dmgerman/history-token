@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/libata.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;sata_sil&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.52&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;0.53&quot;
 r_enum
 (brace
 DECL|enumerator|sil_3112
