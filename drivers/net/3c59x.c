@@ -8544,6 +8544,13 @@ id|media_status
 suffix:semicolon
 )brace
 r_else
+(brace
+id|netif_carrier_off
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8552,12 +8559,6 @@ OG
 l_int|1
 )paren
 (brace
-id|netif_carrier_off
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -8576,6 +8577,7 @@ comma
 id|media_status
 )paren
 suffix:semicolon
+)brace
 )brace
 r_break
 suffix:semicolon
