@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/div64.h&gt;
 multiline_comment|/* This magic number is used in glibc for posix shared memory */
 DECL|macro|TMPFS_MAGIC
 mdefine_line|#define TMPFS_MAGIC&t;0x01021994
@@ -7294,6 +7295,35 @@ c_cond
 (paren
 op_star
 id|rest
+op_eq
+l_char|&squot;%&squot;
+)paren
+(brace
+id|size
+op_lshift_assign
+id|PAGE_SHIFT
+suffix:semicolon
+id|size
+op_mul_assign
+id|totalram_pages
+suffix:semicolon
+id|do_div
+c_func
+(paren
+id|size
+comma
+l_int|100
+)paren
+suffix:semicolon
+id|rest
+op_increment
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_star
+id|rest
 )paren
 r_goto
 id|bad_val
@@ -7690,10 +7720,6 @@ id|shmem_sb_info
 op_star
 id|sbinfo
 suffix:semicolon
-r_struct
-id|sysinfo
-id|si
-suffix:semicolon
 r_int
 id|err
 op_assign
@@ -7743,18 +7769,11 @@ id|shmem_sb_info
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Per default we only allow half of the physical ram per&n;&t; * tmpfs instance&n;&t; */
-id|si_meminfo
-c_func
-(paren
-op_amp
-id|si
-)paren
-suffix:semicolon
 id|blocks
 op_assign
 id|inodes
 op_assign
-id|si.totalram
+id|totalram_pages
 op_div
 l_int|2
 suffix:semicolon
