@@ -1035,10 +1035,15 @@ suffix:semicolon
 multiline_comment|/* ATM layer options */
 )brace
 suffix:semicolon
+DECL|macro|VCC_HTABLE_SIZE
+mdefine_line|#define VCC_HTABLE_SIZE 32
 r_extern
 r_struct
 id|hlist_head
-id|vcc_sklist
+id|vcc_hash
+(braket
+id|VCC_HTABLE_SIZE
+)braket
 suffix:semicolon
 r_extern
 id|rwlock_t
