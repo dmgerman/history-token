@@ -1198,6 +1198,7 @@ r_int
 id|usDspBaseIO
 comma
 r_void
+id|__user
 op_star
 id|pvBuffer
 comma
@@ -1218,6 +1219,7 @@ r_int
 id|usDspBaseIO
 comma
 r_void
+id|__user
 op_star
 id|pvBuffer
 comma
@@ -1238,6 +1240,7 @@ r_int
 id|usDspBaseIO
 comma
 r_void
+id|__user
 op_star
 id|pvBuffer
 comma
@@ -1258,6 +1261,7 @@ r_int
 id|usDspBaseIO
 comma
 r_void
+id|__user
 op_star
 id|pvBuffer
 comma
@@ -1278,6 +1282,7 @@ r_int
 id|usDspBaseIO
 comma
 r_void
+id|__user
 op_star
 id|pvBuffer
 comma

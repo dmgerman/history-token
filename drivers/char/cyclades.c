@@ -92,8 +92,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-DECL|macro|cy_put_user
-mdefine_line|#define cy_put_user&t;put_user
 r_static
 r_void
 id|cy_throttle
@@ -14070,6 +14068,7 @@ id|info
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|retinfo
 )paren
@@ -14192,6 +14191,7 @@ id|info
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|new_info
 )paren
@@ -14397,6 +14397,7 @@ id|info
 comma
 r_int
 r_int
+id|__user
 op_star
 id|value
 )paren
@@ -14561,7 +14562,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 r_return
-id|cy_put_user
+id|put_user
 c_func
 (paren
 id|result
@@ -14569,6 +14570,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|value
@@ -16438,6 +16440,7 @@ id|info
 comma
 r_struct
 id|cyclades_monitor
+id|__user
 op_star
 id|mon
 )paren
@@ -16673,6 +16676,7 @@ id|info
 comma
 r_int
 r_int
+id|__user
 op_star
 id|value
 )paren
@@ -16785,7 +16789,7 @@ op_amp
 id|CyREC_FIFO
 suffix:semicolon
 r_return
-id|cy_put_user
+id|put_user
 c_func
 (paren
 id|tmp
@@ -16843,12 +16847,13 @@ id|info
 comma
 r_int
 r_int
+id|__user
 op_star
 id|value
 )paren
 (brace
 r_return
-id|cy_put_user
+id|put_user
 c_func
 (paren
 id|info-&gt;default_threshold
@@ -17023,6 +17028,7 @@ id|info
 comma
 r_int
 r_int
+id|__user
 op_star
 id|value
 )paren
@@ -17133,7 +17139,7 @@ id|index
 )paren
 suffix:semicolon
 r_return
-id|cy_put_user
+id|put_user
 c_func
 (paren
 id|tmp
@@ -17191,12 +17197,13 @@ id|info
 comma
 r_int
 r_int
+id|__user
 op_star
 id|value
 )paren
 (brace
 r_return
-id|cy_put_user
+id|put_user
 c_func
 (paren
 id|info-&gt;default_timeout
@@ -17253,6 +17260,7 @@ suffix:semicolon
 multiline_comment|/* kernel counter temps */
 r_struct
 id|serial_icounter_struct
+id|__user
 op_star
 id|p_cuser
 suffix:semicolon
@@ -17265,6 +17273,18 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_void
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
 suffix:semicolon
 r_if
 c_cond
@@ -17314,12 +17334,7 @@ c_func
 (paren
 id|info
 comma
-(paren
-r_struct
-id|cyclades_monitor
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_break
@@ -17334,12 +17349,7 @@ c_func
 (paren
 id|info
 comma
-(paren
-r_int
-r_int
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_break
@@ -17354,10 +17364,6 @@ c_func
 (paren
 id|info
 comma
-(paren
-r_int
-r_int
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -17373,12 +17379,7 @@ c_func
 (paren
 id|info
 comma
-(paren
-r_int
-r_int
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_break
@@ -17393,10 +17394,6 @@ c_func
 (paren
 id|info
 comma
-(paren
-r_int
-r_int
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -17412,12 +17409,7 @@ c_func
 (paren
 id|info
 comma
-(paren
-r_int
-r_int
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_break
@@ -17432,10 +17424,6 @@ c_func
 (paren
 id|info
 comma
-(paren
-r_int
-r_int
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -17451,12 +17439,7 @@ c_func
 (paren
 id|info
 comma
-(paren
-r_int
-r_int
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_break
@@ -17471,10 +17454,6 @@ c_func
 (paren
 id|info
 comma
-(paren
-r_int
-r_int
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -17539,16 +17518,8 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|argp
 comma
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|cy_card
 (braket
@@ -17668,12 +17639,7 @@ c_func
 (paren
 id|info
 comma
-(paren
-r_struct
-id|serial_struct
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_break
@@ -17688,12 +17654,7 @@ c_func
 (paren
 id|info
 comma
-(paren
-r_struct
-id|serial_struct
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_break
@@ -17709,12 +17670,7 @@ c_func
 (paren
 id|info
 comma
-(paren
-r_int
-r_int
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_break
@@ -17916,12 +17872,7 @@ id|flags
 suffix:semicolon
 id|p_cuser
 op_assign
-(paren
-r_struct
-id|serial_icounter_struct
-op_star
-)paren
-id|arg
+id|argp
 suffix:semicolon
 id|ret_val
 op_assign
