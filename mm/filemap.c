@@ -6856,6 +6856,8 @@ c_func
 (paren
 id|inode
 comma
+id|mapping
+comma
 id|OSYNC_METADATA
 )paren
 suffix:semicolon
@@ -7296,6 +7298,8 @@ id|generic_osync_inode
 c_func
 (paren
 id|inode
+comma
+id|mapping
 comma
 id|OSYNC_METADATA
 op_or

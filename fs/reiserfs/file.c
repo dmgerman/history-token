@@ -5364,6 +5364,8 @@ c_func
 (paren
 id|inode
 comma
+id|file-&gt;f_mapping
+comma
 id|OSYNC_METADATA
 op_or
 id|OSYNC_DATA
