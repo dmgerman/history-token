@@ -35,6 +35,7 @@ macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#ifdef NETIF_F_TSO
 macro_line|#include &lt;net/checksum.h&gt;
@@ -50,6 +51,8 @@ DECL|macro|BAR_1
 mdefine_line|#define BAR_1&t;&t;1
 DECL|macro|BAR_5
 mdefine_line|#define BAR_5&t;&t;5
+DECL|macro|INTEL_E1000_ETHERNET_DEVICE
+mdefine_line|#define INTEL_E1000_ETHERNET_DEVICE(device_id) {&bslash;&n;&t;PCI_DEVICE(PCI_VENDOR_ID_INTEL, device_id)}
 r_struct
 id|e1000_adapter
 suffix:semicolon
@@ -149,19 +152,17 @@ DECL|member|dma
 r_uint64
 id|dma
 suffix:semicolon
-DECL|member|length
-r_int
-r_int
-id|length
-suffix:semicolon
 DECL|member|time_stamp
 r_int
 r_int
 id|time_stamp
 suffix:semicolon
+DECL|member|length
+r_uint16
+id|length
+suffix:semicolon
 DECL|member|next_to_watch
-r_int
-r_int
+r_uint16
 id|next_to_watch
 suffix:semicolon
 )brace
