@@ -161,15 +161,9 @@ DECL|struct|_snd_rawmidi_runtime
 r_struct
 id|_snd_rawmidi_runtime
 (brace
-DECL|member|trigger
-r_int
-r_int
-id|trigger
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* transfer is running */
 DECL|member|drain
+r_int
+r_int
 id|drain
 suffix:colon
 l_int|1
