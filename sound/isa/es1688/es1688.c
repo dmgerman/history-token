@@ -829,6 +829,14 @@ c_cond
 id|xmpu_irq
 op_ge
 l_int|0
+op_logical_and
+id|xmpu_irq
+op_ne
+id|SNDRV_AUTO_IRQ
+op_logical_and
+id|chip-&gt;mpu_port
+OG
+l_int|0
 )paren
 (brace
 r_if
