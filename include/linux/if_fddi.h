@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Global definitions for the ANSI FDDI interface.&n; *&n; * Version:&t;@(#)if_fddi.h&t;1.0.1&t;09/16/96&n; *&n; * Author:&t;Lawrence V. Stefani, &lt;stefani@lkg.dec.com&gt;&n; *&n; *&t;&t;if_fddi.h is based on previous if_ether.h and if_tr.h work by&n; *&t;&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;&t;Donald Becker, &lt;becker@super.org&gt;&n; *&t;&t;&t;Alan Cox, &lt;alan@redhat.com&gt;&n; *&t;&t;&t;Steve Whitehouse, &lt;gw7rrm@eeshack3.swan.ac.uk&gt;&n; *&t;&t;&t;Peter De Schrijver, &lt;stud11@cc4.kuleuven.ac.be&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Global definitions for the ANSI FDDI interface.&n; *&n; * Version:&t;@(#)if_fddi.h&t;1.0.2&t;Sep 29 2004&n; *&n; * Author:&t;Lawrence V. Stefani, &lt;stefani@lkg.dec.com&gt;&n; *&n; *&t;&t;if_fddi.h is based on previous if_ether.h and if_tr.h work by&n; *&t;&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;&t;Donald Becker, &lt;becker@super.org&gt;&n; *&t;&t;&t;Alan Cox, &lt;alan@redhat.com&gt;&n; *&t;&t;&t;Steve Whitehouse, &lt;gw7rrm@eeshack3.swan.ac.uk&gt;&n; *&t;&t;&t;Peter De Schrijver, &lt;stud11@cc4.kuleuven.ac.be&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#ifndef _LINUX_IF_FDDI_H
 DECL|macro|_LINUX_IF_FDDI_H
 mdefine_line|#define _LINUX_IF_FDDI_H
@@ -223,115 +223,11 @@ DECL|struct|fddi_statistics
 r_struct
 id|fddi_statistics
 (brace
-DECL|member|rx_packets
-id|__u32
-id|rx_packets
-suffix:semicolon
-multiline_comment|/* total packets received */
-DECL|member|tx_packets
-id|__u32
-id|tx_packets
-suffix:semicolon
-multiline_comment|/* total packets transmitted */
-DECL|member|rx_bytes
-id|__u32
-id|rx_bytes
-suffix:semicolon
-multiline_comment|/* total bytes received&t;*/
-DECL|member|tx_bytes
-id|__u32
-id|tx_bytes
-suffix:semicolon
-multiline_comment|/* total bytes transmitted */
-DECL|member|rx_errors
-id|__u32
-id|rx_errors
-suffix:semicolon
-multiline_comment|/* bad packets received&t;*/
-DECL|member|tx_errors
-id|__u32
-id|tx_errors
-suffix:semicolon
-multiline_comment|/* packet transmit problems&t;*/
-DECL|member|rx_dropped
-id|__u32
-id|rx_dropped
-suffix:semicolon
-multiline_comment|/* no space in linux buffers */
-DECL|member|tx_dropped
-id|__u32
-id|tx_dropped
-suffix:semicolon
-multiline_comment|/* no space available in linux */
-DECL|member|multicast
-id|__u32
-id|multicast
-suffix:semicolon
-multiline_comment|/* multicast packets received */
-DECL|member|transmit_collision
-id|__u32
-id|transmit_collision
-suffix:semicolon
-multiline_comment|/* always 0 for FDDI */
-multiline_comment|/* detailed rx_errors */
-DECL|member|rx_length_errors
-id|__u32
-id|rx_length_errors
-suffix:semicolon
-DECL|member|rx_over_errors
-id|__u32
-id|rx_over_errors
-suffix:semicolon
-multiline_comment|/* receiver ring buff overflow&t;*/
-DECL|member|rx_crc_errors
-id|__u32
-id|rx_crc_errors
-suffix:semicolon
-multiline_comment|/* recved pkt with crc error&t;*/
-DECL|member|rx_frame_errors
-id|__u32
-id|rx_frame_errors
-suffix:semicolon
-multiline_comment|/* recv&squot;d frame alignment error */
-DECL|member|rx_fifo_errors
-id|__u32
-id|rx_fifo_errors
-suffix:semicolon
-multiline_comment|/* recv&squot;r fifo overrun&t;&t;*/
-DECL|member|rx_missed_errors
-id|__u32
-id|rx_missed_errors
-suffix:semicolon
-multiline_comment|/* receiver missed packet&t;*/
-multiline_comment|/* detailed tx_errors */
-DECL|member|tx_aborted_errors
-id|__u32
-id|tx_aborted_errors
-suffix:semicolon
-DECL|member|tx_carrier_errors
-id|__u32
-id|tx_carrier_errors
-suffix:semicolon
-DECL|member|tx_fifo_errors
-id|__u32
-id|tx_fifo_errors
-suffix:semicolon
-DECL|member|tx_heartbeat_errors
-id|__u32
-id|tx_heartbeat_errors
-suffix:semicolon
-DECL|member|tx_window_errors
-id|__u32
-id|tx_window_errors
-suffix:semicolon
-multiline_comment|/* for cslip etc */
-DECL|member|rx_compressed
-id|__u32
-id|rx_compressed
-suffix:semicolon
-DECL|member|tx_compressed
-id|__u32
-id|tx_compressed
+multiline_comment|/* Generic statistics. */
+DECL|member|gen
+r_struct
+id|net_device_stats
+id|gen
 suffix:semicolon
 multiline_comment|/* Detailed FDDI statistics.  Adopted from RFC 1512 */
 DECL|member|smt_station_id
