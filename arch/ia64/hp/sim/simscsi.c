@@ -1,17 +1,20 @@
 multiline_comment|/*&n; * Simulated SCSI driver.&n; *&n; * Copyright (C) 1999, 2001-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * 02/01/15 David Mosberger&t;Updated for v2.5.1&n; * 99/12/18 David Mosberger&t;Added support for READ10/WRITE10 needed by linux v2.3.33&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;../drivers/scsi/scsi.h&quot;
-macro_line|#include &quot;../drivers/scsi/hosts.h&quot;
-macro_line|#include &quot;simscsi.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 DECL|macro|DEBUG_SIMSCSI
 mdefine_line|#define DEBUG_SIMSCSI&t;0
+DECL|macro|SIMSCSI_REQ_QUEUE_LEN
+mdefine_line|#define SIMSCSI_REQ_QUEUE_LEN&t;64
+DECL|macro|DEFAULT_SIMSCSI_ROOT
+mdefine_line|#define DEFAULT_SIMSCSI_ROOT&t;&quot;/var/ski-disks/sd&quot;
 multiline_comment|/* Simulator system calls: */
 DECL|macro|SSC_OPEN
 mdefine_line|#define SSC_OPEN&t;&t;&t;50
@@ -56,6 +59,7 @@ r_int
 id|val
 )paren
 suffix:semicolon
+r_static
 id|DECLARE_TASKLET
 c_func
 (paren
@@ -179,7 +183,8 @@ r_struct
 id|queue_entry
 (brace
 DECL|member|sc
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sc
 suffix:semicolon
@@ -281,7 +286,8 @@ r_int
 id|val
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sc
 suffix:semicolon
@@ -351,77 +357,7 @@ id|SIMSCSI_REQ_QUEUE_LEN
 suffix:semicolon
 )brace
 )brace
-r_int
-DECL|function|simscsi_detect
-id|simscsi_detect
-(paren
-id|Scsi_Host_Template
-op_star
-id|templ
-)paren
-(brace
-id|templ-&gt;proc_name
-op_assign
-l_string|&quot;simscsi&quot;
-suffix:semicolon
-id|host
-op_assign
-id|scsi_register
-c_func
-(paren
-id|templ
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|host
-op_eq
-l_int|NULL
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* fake one SCSI host adapter */
-)brace
-r_int
-DECL|function|simscsi_release
-id|simscsi_release
-(paren
-r_struct
-id|Scsi_Host
-op_star
-id|host
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* this is easy...  */
-)brace
-r_const
-r_char
-op_star
-DECL|function|simscsi_info
-id|simscsi_info
-(paren
-r_struct
-id|Scsi_Host
-op_star
-id|host
-)paren
-(brace
-r_return
-l_string|&quot;simulated SCSI host adapter&quot;
-suffix:semicolon
-)brace
+r_static
 r_int
 DECL|function|simscsi_biosparam
 id|simscsi_biosparam
@@ -480,7 +416,8 @@ r_void
 DECL|function|simscsi_readwrite
 id|simscsi_readwrite
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sc
 comma
@@ -623,7 +560,8 @@ r_void
 DECL|function|simscsi_sg_readwrite
 id|simscsi_sg_readwrite
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sc
 comma
@@ -797,7 +735,8 @@ r_void
 DECL|function|simscsi_readwrite6
 id|simscsi_readwrite6
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sc
 comma
@@ -1026,7 +965,8 @@ r_void
 DECL|function|simscsi_readwrite10
 id|simscsi_readwrite10
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sc
 comma
@@ -1127,11 +1067,13 @@ l_int|512
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|simscsi_queuecommand
 id|simscsi_queuecommand
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sc
 comma
@@ -1141,7 +1083,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -1754,11 +1697,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|simscsi_host_reset
 id|simscsi_host_reset
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sc
 )paren
@@ -1776,29 +1721,20 @@ suffix:semicolon
 )brace
 DECL|variable|driver_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|driver_template
 op_assign
 (brace
 dot
 id|name
 op_assign
+l_string|&quot;simulated SCSI host adapter&quot;
+comma
+dot
+id|proc_name
+op_assign
 l_string|&quot;simscsi&quot;
-comma
-dot
-id|detect
-op_assign
-id|simscsi_detect
-comma
-dot
-id|release
-op_assign
-id|simscsi_release
-comma
-dot
-id|info
-op_assign
-id|simscsi_info
 comma
 dot
 id|queuecommand
@@ -1848,5 +1784,101 @@ id|DISABLE_CLUSTERING
 comma
 )brace
 suffix:semicolon
-macro_line|#include &quot;../drivers/scsi/scsi_module.c&quot;
+r_static
+r_int
+id|__init
+DECL|function|simscsi_init
+id|simscsi_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|error
+suffix:semicolon
+id|host
+op_assign
+id|scsi_host_alloc
+c_func
+(paren
+op_amp
+id|driver_template
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|host
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|error
+op_assign
+id|scsi_add_host
+c_func
+(paren
+id|host
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error
+)paren
+id|scsi_scan_host
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
+r_return
+id|error
+suffix:semicolon
+)brace
+r_static
+r_void
+id|__exit
+DECL|function|simscsi_exit
+id|simscsi_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|scsi_remove_host
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
+id|scsi_host_put
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
+)brace
+DECL|variable|simscsi_init
+id|module_init
+c_func
+(paren
+id|simscsi_init
+)paren
+suffix:semicolon
+DECL|variable|simscsi_exit
+id|module_exit
+c_func
+(paren
+id|simscsi_exit
+)paren
+suffix:semicolon
 eof
