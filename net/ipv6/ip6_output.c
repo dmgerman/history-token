@@ -283,6 +283,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ip6_output2
+r_static
 r_int
 id|ip6_output2
 c_func
