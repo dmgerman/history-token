@@ -5800,6 +5800,7 @@ r_sizeof
 (paren
 r_struct
 id|net_device
+op_star
 )paren
 )paren
 (brace
@@ -5960,6 +5961,12 @@ id|KERN_ERR
 l_string|&quot;NET/ROM: nr_proto_init - unable to register network device&bslash;n&quot;
 )paren
 suffix:semicolon
+id|free_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_goto
 id|fail
 suffix:semicolon
@@ -6079,6 +6086,7 @@ id|i
 op_ge
 l_int|0
 )paren
+(brace
 id|unregister_netdev
 c_func
 (paren
@@ -6088,6 +6096,16 @@ id|i
 )braket
 )paren
 suffix:semicolon
+id|free_netdev
+c_func
+(paren
+id|dev_nr
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+)brace
 id|kfree
 c_func
 (paren
@@ -6250,12 +6268,20 @@ c_cond
 (paren
 id|dev
 )paren
+(brace
 id|unregister_netdev
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+id|free_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
 )brace
 id|kfree
 c_func
