@@ -1569,6 +1569,13 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we were booted via quik, r3 points to the physical&n;&t; * address of the command-line parameters.&n;&t; * If we were booted from an xcoff image (i.e. netbooted or&n;&t; * booted from floppy), we get the command line from the&n;&t; * bootargs property of the /chosen node.&n;&t; * If an initial ramdisk is present, r3 and r4&n;&t; * are used for initrd_start and initrd_size,&n;&t; * otherwise they contain 0xdeadbeef.  &n;&t; */
+id|cmd_line
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1585,14 +1592,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|cmd_line
-(braket
-l_int|0
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|cmd_line
@@ -1629,7 +1629,7 @@ id|boot_infos-&gt;kernelParamsOffset
 op_ne
 l_int|0
 )paren
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|cmd_line
@@ -1770,14 +1770,7 @@ op_star
 id|p
 )paren
 (brace
-id|cmd_line
-(braket
-l_int|0
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|cmd_line
@@ -1793,18 +1786,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|cmd_line
-(braket
-r_sizeof
-(paren
-id|cmd_line
-)paren
-op_minus
-l_int|1
-)braket
-op_assign
-l_int|0
-suffix:semicolon
 macro_line|#ifdef CONFIG_ADB
 r_if
 c_cond

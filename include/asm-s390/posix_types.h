@@ -237,6 +237,12 @@ r_typedef
 id|__kernel_gid_t
 id|__kernel_gid32_t
 suffix:semicolon
+DECL|typedef|__kernel_old_dev_t
+r_typedef
+r_int
+r_int
+id|__kernel_old_dev_t
+suffix:semicolon
 macro_line|#endif /* __s390x__ */
 r_typedef
 r_struct

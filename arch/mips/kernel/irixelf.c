@@ -5459,7 +5459,7 @@ id|KERNEL_DS
 )paren
 suffix:semicolon
 )brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|psinfo.pr_fname

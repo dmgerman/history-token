@@ -452,7 +452,7 @@ id|SLAB_KERNEL
 r_return
 id|retval
 suffix:semicolon
-id|strncpy
+id|strlcpy
 (paren
 id|retval-&gt;name
 comma
@@ -461,16 +461,6 @@ comma
 r_sizeof
 id|retval-&gt;name
 )paren
-suffix:semicolon
-id|retval-&gt;name
-(braket
-r_sizeof
-id|retval-&gt;name
-op_minus
-l_int|1
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 id|retval-&gt;dev
 op_assign

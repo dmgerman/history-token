@@ -2463,7 +2463,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* register with global device tree */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|hwif-&gt;gendev.bus_id
@@ -4505,7 +4505,7 @@ suffix:semicolon
 )brace
 DECL|function|ata_probe
 r_struct
-id|gendisk
+id|kobject
 op_star
 id|ata_probe
 c_func
@@ -5604,26 +5604,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
-r_extern
-r_int
-(paren
-op_star
-id|ide_xlate_1024_hook
-)paren
-(paren
-r_struct
-id|block_device
-op_star
-comma
-r_int
-comma
-r_int
-comma
-r_const
-r_char
-op_star
-)paren
-suffix:semicolon
 DECL|function|init_module
 r_int
 id|init_module
@@ -5665,10 +5645,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|ide_xlate_1024_hook
-op_assign
-id|ide_xlate_1024
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -5683,10 +5659,6 @@ r_void
 id|ide_probe
 op_assign
 l_int|NULL
-suffix:semicolon
-id|ide_xlate_1024_hook
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 id|MODULE_LICENSE

@@ -445,7 +445,7 @@ r_register
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* fifo write without cli because it&squot;s allready done  */
+multiline_comment|/* fifo write without cli because it&squot;s already done  */
 id|byteout
 c_func
 (paren

@@ -1366,7 +1366,7 @@ DECL|macro|SNDRV_SEQ_PORT_TYPE_MIDI_MT32
 mdefine_line|#define SNDRV_SEQ_PORT_TYPE_MIDI_MT32&t;(1&lt;&lt;5)&t;/* MT-32 compatible device */
 multiline_comment|/* other standards...*/
 DECL|macro|SNDRV_SEQ_PORT_TYPE_SYNTH
-mdefine_line|#define SNDRV_SEQ_PORT_TYPE_SYNTH&t;(1&lt;&lt;10)&t;/* Synth device */
+mdefine_line|#define SNDRV_SEQ_PORT_TYPE_SYNTH&t;(1&lt;&lt;10)&t;/* Synth device (no MIDI compatible - direct wavetable) */
 DECL|macro|SNDRV_SEQ_PORT_TYPE_DIRECT_SAMPLE
 mdefine_line|#define SNDRV_SEQ_PORT_TYPE_DIRECT_SAMPLE (1&lt;&lt;11)&t;/* Sampling device (support sample download) */
 DECL|macro|SNDRV_SEQ_PORT_TYPE_SAMPLE

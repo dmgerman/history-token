@@ -37,7 +37,7 @@ multiline_comment|/* the semaphore */
 multiline_comment|/* int func to be called */
 DECL|variable|stdma_isr
 r_static
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|stdma_isr
@@ -74,7 +74,7 @@ suffix:semicolon
 multiline_comment|/* wait queue for ST-DMA */
 multiline_comment|/***************************** Prototypes *****************************/
 r_static
-r_void
+id|irqreturn_t
 id|stdma_int
 (paren
 r_int
@@ -97,7 +97,7 @@ r_void
 id|stdma_lock
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -271,7 +271,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Function: void stdma_int()&n; *&n; * Purpose: The interrupt routine for the ST-DMA. It calls the isr&n; *   registered by stdma_lock().&n; *&n; */
 DECL|function|stdma_int
 r_static
-r_void
+id|irqreturn_t
 id|stdma_int
 c_func
 (paren
@@ -304,6 +304,9 @@ id|stdma_isr_data
 comma
 id|fp
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 eof

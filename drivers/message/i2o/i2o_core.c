@@ -5812,7 +5812,7 @@ id|KERN_ERR
 l_string|&quot;IOP reset timeout.&bslash;n&quot;
 )paren
 suffix:semicolon
-singleline_comment|// Better to leak this for safety: - status;
+multiline_comment|/* The controller still may respond and overwrite&n;&t;&t;&t; * status_phys, LEAK it to prevent memory corruption.&n;&t;&t;&t; */
 r_return
 op_minus
 id|ETIMEDOUT
@@ -5891,6 +5891,7 @@ comma
 id|c-&gt;name
 )paren
 suffix:semicolon
+multiline_comment|/* The controller still may respond and&n;&t;&t;&t;&t; * overwrite status_phys, LEAK it to prevent&n;&t;&t;&t;&t; * memory corruption.&n;&t;&t;&t;&t; */
 r_return
 op_minus
 id|ETIMEDOUT

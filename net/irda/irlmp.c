@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *&n; * Filename:      irlmp.c&n; * Version:       1.0&n; * Description:   IrDA Link Management Protocol (LMP) layer&n; * Status:        Stable.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun Aug 17 20:54:32 1997&n; * Modified at:   Wed Jan  5 11:26:03 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;,&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; * Filename:      irlmp.c&n; * Version:       1.0&n; * Description:   IrDA Link Management Protocol (LMP) layer&n; * Status:        Stable.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun Aug 17 20:54:32 1997&n; * Modified at:   Wed Jan  5 11:26:03 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;,&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2003 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -1144,9 +1144,9 @@ id|userdata
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|tx_skb
 op_assign
-l_int|NULL
+id|userdata
 suffix:semicolon
 r_struct
 id|lap_cb
@@ -1157,6 +1157,9 @@ r_struct
 id|lsap_cb
 op_star
 id|lsap
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 id|ASSERT
 c_func
@@ -1214,10 +1217,16 @@ op_amp
 id|self-&gt;connected
 )paren
 )paren
-r_return
+(brace
+id|ret
+op_assign
 op_minus
 id|EISCONN
 suffix:semicolon
+r_goto
+id|err
+suffix:semicolon
+)brace
 multiline_comment|/* Client must supply destination device address */
 r_if
 c_cond
@@ -1225,20 +1234,26 @@ c_cond
 op_logical_neg
 id|daddr
 )paren
-r_return
+(brace
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+r_goto
+id|err
+suffix:semicolon
+)brace
 multiline_comment|/* Any userdata? */
 r_if
 c_cond
 (paren
-id|userdata
+id|tx_skb
 op_eq
 l_int|NULL
 )paren
 (brace
-id|skb
+id|tx_skb
 op_assign
 id|dev_alloc_skb
 c_func
@@ -1250,7 +1265,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|skb
+id|tx_skb
 )paren
 r_return
 op_minus
@@ -1259,17 +1274,12 @@ suffix:semicolon
 id|skb_reserve
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 id|LMP_MAX_HEADER
 )paren
 suffix:semicolon
 )brace
-r_else
-id|skb
-op_assign
-id|userdata
-suffix:semicolon
 multiline_comment|/* Make room for MUX control header (3 bytes) */
 id|ASSERT
 c_func
@@ -1277,7 +1287,7 @@ c_func
 id|skb_headroom
 c_func
 (paren
-id|skb
+id|tx_skb
 )paren
 op_ge
 id|LMP_CONTROL_HEADER
@@ -1291,7 +1301,7 @@ suffix:semicolon
 id|skb_push
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 id|LMP_CONTROL_HEADER
 )paren
@@ -1432,9 +1442,13 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EHOSTUNREACH
+suffix:semicolon
+r_goto
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/* Check if LAP is disconnected or already connected */
@@ -1482,9 +1496,13 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EAGAIN
+suffix:semicolon
+r_goto
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/* LAP is already connected to a different node, and LAP&n;&t;&t; * can only talk to one node at a time */
@@ -1498,9 +1516,13 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EBUSY
+suffix:semicolon
+r_goto
+id|err
 suffix:semicolon
 )brace
 id|self-&gt;lap
@@ -1622,11 +1644,37 @@ id|self
 comma
 id|LM_CONNECT_REQUEST
 comma
-id|skb
+id|tx_skb
+)paren
+suffix:semicolon
+multiline_comment|/* Drop reference count - see irlap_data_request(). */
+id|dev_kfree_skb
+c_func
+(paren
+id|tx_skb
 )paren
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|err
+suffix:colon
+multiline_comment|/* Cleanup */
+r_if
+c_cond
+(paren
+id|tx_skb
+)paren
+(brace
+id|dev_kfree_skb
+c_func
+(paren
+id|tx_skb
+)paren
+suffix:semicolon
+)brace
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlmp_connect_indication (self)&n; *&n; *    Incoming connection&n; *&n; */
@@ -1753,6 +1801,14 @@ c_cond
 (paren
 id|self-&gt;notify.connect_indication
 )paren
+(brace
+multiline_comment|/* Don&squot;t forget to refcount it - see irlap_driver_rcv(). */
+id|skb_get
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 id|self-&gt;notify
 dot
 id|connect_indication
@@ -1772,13 +1828,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-r_else
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Function irlmp_connect_response (handle, userdata)&n; *&n; *    Service user is accepting connection&n; *&n; */
 DECL|function|irlmp_connect_response
@@ -1893,6 +1943,13 @@ id|self
 comma
 id|LM_CONNECT_RESPONSE
 comma
+id|userdata
+)paren
+suffix:semicolon
+multiline_comment|/* Drop reference count - see irlap_data_request(). */
+id|dev_kfree_skb
+c_func
+(paren
 id|userdata
 )paren
 suffix:semicolon
@@ -2032,6 +2089,13 @@ c_cond
 id|self-&gt;notify.connect_confirm
 )paren
 (brace
+multiline_comment|/* Don&squot;t forget to refcount it - see irlap_driver_rcv() */
+id|skb_get
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 id|self-&gt;notify
 dot
 id|connect_confirm
@@ -2052,13 +2116,6 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-r_else
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlmp_dup (orig, instance)&n; *&n; *    Duplicate LSAP, can be used by servers to confirm a connection on a&n; *    new LSAP so it can keep listening on the old one.&n; *&n; */
 DECL|function|irlmp_dup
@@ -2210,6 +2267,12 @@ id|lsap_cb
 suffix:semicolon
 multiline_comment|/* new-&gt;lap = orig-&gt;lap; =&gt; done in the memcpy() */
 multiline_comment|/* new-&gt;slsap_sel = orig-&gt;slsap_sel; =&gt; done in the memcpy() */
+r_new
+op_member_access_from_pointer
+id|conn_skb
+op_assign
+l_int|NULL
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -2383,6 +2446,13 @@ comma
 id|userdata
 )paren
 suffix:semicolon
+multiline_comment|/* Drop reference count - see irlap_data_request(). */
+id|dev_kfree_skb
+c_func
+(paren
+id|userdata
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; *  Remove LSAP from list of connected LSAPs for the particular link&n;&t; *  and insert it into the list of unconnected LSAPs&n;&t; */
 id|ASSERT
 c_func
@@ -2532,7 +2602,7 @@ comma
 r_struct
 id|sk_buff
 op_star
-id|userdata
+id|skb
 )paren
 (brace
 r_struct
@@ -2614,17 +2684,6 @@ comma
 l_string|&quot;%s(), already disconnected!&bslash;n&quot;
 comma
 id|__FUNCTION__
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|userdata
-)paren
-id|dev_kfree_skb
-c_func
-(paren
-id|userdata
 )paren
 suffix:semicolon
 r_return
@@ -2729,6 +2788,21 @@ c_cond
 (paren
 id|self-&gt;notify.disconnect_indication
 )paren
+(brace
+multiline_comment|/* Don&squot;t forget to refcount it - see irlap_driver_rcv(). */
+r_if
+c_cond
+(paren
+id|skb
+)paren
+(brace
+id|skb_get
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+)brace
 id|self-&gt;notify
 dot
 id|disconnect_indication
@@ -2740,9 +2814,10 @@ id|self
 comma
 id|reason
 comma
-id|userdata
+id|skb
 )paren
 suffix:semicolon
+)brace
 r_else
 (brace
 id|IRDA_DEBUG
@@ -2753,17 +2828,6 @@ comma
 l_string|&quot;%s(), no handler&bslash;n&quot;
 comma
 id|__FUNCTION__
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|userdata
-)paren
-id|dev_kfree_skb
-c_func
-(paren
-id|userdata
 )paren
 suffix:semicolon
 )brace
@@ -3581,7 +3645,7 @@ op_amp
 id|irlmp-&gt;discovery_rsp
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlmp_data_request (self, skb)&n; *&n; *    Send some data to peer device&n; *&n; */
+multiline_comment|/*&n; * Function irlmp_data_request (self, skb)&n; *&n; *    Send some data to peer device&n; *&n; * Note on skb management :&n; * After calling the lower layers of the IrDA stack, we always&n; * kfree() the skb, which drop the reference count (and potentially&n; * destroy it).&n; * IrLMP and IrLAP may queue the packet, and in those cases will need&n; * to use skb_get() to keep it around.&n; * Jean II&n; */
 DECL|function|irlmp_data_request
 r_int
 id|irlmp_data_request
@@ -3595,9 +3659,12 @@ comma
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|userdata
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 id|ASSERT
 c_func
 (paren
@@ -3631,7 +3698,7 @@ c_func
 id|skb_headroom
 c_func
 (paren
-id|skb
+id|userdata
 )paren
 op_ge
 id|LMP_HEADER
@@ -3645,12 +3712,13 @@ suffix:semicolon
 id|skb_push
 c_func
 (paren
-id|skb
+id|userdata
 comma
 id|LMP_HEADER
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|irlmp_do_lsap_event
 c_func
 (paren
@@ -3658,8 +3726,18 @@ id|self
 comma
 id|LM_DATA_REQUEST
 comma
-id|skb
+id|userdata
 )paren
+suffix:semicolon
+multiline_comment|/* Drop reference count - see irlap_data_request(). */
+id|dev_kfree_skb
+c_func
+(paren
+id|userdata
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlmp_data_indication (handle, skb)&n; *&n; *    Got data from LAP layer so pass it up to upper layer&n; *&n; */
@@ -3693,6 +3771,14 @@ c_cond
 (paren
 id|self-&gt;notify.data_indication
 )paren
+(brace
+multiline_comment|/* Don&squot;t forget to refcount it - see irlap_driver_rcv(). */
+id|skb_get
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 id|self-&gt;notify
 dot
 id|data_indication
@@ -3705,13 +3791,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-r_else
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Function irlmp_udata_request (self, skb)&n; */
 DECL|function|irlmp_udata_request
@@ -3727,9 +3807,12 @@ comma
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|userdata
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -3743,7 +3826,7 @@ suffix:semicolon
 id|ASSERT
 c_func
 (paren
-id|skb
+id|userdata
 op_ne
 l_int|NULL
 comma
@@ -3760,7 +3843,7 @@ c_func
 id|skb_headroom
 c_func
 (paren
-id|skb
+id|userdata
 )paren
 op_ge
 id|LMP_HEADER
@@ -3774,12 +3857,13 @@ suffix:semicolon
 id|skb_push
 c_func
 (paren
-id|skb
+id|userdata
 comma
 id|LMP_HEADER
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|irlmp_do_lsap_event
 c_func
 (paren
@@ -3787,8 +3871,18 @@ id|self
 comma
 id|LM_UDATA_REQUEST
 comma
-id|skb
+id|userdata
 )paren
+suffix:semicolon
+multiline_comment|/* Drop reference count - see irlap_data_request(). */
+id|dev_kfree_skb
+c_func
+(paren
+id|userdata
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlmp_udata_indication (self, skb)&n; *&n; *    Send unreliable data (but still within the connection)&n; *&n; */
@@ -3865,6 +3959,14 @@ c_cond
 (paren
 id|self-&gt;notify.udata_indication
 )paren
+(brace
+multiline_comment|/* Don&squot;t forget to refcount it - see irlap_driver_rcv(). */
+id|skb_get
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 id|self-&gt;notify
 dot
 id|udata_indication
@@ -3877,13 +3979,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-r_else
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Function irlmp_connless_data_request (self, skb)&n; */
 macro_line|#ifdef CONFIG_IRDA_ULTRA
@@ -3900,7 +3996,7 @@ comma
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|userdata
 )paren
 (brace
 r_struct
@@ -3926,7 +4022,7 @@ suffix:semicolon
 id|ASSERT
 c_func
 (paren
-id|skb
+id|userdata
 op_ne
 l_int|NULL
 comma
@@ -3943,7 +4039,7 @@ c_func
 id|skb_headroom
 c_func
 (paren
-id|skb
+id|userdata
 )paren
 op_ge
 id|LMP_HEADER
@@ -3960,12 +4056,12 @@ multiline_comment|/* Insert protocol identifier */
 id|skb_push
 c_func
 (paren
-id|skb
+id|userdata
 comma
 id|LMP_PID_HEADER
 )paren
 suffix:semicolon
-id|skb-&gt;data
+id|userdata-&gt;data
 (braket
 l_int|0
 )braket
@@ -3976,17 +4072,17 @@ multiline_comment|/* Connectionless sockets must use 0x70 */
 id|skb_push
 c_func
 (paren
-id|skb
+id|userdata
 comma
 id|LMP_HEADER
 )paren
 suffix:semicolon
-id|skb-&gt;data
+id|userdata-&gt;data
 (braket
 l_int|0
 )braket
 op_assign
-id|skb-&gt;data
+id|userdata-&gt;data
 (braket
 l_int|1
 )braket
@@ -4033,7 +4129,7 @@ op_assign
 id|skb_clone
 c_func
 (paren
-id|skb
+id|userdata
 comma
 id|GFP_ATOMIC
 )paren
@@ -4044,10 +4140,18 @@ c_cond
 op_logical_neg
 id|clone_skb
 )paren
+(brace
+id|dev_kfree_skb
+c_func
+(paren
+id|userdata
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 id|irlap_unitdata_request
 c_func
 (paren
@@ -4056,6 +4160,7 @@ comma
 id|clone_skb
 )paren
 suffix:semicolon
+multiline_comment|/* irlap_unitdata_request() don&squot;t increase refcount,&n;&t;&t; * so no dev_kfree_skb() - Jean II */
 id|lap
 op_assign
 (paren
@@ -4073,7 +4178,7 @@ suffix:semicolon
 id|dev_kfree_skb
 c_func
 (paren
-id|skb
+id|userdata
 )paren
 suffix:semicolon
 r_return
@@ -4158,6 +4263,14 @@ c_cond
 (paren
 id|self-&gt;notify.udata_indication
 )paren
+(brace
+multiline_comment|/* Don&squot;t forget to refcount it - see irlap_driver_rcv(). */
+id|skb_get
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 id|self-&gt;notify
 dot
 id|udata_indication
@@ -4170,13 +4283,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-r_else
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
+)brace
 )brace
 macro_line|#endif /* CONFIG_IRDA_ULTRA */
 DECL|function|irlmp_status_request

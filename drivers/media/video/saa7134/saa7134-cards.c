@@ -2507,9 +2507,6 @@ id|dev
 id|u32
 id|value
 suffix:semicolon
-r_int
-id|index
-suffix:semicolon
 id|saa_writel
 c_func
 (paren
@@ -2531,6 +2528,8 @@ l_int|2
 )paren
 suffix:semicolon
 macro_line|#if 0
+(brace
+r_int
 id|index
 op_assign
 (paren
@@ -2545,7 +2544,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: flyvideo: gpio is 0x%x [model=%s,tuner=%d]&bslash;n&quot;
+l_string|&quot;%s: flyvideo: gpio is 0x%x &quot;
+l_string|&quot;[model=%s,tuner=%d]&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -2575,6 +2575,7 @@ id|index
 dot
 id|tuner_type
 suffix:semicolon
+)brace
 macro_line|#else
 id|printk
 c_func

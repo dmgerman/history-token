@@ -375,10 +375,12 @@ id|obj_desc-&gt;buffer.pointer
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_REPORT_WARNING
+id|ACPI_DEBUG_PRINT
 (paren
 (paren
-l_string|&quot;Buffer created with zero length in AML&bslash;n&quot;
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;Buffer defined with zero length in AML, creating&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon

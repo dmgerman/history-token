@@ -2,11 +2,7 @@ multiline_comment|/*&n; *  Dummy soundcard&n; *  Copyright (c) by Jaroslav Kysel
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2, 5, 0)
 macro_line|#include &lt;linux/jiffies.h&gt;
-macro_line|#else
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
@@ -64,8 +60,8 @@ macro_line|#endif
 macro_line|#if 0 /* ICE1712 emulation */
 mdefine_line|#define MAX_BUFFER_SIZE&t;&t;(256 * 1024)
 mdefine_line|#define USE_FORMATS&t;&t;SNDRV_PCM_FMTBIT_S32_LE
-mdefine_line|#define USE_CHANNELS_MIN&t;12
-mdefine_line|#define USE_CHANNELS_MAX&t;12
+mdefine_line|#define USE_CHANNELS_MIN&t;10
+mdefine_line|#define USE_CHANNELS_MAX&t;10
 mdefine_line|#define USE_PERIODS_MIN&t;&t;1
 mdefine_line|#define USE_PERIODS_MAX&t;&t;1024
 macro_line|#endif
@@ -943,8 +939,8 @@ id|dpcm-&gt;pcm_buf_pos
 op_mod_assign
 id|dpcm-&gt;pcm_size
 suffix:semicolon
-r_while
-c_loop
+r_if
+c_cond
 (paren
 id|dpcm-&gt;pcm_irq_pos
 op_ge
@@ -952,7 +948,7 @@ id|dpcm-&gt;pcm_count
 )paren
 (brace
 id|dpcm-&gt;pcm_irq_pos
-op_sub_assign
+op_mod_assign
 id|dpcm-&gt;pcm_count
 suffix:semicolon
 id|snd_pcm_period_elapsed
@@ -1829,7 +1825,8 @@ l_int|2
 suffix:semicolon
 id|uinfo-&gt;value.integer.min
 op_assign
-l_int|0
+op_minus
+l_int|50
 suffix:semicolon
 id|uinfo-&gt;value.integer.max
 op_assign
@@ -1968,8 +1965,30 @@ id|ucontrol-&gt;value.integer.value
 (braket
 l_int|0
 )braket
-op_mod
-l_int|101
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|left
+OL
+op_minus
+l_int|50
+)paren
+id|left
+op_assign
+op_minus
+l_int|50
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|left
+OG
+l_int|100
+)paren
+id|left
+op_assign
+l_int|100
 suffix:semicolon
 id|right
 op_assign
@@ -1977,8 +1996,30 @@ id|ucontrol-&gt;value.integer.value
 (braket
 l_int|1
 )braket
-op_mod
-l_int|101
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|right
+OL
+op_minus
+l_int|50
+)paren
+id|right
+op_assign
+op_minus
+l_int|50
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|right
+OG
+l_int|100
+)paren
+id|right
+op_assign
+l_int|100
 suffix:semicolon
 id|spin_lock_irqsave
 c_func

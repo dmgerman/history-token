@@ -80,6 +80,8 @@ DECL|macro|USBPORTSC_LSDA
 mdefine_line|#define   USBPORTSC_LSDA&t;0x0100&t;/* Low Speed Device Attached */
 DECL|macro|USBPORTSC_PR
 mdefine_line|#define   USBPORTSC_PR&t;&t;0x0200&t;/* Port Reset */
+DECL|macro|USBPORTSC_OC
+mdefine_line|#define   USBPORTSC_OC&t;&t;0x0400&t;/* Over Current condition */
 DECL|macro|USBPORTSC_SUSP
 mdefine_line|#define   USBPORTSC_SUSP&t;0x1000&t;/* Suspend */
 multiline_comment|/* Legacy support register */
@@ -459,6 +461,40 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* int128 for 128-255 ms (Max.) */
 )brace
+multiline_comment|/*&n; * Device states for the host controller.&n; *&n; * To prevent &quot;bouncing&quot; in the presence of electrical noise,&n; * we insist on a 1-second &quot;grace&quot; period, before switching to&n; * the RUNNING or SUSPENDED states, during which the state is&n; * not allowed to change.&n; *&n; * The resume process is divided into substates in order to avoid&n; * potentially length delays during the timer handler.&n; *&n; * States in which the host controller is halted must have values &lt;= 0.&n; */
+DECL|enum|uhci_state
+r_enum
+id|uhci_state
+(brace
+DECL|enumerator|UHCI_RESET
+id|UHCI_RESET
+comma
+DECL|enumerator|UHCI_RUNNING_GRACE
+id|UHCI_RUNNING_GRACE
+comma
+multiline_comment|/* Before RUNNING */
+DECL|enumerator|UHCI_RUNNING
+id|UHCI_RUNNING
+comma
+multiline_comment|/* The normal state */
+DECL|enumerator|UHCI_SUSPENDING_GRACE
+id|UHCI_SUSPENDING_GRACE
+comma
+multiline_comment|/* Before SUSPENDED */
+DECL|enumerator|UHCI_SUSPENDED
+id|UHCI_SUSPENDED
+op_assign
+op_minus
+l_int|10
+comma
+multiline_comment|/* When no devices are attached */
+DECL|enumerator|UHCI_RESUMING_1
+id|UHCI_RESUMING_1
+comma
+DECL|enumerator|UHCI_RESUMING_2
+id|UHCI_RESUMING_2
+)brace
+suffix:semicolon
 DECL|macro|hcd_to_uhci
 mdefine_line|#define hcd_to_uhci(hcd_ptr) container_of(hcd_ptr, struct uhci_hcd, hcd)
 multiline_comment|/*&n; * This describes the full uhci information.&n; *&n; * Note how the &quot;proper&quot; USB information is just&n; * a subset of what the full implementation needs.&n; */
@@ -543,10 +579,23 @@ r_int
 id|fsbrtimeout
 suffix:semicolon
 multiline_comment|/* FSBR delay */
-DECL|member|is_suspended
-r_int
-id|is_suspended
+DECL|member|state
+r_enum
+id|uhci_state
+id|state
 suffix:semicolon
+multiline_comment|/* FIXME: needs a spinlock */
+DECL|member|state_end
+r_int
+r_int
+id|state_end
+suffix:semicolon
+multiline_comment|/* Time of next transition */
+DECL|member|resume_detect
+r_int
+id|resume_detect
+suffix:semicolon
+multiline_comment|/* Need a Global Resume */
 multiline_comment|/* Main list of URB&squot;s currently controlled by this HC */
 DECL|member|urb_list_lock
 id|spinlock_t

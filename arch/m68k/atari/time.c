@@ -12,7 +12,7 @@ DECL|function|atari_sched_init
 id|atari_sched_init
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|timer_routine

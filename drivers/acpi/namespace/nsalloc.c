@@ -133,6 +133,7 @@ id|next_node
 op_assign
 id|parent_node-&gt;child
 suffix:semicolon
+multiline_comment|/* Find the node that is the previous peer in the parent&squot;s child list */
 r_while
 c_loop
 (paren
@@ -156,6 +157,7 @@ c_cond
 id|prev_node
 )paren
 (brace
+multiline_comment|/* Node is not first child, unlink it */
 id|prev_node-&gt;peer
 op_assign
 id|next_node-&gt;peer
@@ -176,10 +178,29 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* Node is first child (has no previous peer) */
+r_if
+c_cond
+(paren
+id|next_node-&gt;flags
+op_amp
+id|ANOBJ_END_OF_PEER_LIST
+)paren
+(brace
+multiline_comment|/* No peers at all */
+id|parent_node-&gt;child
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Link peer list to parent */
 id|parent_node-&gt;child
 op_assign
 id|next_node-&gt;peer
 suffix:semicolon
+)brace
 )brace
 id|ACPI_MEM_TRACKING
 (paren
@@ -373,7 +394,7 @@ id|type
 id|u16
 id|owner_id
 op_assign
-id|TABLE_ID_DSDT
+l_int|0
 suffix:semicolon
 r_struct
 id|acpi_namespace_node
@@ -653,6 +674,11 @@ id|acpi_namespace_node
 op_star
 id|next_node
 suffix:semicolon
+r_struct
+id|acpi_namespace_node
+op_star
+id|node
+suffix:semicolon
 id|u8
 id|flags
 suffix:semicolon
@@ -752,6 +778,52 @@ id|acpi_ns_detach_object
 id|child_node
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Decrement the reference count(s) of all parents up to&n;&t;&t; * the root! (counts were incremented when the node was created)&n;&t;&t; */
+id|node
+op_assign
+id|child_node
+suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+id|node
+op_assign
+id|acpi_ns_get_parent_node
+(paren
+id|node
+)paren
+)paren
+op_ne
+l_int|NULL
+)paren
+(brace
+id|node-&gt;reference_count
+op_decrement
+suffix:semicolon
+)brace
+multiline_comment|/* There should be only one reference remaining on this node */
+r_if
+c_cond
+(paren
+id|child_node-&gt;reference_count
+op_ne
+l_int|1
+)paren
+(brace
+id|ACPI_REPORT_WARNING
+(paren
+(paren
+l_string|&quot;Existing references (%d) on node being deleted (%p)&bslash;n&quot;
+comma
+id|child_node-&gt;reference_count
+comma
+id|child_node
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Now we can delete the node */
 id|ACPI_MEM_FREE
 (paren
 id|child_node
@@ -912,7 +984,6 @@ id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_remove_reference&n; *&n; * PARAMETERS:  Node           - Named node whose reference count is to be&n; *                               decremented&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Remove a Node reference.  Decrements the reference count&n; *              of all parent Nodes up to the root.  Any node along&n; *              the way that reaches zero references is freed.&n; *&n; ******************************************************************************/
-r_static
 r_void
 DECL|function|acpi_ns_remove_reference
 id|acpi_ns_remove_reference

@@ -4276,6 +4276,10 @@ id|toshoboe_checkstuck
 id|self
 )paren
 suffix:semicolon
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
+suffix:semicolon
 multiline_comment|/* Check if we need to change the speed */
 multiline_comment|/* But not now. Wait after transmission if mtt not required */
 id|speed
@@ -6326,22 +6330,12 @@ c_cond
 (paren
 id|self-&gt;netdev
 )paren
-(brace
-multiline_comment|/* Remove netdevice */
-id|rtnl_lock
-(paren
-)paren
-suffix:semicolon
-id|unregister_netdevice
+id|unregister_netdev
+c_func
 (paren
 id|self-&gt;netdev
 )paren
 suffix:semicolon
-id|rtnl_unlock
-(paren
-)paren
-suffix:semicolon
-)brace
 id|kfree
 (paren
 id|self-&gt;ringbuf

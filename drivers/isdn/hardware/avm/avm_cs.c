@@ -975,7 +975,7 @@ OG
 l_int|1
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|devname

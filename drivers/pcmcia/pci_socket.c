@@ -597,7 +597,7 @@ op_assign
 op_amp
 id|dev-&gt;dev
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|socket-&gt;cls_d.class_dev.class_id
@@ -789,6 +789,13 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* note: we are already unregistered from the cs core */
+id|class_device_unregister
+c_func
+(paren
+op_amp
+id|socket-&gt;cls_d.class_dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -802,13 +809,6 @@ id|close
 c_func
 (paren
 id|socket
-)paren
-suffix:semicolon
-id|class_device_unregister
-c_func
-(paren
-op_amp
-id|socket-&gt;cls_d.class_dev
 )paren
 suffix:semicolon
 id|pci_set_drvdata

@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *  drivers/s390/char/tape.c&n; *    tape device driver for S/390 and zSeries tapes.&n; *&n; *  S390 and zSeries version&n; *    Copyright (C) 2001 IBM Corporation&n; *    Author(s): Carsten Otte &lt;cotte@de.ibm.com&gt;&n; *&t;&t; Michael Holzheu &lt;holzheu@de.ibm.com&gt;&n; *&t;&t; Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *&n; * PROCFS Functions&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;

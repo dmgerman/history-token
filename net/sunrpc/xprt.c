@@ -3812,13 +3812,12 @@ c_func
 id|xprt
 )paren
 comma
-id|test_bit
+id|sock_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DEAD
 )paren
 comma
 id|sk-&gt;zapped

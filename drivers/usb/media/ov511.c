@@ -1743,6 +1743,11 @@ id|ov511_control_fops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|ioctl
 op_assign
 id|ov51x_control_ioctl
@@ -29342,8 +29347,6 @@ id|ops
 suffix:semicolon
 )brace
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|unlock_kernel
 c_func
 (paren
@@ -29419,8 +29422,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|unlock_kernel
 c_func
 (paren

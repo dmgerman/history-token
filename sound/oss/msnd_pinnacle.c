@@ -2358,7 +2358,7 @@ id|recsrc
 suffix:semicolon
 )brace
 DECL|macro|set_mixer_info
-mdefine_line|#define set_mixer_info()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;strncpy(info.id, &quot;MSNDMIXER&quot;, sizeof(info.id));&t;&t;&t;&bslash;&n;&t;&t;strncpy(info.name, &quot;MultiSound Mixer&quot;, sizeof(info.name));
+mdefine_line|#define set_mixer_info()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;strlcpy(info.id, &quot;MSNDMIXER&quot;, sizeof(info.id));&t;&t;&t;&bslash;&n;&t;&t;strlcpy(info.name, &quot;MultiSound Mixer&quot;, sizeof(info.name));
 DECL|function|mixer_ioctl
 r_static
 r_int

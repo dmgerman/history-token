@@ -51,6 +51,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name
@@ -448,6 +449,11 @@ op_assign
 id|FIRST_PROCESS_ENTRY
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|proc_pid_readdir
@@ -458,11 +464,6 @@ comma
 id|dirent
 comma
 id|filldir
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return

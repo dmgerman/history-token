@@ -35,7 +35,7 @@ DECL|macro|INTVAL
 mdefine_line|#define INTVAL ((10000 / 4) - 1)
 DECL|function|hp300_tick
 r_static
-r_void
+id|irqreturn_t
 id|hp300_tick
 c_func
 (paren
@@ -56,7 +56,7 @@ r_int
 r_int
 id|tmp
 suffix:semicolon
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|vector
@@ -98,6 +98,7 @@ id|CLOCKBASE
 )paren
 )paren
 suffix:semicolon
+r_return
 id|vector
 c_func
 (paren
@@ -209,7 +210,7 @@ id|__init
 id|hp300_sched_init
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|vector

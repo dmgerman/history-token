@@ -88,14 +88,6 @@ r_void
 op_star
 id|argp
 suffix:semicolon
-DECL|member|session
-r_int
-id|session
-suffix:semicolon
-DECL|member|pgrp
-r_int
-id|pgrp
-suffix:semicolon
 DECL|member|rxmarkmsk
 r_int
 r_int
@@ -149,11 +141,6 @@ DECL|member|normaltermios
 r_struct
 id|termios
 id|normaltermios
-suffix:semicolon
-DECL|member|callouttermios
-r_struct
-id|termios
-id|callouttermios
 suffix:semicolon
 DECL|member|asig
 id|asysigs_t

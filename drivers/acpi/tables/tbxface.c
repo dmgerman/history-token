@@ -426,7 +426,7 @@ id|table_type
 r_struct
 id|acpi_table_desc
 op_star
-id|list_head
+id|table_desc
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
@@ -449,39 +449,37 @@ id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
 multiline_comment|/* Find all tables of the requested type */
-id|list_head
+id|table_desc
 op_assign
-op_amp
-id|acpi_gbl_acpi_tables
+id|acpi_gbl_table_lists
 (braket
 id|table_type
 )braket
+dot
+id|next
 suffix:semicolon
-r_do
+r_while
+c_loop
+(paren
+id|table_desc
+)paren
+suffix:semicolon
 (brace
 multiline_comment|/*&n;&t;&t; * Delete all namespace entries owned by this table.  Note that these&n;&t;&t; * entries can appear anywhere in the namespace by virtue of the AML&n;&t;&t; * &quot;Scope&quot; operator.  Thus, we need to track ownership by an ID, not&n;&t;&t; * simply a position within the hierarchy&n;&t;&t; */
 id|acpi_ns_delete_namespace_by_owner
 (paren
-id|list_head-&gt;table_id
+id|table_desc-&gt;table_id
 )paren
 suffix:semicolon
-multiline_comment|/* Delete (or unmap) the actual table */
-id|acpi_tb_delete_acpi_table
-(paren
-id|table_type
-)paren
+id|table_desc
+op_assign
+id|table_desc-&gt;next
 suffix:semicolon
 )brace
-r_while
-c_loop
+multiline_comment|/* Delete (or unmap) all tables of this type */
+id|acpi_tb_delete_tables_by_type
 (paren
-id|list_head
-op_ne
-op_amp
-id|acpi_gbl_acpi_tables
-(braket
 id|table_type
-)braket
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
@@ -560,7 +558,7 @@ op_logical_or
 (paren
 id|ACPI_IS_SINGLE_TABLE
 (paren
-id|acpi_gbl_acpi_table_data
+id|acpi_gbl_table_data
 (braket
 id|table_type
 )braket
@@ -734,7 +732,7 @@ op_logical_or
 (paren
 id|ACPI_IS_SINGLE_TABLE
 (paren
-id|acpi_gbl_acpi_table_data
+id|acpi_gbl_table_data
 (braket
 id|table_type
 )braket

@@ -547,6 +547,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
+multiline_comment|/* We use TASK_INTERRUPTIBLE, rather than&n;&t;&t; * TASK_UNINTERRUPTIBLE.  Andrew Morton made this&n;&t;&t; * change ; he told me that it is safe, because &quot;signal&n;&t;&t; * blocking is now handled in daemonize()&quot;, he added&n;&t;&t; * that the problem is that &quot;uninterruptible sleep&n;&t;&t; * contributes to load average&quot;, making user worry.&n;&t;&t; * Jean II */
 id|set_task_state
 c_func
 (paren

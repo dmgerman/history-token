@@ -3668,7 +3668,7 @@ id|r-&gt;arp_ha.sa_family
 op_assign
 id|dev-&gt;type
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|r-&gt;arp_dev

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * eth1394.h -- Ethernet driver for Linux IEEE-1394 Subsy
 macro_line|#ifndef __ETH1394_H
 DECL|macro|__ETH1394_H
 mdefine_line|#define __ETH1394_H
+macro_line|#include &quot;ieee1394.h&quot;
 multiline_comment|/* Register for incoming packets. This is 8192 bytes, which supports up to&n; * 1600mbs. We&squot;ll need to change this if that ever becomes &quot;small&quot; :)  */
 DECL|macro|ETHER1394_REGION_ADDR_LEN
 mdefine_line|#define ETHER1394_REGION_ADDR_LEN&t;8192
@@ -12,8 +13,14 @@ mdefine_line|#define ETHER1394_REGION_ADDR_END&t;(ETHER1394_REGION_ADDR + ETHER1
 multiline_comment|/* GASP identifier numbers for IPv4 over IEEE 1394 */
 DECL|macro|ETHER1394_GASP_SPECIFIER_ID
 mdefine_line|#define ETHER1394_GASP_SPECIFIER_ID&t;0x00005E
+DECL|macro|ETHER1394_GASP_SPECIFIER_ID_HI
+mdefine_line|#define ETHER1394_GASP_SPECIFIER_ID_HI&t;((ETHER1394_GASP_SPECIFIER_ID &gt;&gt; 8) &amp; 0xffff)
+DECL|macro|ETHER1394_GASP_SPECIFIER_ID_LO
+mdefine_line|#define ETHER1394_GASP_SPECIFIER_ID_LO&t;(ETHER1394_GASP_SPECIFIER_ID &amp; 0xff)
 DECL|macro|ETHER1394_GASP_VERSION
 mdefine_line|#define ETHER1394_GASP_VERSION&t;&t;1
+DECL|macro|ETHER1394_GASP_OVERHEAD
+mdefine_line|#define ETHER1394_GASP_OVERHEAD (2 * sizeof(quadlet_t))  /* GASP header overhead */
 multiline_comment|/* Node set == 64 */
 DECL|macro|NODE_SET
 mdefine_line|#define NODE_SET&t;&t;&t;(ALL_NODES + 1)
@@ -29,6 +36,29 @@ id|ETHER1394_BC_OPENED
 comma
 DECL|enumerator|ETHER1394_BC_CHECK
 id|ETHER1394_BC_CHECK
+)brace
+suffix:semicolon
+DECL|struct|pdg_list
+r_struct
+id|pdg_list
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+multiline_comment|/* partial datagram list per node */
+DECL|member|sz
+r_int
+r_int
+id|sz
+suffix:semicolon
+multiline_comment|/* partial datagram list size per node&t;*/
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+multiline_comment|/* partial datagram lock&t;&t;*/
 )brace
 suffix:semicolon
 multiline_comment|/* Private structure for our ethernet driver */
@@ -49,10 +79,9 @@ op_star
 id|host
 suffix:semicolon
 multiline_comment|/* The card for this dev&t; */
-DECL|member|max_rec
-r_int
-r_char
-id|max_rec
+DECL|member|maxpayload
+id|u16
+id|maxpayload
 (braket
 id|NODE_SET
 )braket
@@ -67,22 +96,14 @@ id|NODE_SET
 )braket
 suffix:semicolon
 multiline_comment|/* Max speed per node&t;&t; */
-DECL|member|fifo_hi
-id|u16
-id|fifo_hi
+DECL|member|fifo
+id|u64
+id|fifo
 (braket
 id|ALL_NODES
 )braket
 suffix:semicolon
-multiline_comment|/* 16bit hi fifo offset per node */
-DECL|member|fifo_lo
-id|u32
-id|fifo_lo
-(braket
-id|ALL_NODES
-)braket
-suffix:semicolon
-multiline_comment|/* 32bit lo fifo offset per node */
+multiline_comment|/* FIFO offset per node&t;&t; */
 DECL|member|eui
 id|u64
 id|eui
@@ -114,6 +135,23 @@ op_star
 id|iso
 suffix:semicolon
 multiline_comment|/* Async stream recv handle&t; */
+DECL|member|pdg
+r_struct
+id|pdg_list
+id|pdg
+(braket
+id|ALL_NODES
+)braket
+suffix:semicolon
+multiline_comment|/* partial RX datagram lists     */
+DECL|member|dgl
+r_int
+id|dgl
+(braket
+id|NODE_SET
+)braket
+suffix:semicolon
+multiline_comment|/* Outgoing datagram label per node */
 )brace
 suffix:semicolon
 DECL|struct|host_info
@@ -134,6 +172,39 @@ id|dev
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Define a fake hardware header format for the networking core.  Note that&n; * header size cannot exceed 16 bytes as that is the size of the header cache.&n; * Also, we do not need the source address in the header so we omit it and&n; * keep the header to under 16 bytes */
+DECL|macro|ETH1394_ALEN
+mdefine_line|#define ETH1394_ALEN (8)
+DECL|macro|ETH1394_HLEN
+mdefine_line|#define ETH1394_HLEN (10)
+DECL|struct|eth1394hdr
+r_struct
+id|eth1394hdr
+(brace
+DECL|member|h_dest
+r_int
+r_char
+id|h_dest
+(braket
+id|ETH1394_ALEN
+)braket
+suffix:semicolon
+multiline_comment|/* destination eth1394 addr&t;*/
+DECL|member|h_proto
+r_int
+r_int
+id|h_proto
+suffix:semicolon
+multiline_comment|/* packet type ID field&t;*/
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 DECL|enumerator|ETH1394_GASP
 DECL|enumerator|ETH1394_WRREQ
 DECL|typedef|eth1394_tx_type
@@ -146,41 +217,6 @@ id|ETH1394_WRREQ
 )brace
 id|eth1394_tx_type
 suffix:semicolon
-multiline_comment|/* This is our task struct. It&squot;s used for the packet complete callback.  */
-DECL|struct|packet_task
-r_struct
-id|packet_task
-(brace
-DECL|member|skb
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
-multiline_comment|/* Socket buffer we are sending */
-DECL|member|dest_node
-id|nodeid_t
-id|dest_node
-suffix:semicolon
-multiline_comment|/* Destination of the packet */
-DECL|member|addr
-id|u64
-id|addr
-suffix:semicolon
-multiline_comment|/* Address */
-DECL|member|tq
-r_struct
-id|work_struct
-id|tq
-suffix:semicolon
-multiline_comment|/* The task */
-DECL|member|tx_type
-id|eth1394_tx_type
-id|tx_type
-suffix:semicolon
-multiline_comment|/* Send data via GASP or Write Req. */
-)brace
-suffix:semicolon
 multiline_comment|/* IP1394 headers */
 macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/* Unfragmented */
@@ -190,7 +226,7 @@ r_struct
 id|eth1394_uf_hdr
 (brace
 DECL|member|lf
-id|u8
+id|u16
 id|lf
 suffix:colon
 l_int|2
@@ -227,7 +263,7 @@ suffix:colon
 l_int|14
 suffix:semicolon
 DECL|member|lf
-id|u8
+id|u16
 id|lf
 suffix:colon
 l_int|2
@@ -255,13 +291,13 @@ r_struct
 id|eth1394_ff_hdr
 (brace
 DECL|member|lf
-id|u8
+id|u16
 id|lf
 suffix:colon
 l_int|2
 suffix:semicolon
 DECL|member|res1
-id|u8
+id|u16
 id|res1
 suffix:colon
 l_int|2
@@ -308,13 +344,13 @@ suffix:colon
 l_int|12
 suffix:semicolon
 DECL|member|res1
-id|u8
+id|u16
 id|res1
 suffix:colon
 l_int|2
 suffix:semicolon
 DECL|member|lf
-id|u8
+id|u16
 id|lf
 suffix:colon
 l_int|2
@@ -350,13 +386,13 @@ r_struct
 id|eth1394_sf_hdr
 (brace
 DECL|member|lf
-id|u8
+id|u16
 id|lf
 suffix:colon
 l_int|2
 suffix:semicolon
 DECL|member|res1
-id|u8
+id|u16
 id|res1
 suffix:colon
 l_int|2
@@ -369,16 +405,16 @@ l_int|12
 suffix:semicolon
 multiline_comment|/* Datagram size */
 DECL|member|res2
-id|u8
+id|u16
 id|res2
 suffix:colon
-l_int|6
+l_int|4
 suffix:semicolon
 DECL|member|fg_off
 id|u16
 id|fg_off
 suffix:colon
-l_int|10
+l_int|12
 suffix:semicolon
 multiline_comment|/* Fragment offset */
 DECL|member|dgl
@@ -411,13 +447,13 @@ suffix:colon
 l_int|12
 suffix:semicolon
 DECL|member|res1
-id|u8
+id|u16
 id|res1
 suffix:colon
 l_int|2
 suffix:semicolon
 DECL|member|lf
-id|u8
+id|u16
 id|lf
 suffix:colon
 l_int|2
@@ -426,13 +462,13 @@ DECL|member|fg_off
 id|u16
 id|fg_off
 suffix:colon
-l_int|10
+l_int|12
 suffix:semicolon
 DECL|member|res2
-id|u8
+id|u16
 id|res2
 suffix:colon
-l_int|6
+l_int|4
 suffix:semicolon
 DECL|member|dgl
 id|u16
@@ -460,7 +496,7 @@ r_struct
 id|eth1394_common_hdr
 (brace
 DECL|member|lf
-id|u8
+id|u16
 id|lf
 suffix:colon
 l_int|2
@@ -492,7 +528,7 @@ suffix:colon
 l_int|14
 suffix:semicolon
 DECL|member|lf
-id|u8
+id|u16
 id|lf
 suffix:colon
 l_int|2
@@ -645,5 +681,55 @@ suffix:semicolon
 multiline_comment|/* Network timeout */
 DECL|macro|ETHER1394_TIMEOUT
 mdefine_line|#define ETHER1394_TIMEOUT&t;100000
+multiline_comment|/* This is our task struct. It&squot;s used for the packet complete callback.  */
+DECL|struct|packet_task
+r_struct
+id|packet_task
+(brace
+DECL|member|skb
+r_struct
+id|sk_buff
+op_star
+id|skb
+suffix:semicolon
+DECL|member|outstanding_pkts
+r_int
+id|outstanding_pkts
+suffix:semicolon
+DECL|member|tx_type
+id|eth1394_tx_type
+id|tx_type
+suffix:semicolon
+DECL|member|max_payload
+r_int
+id|max_payload
+suffix:semicolon
+DECL|member|packet
+r_struct
+id|hpsb_packet
+op_star
+id|packet
+suffix:semicolon
+DECL|member|priv
+r_struct
+id|eth1394_priv
+op_star
+id|priv
+suffix:semicolon
+DECL|member|hdr
+r_union
+id|eth1394_hdr
+id|hdr
+suffix:semicolon
+DECL|member|addr
+id|u64
+id|addr
+suffix:semicolon
+DECL|member|dest_node
+id|u16
+id|dest_node
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#endif /* __ETH1394_H */
 eof

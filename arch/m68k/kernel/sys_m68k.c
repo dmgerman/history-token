@@ -848,7 +848,7 @@ r_default
 suffix:colon
 r_return
 op_minus
-id|EINVAL
+id|ENOSYS
 suffix:semicolon
 )brace
 r_if
@@ -1009,7 +1009,7 @@ r_default
 suffix:colon
 r_return
 op_minus
-id|EINVAL
+id|ENOSYS
 suffix:semicolon
 )brace
 r_if
@@ -1130,7 +1130,7 @@ r_default
 suffix:colon
 r_return
 op_minus
-id|EINVAL
+id|ENOSYS
 suffix:semicolon
 )brace
 r_return

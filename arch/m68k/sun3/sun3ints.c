@@ -18,7 +18,7 @@ r_char
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|sun3_inthandle
 c_func
 (paren
@@ -245,7 +245,7 @@ suffix:semicolon
 )brace
 DECL|function|sun3_int7
 r_static
-r_void
+id|irqreturn_t
 id|sun3_int7
 c_func
 (paren
@@ -319,10 +319,13 @@ l_int|2000
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|sun3_int5
 r_static
-r_void
+id|irqreturn_t
 id|sun3_int5
 c_func
 (paren
@@ -441,10 +444,13 @@ l_int|20
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* handle requested ints, excepting 5 and 7, which always do the same&n;   thing */
 DECL|variable|sun3_default_handler
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|sun3_default_handler
@@ -520,7 +526,7 @@ id|SYS_IRQS
 suffix:semicolon
 DECL|variable|sun3_inthandler
 r_static
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|sun3_inthandler
@@ -559,7 +565,7 @@ id|sun3_int7
 suffix:semicolon
 DECL|variable|sun3_vechandler
 r_static
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|sun3_vechandler
@@ -693,7 +699,7 @@ suffix:semicolon
 )brace
 DECL|function|sun3_inthandle
 r_static
-r_void
+id|irqreturn_t
 id|sun3_inthandle
 c_func
 (paren
@@ -770,10 +776,13 @@ comma
 id|fp
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|sun3_vec255
 r_static
-r_void
+id|irqreturn_t
 id|sun3_vec255
 c_func
 (paren
@@ -791,6 +800,9 @@ id|fp
 )paren
 (brace
 singleline_comment|//&t;intersil_clear();
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|sun3_init_IRQ
 r_void
@@ -894,7 +906,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -1254,7 +1266,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|sun3_process_int
-r_void
+id|irqreturn_t
 id|sun3_process_int
 c_func
 (paren
@@ -1317,6 +1329,7 @@ id|vec
 )braket
 op_increment
 suffix:semicolon
+r_return
 id|sun3_vechandler
 (braket
 id|vec
@@ -1331,8 +1344,6 @@ id|vec
 comma
 id|regs
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 r_else

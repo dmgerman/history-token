@@ -602,6 +602,9 @@ id|fp
 id|vbl_detected
 op_increment
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|fb_flashcursor

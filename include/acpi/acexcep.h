@@ -79,8 +79,10 @@ DECL|macro|AE_LOGICAL_ADDRESS
 mdefine_line|#define AE_LOGICAL_ADDRESS              (acpi_status) (0x001B | AE_CODE_ENVIRONMENTAL)
 DECL|macro|AE_ABORT_METHOD
 mdefine_line|#define AE_ABORT_METHOD                 (acpi_status) (0x001C | AE_CODE_ENVIRONMENTAL)
+DECL|macro|AE_SAME_HANDLER
+mdefine_line|#define AE_SAME_HANDLER                 (acpi_status) (0x001D | AE_CODE_ENVIRONMENTAL)
 DECL|macro|AE_CODE_ENV_MAX
-mdefine_line|#define AE_CODE_ENV_MAX                 0x001C
+mdefine_line|#define AE_CODE_ENV_MAX                 0x001D
 multiline_comment|/*&n; * Programmer exceptions&n; */
 DECL|macro|AE_BAD_PARAMETER
 mdefine_line|#define AE_BAD_PARAMETER                (acpi_status) (0x0001 | AE_CODE_PROGRAMMER)
@@ -277,6 +279,8 @@ comma
 l_string|&quot;AE_LOGICAL_ADDRESS&quot;
 comma
 l_string|&quot;AE_ABORT_METHOD&quot;
+comma
+l_string|&quot;AE_SAME_HANDLER&quot;
 )brace
 suffix:semicolon
 DECL|variable|acpi_gbl_exception_names_pgm

@@ -21,7 +21,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|hp300_default_handler

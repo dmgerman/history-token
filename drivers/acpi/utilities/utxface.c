@@ -177,50 +177,7 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;acpi_enable_subsystem&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Install the default op_region handlers. These are installed unless&n;&t; * other handlers have already been installed via the&n;&t; * install_address_space_handler interface&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|flags
-op_amp
-id|ACPI_NO_ADDRESS_SPACE_INIT
-)paren
-)paren
-(brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_EXEC
-comma
-l_string|&quot;[Init] Installing default address space handlers&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-id|status
-op_assign
-id|acpi_ev_init_address_spaces
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/*&n;&t; * We must initialize the hardware before we can enable ACPI.&n;&t; * FADT values are validated here.&n;&t; */
+multiline_comment|/*&n;&t; * We must initialize the hardware before we can enable ACPI.&n;&t; * The values from the FADT are validated here.&n;&t; */
 r_if
 c_cond
 (paren
@@ -263,7 +220,7 @@ id|status
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Enable ACPI on this platform&n;&t; */
+multiline_comment|/*&n;&t; * Enable ACPI mode&n;&t; */
 r_if
 c_cond
 (paren
@@ -322,7 +279,7 @@ id|status
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Note:&n;&t; * We must have the hardware AND events initialized before we can execute&n;&t; * ANY control methods SAFELY.  Any control method can require ACPI hardware&n;&t; * support, so the hardware MUST be initialized before execution!&n;&t; */
+multiline_comment|/*&n;&t; * Initialize ACPI Event handling&n;&t; *&n;&t; * NOTE: We must have the hardware AND events initialized before we can execute&n;&t; * ANY control methods SAFELY.  Any control method can require ACPI hardware&n;&t; * support, so the hardware MUST be initialized before execution!&n;&t; */
 r_if
 c_cond
 (paren
@@ -365,7 +322,7 @@ id|status
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Install SCI handler, Global Lock handler, GPE handlers */
+multiline_comment|/* Install the SCI handler, Global Lock handler, and GPE handlers */
 r_if
 c_cond
 (paren
@@ -433,6 +390,92 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;acpi_initialize_objects&quot;
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Install the default op_region handlers. These are installed unless&n;&t; * other handlers have already been installed via the&n;&t; * install_address_space_handler interface.&n;&t; *&n;&t; * NOTE: This will cause _REG methods to be run.  Any objects accessed&n;&t; * by the _REG methods will be automatically initialized, even if they&n;&t; * contain executable AML (see call to acpi_ns_initialize_objects below).&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|flags
+op_amp
+id|ACPI_NO_ADDRESS_SPACE_INIT
+)paren
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;[Init] Installing default address space handlers&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|acpi_ev_init_address_spaces
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n;&t; * Initialize the objects that remain uninitialized.  This&n;&t; * runs the executable AML that may be part of the declaration of these&n;&t; * objects: operation_regions, buffer_fields, Buffers, and Packages.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|flags
+op_amp
+id|ACPI_NO_OBJECT_INIT
+)paren
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;[Init] Initializing ACPI Objects&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|acpi_ns_initialize_objects
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/*&n;&t; * Initialize all device objects in the namespace&n;&t; * This runs the _STA and _INI methods.&n;&t; */
 r_if
 c_cond
@@ -457,49 +500,6 @@ suffix:semicolon
 id|status
 op_assign
 id|acpi_ns_initialize_devices
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/*&n;&t; * Initialize the objects that remain uninitialized.  This&n;&t; * runs the executable AML that is part of the declaration of op_regions&n;&t; * and Fields.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|flags
-op_amp
-id|ACPI_NO_OBJECT_INIT
-)paren
-)paren
-(brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_EXEC
-comma
-l_string|&quot;[Init] Initializing ACPI Objects&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-id|status
-op_assign
-id|acpi_ns_initialize_objects
 (paren
 )paren
 suffix:semicolon
@@ -775,7 +775,7 @@ suffix:semicolon
 multiline_comment|/* Current status of the ACPI tables, per table type */
 id|info_ptr-&gt;num_table_types
 op_assign
-id|NUM_ACPI_TABLES
+id|NUM_ACPI_TABLE_TYPES
 suffix:semicolon
 r_for
 c_loop
@@ -786,7 +786,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUM_ACPI_TABLES
+id|NUM_ACPI_TABLE_TYPES
 suffix:semicolon
 id|i
 op_increment
@@ -799,7 +799,7 @@ id|i
 dot
 id|count
 op_assign
-id|acpi_gbl_acpi_tables
+id|acpi_gbl_table_lists
 (braket
 id|i
 )braket

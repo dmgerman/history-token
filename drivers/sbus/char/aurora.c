@@ -55,8 +55,6 @@ macro_line|#ifndef MIN
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b) ((a) &lt; (b) ? (a) : (b))
 macro_line|#endif
-DECL|macro|AURORA_TYPE_NORMAL
-mdefine_line|#define AURORA_TYPE_NORMAL&t;1
 DECL|variable|aurora_driver
 r_static
 r_struct
@@ -3450,24 +3448,6 @@ id|port-&gt;open_wait
 )paren
 suffix:semicolon
 r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-(paren
-id|port-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-op_logical_and
-(paren
-id|port-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_NOHUP
-)paren
-)paren
-)paren
 id|schedule_task
 c_func
 (paren
@@ -6874,17 +6854,6 @@ id|TTY_IO_ERROR
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|port-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
 id|port-&gt;flags
 op_or_assign
 id|ASYNC_NORMAL_ACTIVE
@@ -6893,28 +6862,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|port-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|port-&gt;normal_termios.c_cflag
-op_amp
-id|CLOCAL
-)paren
-id|do_clocal
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-r_else
-(brace
 r_if
 c_cond
 (paren
@@ -6928,7 +6875,6 @@ id|do_clocal
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 multiline_comment|/* Block waiting for the carrier detect and the line to become&n;&t; * free (i.e., not in use by the callout).  While we are in&n;&t; * this loop, info-&gt;count is dropped by one, so that&n;&t; * rs_close() knows when to free things.  We restore it upon&n;&t; * exit, either normal or abnormal.&n;&t; */
 id|retval
 op_assign
@@ -7029,17 +6975,6 @@ id|CD180_MSVR
 op_amp
 id|MSVR_CD
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|port-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-)paren
-(brace
 id|port-&gt;MSVR
 op_assign
 id|bp-&gt;RTS
@@ -7062,7 +6997,6 @@ id|CD180_MSVR
 )braket
 )paren
 suffix:semicolon
-)brace
 id|sti
 c_func
 (paren
@@ -7115,7 +7049,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-multiline_comment|/*!(port-&gt;flags &amp; ASYNC_CALLOUT_ACTIVE) &amp;&amp;*/
 op_logical_neg
 (paren
 id|port-&gt;flags
@@ -7478,14 +7411,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-id|port-&gt;session
-op_assign
-id|current-&gt;session
-suffix:semicolon
-id|port-&gt;pgrp
-op_assign
-id|current-&gt;pgrp
-suffix:semicolon
 macro_line|#ifdef AURORA_DEBUG
 id|printk
 c_func
@@ -7726,7 +7651,6 @@ op_assign
 op_star
 id|tty-&gt;termios
 suffix:semicolon
-multiline_comment|/*&t;if (port-&gt;flags &amp; ASYNC_CALLOUT_ACTIVE)&n;&t;&t;port-&gt;callout_termios = *tty-&gt;termios;*/
 multiline_comment|/* Now we wait for the transmit buffer to clear; and we notify &n;&t; * the line discipline to only process XON/XOFF characters.&n;&t; */
 id|tty-&gt;closing
 op_assign
@@ -7956,8 +7880,6 @@ op_and_assign
 op_complement
 (paren
 id|ASYNC_NORMAL_ACTIVE
-op_or
-id|ASYNC_CALLOUT_ACTIVE
 op_or
 id|ASYNC_CLOSING
 )paren
@@ -11392,11 +11314,7 @@ suffix:semicolon
 id|port-&gt;flags
 op_and_assign
 op_complement
-(paren
 id|ASYNC_NORMAL_ACTIVE
-op_or
-id|ASYNC_CALLOUT_ACTIVE
-)paren
 suffix:semicolon
 id|port-&gt;tty
 op_assign
@@ -11776,7 +11694,7 @@ id|TTY_DRIVER_TYPE_SERIAL
 suffix:semicolon
 id|aurora_driver.subtype
 op_assign
-id|AURORA_TYPE_NORMAL
+id|SERIAL_TYPE_NORMAL
 suffix:semicolon
 id|aurora_driver.init_termios
 op_assign

@@ -1763,13 +1763,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_bit
+id|sock_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DEAD
 )paren
 )paren
 r_return
@@ -2745,13 +2744,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_bit
+id|sock_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DEAD
 )paren
 op_logical_or
 op_logical_neg
@@ -3071,13 +3069,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_bit
+id|sock_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DEAD
 )paren
 op_logical_or
 op_logical_neg
@@ -4257,6 +4254,7 @@ op_amp
 id|pppoe_notifier
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 id|remove_proc_entry
 c_func
 (paren
@@ -4265,6 +4263,7 @@ comma
 id|proc_net
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|variable|pppoe_init
 id|module_init

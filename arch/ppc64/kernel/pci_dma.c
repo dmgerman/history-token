@@ -3096,7 +3096,6 @@ c_func
 id|bus
 )paren
 suffix:semicolon
-multiline_comment|/* NOTE: there should never be a window declared on a bus when&n;&t;&t; * child devices also have a window.  If this should ever be&n;&t;&t; * architected, we probably want children to have priority.&n;&t;&t; * In reality, the PHB containing ISA has the property, but otherwise&n;&t;&t; * it is the pci-bridges that have the property.&n;&t;&t; */
 id|dma_window
 op_assign
 (paren
@@ -3135,6 +3134,7 @@ id|busdn
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* look for a window on a bridge even if the PHB had one */
 id|create_tce_tables_for_busesLP
 c_func
 (paren

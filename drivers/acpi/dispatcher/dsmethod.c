@@ -533,6 +533,13 @@ id|AE_NULL_OBJECT
 )paren
 suffix:semicolon
 )brace
+id|obj_desc-&gt;method.owning_id
+op_assign
+id|acpi_ut_allocate_owner_id
+(paren
+id|ACPI_OWNER_TYPE_METHOD
+)paren
+suffix:semicolon
 multiline_comment|/* Init for new method, wait on concurrency semaphore */
 id|status
 op_assign

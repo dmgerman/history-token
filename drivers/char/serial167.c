@@ -56,8 +56,6 @@ DECL|macro|STD_COM_FLAGS
 mdefine_line|#define STD_COM_FLAGS (0)
 DECL|macro|SERIAL_TYPE_NORMAL
 mdefine_line|#define SERIAL_TYPE_NORMAL  1
-DECL|macro|SERIAL_TYPE_CALLOUT
-mdefine_line|#define SERIAL_TYPE_CALLOUT 2
 DECL|variable|tq_cyclades
 id|DECLARE_TASK_QUEUE
 c_func
@@ -66,12 +64,9 @@ id|tq_cyclades
 )paren
 suffix:semicolon
 DECL|variable|cy_serial_driver
-DECL|variable|cy_callout_driver
 r_struct
 id|tty_driver
 id|cy_serial_driver
-comma
-id|cy_callout_driver
 suffix:semicolon
 r_extern
 r_int
@@ -1416,7 +1411,7 @@ multiline_comment|/* then trigger event */
 multiline_comment|/* cy_sched_event */
 multiline_comment|/* The real interrupt service routines are called&n;   whenever the card wants its hand held--chars&n;   received, out buffer empty, modem change, etc.&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|cd2401_rxerr_interrupt
 id|cd2401_rxerr_interrupt
 c_func
@@ -1520,6 +1515,7 @@ op_assign
 id|CyNOTRANS
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* Read a byte of data if there is any - assume the error&n;     * is associated with this character */
@@ -1571,6 +1567,7 @@ suffix:colon
 id|CyNOTRANS
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_else
@@ -1601,6 +1598,7 @@ suffix:colon
 id|CyNOTRANS
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -1813,10 +1811,13 @@ l_int|0
 suffix:colon
 id|CyNOTRANS
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* cy_rxerr_interrupt */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|cd2401_modem_interrupt
 id|cd2401_modem_interrupt
 c_func
@@ -1950,24 +1951,6 @@ id|Cy_EVENT_OPEN_WAKEUP
 suffix:semicolon
 )brace
 r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-(paren
-id|info-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-op_logical_and
-(paren
-id|info-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_NOHUP
-)paren
-)paren
-)paren
 (brace
 multiline_comment|/* CP(&squot;@&squot;); */
 id|cy_sched_event
@@ -2082,10 +2065,13 @@ id|CyMEOIR
 op_assign
 l_int|0
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* cy_modem_interrupt */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|cd2401_tx_interrupt
 id|cd2401_tx_interrupt
 c_func
@@ -2208,6 +2194,7 @@ op_assign
 id|CyNOTRANS
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|info-&gt;last_active
@@ -2259,6 +2246,7 @@ op_assign
 id|CyNOTRANS
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* load the on-chip space available for outbound data */
@@ -2575,10 +2563,13 @@ l_int|0
 suffix:colon
 id|CyNOTRANS
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* cy_tx_interrupt */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|cd2401_rx_interrupt
 id|cd2401_rx_interrupt
 c_func
@@ -2830,6 +2821,9 @@ l_int|0
 suffix:colon
 id|CyNOTRANS
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* cy_rx_interrupt */
 multiline_comment|/*&n; * This routine is used to handle the &quot;bottom half&quot; processing for the&n; * serial driver, known also the &quot;software interrupt&quot; processing.&n; * This processing is done at the kernel interrupt level, after the&n; * cy_interrupt() has returned, BUT WITH INTERRUPTS TURNED ON.  This&n; * is where time-consuming activities which can not be done in the&n; * interrupt driver proper are done; the interrupt driver schedules&n; * them using cy_sched_event(), and they get done here.&n; *&n; * This is done through one level of indirection--the task queue.&n; * When a hardware interrupt service routine wants service by the&n; * driver&squot;s bottom half, it enqueues the appropriate tq_struct (one&n; * per port) to the tq_cyclades work queue and sets a request flag&n; * via mark_bh for processing that queue.  When the time is right,&n; * do_cyclades_bh is called (because of the mark_bh) and it requests&n; * that the work queue be processed.&n; *&n; * Although this may seem unwieldy, it gives the system a way to&n; * pass an argument (in this case the pointer to the cyclades_port&n; * structure) to the bottom half of the driver.  Previous kernels&n; * had to poll every port to see if that port needed servicing.&n; */
@@ -2920,11 +2914,7 @@ suffix:semicolon
 id|info-&gt;flags
 op_and_assign
 op_complement
-(paren
 id|ASYNC_NORMAL_ACTIVE
-op_or
-id|ASYNC_CALLOUT_ACTIVE
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -8202,18 +8192,6 @@ c_cond
 (paren
 id|info-&gt;flags
 op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-id|info-&gt;callout_termios
-op_assign
-op_star
-id|tty-&gt;termios
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|info-&gt;flags
-op_amp
 id|ASYNC_INITIALIZED
 )paren
 id|tty_wait_until_sent
@@ -8351,8 +8329,6 @@ op_complement
 (paren
 id|ASYNC_NORMAL_ACTIVE
 op_or
-id|ASYNC_CALLOUT_ACTIVE
-op_or
 id|ASYNC_CLOSING
 )paren
 suffix:semicolon
@@ -8458,11 +8434,7 @@ macro_line|#endif
 id|info-&gt;flags
 op_and_assign
 op_complement
-(paren
 id|ASYNC_NORMAL_ACTIVE
-op_or
-id|ASYNC_CALLOUT_ACTIVE
-)paren
 suffix:semicolon
 id|wake_up_interruptible
 c_func
@@ -8562,90 +8534,6 @@ id|ERESTARTSYS
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;     * If this is a callout device, then just make sure the normal&n;     * device isn&squot;t being used.&n;     */
-r_if
-c_cond
-(paren
-id|tty-&gt;driver-&gt;subtype
-op_eq
-id|SERIAL_TYPE_CALLOUT
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|info-&gt;flags
-op_amp
-id|ASYNC_NORMAL_ACTIVE
-)paren
-(brace
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|info-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-op_logical_and
-(paren
-id|info-&gt;flags
-op_amp
-id|ASYNC_SESSION_LOCKOUT
-)paren
-op_logical_and
-(paren
-id|info-&gt;session
-op_ne
-id|current-&gt;session
-)paren
-)paren
-(brace
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|info-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-op_logical_and
-(paren
-id|info-&gt;flags
-op_amp
-id|ASYNC_PGRP_LOCKOUT
-)paren
-op_logical_and
-(paren
-id|info-&gt;pgrp
-op_ne
-id|current-&gt;pgrp
-)paren
-)paren
-(brace
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
-id|info-&gt;flags
-op_or_assign
-id|ASYNC_CALLOUT_ACTIVE
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n;     * If non-blocking mode is set, then make the check up front&n;     * and then exit.&n;     */
 r_if
 c_cond
@@ -8655,19 +8543,6 @@ op_amp
 id|O_NONBLOCK
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|info-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-(brace
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
 id|info-&gt;flags
 op_or_assign
 id|ASYNC_NORMAL_ACTIVE
@@ -8738,17 +8613,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|info-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-)paren
-(brace
 id|base_addr
 (braket
 id|CyCAR
@@ -8800,7 +8664,6 @@ id|CyMSVR2
 )paren
 suffix:semicolon
 macro_line|#endif
-)brace
 id|local_irq_restore
 c_func
 (paren
@@ -8875,13 +8738,6 @@ multiline_comment|/* CP(&squot;L&squot;);CP1(1 &amp;&amp; C_CLOCAL(tty)); CP1(1 
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
-id|info-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-op_logical_and
 op_logical_neg
 (paren
 id|info-&gt;flags
@@ -9222,23 +9078,10 @@ id|ASYNC_SPLIT_TERMIOS
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|tty-&gt;driver-&gt;subtype
-op_eq
-id|SERIAL_TYPE_NORMAL
-)paren
 op_star
 id|tty-&gt;termios
 op_assign
 id|info-&gt;normal_termios
-suffix:semicolon
-r_else
-op_star
-id|tty-&gt;termios
-op_assign
-id|info-&gt;callout_termios
 suffix:semicolon
 )brace
 multiline_comment|/*&n;     * Start up serial port&n;     */
@@ -9292,14 +9135,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-id|info-&gt;session
-op_assign
-id|current-&gt;session
-suffix:semicolon
-id|info-&gt;pgrp
-op_assign
-id|current-&gt;pgrp
-suffix:semicolon
 macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
@@ -10126,30 +9961,6 @@ id|cy_serial_driver.hangup
 op_assign
 id|cy_hangup
 suffix:semicolon
-multiline_comment|/*&n;     * The callout device is just like normal device except for&n;     * major number and the subtype code.&n;     */
-id|cy_callout_driver
-op_assign
-id|cy_serial_driver
-suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|cy_callout_driver.name
-op_assign
-l_string|&quot;cua/&quot;
-suffix:semicolon
-macro_line|#else
-id|cy_callout_driver.name
-op_assign
-l_string|&quot;cua&quot;
-suffix:semicolon
-macro_line|#endif
-id|cy_callout_driver.major
-op_assign
-id|TTYAUX_MAJOR
-suffix:semicolon
-id|cy_callout_driver.subtype
-op_assign
-id|SERIAL_TYPE_CALLOUT
-suffix:semicolon
 id|ret
 op_assign
 id|tty_register_driver
@@ -10174,32 +9985,6 @@ l_string|&quot;Couldn&squot;t register MVME166/7 serial driver&bslash;n&quot;
 suffix:semicolon
 r_return
 id|ret
-suffix:semicolon
-)brace
-id|ret
-op_assign
-id|tty_register_driver
-c_func
-(paren
-op_amp
-id|cy_callout_driver
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Couldn&squot;t register MVME166/7 callout driver&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|cleanup_serial_driver
 suffix:semicolon
 )brace
 id|init_bh
@@ -10396,10 +10181,6 @@ id|info-&gt;tqueue.data
 op_assign
 id|info
 suffix:semicolon
-id|info-&gt;callout_termios
-op_assign
-id|cy_callout_driver.init_termios
-suffix:semicolon
 id|info-&gt;normal_termios
 op_assign
 id|cy_serial_driver.init_termios
@@ -10534,7 +10315,7 @@ l_string|&quot;Could&squot;t get cd2401_errors IRQ&quot;
 )paren
 suffix:semicolon
 r_goto
-id|cleanup_callout_driver
+id|cleanup_serial_driver
 suffix:semicolon
 )brace
 id|ret
@@ -10698,25 +10479,6 @@ c_func
 id|MVME167_IRQ_SER_ERR
 comma
 id|cd2401_rxerr_interrupt
-)paren
-suffix:semicolon
-id|cleanup_callout_driver
-suffix:colon
-r_if
-c_cond
-(paren
-id|tty_unregister_driver
-c_func
-(paren
-op_amp
-id|cy_callout_driver
-)paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Couldn&squot;t unregister MVME166/7 callout driver&bslash;n&quot;
 )paren
 suffix:semicolon
 id|cleanup_serial_driver
@@ -10893,11 +10655,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;  session pgrp open_wait = %lx %lx %lx&bslash;n&quot;
-comma
-id|info-&gt;session
-comma
-id|info-&gt;pgrp
+l_string|&quot;  open_wait = %lx %lx %lx&bslash;n&quot;
 comma
 (paren
 r_int

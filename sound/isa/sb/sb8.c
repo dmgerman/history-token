@@ -356,6 +356,7 @@ op_amp
 id|SB_OPEN_PCM
 )paren
 (brace
+r_return
 id|snd_sb8dsp_interrupt
 c_func
 (paren
@@ -365,6 +366,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_return
 id|snd_sb8dsp_midi_interrupt
 c_func
 (paren
@@ -372,9 +374,6 @@ id|chip
 )paren
 suffix:semicolon
 )brace
-r_return
-id|IRQ_HANDLED
-suffix:semicolon
 )brace
 DECL|function|snd_sb8_free
 r_static

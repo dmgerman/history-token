@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * class.c - basic device class management&n; * &n; * Copyright (c) 2001-2003 Patrick Mochel &lt;mochel@osdl.org&gt;&n; */
+multiline_comment|/*&n; * class.c - basic device class management&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; * &n; * This file is released under the GPLv2&n; *&n; */
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#include &lt;linux/device.h&gt;
@@ -373,7 +373,7 @@ op_amp
 id|cls-&gt;interfaces
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|cls-&gt;subsys.kset.kobj.name
@@ -639,10 +639,6 @@ l_string|&quot;driver&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|macro|to_class_dev
-mdefine_line|#define to_class_dev(obj) container_of(obj,struct class_device,kobj)
-DECL|macro|to_class_dev_attr
-mdefine_line|#define to_class_dev_attr(_attr) container_of(_attr,struct class_device_attribute,attr)
 r_static
 id|ssize_t
 DECL|function|class_device_attr_show
@@ -806,6 +802,60 @@ id|class_device_attr_store
 comma
 )brace
 suffix:semicolon
+DECL|function|class_dev_release
+r_static
+r_void
+id|class_dev_release
+c_func
+(paren
+r_struct
+id|kobject
+op_star
+id|kobj
+)paren
+(brace
+r_struct
+id|class_device
+op_star
+id|cd
+op_assign
+id|to_class_dev
+c_func
+(paren
+id|kobj
+)paren
+suffix:semicolon
+r_struct
+r_class
+op_star
+id|cls
+op_assign
+id|cd
+op_member_access_from_pointer
+r_class
+suffix:semicolon
+id|pr_debug
+c_func
+(paren
+l_string|&quot;device class &squot;%s&squot;: release.&bslash;n&quot;
+comma
+id|cd-&gt;class_id
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cls-&gt;release
+)paren
+id|cd
+op_member_access_from_pointer
+id|release
+c_func
+(paren
+id|cd
+)paren
+suffix:semicolon
+)brace
 DECL|variable|ktype_class_device
 r_static
 r_struct
@@ -818,6 +868,11 @@ id|sysfs_ops
 op_assign
 op_amp
 id|class_dev_sysfs_ops
+comma
+dot
+id|release
+op_assign
+id|class_dev_release
 comma
 )brace
 suffix:semicolon
@@ -1178,7 +1233,7 @@ id|class_dev-&gt;class_id
 )paren
 suffix:semicolon
 multiline_comment|/* first, register with generic layer. */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|class_dev-&gt;kobj.name
@@ -1447,12 +1502,6 @@ id|parent-&gt;subsys.rwsem
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|class_dev-&gt;dev
-)paren
-(brace
 id|class_device_dev_unlink
 c_func
 (paren
@@ -1465,13 +1514,6 @@ c_func
 id|class_dev
 )paren
 suffix:semicolon
-id|put_device
-c_func
-(paren
-id|class_dev-&gt;dev
-)paren
-suffix:semicolon
-)brace
 id|kobject_del
 c_func
 (paren

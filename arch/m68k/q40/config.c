@@ -37,7 +37,7 @@ id|ints
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|q40_process_int
 (paren
 r_int
@@ -50,7 +50,7 @@ id|regs
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|q40_sys_default_handler
@@ -144,7 +144,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -179,7 +179,7 @@ r_void
 id|q40_sched_init
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler

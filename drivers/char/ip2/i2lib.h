@@ -112,16 +112,6 @@ r_int
 id|flags
 suffix:semicolon
 singleline_comment|// Defined in tty.h
-DECL|member|session
-r_int
-id|session
-suffix:semicolon
-singleline_comment|// Defined in tty.h
-DECL|member|pgrp
-r_int
-id|pgrp
-suffix:semicolon
-singleline_comment|// Defined in tty.h
 DECL|member|open_wait
 id|PWAITQ
 id|open_wait
@@ -157,11 +147,6 @@ DECL|member|NormalTermios
 r_struct
 id|termios
 id|NormalTermios
-suffix:semicolon
-DECL|member|CalloutTermios
-r_struct
-id|termios
-id|CalloutTermios
 suffix:semicolon
 DECL|member|BaudBase
 r_int

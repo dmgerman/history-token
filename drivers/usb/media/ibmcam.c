@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB IBM C-It Video Camera driver&n; *&n; * Supports Xirlink C-It Video Camera, IBM PC Camera,&n; * IBM NetCamera and Veo Stingray.&n; *&n; * This driver is based on earlier work of:&n; *&n; * (C) Copyright 1999 Johannes Erdfelt&n; * (C) Copyright 1999 Randy Dunlap&n; *&n; * 5/24/00 Removed optional (and unnecessary) locking of the driver while&n; * the device remains plugged in. Corrected race conditions in ibmcam_open&n; * and ibmcam_probe() routines using this as a guideline:&n; *&n; * (2) The big kernel lock is automatically released when a process sleeps&n; *   in the kernel and is automatically reacquired on reschedule if the&n; *   process had the lock originally.  Any code that can be compiled as&n; *   a module and is entered with the big kernel lock held *MUST*&n; *   increment the use count to activate the indirect module protection&n; *   before doing anything that might sleep.&n; *&n; *   In practice, this means that all routines that live in modules and&n; *   are invoked under the big kernel lock should do MOD_INC_USE_COUNT&n; *   as their very first action.  And all failure paths from that&n; *   routine must do MOD_DEC_USE_COUNT before returning.&n; */
+multiline_comment|/*&n; * USB IBM C-It Video Camera driver&n; *&n; * Supports Xirlink C-It Video Camera, IBM PC Camera,&n; * IBM NetCamera and Veo Stingray.&n; *&n; * This driver is based on earlier work of:&n; *&n; * (C) Copyright 1999 Johannes Erdfelt&n; * (C) Copyright 1999 Randy Dunlap&n; *&n; * 5/24/00 Removed optional (and unnecessary) locking of the driver while&n; * the device remains plugged in. Corrected race conditions in ibmcam_open&n; * and ibmcam_probe() routines using this as a guideline:&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -25125,9 +25125,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/* Code below may sleep, need to lock module while we are here */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|uvd
 op_assign
 id|usbvideo_AllocateDevice
@@ -25271,8 +25268,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|usb_set_intfdata
 (paren
 id|intf

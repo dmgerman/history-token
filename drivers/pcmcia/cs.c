@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 DECL|macro|IN_CARD_SERVICES
@@ -3246,6 +3247,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+id|refrigerator
+c_func
+(paren
+id|PF_IOTHREAD
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 id|skt-&gt;thread
 )paren
@@ -4446,7 +4460,7 @@ id|client-&gt;client_magic
 op_assign
 id|CLIENT_MAGIC
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|client-&gt;dev_info
@@ -4605,7 +4619,7 @@ l_int|NULL
 r_return
 id|CS_BAD_OFFSET
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|region-&gt;dev_info

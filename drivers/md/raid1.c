@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * raid1.c : Multiple Devices driver for Linux&n; *&n; * Copyright (C) 1999, 2000, 2001 Ingo Molnar, Red Hat&n; *&n; * Copyright (C) 1996, 1997, 1998 Ingo Molnar, Miguel de Icaza, Gadi Oxman&n; *&n; * RAID-1 management functions.&n; *&n; * Better read-balancing code written by Mika Kuoppala &lt;miku@iki.fi&gt;, 2000&n; *&n; * Fixes to reconstruction by Jakob &#xfffd;stergaard&quot; &lt;jakob@ostenfeld.dk&gt;&n; * Various fixes by Neil Brown &lt;neilb@cse.unsw.edu.au&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * You should have received a copy of the GNU General Public License&n; * (for example /usr/src/linux/COPYING); if not, write to the Free&n; * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/raid/raid1.h&gt;
-macro_line|#include &lt;linux/bio.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR MD_MAJOR
 DECL|macro|MD_DRIVER
@@ -46,10 +45,17 @@ op_star
 id|data
 )paren
 (brace
+id|mddev_t
+op_star
+id|mddev
+op_assign
+id|data
+suffix:semicolon
 id|r1bio_t
 op_star
 id|r1_bio
 suffix:semicolon
+multiline_comment|/* allocate a r1bio with room for raid_disks entries in the write_bios array */
 id|r1_bio
 op_assign
 id|kmalloc
@@ -59,6 +65,15 @@ r_sizeof
 (paren
 id|r1bio_t
 )paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|bio
+op_star
+)paren
+op_star
+id|mddev-&gt;raid_disks
 comma
 id|gfp_flags
 )paren
@@ -158,13 +173,22 @@ id|j
 suffix:semicolon
 id|r1_bio
 op_assign
-id|mempool_alloc
+id|r1bio_pool_alloc
 c_func
 (paren
-id|conf-&gt;r1bio_pool
-comma
 id|gfp_flags
+comma
+id|conf-&gt;mddev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|r1_bio
+)paren
+r_return
+l_int|NULL
 suffix:semicolon
 id|bio
 op_assign
@@ -317,12 +341,12 @@ id|bio
 suffix:semicolon
 id|out_free_r1_bio
 suffix:colon
-id|mempool_free
+id|r1bio_pool_free
 c_func
 (paren
 id|r1_bio
 comma
-id|conf-&gt;r1bio_pool
+id|conf-&gt;mddev
 )paren
 suffix:semicolon
 r_return
@@ -442,12 +466,12 @@ c_func
 id|bio
 )paren
 suffix:semicolon
-id|mempool_free
+id|r1bio_pool_free
 c_func
 (paren
 id|r1bio
 comma
-id|conf-&gt;r1bio_pool
+id|conf-&gt;mddev
 )paren
 suffix:semicolon
 )brace
@@ -1249,13 +1273,19 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/*&n;&t;&t;&t; * oops, read error:&n;&t;&t;&t; */
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_ERR
 l_string|&quot;raid1: %s: rescheduling sector %llu&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|conf-&gt;mirrors
@@ -1264,6 +1294,8 @@ id|mirror
 )braket
 dot
 id|rdev-&gt;bdev
+comma
+id|b
 )paren
 comma
 (paren
@@ -2374,6 +2406,12 @@ op_star
 id|rdev
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|conf_t
 op_star
 id|conf
@@ -2439,10 +2477,12 @@ id|KERN_ALERT
 l_string|&quot;raid1: Disk failure on %s, disabling device. &bslash;n&quot;
 l_string|&quot;&t;Operation continuing on %d devices&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|rdev-&gt;bdev
+comma
+id|b
 )paren
 comma
 id|conf-&gt;working_disks
@@ -2514,6 +2554,12 @@ id|i
 op_increment
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|tmp
 op_assign
 id|conf-&gt;mirrors
@@ -2538,10 +2584,12 @@ comma
 op_logical_neg
 id|tmp-&gt;rdev-&gt;faulty
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|tmp-&gt;rdev-&gt;bdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon
@@ -3314,6 +3362,12 @@ id|r1_bio-&gt;state
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * There is no point trying a read-for-reconstruct as&n;&t;&t; * reconstruct is about to be aborted&n;&t;&t; */
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3321,10 +3375,12 @@ id|KERN_ALERT
 l_string|&quot;raid1: %s: unrecoverable I/O read error&quot;
 l_string|&quot; for block %llu&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|bio-&gt;bi_bdev
+comma
+id|b
 )paren
 comma
 (paren
@@ -3408,9 +3464,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|conf-&gt;mirrors
+(braket
 id|i
+)braket
+dot
+id|rdev-&gt;bdev
 op_eq
-id|conf-&gt;last_used
+id|bio-&gt;bi_bdev
 )paren
 multiline_comment|/*&n;&t;&t;&t; * we read from here, no need to write&n;&t;&t;&t; */
 r_continue
@@ -3728,6 +3789,12 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -3839,10 +3906,12 @@ id|KERN_ALERT
 l_string|&quot;raid1: %s: unrecoverable I/O&quot;
 l_string|&quot; read error for block %llu&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|bio-&gt;bi_bdev
+comma
+id|b
 )paren
 comma
 (paren
@@ -3869,10 +3938,12 @@ id|KERN_ERR
 l_string|&quot;raid1: %s: redirecting sector %llu to&quot;
 l_string|&quot; another mirror&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|rdev-&gt;bdev
+comma
+id|b
 )paren
 comma
 (paren
@@ -4485,6 +4556,46 @@ id|conf
 )paren
 )paren
 suffix:semicolon
+id|conf-&gt;mirrors
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|mirror_info
+)paren
+op_star
+id|mddev-&gt;raid_disks
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|conf-&gt;mirrors
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;raid1: couldn&squot;t allocate memory for md%d&bslash;n&quot;
+comma
+id|mdidx
+c_func
+(paren
+id|mddev
+)paren
+)paren
+suffix:semicolon
+r_goto
+id|out_free_conf
+suffix:semicolon
+)brace
 id|conf-&gt;r1bio_pool
 op_assign
 id|mempool_create
@@ -4496,7 +4607,7 @@ id|r1bio_pool_alloc
 comma
 id|r1bio_pool_free
 comma
-l_int|NULL
+id|mddev
 )paren
 suffix:semicolon
 r_if
@@ -4520,7 +4631,7 @@ id|mddev
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_free_conf
 suffix:semicolon
 )brace
 id|ITERATE_RDEV
@@ -4799,6 +4910,17 @@ c_func
 id|conf-&gt;r1bio_pool
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|conf-&gt;mirrors
+)paren
+id|kfree
+c_func
+(paren
+id|conf-&gt;mirrors
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -4858,6 +4980,17 @@ id|mempool_destroy
 c_func
 (paren
 id|conf-&gt;r1bio_pool
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|conf-&gt;mirrors
+)paren
+id|kfree
+c_func
+(paren
+id|conf-&gt;mirrors
 )paren
 suffix:semicolon
 id|kfree

@@ -271,7 +271,7 @@ id|PCI_CLASS_BRIDGE_ISA
 op_logical_or
 r_class
 op_eq
-id|PCI_CLASS_BRIDGE_ISA
+id|PCI_CLASS_BRIDGE_EISA
 )paren
 (brace
 id|dev-&gt;dma_mask

@@ -1,4 +1,4 @@
-multiline_comment|/* orinoco_cs.c 0.13a&t;- (formerly known as dldwd_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; * &n; * Copyright notice &amp; release notes in file orinoco.c&n; */
+multiline_comment|/* orinoco_cs.c 0.13e&t;- (formerly known as dldwd_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; * &n; * Copyright notice &amp; release notes in file orinoco.c&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef  __IN_PCMCIA_PACKAGE__
 macro_line|#include &lt;pcmcia/k_compat.h&gt;
@@ -10,9 +10,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
@@ -133,13 +131,11 @@ id|dev_node_t
 id|node
 suffix:semicolon
 multiline_comment|/* Used to handle hard reset */
-DECL|member|hard_reset_queue
-id|wait_queue_head_t
-id|hard_reset_queue
-suffix:semicolon
-DECL|member|hard_reset_flag
+multiline_comment|/* yuck, we need this hack to work around the insanity of the&n;         * PCMCIA layer */
+DECL|member|hard_reset_in_progress
 r_int
-id|hard_reset_flag
+r_int
+id|hard_reset_in_progress
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -252,9 +248,15 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-id|card-&gt;hard_reset_flag
-op_assign
+multiline_comment|/* We need atomic ops here, because we&squot;re not holding the lock */
+id|set_bit
+c_func
+(paren
 l_int|0
+comma
+op_amp
+id|card-&gt;hard_reset_in_progress
+)paren
 suffix:semicolon
 id|err
 op_assign
@@ -276,12 +278,13 @@ id|err
 r_return
 id|err
 suffix:semicolon
-id|wait_event_interruptible
+id|clear_bit
 c_func
 (paren
-id|card-&gt;hard_reset_queue
+l_int|0
 comma
-id|card-&gt;hard_reset_flag
+op_amp
+id|card-&gt;hard_reset_in_progress
 )paren
 suffix:semicolon
 r_return
@@ -291,6 +294,44 @@ suffix:semicolon
 multiline_comment|/********************************************************************/
 multiline_comment|/* PCMCIA stuff     &t;&t;&t;&t;&t;&t;    */
 multiline_comment|/********************************************************************/
+multiline_comment|/* In 2.5 (as of 2.5.69 at least) there is a cs_error exported which&n; * does this, but it&squot;s not in 2.4 so we do our own for now. */
+r_static
+r_void
+DECL|function|orinoco_cs_error
+id|orinoco_cs_error
+c_func
+(paren
+id|client_handle_t
+id|handle
+comma
+r_int
+id|func
+comma
+r_int
+id|ret
+)paren
+(brace
+id|error_info_t
+id|err
+op_assign
+(brace
+id|func
+comma
+id|ret
+)brace
+suffix:semicolon
+id|CardServices
+c_func
+(paren
+id|ReportError
+comma
+id|handle
+comma
+op_amp
+id|err
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Remove zombie instances (card removed, detach pending) */
 r_static
 r_void
@@ -429,13 +470,6 @@ suffix:semicolon
 id|card
 op_assign
 id|priv-&gt;card
-suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|card-&gt;hard_reset_queue
-)paren
 suffix:semicolon
 multiline_comment|/* Link both structures together */
 id|link
@@ -601,7 +635,7 @@ op_ne
 id|CS_SUCCESS
 )paren
 (brace
-id|cs_error
+id|orinoco_cs_error
 c_func
 (paren
 id|link-&gt;handle
@@ -699,7 +733,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;   If the device is currently configured and active, we won&squot;t&n;&t;   actually delete it yet.  Instead, it is marked so that when&n;&t;   the release() function is called, that will trigger a proper&n;&t;   detach().&n;&t; */
 r_if
 c_cond
 (paren
@@ -708,24 +741,30 @@ op_amp
 id|DEV_CONFIG
 )paren
 (brace
-macro_line|#ifdef PCMCIA_DEBUG
-id|printk
+id|orinoco_cs_release
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;orinoco_cs: detach postponed, &squot;%s&squot; &quot;
-l_string|&quot;still locked&bslash;n&quot;
-comma
-id|link-&gt;dev-&gt;dev_name
+(paren
+id|u_long
+)paren
+id|link
 )paren
 suffix:semicolon
-macro_line|#endif
+r_if
+c_cond
+(paren
+id|link-&gt;state
+op_amp
+id|DEV_CONFIG
+)paren
+(brace
 id|link-&gt;state
 op_or_assign
 id|DEV_STALE_LINK
 suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Break the link with Card Services */
 r_if
@@ -1505,7 +1544,7 @@ id|orinoco_interrupt
 suffix:semicolon
 id|link-&gt;irq.Instance
 op_assign
-id|priv
+id|dev
 suffix:semicolon
 id|CS_CHECK
 c_func
@@ -1715,37 +1754,11 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* And give us the proc nodes for debugging */
-r_if
-c_cond
-(paren
-id|orinoco_proc_dev_init
-c_func
-(paren
-id|dev
-)paren
-op_ne
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;orinoco_cs: Failed to create /proc node for %s&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-r_goto
-id|failed
-suffix:semicolon
-)brace
 r_return
 suffix:semicolon
 id|cs_failed
 suffix:colon
-id|cs_error
+id|orinoco_cs_error
 c_func
 (paren
 id|link-&gt;handle
@@ -1803,35 +1816,30 @@ id|priv
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-multiline_comment|/*&n;&t;   If the device is currently in use, we won&squot;t release until it&n;&t;   is actually closed, because until then, we can&squot;t be sure that&n;&t;   no one will try to access the device or its data structures.&n;&t; */
-r_if
-c_cond
-(paren
-id|priv-&gt;open
-)paren
-(brace
-id|DEBUG
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* We&squot;re committed to taking the device away now, so mark the&n;&t; * hardware as unavailable */
+id|spin_lock_irqsave
 c_func
 (paren
-l_int|0
+op_amp
+id|priv-&gt;lock
 comma
-l_string|&quot;orinoco_cs: release postponed, &squot;%s&squot; still open&bslash;n&quot;
-comma
-id|link-&gt;dev-&gt;dev_name
+id|flags
 )paren
 suffix:semicolon
-id|link-&gt;state
-op_or_assign
-id|DEV_STALE_CONFIG
+id|priv-&gt;hw_unavailable
+op_increment
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/* Unregister proc entry */
-id|orinoco_proc_dev_cleanup
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|dev
+op_amp
+id|priv-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Don&squot;t bother checking to see if these succeed or not */
@@ -1920,6 +1928,13 @@ id|priv
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
+r_struct
+id|orinoco_pccard
+op_star
+id|card
+op_assign
+id|priv-&gt;card
+suffix:semicolon
 r_int
 id|err
 op_assign
@@ -1967,8 +1982,7 @@ id|dev
 )paren
 suffix:semicolon
 id|priv-&gt;hw_unavailable
-op_assign
-l_int|1
+op_increment
 suffix:semicolon
 id|orinoco_unlock
 c_func
@@ -1977,21 +1991,6 @@ id|priv
 comma
 op_amp
 id|flags
-)paren
-suffix:semicolon
-multiline_comment|/*  &t;&t;&t;if (link-&gt;open) */
-multiline_comment|/*  &t;&t;&t;&t;orinoco_cs_stop(dev); */
-id|mod_timer
-c_func
-(paren
-op_amp
-id|link-&gt;release
-comma
-id|jiffies
-op_plus
-id|HZ
-op_div
-l_int|20
 )paren
 suffix:semicolon
 )brace
@@ -2034,35 +2033,30 @@ op_amp
 id|DEV_CONFIG
 )paren
 (brace
-id|err
-op_assign
-id|orinoco_lock
-c_func
-(paren
-id|priv
-comma
-op_amp
-id|flags
-)paren
-suffix:semicolon
+multiline_comment|/* This is probably racy, but I can&squot;t think of&n;                           a better way, short of rewriting the PCMCIA&n;                           layer to not suck :-( */
 r_if
 c_cond
 (paren
-id|err
-)paren
-(brace
-id|printk
+op_logical_neg
+id|test_bit
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;%s: hw_unavailable on SUSPEND/RESET_PHYSICAL&bslash;n&quot;
+l_int|0
 comma
-id|dev-&gt;name
+op_amp
+id|card-&gt;hard_reset_in_progress
+)paren
+)paren
+(brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|priv-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|err
 op_assign
 id|__orinoco_down
@@ -2103,18 +2097,18 @@ id|dev
 )paren
 suffix:semicolon
 id|priv-&gt;hw_unavailable
-op_assign
-l_int|1
+op_increment
 suffix:semicolon
-id|orinoco_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|priv
-comma
 op_amp
+id|priv-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
+)brace
 id|CardServices
 c_func
 (paren
@@ -2146,6 +2140,7 @@ op_amp
 id|DEV_CONFIG
 )paren
 (brace
+multiline_comment|/* FIXME: should we double check that this is&n;&t;&t;&t; * the same card as we had before */
 id|CardServices
 c_func
 (paren
@@ -2157,7 +2152,20 @@ op_amp
 id|link-&gt;conf
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: should we double check that this is&n;&t;&t;&t; * the same card as we had before */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|card-&gt;hard_reset_in_progress
+)paren
+)paren
+(brace
 id|err
 op_assign
 id|orinoco_reinit_firmware
@@ -2202,13 +2210,15 @@ id|dev
 )paren
 suffix:semicolon
 id|priv-&gt;hw_unavailable
-op_assign
-l_int|0
+op_decrement
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|priv-&gt;open
+op_logical_and
+op_logical_neg
+id|priv-&gt;hw_unavailable
 )paren
 (brace
 id|err
@@ -2236,15 +2246,16 @@ id|err
 )paren
 suffix:semicolon
 )brace
-id|orinoco_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|priv
-comma
 op_amp
+id|priv-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
+)brace
 )brace
 r_break
 suffix:semicolon
@@ -2266,7 +2277,42 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;orinoco_cs.c 0.13a (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
+l_string|&quot;orinoco_cs.c 0.13e (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
+suffix:semicolon
+DECL|variable|orinoco_driver
+r_static
+r_struct
+id|pcmcia_driver
+id|orinoco_driver
+op_assign
+(brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
+id|drv
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;orinoco_cs&quot;
+comma
+)brace
+comma
+dot
+id|attach
+op_assign
+id|orinoco_cs_attach
+comma
+dot
+id|detach
+op_assign
+id|orinoco_cs_detach
+comma
+)brace
 suffix:semicolon
 r_static
 r_int
@@ -2278,9 +2324,6 @@ c_func
 r_void
 )paren
 (brace
-id|servinfo_t
-id|serv
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2290,51 +2333,13 @@ comma
 id|version
 )paren
 suffix:semicolon
-id|CardServices
-c_func
-(paren
-id|GetCardServicesInfo
-comma
-op_amp
-id|serv
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|serv.Revision
-op_ne
-id|CS_RELEASE_CODE
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;orinoco_cs: Card Services release &quot;
-l_string|&quot;does not match!&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-id|register_pccard_driver
+id|pcmcia_register_driver
 c_func
 (paren
 op_amp
-id|dev_info
-comma
-op_amp
-id|orinoco_cs_attach
-comma
-op_amp
-id|orinoco_cs_detach
+id|orinoco_driver
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 r_static
@@ -2347,11 +2352,11 @@ c_func
 r_void
 )paren
 (brace
-id|unregister_pccard_driver
+id|pcmcia_unregister_driver
 c_func
 (paren
 op_amp
-id|dev_info
+id|orinoco_driver
 )paren
 suffix:semicolon
 r_if
@@ -2375,13 +2380,6 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|del_timer
-c_func
-(paren
-op_amp
-id|dev_list-&gt;release
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

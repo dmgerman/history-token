@@ -219,13 +219,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_bit
+id|sock_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DEAD
 )paren
 )paren
 (brace
@@ -2021,13 +2020,12 @@ id|nlk-&gt;state
 )paren
 op_logical_and
 op_logical_neg
-id|test_bit
+id|sock_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DEAD
 )paren
 )paren
 id|timeo
@@ -5095,13 +5093,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NETLINK_DEV
-id|init_netlink
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

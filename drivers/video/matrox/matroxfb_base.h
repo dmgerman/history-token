@@ -36,18 +36,14 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#ifdef CONFIG_MTRR
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#endif
-macro_line|#include &lt;video/fbcon.h&gt;
-macro_line|#include &lt;video/fbcon-cfb4.h&gt;
-macro_line|#include &lt;video/fbcon-cfb8.h&gt;
-macro_line|#include &lt;video/fbcon-cfb16.h&gt;
-macro_line|#include &lt;video/fbcon-cfb24.h&gt;
-macro_line|#include &lt;video/fbcon-cfb32.h&gt;
-macro_line|#if defined(CONFIG_PPC)
+macro_line|#include &quot;../console/fbcon.h&quot;
+macro_line|#if defined(CONFIG_ALL_PPC)
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;video/macmodes.h&gt;
@@ -55,8 +51,6 @@ macro_line|#endif
 multiline_comment|/* always compile support for 32MB... It cost almost nothing */
 DECL|macro|CONFIG_FB_MATROX_32MB
 mdefine_line|#define CONFIG_FB_MATROX_32MB
-DECL|macro|FBCON_HAS_VGATEXT
-mdefine_line|#define FBCON_HAS_VGATEXT
 macro_line|#ifdef MATROXFB_DEBUG
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
@@ -1064,55 +1058,6 @@ DECL|member|ydstorg
 )brace
 id|ydstorg
 suffix:semicolon
-DECL|member|putc
-r_void
-(paren
-op_star
-id|putc
-)paren
-(paren
-id|u_int32_t
-comma
-id|u_int32_t
-comma
-r_struct
-id|display
-op_star
-comma
-r_int
-comma
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
-DECL|member|putcs
-r_void
-(paren
-op_star
-id|putcs
-)paren
-(paren
-id|u_int32_t
-comma
-id|u_int32_t
-comma
-r_struct
-id|display
-op_star
-comma
-r_const
-r_int
-r_int
-op_star
-comma
-r_int
-comma
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
 )brace
 suffix:semicolon
 r_struct
@@ -1129,11 +1074,6 @@ suffix:semicolon
 DECL|member|xmiscctrl
 id|u_int8_t
 id|xmiscctrl
-suffix:semicolon
-DECL|member|cursorimage
-r_int
-r_int
-id|cursorimage
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1308,6 +1248,12 @@ id|m_opmode
 suffix:semicolon
 )brace
 suffix:semicolon
+r_struct
+id|v4l2_queryctrl
+suffix:semicolon
+r_struct
+id|v4l2_control
+suffix:semicolon
 DECL|struct|matrox_altout
 r_struct
 id|matrox_altout
@@ -1372,6 +1318,57 @@ id|altout_dev
 comma
 id|u_int32_t
 id|mode
+)paren
+suffix:semicolon
+DECL|member|getqueryctrl
+r_int
+(paren
+op_star
+id|getqueryctrl
+)paren
+(paren
+r_void
+op_star
+id|altout_dev
+comma
+r_struct
+id|v4l2_queryctrl
+op_star
+id|ctrl
+)paren
+suffix:semicolon
+DECL|member|getctrl
+r_int
+(paren
+op_star
+id|getctrl
+)paren
+(paren
+r_void
+op_star
+id|altout_dev
+comma
+r_struct
+id|v4l2_control
+op_star
+id|ctrl
+)paren
+suffix:semicolon
+DECL|member|setctrl
+r_int
+(paren
+op_star
+id|setctrl
+)paren
+(paren
+r_void
+op_star
+id|altout_dev
+comma
+r_struct
+id|v4l2_control
+op_star
+id|ctrl
 )paren
 suffix:semicolon
 )brace
@@ -1471,6 +1468,13 @@ id|output
 suffix:semicolon
 )brace
 suffix:semicolon
+r_extern
+r_struct
+id|display
+id|fb_display
+(braket
+)braket
+suffix:semicolon
 r_struct
 id|matrox_switch
 suffix:semicolon
@@ -1479,6 +1483,21 @@ id|matroxfb_driver
 suffix:semicolon
 r_struct
 id|matroxfb_dh_fb_info
+suffix:semicolon
+DECL|struct|matrox_vsync
+r_struct
+id|matrox_vsync
+(brace
+DECL|member|wait
+id|wait_queue_head_t
+id|wait
+suffix:semicolon
+DECL|member|cnt
+r_int
+r_int
+id|cnt
+suffix:semicolon
+)brace
 suffix:semicolon
 DECL|struct|matrox_fb_info
 r_struct
@@ -1503,6 +1522,16 @@ r_int
 r_int
 id|usecount
 suffix:semicolon
+DECL|member|userusecount
+r_int
+r_int
+id|userusecount
+suffix:semicolon
+DECL|member|irq_flags
+r_int
+r_int
+id|irq_flags
+suffix:semicolon
 DECL|member|curr
 r_struct
 id|matroxfb_par
@@ -1526,6 +1555,11 @@ id|pcidev
 suffix:semicolon
 r_struct
 (brace
+DECL|member|vsync
+r_struct
+id|matrox_vsync
+id|vsync
+suffix:semicolon
 DECL|member|pixclock
 r_int
 r_int
@@ -1541,6 +1575,11 @@ id|crtc1
 suffix:semicolon
 r_struct
 (brace
+DECL|member|vsync
+r_struct
+id|matrox_vsync
+id|vsync
+suffix:semicolon
 DECL|member|pixclock
 r_int
 r_int
@@ -1571,6 +1610,35 @@ DECL|member|lock
 r_struct
 id|rw_semaphore
 id|lock
+suffix:semicolon
+r_struct
+(brace
+DECL|member|brightness
+DECL|member|contrast
+DECL|member|saturation
+DECL|member|hue
+DECL|member|gamma
+r_int
+id|brightness
+comma
+id|contrast
+comma
+id|saturation
+comma
+id|hue
+comma
+id|gamma
+suffix:semicolon
+DECL|member|testout
+DECL|member|deflicker
+r_int
+id|testout
+comma
+id|deflicker
+suffix:semicolon
+DECL|member|tvo_params
+)brace
+id|tvo_params
 suffix:semicolon
 DECL|member|altout
 )brace
@@ -1701,12 +1769,6 @@ id|matrox_switch
 op_star
 id|hw_switch
 suffix:semicolon
-DECL|member|currcon_display
-r_struct
-id|display
-op_star
-id|currcon_display
-suffix:semicolon
 r_struct
 (brace
 DECL|member|pll
@@ -1791,26 +1853,6 @@ DECL|member|capable
 )brace
 id|capable
 suffix:semicolon
-r_struct
-(brace
-DECL|member|size
-r_int
-r_int
-id|size
-suffix:semicolon
-DECL|member|mgabase
-r_int
-r_int
-id|mgabase
-suffix:semicolon
-DECL|member|vbase
-id|vaddr_t
-id|vbase
-suffix:semicolon
-DECL|member|fastfont
-)brace
-id|fastfont
-suffix:semicolon
 macro_line|#ifdef CONFIG_MTRR
 r_struct
 (brace
@@ -1852,18 +1894,6 @@ suffix:semicolon
 DECL|member|noinit
 r_int
 id|noinit
-suffix:semicolon
-DECL|member|inverse
-r_int
-id|inverse
-suffix:semicolon
-DECL|member|hwcursor
-r_int
-id|hwcursor
-suffix:semicolon
-DECL|member|blink
-r_int
-id|blink
 suffix:semicolon
 DECL|member|sgram
 r_int
@@ -1953,57 +1983,10 @@ DECL|member|devflags
 )brace
 id|devflags
 suffix:semicolon
-DECL|member|dispsw
+DECL|member|fbops
 r_struct
-id|display_switch
-id|dispsw
-suffix:semicolon
-r_struct
-(brace
-DECL|member|x
-r_int
-id|x
-suffix:semicolon
-DECL|member|y
-r_int
-id|y
-suffix:semicolon
-DECL|member|w
-r_int
-r_int
-id|w
-suffix:semicolon
-DECL|member|u
-r_int
-r_int
-id|u
-suffix:semicolon
-DECL|member|d
-r_int
-r_int
-id|d
-suffix:semicolon
-DECL|member|type
-r_int
-r_int
-id|type
-suffix:semicolon
-DECL|member|state
-r_int
-id|state
-suffix:semicolon
-DECL|member|redraw
-r_int
-id|redraw
-suffix:semicolon
-DECL|member|timer
-r_struct
-id|timer_list
-id|timer
-suffix:semicolon
-DECL|member|cursor
-)brace
-id|cursor
+id|fb_ops
+id|fbops
 suffix:semicolon
 DECL|member|bios
 r_struct
@@ -2157,44 +2140,17 @@ id|palette
 l_int|256
 )braket
 suffix:semicolon
-multiline_comment|/* These ifdefs must be last! They differ for module &amp; non-module compiles */
-macro_line|#if defined(FBCON_HAS_CFB16) || defined(FBCON_HAS_CFB24) || defined(FBCON_HAS_CFB32)
-r_union
-(brace
-macro_line|#ifdef FBCON_HAS_CFB16
-DECL|member|cfb16
-id|u_int16_t
-id|cfb16
-(braket
-l_int|16
-)braket
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef FBCON_HAS_CFB24
-DECL|member|cfb24
-id|u_int32_t
-id|cfb24
-(braket
-l_int|16
-)braket
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef FBCON_HAS_CFB32
-DECL|member|cfb32
-id|u_int32_t
-id|cfb32
-(braket
-l_int|16
-)braket
-suffix:semicolon
-macro_line|#endif
 DECL|member|cmap
-)brace
+id|u_int32_t
 id|cmap
+(braket
+l_int|17
+)braket
 suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
+DECL|macro|info2minfo
+mdefine_line|#define info2minfo(info) container_of(info, struct matrox_fb_info, fbcon)
 macro_line|#ifdef CONFIG_FB_MATROX_MULTIHEAD
 DECL|macro|ACCESS_FBINFO2
 mdefine_line|#define ACCESS_FBINFO2(info, x) (info-&gt;x)
@@ -2214,41 +2170,8 @@ DECL|macro|PMINFO2
 mdefine_line|#define PMINFO2  minfo
 DECL|macro|PMINFO
 mdefine_line|#define PMINFO   PMINFO2 ,
-DECL|function|mxinfo
-r_static
-r_inline
-r_struct
-id|matrox_fb_info
-op_star
-id|mxinfo
-c_func
-(paren
-r_const
-r_struct
-id|display
-op_star
-id|p
-)paren
-(brace
-r_return
-id|container_of
-c_func
-(paren
-id|p-&gt;fb_info
-comma
-r_struct
-id|matrox_fb_info
-comma
-id|fbcon
-)paren
-suffix:semicolon
-)brace
-DECL|macro|PMXINFO
-mdefine_line|#define PMXINFO(p)&t;   mxinfo(p),
 DECL|macro|MINFO_FROM
 mdefine_line|#define MINFO_FROM(x)&t;   struct matrox_fb_info* minfo = x
-DECL|macro|MINFO_FROM_DISP
-mdefine_line|#define MINFO_FROM_DISP(x) MINFO_FROM(mxinfo(x))
 macro_line|#else
 r_extern
 r_struct
@@ -2273,35 +2196,11 @@ DECL|macro|PMINFO2
 mdefine_line|#define PMINFO2
 DECL|macro|PMINFO
 mdefine_line|#define PMINFO
-macro_line|#if 0
-r_static
-r_inline
-r_struct
-id|matrox_fb_info
-op_star
-id|mxinfo
-c_func
-(paren
-r_const
-r_struct
-id|display
-op_star
-id|p
-)paren
-(brace
-r_return
-op_amp
-id|matroxfb_global_mxinfo
-suffix:semicolon
-)brace
-macro_line|#endif
-DECL|macro|PMXINFO
-mdefine_line|#define PMXINFO(p)
 DECL|macro|MINFO_FROM
 mdefine_line|#define MINFO_FROM(x)
-DECL|macro|MINFO_FROM_DISP
-mdefine_line|#define MINFO_FROM_DISP(x)
 macro_line|#endif
+DECL|macro|MINFO_FROM_INFO
+mdefine_line|#define MINFO_FROM_INFO(x) MINFO_FROM(info2minfo(x))
 DECL|struct|matrox_switch
 r_struct
 id|matrox_switch
@@ -2337,10 +2236,6 @@ id|WPMINFO
 r_struct
 id|my_timming
 op_star
-comma
-r_struct
-id|display
-op_star
 )paren
 suffix:semicolon
 DECL|member|restore
@@ -2348,19 +2243,6 @@ r_void
 (paren
 op_star
 id|restore
-)paren
-(paren
-id|WPMINFO
-r_struct
-id|display
-op_star
-)paren
-suffix:semicolon
-DECL|member|selhwcursor
-r_int
-(paren
-op_star
-id|selhwcursor
 )paren
 (paren
 id|WPMINFO2
@@ -2532,6 +2414,8 @@ DECL|macro|M_FIFOSTATUS
 mdefine_line|#define M_FIFOSTATUS&t;0x1E10
 DECL|macro|M_STATUS
 mdefine_line|#define M_STATUS&t;0x1E14
+DECL|macro|M_ICLEAR
+mdefine_line|#define M_ICLEAR&t;0x1E18
 DECL|macro|M_IEN
 mdefine_line|#define M_IEN&t;&t;0x1E1C
 DECL|macro|M_VCOUNT
@@ -2744,15 +2628,22 @@ id|mt
 suffix:semicolon
 r_extern
 r_int
-id|matroxfb_switch
+id|matroxfb_wait_for_sync
 c_func
 (paren
+id|WPMINFO
+id|u_int32_t
+id|crtc
+)paren
+suffix:semicolon
+r_extern
 r_int
-id|con
-comma
-r_struct
-id|fb_info
-op_star
+id|matroxfb_enable_irq
+c_func
+(paren
+id|WPMINFO
+r_int
+id|reenable
 )paren
 suffix:semicolon
 macro_line|#ifdef MATROXFB_USE_SPINLOCKS

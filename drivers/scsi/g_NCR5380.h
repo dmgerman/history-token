@@ -91,32 +91,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_int
-id|notyet_generic_proc_info
-(paren
-r_char
-op_star
-id|buffer
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|length
-comma
-r_int
-id|hostno
-comma
-r_int
-id|inout
-)paren
-suffix:semicolon
-r_static
 r_const
 r_char
 op_star
@@ -145,33 +119,6 @@ id|sector_t
 comma
 r_int
 op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|generic_NCR5380_proc_info
-c_func
-(paren
-r_char
-op_star
-id|buffer
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|length
-comma
-r_int
-id|hostno
-comma
-r_int
-id|inout
 )paren
 suffix:semicolon
 macro_line|#ifndef CMD_PER_LUN
@@ -234,7 +181,7 @@ mdefine_line|#define NCR5380_region_size 0x3a00
 DECL|macro|NCR5380_read
 mdefine_line|#define NCR5380_read(reg) isa_readb(NCR5380_map_name + NCR53C400_mem_base + (reg))
 DECL|macro|NCR5380_write
-mdefine_line|#define NCR5380_write(reg, value) isa_writeb(NCR5380_map_name + NCR53C400_mem_base + (reg), value)
+mdefine_line|#define NCR5380_write(reg, value) isa_writeb(value, NCR5380_map_name + NCR53C400_mem_base + (reg))
 macro_line|#endif
 DECL|macro|NCR5380_implementation_fields
 mdefine_line|#define NCR5380_implementation_fields &bslash;&n;    NCR5380_map_type NCR5380_map_name

@@ -1440,7 +1440,7 @@ c_cond
 id|name
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|dev-&gt;name
@@ -1451,8 +1451,6 @@ r_sizeof
 (paren
 id|dev-&gt;name
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -2235,7 +2233,7 @@ comma
 id|tmp1
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|tmp1

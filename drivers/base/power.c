@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * power.c - power management functions for the device tree.&n; * &n; * Copyright (c) 2002 Patrick Mochel&n; *&t;&t; 2002 Open Source Development Lab&n; * &n; *  Kai Germaschewski contributed to the list walking routines.&n; *&n; */
+multiline_comment|/*&n; * power.c - power management functions for the device tree.&n; * &n; * Copyright (c) 2002-3 Patrick Mochel&n; *&t;&t; 2002-3 Open Source Development Lab&n; * &n; * This file is released under the GPLv2&n; * &n; *  Kai Germaschewski contributed to the list walking routines.&n; *&n; */
 DECL|macro|DEBUG
-macro_line|#undef DEBUG
+mdefine_line|#define DEBUG
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
@@ -261,6 +261,14 @@ c_func
 id|entry
 )paren
 suffix:semicolon
+id|pr_debug
+c_func
+(paren
+l_string|&quot;shutting down %s: &quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -272,9 +280,7 @@ id|dev-&gt;driver-&gt;shutdown
 id|pr_debug
 c_func
 (paren
-l_string|&quot;shutting down %s&bslash;n&quot;
-comma
-id|dev-&gt;name
+l_string|&quot;Ok&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev-&gt;driver
@@ -286,6 +292,13 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+r_else
+id|pr_debug
+c_func
+(paren
+l_string|&quot;Ignored.&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 id|up_write
 c_func

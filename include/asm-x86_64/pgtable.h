@@ -63,6 +63,20 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|clear_kernel_mapping
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+id|size
+)paren
+suffix:semicolon
+r_extern
 r_int
 r_int
 id|pgkern_mask
@@ -368,8 +382,10 @@ DECL|macro|PAGE_SHARED
 mdefine_line|#define PAGE_SHARED&t;__pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_USER | _PAGE_ACCESSED | _PAGE_NX)
 DECL|macro|PAGE_SHARED_EXEC
 mdefine_line|#define PAGE_SHARED_EXEC __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_USER | _PAGE_ACCESSED)
+DECL|macro|PAGE_COPY_NOEXEC
+mdefine_line|#define PAGE_COPY_NOEXEC __pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED | _PAGE_NX)
 DECL|macro|PAGE_COPY
-mdefine_line|#define PAGE_COPY    __pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED | _PAGE_NX)
+mdefine_line|#define PAGE_COPY PAGE_COPY_NOEXEC
 DECL|macro|PAGE_COPY_EXEC
 mdefine_line|#define PAGE_COPY_EXEC __pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED)
 DECL|macro|PAGE_READONLY
@@ -387,7 +403,7 @@ mdefine_line|#define __PAGE_KERNEL_RO &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_DIRTY
 DECL|macro|__PAGE_KERNEL_VSYSCALL
 mdefine_line|#define __PAGE_KERNEL_VSYSCALL &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED)
 DECL|macro|__PAGE_KERNEL_LARGE
-mdefine_line|#define __PAGE_KERNEL_LARGE &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED | _PAGE_PSE | _PAGE_NX)
+mdefine_line|#define __PAGE_KERNEL_LARGE &bslash;&n;&t;(__PAGE_KERNEL | _PAGE_PSE)
 DECL|macro|MAKE_GLOBAL
 mdefine_line|#define MAKE_GLOBAL(x) __pgprot((x) | _PAGE_GLOBAL)
 DECL|macro|PAGE_KERNEL
@@ -551,6 +567,27 @@ id|pte
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */
+DECL|function|pte_user
+r_static
+r_inline
+r_int
+id|pte_user
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_USER
+suffix:semicolon
+)brace
 DECL|function|pte_read
 r_extern
 r_inline

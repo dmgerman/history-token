@@ -1167,7 +1167,7 @@ id|error1
 suffix:semicolon
 )brace
 multiline_comment|/* Fill in the remaining client fields and put it into the global list */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|new_client-&gt;dev.name

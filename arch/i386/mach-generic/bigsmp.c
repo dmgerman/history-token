@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/mach-bigsmp/mach_apic.h&gt;
+macro_line|#include &lt;asm/mach-bigsmp/mach_apicdef.h&gt;
 macro_line|#include &lt;asm/mach-bigsmp/mach_ipi.h&gt;
 macro_line|#include &lt;asm/mach-default/mach_mpparse.h&gt;
 DECL|variable|dmi_bigsmp

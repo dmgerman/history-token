@@ -490,6 +490,8 @@ suffix:semicolon
 r_char
 op_star
 id|buf
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -965,12 +967,6 @@ c_func
 l_string|&quot;done.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|buf
-)paren
-suffix:semicolon
 id|successful_load
 suffix:colon
 id|res
@@ -995,6 +991,12 @@ id|out_fd
 suffix:semicolon
 id|out
 suffix:colon
+id|kfree
+c_func
+(paren
+id|buf
+)paren
+suffix:semicolon
 id|sys_unlink
 c_func
 (paren

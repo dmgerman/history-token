@@ -2,6 +2,7 @@ macro_line|#ifndef _ASMPPC64_SIGNAL_H
 DECL|macro|_ASMPPC64_SIGNAL_H
 mdefine_line|#define _ASMPPC64_SIGNAL_H
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/siginfo.h&gt;
 multiline_comment|/* Avoid too many header ordering problems.  */
 r_struct
 id|siginfo
@@ -110,27 +111,27 @@ DECL|macro|SIGRTMAX
 mdefine_line|#define SIGRTMAX&t;(_NSIG-1)
 multiline_comment|/*&n; * SA_FLAGS values:&n; *&n; * SA_ONSTACK is not currently supported, but will allow sigaltstack(2).&n; * SA_INTERRUPT is a no-op, but left due to historical reasons. Use the&n; * SA_RESTART flag to get restarting signals (which were the default long ago)&n; * SA_NOCLDSTOP flag to turn off SIGCHLD when children stop.&n; * SA_RESETHAND clears the handler when the signal is delivered.&n; * SA_NOCLDWAIT flag on SIGCHLD to inhibit zombies.&n; * SA_NODEFER prevents the current signal from being masked in the handler.&n; *&n; * SA_ONESHOT and SA_NOMASK are the historical Linux names for the Single&n; * Unix names RESETHAND and NODEFER respectively.&n; */
 DECL|macro|SA_NOCLDSTOP
-mdefine_line|#define SA_NOCLDSTOP&t;0x00000001
+mdefine_line|#define SA_NOCLDSTOP&t;0x00000001u
 DECL|macro|SA_NOCLDWAIT
-mdefine_line|#define SA_NOCLDWAIT&t;0x00000002
+mdefine_line|#define SA_NOCLDWAIT&t;0x00000002u
 DECL|macro|SA_SIGINFO
-mdefine_line|#define SA_SIGINFO&t;0x00000004
+mdefine_line|#define SA_SIGINFO&t;0x00000004u
 DECL|macro|SA_ONSTACK
-mdefine_line|#define SA_ONSTACK&t;0x08000000
+mdefine_line|#define SA_ONSTACK&t;0x08000000u
 DECL|macro|SA_RESTART
-mdefine_line|#define SA_RESTART&t;0x10000000
+mdefine_line|#define SA_RESTART&t;0x10000000u
 DECL|macro|SA_NODEFER
-mdefine_line|#define SA_NODEFER&t;0x40000000
+mdefine_line|#define SA_NODEFER&t;0x40000000u
 DECL|macro|SA_RESETHAND
-mdefine_line|#define SA_RESETHAND&t;0x80000000
+mdefine_line|#define SA_RESETHAND&t;0x80000000u
 DECL|macro|SA_NOMASK
 mdefine_line|#define SA_NOMASK&t;SA_NODEFER
 DECL|macro|SA_ONESHOT
 mdefine_line|#define SA_ONESHOT&t;SA_RESETHAND
 DECL|macro|SA_INTERRUPT
-mdefine_line|#define SA_INTERRUPT&t;0x20000000 /* dummy -- ignored */
+mdefine_line|#define SA_INTERRUPT&t;0x20000000u /* dummy -- ignored */
 DECL|macro|SA_RESTORER
-mdefine_line|#define SA_RESTORER&t;0x04000000
+mdefine_line|#define SA_RESTORER&t;0x04000000u
 multiline_comment|/* &n; * sigaltstack controls&n; */
 DECL|macro|SS_ONSTACK
 mdefine_line|#define SS_ONSTACK&t;1
@@ -265,7 +266,133 @@ DECL|typedef|stack_t
 )brace
 id|stack_t
 suffix:semicolon
+r_struct
+id|pt_regs
+suffix:semicolon
+r_struct
+id|timespec
+suffix:semicolon
+r_extern
+r_int
+id|do_signal
+c_func
+(paren
+id|sigset_t
+op_star
+id|oldset
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|do_signal32
+c_func
+(paren
+id|sigset_t
+op_star
+id|oldset
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sys_rt_sigprocmask
+c_func
+(paren
+r_int
+id|how
+comma
+id|sigset_t
+op_star
+id|set
+comma
+id|sigset_t
+op_star
+id|oset
+comma
+r_int
+id|sigsetsize
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sys_rt_sigpending
+c_func
+(paren
+id|sigset_t
+op_star
+id|set
+comma
+r_int
+id|sigsetsize
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sys_rt_sigtimedwait
+c_func
+(paren
+r_const
+id|sigset_t
+op_star
+id|uthese
+comma
+id|siginfo_t
+op_star
+id|uinfo
+comma
+r_const
+r_struct
+id|timespec
+op_star
+id|uts
+comma
+r_int
+id|sigsetsize
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sys_rt_sigqueueinfo
+c_func
+(paren
+r_int
+id|pid
+comma
+r_int
+id|sig
+comma
+id|siginfo_t
+op_star
+id|uinfo
+)paren
+suffix:semicolon
 DECL|macro|ptrace_signal_deliver
 mdefine_line|#define ptrace_signal_deliver(regs, cookie) do { } while (0)
+r_struct
+id|pt_regs
+suffix:semicolon
+r_int
+id|do_signal32
+c_func
+(paren
+id|sigset_t
+op_star
+id|oldset
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
 macro_line|#endif /* _ASMPPC64_SIGNAL_H */
 eof

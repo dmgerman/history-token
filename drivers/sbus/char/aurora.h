@@ -260,14 +260,6 @@ DECL|member|close_delay
 r_int
 id|close_delay
 suffix:semicolon
-DECL|member|session
-r_int
-id|session
-suffix:semicolon
-DECL|member|pgrp
-r_int
-id|pgrp
-suffix:semicolon
 DECL|member|xmit_buf
 r_int
 r_char

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Copyright (c) International Business Machines  Corp., 2000-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n;*/
+multiline_comment|/*&n; *   Copyright (c) International Business Machines  Corp., 2000-2003&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n;*/
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
@@ -887,7 +887,7 @@ op_eq
 id|newNpages
 )paren
 r_goto
-id|updateImap
+id|finalizeBmap
 suffix:semicolon
 multiline_comment|/*&n;&t; * grow bmap file for the new map pages required:&n;&t; *&n;&t; * allocate growth at the start of newly extended region;&n;&t; * bmap file only grows sequentially, i.e., both data pages&n;&t; * and possibly xtree index pages may grow in append mode,&n;&t; * s.t. logredo() can reconstruct pre-extension state&n;&t; * by washing away bmap file of pages outside s_size boundary;&n;&t; */
 multiline_comment|/*&n;&t; * journal map file growth as if a regular file growth:&n;&t; * (note: bmap is created with di_mode = IFJOURNAL|IFREG);&n;&t; *&n;&t; * journaling of bmap file growth is not required since&n;&t; * logredo() do/can not use log records of bmap file growth&n;&t; * but it provides careful write semantics, pmap update, etc.;&n;&t; */
@@ -1079,6 +1079,8 @@ id|XSize
 r_goto
 id|extendBmap
 suffix:semicolon
+id|finalizeBmap
+suffix:colon
 multiline_comment|/* finalize bmap */
 id|dbFinalizeBmap
 c_func
@@ -1087,8 +1089,6 @@ id|ipbmap
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *      update inode allocation map&n;&t; *      ---------------------------&n;&t; *&n;&t; * move iag lists from old to new iag;&n;&t; * agstart field is not updated for logredo() to reconstruct&n;&t; * iag lists if system crash occurs.&n;&t; * (computation of ag number from agstart based on agsize&n;&t; * will correctly identify the new ag);&n;&t; */
-id|updateImap
-suffix:colon
 multiline_comment|/* if new AG size the same as old AG size, done! */
 r_if
 c_cond
@@ -1277,12 +1277,12 @@ id|cpu_to_le64
 c_func
 (paren
 id|bmp-&gt;db_mapsize
-)paren
 op_lshift
 id|le16_to_cpu
 c_func
 (paren
 id|j_sb-&gt;s_l2bfactor
+)paren
 )paren
 suffix:semicolon
 id|j_sb-&gt;s_agsize

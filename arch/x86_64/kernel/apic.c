@@ -1164,9 +1164,10 @@ id|value
 op_assign
 id|APIC_DM_EXTINT
 suffix:semicolon
-id|printk
+id|Dprintk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;enabled ExtINT on CPU#%d&bslash;n&quot;
 comma
 id|smp_processor_id
@@ -1184,9 +1185,10 @@ id|APIC_DM_EXTINT
 op_or
 id|APIC_LVT_MASKED
 suffix:semicolon
-id|printk
+id|Dprintk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;masked ExtINT on CPU#%d&bslash;n&quot;
 comma
 id|smp_processor_id

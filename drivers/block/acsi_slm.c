@@ -570,7 +570,7 @@ id|device
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|slm_interrupt
 c_func
 (paren
@@ -1810,7 +1810,7 @@ suffix:semicolon
 multiline_comment|/* Only called when an error happened or at the end of a page */
 DECL|function|slm_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|slm_interrupt
 c_func
 (paren
@@ -1916,6 +1916,9 @@ id|ENABLE_IRQ
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|slm_test_ready

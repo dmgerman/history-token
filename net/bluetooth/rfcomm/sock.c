@@ -754,13 +754,12 @@ comma
 id|sk
 )paren
 suffix:semicolon
-id|__set_bit
+id|sock_set_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DEAD
 )paren
 suffix:semicolon
 id|sock_put

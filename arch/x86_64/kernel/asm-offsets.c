@@ -7,6 +7,7 @@ macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/thread_info.h&gt;
+macro_line|#include &lt;asm/ia32.h&gt;
 DECL|macro|DEFINE
 mdefine_line|#define DEFINE(sym, val) &bslash;&n;        asm volatile(&quot;&bslash;n-&gt;&quot; #sym &quot; %0 &quot; #val : : &quot;i&quot; (val))
 DECL|macro|BLANK
@@ -130,6 +131,88 @@ c_func
 suffix:semicolon
 DECL|macro|ENTRY
 macro_line|#undef ENTRY
+DECL|macro|ENTRY
+mdefine_line|#define ENTRY(entry) DEFINE(IA32_SIGCONTEXT_ ## entry, offsetof(struct sigcontext_ia32, entry))
+id|ENTRY
+c_func
+(paren
+id|eax
+)paren
+suffix:semicolon
+id|ENTRY
+c_func
+(paren
+id|ebx
+)paren
+suffix:semicolon
+id|ENTRY
+c_func
+(paren
+id|ecx
+)paren
+suffix:semicolon
+id|ENTRY
+c_func
+(paren
+id|edx
+)paren
+suffix:semicolon
+id|ENTRY
+c_func
+(paren
+id|esi
+)paren
+suffix:semicolon
+id|ENTRY
+c_func
+(paren
+id|edi
+)paren
+suffix:semicolon
+id|ENTRY
+c_func
+(paren
+id|ebp
+)paren
+suffix:semicolon
+id|ENTRY
+c_func
+(paren
+id|esp
+)paren
+suffix:semicolon
+id|ENTRY
+c_func
+(paren
+id|eip
+)paren
+suffix:semicolon
+id|BLANK
+c_func
+(paren
+)paren
+suffix:semicolon
+DECL|macro|ENTRY
+macro_line|#undef ENTRY
+id|DEFINE
+c_func
+(paren
+id|IA32_RT_SIGFRAME_sigcontext
+comma
+m_offsetof
+(paren
+r_struct
+id|rt_sigframe32
+comma
+id|uc.uc_mcontext
+)paren
+)paren
+suffix:semicolon
+id|BLANK
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -7,6 +7,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
 macro_line|#include &lt;asm/thread_info.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
 r_void
 id|fpu_init
@@ -188,6 +189,21 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
+)paren
+id|init_fpu
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -241,6 +257,27 @@ comma
 l_string|&quot;0&quot;
 (paren
 l_int|0
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
+)paren
+id|__clear_user
+c_func
+(paren
+id|fx
+comma
+r_sizeof
+(paren
+r_struct
+id|i387_fxsave_struct
 )paren
 )paren
 suffix:semicolon

@@ -1,5 +1,5 @@
 multiline_comment|/****************************************************************************/
-multiline_comment|/*&n; *&t;mcfuart.h -- ColdFire internal UART support defines.&n; *&n; *&t;(C) Copyright 1999-2002, Greg Ungerer (gerg@snapgear.com)&n; * &t;(C) Copyright 2000, Lineo Inc. (www.lineo.com) &n; */
+multiline_comment|/*&n; *&t;mcfuart.h -- ColdFire internal UART support defines.&n; *&n; *&t;(C) Copyright 1999-2003, Greg Ungerer (gerg@snapgear.com)&n; * &t;(C) Copyright 2000, Lineo Inc. (www.lineo.com) &n; */
 multiline_comment|/****************************************************************************/
 macro_line|#ifndef&t;mcfuart_h
 DECL|macro|mcfuart_h
@@ -24,17 +24,24 @@ mdefine_line|#define&t;MCFUART_BASE1&t;&t;0x140&t;&t;/* Base address of UART1 */
 DECL|macro|MCFUART_BASE2
 mdefine_line|#define&t;MCFUART_BASE2&t;&t;0x180&t;&t;/* Base address of UART2 */
 macro_line|#endif
+macro_line|#elif defined(CONFIG_M5282)
+DECL|macro|MCFUART_BASE1
+mdefine_line|#define MCFUART_BASE1&t;&t;0x200           /* Base address of UART1 */
+DECL|macro|MCFUART_BASE2
+mdefine_line|#define MCFUART_BASE2&t;&t;0x240           /* Base address of UART2 */
+DECL|macro|MCFUART_BASE3
+mdefine_line|#define MCFUART_BASE3&t;&t;0x280           /* Base address of UART3 */
 macro_line|#elif defined(CONFIG_M5249) || defined(CONFIG_M5307) || defined(CONFIG_M5407)
 macro_line|#if defined(CONFIG_NETtel) || defined(CONFIG_DISKtel) || defined(CONFIG_SECUREEDGEMP3)
 DECL|macro|MCFUART_BASE1
 mdefine_line|#define MCFUART_BASE1&t;&t;0x200           /* Base address of UART1 */
 DECL|macro|MCFUART_BASE2
-mdefine_line|#define MCFUART_BASE2&t;&t;0x1c0           /* Base address of UART2 */    
+mdefine_line|#define MCFUART_BASE2&t;&t;0x1c0           /* Base address of UART2 */
 macro_line|#else
 DECL|macro|MCFUART_BASE1
 mdefine_line|#define MCFUART_BASE1&t;&t;0x1c0           /* Base address of UART1 */
 DECL|macro|MCFUART_BASE2
-mdefine_line|#define MCFUART_BASE2&t;&t;0x200           /* Base address of UART2 */    
+mdefine_line|#define MCFUART_BASE2&t;&t;0x200           /* Base address of UART2 */
 macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; *&t;Define the ColdFire UART register set addresses.&n; */
@@ -62,8 +69,17 @@ DECL|macro|MCFUART_UBG1
 mdefine_line|#define&t;MCFUART_UBG1&t;&t;0x18&t;&t;/* Baud Rate MSB (r/w) */
 DECL|macro|MCFUART_UBG2
 mdefine_line|#define&t;MCFUART_UBG2&t;&t;0x1c&t;&t;/* Baud Rate LSB (r/w) */
+macro_line|#ifdef&t;CONFIG_M5272
+DECL|macro|MCFUART_UTF
+mdefine_line|#define&t;MCFUART_UTF&t;&t;0x28&t;&t;/* Transmitter FIFO (r/w) */
+DECL|macro|MCFUART_URF
+mdefine_line|#define&t;MCFUART_URF&t;&t;0x2c&t;&t;/* Receiver FIFO (r/w) */
+DECL|macro|MCFUART_UFPD
+mdefine_line|#define&t;MCFUART_UFPD&t;&t;0x30&t;&t;/* Frac Prec. Divider (r/w) */
+macro_line|#else
 DECL|macro|MCFUART_UIVR
 mdefine_line|#define&t;MCFUART_UIVR&t;&t;0x30&t;&t;/* Interrupt Vector (r/w) */
+macro_line|#endif
 DECL|macro|MCFUART_UIPR
 mdefine_line|#define&t;MCFUART_UIPR&t;&t;0x34&t;&t;/* Input Port (r) */
 DECL|macro|MCFUART_UOP1
@@ -200,6 +216,22 @@ DECL|macro|MCFUART_UIR_RXREADY
 mdefine_line|#define&t;MCFUART_UIR_RXREADY&t;0x02&t;&t;/* Receiver ready */
 DECL|macro|MCFUART_UIR_TXREADY
 mdefine_line|#define&t;MCFUART_UIR_TXREADY&t;0x01&t;&t;/* Transmitter ready */
+macro_line|#ifdef&t;CONFIG_M5272
+multiline_comment|/*&n; *&t;Define bit flags in the Transmitter FIFO Register (UTF).&n; */
+DECL|macro|MCFUART_UTF_TXB
+mdefine_line|#define&t;MCFUART_UTF_TXB&t;&t;0x1f&t;&t;/* Transmitter data level */
+DECL|macro|MCFUART_UTF_FULL
+mdefine_line|#define&t;MCFUART_UTF_FULL&t;0x20&t;&t;/* Transmitter fifo full */
+DECL|macro|MCFUART_UTF_TXS
+mdefine_line|#define&t;MCFUART_UTF_TXS&t;&t;0xc0&t;&t;/* Transmitter status */
+multiline_comment|/*&n; *&t;Define bit flags in the Receiver FIFO Register (URF).&n; */
+DECL|macro|MCFUART_URF_RXB
+mdefine_line|#define&t;MCFUART_URF_RXB&t;&t;0x1f&t;&t;/* Receiver data level */
+DECL|macro|MCFUART_URF_FULL
+mdefine_line|#define&t;MCFUART_URF_FULL&t;0x20&t;&t;/* Receiver fifo full */
+DECL|macro|MCFUART_URF_RXS
+mdefine_line|#define&t;MCFUART_URF_RXS&t;&t;0xc0&t;&t;/* Receiver status */
+macro_line|#endif
 multiline_comment|/****************************************************************************/
 macro_line|#endif&t;/* mcfuart_h */
 eof

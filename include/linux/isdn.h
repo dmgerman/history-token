@@ -470,10 +470,6 @@ DECL|macro|ISDN_SERIAL_XMIT_SIZE
 mdefine_line|#define ISDN_SERIAL_XMIT_SIZE           1024 /* Default bufsize for write    */
 DECL|macro|ISDN_SERIAL_XMIT_MAX
 mdefine_line|#define ISDN_SERIAL_XMIT_MAX            4000 /* Maximum bufsize for write    */
-DECL|macro|ISDN_SERIAL_TYPE_NORMAL
-mdefine_line|#define ISDN_SERIAL_TYPE_NORMAL            1
-DECL|macro|ISDN_SERIAL_TYPE_CALLOUT
-mdefine_line|#define ISDN_SERIAL_TYPE_CALLOUT           2
 macro_line|#ifdef CONFIG_ISDN_AUDIO
 multiline_comment|/* For using sk_buffs with audio we need some private variables&n; * within each sk_buff. For this purpose, we declare a struct here,&n; * and put it always at skb-&gt;head. A few macros help accessing the&n; * variables. Of course, we need to check skb_headroom prior to&n; * any access.&n; */
 DECL|struct|isdn_audio_skb
@@ -668,16 +664,6 @@ r_int
 id|blocked_open
 suffix:semicolon
 multiline_comment|/* # of blocked opens             */
-DECL|member|session
-r_int
-id|session
-suffix:semicolon
-multiline_comment|/* Session of opening process     */
-DECL|member|pgrp
-r_int
-id|pgrp
-suffix:semicolon
-multiline_comment|/* pgrp of opening process        */
 DECL|member|online
 r_int
 id|online
@@ -900,11 +886,6 @@ id|termios
 id|normal_termios
 suffix:semicolon
 multiline_comment|/* For saving termios structs     */
-DECL|member|callout_termios
-r_struct
-id|termios
-id|callout_termios
-suffix:semicolon
 DECL|member|open_wait
 DECL|member|close_wait
 id|wait_queue_head_t

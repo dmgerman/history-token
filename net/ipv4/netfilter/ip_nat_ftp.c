@@ -1649,6 +1649,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|ftp
+id|NEEDS_CONNTRACK
+c_func
+(paren
+id|ftp
+)paren
+suffix:semicolon
 DECL|variable|init
 id|module_init
 c_func

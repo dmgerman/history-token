@@ -512,7 +512,7 @@ id|cpu_buf
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* resets the cpu buffer to a sane state - should be called with &n; * cpu_buf-&gt;int_lock held&n; */
+multiline_comment|/* Resets the cpu buffer to a sane state. */
 DECL|function|cpu_buffer_reset
 r_void
 id|cpu_buffer_reset

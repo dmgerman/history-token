@@ -47,6 +47,7 @@ macro_line|#include &lt;linux/elevator.h&gt;
 macro_line|#include &lt;linux/rtc.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/dm-ioctl.h&gt;
+macro_line|#include &lt;net/sock.h&gt;&t;&t;/* siocdevprivate_ioctl */
 macro_line|#include &lt;scsi/scsi.h&gt;
 multiline_comment|/* Ugly hack. */
 DECL|macro|__KERNEL__

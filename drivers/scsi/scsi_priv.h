@@ -37,9 +37,6 @@ DECL|macro|SCSI_EH_REC_TIMEOUT
 mdefine_line|#define SCSI_EH_REC_TIMEOUT&t;0x0002&t;/* EH retry timed out */
 DECL|macro|SCSI_SENSE_VALID
 mdefine_line|#define SCSI_SENSE_VALID(scmd) &bslash;&n;&t;(((scmd)-&gt;sense_buffer[0] &amp; 0x70) == 0x70)
-r_struct
-id|Scsi_Device_Template
-suffix:semicolon
 multiline_comment|/*&n; * scsi_target: representation of a scsi target, for now, this is only&n; * used for single_lun devices. If no one has active IO to the target,&n; * starget_sdev_user is NULL, else it points to the active sdev.&n; */
 DECL|struct|scsi_target
 r_struct
@@ -89,7 +86,16 @@ r_extern
 r_struct
 id|Scsi_Host
 op_star
-id|scsi_host_get_next
+id|scsi_host_lookup
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_host_put
 c_func
 (paren
 r_struct
@@ -170,39 +176,6 @@ r_struct
 id|scsi_cmnd
 op_star
 id|cmd
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|scsi_attach_device
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-id|sdev
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_detach_device
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-id|sdev
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_rescan_device
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-id|sdev
 )paren
 suffix:semicolon
 r_extern
@@ -468,7 +441,7 @@ macro_line|# define scsi_proc_host_rm(shost)&t;do { } while (0)
 DECL|macro|scsi_init_procfs
 macro_line|# define scsi_init_procfs()&t;&t;(0)
 DECL|macro|scsi_exit_procfs
-macro_line|# define scsi_exit_procfs&t;&t;do { } while (0)
+macro_line|# define scsi_exit_procfs()&t;&t;do { } while (0)
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/* scsi_scan.c */
 r_extern
@@ -523,6 +496,17 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|scsi_rescan_device
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* scsi_sysfs.c */
 r_extern
 r_int
@@ -541,26 +525,6 @@ c_func
 (paren
 r_struct
 id|scsi_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|scsi_upper_driver_register
-c_func
-(paren
-r_struct
-id|Scsi_Device_Template
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_upper_driver_unregister
-c_func
-(paren
-r_struct
-id|Scsi_Device_Template
 op_star
 )paren
 suffix:semicolon
@@ -613,6 +577,33 @@ c_func
 (paren
 r_void
 )paren
+suffix:semicolon
+multiline_comment|/* definitions for the linker default sections covering the host&n; * class and device attributes */
+r_extern
+r_struct
+id|class_device_attribute
+op_star
+id|scsi_sysfs_shost_attrs
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_struct
+id|device_attribute
+op_star
+id|scsi_sysfs_sdev_attrs
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_struct
+r_class
+id|shost_class
+suffix:semicolon
+r_extern
+r_struct
+id|bus_type
+id|scsi_bus_type
 suffix:semicolon
 macro_line|#endif /* _SCSI_PRIV_H */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common code to handle map devices which are simple ROM&n; * (C) 2000 Red Hat. GPL&squot;d.&n; * $Id: map_rom.c,v 1.17 2001/10/02 15:05:12 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Common code to handle map devices which are simple ROM&n; * (C) 2000 Red Hat. GPL&squot;d.&n; * $Id: map_rom.c,v 1.20 2003/05/28 12:51:49 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -7,7 +7,10 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
+macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 r_static
 r_int
 id|maprom_read
@@ -204,7 +207,11 @@ op_rshift_assign
 l_int|1
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
+id|__module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 r_return
 id|mtd
@@ -247,9 +254,7 @@ op_star
 )paren
 id|mtd-&gt;priv
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|copy_from
+id|map_copy_from
 c_func
 (paren
 id|map

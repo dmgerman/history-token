@@ -361,7 +361,7 @@ id|GAMMA_DMACOUNT
 suffix:semicolon
 )brace
 DECL|function|gamma_dma_service
-r_void
+id|irqreturn_t
 id|gamma_dma_service
 c_func
 (paren
@@ -478,6 +478,7 @@ id|dev-&gt;dma_flag
 )paren
 )paren
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 r_if
 c_cond
@@ -512,10 +513,13 @@ id|schedule_work
 c_func
 (paren
 op_amp
-id|dev-&gt;tq
+id|dev-&gt;work
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* Only called by gamma_dma_schedule. */
 DECL|function|gamma_do_dma
@@ -2748,6 +2752,8 @@ id|DRM_IOREMAP
 c_func
 (paren
 id|dev_priv-&gt;buffers
+comma
+id|dev
 )paren
 suffix:semicolon
 id|buf
@@ -2924,6 +2930,8 @@ id|DRM_IOREMAPFREE
 c_func
 (paren
 id|dev_priv-&gt;buffers
+comma
+id|dev
 )paren
 suffix:semicolon
 id|DRM

@@ -18,6 +18,8 @@ DECL|macro|__USER32_DS
 mdefine_line|#define __USER32_DS&t;__USER_DS 
 DECL|macro|__KERNEL16_CS
 mdefine_line|#define __KERNEL16_CS&t;(GDT_ENTRY_KERNELCS16 * 8)
+DECL|macro|__KERNEL_COMPAT32_CS
+mdefine_line|#define __KERNEL_COMPAT32_CS   0x8
 DECL|macro|GDT_ENTRY_TLS
 mdefine_line|#define GDT_ENTRY_TLS 1
 DECL|macro|GDT_ENTRY_TSS

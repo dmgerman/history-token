@@ -226,7 +226,7 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|pmu_interrupt
 c_func
 (paren
@@ -4068,7 +4068,7 @@ id|flags
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|pmu_interrupt
 id|pmu_interrupt
 c_func
@@ -4613,6 +4613,9 @@ id|adb_int_pending
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_static
 r_void

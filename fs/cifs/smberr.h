@@ -63,8 +63,8 @@ DECL|macro|ERRinvparm
 mdefine_line|#define ERRinvparm   87
 DECL|macro|ERRdiskfull
 mdefine_line|#define ERRdiskfull  112
-DECL|macro|ERRinvnum
-mdefine_line|#define ERRinvnum    123
+DECL|macro|ERRinvname
+mdefine_line|#define ERRinvname   123
 DECL|macro|ERRdirnotempty
 mdefine_line|#define ERRdirnotempty 145
 DECL|macro|ERRnotlocked
@@ -154,6 +154,8 @@ DECL|macro|ERRbadLogonTime
 mdefine_line|#define ERRbadLogonTime   2241
 DECL|macro|ERRpasswordExpired
 mdefine_line|#define ERRpasswordExpired 2242
+DECL|macro|ERRnetlogonNotStarted
+mdefine_line|#define ERRnetlogonNotStarted 2455
 DECL|macro|ERRnosupport
 mdefine_line|#define ERRnosupport       0xFFFF
 eof

@@ -469,7 +469,7 @@ suffix:semicolon
 multiline_comment|/* as this ports irq handling is already done, we use a generic funktion */
 DECL|function|amiga_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|amiga_interrupt
 c_func
 (paren
@@ -500,6 +500,9 @@ id|dev_id
 comma
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|amiga_enable_irq

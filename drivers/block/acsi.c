@@ -939,7 +939,7 @@ id|aip
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|acsi_interrupt
 (paren
 r_int
@@ -2624,7 +2624,7 @@ suffix:semicolon
 multiline_comment|/*******************************************************************&n; *&n; * ACSI interrupt routine&n; *   Test, if this is a ACSI interrupt and call the irq handler&n; *   Otherwise ignore this interrupt.&n; *&n; *******************************************************************/
 DECL|function|acsi_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|acsi_interrupt
 c_func
 (paren
@@ -2675,6 +2675,9 @@ id|acsi_irq_handler
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************&n; *&n; * The Interrupt handlers&n; *&n; *******************************************************************/
@@ -6818,16 +6821,10 @@ id|type
 op_ne
 id|HARDDISK
 )paren
-(brace
-id|disk-&gt;minor_shift
-op_assign
-l_int|0
-suffix:semicolon
 id|disk-&gt;minors
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 id|disk-&gt;fops
 op_assign
 op_amp

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/mm/nommu.c&n; *&n; *  Replacement code for mm functions to support CPU&squot;s that don&squot;t&n; *  have any form of memory management unit (thus no virtual memory).&n; *&n; *  Copyright (c) 2000-2002 David McCullough &lt;davidm@snapgear.com&gt;&n; *  Copyright (c) 2000-2001 D Jeff Dionne &lt;jeff@uClinux.org&gt;&n; *  Copyright (c) 2002      Greg Ungerer &lt;gerg@snapgear.com&gt;&n; */
+multiline_comment|/*&n; *  linux/mm/nommu.c&n; *&n; *  Replacement code for mm functions to support CPU&squot;s that don&squot;t&n; *  have any form of memory management unit (thus no virtual memory).&n; *&n; *  Copyright (c) 2000-2003 David McCullough &lt;davidm@snapgear.com&gt;&n; *  Copyright (c) 2000-2001 D Jeff Dionne &lt;jeff@uClinux.org&gt;&n; *  Copyright (c) 2002      Greg Ungerer &lt;gerg@snapgear.com&gt;&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
@@ -53,6 +53,20 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+DECL|variable|sysctl_overcommit_memory
+r_int
+id|sysctl_overcommit_memory
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* default is heuristic overcommit */
+DECL|variable|sysctl_overcommit_ratio
+r_int
+id|sysctl_overcommit_ratio
+op_assign
+l_int|50
+suffix:semicolon
+multiline_comment|/* default is 50% */
 multiline_comment|/*&n; * Handle all mappings that got truncated by a &quot;truncate()&quot;&n; * system call.&n; *&n; * NOTE! We have to be ready to update the memory sharing&n; * between the file and the memory map for a potential last&n; * incomplete page.  Ugly, but necessary.&n; */
 DECL|function|vmtruncate
 r_int
@@ -319,6 +333,11 @@ id|vmas
 r_int
 id|i
 suffix:semicolon
+r_static
+r_struct
+id|vm_area_struct
+id|dummy_vma
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -369,6 +388,19 @@ id|i
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|vmas
+)paren
+id|vmas
+(braket
+id|i
+)braket
+op_assign
+op_amp
+id|dummy_vma
+suffix:semicolon
 id|start
 op_add_assign
 id|PAGE_SIZE
@@ -610,6 +642,13 @@ comma
 r_int
 r_int
 id|count
+comma
+r_int
+r_int
+id|flags
+comma
+id|pgprot_t
+id|prot
 )paren
 (brace
 id|BUG

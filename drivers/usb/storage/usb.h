@@ -56,7 +56,7 @@ id|flags
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Flag definitions */
+multiline_comment|/* Flag definitions: these entries are static */
 DECL|macro|US_FL_SINGLE_LUN
 mdefine_line|#define US_FL_SINGLE_LUN      0x00000001 /* allow access to only LUN 0&t;    */
 DECL|macro|US_FL_MODE_XLATE
@@ -71,10 +71,17 @@ DECL|macro|US_FL_FIX_INQUIRY
 mdefine_line|#define US_FL_FIX_INQUIRY     0x00000040 /* INQUIRY response needs fixing   */
 DECL|macro|US_FL_FIX_CAPACITY
 mdefine_line|#define US_FL_FIX_CAPACITY    0x00000080 /* READ CAPACITY response too big  */
-DECL|macro|US_FLIDX_CAN_CANCEL
-mdefine_line|#define US_FLIDX_CAN_CANCEL  18  /* 0x00040000  okay to cancel current_urb? */
-DECL|macro|US_FLIDX_CANCEL_SG
-mdefine_line|#define US_FLIDX_CANCEL_SG   19  /* 0x00080000&t;okay to cancel current_sg?  */
+multiline_comment|/* Dynamic flag definitions: used in set_bit() etc. */
+DECL|macro|US_FLIDX_URB_ACTIVE
+mdefine_line|#define US_FLIDX_URB_ACTIVE&t;18  /* 0x00040000  current_urb is in use  */
+DECL|macro|US_FLIDX_SG_ACTIVE
+mdefine_line|#define US_FLIDX_SG_ACTIVE&t;19  /* 0x00080000  current_sg is in use   */
+DECL|macro|US_FLIDX_ABORTING
+mdefine_line|#define US_FLIDX_ABORTING&t;20  /* 0x00100000  abort is in progress   */
+DECL|macro|US_FLIDX_DISCONNECTING
+mdefine_line|#define US_FLIDX_DISCONNECTING&t;21  /* 0x00200000  disconnect in progress */
+DECL|macro|DONT_SUBMIT
+mdefine_line|#define DONT_SUBMIT&t;((1UL &lt;&lt; US_FLIDX_ABORTING) | &bslash;&n;&t;&t;&t; (1UL &lt;&lt; US_FLIDX_DISCONNECTING))
 multiline_comment|/* processing state machine states */
 DECL|macro|US_STATE_IDLE
 mdefine_line|#define US_STATE_IDLE&t;&t;1

@@ -292,6 +292,7 @@ op_star
 id|file
 comma
 r_int
+r_int
 id|orig_start
 )paren
 (brace
@@ -300,10 +301,11 @@ r_int
 id|newfd
 suffix:semicolon
 r_int
-id|error
-suffix:semicolon
 r_int
 id|start
+suffix:semicolon
+r_int
+id|error
 suffix:semicolon
 id|error
 op_assign
@@ -451,6 +453,7 @@ id|file
 op_star
 id|file
 comma
+r_int
 r_int
 id|start
 )paren
@@ -1190,14 +1193,6 @@ id|cmd
 r_case
 id|F_DUPFD
 suffix:colon
-r_if
-c_cond
-(paren
-id|arg
-OL
-id|NR_OPEN
-)paren
-(brace
 id|get_file
 c_func
 (paren
@@ -1214,7 +1209,6 @@ comma
 id|arg
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case

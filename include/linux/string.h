@@ -104,6 +104,22 @@ id|__kernel_size_t
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifndef __HAVE_ARCH_STRLCPY
+r_int
+id|strlcpy
+c_func
+(paren
+r_char
+op_star
+comma
+r_const
+r_char
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRCAT
 r_extern
 r_char
@@ -125,6 +141,23 @@ r_extern
 r_char
 op_star
 id|strncat
+c_func
+(paren
+r_char
+op_star
+comma
+r_const
+r_char
+op_star
+comma
+id|__kernel_size_t
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifndef __HAVE_ARCH_STRLCAT
+r_extern
+r_int
+id|strlcat
 c_func
 (paren
 r_char

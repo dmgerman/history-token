@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/q40ints.h&gt;
 macro_line|#include &lt;asm/q40_master.h&gt;
@@ -2087,7 +2088,7 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp

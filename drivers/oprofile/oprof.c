@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/oprofile.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;oprof.h&quot;
 macro_line|#include &quot;event_buffer.h&quot;
@@ -32,6 +33,14 @@ c_func
 (paren
 id|start_sem
 )paren
+suffix:semicolon
+multiline_comment|/* timer&n;   0 - use performance monitoring hardware if available&n;   1 - use the timer int mechanism regardless&n; */
+DECL|variable|timer
+r_static
+r_int
+id|timer
+op_assign
+l_int|0
 suffix:semicolon
 DECL|function|oprofile_setup
 r_int
@@ -383,8 +392,18 @@ r_void
 (brace
 r_int
 id|err
+op_assign
+op_minus
+id|ENODEV
 suffix:semicolon
-multiline_comment|/* Architecture must fill in the interrupt ops and the&n;&t; * logical CPU type, or we can fall back to the timer&n;&t; * interrupt profiler.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|timer
+)paren
+(brace
+multiline_comment|/* Architecture must fill in the interrupt ops and the&n;&t;&t; * logical CPU type, or we can fall back to the timer&n;&t;&t; * interrupt profiler.&n;&t;&t; */
 id|err
 op_assign
 id|oprofile_arch_init
@@ -394,6 +413,7 @@ op_amp
 id|oprofile_ops
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -500,6 +520,26 @@ id|module_exit
 c_func
 (paren
 id|oprofile_exit
+)paren
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|timer
+comma
+id|timer
+comma
+r_int
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|timer
+comma
+l_string|&quot;force use of timer interrupt&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

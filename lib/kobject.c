@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * kobject.c - library routines for handling generic kernel objects&n; *&n; * Copyright (c) 2002-2003 Patrick Mochel &lt;mochel@osdl.org&gt;&n; *&n; */
+multiline_comment|/*&n; * kobject.c - library routines for handling generic kernel objects&n; *&n; * Copyright (c) 2002-2003 Patrick Mochel &lt;mochel@osdl.org&gt;&n; *&n; * This file is released under the GPLv2.&n; *&n; *&n; * Please see the file Documentation/kobject.txt for critical information&n; * about using the kobject interface.&n; */
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#include &lt;linux/kobject.h&gt;

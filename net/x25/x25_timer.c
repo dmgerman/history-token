@@ -452,17 +452,16 @@ id|state
 r_case
 id|X25_STATE_0
 suffix:colon
-multiline_comment|/* Magic here: If we listen() and a new link dies before it&n;&t;&t;&t;   is accepted() it isn&squot;t &squot;dead&squot; so doesn&squot;t get removed. */
+multiline_comment|/*&n;&t;&t;&t; * Magic here: If we listen() and a new link dies&n;&t;&t;&t; * before it is accepted() it isn&squot;t &squot;dead&squot; so doesn&squot;t&n;&t;&t;&t; * get removed.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
-id|test_bit
+id|sock_flag
 c_func
 (paren
-id|SOCK_DESTROY
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DESTROY
 )paren
 op_logical_or
 (paren
@@ -470,13 +469,12 @@ id|sk-&gt;state
 op_eq
 id|TCP_LISTEN
 op_logical_and
-id|test_bit
+id|sock_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DEAD
 )paren
 )paren
 )paren

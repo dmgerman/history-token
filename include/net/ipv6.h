@@ -1494,6 +1494,23 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * reassembly.c&n; */
+r_extern
+r_int
+id|sysctl_ip6frag_high_thresh
+suffix:semicolon
+r_extern
+r_int
+id|sysctl_ip6frag_low_thresh
+suffix:semicolon
+r_extern
+r_int
+id|sysctl_ip6frag_time
+suffix:semicolon
+r_extern
+r_int
+id|sysctl_ip6frag_secret_interval
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _NET_IPV6_H */
 eof

@@ -289,11 +289,6 @@ DECL|member|minors
 r_int
 id|minors
 suffix:semicolon
-DECL|member|minor_shift
-r_int
-id|minor_shift
-suffix:semicolon
-multiline_comment|/* number of times minor is shifted to&n;&t;&t;&t;&t;&t;   get real minor */
 DECL|member|disk_name
 r_char
 id|disk_name
@@ -1398,7 +1393,7 @@ id|minors
 suffix:semicolon
 r_extern
 r_struct
-id|gendisk
+id|kobject
 op_star
 id|get_disk
 c_func
@@ -1438,7 +1433,7 @@ op_star
 id|module
 comma
 r_struct
-id|gendisk
+id|kobject
 op_star
 (paren
 op_star

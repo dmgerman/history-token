@@ -6614,13 +6614,11 @@ id|file_operations
 id|snd_rawmidi_f_ops
 op_assign
 (brace
-macro_line|#ifndef LINUX_2_2
 dot
 id|owner
 op_assign
 id|THIS_MODULE
 comma
-macro_line|#endif
 dot
 id|read
 op_assign
@@ -6923,7 +6921,7 @@ id|id
 op_ne
 l_int|NULL
 )paren
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|rmidi-&gt;id
@@ -6934,8 +6932,6 @@ r_sizeof
 (paren
 id|rmidi-&gt;id
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_if

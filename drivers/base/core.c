@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/base/core.c - core driver model code (device registration, etc)&n; * &n; * Copyright (c) 2002 Patrick Mochel&n; *&t;&t; 2002 Open Source Development Lab&n; */
+multiline_comment|/*&n; * drivers/base/core.c - core driver model code (device registration, etc)&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; * &n; * This file is released under the GPLv2&n; *&n; */
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#include &lt;linux/device.h&gt;
@@ -720,7 +720,7 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* first, register with generic layer. */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|dev-&gt;kobj.name

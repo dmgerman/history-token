@@ -2384,7 +2384,7 @@ op_assign
 id|ETHTOOL_GDRVINFO
 )brace
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.driver
@@ -2395,8 +2395,6 @@ r_sizeof
 (paren
 id|info.driver
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_if

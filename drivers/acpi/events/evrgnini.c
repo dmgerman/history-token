@@ -213,7 +213,7 @@ op_assign
 id|AE_OK
 suffix:semicolon
 id|acpi_integer
-id|temp
+id|pci_value
 suffix:semicolon
 r_struct
 id|acpi_pci_id
@@ -231,7 +231,12 @@ suffix:semicolon
 r_struct
 id|acpi_namespace_node
 op_star
-id|node
+id|parent_node
+suffix:semicolon
+r_struct
+id|acpi_namespace_node
+op_star
+id|pci_root_node
 suffix:semicolon
 r_union
 id|acpi_operand_object
@@ -256,7 +261,7 @@ l_string|&quot;ev_pci_config_region_setup&quot;
 suffix:semicolon
 id|handler_obj
 op_assign
-id|region_obj-&gt;region.addr_handler
+id|region_obj-&gt;region.address_space
 suffix:semicolon
 r_if
 c_cond
@@ -283,6 +288,11 @@ id|AE_NOT_EXIST
 )paren
 suffix:semicolon
 )brace
+op_star
+id|region_context
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -302,11 +312,6 @@ id|ACPI_MEM_FREE
 id|pci_id
 )paren
 suffix:semicolon
-op_star
-id|region_context
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 id|return_ACPI_STATUS
 (paren
@@ -314,7 +319,172 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Create a new context */
+id|parent_node
+op_assign
+id|acpi_ns_get_parent_node
+(paren
+id|region_obj-&gt;region.node
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Get the _SEG and _BBN values from the device upon which the handler&n;&t; * is installed.&n;&t; *&n;&t; * We need to get the _SEG and _BBN objects relative to the PCI BUS device.&n;&t; * This is the device the handler has been registered to handle.&n;&t; */
+multiline_comment|/*&n;&t; * If the address_space.Node is still pointing to the root, we need&n;&t; * to scan upward for a PCI Root bridge and re-associate the op_region&n;&t; * handlers with that device.&n;&t; */
+r_if
+c_cond
+(paren
+id|handler_obj-&gt;address_space.node
+op_eq
+id|acpi_gbl_root_node
+)paren
+(brace
+multiline_comment|/* Start search from the parent object */
+id|pci_root_node
+op_assign
+id|parent_node
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|pci_root_node
+op_ne
+id|acpi_gbl_root_node
+)paren
+(brace
+id|status
+op_assign
+id|acpi_ut_execute_HID
+(paren
+id|pci_root_node
+comma
+op_amp
+id|object_hID
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_SUCCESS
+(paren
+id|status
+)paren
+)paren
+(brace
+multiline_comment|/* Got a valid _HID, check if this is a PCI root */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|ACPI_STRNCMP
+(paren
+id|object_hID.value
+comma
+id|PCI_ROOT_HID_STRING
+comma
+r_sizeof
+(paren
+id|PCI_ROOT_HID_STRING
+)paren
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/* Install a handler for this PCI root bridge */
+id|status
+op_assign
+id|acpi_install_address_space_handler
+(paren
+(paren
+id|acpi_handle
+)paren
+id|pci_root_node
+comma
+id|ACPI_ADR_SPACE_PCI_CONFIG
+comma
+id|ACPI_DEFAULT_HANDLER
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|status
+op_eq
+id|AE_SAME_HANDLER
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t;&t;&t;&t; * It is OK if the handler is already installed on the root&n;&t;&t;&t;&t;&t;&t;&t; * bridge.  Still need to return a context object for the&n;&t;&t;&t;&t;&t;&t;&t; * new PCI_Config operation region, however.&n;&t;&t;&t;&t;&t;&t;&t; */
+id|status
+op_assign
+id|AE_OK
+suffix:semicolon
+)brace
+r_else
+(brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Could not install pci_config handler for Root Bridge %4.4s, %s&bslash;n&quot;
+comma
+id|pci_root_node-&gt;name.ascii
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+r_break
+suffix:semicolon
+)brace
+)brace
+id|pci_root_node
+op_assign
+id|acpi_ns_get_parent_node
+(paren
+id|pci_root_node
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* PCI root bridge not found, use namespace root node */
+)brace
+r_else
+(brace
+id|pci_root_node
+op_assign
+id|handler_obj-&gt;address_space.node
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * If this region is now initialized, we are done.&n;&t; * (install_address_space_handler could have initialized it)&n;&t; */
+r_if
+c_cond
+(paren
+id|region_obj-&gt;region.flags
+op_amp
+id|AOPOBJ_SETUP_COMPLETE
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Region is still not initialized. Create a new context */
 id|pci_id
 op_assign
 id|ACPI_MEM_CALLOCATE
@@ -339,26 +509,18 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * For PCI Config space access, we have to pass the segment, bus,&n;&t; * device and function numbers.  This routine must acquire those.&n;&t; */
-multiline_comment|/*&n;&t; * First get device and function numbers from the _ADR object&n;&t; * in the parent&squot;s scope.&n;&t; */
-id|node
-op_assign
-id|acpi_ns_get_parent_node
-(paren
-id|region_obj-&gt;region.node
-)paren
-suffix:semicolon
-multiline_comment|/* Evaluate the _ADR object */
+multiline_comment|/*&n;&t; * For PCI_Config space access, we need the segment, bus,&n;&t; * device and function numbers.  Acquire them here.&n;&t; */
+multiline_comment|/*&n;&t; * Get the PCI device and function numbers from the _ADR object&n;&t; * contained in the parent&squot;s scope.&n;&t; */
 id|status
 op_assign
 id|acpi_ut_evaluate_numeric_object
 (paren
 id|METHOD_NAME__ADR
 comma
-id|node
+id|parent_node
 comma
 op_amp
-id|temp
+id|pci_value
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The default is zero, and since the allocation above zeroed&n;&t; * the data, just do nothing on failure.&n;&t; */
@@ -377,7 +539,7 @@ id|ACPI_HIWORD
 (paren
 id|ACPI_LODWORD
 (paren
-id|temp
+id|pci_value
 )paren
 )paren
 suffix:semicolon
@@ -387,143 +549,22 @@ id|ACPI_LOWORD
 (paren
 id|ACPI_LODWORD
 (paren
-id|temp
+id|pci_value
 )paren
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Get the _SEG and _BBN values from the device upon which the handler&n;&t; * is installed.&n;&t; *&n;&t; * We need to get the _SEG and _BBN objects relative to the PCI BUS device.&n;&t; * This is the device the handler has been registered to handle.&n;&t; */
-multiline_comment|/*&n;&t; * If the addr_handler.Node is still pointing to the root, we need&n;&t; * to scan upward for a PCI Root bridge and re-associate the op_region&n;&t; * handlers with that device.&n;&t; */
-r_if
-c_cond
-(paren
-id|handler_obj-&gt;addr_handler.node
-op_eq
-id|acpi_gbl_root_node
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Node is currently the parent object&n;&t;&t; */
-r_while
-c_loop
-(paren
-id|node
-op_ne
-id|acpi_gbl_root_node
-)paren
-(brace
-id|status
-op_assign
-id|acpi_ut_execute_HID
-(paren
-id|node
-comma
-op_amp
-id|object_hID
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_SUCCESS
-(paren
-id|status
-)paren
-)paren
-(brace
-multiline_comment|/* Got a valid _HID, check if this is a PCI root */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|ACPI_STRNCMP
-(paren
-id|object_hID.buffer
-comma
-id|PCI_ROOT_HID_STRING
-comma
-r_sizeof
-(paren
-id|PCI_ROOT_HID_STRING
-)paren
-)paren
-)paren
-)paren
-(brace
-multiline_comment|/* Install a handler for this PCI root bridge */
-id|status
-op_assign
-id|acpi_install_address_space_handler
-(paren
-(paren
-id|acpi_handle
-)paren
-id|node
-comma
-id|ACPI_ADR_SPACE_PCI_CONFIG
-comma
-id|ACPI_DEFAULT_HANDLER
-comma
-l_int|NULL
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|ACPI_REPORT_ERROR
-(paren
-(paren
-l_string|&quot;Could not install pci_config handler for %4.4s, %s&bslash;n&quot;
-comma
-id|node-&gt;name.ascii
-comma
-id|acpi_format_exception
-(paren
-id|status
-)paren
-)paren
-)paren
-suffix:semicolon
-)brace
-r_break
-suffix:semicolon
-)brace
-)brace
-id|node
-op_assign
-id|acpi_ns_get_parent_node
-(paren
-id|node
-)paren
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-id|node
-op_assign
-id|handler_obj-&gt;addr_handler.node
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * The PCI segment number comes from the _SEG method&n;&t; */
+multiline_comment|/* The PCI segment number comes from the _SEG method */
 id|status
 op_assign
 id|acpi_ut_evaluate_numeric_object
 (paren
 id|METHOD_NAME__SEG
 comma
-id|node
+id|pci_root_node
 comma
 op_amp
-id|temp
+id|pci_value
 )paren
 suffix:semicolon
 r_if
@@ -539,21 +580,21 @@ id|pci_id-&gt;segment
 op_assign
 id|ACPI_LOWORD
 (paren
-id|temp
+id|pci_value
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The PCI bus number comes from the _BBN method&n;&t; */
+multiline_comment|/* The PCI bus number comes from the _BBN method */
 id|status
 op_assign
 id|acpi_ut_evaluate_numeric_object
 (paren
 id|METHOD_NAME__BBN
 comma
-id|node
+id|pci_root_node
 comma
 op_amp
-id|temp
+id|pci_value
 )paren
 suffix:semicolon
 r_if
@@ -569,14 +610,14 @@ id|pci_id-&gt;bus
 op_assign
 id|ACPI_LOWORD
 (paren
-id|temp
+id|pci_value
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Complete this device&squot;s pci_id&n;&t; */
+multiline_comment|/* Complete this device&squot;s pci_id */
 id|acpi_os_derive_pci_id
 (paren
-id|node
+id|pci_root_node
 comma
 id|region_obj-&gt;region.node
 comma
@@ -833,7 +874,8 @@ id|space_id
 op_assign
 id|region_obj-&gt;region.space_id
 suffix:semicolon
-id|region_obj-&gt;region.addr_handler
+multiline_comment|/* Setup defaults */
+id|region_obj-&gt;region.address_space
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -852,7 +894,7 @@ id|region_obj-&gt;common.flags
 op_or_assign
 id|AOPOBJ_OBJECT_INITIALIZED
 suffix:semicolon
-multiline_comment|/*&n;&t; * Find any &quot;_REG&quot; method associated with this region definition&n;&t; */
+multiline_comment|/* Find any &quot;_REG&quot; method associated with this region definition */
 id|status
 op_assign
 id|acpi_ns_search_node
@@ -890,7 +932,7 @@ c_loop
 id|node
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Check to see if a handler exists&n;&t;&t; */
+multiline_comment|/* Check to see if a handler exists */
 id|handler_obj
 op_assign
 l_int|NULL
@@ -908,7 +950,7 @@ c_cond
 id|obj_desc
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Can only be a handler if the object exists&n;&t;&t;&t; */
+multiline_comment|/* Can only be a handler if the object exists */
 r_switch
 c_cond
 (paren
@@ -920,7 +962,7 @@ id|ACPI_TYPE_DEVICE
 suffix:colon
 id|handler_obj
 op_assign
-id|obj_desc-&gt;device.addr_handler
+id|obj_desc-&gt;device.address_space
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -929,7 +971,7 @@ id|ACPI_TYPE_PROCESSOR
 suffix:colon
 id|handler_obj
 op_assign
-id|obj_desc-&gt;processor.addr_handler
+id|obj_desc-&gt;processor.address_space
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -938,7 +980,7 @@ id|ACPI_TYPE_THERMAL
 suffix:colon
 id|handler_obj
 op_assign
-id|obj_desc-&gt;thermal_zone.addr_handler
+id|obj_desc-&gt;thermal_zone.address_space
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -958,7 +1000,7 @@ multiline_comment|/* Is this handler of the correct type? */
 r_if
 c_cond
 (paren
-id|handler_obj-&gt;addr_handler.space_id
+id|handler_obj-&gt;address_space.space_id
 op_eq
 id|space_id
 )paren
@@ -999,7 +1041,7 @@ suffix:semicolon
 multiline_comment|/* Try next handler in the list */
 id|handler_obj
 op_assign
-id|handler_obj-&gt;addr_handler.next
+id|handler_obj-&gt;address_space.next
 suffix:semicolon
 )brace
 )brace
@@ -1012,7 +1054,7 @@ id|node
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If we get here, there is no handler for this region&n;&t; */
+multiline_comment|/* If we get here, there is no handler for this region */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren

@@ -281,14 +281,6 @@ r_int
 r_int
 id|closing_wait
 suffix:semicolon
-DECL|member|session
-r_int
-id|session
-suffix:semicolon
-DECL|member|pgrp
-r_int
-id|pgrp
-suffix:semicolon
 DECL|member|card
 r_struct
 id|isi_board
@@ -341,11 +333,6 @@ DECL|member|normal_termios
 r_struct
 id|termios
 id|normal_termios
-suffix:semicolon
-DECL|member|callout_termios
-r_struct
-id|termios
-id|callout_termios
 suffix:semicolon
 )brace
 suffix:semicolon

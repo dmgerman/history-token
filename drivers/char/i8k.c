@@ -533,14 +533,17 @@ op_star
 id|buff
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|buff
 comma
 id|serial_number
 comma
-l_int|16
+r_sizeof
+(paren
+id|serial_number
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -2104,7 +2107,7 @@ op_star
 id|p
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|bios_version
@@ -2155,7 +2158,7 @@ op_star
 id|p
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|system_vendor
@@ -2200,7 +2203,7 @@ op_star
 id|p
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|product_name
@@ -2245,7 +2248,7 @@ op_star
 id|p
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|serial_number

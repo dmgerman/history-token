@@ -1416,6 +1416,9 @@ suffix:semicolon
 r_int
 id|hash_code
 suffix:semicolon
+id|__u32
+id|flags
+suffix:semicolon
 r_int
 id|len
 op_assign
@@ -1467,6 +1470,14 @@ c_func
 id|s_hash_function_code
 )paren
 suffix:semicolon
+id|flags
+op_assign
+id|DJF
+c_func
+(paren
+id|s_flags
+)paren
+suffix:semicolon
 id|len
 op_add_assign
 id|sprintf
@@ -1491,6 +1502,7 @@ l_string|&quot;hash: &bslash;t%s&bslash;n&quot;
 l_string|&quot;tree_height: &bslash;t%i&bslash;n&quot;
 l_string|&quot;bmap_nr: &bslash;t%i&bslash;n&quot;
 l_string|&quot;version: &bslash;t%i&bslash;n&quot;
+l_string|&quot;flags: &bslash;t%x[%s]&bslash;n&quot;
 l_string|&quot;reserved_for_journal: &bslash;t%i&bslash;n&quot;
 comma
 id|DFL
@@ -1598,6 +1610,19 @@ c_func
 (paren
 id|s_version
 )paren
+comma
+id|flags
+comma
+(paren
+id|flags
+op_amp
+id|reiserfs_attrs_cleared
+)paren
+ques
+c_cond
+l_string|&quot;attrs_cleared&quot;
+suffix:colon
+l_string|&quot;&quot;
 comma
 id|DF
 (paren

@@ -1324,6 +1324,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SMP
 r_else
 r_if
 c_cond
@@ -1341,13 +1342,23 @@ id|rq
 comma
 id|p
 )paren
-)paren
-id|resched_task
+op_logical_and
+(paren
+id|p-&gt;thread_info-&gt;cpu
+op_ne
+id|smp_processor_id
 c_func
 (paren
-id|rq-&gt;curr
+)paren
+)paren
+)paren
+id|smp_send_reschedule
+c_func
+(paren
+id|p-&gt;thread_info-&gt;cpu
 )paren
 suffix:semicolon
+macro_line|#endif
 id|p-&gt;state
 op_assign
 id|TASK_RUNNING

@@ -5461,13 +5461,12 @@ id|sk-&gt;err
 op_assign
 l_int|0
 suffix:semicolon
-id|__clear_bit
+id|sock_reset_flag
 c_func
 (paren
-id|SOCK_DONE
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DONE
 )paren
 suffix:semicolon
 id|tp-&gt;snd_wnd

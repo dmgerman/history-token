@@ -2748,8 +2748,16 @@ comma
 id|len
 )paren
 )paren
+(brace
+id|kfree
+c_func
+(paren
+id|code
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 id|err
 op_assign
 id|sk_chk_filter

@@ -2429,7 +2429,7 @@ op_assign
 op_amp
 id|tcic_data
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|tcic_class_data.class_id

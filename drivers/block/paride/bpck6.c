@@ -646,9 +646,6 @@ id|pi
 )paren
 )paren
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -663,6 +660,9 @@ l_string|&quot;leaving probe&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|1
+suffix:semicolon
 )brace
 r_else
 (brace

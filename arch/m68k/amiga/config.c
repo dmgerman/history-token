@@ -277,7 +277,7 @@ r_void
 id|amiga_sched_init
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -303,7 +303,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|amiga_default_handler
@@ -329,7 +329,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -2205,7 +2205,7 @@ id|__init
 id|amiga_sched_init
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|timer_routine

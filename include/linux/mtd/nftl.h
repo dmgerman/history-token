@@ -1,13 +1,9 @@
-multiline_comment|/* Defines for NAND Flash Translation Layer  */
-multiline_comment|/* (c) 1999 Machine Vision Holdings, Inc.    */
-multiline_comment|/* Author: David Woodhouse &lt;dwmw2@mvhi.com&gt;  */
-multiline_comment|/* $Id: nftl.h,v 1.10 2000/12/29 00:25:38 dwmw2 Exp $ */
+multiline_comment|/*&n; * $Id: nftl.h,v 1.13 2003/05/23 11:25:02 dwmw2 Exp $&n; *&n; * (C) 1999-2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; */
 macro_line|#ifndef __MTD_NFTL_H__
 DECL|macro|__MTD_NFTL_H__
 mdefine_line|#define __MTD_NFTL_H__
-macro_line|#ifndef __BOOT__
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
-macro_line|#endif
+macro_line|#include &lt;linux/mtd/blktrans.h&gt;
 multiline_comment|/* Block Control Information */
 DECL|struct|nftl_bci
 r_struct
@@ -227,16 +223,10 @@ DECL|struct|NFTLrecord
 r_struct
 id|NFTLrecord
 (brace
-DECL|member|mtd
+DECL|member|mbd
 r_struct
-id|mtd_info
-op_star
-id|mtd
-suffix:semicolon
-DECL|member|mutex
-r_struct
-id|semaphore
-id|mutex
+id|mtd_blktrans_dev
+id|mbd
 suffix:semicolon
 DECL|member|MediaUnit
 DECL|member|SpareMediaUnit
@@ -291,11 +281,6 @@ id|__u16
 id|LastFreeEUN
 suffix:semicolon
 multiline_comment|/* To speed up finding a free EUN */
-DECL|member|nr_sects
-id|__u32
-r_int
-id|nr_sects
-suffix:semicolon
 DECL|member|head
 DECL|member|sect
 DECL|member|cyl
@@ -335,12 +320,6 @@ r_struct
 id|erase_info
 id|instr
 suffix:semicolon
-DECL|member|disk
-r_struct
-id|gendisk
-op_star
-id|disk
-suffix:semicolon
 )brace
 suffix:semicolon
 r_int
@@ -373,7 +352,7 @@ macro_line|#endif
 DECL|macro|MAX_NFTLS
 mdefine_line|#define MAX_NFTLS 16
 DECL|macro|MAX_SECTORS_PER_UNIT
-mdefine_line|#define MAX_SECTORS_PER_UNIT 32
+mdefine_line|#define MAX_SECTORS_PER_UNIT 64
 DECL|macro|NFTL_PARTN_BITS
 mdefine_line|#define NFTL_PARTN_BITS 4
 macro_line|#endif /* __KERNEL__ */

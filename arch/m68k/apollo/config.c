@@ -52,7 +52,7 @@ r_void
 id|dn_sched_init
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -86,7 +86,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -239,7 +239,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|dn_process_int
 c_func
 (paren
@@ -264,7 +264,7 @@ id|on
 suffix:semicolon
 macro_line|#endif
 r_static
-r_void
+id|irqreturn_t
 id|dn_timer_int
 c_func
 (paren
@@ -281,7 +281,7 @@ op_star
 suffix:semicolon
 DECL|variable|sched_timer_handler
 r_static
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|sched_timer_handler
@@ -859,7 +859,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|dn_timer_int
-r_void
+id|irqreturn_t
 id|dn_timer_int
 c_func
 (paren
@@ -921,13 +921,16 @@ op_plus
 l_int|5
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|dn_sched_init
 r_void
 id|dn_sched_init
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|timer_routine

@@ -1436,6 +1436,11 @@ r_int
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/* TIME_WAIT reaping mechanism. */
+DECL|macro|TCP_TWKILL_SLOTS
+mdefine_line|#define TCP_TWKILL_SLOTS&t;8&t;/* Please keep this a power of 2. */
+DECL|macro|TCP_TWKILL_PERIOD
+mdefine_line|#define TCP_TWKILL_PERIOD&t;(TCP_TIMEWAIT_LEN/TCP_TWKILL_SLOTS)
 DECL|variable|tcp_tw_death_row
 r_static
 r_struct
@@ -1472,11 +1477,8 @@ suffix:semicolon
 DECL|function|tcp_twkill
 r_static
 r_void
-id|SMP_TIMER_NAME
-c_func
-(paren
 id|tcp_twkill
-)paren
+c_func
 (paren
 r_int
 r_int
@@ -1632,14 +1634,6 @@ id|tw_death_lock
 )paren
 suffix:semicolon
 )brace
-id|SMP_TIMER_DEFINE
-c_func
-(paren
-id|tcp_twkill
-comma
-id|tcp_twkill_task
-)paren
-suffix:semicolon
 multiline_comment|/* These are always called from BH context.  See callers in&n; * tcp_input.c to verify this.&n; */
 multiline_comment|/* This is for handling early-kills of TIME_WAIT sockets. */
 DECL|function|tcp_tw_deschedule
@@ -2105,11 +2099,8 @@ suffix:semicolon
 )brace
 DECL|function|tcp_twcal_tick
 r_void
-id|SMP_TIMER_NAME
-c_func
-(paren
 id|tcp_twcal_tick
-)paren
+c_func
 (paren
 r_int
 r_int
@@ -2355,14 +2346,6 @@ id|tw_death_lock
 )paren
 suffix:semicolon
 )brace
-id|SMP_TIMER_DEFINE
-c_func
-(paren
-id|tcp_twcal_tick
-comma
-id|tcp_twcal_tasklet
-)paren
-suffix:semicolon
 multiline_comment|/* This is not only more efficient than what we used to do, it eliminates&n; * a lot of code duplication between IPv4/IPv6 SYN recv processing. -DaveM&n; *&n; * Actually, we could lots of memory writes here. tp of listening&n; * socket contains all necessary default parameters.&n; */
 DECL|function|tcp_create_openreq_child
 r_struct
@@ -2526,13 +2509,12 @@ id|newsk-&gt;forward_alloc
 op_assign
 l_int|0
 suffix:semicolon
-id|__clear_bit
+id|sock_reset_flag
 c_func
 (paren
-id|SOCK_DONE
+id|newsk
 comma
-op_amp
-id|newsk-&gt;flags
+id|SOCK_DONE
 )paren
 suffix:semicolon
 id|newsk-&gt;userlocks
@@ -2854,13 +2836,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_bit
+id|sock_flag
 c_func
 (paren
-id|SOCK_KEEPOPEN
+id|newsk
 comma
-op_amp
-id|newsk-&gt;flags
+id|SOCK_KEEPOPEN
 )paren
 )paren
 id|tcp_reset_keepalive_timer

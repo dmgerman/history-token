@@ -174,7 +174,13 @@ c_cond
 id|retval
 )paren
 (brace
-singleline_comment|// FIXME cleanup sys_device_register
+id|sys_device_unregister
+c_func
+(paren
+op_amp
+id|cpu-&gt;sysdev
+)paren
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -207,10 +213,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|error
 )paren
-(brace
+r_goto
+id|out
+suffix:semicolon
 id|error
 op_assign
 id|driver_register
@@ -232,7 +239,8 @@ op_amp
 id|cpu_class
 )paren
 suffix:semicolon
-)brace
+id|out
+suffix:colon
 r_return
 id|error
 suffix:semicolon

@@ -959,7 +959,7 @@ id|tapeblock_major
 suffix:semicolon
 id|disk-&gt;first_minor
 op_assign
-id|i
+id|device-&gt;first_minor
 suffix:semicolon
 id|disk-&gt;fops
 op_assign
@@ -974,24 +974,7 @@ id|disk-&gt;queue
 op_assign
 id|q
 suffix:semicolon
-id|set_capacity
-c_func
-(paren
-id|disk
-comma
-id|size
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|disk-&gt;disk_name
-comma
-l_string|&quot;tBLK%d&quot;
-comma
-id|i
-)paren
-suffix:semicolon
+singleline_comment|//set_capacity(disk, size);
 id|sprintf
 c_func
 (paren
@@ -999,7 +982,9 @@ id|disk-&gt;disk_name
 comma
 l_string|&quot;tBLK/%d&quot;
 comma
-id|i
+id|device-&gt;first_minor
+op_div
+id|TAPE_MINORS_PER_DEV
 )paren
 suffix:semicolon
 id|add_disk
@@ -1229,7 +1214,7 @@ id|gendisk
 op_star
 id|disk
 op_assign
-id|inp-&gt;i_bdev-&gt;bd_disk
+id|inode-&gt;i_bdev-&gt;bd_disk
 suffix:semicolon
 r_struct
 id|tape_device
@@ -1241,6 +1226,7 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
+multiline_comment|/*&n;&t; * FIXME: this new tapeblock_open function is from 2.5.69.&n;&t; * It doesn&squot;t do tape_get_device anymore but picks the device&n;&t; * pointer from disk-&gt;private_data. It is stored in &n;&t; * tapeblock_setup_device but WITHOUT proper ref-counting.&n;&t; */
 id|rc
 op_assign
 id|tape_open
@@ -1348,7 +1334,7 @@ id|gendisk
 op_star
 id|disk
 op_assign
-id|inp-&gt;i_bdev-&gt;bd_disk
+id|inode-&gt;i_bdev-&gt;bd_disk
 suffix:semicolon
 r_struct
 id|tape_device

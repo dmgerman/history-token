@@ -580,6 +580,11 @@ id|usb_storage_driver
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|name
 op_assign
 l_string|&quot;usb-storage&quot;
@@ -1258,9 +1263,7 @@ id|usb_stor_sense_invalidCDB
 suffix:semicolon
 id|us-&gt;srb-&gt;result
 op_assign
-id|CHECK_CONDITION
-op_lshift
-l_int|1
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 )brace
 multiline_comment|/* Handle those devices which need us to fake &n;&t;&t; * their inquiry data */
@@ -1327,9 +1330,7 @@ l_int|36
 suffix:semicolon
 id|us-&gt;srb-&gt;result
 op_assign
-id|GOOD
-op_lshift
-l_int|1
+id|SAM_STAT_GOOD
 suffix:semicolon
 )brace
 multiline_comment|/* we&squot;ve got a command, let&squot;s do it! */
@@ -1412,7 +1413,7 @@ l_string|&quot;scsi command aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* in case an abort request was received after the command&n;&t;&t; * completed, we must use a separate test to see whether&n;&t;&t; * we need to signal that the abort has finished */
+multiline_comment|/* If an abort request was received we need to signal that&n;&t;&t; * the abort has finished.  The proper test for this is&n;&t;&t; * sm_state == US_STATE_ABORTING, not srb-&gt;result == DID_ABORT,&n;&t;&t; * because an abort request might be received after all the&n;&t;&t; * USB processing was complete. */
 r_if
 c_cond
 (paren
@@ -2647,14 +2648,6 @@ id|us-&gt;transport_reset
 op_assign
 id|usb_stor_Bulk_reset
 suffix:semicolon
-id|us-&gt;max_lun
-op_assign
-id|usb_stor_Bulk_max_lun
-c_func
-(paren
-id|us
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#ifdef CONFIG_USB_STORAGE_HP8200e
@@ -2984,6 +2977,22 @@ id|us
 r_goto
 id|BadDevice
 suffix:semicolon
+multiline_comment|/* For bulk-only devices, determine the max LUN value */
+r_if
+c_cond
+(paren
+id|us-&gt;protocol
+op_eq
+id|US_PR_BULK
+)paren
+id|us-&gt;max_lun
+op_assign
+id|usb_stor_Bulk_max_lun
+c_func
+(paren
+id|us
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Since this is a new device, we need to generate a scsi &n;&t; * host definition, and register with the higher SCSI layers&n;&t; */
 multiline_comment|/* Just before we start our control thread, initialize&n;&t; * the device if it needs initialization */
 r_if
@@ -3136,16 +3145,6 @@ r_int
 )paren
 id|us
 suffix:semicolon
-multiline_comment|/* associate this host with our interface */
-id|scsi_set_device
-c_func
-(paren
-id|us-&gt;host
-comma
-op_amp
-id|intf-&gt;dev
-)paren
-suffix:semicolon
 multiline_comment|/* now add the host */
 id|result
 op_assign
@@ -3154,7 +3153,8 @@ c_func
 (paren
 id|us-&gt;host
 comma
-l_int|NULL
+op_amp
+id|intf-&gt;dev
 )paren
 suffix:semicolon
 r_if
@@ -3336,6 +3336,22 @@ c_func
 id|us-&gt;host
 )paren
 suffix:semicolon
+multiline_comment|/* prevent new USB transfers and stop the current command */
+id|set_bit
+c_func
+(paren
+id|US_FLIDX_DISCONNECTING
+comma
+op_amp
+id|us-&gt;flags
+)paren
+suffix:semicolon
+id|usb_stor_stop_transport
+c_func
+(paren
+id|us
+)paren
+suffix:semicolon
 multiline_comment|/* lock device access -- no need to unlock, as we&squot;re going away */
 id|down
 c_func
@@ -3346,28 +3362,6 @@ id|us-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Complete all pending commands with * cmd-&gt;result = DID_ERROR &lt;&lt; 16.&n;&t; * Since we only queue one command at a time, this is pretty easy. */
-r_if
-c_cond
-(paren
-id|us-&gt;srb
-)paren
-(brace
-id|us-&gt;srb-&gt;result
-op_assign
-id|DID_ERROR
-op_lshift
-l_int|16
-suffix:semicolon
-id|us-&gt;srb
-op_member_access_from_pointer
-id|scsi_done
-c_func
-(paren
-id|us-&gt;srb
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* TODO: somehow, wait for the device to&n;&t; * be &squot;idle&squot; (tasklet completion) */
 multiline_comment|/* remove the pointer to the data structure we were using */
 (paren

@@ -2337,7 +2337,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|ctl-&gt;id.name
@@ -2348,8 +2348,6 @@ r_sizeof
 (paren
 id|ctl-&gt;id.name
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|ctl-&gt;id.index

@@ -338,9 +338,7 @@ c_cond
 (paren
 id|srb-&gt;result
 op_eq
-id|GOOD
-op_lshift
-l_int|1
+id|SAM_STAT_GOOD
 )paren
 (brace
 multiline_comment|/* fix the INQUIRY data if necessary */
@@ -669,9 +667,7 @@ c_cond
 (paren
 id|srb-&gt;result
 op_eq
-id|GOOD
-op_lshift
-l_int|1
+id|SAM_STAT_GOOD
 )paren
 (brace
 multiline_comment|/* Fix the MODE_SENSE data if we translated the command */
@@ -1060,9 +1056,7 @@ c_cond
 (paren
 id|srb-&gt;result
 op_eq
-id|GOOD
-op_lshift
-l_int|1
+id|SAM_STAT_GOOD
 )paren
 (brace
 multiline_comment|/* Fix the MODE_SENSE data if we translated the command */
@@ -1412,9 +1406,7 @@ c_cond
 (paren
 id|srb-&gt;result
 op_eq
-id|GOOD
-op_lshift
-l_int|1
+id|SAM_STAT_GOOD
 )paren
 (brace
 multiline_comment|/* Fix the MODE_SENSE data if we translated the command */

@@ -23,13 +23,14 @@ macro_line|#ifdef CONFIG_ATARI
 macro_line|#include &lt;asm/atari_stram.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/tlb.h&gt;
-DECL|variable|mmu_gathers
+id|DEFINE_PER_CPU
+c_func
+(paren
 r_struct
 id|mmu_gather
+comma
 id|mmu_gathers
-(braket
-id|NR_CPUS
-)braket
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * ZERO_PAGE is a special page that is used for zero-initialized&n; * data and COW.&n; */
 DECL|variable|empty_zero_page

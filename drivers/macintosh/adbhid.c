@@ -8,6 +8,8 @@ macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/cuda.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
+macro_line|#include &lt;asm/machdep.h&gt;
+macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
 macro_line|#include &lt;asm/backlight.h&gt;
 macro_line|#endif
@@ -314,7 +316,7 @@ l_int|100
 comma
 l_int|97
 comma
-l_int|116
+l_int|126
 comma
 l_int|116
 )brace
@@ -402,6 +404,10 @@ comma
 r_int
 comma
 r_int
+comma
+r_struct
+id|pt_regs
+op_star
 )paren
 suffix:semicolon
 r_static
@@ -692,6 +698,7 @@ comma
 r_int
 id|repeat
 comma
+r_struct
 id|pt_regs
 op_star
 id|regs
@@ -787,6 +794,42 @@ l_int|0x3f
 suffix:colon
 multiline_comment|/* ignore Powerbook Fn key */
 r_return
+suffix:semicolon
+r_case
+l_int|0x7e
+suffix:colon
+multiline_comment|/* Power key on PBook 3400 needs remapping */
+r_switch
+c_cond
+(paren
+id|pmac_call_feature
+c_func
+(paren
+id|PMAC_FTR_GET_MB_INFO
+comma
+l_int|NULL
+comma
+id|PMAC_MB_INFO_MODEL
+comma
+l_int|0
+)paren
+)paren
+(brace
+r_case
+id|PMAC_TYPE_COMET
+suffix:colon
+r_case
+id|PMAC_TYPE_HOOPER
+suffix:colon
+r_case
+id|PMAC_TYPE_KANGA
+suffix:colon
+id|keycode
+op_assign
+l_int|0x7f
+suffix:semicolon
+)brace
+r_break
 suffix:semicolon
 )brace
 r_if
@@ -1911,15 +1954,13 @@ id|disable_kernel_backlight
 r_if
 c_cond
 (paren
-op_logical_neg
 id|down
-op_logical_or
+op_logical_and
 id|backlight
-OL
+op_ge
 l_int|0
 )paren
-r_break
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -1942,8 +1983,7 @@ c_func
 id|BACKLIGHT_OFF
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
+)brace
 )brace
 macro_line|#endif /* CONFIG_PMAC_BACKLIGHT */
 id|input_report_key
@@ -1979,15 +2019,13 @@ id|disable_kernel_backlight
 r_if
 c_cond
 (paren
-op_logical_neg
 id|down
-op_logical_or
+op_logical_and
 id|backlight
-OL
+op_ge
 l_int|0
 )paren
-r_break
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -2010,8 +2048,7 @@ c_func
 id|BACKLIGHT_MAX
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
+)brace
 )brace
 macro_line|#endif /* CONFIG_PMAC_BACKLIGHT */
 id|input_report_key

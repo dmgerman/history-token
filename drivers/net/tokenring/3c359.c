@@ -5447,7 +5447,7 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|unregister_trdev
+id|unregister_netdev
 c_func
 (paren
 id|dev
@@ -8745,7 +8745,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|unregister_trdev
+id|unregister_netdev
 c_func
 (paren
 id|dev

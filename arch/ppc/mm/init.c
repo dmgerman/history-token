@@ -32,13 +32,14 @@ macro_line|#endif
 macro_line|#endif
 DECL|macro|MAX_LOW_MEM
 mdefine_line|#define MAX_LOW_MEM&t;CONFIG_LOWMEM_SIZE
-DECL|variable|mmu_gathers
+id|DEFINE_PER_CPU
+c_func
+(paren
 r_struct
 id|mmu_gather
+comma
 id|mmu_gathers
-(braket
-id|NR_CPUS
-)braket
+)paren
 suffix:semicolon
 DECL|variable|total_memory
 r_int

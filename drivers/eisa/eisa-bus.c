@@ -92,7 +92,7 @@ id|id.sig
 )paren
 )paren
 (brace
-id|strncpy
+id|strlcpy
 (paren
 id|edev-&gt;dev.name
 comma
@@ -104,8 +104,6 @@ dot
 id|name
 comma
 id|DEVICE_NAME_SIZE
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_return

@@ -10935,7 +10935,7 @@ comma
 l_string|&quot;bttv&quot;
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|cap-&gt;card
@@ -11197,7 +11197,7 @@ id|i
 dot
 id|fourcc
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|f-&gt;description
@@ -11209,7 +11209,10 @@ id|i
 dot
 id|name
 comma
-l_int|31
+r_sizeof
+(paren
+id|f-&gt;description
+)paren
 )paren
 suffix:semicolon
 r_return

@@ -3403,6 +3403,11 @@ id|EFAULT
 suffix:semicolon
 id|data64
 op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|A
 c_func
 (paren

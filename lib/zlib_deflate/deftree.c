@@ -733,24 +733,18 @@ r_void
 id|send_bits
 c_func
 (paren
-id|s
-comma
-id|value
-comma
-id|length
-)paren
 id|deflate_state
 op_star
 id|s
-suffix:semicolon
+comma
 r_int
 id|value
-suffix:semicolon
+comma
 multiline_comment|/* value to send */
 r_int
 id|length
-suffix:semicolon
 multiline_comment|/* number of bits */
+)paren
 (brace
 id|Tracevv
 c_func
@@ -1528,25 +1522,19 @@ r_void
 id|pqdownheap
 c_func
 (paren
-id|s
-comma
-id|tree
-comma
-id|k
-)paren
 id|deflate_state
 op_star
 id|s
-suffix:semicolon
+comma
 id|ct_data
 op_star
 id|tree
-suffix:semicolon
+comma
 multiline_comment|/* the tree to restore */
 r_int
 id|k
-suffix:semicolon
 multiline_comment|/* node to move down */
+)paren
 (brace
 r_int
 id|v
@@ -1662,19 +1650,15 @@ r_void
 id|gen_bitlen
 c_func
 (paren
-id|s
-comma
-id|desc
-)paren
 id|deflate_state
 op_star
 id|s
-suffix:semicolon
+comma
 id|tree_desc
 op_star
 id|desc
-suffix:semicolon
 multiline_comment|/* the tree descriptor */
+)paren
 (brace
 id|ct_data
 op_star
@@ -2140,27 +2124,22 @@ DECL|function|gen_codes
 id|local
 r_void
 id|gen_codes
+c_func
 (paren
-id|tree
-comma
-id|max_code
-comma
-id|bl_count
-)paren
 id|ct_data
 op_star
 id|tree
-suffix:semicolon
+comma
 multiline_comment|/* the tree to decorate */
 r_int
 id|max_code
-suffix:semicolon
+comma
 multiline_comment|/* largest code with non zero frequency */
 id|ushf
 op_star
 id|bl_count
-suffix:semicolon
 multiline_comment|/* number of codes at each bit length */
+)paren
 (brace
 id|ush
 id|next_code
@@ -2365,19 +2344,15 @@ r_void
 id|build_tree
 c_func
 (paren
-id|s
-comma
-id|desc
-)paren
 id|deflate_state
 op_star
 id|s
-suffix:semicolon
+comma
 id|tree_desc
 op_star
 id|desc
-suffix:semicolon
 multiline_comment|/* the tree descriptor */
+)paren
 (brace
 id|ct_data
 op_star
@@ -2816,26 +2791,21 @@ DECL|function|scan_tree
 id|local
 r_void
 id|scan_tree
+c_func
 (paren
-id|s
-comma
-id|tree
-comma
-id|max_code
-)paren
 id|deflate_state
 op_star
 id|s
-suffix:semicolon
+comma
 id|ct_data
 op_star
 id|tree
-suffix:semicolon
+comma
 multiline_comment|/* the tree to be scanned */
 r_int
 id|max_code
-suffix:semicolon
 multiline_comment|/* and its largest code of non zero frequency */
+)paren
 (brace
 r_int
 id|n
@@ -3099,26 +3069,21 @@ DECL|function|send_tree
 id|local
 r_void
 id|send_tree
+c_func
 (paren
-id|s
-comma
-id|tree
-comma
-id|max_code
-)paren
 id|deflate_state
 op_star
 id|s
-suffix:semicolon
+comma
 id|ct_data
 op_star
 id|tree
-suffix:semicolon
+comma
 multiline_comment|/* the tree to be scanned */
 r_int
 id|max_code
-suffix:semicolon
 multiline_comment|/* and its largest code of non zero frequency */
+)paren
 (brace
 r_int
 id|n
@@ -3447,12 +3412,10 @@ r_int
 id|build_bl_tree
 c_func
 (paren
-id|s
-)paren
 id|deflate_state
 op_star
 id|s
-suffix:semicolon
+)paren
 (brace
 r_int
 id|max_blindex
@@ -3584,26 +3547,22 @@ r_void
 id|send_all_trees
 c_func
 (paren
-id|s
-comma
-id|lcodes
-comma
-id|dcodes
-comma
-id|blcodes
-)paren
 id|deflate_state
 op_star
 id|s
-suffix:semicolon
+comma
 r_int
 id|lcodes
 comma
+multiline_comment|/* number of codes for each tree */
+r_int
 id|dcodes
 comma
-id|blcodes
-suffix:semicolon
 multiline_comment|/* number of codes for each tree */
+r_int
+id|blcodes
+multiline_comment|/* number of codes for each tree */
+)paren
 (brace
 r_int
 id|rank
@@ -3817,31 +3776,23 @@ r_void
 id|zlib_tr_stored_block
 c_func
 (paren
-id|s
-comma
-id|buf
-comma
-id|stored_len
-comma
-id|eof
-)paren
 id|deflate_state
 op_star
 id|s
-suffix:semicolon
+comma
 id|charf
 op_star
 id|buf
-suffix:semicolon
+comma
 multiline_comment|/* input block */
 id|ulg
 id|stored_len
-suffix:semicolon
+comma
 multiline_comment|/* length of input block */
 r_int
 id|eof
-suffix:semicolon
 multiline_comment|/* true if this is the last block for a file */
+)paren
 (brace
 id|send_bits
 c_func
@@ -3909,12 +3860,10 @@ r_void
 id|zlib_tr_stored_type_only
 c_func
 (paren
-id|s
-)paren
 id|deflate_state
 op_star
 id|s
-suffix:semicolon
+)paren
 (brace
 id|send_bits
 c_func
@@ -3954,12 +3903,10 @@ r_void
 id|zlib_tr_align
 c_func
 (paren
-id|s
-)paren
 id|deflate_state
 op_star
 id|s
-suffix:semicolon
+)paren
 (brace
 id|send_bits
 c_func
@@ -4053,31 +4000,23 @@ id|ulg
 id|zlib_tr_flush_block
 c_func
 (paren
-id|s
-comma
-id|buf
-comma
-id|stored_len
-comma
-id|eof
-)paren
 id|deflate_state
 op_star
 id|s
-suffix:semicolon
+comma
 id|charf
 op_star
 id|buf
-suffix:semicolon
+comma
 multiline_comment|/* input block, or NULL if too old */
 id|ulg
 id|stored_len
-suffix:semicolon
+comma
 multiline_comment|/* length of input block */
 r_int
 id|eof
-suffix:semicolon
 multiline_comment|/* true if this is the last block for a file */
+)paren
 (brace
 id|ulg
 id|opt_lenb
@@ -4590,25 +4529,20 @@ multiline_comment|/* ===========================================================
 DECL|function|zlib_tr_tally
 r_int
 id|zlib_tr_tally
+c_func
 (paren
-id|s
-comma
-id|dist
-comma
-id|lc
-)paren
 id|deflate_state
 op_star
 id|s
-suffix:semicolon
+comma
 r_int
 id|dist
-suffix:semicolon
+comma
 multiline_comment|/* distance of matched string */
 r_int
 id|lc
-suffix:semicolon
 multiline_comment|/* match length-MIN_MATCH or unmatched char (if dist==0) */
+)paren
 (brace
 id|s-&gt;d_buf
 (braket
@@ -4883,26 +4817,20 @@ r_void
 id|compress_block
 c_func
 (paren
-id|s
-comma
-id|ltree
-comma
-id|dtree
-)paren
 id|deflate_state
 op_star
 id|s
-suffix:semicolon
+comma
 id|ct_data
 op_star
 id|ltree
-suffix:semicolon
+comma
 multiline_comment|/* literal tree */
 id|ct_data
 op_star
 id|dtree
-suffix:semicolon
 multiline_comment|/* distance tree */
+)paren
 (brace
 r_int
 id|dist
@@ -5166,12 +5094,10 @@ r_void
 id|set_data_type
 c_func
 (paren
-id|s
-)paren
 id|deflate_state
 op_star
 id|s
-suffix:semicolon
+)paren
 (brace
 r_int
 id|n
@@ -5267,31 +5193,23 @@ r_void
 id|copy_block
 c_func
 (paren
-id|s
-comma
-id|buf
-comma
-id|len
-comma
-id|header
-)paren
 id|deflate_state
 op_star
 id|s
-suffix:semicolon
+comma
 id|charf
 op_star
 id|buf
-suffix:semicolon
+comma
 multiline_comment|/* the input data */
 r_int
 id|len
-suffix:semicolon
+comma
 multiline_comment|/* its length */
 r_int
 id|header
-suffix:semicolon
 multiline_comment|/* true if block header must be written */
+)paren
 (brace
 id|bi_windup
 c_func

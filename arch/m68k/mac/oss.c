@@ -21,7 +21,7 @@ id|mac_oss
 op_star
 id|oss
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|oss_irq
 c_func
 (paren
@@ -35,7 +35,7 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|oss_nubus_irq
 c_func
 (paren
@@ -50,7 +50,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|via1_irq
 c_func
 (paren
@@ -65,7 +65,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|mac_scc_dispatch
 c_func
 (paren
@@ -253,7 +253,7 @@ r_void
 )brace
 multiline_comment|/*&n; * Handle miscellaneous OSS interrupts. Right now that&squot;s just sound&n; * and SCSI; everything else is routed to its own autovector IRQ.&n; */
 DECL|function|oss_irq
-r_void
+id|irqreturn_t
 id|oss_irq
 c_func
 (paren
@@ -290,6 +290,7 @@ op_logical_neg
 id|events
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 macro_line|#ifdef DEBUG_IRQS&t;
 r_if
@@ -381,10 +382,13 @@ r_else
 (brace
 multiline_comment|/* FIXME: error check here? */
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Nubus IRQ handler, OSS style&n; *&n; * Unlike the VIA/RBV this is on its own autovector interrupt level.&n; */
 DECL|function|oss_nubus_irq
-r_void
+id|irqreturn_t
 id|oss_nubus_irq
 c_func
 (paren
@@ -421,6 +425,7 @@ op_logical_neg
 id|events
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 macro_line|#ifdef DEBUG_NUBUS_INT
 r_if
@@ -504,6 +509,9 @@ id|OSS_IRQLEV_NUBUS
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Enable an OSS interrupt&n; *&n; * It looks messy but it&squot;s rather straightforward. The switch() statement&n; * just maps the machspec interrupt numbers to the right OSS interrupt&n; * source (if the OSS handles that interrupt) and then sets the interrupt&n; * level for that source to nonzero, thus enabling the interrupt.&n; */
 DECL|function|oss_irq_enable

@@ -1,5 +1,5 @@
 multiline_comment|/***************************************************************************/
-multiline_comment|/*&n; *&t;linux/arch/m68knommu/platform/5307/timers.c&n; *&n; *&t;Copyright (C) 1999-2003, Greg Ungerer (gerg@snapgear.com)&n; */
+multiline_comment|/*&n; *&t;timers.c -- generic ColdFire hardware timer support.&n; *&n; *&t;Copyright (C) 1999-2003, Greg Ungerer (gerg@snapgear.com)&n; */
 multiline_comment|/***************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -44,6 +44,28 @@ id|mcftimer
 op_star
 id|mcf_timerp
 suffix:semicolon
+multiline_comment|/*&n; *&t;These provide the underlying interrupt vector support.&n; *&t;Unfortunately it is a little different on each ColdFire.&n; */
+r_extern
+r_void
+id|mcf_settimericr
+c_func
+(paren
+r_int
+id|timer
+comma
+r_int
+id|level
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|mcf_timerirqpending
+c_func
+(paren
+r_int
+id|timer
+)paren
+suffix:semicolon
 multiline_comment|/***************************************************************************/
 DECL|function|coldfire_tick
 r_void
@@ -61,12 +83,13 @@ op_or
 id|MCFTIMER_TER_REF
 suffix:semicolon
 )brace
+multiline_comment|/***************************************************************************/
 DECL|function|coldfire_timer_init
 r_void
 id|coldfire_timer_init
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -173,17 +196,28 @@ r_int
 id|trr
 comma
 id|tcn
+comma
+id|offset
 suffix:semicolon
-multiline_comment|/* Get the values as longs for accurate calculation. */
+multiline_comment|/*&n;&t; * The change to pointer and de-reference is to force the compiler&n;&t; * to read the registers with a single 16bit access. Otherwise it&n;&t; * does some crazy 8bit read combining.&n;&t; */
 id|tcn
 op_assign
+op_star
+(paren
+op_amp
 id|mcf_timerp-&gt;tcn
+)paren
 suffix:semicolon
 id|trr
 op_assign
+op_star
+(paren
+op_amp
 id|mcf_timerp-&gt;trr
+)paren
 suffix:semicolon
-r_return
+id|offset
+op_assign
 (paren
 id|tcn
 op_star
@@ -195,6 +229,37 @@ id|HZ
 )paren
 op_div
 id|trr
+suffix:semicolon
+multiline_comment|/* Check if we just wrapped the counters and maybe missed a tick */
+r_if
+c_cond
+(paren
+(paren
+id|offset
+OL
+(paren
+l_int|1000000
+op_div
+id|HZ
+op_div
+l_int|2
+)paren
+)paren
+op_logical_and
+id|mcf_timerirqpending
+c_func
+(paren
+l_int|1
+)paren
+)paren
+id|offset
+op_add_assign
+l_int|1000000
+op_div
+id|HZ
+suffix:semicolon
+r_return
+id|offset
 suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************/
@@ -299,6 +364,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+multiline_comment|/***************************************************************************/
 DECL|function|coldfire_profile_init
 r_void
 id|coldfire_profile_init

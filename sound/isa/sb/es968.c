@@ -390,6 +390,7 @@ op_amp
 id|SB_OPEN_PCM
 )paren
 (brace
+r_return
 id|snd_sb8dsp_interrupt
 c_func
 (paren
@@ -399,6 +400,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_return
 id|snd_sb8dsp_midi_interrupt
 c_func
 (paren
@@ -406,9 +408,6 @@ id|chip
 )paren
 suffix:semicolon
 )brace
-r_return
-id|IRQ_HANDLED
-suffix:semicolon
 )brace
 DECL|function|snd_card_es968_pnp
 r_static
@@ -647,6 +646,12 @@ c_func
 id|KERN_ERR
 id|PFX
 l_string|&quot;AUDIO pnp configure failure&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|cfg
 )paren
 suffix:semicolon
 r_return
@@ -1210,7 +1215,6 @@ op_amp
 id|es968_pnpc_driver
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 r_if
 c_cond
 (paren
@@ -1218,6 +1222,15 @@ id|res
 op_eq
 l_int|0
 )paren
+(brace
+id|pnp_unregister_card_driver
+c_func
+(paren
+op_amp
+id|es968_pnpc_driver
+)paren
+suffix:semicolon
+macro_line|#ifdef MODULE
 id|snd_printk
 c_func
 (paren
@@ -1226,6 +1239,7 @@ l_string|&quot;no ES968 based soundcards found&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+)brace
 r_return
 id|res
 OL

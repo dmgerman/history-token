@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *&n; * Filename:      iriap_event.c&n; * Version:       0.1&n; * Description:   IAP Finite State Machine&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Thu Aug 21 00:02:07 1997&n; * Modified at:   Wed Mar  1 11:28:34 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1997, 1999-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;,&n; *     All Rights Reserved.&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; * Filename:      iriap_event.c&n; * Version:       0.1&n; * Description:   IAP Finite State Machine&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Thu Aug 21 00:02:07 1997&n; * Modified at:   Wed Mar  1 11:28:34 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1997, 1999-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;,&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2003 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irlmp.h&gt;
 macro_line|#include &lt;net/irda/iriap.h&gt;
@@ -810,7 +810,7 @@ suffix:semicolon
 id|ASSERT
 c_func
 (paren
-id|self-&gt;skb
+id|self-&gt;request_skb
 op_eq
 l_int|NULL
 comma
@@ -818,7 +818,14 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|self-&gt;skb
+multiline_comment|/* Don&squot;t forget to refcount it -&n;&t;&t; * see iriap_getvaluebyclass_request(). */
+id|skb_get
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+id|self-&gt;request_skb
 op_assign
 id|skb
 suffix:semicolon
@@ -1064,6 +1071,11 @@ op_star
 id|skb
 )paren
 (brace
+r_struct
+id|sk_buff
+op_star
+id|tx_skb
+suffix:semicolon
 id|ASSERT
 c_func
 (paren
@@ -1084,11 +1096,12 @@ id|event
 r_case
 id|IAP_CALL_REQUEST
 suffix:colon
-id|skb
+multiline_comment|/* Already refcounted - see state_s_disconnect() */
+id|tx_skb
 op_assign
-id|self-&gt;skb
+id|self-&gt;request_skb
 suffix:semicolon
-id|self-&gt;skb
+id|self-&gt;request_skb
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1097,7 +1110,7 @@ c_func
 (paren
 id|self-&gt;lsap
 comma
-id|skb
+id|tx_skb
 )paren
 suffix:semicolon
 id|iriap_next_call_state
@@ -1122,17 +1135,6 @@ comma
 id|__FUNCTION__
 comma
 id|event
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb
-)paren
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 r_break
@@ -1436,17 +1438,6 @@ comma
 id|R_RECEIVING
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb
-)paren
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -1722,30 +1713,28 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|self
-op_logical_or
-id|self-&gt;magic
-op_ne
-id|IAS_MAGIC
-)paren
-(brace
-id|IRDA_DEBUG
+id|ASSERT
 c_func
 (paren
-l_int|0
+id|self
+op_ne
+l_int|NULL
 comma
-l_string|&quot;%s(), bad pointer self&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|self-&gt;magic
+op_eq
+id|IAS_MAGIC
+comma
+r_return
+suffix:semicolon
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1762,6 +1751,13 @@ c_func
 id|self
 comma
 id|R_RECEIVING
+)paren
+suffix:semicolon
+multiline_comment|/* Don&squot;t forget to refcount it - see&n;&t;&t; * iriap_getvaluebyclass_response(). */
+id|skb_get
+c_func
+(paren
+id|skb
 )paren
 suffix:semicolon
 id|irlmp_data_request

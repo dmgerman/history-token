@@ -6,31 +6,6 @@ mdefine_line|#define MAC_NCR5380_H
 DECL|macro|MACSCSI_PUBLIC_RELEASE
 mdefine_line|#define MACSCSI_PUBLIC_RELEASE 2
 macro_line|#ifndef ASM
-r_int
-id|macscsi_proc_info
-(paren
-r_char
-op_star
-id|buffer
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|length
-comma
-r_int
-id|hostno
-comma
-r_int
-id|inout
-)paren
-suffix:semicolon
 macro_line|#ifndef NULL
 DECL|macro|NULL
 mdefine_line|#define NULL 0

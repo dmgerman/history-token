@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * MTD map driver for AMD compatible flash chips (non-CFI)&n; *&n; * Author: Jonas Holmberg &lt;jonas.holmberg@axis.com&gt;&n; *&n; * $Id: amd_flash.c,v 1.15 2001/10/02 15:05:11 dwmw2 Exp $&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; *&n; * This file is under GPL.&n; *&n; */
+multiline_comment|/*&n; * MTD map driver for AMD compatible flash chips (non-CFI)&n; *&n; * Author: Jonas Holmberg &lt;jonas.holmberg@axis.com&gt;&n; *&n; * $Id: amd_flash.c,v 1.22 2003/05/28 13:47:19 dwmw2 Exp $&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; *&n; * This file is under GPL.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -54,6 +54,8 @@ mdefine_line|#define CMD_UNLOCK_SECTOR&t;&t;0x0060
 multiline_comment|/* Manufacturers */
 DECL|macro|MANUFACTURER_AMD
 mdefine_line|#define MANUFACTURER_AMD&t;0x0001
+DECL|macro|MANUFACTURER_ATMEL
+mdefine_line|#define MANUFACTURER_ATMEL&t;0x001F
 DECL|macro|MANUFACTURER_FUJITSU
 mdefine_line|#define MANUFACTURER_FUJITSU&t;0x0004
 DECL|macro|MANUFACTURER_ST
@@ -79,11 +81,18 @@ DECL|macro|AM29BDS323D
 mdefine_line|#define AM29BDS323D     0x22D1
 DECL|macro|AM29BDS643D
 mdefine_line|#define AM29BDS643D&t;0x227E
+multiline_comment|/* Atmel */
+DECL|macro|AT49xV16x
+mdefine_line|#define AT49xV16x&t;0x00C0
+DECL|macro|AT49xV16xT
+mdefine_line|#define AT49xV16xT&t;0x00C2
 multiline_comment|/* Fujitsu */
 DECL|macro|MBM29LV160TE
 mdefine_line|#define MBM29LV160TE&t;0x22C4
 DECL|macro|MBM29LV160BE
 mdefine_line|#define MBM29LV160BE&t;0x2249
+DECL|macro|MBM29LV800BB
+mdefine_line|#define MBM29LV800BB&t;0x225B
 multiline_comment|/* ST - www.st.com */
 DECL|macro|M29W800T
 mdefine_line|#define M29W800T&t;0x00D7
@@ -347,9 +356,7 @@ l_int|1
 )paren
 (brace
 r_return
-id|map
-op_member_access_from_pointer
-id|read8
+id|map_read8
 c_func
 (paren
 id|map
@@ -368,9 +375,7 @@ l_int|2
 )paren
 (brace
 r_return
-id|map
-op_member_access_from_pointer
-id|read16
+id|map_read16
 c_func
 (paren
 id|map
@@ -389,9 +394,7 @@ l_int|4
 )paren
 (brace
 r_return
-id|map
-op_member_access_from_pointer
-id|read32
+id|map_read32
 c_func
 (paren
 id|map
@@ -431,9 +434,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|map
-op_member_access_from_pointer
-id|write8
+id|map_write8
 c_func
 (paren
 id|map
@@ -453,9 +454,7 @@ op_eq
 l_int|2
 )paren
 (brace
-id|map
-op_member_access_from_pointer
-id|write16
+id|map_write16
 c_func
 (paren
 id|map
@@ -475,9 +474,7 @@ op_eq
 l_int|4
 )paren
 (brace
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
@@ -1837,7 +1834,7 @@ op_star
 id|map
 )paren
 (brace
-multiline_comment|/* Keep this table on the stack so that it gets deallocated after the&n;&t; * probe is done.&n;&t; */
+r_static
 r_const
 r_struct
 id|amd_flash_info
@@ -2950,6 +2947,106 @@ comma
 dot
 id|mfr_id
 op_assign
+id|MANUFACTURER_FUJITSU
+comma
+dot
+id|dev_id
+op_assign
+id|MBM29LV800BB
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Fujitsu MBM29LV800BB&quot;
+comma
+dot
+id|size
+op_assign
+l_int|0x00100000
+comma
+dot
+id|numeraseregions
+op_assign
+l_int|4
+comma
+dot
+id|regions
+op_assign
+(brace
+(brace
+dot
+id|offset
+op_assign
+l_int|0x000000
+comma
+dot
+id|erasesize
+op_assign
+l_int|0x04000
+comma
+dot
+id|numblocks
+op_assign
+l_int|1
+)brace
+comma
+(brace
+dot
+id|offset
+op_assign
+l_int|0x004000
+comma
+dot
+id|erasesize
+op_assign
+l_int|0x02000
+comma
+dot
+id|numblocks
+op_assign
+l_int|2
+)brace
+comma
+(brace
+dot
+id|offset
+op_assign
+l_int|0x008000
+comma
+dot
+id|erasesize
+op_assign
+l_int|0x08000
+comma
+dot
+id|numblocks
+op_assign
+l_int|1
+)brace
+comma
+(brace
+dot
+id|offset
+op_assign
+l_int|0x010000
+comma
+dot
+id|erasesize
+op_assign
+l_int|0x10000
+comma
+dot
+id|numblocks
+op_assign
+l_int|15
+)brace
+)brace
+)brace
+comma
+(brace
+dot
+id|mfr_id
+op_assign
 id|MANUFACTURER_ST
 comma
 dot
@@ -3411,6 +3508,138 @@ op_assign
 l_int|8
 )brace
 comma
+)brace
+)brace
+comma
+(brace
+dot
+id|mfr_id
+op_assign
+id|MANUFACTURER_ATMEL
+comma
+dot
+id|dev_id
+op_assign
+id|AT49xV16x
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Atmel AT49xV16x&quot;
+comma
+dot
+id|size
+op_assign
+l_int|0x00200000
+comma
+dot
+id|numeraseregions
+op_assign
+l_int|2
+comma
+dot
+id|regions
+op_assign
+(brace
+(brace
+dot
+id|offset
+op_assign
+l_int|0x000000
+comma
+dot
+id|erasesize
+op_assign
+l_int|0x02000
+comma
+dot
+id|numblocks
+op_assign
+l_int|8
+)brace
+comma
+(brace
+dot
+id|offset
+op_assign
+l_int|0x010000
+comma
+dot
+id|erasesize
+op_assign
+l_int|0x10000
+comma
+dot
+id|numblocks
+op_assign
+l_int|31
+)brace
+)brace
+)brace
+comma
+(brace
+dot
+id|mfr_id
+op_assign
+id|MANUFACTURER_ATMEL
+comma
+dot
+id|dev_id
+op_assign
+id|AT49xV16xT
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Atmel AT49xV16xT&quot;
+comma
+dot
+id|size
+op_assign
+l_int|0x00200000
+comma
+dot
+id|numeraseregions
+op_assign
+l_int|2
+comma
+dot
+id|regions
+op_assign
+(brace
+(brace
+dot
+id|offset
+op_assign
+l_int|0x000000
+comma
+dot
+id|erasesize
+op_assign
+l_int|0x10000
+comma
+dot
+id|numblocks
+op_assign
+l_int|31
+)brace
+comma
+(brace
+dot
+id|offset
+op_assign
+l_int|0x1F0000
+comma
+dot
+id|erasesize
+op_assign
+l_int|0x02000
+comma
+dot
+id|numblocks
+op_assign
+l_int|8
+)brace
 )brace
 )brace
 )brace
@@ -4303,9 +4532,7 @@ id|chip-&gt;state
 op_assign
 id|FL_READY
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|copy_from
+id|map_copy_from
 c_func
 (paren
 id|map
@@ -5049,9 +5276,7 @@ suffix:semicolon
 id|__u32
 id|datum
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|copy_from
+id|map_copy_from
 c_func
 (paren
 id|map
@@ -5417,9 +5642,7 @@ suffix:semicolon
 id|__u32
 id|datum
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|copy_from
+id|map_copy_from
 c_func
 (paren
 id|map
@@ -5959,9 +6182,7 @@ c_cond
 (paren
 id|verify
 op_assign
-id|map
-op_member_access_from_pointer
-id|read8
+id|map_read8
 c_func
 (paren
 id|map

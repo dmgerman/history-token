@@ -699,10 +699,10 @@ id|minor
 suffix:semicolon
 )brace
 multiline_comment|/* We always need to remove the presto options before passing &n;   mount options to cache FS */
-DECL|function|presto_get_sb
 r_struct
 id|super_block
 op_star
+DECL|function|presto_get_sb
 id|presto_get_sb
 c_func
 (paren
@@ -714,6 +714,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|devname

@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *&n; * Filename:      irlap_frame.c&n; * Version:       1.0&n; * Description:   Build and transmit IrLAP frames&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Tue Aug 19 10:27:26 1997&n; * Modified at:   Wed Jan  5 08:59:04 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;,&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; * Filename:      irlap_frame.c&n; * Version:       1.0&n; * Description:   Build and transmit IrLAP frames&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Tue Aug 19 10:27:26 1997&n; * Modified at:   Wed Jan  5 08:59:04 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;,&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2003 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
@@ -164,7 +164,7 @@ id|qos
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|tx_skb
 suffix:semicolon
 r_struct
 id|snrm_frame
@@ -197,7 +197,7 @@ suffix:semicolon
 )paren
 suffix:semicolon
 multiline_comment|/* Allocate frame */
-id|skb
+id|tx_skb
 op_assign
 id|dev_alloc_skb
 c_func
@@ -209,7 +209,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|skb
+id|tx_skb
 )paren
 r_return
 suffix:semicolon
@@ -223,7 +223,7 @@ op_star
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 l_int|2
 )paren
@@ -264,7 +264,7 @@ id|qos
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 l_int|9
 )paren
@@ -297,7 +297,7 @@ c_func
 (paren
 id|self
 comma
-id|skb
+id|tx_skb
 )paren
 suffix:semicolon
 r_if
@@ -311,7 +311,7 @@ l_int|0
 id|dev_kfree_skb
 c_func
 (paren
-id|skb
+id|tx_skb
 )paren
 suffix:semicolon
 r_return
@@ -323,7 +323,7 @@ c_func
 (paren
 id|self
 comma
-id|skb
+id|tx_skb
 )paren
 suffix:semicolon
 )brace
@@ -376,10 +376,12 @@ id|snrm_frame
 )paren
 )paren
 (brace
-multiline_comment|/* Copy the new connection address */
+multiline_comment|/* Copy the new connection address ignoring the C/R bit */
 id|info-&gt;caddr
 op_assign
 id|frame-&gt;ncaddr
+op_amp
+l_int|0xFE
 suffix:semicolon
 multiline_comment|/* Check if the new connection address is valid */
 r_if
@@ -500,7 +502,7 @@ id|qos
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|tx_skb
 suffix:semicolon
 r_struct
 id|ua_frame
@@ -544,12 +546,8 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|skb
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/* Allocate frame */
-id|skb
+id|tx_skb
 op_assign
 id|dev_alloc_skb
 c_func
@@ -561,7 +559,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|skb
+id|tx_skb
 )paren
 r_return
 suffix:semicolon
@@ -575,7 +573,7 @@ op_star
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 l_int|10
 )paren
@@ -621,7 +619,7 @@ c_func
 (paren
 id|self
 comma
-id|skb
+id|tx_skb
 )paren
 suffix:semicolon
 r_if
@@ -635,7 +633,7 @@ l_int|0
 id|dev_kfree_skb
 c_func
 (paren
-id|skb
+id|tx_skb
 )paren
 suffix:semicolon
 r_return
@@ -647,7 +645,7 @@ c_func
 (paren
 id|self
 comma
-id|skb
+id|tx_skb
 )paren
 suffix:semicolon
 )brace
@@ -666,7 +664,7 @@ id|self
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|tx_skb
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -696,7 +694,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|skb
+id|tx_skb
 op_assign
 id|dev_alloc_skb
 c_func
@@ -708,7 +706,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|skb
+id|tx_skb
 )paren
 r_return
 suffix:semicolon
@@ -717,7 +715,7 @@ op_assign
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 l_int|2
 )paren
@@ -758,7 +756,7 @@ c_func
 (paren
 id|self
 comma
-id|skb
+id|tx_skb
 )paren
 suffix:semicolon
 )brace
@@ -777,7 +775,7 @@ id|self
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|tx_skb
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -817,7 +815,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|skb
+id|tx_skb
 op_assign
 id|dev_alloc_skb
 c_func
@@ -829,7 +827,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|skb
+id|tx_skb
 )paren
 r_return
 suffix:semicolon
@@ -838,7 +836,7 @@ op_assign
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 l_int|2
 )paren
@@ -866,7 +864,7 @@ c_func
 (paren
 id|self
 comma
-id|skb
+id|tx_skb
 )paren
 suffix:semicolon
 )brace
@@ -898,7 +896,7 @@ id|discovery
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|tx_skb
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -965,7 +963,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|skb
+id|tx_skb
 op_assign
 id|dev_alloc_skb
 c_func
@@ -977,14 +975,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|skb
+id|tx_skb
 )paren
 r_return
 suffix:semicolon
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 l_int|14
 )paren
@@ -996,7 +994,7 @@ r_struct
 id|xid_frame
 op_star
 )paren
-id|skb-&gt;data
+id|tx_skb-&gt;data
 suffix:semicolon
 r_if
 c_cond
@@ -1156,7 +1154,7 @@ op_assign
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 l_int|2
 )paren
@@ -1189,7 +1187,7 @@ op_assign
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 l_int|1
 )paren
@@ -1210,7 +1208,7 @@ op_assign
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 l_int|1
 )paren
@@ -1232,7 +1230,7 @@ comma
 id|skb_tailroom
 c_func
 (paren
-id|skb
+id|tx_skb
 )paren
 )paren
 suffix:semicolon
@@ -1241,7 +1239,7 @@ op_assign
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 id|len
 )paren
@@ -1262,7 +1260,7 @@ c_func
 (paren
 id|self
 comma
-id|skb
+id|tx_skb
 )paren
 suffix:semicolon
 )brace
@@ -1754,12 +1752,6 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* Error!! */
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -2009,13 +2001,13 @@ id|command
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|tx_skb
 suffix:semicolon
 id|__u8
 op_star
 id|frame
 suffix:semicolon
-id|skb
+id|tx_skb
 op_assign
 id|dev_alloc_skb
 c_func
@@ -2027,7 +2019,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|skb
+id|tx_skb
 )paren
 r_return
 suffix:semicolon
@@ -2036,7 +2028,7 @@ op_assign
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 l_int|2
 )paren
@@ -2082,7 +2074,7 @@ c_func
 (paren
 id|self
 comma
-id|skb
+id|tx_skb
 )paren
 suffix:semicolon
 )brace
@@ -2101,13 +2093,13 @@ id|self
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|tx_skb
 suffix:semicolon
 id|__u8
 op_star
 id|frame
 suffix:semicolon
-id|skb
+id|tx_skb
 op_assign
 id|dev_alloc_skb
 c_func
@@ -2119,7 +2111,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|skb
+id|tx_skb
 )paren
 r_return
 suffix:semicolon
@@ -2128,7 +2120,7 @@ op_assign
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 l_int|2
 )paren
@@ -2154,7 +2146,7 @@ c_func
 (paren
 id|self
 comma
-id|skb
+id|tx_skb
 )paren
 suffix:semicolon
 )brace
@@ -2243,7 +2235,7 @@ id|command
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|tx_skb
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2273,7 +2265,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|skb
+id|tx_skb
 op_assign
 id|dev_alloc_skb
 c_func
@@ -2285,7 +2277,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|skb
+id|tx_skb
 )paren
 r_return
 suffix:semicolon
@@ -2294,7 +2286,7 @@ op_assign
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 l_int|2
 )paren
@@ -2375,7 +2367,7 @@ c_func
 (paren
 id|self
 comma
-id|skb
+id|tx_skb
 )paren
 suffix:semicolon
 )brace
@@ -2762,6 +2754,22 @@ op_lshift
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; *  Insert frame in store, in case of retransmissions&n;&t;&t; *  Increase skb reference count, see irlap_do_event()&n;&t;&t; */
+id|skb_get
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+id|skb_queue_tail
+c_func
+(paren
+op_amp
+id|self-&gt;wx_list
+comma
+id|skb
+)paren
+suffix:semicolon
 multiline_comment|/* Copy buffer */
 id|tx_skb
 op_assign
@@ -2784,20 +2792,6 @@ l_int|NULL
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; *  Insert frame in store, in case of retransmissions&n;&t;&t; */
-id|skb_queue_tail
-c_func
-(paren
-op_amp
-id|self-&gt;wx_list
-comma
-id|skb_get
-c_func
-(paren
-id|skb
-)paren
-)paren
-suffix:semicolon
 id|self-&gt;vs
 op_assign
 (paren
@@ -2917,6 +2911,22 @@ op_lshift
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; *  Insert frame in store, in case of retransmissions&n;&t;&t; *  Increase skb reference count, see irlap_do_event()&n;&t;&t; */
+id|skb_get
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+id|skb_queue_tail
+c_func
+(paren
+op_amp
+id|self-&gt;wx_list
+comma
+id|skb
+)paren
+suffix:semicolon
 multiline_comment|/* Copy buffer */
 id|tx_skb
 op_assign
@@ -2939,20 +2949,6 @@ l_int|NULL
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; *  Insert frame in store, in case of retransmissions&n;&t;&t; */
-id|skb_queue_tail
-c_func
-(paren
-op_amp
-id|self-&gt;wx_list
-comma
-id|skb_get
-c_func
-(paren
-id|skb
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; *  Set poll bit if necessary. We do this to the copied&n;&t;&t; *  skb, since retransmitted need to set or clear the poll&n;&t;&t; *  bit depending on when they are sent.&n;&t;&t; */
 id|tx_skb-&gt;data
 (braket
@@ -3163,6 +3159,22 @@ op_lshift
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; *  Insert frame in store, in case of retransmissions&n;&t;&t; *  Increase skb reference count, see irlap_do_event()&n;&t;&t; */
+id|skb_get
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+id|skb_queue_tail
+c_func
+(paren
+op_amp
+id|self-&gt;wx_list
+comma
+id|skb
+)paren
+suffix:semicolon
 id|tx_skb
 op_assign
 id|skb_clone
@@ -3184,20 +3196,6 @@ l_int|NULL
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Insert frame in store */
-id|skb_queue_tail
-c_func
-(paren
-op_amp
-id|self-&gt;wx_list
-comma
-id|skb_get
-c_func
-(paren
-id|skb
-)paren
-)paren
-suffix:semicolon
 id|tx_skb-&gt;data
 (braket
 l_int|1
@@ -3364,6 +3362,22 @@ op_lshift
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; *  Insert frame in store, in case of retransmissions&n;&t;&t; *  Increase skb reference count, see irlap_do_event()&n;&t;&t; */
+id|skb_get
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+id|skb_queue_tail
+c_func
+(paren
+op_amp
+id|self-&gt;wx_list
+comma
+id|skb
+)paren
+suffix:semicolon
 id|tx_skb
 op_assign
 id|skb_clone
@@ -3385,20 +3399,6 @@ l_int|NULL
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Insert frame in store */
-id|skb_queue_tail
-c_func
-(paren
-op_amp
-id|self-&gt;wx_list
-comma
-id|skb_get
-c_func
-(paren
-id|skb
-)paren
-)paren
-suffix:semicolon
 id|self-&gt;vs
 op_assign
 (paren
@@ -3503,12 +3503,6 @@ suffix:semicolon
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize variables */
-id|skb
-op_assign
-id|tx_skb
-op_assign
-l_int|NULL
-suffix:semicolon
 id|count
 op_assign
 id|skb_queue_len
@@ -3817,13 +3811,6 @@ comma
 r_return
 suffix:semicolon
 )paren
-suffix:semicolon
-multiline_comment|/* Initialize variables */
-id|skb
-op_assign
-id|tx_skb
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/*  Resend unacknowledged frame(s) */
 id|skb
@@ -4499,7 +4486,7 @@ id|cmd
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|tx_skb
 suffix:semicolon
 r_struct
 id|test_frame
@@ -4510,7 +4497,7 @@ id|__u8
 op_star
 id|info
 suffix:semicolon
-id|skb
+id|tx_skb
 op_assign
 id|dev_alloc_skb
 c_func
@@ -4528,7 +4515,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|skb
+id|tx_skb
 )paren
 r_return
 suffix:semicolon
@@ -4551,7 +4538,7 @@ op_star
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 r_sizeof
 (paren
@@ -4589,7 +4576,7 @@ op_star
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 id|LAP_ADDR_HEADER
 op_plus
@@ -4612,7 +4599,7 @@ op_assign
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 id|cmd-&gt;len
 )paren
@@ -4642,7 +4629,7 @@ c_func
 (paren
 id|self
 comma
-id|skb
+id|tx_skb
 )paren
 suffix:semicolon
 )brace
@@ -4799,7 +4786,7 @@ id|info
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_driver_rcv (skb, netdev, ptype)&n; *&n; *    Called when a frame is received. Dispatches the right receive function&n; *    for processing of the frame.&n; *&n; */
+multiline_comment|/*&n; * Function irlap_driver_rcv (skb, netdev, ptype)&n; *&n; *    Called when a frame is received. Dispatches the right receive function&n; *    for processing of the frame.&n; *&n; * Note on skb management :&n; * After calling the higher layers of the IrDA stack, we always&n; * kfree() the skb, which drop the reference count (and potentially&n; * destroy it).&n; * If a higher layer of the stack want to keep the skb around (to put&n; * in a queue or pass it to the higher layer), it will need to use&n; * skb_get() to keep a reference on it. This is usually done at the&n; * LMP level in irlmp.c.&n; * Jean II&n; */
 DECL|function|irlap_driver_rcv
 r_int
 id|irlap_driver_rcv
@@ -4894,6 +4881,12 @@ c_func
 l_string|&quot;%s: can&squot;t clone shared skb!&bslash;n&quot;
 comma
 id|__FUNCTION__
+)paren
+suffix:semicolon
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
 )paren
 suffix:semicolon
 r_return
@@ -5356,6 +5349,7 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
+multiline_comment|/* Always drop our reference on the skb */
 id|dev_kfree_skb
 c_func
 (paren

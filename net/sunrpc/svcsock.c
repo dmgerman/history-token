@@ -2244,6 +2244,10 @@ id|rqstp-&gt;rq_addr.sin_addr.s_addr
 op_assign
 id|skb-&gt;nh.iph-&gt;saddr
 suffix:semicolon
+id|svsk-&gt;sk_sk-&gt;stamp
+op_assign
+id|skb-&gt;stamp
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2464,10 +2468,6 @@ id|serv-&gt;sv_stats-&gt;netudpcnt
 op_increment
 suffix:semicolon
 multiline_comment|/* One down, maybe more to go... */
-id|svsk-&gt;sk_sk-&gt;stamp
-op_assign
-id|skb-&gt;stamp
-suffix:semicolon
 id|svc_sock_received
 c_func
 (paren

@@ -329,11 +329,11 @@ DECL|macro|DRM_PROC_PRINT_RET
 mdefine_line|#define DRM_PROC_PRINT_RET(ret, fmt, arg...)&t;&t;&t;&t;&bslash;&n;   len += sprintf(&amp;buf[len], fmt , ##arg);&t;&t;&t;&t;&bslash;&n;   if (len &gt; DRM_PROC_LIMIT) { ret; *eof = 1; return len - offset; }
 multiline_comment|/* Mapping helper macros */
 DECL|macro|DRM_IOREMAP
-mdefine_line|#define DRM_IOREMAP(map)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(map)-&gt;handle = DRM(ioremap)( (map)-&gt;offset, (map)-&gt;size )
+mdefine_line|#define DRM_IOREMAP(map, dev)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(map)-&gt;handle = DRM(ioremap)( (map)-&gt;offset, (map)-&gt;size, (dev) )
 DECL|macro|DRM_IOREMAP_NOCACHE
-mdefine_line|#define DRM_IOREMAP_NOCACHE(map)&t;&t;&t;&t;&t;&bslash;&n;&t;(map)-&gt;handle = DRM(ioremap_nocache)((map)-&gt;offset, (map)-&gt;size)
+mdefine_line|#define DRM_IOREMAP_NOCACHE(map, dev)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(map)-&gt;handle = DRM(ioremap_nocache)((map)-&gt;offset, (map)-&gt;size, (dev))
 DECL|macro|DRM_IOREMAPFREE
-mdefine_line|#define DRM_IOREMAPFREE(map)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ( (map)-&gt;handle &amp;&amp; (map)-&gt;size )&t;&t;&t;&bslash;&n;&t;&t;&t;DRM(ioremapfree)( (map)-&gt;handle, (map)-&gt;size );&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define DRM_IOREMAPFREE(map, dev)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ( (map)-&gt;handle &amp;&amp; (map)-&gt;size )&t;&t;&t;&t;&bslash;&n;&t;&t;&t;DRM(ioremapfree)( (map)-&gt;handle, (map)-&gt;size, (dev) );&t;&bslash;&n;&t;} while (0)
 DECL|macro|DRM_FIND_MAP
 mdefine_line|#define DRM_FIND_MAP(_map, _o)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct list_head *_list;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;list_for_each( _list, &amp;dev-&gt;maplist-&gt;head ) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;drm_map_list_t *_entry = list_entry( _list, drm_map_list_t, head );&t;&bslash;&n;&t;&t;if ( _entry-&gt;map &amp;&amp;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     _entry-&gt;map-&gt;offset == (_o) ) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;(_map) = _entry-&gt;map;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; &t;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
 DECL|macro|DRM_DROP_MAP
@@ -2242,6 +2242,10 @@ comma
 r_int
 r_int
 id|size
+comma
+id|drm_device_t
+op_star
+id|dev
 )paren
 suffix:semicolon
 r_extern
@@ -2260,6 +2264,10 @@ comma
 r_int
 r_int
 id|size
+comma
+id|drm_device_t
+op_star
+id|dev
 )paren
 suffix:semicolon
 r_extern
@@ -2277,6 +2285,10 @@ comma
 r_int
 r_int
 id|size
+comma
+id|drm_device_t
+op_star
+id|dev
 )paren
 suffix:semicolon
 macro_line|#if __REALLY_HAVE_AGP

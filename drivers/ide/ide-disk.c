@@ -854,7 +854,7 @@ id|stat
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ide_multwrite() transfers a block of up to mcount sectors of data&n; * to a drive as part of a disk multiple-sector write operation.&n; *&n; * Returns 0 on success.&n; *&n; * Note that we may be called from two contexts - the do_rw_disk context&n; * and IRQ context. The IRQ can happen any time after we&squot;ve output the&n; * full &quot;mcount&quot; number of sectors, so we must make sure we update the&n; * state _before_ we output the final part of the data!&n; *&n; * The update and return to BH is a BLOCK Layer Fakey to get more data&n; * to satisfy the hardware atomic segment.  If the hardware atomic segment&n; * is shorter or smaller than the BH segment then we should be OKAY.&n; * This is only valid if we can rewind the rq-&gt;current_nr_sectors counter.&n; */
+multiline_comment|/*&n; * ide_multwrite() transfers a block of up to mcount sectors of data&n; * to a drive as part of a disk multiple-sector write operation.&n; *&n; * Returns 0 on success.&n; *&n; * Note that we may be called from two contexts - __ide_do_rw_disk() context&n; * and IRQ context. The IRQ can happen any time after we&squot;ve output the&n; * full &quot;mcount&quot; number of sectors, so we must make sure we update the&n; * state _before_ we output the final part of the data!&n; *&n; * The update and return to BH is a BLOCK Layer Fakey to get more data&n; * to satisfy the hardware atomic segment.  If the hardware atomic segment&n; * is shorter or smaller than the BH segment then we should be OKAY.&n; * This is only valid if we can rewind the rq-&gt;current_nr_sectors counter.&n; */
 DECL|function|ide_multwrite
 r_int
 id|ide_multwrite
@@ -1211,11 +1211,10 @@ id|stat
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * do_rw_disk() issues READ and WRITE commands to a disk,&n; * using LBA if supported, or CHS otherwise, to address sectors.&n; * It also takes care of issuing special DRIVE_CMDs.&n; */
-DECL|function|do_rw_disk
-r_static
+multiline_comment|/*&n; * __ide_do_rw_disk() issues READ and WRITE commands to a disk,&n; * using LBA if supported, or CHS otherwise, to address sectors.&n; * It also takes care of issuing special DRIVE_CMDs.&n; */
+DECL|function|__ide_do_rw_disk
 id|ide_startstop_t
-id|do_rw_disk
+id|__ide_do_rw_disk
 (paren
 id|ide_drive_t
 op_star
@@ -1280,24 +1279,6 @@ c_func
 l_string|&quot;Request while ide driver is blocked?&quot;
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_BLK_DEV_PDC4030) || defined(CONFIG_BLK_DEV_PDC4030_MODULE)
-r_if
-c_cond
-(paren
-id|IS_PDC4030_DRIVE
-)paren
-r_return
-id|promise_rw_disk
-c_func
-(paren
-id|drive
-comma
-id|rq
-comma
-id|block
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_PDC4030 */
 r_if
 c_cond
 (paren
@@ -2515,7 +2496,7 @@ c_func
 (paren
 id|rq
 comma
-l_string|&quot;do_rw_disk - bad command&quot;
+l_string|&quot;__ide_do_rw_disk - bad command&quot;
 )paren
 suffix:semicolon
 id|ide_end_request
@@ -2532,6 +2513,13 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
+DECL|variable|__ide_do_rw_disk
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|__ide_do_rw_disk
+)paren
+suffix:semicolon
 macro_line|#else /* CONFIG_IDE_TASKFILE_IO */
 r_static
 id|ide_startstop_t
@@ -2582,11 +2570,10 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * do_rw_disk() issues READ and WRITE commands to a disk,&n; * using LBA if supported, or CHS otherwise, to address sectors.&n; * It also takes care of issuing special DRIVE_CMDs.&n; */
-DECL|function|do_rw_disk
-r_static
+multiline_comment|/*&n; * __ide_do_rw_disk() issues READ and WRITE commands to a disk,&n; * using LBA if supported, or CHS otherwise, to address sectors.&n; * It also takes care of issuing special DRIVE_CMDs.&n; */
+DECL|function|__ide_do_rw_disk
 id|ide_startstop_t
-id|do_rw_disk
+id|__ide_do_rw_disk
 (paren
 id|ide_drive_t
 op_star
@@ -2623,7 +2610,7 @@ c_func
 (paren
 id|rq
 comma
-l_string|&quot;do_rw_disk - bad command&quot;
+l_string|&quot;__ide_do_rw_disk - bad command&quot;
 )paren
 suffix:semicolon
 id|ide_end_request
@@ -2641,24 +2628,6 @@ id|ide_stopped
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * 268435455  == 137439 MB or 28bit limit&n;&t; *&n;&t; * need to add split taskfile operations based on 28bit threshold.&n;&t; */
-macro_line|#if defined(CONFIG_BLK_DEV_PDC4030) || defined(CONFIG_BLK_DEV_PDC4030_MODULE)
-r_if
-c_cond
-(paren
-id|IS_PDC4030_DRIVE
-)paren
-r_return
-id|promise_rw_disk
-c_func
-(paren
-id|drive
-comma
-id|rq
-comma
-id|block
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_PDC4030 */
 r_if
 c_cond
 (paren
@@ -2754,6 +2723,13 @@ id|block
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__ide_do_rw_disk
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|__ide_do_rw_disk
+)paren
+suffix:semicolon
 DECL|function|get_command
 r_static
 id|task_ioreg_t
@@ -3845,6 +3821,65 @@ id|args
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_IDE_TASKFILE_IO */
+DECL|function|ide_do_rw_disk
+r_static
+id|ide_startstop_t
+id|ide_do_rw_disk
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
+comma
+id|sector_t
+id|block
+)paren
+(brace
+id|ide_hwif_t
+op_star
+id|hwif
+op_assign
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hwif-&gt;rw_disk
+)paren
+r_return
+id|hwif
+op_member_access_from_pointer
+id|rw_disk
+c_func
+(paren
+id|drive
+comma
+id|rq
+comma
+id|block
+)paren
+suffix:semicolon
+r_else
+r_return
+id|__ide_do_rw_disk
+c_func
+(paren
+id|drive
+comma
+id|rq
+comma
+id|block
+)paren
+suffix:semicolon
+)brace
 r_static
 r_int
 id|do_idedisk_flushcache
@@ -8695,23 +8730,6 @@ r_int
 r_int
 id|capacity
 suffix:semicolon
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|IS_PDC4030_DRIVE
-)paren
-id|DRIVER
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|do_request
-op_assign
-id|promise_rw_disk
-suffix:semicolon
-macro_line|#endif
 id|idedisk_add_settings
 c_func
 (paren
@@ -9303,7 +9321,7 @@ comma
 dot
 id|do_request
 op_assign
-id|do_rw_disk
+id|ide_do_rw_disk
 comma
 dot
 id|sense
@@ -10013,10 +10031,6 @@ id|g-&gt;minors
 op_assign
 l_int|1
 op_lshift
-id|PARTN_BITS
-suffix:semicolon
-id|g-&gt;minor_shift
-op_assign
 id|PARTN_BITS
 suffix:semicolon
 id|strcpy

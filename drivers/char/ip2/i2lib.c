@@ -1046,14 +1046,6 @@ id|pCh-&gt;flags
 op_assign
 l_int|0
 suffix:semicolon
-id|pCh-&gt;session
-op_assign
-l_int|0
-suffix:semicolon
-id|pCh-&gt;pgrp
-op_assign
-l_int|0
-suffix:semicolon
 id|pCh-&gt;ClosingDelay
 op_assign
 l_int|5

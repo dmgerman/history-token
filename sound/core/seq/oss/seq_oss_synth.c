@@ -272,7 +272,7 @@ id|rec-&gt;use_lock
 )paren
 suffix:semicolon
 multiline_comment|/* copy and truncate the name of synth device */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|rec-&gt;name
@@ -284,18 +284,6 @@ r_sizeof
 id|rec-&gt;name
 )paren
 )paren
-suffix:semicolon
-id|rec-&gt;name
-(braket
-r_sizeof
-(paren
-id|rec-&gt;name
-)paren
-op_minus
-l_int|1
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* registration */
 id|spin_lock_irqsave
@@ -2465,7 +2453,7 @@ id|inf-&gt;device
 op_assign
 id|dev
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|inf-&gt;name
@@ -2518,7 +2506,7 @@ id|inf-&gt;device
 op_assign
 id|dev
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|inf-&gt;name

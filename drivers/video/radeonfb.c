@@ -10121,7 +10121,7 @@ op_star
 id|rinfo-&gt;fb_base
 suffix:semicolon
 multiline_comment|/* Fill fix common fields */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info-&gt;fix.id
@@ -10133,18 +10133,6 @@ r_sizeof
 id|info-&gt;fix.id
 )paren
 )paren
-suffix:semicolon
-id|info-&gt;fix.id
-(braket
-r_sizeof
-(paren
-id|info-&gt;fix.id
-)paren
-op_minus
-l_int|1
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 id|info-&gt;fix.smem_start
 op_assign

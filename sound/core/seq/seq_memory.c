@@ -887,25 +887,6 @@ op_amp
 id|pool-&gt;lock
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-multiline_comment|/* change semaphore to allow other clients&n;&t;&t;   to access device file */
-r_if
-c_cond
-(paren
-id|file
-)paren
-id|up
-c_func
-(paren
-op_amp
-id|semaphore_of
-c_func
-(paren
-id|file
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|interruptible_sleep_on
 c_func
 (paren
@@ -913,25 +894,6 @@ op_amp
 id|pool-&gt;output_sleep
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-multiline_comment|/* restore semaphore again */
-r_if
-c_cond
-(paren
-id|file
-)paren
-id|down
-c_func
-(paren
-op_amp
-id|semaphore_of
-c_func
-(paren
-id|file
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|spin_lock
 c_func
 (paren

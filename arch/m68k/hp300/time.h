@@ -3,7 +3,7 @@ r_void
 id|hp300_sched_init
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|vector

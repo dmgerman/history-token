@@ -1,10 +1,10 @@
 multiline_comment|/* &n; * Written 2000,2002 by Andi Kleen. &n; * &n; * Loosely based on the sparc64 and IA64 32bit emulation loaders.&n; * This tricks binfmt_elf.c into loading 32bit binaries using lots &n; * of ugly preprocessor tricks. Talk about very very poor man&squot;s inheritance.&n; */
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/config.h&gt; 
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -17,12 +17,15 @@ macro_line|#include &lt;asm/fpu32.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
+macro_line|#include &lt;asm/vsyscall32.h&gt;
 DECL|macro|ELF_NAME
 mdefine_line|#define ELF_NAME &quot;elf/i386&quot;
 DECL|macro|AT_SYSINFO
 mdefine_line|#define AT_SYSINFO 32
+DECL|macro|AT_SYSINFO_EHDR
+mdefine_line|#define AT_SYSINFO_EHDR&t;&t;33
 DECL|macro|ARCH_DLINFO
-mdefine_line|#define ARCH_DLINFO NEW_AUX_ENT(AT_SYSINFO, 0xffffe000)
+mdefine_line|#define ARCH_DLINFO do {  &bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO, (u32)(u64)VSYSCALL32_VSYSCALL); &bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO_EHDR, VSYSCALL32_BASE);    &bslash;&n;} while(0)
 r_struct
 id|file
 suffix:semicolon
@@ -64,6 +67,13 @@ id|elf_gregset_t
 id|ELF_NGREG
 )braket
 suffix:semicolon
+multiline_comment|/*&n; * These macros parameterize elf_core_dump in fs/binfmt_elf.c to write out&n; * extra segments containing the vsyscall DSO contents.  Dumping its&n; * contents makes post-mortem fully interpretable later without matching up&n; * the same kernel and hardware config to see what PC values meant.&n; * Dumping its extra ELF program headers includes all the other information&n; * a debugger needs to easily find how the vsyscall DSO was being used.&n; */
+DECL|macro|ELF_CORE_EXTRA_PHDRS
+mdefine_line|#define ELF_CORE_EXTRA_PHDRS&t;&t;(VSYSCALL32_EHDR-&gt;e_phnum)
+DECL|macro|ELF_CORE_WRITE_EXTRA_PHDRS
+mdefine_line|#define ELF_CORE_WRITE_EXTRA_PHDRS&t;&t;&t;&t;&t;      &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;const struct elf32_phdr *const vsyscall_phdrs =&t;&t;&t;      &bslash;&n;&t;&t;(const struct elf32_phdr *) (VSYSCALL32_BASE&t;&t;      &bslash;&n;&t;&t;&t;&t;&t;   + VSYSCALL32_EHDR-&gt;e_phoff);&t;      &bslash;&n;&t;int i;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;Elf32_Off ofs = 0;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;for (i = 0; i &lt; VSYSCALL32_EHDR-&gt;e_phnum; ++i) {&t;&t;      &bslash;&n;&t;&t;struct elf_phdr phdr = vsyscall_phdrs[i];&t;&t;      &bslash;&n;&t;&t;if (phdr.p_type == PT_LOAD) {&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;ofs = phdr.p_offset = offset;&t;&t;&t;      &bslash;&n;&t;&t;&t;offset += phdr.p_filesz;&t;&t;&t;      &bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;phdr.p_offset += ofs;&t;&t;&t;&t;      &bslash;&n;&t;&t;phdr.p_paddr = 0; /* match other core phdrs */&t;&t;      &bslash;&n;&t;&t;DUMP_WRITE(&amp;phdr, sizeof(phdr));&t;&t;&t;      &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;} while (0)
+DECL|macro|ELF_CORE_WRITE_EXTRA_DATA
+mdefine_line|#define ELF_CORE_WRITE_EXTRA_DATA&t;&t;&t;&t;&t;      &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;const struct elf32_phdr *const vsyscall_phdrs =&t;&t;&t;      &bslash;&n;&t;&t;(const struct elf32_phdr *) (VSYSCALL32_BASE&t;&t;      &bslash;&n;&t;&t;&t;&t;&t;   + VSYSCALL32_EHDR-&gt;e_phoff);&t;      &bslash;&n;&t;int i;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;for (i = 0; i &lt; VSYSCALL32_EHDR-&gt;e_phnum; ++i) {&t;&t;      &bslash;&n;&t;&t;if (vsyscall_phdrs[i].p_type == PT_LOAD)&t;&t;      &bslash;&n;&t;&t;&t;DUMP_WRITE((void *) (u64) vsyscall_phdrs[i].p_vaddr,&t;      &bslash;&n;&t;&t;&t;&t;   vsyscall_phdrs[i].p_filesz);&t;&t;      &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;} while (0)
 DECL|struct|elf_siginfo
 r_struct
 id|elf_siginfo
@@ -430,9 +440,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -464,8 +471,6 @@ c_func
 id|KERNEL_DS
 )paren
 suffix:semicolon
-id|ret
-op_assign
 id|save_i387_ia32
 c_func
 (paren
@@ -492,7 +497,7 @@ id|oldfs
 )paren
 suffix:semicolon
 r_return
-id|ret
+l_int|1
 suffix:semicolon
 )brace
 DECL|macro|ELF_CORE_COPY_XFPREGS
@@ -905,13 +910,22 @@ id|mpnt-&gt;vm_end
 op_assign
 id|IA32_STACK_TOP
 suffix:semicolon
-id|mpnt-&gt;vm_page_prot
-op_assign
-id|PAGE_COPY_EXEC
-suffix:semicolon
 id|mpnt-&gt;vm_flags
 op_assign
-id|VM_STACK_FLAGS
+id|vm_stack_flags32
+suffix:semicolon
+id|mpnt-&gt;vm_page_prot
+op_assign
+(paren
+id|mpnt-&gt;vm_flags
+op_amp
+id|VM_EXEC
+)paren
+ques
+c_cond
+id|PAGE_COPY_EXEC
+suffix:colon
+id|PAGE_COPY
 suffix:semicolon
 id|mpnt-&gt;vm_ops
 op_assign
@@ -1073,7 +1087,7 @@ id|PROT_READ
 )paren
 id|prot
 op_or_assign
-id|PROT_EXEC
+id|vm_force_exec32
 suffix:semicolon
 id|down_write
 c_func

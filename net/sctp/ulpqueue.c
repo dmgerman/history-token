@@ -588,13 +588,12 @@ multiline_comment|/* If the socket is just going to throw this away, do not&n;&t
 r_if
 c_cond
 (paren
-id|test_bit
+id|sock_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DEAD
 )paren
 op_logical_or
 (paren

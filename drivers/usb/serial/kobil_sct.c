@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  KOBIL USB Smart Card Terminal Driver&n; *&n; *  Copyright (C) 2002  KOBIL Systems GmbH &n; *  Author: Thomas Wahrenbruch&n; *&n; *  Contact: linuxusb@kobil.de&n; *&n; *  This program is largely derived from work by the linux-usb group&n; *  and associated source files.  Please see the usb/serial files for&n; *  individual credits and copyrights.&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  Thanks to Greg Kroah-Hartman (greg@kroah.com) for his help and&n; *  patience.&n; *&n; * Supported readers: USB TWIN, KAAN Standard Plus and SecOVID Reader Plus&n; * (Adapter K), B1 Professional and KAAN Professional (Adapter B)&n; * &n; * TODO: High baudrates&n; *&n; * (12/09/2002) tw&n; *      Adapted to 2.5.&n; *&n; * (11/08/2002) tw&n; *      Initial version.&n; */
+multiline_comment|/*&n; *  KOBIL USB Smart Card Terminal Driver&n; *&n; *  Copyright (C) 2002  KOBIL Systems GmbH &n; *  Author: Thomas Wahrenbruch&n; *&n; *  Contact: linuxusb@kobil.de&n; *&n; *  This program is largely derived from work by the linux-usb group&n; *  and associated source files.  Please see the usb/serial files for&n; *  individual credits and copyrights.&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  Thanks to Greg Kroah-Hartman (greg@kroah.com) for his help and&n; *  patience.&n; *&n; * Supported readers: USB TWIN, KAAN Standard Plus and SecOVID Reader Plus&n; * (Adapter K), B1 Professional and KAAN Professional (Adapter B)&n; * &n; * (28/05/2003) tw&n; *      Add support for KAAN SIM&n; *&n; * (12/09/2002) tw&n; *      Adapted to 2.5.&n; *&n; * (11/08/2002) tw&n; *      Initial version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -32,7 +32,7 @@ macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 multiline_comment|/* Version Information */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;12/09/2002&quot;
+mdefine_line|#define DRIVER_VERSION &quot;28/05/2003&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;KOBIL Systems GmbH - http:
 singleline_comment|//www.kobil.com&quot;
@@ -46,6 +46,8 @@ DECL|macro|KOBIL_ADAPTER_K_PRODUCT_ID
 mdefine_line|#define KOBIL_ADAPTER_K_PRODUCT_ID&t;0x2012
 DECL|macro|KOBIL_USBTWIN_PRODUCT_ID
 mdefine_line|#define KOBIL_USBTWIN_PRODUCT_ID&t;0x0078
+DECL|macro|KOBIL_KAAN_SIM_PRODUCT_ID
+mdefine_line|#define KOBIL_KAAN_SIM_PRODUCT_ID       0x0081
 DECL|macro|KOBIL_TIMEOUT
 mdefine_line|#define KOBIL_TIMEOUT&t;&t;500
 DECL|macro|KOBIL_BUF_LENGTH
@@ -270,6 +272,16 @@ id|KOBIL_USBTWIN_PRODUCT_ID
 )brace
 comma
 (brace
+id|USB_DEVICE
+c_func
+(paren
+id|KOBIL_VENDOR_ID
+comma
+id|KOBIL_KAAN_SIM_PRODUCT_ID
+)paren
+)brace
+comma
+(brace
 )brace
 multiline_comment|/* Terminating entry */
 )brace
@@ -280,6 +292,40 @@ id|usb
 comma
 id|id_table
 )paren
+suffix:semicolon
+DECL|variable|kobil_driver
+r_static
+r_struct
+id|usb_driver
+id|kobil_driver
+op_assign
+(brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
+id|name
+op_assign
+l_string|&quot;kobil&quot;
+comma
+dot
+id|probe
+op_assign
+id|usb_serial_probe
+comma
+dot
+id|disconnect
+op_assign
+id|usb_serial_disconnect
+comma
+dot
+id|id_table
+op_assign
+id|id_table
+comma
+)brace
 suffix:semicolon
 DECL|variable|kobil_device
 r_struct
@@ -544,6 +590,18 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;KOBIL USBTWIN detected&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|KOBIL_KAAN_SIM_PRODUCT_ID
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;KOBIL KAAN SIM detected&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1440,10 +1498,7 @@ id|data
 op_assign
 id|purb-&gt;transfer_buffer
 suffix:semicolon
-r_char
-op_star
-id|dbg_data
-suffix:semicolon
+singleline_comment|//&t;char *dbg_data;
 id|dbg
 c_func
 (paren
@@ -1486,105 +1541,7 @@ id|purb-&gt;actual_length
 )paren
 (brace
 singleline_comment|// BEGIN DEBUG
-id|dbg_data
-op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-id|kmalloc
-c_func
-(paren
-(paren
-l_int|3
-op_star
-id|purb-&gt;actual_length
-op_plus
-l_int|10
-)paren
-op_star
-r_sizeof
-(paren
-r_char
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dbg_data
-)paren
-(brace
-r_return
-suffix:semicolon
-)brace
-id|memset
-c_func
-(paren
-id|dbg_data
-comma
-l_int|0
-comma
-(paren
-l_int|3
-op_star
-id|purb-&gt;actual_length
-op_plus
-l_int|10
-)paren
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|purb-&gt;actual_length
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|sprintf
-c_func
-(paren
-id|dbg_data
-op_plus
-l_int|3
-op_star
-id|i
-comma
-l_string|&quot;%02X &quot;
-comma
-id|data
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-)brace
-id|dbg
-c_func
-(paren
-l_string|&quot; &lt;-- %s&quot;
-comma
-id|dbg_data
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|dbg_data
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;&t;  dbg_data = (unsigned char *) kmalloc((3 *  purb-&gt;actual_length + 10) * sizeof(char), GFP_KERNEL);&n;&t;&t;  if (! dbg_data) {&n;&t;&t;  return;&n;&t;&t;  }&n;&t;&t;  memset(dbg_data, 0, (3 *  purb-&gt;actual_length + 10));&n;&t;&t;  for (i = 0; i &lt; purb-&gt;actual_length; i++) { &n;&t;&t;  sprintf(dbg_data +3*i, &quot;%02X &quot;, data[i]); &n;&t;&t;  }&n;&t;&t;  dbg(&quot; &lt;-- %s&quot;, dbg_data );&n;&t;&t;  kfree(dbg_data);&n;&t;&t;*/
 singleline_comment|// END DEBUG
 r_for
 c_loop
@@ -1848,7 +1805,7 @@ id|priv-&gt;filled
 op_plus
 id|count
 suffix:semicolon
-singleline_comment|// only send complete block. TWIN and adapter K use the same protocol.
+singleline_comment|// only send complete block. TWIN, KAAN SIM and adapter K use the same protocol.
 r_if
 c_cond
 (paren
@@ -2138,9 +2095,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|priv-&gt;device_type
 op_eq
 id|KOBIL_USBTWIN_PRODUCT_ID
+)paren
+op_logical_or
+(paren
+id|priv-&gt;device_type
+op_eq
+id|KOBIL_KAAN_SIM_PRODUCT_ID
+)paren
 )paren
 (brace
 singleline_comment|// This device doesn&squot;t support ioctl calls
@@ -2340,9 +2305,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|priv-&gt;device_type
 op_eq
 id|KOBIL_USBTWIN_PRODUCT_ID
+)paren
+op_logical_or
+(paren
+id|priv-&gt;device_type
+op_eq
+id|KOBIL_KAAN_SIM_PRODUCT_ID
+)paren
 )paren
 (brace
 singleline_comment|// This device doesn&squot;t support ioctl calls
@@ -2686,9 +2659,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|priv-&gt;device_type
 op_eq
 id|KOBIL_USBTWIN_PRODUCT_ID
+)paren
+op_logical_or
+(paren
+id|priv-&gt;device_type
+op_eq
+id|KOBIL_KAAN_SIM_PRODUCT_ID
+)paren
 )paren
 (brace
 singleline_comment|// This device doesn&squot;t support ioctl calls
@@ -3217,6 +3198,12 @@ op_amp
 id|kobil_device
 )paren
 suffix:semicolon
+id|usb_register
+(paren
+op_amp
+id|kobil_driver
+)paren
+suffix:semicolon
 id|info
 c_func
 (paren
@@ -3244,6 +3231,12 @@ id|kobil_exit
 r_void
 )paren
 (brace
+id|usb_deregister
+(paren
+op_amp
+id|kobil_driver
+)paren
+suffix:semicolon
 id|usb_serial_deregister
 (paren
 op_amp

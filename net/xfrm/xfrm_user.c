@@ -1151,7 +1151,7 @@ id|xfrm_state_lookup
 c_func
 (paren
 op_amp
-id|x-&gt;props.saddr
+id|x-&gt;id.daddr
 comma
 id|x-&gt;id.spi
 comma
@@ -1237,7 +1237,7 @@ id|xfrm_state_lookup
 c_func
 (paren
 op_amp
-id|p-&gt;saddr
+id|p-&gt;daddr
 comma
 id|p-&gt;spi
 comma
@@ -1928,7 +1928,7 @@ id|xfrm_state_lookup
 c_func
 (paren
 op_amp
-id|p-&gt;saddr
+id|p-&gt;daddr
 comma
 id|p-&gt;spi
 comma
@@ -2963,6 +2963,9 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+r_int
+id|excl
+suffix:semicolon
 id|err
 op_assign
 id|verify_newpolicy_info
@@ -3007,6 +3010,12 @@ id|xp
 r_return
 id|err
 suffix:semicolon
+id|excl
+op_assign
+id|nlh-&gt;nlmsg_type
+op_eq
+id|XFRM_MSG_NEWPOLICY
+suffix:semicolon
 id|err
 op_assign
 id|xfrm_policy_insert
@@ -3016,7 +3025,7 @@ id|p-&gt;dir
 comma
 id|xp
 comma
-l_int|1
+id|excl
 )paren
 suffix:semicolon
 r_if
@@ -3870,6 +3879,17 @@ id|xfrm_user_expire
 )paren
 comma
 multiline_comment|/* EXPIRE */
+id|NLMSG_LENGTH
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|xfrm_userpolicy_info
+)paren
+)paren
+comma
+multiline_comment|/* UPD POLICY */
 )brace
 suffix:semicolon
 DECL|struct|xfrm_link
@@ -3981,6 +4001,19 @@ dot
 id|doit
 op_assign
 id|xfrm_alloc_userspi
+)brace
+comma
+(brace
+)brace
+comma
+(brace
+)brace
+comma
+(brace
+dot
+id|doit
+op_assign
+id|xfrm_add_policy
 )brace
 comma
 )brace

@@ -59,7 +59,7 @@ singleline_comment|//#define&t;ENABLE_IRQ()&t;enable_irq( SUN3_VEC_VMESCSI0 );
 DECL|macro|ENABLE_IRQ
 mdefine_line|#define ENABLE_IRQ()
 r_static
-r_void
+id|irqreturn_t
 id|scsi_sun3_intr
 c_func
 (paren
@@ -1076,7 +1076,7 @@ DECL|macro|CSR_GOOD
 mdefine_line|#define CSR_GOOD 0x060f
 DECL|function|scsi_sun3_intr
 r_static
-r_void
+id|irqreturn_t
 id|scsi_sun3_intr
 c_func
 (paren
@@ -1098,6 +1098,11 @@ r_int
 id|csr
 op_assign
 id|dregs-&gt;csr
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|dregs-&gt;csr
 op_and_assign
@@ -1185,6 +1190,10 @@ id|default_instance-&gt;host_no
 )paren
 suffix:semicolon
 )brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -1208,7 +1217,18 @@ comma
 id|fp
 )paren
 suffix:semicolon
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Debug stuff - to be called on NMI, or sysrq key. Use at your own risk; &n; * reentering NCR5380_print_status seems to have ugly side effects&n; */
 multiline_comment|/* this doesn&squot;t seem to get used at all -- sam */

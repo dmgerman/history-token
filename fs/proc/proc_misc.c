@@ -2453,14 +2453,6 @@ comma
 id|saved_command_line
 )paren
 suffix:semicolon
-id|len
-op_assign
-id|strlen
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 r_return
 id|proc_calc_metrics
 c_func

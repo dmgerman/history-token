@@ -145,6 +145,12 @@ DECL|member|lock
 id|rwlock_t
 id|lock
 suffix:semicolon
+multiline_comment|/*&n;&t; * This semaphore is used to ensure that files are not removed&n;&t; * while epoll is using them. This is read-held during the event&n;&t; * collection loop and it is write-held during the file cleanup&n;&t; * path, the epoll file exit code and the ctl operations.&n;&t; */
+DECL|member|sem
+r_struct
+id|rw_semaphore
+id|sem
+suffix:semicolon
 multiline_comment|/* Wait queue used by sys_epoll_wait() */
 DECL|member|wq
 id|wait_queue_head_t
@@ -790,6 +796,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name
@@ -805,13 +812,6 @@ r_static
 r_struct
 id|poll_safewake
 id|psw
-suffix:semicolon
-multiline_comment|/*&n; * This semaphore is used to ensure that files are not removed&n; * while epoll is using them. Namely the f_op-&gt;poll(), since&n; * it has to be called from outside the lock, must be protected.&n; * This is read-held during the event transfer loop to userspace&n; * and it is write-held during the file cleanup path and the epoll&n; * file exit code.&n; */
-DECL|variable|epsem
-r_static
-r_struct
-id|rw_semaphore
-id|epsem
 suffix:semicolon
 multiline_comment|/* Slab cache used to allocate &quot;struct epitem&quot; */
 DECL|variable|epi_cache
@@ -1008,25 +1008,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tncur-&gt;task
-op_eq
-id|this_task
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|tncur-&gt;wq
 op_eq
 id|wq
 op_logical_or
+(paren
+id|tncur-&gt;task
+op_eq
+id|this_task
+op_logical_and
 op_increment
 id|wake_nests
 OG
 id|EP_MAX_POLLWAKE_NESTS
 )paren
+)paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Ops ... loop detected or maximum nest level reached.&n;&t;&t;&t;&t; * We abort this wake by breaking the cycle itself.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Ops ... loop detected or maximum nest level reached.&n;&t;&t;&t; * We abort this wake by breaking the cycle itself.&n;&t;&t;&t; */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -1038,7 +1036,6 @@ id|flags
 suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/* Add the current task to the list */
@@ -1224,13 +1221,6 @@ id|lsthead
 r_return
 suffix:semicolon
 multiline_comment|/*&n;&t; * We don&squot;t want to get &quot;file-&gt;f_ep_lock&quot; because it is not&n;&t; * necessary. It is not necessary because we&squot;re in the &quot;struct file&quot;&n;&t; * cleanup path, and this means that noone is using this file anymore.&n;&t; * The only hit might come from ep_free() but by holding the semaphore&n;&t; * will correctly serialize the operation.&n;&t; */
-id|down_write
-c_func
-(paren
-op_amp
-id|epsem
-)paren
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -1262,6 +1252,13 @@ op_amp
 id|epi-&gt;fllink
 )paren
 suffix:semicolon
+id|down_write
+c_func
+(paren
+op_amp
+id|epi-&gt;ep-&gt;sem
+)paren
+suffix:semicolon
 id|ep_remove
 c_func
 (paren
@@ -1270,14 +1267,14 @@ comma
 id|epi
 )paren
 suffix:semicolon
-)brace
 id|up_write
 c_func
 (paren
 op_amp
-id|epsem
+id|epi-&gt;ep-&gt;sem
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * It opens an eventpoll file descriptor by suggesting a storage of &quot;size&quot;&n; * file descriptors. The size parameter is just an hint about how to size&n; * data structures. It won&squot;t prevent the user to store more than &quot;size&quot;&n; * file descriptors inside the epoll interface. It is the kernel part of&n; * the userspace epoll_create(2).&n; */
 DECL|function|sys_epoll_create
@@ -1680,6 +1677,15 @@ c_cond
 (paren
 id|epi
 )paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * We need to protect the remove operation because another&n;&t;&t;&t; * thread might be doing an epoll_wait() and using the&n;&t;&t;&t; * target file.&n;&t;&t;&t; */
+id|down_write
+c_func
+(paren
+op_amp
+id|ep-&gt;sem
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|ep_remove
@@ -1690,6 +1696,14 @@ comma
 id|epi
 )paren
 suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|ep-&gt;sem
+)paren
+suffix:semicolon
+)brace
 r_else
 id|error
 op_assign
@@ -2194,7 +2208,6 @@ c_func
 id|dentry
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Initialize the file as read/write because it could be used&n;&t; * with write() to add/remove/change interest sets.&n;&t; */
 id|file-&gt;f_pos
 op_assign
 l_int|0
@@ -2692,6 +2705,13 @@ op_amp
 id|ep-&gt;lock
 )paren
 suffix:semicolon
+id|init_rwsem
+c_func
+(paren
+op_amp
+id|ep-&gt;sem
+)paren
+suffix:semicolon
 id|init_waitqueue_head
 c_func
 (paren
@@ -2813,12 +2833,33 @@ id|epitem
 op_star
 id|epi
 suffix:semicolon
+multiline_comment|/* We need to release all tasks waiting for these file */
+r_if
+c_cond
+(paren
+id|waitqueue_active
+c_func
+(paren
+op_amp
+id|ep-&gt;poll_wait
+)paren
+)paren
+id|ep_poll_safewake
+c_func
+(paren
+op_amp
+id|psw
+comma
+op_amp
+id|ep-&gt;poll_wait
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * We need to lock this because we could be hit by&n;&t; * eventpoll_release() while we&squot;re freeing the &quot;struct eventpoll&quot;.&n;&t; */
 id|down_write
 c_func
 (paren
 op_amp
-id|epsem
+id|ep-&gt;sem
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Walks through the whole hash by unregistering poll callbacks.&n;&t; */
@@ -2884,7 +2925,7 @@ id|epi
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Walks through the whole hash by freeing each &quot;struct epitem&quot;. At this&n;&t; * point we are sure no poll callbacks will be lingering around, and also by&n;&t; * write-holding &quot;epsem&quot; we can be sure that no file cleanup code will hit&n;&t; * us during this operation. So we can avoid the lock on &quot;ep-&gt;lock&quot;.&n;&t; */
+multiline_comment|/*&n;&t; * Walks through the whole hash by freeing each &quot;struct epitem&quot;. At this&n;&t; * point we are sure no poll callbacks will be lingering around, and also by&n;&t; * write-holding &quot;sem&quot; we can be sure that no file cleanup code will hit&n;&t; * us during this operation. So we can avoid the lock on &quot;ep-&gt;lock&quot;.&n;&t; */
 r_for
 c_loop
 (paren
@@ -2954,7 +2995,7 @@ id|up_write
 c_func
 (paren
 op_amp
-id|epsem
+id|ep-&gt;sem
 )paren
 suffix:semicolon
 multiline_comment|/* Free hash pages */
@@ -4595,20 +4636,6 @@ id|epi-&gt;txlink
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * We need to increase the usage count of the &quot;struct epitem&quot; because&n;&t;&t;&t; * another thread might call EPOLL_CTL_DEL on this target and make the&n;&t;&t;&t; * object to vanish underneath our nose.&n;&t;&t;&t; */
-id|ep_use_epitem
-c_func
-(paren
-id|epi
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * We need to increase the usage count of the &quot;struct file&quot; because&n;&t;&t;&t; * another thread might call close() on this target and make the file&n;&t;&t;&t; * to vanish before we will be able to call f_op-&gt;poll().&n;&t;&t;&t; */
-id|get_file
-c_func
-(paren
-id|epi-&gt;file
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * This is initialized in this way so that the default&n;&t;&t;&t; * behaviour of the reinjecting code will be to push back&n;&t;&t;&t; * the item inside the ready list.&n;&t;&t;&t; */
 id|epi-&gt;revents
 op_assign
@@ -4703,6 +4730,7 @@ id|event
 id|EP_MAX_BUF_EVENTS
 )braket
 suffix:semicolon
+multiline_comment|/*&n;&t; * We can loop without lock because this is a task private list.&n;&t; * The test done during the collection loop will guarantee us that&n;&t; * another task will not try to collect this file. Also, items&n;&t; * cannot vanish during the loop because we are holding &quot;sem&quot;.&n;&t; */
 id|list_for_each
 c_func
 (paren
@@ -4724,7 +4752,7 @@ comma
 id|txlink
 )paren
 suffix:semicolon
-multiline_comment|/* Get the ready file event set */
+multiline_comment|/*&n;&t;&t; * Get the ready file event set. We can safely use the file&n;&t;&t; * because we are holding the &quot;sem&quot; in read and this will&n;&t;&t; * guarantee that both the file and the item will not vanish.&n;&t;&t; */
 id|revents
 op_assign
 id|epi-&gt;file-&gt;f_op
@@ -4735,13 +4763,6 @@ c_func
 id|epi-&gt;file
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Release the file usage before checking the event mask.&n;&t;&t; * In case this call will lead to the file removal, its&n;&t;&t; * -&gt;event.events member has been already set to zero and&n;&t;&t; * this will make the event to be dropped.&n;&t;&t; */
-id|fput
-c_func
-(paren
-id|epi-&gt;file
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Set the return event set for the current file descriptor.&n;&t;&t; * Note that only the task task was successfully able to link&n;&t;&t; * the item to its &quot;txlist&quot; will write this field.&n;&t;&t; */
@@ -4807,49 +4828,10 @@ id|epoll_event
 )paren
 )paren
 )paren
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * We need to complete the loop to decrement the file&n;&t;&t;&t;&t;&t; * usage before returning from this function.&n;&t;&t;&t;&t;&t; */
-r_for
-c_loop
-(paren
-id|lnk
-op_assign
-id|lnk-&gt;next
-suffix:semicolon
-id|lnk
-op_ne
-id|txlist
-suffix:semicolon
-id|lnk
-op_assign
-id|lnk-&gt;next
-)paren
-(brace
-id|epi
-op_assign
-id|list_entry
-c_func
-(paren
-id|lnk
-comma
-r_struct
-id|epitem
-comma
-id|txlink
-)paren
-suffix:semicolon
-id|fput
-c_func
-(paren
-id|epi-&gt;file
-)paren
-suffix:semicolon
-)brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|eventcnt
 op_add_assign
 id|eventbuf
@@ -4903,7 +4885,7 @@ r_return
 id|eventcnt
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Walk through the transfer list we collected with ep_collect_ready_items()&n; * and, if 1) the item is still &quot;alive&quot; 2) its event set is not empty 3) it&squot;s&n; * not already linked, links it to the ready list.&n; */
+multiline_comment|/*&n; * Walk through the transfer list we collected with ep_collect_ready_items()&n; * and, if 1) the item is still &quot;alive&quot; 2) its event set is not empty 3) it&squot;s&n; * not already linked, links it to the ready list. Same as above, we are holding&n; * &quot;sem&quot; so items cannot vanish underneath our nose.&n; */
 DECL|function|ep_reinject_items
 r_static
 r_void
@@ -5027,12 +5009,6 @@ id|ricnt
 op_increment
 suffix:semicolon
 )brace
-id|ep_release_epitem
-c_func
-(paren
-id|epi
-)paren
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -5135,12 +5111,12 @@ op_amp
 id|txlist
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We need to lock this because we could be hit by&n;&t; * eventpoll_release() while we&squot;re transfering&n;&t; * events to userspace. Read-holding &quot;epsem&quot; will lock&n;&t; * out eventpoll_release() during the whole&n;&t; * transfer loop and this will garantie us that the&n;&t; * file will not vanish underneath our nose when&n;&t; * we will call f_op-&gt;poll() from ep_send_events().&n;&t; */
+multiline_comment|/*&n;&t; * We need to lock this because we could be hit by&n;&t; * eventpoll_release() and epoll_ctl(EPOLL_CTL_DEL).&n;&t; */
 id|down_read
 c_func
 (paren
 op_amp
-id|epsem
+id|ep-&gt;sem
 )paren
 suffix:semicolon
 multiline_comment|/* Collect/extract ready items */
@@ -5157,6 +5133,8 @@ id|txlist
 comma
 id|maxevents
 )paren
+OG
+l_int|0
 )paren
 (brace
 multiline_comment|/* Build result set in userspace */
@@ -5188,7 +5166,7 @@ id|up_read
 c_func
 (paren
 op_amp
-id|epsem
+id|ep-&gt;sem
 )paren
 suffix:semicolon
 r_return
@@ -5557,11 +5535,11 @@ id|error
 )paren
 suffix:semicolon
 )brace
-DECL|function|eventpollfs_get_sb
 r_static
 r_struct
 id|super_block
 op_star
+DECL|function|eventpollfs_get_sb
 id|eventpollfs_get_sb
 c_func
 (paren
@@ -5573,6 +5551,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name
@@ -5608,14 +5587,6 @@ r_void
 (brace
 r_int
 id|error
-suffix:semicolon
-multiline_comment|/* Initialize the semaphore used to syncronize the file cleanup code */
-id|init_rwsem
-c_func
-(paren
-op_amp
-id|epsem
-)paren
 suffix:semicolon
 multiline_comment|/* Initialize the structure used to perform safe poll wait head wake ups */
 id|ep_poll_safewake_init

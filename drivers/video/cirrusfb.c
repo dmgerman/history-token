@@ -11900,7 +11900,7 @@ op_assign
 op_amp
 id|clgen_hwswitch
 suffix:semicolon
-id|strncpy
+id|strlcpy
 (paren
 id|fb_info-&gt;gen.info.modename
 comma
@@ -11916,18 +11916,6 @@ r_sizeof
 id|fb_info-&gt;gen.info.modename
 )paren
 )paren
-suffix:semicolon
-id|fb_info-&gt;gen.info.modename
-(braket
-r_sizeof
-(paren
-id|fb_info-&gt;gen.info.modename
-)paren
-op_minus
-l_int|1
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 id|fb_info-&gt;gen.info.fbops
 op_assign

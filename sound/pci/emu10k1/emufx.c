@@ -6045,7 +6045,7 @@ id|gctl.id.iface
 op_assign
 id|id-&gt;iface
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|gctl.id.name
@@ -6210,7 +6210,7 @@ l_int|0
 r_goto
 id|__error
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|emu-&gt;fx8010.name
@@ -6221,21 +6221,7 @@ r_sizeof
 (paren
 id|emu-&gt;fx8010.name
 )paren
-op_minus
-l_int|1
 )paren
-suffix:semicolon
-id|emu-&gt;fx8010.name
-(braket
-r_sizeof
-(paren
-id|emu-&gt;fx8010.name
-)paren
-op_minus
-l_int|1
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 multiline_comment|/* stop FX processor - this may be dangerous, but it&squot;s better to miss&n;&t;   some samples than generate wrong ones - [jk] */
 r_if
@@ -6382,7 +6368,7 @@ op_amp
 id|emu-&gt;fx8010.lock
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|icode-&gt;name
@@ -6393,21 +6379,7 @@ r_sizeof
 (paren
 id|icode-&gt;name
 )paren
-op_minus
-l_int|1
 )paren
-suffix:semicolon
-id|emu-&gt;fx8010.name
-(braket
-r_sizeof
-(paren
-id|emu-&gt;fx8010.name
-)paren
-op_minus
-l_int|1
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 multiline_comment|/* ok, do the main job */
 id|snd_emu10k1_gpr_peek
@@ -17036,7 +17008,6 @@ l_int|0
 comma
 r_sizeof
 (paren
-op_star
 id|info
 )paren
 )paren

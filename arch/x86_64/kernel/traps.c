@@ -2766,10 +2766,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|tsk-&gt;thread.debugreg
-(braket
-l_int|7
-)braket
+id|tsk-&gt;thread.debugreg7
 )paren
 (brace
 r_goto
@@ -2777,10 +2774,7 @@ id|clear_dr7
 suffix:semicolon
 )brace
 )brace
-id|tsk-&gt;thread.debugreg
-(braket
-l_int|6
-)braket
+id|tsk-&gt;thread.debugreg6
 op_assign
 id|condition
 suffix:semicolon

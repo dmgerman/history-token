@@ -38,6 +38,9 @@ id|vsid
 comma
 r_int
 id|large
+comma
+r_int
+id|kernel_segment
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Build an entry for the base kernel segment and put it into&n; * the segment table or SLB.  All other segment table or SLB&n; * entries are faulted in.&n; */
@@ -135,6 +138,17 @@ comma
 id|vsid
 comma
 l_int|0
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;isync&quot;
+op_scope_resolution
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -619,7 +633,7 @@ l_int|0x7
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Create a segment buffer entry for the given esid/vsid pair.&n; */
+multiline_comment|/*&n; * Create a segment buffer entry for the given esid/vsid pair.&n; *&n; * NOTE: A context syncronising instruction is required before and after&n; * this, in the common case we use exception entry and rfid.&n; */
 DECL|function|make_slbe
 r_void
 id|make_slbe
@@ -635,13 +649,11 @@ id|vsid
 comma
 r_int
 id|large
-)paren
-(brace
+comma
 r_int
 id|kernel_segment
-op_assign
-l_int|0
-suffix:semicolon
+)paren
+(brace
 r_int
 r_int
 id|entry
@@ -672,24 +684,7 @@ suffix:semicolon
 )brace
 id|vsid_data
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|REGION_ID
-c_func
-(paren
-id|esid
-op_lshift
-id|SID_SHIFT
-)paren
-op_ge
-id|KERNEL_REGION_ID
-)paren
-id|kernel_segment
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/*&n;&t; * Find an empty entry, if one exists.&n;&t; */
+multiline_comment|/*&n;&t; * Find an empty entry, if one exists. Must start at 0 because&n;&t; * we use this code to load SLB entry 0 at boot.&n;&t; */
 r_for
 c_loop
 (paren
@@ -727,97 +722,9 @@ c_cond
 op_logical_neg
 id|esid_data.data.v
 )paren
-(brace
-multiline_comment|/* &n;&t;&t;&t; * Write the new SLB entry.&n;&t;&t;&t; */
-id|vsid_data.word0
-op_assign
-l_int|0
+r_goto
+id|write_entry
 suffix:semicolon
-id|vsid_data.data.vsid
-op_assign
-id|vsid
-suffix:semicolon
-id|vsid_data.data.kp
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|large
-)paren
-id|vsid_data.data.l
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|kernel_segment
-)paren
-id|vsid_data.data.c
-op_assign
-l_int|1
-suffix:semicolon
-id|esid_data.word0
-op_assign
-l_int|0
-suffix:semicolon
-id|esid_data.data.esid
-op_assign
-id|esid
-suffix:semicolon
-id|esid_data.data.v
-op_assign
-l_int|1
-suffix:semicolon
-id|esid_data.data.index
-op_assign
-id|entry
-suffix:semicolon
-multiline_comment|/* slbie not needed as no previous mapping existed. */
-multiline_comment|/* Order update  */
-id|asm
-r_volatile
-(paren
-l_string|&quot;isync&quot;
-suffix:colon
-suffix:colon
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;slbmte  %0,%1&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|vsid_data
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|esid_data
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Order update  */
-id|asm
-r_volatile
-(paren
-l_string|&quot;isync&quot;
-suffix:colon
-suffix:colon
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;&t; * Could not find empty entry, pick one with a round robin selection.&n;&t; */
 id|PMC_SW_PROCESSOR
@@ -890,8 +797,6 @@ c_func
 (paren
 )paren
 )paren
-op_logical_and
-id|esid_data.data.v
 )paren
 suffix:semicolon
 id|get_paca
@@ -904,6 +809,8 @@ op_assign
 id|castout_entry
 suffix:semicolon
 multiline_comment|/* slbie not needed as the previous mapping is still valid. */
+id|write_entry
+suffix:colon
 multiline_comment|/* &n;&t; * Write the new SLB entry.&n;&t; */
 id|vsid_data.word0
 op_assign
@@ -951,17 +858,7 @@ id|esid_data.data.index
 op_assign
 id|entry
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;isync&quot;
-suffix:colon
-suffix:colon
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Order update */
+multiline_comment|/*&n;&t; * No need for an isync before or after this slbmte. The exception&n;         * we enter with and the rfid we exit with are context synchronizing.&n;&t; */
 id|asm
 r_volatile
 (paren
@@ -979,17 +876,6 @@ id|esid_data
 )paren
 )paren
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;isync&quot;
-suffix:colon
-suffix:colon
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Order update */
 )brace
 DECL|function|__ste_allocate
 r_static
@@ -1041,6 +927,8 @@ comma
 id|vsid
 comma
 l_int|1
+comma
+id|kernel_segment
 )paren
 suffix:semicolon
 r_else
@@ -1053,6 +941,8 @@ comma
 id|vsid
 comma
 l_int|0
+comma
+id|kernel_segment
 )paren
 suffix:semicolon
 )brace

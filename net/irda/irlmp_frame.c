@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlmp_frame.c&n; * Version:       0.9&n; * Description:   IrLMP frame implementation&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Tue Aug 19 02:09:59 1997&n; * Modified at:   Mon Dec 13 13:41:12 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlmp_frame.c&n; * Version:       0.9&n; * Description:   IrLMP frame implementation&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Tue Aug 19 02:09:59 1997&n; * Modified at:   Mon Dec 13 13:41:12 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2003 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -526,12 +526,6 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -626,12 +620,6 @@ comma
 l_string|&quot;Access mode cmd not implemented!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -643,12 +631,6 @@ c_func
 l_int|0
 comma
 l_string|&quot;Access mode cnf not implemented!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 r_break
@@ -668,12 +650,6 @@ id|fp
 (braket
 l_int|2
 )braket
-)paren
-suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 r_break
@@ -878,12 +854,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -912,12 +882,6 @@ comma
 l_string|&quot;%s(), dropping frame!&bslash;n&quot;
 comma
 id|__FUNCTION__
-)paren
-suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 r_return
@@ -1028,12 +992,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_IRDA_ULTRA */
@@ -1059,7 +1017,7 @@ comma
 r_struct
 id|sk_buff
 op_star
-id|userdata
+id|skb
 )paren
 (brace
 id|IRDA_DEBUG
@@ -1102,18 +1060,7 @@ id|lap-&gt;daddr
 op_assign
 id|DEV_ADDR_ANY
 suffix:semicolon
-multiline_comment|/* FIXME: must do something with the userdata if any */
-r_if
-c_cond
-(paren
-id|userdata
-)paren
-id|dev_kfree_skb
-c_func
-(paren
-id|userdata
-)paren
-suffix:semicolon
+multiline_comment|/* FIXME: must do something with the skb if any */
 multiline_comment|/*&n;&t; *  Inform station state machine&n;&t; */
 id|irlmp_do_lap_event
 c_func
@@ -1215,7 +1162,7 @@ comma
 r_struct
 id|sk_buff
 op_star
-id|userdata
+id|skb
 )paren
 (brace
 id|IRDA_DEBUG
@@ -1261,18 +1208,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-multiline_comment|/* Don&squot;t need use the userdata for now */
-r_if
-c_cond
-(paren
-id|userdata
-)paren
-id|dev_kfree_skb
-c_func
-(paren
-id|userdata
-)paren
-suffix:semicolon
+multiline_comment|/* Don&squot;t need use the skb for now */
 multiline_comment|/* Copy QoS settings for this session */
 id|self-&gt;qos
 op_assign

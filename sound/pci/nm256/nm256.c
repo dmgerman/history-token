@@ -798,14 +798,28 @@ suffix:semicolon
 multiline_comment|/* coefficient buffer for each stream */
 DECL|member|coeffs_current
 r_int
+r_int
 id|coeffs_current
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* coeff. table is loaded? */
 DECL|member|use_cache
 r_int
+r_int
 id|use_cache
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* use one big coef. table */
+DECL|member|latitude_workaround
+r_int
+r_int
+id|latitude_workaround
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Dell Latitude LS workaround needed */
 DECL|member|mixer_base
 r_int
 id|mixer_base
@@ -4064,6 +4078,7 @@ comma
 id|dev_id
 comma
 r_return
+id|IRQ_NONE
 )paren
 suffix:semicolon
 id|u32
@@ -4611,7 +4626,13 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#if 0 /* Dell latitude LS will lock up by this */
+r_if
+c_cond
+(paren
+id|chip-&gt;latitude_workaround
+)paren
+(brace
+multiline_comment|/* Dell latitude LS will lock up by this */
 id|snd_nm256_writeb
 c_func
 (paren
@@ -4622,7 +4643,7 @@ comma
 l_int|0x87
 )paren
 suffix:semicolon
-macro_line|#endif
+)brace
 id|snd_nm256_writeb
 c_func
 (paren
@@ -4671,6 +4692,8 @@ id|ac97
 suffix:semicolon
 r_int
 id|i
+comma
+id|err
 suffix:semicolon
 multiline_comment|/* looks like nm256 hangs up when unexpected registers are touched... */
 r_static
@@ -4744,6 +4767,11 @@ id|ac97.read
 op_assign
 id|snd_nm256_ac97_read
 suffix:semicolon
+id|ac97.scaps
+op_assign
+id|AC97_SCAP_AUDIO
+suffix:semicolon
+multiline_comment|/* we support audio! */
 id|ac97.limited_regs
 op_assign
 l_int|1
@@ -4780,7 +4808,8 @@ id|ac97.private_data
 op_assign
 id|chip
 suffix:semicolon
-r_return
+id|err
+op_assign
 id|snd_ac97_mixer
 c_func
 (paren
@@ -4792,6 +4821,44 @@ comma
 op_amp
 id|chip-&gt;ac97
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
+)paren
+r_return
+id|err
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|chip-&gt;ac97-&gt;id
+op_amp
+(paren
+l_int|0xf0000000
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/* looks like an invalid id */
+id|sprintf
+c_func
+(paren
+id|chip-&gt;card-&gt;mixername
+comma
+l_string|&quot;%s AC97&quot;
+comma
+id|chip-&gt;card-&gt;driver
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * See if the signature left by the NM256 BIOS is intact; if so, we use&n; * the associated address as the end of our audio buffer in the video&n; * RAM.&n; */
@@ -5559,6 +5626,11 @@ suffix:semicolon
 id|u32
 id|addr
 suffix:semicolon
+id|u16
+id|subsystem_vendor
+comma
+id|subsystem_device
+suffix:semicolon
 op_star
 id|chip_ret
 op_assign
@@ -6170,6 +6242,51 @@ id|chip-&gt;coeffs_current
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* check workarounds */
+id|chip-&gt;latitude_workaround
+op_assign
+l_int|1
+suffix:semicolon
+id|pci_read_config_word
+c_func
+(paren
+id|pci
+comma
+id|PCI_SUBSYSTEM_VENDOR_ID
+comma
+op_amp
+id|subsystem_vendor
+)paren
+suffix:semicolon
+id|pci_read_config_word
+c_func
+(paren
+id|pci
+comma
+id|PCI_SUBSYSTEM_ID
+comma
+op_amp
+id|subsystem_device
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|subsystem_vendor
+op_eq
+l_int|0x104d
+op_logical_and
+id|subsystem_device
+op_eq
+l_int|0x8041
+)paren
+(brace
+multiline_comment|/* this workaround will cause lock-up after suspend/resume on Sony PCG-F305 */
+id|chip-&gt;latitude_workaround
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|snd_nm256_init_chip
 c_func
 (paren

@@ -2168,7 +2168,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|slot-&gt;kobj.name

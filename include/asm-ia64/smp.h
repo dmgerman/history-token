@@ -417,13 +417,6 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|smp_send_reschedule_all
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#endif /* _ASM_IA64_SMP_H */
 eof

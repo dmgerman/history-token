@@ -103,6 +103,30 @@ op_assign
 l_int|32
 )brace
 suffix:semicolon
+DECL|variable|spdif
+r_static
+r_int
+id|spdif
+(braket
+id|SNDRV_CARDS
+)braket
+op_assign
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+(paren
+id|SNDRV_CARDS
+op_minus
+l_int|1
+)paren
+)braket
+op_assign
+l_int|0
+)brace
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -224,6 +248,38 @@ id|SNDRV_ENABLED
 l_string|&quot;,default:32,allows:{{1,32}}&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|spdif
+comma
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|SNDRV_CARDS
+)paren
+l_string|&quot;l&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|spdif
+comma
+l_string|&quot;Support SPDIF I/O&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_SYNTAX
+c_func
+(paren
+id|spdif
+comma
+id|SNDRV_ENABLED
+l_string|&quot;,&quot;
+id|SNDRV_BOOLEAN_FALSE_DESC
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *  Debug part definitions&n; */
 singleline_comment|//#define ALI_DEBUG
 macro_line|#ifdef ALI_DEBUG
@@ -293,12 +349,20 @@ DECL|macro|ALI_AC97_READ
 mdefine_line|#define ALI_AC97_READ&t;&t;0x44
 DECL|macro|ALI_SCTRL
 mdefine_line|#define ALI_SCTRL&t;&t;0x48
+DECL|macro|ALI_SPDIF_OUT_ENABLE
+mdefine_line|#define   ALI_SPDIF_OUT_ENABLE&t;&t;0x20
 DECL|macro|ALI_AC97_GPIO
 mdefine_line|#define ALI_AC97_GPIO&t;&t;0x4c
 DECL|macro|ALI_SPDIF_CS
 mdefine_line|#define ALI_SPDIF_CS&t;&t;0x70
 DECL|macro|ALI_SPDIF_CTRL
 mdefine_line|#define ALI_SPDIF_CTRL&t;&t;0x74
+DECL|macro|ALI_SPDIF_IN_FUNC_ENABLE
+mdefine_line|#define   ALI_SPDIF_IN_FUNC_ENABLE&t;0x02
+DECL|macro|ALI_SPDIF_IN_CH_STATUS
+mdefine_line|#define   ALI_SPDIF_IN_CH_STATUS&t;0x40
+DECL|macro|ALI_SPDIF_OUT_CH_STATUS
+mdefine_line|#define   ALI_SPDIF_OUT_CH_STATUS&t;0xbf
 DECL|macro|ALI_START
 mdefine_line|#define ALI_START&t;&t;0x80
 DECL|macro|ALI_STOP
@@ -337,6 +401,16 @@ DECL|macro|ALI_STIMER
 mdefine_line|#define ALI_STIMER&t;&t;0xc8
 DECL|macro|ALI_GLOBAL_CONTROL
 mdefine_line|#define ALI_GLOBAL_CONTROL&t;0xd4
+DECL|macro|ALI_SPDIF_OUT_SEL_PCM
+mdefine_line|#define   ALI_SPDIF_OUT_SEL_PCM&t;&t;0x00000400 /* bit 10 */
+DECL|macro|ALI_SPDIF_IN_SUPPORT
+mdefine_line|#define   ALI_SPDIF_IN_SUPPORT&t;&t;0x00000800 /* bit 11 */
+DECL|macro|ALI_SPDIF_OUT_CH_ENABLE
+mdefine_line|#define   ALI_SPDIF_OUT_CH_ENABLE&t;0x00008000 /* bit 15 */
+DECL|macro|ALI_SPDIF_IN_CH_ENABLE
+mdefine_line|#define   ALI_SPDIF_IN_CH_ENABLE&t;0x00080000 /* bit 19 */
+DECL|macro|ALI_PCM_IN_ENABLE
+mdefine_line|#define   ALI_PCM_IN_ENABLE&t;&t;0x80000000 /* bit 31 */
 DECL|macro|ALI_CSO_ALPHA_FMS
 mdefine_line|#define ALI_CSO_ALPHA_FMS&t;0xe0
 DECL|macro|ALI_LBA
@@ -619,6 +693,13 @@ DECL|member|hw_initialized
 r_int
 r_int
 id|hw_initialized
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|spdif_support
+r_int
+r_int
+id|spdif_support
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -3022,6 +3103,9 @@ id|rec
 r_if
 c_cond
 (paren
+id|codec-&gt;spdif_support
+op_logical_and
+(paren
 id|inl
 c_func
 (paren
@@ -3034,16 +3118,7 @@ id|ALI_GLOBAL_CONTROL
 )paren
 )paren
 op_amp
-(paren
-l_int|1
-op_lshift
-l_int|11
-)paren
-op_logical_and
-(paren
-id|codec-&gt;revision
-op_eq
-id|ALI_5451_V02
+id|ALI_SPDIF_IN_SUPPORT
 )paren
 )paren
 id|idx
@@ -3095,6 +3170,9 @@ singleline_comment|//playback...
 r_if
 c_cond
 (paren
+id|codec-&gt;spdif_support
+op_logical_and
+(paren
 id|inl
 c_func
 (paren
@@ -3107,10 +3185,7 @@ id|ALI_GLOBAL_CONTROL
 )paren
 )paren
 op_amp
-(paren
-l_int|1
-op_lshift
-l_int|15
+id|ALI_SPDIF_OUT_CH_ENABLE
 )paren
 )paren
 (brace
@@ -4048,9 +4123,7 @@ id|ALI_GLOBAL_CONTROL
 suffix:semicolon
 id|dwVal
 op_or_assign
-l_int|1
-op_lshift
-l_int|11
+id|ALI_SPDIF_IN_SUPPORT
 suffix:semicolon
 id|outl
 c_func
@@ -4139,11 +4212,7 @@ suffix:semicolon
 id|dwVal
 op_and_assign
 op_complement
-(paren
-l_int|1
-op_lshift
-l_int|11
-)paren
+id|ALI_SPDIF_IN_SUPPORT
 suffix:semicolon
 id|outl
 c_func
@@ -4473,7 +4542,7 @@ c_func
 (paren
 id|bVal
 op_or
-l_int|0x20
+id|ALI_SPDIF_OUT_ENABLE
 comma
 id|ALI_REG
 c_func
@@ -4503,12 +4572,7 @@ c_func
 (paren
 id|bVal
 op_amp
-op_complement
-(paren
-l_int|1
-op_lshift
-l_int|6
-)paren
+id|ALI_SPDIF_OUT_CH_STATUS
 comma
 id|ALI_REG
 c_func
@@ -4536,11 +4600,7 @@ id|ALI_GLOBAL_CONTROL
 suffix:semicolon
 id|wVal
 op_or_assign
-(paren
-l_int|1
-op_lshift
-l_int|10
-)paren
+id|ALI_SPDIF_OUT_SEL_PCM
 suffix:semicolon
 id|outw
 c_func
@@ -4600,11 +4660,7 @@ suffix:semicolon
 id|wVal
 op_and_assign
 op_complement
-(paren
-l_int|1
-op_lshift
-l_int|10
-)paren
+id|ALI_SPDIF_OUT_SEL_PCM
 suffix:semicolon
 id|outw
 c_func
@@ -4663,11 +4719,7 @@ id|ALI_GLOBAL_CONTROL
 suffix:semicolon
 id|wVal
 op_or_assign
-(paren
-l_int|1
-op_lshift
-l_int|10
-)paren
+id|ALI_SPDIF_OUT_SEL_PCM
 suffix:semicolon
 id|outw
 c_func
@@ -4726,10 +4778,8 @@ c_func
 (paren
 id|bVal
 op_amp
-(paren
 op_complement
-l_int|0x20
-)paren
+id|ALI_SPDIF_OUT_ENABLE
 comma
 id|ALI_REG
 c_func
@@ -6138,6 +6188,11 @@ c_func
 id|substream
 )paren
 suffix:semicolon
+r_struct
+id|list_head
+op_star
+id|pos
+suffix:semicolon
 id|snd_pcm_substream_t
 op_star
 id|s
@@ -6213,12 +6268,22 @@ id|capture_flag
 op_assign
 l_int|0
 suffix:semicolon
+id|snd_pcm_group_for_each
+c_func
+(paren
+id|pos
+comma
+id|substream
+)paren
+(brace
 id|s
 op_assign
-id|substream
+id|snd_pcm_group_substream_entry
+c_func
+(paren
+id|pos
+)paren
 suffix:semicolon
-r_do
-(brace
 r_if
 c_cond
 (paren
@@ -6357,19 +6422,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|s
-op_assign
-id|s-&gt;link_next
-suffix:semicolon
 )brace
-r_while
-c_loop
-(paren
-id|s
-op_ne
-id|substream
-)paren
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -6911,6 +6964,8 @@ r_else
 r_if
 c_cond
 (paren
+id|codec-&gt;spdif_support
+op_logical_and
 (paren
 id|inl
 c_func
@@ -6924,11 +6979,7 @@ id|ALI_GLOBAL_CONTROL
 )paren
 )paren
 op_amp
-(paren
-l_int|1
-op_lshift
-l_int|15
-)paren
+id|ALI_SPDIF_OUT_CH_ENABLE
 )paren
 op_logical_and
 (paren
@@ -6936,14 +6987,6 @@ id|pvoice-&gt;number
 op_eq
 id|ALI_SPDIF_OUT_CHANNEL
 )paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|codec-&gt;revision
-op_eq
-id|ALI_5451_V02
 )paren
 (brace
 id|snd_ali_set_spdif_out_rate
@@ -6958,7 +7001,6 @@ id|Delta
 op_assign
 l_int|0x1000
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* set Loop Back Address */
 id|LBA
@@ -9246,9 +9288,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|codec-&gt;revision
-op_eq
-id|ALI_5451_V02
+id|codec-&gt;spdif_support
 )paren
 (brace
 r_for
@@ -10253,9 +10293,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|codec-&gt;revision
-op_eq
-id|ALI_5451_V02
+id|codec-&gt;spdif_support
 )paren
 (brace
 id|snd_ali_enable_spdif_out
@@ -10432,6 +10470,9 @@ id|pci
 comma
 r_int
 id|pcm_streams
+comma
+r_int
+id|spdif_support
 comma
 id|ali_t
 op_star
@@ -10610,6 +10651,10 @@ comma
 op_amp
 id|codec-&gt;revision
 )paren
+suffix:semicolon
+id|codec-&gt;spdif_support
+op_assign
+id|spdif_support
 suffix:semicolon
 r_if
 c_cond
@@ -11120,6 +11165,11 @@ comma
 id|pci
 comma
 id|pcm_channels
+(braket
+id|dev
+)braket
+comma
+id|spdif
 (braket
 id|dev
 )braket

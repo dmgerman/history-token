@@ -3365,7 +3365,7 @@ c_cond
 (paren
 id|id
 )paren
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|timer-&gt;id
@@ -3376,8 +3376,6 @@ r_sizeof
 (paren
 id|timer-&gt;id
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|INIT_LIST_HEAD
@@ -6449,7 +6447,7 @@ id|ginfo.flags
 op_or_assign
 id|SNDRV_TIMER_FLG_SLAVE
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|ginfo.id
@@ -6460,11 +6458,9 @@ r_sizeof
 (paren
 id|ginfo.id
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|ginfo.name
@@ -6475,8 +6471,6 @@ r_sizeof
 (paren
 id|ginfo.name
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|ginfo.resolution
@@ -7269,7 +7263,7 @@ id|info.flags
 op_or_assign
 id|SNDRV_TIMER_FLG_SLAVE
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.id
@@ -7280,11 +7274,9 @@ r_sizeof
 (paren
 id|info.id
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.name
@@ -7295,8 +7287,6 @@ r_sizeof
 (paren
 id|info.name
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|info.resolution
@@ -8863,13 +8853,11 @@ id|file_operations
 id|snd_timer_f_ops
 op_assign
 (brace
-macro_line|#ifndef LINUX_2_2
 dot
 id|owner
 op_assign
 id|THIS_MODULE
 comma
-macro_line|#endif
 dot
 id|read
 op_assign

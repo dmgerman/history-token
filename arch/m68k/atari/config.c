@@ -107,7 +107,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -209,7 +209,7 @@ r_void
 id|atari_sched_init
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 )paren
@@ -628,22 +628,18 @@ op_assign
 id|switches
 suffix:semicolon
 multiline_comment|/* copy string to local array, strsep works destructively... */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|switches
 comma
 id|str
 comma
-id|len
-)paren
-suffix:semicolon
+r_sizeof
+(paren
 id|switches
-(braket
-id|len
-)braket
-op_assign
-l_int|0
+)paren
+)paren
 suffix:semicolon
 id|atari_switches
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *&n; * Filename:      af_irda.c&n; * Version:       0.9&n; * Description:   IrDA sockets implementation&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun May 31 10:12:43 1998&n; * Modified at:   Sat Dec 25 21:10:23 1999&n; * Modified by:   Dag Brattli &lt;dag@brattli.net&gt;&n; * Sources:       af_netroom.c, af_ax25.c, af_rose.c, af_x25.c etc.&n; *&n; *     Copyright (c) 1999 Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *     Copyright (c) 1999-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     All Rights Reserved.&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; *&n; *     You should have received a copy of the GNU General Public License&n; *     along with this program; if not, write to the Free Software&n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston,&n; *     MA 02111-1307 USA&n; *&n; *     Linux-IrDA now supports four different types of IrDA sockets:&n; *&n; *     o SOCK_STREAM:    TinyTP connections with SAR disabled. The&n; *                       max SDU size is 0 for conn. of this type&n; *     o SOCK_SEQPACKET: TinyTP connections with SAR enabled. TTP may&n; *                       fragment the messages, but will preserve&n; *                       the message boundaries&n; *     o SOCK_DGRAM:     IRDAPROTO_UNITDATA: TinyTP connections with Unitdata&n; *                       (unreliable) transfers&n; *                       IRDAPROTO_ULTRA: Connectionless and unreliable data&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; * Filename:      af_irda.c&n; * Version:       0.9&n; * Description:   IrDA sockets implementation&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun May 31 10:12:43 1998&n; * Modified at:   Sat Dec 25 21:10:23 1999&n; * Modified by:   Dag Brattli &lt;dag@brattli.net&gt;&n; * Sources:       af_netroom.c, af_ax25.c, af_rose.c, af_x25.c etc.&n; *&n; *     Copyright (c) 1999 Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *     Copyright (c) 1999-2003 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     All Rights Reserved.&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; *&n; *     You should have received a copy of the GNU General Public License&n; *     along with this program; if not, write to the Free Software&n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston,&n; *     MA 02111-1307 USA&n; *&n; *     Linux-IrDA now supports four different types of IrDA sockets:&n; *&n; *     o SOCK_STREAM:    TinyTP connections with SAR disabled. The&n; *                       max SDU size is 0 for conn. of this type&n; *     o SOCK_SEQPACKET: TinyTP connections with SAR enabled. TTP may&n; *                       fragment the messages, but will preserve&n; *                       the message boundaries&n; *     o SOCK_DGRAM:     IRDAPROTO_UNITDATA: TinyTP connections with Unitdata&n; *                       (unreliable) transfers&n; *                       IRDAPROTO_ULTRA: Connectionless and unreliable data&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -279,23 +279,18 @@ multiline_comment|/* Prevent race conditions with irda_release() and irda_shutdo
 r_if
 c_cond
 (paren
-(paren
 op_logical_neg
-id|test_bit
+id|sock_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
-)paren
+id|SOCK_DEAD
 )paren
 op_logical_and
-(paren
 id|sk-&gt;state
 op_ne
 id|TCP_CLOSE
-)paren
 )paren
 (brace
 id|sk-&gt;state
@@ -318,16 +313,15 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|__set_bit
+multiline_comment|/* Uh-oh... Should use sock_orphan ? */
+id|sock_set_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DEAD
 )paren
 suffix:semicolon
-multiline_comment|/* Uh-oh... Should use sock_orphan ? */
 multiline_comment|/* Close our TSAP.&n;&t;&t; * If we leave it open, IrLMP put it back into the list of&n;&t;&t; * unconnected LSAPs. The problem is that any incoming request&n;&t;&t; * can then be matched to this socket (and it will be, because&n;&t;&t; * it is at the head of the list). This would prevent any&n;&t;&t; * listening socket waiting on the same TSAP to get those&n;&t;&t; * requests. Some apps forget to close sockets, or hang to it&n;&t;&t; * a bit too long, so we may stay in this dead state long&n;&t;&t; * enough to be noticed...&n;&t;&t; * Note : all socket function do check sk-&gt;state, so we are&n;&t;&t; * safe...&n;&t;&t; * Jean II&n;&t;&t; */
 r_if
 c_cond
@@ -425,6 +419,13 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+singleline_comment|// Should be ??? skb_queue_tail(&amp;sk-&gt;receive_queue, skb);
 multiline_comment|/* How much header space do we need to reserve */
 id|self-&gt;max_header_size
 op_assign
@@ -541,13 +542,6 @@ id|qos_info
 )paren
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-singleline_comment|// Should be ??? skb_queue_tail(&amp;sk-&gt;receive_queue, skb);
 multiline_comment|/* We are now connected! */
 id|sk-&gt;state
 op_assign
@@ -674,6 +668,12 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -704,6 +704,12 @@ c_func
 l_string|&quot;%s: max_sdu_size cannot be 0&bslash;n&quot;
 comma
 id|__FUNCTION__
+)paren
+suffix:semicolon
+id|kfree_skb
+c_func
+(paren
+id|skb
 )paren
 suffix:semicolon
 r_return
@@ -2910,6 +2916,12 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
@@ -3004,6 +3016,7 @@ c_func
 id|self-&gt;tsap
 )paren
 suffix:semicolon
+multiline_comment|/* Wow ! What is that ? Jean II */
 id|skb-&gt;sk
 op_assign
 l_int|NULL

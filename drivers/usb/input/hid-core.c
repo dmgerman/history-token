@@ -6461,6 +6461,8 @@ comma
 id|USB_DEVICE_ID_UGCI_DRIVING
 comma
 id|HID_QUIRK_BADPAD
+op_or
+id|HID_QUIRK_MULTI_INPUT
 )brace
 comma
 (brace
@@ -6469,6 +6471,8 @@ comma
 id|USB_DEVICE_ID_UGCI_FLYING
 comma
 id|HID_QUIRK_BADPAD
+op_or
+id|HID_QUIRK_MULTI_INPUT
 )brace
 comma
 (brace
@@ -6477,6 +6481,8 @@ comma
 id|USB_DEVICE_ID_UGCI_FIGHTING
 comma
 id|HID_QUIRK_BADPAD
+op_or
+id|HID_QUIRK_MULTI_INPUT
 )brace
 comma
 (brace
@@ -7926,12 +7932,6 @@ c_func
 id|hid
 )paren
 suffix:semicolon
-id|hid_ff_init
-c_func
-(paren
-id|hid
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8200,6 +8200,11 @@ id|usb_driver
 id|hid_driver
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|name
 op_assign

@@ -210,7 +210,7 @@ comma
 id|nodenum
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|protocol-&gt;dev.name

@@ -1346,18 +1346,6 @@ r_if
 c_cond
 (paren
 id|irqbalance_disabled
-op_eq
-id|IRQBALANCE_CHECK_ARCH
-op_logical_and
-id|NO_BALANCE_IRQ
-)paren
-r_return
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|irqbalance_disabled
 )paren
 r_return
 suffix:semicolon
@@ -2495,6 +2483,18 @@ id|c
 op_assign
 op_amp
 id|boot_cpu_data
+suffix:semicolon
+multiline_comment|/* When not overwritten by the command line ask subarchitecture. */
+r_if
+c_cond
+(paren
+id|irqbalance_disabled
+op_eq
+id|IRQBALANCE_CHECK_ARCH
+)paren
+id|irqbalance_disabled
+op_assign
+id|NO_BALANCE_IRQ
 suffix:semicolon
 r_if
 c_cond

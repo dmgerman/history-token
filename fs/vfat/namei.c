@@ -1411,9 +1411,10 @@ id|bh
 op_assign
 l_int|NULL
 suffix:semicolon
+id|loff_t
+id|i_pos
+suffix:semicolon
 r_int
-id|ino
-comma
 id|res
 suffix:semicolon
 id|res
@@ -1432,7 +1433,7 @@ op_amp
 id|de
 comma
 op_amp
-id|ino
+id|i_pos
 )paren
 suffix:semicolon
 id|brelse
@@ -3869,8 +3870,8 @@ id|buffer_head
 op_star
 id|dummy_bh
 suffix:semicolon
-r_int
-id|dummy_ino
+id|loff_t
+id|dummy_i_pos
 suffix:semicolon
 id|dir_slots
 op_assign
@@ -3971,7 +3972,7 @@ op_amp
 id|dummy_de
 comma
 op_amp
-id|dummy_ino
+id|dummy_i_pos
 )paren
 suffix:semicolon
 r_if
@@ -4033,7 +4034,7 @@ comma
 id|de
 comma
 op_amp
-id|sinfo_out-&gt;ino
+id|sinfo_out-&gt;i_pos
 )paren
 OL
 l_int|0
@@ -4317,7 +4318,7 @@ comma
 id|last_de
 comma
 op_amp
-id|sinfo-&gt;ino
+id|sinfo-&gt;i_pos
 )paren
 op_ge
 l_int|0
@@ -4483,7 +4484,7 @@ id|dir-&gt;i_sb
 comma
 id|de
 comma
-id|sinfo.ino
+id|sinfo.i_pos
 comma
 op_amp
 id|res
@@ -4720,7 +4721,7 @@ id|sb
 comma
 id|de
 comma
-id|sinfo.ino
+id|sinfo.i_pos
 comma
 op_amp
 id|res
@@ -4818,11 +4819,11 @@ id|de
 (brace
 id|loff_t
 id|offset
+comma
+id|i_pos
 suffix:semicolon
 r_int
 id|i
-comma
-id|ino
 suffix:semicolon
 multiline_comment|/* remove the shortname */
 id|dir-&gt;i_mtime
@@ -4897,7 +4898,7 @@ op_amp
 id|de
 comma
 op_amp
-id|ino
+id|i_pos
 )paren
 OL
 l_int|0
@@ -5318,7 +5319,7 @@ id|sb
 comma
 id|de
 comma
-id|sinfo.ino
+id|sinfo.i_pos
 comma
 op_amp
 id|res
@@ -5517,8 +5518,8 @@ comma
 op_star
 id|dotdot_de
 suffix:semicolon
-r_int
-id|dotdot_ino
+id|loff_t
+id|dotdot_i_pos
 suffix:semicolon
 r_struct
 id|inode
@@ -5628,7 +5629,7 @@ op_amp
 id|dotdot_de
 comma
 op_amp
-id|dotdot_ino
+id|dotdot_i_pos
 )paren
 )paren
 OL
@@ -5676,9 +5677,9 @@ c_func
 id|new_inode
 )paren
 op_member_access_from_pointer
-id|i_location
+id|i_pos
 op_ne
-id|sinfo.ino
+id|sinfo.i_pos
 )paren
 (brace
 multiline_comment|/* WTF??? Cry and fail. */
@@ -5790,7 +5791,7 @@ c_func
 (paren
 id|old_inode
 comma
-id|sinfo.ino
+id|sinfo.i_pos
 )paren
 suffix:semicolon
 id|mark_inode_dirty

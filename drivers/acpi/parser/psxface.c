@@ -328,7 +328,7 @@ id|walk_state
 op_assign
 id|acpi_ds_create_walk_state
 (paren
-id|TABLE_ID_DSDT
+l_int|0
 comma
 l_int|NULL
 comma

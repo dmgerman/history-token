@@ -859,15 +859,6 @@ id|mm-&gt;mmap_sem
 suffix:semicolon
 id|bad_area_nosemaphore
 suffix:colon
-multiline_comment|/* User mode accesses just cause a SIGSEGV */
-r_if
-c_cond
-(paren
-id|error_code
-op_amp
-l_int|4
-)paren
-(brace
 macro_line|#ifdef CONFIG_IA32_EMULATION
 multiline_comment|/* 32bit vsyscall. map on demand. */
 r_if
@@ -885,9 +876,9 @@ l_int|0xffffe000
 op_logical_and
 id|address
 OL
-l_int|0xffffefff
-op_minus
-l_int|7
+l_int|0xffffe000
+op_plus
+id|PAGE_SIZE
 )paren
 (brace
 r_if
@@ -910,6 +901,15 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* User mode accesses just cause a SIGSEGV */
+r_if
+c_cond
+(paren
+id|error_code
+op_amp
+l_int|4
+)paren
+(brace
 id|printk
 c_func
 (paren

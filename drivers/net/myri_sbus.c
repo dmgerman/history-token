@@ -2790,6 +2790,11 @@ suffix:semicolon
 id|u32
 id|status
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2829,6 +2834,10 @@ id|ISTAT_HOST
 (brace
 id|u32
 id|softstate
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 id|DIRQ
 c_func
@@ -2957,7 +2966,11 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|IRQ_HANDLED
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 DECL|function|myri_open

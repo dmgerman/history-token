@@ -783,7 +783,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_PROCFS
+macro_line|#ifdef CONFIG_PROC_FS
 id|rpc_proc_exit
 c_func
 (paren

@@ -4612,7 +4612,7 @@ op_assign
 id|ETHTOOL_GDRVINFO
 )brace
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.driver
@@ -4623,11 +4623,9 @@ r_sizeof
 (paren
 id|info.driver
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.version
@@ -4638,8 +4636,6 @@ r_sizeof
 (paren
 id|info.version
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -6392,6 +6388,11 @@ id|usb_driver
 id|pegasus_driver
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|name
 op_assign

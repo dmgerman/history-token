@@ -20,7 +20,7 @@ macro_line|#include &quot;qdio.h&quot;
 macro_line|#include &quot;ioasm.h&quot;
 macro_line|#include &quot;chsc.h&quot;
 DECL|macro|VERSION_QDIO_C
-mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.48 $&quot;
+mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.49 $&quot;
 multiline_comment|/****************** MODULE PARAMETER VARIABLES ********************/
 id|MODULE_AUTHOR
 c_func
@@ -7156,6 +7156,7 @@ id|irq_ptr-&gt;state
 r_case
 id|QDIO_IRQ_STATE_INACTIVE
 suffix:colon
+multiline_comment|/* FIXME: defer this past interrupt time */
 id|qdio_establish_handle_irq
 c_func
 (paren
@@ -7591,6 +7592,7 @@ suffix:semicolon
 op_star
 id|ssqd_area
 suffix:semicolon
+multiline_comment|/* FIXME make this GFP_KERNEL */
 id|ssqd_area
 op_assign
 (paren
@@ -7600,7 +7602,7 @@ op_star
 id|get_zeroed_page
 c_func
 (paren
-id|GFP_KERNEL
+id|GFP_ATOMIC
 op_or
 id|GFP_DMA
 )paren
@@ -12024,6 +12026,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: don&squot;t wait forever if hardware is broken */
 id|wait_event
 c_func
 (paren

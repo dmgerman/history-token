@@ -495,15 +495,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|__init
-id|agp_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* Video Timings */
 r_extern
 r_void

@@ -327,7 +327,7 @@ suffix:semicolon
 multiline_comment|/*&n; * void hades_dma_emulator(int irq, void *dummy, struct pt_regs *fp)&n; * &n; * This code emulates TT SCSI DMA on the Hades.&n; * &n; * Note the following:&n; * &n; * 1. When there is no byte available to read from the SCSI bus, or&n; *    when a byte cannot yet bet written to the SCSI bus, a bus&n; *    error occurs when reading or writing the pseudo DMA data&n; *    register (hades_psdm_reg). We have to catch this bus error&n; *    and try again to read or write the byte. If after several tries&n; *    we still get a bus error, the interrupt handler is left. When&n; *    the byte can be read or written, the interrupt handler is&n; *    called again.&n; * &n; * 2. The SCSI interrupt must be disabled in this interrupt handler.&n; * &n; * 3. If we set the EOP signal, the SCSI controller still expects one&n; *    byte to be read or written. Therefore the last byte is transferred&n; *    separately, after setting the EOP signal.&n; * &n; * 4. When this function is left, the address pointer (start_addr) is&n; *    converted to a physical address. Because it points one byte&n; *    further than the last transferred byte, it can point outside the&n; *    current page. If virt_to_phys() is called with this address we&n; *    might get an access error. Therefore virt_to_phys() is called with&n; *    start_addr - 1 if the count has reached zero. The result is&n; *    increased with one.&n; */
 DECL|function|hades_dma_emulator
 r_static
-r_void
+id|irqreturn_t
 id|hades_dma_emulator
 c_func
 (paren
@@ -454,6 +454,7 @@ id|IRQ_TT_MFP_SCSI
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -483,6 +484,7 @@ id|IRQ_TT_MFP_SCSI
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Install new bus error routine.&n;&t; */
@@ -1086,6 +1088,7 @@ id|IRQ_TT_MFP_SCSI
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 id|scsi_bus_error
 suffix:colon

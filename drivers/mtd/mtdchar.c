@@ -1,10 +1,12 @@
-multiline_comment|/*&n; * $Id: mtdchar.c,v 1.44 2001/10/02 15:05:11 dwmw2 Exp $&n; *&n; * Character-device access to raw MTD devices.&n; * Pure 2.4 version - compatibility cruft removed to mtdchar-compat.c&n; *&n; */
+multiline_comment|/*&n; * $Id: mtdchar.c,v 1.54 2003/05/21 10:50:43 dwmw2 Exp $&n; *&n; * Character-device access to raw MTD devices.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_DEVFS_FS
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 r_static
@@ -78,11 +80,6 @@ op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -123,11 +120,6 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EINVAL
@@ -157,11 +149,6 @@ op_assign
 id|mtd-&gt;size
 op_minus
 l_int|1
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 r_return
 id|file-&gt;f_pos
@@ -1173,6 +1160,24 @@ r_struct
 id|erase_info
 op_star
 id|erase
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|file-&gt;f_mode
+op_amp
+l_int|2
+)paren
+)paren
+(brace
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+)brace
+id|erase
 op_assign
 id|kmalloc
 c_func
@@ -1389,6 +1394,22 @@ suffix:semicolon
 id|ssize_t
 id|retlen
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|file-&gt;f_mode
+op_amp
+l_int|2
+)paren
+)paren
+(brace
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1900,6 +1921,39 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_case
+id|MEMSETOOBSEL
+suffix:colon
+(brace
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|mtd-&gt;oobinfo
+comma
+(paren
+r_void
+op_star
+)paren
+id|arg
+comma
+r_sizeof
+(paren
+r_struct
+id|nand_oobinfo
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_default
 suffix:colon
 id|DEBUG
@@ -1942,37 +1996,31 @@ id|llseek
 op_assign
 id|mtd_lseek
 comma
-multiline_comment|/* lseek */
 dot
 id|read
 op_assign
 id|mtd_read
 comma
-multiline_comment|/* read */
 dot
 id|write
 op_assign
 id|mtd_write
 comma
-multiline_comment|/* write */
 dot
 id|ioctl
 op_assign
 id|mtd_ioctl
 comma
-multiline_comment|/* ioctl */
 dot
 id|open
 op_assign
 id|mtd_open
 comma
-multiline_comment|/* open */
 dot
 id|release
 op_assign
 id|mtd_close
 comma
-multiline_comment|/* release */
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS

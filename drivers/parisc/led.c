@@ -2147,7 +2147,7 @@ id|led_tasklet
 )paren
 suffix:semicolon
 multiline_comment|/* copy display string to buffer for procfs */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|lcd_text
@@ -2158,8 +2158,6 @@ r_sizeof
 (paren
 id|lcd_text
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Set LCD Cursor to 1st character */

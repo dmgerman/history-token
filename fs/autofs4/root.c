@@ -643,11 +643,6 @@ c_func
 id|dir-&gt;i_sb
 )paren
 suffix:semicolon
-r_struct
-id|autofs_info
-op_star
-id|ino
-suffix:semicolon
 r_int
 id|oz_mode
 op_assign
@@ -708,14 +703,6 @@ op_minus
 id|jiffies
 op_le
 id|AUTOFS_NEGATIVE_TIMEOUT
-)paren
-suffix:semicolon
-id|ino
-op_assign
-id|autofs4_dentry_ino
-c_func
-(paren
-id|dentry
 )paren
 suffix:semicolon
 multiline_comment|/* Check for a non-mountpoint directory with no contents */

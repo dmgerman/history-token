@@ -1,10 +1,247 @@
 multiline_comment|/****************************************************************************/
-multiline_comment|/*&n; *&t;fec.h  --  Fast Ethernet Controller for Motorola ColdFire 5272.&n; *&n; *&t;(C) Copyright 2000-2001, Greg Ungerer (gerg@snapgear.com)&n; *&t;(C) Copyright 2000-2001, Lineo (www.lineo.com)&n; */
+multiline_comment|/*&n; *&t;fec.h  --  Fast Ethernet Controller for Motorola ColdFire 5272&n; *&t;&t;   and 5282..&n; *&n; *&t;(C) Copyright 2000-2003, Greg Ungerer (gerg@snapgear.com)&n; *&t;(C) Copyright 2000-2001, Lineo (www.lineo.com)&n; */
 multiline_comment|/****************************************************************************/
 macro_line|#ifndef FEC_H
 DECL|macro|FEC_H
 mdefine_line|#define&t;FEC_H
 multiline_comment|/****************************************************************************/
+macro_line|#ifdef CONFIG_M5282
+multiline_comment|/*&n; *&t;Just figures, Motorola would have to change the offsets for&n; *&t;registers in the same peripheral device on different models&n; *&t;of the ColdFire!&n; */
+DECL|struct|fec
+r_typedef
+r_struct
+id|fec
+(brace
+DECL|member|fec_reserved0
+r_int
+r_int
+id|fec_reserved0
+suffix:semicolon
+DECL|member|fec_ievent
+r_int
+r_int
+id|fec_ievent
+suffix:semicolon
+multiline_comment|/* Interrupt event reg */
+DECL|member|fec_imask
+r_int
+r_int
+id|fec_imask
+suffix:semicolon
+multiline_comment|/* Interrupt mask reg */
+DECL|member|fec_reserved1
+r_int
+r_int
+id|fec_reserved1
+suffix:semicolon
+DECL|member|fec_r_des_active
+r_int
+r_int
+id|fec_r_des_active
+suffix:semicolon
+multiline_comment|/* Receive descriptor reg */
+DECL|member|fec_x_des_active
+r_int
+r_int
+id|fec_x_des_active
+suffix:semicolon
+multiline_comment|/* Transmit descriptor reg */
+DECL|member|fec_reserved2
+r_int
+r_int
+id|fec_reserved2
+(braket
+l_int|3
+)braket
+suffix:semicolon
+DECL|member|fec_ecntrl
+r_int
+r_int
+id|fec_ecntrl
+suffix:semicolon
+multiline_comment|/* Ethernet control reg */
+DECL|member|fec_reserved3
+r_int
+r_int
+id|fec_reserved3
+(braket
+l_int|6
+)braket
+suffix:semicolon
+DECL|member|fec_mii_data
+r_int
+r_int
+id|fec_mii_data
+suffix:semicolon
+multiline_comment|/* MII manage frame reg */
+DECL|member|fec_mii_speed
+r_int
+r_int
+id|fec_mii_speed
+suffix:semicolon
+multiline_comment|/* MII speed control reg */
+DECL|member|fec_reserved4
+r_int
+r_int
+id|fec_reserved4
+(braket
+l_int|7
+)braket
+suffix:semicolon
+DECL|member|fec_mib_ctrlstat
+r_int
+r_int
+id|fec_mib_ctrlstat
+suffix:semicolon
+multiline_comment|/* MIB control/status reg */
+DECL|member|fec_reserved5
+r_int
+r_int
+id|fec_reserved5
+(braket
+l_int|7
+)braket
+suffix:semicolon
+DECL|member|fec_r_cntrl
+r_int
+r_int
+id|fec_r_cntrl
+suffix:semicolon
+multiline_comment|/* Receive control reg */
+DECL|member|fec_reserved6
+r_int
+r_int
+id|fec_reserved6
+(braket
+l_int|15
+)braket
+suffix:semicolon
+DECL|member|fec_x_cntrl
+r_int
+r_int
+id|fec_x_cntrl
+suffix:semicolon
+multiline_comment|/* Transmit Control reg */
+DECL|member|fec_reserved7
+r_int
+r_int
+id|fec_reserved7
+(braket
+l_int|7
+)braket
+suffix:semicolon
+DECL|member|fec_addr_low
+r_int
+r_int
+id|fec_addr_low
+suffix:semicolon
+multiline_comment|/* Low 32bits MAC address */
+DECL|member|fec_addr_high
+r_int
+r_int
+id|fec_addr_high
+suffix:semicolon
+multiline_comment|/* High 16bits MAC address */
+DECL|member|fec_opd
+r_int
+r_int
+id|fec_opd
+suffix:semicolon
+multiline_comment|/* Opcode + Pause duration */
+DECL|member|fec_reserved8
+r_int
+r_int
+id|fec_reserved8
+(braket
+l_int|10
+)braket
+suffix:semicolon
+DECL|member|fec_hash_table_high
+r_int
+r_int
+id|fec_hash_table_high
+suffix:semicolon
+multiline_comment|/* High 32bits hash table */
+DECL|member|fec_hash_table_low
+r_int
+r_int
+id|fec_hash_table_low
+suffix:semicolon
+multiline_comment|/* Low 32bits hash table */
+DECL|member|fec_grp_hash_table_high
+r_int
+r_int
+id|fec_grp_hash_table_high
+suffix:semicolon
+multiline_comment|/* High 32bits hash table */
+DECL|member|fec_grp_hash_table_low
+r_int
+r_int
+id|fec_grp_hash_table_low
+suffix:semicolon
+multiline_comment|/* Low 32bits hash table */
+DECL|member|fec_reserved9
+r_int
+r_int
+id|fec_reserved9
+(braket
+l_int|7
+)braket
+suffix:semicolon
+DECL|member|fec_x_wmrk
+r_int
+r_int
+id|fec_x_wmrk
+suffix:semicolon
+multiline_comment|/* FIFO transmit water mark */
+DECL|member|fec_reserved10
+r_int
+r_int
+id|fec_reserved10
+suffix:semicolon
+DECL|member|fec_r_bound
+r_int
+r_int
+id|fec_r_bound
+suffix:semicolon
+multiline_comment|/* FIFO receive bound reg */
+DECL|member|fec_r_fstart
+r_int
+r_int
+id|fec_r_fstart
+suffix:semicolon
+multiline_comment|/* FIFO receive start reg */
+DECL|member|fec_reserved11
+r_int
+r_int
+id|fec_reserved11
+(braket
+l_int|11
+)braket
+suffix:semicolon
+DECL|member|fec_r_des_start
+r_int
+r_int
+id|fec_r_des_start
+suffix:semicolon
+multiline_comment|/* Receive descriptor ring */
+DECL|member|fec_x_des_start
+r_int
+r_int
+id|fec_x_des_start
+suffix:semicolon
+multiline_comment|/* Transmit descriptor ring */
+DECL|member|fec_r_buff_size
+r_int
+r_int
+id|fec_r_buff_size
+suffix:semicolon
+multiline_comment|/* Maximum receive buff size */
+DECL|typedef|fec_t
+)brace
+id|fec_t
+suffix:semicolon
+macro_line|#else
 multiline_comment|/*&n; *&t;Define device register set address map.&n; */
 DECL|struct|fec
 r_typedef
@@ -217,6 +454,7 @@ DECL|typedef|fec_t
 )brace
 id|fec_t
 suffix:semicolon
+macro_line|#endif /* CONFIG_M5272 */
 multiline_comment|/*&n; *&t;Define the buffer descriptor structure.&n; */
 DECL|struct|bufdesc
 r_typedef

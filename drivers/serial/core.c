@@ -7608,7 +7608,7 @@ l_int|3
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This reverses the affects of uart_configure_port, hanging up the&n; * port before removal.&n; */
+multiline_comment|/*&n; * This reverses the effects of uart_configure_port, hanging up the&n; * port before removal.&n; */
 r_static
 r_void
 DECL|function|uart_unconfigure_port

@@ -246,7 +246,7 @@ r_struct
 (brace
 DECL|member|driver
 r_struct
-id|Scsi_Device_Template
+id|scsi_driver
 op_star
 id|driver
 suffix:semicolon
@@ -395,22 +395,6 @@ suffix:semicolon
 DECL|member|current_mode
 r_int
 id|current_mode
-suffix:semicolon
-DECL|member|driverfs_dev_r
-r_struct
-id|device
-id|driverfs_dev_r
-(braket
-id|ST_NBR_MODES
-)braket
-suffix:semicolon
-DECL|member|driverfs_dev_n
-r_struct
-id|device
-id|driverfs_dev_n
-(braket
-id|ST_NBR_MODES
-)braket
 suffix:semicolon
 multiline_comment|/* Status variables */
 DECL|member|partition

@@ -994,34 +994,9 @@ l_int|0x1000
 comma
 l_int|0x1000
 comma
-l_string|&quot;ASAHI PENTAX&quot;
+l_string|&quot;Pentax&quot;
 comma
-l_string|&quot;PENTAX OPTIO 430&quot;
-comma
-id|US_SC_8070
-comma
-id|US_PR_CBI
-comma
-l_int|NULL
-comma
-id|US_FL_FIX_INQUIRY
-)paren
-comma
-multiline_comment|/* This Pentax still camera is not conformant&n; * to the USB storage specification: -&n; * - It does not like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; * Tested on Rev. 10.00 (0x1000)&n; * Submitted by James Courtier-Dutton &lt;James@superbug.demon.co.uk&gt;&n; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0a17
-comma
-l_int|0x0004
-comma
-l_int|0x1000
-comma
-l_int|0x1000
-comma
-l_string|&quot;ASAHI PENTAX&quot;
-comma
-l_string|&quot;PENTAX OPTIO 430&quot;
+l_string|&quot;Optio 2/3/400&quot;
 comma
 id|US_SC_8070
 comma
@@ -1032,17 +1007,17 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
-multiline_comment|/* Pentax Optio S digital camera&n; * submitted by Stefan M. Brandl &lt;smb@smbnet.de&gt;&n; */
+multiline_comment|/* Submitted by Per Winkvist &lt;per.winkvist@uk.com&gt; */
 id|UNUSUAL_DEV
 c_func
 (paren
 l_int|0x0a17
 comma
-l_int|0x0006
+l_int|0x006
 comma
-l_int|0x0000
+l_int|0x1000
 comma
-l_int|0xffff
+l_int|0x9009
 comma
 l_string|&quot;Pentax&quot;
 comma
@@ -1050,12 +1025,10 @@ l_string|&quot;Optio S&quot;
 comma
 id|US_SC_8070
 comma
-id|US_PR_CB
+id|US_PR_CBI
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
-op_or
 id|US_FL_FIX_INQUIRY
 )paren
 comma
@@ -1934,6 +1907,31 @@ comma
 id|US_FL_FIX_CAPACITY
 )paren
 comma
+multiline_comment|/* Submitted by Hartmut Wahl &lt;hwahl@hwahl.de&gt;*/
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0839
+comma
+l_int|0x000a
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;Samsung&quot;
+comma
+l_string|&quot;Digimax 410&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -2058,56 +2056,6 @@ id|US_FL_MODE_XLATE
 op_or
 id|US_FL_START_STOP
 op_or
-id|US_FL_FIX_INQUIRY
-)paren
-comma
-multiline_comment|/* This Pentax still camera is not conformant&n; * to the USB storage specification: -&n; * - It does not like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; * Tested on Rev. 10.00 (0x1000)&n; * Submitted by James Courtier-Dutton &lt;James@superbug.demon.co.uk&gt;&n; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0a17
-comma
-l_int|0x0004
-comma
-l_int|0x1000
-comma
-l_int|0x1000
-comma
-l_string|&quot;Pentax&quot;
-comma
-l_string|&quot;Optio 2/3/400&quot;
-comma
-id|US_SC_8070
-comma
-id|US_PR_CBI
-comma
-l_int|NULL
-comma
-id|US_FL_FIX_INQUIRY
-)paren
-comma
-multiline_comment|/* Submitted by Per Winkvist &lt;per.winkvist@uk.com&gt; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0a17
-comma
-l_int|0x006
-comma
-l_int|0x1000
-comma
-l_int|0x9009
-comma
-l_string|&quot;Pentax&quot;
-comma
-l_string|&quot;Optio S&quot;
-comma
-id|US_SC_8070
-comma
-id|US_PR_CBI
-comma
-l_int|NULL
-comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma

@@ -745,6 +745,11 @@ DECL|struct|scsi_device
 r_struct
 id|scsi_device
 (brace
+DECL|member|sdev_classdev
+r_struct
+id|class_device
+id|sdev_classdev
+suffix:semicolon
 multiline_comment|/*&n;&t; * This information is private to the scsi mid-layer.&n;&t; */
 DECL|member|siblings
 r_struct
@@ -1063,14 +1068,21 @@ id|expecting_cc_ua
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Expecting a CHECK_CONDITION/UNIT_ATTN&n;&t;&t;&t;&t;&t; * because we did a bus reset. */
-DECL|member|ten
+multiline_comment|/* Expecting a CHECK_CONDITION/UNIT_ATTN&n;&t;&t;&t;&t;     * because we did a bus reset. */
+DECL|member|use_10_for_rw
 r_int
-id|ten
+id|use_10_for_rw
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* support ten byte read / write */
+multiline_comment|/* first try 10-byte read / write */
+DECL|member|use_10_for_ms
+r_int
+id|use_10_for_ms
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* first try 10-byte mode sense/select */
 DECL|member|remap
 r_int
 id|remap
@@ -1080,6 +1092,13 @@ suffix:semicolon
 multiline_comment|/* support remapping  */
 singleline_comment|//&t;unsigned sync:1;&t;/* Sync transfer state, managed by host */
 singleline_comment|//&t;unsigned wide:1;&t;/* WIDE transfer state, managed by host */
+DECL|member|no_start_on_add
+r_int
+id|no_start_on_add
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* do not issue start on add */
 DECL|member|device_blocked
 r_int
 r_int
@@ -1104,7 +1123,6 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|to_scsi_device
 mdefine_line|#define&t;to_scsi_device(d)&t;&bslash;&n;&t;container_of(d, struct scsi_device, sdev_driverfs_dev)
-multiline_comment|/*&n; * The Scsi_Cmnd structure is used by scsi.c internally, and for communication&n; * with low level drivers that support multiple outstanding commands.&n; */
 DECL|struct|scsi_pointer
 r_typedef
 r_struct
@@ -1287,7 +1305,7 @@ suffix:semicolon
 multiline_comment|/* reserved for owner (usually upper&n; &t;&t;&t;&t;&t;   level driver) of this request */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * FIXME(eric) - one of the great regrets that I have is that I failed to define&n; * these structure elements as something like sc_foo instead of foo.  This would&n; * make it so much easier to grep through sources and so forth.  I propose that&n; * all new elements that get added to these structures follow this convention.&n; * As time goes on and as people have the stomach for it, it should be possible to &n; * go back and retrofit at least some of the elements here with with the prefix.&n; */
+multiline_comment|/*&n; * FIXME(eric) - one of the great regrets that I have is that I failed to&n; * define these structure elements as something like sc_foo instead of foo.&n; * This would make it so much easier to grep through sources and so forth.&n; * I propose that all new elements that get added to these structures follow&n; * this convention.  As time goes on and as people have the stomach for it,&n; * it should be possible to go back and retrofit at least some of the elements&n; * here with with the prefix.&n; */
 DECL|struct|scsi_cmnd
 r_struct
 id|scsi_cmnd
@@ -1840,6 +1858,42 @@ id|dev
 comma
 r_char
 id|state
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|scsi_sysfs_modify_sdev_attribute
+c_func
+(paren
+r_struct
+id|device_attribute
+op_star
+op_star
+op_star
+id|dev_attrs
+comma
+r_struct
+id|device_attribute
+op_star
+id|attr
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|scsi_sysfs_modify_shost_attribute
+c_func
+(paren
+r_struct
+id|class_device_attribute
+op_star
+op_star
+op_star
+id|class_attrs
+comma
+r_struct
+id|class_device_attribute
+op_star
+id|attr
 )paren
 suffix:semicolon
 macro_line|#endif /* _SCSI_H */

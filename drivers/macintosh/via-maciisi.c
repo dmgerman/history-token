@@ -201,7 +201,7 @@ id|req
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|maciisi_interrupt
 c_func
 (paren
@@ -1459,7 +1459,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Shift register interrupt - this is *supposed* to mean that the&n;   register is either full or empty. In practice, I have no idea what&n;   it means :( */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|maciisi_interrupt
 id|maciisi_interrupt
 c_func
@@ -1566,6 +1566,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* Clear the interrupt */
@@ -2410,6 +2411,9 @@ c_func
 (paren
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static

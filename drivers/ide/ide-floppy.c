@@ -8567,10 +8567,6 @@ l_int|1
 op_lshift
 id|PARTN_BITS
 suffix:semicolon
-id|g-&gt;minor_shift
-op_assign
-id|PARTN_BITS
-suffix:semicolon
 id|g-&gt;driverfs_dev
 op_assign
 op_amp

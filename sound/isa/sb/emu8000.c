@@ -6760,6 +6760,11 @@ op_assign
 id|hw
 suffix:semicolon
 )brace
+macro_line|#else
+id|awe
+op_assign
+l_int|NULL
+suffix:semicolon
 macro_line|#endif
 r_if
 c_cond

@@ -369,13 +369,6 @@ id|agpmem-&gt;bound
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
-id|agpmem-&gt;memory-&gt;memory
-(braket
-id|offset
-)braket
-op_and_assign
-id|dev-&gt;agp-&gt;page_mask
-suffix:semicolon
 id|page
 op_assign
 id|virt_to_page
@@ -400,7 +393,7 @@ suffix:semicolon
 id|DRM_DEBUG
 c_func
 (paren
-l_string|&quot;baddr = 0x%lx page = 0x%p, offset = 0x%lx&bslash;n&quot;
+l_string|&quot;baddr = 0x%lx page = 0x%p, offset = 0x%lx, count=%d&bslash;n&quot;
 comma
 id|baddr
 comma
@@ -414,6 +407,13 @@ id|offset
 )paren
 comma
 id|offset
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|page-&gt;count
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -836,6 +836,8 @@ id|ioremapfree
 id|map-&gt;handle
 comma
 id|map-&gt;size
+comma
+id|dev
 )paren
 suffix:semicolon
 r_break
@@ -1643,6 +1645,7 @@ r_return
 op_minus
 id|EACCES
 suffix:semicolon
+multiline_comment|/* We check for &quot;dma&quot;. On Apple&squot;s UniNorth, it&squot;s valid to have&n;&t; * the AGP mapped at physical address 0&n;&t; * --BenH.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1652,6 +1655,17 @@ c_func
 (paren
 id|vma
 )paren
+macro_line|#if __REALLY_HAVE_AGP
+op_logical_and
+(paren
+op_logical_neg
+id|dev-&gt;agp
+op_logical_or
+id|dev-&gt;agp-&gt;agp_info.device-&gt;vendor
+op_ne
+id|PCI_VENDOR_ID_APPLE
+)paren
+macro_line|#endif
 )paren
 r_return
 id|DRM
@@ -1782,7 +1796,12 @@ id|_DRM_READ_ONLY
 (brace
 id|vma-&gt;vm_flags
 op_and_assign
+op_complement
+(paren
+id|VM_WRITE
+op_or
 id|VM_MAYWRITE
+)paren
 suffix:semicolon
 macro_line|#if defined(__i386__) || defined(__x86_64__)
 id|pgprot_val
@@ -1831,8 +1850,24 @@ id|map-&gt;type
 r_case
 id|_DRM_AGP
 suffix:colon
-macro_line|#if defined(__alpha__)
-multiline_comment|/*&n;                 * On Alpha we can&squot;t talk to bus dma address from the&n;                 * CPU, so for memory of type DRM_AGP, we&squot;ll deal with&n;                 * sorting out the real physical pages and mappings&n;                 * in nopage()&n;                 */
+macro_line|#if __REALLY_HAVE_AGP
+r_if
+c_cond
+(paren
+id|dev-&gt;agp-&gt;cant_use_aperture
+)paren
+(brace
+multiline_comment|/*&n;                 * On some platforms we can&squot;t talk to bus dma address from the CPU, so for&n;                 * memory of type DRM_AGP, we&squot;ll deal with sorting out the real physical&n;                 * pages and mappings in nopage()&n;                 */
+macro_line|#if defined(__powerpc__)
+id|pgprot_val
+c_func
+(paren
+id|vma-&gt;vm_page_prot
+)paren
+op_or_assign
+id|_PAGE_NO_CACHE
+suffix:semicolon
+macro_line|#endif
 id|vma-&gt;vm_ops
 op_assign
 op_amp
@@ -1844,6 +1879,7 @@ id|vm_ops
 suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 macro_line|#endif
 multiline_comment|/* fall through to _DRM_FRAME_BUFFER... */
 r_case
@@ -1899,22 +1935,6 @@ op_complement
 id|_PAGE_PWT
 suffix:semicolon
 )brace
-macro_line|#elif defined(__ia64__)
-r_if
-c_cond
-(paren
-id|map-&gt;type
-op_ne
-id|_DRM_AGP
-)paren
-id|vma-&gt;vm_page_prot
-op_assign
-id|pgprot_writecombine
-c_func
-(paren
-id|vma-&gt;vm_page_prot
-)paren
-suffix:semicolon
 macro_line|#elif defined(__powerpc__)
 id|pgprot_val
 c_func
@@ -1933,6 +1953,23 @@ id|VM_IO
 suffix:semicolon
 multiline_comment|/* not in core dump */
 )brace
+macro_line|#if defined(__ia64__)
+r_if
+c_cond
+(paren
+id|map-&gt;type
+op_ne
+id|_DRM_AGP
+)paren
+id|vma-&gt;vm_page_prot
+op_assign
+id|pgprot_writecombine
+c_func
+(paren
+id|vma-&gt;vm_page_prot
+)paren
+suffix:semicolon
+macro_line|#endif
 id|offset
 op_assign
 id|DRIVER_GET_REG_OFS

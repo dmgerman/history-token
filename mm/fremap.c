@@ -392,6 +392,17 @@ comma
 id|addr
 )paren
 suffix:semicolon
+id|update_mmu_cache
+c_func
+(paren
+id|vma
+comma
+id|addr
+comma
+op_star
+id|pte
+)paren
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren

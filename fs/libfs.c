@@ -2,26 +2,6 @@ multiline_comment|/*&n; *&t;fs/libfs.c&n; *&t;Library for filesystems writers.&n
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
-r_extern
-r_struct
-id|vfsmount
-op_star
-id|do_kern_mount
-c_func
-(paren
-r_const
-r_char
-op_star
-comma
-r_int
-comma
-r_char
-op_star
-comma
-r_void
-op_star
-)paren
-suffix:semicolon
 DECL|function|simple_getattr
 r_int
 id|simple_getattr
@@ -1676,8 +1656,9 @@ id|super_operations
 id|s_ops
 op_assign
 (brace
+dot
 id|statfs
-suffix:colon
+op_assign
 id|simple_statfs
 )brace
 suffix:semicolon

@@ -218,7 +218,7 @@ id|value
 )paren
 suffix:semicolon
 id|acpi_status
-id|acpi_ev_addr_handler_helper
+id|acpi_ev_install_handler
 (paren
 id|acpi_handle
 id|obj_handle

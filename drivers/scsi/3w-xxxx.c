@@ -11574,6 +11574,11 @@ r_int
 id|tw_scsi_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|shost
+comma
 r_char
 op_star
 id|buffer
@@ -11588,9 +11593,6 @@ id|offset
 comma
 r_int
 id|length
-comma
-r_int
-id|hostno
 comma
 r_int
 id|inout
@@ -11643,7 +11645,7 @@ id|i
 op_member_access_from_pointer
 id|host-&gt;host_no
 op_eq
-id|hostno
+id|shost-&gt;host_no
 )paren
 id|tw_dev
 op_assign
@@ -11867,7 +11869,7 @@ id|info
 comma
 l_string|&quot;scsi%d: 3ware Storage Controller&bslash;n&quot;
 comma
-id|hostno
+id|shost-&gt;host_no
 )paren
 suffix:semicolon
 id|tw_copy_info

@@ -125,7 +125,7 @@ id|vector
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|openpic_ipi_action
 c_func
 (paren
@@ -139,7 +139,6 @@ comma
 r_struct
 id|pt_regs
 op_star
-id|regs
 )paren
 suffix:semicolon
 macro_line|#endif

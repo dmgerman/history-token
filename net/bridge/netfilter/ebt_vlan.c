@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Description: EBTables 802.1Q match extension kernelspace module.&n; * Authors: Nick Fedchik &lt;nick@fedchik.org.ua&gt;&n; *          Bart De Schuymer &lt;bdschuym@pandora.be&gt;&n; *    &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *  &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * Description: EBTables 802.1Q match extension kernelspace module.&n; * Authors: Nick Fedchik &lt;nick@fedchik.org.ua&gt;&n; *          Bart De Schuymer &lt;bdschuym@pandora.be&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -56,8 +56,7 @@ mdefine_line|#define GET_BITMASK(_BIT_MASK_) info-&gt;bitmask &amp; _BIT_MASK_
 DECL|macro|SET_BITMASK
 mdefine_line|#define SET_BITMASK(_BIT_MASK_) info-&gt;bitmask |= _BIT_MASK_
 DECL|macro|EXIT_ON_MISMATCH
-mdefine_line|#define EXIT_ON_MISMATCH(_MATCH_,_MASK_) if (!((info-&gt;_MATCH_ == _MATCH_)^!!(info-&gt;invflags &amp; _MASK_))) return 1;
-multiline_comment|/*&n; * Function description: ebt_filter_vlan() is main engine for &n; * checking passed 802.1Q frame according to &n; * the passed extension parameters (in the *data buffer)&n; * ebt_filter_vlan() is called after successful check the rule params&n; * by ebt_check_vlan() function.&n; * Parameters:&n; * const struct sk_buff *skb - pointer to passed ethernet frame buffer&n; * const void *data - pointer to passed extension parameters&n; * unsigned int datalen - length of passed *data buffer&n; * const struct net_device *in  -&n; * const struct net_device *out -&n; * const struct ebt_counter *c -&n; * Returned values:&n; * 0 - ok (all rule params matched)&n; * 1 - miss (rule params not acceptable to the parsed frame)&n; */
+mdefine_line|#define EXIT_ON_MISMATCH(_MATCH_,_MASK_) {if (!((info-&gt;_MATCH_ == _MATCH_)^!!(info-&gt;invflags &amp; _MASK_))) return EBT_NOMATCH;}
 r_static
 r_int
 DECL|function|ebt_filter_vlan
@@ -104,20 +103,10 @@ op_star
 )paren
 id|data
 suffix:semicolon
-multiline_comment|/* userspace data */
 r_struct
 id|vlan_ethhdr
-op_star
 id|frame
-op_assign
-(paren
-r_struct
-id|vlan_ethhdr
-op_star
-)paren
-id|skb-&gt;mac.raw
 suffix:semicolon
-multiline_comment|/* Passed tagged frame */
 r_int
 r_int
 id|TCI
@@ -133,18 +122,40 @@ r_char
 id|prio
 suffix:semicolon
 multiline_comment|/* user_priority, given from frame TCI */
+multiline_comment|/* VLAN encapsulated Type/Length field, given from orig frame */
 r_int
 r_int
 id|encap
 suffix:semicolon
-multiline_comment|/* VLAN encapsulated Type/Length field, given from orig frame */
-multiline_comment|/*&n;&t; * Tag Control Information (TCI) consists of the following elements:&n;&t; * - User_priority. The user_priority field is three bits in length, &n;&t; * interpreted as a binary number. &n;&t; * - Canonical Format Indicator (CFI). The Canonical Format Indicator &n;&t; * (CFI) is a single bit flag value. Currently ignored.&n;&t; * - VLAN Identifier (VID). The VID is encoded as &n;&t; * an unsigned binary number. &n;&t; */
+r_if
+c_cond
+(paren
+id|skb_copy_bits
+c_func
+(paren
+id|skb
+comma
+l_int|0
+comma
+op_amp
+id|frame
+comma
+r_sizeof
+(paren
+id|frame
+)paren
+)paren
+)paren
+r_return
+id|EBT_NOMATCH
+suffix:semicolon
+multiline_comment|/* Tag Control Information (TCI) consists of the following elements:&n;&t; * - User_priority. The user_priority field is three bits in length,&n;&t; * interpreted as a binary number.&n;&t; * - Canonical Format Indicator (CFI). The Canonical Format Indicator&n;&t; * (CFI) is a single bit flag value. Currently ignored.&n;&t; * - VLAN Identifier (VID). The VID is encoded as&n;&t; * an unsigned binary number. */
 id|TCI
 op_assign
 id|ntohs
 c_func
 (paren
-id|frame-&gt;h_vlan_TCI
+id|frame.h_vlan_TCI
 )paren
 suffix:semicolon
 id|id
@@ -165,9 +176,9 @@ l_int|0x7
 suffix:semicolon
 id|encap
 op_assign
-id|frame-&gt;h_vlan_encapsulated_proto
+id|frame.h_vlan_encapsulated_proto
 suffix:semicolon
-multiline_comment|/*&n;&t; * Checking VLAN Identifier (VID)&n;&t; */
+multiline_comment|/* Checking VLAN Identifier (VID) */
 r_if
 c_cond
 (paren
@@ -177,8 +188,6 @@ c_func
 id|EBT_VLAN_ID
 )paren
 )paren
-(brace
-multiline_comment|/* Is VLAN ID parsed? */
 id|EXIT_ON_MISMATCH
 c_func
 (paren
@@ -187,8 +196,7 @@ comma
 id|EBT_VLAN_ID
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Checking user_priority&n;&t; */
+multiline_comment|/* Checking user_priority */
 r_if
 c_cond
 (paren
@@ -198,8 +206,6 @@ c_func
 id|EBT_VLAN_PRIO
 )paren
 )paren
-(brace
-multiline_comment|/* Is VLAN user_priority parsed? */
 id|EXIT_ON_MISMATCH
 c_func
 (paren
@@ -208,8 +214,7 @@ comma
 id|EBT_VLAN_PRIO
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Checking Encapsulated Proto (Length/Type) field&n;&t; */
+multiline_comment|/* Checking Encapsulated Proto (Length/Type) field */
 r_if
 c_cond
 (paren
@@ -219,8 +224,6 @@ c_func
 id|EBT_VLAN_ENCAP
 )paren
 )paren
-(brace
-multiline_comment|/* Is VLAN Encap parsed? */
 id|EXIT_ON_MISMATCH
 c_func
 (paren
@@ -229,13 +232,10 @@ comma
 id|EBT_VLAN_ENCAP
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * All possible extension parameters was parsed.&n;&t; * If rule never returned by missmatch, then all ok.&n;&t; */
 r_return
-l_int|0
+id|EBT_MATCH
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function description: ebt_vlan_check() is called when userspace &n; * delivers the table entry to the kernel, &n; * and to check that userspace doesn&squot;t give a bad table.&n; * Parameters:&n; * const char *tablename - table name string&n; * unsigned int hooknr - hook number&n; * const struct ebt_entry *e - ebtables entry basic set&n; * const void *data - pointer to passed extension parameters&n; * unsigned int datalen - length of passed *data buffer&n; * Returned values:&n; * 0 - ok (all delivered rule params are correct)&n; * 1 - miss (rule params is out of range, invalid, incompatible, etc.)&n; */
 r_static
 r_int
 DECL|function|ebt_check_vlan
@@ -278,7 +278,7 @@ op_star
 )paren
 id|data
 suffix:semicolon
-multiline_comment|/*&n;&t; * Parameters buffer overflow check &n;&t; */
+multiline_comment|/* Parameters buffer overflow check */
 r_if
 c_cond
 (paren
@@ -309,7 +309,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Is it 802.1Q frame checked?&n;&t; */
+multiline_comment|/* Is it 802.1Q frame checked? */
 r_if
 c_cond
 (paren
@@ -342,7 +342,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Check for bitmask range &n;&t; * True if even one bit is out of mask&n;&t; */
+multiline_comment|/* Check for bitmask range&n;&t; * True if even one bit is out of mask */
 r_if
 c_cond
 (paren
@@ -367,7 +367,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Check for inversion flags range &n;&t; */
+multiline_comment|/* Check for inversion flags range */
 r_if
 c_cond
 (paren
@@ -392,7 +392,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Reserved VLAN ID (VID) values&n;&t; * -----------------------------&n;&t; * 0 - The null VLAN ID. &n;&t; * 1 - The default Port VID (PVID)&n;&t; * 0x0FFF - Reserved for implementation use. &n;&t; * if_vlan.h: VLAN_GROUP_ARRAY_LEN 4096.&n;&t; */
+multiline_comment|/* Reserved VLAN ID (VID) values&n;&t; * -----------------------------&n;&t; * 0 - The null VLAN ID. &n;&t; * 1 - The default Port VID (PVID)&n;&t; * 0x0FFF - Reserved for implementation use. &n;&t; * if_vlan.h: VLAN_GROUP_ARRAY_LEN 4096. */
 r_if
 c_cond
 (paren
@@ -403,7 +403,6 @@ id|EBT_VLAN_ID
 )paren
 )paren
 (brace
-multiline_comment|/* when vlan-id param was spec-ed */
 r_if
 c_cond
 (paren
@@ -433,14 +432,14 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Note: This is valid VLAN-tagged frame point.&n;&t;&t;&t; * Any value of user_priority are acceptable, &n;&t;&t;&t; * but should be ignored according to 802.1Q Std.&n;&t;&t;&t; * So we just drop the prio flag. &n;&t;&t;&t; */
+multiline_comment|/* Note: This is valid VLAN-tagged frame point.&n;&t;&t;&t; * Any value of user_priority are acceptable, &n;&t;&t;&t; * but should be ignored according to 802.1Q Std.&n;&t;&t;&t; * So we just drop the prio flag. */
 id|info-&gt;bitmask
 op_and_assign
 op_complement
 id|EBT_VLAN_PRIO
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Else, id=0 (null VLAN ID)  =&gt; user_priority range (any?)&n;&t;&t; */
+multiline_comment|/* Else, id=0 (null VLAN ID)  =&gt; user_priority range (any?) */
 )brace
 r_if
 c_cond
@@ -465,6 +464,7 @@ l_int|7
 )paren
 (brace
 id|DEBUG_MSG
+c_func
 (paren
 l_string|&quot;prio %d is out of range (0-7)&bslash;n&quot;
 comma
@@ -477,7 +477,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Check for encapsulated proto range - it is possible to be &n;&t; * any value for u_short range.&n;&t; * if_ether.h:  ETH_ZLEN        60   -  Min. octets in frame sans FCS&n;&t; */
+multiline_comment|/* Check for encapsulated proto range - it is possible to be&n;&t; * any value for u_short range.&n;&t; * if_ether.h:  ETH_ZLEN        60   -  Min. octets in frame sans FCS */
 r_if
 c_cond
 (paren
@@ -554,7 +554,6 @@ id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Module initialization function.&n; */
 DECL|function|init
 r_static
 r_int
@@ -592,7 +591,6 @@ id|filter_vlan
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Module &quot;finalization&quot; function&n; */
 DECL|function|fini
 r_static
 r_void

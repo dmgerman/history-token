@@ -901,6 +901,8 @@ r_struct
 id|inet6_dev
 op_star
 id|idev
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|ipv6hdr
@@ -1470,7 +1472,7 @@ id|sk
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_put
 suffix:semicolon
 )brace
 id|err
@@ -1534,6 +1536,8 @@ comma
 id|Icmp6OutMsgs
 )paren
 suffix:semicolon
+id|out_put
+suffix:colon
 r_if
 c_cond
 (paren
@@ -1885,7 +1889,7 @@ id|sk
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_put
 suffix:semicolon
 )brace
 id|err
@@ -1926,6 +1930,8 @@ comma
 id|Icmp6OutMsgs
 )paren
 suffix:semicolon
+id|out_put
+suffix:colon
 r_if
 c_cond
 (paren

@@ -83,7 +83,7 @@ id|super_block
 op_star
 id|sb
 comma
-r_int
+id|loff_t
 id|i_pos
 )paren
 (brace
@@ -137,7 +137,7 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|loff_t
 id|i_pos
 )paren
 (brace
@@ -154,7 +154,7 @@ c_func
 id|inode
 )paren
 op_member_access_from_pointer
-id|i_location
+id|i_pos
 op_assign
 id|i_pos
 suffix:semicolon
@@ -213,7 +213,7 @@ c_func
 id|inode
 )paren
 op_member_access_from_pointer
-id|i_location
+id|i_pos
 op_assign
 l_int|0
 suffix:semicolon
@@ -250,7 +250,7 @@ id|super_block
 op_star
 id|sb
 comma
-r_int
+id|loff_t
 id|i_pos
 )paren
 (brace
@@ -326,7 +326,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|i-&gt;i_location
+id|i-&gt;i_pos
 op_ne
 id|i_pos
 )paren
@@ -393,8 +393,8 @@ id|msdos_dir_entry
 op_star
 id|de
 comma
-r_int
-id|ino
+id|loff_t
+id|i_pos
 comma
 r_int
 op_star
@@ -418,7 +418,7 @@ c_func
 (paren
 id|sb
 comma
-id|ino
+id|i_pos
 )paren
 suffix:semicolon
 r_if
@@ -505,7 +505,7 @@ c_func
 (paren
 id|inode
 comma
-id|ino
+id|i_pos
 )paren
 suffix:semicolon
 id|insert_inode_hash
@@ -649,12 +649,6 @@ id|sb
 )paren
 suffix:semicolon
 id|fat_clusters_flush
-c_func
-(paren
-id|sb
-)paren
-suffix:semicolon
-id|fat_cache_inval_dev
 c_func
 (paren
 id|sb
@@ -2682,7 +2676,7 @@ c_func
 id|inode
 )paren
 op_member_access_from_pointer
-id|i_location
+id|i_pos
 op_assign
 l_int|0
 suffix:semicolon
@@ -2881,7 +2875,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * a FAT file handle with fhtype 3 is&n; *  0/  i_ino - for fast, reliable lookup if still in the cache&n; *  1/  i_generation - to see if i_ino is still valid&n; *          bit 0 == 0 iff directory&n; *  2/  i_location - if ino has changed, but still in cache&n; *  3/  i_logstart - to semi-verify inode found at i_location&n; *  4/  parent-&gt;i_logstart - maybe used to hunt for the file on disc&n; *&n; */
+multiline_comment|/*&n; * a FAT file handle with fhtype 3 is&n; *  0/  i_ino - for fast, reliable lookup if still in the cache&n; *  1/  i_generation - to see if i_ino is still valid&n; *          bit 0 == 0 iff directory&n; *  2/  i_pos - if ino has changed, but still in cache (hi)&n; *  3/  i_pos - if ino has changed, but still in cache (low)&n; *  4/  i_logstart - to semi-verify inode found at i_location&n; *  5/  parent-&gt;i_logstart - maybe used to hunt for the file on disc&n; *&n; */
 DECL|function|fat_decode_fh
 r_struct
 id|dentry
@@ -2945,7 +2939,7 @@ c_cond
 (paren
 id|len
 OL
-l_int|5
+l_int|6
 )paren
 r_return
 id|ERR_PTR
@@ -3064,7 +3058,27 @@ op_logical_neg
 id|inode
 )paren
 (brace
-multiline_comment|/* try 2 - see if i_location is in F-d-c&n;&t;&t; * require i_logstart to be the same&n;&t;&t; * Will fail if you truncate and then re-write&n;&t;&t; */
+id|loff_t
+id|i_pos
+op_assign
+(paren
+(paren
+id|loff_t
+)paren
+id|fh
+(braket
+l_int|2
+)braket
+op_lshift
+l_int|32
+)paren
+op_or
+id|fh
+(braket
+l_int|3
+)braket
+suffix:semicolon
+multiline_comment|/* try 2 - see if i_pos is in F-d-c&n;&t;&t; * require i_logstart to be the same&n;&t;&t; * Will fail if you truncate and then re-write&n;&t;&t; */
 id|inode
 op_assign
 id|fat_iget
@@ -3072,10 +3086,7 @@ c_func
 (paren
 id|sb
 comma
-id|fh
-(braket
-l_int|2
-)braket
+id|i_pos
 )paren
 suffix:semicolon
 r_if
@@ -3093,7 +3104,7 @@ id|i_logstart
 op_ne
 id|fh
 (braket
-l_int|3
+l_int|4
 )braket
 )paren
 (brace
@@ -3212,7 +3223,7 @@ c_cond
 (paren
 id|len
 OL
-l_int|5
+l_int|6
 )paren
 r_return
 l_int|255
@@ -3221,7 +3232,7 @@ multiline_comment|/* no room */
 op_star
 id|lenp
 op_assign
-l_int|5
+l_int|6
 suffix:semicolon
 id|fh
 (braket
@@ -3242,17 +3253,40 @@ id|fh
 l_int|2
 )braket
 op_assign
+(paren
+id|__u32
+)paren
+(paren
 id|MSDOS_I
 c_func
 (paren
 id|inode
 )paren
 op_member_access_from_pointer
-id|i_location
+id|i_pos
+op_rshift
+l_int|32
+)paren
 suffix:semicolon
 id|fh
 (braket
 l_int|3
+)braket
+op_assign
+(paren
+id|__u32
+)paren
+id|MSDOS_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_pos
+suffix:semicolon
+id|fh
+(braket
+l_int|4
 )braket
 op_assign
 id|MSDOS_I
@@ -3272,7 +3306,7 @@ id|de-&gt;d_lock
 suffix:semicolon
 id|fh
 (braket
-l_int|4
+l_int|5
 )braket
 op_assign
 id|MSDOS_I
@@ -3331,8 +3365,8 @@ suffix:semicolon
 r_int
 id|res
 suffix:semicolon
-r_int
-id|ino
+id|loff_t
+id|i_pos
 op_assign
 l_int|0
 suffix:semicolon
@@ -3362,7 +3396,7 @@ op_amp
 id|de
 comma
 op_amp
-id|ino
+id|i_pos
 )paren
 suffix:semicolon
 r_if
@@ -3384,7 +3418,7 @@ id|child-&gt;d_sb
 comma
 id|de
 comma
-id|ino
+id|i_pos
 comma
 op_amp
 id|res
@@ -3643,6 +3677,8 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_RECLAIM_ACCOUNT
 comma
 id|init_once
 comma
@@ -3941,6 +3977,7 @@ suffix:semicolon
 id|fat_cache_init
 c_func
 (paren
+id|sb
 )paren
 suffix:semicolon
 multiline_comment|/* set up enough so that it can read an inode */
@@ -5673,7 +5710,25 @@ c_func
 id|inode
 )paren
 op_member_access_from_pointer
-id|i_location
+id|file_cluster
+op_assign
+id|MSDOS_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|disk_cluster
+op_assign
+l_int|0
+suffix:semicolon
+id|MSDOS_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_pos
 op_assign
 l_int|0
 suffix:semicolon
@@ -5762,7 +5817,6 @@ id|sbi-&gt;fat_bits
 op_eq
 l_int|32
 )paren
-(brace
 id|MSDOS_I
 c_func
 (paren
@@ -5781,7 +5835,6 @@ op_lshift
 l_int|16
 )paren
 suffix:semicolon
-)brace
 id|MSDOS_I
 c_func
 (paren
@@ -5896,7 +5949,6 @@ id|sbi-&gt;fat_bits
 op_eq
 l_int|32
 )paren
-(brace
 id|MSDOS_I
 c_func
 (paren
@@ -5915,7 +5967,6 @@ op_lshift
 l_int|16
 )paren
 suffix:semicolon
-)brace
 id|MSDOS_I
 c_func
 (paren
@@ -6131,8 +6182,7 @@ id|msdos_dir_entry
 op_star
 id|raw_entry
 suffix:semicolon
-r_int
-r_int
+id|loff_t
 id|i_pos
 suffix:semicolon
 id|retry
@@ -6145,7 +6195,7 @@ c_func
 id|inode
 )paren
 op_member_access_from_pointer
-id|i_location
+id|i_pos
 suffix:semicolon
 r_if
 c_cond
@@ -6196,7 +6246,7 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;unable to read i-node block (ino %lu)&quot;
+l_string|&quot;unable to read i-node block (i_pos %llu)&quot;
 comma
 id|i_pos
 )paren
@@ -6227,7 +6277,7 @@ c_func
 id|inode
 )paren
 op_member_access_from_pointer
-id|i_location
+id|i_pos
 )paren
 (brace
 id|spin_unlock

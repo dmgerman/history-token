@@ -8421,11 +8421,11 @@ id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function devfs_fill_super  */
-DECL|function|devfs_get_sb
 r_static
 r_struct
 id|super_block
 op_star
+DECL|function|devfs_get_sb
 id|devfs_get_sb
 (paren
 r_struct
@@ -8436,6 +8436,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name

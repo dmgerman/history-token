@@ -6961,12 +6961,11 @@ c_cond
 (paren
 id|inode
 )paren
-id|inode
-op_assign
-id|igrab
+id|atomic_inc
 c_func
 (paren
-id|inode
+op_amp
+id|inode-&gt;i_count
 )paren
 suffix:semicolon
 id|error

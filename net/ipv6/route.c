@@ -838,10 +838,6 @@ op_logical_neg
 id|match
 op_logical_and
 id|sprt
-op_logical_and
-id|sprt
-op_ne
-id|rt6_dflt_pointer
 suffix:semicolon
 id|sprt
 op_assign
@@ -867,6 +863,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|sprt
+op_eq
+id|rt6_dflt_pointer
+)paren
+r_break
+suffix:semicolon
 )brace
 )brace
 )brace

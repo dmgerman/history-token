@@ -1152,7 +1152,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUM_MTX
+id|NUM_MUTEX
 suffix:semicolon
 id|i
 op_increment
@@ -1221,7 +1221,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUM_MTX
+id|NUM_MUTEX
 suffix:semicolon
 id|i
 op_increment
@@ -1270,7 +1270,7 @@ c_cond
 (paren
 id|mutex_id
 OG
-id|MAX_MTX
+id|MAX_MUTEX
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -1283,7 +1283,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|acpi_gbl_acpi_mutex_info
+id|acpi_gbl_mutex_info
 (braket
 id|mutex_id
 )braket
@@ -1300,7 +1300,7 @@ comma
 l_int|1
 comma
 op_amp
-id|acpi_gbl_acpi_mutex_info
+id|acpi_gbl_mutex_info
 (braket
 id|mutex_id
 )braket
@@ -1308,7 +1308,7 @@ dot
 id|mutex
 )paren
 suffix:semicolon
-id|acpi_gbl_acpi_mutex_info
+id|acpi_gbl_mutex_info
 (braket
 id|mutex_id
 )braket
@@ -1317,7 +1317,7 @@ id|owner_id
 op_assign
 id|ACPI_MUTEX_NOT_ACQUIRED
 suffix:semicolon
-id|acpi_gbl_acpi_mutex_info
+id|acpi_gbl_mutex_info
 (braket
 id|mutex_id
 )braket
@@ -1357,7 +1357,7 @@ c_cond
 (paren
 id|mutex_id
 OG
-id|MAX_MTX
+id|MAX_MUTEX
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -1370,7 +1370,7 @@ id|status
 op_assign
 id|acpi_os_delete_semaphore
 (paren
-id|acpi_gbl_acpi_mutex_info
+id|acpi_gbl_mutex_info
 (braket
 id|mutex_id
 )braket
@@ -1378,7 +1378,7 @@ dot
 id|mutex
 )paren
 suffix:semicolon
-id|acpi_gbl_acpi_mutex_info
+id|acpi_gbl_mutex_info
 (braket
 id|mutex_id
 )braket
@@ -1387,7 +1387,7 @@ id|mutex
 op_assign
 l_int|NULL
 suffix:semicolon
-id|acpi_gbl_acpi_mutex_info
+id|acpi_gbl_mutex_info
 (braket
 id|mutex_id
 )braket
@@ -1430,7 +1430,7 @@ c_cond
 (paren
 id|mutex_id
 OG
-id|MAX_MTX
+id|MAX_MUTEX
 )paren
 (brace
 r_return
@@ -1455,7 +1455,7 @@ id|mutex_id
 suffix:semicolon
 id|i
 OL
-id|MAX_MTX
+id|MAX_MUTEX
 suffix:semicolon
 id|i
 op_increment
@@ -1464,7 +1464,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|acpi_gbl_acpi_mutex_info
+id|acpi_gbl_mutex_info
 (braket
 id|i
 )braket
@@ -1552,7 +1552,7 @@ id|status
 op_assign
 id|acpi_os_wait_semaphore
 (paren
-id|acpi_gbl_acpi_mutex_info
+id|acpi_gbl_mutex_info
 (braket
 id|mutex_id
 )braket
@@ -1589,7 +1589,7 @@ id|mutex_id
 )paren
 )paren
 suffix:semicolon
-id|acpi_gbl_acpi_mutex_info
+id|acpi_gbl_mutex_info
 (braket
 id|mutex_id
 )braket
@@ -1597,7 +1597,7 @@ dot
 id|use_count
 op_increment
 suffix:semicolon
-id|acpi_gbl_acpi_mutex_info
+id|acpi_gbl_mutex_info
 (braket
 id|mutex_id
 )braket
@@ -1687,7 +1687,7 @@ c_cond
 (paren
 id|mutex_id
 OG
-id|MAX_MTX
+id|MAX_MUTEX
 )paren
 (brace
 r_return
@@ -1700,7 +1700,7 @@ multiline_comment|/*&n;&t; * Mutex must be acquired in order to release it!&n;&t
 r_if
 c_cond
 (paren
-id|acpi_gbl_acpi_mutex_info
+id|acpi_gbl_mutex_info
 (braket
 id|mutex_id
 )braket
@@ -1740,7 +1740,7 @@ id|mutex_id
 suffix:semicolon
 id|i
 OL
-id|MAX_MTX
+id|MAX_MUTEX
 suffix:semicolon
 id|i
 op_increment
@@ -1749,7 +1749,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|acpi_gbl_acpi_mutex_info
+id|acpi_gbl_mutex_info
 (braket
 id|i
 )braket
@@ -1797,7 +1797,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Mark unlocked FIRST */
-id|acpi_gbl_acpi_mutex_info
+id|acpi_gbl_mutex_info
 (braket
 id|mutex_id
 )braket
@@ -1810,7 +1810,7 @@ id|status
 op_assign
 id|acpi_os_signal_semaphore
 (paren
-id|acpi_gbl_acpi_mutex_info
+id|acpi_gbl_mutex_info
 (braket
 id|mutex_id
 )braket

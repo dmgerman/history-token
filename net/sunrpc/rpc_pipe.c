@@ -3551,6 +3551,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name
@@ -3715,6 +3716,8 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_RECLAIM_ACCOUNT
 comma
 id|init_once
 comma

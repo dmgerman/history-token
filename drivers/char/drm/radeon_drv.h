@@ -462,6 +462,14 @@ id|DRM_IOCTL_ARGS
 suffix:semicolon
 r_extern
 r_int
+id|radeon_cp_resume
+c_func
+(paren
+id|DRM_IOCTL_ARGS
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|radeon_engine_reset
 c_func
 (paren

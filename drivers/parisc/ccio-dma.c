@@ -5277,7 +5277,7 @@ l_string|&quot;U2&quot;
 suffix:colon
 l_string|&quot;UTurn&quot;
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|dev-&gt;dev.name

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: jffs2_fs_sb.h,v 1.35 2002/11/12 09:42:18 dwmw2 Exp $ */
+multiline_comment|/* $Id: jffs2_fs_sb.h,v 1.37 2003/01/17 16:04:44 dwmw2 Exp $ */
 macro_line|#ifndef _JFFS2_FS_SB
 DECL|macro|_JFFS2_FS_SB
 mdefine_line|#define _JFFS2_FS_SB
@@ -7,6 +7,8 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 DECL|macro|JFFS2_SB_FLAG_RO
 mdefine_line|#define JFFS2_SB_FLAG_RO 1
@@ -211,6 +213,10 @@ id|wait_queue_head_t
 id|erase_wait
 suffix:semicolon
 multiline_comment|/* For waiting for erases to complete */
+DECL|member|inocache_wq
+id|wait_queue_head_t
+id|inocache_wq
+suffix:semicolon
 DECL|member|inocache_list
 r_struct
 id|jffs2_inode_cache

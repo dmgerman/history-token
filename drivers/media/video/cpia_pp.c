@@ -2192,14 +2192,14 @@ OL
 l_int|0
 )paren
 (brace
-r_return
-id|err
-suffix:semicolon
 id|DBG
 c_func
 (paren
 l_string|&quot;Error reading command result&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 id|memcpy

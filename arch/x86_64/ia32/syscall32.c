@@ -9,41 +9,15 @@ macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/ia32_unistd.h&gt;
-multiline_comment|/* 32bit SYSCALL stub mapped into user space. */
+multiline_comment|/* 32bit VDSO mapped into user space. */
 id|asm
 c_func
 (paren
-l_string|&quot;&t;.code32&bslash;n&quot;
-l_string|&quot;&bslash;nsyscall32:&bslash;n&quot;
-l_string|&quot;&t;pushl %ebp&bslash;n&quot;
-l_string|&quot;&t;movl  %ecx,%ebp&bslash;n&quot;
-l_string|&quot;&t;syscall&bslash;n&quot;
-l_string|&quot;&t;popl  %ebp&bslash;n&quot;
-l_string|&quot;&t;ret&bslash;n&quot;
+l_string|&quot;.section &bslash;&quot;.init.data&bslash;&quot;,&bslash;&quot;aw&bslash;&quot;&bslash;n&quot;
+l_string|&quot;syscall32:&bslash;n&quot;
+l_string|&quot;.incbin &bslash;&quot;arch/x86_64/ia32/vsyscall.so&bslash;&quot;&bslash;n&quot;
 l_string|&quot;syscall32_end:&bslash;n&quot;
-multiline_comment|/* signal trampolines */
-l_string|&quot;sig32_rt_tramp:&bslash;n&quot;
-l_string|&quot;&t;movl $&quot;
-id|__stringify
-c_func
-(paren
-id|__NR_ia32_rt_sigreturn
-)paren
-l_string|&quot;,%eax&bslash;n&quot;
-l_string|&quot;   syscall&bslash;n&quot;
-l_string|&quot;sig32_rt_tramp_end:&bslash;n&quot;
-l_string|&quot;sig32_tramp:&bslash;n&quot;
-l_string|&quot;&t;popl %eax&bslash;n&quot;
-l_string|&quot;&t;movl $&quot;
-id|__stringify
-c_func
-(paren
-id|__NR_ia32_sigreturn
-)paren
-l_string|&quot;,%eax&bslash;n&quot;
-l_string|&quot;&t;syscall&bslash;n&quot;
-l_string|&quot;sig32_tramp_end:&bslash;n&quot;
-l_string|&quot;&t;.code64&bslash;n&quot;
+l_string|&quot;.previous&quot;
 )paren
 suffix:semicolon
 r_extern
@@ -54,28 +28,6 @@ id|syscall32
 )braket
 comma
 id|syscall32_end
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_int
-r_char
-id|sig32_rt_tramp
-(braket
-)braket
-comma
-id|sig32_rt_tramp_end
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_int
-r_char
-id|sig32_tramp
-(braket
-)braket
-comma
-id|sig32_tramp_end
 (braket
 )braket
 suffix:semicolon
@@ -282,34 +234,6 @@ comma
 id|syscall32_end
 op_minus
 id|syscall32
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|syscall32_page
-op_plus
-l_int|32
-comma
-id|sig32_rt_tramp
-comma
-id|sig32_rt_tramp_end
-op_minus
-id|sig32_rt_tramp
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|syscall32_page
-op_plus
-l_int|64
-comma
-id|sig32_tramp
-comma
-id|sig32_tramp_end
-op_minus
-id|sig32_tramp
 )paren
 suffix:semicolon
 r_return

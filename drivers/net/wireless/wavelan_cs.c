@@ -18677,10 +18677,41 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/****************************** MODULE ******************************/
-multiline_comment|/*&n; * Module entry points : insertion &amp; removal&n; */
-multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Module insertion : initialisation of the module.&n; * Register the card with cardmgr...&n; */
+DECL|variable|wavelan_driver
+r_static
+r_struct
+id|pcmcia_driver
+id|wavelan_driver
+op_assign
+(brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
+id|drv
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;wavelan_cs&quot;
+comma
+)brace
+comma
+dot
+id|attach
+op_assign
+id|wavelan_attach
+comma
+dot
+id|detach
+op_assign
+id|wavelan_detach
+comma
+)brace
+suffix:semicolon
 r_static
 r_int
 id|__init
@@ -18691,88 +18722,15 @@ c_func
 r_void
 )paren
 (brace
-id|servinfo_t
-id|serv
-suffix:semicolon
-macro_line|#ifdef DEBUG_MODULE_TRACE
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;-&gt; init_wavelan_cs()&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#ifdef DEBUG_VERSION_SHOW
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s&quot;
-comma
-id|version
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
-id|CardServices
-c_func
-(paren
-id|GetCardServicesInfo
-comma
-op_amp
-id|serv
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|serv.Revision
-op_ne
-id|CS_RELEASE_CODE
-)paren
-(brace
-macro_line|#ifdef DEBUG_CONFIG_ERRORS
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;init_wavelan_cs: Card Services release does not match!&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
-op_minus
-l_int|1
+id|pcmcia_register_driver
+c_func
+(paren
+op_amp
+id|wavelan_driver
+)paren
 suffix:semicolon
 )brace
-id|register_pccard_driver
-c_func
-(paren
-op_amp
-id|dev_info
-comma
-op_amp
-id|wavelan_attach
-comma
-op_amp
-id|wavelan_detach
-)paren
-suffix:semicolon
-macro_line|#ifdef DEBUG_MODULE_TRACE
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;&lt;- init_wavelan_cs()&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Module removal&n; */
 r_static
 r_void
 id|__exit
@@ -18783,73 +18741,19 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef DEBUG_MODULE_TRACE
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;-&gt; cleanup_module()&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef DEBUG_BASIC_SHOW
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;wavelan_cs: unloading&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Do some cleanup of the device list */
 id|wv_flush_stale_links
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* If there remain some devices... */
-macro_line|#ifdef DEBUG_CONFIG_ERRORS
-r_if
-c_cond
-(paren
-id|dev_list
-op_ne
-l_int|NULL
-)paren
-(brace
-multiline_comment|/* Honestly, if this happen we are in a deep s**t */
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;wavelan_cs: devices remaining when removing module&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Please flush your disks and reboot NOW !&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-id|unregister_pccard_driver
+id|pcmcia_unregister_driver
 c_func
 (paren
 op_amp
-id|dev_info
+id|wavelan_driver
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_MODULE_TRACE
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;&lt;- cleanup_module()&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|variable|init_wavelan_cs
 id|module_init

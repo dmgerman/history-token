@@ -1152,6 +1152,37 @@ c_func
 id|unregister_inetaddr_notifier
 )paren
 suffix:semicolon
+multiline_comment|/* proc */
+macro_line|#ifdef CONFIG_PROC_FS
+DECL|variable|udp_proc_register
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udp_proc_register
+)paren
+suffix:semicolon
+DECL|variable|udp_proc_unregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udp_proc_unregister
+)paren
+suffix:semicolon
+DECL|variable|tcp_proc_register
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_proc_register
+)paren
+suffix:semicolon
+DECL|variable|tcp_proc_unregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_proc_unregister
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* needed for ip_gre -cw */
 DECL|variable|ip_statistics
 id|EXPORT_SYMBOL
@@ -2994,13 +3025,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|__kill_fasync
-)paren
-suffix:semicolon
-DECL|variable|if_port_text
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|if_port_text
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HIPPI
