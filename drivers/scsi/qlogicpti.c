@@ -11,8 +11,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;qlogicpti.h&quot;
 macro_line|#include &lt;asm/sbus.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
@@ -4261,7 +4259,8 @@ id|__init
 id|qlogicpti_detect
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|tpnt
 )paren
@@ -4519,7 +4518,7 @@ c_func
 id|qpti
 )paren
 suffix:semicolon
-multiline_comment|/* Clear out Scsi_Cmnd array. */
+multiline_comment|/* Clear out scsi_cmnd array. */
 id|memset
 c_func
 (paren
@@ -5044,7 +5043,8 @@ id|Command_Entry
 op_star
 id|cmd
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|Cmnd
 comma
@@ -5214,7 +5214,8 @@ r_int
 id|load_cmd
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|Cmnd
 comma
@@ -5673,7 +5674,8 @@ r_void
 id|ourdone
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|Cmnd
 )paren
@@ -5701,7 +5703,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -5714,7 +5717,8 @@ r_void
 op_star
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -5913,7 +5917,8 @@ r_int
 id|qlogicpti_queuecommand
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|Cmnd
 comma
@@ -5923,7 +5928,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -5934,7 +5940,8 @@ r_int
 id|qlogicpti_queuecommand_slow
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|Cmnd
 comma
@@ -5944,7 +5951,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -6201,7 +6209,8 @@ r_int
 id|qlogicpti_queuecommand
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|Cmnd
 comma
@@ -6211,7 +6220,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -6700,7 +6710,8 @@ suffix:semicolon
 )brace
 DECL|function|qlogicpti_intr_handler
 r_static
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|qlogicpti_intr_handler
 c_func
@@ -6711,7 +6722,8 @@ op_star
 id|qpti
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|Cmnd
 comma
@@ -7071,7 +7083,8 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|dq
 suffix:semicolon
@@ -7101,14 +7114,16 @@ l_int|NULL
 (brace
 r_do
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|next
 suffix:semicolon
 id|next
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|dq-&gt;host_scribble
@@ -7153,7 +7168,8 @@ r_int
 id|qlogicpti_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|Cmnd
 )paren
@@ -7349,7 +7365,8 @@ r_int
 id|qlogicpti_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|Cmnd
 )paren
@@ -7463,7 +7480,8 @@ suffix:semicolon
 )brace
 DECL|variable|driver_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|driver_template
 op_assign
 (brace

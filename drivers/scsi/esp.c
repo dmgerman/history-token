@@ -12,8 +12,6 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;esp.h&quot;
 macro_line|#include &lt;asm/sbus.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
@@ -1211,7 +1209,8 @@ r_void
 id|esp_advance_phase
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|s
 comma
@@ -1310,17 +1309,20 @@ r_void
 id|append_SC
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 op_star
 id|SC
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|new_SC
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|end
 suffix:semicolon
@@ -1360,7 +1362,8 @@ suffix:semicolon
 id|end
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|end-&gt;host_scribble
@@ -1384,12 +1387,14 @@ r_void
 id|prepend_SC
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 op_star
 id|SC
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|new_SC
 )paren
@@ -1413,18 +1418,21 @@ suffix:semicolon
 DECL|function|remove_first_SC
 r_static
 r_inline
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|remove_first_SC
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 op_star
 id|SC
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|ptr
 suffix:semicolon
@@ -1442,7 +1450,8 @@ op_star
 id|SC
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 (paren
@@ -1459,12 +1468,14 @@ suffix:semicolon
 DECL|function|remove_SC
 r_static
 r_inline
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|remove_SC
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 op_star
 id|SC
@@ -1476,7 +1487,8 @@ r_int
 id|lun
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|ptr
 comma
@@ -1518,7 +1530,8 @@ comma
 id|ptr
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|ptr-&gt;host_scribble
@@ -1544,7 +1557,8 @@ op_star
 id|SC
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|ptr-&gt;host_scribble
@@ -4026,7 +4040,8 @@ id|__init
 id|detect_one_esp
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|tpnt
 comma
@@ -4348,7 +4363,8 @@ id|__init
 id|esp_detect
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|tpnt
 )paren
@@ -4482,7 +4498,8 @@ id|__init
 id|esp_detect
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|tpnt
 )paren
@@ -5729,7 +5746,8 @@ id|esp
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -5866,7 +5884,8 @@ id|esp
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -5922,7 +5941,8 @@ id|esp
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -5966,7 +5986,8 @@ id|esp
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -6013,7 +6034,8 @@ id|esp
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -6222,11 +6244,13 @@ op_star
 id|esp
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCptr
 suffix:semicolon
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDptr
 suffix:semicolon
@@ -7242,7 +7266,8 @@ r_int
 id|esp_queue
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -7252,7 +7277,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -7411,7 +7437,8 @@ r_void
 id|esp_dump_cmd
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCptr
 )paren
@@ -7454,7 +7481,8 @@ op_star
 id|esp
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCptr
 op_assign
@@ -7751,7 +7779,8 @@ suffix:semicolon
 id|SCptr
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|SCptr-&gt;host_scribble
@@ -7773,7 +7802,8 @@ r_int
 id|esp_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCptr
 )paren
@@ -7879,7 +7909,8 @@ c_cond
 id|esp-&gt;issue_SC
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 op_star
 id|prev
@@ -7908,7 +7939,8 @@ suffix:semicolon
 id|prev
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 op_star
 )paren
@@ -7920,7 +7952,8 @@ comma
 id|this
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|this-&gt;host_scribble
@@ -7938,7 +7971,8 @@ op_star
 id|prev
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|this-&gt;host_scribble
@@ -8037,7 +8071,8 @@ op_star
 id|esp
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 op_assign
@@ -8204,7 +8239,8 @@ r_int
 id|esp_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCptr
 )paren
@@ -8274,7 +8310,8 @@ r_int
 id|error
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|done_SC
 op_assign
@@ -8760,7 +8797,8 @@ id|esp
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scp
 comma
@@ -8925,7 +8963,8 @@ id|esp
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scp
 comma
@@ -9498,7 +9537,8 @@ id|esp
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -9617,7 +9657,8 @@ id|esp
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 comma
@@ -10017,7 +10058,8 @@ id|esp
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -10127,7 +10169,8 @@ id|esp
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -10321,7 +10364,8 @@ r_void
 id|advance_sg
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -10373,7 +10417,8 @@ op_star
 id|esp
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCptr
 op_assign
@@ -10703,7 +10748,8 @@ op_star
 id|esp
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCptr
 op_assign
@@ -11305,7 +11351,8 @@ r_int
 id|esp_should_clear_sync
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -11396,7 +11443,8 @@ op_star
 id|esp
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCptr
 op_assign
@@ -11685,7 +11733,8 @@ op_star
 id|esp
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 suffix:semicolon
@@ -11742,7 +11791,8 @@ suffix:semicolon
 id|sp
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|sp-&gt;host_scribble
@@ -11839,7 +11889,8 @@ suffix:semicolon
 id|sp
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|sp-&gt;host_scribble
@@ -11875,7 +11926,8 @@ id|lun
 comma
 id|target
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCptr
 suffix:semicolon
@@ -12104,7 +12156,8 @@ op_star
 id|esp
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCptr
 op_assign
@@ -12705,7 +12758,8 @@ op_star
 id|esp
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 op_assign
@@ -13113,7 +13167,8 @@ op_star
 id|esp
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCptr
 op_assign
@@ -14177,7 +14232,8 @@ id|esp
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCptr
 comma
@@ -14475,7 +14531,8 @@ op_star
 id|esp
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCptr
 op_assign
@@ -15414,7 +15471,8 @@ op_star
 id|esp
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCptr
 op_assign
@@ -15929,7 +15987,8 @@ op_star
 id|esp
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCptr
 op_assign
@@ -17042,7 +17101,8 @@ op_star
 id|esp
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCptr
 op_assign
@@ -17171,7 +17231,8 @@ op_star
 id|esp
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCptr
 suffix:semicolon
@@ -17902,7 +17963,8 @@ r_int
 id|esp_slave_alloc
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDptr
 )paren
@@ -17962,7 +18024,8 @@ r_void
 id|esp_slave_destroy
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDptr
 )paren
@@ -18001,7 +18064,8 @@ suffix:semicolon
 )brace
 DECL|variable|driver_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|driver_template
 op_assign
 (brace
