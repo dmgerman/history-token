@@ -1,5 +1,4 @@
-multiline_comment|/*&n; *  Copyright (C) 1996-2001  Linus Torvalds &amp; author (see below)&n; */
-multiline_comment|/*&n; *  Version 0.03&t;Cleaned auto-tune, added probe&n; *  Version 0.04&t;Added second channel tuning&n; *  Version 0.05&t;Enhanced tuning ; added qd6500 support&n; *  Version 0.06&t;Added dos driver&squot;s list&n; *  Version 0.07&t;Second channel bug fix&n; *&n; * QDI QD6500/QD6580 EIDE controller fast support&n; *&n; * Please set local bus speed using kernel parameter idebus&n; *&t;for example, &quot;idebus=33&quot; stands for 33Mhz VLbus&n; * To activate controller support, use &quot;ide0=qd65xx&quot;&n; * To enable tuning, use &quot;ide0=autotune&quot;&n; * To enable second channel tuning (qd6580 only), use &quot;ide1=autotune&quot;&n; *&n; * Rewritten from the work of Colten Edwards &lt;pje120@cs.usask.ca&gt; by&n; * Samuel Thibault &lt;samuel.thibault@fnac.net&gt;&n; */
+multiline_comment|/*&n; *  Copyright (C) 1996-2001  Linus Torvalds &amp; author (see below)&n; *&n; *  Version 0.03&t;Cleaned auto-tune, added probe&n; *  Version 0.04&t;Added second channel tuning&n; *  Version 0.05&t;Enhanced tuning ; added qd6500 support&n; *  Version 0.06&t;Added dos driver&squot;s list&n; *  Version 0.07&t;Second channel bug fix&n; *&n; * QDI QD6500/QD6580 EIDE controller fast support&n; *&n; * Please set local bus speed using kernel parameter idebus&n; *&t;for example, &quot;idebus=33&quot; stands for 33Mhz VLbus&n; * To activate controller support, use &quot;ide0=qd65xx&quot;&n; * To enable tuning, use &quot;ide0=autotune&quot;&n; * To enable second channel tuning (qd6580 only), use &quot;ide1=autotune&quot;&n; *&n; * Rewritten from the work of Colten Edwards &lt;pje120@cs.usask.ca&gt; by&n; * Samuel Thibault &lt;samuel.thibault@fnac.net&gt;&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -15,7 +14,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;timing.h&quot;
 macro_line|#include &quot;qd65xx.h&quot;
 multiline_comment|/*&n; * I/O ports are 0x30-0x31 (and 0x32-0x33 for qd6580)&n; *            or 0xb0-0xb1 (and 0xb2-0xb3 for qd6580)&n; *&t;-- qd6500 is a single IDE interface&n; *&t;-- qd6580 is a dual IDE interface&n; *&n; * More research on qd6580 being done by willmore@cig.mot.com (David)&n; * More Information given by Petr Soucek (petr@ryston.cz)&n; * http://www.ryston.cz/petr/vlb&n; */
-multiline_comment|/*&n; * base: Timer1&n; *&n; *&n; * base+0x01: Config (R/O)&n; *&n; * bit 0: ide baseport: 1 = 0x1f0 ; 0 = 0x170 (only useful for qd6500)&n; * bit 1: qd65xx baseport: 1 = 0xb0 ; 0 = 0x30&n; * bit 2: ID3: bus speed: 1 = &lt;=33MHz ; 0 = &gt;33MHz&n; * bit 3: qd6500: 1 = disabled, 0 = enabled&n; *        qd6580: 1&n; * upper nibble:&n; *        qd6500: 1100&n; *        qd6580: either 1010 or 0101&n; *&n; *&n; * base+0x02: Timer2 (qd6580 only)&n; *&n; *&n; * base+0x03: Control (qd6580 only)&n; *&n; * bits 0-3 must always be set 1&n; * bit 4 must be set 1, but is set 0 by dos driver while measuring vlb clock&n; * bit 0 : 1 = Only primary port enabled : channel 0 for hda, channel 1 for hdb&n; *         0 = Primary and Secondary ports enabled : channel 0 for hda &amp; hdb&n; *                                                   channel 1 for hdc &amp; hdd&n; * bit 1 : 1 = only disks on primary port&n; *         0 = disks &amp; ATAPI devices on primary port&n; * bit 2-4 : always 0&n; * bit 5 : status, but of what ?&n; * bit 6 : always set 1 by dos driver&n; * bit 7 : set 1 for non-ATAPI devices on primary port&n; * &t;(maybe read-ahead and post-write buffer ?)&n; */
+multiline_comment|/*&n; * base: Timer1&n; *&n; *&n; * base+0x01: Config (R/O)&n; *&n; * bit 0: ide baseport: 1 = 0x1f0 ; 0 = 0x170 (only useful for qd6500)&n; * bit 1: qd65xx baseport: 1 = 0xb0 ; 0 = 0x30&n; * bit 2: ID3: bus speed: 1 = &lt;=33MHz ; 0 = &gt;33MHz&n; * bit 3: qd6500: 1 = disabled, 0 = enabled&n; *        qd6580: 1&n; * upper nibble:&n; *        qd6500: 1100&n; *        qd6580: either 1010 or 0101&n; *&n; *&n; * base+0x02: Timer2 (qd6580 only)&n; *&n; *&n; * base+0x03: Control (qd6580 only)&n; *&n; * bits 0-3 must always be set 1&n; * bit 4 must be set 1, but is set 0 by dos driver while measuring vlb clock&n; * bit 0 : 1 = Only primary port enabled : channel 0 for hda, channel 1 for hdb&n; *         0 = Primary and Secondary ports enabled : channel 0 for hda &amp; hdb&n; *                                                   channel 1 for hdc &amp; hdd&n; * bit 1 : 1 = only disks on primary port&n; *         0 = disks &amp; ATAPI devices on primary port&n; * bit 2-4 : always 0&n; * bit 5 : status, but of what ?&n; * bit 6 : always set 1 by dos driver&n; * bit 7 : set 1 for non-ATAPI devices on primary port&n; *&t;(maybe read-ahead and post-write buffer ?)&n; */
 DECL|variable|timings
 r_static
 r_int
@@ -27,105 +26,7 @@ op_assign
 initialization_block
 suffix:semicolon
 multiline_comment|/* stores current timing for each timer */
-DECL|function|qd_write_reg
-r_static
-r_void
-id|qd_write_reg
-c_func
-(paren
-id|u8
-id|content
-comma
-r_int
-r_int
-id|reg
-)paren
-(brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
-id|outb
-c_func
-(paren
-id|content
-comma
-id|reg
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
-)brace
-DECL|function|qd_read_reg
-r_static
-id|u8
-id|__init
-id|qd_read_reg
-c_func
-(paren
-r_int
-r_int
-id|reg
-)paren
-(brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|u8
-id|read
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
-id|read
-op_assign
-id|inb
-c_func
-(paren
-id|reg
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
-r_return
-id|read
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * qd_select:&n; *&n; * This routine is invoked from ide.c to prepare for access to a given drive.&n; */
+multiline_comment|/*&n; * This routine is invoked from ide.c to prepare for access to a given drive.&n; */
 DECL|function|qd_select
 r_static
 r_void
@@ -181,7 +82,7 @@ c_func
 id|drive
 )paren
 )paren
-id|qd_write_reg
+id|outb
 c_func
 (paren
 id|timings
@@ -203,7 +104,7 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * qd6500_compute_timing&n; *&n; * computes the timing value where&n; *&t;lower nibble represents active time,   in count of VLB clocks&n; *&t;upper nibble represents recovery time, in count of VLB clocks&n; */
+multiline_comment|/*&n; * computes the timing value where&n; *&t;lower nibble represents active time,   in count of VLB clocks&n; *&t;upper nibble represents recovery time, in count of VLB clocks&n; */
 DECL|function|qd6500_compute_timing
 r_static
 id|u8
@@ -331,7 +232,7 @@ op_or
 id|active_cycle
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * qd6580_compute_timing&n; *&n; * idem for qd6580&n; */
+multiline_comment|/*&n; * idem for qd6580&n; */
 DECL|function|qd6580_compute_timing
 r_static
 id|u8
@@ -397,7 +298,7 @@ op_or
 id|active_cycle
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * qd_find_disk_type&n; *&n; * tries to find timing from dos driver&squot;s table&n; */
+multiline_comment|/*&n; * tries to find timing from dos driver&squot;s table&n; */
 DECL|function|qd_find_disk_type
 r_static
 r_int
@@ -510,7 +411,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * qd_timing_ok:&n; *&n; * check whether timings don&squot;t conflict&n; */
+multiline_comment|/*&n; * check whether timings don&squot;t conflict&n; */
 DECL|function|qd_timing_ok
 r_static
 r_int
@@ -579,7 +480,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* if same timing register, must be same timing */
 )brace
-multiline_comment|/*&n; * qd_set_timing:&n; *&n; * records the timing, and enables selectproc as needed&n; */
+multiline_comment|/*&n; * records the timing, and enables selectproc as needed&n; */
 DECL|function|qd_set_timing
 r_static
 r_void
@@ -650,7 +551,6 @@ id|timing
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * qd6500_tune_drive&n; */
 DECL|function|qd6500_tune_drive
 r_static
 r_void
@@ -747,7 +647,6 @@ id|recovery_time
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * qd6580_tune_drive&n; */
 DECL|function|qd6580_tune_drive
 r_static
 r_void
@@ -986,7 +885,7 @@ op_ne
 id|ATA_DISK
 )paren
 (brace
-id|qd_write_reg
+id|outb
 c_func
 (paren
 l_int|0x5f
@@ -1021,7 +920,7 @@ id|recovery_time
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * qd_testreg&n; *&n; * tests if the given port is a register&n; */
+multiline_comment|/*&n; * tests if the given port is a register&n; */
 DECL|function|qd_testreg
 r_static
 r_int
@@ -1137,7 +1036,7 @@ id|QD_TESTVAL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * qd_setup:&n; *&n; * called to setup an ata channel : adjusts attributes &amp; links for tuning&n; */
+multiline_comment|/*&n; * called to setup an ata channel : adjusts attributes &amp; links for tuning&n; */
 DECL|function|qd_setup
 r_void
 id|__init
@@ -1230,7 +1129,7 @@ op_assign
 id|tuneproc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * qd_unsetup:&n; *&n; * called to unsetup an ata channel : back to default values, unlinks tuning&n; */
+multiline_comment|/*&n; * called to unsetup an ata channel : back to default values, unlinks tuning&n; */
 DECL|function|qd_unsetup
 r_void
 id|__init
@@ -1314,7 +1213,7 @@ id|qd6500_tune_drive
 )paren
 (brace
 singleline_comment|// will do it for both
-id|qd_write_reg
+id|outb
 c_func
 (paren
 id|QD6500_DEF_DATA
@@ -1356,7 +1255,7 @@ op_amp
 id|QD_CONTR_SEC_DISABLED
 )paren
 (brace
-id|qd_write_reg
+id|outb
 c_func
 (paren
 id|QD6580_DEF_DATA
@@ -1372,7 +1271,7 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-id|qd_write_reg
+id|outb
 c_func
 (paren
 id|QD6580_DEF_DATA2
@@ -1391,7 +1290,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|qd_write_reg
+id|outb
 c_func
 (paren
 id|unit
@@ -1432,7 +1331,7 @@ l_string|&quot;keeping settings !&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * qd_probe:&n; *&n; * looks at the specified baseport, and if qd found, registers &amp; initialises it&n; * return 1 if another qd may be probed&n; */
+multiline_comment|/*&n; * looks at the specified baseport, and if qd found, registers &amp; initialises it&n; * return 1 if another qd may be probed&n; */
 DECL|function|qd_probe
 r_int
 id|__init
@@ -1451,7 +1350,7 @@ id|unit
 suffix:semicolon
 id|config
 op_assign
-id|qd_read_reg
+id|inb
 c_func
 (paren
 id|QD_CONFIG_PORT
@@ -1633,7 +1532,7 @@ multiline_comment|/* bad registers */
 multiline_comment|/* qd6580 found */
 id|control
 op_assign
-id|qd_read_reg
+id|inb
 c_func
 (paren
 id|QD_CONTROL_PORT
@@ -1707,7 +1606,7 @@ op_amp
 id|qd6580_tune_drive
 )paren
 suffix:semicolon
-id|qd_write_reg
+id|outb
 c_func
 (paren
 id|QD_DEF_CONTR
@@ -1789,7 +1688,7 @@ op_amp
 id|qd6580_tune_drive
 )paren
 suffix:semicolon
-id|qd_write_reg
+id|outb
 c_func
 (paren
 id|QD_DEF_CONTR
@@ -1809,7 +1708,7 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
-multiline_comment|/*&n; * init_qd65xx:&n; *&n; * called by ide.c when parsing command line&n; */
+multiline_comment|/*&n; * called by ide.c when parsing command line&n; */
 DECL|function|init_qd65xx
 r_void
 id|__init

@@ -1262,7 +1262,7 @@ m_abort
 suffix:semicolon
 )brace
 r_else
-id|ide_unregister_subdriver
+id|ata_unregister_device
 c_func
 (paren
 id|drive
@@ -3975,10 +3975,9 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
-multiline_comment|/*&n; * This is in fact registering a device not a driver.&n; */
-DECL|function|ide_register_subdriver
+DECL|function|ata_register_device
 r_int
-id|ide_register_subdriver
+id|ata_register_device
 c_func
 (paren
 r_struct
@@ -4034,7 +4033,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: This will be pushed to the drivers! Thus allowing us to&n;&t; * save one parameter here and to separate this out.&n;&t; */
 id|drive-&gt;driver
 op_assign
 id|driver
@@ -4071,6 +4069,14 @@ id|ch-&gt;udma_setup
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Force DMAing for the beginning of the check.  Some&n;&t;&t;&t; * chipsets appear to do interesting things, if not&n;&t;&t;&t; * checked and cleared.&n;&t;&t;&t; *&n;&t;&t;&t; *   PARANOIA!!!&n;&t;&t;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|udma_enable
 c_func
 (paren
@@ -4101,6 +4107,14 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Only CD-ROMs and tape drives support DSC overlap.  But only&n;&t;&t; * if they are alone on a channel. */
 r_if
@@ -4174,9 +4188,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is in fact the default cleanup routine.&n; *&n; * FIXME: Check whatever we maybe don&squot;t call it twice!.&n; */
-DECL|function|ide_unregister_subdriver
+DECL|function|ata_unregister_device
 r_int
-id|ide_unregister_subdriver
+id|ata_unregister_device
 c_func
 (paren
 r_struct
@@ -4185,26 +4199,6 @@ op_star
 id|drive
 )paren
 (brace
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|__MOD_IN_USE
-c_func
-(paren
-id|ata_ops
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|owner
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4516,18 +4510,18 @@ DECL|variable|ide_devfs_handle
 id|devfs_handle_t
 id|ide_devfs_handle
 suffix:semicolon
-DECL|variable|ide_register_subdriver
+DECL|variable|ata_register_device
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|ide_register_subdriver
+id|ata_register_device
 )paren
 suffix:semicolon
-DECL|variable|ide_unregister_subdriver
+DECL|variable|ata_unregister_device
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|ide_unregister_subdriver
+id|ata_unregister_device
 )paren
 suffix:semicolon
 DECL|variable|ata_revalidate

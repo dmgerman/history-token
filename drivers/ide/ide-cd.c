@@ -11349,7 +11349,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ide_unregister_subdriver
+id|ata_unregister_device
+c_func
 (paren
 id|drive
 )paren
@@ -11648,7 +11649,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ide_register_subdriver
+id|ata_register_device
+c_func
 (paren
 id|drive
 comma

@@ -3183,6 +3183,7 @@ macro_line|#ifdef CONFIG_BLK_DEV_IDEDISK
 r_extern
 r_int
 id|idedisk_init
+c_func
 (paren
 r_void
 )paren
@@ -3192,6 +3193,7 @@ macro_line|#ifdef CONFIG_BLK_DEV_IDECD
 r_extern
 r_int
 id|ide_cdrom_init
+c_func
 (paren
 r_void
 )paren
@@ -3201,6 +3203,7 @@ macro_line|#ifdef CONFIG_BLK_DEV_IDETAPE
 r_extern
 r_int
 id|idetape_init
+c_func
 (paren
 r_void
 )paren
@@ -3210,6 +3213,7 @@ macro_line|#ifdef CONFIG_BLK_DEV_IDEFLOPPY
 r_extern
 r_int
 id|idefloppy_init
+c_func
 (paren
 r_void
 )paren
@@ -3219,6 +3223,7 @@ macro_line|#ifdef CONFIG_BLK_DEV_IDESCSI
 r_extern
 r_int
 id|idescsi_init
+c_func
 (paren
 r_void
 )paren
@@ -3226,7 +3231,7 @@ suffix:semicolon
 macro_line|#endif
 r_extern
 r_int
-id|ide_register_subdriver
+id|ata_register_device
 c_func
 (paren
 r_struct
@@ -3240,7 +3245,7 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|ide_unregister_subdriver
+id|ata_unregister_device
 c_func
 (paren
 r_struct
