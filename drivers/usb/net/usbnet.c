@@ -4880,6 +4880,26 @@ id|always_connected
 comma
 )brace
 suffix:semicolon
+DECL|variable|blob_info
+r_static
+r_const
+r_struct
+id|driver_info
+id|blob_info
+op_assign
+(brace
+dot
+id|description
+op_assign
+l_string|&quot;Boot Loader OBject&quot;
+comma
+dot
+id|check_connect
+op_assign
+id|always_connected
+comma
+)brace
+suffix:semicolon
 macro_line|#endif&t;/* CONFIG_USB_ARMLINUX */
 "&f;"
 macro_line|#ifdef CONFIG_USB_ZAURUS
@@ -9327,6 +9347,27 @@ r_int
 )paren
 op_amp
 id|yopy_info
+comma
+)brace
+comma
+(brace
+id|USB_DEVICE
+(paren
+l_int|0x8086
+comma
+l_int|0x07d3
+)paren
+comma
+singleline_comment|// &quot;blob&quot; bootloader
+dot
+id|driver_info
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|blob_info
 comma
 )brace
 comma
