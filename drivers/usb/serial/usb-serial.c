@@ -4125,17 +4125,9 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#if defined(CONFIG_USB_SERIAL_PL2303) || defined(CONFIG_USB_SERIAL_PL2303_MODULE)
-macro_line|#if 0
+macro_line|#if 1
 multiline_comment|/* BEGIN HORRIBLE HACK FOR PL2303 */
 multiline_comment|/* this is needed due to the looney way its endpoints are set up */
-r_if
-c_cond
-(paren
-id|ifnum
-op_eq
-l_int|1
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -4168,15 +4160,27 @@ id|ATEN_PRODUCT_ID
 )paren
 )paren
 (brace
+singleline_comment|//if (ifnum == 1) {
+r_if
+c_cond
+(paren
+id|interface
+op_ne
+op_amp
+id|dev-&gt;actconfig-&gt;interface
+(braket
+l_int|0
+)braket
+)paren
+(brace
 multiline_comment|/* check out the endpoints of the other interface*/
+singleline_comment|//interface = &amp;dev-&gt;actconfig-&gt;interface[ifnum ^ 1];
 id|interface
 op_assign
 op_amp
 id|dev-&gt;actconfig-&gt;interface
 (braket
-id|ifnum
-op_xor
-l_int|1
+l_int|0
 )braket
 suffix:semicolon
 id|iface_desc
@@ -4249,6 +4253,29 @@ id|num_interrupt_in
 suffix:semicolon
 )brace
 )brace
+)brace
+multiline_comment|/* Now make sure the PL-2303 is configured correctly.&n;&t;&t; * If not, give up now and hope this hack will work&n;&t;&t; * properly during a later invocation of usb_serial_probe&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|num_bulk_in
+op_eq
+l_int|0
+op_logical_or
+id|num_bulk_out
+op_eq
+l_int|0
+)paren
+(brace
+id|info
+c_func
+(paren
+l_string|&quot;PL-2303 hack: descriptors matched but endpoints did not&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/* END HORRIBLE HACK FOR PL2303 */
