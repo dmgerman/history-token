@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &lt;xfs.h&gt;
-macro_line|#include &lt;asm/fcntl.h&gt;
 multiline_comment|/*&n; * The maximum pathlen is 1024 bytes. Since the minimum file system&n; * blocksize is 512 bytes, we can get a max of 2 extents back from&n; * bmapi.&n; */
 DECL|macro|SYMLINK_MAPS
 mdefine_line|#define SYMLINK_MAPS 2
@@ -266,7 +265,7 @@ c_cond
 (paren
 id|vap-&gt;va_mask
 op_eq
-id|AT_SIZE
+id|XFS_AT_SIZE
 )paren
 (brace
 r_if
@@ -333,13 +332,13 @@ id|vap-&gt;va_mask
 op_amp
 op_complement
 (paren
-id|AT_SIZE
+id|XFS_AT_SIZE
 op_or
-id|AT_FSID
+id|XFS_AT_FSID
 op_or
-id|AT_NODEID
+id|XFS_AT_NODEID
 op_or
-id|AT_NLINK
+id|XFS_AT_NLINK
 )paren
 )paren
 op_eq
@@ -549,17 +548,17 @@ c_cond
 id|vap-&gt;va_mask
 op_amp
 (paren
-id|AT_XFLAGS
+id|XFS_AT_XFLAGS
 op_or
-id|AT_EXTSIZE
+id|XFS_AT_EXTSIZE
 op_or
-id|AT_NEXTENTS
+id|XFS_AT_NEXTENTS
 op_or
-id|AT_ANEXTENTS
+id|XFS_AT_ANEXTENTS
 op_or
-id|AT_GENCOUNT
+id|XFS_AT_GENCOUNT
 op_or
-id|AT_VCODE
+id|XFS_AT_VCODE
 )paren
 )paren
 op_eq
@@ -846,7 +845,7 @@ c_cond
 (paren
 id|mask
 op_amp
-id|AT_NOSET
+id|XFS_AT_NOSET
 )paren
 (brace
 r_return
@@ -891,7 +890,7 @@ c_cond
 (paren
 id|mask
 op_amp
-id|AT_UPDTIMES
+id|XFS_AT_UPDTIMES
 )paren
 (brace
 id|ASSERT
@@ -901,7 +900,7 @@ c_func
 id|mask
 op_amp
 op_complement
-id|AT_UPDTIMES
+id|XFS_AT_UPDTIMES
 )paren
 op_eq
 l_int|0
@@ -913,7 +912,7 @@ op_assign
 (paren
 id|mask
 op_amp
-id|AT_UPDATIME
+id|XFS_AT_UPDATIME
 )paren
 ques
 c_cond
@@ -926,7 +925,7 @@ op_or
 (paren
 id|mask
 op_amp
-id|AT_UPDCTIME
+id|XFS_AT_UPDCTIME
 )paren
 ques
 c_cond
@@ -939,7 +938,7 @@ op_or
 (paren
 id|mask
 op_amp
-id|AT_UPDMTIME
+id|XFS_AT_UPDMTIME
 )paren
 ques
 c_cond
@@ -986,9 +985,9 @@ op_logical_and
 id|mask
 op_amp
 (paren
-id|AT_UID
+id|XFS_AT_UID
 op_or
-id|AT_GID
+id|XFS_AT_GID
 )paren
 )paren
 )paren
@@ -1002,7 +1001,7 @@ c_cond
 (paren
 id|mask
 op_amp
-id|AT_UID
+id|XFS_AT_UID
 )paren
 (brace
 id|uid
@@ -1026,7 +1025,7 @@ c_cond
 (paren
 id|mask
 op_amp
-id|AT_GID
+id|XFS_AT_GID
 )paren
 (brace
 id|gid
@@ -1111,7 +1110,7 @@ op_logical_neg
 (paren
 id|mask
 op_amp
-id|AT_SIZE
+id|XFS_AT_SIZE
 )paren
 )paren
 (brace
@@ -1122,11 +1121,11 @@ c_cond
 id|mask
 op_ne
 (paren
-id|AT_CTIME
+id|XFS_AT_CTIME
 op_or
-id|AT_ATIME
+id|XFS_AT_ATIME
 op_or
-id|AT_MTIME
+id|XFS_AT_MTIME
 )paren
 )paren
 op_logical_or
@@ -1302,17 +1301,17 @@ c_cond
 id|mask
 op_amp
 (paren
-id|AT_MODE
+id|XFS_AT_MODE
 op_or
-id|AT_XFLAGS
+id|XFS_AT_XFLAGS
 op_or
-id|AT_EXTSIZE
+id|XFS_AT_EXTSIZE
 op_or
-id|AT_UID
+id|XFS_AT_UID
 op_or
-id|AT_GID
+id|XFS_AT_GID
 op_or
-id|AT_PROJID
+id|XFS_AT_PROJID
 )paren
 )paren
 (brace
@@ -1349,7 +1348,7 @@ c_cond
 (paren
 id|mask
 op_amp
-id|AT_MODE
+id|XFS_AT_MODE
 )paren
 (brace
 id|mode_t
@@ -1442,11 +1441,11 @@ c_cond
 id|mask
 op_amp
 (paren
-id|AT_UID
+id|XFS_AT_UID
 op_or
-id|AT_GID
+id|XFS_AT_GID
 op_or
-id|AT_PROJID
+id|XFS_AT_PROJID
 )paren
 )paren
 (brace
@@ -1468,7 +1467,7 @@ op_assign
 (paren
 id|mask
 op_amp
-id|AT_GID
+id|XFS_AT_GID
 )paren
 ques
 c_cond
@@ -1481,7 +1480,7 @@ op_assign
 (paren
 id|mask
 op_amp
-id|AT_UID
+id|XFS_AT_UID
 )paren
 ques
 c_cond
@@ -1494,7 +1493,7 @@ op_assign
 (paren
 id|mask
 op_amp
-id|AT_PROJID
+id|XFS_AT_PROJID
 )paren
 ques
 c_cond
@@ -1635,7 +1634,7 @@ c_cond
 (paren
 id|mask
 op_amp
-id|AT_SIZE
+id|XFS_AT_SIZE
 )paren
 (brace
 multiline_comment|/* Short circuit the truncate case for zero length files */
@@ -1679,7 +1678,7 @@ c_cond
 (paren
 id|mask
 op_amp
-id|AT_CTIME
+id|XFS_AT_CTIME
 )paren
 id|xfs_ichgtime
 c_func
@@ -1786,9 +1785,9 @@ c_cond
 id|mask
 op_amp
 (paren
-id|AT_ATIME
+id|XFS_AT_ATIME
 op_or
-id|AT_MTIME
+id|XFS_AT_MTIME
 )paren
 )paren
 (brace
@@ -1837,9 +1836,9 @@ c_cond
 id|mask
 op_amp
 (paren
-id|AT_EXTSIZE
+id|XFS_AT_EXTSIZE
 op_or
-id|AT_XFLAGS
+id|XFS_AT_XFLAGS
 )paren
 )paren
 (brace
@@ -1852,7 +1851,7 @@ op_logical_and
 (paren
 id|mask
 op_amp
-id|AT_EXTSIZE
+id|XFS_AT_EXTSIZE
 )paren
 op_logical_and
 (paren
@@ -1886,7 +1885,7 @@ c_cond
 (paren
 id|mask
 op_amp
-id|AT_EXTSIZE
+id|XFS_AT_EXTSIZE
 )paren
 op_logical_and
 (paren
@@ -1912,7 +1911,7 @@ op_logical_or
 (paren
 id|mask
 op_amp
-id|AT_XFLAGS
+id|XFS_AT_XFLAGS
 )paren
 op_logical_and
 (paren
@@ -1946,7 +1945,7 @@ op_logical_and
 (paren
 id|mask
 op_amp
-id|AT_XFLAGS
+id|XFS_AT_XFLAGS
 )paren
 op_logical_and
 (paren
@@ -1982,7 +1981,7 @@ c_cond
 (paren
 id|mask
 op_amp
-id|AT_EXTSIZE
+id|XFS_AT_EXTSIZE
 )paren
 op_logical_and
 id|vap-&gt;va_extsize
@@ -2006,7 +2005,7 @@ op_logical_or
 (paren
 id|mask
 op_amp
-id|AT_XFLAGS
+id|XFS_AT_XFLAGS
 )paren
 op_logical_and
 (paren
@@ -2059,7 +2058,7 @@ c_cond
 (paren
 id|mask
 op_amp
-id|AT_XFLAGS
+id|XFS_AT_XFLAGS
 )paren
 op_logical_and
 (paren
@@ -2105,13 +2104,13 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n;&t; * Now we can make the changes.&t; Before we join the inode&n;&t; * to the transaction, if AT_SIZE is set then take care of&n;&t; * the part of the truncation that must be done without the&n;&t; * inode lock.&t;This needs to be done before joining the inode&n;&t; * to the transaction, because the inode cannot be unlocked&n;&t; * once it is a part of the transaction.&n;&t; */
+multiline_comment|/*&n;&t; * Now we can make the changes.&t; Before we join the inode&n;&t; * to the transaction, if XFS_AT_SIZE is set then take care of&n;&t; * the part of the truncation that must be done without the&n;&t; * inode lock.&t;This needs to be done before joining the inode&n;&t; * to the transaction, because the inode cannot be unlocked&n;&t; * once it is a part of the transaction.&n;&t; */
 r_if
 c_cond
 (paren
 id|mask
 op_amp
-id|AT_SIZE
+id|XFS_AT_SIZE
 )paren
 (brace
 r_if
@@ -2337,7 +2336,7 @@ c_cond
 (paren
 id|mask
 op_amp
-id|AT_SIZE
+id|XFS_AT_SIZE
 )paren
 (brace
 r_if
@@ -2451,7 +2450,7 @@ c_cond
 (paren
 id|mask
 op_amp
-id|AT_MODE
+id|XFS_AT_MODE
 )paren
 (brace
 id|ip-&gt;i_d.di_mode
@@ -2486,11 +2485,11 @@ c_cond
 id|mask
 op_amp
 (paren
-id|AT_UID
+id|XFS_AT_UID
 op_or
-id|AT_GID
+id|XFS_AT_GID
 op_or
-id|AT_PROJID
+id|XFS_AT_PROJID
 )paren
 )paren
 (brace
@@ -2550,7 +2549,7 @@ c_func
 (paren
 id|mask
 op_amp
-id|AT_UID
+id|XFS_AT_UID
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2619,7 +2618,7 @@ c_func
 (paren
 id|mask
 op_amp
-id|AT_GID
+id|XFS_AT_GID
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2711,9 +2710,9 @@ c_cond
 id|mask
 op_amp
 (paren
-id|AT_ATIME
+id|XFS_AT_ATIME
 op_or
-id|AT_MTIME
+id|XFS_AT_MTIME
 )paren
 )paren
 (brace
@@ -2722,7 +2721,7 @@ c_cond
 (paren
 id|mask
 op_amp
-id|AT_ATIME
+id|XFS_AT_ATIME
 )paren
 (brace
 id|ip-&gt;i_d.di_atime.t_sec
@@ -2748,7 +2747,7 @@ c_cond
 (paren
 id|mask
 op_amp
-id|AT_MTIME
+id|XFS_AT_MTIME
 )paren
 (brace
 id|ip-&gt;i_d.di_mtime.t_sec
@@ -2797,9 +2796,9 @@ c_cond
 id|mask
 op_amp
 (paren
-id|AT_EXTSIZE
+id|XFS_AT_EXTSIZE
 op_or
-id|AT_XFLAGS
+id|XFS_AT_XFLAGS
 )paren
 )paren
 (brace
@@ -2808,7 +2807,7 @@ c_cond
 (paren
 id|mask
 op_amp
-id|AT_EXTSIZE
+id|XFS_AT_EXTSIZE
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Converting bytes to fs blocks.&n;&t;&t;&t; */
@@ -2824,7 +2823,7 @@ c_cond
 (paren
 id|mask
 op_amp
-id|AT_XFLAGS
+id|XFS_AT_XFLAGS
 )paren
 (brace
 id|ip-&gt;i_d.di_flags
@@ -2866,7 +2865,7 @@ op_or_assign
 id|XFS_ICHGTIME_CHG
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Change file inode change time only if AT_CTIME set&n;&t; * AND we have been called by a DMI function.&n;&t; */
+multiline_comment|/*&n;&t; * Change file inode change time only if XFS_AT_CTIME set&n;&t; * AND we have been called by a DMI function.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2879,7 +2878,7 @@ op_logical_and
 (paren
 id|mask
 op_amp
-id|AT_CTIME
+id|XFS_AT_CTIME
 )paren
 )paren
 (brace
@@ -7432,7 +7431,7 @@ c_cond
 (paren
 id|vap-&gt;va_mask
 op_amp
-id|AT_PROJID
+id|XFS_AT_PROJID
 )paren
 id|prid
 op_assign
@@ -7700,7 +7699,7 @@ op_assign
 (paren
 id|vap-&gt;va_mask
 op_amp
-id|AT_RDEV
+id|XFS_AT_RDEV
 )paren
 ques
 c_cond
@@ -10987,7 +10986,7 @@ c_cond
 (paren
 id|vap-&gt;va_mask
 op_amp
-id|AT_PROJID
+id|XFS_AT_PROJID
 )paren
 id|prid
 op_assign
@@ -11254,7 +11253,7 @@ op_assign
 (paren
 id|vap-&gt;va_mask
 op_amp
-id|AT_RDEV
+id|XFS_AT_RDEV
 )paren
 ques
 c_cond
@@ -13310,7 +13309,7 @@ c_cond
 (paren
 id|vap-&gt;va_mask
 op_amp
-id|AT_PROJID
+id|XFS_AT_PROJID
 )paren
 id|prid
 op_assign
@@ -13601,7 +13600,7 @@ op_assign
 (paren
 id|vap-&gt;va_mask
 op_amp
-id|AT_RDEV
+id|XFS_AT_RDEV
 )paren
 ques
 c_cond
@@ -18370,7 +18369,7 @@ suffix:semicolon
 )brace
 id|va.va_mask
 op_assign
-id|AT_SIZE
+id|XFS_AT_SIZE
 suffix:semicolon
 id|va.va_size
 op_assign

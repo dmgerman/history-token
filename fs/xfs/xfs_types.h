@@ -3,7 +3,6 @@ macro_line|#ifndef __XFS_TYPES_H__
 DECL|macro|__XFS_TYPES_H__
 mdefine_line|#define __XFS_TYPES_H__
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/*&n; * POSIX Extensions&n; */
 DECL|typedef|uchar_t
 r_typedef
@@ -84,18 +83,6 @@ r_int
 r_int
 id|__uint64_t
 suffix:semicolon
-DECL|enumerator|B_FALSE
-DECL|enumerator|B_TRUE
-DECL|typedef|boolean_t
-r_typedef
-r_enum
-(brace
-id|B_FALSE
-comma
-id|B_TRUE
-)brace
-id|boolean_t
-suffix:semicolon
 DECL|typedef|prid_t
 r_typedef
 id|__int64_t
@@ -137,27 +124,44 @@ r_typedef
 id|__u32
 id|xfs_dev_t
 suffix:semicolon
-DECL|typedef|timespec_t
+DECL|struct|xfs_dirent
 r_typedef
 r_struct
-id|timespec
-id|timespec_t
-suffix:semicolon
-r_typedef
-r_struct
+id|xfs_dirent
 (brace
-DECL|member|__u_bits
+multiline_comment|/* data from readdir() */
+DECL|member|d_ino
+id|xfs_ino_t
+id|d_ino
+suffix:semicolon
+multiline_comment|/* inode number of entry */
+DECL|member|d_off
+id|xfs_off_t
+id|d_off
+suffix:semicolon
+multiline_comment|/* offset of disk directory entry */
+DECL|member|d_reclen
 r_int
+r_int
+id|d_reclen
+suffix:semicolon
+multiline_comment|/* length of this record */
+DECL|member|d_name
 r_char
-id|__u_bits
+id|d_name
 (braket
-l_int|16
+l_int|1
 )braket
 suffix:semicolon
-DECL|typedef|uuid_t
+multiline_comment|/* name of file */
+DECL|typedef|xfs_dirent_t
 )brace
-id|uuid_t
+id|xfs_dirent_t
 suffix:semicolon
+DECL|macro|DIRENTBASESIZE
+mdefine_line|#define DIRENTBASESIZE&t;&t;(((xfs_dirent_t *)0)-&gt;d_name - (char *)0)
+DECL|macro|DIRENTSIZE
+mdefine_line|#define DIRENTSIZE(namelen)&t;&bslash;&n;&t;((DIRENTBASESIZE + (namelen) + &bslash;&n;&t;&t;sizeof(xfs_off_t)) &amp; ~(sizeof(xfs_off_t) - 1))
 multiline_comment|/* __psint_t is the same size as a pointer */
 macro_line|#if (BITS_PER_LONG == 32)
 DECL|typedef|__psint_t
@@ -380,7 +384,7 @@ r_typedef
 id|__uint8_t
 id|xfs_arch_t
 suffix:semicolon
-multiline_comment|/* architecutre of an xfs fs */
+multiline_comment|/* architecture of an xfs fs */
 multiline_comment|/*&n; * Null values for the types.&n; */
 DECL|macro|NULLDFSBNO
 mdefine_line|#define NULLDFSBNO&t;((xfs_dfsbno_t)-1)
@@ -452,384 +456,6 @@ DECL|typedef|xfs_btnum_t
 )brace
 id|xfs_btnum_t
 suffix:semicolon
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(__KERNEL__) &amp;&amp; !defined(XFS_STATS_OFF)
-multiline_comment|/*&n; * XFS global statistics&n; */
-DECL|struct|xfsstats
-r_struct
-id|xfsstats
-(brace
-DECL|macro|XFSSTAT_END_EXTENT_ALLOC
-macro_line|# define XFSSTAT_END_EXTENT_ALLOC&t;4
-DECL|member|xs_allocx
-id|__uint32_t
-id|xs_allocx
-suffix:semicolon
-DECL|member|xs_allocb
-id|__uint32_t
-id|xs_allocb
-suffix:semicolon
-DECL|member|xs_freex
-id|__uint32_t
-id|xs_freex
-suffix:semicolon
-DECL|member|xs_freeb
-id|__uint32_t
-id|xs_freeb
-suffix:semicolon
-DECL|macro|XFSSTAT_END_ALLOC_BTREE
-macro_line|# define XFSSTAT_END_ALLOC_BTREE&t;(XFSSTAT_END_EXTENT_ALLOC+4)
-DECL|member|xs_abt_lookup
-id|__uint32_t
-id|xs_abt_lookup
-suffix:semicolon
-DECL|member|xs_abt_compare
-id|__uint32_t
-id|xs_abt_compare
-suffix:semicolon
-DECL|member|xs_abt_insrec
-id|__uint32_t
-id|xs_abt_insrec
-suffix:semicolon
-DECL|member|xs_abt_delrec
-id|__uint32_t
-id|xs_abt_delrec
-suffix:semicolon
-DECL|macro|XFSSTAT_END_BLOCK_MAPPING
-macro_line|# define XFSSTAT_END_BLOCK_MAPPING&t;(XFSSTAT_END_ALLOC_BTREE+7)
-DECL|member|xs_blk_mapr
-id|__uint32_t
-id|xs_blk_mapr
-suffix:semicolon
-DECL|member|xs_blk_mapw
-id|__uint32_t
-id|xs_blk_mapw
-suffix:semicolon
-DECL|member|xs_blk_unmap
-id|__uint32_t
-id|xs_blk_unmap
-suffix:semicolon
-DECL|member|xs_add_exlist
-id|__uint32_t
-id|xs_add_exlist
-suffix:semicolon
-DECL|member|xs_del_exlist
-id|__uint32_t
-id|xs_del_exlist
-suffix:semicolon
-DECL|member|xs_look_exlist
-id|__uint32_t
-id|xs_look_exlist
-suffix:semicolon
-DECL|member|xs_cmp_exlist
-id|__uint32_t
-id|xs_cmp_exlist
-suffix:semicolon
-DECL|macro|XFSSTAT_END_BLOCK_MAP_BTREE
-macro_line|# define XFSSTAT_END_BLOCK_MAP_BTREE&t;(XFSSTAT_END_BLOCK_MAPPING+4)
-DECL|member|xs_bmbt_lookup
-id|__uint32_t
-id|xs_bmbt_lookup
-suffix:semicolon
-DECL|member|xs_bmbt_compare
-id|__uint32_t
-id|xs_bmbt_compare
-suffix:semicolon
-DECL|member|xs_bmbt_insrec
-id|__uint32_t
-id|xs_bmbt_insrec
-suffix:semicolon
-DECL|member|xs_bmbt_delrec
-id|__uint32_t
-id|xs_bmbt_delrec
-suffix:semicolon
-DECL|macro|XFSSTAT_END_DIRECTORY_OPS
-macro_line|# define XFSSTAT_END_DIRECTORY_OPS&t;(XFSSTAT_END_BLOCK_MAP_BTREE+4)
-DECL|member|xs_dir_lookup
-id|__uint32_t
-id|xs_dir_lookup
-suffix:semicolon
-DECL|member|xs_dir_create
-id|__uint32_t
-id|xs_dir_create
-suffix:semicolon
-DECL|member|xs_dir_remove
-id|__uint32_t
-id|xs_dir_remove
-suffix:semicolon
-DECL|member|xs_dir_getdents
-id|__uint32_t
-id|xs_dir_getdents
-suffix:semicolon
-DECL|macro|XFSSTAT_END_TRANSACTIONS
-macro_line|# define XFSSTAT_END_TRANSACTIONS&t;(XFSSTAT_END_DIRECTORY_OPS+3)
-DECL|member|xs_trans_sync
-id|__uint32_t
-id|xs_trans_sync
-suffix:semicolon
-DECL|member|xs_trans_async
-id|__uint32_t
-id|xs_trans_async
-suffix:semicolon
-DECL|member|xs_trans_empty
-id|__uint32_t
-id|xs_trans_empty
-suffix:semicolon
-DECL|macro|XFSSTAT_END_INODE_OPS
-macro_line|# define XFSSTAT_END_INODE_OPS&t;&t;(XFSSTAT_END_TRANSACTIONS+7)
-DECL|member|xs_ig_attempts
-id|__uint32_t
-id|xs_ig_attempts
-suffix:semicolon
-DECL|member|xs_ig_found
-id|__uint32_t
-id|xs_ig_found
-suffix:semicolon
-DECL|member|xs_ig_frecycle
-id|__uint32_t
-id|xs_ig_frecycle
-suffix:semicolon
-DECL|member|xs_ig_missed
-id|__uint32_t
-id|xs_ig_missed
-suffix:semicolon
-DECL|member|xs_ig_dup
-id|__uint32_t
-id|xs_ig_dup
-suffix:semicolon
-DECL|member|xs_ig_reclaims
-id|__uint32_t
-id|xs_ig_reclaims
-suffix:semicolon
-DECL|member|xs_ig_attrchg
-id|__uint32_t
-id|xs_ig_attrchg
-suffix:semicolon
-DECL|macro|XFSSTAT_END_LOG_OPS
-macro_line|# define XFSSTAT_END_LOG_OPS&t;&t;(XFSSTAT_END_INODE_OPS+5)
-DECL|member|xs_log_writes
-id|__uint32_t
-id|xs_log_writes
-suffix:semicolon
-DECL|member|xs_log_blocks
-id|__uint32_t
-id|xs_log_blocks
-suffix:semicolon
-DECL|member|xs_log_noiclogs
-id|__uint32_t
-id|xs_log_noiclogs
-suffix:semicolon
-DECL|member|xs_log_force
-id|__uint32_t
-id|xs_log_force
-suffix:semicolon
-DECL|member|xs_log_force_sleep
-id|__uint32_t
-id|xs_log_force_sleep
-suffix:semicolon
-DECL|macro|XFSSTAT_END_TAIL_PUSHING
-macro_line|# define XFSSTAT_END_TAIL_PUSHING&t;(XFSSTAT_END_LOG_OPS+10)
-DECL|member|xs_try_logspace
-id|__uint32_t
-id|xs_try_logspace
-suffix:semicolon
-DECL|member|xs_sleep_logspace
-id|__uint32_t
-id|xs_sleep_logspace
-suffix:semicolon
-DECL|member|xs_push_ail
-id|__uint32_t
-id|xs_push_ail
-suffix:semicolon
-DECL|member|xs_push_ail_success
-id|__uint32_t
-id|xs_push_ail_success
-suffix:semicolon
-DECL|member|xs_push_ail_pushbuf
-id|__uint32_t
-id|xs_push_ail_pushbuf
-suffix:semicolon
-DECL|member|xs_push_ail_pinned
-id|__uint32_t
-id|xs_push_ail_pinned
-suffix:semicolon
-DECL|member|xs_push_ail_locked
-id|__uint32_t
-id|xs_push_ail_locked
-suffix:semicolon
-DECL|member|xs_push_ail_flushing
-id|__uint32_t
-id|xs_push_ail_flushing
-suffix:semicolon
-DECL|member|xs_push_ail_restarts
-id|__uint32_t
-id|xs_push_ail_restarts
-suffix:semicolon
-DECL|member|xs_push_ail_flush
-id|__uint32_t
-id|xs_push_ail_flush
-suffix:semicolon
-DECL|macro|XFSSTAT_END_WRITE_CONVERT
-macro_line|# define XFSSTAT_END_WRITE_CONVERT&t;(XFSSTAT_END_TAIL_PUSHING+2)
-DECL|member|xs_xstrat_quick
-id|__uint32_t
-id|xs_xstrat_quick
-suffix:semicolon
-DECL|member|xs_xstrat_split
-id|__uint32_t
-id|xs_xstrat_split
-suffix:semicolon
-DECL|macro|XFSSTAT_END_READ_WRITE_OPS
-macro_line|# define XFSSTAT_END_READ_WRITE_OPS&t;(XFSSTAT_END_WRITE_CONVERT+2)
-DECL|member|xs_write_calls
-id|__uint32_t
-id|xs_write_calls
-suffix:semicolon
-DECL|member|xs_read_calls
-id|__uint32_t
-id|xs_read_calls
-suffix:semicolon
-DECL|macro|XFSSTAT_END_ATTRIBUTE_OPS
-macro_line|# define XFSSTAT_END_ATTRIBUTE_OPS&t;(XFSSTAT_END_READ_WRITE_OPS+4)
-DECL|member|xs_attr_get
-id|__uint32_t
-id|xs_attr_get
-suffix:semicolon
-DECL|member|xs_attr_set
-id|__uint32_t
-id|xs_attr_set
-suffix:semicolon
-DECL|member|xs_attr_remove
-id|__uint32_t
-id|xs_attr_remove
-suffix:semicolon
-DECL|member|xs_attr_list
-id|__uint32_t
-id|xs_attr_list
-suffix:semicolon
-DECL|macro|XFSSTAT_END_QUOTA_OPS
-macro_line|# define XFSSTAT_END_QUOTA_OPS&t;&t;(XFSSTAT_END_ATTRIBUTE_OPS+8)
-DECL|member|xs_qm_dqreclaims
-id|__uint32_t
-id|xs_qm_dqreclaims
-suffix:semicolon
-DECL|member|xs_qm_dqreclaim_misses
-id|__uint32_t
-id|xs_qm_dqreclaim_misses
-suffix:semicolon
-DECL|member|xs_qm_dquot_dups
-id|__uint32_t
-id|xs_qm_dquot_dups
-suffix:semicolon
-DECL|member|xs_qm_dqcachemisses
-id|__uint32_t
-id|xs_qm_dqcachemisses
-suffix:semicolon
-DECL|member|xs_qm_dqcachehits
-id|__uint32_t
-id|xs_qm_dqcachehits
-suffix:semicolon
-DECL|member|xs_qm_dqwants
-id|__uint32_t
-id|xs_qm_dqwants
-suffix:semicolon
-DECL|member|xs_qm_dqshake_reclaims
-id|__uint32_t
-id|xs_qm_dqshake_reclaims
-suffix:semicolon
-DECL|member|xs_qm_dqinact_reclaims
-id|__uint32_t
-id|xs_qm_dqinact_reclaims
-suffix:semicolon
-DECL|macro|XFSSTAT_END_INODE_CLUSTER
-macro_line|# define XFSSTAT_END_INODE_CLUSTER&t;(XFSSTAT_END_QUOTA_OPS+3)
-DECL|member|xs_iflush_count
-id|__uint32_t
-id|xs_iflush_count
-suffix:semicolon
-DECL|member|xs_icluster_flushcnt
-id|__uint32_t
-id|xs_icluster_flushcnt
-suffix:semicolon
-DECL|member|xs_icluster_flushinode
-id|__uint32_t
-id|xs_icluster_flushinode
-suffix:semicolon
-DECL|macro|XFSSTAT_END_VNODE_OPS
-macro_line|# define XFSSTAT_END_VNODE_OPS&t;&t;(XFSSTAT_END_INODE_CLUSTER+8)
-DECL|member|vn_active
-id|__uint32_t
-id|vn_active
-suffix:semicolon
-multiline_comment|/* # vnodes not on free lists */
-DECL|member|vn_alloc
-id|__uint32_t
-id|vn_alloc
-suffix:semicolon
-multiline_comment|/* # times vn_alloc called */
-DECL|member|vn_get
-id|__uint32_t
-id|vn_get
-suffix:semicolon
-multiline_comment|/* # times vn_get called */
-DECL|member|vn_hold
-id|__uint32_t
-id|vn_hold
-suffix:semicolon
-multiline_comment|/* # times vn_hold called */
-DECL|member|vn_rele
-id|__uint32_t
-id|vn_rele
-suffix:semicolon
-multiline_comment|/* # times vn_rele called */
-DECL|member|vn_reclaim
-id|__uint32_t
-id|vn_reclaim
-suffix:semicolon
-multiline_comment|/* # times vn_reclaim called */
-DECL|member|vn_remove
-id|__uint32_t
-id|vn_remove
-suffix:semicolon
-multiline_comment|/* # times vn_remove called */
-DECL|member|vn_free
-id|__uint32_t
-id|vn_free
-suffix:semicolon
-multiline_comment|/* # times vn_free called */
-multiline_comment|/* Extra precision counters */
-DECL|member|xs_xstrat_bytes
-id|__uint64_t
-id|xs_xstrat_bytes
-suffix:semicolon
-DECL|member|xs_write_bytes
-id|__uint64_t
-id|xs_write_bytes
-suffix:semicolon
-DECL|member|xs_read_bytes
-id|__uint64_t
-id|xs_read_bytes
-suffix:semicolon
-)brace
-suffix:semicolon
-r_extern
-r_struct
-id|xfsstats
-id|xfsstats
-suffix:semicolon
-DECL|macro|XFS_STATS_INC
-macro_line|# define XFS_STATS_INC(count)&t;&t;( (count)++ )
-DECL|macro|XFS_STATS_DEC
-macro_line|# define XFS_STATS_DEC(count)&t;&t;( (count)-- )
-DECL|macro|XFS_STATS_ADD
-macro_line|# define XFS_STATS_ADD(count, inc)&t;( (count) += (inc) )
-macro_line|#else&t;/* !CONFIG_PROC_FS */
-DECL|macro|XFS_STATS_INC
-macro_line|# define XFS_STATS_INC(count)
-DECL|macro|XFS_STATS_DEC
-macro_line|# define XFS_STATS_DEC(count)
-DECL|macro|XFS_STATS_ADD
-macro_line|# define XFS_STATS_ADD(count, inc)
-macro_line|#endif&t;/* !CONFIG_PROC_FS */
 multiline_comment|/*&n; * Juggle IRIX device numbers - still used in ondisk structures&n; */
 DECL|macro|XFS_DEV_BITSMAJOR
 mdefine_line|#define XFS_DEV_BITSMAJOR&t;14

@@ -976,7 +976,7 @@ op_assign
 dot
 id|va_mask
 op_assign
-id|AT_UPDATIME
+id|XFS_AT_UPDATIME
 )brace
 suffix:semicolon
 r_int
@@ -1031,7 +1031,7 @@ comma
 op_amp
 id|va
 comma
-id|AT_UPDATIME
+id|XFS_AT_UPDATIME
 comma
 l_int|NULL
 comma

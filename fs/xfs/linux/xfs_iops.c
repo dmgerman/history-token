@@ -32,9 +32,9 @@ id|error
 suffix:semicolon
 id|va.va_mask
 op_assign
-id|AT_NLINK
+id|XFS_AT_NLINK
 op_or
-id|AT_SIZE
+id|XFS_AT_SIZE
 suffix:semicolon
 id|VOP_GETATTR
 c_func
@@ -199,9 +199,9 @@ id|va
 suffix:semicolon
 id|va.va_mask
 op_assign
-id|AT_TYPE
+id|XFS_AT_TYPE
 op_or
-id|AT_MODE
+id|XFS_AT_MODE
 suffix:semicolon
 id|va.va_type
 op_assign
@@ -255,7 +255,7 @@ id|rdev
 suffix:semicolon
 id|va.va_mask
 op_or_assign
-id|AT_RDEV
+id|XFS_AT_RDEV
 suffix:semicolon
 multiline_comment|/*FALLTHROUGH*/
 r_case
@@ -1020,9 +1020,9 @@ id|S_IRWXUGO
 suffix:semicolon
 id|va.va_mask
 op_assign
-id|AT_TYPE
+id|XFS_AT_TYPE
 op_or
-id|AT_MODE
+id|XFS_AT_MODE
 suffix:semicolon
 id|error
 op_assign
@@ -1882,7 +1882,7 @@ id|ATTR_UID
 (brace
 id|vattr.va_mask
 op_or_assign
-id|AT_UID
+id|XFS_AT_UID
 suffix:semicolon
 id|vattr.va_uid
 op_assign
@@ -1899,7 +1899,7 @@ id|ATTR_GID
 (brace
 id|vattr.va_mask
 op_or_assign
-id|AT_GID
+id|XFS_AT_GID
 suffix:semicolon
 id|vattr.va_gid
 op_assign
@@ -1916,7 +1916,7 @@ id|ATTR_SIZE
 (brace
 id|vattr.va_mask
 op_or_assign
-id|AT_SIZE
+id|XFS_AT_SIZE
 suffix:semicolon
 id|vattr.va_size
 op_assign
@@ -1933,7 +1933,7 @@ id|ATTR_ATIME
 (brace
 id|vattr.va_mask
 op_or_assign
-id|AT_ATIME
+id|XFS_AT_ATIME
 suffix:semicolon
 id|vattr.va_atime
 op_assign
@@ -1950,7 +1950,7 @@ id|ATTR_MTIME
 (brace
 id|vattr.va_mask
 op_or_assign
-id|AT_MTIME
+id|XFS_AT_MTIME
 suffix:semicolon
 id|vattr.va_mtime
 op_assign
@@ -1967,7 +1967,7 @@ id|ATTR_CTIME
 (brace
 id|vattr.va_mask
 op_or_assign
-id|AT_CTIME
+id|XFS_AT_CTIME
 suffix:semicolon
 id|vattr.va_ctime
 op_assign
@@ -1984,7 +1984,7 @@ id|ATTR_MODE
 (brace
 id|vattr.va_mask
 op_or_assign
-id|AT_MODE
+id|XFS_AT_MODE
 suffix:semicolon
 id|vattr.va_mode
 op_assign

@@ -1411,74 +1411,74 @@ DECL|typedef|vattr_t
 id|vattr_t
 suffix:semicolon
 multiline_comment|/*&n; * setattr or getattr attributes&n; */
-DECL|macro|AT_TYPE
-mdefine_line|#define AT_TYPE&t;&t;0x00000001
-DECL|macro|AT_MODE
-mdefine_line|#define AT_MODE&t;&t;0x00000002
-DECL|macro|AT_UID
-mdefine_line|#define AT_UID&t;&t;0x00000004
-DECL|macro|AT_GID
-mdefine_line|#define AT_GID&t;&t;0x00000008
-DECL|macro|AT_FSID
-mdefine_line|#define AT_FSID&t;&t;0x00000010
-DECL|macro|AT_NODEID
-mdefine_line|#define AT_NODEID&t;0x00000020
-DECL|macro|AT_NLINK
-mdefine_line|#define AT_NLINK&t;0x00000040
-DECL|macro|AT_SIZE
-mdefine_line|#define AT_SIZE&t;&t;0x00000080
-DECL|macro|AT_ATIME
-mdefine_line|#define AT_ATIME&t;0x00000100
-DECL|macro|AT_MTIME
-mdefine_line|#define AT_MTIME&t;0x00000200
-DECL|macro|AT_CTIME
-mdefine_line|#define AT_CTIME&t;0x00000400
-DECL|macro|AT_RDEV
-mdefine_line|#define AT_RDEV&t;&t;0x00000800
-DECL|macro|AT_BLKSIZE
-mdefine_line|#define AT_BLKSIZE&t;0x00001000
-DECL|macro|AT_NBLOCKS
-mdefine_line|#define AT_NBLOCKS&t;0x00002000
-DECL|macro|AT_VCODE
-mdefine_line|#define AT_VCODE&t;0x00004000
-DECL|macro|AT_MAC
-mdefine_line|#define AT_MAC&t;&t;0x00008000
-DECL|macro|AT_UPDATIME
-mdefine_line|#define AT_UPDATIME&t;0x00010000
-DECL|macro|AT_UPDMTIME
-mdefine_line|#define AT_UPDMTIME&t;0x00020000
-DECL|macro|AT_UPDCTIME
-mdefine_line|#define AT_UPDCTIME&t;0x00040000
-DECL|macro|AT_ACL
-mdefine_line|#define AT_ACL&t;&t;0x00080000
-DECL|macro|AT_CAP
-mdefine_line|#define AT_CAP&t;&t;0x00100000
-DECL|macro|AT_INF
-mdefine_line|#define AT_INF&t;&t;0x00200000
-DECL|macro|AT_XFLAGS
-mdefine_line|#define AT_XFLAGS&t;0x00400000
-DECL|macro|AT_EXTSIZE
-mdefine_line|#define AT_EXTSIZE&t;0x00800000
-DECL|macro|AT_NEXTENTS
-mdefine_line|#define AT_NEXTENTS&t;0x01000000
-DECL|macro|AT_ANEXTENTS
-mdefine_line|#define AT_ANEXTENTS&t;0x02000000
-DECL|macro|AT_PROJID
-mdefine_line|#define AT_PROJID&t;0x04000000
-DECL|macro|AT_SIZE_NOPERM
-mdefine_line|#define AT_SIZE_NOPERM&t;0x08000000
-DECL|macro|AT_GENCOUNT
-mdefine_line|#define AT_GENCOUNT&t;0x10000000
-DECL|macro|AT_ALL
-mdefine_line|#define AT_ALL&t;(AT_TYPE|AT_MODE|AT_UID|AT_GID|AT_FSID|AT_NODEID|&bslash;&n;&t;&t;AT_NLINK|AT_SIZE|AT_ATIME|AT_MTIME|AT_CTIME|AT_RDEV|&bslash;&n;&t;&t;AT_BLKSIZE|AT_NBLOCKS|AT_VCODE|AT_MAC|AT_ACL|AT_CAP|&bslash;&n;&t;&t;AT_INF|AT_XFLAGS|AT_EXTSIZE|AT_NEXTENTS|AT_ANEXTENTS|&bslash;&n;&t;&t;AT_PROJID|AT_GENCOUNT)
-DECL|macro|AT_STAT
-mdefine_line|#define AT_STAT (AT_TYPE|AT_MODE|AT_UID|AT_GID|AT_FSID|AT_NODEID|AT_NLINK|&bslash;&n;&t;&t;AT_SIZE|AT_ATIME|AT_MTIME|AT_CTIME|AT_RDEV|AT_BLKSIZE|&bslash;&n;&t;&t;AT_NBLOCKS|AT_PROJID)
-DECL|macro|AT_TIMES
-mdefine_line|#define AT_TIMES (AT_ATIME|AT_MTIME|AT_CTIME)
-DECL|macro|AT_UPDTIMES
-mdefine_line|#define AT_UPDTIMES (AT_UPDATIME|AT_UPDMTIME|AT_UPDCTIME)
-DECL|macro|AT_NOSET
-mdefine_line|#define AT_NOSET (AT_NLINK|AT_RDEV|AT_FSID|AT_NODEID|AT_TYPE|&bslash;&n;&t;&t; AT_BLKSIZE|AT_NBLOCKS|AT_VCODE|AT_NEXTENTS|AT_ANEXTENTS|&bslash;&n;&t;&t; AT_GENCOUNT)
+DECL|macro|XFS_AT_TYPE
+mdefine_line|#define XFS_AT_TYPE&t;&t;0x00000001
+DECL|macro|XFS_AT_MODE
+mdefine_line|#define XFS_AT_MODE&t;&t;0x00000002
+DECL|macro|XFS_AT_UID
+mdefine_line|#define XFS_AT_UID&t;&t;0x00000004
+DECL|macro|XFS_AT_GID
+mdefine_line|#define XFS_AT_GID&t;&t;0x00000008
+DECL|macro|XFS_AT_FSID
+mdefine_line|#define XFS_AT_FSID&t;&t;0x00000010
+DECL|macro|XFS_AT_NODEID
+mdefine_line|#define XFS_AT_NODEID&t;&t;0x00000020
+DECL|macro|XFS_AT_NLINK
+mdefine_line|#define XFS_AT_NLINK&t;&t;0x00000040
+DECL|macro|XFS_AT_SIZE
+mdefine_line|#define XFS_AT_SIZE&t;&t;0x00000080
+DECL|macro|XFS_AT_ATIME
+mdefine_line|#define XFS_AT_ATIME&t;&t;0x00000100
+DECL|macro|XFS_AT_MTIME
+mdefine_line|#define XFS_AT_MTIME&t;&t;0x00000200
+DECL|macro|XFS_AT_CTIME
+mdefine_line|#define XFS_AT_CTIME&t;&t;0x00000400
+DECL|macro|XFS_AT_RDEV
+mdefine_line|#define XFS_AT_RDEV&t;&t;0x00000800
+DECL|macro|XFS_AT_BLKSIZE
+mdefine_line|#define XFS_AT_BLKSIZE&t;&t;0x00001000
+DECL|macro|XFS_AT_NBLOCKS
+mdefine_line|#define XFS_AT_NBLOCKS&t;&t;0x00002000
+DECL|macro|XFS_AT_VCODE
+mdefine_line|#define XFS_AT_VCODE&t;&t;0x00004000
+DECL|macro|XFS_AT_MAC
+mdefine_line|#define XFS_AT_MAC&t;&t;0x00008000
+DECL|macro|XFS_AT_UPDATIME
+mdefine_line|#define XFS_AT_UPDATIME&t;&t;0x00010000
+DECL|macro|XFS_AT_UPDMTIME
+mdefine_line|#define XFS_AT_UPDMTIME&t;&t;0x00020000
+DECL|macro|XFS_AT_UPDCTIME
+mdefine_line|#define XFS_AT_UPDCTIME&t;&t;0x00040000
+DECL|macro|XFS_AT_ACL
+mdefine_line|#define XFS_AT_ACL&t;&t;0x00080000
+DECL|macro|XFS_AT_CAP
+mdefine_line|#define XFS_AT_CAP&t;&t;0x00100000
+DECL|macro|XFS_AT_INF
+mdefine_line|#define XFS_AT_INF&t;&t;0x00200000
+DECL|macro|XFS_AT_XFLAGS
+mdefine_line|#define XFS_AT_XFLAGS&t;&t;0x00400000
+DECL|macro|XFS_AT_EXTSIZE
+mdefine_line|#define XFS_AT_EXTSIZE&t;&t;0x00800000
+DECL|macro|XFS_AT_NEXTENTS
+mdefine_line|#define XFS_AT_NEXTENTS&t;&t;0x01000000
+DECL|macro|XFS_AT_ANEXTENTS
+mdefine_line|#define XFS_AT_ANEXTENTS&t;0x02000000
+DECL|macro|XFS_AT_PROJID
+mdefine_line|#define XFS_AT_PROJID&t;&t;0x04000000
+DECL|macro|XFS_AT_SIZE_NOPERM
+mdefine_line|#define XFS_AT_SIZE_NOPERM&t;0x08000000
+DECL|macro|XFS_AT_GENCOUNT
+mdefine_line|#define XFS_AT_GENCOUNT&t;&t;0x10000000
+DECL|macro|XFS_AT_ALL
+mdefine_line|#define XFS_AT_ALL&t;(XFS_AT_TYPE|XFS_AT_MODE|XFS_AT_UID|XFS_AT_GID|&bslash;&n;&t;&t;XFS_AT_FSID|XFS_AT_NODEID|XFS_AT_NLINK|XFS_AT_SIZE|&bslash;&n;&t;&t;XFS_AT_ATIME|XFS_AT_MTIME|XFS_AT_CTIME|XFS_AT_RDEV|&bslash;&n;&t;&t;XFS_AT_BLKSIZE|XFS_AT_NBLOCKS|XFS_AT_VCODE|XFS_AT_MAC|&bslash;&n;&t;&t;XFS_AT_ACL|XFS_AT_CAP|XFS_AT_INF|XFS_AT_XFLAGS|XFS_AT_EXTSIZE|&bslash;&n;&t;&t;XFS_AT_NEXTENTS|XFS_AT_ANEXTENTS|XFS_AT_PROJID|XFS_AT_GENCOUNT)
+DECL|macro|XFS_AT_STAT
+mdefine_line|#define XFS_AT_STAT&t;(XFS_AT_TYPE|XFS_AT_MODE|XFS_AT_UID|XFS_AT_GID|&bslash;&n;&t;&t;XFS_AT_FSID|XFS_AT_NODEID|XFS_AT_NLINK|XFS_AT_SIZE|&bslash;&n;&t;&t;XFS_AT_ATIME|XFS_AT_MTIME|XFS_AT_CTIME|XFS_AT_RDEV|&bslash;&n;&t;&t;XFS_AT_BLKSIZE|XFS_AT_NBLOCKS|XFS_AT_PROJID)
+DECL|macro|XFS_AT_TIMES
+mdefine_line|#define XFS_AT_TIMES&t;(XFS_AT_ATIME|XFS_AT_MTIME|XFS_AT_CTIME)
+DECL|macro|XFS_AT_UPDTIMES
+mdefine_line|#define XFS_AT_UPDTIMES&t;(XFS_AT_UPDATIME|XFS_AT_UPDMTIME|XFS_AT_UPDCTIME)
+DECL|macro|XFS_AT_NOSET
+mdefine_line|#define XFS_AT_NOSET&t;(XFS_AT_NLINK|XFS_AT_RDEV|XFS_AT_FSID|XFS_AT_NODEID|&bslash;&n;&t;&t;XFS_AT_TYPE|XFS_AT_BLKSIZE|XFS_AT_NBLOCKS|XFS_AT_VCODE|&bslash;&n;&t;&t;XFS_AT_NEXTENTS|XFS_AT_ANEXTENTS|XFS_AT_GENCOUNT)
 DECL|macro|VREAD
 mdefine_line|#define VREAD&t;&t;00400
 DECL|macro|VWRITE

@@ -632,9 +632,9 @@ id|__return_address
 suffix:semicolon
 id|va.va_mask
 op_assign
-id|AT_STAT
+id|XFS_AT_STAT
 op_or
-id|AT_GENCOUNT
+id|XFS_AT_GENCOUNT
 suffix:semicolon
 id|ASSERT
 c_func
