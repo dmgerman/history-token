@@ -19,10 +19,12 @@ macro_line|#else
 DECL|macro|BIO_BUG_ON
 mdefine_line|#define BIO_BUG_ON
 macro_line|#endif
-DECL|macro|BIO_MAX_SECTORS
-mdefine_line|#define BIO_MAX_SECTORS&t;128
+DECL|macro|BIO_MAX_PAGES
+mdefine_line|#define BIO_MAX_PAGES&t;&t;(256)
 DECL|macro|BIO_MAX_SIZE
-mdefine_line|#define BIO_MAX_SIZE&t;(BIO_MAX_SECTORS &lt;&lt; 9)
+mdefine_line|#define BIO_MAX_SIZE&t;&t;(BIO_MAX_PAGES &lt;&lt; PAGE_CACHE_SHIFT)
+DECL|macro|BIO_MAX_SECTORS
+mdefine_line|#define BIO_MAX_SECTORS&t;&t;(BIO_MAX_SIZE &gt;&gt; 9)
 multiline_comment|/*&n; * was unsigned short, but we might as well be ready for &gt; 64kB I/O pages&n; */
 DECL|struct|bio_vec
 r_struct
@@ -184,6 +186,8 @@ DECL|macro|BIO_SEG_VALID
 mdefine_line|#define BIO_SEG_VALID&t;3&t;/* nr_hw_seg valid */
 DECL|macro|BIO_CLONED
 mdefine_line|#define BIO_CLONED&t;4&t;/* doesn&squot;t own data */
+DECL|macro|bio_flagged
+mdefine_line|#define bio_flagged(bio, flag)&t;((bio)-&gt;bi_flags &amp; (1 &lt;&lt; (flag)))
 multiline_comment|/*&n; * bio bi_rw flags&n; *&n; * bit 0 -- read (not set) or write (set)&n; * bit 1 -- rw-ahead when set&n; * bit 2 -- barrier&n; */
 DECL|macro|BIO_RW
 mdefine_line|#define BIO_RW&t;&t;0
@@ -205,7 +209,7 @@ mdefine_line|#define bio_sectors(bio)&t;((bio)-&gt;bi_size &gt;&gt; 9)
 DECL|macro|bio_data
 mdefine_line|#define bio_data(bio)&t;&t;(page_address(bio_page((bio))) + bio_offset((bio)))
 DECL|macro|bio_barrier
-mdefine_line|#define bio_barrier(bio)&t;((bio)-&gt;bi_rw &amp; (1 &lt;&lt; BIO_BARRIER))
+mdefine_line|#define bio_barrier(bio)&t;((bio)-&gt;bi_rw &amp; (1 &lt;&lt; BIO_RW_BARRIER))
 multiline_comment|/*&n; * will die&n; */
 DECL|macro|bio_to_phys
 mdefine_line|#define bio_to_phys(bio)&t;(page_to_phys(bio_page((bio))) + (unsigned long) bio_offset((bio)))
@@ -366,6 +370,26 @@ c_func
 r_struct
 id|bio
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|bio_add_page
+c_func
+(paren
+r_struct
+id|bio
+op_star
+comma
+r_struct
+id|page
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HIGHMEM
