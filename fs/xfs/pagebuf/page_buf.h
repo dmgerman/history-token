@@ -3,7 +3,6 @@ multiline_comment|/*&n; * Written by Steve Lord, Jim Mostek, Russell Cattelan at
 macro_line|#ifndef __PAGE_BUF_H__
 DECL|macro|__PAGE_BUF_H__
 mdefine_line|#define __PAGE_BUF_H__
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

@@ -9,12 +9,6 @@ mdefine_line|#define _PAGE_BUF_INTERNAL_
 DECL|macro|PB_DEFINE_TRACES
 mdefine_line|#define PB_DEFINE_TRACES
 macro_line|#include &quot;page_buf_trace.h&quot;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,9)
-DECL|macro|page_buffers
-mdefine_line|#define page_buffers(page)&t;((page)-&gt;buffers)
-DECL|macro|page_has_buffers
-mdefine_line|#define page_has_buffers(page)&t;((page)-&gt;buffers)
-macro_line|#endif
 macro_line|#ifdef PAGEBUF_LOCK_TRACKING
 DECL|macro|PB_SET_OWNER
 mdefine_line|#define PB_SET_OWNER(pb)&t;(pb-&gt;pb_last_holder = current-&gt;pid)
