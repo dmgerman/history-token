@@ -8385,7 +8385,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * try_to_free_buffers() checks if all the buffers on this particular page&n; * are unused, and releases them if so.&n; *&n; * Exclusion against try_to_free_buffers may be obtained by either&n; * locking the page or by holding its inode&squot;s i_bufferlist_lock.&n; *&n; * If the page is dirty but all the buffers are clean then we need to&n; * be sure to mark the page clean as well.  This is because the page&n; * may be against a block device, and a later reattachment of buffers&n; * to a dirty page will set *all* buffers dirty.  Which would corrupt&n; * filesystem data on the same device.&n; *&n; * The same applies to regular filesystem pages: if all the buffers are&n; * clean then we set the page clean and proceed.  To do that, we require&n; * total exclusion from __set_page_dirty_buffers().  That is obtained with&n; * i_bufferlist_lock.&n; *&n; * Nobody should be calling try_to_free_buffers against a page which is&n; * eligible for set_page_dirty() treatment anyway - the page is clearly&n; * not freeable.  So we could just test page_count(page) here and complain&n; * then scram if it&squot;s wrong.&n; *&n; * If any buffer is not uptodate then the entire page is set not uptodate,&n; * as the partial uptodateness information is about to be lost.&n; *&n; * try_to_free_buffers() is non-blocking.&n; */
+multiline_comment|/*&n; * try_to_free_buffers() checks if all the buffers on this particular page&n; * are unused, and releases them if so.&n; *&n; * Exclusion against try_to_free_buffers may be obtained by either&n; * locking the page or by holding its inode&squot;s i_bufferlist_lock.&n; *&n; * If the page is dirty but all the buffers are clean then we need to&n; * be sure to mark the page clean as well.  This is because the page&n; * may be against a block device, and a later reattachment of buffers&n; * to a dirty page will set *all* buffers dirty.  Which would corrupt&n; * filesystem data on the same device.&n; *&n; * The same applies to regular filesystem pages: if all the buffers are&n; * clean then we set the page clean and proceed.  To do that, we require&n; * total exclusion from __set_page_dirty_buffers().  That is obtained with&n; * i_bufferlist_lock.&n; *&n; * try_to_free_buffers() is non-blocking.&n; */
 DECL|function|buffer_busy
 r_static
 r_inline
@@ -8661,13 +8661,23 @@ r_if
 c_cond
 (paren
 id|ret
+op_logical_and
+op_logical_neg
+id|PageSwapCache
+c_func
+(paren
+id|page
 )paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * If the filesystem writes its buffers by hand (eg ext3)&n;&t;&t; * then we can have clean buffers against a dirty page.  We&n;&t;&t; * clean the page here; otherwise later reattachment of buffers&n;&t;&t; * could encounter a non-uptodate page, which is unresolvable.&n;&t;&t; * This only applies in the rare case where try_to_free_buffers&n;&t;&t; * succeeds but the page is not freed.&n;&t;&t; */
 id|ClearPageDirty
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
+)brace
 id|spin_unlock
 c_func
 (paren
