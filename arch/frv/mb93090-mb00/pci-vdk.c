@@ -55,11 +55,11 @@ mdefine_line|#define __get_PciCfgDataW(A) readw((volatile void __iomem *) __regi
 DECL|macro|__get_PciCfgDataL
 mdefine_line|#define __get_PciCfgDataL(A) readl((volatile void __iomem *) __region_CS1 + 0x88)
 DECL|macro|__set_PciCfgDataB
-mdefine_line|#define __set_PciCfgDataB(A,V) writeb((V), (volatile void __iomem *) __region_CS1 + 0x88 + ((A) &amp; 3))
+mdefine_line|#define __set_PciCfgDataB(A,V) &bslash;&n;&t;writeb((V), (volatile void __iomem *) __region_CS1 + 0x88 + (3 - ((A) &amp; 3)))
 DECL|macro|__set_PciCfgDataW
-mdefine_line|#define __set_PciCfgDataW(A,V) writew((V), (volatile void __iomem *) __region_CS1 + 0x88 + ((A) &amp; 2))
+mdefine_line|#define __set_PciCfgDataW(A,V) &bslash;&n;&t;writew((V), (volatile void __iomem *) __region_CS1 + 0x88 + (2 - ((A) &amp; 2)))
 DECL|macro|__set_PciCfgDataL
-mdefine_line|#define __set_PciCfgDataL(A,V) writel((V), (volatile void __iomem *) __region_CS1 + 0x88)
+mdefine_line|#define __set_PciCfgDataL(A,V) &bslash;&n;&t;writel((V), (volatile void __iomem *) __region_CS1 + 0x88)
 DECL|macro|__get_PciBridgeDataB
 mdefine_line|#define __get_PciBridgeDataB(A) readb((volatile void __iomem *) __region_CS1 + 0x800 + (A))
 DECL|macro|__get_PciBridgeDataW
