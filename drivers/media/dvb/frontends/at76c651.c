@@ -1,14 +1,15 @@
 multiline_comment|/*&n; * at76c651.c&n; * &n; * Atmel DVB-C Frontend Driver (at76c651/dat7021)&n; *&n; * Copyright (C) 2001 fnbrd &lt;fnbrd@gmx.de&gt;&n; *             &amp; 2002 Andreas Oberritter &lt;andreas@oberritter.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#if defined(__powerpc__)
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#endif
 macro_line|#include &quot;dvb_frontend.h&quot;
 macro_line|#include &quot;dvb_i2c.h&quot;
+macro_line|#include &quot;dvb_functions.h&quot;
 DECL|variable|debug
 r_static
 r_int
@@ -107,8 +108,13 @@ op_or
 id|FE_CAN_QAM_128
 op_or
 id|FE_CAN_QAM_256
-comma
-multiline_comment|/* FE_CAN_QAM_512 | FE_CAN_QAM_1024 |  */
+multiline_comment|/* | FE_CAN_QAM_512 | FE_CAN_QAM_1024 */
+op_or
+id|FE_CAN_RECOVER
+op_or
+id|FE_CAN_CLEAN_SETUP
+op_or
+id|FE_CAN_MUTE_TS
 )brace
 suffix:semicolon
 macro_line|#if ! defined(__powerpc__)
@@ -200,22 +206,26 @@ id|i2c_msg
 id|msg
 op_assign
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 l_int|0x1a
 op_rshift
 l_int|1
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 id|buf
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|2
 )brace
 suffix:semicolon
@@ -256,7 +266,7 @@ comma
 id|ret
 )paren
 suffix:semicolon
-id|mdelay
+id|dvb_delay
 c_func
 (paren
 l_int|10
@@ -320,42 +330,50 @@ id|msg
 op_assign
 (brace
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 l_int|0x1a
 op_rshift
 l_int|1
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 id|b0
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|1
 )brace
 comma
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 l_int|0x1a
 op_rshift
 l_int|1
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 id|I2C_M_RD
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 id|b1
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|1
 )brace
 )brace
@@ -628,18 +646,21 @@ id|i2c_msg
 id|msg
 op_assign
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 l_int|0xc2
 op_rshift
 l_int|1
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 (paren
 id|u8
 op_star
@@ -647,8 +668,9 @@ op_star
 op_amp
 id|tw
 comma
+dot
 id|len
-suffix:colon
+op_assign
 r_sizeof
 (paren
 id|tw

@@ -1,7 +1,11 @@
 multiline_comment|/* &n;    Driver for Grundig 29504-491, a Philips TDA8083 based QPSK Frontend&n;&n;    Copyright (C) 2001 Convergence Integrated Media GmbH&n;&n;    written by Ralph Metzler &lt;ralph@convergence.de&gt;&n;&n;    adoption to the new DVB frontend API and diagnostic ioctl&squot;s&n;    by Holger Waechtler &lt;holger@convergence.de&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &quot;dvb_frontend.h&quot;
+macro_line|#include &quot;dvb_functions.h&quot;
 DECL|variable|debug
 r_static
 r_int
@@ -18,47 +22,56 @@ id|dvb_frontend_info
 id|grundig_29504_491_info
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Grundig 29504-491, (TDA8083 based)&quot;
 comma
+dot
 id|type
-suffix:colon
+op_assign
 id|FE_QPSK
 comma
+dot
 id|frequency_min
-suffix:colon
+op_assign
 l_int|950000
 comma
 multiline_comment|/* FIXME: guessed! */
+dot
 id|frequency_max
-suffix:colon
+op_assign
 l_int|1400000
 comma
 multiline_comment|/* FIXME: guessed! */
+dot
 id|frequency_stepsize
-suffix:colon
+op_assign
 l_int|125
 comma
 multiline_comment|/* kHz for QPSK frontends */
-multiline_comment|/*      frequency_tolerance: ???,*/
+multiline_comment|/*      .frequency_tolerance&t;= ???,*/
+dot
 id|symbol_rate_min
-suffix:colon
+op_assign
 l_int|1000000
 comma
 multiline_comment|/* FIXME: guessed! */
+dot
 id|symbol_rate_max
-suffix:colon
+op_assign
 l_int|45000000
 comma
 multiline_comment|/* FIXME: guessed! */
-multiline_comment|/*      symbol_rate_tolerance: ???,*/
+multiline_comment|/*      .symbol_rate_tolerance&t;= ???,*/
+dot
 id|notifier_delay
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|caps
-suffix:colon
+op_assign
 id|FE_CAN_INVERSION_AUTO
 op_or
 id|FE_CAN_FEC_1_2
@@ -219,20 +232,24 @@ id|i2c_msg
 id|msg
 op_assign
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 l_int|0x68
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 id|buf
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|2
 )brace
 suffix:semicolon
@@ -312,39 +329,47 @@ id|msg
 op_assign
 (brace
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 l_int|0x68
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 op_amp
 id|reg1
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|1
 )brace
 comma
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 l_int|0x68
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 id|I2C_M_RD
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 id|b
 comma
+dot
 id|len
-suffix:colon
+op_assign
 id|len
 )brace
 )brace
@@ -449,20 +474,24 @@ id|i2c_msg
 id|msg
 op_assign
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 l_int|0x61
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 id|data
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|4
 )brace
 suffix:semicolon
@@ -907,6 +936,10 @@ c_func
 (paren
 l_string|&quot;tda8083: ratio == %08x&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|ratio
 )paren
 suffix:semicolon
@@ -1027,13 +1060,10 @@ l_int|0x80
 )paren
 )paren
 (brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|dvb_delay
+c_func
 (paren
-l_int|5
+l_int|50
 )paren
 suffix:semicolon
 )brace
