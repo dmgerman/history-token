@@ -238,12 +238,6 @@ r_if
 c_cond
 (paren
 id|SHpnt-&gt;highmem_io
-op_logical_and
-(paren
-id|SDpnt-&gt;type
-op_eq
-id|TYPE_DISK
-)paren
 )paren
 (brace
 r_if
