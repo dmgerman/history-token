@@ -1,4 +1,4 @@
-multiline_comment|/**&n; * $Id: phram.c,v 1.10 2004/12/10 17:53:13 joern Exp $&n; *&n; * Copyright (c) ????&t;&t;Jochen Sch&#xfffd;uble &lt;psionic@psionic.de&gt;&n; * Copyright (c) 2003-2004&t;J&#xfffd;rn Engel &lt;joern@wh.fh-wedel.de&gt;&n; *&n; * Usage:&n; *&n; * one commend line parameter per device, each in the form:&n; *   phram=&lt;name&gt;,&lt;start&gt;,&lt;len&gt;&n; * &lt;name&gt; may be up to 63 characters.&n; * &lt;start&gt; and &lt;len&gt; can be octal, decimal or hexadecimal.  If followed&n; * by &quot;ki&quot;, &quot;Mi&quot; or &quot;Gi&quot;, the numbers will be interpreted as kilo, mega or&n; * gigabytes.&n; *&n; * Example:&n; *&t;phram=swap,64Mi,128Mi phram=test,900Mi,1Mi&n; *&n; */
+multiline_comment|/**&n; * $Id: phram.c,v 1.11 2005/01/05 18:05:13 dwmw2 Exp $&n; *&n; * Copyright (c) ????&t;&t;Jochen Sch&#xfffd;uble &lt;psionic@psionic.de&gt;&n; * Copyright (c) 2003-2004&t;J&#xfffd;rn Engel &lt;joern@wh.fh-wedel.de&gt;&n; *&n; * Usage:&n; *&n; * one commend line parameter per device, each in the form:&n; *   phram=&lt;name&gt;,&lt;start&gt;,&lt;len&gt;&n; * &lt;name&gt; may be up to 63 characters.&n; * &lt;start&gt; and &lt;len&gt; can be octal, decimal or hexadecimal.  If followed&n; * by &quot;ki&quot;, &quot;Mi&quot; or &quot;Gi&quot;, the numbers will be interpreted as kilo, mega or&n; * gigabytes.&n; *&n; * Example:&n; *&t;phram=swap,64Mi,128Mi phram=test,900Mi,1Mi&n; *&n; */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -52,10 +52,6 @@ id|u_char
 op_star
 id|start
 op_assign
-(paren
-id|u_char
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 r_if
@@ -129,10 +125,6 @@ id|u_char
 op_star
 id|start
 op_assign
-(paren
-id|u_char
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 r_if
@@ -217,10 +209,6 @@ id|u_char
 op_star
 id|start
 op_assign
-(paren
-id|u_char
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 r_if
@@ -288,10 +276,6 @@ id|u_char
 op_star
 id|start
 op_assign
-(paren
-id|u_char
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 r_if

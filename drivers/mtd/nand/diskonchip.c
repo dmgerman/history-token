@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * drivers/mtd/nand/diskonchip.c&n; *&n; * (C) 2003 Red Hat, Inc.&n; * (C) 2004 Dan Brown &lt;dan_brown@ieee.org&gt;&n; * (C) 2004 Kalev Lember &lt;kalev@smartlink.ee&gt;&n; *&n; * Author: David Woodhouse &lt;dwmw2@infradead.org&gt;&n; * Additional Diskonchip 2000 and Millennium support by Dan Brown &lt;dan_brown@ieee.org&gt;&n; * Diskonchip Millennium Plus support by Kalev Lember &lt;kalev@smartlink.ee&gt;&n; * &n; * Error correction code lifted from the old docecc code&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; * converted to the generic Reed-Solomon library by Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *  &n; * Interface to generic NAND code for M-Systems DiskOnChip devices&n; *&n; * $Id: diskonchip.c,v 1.44 2005/01/05 17:34:27 dwmw2 Exp $&n; */
+multiline_comment|/* &n; * drivers/mtd/nand/diskonchip.c&n; *&n; * (C) 2003 Red Hat, Inc.&n; * (C) 2004 Dan Brown &lt;dan_brown@ieee.org&gt;&n; * (C) 2004 Kalev Lember &lt;kalev@smartlink.ee&gt;&n; *&n; * Author: David Woodhouse &lt;dwmw2@infradead.org&gt;&n; * Additional Diskonchip 2000 and Millennium support by Dan Brown &lt;dan_brown@ieee.org&gt;&n; * Diskonchip Millennium Plus support by Kalev Lember &lt;kalev@smartlink.ee&gt;&n; * &n; * Error correction code lifted from the old docecc code&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; * converted to the generic Reed-Solomon library by Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *  &n; * Interface to generic NAND code for M-Systems DiskOnChip devices&n; *&n; * $Id: diskonchip.c,v 1.45 2005/01/05 18:05:14 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1475,10 +1475,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -1549,10 +1545,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -1641,10 +1633,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -1764,10 +1752,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -1857,10 +1841,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -2025,10 +2005,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -2108,10 +2084,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_uint16
@@ -2357,10 +2329,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_uint16
@@ -2456,10 +2424,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_int
@@ -2537,10 +2501,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -2605,10 +2565,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -2679,10 +2635,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -2767,10 +2719,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -2874,10 +2822,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -2991,10 +2935,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -3082,10 +3022,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -3205,10 +3141,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -3421,10 +3353,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -3597,10 +3525,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -3732,10 +3656,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -3862,10 +3782,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -4025,10 +3941,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -4507,10 +4419,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -4709,10 +4617,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -4810,10 +4714,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -4919,10 +4819,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -5294,10 +5190,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_void
@@ -5782,10 +5674,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_int
@@ -6042,10 +5930,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_int
@@ -6468,10 +6352,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_int
@@ -7083,10 +6963,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_struct
@@ -7278,10 +7154,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 r_struct
@@ -7544,10 +7416,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 id|this-&gt;write_byte
@@ -7624,10 +7492,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 id|this-&gt;write_byte
@@ -7757,10 +7621,6 @@ id|doc_priv
 op_star
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|this-&gt;priv
 suffix:semicolon
 id|this-&gt;write_byte
@@ -8281,10 +8141,6 @@ id|mtd-&gt;priv
 suffix:semicolon
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|nand-&gt;priv
 suffix:semicolon
 multiline_comment|/* Use the alias resolution register to determine if this is&n;&t;&t;   in fact the same DOC aliased to a new address.  If writes&n;&t;&t;   to one chip&squot;s alias resolution register change the value on&n;&t;&t;   the other chip, they&squot;re the same chip. */
@@ -8585,10 +8441,6 @@ l_int|1
 suffix:semicolon
 id|mtd-&gt;priv
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|nand
 suffix:semicolon
 id|mtd-&gt;owner
@@ -8597,10 +8449,6 @@ id|THIS_MODULE
 suffix:semicolon
 id|nand-&gt;priv
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|doc
 suffix:semicolon
 id|nand-&gt;select_chip
@@ -8840,10 +8688,6 @@ id|mtd-&gt;priv
 suffix:semicolon
 id|doc
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|nand-&gt;priv
 suffix:semicolon
 id|nextmtd
