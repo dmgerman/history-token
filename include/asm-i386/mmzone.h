@@ -4,6 +4,18 @@ DECL|macro|_ASM_MMZONE_H_
 mdefine_line|#define _ASM_MMZONE_H_
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#ifdef CONFIG_DISCONTIGMEM
+macro_line|#ifdef CONFIG_NUMA
+macro_line|#ifdef CONFIG_X86_NUMAQ
+macro_line|#include &lt;asm/numaq.h&gt;
+macro_line|#else&t;/* summit or generic arch */
+macro_line|#include &lt;asm/srat.h&gt;
+macro_line|#endif
+macro_line|#else /* !CONFIG_NUMA */
+DECL|macro|get_memcfg_numa
+mdefine_line|#define get_memcfg_numa get_memcfg_numa_flat
+DECL|macro|get_zholes_size
+mdefine_line|#define get_zholes_size(n) (0)
+macro_line|#endif /* CONFIG_NUMA */
 r_extern
 r_struct
 id|pglist_data
@@ -12,6 +24,76 @@ id|node_data
 (braket
 )braket
 suffix:semicolon
+DECL|macro|NODE_DATA
+mdefine_line|#define NODE_DATA(nid)&t;&t;(node_data[nid])
+multiline_comment|/*&n; * generic node memory support, the following assumptions apply:&n; *&n; * 1) memory comes in 256Mb contigious chunks which are either present or not&n; * 2) we will not have more than 64Gb in total&n; *&n; * for now assume that 64Gb is max amount of RAM for whole system&n; *    64Gb / 4096bytes/page = 16777216 pages&n; */
+DECL|macro|MAX_NR_PAGES
+mdefine_line|#define MAX_NR_PAGES 16777216
+DECL|macro|MAX_ELEMENTS
+mdefine_line|#define MAX_ELEMENTS 256
+DECL|macro|PAGES_PER_ELEMENT
+mdefine_line|#define PAGES_PER_ELEMENT (MAX_NR_PAGES/MAX_ELEMENTS)
+r_extern
+id|u8
+id|physnode_map
+(braket
+)braket
+suffix:semicolon
+DECL|function|pfn_to_nid
+r_static
+r_inline
+r_int
+id|pfn_to_nid
+c_func
+(paren
+r_int
+r_int
+id|pfn
+)paren
+(brace
+macro_line|#ifdef CONFIG_NUMA
+r_return
+id|physnode_map
+(braket
+(paren
+id|pfn
+)paren
+op_div
+id|PAGES_PER_ELEMENT
+)braket
+suffix:semicolon
+macro_line|#else
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#endif
+)brace
+DECL|function|pfn_to_pgdat
+r_static
+r_inline
+r_struct
+id|pglist_data
+op_star
+id|pfn_to_pgdat
+c_func
+(paren
+r_int
+r_int
+id|pfn
+)paren
+(brace
+r_return
+id|NODE_DATA
+c_func
+(paren
+id|pfn_to_nid
+c_func
+(paren
+id|pfn
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Following are macros that are specific to this numa platform.&n; */
 DECL|macro|reserve_bootmem
 mdefine_line|#define reserve_bootmem(addr, size) &bslash;&n;&t;reserve_bootmem_node(NODE_DATA(0), (addr), (size))
@@ -35,9 +117,6 @@ multiline_comment|/*&n; * Following are macros that each numa implmentation must
 multiline_comment|/*&n; * Given a kernel address, find the home node of the underlying memory.&n; */
 DECL|macro|kvaddr_to_nid
 mdefine_line|#define kvaddr_to_nid(kaddr)&t;pfn_to_nid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
-multiline_comment|/*&n; * Return a pointer to the node data for node n.&n; */
-DECL|macro|NODE_DATA
-mdefine_line|#define NODE_DATA(nid)&t;&t;(node_data[nid])
 DECL|macro|node_mem_map
 mdefine_line|#define node_mem_map(nid)&t;(NODE_DATA(nid)-&gt;node_mem_map)
 DECL|macro|node_start_pfn
@@ -102,79 +181,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * generic node memory support, the following assumptions apply:&n; *&n; * 1) memory comes in 256Mb contigious chunks which are either present or not&n; * 2) we will not have more than 64Gb in total&n; *&n; * for now assume that 64Gb is max amount of RAM for whole system&n; *    64Gb / 4096bytes/page = 16777216 pages&n; */
-DECL|macro|MAX_NR_PAGES
-mdefine_line|#define MAX_NR_PAGES 16777216
-DECL|macro|MAX_ELEMENTS
-mdefine_line|#define MAX_ELEMENTS 256
-DECL|macro|PAGES_PER_ELEMENT
-mdefine_line|#define PAGES_PER_ELEMENT (MAX_NR_PAGES/MAX_ELEMENTS)
-r_extern
-id|u8
-id|physnode_map
-(braket
-)braket
-suffix:semicolon
-DECL|function|pfn_to_nid
-r_static
-r_inline
-r_int
-id|pfn_to_nid
-c_func
-(paren
-r_int
-r_int
-id|pfn
-)paren
-(brace
-r_return
-id|physnode_map
-(braket
-(paren
-id|pfn
-)paren
-op_div
-id|PAGES_PER_ELEMENT
-)braket
-suffix:semicolon
-)brace
-DECL|function|pfn_to_pgdat
-r_static
-r_inline
-r_struct
-id|pglist_data
-op_star
-id|pfn_to_pgdat
-c_func
-(paren
-r_int
-r_int
-id|pfn
-)paren
-(brace
-r_return
-id|NODE_DATA
-c_func
-(paren
-id|pfn_to_nid
-c_func
-(paren
-id|pfn
-)paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#ifdef CONFIG_X86_NUMAQ
-macro_line|#include &lt;asm/numaq.h&gt;
-macro_line|#elif CONFIG_ACPI_SRAT
-macro_line|#include &lt;asm/srat.h&gt;
-macro_line|#elif CONFIG_X86_PC
-DECL|macro|get_zholes_size
-mdefine_line|#define get_zholes_size(n) (0)
-macro_line|#else
-DECL|macro|pfn_to_nid
-mdefine_line|#define pfn_to_nid(pfn)&t;&t;(0)
-macro_line|#endif /* CONFIG_X86_NUMAQ */
 r_extern
 r_int
 id|get_memcfg_numa_flat
