@@ -98,7 +98,7 @@ l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
 DECL|macro|INT_MODULE_PARM
-mdefine_line|#define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, &quot;i&quot;)
+mdefine_line|#define INT_MODULE_PARM(n, v) static int n = v; module_param(n, int, 0444)
 id|INT_MODULE_PARM
 c_func
 (paren

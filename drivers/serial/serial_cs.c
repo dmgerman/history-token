@@ -1,5 +1,6 @@
 multiline_comment|/*======================================================================&n;&n;    A driver for PCMCIA serial devices&n;&n;    serial_cs.c 1.134 2002/05/04 05:48:53&n;&n;    The contents of this file are subject to the Mozilla Public&n;    License Version 1.1 (the &quot;License&quot;); you may not use this file&n;    except in compliance with the License. You may obtain a copy of&n;    the License at http://www.mozilla.org/MPL/&n;&n;    Software distributed under the License is distributed on an &quot;AS&n;    IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, either express or&n;    implied. See the License for the specific language governing&n;    rights and limitations under the License.&n;&n;    The initial developer of the original code is David A. Hinds&n;    &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David A. Hinds&n;    are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n;&n;    Alternatively, the contents of this file may be used under the&n;    terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in which&n;    case the provisions of the GPL are applicable instead of the&n;    above.  If you wish to allow the use of your version of this file&n;    only under the terms of the GPL and not to allow others to use&n;    your version of this file under the MPL, indicate your decision&n;    by deleting the provisions above and replace them with the notice&n;    and other provisions required by the GPL.  If you do not delete&n;    the provisions above, a recipient may use your version of this&n;    file under either the MPL or the GPL.&n;    &n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -68,11 +69,12 @@ id|irq_list
 (braket
 l_int|4
 )braket
-op_assign
-(brace
-op_minus
-l_int|1
-)brace
+suffix:semicolon
+DECL|variable|irq_list_count
+r_static
+r_int
+r_int
+id|irq_list_count
 suffix:semicolon
 multiline_comment|/* Enable the speaker? */
 DECL|variable|do_sound
@@ -88,36 +90,46 @@ r_static
 r_int
 id|buggy_uart
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|irq_mask
 comma
-l_string|&quot;i&quot;
+id|uint
+comma
+l_int|0444
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|irq_list
 comma
-l_string|&quot;1-4i&quot;
+r_int
+comma
+id|irq_list_count
+comma
+l_int|0444
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|do_sound
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|buggy_uart
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 multiline_comment|/*====================================================================*/
@@ -670,13 +682,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|irq_list
-(braket
-l_int|0
-)braket
+id|irq_list_count
 op_eq
-op_minus
-l_int|1
+l_int|0
 )paren
 id|link-&gt;irq.IRQInfo2
 op_assign
@@ -692,7 +700,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|4
+id|irq_list_count
 suffix:semicolon
 id|i
 op_increment

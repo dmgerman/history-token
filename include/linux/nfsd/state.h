@@ -202,7 +202,7 @@ id|NFSD4_REPLAY_ISIZE
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n;* nfs4_stateowner can either be an open_owner, or a lock_owner&n;*&n;*    so_idhash:  stateid_hashtbl[] for open owner, lockstateid_hashtbl[]&n;*         for lock_owner&n;*    so_strhash: ownerstr_hashtbl[] for open_owner, lock_ownerstr_hashtbl[]&n;*         for lock_owner&n;*    so_perclient: nfs4_client-&gt;cl_perclient entry - used when nfs4_client&n;*         struct is reaped.&n;*    so_perfilestate: heads the list of nfs4_stateid (either open or lock) &n;*         and is used to ensure no dangling nfs4_stateid references when we &n;*         release a stateowner.&n;*    so_perlockowner: (open) nfs4_stateid-&gt;st_perlockowner entry - used when&n;*         close is called to reap associated byte-range locks&n;*/
+multiline_comment|/*&n;* nfs4_stateowner can either be an open_owner, or a lock_owner&n;*&n;*    so_idhash:  stateid_hashtbl[] for open owner, lockstateid_hashtbl[]&n;*         for lock_owner&n;*    so_strhash: ownerstr_hashtbl[] for open_owner, lock_ownerstr_hashtbl[]&n;*         for lock_owner&n;*    so_perclient: nfs4_client-&gt;cl_perclient entry - used when nfs4_client&n;*         struct is reaped.&n;*    so_perfilestate: heads the list of nfs4_stateid (either open or lock) &n;*         and is used to ensure no dangling nfs4_stateid references when we &n;*         release a stateowner.&n;*    so_perlockowner: (open) nfs4_stateid-&gt;st_perlockowner entry - used when&n;*         close is called to reap associated byte-range locks&n;*    so_close_lru: (open) stateowner is placed on this list instead of being&n;*         reaped (when so_perfilestate is empty) to hold the last close replay.&n;*         reaped by laundramat thread after lease period.&n;*/
 DECL|struct|nfs4_stateowner
 r_struct
 id|nfs4_stateowner
@@ -237,6 +237,17 @@ id|list_head
 id|so_perlockowner
 suffix:semicolon
 multiline_comment|/* nfs4_stateid-&gt;st_perlockowner */
+DECL|member|so_close_lru
+r_struct
+id|list_head
+id|so_close_lru
+suffix:semicolon
+multiline_comment|/* tail queue */
+DECL|member|so_time
+id|time_t
+id|so_time
+suffix:semicolon
+multiline_comment|/* time of placement on so_close_lru */
 DECL|member|so_is_open_owner
 r_int
 id|so_is_open_owner
@@ -377,6 +388,8 @@ DECL|macro|LOCK_STATE
 mdefine_line|#define LOCK_STATE              0x00000008
 DECL|macro|RDWR_STATE
 mdefine_line|#define RDWR_STATE              0x00000010
+DECL|macro|CLOSE_STATE
+mdefine_line|#define CLOSE_STATE             0x00000020
 DECL|macro|seqid_mutating_err
 mdefine_line|#define seqid_mutating_err(err)                       &bslash;&n;&t;(((err) != nfserr_stale_clientid) &amp;&amp;    &bslash;&n;&t;((err) != nfserr_bad_seqid) &amp;&amp;          &bslash;&n;&t;((err) != nfserr_stale_stateid) &amp;&amp;      &bslash;&n;&t;((err) != nfserr_bad_stateid))
 r_extern
@@ -447,6 +460,22 @@ suffix:semicolon
 r_extern
 r_void
 id|nfs4_unlock_state
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|nfs4_in_grace
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|nfs4_in_no_grace
 c_func
 (paren
 r_void
