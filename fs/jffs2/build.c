@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: build.c,v 1.68 2004/11/27 13:38:10 gleixner Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: build.c,v 1.69 2004/12/16 20:22:18 dmarlin Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -1610,12 +1610,30 @@ c_func
 id|c
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|c-&gt;mtd-&gt;flags
+op_amp
+id|MTD_NO_VIRTBLOCKS
+)paren
+(brace
+id|vfree
+c_func
+(paren
+id|c-&gt;blocks
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|kfree
 c_func
 (paren
 id|c-&gt;blocks
 )paren
 suffix:semicolon
+)brace
 r_return
 op_minus
 id|EIO
