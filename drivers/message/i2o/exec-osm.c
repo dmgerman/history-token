@@ -474,8 +474,6 @@ suffix:semicolon
 r_static
 id|spinlock_t
 id|lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 r_int
 id|rc
@@ -484,6 +482,13 @@ l_int|1
 suffix:semicolon
 id|u32
 id|context
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|lock
+)paren
 suffix:semicolon
 id|context
 op_assign

@@ -4283,9 +4283,12 @@ op_amp
 id|c-&gt;devices
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|c-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|init_MUTEX
 c_func
@@ -4310,9 +4313,12 @@ id|c-&gt;unit
 )paren
 suffix:semicolon
 macro_line|#if BITS_PER_LONG == 64
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|c-&gt;context_list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|atomic_set
 c_func

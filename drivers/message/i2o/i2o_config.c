@@ -41,8 +41,6 @@ DECL|variable|i2o_config_lock
 r_static
 id|spinlock_t
 id|i2o_config_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|macro|MODINC
 mdefine_line|#define MODINC(x,y) ((x) = ((x) + 1) % (y))
@@ -5514,6 +5512,13 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;  (C) Copyright 1999 Red Hat Software&bslash;n&quot;
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|i2o_config_lock
 )paren
 suffix:semicolon
 r_if
