@@ -1359,7 +1359,6 @@ mdefine_line|#define PIRQ_PENALTY_ISA_ALWAYS&t;&t;(16*16*16*16*16*16)
 DECL|variable|acpi_irq_penalty
 r_static
 r_int
-id|__initdata
 id|acpi_irq_penalty
 (braket
 id|ACPI_MAX_IRQS
@@ -1418,6 +1417,7 @@ multiline_comment|/* &gt;IRQ15 */
 )brace
 suffix:semicolon
 r_int
+id|__init
 DECL|function|acpi_irq_penalty_init
 id|acpi_irq_penalty_init
 c_func

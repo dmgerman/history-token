@@ -12,17 +12,9 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#ifndef KERNEL_VERSION
-DECL|macro|KERNEL_VERSION
-mdefine_line|#define KERNEL_VERSION(x,y,z) (((x)&lt;&lt;16)+((y)&lt;&lt;8)+(z))
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 macro_line|#include &lt;linux/interrupt.h&gt; /* For tasklet support. */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#else
-macro_line|#include &lt;linux/malloc.h&gt;
-macro_line|#endif
 multiline_comment|/* Core SCSI definitions */
 DECL|macro|AIC_LIB_PREFIX
 mdefine_line|#define AIC_LIB_PREFIX ahd
@@ -133,19 +125,6 @@ id|Scsi_Host_Template
 id|aic79xx_driver_template
 suffix:semicolon
 multiline_comment|/***************************** Bus Space/DMA **********************************/
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,2,17)
-DECL|typedef|bus_addr_t
-r_typedef
-id|dma_addr_t
-id|bus_addr_t
-suffix:semicolon
-macro_line|#else
-DECL|typedef|bus_addr_t
-r_typedef
-r_uint32
-id|bus_addr_t
-suffix:semicolon
-macro_line|#endif
 DECL|typedef|bus_size_t
 r_typedef
 r_uint32
@@ -173,6 +152,7 @@ suffix:semicolon
 DECL|member|maddr
 r_volatile
 r_uint8
+id|__iomem
 op_star
 id|maddr
 suffix:semicolon
@@ -186,7 +166,7 @@ r_struct
 id|bus_dma_segment
 (brace
 DECL|member|ds_addr
-id|bus_addr_t
+id|dma_addr_t
 id|ds_addr
 suffix:semicolon
 DECL|member|ds_len
@@ -227,7 +207,7 @@ r_struct
 id|ahd_linux_dmamap
 (brace
 DECL|member|bus_addr
-id|bus_addr_t
+id|dma_addr_t
 id|bus_addr
 suffix:semicolon
 )brace
@@ -248,7 +228,7 @@ c_func
 r_void
 op_star
 comma
-id|bus_addr_t
+id|dma_addr_t
 )paren
 suffix:semicolon
 DECL|typedef|bus_dmamap_callback_t
@@ -299,10 +279,10 @@ comma
 id|bus_size_t
 multiline_comment|/*boundary*/
 comma
-id|bus_addr_t
+id|dma_addr_t
 multiline_comment|/*lowaddr*/
 comma
-id|bus_addr_t
+id|dma_addr_t
 multiline_comment|/*highaddr*/
 comma
 id|bus_dma_filter_t
@@ -636,11 +616,7 @@ l_int|1000000
 suffix:semicolon
 )brace
 multiline_comment|/***************************** SMP support ************************************/
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,17)
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
-macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#endif
 macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0) || defined(SCSI_HAS_HOST_LOCK))
 DECL|macro|AHD_SCSI_HAS_HOST_LOCK
 mdefine_line|#define AHD_SCSI_HAS_HOST_LOCK 1
@@ -1098,20 +1074,13 @@ op_star
 id|dev
 suffix:semicolon
 DECL|member|buf_busaddr
-id|bus_addr_t
+id|dma_addr_t
 id|buf_busaddr
 suffix:semicolon
 DECL|member|xfer_len
 r_uint32
 id|xfer_len
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
-DECL|member|resid
-r_uint32
-id|resid
-suffix:semicolon
-multiline_comment|/* Transfer residual */
-macro_line|#endif
 DECL|member|sense_resid
 r_uint32
 id|sense_resid
@@ -1194,13 +1163,11 @@ DECL|member|spin_lock
 id|spinlock_t
 id|spin_lock
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 DECL|member|runq_tasklet
 r_struct
 id|tasklet_struct
 id|runq_tasklet
 suffix:semicolon
-macro_line|#endif
 DECL|member|qfrozen
 id|u_int
 id|qfrozen
@@ -1270,7 +1237,7 @@ id|mem_busaddr
 suffix:semicolon
 multiline_comment|/* Mem Base Addr */
 DECL|member|hw_dma_mask
-id|bus_addr_t
+id|dma_addr_t
 id|hw_dma_mask
 suffix:semicolon
 DECL|member|flags
@@ -2464,13 +2431,11 @@ DECL|macro|PCIXM_STATUS_MAXCRDS
 mdefine_line|#define PCIXM_STATUS_MAXCRDS&t;0x1C00&t;/* Maximum Cumulative Read Size */
 DECL|macro|PCIXM_STATUS_RCVDSCEM
 mdefine_line|#define PCIXM_STATUS_RCVDSCEM&t;0x2000&t;/* Received a Split Comp w/Error msg */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 r_extern
 r_struct
 id|pci_driver
 id|aic79xx_pci_driver
 suffix:semicolon
-macro_line|#endif
 r_typedef
 r_enum
 (brace
@@ -2885,28 +2850,6 @@ id|INTSTAT
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,3,0)
-DECL|macro|pci_map_sg
-mdefine_line|#define pci_map_sg(pdev, sg_list, nseg, direction) (nseg)
-DECL|macro|pci_unmap_sg
-mdefine_line|#define pci_unmap_sg(pdev, sg_list, nseg, direction)
-DECL|macro|sg_dma_address
-mdefine_line|#define sg_dma_address(sg) (VIRT_TO_BUS((sg)-&gt;address))
-DECL|macro|sg_dma_len
-mdefine_line|#define sg_dma_len(sg) ((sg)-&gt;length)
-DECL|macro|pci_map_single
-mdefine_line|#define pci_map_single(pdev, buffer, bufflen, direction) &bslash;&n;&t;(VIRT_TO_BUS(buffer))
-DECL|macro|pci_unmap_single
-mdefine_line|#define pci_unmap_single(pdev, buffer, buflen, direction)
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,3)
-DECL|macro|ahd_pci_set_dma_mask
-mdefine_line|#define ahd_pci_set_dma_mask pci_set_dma_mask
-macro_line|#else
-multiline_comment|/*&n; * Always &quot;return&quot; 0 for success.&n; */
-DECL|macro|ahd_pci_set_dma_mask
-mdefine_line|#define ahd_pci_set_dma_mask(dev_softc, mask)&t;&bslash;&n;&t;(((dev_softc)-&gt;dma_mask = mask) &amp;&amp; 0)
-macro_line|#endif
 multiline_comment|/**************************** Proc FS Support *********************************/
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 r_int
@@ -3459,77 +3402,11 @@ op_star
 id|scb
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,40)
 r_return
 (paren
 id|scb-&gt;io_ctx-&gt;sc_data_direction
 )paren
 suffix:semicolon
-macro_line|#else
-r_if
-c_cond
-(paren
-id|scb-&gt;io_ctx-&gt;bufflen
-op_eq
-l_int|0
-)paren
-r_return
-(paren
-id|CAM_DIR_NONE
-)paren
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|scb-&gt;io_ctx-&gt;cmnd
-(braket
-l_int|0
-)braket
-)paren
-(brace
-r_case
-l_int|0x08
-suffix:colon
-multiline_comment|/* READ(6)  */
-r_case
-l_int|0x28
-suffix:colon
-multiline_comment|/* READ(10) */
-r_case
-l_int|0xA8
-suffix:colon
-multiline_comment|/* READ(12) */
-r_return
-(paren
-id|CAM_DIR_IN
-)paren
-suffix:semicolon
-r_case
-l_int|0x0A
-suffix:colon
-multiline_comment|/* WRITE(6)  */
-r_case
-l_int|0x2A
-suffix:colon
-multiline_comment|/* WRITE(10) */
-r_case
-l_int|0xAA
-suffix:colon
-multiline_comment|/* WRITE(12) */
-r_return
-(paren
-id|CAM_DIR_OUT
-)paren
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-(paren
-id|CAM_DIR_NONE
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 r_static
 id|__inline
@@ -3547,17 +3424,10 @@ id|u_long
 id|resid
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)
 id|scb-&gt;io_ctx-&gt;resid
 op_assign
 id|resid
 suffix:semicolon
-macro_line|#else
-id|scb-&gt;platform_data-&gt;resid
-op_assign
-id|resid
-suffix:semicolon
-macro_line|#endif
 )brace
 r_static
 id|__inline
@@ -3593,19 +3463,11 @@ op_star
 id|scb
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)
 r_return
 (paren
 id|scb-&gt;io_ctx-&gt;resid
 )paren
 suffix:semicolon
-macro_line|#else
-r_return
-(paren
-id|scb-&gt;platform_data-&gt;resid
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 r_static
 id|__inline

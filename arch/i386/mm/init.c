@@ -59,6 +59,7 @@ id|highend_pfn
 suffix:semicolon
 r_static
 r_int
+id|noinline
 id|do_test_wp_bit
 c_func
 (paren
@@ -1754,13 +1755,13 @@ comma
 id|noexec_setup
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_PAE
 DECL|variable|nx_enabled
 r_int
 id|nx_enabled
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_PAE
 DECL|function|set_nx
 r_static
 r_void
@@ -2680,6 +2681,7 @@ multiline_comment|/*&n; * This function cannot be __init, since exceptions don&s
 DECL|function|do_test_wp_bit
 r_static
 r_int
+id|noinline
 id|do_test_wp_bit
 c_func
 (paren
@@ -2804,6 +2806,20 @@ id|addr
 )paren
 comma
 l_int|1
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|addr
+comma
+l_int|0xcc
+comma
+id|PAGE_SIZE
 )paren
 suffix:semicolon
 id|free_page

@@ -71,7 +71,7 @@ op_member_access_from_pointer
 id|urbffout
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 r_private

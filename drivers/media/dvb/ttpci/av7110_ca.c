@@ -8,16 +8,8 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/byteorder/swabb.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-DECL|macro|DEBUG_VARIABLE
-mdefine_line|#define DEBUG_VARIABLE av7110_debug
-r_extern
-r_int
-id|av7110_debug
-suffix:semicolon
-macro_line|#include &quot;dvb_i2c.h&quot;
 macro_line|#include &quot;av7110.h&quot;
 macro_line|#include &quot;av7110_hw.h&quot;
-macro_line|#include &quot;dvb_functions.h&quot;
 DECL|function|CI_handle
 r_void
 id|CI_handle

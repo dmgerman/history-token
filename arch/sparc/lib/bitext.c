@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * bitext.c: kernel little helper (of bit shuffling variety).&n; *&n; * Copyright (C) 2002 Pete Zaitcev &lt;zaitcev@yahoo.com&gt;&n; *&n; * The algorithm to search a zero bit string is geared towards its application.&n; * We expect a couple of fixed sizes of requests, so a rotating counter, reset&n; * by align size, should provide fast enough search while maintaining low&n; * fragmentation.&n; */
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/bitext.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 multiline_comment|/**&n; * bit_map_string_get - find and set a bit string in bit map.&n; * @t: the bit map.&n; * @len: requested string length&n; * @align: requested alignment&n; *&n; * Returns offset in the map or -1 if out of space.&n; *&n; * Not safe to call from an interrupt (uses spin_lock).&n; */
 DECL|function|bit_map_string_get
 r_int

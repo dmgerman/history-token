@@ -657,6 +657,7 @@ id|hw
 suffix:semicolon
 DECL|member|mem_start
 r_void
+id|__iomem
 op_star
 id|mem_start
 suffix:semicolon

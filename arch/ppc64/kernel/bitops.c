@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * These are too big to be inlined.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|function|find_next_zero_bit
 r_int

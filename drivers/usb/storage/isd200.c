@@ -607,13 +607,11 @@ r_struct
 id|read_capacity_data
 (brace
 DECL|member|LogicalBlockAddress
-r_int
-r_int
+id|__be32
 id|LogicalBlockAddress
 suffix:semicolon
 DECL|member|BytesPerBlock
-r_int
-r_int
+id|__be32
 id|BytesPerBlock
 suffix:semicolon
 )brace
@@ -3102,10 +3100,11 @@ multiline_comment|/* ATA Command Identify successful */
 r_int
 id|i
 suffix:semicolon
-id|__u16
+id|__be16
 op_star
 id|src
-comma
+suffix:semicolon
+id|__u16
 op_star
 id|dest
 suffix:semicolon
@@ -3363,11 +3362,6 @@ id|info-&gt;InquiryData.DeviceType
 op_assign
 id|DIRECT_ACCESS_DEVICE
 suffix:semicolon
-multiline_comment|/* Fix-up the return data from an INQUIRY command to show &n;&t;&t;&t;&t; * ANSI SCSI rev 2 so we don&squot;t confuse the SCSI layers above us&n;&t;&t;&t;&t; * in Linux.&n;&t;&t;&t;&t; */
-id|info-&gt;InquiryData.Versions
-op_assign
-l_int|0x2
-suffix:semicolon
 multiline_comment|/* The length must be at least 36 (5 + 31) */
 id|info-&gt;InquiryData.AdditionalLength
 op_assign
@@ -3395,7 +3389,7 @@ multiline_comment|/* Fill in vendor identification fields */
 id|src
 op_assign
 (paren
-id|__u16
+id|__be16
 op_star
 )paren
 id|id-&gt;model
@@ -3439,7 +3433,7 @@ suffix:semicolon
 id|src
 op_assign
 (paren
-id|__u16
+id|__be16
 op_star
 )paren
 (paren
@@ -3487,7 +3481,7 @@ suffix:semicolon
 id|src
 op_assign
 (paren
-id|__u16
+id|__be16
 op_star
 )paren
 id|id-&gt;fw_rev
@@ -4001,10 +3995,12 @@ l_string|&quot;   ATA OUT - SCSIOP_READ&bslash;n&quot;
 suffix:semicolon
 id|lba
 op_assign
+id|be32_to_cpu
+c_func
+(paren
 op_star
 (paren
-r_int
-r_int
+id|__be32
 op_star
 )paren
 op_amp
@@ -4012,13 +4008,6 @@ id|srb-&gt;cmnd
 (braket
 l_int|2
 )braket
-suffix:semicolon
-id|lba
-op_assign
-id|cpu_to_be32
-c_func
-(paren
-id|lba
 )paren
 suffix:semicolon
 id|blockCount
@@ -4224,10 +4213,12 @@ l_string|&quot;   ATA OUT - SCSIOP_WRITE&bslash;n&quot;
 suffix:semicolon
 id|lba
 op_assign
+id|be32_to_cpu
+c_func
+(paren
 op_star
 (paren
-r_int
-r_int
+id|__be32
 op_star
 )paren
 op_amp
@@ -4235,13 +4226,6 @@ id|srb-&gt;cmnd
 (braket
 l_int|2
 )braket
-suffix:semicolon
-id|lba
-op_assign
-id|cpu_to_be32
-c_func
-(paren
-id|lba
 )paren
 suffix:semicolon
 id|blockCount

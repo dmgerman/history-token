@@ -6067,7 +6067,7 @@ suffix:semicolon
 r_int
 id|busn
 op_assign
-id|ctrl-&gt;bus
+id|ctrl-&gt;slot_bus
 suffix:semicolon
 r_int
 id|devn
@@ -6107,19 +6107,7 @@ id|funn
 op_increment
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|devn
-op_eq
-id|ctrl-&gt;device
-op_logical_and
-id|funn
-op_eq
-id|ctrl-&gt;function
-)paren
-r_continue
-suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;if (devn == ctrl-&gt;device &amp;&amp; funn == ctrl-&gt;function)&n;&t;&t;&t;&t;continue;&n;&t;&t;&t;*/
 multiline_comment|/* find out if this entry is for an occupied slot */
 id|vid
 op_assign
@@ -6128,7 +6116,7 @@ suffix:semicolon
 id|pci_bus_read_config_dword
 c_func
 (paren
-id|ctrl-&gt;pci_bus
+id|ctrl-&gt;pci_dev-&gt;subordinate
 comma
 id|PCI_DEVFN
 c_func

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 macro_line|#include &lt;asm/arch/lubbock.h&gt;
 macro_line|#include &quot;leds.h&quot;
 multiline_comment|/*&n; * 8 discrete leds available for general use:&n; *&n; * Note: bits [15-8] are used to enable/blank the 8 7 segment hex displays&n; * so be sure to not monkey with them here.&n; */

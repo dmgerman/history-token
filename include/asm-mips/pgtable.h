@@ -814,7 +814,7 @@ multiline_comment|/*&n; * We provide our own get_unmapped area to cope with the 
 DECL|macro|HAVE_ARCH_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
 DECL|macro|io_remap_page_range
-mdefine_line|#define io_remap_page_range remap_page_range
+mdefine_line|#define io_remap_page_range(vma, vaddr, paddr, size, prot)&t;&t;&bslash;&n;&t;&t;remap_pfn_range(vma, vaddr, (paddr) &gt;&gt; PAGE_SHIFT, size, prot)
 multiline_comment|/*&n; * No page table caches to initialise&n; */
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()&t;do { } while (0)

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * include/asm-sh/ubc.h&n; *&n; * Copyright (C) 1999 Niib
 macro_line|#ifndef __ASM_SH_UBC_H
 DECL|macro|__ASM_SH_UBC_H
 mdefine_line|#define __ASM_SH_UBC_H
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/cpu/ubc.h&gt;
 multiline_comment|/* User Break Controller */
 macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7707) || defined(CONFIG_CPU_SUBTYPE_SH7709) || &bslash;&n;    defined(CONFIG_CPU_SUBTYPE_SH7300)
@@ -80,5 +81,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_SH_UBC_H */
 eof

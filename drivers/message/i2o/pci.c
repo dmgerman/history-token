@@ -417,12 +417,10 @@ id|c-&gt;base.len
 OG
 l_int|0x400000
 )paren
-(brace
 id|c-&gt;base.len
 op_assign
 l_int|0x400000
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -433,12 +431,10 @@ id|c-&gt;base.len
 OG
 l_int|0x100000
 )paren
-(brace
 id|c-&gt;base.len
 op_assign
 l_int|0x100000
 suffix:semicolon
-)brace
 )brace
 )brace
 r_if
@@ -800,7 +796,7 @@ comma
 op_amp
 id|c-&gt;status
 comma
-l_int|4
+l_int|8
 comma
 id|GFP_KERNEL
 )paren
@@ -990,10 +986,6 @@ suffix:semicolon
 id|u32
 id|mv
 suffix:semicolon
-id|u32
-op_star
-id|msg
-suffix:semicolon
 multiline_comment|/*&n;&t; * Old 960 steppings had a bug in the I2O unit that caused&n;&t; * the queue to appear empty when it wasn&squot;t.&n;&t; */
 id|mv
 op_assign
@@ -1054,34 +1046,13 @@ id|I2O_QUEUE_EMPTY
 multiline_comment|/*&n;&t;&t; * Map the message from the page frame map to kernel virtual.&n;&t;&t; * Because bus_to_virt is deprecated, we have calculate the&n;&t;&t; * location by ourself!&n;&t;&t; */
 id|m
 op_assign
+id|i2o_msg_out_to_virt
+c_func
 (paren
-r_struct
-id|i2o_message
-op_star
-)paren
-(paren
+id|c
+comma
 id|mv
-op_minus
-(paren
-r_int
-r_int
 )paren
-id|c-&gt;out_queue.phys
-op_plus
-(paren
-r_int
-r_int
-)paren
-id|c-&gt;out_queue.virt
-)paren
-suffix:semicolon
-id|msg
-op_assign
-(paren
-id|u32
-op_star
-)paren
-id|m
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *      Ensure this message is seen coherently but cachably by&n;&t;&t; *      the processor&n;&t;&t; */
 id|dma_sync_single_for_cpu

@@ -35,7 +35,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;&t;/* for CONFIG_PCI */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;hp100.h&quot;
 multiline_comment|/*&n; *  defines&n; */
@@ -127,6 +127,7 @@ suffix:semicolon
 multiline_comment|/* memory mapped access */
 DECL|member|mem_ptr_virt
 r_void
+id|__iomem
 op_star
 id|mem_ptr_virt
 suffix:semicolon
@@ -1569,7 +1570,7 @@ r_int
 id|mem_ptr_phys
 suffix:semicolon
 r_void
-op_star
+id|__iomem
 op_star
 id|mem_ptr_virt
 suffix:semicolon

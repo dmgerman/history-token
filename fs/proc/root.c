@@ -7,9 +7,10 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|variable|proc_net
+DECL|variable|proc_net_stat
 DECL|variable|proc_bus
 DECL|variable|proc_root_fs
 DECL|variable|proc_root_driver
@@ -17,6 +18,9 @@ r_struct
 id|proc_dir_entry
 op_star
 id|proc_net
+comma
+op_star
+id|proc_net_stat
 comma
 op_star
 id|proc_bus
@@ -196,6 +200,16 @@ id|proc_mkdir
 c_func
 (paren
 l_string|&quot;net&quot;
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|proc_net_stat
+op_assign
+id|proc_mkdir
+c_func
+(paren
+l_string|&quot;net/stat&quot;
 comma
 l_int|NULL
 )paren
@@ -561,15 +575,6 @@ id|proc_root
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_SYSCTL
-DECL|variable|proc_sys_root
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|proc_sys_root
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|proc_symlink
 id|EXPORT_SYMBOL
 c_func
@@ -617,6 +622,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|proc_net
+)paren
+suffix:semicolon
+DECL|variable|proc_net_stat
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|proc_net_stat
 )paren
 suffix:semicolon
 DECL|variable|proc_bus

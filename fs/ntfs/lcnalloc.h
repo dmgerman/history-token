@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_NTFS_LCNALLOC_H
 macro_line|#ifdef NTFS_RW
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;types.h&quot;
+macro_line|#include &quot;runlist.h&quot;
 macro_line|#include &quot;volume.h&quot;
 r_typedef
 r_enum
@@ -119,6 +120,70 @@ id|count
 comma
 id|FALSE
 )paren
+suffix:semicolon
+)brace
+r_extern
+r_int
+id|ntfs_cluster_free_from_rl_nolock
+c_func
+(paren
+id|ntfs_volume
+op_star
+id|vol
+comma
+r_const
+id|runlist_element
+op_star
+id|rl
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * ntfs_cluster_free_from_rl - free clusters from runlist&n; * @vol:&t;mounted ntfs volume on which to free the clusters&n; * @rl:&t;&t;runlist describing the clusters to free&n; *&n; * Free all the clusters described by the runlist @rl on the volume @vol.  In&n; * the case of an error being returned, at least some of the clusters were not&n; * freed.&n; *&n; * Return 0 on success and -errno on error.&n; *&n; * Locking: This function takes the volume lcn bitmap lock for writing and&n; *&t;    modifies the bitmap contents.&n; */
+DECL|function|ntfs_cluster_free_from_rl
+r_static
+r_inline
+r_int
+id|ntfs_cluster_free_from_rl
+c_func
+(paren
+id|ntfs_volume
+op_star
+id|vol
+comma
+r_const
+id|runlist_element
+op_star
+id|rl
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+id|down_write
+c_func
+(paren
+op_amp
+id|vol-&gt;lcnbmp_lock
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|ntfs_cluster_free_from_rl_nolock
+c_func
+(paren
+id|vol
+comma
+id|rl
+)paren
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|vol-&gt;lcnbmp_lock
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 macro_line|#endif /* NTFS_RW */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ixp4xx.c,v 1.4 2004/08/31 22:55:51 dsaxena Exp $&n; *&n; * drivers/mtd/maps/ixp4xx.c&n; *&n; * MTD Map file for IXP4XX based systems. Please do not make per-board&n; * changes in here. If your board needs special setup, do it in your&n; * platform level code in arch/arm/mach-ixp4xx/board-setup.c&n; *&n; * Original Author: Intel Corporation&n; * Maintainer: Deepak Saxena &lt;dsaxena@mvista.com&gt;&n; *&n; * Copyright (C) 2002 Intel Corporation&n; * Copyright (C) 2003-2004 MontaVista Software, Inc.&n; *&n; */
+multiline_comment|/*&n; * $Id: ixp4xx.c,v 1.6 2004/09/17 00:25:06 gleixner Exp $&n; *&n; * drivers/mtd/maps/ixp4xx.c&n; *&n; * MTD Map file for IXP4XX based systems. Please do not make per-board&n; * changes in here. If your board needs special setup, do it in your&n; * platform level code in arch/arm/mach-ixp4xx/board-setup.c&n; *&n; * Original Author: Intel Corporation&n; * Maintainer: Deepak Saxena &lt;dsaxena@mvista.com&gt;&n; *&n; * Copyright (C) 2002 Intel Corporation&n; * Copyright (C) 2003-2004 MontaVista Software, Inc.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -196,6 +196,54 @@ id|i
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Unaligned writes are ignored, causing the 8-bit&n; * probe to fail and proceed to the 16-bit probe (which succeeds).&n; */
+DECL|function|ixp4xx_probe_write16
+r_static
+r_void
+id|ixp4xx_probe_write16
+c_func
+(paren
+r_struct
+id|map_info
+op_star
+id|map
+comma
+id|map_word
+id|d
+comma
+r_int
+r_int
+id|adr
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|adr
+op_amp
+l_int|1
+)paren
+)paren
+op_star
+(paren
+id|__u16
+op_star
+)paren
+(paren
+id|map-&gt;map_priv_1
+op_plus
+id|adr
+)paren
+op_assign
+id|d.x
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Fast write16 function without the probing check above&n; */
 DECL|function|ixp4xx_write16
 r_static
 r_void
@@ -612,7 +660,7 @@ id|ixp4xx_read16
 comma
 id|info-&gt;map.write
 op_assign
-id|ixp4xx_write16
+id|ixp4xx_probe_write16
 comma
 id|info-&gt;map.copy_from
 op_assign
@@ -660,8 +708,9 @@ suffix:semicolon
 id|info-&gt;map.map_priv_1
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap
 c_func
@@ -736,6 +785,11 @@ id|info-&gt;mtd-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
+multiline_comment|/* Use the fast version */
+id|info-&gt;map.write
+op_assign
+id|ixp4xx_write16
+comma
 id|err
 op_assign
 id|parse_mtd_partitions

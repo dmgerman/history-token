@@ -125,7 +125,7 @@ r_struct
 id|uhci_frame_list
 (brace
 DECL|member|frame
-id|u32
+id|__le32
 id|frame
 (braket
 id|UHCI_NUMFRAMES
@@ -155,12 +155,12 @@ id|uhci_qh
 (brace
 multiline_comment|/* Hardware fields */
 DECL|member|link
-id|u32
+id|__le32
 id|link
 suffix:semicolon
 multiline_comment|/* Next queue */
 DECL|member|element
-id|u32
+id|__le32
 id|element
 suffix:semicolon
 multiline_comment|/* Queue element pointer */
@@ -285,19 +285,19 @@ id|uhci_td
 (brace
 multiline_comment|/* Hardware fields */
 DECL|member|link
-id|u32
+id|__le32
 id|link
 suffix:semicolon
 DECL|member|status
-id|u32
+id|__le32
 id|status
 suffix:semicolon
 DECL|member|token
-id|u32
+id|__le32
 id|token
 suffix:semicolon
 DECL|member|buffer
-id|u32
+id|__le32
 id|buffer
 suffix:semicolon
 multiline_comment|/* Software fields */
@@ -623,6 +623,29 @@ r_int
 id|saved_framenumber
 suffix:semicolon
 multiline_comment|/* Save during PM suspend */
+multiline_comment|/* Support for port suspend/resume */
+DECL|member|port_c_suspend
+r_int
+r_int
+id|port_c_suspend
+suffix:semicolon
+multiline_comment|/* Bit-arrays of ports */
+DECL|member|suspended_ports
+r_int
+r_int
+id|suspended_ports
+suffix:semicolon
+DECL|member|resuming_ports
+r_int
+r_int
+id|resuming_ports
+suffix:semicolon
+DECL|member|resume_timeout
+r_int
+r_int
+id|resume_timeout
+suffix:semicolon
+multiline_comment|/* Time to stop signalling */
 multiline_comment|/* Main list of URB&squot;s currently controlled by this HC */
 DECL|member|urb_list
 r_struct

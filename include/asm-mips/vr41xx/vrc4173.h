@@ -36,6 +36,7 @@ mdefine_line|#define VRC4173_DOZEPIU_IRQ&t;VRC4173_IRQ(13)
 DECL|macro|VRC4173_IRQ_LAST
 mdefine_line|#define VRC4173_IRQ_LAST&t;VRC4173_DOZEPIU_IRQ
 multiline_comment|/*&n; * PCI I/O accesses&n; */
+macro_line|#ifdef CONFIG_VRC4173
 r_extern
 r_int
 r_int
@@ -79,6 +80,46 @@ DECL|macro|vrc4173_insw
 mdefine_line|#define vrc4173_insw(port,addr,count)&t;insw(vrc4173_io_offset+(port),(addr),(count))
 DECL|macro|vrc4173_insl
 mdefine_line|#define vrc4173_insl(port,addr,count)&t;insl(vrc4173_io_offset+(port),(addr),(count))
+macro_line|#else
+DECL|macro|set_vrc4173_io_offset
+mdefine_line|#define set_vrc4173_io_offset(offset)&t;do {} while (0)
+DECL|macro|vrc4173_outb
+mdefine_line|#define vrc4173_outb(val,port)&t;&t;do {} while (0)
+DECL|macro|vrc4173_outw
+mdefine_line|#define vrc4173_outw(val,port)&t;&t;do {} while (0)
+DECL|macro|vrc4173_outl
+mdefine_line|#define vrc4173_outl(val,port)&t;&t;do {} while (0)
+DECL|macro|vrc4173_outb_p
+mdefine_line|#define vrc4173_outb_p(val,port)&t;do {} while (0)
+DECL|macro|vrc4173_outw_p
+mdefine_line|#define vrc4173_outw_p(val,port)&t;do {} while (0)
+DECL|macro|vrc4173_outl_p
+mdefine_line|#define vrc4173_outl_p(val,port)&t;do {} while (0)
+DECL|macro|vrc4173_inb
+mdefine_line|#define vrc4173_inb(port)&t;&t;0
+DECL|macro|vrc4173_inw
+mdefine_line|#define vrc4173_inw(port)&t;&t;0
+DECL|macro|vrc4173_inl
+mdefine_line|#define vrc4173_inl(port)&t;&t;0
+DECL|macro|vrc4173_inb_p
+mdefine_line|#define vrc4173_inb_p(port)&t;&t;0
+DECL|macro|vrc4173_inw_p
+mdefine_line|#define vrc4173_inw_p(port)&t;&t;0
+DECL|macro|vrc4173_inl_p
+mdefine_line|#define vrc4173_inl_p(port)&t;&t;0
+DECL|macro|vrc4173_outsb
+mdefine_line|#define vrc4173_outsb(port,addr,count)&t;do {} while (0)
+DECL|macro|vrc4173_outsw
+mdefine_line|#define vrc4173_outsw(port,addr,count)&t;do {} while (0)
+DECL|macro|vrc4173_outsl
+mdefine_line|#define vrc4173_outsl(port,addr,count)&t;do {} while (0)
+DECL|macro|vrc4173_insb
+mdefine_line|#define vrc4173_insb(port,addr,count)&t;do {} while (0)
+DECL|macro|vrc4173_insw
+mdefine_line|#define vrc4173_insw(port,addr,count)&t;do {} while (0)
+DECL|macro|vrc4173_insl
+mdefine_line|#define vrc4173_insl(port,addr,count)&t;do {} while (0)
+macro_line|#endif
 multiline_comment|/*&n; * Clock Mask Unit&n; */
 DECL|enum|vrc4173_clock
 r_typedef
@@ -125,6 +166,7 @@ DECL|typedef|vrc4173_clock_t
 )brace
 id|vrc4173_clock_t
 suffix:semicolon
+macro_line|#ifdef CONFIG_VRC4173
 r_extern
 r_void
 id|vrc4173_supply_clock
@@ -143,6 +185,200 @@ id|vrc4173_clock_t
 id|clock
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|function|vrc4173_supply_clock
+r_static
+r_inline
+r_void
+id|vrc4173_supply_clock
+c_func
+(paren
+id|vrc4173_clock_t
+id|clock
+)paren
+(brace
+)brace
+DECL|function|vrc4173_mask_clock
+r_static
+r_inline
+r_void
+id|vrc4173_mask_clock
+c_func
+(paren
+id|vrc4173_clock_t
+id|clock
+)paren
+(brace
+)brace
+macro_line|#endif
+multiline_comment|/*&n; * Interupt Control Unit&n; */
+DECL|macro|VRC4173_PIUINT_COMMAND
+mdefine_line|#define VRC4173_PIUINT_COMMAND&t;&t;0x0040
+DECL|macro|VRC4173_PIUINT_DATA
+mdefine_line|#define VRC4173_PIUINT_DATA&t;&t;0x0020
+DECL|macro|VRC4173_PIUINT_PAGE1
+mdefine_line|#define VRC4173_PIUINT_PAGE1&t;&t;0x0010
+DECL|macro|VRC4173_PIUINT_PAGE0
+mdefine_line|#define VRC4173_PIUINT_PAGE0&t;&t;0x0008
+DECL|macro|VRC4173_PIUINT_DATALOST
+mdefine_line|#define VRC4173_PIUINT_DATALOST&t;&t;0x0004
+DECL|macro|VRC4173_PIUINT_STATUSCHANGE
+mdefine_line|#define VRC4173_PIUINT_STATUSCHANGE&t;0x0001
+macro_line|#ifdef CONFIG_VRC4173
+r_extern
+r_void
+id|vrc4173_enable_piuint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|vrc4173_disable_piuint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|vrc4173_enable_piuint
+r_static
+r_inline
+r_void
+id|vrc4173_enable_piuint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+(brace
+)brace
+DECL|function|vrc4173_disable_piuint
+r_static
+r_inline
+r_void
+id|vrc4173_disable_piuint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+(brace
+)brace
+macro_line|#endif
+DECL|macro|VRC4173_AIUINT_INPUT_DMAEND
+mdefine_line|#define VRC4173_AIUINT_INPUT_DMAEND&t;0x0800
+DECL|macro|VRC4173_AIUINT_INPUT_DMAHALT
+mdefine_line|#define VRC4173_AIUINT_INPUT_DMAHALT&t;0x0400
+DECL|macro|VRC4173_AIUINT_INPUT_DATALOST
+mdefine_line|#define VRC4173_AIUINT_INPUT_DATALOST&t;0x0200
+DECL|macro|VRC4173_AIUINT_INPUT_DATA
+mdefine_line|#define VRC4173_AIUINT_INPUT_DATA&t;0x0100
+DECL|macro|VRC4173_AIUINT_OUTPUT_DMAEND
+mdefine_line|#define VRC4173_AIUINT_OUTPUT_DMAEND&t;0x0008
+DECL|macro|VRC4173_AIUINT_OUTPUT_DMAHALT
+mdefine_line|#define VRC4173_AIUINT_OUTPUT_DMAHALT&t;0x0004
+DECL|macro|VRC4173_AIUINT_OUTPUT_NODATA
+mdefine_line|#define VRC4173_AIUINT_OUTPUT_NODATA&t;0x0002
+macro_line|#ifdef CONFIG_VRC4173
+r_extern
+r_void
+id|vrc4173_enable_aiuint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|vrc4173_disable_aiuint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|vrc4173_enable_aiuint
+r_static
+r_inline
+r_void
+id|vrc4173_enable_aiuint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+(brace
+)brace
+DECL|function|vrc4173_disable_aiuint
+r_static
+r_inline
+r_void
+id|vrc4173_disable_aiuint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+(brace
+)brace
+macro_line|#endif
+DECL|macro|VRC4173_KIUINT_DATALOST
+mdefine_line|#define VRC4173_KIUINT_DATALOST&t;&t;0x0004
+DECL|macro|VRC4173_KIUINT_DATAREADY
+mdefine_line|#define VRC4173_KIUINT_DATAREADY&t;0x0002
+DECL|macro|VRC4173_KIUINT_SCAN
+mdefine_line|#define VRC4173_KIUINT_SCAN&t;&t;0x0001
+macro_line|#ifdef CONFIG_VRC4173
+r_extern
+r_void
+id|vrc4173_enable_kiuint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|vrc4173_disable_kiuint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|vrc4173_enable_kiuint
+r_static
+r_inline
+r_void
+id|vrc4173_enable_kiuint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+(brace
+)brace
+DECL|function|vrc4173_disable_kiuint
+r_static
+r_inline
+r_void
+id|vrc4173_disable_kiuint
+c_func
+(paren
+r_uint16
+id|mask
+)paren
+(brace
+)brace
+macro_line|#endif
 multiline_comment|/*&n; * General-Purpose I/O Unit&n; */
 DECL|enum|vrc4173_function
 r_typedef
@@ -177,6 +413,7 @@ DECL|typedef|vrc4173_function_t
 )brace
 id|vrc4173_function_t
 suffix:semicolon
+macro_line|#ifdef CONFIG_VRC4173
 r_extern
 r_void
 id|vrc4173_select_function
@@ -186,5 +423,19 @@ id|vrc4173_function_t
 id|function
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|function|vrc4173_select_function
+r_static
+r_inline
+r_void
+id|vrc4173_select_function
+c_func
+(paren
+id|vrc4173_function_t
+id|function
+)paren
+(brace
+)brace
+macro_line|#endif
 macro_line|#endif /* __NEC_VRC4173_H */
 eof

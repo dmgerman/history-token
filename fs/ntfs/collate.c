@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * collate.c - NTFS kernel collation handling.  Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2004 Anton Altaparmakov&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS&n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
-macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;collate.h&quot;
+macro_line|#include &quot;debug.h&quot;
+macro_line|#include &quot;ntfs.h&quot;
 DECL|function|ntfs_collate_binary
 r_static
 r_int
@@ -296,7 +297,7 @@ id|ntfs_volume
 op_star
 id|vol
 comma
-id|COLLATION_RULES
+id|COLLATION_RULE
 id|cr
 comma
 r_const
@@ -318,6 +319,9 @@ r_int
 id|data2_len
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
@@ -337,7 +341,7 @@ op_ne
 id|COLLATION_NTOFS_ULONG
 )paren
 suffix:semicolon
-id|cr
+id|i
 op_assign
 id|le32_to_cpu
 c_func
@@ -348,7 +352,7 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|cr
+id|i
 OL
 l_int|0
 )paren
@@ -356,14 +360,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cr
+id|i
 op_le
 l_int|0x02
 )paren
 r_return
 id|ntfs_do_collate0x0
 (braket
-id|cr
+id|i
 )braket
 (paren
 id|vol
@@ -380,12 +384,12 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|cr
+id|i
 OL
 l_int|0x10
 )paren
 suffix:semicolon
-id|cr
+id|i
 op_sub_assign
 l_int|0x10
 suffix:semicolon
@@ -395,7 +399,7 @@ c_cond
 id|likely
 c_func
 (paren
-id|cr
+id|i
 op_le
 l_int|3
 )paren
@@ -403,7 +407,7 @@ l_int|3
 r_return
 id|ntfs_do_collate0x1
 (braket
-id|cr
+id|i
 )braket
 (paren
 id|vol

@@ -61,7 +61,7 @@ r_struct
 id|acm_line
 (brace
 DECL|member|speed
-id|__u32
+id|__le32
 id|speed
 suffix:semicolon
 DECL|member|stopbits
@@ -286,6 +286,8 @@ id|packed
 )paren
 suffix:semicolon
 multiline_comment|/* class specific descriptor types */
+DECL|macro|CDC_HEADER_TYPE
+mdefine_line|#define CDC_HEADER_TYPE&t;&t;&t;0x00
 DECL|macro|CDC_CALL_MANAGEMENT_TYPE
 mdefine_line|#define CDC_CALL_MANAGEMENT_TYPE&t;0x01
 DECL|macro|CDC_AC_MANAGEMENT_TYPE

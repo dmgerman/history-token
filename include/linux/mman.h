@@ -9,6 +9,12 @@ DECL|macro|MREMAP_MAYMOVE
 mdefine_line|#define MREMAP_MAYMOVE&t;1
 DECL|macro|MREMAP_FIXED
 mdefine_line|#define MREMAP_FIXED&t;2
+DECL|macro|OVERCOMMIT_GUESS
+mdefine_line|#define OVERCOMMIT_GUESS&t;&t;0
+DECL|macro|OVERCOMMIT_ALWAYS
+mdefine_line|#define OVERCOMMIT_ALWAYS&t;&t;1
+DECL|macro|OVERCOMMIT_NEVER
+mdefine_line|#define OVERCOMMIT_NEVER&t;&t;2
 r_extern
 r_int
 id|sysctl_overcommit_memory

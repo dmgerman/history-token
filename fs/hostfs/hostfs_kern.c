@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/statfs.h&gt;
+macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;hostfs.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
@@ -972,6 +973,8 @@ c_func
 id|name
 comma
 l_int|NULL
+comma
+l_int|NULL
 )paren
 op_eq
 id|OS_TYPE_SYMLINK
@@ -1277,12 +1280,6 @@ op_member_access_from_pointer
 id|fd
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Closing host fd in .delete_inode&bslash;n&quot;
-)paren
-suffix:semicolon
 id|HOSTFS_I
 c_func
 (paren
@@ -1339,6 +1336,7 @@ id|host_filename
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*XXX: This should not happen, probably. The check is here for&n;&t; * additional safety.*/
 r_if
 c_cond
 (paren
@@ -1370,6 +1368,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Closing host fd in .destroy_inode&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2614,8 +2613,16 @@ id|err
 op_assign
 op_minus
 id|ENOMEM
+suffix:semicolon
+r_int
+id|maj
 comma
+id|min
+suffix:semicolon
+id|dev_t
 id|rdev
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2653,7 +2660,21 @@ c_func
 id|name
 comma
 op_amp
+id|maj
+comma
+op_amp
+id|min
+)paren
+suffix:semicolon
+multiline_comment|/*Reencode maj and min with the kernel encoding.*/
 id|rdev
+op_assign
+id|MKDEV
+c_func
+(paren
+id|maj
+comma
+id|min
 )paren
 suffix:semicolon
 id|kfree
@@ -4186,12 +4207,14 @@ id|err
 (brace
 id|err
 op_assign
-id|vfs_permission
+id|generic_permission
 c_func
 (paren
 id|ino
 comma
 id|desired
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

@@ -365,7 +365,6 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 id|update_process_times
 c_func
 (paren
@@ -376,7 +375,6 @@ id|regs
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_SMP */
 multiline_comment|/*&n;&t; * If we have an externally synchronized Linux clock, then update&n;&t; * RTC clock accordingly every ~11 minutes. Set_rtc_mmss() has to be&n;&t; * called as close as possible to when a second starts.&n;&t; */
 r_if
 c_cond

@@ -6,11 +6,11 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -218,6 +218,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|cpu_possible
 c_func
 (paren
@@ -232,6 +233,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|cpu_possible
 c_func
 (paren
@@ -246,6 +248,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|cpu_possible
 c_func
 (paren
@@ -260,6 +263,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|cpu_possible
 c_func
 (paren

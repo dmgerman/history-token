@@ -54,7 +54,11 @@ multiline_comment|/* macro to force the IBCT0 value valid */
 DECL|macro|BTE_VALID_MODE
 mdefine_line|#define BTE_VALID_MODE(x) ((x) &amp; (IBCT_NOTIFY | IBCT_ZFIL_MODE))
 DECL|macro|BTE_ACTIVE
-mdefine_line|#define BTE_ACTIVE&t;(IBLS_BUSY | IBLS_ERROR)
+mdefine_line|#define BTE_ACTIVE&t;&t;(IBLS_BUSY | IBLS_ERROR)
+DECL|macro|BTE_WORD_AVAILABLE
+mdefine_line|#define BTE_WORD_AVAILABLE&t;(IBLS_BUSY &lt;&lt; 1)
+DECL|macro|BTE_WORD_BUSY
+mdefine_line|#define BTE_WORD_BUSY&t;&t;(~BTE_WORD_AVAILABLE)
 multiline_comment|/*&n; * Some macros to simplify reading.&n; * Start with macros to locate the BTE control registers.&n; */
 DECL|macro|BTE_LNSTAT_LOAD
 mdefine_line|#define BTE_LNSTAT_LOAD(_bte)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;HUB_L(_bte-&gt;bte_base_addr)

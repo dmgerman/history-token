@@ -599,7 +599,7 @@ r_int
 id|nr
 suffix:semicolon
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|ih
 suffix:semicolon
@@ -1026,7 +1026,7 @@ op_star
 id|blkh
 suffix:semicolon
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 suffix:semicolon
@@ -1458,7 +1458,7 @@ op_star
 id|blkh
 suffix:semicolon
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 suffix:semicolon
@@ -2036,7 +2036,7 @@ op_star
 id|blkh
 suffix:semicolon
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 suffix:semicolon

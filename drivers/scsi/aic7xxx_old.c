@@ -34486,6 +34486,10 @@ c_func
 id|temp_p
 )paren
 suffix:semicolon
+id|temp_p
+op_assign
+l_int|NULL
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace

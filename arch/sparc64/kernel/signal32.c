@@ -11,8 +11,8 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/svr4.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -537,16 +537,10 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-(paren
-id|u32
-)paren
-(paren
-id|u64
-)paren
-id|from-&gt;si_ptr
+id|from-&gt;si_int
 comma
 op_amp
-id|to-&gt;si_ptr
+id|to-&gt;si_int
 )paren
 suffix:semicolon
 r_break

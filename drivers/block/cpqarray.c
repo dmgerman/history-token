@@ -1,7 +1,6 @@
 multiline_comment|/*&n; *    Disk Array driver for Compaq SMART2 Controllers&n; *    Copyright 1998 Compaq Computer Corporation&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; *    NON INFRINGEMENT.  See the GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *    Questions/Comments/Bugfixes to Cpqarray-discuss@lists.sourceforge.net&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;&t;/* CONFIG_PROC_FS */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
@@ -475,6 +474,7 @@ id|pdev
 suffix:semicolon
 r_static
 r_void
+id|__iomem
 op_star
 id|remap_pci_mem
 c_func
@@ -2966,24 +2966,28 @@ id|pci_driver
 id|cpqarray_pci_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;cpqarray&quot;
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|cpqarray_init_one
 comma
+dot
 id|remove
-suffix:colon
+op_assign
 id|__devexit_p
 c_func
 (paren
 id|cpqarray_remove_one_pci
 )paren
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|cpqarray_pci_device_id
 comma
 )brace
@@ -3019,7 +3023,6 @@ id|DRIVER_NAME
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* TODO: If it&squot;s an eisa only system, will rc return negative? */
 id|rc
 op_assign
 id|pci_register_driver
@@ -3033,8 +3036,6 @@ r_if
 c_cond
 (paren
 id|rc
-OL
-l_int|0
 )paren
 r_return
 id|rc
@@ -3788,6 +3789,7 @@ multiline_comment|/*&n; * Map (physical) PCI mem into (virtual) kernel space&n; 
 DECL|function|remap_pci_mem
 r_static
 r_void
+id|__iomem
 op_star
 id|remap_pci_mem
 c_func
@@ -3824,6 +3826,7 @@ op_minus
 id|page_base
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|page_remapped
 op_assign
@@ -3853,7 +3856,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,13)
 multiline_comment|/*&n; * Config string is a comma separated set of i/o addresses of EISA cards.&n; */
 DECL|function|cpqarray_setup
 r_static
@@ -3938,62 +3940,6 @@ comma
 id|cpqarray_setup
 )paren
 suffix:semicolon
-macro_line|#else
-multiline_comment|/*&n; * Copy the contents of the ints[] array passed to us by init.&n; */
-DECL|function|cpqarray_setup
-r_void
-id|cpqarray_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-comma
-r_int
-op_star
-id|ints
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|ints
-(braket
-l_int|0
-)braket
-op_logical_and
-id|i
-OL
-l_int|8
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|eisa
-(braket
-id|i
-)braket
-op_assign
-id|ints
-(braket
-id|i
-op_plus
-l_int|1
-)braket
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Find an EISA controller&squot;s signature.  Set up an hba if we find it.&n; */
 DECL|function|cpqarray_eisa_detect

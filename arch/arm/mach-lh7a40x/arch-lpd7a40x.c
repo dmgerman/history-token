@@ -2,6 +2,7 @@ multiline_comment|/* arch/arm/mach-lh7a40x/arch-lpd7a40x.c&n; *&n; *  Copyright 
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
@@ -10,7 +11,7 @@ macro_line|#include &lt;asm/hardware.h&gt;&t;/* io_p2v() */
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &quot;common.h&quot;
 DECL|variable|smc91x_resources
 r_static
 r_struct
@@ -971,20 +972,6 @@ suffix:semicolon
 multiline_comment|/* Compact Flash */
 )brace
 macro_line|#ifdef CONFIG_MACH_LPD7A400
-r_extern
-r_void
-id|lh7a400_init_irq
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|lh7a40x_init_time
-(paren
-r_void
-)paren
-suffix:semicolon
 id|MACHINE_START
 (paren
 id|LPD7A400
@@ -1018,10 +1005,12 @@ id|INITIRQ
 (paren
 id|lh7a400_init_irq
 )paren
-id|INITTIME
-(paren
-id|lh7a40x_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|lpd7a40x_timer
+comma
 id|INIT_MACHINE
 (paren
 id|lpd7a40x_init
@@ -1029,20 +1018,6 @@ id|lpd7a40x_init
 id|MACHINE_END
 macro_line|#endif
 macro_line|#ifdef CONFIG_MACH_LPD7A404
-r_extern
-r_void
-id|lh7a404_init_irq
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|lh7a40x_init_time
-(paren
-r_void
-)paren
-suffix:semicolon
 id|MACHINE_START
 (paren
 id|LPD7A404
@@ -1076,10 +1051,12 @@ id|INITIRQ
 (paren
 id|lh7a404_init_irq
 )paren
-id|INITTIME
-(paren
-id|lh7a40x_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|lpd7a40x_timer
+comma
 id|INIT_MACHINE
 (paren
 id|lpd7a40x_init

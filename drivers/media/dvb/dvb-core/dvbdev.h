@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|macro|DVB_MAJOR
 mdefine_line|#define DVB_MAJOR 212
 DECL|macro|DVB_DEVICE_VIDEO
@@ -263,6 +264,56 @@ comma
 r_int
 r_int
 id|arg
+)paren
+suffix:semicolon
+multiline_comment|/* we don&squot;t mess with video_usercopy() any more,&n;we simply define out own dvb_usercopy(), which will hopefully become&n;generic_usercopy()  someday... */
+r_extern
+r_int
+id|dvb_usercopy
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+comma
+r_int
+(paren
+op_star
+id|func
+)paren
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|cmd
+comma
+r_void
+op_star
+id|arg
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif /* #ifndef _DVBDEV_H_ */

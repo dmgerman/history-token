@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/arch/map.h&gt;
 macro_line|#include &lt;asm/arch/regs-timer.h&gt;
 macro_line|#include &lt;asm/arch/regs-irq.h&gt;
 macro_line|#include &lt;asm/mach/time.h&gt;
+macro_line|#include &quot;clock.h&quot;
 DECL|variable|timer_startval
 r_static
 r_int
@@ -135,10 +136,24 @@ op_star
 id|regs
 )paren
 (brace
+id|write_seqlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 id|timer_tick
 c_func
 (paren
 id|regs
+)paren
+suffix:semicolon
+id|write_sequnlock
+c_func
+(paren
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
 r_return
@@ -169,10 +184,11 @@ id|s3c2410_timer_interrupt
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Set up timer interrupt, and return the current time in seconds.&n; *&n; * Currently we only use timer4, as it is the only timer which has no&n; * other function that can be exploited externally&n; */
-DECL|function|s3c2410_init_time
+DECL|function|s3c2410_timer_init
+r_static
 r_void
 id|__init
-id|s3c2410_init_time
+id|s3c2410_timer_init
 (paren
 r_void
 )paren
@@ -192,10 +208,6 @@ suffix:semicolon
 r_int
 r_int
 id|tcfg0
-suffix:semicolon
-id|gettimeoffset
-op_assign
-id|s3c2410_gettimeoffset
 suffix:semicolon
 id|tcnt
 op_assign
@@ -279,7 +291,7 @@ c_func
 (brace
 id|timer_ticks_usec
 op_assign
-id|s3c2410_pclk
+id|s3c24xx_pclk
 op_div
 (paren
 l_int|1000
@@ -322,7 +334,7 @@ suffix:semicolon
 id|tcnt
 op_assign
 (paren
-id|s3c2410_pclk
+id|s3c24xx_pclk
 op_div
 l_int|6
 )paren
@@ -472,4 +484,22 @@ id|S3C2410_TCON
 )paren
 suffix:semicolon
 )brace
+DECL|variable|s3c2410_timer
+r_struct
+id|sys_timer
+id|s3c2410_timer
+op_assign
+(brace
+dot
+id|init
+op_assign
+id|s3c2410_timer_init
+comma
+dot
+id|offset
+op_assign
+id|s3c2410_gettimeoffset
+comma
+)brace
+suffix:semicolon
 eof

@@ -650,6 +650,26 @@ DECL|typedef|tcp_pcount_t
 )brace
 id|tcp_pcount_t
 suffix:semicolon
+DECL|enum|tcp_congestion_algo
+r_enum
+id|tcp_congestion_algo
+(brace
+DECL|enumerator|TCP_RENO
+id|TCP_RENO
+op_assign
+l_int|0
+comma
+DECL|enumerator|TCP_VEGAS
+id|TCP_VEGAS
+comma
+DECL|enumerator|TCP_WESTWOOD
+id|TCP_WESTWOOD
+comma
+DECL|enumerator|TCP_BIC
+id|TCP_BIC
+comma
+)brace
+suffix:semicolon
 DECL|struct|tcp_opt
 r_struct
 id|tcp_opt
@@ -856,10 +876,11 @@ id|__u32
 id|frto_highmark
 suffix:semicolon
 multiline_comment|/* snd_nxt when RTO occurred */
-DECL|member|unused_pad
+DECL|member|adv_cong
 id|__u8
-id|unused_pad
+id|adv_cong
 suffix:semicolon
+multiline_comment|/* Using Vegas, Westwood, or BIC */
 DECL|member|defer_accept
 id|__u8
 id|defer_accept
@@ -1345,11 +1366,6 @@ id|__u32
 id|beg_snd_cwnd
 suffix:semicolon
 multiline_comment|/* saves the size of the cwnd */
-DECL|member|do_vegas
-id|__u8
-id|do_vegas
-suffix:semicolon
-multiline_comment|/* do vegas for this connection */
 DECL|member|doing_vegas_now
 id|__u8
 id|doing_vegas_now

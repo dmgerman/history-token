@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#ifdef CONFIG_SERIAL_CONSOLE
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#endif
@@ -22,7 +23,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/wbflush.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
@@ -2421,33 +2421,10 @@ id|info-&gt;event
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
-id|tty-&gt;flags
-op_amp
-(paren
-l_int|1
-op_lshift
-id|TTY_DO_WRITE_WAKEUP
-)paren
-)paren
-op_logical_and
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(paren
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(paren
-id|tty
-)paren
-suffix:semicolon
-id|wake_up_interruptible
+id|tty_wakeup
 c_func
 (paren
-op_amp
-id|tty-&gt;write_wait
+id|tty
 )paren
 suffix:semicolon
 )brace
@@ -4054,31 +4031,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|wake_up_interruptible
+id|tty_wakeup
 c_func
-(paren
-op_amp
-id|tty-&gt;write_wait
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|tty-&gt;flags
-op_amp
-(paren
-l_int|1
-op_lshift
-id|TTY_DO_WRITE_WAKEUP
-)paren
-)paren
-op_logical_and
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(paren
-id|tty-&gt;ldisc.write_wakeup
-)paren
 (paren
 id|tty
 )paren
@@ -5887,14 +5841,7 @@ c_func
 id|tty
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tty-&gt;ldisc.flush_buffer
-)paren
-id|tty-&gt;ldisc
-dot
-id|flush_buffer
+id|tty_ldisc_flush
 c_func
 (paren
 id|tty

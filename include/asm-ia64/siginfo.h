@@ -158,6 +158,7 @@ r_struct
 (brace
 DECL|member|_addr
 r_void
+id|__user
 op_star
 id|_addr
 suffix:semicolon

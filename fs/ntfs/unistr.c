@@ -1,4 +1,6 @@
 multiline_comment|/*&n; * unistr.c - NTFS Unicode string handling. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS&n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+macro_line|#include &quot;types.h&quot;
+macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;ntfs.h&quot;
 multiline_comment|/*&n; * IMPORTANT&n; * =========&n; *&n; * All these routines assume that the Unicode characters are in little endian&n; * encoding inside the strings!!!&n; */
 multiline_comment|/*&n; * This is used by the name collation functions to quickly determine what&n; * characters are (in)valid.&n; */
@@ -271,7 +273,7 @@ id|cnt
 comma
 id|min_len
 suffix:semicolon
-id|ntfschar
+id|u16
 id|c1
 comma
 id|c2
@@ -480,7 +482,7 @@ r_int
 id|n
 )paren
 (brace
-id|ntfschar
+id|u16
 id|c1
 comma
 id|c2
@@ -588,13 +590,13 @@ id|u32
 id|upcase_size
 )paren
 (brace
-id|ntfschar
+r_int
+id|i
+suffix:semicolon
+id|u16
 id|c1
 comma
 id|c2
-suffix:semicolon
-r_int
-id|i
 suffix:semicolon
 r_for
 c_loop
@@ -728,7 +730,7 @@ id|upcase_len
 id|u32
 id|i
 suffix:semicolon
-id|ntfschar
+id|u16
 id|u
 suffix:semicolon
 r_for
@@ -1028,11 +1030,7 @@ id|ucs
 id|o
 )braket
 op_assign
-id|cpu_to_le16
-c_func
-(paren
-l_char|&squot;&bslash;0&squot;
-)paren
+l_int|0
 suffix:semicolon
 op_star
 id|outs
@@ -1390,7 +1388,7 @@ id|ns
 id|o
 )braket
 op_assign
-l_char|&squot;&bslash;0&squot;
+l_int|0
 suffix:semicolon
 op_star
 id|outs

@@ -563,7 +563,7 @@ multiline_comment|/*&n;&t;&t; * See erratum #18 (&quot;C3 Power State/BMIDE and 
 multiline_comment|/* &n;&t;&t; * BM-IDE&n;&t;&t; * ------&n;&t;&t; * Find the PIIX4 IDE Controller and get the Bus Master IDE &n;&t;&t; * Status register address.  We&squot;ll use this later to read &n;&t;&t; * each IDE controller&squot;s DMA status to make sure we catch all&n;&t;&t; * DMA activity.&n;&t;&t; */
 id|dev
 op_assign
-id|pci_find_subsys
+id|pci_get_subsys
 c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
@@ -582,6 +582,7 @@ c_cond
 (paren
 id|dev
 )paren
+(brace
 id|errata.piix4.bmisx
 op_assign
 id|pci_resource_start
@@ -592,10 +593,17 @@ comma
 l_int|4
 )paren
 suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* &n;&t;&t; * Type-F DMA&n;&t;&t; * ----------&n;&t;&t; * Find the PIIX4 ISA Controller and read the Motherboard&n;&t;&t; * DMA controller&squot;s status to see if Type-F (Fast) DMA mode&n;&t;&t; * is enabled (bit 7) on either channel.  Note that we&squot;ll &n;&t;&t; * disable C3 support if this is enabled, as some legacy &n;&t;&t; * devices won&squot;t operate well if fast DMA is disabled.&n;&t;&t; */
 id|dev
 op_assign
-id|pci_find_subsys
+id|pci_get_subsys
 c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
@@ -655,6 +663,12 @@ l_int|0x80
 id|errata.piix4.fdma
 op_assign
 l_int|1
+suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 )brace
 r_break
@@ -741,7 +755,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * PIIX4&n;&t; */
 id|dev
 op_assign
-id|pci_find_subsys
+id|pci_get_subsys
 c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
@@ -760,6 +774,7 @@ c_cond
 (paren
 id|dev
 )paren
+(brace
 id|result
 op_assign
 id|acpi_processor_errata_piix4
@@ -768,6 +783,13 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
 id|return_VALUE
 c_func
 (paren

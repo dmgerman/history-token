@@ -347,7 +347,7 @@ id|ppp_async_ioctl
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Routines implementing the PPP line discipline.&n; */
-multiline_comment|/*&n; * We have a potential race on dereferencing tty-&gt;disc_data,&n; * because the tty layer provides no locking at all - thus one&n; * cpu could be running ppp_asynctty_receive while another&n; * calls ppp_asynctty_close, which zeroes tty-&gt;disc_data and&n; * frees the memory that ppp_asynctty_receive is using.  The best&n; * way to fix this is to use a rwlock in the tty struct, but for now&n; * we use a single global rwlock for all ttys in ppp line discipline.&n; */
+multiline_comment|/*&n; * We have a potential race on dereferencing tty-&gt;disc_data,&n; * because the tty layer provides no locking at all - thus one&n; * cpu could be running ppp_asynctty_receive while another&n; * calls ppp_asynctty_close, which zeroes tty-&gt;disc_data and&n; * frees the memory that ppp_asynctty_receive is using.  The best&n; * way to fix this is to use a rwlock in the tty struct, but for now&n; * we use a single global rwlock for all ttys in ppp line discipline.&n; *&n; * FIXME: this is no longer true. The _close path for the ldisc is &n; * now guaranteed to be sane. &n; */
 DECL|variable|disc_data_lock
 r_static
 id|rwlock_t
@@ -440,7 +440,7 @@ id|ap-&gt;dead_sem
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Called when a tty is put into PPP line discipline.&n; */
+multiline_comment|/*&n; * Called when a tty is put into PPP line discipline. Called in process&n; * context.&n; */
 r_static
 r_int
 DECL|function|ppp_asynctty_open
@@ -838,6 +838,7 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Called in process context only. May be re-entered by multiple&n; * ioctl calling threads.&n; */
 r_static
 r_int
 DECL|function|ppp_asynctty_ioctl
@@ -2743,7 +2744,7 @@ r_return
 id|done
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Flush output from our internal buffers.&n; * Called for the TCFLSH ioctl.&n; */
+multiline_comment|/*&n; * Flush output from our internal buffers.&n; * Called for the TCFLSH ioctl. Can be entered in parallel&n; * but this is covered by the xmit_lock.&n; */
 r_static
 r_void
 DECL|function|ppp_async_flush_output
@@ -3206,7 +3207,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* called when the tty driver has data for us. */
+multiline_comment|/* Called when the tty driver has data for us. Runs parallel with the&n;   other ldisc functions but will not be re-entered */
 r_static
 r_void
 DECL|function|ppp_async_input

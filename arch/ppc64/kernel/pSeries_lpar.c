@@ -395,10 +395,6 @@ id|device_node
 op_star
 id|stdout_node
 suffix:semicolon
-id|phandle
-op_star
-id|stdout_ph
-suffix:semicolon
 id|u32
 op_star
 id|termno
@@ -422,10 +418,10 @@ id|of_chosen
 r_return
 l_int|0
 suffix:semicolon
-id|stdout_ph
+id|name
 op_assign
 (paren
-id|phandle
+r_char
 op_star
 )paren
 id|get_property
@@ -433,7 +429,7 @@ c_func
 (paren
 id|of_chosen
 comma
-l_string|&quot;linux,stdout-package&quot;
+l_string|&quot;linux,stdout-path&quot;
 comma
 l_int|NULL
 )paren
@@ -441,7 +437,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|stdout_ph
+id|name
 op_eq
 l_int|NULL
 )paren
@@ -450,11 +446,10 @@ l_int|0
 suffix:semicolon
 id|stdout_node
 op_assign
-id|of_find_node_by_phandle
+id|of_find_node_by_path
 c_func
 (paren
-op_star
-id|stdout_ph
+id|name
 )paren
 suffix:semicolon
 r_if
@@ -1683,7 +1678,7 @@ id|ppc_md.flush_hash_range
 op_assign
 id|pSeries_lpar_flush_hash_range
 suffix:semicolon
-id|ppc_md.htpe_clear_all
+id|ppc_md.hpte_clear_all
 op_assign
 id|pSeries_lpar_hptab_clear
 suffix:semicolon

@@ -4,6 +4,7 @@ macro_line|#include &quot;linux/rbtree.h&quot;
 macro_line|#include &quot;linux/slab.h&quot;
 macro_line|#include &quot;linux/vmalloc.h&quot;
 macro_line|#include &quot;linux/bootmem.h&quot;
+macro_line|#include &quot;linux/module.h&quot;
 macro_line|#include &quot;asm/types.h&quot;
 macro_line|#include &quot;asm/pgtable.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
@@ -98,6 +99,7 @@ op_assign
 id|rb_entry
 c_func
 (paren
+op_star
 id|n
 comma
 r_struct
@@ -195,6 +197,7 @@ r_return
 id|rb_entry
 c_func
 (paren
+op_star
 id|n
 comma
 r_struct
@@ -1056,6 +1059,27 @@ id|desc
 )paren
 suffix:semicolon
 )brace
+DECL|variable|physmem_forget_descriptor
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|physmem_forget_descriptor
+)paren
+suffix:semicolon
+DECL|variable|physmem_remove_mapping
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|physmem_remove_mapping
+)paren
+suffix:semicolon
+DECL|variable|physmem_subst_mapping
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|physmem_subst_mapping
+)paren
+suffix:semicolon
 DECL|function|arch_free_page
 r_void
 id|arch_free_page
@@ -1675,6 +1699,24 @@ c_cond
 id|err
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOMEM
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;try increasing the host&squot;s &quot;
+l_string|&quot;/proc/sys/vm/max_map_count to &lt;physical &quot;
+l_string|&quot;memory size&gt;/4096&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 id|panic
 c_func
 (paren

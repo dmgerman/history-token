@@ -345,11 +345,6 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Remap the regs into kernel space.&n;&t; */
 id|rrpriv-&gt;regs
 op_assign
-(paren
-r_struct
-id|rr_regs
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -797,6 +792,7 @@ id|cmd
 (brace
 r_struct
 id|rr_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -963,6 +959,7 @@ id|rrpriv
 suffix:semicolon
 r_struct
 id|rr_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -1635,6 +1632,7 @@ id|length
 (brace
 r_struct
 id|rr_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -1899,6 +1897,7 @@ id|length
 (brace
 r_struct
 id|rr_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -2174,6 +2173,7 @@ id|rrpriv
 suffix:semicolon
 r_struct
 id|rr_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -2519,6 +2519,7 @@ id|rrpriv
 suffix:semicolon
 r_struct
 id|rr_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -3319,6 +3320,7 @@ id|rrpriv
 suffix:semicolon
 r_struct
 id|rr_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -4205,6 +4207,7 @@ id|dev
 suffix:semicolon
 r_struct
 id|rr_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -4619,6 +4622,7 @@ id|rrpriv
 suffix:semicolon
 r_struct
 id|rr_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -5239,6 +5243,7 @@ id|dev
 suffix:semicolon
 r_struct
 id|rr_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -5418,6 +5423,7 @@ id|rrpriv-&gt;pci_dev
 suffix:semicolon
 r_struct
 id|rr_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -5842,6 +5848,7 @@ id|rrpriv
 suffix:semicolon
 r_struct
 id|rr_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -6289,6 +6296,7 @@ id|rrpriv
 suffix:semicolon
 r_struct
 id|rr_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -6590,6 +6598,7 @@ id|dev
 suffix:semicolon
 r_struct
 id|rr_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -6961,6 +6970,7 @@ id|rrpriv
 suffix:semicolon
 r_struct
 id|rr_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon

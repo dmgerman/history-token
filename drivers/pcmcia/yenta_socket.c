@@ -5155,8 +5155,6 @@ id|pci_save_state
 c_func
 (paren
 id|dev
-comma
-id|socket-&gt;saved_state
 )paren
 suffix:semicolon
 id|pci_read_config_dword
@@ -5171,7 +5169,7 @@ comma
 op_amp
 id|socket-&gt;saved_state
 (braket
-l_int|16
+l_int|0
 )braket
 )paren
 suffix:semicolon
@@ -5187,7 +5185,7 @@ comma
 op_amp
 id|socket-&gt;saved_state
 (braket
-l_int|17
+l_int|1
 )braket
 )paren
 suffix:semicolon
@@ -5245,8 +5243,6 @@ id|pci_restore_state
 c_func
 (paren
 id|dev
-comma
-id|socket-&gt;saved_state
 )paren
 suffix:semicolon
 id|pci_write_config_dword
@@ -5260,7 +5256,7 @@ l_int|4
 comma
 id|socket-&gt;saved_state
 (braket
-l_int|16
+l_int|0
 )braket
 )paren
 suffix:semicolon
@@ -5275,7 +5271,7 @@ l_int|4
 comma
 id|socket-&gt;saved_state
 (braket
-l_int|17
+l_int|1
 )braket
 )paren
 suffix:semicolon
@@ -5502,6 +5498,16 @@ c_func
 id|PCI_VENDOR_ID_TI
 comma
 id|PCI_DEVICE_ID_TI_4451
+comma
+id|TI12XX
+)paren
+comma
+id|CB_ID
+c_func
+(paren
+id|PCI_VENDOR_ID_TI
+comma
+id|PCI_DEVICE_ID_TI_4520
 comma
 id|TI12XX
 )paren

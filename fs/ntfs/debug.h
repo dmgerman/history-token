@@ -2,12 +2,8 @@ multiline_comment|/*&n; * debug.h - NTFS kernel debug support. Part of the Linux
 macro_line|#ifndef _LINUX_NTFS_DEBUG_H
 DECL|macro|_LINUX_NTFS_DEBUG_H
 mdefine_line|#define _LINUX_NTFS_DEBUG_H
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &quot;inode.h&quot;
-macro_line|#include &quot;attrib.h&quot;
+macro_line|#include &quot;runlist.h&quot;
 macro_line|#ifdef DEBUG
 r_extern
 r_int

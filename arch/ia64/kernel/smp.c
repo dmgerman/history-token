@@ -10,8 +10,8 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
@@ -658,7 +658,7 @@ op_star
 )paren
 id|local_flush_tlb_all
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|1
 comma

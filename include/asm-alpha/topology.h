@@ -130,9 +130,6 @@ r_return
 id|node_cpu_mask
 suffix:semicolon
 )brace
-multiline_comment|/* Cross-node load balancing interval. */
-DECL|macro|NODE_BALANCE_RATE
-macro_line|# define NODE_BALANCE_RATE 10
 DECL|macro|pcibus_to_cpumask
 mdefine_line|#define pcibus_to_cpumask(bus)&t;(cpu_online_map)
 macro_line|#else /* CONFIG_NUMA */

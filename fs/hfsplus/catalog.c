@@ -16,7 +16,7 @@ op_star
 id|k2
 )paren
 (brace
-id|u32
+id|__be32
 id|k1p
 comma
 id|k2p
@@ -123,12 +123,16 @@ id|key-&gt;cat.name.length
 suffix:semicolon
 )brace
 r_else
-id|len
-op_assign
+(brace
 id|key-&gt;cat.name.length
 op_assign
 l_int|0
 suffix:semicolon
+id|len
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|key-&gt;key_len
 op_assign
 id|cpu_to_be16

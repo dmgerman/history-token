@@ -2,6 +2,7 @@ multiline_comment|/* arch/arm/mach-lh7a40x/arch-kev7a400.c&n; *&n; *  Copyright 
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
@@ -10,22 +11,8 @@ macro_line|#include &lt;asm/hardware.h&gt;&t;/* io_p2v() */
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &quot;common.h&quot;
 multiline_comment|/* This function calls the board specific IRQ initialization function. */
-r_extern
-r_void
-id|lh7a400_init_irq
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|lh7a40x_init_time
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_struct
@@ -384,9 +371,11 @@ id|INITIRQ
 (paren
 id|lh7a400_init_irq
 )paren
-id|INITTIME
-(paren
-id|lh7a40x_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|lh7a40x_timer
+comma
 id|MACHINE_END
 eof

@@ -93,12 +93,17 @@ DECL|macro|TUNER_PHILIPS_FM1236_MK3
 mdefine_line|#define TUNER_PHILIPS_FM1236_MK3 43
 DECL|macro|TUNER_PHILIPS_4IN1
 mdefine_line|#define TUNER_PHILIPS_4IN1       44&t;/* ATI TV Wonder Pro - Conexant */
+multiline_comment|/* Microtune mergeged with Temic 12/31/1999 partially financed by Alps - these may be similar to Temic */
 DECL|macro|TUNER_MICROTUNE_4049FM5
 mdefine_line|#define TUNER_MICROTUNE_4049FM5  45
 DECL|macro|TUNER_LG_NTSC_TAPE
 mdefine_line|#define TUNER_LG_NTSC_TAPE       47
 DECL|macro|TUNER_TNF_8831BGFF
 mdefine_line|#define TUNER_TNF_8831BGFF       48
+DECL|macro|TUNER_MICROTUNE_4042FI5
+mdefine_line|#define TUNER_MICROTUNE_4042FI5  49&t;/* FusionHDTV 3 Gold - 4042 FI5 (3X 8147) */
+DECL|macro|TUNER_TCL_2002N
+mdefine_line|#define TUNER_TCL_2002N          50
 DECL|macro|NOTUNER
 mdefine_line|#define NOTUNER 0
 DECL|macro|PAL
@@ -133,6 +138,8 @@ DECL|macro|HITACHI
 mdefine_line|#define HITACHI 9
 DECL|macro|Panasonic
 mdefine_line|#define Panasonic 10
+DECL|macro|TCL
+mdefine_line|#define TCL     11
 DECL|macro|TUNER_SET_TYPE
 mdefine_line|#define TUNER_SET_TYPE               _IOW(&squot;t&squot;,1,int)    /* set tuner type */
 DECL|macro|TUNER_SET_TVFREQ

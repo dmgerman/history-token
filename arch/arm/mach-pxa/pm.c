@@ -7,7 +7,9 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 macro_line|#include &lt;asm/arch/lubbock.h&gt;
+macro_line|#include &lt;asm/mach/time.h&gt;
 multiline_comment|/*&n; * Debug macros&n; */
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -40,21 +42,6 @@ r_enum
 id|SLEEP_SAVE_START
 op_assign
 l_int|0
-comma
-DECL|enumerator|SLEEP_SAVE_OIER
-id|SLEEP_SAVE_OIER
-comma
-DECL|enumerator|SLEEP_SAVE_OSMR0
-DECL|enumerator|SLEEP_SAVE_OSMR1
-DECL|enumerator|SLEEP_SAVE_OSMR2
-DECL|enumerator|SLEEP_SAVE_OSMR3
-id|SLEEP_SAVE_OSMR0
-comma
-id|SLEEP_SAVE_OSMR1
-comma
-id|SLEEP_SAVE_OSMR2
-comma
-id|SLEEP_SAVE_OSMR3
 comma
 DECL|enumerator|SLEEP_SAVE_GPLR0
 DECL|enumerator|SLEEP_SAVE_GPLR1
@@ -146,9 +133,11 @@ id|checksum
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-r_int
+r_struct
+id|timespec
 id|delta
+comma
+id|rtc
 suffix:semicolon
 r_int
 id|i
@@ -165,41 +154,22 @@ op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/* preserve current time */
-id|delta
+id|rtc.tv_sec
 op_assign
-id|xtime.tv_sec
-op_minus
 id|RCNR
 suffix:semicolon
-multiline_comment|/* save vital registers */
-id|SAVE
-c_func
-(paren
-id|OSMR0
-)paren
+id|rtc.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
-id|SAVE
+id|save_time_delta
 c_func
 (paren
-id|OSMR1
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|OSMR2
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|OSMR3
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|OIER
+op_amp
+id|delta
+comma
+op_amp
+id|rtc
 )paren
 suffix:semicolon
 id|SAVE
@@ -571,43 +541,6 @@ suffix:semicolon
 id|RESTORE
 c_func
 (paren
-id|OSMR0
-)paren
-suffix:semicolon
-id|RESTORE
-c_func
-(paren
-id|OSMR1
-)paren
-suffix:semicolon
-id|RESTORE
-c_func
-(paren
-id|OSMR2
-)paren
-suffix:semicolon
-id|RESTORE
-c_func
-(paren
-id|OSMR3
-)paren
-suffix:semicolon
-id|RESTORE
-c_func
-(paren
-id|OIER
-)paren
-suffix:semicolon
-multiline_comment|/* OSMR0 is the system timer: make sure OSCR is sufficiently behind */
-id|OSCR
-op_assign
-id|OSMR0
-op_minus
-id|LATCH
-suffix:semicolon
-id|RESTORE
-c_func
-(paren
 id|CKEN
 )paren
 suffix:semicolon
@@ -626,11 +559,19 @@ id|ICMR
 )paren
 suffix:semicolon
 multiline_comment|/* restore current time */
-id|xtime.tv_sec
+id|rtc.tv_sec
 op_assign
 id|RCNR
-op_plus
+suffix:semicolon
+id|restore_time_delta
+c_func
+(paren
+op_amp
 id|delta
+comma
+op_amp
+id|rtc
+)paren
 suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk

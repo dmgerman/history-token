@@ -4,7 +4,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/sb.h&gt;
@@ -117,11 +117,6 @@ op_assign
 id|SNDRV_DEFAULT_DMA
 suffix:semicolon
 multiline_comment|/* 0,1,3 */
-DECL|variable|boot_devs
-r_static
-r_int
-id|boot_devs
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -129,7 +124,7 @@ id|index
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -149,7 +144,7 @@ id|id
 comma
 id|charp
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -169,7 +164,7 @@ id|sbport
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -189,7 +184,7 @@ id|wssport
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -209,7 +204,7 @@ id|irq
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -229,7 +224,7 @@ id|dma1
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren

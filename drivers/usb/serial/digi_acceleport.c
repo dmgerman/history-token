@@ -1295,39 +1295,12 @@ id|port-&gt;write_wait
 )paren
 suffix:semicolon
 multiline_comment|/* wake up line discipline */
-r_if
-c_cond
-(paren
-(paren
-id|tty-&gt;flags
-op_amp
-(paren
-l_int|1
-op_lshift
-id|TTY_DO_WRITE_WAKEUP
-)paren
-)paren
-op_logical_and
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(brace
-(paren
-id|tty-&gt;ldisc.write_wakeup
-)paren
+id|tty_wakeup
+c_func
 (paren
 id|tty
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* wake up other tty processes */
-id|wake_up_interruptible
-c_func
-(paren
-op_amp
-id|tty-&gt;write_wait
-)paren
-suffix:semicolon
-multiline_comment|/* For 2.2.16 backport -- wake_up_interruptible( &amp;tty-&gt;poll_wait ); */
 )brace
 multiline_comment|/*&n;*  Digi Write OOB Command&n;*&n;*  Write commands on the out of band port.  Commands are 4&n;*  bytes each, multiple commands can be sent at once, and&n;*  no command will be split across USB packets.  Returns 0&n;*  if successful, -EINTR if interrupted while sleeping and&n;*  the interruptible flag is true, or a negative error&n;*  returned by usb_submit_urb.&n;*/
 DECL|function|digi_write_oob_command
@@ -5315,6 +5288,20 @@ comma
 id|port-&gt;open_count
 )paren
 suffix:semicolon
+multiline_comment|/* if disconnected, just clear flags */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|usb_get_intfdata
+c_func
+(paren
+id|port-&gt;serial-&gt;interface
+)paren
+)paren
+r_goto
+m_exit
+suffix:semicolon
 multiline_comment|/* do cleanup only after final close on this port */
 id|spin_lock_irqsave
 c_func
@@ -5385,21 +5372,12 @@ id|tty
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|tty-&gt;ldisc.flush_buffer
-)paren
-(brace
-id|tty-&gt;ldisc
-dot
-id|flush_buffer
+id|tty_ldisc_flush
 c_func
 (paren
 id|tty
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5632,7 +5610,8 @@ id|DIGI_CLOSE_TIMEOUT
 )paren
 suffix:semicolon
 multiline_comment|/* shutdown any outstanding bulk writes */
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;write_urb
 )paren
@@ -5642,6 +5621,8 @@ id|tty-&gt;closing
 op_assign
 l_int|0
 suffix:semicolon
+m_exit
+suffix:colon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -6192,7 +6173,7 @@ id|i
 op_increment
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|serial-&gt;port
@@ -6203,7 +6184,7 @@ op_member_access_from_pointer
 id|read_urb
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|serial-&gt;port

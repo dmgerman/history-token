@@ -525,6 +525,20 @@ DECL|macro|__NR_pciconfig_read
 mdefine_line|#define __NR_pciconfig_read&t;&t;(__NR_SYSCALL_BASE+272)
 DECL|macro|__NR_pciconfig_write
 mdefine_line|#define __NR_pciconfig_write&t;&t;(__NR_SYSCALL_BASE+273)
+DECL|macro|__NR_mq_open
+mdefine_line|#define __NR_mq_open&t;&t;&t;(__NR_SYSCALL_BASE+274)
+DECL|macro|__NR_mq_unlink
+mdefine_line|#define __NR_mq_unlink&t;&t;&t;(__NR_SYSCALL_BASE+275)
+DECL|macro|__NR_mq_timedsend
+mdefine_line|#define __NR_mq_timedsend&t;&t;(__NR_SYSCALL_BASE+276)
+DECL|macro|__NR_mq_timedreceive
+mdefine_line|#define __NR_mq_timedreceive&t;&t;(__NR_SYSCALL_BASE+277)
+DECL|macro|__NR_mq_notify
+mdefine_line|#define __NR_mq_notify&t;&t;&t;(__NR_SYSCALL_BASE+278)
+DECL|macro|__NR_mq_getsetattr
+mdefine_line|#define __NR_mq_getsetattr&t;&t;(__NR_SYSCALL_BASE+279)
+DECL|macro|__NR_waitid
+mdefine_line|#define __NR_waitid&t;&t;&t;(__NR_SYSCALL_BASE+280)
 multiline_comment|/*&n; * The following SWIs are ARM private.&n; */
 DECL|macro|__ARM_NR_BASE
 mdefine_line|#define __ARM_NR_BASE&t;&t;&t;(__NR_SYSCALL_BASE+0x0f0000)

@@ -38,7 +38,7 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -516,6 +516,16 @@ r_static
 r_struct
 id|ethtool_ops
 id|netdev_ethtool_ops
+suffix:semicolon
+r_static
+r_void
+id|init_rx_bufs
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+)paren
 suffix:semicolon
 DECL|variable|io
 r_static
@@ -2075,16 +2085,6 @@ id|dev
 )paren
 )paren
 (brace
-r_static
-r_void
-id|init_rx_bufs
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* The Rx unit is not ready, it must be hung.  Restart the receiver by&n;&t;&t;   initializing the rx buffers, and issuing an Rx start command. */
 r_if
 c_cond

@@ -2495,11 +2495,11 @@ r_else
 (brace
 id|phys
 op_assign
-id|root-&gt;mem_offset
+id|vma-&gt;vm_pgoff
 op_plus
 (paren
-id|vma-&gt;vm_pgoff
-op_lshift
+id|root-&gt;mem_offset
+op_rshift
 id|PAGE_SHIFT
 )paren
 suffix:semicolon
@@ -2524,7 +2524,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma

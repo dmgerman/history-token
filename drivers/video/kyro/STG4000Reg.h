@@ -11,9 +11,9 @@ macro_line|#if defined(__KERNEL__)
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|STG_WRITE_REG
-mdefine_line|#define STG_WRITE_REG(reg,data) (writel(data,(unsigned long)&amp;pSTGReg-&gt;reg))
+mdefine_line|#define STG_WRITE_REG(reg,data) (writel(data,&amp;pSTGReg-&gt;reg))
 DECL|macro|STG_READ_REG
-mdefine_line|#define STG_READ_REG(reg)      (readl((unsigned long)&amp;pSTGReg-&gt;reg))
+mdefine_line|#define STG_READ_REG(reg)      (readl(&amp;pSTGReg-&gt;reg))
 macro_line|#else
 DECL|macro|STG_WRITE_REG
 mdefine_line|#define STG_WRITE_REG(reg,data) (pSTGReg-&gt;reg = data)

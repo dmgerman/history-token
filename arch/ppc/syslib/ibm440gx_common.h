@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/kernel/ibm440gx_common.h&n; *&n; * PPC440GX system library&n; *&n; * Eugene Surovegin &lt;eugene.surovegin@zultys.com&gt; or &lt;ebs@ebshome.net&gt;&n; * Copyright (c) 2003 Zultys Technologies&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
+multiline_comment|/*&n; * arch/ppc/kernel/ibm440gx_common.h&n; *&n; * PPC440GX system library&n; *&n; * Eugene Surovegin &lt;eugene.surovegin@zultys.com&gt; or &lt;ebs@ebshome.net&gt;&n; * Copyright (c) 2003, 2004 Zultys Technologies&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __PPC_SYSLIB_IBM440GX_COMMON_H
 DECL|macro|__PPC_SYSLIB_IBM440GX_COMMON_H
@@ -42,6 +42,17 @@ id|ibm440gx_l2c_disable
 c_func
 (paren
 r_void
+)paren
+id|__init
+suffix:semicolon
+multiline_comment|/* Enable/disable L2 cache for a particular chip revision */
+r_void
+id|ibm440gx_l2c_setup
+c_func
+(paren
+r_struct
+id|ibm44x_clocks
+op_star
 )paren
 id|__init
 suffix:semicolon

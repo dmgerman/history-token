@@ -231,7 +231,7 @@ r_struct
 id|tower_reset_reply
 (brace
 DECL|member|size
-id|__u16
+id|__le16
 id|size
 suffix:semicolon
 multiline_comment|/* little-endian */
@@ -256,7 +256,7 @@ r_struct
 id|tower_get_version_reply
 (brace
 DECL|member|size
-id|__u16
+id|__le16
 id|size
 suffix:semicolon
 multiline_comment|/* little-endian */
@@ -277,7 +277,7 @@ id|__u8
 id|minor
 suffix:semicolon
 DECL|member|build_no
-id|__u16
+id|__le16
 id|build_no
 suffix:semicolon
 multiline_comment|/* little-endian */
@@ -1557,7 +1557,7 @@ op_logical_and
 id|dev-&gt;udev
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 (paren
 id|dev-&gt;interrupt_in_urb
 )paren
@@ -1580,7 +1580,7 @@ op_logical_and
 id|dev-&gt;udev
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 (paren
 id|dev-&gt;interrupt_out_urb
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; * Created by Arjan van de Ven &lt;arjanv@redhat.com&gt;&n; *&n; * Copyright (C) 2004 Ferenc Havasi &lt;havasi@inf.u-szeged.hu&gt;,&n; *                    University of Szeged, Hungary&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: compr.c,v 1.41 2004/06/24 09:51:38 havasi Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; * Created by Arjan van de Ven &lt;arjanv@redhat.com&gt;&n; *&n; * Copyright (C) 2004 Ferenc Havasi &lt;havasi@inf.u-szeged.hu&gt;,&n; *                    University of Szeged, Hungary&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: compr.c,v 1.42 2004/08/07 21:56:08 dwmw2 Exp $&n; *&n; */
 macro_line|#include &quot;compr.h&quot;
 DECL|variable|jffs2_compressor_list_lock
 r_static
@@ -717,6 +717,22 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
+multiline_comment|/* Older code had a bug where it would write non-zero &squot;usercompr&squot;&n;&t;   fields. Deal with it. */
+r_if
+c_cond
+(paren
+(paren
+id|comprtype
+op_amp
+l_int|0xff
+)paren
+op_le
+id|JFFS2_COMPR_ZLIB
+)paren
+id|comprtype
+op_and_assign
+l_int|0xff
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -865,7 +881,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;JFFS2 compression type 0x%02x not avaiable.&bslash;n&quot;
+l_string|&quot;JFFS2 compression type 0x%02x not available.&bslash;n&quot;
 comma
 id|comprtype
 )paren

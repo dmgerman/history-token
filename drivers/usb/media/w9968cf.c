@@ -644,6 +644,7 @@ id|video_nr
 comma
 r_int
 comma
+op_amp
 id|param_nv
 (braket
 l_int|0
@@ -659,6 +660,7 @@ id|packet_size
 comma
 id|uint
 comma
+op_amp
 id|param_nv
 (braket
 l_int|1
@@ -674,6 +676,7 @@ id|max_buffers
 comma
 id|ushort
 comma
+op_amp
 id|param_nv
 (braket
 l_int|2
@@ -689,6 +692,7 @@ id|double_buffer
 comma
 r_bool
 comma
+op_amp
 id|param_nv
 (braket
 l_int|3
@@ -704,6 +708,7 @@ id|clamping
 comma
 r_bool
 comma
+op_amp
 id|param_nv
 (braket
 l_int|4
@@ -719,6 +724,7 @@ id|filter_type
 comma
 id|ushort
 comma
+op_amp
 id|param_nv
 (braket
 l_int|5
@@ -734,6 +740,7 @@ id|largeview
 comma
 r_bool
 comma
+op_amp
 id|param_nv
 (braket
 l_int|6
@@ -749,6 +756,7 @@ id|decompression
 comma
 id|ushort
 comma
+op_amp
 id|param_nv
 (braket
 l_int|7
@@ -764,6 +772,7 @@ id|upscaling
 comma
 r_bool
 comma
+op_amp
 id|param_nv
 (braket
 l_int|8
@@ -779,6 +788,7 @@ id|force_palette
 comma
 id|ushort
 comma
+op_amp
 id|param_nv
 (braket
 l_int|9
@@ -794,6 +804,7 @@ id|force_rgb
 comma
 id|ushort
 comma
+op_amp
 id|param_nv
 (braket
 l_int|10
@@ -809,6 +820,7 @@ id|autobright
 comma
 r_bool
 comma
+op_amp
 id|param_nv
 (braket
 l_int|11
@@ -824,6 +836,7 @@ id|autoexp
 comma
 r_bool
 comma
+op_amp
 id|param_nv
 (braket
 l_int|12
@@ -839,6 +852,7 @@ id|lightfreq
 comma
 id|ushort
 comma
+op_amp
 id|param_nv
 (braket
 l_int|13
@@ -854,6 +868,7 @@ id|bandingfilter
 comma
 r_bool
 comma
+op_amp
 id|param_nv
 (braket
 l_int|14
@@ -869,6 +884,7 @@ id|clockdiv
 comma
 r_int
 comma
+op_amp
 id|param_nv
 (braket
 l_int|15
@@ -884,6 +900,7 @@ id|backlight
 comma
 r_bool
 comma
+op_amp
 id|param_nv
 (braket
 l_int|16
@@ -899,6 +916,7 @@ id|mirror
 comma
 r_bool
 comma
+op_amp
 id|param_nv
 (braket
 l_int|17
@@ -914,6 +932,7 @@ id|monochrome
 comma
 r_bool
 comma
+op_amp
 id|param_nv
 (braket
 l_int|18
@@ -929,6 +948,7 @@ id|brightness
 comma
 id|uint
 comma
+op_amp
 id|param_nv
 (braket
 l_int|19
@@ -944,6 +964,7 @@ id|hue
 comma
 id|uint
 comma
+op_amp
 id|param_nv
 (braket
 l_int|20
@@ -959,6 +980,7 @@ id|colour
 comma
 id|uint
 comma
+op_amp
 id|param_nv
 (braket
 l_int|21
@@ -974,6 +996,7 @@ id|contrast
 comma
 id|uint
 comma
+op_amp
 id|param_nv
 (braket
 l_int|22
@@ -989,6 +1012,7 @@ id|whiteness
 comma
 id|uint
 comma
+op_amp
 id|param_nv
 (braket
 l_int|23
@@ -2131,18 +2155,6 @@ id|arg
 suffix:semicolon
 multiline_comment|/* Memory management */
 r_static
-r_inline
-r_int
-r_int
-id|kvirt_to_pa
-c_func
-(paren
-r_int
-r_int
-id|adr
-)paren
-suffix:semicolon
-r_static
 r_void
 op_star
 id|rvmalloc
@@ -3008,69 +3020,6 @@ l_int|NULL
 )brace
 suffix:semicolon
 multiline_comment|/****************************************************************************&n; * Memory management functions                                              *&n; ****************************************************************************/
-multiline_comment|/* Here we want the physical address of the memory.&n;   This is used when initializing the contents of the area. */
-DECL|function|kvirt_to_pa
-r_static
-r_inline
-r_int
-r_int
-id|kvirt_to_pa
-c_func
-(paren
-r_int
-r_int
-id|adr
-)paren
-(brace
-r_int
-r_int
-id|kva
-comma
-id|ret
-suffix:semicolon
-id|kva
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|page_address
-c_func
-(paren
-id|vmalloc_to_page
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|adr
-)paren
-)paren
-suffix:semicolon
-id|kva
-op_or_assign
-id|adr
-op_amp
-(paren
-id|PAGE_SIZE
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* restore the offset */
-id|ret
-op_assign
-id|__pa
-c_func
-(paren
-id|kva
-)paren
-suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
-)brace
 DECL|function|rvmalloc
 r_static
 r_void
@@ -14018,18 +13967,24 @@ l_int|0
 (brace
 id|page
 op_assign
-id|kvirt_to_pa
+id|page_to_pfn
 c_func
 (paren
+id|vmalloc_to_page
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
 id|pos
 )paren
-op_plus
-id|vma-&gt;vm_pgoff
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma
@@ -14037,6 +13992,8 @@ comma
 id|start
 comma
 id|page
+op_plus
+id|vma-&gt;vm_pgoff
 comma
 id|PAGE_SIZE
 comma

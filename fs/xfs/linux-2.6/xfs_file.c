@@ -1544,6 +1544,19 @@ comma
 id|error
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error
+)paren
+id|vn_revalidate
+c_func
+(paren
+id|vp
+)paren
+suffix:semicolon
+multiline_comment|/* update Linux inode flags */
 r_return
 l_int|0
 suffix:semicolon

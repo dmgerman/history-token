@@ -813,9 +813,9 @@ DECL|macro|set_offset_v2_k_offset
 macro_line|# define set_offset_v2_k_offset(v2,val) (offset_v2_k_offset(v2) = (val))
 macro_line|#endif
 multiline_comment|/* Key of an item determines its location in the S+tree, and&n;   is composed of 4 components */
-DECL|struct|key
+DECL|struct|reiserfs_key
 r_struct
-id|key
+id|reiserfs_key
 (brace
 DECL|member|k_dir_id
 id|__u32
@@ -863,7 +863,7 @@ id|cpu_key
 (brace
 DECL|member|on_disk_key
 r_struct
-id|key
+id|reiserfs_key
 id|on_disk_key
 suffix:semicolon
 DECL|member|version
@@ -894,7 +894,7 @@ mdefine_line|#define KEY_FOUND 1
 DECL|macro|KEY_NOT_FOUND
 mdefine_line|#define KEY_NOT_FOUND 0
 DECL|macro|KEY_SIZE
-mdefine_line|#define KEY_SIZE (sizeof(struct key))
+mdefine_line|#define KEY_SIZE (sizeof(struct reiserfs_key))
 DECL|macro|SHORT_KEY_SIZE
 mdefine_line|#define SHORT_KEY_SIZE (sizeof (__u32) + sizeof (__u32))
 multiline_comment|/* return values for search_by_key and clones */
@@ -939,7 +939,7 @@ id|item_head
 multiline_comment|/* Everything in the tree is found by searching for it based on&n;&t; * its key.*/
 DECL|member|ih_key
 r_struct
-id|key
+id|reiserfs_key
 id|ih_key
 suffix:semicolon
 r_union
@@ -1195,7 +1195,7 @@ id|version
 comma
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 )paren
@@ -1263,7 +1263,7 @@ id|version
 comma
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 )paren
@@ -1334,7 +1334,7 @@ r_int
 id|version
 comma
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 comma
@@ -1420,7 +1420,7 @@ r_int
 id|version
 comma
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 comma
@@ -1708,7 +1708,7 @@ DECL|macro|REISERFS_ROOT_PARENT_OBJECTID
 mdefine_line|#define REISERFS_ROOT_PARENT_OBJECTID 1
 r_extern
 r_struct
-id|key
+id|reiserfs_key
 id|root_key
 suffix:semicolon
 multiline_comment|/* &n; * Picture represents a leaf of the S+tree&n; *  ______________________________________________________&n; * |      |  Array of     |                   |           |&n; * |Block |  Object-Item  |      F r e e      |  Objects- |&n; * | head |  Headers      |     S p a c e     |   Items   |&n; * |______|_______________|___________________|___________|&n; */
@@ -1739,7 +1739,7 @@ suffix:semicolon
 multiline_comment|/* dump this in v4/planA */
 DECL|member|blk_right_delim_key
 r_struct
-id|key
+id|reiserfs_key
 id|blk_right_delim_key
 suffix:semicolon
 multiline_comment|/* kept only for compatibility */
@@ -2611,7 +2611,7 @@ DECL|macro|UNFM_P_SHIFT
 mdefine_line|#define UNFM_P_SHIFT 2
 singleline_comment|// in in-core inode key is stored on le form
 DECL|macro|INODE_PKEY
-mdefine_line|#define INODE_PKEY(inode) ((struct key *)(REISERFS_I(inode)-&gt;i_key))
+mdefine_line|#define INODE_PKEY(inode) ((struct reiserfs_key *)(REISERFS_I(inode)-&gt;i_key))
 DECL|macro|MAX_UL_INT
 mdefine_line|#define MAX_UL_INT 0xffffffff
 DECL|macro|MAX_INT
@@ -3090,7 +3090,7 @@ multiline_comment|/* saved value of `reiserfs_generation&squot; counter&n;&t;&t;
 macro_line|#ifdef DISPLACE_NEW_PACKING_LOCALITIES
 DECL|member|key
 r_struct
-id|key
+id|reiserfs_key
 id|key
 suffix:semicolon
 multiline_comment|/* key pointer, to pass to block allocator or&n;&t;&t;&t;&t; another low-level subsystem */
@@ -3203,7 +3203,7 @@ id|is_left_mergeable
 )paren
 (paren
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|ih
 comma
@@ -3412,7 +3412,7 @@ DECL|macro|B_N_PITEM_HEAD
 mdefine_line|#define B_N_PITEM_HEAD(bh,item_num) ( (struct item_head * )((bh)-&gt;b_data + BLKH_SIZE) + (item_num) )
 multiline_comment|/* get key */
 DECL|macro|B_N_PDELIM_KEY
-mdefine_line|#define B_N_PDELIM_KEY(bh,item_num) ( (struct key * )((bh)-&gt;b_data + BLKH_SIZE) + (item_num) )
+mdefine_line|#define B_N_PDELIM_KEY(bh,item_num) ( (struct reiserfs_key * )((bh)-&gt;b_data + BLKH_SIZE) + (item_num) )
 multiline_comment|/* get the key */
 DECL|macro|B_N_PKEY
 mdefine_line|#define B_N_PKEY(bh,item_num) ( &amp;(B_N_PITEM_HEAD(bh,item_num)-&gt;ih_key) )
@@ -3607,12 +3607,14 @@ id|BH_JDirty
 op_assign
 id|BH_PrivateStart
 comma
+multiline_comment|/* buffer is in current transaction */
 DECL|enumerator|BH_JDirty_wait
 id|BH_JDirty_wait
 comma
 DECL|enumerator|BH_JNew
 id|BH_JNew
 comma
+multiline_comment|/* disk block was taken off free list before&n;                                  * being in a finished transaction, or&n;                                  * written to disk. Can be reused immed. */
 DECL|enumerator|BH_JPrepared
 id|BH_JPrepared
 comma
@@ -3624,6 +3626,102 @@ id|BH_JTest
 comma
 singleline_comment|// debugging only will go away
 )brace
+suffix:semicolon
+id|BUFFER_FNS
+c_func
+(paren
+id|JDirty
+comma
+id|journaled
+)paren
+suffix:semicolon
+id|TAS_BUFFER_FNS
+c_func
+(paren
+id|JDirty
+comma
+id|journaled
+)paren
+suffix:semicolon
+id|BUFFER_FNS
+c_func
+(paren
+id|JDirty_wait
+comma
+id|journal_dirty
+)paren
+suffix:semicolon
+id|TAS_BUFFER_FNS
+c_func
+(paren
+id|JDirty_wait
+comma
+id|journal_dirty
+)paren
+suffix:semicolon
+id|BUFFER_FNS
+c_func
+(paren
+id|JNew
+comma
+id|journal_new
+)paren
+suffix:semicolon
+id|TAS_BUFFER_FNS
+c_func
+(paren
+id|JNew
+comma
+id|journal_new
+)paren
+suffix:semicolon
+id|BUFFER_FNS
+c_func
+(paren
+id|JPrepared
+comma
+id|journal_prepared
+)paren
+suffix:semicolon
+id|TAS_BUFFER_FNS
+c_func
+(paren
+id|JPrepared
+comma
+id|journal_prepared
+)paren
+suffix:semicolon
+id|BUFFER_FNS
+c_func
+(paren
+id|JRestore_dirty
+comma
+id|journal_restore_dirty
+)paren
+suffix:semicolon
+id|TAS_BUFFER_FNS
+c_func
+(paren
+id|JRestore_dirty
+comma
+id|journal_restore_dirty
+)paren
+suffix:semicolon
+id|BUFFER_FNS
+c_func
+(paren
+id|JTest
+comma
+id|journal_test
+)paren
+suffix:semicolon
+id|TAS_BUFFER_FNS
+c_func
+(paren
+id|JTest
+comma
+id|journal_test
+)paren
 suffix:semicolon
 multiline_comment|/*&n;** transaction handle which is passed around for all journal calls&n;*/
 DECL|struct|reiserfs_transaction_handle
@@ -3670,6 +3768,11 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* if new block allocation occurres, that block&n;&t;&t;&t;&t;   should be displaced from others */
+DECL|member|t_list
+r_struct
+id|list_head
+id|t_list
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* used to keep track of ordered and tail writes, attached to the buffer&n; * head through b_journal_head.&n; */
@@ -4156,24 +4259,53 @@ r_int
 )paren
 suffix:semicolon
 r_int
-id|buffer_journaled
+id|journal_join_abort
 c_func
 (paren
-r_const
 r_struct
-id|buffer_head
+id|reiserfs_transaction_handle
 op_star
-id|bh
+comma
+r_struct
+id|super_block
+op_star
+id|p_s_sb
+comma
+r_int
+r_int
 )paren
 suffix:semicolon
-r_int
-id|mark_buffer_journal_new
-c_func
+r_void
+id|reiserfs_journal_abort
 (paren
 r_struct
-id|buffer_head
+id|super_block
 op_star
-id|bh
+id|sb
+comma
+r_int
+id|errno
+)paren
+suffix:semicolon
+r_void
+id|reiserfs_abort
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_int
+id|errno
+comma
+r_const
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
 )paren
 suffix:semicolon
 r_int
@@ -4192,142 +4324,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/* why is this kerplunked right here? */
-DECL|function|reiserfs_buffer_prepared
-r_static
-r_inline
-r_int
-id|reiserfs_buffer_prepared
-c_func
-(paren
-r_const
-r_struct
-id|buffer_head
-op_star
-id|bh
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|bh
-op_logical_and
-id|test_bit
-c_func
-(paren
-id|BH_JPrepared
-comma
-op_amp
-id|bh-&gt;b_state
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_else
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* buffer was journaled, waiting to get to disk */
-DECL|function|buffer_journal_dirty
-r_static
-r_inline
-r_int
-id|buffer_journal_dirty
-c_func
-(paren
-r_const
-r_struct
-id|buffer_head
-op_star
-id|bh
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|bh
-)paren
-r_return
-id|test_bit
-c_func
-(paren
-id|BH_JDirty_wait
-comma
-op_amp
-id|bh-&gt;b_state
-)paren
-suffix:semicolon
-r_else
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|mark_buffer_notjournal_dirty
-r_static
-r_inline
-r_int
-id|mark_buffer_notjournal_dirty
-c_func
-(paren
-r_struct
-id|buffer_head
-op_star
-id|bh
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|bh
-)paren
-id|clear_bit
-c_func
-(paren
-id|BH_JDirty_wait
-comma
-op_amp
-id|bh-&gt;b_state
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|mark_buffer_notjournal_new
-r_static
-r_inline
-r_int
-id|mark_buffer_notjournal_new
-c_func
-(paren
-r_struct
-id|buffer_head
-op_star
-id|bh
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|bh
-)paren
-(brace
-id|clear_bit
-c_func
-(paren
-id|BH_JNew
-comma
-op_amp
-id|bh-&gt;b_state
-)paren
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_void
 id|add_save_link
 (paren
@@ -4345,7 +4341,7 @@ r_int
 id|truncate
 )paren
 suffix:semicolon
-r_void
+r_int
 id|remove_save_link
 (paren
 r_struct
@@ -4438,7 +4434,7 @@ id|comp_keys
 (paren
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|le_key
 comma
@@ -4455,7 +4451,7 @@ id|comp_short_keys
 (paren
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|le_key
 comma
@@ -4477,7 +4473,7 @@ id|to
 comma
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|from
 )paren
@@ -4534,12 +4530,12 @@ id|comp_le_keys
 (paren
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 comma
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 )paren
 suffix:semicolon
@@ -4549,12 +4545,12 @@ id|comp_short_le_keys
 (paren
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 comma
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 )paren
 suffix:semicolon
@@ -4569,7 +4565,7 @@ id|le_key_version
 (paren
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 )paren
@@ -4617,13 +4613,13 @@ r_void
 id|copy_key
 (paren
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|to
 comma
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|from
 )paren
@@ -4656,7 +4652,7 @@ id|p_s_path
 suffix:semicolon
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|get_rkey
 (paren
@@ -4935,12 +4931,12 @@ op_star
 id|inode
 comma
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 )paren
 suffix:semicolon
-r_void
+r_int
 id|reiserfs_delete_object
 (paren
 r_struct
@@ -4954,7 +4950,7 @@ op_star
 id|p_s_inode
 )paren
 suffix:semicolon
-r_void
+r_int
 id|reiserfs_do_truncate
 (paren
 r_struct
@@ -4998,7 +4994,7 @@ id|length
 )paren
 suffix:semicolon
 multiline_comment|/* inode.c */
-r_void
+r_int
 id|restart_transaction
 c_func
 (paren
@@ -5175,7 +5171,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_void
+r_int
 id|reiserfs_truncate_file
 c_func
 (paren
@@ -6418,7 +6414,7 @@ suffix:semicolon
 multiline_comment|/* file offset, in blocks */
 DECL|member|key
 r_struct
-id|key
+id|reiserfs_key
 id|key
 suffix:semicolon
 DECL|member|path

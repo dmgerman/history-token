@@ -17,12 +17,12 @@ macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 multiline_comment|/*&n; *&t;The following are used to debug the driver.&n; */
 DECL|macro|IDEFLOPPY_DEBUG_LOG
 mdefine_line|#define IDEFLOPPY_DEBUG_LOG&t;&t;0
@@ -3307,6 +3307,41 @@ r_return
 id|ide_started
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * idefloppy_should_report_error()&n; *&n; * Supresses error messages resulting from Medium not present&n; */
+DECL|function|idefloppy_should_report_error
+r_static
+r_inline
+r_int
+id|idefloppy_should_report_error
+c_func
+(paren
+id|idefloppy_floppy_t
+op_star
+id|floppy
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|floppy-&gt;sense_key
+op_eq
+l_int|0x02
+op_logical_and
+id|floppy-&gt;asc
+op_eq
+l_int|0x3a
+op_logical_and
+id|floppy-&gt;ascq
+op_eq
+l_int|0x00
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *&t;Issue a packet command&n; */
 DECL|function|idefloppy_issue_pc
 r_static
@@ -3327,6 +3362,12 @@ op_star
 id|floppy
 op_assign
 id|drive-&gt;driver_data
+suffix:semicolon
+id|ide_hwif_t
+op_star
+id|hwif
+op_assign
+id|drive-&gt;hwif
 suffix:semicolon
 id|atapi_feature_t
 id|feature
@@ -3436,6 +3477,15 @@ id|pc-&gt;flags
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|idefloppy_should_report_error
+c_func
+(paren
+id|floppy
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -3555,55 +3605,17 @@ id|pc-&gt;flags
 op_logical_and
 id|drive-&gt;using_dma
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|test_bit
-c_func
-(paren
-id|PC_WRITING
-comma
-op_amp
-id|pc-&gt;flags
-)paren
-)paren
-(brace
 id|feature.b.dma
 op_assign
 op_logical_neg
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|hwif
 op_member_access_from_pointer
-id|ide_dma_write
+id|dma_setup
 c_func
 (paren
 id|drive
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|feature.b.dma
-op_assign
-op_logical_neg
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ide_dma_read
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-)brace
-)brace
 r_if
 c_cond
 (paren
@@ -3696,21 +3708,12 @@ op_amp
 id|pc-&gt;flags
 )paren
 suffix:semicolon
-(paren
-r_void
-)paren
-(paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|hwif
 op_member_access_from_pointer
-id|ide_dma_begin
+id|dma_start
 c_func
 (paren
 id|drive
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -4617,6 +4620,16 @@ id|floppy-&gt;failed_pc
 op_ne
 l_int|NULL
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|idefloppy_should_report_error
+c_func
+(paren
+id|floppy
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -4638,6 +4651,7 @@ comma
 id|floppy-&gt;ascq
 )paren
 suffix:semicolon
+)brace
 r_else
 id|printk
 c_func

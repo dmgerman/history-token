@@ -106,28 +106,31 @@ DECL|macro|ia64_pfn_valid
 macro_line|# define ia64_pfn_valid(pfn) 1
 macro_line|#endif
 macro_line|#ifndef CONFIG_DISCONTIGMEM
-macro_line|# ifdef CONFIG_VIRTUAL_MEM_MAP
+DECL|macro|pfn_valid
+macro_line|# define pfn_valid(pfn)&t;&t;(((pfn) &lt; max_mapnr) &amp;&amp; ia64_pfn_valid(pfn))
+DECL|macro|page_to_pfn
+macro_line|# define page_to_pfn(page)&t;((unsigned long) (page - mem_map))
+DECL|macro|pfn_to_page
+macro_line|# define pfn_to_page(pfn)&t;(mem_map + (pfn))
+macro_line|#else
 r_extern
 r_struct
 id|page
 op_star
 id|vmem_map
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|max_low_pfn
+suffix:semicolon
 DECL|macro|pfn_valid
-macro_line|#  define pfn_valid(pfn)&t;(((pfn) &lt; max_mapnr) &amp;&amp; ia64_pfn_valid(pfn))
+macro_line|# define pfn_valid(pfn)&t;&t;(((pfn) &lt; max_low_pfn) &amp;&amp; ia64_pfn_valid(pfn))
 DECL|macro|page_to_pfn
-macro_line|#  define page_to_pfn(page)&t;((unsigned long) (page - vmem_map))
+macro_line|# define page_to_pfn(page)&t;((unsigned long) (page - vmem_map))
 DECL|macro|pfn_to_page
-macro_line|#  define pfn_to_page(pfn)&t;(vmem_map + (pfn))
-macro_line|# else
-DECL|macro|pfn_valid
-macro_line|#  define pfn_valid(pfn)&t;(((pfn) &lt; max_mapnr) &amp;&amp; ia64_pfn_valid(pfn))
-DECL|macro|page_to_pfn
-macro_line|#  define page_to_pfn(page)&t;((unsigned long) (page - mem_map))
-DECL|macro|pfn_to_page
-macro_line|#  define pfn_to_page(pfn)&t;(mem_map + (pfn))
-macro_line|# endif
-macro_line|#endif /* CONFIG_DISCONTIGMEM */
+macro_line|# define pfn_to_page(pfn)&t;(vmem_map + (pfn))
+macro_line|#endif
 DECL|macro|page_to_phys
 mdefine_line|#define page_to_phys(page)&t;(page_to_pfn(page) &lt;&lt; PAGE_SHIFT)
 DECL|macro|virt_to_page
@@ -188,7 +191,7 @@ DECL|macro|REGION_KERNEL
 mdefine_line|#define REGION_KERNEL&t;&t;7
 macro_line|#ifdef CONFIG_HUGETLB_PAGE
 DECL|macro|htlbpage_to_page
-macro_line|# define htlbpage_to_page(x)&t;((REGION_NUMBER(x) &lt;&lt; 61)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t; | (REGION_OFFSET(x) &gt;&gt; (HPAGE_SHIFT-PAGE_SHIFT)))
+macro_line|# define htlbpage_to_page(x)&t;(((unsigned long) REGION_NUMBER(x) &lt;&lt; 61)&t;&t;&t;&bslash;&n;&t;&t;&t;&t; | (REGION_OFFSET(x) &gt;&gt; (HPAGE_SHIFT-PAGE_SHIFT)))
 DECL|macro|HUGETLB_PAGE_ORDER
 macro_line|# define HUGETLB_PAGE_ORDER&t;(HPAGE_SHIFT - PAGE_SHIFT)
 DECL|macro|is_hugepage_only_range
@@ -362,7 +365,7 @@ DECL|macro|__pgprot
 macro_line|# define __pgprot(x)&t;(x)
 macro_line|#endif /* !STRICT_MM_TYPECHECKS */
 DECL|macro|PAGE_OFFSET
-mdefine_line|#define PAGE_OFFSET&t;&t;&t;0xe000000000000000
+mdefine_line|#define PAGE_OFFSET&t;&t;&t;__IA64_UL_CONST(0xe000000000000000)
 DECL|macro|VM_DATA_DEFAULT_FLAGS
 mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;&t;(VM_READ | VM_WRITE |&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC |&t;&t;&bslash;&n;&t;&t;&t;&t;&t; (((current-&gt;personality &amp; READ_IMPLIES_EXEC) != 0)&t;&bslash;&n;&t;&t;&t;&t;&t;  ? VM_EXEC : 0))
 macro_line|#endif /* _ASM_IA64_PAGE_H */

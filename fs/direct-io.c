@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * How many user pages to map in one call to get_user_pages().  This determines&n; * the size of a structure on the stack.&n; */
 DECL|macro|DIO_PAGES
 mdefine_line|#define DIO_PAGES&t;64
-multiline_comment|/*&n; * This code generally works in units of &quot;dio_blocks&quot;.  A dio_block is&n; * somewhere between the hard sector size and the filesystem block size.  it&n; * is determined on a per-invocation basis.   When talking to the filesystem&n; * we need to convert dio_blocks to fs_blocks by scaling the dio_block quantity&n; * down by dio-&gt;blkfactor.  Similarly, fs-blocksize quantities are converted&n; * to bio_block quantities by shifting left by blkfactor.&n; *&n; * If blkfactor is zero then the user&squot;s request was aligned to the filesystem&squot;s&n; * blocksize.&n; *&n; * needs_locking is set for regular files on direct-IO-naive filesystems.  It&n; * determines whether we need to do the fancy locking which prevents direct-IO&n; * from being able to read uninitialised disk blocks.&n; */
+multiline_comment|/*&n; * This code generally works in units of &quot;dio_blocks&quot;.  A dio_block is&n; * somewhere between the hard sector size and the filesystem block size.  it&n; * is determined on a per-invocation basis.   When talking to the filesystem&n; * we need to convert dio_blocks to fs_blocks by scaling the dio_block quantity&n; * down by dio-&gt;blkfactor.  Similarly, fs-blocksize quantities are converted&n; * to bio_block quantities by shifting left by blkfactor.&n; *&n; * If blkfactor is zero then the user&squot;s request was aligned to the filesystem&squot;s&n; * blocksize.&n; *&n; * lock_type is DIO_LOCKING for regular files on direct-IO-naive filesystems.&n; * This determines whether we need to do the fancy locking which prevents&n; * direct-IO from being able to read uninitialised disk blocks.  If its zero&n; * (blockdev) this locking is not done, and if it is DIO_OWN_LOCKING i_sem is&n; * not held for the entire direct write (taken briefly, initially, during a&n; * direct read though, but its never held for the duration of a direct-IO).&n; */
 DECL|struct|dio
 r_struct
 id|dio
@@ -41,9 +41,9 @@ DECL|member|rw
 r_int
 id|rw
 suffix:semicolon
-DECL|member|needs_locking
+DECL|member|lock_type
 r_int
-id|needs_locking
+id|lock_type
 suffix:semicolon
 multiline_comment|/* doesn&squot;t change */
 DECL|member|blkbits
@@ -551,7 +551,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dio-&gt;needs_locking
+id|dio-&gt;lock_type
+op_ne
+id|DIO_NO_LOCKING
 )paren
 id|up_read
 c_func
@@ -1552,9 +1554,7 @@ r_int
 id|blkmask
 suffix:semicolon
 r_int
-id|beyond_eof
-op_assign
-l_int|0
+id|create
 suffix:semicolon
 multiline_comment|/*&n;&t; * If there was a memory error and we&squot;ve overwritten all the&n;&t; * mapped blocks then we can now return that memory error&n;&t; */
 id|ret
@@ -1623,17 +1623,25 @@ id|blkmask
 id|fs_count
 op_increment
 suffix:semicolon
+id|create
+op_assign
+id|dio-&gt;rw
+op_eq
+id|WRITE
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|dio-&gt;needs_locking
+id|dio-&gt;lock_type
+op_eq
+id|DIO_LOCKING
 )paren
 (brace
 r_if
 c_cond
 (paren
 id|dio-&gt;block_in_file
-op_ge
+OL
 (paren
 id|i_size_read
 c_func
@@ -1644,9 +1652,23 @@ op_rshift
 id|dio-&gt;blkbits
 )paren
 )paren
-id|beyond_eof
+id|create
 op_assign
-l_int|1
+l_int|0
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|dio-&gt;lock_type
+op_eq
+id|DIO_NO_LOCKING
+)paren
+(brace
+id|create
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * For writes inside i_size we forbid block creations: only&n;&t;&t; * overwrites are permitted.  We fall back to buffered writes&n;&t;&t; * at a higher level for inside-i_size block-instantiating&n;&t;&t; * writes.&n;&t;&t; */
@@ -1665,13 +1687,7 @@ id|fs_count
 comma
 id|map_bh
 comma
-(paren
-id|dio-&gt;rw
-op_eq
-id|WRITE
-)paren
-op_logical_and
-id|beyond_eof
+id|create
 )paren
 suffix:semicolon
 )brace
@@ -3039,6 +3055,21 @@ id|dio-&gt;waiter
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/*&n;&t; * In case of non-aligned buffers, we may need 2 more&n;&t; * pages since we need to zero out first and last block.&n;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|dio-&gt;blkfactor
+)paren
+)paren
+id|dio-&gt;pages_in_io
+op_assign
+l_int|2
+suffix:semicolon
+r_else
 id|dio-&gt;pages_in_io
 op_assign
 l_int|0
@@ -3357,7 +3388,11 @@ op_eq
 id|READ
 )paren
 op_logical_and
-id|dio-&gt;needs_locking
+(paren
+id|dio-&gt;lock_type
+op_eq
+id|DIO_LOCKING
+)paren
 )paren
 id|up
 c_func
@@ -3703,7 +3738,7 @@ id|dio_iodone_t
 id|end_io
 comma
 r_int
-id|needs_special_locking
+id|dio_lock_type
 )paren
 (brace
 r_int
@@ -3752,9 +3787,6 @@ r_struct
 id|dio
 op_star
 id|dio
-suffix:semicolon
-r_int
-id|needs_locking
 suffix:semicolon
 r_if
 c_cond
@@ -3936,27 +3968,19 @@ id|dio
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/*&n;&t; * For regular files,&n;&t; *&t;readers need to grab i_sem and i_alloc_sem&n;&t; *&t;writers need to grab i_alloc_sem only (i_sem is already held)&n;&t; */
-id|needs_locking
+multiline_comment|/*&n;&t; * For regular files using DIO_LOCKING,&n;&t; *&t;readers need to grab i_sem and i_alloc_sem&n;&t; *&t;writers need to grab i_alloc_sem only (i_sem is already held)&n;&t; * For regular files using DIO_OWN_LOCKING,&n;&t; *&t;both readers and writers need to grab i_alloc_sem&n;&t; *&t;neither readers nor writers hold i_sem on entry (nor exit)&n;&t; */
+id|dio-&gt;lock_type
 op_assign
-l_int|0
+id|dio_lock_type
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|S_ISREG
-c_func
-(paren
-id|inode-&gt;i_mode
-)paren
-op_logical_and
-id|needs_special_locking
+id|dio_lock_type
+op_ne
+id|DIO_NO_LOCKING
 )paren
 (brace
-id|needs_locking
-op_assign
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4012,7 +4036,30 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|down_read
+c_func
+(paren
+op_amp
+id|inode-&gt;i_alloc_sem
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dio_lock_type
+op_eq
+id|DIO_OWN_LOCKING
+)paren
+id|up
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sem
+)paren
+suffix:semicolon
 )brace
+r_else
+(brace
 id|down_read
 c_func
 (paren
@@ -4021,10 +4068,7 @@ id|inode-&gt;i_alloc_sem
 )paren
 suffix:semicolon
 )brace
-id|dio-&gt;needs_locking
-op_assign
-id|needs_locking
-suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * For file extending writes updating i_size before data&n;&t; * writeouts complete can expose uninitialized blocks. So&n;&t; * even for AIO, we need to wait for i/o to complete before&n;&t; * returning in this case.&n;&t; */
 id|dio-&gt;is_async
 op_assign

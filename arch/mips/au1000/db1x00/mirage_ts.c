@@ -143,7 +143,7 @@ mdefine_line|#define info(format, arg...) printk(KERN_INFO TS_NAME &quot;: &quot
 DECL|macro|warn
 mdefine_line|#define warn(format, arg...) printk(KERN_WARNING TS_NAME &quot;: &quot; format &quot;&bslash;n&quot; , ## arg)
 DECL|macro|DPRINTK
-mdefine_line|#define DPRINTK(format, arg...) printk(__FUNCTION__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg)
+mdefine_line|#define DPRINTK(format, arg...) printk(&quot;%s: &quot; format &quot;&bslash;n&quot;, __FUNCTION__ , ## arg)
 DECL|macro|PEN_DOWN_IRQ
 mdefine_line|#define PEN_DOWN_IRQ&t;AU1000_GPIO_7
 DECL|variable|ts_task

@@ -36,9 +36,9 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;net/neighbour.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
@@ -1919,7 +1919,11 @@ id|dev-&gt;hard_header_len
 suffix:semicolon
 id|eth
 op_assign
-id|skb-&gt;mac.ethernet
+id|eth_hdr
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 r_if
 c_cond

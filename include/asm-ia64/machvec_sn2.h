@@ -225,6 +225,6 @@ DECL|macro|platform_dma_mapping_error
 mdefine_line|#define platform_dma_mapping_error&t;&t;sn_dma_mapping_error
 DECL|macro|platform_dma_supported
 mdefine_line|#define platform_dma_supported&t;&t;sn_dma_supported
-macro_line|#include &lt;asm/sn/sn2/io.h&gt;
+macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#endif /* _ASM_IA64_MACHVEC_SN2_H */
 eof

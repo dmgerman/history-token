@@ -2290,7 +2290,7 @@ id|ia64_fpreg
 op_star
 id|addr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|pt_regs
@@ -4145,7 +4145,7 @@ l_int|0
 suffix:semicolon
 id|sr-&gt;imask
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|sr-&gt;spill_offset
 op_assign
@@ -5825,7 +5825,7 @@ id|ip
 )paren
 (brace
 DECL|macro|hashmagic
-macro_line|#&t;define hashmagic&t;0x9e3779b97f4a7c16&t;/* based on (sqrt(5)/2-1)*2^64 */
+macro_line|#&t;define hashmagic&t;0x9e3779b97f4a7c16UL&t;/* based on (sqrt(5)/2-1)*2^64 */
 r_return
 (paren
 id|ip
@@ -5948,7 +5948,7 @@ l_int|0
 )paren
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Always regenerate scripts in debug mode */
 id|STAT
@@ -6010,7 +6010,7 @@ op_ge
 id|UNW_CACHE_SIZE
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|script
 op_assign
@@ -6069,7 +6069,7 @@ op_ge
 id|UNW_HASH_SIZE
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|script
 op_assign
@@ -6116,10 +6116,6 @@ id|index
 suffix:semicolon
 r_int
 r_int
-id|flags
-suffix:semicolon
-r_int
-r_int
 id|head
 suffix:semicolon
 id|STAT
@@ -6130,16 +6126,6 @@ id|unw.stat.script.news
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Can&squot;t (easily) use cmpxchg() here because of ABA problem&n;&t; * that is intrinsic in cmpxchg()...&n;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|unw.lock
-comma
-id|flags
-)paren
-suffix:semicolon
-(brace
 id|head
 op_assign
 id|unw.lru_head
@@ -6153,14 +6139,6 @@ suffix:semicolon
 id|unw.lru_head
 op_assign
 id|script-&gt;lru_chain
-suffix:semicolon
-)brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|unw.lock
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We&squot;d deadlock here if we interrupted a thread that is holding a read lock on&n;&t; * script-&gt;lock.  Thus, if the write_trylock() fails, we simply bail out.  The&n;&t; * alternative would be to disable interrupts whenever we hold a read-lock, but&n;&t; * that seems silly.&n;&t; */
 r_if
@@ -6177,14 +6155,6 @@ id|script-&gt;lock
 r_return
 l_int|NULL
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|unw.lock
-)paren
-suffix:semicolon
-(brace
 multiline_comment|/* re-insert script at the tail of the LRU chain: */
 id|unw.cache
 (braket
@@ -6225,7 +6195,7 @@ id|index
 suffix:semicolon
 id|prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_while
 c_loop
@@ -6325,16 +6295,6 @@ id|UNW_CACHE_SIZE
 )paren
 op_increment
 id|unw.stat.script.collisions
-)paren
-suffix:semicolon
-)brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|unw.lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|script-&gt;flags
@@ -7079,7 +7039,7 @@ id|unw_table_entry
 op_star
 id|e
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -7193,14 +7153,14 @@ id|unw_table_entry
 op_star
 id|e
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|unw_script
 op_star
 id|script
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|unw_labeled_state
@@ -7361,7 +7321,7 @@ id|start
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|unw.cache
@@ -8833,6 +8793,12 @@ id|unw_script
 op_star
 id|scr
 suffix:semicolon
+r_int
+r_int
+id|flags
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8867,7 +8833,7 @@ id|info-&gt;ip
 suffix:semicolon
 id|info-&gt;rp_loc
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 op_minus
@@ -8889,6 +8855,15 @@ op_logical_neg
 id|scr
 )paren
 (brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|unw.lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|scr
 op_assign
 id|build_script
@@ -8904,6 +8879,15 @@ op_logical_neg
 id|scr
 )paren
 (brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|unw.lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|UNW_DPRINT
 c_func
 (paren
@@ -8949,6 +8933,7 @@ c_cond
 (paren
 id|have_write_lock
 )paren
+(brace
 id|write_unlock
 c_func
 (paren
@@ -8956,6 +8941,16 @@ op_amp
 id|scr-&gt;lock
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|unw.lock
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
 r_else
 id|read_unlock
 c_func
@@ -10300,7 +10295,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|table
@@ -10324,7 +10319,7 @@ op_logical_neg
 id|table
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|init_unwind_table
 c_func
@@ -11390,6 +11385,7 @@ DECL|function|sys_getunwind
 id|sys_getunwind
 (paren
 r_void
+id|__user
 op_star
 id|buf
 comma

@@ -1802,6 +1802,56 @@ DECL|macro|VN_ATIMESET
 mdefine_line|#define VN_ATIMESET(vp, tvp)&t;(LINVFS_GET_IP(vp)-&gt;i_atime = *(tvp))
 DECL|macro|VN_CTIMESET
 mdefine_line|#define VN_CTIMESET(vp, tvp)&t;(LINVFS_GET_IP(vp)-&gt;i_ctime = *(tvp))
+multiline_comment|/*&n; * Dealing with bad inodes&n; */
+DECL|function|vn_mark_bad
+r_static
+r_inline
+r_void
+id|vn_mark_bad
+c_func
+(paren
+r_struct
+id|vnode
+op_star
+id|vp
+)paren
+(brace
+id|make_bad_inode
+c_func
+(paren
+id|LINVFS_GET_IP
+c_func
+(paren
+id|vp
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|VN_BAD
+r_static
+r_inline
+r_int
+id|VN_BAD
+c_func
+(paren
+r_struct
+id|vnode
+op_star
+id|vp
+)paren
+(brace
+r_return
+id|is_bad_inode
+c_func
+(paren
+id|LINVFS_GET_IP
+c_func
+(paren
+id|vp
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Some useful predicates.&n; */
 DECL|macro|VN_MAPPED
 mdefine_line|#define VN_MAPPED(vp)&t;mapping_mapped(LINVFS_GET_IP(vp)-&gt;i_mapping)

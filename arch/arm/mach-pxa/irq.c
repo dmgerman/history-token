@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
+macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 macro_line|#include &quot;generic.h&quot;
 multiline_comment|/*&n; * This is for peripheral IRQs internal to the PXA chip.&n; */
 DECL|function|pxa_mask_low_irq

@@ -7215,12 +7215,6 @@ id|addr
 l_int|2
 )braket
 suffix:semicolon
-DECL|variable|num
-r_static
-r_int
-id|__initdata
-id|num
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -7228,7 +7222,7 @@ id|addr
 comma
 r_int
 comma
-id|num
+l_int|NULL
 comma
 l_int|0444
 )paren

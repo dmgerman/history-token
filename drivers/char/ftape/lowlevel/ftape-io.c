@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/mtio.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ftape.h&gt;
 macro_line|#include &lt;linux/qic117.h&gt;
 macro_line|#include &quot;../lowlevel/ftape-tracing.h&quot;
@@ -233,15 +234,17 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|set_current_state
+id|msleep_interruptible
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
+id|jiffies_to_msecs
+c_func
+(paren
+id|timeout
+)paren
 )paren
 suffix:semicolon
-r_do
-(brace
-multiline_comment|/*  Mmm. Isn&squot;t current-&gt;blocked == 0xffffffff ?&n;&t;&t;&t; */
+multiline_comment|/*  Mmm. Isn&squot;t current-&gt;blocked == 0xffffffff ?&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -260,34 +263,7 @@ comma
 l_string|&quot;awoken by non-blocked signal :-(&quot;
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-multiline_comment|/* exit on signal */
 )brace
-r_while
-c_loop
-(paren
-id|current-&gt;state
-op_ne
-id|TASK_RUNNING
-)paren
-(brace
-id|timeout
-op_assign
-id|schedule_timeout
-c_func
-(paren
-id|timeout
-)paren
-suffix:semicolon
-)brace
-)brace
-r_while
-c_loop
-(paren
-id|timeout
-)paren
-suffix:semicolon
 id|restore_flags
 c_func
 (paren

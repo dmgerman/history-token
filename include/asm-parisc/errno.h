@@ -117,6 +117,14 @@ DECL|macro|ENOMEDIUM
 mdefine_line|#define&t;ENOMEDIUM&t;182&t;/* No medium found */
 DECL|macro|EMEDIUMTYPE
 mdefine_line|#define&t;EMEDIUMTYPE&t;183&t;/* Wrong medium type */
+DECL|macro|ENOKEY
+mdefine_line|#define&t;ENOKEY&t;&t;184&t;/* Required key not available */
+DECL|macro|EKEYEXPIRED
+mdefine_line|#define&t;EKEYEXPIRED&t;185&t;/* Key has expired */
+DECL|macro|EKEYREVOKED
+mdefine_line|#define&t;EKEYREVOKED&t;186&t;/* Key has been revoked */
+DECL|macro|EKEYREJECTED
+mdefine_line|#define&t;EKEYREJECTED&t;187&t;/* Key was rejected by service */
 multiline_comment|/* We now return you to your regularly scheduled HPUX. */
 DECL|macro|ENOSYM
 mdefine_line|#define ENOSYM&t;&t;215&t;/* symbol does not exist in executable */

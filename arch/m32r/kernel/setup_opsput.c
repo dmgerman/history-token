@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/m32r/kernel/setup_opsput.c&n; *&n; *  Setup routines for Renesas OPSPUT Board&n; *&n; *  Copyright (c) 2002-2004&n; * &t;Hiroyuki Kondo, Hirokazu Takata,&n; *      Hitoshi Yamamoto, Takeo Takahashi, Mamoru Sakugawa&n; *&n; *  This file is subject to the terms and conditions of the GNU General&n; *  Public License.  See the file &quot;COPYING&quot; in the main directory of this&n; *  archive for more details.&n; *&n; *  $Id: setup_opsput.c,v 1.1 2004/07/27 06:54:20 sakugawa Exp $&n; */
+multiline_comment|/*&n; *  linux/arch/m32r/kernel/setup_opsput.c&n; *&n; *  Setup routines for Renesas OPSPUT Board&n; *&n; *  Copyright (c) 2002-2004&n; * &t;Hiroyuki Kondo, Hirokazu Takata,&n; *      Hitoshi Yamamoto, Takeo Takahashi, Mamoru Sakugawa&n; *&n; *  This file is subject to the terms and conditions of the GNU General&n; *  Public License.  See the file &quot;COPYING&quot; in the main directory of this&n; *  archive for more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1860,7 +1860,7 @@ c_func
 id|M32R_IRQ_INT2
 )paren
 suffix:semicolon
-singleline_comment|//#if defined(CONFIG_M32R_AR_VGA)
+singleline_comment|//#if defined(CONFIG_VIDEO_M32R_AR)
 multiline_comment|/*&n;&t; * INT3# is used for AR&n;&t; */
 id|irq_desc
 (braket
@@ -1916,7 +1916,7 @@ c_func
 id|M32R_IRQ_INT3
 )paren
 suffix:semicolon
-singleline_comment|//#endif&t;/* CONFIG_M32R_ARV */
+singleline_comment|//#endif&t;/* CONFIG_VIDEO_M32R_AR */
 )brace
 DECL|macro|LAN_IOSTART
 mdefine_line|#define LAN_IOSTART     0x300

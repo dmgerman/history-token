@@ -165,11 +165,18 @@ id|__backtrace
 )paren
 suffix:semicolon
 multiline_comment|/* platform dependent support */
-DECL|variable|udelay
+DECL|variable|__udelay
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|udelay
+id|__udelay
+)paren
+suffix:semicolon
+DECL|variable|__const_udelay
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__const_udelay
 )paren
 suffix:semicolon
 multiline_comment|/* networking */
@@ -624,6 +631,20 @@ c_func
 id|_find_next_zero_bit_le
 )paren
 suffix:semicolon
+DECL|variable|_find_first_bit_le
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_find_first_bit_le
+)paren
+suffix:semicolon
+DECL|variable|_find_next_bit_le
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_find_next_bit_le
+)paren
+suffix:semicolon
 macro_line|#ifdef __ARMEB__
 DECL|variable|_set_bit_be
 id|EXPORT_SYMBOL
@@ -679,6 +700,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|_find_next_zero_bit_be
+)paren
+suffix:semicolon
+DECL|variable|_find_first_bit_be
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_find_first_bit_be
+)paren
+suffix:semicolon
+DECL|variable|_find_next_bit_be
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_find_next_bit_be
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *&t;Functions to handle I2O devices&n; *&n; *&t;Copyright (C) 2004&t;Markus Lidel &lt;Markus.Lidel@shadowconnect.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify it&n; *&t;under the terms of the GNU General Public License as published by the&n; *&t;Free Software Foundation; either version 2 of the License, or (at your&n; *&t;option) any later version.&n; *&n; *&t;Fixes/additions:&n; *&t;&t;Markus Lidel &lt;Markus.Lidel@shadowconnect.com&gt;&n; *&t;&t;&t;initial version.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/i2o.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 multiline_comment|/* Exec OSM functions */
 r_extern
 r_struct
@@ -254,16 +255,10 @@ id|rc
 )paren
 r_break
 suffix:semicolon
-id|set_current_state
+id|ssleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
+l_int|1
 )paren
 suffix:semicolon
 )brace

@@ -7034,12 +7034,14 @@ id|inode
 suffix:semicolon
 id|res
 op_assign
-id|vfs_permission
+id|generic_permission
 c_func
 (paren
 id|inode
 comma
 id|mask
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|unlock_kernel

@@ -32,10 +32,10 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -478,6 +478,11 @@ DECL|member|spy_data
 r_struct
 id|iw_spy_data
 id|spy_data
+suffix:semicolon
+DECL|member|wireless_data
+r_struct
+id|iw_public_data
+id|wireless_data
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef HISTOGRAM
@@ -923,6 +928,17 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Give stats /proc/net/dev */
+r_static
+id|iw_stats
+op_star
+id|wavelan_get_wireless_stats
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* ----------------------- PACKET RECEPTION ----------------------- */
 r_static
 r_inline

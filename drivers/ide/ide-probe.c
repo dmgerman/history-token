@@ -1282,30 +1282,6 @@ comma
 id|cookie
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_CMD640
-macro_line|#ifdef CMD640_DUMP_REGS
-r_if
-c_cond
-(paren
-id|hwif-&gt;chipset
-op_eq
-id|ide_cmd640
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: Hmmm.. probably a driver &quot;
-l_string|&quot;problem.&bslash;n&quot;
-comma
-id|drive-&gt;name
-)paren
-suffix:semicolon
-id|CMD640_DUMP_REGS
-suffix:semicolon
-)brace
-macro_line|#endif /* CMD640_DUMP_REGS */
-macro_line|#endif /* CONFIG_BLK_DEV_CMD640 */
 )brace
 )brace
 )brace
@@ -4771,6 +4747,52 @@ id|hwif-&gt;name
 r_return
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hwif-&gt;sg_max_nents
+)paren
+id|hwif-&gt;sg_max_nents
+op_assign
+id|PRD_ENTRIES
+suffix:semicolon
+id|hwif-&gt;sg_table
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|scatterlist
+)paren
+op_star
+id|hwif-&gt;sg_max_nents
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hwif-&gt;sg_table
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: unable to allocate SG table.&bslash;n&quot;
+comma
+id|hwif-&gt;name
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

@@ -11,15 +11,6 @@ macro_line|#include &lt;asm/arch/gpio.h&gt;
 macro_line|#include &lt;asm/arch/mux.h&gt;
 macro_line|#include &lt;asm/arch/fpga.h&gt;
 macro_line|#include &quot;common.h&quot;
-r_extern
-r_void
-id|__init
-id|omap_init_time
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|omap_perseus2_init_irq
 r_void
 id|omap_perseus2_init_irq
@@ -327,10 +318,11 @@ c_func
 (paren
 id|omap_perseus2_init
 )paren
-id|INITTIME
-c_func
-(paren
-id|omap_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|omap_timer
+comma
 id|MACHINE_END
 eof

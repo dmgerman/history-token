@@ -629,15 +629,6 @@ c_func
 l_string|&quot;nfsd&quot;
 )paren
 suffix:semicolon
-id|current-&gt;rlim
-(braket
-id|RLIMIT_FSIZE
-)braket
-dot
-id|rlim_cur
-op_assign
-id|RLIM_INFINITY
-suffix:semicolon
 multiline_comment|/* After daemonize() this kernel thread shares current-&gt;fs&n;&t; * with the init process. We need to create files with a&n;&t; * umask of 0 instead of init&squot;s umask. */
 id|fsp
 op_assign

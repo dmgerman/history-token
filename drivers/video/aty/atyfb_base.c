@@ -5864,7 +5864,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma
@@ -5874,6 +5874,8 @@ op_plus
 id|page
 comma
 id|map_offset
+op_rshift
+id|PAGE_SHIFT
 comma
 id|map_size
 comma
@@ -9745,6 +9747,11 @@ suffix:semicolon
 id|info-&gt;par
 op_assign
 id|default_par
+suffix:semicolon
+id|info-&gt;device
+op_assign
+op_amp
+id|pdev-&gt;dev
 suffix:semicolon
 macro_line|#ifdef __sparc__
 multiline_comment|/*&n;&t;&t;&t; * Map memory-mapped registers.&n;&t;&t;&t; */

@@ -5026,7 +5026,7 @@ c_cond
 id|card-&gt;u.x.connection_keys
 op_eq
 op_complement
-l_int|0UL
+l_int|0U
 )paren
 (brace
 id|printk

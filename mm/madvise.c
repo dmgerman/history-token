@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *&t;linux/mm/madvise.c&n; *&n; * Copyright (C) 1999  Linus Torvalds&n; * Copyright (C) 2002  Christoph Hellwig&n; */
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 multiline_comment|/*&n; * We can potentially split a vm area into separate&n; * areas, each area with its own behavior.&n; */
 DECL|function|madvise_behavior
 r_static

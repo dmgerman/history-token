@@ -5,34 +5,9 @@ DECL|macro|_LINUX_TIMEX_H
 mdefine_line|#define _LINUX_TIMEX_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
-macro_line|#include &lt;linux/jiffies.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-multiline_comment|/*&n; * The following defines establish the engineering parameters of the PLL&n; * model. The HZ variable establishes the timer interrupt frequency, 100 Hz&n; * for the SunOS kernel, 256 Hz for the Ultrix kernel and 1024 Hz for the&n; * OSF/1 kernel. The SHIFT_HZ define expresses the same value as the&n; * nearest power of two in order to avoid hardware multiply operations.&n; */
-macro_line|#if HZ &gt;= 12 &amp;&amp; HZ &lt; 24
-DECL|macro|SHIFT_HZ
-macro_line|# define SHIFT_HZ&t;4
-macro_line|#elif HZ &gt;= 24 &amp;&amp; HZ &lt; 48
-DECL|macro|SHIFT_HZ
-macro_line|# define SHIFT_HZ&t;5
-macro_line|#elif HZ &gt;= 48 &amp;&amp; HZ &lt; 96
-DECL|macro|SHIFT_HZ
-macro_line|# define SHIFT_HZ&t;6
-macro_line|#elif HZ &gt;= 96 &amp;&amp; HZ &lt; 192
-DECL|macro|SHIFT_HZ
-macro_line|# define SHIFT_HZ&t;7
-macro_line|#elif HZ &gt;= 192 &amp;&amp; HZ &lt; 384
-DECL|macro|SHIFT_HZ
-macro_line|# define SHIFT_HZ&t;8
-macro_line|#elif HZ &gt;= 384 &amp;&amp; HZ &lt; 768
-DECL|macro|SHIFT_HZ
-macro_line|# define SHIFT_HZ&t;9
-macro_line|#elif HZ &gt;= 768 &amp;&amp; HZ &lt; 1536
-DECL|macro|SHIFT_HZ
-macro_line|# define SHIFT_HZ&t;10
-macro_line|#else
-macro_line|# error You lose.
-macro_line|#endif
+macro_line|#include &lt;asm/timex.h&gt;
 multiline_comment|/*&n; * SHIFT_KG and SHIFT_KF establish the damping of the PLL and are chosen&n; * for a slightly underdamped convergence characteristic. SHIFT_KH&n; * establishes the damping of the FLL and is chosen by wisdom and black&n; * art.&n; *&n; * MAXTC establishes the maximum time constant of the PLL. With the&n; * SHIFT_KG and SHIFT_KF values given and a time constant range from&n; * zero to MAXTC, the PLL will converge in 15 minutes to 16 hours,&n; * respectively.&n; */
 DECL|macro|SHIFT_KG
 mdefine_line|#define SHIFT_KG 6&t;&t;/* phase factor (shift) */
@@ -74,28 +49,6 @@ DECL|macro|PPS_VALID
 mdefine_line|#define PPS_VALID 120&t;&t;/* pps signal watchdog max (s) */
 DECL|macro|MAXGLITCH
 mdefine_line|#define MAXGLITCH 30&t;&t;/* pps signal glitch max (s) */
-multiline_comment|/*&n; * Pick up the architecture specific timex specifications&n; */
-macro_line|#include &lt;asm/timex.h&gt;
-multiline_comment|/* LATCH is used in the interval timer and ftape setup. */
-DECL|macro|LATCH
-mdefine_line|#define LATCH  ((CLOCK_TICK_RATE + HZ/2) / HZ)&t;/* For divider */
-multiline_comment|/* Suppose we want to devide two numbers NOM and DEN: NOM/DEN, the we can&n; * improve accuracy by shifting LSH bits, hence calculating:&n; *     (NOM &lt;&lt; LSH) / DEN&n; * This however means trouble for large NOM, because (NOM &lt;&lt; LSH) may no&n; * longer fit in 32 bits. The following way of calculating this gives us&n; * some slack, under the following conditions:&n; *   - (NOM / DEN) fits in (32 - LSH) bits.&n; *   - (NOM % DEN) fits in (32 - LSH) bits.&n; */
-DECL|macro|SH_DIV
-mdefine_line|#define SH_DIV(NOM,DEN,LSH) (   ((NOM / DEN) &lt;&lt; LSH)                    &bslash;&n;                             + (((NOM % DEN) &lt;&lt; LSH) + DEN / 2) / DEN)
-multiline_comment|/* HZ is the requested value. ACTHZ is actual HZ (&quot;&lt;&lt; 8&quot; is for accuracy) */
-DECL|macro|ACTHZ
-mdefine_line|#define ACTHZ (SH_DIV (CLOCK_TICK_RATE, LATCH, 8))
-multiline_comment|/* TICK_NSEC is the time between ticks in nsec assuming real ACTHZ */
-DECL|macro|TICK_NSEC
-mdefine_line|#define TICK_NSEC (SH_DIV (1000000UL * 1000, ACTHZ, 8))
-multiline_comment|/* TICK_USEC is the time between ticks in usec assuming fake USER_HZ */
-DECL|macro|TICK_USEC
-mdefine_line|#define TICK_USEC ((1000000UL + USER_HZ/2) / USER_HZ)
-multiline_comment|/* TICK_USEC_TO_NSEC is the time between ticks in nsec assuming real ACTHZ and&t;*/
-multiline_comment|/* a value TUSEC for TICK_USEC (can be set bij adjtimex)&t;&t;*/
-DECL|macro|TICK_USEC_TO_NSEC
-mdefine_line|#define TICK_USEC_TO_NSEC(TUSEC) (SH_DIV (TUSEC * USER_HZ * 1000, ACTHZ, 8))
-macro_line|#include &lt;linux/time.h&gt;
 multiline_comment|/*&n; * syscall interface - used (mainly by NTP daemon)&n; * to discipline kernel clock oscillator&n; */
 DECL|struct|timex
 r_struct

@@ -13,12 +13,13 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;         /* hweight64() */
 macro_line|#include &lt;asm/delay.h&gt;&t;&t;/* ia64_get_itc() */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/page.h&gt;&t;&t;/* PAGE_OFFSET */
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/system.h&gt;&t;&t;/* wmb() */
-macro_line|#include &lt;asm/bitops.h&gt;&t;&t;/* hweight64() */
 macro_line|#include &lt;asm/acpi-ext.h&gt;
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;IOC: &quot;
@@ -156,6 +157,7 @@ id|ioc
 (brace
 DECL|member|ioc_hpa
 r_void
+id|__iomem
 op_star
 id|ioc_hpa
 suffix:semicolon
@@ -3683,7 +3685,7 @@ id|u64
 op_star
 id|pdirp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -6563,7 +6565,7 @@ c_func
 (paren
 l_string|&quot;bus/mckinley&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

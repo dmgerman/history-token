@@ -67,6 +67,7 @@ suffix:semicolon
 multiline_comment|/* to wait for the STATS indication */
 DECL|member|mbox
 r_void
+id|__iomem
 op_star
 id|mbox
 suffix:semicolon

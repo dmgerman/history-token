@@ -1156,6 +1156,19 @@ comma
 )brace
 comma
 (brace
+l_string|&quot;PowerMac7,3&quot;
+comma
+l_string|&quot;PowerMac G5&quot;
+comma
+id|PMAC_TYPE_POWERMAC_G5
+comma
+id|g5_features
+comma
+l_int|0
+comma
+)brace
+comma
+(brace
 l_string|&quot;RackMac3,1&quot;
 comma
 l_string|&quot;XServe G5&quot;

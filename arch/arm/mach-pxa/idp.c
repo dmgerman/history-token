@@ -11,6 +11,7 @@ macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
+macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 macro_line|#include &lt;asm/arch/idp.h&gt;
 macro_line|#include &quot;generic.h&quot;
 macro_line|#ifndef PXA_IDP_REV02
@@ -320,11 +321,12 @@ c_func
 (paren
 id|idp_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|pxa_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|pxa_timer
+comma
 id|INIT_MACHINE
 c_func
 (paren

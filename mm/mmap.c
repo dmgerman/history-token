@@ -68,9 +68,9 @@ DECL|variable|sysctl_overcommit_memory
 r_int
 id|sysctl_overcommit_memory
 op_assign
-l_int|0
+id|OVERCOMMIT_GUESS
 suffix:semicolon
-multiline_comment|/* default is heuristic overcommit */
+multiline_comment|/* heuristic overcommit */
 DECL|variable|sysctl_overcommit_ratio
 r_int
 id|sysctl_overcommit_ratio
@@ -434,7 +434,7 @@ suffix:semicolon
 multiline_comment|/* Check against rlimit.. */
 id|rlim
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_DATA
 )braket
@@ -3039,30 +3039,6 @@ id|charged
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Does the application expect PROT_READ to imply PROT_EXEC:&n;&t; */
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-(paren
-id|prot
-op_amp
-id|PROT_READ
-)paren
-op_logical_and
-(paren
-id|current-&gt;personality
-op_amp
-id|READ_IMPLIES_EXEC
-)paren
-)paren
-)paren
-id|prot
-op_or_assign
-id|PROT_EXEC
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3115,6 +3091,40 @@ op_minus
 id|EPERM
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Does the application expect PROT_READ to imply PROT_EXEC?&n;&t; *&n;&t; * (the exception is when the underlying filesystem is noexec&n;&t; *  mounted, in which case we dont add PROT_EXEC.)&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|prot
+op_amp
+id|PROT_READ
+)paren
+op_logical_and
+(paren
+id|current-&gt;personality
+op_amp
+id|READ_IMPLIES_EXEC
+)paren
+)paren
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|file
+op_logical_and
+(paren
+id|file-&gt;f_vfsmnt-&gt;mnt_flags
+op_amp
+id|MNT_NOEXEC
+)paren
+)paren
+)paren
+id|prot
+op_or_assign
+id|PROT_EXEC
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3279,7 +3289,7 @@ id|PAGE_SHIFT
 suffix:semicolon
 id|lock_limit
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_MEMLOCK
 )braket
@@ -3575,7 +3585,7 @@ id|PAGE_SHIFT
 op_plus
 id|len
 OG
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_AS
 )braket
@@ -3600,8 +3610,8 @@ id|MAP_NORESERVE
 )paren
 op_logical_or
 id|sysctl_overcommit_memory
-OG
-l_int|1
+op_eq
+id|OVERCOMMIT_NEVER
 )paren
 )paren
 (brace
@@ -5285,7 +5295,7 @@ id|address
 op_minus
 id|vma-&gt;vm_start
 OG
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_STACK
 )braket
@@ -5302,7 +5312,7 @@ op_lshift
 id|PAGE_SHIFT
 )paren
 OG
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_AS
 )braket
@@ -5551,7 +5561,7 @@ id|vma-&gt;vm_end
 op_minus
 id|address
 OG
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_STACK
 )braket
@@ -5568,7 +5578,7 @@ op_lshift
 id|PAGE_SHIFT
 )paren
 OG
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_AS
 )braket
@@ -7050,7 +7060,7 @@ id|PAGE_SHIFT
 suffix:semicolon
 id|lock_limit
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_MEMLOCK
 )braket
@@ -7147,7 +7157,7 @@ id|PAGE_SHIFT
 op_plus
 id|len
 OG
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_AS
 )braket

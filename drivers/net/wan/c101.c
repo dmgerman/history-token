@@ -79,6 +79,7 @@ suffix:semicolon
 multiline_comment|/* TX lock */
 DECL|member|win0base
 id|u8
+id|__iomem
 op_star
 id|win0base
 suffix:semicolon

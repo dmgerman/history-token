@@ -1,8 +1,7 @@
 macro_line|#ifndef _ASM_M32R_SPINLOCK_H
 DECL|macro|_ASM_M32R_SPINLOCK_H
 mdefine_line|#define _ASM_M32R_SPINLOCK_H
-multiline_comment|/* $Id$ */
-multiline_comment|/*&n; *  linux/include/asm-m32r/spinlock.h&n; *    orig : i386 2.4.10&n; *&n; *  M32R version:&n; *    Copyright (C) 2001, 2002  Hitoshi Yamamoto&n; */
+multiline_comment|/*&n; *  linux/include/asm-m32r/spinlock.h&n; *&n; *  M32R version:&n; *    Copyright (C) 2001, 2002  Hitoshi Yamamoto&n; *    Copyright (C) 2004  Hirokazu Takata &lt;takata at linux-m32r.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;&t;/* CONFIG_DEBUG_SPINLOCK, CONFIG_SMP */
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -62,6 +61,13 @@ r_int
 id|magic
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|member|break_lock
+r_int
+r_int
+id|break_lock
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|spinlock_t
 )brace
 id|spinlock_t
@@ -86,11 +92,10 @@ DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(x)&t;do { barrier(); } while(spin_is_locked(x))
 DECL|macro|_raw_spin_lock_flags
 mdefine_line|#define _raw_spin_lock_flags(lock, flags) _raw_spin_lock(lock)
-multiline_comment|/*&n; * This works. Despite all the confusion.&n; */
-multiline_comment|/*======================================================================*&n; * Try spin lock&n; *======================================================================*&n; * Argument:&n; *   arg0: lock&n; * Return value:&n; *   =1: Success&n; *   =0: Failure&n; *======================================================================*/
+multiline_comment|/**&n; * _raw_spin_trylock - Try spin lock and return a result&n; * @lock: Pointer to the lock variable&n; *&n; * _raw_spin_trylock() tries to get the lock and returns a result.&n; * On the m32r, the result value is 1 (= Success) or 0 (= Failure).&n; */
 DECL|function|_raw_spin_trylock
 r_static
-id|__inline__
+r_inline
 r_int
 id|_raw_spin_trylock
 c_func
@@ -103,13 +108,19 @@ id|lock
 r_int
 id|oldval
 suffix:semicolon
+r_int
+r_int
+id|tmp1
+comma
+id|tmp2
+suffix:semicolon
 multiline_comment|/*&n;&t; * lock-&gt;lock :  =1 : unlock&n;&t; *            : &lt;=0 : lock&n;&t; * {&n;&t; *   oldval = lock-&gt;lock; &lt;--+ need atomic operation&n;&t; *   lock-&gt;lock = 0;      &lt;--+&n;&t; * }&n;&t; */
 id|__asm__
 id|__volatile__
 (paren
 l_string|&quot;# spin_trylock&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;ldi&t;r4, #0;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;mvfc&t;r5, psw;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;ldi&t;%1, #0;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;mvfc&t;%2, psw;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;clrpsw&t;#0x40 -&gt; nop;&t;&t;&bslash;n&bslash;t&quot;
 id|DCACHE_CLEAR
 c_func
@@ -118,15 +129,25 @@ l_string|&quot;%0&quot;
 comma
 l_string|&quot;r6&quot;
 comma
-l_string|&quot;%1&quot;
+l_string|&quot;%3&quot;
 )paren
-l_string|&quot;lock&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;unlock&t;r4, @%1;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;mvtc&t;r5, psw;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;lock&t;%0, @%3;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;unlock&t;%1, @%3;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;mvtc&t;%2, psw;&t;&t;&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
 id|oldval
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp1
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp2
 )paren
 suffix:colon
 l_string|&quot;r&quot;
@@ -136,10 +157,6 @@ id|lock-&gt;lock
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
-comma
-l_string|&quot;r4&quot;
-comma
-l_string|&quot;r5&quot;
 macro_line|#ifdef CONFIG_CHIP_M32700_TS1
 comma
 l_string|&quot;r6&quot;
@@ -156,7 +173,7 @@ suffix:semicolon
 )brace
 DECL|function|_raw_spin_lock
 r_static
-id|__inline__
+r_inline
 r_void
 id|_raw_spin_lock
 c_func
@@ -166,6 +183,12 @@ op_star
 id|lock
 )paren
 (brace
+r_int
+r_int
+id|tmp0
+comma
+id|tmp1
+suffix:semicolon
 macro_line|#if SPINLOCK_DEBUG
 id|__label__
 id|here
@@ -203,22 +226,22 @@ id|__volatile__
 l_string|&quot;# spin_lock&t;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;.fillinsn&t;&t;&t;&bslash;n&quot;
 l_string|&quot;1:&t;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;mvfc&t;r5, psw;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;mvfc&t;%1, psw;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;clrpsw&t;#0x40 -&gt; nop;&t;&t;&bslash;n&bslash;t&quot;
 id|DCACHE_CLEAR
 c_func
 (paren
-l_string|&quot;r4&quot;
+l_string|&quot;%0&quot;
 comma
 l_string|&quot;r6&quot;
 comma
-l_string|&quot;%0&quot;
+l_string|&quot;%2&quot;
 )paren
-l_string|&quot;lock&t;r4, @%0;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;addi&t;r4, #-1;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;unlock&t;r4, @%0;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;mvtc&t;r5, psw;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;bltz&t;r4, 2f;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;lock&t;%0, @%2;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;addi&t;%0, #-1;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;unlock&t;%0, @%2;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;mvtc&t;%1, psw;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;bltz&t;%0, 2f;&t;&t;&t;&bslash;n&bslash;t&quot;
 id|LOCK_SECTION_START
 c_func
 (paren
@@ -226,12 +249,20 @@ l_string|&quot;.balign 4 &bslash;n&bslash;t&quot;
 )paren
 l_string|&quot;.fillinsn&t;&t;&t;&bslash;n&quot;
 l_string|&quot;2:&t;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;ld&t;r4, @%0;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;bgtz&t;r4, 1b;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;ld&t;%0, @%2;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;bgtz&t;%0, 1b;&t;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;bra&t;2b;&t;&t;&t;&bslash;n&bslash;t&quot;
 id|LOCK_SECTION_END
 suffix:colon
-multiline_comment|/* no outputs */
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp0
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp1
+)paren
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -240,10 +271,6 @@ id|lock-&gt;lock
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
-comma
-l_string|&quot;r4&quot;
-comma
-l_string|&quot;r5&quot;
 macro_line|#ifdef CONFIG_CHIP_M32700_TS1
 comma
 l_string|&quot;r6&quot;
@@ -253,7 +280,7 @@ suffix:semicolon
 )brace
 DECL|function|_raw_spin_unlock
 r_static
-id|__inline__
+r_inline
 r_void
 id|_raw_spin_unlock
 c_func
@@ -309,6 +336,13 @@ r_int
 id|magic
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|member|break_lock
+r_int
+r_int
+id|break_lock
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|rwlock_t
 )brace
 id|rwlock_t
@@ -332,7 +366,7 @@ multiline_comment|/*&n; * On x86, we implement read-write locks as a 32-bit coun
 multiline_comment|/* the spinlock helpers are in arch/i386/kernel/semaphore.c */
 DECL|function|_raw_read_lock
 r_static
-id|__inline__
+r_inline
 r_void
 id|_raw_read_lock
 c_func
@@ -342,6 +376,12 @@ op_star
 id|rw
 )paren
 (brace
+r_int
+r_int
+id|tmp0
+comma
+id|tmp1
+suffix:semicolon
 macro_line|#if SPINLOCK_DEBUG
 id|BUG_ON
 c_func
@@ -359,22 +399,22 @@ id|__volatile__
 l_string|&quot;# read_lock&t;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;.fillinsn&t;&t;&t;&bslash;n&quot;
 l_string|&quot;1:&t;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;mvfc&t;r5, psw;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;mvfc&t;%1, psw;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;clrpsw&t;#0x40 -&gt; nop;&t;&t;&bslash;n&bslash;t&quot;
 id|DCACHE_CLEAR
 c_func
 (paren
-l_string|&quot;r4&quot;
+l_string|&quot;%0&quot;
 comma
 l_string|&quot;r6&quot;
 comma
-l_string|&quot;%0&quot;
+l_string|&quot;%2&quot;
 )paren
-l_string|&quot;lock&t;r4, @%0;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;addi&t;r4, #-1;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;unlock&t;r4, @%0;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;mvtc&t;r5, psw;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;bltz&t;r4, 2f;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;lock&t;%0, @%2;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;addi&t;%0, #-1;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;unlock&t;%0, @%2;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;mvtc&t;%1, psw;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;bltz&t;%0, 2f;&t;&t;&t;&bslash;n&bslash;t&quot;
 id|LOCK_SECTION_START
 c_func
 (paren
@@ -386,24 +426,32 @@ l_string|&quot;clrpsw&t;#0x40 -&gt; nop;&t;&t;&bslash;n&bslash;t&quot;
 id|DCACHE_CLEAR
 c_func
 (paren
-l_string|&quot;r4&quot;
+l_string|&quot;%0&quot;
 comma
 l_string|&quot;r6&quot;
 comma
-l_string|&quot;%0&quot;
+l_string|&quot;%2&quot;
 )paren
-l_string|&quot;lock&t;r4, @%0;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;addi&t;r4, #1;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;unlock&t;r4, @%0;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;mvtc&t;r5, psw;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;lock&t;%0, @%2;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;addi&t;%0, #1;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;unlock&t;%0, @%2;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;mvtc&t;%1, psw;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;.fillinsn&t;&t;&t;&bslash;n&quot;
 l_string|&quot;3:&t;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;ld&t;r4, @%0;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;bgtz&t;r4, 1b;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;ld&t;%0, @%2;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;bgtz&t;%0, 1b;&t;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;bra&t;3b;&t;&t;&t;&bslash;n&bslash;t&quot;
 id|LOCK_SECTION_END
 suffix:colon
-multiline_comment|/* no outputs */
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp0
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp1
+)paren
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -412,10 +460,6 @@ id|rw-&gt;lock
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
-comma
-l_string|&quot;r4&quot;
-comma
-l_string|&quot;r5&quot;
 macro_line|#ifdef CONFIG_CHIP_M32700_TS1
 comma
 l_string|&quot;r6&quot;
@@ -425,7 +469,7 @@ suffix:semicolon
 )brace
 DECL|function|_raw_write_lock
 r_static
-id|__inline__
+r_inline
 r_void
 id|_raw_write_lock
 c_func
@@ -435,6 +479,14 @@ op_star
 id|rw
 )paren
 (brace
+r_int
+r_int
+id|tmp0
+comma
+id|tmp1
+comma
+id|tmp2
+suffix:semicolon
 macro_line|#if SPINLOCK_DEBUG
 id|BUG_ON
 c_func
@@ -450,30 +502,30 @@ id|__asm__
 id|__volatile__
 (paren
 l_string|&quot;# write_lock&t;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;seth&t;r5, #high(&quot;
+l_string|&quot;seth&t;%1, #high(&quot;
 id|RW_LOCK_BIAS_STR
 l_string|&quot;);&t;&bslash;n&bslash;t&quot;
-l_string|&quot;or3&t;r5, r5, #low(&quot;
+l_string|&quot;or3&t;%1, %1, #low(&quot;
 id|RW_LOCK_BIAS_STR
 l_string|&quot;);&t;&bslash;n&bslash;t&quot;
 l_string|&quot;.fillinsn&t;&t;&t;&t;&t;&bslash;n&quot;
 l_string|&quot;1:&t;&t;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;mvfc&t;r6, psw;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;mvfc&t;%2, psw;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;clrpsw&t;#0x40 -&gt; nop;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
 id|DCACHE_CLEAR
 c_func
 (paren
-l_string|&quot;r4&quot;
+l_string|&quot;%0&quot;
 comma
 l_string|&quot;r7&quot;
 comma
-l_string|&quot;%0&quot;
+l_string|&quot;%3&quot;
 )paren
-l_string|&quot;lock&t;r4, @%0;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;sub&t;r4, r5;&t;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;unlock&t;r4, @%0;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;mvtc&t;r6, psw;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;bnez&t;r4, 2f;&t;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;lock&t;%0, @%3;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;sub&t;%0, %1;&t;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;unlock&t;%0, @%3;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;mvtc&t;%2, psw;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;bnez&t;%0, 2f;&t;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
 id|LOCK_SECTION_START
 c_func
 (paren
@@ -485,24 +537,37 @@ l_string|&quot;clrpsw&t;#0x40 -&gt; nop;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
 id|DCACHE_CLEAR
 c_func
 (paren
-l_string|&quot;r4&quot;
+l_string|&quot;%0&quot;
 comma
 l_string|&quot;r7&quot;
 comma
-l_string|&quot;%0&quot;
+l_string|&quot;%3&quot;
 )paren
-l_string|&quot;lock&t;r4, @%0;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;add&t;r4, r5;&t;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;unlock&t;r4, @%0;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;mvtc&t;r6, psw;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;lock&t;%0, @%3;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;add&t;%0, %1;&t;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;unlock&t;%0, @%3;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;mvtc&t;%2, psw;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;.fillinsn&t;&t;&t;&t;&t;&bslash;n&quot;
 l_string|&quot;3:&t;&t;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;ld&t;r4, @%0;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;beq&t;r4, r5, 1b;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;ld&t;%0, @%3;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;beq&t;%0, %1, 1b;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;bra&t;3b;&t;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
 id|LOCK_SECTION_END
 suffix:colon
-multiline_comment|/* no outputs */
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp0
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp1
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp2
+)paren
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -511,12 +576,6 @@ id|rw-&gt;lock
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
-comma
-l_string|&quot;r4&quot;
-comma
-l_string|&quot;r5&quot;
-comma
-l_string|&quot;r6&quot;
 macro_line|#ifdef CONFIG_CHIP_M32700_TS1
 comma
 l_string|&quot;r7&quot;
@@ -526,7 +585,7 @@ suffix:semicolon
 )brace
 DECL|function|_raw_read_unlock
 r_static
-id|__inline__
+r_inline
 r_void
 id|_raw_read_unlock
 c_func
@@ -536,27 +595,41 @@ op_star
 id|rw
 )paren
 (brace
+r_int
+r_int
+id|tmp0
+comma
+id|tmp1
+suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
 l_string|&quot;# read_unlock&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;mvfc&t;r5, psw;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;mvfc&t;%1, psw;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;clrpsw&t;#0x40 -&gt; nop;&t;&t;&bslash;n&bslash;t&quot;
 id|DCACHE_CLEAR
 c_func
 (paren
-l_string|&quot;r4&quot;
+l_string|&quot;%0&quot;
 comma
 l_string|&quot;r6&quot;
 comma
-l_string|&quot;%0&quot;
+l_string|&quot;%2&quot;
 )paren
-l_string|&quot;lock&t;r4, @%0;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;addi&t;r4, #1;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;unlock&t;r4, @%0;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;mvtc&t;r5, psw;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;lock&t;%0, @%2;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;addi&t;%0, #1;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;unlock&t;%0, @%2;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;mvtc&t;%1, psw;&t;&t;&bslash;n&bslash;t&quot;
 suffix:colon
-multiline_comment|/* no outputs */
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp0
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp1
+)paren
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -565,10 +638,6 @@ id|rw-&gt;lock
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
-comma
-l_string|&quot;r4&quot;
-comma
-l_string|&quot;r5&quot;
 macro_line|#ifdef CONFIG_CHIP_M32700_TS1
 comma
 l_string|&quot;r6&quot;
@@ -578,7 +647,7 @@ suffix:semicolon
 )brace
 DECL|function|_raw_write_unlock
 r_static
-id|__inline__
+r_inline
 r_void
 id|_raw_write_unlock
 c_func
@@ -588,33 +657,54 @@ op_star
 id|rw
 )paren
 (brace
+r_int
+r_int
+id|tmp0
+comma
+id|tmp1
+comma
+id|tmp2
+suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
 l_string|&quot;# write_unlock&t;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;seth&t;r5, #high(&quot;
+l_string|&quot;seth&t;%1, #high(&quot;
 id|RW_LOCK_BIAS_STR
 l_string|&quot;);&t;&bslash;n&bslash;t&quot;
-l_string|&quot;or3&t;r5, r5, #low(&quot;
+l_string|&quot;or3&t;%1, %1, #low(&quot;
 id|RW_LOCK_BIAS_STR
 l_string|&quot;);&t;&bslash;n&bslash;t&quot;
-l_string|&quot;mvfc&t;r6, psw;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;mvfc&t;%2, psw;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;clrpsw&t;#0x40 -&gt; nop;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
 id|DCACHE_CLEAR
 c_func
 (paren
-l_string|&quot;r4&quot;
+l_string|&quot;%0&quot;
 comma
 l_string|&quot;r7&quot;
 comma
-l_string|&quot;%0&quot;
+l_string|&quot;%3&quot;
 )paren
-l_string|&quot;lock&t;r4, @%0;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;add&t;r4, r5;&t;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;unlock&t;r4, @%0;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;mvtc&t;r6, psw;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;lock&t;%0, @%3;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;add&t;%0, %1;&t;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;unlock&t;%0, @%3;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;mvtc&t;%2, psw;&t;&t;&t;&t;&bslash;n&bslash;t&quot;
 suffix:colon
-multiline_comment|/* no outputs */
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp0
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp1
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp2
+)paren
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -623,12 +713,6 @@ id|rw-&gt;lock
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
-comma
-l_string|&quot;r4&quot;
-comma
-l_string|&quot;r5&quot;
-comma
-l_string|&quot;r6&quot;
 macro_line|#ifdef CONFIG_CHIP_M32700_TS1
 comma
 l_string|&quot;r7&quot;
@@ -636,9 +720,11 @@ macro_line|#endif&t;/* CONFIG_CHIP_M32700_TS1 */
 )paren
 suffix:semicolon
 )brace
+DECL|macro|_raw_read_trylock
+mdefine_line|#define _raw_read_trylock(lock) generic_raw_read_trylock(lock)
 DECL|function|_raw_write_trylock
 r_static
-id|__inline__
+r_inline
 r_int
 id|_raw_write_trylock
 c_func

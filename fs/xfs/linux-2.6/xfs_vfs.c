@@ -1114,6 +1114,17 @@ comma
 l_string|&quot;vfs&quot;
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|vfsp-&gt;vfs_sync_list
+)paren
+suffix:semicolon
+id|vfsp-&gt;vfs_sync_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 id|init_waitqueue_head
 c_func
 (paren

@@ -11,6 +11,7 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* If you want to make non-PSE machine work, turn off paging&n;           in do_magic. swsusp_pg_dir should have identity mapping, so&n;           it could work...  */
 r_if
 c_cond
 (paren

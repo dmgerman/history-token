@@ -32,6 +32,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -42,7 +43,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;linux/termios.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
@@ -2947,6 +2948,85 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * line discipline callback wrappers&n; *&n; * The wrappers maintain line discipline references&n; * while calling into the line discipline.&n; *&n; * ldisc_receive_buf  - pass receive data to line discipline&n; */
+DECL|function|ldisc_receive_buf
+r_static
+r_void
+id|ldisc_receive_buf
+c_func
+(paren
+r_struct
+id|tty_struct
+op_star
+id|tty
+comma
+r_const
+id|__u8
+op_star
+id|data
+comma
+r_char
+op_star
+id|flags
+comma
+r_int
+id|count
+)paren
+(brace
+r_struct
+id|tty_ldisc
+op_star
+id|ld
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tty
+)paren
+r_return
+suffix:semicolon
+id|ld
+op_assign
+id|tty_ldisc_ref
+c_func
+(paren
+id|tty
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ld
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ld-&gt;receive_buf
+)paren
+id|ld
+op_member_access_from_pointer
+id|receive_buf
+c_func
+(paren
+id|tty
+comma
+id|data
+comma
+id|flags
+comma
+id|count
+)paren
+suffix:semicolon
+id|tty_ldisc_deref
+c_func
+(paren
+id|ld
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* mgsl_stop()&t;&t;throttle (stop) transmitter&n; * &t;&n; * Arguments:&t;&t;tty&t;pointer to tty info structure&n; * Return Value:&t;None&n; */
 DECL|function|mgsl_stop
 r_static
@@ -3565,49 +3645,12 @@ c_cond
 id|tty
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
-id|tty-&gt;flags
-op_amp
-(paren
-l_int|1
-op_lshift
-id|TTY_DO_WRITE_WAKEUP
-)paren
-)paren
-op_logical_and
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|debug_level
-op_ge
-id|DEBUG_LEVEL_BH
-)paren
-id|printk
+id|tty_wakeup
 c_func
-(paren
-l_string|&quot;%s(%d):calling ldisc.write_wakeup on %s&bslash;n&quot;
-comma
-id|__FILE__
-comma
-id|__LINE__
-comma
-id|info-&gt;device_name
-)paren
-suffix:semicolon
-(paren
-id|tty-&gt;ldisc.write_wakeup
-)paren
 (paren
 id|tty
 )paren
 suffix:semicolon
-)brace
 id|wake_up_interruptible
 c_func
 (paren
@@ -8292,30 +8335,13 @@ op_amp
 id|tty-&gt;write_wait
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|tty-&gt;flags
-op_amp
-(paren
-l_int|1
-op_lshift
-id|TTY_DO_WRITE_WAKEUP
-)paren
-)paren
-op_logical_and
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(paren
-id|tty-&gt;ldisc.write_wakeup
-)paren
+id|tty_wakeup
+c_func
 (paren
 id|tty
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* end of mgsl_flush_buffer() */
 multiline_comment|/* mgsl_send_xchar()&n; *&n; *&t;Send a high-priority XON/XOFF character&n; * &t;&n; * Arguments:&t;&t;tty&t;pointer to tty info structure&n; *&t;&t;&t;ch&t;character to send&n; * Return Value:&t;None&n; */
 DECL|function|mgsl_send_xchar
 r_static
@@ -11847,14 +11873,7 @@ c_func
 id|tty
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tty-&gt;ldisc.flush_buffer
-)paren
-id|tty-&gt;ldisc
-dot
-id|flush_buffer
+id|tty_ldisc_flush
 c_func
 (paren
 id|tty
@@ -11886,16 +11905,14 @@ c_cond
 id|info-&gt;close_delay
 )paren
 (brace
-id|set_current_state
+id|msleep_interruptible
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|jiffies_to_msecs
 c_func
 (paren
 id|info-&gt;close_delay
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -12109,16 +12126,14 @@ c_loop
 id|info-&gt;tx_active
 )paren
 (brace
-id|set_current_state
+id|msleep_interruptible
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|jiffies_to_msecs
 c_func
 (paren
 id|char_time
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -12172,16 +12187,14 @@ op_logical_and
 id|info-&gt;tx_enabled
 )paren
 (brace
-id|set_current_state
+id|msleep_interruptible
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|jiffies_to_msecs
 c_func
 (paren
 id|char_time
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -22983,18 +22996,7 @@ id|framesize
 suffix:semicolon
 r_else
 macro_line|#endif
-(brace
-multiline_comment|/* Call the line discipline receive callback directly. */
-r_if
-c_cond
-(paren
-id|tty
-op_logical_and
-id|tty-&gt;ldisc.receive_buf
-)paren
-id|tty-&gt;ldisc
-dot
-id|receive_buf
+id|ldisc_receive_buf
 c_func
 (paren
 id|tty
@@ -23006,7 +23008,6 @@ comma
 id|framesize
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/* Free the buffers used by this frame. */
@@ -23399,17 +23400,7 @@ suffix:semicolon
 id|info-&gt;icount.rxok
 op_increment
 suffix:semicolon
-multiline_comment|/* Call the line discipline receive callback directly. */
-r_if
-c_cond
-(paren
-id|tty
-op_logical_and
-id|tty-&gt;ldisc.receive_buf
-)paren
-id|tty-&gt;ldisc
-dot
-id|receive_buf
+id|ldisc_receive_buf
 c_func
 (paren
 id|tty
@@ -24263,20 +24254,10 @@ op_logical_neg
 id|info-&gt;irq_occurred
 )paren
 (brace
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|msecs_to_jiffies
+id|msleep_interruptible
 c_func
 (paren
 l_int|10
-)paren
 )paren
 suffix:semicolon
 )brace

@@ -10,12 +10,6 @@ DECL|struct|ip_conntrack_protocol
 r_struct
 id|ip_conntrack_protocol
 (brace
-multiline_comment|/* Next pointer. */
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
 multiline_comment|/* Protocol number. */
 DECL|member|proto
 id|u_int8_t
@@ -217,6 +211,17 @@ id|me
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|MAX_IP_CT_PROTO
+mdefine_line|#define MAX_IP_CT_PROTO 256
+r_extern
+r_struct
+id|ip_conntrack_protocol
+op_star
+id|ip_ct_protos
+(braket
+id|MAX_IP_CT_PROTO
+)braket
+suffix:semicolon
 multiline_comment|/* Protocol registration. */
 r_extern
 r_int
@@ -240,6 +245,26 @@ op_star
 id|proto
 )paren
 suffix:semicolon
+DECL|function|ip_ct_find_proto
+r_static
+r_inline
+r_struct
+id|ip_conntrack_protocol
+op_star
+id|ip_ct_find_proto
+c_func
+(paren
+id|u_int8_t
+id|protocol
+)paren
+(brace
+r_return
+id|ip_ct_protos
+(braket
+id|protocol
+)braket
+suffix:semicolon
+)brace
 multiline_comment|/* Existing built-in protocols */
 r_extern
 r_struct
@@ -255,6 +280,11 @@ r_extern
 r_struct
 id|ip_conntrack_protocol
 id|ip_conntrack_protocol_icmp
+suffix:semicolon
+r_extern
+r_struct
+id|ip_conntrack_protocol
+id|ip_conntrack_generic_protocol
 suffix:semicolon
 r_extern
 r_int

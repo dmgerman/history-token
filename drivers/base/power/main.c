@@ -125,7 +125,7 @@ id|parent
 suffix:semicolon
 )brace
 DECL|variable|device_pm_set_parent
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|device_pm_set_parent

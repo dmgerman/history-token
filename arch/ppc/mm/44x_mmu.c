@@ -82,6 +82,8 @@ id|phys
 r_int
 r_int
 id|attrib
+op_assign
+l_int|0
 suffix:semicolon
 id|__asm__
 id|__volatile__

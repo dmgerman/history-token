@@ -5844,6 +5844,14 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Reacquire the handle: ext3_direct_io_get_block() can restart the&n;&t; * transaction&n;&t; */
+id|handle
+op_assign
+id|journal_current_handle
+c_func
+(paren
+)paren
+suffix:semicolon
 id|out_stop
 suffix:colon
 r_if
@@ -5859,6 +5867,8 @@ r_if
 c_cond
 (paren
 id|orphan
+op_logical_and
+id|inode-&gt;i_nlink
 )paren
 id|ext3_orphan_del
 c_func
@@ -5905,8 +5915,7 @@ comma
 id|end
 )paren
 suffix:semicolon
-id|err
-op_assign
+multiline_comment|/*&n;&t;&t;&t;&t; * We&squot;re going to return a positive `ret&squot;&n;&t;&t;&t;&t; * here due to non-zero-length I/O, so there&squot;s&n;&t;&t;&t;&t; * no way of reporting error returns from&n;&t;&t;&t;&t; * ext3_mark_inode_dirty() to userspace.  So&n;&t;&t;&t;&t; * ignore it.&n;&t;&t;&t;&t; */
 id|ext3_mark_inode_dirty
 c_func
 (paren
@@ -5914,16 +5923,6 @@ id|handle
 comma
 id|inode
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ret
-)paren
-id|ret
-op_assign
-id|err
 suffix:semicolon
 )brace
 )brace

@@ -290,7 +290,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|iommu_setup_pmac
+id|iommu_setup_u3
 c_func
 (paren
 r_void
@@ -520,6 +520,14 @@ suffix:semicolon
 r_extern
 r_void
 id|pci_dma_init_direct
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|alloc_u3_dart_table
 c_func
 (paren
 r_void

@@ -17,8 +17,11 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_tcq.h&gt;
 macro_line|#include &lt;scsi/sg.h&gt;
 DECL|macro|IDESCSI_DEBUG_LOG
 mdefine_line|#define IDESCSI_DEBUG_LOG&t;&t;0
@@ -82,7 +85,8 @@ id|b_count
 suffix:semicolon
 multiline_comment|/* Bytes transferred from current entry */
 DECL|member|scsi_cmd
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scsi_cmd
 suffix:semicolon
@@ -94,7 +98,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -2848,6 +2853,12 @@ op_star
 id|drive
 )paren
 (brace
+id|ide_hwif_t
+op_star
+id|hwif
+op_assign
+id|drive-&gt;hwif
+suffix:semicolon
 id|idescsi_scsi_t
 op_star
 id|scsi
@@ -3006,21 +3017,12 @@ op_amp
 id|pc-&gt;flags
 )paren
 suffix:semicolon
-(paren
-r_void
-)paren
-(paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|hwif
 op_member_access_from_pointer
-id|ide_dma_begin
+id|dma_start
 c_func
 (paren
 id|drive
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -3052,6 +3054,12 @@ c_func
 (paren
 id|drive
 )paren
+suffix:semicolon
+id|ide_hwif_t
+op_star
+id|hwif
+op_assign
+id|drive-&gt;hwif
 suffix:semicolon
 id|atapi_feature_t
 id|feature
@@ -3104,51 +3112,17 @@ id|drive-&gt;using_dma
 op_logical_and
 id|rq-&gt;bio
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|test_bit
-c_func
-(paren
-id|PC_WRITING
-comma
-op_amp
-id|pc-&gt;flags
-)paren
-)paren
 id|feature.b.dma
 op_assign
 op_logical_neg
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|hwif
 op_member_access_from_pointer
-id|ide_dma_write
+id|dma_setup
 c_func
 (paren
 id|drive
 )paren
 suffix:semicolon
-r_else
-id|feature.b.dma
-op_assign
-op_logical_neg
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ide_dma_read
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-)brace
 id|SELECT_DRIVE
 c_func
 (paren
@@ -3984,7 +3958,8 @@ r_int
 id|idescsi_slave_configure
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdp
 )paren
@@ -4026,7 +4001,8 @@ r_static
 r_int
 id|idescsi_ioctl
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|dev
 comma
@@ -4553,7 +4529,8 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -4637,7 +4614,8 @@ r_static
 r_int
 id|idescsi_queue
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -4647,7 +4625,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -5026,7 +5005,8 @@ r_static
 r_int
 id|idescsi_eh_abort
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -5285,7 +5265,8 @@ r_static
 r_int
 id|idescsi_eh_reset
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -5698,7 +5679,8 @@ suffix:semicolon
 )brace
 DECL|variable|idescsi_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|idescsi_template
 op_assign
 (brace

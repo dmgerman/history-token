@@ -1,31 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/m32r/kernel/setup_mappi.c&n; *&n; *  Setup routines for MITSUBISHI MAPPI Board&n; *&n; *  Copyright (c) 2001, 2002  Hiroyuki Kondo, Hirokazu Takata,&n; *                            Hitoshi Yamamoto&n; */
-DECL|variable|rcsid
-r_static
-r_char
-op_star
-id|rcsid
-op_assign
-l_string|&quot;$Id$&quot;
-suffix:semicolon
-DECL|function|use_rcsid
-r_static
-r_void
-id|use_rcsid
-c_func
-(paren
-r_void
-)paren
-(brace
-id|rcsid
-op_assign
-id|rcsid
-suffix:semicolon
-id|use_rcsid
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/*&n; *  linux/arch/m32r/kernel/setup_mappi.c&n; *&n; *  Setup routines for Renesas MAPPI Board&n; *&n; *  Copyright (c) 2001, 2002  Hiroyuki Kondo, Hirokazu Takata,&n; *                            Hitoshi Yamamoto&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

@@ -320,6 +320,8 @@ macro_line|#ifndef pgoff_t
 DECL|macro|pgoff_t
 mdefine_line|#define pgoff_t unsigned long
 macro_line|#endif
+macro_line|#endif /* __KERNEL_STRICT_NAMES */
+multiline_comment|/*&n; * Below are truly Linux-specific types that should never collide with&n; * any application/library that wants linux/types.h.&n; */
 macro_line|#ifdef __CHECKER__
 DECL|macro|__bitwise
 mdefine_line|#define __bitwise __attribute__((bitwise))
@@ -363,8 +365,6 @@ id|__u64
 id|__bitwise
 id|__be64
 suffix:semicolon
-macro_line|#endif /* __KERNEL_STRICT_NAMES */
-multiline_comment|/*&n; * Below are truly Linux-specific types that should never collide with&n; * any application/library that wants linux/types.h.&n; */
 DECL|struct|ustat
 r_struct
 id|ustat

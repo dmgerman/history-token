@@ -744,18 +744,6 @@ DECL|member|pm_suspended
 id|u16
 id|pm_suspended
 suffix:semicolon
-DECL|member|pm_save_state
-id|u32
-id|pm_save_state
-(braket
-l_int|64
-op_div
-r_sizeof
-(paren
-id|u32
-)paren
-)braket
-suffix:semicolon
 DECL|member|pm_saved_mixer_settings
 r_int
 id|pm_saved_mixer_settings
@@ -3893,7 +3881,7 @@ id|dmabuf-&gt;buforder
 op_assign
 id|order
 suffix:semicolon
-multiline_comment|/* now mark the pages as reserved; otherwise remap_page_range doesn&squot;t do what we want */
+multiline_comment|/* now mark the pages as reserved; otherwise remap_pfn_range doesn&squot;t do what we want */
 id|pend
 op_assign
 id|virt_to_page
@@ -8935,7 +8923,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma
@@ -8947,6 +8935,8 @@ c_func
 (paren
 id|dmabuf-&gt;rawbuf
 )paren
+op_rshift
+id|PAGE_SHIFT
 comma
 id|size
 comma
@@ -17584,8 +17574,6 @@ id|pci_save_state
 c_func
 (paren
 id|dev
-comma
-id|card-&gt;pm_save_state
 )paren
 suffix:semicolon
 multiline_comment|/* XXX do we need this? */
@@ -17649,8 +17637,6 @@ id|pci_restore_state
 c_func
 (paren
 id|dev
-comma
-id|card-&gt;pm_save_state
 )paren
 suffix:semicolon
 multiline_comment|/* observation of a toshiba portege 3440ct suggests that the &n;&t;   hardware has to be more or less completely reinitialized from&n;&t;   scratch after an apm suspend.  Works For Me.   -dan */
@@ -18275,32 +18261,13 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
+r_return
 id|pci_register_driver
 c_func
 (paren
 op_amp
 id|ali_pci_driver
 )paren
-)paren
-(brace
-id|pci_unregister_driver
-c_func
-(paren
-op_amp
-id|ali_pci_driver
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|ali_cleanup_module

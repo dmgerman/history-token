@@ -2,6 +2,7 @@ multiline_comment|/*&n; * include/asm-sh/processor.h&n; *&n; * Copyright (C) 199
 macro_line|#ifndef __ASM_SH_PROCESSOR_H
 DECL|macro|__ASM_SH_PROCESSOR_H
 mdefine_line|#define __ASM_SH_PROCESSOR_H
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
@@ -84,6 +85,9 @@ comma
 id|CPU_SH4_202
 comma
 id|CPU_SH4_501
+comma
+DECL|enumerator|CPU_SH73180
+id|CPU_SH73180
 comma
 multiline_comment|/* Unknown subtype */
 DECL|enumerator|CPU_SH_NONE
@@ -286,6 +290,8 @@ DECL|macro|CPU_HAS_MMU_PAGE_ASSOC
 mdefine_line|#define CPU_HAS_MMU_PAGE_ASSOC&t;0x0004&t;/* SH3: TLB way selection bit support */
 DECL|macro|CPU_HAS_DSP
 mdefine_line|#define CPU_HAS_DSP&t;&t;0x0008&t;/* SH-DSP: DSP support */
+DECL|macro|CPU_HAS_PERF_COUNTER
+mdefine_line|#define CPU_HAS_PERF_COUNTER&t;0x0010&t;/* Hardware performance counters */
 DECL|struct|thread_struct
 r_struct
 id|thread_struct
@@ -557,5 +563,6 @@ DECL|macro|cpu_sleep
 mdefine_line|#define cpu_sleep()&t;__asm__ __volatile__ (&quot;sleep&quot; : : : &quot;memory&quot;)
 DECL|macro|cpu_relax
 mdefine_line|#define cpu_relax()&t;do { } while (0)
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_SH_PROCESSOR_H */
 eof

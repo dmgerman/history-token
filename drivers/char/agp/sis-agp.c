@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;agp.h&quot;
 DECL|macro|SIS_ATTBASE
 mdefine_line|#define SIS_ATTBASE&t;0x90
@@ -454,23 +455,10 @@ id|PFX
 l_string|&quot;SiS delay workaround: giving bridge time to recover.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-(paren
-l_int|1
-op_plus
-(paren
-id|HZ
-op_star
 l_int|10
-)paren
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 )brace

@@ -1,100 +1,6 @@
-multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under GPL&n; */
+multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2004 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under GPL&n; */
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * OHCI Root Hub ... the nonsharable stuff&n; *&n; * Registers don&squot;t need cpu_to_le32, that happens transparently&n; */
-multiline_comment|/* AMD-756 (D2 rev) reports corrupt register contents in some cases.&n; * The erratum (#4) description is incorrect.  AMD&squot;s workaround waits&n; * till some bits (mostly reserved) are clear; ok for all revs.&n; */
-DECL|macro|read_roothub
-mdefine_line|#define read_roothub(hc, register, mask) ({ &bslash;&n;&t;u32 temp = ohci_readl (&amp;hc-&gt;regs-&gt;roothub.register); &bslash;&n;&t;if (temp == -1) &bslash;&n;&t;&t;disable (hc); &bslash;&n;&t;else if (hc-&gt;flags &amp; OHCI_QUIRK_AMD756) &bslash;&n;&t;&t;while (temp &amp; mask) &bslash;&n;&t;&t;&t;temp = ohci_readl (&amp;hc-&gt;regs-&gt;roothub.register); &bslash;&n;&t;temp; })
-DECL|function|roothub_a
-r_static
-id|u32
-id|roothub_a
-(paren
-r_struct
-id|ohci_hcd
-op_star
-id|hc
-)paren
-(brace
-r_return
-id|read_roothub
-(paren
-id|hc
-comma
-id|a
-comma
-l_int|0xfc0fe000
-)paren
-suffix:semicolon
-)brace
-DECL|function|roothub_b
-r_static
-r_inline
-id|u32
-id|roothub_b
-(paren
-r_struct
-id|ohci_hcd
-op_star
-id|hc
-)paren
-(brace
-r_return
-id|ohci_readl
-(paren
-op_amp
-id|hc-&gt;regs-&gt;roothub.b
-)paren
-suffix:semicolon
-)brace
-DECL|function|roothub_status
-r_static
-r_inline
-id|u32
-id|roothub_status
-(paren
-r_struct
-id|ohci_hcd
-op_star
-id|hc
-)paren
-(brace
-r_return
-id|ohci_readl
-(paren
-op_amp
-id|hc-&gt;regs-&gt;roothub.status
-)paren
-suffix:semicolon
-)brace
-DECL|function|roothub_portstatus
-r_static
-id|u32
-id|roothub_portstatus
-(paren
-r_struct
-id|ohci_hcd
-op_star
-id|hc
-comma
-r_int
-id|i
-)paren
-(brace
-r_return
-id|read_roothub
-(paren
-id|hc
-comma
-id|portstatus
-(braket
-id|i
-)braket
-comma
-l_int|0xffe0fce0
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/*&n; * OHCI Root Hub ... the nonsharable stuff&n; */
 DECL|macro|dbg_port
 mdefine_line|#define dbg_port(hc,label,num,value) &bslash;&n;&t;ohci_dbg (hc, &bslash;&n;&t;&t;&quot;%s roothub.portstatus [%d] &quot; &bslash;&n;&t;&t;&quot;= 0x%08x%s%s%s%s%s%s%s%s%s%s%s%s&bslash;n&quot;, &bslash;&n;&t;&t;label, num, temp, &bslash;&n;&t;&t;(temp &amp; RH_PS_PRSC) ? &quot; PRSC&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_OCIC) ? &quot; OCIC&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PSSC) ? &quot; PSSC&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PESC) ? &quot; PESC&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_CSC) ? &quot; CSC&quot; : &quot;&quot;, &bslash;&n; &t;&t;&bslash;&n;&t;&t;(temp &amp; RH_PS_LSDA) ? &quot; LSDA&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PPS) ? &quot; PPS&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PRS) ? &quot; PRS&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_POCI) ? &quot; POCI&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PSS) ? &quot; PSS&quot; : &quot;&quot;, &bslash;&n; &t;&t;&bslash;&n;&t;&t;(temp &amp; RH_PS_PES) ? &quot; PES&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_CCS) ? &quot; CCS&quot; : &quot;&quot; &bslash;&n;&t;&t;);
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -479,10 +385,17 @@ l_int|5
 suffix:semicolon
 id|succeed
 suffix:colon
-multiline_comment|/* it&squot;s not USB_STATE_SUSPENDED unless access to this&n;&t; * hub from the non-usb side (PCI, SOC, etc) stopped &n;&t; */
+multiline_comment|/* it&squot;s not HCD_STATE_SUSPENDED unless access to this&n;&t; * hub from the non-usb side (PCI, SOC, etc) stopped &n;&t; */
 id|root-&gt;dev.power.power_state
 op_assign
 l_int|3
+suffix:semicolon
+id|usb_set_device_state
+(paren
+id|root
+comma
+id|USB_STATE_SUSPENDED
+)paren
 suffix:semicolon
 id|done
 suffix:colon
@@ -524,17 +437,7 @@ r_return
 id|ed
 suffix:semicolon
 )brace
-r_static
-r_int
-id|hc_restart
-(paren
-r_struct
-id|ohci_hcd
-op_star
-id|ohci
-)paren
-suffix:semicolon
-multiline_comment|/* caller owns root-&gt;serialize */
+multiline_comment|/* caller has locked the root hub */
 DECL|function|ohci_hub_resume
 r_static
 r_int
@@ -617,6 +520,35 @@ op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ohci-&gt;hc_control
+op_amp
+(paren
+id|OHCI_CTRL_IR
+op_or
+id|OHCI_SCHED_ENABLES
+)paren
+)paren
+(brace
+multiline_comment|/* this can happen after suspend-to-disk */
+id|ohci_dbg
+(paren
+id|ohci
+comma
+l_string|&quot;BIOS/SMM active, control %03x&bslash;n&quot;
+comma
+id|ohci-&gt;hc_control
+)paren
+suffix:semicolon
+id|status
+op_assign
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
+r_else
 r_switch
 c_cond
 (paren
@@ -730,12 +662,22 @@ op_eq
 op_minus
 id|EBUSY
 )paren
-r_return
-id|hc_restart
+(brace
+(paren
+r_void
+)paren
+id|ohci_init
 (paren
 id|ohci
 )paren
 suffix:semicolon
+r_return
+id|ohci_restart
+(paren
+id|ohci
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1009,6 +951,13 @@ id|root-&gt;dev.power.power_state
 op_assign
 l_int|0
 suffix:semicolon
+id|usb_set_device_state
+(paren
+id|root
+comma
+id|USB_STATE_CONFIGURED
+)paren
+suffix:semicolon
 multiline_comment|/* keep it alive for ~5x suspend + resume costs */
 id|ohci-&gt;next_statechange
 op_assign
@@ -1151,7 +1100,7 @@ id|temp
 )paren
 id|writel
 (paren
-id|status
+id|temp
 comma
 op_amp
 id|ohci-&gt;regs-&gt;cmdstatus
@@ -1192,10 +1141,9 @@ id|hcd
 op_assign
 id|_hcd
 suffix:semicolon
-id|down
+id|usb_lock_device
 (paren
-op_amp
-id|hcd-&gt;self.root_hub-&gt;serialize
+id|hcd-&gt;self.root_hub
 )paren
 suffix:semicolon
 (paren
@@ -1206,10 +1154,9 @@ id|ohci_hub_resume
 id|hcd
 )paren
 suffix:semicolon
-id|up
+id|usb_unlock_device
 (paren
-op_amp
-id|hcd-&gt;self.root_hub-&gt;serialize
+id|hcd-&gt;self.root_hub
 )paren
 suffix:semicolon
 )brace
@@ -1534,13 +1481,10 @@ id|ohci-&gt;hc_control
 op_eq
 id|OHCI_USB_OPER
 op_logical_and
-id|down_trylock
+id|usb_trylock_device
 (paren
-op_amp
-id|hcd-&gt;self.root_hub-&gt;serialize
+id|hcd-&gt;self.root_hub
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 id|ohci_vdbg
@@ -1563,10 +1507,9 @@ id|ohci-&gt;hcd.state
 op_assign
 id|USB_STATE_RUNNING
 suffix:semicolon
-id|up
+id|usb_unlock_device
 (paren
-op_amp
-id|hcd-&gt;self.root_hub-&gt;serialize
+id|hcd-&gt;self.root_hub
 )paren
 suffix:semicolon
 )brace
@@ -1888,9 +1831,9 @@ macro_line|#endif
 multiline_comment|/* this timer value might be vendor-specific ... */
 DECL|macro|PORT_RESET_HW_MSEC
 mdefine_line|#define&t;PORT_RESET_HW_MSEC&t;10
-multiline_comment|/* wrap-aware logic stolen from &lt;linux/jiffies.h&gt; */
+multiline_comment|/* wrap-aware logic morphed from &lt;linux/jiffies.h&gt; */
 DECL|macro|tick_before
-mdefine_line|#define tick_before(t1,t2) ((((s16)(t1))-((s16)(t2))) &lt; 0)
+mdefine_line|#define tick_before(t1,t2) ((s16)(((s16)(t1))-((s16)(t2))) &lt; 0)
 multiline_comment|/* called from some task, normally khubd */
 DECL|function|root_port_reset
 r_static
@@ -2302,7 +2245,7 @@ id|RH_HS_DRWE
 suffix:semicolon
 op_star
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|buf
@@ -2344,7 +2287,7 @@ id|wIndex
 suffix:semicolon
 op_star
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|buf

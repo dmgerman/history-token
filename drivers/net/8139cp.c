@@ -1329,6 +1329,7 @@ id|cp_private
 (brace
 DECL|member|regs
 r_void
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -1446,13 +1447,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Is Wake-on-LAN enabled? */
-DECL|member|power_state
-id|u32
-id|power_state
-(braket
-l_int|16
-)braket
-suffix:semicolon
 DECL|member|mii_if
 r_struct
 id|mii_if_info
@@ -7563,6 +7557,7 @@ r_int
 id|read_eeprom
 (paren
 r_void
+id|__iomem
 op_star
 id|ioaddr
 comma
@@ -7582,6 +7577,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ee_addr
 op_assign
@@ -7839,6 +7835,7 @@ r_int
 id|rc
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -8862,8 +8859,6 @@ id|cp-&gt;wol_enabled
 id|pci_save_state
 (paren
 id|cp-&gt;pdev
-comma
-id|cp-&gt;power_state
 )paren
 suffix:semicolon
 id|cp_set_d3_state
@@ -8935,8 +8930,6 @@ suffix:semicolon
 id|pci_restore_state
 (paren
 id|cp-&gt;pdev
-comma
-id|cp-&gt;power_state
 )paren
 suffix:semicolon
 )brace

@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * drivers/serial/sh-sci.c&n; *&n; * SuperH on-chip serial module support.  (SCI with no FIFO / with FIFO)&n; *&n; *  Copyright (C) 2002, 2003  Paul Mundt&n; *&n; * based off of the old drivers/char/sh-sci.c by:&n; *&n; *   Copyright (C) 1999, 2000  Niibe Yutaka&n; *   Copyright (C) 2000  Sugioka Toshinobu&n; *   Modified to support multiple serial ports. Stuart Menefy (May 2000).&n; *   Modified to support SecureEdge. David McCullough (2002)&n; *   Modified to support SH7300 SCIF. Takashi Kusuda (Jun 2003).&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/*&n; * drivers/serial/sh-sci.c&n; *&n; * SuperH on-chip serial module support.  (SCI with no FIFO / with FIFO)&n; *&n; *  Copyright (C) 2002, 2003, 2004  Paul Mundt&n; *&n; * based off of the old drivers/char/sh-sci.c by:&n; *&n; *   Copyright (C) 1999, 2000  Niibe Yutaka&n; *   Copyright (C) 2000  Sugioka Toshinobu&n; *   Modified to support multiple serial ports. Stuart Menefy (May 2000).&n; *   Modified to support SecureEdge. David McCullough (2002)&n; *   Modified to support SH7300 SCIF. Takashi Kusuda (Jun 2003).&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#ifdef CONFIG_CPU_FREQ
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
@@ -30,7 +31,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;linux/generic_serial.h&gt;
 macro_line|#ifdef CONFIG_SH_STANDARD_BIOS
 macro_line|#include &lt;asm/sh_bios.h&gt;
@@ -1329,7 +1329,7 @@ macro_line|#endif
 macro_line|#endif
 macro_line|#if defined(SCIF_ONLY) || defined(SCI_AND_SCIF)
 macro_line|#if defined(CONFIG_CPU_SH3)
-multiline_comment|/* For SH7707, SH7709, SH7709A, SH7729, SH7300*/
+multiline_comment|/* For SH7705, SH7707, SH7709, SH7709A, SH7729, SH7300*/
 DECL|function|sci_init_pins_scif
 r_static
 r_void
@@ -3574,6 +3574,8 @@ id|sci_ports
 (braket
 id|i
 )braket
+dot
+id|port
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Update the uartclk per-port if frequency has&n;&t;&t;&t; * changed, since it will no longer necessarily be&n;&t;&t;&t; * consistent with the old frequency.&n;&t;&t;&t; *&n;&t;&t;&t; * Really we want to be able to do something like&n;&t;&t;&t; * uart_change_speed() or something along those lines&n;&t;&t;&t; * here to implicitly reset the per-port baud rate..&n;&t;&t;&t; *&n;&t;&t;&t; * Clean this up later..&n;&t;&t;&t; */
 id|port-&gt;uartclk
@@ -5197,6 +5199,134 @@ id|sci_init_pins_sci
 comma
 )brace
 comma
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7705)
+(brace
+dot
+id|port
+op_assign
+(brace
+dot
+id|membase
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|SCIF0
+comma
+dot
+id|mapbase
+op_assign
+id|SCIF0
+comma
+dot
+id|iotype
+op_assign
+id|SERIAL_IO_MEM
+comma
+dot
+id|irq
+op_assign
+l_int|55
+comma
+dot
+id|ops
+op_assign
+op_amp
+id|sci_uart_ops
+comma
+dot
+id|flags
+op_assign
+id|ASYNC_BOOT_AUTOCONF
+comma
+dot
+id|line
+op_assign
+l_int|0
+comma
+)brace
+comma
+dot
+id|type
+op_assign
+id|PORT_SCIF
+comma
+dot
+id|irqs
+op_assign
+id|SH3_IRDA_IRQS
+comma
+dot
+id|init_pins
+op_assign
+id|sci_init_pins_scif
+comma
+)brace
+comma
+(brace
+dot
+id|port
+op_assign
+(brace
+dot
+id|membase
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|SCIF2
+comma
+dot
+id|mapbase
+op_assign
+id|SCIF2
+comma
+dot
+id|iotype
+op_assign
+id|SERIAL_IO_MEM
+comma
+dot
+id|irq
+op_assign
+l_int|59
+comma
+dot
+id|ops
+op_assign
+op_amp
+id|sci_uart_ops
+comma
+dot
+id|flags
+op_assign
+id|ASYNC_BOOT_AUTOCONF
+comma
+dot
+id|line
+op_assign
+l_int|1
+comma
+)brace
+comma
+dot
+id|type
+op_assign
+id|PORT_SCIF
+comma
+dot
+id|irqs
+op_assign
+id|SH3_SCIF_IRQS
+comma
+dot
+id|init_pins
+op_assign
+id|sci_init_pins_scif
+comma
+)brace
 macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7707) || defined(CONFIG_CPU_SUBTYPE_SH7709)
 (brace
 dot
@@ -5446,6 +5576,71 @@ dot
 id|irqs
 op_assign
 id|SH7300_SCIF0_IRQS
+comma
+dot
+id|init_pins
+op_assign
+id|sci_init_pins_scif
+comma
+)brace
+comma
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH73180)
+(brace
+dot
+id|port
+op_assign
+(brace
+dot
+id|membase
+op_assign
+(paren
+r_void
+op_star
+)paren
+l_int|0xffe00000
+comma
+dot
+id|mapbase
+op_assign
+l_int|0xffe00000
+comma
+dot
+id|iotype
+op_assign
+id|SERIAL_IO_MEM
+comma
+dot
+id|irq
+op_assign
+l_int|25
+comma
+dot
+id|ops
+op_assign
+op_amp
+id|sci_uart_ops
+comma
+dot
+id|flags
+op_assign
+id|ASYNC_BOOT_AUTOCONF
+comma
+dot
+id|line
+op_assign
+l_int|0
+comma
+)brace
+comma
+dot
+id|type
+op_assign
+id|PORT_SCIF
+comma
+dot
+id|irqs
+op_assign
+id|SH73180_SCIF_IRQS
 comma
 dot
 id|init_pins
@@ -5833,6 +6028,71 @@ dot
 id|irqs
 op_assign
 id|SH7760_SCIF2_IRQS
+comma
+dot
+id|init_pins
+op_assign
+id|sci_init_pins_scif
+comma
+)brace
+comma
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH4_202)
+(brace
+dot
+id|port
+op_assign
+(brace
+dot
+id|membase
+op_assign
+(paren
+r_void
+op_star
+)paren
+l_int|0xffe80000
+comma
+dot
+id|mapbase
+op_assign
+l_int|0xffe80000
+comma
+dot
+id|iotype
+op_assign
+id|SERIAL_IO_MEM
+comma
+dot
+id|irq
+op_assign
+l_int|43
+comma
+dot
+id|ops
+op_assign
+op_amp
+id|sci_uart_ops
+comma
+dot
+id|flags
+op_assign
+id|ASYNC_BOOT_AUTOCONF
+comma
+dot
+id|line
+op_assign
+l_int|0
+comma
+)brace
+comma
+dot
+id|type
+op_assign
+id|PORT_SCIF
+comma
+dot
+id|irqs
+op_assign
+id|SH4_SCIF_IRQS
 comma
 dot
 id|init_pins

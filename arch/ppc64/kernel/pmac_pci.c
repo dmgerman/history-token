@@ -1025,6 +1025,9 @@ r_struct
 id|device_node
 op_star
 id|busdn
+comma
+op_star
+id|dn
 suffix:semicolon
 r_int
 r_int
@@ -1067,6 +1070,39 @@ r_if
 c_cond
 (paren
 id|hose
+op_eq
+l_int|NULL
+)paren
+r_return
+id|PCIBIOS_DEVICE_NOT_FOUND
+suffix:semicolon
+multiline_comment|/* We only allow config cycles to devices that are in OF device-tree&n;&t; * as we are apparently having some weird things going on with some&n;&t; * revs of K2 on recent G5s&n;&t; */
+r_for
+c_loop
+(paren
+id|dn
+op_assign
+id|busdn-&gt;child
+suffix:semicolon
+id|dn
+suffix:semicolon
+id|dn
+op_assign
+id|dn-&gt;sibling
+)paren
+r_if
+c_cond
+(paren
+id|dn-&gt;devfn
+op_eq
+id|devfn
+)paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dn
 op_eq
 l_int|NULL
 )paren
@@ -1564,8 +1600,6 @@ multiline_comment|/*&n;&t; * /ht node doesn&squot;t expose a &quot;ranges&quot; 
 id|hose-&gt;io_base_phys
 op_assign
 l_int|0xf4000000
-op_plus
-l_int|0x00400000
 suffix:semicolon
 id|hose-&gt;io_base_virt
 op_assign
@@ -2873,13 +2907,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PMAC_DART
-id|iommu_setup_pmac
+id|iommu_setup_u3
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PMAC_DART */
 )brace
 DECL|function|pmac_fixup_phb_resources
 r_static

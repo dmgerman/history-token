@@ -239,7 +239,7 @@ id|GFP_KERNEL
 )paren
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|flush_tlb_kernel_page
 c_func

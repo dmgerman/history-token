@@ -7154,8 +7154,7 @@ c_cond
 (paren
 (paren
 op_logical_neg
-id|reiserfs_buffer_prepared
-c_func
+id|buffer_journal_prepared
 (paren
 id|bh
 )paren

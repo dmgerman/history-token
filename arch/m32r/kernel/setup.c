@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/m32r/kernel/setup.c&n; *&n; *  Setup routines for MITSUBISHI M32R&n; *&n; *  Copyright (c) 2001, 2002  Hiroyuki Kondo, Hirokazu Takata,&n; *                            Hitoshi Yamamoto&n; */
+multiline_comment|/*&n; *  linux/arch/m32r/kernel/setup.c&n; *&n; *  Setup routines for Renesas M32R&n; *&n; *  Copyright (c) 2001, 2002  Hiroyuki Kondo, Hirokazu Takata,&n; *                            Hitoshi Yamamoto&n; */
 multiline_comment|/* $Id$ */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

@@ -40,6 +40,8 @@ DECL|macro|HPET_ID_NUMBER
 mdefine_line|#define HPET_ID_NUMBER&t;0x00001f00
 DECL|macro|HPET_ID_REV
 mdefine_line|#define HPET_ID_REV&t;0x000000ff
+DECL|macro|HPET_ID_NUMBER_SHIFT
+mdefine_line|#define&t;HPET_ID_NUMBER_SHIFT&t;8
 DECL|macro|HPET_ID_VENDOR_SHIFT
 mdefine_line|#define HPET_ID_VENDOR_SHIFT&t;16
 DECL|macro|HPET_ID_VENDOR_8086
@@ -48,6 +50,10 @@ DECL|macro|HPET_CFG_ENABLE
 mdefine_line|#define HPET_CFG_ENABLE&t;0x001
 DECL|macro|HPET_CFG_LEGACY
 mdefine_line|#define HPET_CFG_LEGACY&t;0x002
+DECL|macro|HPET_LEGACY_8254
+mdefine_line|#define&t;HPET_LEGACY_8254&t;2
+DECL|macro|HPET_LEGACY_RTC
+mdefine_line|#define&t;HPET_LEGACY_RTC&t;&t;8
 DECL|macro|HPET_TN_ENABLE
 mdefine_line|#define HPET_TN_ENABLE&t;&t;0x004
 DECL|macro|HPET_TN_PERIODIC

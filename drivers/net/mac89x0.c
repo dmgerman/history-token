@@ -34,6 +34,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1068,18 +1069,10 @@ id|POWER_ON_RESET
 )paren
 suffix:semicolon
 multiline_comment|/* wait 30 ms */
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
 l_int|30
-op_star
-id|HZ
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 multiline_comment|/* Wait until the chip is reset */

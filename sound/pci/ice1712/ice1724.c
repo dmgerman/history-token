@@ -109,6 +109,7 @@ id|index
 comma
 r_int
 comma
+op_amp
 id|boot_devs
 comma
 l_int|0444
@@ -129,6 +130,7 @@ id|id
 comma
 id|charp
 comma
+op_amp
 id|boot_devs
 comma
 l_int|0444
@@ -149,6 +151,7 @@ id|enable
 comma
 r_bool
 comma
+op_amp
 id|boot_devs
 comma
 l_int|0444
@@ -169,6 +172,7 @@ id|model
 comma
 id|charp
 comma
+op_amp
 id|boot_devs
 comma
 l_int|0444

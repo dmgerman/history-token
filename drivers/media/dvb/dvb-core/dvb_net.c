@@ -8,7 +8,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &quot;dvb_demux.h&quot;
 macro_line|#include &quot;dvb_net.h&quot;
-macro_line|#include &quot;dvb_functions.h&quot;
 DECL|function|iov_crc32
 r_static
 r_inline
@@ -488,7 +487,11 @@ id|dev-&gt;hard_header_len
 suffix:semicolon
 id|eth
 op_assign
-id|skb-&gt;mac.ethernet
+id|eth_hdr
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 r_if
 c_cond

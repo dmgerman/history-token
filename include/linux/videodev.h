@@ -1246,6 +1246,8 @@ DECL|macro|VID_HARDWARE_SAA7114H
 mdefine_line|#define VID_HARDWARE_SAA7114H   37
 DECL|macro|VID_HARDWARE_SN9C102
 mdefine_line|#define VID_HARDWARE_SN9C102&t;38
+DECL|macro|VID_HARDWARE_ARV
+mdefine_line|#define VID_HARDWARE_ARV&t;39
 macro_line|#endif /* __LINUX_VIDEODEV_H */
 multiline_comment|/*&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */
 eof

@@ -887,7 +887,7 @@ macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
 DECL|macro|io_remap_page_range
-mdefine_line|#define io_remap_page_range remap_page_range
+mdefine_line|#define io_remap_page_range(vma, vaddr, paddr, size, prot)&t;&t;&bslash;&n;&t;&t;remap_pfn_range(vma, vaddr, (paddr) &gt;&gt; PAGE_SHIFT, size, prot)
 multiline_comment|/*&n; * No page table caches to initialise&n; */
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
@@ -905,7 +905,7 @@ id|objp
 )paren
 suffix:semicolon
 macro_line|#endif /* !CONFIG_MMU */
-macro_line|#ifdef CONFIG_CPU_SH4
+macro_line|#if defined(CONFIG_CPU_SH4) || defined(CONFIG_SH7705_CACHE_32KB)
 DECL|macro|__HAVE_ARCH_PTEP_GET_AND_CLEAR
 mdefine_line|#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
 r_extern

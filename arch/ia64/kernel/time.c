@@ -158,8 +158,6 @@ c_loop
 l_int|1
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
-multiline_comment|/*&n;&t;&t; * For UP, this is done in do_timer().  Weird, but&n;&t;&t; * fixing that would require updates to all&n;&t;&t; * platforms.&n;&t;&t; */
 id|update_process_times
 c_func
 (paren
@@ -170,7 +168,6 @@ id|regs
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|new_itm
 op_add_assign
 id|local_cpu_data-&gt;itm_delta
@@ -493,7 +490,7 @@ c_func
 op_amp
 id|proc_ratio
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|itc_ratio

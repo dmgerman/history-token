@@ -569,11 +569,19 @@ DECL|macro|__NR_sys_kexec_load
 mdefine_line|#define __NR_sys_kexec_load&t;283
 DECL|macro|__NR_waitid
 mdefine_line|#define __NR_waitid&t;&t;284
+DECL|macro|__NR_sys_setaltroot
+mdefine_line|#define __NR_sys_setaltroot&t;285
+DECL|macro|__NR_add_key
+mdefine_line|#define __NR_add_key&t;&t;286
+DECL|macro|__NR_request_key
+mdefine_line|#define __NR_request_key&t;287
+DECL|macro|__NR_keyctl
+mdefine_line|#define __NR_keyctl&t;&t;288
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls 285
-multiline_comment|/* user-visible error numbers are in the range -1 - -124: see &lt;asm-i386/errno.h&gt; */
+mdefine_line|#define NR_syscalls 289
+multiline_comment|/*&n; * user-visible error numbers are in the range -1 - -128: see&n; * &lt;asm-i386/errno.h&gt;&n; */
 DECL|macro|__syscall_return
-mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;&t;&t;errno = -(res); &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)
+mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-(128 + 1))) { &bslash;&n;&t;&t;errno = -(res); &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)
 multiline_comment|/* XXX - _foo needs to be __foo, while __NR_bar could be _NR_bar. */
 DECL|macro|_syscall0
 mdefine_line|#define _syscall0(type,name) &bslash;&n;type name(void) &bslash;&n;{ &bslash;&n;long __res; &bslash;&n;__asm__ volatile (&quot;int $0x80&quot; &bslash;&n;&t;: &quot;=a&quot; (__res) &bslash;&n;&t;: &quot;0&quot; (__NR_##name)); &bslash;&n;__syscall_return(type,__res); &bslash;&n;}

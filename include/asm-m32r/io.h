@@ -1,7 +1,8 @@
 macro_line|#ifndef _ASM_M32R_IO_H
 DECL|macro|_ASM_M32R_IO_H
 mdefine_line|#define _ASM_M32R_IO_H
-multiline_comment|/* $Id$ */
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/page.h&gt;  /* __va */
 macro_line|#ifdef __KERNEL__
 DECL|macro|IO_SPACE_LIMIT
@@ -9,7 +10,7 @@ mdefine_line|#define IO_SPACE_LIMIT  0xFFFFFFFF
 multiline_comment|/**&n; *&t;virt_to_phys&t;-&t;map virtual addresses to physical&n; *&t;@address: address to remap&n; *&n; *&t;The returned physical address is the physical (CPU) mapping for&n; *&t;the memory address given. It is only valid to use this function on&n; *&t;addresses directly mapped or allocated via kmalloc.&n; *&n; *&t;This function does not give bus mappings for DMA transfers. In&n; *&t;almost all conceivable cases a device driver should not be using&n; *&t;this function&n; */
 DECL|function|virt_to_phys
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 id|virt_to_phys
@@ -32,7 +33,7 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;phys_to_virt&t;-&t;map physical address to virtual&n; *&t;@address: address to remap&n; *&n; *&t;The returned virtual address is a current CPU mapping for&n; *&t;the memory address given. It is only valid to use this function on&n; *&t;addresses that have a kernel mapping&n; *&n; *&t;This function does not handle bus mappings for DMA transfers. In&n; *&t;almost all conceivable cases a device driver should not be using&n; *&t;this function&n; */
 DECL|function|phys_to_virt
 r_static
-id|__inline__
+r_inline
 r_void
 op_star
 id|phys_to_virt
@@ -53,6 +54,7 @@ suffix:semicolon
 )brace
 r_extern
 r_void
+id|__iomem
 op_star
 id|__ioremap
 c_func
@@ -73,7 +75,7 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;ioremap&t;&t;-&t;map bus memory into CPU space&n; *&t;@offset:&t;bus address of the memory&n; *&t;@size:&t;&t;size of the resource to map&n; *&n; *&t;ioremap performs a platform specific sequence of operations to&n; *&t;make bus memory CPU accessible via the readb/readw/readl/writeb/&n; *&t;writew/writel functions and the other mmio helpers. The returned&n; *&t;address is not guaranteed to be usable directly as a virtual&n; *&t;address.&n; */
 DECL|function|ioremap
 r_static
-id|__inline__
+r_inline
 r_void
 op_star
 id|ioremap
@@ -105,7 +107,9 @@ r_void
 id|iounmap
 c_func
 (paren
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -363,6 +367,7 @@ op_star
 r_volatile
 r_int
 r_char
+id|__force
 op_star
 )paren
 id|addr
@@ -387,6 +392,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -411,6 +417,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -437,6 +444,7 @@ op_star
 r_volatile
 r_int
 r_char
+id|__force
 op_star
 )paren
 id|addr
@@ -465,6 +473,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -493,6 +502,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -640,12 +650,118 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|macro|memset_io
-mdefine_line|#define memset_io(a, b, c)&t;memset((void *)(a), (b), (c))
-DECL|macro|memcpy_fromio
-mdefine_line|#define memcpy_fromio(a, b, c)&t;memcpy((a), (void *)(b), (c))
-DECL|macro|memcpy_toio
-mdefine_line|#define memcpy_toio(a, b, c)&t;memcpy((void *)(a), (b), (c))
+r_static
+r_inline
+r_void
+DECL|function|memset_io
+id|memset_io
+c_func
+(paren
+r_volatile
+r_void
+id|__iomem
+op_star
+id|addr
+comma
+r_int
+r_char
+id|val
+comma
+r_int
+id|count
+)paren
+(brace
+id|memset
+c_func
+(paren
+(paren
+r_void
+id|__force
+op_star
+)paren
+id|addr
+comma
+id|val
+comma
+id|count
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|memcpy_fromio
+id|memcpy_fromio
+c_func
+(paren
+r_void
+op_star
+id|dst
+comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|src
+comma
+r_int
+id|count
+)paren
+(brace
+id|memcpy
+c_func
+(paren
+id|dst
+comma
+(paren
+r_void
+id|__force
+op_star
+)paren
+id|src
+comma
+id|count
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|memcpy_toio
+id|memcpy_toio
+c_func
+(paren
+r_volatile
+r_void
+id|__iomem
+op_star
+id|dst
+comma
+r_const
+r_void
+op_star
+id|src
+comma
+r_int
+id|count
+)paren
+(brace
+id|memcpy
+c_func
+(paren
+(paren
+r_void
+id|__force
+op_star
+)paren
+id|dst
+comma
+id|src
+comma
+id|count
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif  /* __KERNEL__ */
 macro_line|#endif  /* _ASM_M32R_IO_H */
 eof

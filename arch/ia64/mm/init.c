@@ -13,8 +13,8 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/a.out.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -170,7 +170,7 @@ r_int
 id|pgd_alloc_one_fast
 c_func
 (paren
-l_int|0
+l_int|NULL
 )paren
 )paren
 suffix:semicolon
@@ -189,7 +189,7 @@ r_int
 id|pmd_alloc_one_fast
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -322,7 +322,7 @@ r_int
 r_int
 id|stack_size
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_STACK
 )braket
@@ -1889,6 +1889,7 @@ id|byte
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|pg
@@ -1934,6 +1935,7 @@ id|byte
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 (paren

@@ -389,6 +389,10 @@ DECL|enumerator|BH_JournalHead
 id|BH_JournalHead
 comma
 multiline_comment|/* Pins bh-&gt;b_private and jh-&gt;b_bh */
+DECL|enumerator|BH_Unshadow
+id|BH_Unshadow
+comma
+multiline_comment|/* Dummy bit, for BJ_Shadow wakeup filtering */
 )brace
 suffix:semicolon
 id|BUFFER_FNS

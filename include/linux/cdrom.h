@@ -781,6 +781,8 @@ DECL|macro|GPMODE_R_W_ERROR_PAGE
 mdefine_line|#define GPMODE_R_W_ERROR_PAGE&t;&t;0x01
 DECL|macro|GPMODE_WRITE_PARMS_PAGE
 mdefine_line|#define GPMODE_WRITE_PARMS_PAGE&t;&t;0x05
+DECL|macro|GPMODE_WCACHING_PAGE
+mdefine_line|#define GPMODE_WCACHING_PAGE&t;&t;0x08
 DECL|macro|GPMODE_AUDIO_CTL_PAGE
 mdefine_line|#define GPMODE_AUDIO_CTL_PAGE&t;&t;0x0e
 DECL|macro|GPMODE_POWER_PAGE
@@ -2318,6 +2320,17 @@ DECL|member|last_sense
 id|__u8
 id|last_sense
 suffix:semicolon
+DECL|member|media_written
+id|__u8
+id|media_written
+suffix:semicolon
+multiline_comment|/* dirty flag, DVD+RW bookkeeping */
+DECL|member|mmc3_profile
+r_int
+r_int
+id|mmc3_profile
+suffix:semicolon
+multiline_comment|/* current MMC3 profile */
 DECL|member|for_data
 r_int
 id|for_data

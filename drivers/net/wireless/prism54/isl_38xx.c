@@ -17,6 +17,7 @@ id|isl38xx_disable_interrupts
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|device
 )paren
@@ -52,6 +53,7 @@ op_star
 id|powerstate
 comma
 r_void
+id|__iomem
 op_star
 id|device_base
 )paren
@@ -162,6 +164,7 @@ op_star
 id|powerstate
 comma
 r_void
+id|__iomem
 op_star
 id|device_base
 )paren
@@ -233,6 +236,7 @@ r_int
 id|asleep
 comma
 r_void
+id|__iomem
 op_star
 id|device_base
 )paren
@@ -531,6 +535,7 @@ id|isl38xx_interface_reset
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|device_base
 comma
@@ -615,6 +620,7 @@ id|isl38xx_enable_common_interrupts
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|device_base
 )paren

@@ -102,11 +102,6 @@ suffix:semicolon
 DECL|macro|isa_irq_to_vector
 mdefine_line|#define isa_irq_to_vector(x)&t;isa_irq_to_vector_map[(x)]
 r_extern
-r_int
-r_int
-id|ipi_base_addr
-suffix:semicolon
-r_extern
 r_struct
 id|hw_interrupt_type
 id|irq_type_ia64_lsapic

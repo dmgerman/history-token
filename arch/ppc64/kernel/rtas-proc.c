@@ -8,8 +8,8 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -2680,7 +2680,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;Temp. (&#xfffd;C/&#xfffd;F):&bslash;t&quot;
+l_string|&quot;Temp. (C/F):&bslash;t&quot;
 )paren
 suffix:semicolon
 id|temperature

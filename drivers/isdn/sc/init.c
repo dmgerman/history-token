@@ -2,6 +2,7 @@ multiline_comment|/*&n; * This software may be used and distributed according to
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;includes.h&quot;
 macro_line|#include &quot;hardware.h&quot;
 macro_line|#include &quot;card.h&quot;
@@ -889,20 +890,10 @@ op_plus
 id|RESET_OFFSET
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|milliseconds
+id|msleep_interruptible
 c_func
 (paren
 l_int|10000
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2401,16 +2392,10 @@ comma
 id|pgport
 )paren
 suffix:semicolon
-id|set_current_state
+id|msleep_interruptible
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 id|sig
@@ -2452,16 +2437,10 @@ comma
 id|pgport
 )paren
 suffix:semicolon
-id|set_current_state
+id|msleep_interruptible
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 id|sig

@@ -2193,13 +2193,13 @@ suffix:semicolon
 DECL|macro|PROC
 mdefine_line|#define PROC(name, xargt, xrest, argt, rest, respsize)&t;&bslash;&n; { .pc_func&t;= (svc_procfunc) nlmsvc_proc_##name,&t;&bslash;&n;   .pc_decode&t;= (kxdrproc_t) nlmsvc_decode_##xargt,&t;&bslash;&n;   .pc_encode&t;= (kxdrproc_t) nlmsvc_encode_##xrest,&t;&bslash;&n;   .pc_release&t;= NULL,&t;&t;&t;&t;&t;&bslash;&n;   .pc_argsize&t;= sizeof(struct nlm_##argt),&t;&t;&bslash;&n;   .pc_ressize&t;= sizeof(struct nlm_##rest),&t;&t;&bslash;&n;   .pc_xdrressize = respsize,&t;&t;&t;&t;&bslash;&n; }
 DECL|macro|Ck
-mdefine_line|#define&t;Ck&t;(1+8)&t;/* cookie */
+mdefine_line|#define&t;Ck&t;(1+XDR_QUADLEN(NLM_MAXCOOKIELEN))&t;/* cookie */
 DECL|macro|St
-mdefine_line|#define&t;St&t;1&t;/* status */
+mdefine_line|#define&t;St&t;1&t;&t;&t;&t;/* status */
 DECL|macro|No
-mdefine_line|#define&t;No&t;(1+1024/4) /* Net Obj */
+mdefine_line|#define&t;No&t;(1+1024/4)&t;&t;&t;/* Net Obj */
 DECL|macro|Rg
-mdefine_line|#define&t;Rg&t;2&t;/* range - offset + size */
+mdefine_line|#define&t;Rg&t;2&t;&t;&t;&t;/* range - offset + size */
 DECL|variable|nlmsvc_procedures
 r_struct
 id|svc_procedure

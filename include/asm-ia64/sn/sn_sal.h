@@ -7,7 +7,6 @@ macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
-macro_line|#include &lt;asm/sn/klconfig.h&gt;
 singleline_comment|// SGI Specific Calls
 DECL|macro|SN_SAL_POD_MODE
 mdefine_line|#define  SN_SAL_POD_MODE                           0x02000001
@@ -35,6 +34,9 @@ DECL|macro|SN_SAL_PRINT_ERROR
 mdefine_line|#define  SN_SAL_PRINT_ERROR&t;&t;&t;   0x02000012
 DECL|macro|SN_SAL_SET_ERROR_HANDLING_FEATURES
 mdefine_line|#define  SN_SAL_SET_ERROR_HANDLING_FEATURES&t;   0x0200001a&t;
+singleline_comment|// reentrant
+DECL|macro|SN_SAL_GET_FIT_COMPT
+mdefine_line|#define  SN_SAL_GET_FIT_COMPT&t;&t;&t;   0x0200001b&t;
 singleline_comment|// reentrant
 DECL|macro|SN_SAL_CONSOLE_PUTC
 mdefine_line|#define  SN_SAL_CONSOLE_PUTC                       0x02000021
@@ -89,9 +91,27 @@ mdefine_line|#define  SN_SAL_SYSCTL_IOBRICK_PCI_OP&t;&t;   0x02000042&t;
 singleline_comment|// reentrant
 DECL|macro|SN_SAL_IROUTER_OP
 mdefine_line|#define&t; SN_SAL_IROUTER_OP&t;&t;&t;   0x02000043
+DECL|macro|SN_SAL_IOIF_INTERRUPT
+mdefine_line|#define  SN_SAL_IOIF_INTERRUPT&t;&t;&t;   0x0200004a
 DECL|macro|SN_SAL_HWPERF_OP
 mdefine_line|#define  SN_SAL_HWPERF_OP&t;&t;&t;   0x02000050   
 singleline_comment|// lock
+DECL|macro|SN_SAL_IOIF_ERROR_INTERRUPT
+mdefine_line|#define  SN_SAL_IOIF_ERROR_INTERRUPT&t;&t;   0x02000051
+DECL|macro|SN_SAL_IOIF_SLOT_ENABLE
+mdefine_line|#define  SN_SAL_IOIF_SLOT_ENABLE&t;&t;   0x02000053
+DECL|macro|SN_SAL_IOIF_SLOT_DISABLE
+mdefine_line|#define  SN_SAL_IOIF_SLOT_DISABLE&t;&t;   0x02000054
+DECL|macro|SN_SAL_IOIF_GET_HUBDEV_INFO
+mdefine_line|#define  SN_SAL_IOIF_GET_HUBDEV_INFO&t;&t;   0x02000055
+DECL|macro|SN_SAL_IOIF_GET_PCIBUS_INFO
+mdefine_line|#define  SN_SAL_IOIF_GET_PCIBUS_INFO&t;&t;   0x02000056
+DECL|macro|SN_SAL_IOIF_GET_PCIDEV_INFO
+mdefine_line|#define  SN_SAL_IOIF_GET_PCIDEV_INFO&t;&t;   0x02000057
+DECL|macro|SN_SAL_IOIF_GET_WIDGET_DMAFLUSH_LIST
+mdefine_line|#define  SN_SAL_IOIF_GET_WIDGET_DMAFLUSH_LIST&t;   0x02000058
+DECL|macro|SN_SAL_HUB_ERROR_INTERRUPT
+mdefine_line|#define SN_SAL_HUB_ERROR_INTERRUPT&t;&t;   0x02000060
 multiline_comment|/*&n; * Service-specific constants&n; */
 multiline_comment|/* Console interrupt manipulation */
 multiline_comment|/* action codes */
@@ -106,18 +126,11 @@ DECL|macro|SAL_CONSOLE_INTR_XMIT
 mdefine_line|#define SAL_CONSOLE_INTR_XMIT&t;1&t;/* output interrupt */
 DECL|macro|SAL_CONSOLE_INTR_RECV
 mdefine_line|#define SAL_CONSOLE_INTR_RECV&t;2&t;/* input interrupt */
-macro_line|#ifdef CONFIG_HOTPLUG_PCI_SGI
-multiline_comment|/* power up / power down / reset a PCI slot or bus */
-DECL|macro|SAL_SYSCTL_PCI_POWER_UP
-mdefine_line|#define SAL_SYSCTL_PCI_POWER_UP         0
-DECL|macro|SAL_SYSCTL_PCI_POWER_DOWN
-mdefine_line|#define SAL_SYSCTL_PCI_POWER_DOWN       1
-DECL|macro|SAL_SYSCTL_PCI_RESET
-mdefine_line|#define SAL_SYSCTL_PCI_RESET            2
-multiline_comment|/* what type of I/O brick? */
-DECL|macro|SAL_SYSCTL_IO_XTALK
-mdefine_line|#define SAL_SYSCTL_IO_XTALK&t;0       /* connected via a compute node */
-macro_line|#endif&t;/* CONFIG_HOTPLUG_PCI_SGI */
+multiline_comment|/* interrupt handling */
+DECL|macro|SAL_INTR_ALLOC
+mdefine_line|#define SAL_INTR_ALLOC&t;&t;1
+DECL|macro|SAL_INTR_FREE
+mdefine_line|#define SAL_INTR_FREE&t;&t;2
 multiline_comment|/*&n; * IRouter (i.e. generalized system controller) operations&n; */
 DECL|macro|SAL_IROUTER_OPEN
 mdefine_line|#define SAL_IROUTER_OPEN&t;0&t;/* open a subchannel */
@@ -140,34 +153,17 @@ DECL|macro|SAL_IROUTER_INTR_XMIT
 mdefine_line|#define SAL_IROUTER_INTR_XMIT&t;SAL_CONSOLE_INTR_XMIT
 DECL|macro|SAL_IROUTER_INTR_RECV
 mdefine_line|#define SAL_IROUTER_INTR_RECV&t;SAL_CONSOLE_INTR_RECV
-multiline_comment|/*&n; * SN_SAL_GET_PARTITION_ADDR return constants&n; */
+multiline_comment|/*&n; * SAL Error Codes&n; */
 DECL|macro|SALRET_MORE_PASSES
 mdefine_line|#define SALRET_MORE_PASSES&t;1
 DECL|macro|SALRET_OK
 mdefine_line|#define SALRET_OK&t;&t;0
+DECL|macro|SALRET_NOT_IMPLEMENTED
+mdefine_line|#define SALRET_NOT_IMPLEMENTED&t;(-1)
 DECL|macro|SALRET_INVALID_ARG
-mdefine_line|#define SALRET_INVALID_ARG&t;-2
+mdefine_line|#define SALRET_INVALID_ARG&t;(-2)
 DECL|macro|SALRET_ERROR
-mdefine_line|#define SALRET_ERROR&t;&t;-3
-multiline_comment|/*&n; * SN_SAL_SET_ERROR_HANDLING_FEATURES bit settings&n; */
-r_enum
-(brace
-multiline_comment|/* if &quot;rz always&quot; is set, have the mca slaves call os_init_slave */
-DECL|enumerator|SN_SAL_EHF_MCA_SLV_TO_OS_INIT_SLV
-id|SN_SAL_EHF_MCA_SLV_TO_OS_INIT_SLV
-op_assign
-l_int|0
-comma
-multiline_comment|/* do not rz on tlb checks, even if &quot;rz always&quot; is set */
-DECL|enumerator|SN_SAL_EHF_NO_RZ_TLBC
-id|SN_SAL_EHF_NO_RZ_TLBC
-comma
-multiline_comment|/* do not rz on PIO reads to I/O space, even if &quot;rz always&quot; is set */
-DECL|enumerator|SN_SAL_EHF_NO_RZ_IO_READ
-id|SN_SAL_EHF_NO_RZ_IO_READ
-comma
-)brace
-suffix:semicolon
+mdefine_line|#define SALRET_ERROR&t;&t;(-3)
 multiline_comment|/**&n; * sn_sal_rev_major - get the major SGI SAL revision number&n; *&n; * The SGI PROM stores its version in sal_[ab]_rev_(major|minor).&n; * This routine simply extracts the major value from the&n; * @ia64_sal_systab structure constructed by ia64_sal_init().&n; */
 r_static
 r_inline
@@ -220,24 +216,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Specify the minimum PROM revsion required for this kernel.&n; * Note that they&squot;re stored in hex format...&n; */
 DECL|macro|SN_SAL_MIN_MAJOR
-mdefine_line|#define SN_SAL_MIN_MAJOR&t;0x3  /* SN2 kernels need at least PROM 3.40 */
+mdefine_line|#define SN_SAL_MIN_MAJOR&t;0x4  /* SN2 kernels need at least PROM 4.0 */
 DECL|macro|SN_SAL_MIN_MINOR
-mdefine_line|#define SN_SAL_MIN_MINOR&t;0x40
-id|u64
-id|ia64_sn_probe_io_slot
-c_func
-(paren
-r_int
-id|paddr
-comma
-r_int
-id|size
-comma
-r_void
-op_star
-id|data_ptr
-)paren
-suffix:semicolon
+mdefine_line|#define SN_SAL_MIN_MINOR&t;0x0
 multiline_comment|/*&n; * Returns the master console nasid, if the call fails, return an illegal&n; * value.&n; */
 r_static
 r_inline
@@ -782,7 +763,7 @@ id|ret_stuff.v2
 op_assign
 l_int|0
 suffix:semicolon
-id|SAL_CALL_REENTRANT
+id|SAL_CALL_NOLOCK
 c_func
 (paren
 id|ret_stuff
@@ -1818,19 +1799,7 @@ id|paddr
 )paren
 )paren
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|NODEPDA
-c_func
-(paren
-id|cnodeid
-)paren
-op_member_access_from_pointer
-id|bist_lock
-)paren
-suffix:semicolon
+singleline_comment|// spin_lock(&amp;NODEPDA(cnodeid)-&gt;bist_lock);
 id|local_irq_save
 c_func
 (paren
@@ -1865,19 +1834,7 @@ c_func
 id|irq_flags
 )paren
 suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|NODEPDA
-c_func
-(paren
-id|cnodeid
-)paren
-op_member_access_from_pointer
-id|bist_lock
-)paren
-suffix:semicolon
+singleline_comment|// spin_unlock(&amp;NODEPDA(cnodeid)-&gt;bist_lock);
 r_return
 id|ret_stuff.status
 suffix:semicolon
@@ -2007,7 +1964,7 @@ comma
 id|u64
 id|bus
 comma
-id|slotid_t
+r_char
 id|slot
 comma
 id|u64
@@ -2063,81 +2020,6 @@ id|rv.v0
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Tell the prom how the OS wants to handle specific error features.&n; * It takes an array of 7 u64.&n; */
-r_static
-r_inline
-id|u64
-DECL|function|ia64_sn_set_error_handling_features
-id|ia64_sn_set_error_handling_features
-c_func
-(paren
-r_const
-id|u64
-op_star
-id|feature_bits
-)paren
-(brace
-r_struct
-id|ia64_sal_retval
-id|rv
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
-suffix:semicolon
-id|SAL_CALL_REENTRANT
-c_func
-(paren
-id|rv
-comma
-id|SN_SAL_SET_ERROR_HANDLING_FEATURES
-comma
-id|feature_bits
-(braket
-l_int|0
-)braket
-comma
-id|feature_bits
-(braket
-l_int|1
-)braket
-comma
-id|feature_bits
-(braket
-l_int|2
-)braket
-comma
-id|feature_bits
-(braket
-l_int|3
-)braket
-comma
-id|feature_bits
-(braket
-l_int|4
-)braket
-comma
-id|feature_bits
-(braket
-l_int|5
-)braket
-comma
-id|feature_bits
-(braket
-l_int|6
-)braket
-)paren
-suffix:semicolon
-r_return
-id|rv.status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Open a subchannel for sending arbitrary data to the system&n; * controller network via the system controller device associated with&n; * &squot;nasid&squot;.  Return the subchannel number or a negative error code.&n; */
@@ -2540,6 +2422,65 @@ r_return
 r_int
 )paren
 id|rv.v0
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * ia64_sn_get_fit_compt - read a FIT entry from the PROM header&n; * @nasid: NASID of node to read&n; * @index: FIT entry index to be retrieved (0..n)&n; * @fitentry: 16 byte buffer where FIT entry will be stored.&n; * @banbuf: optional buffer for retrieving banner&n; * @banlen: length of banner buffer&n; *&n; * Access to the physical PROM chips needs to be serialized since reads and&n; * writes can&squot;t occur at the same time, so we need to call into the SAL when&n; * we want to look at the FIT entries on the chips.&n; *&n; * Returns:&n; *&t;%SALRET_OK if ok&n; *&t;%SALRET_INVALID_ARG if index too big&n; *&t;%SALRET_NOT_IMPLEMENTED if running on older PROM&n; *&t;??? if nasid invalid OR banner buffer not large enough&n; */
+r_static
+r_inline
+r_int
+DECL|function|ia64_sn_get_fit_compt
+id|ia64_sn_get_fit_compt
+c_func
+(paren
+id|u64
+id|nasid
+comma
+id|u64
+id|index
+comma
+r_void
+op_star
+id|fitentry
+comma
+r_void
+op_star
+id|banbuf
+comma
+id|u64
+id|banlen
+)paren
+(brace
+r_struct
+id|ia64_sal_retval
+id|rv
+suffix:semicolon
+id|SAL_CALL_NOLOCK
+c_func
+(paren
+id|rv
+comma
+id|SN_SAL_GET_FIT_COMPT
+comma
+id|nasid
+comma
+id|index
+comma
+id|fitentry
+comma
+id|banbuf
+comma
+id|banlen
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+(paren
+r_int
+)paren
+id|rv.status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Initialize the SAL components of the system controller&n; * communication driver; specifically pass in a sizable buffer that&n; * can be used for allocation of subchannel queues as new subchannels&n; * are opened.  &quot;buf&quot; points to the buffer, and &quot;len&quot; specifies its&n; * length.&n; */

@@ -52,6 +52,7 @@ id|ports
 comma
 r_int
 comma
+op_amp
 id|ports_c
 comma
 l_int|0400

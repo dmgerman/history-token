@@ -1009,6 +1009,8 @@ id|sig
 r_int
 r_int
 id|save_r2
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#if defined(CONFIG_ALTIVEC) || defined(CONFIG_SPE)
 r_int
@@ -1321,6 +1323,20 @@ r_return
 l_int|1
 suffix:semicolon
 macro_line|#endif /* CONFIG_SPE */
+macro_line|#ifndef CONFIG_SMP
+id|last_task_used_math
+op_assign
+l_int|NULL
+suffix:semicolon
+id|last_task_used_altivec
+op_assign
+l_int|NULL
+suffix:semicolon
+id|last_task_used_spe
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

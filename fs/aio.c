@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/aio_abi.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG 0
 macro_line|#include &lt;linux/sched.h&gt;
@@ -2323,6 +2324,10 @@ c_func
 id|tsk
 )paren
 suffix:semicolon
+id|tsk-&gt;flags
+op_or_assign
+id|PF_BORROWED_MM
+suffix:semicolon
 id|active_mm
 op_assign
 id|tsk-&gt;active_mm
@@ -2387,6 +2392,11 @@ c_func
 (paren
 id|tsk
 )paren
+suffix:semicolon
+id|tsk-&gt;flags
+op_and_assign
+op_complement
+id|PF_BORROWED_MM
 suffix:semicolon
 id|tsk-&gt;mm
 op_assign

@@ -38,8 +38,8 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
@@ -81,7 +81,7 @@ mdefine_line|#define SK_MAX_MACS&t;&t;2
 DECL|macro|SK_MAX_NETS
 mdefine_line|#define SK_MAX_NETS&t;&t;2
 DECL|macro|SK_IOC
-mdefine_line|#define SK_IOC&t;&t;&t;char*
+mdefine_line|#define SK_IOC&t;&t;&t;char __iomem *
 DECL|typedef|SK_MBUF
 r_typedef
 r_struct

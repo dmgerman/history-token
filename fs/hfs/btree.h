@@ -728,12 +728,12 @@ r_struct
 id|hfs_bnode_desc
 (brace
 DECL|member|next
-id|u32
+id|__be32
 id|next
 suffix:semicolon
 multiline_comment|/* (V) Number of the next node at this level */
 DECL|member|prev
-id|u32
+id|__be32
 id|prev
 suffix:semicolon
 multiline_comment|/* (V) Number of the prev node at this level */
@@ -748,7 +748,7 @@ id|height
 suffix:semicolon
 multiline_comment|/* (F) The level of this node (leaves=1) */
 DECL|member|num_recs
-id|u16
+id|__be16
 id|num_recs
 suffix:semicolon
 multiline_comment|/* (V) The number of records in this node */
@@ -773,47 +773,47 @@ r_struct
 id|hfs_btree_header_rec
 (brace
 DECL|member|depth
-id|u16
+id|__be16
 id|depth
 suffix:semicolon
 multiline_comment|/* (V) The number of levels in this B-tree */
 DECL|member|root
-id|u32
+id|__be32
 id|root
 suffix:semicolon
 multiline_comment|/* (V) The node number of the root node */
 DECL|member|leaf_count
-id|u32
+id|__be32
 id|leaf_count
 suffix:semicolon
 multiline_comment|/* (V) The number of leaf records */
 DECL|member|leaf_head
-id|u32
+id|__be32
 id|leaf_head
 suffix:semicolon
 multiline_comment|/* (V) The number of the first leaf node */
 DECL|member|leaf_tail
-id|u32
+id|__be32
 id|leaf_tail
 suffix:semicolon
 multiline_comment|/* (V) The number of the last leaf node */
 DECL|member|node_size
-id|u16
+id|__be16
 id|node_size
 suffix:semicolon
 multiline_comment|/* (F) The number of bytes in a node (=512) */
 DECL|member|max_key_len
-id|u16
+id|__be16
 id|max_key_len
 suffix:semicolon
 multiline_comment|/* (F) The length of a key in an index node */
 DECL|member|node_count
-id|u32
+id|__be32
 id|node_count
 suffix:semicolon
 multiline_comment|/* (V) The total number of nodes */
 DECL|member|free_nodes
-id|u32
+id|__be32
 id|free_nodes
 suffix:semicolon
 multiline_comment|/* (V) The number of unused nodes */
@@ -822,7 +822,7 @@ id|u16
 id|reserved1
 suffix:semicolon
 DECL|member|clump_size
-id|u32
+id|__be32
 id|clump_size
 suffix:semicolon
 multiline_comment|/* (F) clump size. not usually used. */
@@ -836,7 +836,7 @@ id|u8
 id|reserved2
 suffix:semicolon
 DECL|member|attributes
-id|u32
+id|__be32
 id|attributes
 suffix:semicolon
 multiline_comment|/* (F) attributes */

@@ -37,8 +37,6 @@ DECL|macro|EP_DONTUSE
 mdefine_line|#define&t;EP_DONTUSE&t;&t;13&t;/* nonzero */
 DECL|macro|USE_RDK_LEDS
 mdefine_line|#define USE_RDK_LEDS&t;&t;/* GPIO pins control three LEDs */
-DECL|macro|USE_SYSFS_DEBUG_FILES
-mdefine_line|#define USE_SYSFS_DEBUG_FILES
 DECL|variable|driver_name
 r_static
 r_const
@@ -149,7 +147,7 @@ l_int|0644
 suffix:semicolon
 DECL|macro|DIR_STRING
 mdefine_line|#define&t;DIR_STRING(bAddress) (((bAddress) &amp; USB_DIR_IN) ? &quot;in&quot; : &quot;out&quot;)
-macro_line|#if defined(USE_SYSFS_DEBUG_FILES) || defined (DEBUG)
+macro_line|#if defined(CONFIG_USB_GADGET_DEBUG_FILES) || defined (DEBUG)
 DECL|function|type_string
 r_static
 r_char
@@ -1023,8 +1021,8 @@ id|ep-&gt;regs-&gt;ep_irqenb
 )paren
 suffix:semicolon
 multiline_comment|/* init to our chosen defaults, notably so that we NAK OUT&n;&t; * packets until the driver queues a read (+note erratum 0112)&n;&t; */
-id|writel
-(paren
+id|tmp
+op_assign
 (paren
 l_int|1
 op_lshift
@@ -1048,7 +1046,17 @@ l_int|1
 op_lshift
 id|CLEAR_INTERRUPT_MODE
 )paren
-op_or
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ep-&gt;num
+op_ne
+l_int|0
+)paren
+(brace
+id|tmp
+op_or_assign
 (paren
 l_int|1
 op_lshift
@@ -1060,6 +1068,11 @@ l_int|1
 op_lshift
 id|CLEAR_ENDPOINT_HALT
 )paren
+suffix:semicolon
+)brace
+id|writel
+(paren
+id|tmp
 comma
 op_amp
 id|ep-&gt;regs-&gt;ep_rsp
@@ -5898,7 +5911,8 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#ifdef&t;USE_SYSFS_DEBUG_FILES
+macro_line|#ifdef&t;CONFIG_USB_GADGET_DEBUG_FILES
+multiline_comment|/* FIXME move these into procfs, and use seq_file.&n; * Sysfs _still_ doesn&squot;t behave for arbitrarily sized files,&n; * and also doesn&squot;t help products using this with 2.4 kernels.&n; */
 multiline_comment|/* &quot;function&quot; sysfs attribute */
 r_static
 id|ssize_t
@@ -8041,22 +8055,6 @@ l_int|1
 op_lshift
 id|SELF_POWERED_USB_DEVICE
 )paren
-multiline_comment|/* erratum 0102 workaround */
-op_or
-(paren
-(paren
-id|dev-&gt;chiprev
-op_eq
-l_int|0100
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-l_int|1
-)paren
-op_lshift
-id|SUSPEND_IMMEDIATELY
 op_or
 (paren
 l_int|1
@@ -8524,6 +8522,14 @@ op_amp
 id|dev-&gt;lock
 comma
 id|flags
+)paren
+suffix:semicolon
+id|net2280_pullup
+(paren
+op_amp
+id|dev-&gt;gadget
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|driver-&gt;unbind
@@ -10669,16 +10675,6 @@ op_amp
 id|dev-&gt;gadget
 )paren
 suffix:semicolon
-multiline_comment|/* we use SUSPEND_IMMEDIATELY */
-id|stat
-op_and_assign
-op_complement
-(paren
-l_int|1
-op_lshift
-id|SUSPEND_REQUEST_INTERRUPT
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -12243,7 +12239,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
-id|pci_module_init
+id|pci_register_driver
 (paren
 op_amp
 id|net2280_pci_driver

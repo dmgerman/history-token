@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * net/sched/act_api.c&t;Packet action API.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Author:&t;Jamal Hadi Salim&n; *&n; *&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -562,6 +562,11 @@ r_struct
 id|tc_action
 op_star
 id|act
+comma
+r_struct
+id|tcf_result
+op_star
+id|res
 )paren
 (brace
 r_struct
@@ -608,8 +613,12 @@ comma
 id|skb-&gt;dev-&gt;name
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|TC_ACT_OK
+suffix:semicolon
+r_goto
+id|exec_done
 suffix:semicolon
 )brace
 r_while
@@ -702,6 +711,29 @@ suffix:semicolon
 )brace
 id|exec_done
 suffix:colon
+r_if
+c_cond
+(paren
+id|skb-&gt;tc_classid
+OG
+l_int|0
+)paren
+(brace
+id|res-&gt;classid
+op_assign
+id|skb-&gt;tc_classid
+suffix:semicolon
+id|res
+op_member_access_from_pointer
+r_class
+op_assign
+l_int|0
+suffix:semicolon
+id|skb-&gt;tc_classid
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_return
 id|ret
 suffix:semicolon

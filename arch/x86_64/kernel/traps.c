@@ -2033,9 +2033,9 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|DO_ERROR
-mdefine_line|#define DO_ERROR(trapnr, signr, str, name) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) == NOTIFY_BAD) &bslash;&n;&t;&t;return; &bslash;&n;&t;do_trap(trapnr, signr, str, regs, error_code, NULL); &bslash;&n;}
+mdefine_line|#define DO_ERROR(trapnr, signr, str, name) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;== NOTIFY_STOP) &bslash;&n;&t;&t;return; &bslash;&n;&t;do_trap(trapnr, signr, str, regs, error_code, NULL); &bslash;&n;}
 DECL|macro|DO_ERROR_INFO
-mdefine_line|#define DO_ERROR_INFO(trapnr, signr, str, name, sicode, siaddr) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;siginfo_t info; &bslash;&n;&t;info.si_signo = signr; &bslash;&n;&t;info.si_errno = 0; &bslash;&n;&t;info.si_code = sicode; &bslash;&n;&t;info.si_addr = (void __user *)siaddr; &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) == NOTIFY_BAD) &bslash;&n;&t;&t;return; &bslash;&n;&t;do_trap(trapnr, signr, str, regs, error_code, &amp;info); &bslash;&n;}
+mdefine_line|#define DO_ERROR_INFO(trapnr, signr, str, name, sicode, siaddr) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;siginfo_t info; &bslash;&n;&t;info.si_signo = signr; &bslash;&n;&t;info.si_errno = 0; &bslash;&n;&t;info.si_code = sicode; &bslash;&n;&t;info.si_addr = (void __user *)siaddr; &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;== NOTIFY_STOP) &bslash;&n;&t;&t;return; &bslash;&n;&t;do_trap(trapnr, signr, str, regs, error_code, &amp;info); &bslash;&n;}
 id|DO_ERROR_INFO
 c_func
 (paren
@@ -2171,7 +2171,7 @@ comma
 id|reserved
 )paren
 DECL|macro|DO_ERROR_STACK
-mdefine_line|#define DO_ERROR_STACK(trapnr, signr, str, name) &bslash;&n;asmlinkage void *do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;struct pt_regs *pr = ((struct pt_regs *)(current-&gt;thread.rsp0))-1; &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) == NOTIFY_BAD) &bslash;&n;&t;&t;return regs; &bslash;&n;&t;if (regs-&gt;cs &amp; 3) { &bslash;&n;&t;&t;memcpy(pr, regs, sizeof(struct pt_regs)); &bslash;&n;&t;&t;regs = pr; &bslash;&n;&t;} &bslash;&n;&t;do_trap(trapnr, signr, str, regs, error_code, NULL); &bslash;&n;&t;return regs;&t;&t;&bslash;&n;}
+mdefine_line|#define DO_ERROR_STACK(trapnr, signr, str, name) &bslash;&n;asmlinkage void *do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;struct pt_regs *pr = ((struct pt_regs *)(current-&gt;thread.rsp0))-1; &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;== NOTIFY_STOP) &bslash;&n;&t;&t;return regs; &bslash;&n;&t;if (regs-&gt;cs &amp; 3) { &bslash;&n;&t;&t;memcpy(pr, regs, sizeof(struct pt_regs)); &bslash;&n;&t;&t;regs = pr; &bslash;&n;&t;} &bslash;&n;&t;do_trap(trapnr, signr, str, regs, error_code, NULL); &bslash;&n;&t;return regs;&t;&t;&bslash;&n;}
 id|DO_ERROR_STACK
 c_func
 (paren
@@ -2609,7 +2609,7 @@ comma
 id|SIGINT
 )paren
 op_eq
-id|NOTIFY_BAD
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon
@@ -2665,7 +2665,7 @@ comma
 id|SIGINT
 )paren
 op_eq
-id|NOTIFY_BAD
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon
@@ -3080,7 +3080,7 @@ comma
 id|SIGTRAP
 )paren
 op_ne
-id|NOTIFY_BAD
+id|NOTIFY_STOP
 )paren
 id|regs-&gt;eflags
 op_and_assign
@@ -3976,6 +3976,42 @@ c_func
 l_string|&quot;oops=&quot;
 comma
 id|oops_dummy
+)paren
+suffix:semicolon
+DECL|function|kstack_setup
+r_static
+r_int
+id|__init
+id|kstack_setup
+c_func
+(paren
+r_char
+op_star
+id|s
+)paren
+(brace
+id|kstack_depth_to_print
+op_assign
+id|simple_strtoul
+c_func
+(paren
+id|s
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;kstack=&quot;
+comma
+id|kstack_setup
 )paren
 suffix:semicolon
 eof

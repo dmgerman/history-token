@@ -153,11 +153,13 @@ DECL|macro|scsi_set_pci_device
 mdefine_line|#define scsi_set_pci_device(sh,dev) (0)
 macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+macro_line|#ifndef irqreturn_t
 DECL|typedef|irqreturn_t
 r_typedef
 r_void
 id|irqreturn_t
 suffix:semicolon
+macro_line|#endif 
 DECL|macro|IRQ_NONE
 mdefine_line|#define IRQ_NONE
 DECL|macro|IRQ_HANDLED
@@ -3475,12 +3477,14 @@ suffix:semicolon
 multiline_comment|/* Size of memory address     */
 DECL|member|mem_ptr
 r_char
+id|__iomem
 op_star
 id|mem_ptr
 suffix:semicolon
 multiline_comment|/* Memory mapped Ptr          */
 DECL|member|ioremap_ptr
 r_char
+id|__iomem
 op_star
 id|ioremap_ptr
 suffix:semicolon
@@ -3823,19 +3827,19 @@ mdefine_line|#define IPS_VER_MAJOR 7
 DECL|macro|IPS_VER_MAJOR_STRING
 mdefine_line|#define IPS_VER_MAJOR_STRING &quot;7&quot;
 DECL|macro|IPS_VER_MINOR
-mdefine_line|#define IPS_VER_MINOR 00
+mdefine_line|#define IPS_VER_MINOR 10
 DECL|macro|IPS_VER_MINOR_STRING
-mdefine_line|#define IPS_VER_MINOR_STRING &quot;00&quot;
+mdefine_line|#define IPS_VER_MINOR_STRING &quot;10&quot;
 DECL|macro|IPS_VER_BUILD
-mdefine_line|#define IPS_VER_BUILD 15
+mdefine_line|#define IPS_VER_BUILD 18
 DECL|macro|IPS_VER_BUILD_STRING
-mdefine_line|#define IPS_VER_BUILD_STRING &quot;15&quot;
+mdefine_line|#define IPS_VER_BUILD_STRING &quot;18&quot;
 DECL|macro|IPS_VER_STRING
-mdefine_line|#define IPS_VER_STRING &quot;7.00.15&quot;
+mdefine_line|#define IPS_VER_STRING &quot;7.10.18&quot;
 DECL|macro|IPS_RELEASE_ID
 mdefine_line|#define IPS_RELEASE_ID 0x00020000
 DECL|macro|IPS_BUILD_IDENT
-mdefine_line|#define IPS_BUILD_IDENT 625
+mdefine_line|#define IPS_BUILD_IDENT 731
 DECL|macro|IPS_LEGALCOPYRIGHT_STRING
 mdefine_line|#define IPS_LEGALCOPYRIGHT_STRING &quot;(C) Copyright IBM Corp. 1994, 2002. All Rights Reserved.&quot;
 DECL|macro|IPS_ADAPTECCOPYRIGHT_STRING
@@ -3854,20 +3858,22 @@ mdefine_line|#define IPS_VER_NAVAJO &quot;2.88.13&quot;
 DECL|macro|IPS_VER_SERVERAID3
 mdefine_line|#define IPS_VER_SERVERAID3 &quot;6.10.24&quot;
 DECL|macro|IPS_VER_SERVERAID4H
-mdefine_line|#define IPS_VER_SERVERAID4H &quot;7.00.15&quot;
+mdefine_line|#define IPS_VER_SERVERAID4H &quot;7.10.11&quot;
 DECL|macro|IPS_VER_SERVERAID4MLx
-mdefine_line|#define IPS_VER_SERVERAID4MLx &quot;7.00.15&quot;
+mdefine_line|#define IPS_VER_SERVERAID4MLx &quot;7.10.18&quot;
 DECL|macro|IPS_VER_SARASOTA
-mdefine_line|#define IPS_VER_SARASOTA &quot;7.00.15&quot;
+mdefine_line|#define IPS_VER_SARASOTA &quot;7.10.18&quot;
 DECL|macro|IPS_VER_MARCO
-mdefine_line|#define IPS_VER_MARCO &quot;7.00.15&quot;
+mdefine_line|#define IPS_VER_MARCO &quot;7.10.18&quot;
 DECL|macro|IPS_VER_SEBRING
-mdefine_line|#define IPS_VER_SEBRING &quot;7.00.15&quot;
+mdefine_line|#define IPS_VER_SEBRING &quot;7.10.18&quot;
+DECL|macro|IPS_VER_KEYWEST
+mdefine_line|#define IPS_VER_KEYWEST &quot;7.10.18&quot;
 multiline_comment|/* Compatability IDs for various adapters */
 DECL|macro|IPS_COMPAT_UNKNOWN
 mdefine_line|#define IPS_COMPAT_UNKNOWN &quot;&quot;
 DECL|macro|IPS_COMPAT_CURRENT
-mdefine_line|#define IPS_COMPAT_CURRENT &quot;SB610&quot;
+mdefine_line|#define IPS_COMPAT_CURRENT &quot;KW710&quot;
 DECL|macro|IPS_COMPAT_SERVERAID1
 mdefine_line|#define IPS_COMPAT_SERVERAID1 &quot;2.25.01&quot;
 DECL|macro|IPS_COMPAT_SERVERAID2
@@ -3881,28 +3887,32 @@ mdefine_line|#define IPS_COMPAT_SERVERAID3H  &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_SERVERAID3L
 mdefine_line|#define IPS_COMPAT_SERVERAID3L  &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_SERVERAID4H
-mdefine_line|#define IPS_COMPAT_SERVERAID4H  &quot;SB610&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID4H  &quot;KW710&quot;
 DECL|macro|IPS_COMPAT_SERVERAID4M
-mdefine_line|#define IPS_COMPAT_SERVERAID4M  &quot;SB610&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID4M  &quot;KW710&quot;
 DECL|macro|IPS_COMPAT_SERVERAID4L
-mdefine_line|#define IPS_COMPAT_SERVERAID4L  &quot;SB610&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID4L  &quot;KW710&quot;
 DECL|macro|IPS_COMPAT_SERVERAID4Mx
-mdefine_line|#define IPS_COMPAT_SERVERAID4Mx &quot;SB610&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID4Mx &quot;KW710&quot;
 DECL|macro|IPS_COMPAT_SERVERAID4Lx
-mdefine_line|#define IPS_COMPAT_SERVERAID4Lx &quot;SB610&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID4Lx &quot;KW710&quot;
 DECL|macro|IPS_COMPAT_SARASOTA
-mdefine_line|#define IPS_COMPAT_SARASOTA     &quot;SB610&quot;
+mdefine_line|#define IPS_COMPAT_SARASOTA     &quot;KW710&quot;
 DECL|macro|IPS_COMPAT_MARCO
-mdefine_line|#define IPS_COMPAT_MARCO        &quot;SB610&quot;
+mdefine_line|#define IPS_COMPAT_MARCO        &quot;KW710&quot;
 DECL|macro|IPS_COMPAT_SEBRING
-mdefine_line|#define IPS_COMPAT_SEBRING      &quot;SB610&quot;
+mdefine_line|#define IPS_COMPAT_SEBRING      &quot;KW710&quot;
+DECL|macro|IPS_COMPAT_TAMPA
+mdefine_line|#define IPS_COMPAT_TAMPA        &quot;KW710&quot;
+DECL|macro|IPS_COMPAT_KEYWEST
+mdefine_line|#define IPS_COMPAT_KEYWEST      &quot;KW710&quot;
 DECL|macro|IPS_COMPAT_BIOS
-mdefine_line|#define IPS_COMPAT_BIOS &quot;SB610&quot;
+mdefine_line|#define IPS_COMPAT_BIOS &quot;KW710&quot;
 DECL|macro|IPS_COMPAT_MAX_ADAPTER_TYPE
-mdefine_line|#define IPS_COMPAT_MAX_ADAPTER_TYPE 16
+mdefine_line|#define IPS_COMPAT_MAX_ADAPTER_TYPE 18
 DECL|macro|IPS_COMPAT_ID_LENGTH
 mdefine_line|#define IPS_COMPAT_ID_LENGTH 8
 DECL|macro|IPS_DEFINE_COMPAT_TABLE
-mdefine_line|#define IPS_DEFINE_COMPAT_TABLE(tablename) &bslash;&n;   char tablename[IPS_COMPAT_MAX_ADAPTER_TYPE] [IPS_COMPAT_ID_LENGTH] = { &bslash;&n;      IPS_COMPAT_UNKNOWN, &bslash;&n;      IPS_COMPAT_SERVERAID1, &bslash;&n;      IPS_COMPAT_SERVERAID2, &bslash;&n;      IPS_COMPAT_NAVAJO, &bslash;&n;      IPS_COMPAT_KIOWA, &bslash;&n;      IPS_COMPAT_SERVERAID3H, &bslash;&n;      IPS_COMPAT_SERVERAID3L, &bslash;&n;      IPS_COMPAT_SERVERAID4H, &bslash;&n;      IPS_COMPAT_SERVERAID4M, &bslash;&n;      IPS_COMPAT_SERVERAID4L, &bslash;&n;      IPS_COMPAT_SERVERAID4Mx, &bslash;&n;      IPS_COMPAT_SERVERAID4Lx, &bslash;&n;      IPS_COMPAT_SARASOTA,         /* one-channel variety of SARASOTA */  &bslash;&n;      IPS_COMPAT_SARASOTA,         /* two-channel variety of SARASOTA */  &bslash;&n;      IPS_COMPAT_MARCO, &bslash;&n;      IPS_COMPAT_SEBRING &bslash;&n;   }
+mdefine_line|#define IPS_DEFINE_COMPAT_TABLE(tablename) &bslash;&n;   char tablename[IPS_COMPAT_MAX_ADAPTER_TYPE] [IPS_COMPAT_ID_LENGTH] = { &bslash;&n;      IPS_COMPAT_UNKNOWN, &bslash;&n;      IPS_COMPAT_SERVERAID1, &bslash;&n;      IPS_COMPAT_SERVERAID2, &bslash;&n;      IPS_COMPAT_NAVAJO, &bslash;&n;      IPS_COMPAT_KIOWA, &bslash;&n;      IPS_COMPAT_SERVERAID3H, &bslash;&n;      IPS_COMPAT_SERVERAID3L, &bslash;&n;      IPS_COMPAT_SERVERAID4H, &bslash;&n;      IPS_COMPAT_SERVERAID4M, &bslash;&n;      IPS_COMPAT_SERVERAID4L, &bslash;&n;      IPS_COMPAT_SERVERAID4Mx, &bslash;&n;      IPS_COMPAT_SERVERAID4Lx, &bslash;&n;      IPS_COMPAT_SARASOTA,         /* one-channel variety of SARASOTA */  &bslash;&n;      IPS_COMPAT_SARASOTA,         /* two-channel variety of SARASOTA */  &bslash;&n;      IPS_COMPAT_MARCO, &bslash;&n;      IPS_COMPAT_SEBRING, &bslash;&n;      IPS_COMPAT_TAMPA, &bslash;&n;      IPS_COMPAT_KEYWEST &bslash;&n;   }
 multiline_comment|/*&n; * Overrides for Emacs so that we almost follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 2&n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -2&n; * c-argdecl-indent: 2&n; * c-label-offset: -2&n; * c-continued-statement-offset: 2&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: nil&n; * tab-width: 8&n; * End:&n; */
 eof

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * net/sched/sch_generic.c&t;Generic packet scheduler routines.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *              Jamal Hadi Salim, &lt;hadi@cyberus.ca&gt; 990601&n; *              - Ingress support&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -1032,18 +1032,18 @@ suffix:semicolon
 id|qdisc-&gt;q.qlen
 op_increment
 suffix:semicolon
-id|qdisc-&gt;stats.bytes
+id|qdisc-&gt;bstats.bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-id|qdisc-&gt;stats.packets
+id|qdisc-&gt;bstats.packets
 op_increment
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-id|qdisc-&gt;stats.drops
+id|qdisc-&gt;qstats.drops
 op_increment
 suffix:semicolon
 id|kfree_skb
@@ -1728,11 +1728,14 @@ op_assign
 id|qdisc-&gt;ops
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_ESTIMATOR
-id|qdisc_kill_estimator
+id|gen_kill_estimator
 c_func
 (paren
 op_amp
-id|qdisc-&gt;stats
+id|qdisc-&gt;bstats
+comma
+op_amp
+id|qdisc-&gt;rate_est
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -6,9 +6,9 @@ macro_line|#include &quot;mega_common.h&quot;
 macro_line|#include &quot;mbox_defs.h&quot;
 macro_line|#include &quot;megaraid_ioctl.h&quot;
 DECL|macro|MEGARAID_VERSION
-mdefine_line|#define MEGARAID_VERSION&t;&quot;2.20.3.1&quot;
+mdefine_line|#define MEGARAID_VERSION&t;&quot;2.20.4.0&quot;
 DECL|macro|MEGARAID_EXT_VERSION
-mdefine_line|#define MEGARAID_EXT_VERSION&t;&quot;(Release Date: Tue Aug 24 09:43:35 EDT 2004)&quot;
+mdefine_line|#define MEGARAID_EXT_VERSION&t;&quot;(Release Date: Mon Sep 27 22:15:07 EDT 2004)&quot;
 multiline_comment|/*&n; * Define some PCI values here until they are put in the kernel&n; */
 DECL|macro|PCI_DEVICE_ID_PERC4_DI_DISCOVERY
 mdefine_line|#define PCI_DEVICE_ID_PERC4_DI_DISCOVERY&t;&t;0x000E
@@ -293,8 +293,9 @@ r_int
 id|baseport
 suffix:semicolon
 DECL|member|baseaddr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|baseaddr
 suffix:semicolon
 DECL|member|mbox_pool

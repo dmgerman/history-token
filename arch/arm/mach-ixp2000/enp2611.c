@@ -31,11 +31,11 @@ macro_line|#include &lt;asm/mach/time.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/flash.h&gt;
 multiline_comment|/*************************************************************************&n; * ENP-2611 timer tick configuration&n; *************************************************************************/
-DECL|function|enp2611_init_time
+DECL|function|enp2611_timer_init
 r_static
 r_void
 id|__init
-id|enp2611_init_time
+id|enp2611_timer_init
 c_func
 (paren
 r_void
@@ -52,6 +52,23 @@ l_int|1000
 )paren
 suffix:semicolon
 )brace
+r_static
+r_struct
+id|enp2611_timer
+op_assign
+(brace
+dot
+id|init
+op_assign
+id|enp2611_timer_init
+comma
+dot
+id|offset
+op_assign
+id|ixp2000_gettimeoffset
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*************************************************************************&n; * ENP-2611 PCI&n; *************************************************************************/
 DECL|function|enp2611_pci_setup
 r_static
@@ -655,11 +672,12 @@ c_func
 (paren
 id|ixp2000_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|enp2611_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|enp2611_timer
+comma
 id|INIT_MACHINE
 c_func
 (paren

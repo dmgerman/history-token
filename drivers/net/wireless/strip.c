@@ -32,9 +32,9 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|# include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -10139,19 +10139,6 @@ id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
 op_member_access_from_pointer
-id|flush_buffer
-c_func
-(paren
-id|tty
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tty-&gt;ldisc.flush_buffer
-)paren
-id|tty-&gt;ldisc
-dot
 id|flush_buffer
 c_func
 (paren

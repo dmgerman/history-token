@@ -14,11 +14,14 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
+macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 macro_line|#include &lt;asm/arch/lubbock.h&gt;
 macro_line|#include &lt;asm/arch/udc.h&gt;
 macro_line|#include &lt;asm/arch/pxafb.h&gt;
 macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 macro_line|#include &quot;generic.h&quot;
+DECL|macro|LUB_MISC_WR
+mdefine_line|#define LUB_MISC_WR&t;&t;__LUB_REG(LUBBOCK_FPGA_PHYS + 0x080)
 DECL|function|lubbock_set_misc_wr
 r_void
 id|lubbock_set_misc_wr
@@ -922,11 +925,12 @@ c_func
 (paren
 id|lubbock_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|pxa_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|pxa_timer
+comma
 id|INIT_MACHINE
 c_func
 (paren

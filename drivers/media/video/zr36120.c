@@ -3895,16 +3895,10 @@ id|ztv
 )paren
 suffix:semicolon
 multiline_comment|/*&n;         *      This is sucky but right now I can&squot;t find a good way to&n;         *      be sure its safe to free the buffer. We wait 5-6 fields&n;         *      which is more than sufficient to be sure.&n;         */
-id|current-&gt;state
-op_assign
-id|TASK_UNINTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 multiline_comment|/* Wait 1/10th of a second */
@@ -7051,7 +7045,7 @@ l_int|0
 (brace
 r_int
 r_int
-id|page
+id|pfn
 op_assign
 id|virt_to_phys
 c_func
@@ -7062,18 +7056,20 @@ op_star
 )paren
 id|pos
 )paren
+op_rshift
+id|PAGE_SHIFT
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma
 comma
 id|start
 comma
-id|page
+id|pfn
 comma
 id|PAGE_SIZE
 comma
@@ -7403,16 +7399,10 @@ id|ztv
 )paren
 suffix:semicolon
 multiline_comment|/*&n;         *      This is sucky but right now I can&squot;t find a good way to&n;         *      be sure its safe to free the buffer. We wait 5-6 fields&n;         *      which is more than sufficient to be sure.&n;         */
-id|current-&gt;state
-op_assign
-id|TASK_UNINTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 multiline_comment|/* Wait 1/10th of a second */

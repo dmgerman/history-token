@@ -11,14 +11,14 @@ macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;net/if_inet6.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
 macro_line|#include &lt;asm/qdio.h&gt;
 macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &lt;asm/ccwgroup.h&gt;
 macro_line|#include &quot;qeth_mpc.h&quot;
 DECL|macro|VERSION_QETH_H
-mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.113 $&quot;
+mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.116 $&quot;
 macro_line|#ifdef CONFIG_QETH_IPV6
 DECL|macro|QETH_VERSION_IPV6
 mdefine_line|#define QETH_VERSION_IPV6 &t;&quot;:IPv6&quot;
@@ -43,7 +43,7 @@ mdefine_line|#define QETH_DBF_SETUP_INDEX 3
 DECL|macro|QETH_DBF_SETUP_NR_AREAS
 mdefine_line|#define QETH_DBF_SETUP_NR_AREAS 1
 DECL|macro|QETH_DBF_SETUP_LEVEL
-mdefine_line|#define QETH_DBF_SETUP_LEVEL 3
+mdefine_line|#define QETH_DBF_SETUP_LEVEL 5
 DECL|macro|QETH_DBF_MISC_NAME
 mdefine_line|#define QETH_DBF_MISC_NAME &quot;qeth_misc&quot;
 DECL|macro|QETH_DBF_MISC_LEN
@@ -73,7 +73,7 @@ mdefine_line|#define QETH_DBF_CONTROL_INDEX 3
 DECL|macro|QETH_DBF_CONTROL_NR_AREAS
 mdefine_line|#define QETH_DBF_CONTROL_NR_AREAS 2
 DECL|macro|QETH_DBF_CONTROL_LEVEL
-mdefine_line|#define QETH_DBF_CONTROL_LEVEL 2
+mdefine_line|#define QETH_DBF_CONTROL_LEVEL 5
 DECL|macro|QETH_DBF_TRACE_NAME
 mdefine_line|#define QETH_DBF_TRACE_NAME &quot;qeth_trace&quot;
 DECL|macro|QETH_DBF_TRACE_LEN
@@ -83,7 +83,7 @@ mdefine_line|#define QETH_DBF_TRACE_INDEX 2
 DECL|macro|QETH_DBF_TRACE_NR_AREAS
 mdefine_line|#define QETH_DBF_TRACE_NR_AREAS 2
 DECL|macro|QETH_DBF_TRACE_LEVEL
-mdefine_line|#define QETH_DBF_TRACE_LEVEL 3
+mdefine_line|#define QETH_DBF_TRACE_LEVEL 5
 DECL|macro|QETH_DBF_SENSE_NAME
 mdefine_line|#define QETH_DBF_SENSE_NAME &quot;qeth_sense&quot;
 DECL|macro|QETH_DBF_SENSE_LEN
@@ -566,9 +566,9 @@ DECL|macro|QETH_EXT_HDR_TOKEN_ID
 mdefine_line|#define QETH_EXT_HDR_TOKEN_ID          0x02
 DECL|macro|QETH_EXT_HDR_INCLUDE_VLAN_TAG
 mdefine_line|#define QETH_EXT_HDR_INCLUDE_VLAN_TAG  0x04
-DECL|struct|qeth_hdr
+DECL|struct|qeth_hdr_layer3
 r_struct
-id|qeth_hdr
+id|qeth_hdr_layer3
 (brace
 DECL|member|id
 id|__u8
@@ -621,6 +621,88 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+DECL|struct|qeth_hdr_layer2
+r_struct
+id|qeth_hdr_layer2
+(brace
+DECL|member|id
+id|__u8
+id|id
+suffix:semicolon
+DECL|member|flags
+id|__u8
+id|flags
+(braket
+l_int|3
+)braket
+suffix:semicolon
+DECL|member|port_no
+id|__u8
+id|port_no
+suffix:semicolon
+DECL|member|hdr_length
+id|__u8
+id|hdr_length
+suffix:semicolon
+DECL|member|pkt_length
+id|__u16
+id|pkt_length
+suffix:semicolon
+DECL|member|seq_no
+id|__u16
+id|seq_no
+suffix:semicolon
+DECL|member|vlan_id
+id|__u16
+id|vlan_id
+suffix:semicolon
+DECL|member|reserved
+id|__u32
+id|reserved
+suffix:semicolon
+DECL|member|reserved2
+id|__u8
+id|reserved2
+(braket
+l_int|16
+)braket
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+DECL|struct|qeth_hdr
+r_struct
+id|qeth_hdr
+(brace
+r_union
+(brace
+DECL|member|l2
+r_struct
+id|qeth_hdr_layer2
+id|l2
+suffix:semicolon
+DECL|member|l3
+r_struct
+id|qeth_hdr_layer3
+id|l3
+suffix:semicolon
+DECL|member|hdr
+)brace
+id|hdr
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* flags for qeth_hdr.flags */
 DECL|macro|QETH_HDR_PASSTHRU
 mdefine_line|#define QETH_HDR_PASSTHRU 0x10
@@ -656,6 +738,48 @@ DECL|enumerator|QETH_CAST_NOCAST
 id|QETH_CAST_NOCAST
 op_assign
 l_int|0x00
+comma
+)brace
+suffix:semicolon
+DECL|enum|qeth_layer2_frame_flags
+r_enum
+id|qeth_layer2_frame_flags
+(brace
+DECL|enumerator|QETH_LAYER2_FLAG_MULTICAST
+id|QETH_LAYER2_FLAG_MULTICAST
+op_assign
+l_int|0x01
+comma
+DECL|enumerator|QETH_LAYER2_FLAG_BROADCAST
+id|QETH_LAYER2_FLAG_BROADCAST
+op_assign
+l_int|0x02
+comma
+DECL|enumerator|QETH_LAYER2_FLAG_UNICAST
+id|QETH_LAYER2_FLAG_UNICAST
+op_assign
+l_int|0x04
+comma
+DECL|enumerator|QETH_LAYER2_FLAG_VLAN
+id|QETH_LAYER2_FLAG_VLAN
+op_assign
+l_int|0x10
+comma
+)brace
+suffix:semicolon
+DECL|enum|qeth_header_ids
+r_enum
+id|qeth_header_ids
+(brace
+DECL|enumerator|QETH_HEADER_TYPE_LAYER3
+id|QETH_HEADER_TYPE_LAYER3
+op_assign
+l_int|0x01
+comma
+DECL|enumerator|QETH_HEADER_TYPE_LAYER2
+id|QETH_HEADER_TYPE_LAYER2
+op_assign
+l_int|0x02
 comma
 )brace
 suffix:semicolon
@@ -1539,6 +1663,10 @@ DECL|member|guestlan
 r_int
 id|guestlan
 suffix:semicolon
+DECL|member|layer2_mac_registered
+r_int
+id|layer2_mac_registered
+suffix:semicolon
 DECL|member|portname_required
 r_int
 id|portname_required
@@ -1646,6 +1774,10 @@ suffix:semicolon
 DECL|member|fake_ll
 r_int
 id|fake_ll
+suffix:semicolon
+DECL|member|layer2
+r_int
+id|layer2
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1760,6 +1892,38 @@ r_struct
 id|vlan_group
 op_star
 id|vlangrp
+suffix:semicolon
+DECL|member|vlans_current
+id|__u8
+id|vlans_current
+(braket
+id|VLAN_GROUP_ARRAY_LEN
+op_div
+(paren
+l_int|8
+op_star
+r_sizeof
+(paren
+id|__u8
+)paren
+)paren
+)braket
+suffix:semicolon
+DECL|member|vlans_new
+id|__u8
+id|vlans_new
+(braket
+id|VLAN_GROUP_ARRAY_LEN
+op_div
+(paren
+l_int|8
+op_star
+r_sizeof
+(paren
+id|__u8
+)paren
+)paren
+)braket
 suffix:semicolon
 macro_line|#endif
 DECL|member|kernel_thread_starter
@@ -2002,14 +2166,24 @@ DECL|function|qeth_get_netdev_flags
 id|qeth_get_netdev_flags
 c_func
 (paren
-r_int
-id|cardtype
+r_struct
+id|qeth_card
+op_star
+id|card
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|card-&gt;options.layer2
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_switch
 c_cond
 (paren
-id|cardtype
+id|card-&gt;info.type
 )paren
 (brace
 r_case

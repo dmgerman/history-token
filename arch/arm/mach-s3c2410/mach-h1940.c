@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/mach-types.h&gt;
 singleline_comment|//#include &lt;asm/debug-ll.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
 macro_line|#include &quot;s3c2410.h&quot;
+macro_line|#include &quot;clock.h&quot;
 macro_line|#include &quot;devs.h&quot;
 macro_line|#include &quot;cpu.h&quot;
 DECL|variable|__initdata
@@ -65,7 +66,7 @@ dot
 id|clock
 op_assign
 op_amp
-id|s3c2410_pclk
+id|s3c24xx_pclk
 comma
 dot
 id|ucon
@@ -103,7 +104,7 @@ dot
 id|clock
 op_assign
 op_amp
-id|s3c2410_pclk
+id|s3c24xx_pclk
 comma
 dot
 id|ucon
@@ -142,7 +143,7 @@ dot
 id|clock
 op_assign
 op_amp
-id|s3c2410_pclk
+id|s3c24xx_pclk
 comma
 dot
 id|ucon
@@ -269,21 +270,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|h1940_init_time
-r_void
-id|__init
-id|h1940_init_time
-c_func
-(paren
-r_void
-)paren
-(brace
-id|s3c2410_init_time
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 id|MACHINE_START
 c_func
 (paren
@@ -322,10 +308,11 @@ c_func
 (paren
 id|h1940_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|h1940_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|s3c2410_timer
+comma
 id|MACHINE_END
 eof

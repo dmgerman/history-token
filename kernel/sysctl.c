@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/limits.h&gt;
 macro_line|#include &lt;linux/dcache.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#ifdef CONFIG_ROOT_NFS
@@ -85,6 +86,12 @@ suffix:semicolon
 r_extern
 r_int
 id|printk_ratelimit_burst
+suffix:semicolon
+r_extern
+r_int
+id|pid_max_min
+comma
+id|pid_max_max
 suffix:semicolon
 macro_line|#if defined(CONFIG_X86_LOCAL_APIC) &amp;&amp; defined(__i386__)
 DECL|variable|unknown_nmi_panic
@@ -2286,7 +2293,24 @@ dot
 id|proc_handler
 op_assign
 op_amp
-id|proc_dointvec
+id|proc_dointvec_minmax
+comma
+dot
+id|strategy
+op_assign
+id|sysctl_intvec
+comma
+dot
+id|extra1
+op_assign
+op_amp
+id|pid_max_min
+comma
+dot
+id|extra2
+op_assign
+op_amp
+id|pid_max_max
 comma
 )brace
 comma
@@ -3248,6 +3272,7 @@ id|zero
 comma
 )brace
 comma
+macro_line|#ifdef CONFIG_SWAP
 (brace
 dot
 id|ctl_name
@@ -3350,6 +3375,50 @@ comma
 )brace
 comma
 macro_line|#endif
+(brace
+dot
+id|ctl_name
+op_assign
+id|VM_SWAP_TOKEN_TIMEOUT
+comma
+dot
+id|procname
+op_assign
+l_string|&quot;swap_token_timeout&quot;
+comma
+dot
+id|data
+op_assign
+op_amp
+id|swap_token_default_timeout
+comma
+dot
+id|maxlen
+op_assign
+r_sizeof
+(paren
+id|swap_token_default_timeout
+)paren
+comma
+dot
+id|mode
+op_assign
+l_int|0644
+comma
+dot
+id|proc_handler
+op_assign
+op_amp
+id|proc_dointvec_jiffies
+comma
+dot
+id|strategy
+op_assign
+op_amp
+id|sysctl_jiffies
+comma
+)brace
+comma
 (brace
 dot
 id|ctl_name
@@ -3882,6 +3951,7 @@ id|proc_dointvec
 comma
 )brace
 comma
+macro_line|#endif
 (brace
 dot
 id|ctl_name

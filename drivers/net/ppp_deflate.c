@@ -2258,6 +2258,7 @@ id|THIS_MODULE
 )brace
 suffix:semicolon
 DECL|function|deflate_init
+r_static
 r_int
 id|__init
 id|deflate_init
@@ -2302,6 +2303,7 @@ id|answer
 suffix:semicolon
 )brace
 DECL|function|deflate_cleanup
+r_static
 r_void
 id|__exit
 id|deflate_cleanup

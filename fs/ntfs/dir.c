@@ -1,7 +1,12 @@
 multiline_comment|/**&n; * dir.c - NTFS kernel directory operations. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS&n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &quot;ntfs.h&quot;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;dir.h&quot;
+macro_line|#include &quot;aops.h&quot;
+macro_line|#include &quot;attrib.h&quot;
+macro_line|#include &quot;mft.h&quot;
+macro_line|#include &quot;debug.h&quot;
+macro_line|#include &quot;ntfs.h&quot;
 multiline_comment|/**&n; * The little endian Unicode string $I30 as a global constant.&n; */
 DECL|variable|I30
 id|ntfschar
@@ -35,11 +40,7 @@ c_func
 l_char|&squot;0&squot;
 )paren
 comma
-id|const_cpu_to_le16
-c_func
-(paren
 l_int|0
-)paren
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * ntfs_lookup_inode_by_name - find an inode in a directory given its name&n; * @dir_ni:&t;ntfs inode of the directory in which to search for the name&n; * @uname:&t;Unicode name for which to search in the directory&n; * @uname_len:&t;length of the name @uname in Unicode characters&n; * @res:&t;return the found file name if necessary (see below)&n; *&n; * Look for an inode with name @uname in the directory with inode @dir_ni.&n; * ntfs_lookup_inode_by_name() walks the contents of the directory looking for&n; * the Unicode name. If the name is found in the directory, the corresponding&n; * inode number (&gt;= 0) is returned as a mft reference in cpu format, i.e. it&n; * is a 64-bit number containing the sequence number.&n; *&n; * On error, a negative value is returned corresponding to the error code. In&n; * particular if the inode is not found -ENOENT is returned. Note that you&n; * can&squot;t just check the return value for being negative, you have to check the&n; * inode number for being negative which you can extract using MREC(return&n; * value).&n; *&n; * Note, @uname_len does not include the (optional) terminating NULL character.&n; *&n; * Note, we look for a case sensitive match first but we also look for a case&n; * insensitive match at the same time. If we find a case insensitive match, we&n; * save that for the case that we don&squot;t find an exact match, where we return&n; * the case insensitive match and setup @res (which we allocate!) with the mft&n; * reference, the file name type, length and with a copy of the little endian&n; * Unicode file name itself. If we match a file name which is in the DOS name&n; * space, we only return the mft reference and file name type in @res.&n; * ntfs_lookup() then uses this to find the long file name in the inode itself.&n; * This is to avoid polluting the dcache with short file names. We want them to&n; * work but we don&squot;t care for how quickly one can access them. This also fixes&n; * the dcache aliasing issues.&n; *&n; * Locking:  - Caller must hold i_sem on the directory.&n; *&t;     - Each page cache page in the index allocation mapping must be&n; *&t;       locked whilst being accessed otherwise we may find a corrupt&n; *&t;       page due to it being under -&gt;writepage at the moment which&n; *&t;       applies the mst protection fixups before writing out and then&n; *&t;       removes them again after the write is complete after which it &n; *&t;       unlocks the page.&n; */
@@ -928,6 +929,11 @@ id|sle64_to_cpup
 c_func
 (paren
 (paren
+id|sle64
+op_star
+)paren
+(paren
+(paren
 id|u8
 op_star
 )paren
@@ -940,6 +946,7 @@ id|ie-&gt;length
 )paren
 op_minus
 l_int|8
+)paren
 )paren
 suffix:semicolon
 id|ia_mapping
@@ -1895,6 +1902,11 @@ id|sle64_to_cpup
 c_func
 (paren
 (paren
+id|sle64
+op_star
+)paren
+(paren
+(paren
 id|u8
 op_star
 )paren
@@ -1907,6 +1919,7 @@ id|ie-&gt;length
 )paren
 op_minus
 l_int|8
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -3521,45 +3534,7 @@ id|err_out
 suffix:semicolon
 )brace
 macro_line|#endif
-r_typedef
-r_union
-(brace
-DECL|member|ir
-id|INDEX_ROOT
-op_star
-id|ir
-suffix:semicolon
-DECL|member|ia
-id|INDEX_ALLOCATION
-op_star
-id|ia
-suffix:semicolon
-DECL|typedef|index_union
-)brace
-id|index_union
-id|__attribute__
-(paren
-(paren
-id|__transparent_union__
-)paren
-)paren
-suffix:semicolon
-r_typedef
-r_enum
-(brace
-DECL|enumerator|INDEX_TYPE_ROOT
-id|INDEX_TYPE_ROOT
-comma
-multiline_comment|/* index root */
-DECL|enumerator|INDEX_TYPE_ALLOCATION
-id|INDEX_TYPE_ALLOCATION
-comma
-multiline_comment|/* index allocation */
-DECL|typedef|INDEX_TYPE
-)brace
-id|INDEX_TYPE
-suffix:semicolon
-multiline_comment|/**&n; * ntfs_filldir - ntfs specific filldir method&n; * @vol:&t;current ntfs volume&n; * @fpos:&t;position in the directory&n; * @ndir:&t;ntfs inode of current directory&n; * @index_type:&t;specifies whether @iu is an index root or an index allocation&n; * @iu:&t;&t;index root or index allocation attribute to which @ie belongs&n; * @ia_page:&t;page in which the index allocation buffer @ie is in resides&n; * @ie:&t;&t;current index entry&n; * @name:&t;buffer to use for the converted name&n; * @dirent:&t;vfs filldir callback context&n; * @filldir:&t;vfs filldir callback&n; *&n; * Convert the Unicode @name to the loaded NLS and pass it to the @filldir&n; * callback.&n; *&n; * If @index_type is INDEX_TYPE_ALLOCATION, @ia_page is the locked page&n; * containing the index allocation block containing the index entry @ie.&n; * Otherwise, @ia_page is NULL.&n; *&n; * Note, we drop (and then reacquire) the page lock on @ia_page across the&n; * @filldir() call otherwise we would deadlock with NFSd when it calls -&gt;lookup&n; * since ntfs_lookup() will lock the same page.  As an optimization, we do not&n; * retake the lock if we are returning a non-zero value as ntfs_readdir()&n; * would need to drop the lock immediately anyway.&n; */
+multiline_comment|/**&n; * ntfs_filldir - ntfs specific filldir method&n; * @vol:&t;current ntfs volume&n; * @fpos:&t;position in the directory&n; * @ndir:&t;ntfs inode of current directory&n; * @ia_page:&t;page in which the index allocation buffer @ie is in resides&n; * @ie:&t;&t;current index entry&n; * @name:&t;buffer to use for the converted name&n; * @dirent:&t;vfs filldir callback context&n; * @filldir:&t;vfs filldir callback&n; *&n; * Convert the Unicode @name to the loaded NLS and pass it to the @filldir&n; * callback.&n; *&n; * If @ia_page is not NULL it is the locked page containing the index&n; * allocation block containing the index entry @ie.&n; *&n; * Note, we drop (and then reacquire) the page lock on @ia_page across the&n; * @filldir() call otherwise we would deadlock with NFSd when it calls -&gt;lookup&n; * since ntfs_lookup() will lock the same page.  As an optimization, we do not&n; * retake the lock if we are returning a non-zero value as ntfs_readdir()&n; * would need to drop the lock immediately anyway.&n; */
 DECL|function|ntfs_filldir
 r_static
 r_inline
@@ -3572,19 +3547,11 @@ op_star
 id|vol
 comma
 id|loff_t
-op_star
 id|fpos
 comma
 id|ntfs_inode
 op_star
 id|ndir
-comma
-r_const
-id|INDEX_TYPE
-id|index_type
-comma
-id|index_union
-id|iu
 comma
 r_struct
 id|page
@@ -3621,58 +3588,6 @@ id|dt_type
 suffix:semicolon
 id|FILE_NAME_TYPE_FLAGS
 id|name_type
-suffix:semicolon
-multiline_comment|/* Advance the position even if going to skip the entry. */
-r_if
-c_cond
-(paren
-id|index_type
-op_eq
-id|INDEX_TYPE_ALLOCATION
-)paren
-op_star
-id|fpos
-op_assign
-(paren
-id|u8
-op_star
-)paren
-id|ie
-op_minus
-(paren
-id|u8
-op_star
-)paren
-id|iu.ia
-op_plus
-(paren
-id|sle64_to_cpu
-c_func
-(paren
-id|iu.ia-&gt;index_block_vcn
-)paren
-op_lshift
-id|ndir-&gt;itype.index.vcn_size_bits
-)paren
-op_plus
-id|vol-&gt;mft_record_size
-suffix:semicolon
-r_else
-multiline_comment|/* if (index_type == INDEX_TYPE_ROOT) */
-op_star
-id|fpos
-op_assign
-(paren
-id|u8
-op_star
-)paren
-id|ie
-op_minus
-(paren
-id|u8
-op_star
-)paren
-id|iu.ir
 suffix:semicolon
 id|name_type
 op_assign
@@ -3819,9 +3734,7 @@ multiline_comment|/*&n;&t; * Drop the page lock otherwise we deadlock with NFS w
 r_if
 c_cond
 (paren
-id|index_type
-op_eq
-id|INDEX_TYPE_ALLOCATION
+id|ia_page
 )paren
 id|unlock_page
 c_func
@@ -3839,7 +3752,6 @@ id|name
 comma
 id|name_len
 comma
-op_star
 id|fpos
 comma
 id|mref
@@ -3865,7 +3777,6 @@ id|name
 comma
 id|name_len
 comma
-op_star
 id|fpos
 comma
 id|mref
@@ -3880,9 +3791,7 @@ c_cond
 op_logical_neg
 id|rc
 op_logical_and
-id|index_type
-op_eq
-id|INDEX_TYPE_ALLOCATION
+id|ia_page
 )paren
 id|lock_page
 c_func
@@ -4573,6 +4482,21 @@ id|ir
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/* Advance the position even if going to skip the entry. */
+id|fpos
+op_assign
+(paren
+id|u8
+op_star
+)paren
+id|ie
+op_minus
+(paren
+id|u8
+op_star
+)paren
+id|ir
+suffix:semicolon
 multiline_comment|/* Submit the name to the filldir callback. */
 id|rc
 op_assign
@@ -4581,14 +4505,9 @@ c_func
 (paren
 id|vol
 comma
-op_amp
 id|fpos
 comma
 id|ndir
-comma
-id|INDEX_TYPE_ROOT
-comma
-id|ir
 comma
 l_int|NULL
 comma
@@ -4841,6 +4760,11 @@ r_int
 )paren
 id|bmp_pos
 op_amp
+(paren
+r_int
+r_int
+r_int
+)paren
 (paren
 (paren
 id|PAGE_CACHE_SIZE
@@ -5508,6 +5432,11 @@ r_int
 id|ia_start
 op_plus
 (paren
+r_int
+r_int
+r_int
+)paren
+(paren
 (paren
 id|u8
 op_star
@@ -5587,6 +5516,33 @@ id|ia
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/* Advance the position even if going to skip the entry. */
+id|fpos
+op_assign
+(paren
+id|u8
+op_star
+)paren
+id|ie
+op_minus
+(paren
+id|u8
+op_star
+)paren
+id|ia
+op_plus
+(paren
+id|sle64_to_cpu
+c_func
+(paren
+id|ia-&gt;index_block_vcn
+)paren
+op_lshift
+id|ndir-&gt;itype.index.vcn_size_bits
+)paren
+op_plus
+id|vol-&gt;mft_record_size
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Submit the name to the @filldir callback.  Note,&n;&t;&t; * ntfs_filldir() drops the lock on @ia_page but it retakes it&n;&t;&t; * before returning, unless a non-zero value is returned in&n;&t;&t; * which case the page is left unlocked.&n;&t;&t; */
 id|rc
 op_assign
@@ -5595,14 +5551,9 @@ c_func
 (paren
 id|vol
 comma
-op_amp
 id|fpos
 comma
 id|ndir
-comma
-id|INDEX_TYPE_ALLOCATION
-comma
-id|ia
 comma
 id|ia_page
 comma

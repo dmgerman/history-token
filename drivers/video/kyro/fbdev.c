@@ -201,6 +201,7 @@ r_struct
 (brace
 DECL|member|pSTGReg
 id|STG4000REG
+id|__iomem
 op_star
 id|pSTGReg
 suffix:semicolon
@@ -3338,6 +3339,11 @@ l_int|0
 comma
 id|size
 )paren
+suffix:semicolon
+id|info-&gt;device
+op_assign
+op_amp
+id|pdev-&gt;dev
 suffix:semicolon
 r_if
 c_cond

@@ -12,30 +12,7 @@ macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
-r_extern
-r_void
-id|clps711x_init_irq
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|clps711x_map_io
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|clps711x_init_time
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+macro_line|#include &quot;common.h&quot;
 multiline_comment|/*&n; * Map the CS89712 Ethernet port.  That should be moved to the&n; * ethernet driver, perhaps.&n; */
 DECL|variable|__initdata
 r_static
@@ -122,30 +99,11 @@ c_func
 (paren
 id|clps711x_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|clps711x_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|clps711x_timer
+comma
 id|MACHINE_END
-DECL|function|cdb89712_hw_init
-r_static
-r_int
-id|cdb89712_hw_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|variable|cdb89712_hw_init
-id|__initcall
-c_func
-(paren
-id|cdb89712_hw_init
-)paren
-suffix:semicolon
 eof

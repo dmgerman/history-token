@@ -310,14 +310,14 @@ id|dir
 suffix:semicolon
 )brace
 DECL|variable|sysfs_create_group
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|sysfs_create_group
 )paren
 suffix:semicolon
 DECL|variable|sysfs_remove_group
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|sysfs_remove_group

@@ -165,11 +165,6 @@ id|SNDRV_CARDS
 op_assign
 id|SNDRV_DEFAULT_DMA
 suffix:semicolon
-DECL|variable|boot_devs
-r_static
-r_int
-id|boot_devs
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -177,7 +172,7 @@ id|index
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -197,7 +192,7 @@ id|id
 comma
 id|charp
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -217,7 +212,7 @@ id|enable
 comma
 r_bool
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -238,7 +233,7 @@ id|isapnp
 comma
 r_bool
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -259,7 +254,7 @@ id|sbport
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -279,7 +274,7 @@ id|sbirq
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -299,7 +294,7 @@ id|sbdma8
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -319,7 +314,7 @@ id|sbdma16
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -339,7 +334,7 @@ id|wssport
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -359,7 +354,7 @@ id|wssirq
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -379,7 +374,7 @@ id|wssdma
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren

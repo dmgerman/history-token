@@ -694,12 +694,14 @@ suffix:semicolon
 r_else
 multiline_comment|/* file mode might have been restricted at mount time &n;&t;&t;on the client (above and beyond ACL on servers) for  &n;&t;&t;servers which do not support setting and viewing mode bits,&n;&t;&t;so allowing client to check permissions is useful */
 r_return
-id|vfs_permission
+id|generic_permission
 c_func
 (paren
 id|inode
 comma
 id|mask
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

@@ -1,9 +1,14 @@
-multiline_comment|/*&n; * v4l2 device driver for cx2388x based TV cards&n; *&n; * (c) 2003,04 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SUSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: cx88.h,v 1.37 2004/10/12 07:33:22 kraxel Exp $&n; *&n; * v4l2 device driver for cx2388x based TV cards&n; *&n; * (c) 2003,04 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SUSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
+macro_line|#include &lt;dvbdev.h&gt;
+macro_line|#include &lt;dmxdev.h&gt;
+macro_line|#include &lt;dvb_demux.h&gt;
+macro_line|#include &lt;dvb_net.h&gt;
+macro_line|#include &lt;dvb_frontend.h&gt;
 macro_line|#include &lt;media/video-buf.h&gt;
 macro_line|#include &lt;media/tuner.h&gt;
 macro_line|#include &lt;media/audiochip.h&gt;
@@ -26,6 +31,8 @@ DECL|macro|CX88_MAXBOARDS
 mdefine_line|#define CX88_MAXBOARDS 8
 multiline_comment|/* ----------------------------------------------------------- */
 multiline_comment|/* defines and enums                                           */
+DECL|macro|V4L2_I2C_CLIENTS
+mdefine_line|#define V4L2_I2C_CLIENTS 1
 DECL|macro|FORMAT_FLAGS_PACKED
 mdefine_line|#define FORMAT_FLAGS_PACKED       0x01
 DECL|macro|FORMAT_FLAGS_PLANAR
@@ -42,10 +49,10 @@ mdefine_line|#define SHADOW_AUD_BAL_CTL           2
 DECL|macro|SHADOW_MAX
 mdefine_line|#define SHADOW_MAX                   2
 multiline_comment|/* ----------------------------------------------------------- */
-multiline_comment|/* static data                                                 */
-DECL|struct|cx8800_tvnorm
+multiline_comment|/* tv norms                                                    */
+DECL|struct|cx88_tvnorm
 r_struct
-id|cx8800_tvnorm
+id|cx88_tvnorm
 (brace
 DECL|member|name
 r_char
@@ -66,6 +73,63 @@ id|cxoformat
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|function|norm_maxw
+r_static
+r_int
+r_int
+r_inline
+id|norm_maxw
+c_func
+(paren
+r_struct
+id|cx88_tvnorm
+op_star
+id|norm
+)paren
+(brace
+r_return
+(paren
+id|norm-&gt;id
+op_amp
+id|V4L2_STD_625_50
+)paren
+ques
+c_cond
+l_int|768
+suffix:colon
+l_int|640
+suffix:semicolon
+singleline_comment|//&t;return (norm-&gt;id &amp; V4L2_STD_625_50) ? 720 : 640;
+)brace
+DECL|function|norm_maxh
+r_static
+r_int
+r_int
+r_inline
+id|norm_maxh
+c_func
+(paren
+r_struct
+id|cx88_tvnorm
+op_star
+id|norm
+)paren
+(brace
+r_return
+(paren
+id|norm-&gt;id
+op_amp
+id|V4L2_STD_625_50
+)paren
+ques
+c_cond
+l_int|576
+suffix:colon
+l_int|480
+suffix:semicolon
+)brace
+multiline_comment|/* ----------------------------------------------------------- */
+multiline_comment|/* static data                                                 */
 DECL|struct|cx8800_fmt
 r_struct
 id|cx8800_fmt
@@ -139,6 +203,8 @@ DECL|macro|SRAM_CH25
 mdefine_line|#define SRAM_CH25 4   /* audio */
 DECL|macro|SRAM_CH26
 mdefine_line|#define SRAM_CH26 5
+DECL|macro|SRAM_CH28
+mdefine_line|#define SRAM_CH28 6   /* mpeg */
 multiline_comment|/* more */
 DECL|struct|sram_channel
 r_struct
@@ -197,35 +263,49 @@ suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------- */
 multiline_comment|/* card configuration                                          */
 DECL|macro|CX88_BOARD_NOAUTO
-mdefine_line|#define CX88_BOARD_NOAUTO        UNSET
+mdefine_line|#define CX88_BOARD_NOAUTO               UNSET
 DECL|macro|CX88_BOARD_UNKNOWN
-mdefine_line|#define CX88_BOARD_UNKNOWN               0
+mdefine_line|#define CX88_BOARD_UNKNOWN                  0
 DECL|macro|CX88_BOARD_HAUPPAUGE
-mdefine_line|#define CX88_BOARD_HAUPPAUGE             1
+mdefine_line|#define CX88_BOARD_HAUPPAUGE                1
 DECL|macro|CX88_BOARD_GDI
-mdefine_line|#define CX88_BOARD_GDI                   2
+mdefine_line|#define CX88_BOARD_GDI                      2
 DECL|macro|CX88_BOARD_PIXELVIEW
-mdefine_line|#define CX88_BOARD_PIXELVIEW             3
+mdefine_line|#define CX88_BOARD_PIXELVIEW                3
 DECL|macro|CX88_BOARD_ATI_WONDER_PRO
-mdefine_line|#define CX88_BOARD_ATI_WONDER_PRO        4
+mdefine_line|#define CX88_BOARD_ATI_WONDER_PRO           4
 DECL|macro|CX88_BOARD_WINFAST2000XP
-mdefine_line|#define CX88_BOARD_WINFAST2000XP         5
+mdefine_line|#define CX88_BOARD_WINFAST2000XP            5
 DECL|macro|CX88_BOARD_AVERTV_303
-mdefine_line|#define CX88_BOARD_AVERTV_303            6
+mdefine_line|#define CX88_BOARD_AVERTV_303               6
 DECL|macro|CX88_BOARD_MSI_TVANYWHERE_MASTER
-mdefine_line|#define CX88_BOARD_MSI_TVANYWHERE_MASTER 7
+mdefine_line|#define CX88_BOARD_MSI_TVANYWHERE_MASTER    7
 DECL|macro|CX88_BOARD_WINFAST_DV2000
-mdefine_line|#define CX88_BOARD_WINFAST_DV2000        8
+mdefine_line|#define CX88_BOARD_WINFAST_DV2000           8
 DECL|macro|CX88_BOARD_LEADTEK_PVR2000
-mdefine_line|#define CX88_BOARD_LEADTEK_PVR2000       9
+mdefine_line|#define CX88_BOARD_LEADTEK_PVR2000          9
 DECL|macro|CX88_BOARD_IODATA_GVVCP3PCI
-mdefine_line|#define CX88_BOARD_IODATA_GVVCP3PCI      10
+mdefine_line|#define CX88_BOARD_IODATA_GVVCP3PCI        10
 DECL|macro|CX88_BOARD_PROLINK_PLAYTVPVR
-mdefine_line|#define CX88_BOARD_PROLINK_PLAYTVPVR     11
+mdefine_line|#define CX88_BOARD_PROLINK_PLAYTVPVR       11
 DECL|macro|CX88_BOARD_ASUS_PVR_416
-mdefine_line|#define CX88_BOARD_ASUS_PVR_416          12
+mdefine_line|#define CX88_BOARD_ASUS_PVR_416            12
 DECL|macro|CX88_BOARD_MSI_TVANYWHERE
-mdefine_line|#define CX88_BOARD_MSI_TVANYWHERE        13
+mdefine_line|#define CX88_BOARD_MSI_TVANYWHERE          13
+DECL|macro|CX88_BOARD_KWORLD_DVB_T
+mdefine_line|#define CX88_BOARD_KWORLD_DVB_T            14
+DECL|macro|CX88_BOARD_DVICO_FUSIONHDTV_DVB_T1
+mdefine_line|#define CX88_BOARD_DVICO_FUSIONHDTV_DVB_T1 15
+DECL|macro|CX88_BOARD_KWORLD_LTV883
+mdefine_line|#define CX88_BOARD_KWORLD_LTV883           16
+DECL|macro|CX88_BOARD_DVICO_FUSIONHDTV_3_GOLD
+mdefine_line|#define CX88_BOARD_DVICO_FUSIONHDTV_3_GOLD 17
+DECL|macro|CX88_BOARD_HAUPPAUGE_DVB_T1
+mdefine_line|#define CX88_BOARD_HAUPPAUGE_DVB_T1        18
+DECL|macro|CX88_BOARD_CONEXANT_DVB_T1
+mdefine_line|#define CX88_BOARD_CONEXANT_DVB_T1         19
+DECL|macro|CX88_BOARD_PROVIDEO_PV259
+mdefine_line|#define CX88_BOARD_PROVIDEO_PV259          20
 DECL|enum|cx88_itype
 r_enum
 id|cx88_itype
@@ -237,38 +317,30 @@ l_int|1
 comma
 DECL|enumerator|CX88_VMUX_COMPOSITE2
 id|CX88_VMUX_COMPOSITE2
-op_assign
-l_int|2
 comma
 DECL|enumerator|CX88_VMUX_COMPOSITE3
 id|CX88_VMUX_COMPOSITE3
-op_assign
-l_int|3
 comma
 DECL|enumerator|CX88_VMUX_COMPOSITE4
 id|CX88_VMUX_COMPOSITE4
-op_assign
-l_int|4
-comma
-DECL|enumerator|CX88_VMUX_TELEVISION
-id|CX88_VMUX_TELEVISION
-op_assign
-l_int|5
 comma
 DECL|enumerator|CX88_VMUX_SVIDEO
 id|CX88_VMUX_SVIDEO
-op_assign
-l_int|6
+comma
+DECL|enumerator|CX88_VMUX_TELEVISION
+id|CX88_VMUX_TELEVISION
+comma
+DECL|enumerator|CX88_VMUX_CABLE
+id|CX88_VMUX_CABLE
+comma
+DECL|enumerator|CX88_VMUX_DVB
+id|CX88_VMUX_DVB
 comma
 DECL|enumerator|CX88_VMUX_DEBUG
 id|CX88_VMUX_DEBUG
-op_assign
-l_int|7
 comma
 DECL|enumerator|CX88_RADIO
 id|CX88_RADIO
-op_assign
-l_int|8
 comma
 )brace
 suffix:semicolon
@@ -315,11 +387,9 @@ r_int
 r_int
 id|tuner_type
 suffix:semicolon
-DECL|member|needs_tda9887
+DECL|member|tda9887_conf
 r_int
-id|needs_tda9887
-suffix:colon
-l_int|1
+id|tda9887_conf
 suffix:semicolon
 DECL|member|input
 r_struct
@@ -333,6 +403,18 @@ DECL|member|radio
 r_struct
 id|cx88_input
 id|radio
+suffix:semicolon
+DECL|member|blackbird
+r_int
+id|blackbird
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|dvb
+r_int
+id|dvb
+suffix:colon
+l_int|1
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -355,7 +437,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INPUT
-mdefine_line|#define INPUT(nr) (&amp;cx88_boards[dev-&gt;board].input[nr])
+mdefine_line|#define INPUT(nr) (&amp;cx88_boards[core-&gt;board].input[nr])
 multiline_comment|/* ----------------------------------------------------------- */
 multiline_comment|/* device / file handle status                                 */
 DECL|macro|RESOURCE_OVERLAY
@@ -364,12 +446,9 @@ DECL|macro|RESOURCE_VIDEO
 mdefine_line|#define RESOURCE_VIDEO         2
 DECL|macro|RESOURCE_VBI
 mdefine_line|#define RESOURCE_VBI           4
-singleline_comment|//#define BUFFER_TIMEOUT     (HZ/2)  /* 0.5 seconds */
 DECL|macro|BUFFER_TIMEOUT
-mdefine_line|#define BUFFER_TIMEOUT     (HZ*2)
-r_struct
-id|cx8800_dev
-suffix:semicolon
+mdefine_line|#define BUFFER_TIMEOUT     (HZ/2)  /* 0.5 seconds */
+singleline_comment|//#define BUFFER_TIMEOUT     (HZ*2)
 multiline_comment|/* buffer for one video frame */
 DECL|struct|cx88_buffer
 r_struct
@@ -434,7 +513,152 @@ id|count
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* video filehandle status */
+DECL|struct|cx88_core
+r_struct
+id|cx88_core
+(brace
+DECL|member|devlist
+r_struct
+id|list_head
+id|devlist
+suffix:semicolon
+DECL|member|refcount
+id|atomic_t
+id|refcount
+suffix:semicolon
+multiline_comment|/* board name */
+DECL|member|nr
+r_int
+id|nr
+suffix:semicolon
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|32
+)braket
+suffix:semicolon
+multiline_comment|/* pci stuff */
+DECL|member|pci_bus
+r_int
+id|pci_bus
+suffix:semicolon
+DECL|member|pci_slot
+r_int
+id|pci_slot
+suffix:semicolon
+DECL|member|lmmio
+id|u32
+op_star
+id|lmmio
+suffix:semicolon
+DECL|member|bmmio
+id|u8
+op_star
+id|bmmio
+suffix:semicolon
+DECL|member|shadow
+id|u32
+id|shadow
+(braket
+id|SHADOW_MAX
+)braket
+suffix:semicolon
+multiline_comment|/* i2c i/o */
+DECL|member|i2c_adap
+r_struct
+id|i2c_adapter
+id|i2c_adap
+suffix:semicolon
+DECL|member|i2c_algo
+r_struct
+id|i2c_algo_bit_data
+id|i2c_algo
+suffix:semicolon
+DECL|member|i2c_client
+r_struct
+id|i2c_client
+id|i2c_client
+suffix:semicolon
+DECL|member|i2c_state
+DECL|member|i2c_rc
+id|u32
+id|i2c_state
+comma
+id|i2c_rc
+suffix:semicolon
+multiline_comment|/* config info -- analog */
+DECL|member|board
+r_int
+r_int
+id|board
+suffix:semicolon
+DECL|member|tuner_type
+r_int
+r_int
+id|tuner_type
+suffix:semicolon
+DECL|member|tda9887_conf
+r_int
+r_int
+id|tda9887_conf
+suffix:semicolon
+DECL|member|has_radio
+r_int
+r_int
+id|has_radio
+suffix:semicolon
+multiline_comment|/* config info -- dvb */
+DECL|member|pll_type
+r_int
+r_int
+id|pll_type
+suffix:semicolon
+DECL|member|pll_addr
+r_int
+r_int
+id|pll_addr
+suffix:semicolon
+DECL|member|demod_addr
+r_int
+r_int
+id|demod_addr
+suffix:semicolon
+multiline_comment|/* state info */
+DECL|member|kthread
+r_struct
+id|task_struct
+op_star
+id|kthread
+suffix:semicolon
+DECL|member|tvnorm
+r_struct
+id|cx88_tvnorm
+op_star
+id|tvnorm
+suffix:semicolon
+DECL|member|tvaudio
+id|u32
+id|tvaudio
+suffix:semicolon
+DECL|member|input
+id|u32
+id|input
+suffix:semicolon
+DECL|member|astat
+id|u32
+id|astat
+suffix:semicolon
+)brace
+suffix:semicolon
+r_struct
+id|cx8800_dev
+suffix:semicolon
+r_struct
+id|cx8802_dev
+suffix:semicolon
+multiline_comment|/* ----------------------------------------------------------- */
+multiline_comment|/* function 0: video stuff                                     */
 DECL|struct|cx8800_fh
 r_struct
 id|cx8800_fh
@@ -508,29 +732,22 @@ DECL|struct|cx8800_suspend_state
 r_struct
 id|cx8800_suspend_state
 (brace
-DECL|member|pci_cfg
-id|u32
-id|pci_cfg
-(braket
-l_int|64
-op_div
-r_sizeof
-(paren
-id|u32
-)paren
-)braket
-suffix:semicolon
 DECL|member|disabled
 r_int
 id|disabled
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* global device status */
 DECL|struct|cx8800_dev
 r_struct
 id|cx8800_dev
 (brace
+DECL|member|core
+r_struct
+id|cx88_core
+op_star
+id|core
+suffix:semicolon
 DECL|member|devlist
 r_struct
 id|list_head
@@ -570,13 +787,6 @@ op_star
 id|radio_dev
 suffix:semicolon
 multiline_comment|/* pci i/o */
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|32
-)braket
-suffix:semicolon
 DECL|member|pci
 r_struct
 id|pci_dev
@@ -591,67 +801,18 @@ id|pci_rev
 comma
 id|pci_lat
 suffix:semicolon
-DECL|member|lmmio
-id|u32
-op_star
-id|lmmio
-suffix:semicolon
-DECL|member|bmmio
-id|u8
-op_star
-id|bmmio
-suffix:semicolon
-multiline_comment|/* config info */
-DECL|member|board
-r_int
-r_int
-id|board
-suffix:semicolon
-DECL|member|tuner_type
-r_int
-r_int
-id|tuner_type
-suffix:semicolon
-DECL|member|has_radio
-r_int
-r_int
-id|has_radio
-suffix:semicolon
-multiline_comment|/* i2c i/o */
-DECL|member|i2c_adap
-r_struct
-id|i2c_adapter
-id|i2c_adap
-suffix:semicolon
-DECL|member|i2c_algo
-r_struct
-id|i2c_algo_bit_data
-id|i2c_algo
-suffix:semicolon
-DECL|member|i2c_client
-r_struct
-id|i2c_client
-id|i2c_client
-suffix:semicolon
-DECL|member|i2c_state
-DECL|member|i2c_rc
-id|u32
-id|i2c_state
-comma
-id|i2c_rc
-suffix:semicolon
+macro_line|#if 0
 multiline_comment|/* video overlay */
-DECL|member|fbuf
 r_struct
 id|v4l2_framebuffer
 id|fbuf
 suffix:semicolon
-DECL|member|screen
 r_struct
 id|cx88_buffer
 op_star
 id|screen
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* capture queues */
 DECL|member|vidq
 r_struct
@@ -664,45 +825,11 @@ id|cx88_dmaqueue
 id|vbiq
 suffix:semicolon
 multiline_comment|/* various v4l controls */
-DECL|member|tvnorm
-r_struct
-id|cx8800_tvnorm
-op_star
-id|tvnorm
-suffix:semicolon
-DECL|member|tvaudio
-id|u32
-id|tvaudio
-suffix:semicolon
-DECL|member|input
-id|u32
-id|input
-suffix:semicolon
 DECL|member|freq
 id|u32
 id|freq
 suffix:semicolon
 multiline_comment|/* other global state info */
-DECL|member|shadow
-id|u32
-id|shadow
-(braket
-id|SHADOW_MAX
-)braket
-suffix:semicolon
-DECL|member|shutdown
-r_int
-id|shutdown
-suffix:semicolon
-DECL|member|tpid
-id|pid_t
-id|tpid
-suffix:semicolon
-DECL|member|texit
-r_struct
-id|completion
-id|texit
-suffix:semicolon
 DECL|member|state
 r_struct
 id|cx8800_suspend_state
@@ -711,14 +838,233 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------- */
+multiline_comment|/* function 1: audio/alsa stuff                                */
+DECL|struct|cx8801_dev
+r_struct
+id|cx8801_dev
+(brace
+DECL|member|core
+r_struct
+id|cx88_core
+op_star
+id|core
+suffix:semicolon
+multiline_comment|/* pci i/o */
+DECL|member|pci
+r_struct
+id|pci_dev
+op_star
+id|pci
+suffix:semicolon
+DECL|member|pci_rev
+DECL|member|pci_lat
+r_int
+r_char
+id|pci_rev
+comma
+id|pci_lat
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* ----------------------------------------------------------- */
+multiline_comment|/* function 2: mpeg stuff                                      */
+DECL|struct|cx8802_fh
+r_struct
+id|cx8802_fh
+(brace
+DECL|member|dev
+r_struct
+id|cx8802_dev
+op_star
+id|dev
+suffix:semicolon
+DECL|member|mpegq
+r_struct
+id|videobuf_queue
+id|mpegq
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|cx8802_suspend_state
+r_struct
+id|cx8802_suspend_state
+(brace
+DECL|member|pci_cfg
+id|u32
+id|pci_cfg
+(braket
+l_int|64
+op_div
+r_sizeof
+(paren
+id|u32
+)paren
+)braket
+suffix:semicolon
+DECL|member|disabled
+r_int
+id|disabled
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|cx8802_dev
+r_struct
+id|cx8802_dev
+(brace
+DECL|member|core
+r_struct
+id|cx88_core
+op_star
+id|core
+suffix:semicolon
+DECL|member|lock
+r_struct
+id|semaphore
+id|lock
+suffix:semicolon
+DECL|member|slock
+id|spinlock_t
+id|slock
+suffix:semicolon
+multiline_comment|/* pci i/o */
+DECL|member|pci
+r_struct
+id|pci_dev
+op_star
+id|pci
+suffix:semicolon
+DECL|member|pci_rev
+DECL|member|pci_lat
+r_int
+r_char
+id|pci_rev
+comma
+id|pci_lat
+suffix:semicolon
+multiline_comment|/* dma queues */
+DECL|member|mpegq
+r_struct
+id|cx88_dmaqueue
+id|mpegq
+suffix:semicolon
+DECL|member|ts_packet_size
+id|u32
+id|ts_packet_size
+suffix:semicolon
+DECL|member|ts_packet_count
+id|u32
+id|ts_packet_count
+suffix:semicolon
+multiline_comment|/* error stats */
+DECL|member|stopper_count
+id|u32
+id|stopper_count
+suffix:semicolon
+DECL|member|error_count
+id|u32
+id|error_count
+suffix:semicolon
+DECL|member|timeout_count
+id|u32
+id|timeout_count
+suffix:semicolon
+multiline_comment|/* other global state info */
+DECL|member|state
+r_struct
+id|cx8802_suspend_state
+id|state
+suffix:semicolon
+multiline_comment|/* for blackbird only */
+DECL|member|devlist
+r_struct
+id|list_head
+id|devlist
+suffix:semicolon
+DECL|member|mpeg_dev
+r_struct
+id|video_device
+op_star
+id|mpeg_dev
+suffix:semicolon
+DECL|member|mailbox
+id|u32
+id|mailbox
+suffix:semicolon
+multiline_comment|/* for dvb only */
+DECL|member|dvb_adapter
+r_struct
+id|dvb_adapter
+op_star
+id|dvb_adapter
+suffix:semicolon
+DECL|member|dvbq
+r_struct
+id|videobuf_queue
+id|dvbq
+suffix:semicolon
+DECL|member|dvb_thread
+r_struct
+id|task_struct
+op_star
+id|dvb_thread
+suffix:semicolon
+DECL|member|demux
+r_struct
+id|dvb_demux
+id|demux
+suffix:semicolon
+DECL|member|dmxdev
+r_struct
+id|dmxdev
+id|dmxdev
+suffix:semicolon
+DECL|member|fe_hw
+r_struct
+id|dmx_frontend
+id|fe_hw
+suffix:semicolon
+DECL|member|fe_mem
+r_struct
+id|dmx_frontend
+id|fe_mem
+suffix:semicolon
+DECL|member|dvbnet
+r_struct
+id|dvb_net
+id|dvbnet
+suffix:semicolon
+DECL|member|nfeeds
+r_int
+id|nfeeds
+suffix:semicolon
+DECL|member|fe_handle
+r_void
+op_star
+id|fe_handle
+suffix:semicolon
+DECL|member|fe_release
+r_int
+(paren
+op_star
+id|fe_release
+)paren
+(paren
+r_void
+op_star
+id|handle
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* ----------------------------------------------------------- */
 DECL|macro|cx_read
-mdefine_line|#define cx_read(reg)             readl(dev-&gt;lmmio + ((reg)&gt;&gt;2))
+mdefine_line|#define cx_read(reg)             readl(core-&gt;lmmio + ((reg)&gt;&gt;2))
 DECL|macro|cx_write
-mdefine_line|#define cx_write(reg,value)      writel((value), dev-&gt;lmmio + ((reg)&gt;&gt;2));
+mdefine_line|#define cx_write(reg,value)      writel((value), core-&gt;lmmio + ((reg)&gt;&gt;2))
 DECL|macro|cx_writeb
-mdefine_line|#define cx_writeb(reg,value)     writeb((value), dev-&gt;bmmio + (reg));
+mdefine_line|#define cx_writeb(reg,value)     writeb((value), core-&gt;bmmio + (reg))
 DECL|macro|cx_andor
-mdefine_line|#define cx_andor(reg,mask,value) &bslash;&n;  writel((readl(dev-&gt;lmmio+((reg)&gt;&gt;2)) &amp; ~(mask)) |&bslash;&n;  ((value) &amp; (mask)), dev-&gt;lmmio+((reg)&gt;&gt;2))
+mdefine_line|#define cx_andor(reg,mask,value) &bslash;&n;  writel((readl(core-&gt;lmmio+((reg)&gt;&gt;2)) &amp; ~(mask)) |&bslash;&n;  ((value) &amp; (mask)), core-&gt;lmmio+((reg)&gt;&gt;2))
 DECL|macro|cx_set
 mdefine_line|#define cx_set(reg,bit)          cx_andor((reg),(bit),(bit))
 DECL|macro|cx_clear
@@ -727,11 +1073,11 @@ DECL|macro|cx_wait
 mdefine_line|#define cx_wait(d) { if (need_resched()) schedule(); else udelay(d); }
 multiline_comment|/* shadow registers */
 DECL|macro|cx_sread
-mdefine_line|#define cx_sread(sreg)&t;&t;    (dev-&gt;shadow[sreg])
+mdefine_line|#define cx_sread(sreg)&t;&t;    (core-&gt;shadow[sreg])
 DECL|macro|cx_swrite
-mdefine_line|#define cx_swrite(sreg,reg,value) &bslash;&n;  (dev-&gt;shadow[sreg] = value, &bslash;&n;   writel(dev-&gt;shadow[sreg], dev-&gt;lmmio + ((reg)&gt;&gt;2)))
+mdefine_line|#define cx_swrite(sreg,reg,value) &bslash;&n;  (core-&gt;shadow[sreg] = value, &bslash;&n;   writel(core-&gt;shadow[sreg], core-&gt;lmmio + ((reg)&gt;&gt;2)))
 DECL|macro|cx_sandor
-mdefine_line|#define cx_sandor(sreg,reg,mask,value) &bslash;&n;  (dev-&gt;shadow[sreg] = (dev-&gt;shadow[sreg] &amp; ~(mask)) | ((value) &amp; (mask)), &bslash;&n;   writel(dev-&gt;shadow[sreg], dev-&gt;lmmio + ((reg)&gt;&gt;2)))
+mdefine_line|#define cx_sandor(sreg,reg,mask,value) &bslash;&n;  (core-&gt;shadow[sreg] = (core-&gt;shadow[sreg] &amp; ~(mask)) | ((value) &amp; (mask)), &bslash;&n;   writel(core-&gt;shadow[sreg], core-&gt;lmmio + ((reg)&gt;&gt;2)))
 multiline_comment|/* ----------------------------------------------------------- */
 multiline_comment|/* cx88-core.c                                                 */
 r_extern
@@ -746,6 +1092,14 @@ r_extern
 r_char
 op_star
 id|cx88_vid_irqs
+(braket
+l_int|32
+)braket
+suffix:semicolon
+r_extern
+r_char
+op_star
+id|cx88_mpeg_irqs
 (braket
 l_int|32
 )braket
@@ -790,6 +1144,64 @@ id|cmd
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|cx88_irq
+c_func
+(paren
+r_struct
+id|cx88_core
+op_star
+id|core
+comma
+id|u32
+id|status
+comma
+id|u32
+id|mask
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|cx88_wakeup
+c_func
+(paren
+r_struct
+id|cx88_core
+op_star
+id|core
+comma
+r_struct
+id|cx88_dmaqueue
+op_star
+id|q
+comma
+id|u32
+id|count
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|cx88_shutdown
+c_func
+(paren
+r_struct
+id|cx88_core
+op_star
+id|core
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|cx88_reset
+c_func
+(paren
+r_struct
+id|cx88_core
+op_star
+id|core
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|cx88_risc_buffer
 c_func
@@ -824,6 +1236,35 @@ comma
 r_int
 r_int
 id|padding
+comma
+r_int
+r_int
+id|lines
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|cx88_risc_databuffer
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pci
+comma
+r_struct
+id|btcx_riscmem
+op_star
+id|risc
+comma
+r_struct
+id|scatterlist
+op_star
+id|sglist
+comma
+r_int
+r_int
+id|bpl
 comma
 r_int
 r_int
@@ -877,9 +1318,9 @@ id|cx88_risc_disasm
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 comma
 r_struct
 id|btcx_riscmem
@@ -893,9 +1334,9 @@ id|cx88_sram_channel_setup
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 comma
 r_struct
 id|sram_channel
@@ -916,9 +1357,9 @@ id|cx88_sram_channel_dump
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 comma
 r_struct
 id|sram_channel
@@ -928,22 +1369,97 @@ id|ch
 suffix:semicolon
 r_extern
 r_int
-id|cx88_pci_quirks
+id|cx88_set_scale
 c_func
 (paren
-r_char
+r_struct
+id|cx88_core
 op_star
-id|name
+id|core
+comma
+r_int
+r_int
+id|width
+comma
+r_int
+r_int
+id|height
+comma
+r_enum
+id|v4l2_field
+id|field
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|cx88_set_tvnorm
+c_func
+(paren
+r_struct
+id|cx88_core
+op_star
+id|core
+comma
+r_struct
+id|cx88_tvnorm
+op_star
+id|norm
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|video_device
+op_star
+id|cx88_vdev_init
+c_func
+(paren
+r_struct
+id|cx88_core
+op_star
+id|core
 comma
 r_struct
 id|pci_dev
 op_star
 id|pci
 comma
-r_int
-r_int
+r_struct
+id|video_device
 op_star
-id|latency
+r_template
+comma
+r_char
+op_star
+id|type
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|cx88_core
+op_star
+id|cx88_core_get
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pci
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|cx88_core_put
+c_func
+(paren
+r_struct
+id|cx88_core
+op_star
+id|core
+comma
+r_struct
+id|pci_dev
+op_star
+id|pci
 )paren
 suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------- */
@@ -984,6 +1500,16 @@ id|buf
 )paren
 suffix:semicolon
 r_int
+id|cx8800_stop_vbi_dma
+c_func
+(paren
+r_struct
+id|cx8800_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_int
 id|cx8800_restart_vbi_queue
 c_func
 (paren
@@ -1016,24 +1542,29 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/* cx88-i2c.c                                                  */
 r_extern
 r_int
-id|cx8800_i2c_init
+id|cx88_i2c_init
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
+comma
+r_struct
+id|pci_dev
+op_star
+id|pci
 )paren
 suffix:semicolon
 r_extern
 r_void
-id|cx8800_call_i2c_clients
+id|cx88_call_i2c_clients
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 comma
 r_int
 r_int
@@ -1078,9 +1609,14 @@ id|cx88_card_list
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
+comma
+r_struct
+id|pci_dev
+op_star
+id|pci
 )paren
 suffix:semicolon
 r_extern
@@ -1089,9 +1625,9 @@ id|cx88_card_setup
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 )paren
 suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------- */
@@ -1125,9 +1661,9 @@ id|cx88_set_tvaudio
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 )paren
 suffix:semicolon
 r_void
@@ -1135,9 +1671,9 @@ id|cx88_get_stereo
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 comma
 r_struct
 id|v4l2_tuner
@@ -1150,9 +1686,9 @@ id|cx88_set_stereo
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 comma
 id|u32
 id|mode
@@ -1165,6 +1701,91 @@ c_func
 r_void
 op_star
 id|data
+)paren
+suffix:semicolon
+multiline_comment|/* ----------------------------------------------------------- */
+multiline_comment|/* cx88-mpeg.c                                                 */
+r_int
+id|cx8802_buf_prepare
+c_func
+(paren
+r_struct
+id|cx8802_dev
+op_star
+id|dev
+comma
+r_struct
+id|cx88_buffer
+op_star
+id|buf
+)paren
+suffix:semicolon
+r_void
+id|cx8802_buf_queue
+c_func
+(paren
+r_struct
+id|cx8802_dev
+op_star
+id|dev
+comma
+r_struct
+id|cx88_buffer
+op_star
+id|buf
+)paren
+suffix:semicolon
+r_void
+id|cx8802_cancel_buffers
+c_func
+(paren
+r_struct
+id|cx8802_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_int
+id|cx8802_init_common
+c_func
+(paren
+r_struct
+id|cx8802_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_void
+id|cx8802_fini_common
+c_func
+(paren
+r_struct
+id|cx8802_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_int
+id|cx8802_suspend_common
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+comma
+id|u32
+id|state
+)paren
+suffix:semicolon
+r_int
+id|cx8802_resume_common
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */

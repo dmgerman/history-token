@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.59 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.61 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -2356,6 +2356,13 @@ id|dasd_eckd_confdata
 )paren
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|conf_data
+)paren
+suffix:semicolon
+multiline_comment|/* allocated by read_conf_data() */
 r_return
 l_int|0
 suffix:semicolon
@@ -2378,6 +2385,13 @@ id|dasd_eckd_confdata
 )paren
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|conf_data
+)paren
+suffix:semicolon
+multiline_comment|/* allocated by read_conf_data() */
 r_return
 l_int|0
 suffix:semicolon

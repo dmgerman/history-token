@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/m32r/mm/io_remap.c&n; *&n; *  Copyright (c) 2001, 2002  Hiroyuki Kondo&n; *&n; *  Taken from mips version.&n; *    (C) Copyright 1995 1996 Linus Torvalds&n; *    (C) Copyright 2001 Ralf Baechle&n; */
+multiline_comment|/*&n; *  linux/arch/m32r/mm/ioremap.c&n; *&n; *  Copyright (c) 2001, 2002  Hiroyuki Kondo&n; *&n; *  Taken from mips version.&n; *    (C) Copyright 1995 1996 Linus Torvalds&n; *    (C) Copyright 2001 Ralf Baechle&n; */
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
@@ -8,10 +8,10 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-DECL|function|remap_area_pte
 r_static
 r_inline
 r_void
+DECL|function|remap_area_pte
 id|remap_area_pte
 c_func
 (paren
@@ -165,10 +165,10 @@ id|end
 )paren
 suffix:semicolon
 )brace
-DECL|function|remap_area_pmd
 r_static
 r_inline
 r_int
+DECL|function|remap_area_pmd
 id|remap_area_pmd
 c_func
 (paren
@@ -310,9 +310,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|remap_area_pages
 r_static
 r_int
+DECL|function|remap_area_pages
 id|remap_area_pages
 c_func
 (paren
@@ -492,9 +492,10 @@ multiline_comment|/*&n; * Generic mapping function (not visible outside):&n; */
 multiline_comment|/*&n; * Remap an arbitrary physical address space into the kernel virtual&n; * address space. Needed when the kernel wants to access high addresses&n; * directly.&n; *&n; * NOTE! We need to allow non-page-aligned mappings too: we will obviously&n; * have to convert them into an offset in a page-aligned mapping, but the&n; * caller shouldn&squot;t need to know that small detail.&n; */
 DECL|macro|IS_LOW512
 mdefine_line|#define IS_LOW512(addr) (!((unsigned long)(addr) &amp; ~0x1fffffffUL))
-DECL|function|__ioremap
 r_void
+id|__iomem
 op_star
+DECL|function|__ioremap
 id|__ioremap
 c_func
 (paren
@@ -512,6 +513,7 @@ id|flags
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|addr
 suffix:semicolon
@@ -710,6 +712,11 @@ id|phys_addr
 suffix:semicolon
 id|addr
 op_assign
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|area-&gt;addr
 suffix:semicolon
 r_if
@@ -735,6 +742,11 @@ id|flags
 id|vunmap
 c_func
 (paren
+(paren
+r_void
+id|__force
+op_star
+)paren
 id|addr
 )paren
 suffix:semicolon
@@ -745,6 +757,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 (paren
@@ -752,6 +765,7 @@ id|offset
 op_plus
 (paren
 r_char
+id|__iomem
 op_star
 )paren
 id|addr
@@ -765,7 +779,9 @@ r_void
 id|iounmap
 c_func
 (paren
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren

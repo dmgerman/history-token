@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;net/pkt_cls.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
+macro_line|#include &lt;net/gen_stats.h&gt;
 r_struct
 id|rtattr
 suffix:semicolon
@@ -506,6 +507,10 @@ DECL|member|handle
 id|u32
 id|handle
 suffix:semicolon
+DECL|member|parent
+id|u32
+id|parent
+suffix:semicolon
 DECL|member|refcnt
 id|atomic_t
 id|refcnt
@@ -526,10 +531,20 @@ r_struct
 id|list_head
 id|list
 suffix:semicolon
-DECL|member|stats
+DECL|member|bstats
 r_struct
-id|tc_stats
-id|stats
+id|gnet_stats_basic
+id|bstats
+suffix:semicolon
+DECL|member|qstats
+r_struct
+id|gnet_stats_queue
+id|qstats
+suffix:semicolon
+DECL|member|rate_est
+r_struct
+id|gnet_stats_rate_est
+id|rate_est
 suffix:semicolon
 DECL|member|stats_lock
 id|spinlock_t
@@ -1172,6 +1187,11 @@ r_struct
 id|tc_action
 op_star
 id|a
+comma
+r_struct
+id|tcf_result
+op_star
+id|res
 )paren
 suffix:semicolon
 r_extern

@@ -13,7 +13,7 @@ macro_line|#include &lt;asm/mach/time.h&gt;
 multiline_comment|/* Use timer 1 as system timer */
 DECL|macro|TIMER_BASE
 mdefine_line|#define TIMER_BASE IMX_TIM1_BASE
-multiline_comment|/*&n; * Returns number of ms since last clock interrupt.  Note that interrupts&n; * will have been disabled by do_gettimeoffset()&n; */
+multiline_comment|/*&n; * Returns number of us since last clock interrupt.  Note that interrupts&n; * will have been disabled by do_gettimeoffset()&n; */
 r_static
 r_int
 r_int
@@ -31,7 +31,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Get the current number of ticks.  Note that there is a race&n;&t; * condition between us reading the timer and checking for&n;&t; * an interrupt.  We get around this by ensuring that the&n;&t; * counter has not reloaded between our two reads.&n;&t; */
 id|ticks
 op_assign
-id|IMX_TCR
+id|IMX_TCN
 c_func
 (paren
 id|TIMER_BASE
@@ -84,6 +84,13 @@ op_star
 id|regs
 )paren
 (brace
+id|write_seqlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 multiline_comment|/* clear the interrupt */
 r_if
 c_cond
@@ -106,6 +113,13 @@ id|timer_tick
 c_func
 (paren
 id|regs
+)paren
+suffix:semicolon
+id|write_sequnlock
+c_func
+(paren
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
 r_return
@@ -136,10 +150,11 @@ id|imx_timer_interrupt
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Set up timer interrupt, and return the current time in seconds.&n; */
+r_static
 r_void
 id|__init
-DECL|function|imx_init_time
-id|imx_init_time
+DECL|function|imx_timer_init
+id|imx_timer_init
 c_func
 (paren
 r_void
@@ -169,6 +184,8 @@ id|TIMER_BASE
 )paren
 op_assign
 id|LATCH
+op_minus
+l_int|1
 suffix:semicolon
 id|IMX_TCTL
 c_func
@@ -192,9 +209,21 @@ op_amp
 id|imx_timer_irq
 )paren
 suffix:semicolon
-id|gettimeoffset
+)brace
+r_struct
+id|imx_timer
+op_assign
+(brace
+dot
+id|init
+op_assign
+id|imx_timer_init
+comma
+dot
+id|offset
 op_assign
 id|imx_gettimeoffset
-suffix:semicolon
+comma
 )brace
+suffix:semicolon
 eof

@@ -14,6 +14,7 @@ macro_line|#include &lt;asm/arch/cm.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/mach/time.h&gt;
+macro_line|#include &quot;common.h&quot;
 DECL|variable|rtc_device
 r_static
 r_struct
@@ -528,17 +529,6 @@ DECL|typedef|TimerStruct_t
 )brace
 id|TimerStruct_t
 suffix:semicolon
-r_extern
-r_int
-r_int
-(paren
-op_star
-id|gettimeoffset
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|timer_reload
 r_static
 r_int
@@ -547,7 +537,6 @@ id|timer_reload
 suffix:semicolon
 multiline_comment|/*&n; * Returns number of ms since last clock interrupt.  Note that interrupts&n; * will have been disabled by do_gettimeoffset()&n; */
 DECL|function|integrator_gettimeoffset
-r_static
 r_int
 r_int
 id|integrator_gettimeoffset
@@ -677,6 +666,13 @@ op_star
 )paren
 id|TIMER1_VA_BASE
 suffix:semicolon
+id|write_seqlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 singleline_comment|// ...clear the interrupt
 id|timer1-&gt;TimerClear
 op_assign
@@ -686,6 +682,13 @@ id|timer_tick
 c_func
 (paren
 id|regs
+)paren
+suffix:semicolon
+id|write_sequnlock
+c_func
+(paren
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
 r_return
@@ -855,10 +858,6 @@ comma
 op_amp
 id|integrator_timer_irq
 )paren
-suffix:semicolon
-id|gettimeoffset
-op_assign
-id|integrator_gettimeoffset
 suffix:semicolon
 )brace
 eof

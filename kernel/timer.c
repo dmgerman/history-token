@@ -11,10 +11,12 @@ macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef CONFIG_TIME_INTERPOLATION
 r_static
 r_void
@@ -2781,13 +2783,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|ticks
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2809,6 +2804,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+)brace
+r_while
+c_loop
+(paren
+id|ticks
+)paren
+suffix:semicolon
 )brace
 DECL|function|do_process_times
 r_static
@@ -2854,11 +2856,26 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|p-&gt;signal
+op_logical_and
+op_logical_neg
+id|unlikely
+c_func
+(paren
+id|p-&gt;state
+op_amp
+(paren
+id|EXIT_DEAD
+op_or
+id|EXIT_ZOMBIE
+)paren
+)paren
+op_logical_and
 id|psecs
 op_div
 id|HZ
 op_ge
-id|p-&gt;rlim
+id|p-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_CPU
 )braket
@@ -2895,7 +2912,7 @@ id|psecs
 op_div
 id|HZ
 op_ge
-id|p-&gt;rlim
+id|p-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_CPU
 )braket
@@ -3402,19 +3419,6 @@ id|regs
 id|jiffies_64
 op_increment
 suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-multiline_comment|/* SMP process accounting uses the local APIC timer */
-id|update_process_times
-c_func
-(paren
-id|user_mode
-c_func
-(paren
-id|regs
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|update_times
 c_func
 (paren

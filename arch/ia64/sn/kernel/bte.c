@@ -1,14 +1,14 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/pda.h&gt;
-macro_line|#include &lt;asm/sn/sn2/shubio.h&gt;
+macro_line|#include &quot;shubio.h&quot;
 macro_line|#include &lt;asm/nodedata.h&gt;
+macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -20,11 +20,11 @@ macro_line|#endif
 multiline_comment|/* two interfaces on two btes */
 DECL|macro|MAX_INTERFACES_TO_TRY
 mdefine_line|#define MAX_INTERFACES_TO_TRY&t;&t;4
+DECL|function|bte_if_on_node
 r_static
 r_struct
 id|bteinfo_s
 op_star
-DECL|function|bte_if_on_node
 id|bte_if_on_node
 c_func
 (paren
@@ -61,8 +61,8 @@ suffix:semicolon
 )brace
 multiline_comment|/************************************************************************&n; * Block Transfer Engine copy related functions.&n; *&n; ***********************************************************************/
 multiline_comment|/*&n; * bte_copy(src, dest, len, mode, notification)&n; *&n; * Use the block transfer engine to move kernel memory from src to dest&n; * using the assigned mode.&n; *&n; * Paramaters:&n; *   src - physical address of the transfer source.&n; *   dest - physical address of the transfer destination.&n; *   len - number of bytes to transfer from source to dest.&n; *   mode - hardware defined.  See reference information&n; *          for IBCT0/1 in the SHUB Programmers Reference&n; *   notification - kernel virtual address of the notification cache&n; *                  line.  If NULL, the default is used and&n; *                  the bte_copy is synchronous.&n; *&n; * NOTE:  This function requires src, dest, and len to&n; * be cacheline aligned.&n; */
-id|bte_result_t
 DECL|function|bte_copy
+id|bte_result_t
 id|bte_copy
 c_func
 (paren
@@ -101,6 +101,12 @@ r_int
 r_int
 id|irq_flags
 suffix:semicolon
+r_int
+r_int
+id|itc_end
+op_assign
+l_int|0
+suffix:semicolon
 r_struct
 id|bteinfo_s
 op_star
@@ -111,6 +117,11 @@ id|MAX_INTERFACES_TO_TRY
 suffix:semicolon
 r_int
 id|bte_if_index
+suffix:semicolon
+r_int
+id|bte_pri
+comma
+id|bte_sec
 suffix:semicolon
 id|BTE_PRINTK
 c_func
@@ -142,10 +153,8 @@ r_return
 id|BTE_SUCCESS
 suffix:semicolon
 )brace
-id|ASSERT
+id|BUG_ON
 c_func
-(paren
-op_logical_neg
 (paren
 (paren
 id|len
@@ -165,10 +174,11 @@ op_amp
 id|L1_CACHE_MASK
 )paren
 )paren
-)paren
 suffix:semicolon
-id|ASSERT
+id|BUG_ON
 c_func
+(paren
+op_logical_neg
 (paren
 id|len
 OL
@@ -182,7 +192,44 @@ op_lshift
 id|L1_CACHE_SHIFT
 )paren
 )paren
+)paren
 suffix:semicolon
+multiline_comment|/* CPU 0 (per node) tries bte0 first, CPU 1 try bte1 first */
+r_if
+c_cond
+(paren
+id|cpuid_to_subnode
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|bte_pri
+op_assign
+l_int|0
+suffix:semicolon
+id|bte_sec
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+(brace
+id|bte_pri
+op_assign
+l_int|1
+suffix:semicolon
+id|bte_sec
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -206,7 +253,7 @@ c_func
 id|dest
 )paren
 comma
-l_int|0
+id|bte_pri
 )paren
 suffix:semicolon
 id|btes_to_try
@@ -223,7 +270,7 @@ c_func
 id|dest
 )paren
 comma
-l_int|1
+id|bte_sec
 )paren
 suffix:semicolon
 r_if
@@ -247,7 +294,7 @@ c_func
 (paren
 )paren
 comma
-l_int|0
+id|bte_pri
 )paren
 suffix:semicolon
 id|btes_to_try
@@ -263,7 +310,7 @@ c_func
 (paren
 )paren
 comma
-l_int|1
+id|bte_sec
 )paren
 suffix:semicolon
 )brace
@@ -301,7 +348,7 @@ c_func
 (paren
 )paren
 comma
-l_int|0
+id|bte_pri
 )paren
 suffix:semicolon
 id|btes_to_try
@@ -317,7 +364,7 @@ c_func
 (paren
 )paren
 comma
-l_int|1
+id|bte_sec
 )paren
 suffix:semicolon
 r_if
@@ -342,7 +389,7 @@ c_func
 id|dest
 )paren
 comma
-l_int|0
+id|bte_pri
 )paren
 suffix:semicolon
 id|btes_to_try
@@ -359,7 +406,7 @@ c_func
 id|dest
 )paren
 comma
-l_int|1
+id|bte_sec
 )paren
 suffix:semicolon
 )brace
@@ -381,6 +428,8 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
+id|retry_bteop
+suffix:colon
 r_do
 (brace
 id|local_irq_save
@@ -435,11 +484,12 @@ id|bte-&gt;spinlock
 r_if
 c_cond
 (paren
+op_logical_neg
 (paren
 op_star
 id|bte-&gt;most_rcnt_na
 op_amp
-id|BTE_ACTIVE
+id|BTE_WORD_AVAILABLE
 )paren
 op_logical_or
 (paren
@@ -461,10 +511,6 @@ op_amp
 id|bte-&gt;spinlock
 )paren
 suffix:semicolon
-id|bte
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -473,6 +519,10 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|bte
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -552,8 +602,7 @@ multiline_comment|/* Initialize the notification to a known value. */
 op_star
 id|bte-&gt;most_rcnt_na
 op_assign
-op_minus
-l_int|1L
+id|BTE_WORD_BUSY
 suffix:semicolon
 multiline_comment|/* Set the status reg busy bit and transfer length */
 id|BTE_PRINTKV
@@ -705,6 +754,19 @@ id|mode
 )paren
 )paren
 suffix:semicolon
+id|itc_end
+op_assign
+id|ia64_get_itc
+c_func
+(paren
+)paren
+op_plus
+(paren
+l_int|40000000
+op_star
+id|local_cpu_data-&gt;cyc_per_usec
+)paren
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -736,10 +798,75 @@ op_star
 id|bte-&gt;most_rcnt_na
 )paren
 op_eq
-op_minus
-l_int|1UL
+id|BTE_WORD_BUSY
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ia64_get_itc
+c_func
+(paren
+)paren
+OG
+id|itc_end
+)paren
+(brace
+id|BTE_PRINTK
+c_func
+(paren
+(paren
+l_string|&quot;BTE timeout nasid 0x%x bte%d IBLS = 0x%lx na 0x%lx&bslash;n&quot;
+comma
+id|NASID_GET
+c_func
+(paren
+id|bte-&gt;bte_base_addr
+)paren
+comma
+id|bte-&gt;bte_num
+comma
+id|BTE_LNSTAT_LOAD
+c_func
+(paren
+id|bte
+)paren
+comma
+op_star
+id|bte-&gt;most_rcnt_na
+)paren
+)paren
+suffix:semicolon
+id|bte-&gt;bte_error_count
+op_increment
+suffix:semicolon
+id|bte-&gt;bh_error
+op_assign
+id|IBLS_ERROR
+suffix:semicolon
+id|bte_error_handler
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|NODEPDA
+c_func
+(paren
+id|bte-&gt;bte_cnode
+)paren
+)paren
+suffix:semicolon
+op_star
+id|bte-&gt;most_rcnt_na
+op_assign
+id|BTE_WORD_AVAILABLE
+suffix:semicolon
+r_goto
+id|retry_bteop
+suffix:semicolon
+)brace
 )brace
 id|BTE_PRINTKV
 c_func
@@ -773,11 +900,6 @@ op_amp
 op_complement
 id|IBLS_ERROR
 suffix:semicolon
-op_star
-id|bte-&gt;most_rcnt_na
-op_assign
-l_int|0L
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -786,6 +908,11 @@ op_assign
 id|BTE_SUCCESS
 suffix:semicolon
 )brace
+op_star
+id|bte-&gt;most_rcnt_na
+op_assign
+id|BTE_WORD_AVAILABLE
+suffix:semicolon
 id|BTE_PRINTK
 c_func
 (paren
@@ -815,8 +942,8 @@ id|bte_copy
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * bte_unaligned_copy(src, dest, len, mode)&n; *&n; * use the block transfer engine to move kernel&n; * memory from src to dest using the assigned mode.&n; *&n; * Paramaters:&n; *   src - physical address of the transfer source.&n; *   dest - physical address of the transfer destination.&n; *   len - number of bytes to transfer from source to dest.&n; *   mode - hardware defined.  See reference information&n; *          for IBCT0/1 in the SGI documentation.&n; *&n; * NOTE: If the source, dest, and len are all cache line aligned,&n; * then it would be _FAR_ preferrable to use bte_copy instead.&n; */
-id|bte_result_t
 DECL|function|bte_unaligned_copy
+id|bte_result_t
 id|bte_unaligned_copy
 c_func
 (paren
@@ -1347,8 +1474,8 @@ id|bte_unaligned_copy
 suffix:semicolon
 multiline_comment|/************************************************************************&n; * Block Transfer Engine initialization functions.&n; *&n; ***********************************************************************/
 multiline_comment|/*&n; * bte_init_node(nodepda, cnode)&n; *&n; * Initialize the nodepda structure with BTE base addresses and&n; * spinlocks.&n; */
-r_void
 DECL|function|bte_init_node
+r_void
 id|bte_init_node
 c_func
 (paren
@@ -1470,7 +1597,7 @@ id|i
 dot
 id|notify
 op_assign
-l_int|0L
+id|BTE_WORD_AVAILABLE
 suffix:semicolon
 id|spin_lock_init
 c_func

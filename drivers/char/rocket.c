@@ -62,7 +62,7 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -804,6 +804,8 @@ comma
 id|wRecv
 comma
 id|space
+op_assign
+l_int|0
 comma
 id|count
 suffix:semicolon
@@ -816,6 +818,19 @@ r_char
 op_star
 id|fbuf
 suffix:semicolon
+r_struct
+id|tty_ldisc
+op_star
+id|ld
+suffix:semicolon
+id|ld
+op_assign
+id|tty_ldisc_ref
+c_func
+(paren
+id|tty
+)paren
+suffix:semicolon
 id|ToRecv
 op_assign
 id|sGetRxCnt
@@ -824,10 +839,15 @@ c_func
 id|cp
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ld
+)paren
 id|space
 op_assign
-id|tty-&gt;ldisc
-dot
+id|ld
+op_member_access_from_pointer
 id|receive_room
 c_func
 (paren
@@ -1217,8 +1237,8 @@ id|ToRecv
 suffix:semicolon
 )brace
 multiline_comment|/*  Push the data up to the tty layer */
-id|tty-&gt;ldisc
-dot
+id|ld
+op_member_access_from_pointer
 id|receive_buf
 c_func
 (paren
@@ -1229,6 +1249,12 @@ comma
 id|tty-&gt;flip.flag_buf
 comma
 id|count
+)paren
+suffix:semicolon
+id|tty_ldisc_deref
+c_func
+(paren
+id|ld
 )paren
 suffix:semicolon
 )brace
@@ -1508,24 +1534,8 @@ OL
 id|WAKEUP_CHARS
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
-id|tty-&gt;flags
-op_amp
-(paren
-l_int|1
-op_lshift
-id|TTY_DO_WRITE_WAKEUP
-)paren
-)paren
-op_logical_and
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(paren
-id|tty-&gt;ldisc.write_wakeup
-)paren
+id|tty_wakeup
+c_func
 (paren
 id|tty
 )paren
@@ -4549,14 +4559,7 @@ c_func
 id|tty
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tty-&gt;ldisc.flush_buffer
-)paren
-id|tty-&gt;ldisc
-dot
-id|flush_buffer
+id|tty_ldisc_flush
 c_func
 (paren
 id|tty
@@ -4596,14 +4599,14 @@ c_cond
 id|info-&gt;close_delay
 )paren
 (brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
+c_func
+(paren
+id|jiffies_to_msecs
 c_func
 (paren
 id|info-&gt;close_delay
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -6781,14 +6784,14 @@ id|check_time
 )paren
 suffix:semicolon
 macro_line|#endif
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
+c_func
+(paren
+id|jiffies_to_msecs
 c_func
 (paren
 id|check_time
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -7698,24 +7701,8 @@ OL
 id|WAKEUP_CHARS
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
-id|tty-&gt;flags
-op_amp
-(paren
-l_int|1
-op_lshift
-id|TTY_DO_WRITE_WAKEUP
-)paren
-)paren
-op_logical_and
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(paren
-id|tty-&gt;ldisc.write_wakeup
-)paren
+id|tty_wakeup
+c_func
 (paren
 id|tty
 )paren
@@ -7975,24 +7962,8 @@ id|tty-&gt;poll_wait
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-(paren
-id|tty-&gt;flags
-op_amp
-(paren
-l_int|1
-op_lshift
-id|TTY_DO_WRITE_WAKEUP
-)paren
-)paren
-op_logical_and
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(paren
-id|tty-&gt;ldisc.write_wakeup
-)paren
+id|tty_wakeup
+c_func
 (paren
 id|tty
 )paren

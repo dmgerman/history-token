@@ -3,8 +3,8 @@ multiline_comment|/* Derived from&n; *&n; *  linux/fs/ext2/super.c&n; *&n; * Cop
 multiline_comment|/*&n; * Inspired by&n; *&n; *  linux/fs/ufs/super.c&n; *&n; * Copyright (C) 1996&n; * Adrian Rodriguez (adrian@franklins-tower.rutgers.edu)&n; * Laboratory for Computer Science Research Computing Facility&n; * Rutgers, The State University of New Jersey&n; *&n; * Copyright (C) 1996  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * Kernel module support added on 96/04/26 by&n; * Stefan Reinauer &lt;stepan@home.culture.mipt.ru&gt;&n; *&n; * Module usage counts added on 96/04/29 by&n; * Gertjan van Wingerde &lt;gertjan@cs.vu.nl&gt;&n; *&n; * Clean swab support on 19970406 by&n; * Francois-Rene Rideau &lt;fare@tunes.org&gt;&n; *&n; * 4.4BSD (FreeBSD) support added on February 1st 1998 by&n; * Niels Kristian Bech Jensen &lt;nkbj@image.dk&gt; partially based&n; * on code by Martin von Loewis &lt;martin@mira.isdn.cs.tu-berlin.de&gt;.&n; *&n; * NeXTstep support added on February 5th 1998 by&n; * Niels Kristian Bech Jensen &lt;nkbj@image.dk&gt;.&n; *&n; * write support Daniel Pirkl &lt;daniel.pirkl@email.cz&gt; 1998&n; * &n; * HP/UX hfs filesystem support added by&n; * Martin K. Petersen &lt;mkp@mkp.net&gt;, August 1999&n; *&n; * UFS2 (of FreeBSD 5.x) support added by&n; * Niraj Kumar &lt;niraj17@iitbombay.org&gt;, Jan 2004&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;stdarg.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -3993,52 +3993,21 @@ op_member_access_from_pointer
 id|b_data
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check ufs magic number&n;&t; */
-r_switch
-c_cond
-(paren
-(paren
-id|uspi-&gt;fs_magic
-op_assign
-id|__constant_le32_to_cpu
-c_func
-(paren
-id|usb3-&gt;fs_magic
-)paren
-)paren
-)paren
-(brace
-r_case
-id|UFS_MAGIC
-suffix:colon
-r_case
-id|UFS2_MAGIC
-suffix:colon
-r_case
-id|UFS_MAGIC_LFN
-suffix:colon
-r_case
-id|UFS_MAGIC_FEA
-suffix:colon
-r_case
-id|UFS_MAGIC_4GB
-suffix:colon
 id|sbi-&gt;s_bytesex
 op_assign
 id|BYTESEX_LE
 suffix:semicolon
-r_goto
-id|magic_found
-suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
 (paren
 id|uspi-&gt;fs_magic
 op_assign
-id|__constant_be32_to_cpu
+id|fs32_to_cpu
 c_func
 (paren
+id|sb
+comma
 id|usb3-&gt;fs_magic
 )paren
 )paren
@@ -4059,10 +4028,45 @@ suffix:colon
 r_case
 id|UFS_MAGIC_4GB
 suffix:colon
+r_goto
+id|magic_found
+suffix:semicolon
+)brace
 id|sbi-&gt;s_bytesex
 op_assign
 id|BYTESEX_BE
 suffix:semicolon
+r_switch
+c_cond
+(paren
+(paren
+id|uspi-&gt;fs_magic
+op_assign
+id|fs32_to_cpu
+c_func
+(paren
+id|sb
+comma
+id|usb3-&gt;fs_magic
+)paren
+)paren
+)paren
+(brace
+r_case
+id|UFS_MAGIC
+suffix:colon
+r_case
+id|UFS2_MAGIC
+suffix:colon
+r_case
+id|UFS_MAGIC_LFN
+suffix:colon
+r_case
+id|UFS_MAGIC_FEA
+suffix:colon
+r_case
+id|UFS_MAGIC_4GB
+suffix:colon
 r_goto
 id|magic_found
 suffix:semicolon
@@ -6038,7 +6042,13 @@ id|UFS2_MAGIC
 suffix:semicolon
 id|buf-&gt;f_blocks
 op_assign
+id|fs64_to_cpu
+c_func
+(paren
+id|sb
+comma
 id|usb-&gt;fs_u11.fs_u2.fs_dsize
+)paren
 suffix:semicolon
 id|buf-&gt;f_bfree
 op_assign

@@ -647,6 +647,12 @@ op_assign
 l_int|27
 comma
 multiline_comment|/* legacy/compatibility virtual address space layout */
+DECL|enumerator|VM_SWAP_TOKEN_TIMEOUT
+id|VM_SWAP_TOKEN_TIMEOUT
+op_assign
+l_int|28
+comma
+multiline_comment|/* default time for token time out */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_NET names: */
@@ -1328,6 +1334,11 @@ id|NET_TCP_MODERATE_RCVBUF
 op_assign
 l_int|106
 comma
+DECL|enumerator|NET_TCP_TSO_WIN_DIVISOR
+id|NET_TCP_TSO_WIN_DIVISOR
+op_assign
+l_int|107
+comma
 )brace
 suffix:semicolon
 r_enum
@@ -1671,6 +1682,11 @@ DECL|enumerator|NET_IPV4_NF_CONNTRACK_SCTP_TIMEOUT_SHUTDOWN_ACK_SENT
 id|NET_IPV4_NF_CONNTRACK_SCTP_TIMEOUT_SHUTDOWN_ACK_SENT
 op_assign
 l_int|26
+comma
+DECL|enumerator|NET_IPV4_NF_CONNTRACK_COUNT
+id|NET_IPV4_NF_CONNTRACK_COUNT
+op_assign
+l_int|27
 comma
 )brace
 suffix:semicolon

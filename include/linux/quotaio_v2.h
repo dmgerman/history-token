@@ -15,47 +15,47 @@ r_struct
 id|v2_disk_dqblk
 (brace
 DECL|member|dqb_id
-id|__u32
+id|__le32
 id|dqb_id
 suffix:semicolon
 multiline_comment|/* id this quota applies to */
 DECL|member|dqb_ihardlimit
-id|__u32
+id|__le32
 id|dqb_ihardlimit
 suffix:semicolon
 multiline_comment|/* absolute limit on allocated inodes */
 DECL|member|dqb_isoftlimit
-id|__u32
+id|__le32
 id|dqb_isoftlimit
 suffix:semicolon
 multiline_comment|/* preferred inode limit */
 DECL|member|dqb_curinodes
-id|__u32
+id|__le32
 id|dqb_curinodes
 suffix:semicolon
 multiline_comment|/* current # allocated inodes */
 DECL|member|dqb_bhardlimit
-id|__u32
+id|__le32
 id|dqb_bhardlimit
 suffix:semicolon
 multiline_comment|/* absolute limit on disk space (in QUOTABLOCK_SIZE) */
 DECL|member|dqb_bsoftlimit
-id|__u32
+id|__le32
 id|dqb_bsoftlimit
 suffix:semicolon
 multiline_comment|/* preferred limit on disk space (in QUOTABLOCK_SIZE) */
 DECL|member|dqb_curspace
-id|__u64
+id|__le64
 id|dqb_curspace
 suffix:semicolon
 multiline_comment|/* current space occupied (in bytes) */
 DECL|member|dqb_btime
-id|__u64
+id|__le64
 id|dqb_btime
 suffix:semicolon
 multiline_comment|/* time limit for excessive disk use */
 DECL|member|dqb_itime
-id|__u64
+id|__le64
 id|dqb_itime
 suffix:semicolon
 multiline_comment|/* time limit for excessive inode use */
@@ -68,12 +68,12 @@ r_struct
 id|v2_disk_dqheader
 (brace
 DECL|member|dqh_magic
-id|__u32
+id|__le32
 id|dqh_magic
 suffix:semicolon
 multiline_comment|/* Magic number identifying file */
 DECL|member|dqh_version
-id|__u32
+id|__le32
 id|dqh_version
 suffix:semicolon
 multiline_comment|/* File version */
@@ -85,32 +85,32 @@ r_struct
 id|v2_disk_dqinfo
 (brace
 DECL|member|dqi_bgrace
-id|__u32
+id|__le32
 id|dqi_bgrace
 suffix:semicolon
 multiline_comment|/* Time before block soft limit becomes hard limit */
 DECL|member|dqi_igrace
-id|__u32
+id|__le32
 id|dqi_igrace
 suffix:semicolon
 multiline_comment|/* Time before inode soft limit becomes hard limit */
 DECL|member|dqi_flags
-id|__u32
+id|__le32
 id|dqi_flags
 suffix:semicolon
 multiline_comment|/* Flags for quotafile (DQF_*) */
 DECL|member|dqi_blocks
-id|__u32
+id|__le32
 id|dqi_blocks
 suffix:semicolon
 multiline_comment|/* Number of blocks in file */
 DECL|member|dqi_free_blk
-id|__u32
+id|__le32
 id|dqi_free_blk
 suffix:semicolon
 multiline_comment|/* Number of first free block in the list */
 DECL|member|dqi_free_entry
-id|__u32
+id|__le32
 id|dqi_free_entry
 suffix:semicolon
 multiline_comment|/* Number of block with at least one free entry */
@@ -122,26 +122,26 @@ r_struct
 id|v2_disk_dqdbheader
 (brace
 DECL|member|dqdh_next_free
-id|__u32
+id|__le32
 id|dqdh_next_free
 suffix:semicolon
 multiline_comment|/* Number of next block with free entry */
 DECL|member|dqdh_prev_free
-id|__u32
+id|__le32
 id|dqdh_prev_free
 suffix:semicolon
 multiline_comment|/* Number of previous block with free entry */
 DECL|member|dqdh_entries
-id|__u16
+id|__le16
 id|dqdh_entries
 suffix:semicolon
 multiline_comment|/* Number of valid entries in block */
 DECL|member|dqdh_pad1
-id|__u16
+id|__le16
 id|dqdh_pad1
 suffix:semicolon
 DECL|member|dqdh_pad2
-id|__u32
+id|__le32
 id|dqdh_pad2
 suffix:semicolon
 )brace

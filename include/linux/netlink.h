@@ -29,6 +29,8 @@ DECL|macro|NETLINK_IP6_FW
 mdefine_line|#define NETLINK_IP6_FW&t;&t;13
 DECL|macro|NETLINK_DNRTMSG
 mdefine_line|#define NETLINK_DNRTMSG&t;&t;14&t;/* DECnet routing messages */
+DECL|macro|NETLINK_KOBJECT_UEVENT
+mdefine_line|#define NETLINK_KOBJECT_UEVENT&t;15&t;/* Kernel messages to userspace */
 DECL|macro|NETLINK_TAPBASE
 mdefine_line|#define NETLINK_TAPBASE&t;&t;16&t;/* 16 to 31 are ethertap */
 DECL|macro|MAX_LINKS

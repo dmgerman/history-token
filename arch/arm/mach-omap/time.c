@@ -487,6 +487,13 @@ id|now
 comma
 id|ilatency
 suffix:semicolon
+id|write_seqlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Mark the time at which the timer interrupt ocurred using&n;&t; * timer1. We need to remove interrupt latency, which we can&n;&t; * retrieve from the current system timer2 counter. Both the&n;&t; * offset timer1 and the system timer2 are counting at 6MHz,&n;&t; * so we&squot;re ok.&n;&t; */
 id|now
 op_assign
@@ -520,6 +527,13 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+id|write_sequnlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 r_return
 id|IRQ_HANDLED
 suffix:semicolon
@@ -547,20 +561,17 @@ op_assign
 id|omap_timer_interrupt
 )brace
 suffix:semicolon
-DECL|function|omap_init_time
+DECL|function|omap_timer_init
+r_static
 r_void
 id|__init
-id|omap_init_time
+id|omap_timer_init
 c_func
 (paren
 r_void
 )paren
 (brace
 multiline_comment|/* Since we don&squot;t call request_irq, we must init the structure */
-id|gettimeoffset
-op_assign
-id|omap_gettimeoffset
-suffix:semicolon
 macro_line|#ifdef OMAP1510_USE_32KHZ_TIMER
 id|timer32k_write
 c_func
@@ -614,4 +625,22 @@ l_int|1
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|variable|omap_timer
+r_struct
+id|sys_timer
+id|omap_timer
+op_assign
+(brace
+dot
+id|init
+op_assign
+id|omap_timer_init
+comma
+dot
+id|offset
+op_assign
+id|omap_gettimeoffset
+comma
+)brace
+suffix:semicolon
 eof

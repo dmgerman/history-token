@@ -228,7 +228,7 @@ suffix:semicolon
 id|loff_t
 id|off
 suffix:semicolon
-id|u16
+id|__be16
 id|attrib
 suffix:semicolon
 multiline_comment|/* set the device driver to 512-byte blocks */
@@ -859,7 +859,7 @@ op_member_access_from_pointer
 id|bitmap
 op_assign
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|__get_free_pages

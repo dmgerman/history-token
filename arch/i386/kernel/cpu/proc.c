@@ -574,7 +574,9 @@ macro_line|#ifdef CONFIG_X86_HT
 r_if
 c_cond
 (paren
-id|cpu_has_ht
+id|smp_num_siblings
+OG
+l_int|1
 )paren
 (brace
 r_extern

@@ -36,7 +36,7 @@ id|blkp
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * Use this to get to a cpu&squot;s version of the per-cpu object allocated using&n; * alloc_percpu.  If you want to get &quot;this cpu&squot;s version&quot;, maybe you want&n; * to use get_cpu_ptr... &n; */
+multiline_comment|/* &n; * Use this to get to a cpu&squot;s version of the per-cpu object allocated using&n; * alloc_percpu.  Non-atomic access to the current CPU&squot;s version should&n; * probably be combined with get_cpu()/put_cpu().&n; */
 DECL|macro|per_cpu_ptr
 mdefine_line|#define per_cpu_ptr(ptr, cpu)                   &bslash;&n;({                                              &bslash;&n;        struct percpu_data *__p = (struct percpu_data *)~(unsigned long)(ptr); &bslash;&n;        (__typeof__(ptr))__p-&gt;ptrs[(cpu)];&t;&bslash;&n;})
 r_extern
@@ -135,10 +135,5 @@ macro_line|#endif /* CONFIG_SMP */
 multiline_comment|/* Simple wrapper for the common case: zeros memory. */
 DECL|macro|alloc_percpu
 mdefine_line|#define alloc_percpu(type) &bslash;&n;&t;((type *)(__alloc_percpu(sizeof(type), __alignof__(type))))
-multiline_comment|/* &n; * Use these with alloc_percpu. If&n; * 1. You want to operate on memory allocated by alloc_percpu (dereference&n; *    and read/modify/write)  AND &n; * 2. You want &quot;this cpu&squot;s version&quot; of the object AND &n; * 3. You want to do this safely since:&n; *    a. On multiprocessors, you don&squot;t want to switch between cpus after &n; *    you&squot;ve read the current processor id due to preemption -- this would &n; *    take away the implicit  advantage to not have any kind of traditional &n; *    serialization for per-cpu data&n; *    b. On uniprocessors, you don&squot;t want another kernel thread messing&n; *    up with the same per-cpu data due to preemption&n; *    &n; * So, Use get_cpu_ptr to disable preemption and get pointer to the &n; * local cpu version of the per-cpu object. Use put_cpu_ptr to enable&n; * preemption.  Operations on per-cpu data between get_ and put_ is&n; * then considered to be safe. And ofcourse, &quot;Thou shalt not sleep between &n; * get_cpu_ptr and put_cpu_ptr&quot;&n; */
-DECL|macro|get_cpu_ptr
-mdefine_line|#define get_cpu_ptr(ptr) per_cpu_ptr(ptr, get_cpu())
-DECL|macro|put_cpu_ptr
-mdefine_line|#define put_cpu_ptr(ptr) put_cpu()
 macro_line|#endif /* __LINUX_PERCPU_H */
 eof

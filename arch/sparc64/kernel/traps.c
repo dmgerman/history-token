@@ -287,7 +287,7 @@ comma
 id|SIGTRAP
 )paren
 op_eq
-id|NOTIFY_OK
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon
@@ -444,7 +444,7 @@ comma
 id|SIGTRAP
 )paren
 op_eq
-id|NOTIFY_OK
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon
@@ -554,7 +554,7 @@ comma
 id|SIGTRAP
 )paren
 op_eq
-id|NOTIFY_OK
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon
@@ -679,7 +679,7 @@ comma
 id|SIGTRAP
 )paren
 op_eq
-id|NOTIFY_OK
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon
@@ -750,7 +750,7 @@ comma
 id|SIGTRAP
 )paren
 op_eq
-id|NOTIFY_OK
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon
@@ -1046,7 +1046,7 @@ comma
 id|SIGTRAP
 )paren
 op_eq
-id|NOTIFY_OK
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon
@@ -1173,7 +1173,7 @@ comma
 id|SIGTRAP
 )paren
 op_eq
-id|NOTIFY_OK
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon
@@ -8556,7 +8556,7 @@ comma
 id|SIGFPE
 )paren
 op_eq
-id|NOTIFY_OK
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon
@@ -8623,7 +8623,7 @@ comma
 id|SIGFPE
 )paren
 op_eq
-id|NOTIFY_OK
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon
@@ -8721,7 +8721,7 @@ comma
 id|SIGEMT
 )paren
 op_eq
-id|NOTIFY_OK
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon
@@ -8829,7 +8829,7 @@ comma
 id|SIGFPE
 )paren
 op_eq
-id|NOTIFY_OK
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon
@@ -9796,7 +9796,7 @@ comma
 id|SIGILL
 )paren
 op_eq
-id|NOTIFY_OK
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon
@@ -9985,7 +9985,7 @@ comma
 id|SIGSEGV
 )paren
 op_eq
-id|NOTIFY_OK
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon
@@ -10113,7 +10113,7 @@ comma
 id|SIGILL
 )paren
 op_eq
-id|NOTIFY_OK
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon

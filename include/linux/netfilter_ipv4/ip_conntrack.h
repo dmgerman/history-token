@@ -328,15 +328,6 @@ r_struct
 id|nf_conntrack
 id|ct_general
 suffix:semicolon
-multiline_comment|/* These are my tuples; original and reply */
-DECL|member|tuplehash
-r_struct
-id|ip_conntrack_tuple_hash
-id|tuplehash
-(braket
-id|IP_CT_DIR_MAX
-)braket
-suffix:semicolon
 multiline_comment|/* Have we seen traffic both ways yet? (bitset) */
 DECL|member|status
 r_int
@@ -386,15 +377,6 @@ id|ip_conntrack_helper
 op_star
 id|helper
 suffix:semicolon
-multiline_comment|/* Our various nf_ct_info structs specify *what* relation this&n;           packet has to the conntrack */
-DECL|member|infos
-r_struct
-id|nf_ct_info
-id|infos
-(braket
-id|IP_CT_NUMBER
-)braket
-suffix:semicolon
 multiline_comment|/* Storage reserved for other modules: */
 DECL|member|proto
 r_union
@@ -430,6 +412,16 @@ DECL|member|nat
 id|nat
 suffix:semicolon
 macro_line|#endif /* CONFIG_IP_NF_NAT_NEEDED */
+multiline_comment|/* Traversed often, so hopefully in different cacheline to top */
+multiline_comment|/* These are my tuples; original and reply */
+DECL|member|tuplehash
+r_struct
+id|ip_conntrack_tuple_hash
+id|tuplehash
+(braket
+id|IP_CT_DIR_MAX
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* get master conntrack via master expectation */
@@ -473,13 +465,16 @@ id|ignored_conntrack
 )paren
 suffix:semicolon
 multiline_comment|/* Return conntrack_info and tuple hash for given skb. */
-r_extern
+r_static
+r_inline
 r_struct
 id|ip_conntrack
 op_star
+DECL|function|ip_conntrack_get
 id|ip_conntrack_get
 c_func
 (paren
+r_const
 r_struct
 id|sk_buff
 op_star
@@ -490,7 +485,21 @@ id|ip_conntrack_info
 op_star
 id|ctinfo
 )paren
+(brace
+op_star
+id|ctinfo
+op_assign
+id|skb-&gt;nfctinfo
 suffix:semicolon
+r_return
+(paren
+r_struct
+id|ip_conntrack
+op_star
+)paren
+id|skb-&gt;nfct
+suffix:semicolon
+)brace
 multiline_comment|/* decrement reference count on a conntrack */
 r_extern
 r_inline
@@ -756,10 +765,10 @@ r_int
 r_int
 id|early_drop
 suffix:semicolon
-DECL|member|icmp_error
+DECL|member|error
 r_int
 r_int
-id|icmp_error
+id|error
 suffix:semicolon
 DECL|member|expect_new
 r_int
@@ -778,6 +787,8 @@ id|expect_delete
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|CONNTRACK_STAT_INC
+mdefine_line|#define CONNTRACK_STAT_INC(count) (__get_cpu_var(ip_conntrack_stat).count++)
 multiline_comment|/* eg. PROVIDES_CONNTRACK(ftp); */
 DECL|macro|PROVIDES_CONNTRACK
 mdefine_line|#define PROVIDES_CONNTRACK(name)                        &bslash;&n;        int needs_ip_conntrack_##name;                  &bslash;&n;        EXPORT_SYMBOL(needs_ip_conntrack_##name)

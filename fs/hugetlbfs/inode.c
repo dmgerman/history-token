@@ -2976,6 +2976,10 @@ id|sbinfo-&gt;free_inodes
 op_assign
 id|config.nr_inodes
 suffix:semicolon
+id|sb-&gt;s_maxbytes
+op_assign
+id|MAX_LFS_FILESIZE
+suffix:semicolon
 id|sb-&gt;s_blocksize
 op_assign
 id|HPAGE_SIZE

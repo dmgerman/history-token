@@ -87,31 +87,6 @@ mdefine_line|#define DBG_REG(x)&t;/* DBG_REG */
 DECL|macro|DBG_LOOP
 mdefine_line|#define DBG_LOOP(x)&t;/* DBG_LOOP */
 macro_line|#endif /* MATROXFB_DEBUG */
-macro_line|#if !defined(__i386__) &amp;&amp; !defined(__x86_64__)
-macro_line|#ifndef ioremap_nocache
-DECL|macro|ioremap_nocache
-mdefine_line|#define ioremap_nocache(X,Y) ioremap(X,Y)
-macro_line|#endif
-macro_line|#endif
-macro_line|#if defined(__alpha__) || defined(__mc68000__) || defined(__i386__) || defined(__x86_64__)
-DECL|macro|READx_WORKS
-mdefine_line|#define READx_WORKS
-DECL|macro|MEMCPYTOIO_WORKS
-mdefine_line|#define MEMCPYTOIO_WORKS
-macro_line|#else
-multiline_comment|/* ppc/ppc64 must use __raw_{read,write}[bwl] as we drive adapter &n;   in big-endian mode for compatibility with XFree mga driver, and&n;   so we do not want little-endian {read,write}[bwl] */
-DECL|macro|READx_FAILS
-mdefine_line|#define READx_FAILS
-DECL|macro|MEMCPYTOIO_WRITEL
-mdefine_line|#define MEMCPYTOIO_WRITEL
-macro_line|#endif
-macro_line|#if defined(__mc68000__)
-DECL|macro|MAP_BUSTOVIRT
-mdefine_line|#define MAP_BUSTOVIRT
-macro_line|#else
-DECL|macro|MAP_IOREMAP
-mdefine_line|#define MAP_IOREMAP
-macro_line|#endif
 macro_line|#ifdef DEBUG
 DECL|macro|dprintk
 mdefine_line|#define dprintk(X...)&t;printk(X)
@@ -168,7 +143,7 @@ r_typedef
 r_struct
 (brace
 DECL|member|vaddr
-id|u_int8_t
+r_void
 id|__iomem
 op_star
 id|vaddr
@@ -177,7 +152,6 @@ DECL|typedef|vaddr_t
 )brace
 id|vaddr_t
 suffix:semicolon
-macro_line|#ifdef READx_WORKS
 DECL|function|mga_readb
 r_static
 r_inline
@@ -196,57 +170,6 @@ id|offs
 (brace
 r_return
 id|readb
-c_func
-(paren
-id|va.vaddr
-op_plus
-id|offs
-)paren
-suffix:semicolon
-)brace
-DECL|function|mga_readw
-r_static
-r_inline
-r_int
-r_int
-id|mga_readw
-c_func
-(paren
-id|vaddr_t
-id|va
-comma
-r_int
-r_int
-id|offs
-)paren
-(brace
-r_return
-id|readw
-c_func
-(paren
-id|va.vaddr
-op_plus
-id|offs
-)paren
-suffix:semicolon
-)brace
-DECL|function|mga_readl
-r_static
-r_inline
-id|u_int32_t
-id|mga_readl
-c_func
-(paren
-id|vaddr_t
-id|va
-comma
-r_int
-r_int
-id|offs
-)paren
-(brace
-r_return
-id|readl
 c_func
 (paren
 id|va.vaddr
@@ -313,6 +236,31 @@ id|offs
 )paren
 suffix:semicolon
 )brace
+DECL|function|mga_readl
+r_static
+r_inline
+id|u_int32_t
+id|mga_readl
+c_func
+(paren
+id|vaddr_t
+id|va
+comma
+r_int
+r_int
+id|offs
+)paren
+(brace
+r_return
+id|readl
+c_func
+(paren
+id|va.vaddr
+op_plus
+id|offs
+)paren
+suffix:semicolon
+)brace
 DECL|function|mga_writel
 r_static
 r_inline
@@ -342,172 +290,6 @@ id|offs
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|mga_readb
-r_static
-r_inline
-r_int
-r_int
-id|mga_readb
-c_func
-(paren
-id|vaddr_t
-id|va
-comma
-r_int
-r_int
-id|offs
-)paren
-(brace
-r_return
-id|__raw_readb
-c_func
-(paren
-id|va.vaddr
-op_plus
-id|offs
-)paren
-suffix:semicolon
-)brace
-DECL|function|mga_readw
-r_static
-r_inline
-r_int
-r_int
-id|mga_readw
-c_func
-(paren
-id|vaddr_t
-id|va
-comma
-r_int
-r_int
-id|offs
-)paren
-(brace
-r_return
-id|__raw_readw
-c_func
-(paren
-id|va.vaddr
-op_plus
-id|offs
-)paren
-suffix:semicolon
-)brace
-DECL|function|mga_readl
-r_static
-r_inline
-id|u_int32_t
-id|mga_readl
-c_func
-(paren
-id|vaddr_t
-id|va
-comma
-r_int
-r_int
-id|offs
-)paren
-(brace
-r_return
-id|__raw_readl
-c_func
-(paren
-id|va.vaddr
-op_plus
-id|offs
-)paren
-suffix:semicolon
-)brace
-DECL|function|mga_writeb
-r_static
-r_inline
-r_void
-id|mga_writeb
-c_func
-(paren
-id|vaddr_t
-id|va
-comma
-r_int
-r_int
-id|offs
-comma
-id|u_int8_t
-id|value
-)paren
-(brace
-id|__raw_writeb
-c_func
-(paren
-id|value
-comma
-id|va.vaddr
-op_plus
-id|offs
-)paren
-suffix:semicolon
-)brace
-DECL|function|mga_writew
-r_static
-r_inline
-r_void
-id|mga_writew
-c_func
-(paren
-id|vaddr_t
-id|va
-comma
-r_int
-r_int
-id|offs
-comma
-id|u_int16_t
-id|value
-)paren
-(brace
-id|__raw_writew
-c_func
-(paren
-id|value
-comma
-id|va.vaddr
-op_plus
-id|offs
-)paren
-suffix:semicolon
-)brace
-DECL|function|mga_writel
-r_static
-r_inline
-r_void
-id|mga_writel
-c_func
-(paren
-id|vaddr_t
-id|va
-comma
-r_int
-r_int
-id|offs
-comma
-id|u_int32_t
-id|value
-)paren
-(brace
-id|__raw_writel
-c_func
-(paren
-id|value
-comma
-id|va.vaddr
-op_plus
-id|offs
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 DECL|function|mga_memcpy_toio
 r_static
 r_inline
@@ -518,10 +300,6 @@ c_func
 id|vaddr_t
 id|va
 comma
-r_int
-r_int
-id|offs
-comma
 r_const
 r_void
 op_star
@@ -531,24 +309,34 @@ r_int
 id|len
 )paren
 (brace
-macro_line|#ifdef MEMCPYTOIO_WORKS
+macro_line|#if defined(__alpha__) || defined(__i386__) || defined(__x86_64__)
+multiline_comment|/*&n;&t; * memcpy_toio works for us if:&n;&t; *  (1) Copies data as 32bit quantities, not byte after byte,&n;&t; *  (2) Performs LE ordered stores, and&n;&t; *  (3) It copes with unaligned source (destination is guaranteed to be page&n;&t; *      aligned and length is guaranteed to be multiple of 4).&n;&t; */
 id|memcpy_toio
 c_func
 (paren
 id|va.vaddr
-op_plus
-id|offs
 comma
 id|src
 comma
 id|len
 )paren
 suffix:semicolon
-macro_line|#elif defined(MEMCPYTOIO_WRITEL)
+macro_line|#else
+id|u_int32_t
+id|__iomem
+op_star
+id|addr
+op_assign
+id|va.vaddr
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|offs
+(paren
+r_int
+r_int
+)paren
+id|src
 op_amp
 l_int|3
 )paren
@@ -561,13 +349,9 @@ op_ge
 l_int|4
 )paren
 (brace
-id|mga_writel
+id|writel
 c_func
 (paren
-id|va
-comma
-id|offs
-comma
 id|get_unaligned
 c_func
 (paren
@@ -577,11 +361,12 @@ op_star
 )paren
 id|src
 )paren
+comma
+id|addr
 )paren
 suffix:semicolon
-id|offs
-op_add_assign
-l_int|4
+id|addr
+op_increment
 suffix:semicolon
 id|len
 op_sub_assign
@@ -603,24 +388,21 @@ op_ge
 l_int|4
 )paren
 (brace
-id|mga_writel
+id|writel
 c_func
 (paren
-id|va
-comma
-id|offs
-comma
 op_star
 (paren
 id|u32
 op_star
 )paren
 id|src
+comma
+id|addr
 )paren
 suffix:semicolon
-id|offs
-op_add_assign
-l_int|4
+id|addr
+op_increment
 suffix:semicolon
 id|len
 op_sub_assign
@@ -632,39 +414,6 @@ l_int|4
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|len
-)paren
-(brace
-id|u_int32_t
-id|tmp
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-op_amp
-id|tmp
-comma
-id|src
-comma
-id|len
-)paren
-suffix:semicolon
-id|mga_writel
-c_func
-(paren
-id|va
-comma
-id|offs
-comma
-id|tmp
-)paren
-suffix:semicolon
-)brace
-macro_line|#else
-macro_line|#error &quot;Sorry, do not know how to write block of data to device&quot;
 macro_line|#endif
 )brace
 DECL|function|vaddr_add
@@ -736,7 +485,6 @@ op_star
 id|virt
 )paren
 (brace
-macro_line|#ifdef MAP_IOREMAP
 r_if
 c_cond
 (paren
@@ -765,20 +513,6 @@ comma
 id|size
 )paren
 suffix:semicolon
-macro_line|#else
-macro_line|#ifdef MAP_BUSTOVIRT
-id|virt-&gt;vaddr
-op_assign
-id|bus_to_virt
-c_func
-(paren
-id|phys
-)paren
-suffix:semicolon
-macro_line|#else
-macro_line|#error &quot;Your architecture does not have neither ioremap nor bus_to_virt... Giving up&quot;
-macro_line|#endif
-macro_line|#endif
 r_return
 (paren
 id|virt-&gt;vaddr
@@ -799,14 +533,12 @@ id|vaddr_t
 id|va
 )paren
 (brace
-macro_line|#ifdef MAP_IOREMAP
 id|iounmap
 c_func
 (paren
 id|va.vaddr
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|struct|my_timming
 r_struct
@@ -2459,10 +2191,10 @@ mdefine_line|#define DAC_XGENIOCTRL&t;&t;0x2A
 DECL|macro|DAC_XGENIODATA
 mdefine_line|#define DAC_XGENIODATA&t;&t;0x2B
 DECL|macro|M_C2CTL
-mdefine_line|#define M_C2CTL&t;&t;0x3E10
-macro_line|#ifdef __LITTLE_ENDIAN
+mdefine_line|#define M_C2CTL&t;&t;0x3C10
 DECL|macro|MX_OPTION_BSWAP
-mdefine_line|#define MX_OPTION_BSWAP&t;&t;0x00000000
+mdefine_line|#define MX_OPTION_BSWAP         0x00000000
+macro_line|#ifdef __LITTLE_ENDIAN
 DECL|macro|M_OPMODE_4BPP
 mdefine_line|#define M_OPMODE_4BPP&t;(M_OPMODE_DMA_LE | M_OPMODE_DIR_LE | M_OPMODE_DMA_BLIT)
 DECL|macro|M_OPMODE_8BPP
@@ -2475,41 +2207,34 @@ DECL|macro|M_OPMODE_32BPP
 mdefine_line|#define M_OPMODE_32BPP&t;(M_OPMODE_DMA_LE | M_OPMODE_DIR_LE | M_OPMODE_DMA_BLIT)
 macro_line|#else
 macro_line|#ifdef __BIG_ENDIAN
-DECL|macro|MX_OPTION_BSWAP
-mdefine_line|#define MX_OPTION_BSWAP&t;&t;0x80000000
 DECL|macro|M_OPMODE_4BPP
-mdefine_line|#define M_OPMODE_4BPP&t;(M_OPMODE_DMA_LE | M_OPMODE_DIR_LE | M_OPMODE_DMA_BLIT)&t;/* TODO */
+mdefine_line|#define M_OPMODE_4BPP&t;(M_OPMODE_DMA_LE | M_OPMODE_DIR_LE       | M_OPMODE_DMA_BLIT)&t;/* TODO */
 DECL|macro|M_OPMODE_8BPP
-mdefine_line|#define M_OPMODE_8BPP&t;(M_OPMODE_DMA_BE_8BPP  | M_OPMODE_DIR_BE_8BPP  | M_OPMODE_DMA_BLIT)
+mdefine_line|#define M_OPMODE_8BPP&t;(M_OPMODE_DMA_LE | M_OPMODE_DIR_BE_8BPP  | M_OPMODE_DMA_BLIT)
 DECL|macro|M_OPMODE_16BPP
-mdefine_line|#define M_OPMODE_16BPP&t;(M_OPMODE_DMA_BE_16BPP | M_OPMODE_DIR_BE_16BPP | M_OPMODE_DMA_BLIT)
+mdefine_line|#define M_OPMODE_16BPP&t;(M_OPMODE_DMA_LE | M_OPMODE_DIR_BE_16BPP | M_OPMODE_DMA_BLIT)
 DECL|macro|M_OPMODE_24BPP
-mdefine_line|#define M_OPMODE_24BPP&t;(M_OPMODE_DMA_BE_8BPP | M_OPMODE_DIR_BE_8BPP | M_OPMODE_DMA_BLIT)&t;/* TODO, ?32 */
+mdefine_line|#define M_OPMODE_24BPP&t;(M_OPMODE_DMA_LE | M_OPMODE_DIR_BE_8BPP  | M_OPMODE_DMA_BLIT)&t;/* TODO, ?32 */
 DECL|macro|M_OPMODE_32BPP
-mdefine_line|#define M_OPMODE_32BPP&t;(M_OPMODE_DMA_BE_32BPP | M_OPMODE_DIR_BE_32BPP | M_OPMODE_DMA_BLIT)
+mdefine_line|#define M_OPMODE_32BPP&t;(M_OPMODE_DMA_LE | M_OPMODE_DIR_BE_32BPP | M_OPMODE_DMA_BLIT)
 macro_line|#else
 macro_line|#error &quot;Byte ordering have to be defined. Cannot continue.&quot;
 macro_line|#endif
 macro_line|#endif
 DECL|macro|mga_inb
-mdefine_line|#define mga_inb(addr)&t;mga_readb(ACCESS_FBINFO(mmio.vbase), (addr))
+mdefine_line|#define mga_inb(addr)&t;&t;mga_readb(ACCESS_FBINFO(mmio.vbase), (addr))
 DECL|macro|mga_inl
-mdefine_line|#define mga_inl(addr)&t;mga_readl(ACCESS_FBINFO(mmio.vbase), (addr))
+mdefine_line|#define mga_inl(addr)&t;&t;mga_readl(ACCESS_FBINFO(mmio.vbase), (addr))
 DECL|macro|mga_outb
-mdefine_line|#define mga_outb(addr,val) mga_writeb(ACCESS_FBINFO(mmio.vbase), (addr), (val))
+mdefine_line|#define mga_outb(addr,val)&t;mga_writeb(ACCESS_FBINFO(mmio.vbase), (addr), (val))
 DECL|macro|mga_outw
-mdefine_line|#define mga_outw(addr,val) mga_writew(ACCESS_FBINFO(mmio.vbase), (addr), (val))
+mdefine_line|#define mga_outw(addr,val)&t;mga_writew(ACCESS_FBINFO(mmio.vbase), (addr), (val))
 DECL|macro|mga_outl
-mdefine_line|#define mga_outl(addr,val) mga_writel(ACCESS_FBINFO(mmio.vbase), (addr), (val))
+mdefine_line|#define mga_outl(addr,val)&t;mga_writel(ACCESS_FBINFO(mmio.vbase), (addr), (val))
 DECL|macro|mga_readr
-mdefine_line|#define mga_readr(port,idx) (mga_outb((port),(idx)), mga_inb((port)+1))
-macro_line|#ifdef __LITTLE_ENDIAN
+mdefine_line|#define mga_readr(port,idx)&t;(mga_outb((port),(idx)), mga_inb((port)+1))
 DECL|macro|mga_setr
-mdefine_line|#define mga_setr(addr,port,val) mga_outw(addr, ((val)&lt;&lt;8) | (port))
-macro_line|#else
-DECL|macro|mga_setr
-mdefine_line|#define mga_setr(addr,port,val) do { mga_outb(addr, port); mga_outb((addr)+1, val); } while (0)
-macro_line|#endif
+mdefine_line|#define mga_setr(addr,port,val)&t;mga_outw(addr, ((val)&lt;&lt;8) | (port))
 DECL|macro|mga_fifo
 mdefine_line|#define mga_fifo(n)&t;do {} while ((mga_inl(M_FIFOSTATUS) &amp; 0xFF) &lt; (n))
 DECL|macro|WaitTillIdle

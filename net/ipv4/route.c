@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1303,6 +1303,17 @@ id|pos
 r_int
 id|cpu
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|pos
+op_eq
+l_int|0
+)paren
+r_return
+id|SEQ_START_TOKEN
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1310,6 +1321,8 @@ id|cpu
 op_assign
 op_star
 id|pos
+op_minus
+l_int|1
 suffix:semicolon
 id|cpu
 OL
@@ -1335,6 +1348,8 @@ op_star
 id|pos
 op_assign
 id|cpu
+op_plus
+l_int|1
 suffix:semicolon
 r_return
 id|per_cpu_ptr
@@ -1381,8 +1396,6 @@ id|cpu
 op_assign
 op_star
 id|pos
-op_plus
-l_int|1
 suffix:semicolon
 id|cpu
 OL
@@ -1408,6 +1421,8 @@ op_star
 id|pos
 op_assign
 id|cpu
+op_plus
+l_int|1
 suffix:semicolon
 r_return
 id|per_cpu_ptr
@@ -1463,6 +1478,26 @@ id|st
 op_assign
 id|v
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|v
+op_eq
+id|SEQ_START_TOKEN
+)paren
+(brace
+id|seq_printf
+c_func
+(paren
+id|seq
+comma
+l_string|&quot;entries  in_hit in_slow_tot in_no_route in_brd in_martian_dst in_martian_src  out_hit out_slow_tot out_slow_mc  gc_total gc_ignored gc_goal_miss gc_dst_overflow in_hlist_search out_hlist_search&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|seq_printf
 c_func
 (paren
@@ -12662,6 +12697,15 @@ id|rt_secret_timer
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
+(brace
+r_struct
+id|proc_dir_entry
+op_star
+id|rtstat_pde
+op_assign
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* keep gcc happy */
 r_if
 c_cond
 (paren
@@ -12678,15 +12722,18 @@ id|rt_cache_seq_fops
 )paren
 op_logical_or
 op_logical_neg
-id|proc_net_fops_create
+(paren
+id|rtstat_pde
+op_assign
+id|create_proc_entry
 c_func
 (paren
-l_string|&quot;rt_cache_stat&quot;
+l_string|&quot;rt_cache&quot;
 comma
 id|S_IRUGO
 comma
-op_amp
-id|rt_cpu_seq_fops
+id|proc_net_stat
+)paren
 )paren
 )paren
 (brace
@@ -12699,6 +12746,12 @@ suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
+suffix:semicolon
+)brace
+id|rtstat_pde-&gt;proc_fops
+op_assign
+op_amp
+id|rt_cpu_seq_fops
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_NET_CLS_ROUTE

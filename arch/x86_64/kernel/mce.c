@@ -230,6 +230,8 @@ id|printk
 c_func
 (paren
 id|KERN_EMERG
+l_string|&quot;&bslash;n&quot;
+id|KERN_EMERG
 l_string|&quot;CPU %d: Machine Check Exception: %16Lx Bank %d: %016Lx&bslash;n&quot;
 comma
 id|m-&gt;cpu
@@ -414,6 +416,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|backup
+op_logical_and
 id|mcelog.entry
 (braket
 id|i
@@ -853,6 +857,10 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+id|tainted
+op_or_assign
+id|TAINT_MACHINE_CHECK
+suffix:semicolon
 )brace
 multiline_comment|/* Never do anything final in the polling timer */
 r_if

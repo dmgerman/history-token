@@ -236,6 +236,7 @@ id|io_irq
 suffix:semicolon
 DECL|member|base
 r_void
+id|__iomem
 op_star
 id|base
 suffix:semicolon
@@ -275,7 +276,7 @@ DECL|member|saved_state
 id|u32
 id|saved_state
 (braket
-l_int|18
+l_int|2
 )braket
 suffix:semicolon
 )brace

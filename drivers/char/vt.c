@@ -27,10 +27,10 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/font.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &quot;console_macros.h&quot;
 DECL|variable|conswitchp
 r_const
@@ -14188,6 +14188,18 @@ id|rc
 )paren
 r_goto
 id|out
+suffix:semicolon
+id|op-&gt;height
+op_assign
+id|font.height
+suffix:semicolon
+id|op-&gt;width
+op_assign
+id|font.width
+suffix:semicolon
+id|op-&gt;charcount
+op_assign
+id|font.charcount
 suffix:semicolon
 r_if
 c_cond

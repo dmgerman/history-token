@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * Copyright (C) 2004 Matthew Wilcox &lt;matthew@wil.cx&gt;&n; * Copyright (C) 2004 Intel Corp.&n; *&n; * This code is released under the GNU General Public License version 2.&n; */
 multiline_comment|/*&n; * mmconfig.c - Low-level direct PCI config space access via MMCONFIG&n; */
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

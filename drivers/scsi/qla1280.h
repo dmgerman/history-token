@@ -3210,6 +3210,7 @@ suffix:semicolon
 DECL|member|iobase
 r_struct
 id|device_reg
+id|__iomem
 op_star
 id|iobase
 suffix:semicolon
@@ -3217,6 +3218,7 @@ multiline_comment|/* Base Memory-mapped I/O address */
 DECL|member|mmpbase
 r_int
 r_char
+id|__iomem
 op_star
 id|mmpbase
 suffix:semicolon

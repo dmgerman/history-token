@@ -21,7 +21,7 @@ r_int
 r_int
 id|gap
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_STACK
 )braket
@@ -98,7 +98,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_STACK
 )braket

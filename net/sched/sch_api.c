@@ -19,12 +19,12 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 r_static
 r_int
 id|qdisc_notify
@@ -1178,6 +1178,17 @@ comma
 id|old
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+r_new
+)paren
+r_new
+op_member_access_from_pointer
+id|parent
+op_assign
+id|classid
+suffix:semicolon
 id|cops
 op_member_access_from_pointer
 id|put
@@ -1631,11 +1642,14 @@ op_minus
 l_int|1
 )braket
 )paren
-id|qdisc_new_estimator
+id|gen_new_estimator
 c_func
 (paren
 op_amp
-id|sch-&gt;stats
+id|sch-&gt;bstats
+comma
+op_amp
+id|sch-&gt;rate_est
 comma
 id|sch-&gt;stats_lock
 comma
@@ -1770,19 +1784,14 @@ op_minus
 l_int|1
 )braket
 )paren
-(brace
-id|qdisc_kill_estimator
+id|gen_replace_estimator
 c_func
 (paren
 op_amp
-id|sch-&gt;stats
-)paren
-suffix:semicolon
-id|qdisc_new_estimator
-c_func
-(paren
+id|sch-&gt;bstats
+comma
 op_amp
-id|sch-&gt;stats
+id|sch-&gt;rate_est
 comma
 id|sch-&gt;stats_lock
 comma
@@ -1794,7 +1803,6 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 r_return
 l_int|0
@@ -3156,6 +3164,10 @@ id|b
 op_assign
 id|skb-&gt;tail
 suffix:semicolon
+r_struct
+id|gnet_dump
+id|d
+suffix:semicolon
 id|nlh
 op_assign
 id|NLMSG_PUT
@@ -3245,23 +3257,90 @@ l_int|0
 r_goto
 id|rtattr_failure
 suffix:semicolon
-id|q-&gt;stats.qlen
+id|q-&gt;qstats.qlen
 op_assign
 id|q-&gt;q.qlen
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|qdisc_copy_stats
+id|gnet_stats_start_copy_compat
 c_func
 (paren
 id|skb
 comma
-op_amp
-id|q-&gt;stats
+id|TCA_STATS2
+comma
+id|TCA_STATS
+comma
+id|TCA_XSTATS
 comma
 id|q-&gt;stats_lock
+comma
+op_amp
+id|d
 )paren
+OL
+l_int|0
+)paren
+r_goto
+id|rtattr_failure
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|gnet_stats_copy_basic
+c_func
+(paren
+op_amp
+id|d
+comma
+op_amp
+id|q-&gt;bstats
+)paren
+OL
+l_int|0
+op_logical_or
+macro_line|#ifdef CONFIG_NET_ESTIMATOR
+id|gnet_stats_copy_rate_est
+c_func
+(paren
+op_amp
+id|d
+comma
+op_amp
+id|q-&gt;rate_est
+)paren
+OL
+l_int|0
+op_logical_or
+macro_line|#endif
+id|gnet_stats_copy_queue
+c_func
+(paren
+op_amp
+id|d
+comma
+op_amp
+id|q-&gt;qstats
+)paren
+OL
+l_int|0
+)paren
+r_goto
+id|rtattr_failure
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|gnet_stats_finish_copy
+c_func
+(paren
+op_amp
+id|d
+)paren
+OL
+l_int|0
 )paren
 r_goto
 id|rtattr_failure
@@ -3618,7 +3697,7 @@ id|skb
 comma
 id|q
 comma
-l_int|0
+id|q-&gt;parent
 comma
 id|NETLINK_CB
 c_func

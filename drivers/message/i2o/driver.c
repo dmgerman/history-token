@@ -936,7 +936,6 @@ c_cond
 (paren
 id|drv
 )paren
-(brace
 id|i2o_driver_notify_controller_add
 c_func
 (paren
@@ -945,7 +944,6 @@ comma
 id|c
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/**&n; *&t;i2o_driver_notify_controller_remove_all - Send notify of removed&n; *&t;&t;&t;&t;&t;&t;  controller to all I2O drivers&n; *&n; *&t;Send notifications to all registered drivers that a controller was&n; *&t;removed.&n; */
@@ -995,7 +993,6 @@ c_cond
 (paren
 id|drv
 )paren
-(brace
 id|i2o_driver_notify_controller_remove
 c_func
 (paren
@@ -1004,7 +1001,6 @@ comma
 id|c
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/**&n; *&t;i2o_driver_notify_device_add_all - Send notify of added device to all&n; *&t;&t;&t;&t;&t;   I2O drivers&n; *&n; *&t;Send notifications to all registered drivers that a device was added.&n; */
@@ -1054,7 +1050,6 @@ c_cond
 (paren
 id|drv
 )paren
-(brace
 id|i2o_driver_notify_device_add
 c_func
 (paren
@@ -1063,7 +1058,6 @@ comma
 id|i2o_dev
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/**&n; *&t;i2o_driver_notify_device_remove_all - Send notify of removed device to&n; *&t;&t;&t;&t;&t;      all I2O drivers&n; *&n; *&t;Send notifications to all registered drivers that a device was removed.&n; */
@@ -1113,7 +1107,6 @@ c_cond
 (paren
 id|drv
 )paren
-(brace
 id|i2o_driver_notify_device_remove
 c_func
 (paren
@@ -1122,7 +1115,6 @@ comma
 id|i2o_dev
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/**&n; *&t;i2o_driver_init - initialize I2O drivers (OSMs)&n; *&n; *&t;Registers the I2O bus and allocate memory for the array of OSMs.&n; *&n; *&t;Returns 0 on success or negative error code on failure.&n; */

@@ -165,12 +165,6 @@ id|smt_enabled_at_boot
 op_assign
 l_int|1
 suffix:semicolon
-DECL|variable|boot_cpuid
-r_int
-id|boot_cpuid
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* Low level assembly function used to backup CPU 0 state */
 r_extern
 r_void
@@ -1317,7 +1311,18 @@ op_assign
 id|__pa
 c_func
 (paren
+(paren
+id|u32
+)paren
+op_star
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
 id|pseries_secondary_smp_init
+)paren
 )paren
 suffix:semicolon
 r_int

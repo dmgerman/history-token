@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_ELF_H
 DECL|macro|_ASM_IA64_ELF_H
 mdefine_line|#define _ASM_IA64_ELF_H
-multiline_comment|/*&n; * ELF-specific definitions.&n; *&n; * Copyright (C) 1998-1999, 2002-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * ELF-specific definitions.&n; *&n; * Copyright (C) 1998-1999, 2002-2004 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -24,7 +24,7 @@ DECL|macro|ELF_EXEC_PAGESIZE
 mdefine_line|#define ELF_EXEC_PAGESIZE&t;PAGE_SIZE
 multiline_comment|/*&n; * This is the location that an ET_DYN program is loaded if exec&squot;ed.&n; * Typical use of this is to invoke &quot;./ld.so someprog&quot; to test out a&n; * new version of the loader.  We need to make sure that it is out of&n; * the way of the program that it will &quot;exec&quot;, and that there is&n; * sufficient room for the brk.&n; */
 DECL|macro|ELF_ET_DYN_BASE
-mdefine_line|#define ELF_ET_DYN_BASE&t;&t;(TASK_UNMAPPED_BASE + 0x800000000)
+mdefine_line|#define ELF_ET_DYN_BASE&t;&t;(TASK_UNMAPPED_BASE + 0x800000000UL)
 DECL|macro|PT_IA_64_UNWIND
 mdefine_line|#define PT_IA_64_UNWIND&t;&t;0x70000001
 multiline_comment|/* IA-64 relocations: */
@@ -267,7 +267,7 @@ DECL|macro|ELF_HWCAP
 mdefine_line|#define ELF_HWCAP &t;0
 multiline_comment|/* This macro yields a string that ld.so will use to load&n;   implementation specific libraries for optimization.  Not terribly&n;   relevant until we have real hardware to play with... */
 DECL|macro|ELF_PLATFORM
-mdefine_line|#define ELF_PLATFORM&t;0
+mdefine_line|#define ELF_PLATFORM&t;NULL
 multiline_comment|/*&n; * Architecture-neutral AT_ values are in the range 0-17.  Leave some room for more of&n; * them, start the architecture-specific ones at 32.&n; */
 DECL|macro|AT_SYSINFO
 mdefine_line|#define AT_SYSINFO&t;32

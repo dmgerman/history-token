@@ -267,11 +267,12 @@ c_func
 (paren
 id|ixp4xx_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|ixp4xx_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|ixp4xx_timer
+comma
 id|BOOT_PARAMS
 c_func
 (paren

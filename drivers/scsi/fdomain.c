@@ -366,71 +366,6 @@ r_int
 id|in_interrupt_flag
 suffix:semicolon
 macro_line|#endif
-DECL|variable|SCSI_Mode_Cntl_port
-r_static
-r_int
-id|SCSI_Mode_Cntl_port
-suffix:semicolon
-DECL|variable|FIFO_Data_Count_port
-r_static
-r_int
-id|FIFO_Data_Count_port
-suffix:semicolon
-DECL|variable|Interrupt_Cntl_port
-r_static
-r_int
-id|Interrupt_Cntl_port
-suffix:semicolon
-DECL|variable|Interrupt_Status_port
-r_static
-r_int
-id|Interrupt_Status_port
-suffix:semicolon
-DECL|variable|Read_FIFO_port
-r_static
-r_int
-id|Read_FIFO_port
-suffix:semicolon
-DECL|variable|Read_SCSI_Data_port
-r_static
-r_int
-id|Read_SCSI_Data_port
-suffix:semicolon
-DECL|variable|SCSI_Cntl_port
-r_static
-r_int
-id|SCSI_Cntl_port
-suffix:semicolon
-DECL|variable|SCSI_Data_NoACK_port
-r_static
-r_int
-id|SCSI_Data_NoACK_port
-suffix:semicolon
-DECL|variable|SCSI_Status_port
-r_static
-r_int
-id|SCSI_Status_port
-suffix:semicolon
-DECL|variable|TMC_Cntl_port
-r_static
-r_int
-id|TMC_Cntl_port
-suffix:semicolon
-DECL|variable|TMC_Status_port
-r_static
-r_int
-id|TMC_Status_port
-suffix:semicolon
-DECL|variable|Write_FIFO_port
-r_static
-r_int
-id|Write_FIFO_port
-suffix:semicolon
-DECL|variable|Write_SCSI_Data_port
-r_static
-r_int
-id|Write_SCSI_Data_port
-suffix:semicolon
 DECL|variable|FIFO_Size
 r_static
 r_int
@@ -1210,7 +1145,9 @@ c_func
 (paren
 l_int|0
 comma
-id|SCSI_Cntl_port
+id|port_base
+op_plus
+id|SCSI_Cntl
 )paren
 suffix:semicolon
 id|outb
@@ -1218,7 +1155,9 @@ c_func
 (paren
 l_int|0
 comma
-id|SCSI_Mode_Cntl_port
+id|port_base
+op_plus
+id|SCSI_Mode_Cntl
 )paren
 suffix:semicolon
 r_if
@@ -1239,7 +1178,9 @@ l_int|0x21
 op_or
 id|PARITY_MASK
 comma
-id|TMC_Cntl_port
+id|port_base
+op_plus
+id|TMC_Cntl
 )paren
 suffix:semicolon
 multiline_comment|/* Clear forced intr. */
@@ -1251,7 +1192,9 @@ l_int|0x01
 op_or
 id|PARITY_MASK
 comma
-id|TMC_Cntl_port
+id|port_base
+op_plus
+id|TMC_Cntl
 )paren
 suffix:semicolon
 )brace
@@ -2526,84 +2469,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|SCSI_Mode_Cntl_port
-op_assign
-id|port_base
-op_plus
-id|SCSI_Mode_Cntl
-suffix:semicolon
-id|FIFO_Data_Count_port
-op_assign
-id|port_base
-op_plus
-id|FIFO_Data_Count
-suffix:semicolon
-id|Interrupt_Cntl_port
-op_assign
-id|port_base
-op_plus
-id|Interrupt_Cntl
-suffix:semicolon
-id|Interrupt_Status_port
-op_assign
-id|port_base
-op_plus
-id|Interrupt_Status
-suffix:semicolon
-id|Read_FIFO_port
-op_assign
-id|port_base
-op_plus
-id|Read_FIFO
-suffix:semicolon
-id|Read_SCSI_Data_port
-op_assign
-id|port_base
-op_plus
-id|Read_SCSI_Data
-suffix:semicolon
-id|SCSI_Cntl_port
-op_assign
-id|port_base
-op_plus
-id|SCSI_Cntl
-suffix:semicolon
-id|SCSI_Data_NoACK_port
-op_assign
-id|port_base
-op_plus
-id|SCSI_Data_NoACK
-suffix:semicolon
-id|SCSI_Status_port
-op_assign
-id|port_base
-op_plus
-id|SCSI_Status
-suffix:semicolon
-id|TMC_Cntl_port
-op_assign
-id|port_base
-op_plus
-id|TMC_Cntl
-suffix:semicolon
-id|TMC_Status_port
-op_assign
-id|port_base
-op_plus
-id|TMC_Status
-suffix:semicolon
-id|Write_FIFO_port
-op_assign
-id|port_base
-op_plus
-id|Write_FIFO
-suffix:semicolon
-id|Write_SCSI_Data_port
-op_assign
-id|port_base
-op_plus
-id|Write_SCSI_Data
-suffix:semicolon
 id|fdomain_16x0_bus_reset
 c_func
 (paren
@@ -3140,7 +3005,9 @@ c_func
 (paren
 l_int|0x00
 comma
-id|SCSI_Cntl_port
+id|port_base
+op_plus
+id|SCSI_Cntl
 )paren
 suffix:semicolon
 multiline_comment|/* Disable data drivers */
@@ -3162,7 +3029,9 @@ l_int|0x04
 op_or
 id|PARITY_MASK
 comma
-id|TMC_Cntl_port
+id|port_base
+op_plus
+id|TMC_Cntl
 )paren
 suffix:semicolon
 multiline_comment|/* Start arbitration */
@@ -3177,7 +3046,9 @@ op_assign
 id|inb
 c_func
 (paren
-id|TMC_Status_port
+id|port_base
+op_plus
+id|TMC_Status
 )paren
 suffix:semicolon
 multiline_comment|/* Read adapter status */
@@ -3268,7 +3139,9 @@ c_func
 (paren
 l_int|0x82
 comma
-id|SCSI_Cntl_port
+id|port_base
+op_plus
+id|SCSI_Cntl
 )paren
 suffix:semicolon
 multiline_comment|/* Bus Enable + Select */
@@ -3283,7 +3156,9 @@ op_lshift
 id|target
 )paren
 comma
-id|SCSI_Data_NoACK_port
+id|port_base
+op_plus
+id|SCSI_Data_NoACK
 )paren
 suffix:semicolon
 multiline_comment|/* Stop arbitration and enable parity */
@@ -3292,7 +3167,9 @@ c_func
 (paren
 id|PARITY_MASK
 comma
-id|TMC_Cntl_port
+id|port_base
+op_plus
+id|TMC_Cntl
 )paren
 suffix:semicolon
 id|timeout
@@ -3307,7 +3184,9 @@ op_assign
 id|inb
 c_func
 (paren
-id|SCSI_Status_port
+id|port_base
+op_plus
+id|SCSI_Status
 )paren
 suffix:semicolon
 multiline_comment|/* Read adapter status */
@@ -3326,7 +3205,9 @@ c_func
 (paren
 l_int|0x80
 comma
-id|SCSI_Cntl_port
+id|port_base
+op_plus
+id|SCSI_Cntl
 )paren
 suffix:semicolon
 r_return
@@ -3424,7 +3305,9 @@ c_func
 (paren
 l_int|0x00
 comma
-id|Interrupt_Cntl_port
+id|port_base
+op_plus
+id|Interrupt_Cntl
 )paren
 suffix:semicolon
 id|fdomain_make_bus_idle
@@ -3516,7 +3399,9 @@ c_cond
 id|inb
 c_func
 (paren
-id|TMC_Status_port
+id|port_base
+op_plus
+id|TMC_Status
 )paren
 op_amp
 l_int|0x01
@@ -3524,18 +3409,18 @@ l_int|0x01
 op_eq
 l_int|0
 )paren
-(brace
 r_return
 id|IRQ_NONE
 suffix:semicolon
-)brace
 multiline_comment|/* It is our IRQ */
 id|outb
 c_func
 (paren
 l_int|0x00
 comma
-id|Interrupt_Cntl_port
+id|port_base
+op_plus
+id|Interrupt_Cntl
 )paren
 suffix:semicolon
 multiline_comment|/* We usually have one spurious interrupt after each command.  Ignore it. */
@@ -3603,7 +3488,9 @@ op_assign
 id|inb
 c_func
 (paren
-id|TMC_Status_port
+id|port_base
+op_plus
+id|TMC_Status
 )paren
 suffix:semicolon
 multiline_comment|/* Read adapter status */
@@ -3665,7 +3552,9 @@ l_int|0x40
 op_or
 id|FIFO_COUNT
 comma
-id|Interrupt_Cntl_port
+id|port_base
+op_plus
+id|Interrupt_Cntl
 )paren
 suffix:semicolon
 id|outb
@@ -3673,7 +3562,9 @@ c_func
 (paren
 l_int|0x82
 comma
-id|SCSI_Cntl_port
+id|port_base
+op_plus
+id|SCSI_Cntl
 )paren
 suffix:semicolon
 multiline_comment|/* Bus Enable + Select */
@@ -3688,7 +3579,9 @@ op_lshift
 id|current_SC-&gt;device-&gt;id
 )paren
 comma
-id|SCSI_Data_NoACK_port
+id|port_base
+op_plus
+id|SCSI_Data_NoACK
 )paren
 suffix:semicolon
 multiline_comment|/* Stop arbitration and enable parity */
@@ -3699,7 +3592,9 @@ l_int|0x10
 op_or
 id|PARITY_MASK
 comma
-id|TMC_Cntl_port
+id|port_base
+op_plus
+id|TMC_Cntl
 )paren
 suffix:semicolon
 macro_line|#if DEBUG_RACE
@@ -3726,7 +3621,9 @@ op_assign
 id|inb
 c_func
 (paren
-id|SCSI_Status_port
+id|port_base
+op_plus
+id|SCSI_Status
 )paren
 suffix:semicolon
 r_if
@@ -3805,7 +3702,9 @@ l_int|0x10
 op_or
 id|PARITY_MASK
 comma
-id|TMC_Cntl_port
+id|port_base
+op_plus
+id|TMC_Cntl
 )paren
 suffix:semicolon
 )brace
@@ -3821,7 +3720,9 @@ l_int|0x90
 op_or
 id|FIFO_COUNT
 comma
-id|Interrupt_Cntl_port
+id|port_base
+op_plus
+id|Interrupt_Cntl
 )paren
 suffix:semicolon
 id|outb
@@ -3829,7 +3730,9 @@ c_func
 (paren
 l_int|0x80
 comma
-id|SCSI_Cntl_port
+id|port_base
+op_plus
+id|SCSI_Cntl
 )paren
 suffix:semicolon
 macro_line|#if DEBUG_RACE
@@ -3848,7 +3751,9 @@ op_assign
 id|inb
 c_func
 (paren
-id|SCSI_Status_port
+id|port_base
+op_plus
+id|SCSI_Status
 )paren
 suffix:semicolon
 r_if
@@ -3881,7 +3786,9 @@ id|current_SC-&gt;SCp.sent_command
 op_increment
 )braket
 comma
-id|Write_SCSI_Data_port
+id|port_base
+op_plus
+id|Write_SCSI_Data
 )paren
 suffix:semicolon
 macro_line|#if EVERY_ACCESS
@@ -3928,7 +3835,9 @@ l_int|0xd0
 op_or
 id|PARITY_MASK
 comma
-id|TMC_Cntl_port
+id|port_base
+op_plus
+id|TMC_Cntl
 )paren
 suffix:semicolon
 )brace
@@ -3960,7 +3869,9 @@ l_int|0x90
 op_or
 id|PARITY_MASK
 comma
-id|TMC_Cntl_port
+id|port_base
+op_plus
+id|TMC_Cntl
 )paren
 suffix:semicolon
 )brace
@@ -3975,7 +3886,9 @@ op_assign
 id|inb
 c_func
 (paren
-id|Read_SCSI_Data_port
+id|port_base
+op_plus
+id|Read_SCSI_Data
 )paren
 suffix:semicolon
 macro_line|#if EVERY_ACCESS
@@ -4031,7 +3944,9 @@ c_func
 (paren
 id|MESSAGE_REJECT
 comma
-id|Write_SCSI_Data_port
+id|port_base
+op_plus
+id|Write_SCSI_Data
 )paren
 suffix:semicolon
 multiline_comment|/* Reject */
@@ -4046,7 +3961,9 @@ op_assign
 id|inb
 c_func
 (paren
-id|Read_SCSI_Data_port
+id|port_base
+op_plus
+id|Read_SCSI_Data
 )paren
 suffix:semicolon
 macro_line|#if EVERY_ACCESS
@@ -4126,7 +4043,9 @@ l_int|0xd0
 op_or
 id|PARITY_MASK
 comma
-id|TMC_Cntl_port
+id|port_base
+op_plus
+id|TMC_Cntl
 )paren
 suffix:semicolon
 )brace
@@ -4143,7 +4062,9 @@ l_int|0x90
 op_or
 id|PARITY_MASK
 comma
-id|TMC_Cntl_port
+id|port_base
+op_plus
+id|TMC_Cntl
 )paren
 suffix:semicolon
 )brace
@@ -4169,7 +4090,9 @@ op_minus
 id|inw
 c_func
 (paren
-id|FIFO_Data_Count_port
+id|port_base
+op_plus
+id|FIFO_Data_Count
 )paren
 )paren
 OG
@@ -4230,7 +4153,9 @@ op_star
 id|current_SC-&gt;SCp.ptr
 op_increment
 comma
-id|Write_FIFO_port
+id|port_base
+op_plus
+id|Write_FIFO
 )paren
 suffix:semicolon
 op_decrement
@@ -4246,7 +4171,9 @@ suffix:semicolon
 id|outsw
 c_func
 (paren
-id|Write_FIFO_port
+id|port_base
+op_plus
+id|Write_FIFO
 comma
 id|current_SC-&gt;SCp.ptr
 comma
@@ -4325,7 +4252,9 @@ op_assign
 id|inw
 c_func
 (paren
-id|FIFO_Data_Count_port
+id|port_base
+op_plus
+id|FIFO_Data_Count
 )paren
 )paren
 OG
@@ -4384,7 +4313,9 @@ op_assign
 id|inb
 c_func
 (paren
-id|Read_FIFO_port
+id|port_base
+op_plus
+id|Read_FIFO
 )paren
 suffix:semicolon
 op_decrement
@@ -4401,7 +4332,9 @@ multiline_comment|/* Number of words */
 id|insw
 c_func
 (paren
-id|Read_FIFO_port
+id|port_base
+op_plus
+id|Read_FIFO
 comma
 id|current_SC-&gt;SCp.ptr
 comma
@@ -4722,7 +4655,9 @@ l_int|0xd0
 op_or
 id|FIFO_COUNT
 comma
-id|Interrupt_Cntl_port
+id|port_base
+op_plus
+id|Interrupt_Cntl
 )paren
 suffix:semicolon
 id|outb
@@ -4730,7 +4665,9 @@ c_func
 (paren
 l_int|0x00
 comma
-id|SCSI_Cntl_port
+id|port_base
+op_plus
+id|SCSI_Cntl
 )paren
 suffix:semicolon
 )brace
@@ -4743,7 +4680,9 @@ l_int|0x90
 op_or
 id|FIFO_COUNT
 comma
-id|Interrupt_Cntl_port
+id|port_base
+op_plus
+id|Interrupt_Cntl
 )paren
 suffix:semicolon
 )brace
@@ -4916,7 +4855,9 @@ c_func
 (paren
 l_int|0x00
 comma
-id|Interrupt_Cntl_port
+id|port_base
+op_plus
+id|Interrupt_Cntl
 )paren
 suffix:semicolon
 id|outb
@@ -4924,7 +4865,9 @@ c_func
 (paren
 l_int|0x00
 comma
-id|SCSI_Cntl_port
+id|port_base
+op_plus
+id|SCSI_Cntl
 )paren
 suffix:semicolon
 multiline_comment|/* Disable data drivers */
@@ -4933,7 +4876,9 @@ c_func
 (paren
 id|adapter_mask
 comma
-id|SCSI_Data_NoACK_port
+id|port_base
+op_plus
+id|SCSI_Data_NoACK
 )paren
 suffix:semicolon
 multiline_comment|/* Set our id bit */
@@ -4945,7 +4890,9 @@ c_func
 (paren
 l_int|0x20
 comma
-id|Interrupt_Cntl_port
+id|port_base
+op_plus
+id|Interrupt_Cntl
 )paren
 suffix:semicolon
 id|outb
@@ -4955,7 +4902,9 @@ l_int|0x14
 op_or
 id|PARITY_MASK
 comma
-id|TMC_Cntl_port
+id|port_base
+op_plus
+id|TMC_Cntl
 )paren
 suffix:semicolon
 multiline_comment|/* Start arbitration */
@@ -5254,7 +5203,9 @@ comma
 id|inb
 c_func
 (paren
-id|SCSI_Status_port
+id|port_base
+op_plus
+id|SCSI_Status
 )paren
 )paren
 suffix:semicolon
@@ -5266,7 +5217,9 @@ comma
 id|inb
 c_func
 (paren
-id|TMC_Status_port
+id|port_base
+op_plus
+id|TMC_Status
 )paren
 )paren
 suffix:semicolon
@@ -5276,7 +5229,11 @@ c_cond
 id|inb
 c_func
 (paren
-id|TMC_Status_port
+(paren
+id|port_base
+op_plus
+id|TMC_Status
+)paren
 op_amp
 l_int|1
 )paren
@@ -5301,7 +5258,9 @@ comma
 id|inb
 c_func
 (paren
-id|Interrupt_Status_port
+id|port_base
+op_plus
+id|Interrupt_Status
 )paren
 )paren
 suffix:semicolon
@@ -5311,7 +5270,9 @@ c_cond
 id|inb
 c_func
 (paren
-id|Interrupt_Status_port
+id|port_base
+op_plus
+id|Interrupt_Status
 )paren
 op_amp
 l_int|0x08
@@ -5508,7 +5469,9 @@ c_func
 (paren
 l_int|1
 comma
-id|SCSI_Cntl_port
+id|port_base
+op_plus
+id|SCSI_Cntl
 )paren
 suffix:semicolon
 id|do_pause
@@ -5522,7 +5485,9 @@ c_func
 (paren
 l_int|0
 comma
-id|SCSI_Cntl_port
+id|port_base
+op_plus
+id|SCSI_Cntl
 )paren
 suffix:semicolon
 id|do_pause
@@ -5536,7 +5501,9 @@ c_func
 (paren
 l_int|0
 comma
-id|SCSI_Mode_Cntl_port
+id|port_base
+op_plus
+id|SCSI_Mode_Cntl
 )paren
 suffix:semicolon
 id|outb
@@ -5544,7 +5511,9 @@ c_func
 (paren
 id|PARITY_MASK
 comma
-id|TMC_Cntl_port
+id|port_base
+op_plus
+id|TMC_Cntl
 )paren
 suffix:semicolon
 r_return

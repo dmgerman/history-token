@@ -5,7 +5,7 @@ mdefine_line|#define __LINUX_MTD_GEN_PROBE_H__
 macro_line|#include &lt;linux/mtd/flashchip.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt; 
 macro_line|#include &lt;linux/mtd/cfi.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 DECL|struct|chip_probe
 r_struct
 id|chip_probe

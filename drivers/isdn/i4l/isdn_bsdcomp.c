@@ -16,8 +16,8 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;&t;/* used in new tty drivers */
 macro_line|#include &lt;linux/signal.h&gt;&t;/* used in new tty drivers */
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
@@ -933,7 +933,6 @@ id|bsd_free
 id|db
 )paren
 suffix:semicolon
-multiline_comment|/* calls MOD_DEC_USE_COUNT; */
 r_return
 (paren
 l_int|NULL

@@ -2884,14 +2884,7 @@ c_func
 id|port-&gt;tty
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;tty-&gt;ldisc.flush_buffer
-)paren
-id|port-&gt;tty-&gt;ldisc
-dot
-id|flush_buffer
+id|tty_ldisc_flush
 c_func
 (paren
 id|port-&gt;tty
@@ -2947,7 +2940,7 @@ id|urb
 op_assign
 id|wrap-&gt;urb
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|urb
@@ -3024,7 +3017,7 @@ id|urb
 op_assign
 id|wrap-&gt;urb
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|urb
@@ -6220,7 +6213,7 @@ c_cond
 op_logical_neg
 id|command_info-&gt;port_running
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|command_port-&gt;read_urb
@@ -6388,7 +6381,7 @@ id|urb
 op_assign
 id|wrap-&gt;urb
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|urb

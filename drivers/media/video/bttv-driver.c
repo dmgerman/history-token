@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    bttv - Bt848 frame grabber driver&n;    &n;    Copyright (C) 1996,97,98 Ralph  Metzler &lt;rjkm@thp.uni-koeln.de&gt;&n;                           &amp; Marcus Metzler &lt;mocm@thp.uni-koeln.de&gt;&n;    (c) 1999-2002 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;    &n;    some v4l2 code lines are taken from Justin&squot;s bttv2 driver which is&n;    (c) 2000 Justin Schoeman &lt;justin@suntiger.ee.up.ac.za&gt;&n;    &n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;    &n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;    &n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    $Id: bttv-driver.c,v 1.22 2004/10/12 07:33:22 kraxel Exp $&n;&n;    bttv - Bt848 frame grabber driver&n;    &n;    Copyright (C) 1996,97,98 Ralph  Metzler &lt;rjkm@thp.uni-koeln.de&gt;&n;                           &amp; Marcus Metzler &lt;mocm@thp.uni-koeln.de&gt;&n;    (c) 1999-2002 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;    &n;    some v4l2 code lines are taken from Justin&squot;s bttv2 driver which is&n;    (c) 2000 Justin Schoeman &lt;justin@suntiger.ee.up.ac.za&gt;&n;    &n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;    &n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;    &n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -3495,18 +3495,10 @@ c_func
 l_string|&quot;.&quot;
 )paren
 suffix:semicolon
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|50
+l_int|10
 )paren
 suffix:semicolon
 r_if
@@ -4699,7 +4691,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|btv-&gt;curr.irqflags
+id|btv-&gt;curr.frame_irq
 )paren
 (brace
 multiline_comment|/* active capture -&gt; delayed input switch */
@@ -4768,6 +4760,12 @@ c_func
 id|btv
 comma
 id|btv-&gt;tvnorm
+)paren
+suffix:semicolon
+id|i2c_vidiocschan
+c_func
+(paren
+id|btv
 )paren
 suffix:semicolon
 )brace
@@ -5142,8 +5140,6 @@ id|bttv_set_dma
 c_func
 (paren
 id|btv
-comma
-l_int|0
 comma
 l_int|0
 )paren
@@ -6288,7 +6284,7 @@ id|btv-&gt;screen
 op_assign
 r_new
 suffix:semicolon
-id|btv-&gt;curr.irqflags
+id|btv-&gt;loop_irq
 op_or_assign
 l_int|1
 suffix:semicolon
@@ -6298,8 +6294,6 @@ c_func
 id|btv
 comma
 l_int|0x03
-comma
-id|btv-&gt;curr.irqflags
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -6650,10 +6644,9 @@ DECL|function|buffer_setup
 id|buffer_setup
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_int
 r_int
@@ -6671,7 +6664,7 @@ id|bttv_fh
 op_star
 id|fh
 op_assign
-id|file-&gt;private_data
+id|priv
 suffix:semicolon
 op_star
 id|size
@@ -6726,10 +6719,9 @@ DECL|function|buffer_prepare
 id|buffer_prepare
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_buffer
@@ -6758,7 +6750,7 @@ id|bttv_fh
 op_star
 id|fh
 op_assign
-id|file-&gt;private_data
+id|priv
 suffix:semicolon
 r_return
 id|bttv_prepare_buffer
@@ -6784,10 +6776,9 @@ DECL|function|buffer_queue
 id|buffer_queue
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_buffer
@@ -6812,7 +6803,14 @@ id|bttv_fh
 op_star
 id|fh
 op_assign
-id|file-&gt;private_data
+id|priv
+suffix:semicolon
+r_struct
+id|bttv
+op_star
+id|btv
+op_assign
+id|fh-&gt;btv
 suffix:semicolon
 id|buf-&gt;vb.state
 op_assign
@@ -6825,23 +6823,29 @@ op_amp
 id|buf-&gt;vb.queue
 comma
 op_amp
-id|fh-&gt;btv-&gt;capture
+id|btv-&gt;capture
 )paren
 suffix:semicolon
-id|fh-&gt;btv-&gt;curr.irqflags
+r_if
+c_cond
+(paren
+op_logical_neg
+id|btv-&gt;curr.frame_irq
+)paren
+(brace
+id|btv-&gt;loop_irq
 op_or_assign
 l_int|1
 suffix:semicolon
 id|bttv_set_dma
 c_func
 (paren
-id|fh-&gt;btv
+id|btv
 comma
 l_int|0x03
-comma
-id|fh-&gt;btv-&gt;curr.irqflags
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|buffer_release
 r_static
@@ -6849,10 +6853,9 @@ r_void
 id|buffer_release
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_buffer
@@ -6877,7 +6880,7 @@ id|bttv_fh
 op_star
 id|fh
 op_assign
-id|file-&gt;private_data
+id|priv
 suffix:semicolon
 id|bttv_dma_free
 c_func
@@ -7459,6 +7462,16 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|bttv_call_i2c_clients
+c_func
+(paren
+id|btv
+comma
+id|cmd
+comma
+id|v
+)paren
+suffix:semicolon
 id|btv-&gt;tvnorm
 op_assign
 id|v-&gt;norm
@@ -8126,12 +8139,6 @@ id|btv
 comma
 op_star
 id|i
-)paren
-suffix:semicolon
-id|i2c_vidiocschan
-c_func
-(paren
-id|btv
 )paren
 suffix:semicolon
 id|up
@@ -11155,7 +11162,7 @@ op_assign
 id|videobuf_mmap_setup
 c_func
 (paren
-id|file
+id|file-&gt;private_data
 comma
 op_amp
 id|fh-&gt;cap
@@ -11388,7 +11395,7 @@ suffix:semicolon
 id|buffer_queue
 c_func
 (paren
-id|file
+id|file-&gt;private_data
 comma
 op_amp
 id|buf-&gt;vb
@@ -12587,7 +12594,7 @@ r_return
 id|videobuf_reqbufs
 c_func
 (paren
-id|file
+id|file-&gt;private_data
 comma
 id|bttv_queue
 c_func
@@ -12621,7 +12628,7 @@ r_return
 id|videobuf_qbuf
 c_func
 (paren
-id|file
+id|file-&gt;private_data
 comma
 id|bttv_queue
 c_func
@@ -12639,7 +12646,7 @@ r_return
 id|videobuf_dqbuf
 c_func
 (paren
-id|file
+id|file-&gt;private_data
 comma
 id|bttv_queue
 c_func
@@ -12648,6 +12655,10 @@ id|fh
 )paren
 comma
 id|arg
+comma
+id|file-&gt;f_flags
+op_amp
+id|O_NONBLOCK
 )paren
 suffix:semicolon
 r_case
@@ -12685,7 +12696,7 @@ r_return
 id|videobuf_streamon
 c_func
 (paren
-id|file
+id|file-&gt;private_data
 comma
 id|bttv_queue
 c_func
@@ -12713,7 +12724,7 @@ op_assign
 id|videobuf_streamoff
 c_func
 (paren
-id|file
+id|file-&gt;private_data
 comma
 id|bttv_queue
 c_func
@@ -13375,7 +13386,7 @@ op_assign
 id|videobuf_read_one
 c_func
 (paren
-id|file
+id|file-&gt;private_data
 comma
 op_amp
 id|fh-&gt;cap
@@ -13385,6 +13396,10 @@ comma
 id|count
 comma
 id|ppos
+comma
+id|file-&gt;f_flags
+op_amp
+id|O_NONBLOCK
 )paren
 suffix:semicolon
 r_break
@@ -13415,7 +13430,7 @@ op_assign
 id|videobuf_read_stream
 c_func
 (paren
-id|file
+id|file-&gt;private_data
 comma
 op_amp
 id|fh-&gt;vbi
@@ -13427,6 +13442,10 @@ comma
 id|ppos
 comma
 l_int|1
+comma
+id|file-&gt;f_flags
+op_amp
+id|O_NONBLOCK
 )paren
 suffix:semicolon
 r_break
@@ -13499,14 +13518,15 @@ id|RESOURCE_VBI
 )paren
 )paren
 r_return
-op_minus
-id|EBUSY
+id|POLLERR
 suffix:semicolon
 r_return
 id|videobuf_poll_stream
 c_func
 (paren
 id|file
+comma
+id|file-&gt;private_data
 comma
 op_amp
 id|fh-&gt;vbi
@@ -13647,7 +13667,7 @@ op_member_access_from_pointer
 id|buf_prepare
 c_func
 (paren
-id|file
+id|file-&gt;private_data
 comma
 id|fh-&gt;cap.read_buf
 comma
@@ -13671,7 +13691,7 @@ op_member_access_from_pointer
 id|buf_queue
 c_func
 (paren
-id|file
+id|file-&gt;private_data
 comma
 id|fh-&gt;cap.read_buf
 )paren
@@ -14107,7 +14127,7 @@ id|RESOURCE_VIDEO
 id|videobuf_streamoff
 c_func
 (paren
-id|file
+id|file-&gt;private_data
 comma
 op_amp
 id|fh-&gt;cap
@@ -14133,7 +14153,7 @@ id|fh-&gt;cap.read_buf
 id|buffer_release
 c_func
 (paren
-id|file
+id|file-&gt;private_data
 comma
 id|fh-&gt;cap.read_buf
 )paren
@@ -14166,7 +14186,7 @@ id|fh-&gt;vbi.streaming
 id|videobuf_streamoff
 c_func
 (paren
-id|file
+id|file-&gt;private_data
 comma
 op_amp
 id|fh-&gt;vbi
@@ -14180,7 +14200,7 @@ id|fh-&gt;vbi.reading
 id|videobuf_read_stop
 c_func
 (paren
-id|file
+id|file-&gt;private_data
 comma
 op_amp
 id|fh-&gt;vbi
@@ -15372,7 +15392,7 @@ id|btv-&gt;capture
 )paren
 )paren
 (brace
-id|set-&gt;irqflags
+id|set-&gt;frame_irq
 op_assign
 l_int|1
 suffix:semicolon
@@ -15503,7 +15523,7 @@ l_int|NULL
 op_ne
 id|set-&gt;bottom
 )paren
-id|set-&gt;topirq
+id|set-&gt;top_irq
 op_assign
 l_int|2
 suffix:semicolon
@@ -15602,9 +15622,9 @@ id|set-&gt;bottom
 comma
 id|btv-&gt;screen
 comma
-id|set-&gt;irqflags
+id|set-&gt;frame_irq
 comma
-id|set-&gt;topirq
+id|set-&gt;top_irq
 )paren
 suffix:semicolon
 r_return
@@ -15998,6 +16018,10 @@ id|btv-&gt;cvbi
 op_assign
 l_int|NULL
 suffix:semicolon
+id|btv-&gt;loop_irq
+op_assign
+l_int|0
+suffix:semicolon
 id|bttv_buffer_activate_video
 c_func
 (paren
@@ -16019,8 +16043,6 @@ id|bttv_set_dma
 c_func
 (paren
 id|btv
-comma
-l_int|0
 comma
 l_int|0
 )paren
@@ -16187,7 +16209,7 @@ op_amp
 id|btv-&gt;s_lock
 )paren
 suffix:semicolon
-id|btv-&gt;curr.topirq
+id|btv-&gt;curr.top_irq
 op_assign
 l_int|0
 suffix:semicolon
@@ -16392,6 +16414,11 @@ id|btv-&gt;curr
 op_assign
 r_new
 suffix:semicolon
+id|btv-&gt;loop_irq
+op_and_assign
+op_complement
+l_int|1
+suffix:semicolon
 id|bttv_buffer_activate_video
 c_func
 (paren
@@ -16407,10 +16434,6 @@ c_func
 id|btv
 comma
 l_int|0
-comma
-r_new
-dot
-id|irqflags
 )paren
 suffix:semicolon
 multiline_comment|/* switch input */
@@ -16587,6 +16610,11 @@ id|btv-&gt;cvbi
 op_assign
 r_new
 suffix:semicolon
+id|btv-&gt;loop_irq
+op_and_assign
+op_complement
+l_int|4
+suffix:semicolon
 id|bttv_buffer_activate_vbi
 c_func
 (paren
@@ -16601,8 +16629,6 @@ c_func
 id|btv
 comma
 l_int|0
-comma
-id|btv-&gt;curr.irqflags
 )paren
 suffix:semicolon
 id|bttv_irq_wakeup_vbi
@@ -18736,7 +18762,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
 l_string|&quot;bttv%d: suspend %d&bslash;n&quot;
@@ -18778,9 +18804,17 @@ id|btv-&gt;state.vbi
 op_assign
 id|btv-&gt;cvbi
 suffix:semicolon
+id|btv-&gt;state.loop_irq
+op_assign
+id|btv-&gt;loop_irq
+suffix:semicolon
 id|btv-&gt;curr
 op_assign
 id|idle
+suffix:semicolon
+id|btv-&gt;loop_irq
+op_assign
+l_int|0
 suffix:semicolon
 id|bttv_buffer_activate_video
 c_func
@@ -18803,8 +18837,6 @@ id|bttv_set_dma
 c_func
 (paren
 id|btv
-comma
-l_int|0
 comma
 l_int|0
 )paren
@@ -18847,8 +18879,6 @@ id|pci_save_state
 c_func
 (paren
 id|pci_dev
-comma
-id|btv-&gt;state.pci_cfg
 )paren
 suffix:semicolon
 r_if
@@ -18907,7 +18937,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
 l_string|&quot;bttv%d: resume&bslash;n&quot;
@@ -18945,8 +18975,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pci_dev
-comma
-id|btv-&gt;state.pci_cfg
 )paren
 suffix:semicolon
 multiline_comment|/* restore bt878 state */
@@ -18988,6 +19016,10 @@ id|btv-&gt;cvbi
 op_assign
 id|btv-&gt;state.vbi
 suffix:semicolon
+id|btv-&gt;loop_irq
+op_assign
+id|btv-&gt;state.loop_irq
+suffix:semicolon
 id|bttv_buffer_activate_video
 c_func
 (paren
@@ -19011,8 +19043,6 @@ c_func
 id|btv
 comma
 l_int|0
-comma
-id|btv-&gt;curr.irqflags
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -19167,9 +19197,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|rc
-suffix:semicolon
 id|bttv_num
 op_assign
 l_int|0
@@ -19294,49 +19321,13 @@ op_amp
 id|bttv_sub_bus_type
 )paren
 suffix:semicolon
-id|rc
-op_assign
+r_return
 id|pci_module_init
 c_func
 (paren
 op_amp
 id|bttv_pci_driver
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_minus
-id|ENODEV
-op_eq
-id|rc
-)paren
-(brace
-multiline_comment|/* plenty of people trying to use bttv for the cx2388x ... */
-r_if
-c_cond
-(paren
-l_int|NULL
-op_ne
-id|pci_find_device
-c_func
-(paren
-l_int|0x14f1
-comma
-l_int|0x8800
-comma
-l_int|NULL
-)paren
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;bttv doesn&squot;t support your Conexant 2388x card.&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_return
-id|rc
 suffix:semicolon
 )brace
 DECL|function|bttv_cleanup_module

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/m32r/kernel/setup_m32700ut.c&n; *&n; *  Setup routines for MITSUBISHI M32700UT Board&n; *&n; *  Copyright (c) 2002 &t;Hiroyuki Kondo, Hirokazu Takata,&n; *                      Hitoshi Yamamoto, Takeo Takahashi&n; *&n; *  This file is subject to the terms and conditions of the GNU General&n; *  Public License.  See the file &quot;COPYING&quot; in the main directory of this&n; *  archive for more details.&n; *&n; *  $Id: setup_m32700ut.c,v 1.6 2003/11/27 10:18:49 takeo Exp $&n; */
+multiline_comment|/*&n; *  linux/arch/m32r/kernel/setup_m32700ut.c&n; *&n; *  Setup routines for Renesas M32700UT Board&n; *&n; *  Copyright (c) 2002 &t;Hiroyuki Kondo, Hirokazu Takata,&n; *                      Hitoshi Yamamoto, Takeo Takahashi&n; *&n; *  This file is subject to the terms and conditions of the GNU General&n; *  Public License.  See the file &quot;COPYING&quot; in the main directory of this&n; *  archive for more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1858,7 +1858,7 @@ c_func
 id|M32R_IRQ_INT2
 )paren
 suffix:semicolon
-singleline_comment|//#if defined(CONFIG_M32R_AR_VGA)
+singleline_comment|//#if defined(CONFIG_VIDEO_M32R_AR)
 multiline_comment|/*&n;&t; * INT3# is used for AR&n;&t; */
 id|irq_desc
 (braket
@@ -1914,7 +1914,7 @@ c_func
 id|M32R_IRQ_INT3
 )paren
 suffix:semicolon
-singleline_comment|//#endif&t;/* CONFIG_M32R_ARV */
+singleline_comment|//#endif&t;/* CONFIG_VIDEO_M32R_AR */
 )brace
 DECL|macro|LAN_IOSTART
 mdefine_line|#define LAN_IOSTART     0x300

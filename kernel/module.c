@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/vermagic.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/stop_machine.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
@@ -10845,6 +10846,98 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|function|module_add_driver
+r_void
+id|module_add_driver
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|mod
+comma
+r_struct
+id|device_driver
+op_star
+id|drv
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mod
+op_logical_or
+op_logical_neg
+id|drv
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mod-&gt;mkobj
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* Don&squot;t check return code; this call is idempotent */
+id|sysfs_create_link
+c_func
+(paren
+op_amp
+id|drv-&gt;kobj
+comma
+op_amp
+id|mod-&gt;mkobj-&gt;kobj
+comma
+l_string|&quot;module&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|variable|module_add_driver
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|module_add_driver
+)paren
+suffix:semicolon
+DECL|function|module_remove_driver
+r_void
+id|module_remove_driver
+c_func
+(paren
+r_struct
+id|device_driver
+op_star
+id|drv
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drv
+)paren
+r_return
+suffix:semicolon
+id|sysfs_remove_link
+c_func
+(paren
+op_amp
+id|drv-&gt;kobj
+comma
+l_string|&quot;module&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|variable|module_remove_driver
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|module_remove_driver
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_MODVERSIONS
 multiline_comment|/* Generate the signature for struct module here, too, for modversions. */
 DECL|function|struct_module

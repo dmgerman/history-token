@@ -1274,7 +1274,8 @@ id|port-&gt;number
 )paren
 suffix:semicolon
 multiline_comment|/* shutdown our bulk read */
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;read_urb
 )paren
@@ -1703,6 +1704,7 @@ id|tty
 op_assign
 id|port-&gt;tty
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; *&t;FIXME: must not do this in IRQ context,&n;&t;&t;&t; *&t;must honour TTY_DONT_FLIP&n;&t;&t;&t; */
 id|tty-&gt;ldisc
 dot
 id|receive_buf

@@ -19,11 +19,11 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/keyboard.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* (es) */
@@ -1433,33 +1433,10 @@ id|info-&gt;event
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
-id|tty-&gt;flags
-op_amp
-(paren
-l_int|1
-op_lshift
-id|TTY_DO_WRITE_WAKEUP
-)paren
-)paren
-op_logical_and
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(paren
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(paren
-id|tty
-)paren
-suffix:semicolon
-id|wake_up_interruptible
+id|tty_wakeup
 c_func
 (paren
-op_amp
-id|tty-&gt;write_wait
+id|tty
 )paren
 suffix:semicolon
 )brace
@@ -3282,31 +3259,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|wake_up_interruptible
+id|tty_wakeup
 c_func
-(paren
-op_amp
-id|tty-&gt;write_wait
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|tty-&gt;flags
-op_amp
-(paren
-l_int|1
-op_lshift
-id|TTY_DO_WRITE_WAKEUP
-)paren
-)paren
-op_logical_and
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(paren
-id|tty-&gt;ldisc.write_wakeup
-)paren
 (paren
 id|tty
 )paren
@@ -4655,14 +4609,7 @@ c_func
 id|tty
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tty-&gt;ldisc.flush_buffer
-)paren
-id|tty-&gt;ldisc
-dot
-id|flush_buffer
+id|tty_ldisc_flush
 c_func
 (paren
 id|tty
@@ -4680,6 +4627,8 @@ id|info-&gt;tty
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#warning &quot;This is not and has never been valid so fix it&quot;&t;
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -4729,6 +4678,7 @@ id|tty
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif&t;
 r_if
 c_cond
 (paren

@@ -13,9 +13,9 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 multiline_comment|/* number of characters left in xmit buffer before select has we have room */
 DECL|macro|WAKEUP_CHARS
 mdefine_line|#define WAKEUP_CHARS 256
@@ -217,7 +217,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Check whether to call the driver.unthrottle function.&n; * We test the TTY_THROTTLED bit first so that it always&n; * indicates the current state.&n; */
+multiline_comment|/**&n; *&t;check_unthrottle&t;-&t;allow new receive data&n; *&t;@tty; tty device&n; *&n; *&t;Check whether to call the driver.unthrottle function.&n; *&t;We test the TTY_THROTTLED bit first so that it always&n; *&t;indicates the current state. The decision about whether&n; *&t;it is worth allowing more input has been taken by the caller.&n; *&t;Can sleep, may be called under the atomic_read semaphore but&n; *&t;this is not guaranteed.&n; */
 DECL|function|check_unthrottle
 r_static
 r_void
@@ -255,7 +255,7 @@ id|tty
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Reset the read buffer counters, clear the flags, &n; * and make sure the driver is unthrottled. Called&n; * from n_tty_open() and n_tty_flush_buffer().&n; */
+multiline_comment|/**&n; *&t;reset_buffer_flags&t;-&t;reset buffer state&n; *&t;@tty: terminal to reset&n; *&n; *&t;Reset the read buffer counters, clear the flags, &n; *&t;and make sure the driver is unthrottled. Called&n; *&t;from n_tty_open() and n_tty_flush_buffer().&n; */
 DECL|function|reset_buffer_flags
 r_static
 r_void
@@ -325,7 +325,7 @@ id|tty
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Flush the input buffer&n; */
+multiline_comment|/**&n; *&t;n_tty_flush_buffer&t;-&t;clean input queue&n; *&t;@tty:&t;terminal device&n; *&n; *&t;Flush the input buffer. Called when the line discipline is&n; *&t;being closed, when the tty layer wants the buffer flushed (eg&n; *&t;at hangup) or when the N_TTY line discipline internally has to&n; *&t;clean the pending queue (for example some signals).&n; *&n; *&t;FIXME: tty-&gt;ctrl_status is not spinlocked and relies on&n; *&t;lock_kernel() still.&n; */
 DECL|function|n_tty_flush_buffer
 r_void
 id|n_tty_flush_buffer
@@ -371,7 +371,7 @@ id|tty-&gt;link-&gt;read_wait
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Return number of characters buffered to be delivered to user&n; */
+multiline_comment|/**&n; *&t;n_tty_chars_in_buffer&t;-&t;report available bytes&n; *&t;@tty: tty device&n; *&n; *&t;Report the number of characters buffered to be delivered to user&n; *&t;at this instant in time. &n; */
 DECL|function|n_tty_chars_in_buffer
 id|ssize_t
 id|n_tty_chars_in_buffer
@@ -455,6 +455,7 @@ r_return
 id|n
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;is_utf8_continuation&t;-&t;utf8 multibyte check&n; *&t;@c: byte to check&n; *&n; *&t;Returns true if the utf8 character &squot;c&squot; is a multibyte continuation&n; *&t;character. We use this to correctly compute the on screen size&n; *&t;of the character when printing&n; */
 DECL|function|is_utf8_continuation
 r_static
 r_inline
@@ -477,6 +478,7 @@ op_eq
 l_int|0x80
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;is_continuation&t;&t;-&t;multibyte check&n; *&t;@c: byte to check&n; *&n; *&t;Returns true if the utf8 character &squot;c&squot; is a multibyte continuation&n; *&t;character and the terminal is in unicode mode.&n; */
 DECL|function|is_continuation
 r_static
 r_inline
@@ -508,7 +510,7 @@ id|c
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Perform OPOST processing.  Returns -1 when the output device is&n; * full and the character must be retried.&n; */
+multiline_comment|/**&n; *&t;opost&t;&t;&t;-&t;output post processor&n; *&t;@c: character (or partial unicode symbol)&n; *&t;@tty: terminal device&n; *&n; *&t;Perform OPOST processing.  Returns -1 when the output device is&n; *&t;full and the character must be retried. Note that Linux currently&n; *&t;ignores TABDLY, CRDLY, VTDLY, FFDLY and NLDLY. They simply aren&squot;t&n; *&t;relevant in the world today. If you ever need them, add them here.&n; *&n; *&t;Called from both the receive and transmit sides and can be called&n; *&t;re-entrantly. Relies on lock_kernel() still.&n; */
 DECL|function|opost
 r_static
 r_int
@@ -823,7 +825,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * opost_block --- to speed up block console writes, among other&n; * things.&n; */
+multiline_comment|/**&n; *&t;opost_block&t;&t;-&t;block postprocess&n; *&t;@tty: terminal device&n; *&t;@inbuf: user buffer&n; *&t;@nr: number of bytes&n; *&n; *&t;This path is used to speed up block console writes, among other&n; *&t;things when processing blocks of output data. It handles only&n; *&t;the simple cases normally found and helps to generate blocks of&n; *&t;symbols for the console driver and thus improve performance.&n; *&n; *&t;Called from write_chan under the tty layer write lock.&n; */
 DECL|function|opost_block
 r_static
 id|ssize_t
@@ -1147,6 +1149,7 @@ r_return
 id|i
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;put_char&t;-&t;write character to driver&n; *&t;@c: character (or part of unicode symbol)&n; *&t;@tty: terminal device&n; *&n; *&t;Queue a byte to the driver layer for output&n; */
 DECL|function|put_char
 r_static
 r_inline
@@ -1175,7 +1178,7 @@ id|c
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Must be called only when L_ECHO(tty) is true. */
+multiline_comment|/**&n; *&t;echo_char&t;-&t;echo characters&n; *&t;@c: unicode byte to echo&n; *&t;@tty: terminal device&n; *&n; *&t;Echo user input back onto the screen. This must be called only when &n; *&t;L_ECHO(tty) is true. Called from the driver receive_buf path.&n; */
 DECL|function|echo_char
 r_static
 r_void
@@ -1281,6 +1284,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; *&t;eraser&t;&t;-&t;handle erase function&n; *&t;@c: character input&n; *&t;@tty: terminal device&n; *&n; *&t;Perform erase and neccessary output when an erase character is&n; *&t;present in the stream from the driver layer. Handles the complexities&n; *&t;of UTF-8 multibyte symbols.&n; */
 DECL|function|eraser
 r_static
 r_void
@@ -2068,6 +2072,7 @@ id|tty
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;isig&t;&t;-&t;handle the ISIG optio&n; *&t;@sig: signal&n; *&t;@tty: terminal&n; *&t;@flush: force flush&n; *&n; *&t;Called when a signal is being sent due to terminal input. This&n; *&t;may caus terminal flushing to take place according to the termios&n; *&t;settings and character used. Called from the driver receive_buf&n; *&t;path so serialized.&n; */
 DECL|function|isig
 r_static
 r_inline
@@ -2138,6 +2143,7 @@ id|tty
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; *&t;n_tty_receive_break&t;-&t;handle break&n; *&t;@tty: terminal&n; *&n; *&t;An RS232 break event has been hit in the incoming bitstream. This&n; *&t;can cause a variety of events depending upon the termios settings.&n; *&n; *&t;Called from the receive_buf path so single threaded.&n; */
 DECL|function|n_tty_receive_break
 r_static
 r_inline
@@ -2228,6 +2234,7 @@ id|tty-&gt;read_wait
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;n_tty_receive_overrun&t;-&t;handle overrun reporting&n; *&t;@tty: terminal&n; *&n; *&t;Data arrived faster than we could process it. While the tty&n; *&t;driver has flagged this the bits that were missed are gone&n; *&t;forever.&n; *&n; *&t;Called from the receive_buf path so single threaded. Does not&n; *&t;need locking as num_overrun and overrun_time are function&n; *&t;private.&n; */
 DECL|function|n_tty_receive_overrun
 r_static
 r_inline
@@ -2267,6 +2274,7 @@ id|HZ
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: %d input overrun(s)&bslash;n&quot;
 comma
 id|tty_name
@@ -2290,6 +2298,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; *&t;n_tty_receive_parity_error&t;-&t;error notifier&n; *&t;@tty: terminal device&n; *&t;@c: character&n; *&n; *&t;Process a parity error and queue the right data to indicate&n; *&t;the error case if neccessary. Locking as per n_tty_receive_buf.&n; */
 DECL|function|n_tty_receive_parity_error
 r_static
 r_inline
@@ -2390,6 +2399,7 @@ id|tty-&gt;read_wait
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;n_tty_receive_char&t;-&t;perform processing&n; *&t;@tty: terminal device&n; *&t;@c: character&n; *&n; *&t;Process an individual character of input received from the driver.&n; *&t;This is serialized with respect to itself by the rules for the &n; *&t;driver above.&n; */
 DECL|function|n_tty_receive_char
 r_static
 r_inline
@@ -3449,6 +3459,7 @@ id|tty
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;n_tty_receive_room&t;-&t;receive space&n; *&t;@tty: terminal&n; *&n; *&t;Called by the driver to find out how much data it is&n; *&t;permitted to feed to the line discipline without any being lost&n; *&t;and thus to manage flow control. Not serialized. Answers for the&n; *&t;&quot;instant&quot;.&n; */
 DECL|function|n_tty_receive_room
 r_static
 r_int
@@ -3496,7 +3507,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Required for the ptys, serial driver etc. since processes&n; * that attach themselves to the master and rely on ASYNC&n; * IO must be woken up&n; */
+multiline_comment|/**&n; *&t;n_tty_write_wakeup&t;-&t;asynchronous I/O notifier&n; *&t;@tty: tty device&n; *&n; *&t;Required for the ptys, serial driver etc. since processes&n; *&t;that attach themselves to the master and rely on ASYNC&n; *&t;IO must be woken up&n; */
 DECL|function|n_tty_write_wakeup
 r_static
 r_void
@@ -3539,6 +3550,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;n_tty_receive_buf&t;-&t;data receive&n; *&t;@tty: terminal device&n; *&t;@cp: buffer&n; *&t;@fp: flag buffer&n; *&t;@count: characters&n; *&n; *&t;Called by the terminal driver when a block of characters has&n; *&t;been received. This function must be called from soft contexts&n; *&t;not from interrupt context. The driver is responsible for making&n; *&t;calls one at a time and in order (or using flush_to_ldisc)&n; */
 DECL|function|n_tty_receive_buf
 r_static
 r_void
@@ -3986,6 +3998,7 @@ id|SIG_IGN
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;n_tty_set_termios&t;-&t;termios data changed&n; *&t;@tty: terminal&n; *&t;@old: previous data&n; *&n; *&t;Called by the tty layer when the user changes termios flags so&n; *&t;that the line discipline can plan ahead. This function cannot sleep&n; *&t;and is protected from re-entry by the tty layer. The user is &n; *&t;guaranteed that this function will not be re-entered or in progress&n; *&t;when the ldisc is closed.&n; */
 DECL|function|n_tty_set_termios
 r_static
 r_void
@@ -4111,12 +4124,6 @@ id|tty
 )paren
 )paren
 (brace
-id|local_irq_disable
-c_func
-(paren
-)paren
-suffix:semicolon
-singleline_comment|// FIXME: is this safe?
 id|memset
 c_func
 (paren
@@ -4394,12 +4401,6 @@ comma
 id|tty-&gt;process_char_map
 )paren
 suffix:semicolon
-id|local_irq_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-singleline_comment|// FIXME: is this safe?
 id|tty-&gt;raw
 op_assign
 l_int|0
@@ -4474,6 +4475,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; *&t;n_tty_close&t;&t;-&t;close the ldisc for this tty&n; *&t;@tty: device&n; *&n; *&t;Called from the terminal layer when this line discipline is &n; *&t;being shut down, either because of a close or becsuse of a &n; *&t;discipline change. The function will not be called while other&n; *&t;ldisc methods are in progress.&n; */
 DECL|function|n_tty_close
 r_static
 r_void
@@ -4510,6 +4512,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; *&t;n_tty_open&t;&t;-&t;open an ldisc&n; *&t;@tty: terminal to open&n; *&n; *&t;Called when this line discipline is being attached to the &n; *&t;terminal device. Can sleep. Called serialized so that no&n; *&t;other events will occur in parallel. No further open will occur&n; *&t;until a close.&n; */
 DECL|function|n_tty_open
 r_static
 r_int
@@ -4532,6 +4535,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+multiline_comment|/* This one is ugly. Currently a malloc failure here can panic */
 r_if
 c_cond
 (paren
@@ -4650,7 +4654,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Helper function to speed up read_chan.  It is only called when&n; * ICANON is off; it copies characters straight from the tty queue to&n; * user space directly.  It can be profitably called twice; once to&n; * drain the space from the tail pointer to the (physical) end of the&n; * buffer, and once to drain the space from the (physical) beginning of&n; * the buffer to head pointer.&n; */
+multiline_comment|/**&n; * &t;copy_from_read_buf&t;-&t;copy read data directly&n; *&t;@tty: terminal device&n; *&t;@b: user data&n; *&t;@nr: size of data&n; *&n; *&t;Helper function to speed up read_chan.  It is only called when&n; *&t;ICANON is off; it copies characters straight from the tty queue to&n; *&t;user space directly.  It can be profitably called twice; once to&n; *&t;drain the space from the tail pointer to the (physical) end of the&n; *&t;buffer, and once to drain the space from the (physical) beginning of&n; *&t;the buffer to head pointer.&n; *&n; *&t;Called under the tty-&gt;atomic_read sem and with TTY_DONT_FLIP set&n; *&n; */
 DECL|function|copy_from_read_buf
 r_static
 r_inline
@@ -4835,6 +4839,113 @@ id|loff_t
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/**&n; *&t;job_control&t;&t;-&t;check job control&n; *&t;@tty: tty&n; *&t;@file: file handle&n; *&n; *&t;Perform job control management checks on this file/tty descriptor&n; *&t;and if appropriate send any needed signals and return a negative &n; *&t;error code if action should be taken.&n; */
+DECL|function|job_control
+r_static
+r_int
+id|job_control
+c_func
+(paren
+r_struct
+id|tty_struct
+op_star
+id|tty
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+(brace
+multiline_comment|/* Job control check -- must be done at start and after&n;&t;   every sleep (POSIX.1 7.1.1.4). */
+multiline_comment|/* NOTE: not yet done after every sleep pending a thorough&n;&t;   check of the logic of this change. -- jlc */
+multiline_comment|/* don&squot;t stop on /dev/console */
+r_if
+c_cond
+(paren
+id|file-&gt;f_op-&gt;write
+op_ne
+id|redirected_tty_write
+op_logical_and
+id|current-&gt;signal-&gt;tty
+op_eq
+id|tty
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|tty-&gt;pgrp
+op_le
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;read_chan: tty-&gt;pgrp &lt;= 0!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|process_group
+c_func
+(paren
+id|current
+)paren
+op_ne
+id|tty-&gt;pgrp
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|is_ignored
+c_func
+(paren
+id|SIGTTIN
+)paren
+op_logical_or
+id|is_orphaned_pgrp
+c_func
+(paren
+id|process_group
+c_func
+(paren
+id|current
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+id|kill_pg
+c_func
+(paren
+id|process_group
+c_func
+(paren
+id|current
+)paren
+comma
+id|SIGTTIN
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ERESTARTSYS
+suffix:semicolon
+)brace
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/**&n; *&t;read_chan&t;&t;-&t;read function for tty&n; *&t;@tty: tty device&n; *&t;@file: file object&n; *&t;@buf: userspace buffer pointer&n; *&t;@nr: size of I/O&n; *&n; *&t;Perform reads for the line discipline. We are guaranteed that the&n; *&t;line discipline will not be closed under us but we may get multiple&n; *&t;parallel readers and must handle this ourselves. We may also get&n; *&t;a hangup. Always called in user context, may sleep.&n; *&n; *&t;This code must be sure never to sleep through a hangup.&n; */
 DECL|function|read_chan
 r_static
 id|ssize_t
@@ -4920,89 +5031,27 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/* Job control check -- must be done at start and after&n;&t;   every sleep (POSIX.1 7.1.1.4). */
-multiline_comment|/* NOTE: not yet done after every sleep pending a thorough&n;&t;   check of the logic of this change. -- jlc */
-multiline_comment|/* don&squot;t stop on /dev/console */
-r_if
-c_cond
+id|c
+op_assign
+id|job_control
+c_func
 (paren
-id|file-&gt;f_op-&gt;write
-op_ne
-id|redirected_tty_write
-op_logical_and
-id|current-&gt;signal-&gt;tty
-op_eq
 id|tty
+comma
+id|file
 )paren
-(brace
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;pgrp
-op_le
+id|c
+OL
 l_int|0
 )paren
-id|printk
-c_func
-(paren
-l_string|&quot;read_chan: tty-&gt;pgrp &lt;= 0!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|process_group
-c_func
-(paren
-id|current
-)paren
-op_ne
-id|tty-&gt;pgrp
-)paren
 (brace
-r_if
-c_cond
-(paren
-id|is_ignored
-c_func
-(paren
-id|SIGTTIN
-)paren
-op_logical_or
-id|is_orphaned_pgrp
-c_func
-(paren
-id|process_group
-c_func
-(paren
-id|current
-)paren
-)paren
-)paren
 r_return
-op_minus
-id|EIO
+id|c
 suffix:semicolon
-id|kill_pg
-c_func
-(paren
-id|process_group
-c_func
-(paren
-id|current
-)paren
-comma
-id|SIGTTIN
-comma
-l_int|1
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ERESTARTSYS
-suffix:semicolon
-)brace
 )brace
 id|minimum
 op_assign
@@ -5110,6 +5159,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n;&t; *&t;Internal serialization of reads.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5780,6 +5830,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;write_chan&t;&t;-&t;write function for tty&n; *&t;@tty: tty device&n; *&t;@file: file object&n; *&t;@buf: userspace buffer pointer&n; *&t;@nr: size of I/O&n; *&n; *&t;Write function of the terminal device. This is serialized with&n; *&t;respect to other write callers but not to termios changes, reads&n; *&t;and other such events. We must be careful with N_TTY as the receive&n; *&t;code will echo characters, thus calling driver write methods.&n; *&n; *&t;This code must be sure never to sleep through a hangup.&n; */
 DECL|function|write_chan
 r_static
 id|ssize_t
@@ -6165,7 +6216,7 @@ suffix:colon
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* Called without the kernel lock held - fine */
+multiline_comment|/**&n; *&t;normal_poll&t;&t;-&t;poll method for N_TTY&n; *&t;@tty: terminal device&n; *&t;@file: file accessing it&n; *&t;@wait: poll table&n; *&n; *&t;Called when the line discipline is asked to poll() for data or&n; *&t;for special events. This code is not serialized with respect to&n; *&t;other events save open/close.&n; *&n; *&t;This code must be sure never to sleep through a hangup.&n; *&t;Called without the kernel lock held - fine&n; *&n; *&t;FIXME: if someone changes the VMIN or discipline settings for the&n; *&t;terminal while another process is in poll() the poll does not&n; *&t;recompute the new limits. Possibly set_termios should issue&n; *&t;a read wakeup to fix this bug.&n; */
 DECL|function|normal_poll
 r_static
 r_int
@@ -6405,6 +6456,9 @@ multiline_comment|/* set_termios */
 id|normal_poll
 comma
 multiline_comment|/* poll */
+l_int|NULL
+comma
+multiline_comment|/* hangup */
 id|n_tty_receive_buf
 comma
 multiline_comment|/* receive_buf */

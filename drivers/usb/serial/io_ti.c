@@ -861,7 +861,7 @@ suffix:semicolon
 id|__u8
 id|read_length
 suffix:semicolon
-id|__u16
+id|__be16
 id|be_start_address
 suffix:semicolon
 id|dbg
@@ -1366,7 +1366,7 @@ suffix:semicolon
 r_int
 id|write_length
 suffix:semicolon
-id|__u16
+id|__be16
 id|be_start_address
 suffix:semicolon
 multiline_comment|/* We can only send a maximum of 1 aligned byte page at a time */
@@ -6839,36 +6839,10 @@ id|tty
 )paren
 (brace
 multiline_comment|/* let the tty driver wakeup if it has a special write_wakeup function */
-r_if
-c_cond
-(paren
-(paren
-id|tty-&gt;flags
-op_amp
-(paren
-l_int|1
-op_lshift
-id|TTY_DO_WRITE_WAKEUP
-)paren
-)paren
-op_logical_and
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(brace
-(paren
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(paren
-id|tty
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* tell the tty driver that something has changed */
-id|wake_up_interruptible
+id|tty_wakeup
 c_func
 (paren
-op_amp
-id|tty-&gt;write_wait
+id|tty
 )paren
 suffix:semicolon
 )brace
@@ -7527,7 +7501,8 @@ id|TIChasePort
 id|edge_port
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;read_urb
 )paren
@@ -7583,7 +7558,8 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* last port is now closed, let&squot;s shut down our interrupt urb */
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;serial-&gt;port
 (braket
@@ -8171,7 +8147,8 @@ id|edge_port
 )paren
 suffix:semicolon
 )brace
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;read_urb
 )paren

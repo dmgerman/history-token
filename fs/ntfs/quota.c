@@ -1,8 +1,9 @@
 multiline_comment|/*&n; * quota.c - NTFS kernel quota ($Quota) handling.  Part of the Linux-NTFS&n; *&t;     project.&n; *&n; * Copyright (c) 2004 Anton Altaparmakov&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS&n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifdef NTFS_RW
-macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;index.h&quot;
 macro_line|#include &quot;quota.h&quot;
+macro_line|#include &quot;debug.h&quot;
+macro_line|#include &quot;ntfs.h&quot;
 multiline_comment|/**&n; * ntfs_mark_quotas_out_of_date - mark the quotas out of date on an ntfs volume&n; * @vol:&t;ntfs volume on which to mark the quotas out of date&n; *&n; * Mark the quotas out of date on the ntfs volume @vol and return TRUE on&n; * success and FALSE on error.&n; */
 DECL|function|ntfs_mark_quotas_out_of_date
 id|BOOL
@@ -23,7 +24,7 @@ op_star
 id|qce
 suffix:semicolon
 r_const
-id|u32
+id|le32
 id|qid
 op_assign
 id|QUOTA_DEFAULTS_ID

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * net/sched/cls_api.c&t;Packet classifier API.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; * Changes:&n; *&n; * Eduardo J. Blanco &lt;ejbs@netlabs.com.uy&gt; :990222: kmod support&n; *&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -494,8 +494,6 @@ suffix:semicolon
 r_int
 r_int
 id|fh
-comma
-id|fh_s
 suffix:semicolon
 r_int
 id|err
@@ -992,7 +990,21 @@ c_func
 (paren
 id|tp_ops-&gt;owner
 )paren
-op_logical_or
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|tp
+)paren
+suffix:semicolon
+r_goto
+id|errout
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 (paren
 id|err
 op_assign
@@ -1008,6 +1020,12 @@ op_ne
 l_int|0
 )paren
 (brace
+id|module_put
+c_func
+(paren
+id|tp_ops-&gt;owner
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -1068,8 +1086,6 @@ id|tp-&gt;ops-&gt;kind
 r_goto
 id|errout
 suffix:semicolon
-id|fh_s
-op_assign
 id|fh
 op_assign
 id|tp-&gt;ops
@@ -1128,7 +1144,7 @@ id|n
 comma
 id|tp
 comma
-id|fh_s
+id|fh
 comma
 id|RTM_DELTFILTER
 )paren
@@ -1228,7 +1244,7 @@ id|n
 comma
 id|tp
 comma
-id|fh_s
+id|fh
 comma
 id|RTM_DELTFILTER
 )paren

@@ -166,7 +166,7 @@ r_int
 id|off
 )paren
 (brace
-id|u16
+id|__be16
 id|data
 suffix:semicolon
 singleline_comment|// optimize later...
@@ -223,11 +223,7 @@ l_int|1
 )paren
 suffix:semicolon
 r_return
-id|be16_to_cpu
-c_func
-(paren
 id|data
-)paren
 suffix:semicolon
 )brace
 DECL|function|hfs_bnode_read_key
@@ -476,7 +472,8 @@ id|u16
 id|data
 )paren
 (brace
-id|data
+id|__be16
+id|v
 op_assign
 id|cpu_to_be16
 c_func
@@ -491,7 +488,7 @@ c_func
 id|node
 comma
 op_amp
-id|data
+id|v
 comma
 id|off
 comma
@@ -1754,7 +1751,7 @@ r_struct
 id|hfs_bnode_desc
 id|desc
 suffix:semicolon
-id|u32
+id|__be32
 id|cnid
 suffix:semicolon
 r_int
@@ -2014,7 +2011,7 @@ id|hfs_bnode
 op_star
 id|tmp
 suffix:semicolon
-id|u32
+id|__be32
 id|cnid
 suffix:semicolon
 id|tree

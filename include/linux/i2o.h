@@ -10,7 +10,7 @@ mdefine_line|#define I2O_MAX_DRIVERS&t;&t;4
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;&t;/* Needed for MUTEX init macros */
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;asm/dma-mapping.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 multiline_comment|/* message queue empty */
 DECL|macro|I2O_QUEUE_EMPTY
 mdefine_line|#define I2O_QUEUE_EMPTY&t;&t;0xffffffff
@@ -383,12 +383,14 @@ suffix:semicolon
 multiline_comment|/* PCI device */
 DECL|member|short_req
 r_int
+r_int
 id|short_req
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* use small block sizes */
 DECL|member|no_quiesce
+r_int
 r_int
 id|no_quiesce
 suffix:colon
@@ -397,12 +399,14 @@ suffix:semicolon
 multiline_comment|/* dont quiesce before reset */
 DECL|member|raptor
 r_int
+r_int
 id|raptor
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* split bar */
 DECL|member|promise
+r_int
 r_int
 id|promise
 suffix:colon
@@ -517,6 +521,7 @@ suffix:semicolon
 multiline_comment|/* outbound message queue IOP-&gt;Host */
 DECL|member|battery
 r_int
+r_int
 id|battery
 suffix:colon
 l_int|1
@@ -524,12 +529,14 @@ suffix:semicolon
 multiline_comment|/* Has a battery backup */
 DECL|member|io_alloc
 r_int
+r_int
 id|io_alloc
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* An I/O resource was allocated */
 DECL|member|mem_alloc
+r_int
 r_int
 id|mem_alloc
 suffix:colon
@@ -1782,6 +1789,83 @@ id|c
 comma
 id|m
 )paren
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/**&n; *&t;i2o_out_to_virt - Turn an I2O message to a virtual address&n; *&t;@c: controller&n; *&t;@m: message engine value&n; *&n; *&t;Turn a receive message from an I2O controller bus address into&n; *&t;a Linux virtual address. The shared page frame is a linear block&n; *&t;so we simply have to shift the offset. This function does not&n; *&t;work for sender side messages as they are ioremap objects&n; *&t;provided by the I2O controller.&n; */
+DECL|function|i2o_msg_out_to_virt
+r_static
+r_inline
+r_struct
+id|i2o_message
+op_star
+id|i2o_msg_out_to_virt
+c_func
+(paren
+r_struct
+id|i2o_controller
+op_star
+id|c
+comma
+id|u32
+id|m
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|unlikely
+(paren
+id|m
+OL
+id|c-&gt;out_queue.phys
+op_logical_or
+id|m
+op_ge
+id|c-&gt;out_queue.phys
+op_plus
+id|c-&gt;out_queue.len
+)paren
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|c-&gt;out_queue.virt
+op_plus
+(paren
+id|m
+op_minus
+id|c-&gt;out_queue.phys
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/**&n; *&t;i2o_msg_in_to_virt - Turn an I2O message to a virtual address&n; *&t;@c: controller&n; *&t;@m: message engine value&n; *&n; *&t;Turn a send message from an I2O controller bus address into&n; *&t;a Linux virtual address. The shared page frame is a linear block&n; *&t;so we simply have to shift the offset. This function does not&n; *&t;work for receive side messages as they are kmalloc objects&n; *&t;in a different pool.&n; */
+DECL|function|i2o_msg_in_to_virt
+r_static
+r_inline
+r_struct
+id|i2o_message
+op_star
+id|i2o_msg_in_to_virt
+c_func
+(paren
+r_struct
+id|i2o_controller
+op_star
+id|c
+comma
+id|u32
+id|m
+)paren
+(brace
+r_return
+id|c-&gt;in_queue.virt
+op_plus
+id|m
 suffix:semicolon
 )brace
 suffix:semicolon

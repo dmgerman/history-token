@@ -862,21 +862,13 @@ op_div
 l_int|10
 )paren
 (brace
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 )paren
 multiline_comment|/* 100ms */
@@ -3671,7 +3663,7 @@ op_assign
 id|ORB_SET_FUNCTION
 c_func
 (paren
-id|QUERY_LOGINS_REQUEST
+id|SBP2_QUERY_LOGINS_REQUEST
 )paren
 suffix:semicolon
 id|scsi_id-&gt;query_logins_orb-&gt;lun_misc
@@ -4165,7 +4157,7 @@ op_assign
 id|ORB_SET_FUNCTION
 c_func
 (paren
-id|LOGIN_REQUEST
+id|SBP2_LOGIN_REQUEST
 )paren
 suffix:semicolon
 id|scsi_id-&gt;login_orb-&gt;lun_misc
@@ -4624,7 +4616,7 @@ op_assign
 id|ORB_SET_FUNCTION
 c_func
 (paren
-id|LOGOUT_REQUEST
+id|SBP2_LOGOUT_REQUEST
 )paren
 suffix:semicolon
 id|scsi_id-&gt;logout_orb-&gt;login_ID_misc
@@ -4841,7 +4833,7 @@ op_assign
 id|ORB_SET_FUNCTION
 c_func
 (paren
-id|RECONNECT_REQUEST
+id|SBP2_RECONNECT_REQUEST
 )paren
 suffix:semicolon
 id|scsi_id-&gt;reconnect_orb-&gt;login_ID_misc

@@ -26,7 +26,7 @@ DECL|macro|segment_eq
 mdefine_line|#define segment_eq(a, b)&t;((a).seg == (b).seg)
 multiline_comment|/*&n; * When accessing user memory, we need to make sure the entire area really is in&n; * user-level space.  In order to do this efficiently, we make sure that the page at&n; * address TASK_SIZE is never valid.  We also need to make sure that the address doesn&squot;t&n; * point inside the virtually mapped linear page table.&n; */
 DECL|macro|__access_ok
-mdefine_line|#define __access_ok(addr, size, segment)&t;&t;&t;&t;&t;&bslash;&n;&t;(likely((unsigned long) (addr) &lt;= (segment).seg)&t;&t;&t;&bslash;&n;&t; &amp;&amp; ((segment).seg == KERNEL_DS.seg&t;&t;&t;&t;&t;&bslash;&n;&t;     || likely(REGION_OFFSET((unsigned long) (addr)) &lt; RGN_MAP_LIMIT)))
+mdefine_line|#define __access_ok(addr, size, segment)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__chk_user_ptr(addr);&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(likely((unsigned long) (addr) &lt;= (segment).seg)&t;&t;&t;&t;&bslash;&n;&t; &amp;&amp; ((segment).seg == KERNEL_DS.seg&t;&t;&t;&t;&t;&t;&bslash;&n;&t;     || likely(REGION_OFFSET((unsigned long) (addr)) &lt; RGN_MAP_LIMIT)));&t;&bslash;&n;})
 DECL|macro|access_ok
 mdefine_line|#define access_ok(type, addr, size)&t;__access_ok((addr), (size), get_fs())
 r_static
@@ -40,6 +40,7 @@ id|type
 comma
 r_const
 r_void
+id|__user
 op_star
 id|addr
 comma
@@ -236,7 +237,7 @@ r_void
 suffix:semicolon
 multiline_comment|/*&n; * Evaluating arguments X, PTR, SIZE, and SEGMENT may involve subroutine-calls, which&n; * could clobber r8 and r9 (among others).  Thus, be careful not to evaluate it while&n; * using r8/r9.&n; */
 DECL|macro|__do_get_user
-mdefine_line|#define __do_get_user(check, x, ptr, size, segment)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const __typeof__(*(ptr)) *__gu_ptr = (ptr);&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__ (size) __gu_size = (size);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __gu_err = -EFAULT, __gu_val = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!check || __access_ok((long) __gu_ptr, size, segment))&t;&t;&t;&bslash;&n;&t;&t;switch (__gu_size) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;      case 1: __get_user_size(__gu_val, __gu_ptr, 1, __gu_err); break;&t;&bslash;&n;&t;&t;      case 2: __get_user_size(__gu_val, __gu_ptr, 2, __gu_err); break;&t;&bslash;&n;&t;&t;      case 4: __get_user_size(__gu_val, __gu_ptr, 4, __gu_err); break;&t;&bslash;&n;&t;&t;      case 8: __get_user_size(__gu_val, __gu_ptr, 8, __gu_err); break;&t;&bslash;&n;&t;&t;      default: __get_user_unknown(); break;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = (__typeof__(*(__gu_ptr))) __gu_val;&t;&t;&t;&t;&t;&bslash;&n;&t;__gu_err;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __do_get_user(check, x, ptr, size, segment)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const __typeof__(*(ptr)) __user *__gu_ptr = (ptr);&t;&t;&t;&t;&bslash;&n;&t;__typeof__ (size) __gu_size = (size);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __gu_err = -EFAULT, __gu_val = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!check || __access_ok(__gu_ptr, size, segment))&t;&t;&t;&t;&bslash;&n;&t;&t;switch (__gu_size) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;      case 1: __get_user_size(__gu_val, __gu_ptr, 1, __gu_err); break;&t;&bslash;&n;&t;&t;      case 2: __get_user_size(__gu_val, __gu_ptr, 2, __gu_err); break;&t;&bslash;&n;&t;&t;      case 4: __get_user_size(__gu_val, __gu_ptr, 4, __gu_err); break;&t;&bslash;&n;&t;&t;      case 8: __get_user_size(__gu_val, __gu_ptr, 8, __gu_err); break;&t;&bslash;&n;&t;&t;      default: __get_user_unknown(); break;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = (__typeof__(*(__gu_ptr))) __gu_val;&t;&t;&t;&t;&t;&bslash;&n;&t;__gu_err;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__get_user_nocheck
 mdefine_line|#define __get_user_nocheck(x, ptr, size)&t;__do_get_user(0, x, ptr, size, KERNEL_DS)
 DECL|macro|__get_user_check
@@ -250,7 +251,7 @@ r_void
 suffix:semicolon
 multiline_comment|/*&n; * Evaluating arguments X, PTR, SIZE, and SEGMENT may involve subroutine-calls, which&n; * could clobber r8 (among others).  Thus, be careful not to evaluate them while using r8.&n; */
 DECL|macro|__do_put_user
-mdefine_line|#define __do_put_user(check, x, ptr, size, segment)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__ (x) __pu_x = (x);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__ (*(ptr)) *__pu_ptr = (ptr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__ (size) __pu_size = (size);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __pu_err = -EFAULT;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!check || __access_ok((long) __pu_ptr, __pu_size, segment))&t;&t;&t;&bslash;&n;&t;&t;switch (__pu_size) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;      case 1: __put_user_size(__pu_x, __pu_ptr, 1, __pu_err); break;&t;&bslash;&n;&t;&t;      case 2: __put_user_size(__pu_x, __pu_ptr, 2, __pu_err); break;&t;&bslash;&n;&t;&t;      case 4: __put_user_size(__pu_x, __pu_ptr, 4, __pu_err); break;&t;&bslash;&n;&t;&t;      case 8: __put_user_size(__pu_x, __pu_ptr, 8, __pu_err); break;&t;&bslash;&n;&t;&t;      default: __put_user_unknown(); break;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __do_put_user(check, x, ptr, size, segment)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__ (x) __pu_x = (x);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__ (*(ptr)) __user *__pu_ptr = (ptr);&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__ (size) __pu_size = (size);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __pu_err = -EFAULT;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!check || __access_ok(__pu_ptr, __pu_size, segment))&t;&t;&t;&bslash;&n;&t;&t;switch (__pu_size) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;      case 1: __put_user_size(__pu_x, __pu_ptr, 1, __pu_err); break;&t;&bslash;&n;&t;&t;      case 2: __put_user_size(__pu_x, __pu_ptr, 2, __pu_err); break;&t;&bslash;&n;&t;&t;      case 4: __put_user_size(__pu_x, __pu_ptr, 4, __pu_err); break;&t;&bslash;&n;&t;&t;      case 8: __put_user_size(__pu_x, __pu_ptr, 8, __pu_err); break;&t;&bslash;&n;&t;&t;      default: __put_user_unknown(); break;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__put_user_nocheck
 mdefine_line|#define __put_user_nocheck(x, ptr, size)&t;__do_put_user(0, x, ptr, size, KERNEL_DS)
 DECL|macro|__put_user_check
@@ -259,9 +260,34 @@ multiline_comment|/*&n; * Complex access routines&n; */
 r_extern
 r_int
 r_int
+id|__must_check
 id|__copy_user
 (paren
 r_void
+id|__user
+op_star
+id|to
+comma
+r_const
+r_void
+id|__user
+op_star
+id|from
+comma
+r_int
+r_int
+id|count
+)paren
+suffix:semicolon
+r_static
+r_inline
+r_int
+r_int
+DECL|function|__copy_to_user
+id|__copy_to_user
+(paren
+r_void
+id|__user
 op_star
 id|to
 comma
@@ -274,21 +300,71 @@ r_int
 r_int
 id|count
 )paren
+(brace
+r_return
+id|__copy_user
+c_func
+(paren
+id|to
+comma
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|from
+comma
+id|count
+)paren
 suffix:semicolon
-DECL|macro|__copy_to_user
-mdefine_line|#define __copy_to_user(to, from, n)&t;__copy_user((to), (from), (n))
-DECL|macro|__copy_from_user
-mdefine_line|#define __copy_from_user(to, from, n)&t;__copy_user((to), (from), (n))
+)brace
+r_static
+r_inline
+r_int
+r_int
+DECL|function|__copy_from_user
+id|__copy_from_user
+(paren
+r_void
+op_star
+id|to
+comma
+r_const
+r_void
+id|__user
+op_star
+id|from
+comma
+r_int
+r_int
+id|count
+)paren
+(brace
+r_return
+id|__copy_user
+c_func
+(paren
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|to
+comma
+id|from
+comma
+id|count
+)paren
+suffix:semicolon
+)brace
 DECL|macro|__copy_to_user_inatomic
-mdefine_line|#define __copy_to_user_inatomic __copy_to_user
+mdefine_line|#define __copy_to_user_inatomic&t;&t;__copy_to_user
 DECL|macro|__copy_from_user_inatomic
-mdefine_line|#define __copy_from_user_inatomic __copy_from_user
+mdefine_line|#define __copy_from_user_inatomic&t;__copy_from_user
 DECL|macro|copy_to_user
-mdefine_line|#define copy_to_user(to, from, n)&t;__copy_tofrom_user((to), (from), (n), 1)
+mdefine_line|#define copy_to_user(to, from, n)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void __user *__cu_to = (to);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__cu_from = (from);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len = (n);&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__access_ok(__cu_to, __cu_len, get_fs()))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__cu_len = __copy_user(__cu_to, (void __user *) __cu_from, __cu_len);&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|copy_from_user
-mdefine_line|#define copy_from_user(to, from, n)&t;__copy_tofrom_user((to), (from), (n), 0)
-DECL|macro|__copy_tofrom_user
-mdefine_line|#define __copy_tofrom_user(to, from, n, check_to)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *__cu_to = (to);&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__cu_from = (from);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len = (n);&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__access_ok((long) ((check_to) ? __cu_to : __cu_from), __cu_len, get_fs()))&t;&bslash;&n;&t;&t;__cu_len = __copy_user(__cu_to, __cu_from, __cu_len);&t;&t;&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define copy_from_user(to, from, n)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *__cu_to = (to);&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void __user *__cu_from = (from);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len = (n);&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__chk_user_ptr(__cu_from);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__access_ok(__cu_from, __cu_len, get_fs()))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__cu_len = __copy_user((void __user *) __cu_to, __cu_from, __cu_len);&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__copy_in_user
 mdefine_line|#define __copy_in_user(to, from, size)&t;__copy_user((to), (from), (size))
 r_static
@@ -299,11 +375,13 @@ DECL|function|copy_in_user
 id|copy_in_user
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
@@ -361,6 +439,7 @@ r_int
 id|__do_clear_user
 (paren
 r_void
+id|__user
 op_star
 comma
 r_int
@@ -370,10 +449,11 @@ suffix:semicolon
 DECL|macro|__clear_user
 mdefine_line|#define __clear_user(to, n)&t;&t;__do_clear_user(to, n)
 DECL|macro|clear_user
-mdefine_line|#define clear_user(to, n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __cu_len = (n);&t;&t;&t;&t;&bslash;&n;&t;if (__access_ok((long) to, __cu_len, get_fs()))&t;&t;&bslash;&n;&t;&t;__cu_len = __do_clear_user(to, __cu_len);&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define clear_user(to, n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __cu_len = (n);&t;&t;&t;&t;&bslash;&n;&t;if (__access_ok(to, __cu_len, get_fs()))&t;&t;&bslash;&n;&t;&t;__cu_len = __do_clear_user(to, __cu_len);&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/*&n; * Returns: -EFAULT if exception before terminator, N if the entire buffer filled, else&n; * strlen.&n; */
 r_extern
 r_int
+id|__must_check
 id|__strncpy_from_user
 (paren
 r_char
@@ -382,6 +462,7 @@ id|to
 comma
 r_const
 r_char
+id|__user
 op_star
 id|from
 comma
@@ -390,7 +471,7 @@ id|to_len
 )paren
 suffix:semicolon
 DECL|macro|strncpy_from_user
-mdefine_line|#define strncpy_from_user(to, from, n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const char * __sfu_from = (from);&t;&t;&t;&t;&bslash;&n;&t;long __sfu_ret = -EFAULT;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__access_ok((long) __sfu_from, 0, get_fs()))&t;&t;&bslash;&n;&t;&t;__sfu_ret = __strncpy_from_user((to), __sfu_from, (n));&t;&bslash;&n;&t;__sfu_ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define strncpy_from_user(to, from, n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const char __user * __sfu_from = (from);&t;&t;&t;&bslash;&n;&t;long __sfu_ret = -EFAULT;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__access_ok(__sfu_from, 0, get_fs()))&t;&t;&t;&bslash;&n;&t;&t;__sfu_ret = __strncpy_from_user((to), __sfu_from, (n));&t;&bslash;&n;&t;__sfu_ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/* Returns: 0 if bad, string length+1 (memory size) of string if ok */
 r_extern
 r_int
@@ -399,11 +480,12 @@ id|__strlen_user
 (paren
 r_const
 r_char
+id|__user
 op_star
 )paren
 suffix:semicolon
 DECL|macro|strlen_user
-mdefine_line|#define strlen_user(str)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const char *__su_str = (str);&t;&t;&t;&bslash;&n;&t;unsigned long __su_ret = 0;&t;&t;&t;&bslash;&n;&t;if (__access_ok((long) __su_str, 0, get_fs()))&t;&bslash;&n;&t;&t;__su_ret = __strlen_user(__su_str);&t;&bslash;&n;&t;__su_ret;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define strlen_user(str)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const char __user *__su_str = (str);&t;&t;&bslash;&n;&t;unsigned long __su_ret = 0;&t;&t;&t;&bslash;&n;&t;if (__access_ok(__su_str, 0, get_fs()))&t;&t;&bslash;&n;&t;&t;__su_ret = __strlen_user(__su_str);&t;&bslash;&n;&t;__su_ret;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/*&n; * Returns: 0 if exception before NUL or reaching the supplied limit&n; * (N), a value greater than N if the limit would be exceeded, else&n; * strlen.&n; */
 r_extern
 r_int
@@ -412,13 +494,14 @@ id|__strnlen_user
 (paren
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
 )paren
 suffix:semicolon
 DECL|macro|strnlen_user
-mdefine_line|#define strnlen_user(str, len)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const char *__su_str = (str);&t;&t;&t;&t;&bslash;&n;&t;unsigned long __su_ret = 0;&t;&t;&t;&t;&bslash;&n;&t;if (__access_ok((long) __su_str, 0, get_fs()))&t;&t;&bslash;&n;&t;&t;__su_ret = __strnlen_user(__su_str, len);&t;&bslash;&n;&t;__su_ret;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define strnlen_user(str, len)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const char __user *__su_str = (str);&t;&t;&t;&bslash;&n;&t;unsigned long __su_ret = 0;&t;&t;&t;&t;&bslash;&n;&t;if (__access_ok(__su_str, 0, get_fs()))&t;&t;&t;&bslash;&n;&t;&t;__su_ret = __strnlen_user(__su_str, len);&t;&bslash;&n;&t;__su_ret;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/* Generic code can&squot;t deal with the location-relative format that we use for compactness.  */
 DECL|macro|ARCH_HAS_SORT_EXTABLE
 mdefine_line|#define ARCH_HAS_SORT_EXTABLE

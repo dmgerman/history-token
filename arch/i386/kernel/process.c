@@ -1138,7 +1138,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
-id|release_x86_irqs
+id|release_vm86_irqs
 c_func
 (paren
 id|dead_task
@@ -1242,12 +1242,6 @@ suffix:semicolon
 id|childregs-&gt;esp
 op_assign
 id|esp
-suffix:semicolon
-id|p-&gt;set_child_tid
-op_assign
-id|p-&gt;clear_child_tid
-op_assign
-l_int|NULL
 suffix:semicolon
 id|p-&gt;thread.esp
 op_assign
@@ -2306,10 +2300,22 @@ op_eq
 l_int|0
 )paren
 (brace
+id|task_lock
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 id|current-&gt;ptrace
 op_and_assign
 op_complement
 id|PT_DTRACE
+suffix:semicolon
+id|task_unlock
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 multiline_comment|/* Make sure we don&squot;t return using sysenter.. */
 id|set_thread_flag

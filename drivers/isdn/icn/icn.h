@@ -93,9 +93,7 @@ mdefine_line|#define ICN_FLAGS_RUNNING  4    /* Cards driver activated          
 DECL|macro|ICN_FLAGS_RBTIMER
 mdefine_line|#define ICN_FLAGS_RBTIMER  8    /* cyclic scheduling of B-Channel-poll     */
 DECL|macro|ICN_BOOT_TIMEOUT1
-mdefine_line|#define ICN_BOOT_TIMEOUT1  (HZ) /* Delay for Boot-download (jiffies)       */
-DECL|macro|ICN_CHANLOCK_DELAY
-mdefine_line|#define ICN_CHANLOCK_DELAY (HZ/10)&t;/* Delay for Channel-mapping (jiffies)     */
+mdefine_line|#define ICN_BOOT_TIMEOUT1  1000 /* Delay for Boot-download (msecs)         */
 DECL|macro|ICN_TIMER_BCREAD
 mdefine_line|#define ICN_TIMER_BCREAD (HZ/100)&t;/* B-Channel poll-cycle                    */
 DECL|macro|ICN_TIMER_DCREAD

@@ -239,8 +239,6 @@ DECL|variable|eeprom_id
 r_static
 r_int
 id|eeprom_id
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|eeprom_update_client
 r_static

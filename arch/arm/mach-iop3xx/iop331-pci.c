@@ -706,56 +706,14 @@ op_star
 id|IOP331_IATVR3
 )paren
 suffix:semicolon
-macro_line|#if 0
-id|hook_fault_code
-c_func
-(paren
-l_int|4
-comma
-id|iop331_pci_abort
-comma
-id|SIGBUS
-comma
-l_string|&quot;external abort on linefetch&quot;
-)paren
+multiline_comment|/* redboot changed, reset IABAR0 to something sane */
+multiline_comment|/* fixes master aborts in plugged in cards */
+multiline_comment|/* will clean up later and work nicely with redboot */
+op_star
+id|IOP331_IABAR0
+op_assign
+l_int|0x00000004
 suffix:semicolon
-id|hook_fault_code
-c_func
-(paren
-l_int|6
-comma
-id|iop331_pci_abort
-comma
-id|SIGBUS
-comma
-l_string|&quot;external abort on linefetch&quot;
-)paren
-suffix:semicolon
-id|hook_fault_code
-c_func
-(paren
-l_int|8
-comma
-id|iop331_pci_abort
-comma
-id|SIGBUS
-comma
-l_string|&quot;external abort on non-linefetch&quot;
-)paren
-suffix:semicolon
-id|hook_fault_code
-c_func
-(paren
-l_int|10
-comma
-id|iop331_pci_abort
-comma
-id|SIGBUS
-comma
-l_string|&quot;external abort on non-linefetch&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|hook_fault_code
 c_func
 (paren

@@ -12100,8 +12100,6 @@ id|pci_save_state
 c_func
 (paren
 id|pdev
-comma
-id|adapter-&gt;pci_state
 )paren
 suffix:semicolon
 r_if
@@ -12256,8 +12254,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pdev
-comma
-id|adapter-&gt;pci_state
 )paren
 suffix:semicolon
 id|pci_enable_wake

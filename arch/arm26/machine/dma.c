@@ -138,7 +138,7 @@ c_func
 id|FIQ_FLOPPYDATA
 )paren
 suffix:semicolon
-id|loacl_irq_restore
+id|local_irq_restore
 c_func
 (paren
 id|flags

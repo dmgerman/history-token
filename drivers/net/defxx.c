@@ -13,8 +13,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/fddidevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;defxx.h&quot;
 multiline_comment|/* Version information string - should be updated prior to each new release!!! */
@@ -3657,52 +3657,47 @@ op_assign
 id|dev-&gt;priv
 suffix:semicolon
 multiline_comment|/* Fill the bp-&gt;stats structure with driver-maintained counters */
-id|bp-&gt;stats.rx_packets
+id|bp-&gt;stats.gen.rx_packets
 op_assign
 id|bp-&gt;rcv_total_frames
 suffix:semicolon
-id|bp-&gt;stats.tx_packets
+id|bp-&gt;stats.gen.tx_packets
 op_assign
 id|bp-&gt;xmt_total_frames
 suffix:semicolon
-id|bp-&gt;stats.rx_bytes
+id|bp-&gt;stats.gen.rx_bytes
 op_assign
 id|bp-&gt;rcv_total_bytes
 suffix:semicolon
-id|bp-&gt;stats.tx_bytes
+id|bp-&gt;stats.gen.tx_bytes
 op_assign
 id|bp-&gt;xmt_total_bytes
 suffix:semicolon
-id|bp-&gt;stats.rx_errors
+id|bp-&gt;stats.gen.rx_errors
 op_assign
-(paren
-id|u32
-)paren
-(paren
 id|bp-&gt;rcv_crc_errors
 op_plus
 id|bp-&gt;rcv_frame_status_errors
 op_plus
 id|bp-&gt;rcv_length_errors
-)paren
 suffix:semicolon
-id|bp-&gt;stats.tx_errors
+id|bp-&gt;stats.gen.tx_errors
 op_assign
 id|bp-&gt;xmt_length_errors
 suffix:semicolon
-id|bp-&gt;stats.rx_dropped
+id|bp-&gt;stats.gen.rx_dropped
 op_assign
 id|bp-&gt;rcv_discards
 suffix:semicolon
-id|bp-&gt;stats.tx_dropped
+id|bp-&gt;stats.gen.tx_dropped
 op_assign
 id|bp-&gt;xmt_discards
 suffix:semicolon
-id|bp-&gt;stats.multicast
+id|bp-&gt;stats.gen.multicast
 op_assign
 id|bp-&gt;rcv_multicast_frames
 suffix:semicolon
-id|bp-&gt;stats.transmit_collision
+id|bp-&gt;stats.gen.collisions
 op_assign
 l_int|0
 suffix:semicolon

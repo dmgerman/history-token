@@ -102,8 +102,8 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/eisa.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;&t;&t;&t;/* For NR_IRQS only. */
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* Kernel compatibility defines, some common to David Hinds&squot; PCMCIA package.&n;   This is only in the support-all-kernels source code. */
@@ -2987,6 +2987,7 @@ id|gendev
 suffix:semicolon
 DECL|member|cb_fn_base
 r_char
+id|__iomem
 op_star
 id|cb_fn_base
 suffix:semicolon
@@ -3101,7 +3102,7 @@ id|pm_state_valid
 suffix:colon
 l_int|1
 comma
-multiline_comment|/* power_state[] has sane contents */
+multiline_comment|/* pci_dev-&gt;saved_config_space has sane contents */
 DECL|member|open
 id|open
 suffix:colon
@@ -3186,13 +3187,6 @@ id|spinlock_t
 id|mdio_lock
 suffix:semicolon
 multiline_comment|/* Serialise access to mdio hardware */
-DECL|member|power_state
-id|u32
-id|power_state
-(braket
-l_int|16
-)braket
-suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
@@ -3750,6 +3744,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
 r_static
 r_int
 id|vortex_ioctl
@@ -3769,6 +3764,7 @@ r_int
 id|cmd
 )paren
 suffix:semicolon
+macro_line|#endif
 r_static
 r_void
 id|vortex_tx_timeout
@@ -5723,6 +5719,35 @@ id|i
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Unfortunately an all zero eeprom passes the checksum and this&n;&t;   gets found in the wild in failure cases. Crypto is hard 8) */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_valid_ether_addr
+c_func
+(paren
+id|dev-&gt;dev_addr
+)paren
+)paren
+(brace
+id|retval
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;*** EEPROM MAC address is invalid.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|free_ring
+suffix:semicolon
+multiline_comment|/* With every pack */
+)brace
 id|EL3WINDOW
 c_func
 (paren
@@ -6743,10 +6768,12 @@ id|dev-&gt;get_stats
 op_assign
 id|vortex_get_stats
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
 id|dev-&gt;do_ioctl
 op_assign
 id|vortex_ioctl
 suffix:semicolon
+macro_line|#endif
 id|dev-&gt;ethtool_ops
 op_assign
 op_amp
@@ -6796,8 +6823,6 @@ c_func
 (paren
 id|vp
 )paren
-comma
-id|vp-&gt;power_state
 )paren
 suffix:semicolon
 id|acpi_set_WOL
@@ -7105,8 +7130,6 @@ c_func
 (paren
 id|vp
 )paren
-comma
-id|vp-&gt;power_state
 )paren
 suffix:semicolon
 )brace
@@ -14047,8 +14070,6 @@ c_func
 (paren
 id|vp
 )paren
-comma
-id|vp-&gt;power_state
 )paren
 suffix:semicolon
 id|acpi_set_WOL
@@ -15067,6 +15088,7 @@ id|vortex_get_drvinfo
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
 DECL|function|vortex_do_ioctl
 r_static
 r_int
@@ -15359,6 +15381,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Pre-Cyclone chips have no documented multicast filter, so the only&n;   multicast setting is to receive all multicast frames.  At least&n;   the chip has a very clean way to set the mode, unlike many others. */
 DECL|function|set_rx_mode
 r_static
@@ -16387,8 +16410,6 @@ c_func
 (paren
 id|vp
 )paren
-comma
-id|vp-&gt;power_state
 )paren
 suffix:semicolon
 )brace

@@ -777,12 +777,6 @@ r_int
 )paren
 id|frame
 suffix:semicolon
-id|p-&gt;set_child_tid
-op_assign
-id|p-&gt;clear_child_tid
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/* Store access registers to kernel stack of new process. */
 id|frame-&gt;childregs
 op_assign
@@ -1280,10 +1274,22 @@ op_eq
 l_int|0
 )paren
 (brace
+id|task_lock
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 id|current-&gt;ptrace
 op_and_assign
 op_complement
 id|PT_DTRACE
+suffix:semicolon
+id|task_unlock
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 id|current-&gt;thread.fp_regs.fpc
 op_assign

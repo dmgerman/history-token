@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/iosapic.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
@@ -483,19 +484,11 @@ id|lapic-&gt;address
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|ipi_base_addr
 )paren
 suffix:semicolon
 id|ipi_base_addr
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -1056,10 +1049,6 @@ id|acpi_madt-&gt;lapic_address
 )paren
 id|ipi_base_addr
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -1073,7 +1062,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;Local APIC address 0x%lx&bslash;n&quot;
+l_string|&quot;Local APIC address %p&bslash;n&quot;
 comma
 id|ipi_base_addr
 )paren
@@ -1444,7 +1433,7 @@ id|node_from
 comma
 id|node_to
 suffix:semicolon
-multiline_comment|/* If there&squot;s no SRAT, fix the phys_id */
+multiline_comment|/* If there&squot;s no SRAT, fix the phys_id and mark node 0 online */
 r_if
 c_cond
 (paren
@@ -1453,6 +1442,12 @@ op_eq
 l_int|0
 )paren
 (brace
+id|node_set_online
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 id|node_cpuid
 (braket
 l_int|0

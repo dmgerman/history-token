@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/mach/time.h&gt;
+macro_line|#include &quot;common.h&quot;
 macro_line|#if HZ &lt; 100
 DECL|macro|TIMER_CONTROL
 macro_line|# define TIMER_CONTROL&t;TIMER_CONTROL2
@@ -55,6 +56,13 @@ op_star
 id|regs
 )paren
 (brace
+id|write_seqlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 id|TIMER_EOI
 op_assign
 l_int|0
@@ -63,6 +71,13 @@ id|timer_tick
 c_func
 (paren
 id|regs
+)paren
+suffix:semicolon
+id|write_sequnlock
+c_func
+(paren
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
 r_return
@@ -92,10 +107,11 @@ op_assign
 id|lh7a40x_timer_interrupt
 )brace
 suffix:semicolon
-DECL|function|lh7a40x_init_time
+DECL|function|lh7a40x_timer_init
+r_static
 r_void
 id|__init
-id|lh7a40x_init_time
+id|lh7a40x_timer_init
 c_func
 (paren
 r_void
@@ -131,4 +147,18 @@ op_assign
 id|TIMER_MODE
 suffix:semicolon
 )brace
+DECL|variable|lh7a40x_timer
+r_struct
+id|sys_timer
+id|lh7a40x_timer
+op_assign
+(brace
+dot
+id|init
+op_assign
+op_amp
+id|lh7a40x_timer
+comma
+)brace
+suffix:semicolon
 eof

@@ -20,11 +20,11 @@ macro_line|#include &lt;linux/circ_buf.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
 multiline_comment|/* -----------------------------------------------------------------------------&n; *  From STB03xxx SICC UART Specification&n; * -----------------------------------------------------------------------------&n; *  UART Register Offsets.&n; */

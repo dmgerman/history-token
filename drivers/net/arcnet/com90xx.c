@@ -2520,6 +2520,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|memaddr
 op_assign
@@ -2588,6 +2589,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|memaddr
 op_assign

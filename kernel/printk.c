@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|__LOG_BUF_LEN
 mdefine_line|#define __LOG_BUF_LEN&t;(1 &lt;&lt; CONFIG_LOG_BUF_SHIFT)
@@ -184,6 +185,14 @@ id|console_cmdline
 (braket
 id|MAX_CMDLINECONSOLES
 )braket
+suffix:semicolon
+DECL|variable|selected_console
+r_static
+r_int
+id|selected_console
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 DECL|variable|preferred_console
 r_static
@@ -523,7 +532,7 @@ op_eq
 id|idx
 )paren
 (brace
-id|preferred_console
+id|selected_console
 op_assign
 id|i
 suffix:semicolon
@@ -542,7 +551,7 @@ r_return
 op_minus
 id|E2BIG
 suffix:semicolon
-id|preferred_console
+id|selected_console
 op_assign
 id|i
 suffix:semicolon
@@ -2476,6 +2485,7 @@ suffix:semicolon
 multiline_comment|/** console_conditional_schedule - yield the CPU if required&n; *&n; * If the console code is currently allowed to sleep, and&n; * if this CPU should yield the CPU to another task, do&n; * so here.&n; *&n; * Must be called within acquire_console_sem().&n; */
 DECL|function|console_conditional_schedule
 r_void
+id|__sched
 id|console_conditional_schedule
 c_func
 (paren
@@ -2486,25 +2496,12 @@ r_if
 c_cond
 (paren
 id|console_may_schedule
-op_logical_and
-id|need_resched
-c_func
-(paren
 )paren
-)paren
-(brace
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
-id|schedule
+id|cond_resched
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|variable|console_conditional_schedule
 id|EXPORT_SYMBOL
@@ -2792,6 +2789,17 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|preferred_console
+OL
+l_int|0
+)paren
+id|preferred_console
+op_assign
+id|selected_console
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;See if we want to use this console driver. If we&n;&t; *&t;didn&squot;t select a console we take the first one&n;&t; *&t;that registers here.&n;&t; */
 r_if
@@ -3174,8 +3182,7 @@ l_int|NULL
 )paren
 id|preferred_console
 op_assign
-op_minus
-l_int|1
+id|selected_console
 suffix:semicolon
 id|release_console_sem
 c_func

@@ -5,10 +5,13 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &quot;attrib.h&quot;
+macro_line|#include &quot;aops.h&quot;
+macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;logfile.h&quot;
+macro_line|#include &quot;malloc.h&quot;
 macro_line|#include &quot;volume.h&quot;
 macro_line|#include &quot;ntfs.h&quot;
-macro_line|#include &quot;debug.h&quot;
 multiline_comment|/**&n; * ntfs_check_restart_page_header - check the page header for consistency&n; * @vi:&t;&t;$LogFile inode to which the restart page header belongs&n; * @rp:&t;&t;restart page header to check&n; * @pos:&t;position in @vi at which the restart page header resides&n; *&n; * Check the restart page header @rp for consistency and return TRUE if it is&n; * consistent and FALSE otherwise.&n; *&n; * This function only needs NTFS_BLOCK_SIZE bytes in @rp, i.e. it does not&n; * require the full restart page.&n; */
 DECL|function|ntfs_check_restart_page_header
 r_static
@@ -1715,6 +1718,10 @@ op_logical_neg
 id|ntfs_is_empty_recordp
 c_func
 (paren
+(paren
+id|le32
+op_star
+)paren
 id|kaddr
 )paren
 )paren
@@ -1738,6 +1745,10 @@ c_cond
 id|ntfs_is_rcrd_recordp
 c_func
 (paren
+(paren
+id|le32
+op_star
+)paren
 id|kaddr
 )paren
 )paren
@@ -1750,6 +1761,10 @@ c_cond
 id|ntfs_is_chkd_recordp
 c_func
 (paren
+(paren
+id|le32
+op_star
+)paren
 id|kaddr
 )paren
 )paren
@@ -1776,6 +1791,10 @@ op_logical_neg
 id|ntfs_is_rstr_recordp
 c_func
 (paren
+(paren
+id|le32
+op_star
+)paren
 id|kaddr
 )paren
 )paren
@@ -2323,16 +2342,6 @@ c_func
 id|log_vi-&gt;i_sb
 )paren
 suffix:semicolon
-r_struct
-id|address_space
-op_star
-id|mapping
-suffix:semicolon
-id|pgoff_t
-id|idx
-comma
-id|end
-suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
@@ -2342,64 +2351,33 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|NVolLogFileEmpty
 c_func
 (paren
 id|vol
 )paren
 )paren
-r_goto
-id|done
-suffix:semicolon
-id|mapping
-op_assign
-id|log_vi-&gt;i_mapping
-suffix:semicolon
-id|end
-op_assign
-(paren
-id|log_vi-&gt;i_size
-op_plus
-id|PAGE_CACHE_SIZE
-op_minus
-l_int|1
-)paren
-op_rshift
-id|PAGE_CACHE_SHIFT
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|idx
-op_assign
-l_int|0
-suffix:semicolon
-id|idx
-OL
-id|end
-suffix:semicolon
-op_increment
-id|idx
-)paren
 (brace
-r_struct
-id|page
-op_star
-id|page
+r_int
+id|err
 suffix:semicolon
-id|u8
-op_star
-id|kaddr
-suffix:semicolon
-multiline_comment|/* Find or create the current page.  (The page is locked.) */
-id|page
+id|err
 op_assign
-id|grab_cache_page
+id|ntfs_attr_set
 c_func
 (paren
-id|mapping
+id|NTFS_I
+c_func
+(paren
+id|log_vi
+)paren
 comma
-id|idx
+l_int|0
+comma
+id|log_vi-&gt;i_size
+comma
+l_int|0xff
 )paren
 suffix:semicolon
 r_if
@@ -2408,8 +2386,7 @@ c_cond
 id|unlikely
 c_func
 (paren
-op_logical_neg
-id|page
+id|err
 )paren
 )paren
 (brace
@@ -2418,143 +2395,24 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;Insufficient memory to grab &quot;
-l_string|&quot;$LogFile page (index %lu).&quot;
+l_string|&quot;Failed to fill $LogFile with &quot;
+l_string|&quot;0xff bytes (error code %i).&quot;
 comma
-id|idx
+id|err
 )paren
 suffix:semicolon
 r_return
 id|FALSE
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Set all bytes in the page to 0xff.  It doesn&squot;t matter if we&n;&t;&t; * go beyond i_size, because ntfs_writepage() will take care of&n;&t;&t; * that for us.&n;&t;&t; */
-id|kaddr
-op_assign
-(paren
-id|u8
-op_star
-)paren
-id|kmap_atomic
-c_func
-(paren
-id|page
-comma
-id|KM_USER0
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|kaddr
-comma
-l_int|0xff
-comma
-id|PAGE_CACHE_SIZE
-)paren
-suffix:semicolon
-id|flush_dcache_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|kunmap_atomic
-c_func
-(paren
-id|kaddr
-comma
-id|KM_USER0
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If the page has buffers, mark them uptodate since buffer&n;&t;&t; * state and not page state is definitive in 2.6 kernels.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|page_has_buffers
-c_func
-(paren
-id|page
-)paren
-)paren
-(brace
-r_struct
-id|buffer_head
-op_star
-id|bh
-comma
-op_star
-id|head
-suffix:semicolon
-id|bh
-op_assign
-id|head
-op_assign
-id|page_buffers
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_do
-(brace
-id|set_buffer_uptodate
-c_func
-(paren
-id|bh
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-(paren
-id|bh
-op_assign
-id|bh-&gt;b_this_page
-)paren
-op_ne
-id|head
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Now that buffers are uptodate, set the page uptodate, too. */
-id|SetPageUptodate
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Set the page and all its buffers dirty and mark the inode&n;&t;&t; * dirty, too. The VM will write the page later on.&n;&t;&t; */
-id|set_page_dirty
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-multiline_comment|/* Finally unlock and release the page. */
-id|unlock_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|page_cache_release
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* We set the flag so we do not clear the log file again on remount. */
+multiline_comment|/* Set the flag so we do not have to do it again on remount. */
 id|NVolSetLogFileEmpty
 c_func
 (paren
 id|vol
 )paren
 suffix:semicolon
-id|done
-suffix:colon
+)brace
 id|ntfs_debug
 c_func
 (paren

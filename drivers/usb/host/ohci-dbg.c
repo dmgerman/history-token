@@ -1708,7 +1708,7 @@ r_int
 id|verbose
 )paren
 (brace
-id|u32
+id|__le32
 id|tmp
 op_assign
 id|ed-&gt;hwINFO
@@ -1868,8 +1868,6 @@ id|ohci
 comma
 l_string|&quot;  tds: head %08x %s%s tail %08x%s&bslash;n&quot;
 comma
-id|tmp
-op_assign
 id|le32_to_cpup
 (paren
 op_amp
@@ -2097,7 +2095,7 @@ c_loop
 id|ed
 )paren
 (brace
-id|u32
+id|__le32
 id|info
 op_assign
 id|ed-&gt;hwINFO
@@ -2105,7 +2103,7 @@ suffix:semicolon
 id|u32
 id|scratch
 op_assign
-id|cpu_to_le32p
+id|le32_to_cpup
 (paren
 op_amp
 id|ed-&gt;hwINFO
@@ -2246,7 +2244,7 @@ id|td_list
 suffix:semicolon
 id|scratch
 op_assign
-id|cpu_to_le32p
+id|le32_to_cpup
 (paren
 op_amp
 id|td-&gt;hwINFO
@@ -2777,7 +2775,7 @@ op_eq
 id|seen_count
 )paren
 (brace
-id|u32
+id|__le32
 id|info
 op_assign
 id|ed-&gt;hwINFO
@@ -2785,7 +2783,7 @@ suffix:semicolon
 id|u32
 id|scratch
 op_assign
-id|cpu_to_le32p
+id|le32_to_cpup
 (paren
 op_amp
 id|ed-&gt;hwINFO
@@ -3204,7 +3202,7 @@ l_int|31
 )paren
 ques
 c_cond
-l_string|&quot; FIT&quot;
+l_string|&quot;FIT &quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
@@ -3256,7 +3254,7 @@ l_int|31
 )paren
 ques
 c_cond
-l_string|&quot; FRT&quot;
+l_string|&quot;FRT &quot;
 suffix:colon
 l_string|&quot;&quot;
 comma

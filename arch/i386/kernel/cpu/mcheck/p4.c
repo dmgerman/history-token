@@ -91,6 +91,12 @@ c_func
 )paren
 )paren
 suffix:semicolon
+id|add_taint
+c_func
+(paren
+id|TAINT_MACHINE_CHECK
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* P4/Xeon Thermal transition interrupt handler */
 DECL|function|intel_thermal_interrupt
@@ -193,6 +199,12 @@ id|KERN_EMERG
 l_string|&quot;CPU%d: Running in modulated clock mode&bslash;n&quot;
 comma
 id|cpu
+)paren
+suffix:semicolon
+id|add_taint
+c_func
+(paren
+id|TAINT_MACHINE_CHECK
 )paren
 suffix:semicolon
 )brace
@@ -1019,6 +1031,12 @@ multiline_comment|/* Serialize */
 id|wmb
 c_func
 (paren
+)paren
+suffix:semicolon
+id|add_taint
+c_func
+(paren
+id|TAINT_MACHINE_CHECK
 )paren
 suffix:semicolon
 )brace

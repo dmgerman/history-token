@@ -21,8 +21,8 @@ macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -4186,8 +4186,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|NETDEV_TX_LOCKED
 suffix:semicolon
 )brace
 multiline_comment|/* This is a hard error, log it. */
@@ -4239,7 +4238,7 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 r_return
-l_int|1
+id|NETDEV_TX_BUSY
 suffix:semicolon
 )brace
 id|entry
@@ -4698,7 +4697,7 @@ op_assign
 id|jiffies
 suffix:semicolon
 r_return
-l_int|0
+id|NETDEV_TX_OK
 suffix:semicolon
 )brace
 multiline_comment|/* Jumbo-grams don&squot;t seem to work :-( */
@@ -11919,6 +11918,7 @@ id|find_eth_addr_in_vpd
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|rom_base
 comma
@@ -11950,6 +11950,7 @@ op_increment
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|p
 op_assign

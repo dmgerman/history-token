@@ -14,13 +14,13 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -509,7 +509,7 @@ c_func
 id|ppc_md
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PSERIES
+macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 DECL|variable|find_devices
 id|EXPORT_SYMBOL
 c_func

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
@@ -789,14 +790,12 @@ r_continue
 suffix:semicolon
 id|rr
 op_assign
-id|find_next_bit
+id|next_node
 c_func
 (paren
-id|node_online_map
-comma
-id|MAX_NUMNODES
-comma
 id|rr
+comma
+id|node_online_map
 )paren
 suffix:semicolon
 r_if
@@ -808,12 +807,10 @@ id|MAX_NUMNODES
 )paren
 id|rr
 op_assign
-id|find_first_bit
+id|first_node
 c_func
 (paren
 id|node_online_map
-comma
-id|MAX_NUMNODES
 )paren
 suffix:semicolon
 id|node_data
@@ -854,6 +851,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_NUMA_EMU
 DECL|variable|__initdata
 r_int
 id|numa_fake
@@ -1181,6 +1179,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|numa_initmem_init
 r_void
 id|__init
@@ -1199,6 +1198,7 @@ id|end_pfn
 r_int
 id|i
 suffix:semicolon
+macro_line|#ifdef CONFIG_NUMA_EMU
 r_if
 c_cond
 (paren
@@ -1215,6 +1215,7 @@ id|end_pfn
 )paren
 r_return
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_K8_NUMA
 r_if
 c_cond
@@ -1459,6 +1460,7 @@ id|numa_off
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#ifdef CONFIG_NUMA_EMU
 r_if
 c_cond
 (paren
@@ -1501,6 +1503,7 @@ op_assign
 id|MAX_NUMNODES
 suffix:semicolon
 )brace
+macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon

@@ -24,27 +24,27 @@ r_struct
 id|new_pmap
 (brace
 DECL|member|pmSig
-id|u16
+id|__be16
 id|pmSig
 suffix:semicolon
 multiline_comment|/* signature */
 DECL|member|reSigPad
-id|u16
+id|__be16
 id|reSigPad
 suffix:semicolon
 multiline_comment|/* padding */
 DECL|member|pmMapBlkCnt
-id|u32
+id|__be32
 id|pmMapBlkCnt
 suffix:semicolon
 multiline_comment|/* partition blocks count */
 DECL|member|pmPyPartStart
-id|u32
+id|__be32
 id|pmPyPartStart
 suffix:semicolon
 multiline_comment|/* physical block start of partition */
 DECL|member|pmPartBlkCnt
-id|u32
+id|__be32
 id|pmPartBlkCnt
 suffix:semicolon
 multiline_comment|/* physical block count of partition */
@@ -75,7 +75,7 @@ r_struct
 id|old_pmap
 (brace
 DECL|member|pdSig
-id|u16
+id|__be16
 id|pdSig
 suffix:semicolon
 multiline_comment|/* Signature bytes */
@@ -84,15 +84,15 @@ r_struct
 id|old_pmap_entry
 (brace
 DECL|member|pdStart
-id|u32
+id|__be32
 id|pdStart
 suffix:semicolon
 DECL|member|pdSize
-id|u32
+id|__be32
 id|pdSize
 suffix:semicolon
 DECL|member|pdFSID
-id|u32
+id|__be32
 id|pdFSID
 suffix:semicolon
 DECL|member|pdEntry
@@ -131,7 +131,7 @@ id|buffer_head
 op_star
 id|bh
 suffix:semicolon
-id|u16
+id|__be16
 op_star
 id|data
 suffix:semicolon

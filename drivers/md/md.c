@@ -14376,7 +14376,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: using %dk window, over a total of %Lu blocks.&bslash;n&quot;
+l_string|&quot;md: using %dk window, over a total of %llu blocks.&bslash;n&quot;
 comma
 id|window
 op_div
@@ -14717,16 +14717,10 @@ id|mddev
 )paren
 )paren
 (brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
-id|HZ
-op_div
-l_int|4
+l_int|250
 )paren
 suffix:semicolon
 r_goto

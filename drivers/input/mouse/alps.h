@@ -10,6 +10,9 @@ r_struct
 id|psmouse
 op_star
 id|psmouse
+comma
+r_int
+id|set_properties
 )paren
 suffix:semicolon
 r_int

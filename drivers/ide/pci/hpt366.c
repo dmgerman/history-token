@@ -3037,7 +3037,7 @@ l_int|0x1F
 suffix:semicolon
 multiline_comment|/* fall through to a reset */
 r_case
-id|ide_dma_begin
+id|dma_start
 suffix:colon
 r_case
 id|ide_dma_end
@@ -3111,10 +3111,11 @@ l_int|10
 )paren
 suffix:semicolon
 )brace
-DECL|function|hpt370_ide_dma_begin
+DECL|function|hpt370_ide_dma_start
 r_static
-r_int
-id|hpt370_ide_dma_begin
+r_void
+id|hpt370_ide_dma_start
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -3129,8 +3130,7 @@ id|drive
 )paren
 suffix:semicolon
 macro_line|#endif
-r_return
-id|__ide_dma_begin
+id|ide_dma_start
 c_func
 (paren
 id|drive
@@ -6347,10 +6347,10 @@ l_int|3
 )paren
 )paren
 (brace
-id|hwif-&gt;ide_dma_begin
+id|hwif-&gt;dma_start
 op_assign
 op_amp
-id|hpt370_ide_dma_begin
+id|hpt370_ide_dma_start
 suffix:semicolon
 id|hwif-&gt;ide_dma_end
 op_assign

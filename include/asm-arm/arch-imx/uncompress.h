@@ -18,8 +18,8 @@ mdefine_line|#define UCR1_UARTEN 1
 multiline_comment|/*&n; * The following code assumes the serial port has already been&n; * initialized by the bootloader.  We search for the first enabled&n; * port in the most probable order.  If you didn&squot;t setup a port in&n; * your bootloader then nothing will appear (which might be desired).&n; *&n; * This does not append a newline&n; */
 r_static
 r_void
-DECL|function|puts
-id|puts
+DECL|function|putstr
+id|putstr
 c_func
 (paren
 r_const

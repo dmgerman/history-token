@@ -3194,12 +3194,6 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-id|p-&gt;set_child_tid
-op_assign
-id|p-&gt;clear_child_tid
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/* Calculate offset to stack_frame &amp; pt_regs */
 id|child_trap_frame
 op_assign
@@ -4278,10 +4272,22 @@ op_and_assign
 op_complement
 id|TSTATE_PEF
 suffix:semicolon
+id|task_lock
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 id|current-&gt;ptrace
 op_and_assign
 op_complement
 id|PT_DTRACE
+suffix:semicolon
+id|task_unlock
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 )brace
 id|out

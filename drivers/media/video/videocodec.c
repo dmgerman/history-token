@@ -12,11 +12,6 @@ macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#endif
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#ifndef KERNEL_VERSION
-DECL|macro|KERNEL_VERSION
-mdefine_line|#define KERNEL_VERSION(a,b,c) ((a)*65536+(b)*256+(c))
-macro_line|#endif
 macro_line|#include &quot;videocodec.h&quot;
 DECL|variable|debug
 r_static

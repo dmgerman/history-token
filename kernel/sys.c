@@ -14,10 +14,15 @@ macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/key.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/dcookies.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+multiline_comment|/* Don&squot;t include this - it breaks ia64&squot;s cond_syscall() implementation */
+macro_line|#if 0
+macro_line|#include &lt;linux/syscalls.h&gt;
+macro_line|#endif
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
@@ -762,6 +767,26 @@ id|cond_syscall
 c_func
 (paren
 id|compat_set_mempolicy
+)paren
+id|cond_syscall
+c_func
+(paren
+id|sys_add_key
+)paren
+id|cond_syscall
+c_func
+(paren
+id|sys_request_key
+)paren
+id|cond_syscall
+c_func
+(paren
+id|sys_keyctl
+)paren
+id|cond_syscall
+c_func
+(paren
+id|compat_sys_socketcall
 )paren
 multiline_comment|/* arch-specific weak syscall entries */
 id|cond_syscall
@@ -2121,6 +2146,12 @@ id|current-&gt;gid
 op_assign
 id|new_rgid
 suffix:semicolon
+id|key_fsgid_changed
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2260,6 +2291,12 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+id|key_fsgid_changed
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2310,7 +2347,7 @@ op_amp
 id|new_user-&gt;processes
 )paren
 op_ge
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_NPROC
 )braket
@@ -2606,6 +2643,12 @@ id|current-&gt;fsuid
 op_assign
 id|current-&gt;euid
 suffix:semicolon
+id|key_fsuid_changed
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 r_return
 id|security_task_post_setuid
 c_func
@@ -2777,6 +2820,12 @@ suffix:semicolon
 id|current-&gt;suid
 op_assign
 id|new_suid
+suffix:semicolon
+id|key_fsuid_changed
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 r_return
 id|security_task_post_setuid
@@ -3055,6 +3104,12 @@ l_int|1
 id|current-&gt;suid
 op_assign
 id|suid
+suffix:semicolon
+id|key_fsuid_changed
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 r_return
 id|security_task_post_setuid
@@ -3366,6 +3421,12 @@ id|current-&gt;sgid
 op_assign
 id|sgid
 suffix:semicolon
+id|key_fsgid_changed
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3531,6 +3592,12 @@ op_assign
 id|uid
 suffix:semicolon
 )brace
+id|key_fsuid_changed
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 id|security_task_post_setuid
 c_func
 (paren
@@ -3646,6 +3713,12 @@ suffix:semicolon
 id|current-&gt;fsgid
 op_assign
 id|gid
+suffix:semicolon
+id|key_fsgid_changed
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -6023,15 +6096,38 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_else
+(brace
+r_struct
+id|rlimit
+id|value
+suffix:semicolon
+id|task_lock
+c_func
+(paren
+id|current-&gt;group_leader
+)paren
+suffix:semicolon
+id|value
+op_assign
+id|current-&gt;signal-&gt;rlim
+(braket
+id|resource
+)braket
+suffix:semicolon
+id|task_unlock
+c_func
+(paren
+id|current-&gt;group_leader
+)paren
+suffix:semicolon
 r_return
 id|copy_to_user
 c_func
 (paren
 id|rlim
 comma
-id|current-&gt;rlim
-op_plus
-id|resource
+op_amp
+id|value
 comma
 r_sizeof
 (paren
@@ -6046,6 +6142,7 @@ id|EFAULT
 suffix:colon
 l_int|0
 suffix:semicolon
+)brace
 )brace
 macro_line|#ifdef __ARCH_WANT_SYS_OLD_GETRLIMIT
 multiline_comment|/*&n; *&t;Back compatibility for getrlimit. Needed for some apps.&n; */
@@ -6081,21 +6178,23 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|memcpy
+id|task_lock
 c_func
 (paren
-op_amp
-id|x
-comma
-id|current-&gt;rlim
-op_plus
-id|resource
-comma
-r_sizeof
-(paren
-op_star
-id|rlim
+id|current-&gt;group_leader
 )paren
+suffix:semicolon
+id|x
+op_assign
+id|current-&gt;signal-&gt;rlim
+(braket
+id|resource
+)braket
+suffix:semicolon
+id|task_unlock
+c_func
+(paren
+id|current-&gt;group_leader
 )paren
 suffix:semicolon
 r_if
@@ -6221,7 +6320,7 @@ id|EINVAL
 suffix:semicolon
 id|old_rlim
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 op_plus
 id|resource
 suffix:semicolon
@@ -6229,17 +6328,9 @@ r_if
 c_cond
 (paren
 (paren
-(paren
-id|new_rlim.rlim_cur
-OG
-id|old_rlim-&gt;rlim_max
-)paren
-op_logical_or
-(paren
 id|new_rlim.rlim_max
 OG
 id|old_rlim-&gt;rlim_max
-)paren
 )paren
 op_logical_and
 op_logical_neg
@@ -6259,15 +6350,7 @@ c_cond
 id|resource
 op_eq
 id|RLIMIT_NOFILE
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|new_rlim.rlim_cur
-OG
-id|NR_OPEN
-op_logical_or
+op_logical_and
 id|new_rlim.rlim_max
 OG
 id|NR_OPEN
@@ -6276,7 +6359,6 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
-)brace
 id|retval
 op_assign
 id|security_task_setrlimit
@@ -6296,10 +6378,22 @@ id|retval
 r_return
 id|retval
 suffix:semicolon
+id|task_lock
+c_func
+(paren
+id|current-&gt;group_leader
+)paren
+suffix:semicolon
 op_star
 id|old_rlim
 op_assign
 id|new_rlim
+suffix:semicolon
+id|task_unlock
+c_func
+(paren
+id|current-&gt;group_leader
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -7109,6 +7203,7 @@ id|ncomm
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|arg2

@@ -233,7 +233,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|u16
+id|__le16
 op_star
 )paren
 op_amp
@@ -253,7 +253,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|u16
+id|__le16
 op_star
 )paren
 op_amp
@@ -516,7 +516,7 @@ op_logical_neg
 op_decrement
 id|kbtab-&gt;open
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|kbtab-&gt;irq
@@ -994,7 +994,7 @@ c_cond
 id|kbtab
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|kbtab-&gt;irq

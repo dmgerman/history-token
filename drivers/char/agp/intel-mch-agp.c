@@ -336,6 +336,7 @@ multiline_comment|/* device one */
 DECL|member|registers
 r_volatile
 id|u8
+id|__iomem
 op_star
 id|registers
 suffix:semicolon
@@ -757,6 +758,7 @@ op_assign
 (paren
 r_volatile
 id|u8
+id|__iomem
 op_star
 )paren
 id|ioremap
@@ -1113,6 +1115,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|intel_i830_private.registers
@@ -2557,8 +2560,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pdev
-comma
-id|pdev-&gt;saved_config_space
 )paren
 suffix:semicolon
 r_if

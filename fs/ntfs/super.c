@@ -9,12 +9,15 @@ macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;sysctl.h&quot;
 macro_line|#include &quot;logfile.h&quot;
 macro_line|#include &quot;quota.h&quot;
 macro_line|#include &quot;dir.h&quot;
+macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;index.h&quot;
+macro_line|#include &quot;aops.h&quot;
+macro_line|#include &quot;malloc.h&quot;
+macro_line|#include &quot;ntfs.h&quot;
 multiline_comment|/* Number of mounted file systems which have compression enabled. */
 DECL|variable|ntfs_nr_compression_users
 r_static
@@ -376,7 +379,7 @@ op_star
 id|v
 op_increment
 op_assign
-l_char|&squot;&bslash;0&squot;
+l_int|0
 suffix:semicolon
 id|NTFS_GETOPT
 c_func
@@ -1197,9 +1200,17 @@ c_func
 (paren
 l_string|&quot;Entering, old flags = 0x%x, new flags = 0x%x.&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|vol-&gt;vol_flags
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|flags
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1454,15 +1465,27 @@ id|flags
 op_and_assign
 id|VOLUME_FLAGS_MASK
 suffix:semicolon
+id|flags
+op_assign
+id|vol-&gt;vol_flags
+op_amp
+id|cpu_to_le16
+c_func
+(paren
+op_complement
+id|le16_to_cpu
+c_func
+(paren
+id|flags
+)paren
+)paren
+suffix:semicolon
 r_return
 id|ntfs_write_volume_flags
 c_func
 (paren
 id|vol
 comma
-id|vol-&gt;vol_flags
-op_amp
-op_complement
 id|flags
 )paren
 suffix:semicolon
@@ -1887,11 +1910,12 @@ op_logical_and
 id|b-&gt;checksum
 )paren
 (brace
-id|u32
-id|i
-comma
+id|le32
 op_star
 id|u
+suffix:semicolon
+id|u32
+id|i
 suffix:semicolon
 r_for
 c_loop
@@ -1903,7 +1927,7 @@ comma
 id|u
 op_assign
 (paren
-id|u32
+id|le32
 op_star
 )paren
 id|b
@@ -1911,7 +1935,7 @@ suffix:semicolon
 id|u
 OL
 (paren
-id|u32
+id|le32
 op_star
 )paren
 (paren
@@ -3273,11 +3297,11 @@ r_return
 id|TRUE
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * setup_lcn_allocator - initialize the cluster allocator&n; * @vol:&t;volume structure for which to setup the lcn allocator&n; *&n; * Setup the cluster (lcn) allocator to the starting values.&n; */
-DECL|function|setup_lcn_allocator
+multiline_comment|/**&n; * ntfs_setup_allocators - initialize the cluster and mft allocators&n; * @vol:&t;volume structure for which to setup the allocators&n; *&n; * Setup the cluster (lcn) and mft allocators to the starting values.&n; */
+DECL|function|ntfs_setup_allocators
 r_static
 r_void
-id|setup_lcn_allocator
+id|ntfs_setup_allocators
 c_func
 (paren
 id|ntfs_volume
@@ -3522,6 +3546,24 @@ r_int
 id|vol-&gt;data2_zone_pos
 )paren
 suffix:semicolon
+multiline_comment|/* Set the mft data allocation position to mft record 24. */
+id|vol-&gt;mft_data_pos
+op_assign
+l_int|24
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;vol-&gt;mft_data_pos = 0x%llx&quot;
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|vol-&gt;mft_data_pos
+)paren
+suffix:semicolon
 macro_line|#endif /* NTFS_RW */
 )brace
 macro_line|#ifdef NTFS_RW
@@ -3624,11 +3666,11 @@ op_assign
 op_amp
 id|ntfs_empty_file_ops
 suffix:semicolon
-multiline_comment|/* Put back our special address space operations. */
+multiline_comment|/* Put in our special address space operations. */
 id|tmp_ino-&gt;i_mapping-&gt;a_ops
 op_assign
 op_amp
-id|ntfs_mft_aops
+id|ntfs_mst_aops
 suffix:semicolon
 id|tmp_ni
 op_assign
@@ -3898,6 +3940,10 @@ c_cond
 id|ntfs_is_baad_recordp
 c_func
 (paren
+(paren
+id|le32
+op_star
+)paren
 id|kmft
 )paren
 )paren
@@ -3939,6 +3985,10 @@ c_cond
 id|ntfs_is_baad_recordp
 c_func
 (paren
+(paren
+id|le32
+op_star
+)paren
 id|kmirr
 )paren
 )paren
@@ -4448,11 +4498,7 @@ c_func
 l_char|&squot;a&squot;
 )paren
 comma
-id|const_cpu_to_le16
-c_func
-(paren
 l_int|0
-)paren
 )brace
 suffix:semicolon
 r_static
@@ -4475,11 +4521,7 @@ c_func
 l_char|&squot;Q&squot;
 )paren
 comma
-id|const_cpu_to_le16
-c_func
-(paren
 l_int|0
-)paren
 )brace
 suffix:semicolon
 id|ntfs_debug
@@ -9262,8 +9304,8 @@ op_star
 id|bh-&gt;b_data
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize the cluster allocator. */
-id|setup_lcn_allocator
+multiline_comment|/* Initialize the cluster and mft allocators. */
+id|ntfs_setup_allocators
 c_func
 (paren
 id|vol
@@ -10058,7 +10100,7 @@ id|ntfs_index_ctx_cache
 suffix:semicolon
 multiline_comment|/* A global default upcase table and a corresponding reference count. */
 DECL|variable|default_upcase
-m_wchar_t
+id|ntfschar
 op_star
 id|default_upcase
 op_assign

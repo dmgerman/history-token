@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;tulip.h&quot;
 multiline_comment|/* The maximum data clock rate is 2.5 Mhz.  The minimum timing is usually&n;   met by back-to-back PCI I/O cycles, but we insert a delay to avoid&n;   &quot;overclocking&quot; issues or future 66Mhz PCI. */
 DECL|macro|mdio_delay
-mdefine_line|#define mdio_delay() inl(mdio_addr)
+mdefine_line|#define mdio_delay() ioread32(mdio_addr)
 multiline_comment|/* Read and write the MII registers using software-generated serial&n;   MDIO protocol.  It is just different enough from the EEPROM protocol&n;   to not share code.  The maxium data clock rate is 2.5 Mhz. */
 DECL|macro|MDIO_SHIFT_CLK
 mdefine_line|#define MDIO_SHIFT_CLK&t;&t;0x10000
@@ -155,12 +155,16 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|mdio_addr
 op_assign
 id|ioaddr
@@ -203,7 +207,7 @@ id|location
 )braket
 )paren
 r_return
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -240,7 +244,7 @@ id|i
 op_assign
 l_int|1000
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x60020000
@@ -262,7 +266,7 @@ op_plus
 l_int|0xA0
 )paren
 suffix:semicolon
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -270,7 +274,7 @@ op_plus
 l_int|0xA0
 )paren
 suffix:semicolon
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -300,7 +304,7 @@ op_logical_neg
 (paren
 id|retval
 op_assign
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -346,7 +350,7 @@ id|i
 op_decrement
 )paren
 (brace
-id|outl
+id|iowrite32
 c_func
 (paren
 id|MDIO_ENB
@@ -361,7 +365,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|MDIO_ENB
@@ -413,7 +417,7 @@ id|MDIO_DATA_WRITE1
 suffix:colon
 l_int|0
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|MDIO_ENB
@@ -428,7 +432,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|MDIO_ENB
@@ -462,7 +466,7 @@ id|i
 op_decrement
 )paren
 (brace
-id|outl
+id|iowrite32
 c_func
 (paren
 id|MDIO_ENB_IN
@@ -485,7 +489,7 @@ l_int|1
 op_or
 (paren
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
 id|mdio_addr
@@ -500,7 +504,7 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|MDIO_ENB_IN
@@ -600,12 +604,16 @@ op_amp
 l_int|0xffff
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|mdio_addr
 op_assign
 id|ioaddr
@@ -646,7 +654,7 @@ id|comet_miireg2offset
 id|location
 )braket
 )paren
-id|outl
+id|iowrite32
 c_func
 (paren
 id|val
@@ -684,7 +692,7 @@ id|i
 op_assign
 l_int|1000
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|cmd
@@ -706,7 +714,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -757,7 +765,7 @@ id|i
 op_decrement
 )paren
 (brace
-id|outl
+id|iowrite32
 c_func
 (paren
 id|MDIO_ENB
@@ -772,7 +780,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|MDIO_ENB
@@ -824,7 +832,7 @@ id|MDIO_DATA_WRITE1
 suffix:colon
 l_int|0
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|MDIO_ENB
@@ -839,7 +847,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|MDIO_ENB
@@ -873,7 +881,7 @@ id|i
 op_decrement
 )paren
 (brace
-id|outl
+id|iowrite32
 c_func
 (paren
 id|MDIO_ENB_IN
@@ -886,7 +894,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|MDIO_ENB_IN
@@ -927,11 +935,6 @@ r_int
 id|startup
 )paren
 (brace
-r_int
-id|ioaddr
-op_assign
-id|dev-&gt;base_addr
-suffix:semicolon
 r_struct
 id|tulip_private
 op_star
@@ -942,6 +945,13 @@ c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+r_void
+id|__iomem
+op_star
+id|ioaddr
+op_assign
+id|tp-&gt;base_addr
 suffix:semicolon
 r_struct
 id|mediatable
@@ -1024,7 +1034,7 @@ c_cond
 (paren
 id|startup
 )paren
-id|outl
+id|iowrite32
 c_func
 (paren
 id|mtable-&gt;csr12dir
@@ -1036,7 +1046,7 @@ op_plus
 id|CSR12
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|p
@@ -1205,7 +1215,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|outl
+id|iowrite32
 c_func
 (paren
 id|get_u16
@@ -1320,7 +1330,7 @@ id|setup
 l_int|2
 )braket
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0
@@ -1330,7 +1340,7 @@ op_plus
 id|CSR13
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|csr14val
@@ -1340,7 +1350,7 @@ op_plus
 id|CSR14
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|csr15dir
@@ -1351,7 +1361,7 @@ id|CSR15
 )paren
 suffix:semicolon
 multiline_comment|/* Direction */
-id|outl
+id|iowrite32
 c_func
 (paren
 id|csr15val
@@ -1362,7 +1372,7 @@ id|CSR15
 )paren
 suffix:semicolon
 multiline_comment|/* Data */
-id|outl
+id|iowrite32
 c_func
 (paren
 id|csr13val
@@ -1429,7 +1439,7 @@ c_cond
 id|startup
 )paren
 (brace
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0
@@ -1439,7 +1449,7 @@ op_plus
 id|CSR13
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|csr14val
@@ -1450,7 +1460,7 @@ id|CSR14
 )paren
 suffix:semicolon
 )brace
-id|outl
+id|iowrite32
 c_func
 (paren
 id|csr15dir
@@ -1461,7 +1471,7 @@ id|CSR15
 )paren
 suffix:semicolon
 multiline_comment|/* Direction */
-id|outl
+id|iowrite32
 c_func
 (paren
 id|csr15val
@@ -1477,7 +1487,7 @@ c_cond
 (paren
 id|startup
 )paren
-id|outl
+id|iowrite32
 c_func
 (paren
 id|csr13val
@@ -1657,7 +1667,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|outl
+id|iowrite32
 c_func
 (paren
 id|get_u16
@@ -1691,7 +1701,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|outl
+id|iowrite32
 c_func
 (paren
 id|get_u16
@@ -1760,7 +1770,7 @@ c_cond
 id|startup
 )paren
 (brace
-id|outl
+id|iowrite32
 c_func
 (paren
 id|mtable-&gt;csr12dir
@@ -1786,7 +1796,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|outl
+id|iowrite32
 c_func
 (paren
 id|reset_sequence
@@ -1814,7 +1824,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|outl
+id|iowrite32
 c_func
 (paren
 id|init_sequence
@@ -2030,7 +2040,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|outl
+id|iowrite32
 c_func
 (paren
 id|get_u16
@@ -2096,7 +2106,7 @@ id|medianame
 id|dev-&gt;if_port
 )braket
 comma
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -2149,7 +2159,7 @@ l_string|&quot;%s: PNIC PHY status is %3.3x, media %s.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -2173,7 +2183,7 @@ id|new_csr6
 op_assign
 l_int|0x810C0000
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x0001
@@ -2183,7 +2193,7 @@ op_plus
 id|CSR15
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x0201B07A
@@ -2202,7 +2212,7 @@ id|startup
 )paren
 (brace
 multiline_comment|/* Start with 10mbps to do autonegotiation. */
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x32
@@ -2216,7 +2226,7 @@ id|new_csr6
 op_assign
 l_int|0x00420000
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x0001B078
@@ -2226,7 +2236,7 @@ op_plus
 l_int|0xB8
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x0201B078
@@ -2250,7 +2260,7 @@ op_eq
 l_int|5
 )paren
 (brace
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x33
@@ -2265,7 +2275,7 @@ op_assign
 l_int|0x01860000
 suffix:semicolon
 multiline_comment|/* Trigger autonegotiation. */
-id|outl
+id|iowrite32
 c_func
 (paren
 id|startup
@@ -2283,7 +2293,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x32
@@ -2297,7 +2307,7 @@ id|new_csr6
 op_assign
 l_int|0x00420000
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x1F078
@@ -2387,7 +2397,7 @@ id|medianame
 id|dev-&gt;if_port
 )braket
 comma
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr

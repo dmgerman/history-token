@@ -39,6 +39,7 @@ macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
+macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#ifdef DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(fmt...) udbg_printf(fmt)
@@ -179,6 +180,12 @@ id|have_of
 op_assign
 l_int|1
 suffix:semicolon
+DECL|variable|boot_cpuid
+r_int
+id|boot_cpuid
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|boot_dev
 id|dev_t
 id|boot_dev
@@ -232,12 +239,14 @@ id|notifier_block
 id|ppc64_panic_block
 op_assign
 (brace
+dot
 id|notifier_call
-suffix:colon
+op_assign
 id|ppc64_panic_event
 comma
+dot
 id|priority
-suffix:colon
+op_assign
 id|INT_MIN
 multiline_comment|/* may not return; must be done last */
 )brace
@@ -2183,10 +2192,10 @@ suffix:semicolon
 macro_line|#else
 id|pvr
 op_assign
-id|mfpvr
+id|mfspr
 c_func
 (paren
-id|PSRN_PVR
+id|SPRN_PVR
 )paren
 suffix:semicolon
 macro_line|#endif

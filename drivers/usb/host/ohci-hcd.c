@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * [ Initialisation is based on Linus&squot;  ]&n; * [ uhci code and gregs ohci fragments ]&n; * [ (C) Copyright 1999 Linus Torvalds  ]&n; * [ (C) Copyright 1999 Gregory P. Smith]&n; * &n; * &n; * OHCI is the main &quot;non-Intel/VIA&quot; standard for USB 1.1 host controller&n; * interfaces (though some non-x86 Intel chips use it).  It supports&n; * smarter hardware than UHCI.  A download link for the spec available&n; * through the http://www.usb.org website.&n; *&n; * History:&n; * &n; * 2004/03/24 LH7A404 support (Durgesh Pattamatta &amp; Marc Singer)&n; * 2004/02/04 use generic dma_* functions instead of pci_* (dsaxena@plexity.net)&n; * 2003/02/24 show registers in sysfs (Kevin Brosius)&n; *&n; * 2002/09/03 get rid of ed hashtables, rework periodic scheduling and&n; * &t;bandwidth accounting; if debugging, show schedules in driverfs&n; * 2002/07/19 fixes to management of ED and schedule state.&n; * 2002/06/09 SA-1111 support (Christopher Hoover)&n; * 2002/06/01 remember frame when HC won&squot;t see EDs any more; use that info&n; *&t;to fix urb unlink races caused by interrupt latency assumptions;&n; *&t;minor ED field and function naming updates&n; * 2002/01/18 package as a patch for 2.5.3; this should match the&n; *&t;2.4.17 kernel modulo some bugs being fixed.&n; *&n; * 2001/10/18 merge pmac cleanup (Benjamin Herrenschmidt) and bugfixes&n; *&t;from post-2.4.5 patches.&n; * 2001/09/20 URB_ZERO_PACKET support; hcca_dma portability, OPTi warning&n; * 2001/09/07 match PCI PM changes, errnos from Linus&squot; tree&n; * 2001/05/05 fork 2.4.5 version into &quot;hcd&quot; framework, cleanup, simplify;&n; *&t;pbook pci quirks gone (please fix pbook pci sw!) (db)&n; *&n; * 2001/04/08 Identify version on module load (gb)&n; * 2001/03/24 td/ed hashing to remove bus_to_virt (Steve Longerbeam);&n; &t;pci_map_single (db)&n; * 2001/03/21 td and dev/ed allocation uses new pci_pool API (db)&n; * 2001/03/07 hcca allocation uses pci_alloc_consistent (Steve Longerbeam)&n; *&n; * 2000/09/26 fixed races in removing the private portion of the urb&n; * 2000/09/07 disable bulk and control lists when unlinking the last&n; *&t;endpoint descriptor in order to avoid unrecoverable errors on&n; *&t;the Lucent chips. (rwc@sgi)&n; * 2000/08/29 use bandwidth claiming hooks (thanks Randy!), fix some&n; *&t;urb unlink probs, indentation fixes&n; * 2000/08/11 various oops fixes mostly affecting iso and cleanup from&n; *&t;device unplugs.&n; * 2000/06/28 use PCI hotplug framework, for better power management&n; *&t;and for Cardbus support (David Brownell)&n; * 2000/earlier:  fixes for NEC/Lucent chips; suspend/resume handling&n; *&t;when the controller loses power; handle UE; cleanup; ...&n; *&n; * v5.2 1999/12/07 URB 3rd preview, &n; * v5.1 1999/11/30 URB 2nd preview, cpia, (usb-scsi)&n; * v5.0 1999/11/22 URB Technical preview, Paul Mackerras powerbook susp/resume &n; * &t;i386: HUB, Keyboard, Mouse, Printer &n; *&n; * v4.3 1999/10/27 multiple HCs, bulk_request&n; * v4.2 1999/09/05 ISO API alpha, new dev alloc, neg Error-codes&n; * v4.1 1999/08/27 Randy Dunlap&squot;s - ISO API first impl.&n; * v4.0 1999/08/18 &n; * v3.0 1999/06/25 &n; * v2.1 1999/05/09  code clean up&n; * v2.0 1999/05/04 &n; * v1.0 1999/04/27 initial release&n; *&n; * This file is licenced under the GPL.&n; */
+multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2004 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * [ Initialisation is based on Linus&squot;  ]&n; * [ uhci code and gregs ohci fragments ]&n; * [ (C) Copyright 1999 Linus Torvalds  ]&n; * [ (C) Copyright 1999 Gregory P. Smith]&n; * &n; * &n; * OHCI is the main &quot;non-Intel/VIA&quot; standard for USB 1.1 host controller&n; * interfaces (though some non-x86 Intel chips use it).  It supports&n; * smarter hardware than UHCI.  A download link for the spec available&n; * through the http://www.usb.org website.&n; *&n; * History:&n; * &n; * 2004/03/24 LH7A404 support (Durgesh Pattamatta &amp; Marc Singer)&n; * 2004/02/04 use generic dma_* functions instead of pci_* (dsaxena@plexity.net)&n; * 2003/02/24 show registers in sysfs (Kevin Brosius)&n; *&n; * 2002/09/03 get rid of ed hashtables, rework periodic scheduling and&n; * &t;bandwidth accounting; if debugging, show schedules in driverfs&n; * 2002/07/19 fixes to management of ED and schedule state.&n; * 2002/06/09 SA-1111 support (Christopher Hoover)&n; * 2002/06/01 remember frame when HC won&squot;t see EDs any more; use that info&n; *&t;to fix urb unlink races caused by interrupt latency assumptions;&n; *&t;minor ED field and function naming updates&n; * 2002/01/18 package as a patch for 2.5.3; this should match the&n; *&t;2.4.17 kernel modulo some bugs being fixed.&n; *&n; * 2001/10/18 merge pmac cleanup (Benjamin Herrenschmidt) and bugfixes&n; *&t;from post-2.4.5 patches.&n; * 2001/09/20 URB_ZERO_PACKET support; hcca_dma portability, OPTi warning&n; * 2001/09/07 match PCI PM changes, errnos from Linus&squot; tree&n; * 2001/05/05 fork 2.4.5 version into &quot;hcd&quot; framework, cleanup, simplify;&n; *&t;pbook pci quirks gone (please fix pbook pci sw!) (db)&n; *&n; * 2001/04/08 Identify version on module load (gb)&n; * 2001/03/24 td/ed hashing to remove bus_to_virt (Steve Longerbeam);&n; &t;pci_map_single (db)&n; * 2001/03/21 td and dev/ed allocation uses new pci_pool API (db)&n; * 2001/03/07 hcca allocation uses pci_alloc_consistent (Steve Longerbeam)&n; *&n; * 2000/09/26 fixed races in removing the private portion of the urb&n; * 2000/09/07 disable bulk and control lists when unlinking the last&n; *&t;endpoint descriptor in order to avoid unrecoverable errors on&n; *&t;the Lucent chips. (rwc@sgi)&n; * 2000/08/29 use bandwidth claiming hooks (thanks Randy!), fix some&n; *&t;urb unlink probs, indentation fixes&n; * 2000/08/11 various oops fixes mostly affecting iso and cleanup from&n; *&t;device unplugs.&n; * 2000/06/28 use PCI hotplug framework, for better power management&n; *&t;and for Cardbus support (David Brownell)&n; * 2000/earlier:  fixes for NEC/Lucent chips; suspend/resume handling&n; *&t;when the controller loses power; handle UE; cleanup; ...&n; *&n; * v5.2 1999/12/07 URB 3rd preview, &n; * v5.1 1999/11/30 URB 2nd preview, cpia, (usb-scsi)&n; * v5.0 1999/11/22 URB Technical preview, Paul Mackerras powerbook susp/resume &n; * &t;i386: HUB, Keyboard, Mouse, Printer &n; *&n; * v4.3 1999/10/27 multiple HCs, bulk_request&n; * v4.2 1999/09/05 ISO API alpha, new dev alloc, neg Error-codes&n; * v4.1 1999/08/27 Randy Dunlap&squot;s - ISO API first impl.&n; * v4.0 1999/08/18 &n; * v3.0 1999/06/25 &n; * v2.1 1999/05/09  code clean up&n; * v2.0 1999/05/04 &n; * v1.0 1999/04/27 initial release&n; *&n; * This file is licenced under the GPL.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
@@ -44,6 +44,16 @@ DECL|macro|OHCI_CONTROL_INIT
 mdefine_line|#define&t;OHCI_CONTROL_INIT &t;OHCI_CTRL_CBSR
 DECL|macro|OHCI_INTR_INIT
 mdefine_line|#define&t;OHCI_INTR_INIT &bslash;&n;&t;(OHCI_INTR_MIE | OHCI_INTR_UE | OHCI_INTR_RD | OHCI_INTR_WDH)
+macro_line|#ifdef __hppa__
+multiline_comment|/* On PA-RISC, PDC can leave IR set incorrectly; ignore it there. */
+DECL|macro|IR_DISABLE
+mdefine_line|#define&t;IR_DISABLE
+macro_line|#endif
+macro_line|#ifdef CONFIG_ARCH_OMAP
+multiline_comment|/* OMAP doesn&squot;t support IR (no SMM; not needed) */
+DECL|macro|IR_DISABLE
+mdefine_line|#define&t;IR_DISABLE
+macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|variable|hcd_name
 r_static
@@ -56,6 +66,49 @@ op_assign
 l_string|&quot;ohci_hcd&quot;
 suffix:semicolon
 macro_line|#include &quot;ohci.h&quot;
+r_static
+r_void
+id|ohci_dump
+(paren
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+comma
+r_int
+id|verbose
+)paren
+suffix:semicolon
+r_static
+r_int
+id|ohci_init
+(paren
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+)paren
+suffix:semicolon
+r_static
+r_int
+id|ohci_restart
+(paren
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+)paren
+suffix:semicolon
+r_static
+r_void
+id|ohci_stop
+(paren
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+)paren
+suffix:semicolon
 macro_line|#include &quot;ohci-hub.c&quot;
 macro_line|#include &quot;ohci-dbg.c&quot;
 macro_line|#include &quot;ohci-mem.c&quot;
@@ -1045,12 +1098,44 @@ id|ohci-&gt;hcca
 )paren
 suffix:semicolon
 )brace
+DECL|function|ohci_usb_reset
+r_static
+r_void
+id|ohci_usb_reset
+(paren
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+)paren
+(brace
+id|ohci-&gt;hc_control
+op_assign
+id|ohci_readl
+(paren
+op_amp
+id|ohci-&gt;regs-&gt;control
+)paren
+suffix:semicolon
+id|ohci-&gt;hc_control
+op_and_assign
+id|OHCI_CTRL_RWC
+suffix:semicolon
+id|writel
+(paren
+id|ohci-&gt;hc_control
+comma
+op_amp
+id|ohci-&gt;regs-&gt;control
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*-------------------------------------------------------------------------*&n; * HC functions&n; *-------------------------------------------------------------------------*/
-multiline_comment|/* reset the HC and BUS */
-DECL|function|hc_reset
+multiline_comment|/* init memory, and kick BIOS/SMM off */
+DECL|function|ohci_init
 r_static
 r_int
-id|hc_reset
+id|ohci_init
 (paren
 r_struct
 id|ohci_hcd
@@ -1061,42 +1146,24 @@ id|ohci
 id|u32
 id|temp
 suffix:semicolon
-multiline_comment|/* boot firmware should have set this up (5.1.1.3.1) */
-r_if
-c_cond
+r_int
+id|ret
+suffix:semicolon
+id|disable
 (paren
-op_logical_neg
-id|ohci-&gt;fminterval
-)paren
-(brace
-id|temp
-op_assign
-id|ohci_readl
-(paren
-op_amp
-id|ohci-&gt;regs-&gt;fminterval
+id|ohci
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|temp
-op_amp
-l_int|0x3fff0000
-)paren
-id|ohci-&gt;fminterval
+id|ohci-&gt;regs
 op_assign
-id|temp
+id|ohci-&gt;hcd.regs
 suffix:semicolon
-r_else
-id|ohci-&gt;fminterval
+id|ohci-&gt;next_statechange
 op_assign
-id|DEFAULT_FMINTERVAL
+id|jiffies
 suffix:semicolon
-multiline_comment|/* also: power/overcurrent flags in roothub.a */
-)brace
-multiline_comment|/* SMM owns the HC?  not for long!&n;&t; * On PA-RISC, PDC can leave IR set incorrectly; ignore it there.&n;&t; */
-macro_line|#ifndef __hppa__
+macro_line|#ifndef IR_DISABLE
+multiline_comment|/* SMM owns the HC?  not for long! */
 r_if
 c_cond
 (paren
@@ -1173,10 +1240,15 @@ l_string|&quot;USB HC TakeOver failed!&bslash;n&quot;
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EBUSY
 suffix:semicolon
 )brace
 )brace
+id|ohci_usb_reset
+(paren
+id|ohci
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* Disable HC interrupts */
@@ -1188,20 +1260,165 @@ op_amp
 id|ohci-&gt;regs-&gt;intrdisable
 )paren
 suffix:semicolon
-id|ohci_dbg
+singleline_comment|// flush the writes
 (paren
-id|ohci
-comma
-l_string|&quot;reset, control = 0x%x&bslash;n&quot;
-comma
+r_void
+)paren
 id|ohci_readl
 (paren
 op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ohci-&gt;hcca
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|ohci-&gt;hcca
+op_assign
+id|dma_alloc_coherent
+(paren
+id|ohci-&gt;hcd.self.controller
+comma
+r_sizeof
+op_star
+id|ohci-&gt;hcca
+comma
+op_amp
+id|ohci-&gt;hcca_dma
+comma
+l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Reset USB (needed by some controllers); RemoteWakeupConnected&n;&t; * saved if boot firmware (BIOS/SMM/...) told us it&squot;s connected&n;&t; * (for OHCI integrated on mainboard, it normally is)&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ohci-&gt;hcca
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|ret
+op_assign
+id|ohci_mem_init
+(paren
+id|ohci
+)paren
+)paren
+OL
+l_int|0
+)paren
+id|ohci_stop
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/* Start an OHCI controller, set the BUS operational&n; * resets USB and controller&n; * enable interrupts &n; * connect the virtual root hub&n; */
+DECL|function|ohci_run
+r_static
+r_int
+id|ohci_run
+(paren
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+)paren
+(brace
+id|u32
+id|mask
+comma
+id|temp
+suffix:semicolon
+r_struct
+id|usb_device
+op_star
+id|udev
+suffix:semicolon
+r_struct
+id|usb_bus
+op_star
+id|bus
+suffix:semicolon
+r_int
+id|first
+op_assign
+id|ohci-&gt;fminterval
+op_eq
+l_int|0
+suffix:semicolon
+id|disable
+(paren
+id|ohci
+)paren
+suffix:semicolon
+multiline_comment|/* boot firmware should have set this up (5.1.1.3.1) */
+r_if
+c_cond
+(paren
+id|first
+)paren
+(brace
+id|temp
+op_assign
+id|ohci_readl
+(paren
+op_amp
+id|ohci-&gt;regs-&gt;fminterval
+)paren
+suffix:semicolon
+id|ohci-&gt;fminterval
+op_assign
+id|temp
+op_amp
+l_int|0x3fff
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ohci-&gt;fminterval
+op_ne
+id|FI
+)paren
+id|ohci_dbg
+(paren
+id|ohci
+comma
+l_string|&quot;fminterval delta %d&bslash;n&quot;
+comma
+id|ohci-&gt;fminterval
+op_minus
+id|FI
+)paren
+suffix:semicolon
+id|ohci-&gt;fminterval
+op_or_assign
+id|FSMP
+(paren
+id|ohci-&gt;fminterval
+)paren
+op_lshift
+l_int|16
+suffix:semicolon
+multiline_comment|/* also: power/overcurrent flags in roothub.a */
+)brace
+multiline_comment|/* Reset USB nearly &quot;by the book&quot;.  RemoteWakeupConnected&n;&t; * saved if boot firmware (BIOS/SMM/...) told us it&squot;s connected&n;&t; * (for OHCI integrated on mainboard, it normally is)&n;&t; */
 id|ohci-&gt;hc_control
 op_assign
 id|ohci_readl
@@ -1210,26 +1427,119 @@ op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
+id|ohci_dbg
+(paren
+id|ohci
+comma
+l_string|&quot;resetting from state &squot;%s&squot;, control = 0x%x&bslash;n&quot;
+comma
+id|hcfs2string
+(paren
 id|ohci-&gt;hc_control
-op_and_assign
-id|OHCI_CTRL_RWC
+op_amp
+id|OHCI_CTRL_HCFS
+)paren
+comma
+id|ohci-&gt;hc_control
+)paren
 suffix:semicolon
-multiline_comment|/* hcfs 0 = RESET */
 r_if
 c_cond
 (paren
 id|ohci-&gt;hc_control
+op_amp
+id|OHCI_CTRL_RWC
+op_logical_and
+op_logical_neg
+(paren
+id|ohci-&gt;flags
+op_amp
+id|OHCI_QUIRK_AMD756
+)paren
 )paren
 id|ohci-&gt;hcd.can_wakeup
 op_assign
 l_int|1
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ohci-&gt;hc_control
+op_amp
+id|OHCI_CTRL_HCFS
+)paren
+(brace
+r_case
+id|OHCI_USB_OPER
+suffix:colon
+id|temp
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|OHCI_USB_SUSPEND
+suffix:colon
+r_case
+id|OHCI_USB_RESUME
+suffix:colon
+id|ohci-&gt;hc_control
+op_and_assign
+id|OHCI_CTRL_RWC
+suffix:semicolon
+id|ohci-&gt;hc_control
+op_or_assign
+id|OHCI_USB_RESUME
+suffix:semicolon
+id|temp
+op_assign
+l_int|10
+multiline_comment|/* msec wait */
+suffix:semicolon
+r_break
+suffix:semicolon
+singleline_comment|// case OHCI_USB_RESET:
+r_default
+suffix:colon
+id|ohci-&gt;hc_control
+op_and_assign
+id|OHCI_CTRL_RWC
+suffix:semicolon
+id|ohci-&gt;hc_control
+op_or_assign
+id|OHCI_USB_RESET
+suffix:semicolon
+id|temp
+op_assign
+l_int|50
+multiline_comment|/* msec wait */
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|writel
 (paren
 id|ohci-&gt;hc_control
 comma
 op_amp
 id|ohci-&gt;regs-&gt;control
+)paren
+suffix:semicolon
+singleline_comment|// flush the writes
+(paren
+r_void
+)paren
+id|ohci_readl
+(paren
+op_amp
+id|ohci-&gt;regs-&gt;control
+)paren
+suffix:semicolon
+id|msleep
+c_func
+(paren
+id|temp
 )paren
 suffix:semicolon
 r_if
@@ -1275,7 +1585,7 @@ id|temp
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// flush those pci writes
+singleline_comment|// flush those writes
 (paren
 r_void
 )paren
@@ -1285,11 +1595,28 @@ op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
-id|msleep
+id|memset
 (paren
-l_int|50
+id|ohci-&gt;hcca
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|ohci_hcca
+)paren
 )paren
 suffix:semicolon
+multiline_comment|/* 2msec timelimit here means no irqs/preempt */
+id|spin_lock_irq
+(paren
+op_amp
+id|ohci-&gt;lock
+)paren
+suffix:semicolon
+id|retry
+suffix:colon
 multiline_comment|/* HC Reset requires max 10 us delay */
 id|writel
 (paren
@@ -1329,6 +1656,12 @@ op_eq
 l_int|0
 )paren
 (brace
+id|spin_unlock_irq
+(paren
+op_amp
+id|ohci-&gt;lock
+)paren
+suffix:semicolon
 id|ohci_err
 (paren
 id|ohci
@@ -1347,7 +1680,15 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* now we&squot;re in the SUSPEND state ... must go OPERATIONAL&n;&t; * within 2msec else HC enters RESUME&n;&t; *&n;&t; * ... but some hardware won&squot;t init fmInterval &quot;by the book&quot;&n;&t; * (SiS, OPTi ...), so reset again instead.  SiS doesn&squot;t need&n;&t; * this if we write fmInterval after we&squot;re OPERATIONAL.&n;&t; */
+multiline_comment|/* now we&squot;re in the SUSPEND state ... must go OPERATIONAL&n;&t; * within 2msec else HC enters RESUME&n;&t; *&n;&t; * ... but some hardware won&squot;t init fmInterval &quot;by the book&quot;&n;&t; * (SiS, OPTi ...), so reset again instead.  SiS doesn&squot;t need&n;&t; * this if we write fmInterval after we&squot;re OPERATIONAL.&n;&t; * Unclear about ALi, ServerWorks, and others ... this could&n;&t; * easily be a longstanding bug in chip init on Linux.&n;&t; */
+r_if
+c_cond
+(paren
+id|ohci-&gt;flags
+op_amp
+id|OHCI_QUIRK_INITRESET
+)paren
+(brace
 id|writel
 (paren
 id|ohci-&gt;hc_control
@@ -1356,7 +1697,7 @@ op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
-singleline_comment|// flush those pci writes
+singleline_comment|// flush those writes
 (paren
 r_void
 )paren
@@ -1366,41 +1707,13 @@ op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
-multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/* Start an OHCI controller, set the BUS operational&n; * enable interrupts &n; * connect the virtual root hub&n; */
-DECL|function|hc_start
-r_static
-r_int
-id|hc_start
+id|writel
 (paren
-r_struct
-id|ohci_hcd
-op_star
-id|ohci
-)paren
-(brace
-id|u32
-id|mask
+id|ohci-&gt;fminterval
 comma
-id|tmp
-suffix:semicolon
-r_struct
-id|usb_device
-op_star
-id|udev
-suffix:semicolon
-r_struct
-id|usb_bus
-op_star
-id|bus
-suffix:semicolon
-id|disable
-(paren
-id|ohci
+op_amp
+id|ohci-&gt;regs-&gt;fminterval
 )paren
 suffix:semicolon
 multiline_comment|/* Tell the controller where the control and bulk lists are&n;&t; * The lists are empty now. */
@@ -1461,11 +1774,55 @@ id|ohci-&gt;regs-&gt;periodicstart
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|ohci-&gt;flags
+op_amp
+id|OHCI_QUIRK_INITRESET
+)paren
+)paren
+(brace
+id|ohci-&gt;flags
+op_or_assign
+id|OHCI_QUIRK_INITRESET
+suffix:semicolon
+id|ohci_dbg
+(paren
+id|ohci
+comma
+l_string|&quot;enabling initreset quirk&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|retry
+suffix:semicolon
+)brace
+id|spin_unlock_irq
+(paren
+op_amp
+id|ohci-&gt;lock
+)paren
+suffix:semicolon
 id|ohci_err
 (paren
 id|ohci
 comma
-l_string|&quot;init err&bslash;n&quot;
+l_string|&quot;init err (%08x %04x)&bslash;n&quot;
+comma
+id|ohci_readl
+(paren
+op_amp
+id|ohci-&gt;regs-&gt;fminterval
+)paren
+comma
+id|ohci_readl
+(paren
+op_amp
+id|ohci-&gt;regs-&gt;periodicstart
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -1527,14 +1884,14 @@ id|ohci-&gt;regs-&gt;intrenable
 )paren
 suffix:semicolon
 multiline_comment|/* handle root hub init quirks ... */
-id|tmp
+id|temp
 op_assign
 id|roothub_a
 (paren
 id|ohci
 )paren
 suffix:semicolon
-id|tmp
+id|temp
 op_and_assign
 op_complement
 (paren
@@ -1552,11 +1909,11 @@ id|OHCI_QUIRK_SUPERIO
 )paren
 (brace
 multiline_comment|/* NSC 87560 and maybe others */
-id|tmp
+id|temp
 op_or_assign
 id|RH_A_NOCP
 suffix:semicolon
-id|tmp
+id|temp
 op_and_assign
 op_complement
 (paren
@@ -1574,7 +1931,7 @@ id|power_switching
 )paren
 (brace
 multiline_comment|/* act like most external hubs:  use per-port power&n;&t;&t; * switching and overcurrent reporting.&n;&t;&t; */
-id|tmp
+id|temp
 op_and_assign
 op_complement
 (paren
@@ -1583,7 +1940,7 @@ op_or
 id|RH_A_NOCP
 )paren
 suffix:semicolon
-id|tmp
+id|temp
 op_or_assign
 id|RH_A_PSM
 op_or
@@ -1593,14 +1950,14 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* hub power always on; required for AMD-756 and some&n;&t;&t; * Mac platforms.  ganged overcurrent reporting, if any.&n;&t;&t; */
-id|tmp
+id|temp
 op_or_assign
 id|RH_A_NPS
 suffix:semicolon
 )brace
 id|writel
 (paren
-id|tmp
+id|temp
 comma
 op_amp
 id|ohci-&gt;regs-&gt;roothub.a
@@ -1627,7 +1984,7 @@ op_amp
 id|ohci-&gt;regs-&gt;roothub.b
 )paren
 suffix:semicolon
-singleline_comment|// flush those pci writes
+singleline_comment|// flush those writes
 (paren
 r_void
 )paren
@@ -1635,6 +1992,12 @@ id|ohci_readl
 (paren
 op_amp
 id|ohci-&gt;regs-&gt;control
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+(paren
+op_amp
+id|ohci-&gt;lock
 )paren
 suffix:semicolon
 singleline_comment|// POTPGT delay is bits 24-31, in 2 ms units.
@@ -1660,15 +2023,43 @@ op_amp
 id|ohci-&gt;hcd
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|bus-&gt;root_hub
-)paren
-(brace
 id|ohci-&gt;hcd.state
 op_assign
 id|USB_STATE_RUNNING
+suffix:semicolon
+id|ohci_dump
+(paren
+id|ohci
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|udev
+op_assign
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|root_hub
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|udev
+)paren
+(brace
+id|udev-&gt;dev.power.power_state
+op_assign
+l_int|0
+suffix:semicolon
+id|usb_set_device_state
+(paren
+id|udev
+comma
+id|USB_STATE_CONFIGURED
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -1685,10 +2076,6 @@ id|bus
 comma
 l_int|0
 )paren
-suffix:semicolon
-id|ohci-&gt;hcd.state
-op_assign
-id|USB_STATE_RUNNING
 suffix:semicolon
 r_if
 c_cond
@@ -1766,6 +2153,24 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ohci-&gt;power_budget
+)paren
+id|hub_set_power_budget
+c_func
+(paren
+id|udev
+comma
+id|ohci-&gt;power_budget
+)paren
+suffix:semicolon
+id|create_debug_files
+(paren
+id|ohci
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1924,7 +2329,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|hc_reset
+id|ohci_usb_reset
 (paren
 id|ohci
 )paren
@@ -2101,7 +2506,7 @@ op_amp
 id|regs-&gt;intrenable
 )paren
 suffix:semicolon
-singleline_comment|// flush those pci writes
+singleline_comment|// flush those writes
 (paren
 r_void
 )paren
@@ -2166,21 +2571,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|HCD_IS_RUNNING
-c_func
-(paren
-id|ohci-&gt;hcd.state
-)paren
-)paren
-id|hc_reset
+id|ohci_usb_reset
 (paren
 id|ohci
 )paren
 suffix:semicolon
-r_else
 id|writel
 (paren
 id|OHCI_INTR_MIE
@@ -2231,70 +2626,10 @@ suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* must not be called from interrupt context */
 macro_line|#if&t;defined(CONFIG_USB_SUSPEND) || defined(CONFIG_PM)
-DECL|function|mark_children_gone
-r_static
-r_void
-id|mark_children_gone
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|dev-&gt;maxchild
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|dev-&gt;children
-(braket
-id|i
-)braket
-op_eq
-l_int|0
-)paren
-r_continue
-suffix:semicolon
-id|dev-&gt;children
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|state
-op_assign
-id|USB_STATE_NOTATTACHED
-suffix:semicolon
-id|mark_children_gone
-(paren
-id|dev-&gt;children
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-)brace
-)brace
-DECL|function|hc_restart
+DECL|function|ohci_restart
 r_static
 r_int
-id|hc_restart
+id|ohci_restart
 (paren
 r_struct
 id|ohci_hcd
@@ -2326,9 +2661,11 @@ id|disable
 id|ohci
 )paren
 suffix:semicolon
-id|mark_children_gone
+id|usb_set_device_state
 (paren
 id|ohci-&gt;hcd.self.root_hub
+comma
+id|USB_STATE_NOTATTACHED
 )paren
 suffix:semicolon
 r_if
@@ -2533,18 +2870,7 @@ c_cond
 (paren
 id|temp
 op_assign
-id|hc_reset
-(paren
-id|ohci
-)paren
-)paren
-OL
-l_int|0
-op_logical_or
-(paren
-id|temp
-op_assign
-id|hc_start
+id|ohci_run
 (paren
 id|ohci
 )paren
@@ -2595,26 +2921,11 @@ id|temp
 )braket
 )paren
 suffix:semicolon
-id|ohci-&gt;hcd.self.root_hub-&gt;dev.power.power_state
-op_assign
-l_int|0
-suffix:semicolon
-id|ohci-&gt;hcd.state
-op_assign
-id|USB_STATE_RUNNING
-suffix:semicolon
 id|ohci_dbg
 (paren
 id|ohci
 comma
 l_string|&quot;restart complete&bslash;n&quot;
-)paren
-suffix:semicolon
-id|ohci_dump
-(paren
-id|ohci
-comma
-l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -2655,7 +2966,27 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_LH7A404
 macro_line|#include &quot;ohci-lh7a404.c&quot;
 macro_line|#endif
-macro_line|#if !(defined(CONFIG_PCI) &bslash;&n;      || defined(CONFIG_SA1111) &bslash;&n;      || defined(CONFIG_ARCH_OMAP) &bslash;&n;      || defined (CONFIG_ARCH_LH7A404) &bslash;&n;&t;)
+macro_line|#ifdef CONFIG_PXA27x
+macro_line|#include &quot;ohci-pxa27x.c&quot;
+macro_line|#endif
+macro_line|#if !(defined(CONFIG_PCI) &bslash;&n;      || defined(CONFIG_SA1111) &bslash;&n;      || defined(CONFIG_ARCH_OMAP) &bslash;&n;      || defined (CONFIG_ARCH_LH7A404) &bslash;&n;      || defined (CONFIG_PXA27x) &bslash;&n;&t;)
 macro_line|#error &quot;missing bus glue for ohci-hcd&quot;
+macro_line|#endif
+macro_line|#if&t;!defined(HAVE_HNP) &amp;&amp; defined(CONFIG_USB_OTG)
+macro_line|#warning non-OTG configuration, too many HCDs
+DECL|function|start_hnp
+r_static
+r_void
+id|start_hnp
+c_func
+(paren
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+)paren
+(brace
+multiline_comment|/* &quot;can&squot;t happen&quot; */
+)brace
 macro_line|#endif
 eof

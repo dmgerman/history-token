@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/css.c&n; *  driver for channel subsystem&n; *   $Revision: 1.80 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/css.c&n; *  driver for channel subsystem&n; *   $Revision: 1.82 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
@@ -1045,7 +1045,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|irq
-op_le
+OL
 id|__MAX_SUBCHANNELS
 suffix:semicolon
 id|irq
@@ -1954,6 +1954,20 @@ id|new_slow_sch
 r_return
 op_minus
 id|ENOMEM
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|new_slow_sch
+comma
+r_sizeof
+(paren
+r_struct
+id|slow_subchannel
+)paren
+comma
+l_int|0
+)paren
 suffix:semicolon
 id|new_slow_sch-&gt;schid
 op_assign

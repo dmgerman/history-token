@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/fs/namespace.c&n; *&n; * (C) Copyright Al Viro 2000, 2001&n; *&t;Released under GPL v2.&n; *&n; * Based on code from fs/super.c, copyright Linus Torvalds and others.&n; * Heavily rewritten.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -5516,13 +5517,6 @@ id|old_rootmnt
 suffix:semicolon
 )brace
 )brace
-DECL|variable|set_fs_root
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|set_fs_root
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Replace the fs-&gt;{pwdmnt,pwd} with {mnt,dentry}. Put the old values.&n; * It can block. Requires the big lock held.&n; */
 DECL|function|set_fs_pwd
 r_void
@@ -5613,13 +5607,6 @@ id|old_pwdmnt
 suffix:semicolon
 )brace
 )brace
-DECL|variable|set_fs_pwd
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|set_fs_pwd
-)paren
-suffix:semicolon
 DECL|function|chroot_fs_refs
 r_static
 r_void

@@ -2,9 +2,17 @@ multiline_comment|/*&n; * inode.h - Defines for inode structures NTFS Linux kern
 macro_line|#ifndef _LINUX_NTFS_INODE_H
 DECL|macro|_LINUX_NTFS_INODE_H
 mdefine_line|#define _LINUX_NTFS_INODE_H
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;layout.h&quot;
 macro_line|#include &quot;volume.h&quot;
+macro_line|#include &quot;types.h&quot;
+macro_line|#include &quot;runlist.h&quot;
+macro_line|#include &quot;debug.h&quot;
 DECL|typedef|ntfs_inode
 r_typedef
 r_struct
@@ -56,7 +64,7 @@ suffix:semicolon
 multiline_comment|/* Pointer to the ntfs volume of this inode. */
 multiline_comment|/*&n;&t; * If NInoAttr() is true, the below fields describe the attribute which&n;&t; * this fake inode belongs to. The actual inode of this attribute is&n;&t; * pointed to by base_ntfs_ino and nr_extents is always set to -1 (see&n;&t; * below). For real inodes, we also set the type (AT_DATA for files and&n;&t; * AT_INDEX_ALLOCATION for directories), with the name = NULL and&n;&t; * name_len = 0 for files and name = I30 (global constant) and&n;&t; * name_len = 4 for directories.&n;&t; */
 DECL|member|type
-id|ATTR_TYPES
+id|ATTR_TYPE
 id|type
 suffix:semicolon
 multiline_comment|/* Attribute type of this fake inode. */
@@ -135,7 +143,7 @@ id|vcn_size
 suffix:semicolon
 multiline_comment|/* Size of a vcn in this&n;&t;&t;&t;&t;&t;&t;   index. */
 DECL|member|collation_rule
-id|COLLATION_RULES
+id|COLLATION_RULE
 id|collation_rule
 suffix:semicolon
 multiline_comment|/* The collation rule&n;&t;&t;&t;&t;&t;&t;   for the index. */
@@ -425,7 +433,7 @@ id|u32
 id|name_len
 suffix:semicolon
 DECL|member|type
-id|ATTR_TYPES
+id|ATTR_TYPE
 id|type
 suffix:semicolon
 DECL|typedef|ntfs_attr
@@ -492,7 +500,7 @@ id|inode
 op_star
 id|base_vi
 comma
-id|ATTR_TYPES
+id|ATTR_TYPE
 id|type
 comma
 id|ntfschar
@@ -558,6 +566,63 @@ op_star
 id|vi
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|__ntfs_init_inode
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+id|ntfs_inode
+op_star
+id|ni
+)paren
+suffix:semicolon
+DECL|function|ntfs_init_big_inode
+r_static
+r_inline
+r_void
+id|ntfs_init_big_inode
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|vi
+)paren
+(brace
+id|ntfs_inode
+op_star
+id|ni
+op_assign
+id|NTFS_I
+c_func
+(paren
+id|vi
+)paren
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Entering.&quot;
+)paren
+suffix:semicolon
+id|__ntfs_init_inode
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+id|ni
+)paren
+suffix:semicolon
+id|ni-&gt;mft_no
+op_assign
+id|vi-&gt;i_ino
+suffix:semicolon
+)brace
 r_extern
 id|ntfs_inode
 op_star

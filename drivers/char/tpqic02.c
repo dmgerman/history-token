@@ -1765,20 +1765,12 @@ id|spin_t
 )paren
 (brace
 multiline_comment|/* be `nice` to other processes on long operations... */
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
 multiline_comment|/* nap 0.30 sec between checks, */
 multiline_comment|/* but could be woken up earlier by signals... */
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
-l_int|3
-op_star
-id|HZ
-op_div
-l_int|10
+l_int|300
 )paren
 suffix:semicolon
 )brace

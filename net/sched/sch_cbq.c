@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1360,10 +1360,10 @@ id|NET_XMIT_SUCCESS
 id|sch-&gt;q.qlen
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.packets
+id|sch-&gt;bstats.packets
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.bytes
+id|sch-&gt;bstats.bytes
 op_add_assign
 id|len
 suffix:semicolon
@@ -1393,7 +1393,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifndef CONFIG_NET_CLS_ACT
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_if
@@ -1432,7 +1432,7 @@ op_eq
 id|ret
 )paren
 (brace
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 )brace
@@ -1515,7 +1515,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_return
@@ -1583,7 +1583,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 id|cl-&gt;stats.drops
@@ -2649,10 +2649,10 @@ l_int|0
 id|sch-&gt;q.qlen
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.packets
+id|sch-&gt;bstats.packets
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.bytes
+id|sch-&gt;bstats.bytes
 op_add_assign
 id|len
 suffix:semicolon
@@ -2672,14 +2672,14 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_return
@@ -3770,7 +3770,7 @@ c_cond
 id|sch-&gt;q.qlen
 )paren
 (brace
-id|sch-&gt;stats.overlimits
+id|sch-&gt;qstats.overlimits
 op_increment
 suffix:semicolon
 r_if
@@ -6787,10 +6787,6 @@ comma
 id|q-&gt;now
 )paren
 suffix:semicolon
-id|q-&gt;link.xstats.avgidle
-op_assign
-id|q-&gt;link.avgidle
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7151,6 +7147,13 @@ c_func
 id|sch
 )paren
 suffix:semicolon
+id|BUG_TRAP
+c_func
+(paren
+op_logical_neg
+id|cl-&gt;filters
+)paren
+suffix:semicolon
 id|cbq_destroy_filters
 c_func
 (paren
@@ -7230,6 +7233,43 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n;&t; * Filters must be destroyed first because we don&squot;t destroy the&n;&t; * classes from root to leafs which means that filters can still&n;&t; * be bound to classes which have been destroyed already. --TGR &squot;04&n;&t; */
+r_for
+c_loop
+(paren
+id|h
+op_assign
+l_int|0
+suffix:semicolon
+id|h
+OL
+l_int|16
+suffix:semicolon
+id|h
+op_increment
+)paren
+r_for
+c_loop
+(paren
+id|cl
+op_assign
+id|q-&gt;classes
+(braket
+id|h
+)braket
+suffix:semicolon
+id|cl
+suffix:semicolon
+id|cl
+op_assign
+id|cl-&gt;next
+)paren
+id|cbq_destroy_filters
+c_func
+(paren
+id|cl
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren

@@ -1684,8 +1684,7 @@ c_func
 (paren
 l_string|&quot;bw2fb&quot;
 comma
-op_amp
-id|option
+l_int|NULL
 )paren
 )paren
 r_return

@@ -114,6 +114,13 @@ DECL|variable|acpi_strict
 r_int
 id|acpi_strict
 suffix:semicolon
+DECL|variable|acpi_strict
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_strict
+)paren
+suffix:semicolon
 DECL|variable|__initdata
 id|acpi_interrupt_flags
 id|acpi_sci_flags
@@ -1325,6 +1332,12 @@ r_int
 r_int
 id|irq
 suffix:semicolon
+r_int
+r_int
+id|plat_gsi
+op_assign
+id|gsi
+suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 multiline_comment|/*&n;&t; * Make sure all (legacy) PCI IRQs are set as level-triggered.&n;&t; */
 r_if
@@ -1415,6 +1428,8 @@ op_eq
 id|ACPI_IRQ_MODEL_IOAPIC
 )paren
 (brace
+id|plat_gsi
+op_assign
 id|mp_register_gsi
 c_func
 (paren
@@ -1430,7 +1445,7 @@ macro_line|#endif
 id|acpi_gsi_to_irq
 c_func
 (paren
-id|gsi
+id|plat_gsi
 comma
 op_amp
 id|irq
@@ -2512,12 +2527,33 @@ c_cond
 id|error
 )paren
 (brace
+r_extern
+r_int
+id|acpi_force
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_force
+)paren
+(brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
 id|PREFIX
-l_string|&quot;BIOS listed in blacklist, disabling ACPI support&bslash;n&quot;
+l_string|&quot;acpi=force override&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|PREFIX
+l_string|&quot;Disabling ACPI support&bslash;n&quot;
 )paren
 suffix:semicolon
 id|disable_acpi
@@ -2528,6 +2564,7 @@ suffix:semicolon
 r_return
 id|error
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * set sci_int and PM timer address&n;&t; */
 id|acpi_table_parse

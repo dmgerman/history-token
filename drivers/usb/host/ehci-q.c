@@ -2684,7 +2684,7 @@ op_star
 id|qh
 )paren
 (brace
-id|u32
+id|__le32
 id|dma
 op_assign
 id|QH_NEXT
@@ -2807,7 +2807,7 @@ multiline_comment|/* qtd completions reported later by interrupt */
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|macro|QH_ADDR_MASK
-mdefine_line|#define&t;QH_ADDR_MASK&t;__constant_le32_to_cpu(0x7f)
+mdefine_line|#define&t;QH_ADDR_MASK&t;__constant_cpu_to_le32(0x7f)
 multiline_comment|/*&n; * For control/bulk/interrupt, return QH with these TDs appended.&n; * Allocates and initializes the QH if necessary.&n; * Returns null if it can&squot;t allocate a QH it needs to.&n; * If the QH has TDs (urbs) already, that&squot;s great.&n; */
 DECL|function|qh_append_tds
 r_static
@@ -3174,7 +3174,7 @@ suffix:semicolon
 id|dma_addr_t
 id|dma
 suffix:semicolon
-id|u32
+id|__le32
 id|token
 suffix:semicolon
 multiline_comment|/* to avoid racing the HC, use the dummy td instead of&n;&t;&t;&t; * the first td of our list (becomes new dummy).  both&n;&t;&t;&t; * tds stay deactivated until we&squot;re done, when the&n;&t;&t;&t; * HC is allowed to fetch the old dummy (4.10.2).&n;&t;&t;&t; */

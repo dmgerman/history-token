@@ -1823,6 +1823,12 @@ id|sbi-&gt;flag
 op_assign
 id|flag
 suffix:semicolon
+macro_line|#ifdef CONFIG_JFS_POSIX_ACL
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_POSIXACL
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

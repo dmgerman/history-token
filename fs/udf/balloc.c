@@ -2,7 +2,7 @@ multiline_comment|/*&n; * balloc.c&n; *&n; * PURPOSE&n; *&t;Block allocation han
 macro_line|#include &quot;udfdecl.h&quot;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &quot;udf_i.h&quot;
 macro_line|#include &quot;udf_sb.h&quot;
 DECL|macro|udf_clear_bit
@@ -62,7 +62,7 @@ op_div
 id|BITS_PER_LONG
 )paren
 suffix:semicolon
-id|uintBPL_t
+r_int
 id|result
 op_assign
 id|offset
@@ -74,7 +74,8 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|uintBPL_t
+r_int
+r_int
 id|tmp
 suffix:semicolon
 r_if

@@ -47,6 +47,11 @@ op_assign
 id|cap_capable
 comma
 dot
+id|settime
+op_assign
+id|cap_settime
+comma
+dot
 id|netlink_send
 op_assign
 id|cap_netlink_send

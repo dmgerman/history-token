@@ -551,7 +551,8 @@ id|port-&gt;number
 )paren
 suffix:semicolon
 multiline_comment|/* shutdown our bulk read */
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;read_urb
 )paren
@@ -1409,7 +1410,8 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;read_urb
 )paren
@@ -1733,17 +1735,6 @@ id|port-&gt;tty-&gt;low_latency
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* Notify the tty driver that the termios have changed. */
-id|port-&gt;tty-&gt;ldisc
-dot
-id|set_termios
-c_func
-(paren
-id|port-&gt;tty
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -2027,8 +2018,8 @@ id|i
 )braket
 )paren
 (brace
-multiline_comment|/* FIXME - uncomment the following usb_unlink_urb call when&n;&t;&t;&t; * the host controllers get fixed to set urb-&gt;dev = NULL after&n;&t;&t;&t; * the urb is finished.  Otherwise this call oopses. */
-multiline_comment|/* usb_unlink_urb(write_urb_pool[i]); */
+multiline_comment|/* FIXME - uncomment the following usb_kill_urb call when&n;&t;&t;&t; * the host controllers get fixed to set urb-&gt;dev = NULL after&n;&t;&t;&t; * the urb is finished.  Otherwise this call oopses. */
+multiline_comment|/* usb_kill_urb(write_urb_pool[i]); */
 r_if
 c_cond
 (paren

@@ -2,6 +2,9 @@ multiline_comment|/*&n; * linux/arch/arm/mach-omap/common.h&n; *&n; * Header for
 macro_line|#ifndef __ARCH_ARM_MACH_OMAP_COMMON_H
 DECL|macro|__ARCH_ARM_MACH_OMAP_COMMON_H
 mdefine_line|#define __ARCH_ARM_MACH_OMAP_COMMON_H
+r_struct
+id|sys_timer
+suffix:semicolon
 r_extern
 r_void
 id|omap_map_io
@@ -9,6 +12,11 @@ c_func
 (paren
 r_void
 )paren
+suffix:semicolon
+r_extern
+r_struct
+id|sys_timer
+id|omap_timer
 suffix:semicolon
 macro_line|#endif /* __ARCH_ARM_MACH_OMAP_COMMON_H */
 eof

@@ -69,6 +69,7 @@ id|tgfx
 comma
 r_int
 comma
+op_amp
 id|tgfx_nargs
 comma
 l_int|0
@@ -126,6 +127,7 @@ id|tgfx_2
 comma
 r_int
 comma
+op_amp
 id|tgfx_nargs_2
 comma
 l_int|0
@@ -183,6 +185,7 @@ id|tgfx_3
 comma
 r_int
 comma
+op_amp
 id|tgfx_nargs_3
 comma
 l_int|0

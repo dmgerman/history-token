@@ -1741,7 +1741,7 @@ id|new_dev
 )paren
 suffix:semicolon
 r_goto
-id|out_put_dev
+id|out_unlock
 suffix:semicolon
 id|out_free_newdev
 suffix:colon

@@ -3195,7 +3195,6 @@ c_func
 id|lp
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * if (!status)&n;&t; *      MOD_INC_USE_COUNT;&n;&t; */
 r_return
 id|status
 suffix:semicolon
@@ -3336,7 +3335,6 @@ comma
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;   MOD_DEC_USE_COUNT;&n;&t; */
 r_return
 l_int|0
 suffix:semicolon

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *      Copyright (C) 1995-1997 Claus-Justus Heine.&n;&n;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/zftape.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &quot;../zftape/zftape-init.h&quot;
@@ -411,16 +412,10 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 )brace

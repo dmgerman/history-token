@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * net/sched/estimator.c&t;Simple rate estimator.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -19,10 +19,7 @@ macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
-multiline_comment|/*&n;   This code is NOT intended to be used for statistics collection,&n;   its purpose is to provide a base for statistical multiplexing&n;   for controlled load service.&n;   If you need only statistics, run a user level daemon which&n;   periodically reads byte counters.&n;&n;   Unfortunately, rate estimation is not a very easy task.&n;   F.e. I did not find a simple way to estimate the current peak rate&n;   and even failed to formulate the problem 8)8)&n;&n;   So I preferred not to built an estimator into the scheduler,&n;   but run this task separately.&n;   Ideally, it should be kernel thread(s), but for now it runs&n;   from timers, which puts apparent top bounds on the number of rated&n;   flows, has minimal overhead on small, but is enough&n;   to handle controlled load service, sets of aggregates.&n;&n;   We measure rate over A=(1&lt;&lt;interval) seconds and evaluate EWMA:&n;&n;   avrate = avrate*(1-W) + rate*W&n;&n;   where W is chosen as negative power of 2: W = 2^(-ewma_log)&n;&n;   The resulting time constant is:&n;&n;   T = A/(-ln(1-W))&n;&n;&n;   NOTES.&n;&n;   * The stored value for avbps is scaled by 2^5, so that maximal&n;     rate is ~1Gbit, avpps is scaled by 2^10.&n;&n;   * Minimal interval is HZ/4=250msec (it is the greatest common divisor&n;     for HZ=100 and HZ=1024 8)), maximal interval&n;     is (HZ/4)*2^EST_MAX_INTERVAL = 8sec. Shorter intervals&n;     are too expensive, longer ones can be implemented&n;     at user level painlessly.&n; */
-macro_line|#if (HZ%4) != 0
-macro_line|#error Bad HZ value.
-macro_line|#endif
+multiline_comment|/*&n;   This code is NOT intended to be used for statistics collection,&n;   its purpose is to provide a base for statistical multiplexing&n;   for controlled load service.&n;   If you need only statistics, run a user level daemon which&n;   periodically reads byte counters.&n;&n;   Unfortunately, rate estimation is not a very easy task.&n;   F.e. I did not find a simple way to estimate the current peak rate&n;   and even failed to formulate the problem 8)8)&n;&n;   So I preferred not to built an estimator into the scheduler,&n;   but run this task separately.&n;   Ideally, it should be kernel thread(s), but for now it runs&n;   from timers, which puts apparent top bounds on the number of rated&n;   flows, has minimal overhead on small, but is enough&n;   to handle controlled load service, sets of aggregates.&n;&n;   We measure rate over A=(1&lt;&lt;interval) seconds and evaluate EWMA:&n;&n;   avrate = avrate*(1-W) + rate*W&n;&n;   where W is chosen as negative power of 2: W = 2^(-ewma_log)&n;&n;   The resulting time constant is:&n;&n;   T = A/(-ln(1-W))&n;&n;&n;   NOTES.&n;&n;   * The stored value for avbps is scaled by 2^5, so that maximal&n;     rate is ~1Gbit, avpps is scaled by 2^10.&n;&n;   * Minimal interval is HZ/4=250msec (it is the greatest common divisor&n;     for HZ=100 and HZ=1024 8)), maximal interval&n;     is (HZ*2^EST_MAX_INTERVAL)/4 = 8sec. Shorter intervals&n;     are too expensive, longer ones can be implemented&n;     at user level painlessly.&n; */
 DECL|macro|EST_MAX_INTERVAL
 mdefine_line|#define EST_MAX_INTERVAL&t;5
 DECL|struct|qdisc_estimator
@@ -299,11 +296,11 @@ op_plus
 (paren
 (paren
 id|HZ
-op_div
-l_int|4
-)paren
 op_lshift
 id|idx
+)paren
+op_div
+l_int|4
 )paren
 )paren
 suffix:semicolon
@@ -508,11 +505,11 @@ op_plus
 (paren
 (paren
 id|HZ
-op_div
-l_int|4
-)paren
 op_lshift
 id|est-&gt;interval
+)paren
+op_div
+l_int|4
 )paren
 suffix:semicolon
 id|elist

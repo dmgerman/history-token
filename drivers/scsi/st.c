@@ -26,6 +26,14 @@ macro_line|#include &lt;linux/cdev.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_dbg.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_driver.h&gt;
+macro_line|#include &lt;scsi/scsi_eh.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
+macro_line|#include &lt;scsi/scsi_request.h&gt;
 multiline_comment|/* The driver prints some debugging information on the console if DEBUG&n;   is defined and non-zero. */
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG 0
@@ -43,10 +51,6 @@ mdefine_line|#define DEB(a)
 DECL|macro|DEBC
 mdefine_line|#define DEBC(a)
 macro_line|#endif
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &lt;scsi/scsi_host.h&gt;
-macro_line|#include &lt;scsi/scsi_driver.h&gt;
-macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 DECL|macro|ST_KILOBYTE
 mdefine_line|#define ST_KILOBYTE 1024
 macro_line|#include &quot;st_options.h&quot;
@@ -73,14 +77,14 @@ r_static
 r_int
 id|try_rdio
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 DECL|variable|try_wdio
 r_static
 r_int
 id|try_wdio
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 DECL|variable|st_dev_max
 r_static
@@ -753,7 +757,8 @@ op_star
 id|st_incompatible
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDp
 )paren
@@ -878,7 +883,8 @@ id|Scsi_Tape
 op_star
 id|STp
 comma
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 )paren
@@ -1034,7 +1040,7 @@ id|result
 op_amp
 id|DRIVER_SENSE
 )paren
-id|print_req_sense
+id|scsi_print_req_sense
 c_func
 (paren
 l_string|&quot;st&quot;
@@ -1127,7 +1133,7 @@ comma
 id|name
 )paren
 suffix:semicolon
-id|print_req_sense
+id|scsi_print_req_sense
 c_func
 (paren
 l_string|&quot;st&quot;
@@ -1369,7 +1375,8 @@ r_void
 id|st_sleep_done
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -1551,13 +1558,15 @@ suffix:semicolon
 )brace
 multiline_comment|/* Do the scsi command. Waits until command performed if do_wait is true.&n;   Otherwise write_behind_check() is used to check that the command&n;   has finished. */
 r_static
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 DECL|function|st_do_scsi
 id|st_do_scsi
 c_func
 (paren
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 comma
@@ -1981,7 +1990,8 @@ r_int
 id|forward
 )paren
 (brace
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 suffix:semicolon
@@ -2096,13 +2106,13 @@ id|cmd
 comma
 l_int|0
 comma
-id|SCSI_DATA_NONE
+id|DMA_NONE
 comma
 id|STp-&gt;device-&gt;timeout
 comma
 id|MAX_RETRIES
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -2196,7 +2206,8 @@ id|cmd
 id|MAX_COMMAND_SIZE
 )braket
 suffix:semicolon
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 suffix:semicolon
@@ -2428,13 +2439,13 @@ id|cmd
 comma
 id|transfer
 comma
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 comma
 id|STp-&gt;device-&gt;timeout
 comma
 id|MAX_WRITE_RETRIES
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -2762,7 +2773,7 @@ c_func
 (paren
 id|STp
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Back over the EOF hit */
@@ -2869,7 +2880,7 @@ id|STm
 r_int
 id|set_it
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -2906,7 +2917,7 @@ id|STm-&gt;default_density
 suffix:semicolon
 id|set_it
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 )brace
 r_else
@@ -2939,7 +2950,7 @@ id|STm-&gt;default_blksize
 suffix:semicolon
 id|set_it
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 )brace
 r_else
@@ -2992,7 +3003,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Lock or unlock the drive door. Don&squot;t use when Scsi_Request allocated. */
+multiline_comment|/* Lock or unlock the drive door. Don&squot;t use when scsi_request allocated. */
 DECL|function|do_door_lock
 r_static
 r_int
@@ -3157,7 +3168,7 @@ l_int|0
 suffix:semicolon
 id|STps-&gt;last_block_valid
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|STps-&gt;drv_block
 op_assign
@@ -3243,7 +3254,7 @@ id|CHKRES_READY
 comma
 id|new_session
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_int
 r_char
@@ -3252,7 +3263,8 @@ id|cmd
 id|MAX_COMMAND_SIZE
 )braket
 suffix:semicolon
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 op_assign
@@ -3317,13 +3329,13 @@ id|cmd
 comma
 l_int|0
 comma
-id|SCSI_DATA_NONE
+id|DMA_NONE
 comma
 id|STp-&gt;long_timeout
 comma
 id|MAX_READY_RETRIES
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -3381,7 +3393,7 @@ id|UNIT_ATTENTION
 multiline_comment|/* New media? */
 id|new_session
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -3566,7 +3578,7 @@ id|retval
 comma
 id|new_session
 op_assign
-id|FALSE
+l_int|0
 comma
 id|do_wait
 suffix:semicolon
@@ -3585,7 +3597,8 @@ id|st_flags
 op_assign
 id|filp-&gt;f_flags
 suffix:semicolon
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 op_assign
@@ -3656,7 +3669,7 @@ id|mode
 suffix:semicolon
 id|new_session
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|STp-&gt;current_mode
 op_assign
@@ -3780,7 +3793,7 @@ l_int|0
 suffix:semicolon
 id|STps-&gt;last_block_valid
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|STps-&gt;drv_block
 op_assign
@@ -3793,7 +3806,7 @@ suffix:semicolon
 )brace
 id|new_session
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 )brace
 r_else
@@ -3931,13 +3944,13 @@ id|cmd
 comma
 l_int|6
 comma
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 comma
 id|STp-&gt;device-&gt;timeout
 comma
 id|MAX_READY_RETRIES
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -4130,13 +4143,13 @@ id|cmd
 comma
 l_int|12
 comma
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 comma
 id|STp-&gt;device-&gt;timeout
 comma
 id|MAX_READY_RETRIES
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -4408,7 +4421,7 @@ l_int|NULL
 suffix:semicolon
 id|STp-&gt;inited
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -4609,11 +4622,11 @@ id|STp-&gt;density_changed
 op_assign
 id|STp-&gt;blksize_changed
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|STp-&gt;compression_changed
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -5127,7 +5140,8 @@ id|cmd
 id|MAX_COMMAND_SIZE
 )braket
 suffix:semicolon
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 suffix:semicolon
@@ -5376,13 +5390,13 @@ id|cmd
 comma
 l_int|0
 comma
-id|SCSI_DATA_NONE
+id|DMA_NONE
 comma
 id|STp-&gt;device-&gt;timeout
 comma
 id|MAX_WRITE_RETRIES
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -5548,7 +5562,7 @@ c_func
 (paren
 id|STp
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 id|STps-&gt;eof
@@ -5635,7 +5649,7 @@ c_func
 (paren
 id|STp
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -5688,7 +5702,7 @@ c_func
 (paren
 id|STp
 comma
-id|TRUE
+l_int|1
 )paren
 )paren
 )paren
@@ -6212,7 +6226,7 @@ multiline_comment|/* can be used as transfer counter */
 r_else
 id|STbp-&gt;do_dio
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 multiline_comment|/* fall back to buffering with any error */
 id|STbp-&gt;sg_segs
@@ -6288,7 +6302,7 @@ suffix:semicolon
 r_else
 id|STbp-&gt;do_dio
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|DEB
 c_func
@@ -6427,7 +6441,7 @@ l_int|0
 comma
 id|STbp-&gt;do_dio
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 id|STbp-&gt;do_dio
@@ -6502,7 +6516,8 @@ id|__user
 op_star
 id|b_point
 suffix:semicolon
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 op_assign
@@ -6939,7 +6954,7 @@ id|buf
 comma
 id|count
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -7128,7 +7143,7 @@ id|STbp-&gt;buffer_size
 (brace
 id|STp-&gt;dirty
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 multiline_comment|/* Don&squot;t write a buffer that is not full enough. */
 r_if
@@ -7225,7 +7240,7 @@ id|cmd
 comma
 id|transfer
 comma
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 comma
 id|STp-&gt;device-&gt;timeout
 comma
@@ -7542,7 +7557,7 @@ id|undone
 suffix:semicolon
 id|retry_eot
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -7801,7 +7816,8 @@ comma
 r_int
 id|count
 comma
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 op_star
 id|aSRpnt
@@ -7821,7 +7837,8 @@ id|cmd
 id|MAX_COMMAND_SIZE
 )braket
 suffix:semicolon
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 suffix:semicolon
@@ -8052,13 +8069,13 @@ id|cmd
 comma
 id|bytes
 comma
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 comma
 id|STp-&gt;device-&gt;timeout
 comma
 id|MAX_RETRIES
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 id|release_buffering
@@ -8797,7 +8814,8 @@ id|do_dio
 op_assign
 l_int|0
 suffix:semicolon
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 op_assign
@@ -8996,7 +9014,7 @@ id|buf
 comma
 id|count
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -9674,7 +9692,7 @@ id|cd1
 suffix:semicolon
 id|modes_defined
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|DEBC
 c_func
@@ -10215,7 +10233,7 @@ id|ST_READY
 (brace
 id|STp-&gt;blksize_changed
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|set_mode_densblk
 c_func
@@ -10492,7 +10510,7 @@ id|ST_READY
 (brace
 id|STp-&gt;density_changed
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|set_mode_densblk
 c_func
@@ -10711,7 +10729,7 @@ id|ST_READY
 (brace
 id|STp-&gt;compression_changed
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|st_compression
 c_func
@@ -10792,7 +10810,8 @@ id|cmd
 id|MAX_COMMAND_SIZE
 )braket
 suffix:semicolon
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 op_assign
@@ -10857,13 +10876,13 @@ id|cmd
 l_int|4
 )braket
 comma
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 comma
 id|STp-&gt;device-&gt;timeout
 comma
 l_int|0
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -10922,7 +10941,8 @@ id|cmd
 id|MAX_COMMAND_SIZE
 )braket
 suffix:semicolon
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 op_assign
@@ -11049,7 +11069,7 @@ id|cmd
 l_int|4
 )braket
 comma
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 comma
 (paren
 id|slow
@@ -11062,7 +11082,7 @@ id|STp-&gt;device-&gt;timeout
 comma
 l_int|0
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -11177,7 +11197,7 @@ id|STp
 comma
 id|COMPRESSION_PAGE
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -11354,7 +11374,7 @@ id|STp
 comma
 id|COMPRESSION_PAGE
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -11400,7 +11420,7 @@ id|state
 suffix:semicolon
 id|STp-&gt;compression_changed
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 r_return
 l_int|0
@@ -11461,7 +11481,8 @@ id|ST_partstat
 op_star
 id|STps
 suffix:semicolon
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 suffix:semicolon
@@ -11649,13 +11670,13 @@ id|cmd
 comma
 l_int|0
 comma
-id|SCSI_DATA_NONE
+id|DMA_NONE
 comma
 id|timeout
 comma
 id|MAX_RETRIES
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -11797,7 +11818,7 @@ suffix:semicolon
 r_int
 id|chg_eof
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 r_int
 r_char
@@ -11806,7 +11827,8 @@ id|cmd
 id|MAX_COMMAND_SIZE
 )braket
 suffix:semicolon
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 suffix:semicolon
@@ -11830,7 +11852,7 @@ l_int|0
 comma
 id|direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 r_char
 op_star
@@ -11926,7 +11948,7 @@ id|MTFSFM
 suffix:colon
 id|chg_eof
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 multiline_comment|/* Changed from the FSF after this */
 r_case
@@ -12038,7 +12060,7 @@ id|MTBSFM
 suffix:colon
 id|chg_eof
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 multiline_comment|/* Changed from the FSF after this */
 r_case
@@ -13137,7 +13159,7 @@ suffix:colon
 multiline_comment|/* Set density and block size */
 id|chg_eof
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -13245,7 +13267,7 @@ l_int|12
 suffix:semicolon
 id|direction
 op_assign
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 suffix:semicolon
 id|memset
 c_func
@@ -13332,7 +13354,7 @@ id|arg
 suffix:semicolon
 id|STp-&gt;density_changed
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 multiline_comment|/* At least we tried ;-) */
 )brace
@@ -13396,7 +13418,7 @@ id|MTSETBLK
 )paren
 id|STp-&gt;blksize_changed
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 multiline_comment|/* At least we tried ;-) */
 )brace
@@ -13592,7 +13614,7 @@ id|timeout
 comma
 id|MAX_RETRIES
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -14406,7 +14428,8 @@ id|scmd
 id|MAX_COMMAND_SIZE
 )braket
 suffix:semicolon
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 suffix:semicolon
@@ -14513,13 +14536,13 @@ id|scmd
 comma
 l_int|20
 comma
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 comma
 id|STp-&gt;device-&gt;timeout
 comma
 id|MAX_READY_RETRIES
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -14848,7 +14871,8 @@ id|scmd
 id|MAX_COMMAND_SIZE
 )braket
 suffix:semicolon
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 suffix:semicolon
@@ -14976,13 +15000,13 @@ l_int|1
 )paren
 id|STps-&gt;last_block_valid
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_else
 (brace
 id|STps-&gt;last_block_valid
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|STps-&gt;last_block_visited
 op_assign
@@ -15211,13 +15235,13 @@ id|scmd
 comma
 l_int|0
 comma
-id|SCSI_DATA_NONE
+id|DMA_NONE
 comma
 id|timeout
 comma
 id|MAX_READY_RETRIES
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -15570,7 +15594,7 @@ id|STp
 comma
 id|PART_PAGE
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -15686,7 +15710,7 @@ id|STp
 comma
 id|PART_PAGE
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -16017,7 +16041,7 @@ id|STp
 comma
 id|PART_PAGE
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -16196,6 +16220,20 @@ id|STp-&gt;partition
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we are in the middle of error recovery, don&squot;t let anyone&n;&t; * else try and use this device.  Also, if error recovery fails, it&n;&t; * may try and take the device offline, in which case all further&n;&t; * access to the device is prohibited.&n;&t; */
+id|retval
+op_assign
+id|scsi_nonblockable_ioctl
+c_func
+(paren
+id|STp-&gt;device
+comma
+id|cmd_in
+comma
+id|p
+comma
+id|file
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -16205,19 +16243,13 @@ c_func
 (paren
 id|STp-&gt;device
 )paren
-)paren
-(brace
+op_logical_or
+op_logical_neg
 id|retval
-op_assign
-(paren
-op_minus
-id|ENXIO
 )paren
-suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|cmd_type
 op_assign
 id|_IOC_TYPE
@@ -16899,7 +16931,7 @@ id|i
 dot
 id|last_block_valid
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 id|STp-&gt;partition
@@ -17157,7 +17189,7 @@ c_func
 (paren
 id|STp
 comma
-id|FALSE
+l_int|0
 )paren
 )paren
 OL
@@ -17967,7 +17999,7 @@ id|max_sg
 suffix:semicolon
 id|tb-&gt;in_use
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|tb-&gt;dma
 op_assign
@@ -18022,7 +18054,7 @@ op_le
 id|STbuffer-&gt;buffer_size
 )paren
 r_return
-id|TRUE
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -18056,7 +18088,7 @@ op_le
 l_int|0
 )paren
 r_return
-id|FALSE
+l_int|0
 suffix:semicolon
 id|priority
 op_assign
@@ -18192,7 +18224,7 @@ id|STbuffer
 )paren
 suffix:semicolon
 r_return
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 id|STbuffer-&gt;frp
@@ -18234,7 +18266,7 @@ id|page
 )paren
 suffix:semicolon
 r_return
-id|TRUE
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Release the extra buffer */
@@ -19609,7 +19641,7 @@ op_assign
 id|new_tape_buffer
 c_func
 (paren
-id|TRUE
+l_int|1
 comma
 (paren
 id|SDp-&gt;host
@@ -20150,7 +20182,7 @@ id|i
 suffix:semicolon
 id|STm-&gt;defined
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|STm-&gt;sysv
 op_assign
@@ -20232,7 +20264,7 @@ l_int|0
 suffix:semicolon
 id|STps-&gt;last_block_valid
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|STps-&gt;drv_block
 op_assign
@@ -20260,7 +20292,7 @@ l_int|0
 dot
 id|defined
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|tpnt-&gt;density_changed
 op_assign
@@ -20268,7 +20300,7 @@ id|tpnt-&gt;compression_changed
 op_assign
 id|tpnt-&gt;blksize_changed
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|init_MUTEX
 c_func
@@ -20794,7 +20826,8 @@ op_star
 id|dev
 )paren
 (brace
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDp
 op_assign
@@ -22334,7 +22367,7 @@ id|sgl
 comma
 id|nr_pages
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 r_return

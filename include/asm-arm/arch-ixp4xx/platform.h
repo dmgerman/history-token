@@ -53,6 +53,9 @@ id|scl_pin
 suffix:semicolon
 )brace
 suffix:semicolon
+r_struct
+id|sys_timer
+suffix:semicolon
 multiline_comment|/*&n; * Functions used by platform-level setup code&n; */
 r_extern
 r_void
@@ -71,12 +74,9 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|ixp4xx_init_time
-c_func
-(paren
-r_void
-)paren
+r_struct
+id|sys_timer
+id|ixp4xx_timer
 suffix:semicolon
 r_extern
 r_void

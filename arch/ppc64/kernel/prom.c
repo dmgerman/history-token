@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/lmb.h&gt;
@@ -27,7 +28,6 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/pci.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
@@ -134,6 +134,11 @@ r_static
 r_int
 id|__initdata
 id|iommu_is_off
+suffix:semicolon
+DECL|variable|iommu_force_on
+r_int
+id|__initdata
+id|iommu_force_on
 suffix:semicolon
 DECL|typedef|cell_t
 r_typedef
@@ -4576,7 +4581,7 @@ op_assign
 op_star
 id|prop
 suffix:semicolon
-multiline_comment|/* check if iommu is forced off */
+multiline_comment|/* check if iommu is forced on or off */
 r_if
 c_cond
 (paren
@@ -4593,6 +4598,25 @@ op_ne
 l_int|NULL
 )paren
 id|iommu_is_off
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_flat_dt_prop
+c_func
+(paren
+id|node
+comma
+l_string|&quot;linux,iommu-force-on&quot;
+comma
+l_int|NULL
+)paren
+op_ne
+l_int|NULL
+)paren
+id|iommu_force_on
 op_assign
 l_int|1
 suffix:semicolon

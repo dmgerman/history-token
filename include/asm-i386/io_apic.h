@@ -165,8 +165,6 @@ mdefine_line|#define ack_edge_ioapic &t;ack_edge_ioapic_irq
 DECL|macro|end_edge_ioapic
 mdefine_line|#define end_edge_ioapic &t;end_edge_ioapic_irq
 macro_line|#endif
-DECL|macro|APIC_MISMATCH_DEBUG
-mdefine_line|#define APIC_MISMATCH_DEBUG
 DECL|macro|IO_APIC_BASE
 mdefine_line|#define IO_APIC_BASE(idx) &bslash;&n;&t;&t;((volatile int *)(__fix_to_virt(FIX_IO_APIC_BASE_0 + idx) &bslash;&n;&t;&t;+ (mp_ioapics[idx].mpc_apicaddr &amp; ~PAGE_MASK)))
 multiline_comment|/*&n; * The structure of the IO-APIC:&n; */
@@ -672,7 +670,7 @@ id|skip_ioapic_setup
 suffix:semicolon
 multiline_comment|/*&n; * If we use the IO-APIC for IRQ routing, disable automatic&n; * assignment of PCI IRQ&squot;s.&n; */
 DECL|macro|io_apic_assign_pci_irqs
-mdefine_line|#define io_apic_assign_pci_irqs (mp_irq_entries &amp;&amp; !skip_ioapic_setup)
+mdefine_line|#define io_apic_assign_pci_irqs (mp_irq_entries &amp;&amp; !skip_ioapic_setup &amp;&amp; io_apic_irqs)
 macro_line|#ifdef CONFIG_ACPI_BOOT
 r_extern
 r_int

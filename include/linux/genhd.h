@@ -105,6 +105,7 @@ comma
 multiline_comment|/* Same as GNU_HURD and SCO Unix */
 )brace
 suffix:semicolon
+macro_line|#ifndef __KERNEL__
 DECL|struct|partition
 r_struct
 id|partition
@@ -178,7 +179,79 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef __KERNEL__
+DECL|struct|partition
+r_struct
+id|partition
+(brace
+DECL|member|boot_ind
+r_int
+r_char
+id|boot_ind
+suffix:semicolon
+multiline_comment|/* 0x80 - active */
+DECL|member|head
+r_int
+r_char
+id|head
+suffix:semicolon
+multiline_comment|/* starting head */
+DECL|member|sector
+r_int
+r_char
+id|sector
+suffix:semicolon
+multiline_comment|/* starting sector */
+DECL|member|cyl
+r_int
+r_char
+id|cyl
+suffix:semicolon
+multiline_comment|/* starting cylinder */
+DECL|member|sys_ind
+r_int
+r_char
+id|sys_ind
+suffix:semicolon
+multiline_comment|/* What partition type */
+DECL|member|end_head
+r_int
+r_char
+id|end_head
+suffix:semicolon
+multiline_comment|/* end head */
+DECL|member|end_sector
+r_int
+r_char
+id|end_sector
+suffix:semicolon
+multiline_comment|/* end sector */
+DECL|member|end_cyl
+r_int
+r_char
+id|end_cyl
+suffix:semicolon
+multiline_comment|/* end cylinder */
+DECL|member|start_sect
+id|__le32
+id|start_sect
+suffix:semicolon
+multiline_comment|/* starting sector counting from 0 */
+DECL|member|nr_sects
+id|__le32
+id|nr_sects
+suffix:semicolon
+multiline_comment|/* nr of sectors in partition */
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 DECL|struct|hd_struct
 r_struct
 id|hd_struct
@@ -396,10 +469,10 @@ suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * Macros to operate on percpu disk statistics:&n; * Since writes to disk_stats are serialised through the queue_lock,&n; * smp_processor_id() should be enough to get to the per_cpu versions&n; * of statistics counters&n; */
+multiline_comment|/* &n; * Macros to operate on percpu disk statistics:&n; *&n; * The __ variants should only be called in critical sections. The full&n; * variants disable/enable preemption.&n; */
 macro_line|#ifdef&t;CONFIG_SMP
-DECL|macro|disk_stat_add
-mdefine_line|#define disk_stat_add(gendiskp, field, addnd) &t;&bslash;&n;&t;(per_cpu_ptr(gendiskp-&gt;dkstats, smp_processor_id())-&gt;field += addnd)
+DECL|macro|__disk_stat_add
+mdefine_line|#define __disk_stat_add(gendiskp, field, addnd) &t;&bslash;&n;&t;(per_cpu_ptr(gendiskp-&gt;dkstats, smp_processor_id())-&gt;field += addnd)
 DECL|macro|disk_stat_read
 mdefine_line|#define disk_stat_read(gendiskp, field)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;typeof(gendiskp-&gt;dkstats-&gt;field) res = 0;&t;&t;&t;&bslash;&n;&t;int i;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (i=0; i &lt; NR_CPUS; i++) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!cpu_possible(i))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;continue;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;res += per_cpu_ptr(gendiskp-&gt;dkstats, i)-&gt;field;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|function|disk_stat_set_all
@@ -470,8 +543,8 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#else
-DECL|macro|disk_stat_add
-mdefine_line|#define disk_stat_add(gendiskp, field, addnd) (gendiskp-&gt;dkstats.field += addnd)
+DECL|macro|__disk_stat_add
+mdefine_line|#define __disk_stat_add(gendiskp, field, addnd) &bslash;&n;&t;&t;&t;&t;(gendiskp-&gt;dkstats.field += addnd)
 DECL|macro|disk_stat_read
 mdefine_line|#define disk_stat_read(gendiskp, field)&t;(gendiskp-&gt;dkstats.field)
 DECL|function|disk_stat_set_all
@@ -507,10 +580,18 @@ id|disk_stats
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|macro|disk_stat_inc
-mdefine_line|#define disk_stat_inc(gendiskp, field) disk_stat_add(gendiskp, field, 1)
+DECL|macro|disk_stat_add
+mdefine_line|#define disk_stat_add(gendiskp, field, addnd)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_disable();&t;&t;&t;&t;&bslash;&n;&t;&t;__disk_stat_add(gendiskp, field, addnd);&t;&bslash;&n;&t;&t;preempt_enable();&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+DECL|macro|__disk_stat_dec
+mdefine_line|#define __disk_stat_dec(gendiskp, field) __disk_stat_add(gendiskp, field, -1)
 DECL|macro|disk_stat_dec
 mdefine_line|#define disk_stat_dec(gendiskp, field) disk_stat_add(gendiskp, field, -1)
+DECL|macro|__disk_stat_inc
+mdefine_line|#define __disk_stat_inc(gendiskp, field) __disk_stat_add(gendiskp, field, 1)
+DECL|macro|disk_stat_inc
+mdefine_line|#define disk_stat_inc(gendiskp, field) disk_stat_add(gendiskp, field, 1)
+DECL|macro|__disk_stat_sub
+mdefine_line|#define __disk_stat_sub(gendiskp, field, subnd) &bslash;&n;&t;&t;__disk_stat_add(gendiskp, field, -subnd)
 DECL|macro|disk_stat_sub
 mdefine_line|#define disk_stat_sub(gendiskp, field, subnd) &bslash;&n;&t;&t;disk_stat_add(gendiskp, field, -subnd)
 multiline_comment|/* Inlines to alloc and free disk stats in struct gendisk */
@@ -788,24 +869,22 @@ r_struct
 id|solaris_x86_slice
 (brace
 DECL|member|s_tag
-id|ushort
+id|__le16
 id|s_tag
 suffix:semicolon
 multiline_comment|/* ID tag of partition */
 DECL|member|s_flag
-id|ushort
+id|__le16
 id|s_flag
 suffix:semicolon
 multiline_comment|/* permission flags */
 DECL|member|s_start
-r_int
-r_int
+id|__le32
 id|s_start
 suffix:semicolon
 multiline_comment|/* start sector no of partition */
 DECL|member|s_size
-r_int
-r_int
+id|__le32
 id|s_size
 suffix:semicolon
 multiline_comment|/* # of blocks in partition */
@@ -825,14 +904,12 @@ l_int|3
 suffix:semicolon
 multiline_comment|/* info needed by mboot (unsupported) */
 DECL|member|v_sanity
-r_int
-r_int
+id|__le32
 id|v_sanity
 suffix:semicolon
 multiline_comment|/* to verify vtoc sanity */
 DECL|member|v_version
-r_int
-r_int
+id|__le32
 id|v_version
 suffix:semicolon
 multiline_comment|/* layout version */
@@ -845,12 +922,12 @@ l_int|8
 suffix:semicolon
 multiline_comment|/* volume name */
 DECL|member|v_sectorsz
-id|ushort
+id|__le16
 id|v_sectorsz
 suffix:semicolon
 multiline_comment|/* sector size in bytes */
 DECL|member|v_nparts
-id|ushort
+id|__le16
 id|v_nparts
 suffix:semicolon
 multiline_comment|/* number of partitions */
@@ -908,7 +985,7 @@ r_struct
 id|bsd_disklabel
 (brace
 DECL|member|d_magic
-id|__u32
+id|__le32
 id|d_magic
 suffix:semicolon
 multiline_comment|/* the magic number */
@@ -1039,28 +1116,28 @@ id|NSPARE
 suffix:semicolon
 multiline_comment|/* reserved for future use */
 DECL|member|d_magic2
-id|__u32
+id|__le32
 id|d_magic2
 suffix:semicolon
 multiline_comment|/* the magic number (again) */
 DECL|member|d_checksum
-id|__u16
+id|__le16
 id|d_checksum
 suffix:semicolon
 multiline_comment|/* xor of data incl. partitions */
 multiline_comment|/* filesystem and partition information: */
 DECL|member|d_npartitions
-id|__u16
+id|__le16
 id|d_npartitions
 suffix:semicolon
 multiline_comment|/* number of partitions in following */
 DECL|member|d_bbsize
-id|__u32
+id|__le32
 id|d_bbsize
 suffix:semicolon
 multiline_comment|/* size of boot area at sn0, bytes */
 DECL|member|d_sbsize
-id|__u32
+id|__le32
 id|d_sbsize
 suffix:semicolon
 multiline_comment|/* max size of fs superblock, bytes */
@@ -1070,17 +1147,17 @@ id|bsd_partition
 (brace
 multiline_comment|/* the partition table */
 DECL|member|p_size
-id|__u32
+id|__le32
 id|p_size
 suffix:semicolon
 multiline_comment|/* number of sectors in partition */
 DECL|member|p_offset
-id|__u32
+id|__le32
 id|p_offset
 suffix:semicolon
 multiline_comment|/* starting sector */
 DECL|member|p_fsize
-id|__u32
+id|__le32
 id|p_fsize
 suffix:semicolon
 multiline_comment|/* filesystem basic fragment size */
@@ -1095,7 +1172,7 @@ id|p_frag
 suffix:semicolon
 multiline_comment|/* filesystem fragments per block */
 DECL|member|p_cpg
-id|__u16
+id|__le16
 id|p_cpg
 suffix:semicolon
 multiline_comment|/* filesystem cylinders per group */
@@ -1125,22 +1202,22 @@ r_struct
 id|unixware_slice
 (brace
 DECL|member|s_label
-id|__u16
+id|__le16
 id|s_label
 suffix:semicolon
 multiline_comment|/* label */
 DECL|member|s_flags
-id|__u16
+id|__le16
 id|s_flags
 suffix:semicolon
 multiline_comment|/* permission flags */
 DECL|member|start_sect
-id|__u32
+id|__le32
 id|start_sect
 suffix:semicolon
 multiline_comment|/* starting sector */
 DECL|member|nr_sects
-id|__u32
+id|__le32
 id|nr_sects
 suffix:semicolon
 multiline_comment|/* number of sectors in slice */
@@ -1151,17 +1228,17 @@ r_struct
 id|unixware_disklabel
 (brace
 DECL|member|d_type
-id|__u32
+id|__le32
 id|d_type
 suffix:semicolon
 multiline_comment|/* drive type */
 DECL|member|d_magic
-id|__u32
+id|__le32
 id|d_magic
 suffix:semicolon
 multiline_comment|/* the magic number */
 DECL|member|d_version
-id|__u32
+id|__le32
 id|d_version
 suffix:semicolon
 multiline_comment|/* version number */
@@ -1174,32 +1251,32 @@ l_int|12
 suffix:semicolon
 multiline_comment|/* serial number of the device */
 DECL|member|d_ncylinders
-id|__u32
+id|__le32
 id|d_ncylinders
 suffix:semicolon
 multiline_comment|/* # of data cylinders per device */
 DECL|member|d_ntracks
-id|__u32
+id|__le32
 id|d_ntracks
 suffix:semicolon
 multiline_comment|/* # of tracks per cylinder */
 DECL|member|d_nsectors
-id|__u32
+id|__le32
 id|d_nsectors
 suffix:semicolon
 multiline_comment|/* # of data sectors per track */
 DECL|member|d_secsize
-id|__u32
+id|__le32
 id|d_secsize
 suffix:semicolon
 multiline_comment|/* # of bytes per sector */
 DECL|member|d_part_start
-id|__u32
+id|__le32
 id|d_part_start
 suffix:semicolon
 multiline_comment|/* # of first sector of this partition */
 DECL|member|d_unknown1
-id|__u32
+id|__le32
 id|d_unknown1
 (braket
 l_int|12
@@ -1207,47 +1284,47 @@ l_int|12
 suffix:semicolon
 multiline_comment|/* ? */
 DECL|member|d_alt_tbl
-id|__u32
+id|__le32
 id|d_alt_tbl
 suffix:semicolon
 multiline_comment|/* byte offset of alternate table */
 DECL|member|d_alt_len
-id|__u32
+id|__le32
 id|d_alt_len
 suffix:semicolon
 multiline_comment|/* byte length of alternate table */
 DECL|member|d_phys_cyl
-id|__u32
+id|__le32
 id|d_phys_cyl
 suffix:semicolon
 multiline_comment|/* # of physical cylinders per device */
 DECL|member|d_phys_trk
-id|__u32
+id|__le32
 id|d_phys_trk
 suffix:semicolon
 multiline_comment|/* # of physical tracks per cylinder */
 DECL|member|d_phys_sec
-id|__u32
+id|__le32
 id|d_phys_sec
 suffix:semicolon
 multiline_comment|/* # of physical sectors per track */
 DECL|member|d_phys_bytes
-id|__u32
+id|__le32
 id|d_phys_bytes
 suffix:semicolon
 multiline_comment|/* # of physical bytes per sector */
 DECL|member|d_unknown2
-id|__u32
+id|__le32
 id|d_unknown2
 suffix:semicolon
 multiline_comment|/* ? */
 DECL|member|d_unknown3
-id|__u32
+id|__le32
 id|d_unknown3
 suffix:semicolon
 multiline_comment|/* ? */
 DECL|member|d_pad
-id|__u32
+id|__le32
 id|d_pad
 (braket
 l_int|8
@@ -1259,12 +1336,12 @@ r_struct
 id|unixware_vtoc
 (brace
 DECL|member|v_magic
-id|__u32
+id|__le32
 id|v_magic
 suffix:semicolon
 multiline_comment|/* the magic number */
 DECL|member|v_version
-id|__u32
+id|__le32
 id|v_version
 suffix:semicolon
 multiline_comment|/* version number */
@@ -1277,17 +1354,17 @@ l_int|8
 suffix:semicolon
 multiline_comment|/* volume name */
 DECL|member|v_nslices
-id|__u16
+id|__le16
 id|v_nslices
 suffix:semicolon
 multiline_comment|/* # of slices */
 DECL|member|v_unknown1
-id|__u16
+id|__le16
 id|v_unknown1
 suffix:semicolon
 multiline_comment|/* ? */
 DECL|member|v_reserved
-id|__u32
+id|__le32
 id|v_reserved
 (braket
 l_int|10

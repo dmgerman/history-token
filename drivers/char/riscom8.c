@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;riscom8.h&quot;
 macro_line|#include &quot;riscom8_reg.h&quot;
@@ -5249,14 +5250,14 @@ op_amp
 id|IER_TXEMPTY
 )paren
 (brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
+c_func
+(paren
+id|jiffies_to_msecs
 c_func
 (paren
 id|port-&gt;timeout
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -5295,14 +5296,7 @@ c_func
 id|tty
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tty-&gt;ldisc.flush_buffer
-)paren
-id|tty-&gt;ldisc
-dot
-id|flush_buffer
+id|tty_ldisc_flush
 c_func
 (paren
 id|tty
@@ -5332,14 +5326,14 @@ c_cond
 id|port-&gt;close_delay
 )paren
 (brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
+c_func
+(paren
+id|jiffies_to_msecs
 c_func
 (paren
 id|port-&gt;close_delay
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -6221,24 +6215,8 @@ op_amp
 id|tty-&gt;write_wait
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|tty-&gt;flags
-op_amp
-(paren
-l_int|1
-op_lshift
-id|TTY_DO_WRITE_WAKEUP
-)paren
-)paren
-op_logical_and
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(paren
-id|tty-&gt;ldisc.write_wakeup
-)paren
+id|tty_wakeup
+c_func
 (paren
 id|tty
 )paren
@@ -8228,24 +8206,8 @@ id|port-&gt;event
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
-id|tty-&gt;flags
-op_amp
-(paren
-l_int|1
-op_lshift
-id|TTY_DO_WRITE_WAKEUP
-)paren
-)paren
-op_logical_and
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(paren
-id|tty-&gt;ldisc.write_wakeup
-)paren
+id|tty_wakeup
+c_func
 (paren
 id|tty
 )paren

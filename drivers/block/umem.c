@@ -155,6 +155,7 @@ suffix:semicolon
 DECL|member|csr_remap
 r_int
 r_char
+id|__iomem
 op_star
 id|csr_remap
 suffix:semicolon
@@ -172,6 +173,7 @@ suffix:semicolon
 DECL|member|mem_remap
 r_int
 r_char
+id|__iomem
 op_star
 id|mem_remap
 suffix:semicolon
@@ -3753,11 +3755,6 @@ op_logical_neg
 (paren
 id|card-&gt;mem_remap
 op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -4656,10 +4653,6 @@ macro_line|#ifdef CONFIG_MM_MAP_MEMORY
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|card-&gt;mem_remap
 )paren
 suffix:semicolon
@@ -4679,10 +4672,6 @@ macro_line|#endif
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|card-&gt;csr_remap
 )paren
 suffix:semicolon

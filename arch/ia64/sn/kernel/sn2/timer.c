@@ -6,7 +6,9 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &quot;shub.h&quot;
 macro_line|#include &lt;asm/sn/leds.h&gt;
+macro_line|#include &lt;asm/sn/shub_mmr.h&gt;
 macro_line|#include &lt;asm/sn/clksupport.h&gt;
 r_extern
 r_int
@@ -19,9 +21,9 @@ r_struct
 id|time_interpolator
 id|sn2_interpolator
 suffix:semicolon
+DECL|function|sn_timer_init
 r_void
 id|__init
-DECL|function|sn_timer_init
 id|sn_timer_init
 c_func
 (paren

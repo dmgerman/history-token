@@ -3560,11 +3560,7 @@ id|cardnumber
 )paren
 suffix:semicolon
 macro_line|#endif
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
 id|ICN_BOOT_TIMEOUT1
@@ -3598,7 +3594,7 @@ suffix:semicolon
 multiline_comment|/* Load the boot-code into the interface-card&squot;s memory and start it.&n; * Always called from user-process.&n; *&n; * Parameters:&n; *            buffer = pointer to packet&n; * Return:&n; *        0 if successfully loaded&n; */
 macro_line|#ifdef BOOT_DEBUG
 DECL|macro|SLEEP
-mdefine_line|#define SLEEP(sec) { &bslash;&n;int slsec = sec; &bslash;&n;  printk(KERN_DEBUG &quot;SLEEP(%d)&bslash;n&quot;,slsec); &bslash;&n;  while (slsec) { &bslash;&n;    current-&gt;state = TASK_INTERRUPTIBLE; &bslash;&n;    schedule_timeout(HZ); &bslash;&n;    slsec--; &bslash;&n;  } &bslash;&n;}
+mdefine_line|#define SLEEP(sec) { &bslash;&n;int slsec = sec; &bslash;&n;  printk(KERN_DEBUG &quot;SLEEP(%d)&bslash;n&quot;,slsec); &bslash;&n;  while (slsec) { &bslash;&n;    msleep_interruptible(1000); &bslash;&n;    slsec--; &bslash;&n;  } &bslash;&n;}
 macro_line|#else
 DECL|macro|SLEEP
 mdefine_line|#define SLEEP(sec)
@@ -4422,9 +4418,11 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
@@ -4529,11 +4527,7 @@ l_string|&quot;Proto TO?&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
 id|ICN_BOOT_TIMEOUT1
@@ -6064,14 +6058,14 @@ op_eq
 id|ISDN_PTYPE_UNKNOWN
 )paren
 (brace
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
 id|ICN_BOOT_TIMEOUT1
 )paren
 suffix:semicolon
 )brace
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
 id|ICN_BOOT_TIMEOUT1

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/drivers/char/amiserial.c&n; *&n; * Serial driver for the amiga builtin port.&n; *&n; * This code was created by taking serial.c version 4.30 from kernel&n; * release 2.3.22, replacing all hardware related stuff with the&n; * corresponding amiga hardware actions, and removing all irrelevant&n; * code. As a consequence, it uses many of the constants and names&n; * associated with the registers and bits of 16550 compatible UARTS -&n; * but only to keep track of status, etc in the state variables. It&n; * was done this was to make it easier to keep the code in line with&n; * (non hardware specific) changes to serial.c.&n; *&n; * The port is registered with the tty driver as minor device 64, and&n; * therefore other ports should should only use 65 upwards.&n; *&n; * Richard Lucock 28/12/99&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *  Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, &n; * &t;&t;1998, 1999  Theodore Ts&squot;o&n; *&n; */
 multiline_comment|/*&n; * Serial driver configuration section.  Here are the various options:&n; *&n; * SERIAL_PARANOIA_CHECK&n; * &t;&t;Check the magic number for the async_structure where&n; * &t;&t;ever possible.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 DECL|macro|SERIAL_PARANOIA_CHECK
 macro_line|#undef SERIAL_PARANOIA_CHECK
 DECL|macro|SERIAL_DO_RESTART
@@ -56,10 +57,10 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
 macro_line|#ifdef SERIAL_INLINE
@@ -1611,24 +1612,8 @@ id|info-&gt;event
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
-id|tty-&gt;flags
-op_amp
-(paren
-l_int|1
-op_lshift
-id|TTY_DO_WRITE_WAKEUP
-)paren
-)paren
-op_logical_and
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(paren
-id|tty-&gt;ldisc.write_wakeup
-)paren
+id|tty_wakeup
+c_func
 (paren
 id|tty
 )paren
@@ -1957,7 +1942,7 @@ c_func
 (paren
 id|info
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|info-&gt;flags
@@ -2079,7 +2064,7 @@ id|info-&gt;xmit.buf
 suffix:semicolon
 id|info-&gt;xmit.buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|info-&gt;IER
@@ -3510,24 +3495,8 @@ op_amp
 id|tty-&gt;write_wait
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|tty-&gt;flags
-op_amp
-(paren
-l_int|1
-op_lshift
-id|TTY_DO_WRITE_WAKEUP
-)paren
-)paren
-op_logical_and
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(paren
-id|tty-&gt;ldisc.write_wakeup
-)paren
+id|tty_wakeup
+c_func
 (paren
 id|tty
 )paren
@@ -4403,7 +4372,7 @@ c_func
 (paren
 id|info
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -5904,14 +5873,7 @@ c_func
 id|tty
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tty-&gt;ldisc.flush_buffer
-)paren
-id|tty-&gt;ldisc
-dot
-id|flush_buffer
+id|tty_ldisc_flush
 c_func
 (paren
 id|tty
@@ -5927,7 +5889,7 @@ l_int|0
 suffix:semicolon
 id|info-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -5941,14 +5903,14 @@ c_cond
 id|info-&gt;close_delay
 )paren
 (brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
+c_func
+(paren
+id|jiffies_to_msecs
 c_func
 (paren
 id|info-&gt;close_delay
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -6163,14 +6125,14 @@ id|jiffies
 )paren
 suffix:semicolon
 macro_line|#endif
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
+c_func
+(paren
+id|jiffies_to_msecs
 c_func
 (paren
 id|char_time
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -6297,7 +6259,7 @@ id|ASYNC_NORMAL_ACTIVE
 suffix:semicolon
 id|info-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|wake_up_interruptible
 c_func
@@ -7297,7 +7259,7 @@ l_int|0
 suffix:semicolon
 id|info-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|local_irq_save

@@ -519,20 +519,24 @@ id|pci_driver
 id|s2io_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;S2IO&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|s2io_tbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|s2io_init_nic
 comma
+dot
 id|remove
-suffix:colon
+op_assign
 id|__devexit_p
 c_func
 (paren
@@ -7763,8 +7767,6 @@ id|pci_restore_state
 c_func
 (paren
 id|sp-&gt;pdev
-comma
-id|sp-&gt;config_space
 )paren
 suffix:semicolon
 id|s2io_init_pci
@@ -16694,8 +16696,6 @@ id|pci_save_state
 c_func
 (paren
 id|sp-&gt;pdev
-comma
-id|sp-&gt;config_space
 )paren
 suffix:semicolon
 multiline_comment|/* Setting swapper control on the NIC, for proper reset operation */

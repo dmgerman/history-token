@@ -27,5 +27,7 @@ DECL|macro|S3C2410_WTCON_DIV128
 mdefine_line|#define S3C2410_WTCON_DIV128  (3&lt;&lt;3)
 DECL|macro|S3C2410_WTCON_PRESCALE
 mdefine_line|#define S3C2410_WTCON_PRESCALE(x) ((x) &lt;&lt; 8)
+DECL|macro|S3C2410_WTCON_PRESCALE_MASK
+mdefine_line|#define S3C2410_WTCON_PRESCALE_MASK (0xff00)
 macro_line|#endif /* __ASM_ARCH_REGS_WATCHDOG_H */
 eof

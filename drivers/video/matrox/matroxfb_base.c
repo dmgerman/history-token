@@ -5917,6 +5917,9 @@ id|err
 suffix:semicolon
 )brace
 r_case
+id|VIDIOC_S_CTRL_OLD
+suffix:colon
+r_case
 id|VIDIOC_S_CTRL
 suffix:colon
 (brace
@@ -9546,6 +9549,30 @@ suffix:semicolon
 id|ACCESS_FBINFO
 c_func
 (paren
+id|fbcon.flags
+)paren
+op_or_assign
+id|FBINFO_PARTIAL_PAN_OK
+op_or
+multiline_comment|/* Prefer panning for scroll under MC viewer/edit */
+id|FBINFO_HWACCEL_COPYAREA
+op_or
+multiline_comment|/* We have hw-assisted bmove */
+id|FBINFO_HWACCEL_FILLRECT
+op_or
+multiline_comment|/* And fillrect */
+id|FBINFO_HWACCEL_IMAGEBLIT
+op_or
+multiline_comment|/* And imageblit */
+id|FBINFO_HWACCEL_XPAN
+op_or
+multiline_comment|/* And we support both horizontal */
+id|FBINFO_HWACCEL_YPAN
+suffix:semicolon
+multiline_comment|/* And vertical panning */
+id|ACCESS_FBINFO
+c_func
+(paren
 id|video.len_usable
 )paren
 op_and_assign
@@ -10104,6 +10131,23 @@ id|video.len
 )paren
 suffix:semicolon
 multiline_comment|/* We do not have to set currcon to 0... register_framebuffer do it for us on first console&n; * and we do not want currcon == 0 for subsequent framebuffers */
+id|ACCESS_FBINFO
+c_func
+(paren
+id|fbcon
+)paren
+dot
+id|device
+op_assign
+op_amp
+id|ACCESS_FBINFO
+c_func
+(paren
+id|pcidev
+)paren
+op_member_access_from_pointer
+id|dev
+suffix:semicolon
 r_if
 c_cond
 (paren

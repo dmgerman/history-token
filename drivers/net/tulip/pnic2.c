@@ -36,10 +36,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 suffix:semicolon
 r_int
 id|next_tick
@@ -63,7 +65,7 @@ l_string|&quot;%s: PNIC2 negotiation status %8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -115,10 +117,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 suffix:semicolon
 r_int
 id|csr14
@@ -131,7 +135,7 @@ multiline_comment|/* load in csr14  and mask off bits not to touch&n;         * 
 id|csr14
 op_assign
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -222,7 +226,7 @@ suffix:semicolon
 multiline_comment|/* now we have to set up csr6 for NWAY state */
 id|tp-&gt;csr6
 op_assign
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -274,7 +278,7 @@ id|tp-&gt;csr6
 op_or_assign
 l_int|0x01000000
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|csr14
@@ -284,7 +288,7 @@ op_plus
 id|CSR14
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|tp-&gt;csr6
@@ -305,7 +309,7 @@ multiline_comment|/* read in current values and mask off all but the&n;&t; * Aut
 id|csr12
 op_assign
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -320,7 +324,7 @@ id|csr12
 op_or_assign
 l_int|0x1000
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|csr12
@@ -356,10 +360,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 suffix:semicolon
 r_int
 id|csr14
@@ -368,7 +374,7 @@ multiline_comment|/* read the staus register to find out what is up */
 r_int
 id|csr12
 op_assign
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -396,7 +402,7 @@ id|csr12
 comma
 id|csr5
 comma
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -617,7 +623,7 @@ multiline_comment|/* remember to turn off bit 7 - autonegotiate&n;              
 id|csr14
 op_assign
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -628,7 +634,7 @@ op_amp
 l_int|0xffffff7f
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|csr14
@@ -644,7 +650,7 @@ multiline_comment|/* see comment at top of file */
 id|tp-&gt;csr6
 op_assign
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -682,7 +688,7 @@ id|tp-&gt;csr6
 op_or_assign
 l_int|0x00000200
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|1
@@ -710,7 +716,7 @@ id|dev-&gt;name
 comma
 id|tp-&gt;csr6
 comma
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -718,7 +724,7 @@ op_plus
 id|CSR6
 )paren
 comma
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -760,7 +766,7 @@ multiline_comment|/* remember to turn off bit 7 - autonegotiate&n;              
 id|csr14
 op_assign
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -771,7 +777,7 @@ op_amp
 l_int|0xffffff7f
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|csr14
@@ -798,7 +804,7 @@ multiline_comment|/* set to 10baseTx-HD - see Data Port Selection&n;            
 id|tp-&gt;csr6
 op_assign
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -1145,7 +1151,7 @@ multiline_comment|/* make sure autonegotiate enable is off */
 id|csr14
 op_assign
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -1156,7 +1162,7 @@ op_amp
 l_int|0xffffff7f
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|csr14
@@ -1170,7 +1176,7 @@ multiline_comment|/* set to 10baseTx-HD - see Data Port Selection&n;         * c
 id|tp-&gt;csr6
 op_assign
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr

@@ -1075,7 +1075,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma
@@ -1085,6 +1085,8 @@ op_plus
 id|page
 comma
 id|map_offset
+op_rshift
+id|PAGE_SHIFT
 comma
 id|map_size
 comma
@@ -2156,6 +2158,11 @@ id|par
 op_plus
 l_int|1
 )paren
+suffix:semicolon
+id|info-&gt;device
+op_assign
+op_amp
+id|pdev-&gt;dev
 suffix:semicolon
 r_if
 c_cond

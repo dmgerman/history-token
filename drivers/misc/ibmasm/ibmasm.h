@@ -364,6 +364,7 @@ id|lock
 suffix:semicolon
 DECL|member|base_address
 r_void
+id|__iomem
 op_star
 id|base_address
 suffix:semicolon

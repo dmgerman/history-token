@@ -179,8 +179,9 @@ id|__u32
 id|board_id
 suffix:semicolon
 DECL|member|vaddr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|vaddr
 suffix:semicolon
 DECL|member|paddr
@@ -200,6 +201,7 @@ id|io_mem_length
 suffix:semicolon
 DECL|member|cfgtable
 id|CfgTable_struct
+id|__iomem
 op_star
 id|cfgtable
 suffix:semicolon

@@ -1237,7 +1237,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|u16
+id|__le16
 op_star
 )paren
 op_amp
@@ -1263,7 +1263,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|u16
+id|__le16
 op_star
 )paren
 op_amp
@@ -1517,7 +1517,7 @@ c_func
 (paren
 op_star
 (paren
-id|u16
+id|__le16
 op_star
 )paren
 op_amp
@@ -1534,7 +1534,7 @@ c_func
 (paren
 op_star
 (paren
-id|u16
+id|__le16
 op_star
 )paren
 op_amp
@@ -1782,7 +1782,7 @@ c_func
 (paren
 op_star
 (paren
-id|u16
+id|__le16
 op_star
 )paren
 op_amp
@@ -2366,7 +2366,7 @@ c_func
 (paren
 op_star
 (paren
-id|u16
+id|__be16
 op_star
 )paren
 op_amp
@@ -2389,7 +2389,7 @@ c_func
 (paren
 op_star
 (paren
-id|u16
+id|__be16
 op_star
 )paren
 op_amp
@@ -3989,7 +3989,7 @@ op_logical_neg
 op_decrement
 id|wacom-&gt;open
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|wacom-&gt;irq
@@ -4859,7 +4859,7 @@ c_cond
 id|wacom
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|wacom-&gt;irq

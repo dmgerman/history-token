@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; *&t;&t;&t;Linux MegaRAID device driver&n; *&n; * Copyright (c) 2003-2004  LSI Logic Corporation.&n; *&n; *&t;   This program is free software; you can redistribute it and/or&n; *&t;   modify it under the terms of the GNU General Public License&n; *&t;   as published by the Free Software Foundation; either version&n; *&t;   2 of the License, or (at your option) any later version.&n; *&n; * FILE&t;&t;: megaraid_mbox.c&n; * Version&t;: v2.20.3.1 (August 24 2004)&n; *&n; * Authors:&n; * &t;Atul Mukker&t;&t;&lt;Atul.Mukker@lsil.com&gt;&n; * &t;Sreenivas Bagalkote&t;&lt;Sreenivas.Bagalkote@lsil.com&gt;&n; * &t;Manoj Jose&t;&t;&lt;Manoj.Jose@lsil.com&gt;&n; *&n; * List of supported controllers&n; *&n; * OEM&t;Product Name&t;&t;&t;VID&t;DID&t;SSVID&t;SSID&n; * ---&t;------------&t;&t;&t;---&t;---&t;----&t;----&n; * Dell PERC3/QC&t;&t;&t;101E&t;1960&t;1028&t;0471&n; * Dell PERC3/DC&t;&t;&t;101E&t;1960&t;1028&t;0493&n; * Dell PERC3/SC&t;&t;&t;101E&t;1960&t;1028&t;0475&n; * Dell PERC3/Di&t;&t;&t;1028&t;1960&t;1028&t;0123&n; * Dell PERC4/SC&t;&t;&t;1000&t;1960&t;1028&t;0520&n; * Dell PERC4/DC&t;&t;&t;1000&t;1960&t;1028&t;0518&n; * Dell PERC4/QC&t;&t;&t;1000&t;0407&t;1028&t;0531&n; * Dell PERC4/Di&t;&t;&t;1028&t;000F&t;1028&t;014A&n; * Dell PERC 4e/Si&t;&t;&t;1028&t;0013&t;1028&t;016c&n; * Dell PERC 4e/Di&t;&t;&t;1028&t;0013&t;1028&t;016d&n; * Dell PERC 4e/Di&t;&t;&t;1028&t;0013&t;1028&t;016e&n; * Dell PERC 4e/Di&t;&t;&t;1028&t;0013&t;1028&t;016f&n; * Dell PERC 4e/Di&t;&t;&t;1028&t;0013&t;1028&t;0170&n; * Dell PERC 4e/DC&t;&t;&t;1000&t;0408&t;1028&t;0002&n; * Dell PERC 4e/SC&t;&t;&t;1000&t;0408&t;1028&t;0001&n; *&n; *&n; * LSI MegaRAID SCSI 320-0&t;&t;1000&t;1960&t;1000&t;A520&n; * LSI MegaRAID SCSI 320-1&t;&t;1000&t;1960&t;1000&t;0520&n; * LSI MegaRAID SCSI 320-2&t;&t;1000&t;1960&t;1000&t;0518&n; * LSI MegaRAID SCSI 320-0X&t;&t;1000&t;0407&t;1000&t;0530&n; * LSI MegaRAID SCSI 320-2X&t;&t;1000&t;0407&t;1000&t;0532&n; * LSI MegaRAID SCSI 320-4X&t;&t;1000&t;0407&t;1000&t;0531&n; * LSI MegaRAID SCSI 320-1E&t;&t;1000&t;0408&t;1000&t;0001&n; * LSI MegaRAID SCSI 320-2E&t;&t;1000&t;0408&t;1000&t;0002&n; * LSI MegaRAID SATA 150-4&t;&t;1000&t;1960&t;1000&t;4523&n; * LSI MegaRAID SATA 150-6&t;&t;1000&t;1960&t;1000&t;0523&n; * LSI MegaRAID SATA 300-4X&t;&t;1000&t;0409&t;1000&t;3004&n; * LSI MegaRAID SATA 300-8X&t;&t;1000&t;0409&t;1000&t;3008&n; *&n; * INTEL RAID Controller SRCU42X&t;1000&t;0407&t;8086&t;0532&n; * INTEL RAID Controller SRCS16&t;&t;1000&t;1960&t;8086&t;0523&n; * INTEL RAID Controller SRCU42E&t;1000&t;0408&t;8086&t;0002&n; * INTEL RAID Controller SRCZCRX&t;1000&t;0407&t;8086&t;0530&n; * INTEL RAID Controller SRCS28X&t;1000&t;0409&t;8086&t;3008&n; * INTEL RAID Controller SROMBU42E&t;1000&t;0408&t;8086&t;3431&n; * INTEL RAID Controller SROMBU42E&t;1000&t;0408&t;8086&t;3499&n; * INTEL RAID Controller SRCU51L&t;1000&t;1960&t;8086&t;0520&n; *&n; *&n; * FSC&t;MegaRAID PCI Express ROMB&t;1000&t;0408&t;1734&t;1065&n; *&n; *&n; * ACER&t;MegaRAID ROMB-2E&t;&t;1000&t;0408&t;1025&t;004D&n; *&n; *&n; * For history of changes, see Documentation/ChangeLog.megaraid&n; */
+multiline_comment|/*&n; *&n; *&t;&t;&t;Linux MegaRAID device driver&n; *&n; * Copyright (c) 2003-2004  LSI Logic Corporation.&n; *&n; *&t;   This program is free software; you can redistribute it and/or&n; *&t;   modify it under the terms of the GNU General Public License&n; *&t;   as published by the Free Software Foundation; either version&n; *&t;   2 of the License, or (at your option) any later version.&n; *&n; * FILE&t;&t;: megaraid_mbox.c&n; * Version&t;: v2.20.4 (September 27 2004)&n; *&n; * Authors:&n; * &t;Atul Mukker&t;&t;&lt;Atul.Mukker@lsil.com&gt;&n; * &t;Sreenivas Bagalkote&t;&lt;Sreenivas.Bagalkote@lsil.com&gt;&n; * &t;Manoj Jose&t;&t;&lt;Manoj.Jose@lsil.com&gt;&n; *&n; * List of supported controllers&n; *&n; * OEM&t;Product Name&t;&t;&t;VID&t;DID&t;SSVID&t;SSID&n; * ---&t;------------&t;&t;&t;---&t;---&t;----&t;----&n; * Dell PERC3/QC&t;&t;&t;101E&t;1960&t;1028&t;0471&n; * Dell PERC3/DC&t;&t;&t;101E&t;1960&t;1028&t;0493&n; * Dell PERC3/SC&t;&t;&t;101E&t;1960&t;1028&t;0475&n; * Dell PERC3/Di&t;&t;&t;1028&t;1960&t;1028&t;0123&n; * Dell PERC4/SC&t;&t;&t;1000&t;1960&t;1028&t;0520&n; * Dell PERC4/DC&t;&t;&t;1000&t;1960&t;1028&t;0518&n; * Dell PERC4/QC&t;&t;&t;1000&t;0407&t;1028&t;0531&n; * Dell PERC4/Di&t;&t;&t;1028&t;000F&t;1028&t;014A&n; * Dell PERC 4e/Si&t;&t;&t;1028&t;0013&t;1028&t;016c&n; * Dell PERC 4e/Di&t;&t;&t;1028&t;0013&t;1028&t;016d&n; * Dell PERC 4e/Di&t;&t;&t;1028&t;0013&t;1028&t;016e&n; * Dell PERC 4e/Di&t;&t;&t;1028&t;0013&t;1028&t;016f&n; * Dell PERC 4e/Di&t;&t;&t;1028&t;0013&t;1028&t;0170&n; * Dell PERC 4e/DC&t;&t;&t;1000&t;0408&t;1028&t;0002&n; * Dell PERC 4e/SC&t;&t;&t;1000&t;0408&t;1028&t;0001&n; *&n; *&n; * LSI MegaRAID SCSI 320-0&t;&t;1000&t;1960&t;1000&t;A520&n; * LSI MegaRAID SCSI 320-1&t;&t;1000&t;1960&t;1000&t;0520&n; * LSI MegaRAID SCSI 320-2&t;&t;1000&t;1960&t;1000&t;0518&n; * LSI MegaRAID SCSI 320-0X&t;&t;1000&t;0407&t;1000&t;0530&n; * LSI MegaRAID SCSI 320-2X&t;&t;1000&t;0407&t;1000&t;0532&n; * LSI MegaRAID SCSI 320-4X&t;&t;1000&t;0407&t;1000&t;0531&n; * LSI MegaRAID SCSI 320-1E&t;&t;1000&t;0408&t;1000&t;0001&n; * LSI MegaRAID SCSI 320-2E&t;&t;1000&t;0408&t;1000&t;0002&n; * LSI MegaRAID SATA 150-4&t;&t;1000&t;1960&t;1000&t;4523&n; * LSI MegaRAID SATA 150-6&t;&t;1000&t;1960&t;1000&t;0523&n; * LSI MegaRAID SATA 300-4X&t;&t;1000&t;0409&t;1000&t;3004&n; * LSI MegaRAID SATA 300-8X&t;&t;1000&t;0409&t;1000&t;3008&n; *&n; * INTEL RAID Controller SRCU42X&t;1000&t;0407&t;8086&t;0532&n; * INTEL RAID Controller SRCS16&t;&t;1000&t;1960&t;8086&t;0523&n; * INTEL RAID Controller SRCU42E&t;1000&t;0408&t;8086&t;0002&n; * INTEL RAID Controller SRCZCRX&t;1000&t;0407&t;8086&t;0530&n; * INTEL RAID Controller SRCS28X&t;1000&t;0409&t;8086&t;3008&n; * INTEL RAID Controller SROMBU42E&t;1000&t;0408&t;8086&t;3431&n; * INTEL RAID Controller SROMBU42E&t;1000&t;0408&t;8086&t;3499&n; * INTEL RAID Controller SRCU51L&t;1000&t;1960&t;8086&t;0520&n; *&n; *&n; * FSC&t;MegaRAID PCI Express ROMB&t;1000&t;0408&t;1734&t;1065&n; *&n; *&n; * ACER&t;MegaRAID ROMB-2E&t;&t;1000&t;0408&t;1025&t;004D&n; *&n; *&n; * For history of changes, see Documentation/ChangeLog.megaraid&n; */
 macro_line|#include &quot;megaraid_mbox.h&quot;
 r_static
 r_int
@@ -658,13 +658,13 @@ l_int|0x02
 comma
 l_int|0x20
 comma
-l_int|0x02
+l_int|0x04
 comma
 l_int|0x00
 comma
-l_int|7
+l_int|9
 comma
-l_int|22
+l_int|27
 comma
 l_int|20
 comma
@@ -2331,10 +2331,6 @@ suffix:semicolon
 )brace
 id|raid_dev-&gt;baseaddr
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -2667,9 +2663,6 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-id|caddr_t
-)paren
 id|raid_dev-&gt;baseaddr
 )paren
 suffix:semicolon
@@ -2747,9 +2740,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-id|caddr_t
-)paren
 id|raid_dev-&gt;baseaddr
 )paren
 suffix:semicolon
@@ -4658,7 +4648,7 @@ id|scb-&gt;scp-&gt;use_sg
 )paren
 (brace
 singleline_comment|// sg list not used
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|adapter-&gt;pdev
@@ -4673,7 +4663,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|pci_dma_sync_sg
+id|pci_dma_sync_sg_for_cpu
 c_func
 (paren
 id|adapter-&gt;pdev
@@ -7335,7 +7325,7 @@ op_eq
 id|PCI_DMA_FROMDEVICE
 )paren
 (brace
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|adapter-&gt;pdev
@@ -7373,7 +7363,7 @@ op_eq
 id|PCI_DMA_FROMDEVICE
 )paren
 (brace
-id|pci_dma_sync_sg
+id|pci_dma_sync_sg_for_cpu
 c_func
 (paren
 id|adapter-&gt;pdev
@@ -11458,7 +11448,7 @@ id|i
 suffix:semicolon
 id|ccb
 op_assign
-id|raid_dev-&gt;ccb_list
+id|raid_dev-&gt;uccb_list
 op_plus
 id|i
 suffix:semicolon

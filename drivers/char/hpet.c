@@ -16,12 +16,12 @@ macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
@@ -1022,13 +1022,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|remap_page_range
+id|remap_pfn_range
+c_func
 (paren
 id|vma
 comma
 id|vma-&gt;vm_start
 comma
 id|addr
+op_rshift
+id|PAGE_SHIFT
 comma
 id|PAGE_SIZE
 comma
@@ -1040,7 +1043,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;remap_page_range failed in hpet.c&bslash;n&quot;
+l_string|&quot;remap_pfn_range failed in hpet.c&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3960,12 +3963,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|__initdata
+DECL|variable|hpet_acpi_driver
 r_static
 r_struct
 id|acpi_driver
 id|hpet_acpi_driver
-id|__initdata
 op_assign
 (brace
 dot

@@ -1083,7 +1083,7 @@ DECL|macro|ELF_HWCAP
 mdefine_line|#define ELF_HWCAP&t;0
 multiline_comment|/* This macro yields a string that ld.so will use to load&n;   implementation specific libraries for optimization.  Not terribly&n;   relevant until we have real hardware to play with... */
 DECL|macro|ELF_PLATFORM
-mdefine_line|#define ELF_PLATFORM&t;0
+mdefine_line|#define ELF_PLATFORM&t;NULL
 macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
 macro_line|# define SET_PERSONALITY(EX,IBCS2)&t;&t;&t;&t;&bslash;&n;&t;(current-&gt;personality = (IBCS2) ? PER_SVR4 : PER_LINUX)
@@ -1156,7 +1156,7 @@ multiline_comment|/* Unscramble an IA-32 segment descriptor into the IA-64 forma
 DECL|macro|IA32_SEG_UNSCRAMBLE
 mdefine_line|#define IA32_SEG_UNSCRAMBLE(sd)&t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(   (((sd) &gt;&gt; IA32_SEG_BASE) &amp; 0xffffff) | ((((sd) &gt;&gt; IA32_SEG_HIGH_BASE) &amp; 0xff) &lt;&lt; 24) &bslash;&n;&t; | ((((sd) &amp; 0xffff) | ((((sd) &gt;&gt; IA32_SEG_HIGH_LIMIT) &amp; 0xf) &lt;&lt; 16)) &lt;&lt; SEG_LIM)&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_TYPE) &amp; 0xf) &lt;&lt; SEG_TYPE)&t;&t;&t;&t;&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_SYS) &amp; 0x1) &lt;&lt; SEG_SYS)&t;&t;&t;&t;&t;&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_DPL) &amp; 0x3) &lt;&lt; SEG_DPL)&t;&t;&t;&t;&t;&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_P) &amp; 0x1) &lt;&lt; SEG_P)&t;&t;&t;&t;&t;&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_AVL) &amp; 0x1) &lt;&lt; SEG_AVL)&t;&t;&t;&t;&t;&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_DB) &amp; 0x1) &lt;&lt; SEG_DB)&t;&t;&t;&t;&t;&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_G) &amp; 0x1) &lt;&lt; SEG_G))
 DECL|macro|IA32_IOBASE
-mdefine_line|#define IA32_IOBASE&t;0x2000000000000000 /* Virtual address for I/O space */
+mdefine_line|#define IA32_IOBASE&t;0x2000000000000000UL /* Virtual address for I/O space */
 DECL|macro|IA32_CR0
 mdefine_line|#define IA32_CR0&t;0x80000001&t;/* Enable PG and PE bits */
 DECL|macro|IA32_CR4
@@ -1508,12 +1508,11 @@ id|save_ia32_fpstate
 r_struct
 id|task_struct
 op_star
-id|tsk
 comma
 r_struct
 id|ia32_user_i387_struct
+id|__user
 op_star
-id|save
 )paren
 suffix:semicolon
 r_extern
@@ -1523,12 +1522,38 @@ id|save_ia32_fpxstate
 r_struct
 id|task_struct
 op_star
-id|tsk
 comma
 r_struct
 id|ia32_user_fxsr_struct
+id|__user
 op_star
-id|save
+)paren
+suffix:semicolon
+multiline_comment|/* Prototypes for use in sys_ia32.c */
+r_int
+id|copy_siginfo_to_user32
+(paren
+id|siginfo_t32
+id|__user
+op_star
+id|to
+comma
+id|siginfo_t
+op_star
+id|from
+)paren
+suffix:semicolon
+r_int
+id|copy_siginfo_from_user32
+(paren
+id|siginfo_t
+op_star
+id|to
+comma
+id|siginfo_t32
+id|__user
+op_star
+id|from
 )paren
 suffix:semicolon
 macro_line|#endif /* !CONFIG_IA32_SUPPORT */

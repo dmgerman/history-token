@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
 r_struct
-id|key
+id|reiserfs_key
 id|MIN_KEY
 suffix:semicolon
 r_static
@@ -99,12 +99,17 @@ id|inode
 op_assign
 id|dentry-&gt;d_inode
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 id|reiserfs_write_lock
 c_func
 (paren
 id|inode-&gt;i_sb
 )paren
 suffix:semicolon
+id|err
+op_assign
 id|reiserfs_commit_for_inode
 c_func
 (paren
@@ -116,6 +121,16 @@ c_func
 (paren
 id|inode-&gt;i_sb
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
+)paren
+r_return
+id|err
 suffix:semicolon
 r_return
 l_int|0
@@ -171,7 +186,7 @@ id|entry_num
 suffix:semicolon
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|rkey
 suffix:semicolon

@@ -838,11 +838,12 @@ r_struct
 id|_nsp32_lunt
 (brace
 DECL|member|SCpnt
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon
-multiline_comment|/* Current Handling Scsi_Cmnd */
+multiline_comment|/* Current Handling struct scsi_cmnd */
 DECL|member|save_datp
 r_int
 r_int
@@ -1016,8 +1017,9 @@ r_int
 id|NumAddress
 suffix:semicolon
 DECL|member|MmioAddress
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|MmioAddress
 suffix:semicolon
 DECL|macro|NSP32_MMIO_OFFSET
@@ -1028,7 +1030,8 @@ r_int
 id|MmioLength
 suffix:semicolon
 DECL|member|CurrentSC
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|CurrentSC
 suffix:semicolon
@@ -1188,16 +1191,6 @@ r_char
 id|msgin_len
 suffix:semicolon
 multiline_comment|/* msginbuf length  */
-macro_line|#ifdef CONFIG_PM
-DECL|member|PciState
-id|u32
-id|PciState
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* save PCI state to this area */
-macro_line|#endif
 DECL|typedef|nsp32_hw_data
 )brace
 id|nsp32_hw_data

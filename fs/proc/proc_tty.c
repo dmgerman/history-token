@@ -7,14 +7,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
-r_extern
-r_struct
-id|tty_ldisc
-id|ldiscs
-(braket
-)braket
-suffix:semicolon
+macro_line|#include &lt;linux/bitops.h&gt;
 r_static
 r_int
 id|tty_ldiscs_read_proc
@@ -875,6 +868,11 @@ id|begin
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|tty_ldisc
+op_star
+id|ld
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -890,20 +888,20 @@ id|i
 op_increment
 )paren
 (brace
+id|ld
+op_assign
+id|tty_ldisc_get
+c_func
+(paren
+id|i
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
-id|ldiscs
-(braket
-id|i
-)braket
-dot
-id|flags
-op_amp
-id|LDISC_FLAG_DEFINED
-)paren
+id|ld
+op_eq
+l_int|NULL
 )paren
 r_continue
 suffix:semicolon
@@ -918,23 +916,19 @@ id|len
 comma
 l_string|&quot;%-10s %2d&bslash;n&quot;
 comma
-id|ldiscs
-(braket
-id|i
-)braket
-dot
-id|name
+id|ld-&gt;name
 ques
 c_cond
-id|ldiscs
-(braket
-id|i
-)braket
-dot
-id|name
+id|ld-&gt;name
 suffix:colon
 l_string|&quot;???&quot;
 comma
+id|i
+)paren
+suffix:semicolon
+id|tty_ldisc_put
+c_func
+(paren
 id|i
 )paren
 suffix:semicolon

@@ -254,6 +254,11 @@ id|smb_fattr
 op_star
 id|fattr
 comma
+r_struct
+id|smb_sb_info
+op_star
+id|server
+comma
 r_char
 op_star
 id|p

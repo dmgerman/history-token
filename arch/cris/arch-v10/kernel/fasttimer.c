@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/rtc.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/arch/svinto.h&gt;
 macro_line|#include &lt;asm/fasttimer.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -1809,7 +1808,6 @@ id|offset
 comma
 r_int
 id|len
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0)
 comma
 r_int
 op_star
@@ -1818,14 +1816,8 @@ comma
 r_void
 op_star
 id|data_unused
-macro_line|#else
-comma
-r_int
-id|unused
-macro_line|#endif
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0)
 DECL|variable|fasttimer_proc_entry
 r_static
 r_struct
@@ -1833,42 +1825,6 @@ id|proc_dir_entry
 op_star
 id|fasttimer_proc_entry
 suffix:semicolon
-macro_line|#else
-DECL|variable|fasttimer_proc_entry
-r_static
-r_struct
-id|proc_dir_entry
-id|fasttimer_proc_entry
-op_assign
-(brace
-l_int|0
-comma
-l_int|9
-comma
-l_string|&quot;fasttimer&quot;
-comma
-id|S_IFREG
-op_or
-id|S_IRUGO
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|NULL
-multiline_comment|/* ops -- default to array */
-comma
-op_amp
-id|proc_fasttimer_read
-multiline_comment|/* get_info */
-comma
-)brace
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* CONFIG_PROC_FS */
 macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* This value is very much based on testing */
@@ -1894,7 +1850,6 @@ id|offset
 comma
 r_int
 id|len
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0)
 comma
 r_int
 op_star
@@ -1903,11 +1858,6 @@ comma
 r_void
 op_star
 id|data_unused
-macro_line|#else
-comma
-r_int
-id|unused
-macro_line|#endif
 )paren
 (brace
 r_int
@@ -2806,13 +2756,11 @@ id|start
 op_assign
 id|buf
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0)
 op_star
 id|eof
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif
 r_return
 id|len
 suffix:semicolon
@@ -3844,7 +3792,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_PROC_FS
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0)
 r_if
 c_cond
 (paren
@@ -3866,18 +3813,6 @@ id|fasttimer_proc_entry-&gt;read_proc
 op_assign
 id|proc_fasttimer_read
 suffix:semicolon
-macro_line|#else
-id|proc_register_dynamic
-c_func
-(paren
-op_amp
-id|proc_root
-comma
-op_amp
-id|fasttimer_proc_entry
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* PROC_FS */
 r_if
 c_cond

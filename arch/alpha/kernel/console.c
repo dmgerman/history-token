@@ -145,7 +145,7 @@ suffix:semicolon
 (paren
 id|dev
 op_assign
-id|pci_find_class
+id|pci_get_class
 c_func
 (paren
 id|PCI_CLASS_DISPLAY_VGA

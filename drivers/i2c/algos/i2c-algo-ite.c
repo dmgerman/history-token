@@ -223,28 +223,6 @@ op_le
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Puts this process to sleep for a period equal to timeout &n; */
-DECL|function|iic_sleep
-r_static
-r_inline
-r_void
-id|iic_sleep
-c_func
-(paren
-r_int
-r_int
-id|timeout
-)paren
-(brace
-id|schedule_timeout
-c_func
-(paren
-id|timeout
-op_star
-id|HZ
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* After we issue a transaction on the IIC bus, this function&n; * is called.  It puts this process to sleep until we get an interrupt from&n; * from the controller telling us that the transaction we requested in complete.&n; */
 DECL|function|wait_for_pin
 r_static

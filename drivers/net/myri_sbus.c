@@ -24,12 +24,12 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -1839,7 +1839,11 @@ id|dev-&gt;hard_header_len
 suffix:semicolon
 id|eth
 op_assign
-id|skb-&gt;mac.ethernet
+id|eth_hdr
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_HEADER
 id|DHDR

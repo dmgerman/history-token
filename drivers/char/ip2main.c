@@ -96,10 +96,10 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/cdk.h&gt;
 macro_line|#include &lt;linux/comstats.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
@@ -6739,14 +6739,14 @@ c_cond
 id|pCh-&gt;ClosingDelay
 )paren
 (brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
+c_func
+(paren
+id|jiffies_to_msecs
 c_func
 (paren
 id|pCh-&gt;ClosingDelay
+)paren
 )paren
 suffix:semicolon
 )brace

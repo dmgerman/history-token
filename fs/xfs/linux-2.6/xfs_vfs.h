@@ -8,6 +8,9 @@ r_struct
 id|fid
 suffix:semicolon
 r_struct
+id|vfs
+suffix:semicolon
+r_struct
 id|cred
 suffix:semicolon
 r_struct
@@ -30,6 +33,47 @@ r_typedef
 r_struct
 id|kstatfs
 id|xfs_statfs_t
+suffix:semicolon
+DECL|struct|vfs_sync_work
+r_typedef
+r_struct
+id|vfs_sync_work
+(brace
+DECL|member|w_list
+r_struct
+id|list_head
+id|w_list
+suffix:semicolon
+DECL|member|w_vfs
+r_struct
+id|vfs
+op_star
+id|w_vfs
+suffix:semicolon
+DECL|member|w_data
+r_void
+op_star
+id|w_data
+suffix:semicolon
+multiline_comment|/* syncer routine argument */
+DECL|member|w_syncer
+r_void
+(paren
+op_star
+id|w_syncer
+)paren
+(paren
+r_struct
+id|vfs
+op_star
+comma
+r_void
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|vfs_sync_work_t
+)brace
+id|vfs_sync_work_t
 suffix:semicolon
 DECL|struct|vfs
 r_typedef
@@ -63,19 +107,35 @@ id|super_block
 op_star
 id|vfs_super
 suffix:semicolon
-multiline_comment|/* Linux superblock structure */
+multiline_comment|/* generic superblock pointer */
 DECL|member|vfs_sync_task
 r_struct
 id|task_struct
 op_star
 id|vfs_sync_task
 suffix:semicolon
-multiline_comment|/* xfssyncd process */
+multiline_comment|/* generalised sync thread */
+DECL|member|vfs_sync_work
+id|vfs_sync_work_t
+id|vfs_sync_work
+suffix:semicolon
+multiline_comment|/* work item for VFS_SYNC */
+DECL|member|vfs_sync_list
+r_struct
+id|list_head
+id|vfs_sync_list
+suffix:semicolon
+multiline_comment|/* sync thread work item list */
+DECL|member|vfs_sync_lock
+id|spinlock_t
+id|vfs_sync_lock
+suffix:semicolon
+multiline_comment|/* work item list lock */
 DECL|member|vfs_sync_seq
 r_int
 id|vfs_sync_seq
 suffix:semicolon
-multiline_comment|/* xfssyncd generation number */
+multiline_comment|/* sync thread generation no. */
 DECL|member|vfs_wait_single_sync_task
 id|wait_queue_head_t
 id|vfs_wait_single_sync_task
@@ -885,5 +945,9 @@ comma
 r_int
 )paren
 suffix:semicolon
+DECL|macro|fs_frozen
+mdefine_line|#define fs_frozen(vfsp)&t;&t;((vfsp)-&gt;vfs_super-&gt;s_frozen)
+DECL|macro|fs_check_frozen
+mdefine_line|#define fs_check_frozen(vfsp, level) &bslash;&n;&t;vfs_check_frozen(vfsp-&gt;vfs_super, level);
 macro_line|#endif&t;/* __XFS_VFS_H__ */
 eof

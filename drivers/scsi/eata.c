@@ -1,13 +1,10 @@
 multiline_comment|/*&n; *      eata.c - Low-level driver for EATA/DMA SCSI host adapters.&n; *&n; *      03 Jun 2003 Rev. 8.10 for linux-2.5.70&n; *        + Update for new IRQ API.&n; *        + Use &quot;goto&quot; when appropriate.&n; *        + Drop eata.h.&n; *        + Update for new module_param API.&n; *        + Module parameters  can now be specified only in the&n; *          same format as the kernel boot options.&n; *&n; *             boot option    old module param &n; *             -----------    ------------------&n; *             addr,...       io_port=addr,...&n; *             lc:[y|n]       linked_comm=[1|0]&n; *             mq:xx          max_queue_depth=xx&n; *             tm:[0|1|2]     tag_mode=[0|1|2]&n; *             et:[y|n]       ext_tran=[1|0]&n; *             rs:[y|n]       rev_scan=[1|0]&n; *             ip:[y|n]       isa_probe=[1|0]&n; *             ep:[y|n]       eisa_probe=[1|0]&n; *             pp:[y|n]       pci_probe=[1|0]&n; *&n; *          A valid example using the new parameter format is:&n; *          modprobe eata &quot;eata=0x7410,0x230,lc:y,tm:0,mq:4,ep:n&quot;&n; *&n; *          which is equivalent to the old format:&n; *          modprobe eata io_port=0x7410,0x230 linked_comm=1 tag_mode=0 &bslash;&n; *                        max_queue_depth=4 eisa_probe=0&n; *&n; *      12 Feb 2003 Rev. 8.04 for linux 2.5.60&n; *        + Release irq before calling scsi_register.&n; *&n; *      12 Nov 2002 Rev. 8.02 for linux 2.5.47&n; *        + Release driver_lock before calling scsi_register.&n; *&n; *      11 Nov 2002 Rev. 8.01 for linux 2.5.47&n; *        + Fixed bios_param and scsicam_bios_param calling parameters.&n; *&n; *      28 Oct 2002 Rev. 8.00 for linux 2.5.44-ac4&n; *        + Use new tcq and adjust_queue_depth api.&n; *        + New command line option (tm:[0-2]) to choose the type of tags:&n; *          0 -&gt; disable tagging ; 1 -&gt; simple tags  ; 2 -&gt; ordered tags.&n; *          Default is tm:0 (tagged commands disabled).&n; *          For compatibility the &quot;tc:&quot; option is an alias of the &quot;tm:&quot;&n; *          option; tc:n is equivalent to tm:0 and tc:y is equivalent to&n; *          tm:1.&n; *        + The tagged_comm module parameter has been removed, use tag_mode&n; *          instead, equivalent to the &quot;tm:&quot; boot option.&n; *&n; *      10 Oct 2002 Rev. 7.70 for linux 2.5.42&n; *        + Foreport from revision 6.70.&n; *&n; *      25 Jun 2002 Rev. 6.70 for linux 2.4.19&n; *        + This release is the first one tested on a Big Endian platform:&n; *          fixed endian-ness problem due to bitfields;&n; *          fixed endian-ness problem in read_pio.&n; *        + Added new options for selectively probing ISA, EISA and PCI bus:&n; *&n; *          Boot option   Parameter name    Default according to&n; *&n; *          ip:[y|n]      isa_probe=[1|0]   CONFIG_ISA  defined&n; *          ep:[y|n]      eisa_probe=[1|0]  CONFIG_EISA defined&n; *          pp:[y|n]      pci_probe=[1|0]   CONFIG_PCI  defined&n; *&n; *          The default action is to perform probing if the corrisponding&n; *          bus is configured and to skip probing otherwise.&n; *&n; *        + If pci_probe is in effect and a list of I/O  ports is specified&n; *          as parameter or boot option, pci_enable_device() is performed&n; *          on all pci devices matching PCI_CLASS_STORAGE_SCSI.&n; *&n; *      21 Feb 2002 Rev. 6.52 for linux 2.4.18&n; *        + Backport from rev. 7.22 (use io_request_lock).&n; *&n; *      20 Feb 2002 Rev. 7.22 for linux 2.5.5&n; *        + Remove any reference to virt_to_bus().&n; *        + Fix pio hang while detecting multiple HBAs.&n; *        + Fixed a board detection bug: in a system with&n; *          multiple ISA/EISA boards, all but the first one&n; *          were erroneously detected as PCI.&n; *&n; *      01 Jan 2002 Rev. 7.20 for linux 2.5.1&n; *        + Use the dynamic DMA mapping API.&n; *&n; *      19 Dec 2001 Rev. 7.02 for linux 2.5.1&n; *        + Use SCpnt-&gt;sc_data_direction if set.&n; *        + Use sglist.page instead of sglist.address.&n; *&n; *      11 Dec 2001 Rev. 7.00 for linux 2.5.1&n; *        + Use host-&gt;host_lock instead of io_request_lock.&n; *&n; *       1 May 2001 Rev. 6.05 for linux 2.4.4&n; *        + Clean up all pci related routines.&n; *        + Fix data transfer direction for opcode SEND_CUE_SHEET (0x5d)&n; *&n; *      30 Jan 2001 Rev. 6.04 for linux 2.4.1&n; *        + Call pci_resource_start after pci_enable_device.&n; *&n; *      25 Jan 2001 Rev. 6.03 for linux 2.4.0&n; *        + &quot;check_region&quot; call replaced by &quot;request_region&quot;.&n; *&n; *      22 Nov 2000 Rev. 6.02 for linux 2.4.0-test11&n; *        + Return code checked when calling pci_enable_device.&n; *        + Removed old scsi error handling support.&n; *        + The obsolete boot option flag eh:n is silently ignored.&n; *        + Removed error messages while a disk drive is powered up at&n; *          boot time.&n; *        + Improved boot messages: all tagged capable device are&n; *          indicated as &quot;tagged&quot; or &quot;soft-tagged&quot; :&n; *          - &quot;soft-tagged&quot;  means that the driver is trying to do its&n; *            own tagging (i.e. the tc:y option is in effect);&n; *          - &quot;tagged&quot; means that the device supports tagged commands,&n; *            but the driver lets the HBA be responsible for tagging&n; *            support.&n; *&n; *      16 Sep 1999 Rev. 5.11 for linux 2.2.12 and 2.3.18&n; *        + Updated to the new __setup interface for boot command line options.&n; *        + When loaded as a module, accepts the new parameter boot_options&n; *          which value is a string with the same format of the kernel boot&n; *          command line options. A valid example is:&n; *          modprobe eata &squot;boot_options=&quot;0x7410,0x230,lc:y,tc:n,mq:4&quot;&squot;&n; *&n; *       9 Sep 1999 Rev. 5.10 for linux 2.2.12 and 2.3.17&n; *        + 64bit cleanup for Linux/Alpha platform support&n; *          (contribution from H.J. Lu).&n; *&n; *      22 Jul 1999 Rev. 5.00 for linux 2.2.10 and 2.3.11&n; *        + Removed pre-2.2 source code compatibility.&n; *        + Added call to pci_set_master.&n; *&n; *      26 Jul 1998 Rev. 4.33 for linux 2.0.35 and 2.1.111&n; *        + Added command line option (rs:[y|n]) to reverse the scan order&n; *          of PCI boards. The default is rs:y, which reverses the BIOS order&n; *          while registering PCI boards. The default value rs:y generates&n; *          the same order of all previous revisions of this driver.&n; *          Pls. note that &quot;BIOS order&quot; might have been reversed itself&n; *          after the 2.1.9x PCI modifications in the linux kernel.&n; *          The rs value is ignored when the explicit list of addresses&n; *          is used by the &quot;eata=port0,port1,...&quot; command line option.&n; *        + Added command line option (et:[y|n]) to force use of extended&n; *          translation (255 heads, 63 sectors) as disk geometry.&n; *          The default is et:n, which uses the disk geometry returned&n; *          by scsicam_bios_param. The default value et:n is compatible with&n; *          all previous revisions of this driver.&n; *&n; *      28 May 1998 Rev. 4.32 for linux 2.0.33 and 2.1.104&n; *          Increased busy timeout from 10 msec. to 200 msec. while&n; *          processing interrupts.&n; *&n; *      16 May 1998 Rev. 4.31 for linux 2.0.33 and 2.1.102&n; *          Improved abort handling during the eh recovery process.&n; *&n; *      13 May 1998 Rev. 4.30 for linux 2.0.33 and 2.1.101&n; *          The driver is now fully SMP safe, including the&n; *          abort and reset routines.&n; *          Added command line options (eh:[y|n]) to choose between&n; *          new_eh_code and the old scsi code.&n; *          If linux version &gt;= 2.1.101 the default is eh:y, while the eh&n; *          option is ignored for previous releases and the old scsi code&n; *          is used.&n; *&n; *      18 Apr 1998 Rev. 4.20 for linux 2.0.33 and 2.1.97&n; *          Reworked interrupt handler.&n; *&n; *      11 Apr 1998 rev. 4.05 for linux 2.0.33 and 2.1.95&n; *          Major reliability improvement: when a batch with overlapping&n; *          requests is detected, requests are queued one at a time&n; *          eliminating any possible board or drive reordering.&n; *&n; *      10 Apr 1998 rev. 4.04 for linux 2.0.33 and 2.1.95&n; *          Improved SMP support (if linux version &gt;= 2.1.95).&n; *&n; *       9 Apr 1998 rev. 4.03 for linux 2.0.33 and 2.1.94&n; *          Added support for new PCI code and IO-APIC remapping of irqs.&n; *          Performance improvement: when sequential i/o is detected,&n; *          always use direct sort instead of reverse sort.&n; *&n; *       4 Apr 1998 rev. 4.02 for linux 2.0.33 and 2.1.92&n; *          io_port is now unsigned long.&n; *&n; *      17 Mar 1998 rev. 4.01 for linux 2.0.33 and 2.1.88&n; *          Use new scsi error handling code (if linux version &gt;= 2.1.88).&n; *          Use new interrupt code.&n; *&n; *      12 Sep 1997 rev. 3.11 for linux 2.0.30 and 2.1.55&n; *          Use of udelay inside the wait loops to avoid timeout&n; *          problems with fast cpus.&n; *          Removed check about useless calls to the interrupt service&n; *          routine (reported on SMP systems only).&n; *          At initialization time &quot;sorted/unsorted&quot; is displayed instead&n; *          of &quot;linked/unlinked&quot; to reinforce the fact that &quot;linking&quot; is&n; *          nothing but &quot;elevator sorting&quot; in the actual implementation.&n; *&n; *      17 May 1997 rev. 3.10 for linux 2.0.30 and 2.1.38&n; *          Use of serial_number_at_timeout in abort and reset processing.&n; *          Use of the __initfunc and __initdata macro in setup code.&n; *          Minor cleanups in the list_statistics code.&n; *          Increased controller busy timeout in order to better support&n; *          slow SCSI devices.&n; *&n; *      24 Feb 1997 rev. 3.00 for linux 2.0.29 and 2.1.26&n; *          When loading as a module, parameter passing is now supported&n; *          both in 2.0 and in 2.1 style.&n; *          Fixed data transfer direction for some SCSI opcodes.&n; *          Immediate acknowledge to request sense commands.&n; *          Linked commands to each disk device are now reordered by elevator&n; *          sorting. Rare cases in which reordering of write requests could&n; *          cause wrong results are managed.&n; *          Fixed spurious timeouts caused by long simple queue tag sequences.&n; *          New command line option (tm:[0-3]) to choose the type of tags:&n; *          0 -&gt; mixed (default); 1 -&gt; simple; 2 -&gt; head; 3 -&gt; ordered.&n; *&n; *      18 Jan 1997 rev. 2.60 for linux 2.1.21 and 2.0.28&n; *          Added command line options to enable/disable linked commands&n; *          (lc:[y|n]), tagged commands (tc:[y|n]) and to set the max queue&n; *          depth (mq:xx). Default is &quot;eata=lc:n,tc:n,mq:16&quot;.&n; *          Improved command linking.&n; *          Documented how to setup RAID-0 with DPT SmartRAID boards.&n; *&n; *       8 Jan 1997 rev. 2.50 for linux 2.1.20 and 2.0.27&n; *          Added linked command support.&n; *          Improved detection of PCI boards using ISA base addresses.&n; *&n; *       3 Dec 1996 rev. 2.40 for linux 2.1.14 and 2.0.27&n; *          Added support for tagged commands and queue depth adjustment.&n; *&n; *      22 Nov 1996 rev. 2.30 for linux 2.1.12 and 2.0.26&n; *          When CONFIG_PCI is defined, BIOS32 is used to include in the&n; *          list of i/o ports to be probed all the PCI SCSI controllers.&n; *          The list of i/o ports to be probed can be overwritten by the&n; *          &quot;eata=port0,port1,....&quot; boot command line option.&n; *          Scatter/gather lists are now allocated by a number of kmalloc&n; *          calls, in order to avoid the previous size limit of 64Kb.&n; *&n; *      16 Nov 1996 rev. 2.20 for linux 2.1.10 and 2.0.25&n; *          Added support for EATA 2.0C, PCI, multichannel and wide SCSI.&n; *&n; *      27 Sep 1996 rev. 2.12 for linux 2.1.0&n; *          Portability cleanups (virtual/bus addressing, little/big endian&n; *          support).&n; *&n; *      09 Jul 1996 rev. 2.11 for linux 2.0.4&n; *          Number of internal retries is now limited.&n; *&n; *      16 Apr 1996 rev. 2.10 for linux 1.3.90&n; *          New argument &quot;reset_flags&quot; to the reset routine.&n; *&n; *       6 Jul 1995 rev. 2.01 for linux 1.3.7&n; *          Update required by the new /proc/scsi support.&n; *&n; *      11 Mar 1995 rev. 2.00 for linux 1.2.0&n; *          Fixed a bug which prevented media change detection for removable&n; *          disk drives.&n; *&n; *      23 Feb 1995 rev. 1.18 for linux 1.1.94&n; *          Added a check for scsi_register returning NULL.&n; *&n; *      11 Feb 1995 rev. 1.17 for linux 1.1.91&n; *          Now DEBUG_RESET is disabled by default.&n; *          Register a board even if it does not assert DMA protocol support&n; *          (DPT SK2011B does not report correctly the dmasup bit).&n; *&n; *       9 Feb 1995 rev. 1.16 for linux 1.1.90&n; *          Use host-&gt;wish_block instead of host-&gt;block.&n; *          New list of Data Out SCSI commands.&n; *&n; *       8 Feb 1995 rev. 1.15 for linux 1.1.89&n; *          Cleared target_time_out counter while performing a reset.&n; *          All external symbols renamed to avoid possible name conflicts.&n; *&n; *      28 Jan 1995 rev. 1.14 for linux 1.1.86&n; *          Added module support.&n; *          Log and do a retry when a disk drive returns a target status&n; *          different from zero on a recovered error.&n; *&n; *      24 Jan 1995 rev. 1.13 for linux 1.1.85&n; *          Use optimized board configuration, with a measured performance&n; *          increase in the range 10%-20% on i/o throughput.&n; *&n; *      16 Jan 1995 rev. 1.12 for linux 1.1.81&n; *          Fix mscp structure comments (no functional change).&n; *          Display a message if check_region detects a port address&n; *          already in use.&n; *&n; *      17 Dec 1994 rev. 1.11 for linux 1.1.74&n; *          Use the scsicam_bios_param routine. This allows an easy&n; *          migration path from disk partition tables created using&n; *          different SCSI drivers and non optimal disk geometry.&n; *&n; *      15 Dec 1994 rev. 1.10 for linux 1.1.74&n; *          Added support for ISA EATA boards (DPT PM2011, DPT PM2021).&n; *          The host-&gt;block flag is set for all the detected ISA boards.&n; *          The detect routine no longer enforces LEVEL triggering&n; *          for EISA boards, it just prints a warning message.&n; *&n; *      30 Nov 1994 rev. 1.09 for linux 1.1.68&n; *          Redo i/o on target status CHECK_CONDITION for TYPE_DISK only.&n; *          Added optional support for using a single board at a time.&n; *&n; *      18 Nov 1994 rev. 1.08 for linux 1.1.64&n; *          Forces sg_tablesize = 64 and can_queue = 64 if these&n; *          values are not correctly detected (DPT PM2012).&n; *&n; *      14 Nov 1994 rev. 1.07 for linux 1.1.63  Final BETA release.&n; *      04 Aug 1994 rev. 1.00 for linux 1.1.39  First BETA release.&n; *&n; *&n; *          This driver is based on the CAM (Common Access Method Committee)&n; *          EATA (Enhanced AT Bus Attachment) rev. 2.0A, using DMA protocol.&n; *&n; *  Copyright (C) 1994-2003 Dario Ballabio (ballabio_dario@emc.com)&n; *&n; *  Alternate email: dario.ballabio@inwind.it, dario.ballabio@tiscalinet.it&n; *&n; *  Redistribution and use in source and binary forms, with or without&n; *  modification, are permitted provided that redistributions of source&n; *  code retain the above copyright notice and this comment without&n; *  modification.&n; *&n; */
-multiline_comment|/*&n; *&n; *  Here is a brief description of the DPT SCSI host adapters.&n; *  All these boards provide an EATA/DMA compatible programming interface&n; *  and are fully supported by this driver in any configuration, including&n; *  multiple SCSI channels:&n; *&n; *  PM2011B/9X -  Entry Level ISA&n; *  PM2021A/9X -  High Performance ISA&n; *  PM2012A       Old EISA&n; *  PM2012B       Old EISA&n; *  PM2022A/9X -  Entry Level EISA&n; *  PM2122A/9X -  High Performance EISA&n; *  PM2322A/9X -  Extra High Performance EISA&n; *  PM3021     -  SmartRAID Adapter for ISA&n; *  PM3222     -  SmartRAID Adapter for EISA (PM3222W is 16-bit wide SCSI)&n; *  PM3224     -  SmartRAID Adapter for PCI  (PM3224W is 16-bit wide SCSI)&n; *  PM33340UW  -  SmartRAID Adapter for PCI  ultra wide multichannel&n; *&n; *  The above list is just an indication: as a matter of fact all DPT&n; *  boards using the EATA/DMA protocol are supported by this driver,&n; *  since they use exactely the same programming interface.&n; *&n; *  The DPT PM2001 provides only the EATA/PIO interface and hence is not&n; *  supported by this driver.&n; *&n; *  This code has been tested with up to 3 Distributed Processing Technology&n; *  PM2122A/9X (DPT SCSI BIOS v002.D1, firmware v05E.0) EISA controllers,&n; *  in any combination of private and shared IRQ.&n; *  PCI support has been tested using up to 2 DPT PM3224W (DPT SCSI BIOS&n; *  v003.D0, firmware v07G.0).&n; *&n; *  DPT SmartRAID boards support &quot;Hardware Array&quot; - a group of disk drives&n; *  which are all members of the same RAID-0, RAID-1 or RAID-5 array implemented&n; *  in host adapter hardware. Hardware Arrays are fully compatible with this&n; *  driver, since they look to it as a single disk drive.&n; *&n; *  WARNING: to create a RAID-0 &quot;Hardware Array&quot; you must select &quot;Other Unix&quot;&n; *  as the current OS in the DPTMGR &quot;Initial System Installation&quot; menu.&n; *  Otherwise RAID-0 is generated as an &quot;Array Group&quot; (i.e. software RAID-0),&n; *  which is not supported by the actual SCSI subsystem.&n; *  To get the &quot;Array Group&quot; functionality, the Linux MD driver must be used&n; *  instead of the DPT &quot;Array Group&quot; feature.&n; *&n; *  Multiple ISA, EISA and PCI boards can be configured in the same system.&n; *  It is suggested to put all the EISA boards on the same IRQ level, all&n; *  the PCI  boards on another IRQ level, while ISA boards cannot share&n; *  interrupts.&n; *&n; *  If you configure multiple boards on the same IRQ, the interrupt must&n; *  be _level_ triggered (not _edge_ triggered).&n; *&n; *  This driver detects EATA boards by probes at fixed port addresses,&n; *  so no BIOS32 or PCI BIOS support is required.&n; *  The suggested way to detect a generic EATA PCI board is to force on it&n; *  any unused EISA address, even if there are other controllers on the EISA&n; *  bus, or even if you system has no EISA bus at all.&n; *  Do not force any ISA address on EATA PCI boards.&n; *&n; *  If PCI bios support is configured into the kernel, BIOS32 is used to&n; *  include in the list of i/o ports to be probed all the PCI SCSI controllers.&n; *&n; *  Due to a DPT BIOS &quot;feature&quot;, it might not be possible to force an EISA&n; *  address on more than a single DPT PCI board, so in this case you have to&n; *  let the PCI BIOS assign the addresses.&n; *&n; *  The sequence of detection probes is:&n; *&n; *  - ISA 0x1F0;&n; *  - PCI SCSI controllers (only if BIOS32 is available);&n; *  - EISA/PCI 0x1C88 through 0xFC88 (corresponding to EISA slots 1 to 15);&n; *  - ISA  0x170, 0x230, 0x330.&n; *&n; *  The above list of detection probes can be totally replaced by the&n; *  boot command line option: &quot;eata=port0,port1,port2,...&quot;, where the&n; *  port0, port1... arguments are ISA/EISA/PCI addresses to be probed.&n; *  For example using &quot;eata=0x7410,0x7450,0x230&quot;, the driver probes&n; *  only the two PCI addresses 0x7410 and 0x7450 and the ISA address 0x230,&n; *  in this order; &quot;eata=0&quot; totally disables this driver.&n; *&n; *  After the optional list of detection probes, other possible command line&n; *  options are:&n; *&n; *  et:y  force use of extended translation (255 heads, 63 sectors);&n; *  et:n  use disk geometry detected by scsicam_bios_param;&n; *  rs:y  reverse scan order while detecting PCI boards;&n; *  rs:n  use BIOS order while detecting PCI boards;&n; *  lc:y  enables linked commands;&n; *  lc:n  disables linked commands;&n; *  tm:0  disables tagged commands (same as tc:n);&n; *  tm:1  use simple queue tags (same as tc:y);&n; *  tm:2  use ordered queue tags (same as tc:2);&n; *  mq:xx set the max queue depth to the value xx (2 &lt;= xx &lt;= 32).&n; *&n; *  The default value is: &quot;eata=lc:n,mq:16,tm:0,et:n,rs:n&quot;.&n; *  An example using the list of detection probes could be:&n; *  &quot;eata=0x7410,0x230,lc:y,tm:2,mq:4,et:n&quot;.&n; *&n; *  When loading as a module, parameters can be specified as well.&n; *  The above example would be (use 1 in place of y and 0 in place of n):&n; *&n; *  modprobe eata io_port=0x7410,0x230 linked_comm=1 &bslash;&n; *                max_queue_depth=4 ext_tran=0 tag_mode=2 &bslash;&n; *                rev_scan=1&n; *&n; *  ----------------------------------------------------------------------------&n; *  In this implementation, linked commands are designed to work with any DISK&n; *  or CD-ROM, since this linking has only the intent of clustering (time-wise)&n; *  and reordering by elevator sorting commands directed to each device,&n; *  without any relation with the actual SCSI protocol between the controller&n; *  and the device.&n; *  If Q is the queue depth reported at boot time for each device (also named&n; *  cmds/lun) and Q &gt; 2, whenever there is already an active command to the&n; *  device all other commands to the same device  (up to Q-1) are kept waiting&n; *  in the elevator sorting queue. When the active command completes, the&n; *  commands in this queue are sorted by sector address. The sort is chosen&n; *  between increasing or decreasing by minimizing the seek distance between&n; *  the sector of the commands just completed and the sector of the first&n; *  command in the list to be sorted.&n; *  Trivial math assures that the unsorted average seek distance when doing&n; *  random seeks over S sectors is S/3.&n; *  When (Q-1) requests are uniformly distributed over S sectors, the average&n; *  distance between two adjacent requests is S/((Q-1) + 1), so the sorted&n; *  average seek distance for (Q-1) random requests over S sectors is S/Q.&n; *  The elevator sorting hence divides the seek distance by a factor Q/3.&n; *  The above pure geometric remarks are valid in all cases and the&n; *  driver effectively reduces the seek distance by the predicted factor&n; *  when there are Q concurrent read i/o operations on the device, but this&n; *  does not necessarily results in a noticeable performance improvement:&n; *  your mileage may vary....&n; *&n; *  Note: command reordering inside a batch of queued commands could cause&n; *        wrong results only if there is at least one write request and the&n; *        intersection (sector-wise) of all requests is not empty.&n; *        When the driver detects a batch including overlapping requests&n; *        (a really rare event) strict serial (pid) order is enforced.&n; *  ----------------------------------------------------------------------------&n; *  The extended translation option (et:y) is useful when using large physical&n; *  disks/arrays. It could also be useful when switching between Adaptec boards&n; *  and DPT boards without reformatting the disk.&n; *  When a boot disk is partitioned with extended translation, in order to&n; *  be able to boot it with a DPT board is could be necessary to add to&n; *  lilo.conf additional commands as in the following example:&n; *&n; *  fix-table&n; *  disk=/dev/sda bios=0x80 sectors=63 heads=128 cylindres=546&n; *&n; *  where the above geometry should be replaced with the one reported at&n; *  power up by the DPT controller.&n; *  ----------------------------------------------------------------------------&n; *&n; *  The boards are named EATA0, EATA1,... according to the detection order.&n; *&n; *  In order to support multiple ISA boards in a reliable way,&n; *  the driver sets host-&gt;wish_block = TRUE for all ISA boards.&n; */
+multiline_comment|/*&n; *&n; *  Here is a brief description of the DPT SCSI host adapters.&n; *  All these boards provide an EATA/DMA compatible programming interface&n; *  and are fully supported by this driver in any configuration, including&n; *  multiple SCSI channels:&n; *&n; *  PM2011B/9X -  Entry Level ISA&n; *  PM2021A/9X -  High Performance ISA&n; *  PM2012A       Old EISA&n; *  PM2012B       Old EISA&n; *  PM2022A/9X -  Entry Level EISA&n; *  PM2122A/9X -  High Performance EISA&n; *  PM2322A/9X -  Extra High Performance EISA&n; *  PM3021     -  SmartRAID Adapter for ISA&n; *  PM3222     -  SmartRAID Adapter for EISA (PM3222W is 16-bit wide SCSI)&n; *  PM3224     -  SmartRAID Adapter for PCI  (PM3224W is 16-bit wide SCSI)&n; *  PM33340UW  -  SmartRAID Adapter for PCI  ultra wide multichannel&n; *&n; *  The above list is just an indication: as a matter of fact all DPT&n; *  boards using the EATA/DMA protocol are supported by this driver,&n; *  since they use exactely the same programming interface.&n; *&n; *  The DPT PM2001 provides only the EATA/PIO interface and hence is not&n; *  supported by this driver.&n; *&n; *  This code has been tested with up to 3 Distributed Processing Technology&n; *  PM2122A/9X (DPT SCSI BIOS v002.D1, firmware v05E.0) EISA controllers,&n; *  in any combination of private and shared IRQ.&n; *  PCI support has been tested using up to 2 DPT PM3224W (DPT SCSI BIOS&n; *  v003.D0, firmware v07G.0).&n; *&n; *  DPT SmartRAID boards support &quot;Hardware Array&quot; - a group of disk drives&n; *  which are all members of the same RAID-0, RAID-1 or RAID-5 array implemented&n; *  in host adapter hardware. Hardware Arrays are fully compatible with this&n; *  driver, since they look to it as a single disk drive.&n; *&n; *  WARNING: to create a RAID-0 &quot;Hardware Array&quot; you must select &quot;Other Unix&quot;&n; *  as the current OS in the DPTMGR &quot;Initial System Installation&quot; menu.&n; *  Otherwise RAID-0 is generated as an &quot;Array Group&quot; (i.e. software RAID-0),&n; *  which is not supported by the actual SCSI subsystem.&n; *  To get the &quot;Array Group&quot; functionality, the Linux MD driver must be used&n; *  instead of the DPT &quot;Array Group&quot; feature.&n; *&n; *  Multiple ISA, EISA and PCI boards can be configured in the same system.&n; *  It is suggested to put all the EISA boards on the same IRQ level, all&n; *  the PCI  boards on another IRQ level, while ISA boards cannot share&n; *  interrupts.&n; *&n; *  If you configure multiple boards on the same IRQ, the interrupt must&n; *  be _level_ triggered (not _edge_ triggered).&n; *&n; *  This driver detects EATA boards by probes at fixed port addresses,&n; *  so no BIOS32 or PCI BIOS support is required.&n; *  The suggested way to detect a generic EATA PCI board is to force on it&n; *  any unused EISA address, even if there are other controllers on the EISA&n; *  bus, or even if you system has no EISA bus at all.&n; *  Do not force any ISA address on EATA PCI boards.&n; *&n; *  If PCI bios support is configured into the kernel, BIOS32 is used to&n; *  include in the list of i/o ports to be probed all the PCI SCSI controllers.&n; *&n; *  Due to a DPT BIOS &quot;feature&quot;, it might not be possible to force an EISA&n; *  address on more than a single DPT PCI board, so in this case you have to&n; *  let the PCI BIOS assign the addresses.&n; *&n; *  The sequence of detection probes is:&n; *&n; *  - ISA 0x1F0;&n; *  - PCI SCSI controllers (only if BIOS32 is available);&n; *  - EISA/PCI 0x1C88 through 0xFC88 (corresponding to EISA slots 1 to 15);&n; *  - ISA  0x170, 0x230, 0x330.&n; *&n; *  The above list of detection probes can be totally replaced by the&n; *  boot command line option: &quot;eata=port0,port1,port2,...&quot;, where the&n; *  port0, port1... arguments are ISA/EISA/PCI addresses to be probed.&n; *  For example using &quot;eata=0x7410,0x7450,0x230&quot;, the driver probes&n; *  only the two PCI addresses 0x7410 and 0x7450 and the ISA address 0x230,&n; *  in this order; &quot;eata=0&quot; totally disables this driver.&n; *&n; *  After the optional list of detection probes, other possible command line&n; *  options are:&n; *&n; *  et:y  force use of extended translation (255 heads, 63 sectors);&n; *  et:n  use disk geometry detected by scsicam_bios_param;&n; *  rs:y  reverse scan order while detecting PCI boards;&n; *  rs:n  use BIOS order while detecting PCI boards;&n; *  lc:y  enables linked commands;&n; *  lc:n  disables linked commands;&n; *  tm:0  disables tagged commands (same as tc:n);&n; *  tm:1  use simple queue tags (same as tc:y);&n; *  tm:2  use ordered queue tags (same as tc:2);&n; *  mq:xx set the max queue depth to the value xx (2 &lt;= xx &lt;= 32).&n; *&n; *  The default value is: &quot;eata=lc:n,mq:16,tm:0,et:n,rs:n&quot;.&n; *  An example using the list of detection probes could be:&n; *  &quot;eata=0x7410,0x230,lc:y,tm:2,mq:4,et:n&quot;.&n; *&n; *  When loading as a module, parameters can be specified as well.&n; *  The above example would be (use 1 in place of y and 0 in place of n):&n; *&n; *  modprobe eata io_port=0x7410,0x230 linked_comm=1 &bslash;&n; *                max_queue_depth=4 ext_tran=0 tag_mode=2 &bslash;&n; *                rev_scan=1&n; *&n; *  ----------------------------------------------------------------------------&n; *  In this implementation, linked commands are designed to work with any DISK&n; *  or CD-ROM, since this linking has only the intent of clustering (time-wise)&n; *  and reordering by elevator sorting commands directed to each device,&n; *  without any relation with the actual SCSI protocol between the controller&n; *  and the device.&n; *  If Q is the queue depth reported at boot time for each device (also named&n; *  cmds/lun) and Q &gt; 2, whenever there is already an active command to the&n; *  device all other commands to the same device  (up to Q-1) are kept waiting&n; *  in the elevator sorting queue. When the active command completes, the&n; *  commands in this queue are sorted by sector address. The sort is chosen&n; *  between increasing or decreasing by minimizing the seek distance between&n; *  the sector of the commands just completed and the sector of the first&n; *  command in the list to be sorted.&n; *  Trivial math assures that the unsorted average seek distance when doing&n; *  random seeks over S sectors is S/3.&n; *  When (Q-1) requests are uniformly distributed over S sectors, the average&n; *  distance between two adjacent requests is S/((Q-1) + 1), so the sorted&n; *  average seek distance for (Q-1) random requests over S sectors is S/Q.&n; *  The elevator sorting hence divides the seek distance by a factor Q/3.&n; *  The above pure geometric remarks are valid in all cases and the&n; *  driver effectively reduces the seek distance by the predicted factor&n; *  when there are Q concurrent read i/o operations on the device, but this&n; *  does not necessarily results in a noticeable performance improvement:&n; *  your mileage may vary....&n; *&n; *  Note: command reordering inside a batch of queued commands could cause&n; *        wrong results only if there is at least one write request and the&n; *        intersection (sector-wise) of all requests is not empty.&n; *        When the driver detects a batch including overlapping requests&n; *        (a really rare event) strict serial (pid) order is enforced.&n; *  ----------------------------------------------------------------------------&n; *  The extended translation option (et:y) is useful when using large physical&n; *  disks/arrays. It could also be useful when switching between Adaptec boards&n; *  and DPT boards without reformatting the disk.&n; *  When a boot disk is partitioned with extended translation, in order to&n; *  be able to boot it with a DPT board is could be necessary to add to&n; *  lilo.conf additional commands as in the following example:&n; *&n; *  fix-table&n; *  disk=/dev/sda bios=0x80 sectors=63 heads=128 cylindres=546&n; *&n; *  where the above geometry should be replaced with the one reported at&n; *  power up by the DPT controller.&n; *  ----------------------------------------------------------------------------&n; *&n; *  The boards are named EATA0, EATA1,... according to the detection order.&n; *&n; *  In order to support multiple ISA boards in a reliable way,&n; *  the driver sets host-&gt;wish_block = 1 for all ISA boards.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -16,17 +13,23 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;scsi/scsicam.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_tcq.h&gt;
+macro_line|#include &lt;scsi/scsicam.h&gt;
 r_static
 r_int
 id|eata2x_detect
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 )paren
 suffix:semicolon
@@ -45,7 +48,8 @@ r_int
 id|eata2x_queuecommand
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_void
@@ -54,7 +58,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -64,7 +69,8 @@ r_int
 id|eata2x_eh_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -73,7 +79,8 @@ r_int
 id|eata2x_eh_host_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -101,13 +108,15 @@ r_int
 id|eata2x_slave_configure
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 )paren
 suffix:semicolon
 DECL|variable|driver_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|driver_template
 op_assign
 (brace
@@ -233,10 +242,6 @@ DECL|macro|MAX_TAGGED_CMD_PER_LUN
 mdefine_line|#define MAX_TAGGED_CMD_PER_LUN (MAX_MAILBOXES - MAX_CMD_PER_LUN)
 DECL|macro|SKIP
 mdefine_line|#define SKIP ULONG_MAX
-DECL|macro|FALSE
-mdefine_line|#define FALSE 0
-DECL|macro|TRUE
-mdefine_line|#define TRUE 1
 DECL|macro|FREE
 mdefine_line|#define FREE 0
 DECL|macro|IN_USE
@@ -1141,7 +1146,8 @@ suffix:semicolon
 multiline_comment|/* Address where Sense Data is DMA&squot;ed on error */
 multiline_comment|/* Additional fields begin here. */
 DECL|member|SCpnt
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon
@@ -1235,7 +1241,7 @@ id|MAX_TARGET
 id|MAX_CHANNEL
 )braket
 suffix:semicolon
-multiline_comment|/* If TRUE redo i/o on target */
+multiline_comment|/* If 1 redo i/o on target */
 DECL|member|retries
 r_int
 r_int
@@ -1265,7 +1271,7 @@ r_int
 r_char
 id|is_pci
 suffix:semicolon
-multiline_comment|/* TRUE is bus type is PCI */
+multiline_comment|/* 1 is bus type is PCI */
 DECL|member|pdev
 r_struct
 id|pci_dev
@@ -1482,7 +1488,8 @@ r_void
 id|flush_dev
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 comma
 r_int
@@ -1500,14 +1507,14 @@ r_static
 r_int
 id|do_trace
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 DECL|variable|setup_done
 r_static
 r_int
 id|setup_done
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 DECL|variable|link_statistics
 r_static
@@ -1519,14 +1526,14 @@ r_static
 r_int
 id|ext_tran
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 DECL|variable|rev_scan
 r_static
 r_int
 id|rev_scan
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 macro_line|#if defined(CONFIG_SCSI_EATA_TAGGED_QUEUE)
 DECL|variable|tag_mode
@@ -1551,7 +1558,7 @@ r_static
 r_int
 id|linked_comm
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 macro_line|#else
 DECL|variable|linked_comm
@@ -1559,7 +1566,7 @@ r_static
 r_int
 id|linked_comm
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(CONFIG_SCSI_EATA_MAX_TAGS)
@@ -1585,7 +1592,7 @@ r_static
 r_int
 id|isa_probe
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 macro_line|#else
 DECL|variable|isa_probe
@@ -1593,7 +1600,7 @@ r_static
 r_int
 id|isa_probe
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(CONFIG_EISA)
@@ -1602,7 +1609,7 @@ r_static
 r_int
 id|eisa_probe
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 macro_line|#else
 DECL|variable|eisa_probe
@@ -1610,7 +1617,7 @@ r_static
 r_int
 id|eisa_probe
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(CONFIG_PCI)
@@ -1619,7 +1626,7 @@ r_static
 r_int
 id|pci_probe
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 macro_line|#else
 DECL|variable|pci_probe
@@ -1627,7 +1634,7 @@ r_static
 r_int
 id|pci_probe
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 macro_line|#endif
 DECL|macro|MAX_INT_PARAM
@@ -1692,7 +1699,8 @@ r_int
 id|eata2x_slave_configure
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|dev
 )paren
@@ -1924,7 +1932,7 @@ id|tag_suffix
 )paren
 suffix:semicolon
 r_return
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|wait_on_busy
@@ -1971,11 +1979,11 @@ op_eq
 l_int|0
 )paren
 r_return
-id|TRUE
+l_int|1
 suffix:semicolon
 )brace
 r_return
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|do_dma
@@ -2026,7 +2034,7 @@ id|MAXLOOP
 )paren
 )paren
 r_return
-id|TRUE
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -2116,7 +2124,7 @@ id|REG_CMD
 )paren
 suffix:semicolon
 r_return
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|read_pio
@@ -2195,7 +2203,7 @@ op_eq
 l_int|0
 )paren
 r_return
-id|TRUE
+l_int|1
 suffix:semicolon
 )brace
 id|loop
@@ -2217,7 +2225,7 @@ id|iobase
 suffix:semicolon
 )brace
 r_return
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|get_pci_dev
@@ -2251,7 +2259,7 @@ c_loop
 (paren
 id|dev
 op_assign
-id|pci_find_class
+id|pci_get_class
 c_func
 (paren
 id|PCI_CLASS_STORAGE_SCSI
@@ -2288,6 +2296,13 @@ id|addr
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* we are in so much trouble for a pci hotplug system with this driver&n;       * anyway, so doing this at least lets people unload the driver and not&n;       * cause memory problems, but in general this is a bad thing to do (this&n;       * driver needs to be converted to the proper PCI api someday... */
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2329,7 +2344,7 @@ c_loop
 (paren
 id|dev
 op_assign
-id|pci_find_class
+id|pci_get_class
 c_func
 (paren
 id|PCI_CLASS_STORAGE_SCSI
@@ -2392,7 +2407,8 @@ r_int
 r_int
 id|j
 comma
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|tpnt
 )paren
@@ -2409,7 +2425,7 @@ id|i
 comma
 id|is_pci
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_int
 r_char
@@ -2737,7 +2753,7 @@ l_string|&quot;PCI&quot;
 suffix:semicolon
 id|is_pci
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|subversion
 op_assign
@@ -2767,7 +2783,7 @@ l_string|&quot;PCI&quot;
 suffix:semicolon
 id|is_pci
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|subversion
 op_assign
@@ -2839,7 +2855,7 @@ l_string|&quot;PCI&quot;
 suffix:semicolon
 id|is_pci
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|subversion
 op_assign
@@ -3217,7 +3233,7 @@ l_int|510
 suffix:semicolon
 id|cf-&gt;ocena
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -3498,7 +3514,7 @@ id|j
 op_member_access_from_pointer
 id|unchecked_isa_dma
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_else
 (brace
@@ -3513,7 +3529,7 @@ id|j
 op_member_access_from_pointer
 id|unchecked_isa_dma
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|flags
 op_assign
@@ -4420,7 +4436,7 @@ id|j
 suffix:semicolon
 )brace
 r_return
-id|TRUE
+l_int|1
 suffix:semicolon
 id|freedma
 suffix:colon
@@ -4471,7 +4487,7 @@ suffix:semicolon
 id|fail
 suffix:colon
 r_return
-id|FALSE
+l_int|0
 suffix:semicolon
 id|release
 suffix:colon
@@ -4485,7 +4501,7 @@ id|j
 )paren
 suffix:semicolon
 r_return
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|internal_setup
@@ -4576,7 +4592,7 @@ l_int|0
 suffix:semicolon
 id|setup_done
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 )brace
 r_while
@@ -4621,7 +4637,7 @@ l_char|&squot;N&squot;
 )paren
 id|val
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_else
 r_if
@@ -4637,7 +4653,7 @@ l_char|&squot;Y&squot;
 )paren
 id|val
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 r_else
 id|val
@@ -5014,7 +5030,7 @@ op_logical_neg
 (paren
 id|dev
 op_assign
-id|pci_find_class
+id|pci_get_class
 c_func
 (paren
 id|PCI_CLASS_STORAGE_SCSI
@@ -5108,6 +5124,12 @@ op_plus
 id|PCI_BASE_ADDRESS_0
 suffix:semicolon
 )brace
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 macro_line|#endif /* end CONFIG_PCI */
 r_return
 suffix:semicolon
@@ -5118,7 +5140,8 @@ r_int
 id|eata2x_detect
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|tpnt
 )paren
@@ -5167,7 +5190,7 @@ id|SKIP
 (brace
 id|setup_done
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|io_port
 (braket
@@ -5404,7 +5427,8 @@ id|mscp
 op_star
 id|cpp
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon
@@ -5428,11 +5452,7 @@ id|cpp-&gt;SCpnt
 suffix:semicolon
 id|pci_dir
 op_assign
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|SCpnt-&gt;sc_data_direction
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5616,7 +5636,7 @@ suffix:semicolon
 )brace
 id|cpp-&gt;sg
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|cpp-&gt;data_address
 op_assign
@@ -5689,7 +5709,8 @@ id|mscp
 op_star
 id|cpp
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon
@@ -5713,11 +5734,7 @@ id|cpp-&gt;SCpnt
 suffix:semicolon
 id|pci_dir
 op_assign
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|SCpnt-&gt;sc_data_direction
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5851,7 +5868,8 @@ id|mscp
 op_star
 id|cpp
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon
@@ -5875,11 +5893,7 @@ id|cpp-&gt;SCpnt
 suffix:semicolon
 id|pci_dir
 op_assign
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|SCpnt-&gt;sc_data_direction
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6151,7 +6165,8 @@ id|mscp
 op_star
 id|cpp
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon
@@ -6178,16 +6193,16 @@ c_cond
 (paren
 id|SCpnt-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 )paren
 (brace
 id|cpp-&gt;din
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|cpp-&gt;dout
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -6198,16 +6213,16 @@ c_cond
 (paren
 id|SCpnt-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 )paren
 (brace
 id|cpp-&gt;din
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|cpp-&gt;dout
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -6218,16 +6233,16 @@ c_cond
 (paren
 id|SCpnt-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_NONE
+id|DMA_NONE
 )paren
 (brace
 id|cpp-&gt;din
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|cpp-&gt;dout
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -6237,7 +6252,7 @@ c_cond
 (paren
 id|SCpnt-&gt;sc_data_direction
 op_ne
-id|SCSI_DATA_UNKNOWN
+id|DMA_BIDIRECTIONAL
 )paren
 id|panic
 c_func
@@ -6285,7 +6300,7 @@ id|k
 (brace
 id|cpp-&gt;dout
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -6334,7 +6349,7 @@ id|k
 (brace
 id|cpp-&gt;din
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -6346,7 +6361,8 @@ r_int
 id|eata2x_queuecommand
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -6356,7 +6372,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -6614,11 +6631,11 @@ id|SCpnt-&gt;pid
 suffix:semicolon
 id|cpp-&gt;reqsen
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|cpp-&gt;dispri
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 macro_line|#if 0
 r_if
@@ -6630,12 +6647,12 @@ id|TYPE_TAPE
 )paren
 id|cpp-&gt;hbaci
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 macro_line|#endif
 id|cpp-&gt;one
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|cpp-&gt;channel
 op_assign
@@ -6719,7 +6736,7 @@ id|SCpnt-&gt;request-&gt;sector
 comma
 id|j
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -6805,7 +6822,8 @@ r_int
 id|eata2x_eh_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCarg
 )paren
@@ -7332,7 +7350,8 @@ r_int
 id|eata2x_eh_host_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCarg
 )paren
@@ -7356,9 +7375,10 @@ suffix:semicolon
 r_int
 id|arg_done
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon
@@ -7540,7 +7560,7 @@ id|k
 id|c
 )braket
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|HD
 c_func
@@ -7849,7 +7869,7 @@ id|SCarg
 )paren
 id|arg_done
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 )brace
 r_if
@@ -7902,7 +7922,7 @@ suffix:semicolon
 macro_line|#if defined(DEBUG_RESET)
 id|do_trace
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 macro_line|#endif
 id|HD
@@ -7913,7 +7933,7 @@ id|j
 op_member_access_from_pointer
 id|in_reset
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|spin_unlock_irq
 c_func
@@ -8185,11 +8205,11 @@ id|j
 op_member_access_from_pointer
 id|in_reset
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|do_trace
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -8335,7 +8355,7 @@ l_int|2
 suffix:semicolon
 macro_line|#endif
 r_return
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|sort
@@ -8550,7 +8570,8 @@ r_int
 id|n_ready
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon
@@ -8569,25 +8590,25 @@ r_int
 r_int
 id|rev
 op_assign
-id|FALSE
+l_int|0
 comma
 id|s
 op_assign
-id|TRUE
+l_int|1
 comma
 id|r
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 r_int
 r_int
 id|input_only
 op_assign
-id|TRUE
+l_int|1
 comma
 id|overlap
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -8743,7 +8764,7 @@ op_le
 l_int|1
 )paren
 r_return
-id|FALSE
+l_int|0
 suffix:semicolon
 r_for
 c_loop
@@ -8793,7 +8814,7 @@ id|cpp-&gt;din
 )paren
 id|input_only
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -8853,7 +8874,7 @@ l_int|1
 )paren
 id|s
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -8872,7 +8893,7 @@ l_int|1
 )paren
 id|r
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -8979,7 +9000,7 @@ l_int|2
 )paren
 id|rev
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -8998,7 +9019,7 @@ l_int|2
 )paren
 id|rev
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -9171,7 +9192,7 @@ l_int|1
 )paren
 id|overlap
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 )brace
 r_if
@@ -9188,7 +9209,7 @@ id|il
 comma
 id|n_ready
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -9450,7 +9471,8 @@ r_void
 id|flush_dev
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|dev
 comma
@@ -9467,7 +9489,8 @@ r_int
 id|ihdlr
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon
@@ -9754,7 +9777,8 @@ r_int
 id|j
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 suffix:semicolon
@@ -10087,7 +10111,7 @@ c_cond
 (paren
 id|spp-&gt;eoc
 op_eq
-id|FALSE
+l_int|0
 op_logical_and
 id|HD
 c_func
@@ -10102,7 +10126,7 @@ l_int|1
 id|printk
 c_func
 (paren
-l_string|&quot;%s: ihdlr, spp-&gt;eoc == FALSE, irq %d, reg 0x%x, count %d.&bslash;n&quot;
+l_string|&quot;%s: ihdlr, spp-&gt;eoc == 0, irq %d, reg 0x%x, count %d.&bslash;n&quot;
 comma
 id|BN
 c_func
@@ -10170,7 +10194,7 @@ c_cond
 (paren
 id|spp-&gt;eoc
 op_eq
-id|FALSE
+l_int|0
 op_logical_or
 id|spp-&gt;cpp_index
 OL
@@ -10585,7 +10609,7 @@ id|SCpnt-&gt;request-&gt;sector
 comma
 id|j
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 id|tstatus
@@ -10752,7 +10776,7 @@ id|SCpnt-&gt;device-&gt;id
 id|SCpnt-&gt;device-&gt;channel
 )braket
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -10983,7 +11007,7 @@ id|k
 id|c
 )braket
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -11631,7 +11655,7 @@ id|j
 )paren
 suffix:semicolon
 r_return
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#include &quot;scsi_module.c&quot;

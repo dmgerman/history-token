@@ -871,6 +871,11 @@ op_star
 id|swap_token_mm
 suffix:semicolon
 r_extern
+r_int
+r_int
+id|swap_token_default_timeout
+suffix:semicolon
+r_extern
 r_void
 id|grab_swap_token
 c_func

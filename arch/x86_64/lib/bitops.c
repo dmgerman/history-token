@@ -1,5 +1,5 @@
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 DECL|macro|find_first_zero_bit
 macro_line|#undef find_first_zero_bit
 DECL|macro|find_next_zero_bit
