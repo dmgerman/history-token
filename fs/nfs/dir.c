@@ -3011,6 +3011,11 @@ comma
 id|dentry-&gt;d_name.name
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|nfs_zap_caches
 c_func
 (paren
@@ -3043,6 +3048,11 @@ id|error
 id|dentry-&gt;d_inode-&gt;i_nlink
 op_assign
 l_int|0
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 id|error

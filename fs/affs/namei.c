@@ -1642,6 +1642,9 @@ op_star
 id|dentry
 )paren
 (brace
+r_int
+id|res
+suffix:semicolon
 id|pr_debug
 c_func
 (paren
@@ -1660,6 +1663,12 @@ comma
 id|dentry-&gt;d_name.name
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* WTF??? */
 r_if
 c_cond
 (paren
@@ -1670,12 +1679,21 @@ r_return
 op_minus
 id|ENOENT
 suffix:semicolon
-r_return
+id|res
+op_assign
 id|affs_remove_header
 c_func
 (paren
 id|dentry
 )paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|res
 suffix:semicolon
 )brace
 r_int

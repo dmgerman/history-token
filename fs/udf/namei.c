@@ -4560,6 +4560,11 @@ op_assign
 op_minus
 id|ENOENT
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|fi
 op_assign
 id|udf_find_entry
@@ -4747,6 +4752,11 @@ id|fibh.sbh
 suffix:semicolon
 id|out
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon

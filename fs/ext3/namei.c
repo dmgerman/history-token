@@ -3765,6 +3765,11 @@ id|handle_t
 op_star
 id|handle
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|handle
 op_assign
 id|ext3_journal_start
@@ -3784,6 +3789,12 @@ c_func
 id|handle
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|PTR_ERR
 c_func
@@ -3791,6 +3802,7 @@ c_func
 id|handle
 )paren
 suffix:semicolon
+)brace
 id|retval
 op_assign
 op_minus
@@ -3987,6 +3999,11 @@ suffix:semicolon
 id|brelse
 (paren
 id|bh
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

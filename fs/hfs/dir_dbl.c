@@ -1293,6 +1293,11 @@ id|dentry
 r_int
 id|error
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|hfs_rmdir
@@ -1330,6 +1335,11 @@ op_minus
 id|ENOTDIR
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon

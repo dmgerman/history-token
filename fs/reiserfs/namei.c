@@ -3070,6 +3070,11 @@ l_int|2
 op_plus
 l_int|2
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|journal_begin
 c_func
 (paren
@@ -3342,6 +3347,11 @@ op_amp
 id|path
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3369,6 +3379,11 @@ comma
 id|dir-&gt;i_sb
 comma
 id|jbegin_count
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

@@ -2192,6 +2192,11 @@ r_int
 id|error
 suffix:semicolon
 multiline_comment|/*&n;&t; * Close the directory if it&squot;s open.&n;&t; */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|smb_close
 c_func
 (paren
@@ -2233,6 +2238,11 @@ id|dentry
 suffix:semicolon
 id|out
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon

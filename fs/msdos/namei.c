@@ -1784,6 +1784,11 @@ id|bh
 op_assign
 l_int|NULL
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|res
 op_assign
 id|msdos_find
@@ -1892,6 +1897,11 @@ c_func
 id|sb
 comma
 id|bh
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

@@ -5780,11 +5780,6 @@ id|EBUSY
 suffix:semicolon
 r_else
 (brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|error
 op_assign
 id|dir-&gt;i_op
@@ -5795,11 +5790,6 @@ c_func
 id|dir
 comma
 id|dentry
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
