@@ -3647,10 +3647,7 @@ suffix:semicolon
 id|ed-&gt;hwHeadP
 op_and_assign
 op_complement
-id|cpu_to_le32
-(paren
 id|ED_H
-)paren
 suffix:semicolon
 id|ed-&gt;hwNextED
 op_assign

@@ -66,11 +66,11 @@ r_int
 id|next_uframe
 suffix:semicolon
 multiline_comment|/* scan periodic, start here */
-DECL|member|periodic_urbs
+DECL|member|periodic_sched
 r_int
-id|periodic_urbs
+id|periodic_sched
 suffix:semicolon
-multiline_comment|/* how many urbs scheduled? */
+multiline_comment|/* periodic activity count */
 multiline_comment|/* deferred work from IRQ, etc */
 DECL|member|tasklet
 r_struct
@@ -142,7 +142,7 @@ multiline_comment|/* sitd per split iso urb */
 suffix:semicolon
 multiline_comment|/* unwrap an HCD pointer to get an EHCI_HCD pointer */
 DECL|macro|hcd_to_ehci
-mdefine_line|#define hcd_to_ehci(hcd_ptr) list_entry(hcd_ptr, struct ehci_hcd, hcd)
+mdefine_line|#define hcd_to_ehci(hcd_ptr) container_of(hcd_ptr, struct ehci_hcd, hcd)
 multiline_comment|/* NOTE:  urb-&gt;transfer_flags expected to not use this bit !!! */
 DECL|macro|EHCI_STATE_UNLINK
 mdefine_line|#define EHCI_STATE_UNLINK&t;0x8000&t;&t;/* urb being unlinked */
@@ -614,20 +614,8 @@ DECL|member|refcount
 id|atomic_t
 id|refcount
 suffix:semicolon
-DECL|member|usecs
-r_int
-r_int
-id|usecs
-suffix:semicolon
-multiline_comment|/* intr bandwidth */
-DECL|member|c_usecs
-r_int
-r_int
-id|c_usecs
-suffix:semicolon
-multiline_comment|/* ... split completion bw */
 DECL|member|qh_state
-r_int
+id|u8
 id|qh_state
 suffix:semicolon
 DECL|macro|QH_STATE_LINKED
@@ -636,6 +624,36 @@ DECL|macro|QH_STATE_UNLINK
 mdefine_line|#define&t;QH_STATE_UNLINK&t;&t;2&t;&t;/* HC may still see this */
 DECL|macro|QH_STATE_IDLE
 mdefine_line|#define&t;QH_STATE_IDLE&t;&t;3&t;&t;/* HC doesn&squot;t see this */
+multiline_comment|/* periodic schedule info */
+DECL|member|usecs
+id|u8
+id|usecs
+suffix:semicolon
+multiline_comment|/* intr bandwidth */
+DECL|member|gap_uf
+id|u8
+id|gap_uf
+suffix:semicolon
+multiline_comment|/* uframes split/csplit gap */
+DECL|member|c_usecs
+id|u8
+id|c_usecs
+suffix:semicolon
+multiline_comment|/* ... split completion bw */
+DECL|member|period
+r_int
+r_int
+id|period
+suffix:semicolon
+multiline_comment|/* polling interval */
+DECL|member|start
+r_int
+r_int
+id|start
+suffix:semicolon
+multiline_comment|/* where polling starts */
+DECL|macro|NO_FRAME
+mdefine_line|#define NO_FRAME ((unsigned short)~0)&t;&t;&t;/* pick new start */
 )brace
 id|__attribute__
 (paren

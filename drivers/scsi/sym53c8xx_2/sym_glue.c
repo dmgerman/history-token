@@ -3653,10 +3653,6 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|SYM_QUEHEAD
 op_star
 id|qp
@@ -3714,14 +3710,6 @@ comma
 id|devname
 comma
 id|opname
-)paren
-suffix:semicolon
-id|SYM_LOCK_HCB
-c_func
-(paren
-id|np
-comma
-id|flags
 )paren
 suffix:semicolon
 macro_line|#if 0
@@ -4006,14 +3994,6 @@ comma
 id|cmd
 comma
 id|CAM_REQ_ABORTED
-)paren
-suffix:semicolon
-id|SYM_UNLOCK_HCB
-c_func
-(paren
-id|np
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for completion with locks released, as required by kernel */

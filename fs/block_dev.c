@@ -4132,7 +4132,7 @@ id|generic_file_read
 comma
 id|write
 suffix:colon
-id|generic_file_write
+id|generic_file_write_nolock
 comma
 id|mmap
 suffix:colon

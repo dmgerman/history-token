@@ -711,7 +711,7 @@ id|flags
 )paren
 )paren
 (brace
-id|vfree
+id|vunmap
 c_func
 (paren
 id|addr
@@ -900,7 +900,7 @@ r_return
 suffix:semicolon
 id|p
 op_assign
-id|remove_kernel_area
+id|remove_vm_area
 c_func
 (paren
 (paren
@@ -936,16 +936,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|vmfree_area_pages
+id|unmap_vm_area
 c_func
 (paren
-id|VMALLOC_VMADDR
-c_func
-(paren
-id|p-&gt;addr
-)paren
-comma
-id|p-&gt;size
+id|p
 )paren
 suffix:semicolon
 r_if

@@ -310,6 +310,18 @@ DECL|member|gendisk
 r_struct
 id|gendisk
 id|gendisk
+(braket
+id|NWD
+)braket
+suffix:semicolon
+DECL|member|names
+r_char
+id|names
+(braket
+l_int|12
+op_star
+id|NWD
+)braket
 suffix:semicolon
 singleline_comment|// indexed by minor numbers
 DECL|member|hd

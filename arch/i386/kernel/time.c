@@ -1752,12 +1752,14 @@ id|device
 id|device_i8253
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;i8253&quot;
 comma
+dot
 id|bus_id
-suffix:colon
+op_assign
 l_string|&quot;0040&quot;
 comma
 )brace

@@ -70,7 +70,49 @@ suffix:semicolon
 multiline_comment|/* time the alarm is set to */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * ioctl calls that are permitted to the /dev/rtc interface, if &n; * CONFIG_RTC/CONFIG_EFI_RTC was enabled.&n; */
+multiline_comment|/*&n; * Data structure to control PLL correction some better RTC feature&n; * pll_value is used to get or set current value of correction,&n; * the rest of the struct is used to query HW capabilities.&n; * This is modeled after the RTC used in Q40/Q60 computers but&n; * should be sufficiently flexible for other devices&n; *&n; * +ve pll_value means clock will run faster by&n; *   pll_value*pll_posmult/pll_clock&n; * -ve pll_value means clock will run slower by&n; *   pll_value*pll_negmult/pll_clock&n; */
+DECL|struct|rtc_pll_info
+r_struct
+id|rtc_pll_info
+(brace
+DECL|member|pll_ctrl
+r_int
+id|pll_ctrl
+suffix:semicolon
+multiline_comment|/* placeholder for fancier control */
+DECL|member|pll_value
+r_int
+id|pll_value
+suffix:semicolon
+multiline_comment|/* get/set correction value */
+DECL|member|pll_max
+r_int
+id|pll_max
+suffix:semicolon
+multiline_comment|/* max +ve (faster) adjustment value */
+DECL|member|pll_min
+r_int
+id|pll_min
+suffix:semicolon
+multiline_comment|/* max -ve (slower) adjustment value */
+DECL|member|pll_posmult
+r_int
+id|pll_posmult
+suffix:semicolon
+multiline_comment|/* factor for +ve corection */
+DECL|member|pll_negmult
+r_int
+id|pll_negmult
+suffix:semicolon
+multiline_comment|/* factor for -ve corection */
+DECL|member|pll_clock
+r_int
+id|pll_clock
+suffix:semicolon
+multiline_comment|/* base PLL frequency */
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * ioctl calls that are permitted to the /dev/rtc interface, if &n; * any of the RTC drivers are enabled.&n; */
 DECL|macro|RTC_AIE_ON
 mdefine_line|#define RTC_AIE_ON&t;_IO(&squot;p&squot;, 0x01)&t;/* Alarm int. enable on&t;&t;*/
 DECL|macro|RTC_AIE_OFF
@@ -107,6 +149,10 @@ DECL|macro|RTC_WKALM_SET
 mdefine_line|#define RTC_WKALM_SET&t;_IOW(&squot;p&squot;, 0x0f, struct rtc_wkalrm)/* Set wakeup alarm*/
 DECL|macro|RTC_WKALM_RD
 mdefine_line|#define RTC_WKALM_RD&t;_IOR(&squot;p&squot;, 0x10, struct rtc_wkalrm)/* Get wakeup alarm*/
+DECL|macro|RTC_PLL_GET
+mdefine_line|#define RTC_PLL_GET&t;_IOR(&squot;p&squot;, 0x11, struct rtc_pll_info)  /* Get PLL correction */
+DECL|macro|RTC_PLL_SET
+mdefine_line|#define RTC_PLL_SET&t;_IOW(&squot;p&squot;, 0x12, struct rtc_pll_info)  /* Set PLL correction */
 macro_line|#ifdef __KERNEL__
 DECL|struct|rtc_task
 r_typedef
