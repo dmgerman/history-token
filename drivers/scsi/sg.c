@@ -4669,6 +4669,17 @@ r_if
 c_cond
 (paren
 id|val
+OL
+l_int|0
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|val
 op_ne
 id|sfp-&gt;reserve.bufflen
 )paren

@@ -382,6 +382,17 @@ r_if
 c_cond
 (paren
 id|size
+OL
+l_int|0
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|size
 OG
 (paren
 id|q-&gt;max_sectors
