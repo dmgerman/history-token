@@ -2152,7 +2152,7 @@ id|IA64_MCA_DEBUG
 c_func
 (paren
 l_string|&quot;%s: corrected platform error &quot;
-l_string|&quot;vector %#x setup and enabled&bslash;n&quot;
+l_string|&quot;vector %#x registered&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2162,7 +2162,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ACPI */
 macro_line|#endif /* PLATFORM_MCA_HANDLERS */
-multiline_comment|/*&n; * ia64_mca_cmc_vector_setup&n; *&n; *  Setup the corrected machine check vector register in the processor and&n; *  unmask interrupt.  This function is invoked on a per-processor basis.&n; *&n; * Inputs&n; *      None&n; *&n; * Outputs&n; *&t;None&n; */
+multiline_comment|/*&n; * ia64_mca_cmc_vector_setup&n; *&n; *  Setup the corrected machine check vector register in the processor.&n; *  (The interrupt is masked on boot. ia64_mca_late_init unmask this.)&n; *  This function is invoked on a per-processor basis.&n; *&n; * Inputs&n; *      None&n; *&n; * Outputs&n; *&t;None&n; */
 r_void
 DECL|function|ia64_mca_cmc_vector_setup
 id|ia64_mca_cmc_vector_setup
@@ -2179,9 +2179,9 @@ l_int|0
 suffix:semicolon
 id|cmcv.cmcv_mask
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
-multiline_comment|/* Unmask/enable interrupt */
+multiline_comment|/* Mask/disable interrupt at first */
 id|cmcv.cmcv_vector
 op_assign
 id|IA64_CMC_VECTOR
@@ -2198,7 +2198,7 @@ id|IA64_MCA_DEBUG
 c_func
 (paren
 l_string|&quot;%s: CPU %d corrected &quot;
-l_string|&quot;machine check vector %#x setup and enabled.&bslash;n&quot;
+l_string|&quot;machine check vector %#x registered.&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -4114,7 +4114,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Setup vector on BSP &amp; enable */
+multiline_comment|/* Setup vector on BSP */
 multiline_comment|/* Setup the MCA rendezvous interrupt vector */
 id|register_percpu_irq
 c_func
@@ -4137,6 +4137,113 @@ id|mca_wkup_irqaction
 suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI
 multiline_comment|/* Setup the CPEI/P vector and handler */
+id|cpe_vector
+op_assign
+id|acpi_request_vector
+c_func
+(paren
+id|ACPI_INTERRUPT_CPEI
+)paren
+suffix:semicolon
+id|register_percpu_irq
+c_func
+(paren
+id|IA64_CPEP_VECTOR
+comma
+op_amp
+id|mca_cpep_irqaction
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Initialize the areas set aside by the OS to buffer the&n;&t; * platform/processor error states for MCA/INIT/CMC&n;&t; * handling.&n;&t; */
+id|ia64_log_init
+c_func
+(paren
+id|SAL_INFO_TYPE_MCA
+)paren
+suffix:semicolon
+id|ia64_log_init
+c_func
+(paren
+id|SAL_INFO_TYPE_INIT
+)paren
+suffix:semicolon
+id|ia64_log_init
+c_func
+(paren
+id|SAL_INFO_TYPE_CMC
+)paren
+suffix:semicolon
+id|ia64_log_init
+c_func
+(paren
+id|SAL_INFO_TYPE_CPE
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;MCA related initialization done&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * ia64_mca_late_init&n; *&n; *&t;Opportunity to setup things that require initialization later&n; *&t;than ia64_mca_init.  Setup a timer to poll for CPEs if the&n; *&t;platform doesn&squot;t support an interrupt driven mechanism.&n; *&n; *  Inputs  :   None&n; *  Outputs :   Status&n; */
+r_static
+r_int
+id|__init
+DECL|function|ia64_mca_late_init
+id|ia64_mca_late_init
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* Setup the CMCI/P vector and handler */
+id|init_timer
+c_func
+(paren
+op_amp
+id|cmc_poll_timer
+)paren
+suffix:semicolon
+id|cmc_poll_timer.function
+op_assign
+id|ia64_mca_cmc_poll
+suffix:semicolon
+multiline_comment|/* Unmask/enable the vector */
+id|cmc_polling_enabled
+op_assign
+l_int|0
+suffix:semicolon
+id|schedule_work
+c_func
+(paren
+op_amp
+id|cmc_enable_work
+)paren
+suffix:semicolon
+id|IA64_MCA_DEBUG
+c_func
+(paren
+l_string|&quot;%s: CMCI/P setup and enabled.&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI
+multiline_comment|/* Setup the CPEI/P vector and handler */
+id|init_timer
+c_func
+(paren
+op_amp
+id|cpe_poll_timer
+)paren
+suffix:semicolon
+id|cpe_poll_timer.function
+op_assign
+id|ia64_mca_cpe_poll
+suffix:semicolon
 (brace
 id|irq_desc_t
 op_star
@@ -4146,14 +4253,6 @@ r_int
 r_int
 id|irq
 suffix:semicolon
-id|cpe_vector
-op_assign
-id|acpi_request_vector
-c_func
-(paren
-id|ACPI_INTERRUPT_CPEI
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4162,6 +4261,11 @@ op_ge
 l_int|0
 )paren
 (brace
+multiline_comment|/* If platform supports CPEI, enable the irq. */
+id|cpe_poll_enabled
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4216,98 +4320,21 @@ c_func
 id|cpe_vector
 )paren
 suffix:semicolon
-)brace
-id|register_percpu_irq
+id|IA64_MCA_DEBUG
 c_func
 (paren
-id|IA64_CPEP_VECTOR
+l_string|&quot;%s: CPEI/P setup and enabled.&bslash;n&quot;
 comma
-op_amp
-id|mca_cpep_irqaction
+id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-multiline_comment|/* Initialize the areas set aside by the OS to buffer the&n;&t; * platform/processor error states for MCA/INIT/CMC&n;&t; * handling.&n;&t; */
-id|ia64_log_init
-c_func
-(paren
-id|SAL_INFO_TYPE_MCA
-)paren
-suffix:semicolon
-id|ia64_log_init
-c_func
-(paren
-id|SAL_INFO_TYPE_INIT
-)paren
-suffix:semicolon
-id|ia64_log_init
-c_func
-(paren
-id|SAL_INFO_TYPE_CMC
-)paren
-suffix:semicolon
-id|ia64_log_init
-c_func
-(paren
-id|SAL_INFO_TYPE_CPE
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;MCA related initialization done&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * ia64_mca_late_init&n; *&n; *&t;Opportunity to setup things that require initialization later&n; *&t;than ia64_mca_init.  Setup a timer to poll for CPEs if the&n; *&t;platform doesn&squot;t support an interrupt driven mechanism.&n; *&n; *  Inputs  :   None&n; *  Outputs :   Status&n; */
-r_static
-r_int
-id|__init
-DECL|function|ia64_mca_late_init
-id|ia64_mca_late_init
-c_func
-(paren
-r_void
-)paren
+r_else
 (brace
-id|init_timer
-c_func
-(paren
-op_amp
-id|cmc_poll_timer
-)paren
-suffix:semicolon
-id|cmc_poll_timer.function
-op_assign
-id|ia64_mca_cmc_poll
-suffix:semicolon
-multiline_comment|/* Reset to the correct state */
-id|cmc_polling_enabled
-op_assign
-l_int|0
-suffix:semicolon
-id|init_timer
-c_func
-(paren
-op_amp
-id|cpe_poll_timer
-)paren
-suffix:semicolon
-id|cpe_poll_timer.function
-op_assign
-id|ia64_mca_cpe_poll
-suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI
 multiline_comment|/* If platform doesn&squot;t support CPEI, get the timer going. */
 r_if
 c_cond
 (paren
-id|cpe_vector
-OL
-l_int|0
-op_logical_and
 id|cpe_poll_enabled
 )paren
 (brace
@@ -4317,13 +4344,16 @@ c_func
 l_int|0UL
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|cpe_poll_enabled
-op_assign
-l_int|0
+id|IA64_MCA_DEBUG
+c_func
+(paren
+l_string|&quot;%s: CPEP setup and enabled.&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
+)brace
+)brace
 )brace
 macro_line|#endif
 r_return
