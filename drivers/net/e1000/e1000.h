@@ -42,6 +42,7 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 DECL|macro|BAR_0
 mdefine_line|#define BAR_0&t;&t;0
 DECL|macro|BAR_1
@@ -61,6 +62,10 @@ mdefine_line|#define E1000_DBG(args...)
 macro_line|#endif
 DECL|macro|E1000_ERR
 mdefine_line|#define E1000_ERR(args...) printk(KERN_ERR &quot;e1000: &quot; args)
+DECL|macro|PFX
+mdefine_line|#define PFX &quot;e1000: &quot;
+DECL|macro|DPRINTK
+mdefine_line|#define DPRINTK(nlevel, klevel, fmt, args...) &bslash;&n;&t;(void)((NETIF_MSG_##nlevel &amp; adapter-&gt;msg_enable) &amp;&amp; &bslash;&n;&t;printk(KERN_##klevel PFX &quot;%s: %s: &quot; fmt, adapter-&gt;netdev-&gt;name, &bslash;&n;&t;&t;__FUNCTION__ , ## args))
 DECL|macro|E1000_MAX_INTR
 mdefine_line|#define E1000_MAX_INTR 10
 multiline_comment|/* How many descriptors for TX and RX ? */

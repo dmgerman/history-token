@@ -1,6 +1,7 @@
 multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2004 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 macro_line|#include &quot;e1000.h&quot;
-multiline_comment|/* Change Log&n; *&n; * 5.2.39&t;3/12/04&n; *   o Added support to read/write eeprom data in proper order.&n; *     By default device eeprom is always little-endian, word&n; *     addressable &n; *   o Disable TSO as the default for the driver until hangs&n; *     reported against non-IA acrhs can be root-caused.&n; *   o Back out the CSA fix for 82547 as it continues to cause&n; *     systems lock-ups with production systems.&n; *   o Fixed FC high/low water mark values to actually be in the&n; *     range of the Rx FIFO area.  It was a math error.&n; *     [Dainis Jonitis (dainis_jonitis@exigengroup.lv)]&n; *   o Handle failure to get new resources when doing ethtool&n; *     ring paramater changes.  Previously, driver would free old,&n; *     but fails to allocate new, causing problems.  Now, driver &n; *     allocates new, and if sucessful, frees old.&n; *   o Changed collision threshold from 16 to 15 to comply with IEEE&n; *     spec.&n; *   o Toggle chip-select when checking ready status on SPI eeproms.&n; *   o Put PHY into class A mode to pass IEEE tests on some designs.&n; *     Designs with EEPROM word 0x7, bit 15 set will have their PHYs&n; *     set to class A mode, rather than the default class AB.&n; *   o Handle failures of register_netdev.  Stephen Hemminger&n; *     [shemminger@osdl.org].&n; *   o updated README &amp; MAN pages, number of Transmit/Receive&n; *     descriptors may be denied depending on system resources.&n; *&n; * 5.2.30&t;1/14/03&n; *   o Set VLAN filtering to IEEE 802.1Q after reset so we don&squot;t break&n; *     SoL connections that use VLANs.&n; *   o Allow 1000/Full setting for AutoNeg param for Fiber connections&n; *     Jon D Mason [jonmason@us.ibm.com].&n; *   o Race between Tx queue and Tx clean fixed with a spin lock.&n; *   o Added netpoll support.&n; *   o Fixed endianess bug causing ethtool loopback diags to fail on ppc.&n; *   o Use pdev-&gt;irq rather than netdev-&gt;irq in preparation for MSI support.&n; *   o Report driver message on user override of InterruptThrottleRate&n; *     module parameter.&n; *   o Change I/O address storage from uint32_t to unsigned long.&n; *   o Added ethtool RINGPARAM support.&n; *&n; * 5.2.22&t;10/15/03&n; */
+macro_line|#include &lt;linux/rtnetlink.h&gt;
+multiline_comment|/* Change Log&n; *&n; * 5.2.51   5/14/04&n; *   o set default configuration to &squot;NAPI disabled&squot;. NAPI enabled driver&n; *     causes kernel panic when the interface is shutdown while data is being&n; *     transferred.&n; * 5.2.47   5/04/04&n; *   o fixed ethtool -t implementation&n; * 5.2.45   4/29/04&n; *   o fixed ethtool -e implementation&n; *   o Support for ethtool ops [Stephen Hemminger (shemminger@osdl.org)]&n; * 5.2.42   4/26/04&n; *   o Added support for the DPRINTK macro for enhanced error logging.  Some&n; *     parts of the patch were supplied by Jon Mason.&n; *   o Move the register_netdevice() donw in the probe routine due to a &n; *     loading/unloading test issue.&n; *   o Added a long RX byte count the the extra ethtool data members for BER&n; *     testing purposes.&n; * 5.2.39&t;3/12/04&n; */
 DECL|variable|e1000_driver_name
 r_char
 id|e1000_driver_name
@@ -23,7 +24,7 @@ id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;5.2.39-k2&quot;
+l_string|&quot;5.2.52-k2&quot;
 suffix:semicolon
 DECL|variable|e1000_copyright
 r_char
@@ -1327,6 +1328,31 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|debug
+r_static
+r_int
+id|debug
+op_assign
+l_int|3
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|debug
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;Debug level (0=none,...,16=all)&quot;
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * e1000_init_module - Driver Registration Routine&n; *&n; * e1000_init_module is the first routine called when the driver is&n; * loaded. All it does is register with the PCI subsystem.&n; **/
 r_static
 r_int
@@ -2049,6 +2075,38 @@ id|adapter-&gt;hw.back
 op_assign
 id|adapter
 suffix:semicolon
+id|adapter-&gt;msg_enable
+op_assign
+(paren
+l_int|1
+op_lshift
+id|debug
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+id|rtnl_lock
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* we need to set the name early since the DPRINTK macro needs it set */
+r_if
+c_cond
+(paren
+id|dev_alloc_name
+c_func
+(paren
+id|netdev
+comma
+id|netdev-&gt;name
+)paren
+OL
+l_int|0
+)paren
+r_goto
+id|err_free_unlock
+suffix:semicolon
 id|mmio_start
 op_assign
 id|pci_resource_start
@@ -2365,10 +2423,13 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_ERR
+id|PROBE
+comma
+id|ERR
+comma
 l_string|&quot;The EEPROM Checksum Is Not Valid&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2519,24 +2580,6 @@ comma
 id|netdev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|err
-op_assign
-id|register_netdev
-c_func
-(paren
-id|netdev
-)paren
-)paren
-)paren
-(brace
-r_goto
-id|err_register
-suffix:semicolon
-)brace
 multiline_comment|/* we&squot;re going to reset, so assume we have no link for now */
 id|netif_carrier_off
 c_func
@@ -2550,13 +2593,14 @@ c_func
 id|netdev
 )paren
 suffix:semicolon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;%s: Intel(R) PRO/1000 Network Connection&bslash;n&quot;
+id|PROBE
 comma
-id|netdev-&gt;name
+id|INFO
+comma
+l_string|&quot;Intel(R) PRO/1000 Network Connection&bslash;n&quot;
 )paren
 suffix:semicolon
 id|e1000_check_options
@@ -2669,8 +2713,32 @@ c_func
 id|adapter
 )paren
 suffix:semicolon
+multiline_comment|/* since we are holding the rtnl lock already, call the no-lock version */
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|register_netdevice
+c_func
+(paren
+id|netdev
+)paren
+)paren
+)paren
+(brace
+r_goto
+id|err_register
+suffix:semicolon
+)brace
 id|cards_found
 op_increment
+suffix:semicolon
+id|rtnl_unlock
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -2689,6 +2757,13 @@ id|adapter-&gt;hw.hw_addr
 suffix:semicolon
 id|err_ioremap
 suffix:colon
+id|err_free_unlock
+suffix:colon
+id|rtnl_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|free_netdev
 c_func
 (paren
@@ -2924,9 +2999,13 @@ id|hw
 )paren
 )paren
 (brace
-id|E1000_ERR
+id|DPRINTK
 c_func
 (paren
+id|PROBE
+comma
+id|ERR
+comma
 l_string|&quot;Unknown MAC Type&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5603,13 +5682,14 @@ op_amp
 id|adapter-&gt;link_duplex
 )paren
 suffix:semicolon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;e1000: %s NIC Link is Up %d Mbps %s&bslash;n&quot;
+id|LINK
 comma
-id|netdev-&gt;name
+id|INFO
+comma
+l_string|&quot;NIC Link is Up %d Mbps %s&bslash;n&quot;
 comma
 id|adapter-&gt;link_speed
 comma
@@ -5674,13 +5754,14 @@ id|adapter-&gt;link_duplex
 op_assign
 l_int|0
 suffix:semicolon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;e1000: %s NIC Link is Down&bslash;n&quot;
+id|LINK
 comma
-id|netdev-&gt;name
+id|INFO
+comma
+l_string|&quot;NIC Link is Down&bslash;n&quot;
 )paren
 suffix:semicolon
 id|netif_carrier_off
@@ -7766,9 +7847,13 @@ id|MAX_JUMBO_FRAME_SIZE
 )paren
 )paren
 (brace
-id|E1000_ERR
+id|DPRINTK
 c_func
 (paren
+id|PROBE
+comma
+id|ERR
+comma
 l_string|&quot;Invalid MTU setting&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7799,9 +7884,13 @@ OL
 id|e1000_82543
 )paren
 (brace
-id|E1000_ERR
+id|DPRINTK
 c_func
 (paren
+id|PROBE
+comma
+id|ERR
+comma
 l_string|&quot;Jumbo Frames not supported on 82542&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -9487,7 +9576,9 @@ multiline_comment|/* All receives must fit into a single buffer */
 id|E1000_DBG
 c_func
 (paren
-l_string|&quot;Receive packet consumed multiple buffers&bslash;n&quot;
+l_string|&quot;%s: Receive packet consumed multiple buffers&bslash;n&quot;
+comma
+id|netdev-&gt;name
 )paren
 suffix:semicolon
 id|dev_kfree_skb_irq
