@@ -1,9 +1,10 @@
-multiline_comment|/*&n; * sleep.c - ACPI sleep support.&n; *&n; * Copyright (c) 2000-2003 Patrick Mochel&n; * Copyright (c) 2003 Open Source Development Lab&n; *&n; * This file is released under the GPLv2.&n; *&n; */
+multiline_comment|/*&n; * sleep.c - ACPI sleep support.&n; *&n; * Copyright (c) 2004 David Shaohua Li &lt;shaohua.li@intel.com&gt;&n; * Copyright (c) 2000-2003 Patrick Mochel&n; * Copyright (c) 2003 Open Source Development Lab&n; *&n; * This file is released under the GPLv2.&n; *&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/dmi.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
 macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 macro_line|#include &quot;sleep.h&quot;
@@ -138,7 +139,15 @@ c_func
 (paren
 id|acpi_physical_address
 )paren
+id|virt_to_phys
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
 id|acpi_wakeup_address
+)paren
 )paren
 suffix:semicolon
 )brace
