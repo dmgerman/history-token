@@ -650,7 +650,7 @@ id|acq_notifier
 op_assign
 (brace
 dot
-id|notifier_call
+id|self
 op_assign
 id|acq_notify_sys
 comma
