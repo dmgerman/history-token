@@ -3507,6 +3507,27 @@ r_goto
 id|failed_mount2
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|EXT2_HAS_COMPAT_FEATURE
+c_func
+(paren
+id|sb
+comma
+id|EXT3_FEATURE_COMPAT_HAS_JOURNAL
+)paren
+)paren
+id|ext2_warning
+c_func
+(paren
+id|sb
+comma
+id|__FUNCTION__
+comma
+l_string|&quot;mounting ext3 filesystem as ext2&bslash;n&quot;
+)paren
+suffix:semicolon
 id|ext2_setup_super
 (paren
 id|sb

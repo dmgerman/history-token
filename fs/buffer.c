@@ -576,12 +576,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|buffer_io_error
-c_func
-(paren
-id|bh
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;&t; * This happens, due to failed READA attempts.&n;&t;&t; * buffer_io_error(bh);&n;&t;&t; */
 id|clear_buffer_uptodate
 c_func
 (paren
@@ -8663,7 +8658,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/* The page straddles i_size */
+multiline_comment|/*&n;&t; * The page straddles i_size.  It must be zeroed out on each and every&n;&t; * writepage invokation because it may be mmapped.  &quot;A file is mapped&n;&t; * in multiples of the page size.  For a file that is not a multiple of&n;&t; * the  page size, the remaining memory is zeroed when mapped, and&n;&t; * writes to that region are not written out to the file.&quot;&n;&t; */
 id|kaddr
 op_assign
 id|kmap

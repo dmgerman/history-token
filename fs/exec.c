@@ -705,7 +705,6 @@ id|pos
 op_assign
 id|bprm-&gt;p
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * The only sleeping function which we are allowed to call in&n;&t;&t; * this loop is copy_from_user().  Otherwise, copy_user_state&n;&t;&t; * could get trashed.&n;&t;&t; */
 r_while
 c_loop
 (paren

@@ -1898,7 +1898,7 @@ id|wipe_partitions
 )paren
 suffix:semicolon
 DECL|variable|generic_file_direct_IO
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|generic_file_direct_IO

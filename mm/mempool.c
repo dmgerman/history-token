@@ -651,6 +651,10 @@ id|__GFP_IO
 suffix:semicolon
 id|repeat_alloc
 suffix:colon
+id|current-&gt;flags
+op_or_assign
+id|PF_NOWARN
+suffix:semicolon
 id|element
 op_assign
 id|pool
@@ -662,6 +666,11 @@ id|gfp_nowait
 comma
 id|pool-&gt;pool_data
 )paren
+suffix:semicolon
+id|current-&gt;flags
+op_and_assign
+op_complement
+id|PF_NOWARN
 suffix:semicolon
 r_if
 c_cond

@@ -281,6 +281,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|balance_dirty_pages
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|balance_dirty_pages
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * balance_dirty_pages_ratelimited - balance dirty memory state&n; * @mapping - address_space which was dirtied&n; *&n; * Processes which are dirtying memory should call in here once for each page&n; * which was newly dirtied.  The function will periodically check the system&squot;s&n; * dirty state and will initiate writeback if needed.&n; *&n; * balance_dirty_pages_ratelimited() may sleep.&n; */
 DECL|function|balance_dirty_pages_ratelimited
 r_void
