@@ -3572,11 +3572,11 @@ id|CO_APIC_ID
 suffix:semicolon
 )brace
 macro_line|#endif
+macro_line|#ifdef CONFIG_EISA
 DECL|variable|EISA_bus
 r_int
 id|EISA_bus
 suffix:semicolon
-macro_line|#ifdef CONFIG_EISA
 DECL|variable|eisa_id
 r_static
 r_struct
