@@ -175,19 +175,6 @@ macro_line|#ifndef MDELAY
 DECL|macro|MDELAY
 mdefine_line|#define MDELAY mdelay
 macro_line|#endif
-multiline_comment|/*&n;    * Lock macros&n;    */
-DECL|macro|IPS_SCB_LOCK
-mdefine_line|#define IPS_SCB_LOCK(cpu_flags)      spin_lock_irqsave(&amp;ha-&gt;scb_lock, cpu_flags)
-DECL|macro|IPS_SCB_UNLOCK
-mdefine_line|#define IPS_SCB_UNLOCK(cpu_flags)    spin_unlock_irqrestore(&amp;ha-&gt;scb_lock, cpu_flags)
-DECL|macro|IPS_QUEUE_LOCK
-mdefine_line|#define IPS_QUEUE_LOCK(queue)        spin_lock_irqsave(&amp;(queue)-&gt;lock, (queue)-&gt;cpu_flags)
-DECL|macro|IPS_QUEUE_UNLOCK
-mdefine_line|#define IPS_QUEUE_UNLOCK(queue)      spin_unlock_irqrestore(&amp;(queue)-&gt;lock, (queue)-&gt;cpu_flags)
-DECL|macro|IPS_HA_LOCK
-mdefine_line|#define IPS_HA_LOCK(cpu_flags)       spin_lock_irqsave(&amp;ha-&gt;ips_lock, cpu_flags)
-DECL|macro|IPS_HA_UNLOCK
-mdefine_line|#define IPS_HA_UNLOCK(cpu_flags)     spin_unlock_irqrestore(&amp;ha-&gt;ips_lock, cpu_flags)
 multiline_comment|/*&n;    * Adapter address map equates&n;    */
 DECL|macro|IPS_REG_HISR
 mdefine_line|#define IPS_REG_HISR                 0x08    /* Host Interrupt Status Reg   */
@@ -2798,15 +2785,6 @@ DECL|member|count
 r_int
 id|count
 suffix:semicolon
-DECL|member|cpu_flags
-r_int
-r_int
-id|cpu_flags
-suffix:semicolon
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
 DECL|typedef|ips_scb_queue_t
 )brace
 id|ips_scb_queue_t
@@ -2831,15 +2809,6 @@ DECL|member|count
 r_int
 id|count
 suffix:semicolon
-DECL|member|cpu_flags
-r_int
-r_int
-id|cpu_flags
-suffix:semicolon
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
 DECL|typedef|ips_wait_queue_t
 )brace
 id|ips_wait_queue_t
@@ -2853,12 +2822,6 @@ DECL|member|scsi_cmd
 id|Scsi_Cmnd
 op_star
 id|scsi_cmd
-suffix:semicolon
-DECL|member|sem
-r_struct
-id|semaphore
-op_star
-id|sem
 suffix:semicolon
 DECL|member|next
 r_struct
@@ -2890,15 +2853,6 @@ suffix:semicolon
 DECL|member|count
 r_int
 id|count
-suffix:semicolon
-DECL|member|cpu_flags
-r_int
-r_int
-id|cpu_flags
-suffix:semicolon
-DECL|member|lock
-id|spinlock_t
-id|lock
 suffix:semicolon
 DECL|typedef|ips_copp_queue_t
 )brace
@@ -3234,12 +3188,6 @@ r_uint32
 id|cmd_in_progress
 suffix:semicolon
 multiline_comment|/* Current command in progress*/
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* HA flags                   */
 DECL|member|waitflag
 r_uint8
 id|waitflag
@@ -3341,30 +3289,6 @@ op_star
 id|pcidev
 suffix:semicolon
 multiline_comment|/* PCI device handle          */
-DECL|member|scb_lock
-id|spinlock_t
-id|scb_lock
-suffix:semicolon
-DECL|member|copp_lock
-id|spinlock_t
-id|copp_lock
-suffix:semicolon
-DECL|member|ips_lock
-id|spinlock_t
-id|ips_lock
-suffix:semicolon
-DECL|member|ioctl_sem
-r_struct
-id|semaphore
-id|ioctl_sem
-suffix:semicolon
-multiline_comment|/* Semaphore for new IOCTL&squot;s  */
-DECL|member|flash_ioctl_sem
-r_struct
-id|semaphore
-id|flash_ioctl_sem
-suffix:semicolon
-multiline_comment|/* Semaphore for Flashing     */
 DECL|member|flash_data
 r_char
 op_star
@@ -3497,12 +3421,6 @@ suffix:semicolon
 DECL|member|callback
 id|ips_scb_callback
 id|callback
-suffix:semicolon
-DECL|member|sem
-r_struct
-id|semaphore
-op_star
-id|sem
 suffix:semicolon
 DECL|member|sg_busaddr
 r_uint32

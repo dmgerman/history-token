@@ -292,25 +292,21 @@ macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &lt;= LinuxVersionCode(2,5,0)
 DECL|macro|IPS_SG_ADDRESS
 mdefine_line|#define IPS_SG_ADDRESS(sg)       ((sg)-&gt;address)
-DECL|macro|IPS_LOCK_IRQ
-mdefine_line|#define IPS_LOCK_IRQ(lock)       spin_lock_irq(&amp;io_request_lock)
-DECL|macro|IPS_UNLOCK_IRQ
-mdefine_line|#define IPS_UNLOCK_IRQ(lock)     spin_unlock_irq(&amp;io_request_lock)
 DECL|macro|IPS_LOCK_SAVE
 mdefine_line|#define IPS_LOCK_SAVE(lock,flags) spin_lock_irqsave(&amp;io_request_lock,flags)
 DECL|macro|IPS_UNLOCK_RESTORE
 mdefine_line|#define IPS_UNLOCK_RESTORE(lock,flags) spin_unlock_irqrestore(&amp;io_request_lock,flags)
+macro_line|#ifndef __devexit_p
+DECL|macro|__devexit_p
+mdefine_line|#define __devexit_p(x) x
+macro_line|#endif
 macro_line|#else
 DECL|macro|IPS_SG_ADDRESS
 mdefine_line|#define IPS_SG_ADDRESS(sg)      (page_address((sg)-&gt;page) ? &bslash;&n;                                     page_address((sg)-&gt;page)+(sg)-&gt;offset : 0)
-DECL|macro|IPS_LOCK_IRQ
-mdefine_line|#define IPS_LOCK_IRQ(lock)       spin_lock_irq(lock)
-DECL|macro|IPS_UNLOCK_IRQ
-mdefine_line|#define IPS_UNLOCK_IRQ(lock)     spin_unlock_irq(lock)
 DECL|macro|IPS_LOCK_SAVE
-mdefine_line|#define IPS_LOCK_SAVE(lock,flags) spin_lock_irqsave(lock,flags)
+mdefine_line|#define IPS_LOCK_SAVE(lock,flags) spin_lock(lock)
 DECL|macro|IPS_UNLOCK_RESTORE
-mdefine_line|#define IPS_UNLOCK_RESTORE(lock,flags) spin_unlock_irqrestore(lock,flags)
+mdefine_line|#define IPS_UNLOCK_RESTORE(lock,flags) spin_unlock(lock)
 macro_line|#endif
 DECL|macro|IPS_DMA_DIR
 mdefine_line|#define IPS_DMA_DIR(scb) ((!scb-&gt;scsi_cmd || ips_is_passthru(scb-&gt;scsi_cmd) || &bslash;&n;                         SCSI_DATA_NONE == scb-&gt;scsi_cmd-&gt;sc_data_direction) ? &bslash;&n;                         PCI_DMA_BIDIRECTIONAL : &bslash;&n;                         scsi_to_pci_dma_dir(scb-&gt;scsi_cmd-&gt;sc_data_direction))
@@ -4369,49 +4365,6 @@ id|ips_ha_t
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize spin lock */
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|ha-&gt;scb_lock
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|ha-&gt;copp_lock
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|ha-&gt;ips_lock
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|ha-&gt;copp_waitlist.lock
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|ha-&gt;scb_waitlist.lock
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|ha-&gt;scb_activelist.lock
-)paren
-suffix:semicolon
 id|ips_sh
 (braket
 id|ips_next_controller
@@ -6127,7 +6080,7 @@ multiline_comment|/*                                                            
 multiline_comment|/* Routine Description:                                                     */
 multiline_comment|/*                                                                          */
 multiline_comment|/*   Abort a command (using the new error code stuff)                       */
-multiline_comment|/*                                                                          */
+multiline_comment|/* Note: this routine is called under the io_request_lock                   */
 multiline_comment|/****************************************************************************/
 r_int
 DECL|function|ips_eh_abort
@@ -6146,6 +6099,9 @@ suffix:semicolon
 id|ips_copp_wait_item_t
 op_star
 id|item
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 id|METHOD_TRACE
 c_func
@@ -6219,31 +6175,7 @@ id|FAILED
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|test_and_set_bit
-c_func
-(paren
-id|IPS_IN_ABORT
-comma
-op_amp
-id|ha-&gt;flags
-)paren
-)paren
-r_return
-(paren
-id|FAILED
-)paren
-suffix:semicolon
 multiline_comment|/* See if the command is on the copp queue */
-id|IPS_QUEUE_LOCK
-c_func
-(paren
-op_amp
-id|ha-&gt;copp_waitlist
-)paren
-suffix:semicolon
 id|item
 op_assign
 id|ha-&gt;copp_waitlist.head
@@ -6265,13 +6197,6 @@ id|item
 op_assign
 id|item-&gt;next
 suffix:semicolon
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-op_amp
-id|ha-&gt;copp_waitlist
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6288,22 +6213,15 @@ comma
 id|item
 )paren
 suffix:semicolon
-id|clear_bit
-c_func
-(paren
-id|IPS_IN_ABORT
-comma
-op_amp
-id|ha-&gt;flags
-)paren
-suffix:semicolon
-r_return
+id|ret
+op_assign
 (paren
 id|SUCCESS
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* See if the command is on the wait queue */
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -6318,16 +6236,8 @@ id|SC
 )paren
 (brace
 multiline_comment|/* command not sent yet */
-id|clear_bit
-c_func
-(paren
-id|IPS_IN_ABORT
-comma
-op_amp
-id|ha-&gt;flags
-)paren
-suffix:semicolon
-r_return
+id|ret
+op_assign
 (paren
 id|SUCCESS
 )paren
@@ -6336,21 +6246,16 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* command must have already been sent */
-id|clear_bit
-c_func
-(paren
-id|IPS_IN_ABORT
-comma
-op_amp
-id|ha-&gt;flags
-)paren
-suffix:semicolon
-r_return
+id|ret
+op_assign
 (paren
 id|FAILED
 )paren
 suffix:semicolon
 )brace
+r_return
+id|ret
+suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -6390,10 +6295,6 @@ suffix:semicolon
 id|ips_copp_wait_item_t
 op_star
 id|item
-suffix:semicolon
-r_int
-r_int
-id|cpu_flags
 suffix:semicolon
 id|METHOD_TRACE
 c_func
@@ -6471,31 +6372,7 @@ r_return
 id|FAILED
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|test_and_set_bit
-c_func
-(paren
-id|IPS_IN_RESET
-comma
-op_amp
-id|ha-&gt;flags
-)paren
-)paren
-r_return
-(paren
-id|FAILED
-)paren
-suffix:semicolon
 multiline_comment|/* See if the command is on the copp queue */
-id|IPS_QUEUE_LOCK
-c_func
-(paren
-op_amp
-id|ha-&gt;copp_waitlist
-)paren
-suffix:semicolon
 id|item
 op_assign
 id|ha-&gt;copp_waitlist.head
@@ -6517,13 +6394,6 @@ id|item
 op_assign
 id|item-&gt;next
 suffix:semicolon
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-op_amp
-id|ha-&gt;copp_waitlist
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6538,15 +6408,6 @@ op_amp
 id|ha-&gt;copp_waitlist
 comma
 id|item
-)paren
-suffix:semicolon
-id|clear_bit
-c_func
-(paren
-id|IPS_IN_RESET
-comma
-op_amp
-id|ha-&gt;flags
 )paren
 suffix:semicolon
 r_return
@@ -6570,15 +6431,6 @@ id|SC
 )paren
 (brace
 multiline_comment|/* command not sent yet */
-id|clear_bit
-c_func
-(paren
-id|IPS_IN_RESET
-comma
-op_amp
-id|ha-&gt;flags
-)paren
-suffix:semicolon
 r_return
 (paren
 id|SUCCESS
@@ -6588,7 +6440,7 @@ suffix:semicolon
 multiline_comment|/* An explanation for the casual observer:                              */
 multiline_comment|/* Part of the function of a RAID controller is automatic error         */
 multiline_comment|/* detection and recovery.  As such, the only problem that physically   */
-multiline_comment|/* resetting a ServeRAID adapter will ever fix is when, for some reason,*/
+multiline_comment|/* resetting an adapter will ever fix is when, for some reason,         */
 multiline_comment|/* the driver is not successfully communicating with the adapter.       */
 multiline_comment|/* Therefore, we will attempt to flush this adapter.  If that succeeds, */
 multiline_comment|/* then there&squot;s no real purpose in a physical reset. This will complete */
@@ -6700,15 +6552,6 @@ comma
 id|ha-&gt;host_num
 )paren
 suffix:semicolon
-id|clear_bit
-c_func
-(paren
-id|IPS_IN_RESET
-comma
-op_amp
-id|ha-&gt;flags
-)paren
-suffix:semicolon
 r_return
 (paren
 id|SUCCESS
@@ -6717,7 +6560,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Either we can&squot;t communicate with the adapter or it&squot;s an IOCTL request */
-multiline_comment|/* from a ServeRAID utility.  A physical reset is needed at this point.  */
+multiline_comment|/* from a utility.  A physical reset is needed at this point.            */
 id|ha-&gt;ioctl_reset
 op_assign
 l_int|0
@@ -6863,15 +6706,6 @@ id|ha-&gt;active
 op_assign
 id|FALSE
 suffix:semicolon
-id|clear_bit
-c_func
-(paren
-id|IPS_IN_RESET
-comma
-op_amp
-id|ha-&gt;flags
-)paren
-suffix:semicolon
 r_return
 (paren
 id|FAILED
@@ -7004,15 +6838,6 @@ id|ha-&gt;active
 op_assign
 id|FALSE
 suffix:semicolon
-id|clear_bit
-c_func
-(paren
-id|IPS_IN_RESET
-comma
-op_amp
-id|ha-&gt;flags
-)paren
-suffix:semicolon
 r_return
 (paren
 id|FAILED
@@ -7046,24 +6871,12 @@ op_amp
 id|tv
 )paren
 suffix:semicolon
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 id|ha-&gt;last_ffdc
 op_assign
 id|tv.tv_sec
 suffix:semicolon
 id|ha-&gt;reset_count
 op_increment
-suffix:semicolon
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
 suffix:semicolon
 id|ips_ffdc_reset
 c_func
@@ -7158,46 +6971,10 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Reset the number of active IOCTLs */
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 id|ha-&gt;num_ioctl
 op_assign
 l_int|0
 suffix:semicolon
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
-id|clear_bit
-c_func
-(paren
-id|IPS_IN_RESET
-comma
-op_amp
-id|ha-&gt;flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|test_bit
-c_func
-(paren
-id|IPS_IN_INTR
-comma
-op_amp
-id|ha-&gt;flags
-)paren
-)paren
-(brace
-multiline_comment|/*&n;       * Only execute the next command when&n;       * we are not being called from the&n;       * interrupt handler.  The interrupt&n;       * handler wants to do this and since&n;       * interrupts are turned off here....&n;       */
 id|ips_next
 c_func
 (paren
@@ -7206,7 +6983,6 @@ comma
 id|IPS_INTR_IORL
 )paren
 suffix:semicolon
-)brace
 r_return
 (paren
 id|SUCCESS
@@ -7249,10 +7025,6 @@ op_star
 id|ips_ha_t
 op_star
 id|ha
-suffix:semicolon
-r_int
-r_int
-id|cpu_flags
 suffix:semicolon
 id|ips_passthru_t
 op_star
@@ -7306,13 +7078,6 @@ id|SC
 )paren
 )paren
 (brace
-id|IPS_QUEUE_LOCK
-c_func
-(paren
-op_amp
-id|ha-&gt;copp_waitlist
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7321,13 +7086,6 @@ op_eq
 id|IPS_MAX_IOCTL_QUEUE
 )paren
 (brace
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-op_amp
-id|ha-&gt;copp_waitlist
-)paren
-suffix:semicolon
 id|SC-&gt;result
 op_assign
 id|DID_BUS_BUSY
@@ -7346,26 +7104,8 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-op_amp
-id|ha-&gt;copp_waitlist
-)paren
-suffix:semicolon
-)brace
 )brace
 r_else
-(brace
-id|IPS_QUEUE_LOCK
-c_func
-(paren
-op_amp
-id|ha-&gt;scb_waitlist
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7374,13 +7114,6 @@ op_eq
 id|IPS_MAX_QUEUE
 )paren
 (brace
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-op_amp
-id|ha-&gt;scb_waitlist
-)paren
-suffix:semicolon
 id|SC-&gt;result
 op_assign
 id|DID_BUS_BUSY
@@ -7398,17 +7131,6 @@ r_return
 l_int|0
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-op_amp
-id|ha-&gt;scb_waitlist
-)paren
-suffix:semicolon
-)brace
 )brace
 id|SC-&gt;scsi_done
 op_assign
@@ -7616,20 +7338,6 @@ id|scratch-&gt;scsi_cmd
 op_assign
 id|SC
 suffix:semicolon
-id|sema_init
-c_func
-(paren
-op_amp
-id|ha-&gt;ioctl_sem
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|scratch-&gt;sem
-op_assign
-op_amp
-id|ha-&gt;ioctl_sem
-suffix:semicolon
 id|scratch-&gt;next
 op_assign
 l_int|NULL
@@ -7645,6 +7353,7 @@ id|scratch
 suffix:semicolon
 )brace
 r_else
+(brace
 id|ips_putq_wait_tail
 c_func
 (paren
@@ -7654,82 +7363,7 @@ comma
 id|SC
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ha-&gt;scb_waitlist.count
-op_plus
-id|ha-&gt;scb_activelist.count
-OG
-l_int|32
-)paren
-(brace
-id|mod_timer
-c_func
-(paren
-op_amp
-id|SC-&gt;eh_timeout
-comma
-id|jiffies
-op_plus
-l_int|120
-op_star
-id|HZ
-)paren
-suffix:semicolon
 )brace
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-op_logical_neg
-id|test_bit
-c_func
-(paren
-id|IPS_IN_INTR
-comma
-op_amp
-id|ha-&gt;flags
-)paren
-)paren
-op_logical_and
-(paren
-op_logical_neg
-id|test_bit
-c_func
-(paren
-id|IPS_IN_ABORT
-comma
-op_amp
-id|ha-&gt;flags
-)paren
-)paren
-op_logical_and
-(paren
-op_logical_neg
-id|test_bit
-c_func
-(paren
-id|IPS_IN_RESET
-comma
-op_amp
-id|ha-&gt;flags
-)paren
-)paren
-)paren
-(brace
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 id|ips_next
 c_func
 (paren
@@ -7738,16 +7372,6 @@ comma
 id|IPS_INTR_IORL
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* If We were using the CD Boot Flash Buffer, Restore the Old Values */
 r_if
 c_cond
@@ -8234,43 +7858,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_and_set_bit
-c_func
-(paren
-id|IPS_IN_INTR
-comma
-op_amp
-id|ha-&gt;flags
-)paren
-)paren
-(brace
-id|IPS_UNLOCK_RESTORE
-c_func
-(paren
-id|host-&gt;host_lock
-comma
-id|cpu_flags
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 op_logical_neg
 id|ha-&gt;active
 )paren
 (brace
-id|clear_bit
-c_func
-(paren
-id|IPS_IN_INTR
-comma
-op_amp
-id|ha-&gt;flags
-)paren
-suffix:semicolon
 id|IPS_UNLOCK_RESTORE
 c_func
 (paren
@@ -8288,15 +7879,6 @@ id|ha-&gt;func.intr
 )paren
 (paren
 id|ha
-)paren
-suffix:semicolon
-id|clear_bit
-c_func
-(paren
-id|IPS_IN_INTR
-comma
-op_amp
-id|ha-&gt;flags
 )paren
 suffix:semicolon
 id|IPS_UNLOCK_RESTORE
@@ -8352,10 +7934,6 @@ suffix:semicolon
 r_int
 id|intrstatus
 suffix:semicolon
-r_int
-r_int
-id|cpu_flags
-suffix:semicolon
 id|METHOD_TRACE
 c_func
 (paren
@@ -8380,12 +7958,6 @@ id|ha-&gt;active
 )paren
 r_return
 suffix:semicolon
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 id|intrstatus
 op_assign
 (paren
@@ -8404,12 +7976,6 @@ id|intrstatus
 )paren
 (brace
 multiline_comment|/*&n;       * Unexpected/Shared interrupt&n;       */
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -8487,12 +8053,6 @@ op_star
 id|sp-&gt;scb_addr
 suffix:semicolon
 multiline_comment|/*&n;       * use the callback function to finish things up&n;       * NOTE: interrupts are OFF for this&n;       */
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 (paren
 op_star
 id|scb-&gt;callback
@@ -8503,20 +8063,8 @@ comma
 id|scb
 )paren
 suffix:semicolon
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* end while */
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -8553,10 +8101,6 @@ suffix:semicolon
 r_int
 id|intrstatus
 suffix:semicolon
-r_int
-r_int
-id|cpu_flags
-suffix:semicolon
 id|METHOD_TRACE
 c_func
 (paren
@@ -8581,12 +8125,6 @@ id|ha-&gt;active
 )paren
 r_return
 suffix:semicolon
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 id|intrstatus
 op_assign
 (paren
@@ -8605,12 +8143,6 @@ id|intrstatus
 )paren
 (brace
 multiline_comment|/*&n;       * Unexpected/Shared interrupt&n;       */
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -8708,12 +8240,6 @@ op_star
 id|sp-&gt;scb_addr
 suffix:semicolon
 multiline_comment|/*&n;       * use the callback function to finish things up&n;       * NOTE: interrupts are OFF for this&n;       */
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 (paren
 op_star
 id|scb-&gt;callback
@@ -8724,20 +8250,8 @@ comma
 id|scb
 )paren
 suffix:semicolon
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* end while */
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -13603,10 +13117,6 @@ suffix:semicolon
 r_int
 r_int
 id|cpu_flags
-suffix:semicolon
-r_int
-r_int
-id|cpu_flags2
 op_assign
 l_int|0
 suffix:semicolon
@@ -13646,14 +13156,16 @@ id|intr
 op_eq
 id|IPS_INTR_ON
 )paren
+(brace
 id|IPS_LOCK_SAVE
 c_func
 (paren
 id|host-&gt;host_lock
 comma
-id|cpu_flags2
+id|cpu_flags
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -13684,12 +13196,6 @@ op_amp
 id|tv
 )paren
 suffix:semicolon
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13704,12 +13210,6 @@ id|ha-&gt;last_ffdc
 op_assign
 id|tv.tv_sec
 suffix:semicolon
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 id|ips_ffdc_time
 c_func
 (paren
@@ -13717,45 +13217,8 @@ id|ha
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 )brace
-)brace
-r_if
-c_cond
-(paren
-id|intr
-op_eq
-id|IPS_INTR_ON
-)paren
-id|IPS_UNLOCK_RESTORE
-c_func
-(paren
-id|host-&gt;host_lock
-comma
-id|cpu_flags2
-)paren
-suffix:semicolon
 multiline_comment|/*&n;    * Send passthru commands&n;    * These have priority over normal I/O&n;    * but shouldn&squot;t affect performance too much&n;    * since we limit the number that can be active&n;    * on the card at any one time&n;    */
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
-id|IPS_QUEUE_LOCK
-c_func
-(paren
-op_amp
-id|ha-&gt;copp_waitlist
-)paren
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -13780,13 +13243,6 @@ id|ha
 )paren
 )paren
 (brace
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-op_amp
-id|ha-&gt;copp_waitlist
-)paren
-suffix:semicolon
 id|item
 op_assign
 id|ips_removeq_copp_head
@@ -13799,19 +13255,26 @@ suffix:semicolon
 id|ha-&gt;num_ioctl
 op_increment
 suffix:semicolon
-id|IPS_HA_UNLOCK
+r_if
+c_cond
+(paren
+id|intr
+op_eq
+id|IPS_INTR_ON
+)paren
+(brace
+id|IPS_UNLOCK_RESTORE
 c_func
 (paren
+id|host-&gt;host_lock
+comma
 id|cpu_flags
 )paren
 suffix:semicolon
+)brace
 id|scb-&gt;scsi_cmd
 op_assign
 id|item-&gt;scsi_cmd
-suffix:semicolon
-id|scb-&gt;sem
-op_assign
-id|item-&gt;sem
 suffix:semicolon
 id|kfree
 c_func
@@ -13833,6 +13296,23 @@ comma
 id|intr
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|intr
+op_eq
+id|IPS_INTR_ON
+)paren
+(brace
+id|IPS_LOCK_SAVE
+c_func
+(paren
+id|host-&gt;host_lock
+comma
+id|cpu_flags
+)paren
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -13921,19 +13401,6 @@ op_ne
 id|IPS_SUCCESS
 )paren
 (brace
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
-id|IPS_QUEUE_LOCK
-c_func
-(paren
-op_amp
-id|ha-&gt;copp_waitlist
-)paren
-suffix:semicolon
 id|ha-&gt;num_ioctl
 op_decrement
 suffix:semicolon
@@ -14021,57 +13488,11 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* end case */
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
-id|IPS_QUEUE_LOCK
-c_func
-(paren
-op_amp
-id|ha-&gt;copp_waitlist
-)paren
-suffix:semicolon
 )brace
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-op_amp
-id|ha-&gt;copp_waitlist
-)paren
-suffix:semicolon
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 multiline_comment|/*&n;    * Send &quot;Normal&quot; I/O commands&n;    */
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
-id|IPS_QUEUE_LOCK
-c_func
-(paren
-op_amp
-id|ha-&gt;scb_waitlist
-)paren
-suffix:semicolon
 id|p
 op_assign
 id|ha-&gt;scb_waitlist.head
-suffix:semicolon
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-op_amp
-id|ha-&gt;scb_waitlist
-)paren
 suffix:semicolon
 r_while
 c_loop
@@ -14153,19 +13574,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SC
+id|intr
 op_eq
-l_int|NULL
+id|IPS_INTR_ON
 )paren
-multiline_comment|/* Should never happen, but good to check anyway */
-r_continue
-suffix:semicolon
-id|IPS_HA_UNLOCK
+(brace
+id|IPS_UNLOCK_RESTORE
 c_func
 (paren
+id|host-&gt;host_lock
+comma
 id|cpu_flags
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Unlock HA after command is taken off queue */
 id|SC-&gt;result
 op_assign
@@ -14651,6 +14073,23 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|intr
+op_eq
+id|IPS_INTR_ON
+)paren
+(brace
+id|IPS_LOCK_SAVE
+c_func
+(paren
+id|host-&gt;host_lock
+comma
+id|cpu_flags
+)paren
+suffix:semicolon
+)brace
 id|ret
 op_assign
 id|ips_send_cmd
@@ -14661,13 +14100,15 @@ comma
 id|scb
 )paren
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
 id|ret
-op_eq
-id|IPS_SUCCESS
 )paren
+(brace
+r_case
+id|IPS_SUCCESS
+suffix:colon
 id|ips_putq_scb_head
 c_func
 (paren
@@ -14677,12 +14118,8 @@ comma
 id|scb
 )paren
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|ret
-)paren
-(brace
+r_break
+suffix:semicolon
 r_case
 id|IPS_FAILURE
 suffix:colon
@@ -14795,20 +14232,25 @@ op_star
 )paren
 id|p-&gt;host_scribble
 suffix:semicolon
-id|IPS_HA_LOCK
+)brace
+multiline_comment|/* end while */
+r_if
+c_cond
+(paren
+id|intr
+op_eq
+id|IPS_INTR_ON
+)paren
+(brace
+id|IPS_UNLOCK_RESTORE
 c_func
 (paren
+id|host-&gt;host_lock
+comma
 id|cpu_flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* end while */
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -14818,7 +14260,7 @@ multiline_comment|/* Routine Description:                                       
 multiline_comment|/*                                                                          */
 multiline_comment|/*   Add an item to the head of the queue                                   */
 multiline_comment|/*                                                                          */
-multiline_comment|/* ASSUMED to be called from within a lock                                  */
+multiline_comment|/* ASSUMED to be called from within the HA lock                             */
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
@@ -14853,12 +14295,6 @@ id|item
 )paren
 r_return
 suffix:semicolon
-id|IPS_QUEUE_LOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 id|item-&gt;q_next
 op_assign
 id|queue-&gt;head
@@ -14880,12 +14316,6 @@ suffix:semicolon
 id|queue-&gt;count
 op_increment
 suffix:semicolon
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -14895,7 +14325,7 @@ multiline_comment|/* Routine Description:                                       
 multiline_comment|/*                                                                          */
 multiline_comment|/*   Add an item to the tail of the queue                                   */
 multiline_comment|/*                                                                          */
-multiline_comment|/* ASSUMED to be called from within a lock                                  */
+multiline_comment|/* ASSUMED to be called from within the HA lock                             */
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
@@ -14930,12 +14360,6 @@ id|item
 )paren
 r_return
 suffix:semicolon
-id|IPS_QUEUE_LOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 id|item-&gt;q_next
 op_assign
 l_int|NULL
@@ -14966,12 +14390,6 @@ suffix:semicolon
 id|queue-&gt;count
 op_increment
 suffix:semicolon
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -14981,7 +14399,7 @@ multiline_comment|/* Routine Description:                                       
 multiline_comment|/*                                                                          */
 multiline_comment|/*   Remove the head of the queue                                           */
 multiline_comment|/*                                                                          */
-multiline_comment|/* ASSUMED to be called from within a lock                                  */
+multiline_comment|/* ASSUMED to be called from within the HA lock                             */
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
@@ -15009,12 +14427,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|IPS_QUEUE_LOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 id|item
 op_assign
 id|queue-&gt;head
@@ -15026,12 +14438,6 @@ op_logical_neg
 id|item
 )paren
 (brace
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 r_return
 (paren
 l_int|NULL
@@ -15060,12 +14466,6 @@ suffix:semicolon
 id|queue-&gt;count
 op_decrement
 suffix:semicolon
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 r_return
 (paren
 id|item
@@ -15080,7 +14480,7 @@ multiline_comment|/* Routine Description:                                       
 multiline_comment|/*                                                                          */
 multiline_comment|/*   Remove an item from a queue                                            */
 multiline_comment|/*                                                                          */
-multiline_comment|/* ASSUMED to be called from within a lock                                  */
+multiline_comment|/* ASSUMED to be called from within the HA lock                             */
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
@@ -15123,12 +14523,6 @@ r_return
 l_int|NULL
 )paren
 suffix:semicolon
-id|IPS_QUEUE_LOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -15137,12 +14531,6 @@ op_eq
 id|queue-&gt;head
 )paren
 (brace
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 r_return
 (paren
 id|ips_removeq_scb_head
@@ -15202,24 +14590,12 @@ suffix:semicolon
 id|queue-&gt;count
 op_decrement
 suffix:semicolon
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 r_return
 (paren
 id|item
 )paren
 suffix:semicolon
 )brace
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 r_return
 (paren
 l_int|NULL
@@ -15234,7 +14610,7 @@ multiline_comment|/* Routine Description:                                       
 multiline_comment|/*                                                                          */
 multiline_comment|/*   Add an item to the head of the queue                                   */
 multiline_comment|/*                                                                          */
-multiline_comment|/* ASSUMED to be called from within a lock                                  */
+multiline_comment|/* ASSUMED to be called from within the HA lock                             */
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
@@ -15269,12 +14645,6 @@ id|item
 )paren
 r_return
 suffix:semicolon
-id|IPS_QUEUE_LOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 id|item-&gt;host_scribble
 op_assign
 (paren
@@ -15300,12 +14670,6 @@ suffix:semicolon
 id|queue-&gt;count
 op_increment
 suffix:semicolon
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -15315,7 +14679,7 @@ multiline_comment|/* Routine Description:                                       
 multiline_comment|/*                                                                          */
 multiline_comment|/*   Add an item to the tail of the queue                                   */
 multiline_comment|/*                                                                          */
-multiline_comment|/* ASSUMED to be called from within a lock                                  */
+multiline_comment|/* ASSUMED to be called from within the HA lock                             */
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
@@ -15349,12 +14713,6 @@ op_logical_neg
 id|item
 )paren
 r_return
-suffix:semicolon
-id|IPS_QUEUE_LOCK
-c_func
-(paren
-id|queue
-)paren
 suffix:semicolon
 id|item-&gt;host_scribble
 op_assign
@@ -15390,12 +14748,6 @@ suffix:semicolon
 id|queue-&gt;count
 op_increment
 suffix:semicolon
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -15405,7 +14757,7 @@ multiline_comment|/* Routine Description:                                       
 multiline_comment|/*                                                                          */
 multiline_comment|/*   Remove the head of the queue                                           */
 multiline_comment|/*                                                                          */
-multiline_comment|/* ASSUMED to be called from within a lock                                  */
+multiline_comment|/* ASSUMED to be called from within the HA lock                             */
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
@@ -15433,12 +14785,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|IPS_QUEUE_LOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 id|item
 op_assign
 id|queue-&gt;head
@@ -15450,12 +14796,6 @@ op_logical_neg
 id|item
 )paren
 (brace
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 r_return
 (paren
 l_int|NULL
@@ -15488,12 +14828,6 @@ suffix:semicolon
 id|queue-&gt;count
 op_decrement
 suffix:semicolon
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 r_return
 (paren
 id|item
@@ -15508,7 +14842,7 @@ multiline_comment|/* Routine Description:                                       
 multiline_comment|/*                                                                          */
 multiline_comment|/*   Remove an item from a queue                                            */
 multiline_comment|/*                                                                          */
-multiline_comment|/* ASSUMED to be called from within a lock                                  */
+multiline_comment|/* ASSUMED to be called from within the HA lock                             */
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
@@ -15551,12 +14885,6 @@ r_return
 l_int|NULL
 )paren
 suffix:semicolon
-id|IPS_QUEUE_LOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -15565,12 +14893,6 @@ op_eq
 id|queue-&gt;head
 )paren
 (brace
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 r_return
 (paren
 id|ips_removeq_wait_head
@@ -15638,24 +14960,12 @@ suffix:semicolon
 id|queue-&gt;count
 op_decrement
 suffix:semicolon
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 r_return
 (paren
 id|item
 )paren
 suffix:semicolon
 )brace
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 r_return
 (paren
 l_int|NULL
@@ -15670,7 +14980,7 @@ multiline_comment|/* Routine Description:                                       
 multiline_comment|/*                                                                          */
 multiline_comment|/*   Add an item to the head of the queue                                   */
 multiline_comment|/*                                                                          */
-multiline_comment|/* ASSUMED to be called from within a lock                                  */
+multiline_comment|/* ASSUMED to be called from within the HA lock                             */
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
@@ -15705,12 +15015,6 @@ id|item
 )paren
 r_return
 suffix:semicolon
-id|IPS_QUEUE_LOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 id|item-&gt;next
 op_assign
 id|queue-&gt;head
@@ -15732,12 +15036,6 @@ suffix:semicolon
 id|queue-&gt;count
 op_increment
 suffix:semicolon
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -15747,7 +15045,7 @@ multiline_comment|/* Routine Description:                                       
 multiline_comment|/*                                                                          */
 multiline_comment|/*   Add an item to the tail of the queue                                   */
 multiline_comment|/*                                                                          */
-multiline_comment|/* ASSUMED to be called from within a lock                                  */
+multiline_comment|/* ASSUMED to be called from within the HA lock                             */
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
@@ -15782,12 +15080,6 @@ id|item
 )paren
 r_return
 suffix:semicolon
-id|IPS_QUEUE_LOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 id|item-&gt;next
 op_assign
 l_int|NULL
@@ -15818,12 +15110,6 @@ suffix:semicolon
 id|queue-&gt;count
 op_increment
 suffix:semicolon
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -15833,7 +15119,7 @@ multiline_comment|/* Routine Description:                                       
 multiline_comment|/*                                                                          */
 multiline_comment|/*   Remove the head of the queue                                           */
 multiline_comment|/*                                                                          */
-multiline_comment|/* ASSUMED to be called from within a lock                                  */
+multiline_comment|/* ASSUMED to be called from within the HA lock                             */
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
@@ -15861,12 +15147,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|IPS_QUEUE_LOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 id|item
 op_assign
 id|queue-&gt;head
@@ -15878,12 +15158,6 @@ op_logical_neg
 id|item
 )paren
 (brace
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 r_return
 (paren
 l_int|NULL
@@ -15912,12 +15186,6 @@ suffix:semicolon
 id|queue-&gt;count
 op_decrement
 suffix:semicolon
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 r_return
 (paren
 id|item
@@ -15932,7 +15200,7 @@ multiline_comment|/* Routine Description:                                       
 multiline_comment|/*                                                                          */
 multiline_comment|/*   Remove an item from a queue                                            */
 multiline_comment|/*                                                                          */
-multiline_comment|/* ASSUMED to be called from within a lock                                  */
+multiline_comment|/* ASSUMED to be called from within the HA lock                             */
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
@@ -15975,12 +15243,6 @@ r_return
 l_int|NULL
 )paren
 suffix:semicolon
-id|IPS_QUEUE_LOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -15989,12 +15251,6 @@ op_eq
 id|queue-&gt;head
 )paren
 (brace
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 r_return
 (paren
 id|ips_removeq_copp_head
@@ -16054,24 +15310,12 @@ suffix:semicolon
 id|queue-&gt;count
 op_decrement
 suffix:semicolon
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 r_return
 (paren
 id|item
 )paren
 suffix:semicolon
 )brace
-id|IPS_QUEUE_UNLOCK
-c_func
-(paren
-id|queue
-)paren
-suffix:semicolon
 r_return
 (paren
 l_int|NULL
@@ -16237,7 +15481,7 @@ multiline_comment|/*                                                            
 multiline_comment|/* Routine Description:                                                     */
 multiline_comment|/*                                                                          */
 multiline_comment|/*   Do housekeeping on completed commands                                  */
-multiline_comment|/*                                                                          */
+multiline_comment|/*  ASSUMED to be called form within the request lock                       */
 multiline_comment|/****************************************************************************/
 r_static
 r_void
@@ -16256,10 +15500,6 @@ id|scb
 (brace
 r_int
 id|ret
-suffix:semicolon
-r_int
-r_int
-id|cpu_flags
 suffix:semicolon
 id|METHOD_TRACE
 c_func
@@ -16301,20 +15541,8 @@ comma
 id|scb
 )paren
 suffix:semicolon
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 id|ha-&gt;num_ioctl
 op_decrement
-suffix:semicolon
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -17068,12 +16296,6 @@ c_cond
 id|scb-&gt;bus
 )paren
 (brace
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 id|ha-&gt;dcdb_active
 (braket
 id|scb-&gt;bus
@@ -17086,12 +16308,6 @@ op_complement
 l_int|1
 op_lshift
 id|scb-&gt;target_id
-)paren
-suffix:semicolon
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
 )paren
 suffix:semicolon
 )brace
@@ -19037,7 +18253,7 @@ multiline_comment|/*                                                            
 multiline_comment|/* Routine Description:                                                     */
 multiline_comment|/*                                                                          */
 multiline_comment|/*   Check the status of commands to logical drives                         */
-multiline_comment|/*                                                                          */
+multiline_comment|/*   Assumed to be called with the HA lock                                  */
 multiline_comment|/****************************************************************************/
 r_static
 r_void
@@ -21029,22 +20245,12 @@ id|ips_scb_t
 op_star
 id|scb
 suffix:semicolon
-r_int
-r_int
-id|cpu_flags
-suffix:semicolon
 id|METHOD_TRACE
 c_func
 (paren
 l_string|&quot;ips_getscb&quot;
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|IPS_SCB_LOCK
-c_func
-(paren
-id|cpu_flags
 )paren
 suffix:semicolon
 r_if
@@ -21059,12 +20265,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|IPS_SCB_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 r_return
 (paren
 l_int|NULL
@@ -21078,12 +20278,6 @@ suffix:semicolon
 id|scb-&gt;q_next
 op_assign
 l_int|NULL
-suffix:semicolon
-id|IPS_SCB_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
 suffix:semicolon
 id|ips_init_scb
 c_func
@@ -21125,10 +20319,6 @@ op_star
 id|scb
 )paren
 (brace
-r_int
-r_int
-id|cpu_flags
-suffix:semicolon
 id|METHOD_TRACE
 c_func
 (paren
@@ -21207,12 +20397,6 @@ l_int|1
 )paren
 )paren
 (brace
-id|IPS_SCB_LOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 id|scb-&gt;q_next
 op_assign
 id|ha-&gt;scb_freelist
@@ -21220,12 +20404,6 @@ suffix:semicolon
 id|ha-&gt;scb_freelist
 op_assign
 id|scb
-suffix:semicolon
-id|IPS_SCB_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -22744,10 +21922,6 @@ id|ha
 r_int
 id|reset_counter
 suffix:semicolon
-r_int
-r_int
-id|cpu_flags
-suffix:semicolon
 id|METHOD_TRACE
 c_func
 (paren
@@ -22770,12 +21944,6 @@ comma
 id|ha-&gt;io_addr
 comma
 id|ha-&gt;irq
-)paren
-suffix:semicolon
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
 )paren
 suffix:semicolon
 id|reset_counter
@@ -22849,12 +22017,6 @@ op_ge
 l_int|2
 )paren
 (brace
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 r_return
 (paren
 l_int|0
@@ -22862,12 +22024,6 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 r_return
 (paren
 l_int|1
@@ -22897,10 +22053,6 @@ id|ha
 r_int
 id|reset_counter
 suffix:semicolon
-r_int
-r_int
-id|cpu_flags
-suffix:semicolon
 id|METHOD_TRACE
 c_func
 (paren
@@ -22923,12 +22075,6 @@ comma
 id|ha-&gt;mem_addr
 comma
 id|ha-&gt;irq
-)paren
-suffix:semicolon
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
 )paren
 suffix:semicolon
 id|reset_counter
@@ -23002,12 +22148,6 @@ op_ge
 l_int|2
 )paren
 (brace
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 r_return
 (paren
 l_int|0
@@ -23015,12 +22155,6 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 r_return
 (paren
 l_int|1
@@ -23053,10 +22187,6 @@ suffix:semicolon
 r_uint8
 id|junk
 suffix:semicolon
-r_int
-r_int
-id|cpu_flags
-suffix:semicolon
 id|METHOD_TRACE
 c_func
 (paren
@@ -23079,12 +22209,6 @@ comma
 id|ha-&gt;mem_addr
 comma
 id|ha-&gt;irq
-)paren
-suffix:semicolon
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
 )paren
 suffix:semicolon
 id|reset_counter
@@ -23155,12 +22279,6 @@ op_ge
 l_int|2
 )paren
 (brace
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 r_return
 (paren
 l_int|0
@@ -23168,12 +22286,6 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 r_return
 (paren
 l_int|1
@@ -23621,10 +22733,6 @@ suffix:semicolon
 r_uint32
 id|val
 suffix:semicolon
-r_int
-r_int
-id|cpu_flags
-suffix:semicolon
 id|METHOD_TRACE
 c_func
 (paren
@@ -23683,12 +22791,6 @@ id|scb-&gt;cmd.basic_io.command_id
 )paren
 suffix:semicolon
 )brace
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 id|TimeOut
 op_assign
 l_int|0
@@ -23766,12 +22868,6 @@ comma
 id|ha-&gt;host_num
 )paren
 suffix:semicolon
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 r_return
 (paren
 id|IPS_FAILURE
@@ -23809,12 +22905,6 @@ op_plus
 id|IPS_REG_CCCR
 )paren
 suffix:semicolon
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 r_return
 (paren
 id|IPS_SUCCESS
@@ -23850,10 +22940,6 @@ id|TimeOut
 suffix:semicolon
 r_uint32
 id|val
-suffix:semicolon
-r_int
-r_int
-id|cpu_flags
 suffix:semicolon
 id|METHOD_TRACE
 c_func
@@ -23912,12 +22998,6 @@ id|scb-&gt;cmd.basic_io.command_id
 )paren
 suffix:semicolon
 )brace
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 id|TimeOut
 op_assign
 l_int|0
@@ -23991,12 +23071,6 @@ comma
 id|ha-&gt;host_num
 )paren
 suffix:semicolon
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 r_return
 (paren
 id|IPS_FAILURE
@@ -24024,12 +23098,6 @@ comma
 id|ha-&gt;mem_ptr
 op_plus
 id|IPS_REG_CCCR
-)paren
-suffix:semicolon
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
 )paren
 suffix:semicolon
 r_return
@@ -24062,10 +23130,6 @@ op_star
 id|scb
 )paren
 (brace
-r_int
-r_int
-id|cpu_flags
-suffix:semicolon
 id|METHOD_TRACE
 c_func
 (paren
@@ -24123,12 +23187,6 @@ id|scb-&gt;cmd.basic_io.command_id
 )paren
 suffix:semicolon
 )brace
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 id|outl
 c_func
 (paren
@@ -24141,12 +23199,6 @@ comma
 id|ha-&gt;io_addr
 op_plus
 id|IPS_REG_I2O_INMSGQ
-)paren
-suffix:semicolon
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
 )paren
 suffix:semicolon
 r_return
@@ -24179,10 +23231,6 @@ op_star
 id|scb
 )paren
 (brace
-r_int
-r_int
-id|cpu_flags
-suffix:semicolon
 id|METHOD_TRACE
 c_func
 (paren
@@ -24240,12 +23288,6 @@ id|scb-&gt;cmd.basic_io.command_id
 )paren
 suffix:semicolon
 )brace
-id|IPS_HA_LOCK
-c_func
-(paren
-id|cpu_flags
-)paren
-suffix:semicolon
 id|writel
 c_func
 (paren
@@ -24254,12 +23296,6 @@ comma
 id|ha-&gt;mem_ptr
 op_plus
 id|IPS_REG_I2O_INMSGQ
-)paren
-suffix:semicolon
-id|IPS_HA_UNLOCK
-c_func
-(paren
-id|cpu_flags
 )paren
 suffix:semicolon
 r_return
@@ -24650,39 +23686,12 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/*&n;          * NOTE: we already have the io_request_lock so&n;          * even if we get an interrupt it won&squot;t get serviced&n;          * until after we finish.&n;          */
-r_while
-c_loop
-(paren
-id|test_and_set_bit
-c_func
-(paren
-id|IPS_IN_INTR
-comma
-op_amp
-id|ha-&gt;flags
-)paren
-)paren
-id|udelay
-c_func
-(paren
-l_int|1000
-)paren
-suffix:semicolon
 (paren
 op_star
 id|ha-&gt;func.intr
 )paren
 (paren
 id|ha
-)paren
-suffix:semicolon
-id|clear_bit
-c_func
-(paren
-id|IPS_IN_INTR
-comma
-op_amp
-id|ha-&gt;flags
 )paren
 suffix:semicolon
 )brace
@@ -29903,49 +28912,6 @@ r_sizeof
 (paren
 id|ips_ha_t
 )paren
-)paren
-suffix:semicolon
-multiline_comment|/* Initialize spin lock */
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|ha-&gt;scb_lock
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|ha-&gt;copp_lock
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|ha-&gt;ips_lock
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|ha-&gt;copp_waitlist.lock
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|ha-&gt;scb_waitlist.lock
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|ha-&gt;scb_activelist.lock
 )paren
 suffix:semicolon
 id|ips_sh
