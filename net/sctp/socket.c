@@ -3387,6 +3387,12 @@ c_func
 id|pos
 )paren
 suffix:semicolon
+id|sctp_datamsg_track
+c_func
+(paren
+id|chunk
+)paren
+suffix:semicolon
 multiline_comment|/* Do accounting for the write space.  */
 id|sctp_set_owner_w
 c_func

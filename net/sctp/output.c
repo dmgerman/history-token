@@ -606,43 +606,13 @@ id|SCTP_IP_OVERHEAD
 )paren
 suffix:semicolon
 multiline_comment|/* Both control chunks and data chunks with TSNs are&n;&t;&t; * non-fragmentable.&n;&t;&t; */
-r_int
-id|fragmentable
-op_assign
-id|sctp_chunk_is_data
-c_func
-(paren
-id|chunk
-)paren
-op_logical_and
-(paren
-op_logical_neg
-id|chunk-&gt;has_tsn
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|packet_empty
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|fragmentable
-)paren
-(brace
-id|retval
-op_assign
-id|SCTP_XMIT_MUST_FRAG
-suffix:semicolon
-r_goto
-id|finish
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* The packet is too big but we can&n;&t;&t;&t;&t; * not fragment it--we have to just&n;&t;&t;&t;&t; * transmit and rely on IP&n;&t;&t;&t;&t; * fragmentation.&n;&t;&t;&t;&t; */
+multiline_comment|/* We no longer do refragmentation at all.  &n;&t;&t;&t; * Just fragment at the IP layer, if we &n;&t;&t;&t; * actually hit this condition&n;&t;&t;&t; */
 id|packet-&gt;ipfragok
 op_assign
 l_int|1
@@ -650,7 +620,6 @@ suffix:semicolon
 r_goto
 id|append
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -1037,12 +1006,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|sctp_datamsg_track
-c_func
-(paren
-id|chunk
-)paren
-suffix:semicolon
 )brace
 r_else
 id|chunk-&gt;resent
