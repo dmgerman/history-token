@@ -4855,6 +4855,13 @@ op_complement
 id|ICH_PCM_246_MASK
 )paren
 suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|chip-&gt;reg_lock
+)paren
+suffix:semicolon
 id|msleep
 c_func
 (paren
@@ -4862,6 +4869,13 @@ l_int|50
 )paren
 suffix:semicolon
 multiline_comment|/* grrr... */
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|chip-&gt;reg_lock
+)paren
+suffix:semicolon
 )brace
 )brace
 r_else
