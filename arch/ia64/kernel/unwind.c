@@ -1119,23 +1119,19 @@ id|off
 suffix:semicolon
 )brace
 r_static
-r_void
-DECL|function|dump_info_pt
-id|dump_info_pt
-c_func
+r_inline
+r_struct
+id|pt_regs
+op_star
+DECL|function|get_scratch_regs
+id|get_scratch_regs
 (paren
 r_struct
 id|unw_frame_info
 op_star
 id|info
-comma
-r_const
-r_char
-op_star
-id|func
 )paren
 (brace
-multiline_comment|/* WAR for no struct pt_regs, may be caused by bad unwind data.  KAO */
 r_if
 c_cond
 (paren
@@ -1143,22 +1139,15 @@ op_logical_neg
 id|info-&gt;pt
 )paren
 (brace
+multiline_comment|/* This should not happen with valid unwind info.  */
 id|UNW_DPRINT
 c_func
 (paren
 l_int|0
 comma
-l_string|&quot;unwind.%s: sp 0x%lx pt 0x%lx, set to 0x%lx&bslash;n&quot;
+l_string|&quot;unwind.%s: bad unwind info: resetting info-&gt;pt&bslash;n&quot;
 comma
-id|func
-comma
-id|info-&gt;sp
-comma
-id|info-&gt;pt
-comma
-id|info-&gt;sp
-op_minus
-l_int|16
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|info-&gt;pt
@@ -1168,8 +1157,6 @@ op_minus
 l_int|16
 suffix:semicolon
 )brace
-r_else
-(brace
 id|UNW_DPRINT
 c_func
 (paren
@@ -1177,14 +1164,16 @@ l_int|3
 comma
 l_string|&quot;unwind.%s: sp 0x%lx pt 0x%lx&bslash;n&quot;
 comma
-id|func
+id|__FUNCTION__
 comma
 id|info-&gt;sp
 comma
 id|info-&gt;pt
 )paren
 suffix:semicolon
-)brace
+r_return
+id|info-&gt;pt
+suffix:semicolon
 )brace
 r_int
 DECL|function|unw_access_gr
@@ -1229,6 +1218,11 @@ r_struct
 id|unw_ireg
 op_star
 id|ireg
+suffix:semicolon
+r_struct
+id|pt_regs
+op_star
+id|pt
 suffix:semicolon
 r_if
 c_cond
@@ -1560,12 +1554,36 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* access a scratch register */
-id|dump_info_pt
+r_if
+c_cond
+(paren
+op_logical_neg
+id|info-&gt;pt
+)paren
+(brace
+id|UNW_DPRINT
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;unwind.%s: no pt-regs; cannot access r%d&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|regnum
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+id|pt
+op_assign
+id|get_scratch_regs
 c_func
 (paren
 id|info
-comma
-id|__FUNCTION__
 )paren
 suffix:semicolon
 id|addr
@@ -1576,7 +1594,7 @@ r_int
 op_star
 )paren
 (paren
-id|info-&gt;pt
+id|pt
 op_plus
 id|pt_regs_off
 c_func
@@ -1672,7 +1690,8 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;unwind.%s: ignoring attempt to access register outside of rbs&bslash;n&quot;
+l_string|&quot;unwind.%s: ignoring attempt to access register outside &quot;
+l_string|&quot;of rbs&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1819,22 +1838,13 @@ id|pt_regs
 op_star
 id|pt
 suffix:semicolon
-id|dump_info_pt
+id|pt
+op_assign
+id|get_scratch_regs
 c_func
 (paren
 id|info
-comma
-id|__FUNCTION__
 )paren
-suffix:semicolon
-id|pt
-op_assign
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-id|info-&gt;pt
 suffix:semicolon
 r_switch
 c_cond
@@ -2028,22 +2038,13 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|dump_info_pt
+id|pt
+op_assign
+id|get_scratch_regs
 c_func
 (paren
 id|info
-comma
-id|__FUNCTION__
 )paren
-suffix:semicolon
-id|pt
-op_assign
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-id|info-&gt;pt
 suffix:semicolon
 r_if
 c_cond
@@ -2252,22 +2253,13 @@ id|pt_regs
 op_star
 id|pt
 suffix:semicolon
-id|dump_info_pt
+id|pt
+op_assign
+id|get_scratch_regs
 c_func
 (paren
 id|info
-comma
-id|__FUNCTION__
 )paren
-suffix:semicolon
-id|pt
-op_assign
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-id|info-&gt;pt
 suffix:semicolon
 r_switch
 c_cond
@@ -7872,6 +7864,11 @@ op_star
 )paren
 id|state
 suffix:semicolon
+r_struct
+id|pt_regs
+op_star
+id|pt
+suffix:semicolon
 id|STAT
 c_func
 (paren
@@ -8036,12 +8033,12 @@ c_cond
 id|state-&gt;pt
 )paren
 (brace
-id|dump_info_pt
+id|pt
+op_assign
+id|get_scratch_regs
 c_func
 (paren
 id|state
-comma
-id|__FUNCTION__
 )paren
 suffix:semicolon
 id|s
@@ -8049,7 +8046,7 @@ id|s
 id|dst
 )braket
 op_assign
-id|state-&gt;pt
+id|pt
 op_plus
 id|val
 suffix:semicolon
@@ -8951,7 +8948,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;unwind.%s: ip, sp, bsp remain unchanged; stopping here (ip=0x%lx)&bslash;n&quot;
+l_string|&quot;unwind.%s: ip, sp, bsp unchanged; stopping here (ip=0x%lx)&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -9809,7 +9806,8 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;unwind.%s: sorry, freeing the kernel&squot;s unwind table is a no-can-do!&bslash;n&quot;
+l_string|&quot;unwind.%s: sorry, freeing the kernel&squot;s unwind table is a &quot;
+l_string|&quot;no-can-do!&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
