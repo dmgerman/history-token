@@ -41,6 +41,7 @@ comma
 id|mask
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IBMVIO
 r_if
 c_cond
 (paren
@@ -62,6 +63,7 @@ comma
 id|mask
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_IBMVIO */
 id|BUG
 c_func
 (paren
@@ -113,6 +115,7 @@ comma
 id|dma_mask
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IBMVIO
 r_if
 c_cond
 (paren
@@ -134,6 +137,7 @@ comma
 id|dma_mask
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_IBMVIO */
 id|BUG
 c_func
 (paren
@@ -195,6 +199,7 @@ comma
 id|dma_handle
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IBMVIO
 r_if
 c_cond
 (paren
@@ -218,6 +223,7 @@ comma
 id|dma_handle
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_IBMVIO */
 id|BUG
 c_func
 (paren
@@ -279,6 +285,7 @@ comma
 id|dma_handle
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IBMVIO
 r_else
 r_if
 c_cond
@@ -304,6 +311,7 @@ comma
 id|dma_handle
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_IBMVIO */
 r_else
 id|BUG
 c_func
@@ -368,6 +376,7 @@ r_int
 id|direction
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IBMVIO
 r_if
 c_cond
 (paren
@@ -393,6 +402,7 @@ comma
 id|direction
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_IBMVIO */
 id|BUG
 c_func
 (paren
@@ -460,6 +470,7 @@ r_int
 id|direction
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IBMVIO
 r_else
 r_if
 c_cond
@@ -485,6 +496,7 @@ comma
 id|direction
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_IBMVIO */
 r_else
 id|BUG
 c_func
@@ -556,6 +568,7 @@ r_int
 id|direction
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IBMVIO
 r_if
 c_cond
 (paren
@@ -583,6 +596,7 @@ comma
 id|direction
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_IBMVIO */
 id|BUG
 c_func
 (paren
@@ -650,6 +664,7 @@ r_int
 id|direction
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IBMVIO
 r_else
 r_if
 c_cond
@@ -675,6 +690,7 @@ comma
 id|direction
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_IBMVIO */
 r_else
 id|BUG
 c_func
@@ -740,6 +756,7 @@ r_int
 id|direction
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IBMVIO
 r_if
 c_cond
 (paren
@@ -765,6 +782,7 @@ comma
 id|direction
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_IBMVIO */
 id|BUG
 c_func
 (paren
@@ -831,6 +849,7 @@ r_int
 id|direction
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IBMVIO
 r_else
 r_if
 c_cond
@@ -856,6 +875,7 @@ comma
 id|direction
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_IBMVIO */
 r_else
 id|BUG
 c_func
