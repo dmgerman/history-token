@@ -44,7 +44,7 @@ id|i
 suffix:semicolon
 id|r-&gt;name
 op_assign
-id|dev-&gt;dev.name
+id|dev-&gt;dev.bus_id
 suffix:semicolon
 r_if
 c_cond

@@ -1,0 +1,99 @@
+multiline_comment|/*&n; *  linux/arch/arm/mm/mmu.c&n; *&n; *  Copyright (C) 2002-2003 Deep Blue Solutions Ltd, all rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
+DECL|variable|cpu_last_asid
+r_int
+r_int
+id|cpu_last_asid
+op_assign
+(brace
+l_int|1
+op_lshift
+id|ASID_BITS
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * We fork()ed a process, and we need a new context for the child&n; * to run in.  We reserve version 0 for initial tasks so we will&n; * always allocate an ASID.&n; */
+DECL|function|__init_new_context
+r_void
+id|__init_new_context
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+(brace
+id|mm-&gt;context.id
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|__new_context
+r_void
+id|__new_context
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+(brace
+r_int
+r_int
+id|asid
+suffix:semicolon
+id|asid
+op_assign
+op_increment
+id|cpu_last_asid
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|asid
+op_eq
+l_int|0
+)paren
+id|asid
+op_assign
+id|cpu_last_asid
+op_assign
+l_int|1
+op_lshift
+id|ASID_BITS
+suffix:semicolon
+multiline_comment|/*&n;&t; * If we&squot;ve used up all our ASIDs, we need&n;&t; * to start a new version and flush the TLB.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|asid
+op_amp
+op_complement
+id|ASID_MASK
+)paren
+op_eq
+l_int|0
+)paren
+id|flush_tlb_all
+c_func
+(paren
+)paren
+suffix:semicolon
+id|mm-&gt;context.id
+op_assign
+id|asid
+suffix:semicolon
+)brace
+eof
