@@ -3,7 +3,6 @@ DECL|macro|_ASM_IA64_SYSTEM_H
 mdefine_line|#define _ASM_IA64_SYSTEM_H
 multiline_comment|/*&n; * System defines. Note that this is included both from .c and .S&n; * files, so it does only defines, not any C code.  This is based&n; * on information published in the Processor Abstraction Layer&n; * and the System Abstraction Layer manual.&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;asm/kregs.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
@@ -14,6 +13,7 @@ mdefine_line|#define GATE_ADDR&t;&t;(0xa000000000000000 + PAGE_SIZE)
 DECL|macro|PERCPU_ADDR
 mdefine_line|#define PERCPU_ADDR&t;&t;(0xa000000000000000 + 2*PAGE_SIZE)
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 DECL|struct|pci_vector_struct

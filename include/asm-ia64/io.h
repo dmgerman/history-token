@@ -958,11 +958,11 @@ mdefine_line|#define inw(p)&t;&t;__inw(p)
 DECL|macro|inl
 mdefine_line|#define inl(p)&t;&t;__inl(p)
 DECL|macro|insb
-mdefine_line|#define insb(p)&t;&t;__insb(p)
+mdefine_line|#define insb(p,d,c)&t;__insb(p,d,c)
 DECL|macro|insw
-mdefine_line|#define insw(p)&t;&t;__insw(p)
+mdefine_line|#define insw(p,d,c)&t;__insw(p,d,c)
 DECL|macro|insl
-mdefine_line|#define insl(p)&t;&t;__insl(p)
+mdefine_line|#define insl(p,d,c)&t;__insl(p,d,c)
 DECL|macro|outb
 mdefine_line|#define outb(v,p)&t;__outb(v,p)
 DECL|macro|outw
@@ -970,11 +970,11 @@ mdefine_line|#define outw(v,p)&t;__outw(v,p)
 DECL|macro|outl
 mdefine_line|#define outl(v,p)&t;__outl(v,p)
 DECL|macro|outsb
-mdefine_line|#define outsb(v,p)&t;__outsb(v,p)
+mdefine_line|#define outsb(p,s,c)&t;__outsb(p,s,c)
 DECL|macro|outsw
-mdefine_line|#define outsw(v,p)&t;__outsw(v,p)
+mdefine_line|#define outsw(p,s,c)&t;__outsw(p,s,c)
 DECL|macro|outsl
-mdefine_line|#define outsl(v,p)&t;__outsl(v,p)
+mdefine_line|#define outsl(p,s,c)&t;__outsl(p,s,c)
 DECL|macro|mmiob
 mdefine_line|#define mmiob()&t;&t;__mmiob()
 multiline_comment|/*&n; * The address passed to these functions are ioremap()ped already.&n; */
