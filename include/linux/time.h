@@ -596,6 +596,7 @@ id|do_utimes
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|filename
 comma

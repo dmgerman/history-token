@@ -2571,7 +2571,7 @@ op_amp
 id|inetsw6_lock
 )paren
 suffix:semicolon
-id|synchronize_kernel
+id|synchronize_net
 c_func
 (paren
 )paren

@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_core.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat_core.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/listhelp.h&gt;
+macro_line|#include &quot;ip_fw_compat.h&quot;
 macro_line|#if 0
 mdefine_line|#define DEBUGP printk
 macro_line|#else
