@@ -2440,6 +2440,7 @@ comma
 multiline_comment|/* pointer to &n;&t;&t;&t;&t;&t;&t;&t;&t; array to&n;&t;&t;&t;&t;&t;&t;&t;&t; prepared pages&n;&t;&t;&t;&t;&t;&t;&t;&t;*/
 r_const
 r_char
+id|__user
 op_star
 id|buf
 multiline_comment|/* Pointer to user-supplied&n;&t;&t;&t;&t;&t;&t;   data*/
@@ -4706,6 +4707,7 @@ comma
 multiline_comment|/* the file we are going to write into */
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
