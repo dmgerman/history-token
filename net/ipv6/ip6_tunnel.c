@@ -1827,7 +1827,7 @@ c_cond
 (paren
 id|rt
 )paren
-id|dst_free
+id|dst_release
 c_func
 (paren
 op_amp
