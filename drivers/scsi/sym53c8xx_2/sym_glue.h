@@ -219,36 +219,36 @@ macro_line|#endif&t;/* ENDIANs */
 macro_line|#else&t;/* defined SYM_CONF_IOMAPPED */
 multiline_comment|/*&n; *  MEMORY mapped IO input / output&n; */
 DECL|macro|INB_OFF
-mdefine_line|#define INB_OFF(o)        readb((char *)np-&gt;s.mmio_va + sym_offb(o))
+mdefine_line|#define INB_OFF(o)        readb(np-&gt;s.mmio_va + sym_offb(o))
 DECL|macro|OUTB_OFF
-mdefine_line|#define OUTB_OFF(o, val)  writeb((val), (char *)np-&gt;s.mmio_va + sym_offb(o))
+mdefine_line|#define OUTB_OFF(o, val)  writeb((val), np-&gt;s.mmio_va + sym_offb(o))
 macro_line|#if&t;defined(__BIG_ENDIAN) &amp;&amp; !defined(SYM_CONF_CHIP_BIG_ENDIAN)
 DECL|macro|INW_OFF
-mdefine_line|#define INW_OFF(o)        readw_l2b((char *)np-&gt;s.mmio_va + sym_offw(o))
+mdefine_line|#define INW_OFF(o)        readw_l2b(np-&gt;s.mmio_va + sym_offw(o))
 DECL|macro|INL_OFF
-mdefine_line|#define INL_OFF(o)        readl_l2b((char *)np-&gt;s.mmio_va + (o))
+mdefine_line|#define INL_OFF(o)        readl_l2b(np-&gt;s.mmio_va + (o))
 DECL|macro|OUTW_OFF
-mdefine_line|#define OUTW_OFF(o, val)  writew_b2l((val), (char *)np-&gt;s.mmio_va + sym_offw(o))
+mdefine_line|#define OUTW_OFF(o, val)  writew_b2l((val), np-&gt;s.mmio_va + sym_offw(o))
 DECL|macro|OUTL_OFF
-mdefine_line|#define OUTL_OFF(o, val)  writel_b2l((val), (char *)np-&gt;s.mmio_va + (o))
+mdefine_line|#define OUTL_OFF(o, val)  writel_b2l((val), np-&gt;s.mmio_va + (o))
 macro_line|#elif&t;defined(__LITTLE_ENDIAN) &amp;&amp; defined(SYM_CONF_CHIP_BIG_ENDIAN)
 DECL|macro|INW_OFF
-mdefine_line|#define INW_OFF(o)        readw_b2l((char *)np-&gt;s.mmio_va + sym_offw(o))
+mdefine_line|#define INW_OFF(o)        readw_b2l(np-&gt;s.mmio_va + sym_offw(o))
 DECL|macro|INL_OFF
-mdefine_line|#define INL_OFF(o)        readl_b2l((char *)np-&gt;s.mmio_va + (o))
+mdefine_line|#define INL_OFF(o)        readl_b2l(np-&gt;s.mmio_va + (o))
 DECL|macro|OUTW_OFF
-mdefine_line|#define OUTW_OFF(o, val)  writew_l2b((val), (char *)np-&gt;s.mmio_va + sym_offw(o))
+mdefine_line|#define OUTW_OFF(o, val)  writew_l2b((val), np-&gt;s.mmio_va + sym_offw(o))
 DECL|macro|OUTL_OFF
-mdefine_line|#define OUTL_OFF(o, val)  writel_l2b((val), (char *)np-&gt;s.mmio_va + (o))
+mdefine_line|#define OUTL_OFF(o, val)  writel_l2b((val), np-&gt;s.mmio_va + (o))
 macro_line|#else
 DECL|macro|INW_OFF
-mdefine_line|#define INW_OFF(o)        readw_raw((char *)np-&gt;s.mmio_va + sym_offw(o))
+mdefine_line|#define INW_OFF(o)        readw_raw(np-&gt;s.mmio_va + sym_offw(o))
 DECL|macro|INL_OFF
-mdefine_line|#define INL_OFF(o)        readl_raw((char *)np-&gt;s.mmio_va + (o))
+mdefine_line|#define INL_OFF(o)        readl_raw(np-&gt;s.mmio_va + (o))
 DECL|macro|OUTW_OFF
-mdefine_line|#define OUTW_OFF(o, val)  writew_raw((val), (char *)np-&gt;s.mmio_va + sym_offw(o))
+mdefine_line|#define OUTW_OFF(o, val)  writew_raw((val), np-&gt;s.mmio_va + sym_offw(o))
 DECL|macro|OUTL_OFF
-mdefine_line|#define OUTL_OFF(o, val)  writel_raw((val), (char *)np-&gt;s.mmio_va + (o))
+mdefine_line|#define OUTL_OFF(o, val)  writel_raw((val), np-&gt;s.mmio_va + (o))
 macro_line|#endif
 macro_line|#endif&t;/* defined SYM_CONF_IOMAPPED */
 DECL|macro|OUTRAM_OFF
@@ -355,12 +355,14 @@ id|host
 suffix:semicolon
 DECL|member|mmio_va
 r_void
+id|__iomem
 op_star
 id|mmio_va
 suffix:semicolon
 multiline_comment|/* MMIO kernel virtual address&t;*/
 DECL|member|ram_va
 r_void
+id|__iomem
 op_star
 id|ram_va
 suffix:semicolon
@@ -446,6 +448,7 @@ id|io_port
 suffix:semicolon
 DECL|member|mmio_va
 r_void
+id|__iomem
 op_star
 id|mmio_va
 suffix:semicolon
