@@ -1357,9 +1357,7 @@ id|bus
 )paren
 suffix:semicolon
 )brace
-r_struct
-id|pci_dev
-op_star
+r_int
 id|pci_scan_slot
 c_func
 (paren
@@ -1370,6 +1368,16 @@ id|bus
 comma
 r_int
 id|devfn
+)paren
+suffix:semicolon
+r_void
+id|pci_bus_add_devices
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
 )paren
 suffix:semicolon
 r_int

@@ -4,6 +4,9 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &quot;pci.h&quot;
 multiline_comment|/**&n; * pci_bus_alloc_resource - allocate a resource from a parent bus&n; * @bus: PCI bus&n; * @res: resource to allocate&n; * @size: size of resource to allocate&n; * @align: alignment of resource to allocate&n; * @min: minimum /proc/iomem address to allocate&n; * @type_mask: IORESOURCE_* type flags&n; * @alignf: resource alignment function&n; * @alignf_data: data argument for resource alignment function&n; *&n; * Given the PCI bus a device resides on, the size, minimum address,&n; * alignment and type, try to find an acceptable resource allocation&n; * for a specific device resource.&n; */
 r_int
 DECL|function|pci_bus_alloc_resource
@@ -179,6 +182,113 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * pci_bus_add_devices - insert newly discovered PCI devices&n; * @bus: bus to check for new devices&n; *&n; * Add newly discovered PCI devices (which are on the bus-&gt;devices&n; * list) to the global PCI device list, add the sysfs and procfs&n; * entries.  Where a bridge is found, add the discovered bus to&n; * the parents list of child buses, and recurse.&n; *&n; * Call hotplug for each new devices.&n; */
+DECL|function|pci_bus_add_devices
+r_void
+id|__devinit
+id|pci_bus_add_devices
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
+)paren
+(brace
+r_struct
+id|pci_dev
+op_star
+id|dev
+suffix:semicolon
+id|list_for_each_entry
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|bus-&gt;devices
+comma
+id|bus_list
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Skip already-present devices (which are on the&n;&t;&t; * global device list.)&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|dev-&gt;global_list
+)paren
+)paren
+r_continue
+suffix:semicolon
+id|device_register
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+)paren
+suffix:semicolon
+id|list_add_tail
+c_func
+(paren
+op_amp
+id|dev-&gt;global_list
+comma
+op_amp
+id|pci_devices
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+id|pci_proc_attach_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
+id|pci_create_sysfs_dev_files
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * If there is an unattached subordinate bus, attach&n;&t;&t; * it and then scan for unattached PCI devices.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|dev-&gt;subordinate
+op_logical_and
+id|list_empty
+c_func
+(paren
+op_amp
+id|dev-&gt;subordinate-&gt;node
+)paren
+)paren
+(brace
+id|list_add_tail
+c_func
+(paren
+op_amp
+id|dev-&gt;subordinate-&gt;node
+comma
+op_amp
+id|dev-&gt;bus-&gt;children
+)paren
+suffix:semicolon
+id|pci_bus_add_devices
+c_func
+(paren
+id|dev-&gt;subordinate
+)paren
+suffix:semicolon
+)brace
+)brace
+)brace
 DECL|function|pci_enable_bridges
 r_void
 id|pci_enable_bridges
@@ -238,6 +348,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pci_bus_alloc_resource
+)paren
+suffix:semicolon
+DECL|variable|pci_bus_add_devices
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_bus_add_devices
 )paren
 suffix:semicolon
 DECL|variable|pci_enable_bridges
