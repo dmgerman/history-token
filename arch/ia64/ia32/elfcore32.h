@@ -2,6 +2,7 @@ multiline_comment|/*&n; * IA-32 ELF core dump support.&n; *&n; * Copyright (C) 2
 macro_line|#ifndef _ELFCORE32_H_
 DECL|macro|_ELFCORE32_H_
 mdefine_line|#define _ELFCORE32_H_
+macro_line|#include &lt;asm/intrinsics.h&gt;
 DECL|macro|USE_ELF_CORE_DUMP
 mdefine_line|#define USE_ELF_CORE_DUMP 1
 multiline_comment|/* Override elfcore.h */
@@ -210,7 +211,7 @@ multiline_comment|/* initial part of arg list */
 )brace
 suffix:semicolon
 DECL|macro|ELF_CORE_COPY_REGS
-mdefine_line|#define ELF_CORE_COPY_REGS(pr_reg, regs)       &t;&t;&bslash;&n;&t;pr_reg[0] = regs-&gt;r11;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[1] = regs-&gt;r9;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[2] = regs-&gt;r10;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[3] = regs-&gt;r14;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[4] = regs-&gt;r15;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[5] = regs-&gt;r13;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[6] = regs-&gt;r8;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[7] = regs-&gt;r16 &amp; 0xffff;&t;&t;&t;&bslash;&n;&t;pr_reg[8] = (regs-&gt;r16 &gt;&gt; 16) &amp; 0xffff;&t;&t;&bslash;&n;&t;pr_reg[9] = (regs-&gt;r16 &gt;&gt; 32) &amp; 0xffff;&t;&t;&bslash;&n;&t;pr_reg[10] = (regs-&gt;r16 &gt;&gt; 48) &amp; 0xffff;&t;&bslash;&n;&t;pr_reg[11] = regs-&gt;r1; &t;&t;&t;&t;&bslash;&n;&t;pr_reg[12] = regs-&gt;cr_iip;&t;&t;&t;&bslash;&n;&t;pr_reg[13] = regs-&gt;r17 &amp; 0xffff;&t;&t;&bslash;&n;&t;asm volatile (&quot;mov %0=ar.eflag ;;&quot;&t;&t;&bslash;&n;&t;&t;      : &quot;=r&quot;(pr_reg[14]));&t;&t;&bslash;&n;&t;pr_reg[15] = regs-&gt;r12;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[16] = (regs-&gt;r17 &gt;&gt; 16) &amp; 0xffff;
+mdefine_line|#define ELF_CORE_COPY_REGS(pr_reg, regs)       &t;&t;&bslash;&n;&t;pr_reg[0] = regs-&gt;r11;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[1] = regs-&gt;r9;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[2] = regs-&gt;r10;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[3] = regs-&gt;r14;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[4] = regs-&gt;r15;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[5] = regs-&gt;r13;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[6] = regs-&gt;r8;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[7] = regs-&gt;r16 &amp; 0xffff;&t;&t;&t;&bslash;&n;&t;pr_reg[8] = (regs-&gt;r16 &gt;&gt; 16) &amp; 0xffff;&t;&t;&bslash;&n;&t;pr_reg[9] = (regs-&gt;r16 &gt;&gt; 32) &amp; 0xffff;&t;&t;&bslash;&n;&t;pr_reg[10] = (regs-&gt;r16 &gt;&gt; 48) &amp; 0xffff;&t;&bslash;&n;&t;pr_reg[11] = regs-&gt;r1; &t;&t;&t;&t;&bslash;&n;&t;pr_reg[12] = regs-&gt;cr_iip;&t;&t;&t;&bslash;&n;&t;pr_reg[13] = regs-&gt;r17 &amp; 0xffff;&t;&t;&bslash;&n;&t;pr_reg[14] = ia64_getreg(_IA64_REG_AR_EFLAG);&t;&bslash;&n;&t;pr_reg[15] = regs-&gt;r12;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[16] = (regs-&gt;r17 &gt;&gt; 16) &amp; 0xffff;
 DECL|function|elf_core_copy_regs
 r_static
 r_inline
