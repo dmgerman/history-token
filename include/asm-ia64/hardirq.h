@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_HARDIRQ_H
 DECL|macro|_ASM_IA64_HARDIRQ_H
 mdefine_line|#define _ASM_IA64_HARDIRQ_H
-multiline_comment|/*&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Modified 1998-2002, 2004 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
@@ -73,8 +73,6 @@ DECL|macro|hardirq_trylock
 mdefine_line|#define hardirq_trylock()&t;(!in_interrupt())
 DECL|macro|hardirq_endlock
 mdefine_line|#define hardirq_endlock()&t;do { } while (0)
-DECL|macro|irq_enter
-mdefine_line|#define irq_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
 macro_line|#ifdef CONFIG_PREEMPT
 macro_line|# include &lt;linux/smp_lock.h&gt;
 DECL|macro|in_atomic
@@ -87,8 +85,6 @@ macro_line|# define in_atomic()&t;&t;(preempt_count() != 0)
 DECL|macro|IRQ_EXIT_OFFSET
 macro_line|# define IRQ_EXIT_OFFSET HARDIRQ_OFFSET
 macro_line|#endif
-DECL|macro|irq_exit
-mdefine_line|#define irq_exit()&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_count() -= IRQ_EXIT_OFFSET;&t;&t;&bslash;&n;&t;&t;if (!in_interrupt() &amp;&amp; local_softirq_pending())&t;&bslash;&n;&t;&t;&t;do_softirq();&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_enable_no_resched();&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
