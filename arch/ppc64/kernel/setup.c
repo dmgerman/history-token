@@ -2343,7 +2343,7 @@ op_logical_and
 (paren
 id|val
 op_le
-id|MAX_PACAS
+id|NR_CPUS
 )paren
 )paren
 (brace
