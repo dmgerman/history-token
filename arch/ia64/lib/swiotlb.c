@@ -910,16 +910,7 @@ r_void
 op_star
 id|ret
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hwdev
-op_logical_or
-id|hwdev-&gt;dma_mask
-op_le
-l_int|0xffffffff
-)paren
+multiline_comment|/*&n;&t; * Alloc_consistent() is defined to return memory &lt; 4GB, no matter what the DMA&n;&t; * mask says.&n;&t; */
 id|gfp
 op_or_assign
 id|GFP_DMA
