@@ -9799,6 +9799,14 @@ c_func
 id|chip-&gt;ac97
 )paren
 suffix:semicolon
+id|snd_power_change_state
+c_func
+(paren
+id|card
+comma
+id|SNDRV_CTL_POWER_D0
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
