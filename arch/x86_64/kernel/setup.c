@@ -4864,6 +4864,9 @@ multiline_comment|/* voltage id control */
 l_string|&quot;ttp&quot;
 comma
 multiline_comment|/* thermal trip */
+l_string|&quot;tm&quot;
+comma
+l_string|&quot;stc&quot;
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
