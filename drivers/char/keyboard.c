@@ -54,6 +54,13 @@ id|pt_regs
 op_star
 id|kbd_pt_regs
 suffix:semicolon
+DECL|variable|kbd_pt_regs
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kbd_pt_regs
+)paren
+suffix:semicolon
 r_void
 id|compute_shiftstate
 c_func
