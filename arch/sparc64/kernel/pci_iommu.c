@@ -3754,7 +3754,7 @@ suffix:semicolon
 multiline_comment|/* ALI sound chips generate 31-bits of DMA, a special register&n;&t; * determines what bit 31 is emitted as.&n;&t; */
 id|ali_isa_bridge
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_AL
@@ -3798,6 +3798,12 @@ comma
 l_int|0x7e
 comma
 id|val
+)paren
+suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|ali_isa_bridge
 )paren
 suffix:semicolon
 )brace

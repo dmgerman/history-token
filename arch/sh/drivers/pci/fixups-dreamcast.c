@@ -134,24 +134,10 @@ id|dev
 op_assign
 l_int|0
 suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|dev
-op_assign
-id|pci_find_device
+id|for_each_pci_dev
 c_func
 (paren
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
 id|dev
-)paren
-)paren
-op_ne
-l_int|NULL
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * The interrupt routing semantics here are quite trivial.&n;&t;&t; *&n;&t;&t; * We basically only support one interrupt, so we only bother&n;&t;&t; * updating a device&squot;s interrupt line with this single shared&n;&t;&t; * interrupt. Keeps routing quite simple, doesn&squot;t it?&n;&t;&t; */

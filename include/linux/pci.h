@@ -962,6 +962,18 @@ l_int|16
 )braket
 suffix:semicolon
 multiline_comment|/* config space saved at suspend time */
+DECL|member|rom_attr
+r_struct
+id|bin_attribute
+op_star
+id|rom_attr
+suffix:semicolon
+multiline_comment|/* attribute descriptor for sysfs ROM entry */
+DECL|member|rom_attr_enabled
+r_int
+id|rom_attr_enabled
+suffix:semicolon
+multiline_comment|/* has display of the rom attribute been enabled? */
 macro_line|#ifdef CONFIG_PCI_NAMES
 DECL|macro|PCI_NAME_SIZE
 mdefine_line|#define PCI_NAME_SIZE&t;96
@@ -1637,6 +1649,16 @@ r_struct
 id|pci_bus
 op_star
 id|bus
+)paren
+suffix:semicolon
+r_void
+id|pci_bus_add_device
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
 )paren
 suffix:semicolon
 r_void
@@ -2364,6 +2386,64 @@ id|dev
 comma
 r_int
 id|i
+)paren
+suffix:semicolon
+multiline_comment|/* ROM control related routines */
+r_void
+id|__iomem
+op_star
+id|pci_map_rom
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_int
+op_star
+id|size
+)paren
+suffix:semicolon
+r_void
+id|__iomem
+op_star
+id|pci_map_rom_copy
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_int
+op_star
+id|size
+)paren
+suffix:semicolon
+r_void
+id|pci_unmap_rom
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_void
+id|__iomem
+op_star
+id|rom
+)paren
+suffix:semicolon
+r_void
+id|pci_remove_rom
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
 )paren
 suffix:semicolon
 multiline_comment|/* Power management related routines */
@@ -3531,10 +3611,14 @@ DECL|enum|pci_fixup_pass
 r_enum
 id|pci_fixup_pass
 (brace
+DECL|enumerator|pci_fixup_early
+id|pci_fixup_early
+comma
+multiline_comment|/* Before probing BARs */
 DECL|enumerator|pci_fixup_header
 id|pci_fixup_header
 comma
-multiline_comment|/* Called immediately after reading configuration header */
+multiline_comment|/* After reading configuration header */
 DECL|enumerator|pci_fixup_final
 id|pci_fixup_final
 comma
@@ -3546,12 +3630,16 @@ multiline_comment|/* pci_enable_device() time */
 )brace
 suffix:semicolon
 multiline_comment|/* Anonymous variables would be nice... */
+DECL|macro|DECLARE_PCI_FIXUP_SECTION
+mdefine_line|#define DECLARE_PCI_FIXUP_SECTION(section, name, vendor, device, hook)&t;&bslash;&n;&t;static struct pci_fixup __pci_fixup_##name __attribute_used__&t;&bslash;&n;&t;__attribute__((__section__(#section))) = { vendor, device, hook };
+DECL|macro|DECLARE_PCI_FIXUP_EARLY
+mdefine_line|#define DECLARE_PCI_FIXUP_EARLY(vendor, device, hook)&t;&t;&t;&bslash;&n;&t;DECLARE_PCI_FIXUP_SECTION(.pci_fixup_early,&t;&t;&t;&bslash;&n;&t;&t;&t;vendor##device##hook, vendor, device, hook)
 DECL|macro|DECLARE_PCI_FIXUP_HEADER
-mdefine_line|#define DECLARE_PCI_FIXUP_HEADER(vendor, device, hook)&t;&t;&t;&t;&t;&bslash;&n;&t;static struct pci_fixup __pci_fixup_##vendor##device##hook __attribute_used__&t;&bslash;&n;&t;__attribute__((__section__(&quot;.pci_fixup_header&quot;))) = {&t;&t;&t;&t;&bslash;&n;&t;&t;vendor, device, hook };
+mdefine_line|#define DECLARE_PCI_FIXUP_HEADER(vendor, device, hook)&t;&t;&t;&bslash;&n;&t;DECLARE_PCI_FIXUP_SECTION(.pci_fixup_header,&t;&t;&t;&bslash;&n;&t;&t;&t;vendor##device##hook, vendor, device, hook)
 DECL|macro|DECLARE_PCI_FIXUP_FINAL
-mdefine_line|#define DECLARE_PCI_FIXUP_FINAL(vendor, device, hook)&t;&t;&t;&t;&bslash;&n;&t;static struct pci_fixup __pci_fixup_##vendor##device##hook __attribute_used__&t;&bslash;&n;&t;__attribute__((__section__(&quot;.pci_fixup_final&quot;))) = {&t;&t;&t;&t;&bslash;&n;&t;&t;vendor, device, hook };
+mdefine_line|#define DECLARE_PCI_FIXUP_FINAL(vendor, device, hook)&t;&t;&t;&bslash;&n;&t;DECLARE_PCI_FIXUP_SECTION(.pci_fixup_final,&t;&t;&t;&bslash;&n;&t;&t;&t;vendor##device##hook, vendor, device, hook)
 DECL|macro|DECLARE_PCI_FIXUP_ENABLE
-mdefine_line|#define DECLARE_PCI_FIXUP_ENABLE(vendor, device, hook)&t;&t;&t;&t;&bslash;&n;&t;static struct pci_fixup __pci_fixup_##vendor##device##hook __attribute_used__&t;&bslash;&n;&t;__attribute__((__section__(&quot;.pci_fixup_enable&quot;))) = {&t;&t;&t;&t;&bslash;&n;&t;&t;vendor, device, hook };
+mdefine_line|#define DECLARE_PCI_FIXUP_ENABLE(vendor, device, hook)&t;&t;&t;&bslash;&n;&t;DECLARE_PCI_FIXUP_SECTION(.pci_fixup_enable,&t;&t;&t;&bslash;&n;&t;&t;&t;vendor##device##hook, vendor, device, hook)
 r_void
 id|pci_fixup_device
 c_func

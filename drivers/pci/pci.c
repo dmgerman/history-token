@@ -1150,6 +1150,24 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * pcibios_disable_device - disable arch specific PCI resources for device dev&n; * @dev: the PCI device to disable&n; *&n; * Disables architecture specific PCI resources for the device. This&n; * is the default implementation. Architecture implementations can&n; * override this.&n; */
+DECL|function|pcibios_disable_device
+r_void
+id|__attribute__
+(paren
+(paren
+id|weak
+)paren
+)paren
+id|pcibios_disable_device
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+)brace
 multiline_comment|/**&n; * pci_disable_device - Disable PCI device after use&n; * @dev: PCI device to be disabled&n; *&n; * Signal to the system that the PCI device is not in use by the system&n; * anymore.  This only involves disabling PCI bus-mastering, if active.&n; */
 r_void
 DECL|function|pci_disable_device
@@ -1208,6 +1226,12 @@ id|pci_command
 )paren
 suffix:semicolon
 )brace
+id|pcibios_disable_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * pci_enable_wake - enable device to generate PME# when suspended&n; * @dev: - PCI device to operate on&n; * @state: - Current state of device.&n; * @enable: - Flag to enable or disable generation&n; * &n; * Set the bits in the device&squot;s PM Capabilities to generate PME# when&n; * the system is suspended. &n; *&n; * -EIO is returned if device doesn&squot;t have PM Capabilities. &n; * -EINVAL is returned if device supports it, but can&squot;t generate wake events.&n; * 0 if operation is successful.&n; * &n; */
 DECL|function|pci_enable_wake

@@ -255,10 +255,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|err
+op_assign
 id|pci_enable_device
 c_func
 (paren
 id|dev
+)paren
 )paren
 )paren
 (brace
@@ -276,8 +280,7 @@ id|dev
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENODEV
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/* allocate memory for the board structure */

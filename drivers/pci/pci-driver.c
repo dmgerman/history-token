@@ -1153,27 +1153,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_DEBUG_KERNEL
-multiline_comment|/*&n;&t; * If the driver decides to stop using the device, it should&n;&t; * call pci_disable_device().&n;&t; */
-r_if
-c_cond
-(paren
-id|pci_dev-&gt;is_enabled
-)paren
-(brace
-id|dev_warn
-c_func
-(paren
-op_amp
-id|pci_dev-&gt;dev
-comma
-l_string|&quot;Device was removed without properly &quot;
-l_string|&quot;calling pci_disable_device(). This may need fixing.&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* WARN_ON(1); */
-)brace
-macro_line|#endif /* CONFIG_DEBUG_KERNEL */
+multiline_comment|/*&n;&t; * We would love to complain here if pci_dev-&gt;is_enabled is set, that&n;&t; * the driver should have called pci_disable_device(), but the&n;&t; * unfortunate fact is there are too many odd BIOS and bridge setups&n;&t; * that don&squot;t like drivers doing that all of the time.  &n;&t; * Oh well, we can dream of sane hardware when we sleep, no matter how&n;&t; * horrible the crap we have to deal with is when we are awake...&n;&t; */
 id|pci_dev_put
 c_func
 (paren
