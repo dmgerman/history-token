@@ -18465,8 +18465,12 @@ r_if
 c_cond
 (paren
 id|stat
-OL
-l_int|0
+op_le
+l_int|10000
+op_logical_or
+id|stat
+OG
+l_int|10100
 )paren
 (brace
 multiline_comment|/* The server is looney tunes. */
