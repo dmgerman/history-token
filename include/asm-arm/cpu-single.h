@@ -38,8 +38,8 @@ DECL|macro|cpu_icache_invalidate_page
 mdefine_line|#define cpu_icache_invalidate_page&t;__cpu_fn(CPU_NAME,_icache_invalidate_page)
 DECL|macro|cpu_set_pgd
 mdefine_line|#define cpu_set_pgd&t;&t;&t;__cpu_fn(CPU_NAME,_set_pgd)
-DECL|macro|cpu_set_pmd
-mdefine_line|#define cpu_set_pmd&t;&t;&t;__cpu_fn(CPU_NAME,_set_pmd)
+DECL|macro|cpu_flush_pmd
+mdefine_line|#define cpu_flush_pmd&t;&t;&t;__cpu_fn(CPU_NAME,_flush_pmd)
 DECL|macro|cpu_set_pte
 mdefine_line|#define cpu_set_pte&t;&t;&t;__cpu_fn(CPU_NAME,_set_pte)
 macro_line|#ifndef __ASSEMBLY__
@@ -205,15 +205,12 @@ id|mm
 suffix:semicolon
 r_extern
 r_void
-id|cpu_set_pmd
+id|cpu_flush_pmd
 c_func
 (paren
 id|pmd_t
 op_star
 id|pmdp
-comma
-id|pmd_t
-id|pmd
 )paren
 suffix:semicolon
 r_extern
