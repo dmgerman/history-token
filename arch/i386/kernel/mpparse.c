@@ -13,7 +13,6 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/acpi.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;mach_apic.h&gt;
 macro_line|#include &lt;mach_mpparse.h&gt;
