@@ -932,6 +932,31 @@ comma
 l_int|0
 )paren
 comma
+multiline_comment|/* This Pentax still camera is not conformant&n; * to the USB storage specification: -&n; * - It does not like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; * Tested on Rev. 10.00 (0x1000)&n; * Submitted by James Courtier-Dutton &lt;James@superbug.demon.co.uk&gt;&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0a17
+comma
+l_int|0x0004
+comma
+l_int|0x1000
+comma
+l_int|0x1000
+comma
+l_string|&quot;ASAHI PENTAX&quot;
+comma
+l_string|&quot;PENTAX OPTIO 430&quot;
+comma
+id|US_SC_8070
+comma
+id|US_PR_CBI
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
 macro_line|#ifdef CONFIG_USB_STORAGE_ISD200
 id|UNUSUAL_DEV
 c_func
