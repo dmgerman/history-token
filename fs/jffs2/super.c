@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * The original JFFS, from which the design for JFFS2 was derived,&n; * was designed and implemented by Axis Communications AB.&n; *&n; * The contents of this file are subject to the Red Hat eCos Public&n; * License Version 1.1 (the &quot;Licence&quot;); you may not use this file&n; * except in compliance with the Licence.  You may obtain a copy of&n; * the Licence at http://www.redhat.com/&n; *&n; * Software distributed under the Licence is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.&n; * See the Licence for the specific language governing rights and&n; * limitations under the Licence.&n; *&n; * The Original Code is JFFS2 - Journalling Flash File System, version 2&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the RHEPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the RHEPL or the GPL.&n; *&n; * $Id: super.c,v 1.64 2002/03/17 10:18:42 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: super.c,v 1.73 2002/07/23 17:00:45 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -7,12 +7,12 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
 r_void
 id|jffs2_put_super
@@ -171,36 +171,44 @@ id|super_operations
 id|jffs2_super_operations
 op_assign
 (brace
+dot
 id|alloc_inode
-suffix:colon
+op_assign
 id|jffs2_alloc_inode
 comma
+dot
 id|destroy_inode
-suffix:colon
+op_assign
 id|jffs2_destroy_inode
 comma
+dot
 id|read_inode
-suffix:colon
+op_assign
 id|jffs2_read_inode
 comma
+dot
 id|put_super
-suffix:colon
+op_assign
 id|jffs2_put_super
 comma
+dot
 id|write_super
-suffix:colon
+op_assign
 id|jffs2_write_super
 comma
+dot
 id|statfs
-suffix:colon
+op_assign
 id|jffs2_statfs
 comma
+dot
 id|remount_fs
-suffix:colon
+op_assign
 id|jffs2_remount_fs
 comma
+dot
 id|clear_inode
-suffix:colon
+op_assign
 id|jffs2_clear_inode
 )brace
 suffix:semicolon
@@ -256,9 +264,9 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;jffs2_sb_compare: match on device %d (&bslash;&quot;%s&bslash;&quot;)&bslash;n&quot;
 comma
-id|mtd-&gt;index
+id|p-&gt;mtd-&gt;index
 comma
-id|mtd-&gt;name
+id|p-&gt;mtd-&gt;name
 )paren
 )paren
 suffix:semicolon
@@ -281,9 +289,9 @@ id|c-&gt;mtd-&gt;index
 comma
 id|c-&gt;mtd-&gt;name
 comma
-id|mtd-&gt;index
+id|p-&gt;mtd-&gt;index
 comma
-id|mtd-&gt;name
+id|p-&gt;mtd-&gt;name
 )paren
 )paren
 suffix:semicolon
@@ -1158,12 +1166,26 @@ c_func
 id|c
 )paren
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|c-&gt;alloc_sem
+)paren
+suffix:semicolon
 id|jffs2_flush_wbuf
 c_func
 (paren
 id|c
 comma
 l_int|1
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|c-&gt;alloc_sem
 )paren
 suffix:semicolon
 id|jffs2_free_ino_caches
@@ -1182,6 +1204,23 @@ id|kfree
 c_func
 (paren
 id|c-&gt;blocks
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|c-&gt;wbuf
+)paren
+id|kfree
+c_func
+(paren
+id|c-&gt;wbuf
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|c-&gt;inocache_list
 )paren
 suffix:semicolon
 r_if
@@ -1258,20 +1297,24 @@ id|file_system_type
 id|jffs2_fs_type
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;jffs2&quot;
 comma
+dot
 id|get_sb
-suffix:colon
+op_assign
 id|jffs2_get_sb
 comma
+dot
 id|kill_sb
-suffix:colon
+op_assign
 id|jffs2_kill_sb
 comma
 )brace
@@ -1357,8 +1400,8 @@ id|KERN_ERR
 l_string|&quot;JFFS2 error: Failed to initialise zlib workspaces&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-id|ret
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|ret
@@ -1381,8 +1424,8 @@ id|KERN_ERR
 l_string|&quot;JFFS2 error: Failed to initialise slab caches&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-id|ret
+r_goto
+id|out_zlib
 suffix:semicolon
 )brace
 id|ret
@@ -1407,12 +1450,29 @@ id|KERN_ERR
 l_string|&quot;JFFS2 error: Failed to register filesystem&bslash;n&quot;
 )paren
 suffix:semicolon
+r_goto
+id|out_slab
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+id|out_slab
+suffix:colon
 id|jffs2_destroy_slab_caches
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
+id|out_zlib
+suffix:colon
+id|jffs2_zlib_exit
+c_func
+(paren
+)paren
+suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|ret
 suffix:semicolon
