@@ -1916,10 +1916,6 @@ DECL|macro|map_scsi_single_data
 mdefine_line|#define map_scsi_single_data(np, cmd)&t;__map_scsi_single_data(np-&gt;dev, cmd)
 DECL|macro|map_scsi_sg_data
 mdefine_line|#define map_scsi_sg_data(np, cmd)&t;__map_scsi_sg_data(np-&gt;dev, cmd)
-DECL|macro|sync_scsi_data_for_cpu
-mdefine_line|#define sync_scsi_data_for_cpu(np, cmd)&t;__sync_scsi_data_for_cpu(np-&gt;dev, cmd)
-DECL|macro|sync_scsi_data_for_device
-mdefine_line|#define sync_scsi_data_for_device(np, cmd) __sync_scsi_data_for_device(np-&gt;dev, cmd)
 multiline_comment|/*==========================================================&n;**&n;**&t;Driver setup.&n;**&n;**&t;This structure is initialized from linux config &n;**&t;options. It can be overridden at boot-up by the boot &n;**&t;command line.&n;**&n;**==========================================================&n;*/
 r_static
 r_struct
