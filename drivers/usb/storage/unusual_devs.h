@@ -821,6 +821,31 @@ comma
 id|US_FL_IGNORE_RESIDUE
 )paren
 comma
+multiline_comment|/* Yakumo Mega Image 47&n; * Reported by Bjoern Paetzel &lt;kolrabi@kolrabi.de&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x052b
+comma
+l_int|0x1905
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Tekom Technologies, Inc&quot;
+comma
+l_string|&quot;400_CAMERA&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_IGNORE_RESIDUE
+)paren
+comma
 multiline_comment|/* This entry is needed because the device reports Sub=ff */
 id|UNUSUAL_DEV
 c_func
