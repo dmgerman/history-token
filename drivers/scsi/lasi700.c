@@ -152,30 +152,6 @@ id|Scsi_Host
 op_star
 id|host
 suffix:semicolon
-id|snprintf
-c_func
-(paren
-id|dev-&gt;dev.name
-comma
-r_sizeof
-(paren
-id|dev-&gt;dev.name
-)paren
-comma
-l_string|&quot;%s&quot;
-comma
-(paren
-id|dev-&gt;id.sversion
-op_eq
-id|LASI_700_SVERSION
-)paren
-ques
-c_cond
-l_string|&quot;lasi700&quot;
-suffix:colon
-l_string|&quot;lasi710&quot;
-)paren
-suffix:semicolon
 id|hostdata
 op_assign
 id|kmalloc
@@ -203,7 +179,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: Failed to allocate host data&bslash;n&quot;
 comma
-id|dev-&gt;dev.name
+id|dev-&gt;dev.bus_id
 )paren
 suffix:semicolon
 r_return
@@ -324,7 +300,7 @@ id|NCR_700_intr
 comma
 id|SA_SHIRQ
 comma
-id|dev-&gt;dev.name
+id|dev-&gt;dev.bus_id
 comma
 id|host
 )paren
@@ -336,7 +312,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: irq problem, detaching&bslash;n&quot;
 comma
-id|dev-&gt;dev.name
+id|dev-&gt;dev.bus_id
 )paren
 suffix:semicolon
 r_goto
