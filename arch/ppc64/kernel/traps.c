@@ -471,35 +471,10 @@ c_cond
 id|fwnmi_active
 )paren
 (brace
-r_int
-r_int
-op_star
-id|r3
-op_assign
-id|__va
-c_func
-(paren
-id|regs-&gt;gpr
-(braket
-l_int|3
-)braket
-)paren
-suffix:semicolon
-multiline_comment|/* for FWNMI debug */
 r_struct
 id|rtas_error_log
 op_star
-id|errlog
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;FWNMI is active with save area at %016lx&bslash;n&quot;
-comma
-id|r3
-)paren
-suffix:semicolon
-id|errlog
+id|errhdr
 op_assign
 id|FWNMI_get_errinfo
 c_func
@@ -507,6 +482,14 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|errhdr
+)paren
+(brace
+multiline_comment|/* XXX Should look at FWNMI information */
+)brace
 id|FWNMI_release_errinfo
 c_func
 (paren

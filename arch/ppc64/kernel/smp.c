@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * &n; *&n; * SMP support for ppc.&n; *&n; * Written by Cort Dougan (cort@cs.nmt.edu) borrowing a great&n; * deal of code from the sparc and intel versions.&n; *&n; * Copyright (C) 1999 Cort Dougan &lt;cort@cs.nmt.edu&gt;&n; *&n; * PowerPC-64 Support added by Dave Engebretsen, Peter Bergner, and&n; * Mike Corrigan {engebret|bergner|mikec}@us.ibm.com&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * SMP support for ppc.&n; *&n; * Written by Cort Dougan (cort@cs.nmt.edu) borrowing a great&n; * deal of code from the sparc and intel versions.&n; *&n; * Copyright (C) 1999 Cort Dougan &lt;cort@cs.nmt.edu&gt;&n; *&n; * PowerPC-64 Support added by Dave Engebretsen, Peter Bergner, and&n; * Mike Corrigan {engebret|bergner|mikec}@us.ibm.com&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1628,6 +1628,9 @@ DECL|variable|call_data
 op_star
 id|call_data
 suffix:semicolon
+multiline_comment|/* delay of at least 8 seconds on 1GHz cpu */
+DECL|macro|SMP_CALL_TIMEOUT
+mdefine_line|#define SMP_CALL_TIMEOUT (1UL &lt;&lt; (30 + 3))
 multiline_comment|/*&n; * This function sends a &squot;generic call function&squot; IPI to all other CPUs&n; * in the system.&n; *&n; * [SUMMARY] Run a function on all other CPUs.&n; * &lt;func&gt; The function to run. This must be fast and non-blocking.&n; * &lt;info&gt; An arbitrary pointer to pass to the function.&n; * &lt;nonatomic&gt; currently unused.&n; * &lt;wait&gt; If true, wait (atomically) until function has completed on other CPUs.&n; * [RETURNS] 0 on success, else a negative status code. Does not return until&n; * remote CPUs are nearly ready to execute &lt;&lt;func&gt;&gt; or are or have executed.&n; *&n; * You must not call this function with disabled interrupts or from a&n; * hardware interrupt handler or from a bottom half handler.&n; */
 DECL|function|smp_call_function
 r_int
@@ -1674,6 +1677,7 @@ c_func
 op_minus
 l_int|1
 suffix:semicolon
+r_int
 r_int
 id|timeout
 suffix:semicolon
@@ -1733,6 +1737,11 @@ op_assign
 op_amp
 id|data
 suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Send a message to all other CPUs and wait for them to respond */
 id|smp_message_pass
 c_func
@@ -1749,7 +1758,7 @@ suffix:semicolon
 multiline_comment|/* Wait for response */
 id|timeout
 op_assign
-l_int|8000000
+id|SMP_CALL_TIMEOUT
 suffix:semicolon
 r_while
 c_loop
@@ -1778,10 +1787,22 @@ op_eq
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|debugger
+)paren
+id|debugger
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;smp_call_function on cpu %d: other cpus not responding (%d)&bslash;n&quot;
+l_string|&quot;smp_call_function on cpu %d: other cpus not &quot;
+l_string|&quot;responding (%d)&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
@@ -1796,36 +1817,10 @@ id|data.started
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_XMON
-id|xmon
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_PPC_ISERIES
-id|HvCall_terminateMachineSrc
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_goto
 id|out
 suffix:semicolon
 )brace
-id|barrier
-c_func
-(paren
-)paren
-suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -1835,7 +1830,7 @@ id|wait
 (brace
 id|timeout
 op_assign
-l_int|1000000
+id|SMP_CALL_TIMEOUT
 suffix:semicolon
 r_while
 c_loop
@@ -1864,10 +1859,22 @@ op_eq
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|debugger
+)paren
+id|debugger
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;smp_call_function on cpu %d: other cpus not finishing (%d/%d)&bslash;n&quot;
+l_string|&quot;smp_call_function on cpu %d: other &quot;
+l_string|&quot;cpus not finishing (%d/%d)&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
@@ -1889,28 +1896,10 @@ id|data.started
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_ISERIES
-id|HvCall_terminateMachineSrc
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_goto
 id|out
 suffix:semicolon
 )brace
-id|barrier
-c_func
-(paren
-)paren
-suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
 )brace
 )brace
 id|ret

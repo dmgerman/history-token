@@ -321,10 +321,6 @@ r_struct
 id|msgbuf
 op_star
 )paren
-(paren
-r_int
-r_int
-)paren
 id|tmp.msgp
 comma
 id|second
