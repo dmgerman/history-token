@@ -1212,6 +1212,14 @@ r_goto
 id|clean_device
 suffix:semicolon
 )brace
+multiline_comment|/* take a reference for the sdev_classdev; this is&n;&t; * released by the sdev_class .release */
+id|get_device
+c_func
+(paren
+op_amp
+id|sdev-&gt;sdev_gendev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1237,7 +1245,7 @@ id|error
 r_goto
 id|clean_device2
 suffix:semicolon
-)brace
+multiline_comment|/* take a reference for the transport_classdev; this&n;&t;&t; * is released by the transport_class .release */
 id|get_device
 c_func
 (paren
@@ -1245,6 +1253,7 @@ op_amp
 id|sdev-&gt;sdev_gendev
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1504,6 +1513,14 @@ op_amp
 id|sdev-&gt;sdev_classdev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sdev-&gt;transport_classdev
+dot
+r_class
+)paren
+(brace
 id|class_device_unregister
 c_func
 (paren
@@ -1511,6 +1528,7 @@ op_amp
 id|sdev-&gt;transport_classdev
 )paren
 suffix:semicolon
+)brace
 id|device_del
 c_func
 (paren
