@@ -257,6 +257,9 @@ id|kobj
 )paren
 (brace
 r_return
+id|kobj
+ques
+c_cond
 id|container_of
 c_func
 (paren
@@ -267,6 +270,8 @@ id|kset
 comma
 id|kobj
 )paren
+suffix:colon
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|kset_get

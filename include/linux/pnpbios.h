@@ -93,9 +93,9 @@ mdefine_line|#define PNPBIOS_DOCK&t;&t;&t;0x0020
 DECL|macro|PNPBIOS_REMOVABLE
 mdefine_line|#define PNPBIOS_REMOVABLE&t;&t;0x0040
 DECL|macro|pnpbios_is_static
-mdefine_line|#define pnpbios_is_static(x) ((x)-&gt;flags &amp; 0x0100) == 0x0000
+mdefine_line|#define pnpbios_is_static(x) (((x)-&gt;flags &amp; 0x0100) == 0x0000)
 DECL|macro|pnpbios_is_dynamic
-mdefine_line|#define pnpbios_is_dynamic(x) (x)-&gt;flags &amp; 0x0080
+mdefine_line|#define pnpbios_is_dynamic(x) ((x)-&gt;flags &amp; 0x0080)
 multiline_comment|/* 0x8000 through 0xffff are OEM defined */
 macro_line|#pragma pack(1)
 DECL|struct|pnp_dev_node_info
