@@ -534,7 +534,7 @@ id|reclaimer
 comma
 id|host
 comma
-id|CLONE_SIGNAL
+id|CLONE_KERNEL
 )paren
 suffix:semicolon
 )brace

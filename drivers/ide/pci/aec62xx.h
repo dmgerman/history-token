@@ -448,6 +448,7 @@ id|__initdata
 op_assign
 (brace
 (brace
+multiline_comment|/* 0 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_ARTOP
@@ -519,6 +520,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 1 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_ARTOP
@@ -590,6 +592,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 2 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_ARTOP
@@ -661,6 +664,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 3 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_ARTOP
@@ -732,6 +736,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 4 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_ARTOP
@@ -799,25 +804,6 @@ comma
 id|extra
 suffix:colon
 l_int|0
-comma
-)brace
-comma
-(brace
-id|vendor
-suffix:colon
-l_int|0
-comma
-id|device
-suffix:colon
-l_int|0
-comma
-id|channels
-suffix:colon
-l_int|0
-comma
-id|bootable
-suffix:colon
-id|EOL
 comma
 )brace
 )brace

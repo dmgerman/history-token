@@ -586,7 +586,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|host-&gt;ops
+id|host-&gt;driver
 op_member_access_from_pointer
 id|devctl
 c_func
@@ -651,7 +651,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|host-&gt;ops
+id|host-&gt;driver
 op_member_access_from_pointer
 id|devctl
 c_func

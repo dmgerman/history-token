@@ -2958,6 +2958,9 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+comma
+r_int
+id|mask
 )paren
 (brace
 id|u16
@@ -3003,6 +3006,23 @@ id|idx
 op_increment
 )paren
 (brace
+multiline_comment|/* Only set up the requested stuff */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|mask
+op_amp
+(paren
+l_int|1
+op_lshift
+id|idx
+)paren
+)paren
+)paren
+r_continue
+suffix:semicolon
 id|r
 op_assign
 op_amp
@@ -5648,6 +5668,9 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+comma
+r_int
+id|mask
 )paren
 (brace
 id|u16
@@ -6890,6 +6913,10 @@ suffix:semicolon
 id|bus.number
 op_assign
 id|busnr
+suffix:semicolon
+id|bus.sysdata
+op_assign
+id|hose
 suffix:semicolon
 id|bus.ops
 op_assign

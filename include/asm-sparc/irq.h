@@ -26,6 +26,8 @@ DECL|macro|__irq_itoa
 mdefine_line|#define __irq_itoa(irq) BTFIXUP_CALL(__irq_itoa)(irq)
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS    15
+DECL|macro|irq_cannonicalize
+mdefine_line|#define irq_cannonicalize(irq)&t;(irq)
 multiline_comment|/* Dave Redman (djhr@tadpole.co.uk)&n; * changed these to function pointers.. it saves cycles and will allow&n; * the irq dependencies to be split into different files at a later date&n; * sun4c_irq.c, sun4m_irq.c etc so we could reduce the kernel size.&n; * Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Changed these to btfixup entities... It saves cycles :)&n; */
 id|BTFIXUPDEF_CALL
 c_func

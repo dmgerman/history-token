@@ -64,8 +64,9 @@ DECL|macro|CLONE_CLEARTID
 mdefine_line|#define CLONE_CLEARTID&t;0x00200000&t;/* clear the userspace TID */
 DECL|macro|CLONE_DETACHED
 mdefine_line|#define CLONE_DETACHED&t;0x00400000&t;/* parent wants no child-exit signal */
-DECL|macro|CLONE_SIGNAL
-mdefine_line|#define CLONE_SIGNAL&t;(CLONE_SIGHAND | CLONE_THREAD)
+multiline_comment|/*&n; * List of flags we want to share for kernel threads,&n; * if only because they are not used by them anyway.&n; */
+DECL|macro|CLONE_KERNEL
+mdefine_line|#define CLONE_KERNEL&t;(CLONE_FS | CLONE_FILES | CLONE_SIGHAND)
 multiline_comment|/*&n; * These are the constant used to fake the fixed-point load-average&n; * counting. Some notes:&n; *  - 11 bit fractions expand to 22 bits by the multiplies: this gives&n; *    a load-average precision of 10 bits integer + 11 bits fractional&n; *  - if you want to count load-averages more often, you need more&n; *    precision, or rounding will get you. With 2-second counting freq,&n; *    the EXP_n values would be 1981, 2034 and 2043 if still using only&n; *    11 bit fractions.&n; */
 r_extern
 r_int
@@ -333,9 +334,7 @@ suffix:semicolon
 multiline_comment|/* Maximum number of active map areas.. This is a random (large) number */
 DECL|macro|MAX_MAP_COUNT
 mdefine_line|#define MAX_MAP_COUNT&t;(65536)
-r_struct
-id|kioctx
-suffix:semicolon
+macro_line|#include &lt;linux/aio.h&gt;
 DECL|struct|mm_struct
 r_struct
 id|mm_struct
@@ -481,6 +480,11 @@ id|kioctx
 op_star
 id|ioctx_list
 suffix:semicolon
+DECL|member|default_kioctx
+r_struct
+id|kioctx
+id|default_kioctx
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
@@ -527,10 +531,11 @@ DECL|member|group_exit_code
 r_int
 id|group_exit_code
 suffix:semicolon
-DECL|member|group_exit_done
+DECL|member|group_exit_task
 r_struct
-id|completion
-id|group_exit_done
+id|task_struct
+op_star
+id|group_exit_task
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -790,6 +795,12 @@ id|list_head
 id|sibling
 suffix:semicolon
 multiline_comment|/* linkage in my parent&squot;s children list */
+DECL|member|group_leader
+r_struct
+id|task_struct
+op_star
+id|group_leader
+suffix:semicolon
 DECL|member|thread_group
 r_struct
 id|list_head
@@ -1198,6 +1209,8 @@ DECL|macro|PF_FROZEN
 mdefine_line|#define PF_FROZEN&t;0x00040000&t;/* frozen for system suspend */
 DECL|macro|PF_SYNC
 mdefine_line|#define PF_SYNC&t;&t;0x00080000&t;/* performing fsync(), etc */
+DECL|macro|PF_FSTRANS
+mdefine_line|#define PF_FSTRANS&t;0x00100000&t;/* inside a filesystem transaction */
 multiline_comment|/*&n; * Ptrace flags&n; */
 DECL|macro|PT_PTRACED
 mdefine_line|#define PT_PTRACED&t;0x00000001
@@ -1878,6 +1891,17 @@ id|unblock_all_signals
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|release_task
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|p
 )paren
 suffix:semicolon
 r_extern
@@ -2809,6 +2833,7 @@ id|wait
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
 id|wait_task_inactive
@@ -2819,6 +2844,10 @@ op_star
 id|p
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|wait_task_inactive
+mdefine_line|#define wait_task_inactive(p)&t;do { } while (0)
+macro_line|#endif
 r_extern
 r_void
 id|kick_if_running
@@ -2898,9 +2927,9 @@ mdefine_line|#define remove_parent(p)&t;list_del_init(&amp;(p)-&gt;sibling)
 DECL|macro|add_parent
 mdefine_line|#define add_parent(p, parent)&t;list_add_tail(&amp;(p)-&gt;sibling,&amp;(parent)-&gt;children)
 DECL|macro|REMOVE_LINKS
-mdefine_line|#define REMOVE_LINKS(p) do {&t;&t;&t;&t;&bslash;&n;&t;list_del_init(&amp;(p)-&gt;tasks);&t;&t;&t;&bslash;&n;&t;remove_parent(p);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define REMOVE_LINKS(p) do {&t;&t;&t;&t;&t;&bslash;&n;&t;if (thread_group_leader(p))&t;&t;&t;&t;&bslash;&n;&t;&t;list_del_init(&amp;(p)-&gt;tasks);&t;&t;&t;&bslash;&n;&t;remove_parent(p);&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|SET_LINKS
-mdefine_line|#define SET_LINKS(p) do {&t;&t;&t;&t;&bslash;&n;&t;list_add_tail(&amp;(p)-&gt;tasks,&amp;init_task.tasks);&t;&bslash;&n;&t;add_parent(p, (p)-&gt;parent);&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define SET_LINKS(p) do {&t;&t;&t;&t;&t;&bslash;&n;&t;if (thread_group_leader(p))&t;&t;&t;&t;&bslash;&n;&t;&t;list_add_tail(&amp;(p)-&gt;tasks,&amp;init_task.tasks);&t;&bslash;&n;&t;add_parent(p, (p)-&gt;parent);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|function|eldest_child
 r_static
 r_inline
@@ -3065,10 +3094,13 @@ DECL|macro|next_task
 mdefine_line|#define next_task(p)&t;list_entry((p)-&gt;tasks.next, struct task_struct, tasks)
 DECL|macro|prev_task
 mdefine_line|#define prev_task(p)&t;list_entry((p)-&gt;tasks.prev, struct task_struct, tasks)
-DECL|macro|for_each_task
-mdefine_line|#define for_each_task(p) &bslash;&n;&t;for (p = &amp;init_task ; (p = next_task(p)) != &amp;init_task ; )
-DECL|macro|for_each_thread
-mdefine_line|#define for_each_thread(task) &bslash;&n;&t;for (task = next_thread(current) ; task != current ; task = next_thread(task))
+DECL|macro|for_each_process
+mdefine_line|#define for_each_process(p) &bslash;&n;&t;for (p = &amp;init_task ; (p = next_task(p)) != &amp;init_task ; )
+multiline_comment|/*&n; * Careful: do_each_thread/while_each_thread is a double loop so&n; *          &squot;break&squot; will not work as expected - use goto instead.&n; */
+DECL|macro|do_each_thread
+mdefine_line|#define do_each_thread(g, t) &bslash;&n;&t;for (g = t = &amp;init_task ; (g = t = next_task(g)) != &amp;init_task ; ) do
+DECL|macro|while_each_thread
+mdefine_line|#define while_each_thread(g, t) &bslash;&n;&t;while ((t = next_thread(t)) != g)
 DECL|function|next_thread
 r_static
 r_inline
@@ -3203,6 +3235,8 @@ suffix:semicolon
 )brace
 DECL|macro|thread_group_leader
 mdefine_line|#define thread_group_leader(p)&t;(p-&gt;pid == p-&gt;tgid)
+DECL|macro|delay_group_leader
+mdefine_line|#define delay_group_leader(p) &bslash;&n;&t;(p-&gt;tgid == p-&gt;pid &amp;&amp; !list_empty(&amp;p-&gt;thread_group))
 r_extern
 r_void
 id|unhash_process
@@ -3683,6 +3717,75 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PREEMPT
+multiline_comment|/*&n; * cond_resched_lock() - if a reschedule is pending, drop the given lock,&n; * call schedule, and on return reacquire the lock.&n; *&n; * Note: this does not assume the given lock is the _only_ lock held.&n; * The kernel preemption counter gives us &quot;free&quot; checking that we are&n; * atomic -- let&squot;s use it.&n; */
+DECL|function|cond_resched_lock
+r_static
+r_inline
+r_void
+id|cond_resched_lock
+c_func
+(paren
+id|spinlock_t
+op_star
+id|lock
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|need_resched
+c_func
+(paren
+)paren
+op_logical_and
+id|preempt_count
+c_func
+(paren
+)paren
+op_eq
+l_int|1
+)paren
+(brace
+id|_raw_spin_unlock
+c_func
+(paren
+id|lock
+)paren
+suffix:semicolon
+id|preempt_enable_no_resched
+c_func
+(paren
+)paren
+suffix:semicolon
+id|__cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+id|lock
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#else
+DECL|function|cond_resched_lock
+r_static
+r_inline
+r_void
+id|cond_resched_lock
+c_func
+(paren
+id|spinlock_t
+op_star
+id|lock
+)paren
+(brace
+)brace
+macro_line|#endif
 multiline_comment|/* Reevaluate whether the task has signals pending delivery.&n;   This is required every time the blocked sigset_t changes.&n;   Athread cathreaders should have t-&gt;sigmask_lock.  */
 r_extern
 id|FASTCALL

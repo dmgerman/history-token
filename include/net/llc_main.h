@@ -24,7 +24,7 @@ DECL|macro|LLC_DEST_SAP
 mdefine_line|#define LLC_DEST_SAP&t;&t; 1&t;/* Type 1 goes here */
 DECL|macro|LLC_DEST_CONN
 mdefine_line|#define LLC_DEST_CONN&t;&t; 2&t;/* Type 2 goes here */
-multiline_comment|/**&n; * struct llc_station - LLC station component&n; *&n; * SAP and connection resource manager, one per adapter.&n; *&n; * @state - state of station&n; * @xid_r_count - XID response PDU counter&n; * @ack_tmr_running - 1 or 0&n; * @mac_sa - MAC source address&n; * @sap_list - list of related SAPs&n; * @ev_q - events entering state mach.&n; * @mac_pdu_q - PDUs ready to send to MAC&n; */
+multiline_comment|/**&n; * struct llc_station - LLC station component&n; *&n; * SAP and connection resource manager, one per adapter.&n; *&n; * @state - state of station&n; * @xid_r_count - XID response PDU counter&n; * @mac_sa - MAC source address&n; * @sap_list - list of related SAPs&n; * @ev_q - events entering state mach.&n; * @mac_pdu_q - PDUs ready to send to MAC&n; */
 DECL|struct|llc_station
 r_struct
 id|llc_station
@@ -41,10 +41,6 @@ DECL|member|ack_timer
 r_struct
 id|timer_list
 id|ack_timer
-suffix:semicolon
-DECL|member|ack_tmr_running
-id|u8
-id|ack_tmr_running
 suffix:semicolon
 DECL|member|retry_count
 id|u8
@@ -156,7 +152,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|llc_station_send_ev
+id|llc_station_state_process
 c_func
 (paren
 r_struct

@@ -40,7 +40,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;eth1394.c:v0.50 15/Jul/01 Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 546 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Our ieee1394 highlevel driver */
 DECL|macro|ETHER1394_DRIVER_NAME
@@ -118,6 +118,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;IEEE 1394 IPv4 Driver (IPv4-over-1394 as per RFC 2734)&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Find our host_info struct for a given host pointer. Must be called&n; * under spinlock.  */
@@ -898,6 +904,7 @@ r_int
 id|set_mtu
 )paren
 (brace
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -1793,6 +1800,7 @@ id|ETH_P_ARP
 )paren
 (brace
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|u16
@@ -2058,6 +2066,7 @@ op_star
 )paren
 id|data
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -2332,6 +2341,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* Statistics */
@@ -2480,7 +2490,9 @@ id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|proto
-comma
+suffix:semicolon
+r_int
+r_int
 id|flags
 suffix:semicolon
 id|nodeid_t
@@ -2767,8 +2779,9 @@ id|hpsb_address_ops
 id|addr_ops
 op_assign
 (brace
+dot
 id|write
-suffix:colon
+op_assign
 id|ether1394_write
 comma
 )brace
@@ -2781,16 +2794,19 @@ id|hpsb_highlevel_ops
 id|hl_ops
 op_assign
 (brace
+dot
 id|add_host
-suffix:colon
+op_assign
 id|ether1394_add_host
 comma
+dot
 id|remove_host
-suffix:colon
+op_assign
 id|ether1394_remove_host
 comma
+dot
 id|host_reset
-suffix:colon
+op_assign
 id|ether1394_host_reset
 comma
 )brace

@@ -946,7 +946,7 @@ c_func
 op_plus
 id|time_diff
 suffix:semicolon
-id|xtime.tv_usec
+id|xtime.tv_nsec
 op_assign
 l_int|0
 suffix:semicolon

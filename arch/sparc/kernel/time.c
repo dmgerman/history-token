@@ -27,6 +27,11 @@ r_extern
 id|rwlock_t
 id|xtime_lock
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|wall_jiffies
+suffix:semicolon
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
@@ -309,6 +314,8 @@ op_star
 id|master_l10_limit
 suffix:semicolon
 multiline_comment|/*&n; * timer_interrupt() needs to keep up the real-time clock,&n; * as well as call the &quot;do_timer()&quot; routine every clocktick&n; */
+DECL|macro|TICK_SIZE
+mdefine_line|#define TICK_SIZE (tick_nsec / 1000)
 DECL|function|timer_interrupt
 r_void
 id|timer_interrupt
@@ -438,7 +445,11 @@ id|last_rtc_update
 op_plus
 l_int|660
 op_logical_and
-id|xtime.tv_usec
+(paren
+id|xtime.tv_nsec
+op_div
+l_int|1000
+)paren
 op_ge
 l_int|500000
 op_minus
@@ -446,12 +457,16 @@ op_minus
 (paren
 r_int
 )paren
-id|tick
+id|TICK_SIZE
 )paren
 op_div
 l_int|2
 op_logical_and
-id|xtime.tv_usec
+(paren
+id|xtime.tv_nsec
+op_div
+l_int|1000
+)paren
 op_le
 l_int|500000
 op_plus
@@ -459,7 +474,7 @@ op_plus
 (paren
 r_int
 )paren
-id|tick
+id|TICK_SIZE
 )paren
 op_div
 l_int|2
@@ -1815,7 +1830,7 @@ comma
 id|sec
 )paren
 suffix:semicolon
-id|xtime.tv_usec
+id|xtime.tv_nsec
 op_assign
 l_int|0
 suffix:semicolon
@@ -1960,7 +1975,7 @@ comma
 id|sec
 )paren
 suffix:semicolon
-id|xtime.tv_usec
+id|xtime.tv_nsec
 op_assign
 l_int|0
 suffix:semicolon
@@ -2100,7 +2115,7 @@ op_plus
 id|count
 suffix:semicolon
 )brace
-multiline_comment|/* This need not obtain the xtime_lock as it is coded in&n; * an implicitly SMP safe way already.&n; */
+multiline_comment|/* Ok, my cute asm atomicity trick doesn&squot;t work anymore.&n; * There are just too many variables that need to be protected&n; * now (both members of xtime, wall_jiffies, et al.)&n; */
 DECL|function|do_gettimeofday
 r_void
 id|do_gettimeofday
@@ -2112,44 +2127,101 @@ op_star
 id|tv
 )paren
 (brace
-multiline_comment|/* Load doubles must be used on xtime so that what we get&n;&t; * is guarenteed to be atomic, this is why we can run this&n;&t; * with interrupts on full blast.  Don&squot;t touch this... -DaveM&n;&t; */
-id|__asm__
-id|__volatile__
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
+r_int
+id|usec
+comma
+id|sec
+suffix:semicolon
+id|read_lock_irqsave
 c_func
 (paren
-l_string|&quot;sethi&t;%hi(master_l10_counter), %o1&bslash;n&bslash;t&quot;
-l_string|&quot;ld&t;[%o1 + %lo(master_l10_counter)], %g3&bslash;n&bslash;t&quot;
-l_string|&quot;sethi&t;%hi(xtime), %g2&bslash;n&quot;
-l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;ldd&t;[%g2 + %lo(xtime)], %o4&bslash;n&bslash;t&quot;
-l_string|&quot;ld&t;[%g3], %o1&bslash;n&bslash;t&quot;
-l_string|&quot;ldd&t;[%g2 + %lo(xtime)], %o2&bslash;n&bslash;t&quot;
-l_string|&quot;xor&t;%o4, %o2, %o2&bslash;n&bslash;t&quot;
-l_string|&quot;xor&t;%o5, %o3, %o3&bslash;n&bslash;t&quot;
-l_string|&quot;orcc&t;%o2, %o3, %g0&bslash;n&bslash;t&quot;
-l_string|&quot;bne&t;1b&bslash;n&bslash;t&quot;
-l_string|&quot; cmp&t;%o1, 0&bslash;n&bslash;t&quot;
-l_string|&quot;bge&t;1f&bslash;n&bslash;t&quot;
-l_string|&quot; srl&t;%o1, 0xa, %o1&bslash;n&bslash;t&quot;
-l_string|&quot;sethi&t;%hi(tick), %o3&bslash;n&bslash;t&quot;
-l_string|&quot;ld&t;[%o3 + %lo(tick)], %o3&bslash;n&bslash;t&quot;
-l_string|&quot;sethi&t;%hi(0x1fffff), %o2&bslash;n&bslash;t&quot;
-l_string|&quot;or&t;%o2, %lo(0x1fffff), %o2&bslash;n&bslash;t&quot;
-l_string|&quot;add&t;%o5, %o3, %o5&bslash;n&bslash;t&quot;
-l_string|&quot;and&t;%o1, %o2, %o1&bslash;n&quot;
-l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;add&t;%o5, %o1, %o5&bslash;n&bslash;t&quot;
-l_string|&quot;sethi&t;%hi(1000000), %o2&bslash;n&bslash;t&quot;
-l_string|&quot;or&t;%o2, %lo(1000000), %o2&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;%o5, %o2&bslash;n&bslash;t&quot;
-l_string|&quot;bl,a&t;1f&bslash;n&bslash;t&quot;
-l_string|&quot; st&t;%o4, [%o0 + 0x0]&bslash;n&bslash;t&quot;
-l_string|&quot;add&t;%o4, 0x1, %o4&bslash;n&bslash;t&quot;
-l_string|&quot;sub&t;%o5, %o2, %o5&bslash;n&bslash;t&quot;
-l_string|&quot;st&t;%o4, [%o0 + 0x0]&bslash;n&quot;
-l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;st&t;%o5, [%o0 + 0x4]&bslash;n&quot;
+op_amp
+id|xtime_lock
+comma
+id|flags
 )paren
+suffix:semicolon
+id|usec
+op_assign
+id|do_gettimeoffset
+c_func
+(paren
+)paren
+suffix:semicolon
+(brace
+r_int
+r_int
+id|lost
+op_assign
+id|jiffies
+op_minus
+id|wall_jiffies
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|lost
+)paren
+id|usec
+op_add_assign
+id|lost
+op_star
+(paren
+l_int|1000000
+op_div
+id|HZ
+)paren
+suffix:semicolon
+)brace
+id|sec
+op_assign
+id|xtime.tv_sec
+suffix:semicolon
+id|usec
+op_add_assign
+(paren
+id|xtime.tv_nsec
+op_div
+l_int|1000
+)paren
+suffix:semicolon
+id|read_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|xtime_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|usec
+op_ge
+l_int|1000000
+)paren
+(brace
+id|usec
+op_sub_assign
+l_int|1000000
+suffix:semicolon
+id|sec
+op_increment
+suffix:semicolon
+)brace
+id|tv-&gt;tv_sec
+op_assign
+id|sec
+suffix:semicolon
+id|tv-&gt;tv_usec
+op_assign
+id|usec
 suffix:semicolon
 )brace
 DECL|function|do_settimeofday
@@ -2196,6 +2268,7 @@ op_star
 id|tv
 )paren
 (brace
+multiline_comment|/*&n;&t; * This is revolting. We need to set &quot;xtime&quot; correctly. However, the&n;&t; * value in this location is the value at the most recent update of&n;&t; * wall time.  Discover what correction gettimeofday() would have&n;&t; * made, and then undo it!&n;&t; */
 id|tv-&gt;tv_usec
 op_sub_assign
 id|do_gettimeoffset
@@ -2203,8 +2276,22 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|tv-&gt;tv_usec
+op_sub_assign
+(paren
+id|jiffies
+op_minus
+id|wall_jiffies
+)paren
+op_star
+(paren
+l_int|1000000
+op_div
+id|HZ
+)paren
+suffix:semicolon
+r_while
+c_loop
 (paren
 id|tv-&gt;tv_usec
 OL
@@ -2219,10 +2306,17 @@ id|tv-&gt;tv_sec
 op_decrement
 suffix:semicolon
 )brace
-id|xtime
+id|xtime.tv_sec
 op_assign
+id|tv-&gt;tv_sec
+suffix:semicolon
+id|xtime.tv_nsec
+op_assign
+(paren
+id|tv-&gt;tv_usec
 op_star
-id|tv
+l_int|1000
+)paren
 suffix:semicolon
 id|time_adjust
 op_assign

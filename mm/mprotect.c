@@ -1642,6 +1642,25 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Here we know that  vma-&gt;vm_start &lt;= nstart &lt; vma-&gt;vm_end. */
+r_if
+c_cond
+(paren
+id|is_vm_hugetlb_page
+c_func
+(paren
+id|vma
+)paren
+)paren
+(brace
+id|error
+op_assign
+op_minus
+id|EACCES
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|newflags
 op_assign
 id|prot

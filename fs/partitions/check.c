@@ -1177,8 +1177,6 @@ op_logical_neg
 id|state-&gt;parts
 (braket
 id|j
-op_minus
-l_int|1
 )braket
 dot
 id|flags

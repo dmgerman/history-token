@@ -351,7 +351,8 @@ DECL|macro|__NR_fremovexattr
 mdefine_line|#define __NR_fremovexattr       186 /* SunOS: pathconf                             */
 DECL|macro|__NR_tkill
 mdefine_line|#define __NR_tkill              187 /* SunOS: fpathconf                            */
-multiline_comment|/* #define __NR_sysconf         188    SunOS Specific                              */
+DECL|macro|__NR_exit_group
+mdefine_line|#define __NR_exit_group&t;&t;188 /* Linux specific, sysconf undef SunOS         */
 DECL|macro|__NR_uname
 mdefine_line|#define __NR_uname              189 /* Linux Specific                              */
 DECL|macro|__NR_init_module

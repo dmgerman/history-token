@@ -63,6 +63,7 @@ id|__initdata
 op_assign
 (brace
 (brace
+multiline_comment|/* 0 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_NS
@@ -134,6 +135,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 1 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_PCTECH
@@ -205,6 +207,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 2 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_HOLTEK
@@ -276,6 +279,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 3 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_UMC
@@ -347,6 +351,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 4 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_UMC
@@ -418,6 +423,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 5 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_UMC
@@ -489,6 +495,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 6 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_HINT
@@ -560,6 +567,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 7 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_VIA
@@ -631,6 +639,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 8 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_OPTI
@@ -731,6 +740,7 @@ id|__initdata
 op_assign
 (brace
 (brace
+multiline_comment|/* 0 */
 id|vendor
 suffix:colon
 l_int|0

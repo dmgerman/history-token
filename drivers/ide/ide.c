@@ -124,6 +124,13 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
+DECL|variable|noautodma
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|noautodma
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * ide_modules keeps track of the available IDE chipset/probe/driver modules.&n; */
 DECL|variable|ide_chipsets
 id|ide_module_t
@@ -5695,12 +5702,6 @@ op_ne
 l_int|0
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;ide_intr: unexpected interrupt!&bslash;n&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Not expecting an interrupt from this drive.&n;&t;&t; * That means this could be:&n;&t;&t; *&t;(1) an interrupt from another PCI device&n;&t;&t; *&t;sharing the same PCI INT# as us.&n;&t;&t; * or&t;(2) a drive just entered sleep or standby mode,&n;&t;&t; *&t;and is interrupting to let us know.&n;&t;&t; * or&t;(3) a spurious interrupt of unknown origin.&n;&t;&t; *&n;&t;&t; * For PCI, we cannot tell the difference,&n;&t;&t; * so in that case we just ignore it and hope it goes away.&n;&t;&t; */
 macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 r_if

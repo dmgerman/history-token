@@ -193,10 +193,6 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|serial_console
-suffix:semicolon
-r_extern
 r_void
 (paren
 op_star

@@ -1443,6 +1443,9 @@ r_struct
 id|pci_dev
 op_star
 id|pdev
+comma
+r_int
+id|mask
 )paren
 (brace
 r_return
