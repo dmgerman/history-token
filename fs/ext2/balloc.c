@@ -1330,22 +1330,30 @@ suffix:semicolon
 r_struct
 id|buffer_head
 op_star
-id|bh2
+id|gdp_bh
 suffix:semicolon
+multiline_comment|/* bh2 */
 r_struct
 id|ext2_group_desc
 op_star
 id|desc
 suffix:semicolon
 r_int
-id|i
-comma
-id|j
-comma
-id|k
-comma
-id|tmp
+id|group_no
 suffix:semicolon
+multiline_comment|/* i */
+r_int
+id|ret_block
+suffix:semicolon
+multiline_comment|/* j */
+r_int
+id|bit
+suffix:semicolon
+multiline_comment|/* k */
+r_int
+id|target_block
+suffix:semicolon
+multiline_comment|/* tmp */
 r_int
 id|block
 op_assign
@@ -1531,7 +1539,7 @@ c_func
 id|es-&gt;s_first_data_block
 )paren
 suffix:semicolon
-id|i
+id|group_no
 op_assign
 (paren
 id|goal
@@ -1551,10 +1559,10 @@ id|ext2_get_group_desc
 (paren
 id|sb
 comma
-id|i
+id|group_no
 comma
 op_amp
-id|bh2
+id|gdp_bh
 )paren
 suffix:semicolon
 r_if
@@ -1573,7 +1581,7 @@ c_func
 (paren
 id|desc
 comma
-id|bh2
+id|gdp_bh
 comma
 id|es_alloc
 )paren
@@ -1584,7 +1592,7 @@ c_cond
 id|group_alloc
 )paren
 (brace
-id|j
+id|ret_block
 op_assign
 (paren
 (paren
@@ -1613,7 +1621,7 @@ c_func
 (paren
 id|sb
 comma
-id|i
+id|group_no
 )paren
 suffix:semicolon
 r_if
@@ -1626,15 +1634,16 @@ r_goto
 id|io_error
 suffix:semicolon
 id|ext2_debug
+c_func
 (paren
 l_string|&quot;goal is at %d:%d.&bslash;n&quot;
 comma
-id|i
+id|group_no
 comma
-id|j
+id|ret_block
 )paren
 suffix:semicolon
-id|j
+id|ret_block
 op_assign
 id|grab_block
 c_func
@@ -1643,13 +1652,13 @@ id|bitmap_bh-&gt;b_data
 comma
 id|group_size
 comma
-id|j
+id|ret_block
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|j
+id|ret_block
 op_ge
 l_int|0
 )paren
@@ -1661,7 +1670,7 @@ c_func
 (paren
 id|desc
 comma
-id|bh2
+id|gdp_bh
 comma
 id|group_alloc
 )paren
@@ -1675,52 +1684,53 @@ id|ext2_debug
 (paren
 l_string|&quot;Bit not found in block group %d.&bslash;n&quot;
 comma
-id|i
+id|group_no
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Now search the rest of the groups.  We assume that &n;&t; * i and desc correctly point to the last group visited.&n;&t; */
 r_for
 c_loop
 (paren
-id|k
+id|bit
 op_assign
 l_int|0
 suffix:semicolon
 op_logical_neg
 id|group_alloc
 op_logical_and
-id|k
+id|bit
 OL
 id|sbi-&gt;s_groups_count
 suffix:semicolon
-id|k
+id|bit
 op_increment
 )paren
 (brace
-id|i
+id|group_no
 op_increment
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|i
+id|group_no
 op_ge
 id|sbi-&gt;s_groups_count
 )paren
-id|i
+id|group_no
 op_assign
 l_int|0
 suffix:semicolon
 id|desc
 op_assign
 id|ext2_get_group_desc
+c_func
 (paren
 id|sb
 comma
-id|i
+id|group_no
 comma
 op_amp
-id|bh2
+id|gdp_bh
 )paren
 suffix:semicolon
 r_if
@@ -1739,7 +1749,7 @@ c_func
 (paren
 id|desc
 comma
-id|bh2
+id|gdp_bh
 comma
 id|es_alloc
 )paren
@@ -1748,7 +1758,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|k
+id|bit
 op_ge
 id|sbi-&gt;s_groups_count
 )paren
@@ -1768,7 +1778,7 @@ c_func
 (paren
 id|sb
 comma
-id|i
+id|group_no
 )paren
 suffix:semicolon
 r_if
@@ -1780,7 +1790,7 @@ id|bitmap_bh
 r_goto
 id|io_error
 suffix:semicolon
-id|j
+id|ret_block
 op_assign
 id|grab_block
 c_func
@@ -1795,7 +1805,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|j
+id|ret_block
 OL
 l_int|0
 )paren
@@ -1808,7 +1818,7 @@ l_string|&quot;ext2_new_block&quot;
 comma
 l_string|&quot;Free blocks count corrupted for block group %d&quot;
 comma
-id|i
+id|group_no
 )paren
 suffix:semicolon
 id|group_alloc
@@ -1826,16 +1836,16 @@ c_func
 (paren
 l_string|&quot;using block group %d(%d)&bslash;n&quot;
 comma
-id|i
+id|group_no
 comma
 id|desc-&gt;bg_free_blocks_count
 )paren
 suffix:semicolon
-id|tmp
+id|target_block
 op_assign
-id|j
+id|ret_block
 op_plus
-id|i
+id|group_no
 op_star
 id|group_size
 op_plus
@@ -1848,7 +1858,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tmp
+id|target_block
 op_eq
 id|le32_to_cpu
 c_func
@@ -1856,7 +1866,7 @@ c_func
 id|desc-&gt;bg_block_bitmap
 )paren
 op_logical_or
-id|tmp
+id|target_block
 op_eq
 id|le32_to_cpu
 c_func
@@ -1865,8 +1875,9 @@ id|desc-&gt;bg_inode_bitmap
 )paren
 op_logical_or
 id|in_range
+c_func
 (paren
-id|tmp
+id|target_block
 comma
 id|le32_to_cpu
 c_func
@@ -1886,13 +1897,13 @@ comma
 l_string|&quot;Allocating block in system zone - &quot;
 l_string|&quot;block = %u&quot;
 comma
-id|tmp
+id|target_block
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|tmp
+id|target_block
 op_ge
 id|le32_to_cpu
 c_func
@@ -1910,7 +1921,7 @@ comma
 l_string|&quot;block(%d) &gt;= blocks count(%d) - &quot;
 l_string|&quot;block_group = %d, es == %p &quot;
 comma
-id|j
+id|ret_block
 comma
 id|le32_to_cpu
 c_func
@@ -1918,7 +1929,7 @@ c_func
 id|es-&gt;s_blocks_count
 )paren
 comma
-id|i
+id|group_no
 comma
 id|es
 )paren
@@ -1929,14 +1940,15 @@ suffix:semicolon
 )brace
 id|block
 op_assign
-id|tmp
+id|target_block
 suffix:semicolon
 multiline_comment|/* OK, we _had_ allocated something */
 id|ext2_debug
+c_func
 (paren
 l_string|&quot;found bit %d&bslash;n&quot;
 comma
-id|j
+id|ret_block
 )paren
 suffix:semicolon
 id|dq_alloc
@@ -1987,7 +1999,7 @@ OL
 id|group_alloc
 op_logical_and
 op_increment
-id|j
+id|ret_block
 OL
 id|group_size
 suffix:semicolon
@@ -2001,7 +2013,7 @@ c_cond
 id|ext2_set_bit
 c_func
 (paren
-id|j
+id|ret_block
 comma
 id|bitmap_bh-&gt;b_data
 )paren
@@ -2093,7 +2105,7 @@ c_func
 (paren
 id|desc
 comma
-id|bh2
+id|gdp_bh
 comma
 id|group_alloc
 )paren

@@ -1,7 +1,13 @@
-multiline_comment|/*&n; * Product specific probe and attach routines for:&n; * &t;27/284X and aic7770 motherboard SCSI controllers&n; *&n; * Copyright (c) 1994-1998, 2000, 2001 Justin T. Gibbs.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic7770.c#14 $&n; *&n; * $FreeBSD: src/sys/dev/aic7xxx/aic7770.c,v 1.1 2000/09/16 20:02:27 gibbs Exp $&n; */
+multiline_comment|/*&n; * Product specific probe and attach routines for:&n; * &t;27/284X and aic7770 motherboard SCSI controllers&n; *&n; * Copyright (c) 1994-1998, 2000, 2001 Justin T. Gibbs.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic7770.c#27 $&n; *&n; * $FreeBSD$&n; */
+macro_line|#ifdef __linux__
 macro_line|#include &quot;aic7xxx_osm.h&quot;
 macro_line|#include &quot;aic7xxx_inline.h&quot;
 macro_line|#include &quot;aic7xxx_93cx6.h&quot;
+macro_line|#else
+macro_line|#include &lt;dev/aic7xxx/aic7xxx_osm.h&gt;
+macro_line|#include &lt;dev/aic7xxx/aic7xxx_inline.h&gt;
+macro_line|#include &lt;dev/aic7xxx/aic7xxx_93cx6.h&gt;
+macro_line|#endif
 DECL|macro|ID_AIC7770
 mdefine_line|#define ID_AIC7770&t;0x04907770
 DECL|macro|ID_AHA_274x
@@ -10,10 +16,12 @@ DECL|macro|ID_AHA_284xB
 mdefine_line|#define ID_AHA_284xB&t;0x04907756 /* BIOS enabled */
 DECL|macro|ID_AHA_284x
 mdefine_line|#define ID_AHA_284x&t;0x04907757 /* BIOS disabled*/
-DECL|macro|ID_AIC_7782
-mdefine_line|#define ID_AIC_7782&t;0x04907782
+DECL|macro|ID_OLV_274x
+mdefine_line|#define&t;ID_OLV_274x&t;0x04907782 /* Olivetti OEM */
+DECL|macro|ID_OLV_274xD
+mdefine_line|#define&t;ID_OLV_274xD&t;0x04907783 /* Olivetti OEM (Differential) */
 r_static
-r_void
+r_int
 id|aha2840_load_seeprom
 c_func
 (paren
@@ -67,6 +75,26 @@ comma
 id|ahc_aic7770_VL_setup
 )brace
 comma
+(brace
+id|ID_OLV_274x
+comma
+l_int|0xFFFFFFFF
+comma
+l_string|&quot;Adaptec (Olivetti OEM) 274X SCSI adapter&quot;
+comma
+id|ahc_aic7770_EISA_setup
+)brace
+comma
+(brace
+id|ID_OLV_274xD
+comma
+l_int|0xFFFFFFFF
+comma
+l_string|&quot;Adaptec (Olivetti OEM) 274X Differential SCSI adapter&quot;
+comma
+id|ahc_aic7770_EISA_setup
+)brace
+comma
 multiline_comment|/* Generic chip probes for devices we don&squot;t know &squot;exactly&squot; */
 (brace
 id|ID_AIC7770
@@ -74,17 +102,6 @@ comma
 l_int|0xFFFFFFFF
 comma
 l_string|&quot;Adaptec aic7770 SCSI adapter&quot;
-comma
-id|ahc_aic7770_EISA_setup
-)brace
-comma
-(brace
-multiline_comment|/* (Olivetti 2 channel EISA) */
-id|ID_AIC_7782
-comma
-l_int|0xFFFFFFFF
-comma
-l_string|&quot;Adaptec aic7782 SCSI adapter&quot;
 comma
 id|ahc_aic7770_EISA_setup
 )brace
@@ -180,10 +197,19 @@ r_struct
 id|aic7770_identity
 op_star
 id|entry
+comma
+id|u_int
+id|io
 )paren
 (brace
+id|u_long
+id|l
+suffix:semicolon
 r_int
 id|error
+suffix:semicolon
+r_int
+id|have_seeprom
 suffix:semicolon
 id|u_int
 id|hostconf
@@ -204,6 +230,10 @@ c_func
 id|ahc
 )paren
 suffix:semicolon
+id|have_seeprom
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -222,6 +252,8 @@ id|aic7770_map_registers
 c_func
 (paren
 id|ahc
+comma
+id|io
 )paren
 suffix:semicolon
 r_if
@@ -234,6 +266,15 @@ l_int|0
 r_return
 (paren
 id|error
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Before we continue probing the card, ensure that&n;&t; * its interrupts are *disabled*.  We don&squot;t want&n;&t; * a misstep to hang the machine in an interrupt&n;&t; * storm.&n;&t; */
+id|ahc_intr_enable
+c_func
+(paren
+id|ahc
+comma
+id|FALSE
 )paren
 suffix:semicolon
 id|ahc-&gt;description
@@ -502,7 +543,21 @@ id|AHC_TERM_ENB_B
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t; * We have no way to tell, so assume extended&n;&t;&t; * translation is enabled.&n;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|ahc_inb
+c_func
+(paren
+id|ahc
+comma
+id|HA_274_BIOSGLOBAL
+)paren
+op_amp
+id|HA_274_EXTENDED_TRANS
+)paren
+)paren
 id|ahc-&gt;flags
 op_or_assign
 id|AHC_EXTENDED_TRANS_A
@@ -516,6 +571,8 @@ r_case
 id|AHC_VL
 suffix:colon
 (brace
+id|have_seeprom
+op_assign
 id|aha2840_load_seeprom
 c_func
 (paren
@@ -528,6 +585,27 @@ suffix:semicolon
 r_default
 suffix:colon
 r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|have_seeprom
+op_eq
+l_int|0
+)paren
+(brace
+id|free
+c_func
+(paren
+id|ahc-&gt;seep_config
+comma
+id|M_DEVBUF
+)paren
+suffix:semicolon
+id|ahc-&gt;seep_config
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Ensure autoflush is enabled&n;&t; */
@@ -610,13 +688,6 @@ r_return
 id|error
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Link this softc in with all other ahc instances.&n;&t; */
-id|ahc_softc_insert
-c_func
-(paren
-id|ahc
-)paren
-suffix:semicolon
 id|error
 op_assign
 id|aic7770_map_int
@@ -639,6 +710,20 @@ r_return
 id|error
 )paren
 suffix:semicolon
+id|ahc_list_lock
+c_func
+(paren
+op_amp
+id|l
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Link this softc in with all other ahc instances.&n;&t; */
+id|ahc_softc_insert
+c_func
+(paren
+id|ahc
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Enable the board&squot;s BUS drivers&n;&t; */
 id|ahc_outb
 c_func
@@ -650,13 +735,11 @@ comma
 id|ENABLE
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Allow interrupts.&n;&t; */
-id|ahc_intr_enable
+id|ahc_list_unlock
 c_func
 (paren
-id|ahc
-comma
-id|TRUE
+op_amp
+id|l
 )paren
 suffix:semicolon
 r_return
@@ -667,7 +750,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read the 284x SEEPROM.&n; */
 r_static
-r_void
+r_int
 DECL|function|aha2840_load_seeprom
 id|aha2840_load_seeprom
 c_func
@@ -684,18 +767,14 @@ id|sd
 suffix:semicolon
 r_struct
 id|seeprom_config
+op_star
 id|sc
-suffix:semicolon
-r_uint16
-id|checksum
-op_assign
-l_int|0
-suffix:semicolon
-r_uint8
-id|scsi_conf
 suffix:semicolon
 r_int
 id|have_seeprom
+suffix:semicolon
+r_uint8
+id|scsi_conf
 suffix:semicolon
 id|sd.sd_ahc
 op_assign
@@ -741,6 +820,10 @@ id|sd.sd_DI
 op_assign
 id|DI_2840
 suffix:semicolon
+id|sc
+op_assign
+id|ahc-&gt;seep_config
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -760,7 +843,7 @@ id|ahc
 suffix:semicolon
 id|have_seeprom
 op_assign
-id|read_seeprom
+id|ahc_read_seeprom
 c_func
 (paren
 op_amp
@@ -770,7 +853,6 @@ comma
 r_uint16
 op_star
 )paren
-op_amp
 id|sc
 comma
 multiline_comment|/*start_addr*/
@@ -790,64 +872,16 @@ c_cond
 id|have_seeprom
 )paren
 (brace
-multiline_comment|/* Check checksum */
-r_int
-id|i
-suffix:semicolon
-r_int
-id|maxaddr
-op_assign
-(paren
-r_sizeof
-(paren
-id|sc
-)paren
-op_div
-l_int|2
-)paren
-op_minus
-l_int|1
-suffix:semicolon
-r_uint16
-op_star
-id|scarray
-op_assign
-(paren
-r_uint16
-op_star
-)paren
-op_amp
-id|sc
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|maxaddr
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|checksum
-op_assign
-id|checksum
-op_plus
-id|scarray
-(braket
-id|i
-)braket
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|checksum
-op_ne
-id|sc.checksum
+id|ahc_verify_cksum
+c_func
+(paren
+id|sc
+)paren
+op_eq
+l_int|0
 )paren
 (brace
 r_if
@@ -919,6 +953,11 @@ id|i
 suffix:semicolon
 r_int
 id|max_targ
+suffix:semicolon
+r_uint16
+id|discenable
+suffix:semicolon
+id|max_targ
 op_assign
 (paren
 id|ahc-&gt;features
@@ -932,9 +971,6 @@ c_cond
 l_int|16
 suffix:colon
 l_int|8
-suffix:semicolon
-r_uint16
-id|discenable
 suffix:semicolon
 id|discenable
 op_assign
@@ -961,7 +997,7 @@ suffix:semicolon
 id|target_settings
 op_assign
 (paren
-id|sc.device_flags
+id|sc-&gt;device_flags
 (braket
 id|i
 )braket
@@ -974,7 +1010,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sc.device_flags
+id|sc-&gt;device_flags
 (braket
 id|i
 )braket
@@ -988,7 +1024,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sc.device_flags
+id|sc-&gt;device_flags
 (braket
 id|i
 )braket
@@ -1002,7 +1038,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sc.device_flags
+id|sc-&gt;device_flags
 (braket
 id|i
 )braket
@@ -1068,7 +1104,7 @@ l_int|0xff
 suffix:semicolon
 id|ahc-&gt;our_id
 op_assign
-id|sc.brtime_id
+id|sc-&gt;brtime_id
 op_amp
 id|CFSCSIID
 suffix:semicolon
@@ -1083,7 +1119,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sc.adapter_control
+id|sc-&gt;adapter_control
 op_amp
 id|CFSPARITY
 )paren
@@ -1094,7 +1130,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sc.adapter_control
+id|sc-&gt;adapter_control
 op_amp
 id|CFRESETB
 )paren
@@ -1105,7 +1141,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sc.bios_control
+id|sc-&gt;bios_control
 op_amp
 id|CF284XEXTEND
 )paren
@@ -1127,7 +1163,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sc.adapter_control
+id|sc-&gt;adapter_control
 op_amp
 id|CF284XSTERM
 )paren
@@ -1136,6 +1172,11 @@ op_or_assign
 id|AHC_TERM_ENB_A
 suffix:semicolon
 )brace
+r_return
+(paren
+id|have_seeprom
+)paren
+suffix:semicolon
 )brace
 r_static
 r_int

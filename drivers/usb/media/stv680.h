@@ -424,6 +424,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|red
+r_static
 r_int
 r_char
 id|red
@@ -946,6 +947,7 @@ l_int|221
 )brace
 suffix:semicolon
 DECL|variable|green
+r_static
 r_int
 r_char
 id|green
@@ -1468,6 +1470,7 @@ l_int|246
 )brace
 suffix:semicolon
 DECL|variable|blue
+r_static
 r_int
 r_char
 id|blue

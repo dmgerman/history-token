@@ -2,6 +2,7 @@ multiline_comment|/*&n; * cpufeature.h&n; *&n; * Defines x86 CPU feature bits&n;
 macro_line|#ifndef __ASM_I386_CPUFEATURE_H
 DECL|macro|__ASM_I386_CPUFEATURE_H
 mdefine_line|#define __ASM_I386_CPUFEATURE_H
+macro_line|#include &lt;linux/bitops.h&gt;
 DECL|macro|NCAPINTS
 mdefine_line|#define NCAPINTS&t;4&t;/* Currently we have 4 32-bit words worth of info */
 multiline_comment|/* Intel-defined CPU features, CPUID level 0x00000001, word 0 */
@@ -115,6 +116,8 @@ DECL|macro|cpu_has_pge
 mdefine_line|#define cpu_has_pge&t;&t;boot_cpu_has(X86_FEATURE_PGE)
 DECL|macro|cpu_has_apic
 mdefine_line|#define cpu_has_apic&t;&t;boot_cpu_has(X86_FEATURE_APIC)
+DECL|macro|cpu_has_sep
+mdefine_line|#define cpu_has_sep&t;&t;boot_cpu_has(X86_FEATURE_SEP)
 DECL|macro|cpu_has_mtrr
 mdefine_line|#define cpu_has_mtrr&t;&t;boot_cpu_has(X86_FEATURE_MTRR)
 DECL|macro|cpu_has_mmx

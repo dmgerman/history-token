@@ -44,14 +44,17 @@ DECL|member|i_dtime
 id|__u32
 id|i_dtime
 suffix:semicolon
+multiline_comment|/*&n;&t; * i_block_group is the number of the block group which contains&n;&t; * this file&squot;s inode.  Constant across the lifetime of the inode,&n;&t; * it is ued for making block allocation decisions - we try to&n;&t; * place a file&squot;s data blocks near its inode block, and new inodes&n;&t; * near to their parent directory&squot;s inode.&n;&t; */
 DECL|member|i_block_group
 id|__u32
 id|i_block_group
 suffix:semicolon
+multiline_comment|/*&n;&t; * i_next_alloc_block is the logical (file-relative) number of the&n;&t; * most-recently-allocated block in this file.  Yes, it is misnamed.&n;&t; * We use this for detecting linearly ascending allocation requests.&n;&t; */
 DECL|member|i_next_alloc_block
 id|__u32
 id|i_next_alloc_block
 suffix:semicolon
+multiline_comment|/*&n;&t; * i_next_alloc_goal is the *physical* companion to i_next_alloc_block.&n;&t; * it the the physical block number of the block which was most-recently&n;&t; * allocated to this file.  This give us the goal (target) for the next&n;&t; * allocation when we detect linearly ascending requests.&n;&t; */
 DECL|member|i_next_alloc_goal
 id|__u32
 id|i_next_alloc_goal

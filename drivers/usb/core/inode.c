@@ -2238,7 +2238,7 @@ id|printk
 (paren
 id|KERN_INFO
 l_string|&quot;Please use the &squot;usbfs&squot; filetype instead, &quot;
-l_string|&quot;the &squot;usbdevfs&squot; name is depreciated.&bslash;n&quot;
+l_string|&quot;the &squot;usbdevfs&squot; name is deprecated.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

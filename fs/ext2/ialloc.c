@@ -1606,11 +1606,28 @@ c_func
 (paren
 id|desc-&gt;bg_free_inodes_count
 )paren
+op_logical_and
+id|le16_to_cpu
+c_func
+(paren
+id|desc-&gt;bg_free_blocks_count
+)paren
 )paren
 r_goto
 id|found
 suffix:semicolon
-multiline_comment|/*&n;&t; * Use a quadratic hash to find a group with a&n;&t; * free inode&n;&t; */
+multiline_comment|/*&n;&t; * We&squot;re going to place this inode in a different blockgroup from its&n;&t; * parent.  We want to cause files in a common directory to all land in&n;&t; * the same blockgroup.  But we want files which are in a different&n;&t; * directory which shares a blockgroup with our parent to land in a&n;&t; * different blockgroup.&n;&t; *&n;&t; * So add our directory&squot;s i_ino into the starting point for the hash.&n;&t; */
+id|group
+op_assign
+(paren
+id|group
+op_plus
+id|parent-&gt;i_ino
+)paren
+op_mod
+id|ngroups
+suffix:semicolon
+multiline_comment|/*&n;&t; * Use a quadratic hash to find a group with a free inode and some&n;&t; * free blocks.&n;&t; */
 r_for
 c_loop
 (paren
@@ -1664,12 +1681,18 @@ c_func
 (paren
 id|desc-&gt;bg_free_inodes_count
 )paren
+op_logical_and
+id|le16_to_cpu
+c_func
+(paren
+id|desc-&gt;bg_free_blocks_count
+)paren
 )paren
 r_goto
 id|found
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * That failed: try linear search for a free inode&n;&t; */
+multiline_comment|/*&n;&t; * That failed: try linear search for a free inode, even if that group&n;&t; * has no free blocks.&n;&t; */
 id|group
 op_assign
 id|parent_group

@@ -927,18 +927,6 @@ id|scsi_driverfs_driver
 suffix:semicolon
 )brace
 suffix:semicolon
-r_void
-id|scsi_initialize_queue
-c_func
-(paren
-id|Scsi_Device
-op_star
-comma
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Highlevel driver registration/unregistration.&n; */
 r_extern
 r_int

@@ -21,7 +21,7 @@ DECL|macro|BN_ALIGN_MASK
 mdefine_line|#define BN_ALIGN_MASK&t;((1 &lt;&lt; (PAGE_CACHE_SHIFT - BBSHIFT)) - 1)
 macro_line|#ifndef GFP_READAHEAD
 DECL|macro|GFP_READAHEAD
-mdefine_line|#define GFP_READAHEAD&t;0
+mdefine_line|#define GFP_READAHEAD&t;__GFP_NOWARN
 macro_line|#endif
 multiline_comment|/*&n; * Debug code&n; */
 macro_line|#ifdef PAGEBUF_TRACE
@@ -2714,11 +2714,6 @@ op_or
 id|PBF_READ_AHEAD
 )paren
 suffix:semicolon
-multiline_comment|/* don&squot;t complain on allocation failure, it&squot;s fine with us */
-id|current-&gt;flags
-op_or_assign
-id|PF_NOWARN
-suffix:semicolon
 id|pagebuf_get
 c_func
 (paren
@@ -2730,11 +2725,6 @@ id|isize
 comma
 id|flags
 )paren
-suffix:semicolon
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_NOWARN
 suffix:semicolon
 )brace
 id|page_buf_t

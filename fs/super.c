@@ -604,21 +604,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sop-&gt;sync_fs
-)paren
-id|sop
-op_member_access_from_pointer
-id|sync_fs
-c_func
-(paren
-id|sb
-comma
-l_int|1
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|sop-&gt;put_super
 )paren
 id|sop
@@ -1260,7 +1245,7 @@ id|MS_RDONLY
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* hm.  Was remounted r/w meanwhile */
+multiline_comment|/* hm.  Was remounted r/o meanwhile */
 id|sb-&gt;s_count
 op_increment
 suffix:semicolon
@@ -1278,6 +1263,11 @@ op_amp
 id|sb-&gt;s_umount
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sb-&gt;s_root
+)paren
 id|sb-&gt;s_op
 op_member_access_from_pointer
 id|sync_fs

@@ -373,6 +373,7 @@ id|MAX_PKTGEN
 suffix:semicolon
 multiline_comment|/** Convert to miliseconds */
 DECL|function|tv_to_ms
+r_static
 r_inline
 id|__u64
 id|tv_to_ms
@@ -409,6 +410,7 @@ id|ms
 suffix:semicolon
 )brace
 DECL|function|getCurMs
+r_static
 r_inline
 id|__u64
 id|getCurMs
@@ -6677,6 +6679,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|create_proc_dir
+r_static
 r_int
 id|create_proc_dir
 c_func
@@ -6768,6 +6771,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|remove_proc_dir
+r_static
 r_int
 id|remove_proc_dir
 c_func

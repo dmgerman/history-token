@@ -666,11 +666,11 @@ id|arg
 suffix:semicolon
 id|regs.xds
 op_assign
-id|__KERNEL_DS
+id|__USER_DS
 suffix:semicolon
 id|regs.xes
 op_assign
-id|__KERNEL_DS
+id|__USER_DS
 suffix:semicolon
 id|regs.orig_eax
 op_assign
@@ -1526,9 +1526,13 @@ id|prev_p
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Reload esp0, LDT and the page table pointer:&n;&t; */
-id|tss-&gt;esp0
-op_assign
+id|load_esp0
+c_func
+(paren
+id|tss
+comma
 id|next-&gt;esp0
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Load the per-thread Thread-Local Storage descriptor.&n;&t; */
 id|load_TLS

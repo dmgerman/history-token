@@ -340,7 +340,7 @@ c_func
 (paren
 id|ether_dev-&gt;rx_urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 )paren
@@ -801,7 +801,7 @@ c_func
 (paren
 id|ether_dev-&gt;tx_urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 )paren

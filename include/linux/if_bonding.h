@@ -24,11 +24,13 @@ mdefine_line|#define BOND_CHANGE_ACTIVE_OLD&t;&t;(SIOCDEVPRIVATE + 13)
 DECL|macro|BOND_CHECK_MII_STATUS
 mdefine_line|#define BOND_CHECK_MII_STATUS&t;(SIOCGMIIPHY)
 DECL|macro|BOND_MODE_ROUNDROBIN
-mdefine_line|#define BOND_MODE_ROUNDROBIN    0
+mdefine_line|#define BOND_MODE_ROUNDROBIN&t;0
 DECL|macro|BOND_MODE_ACTIVEBACKUP
-mdefine_line|#define BOND_MODE_ACTIVEBACKUP  1
+mdefine_line|#define BOND_MODE_ACTIVEBACKUP&t;1
 DECL|macro|BOND_MODE_XOR
-mdefine_line|#define BOND_MODE_XOR           2 
+mdefine_line|#define BOND_MODE_XOR&t;&t;2
+DECL|macro|BOND_MODE_BROADCAST
+mdefine_line|#define BOND_MODE_BROADCAST&t;3
 multiline_comment|/* each slave&squot;s link has 4 states */
 DECL|macro|BOND_LINK_UP
 mdefine_line|#define BOND_LINK_UP    0           /* link is up and running */
@@ -127,6 +129,11 @@ DECL|member|delay
 r_int
 id|delay
 suffix:semicolon
+DECL|member|jiffies
+r_int
+r_int
+id|jiffies
+suffix:semicolon
 DECL|member|link
 r_char
 id|link
@@ -170,6 +177,16 @@ DECL|member|current_slave
 id|slave_t
 op_star
 id|current_slave
+suffix:semicolon
+DECL|member|primary_slave
+id|slave_t
+op_star
+id|primary_slave
+suffix:semicolon
+DECL|member|current_arp_slave
+id|slave_t
+op_star
+id|current_arp_slave
 suffix:semicolon
 DECL|member|slave_cnt
 id|__s32

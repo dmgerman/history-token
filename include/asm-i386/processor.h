@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/cpufeature.h&gt;
+macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -163,6 +164,11 @@ r_extern
 r_struct
 id|cpuinfo_x86
 id|boot_cpu_data
+suffix:semicolon
+r_extern
+r_struct
+id|cpuinfo_x86
+id|new_cpu_data
 suffix:semicolon
 r_extern
 r_struct
@@ -1199,6 +1205,14 @@ id|v86mask
 comma
 id|saved_esp0
 suffix:semicolon
+DECL|member|saved_fs
+DECL|member|saved_gs
+r_int
+r_int
+id|saved_fs
+comma
+id|saved_gs
+suffix:semicolon
 multiline_comment|/* IO permissions */
 DECL|member|ts_io_bitmap
 r_int
@@ -1212,6 +1226,81 @@ DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ { 0, 0 } , },&t;&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;0, 0, 0, 0, &t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ [0 ... 7] = 0 },&t;/* debugging registers */&t;&bslash;&n;&t;0, 0, 0,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ { 0, }, },&t;&t;/* 387 state */&t;&t;&t;&bslash;&n;&t;0,0,0,0,0,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;NULL,&t;&t;&t;/* io permissions */&t;&t;&bslash;&n;}
 DECL|macro|INIT_TSS
 mdefine_line|#define INIT_TSS  {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;0,0, /* back_link, __blh */&t;&t;&t;&t;&bslash;&n;&t;sizeof(init_stack) + (long) &amp;init_stack, /* esp0 */&t;&bslash;&n;&t;__KERNEL_DS, 0, /* ss0 */&t;&t;&t;&t;&bslash;&n;&t;0,0,0,0,0,0, /* stack1, stack2 */&t;&t;&t;&bslash;&n;&t;0, /* cr3 */&t;&t;&t;&t;&t;&t;&bslash;&n;&t;0,0, /* eip,eflags */&t;&t;&t;&t;&t;&bslash;&n;&t;0,0,0,0, /* eax,ecx,edx,ebx */&t;&t;&t;&t;&bslash;&n;&t;0,0,0,0, /* esp,ebp,esi,edi */&t;&t;&t;&t;&bslash;&n;&t;0,0,0,0,0,0, /* es,cs,ss */&t;&t;&t;&t;&bslash;&n;&t;0,0,0,0,0,0, /* ds,fs,gs */&t;&t;&t;&t;&bslash;&n;&t;GDT_ENTRY_LDT,0, /* ldt */&t;&t;&t;&t;&t;&bslash;&n;&t;0, INVALID_IO_BITMAP_OFFSET, /* tace, bitmap */&t;&t;&bslash;&n;&t;{~0, } /* ioperm */&t;&t;&t;&t;&t;&bslash;&n;}
+DECL|function|load_esp0
+r_static
+r_inline
+r_void
+id|load_esp0
+c_func
+(paren
+r_struct
+id|tss_struct
+op_star
+id|tss
+comma
+r_int
+r_int
+id|esp0
+)paren
+(brace
+id|tss-&gt;esp0
+op_assign
+id|esp0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cpu_has_sep
+)paren
+(brace
+id|wrmsr
+c_func
+(paren
+id|MSR_IA32_SYSENTER_CS
+comma
+id|__KERNEL_CS
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|wrmsr
+c_func
+(paren
+id|MSR_IA32_SYSENTER_ESP
+comma
+id|esp0
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+)brace
+DECL|function|disable_sysenter
+r_static
+r_inline
+r_void
+id|disable_sysenter
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cpu_has_sep
+)paren
+id|wrmsr
+c_func
+(paren
+id|MSR_IA32_SYSENTER_CS
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 DECL|macro|start_thread
 mdefine_line|#define start_thread(regs, new_eip, new_esp) do {&t;&t;&bslash;&n;&t;__asm__(&quot;movl %0,%%fs ; movl %0,%%gs&quot;: :&quot;r&quot; (0));&t;&bslash;&n;&t;set_fs(USER_DS);&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;xds = __USER_DS;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;xes = __USER_DS;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;xss = __USER_DS;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;xcs = __USER_CS;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;eip = new_eip;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;esp = new_esp;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* Forward declaration, a strange C thing */

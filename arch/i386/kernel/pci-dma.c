@@ -4,16 +4,16 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-DECL|function|pci_alloc_consistent
+DECL|function|dma_alloc_coherent
 r_void
 op_star
-id|pci_alloc_consistent
+id|dma_alloc_coherent
 c_func
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
-id|hwdev
+id|dev
 comma
 r_int
 id|size
@@ -35,7 +35,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hwdev
+id|dev
 op_eq
 l_int|NULL
 op_logical_or
@@ -43,7 +43,8 @@ op_logical_or
 (paren
 id|u32
 )paren
-id|hwdev-&gt;dma_mask
+op_star
+id|dev-&gt;dma_mask
 op_ne
 l_int|0xffffffff
 )paren
@@ -102,15 +103,15 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|pci_free_consistent
+DECL|function|dma_free_coherent
 r_void
-id|pci_free_consistent
+id|dma_free_coherent
 c_func
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
-id|hwdev
+id|dev
 comma
 r_int
 id|size

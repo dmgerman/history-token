@@ -184,7 +184,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|vma-&gt;vm_file
+id|file
 )paren
 r_return
 op_minus

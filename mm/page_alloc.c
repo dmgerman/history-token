@@ -2431,9 +2431,9 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|current-&gt;flags
+id|gfp_mask
 op_amp
-id|PF_NOWARN
+id|__GFP_NOWARN
 )paren
 )paren
 (brace

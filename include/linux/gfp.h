@@ -23,6 +23,8 @@ DECL|macro|__GFP_FS
 mdefine_line|#define __GFP_FS&t;0x100&t;/* Can call down to low-level FS? */
 DECL|macro|__GFP_COLD
 mdefine_line|#define __GFP_COLD&t;0x200&t;/* Cache-cold page required */
+DECL|macro|__GFP_NOWARN
+mdefine_line|#define __GFP_NOWARN&t;0x400&t;/* Suppress page allocation failure warning */
 DECL|macro|GFP_NOHIGHIO
 mdefine_line|#define GFP_NOHIGHIO&t;(             __GFP_WAIT | __GFP_IO)
 DECL|macro|GFP_NOIO

@@ -1093,7 +1093,7 @@ id|addr
 )paren
 (brace
 r_struct
-id|sctp_func
+id|sctp_af
 op_star
 id|af
 op_assign
@@ -1188,7 +1188,7 @@ id|addr
 )paren
 (brace
 r_struct
-id|sctp_func
+id|sctp_af
 op_star
 id|af
 suffix:semicolon

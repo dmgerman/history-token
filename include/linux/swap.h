@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 DECL|macro|SWAP_FLAG_PREFER
@@ -15,6 +16,22 @@ DECL|macro|SWAP_FLAG_PRIO_MASK
 mdefine_line|#define SWAP_FLAG_PRIO_MASK&t;0x7fff
 DECL|macro|SWAP_FLAG_PRIO_SHIFT
 mdefine_line|#define SWAP_FLAG_PRIO_SHIFT&t;0
+DECL|function|current_is_kswapd
+r_static
+r_inline
+r_int
+id|current_is_kswapd
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|current-&gt;flags
+op_amp
+id|PF_KSWAPD
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * MAX_SWAPFILES defines the maximum number of swaptypes: things which can&n; * be swapped to.  The swap type and the offset into that swap type are&n; * encoded into pte&squot;s and into pgoff_t&squot;s in the swapcache.  Using five bits&n; * for the type means that the maximum number of swapcache pages is 27 bits&n; * on 32-bit-pgoff_t architectures.  And that assumes that the architecture packs&n; * the type/offset into the pte as 5/27 as well.&n; */
 DECL|macro|MAX_SWAPFILES_SHIFT
 mdefine_line|#define MAX_SWAPFILES_SHIFT&t;5

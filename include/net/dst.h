@@ -4,6 +4,7 @@ DECL|macro|_NET_DST_H
 mdefine_line|#define _NET_DST_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
+macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;net/neighbour.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * 0 - no debugging messages&n; * 1 - rare events and bugs (default)&n; * 2 - trace mode.&n; */
@@ -162,6 +163,11 @@ r_struct
 id|dst_ops
 op_star
 id|ops
+suffix:semicolon
+DECL|member|rcu_head
+r_struct
+id|rcu_head
+id|rcu_head
 suffix:semicolon
 DECL|member|info
 r_char

@@ -1104,6 +1104,10 @@ id|maxp
 comma
 id|ret
 suffix:semicolon
+r_char
+op_star
+id|message
+suffix:semicolon
 id|hub-&gt;descriptor
 op_assign
 id|kmalloc
@@ -1125,21 +1129,17 @@ op_logical_neg
 id|hub-&gt;descriptor
 )paren
 (brace
-id|err
-c_func
-(paren
-l_string|&quot;Unable to kmalloc %Zd bytes for hub descriptor&quot;
-comma
-r_sizeof
-(paren
-op_star
-id|hub-&gt;descriptor
-)paren
-)paren
+id|message
+op_assign
+l_string|&quot;can&squot;t kmalloc hub descriptor&quot;
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
-l_int|1
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|fail
 suffix:semicolon
 )brace
 multiline_comment|/* Request the entire hub descriptor.&n;&t; * hub-&gt;descriptor can handle USB_MAXCHILDREN ports,&n;&t; * but the hub can/will return fewer bytes here.&n;&t; */
@@ -1167,23 +1167,12 @@ OL
 l_int|0
 )paren
 (brace
-id|err
-c_func
-(paren
-l_string|&quot;Unable to get hub descriptor (err = %d)&quot;
-comma
-id|ret
-)paren
+id|message
+op_assign
+l_string|&quot;can&squot;t read hub descriptor&quot;
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|hub-&gt;descriptor
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
+r_goto
+id|fail
 suffix:semicolon
 )brace
 r_else
@@ -1195,23 +1184,17 @@ OG
 id|USB_MAXCHILDREN
 )paren
 (brace
-id|err
-c_func
-(paren
-l_string|&quot;Hub is too big! %d children&quot;
-comma
-id|hub-&gt;descriptor-&gt;bNbrPorts
-)paren
+id|message
+op_assign
+l_string|&quot;hub has too many ports!&quot;
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|hub-&gt;descriptor
-)paren
-suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
-l_int|1
+id|ENODEV
+suffix:semicolon
+r_goto
+id|fail
 suffix:semicolon
 )brace
 id|dev-&gt;maxchild
@@ -1626,23 +1609,12 @@ OL
 l_int|0
 )paren
 (brace
-id|err
-c_func
-(paren
-l_string|&quot;Unable to get hub status (err = %d)&quot;
-comma
-id|ret
-)paren
+id|message
+op_assign
+l_string|&quot;can&squot;t get hub status&quot;
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|hub-&gt;descriptor
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
+r_goto
+id|fail
 suffix:semicolon
 )brace
 id|le16_to_cpus
@@ -1747,21 +1719,17 @@ op_logical_neg
 id|hub-&gt;urb
 )paren
 (brace
-id|err
-c_func
-(paren
+id|message
+op_assign
 l_string|&quot;couldn&squot;t allocate interrupt urb&quot;
-)paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|hub-&gt;descriptor
-)paren
-suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
-l_int|1
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|fail
 suffix:semicolon
 )brace
 id|usb_fill_int_urb
@@ -1800,23 +1768,12 @@ c_cond
 id|ret
 )paren
 (brace
-id|err
-c_func
-(paren
-l_string|&quot;usb_submit_urb failed (%d)&quot;
-comma
-id|ret
-)paren
+id|message
+op_assign
+l_string|&quot;couldn&squot;t submit status urb&quot;
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|hub-&gt;descriptor
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
+r_goto
+id|fail
 suffix:semicolon
 )brace
 multiline_comment|/* Wake up khubd */
@@ -1835,6 +1792,23 @@ id|hub
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|fail
+suffix:colon
+id|dev_err
+(paren
+id|hub-&gt;intf-&gt;dev
+comma
+l_string|&quot;config failed, %s (err %d)&bslash;n&quot;
+comma
+id|message
+comma
+id|ret
+)paren
+suffix:semicolon
+multiline_comment|/* hub_disconnect() frees urb and descriptor */
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|hub_disconnect
@@ -2074,14 +2048,13 @@ l_int|1
 )paren
 )paren
 (brace
-id|err
-c_func
+id|descriptor_error
+suffix:colon
+id|dev_err
 (paren
-l_string|&quot;invalid subclass (%d) for USB hub device #%d&quot;
+id|intf-&gt;dev
 comma
-id|desc-&gt;desc.bInterfaceSubClass
-comma
-id|dev-&gt;devnum
+l_string|&quot;bad descriptor, ignoring hub&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2098,19 +2071,8 @@ op_ne
 l_int|1
 )paren
 (brace
-id|err
-c_func
-(paren
-l_string|&quot;invalid bNumEndpoints (%d) for USB hub device #%d&quot;
-comma
-id|desc-&gt;desc.bNumEndpoints
-comma
-id|dev-&gt;devnum
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
+r_goto
+id|descriptor_error
 suffix:semicolon
 )brace
 id|endpoint
@@ -2135,17 +2097,8 @@ id|USB_DIR_IN
 )paren
 )paren
 (brace
-id|err
-c_func
-(paren
-l_string|&quot;Device #%d is hub class, but has output endpoint?&quot;
-comma
-id|dev-&gt;devnum
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
+r_goto
+id|descriptor_error
 suffix:semicolon
 )brace
 multiline_comment|/* If it&squot;s not an interrupt endpoint, we&squot;d better punt! */
@@ -2161,13 +2114,8 @@ op_ne
 id|USB_ENDPOINT_XFER_INT
 )paren
 (brace
-id|err
-c_func
-(paren
-l_string|&quot;Device #%d is hub class, but endpoint is not interrupt?&quot;
-comma
-id|dev-&gt;devnum
-)paren
+r_goto
+id|descriptor_error
 suffix:semicolon
 r_return
 op_minus
@@ -2319,14 +2267,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|err
-c_func
-(paren
-l_string|&quot;hub configuration failed for device at %s&quot;
-comma
-id|dev-&gt;devpath
-)paren
-suffix:semicolon
 id|hub_disconnect
 (paren
 id|intf

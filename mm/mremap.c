@@ -1123,6 +1123,18 @@ id|old_len
 )paren
 )paren
 (brace
+r_int
+r_int
+id|must_fault_in
+suffix:semicolon
+r_int
+r_int
+id|fault_in_start
+suffix:semicolon
+r_int
+r_int
+id|fault_in_end
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1255,6 +1267,20 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* nothing more to do */
+id|must_fault_in
+op_assign
+id|new_vma-&gt;vm_flags
+op_amp
+id|VM_LOCKED
+suffix:semicolon
+id|fault_in_start
+op_assign
+id|new_vma-&gt;vm_start
+suffix:semicolon
+id|fault_in_end
+op_assign
+id|new_vma-&gt;vm_end
+suffix:semicolon
 id|do_munmap
 c_func
 (paren
@@ -1265,6 +1291,7 @@ comma
 id|old_len
 )paren
 suffix:semicolon
+multiline_comment|/* new_vma could have been invalidated by do_munmap */
 multiline_comment|/* Restore VM_ACCOUNT if one or two pieces of vma left */
 r_if
 c_cond
@@ -1295,9 +1322,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|new_vma-&gt;vm_flags
-op_amp
-id|VM_LOCKED
+id|must_fault_in
 )paren
 (brace
 id|current-&gt;mm-&gt;locked_vm
@@ -1309,9 +1334,9 @@ suffix:semicolon
 id|make_pages_present
 c_func
 (paren
-id|new_vma-&gt;vm_start
+id|fault_in_start
 comma
-id|new_vma-&gt;vm_end
+id|fault_in_end
 )paren
 suffix:semicolon
 )brace

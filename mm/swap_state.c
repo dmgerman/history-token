@@ -489,10 +489,6 @@ op_and_assign
 op_complement
 id|PF_MEMALLOC
 suffix:semicolon
-id|current-&gt;flags
-op_or_assign
-id|PF_NOWARN
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Add it to the swap cache and mark it dirty&n;&t;&t; */
 id|err
 op_assign
@@ -506,21 +502,6 @@ id|swapper_space
 comma
 id|entry.val
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|pf_flags
-op_amp
-id|PF_NOWARN
-)paren
-)paren
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_NOWARN
 suffix:semicolon
 r_if
 c_cond

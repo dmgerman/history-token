@@ -56,6 +56,10 @@ op_star
 id|c
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|disable_pse
+suffix:semicolon
 DECL|function|default_init
 r_static
 r_void
@@ -1357,30 +1361,6 @@ c_func
 id|c
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;CPU: Before vendor init, caps: %08lx %08lx %08lx, vendor = %d&bslash;n&quot;
-comma
-id|c-&gt;x86_capability
-(braket
-l_int|0
-)braket
-comma
-id|c-&gt;x86_capability
-(braket
-l_int|1
-)braket
-comma
-id|c-&gt;x86_capability
-(braket
-l_int|2
-)braket
-comma
-id|c-&gt;x86_vendor
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Vendor-specific initialization.  In this section we&n;&t; * canonicalize the feature flags, meaning if there are&n;&t; * features a certain CPU supports which CPUID doesn&squot;t&n;&t; * tell us, CPUID claiming incorrect flags, or other bugs,&n;&t; * we handle them here.&n;&t; *&n;&t; * At the end of this section, c-&gt;x86_capability better&n;&t; * indicate the features this CPU genuinely supports!&n;&t; */
 r_if
 c_cond
@@ -1400,33 +1380,6 @@ id|squash_the_stupid_serial_number
 c_func
 (paren
 id|c
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;CPU: After vendor init, caps: %08lx %08lx %08lx %08lx&bslash;n&quot;
-comma
-id|c-&gt;x86_capability
-(braket
-l_int|0
-)braket
-comma
-id|c-&gt;x86_capability
-(braket
-l_int|1
-)braket
-comma
-id|c-&gt;x86_capability
-(braket
-l_int|2
-)braket
-comma
-id|c-&gt;x86_capability
-(braket
-l_int|3
-)braket
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The vendor-specific functions might have changed features.  Now&n;&t; * we do &quot;generic changes.&quot;&n;&t; */
@@ -1468,6 +1421,19 @@ id|c-&gt;x86_capability
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|disable_pse
+)paren
+id|clear_bit
+c_func
+(paren
+id|X86_FEATURE_PSE
+comma
+id|c-&gt;x86_capability
+)paren
+suffix:semicolon
 multiline_comment|/* If the model name is still unset, do table lookup. */
 r_if
 c_cond
@@ -1583,33 +1549,6 @@ id|i
 )braket
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;CPU:             Common caps: %08lx %08lx %08lx %08lx&bslash;n&quot;
-comma
-id|boot_cpu_data.x86_capability
-(braket
-l_int|0
-)braket
-comma
-id|boot_cpu_data.x86_capability
-(braket
-l_int|1
-)braket
-comma
-id|boot_cpu_data.x86_capability
-(braket
-l_int|2
-)braket
-comma
-id|boot_cpu_data.x86_capability
-(braket
-l_int|3
-)braket
-)paren
-suffix:semicolon
 multiline_comment|/* Init Machine Check Exception if available. */
 macro_line|#ifdef CONFIG_X86_MCE
 id|mcheck_init
@@ -2186,9 +2125,13 @@ comma
 id|cpu
 )paren
 suffix:semicolon
-id|t-&gt;esp0
-op_assign
+id|load_esp0
+c_func
+(paren
+id|t
+comma
 id|thread-&gt;esp0
+)paren
 suffix:semicolon
 id|set_tss_desc
 c_func

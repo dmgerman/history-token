@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
-macro_line|#include &quot;mach_apic.h&quot;
+macro_line|#include &lt;mach_apic.h&gt;
 DECL|macro|APIC_LOCKUP_DEBUG
 macro_line|#undef APIC_LOCKUP_DEBUG
 DECL|macro|APIC_LOCKUP_DEBUG
@@ -824,7 +824,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|clustered_apic_mode
+id|no_balance_irq
 )paren
 r_return
 suffix:semicolon
@@ -2784,10 +2784,6 @@ id|entry.mask
 op_assign
 l_int|1
 suffix:semicolon
-id|entry.dest.logical.logical_dest
-op_assign
-id|TARGET_CPUS
-suffix:semicolon
 )brace
 id|irq
 op_assign
@@ -2805,18 +2801,12 @@ multiline_comment|/*&n;&t;&t; * skip adding the timer int on secondary nodes, wh
 r_if
 c_cond
 (paren
-id|clustered_apic_mode
-op_logical_and
+id|multi_timer_check
+c_func
 (paren
 id|apic
-op_ne
-l_int|0
-)paren
-op_logical_and
-(paren
+comma
 id|irq
-op_eq
-l_int|0
 )paren
 )paren
 r_continue
@@ -4913,8 +4903,6 @@ suffix:semicolon
 r_int
 r_int
 id|phys_id_present_map
-op_assign
-id|phys_cpu_present_map
 suffix:semicolon
 r_int
 id|apic
@@ -4938,18 +4926,13 @@ id|acpi_ioapic
 multiline_comment|/* This gets done during IOAPIC enumeration for ACPI. */
 r_return
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|clustered_apic_mode
-)paren
-multiline_comment|/* We don&squot;t have a good way to do this yet - hack */
 id|phys_id_present_map
 op_assign
+id|ioapic_phys_id_map
+c_func
 (paren
-id|u_long
+id|phys_cpu_present_map
 )paren
-l_int|0xf
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the IOAPIC ID to the value stored in the MPC table.&n;&t; */
 r_for
