@@ -2116,6 +2116,12 @@ l_int|8
 op_assign
 id|slot
 suffix:semicolon
+id|cgc.timeout
+op_assign
+l_int|60
+op_star
+id|HZ
+suffix:semicolon
 multiline_comment|/* The Sanyo 3 CD changer uses byte 7 of the &n;&t;GPCMD_TEST_UNIT_READY to command to switch CDs instead of&n;&t;using the GPCMD_LOAD_UNLOAD opcode. */
 r_if
 c_cond
