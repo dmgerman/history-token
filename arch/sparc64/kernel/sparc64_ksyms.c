@@ -906,6 +906,20 @@ c_func
 id|__atomic_sub
 )paren
 suffix:semicolon
+DECL|variable|__atomic64_add
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__atomic64_add
+)paren
+suffix:semicolon
+DECL|variable|__atomic64_sub
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__atomic64_sub
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|atomic_dec_and_lock
 id|EXPORT_SYMBOL

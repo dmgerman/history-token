@@ -1284,6 +1284,9 @@ op_assign
 id|harmony.first_filled_record
 suffix:semicolon
 multiline_comment|/* Copy the page to an aligned buffer */
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -1301,7 +1304,16 @@ id|buf_to_read
 comma
 id|HARMONY_BUF_SIZE
 )paren
+)paren
+(brace
+id|count
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|harmony.nb_filled_record
 op_decrement
 suffix:semicolon
@@ -1328,7 +1340,7 @@ DECL|macro|test_rate
 mdefine_line|#define test_rate(tested,real_value,harmony_value) if ((tested)&lt;=(real_value))&bslash;&n;                                                    
 DECL|function|harmony_format_auto_detect
 r_static
-r_void
+r_int
 id|harmony_format_auto_detect
 c_func
 (paren
@@ -1350,6 +1362,11 @@ suffix:semicolon
 id|u32
 id|start_string
 suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1358,6 +1375,9 @@ OG
 l_int|24
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -1370,6 +1390,11 @@ r_sizeof
 id|file_header
 )paren
 )paren
+)paren
+id|ret
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
 id|start_string
 op_assign
@@ -1476,7 +1501,8 @@ comma
 id|HARMONY_SS_STEREO
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_switch
@@ -1527,7 +1553,8 @@ id|harmony.dac_rate
 op_assign
 id|speed
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 )brace
@@ -1540,6 +1567,11 @@ id|HARMONY_SR_8KHZ
 comma
 id|HARMONY_SS_MONO
 )paren
+suffix:semicolon
+id|out
+suffix:colon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|macro|four_bytes_to_u32
@@ -1593,6 +1625,10 @@ c_cond
 op_logical_neg
 id|harmony.format_initialized
 )paren
+(brace
+r_if
+c_cond
+(paren
 id|harmony_format_auto_detect
 c_func
 (paren
@@ -1600,7 +1636,12 @@ id|buffer
 comma
 id|total_count
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
@@ -1735,6 +1776,9 @@ id|harmony.play_offset
 suffix:semicolon
 )brace
 multiline_comment|/* Copy the page to an aligned buffer */
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -1754,6 +1798,10 @@ id|count
 comma
 id|frame_size
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|CHECK_WBACK_INV_OFFSET
 c_func

@@ -1076,20 +1076,6 @@ mdefine_line|#define&t;TOLOWER(x)&t;((((x) &gt;= &squot;A&squot;) &amp;&amp; ((x
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Declare all those functions in this driver!&n; */
 macro_line|#ifdef MODULE
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_static
 r_void
 id|stl_argbrds

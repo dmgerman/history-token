@@ -569,8 +569,8 @@ id|KERN_ERR
 l_string|&quot;kahlua: audio not responding.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|1
+r_goto
+id|err_out_free
 suffix:semicolon
 )brace
 id|oldquiet
@@ -597,6 +597,19 @@ id|sb_be_quiet
 op_assign
 id|oldquiet
 suffix:semicolon
+r_goto
+id|err_out_free
+suffix:semicolon
+)brace
+id|sb_be_quiet
+op_assign
+id|oldquiet
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+id|err_out_free
+suffix:colon
 id|pci_set_drvdata
 c_func
 (paren
@@ -613,14 +626,6 @@ id|hw_config
 suffix:semicolon
 r_return
 l_int|1
-suffix:semicolon
-)brace
-id|sb_be_quiet
-op_assign
-id|oldquiet
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|remove_one

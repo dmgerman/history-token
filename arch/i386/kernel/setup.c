@@ -19,6 +19,7 @@ macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/edd.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &quot;setup_arch_pre.h&quot;
 macro_line|#include &quot;mach_resources.h&quot;
 DECL|variable|__initdata
@@ -265,13 +266,9 @@ id|root_mountflags
 suffix:semicolon
 r_extern
 r_char
-id|_text
-comma
-id|_etext
-comma
-id|_edata
-comma
 id|_end
+(braket
+)braket
 suffix:semicolon
 DECL|variable|saved_videomode
 r_int
@@ -2727,7 +2724,6 @@ c_func
 id|__pa
 c_func
 (paren
-op_amp
 id|_end
 )paren
 )paren
@@ -4021,7 +4017,6 @@ op_assign
 r_int
 r_int
 )paren
-op_amp
 id|_text
 suffix:semicolon
 id|init_mm.end_code
@@ -4030,7 +4025,6 @@ op_assign
 r_int
 r_int
 )paren
-op_amp
 id|_etext
 suffix:semicolon
 id|init_mm.end_data
@@ -4039,7 +4033,6 @@ op_assign
 r_int
 r_int
 )paren
-op_amp
 id|_edata
 suffix:semicolon
 id|init_mm.brk
@@ -4048,7 +4041,6 @@ op_assign
 r_int
 r_int
 )paren
-op_amp
 id|_end
 suffix:semicolon
 id|code_resource.start
@@ -4056,7 +4048,6 @@ op_assign
 id|virt_to_phys
 c_func
 (paren
-op_amp
 id|_text
 )paren
 suffix:semicolon
@@ -4065,7 +4056,6 @@ op_assign
 id|virt_to_phys
 c_func
 (paren
-op_amp
 id|_etext
 )paren
 op_minus
@@ -4076,7 +4066,6 @@ op_assign
 id|virt_to_phys
 c_func
 (paren
-op_amp
 id|_etext
 )paren
 suffix:semicolon
@@ -4085,7 +4074,6 @@ op_assign
 id|virt_to_phys
 c_func
 (paren
-op_amp
 id|_edata
 )paren
 op_minus
