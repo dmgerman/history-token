@@ -245,22 +245,6 @@ r_int
 id|size
 )paren
 suffix:semicolon
-id|memHeap_t
-op_star
-id|mmAddRange
-c_func
-(paren
-id|memHeap_t
-op_star
-id|heap
-comma
-r_int
-id|ofs
-comma
-r_int
-id|size
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Allocate &squot;size&squot; bytes with 2^align2 bytes alignment,&n; * restrict the search to free memory after &squot;startSearch&squot;&n; * depth and back buffers should be in different 4mb banks&n; * to get better page hits if possible&n; * input:&t;size = size of block&n; *       &t;align2 = 2^align2 bytes alignment&n; *&t;&t;startSearch = linear offset from start of heap to begin search&n; * return: pointer to the allocated block, 0 if error&n; */
 id|PMemBlock
 id|mmAllocMem
@@ -299,44 +283,6 @@ c_func
 (paren
 id|PMemBlock
 id|b
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Reserve &squot;size&squot; bytes block start at offset&n; * This is used to prevent allocation of memory already used&n; * by the X server for the front buffer, pixmaps, and cursor&n; * input: size, offset&n; * output: 0 if OK, -1 if error&n; */
-r_int
-id|mmReserveMem
-c_func
-(paren
-id|memHeap_t
-op_star
-id|heap
-comma
-r_int
-id|offset
-comma
-r_int
-id|size
-)paren
-suffix:semicolon
-r_int
-id|mmFreeReserved
-c_func
-(paren
-id|memHeap_t
-op_star
-id|heap
-comma
-r_int
-id|offset
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * destroy MM&n; */
-r_void
-id|mmDestroy
-c_func
-(paren
-id|memHeap_t
-op_star
-id|mmInit
 )paren
 suffix:semicolon
 multiline_comment|/* For debuging purpose. */

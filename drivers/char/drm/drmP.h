@@ -816,11 +816,11 @@ id|drm_file
 op_star
 id|prev
 suffix:semicolon
-DECL|member|dev
+DECL|member|head
 r_struct
-id|drm_device
+id|drm_head
 op_star
-id|dev
+id|head
 suffix:semicolon
 DECL|member|remove_auth_on_close
 r_int
@@ -1688,7 +1688,46 @@ id|pci_driver
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * DRM device structure.&n; */
+multiline_comment|/**&n; * DRM head structure. This structure represent a video head on a card&n; * that may contain multiple heads. Embed one per head of these in the&n; * private drm_device structure.&n; */
+DECL|struct|drm_head
+r_typedef
+r_struct
+id|drm_head
+(brace
+DECL|member|minor
+r_int
+id|minor
+suffix:semicolon
+multiline_comment|/**&lt; Minor device number */
+DECL|member|dev
+r_struct
+id|drm_device
+op_star
+id|dev
+suffix:semicolon
+DECL|member|dev_root
+r_struct
+id|proc_dir_entry
+op_star
+id|dev_root
+suffix:semicolon
+multiline_comment|/**&lt; proc directory entry */
+DECL|member|device
+id|dev_t
+id|device
+suffix:semicolon
+multiline_comment|/**&lt; Device number for mknod */
+DECL|member|dev_class
+r_struct
+id|class_device
+op_star
+id|dev_class
+suffix:semicolon
+DECL|typedef|drm_head_t
+)brace
+id|drm_head_t
+suffix:semicolon
+multiline_comment|/**&n; * DRM device structure. This structure represent a complete card that&n; * may contain multiple heads.&n; */
 DECL|struct|drm_device
 r_typedef
 r_struct
@@ -1705,22 +1744,12 @@ r_int
 id|unique_len
 suffix:semicolon
 multiline_comment|/**&lt; Length of unique field */
-DECL|member|device
-id|dev_t
-id|device
-suffix:semicolon
-multiline_comment|/**&lt; Device number for mknod */
 DECL|member|devname
 r_char
 op_star
 id|devname
 suffix:semicolon
 multiline_comment|/**&lt; For /proc/interrupts */
-DECL|member|minor
-r_int
-id|minor
-suffix:semicolon
-multiline_comment|/**&lt; Minor device number */
 DECL|member|if_version
 r_int
 id|if_version
@@ -1731,13 +1760,6 @@ r_int
 id|blocked
 suffix:semicolon
 multiline_comment|/**&lt; Blocked due to VC switch? */
-DECL|member|root
-r_struct
-id|proc_dir_entry
-op_star
-id|root
-suffix:semicolon
-multiline_comment|/**&lt; Root for this device&squot;s entries */
 multiline_comment|/** &bslash;name Locks */
 multiline_comment|/*@{*/
 DECL|member|count_lock
@@ -2140,44 +2162,14 @@ id|drm_local_map_t
 op_star
 id|agp_buffer_map
 suffix:semicolon
+DECL|member|primary
+id|drm_head_t
+id|primary
+suffix:semicolon
+multiline_comment|/**&lt; primary screen head */
 DECL|typedef|drm_device_t
 )brace
 id|drm_device_t
-suffix:semicolon
-DECL|struct|drm_minor
-r_typedef
-r_struct
-id|drm_minor
-(brace
-r_enum
-(brace
-DECL|enumerator|DRM_MINOR_FREE
-id|DRM_MINOR_FREE
-op_assign
-l_int|0
-comma
-DECL|enumerator|DRM_MINOR_PRIMARY
-id|DRM_MINOR_PRIMARY
-comma
-DECL|member|type
-)brace
-id|type
-suffix:semicolon
-DECL|member|dev
-id|drm_device_t
-op_star
-id|dev
-suffix:semicolon
-DECL|member|dev_root
-r_struct
-id|proc_dir_entry
-op_star
-id|dev_root
-suffix:semicolon
-multiline_comment|/**&lt; proc directory entry */
-DECL|typedef|drm_minor_t
-)brace
-id|drm_minor_t
 suffix:semicolon
 DECL|function|drm_core_check_feature
 r_static
@@ -4136,7 +4128,7 @@ suffix:semicolon
 multiline_comment|/* Stub support (drm_stub.h) */
 r_extern
 r_int
-id|drm_probe
+id|drm_get_dev
 c_func
 (paren
 r_struct
@@ -4158,12 +4150,36 @@ id|driver
 suffix:semicolon
 r_extern
 r_int
-id|drm_put_minor
+id|drm_put_dev
 c_func
 (paren
 id|drm_device_t
 op_star
 id|dev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|drm_get_head
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+comma
+id|drm_head_t
+op_star
+id|head
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|drm_put_head
+c_func
+(paren
+id|drm_head_t
+op_star
+id|head
 )paren
 suffix:semicolon
 r_extern
@@ -4177,9 +4193,10 @@ r_int
 id|drm_cards_limit
 suffix:semicolon
 r_extern
-id|drm_minor_t
+id|drm_head_t
 op_star
-id|drm_minors
+op_star
+id|drm_heads
 suffix:semicolon
 r_extern
 r_struct

@@ -67,7 +67,7 @@ id|DRIVER_PATCHLEVEL
 comma
 id|DRIVER_DATE
 comma
-id|dev-&gt;minor
+id|dev-&gt;primary.minor
 comma
 id|pci_pretty_name
 c_func
@@ -197,6 +197,11 @@ dot
 id|pretakedown
 op_assign
 id|i830_driver_pretakedown
+comma
+dot
+id|prerelease
+op_assign
+id|i830_driver_prerelease
 comma
 dot
 id|release
