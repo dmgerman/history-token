@@ -1681,7 +1681,12 @@ suffix:semicolon
 macro_line|#endif
 id|mpnt-&gt;vm_page_prot
 op_assign
-id|PAGE_COPY
+id|protection_map
+(braket
+id|VM_STACK_FLAGS
+op_amp
+l_int|0x7
+)braket
 suffix:semicolon
 id|mpnt-&gt;vm_flags
 op_assign
