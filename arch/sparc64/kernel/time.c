@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
+macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/mostek.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
@@ -1279,14 +1280,6 @@ id|data2
 suffix:semicolon
 multiline_comment|/* Was the write blocked? */
 )brace
-macro_line|#ifndef BCD_TO_BIN
-DECL|macro|BCD_TO_BIN
-mdefine_line|#define BCD_TO_BIN(val) (((val)&amp;15) + ((val)&gt;&gt;4)*10)
-macro_line|#endif
-macro_line|#ifndef BIN_TO_BCD
-DECL|macro|BIN_TO_BCD
-mdefine_line|#define BIN_TO_BCD(val) ((((val)/10)&lt;&lt;4) + (val)%10)
-macro_line|#endif
 multiline_comment|/* Probe for the real time clock chip. */
 DECL|function|set_system_time
 r_static

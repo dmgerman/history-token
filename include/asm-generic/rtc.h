@@ -5,6 +5,7 @@ mdefine_line|#define __ASM_RTC_H__
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/rtc.h&gt;
+macro_line|#include &lt;linux/bcd.h&gt;
 DECL|macro|RTC_PIE
 mdefine_line|#define RTC_PIE 0x40&t;&t;/* periodic interrupt enable */
 DECL|macro|RTC_AIE
