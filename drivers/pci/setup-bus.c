@@ -1217,7 +1217,7 @@ multiline_comment|/* Exclude ranges with size &gt; align from&n;&t;&t;&t;   calc
 r_if
 c_cond
 (paren
-id|size
+id|r_size
 op_eq
 id|align
 )paren
