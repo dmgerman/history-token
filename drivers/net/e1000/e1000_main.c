@@ -2783,6 +2783,12 @@ c_func
 id|netdev
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_sw_init - Initialize general software structures (struct e1000_adapter)&n; * @adapter: board private structure to initialize&n; *&n; * e1000_sw_init initializes the Adapter private data structure.&n; * Fields are initialized based on PCI device information and&n; * OS network device settings (MTU size).&n; **/
 r_static
