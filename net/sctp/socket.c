@@ -12247,7 +12247,6 @@ id|pp
 r_if
 c_cond
 (paren
-op_logical_neg
 id|hlist_empty
 c_func
 (paren
