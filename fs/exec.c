@@ -2240,6 +2240,13 @@ id|newsig-&gt;action
 )paren
 )paren
 suffix:semicolon
+id|init_sigpending
+c_func
+(paren
+op_amp
+id|newsig-&gt;shared_pending
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
