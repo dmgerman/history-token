@@ -2823,9 +2823,6 @@ r_if
 c_cond
 (paren
 id|clnt-&gt;cl_chatty
-op_logical_and
-op_logical_neg
-id|task-&gt;tk_exit
 )paren
 id|printk
 c_func
@@ -2861,15 +2858,6 @@ id|task-&gt;tk_flags
 op_amp
 id|RPC_CALL_MAJORSEEN
 )paren
-op_logical_and
-id|rpc_ntimeo
-c_func
-(paren
-op_amp
-id|clnt-&gt;cl_rtt
-)paren
-OG
-l_int|7
 )paren
 (brace
 id|task-&gt;tk_flags

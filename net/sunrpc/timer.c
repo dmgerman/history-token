@@ -87,15 +87,6 @@ op_assign
 id|RPC_RTO_INIT
 suffix:semicolon
 )brace
-id|atomic_set
-c_func
-(paren
-op_amp
-id|rt-&gt;ntimeouts
-comma
-l_int|0
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * NB: When computing the smoothed RTT and standard deviation,&n; *     be careful not to produce negative intermediate results.&n; */
 r_void
