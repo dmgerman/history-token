@@ -1720,7 +1720,7 @@ suffix:semicolon
 multiline_comment|/* Get a TSN block of nfrags TSNs. */
 id|tsn
 op_assign
-id|__sctp_association_get_tsn_block
+id|sctp_association_get_tsn_block
 c_func
 (paren
 id|asoc

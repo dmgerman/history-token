@@ -112,7 +112,8 @@ r_int
 id|priority
 )paren
 (brace
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|proto
 op_assign
@@ -735,7 +736,8 @@ id|__u32
 id|rtt
 )paren
 (brace
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|proto
 op_assign

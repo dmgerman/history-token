@@ -55,7 +55,8 @@ macro_line|#endif
 multiline_comment|/*&n; * Function declarations.&n; */
 multiline_comment|/*&n; * sctp_protocol.c&n; */
 r_extern
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 id|sctp_proto
 suffix:semicolon
 r_extern
@@ -73,10 +74,12 @@ r_int
 id|sctp_copy_local_addr_list
 c_func
 (paren
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 comma
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 comma
 id|sctp_scope_t
@@ -818,15 +821,11 @@ id|asoc
 suffix:semicolon
 )brace
 multiline_comment|/* Look up the association by its id.  */
-DECL|function|sctp_id2assoc
-r_static
-r_inline
 id|sctp_association_t
 op_star
 id|sctp_id2assoc
 c_func
 (paren
-r_const
 r_struct
 id|sock
 op_star
@@ -835,63 +834,7 @@ comma
 id|sctp_assoc_t
 id|id
 )paren
-(brace
-id|sctp_association_t
-op_star
-id|asoc
-op_assign
-l_int|NULL
 suffix:semicolon
-multiline_comment|/* First, verify that this is a kernel address. */
-r_if
-c_cond
-(paren
-id|sctp_is_valid_kaddr
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|id
-)paren
-)paren
-(brace
-id|sctp_association_t
-op_star
-id|temp
-op_assign
-(paren
-id|sctp_association_t
-op_star
-)paren
-id|id
-suffix:semicolon
-multiline_comment|/* Verify that this _is_ an sctp_association_t&n;&t;&t; * data structure and if so, that the socket matches.&n;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|SCTP_ASSOC_EYECATCHER
-op_eq
-id|temp-&gt;eyecatcher
-)paren
-op_logical_and
-(paren
-id|temp-&gt;base.sk
-op_eq
-id|sk
-)paren
-)paren
-id|asoc
-op_assign
-id|temp
-suffix:semicolon
-)brace
-r_return
-id|asoc
-suffix:semicolon
-)brace
 multiline_comment|/* A macro to walk a list of skbs.  */
 DECL|macro|sctp_skb_for_each
 mdefine_line|#define sctp_skb_for_each(pos, head, tmp) &bslash;&n;for (pos = (head)-&gt;next;&bslash;&n;     tmp = (pos)-&gt;next, pos != ((struct sk_buff *)(head));&bslash;&n;     pos = tmp)
@@ -1239,7 +1182,8 @@ multiline_comment|/* Return the SCTP protocol structure. */
 DECL|function|sctp_get_protocol
 r_static
 r_inline
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|sctp_get_protocol
 c_func
@@ -1318,7 +1262,8 @@ id|__u16
 id|lport
 )paren
 (brace
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|sctp_proto
 op_assign
@@ -1351,7 +1296,8 @@ id|__u16
 id|lport
 )paren
 (brace
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|sctp_proto
 op_assign
@@ -1387,7 +1333,8 @@ id|__u16
 id|rport
 )paren
 (brace
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|sctp_proto
 op_assign
@@ -1443,7 +1390,8 @@ id|__u32
 id|vtag
 )paren
 (brace
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|sctp_proto
 op_assign

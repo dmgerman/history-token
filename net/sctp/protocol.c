@@ -11,7 +11,8 @@ macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
 multiline_comment|/* Global data structures. */
 DECL|variable|sctp_proto
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 id|sctp_proto
 suffix:semicolon
 DECL|variable|proc_net_sctp
@@ -361,7 +362,8 @@ r_void
 id|__sctp_get_local_addr_list
 c_func
 (paren
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|proto
 )paren
@@ -451,7 +453,8 @@ r_void
 id|sctp_get_local_addr_list
 c_func
 (paren
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|proto
 )paren
@@ -498,7 +501,8 @@ r_void
 id|__sctp_free_local_addr_list
 c_func
 (paren
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|proto
 )paren
@@ -561,7 +565,8 @@ r_void
 id|sctp_free_local_addr_list
 c_func
 (paren
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|proto
 )paren
@@ -606,11 +611,13 @@ r_int
 id|sctp_copy_local_addr_list
 c_func
 (paren
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|proto
 comma
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 comma
@@ -1271,7 +1278,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* Returns a valid dst cache entry for the given source and destination ip&n; * addresses. If an association is passed, trys to get a dst entry with a&n; * source adddress that matches an address in the bind address list. &n; */
+multiline_comment|/* Returns a valid dst cache entry for the given source and destination ip&n; * addresses. If an association is passed, trys to get a dst entry with a&n; * source adddress that matches an address in the bind address list.&n; */
 DECL|function|sctp_v4_get_dst
 r_struct
 id|dst_entry

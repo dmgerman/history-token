@@ -919,6 +919,55 @@ id|assoc
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Change the primary destination address for the peer. */
+DECL|function|sctp_assoc_set_primary
+r_void
+id|sctp_assoc_set_primary
+c_func
+(paren
+r_struct
+id|sctp_association
+op_star
+id|asoc
+comma
+r_struct
+id|sctp_transport
+op_star
+id|transport
+)paren
+(brace
+id|asoc-&gt;peer.primary_path
+op_assign
+id|transport
+suffix:semicolon
+multiline_comment|/* Set a default msg_name for events. */
+id|memcpy
+c_func
+(paren
+op_amp
+id|asoc-&gt;peer.primary_addr
+comma
+op_amp
+id|transport-&gt;ipaddr
+comma
+r_sizeof
+(paren
+r_union
+id|sctp_addr
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* If the primary path is changing, assume that the&n;&t; * user wants to use this new path.&n;&t; */
+r_if
+c_cond
+(paren
+id|transport-&gt;active
+)paren
+id|asoc-&gt;peer.active_path
+op_assign
+id|transport
+suffix:semicolon
+)brace
 multiline_comment|/* Add a transport address to an association.  */
 DECL|function|sctp_assoc_add_peer
 r_struct
@@ -927,7 +976,8 @@ op_star
 id|sctp_assoc_add_peer
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -1170,30 +1220,13 @@ op_eq
 id|asoc-&gt;peer.primary_path
 )paren
 (brace
-id|asoc-&gt;peer.primary_path
-op_assign
-id|peer
-suffix:semicolon
-multiline_comment|/* Set a default msg_name for events. */
-id|memcpy
+id|sctp_assoc_set_primary
 c_func
 (paren
-op_amp
-id|asoc-&gt;peer.primary_addr
+id|asoc
 comma
-op_amp
-id|peer-&gt;ipaddr
-comma
-r_sizeof
-(paren
-r_union
-id|sctp_addr
-)paren
-)paren
-suffix:semicolon
-id|asoc-&gt;peer.active_path
-op_assign
 id|peer
+)paren
 suffix:semicolon
 id|asoc-&gt;peer.retran_path
 op_assign
@@ -1591,9 +1624,9 @@ id|asoc
 suffix:semicolon
 )brace
 multiline_comment|/* Allocate the next TSN, Transmission Sequence Number, for the given&n; * association.&n; */
-DECL|function|__sctp_association_get_next_tsn
+DECL|function|sctp_association_get_next_tsn
 id|__u32
-id|__sctp_association_get_next_tsn
+id|sctp_association_get_next_tsn
 c_func
 (paren
 id|sctp_association_t
@@ -1618,9 +1651,9 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/* Allocate &squot;num&squot; TSNs by incrementing the association&squot;s TSN by num. */
-DECL|function|__sctp_association_get_tsn_block
+DECL|function|sctp_association_get_tsn_block
 id|__u32
-id|__sctp_association_get_tsn_block
+id|sctp_association_get_tsn_block
 c_func
 (paren
 id|sctp_association_t
@@ -2569,7 +2602,7 @@ op_star
 id|asoc
 )paren
 (brace
-multiline_comment|/* If this is the first time SHUTDOWN is sent, use the active path,&n;&t; * else use the retran path. If the last SHUTDOWN was sent over the&n;&t; * retran path, update the retran path and use it. &n;&t; */
+multiline_comment|/* If this is the first time SHUTDOWN is sent, use the active path,&n;&t; * else use the retran path. If the last SHUTDOWN was sent over the&n;&t; * retran path, update the retran path and use it.&n;&t; */
 r_if
 c_cond
 (paren

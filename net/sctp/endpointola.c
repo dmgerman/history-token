@@ -26,7 +26,8 @@ op_star
 id|sctp_endpoint_new
 c_func
 (paren
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|proto
 comma
@@ -120,7 +121,8 @@ id|sctp_endpoint_t
 op_star
 id|ep
 comma
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|proto
 comma

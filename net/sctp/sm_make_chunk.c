@@ -3824,7 +3824,7 @@ op_assign
 id|htonl
 c_func
 (paren
-id|__sctp_association_get_next_tsn
+id|sctp_association_get_next_tsn
 c_func
 (paren
 id|chunk-&gt;asoc
