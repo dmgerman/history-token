@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: actypes.h - Common data types for the entire ACPI subsystem&n; *       $Revision: 239 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: actypes.h - Common data types for the entire ACPI subsystem&n; *       $Revision: 240 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTYPES_H__
 DECL|macro|__ACTYPES_H__
@@ -15,7 +15,7 @@ DECL|macro|ACPI_UINT64_MAX
 mdefine_line|#define ACPI_UINT64_MAX                 (UINT64) 0xFFFFFFFFFFFFFFFF
 DECL|macro|ACPI_ASCII_MAX
 mdefine_line|#define ACPI_ASCII_MAX                  0x7F
-multiline_comment|/*&n; * Data types - Fixed across all compilation models&n; *&n; * BOOLEAN      Logical Boolean.&n; * INT8         8-bit  (1 byte) signed value&n; * UINT8        8-bit  (1 byte) unsigned value&n; * INT16        16-bit (2 byte) signed value&n; * UINT16       16-bit (2 byte) unsigned value&n; * INT32        32-bit (4 byte) signed value&n; * UINT32       32-bit (4 byte) unsigned value&n; * INT64        64-bit (8 byte) signed value&n; * UINT64       64-bit (8 byte) unsigned value&n; * NATIVE_INT   32-bit on IA-32, 64-bit on IA-64 signed value&n; * NATIVE_UINT  32-bit on IA-32, 64-bit on IA-64 unsigned value&n; */
+multiline_comment|/*&n; * Data types - Fixed across all compilation models (16/32/64)&n; *&n; * BOOLEAN      Logical Boolean.&n; * INT8         8-bit  (1 byte) signed value&n; * UINT8        8-bit  (1 byte) unsigned value&n; * INT16        16-bit (2 byte) signed value&n; * UINT16       16-bit (2 byte) unsigned value&n; * INT32        32-bit (4 byte) signed value&n; * UINT32       32-bit (4 byte) unsigned value&n; * INT64        64-bit (8 byte) signed value&n; * UINT64       64-bit (8 byte) unsigned value&n; * NATIVE_INT   32-bit on IA-32, 64-bit on IA-64 signed value&n; * NATIVE_UINT  32-bit on IA-32, 64-bit on IA-64 unsigned value&n; */
 macro_line|#ifndef ACPI_MACHINE_WIDTH
 macro_line|#error ACPI_MACHINE_WIDTH not defined
 macro_line|#endif
@@ -652,7 +652,7 @@ DECL|macro|ACPI_TABLE_MAX
 mdefine_line|#define ACPI_TABLE_MAX                  6
 DECL|macro|NUM_ACPI_TABLES
 mdefine_line|#define NUM_ACPI_TABLES                 (ACPI_TABLE_MAX+1)
-multiline_comment|/*&n; * Types associated with names.  The first group of&n; * values correspond to the definition of the ACPI&n; * Object_type operator (See the ACPI Spec). Therefore,&n; * only add to the first group if the spec changes.&n; *&n; * Types must be kept in sync with the Acpi_ns_properties&n; * and Acpi_ns_type_names arrays&n; */
+multiline_comment|/*&n; * Types associated with ACPI names and objects.  The first group of&n; * values (up to ACPI_TYPE_EXTERNAL_MAX) correspond to the definition&n; * of the ACPI Object_type() operator (See the ACPI Spec). Therefore,&n; * only add to the first group if the spec changes.&n; *&n; * Types must be kept in sync with the global Acpi_ns_properties&n; * and Acpi_ns_type_names arrays.&n; */
 DECL|typedef|acpi_object_type
 r_typedef
 id|u32
@@ -692,59 +692,44 @@ DECL|macro|ACPI_TYPE_DDB_HANDLE
 mdefine_line|#define ACPI_TYPE_DDB_HANDLE            0x0F
 DECL|macro|ACPI_TYPE_DEBUG_OBJECT
 mdefine_line|#define ACPI_TYPE_DEBUG_OBJECT          0x10
-DECL|macro|ACPI_TYPE_MAX
-mdefine_line|#define ACPI_TYPE_MAX                   0x10
-multiline_comment|/*&n; * This section contains object types that do not relate to the ACPI Object_type operator.&n; * They are used for various internal purposes only.  If new predefined ACPI_TYPEs are&n; * added (via the ACPI specification), these internal types must move upwards.&n; * Also, values exceeding the largest official ACPI Object_type must not overlap with&n; * defined AML opcodes.&n; */
-DECL|macro|INTERNAL_TYPE_BEGIN
-mdefine_line|#define INTERNAL_TYPE_BEGIN             0x11
-DECL|macro|INTERNAL_TYPE_REGION_FIELD
-mdefine_line|#define INTERNAL_TYPE_REGION_FIELD      0x11
-DECL|macro|INTERNAL_TYPE_BANK_FIELD
-mdefine_line|#define INTERNAL_TYPE_BANK_FIELD        0x12
-DECL|macro|INTERNAL_TYPE_INDEX_FIELD
-mdefine_line|#define INTERNAL_TYPE_INDEX_FIELD       0x13
-DECL|macro|INTERNAL_TYPE_REFERENCE
-mdefine_line|#define INTERNAL_TYPE_REFERENCE         0x14  /* Arg#, Local#, Name, Debug; used only in descriptors */
-DECL|macro|INTERNAL_TYPE_ALIAS
-mdefine_line|#define INTERNAL_TYPE_ALIAS             0x15
-DECL|macro|INTERNAL_TYPE_NOTIFY
-mdefine_line|#define INTERNAL_TYPE_NOTIFY            0x16
-DECL|macro|INTERNAL_TYPE_ADDRESS_HANDLER
-mdefine_line|#define INTERNAL_TYPE_ADDRESS_HANDLER   0x17
-DECL|macro|INTERNAL_TYPE_RESOURCE
-mdefine_line|#define INTERNAL_TYPE_RESOURCE          0x18
-DECL|macro|INTERNAL_TYPE_RESOURCE_FIELD
-mdefine_line|#define INTERNAL_TYPE_RESOURCE_FIELD    0x19
-DECL|macro|INTERNAL_TYPE_NODE_MAX
-mdefine_line|#define INTERNAL_TYPE_NODE_MAX          0x19
-multiline_comment|/* These are pseudo-types because there are never any namespace nodes with these types */
-DECL|macro|INTERNAL_TYPE_FIELD_DEFN
-mdefine_line|#define INTERNAL_TYPE_FIELD_DEFN        0x1A  /* Name, Byte_const, multiple Field_element */
-DECL|macro|INTERNAL_TYPE_BANK_FIELD_DEFN
-mdefine_line|#define INTERNAL_TYPE_BANK_FIELD_DEFN   0x1B  /* 2 Name,DWord_const,Byte_const,multi Field_element */
-DECL|macro|INTERNAL_TYPE_INDEX_FIELD_DEFN
-mdefine_line|#define INTERNAL_TYPE_INDEX_FIELD_DEFN  0x1C  /* 2 Name, Byte_const, multiple Field_element */
-DECL|macro|INTERNAL_TYPE_IF
-mdefine_line|#define INTERNAL_TYPE_IF                0x1D
-DECL|macro|INTERNAL_TYPE_ELSE
-mdefine_line|#define INTERNAL_TYPE_ELSE              0x1E
-DECL|macro|INTERNAL_TYPE_WHILE
-mdefine_line|#define INTERNAL_TYPE_WHILE             0x1F
-DECL|macro|INTERNAL_TYPE_SCOPE
-mdefine_line|#define INTERNAL_TYPE_SCOPE             0x20  /* Name, multiple Node */
-DECL|macro|INTERNAL_TYPE_DEF_ANY
-mdefine_line|#define INTERNAL_TYPE_DEF_ANY           0x21  /* type is Any, suppress search of enclosing scopes */
-DECL|macro|INTERNAL_TYPE_EXTRA
-mdefine_line|#define INTERNAL_TYPE_EXTRA             0x22
-DECL|macro|INTERNAL_TYPE_DATA
-mdefine_line|#define INTERNAL_TYPE_DATA              0x23
-DECL|macro|INTERNAL_TYPE_MAX
-mdefine_line|#define INTERNAL_TYPE_MAX               0x23
-DECL|macro|INTERNAL_TYPE_INVALID
-mdefine_line|#define INTERNAL_TYPE_INVALID           0x24
+DECL|macro|ACPI_TYPE_EXTERNAL_MAX
+mdefine_line|#define ACPI_TYPE_EXTERNAL_MAX          0x10
+multiline_comment|/*&n; * These are object types that do not map directly to the ACPI&n; * Object_type() operator. They are used for various internal purposes only.&n; * If new predefined ACPI_TYPEs are added (via the ACPI specification), these&n; * internal types must move upwards. (There is code that depends on these&n; * values being contiguous with the external types above.)&n; */
+DECL|macro|ACPI_TYPE_LOCAL_REGION_FIELD
+mdefine_line|#define ACPI_TYPE_LOCAL_REGION_FIELD    0x11
+DECL|macro|ACPI_TYPE_LOCAL_BANK_FIELD
+mdefine_line|#define ACPI_TYPE_LOCAL_BANK_FIELD      0x12
+DECL|macro|ACPI_TYPE_LOCAL_INDEX_FIELD
+mdefine_line|#define ACPI_TYPE_LOCAL_INDEX_FIELD     0x13
+DECL|macro|ACPI_TYPE_LOCAL_REFERENCE
+mdefine_line|#define ACPI_TYPE_LOCAL_REFERENCE       0x14  /* Arg#, Local#, Name, Debug, Ref_of, Index */
+DECL|macro|ACPI_TYPE_LOCAL_ALIAS
+mdefine_line|#define ACPI_TYPE_LOCAL_ALIAS           0x15
+DECL|macro|ACPI_TYPE_LOCAL_NOTIFY
+mdefine_line|#define ACPI_TYPE_LOCAL_NOTIFY          0x16
+DECL|macro|ACPI_TYPE_LOCAL_ADDRESS_HANDLER
+mdefine_line|#define ACPI_TYPE_LOCAL_ADDRESS_HANDLER 0x17
+DECL|macro|ACPI_TYPE_LOCAL_RESOURCE
+mdefine_line|#define ACPI_TYPE_LOCAL_RESOURCE        0x18
+DECL|macro|ACPI_TYPE_LOCAL_RESOURCE_FIELD
+mdefine_line|#define ACPI_TYPE_LOCAL_RESOURCE_FIELD  0x19
+DECL|macro|ACPI_TYPE_LOCAL_SCOPE
+mdefine_line|#define ACPI_TYPE_LOCAL_SCOPE           0x1A  /* 1 Name, multiple Object_list Nodes */
+DECL|macro|ACPI_TYPE_NS_NODE_MAX
+mdefine_line|#define ACPI_TYPE_NS_NODE_MAX           0x1A  /* Last typecode used within a NS Node */
+multiline_comment|/*&n; * These are special object types that never appear in&n; * a Namespace node, only in an acpi_operand_object&n; */
+DECL|macro|ACPI_TYPE_LOCAL_EXTRA
+mdefine_line|#define ACPI_TYPE_LOCAL_EXTRA           0x1B
+DECL|macro|ACPI_TYPE_LOCAL_DATA
+mdefine_line|#define ACPI_TYPE_LOCAL_DATA            0x1C
+DECL|macro|ACPI_TYPE_LOCAL_MAX
+mdefine_line|#define ACPI_TYPE_LOCAL_MAX             0x1C
+multiline_comment|/* All types above here are invalid */
+DECL|macro|ACPI_TYPE_INVALID
+mdefine_line|#define ACPI_TYPE_INVALID               0x1D
 DECL|macro|ACPI_TYPE_NOT_FOUND
 mdefine_line|#define ACPI_TYPE_NOT_FOUND             0xFF
-multiline_comment|/*&n; * Bitmapped ACPI types&n; * Used internally only&n; */
+multiline_comment|/*&n; * Bitmapped ACPI types.  Used internally only&n; */
 DECL|macro|ACPI_BTYPE_ANY
 mdefine_line|#define ACPI_BTYPE_ANY                  0x00000000
 DECL|macro|ACPI_BTYPE_INTEGER
@@ -862,7 +847,7 @@ mdefine_line|#define ACPI_DEVICE_NOTIFY              1
 DECL|macro|ACPI_MAX_NOTIFY_HANDLER_TYPE
 mdefine_line|#define ACPI_MAX_NOTIFY_HANDLER_TYPE    1
 DECL|macro|ACPI_MAX_SYS_NOTIFY
-mdefine_line|#define ACPI_MAX_SYS_NOTIFY                  0x7f
+mdefine_line|#define ACPI_MAX_SYS_NOTIFY             0x7f
 multiline_comment|/* Address Space (Operation Region) Types */
 DECL|typedef|ACPI_ADR_SPACE_TYPE
 r_typedef
@@ -1655,7 +1640,7 @@ DECL|typedef|acpi_resource_start_dpf
 )brace
 id|acpi_resource_start_dpf
 suffix:semicolon
-multiline_comment|/*&n; * END_DEPENDENT_FUNCTIONS_RESOURCE struct is not&n; *  needed because it has no fields&n; */
+multiline_comment|/*&n; * END_DEPENDENT_FUNCTIONS_RESOURCE struct is not&n; * needed because it has no fields&n; */
 r_typedef
 r_struct
 (brace

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 39 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 41 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -1286,6 +1286,9 @@ id|new_buf
 suffix:semicolon
 id|ret_desc-&gt;string.length
 op_assign
+(paren
+id|u32
+)paren
 id|ACPI_STRLEN
 (paren
 (paren
@@ -1434,7 +1437,7 @@ id|destination_type
 )paren
 (brace
 r_case
-id|INTERNAL_TYPE_REGION_FIELD
+id|ACPI_TYPE_LOCAL_REGION_FIELD
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * Named field can always handle conversions&n;&t;&t;&t; */
 r_break
@@ -1498,10 +1501,10 @@ r_case
 id|ACPI_TYPE_BUFFER_FIELD
 suffix:colon
 r_case
-id|INTERNAL_TYPE_BANK_FIELD
+id|ACPI_TYPE_LOCAL_BANK_FIELD
 suffix:colon
 r_case
-id|INTERNAL_TYPE_INDEX_FIELD
+id|ACPI_TYPE_LOCAL_INDEX_FIELD
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * These types require an Integer operand.  We can convert&n;&t;&t;&t; * a Buffer or a String to an Integer if necessary.&n;&t;&t;&t; */
 id|status

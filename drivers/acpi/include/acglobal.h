@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acglobal.h - Declarations for global variables&n; *       $Revision: 131 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acglobal.h - Declarations for global variables&n; *       $Revision: 132 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACGLOBAL_H__
 DECL|macro|__ACGLOBAL_H__
@@ -263,7 +263,7 @@ id|ACPI_NUM_PREDEFINED_REGIONS
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Namespace globals&n; *&n; ****************************************************************************/
 DECL|macro|NUM_NS_TYPES
-mdefine_line|#define NUM_NS_TYPES                    INTERNAL_TYPE_INVALID+1
+mdefine_line|#define NUM_NS_TYPES                    ACPI_TYPE_INVALID+1
 macro_line|#if defined (ACPI_NO_METHOD_EXECUTION) || defined (ACPI_CONSTANT_EVAL_ONLY)
 DECL|macro|NUM_PREDEFINED_NAMES
 mdefine_line|#define NUM_PREDEFINED_NAMES            10
@@ -565,7 +565,7 @@ id|ACPI_EXTERN
 id|u16
 id|acpi_gbl_obj_type_count
 (braket
-id|INTERNAL_TYPE_NODE_MAX
+id|ACPI_TYPE_NS_NODE_MAX
 op_plus
 l_int|1
 )braket
@@ -575,7 +575,7 @@ id|ACPI_EXTERN
 id|u16
 id|acpi_gbl_node_type_count
 (braket
-id|INTERNAL_TYPE_NODE_MAX
+id|ACPI_TYPE_NS_NODE_MAX
 op_plus
 l_int|1
 )braket

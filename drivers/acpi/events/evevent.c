@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evevent - Fixed and General Purpose Even handling and dispatch&n; *              $Revision: 92 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evevent - Fixed and General Purpose Even handling and dispatch&n; *              $Revision: 94 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -784,7 +784,27 @@ id|acpi_gbl_FADT-&gt;gpe1_base
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;GPE0 block overlaps the GPE1 block&bslash;n&quot;
+l_string|&quot;GPE0 block (GPE  0 to %d) overlaps the GPE1 block (GPE %d to %d)&bslash;n&quot;
+comma
+id|acpi_gbl_gpe_number_max
+comma
+id|acpi_gbl_FADT-&gt;gpe1_base
+comma
+id|acpi_gbl_FADT-&gt;gpe1_base
+op_plus
+(paren
+id|ACPI_MUL_8
+(paren
+id|acpi_gbl_gpe_block_info
+(braket
+l_int|1
+)braket
+dot
+id|register_count
+)paren
+op_minus
+l_int|1
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -2049,7 +2069,7 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;%s while evaluated GPE%X method&bslash;n&quot;
+l_string|&quot;%s while evaluating GPE%X method&bslash;n&quot;
 comma
 id|acpi_format_exception
 (paren
@@ -2147,7 +2167,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Invalid event, GPE[%X].&bslash;n&quot;
+l_string|&quot;GPE[%X] is not a valid event&bslash;n&quot;
 comma
 id|gpe_number
 )paren
