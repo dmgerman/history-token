@@ -1,5 +1,41 @@
 multiline_comment|/*&n; * Copyright (c) 2001-2002 by David Brownell&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#ifdef __KERNEL__
+multiline_comment|/* This file contains declarations of usbcore internals that are mostly&n; * used or exposed by Host Controller Drivers.&n; */
+multiline_comment|/*&n; * USB Packet IDs (PIDs)&n; */
+DECL|macro|USB_PID_UNDEF_0
+mdefine_line|#define USB_PID_UNDEF_0&t;&t;&t;0xf0
+DECL|macro|USB_PID_OUT
+mdefine_line|#define USB_PID_OUT&t;&t;&t;0xe1
+DECL|macro|USB_PID_ACK
+mdefine_line|#define USB_PID_ACK&t;&t;&t;0xd2
+DECL|macro|USB_PID_DATA0
+mdefine_line|#define USB_PID_DATA0&t;&t;&t;0xc3
+DECL|macro|USB_PID_PING
+mdefine_line|#define USB_PID_PING&t;&t;&t;0xb4&t;/* USB 2.0 */
+DECL|macro|USB_PID_SOF
+mdefine_line|#define USB_PID_SOF&t;&t;&t;0xa5
+DECL|macro|USB_PID_NYET
+mdefine_line|#define USB_PID_NYET&t;&t;&t;0x96&t;/* USB 2.0 */
+DECL|macro|USB_PID_DATA2
+mdefine_line|#define USB_PID_DATA2&t;&t;&t;0x87&t;/* USB 2.0 */
+DECL|macro|USB_PID_SPLIT
+mdefine_line|#define USB_PID_SPLIT&t;&t;&t;0x78&t;/* USB 2.0 */
+DECL|macro|USB_PID_IN
+mdefine_line|#define USB_PID_IN&t;&t;&t;0x69
+DECL|macro|USB_PID_NAK
+mdefine_line|#define USB_PID_NAK&t;&t;&t;0x5a
+DECL|macro|USB_PID_DATA1
+mdefine_line|#define USB_PID_DATA1&t;&t;&t;0x4b
+DECL|macro|USB_PID_PREAMBLE
+mdefine_line|#define USB_PID_PREAMBLE&t;&t;0x3c&t;/* Token mode */
+DECL|macro|USB_PID_ERR
+mdefine_line|#define USB_PID_ERR&t;&t;&t;0x3c&t;/* USB 2.0: handshake mode */
+DECL|macro|USB_PID_SETUP
+mdefine_line|#define USB_PID_SETUP&t;&t;&t;0x2d
+DECL|macro|USB_PID_STALL
+mdefine_line|#define USB_PID_STALL&t;&t;&t;0x1e
+DECL|macro|USB_PID_MDATA
+mdefine_line|#define USB_PID_MDATA&t;&t;&t;0x0f&t;/* USB 2.0 */
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * USB Host Controller Driver (usb_hcd) framework&n; *&n; * Since &quot;struct usb_bus&quot; is so thin, you can&squot;t share much code in it.&n; * This framework is a layer over that, and should be more sharable.&n; */
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -901,7 +937,6 @@ op_star
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifndef _LINUX_HUB_H
 multiline_comment|/* exported to hub driver ONLY to support usb_reset_device () */
 r_extern
 r_int
@@ -947,7 +982,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif /* _LINUX_HUB_H */
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * HCD Root Hub support&n; */
 macro_line|#include &quot;hub.h&quot;
@@ -1200,6 +1234,10 @@ op_star
 id|interface
 )paren
 suffix:semicolon
+DECL|macro|usb_endpoint_halt
+mdefine_line|#define usb_endpoint_halt(dev, ep, out) ((dev)-&gt;halted[out] |= (1 &lt;&lt; (ep)))
+DECL|macro|usb_endpoint_out
+mdefine_line|#define usb_endpoint_out(ep_dir)&t;(!((ep_dir) &amp; USB_DIR_IN))
 multiline_comment|/* for probe/disconnect with correct module usage counting */
 r_void
 op_star
@@ -1232,6 +1270,174 @@ op_star
 id|intf
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|list_head
+id|usb_driver_list
+suffix:semicolon
+multiline_comment|/*&n; * USB device fs stuff&n; */
+macro_line|#ifdef CONFIG_USB_DEVICEFS
+multiline_comment|/*&n; * these are expected to be called from the USB core/hub thread&n; * with the kernel lock held&n; */
+r_extern
+r_void
+id|usbfs_add_bus
+c_func
+(paren
+r_struct
+id|usb_bus
+op_star
+id|bus
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usbfs_remove_bus
+c_func
+(paren
+r_struct
+id|usb_bus
+op_star
+id|bus
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usbfs_add_device
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usbfs_remove_device
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usbfs_update_special
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|usbfs_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usbfs_cleanup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else /* CONFIG_USB_DEVICEFS */
+DECL|function|usbfs_add_bus
+r_static
+r_inline
+r_void
+id|usbfs_add_bus
+c_func
+(paren
+r_struct
+id|usb_bus
+op_star
+id|bus
+)paren
+(brace
+)brace
+DECL|function|usbfs_remove_bus
+r_static
+r_inline
+r_void
+id|usbfs_remove_bus
+c_func
+(paren
+r_struct
+id|usb_bus
+op_star
+id|bus
+)paren
+(brace
+)brace
+DECL|function|usbfs_add_device
+r_static
+r_inline
+r_void
+id|usbfs_add_device
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+(brace
+)brace
+DECL|function|usbfs_remove_device
+r_static
+r_inline
+r_void
+id|usbfs_remove_device
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+(brace
+)brace
+DECL|function|usbfs_update_special
+r_static
+r_inline
+r_void
+id|usbfs_update_special
+(paren
+r_void
+)paren
+(brace
+)brace
+DECL|function|usbfs_init
+r_static
+r_inline
+r_int
+id|usbfs_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|usbfs_cleanup
+r_static
+r_inline
+r_void
+id|usbfs_cleanup
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+macro_line|#endif /* CONFIG_USB_DEVICEFS */
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* hub.h ... DeviceRemovable in 2.4.2-ac11, gone in 2.4.10 */
 singleline_comment|// bleech -- resurfaced in 2.4.11 or 2.4.12

@@ -68,12 +68,14 @@ DECL|macro|LIMIT_RGB
 mdefine_line|#define LIMIT_RGB(x) (((x) &lt; 0) ? 0 : (((x) &gt; 255) ? 255 : (x)))
 DECL|macro|YUV_TO_RGB_BY_THE_BOOK
 mdefine_line|#define YUV_TO_RGB_BY_THE_BOOK(my,mu,mv,mr,mg,mb) { &bslash;&n;    int mm_y, mm_yc, mm_u, mm_v, mm_r, mm_g, mm_b; &bslash;&n;    mm_y = (my) - 16;  &bslash;&n;    mm_u = (mu) - 128; &bslash;&n;    mm_v = (mv) - 128; &bslash;&n;    mm_yc= mm_y * 76284; &bslash;&n;    mm_b = (mm_yc&t;&t;+ 132252*mm_v&t;) &gt;&gt; 16; &bslash;&n;    mm_g = (mm_yc -  53281*mm_u -  25625*mm_v&t;) &gt;&gt; 16; &bslash;&n;    mm_r = (mm_yc + 104595*mm_u&t;&t;&t;) &gt;&gt; 16; &bslash;&n;    mb = LIMIT_RGB(mm_b); &bslash;&n;    mg = LIMIT_RGB(mm_g); &bslash;&n;    mr = LIMIT_RGB(mm_r); &bslash;&n;}
+DECL|macro|RING_QUEUE_SIZE
+mdefine_line|#define&t;RING_QUEUE_SIZE&t;&t;(128*1024)&t;/* Must be a power of 2 */
 DECL|macro|RING_QUEUE_ADVANCE_INDEX
-mdefine_line|#define&t;RING_QUEUE_ADVANCE_INDEX(rq,ind,n) (rq)-&gt;ind = ((rq)-&gt;ind + (n)) % (rq)-&gt;length
+mdefine_line|#define&t;RING_QUEUE_ADVANCE_INDEX(rq,ind,n) (rq)-&gt;ind = ((rq)-&gt;ind + (n)) &amp; ((rq)-&gt;length-1)
 DECL|macro|RING_QUEUE_DEQUEUE_BYTES
 mdefine_line|#define&t;RING_QUEUE_DEQUEUE_BYTES(rq,n) RING_QUEUE_ADVANCE_INDEX(rq,ri,n)
 DECL|macro|RING_QUEUE_PEEK
-mdefine_line|#define&t;RING_QUEUE_PEEK(rq,ofs) ((rq)-&gt;queue[((ofs) + (rq)-&gt;ri) % (rq)-&gt;length])
+mdefine_line|#define&t;RING_QUEUE_PEEK(rq,ofs) ((rq)-&gt;queue[((ofs) + (rq)-&gt;ri) &amp; ((rq)-&gt;length-1)])
 r_typedef
 r_struct
 (brace
@@ -348,8 +350,9 @@ suffix:semicolon
 r_struct
 id|s_usbvideo_t
 suffix:semicolon
-r_typedef
+DECL|struct|uvd
 r_struct
+id|uvd
 (brace
 DECL|member|vdev
 r_struct
@@ -561,9 +564,7 @@ l_int|32
 )braket
 suffix:semicolon
 multiline_comment|/* Holds name like &quot;video7&quot; */
-DECL|typedef|uvd_t
 )brace
-id|uvd_t
 suffix:semicolon
 multiline_comment|/*&n; * usbvideo callbacks (virtual methods). They are set when usbvideo&n; * services are registered. All of these default to NULL, except those&n; * that default to usbvideo-provided methods.&n; */
 r_typedef
@@ -597,7 +598,8 @@ op_star
 id|userFree
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 )paren
 suffix:semicolon
@@ -623,7 +625,8 @@ op_star
 id|setupOnOpen
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 )paren
 suffix:semicolon
@@ -634,7 +637,8 @@ op_star
 id|videoStart
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 )paren
 suffix:semicolon
@@ -645,7 +649,8 @@ op_star
 id|videoStop
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 )paren
 suffix:semicolon
@@ -656,7 +661,8 @@ op_star
 id|processData
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 comma
 id|usbvideo_frame_t
@@ -670,7 +676,8 @@ op_star
 id|postProcess
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 comma
 id|usbvideo_frame_t
@@ -684,7 +691,8 @@ op_star
 id|adjustPicture
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 )paren
 suffix:semicolon
@@ -695,7 +703,8 @@ op_star
 id|getFPS
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 )paren
 suffix:semicolon
@@ -706,7 +715,8 @@ op_star
 id|overlayHook
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 comma
 id|usbvideo_frame_t
@@ -720,7 +730,8 @@ op_star
 id|getFrame
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 comma
 r_int
@@ -790,7 +801,8 @@ op_star
 id|startDataPump
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -802,9 +814,28 @@ op_star
 id|stopDataPump
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
+)paren
+suffix:semicolon
+DECL|member|setVideoMode
+r_int
+(paren
+op_star
+id|setVideoMode
+)paren
+(paren
+r_struct
+id|uvd
+op_star
+id|uvd
+comma
+r_struct
+id|video_window
+op_star
+id|vw
 )paren
 suffix:semicolon
 DECL|typedef|usbvideo_cb_t
@@ -852,7 +883,8 @@ id|vdt
 suffix:semicolon
 multiline_comment|/* Video device template */
 DECL|member|cam
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|cam
 suffix:semicolon
@@ -884,7 +916,7 @@ r_struct
 id|s_usbvideo_t
 id|usbvideo_t
 suffix:semicolon
-multiline_comment|/*&n; * This macro retrieves callback address from the uvd_t object.&n; * No validity checks are done here, so be sure to check the&n; * callback beforehand with VALID_CALLBACK.&n; */
+multiline_comment|/*&n; * This macro retrieves callback address from the struct uvd object.&n; * No validity checks are done here, so be sure to check the&n; * callback beforehand with VALID_CALLBACK.&n; */
 DECL|macro|GET_CALLBACK
 mdefine_line|#define&t;GET_CALLBACK(uvd,cbName) ((uvd)-&gt;handle-&gt;cb.cbName)
 multiline_comment|/*&n; * This macro returns either callback pointer or NULL. This is safe&n; * macro, meaning that most of components of data structures involved&n; * may be NULL - this only results in NULL being returned. You may&n; * wish to use this macro to make sure that the callback is callable.&n; * However keep in mind that those checks take time.&n; */
@@ -925,16 +957,6 @@ r_int
 id|n
 )paren
 suffix:semicolon
-r_int
-id|RingQueue_GetLength
-c_func
-(paren
-r_const
-id|RingQueue_t
-op_star
-id|rq
-)paren
-suffix:semicolon
 r_void
 id|RingQueue_WakeUpInterruptible
 c_func
@@ -944,6 +966,67 @@ op_star
 id|rq
 )paren
 suffix:semicolon
+r_void
+id|RingQueue_Flush
+c_func
+(paren
+id|RingQueue_t
+op_star
+id|rq
+)paren
+suffix:semicolon
+DECL|function|RingQueue_GetLength
+r_static
+r_inline
+r_int
+id|RingQueue_GetLength
+c_func
+(paren
+r_const
+id|RingQueue_t
+op_star
+id|rq
+)paren
+(brace
+r_return
+(paren
+id|rq-&gt;wi
+op_minus
+id|rq-&gt;ri
+op_plus
+id|rq-&gt;length
+)paren
+op_amp
+(paren
+id|rq-&gt;length
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+DECL|function|RingQueue_GetFreeSpace
+r_static
+r_inline
+r_int
+id|RingQueue_GetFreeSpace
+c_func
+(paren
+r_const
+id|RingQueue_t
+op_star
+id|rq
+)paren
+(brace
+r_return
+id|rq-&gt;length
+op_minus
+id|RingQueue_GetLength
+c_func
+(paren
+id|rq
+)paren
+suffix:semicolon
+)brace
 r_void
 id|usbvideo_DrawLine
 c_func
@@ -1005,7 +1088,8 @@ r_void
 id|usbvideo_TestPattern
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -1066,7 +1150,8 @@ op_star
 id|id_table
 )paren
 suffix:semicolon
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|usbvideo_AllocateDevice
 c_func
@@ -1080,7 +1165,8 @@ r_int
 id|usbvideo_RegisterVideoDevice
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -1109,7 +1195,8 @@ r_void
 id|usbvideo_DeinterlaceFrame
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma

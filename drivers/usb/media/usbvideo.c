@@ -60,7 +60,8 @@ r_void
 id|usbvideo_procfs_level2_create
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -70,7 +71,8 @@ r_void
 id|usbvideo_procfs_level2_destroy
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -149,7 +151,8 @@ r_void
 id|usbvideo_CameraRelease
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -253,7 +256,8 @@ r_int
 id|usbvideo_StartDataPump
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -263,7 +267,8 @@ r_void
 id|usbvideo_StopDataPump
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -273,7 +278,8 @@ r_int
 id|usbvideo_GetFrame
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -286,7 +292,8 @@ r_int
 id|usbvideo_NewFrame
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -299,7 +306,8 @@ r_void
 id|usbvideo_SoftwareContrastAdjustment
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -587,6 +595,12 @@ r_int
 id|rqLen
 )paren
 (brace
+multiline_comment|/* Make sure the requested size is a power of 2 and&n;&t;   round up if necessary. This allows index wrapping&n;&t;   using masks rather than modulo */
+r_int
+id|i
+op_assign
+l_int|1
+suffix:semicolon
 m_assert
 (paren
 id|rq
@@ -601,9 +615,48 @@ OG
 l_int|0
 )paren
 suffix:semicolon
+r_while
+c_loop
+(paren
+id|rqLen
+op_rshift
+id|i
+)paren
+(brace
+id|i
+op_increment
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|rqLen
+op_ne
+l_int|1
+op_lshift
+(paren
+id|i
+op_minus
+l_int|1
+)paren
+)paren
+(brace
+id|rqLen
+op_assign
+l_int|1
+op_lshift
+id|i
+suffix:semicolon
+)brace
 id|rq-&gt;length
 op_assign
 id|rqLen
+suffix:semicolon
+id|rq-&gt;ri
+op_assign
+id|rq-&gt;wi
+op_assign
+l_int|0
 suffix:semicolon
 id|rq-&gt;queue
 op_assign
@@ -722,7 +775,9 @@ id|len
 )paren
 (brace
 r_int
-id|i
+id|rql
+comma
+id|toread
 suffix:semicolon
 m_assert
 (paren
@@ -738,36 +793,137 @@ op_ne
 l_int|NULL
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
+id|rql
 op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|len
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|dst
-(braket
-id|i
-)braket
-op_assign
-id|rq-&gt;queue
-(braket
-id|rq-&gt;ri
-)braket
-suffix:semicolon
-id|RING_QUEUE_DEQUEUE_BYTES
+id|RingQueue_GetLength
 c_func
 (paren
 id|rq
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rql
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* Clip requested length to available data */
+r_if
+c_cond
+(paren
+id|len
+OG
+id|rql
+)paren
+(brace
+id|len
+op_assign
+id|rql
+suffix:semicolon
+)brace
+id|toread
+op_assign
+id|len
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rq-&gt;ri
+OG
+id|rq-&gt;wi
+)paren
+(brace
+multiline_comment|/* Read data from tail */
+r_int
+id|read
+op_assign
+(paren
+id|toread
+OL
+(paren
+id|rq-&gt;length
+op_minus
+id|rq-&gt;ri
+)paren
+)paren
+ques
+c_cond
+id|toread
+suffix:colon
+id|rq-&gt;length
+op_minus
+id|rq-&gt;ri
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|dst
 comma
+id|rq-&gt;queue
+op_plus
+id|rq-&gt;ri
+comma
+id|read
+)paren
+suffix:semicolon
+id|toread
+op_sub_assign
+id|read
+suffix:semicolon
+id|dst
+op_add_assign
+id|read
+suffix:semicolon
+id|rq-&gt;ri
+op_assign
+(paren
+id|rq-&gt;ri
+op_plus
+id|read
+)paren
+op_amp
+(paren
+id|rq-&gt;length
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|toread
+)paren
+(brace
+multiline_comment|/* Read data from head */
+id|memcpy
+c_func
+(paren
+id|dst
+comma
+id|rq-&gt;queue
+op_plus
+id|rq-&gt;ri
+comma
+id|toread
+)paren
+suffix:semicolon
+id|rq-&gt;ri
+op_assign
+(paren
+id|rq-&gt;ri
+op_plus
+id|toread
+)paren
+op_amp
+(paren
+id|rq-&gt;length
+op_minus
 l_int|1
 )paren
 suffix:semicolon
@@ -887,7 +1043,7 @@ id|m
 op_assign
 id|q_avail
 suffix:semicolon
-id|memmove
+id|memcpy
 c_func
 (paren
 id|rq-&gt;queue
@@ -931,78 +1087,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|RingQueue_Enqueue
-)paren
-suffix:semicolon
-DECL|function|RingQueue_GetLength
-r_int
-id|RingQueue_GetLength
-c_func
-(paren
-r_const
-id|RingQueue_t
-op_star
-id|rq
-)paren
-(brace
-r_int
-id|ri
-comma
-id|wi
-suffix:semicolon
-m_assert
-(paren
-id|rq
-op_ne
-l_int|NULL
-)paren
-suffix:semicolon
-id|ri
-op_assign
-id|rq-&gt;ri
-suffix:semicolon
-id|wi
-op_assign
-id|rq-&gt;wi
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ri
-op_eq
-id|wi
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|ri
-OL
-id|wi
-)paren
-r_return
-id|wi
-op_minus
-id|ri
-suffix:semicolon
-r_else
-r_return
-id|wi
-op_plus
-(paren
-id|rq-&gt;length
-op_minus
-id|ri
-)paren
-suffix:semicolon
-)brace
-DECL|variable|RingQueue_GetLength
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|RingQueue_GetLength
 )paren
 suffix:semicolon
 DECL|function|RingQueue_InterruptibleSleepOn
@@ -1071,6 +1155,39 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|RingQueue_WakeUpInterruptible
+)paren
+suffix:semicolon
+DECL|function|RingQueue_Flush
+r_void
+id|RingQueue_Flush
+c_func
+(paren
+id|RingQueue_t
+op_star
+id|rq
+)paren
+(brace
+m_assert
+(paren
+id|rq
+op_ne
+l_int|NULL
+)paren
+suffix:semicolon
+id|rq-&gt;ri
+op_assign
+l_int|0
+suffix:semicolon
+id|rq-&gt;wi
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|RingQueue_Flush
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|RingQueue_Flush
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * usbvideo_VideosizeToString()&n; *&n; * This procedure converts given videosize value to readable string.&n; *&n; * History:&n; * 07-Aug-2000 Created.&n; * 19-Oct-2000 Reworked for usbvideo module.&n; */
@@ -1174,7 +1291,8 @@ r_void
 id|usbvideo_OverlayChar
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -1435,7 +1553,8 @@ r_void
 id|usbvideo_OverlayString
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -1494,7 +1613,8 @@ r_void
 id|usbvideo_OverlayStats
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -1670,8 +1790,12 @@ id|q_used
 op_plus
 id|uvd-&gt;dp.ri
 )paren
-op_mod
+op_amp
+(paren
 id|uvd-&gt;dp.length
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -2321,7 +2445,8 @@ id|usbvideo_ReportStatistics
 c_func
 (paren
 r_const
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -2942,7 +3067,8 @@ r_void
 id|usbvideo_TestPattern
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -2953,15 +3079,6 @@ r_int
 id|pmode
 )paren
 (brace
-r_static
-r_const
-r_char
-id|proc
-(braket
-)braket
-op_assign
-l_string|&quot;usbvideo_TestPattern&quot;
-suffix:semicolon
 id|usbvideo_frame_t
 op_star
 id|frame
@@ -2995,7 +3112,7 @@ c_func
 (paren
 l_string|&quot;%s: uvd == NULL&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -3022,7 +3139,7 @@ c_func
 (paren
 l_string|&quot;%s: uvd-&gt;curframe=%d.&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|uvd-&gt;curframe
 )paren
@@ -3541,20 +3658,12 @@ r_void
 id|usbvideo_ClientIncModCount
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
 (brace
-r_static
-r_const
-r_char
-id|proc
-(braket
-)braket
-op_assign
-l_string|&quot;usbvideo_ClientIncModCount&quot;
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3568,7 +3677,7 @@ c_func
 (paren
 l_string|&quot;%s: uvd == NULL&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -3587,7 +3696,7 @@ c_func
 (paren
 l_string|&quot;%s: uvd-&gt;handle == NULL&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -3606,7 +3715,7 @@ c_func
 (paren
 l_string|&quot;%s: uvd-&gt;handle-&gt;md_module == NULL&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -3625,20 +3734,12 @@ r_void
 id|usbvideo_ClientDecModCount
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
 (brace
-r_static
-r_const
-r_char
-id|proc
-(braket
-)braket
-op_assign
-l_string|&quot;usbvideo_ClientDecModCount&quot;
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3652,7 +3753,7 @@ c_func
 (paren
 l_string|&quot;%s: uvd == NULL&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -3671,7 +3772,7 @@ c_func
 (paren
 l_string|&quot;%s: uvd-&gt;handle == NULL&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -3690,7 +3791,7 @@ c_func
 (paren
 l_string|&quot;%s: uvd-&gt;handle-&gt;md_module == NULL&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -3743,15 +3844,6 @@ op_star
 id|id_table
 )paren
 (brace
-r_static
-r_const
-r_char
-id|proc
-(braket
-)braket
-op_assign
-l_string|&quot;usbvideo_register&quot;
-suffix:semicolon
 id|usbvideo_t
 op_star
 id|cams
@@ -3789,7 +3881,7 @@ c_func
 (paren
 l_string|&quot;%s: Illegal call&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -3811,7 +3903,7 @@ c_func
 (paren
 l_string|&quot;%s: probe() is required!&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -3825,7 +3917,8 @@ id|num_cams
 op_star
 r_sizeof
 (paren
-id|uvd_t
+r_struct
+id|uvd
 )paren
 op_plus
 r_sizeof
@@ -3873,7 +3966,7 @@ c_func
 (paren
 l_string|&quot;%s: Allocated $%p (%d. bytes) for %d. cameras&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|cams
 comma
@@ -4031,7 +4124,8 @@ suffix:semicolon
 id|cams-&gt;cam
 op_assign
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 )paren
 op_amp
@@ -4056,7 +4150,7 @@ c_func
 (paren
 l_string|&quot;%s: module == NULL!&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|init_MUTEX
@@ -4082,7 +4176,8 @@ id|i
 op_increment
 )paren
 (brace
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|up
 op_assign
@@ -4142,7 +4237,7 @@ c_func
 (paren
 l_string|&quot;%s: Failed to allocate user_data (%d. bytes)&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|up-&gt;user_size
 )paren
@@ -4157,7 +4252,7 @@ c_func
 (paren
 l_string|&quot;%s: Allocated cams[%d].user_data=$%p (%d. bytes)&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|i
 comma
@@ -4214,7 +4309,7 @@ c_func
 (paren
 l_string|&quot;%s: Creating /proc filesystem entries.&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|usbvideo_procfs_level1_create
@@ -4261,15 +4356,6 @@ op_star
 id|pCams
 )paren
 (brace
-r_static
-r_const
-r_char
-id|proc
-(braket
-)braket
-op_assign
-l_string|&quot;usbvideo_deregister&quot;
-suffix:semicolon
 id|usbvideo_t
 op_star
 id|cams
@@ -4290,7 +4376,7 @@ c_func
 (paren
 l_string|&quot;%s: pCams == NULL&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -4314,7 +4400,7 @@ c_func
 (paren
 l_string|&quot;%s: cams == NULL&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -4332,7 +4418,7 @@ c_func
 (paren
 l_string|&quot;%s: Deregistering filesystem entries.&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|usbvideo_procfs_level1_destroy
@@ -4348,7 +4434,7 @@ c_func
 (paren
 l_string|&quot;%s: Deregistering %s driver.&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|cams-&gt;drvName
 )paren
@@ -4365,7 +4451,7 @@ c_func
 (paren
 l_string|&quot;%s: Deallocating cams=$%p (%d. cameras)&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|cams
 comma
@@ -4387,7 +4473,8 @@ id|i
 op_increment
 )paren
 (brace
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|up
 op_assign
@@ -4445,7 +4532,7 @@ c_func
 (paren
 l_string|&quot;%s: Warning: user_data=$%p user_size=%d.&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|up-&gt;user_data
 comma
@@ -4460,7 +4547,7 @@ c_func
 (paren
 l_string|&quot;%s: Freeing %d. $%p-&gt;user_data=$%p&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|i
 comma
@@ -4481,9 +4568,9 @@ multiline_comment|/* Whole array was allocated in one chunk */
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: Freed %d uvd_t structures&quot;
+l_string|&quot;%s: Freed %d uvd structures&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|cams-&gt;num_cameras
 )paren
@@ -4524,21 +4611,14 @@ op_star
 id|ptr
 )paren
 (brace
-r_static
-r_const
-r_char
-id|proc
-(braket
-)braket
-op_assign
-l_string|&quot;usbvideo_Disconnect&quot;
-suffix:semicolon
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 )paren
 id|ptr
@@ -4567,7 +4647,7 @@ c_func
 (paren
 l_string|&quot;%s($%p,$%p): Illegal call.&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|dev
 comma
@@ -4595,7 +4675,7 @@ c_func
 (paren
 l_string|&quot;%s(%p,%p.)&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|dev
 comma
@@ -4681,7 +4761,7 @@ c_func
 (paren
 l_string|&quot;%s: Video unregistered.&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_if
@@ -4694,7 +4774,7 @@ c_func
 (paren
 l_string|&quot;%s: In use, disconnect pending.&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_else
@@ -4724,27 +4804,19 @@ id|uvd
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * usbvideo_CameraRelease()&n; *&n; * This code does final release of uvd_t. This happens&n; * after the device is disconnected -and- all clients&n; * closed their files.&n; *&n; * History:&n; * 27-Jan-2000 Created.&n; */
+multiline_comment|/*&n; * usbvideo_CameraRelease()&n; *&n; * This code does final release of uvd. This happens&n; * after the device is disconnected -and- all clients&n; * closed their files.&n; *&n; * History:&n; * 27-Jan-2000 Created.&n; */
 DECL|function|usbvideo_CameraRelease
 r_static
 r_void
 id|usbvideo_CameraRelease
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
 (brace
-r_static
-r_const
-r_char
-id|proc
-(braket
-)braket
-op_assign
-l_string|&quot;usbvideo_CameraRelease&quot;
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4758,7 +4830,7 @@ c_func
 (paren
 l_string|&quot;%s: Illegal call&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -4783,7 +4855,7 @@ c_func
 (paren
 l_string|&quot;%s: Removing /proc/%s/ filesystem entries.&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|uvd-&gt;handle-&gt;drvName
 )paren
@@ -4892,7 +4964,8 @@ id|u
 op_increment
 )paren
 (brace
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
@@ -5021,7 +5094,8 @@ comma
 )brace
 suffix:semicolon
 DECL|function|usbvideo_AllocateDevice
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|usbvideo_AllocateDevice
 c_func
@@ -5036,7 +5110,8 @@ id|i
 comma
 id|devnum
 suffix:semicolon
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
@@ -5248,20 +5323,12 @@ r_int
 id|usbvideo_RegisterVideoDevice
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
 (brace
-r_static
-r_const
-r_char
-id|proc
-(braket
-)braket
-op_assign
-l_string|&quot;usbvideo_RegisterVideoDevice&quot;
-suffix:semicolon
 r_char
 id|tmp1
 (braket
@@ -5287,7 +5354,7 @@ c_func
 (paren
 l_string|&quot;%s: Illegal call.&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -5308,7 +5375,7 @@ c_func
 (paren
 l_string|&quot;%s: No video endpoint specified; data pump disabled.&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
@@ -5325,7 +5392,7 @@ c_func
 (paren
 l_string|&quot;%s: No palettes specified!&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -5346,7 +5413,7 @@ c_func
 (paren
 l_string|&quot;%s: No default palette!&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
@@ -5405,7 +5472,7 @@ c_func
 (paren
 l_string|&quot;%s: iface=%d. endpoint=$%02x paletteBits=$%08lx&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|uvd-&gt;iface
 comma
@@ -5438,7 +5505,7 @@ c_func
 (paren
 l_string|&quot;%s: video_register_device failed&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -5459,7 +5526,7 @@ c_func
 (paren
 l_string|&quot;%s: video_register_device() successful&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
@@ -5476,7 +5543,7 @@ c_func
 (paren
 l_string|&quot;%s: uvd-&gt;dev == NULL&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -5534,7 +5601,7 @@ c_func
 (paren
 l_string|&quot;%s: Creating /proc/video/%s/ filesystem entries.&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|uvd-&gt;handle-&gt;drvName
 )paren
@@ -5583,7 +5650,8 @@ op_star
 id|vma
 )paren
 (brace
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
@@ -5745,15 +5813,6 @@ op_star
 id|file
 )paren
 (brace
-r_static
-r_const
-r_char
-id|proc
-(braket
-)braket
-op_assign
-l_string|&quot;usbvideo_v4l_open&quot;
-suffix:semicolon
 r_struct
 id|video_device
 op_star
@@ -5765,12 +5824,14 @@ c_func
 id|file
 )paren
 suffix:semicolon
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 )paren
 id|dev
@@ -5800,9 +5861,9 @@ l_int|1
 id|info
 c_func
 (paren
-l_string|&quot;%s($%p&quot;
+l_string|&quot;%s($%p)&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|dev
 )paren
@@ -5831,7 +5892,7 @@ c_func
 (paren
 l_string|&quot;%s: Someone tried to open an already opened device!&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|errCode
@@ -5902,12 +5963,9 @@ c_func
 op_amp
 id|uvd-&gt;dp
 comma
-l_int|128
-op_star
-l_int|1024
+id|RING_QUEUE_SIZE
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME #define */
 r_if
 c_cond
 (paren
@@ -5933,7 +5991,7 @@ c_func
 (paren
 l_string|&quot;%s: Failed to allocate fbuf or dp&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|errCode
@@ -6207,7 +6265,7 @@ c_func
 (paren
 l_string|&quot;%s: setupOnOpen callback&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|errCode
@@ -6236,7 +6294,7 @@ c_func
 (paren
 l_string|&quot;%s: setupOnOpen callback failed (%d.).&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|errCode
 )paren
@@ -6256,7 +6314,7 @@ c_func
 (paren
 l_string|&quot;%s: setupOnOpen callback successful&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
@@ -6285,7 +6343,7 @@ c_func
 (paren
 l_string|&quot;%s: Open succeeded.&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|uvd-&gt;user
@@ -6330,7 +6388,7 @@ c_func
 (paren
 l_string|&quot;%s: Returning %d.&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|errCode
 )paren
@@ -6357,15 +6415,6 @@ op_star
 id|file
 )paren
 (brace
-r_static
-r_const
-r_char
-id|proc
-(braket
-)braket
-op_assign
-l_string|&quot;usbvideo_v4l_close&quot;
-suffix:semicolon
 r_struct
 id|video_device
 op_star
@@ -6373,12 +6422,14 @@ id|dev
 op_assign
 id|file-&gt;private_data
 suffix:semicolon
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 )paren
 id|dev
@@ -6398,7 +6449,7 @@ c_func
 (paren
 l_string|&quot;%s($%p)&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|dev
 )paren
@@ -6538,7 +6589,7 @@ c_func
 (paren
 l_string|&quot;%s: Completed.&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|file-&gt;private_data
@@ -6575,7 +6626,8 @@ op_star
 id|arg
 )paren
 (brace
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
@@ -6738,6 +6790,33 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|VALID_CALLBACK
+c_func
+(paren
+id|uvd
+comma
+id|setVideoMode
+)paren
+)paren
+(brace
+r_return
+id|GET_CALLBACK
+c_func
+(paren
+id|uvd
+comma
+id|setVideoMode
+)paren
+(paren
+id|uvd
+comma
+id|vw
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|vw-&gt;flags
 )paren
 r_return
@@ -6811,7 +6890,7 @@ op_assign
 id|VIDEOSIZE_X
 c_func
 (paren
-id|uvd-&gt;canvas
+id|uvd-&gt;videosize
 )paren
 suffix:semicolon
 id|vw-&gt;height
@@ -6819,7 +6898,7 @@ op_assign
 id|VIDEOSIZE_Y
 c_func
 (paren
-id|uvd-&gt;canvas
+id|uvd-&gt;videosize
 )paren
 suffix:semicolon
 id|vw-&gt;chromakey
@@ -7448,16 +7527,8 @@ op_star
 id|ppos
 )paren
 (brace
-r_static
-r_const
-r_char
-id|proc
-(braket
-)braket
-op_assign
-l_string|&quot;usbvideo_v4l_read&quot;
-suffix:semicolon
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
@@ -7514,7 +7585,7 @@ c_func
 (paren
 l_string|&quot;%s: %d. bytes, noblock=%d.&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|count
 comma
@@ -7682,7 +7753,7 @@ c_func
 (paren
 l_string|&quot;%s: No default palette; don&squot;t know what to do!&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|count
@@ -7898,7 +7969,7 @@ c_func
 (paren
 l_string|&quot;%s: {copy} count used=%d, new seqRead_Index=%ld&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|count
 comma
@@ -7953,7 +8024,7 @@ c_func
 (paren
 l_string|&quot;%s: usbvideo_NewFrame failed.&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
@@ -7978,7 +8049,8 @@ r_int
 id|usbvideo_CompressIsochronous
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -8134,7 +8206,8 @@ id|ret
 comma
 id|len
 suffix:semicolon
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
@@ -8354,20 +8427,12 @@ r_int
 id|usbvideo_StartDataPump
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
 (brace
-r_static
-r_const
-r_char
-id|proc
-(braket
-)braket
-op_assign
-l_string|&quot;usbvideo_StartDataPump&quot;
-suffix:semicolon
 r_struct
 id|usb_device
 op_star
@@ -8392,7 +8457,7 @@ c_func
 (paren
 l_string|&quot;%s($%p)&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|uvd
 )paren
@@ -8413,7 +8478,7 @@ c_func
 (paren
 l_string|&quot;%s: Camera is not operational&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -8452,7 +8517,7 @@ c_func
 (paren
 l_string|&quot;%s: usb_set_interface error&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|uvd-&gt;last_error
@@ -8492,7 +8557,7 @@ c_func
 (paren
 l_string|&quot;%s: videoStart not set&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/* We double buffer the Iso lists */
@@ -8659,7 +8724,7 @@ c_func
 (paren
 l_string|&quot;%s: usb_submit_isoc(%d) ret %d&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|i
 comma
@@ -8683,7 +8748,7 @@ c_func
 (paren
 l_string|&quot;%s: streaming=1 video_endp=$%02x&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|uvd-&gt;video_endp
 )paren
@@ -8699,20 +8764,12 @@ r_void
 id|usbvideo_StopDataPump
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
 (brace
-r_static
-r_const
-r_char
-id|proc
-(braket
-)braket
-op_assign
-l_string|&quot;usbvideo_StopDataPump&quot;
-suffix:semicolon
 r_int
 id|i
 comma
@@ -8730,7 +8787,7 @@ c_func
 (paren
 l_string|&quot;%s($%p)&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|uvd
 )paren
@@ -8798,7 +8855,7 @@ c_func
 (paren
 l_string|&quot;%s: usb_unlink_urb() error %d.&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|j
 )paren
@@ -8816,7 +8873,7 @@ c_func
 (paren
 l_string|&quot;%s: streaming=0&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|uvd-&gt;streaming
@@ -8859,7 +8916,7 @@ c_func
 (paren
 l_string|&quot;%s: videoStop not set&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/* Set packet size to 0 */
@@ -8888,7 +8945,7 @@ c_func
 (paren
 l_string|&quot;%s: usb_set_interface() error %d.&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|j
 )paren
@@ -8907,7 +8964,8 @@ r_int
 id|usbvideo_NewFrame
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -9123,7 +9181,8 @@ r_void
 id|usbvideo_CollectRawData
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -9236,7 +9295,8 @@ r_int
 id|usbvideo_GetFrame
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -9244,15 +9304,6 @@ r_int
 id|frameNum
 )paren
 (brace
-r_static
-r_const
-r_char
-id|proc
-(braket
-)braket
-op_assign
-l_string|&quot;usbvideo_GetFrame&quot;
-suffix:semicolon
 id|usbvideo_frame_t
 op_star
 id|frame
@@ -9275,7 +9326,7 @@ c_func
 (paren
 l_string|&quot;%s($%p,%d.)&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|uvd
 comma
@@ -9303,7 +9354,7 @@ c_func
 (paren
 l_string|&quot;%s: FrameState_Unused&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -9350,7 +9401,7 @@ c_func
 (paren
 l_string|&quot;%s: Camera is not operational (1)&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -9402,7 +9453,7 @@ c_func
 (paren
 l_string|&quot;%s: Camera is not operational (2)&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -9435,7 +9486,7 @@ c_func
 (paren
 l_string|&quot;%s: Signal=$%08x&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|signalPending
 )paren
@@ -9478,7 +9529,7 @@ c_func
 (paren
 l_string|&quot;%s: Forced test pattern screen&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -9500,7 +9551,7 @@ c_func
 (paren
 l_string|&quot;%s: Interrupted!&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -9558,7 +9609,7 @@ c_func
 (paren
 l_string|&quot;%s: processData not set&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
@@ -9584,7 +9635,7 @@ c_func
 (paren
 l_string|&quot;%s: Grabbing done; state=%d. (%lu. bytes)&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|frame-&gt;frameState
 comma
@@ -9624,7 +9675,7 @@ c_func
 (paren
 l_string|&quot;%s: usbvideo_NewFrame() failed (%d.)&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|ret
 )paren
@@ -9714,7 +9765,7 @@ c_func
 (paren
 l_string|&quot;%s: Entered FrameState_Done_Hold state.&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -9736,7 +9787,7 @@ c_func
 (paren
 l_string|&quot;%s: FrameState_Done_Hold state.&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -9749,7 +9800,7 @@ c_func
 (paren
 l_string|&quot;%s: Invalid state %d.&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|frame-&gt;frameState
 )paren
@@ -9768,7 +9819,8 @@ r_void
 id|usbvideo_DeinterlaceFrame
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -10088,7 +10140,8 @@ r_void
 id|usbvideo_SoftwareContrastAdjustment
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -10097,15 +10150,6 @@ op_star
 id|frame
 )paren
 (brace
-r_static
-r_const
-r_char
-id|proc
-(braket
-)braket
-op_assign
-l_string|&quot;usbvideo_SoftwareContrastAdjustment&quot;
-suffix:semicolon
 r_int
 id|i
 comma
@@ -10145,7 +10189,7 @@ c_func
 (paren
 l_string|&quot;%s: Illegal call.&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -10322,15 +10366,6 @@ op_star
 id|ut
 )paren
 (brace
-r_static
-r_const
-r_char
-id|proc
-(braket
-)braket
-op_assign
-l_string|&quot;usbvideo_procfs_level1_create&quot;
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10344,7 +10379,7 @@ c_func
 (paren
 l_string|&quot;%s: ut == NULL&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -10363,7 +10398,7 @@ c_func
 (paren
 l_string|&quot;%s: /proc/video/ doesn&squot;t exist.&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -10408,7 +10443,7 @@ c_func
 (paren
 l_string|&quot;%s: Unable to initialize /proc/video/%s&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|ut-&gt;drvName
 )paren
@@ -10426,15 +10461,6 @@ op_star
 id|ut
 )paren
 (brace
-r_static
-r_const
-r_char
-id|proc
-(braket
-)braket
-op_assign
-l_string|&quot;usbvideo_procfs_level1_destroy&quot;
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10448,7 +10474,7 @@ c_func
 (paren
 l_string|&quot;%s: ut == NULL&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -10482,20 +10508,12 @@ r_void
 id|usbvideo_procfs_level2_create
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
 (brace
-r_static
-r_const
-r_char
-id|proc
-(braket
-)braket
-op_assign
-l_string|&quot;usbvideo_procfs_level2_create&quot;
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10509,7 +10527,7 @@ c_func
 (paren
 l_string|&quot;%s: uvd == NULL&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -10535,7 +10553,7 @@ c_func
 (paren
 l_string|&quot;%s: uvd-&gt;handle-&gt;procfs_dEntry == NULL&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -10595,7 +10613,7 @@ c_func
 (paren
 l_string|&quot;%s: Failed to create entry &bslash;&quot;%s&bslash;&quot;&quot;
 comma
-id|proc
+id|__FUNCTION__
 comma
 id|uvd-&gt;videoName
 )paren
@@ -10608,20 +10626,12 @@ r_void
 id|usbvideo_procfs_level2_destroy
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
 (brace
-r_static
-r_const
-r_char
-id|proc
-(braket
-)braket
-op_assign
-l_string|&quot;usbvideo_procfs_level2_destroy&quot;
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10635,7 +10645,7 @@ c_func
 (paren
 l_string|&quot;%s: uvd == NULL&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return

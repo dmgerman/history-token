@@ -7,7 +7,7 @@ mdefine_line|#define COMPAQ_VENDOR_ID&t;0x049f
 DECL|macro|COMPAQ_IPAQ_ID
 mdefine_line|#define COMPAQ_IPAQ_ID&t;&t;0x0003
 DECL|macro|HP_VENDOR_ID
-mdefine_line|#define HP_VENDOR_ID&t;&t;0x003f
+mdefine_line|#define HP_VENDOR_ID&t;&t;0x03f0
 DECL|macro|HP_JORNADA_548_ID
 mdefine_line|#define HP_JORNADA_548_ID&t;0x1016
 DECL|macro|HP_JORNADA_568_ID
