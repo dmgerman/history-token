@@ -247,7 +247,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|BUG_ON
+id|WARN_ON
 c_func
 (paren
 id|irqs_disabled
