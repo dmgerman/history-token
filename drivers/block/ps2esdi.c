@@ -150,7 +150,7 @@ id|dma_xmode
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|ps2esdi_interrupt_handler
 c_func
 (paren
@@ -2723,8 +2723,10 @@ id|cmd_blk
 (brace
 r_int
 id|i
-comma
-id|j
+suffix:semicolon
+r_int
+r_int
+id|jif
 suffix:semicolon
 id|u_char
 id|status
@@ -2742,7 +2744,7 @@ multiline_comment|/* do not write to the controller, if it is busy */
 r_for
 c_loop
 (paren
-id|i
+id|jif
 op_assign
 id|jiffies
 op_plus
@@ -2751,7 +2753,7 @@ suffix:semicolon
 id|time_after
 c_func
 (paren
-id|i
+id|jif
 comma
 id|jiffies
 )paren
@@ -2772,11 +2774,11 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
-l_string|&quot;%s: i(1)=%d&bslash;n&quot;
+l_string|&quot;%s: i(1)=%ld&bslash;n&quot;
 comma
 id|DEVICE_NAME
 comma
-id|i
+id|jif
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2887,7 +2889,7 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|j
+id|jif
 op_assign
 id|jiffies
 op_plus
@@ -2896,7 +2898,7 @@ suffix:semicolon
 id|time_after
 c_func
 (paren
-id|j
+id|jif
 comma
 id|jiffies
 )paren
@@ -3066,7 +3068,7 @@ suffix:semicolon
 multiline_comment|/* prepare for dma */
 DECL|function|ps2esdi_interrupt_handler
 r_static
-r_void
+id|irqreturn_t
 id|ps2esdi_interrupt_handler
 c_func
 (paren
@@ -3141,8 +3143,12 @@ suffix:semicolon
 r_else
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|ps2esdi_initial_reset_int_handler
 r_static

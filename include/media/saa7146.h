@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/module.h&gt;&t;/* for module-version */
 macro_line|#include &lt;linux/delay.h&gt;&t;/* for delay-stuff */
 macro_line|#include &lt;linux/slab.h&gt;&t;&t;/* for kmalloc/kfree */
 macro_line|#include &lt;linux/pci.h&gt;&t;&t;/* for pci-config-stuff, vendor ids etc. */
-macro_line|#include &lt;linux/wrapper.h&gt;&t;/* for mem_map_reserve */
 macro_line|#include &lt;linux/init.h&gt;&t;&t;/* for &quot;__init&quot; */
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* for IMMEDIATE_BH */
 macro_line|#include &lt;linux/kmod.h&gt;&t;&t;/* for kernel module loader */

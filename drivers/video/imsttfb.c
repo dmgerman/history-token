@@ -8635,10 +8635,6 @@ c_func
 id|par
 )paren
 suffix:semicolon
-id|info-&gt;node
-op_assign
-id|NODEV
-suffix:semicolon
 id|info-&gt;fbops
 op_assign
 op_amp
@@ -8701,11 +8697,7 @@ c_func
 (paren
 l_string|&quot;fb%u: %s frame buffer; %uMB vram; chip version %u&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|info-&gt;node
-)paren
 comma
 id|info-&gt;fix.id
 comma

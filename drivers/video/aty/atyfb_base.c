@@ -9190,10 +9190,6 @@ comma
 id|info-&gt;fix.smem_len
 )paren
 suffix:semicolon
-id|info-&gt;node
-op_assign
-id|NODEV
-suffix:semicolon
 id|info-&gt;fbops
 op_assign
 op_amp
@@ -9703,11 +9699,7 @@ c_func
 (paren
 l_string|&quot;fb%d: %s frame buffer device on %s&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|info-&gt;node
-)paren
 comma
 id|info-&gt;fix.id
 comma

@@ -273,8 +273,6 @@ DECL|macro|page_buffers
 mdefine_line|#define page_buffers(page)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!PagePrivate(page))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;BUG();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;((struct buffer_head *)(page)-&gt;private);&t;&bslash;&n;&t;})
 DECL|macro|page_has_buffers
 mdefine_line|#define page_has_buffers(page)&t;PagePrivate(page)
-DECL|macro|invalidate_buffers
-mdefine_line|#define invalidate_buffers(dev)&t;__invalidate_buffers((dev), 0)
 multiline_comment|/*&n; * Declarations&n; */
 r_void
 id|FASTCALL
@@ -500,16 +498,6 @@ c_func
 r_struct
 id|block_device
 op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_void
-id|__invalidate_buffers
-c_func
-(paren
-id|kdev_t
-id|dev
 comma
 r_int
 )paren

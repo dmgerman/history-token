@@ -1310,7 +1310,7 @@ r_struct
 id|fb_info
 (brace
 DECL|member|node
-id|kdev_t
+r_int
 id|node
 suffix:semicolon
 DECL|member|flags

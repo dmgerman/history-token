@@ -10099,10 +10099,6 @@ id|info-&gt;pseudo_palette
 op_assign
 id|rinfo-&gt;pseudo_palette
 suffix:semicolon
-id|info-&gt;node
-op_assign
-id|NODEV
-suffix:semicolon
 id|info-&gt;flags
 op_assign
 id|FBINFO_FLAG_DEFAULT

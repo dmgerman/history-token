@@ -23,8 +23,6 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-multiline_comment|/*&n;  * for crizappy mmap()&n;  */
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &quot;maestro3.h&quot;
 DECL|macro|M_DEBUG
 mdefine_line|#define M_DEBUG 1

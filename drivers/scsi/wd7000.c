@@ -3663,7 +3663,7 @@ suffix:semicolon
 )brace
 DECL|function|do_wd7000_intr_handle
 r_static
-r_void
+id|irqreturn_t
 id|do_wd7000_intr_handle
 c_func
 (paren
@@ -3716,6 +3716,9 @@ id|host-&gt;host_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|wd7000_queuecommand

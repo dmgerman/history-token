@@ -568,7 +568,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|do_seagate_reconnect_intr
 (paren
 r_int
@@ -1335,8 +1335,9 @@ suffix:semicolon
 multiline_comment|/*&n; * The seagate_reconnect_intr routine is called when a target reselects the&n; * host adapter.  This occurs on the interrupt triggered by the target&n; * asserting SEL.&n; */
 DECL|function|do_seagate_reconnect_intr
 r_static
-r_void
+id|irqreturn_t
 id|do_seagate_reconnect_intr
+c_func
 (paren
 r_int
 id|irq
@@ -1384,6 +1385,9 @@ id|dev-&gt;host_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|seagate_reconnect_intr

@@ -6627,7 +6627,7 @@ suffix:semicolon
 multiline_comment|/*------------------------------- interrupts --------------------------------*/
 DECL|function|zatm_int
 r_static
-r_void
+id|irqreturn_t
 id|zatm_int
 c_func
 (paren
@@ -6657,6 +6657,11 @@ suffix:semicolon
 id|u32
 id|reason
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|dev
 op_assign
 id|dev_id
@@ -6683,6 +6688,10 @@ id|GSR
 )paren
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|EVENT
 c_func
 (paren
@@ -7067,6 +7076,13 @@ suffix:semicolon
 )brace
 multiline_comment|/* @@@ handle RCRn */
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*----------------------------- (E)EPROM access -----------------------------*/
 DECL|function|eprom_set

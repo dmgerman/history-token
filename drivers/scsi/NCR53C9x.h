@@ -3,6 +3,7 @@ macro_line|#ifndef NCR53C9X_H
 DECL|macro|NCR53C9X_H
 mdefine_line|#define NCR53C9X_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 multiline_comment|/* djweis for mac driver */
 macro_line|#if defined(CONFIG_MAC)
 DECL|macro|PAD_SIZE
@@ -1614,7 +1615,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|esp_intr
 c_func
 (paren

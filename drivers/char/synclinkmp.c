@@ -2529,24 +2529,6 @@ id|status
 )paren
 suffix:semicolon
 r_static
-r_void
-id|synclinkmp_interrupt
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_static
 r_int
 id|alloc_dma_bufs
 c_func
@@ -10568,7 +10550,7 @@ suffix:semicolon
 multiline_comment|/* Interrupt service routine entry point.&n; *&n; * Arguments:&n; * &t;irq&t;&t;interrupt number that caused interrupt&n; * &t;dev_id&t;&t;device ID supplied during interrupt registration&n; * &t;regs&t;&t;interrupted processor context&n; */
 DECL|function|synclinkmp_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|synclinkmp_interrupt
 c_func
 (paren
@@ -10663,6 +10645,7 @@ op_logical_neg
 id|info
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock
 c_func
@@ -11243,6 +11226,9 @@ id|__LINE__
 comma
 id|irq
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* Initialize and start device.&n; */

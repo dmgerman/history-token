@@ -2968,7 +2968,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Releasing a block device means we sync() it, so that it can safely&n; * be forgotten about...&n; */
 DECL|function|hd_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|hd_interrupt
 c_func
 (paren
@@ -3026,6 +3026,9 @@ id|local_irq_enable
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|variable|hd_fops

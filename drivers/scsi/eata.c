@@ -1419,7 +1419,7 @@ multiline_comment|/* But transfer orientation from the 16 bit data register is L
 DECL|macro|REG2H
 mdefine_line|#define REG2H(x)   le16_to_cpu(x)
 r_static
-r_void
+id|irqreturn_t
 id|do_interrupt_handler
 c_func
 (paren
@@ -11243,7 +11243,7 @@ suffix:semicolon
 )brace
 DECL|function|do_interrupt_handler
 r_static
-r_void
+id|irqreturn_t
 id|do_interrupt_handler
 c_func
 (paren
@@ -11293,6 +11293,7 @@ op_ge
 id|num_boards
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -11327,6 +11328,9 @@ id|host_lock
 comma
 id|spin_flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|eata2x_release

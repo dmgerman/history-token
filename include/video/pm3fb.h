@@ -2082,11 +2082,6 @@ macro_line|#ifdef __BIG_ENDIAN
 DECL|macro|MUST_BYTESWAP
 mdefine_line|#define MUST_BYTESWAP
 macro_line|#endif
-multiline_comment|/* for compatibility between 2.5, 2.4 and 2.2 */
-macro_line|#ifndef B_FREE
-DECL|macro|B_FREE
-mdefine_line|#define B_FREE   -1
-macro_line|#endif
 multiline_comment|/* permedia3 -specific definitions */
 DECL|macro|PM3_SCALE_TO_CLOCK
 mdefine_line|#define PM3_SCALE_TO_CLOCK(pr, fe, po) ((2 * PM3_REF_CLOCK * fe) / (pr * (1 &lt;&lt; (po))))

@@ -4417,8 +4417,9 @@ suffix:semicolon
 multiline_comment|/********** interrupt handler **********/
 DECL|function|interrupt_handler
 r_static
-r_void
+id|irqreturn_t
 id|interrupt_handler
+c_func
 (paren
 r_int
 id|irq
@@ -4479,6 +4480,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 singleline_comment|// Did one of our cards generate the interrupt?
@@ -4519,6 +4521,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -4541,6 +4544,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 singleline_comment|// definitely for us
@@ -4701,6 +4705,17 @@ l_string|&quot;interrupt_handler done: %p&quot;
 comma
 id|dev_id
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|irq_ok
+)paren
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
+r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/********** housekeeping **********/

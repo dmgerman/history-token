@@ -207,7 +207,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|do_NCR53c406a_intr
 c_func
 (paren
@@ -2529,6 +2529,7 @@ r_void
 )paren
 (brace
 r_int
+r_int
 id|i
 op_assign
 id|jiffies
@@ -3111,7 +3112,7 @@ suffix:semicolon
 )brace
 DECL|function|do_NCR53c406a_intr
 r_static
-r_void
+id|irqreturn_t
 id|do_NCR53c406a_intr
 c_func
 (paren
@@ -3164,6 +3165,9 @@ id|dev-&gt;host_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|NCR53c406a_intr
@@ -4065,6 +4069,7 @@ id|irqs
 comma
 id|irq
 suffix:semicolon
+r_int
 r_int
 id|i
 suffix:semicolon

@@ -1001,9 +1001,6 @@ id|mp
 op_assign
 l_int|0
 suffix:semicolon
-id|kdev_t
-id|kdev
-suffix:semicolon
 macro_line|#endif /* CONFIG_ISDN_CAPI_MIDDLEWARE */
 id|np
 op_assign
@@ -1095,16 +1092,6 @@ l_string|&quot;set mp-&gt;nccip&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(CONFIG_ISDN_CAPI_CAPIFS) || defined(CONFIG_ISDN_CAPI_CAPIFS_MODULE)
-id|kdev
-op_assign
-id|mk_kdev
-c_func
-(paren
-id|capi_ttymajor
-comma
-id|mp-&gt;minor
-)paren
-suffix:semicolon
 id|capifs_new_ncci
 c_func
 (paren
@@ -1112,7 +1099,13 @@ l_int|0
 comma
 id|mp-&gt;minor
 comma
-id|kdev
+id|MKDEV
+c_func
+(paren
+id|capi_ttymajor
+comma
+id|mp-&gt;minor
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif

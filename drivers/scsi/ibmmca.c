@@ -1245,21 +1245,6 @@ suffix:semicolon
 macro_line|#endif
 r_static
 r_void
-id|interrupt_handler
-c_func
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-r_static
-r_void
 id|issue_cmd
 c_func
 (paren
@@ -1479,7 +1464,7 @@ r_int
 suffix:semicolon
 DECL|function|interrupt_handler
 r_static
-r_void
+id|irqreturn_t
 id|interrupt_handler
 c_func
 (paren
@@ -1583,6 +1568,7 @@ id|dev-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* the reset-function already did all the job, even ints got&n;&t;   renabled on the subsystem, so just return */
@@ -1625,6 +1611,7 @@ id|dev-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*must wait for attention reg not busy, then send EOI to subsystem */
@@ -2380,6 +2367,7 @@ id|dev-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* handling of commands coming from upper level of scsi driver */
@@ -2510,6 +2498,7 @@ id|dev-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_else
@@ -2642,6 +2631,7 @@ id|dev-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_else
@@ -2689,6 +2679,7 @@ id|dev-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 )brace
@@ -2774,6 +2765,7 @@ id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 )brace
@@ -2793,6 +2785,7 @@ id|dev-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifdef IM_DEBUG_INT
@@ -2999,6 +2992,7 @@ id|dev-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|issue_cmd
