@@ -3871,7 +3871,7 @@ op_star
 id|self
 comma
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|endpoint
 comma
@@ -3937,7 +3937,7 @@ id|endpoint
 id|i
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
@@ -3948,7 +3948,7 @@ id|endpoint
 id|i
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 id|USB_ENDPOINT_DIR_MASK
 suffix:semicolon
@@ -3959,7 +3959,7 @@ id|endpoint
 id|i
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 suffix:semicolon
 id|psize
 op_assign
@@ -3968,7 +3968,7 @@ id|endpoint
 id|i
 )braket
 dot
-id|wMaxPacketSize
+id|desc.wMaxPacketSize
 suffix:semicolon
 multiline_comment|/* Is it a bulk endpoint ??? */
 r_if
@@ -4286,7 +4286,7 @@ id|USB_RECIP_INTERFACE
 comma
 l_int|0
 comma
-id|intf-&gt;altsetting-&gt;bInterfaceNumber
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 comma
 id|desc
 comma
@@ -4428,7 +4428,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|interface
 suffix:semicolon
@@ -4778,7 +4778,7 @@ id|dev-&gt;config
 l_int|0
 )braket
 dot
-id|bConfigurationValue
+id|desc.bConfigurationValue
 )paren
 OL
 l_int|0
@@ -4804,7 +4804,7 @@ c_func
 (paren
 id|dev
 comma
-id|intf-&gt;altsetting-&gt;bInterfaceNumber
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 comma
 l_int|0
 )paren
@@ -4904,7 +4904,7 @@ id|self
 comma
 id|interface-&gt;endpoint
 comma
-id|interface-&gt;bNumEndpoints
+id|interface-&gt;desc.bNumEndpoints
 )paren
 )paren
 (brace
