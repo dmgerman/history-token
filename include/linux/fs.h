@@ -7553,6 +7553,15 @@ r_return
 id|res
 suffix:semicolon
 )brace
+multiline_comment|/* kernel/fork.c */
+r_extern
+r_int
+id|unshare_files
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_FS_H */
 eof
