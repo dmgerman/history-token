@@ -2613,6 +2613,17 @@ comma
 l_int|20
 )paren
 op_logical_and
+multiline_comment|/* Same goes for another set of Maxtor drives that say &quot;D3000000&quot; */
+id|strncmp
+c_func
+(paren
+id|drive-&gt;id-&gt;serial_no
+comma
+l_string|&quot;D3000000&quot;
+comma
+l_int|8
+)paren
+op_logical_and
 id|strncmp
 c_func
 (paren
