@@ -4,19 +4,6 @@ DECL|macro|_SA1100_KEYBOARD_H
 mdefine_line|#define _SA1100_KEYBOARD_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
-macro_line|#include &lt;asm/arch/assabet.h&gt;
-DECL|macro|kbd_disable_irq
-mdefine_line|#define kbd_disable_irq()&t;do { } while(0)
-DECL|macro|kbd_enable_irq
-mdefine_line|#define kbd_enable_irq()&t;do { } while(0)
-r_extern
-r_int
-id|sa1111_kbd_init_hw
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|gc_kbd_init_hw
@@ -54,31 +41,6 @@ r_void
 r_if
 c_cond
 (paren
-(paren
-id|machine_is_assabet
-c_func
-(paren
-)paren
-op_logical_and
-id|machine_has_neponset
-c_func
-(paren
-)paren
-)paren
-op_logical_or
-id|machine_is_graphicsmaster
-c_func
-(paren
-)paren
-)paren
-id|sa1111_kbd_init_hw
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|machine_is_graphicsclient
 c_func
 (paren
@@ -112,22 +74,6 @@ c_func
 )paren
 )paren
 id|cerf_kbd_init_hw
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_PT_SYSTEM3
-multiline_comment|/* TODO: add system 3 board specific functions here */
-r_if
-c_cond
-(paren
-id|machine_is_pt_system3
-c_func
-(paren
-)paren
-)paren
-id|sa1111_kbd_init_hw
 c_func
 (paren
 )paren
