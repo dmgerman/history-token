@@ -15867,7 +15867,7 @@ r_if
 c_cond
 (paren
 id|vw.clipcount
-OG
+template_param
 l_int|2048
 )paren
 r_return
