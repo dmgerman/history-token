@@ -1,20 +1,21 @@
-singleline_comment|//#define dprintk(x) printk x
+macro_line|#if (!defined(dprintk))
 DECL|macro|dprintk
-mdefine_line|#define dprintk(x)
+macro_line|# define dprintk(x)
+macro_line|#endif
 multiline_comment|/*------------------------------------------------------------------------------&n; *              D E F I N E S&n; *----------------------------------------------------------------------------*/
 DECL|macro|MAXIMUM_NUM_CONTAINERS
 mdefine_line|#define MAXIMUM_NUM_CONTAINERS&t;31
 DECL|macro|MAXIMUM_NUM_ADAPTERS
 mdefine_line|#define MAXIMUM_NUM_ADAPTERS&t;8
 DECL|macro|AAC_NUM_FIB
-mdefine_line|#define AAC_NUM_FIB&t;578
+mdefine_line|#define AAC_NUM_FIB&t;&t;578
 singleline_comment|//#define AAC_NUM_IO_FIB&t;512
 DECL|macro|AAC_NUM_IO_FIB
-mdefine_line|#define AAC_NUM_IO_FIB&t;100
+mdefine_line|#define AAC_NUM_IO_FIB&t;&t;100
 DECL|macro|AAC_MAX_TARGET
-mdefine_line|#define AAC_MAX_TARGET (MAXIMUM_NUM_CONTAINERS+1)
+mdefine_line|#define AAC_MAX_TARGET &t;&t;(MAXIMUM_NUM_CONTAINERS+1)
 DECL|macro|AAC_MAX_LUN
-mdefine_line|#define AAC_MAX_LUN&t;(8)
+mdefine_line|#define AAC_MAX_LUN&t;&t;(8)
 DECL|macro|AAC_MAX_HOSTPHYSMEMPAGES
 mdefine_line|#define AAC_MAX_HOSTPHYSMEMPAGES (0xfffff)
 multiline_comment|/*&n; * These macros convert from physical channels to virtual channels&n; */
@@ -383,244 +384,6 @@ id|AdapHighRespQueue
 multiline_comment|/* Host to adapter high priority response traffic */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Implement our own version of these so we have 64 bit compatability&n; * The adapter uses these and can only handle 32 bit addresses&n; */
-DECL|struct|aac_list_head
-r_struct
-id|aac_list_head
-(brace
-DECL|member|next
-id|u32
-id|next
-suffix:semicolon
-DECL|member|prev
-id|u32
-id|prev
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|macro|AAC_INIT_LIST_HEAD
-mdefine_line|#define AAC_INIT_LIST_HEAD(ptr) do { &bslash;&n;&t;(ptr)-&gt;next = (u32)(ulong)(ptr); &bslash;&n;&t;(ptr)-&gt;prev = (u32)(ulong)(ptr); &bslash;&n;} while (0)
-multiline_comment|/**&n; * aac_list_empty - tests whether a list is empty&n; * @head: the list to test.&n; */
-DECL|function|aac_list_empty
-r_static
-id|__inline__
-r_int
-id|aac_list_empty
-c_func
-(paren
-r_struct
-id|aac_list_head
-op_star
-id|head
-)paren
-(brace
-r_return
-id|head-&gt;next
-op_eq
-(paren
-(paren
-id|u32
-)paren
-(paren
-id|ulong
-)paren
-id|head
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Insert a new entry between two known consecutive entries. &n; *&n; * This is only for internal list manipulation where we know&n; * the prev/next entries already!&n; */
-DECL|function|aac_list_add
-r_static
-id|__inline__
-r_void
-id|aac_list_add
-c_func
-(paren
-r_struct
-id|aac_list_head
-op_star
-id|n
-comma
-r_struct
-id|aac_list_head
-op_star
-id|prev
-comma
-r_struct
-id|aac_list_head
-op_star
-id|next
-)paren
-(brace
-id|next-&gt;prev
-op_assign
-(paren
-id|u32
-)paren
-(paren
-id|ulong
-)paren
-id|n
-suffix:semicolon
-id|n-&gt;next
-op_assign
-(paren
-id|u32
-)paren
-(paren
-id|ulong
-)paren
-id|next
-suffix:semicolon
-id|n-&gt;prev
-op_assign
-(paren
-id|u32
-)paren
-(paren
-id|ulong
-)paren
-id|prev
-suffix:semicolon
-id|prev-&gt;next
-op_assign
-(paren
-id|u32
-)paren
-(paren
-id|ulong
-)paren
-id|n
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * list_add_tail - add a new entry&n; * @new: new entry to be added&n; * @head: list head to add it before&n; *&n; * Insert a new entry before the specified head.&n; * This is useful for implementing queues.&n; */
-DECL|function|aac_list_add_tail
-r_static
-id|__inline__
-r_void
-id|aac_list_add_tail
-c_func
-(paren
-r_struct
-id|aac_list_head
-op_star
-id|n
-comma
-r_struct
-id|aac_list_head
-op_star
-id|head
-)paren
-(brace
-id|aac_list_add
-c_func
-(paren
-id|n
-comma
-(paren
-r_struct
-id|aac_list_head
-op_star
-)paren
-(paren
-id|ulong
-)paren
-(paren
-id|head-&gt;prev
-)paren
-comma
-id|head
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Delete a list entry by making the prev/next entries&n; * point to each other.&n; *&n; * This is only for internal list manipulation where we know&n; * the prev/next entries already!&n; */
-DECL|function|__aac_list_del
-r_static
-id|__inline__
-r_void
-id|__aac_list_del
-c_func
-(paren
-r_struct
-id|aac_list_head
-op_star
-id|p
-comma
-r_struct
-id|aac_list_head
-op_star
-id|n
-)paren
-(brace
-id|n-&gt;prev
-op_assign
-(paren
-id|u32
-)paren
-(paren
-id|ulong
-)paren
-id|p
-suffix:semicolon
-id|p-&gt;next
-op_assign
-(paren
-id|u32
-)paren
-(paren
-id|ulong
-)paren
-id|n
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * aac_list_del - deletes entry from list.&n; * @entry: the element to delete from the list.&n; * Note: list_empty on entry does not return true after this, the entry is in an undefined state.&n; */
-DECL|function|aac_list_del
-r_static
-id|__inline__
-r_void
-id|aac_list_del
-c_func
-(paren
-r_struct
-id|aac_list_head
-op_star
-id|entry
-)paren
-(brace
-id|__aac_list_del
-c_func
-(paren
-(paren
-r_struct
-id|aac_list_head
-op_star
-)paren
-(paren
-id|ulong
-)paren
-id|entry-&gt;prev
-comma
-(paren
-r_struct
-id|aac_list_head
-op_star
-)paren
-(paren
-id|ulong
-)paren
-id|entry-&gt;next
-)paren
-suffix:semicolon
-id|entry-&gt;next
-op_assign
-id|entry-&gt;prev
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * aac_list_entry - get the struct for this entry&n; * @ptr:&t;the &amp;struct list_head pointer.&n; * @type:&t;the type of the struct this is embedded in.&n; * @member:&t;the name of the list_struct within the struct.&n; */
-DECL|macro|aac_list_entry
-mdefine_line|#define aac_list_entry(ptr, type, member) &bslash;&n;&t;((type *)((char *)(ptr)-(ulong)(&amp;((type *)0)-&gt;member)))
 multiline_comment|/*&n; *&t;Assign type values to the FSA communication data structures&n; */
 DECL|macro|FIB_MAGIC
 mdefine_line|#define&t;&t;FIB_MAGIC&t;0x0001
@@ -697,21 +460,12 @@ DECL|member|_s
 )brace
 id|_s
 suffix:semicolon
-DECL|member|_FibLinks
-r_struct
-id|aac_list_head
-id|_FibLinks
-suffix:semicolon
-singleline_comment|// Used to link Adapter Initiated Fibs on the host
-singleline_comment|//&t;&t;struct list_head _FibLinks;&t;// Used to link Adapter Initiated Fibs on the host
 DECL|member|_u
 )brace
 id|_u
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|FibLinks
-mdefine_line|#define FibLinks&t;&t;&t;_u._FibLinks
 DECL|macro|FIB_DATA_SIZE_IN_BYTES
 mdefine_line|#define FIB_DATA_SIZE_IN_BYTES (512 - sizeof(struct aac_fibhdr))
 DECL|struct|hw_fib
@@ -1362,11 +1116,10 @@ suffix:semicolon
 multiline_comment|/* Padding - FIXME - can remove I believe */
 DECL|member|cmdq
 r_struct
-id|aac_list_head
+id|list_head
 id|cmdq
 suffix:semicolon
 multiline_comment|/* A queue of FIBs which need to be prcessed by the FS thread. This is */
-singleline_comment|//&t;struct list_head &t;cmdq;&t;   &t;/* A queue of FIBs which need to be prcessed by the FS thread. This is */
 multiline_comment|/* only valid for command queues which receive entries from the adapter. */
 DECL|member|pendingq
 r_struct
@@ -1876,12 +1629,12 @@ r_int
 id|count
 suffix:semicolon
 singleline_comment|// total number of FIBs on FibList
-DECL|member|hw_fib_list
+DECL|member|fib_list
 r_struct
-id|aac_list_head
-id|hw_fib_list
+id|list_head
+id|fib_list
 suffix:semicolon
-singleline_comment|// this holds hw_fibs which should be 32 bit addresses
+singleline_comment|// this holds fibs and their attachd hw_fibs
 )brace
 suffix:semicolon
 DECL|struct|fsa_scsi_hba
@@ -2001,6 +1754,12 @@ DECL|member|queue
 r_struct
 id|list_head
 id|queue
+suffix:semicolon
+multiline_comment|/*&n;&t; *&t;And for the internal issue/reply queues (we may be able&n;&t; *&t;to merge these two)&n;&t; */
+DECL|member|fiblink
+r_struct
+id|list_head
+id|fiblink
 suffix:semicolon
 DECL|member|data
 r_void
@@ -2135,31 +1894,31 @@ DECL|macro|AAC_CPU_STRONGARM
 mdefine_line|#define AAC_CPU_STRONGARM&t;(3)
 multiline_comment|/*&n; * Supported Options&n; */
 DECL|macro|AAC_OPT_SNAPSHOT
-mdefine_line|#define AAC_OPT_SNAPSHOT&t;cpu_to_le32(1)
+mdefine_line|#define AAC_OPT_SNAPSHOT&t;&t;cpu_to_le32(1)
 DECL|macro|AAC_OPT_CLUSTERS
-mdefine_line|#define AAC_OPT_CLUSTERS&t;cpu_to_le32(1&lt;&lt;1)
+mdefine_line|#define AAC_OPT_CLUSTERS&t;&t;cpu_to_le32(1&lt;&lt;1)
 DECL|macro|AAC_OPT_WRITE_CACHE
-mdefine_line|#define AAC_OPT_WRITE_CACHE&t;cpu_to_le32(1&lt;&lt;2)
+mdefine_line|#define AAC_OPT_WRITE_CACHE&t;&t;cpu_to_le32(1&lt;&lt;2)
 DECL|macro|AAC_OPT_64BIT_DATA
-mdefine_line|#define AAC_OPT_64BIT_DATA&t;cpu_to_le32(1&lt;&lt;3)
+mdefine_line|#define AAC_OPT_64BIT_DATA&t;&t;cpu_to_le32(1&lt;&lt;3)
 DECL|macro|AAC_OPT_HOST_TIME_FIB
-mdefine_line|#define AAC_OPT_HOST_TIME_FIB&t;cpu_to_le32(1&lt;&lt;4)
+mdefine_line|#define AAC_OPT_HOST_TIME_FIB&t;&t;cpu_to_le32(1&lt;&lt;4)
 DECL|macro|AAC_OPT_RAID50
-mdefine_line|#define AAC_OPT_RAID50&t;&t;cpu_to_le32(1&lt;&lt;5)
+mdefine_line|#define AAC_OPT_RAID50&t;&t;&t;cpu_to_le32(1&lt;&lt;5)
 DECL|macro|AAC_OPT_4GB_WINDOW
-mdefine_line|#define AAC_OPT_4GB_WINDOW&t;cpu_to_le32(1&lt;&lt;6)
+mdefine_line|#define AAC_OPT_4GB_WINDOW&t;&t;cpu_to_le32(1&lt;&lt;6)
 DECL|macro|AAC_OPT_SCSI_UPGRADEABLE
-mdefine_line|#define AAC_OPT_SCSI_UPGRADEABLE cpu_to_le32(1&lt;&lt;7)
+mdefine_line|#define AAC_OPT_SCSI_UPGRADEABLE &t;cpu_to_le32(1&lt;&lt;7)
 DECL|macro|AAC_OPT_SOFT_ERR_REPORT
-mdefine_line|#define AAC_OPT_SOFT_ERR_REPORT&t;cpu_to_le32(1&lt;&lt;8)
+mdefine_line|#define AAC_OPT_SOFT_ERR_REPORT&t;&t;cpu_to_le32(1&lt;&lt;8)
 DECL|macro|AAC_OPT_SUPPORTED_RECONDITION
-mdefine_line|#define AAC_OPT_SUPPORTED_RECONDITION cpu_to_le32(1&lt;&lt;9)
+mdefine_line|#define AAC_OPT_SUPPORTED_RECONDITION &t;cpu_to_le32(1&lt;&lt;9)
 DECL|macro|AAC_OPT_SGMAP_HOST64
-mdefine_line|#define AAC_OPT_SGMAP_HOST64&t;cpu_to_le32(1&lt;&lt;10)
+mdefine_line|#define AAC_OPT_SGMAP_HOST64&t;&t;cpu_to_le32(1&lt;&lt;10)
 DECL|macro|AAC_OPT_ALARM
-mdefine_line|#define AAC_OPT_ALARM&t;&t;cpu_to_le32(1&lt;&lt;11)
+mdefine_line|#define AAC_OPT_ALARM&t;&t;&t;cpu_to_le32(1&lt;&lt;11)
 DECL|macro|AAC_OPT_NONDASD
-mdefine_line|#define AAC_OPT_NONDASD&t;&t;cpu_to_le32(1&lt;&lt;12)
+mdefine_line|#define AAC_OPT_NONDASD&t;&t;&t;cpu_to_le32(1&lt;&lt;12)
 DECL|struct|aac_dev
 r_struct
 id|aac_dev
@@ -2195,12 +1954,13 @@ id|hw_fib
 op_star
 id|hw_fib_va
 suffix:semicolon
-DECL|member|fib_base_va
-id|ulong
-id|fib_base_va
+DECL|member|aif_base_va
+r_struct
+id|hw_fib
+op_star
+id|aif_base_va
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Fib Headers&n;&t; */
-singleline_comment|// dmb&t;struct fib              fibs[AAC_NUM_FIB]; /* Doing it here takes up too much from the scsi pool*/
 DECL|member|fibs
 r_struct
 id|fib
@@ -2253,7 +2013,6 @@ op_star
 id|init
 suffix:semicolon
 multiline_comment|/* Holds initialization info to communicate with adapter */
-singleline_comment|//&t;void *&t;&t;&t;init_pa; &t;/* Holds physical address of the init struct */
 DECL|member|init_pa
 id|dma_addr_t
 id|init_pa
@@ -2299,7 +2058,7 @@ id|fsa_scsi_hba
 id|fsa_dev
 suffix:semicolon
 DECL|member|thread_pid
-r_int
+id|pid_t
 id|thread_pid
 suffix:semicolon
 DECL|member|cardtype
