@@ -1630,13 +1630,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|id
-op_assign
-id|I2C_ALGO_SMBUS
-op_or
-id|I2C_HW_SMBUS_PIIX4
-comma
-dot
 r_class
 op_assign
 id|I2C_ADAP_CLASS_SMBUS
@@ -1859,7 +1852,7 @@ c_func
 (paren
 id|piix4_adapter.name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 comma
 l_string|&quot;SMBus PIIX4 adapter at %04x&quot;
 comma
@@ -1943,17 +1936,6 @@ c_func
 r_void
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;i2c-piix4 version %s (%s)&bslash;n&quot;
-comma
-id|I2C_VERSION
-comma
-id|I2C_DATE
-)paren
-suffix:semicolon
 r_return
 id|pci_module_init
 c_func

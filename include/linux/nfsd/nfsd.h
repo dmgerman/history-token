@@ -766,6 +766,10 @@ DECL|macro|nfserr_badtype
 mdefine_line|#define&t;nfserr_badtype&t;&t;__constant_htonl(NFSERR_BADTYPE)
 DECL|macro|nfserr_jukebox
 mdefine_line|#define&t;nfserr_jukebox&t;&t;__constant_htonl(NFSERR_JUKEBOX)
+DECL|macro|nfserr_denied
+mdefine_line|#define&t;nfserr_denied&t;&t;__constant_htonl(NFSERR_DENIED)
+DECL|macro|nfserr_deadlock
+mdefine_line|#define&t;nfserr_deadlock&t;&t;__constant_htonl(NFSERR_DEADLOCK)
 DECL|macro|nfserr_expired
 mdefine_line|#define nfserr_expired          __constant_htonl(NFSERR_EXPIRED)
 DECL|macro|nfserr_bad_cookie

@@ -2895,7 +2895,7 @@ id|lm78
 (brace
 id|client_name
 op_assign
-l_string|&quot;LM78 chip&quot;
+l_string|&quot;lm78&quot;
 suffix:semicolon
 )brace
 r_else
@@ -2909,7 +2909,7 @@ id|lm78j
 (brace
 id|client_name
 op_assign
-l_string|&quot;LM78-J chip&quot;
+l_string|&quot;lm78-j&quot;
 suffix:semicolon
 )brace
 r_else
@@ -2923,7 +2923,7 @@ id|lm79
 (brace
 id|client_name
 op_assign
-l_string|&quot;LM79 chip&quot;
+l_string|&quot;lm79&quot;
 suffix:semicolon
 )brace
 r_else
@@ -2956,7 +2956,7 @@ id|new_client-&gt;name
 comma
 id|client_name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
 id|data-&gt;type

@@ -253,11 +253,8 @@ r_void
 id|printk
 c_func
 (paren
-l_string|&quot;i2c-rpx.o: i2c MPC8xx module version %s (%s)&bslash;n&quot;
-comma
-id|I2C_VERSION
-comma
-id|I2C_DATE
+id|KERN_INFO
+l_string|&quot;i2c-rpx: i2c MPC8xx driver&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* reset hardware to sane state */

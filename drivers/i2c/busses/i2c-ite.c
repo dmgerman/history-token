@@ -6,14 +6,13 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-ite.h&gt;
 macro_line|#include &lt;linux/i2c-adap-ite.h&gt;
-macro_line|#include &quot;i2c-ite.h&quot;
+macro_line|#include &quot;../i2c-ite.h&quot;
 DECL|macro|DEFAULT_BASE
 mdefine_line|#define DEFAULT_BASE  0x14014030
 DECL|macro|ITE_IIC_IO_SIZE
