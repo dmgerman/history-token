@@ -2802,11 +2802,17 @@ macro_line|#endif
 macro_line|#include &lt;linux/bios32.h&gt;
 macro_line|#endif
 r_int
-id|ahd_linux_pci_probe
+id|ahd_linux_pci_init
 c_func
 (paren
-id|Scsi_Host_Template
-op_star
+r_void
+)paren
+suffix:semicolon
+r_void
+id|ahd_linux_pci_exit
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 r_int
