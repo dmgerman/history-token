@@ -2533,18 +2533,22 @@ op_star
 id|pci_io
 suffix:semicolon
 multiline_comment|/* start of PCI IO memory */
-DECL|member|share_start
-r_void
-op_star
-id|share_start
-suffix:semicolon
-multiline_comment|/* shared memory for Fifos start */
 DECL|member|fifos
 r_void
 op_star
 id|fifos
 suffix:semicolon
 multiline_comment|/* FIFO memory */
+DECL|member|fifos_dma
+id|dma_addr_t
+id|fifos_dma
+suffix:semicolon
+DECL|member|pdev
+r_struct
+id|pci_dev
+op_star
+id|pdev
+suffix:semicolon
 DECL|member|last_bfifo_cnt
 r_int
 id|last_bfifo_cnt
