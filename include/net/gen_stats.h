@@ -36,10 +36,13 @@ r_int
 id|compat_xstats
 suffix:semicolon
 DECL|member|xstats
-r_struct
-id|rtattr
+r_void
 op_star
 id|xstats
+suffix:semicolon
+DECL|member|xstats_len
+r_int
+id|xstats_len
 suffix:semicolon
 DECL|member|tc_stats
 r_struct
