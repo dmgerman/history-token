@@ -301,6 +301,7 @@ id|op
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef ACPI_ENABLE_OBJECT_CACHE
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_delete_parse_cache&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Free all objects that are on the parse cache list.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ps_delete_parse_cache
@@ -327,6 +328,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Utility functions&n; *&n; * DESCRIPTION: Low level character and object functions&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; * Is &quot;c&quot; a namestring lead character?&n; */
 id|u8

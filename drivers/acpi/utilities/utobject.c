@@ -623,6 +623,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_ENABLE_OBJECT_CACHE
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_delete_object_cache&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Purge the global state object cache.  Used during subsystem&n; *              termination.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ut_delete_object_cache
@@ -644,6 +645,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_get_simple_object_size&n; *&n; * PARAMETERS:  *internal_object    - Pointer to the object we are examining&n; *              *obj_length         - Where the length is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to determine the space required to&n; *              contain a simple object for return to an external user.&n; *&n; *              The length includes the object structure plus any additional&n; *              needed space.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_get_simple_object_size

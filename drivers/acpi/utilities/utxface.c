@@ -924,6 +924,7 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;acpi_purge_cached_objects&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_ENABLE_OBJECT_CACHE
 id|acpi_ut_delete_generic_state_cache
 (paren
 )paren
@@ -940,6 +941,7 @@ id|acpi_ps_delete_parse_cache
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|return_ACPI_STATUS
 (paren
 id|AE_OK
