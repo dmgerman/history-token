@@ -3623,13 +3623,7 @@ c_cond
 op_logical_neg
 id|mode_valid
 op_logical_and
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|info-&gt;modelist
-)paren
+id|info-&gt;monspecs.modedb_len
 )paren
 r_return
 op_minus
@@ -8810,7 +8804,7 @@ id|info-&gt;fix.id
 comma
 l_int|16
 comma
-l_string|&quot;S3 Savage/MX-MV&quot;
+l_string|&quot;Savage/MX-MV&quot;
 )paren
 suffix:semicolon
 r_break
@@ -8828,7 +8822,7 @@ id|info-&gt;fix.id
 comma
 l_int|16
 comma
-l_string|&quot;S3 Savage/MX&quot;
+l_string|&quot;Savage/MX&quot;
 )paren
 suffix:semicolon
 r_break
@@ -8846,7 +8840,7 @@ id|info-&gt;fix.id
 comma
 l_int|16
 comma
-l_string|&quot;S3 Savage/IX-MV&quot;
+l_string|&quot;Savage/IX-MV&quot;
 )paren
 suffix:semicolon
 r_break
@@ -8864,7 +8858,7 @@ id|info-&gt;fix.id
 comma
 l_int|16
 comma
-l_string|&quot;S3 Savage/IX&quot;
+l_string|&quot;Savage/IX&quot;
 )paren
 suffix:semicolon
 r_break
@@ -8882,7 +8876,7 @@ id|info-&gt;fix.id
 comma
 l_int|16
 comma
-l_string|&quot;S3 ProSavage&quot;
+l_string|&quot;ProSavagePM&quot;
 )paren
 suffix:semicolon
 r_break
@@ -8900,7 +8894,7 @@ id|info-&gt;fix.id
 comma
 l_int|16
 comma
-l_string|&quot;S3 ProSavage&quot;
+l_string|&quot;ProSavageKM&quot;
 )paren
 suffix:semicolon
 r_break
@@ -8918,7 +8912,7 @@ id|info-&gt;fix.id
 comma
 l_int|16
 comma
-l_string|&quot;S3 Twister&quot;
+l_string|&quot;TwisterP&quot;
 )paren
 suffix:semicolon
 r_break
@@ -8936,7 +8930,7 @@ id|info-&gt;fix.id
 comma
 l_int|16
 comma
-l_string|&quot;S3 TwisterK&quot;
+l_string|&quot;TwisterK&quot;
 )paren
 suffix:semicolon
 r_break
@@ -8954,7 +8948,7 @@ id|info-&gt;fix.id
 comma
 l_int|16
 comma
-l_string|&quot;S3 ProSavage DDR&quot;
+l_string|&quot;ProSavageDDR&quot;
 )paren
 suffix:semicolon
 r_break
@@ -8972,7 +8966,7 @@ id|info-&gt;fix.id
 comma
 l_int|16
 comma
-l_string|&quot;S3 ProSavage DDR-K&quot;
+l_string|&quot;ProSavage8&quot;
 )paren
 suffix:semicolon
 r_break
@@ -9664,10 +9658,6 @@ c_func
 id|info-&gt;monspecs.modedb
 )paren
 suffix:semicolon
-id|info-&gt;monspecs.modedb_len
-op_assign
-l_int|0
-suffix:semicolon
 id|info-&gt;monspecs.modedb
 op_assign
 l_int|NULL
@@ -9692,7 +9682,7 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;fb: %s frame buffer device&bslash;n&quot;
+l_string|&quot;fb: S3 %s frame buffer device&bslash;n&quot;
 comma
 id|info-&gt;fix.id
 )paren
