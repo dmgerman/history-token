@@ -2709,6 +2709,7 @@ id|vlan_tag
 )paren
 (brace
 macro_line|#ifdef CONFIG_AMD8111E_NAPI
+r_return
 id|vlan_hwaccel_receive_skb
 c_func
 (paren
