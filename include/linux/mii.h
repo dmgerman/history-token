@@ -236,6 +236,7 @@ suffix:semicolon
 r_struct
 id|ethtool_cmd
 suffix:semicolon
+r_extern
 r_int
 id|mii_link_ok
 (paren
@@ -245,6 +246,7 @@ op_star
 id|mii
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|mii_nway_restart
 (paren
@@ -254,6 +256,7 @@ op_star
 id|mii
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|mii_ethtool_gset
 c_func
@@ -269,6 +272,7 @@ op_star
 id|ecmd
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|mii_ethtool_sset
 c_func
@@ -282,6 +286,31 @@ r_struct
 id|ethtool_cmd
 op_star
 id|ecmd
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|mii_check_link
+(paren
+r_struct
+id|mii_if_info
+op_star
+id|mii
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|mii_check_media
+(paren
+r_struct
+id|mii_if_info
+op_star
+id|mii
+comma
+r_int
+r_int
+id|ok_to_print
 )paren
 suffix:semicolon
 multiline_comment|/* This structure is used in all SIOCxMIIxxx ioctl calls */
