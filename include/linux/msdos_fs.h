@@ -162,9 +162,9 @@ l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* bytes per logical sector */
-DECL|member|cluster_size
+DECL|member|sec_per_clus
 id|__u8
-id|cluster_size
+id|sec_per_clus
 suffix:semicolon
 multiline_comment|/* sectors/cluster */
 DECL|member|reserved

@@ -2134,7 +2134,7 @@ op_assign
 id|sector
 op_amp
 (paren
-id|sbi-&gt;cluster_size
+id|sbi-&gt;sec_per_clus
 op_minus
 l_int|1
 )paren
@@ -2178,7 +2178,7 @@ op_minus
 l_int|2
 )paren
 op_star
-id|sbi-&gt;cluster_size
+id|sbi-&gt;sec_per_clus
 op_plus
 id|sbi-&gt;data_start
 op_plus
@@ -2474,17 +2474,13 @@ op_increment
 suffix:semicolon
 id|inode-&gt;i_blocks
 op_sub_assign
-(paren
-l_int|1
-op_lshift
 id|MSDOS_SB
 c_func
 (paren
 id|sb
 )paren
 op_member_access_from_pointer
-id|cluster_bits
-)paren
+id|cluster_size
 op_rshift
 l_int|9
 suffix:semicolon
