@@ -550,11 +550,11 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/* Combine the mmap &quot;prot&quot; and &quot;flags&quot; argument into one &quot;vm_flags&quot; used&n; * internally. Essentially, translate the &quot;PROT_xxx&quot; and &quot;MAP_xxx&quot; bits&n; * into &quot;VM_xxx&quot;.&n; */
-DECL|function|calc_vm_flags
 r_static
 r_inline
 r_int
 r_int
+DECL|function|calc_vm_flags
 id|calc_vm_flags
 c_func
 (paren
@@ -803,11 +803,11 @@ macro_line|#else
 DECL|macro|validate_mm
 mdefine_line|#define validate_mm(mm) do { } while (0)
 macro_line|#endif
-DECL|function|find_vma_prepare
 r_static
 r_struct
 id|vm_area_struct
 op_star
+DECL|function|find_vma_prepare
 id|find_vma_prepare
 c_func
 (paren
@@ -981,10 +981,10 @@ r_return
 id|vma
 suffix:semicolon
 )brace
-DECL|function|__vma_link_list
 r_static
 r_inline
 r_void
+DECL|function|__vma_link_list
 id|__vma_link_list
 c_func
 (paren
@@ -1191,9 +1191,9 @@ id|mapping-&gt;i_mmap
 suffix:semicolon
 )brace
 )brace
-DECL|function|__vma_link
 r_static
 r_void
+DECL|function|__vma_link
 id|__vma_link
 c_func
 (paren
@@ -2180,7 +2180,7 @@ r_return
 op_minus
 id|EACCES
 suffix:semicolon
-multiline_comment|/* Make sure we don&squot;t allow writing to an append-only file.. */
+multiline_comment|/*&n;&t;&t;&t; * Make sure we don&squot;t allow writing to an append-only&n;&t;&t;&t; * file..&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2200,7 +2200,7 @@ r_return
 op_minus
 id|EACCES
 suffix:semicolon
-multiline_comment|/* make sure there are no mandatory locks on the file. */
+multiline_comment|/*&n;&t;&t;&t; * Make sure there are no mandatory locks on the file.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2450,7 +2450,7 @@ op_amp
 id|VM_WRITE
 )paren
 (brace
-multiline_comment|/* Private writable mapping: check memory availability */
+multiline_comment|/*&n;&t;&t;&t; * Private writable mapping: check memory availability&n;&t;&t;&t; */
 id|charged
 op_assign
 id|len
@@ -2521,7 +2521,7 @@ l_int|0
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/* Determine the object being mapped and call the appropriate&n;&t; * specific mapper. the address has already been validated, but&n;&t; * not unmapped, but the maps are removed from the list.&n;&t; */
+multiline_comment|/*&n;&t; * Determine the object being mapped and call the appropriate&n;&t; * specific mapper. the address has already been validated, but&n;&t; * not unmapped, but the maps are removed from the list.&n;&t; */
 id|vma
 op_assign
 id|kmem_cache_alloc
@@ -2974,11 +2974,11 @@ suffix:semicolon
 )brace
 multiline_comment|/* Get an address range which is currently unmapped.&n; * For shmat() with addr=0.&n; *&n; * Ugly calling convention alert:&n; * Return value with the low bits set means error value,&n; * ie&n; *&t;if (ret &amp; ~PAGE_MASK)&n; *&t;&t;error = ret;&n; *&n; * This function &quot;knows&quot; that -ENOMEM has the bits set.&n; */
 macro_line|#ifndef HAVE_ARCH_UNMAPPED_AREA
-DECL|function|arch_get_unmapped_area
 r_static
 r_inline
 r_int
 r_int
+DECL|function|arch_get_unmapped_area
 id|arch_get_unmapped_area
 c_func
 (paren
@@ -3189,9 +3189,9 @@ r_int
 )paren
 suffix:semicolon
 macro_line|#endif&t;
+r_int
+r_int
 DECL|function|get_unmapped_area
-r_int
-r_int
 id|get_unmapped_area
 c_func
 (paren
@@ -3435,10 +3435,10 @@ id|vma
 suffix:semicolon
 )brace
 multiline_comment|/* Same as find_vma, but also return a pointer to the previous VMA in *pprev. */
-DECL|function|find_vma_prev
 r_struct
 id|vm_area_struct
 op_star
+DECL|function|find_vma_prev
 id|find_vma_prev
 c_func
 (paren
@@ -3742,10 +3742,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|find_extend_vma
 r_struct
 id|vm_area_struct
 op_star
+DECL|function|find_extend_vma
 id|find_extend_vma
 c_func
 (paren
@@ -3987,10 +3987,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|find_extend_vma
 r_struct
 id|vm_area_struct
 op_star
+DECL|function|find_extend_vma
 id|find_extend_vma
 c_func
 (paren
@@ -4274,7 +4274,7 @@ id|last
 OL
 id|first
 )paren
-multiline_comment|/* needed for arches with discontiguous pgd indices */
+multiline_comment|/* for arches with discontiguous pgd indices */
 r_return
 suffix:semicolon
 multiline_comment|/*&n;&t; * If the PGD bits are not consecutive in the virtual address, the&n;&t; * old method of shifting the VA &gt;&gt; by PGDIR_SHIFT doesn&squot;t work.&n;&t; */
