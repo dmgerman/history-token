@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
+macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#ifdef CONFIG_KMOD
@@ -4930,6 +4931,16 @@ id|security_bprm_free
 c_func
 (paren
 id|bprm
+)paren
+suffix:semicolon
+id|acct_update_integrals
+c_func
+(paren
+)paren
+suffix:semicolon
+id|update_mem_hiwater
+c_func
+(paren
 )paren
 suffix:semicolon
 id|kfree

@@ -3118,6 +3118,16 @@ id|SIGTRAP
 )paren
 suffix:semicolon
 )brace
+id|acct_update_integrals
+c_func
+(paren
+)paren
+suffix:semicolon
+id|update_mem_hiwater
+c_func
+(paren
+)paren
+suffix:semicolon
 id|group_dead
 op_assign
 id|atomic_dec_and_test

@@ -28,6 +28,7 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/audit.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
+macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1678,6 +1679,14 @@ id|retval
 )paren
 r_goto
 id|free_pt
+suffix:semicolon
+id|mm-&gt;hiwater_rss
+op_assign
+id|mm-&gt;rss
+suffix:semicolon
+id|mm-&gt;hiwater_vm
+op_assign
+id|mm-&gt;total_vm
 suffix:semicolon
 id|good_mm
 suffix:colon
@@ -3455,6 +3464,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* I/O counter: write syscalls */
+id|acct_clear_integrals
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
 id|p-&gt;lock_depth
 op_assign
 op_minus

@@ -708,6 +708,18 @@ r_struct
 id|kioctx
 id|default_kioctx
 suffix:semicolon
+DECL|member|hiwater_rss
+r_int
+r_int
+id|hiwater_rss
+suffix:semicolon
+multiline_comment|/* High-water RSS usage */
+DECL|member|hiwater_vm
+r_int
+r_int
+id|hiwater_vm
+suffix:semicolon
+multiline_comment|/* High-water virtual memory usage */
 )brace
 suffix:semicolon
 DECL|struct|sighand_struct
@@ -1956,6 +1968,23 @@ id|syscr
 comma
 id|syscw
 suffix:semicolon
+macro_line|#if defined(CONFIG_BSD_PROCESS_ACCT)
+DECL|member|acct_rss_mem1
+id|u64
+id|acct_rss_mem1
+suffix:semicolon
+multiline_comment|/* accumulated rss usage */
+DECL|member|acct_vm_mem1
+id|u64
+id|acct_vm_mem1
+suffix:semicolon
+multiline_comment|/* accumulated virtual memory usage */
+DECL|member|acct_stimexpd
+id|clock_t
+id|acct_stimexpd
+suffix:semicolon
+multiline_comment|/* clock_t-converted stime since last update */
+macro_line|#endif
 macro_line|#ifdef CONFIG_NUMA
 DECL|member|mempolicy
 r_struct

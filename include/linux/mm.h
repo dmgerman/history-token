@@ -3182,6 +3182,15 @@ id|vma
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* update per process rss and vm hiwater data */
+r_extern
+r_void
+id|update_mem_hiwater
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifndef CONFIG_DEBUG_PAGEALLOC
 r_static
 r_inline
