@@ -1,4 +1,4 @@
-multiline_comment|/***************************************************************************** &n; *                          USBLCD Kernel Driver                             *&n; *        See http://www.usblcd.de for Hardware and Documentation.           *&n; *                            Version 1.03                                   *&n; *             (C) 2002 Adams IT Services &lt;info@usblcd.de&gt;                   *&n; *                                                                           *&n; *     This file is licensed under the GPL. See COPYING in the package.      *&n; * Based on rio500.c by Cesar Miquel (miquel@df.uba.ar) which is based on    *&n; * hp_scanner.c by David E. Nelson (dnelson@jump.net)                        *&n; *                                                                           *&n; * 23.7.02 RA changed minor device number to the official assigned one       *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *                          USBLCD Kernel Driver                             *&n; *        See http://www.usblcd.de for Hardware and Documentation.           *&n; *                            Version 1.03                                   *&n; *             (C) 2002 Adams IT Services &lt;info@usblcd.de&gt;                   *&n; *                                                                           *&n; *     This file is licensed under the GPL. See COPYING in the package.      *&n; * Based on rio500.c by Cesar Miquel (miquel@df.uba.ar) which is based on    *&n; * hp_scanner.c by David E. Nelson (dnelson@jump.net)                        *&n; *                                                                           *&n; * 23.7.02 RA changed minor device number to the official assigned one       *&n; *****************************************************************************/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;USBLCD Driver Version 1.03&quot;
+mdefine_line|#define DRIVER_VERSION &quot;USBLCD Driver Version 1.04&quot;
 DECL|macro|USBLCD_MINOR
 mdefine_line|#define USBLCD_MINOR&t;&t;144
 DECL|macro|IOCTL_GET_HARD_VERSION
@@ -1201,34 +1201,6 @@ comma
 id|dev-&gt;devnum
 )paren
 suffix:semicolon
-id|retval
-op_assign
-id|usb_register_dev
-c_func
-(paren
-id|intf
-comma
-op_amp
-id|usb_lcd_class
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-)paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;Not able to get a minor for this device.&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 id|lcd-&gt;present
 op_assign
 l_int|1
@@ -1262,15 +1234,6 @@ id|err
 c_func
 (paren
 l_string|&quot;probe_lcd: Not enough memory for the output buffer&quot;
-)paren
-suffix:semicolon
-id|usb_deregister_dev
-c_func
-(paren
-id|intf
-comma
-op_amp
-id|usb_lcd_class
 )paren
 suffix:semicolon
 r_return
@@ -1313,15 +1276,6 @@ c_func
 l_string|&quot;probe_lcd: Not enough memory for the input buffer&quot;
 )paren
 suffix:semicolon
-id|usb_deregister_dev
-c_func
-(paren
-id|intf
-comma
-op_amp
-id|usb_lcd_class
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -1341,6 +1295,46 @@ comma
 id|lcd-&gt;ibuf
 )paren
 suffix:semicolon
+id|retval
+op_assign
+id|usb_register_dev
+c_func
+(paren
+id|intf
+comma
+op_amp
+id|usb_lcd_class
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;Not able to get a minor for this device.&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|lcd-&gt;obuf
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|lcd-&gt;ibuf
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|usb_set_intfdata
 (paren
 id|intf
