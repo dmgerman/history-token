@@ -2221,7 +2221,7 @@ id|DF_LINK_FC_CAP
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* &n; * Procedure: e100_phy_check&n; * &n; * Arguments:  bdp - Pointer to the e100_private structure for the board&n; *&n; * Returns: true if link state was changed&n; *&t;    B_FLASE otherwise&n; *&n; */
+multiline_comment|/* &n; * Procedure: e100_phy_check&n; * &n; * Arguments:  bdp - Pointer to the e100_private structure for the board&n; *&n; * Returns: true if link state was changed&n; *&t;   false otherwise&n; *&n; */
 r_int
 r_char
 DECL|function|e100_phy_check
