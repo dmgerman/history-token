@@ -138,6 +138,12 @@ r_struct
 id|list_head
 id|rq_list
 suffix:semicolon
+DECL|member|rq_private_buf
+r_struct
+id|xdr_buf
+id|rq_private_buf
+suffix:semicolon
+multiline_comment|/* The receive buffer&n;&t;&t;&t;&t;&t;&t;&t; * used in the softirq.&n;&t;&t;&t;&t;&t;&t;&t; */
 multiline_comment|/*&n;&t; * For authentication (e.g. auth_des)&n;&t; */
 DECL|member|rq_creddata
 id|u32
@@ -162,9 +168,9 @@ DECL|member|rq_ntimeo
 r_int
 id|rq_ntimeo
 suffix:semicolon
-DECL|member|rq_nresend
+DECL|member|rq_ntrans
 r_int
-id|rq_nresend
+id|rq_ntrans
 suffix:semicolon
 )brace
 suffix:semicolon
