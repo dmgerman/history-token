@@ -1084,7 +1084,7 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
-id|kfree
+id|pci_put_dev
 c_func
 (paren
 id|dev
