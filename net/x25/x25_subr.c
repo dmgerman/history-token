@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;X.25 Packet Layer release 002&n; *&n; *&t;This is ALPHA test software. This code may break your machine, randomly fail to work with new &n; *&t;releases, misbehave and/or generally screw up. It might even work. &n; *&n; *&t;This code REQUIRES 2.1.15 or higher&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;X.25 001&t;Jonathan Naylor&t;  Started coding.&n; *&t;X.25 002&t;Jonathan Naylor&t;  Centralised disconnection processing.&n; *&t;mar/20/00&t;Daniela Squassoni Disabling/enabling of facilities &n; *&t;&t;&t;&t;&t;  negotiation.&n; *&t;jun/24/01&t;Arnaldo C. Melo&t;  use skb_queue_purge, cleanups&n; */
+multiline_comment|/*&n; *&t;X.25 Packet Layer release 002&n; *&n; *&t;This is ALPHA test software. This code may break your machine,&n; *&t;randomly fail to work with new releases, misbehave and/or generally&n; *&t;screw up. It might even work.&n; *&n; *&t;This code REQUIRES 2.1.15 or higher&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;X.25 001&t;Jonathan Naylor&t;  Started coding.&n; *&t;X.25 002&t;Jonathan Naylor&t;  Centralised disconnection processing.&n; *&t;mar/20/00&t;Daniela Squassoni Disabling/enabling of facilities&n; *&t;&t;&t;&t;&t;  negotiation.&n; *&t;jun/24/01&t;Arnaldo C. Melo&t;  use skb_queue_purge, cleanups&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -216,9 +216,8 @@ l_int|NULL
 r_if
 c_cond
 (paren
+op_logical_neg
 id|skb_prev
-op_eq
-l_int|NULL
 )paren
 id|skb_queue_head
 c_func
@@ -326,7 +325,7 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* &n; *  This routine is called when the packet layer internally generates a&n; *  control frame.&n; */
+multiline_comment|/*&n; *  This routine is called when the packet layer internally generates a&n; *  control frame.&n; */
 DECL|function|x25_write_internal
 r_void
 id|x25_write_internal
@@ -383,10 +382,8 @@ id|lci1
 comma
 id|lci2
 suffix:semicolon
-r_int
-id|len
-suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Default safe frame size.&n;&t; */
+r_int
 id|len
 op_assign
 id|X25_MAX_L2_LEN
