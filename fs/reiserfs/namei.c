@@ -1260,12 +1260,6 @@ id|INITIALIZE_PATH
 id|path_to_entry
 )paren
 suffix:semicolon
-id|reiserfs_check_lock_depth
-c_func
-(paren
-l_string|&quot;lookup&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
