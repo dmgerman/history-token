@@ -3480,7 +3480,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;please e-mail sammy@oh.verio.com with a description of how this&bslash;n&quot;
+l_string|&quot;please e-mail sammy@sammy.net with a description of how this&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -3489,7 +3489,7 @@ c_func
 l_string|&quot;error was produced.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|machine_halt
+id|BUG
 c_func
 (paren
 )paren
@@ -3570,7 +3570,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;please e-mail sammy@oh.verio.com with a description of how this&bslash;n&quot;
+l_string|&quot;please e-mail sammy@sammy.net with a description of how this&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -3579,7 +3579,7 @@ c_func
 l_string|&quot;error was produced.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|machine_halt
+id|BUG
 c_func
 (paren
 )paren
@@ -5738,7 +5738,7 @@ comma
 id|HOSTNO
 )paren
 suffix:semicolon
-id|machine_halt
+id|BUG
 c_func
 (paren
 )paren
