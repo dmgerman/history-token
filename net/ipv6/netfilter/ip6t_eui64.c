@@ -55,13 +55,9 @@ comma
 r_int
 id|offset
 comma
-r_const
-r_void
-op_star
-id|hdr
-comma
-id|u_int16_t
-id|datalen
+r_int
+r_int
+id|protoff
 comma
 r_int
 op_star

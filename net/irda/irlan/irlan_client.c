@@ -776,6 +776,8 @@ op_amp
 id|self-&gt;client.txq
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 id|dev_kfree_skb
