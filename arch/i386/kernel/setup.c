@@ -3198,6 +3198,11 @@ id|start
 suffix:semicolon
 id|a
 OL
+(paren
+r_struct
+id|alt_instr
+op_star
+)paren
 id|end
 suffix:semicolon
 id|a
