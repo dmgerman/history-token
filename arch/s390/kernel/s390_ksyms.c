@@ -61,6 +61,13 @@ c_func
 id|__clear_user_asm
 )paren
 suffix:semicolon
+DECL|variable|diag10
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|diag10
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * semaphore ops&n; */
 DECL|variable|__up
 id|EXPORT_SYMBOL
