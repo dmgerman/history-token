@@ -2663,7 +2663,14 @@ suffix:semicolon
 multiline_comment|/* ATAPI commands get padded out to 12 bytes minimum */
 id|cmd_len
 op_assign
-id|rq-&gt;cmd_len
+id|COMMAND_SIZE
+c_func
+(paren
+id|rq-&gt;cmd
+(braket
+l_int|0
+)braket
+)paren
 suffix:semicolon
 r_if
 c_cond
