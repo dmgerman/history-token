@@ -3411,7 +3411,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|list_splice_init
+id|list_splice
 c_func
 (paren
 op_amp
@@ -3419,6 +3419,13 @@ id|host-&gt;pending_packets
 comma
 op_amp
 id|llist
+)paren
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|host-&gt;pending_packets
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -4015,12 +4022,6 @@ op_amp
 l_int|0xF
 suffix:semicolon
 multiline_comment|/* printk(&quot;ieee1394_dispatch_open(%d)&quot;, blocknum); */
-multiline_comment|/* lock the whole kernel here, to prevent a driver from&n;&t;   being unloaded between the file_ops lookup and the open */
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|read_lock
 c_func
 (paren
@@ -4028,23 +4029,30 @@ op_amp
 id|ieee1394_chardevs_lock
 )paren
 suffix:semicolon
-id|file_ops
+id|module
 op_assign
 id|ieee1394_chardevs
 (braket
 id|blocknum
 )braket
 dot
-id|file_ops
+id|module
 suffix:semicolon
+multiline_comment|/* bump the reference count of the driver that&n;&t;   will receive the open() */
+id|INCREF
+c_func
+(paren
 id|module
+)paren
+suffix:semicolon
+id|file_ops
 op_assign
 id|ieee1394_chardevs
 (braket
 id|blocknum
 )braket
 dot
-id|module
+id|file_ops
 suffix:semicolon
 id|read_unlock
 c_func
@@ -4061,6 +4069,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|DECREF
+c_func
+(paren
+id|module
+)paren
+suffix:semicolon
 r_goto
 id|out_fail
 suffix:semicolon
@@ -4069,13 +4083,6 @@ multiline_comment|/* redirect all subsequent requests to the driver&squot;s&n;&t
 id|file-&gt;f_op
 op_assign
 id|file_ops
-suffix:semicolon
-multiline_comment|/* bump the reference count of the driver that&n;&t;   will receive the open() */
-id|INCREF
-c_func
-(paren
-id|module
-)paren
 suffix:semicolon
 multiline_comment|/* at this point BOTH ieee1394 and the task-specific driver have&n;&t;   an extra reference */
 multiline_comment|/* follow through with the open() */
@@ -4118,11 +4125,6 @@ id|THIS_MODULE
 )paren
 suffix:semicolon
 multiline_comment|/* the task-specific driver still has the extra&n;&t;&t;   reference we gave it. This extra reference prevents&n;&t;&t;   the module from unloading while the file is open,&n;&t;&t;   and will be dropped by the VFS when the file is&n;&t;&t;   released. */
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4134,11 +4136,6 @@ id|file-&gt;f_op
 op_assign
 op_amp
 id|ieee1394_chardev_ops
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 r_return
 id|retval

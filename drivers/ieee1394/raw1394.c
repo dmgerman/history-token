@@ -729,6 +729,13 @@ c_func
 id|hi
 )paren
 suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|internal_generation
+)paren
+suffix:semicolon
 )brace
 DECL|function|host_reset
 r_static
@@ -892,13 +899,6 @@ op_amp
 id|host_info_lock
 comma
 id|flags
-)paren
-suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|internal_generation
 )paren
 suffix:semicolon
 )brace

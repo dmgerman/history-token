@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * ohci1394.c - driver for OHCI 1394 boards&n; * Copyright (C)1999,2000 Sebastien Rougeaux &lt;sebastien.rougeaux@anu.edu.au&gt;&n; *                        Gord Peters &lt;GordPeters@smarttech.com&gt;&n; *              2001      Ben Collins &lt;bcollins@debian.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
-multiline_comment|/*&n; * Things known to be working:&n; * . Async Request Transmit&n; * . Async Response Receive&n; * . Async Request Receive&n; * . Async Response Transmit&n; * . Iso Receive&n; * . DMA mmap for iso receive&n; * . Config ROM generation&n; *&n; * Things implemented, but still in test phase:&n; * . Iso Transmit&n; * &n; * Things not implemented:&n; * . Async Stream Packets&n; * . DMA error recovery&n; *&n; * Known bugs:&n; * . Apple PowerBook detected but not working yet (still true?)&n; */
+multiline_comment|/*&n; * Things known to be working:&n; * . Async Request Transmit&n; * . Async Response Receive&n; * . Async Request Receive&n; * . Async Response Transmit&n; * . Iso Receive&n; * . DMA mmap for iso receive&n; * . Config ROM generation&n; *&n; * Things implemented, but still in test phase:&n; * . Iso Transmit&n; * &n; * Things not implemented:&n; * . Async Stream Packets&n; * . DMA error recovery&n; *&n; * Known bugs:&n; * . devctl BUS_RESET arg confusion (reset type or root holdoff?)&n; */
 multiline_comment|/* &n; * Acknowledgments:&n; *&n; * Adam J Richter &lt;adam@yggdrasil.com&gt;&n; *  . Use of pci_class to find device&n; *&n; * Andreas Tobler &lt;toa@pop.agri.ch&gt;&n; *  . Updated proc_fs calls&n; *&n; * Emilie Chung&t;&lt;emilie.chung@axis.com&gt;&n; *  . Tip on Async Request Filter&n; *&n; * Pascal Drolet &lt;pascal.drolet@informission.ca&gt;&n; *  . Various tips for optimization and functionnalities&n; *&n; * Robert Ficklin &lt;rficklin@westengineering.com&gt;&n; *  . Loop in irq_handler&n; *&n; * James Goodwin &lt;jamesg@Filanet.com&gt;&n; *  . Various tips on initialization, self-id reception, etc.&n; *&n; * Albrecht Dress &lt;ad@mpifr-bonn.mpg.de&gt;&n; *  . Apple PowerBook detection&n; *&n; * Daniel Kobras &lt;daniel.kobras@student.uni-tuebingen.de&gt;&n; *  . Reset the board properly before leaving + misc cleanups&n; *&n; * Leon van Stuivenberg &lt;leonvs@iae.nl&gt;&n; *  . Bug fixes&n; *&n; * Ben Collins &lt;bcollins@debian.org&gt;&n; *  . Working big-endian support&n; *  . Updated to 2.4.x module scheme (PCI aswell)&n; *  . Removed procfs support since it trashes random mem&n; *  . Config ROM generation&n; */
-multiline_comment|/* Issues:&n; *&n; * - devctl BUS_RESET should treat arg as reset type&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
@@ -84,7 +83,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Revision: 1.101 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 504 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Module Parameters */
 id|MODULE_PARM
@@ -100,7 +99,7 @@ c_func
 (paren
 id|attempt_root
 comma
-l_string|&quot;Attempt to make the host root.&quot;
+l_string|&quot;Attempt to make the host root (default = 0).&quot;
 )paren
 suffix:semicolon
 DECL|variable|attempt_root
@@ -109,6 +108,29 @@ r_int
 id|attempt_root
 op_assign
 l_int|0
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|phys_dma
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|phys_dma
+comma
+l_string|&quot;Enable physical dma (default = 1).&quot;
+)paren
+suffix:semicolon
+DECL|variable|phys_dma
+r_static
+r_int
+id|phys_dma
+op_assign
+l_int|1
 suffix:semicolon
 r_static
 r_void
@@ -133,7 +155,6 @@ id|d
 suffix:semicolon
 r_static
 r_void
-id|__devexit
 id|ohci1394_pci_remove
 c_func
 (paren
@@ -341,16 +362,9 @@ comma
 id|OHCI1394_PhyControl
 comma
 (paren
-(paren
-(paren
-id|u16
-)paren
 id|addr
 op_lshift
 l_int|8
-)paren
-op_amp
-l_int|0x00000f00
 )paren
 op_or
 l_int|0x00008000
@@ -490,22 +504,15 @@ id|ohci
 comma
 id|OHCI1394_PhyControl
 comma
-l_int|0x00004000
-op_or
 (paren
-(paren
-(paren
-id|u16
-)paren
 id|addr
 op_lshift
 l_int|8
 )paren
-op_amp
-l_int|0x00000f00
-)paren
 op_or
 id|data
+op_or
+l_int|0x00004000
 )paren
 suffix:semicolon
 r_for
@@ -681,12 +688,6 @@ id|quadlet_t
 id|q0
 comma
 id|q1
-suffix:semicolon
-id|mdelay
-c_func
-(paren
-l_int|10
-)paren
 suffix:semicolon
 multiline_comment|/* Check status of self-id reception */
 r_if
@@ -1031,23 +1032,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Now reenable LPS, since that&squot;s usually what we want after a&n;&t; * softreset anyway. Wait 50msec to make sure we have full link&n;&t; * enabled.  */
-id|reg_write
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_HCControlSet
-comma
-l_int|0x00080000
-)paren
-suffix:semicolon
-id|mdelay
-c_func
-(paren
-l_int|50
-)paren
-suffix:semicolon
 id|DBGMSG
 (paren
 id|ohci-&gt;id
@@ -1606,6 +1590,86 @@ id|ohci
 id|quadlet_t
 id|buf
 suffix:semicolon
+multiline_comment|/* Start off with a soft reset, to clear everything to a sane&n;&t; * state. */
+id|ohci_soft_reset
+c_func
+(paren
+id|ohci
+)paren
+suffix:semicolon
+multiline_comment|/* Now enable LPS, which we need in order to start accessing&n;&t; * most of the registers.  In fact, on some cards (ALI M5251),&n;&t; * accessing registers in the SClk domain without LPS enabled&n;&t; * will lock up the machine.  Wait 50msec to make sure we have&n;&t; * full link enabled.  */
+id|reg_write
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_HCControlSet
+comma
+l_int|0x00080000
+)paren
+suffix:semicolon
+id|mdelay
+c_func
+(paren
+l_int|50
+)paren
+suffix:semicolon
+multiline_comment|/* Determine the number of available IR and IT contexts. */
+id|ohci-&gt;nb_iso_rcv_ctx
+op_assign
+id|get_nb_iso_ctx
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_IsoRecvIntMaskSet
+)paren
+suffix:semicolon
+id|DBGMSG
+c_func
+(paren
+id|ohci-&gt;id
+comma
+l_string|&quot;%d iso receive contexts available&quot;
+comma
+id|ohci-&gt;nb_iso_rcv_ctx
+)paren
+suffix:semicolon
+id|ohci-&gt;nb_iso_xmit_ctx
+op_assign
+id|get_nb_iso_ctx
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_IsoXmitIntMaskSet
+)paren
+suffix:semicolon
+id|DBGMSG
+c_func
+(paren
+id|ohci-&gt;id
+comma
+l_string|&quot;%d iso transmit contexts available&quot;
+comma
+id|ohci-&gt;nb_iso_xmit_ctx
+)paren
+suffix:semicolon
+multiline_comment|/* Set the usage bits for non-existent contexts so they can&squot;t&n;&t; * be allocated */
+id|ohci-&gt;ir_ctx_usage
+op_or_assign
+op_complement
+l_int|0
+op_lshift
+id|ohci-&gt;nb_iso_rcv_ctx
+suffix:semicolon
+id|ohci-&gt;it_ctx_usage
+op_or_assign
+op_complement
+l_int|0
+op_lshift
+id|ohci-&gt;nb_iso_xmit_ctx
+suffix:semicolon
 id|spin_lock_init
 c_func
 (paren
@@ -1633,9 +1697,9 @@ id|OHCI1394_BusOptions
 suffix:semicolon
 id|buf
 op_or_assign
-l_int|0x60000000
+l_int|0xE0000000
 suffix:semicolon
-multiline_comment|/* Enable CMC and ISC */
+multiline_comment|/* Enable IRMC, CMC and ISC */
 id|buf
 op_and_assign
 op_complement
@@ -1645,9 +1709,9 @@ multiline_comment|/* XXX: Set cyc_clk_acc to zero for now */
 id|buf
 op_and_assign
 op_complement
-l_int|0x98000000
+l_int|0x18000000
 suffix:semicolon
-multiline_comment|/* Disable PMC, IRMC and BMC */
+multiline_comment|/* Disable PMC and BMC */
 id|reg_write
 c_func
 (paren
@@ -1691,7 +1755,7 @@ comma
 l_int|0xffffffff
 )paren
 suffix:semicolon
-multiline_comment|/* Enable cycle timer and cycle master */
+multiline_comment|/* Enable cycle timer and cycle master and set the IRM&n;&t; * contender bit in our self ID packets. */
 id|reg_write
 c_func
 (paren
@@ -1700,6 +1764,16 @@ comma
 id|OHCI1394_LinkControlSet
 comma
 l_int|0x00300000
+)paren
+suffix:semicolon
+id|set_phy_reg_mask
+c_func
+(paren
+id|ohci
+comma
+l_int|4
+comma
+l_int|0xc0
 )paren
 suffix:semicolon
 multiline_comment|/* Clear interrupt registers */
@@ -2127,13 +2201,7 @@ comma
 l_int|0
 )paren
 op_plus
-id|pci_resource_len
-c_func
-(paren
-id|ohci-&gt;dev
-comma
-l_int|0
-)paren
+id|OHCI1394_REGISTER_SIZE
 comma
 id|ohci-&gt;max_packet_size
 )paren
@@ -5150,37 +5218,6 @@ comma
 l_int|0xffffffff
 )paren
 suffix:semicolon
-multiline_comment|/* Turn on phys dma reception. We should&n;&t;&t;&t; * probably manage the filtering somehow, &n;&t;&t;&t; * instead of blindly turning it on.  */
-id|reg_write
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_PhyReqFilterHiSet
-comma
-l_int|0xffffffff
-)paren
-suffix:semicolon
-id|reg_write
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_PhyReqFilterLoSet
-comma
-l_int|0xffffffff
-)paren
-suffix:semicolon
-id|reg_write
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_PhyUpperBound
-comma
-l_int|0xffff0000
-)paren
-suffix:semicolon
 )brace
 r_else
 id|PRINT
@@ -5236,6 +5273,75 @@ id|event
 op_and_assign
 op_complement
 id|OHCI1394_selfIDComplete
+suffix:semicolon
+multiline_comment|/* Turn on phys dma reception. We should&n;&t;&t; * probably manage the filtering somehow, &n;&t;&t; * instead of blindly turning it on.  */
+multiline_comment|/*&n;&t;&t; * CAUTION!&n;&t;&t; * Some chips (TI TSB43AB22) won&squot;t take a value in&n;&t;&t; * the PhyReqFilter register until after the IntEvent&n;&t;&t; * is cleared for bus reset, and even then a short&n;&t;&t; * delay is required.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|phys_dma
+)paren
+(brace
+id|mdelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|reg_write
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_PhyReqFilterHiSet
+comma
+l_int|0xffffffff
+)paren
+suffix:semicolon
+id|reg_write
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_PhyReqFilterLoSet
+comma
+l_int|0xffffffff
+)paren
+suffix:semicolon
+id|reg_write
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_PhyUpperBound
+comma
+l_int|0xffff0000
+)paren
+suffix:semicolon
+)brace
+id|DBGMSG
+c_func
+(paren
+id|ohci-&gt;id
+comma
+l_string|&quot;PhyReqFilter=%08x%08x&bslash;n&quot;
+comma
+id|reg_read
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_PhyReqFilterHiSet
+)paren
+comma
+id|reg_read
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_PhyReqFilterLoSet
+)paren
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Make sure we handle everything, just in case we accidentally&n;&t; * enabled an interrupt that we didn&squot;t write a handler for.  */
@@ -8577,9 +8683,13 @@ op_decrement
 (brace
 id|data
 op_assign
+id|be32_to_cpu
+c_func
+(paren
 op_star
 id|ptr
 op_increment
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -9603,8 +9713,6 @@ multiline_comment|/* shortcut to currently handled device */
 r_int
 r_int
 id|ohci_base
-comma
-id|ohci_len
 suffix:semicolon
 r_int
 id|i
@@ -9700,6 +9808,10 @@ id|ohci-&gt;host
 op_assign
 id|host
 suffix:semicolon
+id|ohci-&gt;init_state
+op_assign
+id|OHCI_INIT_ALLOC_HOST
+suffix:semicolon
 id|host-&gt;pdev
 op_assign
 id|dev
@@ -9753,6 +9865,123 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* We hardwire the MMIO length, since some CardBus adaptors&n;&t; * fail to report the right length.  Anyway, the ohci spec&n;&t; * clearly says it&squot;s 2kb, so this shouldn&squot;t be a problem. */
+id|ohci_base
+op_assign
+id|pci_resource_start
+c_func
+(paren
+id|dev
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pci_resource_len
+c_func
+(paren
+id|dev
+comma
+l_int|0
+)paren
+op_ne
+id|OHCI1394_REGISTER_SIZE
+)paren
+id|PRINT
+c_func
+(paren
+id|KERN_WARNING
+comma
+id|ohci-&gt;id
+comma
+l_string|&quot;Unexpected PCI resource length of %lx!&quot;
+comma
+id|pci_resource_len
+c_func
+(paren
+id|dev
+comma
+l_int|0
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Seems PCMCIA handles this internally. Not sure why. Seems&n;&t; * pretty bogus to force a driver to special case this.  */
+macro_line|#ifndef PCMCIA
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_mem_region
+(paren
+id|ohci_base
+comma
+id|OHCI1394_REGISTER_SIZE
+comma
+id|OHCI1394_DRIVER_NAME
+)paren
+)paren
+id|FAIL
+c_func
+(paren
+op_minus
+id|ENOMEM
+comma
+l_string|&quot;MMIO resource (0x%lx - 0x%lx) unavailable&quot;
+comma
+id|ohci_base
+comma
+id|ohci_base
+op_plus
+id|OHCI1394_REGISTER_SIZE
+)paren
+suffix:semicolon
+macro_line|#endif
+id|ohci-&gt;init_state
+op_assign
+id|OHCI_INIT_HAVE_MEM_REGION
+suffix:semicolon
+id|ohci-&gt;registers
+op_assign
+id|ioremap
+c_func
+(paren
+id|ohci_base
+comma
+id|OHCI1394_REGISTER_SIZE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ohci-&gt;registers
+op_eq
+l_int|NULL
+)paren
+id|FAIL
+c_func
+(paren
+op_minus
+id|ENXIO
+comma
+l_string|&quot;Failed to remap registers - card not accessible&quot;
+)paren
+suffix:semicolon
+id|ohci-&gt;init_state
+op_assign
+id|OHCI_INIT_HAVE_IOMAPPING
+suffix:semicolon
+id|DBGMSG
+c_func
+(paren
+id|ohci-&gt;id
+comma
+l_string|&quot;Remapped memory spaces reg 0x%p&quot;
+comma
+id|ohci-&gt;registers
+)paren
+suffix:semicolon
 multiline_comment|/* csr_config rom allocation */
 id|ohci-&gt;csr_config_rom_cpu
 op_assign
@@ -9789,207 +10018,11 @@ comma
 l_string|&quot;Failed to allocate buffer config rom&quot;
 )paren
 suffix:semicolon
-id|ohci_base
+id|ohci-&gt;init_state
 op_assign
-id|pci_resource_start
-c_func
-(paren
-id|dev
-comma
-l_int|0
-)paren
+id|OHCI_INIT_HAVE_CONFIG_ROM_BUFFER
 suffix:semicolon
-id|ohci_len
-op_assign
-id|pci_resource_len
-c_func
-(paren
-id|dev
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|request_mem_region
-(paren
-id|ohci_base
-comma
-id|ohci_len
-comma
-id|OHCI1394_DRIVER_NAME
-)paren
-)paren
-id|FAIL
-c_func
-(paren
-op_minus
-id|ENOMEM
-comma
-l_string|&quot;MMIO resource (0x%lx@0x%lx) unavailable, aborting.&quot;
-comma
-id|ohci_base
-comma
-id|ohci_len
-)paren
-suffix:semicolon
-id|ohci-&gt;registers
-op_assign
-id|ioremap
-c_func
-(paren
-id|ohci_base
-comma
-id|ohci_len
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ohci-&gt;registers
-op_eq
-l_int|NULL
-)paren
-id|FAIL
-c_func
-(paren
-op_minus
-id|ENXIO
-comma
-l_string|&quot;Failed to remap registers - card not accessible&quot;
-)paren
-suffix:semicolon
-id|DBGMSG
-c_func
-(paren
-id|ohci-&gt;id
-comma
-l_string|&quot;Remapped memory spaces reg 0x%p&quot;
-comma
-id|ohci-&gt;registers
-)paren
-suffix:semicolon
-multiline_comment|/* Start off with a softreset, to clear everything to a sane&n;&t; * state.  This will also set Link Power State (LPS), which we&n;&t; * need in order to start accessing most of the registers.  */
-id|ohci_soft_reset
-c_func
-(paren
-id|ohci
-)paren
-suffix:semicolon
-multiline_comment|/* determinte the number of available IR and IT contexts right away,&n;&t;   because they need to be known for alloc_dma_*_ctx() */
-id|ohci-&gt;nb_iso_rcv_ctx
-op_assign
-id|get_nb_iso_ctx
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_IsoRecvIntMaskSet
-)paren
-suffix:semicolon
-id|DBGMSG
-c_func
-(paren
-id|ohci-&gt;id
-comma
-l_string|&quot;%d iso receive contexts available&quot;
-comma
-id|ohci-&gt;nb_iso_rcv_ctx
-)paren
-suffix:semicolon
-id|ohci-&gt;ir_ctx_usage
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* set the usage bits for non-existent contexts so they can&squot;t be allocated */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-id|ohci-&gt;nb_iso_rcv_ctx
-suffix:semicolon
-id|i
-OL
-r_sizeof
-(paren
-id|ohci-&gt;ir_ctx_usage
-)paren
-op_star
-l_int|8
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|__set_bit
-c_func
-(paren
-id|i
-comma
-op_amp
-id|ohci-&gt;ir_ctx_usage
-)paren
-suffix:semicolon
-)brace
-id|ohci-&gt;nb_iso_xmit_ctx
-op_assign
-id|get_nb_iso_ctx
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_IsoXmitIntMaskSet
-)paren
-suffix:semicolon
-id|DBGMSG
-c_func
-(paren
-id|ohci-&gt;id
-comma
-l_string|&quot;%d iso transmit contexts available&quot;
-comma
-id|ohci-&gt;nb_iso_xmit_ctx
-)paren
-suffix:semicolon
-id|ohci-&gt;it_ctx_usage
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* set the usage bits for non-existent contexts so they can&squot;t be allocated */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-id|ohci-&gt;nb_iso_xmit_ctx
-suffix:semicolon
-id|i
-OL
-r_sizeof
-(paren
-id|ohci-&gt;it_ctx_usage
-)paren
-op_star
-l_int|8
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|__set_bit
-c_func
-(paren
-id|i
-comma
-op_amp
-id|ohci-&gt;it_ctx_usage
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* &n;&t; * self-id dma buffer allocation&n;&t; */
+multiline_comment|/* self-id dma buffer allocation */
 id|ohci-&gt;selfid_buf_cpu
 op_assign
 id|pci_alloc_consistent
@@ -10025,6 +10058,10 @@ comma
 l_string|&quot;Failed to allocate DMA buffer for self-id packets&quot;
 )paren
 suffix:semicolon
+id|ohci-&gt;init_state
+op_assign
+id|OHCI_INIT_HAVE_SELFID_BUFFER
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10053,6 +10090,10 @@ multiline_comment|/* No self-id errors at startup */
 id|ohci-&gt;self_id_errors
 op_assign
 l_int|0
+suffix:semicolon
+id|ohci-&gt;init_state
+op_assign
+id|OHCI_INIT_HAVE_TXRX_BUFFERS__MAYBE
 suffix:semicolon
 multiline_comment|/* AR DMA request context allocation */
 id|ohci-&gt;ar_req_context
@@ -10193,6 +10234,14 @@ id|ENOMEM
 comma
 l_string|&quot;Failed to allocate AT Resp context&quot;
 )paren
+suffix:semicolon
+id|ohci-&gt;ir_ctx_usage
+op_assign
+l_int|0
+suffix:semicolon
+id|ohci-&gt;it_ctx_usage
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* IR DMA context */
 id|ohci-&gt;ir_context
@@ -10337,6 +10386,10 @@ comma
 id|dev-&gt;irq
 )paren
 suffix:semicolon
+id|ohci-&gt;init_state
+op_assign
+id|OHCI_INIT_HAVE_IRQ
+suffix:semicolon
 id|ohci_initialize
 c_func
 (paren
@@ -10350,6 +10403,10 @@ c_func
 id|host
 )paren
 suffix:semicolon
+id|ohci-&gt;init_state
+op_assign
+id|OHCI_INIT_DONE
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -10359,7 +10416,6 @@ macro_line|#undef FAIL
 DECL|function|ohci1394_pci_remove
 r_static
 r_void
-id|__devexit
 id|ohci1394_pci_remove
 c_func
 (paren
@@ -10373,9 +10429,6 @@ r_struct
 id|ti_ohci
 op_star
 id|ohci
-suffix:semicolon
-id|quadlet_t
-id|buf
 suffix:semicolon
 id|ohci
 op_assign
@@ -10393,24 +10446,42 @@ id|ohci
 )paren
 r_return
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
-id|ohci-&gt;host
+id|ohci-&gt;init_state
 )paren
+(brace
+r_case
+id|OHCI_INIT_DONE
+suffix:colon
 id|hpsb_remove_host
 c_func
 (paren
 id|ohci-&gt;host
 )paren
 suffix:semicolon
-multiline_comment|/* Soft reset before we start */
+r_case
+id|OHCI_INIT_HAVE_IRQ
+suffix:colon
+multiline_comment|/* Soft reset before we start - this disables&n;&t;&t; * interrupts and clears linkEnable and LPS. */
 id|ohci_soft_reset
 c_func
 (paren
 id|ohci
 )paren
 suffix:semicolon
+id|free_irq
+c_func
+(paren
+id|ohci-&gt;dev-&gt;irq
+comma
+id|ohci
+)paren
+suffix:semicolon
+r_case
+id|OHCI_INIT_HAVE_TXRX_BUFFERS__MAYBE
+suffix:colon
 multiline_comment|/* Free AR dma */
 id|free_dma_rcv_ctx
 c_func
@@ -10457,32 +10528,9 @@ op_amp
 id|ohci-&gt;it_context
 )paren
 suffix:semicolon
-multiline_comment|/* Disable all interrupts */
-id|reg_write
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_IntMaskClear
-comma
-l_int|0x80000000
-)paren
-suffix:semicolon
-id|free_irq
-c_func
-(paren
-id|ohci-&gt;dev-&gt;irq
-comma
-id|ohci
-)paren
-suffix:semicolon
-multiline_comment|/* Free self-id buffer */
-r_if
-c_cond
-(paren
-id|ohci-&gt;selfid_buf_cpu
-)paren
-(brace
+r_case
+id|OHCI_INIT_HAVE_SELFID_BUFFER
+suffix:colon
 id|pci_free_consistent
 c_func
 (paren
@@ -10501,14 +10549,9 @@ c_func
 l_string|&quot;consistent selfid_buf&quot;
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* Free config rom */
-r_if
-c_cond
-(paren
-id|ohci-&gt;csr_config_rom_cpu
-)paren
-(brace
+r_case
+id|OHCI_INIT_HAVE_CONFIG_ROM_BUFFER
+suffix:colon
 id|pci_free_consistent
 c_func
 (paren
@@ -10527,60 +10570,21 @@ c_func
 l_string|&quot;consistent csr_config_rom&quot;
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* Disable our bus options */
-id|buf
-op_assign
-id|reg_read
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_BusOptions
-)paren
-suffix:semicolon
-id|buf
-op_and_assign
-op_complement
-l_int|0xf8000000
-suffix:semicolon
-id|buf
-op_or_assign
-l_int|0x00ff0000
-suffix:semicolon
-id|reg_write
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_BusOptions
-comma
-id|buf
-)paren
-suffix:semicolon
-multiline_comment|/* Clear LinkEnable and LPS */
-id|reg_write
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_HCControlClear
-comma
-l_int|0x000a0000
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ohci-&gt;registers
-)paren
+r_case
+id|OHCI_INIT_HAVE_IOMAPPING
+suffix:colon
 id|iounmap
 c_func
 (paren
 id|ohci-&gt;registers
 )paren
 suffix:semicolon
+r_case
+id|OHCI_INIT_HAVE_MEM_REGION
+suffix:colon
+macro_line|#ifndef PCMCIA
 id|release_mem_region
+c_func
 (paren
 id|pci_resource_start
 c_func
@@ -10590,17 +10594,12 @@ comma
 l_int|0
 )paren
 comma
-id|pci_resource_len
-c_func
-(paren
-id|ohci-&gt;dev
-comma
-l_int|0
-)paren
+id|OHCI1394_REGISTER_SIZE
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_ALL_PPC
-multiline_comment|/* On UniNorth, power down the cable and turn off the&n;&t; * chip clock when the module is removed to save power&n;&t; * on laptops. Turning it back ON is done by the arch&n;&t; * code when pci_enable_device() is called&n;&t; */
+multiline_comment|/* On UniNorth, power down the cable and turn off the chip&n;&t; * clock when the module is removed to save power on&n;&t; * laptops. Turning it back ON is done by the arch code when&n;&t; * pci_enable_device() is called */
 (brace
 r_struct
 id|device_node
@@ -10648,6 +10647,9 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_ALL_PPC */
+r_case
+id|OHCI_INIT_ALLOC_HOST
+suffix:colon
 id|pci_set_drvdata
 c_func
 (paren
@@ -10662,6 +10664,7 @@ c_func
 id|ohci-&gt;host
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|macro|PCI_CLASS_FIREWIRE_OHCI
 mdefine_line|#define PCI_CLASS_FIREWIRE_OHCI     ((PCI_CLASS_SERIAL_FIREWIRE &lt;&lt; 8) | 0x10)
@@ -10738,11 +10741,7 @@ id|ohci1394_pci_probe
 comma
 id|remove
 suffix:colon
-id|__devexit_p
-c_func
-(paren
 id|ohci1394_pci_remove
-)paren
 comma
 )brace
 suffix:semicolon
