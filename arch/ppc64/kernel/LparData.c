@@ -62,14 +62,8 @@ comma
 id|xItVpdAreas
 )paren
 comma
-(paren
-r_struct
-id|naca_struct
-op_star
-)paren
-(paren
-id|NACA_VIRT_ADDR
-)paren
+op_amp
+id|naca
 comma
 multiline_comment|/* 64-bit Naca address */
 l_int|0x6000

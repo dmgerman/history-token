@@ -8,21 +8,7 @@ macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
-DECL|variable|naca
-r_struct
-id|naca_struct
-op_star
-id|naca
-suffix:semicolon
-DECL|variable|naca
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|naca
-)paren
-suffix:semicolon
 DECL|variable|systemcfg
 r_struct
 id|systemcfg

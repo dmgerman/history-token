@@ -31,7 +31,6 @@ suffix:semicolon
 r_extern
 r_struct
 id|naca_struct
-op_star
 id|naca
 suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
@@ -39,7 +38,5 @@ DECL|macro|NACA_PAGE
 mdefine_line|#define NACA_PAGE      0x4
 DECL|macro|NACA_PHYS_ADDR
 mdefine_line|#define NACA_PHYS_ADDR (NACA_PAGE&lt;&lt;PAGE_SHIFT)
-DECL|macro|NACA_VIRT_ADDR
-mdefine_line|#define NACA_VIRT_ADDR (KERNELBASE+NACA_PHYS_ADDR)
 macro_line|#endif /* _NACA_H */
 eof

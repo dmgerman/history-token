@@ -9,6 +9,7 @@ singleline_comment|//   release so that it can be changed in the future (ie, the
 singleline_comment|//   address of the OS&squot;s NACA).
 singleline_comment|//
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 singleline_comment|//=============================================================================
 singleline_comment|//
 singleline_comment|//&t;When we IPL a secondary partition, we will check if if the 
