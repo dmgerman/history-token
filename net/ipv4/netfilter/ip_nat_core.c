@@ -3530,7 +3530,7 @@ op_amp
 id|ip_conntrack_lock
 )paren
 suffix:semicolon
-id|list_for_each
+id|list_for_each_prev
 c_func
 (paren
 id|cur_item
