@@ -2155,10 +2155,12 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef CONFIG_PPC_ISERIES
 r_int
 r_int
 id|i
 suffix:semicolon
+macro_line|#endif
 id|ppc64_boot_msg
 c_func
 (paren
