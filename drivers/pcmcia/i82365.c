@@ -36,8 +36,9 @@ DECL|variable|version
 r_static
 r_const
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;i82365.c 1.265 1999/11/10 18:36:21 (David Hinds)&quot;
 suffix:semicolon
