@@ -2625,7 +2625,7 @@ l_int|0
 )braket
 op_assign
 (paren
-id|SPEED_100
+id|IEEE1394_SPEED_100
 op_lshift
 l_int|16
 )paren

@@ -283,7 +283,7 @@ l_int|0x0
 op_lshift
 l_int|16
 )paren
-multiline_comment|/* DMA_SPEED_100 */
+multiline_comment|/* IEEE1394_SPEED_100 */
 op_or
 (paren
 id|tag
@@ -449,7 +449,6 @@ c_cond
 (paren
 id|want_timestamp
 )paren
-(brace
 multiline_comment|/* controller will update timestamp at DMA time */
 id|temp
 op_or_assign
@@ -457,20 +456,17 @@ l_int|1
 op_lshift
 l_int|27
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|want_interrupt
 )paren
-(brace
 id|temp
 op_or_assign
 l_int|3
 op_lshift
 l_int|20
 suffix:semicolon
-)brace
 id|temp
 op_or_assign
 l_int|3

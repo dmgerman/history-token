@@ -45,7 +45,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 942 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 967 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/*&n; * Module load parameter definitions&n; */
 multiline_comment|/*&n; * Change max_speed on module load if you have a bad IEEE-1394&n; * controller that has trouble running 2KB packets at 400mb.&n; *&n; * NOTE: On certain OHCI parts I have seen short packets on async transmit&n; * (probably due to PCI latency/throughput issues with the part). You can&n; * bump down the speed if you are running into problems.&n; */
@@ -54,7 +54,7 @@ r_static
 r_int
 id|max_speed
 op_assign
-id|SPEED_MAX
+id|IEEE1394_SPEED_MAX
 suffix:semicolon
 id|module_param
 c_func
@@ -2626,13 +2626,13 @@ id|hi
 suffix:semicolon
 id|scsi_id-&gt;speed_code
 op_assign
-id|SPEED_100
+id|IEEE1394_SPEED_100
 suffix:semicolon
 id|scsi_id-&gt;max_payload_size
 op_assign
 id|sbp2_speedto_max_payload
 (braket
-id|SPEED_100
+id|IEEE1394_SPEED_100
 )braket
 suffix:semicolon
 id|atomic_set

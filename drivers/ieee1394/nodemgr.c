@@ -5339,7 +5339,7 @@ op_assign
 id|buffer
 suffix:semicolon
 DECL|macro|PUT_ENVP
-mdefine_line|#define PUT_ENVP(fmt,val) &t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;envp[i++] = scratch;&t;&t;&t;&t;&t;&bslash;&n;&t;length += snprintf(scratch, buffer_size - length,&t;&bslash;&n;&t;&t;&t;   fmt, val);&t;&t;&t;&t;&bslash;&n;&t;if ((buffer_size - length &lt;= 0) || (i &gt;= num_envp))&t;&bslash;&n;&t;&t;return -ENOMEM;&t;&t;&t;&t;&t;&bslash;&n;&t;++length;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;scratch = buffer + length;&t;&t;&t;&t;&bslash;&n;} while(0)
+mdefine_line|#define PUT_ENVP(fmt,val) &t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;envp[i++] = scratch;&t;&t;&t;&t;&t;&bslash;&n;&t;length += snprintf(scratch, buffer_size - length,&t;&bslash;&n;&t;&t;&t;   fmt, val);&t;&t;&t;&t;&bslash;&n;&t;if ((buffer_size - length &lt;= 0) || (i &gt;= num_envp))&t;&bslash;&n;&t;&t;return -ENOMEM;&t;&t;&t;&t;&t;&bslash;&n;&t;++length;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;scratch = buffer + length;&t;&t;&t;&t;&bslash;&n;} while (0)
 id|PUT_ENVP
 c_func
 (paren
@@ -6750,7 +6750,7 @@ c_cond
 (paren
 id|host-&gt;busmgr_id
 op_eq
-l_int|0x3f
+l_int|0xffff
 op_logical_and
 id|host-&gt;node_count
 OG
@@ -6769,17 +6769,21 @@ id|node_entry
 op_star
 id|ne
 op_assign
-id|hpsb_nodeid_get_entry
+id|find_entry_by_nodeid
 c_func
 (paren
 id|host
 comma
 id|root_node
+op_or
+id|LOCAL_BUS
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
+id|ne
+op_logical_and
 id|ne-&gt;busopt.cmc
 )paren
 id|hpsb_send_phy_config

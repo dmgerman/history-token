@@ -965,7 +965,7 @@ op_plus
 id|j
 )braket
 op_assign
-id|SPEED_MAX
+id|IEEE1394_SPEED_MAX
 suffix:semicolon
 )brace
 )brace
@@ -1941,7 +1941,7 @@ id|host
 suffix:semicolon
 id|packet-&gt;header_size
 op_assign
-l_int|16
+l_int|8
 suffix:semicolon
 id|packet-&gt;data_size
 op_assign
@@ -1974,7 +1974,6 @@ op_ne
 op_minus
 l_int|1
 )paren
-(brace
 id|packet-&gt;header
 (braket
 l_int|0
@@ -1988,7 +1987,6 @@ l_int|1
 op_lshift
 l_int|23
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1997,7 +1995,6 @@ op_ne
 op_minus
 l_int|1
 )paren
-(brace
 id|packet-&gt;header
 (braket
 l_int|0
@@ -2011,7 +2008,6 @@ l_int|1
 op_lshift
 l_int|22
 suffix:semicolon
-)brace
 id|packet-&gt;header
 (braket
 l_int|1
@@ -2029,12 +2025,6 @@ id|get_hpsb_generation
 c_func
 (paren
 id|host
-)paren
-suffix:semicolon
-id|HPSB_DEBUG
-c_func
-(paren
-l_string|&quot;Sending PHY configuration packet (I hope)...&quot;
 )paren
 suffix:semicolon
 r_if
@@ -4657,12 +4647,10 @@ OG
 l_int|15
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|write_lock
 c_func
 (paren
@@ -4752,10 +4740,8 @@ OG
 l_int|15
 )paren
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 id|write_lock
 c_func
 (paren
@@ -4985,12 +4971,10 @@ id|file_ops
 op_eq
 l_int|0
 )paren
-(brace
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-)brace
 multiline_comment|/* redirect all subsequent requests to the driver&squot;s&n;&t;   own file_operations */
 id|file-&gt;f_op
 op_assign
