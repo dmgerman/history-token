@@ -28,13 +28,7 @@ macro_line|#ifdef CONFIG_NET_DIVERT
 macro_line|#include &lt;linux/divert.h&gt;
 macro_line|#endif /* CONFIG_NET_DIVERT */
 macro_line|#ifdef CONFIG_INET
-macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
-macro_line|#include &lt;net/arp.h&gt;
-macro_line|#if defined(CONFIG_ATM_CLIP) || defined(CONFIG_ATM_CLIP_MODULE)
-macro_line|#include &lt;net/atmclip.h&gt;
-macro_line|#endif
-macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
@@ -91,12 +85,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_ATALK_MODULE
 macro_line|#include &lt;net/sock.h&gt;
-macro_line|#endif
-macro_line|#ifdef CONFIG_SYSCTL
-r_extern
-r_int
-id|sysctl_max_syn_backlog
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Socket layer support routines */
 DECL|variable|memcpy_fromiovec
@@ -375,39 +363,11 @@ c_func
 id|ip_options_undo
 )paren
 suffix:semicolon
-DECL|variable|arp_send
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|arp_send
-)paren
-suffix:semicolon
-DECL|variable|arp_broken_ops
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|arp_broken_ops
-)paren
-suffix:semicolon
 DECL|variable|__ip_select_ident
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|__ip_select_ident
-)paren
-suffix:semicolon
-DECL|variable|ip_send_check
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_send_check
-)paren
-suffix:semicolon
-DECL|variable|ip_fragment
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_fragment
 )paren
 suffix:semicolon
 DECL|variable|in_aton
@@ -436,13 +396,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ip_mc_join_group
-)paren
-suffix:semicolon
-DECL|variable|ip_finish_output
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_finish_output
 )paren
 suffix:semicolon
 DECL|variable|inet_addr_type
@@ -529,13 +482,6 @@ suffix:semicolon
 macro_line|#if defined (CONFIG_IPV6_MODULE) || defined (CONFIG_IP_SCTP_MODULE)
 multiline_comment|/* inet functions common to v4 and v6 */
 multiline_comment|/* Socket demultiplexing. */
-DECL|variable|ip_queue_xmit
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_queue_xmit
-)paren
-suffix:semicolon
 DECL|variable|memcpy_fromiovecend
 id|EXPORT_SYMBOL
 c_func
@@ -556,13 +502,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|net_statistics
-)paren
-suffix:semicolon
-DECL|variable|ip_generic_getfrag
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_generic_getfrag
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -587,36 +526,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ip_rcv
-)paren
-suffix:semicolon
-DECL|variable|arp_rcv
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|arp_rcv
-)paren
-suffix:semicolon
-DECL|variable|arp_tbl
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|arp_tbl
-)paren
-suffix:semicolon
-macro_line|#if defined(CONFIG_ATM_CLIP) || defined(CONFIG_ATM_CLIP_MODULE)
-DECL|variable|clip_tbl_hook
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|clip_tbl_hook
-)paren
-suffix:semicolon
-macro_line|#endif
-DECL|variable|arp_find
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|arp_find
 )paren
 suffix:semicolon
 macro_line|#endif  /* CONFIG_INET */
@@ -720,17 +629,6 @@ c_func
 id|hippi_type_trans
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SYSCTL
-macro_line|#ifdef CONFIG_INET
-DECL|variable|sysctl_ip_default_ttl
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sysctl_ip_default_ttl
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_NET_SCHED
 id|PSCHED_EXPORTLIST
