@@ -1080,6 +1080,7 @@ op_eq
 l_int|0
 )paren
 r_return
+l_int|0
 suffix:semicolon
 macro_line|#endif
 r_for
@@ -1118,15 +1119,6 @@ c_func
 id|hwif
 )paren
 )paren
-(brace
-macro_line|#ifndef MODULE
-id|setup_pdc4030
-c_func
-(paren
-id|hwif
-)paren
-suffix:semicolon
-macro_line|#else
 r_return
 id|setup_pdc4030
 c_func
@@ -1134,14 +1126,10 @@ c_func
 id|hwif
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
-)brace
-macro_line|#ifdef MODULE
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|release_pdc4030
 r_static

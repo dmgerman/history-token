@@ -289,16 +289,6 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|ne3210_probe
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|e2100_probe
 c_func
 (paren
@@ -773,14 +763,6 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_LNE390
 (brace
 id|lne390_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
-macro_line|#ifdef CONFIG_NE3210
-(brace
-id|ne3210_probe
 comma
 l_int|0
 )brace
