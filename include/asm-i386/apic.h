@@ -241,6 +241,13 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|lapic_shutdown
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|verify_local_APIC
 (paren
@@ -407,6 +414,18 @@ DECL|macro|NMI_LOCAL_APIC
 mdefine_line|#define NMI_LOCAL_APIC&t;2
 DECL|macro|NMI_INVALID
 mdefine_line|#define NMI_INVALID&t;3
-macro_line|#endif /* CONFIG_X86_LOCAL_APIC */
+macro_line|#else /* !CONFIG_X86_LOCAL_APIC */
+DECL|function|lapic_shutdown
+r_static
+r_inline
+r_void
+id|lapic_shutdown
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+macro_line|#endif /* !CONFIG_X86_LOCAL_APIC */
 macro_line|#endif /* __ASM_APIC_H */
 eof
