@@ -317,6 +317,14 @@ c_func
 id|scsi_deregister_blocked_host
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * This symbol is for the highlevel drivers (e.g. sg) only.&n; */
+DECL|variable|scsi_reset_provider
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_reset_provider
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * These are here only while I debug the rest of the scsi stuff.&n; */
 DECL|variable|scsi_hostlist
 id|EXPORT_SYMBOL
