@@ -320,13 +320,6 @@ c_func
 id|__read_lock_failed
 )paren
 suffix:semicolon
-DECL|variable|smp_num_cpus
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|smp_num_cpus
-)paren
-suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_HIGHMEM
 DECL|variable|kmap
