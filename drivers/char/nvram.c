@@ -8,12 +8,12 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|macro|PC
 mdefine_line|#define PC&t;&t;1
 DECL|macro|ATARI
-mdefine_line|#define ATARI&t;2
+mdefine_line|#define ATARI&t;&t;2
 multiline_comment|/* select machine configuration */
 macro_line|#if defined(CONFIG_ATARI)
 DECL|macro|MACH
 mdefine_line|#define MACH ATARI
-macro_line|#elif defined(__i386__) || defined(__x86_64__) || defined(__arm__) /* and others?? */
+macro_line|#elif defined(__i386__) || defined(__x86_64__) || defined(__arm__)  /* and others?? */
 DECL|macro|MACH
 mdefine_line|#define MACH PC
 macro_line|#else
@@ -22,14 +22,14 @@ macro_line|#endif
 macro_line|#if MACH == PC
 multiline_comment|/* RTC in a PC */
 DECL|macro|CHECK_DRIVER_INIT
-mdefine_line|#define CHECK_DRIVER_INIT() 1
+mdefine_line|#define CHECK_DRIVER_INIT()&t;1
 multiline_comment|/* On PCs, the checksum is built only over bytes 2..31 */
 DECL|macro|PC_CKS_RANGE_START
 mdefine_line|#define PC_CKS_RANGE_START&t;2
 DECL|macro|PC_CKS_RANGE_END
 mdefine_line|#define PC_CKS_RANGE_END&t;31
 DECL|macro|PC_CKS_LOC
-mdefine_line|#define PC_CKS_LOC&t;&t;&t;32
+mdefine_line|#define PC_CKS_LOC&t;&t;32
 DECL|macro|mach_check_checksum
 mdefine_line|#define&t;mach_check_checksum&t;pc_check_checksum
 DECL|macro|mach_set_checksum
@@ -42,16 +42,16 @@ multiline_comment|/* Special parameters for RTC in Atari machines */
 macro_line|#include &lt;asm/atarihw.h&gt;
 macro_line|#include &lt;asm/atariints.h&gt;
 DECL|macro|RTC_PORT
-mdefine_line|#define RTC_PORT(x)&t;&t;&t;(TT_RTC_BAS + 2*(x))
+mdefine_line|#define RTC_PORT(x)&t;&t;(TT_RTC_BAS + 2*(x))
 DECL|macro|CHECK_DRIVER_INIT
-mdefine_line|#define CHECK_DRIVER_INIT() (MACH_IS_ATARI &amp;&amp; ATARIHW_PRESENT(TT_CLK))
+mdefine_line|#define CHECK_DRIVER_INIT()&t;(MACH_IS_ATARI &amp;&amp; ATARIHW_PRESENT(TT_CLK))
 multiline_comment|/* On Ataris, the checksum is over all bytes except the checksum bytes&n; * themselves; these are at the very end */
 DECL|macro|ATARI_CKS_RANGE_START
 mdefine_line|#define ATARI_CKS_RANGE_START&t;0
 DECL|macro|ATARI_CKS_RANGE_END
-mdefine_line|#define ATARI_CKS_RANGE_END&t;&t;47
+mdefine_line|#define ATARI_CKS_RANGE_END&t;47
 DECL|macro|ATARI_CKS_LOC
-mdefine_line|#define ATARI_CKS_LOC&t;&t;&t;48
+mdefine_line|#define ATARI_CKS_LOC&t;&t;48
 DECL|macro|mach_check_checksum
 mdefine_line|#define&t;mach_check_checksum&t;atari_check_checksum
 DECL|macro|mach_set_checksum
@@ -93,15 +93,15 @@ id|nvram_open_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/* guards nvram_open_cnt and&n;                                         nvram_open_mode */
+multiline_comment|/* guards &n;&t;&t;&t;&t;&t;&t;&t; * nvram_open_cnt and&n;&t;&t;&t;&t;&t;&t;&t; * nvram_open_mode */
 DECL|macro|NVRAM_WRITE
-mdefine_line|#define&t;NVRAM_WRITE&t;&t;1&t;&t;/* opened for writing (exclusive) */
+mdefine_line|#define&t;NVRAM_WRITE&t;&t;1&t;/* opened for writing (exclusive) */
 DECL|macro|NVRAM_EXCL
-mdefine_line|#define&t;NVRAM_EXCL&t;&t;2&t;&t;/* opened with O_EXCL */
+mdefine_line|#define&t;NVRAM_EXCL&t;&t;2&t;/* opened with O_EXCL */
 DECL|macro|RTC_FIRST_BYTE
-mdefine_line|#define&t;RTC_FIRST_BYTE&t;&t;14&t;/* RTC register number of first NVRAM byte */
+mdefine_line|#define&t;RTC_FIRST_BYTE&t;&t;14&t;/* RTC register number of first&n;&t;&t;&t;&t;&t; * NVRAM byte */
 DECL|macro|NVRAM_BYTES
-mdefine_line|#define&t;NVRAM_BYTES&t;&t;&t;128-RTC_FIRST_BYTE&t;/* number of NVRAM bytes */
+mdefine_line|#define&t;NVRAM_BYTES&t;&t;128-RTC_FIRST_BYTE /* number of NVRAM bytes */
 r_static
 r_int
 id|mach_check_checksum
@@ -150,11 +150,11 @@ id|size
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * These are the internal NVRAM access functions, which do NOT disable&n; * interrupts and do not check the checksum. Both tasks are left to higher&n; * level function, so they need to be done only once per syscall.&n; */
-DECL|function|nvram_read_int
 r_static
 id|__inline__
 r_int
 r_char
+DECL|function|nvram_read_int
 id|nvram_read_int
 c_func
 (paren
@@ -163,6 +163,7 @@ id|i
 )paren
 (brace
 r_return
+(paren
 id|CMOS_READ
 c_func
 (paren
@@ -170,12 +171,13 @@ id|RTC_FIRST_BYTE
 op_plus
 id|i
 )paren
+)paren
 suffix:semicolon
 )brace
-DECL|function|nvram_write_int
 r_static
 id|__inline__
 r_void
+DECL|function|nvram_write_int
 id|nvram_write_int
 c_func
 (paren
@@ -198,10 +200,10 @@ id|i
 )paren
 suffix:semicolon
 )brace
-DECL|function|nvram_check_checksum_int
 r_static
 id|__inline__
 r_int
+DECL|function|nvram_check_checksum_int
 id|nvram_check_checksum_int
 c_func
 (paren
@@ -209,16 +211,18 @@ r_void
 )paren
 (brace
 r_return
+(paren
 id|mach_check_checksum
 c_func
 (paren
 )paren
+)paren
 suffix:semicolon
 )brace
-DECL|function|nvram_set_checksum_int
 r_static
 id|__inline__
 r_void
+DECL|function|nvram_set_checksum_int
 id|nvram_set_checksum_int
 c_func
 (paren
@@ -233,9 +237,9 @@ suffix:semicolon
 )brace
 macro_line|#if MACH == ATARI
 multiline_comment|/*&n; * These non-internal functions are provided to be called by other parts of&n; * the kernel. It&squot;s up to the caller to ensure correct checksum before reading&n; * or after writing (needs to be done only once).&n; *&n; * They&squot;re only built if CONFIG_ATARI is defined, because Atari drivers use&n; * them. For other configurations (PC), the rest of the kernel can&squot;t rely on&n; * them being present (this driver may not be configured at all, or as a&n; * module), so they access config information themselves.&n; */
-DECL|function|nvram_read_byte
 r_int
 r_char
+DECL|function|nvram_read_byte
 id|nvram_read_byte
 c_func
 (paren
@@ -252,6 +256,7 @@ r_char
 id|c
 suffix:semicolon
 id|spin_lock_irqsave
+c_func
 (paren
 op_amp
 id|rtc_lock
@@ -268,6 +273,7 @@ id|i
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
+c_func
 (paren
 op_amp
 id|rtc_lock
@@ -276,12 +282,14 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+(paren
 id|c
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* This races nicely with trying to read with checksum checking (nvram_read) */
-DECL|function|nvram_write_byte
 r_void
+DECL|function|nvram_write_byte
 id|nvram_write_byte
 c_func
 (paren
@@ -298,6 +306,7 @@ r_int
 id|flags
 suffix:semicolon
 id|spin_lock_irqsave
+c_func
 (paren
 op_amp
 id|rtc_lock
@@ -314,6 +323,7 @@ id|i
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
+c_func
 (paren
 op_amp
 id|rtc_lock
@@ -322,8 +332,8 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|nvram_check_checksum
 r_int
+DECL|function|nvram_check_checksum
 id|nvram_check_checksum
 c_func
 (paren
@@ -338,6 +348,7 @@ r_int
 id|rv
 suffix:semicolon
 id|spin_lock_irqsave
+c_func
 (paren
 op_amp
 id|rtc_lock
@@ -353,6 +364,7 @@ c_func
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
+c_func
 (paren
 op_amp
 id|rtc_lock
@@ -361,11 +373,13 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+(paren
 id|rv
+)paren
 suffix:semicolon
 )brace
-DECL|function|nvram_set_checksum
 r_void
+DECL|function|nvram_set_checksum
 id|nvram_set_checksum
 c_func
 (paren
@@ -377,6 +391,7 @@ r_int
 id|flags
 suffix:semicolon
 id|spin_lock_irqsave
+c_func
 (paren
 op_amp
 id|rtc_lock
@@ -390,6 +405,7 @@ c_func
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
+c_func
 (paren
 op_amp
 id|rtc_lock
@@ -400,10 +416,10 @@ suffix:semicolon
 )brace
 macro_line|#endif /* MACH == ATARI */
 multiline_comment|/*&n; * The are the file operation function for user access to /dev/nvram&n; */
-DECL|function|nvram_llseek
 r_static
 r_int
 r_int
+DECL|function|nvram_llseek
 id|nvram_llseek
 c_func
 (paren
@@ -462,6 +478,7 @@ c_func
 suffix:semicolon
 r_return
 (paren
+(paren
 id|offset
 op_ge
 l_int|0
@@ -476,11 +493,12 @@ id|offset
 suffix:colon
 op_minus
 id|EINVAL
+)paren
 suffix:semicolon
 )brace
-DECL|function|nvram_read
 r_static
 id|ssize_t
+DECL|function|nvram_read
 id|nvram_read
 c_func
 (paren
@@ -518,6 +536,7 @@ op_star
 id|tmp
 suffix:semicolon
 id|spin_lock_irq
+c_func
 (paren
 op_amp
 id|rtc_lock
@@ -567,6 +586,7 @@ id|i
 )paren
 suffix:semicolon
 id|spin_unlock_irq
+c_func
 (paren
 op_amp
 id|rtc_lock
@@ -576,6 +596,7 @@ r_if
 c_cond
 (paren
 id|copy_to_user
+c_func
 (paren
 id|buf
 comma
@@ -605,6 +626,7 @@ suffix:semicolon
 id|checksum_err
 suffix:colon
 id|spin_unlock_irq
+c_func
 (paren
 op_amp
 id|rtc_lock
@@ -615,9 +637,9 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-DECL|function|nvram_write
 r_static
 id|ssize_t
+DECL|function|nvram_write
 id|nvram_write
 c_func
 (paren
@@ -659,6 +681,7 @@ r_if
 c_cond
 (paren
 id|copy_from_user
+c_func
 (paren
 id|contents
 comma
@@ -687,6 +710,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 id|spin_lock_irq
+c_func
 (paren
 op_amp
 id|rtc_lock
@@ -727,6 +751,7 @@ op_increment
 id|tmp
 )paren
 id|nvram_write_int
+c_func
 (paren
 op_star
 id|tmp
@@ -740,6 +765,7 @@ c_func
 )paren
 suffix:semicolon
 id|spin_unlock_irq
+c_func
 (paren
 op_amp
 id|rtc_lock
@@ -760,6 +786,7 @@ suffix:semicolon
 id|checksum_err
 suffix:colon
 id|spin_unlock_irq
+c_func
 (paren
 op_amp
 id|rtc_lock
@@ -770,9 +797,9 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-DECL|function|nvram_ioctl
 r_static
 r_int
+DECL|function|nvram_ioctl
 id|nvram_ioctl
 c_func
 (paren
@@ -819,10 +846,13 @@ id|CAP_SYS_ADMIN
 )paren
 )paren
 r_return
+(paren
 op_minus
 id|EACCES
+)paren
 suffix:semicolon
 id|spin_lock_irq
+c_func
 (paren
 op_amp
 id|rtc_lock
@@ -842,7 +872,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|nvram_write_int
 c_func
 (paren
@@ -851,25 +880,27 @@ comma
 id|i
 )paren
 suffix:semicolon
-)brace
 id|nvram_set_checksum_int
 c_func
 (paren
 )paren
 suffix:semicolon
 id|spin_unlock_irq
+c_func
 (paren
 op_amp
 id|rtc_lock
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 r_case
 id|NVRAM_SETCKS
 suffix:colon
-multiline_comment|/* just set checksum, contents unchanged&n;&t;&t;&t;&t;&t;&t;&t;&t; * (maybe useful after checksum garbaged&n;&t;&t;&t;&t;&t;&t;&t;&t; * somehow...) */
+multiline_comment|/* just set checksum, contents unchanged&n;&t;&t;&t;&t; * (maybe useful after checksum garbaged&n;&t;&t;&t;&t; * somehow...) */
 r_if
 c_cond
 (paren
@@ -881,10 +912,13 @@ id|CAP_SYS_ADMIN
 )paren
 )paren
 r_return
+(paren
 op_minus
 id|EACCES
+)paren
 suffix:semicolon
 id|spin_lock_irq
+c_func
 (paren
 op_amp
 id|rtc_lock
@@ -896,25 +930,30 @@ c_func
 )paren
 suffix:semicolon
 id|spin_unlock_irq
+c_func
 (paren
 op_amp
 id|rtc_lock
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 r_default
 suffix:colon
 r_return
+(paren
 op_minus
 id|ENOTTY
+)paren
 suffix:semicolon
 )brace
 )brace
-DECL|function|nvram_open
 r_static
 r_int
+DECL|function|nvram_open
 id|nvram_open
 c_func
 (paren
@@ -978,8 +1017,10 @@ id|nvram_open_lock
 )paren
 suffix:semicolon
 r_return
+(paren
 op_minus
 id|EBUSY
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -1015,12 +1056,14 @@ id|nvram_open_lock
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
-DECL|function|nvram_release
 r_static
 r_int
+DECL|function|nvram_release
 id|nvram_release
 c_func
 (paren
@@ -1077,13 +1120,15 @@ id|nvram_open_lock
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 macro_line|#ifndef CONFIG_PROC_FS
-DECL|function|nvram_read_proc
 r_static
 r_int
+DECL|function|nvram_read_proc
 id|nvram_read_proc
 c_func
 (paren
@@ -1116,9 +1161,9 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#else
-DECL|function|nvram_read_proc
 r_static
 r_int
+DECL|function|nvram_read_proc
 id|nvram_read_proc
 c_func
 (paren
@@ -1166,6 +1211,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|spin_lock_irq
+c_func
 (paren
 op_amp
 id|rtc_lock
@@ -1185,7 +1231,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|contents
 (braket
 id|i
@@ -1197,8 +1242,8 @@ c_func
 id|i
 )paren
 suffix:semicolon
-)brace
 id|spin_unlock_irq
+c_func
 (paren
 op_amp
 id|rtc_lock
@@ -1235,7 +1280,9 @@ op_plus
 id|len
 )paren
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 op_star
 id|start
@@ -1249,6 +1296,7 @@ id|begin
 )paren
 suffix:semicolon
 r_return
+(paren
 id|size
 OL
 id|begin
@@ -1265,11 +1313,12 @@ op_plus
 id|len
 op_minus
 id|offset
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* This macro frees the machine specific function from bounds checking and&n; * this like that... */
 DECL|macro|PRINT_PROC
-mdefine_line|#define&t;PRINT_PROC(fmt,args...)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*len += sprintf( buffer+*len, fmt, ##args );&t;&bslash;&n;&t;&t;if (*begin + *len &gt; offset + size)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;return( 0 );&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (*begin + *len &lt; offset) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;*begin += *len;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;*len = 0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while(0)
+mdefine_line|#define&t;PRINT_PROC(fmt,args...)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*len += sprintf( buffer+*len, fmt, ##args );&t;&bslash;&n;&t;&t;if (*begin + *len &gt; offset + size)&t;&t;&bslash;&n;&t;&t;&t;return( 0 );&t;&t;&t;&t;&bslash;&n;&t;&t;if (*begin + *len &lt; offset) {&t;&t;&t;&bslash;&n;&t;&t;&t;*begin += *len;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;*len = 0;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while(0)
 macro_line|#endif /* CONFIG_PROC_FS */
 DECL|variable|nvram_fops
 r_static
@@ -1323,10 +1372,10 @@ op_amp
 id|nvram_fops
 )brace
 suffix:semicolon
-DECL|function|nvram_init
 r_static
 r_int
 id|__init
+DECL|function|nvram_init
 id|nvram_init
 c_func
 (paren
@@ -1347,8 +1396,10 @@ c_func
 )paren
 )paren
 r_return
+(paren
 op_minus
 id|ENXIO
+)paren
 suffix:semicolon
 id|ret
 op_assign
@@ -1429,7 +1480,9 @@ suffix:semicolon
 id|out
 suffix:colon
 r_return
+(paren
 id|ret
+)paren
 suffix:semicolon
 id|outmisc
 suffix:colon
@@ -1444,11 +1497,12 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-DECL|function|nvram_cleanup_module
 r_static
 r_void
 id|__exit
+DECL|function|nvram_cleanup_module
 id|nvram_cleanup_module
+c_func
 (paren
 r_void
 )paren
@@ -1485,9 +1539,9 @@ id|nvram_cleanup_module
 suffix:semicolon
 multiline_comment|/*&n; * Machine specific functions&n; */
 macro_line|#if MACH == PC
-DECL|function|pc_check_checksum
 r_static
 r_int
+DECL|function|pc_check_checksum
 id|pc_check_checksum
 c_func
 (paren
@@ -1517,7 +1571,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|sum
 op_add_assign
 id|nvram_read_int
@@ -1526,8 +1579,8 @@ c_func
 id|i
 )paren
 suffix:semicolon
-)brace
 r_return
+(paren
 (paren
 id|sum
 op_amp
@@ -1553,11 +1606,12 @@ op_plus
 l_int|1
 )paren
 )paren
+)paren
 suffix:semicolon
 )brace
-DECL|function|pc_set_checksum
 r_static
 r_void
+DECL|function|pc_set_checksum
 id|pc_set_checksum
 c_func
 (paren
@@ -1587,7 +1641,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|sum
 op_add_assign
 id|nvram_read_int
@@ -1596,7 +1649,6 @@ c_func
 id|i
 )paren
 suffix:semicolon
-)brace
 id|nvram_write_int
 c_func
 (paren
@@ -1664,9 +1716,9 @@ l_string|&quot;monochrome&quot;
 comma
 )brace
 suffix:semicolon
-DECL|function|pc_proc_infos
 r_static
 r_int
+DECL|function|pc_proc_infos
 id|pc_proc_infos
 c_func
 (paren
@@ -1701,6 +1753,7 @@ r_int
 id|type
 suffix:semicolon
 id|spin_lock_irq
+c_func
 (paren
 op_amp
 id|rtc_lock
@@ -1714,6 +1767,7 @@ c_func
 )paren
 suffix:semicolon
 id|spin_unlock_irq
+c_func
 (paren
 op_amp
 id|rtc_lock
@@ -2164,15 +2218,17 @@ l_string|&quot;not &quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#endif /* MACH == PC */
 macro_line|#if MACH == ATARI
-DECL|function|atari_check_checksum
 r_static
 r_int
+DECL|function|atari_check_checksum
 id|atari_check_checksum
 c_func
 (paren
@@ -2202,7 +2258,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|sum
 op_add_assign
 id|nvram_read_int
@@ -2211,8 +2266,8 @@ c_func
 id|i
 )paren
 suffix:semicolon
-)brace
 r_return
+(paren
 id|nvram_read_int
 c_func
 (paren
@@ -2239,11 +2294,12 @@ id|sum
 op_amp
 l_int|0xff
 )paren
+)paren
 suffix:semicolon
 )brace
-DECL|function|atari_set_checksum
 r_static
 r_void
+DECL|function|atari_set_checksum
 id|atari_set_checksum
 c_func
 (paren
@@ -2273,7 +2329,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|sum
 op_add_assign
 id|nvram_read_int
@@ -2282,7 +2337,6 @@ c_func
 id|i
 )paren
 suffix:semicolon
-)brace
 id|nvram_write_int
 c_func
 (paren
@@ -2437,9 +2491,9 @@ l_string|&quot;??&quot;
 suffix:semicolon
 DECL|macro|fieldsize
 mdefine_line|#define fieldsize(a)&t;(sizeof(a)/sizeof(*a))
-DECL|function|atari_proc_infos
 r_static
 r_int
+DECL|function|atari_proc_infos
 id|atari_proc_infos
 c_func
 (paren
@@ -2944,7 +2998,9 @@ l_string|&quot;&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -2955,5 +3011,4 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Local variables:&n; *  c-indent-level: 4&n; *  tab-width: 4&n; * End:&n; */
 eof
