@@ -28,7 +28,6 @@ macro_line|#include &quot;xfs_inode.h&quot;
 macro_line|#include &quot;xfs_bmap.h&quot;
 macro_line|#include &quot;xfs_acl.h&quot;
 macro_line|#include &quot;xfs_mac.h&quot;
-macro_line|#include &quot;xfs_attr.h&quot;
 macro_line|#include &quot;xfs_error.h&quot;
 macro_line|#include &quot;xfs_buf_item.h&quot;
 macro_line|#include &quot;xfs_rw.h&quot;

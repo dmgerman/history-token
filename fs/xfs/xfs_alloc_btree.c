@@ -394,7 +394,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_abt_delrec
+id|xs_abt_delrec
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * It&squot;s a nonleaf.  Excise the key and ptr being deleted, by&n;&t; * sliding the entries past them down one.&n;&t; * Log the changed areas of the block.&n;&t; */
@@ -2801,7 +2801,7 @@ id|cur-&gt;bc_nlevels
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_abt_insrec
+id|xs_abt_insrec
 )paren
 suffix:semicolon
 r_if
@@ -2878,7 +2878,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_abt_insrec
+id|xs_abt_insrec
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get pointers to the btree buffer and block.&n;&t; */
@@ -4414,7 +4414,7 @@ multiline_comment|/* file system mount point */
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_abt_lookup
+id|xs_abt_lookup
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the allocation group header, and the root block number.&n;&t; */
@@ -4764,7 +4764,7 @@ multiline_comment|/* key value */
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_abt_compare
+id|xs_abt_compare
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; * keyno is average of low and high.&n;&t;&t;&t;&t; */

@@ -25,16 +25,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|mov
-id|r0
-comma
-id|r0
-id|mov
-id|r0
-comma
-id|r0
-"&quot;"
+l_string|&quot;mov&t;r0, r0&bslash;n&bslash;&n;&t;mov&t;r0, r0&quot;
 )paren
 suffix:semicolon
 )brace

@@ -155,6 +155,8 @@ mdefine_line|#define PTE_BUFFERABLE&t;&t;(1 &lt;&lt; 2)
 DECL|macro|PTE_CACHEABLE
 mdefine_line|#define PTE_CACHEABLE&t;&t;(1 &lt;&lt; 3)
 multiline_comment|/*&n; *   - extended small page/tiny page&n; */
+DECL|macro|PTE_EXT_AP_MASK
+mdefine_line|#define PTE_EXT_AP_MASK&t;&t;(3 &lt;&lt; 4)
 DECL|macro|PTE_EXT_AP_UNO_SRO
 mdefine_line|#define PTE_EXT_AP_UNO_SRO&t;(0 &lt;&lt; 4)
 DECL|macro|PTE_EXT_AP_UNO_SRW
@@ -166,6 +168,8 @@ mdefine_line|#define PTE_EXT_AP_URW_SRW&t;(3 &lt;&lt; 4)
 DECL|macro|PTE_EXT_TEX
 mdefine_line|#define PTE_EXT_TEX(x)&t;&t;((x) &lt;&lt; 6)&t;/* v5 */
 multiline_comment|/*&n; *   - small page&n; */
+DECL|macro|PTE_SMALL_AP_MASK
+mdefine_line|#define PTE_SMALL_AP_MASK&t;(0xff &lt;&lt; 4)
 DECL|macro|PTE_SMALL_AP_UNO_SRO
 mdefine_line|#define PTE_SMALL_AP_UNO_SRO&t;(0x00 &lt;&lt; 4)
 DECL|macro|PTE_SMALL_AP_UNO_SRW
@@ -174,10 +178,6 @@ DECL|macro|PTE_SMALL_AP_URO_SRW
 mdefine_line|#define PTE_SMALL_AP_URO_SRW&t;(0xaa &lt;&lt; 4)
 DECL|macro|PTE_SMALL_AP_URW_SRW
 mdefine_line|#define PTE_SMALL_AP_URW_SRW&t;(0xff &lt;&lt; 4)
-DECL|macro|PTE_AP_READ
-mdefine_line|#define PTE_AP_READ&t;&t;PTE_SMALL_AP_URO_SRW
-DECL|macro|PTE_AP_WRITE
-mdefine_line|#define PTE_AP_WRITE&t;&t;PTE_SMALL_AP_UNO_SRW
 multiline_comment|/*&n; * &quot;Linux&quot; PTE definitions.&n; *&n; * We keep two sets of PTEs - the hardware and the linux version.&n; * This allows greater flexibility in the way we map the Linux bits&n; * onto the hardware tables, and allows us to have YOUNG and DIRTY&n; * bits.&n; *&n; * The PTE table pointer refers to the hardware entries; the &quot;Linux&quot;&n; * entries are stored 1024 bytes below.&n; */
 DECL|macro|L_PTE_PRESENT
 mdefine_line|#define L_PTE_PRESENT&t;&t;(1 &lt;&lt; 0)

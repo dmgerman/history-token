@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/mach-integrator/impd1.c&n; *&n; *  Copyright (C) 2003 Deep Blue Solutions Ltd, All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  This file provides the core support for the IM-PD1 module.&n; *&n; * Module / boot parameters.&n; *   id=n   impd1.id=n - set the logic module position in stack to &squot;n&squot;&n; */
+multiline_comment|/*&n; *  linux/arch/arm/mach-integrator/impd1.c&n; *&n; *  Copyright (C) 2003 Deep Blue Solutions Ltd, All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  This file provides the core support for the IM-PD1 module.&n; *&n; * Module / boot parameters.&n; *   lmid=n   impd1.lmid=n - set the logic module position in stack to &squot;n&squot;&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardware/icst525.h&gt;
 macro_line|#include &lt;asm/hardware/amba.h&gt;
+macro_line|#include &lt;asm/arch/lm.h&gt;
 macro_line|#include &lt;asm/arch/impd1.h&gt;
 macro_line|#include &lt;asm/sizes.h&gt;
 DECL|variable|module_id
@@ -23,7 +24,7 @@ id|module_id
 comma
 r_int
 comma
-l_int|0
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -34,10 +35,6 @@ comma
 l_string|&quot;logic module stack position&quot;
 )paren
 suffix:semicolon
-DECL|macro|ROM_OFFSET
-mdefine_line|#define ROM_OFFSET&t;0x0fffff00
-DECL|macro|ROM_SIZE
-mdefine_line|#define ROM_SIZE&t;256
 DECL|struct|impd1_module
 r_struct
 id|impd1_module
@@ -580,33 +577,11 @@ id|impd1_probe
 c_func
 (paren
 r_struct
-id|device
+id|lm_device
 op_star
 id|dev
 )paren
 (brace
-r_struct
-id|platform_device
-op_star
-id|pdev
-op_assign
-id|to_platform_device
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_struct
-id|resource
-op_star
-id|res
-op_assign
-op_amp
-id|pdev-&gt;resource
-(braket
-l_int|0
-)braket
-suffix:semicolon
 r_struct
 id|impd1_module
 op_star
@@ -620,7 +595,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pdev-&gt;id
+id|dev-&gt;id
 op_ne
 id|module_id
 )paren
@@ -635,7 +610,7 @@ op_logical_neg
 id|request_mem_region
 c_func
 (paren
-id|res-&gt;start
+id|dev-&gt;resource.start
 comma
 id|SZ_4K
 comma
@@ -695,7 +670,7 @@ op_assign
 id|ioremap
 c_func
 (paren
-id|res-&gt;start
+id|dev-&gt;resource.start
 comma
 id|SZ_4K
 )paren
@@ -716,7 +691,7 @@ r_goto
 id|free_impd1
 suffix:semicolon
 )brace
-id|dev_set_drvdata
+id|lm_set_drvdata
 c_func
 (paren
 id|dev
@@ -729,7 +704,7 @@ c_func
 (paren
 l_string|&quot;IM-PD1 found at 0x%08lx&bslash;n&quot;
 comma
-id|res-&gt;start
+id|dev-&gt;resource.start
 )paren
 suffix:semicolon
 r_for
@@ -771,7 +746,7 @@ id|pc_base
 suffix:semicolon
 id|pc_base
 op_assign
-id|res-&gt;start
+id|dev-&gt;resource.start
 op_plus
 id|idev-&gt;offset
 suffix:semicolon
@@ -823,7 +798,7 @@ id|d-&gt;dev.bus_id
 comma
 l_string|&quot;lm%x:%5.5lx&quot;
 comma
-id|pdev-&gt;id
+id|dev-&gt;id
 comma
 id|idev-&gt;offset
 op_rshift
@@ -833,11 +808,11 @@ suffix:semicolon
 id|d-&gt;dev.parent
 op_assign
 op_amp
-id|pdev-&gt;dev
+id|dev-&gt;dev
 suffix:semicolon
 id|d-&gt;res.start
 op_assign
-id|res-&gt;start
+id|dev-&gt;resource.start
 op_plus
 id|idev-&gt;offset
 suffix:semicolon
@@ -855,12 +830,7 @@ id|IORESOURCE_MEM
 suffix:semicolon
 id|d-&gt;irq
 op_assign
-id|pdev-&gt;resource
-(braket
-l_int|1
-)braket
-dot
-id|start
+id|dev-&gt;irq
 suffix:semicolon
 id|d-&gt;periphid
 op_assign
@@ -873,7 +843,8 @@ c_func
 (paren
 id|d
 comma
-id|res
+op_amp
+id|dev-&gt;resource
 )paren
 suffix:semicolon
 r_if
@@ -934,7 +905,7 @@ suffix:colon
 id|release_mem_region
 c_func
 (paren
-id|res-&gt;start
+id|dev-&gt;resource.start
 comma
 id|SZ_4K
 )paren
@@ -945,44 +916,22 @@ suffix:semicolon
 )brace
 DECL|function|impd1_remove
 r_static
-r_int
+r_void
 id|impd1_remove
 c_func
 (paren
 r_struct
-id|device
+id|lm_device
 op_star
 id|dev
 )paren
 (brace
 r_struct
-id|platform_device
-op_star
-id|pdev
-op_assign
-id|to_platform_device
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_struct
-id|resource
-op_star
-id|res
-op_assign
-op_amp
-id|pdev-&gt;resource
-(braket
-l_int|0
-)braket
-suffix:semicolon
-r_struct
 id|impd1_module
 op_star
 id|impd1
 op_assign
-id|dev_get_drvdata
+id|lm_get_drvdata
 c_func
 (paren
 id|dev
@@ -1004,7 +953,7 @@ comma
 id|n
 comma
 op_amp
-id|dev-&gt;children
+id|dev-&gt;dev.children
 )paren
 (brace
 r_struct
@@ -1025,7 +974,7 @@ id|d
 )paren
 suffix:semicolon
 )brace
-id|dev_set_drvdata
+id|lm_set_drvdata
 c_func
 (paren
 id|dev
@@ -1048,32 +997,29 @@ suffix:semicolon
 id|release_mem_region
 c_func
 (paren
-id|res-&gt;start
+id|dev-&gt;resource.start
 comma
 id|SZ_4K
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|impd1_driver
 r_static
 r_struct
-id|device_driver
+id|lm_driver
 id|impd1_driver
+op_assign
+(brace
+dot
+id|drv
 op_assign
 (brace
 dot
 id|name
 op_assign
-l_string|&quot;lm&quot;
+l_string|&quot;impd1&quot;
 comma
-dot
-id|bus
-op_assign
-op_amp
-id|platform_bus_type
+)brace
 comma
 dot
 id|probe
@@ -1098,7 +1044,7 @@ r_void
 )paren
 (brace
 r_return
-id|driver_register
+id|lm_driver_register
 c_func
 (paren
 op_amp
@@ -1116,7 +1062,7 @@ c_func
 r_void
 )paren
 (brace
-id|driver_unregister
+id|lm_driver_unregister
 c_func
 (paren
 op_amp

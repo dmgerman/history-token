@@ -16,7 +16,6 @@ macro_line|#include &quot;xfs_alloc_btree.h&quot;
 macro_line|#include &quot;xfs_btree.h&quot;
 macro_line|#include &quot;xfs_alloc.h&quot;
 macro_line|#include &quot;xfs_ialloc.h&quot;
-macro_line|#include &quot;xfs_alloc.h&quot;
 macro_line|#include &quot;xfs_attr_sf.h&quot;
 macro_line|#include &quot;xfs_dir_sf.h&quot;
 macro_line|#include &quot;xfs_dir2_sf.h&quot;
@@ -31,7 +30,6 @@ macro_line|#include &quot;xfs_rw.h&quot;
 macro_line|#include &quot;xfs_buf_item.h&quot;
 macro_line|#include &quot;xfs_extfree_item.h&quot;
 macro_line|#include &quot;xfs_quota.h&quot;
-macro_line|#include &quot;xfs_dmapi.h&quot;
 macro_line|#include &quot;xfs_dir2_trace.h&quot;
 macro_line|#include &quot;xfs_acl.h&quot;
 macro_line|#include &quot;xfs_attr.h&quot;
@@ -831,7 +829,7 @@ id|mp-&gt;m_flags
 op_or_assign
 id|XFS_MOUNT_WSYNC
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 r_if
 c_cond
 (paren
@@ -903,7 +901,11 @@ id|XFSMNT_32BITINODES
 )paren
 id|mp-&gt;m_flags
 op_or_assign
+(paren
 id|XFS_MOUNT_32BITINODES
+op_or
+id|XFS_MOUNT_32BITINOOPT
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1058,7 +1060,6 @@ r_if
 c_cond
 (paren
 (paren
-(paren
 id|ap-&gt;logbufsize
 op_eq
 op_minus
@@ -1071,12 +1072,19 @@ OG
 id|XLOG_BIG_RECORD_BSIZE
 )paren
 )paren
-op_logical_or
+(brace
+id|mp-&gt;m_logbsize
+op_assign
+id|mp-&gt;m_sb.sb_logsunit
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
 (paren
 id|ap-&gt;logbufsize
 OL
 id|mp-&gt;m_sb.sb_logsunit
-)paren
 )paren
 (brace
 id|cmn_err
@@ -1883,25 +1891,6 @@ op_amp
 id|VFS_DMI
 )paren
 (brace
-id|bhv_desc_t
-op_star
-id|rbdp
-suffix:semicolon
-id|rbdp
-op_assign
-id|vn_bhv_lookup_unlocked
-c_func
-(paren
-id|VN_BHV_HEAD
-c_func
-(paren
-id|rvp
-)paren
-comma
-op_amp
-id|xfs_vnodeops
-)paren
-suffix:semicolon
 id|error
 op_assign
 id|XFS_SEND_NAMESP
@@ -1911,11 +1900,11 @@ id|mp
 comma
 id|DM_EVENT_PREUNMOUNT
 comma
-id|rbdp
+id|rvp
 comma
 id|DM_RIGHT_NULL
 comma
-id|rbdp
+id|rvp
 comma
 id|DM_RIGHT_NULL
 comma
@@ -2780,7 +2769,7 @@ id|statp-&gt;f_bfree
 op_lshift
 id|sbp-&gt;sb_inopblog
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 id|fakeinos
 op_add_assign
 id|mp-&gt;m_inoadd
@@ -2806,7 +2795,7 @@ c_cond
 (paren
 id|mp-&gt;m_maxicount
 )paren
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 r_if
 c_cond
 (paren
@@ -5144,6 +5133,8 @@ DECL|macro|MNTOPT_NOLOGFLUSH
 mdefine_line|#define MNTOPT_NOLOGFLUSH   &quot;nologflush&quot;   /* don&squot;t hard flush on log writes */
 DECL|macro|MNTOPT_OSYNCISOSYNC
 mdefine_line|#define MNTOPT_OSYNCISOSYNC &quot;osyncisosync&quot; /* o_sync is REALLY o_sync */
+DECL|macro|MNTOPT_64BITINODE
+mdefine_line|#define MNTOPT_64BITINODE   &quot;inode64&quot;  /* inodes can be allocated anywhere */
 r_int
 DECL|function|xfs_parseargs
 id|xfs_parseargs
@@ -5710,7 +5701,7 @@ id|args-&gt;flags
 op_or_assign
 id|XFSMNT_INO64
 suffix:semicolon
-macro_line|#ifndef XFS_BIG_FILESYSTEMS
+macro_line|#if !XFS_BIG_INUMS
 id|printk
 c_func
 (paren
@@ -5844,6 +5835,39 @@ comma
 l_int|10
 )paren
 suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|this_char
+comma
+id|MNTOPT_64BITINODE
+)paren
+)paren
+(brace
+id|args-&gt;flags
+op_and_assign
+op_complement
+id|XFSMNT_32BITINODES
+suffix:semicolon
+macro_line|#if !XFS_BIG_INUMS
+id|printk
+c_func
+(paren
+l_string|&quot;XFS: %s option not allowed on this system&bslash;n&quot;
+comma
+id|MNTOPT_64BITINODE
+)paren
+suffix:semicolon
+r_return
+id|EINVAL
+suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 r_if

@@ -1241,6 +1241,11 @@ id|husb
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BT_USB_SCO
+r_if
+c_cond
+(paren
+id|husb-&gt;isoc_iface
+)paren
 id|hci_usb_isoc_rx_submit
 c_func
 (paren

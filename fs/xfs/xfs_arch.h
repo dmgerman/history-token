@@ -2,8 +2,8 @@ multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Ri
 macro_line|#ifndef __XFS_ARCH_H__
 DECL|macro|__XFS_ARCH_H__
 mdefine_line|#define __XFS_ARCH_H__
-macro_line|#ifndef XFS_BIG_FILESYSTEMS
-macro_line|#error XFS_BIG_FILESYSTEMS must be defined true or false
+macro_line|#ifndef XFS_BIG_INUMS
+macro_line|# error XFS_BIG_INUMS must be defined true or false
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -106,7 +106,7 @@ DECL|macro|INT_SET_UNALIGNED_16_ARCH
 mdefine_line|#define INT_SET_UNALIGNED_16_ARCH(pointer,value,arch) &bslash;&n;    if ((arch) == ARCH_NOCONVERT) { &bslash;&n;&t;INT_SET_UNALIGNED_16(pointer,value); &bslash;&n;    } else { &bslash;&n;&t;INT_SET_UNALIGNED_16_BE(pointer,value); &bslash;&n;    }
 DECL|macro|DIRINO4_GET_ARCH
 mdefine_line|#define DIRINO4_GET_ARCH(pointer,arch) &bslash;&n;    ( ((arch) == ARCH_NOCONVERT) &bslash;&n;&t;? &bslash;&n;&t;    (INT_GET_UNALIGNED_32(pointer)) &bslash;&n;&t;: &bslash;&n;&t;    (INT_GET_UNALIGNED_32_BE(pointer)) &bslash;&n;    )
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 DECL|macro|DIRINO_GET_ARCH
 mdefine_line|#define DIRINO_GET_ARCH(pointer,arch) &bslash;&n;    ( ((arch) == ARCH_NOCONVERT) &bslash;&n;&t;? &bslash;&n;&t;    (INT_GET_UNALIGNED_64(pointer)) &bslash;&n;&t;: &bslash;&n;&t;    (INT_GET_UNALIGNED_64_BE(pointer)) &bslash;&n;    )
 macro_line|#else

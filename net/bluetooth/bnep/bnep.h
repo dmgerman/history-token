@@ -429,6 +429,7 @@ suffix:semicolon
 DECL|member|dev
 r_struct
 id|net_device
+op_star
 id|dev
 suffix:semicolon
 DECL|member|stats
@@ -438,8 +439,8 @@ id|stats
 suffix:semicolon
 )brace
 suffix:semicolon
-r_int
-id|bnep_net_init
+r_void
+id|bnep_net_setup
 c_func
 (paren
 r_struct
