@@ -2295,7 +2295,7 @@ op_star
 id|intf
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|intfd
 suffix:semicolon
@@ -2465,7 +2465,7 @@ id|intf-&gt;altsetting
 l_int|0
 )braket
 dot
-id|bNumEndpoints
+id|desc.bNumEndpoints
 OL
 l_int|1
 )paren
@@ -3617,7 +3617,7 @@ op_star
 id|intf
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|intfd
 suffix:semicolon
@@ -3627,7 +3627,7 @@ op_star
 id|ms_header
 suffix:semicolon
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|ep
 suffix:semicolon
@@ -3729,7 +3729,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|intfd-&gt;bNumEndpoints
+id|intfd-&gt;desc.bNumEndpoints
 suffix:semicolon
 op_increment
 id|i
@@ -3747,7 +3747,7 @@ r_if
 c_cond
 (paren
 (paren
-id|ep-&gt;bmAttributes
+id|ep-&gt;desc.bmAttributes
 op_amp
 id|USB_ENDPOINT_XFERTYPE_MASK
 )paren
@@ -3806,7 +3806,7 @@ dot
 id|epnum
 op_ne
 (paren
-id|ep-&gt;bEndpointAddress
+id|ep-&gt;desc.bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 )paren
@@ -3841,14 +3841,14 @@ id|epidx
 dot
 id|epnum
 op_assign
-id|ep-&gt;bEndpointAddress
+id|ep-&gt;desc.bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ep-&gt;bEndpointAddress
+id|ep-&gt;desc.bEndpointAddress
 op_amp
 id|USB_DIR_IN
 )paren
@@ -3895,7 +3895,7 @@ l_string|&quot;snd-usb-midi: detected %d %s jack(s) on endpoint %d&bslash;n&quot
 comma
 id|ms_ep-&gt;bNumEmbMIDIJack
 comma
-id|ep-&gt;bEndpointAddress
+id|ep-&gt;desc.bEndpointAddress
 op_amp
 id|USB_DIR_IN
 ques
@@ -3939,7 +3939,7 @@ op_star
 id|intf
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|intfd
 suffix:semicolon
@@ -4033,7 +4033,7 @@ op_star
 id|intf
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|intfd
 suffix:semicolon
@@ -4062,7 +4062,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|intfd-&gt;bNumEndpoints
+id|intfd-&gt;desc.bNumEndpoints
 OL
 l_int|1
 )paren
@@ -4204,7 +4204,7 @@ op_star
 id|intf
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|intfd
 suffix:semicolon

@@ -9348,7 +9348,7 @@ id|ep_quirk
 )brace
 suffix:semicolon
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|cfg
 op_assign
@@ -9365,7 +9365,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cfg-&gt;bNumInterfaces
+id|cfg-&gt;desc.bNumInterfaces
 op_ne
 l_int|3
 )paren
@@ -10328,7 +10328,7 @@ id|usb_id
 )paren
 (brace
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|config
 op_assign
@@ -10360,7 +10360,7 @@ suffix:semicolon
 r_int
 id|ifnum
 op_assign
-id|intf-&gt;altsetting-&gt;bInterfaceNumber
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 suffix:semicolon
 r_if
 c_cond
@@ -10386,7 +10386,7 @@ c_func
 (paren
 id|dev
 comma
-id|config-&gt;bConfigurationValue
+id|config-&gt;desc.bConfigurationValue
 )paren
 OL
 l_int|0
@@ -10398,7 +10398,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;cannot set configuration (value 0x%x)&bslash;n&quot;
 comma
-id|config-&gt;bConfigurationValue
+id|config-&gt;desc.bConfigurationValue
 )paren
 suffix:semicolon
 r_goto
