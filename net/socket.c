@@ -6720,16 +6720,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_BLUEZ
-r_extern
-r_void
-id|bluez_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|function|sock_init
 r_void
 id|__init
@@ -6840,13 +6830,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_NETFILTER
 id|netfilter_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_BLUEZ
-id|bluez_init
 c_func
 (paren
 )paren

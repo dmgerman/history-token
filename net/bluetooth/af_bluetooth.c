@@ -1454,7 +1454,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|variable|bluez_init
-id|module_init
+id|subsys_initcall
 c_func
 (paren
 id|bluez_init
