@@ -102,9 +102,7 @@ id|__pad
 l_int|0
 )braket
 suffix:semicolon
-DECL|variable|____cacheline_aligned
 )brace
-id|____cacheline_aligned
 suffix:semicolon
 DECL|struct|ipv6_mib
 r_struct
@@ -228,9 +226,7 @@ id|__pad
 l_int|0
 )braket
 suffix:semicolon
-DECL|variable|____cacheline_aligned
 )brace
-id|____cacheline_aligned
 suffix:semicolon
 DECL|struct|icmp_mib
 r_struct
@@ -379,9 +375,7 @@ id|__pad
 l_int|0
 )braket
 suffix:semicolon
-DECL|variable|____cacheline_aligned
 )brace
-id|____cacheline_aligned
 suffix:semicolon
 DECL|struct|icmpv6_mib
 r_struct
@@ -535,9 +529,7 @@ id|__pad
 l_int|0
 )braket
 suffix:semicolon
-DECL|variable|____cacheline_aligned
 )brace
-id|____cacheline_aligned
 suffix:semicolon
 DECL|struct|tcp_mib
 r_struct
@@ -621,9 +613,7 @@ id|__pad
 l_int|0
 )braket
 suffix:semicolon
-DECL|variable|____cacheline_aligned
 )brace
-id|____cacheline_aligned
 suffix:semicolon
 DECL|struct|udp_mib
 r_struct
@@ -657,9 +647,7 @@ id|__pad
 l_int|0
 )braket
 suffix:semicolon
-DECL|variable|____cacheline_aligned
 )brace
-id|____cacheline_aligned
 suffix:semicolon
 multiline_comment|/* draft-ietf-sigtran-sctp-mib-07.txt */
 DECL|struct|sctp_mib
@@ -789,9 +777,7 @@ id|__pad
 l_int|0
 )braket
 suffix:semicolon
-DECL|variable|____cacheline_aligned
 )brace
-id|____cacheline_aligned
 suffix:semicolon
 DECL|struct|linux_mib
 r_struct
@@ -1130,16 +1116,28 @@ id|__pad
 l_int|0
 )braket
 suffix:semicolon
-DECL|variable|____cacheline_aligned
 )brace
-id|____cacheline_aligned
 suffix:semicolon
 multiline_comment|/* &n; * FIXME: On x86 and some other CPUs the split into user and softirq parts is not needed because &n; * addl $1,memory is atomic against interrupts (but atomic_inc would be overkill because of the lock &n; * cycles). Wants new nonlocked_atomic_inc() primitives -AK&n; */
-DECL|macro|SNMP_INC_STATS
-mdefine_line|#define SNMP_INC_STATS(mib, field) ((mib)[2*smp_processor_id()+!in_softirq()].field++)
+DECL|macro|DEFINE_SNMP_STAT
+mdefine_line|#define DEFINE_SNMP_STAT(type, name)&t;&bslash;&n;&t;__typeof__(type) *name[2]
+DECL|macro|DECLARE_SNMP_STAT
+mdefine_line|#define DECLARE_SNMP_STAT(type, name)&t;&bslash;&n;&t;extern __typeof__(type) *name[2]
+DECL|macro|SNMP_STAT_USRPTR
+mdefine_line|#define SNMP_STAT_USRPTR(name)&t;(name[0])
+DECL|macro|SNMP_STAT_BHPTR
+mdefine_line|#define SNMP_STAT_BHPTR(name)&t;(name[1])
 DECL|macro|SNMP_INC_STATS_BH
-mdefine_line|#define SNMP_INC_STATS_BH(mib, field) ((mib)[2*smp_processor_id()].field++)
+mdefine_line|#define SNMP_INC_STATS_BH(mib, field) &t;&bslash;&n;&t;(per_cpu_ptr(mib[0], smp_processor_id())-&gt;field++)
 DECL|macro|SNMP_INC_STATS_USER
-mdefine_line|#define SNMP_INC_STATS_USER(mib, field) ((mib)[2*smp_processor_id()+1].field++)
+mdefine_line|#define SNMP_INC_STATS_USER(mib, field) &bslash;&n;&t;(per_cpu_ptr(mib[1], smp_processor_id())-&gt;field++)
+DECL|macro|SNMP_INC_STATS
+mdefine_line|#define SNMP_INC_STATS(mib, field) &t;&bslash;&n;&t;(per_cpu_ptr(mib[!in_softirq()], smp_processor_id())-&gt;field++)
+DECL|macro|SNMP_DEC_STATS
+mdefine_line|#define SNMP_DEC_STATS(mib, field) &t;&bslash;&n;&t;(per_cpu_ptr(mib[!in_softirq()], smp_processor_id())-&gt;field--)
+DECL|macro|SNMP_ADD_STATS_BH
+mdefine_line|#define SNMP_ADD_STATS_BH(mib, field, addend) &t;&bslash;&n;&t;(per_cpu_ptr(mib[0], smp_processor_id())-&gt;field += addend)
+DECL|macro|SNMP_ADD_STATS_USER
+mdefine_line|#define SNMP_ADD_STATS_USER(mib, field, addend) &t;&bslash;&n;&t;(per_cpu_ptr(mib[1], smp_processor_id())-&gt;field += addend)
 macro_line|#endif
 eof

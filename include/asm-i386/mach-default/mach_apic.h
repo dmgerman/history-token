@@ -12,6 +12,8 @@ mdefine_line|#define TARGET_CPUS 0x01
 macro_line|#endif
 DECL|macro|no_balance_irq
 mdefine_line|#define no_balance_irq (0)
+DECL|macro|esr_disable
+mdefine_line|#define esr_disable (0)
 DECL|macro|APIC_BROADCAST_ID
 mdefine_line|#define APIC_BROADCAST_ID      0x0F
 DECL|macro|check_apicid_used
@@ -157,6 +159,21 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|apicid_to_node
+r_static
+r_inline
+r_int
+id|apicid_to_node
+c_func
+(paren
+r_int
+id|logical_apicid
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|cpu_present_to_apicid
 r_static
 r_inline
@@ -240,8 +257,6 @@ id|m-&gt;mpc_apicid
 )paren
 suffix:semicolon
 )brace
-DECL|macro|WAKE_SECONDARY_VIA_INIT
-mdefine_line|#define WAKE_SECONDARY_VIA_INIT
 DECL|function|setup_portio_remap
 r_static
 r_inline
@@ -252,6 +267,28 @@ c_func
 r_void
 )paren
 (brace
+)brace
+DECL|function|check_phys_apicid_present
+r_static
+r_inline
+r_int
+id|check_phys_apicid_present
+c_func
+(paren
+r_int
+id|boot_cpu_physical_apicid
+)paren
+(brace
+r_return
+id|test_bit
+c_func
+(paren
+id|boot_cpu_physical_apicid
+comma
+op_amp
+id|phys_cpu_present_map
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif /* __ASM_MACH_APIC_H */
 eof

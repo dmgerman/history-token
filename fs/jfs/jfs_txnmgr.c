@@ -330,18 +330,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|lmGCwrite
-c_func
-(paren
-r_struct
-id|jfs_log
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|lmSync
 c_func
@@ -9742,32 +9730,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We may need to kick off the group commit&n;&t; */
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|log-&gt;gclock
-)paren
-suffix:semicolon
-singleline_comment|// LOGGC_LOCK
-r_if
-c_cond
-(paren
-id|log-&gt;cqueue.head
-op_logical_and
-op_logical_neg
-(paren
-id|log-&gt;cflag
-op_amp
-id|logGC_PAGEOUT
-)paren
-)paren
-(brace
-id|log-&gt;cflag
-op_or_assign
-id|logGC_PAGEOUT
-suffix:semicolon
-id|lmGCwrite
+id|jfs_flush_journal
 c_func
 (paren
 id|log
@@ -9775,15 +9738,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|log-&gt;gclock
-)paren
-suffix:semicolon
-singleline_comment|// LOGGC_UNLOCK
 )brace
 multiline_comment|/*&n; * txResume()&n; *&n; * Allows transactions to start again following txQuiesce&n; */
 DECL|function|txResume

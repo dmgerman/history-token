@@ -715,6 +715,8 @@ DECL|macro|log_SYNCBARRIER
 mdefine_line|#define log_SYNCBARRIER&t;2
 DECL|macro|log_QUIESCE
 mdefine_line|#define log_QUIESCE&t;3
+DECL|macro|log_FLUSH
+mdefine_line|#define log_FLUSH&t;4
 multiline_comment|/*&n; * group commit flag&n; */
 multiline_comment|/* jfs_log */
 DECL|macro|logGC_PAGEOUT
@@ -877,17 +879,6 @@ id|log
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|lmLogWait
-c_func
-(paren
-r_struct
-id|jfs_log
-op_star
-id|log
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|lmLogClose
 c_func
@@ -954,6 +945,20 @@ id|logAddress
 comma
 r_int
 id|logSize
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|jfs_flush_journal
+c_func
+(paren
+r_struct
+id|jfs_log
+op_star
+id|log
+comma
+r_int
+id|wait
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _H_JFS_LOGMGR */

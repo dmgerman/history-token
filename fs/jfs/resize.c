@@ -1441,7 +1441,7 @@ suffix:semicolon
 id|brelse
 c_func
 (paren
-id|bh
+id|bh2
 )paren
 suffix:semicolon
 )brace

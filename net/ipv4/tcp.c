@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
+macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ioctls.h&gt;
 DECL|variable|sysctl_tcp_fin_timeout
@@ -17,15 +18,14 @@ id|sysctl_tcp_fin_timeout
 op_assign
 id|TCP_FIN_TIMEOUT
 suffix:semicolon
-DECL|variable|tcp_statistics
+id|DEFINE_SNMP_STAT
+c_func
+(paren
 r_struct
 id|tcp_mib
+comma
 id|tcp_statistics
-(braket
-id|NR_CPUS
-op_star
-l_int|2
-)braket
+)paren
 suffix:semicolon
 DECL|variable|tcp_openreq_cachep
 id|kmem_cache_t
@@ -5255,25 +5255,17 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|net_statistics
-(braket
-id|smp_processor_id
+id|NET_ADD_STATS_USER
 c_func
 (paren
-)paren
-op_star
-l_int|2
-op_plus
-l_int|1
-)braket
-dot
 id|TCPPrequeued
-op_add_assign
+comma
 id|skb_queue_len
 c_func
 (paren
 op_amp
 id|tp-&gt;ucopy.prequeue
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* RX process wants to run with disabled BHs, though it is not&n;&t; * necessary */
@@ -6260,21 +6252,13 @@ op_ne
 l_int|0
 )paren
 (brace
-id|net_statistics
-(braket
-id|smp_processor_id
+id|NET_ADD_STATS_USER
 c_func
 (paren
-)paren
-op_star
-l_int|2
-op_plus
-l_int|1
-)braket
-dot
 id|TCPDirectCopyFromBacklog
-op_add_assign
+comma
 id|chunk
+)paren
 suffix:semicolon
 id|len
 op_sub_assign
@@ -6322,21 +6306,13 @@ op_ne
 l_int|0
 )paren
 (brace
-id|net_statistics
-(braket
-id|smp_processor_id
+id|NET_ADD_STATS_USER
 c_func
 (paren
-)paren
-op_star
-l_int|2
-op_plus
-l_int|1
-)braket
-dot
 id|TCPDirectCopyFromPrequeue
-op_add_assign
+comma
 id|chunk
+)paren
 suffix:semicolon
 id|len
 op_sub_assign
@@ -6693,21 +6669,13 @@ op_ne
 l_int|0
 )paren
 (brace
-id|net_statistics
-(braket
-id|smp_processor_id
+id|NET_ADD_STATS_USER
 c_func
 (paren
-)paren
-op_star
-l_int|2
-op_plus
-l_int|1
-)braket
-dot
 id|TCPDirectCopyFromPrequeue
-op_add_assign
+comma
 id|chunk
+)paren
 suffix:semicolon
 id|len
 op_sub_assign

@@ -746,13 +746,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|clustered_apic_mode
-op_logical_and
-(paren
 id|numnodes
 OG
 l_int|1
-)paren
 )paren
 (brace
 r_for

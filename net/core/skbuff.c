@@ -996,12 +996,14 @@ c_func
 id|skb-&gt;dst
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_INET
 id|secpath_put
 c_func
 (paren
 id|skb-&gt;sp
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1191,12 +1193,14 @@ c_func
 id|sp
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_INET
 id|secpath_get
 c_func
 (paren
 id|n-&gt;sp
 )paren
 suffix:semicolon
+macro_line|#endif
 id|memcpy
 c_func
 (paren
@@ -1465,6 +1469,7 @@ c_func
 id|old-&gt;dst
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_INET
 r_new
 op_member_access_from_pointer
 id|sp
@@ -1475,6 +1480,7 @@ c_func
 id|old-&gt;sp
 )paren
 suffix:semicolon
+macro_line|#endif
 r_new
 op_member_access_from_pointer
 id|h.raw

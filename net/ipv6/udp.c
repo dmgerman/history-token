@@ -25,15 +25,14 @@ macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
-DECL|variable|udp_stats_in6
+id|DEFINE_SNMP_STAT
+c_func
+(paren
 r_struct
 id|udp_mib
+comma
 id|udp_stats_in6
-(braket
-id|NR_CPUS
-op_star
-l_int|2
-)braket
+)paren
 suffix:semicolon
 multiline_comment|/* XXX This is identical to tcp_ipv6.c:ipv6_rcv_saddr_equal, put&n; * XXX it somewhere common. -DaveM&n; */
 DECL|function|udv6_rcv_saddr_equal
