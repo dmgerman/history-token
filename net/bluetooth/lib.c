@@ -1,5 +1,7 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
 multiline_comment|/*&n; * Bluetooth kernel library.&n; *&n; * $Id: lib.c,v 1.1 2002/03/08 21:06:59 maxk Exp $&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -144,6 +146,13 @@ id|line
 )paren
 suffix:semicolon
 )brace
+DECL|variable|bt_dump
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bt_dump
+)paren
+suffix:semicolon
 DECL|function|baswap
 r_void
 id|baswap
@@ -212,6 +221,13 @@ id|i
 )braket
 suffix:semicolon
 )brace
+DECL|variable|baswap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|baswap
+)paren
+suffix:semicolon
 DECL|function|batostr
 r_char
 op_star
@@ -291,6 +307,13 @@ id|i
 )braket
 suffix:semicolon
 )brace
+DECL|variable|batostr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|batostr
+)paren
+suffix:semicolon
 multiline_comment|/* Bluetooth error codes to Unix errno mapping */
 DECL|function|bt_err
 r_int
@@ -491,4 +514,11 @@ id|ENOSYS
 suffix:semicolon
 )brace
 )brace
+DECL|variable|bt_err
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bt_err
+)paren
+suffix:semicolon
 eof

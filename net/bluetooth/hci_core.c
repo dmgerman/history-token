@@ -1068,6 +1068,13 @@ r_return
 id|hdev
 suffix:semicolon
 )brace
+DECL|variable|hci_dev_get
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_dev_get
+)paren
+suffix:semicolon
 multiline_comment|/* ---- Inquiry support ---- */
 DECL|function|inquiry_cache_flush
 r_void
@@ -3480,6 +3487,13 @@ r_return
 id|hdev
 suffix:semicolon
 )brace
+DECL|variable|hci_alloc_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_alloc_dev
+)paren
+suffix:semicolon
 multiline_comment|/* Free HCI device */
 DECL|function|hci_free_dev
 r_void
@@ -3501,6 +3515,13 @@ id|hdev-&gt;class_dev
 )paren
 suffix:semicolon
 )brace
+DECL|variable|hci_free_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_free_dev
+)paren
+suffix:semicolon
 multiline_comment|/* Register HCI device */
 DECL|function|hci_register_dev
 r_int
@@ -3804,6 +3825,13 @@ r_return
 id|id
 suffix:semicolon
 )brace
+DECL|variable|hci_register_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_register_dev
+)paren
+suffix:semicolon
 multiline_comment|/* Unregister HCI device */
 DECL|function|hci_unregister_dev
 r_int
@@ -3879,6 +3907,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|hci_unregister_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_unregister_dev
+)paren
+suffix:semicolon
 multiline_comment|/* Suspend HCI device */
 DECL|function|hci_suspend_dev
 r_int
@@ -3903,6 +3938,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|hci_suspend_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_suspend_dev
+)paren
+suffix:semicolon
 multiline_comment|/* Resume HCI device */
 DECL|function|hci_resume_dev
 r_int
@@ -3927,6 +3969,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|hci_resume_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_resume_dev
+)paren
+suffix:semicolon
 multiline_comment|/* ---- Interface to upper protocols ---- */
 multiline_comment|/* Register/Unregister protocols.&n; * hci_task_lock is used to ensure that no tasks are running. */
 DECL|function|hci_register_proto
@@ -4008,6 +4057,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|hci_register_proto
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_register_proto
+)paren
+suffix:semicolon
 DECL|function|hci_unregister_proto
 r_int
 id|hci_unregister_proto
@@ -4086,6 +4142,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|hci_unregister_proto
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_unregister_proto
+)paren
+suffix:semicolon
 DECL|function|hci_send_frame
 r_static
 r_int
@@ -4364,6 +4427,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|hci_send_cmd
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_send_cmd
+)paren
+suffix:semicolon
 multiline_comment|/* Get data from the previously sent command */
 DECL|function|hci_sent_cmd_data
 r_void
@@ -4747,6 +4817,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|hci_send_acl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_send_acl
+)paren
+suffix:semicolon
 multiline_comment|/* Send SCO data */
 DECL|function|hci_send_sco
 r_int
@@ -4868,6 +4945,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|hci_send_sco
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_send_sco
+)paren
+suffix:semicolon
 multiline_comment|/* ---- HCI TX task (outgoing data) ---- */
 multiline_comment|/* HCI Connection scheduler */
 DECL|function|hci_low_sent

@@ -4214,4 +4214,11 @@ id|skb
 )paren
 suffix:semicolon
 )brace
+DECL|variable|hci_si_event
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_si_event
+)paren
+suffix:semicolon
 eof

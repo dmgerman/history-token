@@ -956,6 +956,13 @@ r_return
 id|hdev
 suffix:semicolon
 )brace
+DECL|variable|hci_get_route
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_get_route
+)paren
+suffix:semicolon
 multiline_comment|/* Create SCO or ACL connection.&n; * Device _must_ be locked */
 DECL|function|hci_connect
 r_struct
@@ -1172,6 +1179,13 @@ id|acl
 suffix:semicolon
 )brace
 )brace
+DECL|variable|hci_connect
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_connect
+)paren
+suffix:semicolon
 multiline_comment|/* Authenticate remote device */
 DECL|function|hci_conn_auth
 r_int
@@ -1251,6 +1265,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|hci_conn_auth
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_conn_auth
+)paren
+suffix:semicolon
 multiline_comment|/* Enable encryption */
 DECL|function|hci_conn_encrypt
 r_int
@@ -1345,6 +1366,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|hci_conn_encrypt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_conn_encrypt
+)paren
+suffix:semicolon
 multiline_comment|/* Drop all connection on the device */
 DECL|function|hci_conn_hash_flush
 r_void
