@@ -10123,7 +10123,7 @@ id|req-&gt;port_high
 op_lshift
 id|HIGH_BITS_OFFSET
 suffix:semicolon
-multiline_comment|/*&n;&t; * If a clock rate wasn&squot;t specified by the low level&n;&t; * driver, then default to the standard clock rate.&n;&t; */
+multiline_comment|/*&n;&t; * If a clock rate wasn&squot;t specified by the low level driver, then&n;&t; * default to the standard clock rate.  This should be 115200 (*16)&n;&t; * and should not depend on the architecture&squot;s BASE_BAUD definition.&n;&t; * However, since this API will be deprecated, it&squot;s probably a&n;&t; * better idea to convert the drivers to use the new API&n;&t; * (serial8250_register_port and serial8250_unregister_port).&n;&t; */
 r_if
 c_cond
 (paren
@@ -10131,12 +10131,46 @@ id|port.uartclk
 op_eq
 l_int|0
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Serial: registering port at [%08lx,%08lx,%p] irq %d with zero baud_base&bslash;n&quot;
+comma
+id|port.iobase
+comma
+id|port.mapbase
+comma
+id|port.membase
+comma
+id|port.irq
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Serial: see %s:%d for more information&bslash;n&quot;
+comma
+id|__FILE__
+comma
+id|__LINE__
+)paren
+suffix:semicolon
+id|dump_stack
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Fix it up for now, but this is only a temporary measure.&n;&t;&t; */
 id|port.uartclk
 op_assign
 id|BASE_BAUD
 op_star
 l_int|16
 suffix:semicolon
+)brace
 r_return
 id|serial8250_register_port
 c_func
