@@ -59,7 +59,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|macro|try_then_request_module
-mdefine_line|#define try_then_request_module(x, mod...) ((x) ?: request_module(mod), (x))
+mdefine_line|#define try_then_request_module(x, mod...) ((x) ?: (request_module(mod), (x)))
 r_extern
 r_int
 id|call_usermodehelper
