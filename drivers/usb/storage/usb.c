@@ -968,13 +968,18 @@ c_func
 id|host
 )paren
 suffix:semicolon
-multiline_comment|/* has the command been aborted *already* ? */
+multiline_comment|/* has the command timed out *already* ? */
 r_if
 c_cond
 (paren
-id|us-&gt;sm_state
-op_eq
-id|US_STATE_ABORTING
+id|test_bit
+c_func
+(paren
+id|US_FLIDX_TIMED_OUT
+comma
+op_amp
+id|us-&gt;flags
+)paren
 )paren
 (brace
 id|us-&gt;srb-&gt;result
@@ -1011,11 +1016,6 @@ r_goto
 id|SkipForDisconnect
 suffix:semicolon
 )brace
-multiline_comment|/* set the state and release the lock */
-id|us-&gt;sm_state
-op_assign
-id|US_STATE_RUNNING
-suffix:semicolon
 id|scsi_unlock
 c_func
 (paren
@@ -1239,13 +1239,18 @@ l_string|&quot;scsi command aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* If an abort request was received we need to signal that&n;&t;&t; * the abort has finished.  The proper test for this is&n;&t;&t; * sm_state == US_STATE_ABORTING, not srb-&gt;result == DID_ABORT,&n;&t;&t; * because an abort request might be received after all the&n;&t;&t; * USB processing was complete. */
+multiline_comment|/* If an abort request was received we need to signal that&n;&t;&t; * the abort has finished.  The proper test for this is&n;&t;&t; * the TIMED_OUT flag, not srb-&gt;result == DID_ABORT, because&n;&t;&t; * a timeout/abort request might be received after all the&n;&t;&t; * USB processing was complete. */
 r_if
 c_cond
 (paren
-id|us-&gt;sm_state
-op_eq
-id|US_STATE_ABORTING
+id|test_bit
+c_func
+(paren
+id|US_FLIDX_TIMED_OUT
+comma
+op_amp
+id|us-&gt;flags
+)paren
 )paren
 id|complete
 c_func
@@ -1256,16 +1261,12 @@ id|us-&gt;notify
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* empty the queue, reset the state, and release the lock */
+multiline_comment|/* finished working on this command */
 id|SkipForDisconnect
 suffix:colon
 id|us-&gt;srb
 op_assign
 l_int|NULL
-suffix:semicolon
-id|us-&gt;sm_state
-op_assign
-id|US_STATE_IDLE
 suffix:semicolon
 id|scsi_unlock
 c_func
@@ -2622,10 +2623,6 @@ r_int
 id|us
 suffix:semicolon
 multiline_comment|/* Start up our control thread */
-id|us-&gt;sm_state
-op_assign
-id|US_STATE_IDLE
-suffix:semicolon
 id|p
 op_assign
 id|kernel_thread
@@ -2715,14 +2712,6 @@ id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;-- sending exit command to thread&bslash;n&quot;
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-id|us-&gt;sm_state
-op_ne
-id|US_STATE_IDLE
 )paren
 suffix:semicolon
 multiline_comment|/* If the SCSI midlayer queued a final command just before&n;&t;&t; * scsi_remove_host() was called, us-&gt;srb might not be&n;&t;&t; * NULL.  We can overwrite it safely, because the midlayer&n;&t;&t; * will not wait for the command to finish.  Also the&n;&t;&t; * control thread will already have been awakened.&n;&t;&t; * That&squot;s okay, an extra up() on us-&gt;sema won&squot;t hurt.&n;&t;&t; *&n;&t;&t; * Enqueue the command, wake up the thread, and wait for &n;&t;&t; * notification that it has exited.&n;&t;&t; */
