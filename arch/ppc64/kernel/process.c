@@ -167,8 +167,10 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-r_void
 DECL|function|__switch_to
+r_struct
+id|task_struct
+op_star
 id|__switch_to
 c_func
 (paren
@@ -194,6 +196,11 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_struct
+id|task_struct
+op_star
+id|last
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* avoid complexity of lazy save/restore of fpu&n;&t; * by just saving it every time we switch out if&n;&t; * this task used the fpu during the last quantum.&n;&t; * &n;&t; * If it tries to use the fpu again, it&squot;ll trap and&n;&t; * reload its fp regs.  So we don&squot;t have to do a restore&n;&t; * every switch, just a save.&n;&t; *  -- Cort&n;&t; */
@@ -233,6 +240,8 @@ c_func
 id|flags
 )paren
 suffix:semicolon
+id|last
+op_assign
 id|_switch
 c_func
 (paren
@@ -246,6 +255,9 @@ c_func
 (paren
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|last
 suffix:semicolon
 )brace
 r_static
