@@ -2186,14 +2186,11 @@ suffix:semicolon
 id|resp-&gt;tagp
 op_assign
 id|resp-&gt;p
-op_plus
-l_int|1
 suffix:semicolon
-multiline_comment|/* skip over status */
-multiline_comment|/* reserve space for: status, taglen, tag, and opcnt */
+multiline_comment|/* reserve space for: taglen, tag, and opcnt */
 id|resp-&gt;p
 op_add_assign
-l_int|3
+l_int|2
 op_plus
 id|XDR_QUADLEN
 c_func
