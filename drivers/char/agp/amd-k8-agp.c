@@ -8,6 +8,23 @@ macro_line|#include &quot;agp.h&quot;
 multiline_comment|/* Will need to be increased if hammer ever goes &gt;8-way. */
 DECL|macro|MAX_HAMMER_GARTS
 mdefine_line|#define MAX_HAMMER_GARTS   8
+multiline_comment|/* PTE bits. */
+DECL|macro|GPTE_VALID
+mdefine_line|#define GPTE_VALID&t;1
+DECL|macro|GPTE_COHERENT
+mdefine_line|#define GPTE_COHERENT&t;2
+multiline_comment|/* Aperture control register bits. */
+DECL|macro|GARTEN
+mdefine_line|#define GARTEN&t;&t;1&lt;&lt;0
+DECL|macro|DISGARTCPU
+mdefine_line|#define DISGARTCPU&t;1&lt;&lt;4
+DECL|macro|DISGARTIO
+mdefine_line|#define DISGARTIO&t;1&lt;&lt;5
+multiline_comment|/* GART cache control register bits. */
+DECL|macro|INVGART
+mdefine_line|#define INVGART&t;&t;1&lt;&lt;0
+DECL|macro|GARTPTEERR
+mdefine_line|#define GARTPTEERR&t;1&lt;&lt;1
 DECL|variable|nr_garts
 r_static
 r_int
@@ -57,9 +74,7 @@ id|tmp
 suffix:semicolon
 id|tmp
 op_or_assign
-l_int|1
-op_lshift
-l_int|0
+id|INVGART
 suffix:semicolon
 id|pci_write_config_dword
 (paren
@@ -294,13 +309,9 @@ l_int|0x00000000fffff000
 suffix:semicolon
 id|pte
 op_or_assign
-l_int|1
-op_lshift
-l_int|1
+id|GPTE_VALID
 op_or
-l_int|1
-op_lshift
-l_int|0
+id|GPTE_COHERENT
 suffix:semicolon
 id|agp_bridge-&gt;gatt_table
 (braket
@@ -718,14 +729,17 @@ id|tmp
 )paren
 suffix:semicolon
 id|tmp
-op_and_assign
-l_int|0x3f
+op_or_assign
+id|GARTEN
 suffix:semicolon
 id|tmp
-op_or_assign
-l_int|1
-op_lshift
-l_int|0
+op_and_assign
+op_complement
+(paren
+id|DISGARTCPU
+op_or
+id|DISGARTIO
+)paren
 suffix:semicolon
 id|pci_write_config_dword
 c_func
