@@ -288,7 +288,7 @@ c_func
 (paren
 id|HDIO_SET_NICE
 )paren
-macro_line|#ifndef CONFIG_ARCH_S390
+macro_line|#ifdef CONFIG_BLK_DEV_FD
 multiline_comment|/* 0x02 -- Floppy ioctls */
 id|COMPATIBLE_IOCTL
 c_func
