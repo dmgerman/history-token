@@ -27,7 +27,7 @@ DECL|struct|sigregs32
 r_struct
 id|sigregs32
 (brace
-multiline_comment|/*&n;&t; * the gp_regs array is 32 bit representation of the pt_regs&n;&t; * structure that was stored on the kernle stack during the&n;&t; * system call that was interrupted for the signal.&n;&t; *&n;&t; * Note that the entire pt_regs regs structure will fit in&n;&t; * the gp_regs structure because the ELF_NREG value is 48 for&n;&t; * PPC and the pt_regs structure contains 44 registers&n;&t; */
+multiline_comment|/*&n;&t; * the gp_regs array is 32 bit representation of the pt_regs&n;&t; * structure that was stored on the kernel stack during the&n;&t; * system call that was interrupted for the signal.&n;&t; *&n;&t; * Note that the entire pt_regs regs structure will fit in&n;&t; * the gp_regs structure because the ELF_NREG value is 48 for&n;&t; * PPC and the pt_regs structure contains 44 registers&n;&t; */
 DECL|member|gp_regs
 id|elf_gregset_t32
 id|gp_regs
