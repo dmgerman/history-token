@@ -1240,10 +1240,6 @@ id|init_pci
 suffix:colon
 id|cabriolet_init_pci
 comma
-id|kill_arch
-suffix:colon
-l_int|NULL
-comma
 id|pci_map_irq
 suffix:colon
 id|cabriolet_map_irq
@@ -1320,6 +1316,10 @@ comma
 id|init_pci
 suffix:colon
 id|cia_cab_init_pci
+comma
+id|kill_arch
+suffix:colon
+id|cia_kill_arch
 comma
 id|pci_map_irq
 suffix:colon
@@ -1475,6 +1475,10 @@ id|init_pci
 suffix:colon
 id|alphapc164_init_pci
 comma
+id|kill_arch
+suffix:colon
+id|cia_kill_arch
+comma
 id|pci_map_irq
 suffix:colon
 id|alphapc164_map_irq
@@ -1549,6 +1553,10 @@ comma
 id|init_pci
 suffix:colon
 id|alphapc164_init_pci
+comma
+id|kill_arch
+suffix:colon
+id|cia_kill_arch
 comma
 id|pci_map_irq
 suffix:colon

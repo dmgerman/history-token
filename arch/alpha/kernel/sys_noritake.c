@@ -1149,10 +1149,6 @@ id|init_pci
 suffix:colon
 id|common_init_pci
 comma
-id|kill_arch
-suffix:colon
-l_int|NULL
-comma
 id|pci_map_irq
 suffix:colon
 id|noritake_map_irq
@@ -1227,6 +1223,10 @@ comma
 id|init_pci
 suffix:colon
 id|cia_init_pci
+comma
+id|kill_arch
+suffix:colon
+id|cia_kill_arch
 comma
 id|pci_map_irq
 suffix:colon

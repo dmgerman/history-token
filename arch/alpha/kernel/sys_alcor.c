@@ -773,6 +773,12 @@ r_int
 id|mode
 )paren
 (brace
+id|cia_kill_arch
+c_func
+(paren
+id|mode
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren

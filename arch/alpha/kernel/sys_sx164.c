@@ -450,7 +450,7 @@ id|sx164_init_pci
 comma
 id|kill_arch
 suffix:colon
-l_int|NULL
+id|cia_kill_arch
 comma
 id|pci_map_irq
 suffix:colon
