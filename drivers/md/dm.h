@@ -440,6 +440,19 @@ op_star
 id|t
 )paren
 suffix:semicolon
+r_int
+id|dm_table_any_congested
+c_func
+(paren
+r_struct
+id|dm_table
+op_star
+id|t
+comma
+r_int
+id|bdi_bits
+)paren
+suffix:semicolon
 multiline_comment|/*-----------------------------------------------------------------&n; * A registry of target types.&n; *---------------------------------------------------------------*/
 r_int
 id|dm_target_init
