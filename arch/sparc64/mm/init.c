@@ -6571,6 +6571,14 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEBUG_BOOTMEM
+id|prom_printf
+c_func
+(paren
+l_string|&quot;bootmem_init: Scan sp_banks, &quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|bytes_avail
 op_assign
 l_int|0UL
@@ -6876,6 +6884,20 @@ id|min_low_pfn
 op_assign
 id|pfn_base
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEBUG_BOOTMEM
+id|prom_printf
+c_func
+(paren
+l_string|&quot;init_bootmem(spfn[%lx], bpfn[%lx], mlpfn[%lx])&bslash;n&quot;
+comma
+id|start_pfn
+comma
+id|bootmap_pfn
+comma
+id|max_low_pfn
+)paren
+suffix:semicolon
+macro_line|#endif
 id|bootmap_size
 op_assign
 id|init_bootmem_node
@@ -6914,6 +6936,31 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
+macro_line|#ifdef CONFIG_DEBUG_BOOTMEM
+id|prom_printf
+c_func
+(paren
+l_string|&quot;free_bootmem(sp_banks:%d): base[%lx] size[%lx]&bslash;n&quot;
+comma
+id|i
+comma
+id|sp_banks
+(braket
+id|i
+)braket
+dot
+id|base_addr
+comma
+id|sp_banks
+(braket
+id|i
+)braket
+dot
+id|num_bytes
+)paren
+suffix:semicolon
+macro_line|#endif
 id|free_bootmem
 c_func
 (paren
@@ -6932,6 +6979,7 @@ dot
 id|num_bytes
 )paren
 suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 r_if
 c_cond
@@ -6986,6 +7034,18 @@ id|PAGE_SHIFT
 op_minus
 id|phys_base
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEBUG_BOOTMEM
+id|prom_printf
+c_func
+(paren
+l_string|&quot;reserve_bootmem(kernel): base[%lx] size[%lx]&bslash;n&quot;
+comma
+id|phys_base
+comma
+id|size
+)paren
+suffix:semicolon
+macro_line|#endif
 id|reserve_bootmem
 c_func
 (paren
@@ -7010,6 +7070,22 @@ id|size
 op_assign
 id|bootmap_size
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEBUG_BOOTMEM
+id|prom_printf
+c_func
+(paren
+l_string|&quot;reserve_bootmem(bootmap): base[%lx] size[%lx]&bslash;n&quot;
+comma
+(paren
+id|bootmap_pfn
+op_lshift
+id|PAGE_SHIFT
+)paren
+comma
+id|size
+)paren
+suffix:semicolon
+macro_line|#endif
 id|reserve_bootmem
 c_func
 (paren
@@ -8681,6 +8757,14 @@ op_lshift
 id|PAGE_SHIFT
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEBUG_BOOTMEM
+id|prom_printf
+c_func
+(paren
+l_string|&quot;mem_init: Calling free_all_bootmem().&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|totalram_pages
 op_assign
 id|num_physpages
