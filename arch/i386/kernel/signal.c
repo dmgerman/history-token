@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
@@ -1985,11 +1986,38 @@ id|regs-&gt;xcs
 op_assign
 id|__USER_CS
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|regs-&gt;eflags
+op_amp
+id|TF_MASK
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|current-&gt;ptrace
+op_amp
+id|PT_PTRACED
+)paren
+(brace
+id|ptrace_notify
+c_func
+(paren
+id|SIGTRAP
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|regs-&gt;eflags
 op_and_assign
 op_complement
 id|TF_MASK
 suffix:semicolon
+)brace
+)brace
 macro_line|#if DEBUG_SIG
 id|printk
 c_func
@@ -2455,11 +2483,38 @@ id|regs-&gt;xcs
 op_assign
 id|__USER_CS
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|regs-&gt;eflags
+op_amp
+id|TF_MASK
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|current-&gt;ptrace
+op_amp
+id|PT_PTRACED
+)paren
+(brace
+id|ptrace_notify
+c_func
+(paren
+id|SIGTRAP
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|regs-&gt;eflags
 op_and_assign
 op_complement
 id|TF_MASK
 suffix:semicolon
+)brace
+)brace
 macro_line|#if DEBUG_SIG
 id|printk
 c_func
