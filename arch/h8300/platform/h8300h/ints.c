@@ -98,6 +98,10 @@ r_int
 op_star
 id|interrupt_redirect_table
 suffix:semicolon
+DECL|macro|CPU_VECTOR
+mdefine_line|#define CPU_VECTOR ((unsigned long *)0x000000)
+DECL|macro|ADDR_MASK
+mdefine_line|#define ADDR_MASK (0xffffff)
 DECL|function|get_vector_address
 r_static
 r_inline
@@ -115,12 +119,7 @@ r_int
 op_star
 id|rom_vector
 op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-l_int|0x000000
+id|CPU_VECTOR
 suffix:semicolon
 r_int
 r_int
@@ -137,6 +136,8 @@ id|rom_vector
 (braket
 id|EXT_IRQ0
 )braket
+op_amp
+id|ADDR_MASK
 suffix:semicolon
 multiline_comment|/* check romvector format */
 r_for
@@ -169,10 +170,14 @@ op_star
 l_int|4
 )paren
 op_ne
+(paren
 id|rom_vector
 (braket
 id|vec_no
 )braket
+op_amp
+id|ADDR_MASK
+)paren
 )paren
 r_return
 l_int|NULL
