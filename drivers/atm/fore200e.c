@@ -3867,7 +3867,7 @@ op_ne
 id|entry-&gt;incarn
 )paren
 (brace
-multiline_comment|/* when a vcc is closed, some PDUs may be still pending in the tx queue.&n;&t;&t;   if the same vcc is immediately re-opened, those pending PDUs must&n;&t;&t;   not be popped after the completion of their emission, as they refer&n;&t;&t;   to the prior incarnation of that vcc. otherwise, vcc-&gt;sk-&gt;sk_wmem_alloc&n;&t;&t;   would be decremented by the size of the (unrelated) skb, possibly&n;&t;&t;   leading to a negative sk-&gt;sk_wmem_alloc count, ultimately freezing the vcc.&n;&t;&t;   we thus bind the tx entry to the current incarnation of the vcc&n;&t;&t;   when the entry is submitted for tx. When the tx later completes,&n;&t;&t;   if the incarnation number of the tx entry does not match the one&n;&t;&t;   of the vcc, then this implies that the vcc has been closed then re-opened.&n;&t;&t;   we thus just drop the skb here. */
+multiline_comment|/* when a vcc is closed, some PDUs may be still pending in the tx queue.&n;&t;&t;   if the same vcc is immediately re-opened, those pending PDUs must&n;&t;&t;   not be popped after the completion of their emission, as they refer&n;&t;&t;   to the prior incarnation of that vcc. otherwise, sk_atm(vcc)-&gt;sk_wmem_alloc&n;&t;&t;   would be decremented by the size of the (unrelated) skb, possibly&n;&t;&t;   leading to a negative sk-&gt;sk_wmem_alloc count, ultimately freezing the vcc.&n;&t;&t;   we thus bind the tx entry to the current incarnation of the vcc&n;&t;&t;   when the entry is submitted for tx. When the tx later completes,&n;&t;&t;   if the incarnation number of the tx entry does not match the one&n;&t;&t;   of the vcc, then this implies that the vcc has been closed then re-opened.&n;&t;&t;   we thus just drop the skb here. */
 id|DPRINTK
 c_func
 (paren
@@ -3933,7 +3933,13 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;sk_wmem_alloc
+id|sk_atm
+c_func
+(paren
+id|vcc
+)paren
+op_member_access_from_pointer
+id|sk_wmem_alloc
 )paren
 OL
 l_int|0
@@ -3943,7 +3949,13 @@ id|atomic_set
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;sk_wmem_alloc
+id|sk_atm
+c_func
+(paren
+id|vcc
+)paren
+op_member_access_from_pointer
+id|sk_wmem_alloc
 comma
 l_int|0
 )paren
@@ -4841,7 +4853,13 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;sk_wmem_alloc
+id|sk_atm
+c_func
+(paren
+id|vcc
+)paren
+op_member_access_from_pointer
+id|sk_wmem_alloc
 )paren
 op_ge
 l_int|0
@@ -4871,7 +4889,13 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;sk_wmem_alloc
+id|sk_atm
+c_func
+(paren
+id|vcc
+)paren
+op_member_access_from_pointer
+id|sk_wmem_alloc
 )paren
 op_ge
 l_int|0
@@ -6814,7 +6838,13 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;sk_wmem_alloc
+id|sk_atm
+c_func
+(paren
+id|vcc
+)paren
+op_member_access_from_pointer
+id|sk_wmem_alloc
 )paren
 op_ge
 l_int|0
