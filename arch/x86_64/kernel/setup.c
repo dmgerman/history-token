@@ -3972,12 +3972,14 @@ id|i
 )braket
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_X86_MCE
 id|mcheck_init
 c_func
 (paren
 id|c
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|print_cpu_info
 r_void

@@ -3903,6 +3903,7 @@ op_amp
 id|alignment_check
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_MCE
 id|set_intr_gate_ist
 c_func
 (paren
@@ -3914,6 +3915,7 @@ comma
 id|MCE_STACK
 )paren
 suffix:semicolon
+macro_line|#endif
 id|set_intr_gate
 c_func
 (paren
