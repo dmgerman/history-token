@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_TLB_H
 DECL|macro|_ASM_IA64_TLB_H
 mdefine_line|#define _ASM_IA64_TLB_H
-multiline_comment|/*&n; * Copyright (C) 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * This file was derived from asm-generic/tlb.h.&n; */
+multiline_comment|/*&n; * Copyright (C) 2002-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * This file was derived from asm-generic/tlb.h.&n; */
 multiline_comment|/*&n; * Removing a translation from a page table (including TLB-shootdown) is a four-step&n; * procedure:&n; *&n; *&t;(1) Flush (virtual) caches --- ensures virtual memory is coherent with kernel memory&n; *&t;    (this is a no-op on ia64).&n; *&t;(2) Clear the relevant portions of the page-table&n; *&t;(3) Flush the TLBs --- ensures that stale content is gone from CPU TLBs&n; *&t;(4) Release the pages that were freed up in step (2).&n; *&n; * Note that the ordering of these steps is crucial to avoid races on MP machines.&n; *&n; * The Linux kernel defines several platform-specific hooks for TLB-shootdown.  When&n; * unmapping a portion of the virtual address space, these hooks are called according to&n; * the following template:&n; *&n; *&t;tlb &lt;- tlb_gather_mmu(mm, full_mm_flush);&t;// start unmap for address space MM&n; *&t;{&n; *&t;  for each vma that needs a shootdown do {&n; *&t;    tlb_start_vma(tlb, vma);&n; *&t;      for each page-table-entry PTE that needs to be removed do {&n; *&t;&t;tlb_remove_tlb_entry(tlb, pte, address);&n; *&t;&t;if (pte refers to a normal page) {&n; *&t;&t;  tlb_remove_page(tlb, page);&n; *&t;&t;}&n; *&t;      }&n; *&t;    tlb_end_vma(tlb, vma);&n; *&t;  }&n; *&t;}&n; *&t;tlb_finish_mmu(tlb, start, end);&t;// finish unmap for address space MM&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -88,7 +88,6 @@ r_inline
 r_void
 DECL|function|ia64_tlb_flush_mmu
 id|ia64_tlb_flush_mmu
-c_func
 (paren
 r_struct
 id|mmu_gather
@@ -493,7 +492,6 @@ r_inline
 r_void
 DECL|function|__tlb_remove_tlb_entry
 id|__tlb_remove_tlb_entry
-c_func
 (paren
 r_struct
 id|mmu_gather

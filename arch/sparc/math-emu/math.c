@@ -358,7 +358,7 @@ r_return
 id|retcode
 suffix:semicolon
 )brace
-multiline_comment|/* All routines returning an exception to raise should detect&n; * such exceptions _before_ rounding to be consistant with&n; * the behavior of the hardware in the implemented cases&n; * (and thus with the recommendations in the V9 architecture&n; * manual).&n; *&n; * We return 0 if a SIGFPE should be sent, 1 otherwise.&n; */
+multiline_comment|/* All routines returning an exception to raise should detect&n; * such exceptions _before_ rounding to be consistent with&n; * the behavior of the hardware in the implemented cases&n; * (and thus with the recommendations in the V9 architecture&n; * manual).&n; *&n; * We return 0 if a SIGFPE should be sent, 1 otherwise.&n; */
 DECL|function|record_exception
 r_static
 r_inline

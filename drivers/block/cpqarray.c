@@ -3286,7 +3286,7 @@ suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,13)
-multiline_comment|/*&n; * Config string is a comma seperated set of i/o addresses of EISA cards.&n; */
+multiline_comment|/*&n; * Config string is a comma separated set of i/o addresses of EISA cards.&n; */
 DECL|function|cpqarray_setup
 r_static
 r_int

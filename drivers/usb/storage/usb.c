@@ -993,7 +993,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|flush_signals
@@ -1022,7 +1022,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 multiline_comment|/* set our name for identification purposes */
@@ -2643,7 +2643,7 @@ comma
 id|USB_STOR_STRING_LEN
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Set the handler pointers based on the protocol&n;&t; * Again, this data is persistant across reattachments&n;&t; */
+multiline_comment|/* &n;&t; * Set the handler pointers based on the protocol&n;&t; * Again, this data is persistent across reattachments&n;&t; */
 r_switch
 c_cond
 (paren

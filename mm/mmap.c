@@ -1633,7 +1633,7 @@ ques
 c_cond
 id|file-&gt;f_dentry-&gt;d_inode
 suffix:colon
-id|inode
+l_int|NULL
 suffix:semicolon
 r_int
 id|need_up

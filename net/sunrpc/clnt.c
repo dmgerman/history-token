@@ -866,7 +866,7 @@ id|k_sigaction
 op_star
 id|action
 op_assign
-id|current-&gt;sig-&gt;action
+id|current-&gt;sighand-&gt;action
 suffix:semicolon
 r_if
 c_cond
@@ -917,7 +917,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 comma
 id|irqflags
 )paren
@@ -951,7 +951,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 comma
 id|irqflags
 )paren
@@ -980,7 +980,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 comma
 id|irqflags
 )paren
@@ -999,7 +999,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 comma
 id|irqflags
 )paren

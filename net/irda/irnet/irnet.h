@@ -58,7 +58,7 @@ macro_line|#undef FLUSH_TO_PPP&t;&t;/* Not sure about this one, let&squot;s play
 DECL|macro|SECURE_DEVIRNET
 macro_line|#undef SECURE_DEVIRNET&t;&t;/* Bah... */
 multiline_comment|/****************************** DEBUG ******************************/
-multiline_comment|/*&n; * This set of flags enable and disable all the various warning,&n; * error and debug message of this driver.&n; * Each section can be enabled and disabled independantly&n; */
+multiline_comment|/*&n; * This set of flags enable and disable all the various warning,&n; * error and debug message of this driver.&n; * Each section can be enabled and disabled independently&n; */
 multiline_comment|/* In the PPP part */
 DECL|macro|DEBUG_CTRL_TRACE
 mdefine_line|#define DEBUG_CTRL_TRACE&t;0&t;/* Control channel */

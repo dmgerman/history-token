@@ -2106,7 +2106,7 @@ l_int|0x01
 (brace
 id|ldm_crit
 (paren
-l_string|&quot;Database is not in a consistant state.  Aborting.&quot;
+l_string|&quot;Database is not in a consistent state.  Aborting.&quot;
 )paren
 suffix:semicolon
 r_goto

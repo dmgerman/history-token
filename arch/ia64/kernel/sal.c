@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * System Abstraction Layer (SAL) interface routines.&n; *&n; * Copyright (C) 1998, 1999, 2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; */
+multiline_comment|/*&n; * System Abstraction Layer (SAL) interface routines.&n; *&n; * Copyright (C) 1998, 1999, 2001, 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -399,6 +399,7 @@ id|systab
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Hmm, no SAL System Table.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -423,6 +424,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;bad signature in system table!&quot;
 )paren
 suffix:semicolon
@@ -430,6 +432,7 @@ multiline_comment|/*&n;&t; * revisions are coded in BCD, so %x does the job for 
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;SAL v%x.%02x: oem=%.32s, product=%.32s&bslash;n&quot;
 comma
 id|systab-&gt;sal_rev_major
@@ -500,6 +503,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;SAL: entry: pal_proc=0x%lx, sal_proc=0x%lx&bslash;n&quot;
 comma
 id|ep-&gt;pal_proc
@@ -580,6 +584,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;SAL: AP wakeup using external interrupt &quot;
 l_string|&quot;vector 0x%lx&bslash;n&quot;
 comma
@@ -593,6 +598,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;SAL: AP wakeup mechanism unsupported!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -625,6 +631,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;SAL: Platform features &quot;
 )paren
 suffix:semicolon

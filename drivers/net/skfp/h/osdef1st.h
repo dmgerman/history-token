@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998,1999 SysKonnect,&n; *&t;a business unit of Schneider &amp; Koch &amp; Co. Datensysteme GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/* &n; * Operating system-dependant definitions that have to be defined&n; * before any other header files are included.&n; */
+multiline_comment|/* &n; * Operating system-dependent definitions that have to be defined&n; * before any other header files are included.&n; */
 singleline_comment|// HWM (HardWare Module) Definitions
 singleline_comment|// -----------------------
 macro_line|#ifdef __LITTLE_ENDIAN

@@ -76,11 +76,11 @@ mdefine_line|#define sig_kernel_ignore(sig) &bslash;&n;&t;&t;(((sig) &lt; SIGRTM
 DECL|macro|sig_kernel_stop
 mdefine_line|#define sig_kernel_stop(sig) &bslash;&n;&t;&t;(((sig) &lt; SIGRTMIN)  &amp;&amp; T(sig, SIG_KERNEL_STOP_MASK))
 DECL|macro|sig_user_defined
-mdefine_line|#define sig_user_defined(t, signr) &bslash;&n;&t;(((t)-&gt;sig-&gt;action[(signr)-1].sa.sa_handler != SIG_DFL) &amp;&amp;&t;&bslash;&n;&t; ((t)-&gt;sig-&gt;action[(signr)-1].sa.sa_handler != SIG_IGN))
+mdefine_line|#define sig_user_defined(t, signr) &bslash;&n;&t;(((t)-&gt;sighand-&gt;action[(signr)-1].sa.sa_handler != SIG_DFL) &amp;&amp;&t;&bslash;&n;&t; ((t)-&gt;sighand-&gt;action[(signr)-1].sa.sa_handler != SIG_IGN))
 DECL|macro|sig_ignored
-mdefine_line|#define sig_ignored(t, signr) &bslash;&n;&t;(!((t)-&gt;ptrace &amp; PT_PTRACED) &amp;&amp; &bslash;&n;&t; (t)-&gt;sig-&gt;action[(signr)-1].sa.sa_handler == SIG_IGN)
+mdefine_line|#define sig_ignored(t, signr) &bslash;&n;&t;(!((t)-&gt;ptrace &amp; PT_PTRACED) &amp;&amp; &bslash;&n;&t; (t)-&gt;sighand-&gt;action[(signr)-1].sa.sa_handler == SIG_IGN)
 DECL|macro|sig_fatal
-mdefine_line|#define sig_fatal(t, signr) &bslash;&n;&t;(!T(signr, SIG_KERNEL_IGNORE_MASK|SIG_KERNEL_STOP_MASK) &amp;&amp; &bslash;&n;&t; (t)-&gt;sig-&gt;action[(signr)-1].sa.sa_handler == SIG_DFL)
+mdefine_line|#define sig_fatal(t, signr) &bslash;&n;&t;(!T(signr, SIG_KERNEL_IGNORE_MASK|SIG_KERNEL_STOP_MASK) &amp;&amp; &bslash;&n;&t; (t)-&gt;sighand-&gt;action[(signr)-1].sa.sa_handler == SIG_DFL)
 multiline_comment|/*&n; * Re-calculate pending state from the set of locally pending&n; * signals, globally pending signals, and blocked signals.&n; */
 DECL|function|has_pending_signals
 r_static
@@ -275,7 +275,7 @@ id|t
 r_if
 c_cond
 (paren
-id|t-&gt;sig-&gt;group_stop_count
+id|t-&gt;signal-&gt;group_stop_count
 OG
 l_int|0
 op_logical_or
@@ -293,7 +293,7 @@ id|PENDING
 c_func
 (paren
 op_amp
-id|t-&gt;sig-&gt;shared_pending
+id|t-&gt;signal-&gt;shared_pending
 comma
 op_amp
 id|t-&gt;blocked
@@ -658,11 +658,93 @@ id|tsk
 )paren
 (brace
 r_struct
+id|sighand_struct
+op_star
+id|sighand
+op_assign
+id|tsk-&gt;sighand
+suffix:semicolon
+multiline_comment|/* Ok, we&squot;re done with the signal handlers */
+id|tsk-&gt;sighand
+op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|atomic_dec_and_test
+c_func
+(paren
+op_amp
+id|sighand-&gt;count
+)paren
+)paren
+id|kmem_cache_free
+c_func
+(paren
+id|sighand_cachep
+comma
+id|sighand
+)paren
+suffix:semicolon
+)brace
+DECL|function|exit_sighand
+r_void
+id|exit_sighand
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+(brace
+id|write_lock_irq
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+id|__exit_sighand
+c_func
+(paren
+id|tsk
+)paren
+suffix:semicolon
+id|write_unlock_irq
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * This function expects the tasklist_lock write-locked.&n; */
+DECL|function|__exit_signal
+r_void
+id|__exit_signal
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+(brace
+r_struct
 id|signal_struct
 op_star
 id|sig
 op_assign
-id|tsk-&gt;sig
+id|tsk-&gt;signal
+suffix:semicolon
+r_struct
+id|sighand_struct
+op_star
+id|sighand
+op_assign
+id|tsk-&gt;sighand
 suffix:semicolon
 r_if
 c_cond
@@ -695,7 +777,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|sig-&gt;siglock
+id|sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_if
@@ -724,7 +806,7 @@ c_func
 id|tsk
 )paren
 suffix:semicolon
-id|tsk-&gt;sig
+id|tsk-&gt;signal
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -732,7 +814,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|sig-&gt;siglock
+id|sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|flush_sigqueue
@@ -745,7 +827,7 @@ suffix:semicolon
 id|kmem_cache_free
 c_func
 (paren
-id|sigact_cachep
+id|signal_cachep
 comma
 id|sig
 )paren
@@ -795,7 +877,7 @@ c_func
 id|tsk
 )paren
 suffix:semicolon
-id|tsk-&gt;sig
+id|tsk-&gt;signal
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -803,7 +885,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|sig-&gt;siglock
+id|sighand-&gt;siglock
 )paren
 suffix:semicolon
 )brace
@@ -823,9 +905,9 @@ id|tsk-&gt;pending
 )paren
 suffix:semicolon
 )brace
-DECL|function|exit_sighand
+DECL|function|exit_signal
 r_void
-id|exit_sighand
+id|exit_signal
 c_func
 (paren
 r_struct
@@ -841,7 +923,7 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-id|__exit_sighand
+id|__exit_signal
 c_func
 (paren
 id|tsk
@@ -876,7 +958,7 @@ op_star
 id|ka
 op_assign
 op_amp
-id|t-&gt;sig-&gt;action
+id|t-&gt;sighand-&gt;action
 (braket
 l_int|0
 )braket
@@ -957,7 +1039,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 comma
 id|flags
 )paren
@@ -978,7 +1060,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 comma
 id|flags
 )paren
@@ -1001,7 +1083,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 comma
 id|flags
 )paren
@@ -1023,7 +1105,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 comma
 id|flags
 )paren
@@ -1393,7 +1475,7 @@ id|__dequeue_signal
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;shared_pending
+id|current-&gt;signal-&gt;shared_pending
 comma
 id|mask
 comma
@@ -1795,7 +1877,7 @@ id|SIGCONT
 )paren
 comma
 op_amp
-id|p-&gt;sig-&gt;shared_pending
+id|p-&gt;signal-&gt;shared_pending
 )paren
 suffix:semicolon
 id|t
@@ -1844,21 +1926,21 @@ op_eq
 id|SIGCONT
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Remove all stop signals from all queues,&n;&t;&t; * and wake all threads.&n; */
+multiline_comment|/*&n;&t;&t; * Remove all stop signals from all queues,&n;&t;&t; * and wake all threads.&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|unlikely
 c_func
 (paren
-id|p-&gt;sig-&gt;group_stop_count
+id|p-&gt;signal-&gt;group_stop_count
 OG
 l_int|0
 )paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * There was a group stop in progress.  We&squot;ll&n;&t;&t;&t; * pretend it finished before we got here.  We are&n;&t;&t;&t; * obliged to report it to the parent: if the&n;&t;&t;&t; * SIGSTOP happened &quot;after&quot; this SIGCONT, then it&n;&t;&t;&t; * would have cleared this pending SIGCONT.  If it&n;&t;&t;&t; * happened &quot;before&quot; this SIGCONT, then the parent&n;&t;&t;&t; * got the SIGCHLD about the stop finishing before&n;&t;&t;&t; * the continue happened.  We do the notification&n;&t;&t;&t; * now, and it&squot;s as if the stop had finished and&n;&t;&t;&t; * the SIGCHLD was pending on entry to this kill.&n;&t;&t;&t; */
-id|p-&gt;sig-&gt;group_stop_count
+id|p-&gt;signal-&gt;group_stop_count
 op_assign
 l_int|0
 suffix:semicolon
@@ -1893,7 +1975,7 @@ c_func
 id|SIG_KERNEL_STOP_MASK
 comma
 op_amp
-id|p-&gt;sig-&gt;shared_pending
+id|p-&gt;signal-&gt;shared_pending
 )paren
 suffix:semicolon
 id|t
@@ -1919,7 +2001,7 @@ op_eq
 id|TASK_STOPPED
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * If there is a handler for SIGCONT, we&n;&t;&t;&t;&t; * must make sure that no thread returns to&n;&t;&t;&t;&t; * user mode before we post the signal, in&n;&t;&t;&t;&t; * case it was the only thread eligible to&n;&t;&t;&t;&t; * run the signal handler--then it must not&n;&t;&t;&t;&t; * do anything between resuming and running&n;&t;&t;&t;&t; * the handler.  With the TIF_SIGPENDING flag&n;&t;&t;&t;&t; * set, the thread will pause and acquire the&n;&t;&t;&t;&t; * siglock that we hold now and until we&squot;ve&n;&t;&t;&t;&t; * queued the pending signal.&n; */
+multiline_comment|/*&n;&t;&t;&t;&t; * If there is a handler for SIGCONT, we&n;&t;&t;&t;&t; * must make sure that no thread returns to&n;&t;&t;&t;&t; * user mode before we post the signal, in&n;&t;&t;&t;&t; * case it was the only thread eligible to&n;&t;&t;&t;&t; * run the signal handler--then it must not&n;&t;&t;&t;&t; * do anything between resuming and running&n;&t;&t;&t;&t; * the handler.  With the TIF_SIGPENDING flag&n;&t;&t;&t;&t; * set, the thread will pause and acquire the&n;&t;&t;&t;&t; * siglock that we hold now and until we&squot;ve&n;&t;&t;&t;&t; * queued the pending signal.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2222,7 +2304,7 @@ id|spin_is_locked
 c_func
 (paren
 op_amp
-id|t-&gt;sig-&gt;siglock
+id|t-&gt;sighand-&gt;siglock
 )paren
 )paren
 id|BUG
@@ -2246,7 +2328,7 @@ id|sig
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* Support queueing exactly one non-rt signal, so that we&n;&t;&t;   can get more detailed information about the cause of&n;&t;&t;   the signal. */
+multiline_comment|/* Support queueing exactly one non-rt signal, so that we&n;&t;   can get more detailed information about the cause of&n;&t;   the signal. */
 r_if
 c_cond
 (paren
@@ -2337,7 +2419,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|t-&gt;sig-&gt;siglock
+id|t-&gt;sighand-&gt;siglock
 comma
 id|flags
 )paren
@@ -2345,7 +2427,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|t-&gt;sig-&gt;action
+id|t-&gt;sighand-&gt;action
 (braket
 id|sig
 op_minus
@@ -2356,7 +2438,7 @@ id|sa.sa_handler
 op_eq
 id|SIG_IGN
 )paren
-id|t-&gt;sig-&gt;action
+id|t-&gt;sighand-&gt;action
 (braket
 id|sig
 op_minus
@@ -2398,7 +2480,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|t-&gt;sig-&gt;siglock
+id|t-&gt;sighand-&gt;siglock
 comma
 id|flags
 )paren
@@ -2430,7 +2512,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|t-&gt;sig-&gt;siglock
+id|t-&gt;sighand-&gt;siglock
 comma
 id|flags
 )paren
@@ -2438,7 +2520,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|t-&gt;sig-&gt;action
+id|t-&gt;sighand-&gt;action
 (braket
 id|sig
 op_minus
@@ -2449,7 +2531,7 @@ id|sa.sa_handler
 op_eq
 id|SIG_IGN
 )paren
-id|t-&gt;sig-&gt;action
+id|t-&gt;sighand-&gt;action
 (braket
 id|sig
 op_minus
@@ -2493,7 +2575,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|t-&gt;sig-&gt;siglock
+id|t-&gt;sighand-&gt;siglock
 comma
 id|flags
 )paren
@@ -2540,7 +2622,7 @@ id|spin_is_locked
 c_func
 (paren
 op_amp
-id|p-&gt;sig-&gt;siglock
+id|p-&gt;sighand-&gt;siglock
 )paren
 )paren
 id|BUG
@@ -2579,7 +2661,7 @@ id|LEGACY_QUEUE
 c_func
 (paren
 op_amp
-id|p-&gt;sig-&gt;shared_pending
+id|p-&gt;signal-&gt;shared_pending
 comma
 id|sig
 )paren
@@ -2599,7 +2681,7 @@ comma
 id|info
 comma
 op_amp
-id|p-&gt;sig-&gt;shared_pending
+id|p-&gt;signal-&gt;shared_pending
 )paren
 suffix:semicolon
 r_if
@@ -2618,24 +2700,12 @@ multiline_comment|/*&n;&t; * Now find a thread we can wake up to take the signal
 r_if
 c_cond
 (paren
-id|p-&gt;state
-OL
-id|TASK_ZOMBIE
-op_logical_and
-(paren
-id|sig_kernel_only
-c_func
-(paren
-id|sig
-)paren
-op_logical_or
 id|wants_signal
 c_func
 (paren
 id|sig
 comma
 id|p
-)paren
 )paren
 )paren
 id|t
@@ -2658,10 +2728,10 @@ l_int|0
 suffix:semicolon
 r_else
 (brace
-multiline_comment|/*&n;&t; * Otherwise try to find a suitable thread.&n;&t; */
+multiline_comment|/*&n;&t;&t; * Otherwise try to find a suitable thread.&n;&t;&t; */
 id|t
 op_assign
-id|p-&gt;sig-&gt;curr_target
+id|p-&gt;signal-&gt;curr_target
 suffix:semicolon
 r_if
 c_cond
@@ -2673,7 +2743,7 @@ l_int|NULL
 multiline_comment|/* restart balancing at this thread */
 id|t
 op_assign
-id|p-&gt;sig-&gt;curr_target
+id|p-&gt;signal-&gt;curr_target
 op_assign
 id|p
 suffix:semicolon
@@ -2711,14 +2781,14 @@ c_cond
 (paren
 id|t
 op_eq
-id|p-&gt;sig-&gt;curr_target
+id|p-&gt;signal-&gt;curr_target
 )paren
-multiline_comment|/*&n;&t;&t;&t;&t; * No thread needs to be woken.&n;&t;&t;&t;&t; * Any eligible threads will see&n;&t;&t;&t;&t; * the signal in the queue soon.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * No thread needs to be woken.&n;&t;&t;&t;&t; * Any eligible threads will see&n;&t;&t;&t;&t; * the signal in the queue soon.&n;&t;&t;&t;&t; */
 r_return
 l_int|0
 suffix:semicolon
 )brace
-id|p-&gt;sig-&gt;curr_target
+id|p-&gt;signal-&gt;curr_target
 op_assign
 id|t
 suffix:semicolon
@@ -2736,7 +2806,7 @@ id|sig
 )paren
 op_logical_and
 op_logical_neg
-id|p-&gt;sig-&gt;group_exit
+id|p-&gt;signal-&gt;group_exit
 op_logical_and
 op_logical_neg
 id|sigismember
@@ -2775,15 +2845,15 @@ id|sig
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Start a group exit and wake everybody up.&n;&t;&t;&t; * This way we don&squot;t have other threads&n;&t;&t;&t; * running and doing things after a slower&n;&t;&t;&t; * thread has the fatal signal pending.&n;&t;&t;&t; */
-id|p-&gt;sig-&gt;group_exit
+id|p-&gt;signal-&gt;group_exit
 op_assign
 l_int|1
 suffix:semicolon
-id|p-&gt;sig-&gt;group_exit_code
+id|p-&gt;signal-&gt;group_exit_code
 op_assign
 id|sig
 suffix:semicolon
-id|p-&gt;sig-&gt;group_stop_count
+id|p-&gt;signal-&gt;group_stop_count
 op_assign
 l_int|0
 suffix:semicolon
@@ -2847,14 +2917,14 @@ c_func
 id|SIG_KERNEL_STOP_MASK
 comma
 op_amp
-id|p-&gt;sig-&gt;shared_pending
+id|p-&gt;signal-&gt;shared_pending
 )paren
 suffix:semicolon
-id|p-&gt;sig-&gt;group_stop_count
+id|p-&gt;signal-&gt;group_stop_count
 op_assign
 l_int|0
 suffix:semicolon
-id|p-&gt;sig-&gt;group_exit_task
+id|p-&gt;signal-&gt;group_exit_task
 op_assign
 id|t
 suffix:semicolon
@@ -2864,7 +2934,7 @@ id|p
 suffix:semicolon
 r_do
 (brace
-id|p-&gt;sig-&gt;group_stop_count
+id|p-&gt;signal-&gt;group_stop_count
 op_increment
 suffix:semicolon
 id|signal_wake_up
@@ -2895,7 +2965,7 @@ suffix:semicolon
 id|wake_up_process
 c_func
 (paren
-id|p-&gt;sig-&gt;group_exit_task
+id|p-&gt;signal-&gt;group_exit_task
 )paren
 suffix:semicolon
 r_return
@@ -2934,7 +3004,7 @@ id|task_struct
 op_star
 id|t
 suffix:semicolon
-id|p-&gt;sig-&gt;group_stop_count
+id|p-&gt;signal-&gt;group_stop_count
 op_assign
 l_int|0
 suffix:semicolon
@@ -3047,14 +3117,14 @@ id|ret
 op_logical_and
 id|sig
 op_logical_and
-id|p-&gt;sig
+id|p-&gt;sighand
 )paren
 (brace
 id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|p-&gt;sig-&gt;siglock
+id|p-&gt;sighand-&gt;siglock
 comma
 id|flags
 )paren
@@ -3075,7 +3145,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|p-&gt;sig-&gt;siglock
+id|p-&gt;sighand-&gt;siglock
 comma
 id|flags
 )paren
@@ -3644,7 +3714,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|p-&gt;sig-&gt;siglock
+id|p-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|error
@@ -3663,7 +3733,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|p-&gt;sig-&gt;siglock
+id|p-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_return
@@ -3919,9 +3989,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tsk-&gt;sig
+id|tsk-&gt;signal
 op_ne
-id|parent-&gt;sig
+id|parent-&gt;signal
 )paren
 id|BUG
 c_func
@@ -3967,7 +4037,7 @@ comma
 id|status
 suffix:semicolon
 r_struct
-id|signal_struct
+id|sighand_struct
 op_star
 id|psig
 suffix:semicolon
@@ -4101,7 +4171,7 @@ id|status
 suffix:semicolon
 id|psig
 op_assign
-id|tsk-&gt;parent-&gt;sig
+id|tsk-&gt;parent-&gt;sighand
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -4288,6 +4358,11 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_struct
+id|sighand_struct
+op_star
+id|sighand
+suffix:semicolon
 id|info.si_signo
 op_assign
 id|SIGCHLD
@@ -4323,11 +4398,15 @@ id|info.si_code
 op_assign
 id|CLD_STOPPED
 suffix:semicolon
+id|sighand
+op_assign
+id|parent-&gt;sighand
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|parent-&gt;sig-&gt;siglock
+id|sighand-&gt;siglock
 comma
 id|flags
 )paren
@@ -4335,7 +4414,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|parent-&gt;sig-&gt;action
+id|sighand-&gt;action
 (braket
 id|SIGCHLD
 op_minus
@@ -4348,7 +4427,7 @@ id|SIG_IGN
 op_logical_and
 op_logical_neg
 (paren
-id|parent-&gt;sig-&gt;action
+id|sighand-&gt;action
 (braket
 id|SIGCHLD
 op_minus
@@ -4384,7 +4463,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|parent-&gt;sig-&gt;siglock
+id|sighand-&gt;siglock
 comma
 id|flags
 )paren
@@ -4497,7 +4576,14 @@ id|signal_struct
 op_star
 id|sig
 op_assign
-id|current-&gt;sig
+id|current-&gt;signal
+suffix:semicolon
+r_struct
+id|sighand_struct
+op_star
+id|sighand
+op_assign
+id|current-&gt;sighand
 suffix:semicolon
 r_int
 id|stop_count
@@ -4518,7 +4604,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|sig-&gt;siglock
+id|sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_if
@@ -4544,7 +4630,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|sig-&gt;siglock
+id|sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_return
@@ -4573,7 +4659,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|sig-&gt;siglock
+id|sighand-&gt;siglock
 )paren
 suffix:semicolon
 )brace
@@ -4619,7 +4705,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|sig-&gt;siglock
+id|sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_if
@@ -4637,7 +4723,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|sig-&gt;siglock
+id|sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|read_unlock
@@ -4742,7 +4828,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|sig-&gt;siglock
+id|sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|read_unlock
@@ -4805,7 +4891,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_if
@@ -4814,7 +4900,7 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|current-&gt;sig-&gt;group_stop_count
+id|current-&gt;signal-&gt;group_stop_count
 OG
 l_int|0
 )paren
@@ -4826,13 +4912,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;sig-&gt;group_exit_task
+id|current-&gt;signal-&gt;group_exit_task
 op_eq
 id|current
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t;&t; * Group stop is so we can do a core dump.&n;&t;&t;&t;&t; */
-id|current-&gt;sig-&gt;group_exit_task
+id|current-&gt;signal-&gt;group_exit_task
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -4844,11 +4930,11 @@ multiline_comment|/*&n;&t;&t;&t; * There is a group stop in progress.  We stop&n
 id|stop_count
 op_assign
 op_decrement
-id|current-&gt;sig-&gt;group_stop_count
+id|current-&gt;signal-&gt;group_stop_count
 suffix:semicolon
 id|signr
 op_assign
-id|current-&gt;sig-&gt;group_exit_code
+id|current-&gt;signal-&gt;group_exit_code
 suffix:semicolon
 id|current-&gt;exit_code
 op_assign
@@ -4864,7 +4950,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|finish_stop
@@ -4892,7 +4978,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_if
@@ -4921,7 +5007,7 @@ multiline_comment|/*&n;&t;&t;&t; * If there is a group stop in progress,&n;&t;&t
 r_if
 c_cond
 (paren
-id|current-&gt;sig-&gt;group_stop_count
+id|current-&gt;signal-&gt;group_stop_count
 OG
 l_int|0
 )paren
@@ -4930,17 +5016,17 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 op_decrement
-id|current-&gt;sig-&gt;group_stop_count
+id|current-&gt;signal-&gt;group_stop_count
 suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 )brace
@@ -4948,6 +5034,10 @@ multiline_comment|/* Let the debugger run.  */
 id|current-&gt;exit_code
 op_assign
 id|signr
+suffix:semicolon
+id|current-&gt;last_siginfo
+op_assign
+id|info
 suffix:semicolon
 id|set_current_state
 c_func
@@ -4968,6 +5058,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|current-&gt;last_siginfo
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/* We&squot;re back.  Did the debugger cancel the sig?  */
 id|signr
 op_assign
@@ -4986,7 +5080,7 @@ id|current-&gt;exit_code
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Update the siginfo structure.  Is this good?  */
+multiline_comment|/* Update the siginfo structure if the signal has&n;&t;&t;&t;   changed.  If the debugger wanted something&n;&t;&t;&t;   specific in the siginfo structure then it should&n;&t;&t;&t;   have updated *info via PTRACE_SETSIGINFO.  */
 r_if
 c_cond
 (paren
@@ -5034,7 +5128,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|specific_send_sig_info
@@ -5051,7 +5145,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_continue
@@ -5061,7 +5155,7 @@ suffix:semicolon
 id|ka
 op_assign
 op_amp
-id|current-&gt;sig-&gt;action
+id|current-&gt;sighand-&gt;action
 (braket
 id|signr
 op_minus
@@ -5184,13 +5278,13 @@ id|BUG_ON
 c_func
 (paren
 op_logical_neg
-id|current-&gt;sig-&gt;group_exit
+id|current-&gt;signal-&gt;group_exit
 )paren
 suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|current-&gt;sig-&gt;group_exit_code
+id|current-&gt;signal-&gt;group_exit_code
 op_ne
 id|code
 )paren
@@ -5480,7 +5574,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|old_set
@@ -5561,7 +5655,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_if
@@ -5592,7 +5686,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|old_set
@@ -5603,7 +5697,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|set_old
@@ -5685,7 +5779,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|sigorsets
@@ -5698,14 +5792,14 @@ op_amp
 id|current-&gt;pending.signal
 comma
 op_amp
-id|current-&gt;sig-&gt;shared_pending.signal
+id|current-&gt;signal-&gt;shared_pending.signal
 )paren
 suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 multiline_comment|/* Outside the lock because only this thread touches it.  */
@@ -6298,7 +6392,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|sig
@@ -6379,7 +6473,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|current-&gt;state
@@ -6398,7 +6492,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|sig
@@ -6437,7 +6531,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_if
@@ -6653,14 +6747,14 @@ id|error
 op_logical_and
 id|sig
 op_logical_and
-id|p-&gt;sig
+id|p-&gt;sighand
 )paren
 (brace
 id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|p-&gt;sig-&gt;siglock
+id|p-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|handle_stop_signal
@@ -6688,7 +6782,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|p-&gt;sig-&gt;siglock
+id|p-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 )brace
@@ -6824,25 +6918,18 @@ suffix:semicolon
 id|k
 op_assign
 op_amp
-id|current-&gt;sig-&gt;action
+id|current-&gt;sighand-&gt;action
 (braket
 id|sig
 op_minus
 l_int|1
 )braket
 suffix:semicolon
-id|read_lock
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_if
@@ -6860,19 +6947,12 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
-)paren
-suffix:semicolon
-id|read_unlock
-c_func
-(paren
-op_amp
-id|tasklist_lock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_return
 op_minus
-id|ERESTARTSYS
+id|ERESTARTNOINTR
 suffix:semicolon
 )brace
 r_if
@@ -6892,6 +6972,56 @@ c_cond
 id|act
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * POSIX 3.3.1.3:&n;&t;&t; *  &quot;Setting a signal action to SIG_IGN for a signal that is&n;&t;&t; *   pending shall cause the pending signal to be discarded,&n;&t;&t; *   whether or not it is blocked.&quot;&n;&t;&t; *&n;&t;&t; *  &quot;Setting a signal action to SIG_DFL for a signal that is&n;&t;&t; *   pending and whose default action is to ignore the signal&n;&t;&t; *   (for example, SIGCHLD), shall cause the pending signal to&n;&t;&t; *   be discarded, whether or not it is blocked&quot;&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|act-&gt;sa.sa_handler
+op_eq
+id|SIG_IGN
+op_logical_or
+(paren
+id|act-&gt;sa.sa_handler
+op_eq
+id|SIG_DFL
+op_logical_and
+id|sig_kernel_ignore
+c_func
+(paren
+id|sig
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * This is a fairly rare case, so we only take the&n;&t;&t;&t; * tasklist_lock once we&squot;re sure we&squot;ll need it.&n;&t;&t;&t; * Now we must do this little unlock and relock&n;&t;&t;&t; * dance to maintain the lock hierarchy.&n;&t;&t;&t; */
+r_struct
+id|task_struct
+op_star
+id|t
+op_assign
+id|current
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|t-&gt;sighand-&gt;siglock
+)paren
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|t-&gt;sighand-&gt;siglock
+)paren
+suffix:semicolon
 op_star
 id|k
 op_assign
@@ -6917,34 +7047,6 @@ id|SIGSTOP
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * POSIX 3.3.1.3:&n;&t;&t; *  &quot;Setting a signal action to SIG_IGN for a signal that is&n;&t;&t; *   pending shall cause the pending signal to be discarded,&n;&t;&t; *   whether or not it is blocked.&quot;&n;&t;&t; *&n;&t;&t; *  &quot;Setting a signal action to SIG_DFL for a signal that is&n;&t;&t; *   pending and whose default action is to ignore the signal&n;&t;&t; *   (for example, SIGCHLD), shall cause the pending signal to&n;&t;&t; *   be discarded, whether or not it is blocked&quot;&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|k-&gt;sa.sa_handler
-op_eq
-id|SIG_IGN
-op_logical_or
-(paren
-id|k-&gt;sa.sa_handler
-op_eq
-id|SIG_DFL
-op_logical_and
-id|sig_kernel_ignore
-c_func
-(paren
-id|sig
-)paren
-)paren
-)paren
-(brace
-r_struct
-id|task_struct
-op_star
-id|t
-op_assign
-id|current
-suffix:semicolon
 id|rm_from_queue
 c_func
 (paren
@@ -6955,7 +7057,7 @@ id|sig
 )paren
 comma
 op_amp
-id|t-&gt;sig-&gt;shared_pending
+id|t-&gt;signal-&gt;shared_pending
 )paren
 suffix:semicolon
 r_do
@@ -6996,13 +7098,11 @@ op_ne
 id|current
 )paren
 suffix:semicolon
-)brace
-)brace
 id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|read_unlock
@@ -7010,6 +7110,43 @@ c_func
 (paren
 op_amp
 id|tasklist_lock
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+op_star
+id|k
+op_assign
+op_star
+id|act
+suffix:semicolon
+id|sigdelsetmask
+c_func
+(paren
+op_amp
+id|k-&gt;sa.sa_mask
+comma
+id|sigmask
+c_func
+(paren
+id|SIGKILL
+)paren
+op_or
+id|sigmask
+c_func
+(paren
+id|SIGSTOP
+)paren
+)paren
+suffix:semicolon
+)brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_return
@@ -7144,6 +7281,7 @@ r_if
 c_cond
 (paren
 id|on_sig_stack
+c_func
 (paren
 id|sp
 )paren
@@ -7371,7 +7509,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|old_set
@@ -7450,7 +7588,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_if
@@ -7701,7 +7839,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|old
@@ -7744,7 +7882,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_return

@@ -151,7 +151,7 @@ DECL|struct|i810_channel
 r_struct
 id|i810_channel
 (brace
-multiline_comment|/* these sg guys should probably be allocated&n;&t;   seperately as nocache. Must be 8 byte aligned */
+multiline_comment|/* these sg guys should probably be allocated&n;&t;   separately as nocache. Must be 8 byte aligned */
 DECL|member|sg
 r_struct
 id|sg_item
@@ -181,7 +181,7 @@ id|num
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * we have 3 seperate dma engines.  pcm in, pcm out, and mic.&n; * each dma engine has controlling registers.  These goofy&n; * names are from the datasheet, but make it easy to write&n; * code while leafing through it.&n; *&n; * ICH4 has 6 dma engines, pcm in, pcm out, mic, pcm in 2, &n; * mic in 2, s/pdif.   Of special interest is the fact that&n; * the upper 3 DMA engines on the ICH4 *must* be accessed&n; * via mmio access instead of pio access.&n; */
+multiline_comment|/*&n; * we have 3 separate dma engines.  pcm in, pcm out, and mic.&n; * each dma engine has controlling registers.  These goofy&n; * names are from the datasheet, but make it easy to write&n; * code while leafing through it.&n; *&n; * ICH4 has 6 dma engines, pcm in, pcm out, mic, pcm in 2, &n; * mic in 2, s/pdif.   Of special interest is the fact that&n; * the upper 3 DMA engines on the ICH4 *must* be accessed&n; * via mmio access instead of pio access.&n; */
 DECL|macro|ENUM_ENGINE
 mdefine_line|#define ENUM_ENGINE(PRE,DIG) &t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;enum {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;PRE##_BDBAR =&t;0x##DIG##0,&t;&t;/* Buffer Descriptor list Base Address */&t;&bslash;&n;&t;PRE##_CIV =&t;0x##DIG##4,&t;&t;/* Current Index Value */&t;&t;&t;&bslash;&n;&t;PRE##_LVI =&t;0x##DIG##5,&t;&t;/* Last Valid Index */&t;&t;&t;&t;&bslash;&n;&t;PRE##_SR =&t;0x##DIG##6,&t;&t;/* Status Register */&t;&t;&t;&t;&bslash;&n;&t;PRE##_PICB =&t;0x##DIG##8,&t;&t;/* Position In Current Buffer */&t;&t;&bslash;&n;&t;PRE##_PIV =&t;0x##DIG##a,&t;&t;/* Prefetched Index Value */&t;&t;&t;&bslash;&n;&t;PRE##_CR =&t;0x##DIG##b&t;&t;/* Control Register */&t;&t;&t;&t;&bslash;&n;}
 id|ENUM_ENGINE
@@ -3208,7 +3208,7 @@ DECL|macro|DMABUF_DEFAULTORDER
 mdefine_line|#define DMABUF_DEFAULTORDER (16-PAGE_SHIFT)
 DECL|macro|DMABUF_MINORDER
 mdefine_line|#define DMABUF_MINORDER 1
-multiline_comment|/* allocate DMA buffer, playback and recording buffer should be allocated seperately */
+multiline_comment|/* allocate DMA buffer, playback and recording buffer should be allocated separately */
 DECL|function|alloc_dmabuf
 r_static
 r_int

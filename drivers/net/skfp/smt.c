@@ -1392,7 +1392,7 @@ id|fddiMACUNDA_Flag
 op_assign
 id|FALSE
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Make sure the fddiMACUNDA_Flag = FALSE is&n;&t;&t; * included in the SRF so we don&squot;t generate&n;&t;&t; * a seperate SRF for the deassertion of this&n;&t;&t; * condition&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Make sure the fddiMACUNDA_Flag = FALSE is&n;&t;&t; * included in the SRF so we don&squot;t generate&n;&t;&t; * a separate SRF for the deassertion of this&n;&t;&t; * condition&n;&t;&t; */
 id|update_dac
 c_func
 (paren

@@ -1631,7 +1631,7 @@ mdefine_line|#define&t;PL_PC2&t;&t;(2&lt;&lt;7)&t;&t;/* TRACE   - to localize st
 DECL|macro|PL_PC3
 mdefine_line|#define&t;PL_PC3&t;&t;(3&lt;&lt;7)&t;&t;/* CONNECT - synchronize ends of conn*/
 DECL|macro|PL_PC4
-mdefine_line|#define&t;PL_PC4&t;&t;(4&lt;&lt;7)&t;&t;/* NEXT&t;   - to seperate the signalng*/
+mdefine_line|#define&t;PL_PC4&t;&t;(4&lt;&lt;7)&t;&t;/* NEXT&t;   - to separate the signalng*/
 DECL|macro|PL_PC5
 mdefine_line|#define&t;PL_PC5&t;&t;(5&lt;&lt;7)&t;&t;/* SIGNAL  - PCM trans/rec. bit infos*/
 DECL|macro|PL_PC6

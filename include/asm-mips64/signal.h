@@ -121,7 +121,7 @@ mdefine_line|#define SA_SIGINFO&t;0x00000008
 DECL|macro|SA_NODEFER
 mdefine_line|#define SA_NODEFER&t;0x40000000
 DECL|macro|SA_NOCLDWAIT
-mdefine_line|#define SA_NOCLDWAIT&t;0x00010000&t;/* Not supported yet */
+mdefine_line|#define SA_NOCLDWAIT&t;0x00010000
 DECL|macro|SA_NOCLDSTOP
 mdefine_line|#define SA_NOCLDSTOP&t;0x00000001
 DECL|macro|SA_NOMASK

@@ -55,9 +55,17 @@ DECL|macro|SPIN_LOCK_UNLOCKED
 mdefine_line|#define SPIN_LOCK_UNLOCKED&t;&t;&t;(spinlock_t) { 0 }
 DECL|macro|spin_lock_init
 mdefine_line|#define spin_lock_init(x)&t;&t;&t;((x)-&gt;lock = 0)
+DECL|macro|DEBUG_SPIN_LOCK
+mdefine_line|#define DEBUG_SPIN_LOCK&t;0
+macro_line|#if DEBUG_SPIN_LOCK
+macro_line|#include &lt;ia64intrin.h&gt;
+DECL|macro|_raw_spin_lock
+mdefine_line|#define _raw_spin_lock(x)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long _timeout = 1000000000;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;volatile unsigned int _old = 0, _new = 1, *_ptr = &amp;((x)-&gt;lock);&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (_timeout-- == 0) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;extern void dump_stack (void);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(&quot;kernel DEADLOCK at %s:%d?&bslash;n&quot;, __FILE__, __LINE__);&t;&bslash;&n;&t;&t;&t;dump_stack();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (__sync_val_compare_and_swap(_ptr, _old, _new) != _old);&t;&t;&bslash;&n;} while (0)
+macro_line|#else
 multiline_comment|/*&n; * Streamlined test_and_set_bit(0, (x)).  We use test-and-test-and-set&n; * rather than a simple xchg to avoid writing the cache-line when&n; * there is contention.&n; */
 DECL|macro|_raw_spin_lock
 mdefine_line|#define _raw_spin_lock(x) __asm__ __volatile__ (&t;&t;&bslash;&n;&t;&quot;mov ar.ccv = r0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mov r29 = 1&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;;;&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ld4.bias r2 = [%0]&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;;;&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;cmp4.eq p0,p7 = r0,r2&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;(p7) br.cond.spnt.few 1b &bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;cmpxchg4.acq r2 = [%0], r29, ar.ccv&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;;;&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;cmp4.eq p0,p7 = r0, r2&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;(p7) br.cond.spnt.few 1b&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;;;&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:: &quot;r&quot;(&amp;(x)-&gt;lock) : &quot;ar.ccv&quot;, &quot;p7&quot;, &quot;r2&quot;, &quot;r29&quot;, &quot;memory&quot;)
+macro_line|#endif /* !DEBUG_SPIN_LOCK */
 DECL|macro|spin_is_locked
 mdefine_line|#define spin_is_locked(x)&t;((x)-&gt;lock != 0)
 DECL|macro|_raw_spin_unlock

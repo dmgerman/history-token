@@ -2504,7 +2504,7 @@ id|right
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* read or write the recmask, the ac97 can really have left and right recording&n;   inputs independantly set, but OSS doesn&squot;t seem to want us to express that to&n;   the user. the caller guarantees that we have a supported bit set, and they&n;   must be holding the card&squot;s spinlock */
+multiline_comment|/* read or write the recmask, the ac97 can really have left and right recording&n;   inputs independently set, but OSS doesn&squot;t seem to want us to express that to&n;   the user. the caller guarantees that we have a supported bit set, and they&n;   must be holding the card&squot;s spinlock */
 DECL|function|ac97_recmask_io
 r_static
 r_int

@@ -3280,7 +3280,7 @@ id|server
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/*&n;&t; * Now we do a seperate LOOKUP for each component of the mount path.&n;&t; * The LOOKUPs are done seperately so that we can conveniently&n;&t; * catch an ERR_WRONGSEC if it occurs along the way...&n;&t; */
+multiline_comment|/*&n;&t; * Now we do a separate LOOKUP for each component of the mount path.&n;&t; * The LOOKUPs are done separately so that we can conveniently&n;&t; * catch an ERR_WRONGSEC if it occurs along the way...&n;&t; */
 id|p
 op_assign
 id|server-&gt;mnt_path

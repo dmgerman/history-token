@@ -9061,7 +9061,7 @@ c_func
 id|tblk
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * We can be running indefinately if other processors&n;&t;&t;&t; * are adding transactions to this list&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * We can be running indefinitely if other processors&n;&t;&t;&t; * are adding transactions to this list&n;&t;&t;&t; */
 id|cond_resched
 c_func
 (paren

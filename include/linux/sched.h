@@ -560,9 +560,9 @@ r_extern
 r_int
 id|mmlist_nr
 suffix:semicolon
-DECL|struct|signal_struct
+DECL|struct|sighand_struct
 r_struct
-id|signal_struct
+id|sighand_struct
 (brace
 DECL|member|count
 id|atomic_t
@@ -579,6 +579,17 @@ suffix:semicolon
 DECL|member|siglock
 id|spinlock_t
 id|siglock
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * NOTE! &quot;signal_struct&quot; does not have it&squot;s own&n; * locking, because a shared signal_struct always&n; * implies a shared sighand_struct, so locking&n; * sighand_struct is always a proper superset of&n; * the locking of signal_struct.&n; */
+DECL|struct|signal_struct
+r_struct
+id|signal_struct
+(brace
+DECL|member|count
+id|atomic_t
+id|count
 suffix:semicolon
 multiline_comment|/* current thread group signal load-balancing target: */
 DECL|member|curr_target
@@ -1116,11 +1127,17 @@ op_star
 r_namespace
 suffix:semicolon
 multiline_comment|/* signal handlers */
-DECL|member|sig
+DECL|member|signal
 r_struct
 id|signal_struct
 op_star
-id|sig
+id|signal
+suffix:semicolon
+DECL|member|sighand
+r_struct
+id|sighand_struct
+op_star
+id|sighand
 suffix:semicolon
 DECL|member|blocked
 DECL|member|real_blocked
@@ -1212,6 +1229,12 @@ r_int
 r_int
 id|ptrace_message
 suffix:semicolon
+DECL|member|last_siginfo
+id|siginfo_t
+op_star
+id|last_siginfo
+suffix:semicolon
+multiline_comment|/* For ptrace use.  */
 )brace
 suffix:semicolon
 r_extern
@@ -1278,6 +1301,10 @@ DECL|macro|PT_TRACE_CLONE
 mdefine_line|#define PT_TRACE_CLONE&t;0x00000040
 DECL|macro|PT_TRACE_EXEC
 mdefine_line|#define PT_TRACE_EXEC&t;0x00000080
+DECL|macro|PT_TRACE_VFORK_DONE
+mdefine_line|#define PT_TRACE_VFORK_DONE&t;0x00000100
+DECL|macro|PT_TRACE_EXIT
+mdefine_line|#define PT_TRACE_EXIT&t;0x00000200
 macro_line|#if CONFIG_SMP
 r_extern
 r_void
@@ -2145,6 +2172,26 @@ suffix:semicolon
 r_extern
 r_void
 id|exit_files
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|exit_signal
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__exit_signal
 c_func
 (paren
 r_struct

@@ -6775,7 +6775,7 @@ id|np-&gt;ram_ws
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; *  Free O/S independant resources.&n;&t; */
+multiline_comment|/*&n;&t; *  Free O/S independent resources.&n;&t; */
 id|sym_hcb_free
 c_func
 (paren
@@ -7432,7 +7432,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-multiline_comment|/*&n;&t; *  Perform O/S independant stuff.&n;&t; */
+multiline_comment|/*&n;&t; *  Perform O/S independent stuff.&n;&t; */
 r_if
 c_cond
 (paren

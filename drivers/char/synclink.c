@@ -21367,7 +21367,7 @@ id|info-&gt;usc_idle_mode
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Program the Bus Configuration Register (BCR)&n;&t; *&n;&t; * &lt;15&gt;&t;&t;0&t;Don&squot;t use seperate address&n;&t; * &lt;14..6&gt;&t;0&t;reserved&n;&t; * &lt;5..4&gt;&t;00&t;IAckmode = Default, don&squot;t care&n;&t; * &lt;3&gt;&t;&t;1&t;Bus Request Totem Pole output&n;&t; * &lt;2&gt;&t;&t;1&t;Use 16 Bit data bus&n;&t; * &lt;1&gt;&t;&t;0&t;IRQ Totem Pole output&n;&t; * &lt;0&gt;&t;&t;0&t;Don&squot;t Shift Right Addr&n;&t; *&n;&t; * 0000 0000 0000 1100 = 0x000c&n;&t; *&n;&t; * By writing to io_base + SDPIN the Wait/Ack pin is&n;&t; * programmed to work as a Wait pin.&n;&t; */
+multiline_comment|/*&n;&t; * Program the Bus Configuration Register (BCR)&n;&t; *&n;&t; * &lt;15&gt;&t;&t;0&t;Don&squot;t use separate address&n;&t; * &lt;14..6&gt;&t;0&t;reserved&n;&t; * &lt;5..4&gt;&t;00&t;IAckmode = Default, don&squot;t care&n;&t; * &lt;3&gt;&t;&t;1&t;Bus Request Totem Pole output&n;&t; * &lt;2&gt;&t;&t;1&t;Use 16 Bit data bus&n;&t; * &lt;1&gt;&t;&t;0&t;IRQ Totem Pole output&n;&t; * &lt;0&gt;&t;&t;0&t;Don&squot;t Shift Right Addr&n;&t; *&n;&t; * 0000 0000 0000 1100 = 0x000c&n;&t; *&n;&t; * By writing to io_base + SDPIN the Wait/Ack pin is&n;&t; * programmed to work as a Wait pin.&n;&t; */
 id|outw
 c_func
 (paren

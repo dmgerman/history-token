@@ -3784,7 +3784,7 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PERFMON
-multiline_comment|/* &n;&t;&t; * Check if debug registers are used &n;&t;&t; * by perfmon. This test must be done once we know that we can&n;&t;&t; * do the operation, i.e. the arguments are all valid, but before&n;&t;&t; * we start modifying the state.&n;&t;&t; *&n;&t;&t; * Perfmon needs to keep a count of how many processes are&n;&t;&t; * trying to modify the debug registers for system wide monitoring&n;&t;&t; * sessions.&n;&t;&t; *&n;&t;&t; * We also include read access here, because they may cause &n;&t;&t; * the PMU-installed debug register state (dbr[], ibr[]) to&n;&t;&t; * be reset. The two arrays are also used by perfmon, but&n;&t;&t; * we do not use IA64_THREAD_DBG_VALID. The registers are restored&n;&t;&t; * by the PMU context switch code.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Check if debug registers are used by perfmon. This test must be done&n;&t;&t; * once we know that we can do the operation, i.e. the arguments are all&n;&t;&t; * valid, but before we start modifying the state.&n;&t;&t; *&n;&t;&t; * Perfmon needs to keep a count of how many processes are trying to&n;&t;&t; * modify the debug registers for system wide monitoring sessions.&n;&t;&t; *&n;&t;&t; * We also include read access here, because they may cause the&n;&t;&t; * PMU-installed debug register state (dbr[], ibr[]) to be reset. The two&n;&t;&t; * arrays are also used by perfmon, but we do not use&n;&t;&t; * IA64_THREAD_DBG_VALID. The registers are restored by the PMU context&n;&t;&t; * switch code.&n;&t;&t; */
 r_if
 c_cond
 (paren

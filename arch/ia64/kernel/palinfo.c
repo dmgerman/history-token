@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * palinfo.c&n; *&n; * Prints processor specific information reported by PAL.&n; * This code is based on specification of PAL as of the&n; * Intel IA-64 Architecture Software Developer&squot;s Manual v1.0.&n; *&n; *&n; * Copyright (C) 2000-2001 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * 05/26/2000&t;S.Eranian&t;initial release&n; * 08/21/2000&t;S.Eranian&t;updated to July 2000 PAL specs&n; * 02/05/2001   S.Eranian&t;fixed module support&n; * 10/23/2001&t;S.Eranian&t;updated pal_perf_mon_info bug fixes&n; */
+multiline_comment|/*&n; * palinfo.c&n; *&n; * Prints processor specific information reported by PAL.&n; * This code is based on specification of PAL as of the&n; * Intel IA-64 Architecture Software Developer&squot;s Manual v1.0.&n; *&n; *&n; * Copyright (C) 2000-2001, 2003 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * 05/26/2000&t;S.Eranian&t;initial release&n; * 08/21/2000&t;S.Eranian&t;updated to July 2000 PAL specs&n; * 02/05/2001   S.Eranian&t;fixed module support&n; * 10/23/2001&t;S.Eranian&t;updated pal_perf_mon_info bug fixes&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -697,6 +697,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ia64_pal_cache_summary=%ld&bslash;n&quot;
 comma
 id|status
@@ -713,9 +714,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Cache levels  : %ld&bslash;n&quot;
-"&bslash;"
-l_string|&quot;Unique caches : %ld&bslash;n&bslash;n&quot;
+l_string|&quot;Cache levels  : %ld&bslash;nUnique caches : %ld&bslash;n&bslash;n&quot;
 comma
 id|levels
 comma
@@ -1113,6 +1112,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ia64_pal_vm_summary=%ld&bslash;n&quot;
 comma
 id|status
@@ -1270,6 +1270,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ia64_pal_vm_page_size=%ld&bslash;n&quot;
 comma
 id|status
@@ -1360,6 +1361,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ia64_get_ptce=%ld&bslash;n&quot;
 comma
 id|status
@@ -2828,6 +2830,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ia64_pal_vm_summary=%ld&bslash;n&quot;
 comma
 id|status
@@ -2914,6 +2917,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;palinfo: pal call failed on tr[%d:%d]=%ld&bslash;n&quot;
 comma
 id|i
@@ -3212,9 +3216,8 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;%s palinfo: data pointer is NULL&bslash;n&quot;
-comma
 id|KERN_ERR
+l_string|&quot;palinfo: data pointer is NULL&bslash;n&quot;
 )paren
 suffix:semicolon
 id|data-&gt;ret
@@ -3304,7 +3307,9 @@ l_int|1
 id|printk
 c_func
 (paren
-l_string|&quot;palinfo: remote CPU call from %d to %d on function %d: error %d&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;palinfo: remote CPU call from %d to %d on function %d: &quot;
+l_string|&quot;error %d&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
@@ -3345,6 +3350,7 @@ id|page
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;palinfo: should not be called with non SMP kernel&bslash;n&quot;
 )paren
 suffix:semicolon

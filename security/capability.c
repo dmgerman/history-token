@@ -466,7 +466,7 @@ op_logical_or
 id|atomic_read
 (paren
 op_amp
-id|current-&gt;sig-&gt;count
+id|current-&gt;sighand-&gt;count
 )paren
 OG
 l_int|1

@@ -1,6 +1,6 @@
 multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998,1999 SysKonnect,&n; *&t;a business unit of Schneider &amp; Koch &amp; Co. Datensysteme GmbH.&n; *&n; *&t;See the file &quot;skfddi.c&quot; for further information.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
 multiline_comment|/*&n;&t;PCM&n;&t;Physical Connection Management&n;*/
-multiline_comment|/*&n; * Hardware independant state machine implemantation&n; * The following external SMT functions are referenced :&n; *&n; * &t;&t;queue_event()&n; * &t;&t;smt_timer_start()&n; * &t;&t;smt_timer_stop()&n; *&n; * &t;The following external HW dependant functions are referenced :&n; * &t;&t;sm_pm_control()&n; *&t;&t;sm_ph_linestate()&n; *&t;&t;sm_pm_ls_latch()&n; *&n; * &t;The following HW dependant events are required :&n; *&t;&t;PC_QLS&n; *&t;&t;PC_ILS&n; *&t;&t;PC_HLS&n; *&t;&t;PC_MLS&n; *&t;&t;PC_NSE&n; *&t;&t;PC_LEM&n; *&n; */
+multiline_comment|/*&n; * Hardware independent state machine implemantation&n; * The following external SMT functions are referenced :&n; *&n; * &t;&t;queue_event()&n; * &t;&t;smt_timer_start()&n; * &t;&t;smt_timer_stop()&n; *&n; * &t;The following external HW dependent functions are referenced :&n; * &t;&t;sm_pm_control()&n; *&t;&t;sm_ph_linestate()&n; *&t;&t;sm_pm_ls_latch()&n; *&n; * &t;The following HW dependent events are required :&n; *&t;&t;PC_QLS&n; *&t;&t;PC_ILS&n; *&t;&t;PC_HLS&n; *&t;&t;PC_MLS&n; *&t;&t;PC_NSE&n; *&t;&t;PC_LEM&n; *&n; */
 macro_line|#include &quot;h/types.h&quot;
 macro_line|#include &quot;h/fddi.h&quot;
 macro_line|#include &quot;h/smc.h&quot;
@@ -2504,7 +2504,7 @@ id|mib
 op_assign
 id|phy-&gt;mib
 suffix:semicolon
-multiline_comment|/*&n;&t; * general transitions independant of state&n;&t; */
+multiline_comment|/*&n;&t; * general transitions independent of state&n;&t; */
 r_switch
 c_cond
 (paren

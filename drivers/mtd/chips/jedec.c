@@ -3138,7 +3138,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* We could split this into a timer routine and return early, performing&n;      background erasure.. Maybe later if the need warrents */
-multiline_comment|/* Poll the flash for erasure completion, specs say this can take as long&n;      as 480 seconds to do all the sectors (for a 2 meg flash). &n;      Erasure time is dependant on chip age, temp and wear.. */
+multiline_comment|/* Poll the flash for erasure completion, specs say this can take as long&n;      as 480 seconds to do all the sectors (for a 2 meg flash). &n;      Erasure time is dependent on chip age, temp and wear.. */
 multiline_comment|/* This being a generic routine assumes a 32 bit bus. It does read32s&n;      and bundles interleved chips into the same grouping. This will work &n;      for all bus widths */
 id|Time
 op_assign

@@ -229,7 +229,7 @@ mdefine_line|#define SA_NOMASK&t;0x20
 DECL|macro|SA_SHIRQ
 mdefine_line|#define SA_SHIRQ&t;0x40
 DECL|macro|SA_NOCLDWAIT
-mdefine_line|#define SA_NOCLDWAIT    0x100 /* not supported yet */
+mdefine_line|#define SA_NOCLDWAIT    0x100
 DECL|macro|SA_SIGINFO
 mdefine_line|#define SA_SIGINFO      0x200
 DECL|macro|SIG_BLOCK
