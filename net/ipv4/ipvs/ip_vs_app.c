@@ -652,6 +652,13 @@ id|inc
 )paren
 suffix:semicolon
 )brace
+id|list_del
+c_func
+(paren
+op_amp
+id|app-&gt;a_list
+)paren
+suffix:semicolon
 id|up
 c_func
 (paren

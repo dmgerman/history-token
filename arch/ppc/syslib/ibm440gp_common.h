@@ -42,7 +42,7 @@ id|uart
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Please, refer to the Figure 13.1 in 440GP user manual&n; * &n; * if internal UART clock is used, ser_clk is ignored&n; */
+multiline_comment|/*&n; * Please, refer to the Figure 13.1 in 440GP user manual&n; *&n; * if internal UART clock is used, ser_clk is ignored&n; */
 r_void
 id|ibm440gp_get_clocks
 c_func

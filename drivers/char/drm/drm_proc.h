@@ -795,7 +795,11 @@ comma
 (paren
 r_int
 )paren
+id|old_encode_dev
+c_func
+(paren
 id|dev-&gt;device
+)paren
 comma
 id|dev-&gt;unique
 )paren
@@ -813,7 +817,11 @@ comma
 (paren
 r_int
 )paren
+id|old_encode_dev
+c_func
+(paren
 id|dev-&gt;device
+)paren
 )paren
 suffix:semicolon
 )brace

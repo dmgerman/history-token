@@ -1,10 +1,10 @@
-multiline_comment|/*&n; * Definition of platform feature hooks for PowerMacs&n; * &n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1998 Paul Mackerras &amp;&n; *                    Ben. Herrenschmidt.&n; *                    &n; *                    &n; * Note: I removed media-bay details from the feature stuff, I beleive it&squot;s&n; *       not worth it, the media-bay driver can directly use the mac-io&n; *       ASIC registers.&n; *       &n; * Implementation note: Currently, none of these functions will block.&n; * However, they may internally protect themselves with a spinlock&n; * for way too long. Be prepared for at least some of these to block&n; * in the future.&n; * &n; * Unless specifically defined, the result code is assumed to be an&n; * error when negative, 0 is the default success result. Some functions&n; * may return additional positive result values.&n; * &n; * To keep implementation simple, all feature calls are assumed to have&n; * the prototype parameters (struct device_node* node, int value).&n; * When either is not used, pass 0.&n; */
+multiline_comment|/*&n; * Definition of platform feature hooks for PowerMacs&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1998 Paul Mackerras &amp;&n; *                    Ben. Herrenschmidt.&n; *&n; *&n; * Note: I removed media-bay details from the feature stuff, I beleive it&squot;s&n; *       not worth it, the media-bay driver can directly use the mac-io&n; *       ASIC registers.&n; *&n; * Implementation note: Currently, none of these functions will block.&n; * However, they may internally protect themselves with a spinlock&n; * for way too long. Be prepared for at least some of these to block&n; * in the future.&n; *&n; * Unless specifically defined, the result code is assumed to be an&n; * error when negative, 0 is the default success result. Some functions&n; * may return additional positive result values.&n; *&n; * To keep implementation simple, all feature calls are assumed to have&n; * the prototype parameters (struct device_node* node, int value).&n; * When either is not used, pass 0.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __PPC_ASM_PMAC_FEATURE_H
 DECL|macro|__PPC_ASM_PMAC_FEATURE_H
 mdefine_line|#define __PPC_ASM_PMAC_FEATURE_H
 macro_line|#include &lt;asm/macio.h&gt;
-multiline_comment|/*&n; * Known Mac motherboard models&n; * &n; * Please, report any error here to benh@kernel.crashing.org, thanks !&n; * &n; * Note that I don&squot;t fully maintain this list for Core99 &amp; MacRISC2&n; * and I&squot;m considering removing all NewWorld entries from it and&n; * entirely rely on the model string.&n; */
+multiline_comment|/*&n; * Known Mac motherboard models&n; *&n; * Please, report any error here to benh@kernel.crashing.org, thanks !&n; *&n; * Note that I don&squot;t fully maintain this list for Core99 &amp; MacRISC2&n; * and I&squot;m considering removing all NewWorld entries from it and&n; * entirely rely on the model string.&n; */
 multiline_comment|/* PowerSurge are the first generation of PCI Pmacs. This include&n; * all of the Grand-Central based machines. We currently don&squot;t&n; * differenciate most of them.&n; */
 DECL|macro|PMAC_TYPE_PSURGE
 mdefine_line|#define PMAC_TYPE_PSURGE&t;&t;0x10&t;/* PowerSurge */
@@ -43,7 +43,7 @@ DECL|macro|PMAC_TYPE_YIKES
 mdefine_line|#define PMAC_TYPE_YIKES&t;&t;&t;0x43&t;/* Yikes G4 (PCI graphics) */
 DECL|macro|PMAC_TYPE_UNKNOWN_PADDINGTON
 mdefine_line|#define PMAC_TYPE_UNKNOWN_PADDINGTON&t;0x4f&t;/* Unknown but paddington based */
-multiline_comment|/* Core99 machines based on UniNorth 1.0 and 1.5&n; * &n; * Note: A single entry here may cover several actual models according&n; * to the device-tree. (Sawtooth is most tower G4s, FW_IMAC is most&n; * FireWire based iMacs, etc...). Those machines are too similar to be&n; * distinguished here, when they need to be differencied, use the&n; * device-tree &quot;model&quot; or &quot;compatible&quot; property.&n; */
+multiline_comment|/* Core99 machines based on UniNorth 1.0 and 1.5&n; *&n; * Note: A single entry here may cover several actual models according&n; * to the device-tree. (Sawtooth is most tower G4s, FW_IMAC is most&n; * FireWire based iMacs, etc...). Those machines are too similar to be&n; * distinguished here, when they need to be differencied, use the&n; * device-tree &quot;model&quot; or &quot;compatible&quot; property.&n; */
 DECL|macro|PMAC_TYPE_ORIG_IBOOK
 mdefine_line|#define PMAC_TYPE_ORIG_IBOOK&t;&t;0x40&t;/* First iBook model (no firewire) */
 DECL|macro|PMAC_TYPE_SAWTOOTH
@@ -74,7 +74,7 @@ multiline_comment|/* MacRisc2 with UniNorth 2.0 */
 DECL|macro|PMAC_TYPE_RACKMAC
 mdefine_line|#define PMAC_TYPE_RACKMAC&t;&t;0x80&t;/* XServe */
 DECL|macro|PMAC_TYPE_WINDTUNNEL
-mdefine_line|#define PMAC_TYPE_WINDTUNNEL&t;&t;0x81&t;
+mdefine_line|#define PMAC_TYPE_WINDTUNNEL&t;&t;0x81
 multiline_comment|/* MacRISC2 machines based on the Pangea chipset&n; */
 DECL|macro|PMAC_TYPE_PANGEA_IMAC
 mdefine_line|#define PMAC_TYPE_PANGEA_IMAC&t;&t;0x100&t;/* Flower Power iMac */
@@ -96,7 +96,7 @@ DECL|macro|PMAC_MB_OLD_CORE99
 mdefine_line|#define PMAC_MB_OLD_CORE99&t;&t;0x00000004
 DECL|macro|PMAC_MB_MOBILE
 mdefine_line|#define PMAC_MB_MOBILE&t;&t;&t;0x00000008
-multiline_comment|/*&n; * Feature calls supported on pmac&n; * &t;&n; */
+multiline_comment|/*&n; * Feature calls supported on pmac&n; *&n; */
 multiline_comment|/*&n; * Use this inline wrapper&n; */
 r_struct
 id|device_node
@@ -206,7 +206,7 @@ mdefine_line|#define PMAC_FTR_1394_CABLE_POWER&t;PMAC_FTR_DEF(14)
 multiline_comment|/* PMAC_FTR_SLEEP_STATE&t;&t;(struct device_node* node, 0, int value)&n; * set the sleep state of the motherboard.&n; * Pass -1 as value to query for sleep capability&n; */
 DECL|macro|PMAC_FTR_SLEEP_STATE
 mdefine_line|#define PMAC_FTR_SLEEP_STATE&t;&t;PMAC_FTR_DEF(15)
-multiline_comment|/* PMAC_FTR_GET_MB_INFO&t;&t;(NULL, selector, 0)&n; * &n; * returns some motherboard infos.&n; * selector: 0  - model id&n; *           1  - model flags (capabilities)&n; *           2  - model name (cast to const char *)&n; */
+multiline_comment|/* PMAC_FTR_GET_MB_INFO&t;&t;(NULL, selector, 0)&n; *&n; * returns some motherboard infos.&n; * selector: 0  - model id&n; *           1  - model flags (capabilities)&n; *           2  - model name (cast to const char *)&n; */
 DECL|macro|PMAC_FTR_GET_MB_INFO
 mdefine_line|#define PMAC_FTR_GET_MB_INFO&t;&t;PMAC_FTR_DEF(16)
 DECL|macro|PMAC_MB_INFO_MODEL

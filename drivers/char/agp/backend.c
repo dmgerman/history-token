@@ -1119,7 +1119,7 @@ r_void
 )paren
 (brace
 )brace
-macro_line|#ifdef MODULE
+macro_line|#ifndef MODULE
 DECL|function|agp_setup
 r_static
 id|__init

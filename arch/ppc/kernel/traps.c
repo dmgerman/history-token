@@ -2222,6 +2222,41 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_INT_TAU */
+macro_line|#ifdef CONFIG_ALTIVEC
+r_void
+DECL|function|AltivecAssistException
+id|AltivecAssistException
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|regs-&gt;msr
+op_amp
+id|MSR_VEC
+)paren
+id|giveup_altivec
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+multiline_comment|/* XXX quick hack for now: set the non-Java bit in the VSCR */
+id|current-&gt;thread.vscr.u
+(braket
+l_int|3
+)braket
+op_or_assign
+l_int|0x10000
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_ALTIVEC */
 DECL|function|trap_init
 r_void
 id|__init

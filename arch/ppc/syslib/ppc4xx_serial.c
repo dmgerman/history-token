@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/syslib/ppc405_serial.c&n; *&n; * Author: MontaVista Software, Inc.&n; *         &t;frank_rowand@mvista.com or source@mvista.com&n; * &t;   &t;debbie_chu@mvista.com&n; *&n; * This is a fairly standard 165xx type device that will eventually&n; * be merged with other similar processor/boards.&t;-- Dan&n; *&n; * 2000 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; *&n; * Console I/O support for Early kernel bringup. &n; */
+multiline_comment|/*&n; * arch/ppc/syslib/ppc405_serial.c&n; *&n; * Author: MontaVista Software, Inc.&n; *         &t;frank_rowand@mvista.com or source@mvista.com&n; * &t;   &t;debbie_chu@mvista.com&n; *&n; * This is a fairly standard 165xx type device that will eventually&n; * be merged with other similar processor/boards.&t;-- Dan&n; *&n; * 2000 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; *&n; * Console I/O support for Early kernel bringup.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if defined(CONFIG_IBM405GP) || defined(CONFIG_IBM405CR)
 macro_line|#ifdef CONFIG_KGDB
@@ -117,7 +117,7 @@ l_int|0x80
 suffix:semicolon
 multiline_comment|/* DLAB on  */
 multiline_comment|/* ftr revisit - there is no config option for this&n;**  also see include/asm-ppc/ppc405_serial.h&n;**&n;** #define CONFIG_IBM405GP_INTERNAL_CLOCK&n;*/
-macro_line|#ifdef  CONFIG_IBM405GP_INTERNAL_CLOCK 
+macro_line|#ifdef  CONFIG_IBM405GP_INTERNAL_CLOCK
 multiline_comment|/* ftr revisit&n;    ** why is bit 19 of chcr0 (0x1000) being set?&n;    */
 multiline_comment|/* 0x2a results in data corruption, kgdb works with 0x28 */
 op_star

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Siemens PCU E board specific definitions&n; * &n; * Copyright (c) 2001 Wolfgang Denk (wd@denx.de)&n; */
+multiline_comment|/*&n; * Siemens PCU E board specific definitions&n; *&n; * Copyright (c) 2001 Wolfgang Denk (wd@denx.de)&n; */
 macro_line|#ifndef __MACH_PCU_E_H
 DECL|macro|__MACH_PCU_E_H
 mdefine_line|#define __MACH_PCU_E_H

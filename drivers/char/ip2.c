@@ -83,7 +83,6 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-macro_line|#ifdef MODULE
 DECL|variable|poll_only
 r_static
 r_int
@@ -163,21 +162,16 @@ comma
 l_string|&quot;Do not use card interrupts&quot;
 )paren
 suffix:semicolon
-singleline_comment|//======================================================================
+DECL|function|ip2_init
+r_static
 r_int
-DECL|function|init_module
-id|init_module
+id|__init
+id|ip2_init
 c_func
 (paren
 r_void
 )paren
 (brace
-r_int
-id|rc
-suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-singleline_comment|// hold till done 
 r_if
 c_cond
 (paren
@@ -208,8 +202,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|rc
-op_assign
+r_return
 id|ip2_loadmain
 c_func
 (paren
@@ -230,50 +223,21 @@ id|fip_firm
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// The call to lock and load main, create dep 
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-singleline_comment|//done - kerneld now can unload us
-r_return
-id|rc
-suffix:semicolon
 )brace
-singleline_comment|//======================================================================
-r_int
-DECL|function|ip2_init
+DECL|variable|ip2_init
+id|module_init
+c_func
+(paren
 id|ip2_init
-c_func
-(paren
-r_void
 )paren
-(brace
-singleline_comment|// call to this is in tty_io.c so we need this
-r_return
-l_int|0
 suffix:semicolon
-)brace
-singleline_comment|//======================================================================
-r_void
-DECL|function|cleanup_module
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#else&t;
-singleline_comment|// !MODULE 
-macro_line|#ifndef NULL
-DECL|macro|NULL
-macro_line|# define NULL&t;&t;((void *) 0)
-macro_line|#endif
+macro_line|#ifndef MODULE
 multiline_comment|/******************************************************************************&n; *&t;ip2_setup:&n; *&t;&t;str: kernel command line string&n; *&n; *&t;Can&squot;t autoprobe the boards so user must specify configuration on&n; *&t;kernel command line.  Sane people build it modular but the others&n; *&t;come here.&n; *&n; *&t;Alternating pairs of io,irq for up to 4 boards.&n; *&t;&t;ip2=io0,irq0,io1,irq1,io2,irq2,io3,irq3&n; *&n; *&t;&t;io=0 =&gt; No board&n; *&t;&t;io=1 =&gt; PCI&n; *&t;&t;io=2 =&gt; EISA&n; *&t;&t;else =&gt; ISA I/O address&n; *&n; *&t;&t;irq=0 or invalid for ISA will revert to polling mode&n; *&n; *&t;&t;Any value = -1, do not overwrite compiled in value.&n; *&n; ******************************************************************************/
 DECL|function|ip2_setup
 r_static
@@ -416,37 +380,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-r_int
-DECL|function|ip2_init
-id|ip2_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|ip2_loadmain
-c_func
-(paren
-id|io
-comma
-id|irq
-comma
-(paren
-r_int
-r_char
-op_star
-)paren
-id|fip_firm
-comma
-r_sizeof
-(paren
-id|fip_firm
-)paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,13))
 id|__setup
 c_func
 (paren
@@ -455,13 +388,5 @@ comma
 id|ip2_setup
 )paren
 suffix:semicolon
-DECL|variable|ip2_init
-id|__initcall
-c_func
-(paren
-id|ip2_init
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* !MODULE */
 eof

@@ -807,15 +807,14 @@ id|ch-&gt;tmp_buf
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*****************************************************************************/
-macro_line|#ifdef MODULE
-multiline_comment|/*****************************************************************************/
 DECL|function|pcxe_cleanup
 r_static
 r_void
+id|__exit
 id|pcxe_cleanup
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -914,7 +913,6 @@ c_func
 id|pcxe_cleanup
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|chan
 r_static
 r_inline
@@ -4447,6 +4445,16 @@ op_increment
 suffix:semicolon
 )brace
 macro_line|#endif
+id|module_init
+c_func
+(paren
+id|pcxe_init
+)paren
+id|module_exit
+c_func
+(paren
+id|pcxe_exit
+)paren
 DECL|variable|pcxe_ops
 r_static
 r_struct
@@ -4533,6 +4541,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * function to initialize the driver with the given parameters, which are either&n; * the default values from this file or the parameters given at boot.&n; */
 DECL|function|pcxe_init
+r_static
 r_int
 id|__init
 id|pcxe_init

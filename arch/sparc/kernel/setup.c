@@ -1246,7 +1246,11 @@ id|MS_RDONLY
 suffix:semicolon
 id|ROOT_DEV
 op_assign
+id|old_decode_dev
+c_func
+(paren
 id|root_dev
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 id|rd_image_start

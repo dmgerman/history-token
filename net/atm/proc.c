@@ -22,10 +22,8 @@ macro_line|#include &lt;asm/param.h&gt; /* for HZ */
 macro_line|#include &quot;resources.h&quot;
 macro_line|#include &quot;common.h&quot; /* atm_proc_init prototype */
 macro_line|#include &quot;signaling.h&quot; /* to get sigd - ugly too */
-macro_line|#if defined(CONFIG_ATM_CLIP) || defined(CONFIG_ATM_CLIP_MODULE)
 macro_line|#include &lt;net/atmclip.h&gt;
 macro_line|#include &quot;ipcommon.h&quot;
-macro_line|#endif
 macro_line|#if defined(CONFIG_ATM_LANE) || defined(CONFIG_ATM_LANE_MODULE)
 macro_line|#include &quot;lec.h&quot;
 macro_line|#include &quot;lec_arpc.h&quot;

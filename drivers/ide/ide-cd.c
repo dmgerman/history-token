@@ -9319,7 +9319,7 @@ op_logical_neg
 id|cgc-&gt;stat
 )paren
 id|cgc-&gt;buflen
-op_assign
+op_sub_assign
 id|req.data_len
 suffix:semicolon
 r_return

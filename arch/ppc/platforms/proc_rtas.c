@@ -127,7 +127,7 @@ mdefine_line|#define TONE_FREQUENCY&t;&t;0x0001 /* 0 - 1000 (HZ)*/
 DECL|macro|TONE_VOLUME
 mdefine_line|#define TONE_VOLUME&t;&t;0x0002 /* 0 - 100 (%) */
 DECL|macro|SYSTEM_POWER_STATE
-mdefine_line|#define SYSTEM_POWER_STATE&t;0x0003 
+mdefine_line|#define SYSTEM_POWER_STATE&t;0x0003
 DECL|macro|WARNING_LIGHT
 mdefine_line|#define WARNING_LIGHT&t;&t;0x0004
 DECL|macro|DISK_ACTIVITY_LIGHT
@@ -150,7 +150,7 @@ mdefine_line|#define GLOBAL_INTERRUPT_QUEUE&t;0x232d /* 9005 */
 multiline_comment|/* 9006 - 9999: Vendor specific */
 multiline_comment|/* other */
 DECL|macro|MAX_SENSORS
-mdefine_line|#define MAX_SENSORS&t;&t; 17  /* I only know of 17 sensors */    
+mdefine_line|#define MAX_SENSORS&t;&t; 17  /* I only know of 17 sensors */
 DECL|macro|MAX_LINELENGTH
 mdefine_line|#define MAX_LINELENGTH          256
 DECL|macro|SENSOR_PREFIX
@@ -3239,7 +3239,7 @@ id|n
 suffix:semicolon
 )brace
 multiline_comment|/* ****************************************************************** */
-multiline_comment|/* &n; * Format: &n; * ${LETTER}${NUMBER}[[-/]${LETTER}${NUMBER} [ ... ] ]&n; * the &squot;.&squot; may be an abbrevation&n; */
+multiline_comment|/*&n; * Format:&n; * ${LETTER}${NUMBER}[[-/]${LETTER}${NUMBER} [ ... ] ]&n; * the &squot;.&squot; may be an abbrevation&n; */
 DECL|function|check_location_string
 r_int
 id|check_location_string

@@ -7667,11 +7667,21 @@ id|CE_ALERT
 comma
 id|log-&gt;l_mp
 comma
-l_string|&quot;xfs_log_recover: unknown buffer type 0x%x, dev 0x%x&quot;
+l_string|&quot;xfs_log_recover: unknown buffer type 0x%x, dev %u:%u&quot;
 comma
 id|buf_f-&gt;blf_type
 comma
+id|MAJOR
+c_func
+(paren
 id|log-&gt;l_dev
+)paren
+comma
+id|MINOR
+c_func
+(paren
+id|log-&gt;l_dev
+)paren
 )paren
 suffix:semicolon
 id|XFS_ERROR_REPORT

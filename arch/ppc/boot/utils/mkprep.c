@@ -744,7 +744,7 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif /* __i386__ */
-macro_line|#endif    
+macro_line|#endif
 macro_line|#ifdef __i386__
 id|pe-&gt;number_of_sectors
 op_assign

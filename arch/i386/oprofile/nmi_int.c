@@ -1584,7 +1584,6 @@ l_string|&quot;i386/athlon&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#if defined(CONFIG_X86_64)
 r_case
 l_int|0xf
 suffix:colon
@@ -1593,13 +1592,13 @@ op_assign
 op_amp
 id|op_athlon_spec
 suffix:semicolon
+multiline_comment|/* Actually it could be i386/hammer too, but give&n;&t;&t;&t;&t;   user space an consistent name. */
 id|nmi_ops.cpu_type
 op_assign
 l_string|&quot;x86-64/hammer&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_X86_64 */
 )brace
 r_break
 suffix:semicolon

@@ -275,6 +275,7 @@ id|atm_clip_ops
 op_star
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_ATM_CLIP) || defined(CONFIG_ATM_CLIP_MODULE)
 r_int
 id|try_atm_clip_ops
 c_func
@@ -282,6 +283,22 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|function|try_atm_clip_ops
+r_static
+r_inline
+r_int
+id|try_atm_clip_ops
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 r_extern
 r_struct
 id|neigh_table

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Multidata HERMES-PRO ( / SL ) board specific definitions&n; * &n; * Copyright (c) 2000, 2001 Wolfgang Denk (wd@denx.de)&n; */
+multiline_comment|/*&n; * Multidata HERMES-PRO ( / SL ) board specific definitions&n; *&n; * Copyright (c) 2000, 2001 Wolfgang Denk (wd@denx.de)&n; */
 macro_line|#ifndef __MACH_HERMES_H
 DECL|macro|__MACH_HERMES_H
 mdefine_line|#define __MACH_HERMES_H

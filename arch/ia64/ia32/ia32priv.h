@@ -548,6 +548,7 @@ id|stat64
 DECL|member|st_dev
 r_int
 r_int
+r_int
 id|st_dev
 suffix:semicolon
 DECL|member|__pad0
@@ -555,7 +556,7 @@ r_int
 r_char
 id|__pad0
 (braket
-l_int|10
+l_int|4
 )braket
 suffix:semicolon
 DECL|member|__st_ino
@@ -586,6 +587,7 @@ suffix:semicolon
 DECL|member|st_rdev
 r_int
 r_int
+r_int
 id|st_rdev
 suffix:semicolon
 DECL|member|__pad3
@@ -593,7 +595,7 @@ r_int
 r_char
 id|__pad3
 (braket
-l_int|10
+l_int|4
 )braket
 suffix:semicolon
 DECL|member|st_size_lo

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Speech Design SPD8xxTS board specific definitions&n; * &n; * Copyright (c) 2000,2001 Wolfgang Denk (wd@denx.de)&n; */
+multiline_comment|/*&n; * Speech Design SPD8xxTS board specific definitions&n; *&n; * Copyright (c) 2000,2001 Wolfgang Denk (wd@denx.de)&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_SPD8XX_H__
 DECL|macro|__ASM_SPD8XX_H__

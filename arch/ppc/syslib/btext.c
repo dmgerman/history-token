@@ -452,7 +452,7 @@ l_string|&quot;&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Calc BAT values for mapping the display and store them&n; * in disp_BAT.  Those values are then used from head.S to map&n; * the display during identify_machine() and MMU_Init()&n; * &n; * The display is mapped to virtual address 0xD0000000, rather&n; * than 1:1, because some some CHRP machines put the frame buffer&n; * in the region starting at 0xC0000000 (KERNELBASE).&n; * This mapping is temporary and will disappear as soon as the&n; * setup done by MMU_Init() is applied.&n; * &n; * For now, we align the BAT and then map 8Mb on 601 and 16Mb&n; * on other PPCs. This may cause trouble if the framebuffer&n; * is really badly aligned, but I didn&squot;t encounter this case&n; * yet.&n; */
+multiline_comment|/* Calc BAT values for mapping the display and store them&n; * in disp_BAT.  Those values are then used from head.S to map&n; * the display during identify_machine() and MMU_Init()&n; *&n; * The display is mapped to virtual address 0xD0000000, rather&n; * than 1:1, because some some CHRP machines put the frame buffer&n; * in the region starting at 0xC0000000 (KERNELBASE).&n; * This mapping is temporary and will disappear as soon as the&n; * setup done by MMU_Init() is applied.&n; *&n; * For now, we align the BAT and then map 8Mb on 601 and 16Mb&n; * on other PPCs. This may cause trouble if the framebuffer&n; * is really badly aligned, but I didn&squot;t encounter this case&n; * yet.&n; */
 r_void
 id|__init
 DECL|function|btext_prepare_BAT
@@ -728,7 +728,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Here&squot;s a small text engine to use during early boot&n; * or for debugging purposes&n; * &n; * todo:&n; * &n; *  - build some kind of vgacon with it to enable early printk&n; *  - move to a separate file&n; *  - add a few video driver hooks to keep in sync with display&n; *    changes.&n; */
+multiline_comment|/* Here&squot;s a small text engine to use during early boot&n; * or for debugging purposes&n; *&n; * todo:&n; *&n; *  - build some kind of vgacon with it to enable early printk&n; *  - move to a separate file&n; *  - add a few video driver hooks to keep in sync with display&n; *    changes.&n; */
 r_void
 id|__openfirmware
 DECL|function|map_boot_text

@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/ocp.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
-multiline_comment|/**&n; * ocp_get_num - This determines how many OCP devices of a given&n; * device are registered&n; * @device: OCP device such as HOST, PCI, GPT, UART, OPB, IIC, GPIO, EMAC, ZMII,&n; *  &n; * The routine returns the number that devices which is registered&n; */
+multiline_comment|/**&n; * ocp_get_num - This determines how many OCP devices of a given&n; * device are registered&n; * @device: OCP device such as HOST, PCI, GPT, UART, OPB, IIC, GPIO, EMAC, ZMII,&n; *&n; * The routine returns the number that devices which is registered&n; */
 DECL|function|ocp_get_num
 r_int
 r_int
@@ -74,7 +74,7 @@ r_return
 id|count
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ocp_get_dev - get ocp driver pointer for ocp device and instance of it &n; * @device: OCP device such as PCI, GPT, UART, OPB, IIC, GPIO, EMAC, ZMII&n; * @dev_num: ocp device number whos paddr you want&n; *  &n; * The routine returns ocp device pointer &n; * in list based on device and instance of that device&n; *&n; */
+multiline_comment|/**&n; * ocp_get_dev - get ocp driver pointer for ocp device and instance of it&n; * @device: OCP device such as PCI, GPT, UART, OPB, IIC, GPIO, EMAC, ZMII&n; * @dev_num: ocp device number whos paddr you want&n; *&n; * The routine returns ocp device pointer&n; * in list based on device and instance of that device&n; *&n; */
 r_struct
 id|ocp_device
 op_star

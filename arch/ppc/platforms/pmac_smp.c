@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * SMP support for power macintosh.&n; *&n; * We support both the old &quot;powersurge&quot; SMP architecture&n; * and the current Core99 (G4 PowerMac) machines.&n; * &n; * Note that we don&squot;t support the very first rev. of&n; * Apple/DayStar 2 CPUs board, the one with the funky&n; * watchdog. Hopefully, none of these should be there except&n; * maybe internally to Apple. I should probably still add some&n; * code to detect this card though and disable SMP. --BenH.&n; *&n; * Support Macintosh G4 SMP by Troy Benjegerdes (hozer@drgw.net)&n; * and Ben Herrenschmidt &lt;benh@kernel.crashing.org&gt;.&n; *&n; * Support for DayStar quad CPU cards&n; * Copyright (C) XLR8, Inc. 1994-2000&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * SMP support for power macintosh.&n; *&n; * We support both the old &quot;powersurge&quot; SMP architecture&n; * and the current Core99 (G4 PowerMac) machines.&n; *&n; * Note that we don&squot;t support the very first rev. of&n; * Apple/DayStar 2 CPUs board, the one with the funky&n; * watchdog. Hopefully, none of these should be there except&n; * maybe internally to Apple. I should probably still add some&n; * code to detect this card though and disable SMP. --BenH.&n; *&n; * Support Macintosh G4 SMP by Troy Benjegerdes (hozer@drgw.net)&n; * and Ben Herrenschmidt &lt;benh@kernel.crashing.org&gt;.&n; *&n; * Support for DayStar quad CPU cards&n; * Copyright (C) XLR8, Inc. 1994-2000&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1807,7 +1807,7 @@ op_assign
 op_star
 id|vector
 suffix:semicolon
-multiline_comment|/* Setup fake reset vector that does&t;  &n;&t; *   b __secondary_start_psurge - KERNELBASE&n;&t; */
+multiline_comment|/* Setup fake reset vector that does&t;&n;&t; *   b __secondary_start_psurge - KERNELBASE&n;&t; */
 r_switch
 c_cond
 (paren

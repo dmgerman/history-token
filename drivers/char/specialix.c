@@ -5703,10 +5703,6 @@ id|specialix_board
 op_star
 id|bp
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|board
 op_assign
 id|SX_BOARD
@@ -10028,7 +10024,9 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* &n; * This routine must be called by kernel at boot time &n; */
 DECL|function|specialix_init
+r_static
 r_int
+id|__init
 id|specialix_init
 c_func
 (paren
@@ -10274,7 +10272,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|iobase
 r_int
 id|iobase
@@ -10328,9 +10325,11 @@ l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * You can setup up to 4 boards.&n; * by specifying &quot;iobase=0xXXX,0xXXX ...&quot; as insmod parameter.&n; * You should specify the IRQs too in that case &quot;irq=....,...&quot;. &n; * &n; * More than 4 boards in one computer is not possible, as the card can&n; * only use 4 different interrupts. &n; *&n; */
-DECL|function|init_module
+DECL|function|specialix_init_module
+r_static
 r_int
-id|init_module
+id|__init
+id|specialix_init_module
 c_func
 (paren
 r_void
@@ -10411,9 +10410,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
+DECL|function|specialix_exit_module
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|specialix_exit_module
 c_func
 (paren
 r_void
@@ -10472,7 +10473,20 @@ id|missed_irq_timer
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#endif /* MODULE */
+DECL|variable|specialix_init_module
+id|module_init
+c_func
+(paren
+id|specialix_init_module
+)paren
+suffix:semicolon
+DECL|variable|specialix_exit_module
+id|module_exit
+c_func
+(paren
+id|specialix_exit_module
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

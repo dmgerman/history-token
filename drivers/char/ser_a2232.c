@@ -123,14 +123,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize all A2232 boards; main entry point. */
-r_int
-id|a2232board_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* BEGIN GENERIC_SERIAL PROTOTYPES */
 r_static
 r_void
@@ -2583,7 +2575,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|a2232board_init
+r_static
 r_int
+id|__init
 id|a2232board_init
 c_func
 (paren
@@ -2987,25 +2981,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
+DECL|function|a2232board_exit
+r_static
 r_void
-)paren
-(brace
-r_return
-id|a2232board_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+id|__exit
+id|a2232board_exit
 c_func
 (paren
 r_void
@@ -3060,8 +3040,20 @@ id|a2232_driver_ID
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-multiline_comment|/***************************** End of Functions *********************/
+DECL|variable|a2232board_init
+id|module_init
+c_func
+(paren
+id|a2232board_init
+)paren
+suffix:semicolon
+DECL|variable|a2232board_exit
+id|module_exit
+c_func
+(paren
+id|a2232board_exit
+)paren
+suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

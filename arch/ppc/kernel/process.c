@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  arch/ppc/kernel/process.c&n; *&n; *  Derived from &quot;arch/i386/kernel/process.c&quot;&n; *    Copyright (C) 1995  Linus Torvalds&n; *&n; *  Updated and modified by Cort Dougan (cort@cs.nmt.edu) and&n; *  Paul Mackerras (paulus@cs.anu.edu.au)&n; *&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
+multiline_comment|/*&n; *  arch/ppc/kernel/process.c&n; *&n; *  Derived from &quot;arch/i386/kernel/process.c&quot;&n; *    Copyright (C) 1995  Linus Torvalds&n; *&n; *  Updated and modified by Cort Dougan (cort@cs.nmt.edu) and&n; *  Paul Mackerras (paulus@cs.anu.edu.au)&n; *&n; *  PowerPC version&n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -266,7 +266,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if 0&t;
+macro_line|#if 0
 multiline_comment|/* check thread magic */
 r_if
 c_cond
@@ -399,7 +399,7 @@ op_or_assign
 l_int|4
 suffix:semicolon
 )brace
-macro_line|#if 0&t;
+macro_line|#if 0
 multiline_comment|/* check amount of free stack */
 r_for
 c_loop
@@ -754,7 +754,7 @@ r_new
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* avoid complexity of lazy save/restore of fpu&n;&t; * by just saving it every time we switch out if&n;&t; * this task used the fpu during the last quantum.&n;&t; * &n;&t; * If it tries to use the fpu again, it&squot;ll trap and&n;&t; * reload its fp regs.  So we don&squot;t have to do a restore&n;&t; * every switch, just a save.&n;&t; *  -- Cort&n;&t; */
+multiline_comment|/* avoid complexity of lazy save/restore of fpu&n;&t; * by just saving it every time we switch out if&n;&t; * this task used the fpu during the last quantum.&n;&t; *&n;&t; * If it tries to use the fpu again, it&squot;ll trap and&n;&t; * reload its fp regs.  So we don&squot;t have to do a restore&n;&t; * every switch, just a save.&n;&t; *  -- Cort&n;&t; */
 r_if
 c_cond
 (paren
@@ -772,7 +772,7 @@ c_func
 id|prev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALTIVEC&t;
+macro_line|#ifdef CONFIG_ALTIVEC
 multiline_comment|/*&n;&t; * If the previous thread used altivec in the last quantum&n;&t; * (thus changing altivec regs) then save them.&n;&t; * We used to check the VRSAVE register but not all apps&n;&t; * set it, so we don&squot;t rely on it now (and in fact we need&n;&t; * to save &amp; restore VSCR even if VRSAVE == 0).  -- paulus&n;&t; *&n;&t; * On SMP we always save/restore altivec regs just to avoid the&n;&t; * complexity of changing processors.&n;&t; *  -- Cort&n;&t; */
 r_if
 c_cond
@@ -793,7 +793,7 @@ c_func
 id|prev
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_ALTIVEC */&t;
+macro_line|#endif /* CONFIG_ALTIVEC */
 macro_line|#endif /* CONFIG_SMP */
 multiline_comment|/* Avoid the trap.  On smp this this never happens since&n;&t; * we don&squot;t set last_task_used_altivec -- Cort&n;&t; */
 r_if
@@ -2094,7 +2094,7 @@ c_func
 id|current
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_ALTIVEC */ 
+macro_line|#endif /* CONFIG_ALTIVEC */
 id|error
 op_assign
 id|do_execve
@@ -2680,7 +2680,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#if 0&t;
+macro_line|#if 0
 r_if
 c_cond
 (paren

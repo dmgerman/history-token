@@ -638,7 +638,7 @@ dot
 dot
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * PCI &lt;-&gt; OF matching functions &n; */
+multiline_comment|/*&n; * PCI &lt;-&gt; OF matching functions&n; */
 r_struct
 id|pci_bus
 suffix:semicolon

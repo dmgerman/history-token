@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* SIS630 SMBus registers */
 DECL|macro|SMB_STS
 mdefine_line|#define SMB_STS&t;&t;&t;0x80&t;/* status */

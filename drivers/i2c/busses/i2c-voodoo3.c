@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* the only registers we use */
 DECL|macro|REG
 mdefine_line|#define REG&t;&t;0x78

@@ -1219,7 +1219,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * make the child exit.  Best I can do is send it a sigkill. &n; * perhaps it should be put in the status that it wants to &n; * exit.&n; */
+multiline_comment|/*&n; * make the child exit.  Best I can do is send it a sigkill.&n; * perhaps it should be put in the status that it wants to&n; * exit.&n; */
 r_case
 id|PTRACE_KILL
 suffix:colon

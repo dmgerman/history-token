@@ -738,7 +738,7 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Updating the RTC is not the job of this code. If the time is&n;&t; * stepped under NTP, the RTC will be update after STA_UNSYNC&n;&t; * is cleared. Tool like clock/hwclock either copy the RTC&n;&t; * to the system time, in which case there is no point in writing&n;&t; * to the RTC again, or write to the RTC but then they don&squot;t call&n;&t; * settimeofday to perform this operation. Note also that&n;&t; * we don&squot;t touch the decrementer since:&n;&t; * a) it would lose timer interrupt synchronization on SMP&n;&t; * (if it is working one day)&n;&t; * b) it could make one jiffy spuriously shorter or longer&n;&t; * which would introduce another source of uncertainty potentially&n;&t; * harmful to relatively short timers.&n;&t; */
-multiline_comment|/* This works perfectly on SMP only if the tb are in sync but &n;&t; * guarantees an error &lt; 1 jiffy even if they are off by eons,&n;&t; * still reasonable when gettimeofday resolution is 1 jiffy.&n;&t; */
+multiline_comment|/* This works perfectly on SMP only if the tb are in sync but&n;&t; * guarantees an error &lt; 1 jiffy even if they are off by eons,&n;&t; * still reasonable when gettimeofday resolution is 1 jiffy.&n;&t; */
 id|tb_delta
 op_assign
 id|tb_ticks_since
@@ -818,7 +818,7 @@ comma
 id|wtm_nsec
 )paren
 suffix:semicolon
-multiline_comment|/* In case of a large backwards jump in time with NTP, we want the &n;&t; * clock to be updated as soon as the PLL is again in lock.&n;&t; */
+multiline_comment|/* In case of a large backwards jump in time with NTP, we want the&n;&t; * clock to be updated as soon as the PLL is again in lock.&n;&t; */
 id|last_rtc_update
 op_assign
 id|new_sec
@@ -940,7 +940,7 @@ l_int|10
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Now that the decrementer is calibrated, it can be used in case the &n;&t; * clock is stuck, but the fact that we have to handle the 601&n;&t; * makes things more complex. Repeatedly read the RTC until the&n;&t; * next second boundary to try to achieve some precision.  If there&n;&t; * is no RTC, we still need to set tb_last_stamp and&n;&t; * last_jiffy_stamp(cpu 0) to the current stamp.&n;&t; */
+multiline_comment|/* Now that the decrementer is calibrated, it can be used in case the&n;&t; * clock is stuck, but the fact that we have to handle the 601&n;&t; * makes things more complex. Repeatedly read the RTC until the&n;&t; * next second boundary to try to achieve some precision.  If there&n;&t; * is no RTC, we still need to set tb_last_stamp and&n;&t; * last_jiffy_stamp(cpu 0) to the current stamp.&n;&t; */
 id|stamp
 op_assign
 id|get_native_tbl

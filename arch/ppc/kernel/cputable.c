@@ -196,6 +196,42 @@ id|spec
 suffix:semicolon
 r_extern
 r_void
+id|__setup_cpu_power4
+c_func
+(paren
+r_int
+r_int
+id|offset
+comma
+r_int
+id|cpu_nr
+comma
+r_struct
+id|cpu_spec
+op_star
+id|spec
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__setup_cpu_ppc970
+c_func
+(paren
+r_int
+r_int
+id|offset
+comma
+r_int
+id|cpu_nr
+comma
+r_struct
+id|cpu_spec
+op_star
+id|spec
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|__setup_cpu_8xx
 c_func
 (paren
@@ -231,17 +267,21 @@ id|spec
 )paren
 suffix:semicolon
 DECL|macro|CLASSIC_PPC
-mdefine_line|#define CLASSIC_PPC (!defined(CONFIG_8xx) &amp;&amp; !defined(CONFIG_4xx) &amp;&amp; &bslash;&n;&t;&t;     !defined(CONFIG_POWER3))
+mdefine_line|#define CLASSIC_PPC (!defined(CONFIG_8xx) &amp;&amp; !defined(CONFIG_4xx) &amp;&amp; &bslash;&n;&t;&t;     !defined(CONFIG_POWER3) &amp;&amp; !defined(CONFIG_POWER4))
 multiline_comment|/* This table only contains &quot;desktop&quot; CPUs, it need to be filled with embedded&n; * ones as well...&n; */
 DECL|macro|COMMON_PPC
 mdefine_line|#define COMMON_PPC&t;(PPC_FEATURE_32 | PPC_FEATURE_HAS_FPU | &bslash;&n;&t;&t;&t; PPC_FEATURE_HAS_MMU)
 multiline_comment|/* We only set the altivec features if the kernel was compiled with altivec&n; * support&n; */
 macro_line|#ifdef CONFIG_ALTIVEC
 DECL|macro|CPU_FTR_ALTIVEC_COMP
-mdefine_line|#define CPU_FTR_ALTIVEC_COMP&t;CPU_FTR_ALTIVEC
+mdefine_line|#define CPU_FTR_ALTIVEC_COMP&t;&t;CPU_FTR_ALTIVEC
+DECL|macro|PPC_FEATURE_ALTIVEC_COMP
+mdefine_line|#define PPC_FEATURE_ALTIVEC_COMP    &t;PPC_FEATURE_HAS_ALTIVEC  
 macro_line|#else
 DECL|macro|CPU_FTR_ALTIVEC_COMP
-mdefine_line|#define CPU_FTR_ALTIVEC_COMP&t;0
+mdefine_line|#define CPU_FTR_ALTIVEC_COMP&t;&t;0
+DECL|macro|PPC_FEATURE_ALTIVEC_COMP
+mdefine_line|#define PPC_FEATURE_ALTIVEC_COMP       &t;0
 macro_line|#endif
 DECL|variable|cpu_specs
 r_struct
@@ -763,7 +803,7 @@ id|CPU_FTR_CAN_NAP
 comma
 id|COMMON_PPC
 op_or
-id|PPC_FEATURE_HAS_ALTIVEC
+id|PPC_FEATURE_ALTIVEC_COMP
 comma
 l_int|32
 comma
@@ -798,7 +838,7 @@ id|CPU_FTR_CAN_NAP
 comma
 id|COMMON_PPC
 op_or
-id|PPC_FEATURE_HAS_ALTIVEC
+id|PPC_FEATURE_ALTIVEC_COMP
 comma
 l_int|32
 comma
@@ -833,7 +873,7 @@ id|CPU_FTR_CAN_NAP
 comma
 id|COMMON_PPC
 op_or
-id|PPC_FEATURE_HAS_ALTIVEC
+id|PPC_FEATURE_ALTIVEC_COMP
 comma
 l_int|32
 comma
@@ -866,7 +906,7 @@ id|CPU_FTR_SPEC7450
 comma
 id|COMMON_PPC
 op_or
-id|PPC_FEATURE_HAS_ALTIVEC
+id|PPC_FEATURE_ALTIVEC_COMP
 comma
 l_int|32
 comma
@@ -905,7 +945,7 @@ id|CPU_FTR_L3_DISABLE_NAP
 comma
 id|COMMON_PPC
 op_or
-id|PPC_FEATURE_HAS_ALTIVEC
+id|PPC_FEATURE_ALTIVEC_COMP
 comma
 l_int|32
 comma
@@ -942,7 +982,7 @@ id|CPU_FTR_NAP_DISABLE_L2_PR
 comma
 id|COMMON_PPC
 op_or
-id|PPC_FEATURE_HAS_ALTIVEC
+id|PPC_FEATURE_ALTIVEC_COMP
 comma
 l_int|32
 comma
@@ -977,7 +1017,7 @@ id|CPU_FTR_HAS_HIGH_BATS
 comma
 id|COMMON_PPC
 op_or
-id|PPC_FEATURE_HAS_ALTIVEC
+id|PPC_FEATURE_ALTIVEC_COMP
 comma
 l_int|32
 comma
@@ -1018,7 +1058,7 @@ id|CPU_FTR_HAS_HIGH_BATS
 comma
 id|COMMON_PPC
 op_or
-id|PPC_FEATURE_HAS_ALTIVEC
+id|PPC_FEATURE_ALTIVEC_COMP
 comma
 l_int|32
 comma
@@ -1057,7 +1097,7 @@ id|CPU_FTR_HAS_HIGH_BATS
 comma
 id|COMMON_PPC
 op_or
-id|PPC_FEATURE_HAS_ALTIVEC
+id|PPC_FEATURE_ALTIVEC_COMP
 comma
 l_int|32
 comma
@@ -1096,7 +1136,7 @@ id|CPU_FTR_HAS_HIGH_BATS
 comma
 id|COMMON_PPC
 op_or
-id|PPC_FEATURE_HAS_ALTIVEC
+id|PPC_FEATURE_ALTIVEC_COMP
 comma
 l_int|32
 comma
@@ -1151,7 +1191,7 @@ comma
 id|__setup_cpu_generic
 )brace
 comma
-macro_line|#endif /* CLASSIC_PPC */    
+macro_line|#endif /* CLASSIC_PPC */
 macro_line|#ifdef CONFIG_PPC64BRIDGE
 (brace
 multiline_comment|/* Power3 */
@@ -1253,7 +1293,65 @@ comma
 id|__setup_cpu_power3
 )brace
 comma
-macro_line|#endif /* CONFIG_PPC64BRIDGE */    
+macro_line|#endif /* CONFIG_PPC64BRIDGE */
+macro_line|#ifdef CONFIG_POWER4
+(brace
+multiline_comment|/* Power4 */
+l_int|0xffff0000
+comma
+l_int|0x00350000
+comma
+l_string|&quot;Power4&quot;
+comma
+id|CPU_FTR_SPLIT_ID_CACHE
+op_or
+id|CPU_FTR_USE_TB
+op_or
+id|CPU_FTR_HPTE_TABLE
+comma
+id|COMMON_PPC
+op_or
+id|PPC_FEATURE_64
+comma
+l_int|128
+comma
+l_int|128
+comma
+id|__setup_cpu_power4
+)brace
+comma
+(brace
+multiline_comment|/* PPC970 */
+l_int|0xffff0000
+comma
+l_int|0x00390000
+comma
+l_string|&quot;PPC970&quot;
+comma
+id|CPU_FTR_SPLIT_ID_CACHE
+op_or
+id|CPU_FTR_USE_TB
+op_or
+id|CPU_FTR_HPTE_TABLE
+op_or
+id|CPU_FTR_ALTIVEC_COMP
+op_or
+id|CPU_FTR_CAN_NAP
+comma
+id|COMMON_PPC
+op_or
+id|PPC_FEATURE_64
+op_or
+id|PPC_FEATURE_ALTIVEC_COMP
+comma
+l_int|128
+comma
+l_int|128
+comma
+id|__setup_cpu_ppc970
+)brace
+comma
+macro_line|#endif /* CONFIG_POWER4 */
 macro_line|#ifdef CONFIG_8xx
 (brace
 multiline_comment|/* 8xx */

@@ -214,7 +214,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* Since OpenPIC has only 4 IPIs, we use slightly different message numbers.&n; * &n; * Make sure this matches openpic_request_IPIs in open_pic.c, or what shows up&n; * in /proc/interrupts will be wrong!!! --Troy */
+multiline_comment|/* Since OpenPIC has only 4 IPIs, we use slightly different message numbers.&n; *&n; * Make sure this matches openpic_request_IPIs in open_pic.c, or what shows up&n; * in /proc/interrupts will be wrong!!! --Troy */
 DECL|macro|PPC_MSG_CALL_FUNCTION
 mdefine_line|#define PPC_MSG_CALL_FUNCTION&t;0
 DECL|macro|PPC_MSG_RESCHEDULE
@@ -225,7 +225,7 @@ DECL|macro|PPC_MSG_XMON_BREAK
 mdefine_line|#define PPC_MSG_XMON_BREAK&t;3
 DECL|macro|smp_message_pass
 mdefine_line|#define smp_message_pass(t,m,d,w) &bslash;&n;    do { if (smp_ops) &bslash;&n;&t;     atomic_inc(&amp;ipi_sent); &bslash;&n;&t;     smp_ops-&gt;message_pass((t),(m),(d),(w)); &bslash;&n;       } while(0)
-multiline_comment|/* &n; * Common functions&n; */
+multiline_comment|/*&n; * Common functions&n; */
 DECL|function|smp_local_timer_interrupt
 r_void
 id|smp_local_timer_interrupt

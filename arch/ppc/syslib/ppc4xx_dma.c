@@ -87,7 +87,7 @@ id|dma_channels
 id|MAX_405GP_DMA_CHANNELS
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * Configures a DMA channel, including the peripheral bus width, if a&n; * peripheral is attached to the channel, the polarity of the DMAReq and&n; * DMAAck signals, etc.  This information should really be setup by the boot &n; * code, since most likely the configuration won&squot;t change dynamically.&n; * If the kernel has to call this function, it&squot;s recommended that it&squot;s&n; * called from platform specific init code.  The driver should not need to &n; * call this function.&n; */
+multiline_comment|/*&n; * Configures a DMA channel, including the peripheral bus width, if a&n; * peripheral is attached to the channel, the polarity of the DMAReq and&n; * DMAAck signals, etc.  This information should really be setup by the boot&n; * code, since most likely the configuration won&squot;t change dynamically.&n; * If the kernel has to call this function, it&squot;s recommended that it&squot;s&n; * called from platform specific init code.  The driver should not need to&n; * call this function.&n; */
 DECL|function|hw_init_dma_channel
 r_int
 id|hw_init_dma_channel
@@ -691,7 +691,7 @@ r_return
 id|DMA_STATUS_GOOD
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Sets the priority for the DMA channel dmanr.&n; * Since this is setup by the hardware init function, this function &n; * can be used to dynamically change the priority of a channel.&n; *&n; * Acceptable priorities:&n; *&n; * PRIORITY_LOW&n; * PRIORITY_MID_LOW&n; * PRIORITY_MID_HIGH&n; * PRIORITY_HIGH&n; *&n; */
+multiline_comment|/*&n; * Sets the priority for the DMA channel dmanr.&n; * Since this is setup by the hardware init function, this function&n; * can be used to dynamically change the priority of a channel.&n; *&n; * Acceptable priorities:&n; *&n; * PRIORITY_LOW&n; * PRIORITY_MID_LOW&n; * PRIORITY_MID_HIGH&n; * PRIORITY_HIGH&n; *&n; */
 DECL|function|set_channel_priority
 r_int
 id|set_channel_priority
@@ -891,7 +891,7 @@ r_return
 id|DMA_STATUS_GOOD
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Returns the width of the peripheral attached to this channel. This assumes&n; * that someone who knows the hardware configuration, boot code or some other &n; * init code, already set the width.&n; *&n; * The return value is one of:&n; *   PW_8&n; *   PW_16&n; *   PW_32&n; *   PW_64&n; *&n; *   The function returns 0 on error.&n; */
+multiline_comment|/*&n; * Returns the width of the peripheral attached to this channel. This assumes&n; * that someone who knows the hardware configuration, boot code or some other&n; * init code, already set the width.&n; *&n; * The return value is one of:&n; *   PW_8&n; *   PW_16&n; *   PW_32&n; *   PW_64&n; *&n; *   The function returns 0 on error.&n; */
 DECL|function|get_peripheral_width
 r_int
 r_int
@@ -989,7 +989,7 @@ id|control
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *   Create a scatter/gather list handle.  This is simply a structure which&n; *   describes a scatter/gather list.&n; *&n; *   A handle is returned in &quot;handle&quot; which the driver should save in order to &n; *   be able to access this list later.  A chunk of memory will be allocated &n; *   to be used by the API for internal management purposes, including managing &n; *   the sg list and allocating memory for the sgl descriptors.  One page should &n; *   be more than enough for that purpose.  Perhaps it&squot;s a bit wasteful to use &n; *   a whole page for a single sg list, but most likely there will be only one &n; *   sg list per channel.&n; *&n; *   Interrupt notes:&n; *   Each sgl descriptor has a copy of the DMA control word which the DMA engine&n; *   loads in the control register.  The control word has a &quot;global&quot; interrupt &n; *   enable bit for that channel. Interrupts are further qualified by a few bits&n; *   in the sgl descriptor count register.  In order to setup an sgl, we have to&n; *   know ahead of time whether or not interrupts will be enabled at the completion&n; *   of the transfers.  Thus, enable_dma_interrupt()/disable_dma_interrupt() MUST&n; *   be called before calling alloc_dma_handle().  If the interrupt mode will never&n; *   change after powerup, then enable_dma_interrupt()/disable_dma_interrupt() &n; *   do not have to be called -- interrupts will be enabled or disabled based&n; *   on how the channel was configured after powerup by the hw_init_dma_channel()&n; *   function.  Each sgl descriptor will be setup to interrupt if an error occurs;&n; *   however, only the last descriptor will be setup to interrupt. Thus, an &n; *   interrupt will occur (if interrupts are enabled) only after the complete&n; *   sgl transfer is done.&n; */
+multiline_comment|/*&n; *   Create a scatter/gather list handle.  This is simply a structure which&n; *   describes a scatter/gather list.&n; *&n; *   A handle is returned in &quot;handle&quot; which the driver should save in order to&n; *   be able to access this list later.  A chunk of memory will be allocated&n; *   to be used by the API for internal management purposes, including managing&n; *   the sg list and allocating memory for the sgl descriptors.  One page should&n; *   be more than enough for that purpose.  Perhaps it&squot;s a bit wasteful to use&n; *   a whole page for a single sg list, but most likely there will be only one&n; *   sg list per channel.&n; *&n; *   Interrupt notes:&n; *   Each sgl descriptor has a copy of the DMA control word which the DMA engine&n; *   loads in the control register.  The control word has a &quot;global&quot; interrupt&n; *   enable bit for that channel. Interrupts are further qualified by a few bits&n; *   in the sgl descriptor count register.  In order to setup an sgl, we have to&n; *   know ahead of time whether or not interrupts will be enabled at the completion&n; *   of the transfers.  Thus, enable_dma_interrupt()/disable_dma_interrupt() MUST&n; *   be called before calling alloc_dma_handle().  If the interrupt mode will never&n; *   change after powerup, then enable_dma_interrupt()/disable_dma_interrupt()&n; *   do not have to be called -- interrupts will be enabled or disabled based&n; *   on how the channel was configured after powerup by the hw_init_dma_channel()&n; *   function.  Each sgl descriptor will be setup to interrupt if an error occurs;&n; *   however, only the last descriptor will be setup to interrupt. Thus, an&n; *   interrupt will occur (if interrupts are enabled) only after the complete&n; *   sgl transfer is done.&n; */
 DECL|function|alloc_dma_handle
 r_int
 id|alloc_dma_handle

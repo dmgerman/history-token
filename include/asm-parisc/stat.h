@@ -7,7 +7,8 @@ r_struct
 id|stat
 (brace
 DECL|member|st_dev
-id|dev_t
+r_int
+r_int
 id|st_dev
 suffix:semicolon
 multiline_comment|/* dev_t is 32 bits on parisc */
@@ -39,7 +40,8 @@ id|st_reserved2
 suffix:semicolon
 multiline_comment|/* old st_gid */
 DECL|member|st_rdev
-id|dev_t
+r_int
+r_int
 id|st_rdev
 suffix:semicolon
 DECL|member|st_size
@@ -88,7 +90,8 @@ id|__unused1
 suffix:semicolon
 multiline_comment|/* ACL stuff */
 DECL|member|__unused2
-id|dev_t
+r_int
+r_int
 id|__unused2
 suffix:semicolon
 multiline_comment|/* network */
@@ -114,7 +117,8 @@ r_int
 id|st_fstype
 suffix:semicolon
 DECL|member|st_realdev
-id|dev_t
+r_int
+r_int
 id|st_realdev
 suffix:semicolon
 DECL|member|st_basemode
@@ -157,7 +161,8 @@ r_struct
 id|hpux_stat64
 (brace
 DECL|member|st_dev
-id|dev_t
+r_int
+r_int
 id|st_dev
 suffix:semicolon
 multiline_comment|/* dev_t is 32 bits on parisc */
@@ -189,7 +194,8 @@ id|st_reserved2
 suffix:semicolon
 multiline_comment|/* old st_gid */
 DECL|member|st_rdev
-id|dev_t
+r_int
+r_int
 id|st_rdev
 suffix:semicolon
 DECL|member|st_size
@@ -238,7 +244,8 @@ id|__unused1
 suffix:semicolon
 multiline_comment|/* ACL stuff */
 DECL|member|__unused2
-id|dev_t
+r_int
+r_int
 id|__unused2
 suffix:semicolon
 multiline_comment|/* network */
@@ -264,7 +271,8 @@ r_int
 id|st_fstype
 suffix:semicolon
 DECL|member|st_realdev
-id|dev_t
+r_int
+r_int
 id|st_realdev
 suffix:semicolon
 DECL|member|st_basemode
