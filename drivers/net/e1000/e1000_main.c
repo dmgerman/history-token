@@ -9835,6 +9835,7 @@ c_func
 id|netdev
 )paren
 suffix:semicolon
+multiline_comment|/* turn on all-multi mode if wake on multicast is enabled */
 r_if
 c_cond
 (paren
@@ -9873,13 +9874,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|adapter-&gt;hw.media_type
-op_eq
-id|e1000_media_type_fiber
+id|adapter-&gt;hw.mac_type
+op_ge
+id|e1000_82540
 )paren
 (brace
-DECL|macro|E1000_CTRL_ADVD3WUC
-mdefine_line|#define E1000_CTRL_ADVD3WUC 0x00100000
 id|ctrl
 op_assign
 id|E1000_READ_REG
@@ -9891,9 +9890,17 @@ comma
 id|CTRL
 )paren
 suffix:semicolon
+multiline_comment|/* advertise wake from D3Cold */
+DECL|macro|E1000_CTRL_ADVD3WUC
+mdefine_line|#define E1000_CTRL_ADVD3WUC 0x00100000
+multiline_comment|/* phy power management enable */
+DECL|macro|E1000_CTRL_EN_PHY_PWR_MGMT
+mdefine_line|#define E1000_CTRL_EN_PHY_PWR_MGMT 0x00200000
 id|ctrl
 op_or_assign
 id|E1000_CTRL_ADVD3WUC
+op_or
+id|E1000_CTRL_EN_PHY_PWR_MGMT
 suffix:semicolon
 id|E1000_WRITE_REG
 c_func
@@ -9906,6 +9913,16 @@ comma
 id|ctrl
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|adapter-&gt;hw.media_type
+op_eq
+id|e1000_media_type_fiber
+)paren
+(brace
+multiline_comment|/* keep the laser running in D3 */
 id|ctrl_ext
 op_assign
 id|E1000_READ_REG
@@ -9941,7 +9958,7 @@ id|adapter-&gt;hw
 comma
 id|WUC
 comma
-l_int|0
+id|E1000_WUC_PME_EN
 )paren
 suffix:semicolon
 id|E1000_WRITE_REG
@@ -9965,6 +9982,17 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|pci_enable_wake
+c_func
+(paren
+id|pdev
+comma
+l_int|4
+comma
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* 4 == D3 cold */
 )brace
 r_else
 (brace
@@ -10000,6 +10028,17 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|pci_enable_wake
+c_func
+(paren
+id|pdev
+comma
+l_int|4
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* 4 == D3 cold */
 )brace
 id|pci_save_state
 c_func
@@ -10051,15 +10090,31 @@ comma
 id|manc
 )paren
 suffix:semicolon
+id|state
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 )brace
-r_else
+id|state
+op_assign
+(paren
+id|state
+OG
+l_int|0
+)paren
+ques
+c_cond
+l_int|3
+suffix:colon
+l_int|0
+suffix:semicolon
 id|pci_set_power_state
 c_func
 (paren
 id|pdev
 comma
-l_int|3
+id|state
 )paren
 suffix:semicolon
 r_return
@@ -10121,12 +10176,28 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0
+l_int|3
 comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Clear the wakeup status bits */
+id|pci_enable_wake
+c_func
+(paren
+id|pdev
+comma
+l_int|4
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* 4 == D3 cold */
+id|e1000_reset
+c_func
+(paren
+id|adapter
+)paren
+suffix:semicolon
 id|E1000_WRITE_REG
 c_func
 (paren
