@@ -3168,6 +3168,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|tty_sem
+)paren
+suffix:semicolon
 id|tty
 op_assign
 id|current-&gt;signal-&gt;tty
@@ -3181,6 +3188,13 @@ id|tty
 id|tty_pgrp
 op_assign
 id|tty-&gt;pgrp
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|tty_sem
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3227,6 +3241,13 @@ id|on_exit
 )paren
 suffix:semicolon
 )brace
+id|up
+c_func
+(paren
+op_amp
+id|tty_sem
+)paren
+suffix:semicolon
 id|unlock_kernel
 c_func
 (paren
@@ -3270,6 +3291,14 @@ id|on_exit
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Must lock changes to tty_old_pgrp */
+id|down
+c_func
+(paren
+op_amp
+id|tty_sem
+)paren
+suffix:semicolon
 id|current-&gt;signal-&gt;tty_old_pgrp
 op_assign
 l_int|0
@@ -3283,6 +3312,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+multiline_comment|/* Now clear signal-&gt;tty under the lock */
 id|read_lock
 c_func
 (paren
@@ -3320,6 +3350,13 @@ c_func
 (paren
 op_amp
 id|tasklist_lock
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|tty_sem
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -4399,14 +4436,6 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* &n;&t; * Check whether we need to acquire the tty semaphore to avoid&n;&t; * race conditions.  For now, play it safe.&n;&t; */
-id|down
-c_func
-(paren
-op_amp
-id|tty_sem
-)paren
-suffix:semicolon
 multiline_comment|/* check whether we&squot;re reopening an existing tty */
 r_if
 c_cond
@@ -5160,13 +5189,6 @@ suffix:semicolon
 multiline_comment|/* All paths come through here to release the semaphore */
 id|end_init
 suffix:colon
-id|up
-c_func
-(paren
-op_amp
-id|tty_sem
-)paren
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -5910,6 +5932,14 @@ c_loop
 l_int|1
 )paren
 (brace
+multiline_comment|/* Guard against races with tty-&gt;count changes elsewhere and&n;&t;&t;   opens on /dev/tty */
+id|down
+c_func
+(paren
+op_amp
+id|tty_sem
+)paren
+suffix:semicolon
 id|tty_closing
 op_assign
 id|tty-&gt;count
@@ -5931,6 +5961,13 @@ l_int|1
 suffix:colon
 l_int|0
 )paren
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|tty_sem
 )paren
 suffix:semicolon
 id|do_sleep
@@ -6070,6 +6107,13 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * The closing flags are now consistent with the open counts on &n;&t; * both sides, and we&squot;ve completed the last operation that could &n;&t; * block, so it&squot;s safe to proceed with closing.&n;&t; */
+id|down
+c_func
+(paren
+op_amp
+id|tty_sem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6140,6 +6184,13 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|up
+c_func
+(paren
+op_amp
+id|tty_sem
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * We&squot;ve decremented tty-&gt;count, so we need to remove this file&n;&t; * descriptor off the tty-&gt;tty_files list; this serves two&n;&t; * purposes:&n;&t; *  - check_tty_count sees the correct number of file descriptors&n;&t; *    associated with this tty.&n;&t; *  - do_tty_hangup no longer sees this file descriptor as&n;&t; *    something that needs to be handled for hangups.&n;&t; */
 id|file_kill
 c_func
@@ -6589,6 +6640,13 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|tty_sem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6609,10 +6667,19 @@ c_cond
 op_logical_neg
 id|current-&gt;signal-&gt;tty
 )paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|tty_sem
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENXIO
 suffix:semicolon
+)brace
 id|driver
 op_assign
 id|current-&gt;signal-&gt;tty-&gt;driver
@@ -6715,6 +6782,13 @@ r_goto
 id|got_driver
 suffix:semicolon
 )brace
+id|up
+c_func
+(paren
+op_amp
+id|tty_sem
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -6737,10 +6811,19 @@ c_cond
 op_logical_neg
 id|driver
 )paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|tty_sem
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 id|got_driver
 suffix:colon
 id|retval
@@ -6754,6 +6837,13 @@ id|index
 comma
 op_amp
 id|tty
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|tty_sem
 )paren
 suffix:semicolon
 r_if
@@ -7153,6 +7243,13 @@ op_amp
 id|allocated_ptys_lock
 )paren
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|tty_sem
+)paren
+suffix:semicolon
 id|retval
 op_assign
 id|init_dev
@@ -7164,6 +7261,13 @@ id|index
 comma
 op_amp
 id|tty
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|tty_sem
 )paren
 suffix:semicolon
 r_if

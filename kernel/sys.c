@@ -4129,6 +4129,13 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|tty_sem
+)paren
+suffix:semicolon
 id|write_lock_irq
 c_func
 (paren
@@ -4189,6 +4196,13 @@ c_func
 (paren
 op_amp
 id|tasklist_lock
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|tty_sem
 )paren
 suffix:semicolon
 r_return
