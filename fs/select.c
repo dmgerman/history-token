@@ -1903,17 +1903,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|nfds
-OG
-id|current-&gt;files-&gt;max_fds
-)paren
-id|nfds
-op_assign
-id|current-&gt;files-&gt;max_fds
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|timeout
 )paren
 (brace

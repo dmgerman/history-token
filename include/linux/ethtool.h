@@ -131,6 +131,35 @@ suffix:semicolon
 multiline_comment|/* Amount of data from ETHTOOL_GREGS */
 )brace
 suffix:semicolon
+DECL|macro|SOPASS_MAX
+mdefine_line|#define SOPASS_MAX&t;6
+multiline_comment|/* wake-on-lan settings */
+DECL|struct|ethtool_wolinfo
+r_struct
+id|ethtool_wolinfo
+(brace
+DECL|member|cmd
+id|u32
+id|cmd
+suffix:semicolon
+DECL|member|supported
+id|u32
+id|supported
+suffix:semicolon
+DECL|member|wolopts
+id|u32
+id|wolopts
+suffix:semicolon
+DECL|member|sopass
+id|u8
+id|sopass
+(braket
+id|SOPASS_MAX
+)braket
+suffix:semicolon
+multiline_comment|/* SecureOn(tm) password */
+)brace
+suffix:semicolon
 multiline_comment|/* CMDs currently supported */
 DECL|macro|ETHTOOL_GSET
 mdefine_line|#define ETHTOOL_GSET&t;&t;0x00000001 /* Get settings. */
@@ -140,6 +169,10 @@ DECL|macro|ETHTOOL_GDRVINFO
 mdefine_line|#define ETHTOOL_GDRVINFO&t;0x00000003 /* Get driver info. */
 DECL|macro|ETHTOOL_GREGS
 mdefine_line|#define ETHTOOL_GREGS&t;&t;0x00000004 /* Get NIC registers, privileged. */
+DECL|macro|ETHTOOL_GWOL
+mdefine_line|#define ETHTOOL_GWOL&t;&t;0x00000005 /* Get wake-on-lan options. */
+DECL|macro|ETHTOOL_SWOL
+mdefine_line|#define ETHTOOL_SWOL&t;&t;0x00000006 /* Set wake-on-lan options. */
 multiline_comment|/* compatibility with older code */
 DECL|macro|SPARC_ETH_GSET
 mdefine_line|#define SPARC_ETH_GSET&t;&t;ETHTOOL_GSET
@@ -231,5 +264,20 @@ DECL|macro|AUTONEG_DISABLE
 mdefine_line|#define AUTONEG_DISABLE&t;&t;0x00
 DECL|macro|AUTONEG_ENABLE
 mdefine_line|#define AUTONEG_ENABLE&t;&t;0x01
+multiline_comment|/* Wake-On-Lan options. */
+DECL|macro|WAKE_PHY
+mdefine_line|#define WAKE_PHY&t;&t;(1 &lt;&lt; 0)
+DECL|macro|WAKE_UCAST
+mdefine_line|#define WAKE_UCAST&t;&t;(1 &lt;&lt; 1)
+DECL|macro|WAKE_MCAST
+mdefine_line|#define WAKE_MCAST&t;&t;(1 &lt;&lt; 2)
+DECL|macro|WAKE_BCAST
+mdefine_line|#define WAKE_BCAST&t;&t;(1 &lt;&lt; 3)
+DECL|macro|WAKE_ARP
+mdefine_line|#define WAKE_ARP&t;&t;(1 &lt;&lt; 4)
+DECL|macro|WAKE_MAGIC
+mdefine_line|#define WAKE_MAGIC&t;&t;(1 &lt;&lt; 5)
+DECL|macro|WAKE_MAGICSECURE
+mdefine_line|#define WAKE_MAGICSECURE&t;(1 &lt;&lt; 6) /* only meaningful if WAKE_MAGIC */
 macro_line|#endif /* _LINUX_ETHTOOL_H */
 eof

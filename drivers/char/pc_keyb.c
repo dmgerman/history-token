@@ -86,6 +86,13 @@ r_int
 id|val
 )paren
 suffix:semicolon
+DECL|variable|aux_reconnect
+r_static
+r_int
+id|aux_reconnect
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#endif
 DECL|variable|kbd_controller_lock
 r_static
@@ -136,8 +143,10 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|macro|AUX_RECONNECT
-mdefine_line|#define AUX_RECONNECT 170 /* scancode when ps2 device is plugged (back) in */
+DECL|macro|AUX_RECONNECT1
+mdefine_line|#define AUX_RECONNECT1 0xaa&t;/* scancode1 when ps2 device is plugged (back) in */
+DECL|macro|AUX_RECONNECT2
+mdefine_line|#define AUX_RECONNECT2 0x00&t;/* scancode2 when ps2 device is plugged (back) in */
 DECL|variable|queue
 r_static
 r_struct
@@ -1211,6 +1220,11 @@ id|scancode
 )paren
 (brace
 macro_line|#ifdef CONFIG_PSMOUSE
+r_static
+r_int
+r_char
+id|prev_code
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1242,9 +1256,21 @@ c_cond
 (paren
 id|scancode
 op_eq
-id|AUX_RECONNECT
+id|AUX_RECONNECT2
+op_logical_and
+id|prev_code
+op_eq
+id|AUX_RECONNECT1
+op_logical_and
+id|aux_reconnect
 )paren
 (brace
+id|printk
+(paren
+id|KERN_INFO
+l_string|&quot;PS/2 mouse reconnect detected&bslash;n&quot;
+)paren
+suffix:semicolon
 id|queue-&gt;head
 op_assign
 id|queue-&gt;tail
@@ -1262,6 +1288,10 @@ multiline_comment|/* ping the mouse :) */
 r_return
 suffix:semicolon
 )brace
+id|prev_code
+op_assign
+id|scancode
+suffix:semicolon
 id|add_mouse_randomness
 c_func
 (paren
@@ -2818,6 +2848,33 @@ id|keyboard_interrupt
 suffix:semicolon
 )brace
 macro_line|#if defined CONFIG_PSMOUSE
+DECL|function|aux_reconnect_setup
+r_static
+r_int
+id|__init
+id|aux_reconnect_setup
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|aux_reconnect
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;psaux-reconnect&quot;
+comma
+id|aux_reconnect_setup
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Check if this is a dual port controller.&n; */
 DECL|function|detect_auxiliary_port
 r_static

@@ -3587,8 +3587,25 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|PageActive
+c_func
+(paren
+id|page
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|page-&gt;age
 )paren
+id|activate_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+r_else
 (brace
 id|page-&gt;age
 op_assign
@@ -3600,6 +3617,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/*&n; * This is a generic file read routine, and uses the&n; * inode-&gt;i_op-&gt;readpage() function for the actual low-level&n; * stuff.&n; *&n; * This is really ugly. But the goto&squot;s actually try to clarify some&n; * of the logic when it comes to error handling etc.&n; */
