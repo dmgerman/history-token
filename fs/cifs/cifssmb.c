@@ -170,6 +170,7 @@ id|GlobalSMBSeslock
 suffix:semicolon
 multiline_comment|/* BB Add call to invalidate_inodes(sb) for all superblocks mounted to this tcon */
 )brace
+multiline_comment|/* If the return code is zero, this function must fill in request_buf pointer */
 r_static
 r_int
 DECL|function|small_smb_init
@@ -536,6 +537,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+multiline_comment|/* If the return code is zero, this function must fill in request_buf pointer */
 r_static
 r_int
 DECL|function|smb_init
@@ -2022,6 +2024,23 @@ op_amp
 id|pSMB
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|ses-&gt;sesSem
+)paren
+suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
+)brace
 id|smb_buffer_response
 op_assign
 (paren
@@ -2055,23 +2074,6 @@ op_or_assign
 id|SMBFLG2_SECURITY_SIGNATURE
 suffix:semicolon
 )brace
-)brace
-r_if
-c_cond
-(paren
-id|rc
-)paren
-(brace
-id|up
-c_func
-(paren
-op_amp
-id|ses-&gt;sesSem
-)paren
-suffix:semicolon
-r_return
-id|rc
-suffix:semicolon
 )brace
 id|pSMB-&gt;hdr.Uid
 op_assign
@@ -2434,11 +2436,6 @@ id|tcon-&gt;num_deletes
 suffix:semicolon
 )brace
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -2701,11 +2698,6 @@ id|tcon-&gt;num_rmdirs
 suffix:semicolon
 )brace
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -2968,11 +2960,6 @@ id|tcon-&gt;num_mkdirs
 suffix:semicolon
 )brace
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -3474,11 +3461,6 @@ id|tcon-&gt;num_opens
 suffix:semicolon
 macro_line|#endif
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -3856,12 +3838,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pSMB
-)paren
-(brace
-r_if
-c_cond
-(paren
 op_star
 id|buf
 )paren
@@ -3883,7 +3859,6 @@ op_star
 )paren
 id|pSMB
 suffix:semicolon
-)brace
 multiline_comment|/* Note: On -EAGAIN error only caller can retry on handle based calls &n;&t;&t;since file handle passed in no longer valid */
 r_return
 id|rc
@@ -4157,19 +4132,12 @@ id|bytes_sent
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
-(brace
 id|cifs_buf_release
 c_func
 (paren
 id|pSMB
 )paren
 suffix:semicolon
-)brace
 r_return
 op_minus
 id|EFAULT
@@ -4179,19 +4147,12 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* No buffer */
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
-(brace
 id|cifs_buf_release
 c_func
 (paren
 id|pSMB
 )paren
 suffix:semicolon
-)brace
 r_return
 op_minus
 id|EINVAL
@@ -4323,11 +4284,6 @@ id|pSMBr-&gt;Count
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -4428,6 +4384,14 @@ op_amp
 id|pSMB
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_return
+id|rc
+suffix:semicolon
 id|pSMBr
 op_assign
 (paren
@@ -4437,14 +4401,6 @@ op_star
 id|pSMB
 suffix:semicolon
 multiline_comment|/* BB removeme BB */
-r_if
-c_cond
-(paren
-id|rc
-)paren
-r_return
-id|rc
-suffix:semicolon
 multiline_comment|/* tcon and ses pointer are checked in smb_init */
 r_if
 c_cond
@@ -4607,11 +4563,6 @@ c_func
 id|pSMBr-&gt;Count
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_small_buf_release
 c_func
 (paren
@@ -5004,11 +4955,6 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -5089,15 +5035,6 @@ op_amp
 id|pSMB
 )paren
 suffix:semicolon
-id|pSMBr
-op_assign
-(paren
-id|CLOSE_RSP
-op_star
-)paren
-id|pSMB
-suffix:semicolon
-multiline_comment|/* BB removeme BB */
 r_if
 c_cond
 (paren
@@ -5119,6 +5056,15 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
+id|pSMBr
+op_assign
+(paren
+id|CLOSE_RSP
+op_star
+)paren
+id|pSMB
+suffix:semicolon
+multiline_comment|/* BB removeme BB */
 id|pSMB-&gt;FileID
 op_assign
 (paren
@@ -5193,11 +5139,6 @@ id|rc
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_small_buf_release
 c_func
 (paren
@@ -5596,11 +5537,6 @@ id|tcon-&gt;num_renames
 suffix:semicolon
 )brace
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -6080,11 +6016,6 @@ id|pTcon-&gt;num_t2renames
 suffix:semicolon
 )brace
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -7441,11 +7372,6 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -7839,11 +7765,6 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -8387,11 +8308,6 @@ suffix:semicolon
 multiline_comment|/* just in case so calling code does not go off the end of buffer */
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -8712,7 +8628,19 @@ l_int|2048
 )paren
 )paren
 (brace
-multiline_comment|/* could also validate reparse tag &amp;&amp; better check name length */
+r_char
+op_star
+id|end_of_smb
+op_assign
+id|pSMBr-&gt;ByteCount
+op_plus
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|pSMBr-&gt;ByteCount
+suffix:semicolon
 r_struct
 id|reparse_data
 op_star
@@ -8734,6 +8662,60 @@ op_plus
 id|data_offset
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+r_char
+op_star
+)paren
+id|reparse_buf
+op_ge
+id|end_of_smb
+)paren
+(brace
+id|rc
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+r_goto
+id|qreparse_out
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|reparse_buf-&gt;LinkNamesBuf
+op_plus
+id|reparse_buf-&gt;TargetNameOffset
+op_plus
+id|reparse_buf-&gt;TargetNameLen
+)paren
+OG
+id|end_of_smb
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;reparse buf extended beyond SMB&quot;
+)paren
+)paren
+suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+r_goto
+id|qreparse_out
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -8857,6 +8839,8 @@ id|symlinkinfo
 suffix:semicolon
 )brace
 )brace
+id|qreparse_out
+suffix:colon
 r_if
 c_cond
 (paren
@@ -10054,11 +10038,6 @@ id|count
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -10520,11 +10499,6 @@ suffix:semicolon
 )brace
 id|setACLerrorExit
 suffix:colon
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -10974,11 +10948,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -11434,11 +11403,6 @@ id|FILE_UNIX_BASIC_INFO
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -11850,11 +11814,6 @@ r_else
 multiline_comment|/* decode response */
 multiline_comment|/* BB fill in */
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -11954,11 +11913,11 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;In FindFirst2&quot;
+l_string|&quot;In FindFirst&quot;
 )paren
 )paren
 suffix:semicolon
-id|findFirst2Retry
+id|findFirstRetry
 suffix:colon
 id|rc
 op_assign
@@ -12332,7 +12291,7 @@ op_minus
 id|EAGAIN
 )paren
 r_goto
-id|findFirst2Retry
+id|findFirstRetry
 suffix:semicolon
 )brace
 r_else
@@ -12457,19 +12416,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
-(brace
 id|cifs_buf_release
 c_func
 (paren
 id|pSMB
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 r_return
@@ -12540,7 +12492,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;In FindNext2&quot;
+l_string|&quot;In FindNext&quot;
 )paren
 )paren
 suffix:semicolon
@@ -13008,13 +12960,9 @@ suffix:colon
 r_if
 c_cond
 (paren
-(paren
 id|rc
 op_ne
 l_int|0
-)paren
-op_logical_and
-id|pSMB
 )paren
 id|cifs_buf_release
 c_func
@@ -13096,16 +13044,7 @@ op_amp
 id|pSMB
 )paren
 suffix:semicolon
-id|pSMBr
-op_assign
-(paren
-id|CLOSE_RSP
-op_star
-)paren
-id|pSMB
-suffix:semicolon
-multiline_comment|/* BB removeme BB */
-multiline_comment|/* no sense returning error if session restarted&n;&t;&t;file handle has been closed */
+multiline_comment|/* no sense returning error if session restarted&n;&t;&t;as file handle has been closed */
 r_if
 c_cond
 (paren
@@ -13127,6 +13066,15 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
+id|pSMBr
+op_assign
+(paren
+id|CLOSE_RSP
+op_star
+)paren
+id|pSMB
+suffix:semicolon
+multiline_comment|/* BB removeme BB */
 id|pSMB-&gt;FileID
 op_assign
 id|searchHandle
@@ -13183,11 +13131,6 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_small_buf_release
 c_func
 (paren
@@ -14650,11 +14593,6 @@ id|FSData-&gt;f_bsize
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -15032,11 +14970,6 @@ id|FILE_SYSTEM_ATTRIBUTE_INFO
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -15414,11 +15347,6 @@ id|FILE_SYSTEM_DEVICE_INFO
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -15795,11 +15723,6 @@ id|FILE_SYSTEM_UNIX_INFO
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -16207,11 +16130,6 @@ id|response_data-&gt;FreeFileNodes
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -16706,11 +16624,6 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -17557,11 +17470,6 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -18003,11 +17911,6 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -18441,11 +18344,6 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
@@ -19348,18 +19246,12 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren
 id|pSMB
 )paren
 suffix:semicolon
-multiline_comment|/*&t;&t;if (rc == -EAGAIN)&n;&t;&t;&t;goto NotifyRetry; */
 r_return
 id|rc
 suffix:semicolon
@@ -21144,6 +21036,12 @@ id|name_len
 suffix:semicolon
 suffix:semicolon
 multiline_comment|/* EA names are always ASCII */
+r_if
+c_cond
+(paren
+id|ea_name
+)paren
+(brace
 id|strncpy
 c_func
 (paren
@@ -21159,6 +21057,7 @@ comma
 id|name_len
 )paren
 suffix:semicolon
+)brace
 id|parm_data-&gt;list
 (braket
 l_int|0
@@ -21293,11 +21192,6 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|pSMB
-)paren
 id|cifs_buf_release
 c_func
 (paren

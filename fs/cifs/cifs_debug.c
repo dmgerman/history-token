@@ -377,7 +377,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;n%d) Name: %s  Domain: %s Mounts: %d ServerOS: %s  &bslash;n&bslash;tServerNOS: %s&bslash;tCapabilities: 0x%x&bslash;n&bslash;tSMB session status: %d&bslash;tTCP status: %d&quot;
+l_string|&quot;&bslash;n%d) Name: %s  Domain: %s Mounts: %d ServerOS: %s  &bslash;n&bslash;tServerNOS: %s&bslash;tCapabilities: 0x%x&bslash;n&bslash;tSMB session status: %d&bslash;t&quot;
 comma
 id|i
 comma
@@ -420,7 +420,9 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;n&bslash;tLocal Users To Server: %d SecMode: 0x%x Req Active: %d&quot;
+l_string|&quot;TCP status: %d&bslash;n&bslash;tLocal Users To Server: %d SecMode: 0x%x Req Active: %d&quot;
+comma
+id|ses-&gt;server-&gt;tcpStatus
 comma
 id|atomic_read
 c_func

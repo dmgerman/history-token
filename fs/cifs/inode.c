@@ -3499,12 +3499,19 @@ c_cond
 id|invalidate_inode
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|direntry-&gt;d_inode-&gt;i_mapping
+)paren
+(brace
 id|filemap_fdatawait
 c_func
 (paren
 id|direntry-&gt;d_inode-&gt;i_mapping
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* may eventually have to do this for open files too */
 r_if
 c_cond
