@@ -248,6 +248,7 @@ r_return
 id|page
 suffix:semicolon
 )brace
+r_static
 r_void
 id|free_huge_page
 c_func
@@ -1288,6 +1289,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|free_huge_page
+r_static
 r_void
 id|free_huge_page
 c_func
@@ -1857,6 +1859,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|update_and_free_page
+r_static
 r_void
 id|update_and_free_page
 c_func
@@ -1968,6 +1971,7 @@ id|HUGETLB_PAGE_ORDER
 suffix:semicolon
 )brace
 DECL|function|try_to_free_low
+r_static
 r_int
 id|try_to_free_low
 c_func
@@ -2116,6 +2120,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|function|set_hugetlb_mem_size
+r_static
 r_int
 id|set_hugetlb_mem_size
 c_func
@@ -2315,6 +2320,16 @@ op_star
 id|length
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_has_pse
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 id|proc_dointvec
 c_func
 (paren
@@ -2402,6 +2417,16 @@ r_struct
 id|page
 op_star
 id|page
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_has_pse
+)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 r_for
 c_loop
