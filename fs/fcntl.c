@@ -2608,6 +2608,14 @@ r_int
 id|band
 )paren
 (brace
+multiline_comment|/* First a quick test without locking: usually&n;&t; * the list is empty.&n;&t; */
+r_if
+c_cond
+(paren
+op_star
+id|fp
+)paren
+(brace
 id|read_lock
 c_func
 (paren
@@ -2615,6 +2623,7 @@ op_amp
 id|fasync_lock
 )paren
 suffix:semicolon
+multiline_comment|/* reread *fp after obtaining the lock */
 id|__kill_fasync
 c_func
 (paren
@@ -2633,6 +2642,7 @@ op_amp
 id|fasync_lock
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|variable|kill_fasync
 id|EXPORT_SYMBOL
