@@ -274,6 +274,12 @@ id|hwdev
 op_eq
 l_int|NULL
 op_logical_or
+id|dev_is_sa1111
+c_func
+(paren
+id|hwdev
+)paren
+op_logical_or
 id|hwdev-&gt;dma_mask
 op_ne
 l_int|0xffffffff
