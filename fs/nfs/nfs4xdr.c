@@ -10183,6 +10183,16 @@ c_func
 id|hdr.status
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|status
+)paren
+id|status
+op_assign
+id|res-&gt;count
+suffix:semicolon
 id|out
 suffix:colon
 r_return

@@ -3245,6 +3245,9 @@ suffix:semicolon
 id|ssize_t
 id|shift
 suffix:semicolon
+r_int
+id|padding
+suffix:semicolon
 multiline_comment|/* Realign pages to current pointer position */
 id|iov
 op_assign
@@ -3282,16 +3285,6 @@ id|shift
 )paren
 suffix:semicolon
 multiline_comment|/* Truncate page data and move it into the tail */
-id|len
-op_assign
-id|XDR_QUADLEN
-c_func
-(paren
-id|len
-)paren
-op_lshift
-l_int|2
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3309,6 +3302,20 @@ op_minus
 id|len
 )paren
 suffix:semicolon
+id|padding
+op_assign
+(paren
+id|XDR_QUADLEN
+c_func
+(paren
+id|len
+)paren
+op_lshift
+l_int|2
+)paren
+op_minus
+id|len
+suffix:semicolon
 id|xdr-&gt;iov
 op_assign
 id|iov
@@ -3321,7 +3328,15 @@ op_assign
 r_uint32
 op_star
 )paren
+(paren
+(paren
+r_char
+op_star
+)paren
 id|iov-&gt;iov_base
+op_plus
+id|padding
+)paren
 suffix:semicolon
 id|xdr-&gt;end
 op_assign
