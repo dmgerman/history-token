@@ -3038,6 +3038,7 @@ id|dentry
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
