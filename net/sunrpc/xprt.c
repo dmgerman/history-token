@@ -1700,9 +1700,9 @@ id|inet-&gt;state
 op_amp
 op_complement
 (paren
-id|TCP_SYN_SENT
+id|TCPF_SYN_SENT
 op_or
-id|TCP_SYN_RECV
+id|TCPF_SYN_RECV
 )paren
 )paren
 id|task-&gt;tk_timeout
