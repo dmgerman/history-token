@@ -908,20 +908,6 @@ id|priv-&gt;line_state
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|port_paranoia_check
-(paren
-id|port
-comma
-id|__FUNCTION__
-)paren
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 singleline_comment|// someone sets the dev to 0 if the close method has been called
 id|port-&gt;interrupt_in_urb-&gt;dev
 op_assign
