@@ -2846,10 +2846,8 @@ DECL|macro|SS_RESIDUAL_OVER
 mdefine_line|#define SS_RESIDUAL_OVER&t;&t;BIT_10
 DECL|macro|SS_SENSE_LEN_VALID
 mdefine_line|#define SS_SENSE_LEN_VALID&t;&t;BIT_9
-DECL|macro|SS_RESIDUAL_LEN_VALID
-mdefine_line|#define SS_RESIDUAL_LEN_VALID&t;&t;BIT_8&t;/* ISP2100 only */
 DECL|macro|SS_RESPONSE_INFO_LEN_VALID
-mdefine_line|#define SS_RESPONSE_INFO_LEN_VALID&t;BIT_8&t;/* ISP2200 and 23xx */
+mdefine_line|#define SS_RESPONSE_INFO_LEN_VALID&t;BIT_8
 DECL|macro|SS_RESERVE_CONFLICT
 mdefine_line|#define SS_RESERVE_CONFLICT&t;&t;(BIT_4 | BIT_3)
 DECL|macro|SS_BUSY_CONDITION

@@ -3862,9 +3862,15 @@ op_amp
 id|ha-&gt;loop_down_timer
 )paren
 op_logical_and
+(paren
 id|fw_state
 op_ge
 id|FSTATE_LOSS_OF_SYNC
+op_logical_or
+id|fw_state
+op_eq
+id|FSTATE_WAIT_AL_PA
+)paren
 )paren
 (brace
 multiline_comment|/* Loop down. Timeout on min_wait for states&n;&t;&t;&t;&t; * other than Wait for Login. &n;&t;&t;&t;&t; */
@@ -9502,6 +9508,9 @@ op_ne
 id|MBS_COMMAND_COMPLETE
 )paren
 (brace
+id|DEBUG2
+c_func
+(paren
 id|qla_printk
 c_func
 (paren
@@ -9539,10 +9548,11 @@ id|mb
 l_int|7
 )braket
 )paren
+)paren
 suffix:semicolon
 r_return
 (paren
-id|QLA_FUNCTION_FAILED
+id|QLA_SUCCESS
 )paren
 suffix:semicolon
 )brace
