@@ -26,6 +26,10 @@ op_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/* only PSDOUT0 is connected */
+id|ice-&gt;num_total_adcs
+op_assign
+l_int|2
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

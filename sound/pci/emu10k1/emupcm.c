@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *                   Creative Labs, Inc.&n; *  Routines for control of EMU10K1 chips / PCM routines&n; *&n; *  BUGS:&n; *    --&n; *&n; *  TODO:&n; *    --&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
@@ -1734,7 +1735,7 @@ op_assign
 r_int
 r_int
 )paren
-id|emu-&gt;silent_page_dmaaddr
+id|emu-&gt;silent_page.addr
 op_lshift
 l_int|1
 )paren
@@ -5594,12 +5595,18 @@ c_cond
 (paren
 id|err
 op_assign
-id|snd_pcm_lib_preallocate_sg_pages
+id|snd_pcm_lib_preallocate_pages
+c_func
+(paren
+id|substream
+comma
+id|SNDRV_DMA_TYPE_DEV_SG
+comma
+id|snd_dma_pci_data
 c_func
 (paren
 id|emu-&gt;pci
-comma
-id|substream
+)paren
 comma
 l_int|64
 op_star
@@ -5634,12 +5641,18 @@ id|substream
 op_assign
 id|substream-&gt;next
 )paren
-id|snd_pcm_lib_preallocate_pci_pages
+id|snd_pcm_lib_preallocate_pages
+c_func
+(paren
+id|substream
+comma
+id|SNDRV_DMA_TYPE_DEV
+comma
+id|snd_dma_pci_data
 c_func
 (paren
 id|emu-&gt;pci
-comma
-id|substream
+)paren
 comma
 l_int|64
 op_star
@@ -5848,12 +5861,18 @@ id|emu-&gt;pcm_mic
 op_assign
 id|pcm
 suffix:semicolon
-id|snd_pcm_lib_preallocate_pci_pages_for_all
+id|snd_pcm_lib_preallocate_pages_for_all
+c_func
+(paren
+id|pcm
+comma
+id|SNDRV_DMA_TYPE_DEV
+comma
+id|snd_dma_pci_data
 c_func
 (paren
 id|emu-&gt;pci
-comma
-id|pcm
+)paren
 comma
 l_int|64
 op_star
@@ -6499,12 +6518,18 @@ id|emu
 )paren
 )paren
 suffix:semicolon
-id|snd_pcm_lib_preallocate_pci_pages_for_all
+id|snd_pcm_lib_preallocate_pages_for_all
+c_func
+(paren
+id|pcm
+comma
+id|SNDRV_DMA_TYPE_DEV
+comma
+id|snd_dma_pci_data
 c_func
 (paren
 id|emu-&gt;pci
-comma
-id|pcm
+)paren
 comma
 l_int|64
 op_star

@@ -1411,7 +1411,12 @@ comma
 multiline_comment|/* swap master and surround controls */
 DECL|enumerator|AC97_TUNE_AD_SHARING
 id|AC97_TUNE_AD_SHARING
+comma
 multiline_comment|/* for AD1985, turn on OMS bit and use headphone */
+DECL|enumerator|AC97_TUNE_ALC_JACK
+id|AC97_TUNE_ALC_JACK
+comma
+multiline_comment|/* for Realtek, enable JACK detection */
 )brace
 suffix:semicolon
 DECL|struct|ac97_quirk
