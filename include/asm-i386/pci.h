@@ -306,8 +306,8 @@ DECL|macro|DECLARE_PCI_UNMAP_LEN
 mdefine_line|#define DECLARE_PCI_UNMAP_LEN(LEN_NAME)
 DECL|macro|pci_unmap_addr
 mdefine_line|#define pci_unmap_addr(PTR, ADDR_NAME)&t;&t;(0)
-DECL|macro|pci_unmap_addr_SET
-mdefine_line|#define pci_unmap_addr_SET(PTR, ADDR_NAME, VAL)&t;do { } while (0)
+DECL|macro|pci_unmap_addr_set
+mdefine_line|#define pci_unmap_addr_set(PTR, ADDR_NAME, VAL)&t;do { } while (0)
 DECL|macro|pci_unmap_len
 mdefine_line|#define pci_unmap_len(PTR, LEN_NAME)&t;&t;(0)
 DECL|macro|pci_unmap_len_set
