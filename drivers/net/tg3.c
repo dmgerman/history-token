@@ -11850,6 +11850,11 @@ id|sw_idx
 )paren
 suffix:semicolon
 )brace
+id|mmiowb
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|received
 suffix:semicolon
@@ -13910,6 +13915,11 @@ id|dev
 suffix:semicolon
 id|out_unlock
 suffix:colon
+id|mmiowb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
