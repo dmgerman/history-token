@@ -3153,7 +3153,7 @@ r_return
 id|page
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Must be called with the pagecache lock held,&n; * will return with it held (but it may be dropped&n; * during blocking operations..&n; */
+multiline_comment|/*&n; * Must be called with the mapping lock held for writing.&n; * Will return with it held for writing, but it may be dropped&n; * while locking the page.&n; */
 DECL|function|__find_lock_page
 r_static
 r_struct
@@ -3213,7 +3213,7 @@ id|page
 )paren
 )paren
 (brace
-id|read_unlock
+id|write_unlock
 c_func
 (paren
 op_amp
@@ -3226,14 +3226,14 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|read_lock
+id|write_lock
 c_func
 (paren
 op_amp
 id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Has the page been re-allocated while we slept? */
+multiline_comment|/* Has the page been truncated while we slept? */
 r_if
 c_cond
 (paren
@@ -3268,7 +3268,8 @@ r_return
 id|page
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Same as the above, but lock the page too, verifying that&n; * it&squot;s still valid once we own it.&n; */
+multiline_comment|/**&n; * find_lock_page - locate, pin and lock a pagecache page&n; *&n; * @mapping - the address_space to search&n; * @offset - the page index&n; *&n; * Locates the desired pagecache page, locks it, increments its reference&n; * count and returns its address.&n; *&n; * Returns zero if the page was not present. find_lock_page() may sleep.&n; */
+multiline_comment|/*&n; * The write_lock is unfortunate, but __find_lock_page() requires that on&n; * behalf of find_or_create_page().  We could just clone __find_lock_page() -&n; * one for find_lock_page(), one for find_or_create_page()...&n; */
 DECL|function|find_lock_page
 r_struct
 id|page
@@ -3291,7 +3292,7 @@ id|page
 op_star
 id|page
 suffix:semicolon
-id|read_lock
+id|write_lock
 c_func
 (paren
 op_amp
@@ -3308,7 +3309,7 @@ comma
 id|offset
 )paren
 suffix:semicolon
-id|read_unlock
+id|write_unlock
 c_func
 (paren
 op_amp
@@ -3319,7 +3320,7 @@ r_return
 id|page
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Same as above, but create the page if required..&n; */
+multiline_comment|/**&n; * find_or_create_page - locate or add a pagecache page&n; *&n; * @mapping - the page&squot;s address_space&n; * @index - the page&squot;s index into the mapping&n; * @gfp_mask - page allocation mode&n; *&n; * Locates a page in the pagecache.  If the page is not present, a new page&n; * is allocated using @gfp_mask and is added to the pagecache and to the VM&squot;s&n; * LRU list.  The returned page is locked and has its reference count&n; * incremented.&n; *&n; * find_or_create_page() may sleep, even if @gfp_flags specifies an atomic&n; * allocation!&n; *&n; * find_or_create_page() returns the desired page&squot;s address, or zero on&n; * memory exhaustion.&n; */
 DECL|function|find_or_create_page
 r_struct
 id|page

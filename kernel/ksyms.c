@@ -1032,6 +1032,13 @@ c_func
 id|generic_direct_IO
 )paren
 suffix:semicolon
+DECL|variable|discard_bh_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|discard_bh_page
+)paren
+suffix:semicolon
 DECL|variable|block_write_full_page
 id|EXPORT_SYMBOL
 c_func

@@ -568,11 +568,6 @@ id|special_t
 id|special
 suffix:semicolon
 multiline_comment|/* special action flags */
-DECL|member|keep_settings
-id|byte
-id|keep_settings
-suffix:semicolon
-multiline_comment|/* restore settings after drive reset */
 DECL|member|using_dma
 id|byte
 id|using_dma
@@ -593,11 +588,6 @@ id|byte
 id|state
 suffix:semicolon
 multiline_comment|/* retry state */
-DECL|member|unmask
-id|byte
-id|unmask
-suffix:semicolon
-multiline_comment|/* flag: okay to unmask other irqs */
 DECL|member|dsc_overlap
 id|byte
 id|dsc_overlap
@@ -652,13 +642,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1 if hdx=c,h,s was given at boot */
-DECL|member|no_unmask
-r_int
-id|no_unmask
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* disallow setting unmask bit */
 DECL|member|nobios
 r_int
 id|nobios
@@ -820,24 +803,6 @@ r_int
 id|drive_data
 suffix:semicolon
 multiline_comment|/* for use by tuneproc/selectproc as needed */
-multiline_comment|/* FIXME: Those are properties of a channel and not a drive!  Move them&n;&t; * later there.&n;&t; */
-DECL|member|slow
-id|byte
-id|slow
-suffix:semicolon
-multiline_comment|/* flag: slow data port */
-DECL|member|no_io_32bit
-r_int
-id|no_io_32bit
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* disallow enabling 32bit I/O */
-DECL|member|io_32bit
-id|byte
-id|io_32bit
-suffix:semicolon
-multiline_comment|/* 0=16-bit, 1=32-bit, 2/3=32bit+sync */
 DECL|member|wqueue
 id|wait_queue_head_t
 id|wqueue
@@ -1437,6 +1402,35 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* can do full 32-bit dma */
+DECL|member|slow
+id|byte
+id|slow
+suffix:semicolon
+multiline_comment|/* flag: slow data port */
+DECL|member|no_io_32bit
+r_int
+id|no_io_32bit
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* disallow enabling 32bit I/O */
+DECL|member|io_32bit
+id|byte
+id|io_32bit
+suffix:semicolon
+multiline_comment|/* 0=16-bit, 1=32-bit, 2/3=32bit+sync */
+DECL|member|no_unmask
+r_int
+id|no_unmask
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* disallow setting unmask bit */
+DECL|member|unmask
+id|byte
+id|unmask
+suffix:semicolon
+multiline_comment|/* flag: okay to unmask other irqs */
 macro_line|#if (DISK_RECOVERY_TIME &gt; 0)
 DECL|member|last_time
 r_int
@@ -3239,13 +3233,11 @@ suffix:semicolon
 multiline_comment|/*&n; * Tagged Command Queueing:&n; */
 multiline_comment|/*&n; * ata_request flag bits&n; */
 DECL|macro|ATA_AR_QUEUED
-mdefine_line|#define ATA_AR_QUEUED&t;1
+mdefine_line|#define ATA_AR_QUEUED&t;1&t;/* was queued */
 DECL|macro|ATA_AR_SETUP
-mdefine_line|#define ATA_AR_SETUP&t;2
-DECL|macro|ATA_AR_RETURN
-mdefine_line|#define ATA_AR_RETURN&t;4
-DECL|macro|ATA_AR_STATIC
-mdefine_line|#define ATA_AR_STATIC&t;8
+mdefine_line|#define ATA_AR_SETUP&t;2&t;/* dma table mapped */
+DECL|macro|ATA_AR_POOL
+mdefine_line|#define ATA_AR_POOL&t;4&t;/* originated from drive pool */
 multiline_comment|/*&n; * if turn-around time is longer than this, halve queue depth&n; */
 DECL|macro|ATA_AR_MAX_TURNAROUND
 mdefine_line|#define ATA_AR_MAX_TURNAROUND&t;(3 * HZ)
@@ -3376,6 +3368,10 @@ comma
 id|ar
 )paren
 suffix:semicolon
+id|ar-&gt;ar_flags
+op_or_assign
+id|ATA_AR_POOL
+suffix:semicolon
 )brace
 r_return
 id|ar
@@ -3401,12 +3397,9 @@ id|ar
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
 id|ar-&gt;ar_flags
 op_amp
-id|ATA_AR_STATIC
-)paren
+id|ATA_AR_POOL
 )paren
 id|list_add
 c_func
