@@ -31,6 +31,8 @@ DECL|macro|GT64260_WINDOW_SIZE_MIN
 mdefine_line|#define GT64260_WINDOW_SIZE_MIN&t;&t;&t;0x00100000
 DECL|macro|MV64360_WINDOW_SIZE_MIN
 mdefine_line|#define MV64360_WINDOW_SIZE_MIN&t;&t;&t;0x00010000
+DECL|macro|MV64x60_TCLK_FREQ_MAX
+mdefine_line|#define&t;MV64x60_TCLK_FREQ_MAX&t;&t;&t;133333333U
 multiline_comment|/* IRQ&squot;s for embedded controllers */
 DECL|macro|MV64x60_IRQ_DEV
 mdefine_line|#define&t;MV64x60_IRQ_DEV&t;&t;&t;&t;1
@@ -448,7 +450,7 @@ mdefine_line|#define&t;MV64360_SRAM_ERR_DATA_HI&t;&t;0x03a0
 DECL|macro|MV64360_SRAM_ERR_PARITY
 mdefine_line|#define&t;MV64360_SRAM_ERR_PARITY&t;&t;&t;0x03a8
 DECL|macro|MV64360_SRAM_SIZE
-mdefine_line|#define&t;MV64360_SRAM_SIZE&t;&t;&t;0x00040000 /* 256 KB of SRAM */
+mdefine_line|#define&t;MV64360_SRAM_SIZE&t;&t;&t;0x00200000 /* 2 MB of SRAM */
 multiline_comment|/*&n; *****************************************************************************&n; *&n; *&t;SDRAM/MEM Cotnroller Registers&n; *&n; *****************************************************************************&n; */
 multiline_comment|/* SDRAM Config Registers (64260) */
 DECL|macro|GT64260_SDRAM_CONFIG
