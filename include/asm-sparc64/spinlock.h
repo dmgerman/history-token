@@ -135,6 +135,20 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|_raw_spin_lock_flags
+c_func
+(paren
+id|spinlock_t
+op_star
+id|lock
+comma
+r_int
+r_int
+id|flags
+)paren
+suffix:semicolon
 macro_line|#else /* !(CONFIG_DEBUG_SPINLOCK) */
 r_typedef
 r_struct
@@ -201,9 +215,9 @@ DECL|macro|_raw_spin_lock
 mdefine_line|#define _raw_spin_lock(lock)&t;_do_spin_lock(lock, &quot;spin_lock&quot;)
 DECL|macro|_raw_spin_unlock
 mdefine_line|#define _raw_spin_unlock(lock)&t;_do_spin_unlock(lock)
-macro_line|#endif /* CONFIG_DEBUG_SPINLOCK */
 DECL|macro|_raw_spin_lock_flags
 mdefine_line|#define _raw_spin_lock_flags(lock, flags) _raw_spin_lock(lock)
+macro_line|#endif /* CONFIG_DEBUG_SPINLOCK */
 multiline_comment|/* Multi-reader locks, these are much saner than the 32-bit Sparc ones... */
 macro_line|#ifndef CONFIG_DEBUG_SPINLOCK
 DECL|typedef|rwlock_t

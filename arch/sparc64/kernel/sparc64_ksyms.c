@@ -683,6 +683,14 @@ c_func
 id|__write_trylock
 )paren
 suffix:semicolon
+multiline_comment|/* Out of line spin-locking implementation. */
+DECL|variable|_raw_spin_lock_flags
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_raw_spin_lock_flags
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Hard IRQ locking */
 DECL|variable|synchronize_irq
