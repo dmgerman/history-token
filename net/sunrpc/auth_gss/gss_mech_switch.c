@@ -685,7 +685,7 @@ id|u32
 id|qop
 comma
 r_struct
-id|xdr_netobj
+id|xdr_buf
 op_star
 id|message
 comma
@@ -723,7 +723,7 @@ op_star
 id|context_handle
 comma
 r_struct
-id|xdr_netobj
+id|xdr_buf
 op_star
 id|message
 comma

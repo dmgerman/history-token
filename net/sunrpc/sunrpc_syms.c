@@ -612,6 +612,27 @@ c_func
 id|xdr_read_pages
 )paren
 suffix:semicolon
+DECL|variable|xdr_buf_from_iov
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xdr_buf_from_iov
+)paren
+suffix:semicolon
+DECL|variable|xdr_buf_subsegment
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xdr_buf_subsegment
+)paren
+suffix:semicolon
+DECL|variable|xdr_buf_read_netobj
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xdr_buf_read_netobj
+)paren
+suffix:semicolon
 multiline_comment|/* Debugging symbols */
 macro_line|#ifdef RPC_DEBUG
 DECL|variable|rpc_debug

@@ -212,12 +212,10 @@ r_char
 op_star
 id|header
 comma
-r_char
+r_struct
+id|xdr_buf
 op_star
 id|body
-comma
-r_int
-id|body_len
 comma
 r_struct
 id|xdr_netobj
@@ -238,7 +236,7 @@ r_int
 id|qop_req
 comma
 r_struct
-id|xdr_netobj
+id|xdr_buf
 op_star
 id|input_message_buffer
 comma
@@ -266,7 +264,7 @@ op_star
 id|input_token_buffer
 comma
 r_struct
-id|xdr_netobj
+id|xdr_buf
 op_star
 id|message_buffer
 comma
