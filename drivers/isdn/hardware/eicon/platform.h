@@ -925,10 +925,14 @@ mdefine_line|#define IMPLEMENT_MARKED_OK_AFTER_FC 1
 DECL|macro|DIVA_IDI_RX_DMA
 mdefine_line|#define DIVA_IDI_RX_DMA 1
 multiline_comment|/*&n;** endian macros&n;**&n;** If only...  In some cases we did use them for endianness conversion;&n;** unfortunately, other uses were real iomem accesses.&n;*/
+DECL|macro|READ_BYTE
+mdefine_line|#define READ_BYTE(addr)   readb(addr)
 DECL|macro|READ_WORD
 mdefine_line|#define READ_WORD(addr)   readw(addr)
 DECL|macro|READ_DWORD
 mdefine_line|#define READ_DWORD(addr)  readl(addr)
+DECL|macro|WRITE_BYTE
+mdefine_line|#define WRITE_BYTE(addr,v)  writeb(v,addr)
 DECL|macro|WRITE_WORD
 mdefine_line|#define WRITE_WORD(addr,v)  writew(v,addr)
 DECL|macro|WRITE_DWORD

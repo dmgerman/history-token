@@ -295,7 +295,7 @@ id|size
 op_assign
 id|MAX_XLOG_SIZE
 suffix:semicolon
-id|memcpy
+id|memcpy_fromio
 (paren
 id|Xlog
 comma
@@ -839,12 +839,17 @@ c_func
 id|IoAdapter
 )paren
 suffix:semicolon
+id|WRITE_BYTE
+c_func
+(paren
+op_amp
 id|p
 (braket
 id|PLX9054_INTCSR
 )braket
-op_assign
+comma
 l_int|0x00
+)paren
 suffix:semicolon
 multiline_comment|/* disable PCI interrupts */
 id|DIVA_OS_MEM_DETACH_RESET
@@ -4628,10 +4633,15 @@ c_cond
 (paren
 op_logical_neg
 (paren
+id|READ_BYTE
+c_func
+(paren
+op_amp
 id|p
 (braket
 id|PLX9054_INTCSR
 )braket
+)paren
 op_amp
 l_int|0x80
 )paren
@@ -4809,12 +4819,17 @@ c_func
 id|IoAdapter
 )paren
 suffix:semicolon
+id|WRITE_BYTE
+c_func
+(paren
+op_amp
 id|p
 (braket
 id|PLX9054_INTCSR
 )braket
-op_assign
+comma
 l_int|0x00
+)paren
 suffix:semicolon
 multiline_comment|/* disable PCI interrupts */
 id|DIVA_OS_MEM_DETACH_RESET
