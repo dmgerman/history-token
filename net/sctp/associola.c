@@ -1445,7 +1445,7 @@ id|SCTP_TRANSPORT_UP
 suffix:colon
 id|transport-&gt;active
 op_assign
-l_int|1
+id|SCTP_ACTIVE
 suffix:semicolon
 id|spc_state
 op_assign
@@ -1458,7 +1458,7 @@ id|SCTP_TRANSPORT_DOWN
 suffix:colon
 id|transport-&gt;active
 op_assign
-l_int|0
+id|SCTP_INACTIVE
 suffix:semicolon
 id|spc_state
 op_assign
