@@ -3554,12 +3554,16 @@ r_if
 c_cond
 (paren
 id|q_idx
-op_increment
 OL
 id|s_q_idx
 )paren
+(brace
+id|q_idx
+op_increment
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3601,6 +3605,9 @@ r_goto
 id|done
 suffix:semicolon
 )brace
+id|q_idx
+op_increment
+suffix:semicolon
 )brace
 id|read_unlock_bh
 c_func
@@ -3632,8 +3639,6 @@ l_int|1
 )braket
 op_assign
 id|q_idx
-op_minus
-l_int|1
 suffix:semicolon
 r_return
 id|skb-&gt;len
