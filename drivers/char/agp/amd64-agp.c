@@ -1645,7 +1645,7 @@ r_if
 c_cond
 (paren
 id|i
-op_eq
+OG
 id|MAX_HAMMER_GARTS
 )paren
 (brace
