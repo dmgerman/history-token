@@ -146,6 +146,9 @@ comma
 l_int|0UL
 )brace
 comma
+(brace
+)brace
+multiline_comment|/* terminate list with empty entry */
 )brace
 suffix:semicolon
 id|MODULE_DEVICE_TABLE
