@@ -35,6 +35,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
+macro_line|#include &lt;asm/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/mk48t59.h&gt;
 macro_line|#include &lt;asm/prep_nvram.h&gt;
 macro_line|#include &lt;asm/raven.h&gt;
@@ -3708,16 +3709,32 @@ op_eq
 id|_PREP_IBM
 )paren
 (brace
+id|ppc_md.rtc_read_val
+op_assign
+id|todc_mc146818_read_val
+suffix:semicolon
+id|ppc_md.rtc_write_val
+op_assign
+id|todc_mc146818_write_val
+suffix:semicolon
 id|TODC_INIT
 c_func
 (paren
 id|TODC_TYPE_MC146818
 comma
-id|PREP_NVRAM_AS0
+id|RTC_PORT
+c_func
+(paren
+l_int|0
+)paren
 comma
-id|PREP_NVRAM_AS1
+l_int|NULL
 comma
-id|PREP_NVRAM_DATA
+id|RTC_PORT
+c_func
+(paren
+l_int|1
+)paren
 comma
 l_int|8
 )paren

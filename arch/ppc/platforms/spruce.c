@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/spruce_setup.c&n; *&n; * Board setup routines for IBM Spruce&n; *&n; * Authors: Johnnie Peters &lt;jpeters@mvista.com&gt;&n; *          Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * 2001-2002 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/spruce.c&n; *&n; * Board and PCI setup routines for IBM Spruce&n; *&n; * Author: MontaVista Software &lt;source@mvista.com&gt;&n; *&n; * 2000-2004 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -25,43 +25,232 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
-macro_line|#include &lt;platforms/spruce.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/kgdb.h&gt;
 macro_line|#include &lt;syslib/cpc700.h&gt;
-r_extern
-r_void
-id|spruce_init_IRQ
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
+macro_line|#include &quot;spruce.h&quot;
+r_static
+r_inline
 r_int
-id|spruce_get_irq
+DECL|function|spruce_map_irq
+id|spruce_map_irq
 c_func
 (paren
 r_struct
-id|pt_regs
+id|pci_dev
 op_star
+id|dev
+comma
+r_int
+r_char
+id|idsel
+comma
+r_int
+r_char
+id|pin
 )paren
+(brace
+r_static
+r_char
+id|pci_irq_table
+(braket
+)braket
+(braket
+l_int|4
+)braket
+op_assign
+multiline_comment|/*&n;&t;&t; * &t;PCI IDSEL/INTPIN-&gt;INTLINE&n;&t;&t; * &t;A&t;B&t;C&t;D&n;&t;&t; */
+(brace
+(brace
+l_int|23
+comma
+l_int|24
+comma
+l_int|25
+comma
+l_int|26
+)brace
+comma
+multiline_comment|/* IDSEL 1 - PCI slot 3 */
+(brace
+l_int|24
+comma
+l_int|25
+comma
+l_int|26
+comma
+l_int|23
+)brace
+comma
+multiline_comment|/* IDSEL 2 - PCI slot 2 */
+(brace
+l_int|25
+comma
+l_int|26
+comma
+l_int|23
+comma
+l_int|24
+)brace
+comma
+multiline_comment|/* IDSEL 3 - PCI slot 1 */
+(brace
+l_int|26
+comma
+l_int|23
+comma
+l_int|24
+comma
+l_int|25
+)brace
+comma
+multiline_comment|/* IDSEL 4 - PCI slot 0 */
+)brace
 suffix:semicolon
-r_extern
+r_const
+r_int
+id|min_idsel
+op_assign
+l_int|1
+comma
+id|max_idsel
+op_assign
+l_int|4
+comma
+id|irqs_per_slot
+op_assign
+l_int|4
+suffix:semicolon
+r_return
+id|PCI_IRQ_TABLE_LOOKUP
+suffix:semicolon
+)brace
+r_static
 r_void
+id|__init
+DECL|function|spruce_setup_hose
 id|spruce_setup_hose
 c_func
 (paren
 r_void
 )paren
+(brace
+r_struct
+id|pci_controller
+op_star
+id|hose
 suffix:semicolon
-r_extern
-r_char
-id|cmd_line
+multiline_comment|/* Setup hose */
+id|hose
+op_assign
+id|pcibios_alloc_controller
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hose
+)paren
+r_return
+suffix:semicolon
+id|hose-&gt;first_busno
+op_assign
+l_int|0
+suffix:semicolon
+id|hose-&gt;last_busno
+op_assign
+l_int|0xff
+suffix:semicolon
+id|pci_init_resource
+c_func
+(paren
+op_amp
+id|hose-&gt;io_resource
+comma
+id|SPRUCE_PCI_LOWER_IO
+comma
+id|SPRUCE_PCI_UPPER_IO
+comma
+id|IORESOURCE_IO
+comma
+l_string|&quot;PCI host bridge&quot;
+)paren
+suffix:semicolon
+id|pci_init_resource
+c_func
+(paren
+op_amp
+id|hose-&gt;mem_resources
 (braket
+l_int|0
 )braket
+comma
+id|SPRUCE_PCI_LOWER_MEM
+comma
+id|SPRUCE_PCI_UPPER_MEM
+comma
+id|IORESOURCE_MEM
+comma
+l_string|&quot;PCI host bridge&quot;
+)paren
 suffix:semicolon
+id|hose-&gt;io_space.start
+op_assign
+id|SPRUCE_PCI_LOWER_IO
+suffix:semicolon
+id|hose-&gt;io_space.end
+op_assign
+id|SPRUCE_PCI_UPPER_IO
+suffix:semicolon
+id|hose-&gt;mem_space.start
+op_assign
+id|SPRUCE_PCI_LOWER_MEM
+suffix:semicolon
+id|hose-&gt;mem_space.end
+op_assign
+id|SPRUCE_PCI_UPPER_MEM
+suffix:semicolon
+id|hose-&gt;io_base_virt
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|SPRUCE_ISA_IO_BASE
+suffix:semicolon
+id|setup_indirect_pci
+c_func
+(paren
+id|hose
+comma
+id|SPRUCE_PCI_CONFIG_ADDR
+comma
+id|SPRUCE_PCI_CONFIG_DATA
+)paren
+suffix:semicolon
+id|hose-&gt;last_busno
+op_assign
+id|pciauto_bus_scan
+c_func
+(paren
+id|hose
+comma
+id|hose-&gt;first_busno
+)paren
+suffix:semicolon
+id|ppc_md.pci_swizzle
+op_assign
+id|common_swizzle
+suffix:semicolon
+id|ppc_md.pci_map_irq
+op_assign
+id|spruce_map_irq
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * CPC700 PIC interrupt programming table&n; *&n; * First entry is the sensitivity (level/edge), second is the polarity.&n; */
 DECL|variable|cpc700_irq_assigns
 r_int
@@ -410,8 +599,6 @@ suffix:semicolon
 id|serial_req.flags
 op_assign
 id|ASYNC_BOOT_AUTOCONF
-op_or
-id|ASYNC_SKIP_TEST
 suffix:semicolon
 id|serial_req.iotype
 op_assign

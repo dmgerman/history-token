@@ -585,7 +585,7 @@ id|i
 dot
 id|port
 op_assign
-id|serial_req-&gt;line
+id|serial_req-&gt;iobase
 suffix:semicolon
 id|rs_table
 (braket
