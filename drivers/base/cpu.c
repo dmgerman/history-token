@@ -136,11 +136,10 @@ id|cpu-&gt;sysdev
 )paren
 suffix:semicolon
 )brace
-DECL|function|register_cpu_type
-r_static
+DECL|function|cpu_dev_init
 r_int
 id|__init
-id|register_cpu_type
+id|cpu_dev_init
 c_func
 (paren
 r_void
@@ -162,11 +161,4 @@ id|cpu_driver
 )paren
 suffix:semicolon
 )brace
-DECL|variable|register_cpu_type
-id|postcore_initcall
-c_func
-(paren
-id|register_cpu_type
-)paren
-suffix:semicolon
 eof

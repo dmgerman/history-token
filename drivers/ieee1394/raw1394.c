@@ -909,7 +909,7 @@ suffix:semicolon
 id|host_count
 op_decrement
 suffix:semicolon
-multiline_comment|/* &n;                   FIXME: addressranges should be removed &n;                   and fileinfo states should be initialized&n;                   (including setting generation to &n;                   internal-generation ...)&n;                */
+multiline_comment|/* &n;                   FIXME: address ranges should be removed &n;                   and fileinfo states should be initialized&n;                   (including setting generation to &n;                   internal-generation ...)&n;                */
 )brace
 id|spin_unlock_irqrestore
 c_func
@@ -1099,10 +1099,10 @@ l_int|3
 id|req-&gt;req.misc
 op_or_assign
 (paren
+id|NODEID_TO_NODE
+c_func
 (paren
 id|host-&gt;irm_id
-op_amp
-id|NODE_MASK
 )paren
 op_lshift
 l_int|8
@@ -2487,10 +2487,10 @@ l_int|3
 (brace
 id|req-&gt;req.misc
 op_or_assign
+id|NODEID_TO_NODE
+c_func
 (paren
 id|fi-&gt;host-&gt;irm_id
-op_amp
-id|NODE_MASK
 )paren
 op_lshift
 l_int|8

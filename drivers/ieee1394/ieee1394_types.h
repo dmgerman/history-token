@@ -134,17 +134,23 @@ id|arm_length_t
 suffix:semicolon
 DECL|macro|BUS_MASK
 mdefine_line|#define BUS_MASK  0xffc0
+DECL|macro|BUS_SHIFT
+mdefine_line|#define BUS_SHIFT 6
 DECL|macro|NODE_MASK
 mdefine_line|#define NODE_MASK 0x003f
 DECL|macro|LOCAL_BUS
 mdefine_line|#define LOCAL_BUS 0xffc0
 DECL|macro|ALL_NODES
 mdefine_line|#define ALL_NODES 0x003f
+DECL|macro|NODEID_TO_BUS
+mdefine_line|#define NODEID_TO_BUS(nodeid)&t;((nodeid &amp; BUS_MASK) &gt;&gt; BUS_SHIFT)
+DECL|macro|NODEID_TO_NODE
+mdefine_line|#define NODEID_TO_NODE(nodeid)&t;(nodeid &amp; NODE_MASK)
 multiline_comment|/* Can be used to consistently print a node/bus ID. */
 DECL|macro|NODE_BUS_FMT
-mdefine_line|#define NODE_BUS_FMT    &quot;%02d:%04d&quot;
+mdefine_line|#define NODE_BUS_FMT&t;&t;&quot;%02d:%04d&quot;
 DECL|macro|NODE_BUS_ARGS
-mdefine_line|#define NODE_BUS_ARGS(nodeid) &bslash;&n;&t;(nodeid &amp; NODE_MASK), ((nodeid &amp; BUS_MASK) &gt;&gt; 6)
+mdefine_line|#define NODE_BUS_ARGS(nodeid)&t;NODEID_TO_NODE(nodeid), NODEID_TO_BUS(nodeid)
 DECL|macro|HPSB_PRINT
 mdefine_line|#define HPSB_PRINT(level, fmt, args...) printk(level &quot;ieee1394: &quot; fmt &quot;&bslash;n&quot; , ## args)
 DECL|macro|HPSB_DEBUG

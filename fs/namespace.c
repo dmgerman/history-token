@@ -64,6 +64,15 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|__init
+id|fs_subsys_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|variable|mount_hashtable
 r_static
 r_struct
@@ -5682,6 +5691,11 @@ r_while
 c_loop
 (paren
 id|i
+)paren
+suffix:semicolon
+id|fs_subsys_init
+c_func
+(paren
 )paren
 suffix:semicolon
 id|init_rootfs

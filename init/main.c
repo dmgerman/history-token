@@ -161,6 +161,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|driver_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_TC
 r_extern
 r_void
@@ -1624,6 +1632,11 @@ c_func
 r_void
 )paren
 (brace
+id|driver_init
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SYSCTL
 id|sysctl_init
 c_func

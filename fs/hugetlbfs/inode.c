@@ -801,7 +801,7 @@ op_star
 id|inode
 )paren
 (brace
-id|list_del_init
+id|hlist_del_init
 c_func
 (paren
 op_amp
@@ -884,7 +884,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|list_empty
+id|hlist_unhashed
 c_func
 (paren
 op_amp
@@ -957,7 +957,7 @@ multiline_comment|/* write_inode_now() ? */
 id|inodes_stat.nr_unused
 op_decrement
 suffix:semicolon
-id|list_del_init
+id|hlist_del_init
 c_func
 (paren
 op_amp

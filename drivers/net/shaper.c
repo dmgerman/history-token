@@ -19,26 +19,28 @@ DECL|struct|shaper_cb
 r_struct
 id|shaper_cb
 (brace
+DECL|member|shapeclock
+r_int
+r_int
+id|shapeclock
+suffix:semicolon
+multiline_comment|/* Time it should go out */
+DECL|member|shapestamp
+r_int
+r_int
+id|shapestamp
+suffix:semicolon
+multiline_comment|/* Stamp for shaper    */
 DECL|member|shapelatency
 id|__u32
 id|shapelatency
 suffix:semicolon
 multiline_comment|/* Latency on frame */
-DECL|member|shapeclock
-id|__u32
-id|shapeclock
-suffix:semicolon
-multiline_comment|/* Time it should go out */
 DECL|member|shapelen
 id|__u32
 id|shapelen
 suffix:semicolon
 multiline_comment|/* Frame length in clocks */
-DECL|member|shapestamp
-id|__u32
-id|shapestamp
-suffix:semicolon
-multiline_comment|/* Stamp for shaper    */
 DECL|member|shapepend
 id|__u16
 id|shapepend
@@ -922,7 +924,7 @@ id|sh_debug
 id|printk
 c_func
 (paren
-l_string|&quot;Clock = %d, jiffies = %ld&bslash;n&quot;
+l_string|&quot;Clock = %ld, jiffies = %ld&bslash;n&quot;
 comma
 id|SHAPERCB
 c_func

@@ -10,6 +10,8 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
+macro_line|#include &lt;linux/ioctl32.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &quot;hosts.h&quot;
@@ -4875,9 +4877,11 @@ id|amdtp_init_module
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
+r_int
+id|ret
+suffix:semicolon
+id|ret
+op_assign
 id|ieee1394_register_chardev
 c_func
 (paren
@@ -4888,6 +4892,11 @@ comma
 op_amp
 id|amdtp_fops
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 )paren
 (brace
 id|HPSB_ERR
@@ -4936,6 +4945,59 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_COMPAT
+id|ret
+op_assign
+id|register_ioctl32_conversion
+c_func
+(paren
+id|AMDTP_IOC_CHANNEL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ret
+op_or_assign
+id|register_ioctl32_conversion
+c_func
+(paren
+id|AMDTP_IOC_PLUG
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ret
+op_or_assign
+id|register_ioctl32_conversion
+c_func
+(paren
+id|AMDTP_IOC_PING
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ret
+op_or_assign
+id|register_ioctl32_conversion
+c_func
+(paren
+id|AMDTP_IOC_ZAP
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+id|HPSB_ERR
+c_func
+(paren
+l_string|&quot;amdtp: Error registering ioctl32 translations&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|HPSB_INFO
 c_func
 (paren
@@ -4955,6 +5017,54 @@ id|amdtp_exit_module
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_COMPAT
+r_int
+id|ret
+suffix:semicolon
+id|ret
+op_assign
+id|unregister_ioctl32_conversion
+c_func
+(paren
+id|AMDTP_IOC_CHANNEL
+)paren
+suffix:semicolon
+id|ret
+op_or_assign
+id|unregister_ioctl32_conversion
+c_func
+(paren
+id|AMDTP_IOC_PLUG
+)paren
+suffix:semicolon
+id|ret
+op_or_assign
+id|unregister_ioctl32_conversion
+c_func
+(paren
+id|AMDTP_IOC_PING
+)paren
+suffix:semicolon
+id|ret
+op_or_assign
+id|unregister_ioctl32_conversion
+c_func
+(paren
+id|AMDTP_IOC_ZAP
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+id|HPSB_ERR
+c_func
+(paren
+l_string|&quot;amdtp: Error unregistering ioctl32 translations&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|hpsb_unregister_highlevel
 c_func
 (paren

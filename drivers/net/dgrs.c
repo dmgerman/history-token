@@ -2801,6 +2801,7 @@ r_int
 id|is
 suffix:semicolon
 r_int
+r_int
 id|i
 suffix:semicolon
 r_static
@@ -3431,6 +3432,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
+r_int
 r_int
 id|i
 suffix:semicolon

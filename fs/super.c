@@ -162,7 +162,7 @@ op_amp
 id|s-&gt;s_instances
 )paren
 suffix:semicolon
-id|INIT_LIST_HEAD
+id|INIT_HLIST_HEAD
 c_func
 (paren
 op_amp

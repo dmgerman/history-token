@@ -714,6 +714,7 @@ id|minimum_to_wake
 suffix:semicolon
 DECL|member|overrun_time
 r_int
+r_int
 id|overrun_time
 suffix:semicolon
 DECL|member|num_overrun

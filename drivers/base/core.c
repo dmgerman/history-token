@@ -854,11 +854,10 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-DECL|function|device_subsys_init
-r_static
+DECL|function|devices_init
 r_int
 id|__init
-id|device_subsys_init
+id|devices_init
 c_func
 (paren
 r_void
@@ -873,13 +872,6 @@ id|devices_subsys
 )paren
 suffix:semicolon
 )brace
-DECL|variable|device_subsys_init
-id|core_initcall
-c_func
-(paren
-id|device_subsys_init
-)paren
-suffix:semicolon
 DECL|variable|device_initialize
 id|EXPORT_SYMBOL
 c_func

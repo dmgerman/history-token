@@ -2,6 +2,7 @@ multiline_comment|/*&n; * DMA region bookkeeping routines&n; *&n; * Copyright (C
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &quot;dma.h&quot;
 multiline_comment|/* dma_prog_region */
 DECL|function|dma_prog_region_init

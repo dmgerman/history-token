@@ -209,16 +209,6 @@ id|host-&gt;driver-&gt;owner
 )paren
 )paren
 (brace
-multiline_comment|/* we&squot;re doing this twice and don&squot;t seem&n;&t;&t;&t;&t;   to undo it..  --hch */
-(paren
-r_void
-)paren
-id|try_module_get
-c_func
-(paren
-id|host-&gt;driver-&gt;owner
-)paren
-suffix:semicolon
 id|host-&gt;refcount
 op_increment
 suffix:semicolon

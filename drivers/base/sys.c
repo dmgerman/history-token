@@ -285,8 +285,8 @@ comma
 )brace
 suffix:semicolon
 DECL|function|sys_bus_init
-r_static
 r_int
+id|__init
 id|sys_bus_init
 c_func
 (paren
@@ -309,13 +309,6 @@ id|system_bus
 )paren
 suffix:semicolon
 )brace
-DECL|variable|sys_bus_init
-id|postcore_initcall
-c_func
-(paren
-id|sys_bus_init
-)paren
-suffix:semicolon
 DECL|variable|system_bus_type
 id|EXPORT_SYMBOL
 c_func

@@ -57,7 +57,6 @@ id|s
 suffix:semicolon
 )brace
 DECL|function|firmware_init
-r_static
 r_int
 id|__init
 id|firmware_init
@@ -75,13 +74,6 @@ id|firmware_subsys
 )paren
 suffix:semicolon
 )brace
-DECL|variable|firmware_init
-id|core_initcall
-c_func
-(paren
-id|firmware_init
-)paren
-suffix:semicolon
 DECL|variable|firmware_register
 id|EXPORT_SYMBOL
 c_func

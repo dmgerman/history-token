@@ -224,17 +224,6 @@ id|spinlock_t
 id|d_lock
 suffix:semicolon
 multiline_comment|/* per dentry lock */
-DECL|member|d_flags
-r_int
-r_int
-id|d_flags
-suffix:semicolon
-DECL|member|d_move_count
-r_int
-r_int
-id|d_move_count
-suffix:semicolon
-multiline_comment|/* to indicated moved dentry while lockless lookup */
 DECL|member|d_inode
 r_struct
 id|inode
@@ -242,26 +231,6 @@ op_star
 id|d_inode
 suffix:semicolon
 multiline_comment|/* Where the name belongs to - NULL is negative */
-DECL|member|d_parent
-r_struct
-id|dentry
-op_star
-id|d_parent
-suffix:semicolon
-multiline_comment|/* parent directory */
-DECL|member|d_bucket
-r_struct
-id|list_head
-op_star
-id|d_bucket
-suffix:semicolon
-multiline_comment|/* lookup hash bucket */
-DECL|member|d_hash
-r_struct
-id|list_head
-id|d_hash
-suffix:semicolon
-multiline_comment|/* lookup hash list */
 DECL|member|d_lru
 r_struct
 id|list_head
@@ -286,22 +255,6 @@ id|list_head
 id|d_alias
 suffix:semicolon
 multiline_comment|/* inode alias list */
-DECL|member|d_mounted
-r_int
-id|d_mounted
-suffix:semicolon
-DECL|member|d_name
-r_struct
-id|qstr
-id|d_name
-suffix:semicolon
-DECL|member|d_qstr
-r_struct
-id|qstr
-op_star
-id|d_qstr
-suffix:semicolon
-multiline_comment|/* quick str ptr used in lockless lookup and concurrent d_move */
 DECL|member|d_time
 r_int
 r_int
@@ -321,6 +274,15 @@ op_star
 id|d_sb
 suffix:semicolon
 multiline_comment|/* The root of the dentry tree */
+DECL|member|d_flags
+r_int
+r_int
+id|d_flags
+suffix:semicolon
+DECL|member|d_mounted
+r_int
+id|d_mounted
+suffix:semicolon
 DECL|member|d_fsdata
 r_void
 op_star
@@ -339,6 +301,44 @@ op_star
 id|d_cookie
 suffix:semicolon
 multiline_comment|/* cookie, if any */
+DECL|member|d_move_count
+r_int
+r_int
+id|d_move_count
+suffix:semicolon
+multiline_comment|/* to indicated moved dentry while lockless lookup */
+DECL|member|d_qstr
+r_struct
+id|qstr
+op_star
+id|d_qstr
+suffix:semicolon
+multiline_comment|/* quick str ptr used in lockless lookup and concurrent d_move */
+DECL|member|d_parent
+r_struct
+id|dentry
+op_star
+id|d_parent
+suffix:semicolon
+multiline_comment|/* parent directory */
+DECL|member|d_name
+r_struct
+id|qstr
+id|d_name
+suffix:semicolon
+DECL|member|d_hash
+r_struct
+id|hlist_node
+id|d_hash
+suffix:semicolon
+multiline_comment|/* lookup hash list */
+DECL|member|d_bucket
+r_struct
+id|hlist_head
+op_star
+id|d_bucket
+suffix:semicolon
+multiline_comment|/* lookup hash bucket */
 DECL|member|d_iname
 r_int
 r_char
@@ -490,7 +490,7 @@ id|dentry-&gt;d_vfs_flags
 op_or_assign
 id|DCACHE_UNHASHED
 suffix:semicolon
-id|list_del_rcu
+id|hlist_del_rcu
 c_func
 (paren
 op_amp
@@ -648,7 +648,7 @@ id|shrink_dcache_anon
 c_func
 (paren
 r_struct
-id|list_head
+id|hlist_head
 op_star
 )paren
 suffix:semicolon
