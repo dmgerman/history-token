@@ -79,10 +79,10 @@ r_struct
 id|timer_list
 id|poll_timer
 suffix:semicolon
-DECL|member|cls_d
+DECL|member|socket
 r_struct
-id|pcmcia_socket_class_data
-id|cls_d
+id|pcmcia_socket
+id|socket
 suffix:semicolon
 multiline_comment|/* A few words of private data for the low-level driver.. */
 DECL|member|private
