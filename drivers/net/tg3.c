@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * tg3.c: Broadcom Tigon3 ethernet driver.&n; *&n; * Copyright (C) 2001, 2002, 2003, 2004 David S. Miller (davem@redhat.com)&n; * Copyright (C) 2001, 2002, 2003 Jeff Garzik (jgarzik@pobox.com)&n; * Copyright (C) 2004 Sun Microsystems Inc.&n; *&n; * Firmware is:&n; * &t;Copyright (C) 2000-2003 Broadcom Corporation.&n; */
+multiline_comment|/*&n; * tg3.c: Broadcom Tigon3 ethernet driver.&n; *&n; * Copyright (C) 2001, 2002, 2003, 2004 David S. Miller (davem@redhat.com)&n; * Copyright (C) 2001, 2002, 2003 Jeff Garzik (jgarzik@pobox.com)&n; * Copyright (C) 2004 Sun Microsystems Inc.&n; * Copyright (C) 2005 Broadcom Corporation.&n; *&n; * Firmware is:&n; * &t;Copyright (C) 2000-2003 Broadcom Corporation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
