@@ -951,7 +951,7 @@ id|pnp_resources
 op_star
 id|res
 op_assign
-id|dev-&gt;res
+id|dev-&gt;possible
 suffix:semicolon
 id|serial8250_get_irq_map
 c_func
@@ -1120,7 +1120,7 @@ id|pnp_resources
 op_star
 id|res
 op_assign
-id|dev-&gt;res
+id|dev-&gt;possible
 suffix:semicolon
 r_struct
 id|pnp_resources
@@ -1135,7 +1135,7 @@ op_logical_neg
 id|check_name
 c_func
 (paren
-id|dev-&gt;name
+id|dev-&gt;dev.name
 )paren
 op_logical_or
 (paren
@@ -1144,7 +1144,7 @@ op_logical_and
 id|check_name
 c_func
 (paren
-id|dev-&gt;card-&gt;name
+id|dev-&gt;card-&gt;dev.name
 )paren
 )paren
 )paren

@@ -194,6 +194,27 @@ id|tsk-&gt;usage
 )paren
 )paren
 suffix:semicolon
+id|WARN_ON
+c_func
+(paren
+id|tsk
+op_eq
+id|current
+)paren
+suffix:semicolon
+id|security_task_free
+c_func
+(paren
+id|tsk
+)paren
+suffix:semicolon
+id|free_uid
+c_func
+(paren
+id|tsk-&gt;user
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * The task cache is effectively disabled right now.&n;&t; * Do we want it? The slab cache already has per-cpu&n;&t; * stuff, but the thread info (usually a order-1 page&n;&t; * allocation) doesn&squot;t.&n;&t; */
 r_if
 c_cond
 (paren
