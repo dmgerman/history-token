@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: um_idi.c,v 1.1.2.2 2001/02/11 14:40:41 armin Exp $ */
+multiline_comment|/* $Id: um_idi.c,v 1.9 2003/09/09 06:00:47 schindler Exp $ */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
 macro_line|#include &quot;pc.h&quot;
@@ -142,6 +142,8 @@ id|byte
 id|rc
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * include queue functions&n; */
+macro_line|#include &quot;dlist.c&quot;
 multiline_comment|/* --------------------------------------------------------------------------&n;&t;&t;MAIN&n;   -------------------------------------------------------------------------- */
 DECL|function|diva_user_mode_idi_init
 r_int
@@ -725,15 +727,42 @@ c_func
 r_void
 )paren
 (brace
-r_return
-(paren
-id|diva_q_get_nr_of_entries
-c_func
-(paren
+r_int
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+r_const
+id|diva_entity_queue_t
+op_star
+id|q
+op_assign
 op_amp
 id|adapter_q
+suffix:semicolon
+r_const
+id|diva_entity_link_t
+op_star
+id|diva_current
+op_assign
+id|q-&gt;head
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|diva_current
 )paren
-)paren
+(brace
+id|i
+op_increment
+suffix:semicolon
+id|diva_current
+op_assign
+id|diva_current-&gt;next
+suffix:semicolon
+)brace
+r_return
+id|i
 suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------------------&n;&t;&t;Cleanup this adapter and cleanup/delete all entities assigned&n;&t;&t;to this adapter&n;   ------------------------------------------------------------------------ */
