@@ -544,6 +544,32 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
+r_void
+DECL|function|warn_no_idmapd
+id|warn_no_idmapd
+c_func
+(paren
+r_struct
+id|cache_detail
+op_star
+id|detail
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;nfsd: nfsv4 idmapping failing: has idmapd %s?&bslash;n&quot;
+comma
+id|detail-&gt;last_close
+ques
+c_cond
+l_string|&quot;died&quot;
+suffix:colon
+l_string|&quot;not been started&quot;
+)paren
+suffix:semicolon
+)brace
+r_static
 r_int
 id|idtoname_parse
 c_func
@@ -612,6 +638,11 @@ dot
 id|cache_show
 op_assign
 id|idtoname_show
+comma
+dot
+id|warn_no_listener
+op_assign
+id|warn_no_idmapd
 comma
 )brace
 suffix:semicolon
@@ -1339,6 +1370,11 @@ dot
 id|cache_show
 op_assign
 id|nametoid_show
+comma
+dot
+id|warn_no_listener
+op_assign
+id|warn_no_idmapd
 comma
 )brace
 suffix:semicolon

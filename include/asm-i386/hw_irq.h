@@ -226,8 +226,7 @@ r_void
 id|setup_ioapic_dest
 c_func
 (paren
-id|cpumask_t
-id|mask
+r_void
 )paren
 suffix:semicolon
 r_extern

@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  linux/include/asm-arm/arch-pxa/hardware.h&n; *&n; *  
 macro_line|#ifndef __ASM_ARCH_HARDWARE_H
 DECL|macro|__ASM_ARCH_HARDWARE_H
 mdefine_line|#define __ASM_ARCH_HARDWARE_H
-macro_line|#include &lt;asm/mach-types.h&gt;
 multiline_comment|/*&n; * We requires absolute addresses.&n; */
 DECL|macro|PCIO_BASE
 mdefine_line|#define PCIO_BASE&t;&t;0

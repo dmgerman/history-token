@@ -222,6 +222,19 @@ id|time_t
 id|last_warn
 suffix:semicolon
 multiline_comment|/* when we last warned about no readers */
+DECL|member|warn_no_listener
+r_void
+(paren
+op_star
+id|warn_no_listener
+)paren
+(paren
+r_struct
+id|cache_detail
+op_star
+id|cd
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* this must be embedded in any request structure that&n; * identifies an object that will want a callback on&n; * a cache fill&n; */

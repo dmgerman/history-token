@@ -14,5 +14,7 @@ DECL|macro|Elf_Sym
 mdefine_line|#define Elf_Sym Elf32_Sym
 DECL|macro|Elf_Ehdr
 mdefine_line|#define Elf_Ehdr Elf32_Ehdr
+DECL|macro|MODULE_SYMBOL_PREFIX
+mdefine_line|#define MODULE_SYMBOL_PREFIX &quot;_&quot;
 macro_line|#endif /* _ASM_H8/300_MODULE_H */
 eof

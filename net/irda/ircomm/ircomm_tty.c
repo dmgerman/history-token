@@ -2601,10 +2601,18 @@ comma
 id|count
 )paren
 )paren
+(brace
+id|kfree
+c_func
+(paren
+id|kbuf
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+)brace
 )brace
 r_else
 multiline_comment|/* The buffer is already in kernel space */
@@ -2726,6 +2734,17 @@ op_amp
 id|self-&gt;spinlock
 comma
 id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|from_user
+)paren
+id|kfree
+c_func
+(paren
+id|kbuf
 )paren
 suffix:semicolon
 r_return

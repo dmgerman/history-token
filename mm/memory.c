@@ -4682,6 +4682,8 @@ comma
 id|page_table
 comma
 id|entry
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|update_mmu_cache
@@ -4867,6 +4869,8 @@ comma
 id|page_table
 comma
 id|entry
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|update_mmu_cache
@@ -7391,6 +7395,8 @@ comma
 id|pte
 comma
 id|entry
+comma
+id|write_access
 )paren
 suffix:semicolon
 id|update_mmu_cache
