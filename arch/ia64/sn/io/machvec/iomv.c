@@ -1,11 +1,11 @@
 multiline_comment|/* &n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
-macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/sn/simulator.h&gt;
 macro_line|#include &lt;asm/sn/pda.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
+macro_line|#include &lt;asm/sn/sn2/shub_mmr.h&gt;
 multiline_comment|/**&n; * sn_io_addr - convert an in/out port to an i/o address&n; * @port: port to convert&n; *&n; * Legacy in/out instructions are converted to ld/st instructions&n; * on IA64.  This routine will convert a port number into a valid &n; * SN i/o address.  Used by sn_in*() and sn_out*().&n; */
 r_void
 op_star
