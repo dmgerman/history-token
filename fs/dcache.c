@@ -1988,7 +1988,7 @@ id|found
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This is called from kswapd when we think we need some more memory.&n; */
+multiline_comment|/*&n; * Scan `nr&squot; dentries and return the number which remain.&n; *&n; * We need to avoid reentering the filesystem if the caller is performing a&n; * GFP_NOFS allocation attempt.  One example deadlock is:&n; *&n; * ext2_new_block-&gt;getblk-&gt;GFP-&gt;shrink_dcache_memory-&gt;prune_dcache-&gt;&n; * prune_one_dentry-&gt;dput-&gt;dentry_iput-&gt;iput-&gt;inode-&gt;i_sb-&gt;s_op-&gt;put_inode-&gt;&n; * ext2_discard_prealloc-&gt;ext2_free_blocks-&gt;lock_super-&gt;DEADLOCK.&n; *&n; * In this case we return -1 to tell the caller that we baled.&n; */
 DECL|function|shrink_dcache_memory
 r_static
 r_int
@@ -2009,14 +2009,20 @@ c_cond
 id|nr
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Nasty deadlock avoidance.&n;&t;&t; *&n;&t; &t; * ext2_new_block-&gt;getblk-&gt;GFP-&gt;shrink_dcache_memory-&gt;&n;&t;&t; * prune_dcache-&gt;prune_one_dentry-&gt;dput-&gt;dentry_iput-&gt;iput-&gt;&n;&t;&t; * inode-&gt;i_sb-&gt;s_op-&gt;put_inode-&gt;ext2_discard_prealloc-&gt;&n;&t;&t; * ext2_free_blocks-&gt;lock_super-&gt;DEADLOCK.&n;&t; &t; *&n;&t; &t; * We should make sure we don&squot;t hold the superblock lock over&n;&t; &t; * block allocations, but for now:&n;&t;&t; */
 r_if
 c_cond
+(paren
+op_logical_neg
 (paren
 id|gfp_mask
 op_amp
 id|__GFP_FS
 )paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 id|prune_dcache
 c_func
 (paren
