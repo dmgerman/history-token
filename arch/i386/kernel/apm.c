@@ -4524,7 +4524,7 @@ r_if
 c_cond
 (paren
 (paren
-id|num_possible_cpus
+id|num_online_cpus
 c_func
 (paren
 )paren
@@ -4919,7 +4919,7 @@ c_cond
 id|debug
 op_logical_and
 (paren
-id|num_possible_cpus
+id|num_online_cpus
 c_func
 (paren
 )paren
@@ -5180,7 +5180,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|num_possible_cpus
+id|num_online_cpus
 c_func
 (paren
 )paren
@@ -5728,6 +5728,9 @@ id|proc_dir_entry
 op_star
 id|apm_proc
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5946,7 +5949,7 @@ r_if
 c_cond
 (paren
 (paren
-id|num_possible_cpus
+id|num_online_cpus
 c_func
 (paren
 )paren
@@ -5996,12 +5999,27 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set up a segment that references the real mode segment 0x40&n;&t; * that extends up to the end of page zero (that we have reserved).&n;&t; * This is for buggy BIOS&squot;s that refer to (real mode) segment 0x40&n;&t; * even though they are called in protected mode.&n;&t; *&n;&t; * NOTE: on SMP we call into the APM BIOS only on CPU#0, so it&squot;s&n;&t; * enough to modify CPU#0&squot;s GDT.&n;&t; */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NR_CPUS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 id|set_base
 c_func
 (paren
 id|cpu_gdt_table
 (braket
-l_int|0
+id|i
 )braket
 (braket
 id|APM_40
@@ -6032,7 +6050,7 @@ op_star
 op_amp
 id|cpu_gdt_table
 (braket
-l_int|0
+id|i
 )braket
 (braket
 id|APM_40
@@ -6062,7 +6080,7 @@ c_func
 (paren
 id|cpu_gdt_table
 (braket
-l_int|0
+id|i
 )braket
 (braket
 id|APM_CS
@@ -6088,7 +6106,7 @@ c_func
 (paren
 id|cpu_gdt_table
 (braket
-l_int|0
+id|i
 )braket
 (braket
 id|APM_CS_16
@@ -6114,7 +6132,7 @@ c_func
 (paren
 id|cpu_gdt_table
 (braket
-l_int|0
+id|i
 )braket
 (braket
 id|APM_DS
@@ -6156,7 +6174,7 @@ op_star
 op_amp
 id|cpu_gdt_table
 (braket
-l_int|0
+id|i
 )braket
 (braket
 id|APM_CS
@@ -6182,7 +6200,7 @@ op_star
 op_amp
 id|cpu_gdt_table
 (braket
-l_int|0
+id|i
 )braket
 (braket
 id|APM_CS_16
@@ -6208,7 +6226,7 @@ op_star
 op_amp
 id|cpu_gdt_table
 (braket
-l_int|0
+id|i
 )braket
 (braket
 id|APM_DS
@@ -6237,7 +6255,7 @@ op_star
 op_amp
 id|cpu_gdt_table
 (braket
-l_int|0
+id|i
 )braket
 (braket
 id|APM_CS
@@ -6264,7 +6282,7 @@ op_star
 op_amp
 id|cpu_gdt_table
 (braket
-l_int|0
+id|i
 )braket
 (braket
 id|APM_CS_16
@@ -6291,7 +6309,7 @@ op_star
 op_amp
 id|cpu_gdt_table
 (braket
-l_int|0
+id|i
 )braket
 (braket
 id|APM_DS
@@ -6310,6 +6328,7 @@ l_int|0xffff
 suffix:semicolon
 )brace
 macro_line|#endif
+)brace
 id|apm_proc
 op_assign
 id|create_proc_info_entry
@@ -6354,7 +6373,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|num_possible_cpus
+id|num_online_cpus
 c_func
 (paren
 )paren
