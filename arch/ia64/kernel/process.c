@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Architecture-specific setup.&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Architecture-specific setup.&n; *&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__&t;/* see &lt;asm/unistd.h&gt; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -674,6 +674,47 @@ r_int
 id|in_syscall
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|fsys_mode
+c_func
+(paren
+id|current
+comma
+op_amp
+id|scr-&gt;pt
+)paren
+)paren
+(brace
+multiline_comment|/* defer signal-handling etc. until we return to privilege-level 0.  */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ia64_psr
+c_func
+(paren
+op_amp
+id|scr-&gt;pt
+)paren
+op_member_access_from_pointer
+id|lp
+)paren
+id|ia64_psr
+c_func
+(paren
+op_amp
+id|scr-&gt;pt
+)paren
+op_member_access_from_pointer
+id|lp
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_PERFMON
 r_if
 c_cond

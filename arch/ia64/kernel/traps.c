@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Architecture-specific trap handling.&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 05/12/00 grao &lt;goutham.rao@intel.com&gt; : added isr in siginfo for SIGFPE&n; */
+multiline_comment|/*&n; * Architecture-specific trap handling.&n; *&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 05/12/00 grao &lt;goutham.rao@intel.com&gt; : added isr in siginfo for SIGFPE&n; */
 multiline_comment|/*&n; * fp_emulate() needs to be able to access and update all floating point registers.  Those&n; * saved in pt_regs can be accessed through that structure, but those not saved, will be&n; * accessed directly.  To make this work, we need to ensure that the compiler does not end&n; * up using a preserved floating point register on its own.  The following achieves this&n; * by declaring preserved registers that are not marked as &quot;fixed&quot; as global register&n; * variables.&n; */
 r_register
 r_float
@@ -2424,6 +2424,8 @@ c_cond
 id|fsys_mode
 c_func
 (paren
+id|current
+comma
 id|regs
 )paren
 )paren
@@ -2705,7 +2707,32 @@ suffix:semicolon
 r_case
 l_int|34
 suffix:colon
-multiline_comment|/* Unimplemented Instruction Address Trap */
+r_if
+c_cond
+(paren
+id|isr
+op_amp
+l_int|0x2
+)paren
+(brace
+multiline_comment|/* Lower-Privilege Transfer Trap */
+multiline_comment|/*&n;&t;&t;&t; * Just clear PSR.lp and then return immediately: all the&n;&t;&t;&t; * interesting work (e.g., signal delivery is done in the kernel&n;&t;&t;&t; * exit path).&n;&t;&t;&t; */
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|lp
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Unimplemented Instr. Address Trap */
 r_if
 c_cond
 (paren
@@ -2780,6 +2807,7 @@ comma
 l_string|&quot;Unimplemented Instruction Address fault&quot;
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case

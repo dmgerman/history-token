@@ -2262,6 +2262,8 @@ op_logical_neg
 id|user_stack
 c_func
 (paren
+id|current
+comma
 id|regs
 )paren
 )paren
@@ -2781,6 +2783,8 @@ op_logical_neg
 id|user_stack
 c_func
 (paren
+id|current
+comma
 id|regs
 )paren
 )paren
