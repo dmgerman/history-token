@@ -1,11 +1,9 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/s3c2440-dsc.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Samsung S3C2440 Drive Strength Control support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     29-Aug-2004 BJD  Start of drive-strength control&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/s3c2440-dsc.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Samsung S3C2440 Drive Strength Control support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     29-Aug-2004 BJD  Start of drive-strength control&n; *     09-Nov-2004 BJD  Added symbol export&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
@@ -112,4 +110,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|s3c2440_set_dsc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|s3c2440_set_dsc
+)paren
+suffix:semicolon
 eof
