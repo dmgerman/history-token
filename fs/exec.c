@@ -3243,13 +3243,13 @@ id|ch
 comma
 id|retval
 suffix:semicolon
-multiline_comment|/* &n;&t; * Release all of the old mmap stuff&n;&t; */
+multiline_comment|/*&n;&t; * Make sure we have a private signal table and that&n;&t; * we are unassociated from the previous thread group.&n;&t; */
 id|retval
 op_assign
-id|exec_mmap
+id|de_thread
 c_func
 (paren
-id|bprm-&gt;mm
+id|current
 )paren
 suffix:semicolon
 r_if
@@ -3260,13 +3260,13 @@ id|retval
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/*&n;&t; * Make sure we have a private signal table and that&n;&t; * we are unassociated from the previous thread group.&n;&t; */
+multiline_comment|/*&n;&t; * Release all of the old mmap stuff&n;&t; */
 id|retval
 op_assign
-id|de_thread
+id|exec_mmap
 c_func
 (paren
-id|current
+id|bprm-&gt;mm
 )paren
 suffix:semicolon
 r_if
