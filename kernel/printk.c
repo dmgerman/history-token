@@ -2478,7 +2478,7 @@ op_amp
 id|CON_PRINTBUFFER
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * release_cosole_sem() will print out the buffered messages for us.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * release_console_sem() will print out the buffered messages for us.&n;&t;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
