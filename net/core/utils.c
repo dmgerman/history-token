@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n;  This is a maximally equidistributed combined Tausworthe generator&n;  based on code from GNU Scientific Library 1.5 (30 Jun 2004)&n;&n;   x_n = (s1_n ^ s2_n ^ s3_n) &n;&n;   s1_{n+1} = (((s1_n &amp; 4294967294) &lt;&lt;12) ^ (((s1_n &lt;&lt;13) ^ s1_n) &gt;&gt;19))&n;   s2_{n+1} = (((s2_n &amp; 4294967288) &lt;&lt; 4) ^ (((s2_n &lt;&lt; 2) ^ s2_n) &gt;&gt;25))&n;   s3_{n+1} = (((s3_n &amp; 4294967280) &lt;&lt;17) ^ (((s3_n &lt;&lt; 3) ^ s3_n) &gt;&gt;11))&n;&n;   The period of this generator is about 2^88.&n;&n;   From: P. L&squot;Ecuyer, &quot;Maximally Equidistributed Combined Tausworthe&n;   Generators&quot;, Mathematics of Computation, 65, 213 (1996), 203--213.&n;&n;   This is available on the net from L&squot;Ecuyer&squot;s home page,&n;&n;   http://www.iro.umontreal.ca/~lecuyer/myftp/papers/tausme.ps&n;   ftp://ftp.iro.umontreal.ca/pub/simulation/lecuyer/papers/tausme.ps &n;&n;   There is an erratum in the paper &quot;Tables of Maximally&n;   Equidistributed Combined LFSR Generators&quot;, Mathematics of&n;   Computation, 68, 225 (1999), 261--269:&n;   http://www.iro.umontreal.ca/~lecuyer/myftp/papers/tausme2.ps&n;&n;        ... the k_j most significant bits of z_j must be non-&n;        zero, for each j. (Note: this restriction also applies to the &n;        computer code given in [4], but was mistakenly not mentioned in&n;        that paper.)&n;   &n;   This affects the seeding procedure by imposing the requirement&n;   s1 &gt; 1, s2 &gt; 7, s3 &gt; 15.&n;&n;*/
@@ -121,16 +122,9 @@ id|state
 comma
 r_int
 r_int
-id|entropy
+id|s
 )paren
 (brace
-id|u32
-id|s
-op_assign
-id|state-&gt;s1
-op_xor
-id|entropy
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -277,6 +271,8 @@ c_func
 (paren
 id|state
 comma
+id|state-&gt;s1
+op_xor
 id|entropy
 )paren
 suffix:semicolon
@@ -291,6 +287,59 @@ DECL|function|net_random_init
 r_void
 id|__init
 id|net_random_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NR_CPUS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_struct
+id|nrnd_state
+op_star
+id|state
+op_assign
+op_amp
+id|per_cpu
+c_func
+(paren
+id|net_rand_state
+comma
+id|i
+)paren
+suffix:semicolon
+id|__net_srandom
+c_func
+(paren
+id|state
+comma
+id|i
+op_plus
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+)brace
+DECL|function|net_random_reseed
+r_static
+r_int
+id|net_random_reseed
 c_func
 (paren
 r_void
@@ -346,20 +395,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|memset
-c_func
-(paren
-id|state
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|state
-)paren
-)paren
-suffix:semicolon
 id|__net_srandom
 c_func
 (paren
@@ -372,7 +407,17 @@ id|i
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|net_random_reseed
+id|late_initcall
+c_func
+(paren
+id|net_random_reseed
+)paren
+suffix:semicolon
 DECL|variable|net_msg_cost
 r_int
 id|net_msg_cost
