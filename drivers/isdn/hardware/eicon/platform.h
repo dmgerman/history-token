@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: platform.h,v 1.31 2003/09/08 15:15:22 schindler Exp $&n; *&n; * platform.h&n; * &n; *&n; * Copyright 2000-2003  by Armin Schindler (mac@melware.de)&n; * Copyright 2000  Eicon Networks &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: platform.h,v 1.32 2003/09/18 06:59:59 schindler Exp $&n; *&n; * platform.h&n; * &n; *&n; * Copyright 2000-2003  by Armin Schindler (mac@melware.de)&n; * Copyright 2000  Eicon Networks &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#ifndef&t;__PLATFORM_H__
 DECL|macro|__PLATFORM_H__
 mdefine_line|#define&t;__PLATFORM_H__
@@ -7,7 +7,6 @@ DECL|macro|DIVA_BUILD
 mdefine_line|#define DIVA_BUILD &quot;local&quot;
 macro_line|#endif
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
