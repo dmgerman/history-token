@@ -215,9 +215,6 @@ l_string|&quot;atkbd_softrepeat=&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Scancode to keycode tables. These are just the default setting, and&n; * are loadable via an userland utility.&n; */
-macro_line|#if defined(__hppa__)
-macro_line|#include &quot;hpps2atkbd.h&quot;
-macro_line|#else
 DECL|variable|atkbd_set2_keycode
 r_static
 r_int
@@ -228,6 +225,10 @@ l_int|512
 )braket
 op_assign
 (brace
+macro_line|#ifdef CONFIG_KEYBOARD_ATKBD_HP_KEYCODES
+multiline_comment|/* XXX: need a more general approach */
+macro_line|#include &quot;hpps2atkbd.h&quot;&t;/* include the keyboard scancodes */
+macro_line|#else
 l_int|0
 comma
 l_int|67
@@ -750,9 +751,9 @@ l_int|65
 comma
 l_int|99
 comma
+macro_line|#endif
 )brace
 suffix:semicolon
-macro_line|#endif
 DECL|variable|atkbd_set3_keycode
 r_static
 r_int

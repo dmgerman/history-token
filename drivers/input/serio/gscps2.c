@@ -21,7 +21,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;HP GSC PS/2 port driver&quot;
+l_string|&quot;HP GSC PS2 port driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -1469,7 +1469,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;GSC PS/2&quot;
+l_string|&quot;GSC PS2&quot;
 comma
 dot
 id|id_table
