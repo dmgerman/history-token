@@ -1497,6 +1497,8 @@ c_func
 (paren
 id|bprm
 comma
+id|STACK_TOP
+comma
 id|EXSTACK_DEFAULT
 )paren
 suffix:semicolon
