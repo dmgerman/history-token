@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 multiline_comment|/*&n; * Module: jfs_mount.c&n; *&n; * note: file system in transition to aggregate/fileset:&n; *&n; * file system mount is interpreted as the mount of aggregate, &n; * if not already mounted, and mount of the single/only fileset in &n; * the aggregate;&n; *&n; * a file system/aggregate is represented by an internal inode&n; * (aka mount inode) initialized with aggregate superblock;&n; * each vfs represents a fileset, and points to its &quot;fileset inode &n; * allocation map inode&quot; (aka fileset inode):&n; * (an aggregate itself is structured recursively as a filset: &n; * an internal vfs is constructed and points to its &quot;fileset inode &n; * allocation map inode&quot; (aka aggregate inode) where each inode &n; * represents a fileset inode) so that inode number is mapped to &n; * on-disk inode in uniform way at both aggregate and fileset level;&n; *&n; * each vnode/inode of a fileset is linked to its vfs (to facilitate&n; * per fileset inode operations, e.g., unmount of a fileset, etc.);&n; * each inode points to the mount inode (to facilitate access to&n; * per aggregate information, e.g., block size, etc.) as well as&n; * its file set inode.&n; *&n; *   aggregate &n; *   ipmnt&n; *   mntvfs -&gt; fileset ipimap+ -&gt; aggregate ipbmap -&gt; aggregate ipaimap;&n; *             fileset vfs     -&gt; vp(1) &lt;-&gt; ... &lt;-&gt; vp(n) &lt;-&gt;vproot;&n; */
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
 macro_line|#include &quot;jfs_superblock.h&quot;
@@ -851,10 +852,6 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|metapage_t
-op_star
-id|mp
-suffix:semicolon
 r_struct
 id|jfs_sb_info
 op_star
@@ -870,6 +867,11 @@ r_struct
 id|jfs_superblock
 op_star
 id|j_sb
+suffix:semicolon
+r_struct
+id|buffer_head
+op_star
+id|bh
 suffix:semicolon
 r_int
 id|AIM_bytesize
@@ -908,7 +910,7 @@ c_func
 id|sb
 comma
 op_amp
-id|mp
+id|bh
 )paren
 )paren
 )paren
@@ -922,9 +924,7 @@ r_struct
 id|jfs_superblock
 op_star
 )paren
-(paren
-id|mp-&gt;data
-)paren
+id|bh-&gt;b_data
 suffix:semicolon
 multiline_comment|/*&n;&t; * validate superblock&n;&t; */
 multiline_comment|/* validate fs signature */
@@ -1378,10 +1378,10 @@ id|j_sb-&gt;s_ait2
 suffix:semicolon
 id|out
 suffix:colon
-id|release_metapage
+id|brelse
 c_func
 (paren
-id|mp
+id|bh
 )paren
 suffix:semicolon
 r_return
@@ -1419,9 +1419,10 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|metapage_t
+r_struct
+id|buffer_head
 op_star
-id|mp
+id|bh
 suffix:semicolon
 r_int
 id|rc
@@ -1449,7 +1450,7 @@ c_func
 id|sb
 comma
 op_amp
-id|mp
+id|bh
 )paren
 )paren
 )paren
@@ -1463,9 +1464,7 @@ r_struct
 id|jfs_superblock
 op_star
 )paren
-(paren
-id|mp-&gt;data
-)paren
+id|bh-&gt;b_data
 suffix:semicolon
 id|j_sb-&gt;s_state
 op_assign
@@ -1535,10 +1534,33 @@ id|JFS_DASD_PRIME
 )paren
 suffix:semicolon
 )brace
-id|flush_metapage
+id|mark_buffer_dirty
 c_func
 (paren
-id|mp
+id|bh
+)paren
+suffix:semicolon
+id|ll_rw_block
+c_func
+(paren
+id|WRITE
+comma
+l_int|1
+comma
+op_amp
+id|bh
+)paren
+suffix:semicolon
+id|wait_on_buffer
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+id|brelse
+c_func
+(paren
+id|bh
 )paren
 suffix:semicolon
 r_return
@@ -1556,78 +1578,60 @@ id|super_block
 op_star
 id|sb
 comma
-id|metapage_t
+r_struct
+id|buffer_head
 op_star
 op_star
-id|mpp
+id|bpp
 )paren
 (brace
 multiline_comment|/* read in primary superblock */
 op_star
-id|mpp
+id|bpp
 op_assign
-id|read_metapage
-c_func
-(paren
-id|JFS_SBI
+id|sb_bread
 c_func
 (paren
 id|sb
-)paren
-op_member_access_from_pointer
-id|direct_inode
 comma
 id|SUPER1_OFF
 op_rshift
 id|sb-&gt;s_blocksize_bits
-comma
-id|PSIZE
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_star
-id|mpp
-op_eq
-l_int|NULL
+id|bpp
 )paren
-(brace
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/* read in secondary/replicated superblock */
 op_star
-id|mpp
+id|bpp
 op_assign
-id|read_metapage
-c_func
-(paren
-id|JFS_SBI
+id|sb_bread
 c_func
 (paren
 id|sb
-)paren
-op_member_access_from_pointer
-id|direct_inode
 comma
 id|SUPER2_OFF
 op_rshift
 id|sb-&gt;s_blocksize_bits
-comma
-id|PSIZE
-comma
-l_int|1
 )paren
 suffix:semicolon
-)brace
-r_return
-op_star
-id|mpp
-ques
+r_if
 c_cond
+(paren
+id|bpp
+)paren
+r_return
 l_int|0
-suffix:colon
-l_int|1
+suffix:semicolon
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;logMOUNT()&n; *&n; * function: write a MOUNT log record for file system.&n; *&n; * MOUNT record keeps logredo() from processing log records&n; * for this file system past this point in log.&n; * it is harmless if mount fails.&n; *&n; * note: MOUNT record is at aggregate level, not at fileset level, &n; * since log records of previous mounts of a fileset&n; * (e.g., AFTER record of extent allocation) have to be processed &n; * to update block allocation map at aggregate level.&n; */
