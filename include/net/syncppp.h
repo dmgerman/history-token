@@ -125,6 +125,10 @@ r_char
 id|pp_link_state
 suffix:semicolon
 multiline_comment|/* Link status */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|ppp_device

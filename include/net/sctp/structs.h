@@ -961,6 +961,12 @@ id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
+DECL|member|bind_hash
+r_struct
+id|sctp_bind_bucket
+op_star
+id|bind_hash
+suffix:semicolon
 multiline_comment|/* Various Socket Options.  */
 DECL|member|default_stream
 id|__u16

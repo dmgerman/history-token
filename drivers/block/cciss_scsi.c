@@ -2973,7 +2973,7 @@ id|sh
 suffix:semicolon
 id|sh
 op_assign
-id|scsi_register
+id|scsi_host_alloc
 c_func
 (paren
 op_amp
@@ -5938,7 +5938,7 @@ c_func
 id|sa-&gt;scsi_host
 )paren
 suffix:semicolon
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|sa-&gt;scsi_host

@@ -34,6 +34,19 @@ op_star
 id|sk
 )paren
 suffix:semicolon
+r_int
+id|atm_dev_ioctl
+c_func
+(paren
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &lt;linux/proc_fs.h&gt;
 r_int

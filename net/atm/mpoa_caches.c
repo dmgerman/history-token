@@ -981,7 +981,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|atm_async_release_vcc
+id|vcc_release_async
 c_func
 (paren
 id|vcc
@@ -2035,7 +2035,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|atm_async_release_vcc
+id|vcc_release_async
 c_func
 (paren
 id|vcc

@@ -2314,7 +2314,8 @@ suffix:semicolon
 multiline_comment|/* Register our host with the SCSI stack. */
 id|scsi_host
 op_assign
-id|scsi_register
+id|scsi_host_alloc
+c_func
 (paren
 op_amp
 id|scsi_driver_template
@@ -2369,7 +2370,7 @@ c_func
 l_string|&quot;failed to allocate hostinfo&quot;
 )paren
 suffix:semicolon
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|hi-&gt;scsi_host
@@ -2426,7 +2427,7 @@ c_func
 l_string|&quot;failed to add scsi host&quot;
 )paren
 suffix:semicolon
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|hi-&gt;scsi_host
@@ -2493,7 +2494,7 @@ c_func
 id|hi-&gt;scsi_host
 )paren
 suffix:semicolon
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|hi-&gt;scsi_host

@@ -4989,7 +4989,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
-id|atm_async_release_vcc
+id|vcc_release_async
 c_func
 (paren
 id|entry-&gt;vcc
@@ -5043,7 +5043,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
-id|atm_async_release_vcc
+id|vcc_release_async
 c_func
 (paren
 id|entry-&gt;recv_vcc

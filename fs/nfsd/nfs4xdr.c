@@ -4668,7 +4668,7 @@ mdefine_line|#define WRITE32(n)               *p++ = htonl(n)
 DECL|macro|WRITE64
 mdefine_line|#define WRITE64(n)               do {&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl((u32)((n) &gt;&gt; 32));&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl((u32)(n));&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|WRITEMEM
-mdefine_line|#define WRITEMEM(ptr,nbytes)     do {&t;&t;&t;&t;&bslash;&n;&t;memcpy(p, ptr, nbytes);&t;&t;&t;&t;&t;&bslash;&n;&t;p += XDR_QUADLEN(nbytes);&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define WRITEMEM(ptr,nbytes)     do {&t;&t;&t;&t;&bslash;&n;&t;*(p + XDR_QUADLEN(nbytes) -1) = 0;                      &bslash;&n;&t;memcpy(p, ptr, nbytes);&t;&t;&t;&t;&t;&bslash;&n;&t;p += XDR_QUADLEN(nbytes);&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|WRITECINFO
 mdefine_line|#define WRITECINFO(c)&t;&t;do {&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl(c.atomic);&t;&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl(c.before_size);&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl(c.before_ctime);&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl(c.after_size);&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl(c.after_ctime);&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|RESERVE_SPACE
@@ -6737,6 +6737,13 @@ id|dentry
 op_star
 id|dentry
 suffix:semicolon
+r_struct
+id|svc_export
+op_star
+id|exp
+op_assign
+id|cd-&gt;rd_fhp-&gt;fh_export
+suffix:semicolon
 id|u32
 id|bmval0
 comma
@@ -6876,7 +6883,7 @@ op_logical_or
 id|bmval1
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * &quot;Heavyweight&quot; case: we have no choice except to&n;&t;&t; * call nfsd4_encode_fattr().  As far as I know,&n;&t;&t; * only Windows clients will trigger this code&n;&t;&t; * path.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * &quot;Heavyweight&quot; case: we have no choice except to&n;&t;&t; * call nfsd4_encode_fattr(). &n;&t;&t; */
 id|dentry
 op_assign
 id|lookup_one_len
@@ -6915,6 +6922,52 @@ r_goto
 id|error
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|d_mountpoint
+c_func
+(paren
+id|dentry
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|nfserr
+op_assign
+id|nfsd_cross_mnt
+c_func
+(paren
+id|cd-&gt;rd_rqstp
+comma
+op_amp
+id|dentry
+comma
+op_amp
+id|exp
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/* &n;&t;&t;&t; * -EAGAIN is the only error returned from &n;&t;&t;&t; * nfsd_cross_mnt() and it indicates that an &n;&t;&t;&t; * up-call has  been initiated to fill in the export &n;&t;&t;&t; * options on exp.  When the answer comes back,&n;&t;&t;&t; * this call will be retried.&n;&t;&t;&t; */
+id|dput
+c_func
+(paren
+id|dentry
+)paren
+suffix:semicolon
+id|nfserr
+op_assign
+id|nfserr_dropit
+suffix:semicolon
+r_goto
+id|error
+suffix:semicolon
+)brace
+)brace
 id|nfserr
 op_assign
 id|nfsd4_encode_fattr
@@ -6922,7 +6975,7 @@ c_func
 (paren
 l_int|NULL
 comma
-id|cd-&gt;rd_fhp-&gt;fh_export
+id|exp
 comma
 id|dentry
 comma
@@ -6932,12 +6985,6 @@ op_amp
 id|buflen
 comma
 id|cd-&gt;rd_bmval
-)paren
-suffix:semicolon
-id|dput
-c_func
-(paren
-id|dentry
 )paren
 suffix:semicolon
 r_if

@@ -966,7 +966,7 @@ comma
 r_int
 r_char
 op_star
-id|node
+id|ipx_node
 comma
 r_int
 r_int
@@ -1029,7 +1029,7 @@ op_logical_neg
 id|memcmp
 c_func
 (paren
-id|node
+id|ipx_node
 comma
 id|ipxs-&gt;node
 comma

@@ -1125,6 +1125,12 @@ id|ENXIO
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * rename and move the name cell.&n;&t; */
+id|unregister_with_devfs
+c_func
+(paren
+id|hc
+)paren
+suffix:semicolon
 id|list_del
 c_func
 (paren
@@ -1156,12 +1162,6 @@ id|new_name
 )paren
 suffix:semicolon
 multiline_comment|/* rename the device node in devfs */
-id|unregister_with_devfs
-c_func
-(paren
-id|hc
-)paren
-suffix:semicolon
 id|register_with_devfs
 c_func
 (paren

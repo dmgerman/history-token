@@ -11244,7 +11244,7 @@ id|ENOMEM
 suffix:semicolon
 id|host
 op_assign
-id|scsi_register
+id|scsi_host_alloc
 c_func
 (paren
 op_amp
@@ -11626,7 +11626,7 @@ l_int|2
 suffix:semicolon
 id|err_1
 suffix:colon
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|host
@@ -11764,6 +11764,12 @@ c_func
 (paren
 op_amp
 id|ashost-&gt;queues.issue
+)paren
+suffix:semicolon
+id|scsi_host_put
+c_func
+(paren
+id|host
 )paren
 suffix:semicolon
 )brace

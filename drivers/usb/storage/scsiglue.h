@@ -23,7 +23,7 @@ l_int|18
 suffix:semicolon
 r_extern
 r_struct
-id|SHT
+id|scsi_host_template
 id|usb_stor_host_template
 suffix:semicolon
 r_extern

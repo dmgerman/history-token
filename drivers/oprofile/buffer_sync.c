@@ -1305,6 +1305,8 @@ suffix:semicolon
 r_int
 r_int
 id|cookie
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|in_kernel
@@ -1385,6 +1387,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_struct
+id|mm_struct
+op_star
+id|oldmm
+op_assign
+id|mm
+suffix:semicolon
 multiline_comment|/* userspace context switch */
 r_new
 op_assign
@@ -1398,7 +1407,7 @@ suffix:semicolon
 id|release_mm
 c_func
 (paren
-id|mm
+id|oldmm
 )paren
 suffix:semicolon
 id|mm
@@ -1409,6 +1418,13 @@ c_func
 r_new
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mm
+op_ne
+id|oldmm
+)paren
 id|cookie
 op_assign
 id|get_exec_dcookie

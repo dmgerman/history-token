@@ -1891,11 +1891,6 @@ op_assign
 id|eesoxscsi_info
 comma
 dot
-id|command
-op_assign
-id|fas216_command
-comma
-dot
 id|queuecommand
 op_assign
 id|fas216_queue_command

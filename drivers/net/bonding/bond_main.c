@@ -2183,8 +2183,6 @@ id|alb_timer
 )paren
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2556,8 +2554,6 @@ id|bond
 )paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -13033,6 +13029,10 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|bond-&gt;bond_proc_dir-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|bond-&gt;bond_proc_info_file
 op_assign
 id|create_proc_info_entry
@@ -13091,6 +13091,10 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|bond-&gt;bond_proc_info_file-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
 r_if
 c_cond

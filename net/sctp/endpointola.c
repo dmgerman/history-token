@@ -521,7 +521,13 @@ multiline_comment|/* Remove and free the port */
 r_if
 c_cond
 (paren
-id|ep-&gt;base.sk-&gt;sk_prev
+id|sctp_sk
+c_func
+(paren
+id|ep-&gt;base.sk
+)paren
+op_member_access_from_pointer
+id|bind_hash
 )paren
 id|sctp_put_port
 c_func

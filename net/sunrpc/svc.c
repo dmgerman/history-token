@@ -365,6 +365,12 @@ id|svsk
 )paren
 suffix:semicolon
 )brace
+id|cache_clean_deferred
+c_func
+(paren
+id|serv
+)paren
+suffix:semicolon
 multiline_comment|/* Unregister service with the portmapper */
 id|svc_register
 c_func

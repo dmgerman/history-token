@@ -674,6 +674,12 @@ id|__u32
 id|lsndtime
 suffix:semicolon
 multiline_comment|/* timestamp of last sent data packet (for restart window) */
+DECL|member|bind_hash
+r_struct
+id|tcp_bind_bucket
+op_star
+id|bind_hash
+suffix:semicolon
 multiline_comment|/* Delayed ACK control data */
 r_struct
 (brace

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Regular cardbus driver (&quot;yenta&quot;)&n; *&n; * (C) Copyright 1999, 2000 Linus Torvalds&n; *&n; * Changelog:&n; * Aug 2002: Manfred Spraul &lt;manfred@colorfullife.com&gt;&n; * &t;Dynamically adjust the size of the bridge resource&n; * &t;&n; * May 2003: Dominik Brodowski &lt;linux@brodo.de&gt;&n; * &t;Merge pci_socket.c and yenta.c into one file&n; */
+multiline_comment|/*&n; * Regular cardbus driver (&quot;yenta_socket&quot;)&n; *&n; * (C) Copyright 1999, 2000 Linus Torvalds&n; *&n; * Changelog:&n; * Aug 2002: Manfred Spraul &lt;manfred@colorfullife.com&gt;&n; * &t;Dynamically adjust the size of the bridge resource&n; * &t;&n; * May 2003: Dominik Brodowski &lt;linux@brodo.de&gt;&n; * &t;Merge pci_socket.c and yenta.c into one file&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -11,7 +11,7 @@ macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/ss.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;yenta.h&quot;
+macro_line|#include &quot;yenta_socket.h&quot;
 macro_line|#include &quot;i82365.h&quot;
 macro_line|#if 0
 mdefine_line|#define DEBUG(x,args...)&t;printk(&quot;%s: &quot; x, __FUNCTION__, ##args)

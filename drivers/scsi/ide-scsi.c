@@ -3310,7 +3310,7 @@ c_func
 id|scsihost
 )paren
 suffix:semicolon
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|scsihost
@@ -5130,7 +5130,7 @@ op_logical_neg
 (paren
 id|host
 op_assign
-id|scsi_register
+id|scsi_host_alloc
 c_func
 (paren
 op_amp
@@ -5229,7 +5229,7 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|host

@@ -345,22 +345,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
-r_inline
-r_int
-DECL|function|nfsd4_renew
-id|nfsd4_renew
-c_func
-(paren
-id|clientid_t
-op_star
-id|clientid
-)paren
-(brace
-r_return
-id|nfs_ok
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * filehandle-manipulating ops.&n; */
 r_static
 r_inline
