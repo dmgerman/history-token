@@ -6287,7 +6287,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|ai-&gt;stats_task.routine
+id|ai-&gt;stats_task.func
 op_assign
 (paren
 r_void
@@ -6309,7 +6309,7 @@ op_star
 )paren
 id|ai
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -9374,7 +9374,7 @@ c_cond
 id|len
 )paren
 (brace
-macro_line|#if WIRELESS_EXT &gt; 15
+macro_line|#if 0 &amp;&amp; WIRELESS_EXT &gt; 15
 macro_line|#ifdef IW_WIRELESS_SPY&t;&t;/* defined in iw_handler.h */
 r_if
 c_cond
@@ -27351,7 +27351,7 @@ op_star
 )paren
 id|airo_private_args
 comma
-macro_line|#if WIRELESS_EXT &gt; 15
+macro_line|#if 0 &amp;&amp; WIRELESS_EXT &gt; 15
 dot
 id|spy_offset
 op_assign
