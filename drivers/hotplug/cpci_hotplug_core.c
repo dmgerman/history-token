@@ -447,7 +447,7 @@ r_return
 id|pci_hp_change_slot_info
 c_func
 (paren
-id|hotplug_slot-&gt;name
+id|hotplug_slot
 comma
 op_amp
 id|info
@@ -512,7 +512,7 @@ r_return
 id|pci_hp_change_slot_info
 c_func
 (paren
-id|hotplug_slot-&gt;name
+id|hotplug_slot
 comma
 op_amp
 id|info

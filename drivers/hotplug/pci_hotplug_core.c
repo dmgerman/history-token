@@ -2014,15 +2014,15 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_hp_change_slot_info - changes the slot&squot;s information structure in the core&n; * @name: the name of the slot whose info has changed&n; * @info: pointer to the info copy into the slot&squot;s info structure&n; *&n; * A slot with @name must have been registered with the pci &n; * hotplug subsystem previously with a call to pci_hp_register().&n; *&n; * Returns 0 if successful, anything else for an error.&n; * Not supported by sysfs now.&n; */
+multiline_comment|/**&n; * pci_hp_change_slot_info - changes the slot&squot;s information structure in the core&n; * @slot: pointer to the slot whose info has changed&n; * @info: pointer to the info copy into the slot&squot;s info structure&n; *&n; * @slot must have been registered with the pci &n; * hotplug subsystem previously with a call to pci_hp_register().&n; *&n; * Returns 0 if successful, anything else for an error.&n; * Not supported by sysfs now.&n; */
 DECL|function|pci_hp_change_slot_info
 r_int
 id|pci_hp_change_slot_info
 (paren
-r_const
-r_char
+r_struct
+id|hotplug_slot
 op_star
-id|name
+id|slot
 comma
 r_struct
 id|hotplug_slot_info

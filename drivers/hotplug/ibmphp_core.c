@@ -2870,12 +2870,6 @@ id|hotplug_slot_info
 op_star
 id|info
 suffix:semicolon
-r_char
-id|buffer
-(braket
-l_int|30
-)braket
-suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
@@ -2915,15 +2909,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|strncpy
-(paren
-id|buffer
-comma
-id|slot_cur-&gt;hotplug_slot-&gt;name
-comma
-l_int|30
-)paren
-suffix:semicolon
 id|info-&gt;power_status
 op_assign
 id|SLOT_PWRGD
@@ -3052,7 +3037,7 @@ id|rc
 op_assign
 id|pci_hp_change_slot_info
 (paren
-id|buffer
+id|slot_cur-&gt;hotplug_slot
 comma
 id|info
 )paren

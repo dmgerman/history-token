@@ -388,10 +388,10 @@ r_extern
 r_int
 id|pci_hp_change_slot_info
 (paren
-r_const
-r_char
+r_struct
+id|hotplug_slot
 op_star
-id|name
+id|slot
 comma
 r_struct
 id|hotplug_slot_info
