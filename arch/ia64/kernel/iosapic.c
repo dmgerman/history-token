@@ -2867,7 +2867,7 @@ comma
 id|gsi
 )paren
 suffix:semicolon
-r_return
+r_continue
 suffix:semicolon
 )brace
 id|addr
