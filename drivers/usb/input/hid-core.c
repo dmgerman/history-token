@@ -6213,6 +6213,10 @@ DECL|macro|USB_VENDOR_ID_SAITEK
 mdefine_line|#define USB_VENDOR_ID_SAITEK&t;&t;0x06a3
 DECL|macro|USB_DEVICE_ID_SAITEK_RUMBLEPAD
 mdefine_line|#define USB_DEVICE_ID_SAITEK_RUMBLEPAD&t;0xff17
+DECL|macro|USB_VENDOR_ID_NEC
+mdefine_line|#define USB_VENDOR_ID_NEC&t;&t;0x073e
+DECL|macro|USB_DEVICE_ID_NEC_USB_GAME_PAD
+mdefine_line|#define USB_DEVICE_ID_NEC_USB_GAME_PAD&t;0x0301
 DECL|struct|hid_blacklist
 r_struct
 id|hid_blacklist
@@ -6658,6 +6662,14 @@ comma
 id|HID_QUIRK_BADPAD
 op_or
 id|HID_QUIRK_MULTI_INPUT
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_NEC
+comma
+id|USB_DEVICE_ID_NEC_USB_GAME_PAD
+comma
+id|HID_QUIRK_BADPAD
 )brace
 comma
 (brace
