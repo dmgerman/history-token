@@ -11667,9 +11667,11 @@ id|mddev-&gt;curr_resync
 op_assign
 l_int|1
 suffix:semicolon
-id|yield
+id|wake_up
 c_func
 (paren
+op_amp
+id|resync_wait
 )paren
 suffix:semicolon
 )brace
@@ -11683,7 +11685,7 @@ id|resync_wait
 comma
 id|mddev2-&gt;curr_resync
 OL
-l_int|2
+id|mddev-&gt;curr_resync
 )paren
 )paren
 (brace
@@ -11708,6 +11710,15 @@ id|skip
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|mddev-&gt;curr_resync
+op_eq
+l_int|1
+)paren
+r_break
+suffix:semicolon
 )brace
 )brace
 r_while

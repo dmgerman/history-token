@@ -3546,7 +3546,8 @@ id|drive
 )paren
 (brace
 macro_line|#if 0
-id|u32
+r_int
+r_int
 id|high_16
 op_assign
 id|pci_resource_start
@@ -4461,10 +4462,19 @@ comma
 l_int|8
 )paren
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;HPT37x: 66MHz timings are not supported.&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EOPNOTSUPP
 suffix:semicolon
+)brace
 r_else
 r_if
 c_cond

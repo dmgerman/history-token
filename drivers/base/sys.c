@@ -131,9 +131,9 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;sys_unregister_root - remove subordinate root from tree&n; *&t;@root:&t;subordinate root in question.&n; *&n; *&t;We only decrement the reference count on @root-&gt;sysdev &n; *&t;and @root-&gt;dev.&n; *&t;If both are 0, they will be cleaned up by the core.&n; */
-DECL|function|sys_unegister_root
+DECL|function|sys_unregister_root
 r_void
-id|sys_unegister_root
+id|sys_unregister_root
 c_func
 (paren
 r_struct

@@ -62,8 +62,6 @@ DECL|macro|SK_DATA
 mdefine_line|#define&t;SK_DATA&t;&t;3&t;&t;&t;/* data pending */
 DECL|macro|SK_TEMP
 mdefine_line|#define&t;SK_TEMP&t;&t;4&t;&t;&t;/* temp (TCP) socket */
-DECL|macro|SK_QUED
-mdefine_line|#define&t;SK_QUED&t;&t;5&t;&t;&t;/* on serv-&gt;sk_sockets */
 DECL|macro|SK_DEAD
 mdefine_line|#define&t;SK_DEAD&t;&t;6&t;&t;&t;/* socket closed */
 DECL|macro|SK_CHNGBUF

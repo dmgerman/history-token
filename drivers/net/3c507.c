@@ -529,6 +529,9 @@ id|buf
 comma
 r_int
 id|length
+comma
+r_int
+id|pad
 )paren
 suffix:semicolon
 r_static
@@ -1549,7 +1552,11 @@ id|dev
 comma
 id|buf
 comma
+id|skb-&gt;len
+comma
 id|length
+op_minus
+id|skb-&gt;len
 )paren
 suffix:semicolon
 id|dev-&gt;trans_start
@@ -2742,6 +2749,9 @@ id|buf
 comma
 r_int
 id|length
+comma
+r_int
+id|pad
 )paren
 (brace
 r_struct
@@ -2773,6 +2783,13 @@ op_assign
 id|dev-&gt;mem_start
 op_plus
 id|tx_block
+suffix:semicolon
+r_static
+r_char
+id|padding
+(braket
+id|ETH_ZLEN
+)braket
 suffix:semicolon
 multiline_comment|/* Set the write pointer to the Tx block, and put out the header. */
 id|isa_writew
@@ -2827,7 +2844,11 @@ multiline_comment|/* Output the data buffer descriptor. */
 id|isa_writew
 c_func
 (paren
+(paren
+id|pad
+op_plus
 id|length
+)paren
 op_or
 l_int|0x8000
 comma
@@ -2922,6 +2943,25 @@ comma
 id|buf
 comma
 id|length
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pad
+)paren
+id|isa_memcpy_toio
+c_func
+(paren
+id|write_ptr
+op_plus
+id|length
+op_plus
+l_int|2
+comma
+id|padding
+comma
+id|pad
 )paren
 suffix:semicolon
 multiline_comment|/* Set the old command link pointing to this send packet. */
