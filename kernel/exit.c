@@ -1184,9 +1184,23 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|tty_sem
+)paren
+suffix:semicolon
 id|current-&gt;signal-&gt;tty
 op_assign
 l_int|NULL
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|tty_sem
+)paren
 suffix:semicolon
 multiline_comment|/* Block and flush all signals */
 id|sigfillset

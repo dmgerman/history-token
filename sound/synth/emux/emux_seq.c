@@ -642,11 +642,6 @@ id|p
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|p-&gt;chset.channels
-)paren
 id|kfree
 c_func
 (paren

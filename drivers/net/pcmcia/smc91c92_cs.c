@@ -190,7 +190,9 @@ r_int
 id|packets_waiting
 suffix:semicolon
 DECL|member|base
-id|caddr_t
+r_void
+id|__iomem
+op_star
 id|base
 suffix:semicolon
 DECL|member|cfg

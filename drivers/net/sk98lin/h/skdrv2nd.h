@@ -506,12 +506,6 @@ DECL|struct|s_DevNet
 r_struct
 id|s_DevNet
 (brace
-DECL|member|proc
-r_struct
-id|proc_dir_entry
-op_star
-id|proc
-suffix:semicolon
 DECL|member|PortNr
 r_int
 id|PortNr
@@ -876,6 +870,16 @@ id|spinlock_t
 id|SlowPathLock
 suffix:semicolon
 multiline_comment|/* Normal IRQ lock */
+DECL|member|BlinkTimer
+r_struct
+id|timer_list
+id|BlinkTimer
+suffix:semicolon
+multiline_comment|/* for LED blinking */
+DECL|member|LedsOn
+r_int
+id|LedsOn
+suffix:semicolon
 DECL|member|PnmiStruct
 id|SK_PNMI_STRUCT_DATA
 id|PnmiStruct
@@ -944,13 +948,6 @@ l_int|30
 )braket
 suffix:semicolon
 multiline_comment|/* driver name */
-DECL|member|Next
-r_struct
-id|SK_NET_DEVICE
-op_star
-id|Next
-suffix:semicolon
-multiline_comment|/* link all devices (for clearing) */
 DECL|member|RxBufSize
 r_int
 id|RxBufSize

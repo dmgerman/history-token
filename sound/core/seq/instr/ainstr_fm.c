@@ -24,13 +24,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|variable|snd_seq_fm_id
-r_char
-op_star
-id|snd_seq_fm_id
-op_assign
-id|SNDRV_SEQ_INSTR_ID_OPL2_3
-suffix:semicolon
 DECL|function|snd_seq_fm_put
 r_static
 r_int
@@ -738,7 +731,7 @@ id|fm_instrument_t
 suffix:semicolon
 id|ops-&gt;instr_type
 op_assign
-id|snd_seq_fm_id
+id|SNDRV_SEQ_INSTR_ID_OPL2_3
 suffix:semicolon
 id|ops-&gt;put
 op_assign
@@ -798,13 +791,6 @@ c_func
 (paren
 id|alsa_ainstr_fm_exit
 )paren
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_seq_fm_id
-)paren
-suffix:semicolon
-DECL|variable|EXPORT_SYMBOL
 id|EXPORT_SYMBOL
 c_func
 (paren

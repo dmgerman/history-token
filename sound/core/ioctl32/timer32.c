@@ -54,7 +54,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|CVT_sndrv_timer_info
-mdefine_line|#define CVT_sndrv_timer_info()&bslash;&n;{&bslash;&n;&t;COPY(flags);&bslash;&n;&t;COPY(card);&bslash;&n;&t;memcpy(dst-&gt;id, src-&gt;id, sizeof(src-&gt;id));&bslash;&n;&t;memcpy(dst-&gt;name, src-&gt;name, sizeof(src-&gt;name));&bslash;&n;&t;COPY(resolution);&bslash;&n;}
+mdefine_line|#define CVT_sndrv_timer_info()&bslash;&n;{&bslash;&n;&t;COPY(flags);&bslash;&n;&t;COPY(card);&bslash;&n;&t;COPY_ARRAY(id);&bslash;&n;&t;COPY_ARRAY(name);&bslash;&n;&t;COPY_CVT(resolution);&bslash;&n;}
 DECL|struct|sndrv_timer_status32
 r_struct
 id|sndrv_timer_status32
@@ -91,7 +91,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|CVT_sndrv_timer_status
-mdefine_line|#define CVT_sndrv_timer_status()&bslash;&n;{&bslash;&n;&t;COPY(tstamp.tv_sec);&bslash;&n;&t;COPY(tstamp.tv_nsec);&bslash;&n;&t;COPY(resolution);&bslash;&n;&t;COPY(lost);&bslash;&n;&t;COPY(overrun);&bslash;&n;&t;COPY(queue);&bslash;&n;}
+mdefine_line|#define CVT_sndrv_timer_status()&bslash;&n;{&bslash;&n;&t;COPY_CVT(tstamp.tv_sec);&bslash;&n;&t;COPY_CVT(tstamp.tv_nsec);&bslash;&n;&t;COPY(resolution);&bslash;&n;&t;COPY(lost);&bslash;&n;&t;COPY(overrun);&bslash;&n;&t;COPY(queue);&bslash;&n;}
 DECL|variable|timer_info
 id|DEFINE_ALSA_IOCTL
 c_func

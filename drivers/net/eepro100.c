@@ -198,11 +198,11 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
-multiline_comment|/* enable PIO instead of MMIO, if CONFIG_EEPRO100_PIO is selected */
-macro_line|#ifdef CONFIG_EEPRO100_PIO
-DECL|macro|USE_IO
-mdefine_line|#define USE_IO 1
-macro_line|#endif
+DECL|variable|use_io
+r_static
+r_int
+id|use_io
+suffix:semicolon
 DECL|variable|debug
 r_static
 r_int
@@ -231,6 +231,14 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|use_io
+comma
+l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -467,7 +475,9 @@ id|pci_dev
 op_star
 id|pdev
 comma
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 comma
 r_int
@@ -526,79 +536,6 @@ l_int|3
 comma
 )brace
 suffix:semicolon
-DECL|function|io_inw
-r_static
-r_inline
-r_int
-r_int
-id|io_inw
-c_func
-(paren
-r_int
-r_int
-id|port
-)paren
-(brace
-r_return
-id|inw
-c_func
-(paren
-id|port
-)paren
-suffix:semicolon
-)brace
-DECL|function|io_outw
-r_static
-r_inline
-r_void
-id|io_outw
-c_func
-(paren
-r_int
-r_int
-id|val
-comma
-r_int
-r_int
-id|port
-)paren
-(brace
-id|outw
-c_func
-(paren
-id|val
-comma
-id|port
-)paren
-suffix:semicolon
-)brace
-macro_line|#ifndef USE_IO
-multiline_comment|/* Currently alpha headers define in/out macros.&n;   Undefine them.  2000/03/30  SAW */
-DECL|macro|inb
-macro_line|#undef inb
-DECL|macro|inw
-macro_line|#undef inw
-DECL|macro|inl
-macro_line|#undef inl
-DECL|macro|outb
-macro_line|#undef outb
-DECL|macro|outw
-macro_line|#undef outw
-DECL|macro|outl
-macro_line|#undef outl
-DECL|macro|inb
-mdefine_line|#define inb readb
-DECL|macro|inw
-mdefine_line|#define inw readw
-DECL|macro|inl
-mdefine_line|#define inl readl
-DECL|macro|outb
-mdefine_line|#define outb writeb
-DECL|macro|outw
-mdefine_line|#define outw writew
-DECL|macro|outl
-mdefine_line|#define outl writel
-macro_line|#endif
 multiline_comment|/* Offsets to the various registers.&n;   All accesses need not be longword aligned. */
 DECL|enum|speedo_offsets
 r_enum
@@ -1185,6 +1122,12 @@ DECL|struct|speedo_private
 r_struct
 id|speedo_private
 (brace
+DECL|member|regs
+r_void
+id|__iomem
+op_star
+id|regs
+suffix:semicolon
 DECL|member|tx_ring
 r_struct
 id|TxFD
@@ -1662,7 +1605,9 @@ r_int
 id|do_eeprom_cmd
 c_func
 (paren
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 comma
 r_int
@@ -1947,6 +1892,11 @@ r_struct
 id|net_device
 op_star
 id|dev
+comma
+r_struct
+id|speedo_private
+op_star
+id|sp
 )paren
 (brace
 r_int
@@ -1954,10 +1904,12 @@ id|wait
 op_assign
 l_int|1000
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|cmd_ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|sp-&gt;regs
 op_plus
 id|SCBCmd
 suffix:semicolon
@@ -1975,7 +1927,7 @@ l_int|1
 suffix:semicolon
 id|r
 op_assign
-id|inb
+id|ioread8
 c_func
 (paren
 id|cmd_ioaddr
@@ -2033,12 +1985,15 @@ op_star
 id|ent
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 suffix:semicolon
 r_int
 id|irq
+comma
+id|pci_bar
 suffix:semicolon
 r_int
 id|acpi_idle_state
@@ -2051,6 +2006,10 @@ r_static
 r_int
 id|cards_found
 multiline_comment|/* = 0 */
+suffix:semicolon
+r_int
+r_int
+id|pci_base
 suffix:semicolon
 macro_line|#ifndef MODULE
 multiline_comment|/* when built-in, we only print version if device is found */
@@ -2209,15 +2168,23 @@ id|irq
 op_assign
 id|pdev-&gt;irq
 suffix:semicolon
-macro_line|#ifdef USE_IO
-id|ioaddr
+id|pci_bar
+op_assign
+id|use_io
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+id|pci_base
 op_assign
 id|pci_resource_start
 c_func
 (paren
 id|pdev
 comma
-l_int|1
+id|pci_bar
 )paren
 suffix:semicolon
 r_if
@@ -2230,38 +2197,23 @@ id|NETIF_MSG_PROBE
 id|printk
 c_func
 (paren
-l_string|&quot;Found Intel i82557 PCI Speedo at I/O %#lx, IRQ %d.&bslash;n&quot;
+l_string|&quot;Found Intel i82557 PCI Speedo at %#lx, IRQ %d.&bslash;n&quot;
 comma
-id|ioaddr
+id|pci_base
 comma
 id|irq
 )paren
 suffix:semicolon
-macro_line|#else
 id|ioaddr
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|ioremap
-c_func
-(paren
-id|pci_resource_start
+id|pci_iomap
 c_func
 (paren
 id|pdev
 comma
-l_int|0
-)paren
-comma
-id|pci_resource_len
-c_func
-(paren
-id|pdev
+id|pci_bar
 comma
 l_int|0
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -2274,53 +2226,13 @@ id|ioaddr
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;eepro100: cannot remap MMIO region %lx @ %lx&bslash;n&quot;
-comma
-id|pci_resource_len
-c_func
-(paren
-id|pdev
-comma
-l_int|0
-)paren
-comma
-id|pci_resource_start
-c_func
-(paren
-id|pdev
-comma
-l_int|0
-)paren
+l_string|&quot;eepro100: cannot remap IO&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
 id|err_out_free_mmio_region
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|DEBUG
-op_amp
-id|NETIF_MSG_PROBE
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;Found Intel i82557 PCI Speedo, MMIO at %#lx, IRQ %d.&bslash;n&quot;
-comma
-id|pci_resource_start
-c_func
-(paren
-id|pdev
-comma
-l_int|0
-)paren
-comma
-id|irq
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2351,17 +2263,14 @@ suffix:semicolon
 id|err_out_iounmap
 suffix:colon
 suffix:semicolon
-macro_line|#ifndef USE_IO
-id|iounmap
+id|pci_iounmap
+c_func
 (paren
-(paren
-r_void
-op_star
-)paren
+id|pdev
+comma
 id|ioaddr
 )paren
 suffix:semicolon
-macro_line|#endif
 id|err_out_free_mmio_region
 suffix:colon
 id|release_mem_region
@@ -2462,7 +2371,9 @@ id|pci_dev
 op_star
 id|pdev
 comma
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 comma
 r_int
@@ -2668,8 +2579,9 @@ id|err_free_unlock
 suffix:semicolon
 multiline_comment|/* Read the station address EEPROM before doing the reset.&n;&t;   Nominally his should even be done before accepting the device, but&n;&t;   then we wouldn&squot;t have a device name with which to report the error.&n;&t;   The size test is for 6 bit vs. 8 bit address serial EEPROMs.&n;&t;*/
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|iobase
 suffix:semicolon
 r_int
@@ -2686,13 +2598,30 @@ suffix:semicolon
 multiline_comment|/* Use IO only to avoid postponed writes and satisfy EEPROM timing&n;&t;&t;   requirements. */
 id|iobase
 op_assign
-id|pci_resource_start
+id|pci_iomap
+c_func
+(paren
+id|pdev
+comma
+l_int|1
+comma
+id|pci_resource_len
 c_func
 (paren
 id|pdev
 comma
 l_int|1
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|iobase
+)paren
+r_goto
+id|err_free_unlock
 suffix:semicolon
 r_if
 c_cond
@@ -2841,9 +2770,17 @@ id|sum
 )paren
 suffix:semicolon
 multiline_comment|/* Don&squot;t  unregister_netdev(dev);  as the EEPro may actually be&n;&t;&t;   usable, especially if the MAC address is set later.&n;&t;&t;   On the other hand, it may be unusable if MDI data is corrupted. */
+id|pci_iounmap
+c_func
+(paren
+id|pdev
+comma
+id|iobase
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Reset the chip: stop Tx and Rx processes and clear counters.&n;&t;   This takes less than 10usec and will easily finish before the next&n;&t;   action. */
-id|outl
+id|iowrite32
 c_func
 (paren
 id|PortReset
@@ -2853,7 +2790,7 @@ op_plus
 id|SCBPort
 )paren
 suffix:semicolon
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -2937,16 +2874,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#ifdef USE_IO
-id|printk
-c_func
-(paren
-l_string|&quot;I/O at %#3lx, &quot;
-comma
-id|ioaddr
-)paren
-suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -2955,8 +2882,16 @@ comma
 id|pdev-&gt;irq
 )paren
 suffix:semicolon
-multiline_comment|/* we must initialize base_addr early, for mdio_{read,write} */
-id|dev-&gt;base_addr
+id|sp
+op_assign
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* we must initialize this early, for mdio_{read,write} */
+id|sp-&gt;regs
 op_assign
 id|ioaddr
 suffix:semicolon
@@ -3355,7 +3290,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|tx_ring_dma
@@ -3489,7 +3424,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif  /* kernel_bloat */
-id|outl
+id|iowrite32
 c_func
 (paren
 id|PortReset
@@ -3499,7 +3434,7 @@ op_plus
 id|SCBPort
 )paren
 suffix:semicolon
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -3541,14 +3476,6 @@ suffix:semicolon
 id|dev-&gt;irq
 op_assign
 id|pdev-&gt;irq
-suffix:semicolon
-id|sp
-op_assign
-id|netdev_priv
-c_func
-(paren
-id|dev
-)paren
 suffix:semicolon
 id|sp-&gt;pdev
 op_assign
@@ -3893,14 +3820,21 @@ id|net_device
 op_star
 id|dev
 comma
+r_struct
+id|speedo_private
+op_star
+id|sp
+comma
 r_int
 id|cmd
 )paren
 (brace
-r_int
+r_void
+id|__iomem
+op_star
 id|cmd_ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|sp-&gt;regs
 op_plus
 id|SCBCmd
 suffix:semicolon
@@ -3913,7 +3847,7 @@ r_do
 r_if
 c_cond
 (paren
-id|inb
+id|ioread8
 c_func
 (paren
 id|cmd_ioaddr
@@ -3947,7 +3881,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;Command %4.4x never accepted (%d polls)!&bslash;n&quot;
 comma
-id|inb
+id|ioread8
 c_func
 (paren
 id|cmd_ioaddr
@@ -3956,7 +3890,7 @@ comma
 id|wait
 )paren
 suffix:semicolon
-id|outb
+id|iowrite8
 c_func
 (paren
 id|cmd
@@ -3981,7 +3915,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|inb
+id|ioread8
 c_func
 (paren
 id|cmd_ioaddr
@@ -4005,7 +3939,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|inb
+id|ioread8
 c_func
 (paren
 id|cmd_ioaddr
@@ -4033,10 +3967,10 @@ id|cmd
 comma
 id|wait
 comma
-id|inl
+id|ioread32
 c_func
 (paren
-id|dev-&gt;base_addr
+id|sp-&gt;regs
 op_plus
 id|SCBStatus
 )paren
@@ -4069,7 +4003,9 @@ id|__devinit
 id|do_eeprom_cmd
 c_func
 (paren
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 comma
 r_int
@@ -4084,14 +4020,16 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ee_addr
 op_assign
 id|ioaddr
 op_plus
 id|SCBeeprom
 suffix:semicolon
-id|io_outw
+id|iowrite16
 c_func
 (paren
 id|EE_ENB
@@ -4105,7 +4043,7 @@ c_func
 l_int|2
 )paren
 suffix:semicolon
-id|io_outw
+id|iowrite16
 c_func
 (paren
 id|EE_ENB
@@ -4142,7 +4080,7 @@ id|EE_WRITE_1
 suffix:colon
 id|EE_WRITE_0
 suffix:semicolon
-id|io_outw
+id|iowrite16
 c_func
 (paren
 id|dataval
@@ -4156,7 +4094,7 @@ c_func
 l_int|2
 )paren
 suffix:semicolon
-id|io_outw
+id|iowrite16
 c_func
 (paren
 id|dataval
@@ -4182,7 +4120,7 @@ l_int|1
 op_or
 (paren
 (paren
-id|io_inw
+id|ioread16
 c_func
 (paren
 id|ee_addr
@@ -4207,7 +4145,7 @@ op_ge
 l_int|0
 )paren
 suffix:semicolon
-id|io_outw
+id|iowrite16
 c_func
 (paren
 id|EE_ENB
@@ -4222,7 +4160,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Terminate the EEPROM access. */
-id|io_outw
+id|iowrite16
 c_func
 (paren
 id|EE_ENB
@@ -4255,10 +4193,23 @@ r_int
 id|location
 )paren
 (brace
-r_int
+r_struct
+id|speedo_private
+op_star
+id|sp
+op_assign
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|sp-&gt;regs
 suffix:semicolon
 r_int
 id|val
@@ -4270,7 +4221,7 @@ op_star
 l_int|10
 suffix:semicolon
 multiline_comment|/* &lt;64 usec. to complete, typ 27 ticks */
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x08000000
@@ -4296,7 +4247,7 @@ r_do
 (brace
 id|val
 op_assign
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -4364,10 +4315,23 @@ r_int
 id|value
 )paren
 (brace
-r_int
+r_struct
+id|speedo_private
+op_star
+id|sp
+op_assign
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|sp-&gt;regs
 suffix:semicolon
 r_int
 id|val
@@ -4379,7 +4343,7 @@ op_star
 l_int|10
 suffix:semicolon
 multiline_comment|/* &lt;64 usec. to complete, typ 27 ticks */
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x04000000
@@ -4407,7 +4371,7 @@ r_do
 (brace
 id|val
 op_assign
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -4472,10 +4436,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|sp-&gt;regs
 suffix:semicolon
 r_int
 id|retval
@@ -4630,7 +4596,7 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Fire up the hardware. */
-id|outw
+id|iowrite16
 c_func
 (paren
 id|SCBMaskAll
@@ -4741,7 +4707,7 @@ l_string|&quot;%s: Done speedo_open(), status %8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|inw
+id|ioread16
 c_func
 (paren
 id|ioaddr
@@ -4846,10 +4812,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|sp-&gt;regs
 suffix:semicolon
 multiline_comment|/* Start with a Tx threshold of 256 (0x..20.... 8 byte units). */
 id|sp-&gt;tx_threshold
@@ -4864,12 +4832,14 @@ id|wait_for_cmd_done
 c_func
 (paren
 id|dev
+comma
+id|sp
 )paren
 op_ne
 l_int|0
 )paren
 (brace
-id|outl
+id|iowrite32
 c_func
 (paren
 id|PortPartialReset
@@ -4886,7 +4856,7 @@ l_int|10
 )paren
 suffix:semicolon
 )brace
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0
@@ -4896,7 +4866,7 @@ op_plus
 id|SCBPointer
 )paren
 suffix:semicolon
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -4918,6 +4888,8 @@ c_func
 (paren
 id|dev
 comma
+id|sp
+comma
 id|RxAddrLoad
 )paren
 suffix:semicolon
@@ -4926,11 +4898,13 @@ c_func
 (paren
 id|dev
 comma
+id|sp
+comma
 id|CUCmdBase
 )paren
 suffix:semicolon
 multiline_comment|/* Load the statistics block and rx ring addresses. */
-id|outl
+id|iowrite32
 c_func
 (paren
 id|sp-&gt;lstats_dma
@@ -4940,7 +4914,7 @@ op_plus
 id|SCBPointer
 )paren
 suffix:semicolon
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -4949,7 +4923,7 @@ id|SCBPointer
 )paren
 suffix:semicolon
 multiline_comment|/* Flush to PCI */
-id|outb
+id|iowrite8
 c_func
 (paren
 id|CUStatsAddr
@@ -4967,6 +4941,8 @@ id|wait_for_cmd_done
 c_func
 (paren
 id|dev
+comma
+id|sp
 )paren
 suffix:semicolon
 r_if
@@ -5003,7 +4979,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|outl
+id|iowrite32
 c_func
 (paren
 id|sp-&gt;rx_ring_dma
@@ -5018,7 +4994,7 @@ op_plus
 id|SCBPointer
 )paren
 suffix:semicolon
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -5034,6 +5010,8 @@ c_func
 (paren
 id|dev
 comma
+id|sp
+comma
 id|RxStart
 )paren
 suffix:semicolon
@@ -5041,6 +5019,8 @@ id|do_slow_command
 c_func
 (paren
 id|dev
+comma
+id|sp
 comma
 id|CUDumpStats
 )paren
@@ -5126,7 +5106,7 @@ id|ias_cmd
 suffix:semicolon
 )brace
 multiline_comment|/* Start the chip&squot;s Tx process and unmask interrupts. */
-id|outl
+id|iowrite32
 c_func
 (paren
 id|TX_RING_ELEM_DMA
@@ -5145,7 +5125,7 @@ id|SCBPointer
 )paren
 suffix:semicolon
 multiline_comment|/* We are not ACK-ing FCP and ER in the interrupt handler yet so they should&n;&t;   remain masked --Dragan */
-id|outw
+id|iowrite16
 c_func
 (paren
 id|CUStart
@@ -5189,12 +5169,14 @@ id|RxFD
 op_star
 id|rfd
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 suffix:semicolon
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|sp-&gt;regs
 suffix:semicolon
 r_if
 c_cond
@@ -5203,6 +5185,8 @@ id|wait_for_cmd_done
 c_func
 (paren
 id|dev
+comma
+id|sp
 )paren
 op_ne
 l_int|0
@@ -5220,7 +5204,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;* Put the hardware into a known state.&n;&t;*/
-id|outb
+id|iowrite8
 c_func
 (paren
 id|RxAbort
@@ -5250,6 +5234,8 @@ id|wait_for_cmd_done
 c_func
 (paren
 id|dev
+comma
+id|sp
 )paren
 op_ne
 l_int|0
@@ -5266,7 +5252,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|outl
+id|iowrite32
 c_func
 (paren
 id|sp-&gt;rx_ring_dma
@@ -5281,7 +5267,7 @@ op_plus
 id|SCBPointer
 )paren
 suffix:semicolon
-id|outb
+id|iowrite8
 c_func
 (paren
 id|RxStart
@@ -5327,10 +5313,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|sp-&gt;regs
 suffix:semicolon
 r_int
 id|phy_num
@@ -5478,7 +5466,7 @@ l_string|&quot;%s: Media control tick, status %4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|inw
+id|ioread16
 c_func
 (paren
 id|ioaddr
@@ -5763,10 +5751,12 @@ suffix:semicolon
 )brace
 macro_line|#if 0
 (brace
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|sp-&gt;regs
 suffix:semicolon
 r_int
 id|phy_num
@@ -6521,15 +6511,17 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|sp-&gt;regs
 suffix:semicolon
 r_int
 id|status
 op_assign
-id|inw
+id|ioread16
 c_func
 (paren
 id|ioaddr
@@ -6562,7 +6554,7 @@ id|dev-&gt;name
 comma
 id|status
 comma
-id|inw
+id|ioread16
 c_func
 (paren
 id|ioaddr
@@ -6622,7 +6614,7 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 (paren
 id|TX_RING_ELEM_DMA
 (paren
@@ -6639,7 +6631,7 @@ op_plus
 id|SCBPointer
 )paren
 suffix:semicolon
-id|outw
+id|iowrite16
 c_func
 (paren
 id|CUStart
@@ -6669,7 +6661,7 @@ id|sp-&gt;timer
 )paren
 suffix:semicolon
 multiline_comment|/* Reset the Tx and Rx units. */
-id|outl
+id|iowrite32
 c_func
 (paren
 id|PortReset
@@ -6687,7 +6679,7 @@ l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/* Disable interrupts. */
-id|outw
+id|iowrite16
 c_func
 (paren
 id|SCBMaskAll
@@ -6820,10 +6812,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|sp-&gt;regs
 suffix:semicolon
 r_int
 id|entry
@@ -7066,9 +7060,11 @@ id|wait_for_cmd_done
 c_func
 (paren
 id|dev
+comma
+id|sp
 )paren
 suffix:semicolon
-id|outb
+id|iowrite8
 c_func
 (paren
 l_int|0
@@ -7090,6 +7086,8 @@ id|wait_for_cmd_done
 c_func
 (paren
 id|dev
+comma
+id|sp
 )paren
 suffix:semicolon
 id|clear_suspend
@@ -7099,7 +7097,7 @@ id|sp-&gt;last_cmd
 )paren
 suffix:semicolon
 multiline_comment|/* We want the time window between clearing suspend flag on the previous&n;&t;   command and resuming CU to be as small as possible.&n;&t;   Interrupts in between are very undesired.  --SAW */
-id|outb
+id|iowrite8
 c_func
 (paren
 id|CUResume
@@ -7539,9 +7537,12 @@ id|speedo_private
 op_star
 id|sp
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
-comma
+suffix:semicolon
+r_int
 id|boguscnt
 op_assign
 id|max_interrupt_work
@@ -7556,10 +7557,6 @@ id|handled
 op_assign
 l_int|0
 suffix:semicolon
-id|ioaddr
-op_assign
-id|dev-&gt;base_addr
-suffix:semicolon
 id|sp
 op_assign
 id|netdev_priv
@@ -7567,6 +7564,10 @@ c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+id|ioaddr
+op_assign
+id|sp-&gt;regs
 suffix:semicolon
 macro_line|#ifndef final_version
 multiline_comment|/* A lock to prevent simultaneous entry on SMP machines. */
@@ -7610,7 +7611,7 @@ r_do
 (brace
 id|status
 op_assign
-id|inw
+id|ioread16
 c_func
 (paren
 id|ioaddr
@@ -7620,7 +7621,7 @@ id|SCBStatus
 suffix:semicolon
 multiline_comment|/* Acknowledge all of the current interrupt sources ASAP. */
 multiline_comment|/* Will change from 0xfc00 to 0xff00 when we start handling&n;&t;&t;   FCP and ER interrupts --Dragan */
-id|outw
+id|iowrite16
 c_func
 (paren
 id|status
@@ -7867,7 +7868,7 @@ id|status
 suffix:semicolon
 multiline_comment|/* Clear all interrupt sources. */
 multiline_comment|/* Will change from 0xfc00 to 0xff00 when we start handling&n;&t;&t;&t;   FCP and ER interrupts --Dragan */
-id|outw
+id|iowrite16
 c_func
 (paren
 l_int|0xfc00
@@ -7904,7 +7905,7 @@ l_string|&quot;%s: exiting interrupt, status=%#4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|inw
+id|ioread16
 c_func
 (paren
 id|ioaddr
@@ -9105,11 +9106,6 @@ op_star
 id|dev
 )paren
 (brace
-r_int
-id|ioaddr
-op_assign
-id|dev-&gt;base_addr
-suffix:semicolon
 r_struct
 id|speedo_private
 op_star
@@ -9120,6 +9116,13 @@ c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+r_void
+id|__iomem
+op_star
+id|ioaddr
+op_assign
+id|sp-&gt;regs
 suffix:semicolon
 r_int
 id|i
@@ -9153,7 +9156,7 @@ l_string|&quot;%s: Shutting down ethercard, status was %4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|inw
+id|ioread16
 c_func
 (paren
 id|ioaddr
@@ -9170,7 +9173,7 @@ op_amp
 id|sp-&gt;timer
 )paren
 suffix:semicolon
-id|outw
+id|iowrite16
 c_func
 (paren
 id|SCBMaskAll
@@ -9181,7 +9184,7 @@ id|SCBCmd
 )paren
 suffix:semicolon
 multiline_comment|/* Shutting down the chip nicely fails to disable flow control. So.. */
-id|outl
+id|iowrite32
 c_func
 (paren
 id|PortPartialReset
@@ -9191,7 +9194,7 @@ op_plus
 id|SCBPort
 )paren
 suffix:semicolon
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -9456,10 +9459,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|sp-&gt;regs
 suffix:semicolon
 multiline_comment|/* Update only if the previous dump finished. */
 r_if
@@ -9587,9 +9592,11 @@ id|wait_for_cmd_done
 c_func
 (paren
 id|dev
+comma
+id|sp
 )paren
 suffix:semicolon
-id|outb
+id|iowrite8
 c_func
 (paren
 id|CUDumpStats
@@ -10213,10 +10220,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|sp-&gt;regs
 suffix:semicolon
 r_struct
 id|descriptor
@@ -10553,6 +10562,8 @@ id|wait_for_cmd_done
 c_func
 (paren
 id|dev
+comma
+id|sp
 )paren
 suffix:semicolon
 id|clear_suspend
@@ -10561,7 +10572,7 @@ c_func
 id|last_cmd
 )paren
 suffix:semicolon
-id|outb
+id|iowrite8
 c_func
 (paren
 id|CUResume
@@ -10809,6 +10820,8 @@ id|wait_for_cmd_done
 c_func
 (paren
 id|dev
+comma
+id|sp
 )paren
 suffix:semicolon
 id|clear_suspend
@@ -10818,7 +10831,7 @@ id|last_cmd
 )paren
 suffix:semicolon
 multiline_comment|/* Immediately trigger the command unit resume. */
-id|outb
+id|iowrite8
 c_func
 (paren
 id|CUResume
@@ -11206,6 +11219,8 @@ id|wait_for_cmd_done
 c_func
 (paren
 id|dev
+comma
+id|sp
 )paren
 suffix:semicolon
 id|clear_suspend
@@ -11215,7 +11230,7 @@ id|last_cmd
 )paren
 suffix:semicolon
 multiline_comment|/* Immediately trigger the command unit resume. */
-id|outb
+id|iowrite8
 c_func
 (paren
 id|CUResume
@@ -11323,10 +11338,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|sp-&gt;regs
 suffix:semicolon
 id|pci_save_state
 c_func
@@ -11360,7 +11377,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|PortPartialReset
@@ -11421,10 +11438,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|sp-&gt;regs
 suffix:semicolon
 id|pci_set_power_state
 c_func
@@ -11466,7 +11485,7 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* I&squot;m absolutely uncertain if this part of code may work.&n;&t;   The problems are:&n;&t;    - correct hardware reinitialization;&n;&t;&t;- correct driver behavior between different steps of the&n;&t;&t;  reinitialization;&n;&t;&t;- serialization with other driver calls.&n;&t;   2000/03/08  SAW */
-id|outw
+id|iowrite16
 c_func
 (paren
 id|SCBMaskAll
@@ -11606,18 +11625,14 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifndef USE_IO
-id|iounmap
+id|pci_iounmap
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
-id|dev-&gt;base_addr
+id|pdev
+comma
+id|sp-&gt;regs
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pci_free_consistent
 c_func
 (paren

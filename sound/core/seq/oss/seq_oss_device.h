@@ -543,15 +543,6 @@ r_int
 r_bool
 )paren
 suffix:semicolon
-r_char
-op_star
-id|filemode_str
-c_func
-(paren
-r_int
-id|fmode
-)paren
-suffix:semicolon
 multiline_comment|/* for debug */
 macro_line|#ifdef SNDRV_SEQ_OSS_DEBUG
 r_extern

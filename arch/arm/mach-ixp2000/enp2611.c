@@ -49,8 +49,10 @@ l_int|1000
 )paren
 suffix:semicolon
 )brace
+DECL|variable|enp2611_timer
 r_static
 r_struct
+id|sys_timer
 id|enp2611_timer
 op_assign
 (brace

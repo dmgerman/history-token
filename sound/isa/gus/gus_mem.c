@@ -329,11 +329,6 @@ op_assign
 id|block-&gt;next
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|block-&gt;name
-)paren
 id|kfree
 c_func
 (paren

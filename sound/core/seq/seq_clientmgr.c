@@ -3079,6 +3079,7 @@ multiline_comment|/* ignored */
 macro_line|#endif /* SUPPORT_BROADCAST */
 multiline_comment|/* deliver an event to the destination port(s).&n; * if the event is to subscribers or broadcast, the event is dispatched&n; * to multiple targets.&n; *&n; * RETURN VALUE: n &gt; 0  : the number of delivered events.&n; *               n == 0 : the event was not passed to any client.&n; *               n &lt; 0  : error - event was not processed.&n; */
 DECL|function|snd_seq_deliver_event
+r_static
 r_int
 id|snd_seq_deliver_event
 c_func
@@ -3678,8 +3679,7 @@ id|cell
 comma
 op_logical_neg
 id|blocking
-op_logical_and
-op_logical_neg
+op_logical_or
 id|atomic
 comma
 id|file

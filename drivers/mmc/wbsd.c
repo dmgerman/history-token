@@ -21,7 +21,7 @@ macro_line|#ifdef CONFIG_MMC_DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(x...) &bslash;&n;&t;printk(KERN_DEBUG DRIVER_NAME &quot;: &quot; x)
 DECL|macro|DBGF
-mdefine_line|#define DBGF(f, x...) &bslash;&n;&t;printk(KERN_DEBUG DRIVER_NAME &quot; [%s()]: &quot; f, __func__, ##x)
+mdefine_line|#define DBGF(f, x...) &bslash;&n;&t;printk(KERN_DEBUG DRIVER_NAME &quot; [%s()]: &quot; f, __func__ , ##x)
 macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(x...)&t;do { } while (0)

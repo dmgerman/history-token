@@ -2353,12 +2353,14 @@ c_func
 (paren
 id|pmdval
 op_plus
+(paren
 l_int|1
 op_lshift
 (paren
 id|PGDIR_SHIFT
 op_minus
 l_int|1
+)paren
 )paren
 )paren
 )paren

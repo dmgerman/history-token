@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/gus.h&gt;
 DECL|function|snd_gf1_dma_ack
+r_static
 r_void
 id|snd_gf1_dma_ack
 c_func
@@ -56,6 +57,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|snd_gf1_dma_program
+r_static
 r_void
 id|snd_gf1_dma_program
 c_func

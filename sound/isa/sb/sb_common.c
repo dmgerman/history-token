@@ -341,6 +341,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|snd_sbdsp_version
+r_static
 r_int
 id|snd_sbdsp_version
 c_func
