@@ -13106,12 +13106,9 @@ id|x1
 id|fb_writeb
 c_func
 (paren
-id|fb_readb
-c_func
-(paren
+op_star
 id|src
 op_increment
-)paren
 op_xor
 id|inverse
 comma
