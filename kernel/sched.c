@@ -3773,6 +3773,13 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
+DECL|variable|kstat
+id|EXPORT_PER_CPU_SYMBOL
+c_func
+(paren
+id|kstat
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * We place interactive tasks back into the active array, if possible.&n; *&n; * To guarantee that this does not starve expired tasks we ignore the&n; * interactivity of a task if the first expired task had to wait more&n; * than a &squot;reasonable&squot; amount of time. This deadline timeout is&n; * load-dependent, as the frequency of array switched decreases with&n; * increasing number of running tasks:&n; */
 DECL|macro|EXPIRED_STARVING
 mdefine_line|#define EXPIRED_STARVING(rq) &bslash;&n;&t;&t;(STARVATION_LIMIT &amp;&amp; ((rq)-&gt;expired_timestamp &amp;&amp; &bslash;&n;&t;&t;(jiffies - (rq)-&gt;expired_timestamp &gt;= &bslash;&n;&t;&t;&t;STARVATION_LIMIT * ((rq)-&gt;nr_running) + 1)))
