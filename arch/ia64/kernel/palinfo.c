@@ -1287,7 +1287,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;&bslash;nTLB walker                     : %s implemented&bslash;n&quot;
+l_string|&quot;&bslash;nTLB walker                     : %simplemented&bslash;n&quot;
 "&bslash;"
 l_string|&quot;Number of DTR                  : %d&bslash;n&quot;
 "&bslash;"
@@ -1298,9 +1298,9 @@ comma
 id|vm_info_1.pal_vm_info_1_s.vw
 ques
 c_cond
-l_string|&quot;&bslash;b&quot;
+l_string|&quot;&quot;
 suffix:colon
-l_string|&quot;not&quot;
+l_string|&quot;not &quot;
 comma
 id|vm_info_1.pal_vm_info_1_s.max_dtr_entry
 op_plus
