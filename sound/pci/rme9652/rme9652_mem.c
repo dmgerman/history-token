@@ -245,7 +245,8 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|mem_map_t
+r_struct
+id|page
 op_star
 id|page
 op_assign
@@ -255,7 +256,8 @@ c_func
 id|res
 )paren
 suffix:semicolon
-id|mem_map_t
+r_struct
+id|page
 op_star
 id|last_page
 op_assign
@@ -320,7 +322,8 @@ id|dma_addr_t
 id|dmaaddr
 )paren
 (brace
-id|mem_map_t
+r_struct
+id|page
 op_star
 id|page
 comma
