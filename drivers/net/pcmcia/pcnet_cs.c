@@ -7611,7 +7611,7 @@ r_void
 op_star
 )paren
 (paren
-id|dev-&gt;rmem_start
+id|ei_status.rmem_start
 op_plus
 (paren
 id|ring_page
@@ -7687,7 +7687,7 @@ r_void
 op_star
 )paren
 (paren
-id|dev-&gt;rmem_start
+id|ei_status.rmem_start
 op_plus
 id|ring_offset
 op_minus
@@ -7715,7 +7715,7 @@ OG
 r_void
 op_star
 )paren
-id|dev-&gt;rmem_end
+id|ei_status.rmem_end
 )paren
 (brace
 multiline_comment|/* We must wrap the input move. */
@@ -7726,7 +7726,7 @@ op_assign
 r_void
 op_star
 )paren
-id|dev-&gt;rmem_end
+id|ei_status.rmem_end
 op_minus
 id|xfer_start
 suffix:semicolon
@@ -7756,7 +7756,7 @@ op_assign
 r_void
 op_star
 )paren
-id|dev-&gt;rmem_start
+id|ei_status.rmem_start
 suffix:semicolon
 id|count
 op_sub_assign
@@ -8159,7 +8159,7 @@ id|info-&gt;base
 op_plus
 id|offset
 suffix:semicolon
-id|dev-&gt;rmem_start
+id|ei_status.rmem_start
 op_assign
 id|dev-&gt;mem_start
 op_plus
@@ -8171,7 +8171,7 @@ l_int|8
 suffix:semicolon
 id|dev-&gt;mem_end
 op_assign
-id|dev-&gt;rmem_end
+id|ei_status.rmem_end
 op_assign
 (paren
 id|u_long
