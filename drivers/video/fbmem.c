@@ -1474,6 +1474,8 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_LOGO
+macro_line|#include &lt;linux/linux_logo.h&gt;
 DECL|function|safe_shift
 r_static
 r_inline
@@ -1504,8 +1506,6 @@ op_lshift
 id|n
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_FB_LOGO
-macro_line|#include &lt;linux/linux_logo.h&gt;
 DECL|function|fb_set_logocmap
 r_static
 r_void
@@ -2882,7 +2882,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_FB_LOGO */
+macro_line|#endif /* CONFIG_LOGO */
 DECL|function|fbmem_read_proc
 r_static
 r_int

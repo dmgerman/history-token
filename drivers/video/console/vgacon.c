@@ -24,6 +24,12 @@ id|vga_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+DECL|variable|state
+r_static
+r_struct
+id|vgastate
+id|state
+suffix:semicolon
 DECL|macro|BLANK
 mdefine_line|#define BLANK 0x0020
 DECL|macro|CAN_LOAD_EGA_FONTS
@@ -640,6 +646,10 @@ id|vga_video_num_columns
 op_assign
 id|ORIG_VIDEO_COLS
 suffix:semicolon
+id|state.vgabase
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -900,7 +910,7 @@ c_func
 (paren
 l_int|6
 comma
-l_int|0x3ce
+id|VGA_GFX_I
 )paren
 suffix:semicolon
 id|outb_p
@@ -908,7 +918,7 @@ c_func
 (paren
 l_int|6
 comma
-l_int|0x3cf
+id|VGA_GFX_D
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -931,7 +941,7 @@ op_increment
 id|inb_p
 c_func
 (paren
-l_int|0x3da
+id|VGA_IS1_RC
 )paren
 suffix:semicolon
 id|outb_p
@@ -939,7 +949,7 @@ c_func
 (paren
 id|i
 comma
-l_int|0x3c0
+id|VGA_ATT_W
 )paren
 suffix:semicolon
 id|outb_p
@@ -947,7 +957,7 @@ c_func
 (paren
 id|i
 comma
-l_int|0x3c0
+id|VGA_ATT_W
 )paren
 suffix:semicolon
 )brace
@@ -956,10 +966,10 @@ c_func
 (paren
 l_int|0x20
 comma
-l_int|0x3c0
+id|VGA_ATT_W
 )paren
 suffix:semicolon
-multiline_comment|/* now set the DAC registers back to their&n;&t;&t;&t;&t; * default values */
+multiline_comment|/*&n;&t;&t;&t;&t; * Now set the DAC registers back to their&n;&t;&t;&t;&t; * default values&n;&t;&t;&t;&t; */
 r_for
 c_loop
 (paren
@@ -983,7 +993,7 @@ id|color_table
 id|i
 )braket
 comma
-l_int|0x3c8
+id|VGA_PEL_IW
 )paren
 suffix:semicolon
 id|outb_p
@@ -994,7 +1004,7 @@ id|default_red
 id|i
 )braket
 comma
-l_int|0x3c9
+id|VGA_PEL_D
 )paren
 suffix:semicolon
 id|outb_p
@@ -1005,7 +1015,7 @@ id|default_grn
 id|i
 )braket
 comma
-l_int|0x3c9
+id|VGA_PEL_D
 )paren
 suffix:semicolon
 id|outb_p
@@ -1016,7 +1026,7 @@ id|default_blu
 id|i
 )braket
 comma
-l_int|0x3c9
+id|VGA_PEL_D
 )paren
 suffix:semicolon
 )brace
@@ -2262,7 +2272,7 @@ op_increment
 id|vga_w
 c_func
 (paren
-l_int|NULL
+id|state.vgabase
 comma
 id|VGA_PEL_IW
 comma
@@ -2275,7 +2285,7 @@ suffix:semicolon
 id|vga_w
 c_func
 (paren
-l_int|NULL
+id|state.vgabase
 comma
 id|VGA_PEL_D
 comma
@@ -2291,7 +2301,7 @@ suffix:semicolon
 id|vga_w
 c_func
 (paren
-l_int|NULL
+id|state.vgabase
 comma
 id|VGA_PEL_D
 comma
@@ -2307,7 +2317,7 @@ suffix:semicolon
 id|vga_w
 c_func
 (paren
-l_int|NULL
+id|state.vgabase
 comma
 id|VGA_PEL_D
 comma
@@ -2464,6 +2474,11 @@ r_void
 id|vga_vesa_blank
 c_func
 (paren
+r_struct
+id|vgastate
+op_star
+id|state
+comma
 r_int
 id|mode
 )paren
@@ -2488,7 +2503,7 @@ op_assign
 id|vga_r
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_SEQ_I
 )paren
@@ -2506,7 +2521,7 @@ op_assign
 id|vga_r
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_MIS_R
 )paren
@@ -2659,7 +2674,7 @@ op_assign
 id|vga_rseq
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_SEQ_CLOCK_MODE
 )paren
@@ -2677,7 +2692,7 @@ suffix:semicolon
 id|vga_wseq
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_SEQ_CLOCK_MODE
 comma
@@ -2701,7 +2716,7 @@ l_int|0x80
 id|vga_w
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_MIS_W
 comma
@@ -2826,7 +2841,7 @@ multiline_comment|/* restore both index registers */
 id|vga_w
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_SEQ_I
 comma
@@ -2855,7 +2870,10 @@ r_void
 id|vga_vesa_unblank
 c_func
 (paren
-r_void
+r_struct
+id|vgastate
+op_star
+id|state
 )paren
 (brace
 multiline_comment|/* restore original values of VGA controller registers */
@@ -2869,7 +2887,7 @@ suffix:semicolon
 id|vga_w
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_MIS_W
 comma
@@ -3016,7 +3034,7 @@ multiline_comment|/* ClockingMode */
 id|vga_wseq
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_SEQ_CLOCK_MODE
 comma
@@ -3027,7 +3045,7 @@ multiline_comment|/* restore index/control registers */
 id|vga_w
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_SEQ_I
 comma
@@ -3056,8 +3074,10 @@ r_void
 id|vga_pal_blank
 c_func
 (paren
-id|caddr_t
-id|regs
+r_struct
+id|vgastate
+op_star
+id|state
 )paren
 (brace
 r_int
@@ -3081,7 +3101,7 @@ op_increment
 id|vga_w
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_PEL_IW
 comma
@@ -3091,7 +3111,7 @@ suffix:semicolon
 id|vga_w
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_PEL_D
 comma
@@ -3101,7 +3121,7 @@ suffix:semicolon
 id|vga_w
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_PEL_D
 comma
@@ -3111,7 +3131,7 @@ suffix:semicolon
 id|vga_w
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_PEL_D
 comma
@@ -3154,6 +3174,8 @@ id|vga_vesa_blanked
 id|vga_vesa_unblank
 c_func
 (paren
+op_amp
+id|state
 )paren
 suffix:semicolon
 id|vga_vesa_blanked
@@ -3206,7 +3228,8 @@ id|VIDEO_TYPE_VGAC
 id|vga_pal_blank
 c_func
 (paren
-l_int|NULL
+op_amp
+id|state
 )paren
 suffix:semicolon
 id|vga_palette_blanked
@@ -3282,6 +3305,9 @@ id|VIDEO_TYPE_VGAC
 id|vga_vesa_blank
 c_func
 (paren
+op_amp
+id|state
+comma
 id|blank
 op_minus
 l_int|1
@@ -3312,6 +3338,11 @@ r_int
 id|vgacon_do_font_op
 c_func
 (paren
+r_struct
+id|vgastate
+op_star
+id|state
+comma
 r_char
 op_star
 id|arg
@@ -3324,16 +3355,6 @@ id|ch512
 )paren
 (brace
 r_int
-id|i
-suffix:semicolon
-r_char
-op_star
-id|charmap
-suffix:semicolon
-r_int
-id|beg
-suffix:semicolon
-r_int
 r_int
 id|video_port_status
 op_assign
@@ -3345,6 +3366,14 @@ r_int
 id|font_select
 op_assign
 l_int|0x00
+comma
+id|beg
+comma
+id|i
+suffix:semicolon
+r_char
+op_star
+id|charmap
 suffix:semicolon
 r_if
 c_cond
@@ -3494,7 +3523,7 @@ multiline_comment|/* First, the Sequencer */
 id|vga_wseq
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_SEQ_RESET
 comma
@@ -3505,7 +3534,7 @@ multiline_comment|/* CPU writes only to map 2 */
 id|vga_wseq
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_SEQ_PLANE_WRITE
 comma
@@ -3516,7 +3545,7 @@ multiline_comment|/* Sequential addressing */
 id|vga_wseq
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_SEQ_MEMORY_MODE
 comma
@@ -3527,7 +3556,7 @@ multiline_comment|/* Clear synchronous reset */
 id|vga_wseq
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_SEQ_RESET
 comma
@@ -3538,7 +3567,7 @@ multiline_comment|/* Now, the graphics controller, select map 2 */
 id|vga_wgfx
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_GFX_PLANE_READ
 comma
@@ -3549,7 +3578,7 @@ multiline_comment|/* disable odd-even addressing */
 id|vga_wgfx
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_GFX_MODE
 comma
@@ -3560,7 +3589,7 @@ multiline_comment|/* map start at A000:0000 */
 id|vga_wgfx
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_GFX_MISC
 comma
@@ -3730,7 +3759,7 @@ multiline_comment|/* First, the sequencer, Synchronous reset */
 id|vga_wseq
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_SEQ_RESET
 comma
@@ -3741,7 +3770,7 @@ multiline_comment|/* CPU writes to maps 0 and 1 */
 id|vga_wseq
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_SEQ_PLANE_WRITE
 comma
@@ -3752,7 +3781,7 @@ multiline_comment|/* odd-even addressing */
 id|vga_wseq
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_SEQ_MEMORY_MODE
 comma
@@ -3768,7 +3797,7 @@ id|set
 id|vga_wseq
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_SEQ_CHARACTER_MAP
 comma
@@ -3779,7 +3808,7 @@ multiline_comment|/* clear synchronous reset */
 id|vga_wseq
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_SEQ_RESET
 comma
@@ -3790,7 +3819,7 @@ multiline_comment|/* Now, the graphics controller, select map 0 for CPU */
 id|vga_wgfx
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_GFX_PLANE_READ
 comma
@@ -3801,7 +3830,7 @@ multiline_comment|/* enable even-odd addressing */
 id|vga_wgfx
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_GFX_MODE
 comma
@@ -3812,7 +3841,7 @@ multiline_comment|/* map starts at b800:0 or b000:0 */
 id|vga_wgfx
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_GFX_MISC
 comma
@@ -3901,7 +3930,7 @@ multiline_comment|/* color plane enable register */
 id|vga_wattr
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_ATC_PLANE_ENABLE
 comma
@@ -3923,7 +3952,7 @@ suffix:semicolon
 id|vga_wattr
 c_func
 (paren
-l_int|NULL
+id|state-&gt;vgabase
 comma
 id|VGA_AR_ENABLE_DISPLAY
 comma
@@ -4283,6 +4312,9 @@ op_assign
 id|vgacon_do_font_op
 c_func
 (paren
+op_amp
+id|state
+comma
 id|op-&gt;data
 comma
 l_int|1
@@ -4354,6 +4386,9 @@ op_assign
 id|vgacon_do_font_op
 c_func
 (paren
+op_amp
+id|state
+comma
 id|op-&gt;data
 comma
 l_int|0

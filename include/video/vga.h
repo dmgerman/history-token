@@ -281,13 +281,9 @@ id|caddr_t
 id|vgabase
 suffix:semicolon
 multiline_comment|/* mmio base, if supported &t;&t;   */
-DECL|member|flags
-id|__u32
-id|flags
-suffix:semicolon
-multiline_comment|/* what state[s] to save (see VGA_SAVE_*)  */
 DECL|member|membase
-id|__u32
+r_int
+r_int
 id|membase
 suffix:semicolon
 multiline_comment|/* VGA window base, 0 for default - 0xA000 */
@@ -296,6 +292,11 @@ id|__u32
 id|memsize
 suffix:semicolon
 multiline_comment|/* VGA window size, 0 for default 64K&t;   */
+DECL|member|flags
+id|__u32
+id|flags
+suffix:semicolon
+multiline_comment|/* what state[s] to save (see VGA_SAVE_*)  */
 DECL|member|depth
 id|__u32
 id|depth

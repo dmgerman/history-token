@@ -495,6 +495,46 @@ r_return
 id|val
 suffix:semicolon
 )brace
+DECL|function|get_number255
+r_static
+r_int
+r_int
+id|get_number255
+c_func
+(paren
+id|FILE
+op_star
+id|fp
+comma
+r_int
+r_int
+id|maxval
+)paren
+(brace
+r_int
+r_int
+id|val
+op_assign
+id|get_number
+c_func
+(paren
+id|fp
+)paren
+suffix:semicolon
+r_return
+(paren
+l_int|255
+op_star
+id|val
+op_plus
+id|maxval
+op_div
+l_int|2
+)paren
+op_div
+id|maxval
+suffix:semicolon
+)brace
 DECL|function|read_image
 r_static
 r_void
@@ -613,8 +653,8 @@ multiline_comment|/* Binary PBM/PGM/PPM */
 id|die
 c_func
 (paren
-l_string|&quot;%s: Binary PNM is not supported.&bslash;n&quot;
-l_string|&quot;Use pnmnoraw(1) to convert it to ASCII.&bslash;n&quot;
+l_string|&quot;%s: Binary PNM is not supported&bslash;n&quot;
+l_string|&quot;Use pnmnoraw(1) to convert it to ASCII PNM&bslash;n&quot;
 comma
 id|filename
 )paren
@@ -893,15 +933,13 @@ id|j
 dot
 id|blue
 op_assign
-l_int|255
-op_star
-id|get_number
+id|get_number255
 c_func
 (paren
 id|fp
-)paren
-op_div
+comma
 id|maxval
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -956,15 +994,13 @@ id|j
 dot
 id|red
 op_assign
-l_int|255
-op_star
-id|get_number
+id|get_number255
 c_func
 (paren
 id|fp
-)paren
-op_div
+comma
 id|maxval
+)paren
 suffix:semicolon
 id|logo_data
 (braket
@@ -976,15 +1012,13 @@ id|j
 dot
 id|green
 op_assign
-l_int|255
-op_star
-id|get_number
+id|get_number255
 c_func
 (paren
 id|fp
-)paren
-op_div
+comma
 id|maxval
+)paren
 suffix:semicolon
 id|logo_data
 (braket
@@ -996,15 +1030,13 @@ id|j
 dot
 id|blue
 op_assign
-l_int|255
-op_star
-id|get_number
+id|get_number255
 c_func
 (paren
 id|fp
-)paren
-op_div
+comma
 id|maxval
+)paren
 suffix:semicolon
 )brace
 r_break
@@ -1713,6 +1745,8 @@ id|die
 c_func
 (paren
 l_string|&quot;Image must use the 16 console colors only&bslash;n&quot;
+l_string|&quot;Use ppmquant(1) -map clut_vga16.ppm to reduce the number &quot;
+l_string|&quot;of colors&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1959,6 +1993,7 @@ id|die
 c_func
 (paren
 l_string|&quot;Image has more than %d colors&bslash;n&quot;
+l_string|&quot;Use ppmquant(1) to reduce the number of colors&bslash;n&quot;
 comma
 id|MAX_LINUX_LOGO_COLORS
 )paren
