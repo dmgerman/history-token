@@ -17,11 +17,16 @@ suffix:semicolon
 multiline_comment|/*&n; * linux/include/linux/dcache.h&n; *&n; * Dirent cache data structures&n; *&n; * (C) Copyright 1997 Thomas Schoebel-Theuer,&n; * with heavy changes by Linus Torvalds&n; */
 DECL|macro|IS_ROOT
 mdefine_line|#define IS_ROOT(x) ((x) == (x)-&gt;d_parent)
-multiline_comment|/*&n; * &quot;quick string&quot; -- eases parameter passing, but more importantly&n; * saves &quot;metadata&quot; about the string (ie length and the hash).&n; */
+multiline_comment|/*&n; * &quot;quick string&quot; -- eases parameter passing, but more importantly&n; * saves &quot;metadata&quot; about the string (ie length and the hash).&n; *&n; * hash comes first so it snuggles against d_parent and d_bucket in the&n; * dentry.&n; */
 DECL|struct|qstr
 r_struct
 id|qstr
 (brace
+DECL|member|hash
+r_int
+r_int
+id|hash
+suffix:semicolon
 DECL|member|name
 r_const
 r_int
@@ -33,11 +38,6 @@ DECL|member|len
 r_int
 r_int
 id|len
-suffix:semicolon
-DECL|member|hash
-r_int
-r_int
-id|hash
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -199,6 +199,7 @@ suffix:semicolon
 r_struct
 id|dcookie_struct
 suffix:semicolon
+multiline_comment|/*&n; * On x86, dentries are a multiple of 16 bytes, with 16-byte alignment.&n; */
 DECL|struct|dentry
 r_struct
 id|dentry
@@ -225,6 +226,26 @@ op_star
 id|d_inode
 suffix:semicolon
 multiline_comment|/* Where the name belongs to - NULL is&n;&t;&t;&t;&t;&t; * negative */
+multiline_comment|/*&n;&t; * The next three fields are touched by __d_lookup.  Place them here&n;&t; * so they all fit in a 16-byte range, with 16-byte alignment.&n;&t; */
+DECL|member|d_parent
+r_struct
+id|dentry
+op_star
+id|d_parent
+suffix:semicolon
+multiline_comment|/* parent directory */
+DECL|member|d_bucket
+r_struct
+id|hlist_head
+op_star
+id|d_bucket
+suffix:semicolon
+multiline_comment|/* lookup hash bucket */
+DECL|member|d_name
+r_struct
+id|qstr
+id|d_name
+suffix:semicolon
 DECL|member|d_lru
 r_struct
 id|list_head
@@ -290,31 +311,12 @@ op_star
 id|d_cookie
 suffix:semicolon
 multiline_comment|/* cookie, if any */
-DECL|member|d_parent
-r_struct
-id|dentry
-op_star
-id|d_parent
-suffix:semicolon
-multiline_comment|/* parent directory */
-DECL|member|d_name
-r_struct
-id|qstr
-id|d_name
-suffix:semicolon
 DECL|member|d_hash
 r_struct
 id|hlist_node
 id|d_hash
 suffix:semicolon
 multiline_comment|/* lookup hash list */
-DECL|member|d_bucket
-r_struct
-id|hlist_head
-op_star
-id|d_bucket
-suffix:semicolon
-multiline_comment|/* lookup hash bucket */
 DECL|member|d_iname
 r_int
 r_char
