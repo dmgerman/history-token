@@ -343,6 +343,26 @@ DECL|typedef|expansioncard_ops_t
 )brace
 id|expansioncard_ops_t
 suffix:semicolon
+DECL|macro|ECARD_NUM_RESOURCES
+mdefine_line|#define ECARD_NUM_RESOURCES&t;(6)
+DECL|macro|ECARD_RES_IOCSLOW
+mdefine_line|#define ECARD_RES_IOCSLOW&t;(0)
+DECL|macro|ECARD_RES_IOCMEDIUM
+mdefine_line|#define ECARD_RES_IOCMEDIUM&t;(1)
+DECL|macro|ECARD_RES_IOCFAST
+mdefine_line|#define ECARD_RES_IOCFAST&t;(2)
+DECL|macro|ECARD_RES_IOCSYNC
+mdefine_line|#define ECARD_RES_IOCSYNC&t;(3)
+DECL|macro|ECARD_RES_MEMC
+mdefine_line|#define ECARD_RES_MEMC&t;&t;(4)
+DECL|macro|ECARD_RES_EASI
+mdefine_line|#define ECARD_RES_EASI&t;&t;(5)
+DECL|macro|ecard_resource_start
+mdefine_line|#define ecard_resource_start(ec,nr)&t;((ec)-&gt;resource[nr].start)
+DECL|macro|ecard_resource_end
+mdefine_line|#define ecard_resource_end(ec,nr)&t;((ec)-&gt;resource[nr].end)
+DECL|macro|ecard_resource_len
+mdefine_line|#define ecard_resource_len(ec,nr)&t;((ec)-&gt;resource[nr].end - &bslash;&n;&t;&t;&t;&t;&t; (ec)-&gt;resource[nr].start + 1)
 multiline_comment|/*&n; * This contains all the info needed on an expansion card&n; */
 DECL|struct|expansion_card
 r_struct
@@ -358,6 +378,14 @@ DECL|member|dev
 r_struct
 id|device
 id|dev
+suffix:semicolon
+DECL|member|resource
+r_struct
+id|resource
+id|resource
+(braket
+id|ECARD_NUM_RESOURCES
+)braket
 suffix:semicolon
 multiline_comment|/* Public data */
 DECL|member|irqaddr
@@ -407,6 +435,7 @@ id|fiq_data
 suffix:semicolon
 multiline_comment|/* Data for use for FIQ by card&t;*/
 DECL|member|ops
+r_const
 id|expansioncard_ops_t
 op_star
 id|ops
