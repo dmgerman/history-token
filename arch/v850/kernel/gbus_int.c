@@ -770,13 +770,13 @@ id|NUM_USED_GINTS
 )braket
 suffix:semicolon
 multiline_comment|/* GBUS interrupts themselves.  */
-DECL|variable|gbus_irq_inits
-id|__init
+DECL|variable|__initdata
 r_struct
 id|gbus_int_irq_init
 id|gbus_irq_inits
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 multiline_comment|/* First set defaults.  */

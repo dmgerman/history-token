@@ -2759,6 +2759,9 @@ id|regs-&gt;gpr
 id|GPR_RVAL
 )braket
 op_eq
+(paren
+id|v850_reg_t
+)paren
 op_minus
 id|ERESTARTNOHAND
 op_logical_or
@@ -2767,6 +2770,9 @@ id|regs-&gt;gpr
 id|GPR_RVAL
 )braket
 op_eq
+(paren
+id|v850_reg_t
+)paren
 op_minus
 id|ERESTARTSYS
 op_logical_or
@@ -2775,6 +2781,9 @@ id|regs-&gt;gpr
 id|GPR_RVAL
 )braket
 op_eq
+(paren
+id|v850_reg_t
+)paren
 op_minus
 id|ERESTARTNOINTR
 )paren

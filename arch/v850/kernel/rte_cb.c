@@ -156,6 +156,7 @@ op_star
 (paren
 r_volatile
 r_int
+r_int
 op_star
 )paren
 id|MB_A_SRAM_ADDR
@@ -169,6 +170,7 @@ op_star
 (paren
 r_volatile
 r_int
+r_int
 op_star
 )paren
 id|MB_A_SRAM_ADDR
@@ -179,6 +181,7 @@ l_int|0xDEADBEEF
 op_star
 (paren
 r_volatile
+r_int
 r_int
 op_star
 )paren
@@ -192,6 +195,7 @@ c_cond
 op_star
 (paren
 r_volatile
+r_int
 r_int
 op_star
 )paren
