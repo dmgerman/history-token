@@ -1269,6 +1269,22 @@ op_star
 id|i_pos
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|fat_remove_entries
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|dir
+comma
+r_struct
+id|fat_slot_info
+op_star
+id|sinfo
+)paren
+suffix:semicolon
 multiline_comment|/* fat/fatent.c */
 DECL|struct|fat_entry
 r_struct
