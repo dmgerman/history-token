@@ -661,6 +661,10 @@ DECL|member|count
 r_int
 id|count
 suffix:semicolon
+DECL|member|pm_state
+r_int
+id|pm_state
+suffix:semicolon
 DECL|member|info
 r_struct
 id|uart_info
@@ -673,14 +677,11 @@ id|uart_port
 op_star
 id|port
 suffix:semicolon
-macro_line|#ifdef CONFIG_PM
-DECL|member|pm
+DECL|member|sem
 r_struct
-id|pm_dev
-op_star
-id|pm
+id|semaphore
+id|sem
 suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|UART_XMIT_SIZE
@@ -690,18 +691,6 @@ DECL|struct|uart_info
 r_struct
 id|uart_info
 (brace
-DECL|member|port
-r_struct
-id|uart_port
-op_star
-id|port
-suffix:semicolon
-DECL|member|state
-r_struct
-id|uart_state
-op_star
-id|state
-suffix:semicolon
 DECL|member|tty
 r_struct
 id|tty_struct
@@ -723,8 +712,6 @@ DECL|macro|UIF_CHECK_CD
 mdefine_line|#define UIF_CHECK_CD&t;&t;(1 &lt;&lt; 25)
 DECL|macro|UIF_CTS_FLOW
 mdefine_line|#define UIF_CTS_FLOW&t;&t;(1 &lt;&lt; 26)
-DECL|macro|UIF_CLOSING
-mdefine_line|#define UIF_CLOSING&t;&t;(1 &lt;&lt; 27)
 DECL|macro|UIF_NORMAL_ACTIVE
 mdefine_line|#define UIF_NORMAL_ACTIVE&t;(1 &lt;&lt; 29)
 DECL|macro|UIF_INITIALIZED
@@ -1046,6 +1033,43 @@ r_struct
 id|uart_port
 op_star
 id|port
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Power Management&n; */
+r_int
+id|uart_suspend_port
+c_func
+(paren
+r_struct
+id|uart_driver
+op_star
+id|reg
+comma
+r_struct
+id|uart_port
+op_star
+id|port
+comma
+id|u32
+id|level
+)paren
+suffix:semicolon
+r_int
+id|uart_resume_port
+c_func
+(paren
+r_struct
+id|uart_driver
+op_star
+id|reg
+comma
+r_struct
+id|uart_port
+op_star
+id|port
+comma
+id|u32
+id|level
 )paren
 suffix:semicolon
 DECL|macro|uart_circ_empty
