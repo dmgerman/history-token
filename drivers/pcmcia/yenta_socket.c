@@ -2934,6 +2934,10 @@ DECL|macro|BRIDGE_IO_MAX
 mdefine_line|#define BRIDGE_IO_MAX 256
 DECL|macro|BRIDGE_IO_MIN
 mdefine_line|#define BRIDGE_IO_MIN 32
+macro_line|#ifndef PCIBIOS_MIN_CARDBUS_IO
+DECL|macro|PCIBIOS_MIN_CARDBUS_IO
+mdefine_line|#define PCIBIOS_MIN_CARDBUS_IO PCIBIOS_MIN_IO
+macro_line|#endif
 DECL|function|yenta_allocate_res
 r_static
 r_void
@@ -3159,7 +3163,7 @@ id|BRIDGE_IO_MIN
 suffix:semicolon
 id|start
 op_assign
-id|PCIBIOS_MIN_IO
+id|PCIBIOS_MIN_CARDBUS_IO
 suffix:semicolon
 id|end
 op_assign
