@@ -285,19 +285,22 @@ r_int
 r_int
 id|card
 (braket
-l_int|4
+id|BTTV_MAX
 )braket
 op_assign
 (brace
+(braket
+l_int|0
+dot
+dot
+dot
+(paren
+id|BTTV_MAX
 op_minus
 l_int|1
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
+)paren
+)braket
+op_assign
 op_minus
 l_int|1
 )brace
@@ -308,19 +311,22 @@ r_int
 r_int
 id|pll
 (braket
-l_int|4
+id|BTTV_MAX
 )braket
 op_assign
 (brace
+(braket
+l_int|0
+dot
+dot
+dot
+(paren
+id|BTTV_MAX
 op_minus
 l_int|1
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
+)paren
+)braket
+op_assign
 op_minus
 l_int|1
 )brace
@@ -331,19 +337,22 @@ r_int
 r_int
 id|tuner
 (braket
-l_int|4
+id|BTTV_MAX
 )braket
 op_assign
 (brace
+(braket
+l_int|0
+dot
+dot
+dot
+(paren
+id|BTTV_MAX
 op_minus
 l_int|1
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
+)paren
+)braket
+op_assign
 op_minus
 l_int|1
 )brace
@@ -459,7 +468,13 @@ c_func
 (paren
 id|card
 comma
-l_string|&quot;1-4i&quot;
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|BTTV_MAX
+)paren
+l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -475,7 +490,13 @@ c_func
 (paren
 id|pll
 comma
-l_string|&quot;1-4i&quot;
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|BTTV_MAX
+)paren
+l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -491,7 +512,13 @@ c_func
 (paren
 id|tuner
 comma
-l_string|&quot;1-4i&quot;
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|BTTV_MAX
+)paren
+l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -809,6 +836,14 @@ l_string|&quot;Leadtek WinFast TV 2000&quot;
 )brace
 comma
 (brace
+l_int|0x6607107d
+comma
+id|BTTV_WINFAST2000
+comma
+l_string|&quot;Leadtek WinFast VC 100&quot;
+)brace
+comma
+(brace
 l_int|0x263610b4
 comma
 id|BTTV_STB2
@@ -821,7 +856,7 @@ l_int|0x402010fc
 comma
 id|BTTV_GVBCTV3PCI
 comma
-l_string|&quot;I-O Data Co. GV-BCV3/PCI&quot;
+l_string|&quot;I-O Data Co. GV-BCTV3/PCI&quot;
 )brace
 comma
 (brace
@@ -829,7 +864,7 @@ l_int|0x405010fc
 comma
 id|BTTV_GVBCTV4PCI
 comma
-l_string|&quot;I-O Data Co. GV-BCV4/PCI&quot;
+l_string|&quot;I-O Data Co. GV-BCTV4/PCI&quot;
 )brace
 comma
 (brace
@@ -984,6 +1019,8 @@ comma
 l_string|&quot;Terratec TV+&quot;
 )brace
 comma
+singleline_comment|// clashes with FlyVideo
+singleline_comment|//{ 0x18521852, BTTV_TERRATV,     &quot;Terratec TV+&quot;    },
 (brace
 l_int|0x1134153b
 comma
@@ -1061,7 +1098,7 @@ l_int|0x18501851
 comma
 id|BTTV_CHRONOS_VS2
 comma
-l_string|&quot;Flyvideo 98 (LR50)/ Chronos Video Shuttle II&quot;
+l_string|&quot;FlyVideo 98 (LR50)/ Chronos Video Shuttle II&quot;
 )brace
 comma
 (brace
@@ -1069,7 +1106,7 @@ l_int|0x18511851
 comma
 id|BTTV_FLYVIDEO98EZ
 comma
-l_string|&quot;Flyvideo 98EZ (LR51)/ CyberMail AV&quot;
+l_string|&quot;FlyVideo 98EZ (LR51)/ CyberMail AV&quot;
 )brace
 comma
 (brace
@@ -1077,7 +1114,7 @@ l_int|0x18521852
 comma
 id|BTTV_TYPHOON_TVIEW
 comma
-l_string|&quot;Flyvideo 98FM (LR50)/ Typhoon TView TV/FM Tuner&quot;
+l_string|&quot;FlyVideo 98FM (LR50)/ Typhoon TView TV/FM Tuner&quot;
 )brace
 comma
 (brace
@@ -1110,6 +1147,14 @@ comma
 id|BTTV_WINDVR
 comma
 l_string|&quot;Canopus WinDVR PCI&quot;
+)brace
+comma
+(brace
+l_int|0xa0fca1a0
+comma
+id|BTTV_ZOLTRIX
+comma
+l_string|&quot;Face to Face Tvmax&quot;
 )brace
 comma
 (brace
@@ -1367,28 +1412,28 @@ comma
 multiline_comment|/* ---- card 0x04 ---------------------------------- */
 id|name
 suffix:colon
-l_string|&quot;Intel&quot;
+l_string|&quot;Intel Create and Share PCI/ Smart Video Recorder III&quot;
 comma
 id|video_inputs
 suffix:colon
-l_int|3
+l_int|4
 comma
 id|audio_inputs
 suffix:colon
-l_int|1
-comma
-id|tuner
-suffix:colon
 l_int|0
 comma
-id|svhs
+id|tuner
 suffix:colon
 op_minus
 l_int|1
 comma
+id|svhs
+suffix:colon
+l_int|2
+comma
 id|gpiomask
 suffix:colon
-l_int|7
+l_int|0
 comma
 id|muxsel
 suffix:colon
@@ -1406,24 +1451,15 @@ id|audiomux
 suffix:colon
 (brace
 l_int|0
-comma
-l_int|1
-comma
-l_int|2
-comma
-l_int|3
-comma
-l_int|4
 )brace
 comma
 id|needs_tvaudio
 suffix:colon
-l_int|1
+l_int|0
 comma
 id|tuner_type
 suffix:colon
-op_minus
-l_int|1
+l_int|4
 comma
 )brace
 comma
@@ -1617,7 +1653,7 @@ comma
 multiline_comment|/* ---- card 0x08 ---------------------------------- */
 id|name
 suffix:colon
-l_string|&quot;FlyVideo II (Bt848) LR26&quot;
+l_string|&quot;Lifeview FlyVideo II (Bt848) LR26&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -1685,7 +1721,7 @@ comma
 (brace
 id|name
 suffix:colon
-l_string|&quot;IXMicro TurboTV&quot;
+l_string|&quot;IMS/IXmicro TurboTV&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -1735,12 +1771,15 @@ l_int|0
 comma
 id|needs_tvaudio
 suffix:colon
-l_int|1
+l_int|0
+comma
+id|pll
+suffix:colon
+id|PLL_28
 comma
 id|tuner_type
 suffix:colon
-op_minus
-l_int|1
+id|TUNER_TEMIC_PAL
 comma
 )brace
 comma
@@ -1877,7 +1916,7 @@ comma
 multiline_comment|/* ---- card 0x0c ---------------------------------- */
 id|name
 suffix:colon
-l_string|&quot;ADS Technologies Channel Surfer TV&quot;
+l_string|&quot;ADS Technologies Channel Surfer TV (bt848)&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -2062,6 +2101,10 @@ id|needs_tvaudio
 suffix:colon
 l_int|1
 comma
+id|pll
+suffix:colon
+id|PLL_28
+comma
 id|tuner_type
 suffix:colon
 op_minus
@@ -2135,7 +2178,7 @@ comma
 multiline_comment|/* ---- card 0x10 ---------------------------------- */
 id|name
 suffix:colon
-l_string|&quot;Pixelview PlayTV (bt878)&quot;
+l_string|&quot;Prolink Pixelview PlayTV (bt878)&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -2339,11 +2382,11 @@ comma
 (brace
 id|name
 suffix:colon
-l_string|&quot;LifeView FlyKit w/o Tuner&quot;
+l_string|&quot;Lifeview FlyVideo II EZ /FlyKit LR38 Bt848 (capture only)&quot;
 comma
 id|video_inputs
 suffix:colon
-l_int|3
+l_int|4
 comma
 id|audio_inputs
 suffix:colon
@@ -2436,16 +2479,17 @@ comma
 (brace
 id|name
 suffix:colon
-l_string|&quot;Lucky Star Image World ConferenceTV&quot;
+l_string|&quot;Lifeview FlyVideo 98/ Lucky Star Image World ConferenceTV LR50&quot;
 comma
 id|video_inputs
 suffix:colon
-l_int|3
+l_int|4
 comma
 id|audio_inputs
 suffix:colon
-l_int|1
+l_int|2
 comma
+singleline_comment|// tuner, line in
 id|tuner
 suffix:colon
 l_int|0
@@ -2456,7 +2500,7 @@ l_int|2
 comma
 id|gpiomask
 suffix:colon
-l_int|0x00fffe07
+l_int|0x1800
 comma
 id|muxsel
 suffix:colon
@@ -2473,20 +2517,16 @@ comma
 id|audiomux
 suffix:colon
 (brace
-l_int|131072
+l_int|0
 comma
-l_int|1
+l_int|0x800
 comma
-l_int|1638400
+l_int|0x1000
 comma
-l_int|3
+l_int|0x1000
 comma
-l_int|4
+l_int|0x1800
 )brace
-comma
-id|needs_tvaudio
-suffix:colon
-l_int|1
 comma
 id|pll
 suffix:colon
@@ -2501,7 +2541,7 @@ comma
 (brace
 id|name
 suffix:colon
-l_string|&quot;Phoebe Tv Master + FM (CPH050)&quot;
+l_string|&quot;Askey CPH050/ Phoebe Tv Master + FM&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -2554,6 +2594,10 @@ comma
 id|needs_tvaudio
 suffix:colon
 l_int|1
+comma
+id|pll
+suffix:colon
+id|PLL_28
 comma
 id|tuner_type
 suffix:colon
@@ -2628,7 +2672,7 @@ comma
 multiline_comment|/* ---- card 0x18 ---------------------------------- */
 id|name
 suffix:colon
-l_string|&quot;[many vendors] CPH05X/06X (bt878)&quot;
+l_string|&quot;Askey CPH05X/06X (bt878) [many vendors]&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -2694,7 +2738,7 @@ comma
 (brace
 id|name
 suffix:colon
-l_string|&quot;Terratec/Vobis TV-Boostar&quot;
+l_string|&quot;Terratec Terra TV+ Version 1.0 (Bt848)/Vobis TV-Boostar&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -2756,7 +2800,7 @@ comma
 (brace
 id|name
 suffix:colon
-l_string|&quot;Newer Hauppauge WinCam (bt878)&quot;
+l_string|&quot;Hauppauge WinCam newer (bt878)&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -2818,15 +2862,15 @@ comma
 (brace
 id|name
 suffix:colon
-l_string|&quot;MAXI TV Video PCI2&quot;
+l_string|&quot;Lifeview FlyVideo 98/ MAXI TV Video PCI2 LR50&quot;
 comma
 id|video_inputs
 suffix:colon
-l_int|3
+l_int|4
 comma
 id|audio_inputs
 suffix:colon
-l_int|1
+l_int|2
 comma
 id|tuner
 suffix:colon
@@ -2838,7 +2882,7 @@ l_int|2
 comma
 id|gpiomask
 suffix:colon
-l_int|0xffff
+l_int|0x1800
 comma
 id|muxsel
 suffix:colon
@@ -2857,18 +2901,18 @@ suffix:colon
 (brace
 l_int|0
 comma
-l_int|1
+l_int|0x800
 comma
-l_int|2
+l_int|0x1000
 comma
-l_int|3
+l_int|0x1000
 comma
-l_int|0xc00
+l_int|0x1800
 )brace
 comma
-id|needs_tvaudio
+id|pll
 suffix:colon
-l_int|1
+id|PLL_28
 comma
 id|tuner_type
 suffix:colon
@@ -3004,11 +3048,11 @@ comma
 (brace
 id|name
 suffix:colon
-l_string|&quot;FlyVideo 98&quot;
+l_string|&quot;Lifeview FlyVideo 98 LR50&quot;
 comma
 id|video_inputs
 suffix:colon
-l_int|3
+l_int|4
 comma
 id|audio_inputs
 suffix:colon
@@ -3055,9 +3099,9 @@ comma
 l_int|0
 )brace
 comma
-id|needs_tvaudio
+id|pll
 suffix:colon
-l_int|1
+id|PLL_28
 comma
 id|tuner_type
 suffix:colon
@@ -3069,7 +3113,7 @@ comma
 (brace
 id|name
 suffix:colon
-l_string|&quot;iProTV&quot;
+l_string|&quot;Formac iProTV&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -3128,7 +3172,7 @@ comma
 multiline_comment|/* ---- card 0x20 ---------------------------------- */
 id|name
 suffix:colon
-l_string|&quot;Intel Create and Share PCI&quot;
+l_string|&quot;Intel Create and Share PCI/ Smart Video Recorder III&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -3136,11 +3180,12 @@ l_int|4
 comma
 id|audio_inputs
 suffix:colon
-l_int|1
+l_int|0
 comma
 id|tuner
 suffix:colon
-l_int|0
+op_minus
+l_int|1
 comma
 id|svhs
 suffix:colon
@@ -3148,7 +3193,7 @@ l_int|2
 comma
 id|gpiomask
 suffix:colon
-l_int|7
+l_int|0
 comma
 id|muxsel
 suffix:colon
@@ -3165,25 +3210,16 @@ comma
 id|audiomux
 suffix:colon
 (brace
-l_int|4
-comma
-l_int|4
-comma
-l_int|4
-comma
-l_int|4
-comma
-l_int|4
+l_int|0
 )brace
 comma
 id|needs_tvaudio
 suffix:colon
-l_int|1
+l_int|0
 comma
 id|tuner_type
 suffix:colon
-op_minus
-l_int|1
+l_int|4
 comma
 )brace
 comma
@@ -3329,11 +3365,11 @@ comma
 (brace
 id|name
 suffix:colon
-l_string|&quot;Flyvideo 98 (LR50Q) / Chronos Video Shuttle II&quot;
+l_string|&quot;Lifeview FlyVideo 98 LR50 / Chronos Video Shuttle II&quot;
 comma
 id|video_inputs
 suffix:colon
-l_int|3
+l_int|4
 comma
 id|audio_inputs
 suffix:colon
@@ -3376,10 +3412,6 @@ l_int|0x1000
 comma
 l_int|0x1800
 )brace
-comma
-id|needs_tvaudio
-suffix:colon
-l_int|1
 comma
 id|pll
 suffix:colon
@@ -3396,11 +3428,11 @@ comma
 multiline_comment|/* ---- card 0x24 ---------------------------------- */
 id|name
 suffix:colon
-l_string|&quot;Flyvideo 98FM (LR50Q) / Typhoon TView TV/FM Tuner&quot;
+l_string|&quot;Lifeview FlyVideo 98FM LR50 / Typhoon TView TV/FM Tuner&quot;
 comma
 id|video_inputs
 suffix:colon
-l_int|3
+l_int|4
 comma
 id|audio_inputs
 suffix:colon
@@ -3445,10 +3477,6 @@ l_int|0x1800
 comma
 l_int|0
 )brace
-comma
-id|needs_tvaudio
-suffix:colon
-l_int|1
 comma
 id|pll
 suffix:colon
@@ -3468,7 +3496,7 @@ comma
 (brace
 id|name
 suffix:colon
-l_string|&quot;PixelView PlayTV pro&quot;
+l_string|&quot;Prolink PixelView PlayTV pro&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -3536,7 +3564,7 @@ comma
 (brace
 id|name
 suffix:colon
-l_string|&quot;TView99 CPH06X&quot;
+l_string|&quot;Askey CPH06X TView99&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -3757,7 +3785,7 @@ l_int|2
 comma
 id|gpiomask
 suffix:colon
-l_int|12
+l_int|15
 comma
 id|muxsel
 suffix:colon
@@ -3857,6 +3885,10 @@ l_int|0
 comma
 l_int|0
 )brace
+comma
+id|needs_tvaudio
+suffix:colon
+l_int|1
 comma
 id|no_msp34xx
 suffix:colon
@@ -4151,7 +4183,7 @@ l_int|2
 comma
 id|gpiomask
 suffix:colon
-l_int|0x1f0000
+l_int|0x70000
 comma
 id|muxsel
 suffix:colon
@@ -4168,17 +4200,17 @@ comma
 id|audiomux
 suffix:colon
 (brace
-l_int|0xe2ffff
+l_int|0x20000
 comma
-l_int|0xebffff
+l_int|0x30000
+comma
+l_int|0x10000
 comma
 l_int|0
 comma
-l_int|0
+l_int|0x40000
 comma
-l_int|0xe0ffff
-comma
-l_int|0xe2ffff
+l_int|0x20000
 )brace
 comma
 id|needs_tvaudio
@@ -4207,7 +4239,7 @@ comma
 multiline_comment|/* ---- card 0x30 ---------------------------------- */
 id|name
 suffix:colon
-l_string|&quot;Dynalink Magic TView &quot;
+l_string|&quot;Askey CPH03x/ Dynalink Magic TView&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -4273,7 +4305,7 @@ comma
 (brace
 id|name
 suffix:colon
-l_string|&quot;GV-BCTV3&quot;
+l_string|&quot;IODATA GV-BCTV3/PCI&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -4524,6 +4556,7 @@ comma
 l_int|10
 )brace
 comma
+multiline_comment|/* sound path (5 sources):&n;&t;&t;&t;   MUX1 (mask 0x03), Enable Pin 0x08 (0=enable, 1=disable)&n;&t;&t;&t;&t;0= ext. Audio IN&n;&t;&t;&t;&t;1= from MUX2&n;&t;&t;&t;&t;2= Mono TV sound from Tuner&n;&t;&t;&t;&t;3= not connected&n;&t;&t;&t;   MUX2 (mask 0x30000):&n;&t;&t;&t;&t;0,2,3= from MSP34xx&n;&t;&t;&t;&t;1= FM stereo Radio from Tuner */
 id|needs_tvaudio
 suffix:colon
 l_int|1
@@ -4613,7 +4646,7 @@ comma
 multiline_comment|/* Tim R&#xfffd;stermundt &lt;rosterm@uni-muenster.de&gt;&n;&t;   in de.comp.os.unix.linux.hardware:&n;&t;&t;options bttv card=0 pll=1 radio=1 gpiomask=0x18e0&n;&t;&t;audiomux=0x44c71f,0x44d71f,0,0x44d71f,0x44dfff&n;&t;&t;options tuner type=5 */
 id|name
 suffix:colon
-l_string|&quot;Lifetec LT 9415 TV (LR90 Rev.F)&quot;
+l_string|&quot;Lifeview FlyVideo 2000 /FlyVideo A2/ Lifetec LT 9415 TV [LR90]&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -4661,21 +4694,14 @@ comma
 l_int|0x18e0
 )brace
 comma
-multiline_comment|/* 0x0000: Tuner normal stereo&n;&t;&t;&t;  0x0080: Tuner A2 SAP (second audio program = Zweikanalton)&n;&t;&t;&t;  0x0880: Tuner A2 stereo */
+multiline_comment|/* For cards with tda9820/tda9821:&n;&t;&t;&t;  0x0000: Tuner normal stereo&n;&t;&t;&t;  0x0080: Tuner A2 SAP (second audio program = Zweikanalton)&n;&t;&t;&t;  0x0880: Tuner A2 stereo */
 id|pll
 suffix:colon
 id|PLL_28
 comma
 id|tuner_type
 suffix:colon
-id|TUNER_PHILIPS_PAL
-comma
-id|audio_hook
-suffix:colon
-id|lt9415_audio
-comma
-id|has_radio
-suffix:colon
+op_minus
 l_int|1
 comma
 )brace
@@ -4684,7 +4710,7 @@ comma
 multiline_comment|/* Miguel Angel Alvarez &lt;maacruz@navegalia.com&gt;&n;&t;   old Easy TV BT848 version (model CPH031) */
 id|name
 suffix:colon
-l_string|&quot;BESTBUY Easy TV (CPH031)&quot;
+l_string|&quot;Askey CPH031/ BESTBUY Easy TV&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -4751,11 +4777,11 @@ multiline_comment|/* ---- card 0x38 ---------------------------------- */
 multiline_comment|/* Gordon Heydon &lt;gjheydon@bigfoot.com (&squot;98) */
 id|name
 suffix:colon
-l_string|&quot;FlyVideo &squot;98/FM&quot;
+l_string|&quot;Lifeview FlyVideo 98FM LR50&quot;
 comma
 id|video_inputs
 suffix:colon
-l_int|3
+l_int|4
 comma
 id|audio_inputs
 suffix:colon
@@ -4780,7 +4806,7 @@ l_int|2
 comma
 l_int|3
 comma
-l_int|0
+l_int|1
 comma
 l_int|1
 )brace
@@ -4800,10 +4826,6 @@ l_int|0x1800
 comma
 l_int|0
 )brace
-comma
-id|needs_tvaudio
-suffix:colon
-l_int|1
 comma
 id|pll
 suffix:colon
@@ -4879,7 +4901,7 @@ comma
 multiline_comment|/* Daniel Herrington &lt;daniel.herrington@home.com&gt; */
 id|name
 suffix:colon
-l_string|&quot;Phoebe TV Master Only (No FM) CPH060&quot;
+l_string|&quot;Askey CPH060/ Phoebe TV Master Only (No FM)&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -4935,7 +4957,7 @@ l_int|1
 comma
 id|pll
 suffix:colon
-id|PLL_NONE
+id|PLL_28
 comma
 id|tuner_type
 suffix:colon
@@ -4947,7 +4969,7 @@ comma
 multiline_comment|/* Matti Mottus &lt;mottus@physic.ut.ee&gt; */
 id|name
 suffix:colon
-l_string|&quot;TV Capturer (CPH03X)&quot;
+l_string|&quot;Askey CPH03x TV Capturer&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -5020,6 +5042,15 @@ id|audio_inputs
 suffix:colon
 l_int|2
 comma
+id|tuner
+suffix:colon
+l_int|0
+comma
+id|svhs
+suffix:colon
+op_minus
+l_int|1
+comma
 id|gpiomask
 suffix:colon
 l_int|11
@@ -5052,7 +5083,7 @@ l_int|8
 comma
 id|pll
 suffix:colon
-id|PLL_NONE
+id|PLL_35
 comma
 id|tuner_type
 suffix:colon
@@ -5123,7 +5154,7 @@ comma
 multiline_comment|/* Miguel Angel Alvarez &lt;maacruz@navegalia.com&gt;&n;&t;   new Easy TV BT878 version (model CPH061) &n;&t;   special thanks to Informatica Mieres for providing the card */
 id|name
 suffix:colon
-l_string|&quot;BESTBUY Easy TV (bt878)&quot;
+l_string|&quot;Askey CPH061/ BESTBUY Easy TV (bt878)&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -5319,7 +5350,7 @@ comma
 multiline_comment|/* DeeJay &lt;deejay@westel900.net (2000S) */
 id|name
 suffix:colon
-l_string|&quot;FlyVideo 2000S&quot;
+l_string|&quot;Lifeview FlyVideo 2000S LR90&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -5353,7 +5384,7 @@ comma
 l_int|1
 )brace
 comma
-multiline_comment|/* Radio changed from 1e80 to 0x800 to make&n;&t;&t;&t;   Flyvideo2000S in .hu happy (gm)*/
+multiline_comment|/* Radio changed from 1e80 to 0x800 to make&n;&t;&t;&t;   FlyVideo2000S in .hu happy (gm)*/
 multiline_comment|/* -dk-???: set mute=0x1800 for tda9874h daughterboard */
 id|audiomux
 suffix:colon
@@ -5470,7 +5501,7 @@ comma
 multiline_comment|/* TANAKA Kei &lt;peg00625@nifty.com&gt; */
 id|name
 suffix:colon
-l_string|&quot;GV-BCTV4/PCI&quot;
+l_string|&quot;IODATA GV-BCTV4/PCI&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -5654,7 +5685,7 @@ comma
 multiline_comment|/* Tomasz Pyra &lt;hellfire@sedez.iq.pl&gt; */
 id|name
 suffix:colon
-l_string|&quot;PV-BT878P+&quot;
+l_string|&quot;Prolink Pixelview PV-BT878P+ (Rev.4C)&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -5721,7 +5752,7 @@ comma
 (brace
 id|name
 suffix:colon
-l_string|&quot;Flyvideo 98EZ (capture only)&quot;
+l_string|&quot;Lifeview FlyVideo 98EZ (capture only) LR51&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -5768,7 +5799,7 @@ multiline_comment|/* ---- card 0x48 ---------------------------------- */
 multiline_comment|/* Dariusz Kowalewski &lt;darekk@automex.pl&gt; */
 id|name
 suffix:colon
-l_string|&quot;Prolink PV-BT878P+9B (PlayTV Pro rev.9B FM+NICAM)&quot;
+l_string|&quot;Prolink Pixelview PV-BT878P+9B (PlayTV Pro rev.9B FM+NICAM)&quot;
 comma
 id|video_inputs
 suffix:colon
@@ -5924,11 +5955,13 @@ l_int|0
 comma
 id|tuner
 suffix:colon
-l_int|0
+op_minus
+l_int|1
 comma
 id|svhs
 suffix:colon
-l_int|0
+op_minus
+l_int|1
 comma
 id|gpiomask
 suffix:colon
@@ -6005,6 +6038,10 @@ comma
 id|audio_inputs
 suffix:colon
 l_int|2
+comma
+id|tuner
+suffix:colon
+l_int|0
 comma
 id|svhs
 suffix:colon
@@ -6188,40 +6225,104 @@ comma
 )brace
 comma
 (brace
-multiline_comment|/* http://www.aopen.com/products/video/va1000.htm */
 id|name
 suffix:colon
-l_string|&quot;AOPEN VA1000&quot;
+l_string|&quot;Jetway TV/Capture JW-TV878-FBK, Kworld KW-TV878RF&quot;
 comma
 id|video_inputs
 suffix:colon
-l_int|3
+l_int|4
 comma
-multiline_comment|/* coax, AV, s-vid */
 id|audio_inputs
 suffix:colon
-l_int|1
+l_int|3
 comma
 id|tuner
 suffix:colon
 l_int|0
 comma
-id|tuner_type
+id|svhs
 suffix:colon
-id|TUNER_LG_PAL
+l_int|2
 comma
-multiline_comment|/* actually TP18PSB12P (PAL B/G) */
-id|audiomux
+id|gpiomask
+suffix:colon
+l_int|7
+comma
+id|muxsel
 suffix:colon
 (brace
 l_int|2
 comma
-l_int|0
+l_int|3
 comma
-l_int|0
+l_int|1
 comma
-l_int|0
+l_int|1
 )brace
+comma
+singleline_comment|// Tuner, SVid, SVHS, SVid to SVHS connector
+id|audiomux
+suffix:colon
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_int|4
+comma
+l_int|4
+comma
+l_int|4
+comma
+l_int|4
+)brace
+comma
+singleline_comment|// Yes, this tuner uses the same audio output for TV and FM radio!
+singleline_comment|// This card lacks external Audio In, so we mute it on Ext. &amp; Int.
+singleline_comment|// The PCB can take a sbx1637/sbx1673, wiring unknown.
+singleline_comment|// This card lacks PCI subsystem ID, sigh.
+singleline_comment|// audiomux=1: lower volume, 2+3: mute
+singleline_comment|// btwincap uses 0x80000/0x80003
+id|needs_tvaudio
+suffix:colon
+l_int|0
+comma
+id|no_msp34xx
+suffix:colon
+l_int|1
+comma
+id|pll
+suffix:colon
+id|PLL_28
+comma
+id|tuner_type
+suffix:colon
+l_int|5
+comma
+singleline_comment|// Samsung TCPA9095PC27A (BG+DK), philips compatible, w/FM, stereo and
+singleline_comment|// radio signal strength indicators work fine.
+id|has_radio
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* GPIO Info:&n;&t;&t;GPIO0,1:   HEF4052 A0,A1&n;&t;&t;GPIO2:     HEF4052 nENABLE&n;&t;&t;GPIO3-7:   n.c.&n;&t;&t;GPIO8-13:  IRDC357 data0,5 (data6 n.c. ?) [chip not present on my card]&n;&t;&t;GPIO14,15: ??&n;&t;&t;GPIO16-21: n.c.&n;&t;&t;GPIO22,23: ??&n;&t;&t;??       : mtu8b56ep microcontroller for IR (GPIO wiring unknown)*/
+)brace
+comma
+(brace
+multiline_comment|/* Arthur Tetzlaff-Deas, DSP Design Ltd &lt;software@dspdesign.com&gt; */
+id|name
+suffix:colon
+l_string|&quot;DSP Design TCVIDEO&quot;
+comma
+id|video_inputs
+suffix:colon
+l_int|4
+comma
+id|svhs
+suffix:colon
+op_minus
+l_int|1
 comma
 id|muxsel
 suffix:colon
@@ -6238,6 +6339,11 @@ comma
 id|pll
 suffix:colon
 id|PLL_28
+comma
+id|tuner_type
+suffix:colon
+op_minus
+l_int|1
 comma
 )brace
 )brace
@@ -6763,6 +6869,16 @@ r_int
 id|gpio
 comma
 id|outbits
+comma
+id|has_remote
+comma
+id|has_radio
+comma
+id|is_capture_only
+comma
+id|is_lr90
+comma
+id|has_tda9820_tda9821
 suffix:semicolon
 r_int
 id|tuner
@@ -6812,7 +6928,14 @@ id|BT848_GPIO_OUT_EN
 )paren
 suffix:semicolon
 singleline_comment|// all cards provide GPIO info, some have an additional eeprom
+singleline_comment|// LR50: GPIO coding can be found lower right CP1 .. CP9
+singleline_comment|//       CP9=GPIO23 .. CP1=GPIO15; when OPEN, the corresponding GPIO reads 1.
+singleline_comment|//       GPIO14-12: n.c.
+singleline_comment|// LR90: GP9=GPIO23 .. GP1=GPIO15 (right above the bt878)
 singleline_comment|// lowest 3 bytes are remote control codes (no handshake needed)
+singleline_comment|// xxxFFF: No remote control chip soldered
+singleline_comment|// xxxF00(LR26/LR50), xxxFE0(LR90): Remote control chip (LVA001 or CF45) soldered 
+singleline_comment|// Note: Some bits are Audio_Mask !
 id|ttype
 op_assign
 (paren
@@ -6830,7 +6953,7 @@ id|ttype
 )paren
 (brace
 r_case
-l_int|0
+l_int|0x0
 suffix:colon
 id|tuner
 op_assign
@@ -6840,7 +6963,7 @@ singleline_comment|// None
 r_break
 suffix:semicolon
 r_case
-l_int|4
+l_int|0x4
 suffix:colon
 id|tuner
 op_assign
@@ -6850,7 +6973,7 @@ singleline_comment|// Philips PAL
 r_break
 suffix:semicolon
 r_case
-l_int|6
+l_int|0x6
 suffix:colon
 id|tuner
 op_assign
@@ -6875,58 +6998,147 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;bttv%d: flyvideo_gpio: unknown tuner type.&bslash;n&quot;
+l_string|&quot;bttv%d: FlyVideo_gpio: unknown tuner type.&bslash;n&quot;
 comma
 id|btv-&gt;nr
 )paren
 suffix:semicolon
 )brace
+id|has_remote
+op_assign
+id|gpio
+op_amp
+l_int|0x800000
+suffix:semicolon
+id|has_radio
+op_assign
+id|gpio
+op_amp
+l_int|0x400000
+suffix:semicolon
+singleline_comment|//   unknown                   0x200000;
+singleline_comment|//   unknown2                  0x100000;
+id|is_capture_only
+op_assign
+op_logical_neg
+(paren
+id|gpio
+op_amp
+l_int|0x008000
+)paren
+suffix:semicolon
+singleline_comment|//GPIO15
+id|has_tda9820_tda9821
+op_assign
+op_logical_neg
+(paren
+id|gpio
+op_amp
+l_int|0x004000
+)paren
+suffix:semicolon
+id|is_lr90
+op_assign
+op_logical_neg
+(paren
+id|gpio
+op_amp
+l_int|0x002000
+)paren
+suffix:semicolon
+singleline_comment|// else LR26/LR50 (LR38/LR51 f. capture only)
+singleline_comment|//&t;&t;        gpio &amp; 0x001000 // output bit for audio routing
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;bttv%d: Flyvideo Radio=%s RemoteControl=%s Tuner=%d gpio=0x%06x&bslash;n&quot;
+l_string|&quot;bttv%d: FlyVideo Radio=%s RemoteControl=%s Tuner=%d gpio=0x%06x&bslash;n&quot;
 comma
 id|btv-&gt;nr
 comma
-id|gpio
-op_amp
-l_int|0x400000
+id|has_radio
 ques
 c_cond
 l_string|&quot;yes&quot;
 suffix:colon
-l_string|&quot;no&quot;
+l_string|&quot;no &quot;
 comma
-id|gpio
-op_amp
-l_int|0x800000
+id|has_remote
 ques
 c_cond
 l_string|&quot;yes&quot;
 suffix:colon
-l_string|&quot;no&quot;
+l_string|&quot;no &quot;
 comma
 id|tuner
 comma
 id|gpio
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;bttv%d: FlyVideo  LR90=%s tda9821/tda9820=%s capture_only=%s&bslash;n&quot;
+comma
+id|btv-&gt;nr
+comma
+id|is_lr90
+ques
+c_cond
+l_string|&quot;yes&quot;
+suffix:colon
+l_string|&quot;no &quot;
+comma
+id|has_tda9820_tda9821
+ques
+c_cond
+l_string|&quot;yes&quot;
+suffix:colon
+l_string|&quot;no &quot;
+comma
+id|is_capture_only
+ques
+c_cond
+l_string|&quot;yes&quot;
+suffix:colon
+l_string|&quot;no &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tuner
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
+singleline_comment|// only set if known tuner autodetected, else let insmod option through
 id|btv-&gt;tuner_type
 op_assign
 id|tuner
 suffix:semicolon
+)brace
 id|btv-&gt;has_radio
 op_assign
-id|gpio
-op_amp
-l_int|0x400000
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
+id|has_radio
 suffix:semicolon
+singleline_comment|// LR90 Audio Routing is done by 2 hef4052, so Audio_Mask has 4 bits: 0x001c80
+singleline_comment|// LR26/LR50 only has 1 hef4052, Audio_Mask 0x000c00
+singleline_comment|// Audio options: from tuner, from tda9821/tda9821(mono,stereo.sap), from tda9874, ext., mute
+r_if
+c_cond
+(paren
+id|has_tda9820_tda9821
+)paren
+(brace
+id|btv-&gt;audio_hook
+op_assign
+id|lt9415_audio
+suffix:semicolon
+)brace
+singleline_comment|//todo: if(has_tda9874) btv-&gt;audio_hook = fv2000s_audio;
 )brace
 DECL|variable|miro_tunermap
 r_int
@@ -7072,86 +7284,16 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-multiline_comment|/* initialization part one -- before registering i2c bus */
-DECL|function|bttv_init_card1
+DECL|function|miro_pinnacle_gpio
+r_static
 r_void
-id|__devinit
-id|bttv_init_card1
+id|miro_pinnacle_gpio
 c_func
 (paren
 r_struct
 id|bttv
 op_star
 id|btv
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|btv-&gt;type
-op_eq
-id|BTTV_HAUPPAUGE
-op_logical_or
-id|btv-&gt;type
-op_eq
-id|BTTV_HAUPPAUGE878
-)paren
-id|boot_msp34xx
-c_func
-(paren
-id|btv
-comma
-l_int|5
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|btv-&gt;type
-op_eq
-id|BTTV_VOODOOTV_FM
-)paren
-id|boot_msp34xx
-c_func
-(paren
-id|btv
-comma
-l_int|20
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* initialization part one -- after registering i2c bus */
-DECL|function|bttv_init_card2
-r_void
-id|__devinit
-id|bttv_init_card2
-c_func
-(paren
-r_struct
-id|bttv
-op_star
-id|btv
-)paren
-(brace
-multiline_comment|/* miro/pinnacle */
-r_if
-c_cond
-(paren
-id|btv-&gt;type
-op_eq
-id|BTTV_MIRO
-op_logical_or
-id|btv-&gt;type
-op_eq
-id|BTTV_MIROPRO
-op_logical_or
-id|btv-&gt;type
-op_eq
-id|BTTV_PINNACLE
-op_logical_or
-id|btv-&gt;type
-op_eq
-id|BTTV_PINNACLEPRO
 )paren
 (brace
 r_int
@@ -7329,17 +7471,11 @@ op_assign
 id|BTTV_PINNACLEPRO
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|bttv_verbose
-)paren
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;bttv%d: miro: id=%d tuner=%d &quot;
-l_string|&quot;radio=%s stereo=%s&bslash;n&quot;
+l_string|&quot;bttv%d: miro: id=%d tuner=%d radio=%s stereo=%s&bslash;n&quot;
 comma
 id|btv-&gt;nr
 comma
@@ -7377,40 +7513,109 @@ suffix:colon
 l_string|&quot;yes&quot;
 )paren
 suffix:semicolon
-macro_line|#if 0
-r_if
-c_cond
+)brace
+multiline_comment|/* initialization part one -- before registering i2c bus */
+DECL|function|bttv_init_card1
+r_void
+id|__devinit
+id|bttv_init_card1
+c_func
 (paren
-id|btv-&gt;has_matchbox
+r_struct
+id|bttv
+op_star
+id|btv
 )paren
 (brace
 r_if
 c_cond
 (paren
-id|bttv_verbose
+id|btv-&gt;type
+op_eq
+id|BTTV_HAUPPAUGE
+op_logical_or
+id|btv-&gt;type
+op_eq
+id|BTTV_HAUPPAUGE878
 )paren
-id|printk
+id|boot_msp34xx
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;Initializing TEA5757...&bslash;n&quot;
+id|btv
+comma
+l_int|5
 )paren
 suffix:semicolon
-id|init_tea5757
+r_if
+c_cond
+(paren
+id|btv-&gt;type
+op_eq
+id|BTTV_VOODOOTV_FM
+)paren
+id|boot_msp34xx
+c_func
+(paren
+id|btv
+comma
+l_int|20
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* initialization part two -- after registering i2c bus */
+DECL|function|bttv_init_card2
+r_void
+id|__devinit
+id|bttv_init_card2
+c_func
+(paren
+r_struct
+id|bttv
+op_star
+id|btv
+)paren
+(brace
+id|btv-&gt;tuner_type
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* miro/pinnacle */
+r_if
+c_cond
+(paren
+id|btv-&gt;type
+op_eq
+id|BTTV_MIRO
+op_logical_or
+id|btv-&gt;type
+op_eq
+id|BTTV_MIROPRO
+op_logical_or
+id|btv-&gt;type
+op_eq
+id|BTTV_PINNACLE
+op_logical_or
+id|btv-&gt;type
+op_eq
+id|BTTV_PINNACLEPRO
+)paren
+id|miro_pinnacle_gpio
 c_func
 (paren
 id|btv
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
-)brace
 r_if
 c_cond
 (paren
 id|btv-&gt;type
 op_eq
 id|BTTV_FLYVIDEO_98
+op_logical_or
+id|btv-&gt;type
+op_eq
+id|BTTV_LIFE_FLYKIT
 op_logical_or
 id|btv-&gt;type
 op_eq
@@ -7435,6 +7640,14 @@ op_logical_or
 id|btv-&gt;type
 op_eq
 id|BTTV_FLYVIDEO98EZ
+op_logical_or
+id|btv-&gt;type
+op_eq
+id|BTTV_CONFERENCETV
+op_logical_or
+id|btv-&gt;type
+op_eq
+id|BTTV_LIFETEC_9415
 )paren
 id|flyvideo_gpio
 c_func
@@ -7549,43 +7762,6 @@ suffix:semicolon
 id|btv-&gt;mbox_mask
 op_assign
 l_int|0x38
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|btv-&gt;type
-op_eq
-id|BTTV_LIFETEC_9415
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|btread
-c_func
-(paren
-id|BT848_GPIO_DATA
-)paren
-op_amp
-l_int|0x4000
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;bttv%d: lifetec: tv mono/fm stereo card&bslash;n&quot;
-comma
-id|btv-&gt;nr
-)paren
-suffix:semicolon
-r_else
-id|printk
-c_func
-(paren
-l_string|&quot;bttv%d: lifetec: stereo(TDA9821) card&bslash;n&quot;
-comma
-id|btv-&gt;nr
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -7751,7 +7927,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* tuner configuration (from card list / insmod option) */
+multiline_comment|/* tuner configuration (from card list / autodetect / insmod option) */
 r_if
 c_cond
 (paren
@@ -7765,6 +7941,15 @@ id|btv-&gt;type
 dot
 id|tuner_type
 )paren
+r_if
+c_cond
+(paren
+op_minus
+l_int|1
+op_eq
+id|btv-&gt;tuner_type
+)paren
+(brace
 id|btv-&gt;tuner_type
 op_assign
 id|bttv_tvcards
@@ -7774,6 +7959,7 @@ id|btv-&gt;type
 dot
 id|tuner_type
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -7811,6 +7997,16 @@ op_amp
 id|btv-&gt;tuner_type
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;bttv%d: using tuner=%d&bslash;n&quot;
+comma
+id|btv-&gt;nr
+comma
+id|btv-&gt;tuner_type
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7824,6 +8020,25 @@ id|has_radio
 id|btv-&gt;has_radio
 op_assign
 l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bttv_tvcards
+(braket
+id|btv-&gt;type
+)braket
+dot
+id|audio_hook
+)paren
+id|btv-&gt;audio_hook
+op_assign
+id|bttv_tvcards
+(braket
+id|btv-&gt;type
+)braket
+dot
+id|audio_hook
 suffix:semicolon
 multiline_comment|/* try to detect audio/fader chips */
 r_if

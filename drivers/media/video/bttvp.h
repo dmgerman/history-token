@@ -3,7 +3,7 @@ macro_line|#ifndef _BTTVP_H_
 DECL|macro|_BTTVP_H_
 mdefine_line|#define _BTTVP_H_
 DECL|macro|BTTV_VERSION_CODE
-mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,8,38)
+mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,8,42)
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
@@ -323,11 +323,6 @@ DECL|struct|bttv_vbi
 r_struct
 id|bttv_vbi
 (brace
-DECL|member|lock
-r_struct
-id|semaphore
-id|lock
-suffix:semicolon
 DECL|member|users
 r_int
 id|users
@@ -336,39 +331,10 @@ DECL|member|lines
 r_int
 id|lines
 suffix:semicolon
-multiline_comment|/* mmap */
-DECL|member|streaming
-r_int
-id|streaming
-suffix:semicolon
-DECL|member|bufs
+DECL|member|q
 r_struct
-id|bttv_buffer
-op_star
-id|bufs
-(braket
-id|VIDEO_MAX_FRAME
-)braket
-suffix:semicolon
-DECL|member|stream
-r_struct
-id|list_head
-id|stream
-suffix:semicolon
-multiline_comment|/* read */
-DECL|member|reading
-r_int
-id|reading
-suffix:semicolon
-DECL|member|read_off
-r_int
-id|read_off
-suffix:semicolon
-DECL|member|read_buf
-r_struct
-id|bttv_buffer
-op_star
-id|read_buf
+id|videobuf_queue
+id|q
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -382,17 +348,16 @@ id|bttv
 op_star
 id|btv
 suffix:semicolon
-multiline_comment|/* locking */
+DECL|member|q
+r_struct
+id|videobuf_queue
+id|q
+suffix:semicolon
 DECL|member|resources
 r_int
 id|resources
 suffix:semicolon
-DECL|member|lock
-r_struct
-id|semaphore
-id|lock
-suffix:semicolon
-multiline_comment|/* keep current driver settings */
+multiline_comment|/* current settings */
 DECL|member|ovfmt
 r_const
 r_struct
@@ -410,32 +375,6 @@ r_struct
 id|bttv_buffer
 id|buf
 suffix:semicolon
-multiline_comment|/* for read() capture */
-DECL|member|read_buf
-r_struct
-id|bttv_buffer
-id|read_buf
-suffix:semicolon
-DECL|member|read_off
-r_int
-id|read_off
-suffix:semicolon
-multiline_comment|/* mmap()&squot;ed buffers */
-DECL|member|bufs
-r_struct
-id|bttv_buffer
-op_star
-id|bufs
-(braket
-id|VIDEO_MAX_FRAME
-)braket
-suffix:semicolon
-DECL|member|stream
-r_struct
-id|list_head
-id|stream
-suffix:semicolon
-multiline_comment|/* v4l2 QBUF/DQBUF */
 )brace
 suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------- */
@@ -829,6 +768,11 @@ r_struct
 id|video_device
 id|bttv_vbi_template
 suffix:semicolon
+r_extern
+r_struct
+id|videobuf_queue_ops
+id|vbi_qops
+suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------- */
 multiline_comment|/* bttv-driver.c                                              */
 multiline_comment|/* insmod options */
@@ -1048,6 +992,27 @@ suffix:semicolon
 DECL|member|shutdown
 r_int
 id|shutdown
+suffix:semicolon
+DECL|member|audio_hook
+r_void
+(paren
+op_star
+id|audio_hook
+)paren
+(paren
+r_struct
+id|bttv
+op_star
+id|btv
+comma
+r_struct
+id|video_audio
+op_star
+id|v
+comma
+r_int
+id|set
+)paren
 suffix:semicolon
 multiline_comment|/* i2c layer */
 DECL|member|i2c_adap
