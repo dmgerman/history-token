@@ -143,9 +143,13 @@ id|tp-&gt;ecn_flags
 op_assign
 id|TCP_ECN_OK
 suffix:semicolon
-id|sk-&gt;sk_no_largesend
-op_assign
-l_int|1
+id|sock_set_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_NO_LARGESEND
+)paren
 suffix:semicolon
 )brace
 )brace
