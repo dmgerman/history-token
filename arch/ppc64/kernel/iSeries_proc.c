@@ -2,6 +2,7 @@ multiline_comment|/*&n;  * iSeries_proc.c&n;  * Copyright (C) 2001  Kyle A. Luck
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_proc.h&gt;
 DECL|variable|iSeries_proc_root
 r_static
@@ -374,4 +375,11 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|iSeries_proc_callback
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iSeries_proc_callback
+)paren
+suffix:semicolon
 eof

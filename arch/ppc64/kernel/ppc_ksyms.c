@@ -34,11 +34,7 @@ macro_line|#include &lt;asm/abs_addr.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/proc_fs.h&gt;
 macro_line|#ifdef CONFIG_PPC_ISERIES
-macro_line|#include &lt;asm/iSeries/iSeries_pci.h&gt;
-macro_line|#include &lt;asm/iSeries/iSeries_proc.h&gt;
-macro_line|#include &lt;asm/iSeries/mf.h&gt;
-macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
-macro_line|#include &lt;asm/iSeries/HvLpConfig.h&gt;
+macro_line|#include &lt;asm/iSeries/HvCallSc.h&gt;
 macro_line|#endif
 r_extern
 r_int
@@ -294,13 +290,6 @@ id|reloc_offset
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_ISERIES
-DECL|variable|iSeries_proc_callback
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iSeries_proc_callback
-)paren
-suffix:semicolon
 DECL|variable|HvCall0
 id|EXPORT_SYMBOL
 c_func
@@ -355,41 +344,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|HvCall7
-)paren
-suffix:semicolon
-DECL|variable|HvLpEvent_unregisterHandler
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|HvLpEvent_unregisterHandler
-)paren
-suffix:semicolon
-DECL|variable|HvLpEvent_registerHandler
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|HvLpEvent_registerHandler
-)paren
-suffix:semicolon
-DECL|variable|mf_allocateLpEvents
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|mf_allocateLpEvents
-)paren
-suffix:semicolon
-DECL|variable|mf_deallocateLpEvents
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|mf_deallocateLpEvents
-)paren
-suffix:semicolon
-DECL|variable|HvLpConfig_getLpIndex_outline
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|HvLpConfig_getLpIndex_outline
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -527,85 +481,6 @@ c_func
 id|pci_unmap_sg
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_ISERIES
-DECL|variable|iSeries_GetLocationData
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iSeries_GetLocationData
-)paren
-suffix:semicolon
-DECL|variable|iSeries_Device_ToggleReset
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iSeries_Device_ToggleReset
-)paren
-suffix:semicolon
-DECL|variable|iSeries_memset_io
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iSeries_memset_io
-)paren
-suffix:semicolon
-DECL|variable|iSeries_memcpy_toio
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iSeries_memcpy_toio
-)paren
-suffix:semicolon
-DECL|variable|iSeries_memcpy_fromio
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iSeries_memcpy_fromio
-)paren
-suffix:semicolon
-DECL|variable|iSeries_Read_Byte
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iSeries_Read_Byte
-)paren
-suffix:semicolon
-DECL|variable|iSeries_Read_Word
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iSeries_Read_Word
-)paren
-suffix:semicolon
-DECL|variable|iSeries_Read_Long
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iSeries_Read_Long
-)paren
-suffix:semicolon
-DECL|variable|iSeries_Write_Byte
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iSeries_Write_Byte
-)paren
-suffix:semicolon
-DECL|variable|iSeries_Write_Word
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iSeries_Write_Word
-)paren
-suffix:semicolon
-DECL|variable|iSeries_Write_Long
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iSeries_Write_Long
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PPC_ISERIES */
 macro_line|#endif /* CONFIG_PCI */
 DECL|variable|start_thread
 id|EXPORT_SYMBOL

@@ -30,6 +30,7 @@ multiline_comment|/* End Change Activity                                        
 multiline_comment|/************************************************************************/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -285,4 +286,11 @@ r_return
 id|DeviceNode-&gt;ReturnCode
 suffix:semicolon
 )brace
+DECL|variable|iSeries_Device_ToggleReset
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iSeries_Device_ToggleReset
+)paren
+suffix:semicolon
 eof
