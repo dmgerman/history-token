@@ -1051,6 +1051,9 @@ comma
 r_int
 r_int
 id|address
+comma
+id|pgprot_t
+id|prot
 )paren
 (brace
 id|pgd_t
@@ -1218,7 +1221,7 @@ c_func
 (paren
 id|page
 comma
-id|PAGE_COPY
+id|prot
 )paren
 )paren
 )paren
@@ -1784,6 +1787,8 @@ comma
 id|page
 comma
 id|stack_base
+comma
+id|mpnt-&gt;vm_page_prot
 )paren
 suffix:semicolon
 )brace
@@ -1806,10 +1811,6 @@ suffix:semicolon
 DECL|macro|free_arg_pages
 mdefine_line|#define free_arg_pages(bprm) do { } while (0)
 macro_line|#else
-DECL|macro|put_dirty_page
-mdefine_line|#define put_dirty_page(tsk, page, address)
-DECL|macro|setup_arg_pages
-mdefine_line|#define setup_arg_pages(bprm)&t;&t;&t;(0)
 DECL|function|free_arg_pages
 r_static
 r_inline
