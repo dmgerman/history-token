@@ -2514,7 +2514,22 @@ id|KERN_WARNING
 l_string|&quot;atkbd.c: keyboard reset failed&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Next we check we can set LEDs on the keyboard. This should work on every&n; * keyboard out there. It also turns the LEDs off, which we want anyway.&n; */
+multiline_comment|/*&n; * Then we check the keyboard ID. We should get 0xab83 under normal conditions.&n; * Some keyboards report different values, but the first byte is always 0xab or&n; * 0xac. Some old AT keyboards don&squot;t report anything.&n; */
+r_if
+c_cond
+(paren
+id|atkbd_command
+c_func
+(paren
+id|atkbd
+comma
+id|param
+comma
+id|ATKBD_CMD_GETID
+)paren
+)paren
+(brace
+multiline_comment|/*&n; * If the get ID command failed, we check if we can at least set the LEDs on&n; * the keyboard. This should work on every keyboard out there. It also turns&n; * the LEDs off, which we want anyway.&n; */
 id|param
 (braket
 l_int|0
@@ -2539,21 +2554,6 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n; * Then we check the keyboard ID. We should get 0xab83 under normal conditions.&n; * Some keyboards report different values, but the first byte is always 0xab or&n; * 0xac. Some old AT keyboards don&squot;t report anything.&n; */
-r_if
-c_cond
-(paren
-id|atkbd_command
-c_func
-(paren
-id|atkbd
-comma
-id|param
-comma
-id|ATKBD_CMD_GETID
-)paren
-)paren
-(brace
 id|atkbd-&gt;id
 op_assign
 l_int|0xabba
@@ -2615,6 +2615,31 @@ id|param
 (braket
 l_int|0
 )braket
+suffix:semicolon
+multiline_comment|/*&n; * Set the LEDs to a defined state.&n; */
+id|param
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|atkbd_command
+c_func
+(paren
+id|atkbd
+comma
+id|param
+comma
+id|ATKBD_CMD_SETLEDS
+)paren
+)paren
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 multiline_comment|/*&n; * Disable autorepeat. We don&squot;t need it, as we do it in software anyway,&n; * because that way can get faster repeat, and have less system load (less&n; * accesses to the slow ISA hardware). If this fails, we don&squot;t care, and will&n; * just ignore the repeated keys.&n; */
 id|atkbd_command
