@@ -89,8 +89,9 @@ dot
 id|parms
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;gre0&quot;
 )brace
 )brace

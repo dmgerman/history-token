@@ -120,8 +120,9 @@ id|timer_list
 id|addr_chk_timer
 op_assign
 (brace
+dot
 id|function
-suffix:colon
+op_assign
 id|addrconf_verify
 )brace
 suffix:semicolon

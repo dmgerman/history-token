@@ -85,8 +85,9 @@ dot
 id|parms
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;tunl0&quot;
 comma
 )brace
