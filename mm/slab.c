@@ -822,6 +822,7 @@ macro_line|#undef CACHE
 )brace
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_struct
 id|arraycache_init
 id|initarray_cache
@@ -840,6 +841,7 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_struct
 id|arraycache_init
 id|initarray_generic
@@ -926,6 +928,7 @@ id|semaphore
 id|cache_chain_sem
 suffix:semicolon
 DECL|variable|cache_chain
+r_static
 r_struct
 id|list_head
 id|cache_chain
@@ -943,6 +946,7 @@ id|slab_reclaim_pages
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * chicken and egg problem: delay the per-cpu array allocation&n; * until the general caches are up.&n; */
+r_static
 r_enum
 (brace
 DECL|enumerator|NONE
@@ -2175,6 +2179,7 @@ suffix:semicolon
 multiline_comment|/* The reap timers are started later, with a module init call:&n;&t; * That part of the kernel is not yet operational.&n;&t; */
 )brace
 DECL|function|cpucache_init
+r_static
 r_int
 id|__init
 id|cpucache_init

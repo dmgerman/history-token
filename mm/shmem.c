@@ -506,7 +506,7 @@ id|default_unplug_io_fn
 comma
 )brace
 suffix:semicolon
-DECL|variable|shmem_inodes
+r_static
 id|LIST_HEAD
 c_func
 (paren
