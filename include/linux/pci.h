@@ -732,6 +732,14 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Transparent PCI bridge */
+DECL|member|multifunction
+r_int
+r_int
+id|multifunction
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Part of multi-function device */
 )brace
 suffix:semicolon
 DECL|macro|pci_dev_g
@@ -1356,9 +1364,12 @@ id|pci_scan_slot
 c_func
 (paren
 r_struct
-id|pci_dev
+id|pci_bus
 op_star
-id|temp
+id|bus
+comma
+r_int
+id|devfn
 )paren
 suffix:semicolon
 r_int
