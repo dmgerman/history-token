@@ -31,7 +31,6 @@ id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
-macro_line|#if ACPI_MACHINE_WIDTH != 64
 r_if
 c_cond
 (paren
@@ -49,7 +48,6 @@ id|u32
 suffix:semicolon
 )brace
 r_else
-macro_line|#endif
 (brace
 id|pointer_size
 op_assign

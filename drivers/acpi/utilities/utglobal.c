@@ -651,7 +651,6 @@ comma
 (paren
 r_void
 op_star
-op_star
 )paren
 op_amp
 id|acpi_gbl_DSDT
@@ -679,7 +678,6 @@ comma
 (paren
 r_void
 op_star
-op_star
 )paren
 op_amp
 id|acpi_gbl_FADT
@@ -704,7 +702,6 @@ id|FACS_SIG
 comma
 (paren
 r_void
-op_star
 op_star
 )paren
 op_amp

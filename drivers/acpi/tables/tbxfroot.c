@@ -329,7 +329,6 @@ comma
 (paren
 r_void
 op_star
-op_star
 )paren
 op_amp
 id|acpi_gbl_RSDP
@@ -950,7 +949,6 @@ comma
 (paren
 r_void
 op_star
-op_star
 )paren
 op_amp
 id|table_ptr
@@ -1044,7 +1042,6 @@ id|ACPI_HI_RSDP_WINDOW_SIZE
 comma
 (paren
 r_void
-op_star
 op_star
 )paren
 op_amp
