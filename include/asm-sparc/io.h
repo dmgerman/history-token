@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/ioport.h&gt;  /* struct resource */
 macro_line|#include &lt;asm/page.h&gt;      /* IO address mapping routines need this */
 macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|page_to_phys
-mdefine_line|#define page_to_phys(page)&t;((page - mem_map) &lt;&lt; PAGE_SHIFT)
+mdefine_line|#define page_to_phys(page)&t;(((page) - mem_map) &lt;&lt; PAGE_SHIFT)
 DECL|function|flip_dword
 r_static
 r_inline
@@ -16,13 +16,13 @@ id|u32
 id|flip_dword
 (paren
 id|u32
-id|d
+id|l
 )paren
 (brace
 r_return
 (paren
 (paren
-id|d
+id|l
 op_amp
 l_int|0xff
 )paren
@@ -33,7 +33,7 @@ op_or
 (paren
 (paren
 (paren
-id|d
+id|l
 op_rshift
 l_int|8
 )paren
@@ -47,7 +47,7 @@ op_or
 (paren
 (paren
 (paren
-id|d
+id|l
 op_rshift
 l_int|16
 )paren
@@ -60,7 +60,7 @@ l_int|8
 op_or
 (paren
 (paren
-id|d
+id|l
 op_rshift
 l_int|24
 )paren
@@ -76,13 +76,13 @@ id|u16
 id|flip_word
 (paren
 id|u16
-id|d
+id|w
 )paren
 (brace
 r_return
 (paren
 (paren
-id|d
+id|w
 op_amp
 l_int|0xff
 )paren
@@ -92,7 +92,7 @@ l_int|8
 op_or
 (paren
 (paren
-id|d
+id|w
 op_rshift
 l_int|8
 )paren
@@ -202,7 +202,7 @@ id|__raw_writew
 c_func
 (paren
 id|u16
-id|b
+id|w
 comma
 r_int
 r_int
@@ -217,7 +217,7 @@ op_star
 )paren
 id|addr
 op_assign
-id|b
+id|w
 suffix:semicolon
 )brace
 DECL|function|__raw_writel
@@ -228,7 +228,7 @@ id|__raw_writel
 c_func
 (paren
 id|u32
-id|b
+id|l
 comma
 r_int
 r_int
@@ -243,7 +243,7 @@ op_star
 )paren
 id|addr
 op_assign
-id|b
+id|l
 suffix:semicolon
 )brace
 DECL|function|__readb
@@ -354,7 +354,7 @@ id|__writew
 c_func
 (paren
 id|u16
-id|b
+id|w
 comma
 r_int
 r_int
@@ -372,7 +372,7 @@ op_assign
 id|flip_word
 c_func
 (paren
-id|b
+id|w
 )paren
 suffix:semicolon
 )brace
@@ -384,7 +384,7 @@ id|__writel
 c_func
 (paren
 id|u32
-id|b
+id|l
 comma
 r_int
 r_int
@@ -402,57 +402,57 @@ op_assign
 id|flip_dword
 c_func
 (paren
-id|b
+id|l
 )paren
 suffix:semicolon
 )brace
 DECL|macro|readb
-mdefine_line|#define readb(addr)&t;__readb((unsigned long)(addr))
+mdefine_line|#define readb(__addr)&t;&t;__readb((unsigned long)(__addr))
 DECL|macro|readw
-mdefine_line|#define readw(addr)&t;__readw((unsigned long)(addr))
+mdefine_line|#define readw(__addr)&t;&t;__readw((unsigned long)(__addr))
 DECL|macro|readl
-mdefine_line|#define readl(addr)&t;__readl((unsigned long)(addr))
+mdefine_line|#define readl(__addr)&t;&t;__readl((unsigned long)(__addr))
 DECL|macro|readb_relaxed
-mdefine_line|#define readb_relaxed(addr) readb(addr)
+mdefine_line|#define readb_relaxed(__addr)&t;readb(__addr)
 DECL|macro|readw_relaxed
-mdefine_line|#define readw_relaxed(addr) readw(addr)
+mdefine_line|#define readw_relaxed(__addr)&t;readw(__addr)
 DECL|macro|readl_relaxed
-mdefine_line|#define readl_relaxed(addr) readl(addr)
+mdefine_line|#define readl_relaxed(__addr)&t;readl(__addr)
 DECL|macro|writeb
-mdefine_line|#define writeb(b, addr)&t;__writeb((b),(unsigned long)(addr))
+mdefine_line|#define writeb(__b, __addr)&t;__writeb((__b),(unsigned long)(__addr))
 DECL|macro|writew
-mdefine_line|#define writew(b, addr)&t;__writew((b),(unsigned long)(addr))
+mdefine_line|#define writew(__w, __addr)&t;__writew((__w),(unsigned long)(__addr))
 DECL|macro|writel
-mdefine_line|#define writel(b, addr)&t;__writel((b),(unsigned long)(addr))
+mdefine_line|#define writel(__l, __addr)&t;__writel((__l),(unsigned long)(__addr))
 multiline_comment|/*&n; * I/O space operations&n; *&n; * Arrangement on a Sun is somewhat complicated.&n; *&n; * First of all, we want to use standard Linux drivers&n; * for keyboard, PC serial, etc. These drivers think&n; * they access I/O space and use inb/outb.&n; * On the other hand, EBus bridge accepts PCI *memory*&n; * cycles and converts them into ISA *I/O* cycles.&n; * Ergo, we want inb &amp; outb to generate PCI memory cycles.&n; *&n; * If we want to issue PCI *I/O* cycles, we do this&n; * with a low 64K fixed window in PCIC. This window gets&n; * mapped somewhere into virtual kernel space and we&n; * can use inb/outb again.&n; */
 DECL|macro|inb_local
-mdefine_line|#define inb_local(addr)&t;&t;__readb(addr)
+mdefine_line|#define inb_local(__addr)&t;__readb((unsigned long)(__addr))
 DECL|macro|inb
-mdefine_line|#define inb(addr)&t;&t;__readb(addr)
+mdefine_line|#define inb(__addr)&t;&t;__readb((unsigned long)(__addr))
 DECL|macro|inw
-mdefine_line|#define inw(addr)&t;&t;__readw(addr)
+mdefine_line|#define inw(__addr)&t;&t;__readw((unsigned long)(__addr))
 DECL|macro|inl
-mdefine_line|#define inl(addr)&t;&t;__readl(addr)
+mdefine_line|#define inl(__addr)&t;&t;__readl((unsigned long)(__addr))
 DECL|macro|outb_local
-mdefine_line|#define outb_local(b, addr)&t;__writeb(b, addr)
+mdefine_line|#define outb_local(__b, __addr)&t;__writeb(__b, (unsigned long)(__addr))
 DECL|macro|outb
-mdefine_line|#define outb(b, addr)&t;&t;__writeb(b, addr)
+mdefine_line|#define outb(__b, __addr)&t;__writeb(__b, (unsigned long)(__addr))
 DECL|macro|outw
-mdefine_line|#define outw(b, addr)&t;&t;__writew(b, addr)
+mdefine_line|#define outw(__w, __addr)&t;__writew(__w, (unsigned long)(__addr))
 DECL|macro|outl
-mdefine_line|#define outl(b, addr)&t;&t;__writel(b, addr)
+mdefine_line|#define outl(__l, __addr)&t;__writel(__l, (unsigned long)(__addr))
 DECL|macro|inb_p
-mdefine_line|#define inb_p inb
+mdefine_line|#define inb_p(__addr)&t;&t;inb(__addr)
 DECL|macro|outb_p
-mdefine_line|#define outb_p outb
+mdefine_line|#define outb_p(__b, __addr)&t;outb(__b, __addr)
 DECL|macro|inw_p
-mdefine_line|#define inw_p inw
+mdefine_line|#define inw_p(__addr)&t;&t;inw(__addr)
 DECL|macro|outw_p
-mdefine_line|#define outw_p outw
+mdefine_line|#define outw_p(__w, __addr)&t;outw(__w, __addr)
 DECL|macro|inl_p
-mdefine_line|#define inl_p inl
+mdefine_line|#define inl_p(__addr)&t;&t;inl(__addr)
 DECL|macro|outl_p
-mdefine_line|#define outl_p outl
+mdefine_line|#define outl_p(__l, __addr)&t;outl(__l, __addr)
 r_extern
 r_void
 id|outsb
@@ -667,7 +667,7 @@ id|_sbus_writew
 c_func
 (paren
 id|u16
-id|b
+id|w
 comma
 r_int
 r_int
@@ -682,7 +682,7 @@ op_star
 )paren
 id|addr
 op_assign
-id|b
+id|w
 suffix:semicolon
 )brace
 DECL|function|_sbus_writel
@@ -693,7 +693,7 @@ id|_sbus_writel
 c_func
 (paren
 id|u32
-id|b
+id|l
 comma
 r_int
 r_int
@@ -708,22 +708,22 @@ op_star
 )paren
 id|addr
 op_assign
-id|b
+id|l
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The only reason for #define&squot;s is to hide casts to unsigned long.&n; */
 DECL|macro|sbus_readb
-mdefine_line|#define sbus_readb(a)&t;&t;_sbus_readb((unsigned long)(a))
+mdefine_line|#define sbus_readb(__addr)&t;&t;_sbus_readb((unsigned long)(__addr))
 DECL|macro|sbus_readw
-mdefine_line|#define sbus_readw(a)&t;&t;_sbus_readw((unsigned long)(a))
+mdefine_line|#define sbus_readw(__addr)&t;&t;_sbus_readw((unsigned long)(__addr))
 DECL|macro|sbus_readl
-mdefine_line|#define sbus_readl(a)&t;&t;_sbus_readl((unsigned long)(a))
+mdefine_line|#define sbus_readl(__addr)&t;&t;_sbus_readl((unsigned long)(__addr))
 DECL|macro|sbus_writeb
-mdefine_line|#define sbus_writeb(v, a)&t;_sbus_writeb(v, (unsigned long)(a))
+mdefine_line|#define sbus_writeb(__b, __addr)&t;_sbus_writeb(__b, (unsigned long)(__addr))
 DECL|macro|sbus_writew
-mdefine_line|#define sbus_writew(v, a)&t;_sbus_writew(v, (unsigned long)(a))
+mdefine_line|#define sbus_writew(__w, __addr)&t;_sbus_writew(__w, (unsigned long)(__addr))
 DECL|macro|sbus_writel
-mdefine_line|#define sbus_writel(v, a)&t;_sbus_writel(v, (unsigned long)(a))
+mdefine_line|#define sbus_writel(__l, __addr)&t;_sbus_writel(__l, (unsigned long)(__addr))
 DECL|function|sbus_memset_io
 r_static
 r_inline
