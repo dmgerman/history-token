@@ -547,6 +547,13 @@ id|rdev
 op_logical_and
 op_logical_neg
 id|rdev-&gt;faulty
+op_logical_and
+id|atomic_read
+c_func
+(paren
+op_amp
+id|rdev-&gt;nr_pending
+)paren
 )paren
 (brace
 id|request_queue_t

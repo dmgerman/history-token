@@ -1655,6 +1655,9 @@ c_cond
 (paren
 id|rdev
 op_logical_and
+op_logical_neg
+id|rdev-&gt;faulty
+op_logical_and
 id|atomic_read
 c_func
 (paren
