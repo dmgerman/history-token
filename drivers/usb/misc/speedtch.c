@@ -5649,7 +5649,12 @@ id|count
 )paren
 r_break
 suffix:semicolon
-id|yield
+id|set_current_state
+(paren
+id|TASK_RUNNING
+)paren
+suffix:semicolon
+id|schedule
 (paren
 )paren
 suffix:semicolon
@@ -5839,7 +5844,12 @@ id|UDSL_NUM_SND_URBS
 )paren
 r_break
 suffix:semicolon
-id|yield
+id|set_current_state
+(paren
+id|TASK_RUNNING
+)paren
+suffix:semicolon
+id|schedule
 (paren
 )paren
 suffix:semicolon
