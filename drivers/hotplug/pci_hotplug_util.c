@@ -222,6 +222,8 @@ id|wrapped_bus
 suffix:semicolon
 r_int
 id|result
+op_assign
+l_int|0
 suffix:semicolon
 id|dbg
 c_func
