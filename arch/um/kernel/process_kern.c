@@ -1957,11 +1957,6 @@ id|PT_DTRACE
 r_return
 l_int|0
 suffix:semicolon
-id|task-&gt;ptrace
-op_and_assign
-op_complement
-id|PT_DTRACE
-suffix:semicolon
 r_if
 c_cond
 (paren

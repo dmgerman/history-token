@@ -594,12 +594,13 @@ multiline_comment|/* This closes a way to execute a system call on the host.  If
 r_if
 c_cond
 (paren
-(paren
 id|current-&gt;ptrace
 op_amp
 id|PT_DTRACE
 )paren
-op_logical_and
+(brace
+id|current-&gt;thread.singlestep_syscall
+op_assign
 id|is_syscall
 c_func
 (paren
@@ -610,11 +611,6 @@ op_amp
 id|current-&gt;thread.regs
 )paren
 )paren
-)paren
-(brace
-id|current-&gt;thread.singlestep_syscall
-op_assign
-l_int|1
 suffix:semicolon
 )brace
 r_return

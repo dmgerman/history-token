@@ -24,6 +24,15 @@ op_star
 id|child
 )paren
 (brace
+id|child-&gt;ptrace
+op_and_assign
+op_complement
+id|PT_DTRACE
+suffix:semicolon
+id|child-&gt;thread.singlestep_syscall
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|sys_ptrace
 r_int
@@ -636,6 +645,15 @@ id|_NSIG
 )paren
 r_break
 suffix:semicolon
+id|child-&gt;ptrace
+op_and_assign
+op_complement
+id|PT_DTRACE
+suffix:semicolon
+id|child-&gt;thread.singlestep_syscall
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -700,6 +718,15 @@ id|EXIT_ZOMBIE
 multiline_comment|/* already dead */
 r_break
 suffix:semicolon
+id|child-&gt;ptrace
+op_and_assign
+op_complement
+id|PT_DTRACE
+suffix:semicolon
+id|child-&gt;thread.singlestep_syscall
+op_assign
+l_int|0
+suffix:semicolon
 id|child-&gt;exit_code
 op_assign
 id|SIGKILL
@@ -747,6 +774,10 @@ suffix:semicolon
 id|child-&gt;ptrace
 op_or_assign
 id|PT_DTRACE
+suffix:semicolon
+id|child-&gt;thread.singlestep_syscall
+op_assign
+l_int|0
 suffix:semicolon
 id|child-&gt;exit_code
 op_assign
@@ -1301,6 +1332,20 @@ r_int
 id|entryexit
 )paren
 (brace
+r_int
+id|is_singlestep
+op_assign
+(paren
+id|current-&gt;ptrace
+op_amp
+id|PT_DTRACE
+)paren
+op_logical_and
+id|entryexit
+suffix:semicolon
+r_int
+id|tracesysgood
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1352,6 +1397,9 @@ c_func
 (paren
 id|TIF_SYSCALL_TRACE
 )paren
+op_logical_and
+op_logical_neg
+id|is_singlestep
 )paren
 r_return
 suffix:semicolon
@@ -1368,17 +1416,24 @@ id|PT_PTRACED
 r_return
 suffix:semicolon
 multiline_comment|/* the 0x80 provides a way for the tracing parent to distinguish&n;&t;   between a syscall stop and SIGTRAP delivery */
+id|tracesysgood
+op_assign
+(paren
+id|current-&gt;ptrace
+op_amp
+id|PT_TRACESYSGOOD
+)paren
+op_logical_and
+op_logical_neg
+id|is_singlestep
+suffix:semicolon
 id|ptrace_notify
 c_func
 (paren
 id|SIGTRAP
 op_or
 (paren
-(paren
-id|current-&gt;ptrace
-op_amp
-id|PT_TRACESYSGOOD
-)paren
+id|tracesysgood
 ques
 c_cond
 l_int|0x80
@@ -1387,7 +1442,14 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * this isn&squot;t the same as continuing with a signal, but it will do&n;&t; * for normal use.  strace only continues with a signal if the&n;&t; * stopping signal is not SIGTRAP.  -brl&n;&t; */
+multiline_comment|/* force do_signal() --&gt; is_syscall() */
+id|set_thread_flag
+c_func
+(paren
+id|TIF_SIGPENDING
+)paren
+suffix:semicolon
+multiline_comment|/* this isn&squot;t the same as continuing with a signal, but it will do&n;&t; * for normal use.  strace only continues with a signal if the&n;&t; * stopping signal is not SIGTRAP.  -brl&n;&t; */
 r_if
 c_cond
 (paren
