@@ -3583,9 +3583,12 @@ id|error
 id|ide_drive_t
 op_star
 comma
-r_const
-r_char
+r_struct
+id|request
 op_star
+id|rq
+comma
+id|u8
 comma
 id|u8
 )paren
@@ -3846,6 +3849,22 @@ r_int
 comma
 id|ide_expiry_t
 op_star
+)paren
+suffix:semicolon
+id|ide_startstop_t
+id|__ide_error
+c_func
+(paren
+id|ide_drive_t
+op_star
+comma
+r_struct
+id|request
+op_star
+comma
+id|u8
+comma
+id|u8
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * ide_error() takes action based on the error returned by the controller.&n; * The caller should return immediately after invoking this.&n; *&n; * (drive, msg, status)&n; */

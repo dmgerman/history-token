@@ -455,13 +455,7 @@ id|dma_stat
 suffix:semicolon
 )brace
 r_return
-id|DRIVER
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|error
+id|ide_error
 c_func
 (paren
 id|drive
