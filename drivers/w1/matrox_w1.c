@@ -2,7 +2,7 @@ multiline_comment|/*&n; * &t;matrox_w1.c&n; *&n; * Copyright (c) 2004 Evgeniy Po
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/delay.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
