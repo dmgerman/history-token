@@ -119,14 +119,6 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|iSeries_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|iSeries_init_early
 c_func
 (paren
@@ -191,6 +183,14 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|iSeries_parse_cmdline
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|variable|decr_overclock
 r_int
 r_int
@@ -227,38 +227,6 @@ DECL|variable|aux_device_present
 r_int
 r_char
 id|aux_device_present
-suffix:semicolon
-r_void
-id|parse_cmd_line
-c_func
-(paren
-r_int
-r_int
-id|r3
-comma
-r_int
-r_int
-id|r4
-comma
-r_int
-r_int
-id|r5
-comma
-r_int
-r_int
-id|r6
-comma
-r_int
-r_int
-id|r7
-)paren
-suffix:semicolon
-r_int
-id|parse_bootinfo
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 DECL|variable|SYSRQ_KEY
@@ -910,11 +878,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|parse_bootinfo
-c_func
-(paren
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -930,11 +893,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|parse_bootinfo
-c_func
-(paren
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif /* CONFIG_PPC_PSERIES */
@@ -943,11 +901,6 @@ r_case
 id|PLATFORM_POWERMAC
 suffix:colon
 id|pmac_init_early
-c_func
-(paren
-)paren
-suffix:semicolon
-id|parse_bootinfo
 c_func
 (paren
 )paren
@@ -1085,6 +1038,13 @@ id|r7
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PPC_PSERIES */
+macro_line|#ifdef CONFIG_PPC_ISERIES
+id|iSeries_parse_cmdline
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef CONFIG_PPC_ISERIES
 multiline_comment|/*&n;&t; * iSeries has already initialized the cpu maps at this point.&n;&t; */
@@ -1320,43 +1280,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|systemcfg-&gt;platform
-)paren
-(brace
-macro_line|#ifdef CONFIG_PPC_ISERIES
-r_case
-id|PLATFORM_ISERIES_LPAR
-suffix:colon
-id|iSeries_init
-c_func
-(paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-macro_line|#endif
-r_default
-suffix:colon
-multiline_comment|/* The following relies on the device tree being */
-multiline_comment|/* fully configured.                             */
-id|parse_cmd_line
-c_func
-(paren
-id|r3
-comma
-id|r4
-comma
-id|r5
-comma
-id|r6
-comma
-id|r7
-)paren
-suffix:semicolon
-)brace
 )brace
 DECL|function|machine_restart
 r_void
@@ -1890,131 +1813,6 @@ id|show_cpuinfo
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Fetch the cmd_line from open firmware. &n; */
-DECL|function|parse_cmd_line
-r_void
-id|parse_cmd_line
-c_func
-(paren
-r_int
-r_int
-id|r3
-comma
-r_int
-r_int
-id|r4
-comma
-r_int
-r_int
-id|r5
-comma
-r_int
-r_int
-id|r6
-comma
-r_int
-r_int
-id|r7
-)paren
-(brace
-id|cmd_line
-(braket
-l_int|0
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#ifdef CONFIG_CMDLINE
-id|strlcpy
-c_func
-(paren
-id|cmd_line
-comma
-id|CONFIG_CMDLINE
-comma
-r_sizeof
-(paren
-id|cmd_line
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_CMDLINE */
-macro_line|#ifdef CONFIG_PPC_PSERIES
-(brace
-r_struct
-id|device_node
-op_star
-id|chosen
-suffix:semicolon
-id|chosen
-op_assign
-id|of_find_node_by_name
-c_func
-(paren
-l_int|NULL
-comma
-l_string|&quot;chosen&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|chosen
-op_ne
-l_int|NULL
-)paren
-(brace
-r_char
-op_star
-id|p
-suffix:semicolon
-id|p
-op_assign
-id|get_property
-c_func
-(paren
-id|chosen
-comma
-l_string|&quot;bootargs&quot;
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|p
-op_ne
-l_int|NULL
-op_logical_and
-id|p
-(braket
-l_int|0
-)braket
-op_ne
-l_int|0
-)paren
-id|strlcpy
-c_func
-(paren
-id|cmd_line
-comma
-id|p
-comma
-r_sizeof
-(paren
-id|cmd_line
-)paren
-)paren
-suffix:semicolon
-id|of_node_put
-c_func
-(paren
-id|chosen
-)paren
-suffix:semicolon
-)brace
-)brace
 macro_line|#endif
 multiline_comment|/* Look for mem= option on command line */
 r_if
@@ -2159,7 +1957,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef CONFIG_PPC_PSERIES
-DECL|function|set_preferred_console
 r_static
 r_int
 id|__init
@@ -2530,98 +2327,13 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-DECL|variable|set_preferred_console
 id|console_initcall
 c_func
 (paren
 id|set_preferred_console
 )paren
 suffix:semicolon
-DECL|function|parse_bootinfo
-r_int
-id|parse_bootinfo
-c_func
-(paren
-r_void
-)paren
-(brace
-r_struct
-id|bi_record
-op_star
-id|rec
-suffix:semicolon
-id|rec
-op_assign
-id|prom.bi_recs
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rec
-op_eq
-l_int|NULL
-op_logical_or
-id|rec-&gt;tag
-op_ne
-id|BI_FIRST
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-r_for
-c_loop
-(paren
-suffix:semicolon
-id|rec-&gt;tag
-op_ne
-id|BI_LAST
-suffix:semicolon
-id|rec
-op_assign
-id|bi_rec_next
-c_func
-(paren
-id|rec
-)paren
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|rec-&gt;tag
-)paren
-(brace
-r_case
-id|BI_CMD_LINE
-suffix:colon
-id|strlcpy
-c_func
-(paren
-id|cmd_line
-comma
-(paren
-r_void
-op_star
-)paren
-id|rec-&gt;data
-comma
-r_sizeof
-(paren
-id|cmd_line
-)paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 macro_line|#endif
-DECL|function|ppc_init
 r_int
 id|__init
 id|ppc_init
@@ -2661,14 +2373,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|ppc_init
 id|arch_initcall
 c_func
 (paren
 id|ppc_init
 )paren
 suffix:semicolon
-DECL|function|ppc64_calibrate_delay
 r_void
 id|__init
 id|ppc64_calibrate_delay
@@ -2717,7 +2427,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IRQSTACKS
-DECL|function|irqstack_early_init
 r_static
 r_void
 id|__init
@@ -2789,11 +2498,9 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#else
-DECL|macro|irqstack_early_init
 mdefine_line|#define irqstack_early_init()
 macro_line|#endif
 multiline_comment|/*&n; * Stack space used when we detect a bad kernel stack pointer, and&n; * early in SMP boots before relocation is enabled.&n; */
-DECL|function|emergency_stack_init
 r_static
 r_void
 id|__init
@@ -2852,7 +2559,6 @@ id|PAGE_SIZE
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Called into from start_kernel, after lock_kernel has been called.&n; * Initializes bootmem, which is unsed to manage page allocation until&n; * mem_init is called.&n; */
-DECL|function|setup_arch
 r_void
 id|__init
 id|setup_arch
@@ -3022,17 +2728,11 @@ l_string|&quot;Setup Done&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* ToDo: do something useful if ppc_md is not yet setup. */
-DECL|macro|PPC64_LINUX_FUNCTION
 mdefine_line|#define PPC64_LINUX_FUNCTION 0x0f000000
-DECL|macro|PPC64_IPL_MESSAGE
 mdefine_line|#define PPC64_IPL_MESSAGE 0xc0000000
-DECL|macro|PPC64_TERM_MESSAGE
 mdefine_line|#define PPC64_TERM_MESSAGE 0xb0000000
-DECL|macro|PPC64_ATTN_MESSAGE
 mdefine_line|#define PPC64_ATTN_MESSAGE 0xa0000000
-DECL|macro|PPC64_DUMP_MESSAGE
 mdefine_line|#define PPC64_DUMP_MESSAGE 0xd0000000
-DECL|function|ppc64_do_msg
 r_static
 r_void
 id|ppc64_do_msg
@@ -3103,7 +2803,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Print a boot progress message. */
-DECL|function|ppc64_boot_msg
 r_void
 id|ppc64_boot_msg
 c_func
@@ -3142,7 +2841,6 @@ id|msg
 suffix:semicolon
 )brace
 multiline_comment|/* Print a termination message (print only -- does not stop the kernel) */
-DECL|function|ppc64_terminate_msg
 r_void
 id|ppc64_terminate_msg
 c_func
@@ -3181,7 +2879,6 @@ id|msg
 suffix:semicolon
 )brace
 multiline_comment|/* Print something that needs attention (device error, etc) */
-DECL|function|ppc64_attention_msg
 r_void
 id|ppc64_attention_msg
 c_func
@@ -3220,7 +2917,6 @@ id|msg
 suffix:semicolon
 )brace
 multiline_comment|/* Print a dump progress message. */
-DECL|function|ppc64_dump_msg
 r_void
 id|ppc64_dump_msg
 c_func
@@ -3258,7 +2954,6 @@ id|msg
 )paren
 suffix:semicolon
 )brace
-DECL|function|set_spread_lpevents
 r_int
 id|set_spread_lpevents
 c_func
@@ -3354,7 +3049,6 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* This should only be called on processor 0 during calibrate decr */
-DECL|function|setup_default_decr
 r_void
 id|setup_default_decr
 c_func
@@ -3400,7 +3094,6 @@ op_plus
 id|tb_ticks_per_jiffy
 suffix:semicolon
 )brace
-DECL|function|set_decr_overclock_proc0
 r_int
 id|set_decr_overclock_proc0
 c_func
@@ -3470,7 +3163,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|set_decr_overclock
 r_int
 id|set_decr_overclock
 c_func

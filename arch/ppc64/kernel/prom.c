@@ -8996,6 +8996,25 @@ l_int|0
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_CMDLINE
+id|strlcpy
+c_func
+(paren
+id|RELOC
+c_func
+(paren
+id|cmd_line
+)paren
+comma
+id|CONFIG_CMDLINE
+comma
+r_sizeof
+(paren
+id|cmd_line
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_CMDLINE */
 r_if
 c_cond
 (paren

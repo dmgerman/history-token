@@ -394,14 +394,6 @@ op_assign
 id|Root_SDA2
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;Boot arguments: %s&bslash;n&quot;
-comma
-id|cmd_line
-)paren
-suffix:semicolon
 id|fwnmi_init
 c_func
 (paren
