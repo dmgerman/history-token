@@ -2255,6 +2255,11 @@ op_star
 id|info
 comma
 r_struct
+id|task_struct
+op_star
+id|t
+comma
+r_struct
 id|sigpending
 op_star
 id|signals
@@ -2602,6 +2607,8 @@ c_func
 id|sig
 comma
 id|info
+comma
+id|t
 comma
 op_amp
 id|t-&gt;pending
@@ -3298,6 +3305,8 @@ c_func
 id|sig
 comma
 id|info
+comma
+id|p
 comma
 op_amp
 id|p-&gt;signal-&gt;shared_pending
