@@ -3431,7 +3431,7 @@ l_int|2
 )paren
 r_return
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
 id|get_u16
 c_func
