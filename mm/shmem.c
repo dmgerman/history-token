@@ -4978,6 +4978,13 @@ id|FS_NOMOUNT
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|shm_mnt
+r_static
+r_struct
+id|vfsmount
+op_star
+id|shm_mnt
+suffix:semicolon
 DECL|function|init_shmem_fs
 r_static
 r_int
@@ -5096,6 +5103,10 @@ id|res
 )paren
 suffix:semicolon
 )brace
+id|shm_mnt
+op_assign
+id|res
+suffix:semicolon
 multiline_comment|/* The internal instance should not do size checking */
 r_if
 c_cond
@@ -5149,6 +5160,12 @@ c_func
 (paren
 op_amp
 id|tmpfs_fs_type
+)paren
+suffix:semicolon
+id|mntput
+c_func
+(paren
+id|shm_mnt
 )paren
 suffix:semicolon
 )brace
@@ -5617,7 +5634,7 @@ suffix:semicolon
 multiline_comment|/* will go */
 id|root
 op_assign
-id|tmpfs_fs_type.kern_mnt-&gt;mnt_root
+id|shm_mnt-&gt;mnt_root
 suffix:semicolon
 id|dentry
 op_assign
@@ -5716,7 +5733,7 @@ op_assign
 id|mntget
 c_func
 (paren
-id|tmpfs_fs_type.kern_mnt
+id|shm_mnt
 )paren
 suffix:semicolon
 id|file-&gt;f_dentry

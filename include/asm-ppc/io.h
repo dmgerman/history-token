@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.io.h 1.7 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.io.h 1.11 08/28/01 15:48:26 paulus&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_IO_H
 DECL|macro|_PPC_IO_H
@@ -29,7 +29,7 @@ mdefine_line|#define PREP_ISA_MEM_BASE &t;0xc0000000
 DECL|macro|PREP_PCI_DRAM_OFFSET
 mdefine_line|#define PREP_PCI_DRAM_OFFSET &t;0x80000000
 macro_line|#if defined(CONFIG_4xx)
-macro_line|#include &lt;asm/board.h&gt;
+macro_line|#include &lt;asm/ppc4xx.h&gt;
 macro_line|#elif defined(CONFIG_8xx)
 macro_line|#include &lt;asm/mpc8xx.h&gt;
 macro_line|#elif defined(CONFIG_8260)
@@ -415,25 +415,6 @@ suffix:semicolon
 r_extern
 r_void
 op_star
-id|__ioremap_at
-c_func
-(paren
-r_int
-r_int
-id|phys
-comma
-r_int
-r_int
-id|size
-comma
-r_int
-r_int
-id|flags
-)paren
-suffix:semicolon
-r_extern
-r_void
-op_star
 id|ioremap
 c_func
 (paren
@@ -469,7 +450,6 @@ r_int
 id|addr
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_APUS
 r_extern
 r_int
 r_int
@@ -487,7 +467,27 @@ r_const
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
+r_extern
+r_void
+id|io_block_mapping
+c_func
+(paren
+r_int
+r_int
+id|virt
+comma
+r_int
+r_int
+id|phys
+comma
+r_int
+r_int
+id|size
+comma
+r_int
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * The PCI bus is inherently Little-Endian.  The PowerPC is being&n; * run Big-Endian.  Thus all values which cross the [PCI] barrier&n; * must be endian-adjusted.  Also, the local DRAM has a different&n; * address from the PCI point of view, thus buffer addresses also&n; * have to be modified [mapped] appropriately.&n; */
 DECL|function|virt_to_bus
 r_extern
@@ -668,6 +668,11 @@ id|address
 suffix:semicolon
 macro_line|#endif
 )brace
+multiline_comment|/*&n; * Change &quot;struct page&quot; to physical address.&n; */
+DECL|macro|page_to_phys
+mdefine_line|#define page_to_phys(page)&t;((page - mem_map) &lt;&lt; PAGE_SHIFT)
+DECL|macro|page_to_bus
+mdefine_line|#define page_to_bus(page)&t;(page_to_phys(page) + PCI_DRAM_OFFSET)
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * Enforce In-order Execution of I/O:&n; * Acts as a barrier to ensure all previous I/O accesses have&n; * completed before any further ones are issued.&n; */
 DECL|function|eieio

@@ -1396,8 +1396,6 @@ id|old_termios
 r_int
 r_int
 id|cflag
-op_assign
-id|port-&gt;tty-&gt;termios-&gt;c_cflag
 suffix:semicolon
 r_struct
 id|whiteheat_port_settings
@@ -1417,6 +1415,35 @@ id|down
 op_amp
 id|port-&gt;sem
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+op_logical_neg
+id|port-&gt;tty
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|port-&gt;tty-&gt;termios
+)paren
+)paren
+(brace
+id|dbg
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; - no tty structures&quot;
+)paren
+suffix:semicolon
+r_goto
+m_exit
+suffix:semicolon
+)brace
+id|cflag
+op_assign
+id|port-&gt;tty-&gt;termios-&gt;c_cflag
 suffix:semicolon
 multiline_comment|/* check that they really want us to change something */
 r_if
@@ -1460,31 +1487,6 @@ r_goto
 m_exit
 suffix:semicolon
 )brace
-)brace
-r_if
-c_cond
-(paren
-(paren
-op_logical_neg
-id|port-&gt;tty
-)paren
-op_logical_or
-(paren
-op_logical_neg
-id|port-&gt;tty-&gt;termios
-)paren
-)paren
-(brace
-id|dbg
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - no tty structures&quot;
-)paren
-suffix:semicolon
-r_goto
-m_exit
-suffix:semicolon
 )brace
 multiline_comment|/* set the port number */
 multiline_comment|/* firmware uses 1 based port numbering */

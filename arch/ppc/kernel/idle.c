@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.idle.c 1.11 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.idle.c 1.14 08/15/01 22:43:06 paulus&n; */
 multiline_comment|/*&n; * Idle daemon for PowerPC.  Idle daemon will handle any action&n; * that needs to be taken when the system becomes idle.&n; *&n; * Written by Cort Dougan (cort@cs.nmt.edu)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
 r_void
 id|zero_paged
 c_func
@@ -31,21 +32,6 @@ c_func
 (paren
 r_void
 )paren
-suffix:semicolon
-r_void
-r_inline
-id|htab_reclaim
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|variable|htab_reclaim_on
-r_int
-r_int
-id|htab_reclaim_on
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|zero_paged_on
 r_int
@@ -101,47 +87,25 @@ id|do_power_save
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* only sleep on the 603-family/750 processors */
-r_switch
+r_if
 c_cond
 (paren
-id|_get_PVR
+id|cur_cpu_spec
+(braket
+id|smp_processor_id
 c_func
 (paren
 )paren
-op_rshift
-l_int|16
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|CPU_FTR_CAN_DOZE
 )paren
-(brace
-r_case
-l_int|3
-suffix:colon
-multiline_comment|/* 603 */
-r_case
-l_int|6
-suffix:colon
-multiline_comment|/* 603e */
-r_case
-l_int|7
-suffix:colon
-multiline_comment|/* 603ev */
-r_case
-l_int|8
-suffix:colon
-multiline_comment|/* 750 */
-r_case
-l_int|12
-suffix:colon
-multiline_comment|/* 7400 */
-r_case
-l_int|0x800c
-suffix:colon
-multiline_comment|/* 7410 */
 id|do_power_save
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 multiline_comment|/* endless loop with no priority at all */
 id|current-&gt;nice
 op_assign
@@ -164,20 +128,52 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-multiline_comment|/*if ( !current-&gt;need_resched &amp;&amp; zero_paged_on )&n;&t;&t;&t;zero_paged();*/
+macro_line|#ifdef CONFIG_SMP
+r_int
+id|oldval
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|current-&gt;need_resched
-op_logical_and
-id|htab_reclaim_on
+id|do_power_save
 )paren
-id|htab_reclaim
+(brace
+multiline_comment|/*&n;&t;&t;&t; * Deal with another CPU just having chosen a thread to&n;&t;&t;&t; * run here:&n;&t;&t;&t; */
+id|oldval
+op_assign
+id|xchg
 c_func
 (paren
+op_amp
+id|current-&gt;need_resched
+comma
+op_minus
+l_int|1
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|oldval
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|current-&gt;need_resched
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+suffix:semicolon
+)brace
+multiline_comment|/* Do Nothing */
+)brace
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -230,235 +226,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * Mark &squot;zombie&squot; pte&squot;s in the hash table as invalid.&n; * This improves performance for the hash table reload code&n; * a bit since we don&squot;t consider unused pages as valid.&n; *  -- Cort&n; */
-DECL|variable|reclaim_ptr
-id|PTE
-op_star
-id|reclaim_ptr
-op_assign
-l_int|0
-suffix:semicolon
-DECL|function|htab_reclaim
-r_void
-r_inline
-id|htab_reclaim
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifndef CONFIG_8xx&t;&t;
-macro_line|#if 0&t;
-id|PTE
-op_star
-id|ptr
-comma
-op_star
-id|start
-suffix:semicolon
-r_static
-r_int
-id|dir
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif&t;
-r_struct
-id|task_struct
-op_star
-id|p
-suffix:semicolon
-r_int
-r_int
-id|valid
-op_assign
-l_int|0
-suffix:semicolon
-r_extern
-id|PTE
-op_star
-id|Hash
-comma
-op_star
-id|Hash_end
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|Hash_size
-suffix:semicolon
-multiline_comment|/* if we don&squot;t have a htab */
-r_if
-c_cond
-(paren
-id|Hash_size
-op_eq
-l_int|0
-)paren
-r_return
-suffix:semicolon
-macro_line|#if 0&t;
-multiline_comment|/* find a random place in the htab to start each time */
-id|start
-op_assign
-op_amp
-id|Hash
-(braket
-id|jiffies
-op_mod
-(paren
-id|Hash_size
-op_div
-r_sizeof
-(paren
-id|PTE
-)paren
-)paren
-)braket
-suffix:semicolon
-multiline_comment|/* go a different direction each time */
-id|dir
-op_mul_assign
-op_minus
-l_int|1
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|ptr
-op_assign
-id|start
-suffix:semicolon
-op_logical_neg
-id|current-&gt;need_resched
-op_logical_and
-(paren
-id|ptr
-op_ne
-id|Hash_end
-)paren
-op_logical_and
-(paren
-id|ptr
-op_ne
-id|Hash
-)paren
-suffix:semicolon
-id|ptr
-op_add_assign
-id|dir
-)paren
-(brace
-macro_line|#else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|reclaim_ptr
-)paren
-id|reclaim_ptr
-op_assign
-id|Hash
-suffix:semicolon
-r_while
-c_loop
-(paren
-op_logical_neg
-id|current-&gt;need_resched
-)paren
-(brace
-id|reclaim_ptr
-op_increment
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|reclaim_ptr
-op_eq
-id|Hash_end
-)paren
-id|reclaim_ptr
-op_assign
-id|Hash
-suffix:semicolon
-macro_line|#endif&t;  
-r_if
-c_cond
-(paren
-op_logical_neg
-id|reclaim_ptr-&gt;v
-)paren
-r_continue
-suffix:semicolon
-id|valid
-op_assign
-l_int|0
-suffix:semicolon
-id|for_each_task
-c_func
-(paren
-id|p
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|current-&gt;need_resched
-)paren
-r_goto
-id|out
-suffix:semicolon
-multiline_comment|/* if this vsid/context is in use */
-r_if
-c_cond
-(paren
-(paren
-id|reclaim_ptr-&gt;vsid
-op_rshift
-l_int|4
-)paren
-op_eq
-id|p-&gt;mm-&gt;context
-)paren
-(brace
-id|valid
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-id|valid
-)paren
-r_continue
-suffix:semicolon
-multiline_comment|/* this pte isn&squot;t used */
-id|reclaim_ptr-&gt;v
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-id|out
-suffix:colon
-r_if
-c_cond
-(paren
-id|current-&gt;need_resched
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;need_resched: %lx&bslash;n&quot;
-comma
-id|current-&gt;need_resched
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_8xx */
 )brace
 macro_line|#if 0
 multiline_comment|/*&n; * Returns a pre-zero&squot;d page from the list otherwise returns&n; * NULL.&n; */
@@ -878,7 +645,7 @@ id|zero_cache_total
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+macro_line|#endif /* 0 */
 DECL|function|power_save
 r_void
 id|power_save

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.prep_pci.c 1.22 08/05/01 16:18:54 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.prep_pci.c 1.24 08/20/01 15:06:15 paulus&n; */
 multiline_comment|/*&n; * PReP pci functions.&n; * Originally by Gary Thomas&n; * rewritten and updated by Cort Dougan (cort@cs.nmt.edu)&n; *&n; * The motherboard routes/maps will disappear shortly. -- Cort&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -428,7 +428,7 @@ comma
 multiline_comment|/* Slot 9  - unused */
 l_int|0
 comma
-multiline_comment|/* Slot 10 - unxued */
+multiline_comment|/* Slot 10 - unused */
 l_int|0
 comma
 multiline_comment|/* Slot 11 - unused */
@@ -510,7 +510,7 @@ comma
 multiline_comment|/* Slot 9  - unused */
 l_int|0
 comma
-multiline_comment|/* Slot 10 - unxued */
+multiline_comment|/* Slot 10 - unused */
 l_int|0
 comma
 multiline_comment|/* Slot 11 - unused */
@@ -865,10 +865,10 @@ comma
 multiline_comment|/* Slot 14 - SCSI */
 l_int|0
 comma
-multiline_comment|/* Slot 15 - graphics on 3600 */
+multiline_comment|/* Slot 15 - unused */
 l_int|9
 comma
-multiline_comment|/* Slot 16 - PMC */
+multiline_comment|/* Slot 16 - PMC 1 */
 l_int|12
 comma
 multiline_comment|/* Slot 17 - pci */
@@ -1348,6 +1348,114 @@ l_int|13
 comma
 multiline_comment|/* Line 3 */
 l_int|13
+multiline_comment|/* Line 4 */
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * IBM RS/6000 43p/140  -- paulus&n; * XXX we should get all this from the residual data&n; */
+DECL|variable|__prepdata
+r_static
+r_char
+id|ibm43p_pci_IRQ_map
+(braket
+l_int|23
+)braket
+id|__prepdata
+op_assign
+(brace
+l_int|0
+comma
+multiline_comment|/* Slot 0  - unused */
+l_int|0
+comma
+multiline_comment|/* Slot 1  - unused */
+l_int|0
+comma
+multiline_comment|/* Slot 2  - unused */
+l_int|0
+comma
+multiline_comment|/* Slot 3  - unused */
+l_int|0
+comma
+multiline_comment|/* Slot 4  - unused */
+l_int|0
+comma
+multiline_comment|/* Slot 5  - unused */
+l_int|0
+comma
+multiline_comment|/* Slot 6  - unused */
+l_int|0
+comma
+multiline_comment|/* Slot 7  - unused */
+l_int|0
+comma
+multiline_comment|/* Slot 8  - unused */
+l_int|0
+comma
+multiline_comment|/* Slot 9  - unused */
+l_int|0
+comma
+multiline_comment|/* Slot 10 - unused */
+l_int|0
+comma
+multiline_comment|/* Slot 11 - FireCoral ISA bridge */
+l_int|6
+comma
+multiline_comment|/* Slot 12 - Ethernet  */
+l_int|0
+comma
+multiline_comment|/* Slot 13 - openpic */
+l_int|0
+comma
+multiline_comment|/* Slot 14 - unused */
+l_int|0
+comma
+multiline_comment|/* Slot 15 - unused */
+l_int|7
+comma
+multiline_comment|/* Slot 16 - NCR58C825a onboard scsi */
+l_int|0
+comma
+multiline_comment|/* Slot 17 - unused */
+l_int|2
+comma
+multiline_comment|/* Slot 18 - PCI Slot 2 PCIINTx# (See below) */
+l_int|0
+comma
+multiline_comment|/* Slot 19 - unused */
+l_int|0
+comma
+multiline_comment|/* Slot 20 - unused */
+l_int|0
+comma
+multiline_comment|/* Slot 21 - unused */
+l_int|1
+comma
+multiline_comment|/* Slot 22 - PCI slot 1 PCIINTx# (See below) */
+)brace
+suffix:semicolon
+DECL|variable|__prepdata
+r_static
+r_char
+id|ibm43p_pci_IRQ_routes
+(braket
+)braket
+id|__prepdata
+op_assign
+(brace
+l_int|0
+comma
+multiline_comment|/* Line 0 - unused */
+l_int|15
+comma
+multiline_comment|/* Line 1 */
+l_int|15
+comma
+multiline_comment|/* Line 2 */
+l_int|15
+comma
+multiline_comment|/* Line 3 */
+l_int|15
+comma
 multiline_comment|/* Line 4 */
 )brace
 suffix:semicolon
@@ -2586,9 +2694,241 @@ l_int|0x00
 )brace
 )brace
 suffix:semicolon
+DECL|function|ibm_prep_init
+r_void
+id|ibm_prep_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|u32
+id|addr
+suffix:semicolon
+macro_line|#ifdef CONFIG_PREP_RESIDUAL
+id|PPC_DEVICE
+op_star
+id|mpic
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|inb
+c_func
+(paren
+l_int|0x0852
+)paren
+op_eq
+l_int|0xd5
+)paren
+(brace
+multiline_comment|/* This is for the 43p-140 */
+id|early_read_config_dword
+c_func
+(paren
+l_int|0
+comma
+l_int|0
+comma
+id|PCI_DEVFN
+c_func
+(paren
+l_int|13
+comma
+l_int|0
+)paren
+comma
+id|PCI_BASE_ADDRESS_0
+comma
+op_amp
+id|addr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|addr
+op_ne
+l_int|0xffffffff
+op_logical_and
+op_logical_neg
+(paren
+id|addr
+op_amp
+id|PCI_BASE_ADDRESS_SPACE_IO
+)paren
+op_logical_and
+(paren
+id|addr
+op_and_assign
+id|PCI_BASE_ADDRESS_MEM_MASK
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|addr
+op_add_assign
+id|PREP_ISA_MEM_BASE
+suffix:semicolon
+id|OpenPIC_Addr
+op_assign
+id|ioremap
+c_func
+(paren
+id|addr
+comma
+l_int|0x40000
+)paren
+suffix:semicolon
+id|ppc_md.get_irq
+op_assign
+id|openpic_get_irq
+suffix:semicolon
+)brace
+)brace
+macro_line|#ifdef CONFIG_PREP_RESIDUAL
+id|mpic
+op_assign
+id|residual_find_device
+c_func
+(paren
+op_minus
+l_int|1
+comma
+l_int|NULL
+comma
+id|SystemPeripheral
+comma
+id|ProgrammableInterruptController
+comma
+id|MPIC
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mpic
+op_ne
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;mpic = %p&bslash;n&quot;
+comma
+id|mpic
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+)brace
+r_void
+DECL|function|ibm43p_pci_map_non0
+id|ibm43p_pci_map_non0
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+r_int
+r_char
+id|intpin
+suffix:semicolon
+r_static
+r_int
+r_char
+id|bridge_intrs
+(braket
+l_int|4
+)braket
+op_assign
+(brace
+l_int|3
+comma
+l_int|4
+comma
+l_int|5
+comma
+l_int|8
+)brace
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev
+op_eq
+l_int|NULL
+)paren
+r_return
+suffix:semicolon
+id|pci_read_config_byte
+c_func
+(paren
+id|dev
+comma
+id|PCI_INTERRUPT_PIN
+comma
+op_amp
+id|intpin
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|intpin
+template_param
+l_int|4
+)paren
+r_return
+suffix:semicolon
+id|intpin
+op_assign
+(paren
+id|PCI_SLOT
+c_func
+(paren
+id|dev-&gt;devfn
+)paren
+op_plus
+id|intpin
+op_minus
+l_int|1
+)paren
+op_amp
+l_int|3
+suffix:semicolon
+id|dev-&gt;irq
+op_assign
+id|openpic_to_irq
+c_func
+(paren
+id|bridge_intrs
+(braket
+id|intpin
+)braket
+)paren
+suffix:semicolon
+id|pci_write_config_byte
+c_func
+(paren
+id|dev
+comma
+id|PCI_INTERRUPT_LINE
+comma
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+)brace
 DECL|function|prep_route_pci_interrupts
-r_int
-r_int
+r_void
 id|__init
 id|prep_route_pci_interrupts
 c_func
@@ -3051,6 +3391,27 @@ id|ibm6015_pci_IRQ_routes
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+l_int|0xd5
+suffix:colon
+id|Motherboard_map_name
+op_assign
+l_string|&quot;IBM 43p/140&quot;
+suffix:semicolon
+id|Motherboard_map
+op_assign
+id|ibm43p_pci_IRQ_map
+suffix:semicolon
+id|Motherboard_routes
+op_assign
+id|ibm43p_pci_IRQ_routes
+suffix:semicolon
+id|Motherboard_non0
+op_assign
+id|ibm43p_pci_map_non0
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|Motherboard_map_name
@@ -3126,8 +3487,6 @@ l_string|&quot;No known machine pci routing!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Set up mapping from slots */
@@ -3164,9 +3523,6 @@ op_star
 id|ibc_pcicon
 op_or_assign
 l_int|0x20
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 r_void
@@ -3227,12 +3583,10 @@ id|dev
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * PPCBUG does not set the enable bits&n;&t;&t;&t; * for the IDE device. Force them on here.&n;&t;&t;&t; */
-id|pcibios_read_config_byte
+id|pci_read_config_byte
 c_func
 (paren
-id|dev-&gt;bus-&gt;number
-comma
-id|dev-&gt;devfn
+id|dev
 comma
 l_int|0x40
 comma
@@ -3245,29 +3599,50 @@ op_or_assign
 l_int|0x03
 suffix:semicolon
 multiline_comment|/* IDE: Chip Enable Bits */
-id|pcibios_write_config_byte
+id|pci_write_config_byte
 c_func
 (paren
-id|dev-&gt;bus-&gt;number
-comma
-id|dev-&gt;devfn
+id|dev
 comma
 l_int|0x40
 comma
 id|reg
 )paren
 suffix:semicolon
-multiline_comment|/* Force correct IDE function interrupt */
-id|dev-&gt;irq
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|dev
 op_assign
-l_int|14
-suffix:semicolon
-id|pcibios_write_config_byte
+id|pci_find_device
 c_func
 (paren
-id|dev-&gt;bus-&gt;number
+id|PCI_VENDOR_ID_VIA
 comma
+id|PCI_DEVICE_ID_VIA_82C586_2
+comma
+id|dev
+)paren
+)paren
+op_logical_and
+(paren
 id|dev-&gt;devfn
+op_assign
+l_int|0x5a
+)paren
+)paren
+(brace
+multiline_comment|/* Force correct USB interrupt */
+id|dev-&gt;irq
+op_assign
+l_int|11
+suffix:semicolon
+id|pci_write_config_byte
+c_func
+(paren
+id|dev
 comma
 id|PCI_INTERRUPT_LINE
 comma
@@ -3275,7 +3650,6 @@ id|dev-&gt;irq
 )paren
 suffix:semicolon
 )brace
-r_else
 r_if
 c_cond
 (paren
@@ -3294,7 +3668,7 @@ id|dev
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Clear the PCI Interrupt Routing Control Register.&n;&t;&t;&t; */
+multiline_comment|/* Clear PCI Interrupt Routing Control Register. */
 id|short_reg
 op_assign
 l_int|0x0000
@@ -3315,7 +3689,7 @@ c_cond
 id|OpenPIC_Addr
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Route both IDE interrupts to IRQ 14&n;&t;&t;&t;&t; */
+multiline_comment|/* Route IDE interrupts to IRQ 14 */
 id|reg
 op_assign
 l_int|0xEE
@@ -3325,7 +3699,7 @@ c_func
 (paren
 id|dev
 comma
-l_int|0x44
+l_int|0x43
 comma
 id|reg
 )paren
@@ -3357,13 +3731,7 @@ c_cond
 id|OpenPIC_Addr
 )paren
 (brace
-multiline_comment|/* Disable LEGIRQ mode so PCI INTs are routed to&n;&t;&t;&t;   the 8259 */
-id|printk
-c_func
-(paren
-l_string|&quot;Set winbond IDE to native mode&bslash;n&quot;
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Disable LEGIRQ mode so PCI INTS are routed&n;&t;&t;&t; * directly to the 8259 and enable both channels&n;&t;&t;&t; */
 id|pci_write_config_dword
 c_func
 (paren
@@ -3371,7 +3739,22 @@ id|dev
 comma
 l_int|0x40
 comma
-l_int|0x10ff00a1
+l_int|0x10ff0033
+)paren
+suffix:semicolon
+multiline_comment|/* Force correct IDE interrupt */
+id|dev-&gt;irq
+op_assign
+l_int|14
+suffix:semicolon
+id|pci_write_config_byte
+c_func
+(paren
+id|dev
+comma
+id|PCI_INTERRUPT_LINE
+comma
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 )brace
@@ -4030,6 +4413,59 @@ suffix:semicolon
 macro_line|#endif
 )brace
 )brace
+r_static
+r_void
+id|__init
+DECL|function|prep_init_resource
+id|prep_init_resource
+c_func
+(paren
+r_struct
+id|resource
+op_star
+id|res
+comma
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+comma
+r_int
+id|flags
+)paren
+(brace
+id|res-&gt;flags
+op_assign
+id|flags
+suffix:semicolon
+id|res-&gt;start
+op_assign
+id|start
+suffix:semicolon
+id|res-&gt;end
+op_assign
+id|end
+suffix:semicolon
+id|res-&gt;name
+op_assign
+l_string|&quot;PCI host bridge&quot;
+suffix:semicolon
+id|res-&gt;parent
+op_assign
+l_int|NULL
+suffix:semicolon
+id|res-&gt;sibling
+op_assign
+l_int|NULL
+suffix:semicolon
+id|res-&gt;child
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 r_void
 id|__init
 DECL|function|prep_find_bridges
@@ -4078,6 +4514,35 @@ r_void
 op_star
 )paren
 id|PREP_ISA_IO_BASE
+suffix:semicolon
+id|prep_init_resource
+c_func
+(paren
+op_amp
+id|hose-&gt;io_resource
+comma
+l_int|0
+comma
+l_int|0x0fffffff
+comma
+id|IORESOURCE_IO
+)paren
+suffix:semicolon
+id|prep_init_resource
+c_func
+(paren
+op_amp
+id|hose-&gt;mem_resources
+(braket
+l_int|0
+)braket
+comma
+l_int|0xc0000000
+comma
+l_int|0xfeffffff
+comma
+id|IORESOURCE_MEM
+)paren
 suffix:semicolon
 id|printk
 c_func

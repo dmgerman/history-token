@@ -1,7 +1,7 @@
 macro_line|#ifndef __LINUX_UHCI_H
 DECL|macro|__LINUX_UHCI_H
 mdefine_line|#define __LINUX_UHCI_H
-multiline_comment|/*&n;   $Id: usb-uhci.h,v 1.55 2000/05/13 12:50:30 acher Exp $&n; */
+multiline_comment|/*&n;   $Id: usb-uhci.h,v 1.58 2001/08/28 16:45:00 acher Exp $&n; */
 DECL|macro|MODNAME
 mdefine_line|#define MODNAME &quot;usb-uhci&quot;
 DECL|macro|UHCI_LATENCY_TIMER
@@ -592,6 +592,11 @@ id|pci_pool
 op_star
 id|desc_pool
 suffix:semicolon
+DECL|member|last_error_time
+r_int
+id|last_error_time
+suffix:semicolon
+singleline_comment|// last error output in uhci_interrupt()
 DECL|typedef|uhci_t
 DECL|typedef|puhci_t
 )brace
@@ -606,6 +611,36 @@ DECL|macro|MAKE_QH_ADDR
 mdefine_line|#define MAKE_QH_ADDR(a) ((a)-&gt;dma_addr|UHCI_PTR_QH)
 DECL|macro|UHCI_GET_CURRENT_FRAME
 mdefine_line|#define UHCI_GET_CURRENT_FRAME(uhci) (inw ((uhci)-&gt;io_addr + USBFRNUM))
+DECL|macro|CLEAN_TRANSFER_NO_DELETION
+mdefine_line|#define CLEAN_TRANSFER_NO_DELETION 0
+DECL|macro|CLEAN_TRANSFER_REGULAR
+mdefine_line|#define CLEAN_TRANSFER_REGULAR 1
+DECL|macro|CLEAN_TRANSFER_DELETION_MARK
+mdefine_line|#define CLEAN_TRANSFER_DELETION_MARK 2
+DECL|macro|CLEAN_NOT_FORCED
+mdefine_line|#define CLEAN_NOT_FORCED 0
+DECL|macro|CLEAN_FORCED
+mdefine_line|#define CLEAN_FORCED 1
+DECL|macro|PROCESS_ISO_REGULAR
+mdefine_line|#define PROCESS_ISO_REGULAR 0
+DECL|macro|PROCESS_ISO_FORCE
+mdefine_line|#define PROCESS_ISO_FORCE 1
+DECL|macro|UNLINK_ASYNC_STORE_URB
+mdefine_line|#define UNLINK_ASYNC_STORE_URB 0
+DECL|macro|UNLINK_ASYNC_DONT_STORE
+mdefine_line|#define UNLINK_ASYNC_DONT_STORE 1
+DECL|macro|is_td_active
+mdefine_line|#define is_td_active(desc) (desc-&gt;hw.td.status &amp; cpu_to_le32(TD_CTRL_ACTIVE))
+DECL|macro|set_qh_head
+mdefine_line|#define set_qh_head(desc,val) (desc)-&gt;hw.qh.head=cpu_to_le32(val)
+DECL|macro|set_qh_element
+mdefine_line|#define set_qh_element(desc,val) (desc)-&gt;hw.qh.element=cpu_to_le32(val)
+DECL|macro|set_td_link
+mdefine_line|#define set_td_link(desc,val) (desc)-&gt;hw.td.link=cpu_to_le32(val)
+DECL|macro|set_td_ioc
+mdefine_line|#define set_td_ioc(desc) (desc)-&gt;hw.td.status |= cpu_to_le32(TD_CTRL_IOC)
+DECL|macro|clr_td_ioc
+mdefine_line|#define clr_td_ioc(desc) (desc)-&gt;hw.td.status &amp;= cpu_to_le32(~TD_CTRL_IOC)
 multiline_comment|/* ------------------------------------------------------------------------------------ &n;   Virtual Root HUB &n;   ------------------------------------------------------------------------------------ */
 multiline_comment|/* destination of request */
 DECL|macro|RH_INTERFACE

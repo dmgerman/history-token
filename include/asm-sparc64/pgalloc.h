@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgalloc.h,v 1.20 2001/04/26 02:36:36 davem Exp $ */
+multiline_comment|/* $Id: pgalloc.h,v 1.21 2001/08/22 22:16:56 kanoj Exp $ */
 macro_line|#ifndef _SPARC64_PGALLOC_H
 DECL|macro|_SPARC64_PGALLOC_H
 mdefine_line|#define _SPARC64_PGALLOC_H
@@ -147,7 +147,7 @@ mdefine_line|#define flush_tlb_all()&t;&t;__flush_tlb_all()
 DECL|macro|flush_tlb_mm
 mdefine_line|#define flush_tlb_mm(__mm) &bslash;&n;do { if(CTX_VALID((__mm)-&gt;context)) &bslash;&n;&t;__flush_tlb_mm(CTX_HWBITS((__mm)-&gt;context), SECONDARY_CONTEXT); &bslash;&n;} while(0)
 DECL|macro|flush_tlb_range
-mdefine_line|#define flush_tlb_range(__mm, start, end) &bslash;&n;do { if(CTX_VALID((__mm)-&gt;context)) { &bslash;&n;&t;unsigned long __start = (start)&amp;PAGE_MASK; &bslash;&n;&t;unsigned long __end = (end)&amp;PAGE_MASK; &bslash;&n;&t;__flush_tlb_range(CTX_HWBITS((__mm)-&gt;context), __start, &bslash;&n;&t;&t;&t;  SECONDARY_CONTEXT, __end, PAGE_SIZE, &bslash;&n;&t;&t;&t;  (__end - __start)); &bslash;&n;     } &bslash;&n;} while(0)
+mdefine_line|#define flush_tlb_range(__mm, start, end) &bslash;&n;do { if(CTX_VALID((__mm)-&gt;context)) { &bslash;&n;&t;unsigned long __start = (start)&amp;PAGE_MASK; &bslash;&n;&t;unsigned long __end = PAGE_ALIGN(end); &bslash;&n;&t;__flush_tlb_range(CTX_HWBITS((__mm)-&gt;context), __start, &bslash;&n;&t;&t;&t;  SECONDARY_CONTEXT, __end, PAGE_SIZE, &bslash;&n;&t;&t;&t;  (__end - __start)); &bslash;&n;     } &bslash;&n;} while(0)
 DECL|macro|flush_tlb_page
 mdefine_line|#define flush_tlb_page(vma, page) &bslash;&n;do { struct mm_struct *__mm = (vma)-&gt;vm_mm; &bslash;&n;     if(CTX_VALID(__mm-&gt;context)) &bslash;&n;&t;__flush_tlb_page(CTX_HWBITS(__mm-&gt;context), (page)&amp;PAGE_MASK, &bslash;&n;&t;&t;&t; SECONDARY_CONTEXT); &bslash;&n;} while(0)
 macro_line|#else /* CONFIG_SMP */

@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kbd_kern.h&gt;
+macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -2040,6 +2041,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|pckbd_rate
+r_static
 r_int
 id|pckbd_rate
 c_func
@@ -2839,6 +2841,10 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+id|kbd_rate
+op_assign
+id|pckbd_rate
+suffix:semicolon
 multiline_comment|/* Ok, finally allocate the IRQ, and off we go.. */
 id|kbd_request_irq
 c_func

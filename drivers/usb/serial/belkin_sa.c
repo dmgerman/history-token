@@ -2265,9 +2265,6 @@ multiline_comment|/* turns off (Clears) the lines as specified by the mask */
 r_if
 c_cond
 (paren
-(paren
-id|ret
-op_assign
 id|get_user
 c_func
 (paren
@@ -2281,9 +2278,9 @@ op_star
 id|arg
 )paren
 )paren
-)paren
 r_return
-id|ret
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond

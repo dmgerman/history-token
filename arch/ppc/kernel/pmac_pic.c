@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pmac_pic.c 1.14 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pmac_pic.c 1.18 08/19/01 22:23:04 paulus&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -92,11 +92,6 @@ DECL|variable|max_real_irqs
 r_static
 r_int
 id|max_real_irqs
-suffix:semicolon
-DECL|variable|pmac_has_openpic
-r_static
-r_int
-id|pmac_has_openpic
 suffix:semicolon
 DECL|variable|pmac_pic_lock
 id|spinlock_t
@@ -1338,7 +1333,7 @@ suffix:semicolon
 multiline_comment|/*&n; * The PowerBook 3400/2400/3500 can have a combo ethernet/modem&n; * card which includes an ohare chip that acts as a second interrupt&n; * controller.  If we find this second ohare, set it up and fix the&n; * interrupt value in the device tree for the ethernet chip.&n; */
 DECL|function|enable_second_ohare
 r_static
-r_void
+r_int
 id|__init
 id|enable_second_ohare
 c_func
@@ -1359,9 +1354,6 @@ suffix:semicolon
 r_int
 r_int
 id|addr
-suffix:semicolon
-r_int
-id|second_irq
 suffix:semicolon
 r_struct
 id|device_node
@@ -1391,6 +1383,8 @@ op_le
 l_int|0
 )paren
 r_return
+op_minus
+l_int|1
 suffix:semicolon
 id|addr
 op_assign
@@ -1518,38 +1512,6 @@ id|cmd
 suffix:semicolon
 )brace
 )brace
-id|second_irq
-op_assign
-id|irqctrler-&gt;intrs
-(braket
-l_int|0
-)braket
-dot
-id|line
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;irq: secondary controller on irq %d&bslash;n&quot;
-comma
-id|second_irq
-)paren
-suffix:semicolon
-id|request_irq
-c_func
-(paren
-id|second_irq
-comma
-id|gatwick_action
-comma
-id|SA_INTERRUPT
-comma
-l_string|&quot;interrupt cascade&quot;
-comma
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/* Fix interrupt for the modem/ethernet combo controller. The number&n;&t;   in the device tree (27) is bogus (correct for the ethernet-only&n;&t;   board but not the combo ethernet/modem board).&n;&t;   The real interrupt is 28 on the second controller -&gt; 28+32 = 60.&n;&t;*/
 id|ether
 op_assign
@@ -1593,6 +1555,15 @@ id|line
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Return the interrupt number of the cascade */
+r_return
+id|irqctrler-&gt;intrs
+(braket
+l_int|0
+)braket
+dot
+id|line
+suffix:semicolon
 )brace
 r_void
 id|__init
@@ -1616,10 +1587,10 @@ r_int
 id|addr
 suffix:semicolon
 r_int
-id|second_irq
+id|irq_cascade
 op_assign
 op_minus
-l_int|999
+l_int|1
 suffix:semicolon
 multiline_comment|/* We first try to detect Apple&squot;s new Core99 chipset, since mac-io&n;&t; * is quite different on those machines and contains an IBM MPIC2.&n;&t; */
 id|irqctrler
@@ -1749,10 +1720,6 @@ l_int|0
 comma
 id|nmi_irq
 )paren
-suffix:semicolon
-id|pmac_has_openpic
-op_assign
-l_int|1
 suffix:semicolon
 macro_line|#ifdef CONFIG_XMON
 r_if
@@ -1992,6 +1959,34 @@ op_star
 l_int|0x10
 )paren
 suffix:semicolon
+id|irq_cascade
+op_assign
+id|irqctrler-&gt;intrs
+(braket
+l_int|0
+)braket
+dot
+id|line
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|device_is_compatible
+c_func
+(paren
+id|irqctrler
+comma
+l_string|&quot;gatwick&quot;
+)paren
+)paren
+id|pmac_fix_gatwick_interrupts
+c_func
+(paren
+id|irqctrler
+comma
+id|max_real_irqs
+)paren
+suffix:semicolon
 )brace
 )brace
 r_else
@@ -2045,6 +2040,8 @@ c_func
 l_string|&quot;AAPL,3500&quot;
 )paren
 )paren
+id|irq_cascade
+op_assign
 id|enable_second_ohare
 c_func
 (paren
@@ -2085,18 +2082,11 @@ multiline_comment|/* get interrupt line of secondary interrupt controller */
 r_if
 c_cond
 (paren
-id|irqctrler
+id|irq_cascade
+op_ge
+l_int|0
 )paren
 (brace
-id|second_irq
-op_assign
-id|irqctrler-&gt;intrs
-(braket
-l_int|0
-)braket
-dot
-id|line
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2106,26 +2096,7 @@ comma
 (paren
 r_int
 )paren
-id|second_irq
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|device_is_compatible
-c_func
-(paren
-id|irqctrler
-comma
-l_string|&quot;gatwick&quot;
-)paren
-)paren
-id|pmac_fix_gatwick_interrupts
-c_func
-(paren
-id|irqctrler
-comma
-id|max_real_irqs
+id|irq_cascade
 )paren
 suffix:semicolon
 r_for
@@ -2155,13 +2126,13 @@ suffix:semicolon
 id|request_irq
 c_func
 (paren
-id|second_irq
+id|irq_cascade
 comma
 id|gatwick_action
 comma
 id|SA_INTERRUPT
 comma
-l_string|&quot;gatwick cascade&quot;
+l_string|&quot;cascade&quot;
 comma
 l_int|0
 )paren
@@ -2219,8 +2190,9 @@ l_int|2
 )braket
 suffix:semicolon
 r_void
-DECL|function|sleep_save_intrs
-id|sleep_save_intrs
+id|__pmac
+DECL|function|pmac_sleep_save_intrs
+id|pmac_sleep_save_intrs
 c_func
 (paren
 r_int
@@ -2261,6 +2233,13 @@ l_int|1
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|viaint
+OG
+l_int|0
+)paren
 id|set_bit
 c_func
 (paren
@@ -2348,8 +2327,9 @@ id|enable
 suffix:semicolon
 )brace
 r_void
-DECL|function|sleep_restore_intrs
-id|sleep_restore_intrs
+id|__pmac
+DECL|function|pmac_sleep_restore_intrs
+id|pmac_sleep_restore_intrs
 c_func
 (paren
 r_void

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.start.c 1.12 05/21/01 21:39:13 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.start.c 1.16 08/20/01 22:17:58 paulus&n; */
 multiline_comment|/*&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -14,6 +14,7 @@ macro_line|#include &lt;asm/bootx.h&gt;
 macro_line|#include &lt;asm/feature.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
+macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#endif
@@ -50,25 +51,6 @@ comma
 dot
 dot
 dot
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|prom_drawchar
-c_func
-(paren
-r_char
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|prom_drawstring
-c_func
-(paren
-r_const
-r_char
-op_star
-id|str
 )paren
 suffix:semicolon
 r_static
@@ -187,6 +169,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_ALL_PPC
 r_volatile
 r_int
 r_char
@@ -310,7 +293,121 @@ l_int|1
 suffix:semicolon
 macro_line|#endif
 )brace
-id|prom_drawstring
+r_if
+c_cond
+(paren
+op_logical_neg
+id|use_screen
+op_logical_and
+(paren
+id|np
+op_assign
+id|find_devices
+c_func
+(paren
+l_string|&quot;escc&quot;
+)paren
+)paren
+op_ne
+l_int|NULL
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * look for the device node for the serial port&n;&t;&t;&t; * we&squot;re using and see if it says it has a modem&n;&t;&t;&t; */
+r_char
+op_star
+id|name
+op_assign
+id|xmon_use_sccb
+ques
+c_cond
+l_string|&quot;ch-b&quot;
+suffix:colon
+l_string|&quot;ch-a&quot;
+suffix:semicolon
+r_char
+op_star
+id|slots
+suffix:semicolon
+r_int
+id|l
+suffix:semicolon
+id|np
+op_assign
+id|np-&gt;child
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|np
+op_ne
+l_int|NULL
+op_logical_and
+id|strcmp
+c_func
+(paren
+id|np-&gt;name
+comma
+id|name
+)paren
+op_ne
+l_int|0
+)paren
+id|np
+op_assign
+id|np-&gt;sibling
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|np
+op_ne
+l_int|NULL
+)paren
+(brace
+multiline_comment|/* XXX should parse this properly */
+id|slots
+op_assign
+id|get_property
+c_func
+(paren
+id|np
+comma
+l_string|&quot;slot-names&quot;
+comma
+op_amp
+id|l
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|slots
+op_ne
+l_int|NULL
+op_logical_and
+id|l
+op_ge
+l_int|10
+op_logical_and
+id|strcmp
+c_func
+(paren
+id|slots
+op_plus
+l_int|4
+comma
+l_string|&quot;Modem&quot;
+)paren
+op_eq
+l_int|0
+)paren
+id|via_modem
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+)brace
+id|btext_drawstring
 c_func
 (paren
 l_string|&quot;xmon uses &quot;
@@ -321,7 +418,7 @@ c_cond
 (paren
 id|use_screen
 )paren
-id|prom_drawstring
+id|btext_drawstring
 c_func
 (paren
 l_string|&quot;screen and keyboard&bslash;n&quot;
@@ -334,13 +431,13 @@ c_cond
 (paren
 id|via_modem
 )paren
-id|prom_drawstring
+id|btext_drawstring
 c_func
 (paren
 l_string|&quot;modem on &quot;
 )paren
 suffix:semicolon
-id|prom_drawstring
+id|btext_drawstring
 c_func
 (paren
 id|xmon_use_sccb
@@ -351,7 +448,7 @@ suffix:colon
 l_string|&quot;modem&quot;
 )paren
 suffix:semicolon
-id|prom_drawstring
+id|btext_drawstring
 c_func
 (paren
 l_string|&quot; port&bslash;n&quot;
@@ -447,49 +544,6 @@ l_int|0x10
 suffix:semicolon
 )brace
 r_else
-r_if
-c_cond
-(paren
-id|_machine
-op_amp
-id|_MACH_gemini
-)paren
-(brace
-multiline_comment|/* should already be mapped by the kernel boot */
-id|sccc
-op_assign
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
-l_int|0xffeffb0d
-suffix:semicolon
-id|sccd
-op_assign
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
-l_int|0xffeffb08
-suffix:semicolon
-id|TXRDY
-op_assign
-l_int|0x20
-suffix:semicolon
-id|RXRDY
-op_assign
-l_int|1
-suffix:semicolon
-id|console
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-r_else
 (brace
 multiline_comment|/* should already be mapped by the kernel boot */
 id|sccc
@@ -544,6 +598,41 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#elif defined(CONFIG_GEMINI)
+multiline_comment|/* should already be mapped by the kernel boot */
+id|sccc
+op_assign
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+l_int|0xffeffb0d
+suffix:semicolon
+id|sccd
+op_assign
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+l_int|0xffeffb08
+suffix:semicolon
+id|TXRDY
+op_assign
+l_int|0x20
+suffix:semicolon
+id|RXRDY
+op_assign
+l_int|1
+suffix:semicolon
+id|console
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif /* platform */
 )brace
 DECL|variable|scc_initialized
 r_static
@@ -709,7 +798,7 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-id|prom_drawchar
+id|btext_drawchar
 c_func
 (paren
 op_star
@@ -883,7 +972,7 @@ l_int|128
 op_assign
 l_string|&quot;asdfhgzxcv&bslash;000bqwer&quot;
 multiline_comment|/* 0x00 - 0x0f */
-l_string|&quot;yt123465=97-80o]&quot;
+l_string|&quot;yt123465=97-80]o&quot;
 multiline_comment|/* 0x10 - 0x1f */
 l_string|&quot;u[ip&bslash;rlj&squot;k;&bslash;&bslash;,/nm.&quot;
 multiline_comment|/* 0x20 - 0x2f */
@@ -905,7 +994,7 @@ l_int|128
 op_assign
 l_string|&quot;ASDFHGZXCV&bslash;000BQWER&quot;
 multiline_comment|/* 0x00 - 0x0f */
-l_string|&quot;YT!@#$^%+(&amp;=*)}O&quot;
+l_string|&quot;YT!@#$^%+(&amp;_*)}O&quot;
 multiline_comment|/* 0x10 - 0x1f */
 l_string|&quot;U{IP&bslash;rLJ&bslash;&quot;K:|&lt;?NM&gt;&quot;
 multiline_comment|/* 0x20 - 0x2f */
@@ -973,7 +1062,7 @@ l_int|1
 op_minus
 id|on
 suffix:semicolon
-id|prom_drawchar
+id|btext_drawchar
 c_func
 (paren
 id|on
@@ -984,7 +1073,7 @@ suffix:colon
 l_int|0x20
 )paren
 suffix:semicolon
-id|prom_drawchar
+id|btext_drawchar
 c_func
 (paren
 l_char|&squot;&bslash;b&squot;
@@ -1019,7 +1108,7 @@ c_cond
 (paren
 id|on
 )paren
-id|prom_drawstring
+id|btext_drawstring
 c_func
 (paren
 l_string|&quot; &bslash;b&quot;
@@ -2439,11 +2528,20 @@ r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_ADB_PMU
+r_if
+c_cond
+(paren
+id|_machine
+op_eq
+id|_MACH_Pmac
+)paren
+(brace
 id|pmu_suspend
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 )brace
 r_void
@@ -2455,11 +2553,20 @@ r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_ADB_PMU
+r_if
+c_cond
+(paren
+id|_machine
+op_eq
+id|_MACH_Pmac
+)paren
+(brace
 id|pmu_resume
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 )brace
 eof

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
@@ -20,6 +21,11 @@ DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
+multiline_comment|/* /dev/usb dir. */
+r_extern
+id|devfs_handle_t
+id|usb_devfs_handle
+suffix:semicolon
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;v1.0.0&quot;
@@ -214,6 +220,11 @@ op_star
 id|buf
 suffix:semicolon
 multiline_comment|/* buffer for I/O */
+DECL|member|devfs
+id|devfs_handle_t
+id|devfs
+suffix:semicolon
+multiline_comment|/* devfs device */
 multiline_comment|/* always valid */
 DECL|member|wait
 id|wait_queue_head_t
@@ -1122,6 +1133,12 @@ id|direction
 comma
 id|ep
 suffix:semicolon
+r_char
+id|name
+(braket
+l_int|8
+)braket
+suffix:semicolon
 r_struct
 id|camera_state
 op_star
@@ -1464,6 +1481,50 @@ id|usb_inc_dev_use
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* If we have devfs, register the device */
+id|sprintf
+c_func
+(paren
+id|name
+comma
+l_string|&quot;dc2xx%d&quot;
+comma
+id|camera-&gt;subminor
+)paren
+suffix:semicolon
+id|camera-&gt;devfs
+op_assign
+id|devfs_register
+c_func
+(paren
+id|usb_devfs_handle
+comma
+id|name
+comma
+id|DEVFS_FL_DEFAULT
+comma
+id|USB_MAJOR
+comma
+id|USB_CAMERA_MINOR_BASE
+op_plus
+id|camera-&gt;subminor
+comma
+id|S_IFCHR
+op_or
+id|S_IRUSR
+op_or
+id|S_IWUSR
+op_or
+id|S_IRGRP
+op_or
+id|S_IWGRP
+comma
+op_amp
+id|usb_camera_fops
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 r_goto
 id|bye
 suffix:semicolon
@@ -1540,6 +1601,12 @@ id|down
 (paren
 op_amp
 id|camera-&gt;sem
+)paren
+suffix:semicolon
+id|devfs_unregister
+c_func
+(paren
+id|camera-&gt;devfs
 )paren
 suffix:semicolon
 multiline_comment|/* If camera&squot;s not opened, we can clean up right away.&n;&t; * Else apps see a disconnect on next I/O; the release cleans.&n;&t; */

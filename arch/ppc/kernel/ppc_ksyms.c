@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ppc_ksyms.c 1.38 07/23/01 15:35:53 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.ppc_ksyms.c 1.51 08/24/01 17:05:47 paulus&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -45,6 +45,8 @@ macro_line|#include &lt;asm/smplock.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#include &lt;asm/time.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
+macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#ifdef  CONFIG_8xx
 macro_line|#include &quot;../8xx_io/commproc.h&quot;
 macro_line|#endif
@@ -194,6 +196,16 @@ r_extern
 r_int
 r_int
 id|ret_to_user_hook
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|mm_ptov
+(paren
+r_int
+r_int
+id|paddr
+)paren
 suffix:semicolon
 DECL|variable|clear_page
 id|EXPORT_SYMBOL
@@ -637,18 +649,18 @@ c_func
 id|iounmap
 )paren
 suffix:semicolon
-DECL|variable|ide_insw
+DECL|variable|iopa
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|ide_insw
+id|iopa
 )paren
 suffix:semicolon
-DECL|variable|ide_outsw
+DECL|variable|mm_ptov
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|ide_outsw
+id|mm_ptov
 )paren
 suffix:semicolon
 DECL|variable|ppc_ide_md
@@ -658,36 +670,6 @@ c_func
 id|ppc_ide_md
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE_MODULE
-DECL|variable|chrp_ide_irq
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|chrp_ide_irq
-)paren
-suffix:semicolon
-DECL|variable|chrp_ide_ports_known
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|chrp_ide_ports_known
-)paren
-suffix:semicolon
-DECL|variable|chrp_ide_regbase
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|chrp_ide_regbase
-)paren
-suffix:semicolon
-DECL|variable|chrp_ide_probe
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|chrp_ide_probe
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
 DECL|variable|isa_io_base
 id|EXPORT_SYMBOL_NOVERS
@@ -748,13 +730,6 @@ c_func
 id|flush_instruction_cache
 )paren
 suffix:semicolon
-DECL|variable|_get_PVR
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|_get_PVR
-)paren
-suffix:semicolon
 DECL|variable|giveup_fpu
 id|EXPORT_SYMBOL
 c_func
@@ -774,6 +749,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|flush_icache_range
+)paren
+suffix:semicolon
+DECL|variable|flush_dcache_range
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_dcache_range
 )paren
 suffix:semicolon
 DECL|variable|xchg_u32
@@ -849,6 +831,7 @@ c_func
 id|__global_restore_flags
 )paren
 suffix:semicolon
+macro_line|#ifdef SPINLOCK_DEBUG
 DECL|variable|_spin_lock
 id|EXPORT_SYMBOL
 c_func
@@ -898,6 +881,7 @@ c_func
 id|_write_unlock
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|smp_call_function
 id|EXPORT_SYMBOL
 c_func
@@ -987,59 +971,6 @@ id|cuda_poll
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_ADB_CUDA */
-macro_line|#ifdef CONFIG_ADB_PMU
-DECL|variable|pmu_request
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pmu_request
-)paren
-suffix:semicolon
-DECL|variable|pmu_poll
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pmu_poll
-)paren
-suffix:semicolon
-DECL|variable|pmu_suspend
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pmu_suspend
-)paren
-suffix:semicolon
-DECL|variable|pmu_resume
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pmu_resume
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_ADB_PMU */
-macro_line|#ifdef CONFIG_PMAC_PBOOK
-DECL|variable|pmu_register_sleep_notifier
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pmu_register_sleep_notifier
-)paren
-suffix:semicolon
-DECL|variable|pmu_unregister_sleep_notifier
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pmu_unregister_sleep_notifier
-)paren
-suffix:semicolon
-DECL|variable|pmu_enable_irled
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pmu_enable_irled
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PMAC_PBOOK */
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
 DECL|variable|get_backlight_level
 id|EXPORT_SYMBOL
@@ -1076,13 +1007,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|_machine
-)paren
-suffix:semicolon
-DECL|variable|have_of
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|have_of
 )paren
 suffix:semicolon
 DECL|variable|sys_ctrler
@@ -1274,6 +1198,13 @@ c_func
 id|feature_set_firewire_cable_power
 )paren
 suffix:semicolon
+DECL|variable|feature_set_modem_power
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|feature_set_modem_power
+)paren
+suffix:semicolon
 DECL|variable|feature_set_airport_power
 id|EXPORT_SYMBOL
 c_func
@@ -1283,11 +1214,11 @@ id|feature_set_airport_power
 suffix:semicolon
 macro_line|#endif /* defined(CONFIG_ALL_PPC) */
 macro_line|#if defined(CONFIG_BOOTX_TEXT)
-DECL|variable|bootx_update_display
+DECL|variable|btext_update_display
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|bootx_update_display
+id|btext_update_display
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1409,7 +1340,7 @@ c_func
 id|abs
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_VT
+macro_line|#ifdef CONFIG_VGA_CONSOLE
 DECL|variable|screen_info
 id|EXPORT_SYMBOL
 c_func
@@ -1798,6 +1729,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ret_from_intercept
+)paren
+suffix:semicolon
+DECL|variable|cur_cpu_spec
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cur_cpu_spec
 )paren
 suffix:semicolon
 eof

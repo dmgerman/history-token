@@ -1,23 +1,22 @@
 multiline_comment|/*&n; * super.c&n; *&n; * Copyright (C) 1995-1997, 1999 Martin von L&#xfffd;wis&n; * Copyright (C) 1996-1997 R&#xfffd;gis Duchesne&n; * Copyright (C) 1999 Steve Dodd&n; * Copyright (C) 2000-2001 Anton Altparmakov (AIA)&n; */
+macro_line|#include &lt;linux/ntfs_fs.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;ntfstypes.h&quot;
 macro_line|#include &quot;struct.h&quot;
 macro_line|#include &quot;super.h&quot;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &quot;macros.h&quot;
 macro_line|#include &quot;inode.h&quot;
 macro_line|#include &quot;support.h&quot;
 macro_line|#include &quot;util.h&quot;
-multiline_comment|/* All important structures in NTFS use 2 consistency checks:&n; * . a magic structure identifier (FILE, INDX, RSTR, RCRD...)&n; * . a fixup technique : the last word of each sector (called a fixup) of a&n; *   structure&squot;s record should end with the word at offset &lt;n&gt; of the first&n; *   sector, and if it is the case, must be replaced with the words following&n; *   &lt;n&gt;. The value of &lt;n&gt; and the number of fixups is taken from the fields&n; *   at the offsets 4 and 6.&n; *&n; * This function perform these 2 checks, and _fails_ if :&n; * . the magic identifier is wrong&n; * . the size is given and does not match the number of sectors&n; * . a fixup is invalid&n; */
+macro_line|#include &lt;linux/smp_lock.h&gt;
+multiline_comment|/* All important structures in NTFS use 2 consistency checks:&n; * . a magic structure identifier (FILE, INDX, RSTR, RCRD...)&n; * . a fixup technique : the last word of each sector (called a fixup) of a&n; *   structure&squot;s record should end with the word at offset &lt;n&gt; of the first&n; *   sector, and if it is the case, must be replaced with the words following&n; *   &lt;n&gt;. The value of &lt;n&gt; and the number of fixups is taken from the fields&n; *   at the offsets 4 and 6. Note that the sector size is defined as&n; *   NTFS_SECTOR_SIZE and not as the hardware sector size (this is concordant&n; *   with what the Windows NTFS driver does).&n; *&n; * This function perform these 2 checks, and _fails_ if:&n; * . the input size is invalid&n; * . the fixup header is invalid&n; * . the size does not match the number of sectors&n; * . the magic identifier is wrong&n; * . a fixup is invalid&n; */
 DECL|function|ntfs_fixup_record
 r_int
 id|ntfs_fixup_record
 c_func
 (paren
-id|ntfs_volume
-op_star
-id|vol
-comma
 r_char
 op_star
 id|record
@@ -74,22 +73,55 @@ id|record
 op_plus
 l_int|6
 )paren
-suffix:semicolon
-id|count
-op_decrement
+op_minus
+l_int|1
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|size
-op_logical_and
-id|vol-&gt;sector_size
-op_star
+op_amp
+(paren
+id|NTFS_SECTOR_SIZE
+op_minus
+l_int|1
+)paren
+op_logical_or
+id|start
+op_amp
+l_int|1
+op_logical_or
+id|start
+op_plus
 id|count
-op_ne
+op_star
+l_int|2
+OG
 id|size
+op_logical_or
+id|size
+op_rshift
+l_int|9
+op_ne
+id|count
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|size
+op_le
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;NTFS: BUG: ntfs_fixup_record() got &quot;
+l_string|&quot;zero size! Please report this to &quot;
+l_string|&quot;linux-ntfs-dev@lists.sf.net&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -110,7 +142,7 @@ l_int|2
 suffix:semicolon
 id|offset
 op_assign
-id|vol-&gt;sector_size
+id|NTFS_SECTOR_SIZE
 op_minus
 l_int|2
 suffix:semicolon
@@ -159,7 +191,7 @@ l_int|2
 suffix:semicolon
 id|offset
 op_add_assign
-id|vol-&gt;sector_size
+id|NTFS_SECTOR_SIZE
 suffix:semicolon
 )brace
 r_return
@@ -184,7 +216,10 @@ id|boot
 r_int
 id|sectors_per_cluster_bits
 suffix:semicolon
-multiline_comment|/* Historical default values, in case we don&squot;t load $AttrDef. */
+id|__s64
+id|ll
+suffix:semicolon
+multiline_comment|/* System defined default values, in case we don&squot;t load $AttrDef. */
 id|vol-&gt;at_standard_information
 op_assign
 l_int|0x10
@@ -233,7 +268,7 @@ id|vol-&gt;at_symlink
 op_assign
 l_int|0xC0
 suffix:semicolon
-multiline_comment|/* Sector size */
+multiline_comment|/* Sector size. */
 id|vol-&gt;sector_size
 op_assign
 id|NTFS_GETU16
@@ -501,36 +536,23 @@ comma
 id|vol-&gt;index_record_size_bits
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Check mft and mftmirr locations for 64-bit-ness. NOTE: This is a&n;&t; * crude check only as many other things could be out of bounds later&n;&t; * on, but it will catch at least some of the cases, since the mftmirr&n;&t; * is located in the middle of the volume so if the volume is very&n;&t; * large the mftmirr probably will be out of 32-bit bounds.&n;&t; */
-id|vol-&gt;mft_lcn
+multiline_comment|/*&n;&t; * Get the size of the volume in clusters (ofs 0x28 is nr_sectors) and&n;&t; * check for 64-bit-ness. Windows currently only uses 32 bits to save&n;&t; * the clusters so we do the same as it is much faster on 32-bit CPUs.&n;&t; */
+id|ll
 op_assign
 id|NTFS_GETS64
 c_func
 (paren
 id|boot
 op_plus
-l_int|0x30
+l_int|0x28
 )paren
+op_rshift
+id|sectors_per_cluster_bits
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|vol-&gt;mft_lcn
-op_ge
-(paren
-id|__s64
-)paren
-l_int|1
-op_lshift
-l_int|31
-op_logical_or
-id|NTFS_GETS64
-c_func
-(paren
-id|boot
-op_plus
-l_int|0x38
-)paren
+id|ll
 op_ge
 (paren
 id|__s64
@@ -543,7 +565,9 @@ l_int|31
 id|ntfs_error
 c_func
 (paren
-l_string|&quot;Cannot handle 64-bit clusters yet.&bslash;n&quot;
+l_string|&quot;Cannot handle 64-bit clusters. Please inform &quot;
+l_string|&quot;linux-ntfs-dev@lists.sf.net that you got this &quot;
+l_string|&quot;error.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -551,6 +575,122 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+id|vol-&gt;nr_clusters
+op_assign
+(paren
+id|ntfs_cluster_t
+)paren
+id|ll
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+id|DEBUG_FILE3
+comma
+l_string|&quot;ntfs_init_volume: vol-&gt;nr_clusters = 0x%x&bslash;n&quot;
+comma
+id|vol-&gt;nr_clusters
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Determine MFT zone size. FIXME: Need to take into consideration&n;&t; * where the mft zone starts (at vol-&gt;mft_lcn) as vol-&gt;mft_zone_end&n;&t; * needs to be relative to that.&n;&t; */
+id|vol-&gt;mft_zone_end
+op_assign
+id|vol-&gt;nr_clusters
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|vol-&gt;mft_zone_multiplier
+)paren
+(brace
+multiline_comment|/* % of volume size in clusters */
+r_case
+l_int|4
+suffix:colon
+id|vol-&gt;mft_zone_end
+op_assign
+id|vol-&gt;mft_zone_end
+op_rshift
+l_int|1
+suffix:semicolon
+multiline_comment|/* 50%   */
+r_break
+suffix:semicolon
+r_case
+l_int|3
+suffix:colon
+id|vol-&gt;mft_zone_end
+op_assign
+id|vol-&gt;mft_zone_end
+op_star
+l_int|3
+op_rshift
+l_int|3
+suffix:semicolon
+multiline_comment|/* 37.5% */
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+id|vol-&gt;mft_zone_end
+op_assign
+id|vol-&gt;mft_zone_end
+op_rshift
+l_int|2
+suffix:semicolon
+multiline_comment|/* 25%   */
+r_break
+suffix:semicolon
+multiline_comment|/* case 1: */
+r_default
+suffix:colon
+id|vol-&gt;mft_zone_end
+op_assign
+id|vol-&gt;mft_zone_end
+op_rshift
+l_int|3
+suffix:semicolon
+multiline_comment|/* 12.5% */
+r_break
+suffix:semicolon
+)brace
+id|ntfs_debug
+c_func
+(paren
+id|DEBUG_FILE3
+comma
+l_string|&quot;ntfs_init_volume: vol-&gt;mft_zone_end = %x&bslash;n&quot;
+comma
+id|vol-&gt;mft_zone_end
+)paren
+suffix:semicolon
+id|vol-&gt;mft_lcn
+op_assign
+(paren
+id|ntfs_cluster_t
+)paren
+id|NTFS_GETS64
+c_func
+(paren
+id|boot
+op_plus
+l_int|0x30
+)paren
+suffix:semicolon
+id|vol-&gt;mft_mirr_lcn
+op_assign
+(paren
+id|ntfs_cluster_t
+)paren
+id|NTFS_GETS64
+c_func
+(paren
+id|boot
+op_plus
+l_int|0x38
+)paren
+suffix:semicolon
 multiline_comment|/* This will be initialized later. */
 id|vol-&gt;upcase
 op_assign
@@ -2446,9 +2586,9 @@ r_return
 id|clusters
 suffix:semicolon
 )brace
-multiline_comment|/* Insert the fixups for the record. The number and location of the fixes&n; * is obtained from the record header */
+multiline_comment|/*&n; * Insert the fixups for the record. The number and location of the fixes&n; * is obtained from the record header but we double check with @rec_size and&n; * use that as the upper boundary, if necessary overwriting the count value in&n; * the record header.&n; *&n; * We return 0 on success or -1 if fixup header indicated the beginning of the&n; * update sequence array to be beyond the valid limit.&n; */
 DECL|function|ntfs_insert_fixups
-r_void
+r_int
 id|ntfs_insert_fixups
 c_func
 (paren
@@ -2458,10 +2598,24 @@ op_star
 id|rec
 comma
 r_int
-id|secsize
+id|rec_size
 )paren
 (brace
 r_int
+id|first
+suffix:semicolon
+r_int
+id|count
+suffix:semicolon
+r_int
+id|offset
+op_assign
+op_minus
+l_int|2
+suffix:semicolon
+id|ntfs_u16
+id|fix
+suffix:semicolon
 id|first
 op_assign
 id|NTFS_GETU16
@@ -2472,9 +2626,49 @@ op_plus
 l_int|4
 )paren
 suffix:semicolon
-r_int
 id|count
 op_assign
+(paren
+id|rec_size
+op_rshift
+id|NTFS_SECTOR_BITS
+)paren
+op_plus
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|first
+op_plus
+id|count
+op_star
+l_int|2
+OG
+id|NTFS_SECTOR_SIZE
+op_minus
+l_int|2
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;NTFS: ntfs_insert_fixups() detected corrupt &quot;
+l_string|&quot;NTFS record update sequence array position. - &quot;
+l_string|&quot;Cannot hotfix.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|count
+op_ne
 id|NTFS_GETU16
 c_func
 (paren
@@ -2482,16 +2676,31 @@ id|rec
 op_plus
 l_int|6
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;NTFS: ntfs_insert_fixups() detected corrupt &quot;
+l_string|&quot;NTFS record update sequence array size. - &quot;
+l_string|&quot;Applying hotfix.&bslash;n&quot;
+)paren
 suffix:semicolon
-r_int
-id|offset
-op_assign
-op_minus
-l_int|2
+id|NTFS_PUTU16
+c_func
+(paren
+id|rec
+op_plus
+l_int|6
+comma
+id|count
+)paren
 suffix:semicolon
-id|ntfs_u16
+)brace
 id|fix
 op_assign
+(paren
 id|NTFS_GETU16
 c_func
 (paren
@@ -2499,9 +2708,11 @@ id|rec
 op_plus
 id|first
 )paren
-suffix:semicolon
-id|fix
-op_increment
+op_plus
+l_int|1
+)paren
+op_amp
+l_int|0xffff
 suffix:semicolon
 r_if
 c_cond
@@ -2543,7 +2754,7 @@ l_int|2
 suffix:semicolon
 id|offset
 op_add_assign
-id|secsize
+id|NTFS_SECTOR_SIZE
 suffix:semicolon
 id|NTFS_PUTU16
 c_func
@@ -2572,6 +2783,8 @@ id|fix
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Search the bitmap bits of l bytes for *cnt zero bits. Return the bit number&n; * in *loc, which is initially set to the number of the first bit. Return the&n; * largest block found in *cnt. Return 0 on success, -ENOSPC if all bits are&n; * used. */
@@ -2633,7 +2846,7 @@ id|in
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* special case searching for a single block */
+multiline_comment|/* Special case searching for a single block. */
 r_if
 c_cond
 (paren
@@ -2768,7 +2981,7 @@ op_increment
 suffix:semicolon
 r_else
 (brace
-multiline_comment|/* end of sequence of zeroes */
+multiline_comment|/* End of sequence of zeroes. */
 id|in
 op_assign
 l_int|0
@@ -2835,7 +3048,7 @@ op_increment
 suffix:semicolon
 r_else
 (brace
-multiline_comment|/*start of sequence*/
+multiline_comment|/* Start of sequence. */
 id|in
 op_assign
 l_int|1
@@ -2985,7 +3198,7 @@ l_int|7
 op_rshift
 l_int|3
 suffix:semicolon
-multiline_comment|/* round up to multiple of 8*/
+multiline_comment|/* Round up to multiple of 8. */
 id|bits
 op_assign
 id|ntfs_malloc
@@ -3076,7 +3289,7 @@ op_logical_and
 id|cnt
 )paren
 (brace
-multiline_comment|/* process first byte */
+multiline_comment|/* Process first byte. */
 r_if
 c_cond
 (paren
@@ -3135,7 +3348,7 @@ OG
 l_int|8
 )paren
 (brace
-multiline_comment|/*process full bytes */
+multiline_comment|/* Process full bytes. */
 op_star
 id|it
 op_assign
@@ -3164,7 +3377,7 @@ c_loop
 id|cnt
 )paren
 (brace
-multiline_comment|/*process last byte */
+multiline_comment|/* Process last byte. */
 r_if
 c_cond
 (paren
@@ -3203,7 +3416,7 @@ id|locit
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/* reset to start */
+multiline_comment|/* Reset to start. */
 id|io.param
 op_assign
 id|bits

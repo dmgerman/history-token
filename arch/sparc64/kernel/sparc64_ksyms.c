@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sparc64_ksyms.c,v 1.108 2001/06/05 03:39:50 davem Exp $&n; * arch/sparc64/kernel/sparc64_ksyms.c: Sparc64 specific ksyms support.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: sparc64_ksyms.c,v 1.110 2001/08/18 08:08:13 davem Exp $&n; * arch/sparc64/kernel/sparc64_ksyms.c: Sparc64 specific ksyms support.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
 multiline_comment|/* Tell string.h we don&squot;t want memcpy etc. as cpp defines */
 DECL|macro|EXPORT_SYMTAB_STROPS
 mdefine_line|#define EXPORT_SYMTAB_STROPS
@@ -815,6 +815,7 @@ c_func
 id|__atomic_sub
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 DECL|variable|atomic_dec_and_lock
 id|EXPORT_SYMBOL
 c_func
@@ -822,6 +823,7 @@ c_func
 id|atomic_dec_and_lock
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Atomic bit operations. */
 DECL|variable|___test_and_set_bit
 id|EXPORT_SYMBOL

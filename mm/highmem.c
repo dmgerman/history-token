@@ -1136,7 +1136,7 @@ op_assign
 id|alloc_page
 c_func
 (paren
-id|GFP_NOIO
+id|GFP_NOHIGHIO
 )paren
 suffix:semicolon
 r_if
@@ -1270,7 +1270,7 @@ c_func
 (paren
 id|bh_cachep
 comma
-id|SLAB_NOIO
+id|SLAB_NOHIGHIO
 )paren
 suffix:semicolon
 r_if

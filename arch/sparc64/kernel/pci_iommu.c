@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_iommu.c,v 1.14 2001/05/23 03:06:51 davem Exp $&n; * pci_iommu.c: UltraSparc PCI controller IOM/STC support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1999, 2000 Jakub Jelinek (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: pci_iommu.c,v 1.15 2001/08/24 19:36:58 kanoj Exp $&n; * pci_iommu.c: UltraSparc PCI controller IOM/STC support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1999, 2000 Jakub Jelinek (jakub@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -451,7 +451,7 @@ op_lshift
 (paren
 l_int|32
 op_minus
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 op_plus
 id|PBM_LOGCLUSTERS
 op_minus
@@ -698,7 +698,7 @@ id|npages
 suffix:semicolon
 id|size
 op_assign
-id|PAGE_ALIGN
+id|IO_PAGE_ALIGN
 c_func
 (paren
 id|size
@@ -784,7 +784,7 @@ id|iommu
 comma
 id|size
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 r_if
@@ -829,7 +829,7 @@ op_minus
 id|iommu-&gt;page_table
 )paren
 op_lshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 )paren
 suffix:semicolon
@@ -845,7 +845,7 @@ id|npages
 op_assign
 id|size
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 suffix:semicolon
 id|ctx
 op_assign
@@ -904,7 +904,7 @@ op_increment
 suffix:semicolon
 id|first_page
 op_add_assign
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 suffix:semicolon
 )brace
 (brace
@@ -921,7 +921,7 @@ id|npages
 op_assign
 id|size
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 suffix:semicolon
 r_for
 c_loop
@@ -948,7 +948,7 @@ id|daddr
 suffix:semicolon
 id|daddr
 op_add_assign
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 suffix:semicolon
 )brace
 )brace
@@ -1015,13 +1015,13 @@ id|ctx
 suffix:semicolon
 id|npages
 op_assign
-id|PAGE_ALIGN
+id|IO_PAGE_ALIGN
 c_func
 (paren
 id|size
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 suffix:semicolon
 id|pcp
 op_assign
@@ -1042,7 +1042,7 @@ op_minus
 id|iommu-&gt;page_table_map_base
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -1220,7 +1220,7 @@ op_plus
 (paren
 id|i
 op_lshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 id|pci_iommu_write
@@ -1371,7 +1371,7 @@ id|ptr
 suffix:semicolon
 id|npages
 op_assign
-id|PAGE_ALIGN
+id|IO_PAGE_ALIGN
 c_func
 (paren
 id|oaddr
@@ -1382,12 +1382,12 @@ op_minus
 (paren
 id|oaddr
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 )paren
 suffix:semicolon
 id|npages
 op_rshift_assign
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -1430,7 +1430,7 @@ op_minus
 id|iommu-&gt;page_table
 )paren
 op_lshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 )paren
 suffix:semicolon
@@ -1442,7 +1442,7 @@ op_or
 id|oaddr
 op_amp
 op_complement
-id|PAGE_MASK
+id|IO_PAGE_MASK
 )paren
 suffix:semicolon
 id|base_paddr
@@ -1452,7 +1452,7 @@ c_func
 (paren
 id|oaddr
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 )paren
 suffix:semicolon
 id|ctx
@@ -1521,7 +1521,7 @@ op_increment
 comma
 id|base_paddr
 op_add_assign
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 )paren
 id|iopte_val
 c_func
@@ -1643,7 +1643,7 @@ id|pcp-&gt;pbm-&gt;stc
 suffix:semicolon
 id|npages
 op_assign
-id|PAGE_ALIGN
+id|IO_PAGE_ALIGN
 c_func
 (paren
 id|bus_addr
@@ -1654,12 +1654,12 @@ op_minus
 (paren
 id|bus_addr
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 )paren
 suffix:semicolon
 id|npages
 op_rshift_assign
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 suffix:semicolon
 id|base
 op_assign
@@ -1672,7 +1672,7 @@ op_minus
 id|iommu-&gt;page_table_map_base
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_PCI_IOMMU
@@ -1707,7 +1707,7 @@ suffix:semicolon
 macro_line|#endif
 id|bus_addr
 op_and_assign
-id|PAGE_MASK
+id|IO_PAGE_MASK
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -1838,7 +1838,7 @@ op_increment
 comma
 id|vaddr
 op_add_assign
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 )paren
 id|pci_iommu_write
 c_func
@@ -1983,7 +1983,7 @@ op_assign
 id|dma_sg-&gt;dvma_address
 op_amp
 (paren
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 op_minus
 l_int|1UL
 )paren
@@ -1996,14 +1996,14 @@ op_plus
 id|u32
 )paren
 (paren
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 op_minus
 l_int|1UL
 )paren
 )paren
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 suffix:semicolon
 r_do
 (brace
@@ -2053,7 +2053,7 @@ op_xor
 id|pteval
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 op_ne
 l_int|0UL
@@ -2063,14 +2063,14 @@ id|pteval
 op_assign
 id|tmp
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 suffix:semicolon
 id|offset
 op_assign
 id|tmp
 op_amp
 (paren
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 op_minus
 l_int|1UL
 )paren
@@ -2094,7 +2094,7 @@ l_int|1UL
 )paren
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 op_ne
 l_int|0UL
@@ -2105,10 +2105,10 @@ op_assign
 (paren
 id|tmp
 op_plus
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 )paren
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 suffix:semicolon
 id|offset
 op_assign
@@ -2117,13 +2117,13 @@ suffix:semicolon
 id|len
 op_sub_assign
 (paren
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 op_minus
 (paren
 id|tmp
 op_amp
 (paren
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 op_minus
 l_int|1UL
 )paren
@@ -2167,12 +2167,12 @@ id|pteval
 suffix:semicolon
 id|pteval
 op_add_assign
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 suffix:semicolon
 id|len
 op_sub_assign
 (paren
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 op_minus
 id|offset
 )paren
@@ -2208,7 +2208,7 @@ op_lshift
 (paren
 l_int|64
 op_minus
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 )paren
 op_ne
@@ -2239,7 +2239,7 @@ l_int|1UL
 )paren
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 op_eq
 l_int|0UL
@@ -2262,7 +2262,7 @@ op_lshift
 (paren
 l_int|64
 op_minus
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 )paren
 op_eq
@@ -2458,7 +2458,7 @@ op_minus
 id|iommu-&gt;page_table
 )paren
 op_lshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 multiline_comment|/* Step 3: Normalize DMA addresses. */
@@ -2685,7 +2685,7 @@ id|bus_addr
 op_assign
 id|sglist-&gt;dvma_address
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 suffix:semicolon
 r_for
 c_loop
@@ -2721,7 +2721,7 @@ suffix:semicolon
 id|npages
 op_assign
 (paren
-id|PAGE_ALIGN
+id|IO_PAGE_ALIGN
 c_func
 (paren
 id|sglist
@@ -2742,7 +2742,7 @@ op_minus
 id|bus_addr
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 suffix:semicolon
 id|base
 op_assign
@@ -2755,7 +2755,7 @@ op_minus
 id|iommu-&gt;page_table_map_base
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_PCI_IOMMU
@@ -2917,7 +2917,7 @@ op_increment
 comma
 id|vaddr
 op_add_assign
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 )paren
 id|pci_iommu_write
 c_func
@@ -3072,7 +3072,7 @@ id|flags
 suffix:semicolon
 id|npages
 op_assign
-id|PAGE_ALIGN
+id|IO_PAGE_ALIGN
 c_func
 (paren
 id|bus_addr
@@ -3083,16 +3083,16 @@ op_minus
 (paren
 id|bus_addr
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 )paren
 suffix:semicolon
 id|npages
 op_rshift_assign
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 suffix:semicolon
 id|bus_addr
 op_and_assign
-id|PAGE_MASK
+id|IO_PAGE_MASK
 suffix:semicolon
 multiline_comment|/* Step 1: Record the context, if any. */
 id|ctx
@@ -3122,7 +3122,7 @@ op_minus
 id|iommu-&gt;page_table_map_base
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 id|ctx
@@ -3229,7 +3229,7 @@ op_increment
 comma
 id|bus_addr
 op_add_assign
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 )paren
 id|pci_iommu_write
 c_func
@@ -3391,7 +3391,7 @@ op_minus
 id|iommu-&gt;page_table_map_base
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 id|ctx
@@ -3494,7 +3494,7 @@ l_int|0
 dot
 id|dvma_address
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 suffix:semicolon
 r_for
 c_loop
@@ -3529,7 +3529,7 @@ suffix:semicolon
 id|npages
 op_assign
 (paren
-id|PAGE_ALIGN
+id|IO_PAGE_ALIGN
 c_func
 (paren
 id|sglist
@@ -3550,7 +3550,7 @@ op_minus
 id|bus_addr
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 suffix:semicolon
 r_for
 c_loop
@@ -3568,7 +3568,7 @@ op_increment
 comma
 id|bus_addr
 op_add_assign
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 )paren
 id|pci_iommu_write
 c_func

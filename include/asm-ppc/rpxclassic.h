@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.rpxclassic.h 1.8 05/17/01 18:14:25 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.rpxclassic.h 1.11 08/17/01 15:23:17 paulus&n; */
 multiline_comment|/*&n; * A collection of structures, addresses, and values associated with&n; * the RPCG RPX-Classic board.  Copied from the RPX-Lite stuff.&n; *&n; * Copyright (c) 1998 Dan Malek (dmalek@jlc.net)&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __MACH_RPX_DEFS
@@ -151,9 +151,6 @@ macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* We don&squot;t use the 8259.&n;*/
 DECL|macro|NR_8259_INTS
 mdefine_line|#define NR_8259_INTS&t;0
-multiline_comment|/* Machine type&n;*/
-DECL|macro|_MACH_8xx
-mdefine_line|#define _MACH_8xx (_MACH_classic)
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 eof

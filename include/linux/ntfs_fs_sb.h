@@ -1,11 +1,7 @@
 macro_line|#ifndef _LINUX_NTFS_FS_SB_H
 DECL|macro|_LINUX_NTFS_FS_SB_H
 mdefine_line|#define _LINUX_NTFS_FS_SB_H
-DECL|typedef|LCN
-r_typedef
-id|__s64
-id|LCN
-suffix:semicolon
+macro_line|#include &lt;linux/ntfs_fs_i.h&gt;
 DECL|struct|ntfs_sb_info
 r_struct
 id|ntfs_sb_info
@@ -32,6 +28,14 @@ DECL|member|ngt
 r_int
 r_int
 id|ngt
+suffix:semicolon
+DECL|member|mft_zone_multiplier
+r_char
+id|mft_zone_multiplier
+suffix:semicolon
+DECL|member|mft_zone_end
+id|ntfs_cluster_t
+id|mft_zone_end
 suffix:semicolon
 multiline_comment|/* Configuration provided by user with the ntfstools.&n;&t; * FIXME: This is no longer possible. What is this good for? (AIA) */
 DECL|member|partition_bias
@@ -126,9 +130,17 @@ DECL|member|index_record_size_bits
 r_int
 id|index_record_size_bits
 suffix:semicolon
+DECL|member|nr_clusters
+id|ntfs_cluster_t
+id|nr_clusters
+suffix:semicolon
 DECL|member|mft_lcn
-id|LCN
+id|ntfs_cluster_t
 id|mft_lcn
+suffix:semicolon
+DECL|member|mft_mirr_lcn
+id|ntfs_cluster_t
+id|mft_mirr_lcn
 suffix:semicolon
 multiline_comment|/* Data read from special files. */
 DECL|member|mft

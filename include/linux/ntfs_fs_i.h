@@ -1,6 +1,7 @@
 macro_line|#ifndef _LINUX_NTFS_FS_I_H
 DECL|macro|_LINUX_NTFS_FS_I_H
 mdefine_line|#define _LINUX_NTFS_FS_I_H
+macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/* Forward declarations, to keep number of mutual includes low */
 r_struct
 id|ntfs_attribute

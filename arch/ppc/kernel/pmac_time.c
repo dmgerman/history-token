@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pmac_time.c 1.11 07/06/01 15:46:39 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pmac_time.c 1.14 08/19/01 22:23:04 paulus&n; */
 multiline_comment|/*&n; * Support for periodic interrupts (100 per second) and for getting&n; * the current time from the RTC on Power Macintoshes.&n; *&n; * We use the decrementer register for our periodic interrupts.&n; *&n; * Paul Mackerras&t;August 1996.&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -1036,6 +1036,17 @@ id|time_sleep_notifier
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PMAC_PBOOK */
+multiline_comment|/* We assume MacRISC2 machines have correct device-tree&n;&t; * calibration. That&squot;s better since the VIA itself seems&n;&t; * to be slightly off. --BenH&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;MacRISC2&quot;
+)paren
+)paren
 r_if
 c_cond
 (paren

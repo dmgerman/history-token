@@ -13,18 +13,6 @@ macro_line|#ifndef FALSE
 DECL|macro|FALSE
 mdefine_line|#define FALSE&t;&t;(0)
 macro_line|#endif
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;(((a)&lt;(b))?(a):(b))
-macro_line|#endif
-macro_line|#ifndef MAX
-DECL|macro|MAX
-mdefine_line|#define MAX(a,b)&t;(((a)&gt;(b))?(a):(b))
-macro_line|#endif
-macro_line|#ifndef max
-DECL|macro|max
-mdefine_line|#define max&t;&t;MAX
-macro_line|#endif
 macro_line|#ifndef LOW8
 DECL|macro|LOW8
 mdefine_line|#define LOW8(a)&t;&t;((unsigned char)(a &amp; 0xff))

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.processor.h 1.24 06/15/01 13:56:56 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.processor.h 1.28 08/17/01 15:23:17 paulus&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_PPC_PROCESSOR_H
 DECL|macro|__ASM_PPC_PROCESSOR_H
@@ -863,43 +863,13 @@ DECL|macro|PVR_8240
 mdefine_line|#define&t;PVR_8240&t;0x00810100
 DECL|macro|PVR_8260
 mdefine_line|#define&t;PVR_8260&t;PVR_8240
-multiline_comment|/* I am just adding a single entry for 8260 boards.  I think we may be&n; * able to combine mbx, fads, rpxlite, bseip, and classic into a single&n; * generic 8xx as well.  The boards containing these processors are either&n; * identical at the processor level (due to the high integration) or so&n; * wildly different that testing _machine at run time is best replaced by&n; * conditional compilation by board type (found in their respective .h file).&n; *&t;-- Dan&n; */
+multiline_comment|/* We only need to define a new _MACH_xxx for machines which are part of&n; * a configuration which supports more than one type of different machine.&n; * This is currently limited to CONFIG_ALL_PPC and CHRP/PReP/PMac. -- Tom&n; */
 DECL|macro|_MACH_prep
 mdefine_line|#define _MACH_prep&t;0x00000001
 DECL|macro|_MACH_Pmac
 mdefine_line|#define _MACH_Pmac&t;0x00000002&t;/* pmac or pmac clone (non-chrp) */
 DECL|macro|_MACH_chrp
 mdefine_line|#define _MACH_chrp&t;0x00000004&t;/* chrp machine */
-DECL|macro|_MACH_mbx
-mdefine_line|#define _MACH_mbx&t;0x00000008&t;/* Motorola MBX board */
-DECL|macro|_MACH_apus
-mdefine_line|#define _MACH_apus&t;0x00000010&t;/* amiga with phase5 powerup */
-DECL|macro|_MACH_fads
-mdefine_line|#define _MACH_fads&t;0x00000020&t;/* Motorola FADS board */
-DECL|macro|_MACH_rpxlite
-mdefine_line|#define _MACH_rpxlite&t;0x00000040&t;/* RPCG RPX-Lite 8xx board */
-DECL|macro|_MACH_bseip
-mdefine_line|#define _MACH_bseip&t;0x00000080&t;/* Bright Star Engineering ip-Engine */
-DECL|macro|_MACH_unused0
-mdefine_line|#define _MACH_unused0&t;0x00000100&t;/* Now free to be used */
-DECL|macro|_MACH_gemini
-mdefine_line|#define _MACH_gemini&t;0x00000200      /* Synergy Microsystems gemini board */
-DECL|macro|_MACH_classic
-mdefine_line|#define _MACH_classic&t;0x00000400&t;/* RPCG RPX-Classic 8xx board */
-DECL|macro|_MACH_oak
-mdefine_line|#define _MACH_oak&t;0x00000800&t;/* IBM &quot;Oak&quot; 403 eval. board */
-DECL|macro|_MACH_walnut
-mdefine_line|#define _MACH_walnut&t;0x00001000&t;/* IBM &quot;Walnut&quot; 405GP eval. board */
-DECL|macro|_MACH_8260
-mdefine_line|#define _MACH_8260&t;0x00002000&t;/* Generic 8260 */
-DECL|macro|_MACH_tqm860
-mdefine_line|#define _MACH_tqm860&t;0x00004000&t;/* TQM860/L */
-DECL|macro|_MACH_tqm8xxL
-mdefine_line|#define _MACH_tqm8xxL&t;0x00008000&t;/* TQM8xxL */
-DECL|macro|_MACH_spd8xx
-mdefine_line|#define _MACH_spd8xx&t;0x00010000&t;/* SPD8xx */
-DECL|macro|_MACH_ivms8
-mdefine_line|#define _MACH_ivms8&t;0x00020000&t;/* IVMS8 */
 multiline_comment|/* see residual.h for these */
 DECL|macro|_PREP_Motorola
 mdefine_line|#define _PREP_Motorola 0x01  /* motorola prep */
@@ -972,11 +942,6 @@ r_extern
 r_int
 id|_machine
 suffix:semicolon
-r_extern
-r_int
-id|have_of
-suffix:semicolon
-macro_line|#endif /* CONFIG_ALL_PPC */
 multiline_comment|/* what kind of prep workstation we are */
 r_extern
 r_int
@@ -1000,6 +965,10 @@ id|ucBoardRevMaj
 comma
 id|ucBoardRevMin
 suffix:semicolon
+macro_line|#else
+DECL|macro|_machine
+mdefine_line|#define _machine 0
+macro_line|#endif /* CONFIG_ALL_PPC */
 r_struct
 id|task_struct
 suffix:semicolon
@@ -1278,32 +1247,9 @@ r_int
 id|or_val
 )paren
 suffix:semicolon
-macro_line|#endif /* ndef ASSEMBLY*/
-macro_line|#ifndef CONFIG_ALL_PPC
-macro_line|#if defined(CONFIG_APUS)
-DECL|macro|_machine
-mdefine_line|#define _machine _MACH_apus
-macro_line|#elif defined(CONFIG_GEMINI)
-DECL|macro|_machine
-mdefine_line|#define _machine _MACH_gemini
-macro_line|#elif defined(CONFIG_OAK)
-DECL|macro|_machine
-mdefine_line|#define _machine _MACH_oak
-macro_line|#elif defined(CONFIG_WALNUT)
-DECL|macro|_machine
-mdefine_line|#define _machine _MACH_walnut
-macro_line|#elif defined(CONFIG_8xx)
-DECL|macro|_machine
-mdefine_line|#define _machine _MACH_8xx
-macro_line|#elif defined(CONFIG_8260)
-DECL|macro|_machine
-mdefine_line|#define _machine _MACH_8260
-macro_line|#else
-macro_line|#error &quot;Machine not defined correctly&quot;
-macro_line|#endif
+macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|have_of
-mdefine_line|#define have_of 0
-macro_line|#endif /* !CONFIG_ALL_PPC */
+mdefine_line|#define have_of (_machine == _MACH_chrp || _machine == _MACH_Pmac)
 macro_line|#endif /* __ASM_PPC_PROCESSOR_H */
 macro_line|#endif /* __KERNEL__ */
 eof

@@ -2875,8 +2875,6 @@ comma
 id|pipefs_read_super
 comma
 id|FS_NOMOUNT
-op_or
-id|FS_SINGLE
 )paren
 suffix:semicolon
 DECL|function|init_pipe_fs
@@ -2966,7 +2964,7 @@ op_amp
 id|pipe_fs_type
 )paren
 suffix:semicolon
-id|kern_umount
+id|mntput
 c_func
 (paren
 id|pipe_mnt

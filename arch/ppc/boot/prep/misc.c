@@ -1,7 +1,5 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.misc.c 1.14 06/16/01 20:43:20 trini&n; */
-multiline_comment|/*&n; * misc.c&n; *&n; * Adapted for PowerPC by Gary Thomas&n; *&n; * Rewritten by Cort Dougan (cort@cs.nmt.edu)&n; * One day to be replaced by a single bootloader for chrp/prep/pmac. -- Cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.misc.c 1.18 07/30/01 17:19:40 trini&n; *&n; * arch/ppc/boot/prep/misc.c&n; *&n; * Adapted for PowerPC by Gary Thomas&n; *&n; * Rewritten by Cort Dougan (cort@cs.nmt.edu)&n; * One day to be replaced by a single bootloader for chrp/prep/pmac. -- Cort&n; */
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &quot;zlib.h&quot;
 macro_line|#include &lt;asm/residual.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -12,13 +10,8 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#if defined(CONFIG_SERIAL_CONSOLE)
-DECL|variable|com_port
-r_int
-r_int
-id|com_port
-suffix:semicolon
-macro_line|#endif /* CONFIG_SERIAL_CONSOLE */
+macro_line|#include &quot;nonstdio.h&quot;
+macro_line|#include &quot;zlib.h&quot;
 multiline_comment|/*&n; * Please send me load/board info and such data for hardware not&n; * listed here so I can keep track since things are getting tricky&n; * with the different load addrs with different firmware.  This will&n; * help to avoid breaking the load/boot process.&n; * -- Cort&n; */
 DECL|variable|avail_ram
 r_char
@@ -105,6 +98,14 @@ DECL|variable|zimage_size
 r_int
 id|zimage_size
 suffix:semicolon
+macro_line|#if defined(CONFIG_SERIAL_CONSOLE)
+DECL|variable|com_port
+r_int
+r_int
+id|com_port
+suffix:semicolon
+macro_line|#endif /* CONFIG_SERIAL_CONSOLE */
+macro_line|#ifdef CONFIG_VGA_CONSOLE
 DECL|variable|vidmem
 r_char
 op_star
@@ -120,8 +121,12 @@ DECL|variable|lines
 DECL|variable|cols
 r_int
 id|lines
+op_assign
+l_int|25
 comma
 id|cols
+op_assign
+l_int|80
 suffix:semicolon
 DECL|variable|orig_x
 DECL|variable|orig_y
@@ -129,72 +134,10 @@ r_int
 id|orig_x
 comma
 id|orig_y
+op_assign
+l_int|24
 suffix:semicolon
-r_extern
-r_void
-id|puts
-c_func
-(paren
-r_const
-r_char
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|putc
-c_func
-(paren
-r_const
-r_char
-id|c
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|tstc
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|getc
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|puthex
-c_func
-(paren
-r_int
-r_int
-id|val
-)paren
-suffix:semicolon
-r_extern
-r_void
-op_star
-id|memcpy
-c_func
-(paren
-r_void
-op_star
-id|__dest
-comma
-id|__const
-r_void
-op_star
-id|__src
-comma
-id|__kernel_size_t
-id|__n
-)paren
-suffix:semicolon
+macro_line|#endif /* CONFIG_VGA_CONSOLE */
 r_extern
 r_int
 id|CRT_tstc
@@ -254,17 +197,6 @@ id|size
 )paren
 suffix:semicolon
 r_extern
-id|__kernel_size_t
-id|strlen
-c_func
-(paren
-r_const
-r_char
-op_star
-id|s
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|vga_init
 c_func
@@ -276,14 +208,6 @@ id|ISA_mem
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|udelay
-c_func
-(paren
-r_int
-id|x
-)paren
-suffix:semicolon
 r_void
 id|gunzip
 c_func
@@ -301,12 +225,52 @@ r_int
 op_star
 )paren
 suffix:semicolon
-r_int
-r_char
-id|inb
+r_extern
+r_void
+id|_put_HID0
 c_func
 (paren
 r_int
+r_int
+id|val
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|_put_MSR
+c_func
+(paren
+r_int
+r_int
+id|val
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|_get_HID0
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|_get_MSR
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|serial_init
+c_func
+(paren
+r_int
+id|chan
 )paren
 suffix:semicolon
 r_void
@@ -437,6 +401,7 @@ DECL|function|scroll
 id|scroll
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -505,6 +470,7 @@ DECL|function|park_cpus
 id|park_cpus
 c_func
 (paren
+r_void
 )paren
 (brace
 r_volatile
@@ -678,22 +644,6 @@ comma
 id|tulip_pci_base
 comma
 id|tulip_base
-suffix:semicolon
-id|lines
-op_assign
-l_int|25
-suffix:semicolon
-id|cols
-op_assign
-l_int|80
-suffix:semicolon
-id|orig_x
-op_assign
-l_int|0
-suffix:semicolon
-id|orig_y
-op_assign
-l_int|24
 suffix:semicolon
 multiline_comment|/*&n;&t; * IBM&squot;s have the MMU on, so we have to disable it or&n;&t; * things get really unhappy in the kernel when&n;&t; * trying to setup the BATs with the MMU on&n;&t; * -- Cort&n;&t; */
 id|flush_instruction_cache
@@ -2289,87 +2239,6 @@ id|hold_residual
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * PCI/ISA I/O support&n; */
-DECL|variable|ISA_io
-r_volatile
-r_int
-r_char
-op_star
-id|ISA_io
-op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-l_int|0x80000000
-suffix:semicolon
-DECL|variable|ISA_mem
-r_volatile
-r_int
-r_char
-op_star
-id|ISA_mem
-op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-l_int|0xC0000000
-suffix:semicolon
-r_void
-DECL|function|outb
-id|outb
-c_func
-(paren
-r_int
-id|port
-comma
-r_char
-id|val
-)paren
-(brace
-multiline_comment|/* Ensure I/O operations complete */
-id|__asm__
-r_volatile
-(paren
-l_string|&quot;eieio&quot;
-)paren
-suffix:semicolon
-id|ISA_io
-(braket
-id|port
-)braket
-op_assign
-id|val
-suffix:semicolon
-)brace
-r_int
-r_char
-DECL|function|inb
-id|inb
-c_func
-(paren
-r_int
-id|port
-)paren
-(brace
-multiline_comment|/* Ensure I/O operations complete */
-id|__asm__
-r_volatile
-(paren
-l_string|&quot;eieio&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-id|ISA_io
-(braket
-id|port
-)braket
-)paren
-suffix:semicolon
-)brace
 r_int
 r_int
 DECL|function|local_to_PCI
@@ -2383,11 +2252,7 @@ id|addr
 (brace
 r_return
 (paren
-(paren
 id|addr
-op_amp
-l_int|0x7FFFFFFF
-)paren
 op_or
 l_int|0x80000000
 )paren

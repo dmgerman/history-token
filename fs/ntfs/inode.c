@@ -10,6 +10,7 @@ macro_line|#include &quot;super.h&quot;
 macro_line|#include &quot;dir.h&quot;
 macro_line|#include &quot;support.h&quot;
 macro_line|#include &quot;util.h&quot;
+macro_line|#include &lt;linux/ntfs_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 r_typedef
 r_struct
@@ -389,9 +390,7 @@ id|rcount
 comma
 id|error
 comma
-id|block
-comma
-id|blockbits
+id|mft_rec_size
 suffix:semicolon
 id|__s64
 id|size
@@ -432,6 +431,10 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|mft_rec_size
+op_assign
+id|vol-&gt;mft_record_size
+suffix:semicolon
 multiline_comment|/* First check whether there is uninitialized space. */
 r_if
 c_cond
@@ -440,7 +443,7 @@ id|mdata-&gt;allocated
 OL
 id|mdata-&gt;size
 op_plus
-id|vol-&gt;mft_record_size
+id|mft_rec_size
 )paren
 (brace
 id|size
@@ -455,52 +458,43 @@ id|vol-&gt;bitmap
 )paren
 op_lshift
 id|vol-&gt;cluster_size_bits
-suffix:semicolon
-multiline_comment|/* On error, size will be negative. We can ignore this as we&n;&t;&t; * will fall back to the minimal size allocation below. (AIA) */
-id|block
-op_assign
-id|vol-&gt;mft_record_size
-suffix:semicolon
-id|blockbits
-op_assign
-id|vol-&gt;mft_record_size_bits
-suffix:semicolon
-id|size
-op_assign
-id|max
-c_func
-(paren
-id|s64
-comma
-id|size
 op_rshift
 l_int|10
-comma
+suffix:semicolon
+multiline_comment|/* On error, size will be negative. We can ignore this as we&n;&t;&t; * will fall back to the minimal size allocation below. (AIA) */
+r_if
+c_cond
+(paren
+id|size
+OL
 id|mdata-&gt;size
 op_plus
-id|vol-&gt;mft_record_size
+id|mft_rec_size
 )paren
-suffix:semicolon
 id|size
 op_assign
+id|mdata-&gt;size
+op_plus
+id|mft_rec_size
+suffix:semicolon
+id|size
+op_add_assign
+id|mft_rec_size
+op_minus
+l_int|1
+suffix:semicolon
+id|size
+op_and_assign
+op_complement
 (paren
 id|__s64
 )paren
 (paren
-(paren
-id|size
-op_plus
-id|block
+id|mft_rec_size
 op_minus
 l_int|1
 )paren
-op_rshift
-id|blockbits
-)paren
-op_lshift
-id|blockbits
 suffix:semicolon
-multiline_comment|/* Require this to be a single chunk. */
 id|error
 op_assign
 id|ntfs_extend_attr
@@ -528,17 +522,16 @@ id|ENOSPC
 (brace
 multiline_comment|/* Round down to multiple of mft record size. */
 id|size
-op_assign
+op_and_assign
+op_complement
 (paren
 id|__s64
 )paren
 (paren
-id|size
-op_rshift
-id|vol-&gt;mft_record_size_bits
+id|mft_rec_size
+op_minus
+l_int|1
 )paren
-op_lshift
-id|vol-&gt;mft_record_size_bits
 suffix:semicolon
 r_if
 c_cond
@@ -578,7 +571,7 @@ suffix:semicolon
 multiline_comment|/* Even though we might have allocated more than needed, we initialize&n;&t; * only one record. */
 id|mdata-&gt;size
 op_add_assign
-id|vol-&gt;mft_record_size
+id|mft_rec_size
 suffix:semicolon
 multiline_comment|/* Now extend the bitmap if necessary. */
 id|rcount
@@ -718,7 +711,7 @@ op_assign
 id|ntfs_calloc
 c_func
 (paren
-id|vol-&gt;mft_record_size
+id|mft_rec_size
 )paren
 suffix:semicolon
 r_if
@@ -736,28 +729,51 @@ c_func
 (paren
 id|buf
 comma
-id|vol-&gt;mft_record_size
+id|mft_rec_size
 comma
 id|vol-&gt;sector_size
 comma
 l_int|0
 )paren
 suffix:semicolon
+id|error
+op_assign
 id|ntfs_insert_fixups
 c_func
 (paren
 id|buf
 comma
-id|vol-&gt;sector_size
+id|mft_rec_size
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ALERT
+l_string|&quot;NTFS: ntfs_extend_mft() caught corrupt &quot;
+l_string|&quot;mtf record ntfs record header. Refusing to &quot;
+l_string|&quot;write corrupt data to disk. Unmount and run &quot;
+l_string|&quot;chkdsk immediately!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 id|io.param
 op_assign
 id|buf
 suffix:semicolon
 id|io.size
 op_assign
-id|vol-&gt;mft_record_size
+id|mft_rec_size
 suffix:semicolon
 id|io.fn_put
 op_assign
@@ -806,7 +822,7 @@ c_cond
 (paren
 id|io.size
 op_ne
-id|vol-&gt;mft_record_size
+id|mft_rec_size
 )paren
 r_return
 op_minus
@@ -1873,21 +1889,22 @@ id|buf
 op_plus
 id|delta
 suffix:semicolon
-id|io.size
-op_assign
 id|len
 op_assign
-id|min
-c_func
-(paren
-r_int
-comma
-id|datasize
-comma
 l_int|1024
 op_minus
 id|delta
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OG
+id|datasize
 )paren
+id|len
+op_assign
+id|datasize
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -1912,6 +1929,10 @@ id|ino-&gt;i_number
 comma
 id|delta
 )paren
+suffix:semicolon
+id|io.size
+op_assign
+id|len
 suffix:semicolon
 r_if
 c_cond
@@ -2339,8 +2360,6 @@ r_return
 id|ntfs_fixup_record
 c_func
 (paren
-id|vol
-comma
 id|record
 comma
 l_string|&quot;FILE&quot;
@@ -3347,7 +3366,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|attr-&gt;compressed
+id|attr-&gt;flags
+op_amp
+id|ATTR_IS_COMPRESSED
 )paren
 r_return
 id|ntfs_read_compressed
@@ -3368,7 +3389,9 @@ r_else
 r_if
 c_cond
 (paren
-id|attr-&gt;compressed
+id|attr-&gt;flags
+op_amp
+id|ATTR_IS_COMPRESSED
 )paren
 r_return
 id|ntfs_write_compressed
@@ -3462,7 +3485,7 @@ comma
 id|s_vcn
 )paren
 suffix:semicolon
-multiline_comment|/*FIXME: Should extend runlist. */
+multiline_comment|/*FIXME: Should extend run list. */
 r_return
 op_minus
 id|EOPNOTSUPP
@@ -3512,11 +3535,6 @@ id|vcn
 suffix:semicolon
 id|chunk
 op_assign
-id|min
-c_func
-(paren
-id|s64
-comma
 (paren
 (paren
 id|__s64
@@ -3531,9 +3549,17 @@ id|clustersizebits
 )paren
 op_minus
 id|offset
-comma
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|chunk
+OG
 id|l
 )paren
+id|chunk
+op_assign
+id|l
 suffix:semicolon
 id|dest-&gt;size
 op_assign
@@ -3842,7 +3868,13 @@ id|data
 op_logical_or
 id|data-&gt;resident
 op_logical_or
-id|data-&gt;compressed
+id|data-&gt;flags
+op_amp
+(paren
+id|ATTR_IS_COMPRESSED
+op_or
+id|ATTR_IS_ENCRYPTED
+)paren
 )paren
 r_return
 op_minus
@@ -4147,7 +4179,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * layout_runs - compress runlist into mapping pairs array&n; * @attr:&t;attribute containing the runlist to compress&n; * @rec:&t;destination buffer to hold the mapping pairs array&n; * @offs:&t;current position in @rec (in/out variable)&n; * @size:&t;size of the buffer @rec&n; *&n; * layout_runs walks the runlist in @attr, compresses it and writes it out the&n; * resulting mapping pairs array into @rec (up to a maximum of @size bytes are&n; * written). On entry @offs is the offset in @rec at which to begin writting the&n; * mapping pairs array. On exit, it contains the offset in @rec of the first&n; * byte after the end of the mapping pairs array.&n; */
+multiline_comment|/**&n; * layout_runs - compress run list into mapping pairs array&n; * @attr:&t;attribute containing the run list to compress&n; * @rec:&t;destination buffer to hold the mapping pairs array&n; * @offs:&t;current position in @rec (in/out variable)&n; * @size:&t;size of the buffer @rec&n; *&n; * layout_runs walks the run list in @attr, compresses it and writes it out the&n; * resulting mapping pairs array into @rec (up to a maximum of @size bytes are&n; * written). On entry @offs is the offset in @rec at which to begin writing the&n; * mapping pairs array. On exit, it contains the offset in @rec of the first&n; * byte after the end of the mapping pairs array.&n; */
 DECL|function|layout_runs
 r_static
 r_int
@@ -4820,7 +4852,7 @@ comma
 id|attr-&gt;size
 )paren
 suffix:semicolon
-id|NTFS_PUTU16
+id|NTFS_PUTU8
 c_func
 (paren
 id|buf
@@ -4866,7 +4898,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|attr-&gt;compressed
+id|attr-&gt;flags
+op_amp
+id|ATTR_IS_COMPRESSED
 )paren
 id|nameoff
 op_assign
@@ -5016,7 +5050,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|attr-&gt;compressed
+id|attr-&gt;flags
+op_amp
+id|ATTR_IS_COMPRESSED
 )paren
 id|NTFS_PUTS64
 c_func
@@ -5089,7 +5125,7 @@ id|buf
 op_plus
 l_int|0xc
 comma
-id|attr-&gt;compressed
+id|attr-&gt;flags
 )paren
 suffix:semicolon
 id|NTFS_PUTU16
@@ -5606,6 +5642,8 @@ id|i
 op_increment
 )paren
 (brace
+id|error
+op_assign
 id|ntfs_insert_fixups
 c_func
 (paren
@@ -5616,9 +5654,45 @@ id|i
 dot
 id|record
 comma
-id|ino-&gt;vol-&gt;sector_size
+id|ino-&gt;vol-&gt;mft_record_size
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ALERT
+l_string|&quot;NTFS: ntfs_update_inode() caught &quot;
+l_string|&quot;corrupt %s mtf record ntfs record &quot;
+l_string|&quot;header. Refusing to write corrupt &quot;
+l_string|&quot;data to disk. Unmount and run chkdsk &quot;
+l_string|&quot;immediately!&bslash;n&quot;
+comma
+id|i
+ques
+c_cond
+l_string|&quot;extension&quot;
+suffix:colon
+l_string|&quot;base&quot;
+)paren
+suffix:semicolon
+id|deallocate_store
+c_func
+(paren
+op_amp
+id|store
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 id|io.param
 op_assign
 id|store.records

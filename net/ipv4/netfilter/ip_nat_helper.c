@@ -1204,7 +1204,13 @@ id|i
 op_xor
 l_int|0xFFFF
 comma
-l_int|0
+(paren
+id|TCPOPT_NOP
+op_lshift
+l_int|8
+)paren
+op_or
+id|TCPOPT_NOP
 comma
 id|tcph-&gt;check
 )paren
@@ -1221,7 +1227,7 @@ op_plus
 l_int|1
 )braket
 op_assign
-l_int|0
+id|TCPOPT_NOP
 suffix:semicolon
 )brace
 r_else

@@ -3251,7 +3251,7 @@ r_int
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef __powerpc__
+macro_line|#ifdef CONFIG_PPC32
 (brace
 r_extern
 r_struct

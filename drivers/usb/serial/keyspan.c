@@ -1126,6 +1126,9 @@ c_cond
 id|from_user
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -1137,6 +1140,10 @@ id|buf
 comma
 id|todo
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 r_else

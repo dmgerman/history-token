@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.oak_setup.c 1.5 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.oak_setup.c 1.8 08/15/01 21:48:38 paulus&n; */
 multiline_comment|/*&n; *&n; *    Copyright (c) 1999-2000 Grant Erickson &lt;grant@lcse.umn.edu&gt;&n; *&n; *    Module name: oak_setup.c&n; *&n; *    Description:&n; *      Architecture- / platform-specific boot-time initialization code for&n; *      the IBM PowerPC 403GCX &quot;Oak&quot; evaluation board. Adapted from original&n; *      code by Gary Thomas, Cort Dougan &lt;cort@fsmlabs.com&gt;, and Dan Malek&n; *      &lt;dan@net4x.com&gt;.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -39,8 +39,8 @@ suffix:semicolon
 multiline_comment|/*&n; * void __init oak_init()&n; *&n; * Description:&n; *   This routine...&n; *&n; * Input(s):&n; *   r3 - Optional pointer to a board information structure.&n; *   r4 - Optional pointer to the physical starting address of the init RAM&n; *        disk.&n; *   r5 - Optional pointer to the physical ending address of the init RAM&n; *        disk.&n; *   r6 - Optional pointer to the physical starting address of any kernel&n; *        command-line parameters.&n; *   r7 - Optional pointer to the physical ending address of any kernel&n; *        command-line parameters.&n; *&n; * Output(s):&n; *   N/A&n; *&n; * Returns:&n; *   N/A&n; *&n; */
 r_void
 id|__init
-DECL|function|oak_init
-id|oak_init
+DECL|function|platform_init
+id|platform_init
 c_func
 (paren
 r_int

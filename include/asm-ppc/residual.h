@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.residual.h 1.5 05/17/01 18:14:25 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.residual.h 1.8 08/09/01 09:11:24 trini&n; */
 multiline_comment|/* 7/18/95                                                                    */
 multiline_comment|/*----------------------------------------------------------------------------*/
 multiline_comment|/*      Residual Data header definitions and prototypes                       */
@@ -27,7 +27,7 @@ mdefine_line|#define MAX_MEM_SEGS 64                 /* this header file.       
 multiline_comment|/*----------------------------------------------------------------------------*/
 multiline_comment|/*               Public structures...                                         */
 multiline_comment|/*----------------------------------------------------------------------------*/
-macro_line|#include &quot;pnp.h&quot;
+macro_line|#include &lt;asm/pnp.h&gt;
 DECL|enum|_L1CACHE_TYPE
 r_typedef
 r_enum

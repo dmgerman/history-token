@@ -1,4 +1,4 @@
-multiline_comment|/*&n;**&t;Pegasus: USB 10/100Mbps/HomePNA (1Mbps) Controller&n;**&n;**&t;Copyright (c) 1999,2000 Petko Manolov - Petkan (petkan@dce.bg)&n;**&t;&n;**&n;**&t;ChangeLog:&n;**&t;&t;....&t;Most of the time spend reading sources &amp; docs.&n;**&t;&t;v0.2.x&t;First official release for the Linux kernel.&n;**&t;&t;v0.3.0&t;Beutified and structured, some bugs fixed.&n;**&t;&t;v0.3.x&t;URBifying bulk requests and bugfixing. First relatively&n;**&t;&t;&t;stable release. Still can touch device&squot;s registers only&n;**&t;&t;&t;from top-halves.&n;**&t;&t;v0.4.0&t;Control messages remained unurbified are now URBs.&n;**&t;&t;&t;Now we can touch the HW at any time.&n;**&t;&t;v0.4.9&t;Control urbs again use process context to wait. Argh...&n;**&t;&t;&t;Some long standing bugs (enable_net_traffic) fixed.&n;**&t;&t;&t;Also nasty trick about resubmiting control urb from&n;**&t;&t;&t;interrupt context used. Please let me know how it&n;**&t;&t;&t;behaves. Pegasus II support added since this version.&n;**&t;&t;&t;TODO: suppressing HCD warnings spewage on disconnect.&n;**&t;&t;v0.4.13&t;Ethernet address is now set at probe(), not at open()&n;**&t;&t;&t;time as this seems to break dhcpd. &n;*/
+multiline_comment|/*&n;**&t;Pegasus: USB 10/100Mbps/HomePNA (1Mbps) Controller&n;**&n;**&t;Copyright (c) 1999-2001 Petko Manolov (pmanolov@lnxw.com)&n;**&t;&n;**&n;**&t;ChangeLog:&n;**&t;&t;....&t;Most of the time spend reading sources &amp; docs.&n;**&t;&t;v0.2.x&t;First official release for the Linux kernel.&n;**&t;&t;v0.3.0&t;Beutified and structured, some bugs fixed.&n;**&t;&t;v0.3.x&t;URBifying bulk requests and bugfixing. First relatively&n;**&t;&t;&t;stable release. Still can touch device&squot;s registers only&n;**&t;&t;&t;from top-halves.&n;**&t;&t;v0.4.0&t;Control messages remained unurbified are now URBs.&n;**&t;&t;&t;Now we can touch the HW at any time.&n;**&t;&t;v0.4.9&t;Control urbs again use process context to wait. Argh...&n;**&t;&t;&t;Some long standing bugs (enable_net_traffic) fixed.&n;**&t;&t;&t;Also nasty trick about resubmiting control urb from&n;**&t;&t;&t;interrupt context used. Please let me know how it&n;**&t;&t;&t;behaves. Pegasus II support added since this version.&n;**&t;&t;&t;TODO: suppressing HCD warnings spewage on disconnect.&n;**&t;&t;v0.4.13&t;Ethernet address is now set at probe(), not at open()&n;**&t;&t;&t;time as this seems to break dhcpd. &n;*/
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -11,11 +11,11 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;pegasus.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.4.19 2001/06/07 (C) 1999-2001&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.4.21 (2001/08/27)&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Petko Manolov &lt;pmanolov@lnxw.com&gt;&quot;
 DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC &quot;ADMtek AN986 Pegasus USB Ethernet driver&quot;
+mdefine_line|#define DRIVER_DESC &quot;Pegasus/Pegasus II USB Ethernet driver&quot;
 DECL|macro|PEGASUS_USE_INTR
 mdefine_line|#define&t;PEGASUS_USE_INTR
 DECL|macro|PEGASUS_WRITE_EEPROM
@@ -236,25 +236,13 @@ op_and_assign
 op_complement
 id|ETH_REGS_CHANGED
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|waitqueue_active
-c_func
-(paren
-op_amp
-id|pegasus-&gt;ctrl_wait
-)paren
-)paren
-(brace
-id|wake_up_interruptible
+id|wake_up
 c_func
 (paren
 op_amp
 id|pegasus-&gt;ctrl_wait
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|get_registers
 r_static
@@ -330,6 +318,22 @@ comma
 id|size
 )paren
 suffix:semicolon
+id|add_wait_queue
+c_func
+(paren
+op_amp
+id|pegasus-&gt;ctrl_wait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -337,11 +341,25 @@ id|pegasus-&gt;flags
 op_amp
 id|ETH_REGS_CHANGED
 )paren
-id|interruptible_sleep_on
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+id|remove_wait_queue
 c_func
 (paren
 op_amp
 id|pegasus-&gt;ctrl_wait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_RUNNING
 )paren
 suffix:semicolon
 id|pegasus-&gt;dr.requesttype
@@ -426,7 +444,7 @@ suffix:semicolon
 id|set_current_state
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
+id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
 r_if
@@ -568,6 +586,22 @@ comma
 id|size
 )paren
 suffix:semicolon
+id|add_wait_queue
+c_func
+(paren
+op_amp
+id|pegasus-&gt;ctrl_wait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -575,11 +609,25 @@ id|pegasus-&gt;flags
 op_amp
 id|ETH_REGS_CHANGED
 )paren
-id|interruptible_sleep_on
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+id|remove_wait_queue
 c_func
 (paren
 op_amp
 id|pegasus-&gt;ctrl_wait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_RUNNING
 )paren
 suffix:semicolon
 id|pegasus-&gt;dr.requesttype
@@ -664,7 +712,7 @@ suffix:semicolon
 id|set_current_state
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
+id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
 r_if
@@ -798,6 +846,22 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|add_wait_queue
+c_func
+(paren
+op_amp
+id|pegasus-&gt;ctrl_wait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -805,11 +869,25 @@ id|pegasus-&gt;flags
 op_amp
 id|ETH_REGS_CHANGED
 )paren
-id|interruptible_sleep_on
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+id|remove_wait_queue
 c_func
 (paren
 op_amp
 id|pegasus-&gt;ctrl_wait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_RUNNING
 )paren
 suffix:semicolon
 id|pegasus-&gt;dr.requesttype
@@ -895,7 +973,7 @@ suffix:semicolon
 id|set_current_state
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
+id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
 r_if
@@ -2892,7 +2970,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,48)
 DECL|function|pegasus_tx_timeout
 r_static
 r_void
@@ -2942,7 +3019,6 @@ id|pegasus-&gt;stats.tx_errors
 op_increment
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|pegasus_start_xmit
 r_static
 r_int
@@ -4094,7 +4170,6 @@ id|net-&gt;stop
 op_assign
 id|pegasus_close
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,48)
 id|net-&gt;watchdog_timeo
 op_assign
 id|PEGASUS_TX_TIMEOUT
@@ -4103,7 +4178,6 @@ id|net-&gt;tx_timeout
 op_assign
 id|pegasus_tx_timeout
 suffix:semicolon
-macro_line|#endif
 id|net-&gt;do_ioctl
 op_assign
 id|pegasus_ioctl

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pmac_pic.h 1.5 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pmac_pic.h 1.9 08/19/01 22:23:04 paulus&n; */
 macro_line|#ifndef _PPC_KERNEL_PMAC_PIC_H
 DECL|macro|_PPC_KERNEL_PMAC_PIC_H
 mdefine_line|#define _PPC_KERNEL_PMAC_PIC_H
@@ -23,13 +23,6 @@ r_struct
 id|pt_regs
 op_star
 id|regs
-)paren
-suffix:semicolon
-r_void
-id|pmac_post_irq
-c_func
-(paren
-r_int
 )paren
 suffix:semicolon
 macro_line|#endif /* _PPC_KERNEL_PMAC_PIC_H */

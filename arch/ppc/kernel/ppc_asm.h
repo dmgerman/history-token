@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ppc_asm.h 1.14 07/02/01 22:08:05 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.ppc_asm.h 1.16 08/15/01 22:43:06 paulus&n; */
 multiline_comment|/*&n; * arch/ppc/kernel/ppc_asm.h&n; *&n; * Definitions used by various bits of low-level assembly code on PowerPC.&n; *&n; * Copyright (C) 1995-1999 Gary Thomas, Paul Mackerras, Cort Dougan.&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;ppc_asm.tmpl&quot;
@@ -83,18 +83,27 @@ DECL|macro|REST_32VR
 mdefine_line|#define REST_32VR(n,b,base)&t;REST_16VR(n,b,base); REST_16VR(n+16,b,base)
 macro_line|#ifdef CONFIG_PPC601_SYNC_FIX
 DECL|macro|SYNC
-mdefine_line|#define SYNC &bslash;&n;&t;sync; &bslash;&n;&t;isync
+mdefine_line|#define SYNC&t;&t;&t;&t;&bslash;&n;BEGIN_FTR_SECTION&t;&t;&t;&bslash;&n;&t;sync;&t;&t;&t;&t;&bslash;&n;&t;isync;&t;&t;&t;&t;&bslash;&n;END_FTR_SECTION_IFSET(CPU_FTR_601)
+DECL|macro|SYNC_601
+mdefine_line|#define SYNC_601&t;&t;&t;&bslash;&n;BEGIN_FTR_SECTION&t;&t;&t;&bslash;&n;&t;sync;&t;&t;&t;&t;&bslash;&n;END_FTR_SECTION_IFSET(CPU_FTR_601)
+DECL|macro|ISYNC_601
+mdefine_line|#define ISYNC_601&t;&t;&t;&bslash;&n;BEGIN_FTR_SECTION&t;&t;&t;&bslash;&n;&t;isync;&t;&t;&t;&t;&bslash;&n;END_FTR_SECTION_IFSET(CPU_FTR_601)
 macro_line|#else
 DECL|macro|SYNC
 mdefine_line|#define&t;SYNC
+DECL|macro|SYNC_601
+mdefine_line|#define SYNC_601
+DECL|macro|ISYNC_601
+mdefine_line|#define ISYNC_601
 macro_line|#endif
 macro_line|#ifndef CONFIG_SMP
 DECL|macro|TLBSYNC
 mdefine_line|#define TLBSYNC
 macro_line|#else /* CONFIG_SMP */
+multiline_comment|/* tlbsync is not implemented on 601 */
 DECL|macro|TLBSYNC
-mdefine_line|#define TLBSYNC&t;&t;&t;&t;&bslash;&n;&t;tlbsync;&t;&t;&t;&bslash;&n;&t;sync
-macro_line|#endif /* CONFIG_SMP */
+mdefine_line|#define TLBSYNC&t;&t;&t;&t;&bslash;&n;BEGIN_FTR_SECTION&t;&t;&t;&bslash;&n;&t;tlbsync;&t;&t;&t;&bslash;&n;&t;sync;&t;&t;&t;&t;&bslash;&n;END_FTR_SECTION_IFCLR(CPU_FTR_601)
+macro_line|#endif
 multiline_comment|/*&n; * This instruction is not implemented on the PPC 603 or 601; however, on&n; * the 403GCX and 405GP tlbia IS defined and tlbie is not.&n; * All of these instructions exist in the 8xx, they have magical powers,&n; * and they must be used.&n; */
 macro_line|#if !defined(CONFIG_4xx) &amp;&amp; !defined(CONFIG_8xx)
 DECL|macro|tlbia

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.machdep.h 1.14 06/28/01 16:13:50 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.machdep.h 1.19 08/18/01 18:16:33 paulus&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_MACHDEP_H
 DECL|macro|_PPC_MACHDEP_H
@@ -15,6 +15,9 @@ id|pci_bus
 suffix:semicolon
 r_struct
 id|pci_dev
+suffix:semicolon
+r_struct
+id|kbd_repeat
 suffix:semicolon
 DECL|struct|machdep_calls
 r_struct
@@ -210,6 +213,16 @@ id|find_end_of_memory
 r_void
 )paren
 suffix:semicolon
+DECL|member|setup_io_mappings
+r_void
+(paren
+op_star
+id|setup_io_mappings
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|member|progress
 r_void
 (paren
@@ -324,6 +337,19 @@ r_char
 id|leds
 )paren
 suffix:semicolon
+DECL|member|kbd_rate_fn
+r_int
+(paren
+op_star
+id|kbd_rate_fn
+)paren
+(paren
+r_struct
+id|kbd_repeat
+op_star
+id|rep
+)paren
+suffix:semicolon
 DECL|member|kbd_init_hw
 r_void
 (paren
@@ -399,6 +425,15 @@ DECL|member|ppc_machine
 r_int
 id|ppc_machine
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/* functions for dealing with other cpus */
+DECL|member|smp_ops
+r_struct
+id|smp_ops_t
+op_star
+id|smp_ops
+suffix:semicolon
+macro_line|#endif /* CONFIG_SMP */
 )brace
 suffix:semicolon
 r_extern
@@ -450,6 +485,67 @@ r_extern
 id|sys_ctrler_t
 id|sys_ctrler
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+DECL|struct|smp_ops_t
+r_struct
+id|smp_ops_t
+(brace
+DECL|member|message_pass
+r_void
+(paren
+op_star
+id|message_pass
+)paren
+(paren
+r_int
+id|target
+comma
+r_int
+id|msg
+comma
+r_int
+r_int
+id|data
+comma
+r_int
+id|wait
+)paren
+suffix:semicolon
+DECL|member|probe
+r_int
+(paren
+op_star
+id|probe
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|member|kick_cpu
+r_void
+(paren
+op_star
+id|kick_cpu
+)paren
+(paren
+r_int
+id|nr
+)paren
+suffix:semicolon
+DECL|member|setup_cpu
+r_void
+(paren
+op_star
+id|setup_cpu
+)paren
+(paren
+r_int
+id|nr
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif /* CONFIG_SMP */
 macro_line|#endif /* _PPC_MACHDEP_H */
 macro_line|#endif /* __KERNEL__ */
 eof

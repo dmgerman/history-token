@@ -1,6 +1,5 @@
-multiline_comment|/*&n; * $Id: unistr.c,v 1.4 2001/04/08 03:02:55 antona Exp $&n; *&n; * unistr.c - Unicode string handling. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2000,2001 Anton Altaparmakov.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * unistr.c - Unicode string handling. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2000,2001 Anton Altaparmakov.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &quot;unistr.h&quot;
 macro_line|#include &quot;macros.h&quot;
@@ -266,11 +265,28 @@ id|err_val
 (brace
 id|__u32
 id|cnt
+comma
+id|min_len
 suffix:semicolon
 m_wchar_t
 id|c1
 comma
 id|c2
+suffix:semicolon
+id|min_len
+op_assign
+id|name1_len
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|min_len
+OG
+id|name2_len
+)paren
+id|min_len
+op_assign
+id|name2_len
 suffix:semicolon
 r_for
 c_loop
@@ -281,16 +297,7 @@ l_int|0
 suffix:semicolon
 id|cnt
 OL
-id|min
-c_func
-(paren
-r_int
-r_int
-comma
-id|name1_len
-comma
-id|name2_len
-)paren
+id|min_len
 suffix:semicolon
 op_increment
 id|cnt
@@ -373,7 +380,6 @@ id|c1
 op_amp
 l_int|8
 )paren
-suffix:semicolon
 r_return
 id|err_val
 suffix:semicolon

@@ -1,7 +1,8 @@
 multiline_comment|/*&n; * arch/ppc/boot/common/misc-common.c&n; * &n; * Misc. bootloader code (almost) all platforms can use&n; *&n; * Author: Johnnie Peters &lt;jpeters@mvista.com&gt;&n; * Editor: Tom Rini &lt;trini@mvista.com&gt;&n; *&n; * Derived from arch/ppc/boot/prep/misc.c&n; *&n; * Copyright 2000-2001 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; * THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR   IMPLIED&n; * WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; * NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT,  INDIRECT,&n; * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; * NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; * USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; * ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * You should have received a copy of the  GNU General Public License along&n; * with this program; if not, write  to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+macro_line|#include &lt;stdarg.h&gt;&t;/* for va_ bits */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;zlib.h&quot;
-macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &quot;nonstdio.h&quot;
 multiline_comment|/* If we&squot;re on a ALL_PPC, assume we have a keyboard controller&n; * Also note, if we&squot;re not ALL_PPC, we assume you are a serial&n; * console - Tom */
 macro_line|#if defined(CONFIG_ALL_PPC) &amp;&amp; defined(CONFIG_VGA_CONSOLE)
 r_extern
@@ -241,6 +242,7 @@ c_func
 r_void
 (paren
 op_star
+id|putc
 )paren
 (paren
 r_const
@@ -250,9 +252,19 @@ comma
 r_const
 r_char
 op_star
+id|fmt0
 comma
 id|va_list
+id|ap
 )paren
+suffix:semicolon
+DECL|variable|ISA_io
+r_int
+r_char
+op_star
+id|ISA_io
+op_assign
+l_int|NULL
 suffix:semicolon
 macro_line|#if defined(CONFIG_SERIAL_CONSOLE)
 r_extern
@@ -265,7 +277,6 @@ r_int
 id|serial_tstc
 c_func
 (paren
-r_volatile
 r_int
 r_int
 id|com_port
@@ -277,7 +288,6 @@ r_char
 id|serial_getc
 c_func
 (paren
-r_volatile
 r_int
 r_int
 id|com_port
@@ -288,7 +298,6 @@ r_void
 id|serial_putc
 c_func
 (paren
-r_volatile
 r_int
 r_int
 id|com_port
@@ -1339,7 +1348,6 @@ DECL|macro|FALSE
 mdefine_line|#define FALSE 0
 DECL|macro|TRUE
 mdefine_line|#define TRUE  1
-macro_line|#include &lt;stdarg.h&gt;
 r_void
 DECL|function|_printk
 id|_printk
@@ -2385,6 +2393,61 @@ comma
 id|s
 comma
 l_int|0
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Very simple inb/outb routines.  We declare ISA_io to be 0 above, and&n; * then modify it on platforms which need to.  We do it like this&n; * because on some platforms we give inb/outb an exact location, and&n; * on others it&squot;s an offset from a given location. -- Tom&n; */
+r_void
+DECL|function|outb
+id|outb
+c_func
+(paren
+r_int
+id|port
+comma
+r_int
+r_char
+id|val
+)paren
+(brace
+multiline_comment|/* Ensure I/O operations complete */
+id|__asm__
+r_volatile
+(paren
+l_string|&quot;eieio&quot;
+)paren
+suffix:semicolon
+id|ISA_io
+(braket
+id|port
+)braket
+op_assign
+id|val
+suffix:semicolon
+)brace
+r_int
+r_char
+DECL|function|inb
+id|inb
+c_func
+(paren
+r_int
+id|port
+)paren
+(brace
+multiline_comment|/* Ensure I/O operations complete */
+id|__asm__
+r_volatile
+(paren
+l_string|&quot;eieio&quot;
+)paren
+suffix:semicolon
+r_return
+(paren
+id|ISA_io
+(braket
+id|port
+)braket
 )paren
 suffix:semicolon
 )brace

@@ -41,8 +41,6 @@ DECL|macro|EMPEG_VENDOR_ID
 mdefine_line|#define EMPEG_VENDOR_ID&t;&t;&t;0x084f
 DECL|macro|EMPEG_PRODUCT_ID
 mdefine_line|#define EMPEG_PRODUCT_ID&t;&t;0x0001
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;&t;(((a)&lt;(b))?(a):(b))
 multiline_comment|/* function prototypes for an empeg-car player */
 r_static
 r_int
@@ -836,8 +834,10 @@ suffix:semicolon
 )brace
 id|transfer_size
 op_assign
-id|MIN
+id|min
 (paren
+r_int
+comma
 id|count
 comma
 id|URB_TRANSFER_BUFFER_SIZE
@@ -849,6 +849,9 @@ c_cond
 id|from_user
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 (paren
 id|urb-&gt;transfer_buffer
@@ -857,7 +860,16 @@ id|current_position
 comma
 id|transfer_size
 )paren
+)paren
+(brace
+id|bytes_sent
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -913,7 +925,8 @@ c_cond
 (paren
 id|status
 )paren
-id|dbg
+(brace
+id|err
 c_func
 (paren
 id|__FUNCTION__
@@ -922,6 +935,13 @@ comma
 id|status
 )paren
 suffix:semicolon
+id|bytes_sent
+op_assign
+id|status
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|current_position
 op_add_assign
 id|transfer_size

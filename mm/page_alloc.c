@@ -1700,9 +1700,19 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;__alloc_pages: %lu-order allocation failed.&bslash;n&quot;
+l_string|&quot;__alloc_pages: %lu-order allocation failed (gfp=0x%x/%i).&bslash;n&quot;
 comma
 id|order
+comma
+id|gfp_mask
+comma
+op_logical_neg
+op_logical_neg
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_MEMALLOC
+)paren
 )paren
 suffix:semicolon
 r_return

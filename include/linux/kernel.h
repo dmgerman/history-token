@@ -6,6 +6,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/* Optimization barrier */
 multiline_comment|/* The &quot;volatile&quot; is due to gcc bugs */
 DECL|macro|barrier
@@ -229,6 +230,49 @@ r_char
 op_star
 comma
 id|va_list
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|snprintf
+c_func
+(paren
+r_char
+op_star
+id|buf
+comma
+r_int
+id|size
+comma
+r_const
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|vsnprintf
+c_func
+(paren
+r_char
+op_star
+id|buf
+comma
+r_int
+id|size
+comma
+r_const
+r_char
+op_star
+id|fmt
+comma
+id|va_list
+id|args
 )paren
 suffix:semicolon
 r_extern

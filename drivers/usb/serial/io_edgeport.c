@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_driver.h&gt;
@@ -3887,9 +3887,10 @@ suffix:semicolon
 singleline_comment|// calculate number of bytes to put in fifo
 id|copySize
 op_assign
-id|MIN
-c_func
+id|min
 (paren
+r_int
+comma
 id|count
 comma
 (paren
@@ -3947,9 +3948,10 @@ id|fifo-&gt;head
 suffix:semicolon
 id|firsthalf
 op_assign
-id|MIN
-c_func
+id|min
 (paren
+r_int
+comma
 id|bytesleft
 comma
 id|copySize
@@ -3972,6 +3974,9 @@ c_cond
 id|from_user
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -3985,6 +3990,10 @@ id|data
 comma
 id|firsthalf
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 r_else
@@ -4053,6 +4062,9 @@ c_cond
 id|from_user
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -4070,6 +4082,10 @@ id|firsthalf
 comma
 id|secondhalf
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 r_else
@@ -4415,9 +4431,10 @@ id|fifo-&gt;tail
 suffix:semicolon
 id|firsthalf
 op_assign
-id|MIN
-c_func
+id|min
 (paren
+r_int
+comma
 id|bytesleft
 comma
 id|count

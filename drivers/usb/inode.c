@@ -3947,13 +3947,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|kern_mount
-c_func
-(paren
-op_amp
-id|usbdevice_fs_type
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS&t;&t;
 multiline_comment|/* create mount point for usbdevfs */
 id|usbdir
@@ -3992,12 +3985,6 @@ c_func
 (paren
 op_amp
 id|usbdevice_fs_type
-)paren
-suffix:semicolon
-id|kern_umount
-c_func
-(paren
-id|usbdevice_fs_type.kern_mnt
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS&t;

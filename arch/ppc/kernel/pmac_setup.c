@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pmac_setup.c 1.24 07/06/01 14:49:51 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pmac_setup.c 1.35 08/20/01 22:37:37 paulus&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Adapted for Power Macintosh by Paul Mackerras&n; *    Copyright (C) 1996 Paul Mackerras (paulus@cs.anu.edu.au)&n; *&n; *  Derived from &quot;arch/alpha/kernel/setup.c&quot;&n; *    Copyright (C) 1995 Linus Torvalds&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -41,6 +41,8 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/bootx.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
+macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &quot;local_irq.h&quot;
 macro_line|#include &quot;pmac_pic.h&quot;
@@ -411,6 +413,16 @@ op_assign
 id|SYS_CTRLER_UNKNOWN
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
+r_extern
+r_struct
+id|smp_ops_t
+id|psurge_smp_ops
+suffix:semicolon
+r_extern
+r_struct
+id|smp_ops_t
+id|core99_smp_ops
+suffix:semicolon
 DECL|variable|core99_l2_cache
 r_volatile
 r_static
@@ -419,7 +431,7 @@ r_int
 id|core99_l2_cache
 suffix:semicolon
 r_void
-id|__pmac
+id|__init
 DECL|function|core99_init_l2
 id|core99_init_l2
 c_func
@@ -438,27 +450,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 (paren
-id|_get_PVR
-c_func
-(paren
+id|cur_cpu_spec
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|CPU_FTR_L2CR
 )paren
-op_rshift
-l_int|16
-)paren
-op_ne
-l_int|8
-op_logical_and
-(paren
-id|_get_PVR
-c_func
-(paren
-)paren
-op_rshift
-l_int|16
-)paren
-op_ne
-l_int|12
 )paren
 r_return
 suffix:semicolon
@@ -1203,6 +1205,22 @@ r_int
 op_star
 id|fp
 suffix:semicolon
+r_int
+r_int
+id|pvr
+suffix:semicolon
+id|pvr
+op_assign
+id|PVR_VER
+c_func
+(paren
+id|mfspr
+c_func
+(paren
+id|PVR
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Set loops_per_jiffy to a half-way reasonable value,&n;&t;   for use until calibrate_delay gets called. */
 id|cpu
 op_assign
@@ -1244,41 +1262,18 @@ op_ne
 l_int|0
 )paren
 (brace
-r_switch
+r_if
 c_cond
 (paren
-id|_get_PVR
-c_func
-(paren
-)paren
-op_rshift
-l_int|16
-)paren
-(brace
-r_case
+id|pvr
+op_eq
 l_int|4
-suffix:colon
-multiline_comment|/* 604 */
-r_case
+op_logical_or
+id|pvr
+op_ge
 l_int|8
-suffix:colon
-multiline_comment|/* G3 */
-r_case
-l_int|9
-suffix:colon
-multiline_comment|/* 604e */
-r_case
-l_int|10
-suffix:colon
-multiline_comment|/* mach V (604ev5) */
-r_case
-l_int|12
-suffix:colon
-multiline_comment|/* G4 */
-r_case
-l_int|20
-suffix:colon
-multiline_comment|/* 620 */
+)paren
+multiline_comment|/* 604, G3, G4 etc. */
 id|loops_per_jiffy
 op_assign
 op_star
@@ -1286,10 +1281,7 @@ id|fp
 op_div
 id|HZ
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
+r_else
 multiline_comment|/* 601, 603, etc. */
 id|loops_per_jiffy
 op_assign
@@ -1302,7 +1294,6 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
-)brace
 )brace
 r_else
 id|loops_per_jiffy
@@ -1328,20 +1319,6 @@ comma
 l_int|0x1000
 )paren
 suffix:semicolon
-id|__ioremap
-c_func
-(paren
-l_int|0xffc00000
-comma
-l_int|0x400000
-comma
-id|pgprot_val
-c_func
-(paren
-id|PAGE_READONLY
-)paren
-)paren
-suffix:semicolon
 id|ohare_init
 c_func
 (paren
@@ -1357,27 +1334,14 @@ multiline_comment|/* Checks &quot;l2cr-value&quot; property in the registry */
 r_if
 c_cond
 (paren
-(paren
-id|_get_PVR
-c_func
-(paren
-)paren
-op_rshift
-l_int|16
-)paren
-op_eq
-l_int|8
-op_logical_or
-(paren
-id|_get_PVR
-c_func
-(paren
-)paren
-op_rshift
-l_int|16
-)paren
-op_eq
-l_int|12
+id|cur_cpu_spec
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|CPU_FTR_L2CR
 )paren
 (brace
 r_struct
@@ -1513,6 +1477,30 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+id|find_devices
+c_func
+(paren
+l_string|&quot;via-cuda&quot;
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;WARNING ! Your machine is Cuda based but your kernel&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;          wasn&squot;t compiled with CONFIG_ADB_CUDA option !&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif&t;
 macro_line|#ifdef CONFIG_ADB_PMU
 id|find_via_pmu
@@ -1520,6 +1508,30 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+id|find_devices
+c_func
+(paren
+l_string|&quot;via-pmu&quot;
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;WARNING ! Your machine is PMU based but your kernel&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;          wasn&squot;t compiled with CONFIG_ADB_PMU option !&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif&t;
 macro_line|#ifdef CONFIG_NVRAM
 id|pmac_nvram_init
@@ -1567,6 +1579,29 @@ c_func
 id|DEFAULT_ROOT_DEVICE
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/* Check for Core99 */
+r_if
+c_cond
+(paren
+id|find_devices
+c_func
+(paren
+l_string|&quot;uni-n&quot;
+)paren
+)paren
+id|ppc_md.smp_ops
+op_assign
+op_amp
+id|core99_smp_ops
+suffix:semicolon
+r_else
+id|ppc_md.smp_ops
+op_assign
+op_amp
+id|psurge_smp_ops
+suffix:semicolon
+macro_line|#endif /* CONFIG_SMP */
 )brace
 DECL|function|ohare_init
 r_static
@@ -2009,7 +2044,16 @@ r_char
 op_star
 id|p
 suffix:semicolon
-multiline_comment|/* Do nothing if the root has been set already. */
+multiline_comment|/* Do nothing if the root has been mounted already. */
+r_if
+c_cond
+(paren
+id|init_task.fs-&gt;rootmnt
+op_ne
+l_int|NULL
+)paren
+r_return
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2298,146 +2342,7 @@ suffix:semicolon
 )brace
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 multiline_comment|/*&n; * IDE stuff.&n; */
-r_void
-id|__pmac
-DECL|function|pmac_ide_insw
-id|pmac_ide_insw
-c_func
-(paren
-id|ide_ioreg_t
-id|port
-comma
-r_void
-op_star
-id|buf
-comma
-r_int
-id|ns
-)paren
-(brace
-id|_insw_ns
-c_func
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-id|port
-op_plus
-id|_IO_BASE
-)paren
-comma
-id|buf
-comma
-id|ns
-)paren
-suffix:semicolon
-)brace
-r_void
-id|__pmac
-DECL|function|pmac_ide_outsw
-id|pmac_ide_outsw
-c_func
-(paren
-id|ide_ioreg_t
-id|port
-comma
-r_void
-op_star
-id|buf
-comma
-r_int
-id|ns
-)paren
-(brace
-id|_outsw_ns
-c_func
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-id|port
-op_plus
-id|_IO_BASE
-)paren
-comma
-id|buf
-comma
-id|ns
-)paren
-suffix:semicolon
-)brace
-r_int
-id|__pmac
-DECL|function|pmac_ide_default_irq
-id|pmac_ide_default_irq
-c_func
-(paren
-id|ide_ioreg_t
-id|base
-)paren
-(brace
-macro_line|#if defined(CONFIG_BLK_DEV_IDE) &amp;&amp; defined(CONFIG_BLK_DEV_IDE_PMAC)
-r_extern
-r_int
-id|pmac_ide_get_irq
-c_func
-(paren
-id|ide_ioreg_t
-id|base
-)paren
-suffix:semicolon
-r_return
-id|pmac_ide_get_irq
-c_func
-(paren
-id|base
-)paren
-suffix:semicolon
-macro_line|#else
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#endif
-)brace
-id|ide_ioreg_t
-id|__pmac
-DECL|function|pmac_ide_default_io_base
-id|pmac_ide_default_io_base
-c_func
-(paren
-r_int
-id|index
-)paren
-(brace
-macro_line|#if defined(CONFIG_BLK_DEV_IDE) &amp;&amp; defined(CONFIG_BLK_DEV_IDE_PMAC)
-r_extern
-id|ide_ioreg_t
-id|pmac_ide_get_base
-c_func
-(paren
-r_int
-id|index
-)paren
-suffix:semicolon
-r_return
-id|pmac_ide_get_base
-c_func
-(paren
-id|index
-)paren
-suffix:semicolon
-macro_line|#else
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#endif
-)brace
+r_static
 r_int
 id|__pmac
 DECL|function|pmac_ide_check_region
@@ -2462,9 +2367,6 @@ op_complement
 id|_IO_BASE
 )paren
 r_return
-l_int|0
-suffix:semicolon
-r_return
 id|check_region
 c_func
 (paren
@@ -2473,7 +2375,11 @@ comma
 id|extent
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+r_static
 r_void
 id|__pmac
 DECL|function|pmac_ide_request_region
@@ -2512,6 +2418,7 @@ id|name
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 id|__pmac
 DECL|function|pmac_ide_release_region
@@ -2543,29 +2450,8 @@ id|extent
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_BLK_DEV_IDE) &amp;&amp; defined(CONFIG_BLK_DEV_IDE_PMAC)
-multiline_comment|/* This is declared in drivers/block/ide-pmac.c */
-r_void
-id|__pmac
-id|pmac_ide_init_hwif_ports
-(paren
-id|hw_regs_t
-op_star
-id|hw
-comma
-id|ide_ioreg_t
-id|data_port
-comma
-id|ide_ioreg_t
-id|ctrl_port
-comma
-r_int
-op_star
-id|irq
-)paren
-suffix:semicolon
-macro_line|#else
-multiline_comment|/*&n; * This registers the standard ports for this architecture with the IDE&n; * driver.&n; */
+multiline_comment|/*&n; * This is only used if we have a PCI IDE controller, not&n; * for the IDE controller in the ohare/paddington/heathrow/keylargo.&n; */
+r_static
 r_void
 id|__pmac
 DECL|function|pmac_ide_init_hwif_ports
@@ -2587,8 +2473,49 @@ op_star
 id|irq
 )paren
 (brace
+id|ide_ioreg_t
+id|reg
+op_assign
+id|data_port
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+id|IDE_DATA_OFFSET
+suffix:semicolon
+id|i
+op_le
+id|IDE_STATUS_OFFSET
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|hw-&gt;io_ports
+(braket
+id|i
+)braket
+op_assign
+id|reg
+suffix:semicolon
+id|reg
+op_add_assign
+l_int|1
+suffix:semicolon
 )brace
-macro_line|#endif
+id|hw-&gt;io_ports
+(braket
+id|IDE_CONTROL_OFFSET
+)braket
+op_assign
+id|ctrl_port
+suffix:semicolon
+)brace
 macro_line|#endif
 multiline_comment|/*&n; * Read in a property describing some pieces of memory.&n; */
 r_static
@@ -2943,6 +2870,118 @@ suffix:semicolon
 )brace
 r_void
 id|__init
+DECL|function|select_adb_keyboard
+id|select_adb_keyboard
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef CONFIG_VT
+macro_line|#ifdef CONFIG_INPUT
+id|ppc_md.kbd_init_hw
+op_assign
+id|mac_hid_init_hw
+suffix:semicolon
+id|ppc_md.kbd_translate
+op_assign
+id|mac_hid_kbd_translate
+suffix:semicolon
+id|ppc_md.kbd_unexpected_up
+op_assign
+id|mac_hid_kbd_unexpected_up
+suffix:semicolon
+id|ppc_md.kbd_setkeycode
+op_assign
+l_int|0
+suffix:semicolon
+id|ppc_md.kbd_getkeycode
+op_assign
+l_int|0
+suffix:semicolon
+id|ppc_md.kbd_leds
+op_assign
+l_int|0
+suffix:semicolon
+id|ppc_md.kbd_rate_fn
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+macro_line|#ifdef CONFIG_MAC_ADBKEYCODES
+r_if
+c_cond
+(paren
+op_logical_neg
+id|keyboard_sends_linux_keycodes
+)paren
+(brace
+id|ppc_md.ppc_kbd_sysrq_xlate
+op_assign
+id|mac_hid_kbd_sysrq_xlate
+suffix:semicolon
+id|SYSRQ_KEY
+op_assign
+l_int|0x69
+suffix:semicolon
+)brace
+r_else
+macro_line|#endif /* CONFIG_MAC_ADBKEYCODES */
+(brace
+id|ppc_md.ppc_kbd_sysrq_xlate
+op_assign
+id|pckbd_sysrq_xlate
+suffix:semicolon
+id|SYSRQ_KEY
+op_assign
+l_int|0x54
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
+macro_line|#elif defined(CONFIG_ADB_KEYBOARD)
+id|ppc_md.kbd_setkeycode
+op_assign
+id|mackbd_setkeycode
+suffix:semicolon
+id|ppc_md.kbd_getkeycode
+op_assign
+id|mackbd_getkeycode
+suffix:semicolon
+id|ppc_md.kbd_translate
+op_assign
+id|mackbd_translate
+suffix:semicolon
+id|ppc_md.kbd_unexpected_up
+op_assign
+id|mackbd_unexpected_up
+suffix:semicolon
+id|ppc_md.kbd_leds
+op_assign
+id|mackbd_leds
+suffix:semicolon
+id|ppc_md.kbd_rate_fn
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ppc_md.kbd_init_hw
+op_assign
+id|mackbd_init_hw
+suffix:semicolon
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+id|ppc_md.ppc_kbd_sysrq_xlate
+op_assign
+id|mackbd_sysrq_xlate
+suffix:semicolon
+id|SYSRQ_KEY
+op_assign
+l_int|0x69
+suffix:semicolon
+macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
+macro_line|#endif /* CONFIG_INPUT_ADBHID/CONFIG_ADB_KEYBOARD */
+macro_line|#endif /* CONFIG_VT */
+)brace
+r_void
+id|__init
 DECL|function|pmac_init
 id|pmac_init
 c_func
@@ -3063,113 +3102,12 @@ id|ppc_md.find_end_of_memory
 op_assign
 id|pmac_find_end_of_memory
 suffix:semicolon
-macro_line|#ifdef CONFIG_VT
-macro_line|#ifdef CONFIG_INPUT
-id|ppc_md.kbd_init_hw
-op_assign
-id|mac_hid_init_hw
-suffix:semicolon
-id|ppc_md.kbd_translate
-op_assign
-id|mac_hid_kbd_translate
-suffix:semicolon
-id|ppc_md.kbd_unexpected_up
-op_assign
-id|mac_hid_kbd_unexpected_up
-suffix:semicolon
-id|ppc_md.kbd_setkeycode
-op_assign
-l_int|0
-suffix:semicolon
-id|ppc_md.kbd_getkeycode
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
-macro_line|#ifdef CONFIG_MAC_ADBKEYCODES
-r_if
-c_cond
+id|select_adb_keyboard
+c_func
 (paren
-op_logical_neg
-id|keyboard_sends_linux_keycodes
 )paren
-(brace
-id|ppc_md.ppc_kbd_sysrq_xlate
-op_assign
-id|mac_hid_kbd_sysrq_xlate
 suffix:semicolon
-id|SYSRQ_KEY
-op_assign
-l_int|0x69
-suffix:semicolon
-)brace
-r_else
-macro_line|#endif /* CONFIG_MAC_ADBKEYCODES */
-(brace
-id|ppc_md.ppc_kbd_sysrq_xlate
-op_assign
-id|pckbd_sysrq_xlate
-suffix:semicolon
-id|SYSRQ_KEY
-op_assign
-l_int|0x54
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
-macro_line|#elif defined(CONFIG_ADB_KEYBOARD)
-id|ppc_md.kbd_setkeycode
-op_assign
-id|mackbd_setkeycode
-suffix:semicolon
-id|ppc_md.kbd_getkeycode
-op_assign
-id|mackbd_getkeycode
-suffix:semicolon
-id|ppc_md.kbd_translate
-op_assign
-id|mackbd_translate
-suffix:semicolon
-id|ppc_md.kbd_unexpected_up
-op_assign
-id|mackbd_unexpected_up
-suffix:semicolon
-id|ppc_md.kbd_leds
-op_assign
-id|mackbd_leds
-suffix:semicolon
-id|ppc_md.kbd_init_hw
-op_assign
-id|mackbd_init_hw
-suffix:semicolon
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
-id|ppc_md.ppc_kbd_sysrq_xlate
-op_assign
-id|mackbd_sysrq_xlate
-suffix:semicolon
-id|SYSRQ_KEY
-op_assign
-l_int|0x69
-suffix:semicolon
-macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
-macro_line|#endif /* CONFIG_INPUT_ADBHID/CONFIG_ADB_KEYBOARD */
-macro_line|#endif /* CONFIG_VT */
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) &amp;&amp; defined(CONFIG_BLK_DEV_IDE_PMAC)
-id|ppc_ide_md.insw
-op_assign
-id|pmac_ide_insw
-suffix:semicolon
-id|ppc_ide_md.outsw
-op_assign
-id|pmac_ide_outsw
-suffix:semicolon
-id|ppc_ide_md.default_irq
-op_assign
-id|pmac_ide_default_irq
-suffix:semicolon
-id|ppc_ide_md.default_io_base
-op_assign
-id|pmac_ide_default_io_base
-suffix:semicolon
 id|ppc_ide_md.ide_check_region
 op_assign
 id|pmac_ide_check_region
@@ -3181,10 +3119,6 @@ suffix:semicolon
 id|ppc_ide_md.ide_release_region
 op_assign
 id|pmac_ide_release_region
-suffix:semicolon
-id|ppc_ide_md.fix_driveid
-op_assign
-id|ppc_generic_ide_fix_driveid
 suffix:semicolon
 id|ppc_ide_md.ide_init_hwif
 op_assign
@@ -3263,13 +3197,13 @@ l_int|0
 )paren
 r_return
 suffix:semicolon
-id|prom_drawstring
+id|btext_drawstring
 c_func
 (paren
 id|s
 )paren
 suffix:semicolon
-id|prom_drawchar
+id|btext_drawchar
 c_func
 (paren
 l_char|&squot;&bslash;n&squot;

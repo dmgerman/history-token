@@ -70,8 +70,6 @@ DECL|macro|RELEVANT_IFLAG
 mdefine_line|#define RELEVANT_IFLAG(iflag)&t;(iflag &amp; (IGNBRK|BRKINT|IGNPAR|PARMRK|INPCK))
 DECL|macro|CHAR2INT16
 mdefine_line|#define CHAR2INT16(c1,c0)&t;(((u32)((c1) &amp; 0xff) &lt;&lt; 8) + (u32)((c0) &amp; 0xff))
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;&t;(((a)&lt;(b))?(a):(b))
 DECL|macro|NUM_BULK_URBS
 mdefine_line|#define NUM_BULK_URBS&t;&t;24
 DECL|macro|NUM_CONTROL_URBS
@@ -1701,8 +1699,10 @@ suffix:semicolon
 )brace
 id|buffer_size
 op_assign
-id|MIN
+id|min
 (paren
+r_int
+comma
 id|count
 comma
 id|bluetooth-&gt;bulk_out_buffer_size

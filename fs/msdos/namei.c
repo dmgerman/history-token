@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &quot;../fat/msbuffer.h&quot;
 DECL|macro|MSDOS_DEBUG
 mdefine_line|#define MSDOS_DEBUG 0
 DECL|macro|PRINTK

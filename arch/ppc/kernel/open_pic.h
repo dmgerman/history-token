@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.open_pic.h 1.8 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.open_pic.h 1.12 08/20/01 22:33:28 paulus&n; */
 multiline_comment|/*&n; *  arch/ppc/kernel/open_pic.h -- OpenPIC Interrupt Handling&n; *&n; *  Copyright (C) 1997 Geert Uytterhoeven&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive&n; *  for more details.&n; *  &n; */
 macro_line|#ifndef _PPC_KERNEL_OPEN_PIC_H
 DECL|macro|_PPC_KERNEL_OPEN_PIC_H
@@ -6,6 +6,13 @@ mdefine_line|#define _PPC_KERNEL_OPEN_PIC_H
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|OPENPIC_SIZE
 mdefine_line|#define OPENPIC_SIZE&t;0x40000
+multiline_comment|/*&n; *  Non-offset&squot;ed vector numbers&n; */
+DECL|macro|OPENPIC_VEC_TIMER
+mdefine_line|#define OPENPIC_VEC_TIMER&t;64&t;/* and up */
+DECL|macro|OPENPIC_VEC_IPI
+mdefine_line|#define OPENPIC_VEC_IPI&t;&t;72&t;/* and up */
+DECL|macro|OPENPIC_VEC_SPURIOUS
+mdefine_line|#define OPENPIC_VEC_SPURIOUS&t;127
 multiline_comment|/* OpenPIC IRQ controller structure */
 r_extern
 r_struct
@@ -49,6 +56,22 @@ r_char
 op_star
 comma
 r_int
+)paren
+suffix:semicolon
+r_extern
+id|u_int
+id|openpic_irq
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|openpic_eoi
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 r_extern
@@ -112,6 +135,25 @@ id|u_int
 id|cpumask
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|smp_openpic_message_pass
+c_func
+(paren
+r_int
+id|target
+comma
+r_int
+id|msg
+comma
+r_int
+r_int
+id|data
+comma
+r_int
+id|wait
+)paren
+suffix:semicolon
 DECL|function|openpic_to_irq
 r_extern
 r_inline
@@ -123,11 +165,27 @@ r_int
 id|irq
 )paren
 (brace
+multiline_comment|/* IRQ 0 usually means &squot;disabled&squot;.. don&squot;t mess with it &n;&t; * exceptions to this (sandpoint maybe?) &n;&t; * shouldn&squot;t use openpic_to_irq &n;&t; */
+r_if
+c_cond
+(paren
+id|irq
+op_ne
+l_int|0
+)paren
+(brace
 r_return
 id|irq
 op_add_assign
 id|NUM_8259_INTERRUPTS
 suffix:semicolon
+)brace
+r_else
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*extern int open_pic_irq_offset;*/
 macro_line|#endif /* _PPC_KERNEL_OPEN_PIC_H */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * super.h - Header file for super.c&n; *&n; * Copyright (C) 1995-1997 Martin von L&#xfffd;wis&n; * Copyright (C) 1996-1997 R&#xfffd;gis Duchesne&n; */
+multiline_comment|/*&n; * super.h - Header file for super.c&n; *&n; * Copyright (C) 1995-1997 Martin von L&#xfffd;wis&n; * Copyright (C) 1996-1997 R&#xfffd;gis Duchesne&n; * Copyright (c) 2001 Anton Altaparmakov&n; */
 DECL|macro|ALLOC_REQUIRE_LOCATION
 mdefine_line|#define ALLOC_REQUIRE_LOCATION 1
 DECL|macro|ALLOC_REQUIRE_SIZE
@@ -56,7 +56,7 @@ op_star
 id|vol
 )paren
 suffix:semicolon
-r_void
+r_int
 id|ntfs_insert_fixups
 c_func
 (paren
@@ -66,17 +66,13 @@ op_star
 id|rec
 comma
 r_int
-id|secsize
+id|rec_size
 )paren
 suffix:semicolon
 r_int
 id|ntfs_fixup_record
 c_func
 (paren
-id|ntfs_volume
-op_star
-id|vol
-comma
 r_char
 op_star
 id|record

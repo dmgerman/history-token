@@ -252,12 +252,6 @@ comma
 l_int|2048
 )paren
 suffix:semicolon
-id|sync_dev
-c_func
-(paren
-id|cdi-&gt;dev
-)paren
-suffix:semicolon
 id|scsi_CDs
 (braket
 id|MINOR

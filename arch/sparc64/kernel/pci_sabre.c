@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_sabre.c,v 1.38 2001/08/12 13:18:23 davem Exp $&n; * pci_sabre.c: Sabre specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: pci_sabre.c,v 1.39 2001/08/24 19:36:58 kanoj Exp $&n; * pci_sabre.c: Sabre specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -10,6 +10,7 @@ macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &quot;pci_impl.h&quot;
+macro_line|#include &quot;iommu_common.h&quot;
 multiline_comment|/* All SABRE registers are 64-bits.  The following accessor&n; * routines are how they are accessed.  The REG parameter&n; * is a physical address.&n; */
 DECL|macro|sabre_read
 mdefine_line|#define sabre_read(__reg) &bslash;&n;({&t;u64 __ret; &bslash;&n;&t;__asm__ __volatile__(&quot;ldxa [%1] %2, %0&quot; &bslash;&n;&t;&t;&t;     : &quot;=r&quot; (__ret) &bslash;&n;&t;&t;&t;     : &quot;r&quot; (__reg), &quot;i&quot; (ASI_PHYS_BYPASS_EC_E) &bslash;&n;&t;&t;&t;     : &quot;memory&quot;); &bslash;&n;&t;__ret; &bslash;&n;})
@@ -2959,7 +2960,7 @@ op_amp
 id|SABRE_IOMMUTAG_VPN
 )paren
 op_lshift
-id|PAGE_SHIFT
+id|IOMMU_PAGE_SHIFT
 )paren
 )paren
 suffix:semicolon
@@ -3020,7 +3021,7 @@ op_amp
 id|SABRE_IOMMUDATA_PPN
 )paren
 op_lshift
-id|PAGE_SHIFT
+id|IOMMU_PAGE_SHIFT
 )paren
 )paren
 suffix:semicolon

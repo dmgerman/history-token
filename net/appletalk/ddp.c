@@ -2756,6 +2756,7 @@ suffix:semicolon
 multiline_comment|/* ioctl calls. Shouldn&squot;t even need touching */
 multiline_comment|/* Device configuration ioctl calls */
 DECL|function|atif_ioctl
+r_static
 r_int
 id|atif_ioctl
 c_func
@@ -7171,7 +7172,17 @@ r_case
 id|SIOCDARP
 suffix:colon
 multiline_comment|/* proxy AARP */
-r_return
+(brace
+r_int
+id|ret
+suffix:semicolon
+id|rtnl_lock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|atif_ioctl
 c_func
 (paren
@@ -7184,6 +7195,15 @@ op_star
 id|arg
 )paren
 suffix:semicolon
+id|rtnl_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 multiline_comment|/* Physical layer ioctl calls */
 r_case
 id|SIOCSIFLINK

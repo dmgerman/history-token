@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * struct.h - Structure definitions&n; *&n; * Copyright (C) 1997 R&#xfffd;gis Duchesne&n; * Copyright (C) 2000-2001 Anton Altaparmakov (AIA)&n; */
+macro_line|#include &lt;linux/ntfs_fs.h&gt;
 multiline_comment|/* Necessary forward definition. */
 r_struct
 id|ntfs_inode
@@ -68,12 +69,13 @@ id|initialized
 comma
 id|compsize
 suffix:semicolon
-DECL|member|compressed
+DECL|member|flags
+id|ATTR_FLAGS
+id|flags
+suffix:semicolon
 DECL|member|resident
 DECL|member|indexed
-r_int
-id|compressed
-comma
+id|__u8
 id|resident
 comma
 id|indexed

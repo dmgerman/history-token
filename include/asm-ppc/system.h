@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.system.h 1.10 05/17/01 18:14:26 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.system.h 1.14 08/20/01 14:34:41 paulus&n; */
 multiline_comment|/*&n; * Copyright (C) 1999 Cort Dougan &lt;cort@cs.nmt.edu&gt;&n; */
 macro_line|#ifndef __PPC_SYSTEM_H
 DECL|macro|__PPC_SYSTEM_H
@@ -106,14 +106,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|_get_PVR
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+macro_line|#ifdef CONFIG_6xx
 r_extern
 r_int
 id|_get_L2CR
@@ -131,6 +124,12 @@ r_int
 r_int
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|_get_L2CR
+mdefine_line|#define _get_L2CR()&t;0
+DECL|macro|_set_L2CR
+mdefine_line|#define _set_L2CR(val)&t;do { } while(0)
+macro_line|#endif
 r_extern
 r_void
 id|via_cuda_init

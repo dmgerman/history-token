@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: iommu_common.c,v 1.4 2000/06/04 21:50:23 anton Exp $&n; * iommu_common.c: UltraSparc SBUS/PCI common iommu code.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: iommu_common.c,v 1.5 2001/08/24 17:57:51 kanoj Exp $&n; * iommu_common.c: UltraSparc SBUS/PCI common iommu code.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &quot;iommu_common.h&quot;
 multiline_comment|/* You are _strongly_ advised to enable the following debugging code&n; * any time you make changes to the sg code below, run it for a while&n; * with filesystems mounted read-only before buying the farm... -DaveM&n; */
 macro_line|#ifdef VERIFY_SG
@@ -158,7 +158,7 @@ id|start
 op_assign
 id|start
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 suffix:semicolon
 id|end
 op_assign
@@ -182,13 +182,13 @@ op_assign
 id|end
 op_plus
 (paren
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 op_minus
 l_int|1
 )paren
 )paren
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 suffix:semicolon
 id|pgcount
 op_add_assign
@@ -199,7 +199,7 @@ op_minus
 id|start
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 )brace
@@ -322,14 +322,14 @@ c_cond
 id|sgaddr
 op_amp
 op_complement
-id|PAGE_MASK
+id|IO_PAGE_MASK
 )paren
 op_ne
 (paren
 id|daddr
 op_amp
 op_complement
-id|PAGE_MASK
+id|IO_PAGE_MASK
 )paren
 )paren
 (brace
@@ -377,7 +377,7 @@ op_ne
 (paren
 id|sgaddr
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 )paren
 )paren
 (brace
@@ -397,7 +397,7 @@ comma
 (paren
 id|sgaddr
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 )paren
 op_minus
 id|PAGE_OFFSET
@@ -419,7 +419,7 @@ c_cond
 (paren
 id|sgaddr
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 )paren
 op_xor
 (paren
@@ -431,7 +431,7 @@ op_minus
 l_int|1
 )paren
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 )paren
 )paren
 (brace
@@ -446,10 +446,10 @@ op_assign
 (paren
 id|sgaddr
 op_plus
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 )paren
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 suffix:semicolon
 id|diff
 op_assign
@@ -507,7 +507,7 @@ op_logical_and
 id|daddr
 op_amp
 op_complement
-id|PAGE_MASK
+id|IO_PAGE_MASK
 )paren
 op_eq
 l_int|0
@@ -798,7 +798,7 @@ id|u32
 (paren
 id|sg-&gt;dvma_address
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 )paren
 )paren
 suffix:semicolon
@@ -859,9 +859,6 @@ suffix:semicolon
 multiline_comment|/* Seems to be ok */
 )brace
 macro_line|#endif
-multiline_comment|/* Two addresses are &quot;virtually contiguous&quot; if and only if:&n; * 1) They are equal, or...&n; * 2) They are both on a page boundry&n; */
-DECL|macro|VCONTIG
-mdefine_line|#define VCONTIG(__X, __Y)&t;(((__X) == (__Y)) || &bslash;&n;&t;&t;&t;&t; (((__X) | (__Y)) &lt;&lt; (64UL - PAGE_SHIFT)) == 0UL)
 DECL|function|prepare_sg
 r_int
 r_int
@@ -926,7 +923,7 @@ r_int
 id|sg-&gt;address
 op_amp
 (paren
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 op_minus
 l_int|1UL
 )paren
@@ -987,25 +984,25 @@ op_plus
 id|dent_len
 op_plus
 (paren
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 op_minus
 l_int|1UL
 )paren
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 id|dent_addr
 op_lshift_assign
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 suffix:semicolon
 id|dent_addr
 op_add_assign
 id|addr
 op_amp
 (paren
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 op_minus
 l_int|1UL
 )paren
@@ -1049,13 +1046,13 @@ r_int
 id|dent_len
 op_plus
 (paren
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 op_minus
 l_int|1UL
 )paren
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 suffix:semicolon
 )brace
 eof

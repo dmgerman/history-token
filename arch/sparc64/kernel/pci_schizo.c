@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_schizo.c,v 1.20 2001/08/12 13:18:23 davem Exp $&n; * pci_schizo.c: SCHIZO specific PCI controller support.&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pci_schizo.c,v 1.21 2001/08/24 19:36:58 kanoj Exp $&n; * pci_schizo.c: SCHIZO specific PCI controller support.&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/upa.h&gt;
 macro_line|#include &quot;pci_impl.h&quot;
+macro_line|#include &quot;iommu_common.h&quot;
 multiline_comment|/* All SCHIZO registers are 64-bits.  The following accessor&n; * routines are how they are accessed.  The REG parameter&n; * is a physical address.&n; */
 DECL|macro|schizo_read
 mdefine_line|#define schizo_read(__reg) &bslash;&n;({&t;u64 __ret; &bslash;&n;&t;__asm__ __volatile__(&quot;ldxa [%1] %2, %0&quot; &bslash;&n;&t;&t;&t;     : &quot;=r&quot; (__ret) &bslash;&n;&t;&t;&t;     : &quot;r&quot; (__reg), &quot;i&quot; (ASI_PHYS_BYPASS_EC_E) &bslash;&n;&t;&t;&t;     : &quot;memory&quot;); &bslash;&n;&t;__ret; &bslash;&n;})
@@ -2653,7 +2654,7 @@ op_amp
 id|SCHIZO_IOMMU_TAG_VPAGE
 )paren
 op_lshift
-id|PAGE_SHIFT
+id|IOMMU_PAGE_SHIFT
 )paren
 suffix:semicolon
 id|printk
@@ -2699,7 +2700,7 @@ op_amp
 id|SCHIZO_IOMMU_DATA_PPAGE
 )paren
 op_lshift
-id|PAGE_SHIFT
+id|IOMMU_PAGE_SHIFT
 )paren
 suffix:semicolon
 )brace
@@ -6823,7 +6824,11 @@ c_func
 (paren
 id|GFP_KERNEL
 comma
-l_int|7
+id|get_order
+c_func
+(paren
+id|IO_TSB_SIZE
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -6876,9 +6881,7 @@ id|tsbbase
 comma
 l_int|0
 comma
-id|PAGE_SIZE
-op_lshift
-l_int|7
+id|IO_TSB_SIZE
 )paren
 suffix:semicolon
 multiline_comment|/* We start with no consistent mappings. */

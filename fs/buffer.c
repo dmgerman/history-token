@@ -3391,7 +3391,6 @@ r_void
 id|balance_dirty
 c_func
 (paren
-id|NODEV
 )paren
 suffix:semicolon
 id|page_launder
@@ -4363,12 +4362,12 @@ suffix:semicolon
 )brace
 multiline_comment|/* -1 -&gt; no need to flush&n;    0 -&gt; async flush&n;    1 -&gt; sync flush (wait for I/O completion) */
 DECL|function|balance_dirty_state
+r_static
 r_int
 id|balance_dirty_state
 c_func
 (paren
-id|kdev_t
-id|dev
+r_void
 )paren
 (brace
 r_int
@@ -4447,8 +4446,7 @@ r_void
 id|balance_dirty
 c_func
 (paren
-id|kdev_t
-id|dev
+r_void
 )paren
 (brace
 r_int
@@ -4457,7 +4455,6 @@ op_assign
 id|balance_dirty_state
 c_func
 (paren
-id|dev
 )paren
 suffix:semicolon
 r_if
@@ -4480,7 +4477,7 @@ suffix:semicolon
 id|write_some_buffers
 c_func
 (paren
-id|dev
+id|NODEV
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * And if we&squot;re _really_ out of balance, wait for&n;&t; * some of the dirty/locked buffers ourselves and&n;&t; * start bdflush.&n;&t; * This will throttle heavy writers.&n;&t; */
@@ -4495,7 +4492,7 @@ l_int|0
 id|wait_for_some_buffers
 c_func
 (paren
-id|dev
+id|NODEV
 )paren
 suffix:semicolon
 id|wakeup_bdflush
@@ -4591,7 +4588,6 @@ suffix:semicolon
 id|balance_dirty
 c_func
 (paren
-id|bh-&gt;b_dev
 )paren
 suffix:semicolon
 )brace
@@ -6762,7 +6758,6 @@ id|need_balance_dirty
 id|balance_dirty
 c_func
 (paren
-id|bh-&gt;b_dev
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * is this a partial write that happened to make all buffers&n;&t; * uptodate then we can optimize away a bogus readpage() for&n;&t; * the next read(). Here we &squot;discover&squot; wether the page went&n;&t; * uptodate as a result of this (potentially partial) write.&n;&t; */
@@ -10005,6 +10000,25 @@ op_amp
 id|__GFP_IO
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|gfp_mask
+op_amp
+id|__GFP_HIGHIO
+)paren
+op_logical_and
+id|PageHighMem
+c_func
+(paren
+id|page
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|sync_page_buffers
 c_func
 (paren
@@ -11013,7 +11027,6 @@ op_logical_or
 id|balance_dirty_state
 c_func
 (paren
-id|NODEV
 )paren
 OL
 l_int|0

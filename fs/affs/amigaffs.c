@@ -1516,7 +1516,7 @@ comma
 id|inode
 )paren
 suffix:semicolon
-id|affs_lock_dir
+id|affs_unlock_dir
 c_func
 (paren
 id|dir

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.keylargo.h 1.9 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.keylargo.h 1.13 08/19/01 22:23:04 paulus&n; */
 multiline_comment|/*&n; * keylargo.h: definitions for using the &quot;KeyLargo&quot; I/O controller chip.&n; *&n; */
 multiline_comment|/* &quot;Pangea&quot; chipset has keylargo device-id 0x25 while core99&n; * has device-id 0x22. The rev. of the pangea one is 0, so we&n; * fake an artificial rev. in keylargo_rev by oring 0x100&n; */
 DECL|macro|KL_PANGEA_REV
@@ -38,8 +38,11 @@ DECL|macro|KL_GPIO_MODEM_RESET
 mdefine_line|#define KL_GPIO_MODEM_RESET&t;&t;(KEYLARGO_GPIO_0+0x03) /* Pangea */
 DECL|macro|KL_GPIO_MODEM_POWER
 mdefine_line|#define KL_GPIO_MODEM_POWER&t;&t;(KEYLARGO_GPIO_0+0x02) /* Pangea */
+multiline_comment|/* Hrm... this one is only to be used on Pismo. It seeem to also&n; * control the timebase enable on other machines. Still to be&n; * experimented... --BenH.&n; */
 DECL|macro|KL_GPIO_FW_CABLE_POWER
 mdefine_line|#define KL_GPIO_FW_CABLE_POWER&t;&t;(KEYLARGO_GPIO_0+0x09)
+DECL|macro|KL_GPIO_TB_ENABLE
+mdefine_line|#define KL_GPIO_TB_ENABLE&t;&t;(KEYLARGO_GPIO_0+0x09)
 DECL|macro|KL_GPIO_ETH_PHY_RESET
 mdefine_line|#define KL_GPIO_ETH_PHY_RESET&t;&t;(KEYLARGO_GPIO_0+0x10)
 DECL|macro|KL_GPIO_EXTINT_CPU1

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.mmu_context.h 1.12 06/28/01 15:50:17 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.mmu_context.h 1.15 08/16/01 23:00:17 paulus&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __PPC_MMU_CONTEXT_H
 DECL|macro|__PPC_MMU_CONTEXT_H
@@ -39,19 +39,25 @@ DECL|macro|NO_CONTEXT
 mdefine_line|#define NO_CONTEXT      &t;16
 DECL|macro|LAST_CONTEXT
 mdefine_line|#define LAST_CONTEXT    &t;15
+DECL|macro|FIRST_CONTEXT
+mdefine_line|#define FIRST_CONTEXT    &t;0
 macro_line|#elif CONFIG_4xx
 DECL|macro|NO_CONTEXT
 mdefine_line|#define NO_CONTEXT      &t;256
 DECL|macro|LAST_CONTEXT
 mdefine_line|#define LAST_CONTEXT    &t;255
+DECL|macro|FIRST_CONTEXT
+mdefine_line|#define FIRST_CONTEXT    &t;1
 macro_line|#else
 multiline_comment|/* PPC 6xx, 7xx CPUs */
 DECL|macro|NO_CONTEXT
 mdefine_line|#define NO_CONTEXT      &t;((mm_context_t) -1)
 DECL|macro|LAST_CONTEXT
 mdefine_line|#define LAST_CONTEXT    &t;32767
+DECL|macro|FIRST_CONTEXT
+mdefine_line|#define FIRST_CONTEXT    &t;1
 macro_line|#endif
-multiline_comment|/*&n; * Set the current MMU context.&n; * On 32-bit PowerPCs (other than the 8xx embedded chips), this is done by&n; * loading up the segment registers for the user part of the address space.&n; *&n; * On the 8xx parts, the context currently includes the page directory,&n; * and once I implement a real TLB context manager this will disappear.&n; * The PGD is ignored on other processors. - Dan&n; */
+multiline_comment|/*&n; * Set the current MMU context.&n; * On 32-bit PowerPCs (other than the 8xx embedded chips), this is done by&n; * loading up the segment registers for the user part of the address space.&n; *&n; * Since the PGD is immediately available, it is much faster to simply&n; * pass this along as a second parameter, which is required for 8xx and&n; * can be used for debugging on all processors (if you happen to have&n; * an Abatron).&n; */
 r_extern
 r_void
 id|set_context
@@ -59,6 +65,10 @@ c_func
 (paren
 id|mm_context_t
 id|context
+comma
+id|pgd_t
+op_star
+id|pgd
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Bitmap of contexts in use.&n; * The size of this bitmap is LAST_CONTEXT + 1 bits.&n; */
@@ -316,6 +326,8 @@ id|set_context
 c_func
 (paren
 id|next-&gt;context
+comma
+id|next-&gt;pgd
 )paren
 suffix:semicolon
 )brace
@@ -352,9 +364,19 @@ id|set_context
 c_func
 (paren
 id|mm-&gt;context
+comma
+id|mm-&gt;pgd
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|mmu_context_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* __PPC_MMU_CONTEXT_H */
 macro_line|#endif /* __KERNEL__ */
 eof

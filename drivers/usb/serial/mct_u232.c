@@ -46,8 +46,6 @@ DECL|variable|write_blocking
 r_static
 r_int
 id|write_blocking
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* disabled by default */
 macro_line|#endif
@@ -1852,6 +1850,9 @@ c_cond
 id|from_user
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -1861,7 +1862,19 @@ id|buf
 comma
 id|size
 )paren
+)paren
+(brace
+id|up
+(paren
+op_amp
+id|port-&gt;sem
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -3088,8 +3101,6 @@ op_member_access_from_pointer
 r_private
 suffix:semicolon
 r_int
-id|ret
-comma
 id|mask
 suffix:semicolon
 id|dbg
@@ -3141,9 +3152,6 @@ multiline_comment|/* turns off (Clears) the lines as specified by the mask */
 r_if
 c_cond
 (paren
-(paren
-id|ret
-op_assign
 id|get_user
 c_func
 (paren
@@ -3157,9 +3165,9 @@ op_star
 id|arg
 )paren
 )paren
-)paren
 r_return
-id|ret
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond

@@ -1,9 +1,25 @@
-multiline_comment|/* $Id: iommu_common.h,v 1.1 1999/12/17 12:31:54 jj Exp $&n; * iommu_common.h: UltraSparc SBUS/PCI common iommu declarations.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: iommu_common.h,v 1.3 2001/08/24 19:36:58 kanoj Exp $&n; * iommu_common.h: UltraSparc SBUS/PCI common iommu declarations.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
+multiline_comment|/*&n; * These give mapping size of each iommu pte/tlb.&n; */
+DECL|macro|IO_PAGE_SHIFT
+mdefine_line|#define IO_PAGE_SHIFT&t;&t;&t;13
+DECL|macro|IO_PAGE_SIZE
+mdefine_line|#define IO_PAGE_SIZE&t;&t;&t;(1UL &lt;&lt; IO_PAGE_SHIFT)
+DECL|macro|IO_PAGE_MASK
+mdefine_line|#define IO_PAGE_MASK&t;&t;&t;(~(IO_PAGE_SIZE-1))
+DECL|macro|IO_PAGE_ALIGN
+mdefine_line|#define IO_PAGE_ALIGN(addr)&t;&t;(((addr)+IO_PAGE_SIZE-1)&amp;IO_PAGE_MASK)
+DECL|macro|IO_TSB_ENTRIES
+mdefine_line|#define IO_TSB_ENTRIES&t;&t;&t;(128*1024)
+DECL|macro|IO_TSB_SIZE
+mdefine_line|#define IO_TSB_SIZE&t;&t;&t;(IO_TSB_ENTRIES * 8)
+multiline_comment|/*&n; * This is the hardwired shift in the iotlb tag/data parts.&n; */
+DECL|macro|IOMMU_PAGE_SHIFT
+mdefine_line|#define IOMMU_PAGE_SHIFT&t;&t;13
 multiline_comment|/* You are _strongly_ advised to enable the following debugging code&n; * any time you make changes to the sg code below, run it for a while&n; * with filesystems mounted read-only before buying the farm... -DaveM&n; */
 DECL|macro|VERIFY_SG
 macro_line|#undef VERIFY_SG

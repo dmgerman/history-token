@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.traps.c 1.16 07/31/01 10:53:34 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.traps.c 1.19 08/24/01 20:07:37 paulus&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/traps.c&n; *&n; *  Copyright (C) 1995-1996  Gary Thomas (gdt@linuxppc.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  and Paul Mackerras (paulus@cs.anu.edu.au)&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of hardware exceptions&n; */
 macro_line|#include &lt;linux/errno.h&gt;
@@ -890,9 +890,10 @@ id|regs-&gt;gpr
 id|rd
 )braket
 op_assign
-id|_get_PVR
+id|mfspr
 c_func
 (paren
+id|PVR
 )paren
 suffix:semicolon
 id|retval
@@ -1426,6 +1427,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+macro_line|#if !defined(CONFIG_TAU_INT)
 r_void
 DECL|function|TAUException
 id|TAUException
@@ -1450,6 +1452,7 @@ id|regs-&gt;trap
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_INT_TAU */
 DECL|function|trap_init
 r_void
 id|__init

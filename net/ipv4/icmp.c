@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;NET3:&t;Implementation of the ICMP protocol layer. &n; *&t;&n; *&t;&t;Alan Cox, &lt;alan@redhat.com&gt;&n; *&n; *&t;Version: $Id: icmp.c,v 1.79 2001/08/03 22:20:39 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Some of the function names and the icmp unreach table for this&n; *&t;module were derived from [icmp.c 1.0.11 06/02/93] by&n; *&t;Ross Biro, Fred N. van Kempen, Mark Evans, Alan Cox, Gerhard Koerting.&n; *&t;Other than that this module is a complete rewrite.&n; *&n; *&t;Fixes:&n; *&t;&t;Mike Shaver&t;:&t;RFC1122 checks.&n; *&t;&t;Alan Cox&t;:&t;Multicast ping reply as self.&n; *&t;&t;Alan Cox&t;:&t;Fix atomicity lockup in ip_build_xmit &n; *&t;&t;&t;&t;&t;call.&n; *&t;&t;Alan Cox&t;:&t;Added 216,128 byte paths to the MTU &n; *&t;&t;&t;&t;&t;code.&n; *&t;&t;Martin Mares&t;:&t;RFC1812 checks.&n; *&t;&t;Martin Mares&t;:&t;Can be configured to follow redirects &n; *&t;&t;&t;&t;&t;if acting as a router _without_ a&n; *&t;&t;&t;&t;&t;routing protocol (RFC 1812).&n; *&t;&t;Martin Mares&t;:&t;Echo requests may be configured to &n; *&t;&t;&t;&t;&t;be ignored (RFC 1812).&n; *&t;&t;Martin Mares&t;:&t;Limitation of ICMP error message &n; *&t;&t;&t;&t;&t;transmit rate (RFC 1812).&n; *&t;&t;Martin Mares&t;:&t;TOS and Precedence set correctly &n; *&t;&t;&t;&t;&t;(RFC 1812).&n; *&t;&t;Martin Mares&t;:&t;Now copying as much data from the &n; *&t;&t;&t;&t;&t;original packet as we can without&n; *&t;&t;&t;&t;&t;exceeding 576 bytes (RFC 1812).&n; *&t;Willy Konynenberg&t;:&t;Transparent proxying support.&n; *&t;&t;Keith Owens&t;:&t;RFC1191 correction for 4.2BSD based &n; *&t;&t;&t;&t;&t;path MTU bug.&n; *&t;&t;Thomas Quinot&t;:&t;ICMP Dest Unreach codes up to 15 are&n; *&t;&t;&t;&t;&t;valid (RFC 1812).&n; *&t;&t;Andi Kleen&t;:&t;Check all packet lengths properly&n; *&t;&t;&t;&t;&t;and moved all kfree_skb() up to&n; *&t;&t;&t;&t;&t;icmp_rcv.&n; *&t;&t;Andi Kleen&t;:&t;Move the rate limit bookkeeping&n; *&t;&t;&t;&t;&t;into the dest entry and use a token&n; *&t;&t;&t;&t;&t;bucket filter (thanks to ANK). Make&n; *&t;&t;&t;&t;&t;the rates sysctl configurable.&n; *&t;&t;Yu Tianli&t;:&t;Fixed two ugly bugs in icmp_send&n; *&t;&t;&t;&t;&t;- IP option length was accounted wrongly&n; *&t;&t;&t;&t;&t;- ICMP header length was not accounted at all.&n; *              Tristan Greaves :       Added sysctl option to ignore bogus broadcast&n; *                                      responses from broken routers.&n; *&n; * To Fix:&n; *&n; *&t;- Should use skb_pull() instead of all the manual checking.&n; *&t;  This would also greatly simply some upper layer error handlers. --AK&n; *&n; */
+multiline_comment|/*&n; *&t;NET3:&t;Implementation of the ICMP protocol layer. &n; *&t;&n; *&t;&t;Alan Cox, &lt;alan@redhat.com&gt;&n; *&n; *&t;Version: $Id: icmp.c,v 1.80 2001/08/22 20:38:41 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Some of the function names and the icmp unreach table for this&n; *&t;module were derived from [icmp.c 1.0.11 06/02/93] by&n; *&t;Ross Biro, Fred N. van Kempen, Mark Evans, Alan Cox, Gerhard Koerting.&n; *&t;Other than that this module is a complete rewrite.&n; *&n; *&t;Fixes:&n; *&t;Clemens Fruhwirth&t;:&t;introduce global icmp rate limiting&n; *&t;&t;&t;&t;&t;with icmp type masking ability instead&n; *&t;&t;&t;&t;&t;of broken per type icmp timeouts.&n; *&t;&t;Mike Shaver&t;:&t;RFC1122 checks.&n; *&t;&t;Alan Cox&t;:&t;Multicast ping reply as self.&n; *&t;&t;Alan Cox&t;:&t;Fix atomicity lockup in ip_build_xmit &n; *&t;&t;&t;&t;&t;call.&n; *&t;&t;Alan Cox&t;:&t;Added 216,128 byte paths to the MTU &n; *&t;&t;&t;&t;&t;code.&n; *&t;&t;Martin Mares&t;:&t;RFC1812 checks.&n; *&t;&t;Martin Mares&t;:&t;Can be configured to follow redirects &n; *&t;&t;&t;&t;&t;if acting as a router _without_ a&n; *&t;&t;&t;&t;&t;routing protocol (RFC 1812).&n; *&t;&t;Martin Mares&t;:&t;Echo requests may be configured to &n; *&t;&t;&t;&t;&t;be ignored (RFC 1812).&n; *&t;&t;Martin Mares&t;:&t;Limitation of ICMP error message &n; *&t;&t;&t;&t;&t;transmit rate (RFC 1812).&n; *&t;&t;Martin Mares&t;:&t;TOS and Precedence set correctly &n; *&t;&t;&t;&t;&t;(RFC 1812).&n; *&t;&t;Martin Mares&t;:&t;Now copying as much data from the &n; *&t;&t;&t;&t;&t;original packet as we can without&n; *&t;&t;&t;&t;&t;exceeding 576 bytes (RFC 1812).&n; *&t;Willy Konynenberg&t;:&t;Transparent proxying support.&n; *&t;&t;Keith Owens&t;:&t;RFC1191 correction for 4.2BSD based &n; *&t;&t;&t;&t;&t;path MTU bug.&n; *&t;&t;Thomas Quinot&t;:&t;ICMP Dest Unreach codes up to 15 are&n; *&t;&t;&t;&t;&t;valid (RFC 1812).&n; *&t;&t;Andi Kleen&t;:&t;Check all packet lengths properly&n; *&t;&t;&t;&t;&t;and moved all kfree_skb() up to&n; *&t;&t;&t;&t;&t;icmp_rcv.&n; *&t;&t;Andi Kleen&t;:&t;Move the rate limit bookkeeping&n; *&t;&t;&t;&t;&t;into the dest entry and use a token&n; *&t;&t;&t;&t;&t;bucket filter (thanks to ANK). Make&n; *&t;&t;&t;&t;&t;the rates sysctl configurable.&n; *&t;&t;Yu Tianli&t;:&t;Fixed two ugly bugs in icmp_send&n; *&t;&t;&t;&t;&t;- IP option length was accounted wrongly&n; *&t;&t;&t;&t;&t;- ICMP header length was not accounted at all.&n; *              Tristan Greaves :       Added sysctl option to ignore bogus broadcast&n; *                                      responses from broken routers.&n; *&n; * To Fix:&n; *&n; *&t;- Should use skb_pull() instead of all the manual checking.&n; *&t;  This would also greatly simply some upper layer error handlers. --AK&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -235,6 +235,21 @@ DECL|variable|sysctl_icmp_ignore_bogus_error_responses
 r_int
 id|sysctl_icmp_ignore_bogus_error_responses
 suffix:semicolon
+multiline_comment|/* &n; * &t;Configurable global rate limit.&n; *&n; *&t;ratelimit defines tokens/packet consumed for dst-&gt;rate_token bucket&n; *&t;ratemask defines which icmp types are ratelimited by setting&n; * &t;it&squot;s bit position.&n; *&n; *&t;default: &n; *&t;dest unreachable (0x03), source quench (0x04),&n; *&t;time exceeded (0x11), parameter problem (0x12)&n; */
+DECL|variable|sysctl_icmp_ratelimit
+r_int
+id|sysctl_icmp_ratelimit
+op_assign
+l_int|1
+op_star
+id|HZ
+suffix:semicolon
+DECL|variable|sysctl_icmp_ratemask
+r_int
+id|sysctl_icmp_ratemask
+op_assign
+l_int|0x1818
+suffix:semicolon
 multiline_comment|/*&n; *&t;ICMP control array. This specifies what to do with each ICMP.&n; */
 DECL|struct|icmp_control
 r_struct
@@ -272,12 +287,6 @@ r_int
 id|error
 suffix:semicolon
 multiline_comment|/* This ICMP is classed as an error message */
-DECL|member|timeout
-r_int
-op_star
-id|timeout
-suffix:semicolon
-multiline_comment|/* Rate limit */
 )brace
 suffix:semicolon
 DECL|variable|icmp_pointers
@@ -452,7 +461,7 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Send an ICMP frame.&n; */
-multiline_comment|/*&n; *&t;Check transmit rate limitation for given message.&n; *&t;The rate information is held in the destination cache now.&n; *&t;This function is generic and could be used for other purposes&n; *&t;too. It uses a Token bucket filter as suggested by Alexey Kuznetsov.&n; *&n; *&t;Note that the same dst_entry fields are modified by functions in &n; *&t;route.c too, but these work for packet destinations while xrlim_allow&n; *&t;works for icmp destinations. This means the rate limiting information&n; *&t;for one &quot;ip object&quot; is shared.&n; *&n; *&t;Note that the same dst_entry fields are modified by functions in &n; *&t;route.c too, but these work for packet destinations while xrlim_allow&n; *&t;works for icmp destinations. This means the rate limiting information&n; *&t;for one &quot;ip object&quot; is shared - and these ICMPs are twice limited:&n; *&t;by source and by destination.&n; *&n; *&t;RFC 1812: 4.3.2.8 SHOULD be able to limit error message rate&n; *&t;&t;&t;  SHOULD allow setting of rate limits &n; *&n; * &t;Shared between ICMPv4 and ICMPv6.&n; */
+multiline_comment|/*&n; *&t;Check transmit rate limitation for given message.&n; *&t;The rate information is held in the destination cache now.&n; *&t;This function is generic and could be used for other purposes&n; *&t;too. It uses a Token bucket filter as suggested by Alexey Kuznetsov.&n; *&n; *&t;Note that the same dst_entry fields are modified by functions in &n; *&t;route.c too, but these work for packet destinations while xrlim_allow&n; *&t;works for icmp destinations. This means the rate limiting information&n; *&t;for one &quot;ip object&quot; is shared - and these ICMPs are twice limited:&n; *&t;by source and by destination.&n; *&n; *&t;RFC 1812: 4.3.2.8 SHOULD be able to limit error message rate&n; *&t;&t;&t;  SHOULD allow setting of rate limits &n; *&n; * &t;Shared between ICMPv4 and ICMPv6.&n; */
 DECL|macro|XRLIM_BURST_FACTOR
 mdefine_line|#define XRLIM_BURST_FACTOR 6
 DECL|function|xrlim_allow
@@ -473,12 +482,6 @@ r_int
 r_int
 id|now
 suffix:semicolon
-r_static
-r_int
-id|burst
-op_assign
-id|HZ
-suffix:semicolon
 id|now
 op_assign
 id|jiffies
@@ -496,28 +499,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|burst
-OL
-id|XRLIM_BURST_FACTOR
-op_star
-id|timeout
-)paren
-id|burst
-op_assign
-id|XRLIM_BURST_FACTOR
-op_star
-id|timeout
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|dst-&gt;rate_tokens
 OG
-id|burst
+id|XRLIM_BURST_FACTOR
+op_star
+id|timeout
 )paren
 id|dst-&gt;rate_tokens
 op_assign
-id|burst
+id|XRLIM_BURST_FACTOR
+op_star
+id|timeout
 suffix:semicolon
 r_if
 c_cond
@@ -572,14 +564,6 @@ c_cond
 id|type
 OG
 id|NR_ICMP_TYPES
-op_logical_or
-op_logical_neg
-id|icmp_pointers
-(braket
-id|type
-)braket
-dot
-id|timeout
 )paren
 r_return
 l_int|1
@@ -599,17 +583,6 @@ id|ICMP_FRAG_NEEDED
 r_return
 l_int|1
 suffix:semicolon
-multiline_comment|/* Redirect has its own rate limit mechanism */
-r_if
-c_cond
-(paren
-id|type
-op_eq
-id|ICMP_REDIRECT
-)paren
-r_return
-l_int|1
-suffix:semicolon
 multiline_comment|/* No rate limit on loopback */
 r_if
 c_cond
@@ -625,22 +598,32 @@ id|IFF_LOOPBACK
 r_return
 l_int|1
 suffix:semicolon
+multiline_comment|/* Limit if icmp type is enabled in ratemask. */
+r_if
+c_cond
+(paren
+(paren
+l_int|1
+op_lshift
+id|type
+)paren
+op_amp
+id|sysctl_icmp_ratemask
+)paren
+(brace
 r_return
 id|xrlim_allow
 c_func
 (paren
 id|dst
 comma
-op_star
-(paren
-id|icmp_pointers
-(braket
-id|type
-)braket
-dot
-id|timeout
+id|sysctl_icmp_ratelimit
 )paren
-)paren
+suffix:semicolon
+)brace
+r_else
+r_return
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Maintain the counters used in the SNMP statistics for outgoing ICMP&n; */
@@ -2884,36 +2867,6 @@ r_goto
 id|drop
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * &t;Configurable rate limits.&n; *&t;Someone should check if these default values are correct.&n; *&t;Note that these values interact with the routing cache GC timeout.&n; *&t;If you chose them too high they won&squot;t take effect, because the&n; *&t;dst_entry gets expired too early. The same should happen when&n; *&t;the cache grows too big.&n; */
-DECL|variable|sysctl_icmp_destunreach_time
-r_int
-id|sysctl_icmp_destunreach_time
-op_assign
-l_int|1
-op_star
-id|HZ
-suffix:semicolon
-DECL|variable|sysctl_icmp_timeexceed_time
-r_int
-id|sysctl_icmp_timeexceed_time
-op_assign
-l_int|1
-op_star
-id|HZ
-suffix:semicolon
-DECL|variable|sysctl_icmp_paramprob_time
-r_int
-id|sysctl_icmp_paramprob_time
-op_assign
-l_int|1
-op_star
-id|HZ
-suffix:semicolon
-DECL|variable|sysctl_icmp_echoreply_time
-r_int
-id|sysctl_icmp_echoreply_time
-suffix:semicolon
-multiline_comment|/* don&squot;t limit it per default. */
 multiline_comment|/*&n; *&t;This table is the definition of how we handle ICMP.&n; */
 DECL|variable|icmp_pointers
 r_static
@@ -2948,9 +2901,6 @@ comma
 id|icmp_discard
 comma
 l_int|0
-comma
-op_amp
-id|sysctl_icmp_echoreply_time
 )brace
 comma
 (brace
@@ -2973,7 +2923,6 @@ comma
 id|icmp_discard
 comma
 l_int|1
-comma
 )brace
 comma
 (brace
@@ -2996,7 +2945,6 @@ comma
 id|icmp_discard
 comma
 l_int|1
-comma
 )brace
 comma
 multiline_comment|/* DEST UNREACH (3) */
@@ -3020,9 +2968,6 @@ comma
 id|icmp_unreach
 comma
 l_int|1
-comma
-op_amp
-id|sysctl_icmp_destunreach_time
 )brace
 comma
 multiline_comment|/* SOURCE QUENCH (4) */
@@ -3046,7 +2991,6 @@ comma
 id|icmp_unreach
 comma
 l_int|1
-comma
 )brace
 comma
 multiline_comment|/* REDIRECT (5) */
@@ -3070,7 +3014,6 @@ comma
 id|icmp_redirect
 comma
 l_int|1
-comma
 )brace
 comma
 (brace
@@ -3093,7 +3036,6 @@ comma
 id|icmp_discard
 comma
 l_int|1
-comma
 )brace
 comma
 (brace
@@ -3116,7 +3058,6 @@ comma
 id|icmp_discard
 comma
 l_int|1
-comma
 )brace
 comma
 multiline_comment|/* ECHO (8) */
@@ -3140,7 +3081,6 @@ comma
 id|icmp_echo
 comma
 l_int|0
-comma
 )brace
 comma
 (brace
@@ -3163,7 +3103,6 @@ comma
 id|icmp_discard
 comma
 l_int|1
-comma
 )brace
 comma
 (brace
@@ -3186,7 +3125,6 @@ comma
 id|icmp_discard
 comma
 l_int|1
-comma
 )brace
 comma
 multiline_comment|/* TIME EXCEEDED (11) */
@@ -3210,9 +3148,6 @@ comma
 id|icmp_unreach
 comma
 l_int|1
-comma
-op_amp
-id|sysctl_icmp_timeexceed_time
 )brace
 comma
 multiline_comment|/* PARAMETER PROBLEM (12) */
@@ -3236,9 +3171,6 @@ comma
 id|icmp_unreach
 comma
 l_int|1
-comma
-op_amp
-id|sysctl_icmp_paramprob_time
 )brace
 comma
 multiline_comment|/* TIMESTAMP (13) */
@@ -3262,7 +3194,6 @@ comma
 id|icmp_timestamp
 comma
 l_int|0
-comma
 )brace
 comma
 multiline_comment|/* TIMESTAMP REPLY (14) */
@@ -3286,7 +3217,6 @@ comma
 id|icmp_discard
 comma
 l_int|0
-comma
 )brace
 comma
 multiline_comment|/* INFO (15) */
@@ -3310,7 +3240,6 @@ comma
 id|icmp_discard
 comma
 l_int|0
-comma
 )brace
 comma
 multiline_comment|/* INFO REPLY (16) */
@@ -3334,7 +3263,6 @@ comma
 id|icmp_discard
 comma
 l_int|0
-comma
 )brace
 comma
 multiline_comment|/* ADDR MASK (17) */
@@ -3358,7 +3286,6 @@ comma
 id|icmp_address
 comma
 l_int|0
-comma
 )brace
 comma
 multiline_comment|/* ADDR MASK REPLY (18) */
@@ -3382,7 +3309,6 @@ comma
 id|icmp_address_reply
 comma
 l_int|0
-comma
 )brace
 )brace
 suffix:semicolon

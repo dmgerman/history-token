@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.smp.h 1.9 05/17/01 18:14:25 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.smp.h 1.12 08/16/01 07:49:31 paulus&n; */
 multiline_comment|/* smp.h: PPC specific SMP stuff.&n; *&n; * Original was a copy of sparc smp.h.  Now heavily modified&n; * for PPC.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996-2001 Cort Dougan &lt;cort@fsmlabs.com&gt;&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_SMP_H
@@ -72,6 +72,10 @@ id|NR_CPUS
 )braket
 suffix:semicolon
 r_extern
+r_int
+id|smp_tb_synchronized
+suffix:semicolon
+r_extern
 r_void
 id|smp_store_cpu_info
 c_func
@@ -107,6 +111,16 @@ c_func
 (paren
 r_int
 comma
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|smp_local_timer_interrupt
+c_func
+(paren
 r_struct
 id|pt_regs
 op_star

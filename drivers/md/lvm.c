@@ -3680,12 +3680,6 @@ id|minor
 )paren
 suffix:semicolon
 macro_line|#endif
-id|sync_dev
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

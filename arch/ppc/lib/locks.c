@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.locks.c 1.8 05/17/01 18:14:22 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.locks.c 1.11 08/19/01 22:27:32 paulus&n; */
 multiline_comment|/*&n; * Locks for smp ppc &n; * &n; * Written by Cort Dougan (cort@cs.nmt.edu)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -7,12 +7,59 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-DECL|macro|DEBUG_LOCKS
-mdefine_line|#define DEBUG_LOCKS 1
+macro_line|#ifdef SPINLOCK_DEBUG
 DECL|macro|INIT_STUCK
 macro_line|#undef INIT_STUCK
 DECL|macro|INIT_STUCK
 mdefine_line|#define INIT_STUCK 200000000 /*0xffffffff*/
+multiline_comment|/*&n; * Try to acquire a spinlock.&n; * Only does the stwcx. if the load returned 0 - the Programming&n; * Environments Manual suggests not doing unnecessary stcwx.&squot;s&n; * since they may inhibit forward progress by other CPUs in getting&n; * a lock.&n; */
+DECL|function|__spin_trylock
+r_static
+r_int
+r_int
+id|__spin_trylock
+c_func
+(paren
+r_volatile
+r_int
+r_int
+op_star
+id|lock
+)paren
+(brace
+r_int
+r_int
+id|ret
+suffix:semicolon
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;bne&t;2f&bslash;n&bslash;&n;&t;stwcx.&t;%2,0,%1&bslash;n&bslash;&n;&t;bne-&t;1b&bslash;n&bslash;&n;&t;isync&bslash;n&bslash;&n;2:&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|ret
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|lock
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+l_int|1
+)paren
+suffix:colon
+l_string|&quot;cr0&quot;
+comma
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 DECL|function|_spin_lock
 r_void
 id|_spin_lock
@@ -31,14 +78,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_LOCKS
 r_int
 r_int
 id|stuck
 op_assign
 id|INIT_STUCK
 suffix:semicolon
-macro_line|#endif /* DEBUG_LOCKS */
 r_while
 c_loop
 (paren
@@ -50,7 +95,19 @@ id|lock-&gt;lock
 )paren
 )paren
 (brace
-macro_line|#ifdef DEBUG_LOCKS
+r_while
+c_loop
+(paren
+(paren
+r_int
+r_volatile
+r_int
+)paren
+id|lock-&gt;lock
+op_ne
+l_int|0
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -87,7 +144,7 @@ suffix:semicolon
 multiline_comment|/* steal the lock */
 multiline_comment|/*xchg_u32((void *)&amp;lock-&gt;lock,0);*/
 )brace
-macro_line|#endif /* DEBUG_LOCKS */
+)brace
 )brace
 id|lock-&gt;owner_pc
 op_assign
@@ -162,7 +219,6 @@ op_star
 id|lp
 )paren
 (brace
-macro_line|#ifdef DEBUG_LOCKS
 r_if
 c_cond
 (paren
@@ -224,7 +280,6 @@ comma
 id|lp-&gt;lock
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG_LOCKS */
 id|lp-&gt;owner_pc
 op_assign
 id|lp-&gt;owner_cpu
@@ -240,11 +295,6 @@ id|lp-&gt;lock
 op_assign
 l_int|0
 suffix:semicolon
-id|wmb
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Just like x86, implement read-write locks as a 32-bit counter&n; * with the high bit (sign) being the &quot;write&quot; bit.&n; * -- Cort&n; */
 DECL|function|_read_lock
@@ -257,7 +307,6 @@ op_star
 id|rw
 )paren
 (brace
-macro_line|#ifdef DEBUG_LOCKS
 r_int
 r_int
 id|stuck
@@ -272,15 +321,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG_LOCKS */&t;&t;  
 id|again
 suffix:colon
 multiline_comment|/* get our read lock in there */
-id|wmb
-c_func
-(paren
-)paren
-suffix:semicolon
 id|atomic_inc
 c_func
 (paren
@@ -350,7 +393,6 @@ OL
 l_int|0
 )paren
 (brace
-macro_line|#ifdef DEBUG_LOCKS
 r_if
 c_cond
 (paren
@@ -374,7 +416,6 @@ op_assign
 id|INIT_STUCK
 suffix:semicolon
 )brace
-macro_line|#endif /* DEBUG_LOCKS */
 )brace
 multiline_comment|/* try to get the read lock again */
 r_goto
@@ -397,7 +438,6 @@ op_star
 id|rw
 )paren
 (brace
-macro_line|#ifdef DEBUG_LOCKS
 r_if
 c_cond
 (paren
@@ -419,7 +459,6 @@ comma
 id|rw-&gt;lock
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG_LOCKS */
 id|wmb
 c_func
 (paren
@@ -440,11 +479,6 @@ op_member_access_from_pointer
 id|lock
 )paren
 suffix:semicolon
-id|wmb
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 DECL|function|_write_lock
 r_void
@@ -456,7 +490,6 @@ op_star
 id|rw
 )paren
 (brace
-macro_line|#ifdef DEBUG_LOCKS
 r_int
 r_int
 id|stuck
@@ -471,14 +504,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG_LOCKS */&t;&t;  
 id|again
 suffix:colon
-id|wmb
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -514,7 +541,6 @@ l_int|31
 )paren
 multiline_comment|/* wait for write lock */
 (brace
-macro_line|#ifdef DEBUG_LOCKS
 r_if
 c_cond
 (paren
@@ -540,7 +566,6 @@ op_assign
 id|INIT_STUCK
 suffix:semicolon
 )brace
-macro_line|#endif /* DEBUG_LOCKS */&t;&t;  
 id|barrier
 c_func
 (paren
@@ -600,7 +625,6 @@ l_int|31
 )paren
 )paren
 (brace
-macro_line|#ifdef DEBUG_LOCKS
 r_if
 c_cond
 (paren
@@ -626,7 +650,6 @@ op_assign
 id|INIT_STUCK
 suffix:semicolon
 )brace
-macro_line|#endif /* DEBUG_LOCKS */
 id|barrier
 c_func
 (paren
@@ -653,7 +676,6 @@ op_star
 id|rw
 )paren
 (brace
-macro_line|#ifdef DEBUG_LOCKS
 r_if
 c_cond
 (paren
@@ -682,7 +704,6 @@ comma
 id|rw-&gt;lock
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG_LOCKS */
 id|wmb
 c_func
 (paren
@@ -701,272 +722,6 @@ op_member_access_from_pointer
 id|lock
 )paren
 suffix:semicolon
-id|wmb
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
-DECL|function|__lock_kernel
-r_void
-id|__lock_kernel
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-)paren
-(brace
-macro_line|#ifdef DEBUG_LOCKS
-r_int
-r_int
-id|stuck
-op_assign
-id|INIT_STUCK
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-r_int
-r_int
-)paren
-(paren
-id|task-&gt;lock_depth
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;__lock_kernel(): %s/%d (nip %08lX) lock depth %x&bslash;n&quot;
-comma
-id|task-&gt;comm
-comma
-id|task-&gt;pid
-comma
-id|task-&gt;thread.regs-&gt;nip
-comma
-id|task-&gt;lock_depth
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* DEBUG_LOCKS */
-r_if
-c_cond
-(paren
-id|atomic_inc_return
-c_func
-(paren
-(paren
-id|atomic_t
-op_star
-)paren
-op_amp
-id|task-&gt;lock_depth
-)paren
-op_ne
-l_int|1
-)paren
-r_return
-suffix:semicolon
-multiline_comment|/* mine! */
-r_while
-c_loop
-(paren
-id|__spin_trylock
-c_func
-(paren
-op_amp
-id|klock_info.kernel_flag
-)paren
-)paren
-(brace
-macro_line|#ifdef DEBUG_LOCKS
-r_if
-c_cond
-(paren
-op_logical_neg
-op_decrement
-id|stuck
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;_lock_kernel() CPU#%d NIP %p&bslash;n&quot;
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|__builtin_return_address
-c_func
-(paren
-l_int|0
-)paren
-)paren
-suffix:semicolon
-id|stuck
-op_assign
-id|INIT_STUCK
-suffix:semicolon
-)brace
-macro_line|#endif /* DEBUG_LOCKS */
-)brace
-id|klock_info.akp
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* my kernel mode! mine!!! */
-)brace
-DECL|function|__unlock_kernel
-r_void
-id|__unlock_kernel
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-)paren
-(brace
-macro_line|#ifdef DEBUG_LOCKS
-r_if
-c_cond
-(paren
-(paren
-id|task-&gt;lock_depth
-op_eq
-l_int|0
-)paren
-op_logical_or
-(paren
-id|klock_info.kernel_flag
-op_ne
-id|KLOCK_HELD
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;__unlock_kernel(): %s/%d (nip %08lX) &quot;
-l_string|&quot;lock depth %x flags %lx&bslash;n&quot;
-comma
-id|task-&gt;comm
-comma
-id|task-&gt;pid
-comma
-id|task-&gt;thread.regs-&gt;nip
-comma
-id|task-&gt;lock_depth
-comma
-id|klock_info.kernel_flag
-)paren
-suffix:semicolon
-id|klock_info.akp
-op_assign
-id|NO_PROC_ID
-suffix:semicolon
-id|klock_info.kernel_flag
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-macro_line|#endif /* DEBUG_LOCKS */
-r_if
-c_cond
-(paren
-id|atomic_dec_and_test
-c_func
-(paren
-(paren
-id|atomic_t
-op_star
-)paren
-op_amp
-id|task-&gt;lock_depth
-)paren
-)paren
-(brace
-id|wmb
-c_func
-(paren
-)paren
-suffix:semicolon
-id|klock_info.akp
-op_assign
-id|NO_PROC_ID
-suffix:semicolon
-id|wmb
-c_func
-(paren
-)paren
-suffix:semicolon
-id|klock_info.kernel_flag
-op_assign
-id|KLOCK_CLEAR
-suffix:semicolon
-id|wmb
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-)brace
-DECL|function|reacquire_kernel_lock
-r_void
-id|reacquire_kernel_lock
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-comma
-r_int
-id|cpu
-comma
-r_int
-id|depth
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|depth
-)paren
-(brace
-id|__cli
-c_func
-(paren
-)paren
-suffix:semicolon
-id|__lock_kernel
-c_func
-(paren
-id|task
-)paren
-suffix:semicolon
-id|task-&gt;lock_depth
-op_assign
-id|depth
-suffix:semicolon
-id|__sti
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-)brace
+macro_line|#endif
 eof

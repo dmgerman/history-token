@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.mk_defs.c 1.8 06/28/01 15:50:16 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.mk_defs.c 1.11 08/19/01 22:43:23 paulus&n; */
 multiline_comment|/*&n; * This program is used to generate definitions needed by&n; * assembly language modules.&n; *&n; * We use the technique used in the OSF Mach kernel code:&n; * generate asm statements containing #defines,&n; * compile this file to assembler, and then extract the&n; * #defines from the assembly-language output.&n; */
 macro_line|#include &lt;stddef.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
 DECL|macro|DEFINE
 mdefine_line|#define DEFINE(sym, val) &bslash;&n;&t;asm volatile(&quot;&bslash;n#define&bslash;t&quot; #sym &quot;&bslash;t%0&quot; : : &quot;i&quot; (val))
 r_int
@@ -1224,6 +1225,85 @@ id|mm_struct
 comma
 id|pgd
 )paren
+)paren
+suffix:semicolon
+multiline_comment|/* About the CPU features table */
+id|DEFINE
+c_func
+(paren
+id|CPU_SPEC_ENTRY_SIZE
+comma
+r_sizeof
+(paren
+r_struct
+id|cpu_spec
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|CPU_SPEC_PVR_MASK
+comma
+m_offsetof
+(paren
+r_struct
+id|cpu_spec
+comma
+id|pvr_mask
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|CPU_SPEC_PVR_VALUE
+comma
+m_offsetof
+(paren
+r_struct
+id|cpu_spec
+comma
+id|pvr_value
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|CPU_SPEC_FEATURES
+comma
+m_offsetof
+(paren
+r_struct
+id|cpu_spec
+comma
+id|cpu_features
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|CPU_SPEC_SETUP
+comma
+m_offsetof
+(paren
+r_struct
+id|cpu_spec
+comma
+id|cpu_setup
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|NUM_USER_SEGMENTS
+comma
+id|TASK_SIZE
+op_rshift
+l_int|28
 )paren
 suffix:semicolon
 r_return

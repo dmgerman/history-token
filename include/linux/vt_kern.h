@@ -4,6 +4,7 @@ mdefine_line|#define _VT_KERN_H
 multiline_comment|/*&n; * this really is an extension of the vc_cons structure in console.c, but&n; * with information needed by the vt package&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/vt.h&gt;
+macro_line|#include &lt;linux/kd.h&gt;
 multiline_comment|/*&n; * Presently, a lot of graphics programs do not restore the contents of&n; * the higher font pages.  Defining this flag will avoid use of them, but&n; * will lose support for PIO_FONTRESET.  Note that many font operations are&n; * not likely to work with these programs anyway; they need to be&n; * fixed.  The linux/Documentation directory includes a code snippet&n; * to save and restore the text font.&n; */
 macro_line|#ifdef CONFIG_VGA_CONSOLE
 DECL|macro|BROKEN_GRAPHICS_PROGRAMS
@@ -63,6 +64,19 @@ comma
 r_int
 r_int
 id|ticks
+)paren
+suffix:semicolon
+r_extern
+r_int
+(paren
+op_star
+id|kbd_rate
+)paren
+(paren
+r_struct
+id|kbd_repeat
+op_star
+id|rep
 )paren
 suffix:semicolon
 multiline_comment|/* console.c */

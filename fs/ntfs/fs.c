@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * fs.c - NTFS driver for Linux 2.4.x&n; *&n; * Legato Systems, Inc. (http://www.legato.com) have sponsored Anton&n; * Altaparmakov to develop NTFS on Linux since June 2001.&n; *&n; * Copyright (C) 1995-1997, 1999 Martin von L&#xfffd;wis&n; * Copyright (C) 1996 Richard Russon&n; * Copyright (C) 1996-1997 R&#xfffd;gis Duchesne&n; * Copyright (C) 2000-2001, Anton Altaparmakov (AIA)&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &quot;ntfstypes.h&quot;
 macro_line|#include &quot;struct.h&quot;
 macro_line|#include &quot;util.h&quot;
@@ -15,9 +16,8 @@ macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#ifndef NLS_MAX_CHARSET_SIZE
 macro_line|#include &lt;linux/nls.h&gt;
-macro_line|#endif
+macro_line|#include &lt;linux/ntfs_fs.h&gt;
 multiline_comment|/* Forward declarations. */
 DECL|variable|ntfs_dir_inode_operations
 r_static
@@ -165,6 +165,10 @@ suffix:semicolon
 id|ntfs_io
 id|io
 suffix:semicolon
+id|ntfs_attribute
+op_star
+id|attr
+suffix:semicolon
 id|ntfs_inode
 op_star
 id|ino
@@ -212,11 +216,8 @@ r_int
 id|count
 )paren
 suffix:semicolon
-multiline_comment|/* Inode has no unnamed data attribute. */
-r_if
-c_cond
-(paren
-op_logical_neg
+id|attr
+op_assign
 id|ntfs_find_attr
 c_func
 (paren
@@ -226,6 +227,13 @@ id|ino-&gt;vol-&gt;at_data
 comma
 l_int|NULL
 )paren
+suffix:semicolon
+multiline_comment|/* Inode has no unnamed data attribute. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|attr
 )paren
 (brace
 id|ntfs_debug
@@ -241,6 +249,17 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|attr-&gt;flags
+op_amp
+id|ATTR_IS_ENCRYPTED
+)paren
+r_return
+op_minus
+id|EACCES
+suffix:semicolon
 multiline_comment|/* Read the data. */
 id|io.fn_put
 op_assign
@@ -1328,6 +1347,47 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * This needs to be outside parse_options() otherwise a remount will reset&n; * these unintentionally.&n; */
+DECL|function|init_ntfs_super_block
+r_static
+r_void
+id|init_ntfs_super_block
+c_func
+(paren
+id|ntfs_volume
+op_star
+id|vol
+)paren
+(brace
+id|vol-&gt;uid
+op_assign
+id|vol-&gt;gid
+op_assign
+l_int|0
+suffix:semicolon
+id|vol-&gt;umask
+op_assign
+l_int|0077
+suffix:semicolon
+id|vol-&gt;ngt
+op_assign
+id|ngt_nt
+suffix:semicolon
+id|vol-&gt;nls_map
+op_assign
+(paren
+r_void
+op_star
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+id|vol-&gt;mft_zone_multiplier
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* Parse the (re)mount options. */
 DECL|function|parse_options
 r_static
@@ -1342,9 +1402,6 @@ comma
 r_char
 op_star
 id|opt
-comma
-r_int
-id|remount
 )paren
 (brace
 r_char
@@ -1395,6 +1452,13 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* If no NLS specified and loading the default&n;&t;&t;&t;&t;   NLS failed use utf8. */
+r_int
+id|mft_zone_mul
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* 1 */
 r_if
 c_cond
 (paren
@@ -1630,6 +1694,101 @@ l_string|&quot;argument&bslash;n&quot;
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|strcmp
+c_func
+(paren
+id|opt
+comma
+l_string|&quot;mft_zone_multiplier&quot;
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+r_int
+r_int
+id|ul
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|value
+op_logical_or
+op_logical_neg
+op_star
+id|value
+)paren
+r_goto
+id|needs_arg
+suffix:semicolon
+id|ul
+op_assign
+id|simple_strtoul
+c_func
+(paren
+id|value
+comma
+op_amp
+id|value
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|value
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;NTFS: mft_zone_multiplier &quot;
+l_string|&quot;invalid argument&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ul
+op_ge
+l_int|1
+op_logical_and
+id|ul
+op_le
+l_int|4
+)paren
+id|mft_zone_mul
+op_assign
+id|ul
+suffix:semicolon
+r_else
+(brace
+id|mft_zone_mul
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;NTFS: mft_zone_multiplier &quot;
+l_string|&quot;out of range. Setting to 1.&bslash;n&quot;
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -1884,16 +2043,78 @@ r_if
 c_cond
 (paren
 id|use_utf8
-op_ne
+op_eq
 op_minus
 l_int|1
-op_logical_and
-id|use_utf8
 )paren
 (brace
+multiline_comment|/* utf8 was not specified at all. */
 r_if
 c_cond
 (paren
+op_logical_neg
+id|nls_map
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * No NLS was specified. If first mount, load the&n;&t;&t;&t; * default NLS, otherwise don&squot;t change the NLS setting.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|vol-&gt;nls_map
+op_eq
+(paren
+r_void
+op_star
+)paren
+op_minus
+l_int|1
+)paren
+id|vol-&gt;nls_map
+op_assign
+id|load_nls_default
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* If an NLS was already loaded, unload it first. */
+r_if
+c_cond
+(paren
+id|vol-&gt;nls_map
+op_logical_and
+id|vol-&gt;nls_map
+op_ne
+(paren
+r_void
+op_star
+)paren
+op_minus
+l_int|1
+)paren
+id|unload_nls
+c_func
+(paren
+id|vol-&gt;nls_map
+)paren
+suffix:semicolon
+multiline_comment|/* Use the specified NLS. */
+id|vol-&gt;nls_map
+op_assign
+id|nls_map
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+multiline_comment|/* utf8 was specified. */
+r_if
+c_cond
+(paren
+id|use_utf8
+op_logical_and
 id|nls_map
 )paren
 (brace
@@ -1915,12 +2136,20 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* If an NLS was already loaded, unload it first. */
 r_if
 c_cond
 (paren
-id|remount
+id|vol-&gt;nls_map
 op_logical_and
 id|vol-&gt;nls_map
+op_ne
+(paren
+r_void
+op_star
+)paren
+op_minus
+l_int|1
 )paren
 id|unload_nls
 c_func
@@ -1928,54 +2157,21 @@ c_func
 id|vol-&gt;nls_map
 )paren
 suffix:semicolon
-id|vol-&gt;nls_map
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-r_else
-(brace
 r_if
 c_cond
 (paren
-id|nls_map
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|remount
-op_logical_and
-id|vol-&gt;nls_map
-)paren
-id|unload_nls
-c_func
-(paren
-id|vol-&gt;nls_map
-)paren
-suffix:semicolon
-id|vol-&gt;nls_map
-op_assign
-id|nls_map
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|remount
-op_logical_or
-(paren
-id|remount
-op_logical_and
 op_logical_neg
 id|use_utf8
-op_logical_and
+)paren
+(brace
+multiline_comment|/* utf8 was specified as false. */
+r_if
+c_cond
+(paren
 op_logical_neg
-id|vol-&gt;nls_map
+id|nls_map
 )paren
-)paren
+multiline_comment|/* No NLS was specified, load the default. */
 id|vol-&gt;nls_map
 op_assign
 id|load_nls_default
@@ -1983,6 +2179,19 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_else
+multiline_comment|/* Use the specified NLS. */
+id|vol-&gt;nls_map
+op_assign
+id|nls_map
+suffix:semicolon
+)brace
+r_else
+multiline_comment|/* utf8 was specified as true. */
+id|vol-&gt;nls_map
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -1996,17 +2205,6 @@ id|vol-&gt;uid
 op_assign
 id|uid
 suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|remount
-)paren
-id|vol-&gt;uid
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2018,17 +2216,6 @@ l_int|1
 id|vol-&gt;gid
 op_assign
 id|gid
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|remount
-)paren
-id|vol-&gt;gid
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2045,17 +2232,6 @@ id|ntmode_t
 )paren
 id|umask
 suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|remount
-)paren
-id|vol-&gt;umask
-op_assign
-l_int|0077
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2068,16 +2244,65 @@ id|vol-&gt;ngt
 op_assign
 id|ngt
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mft_zone_mul
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
+multiline_comment|/* mft_zone_multiplier was specified. */
+r_if
+c_cond
+(paren
+id|vol-&gt;mft_zone_multiplier
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
+multiline_comment|/* This is a remount, ignore a change and warn user. */
+r_if
+c_cond
+(paren
+id|vol-&gt;mft_zone_multiplier
+op_ne
+id|mft_zone_mul
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;NTFS: Ignoring changes in &quot;
+l_string|&quot;mft_zone_multiplier on &quot;
+l_string|&quot;remount. If you want to &quot;
+l_string|&quot;change this you need to &quot;
+l_string|&quot;umount and mount again.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+multiline_comment|/* Use the specified multiplier. */
+id|vol-&gt;mft_zone_multiplier
+op_assign
+id|mft_zone_mul
+suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
 (paren
-op_logical_neg
-id|remount
+id|vol-&gt;mft_zone_multiplier
+op_eq
+op_minus
+l_int|1
 )paren
-id|vol-&gt;ngt
+multiline_comment|/* No multiplier specified and first mount, so set default. */
+id|vol-&gt;mft_zone_multiplier
 op_assign
-id|ngt_nt
+l_int|1
 suffix:semicolon
 r_return
 l_int|1
@@ -2298,6 +2523,10 @@ id|file_operations
 id|ntfs_file_operations_nommap
 op_assign
 (brace
+id|llseek
+suffix:colon
+id|generic_file_llseek
+comma
 id|read
 suffix:colon
 id|ntfs_read
@@ -2308,6 +2537,10 @@ suffix:colon
 id|ntfs_write
 comma
 macro_line|#endif
+id|open
+suffix:colon
+id|generic_file_open
+comma
 )brace
 suffix:semicolon
 DECL|variable|ntfs_inode_operations_nobmap
@@ -2906,68 +3139,9 @@ id|error
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if 0
-r_static
-r_int
-id|ntfs_bmap
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|ino
-comma
-r_int
-id|block
-)paren
-(brace
-r_int
-id|ret
-op_assign
-id|ntfs_vcn_to_lcn
-c_func
-(paren
-id|NTFS_LINO2NINO
-c_func
-(paren
-id|ino
-)paren
-comma
-id|block
-)paren
-suffix:semicolon
-id|ntfs_debug
-c_func
-(paren
-id|DEBUG_OTHER
-comma
-l_string|&quot;bmap of %lx, block %x is %x&bslash;n&quot;
-comma
-id|ino-&gt;i_ino
-comma
-id|block
-comma
-id|ret
-)paren
-suffix:semicolon
-r_return
-(paren
-id|ret
-op_eq
-op_minus
-l_int|1
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-id|ret
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* It&squot;s fscking broken. */
-multiline_comment|/* FIXME: [bm]map code is disabled until ntfs_get_block() gets sorted! */
-multiline_comment|/*&n;static int ntfs_get_block(struct inode *inode, long block, struct buffer_head *bh, int create)&n;{&n;&t;BUG();&n;&t;return -1;&n;}&n;&n;static struct file_operations ntfs_file_operations = {&n;&t;read:&t;&t;ntfs_read,&n;&t;mmap:&t;&t;generic_file_mmap,&n;#ifdef CONFIG_NTFS_RW&n;&t;write:&t;&t;ntfs_write,&n;#endif&n;};&n;&n;static struct inode_operations ntfs_inode_operations;&n;*/
+multiline_comment|/* FIXME: mmap code is disabled until ntfs_get_block() gets sorted! */
+multiline_comment|/*&n;static int ntfs_get_block(struct inode *inode, long block, struct buffer_head *bh, int create)&n;{&n;&t;BUG();&n;&t;return -1;&n;}&n;&n;static struct file_operations ntfs_file_operations = {&n;&t;llseek:&t;&t;generic_file_llseek,&n;&t;read:&t;&t;ntfs_read,&n;&t;mmap:&t;&t;generic_file_mmap,&n;#ifdef CONFIG_NTFS_RW&n;&t;write:&t;&t;ntfs_write,&n;#endif&n;&t;open:&t;&t;generic_file_open,&n;};&n;&n;static struct inode_operations ntfs_inode_operations;&n;*/
 DECL|variable|ntfs_dir_operations
 r_static
 r_struct
@@ -3060,15 +3234,11 @@ c_func
 (paren
 id|DEBUG_OTHER
 comma
-l_string|&quot;ntfs_read_inode 0x%x&bslash;n&quot;
+l_string|&quot;ntfs_read_inode 0x%lx&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|inode-&gt;i_ino
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * This kills all accesses to system files (except $Extend directory).&n;&t; * The driver can bypass this by calling ntfs_init_inode() directly.&n;&t; * Only if ngt is ngt_full do we allow access to the system files.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -3081,23 +3251,6 @@ id|FILE_
 "$"
 id|Mft
 suffix:colon
-r_if
-c_cond
-(paren
-id|vol-&gt;ngt
-op_ne
-id|ngt_full
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-l_string|&quot;Trying to open $MFT!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3173,23 +3326,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|vol-&gt;ngt
-op_ne
-id|ngt_full
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-l_string|&quot;Trying to open $MFTMirr!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 op_logical_neg
 id|vol-&gt;mftmirr
 op_logical_or
@@ -3259,23 +3395,6 @@ id|FILE_
 "$"
 id|BitMap
 suffix:colon
-r_if
-c_cond
-(paren
-id|vol-&gt;ngt
-op_ne
-id|ngt_full
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-l_string|&quot;Trying to open $Bitmap!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3354,7 +3473,7 @@ id|FILE_
 "$"
 id|AttrDef
 suffix:colon
-multiline_comment|/* We need to allow reading the root directory. */
+multiline_comment|/* No need to log root directory accesses. */
 r_case
 id|FILE_
 "$"
@@ -3366,26 +3485,6 @@ id|FILE_
 "$"
 id|UpCase
 suffix:colon
-r_if
-c_cond
-(paren
-id|vol-&gt;ngt
-op_ne
-id|ngt_full
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-l_string|&quot;Trying to open system file %i!&bslash;n&quot;
-comma
-id|inode-&gt;i_ino
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/* Do the default for ngt_full. */
 id|ntfs_debug
 c_func
 (paren
@@ -3492,7 +3591,7 @@ op_assign
 id|data-&gt;size
 suffix:semicolon
 multiline_comment|/* FIXME: once ntfs_get_block is implemented, uncomment the&n;&t;&t; * next line and remove the &quot;can_mmap = 0;&quot;. (AIA) */
-multiline_comment|/* can_mmap = !data-&gt;resident &amp;&amp; !data-&gt;compressed; */
+multiline_comment|/* can_mmap = !data-&gt;resident &amp;&amp; !(data-&gt;flags &amp;&n;&t;&t; * &t;&t;(ATTR_IS_COMPRESSED | ATTR_IS_ENCRYPTED)); */
 id|can_mmap
 op_assign
 l_int|0
@@ -3654,7 +3753,15 @@ op_logical_neg
 id|data
 op_logical_or
 op_logical_neg
-id|data-&gt;compressed
+(paren
+id|data-&gt;flags
+op_amp
+(paren
+id|ATTR_IS_COMPRESSED
+op_or
+id|ATTR_IS_ENCRYPTED
+)paren
+)paren
 )paren
 id|inode-&gt;i_mode
 op_or_assign
@@ -3779,7 +3886,8 @@ id|vol
 id|ntfs_error
 c_func
 (paren
-l_string|&quot;_ntfs_clear_inode: vol = NTFS_INO2VOL(inode) is NULL.&bslash;n&quot;
+l_string|&quot;_ntfs_clear_inode: vol = NTFS_INO2VOL(inode) is &quot;
+l_string|&quot;NULL.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_switch
@@ -3793,24 +3901,6 @@ id|FILE_
 "$"
 id|Mft
 suffix:colon
-r_if
-c_cond
-(paren
-id|vol-&gt;ngt
-op_ne
-id|ngt_full
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-l_string|&quot;Trying to _clear_inode of $MFT!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|unl_out
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3878,24 +3968,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|vol-&gt;ngt
-op_ne
-id|ngt_full
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-l_string|&quot;Trying to _clear_inode of $MFTMirr!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|unl_out
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 id|vol-&gt;mftmirr
 op_logical_and
 (paren
@@ -3960,24 +4032,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|vol-&gt;ngt
-op_ne
-id|ngt_full
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-l_string|&quot;Trying to _clear_inode of $Bitmap!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|unl_out
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 id|vol-&gt;bitmap
 op_logical_and
 (paren
@@ -4034,50 +4088,6 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-r_case
-id|FILE_
-"$"
-id|LogFile
-dot
-dot
-dot
-id|FILE_
-"$"
-id|AttrDef
-suffix:colon
-r_case
-id|FILE_
-"$"
-id|Boot
-dot
-dot
-dot
-id|FILE_
-"$"
-id|UpCase
-suffix:colon
-r_if
-c_cond
-(paren
-id|vol-&gt;ngt
-op_ne
-id|ngt_full
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-l_string|&quot;Trying to _clear_inode of system file %i! &quot;
-l_string|&quot;Shouldn&squot;t happen.&bslash;n&quot;
-comma
-id|inode-&gt;i_ino
-)paren
-suffix:semicolon
-r_goto
-id|unl_out
-suffix:semicolon
-)brace
-multiline_comment|/* Do the default for ngt_full. */
 r_default
 suffix:colon
 (brace
@@ -4378,8 +4388,6 @@ id|sb
 )paren
 comma
 id|options
-comma
-l_int|1
 )paren
 )paren
 r_return
@@ -4874,6 +4882,8 @@ id|bh
 suffix:semicolon
 r_int
 id|i
+comma
+id|to_read
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -4891,6 +4901,12 @@ c_func
 id|sb
 )paren
 suffix:semicolon
+id|init_ntfs_super_block
+c_func
+(paren
+id|vol
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4905,8 +4921,6 @@ r_char
 op_star
 )paren
 id|options
-comma
-l_int|0
 )paren
 )paren
 r_goto
@@ -5124,6 +5138,21 @@ l_string|&quot;set_blocksize&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Allocate an MFT record (MFT record can be smaller than a cluster). */
+id|i
+op_assign
+id|vol-&gt;cluster_size
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+OL
+id|vol-&gt;mft_record_size
+)paren
+id|i
+op_assign
+id|vol-&gt;mft_record_size
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5134,15 +5163,7 @@ op_assign
 id|ntfs_malloc
 c_func
 (paren
-id|max
-c_func
-(paren
-r_int
-comma
-id|vol-&gt;mft_record_size
-comma
-id|vol-&gt;cluster_size
-)paren
+id|i
 )paren
 )paren
 )paren
@@ -5150,6 +5171,21 @@ r_goto
 id|ntfs_read_super_unl
 suffix:semicolon
 multiline_comment|/* Read at least the MFT record for $Mft. */
+id|to_read
+op_assign
+id|vol-&gt;mft_clusters_per_record
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|to_read
+OL
+l_int|1
+)paren
+id|to_read
+op_assign
+l_int|1
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5159,15 +5195,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|max
-c_func
-(paren
-r_int
-comma
-id|vol-&gt;mft_clusters_per_record
-comma
-l_int|1
-)paren
+id|to_read
 suffix:semicolon
 id|i
 op_increment

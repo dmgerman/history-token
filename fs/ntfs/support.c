@@ -9,9 +9,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;util.h&quot;
 macro_line|#include &quot;inode.h&quot;
 macro_line|#include &quot;macros.h&quot;
-macro_line|#ifndef NLS_MAX_CHARSET_SIZE
 macro_line|#include &lt;linux/nls.h&gt;
-macro_line|#endif
 DECL|variable|print_buf
 r_static
 r_char
@@ -347,6 +345,7 @@ c_func
 id|print_buf
 comma
 id|KERN_ERR
+l_string|&quot;NTFS: &quot;
 )paren
 suffix:semicolon
 id|vsprintf
@@ -354,7 +353,7 @@ c_func
 (paren
 id|print_buf
 op_plus
-l_int|3
+l_int|9
 comma
 id|fmt
 comma
@@ -671,6 +670,12 @@ comma
 id|length
 )paren
 suffix:semicolon
+id|to_copy
+op_assign
+id|vol-&gt;cluster_size
+op_minus
+id|start_offs
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -720,20 +725,16 @@ r_goto
 id|error_ret
 suffix:semicolon
 )brace
-id|to_copy
-op_assign
-id|min
-c_func
+r_if
+c_cond
 (paren
-r_int
-r_int
-comma
-id|vol-&gt;cluster_size
-op_minus
-id|start_offs
-comma
+id|to_copy
+OG
 id|length
 )paren
+id|to_copy
+op_assign
+id|length
 suffix:semicolon
 id|lock_buffer
 c_func
@@ -872,6 +873,12 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|brelse
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
 id|length
 op_sub_assign
 id|to_copy
@@ -880,14 +887,12 @@ id|start_offs
 op_assign
 l_int|0
 suffix:semicolon
+id|to_copy
+op_assign
+id|vol-&gt;cluster_size
+suffix:semicolon
 id|cluster
 op_increment
-suffix:semicolon
-id|brelse
-c_func
-(paren
-id|bh
-)paren
 suffix:semicolon
 )brace
 id|error_ret

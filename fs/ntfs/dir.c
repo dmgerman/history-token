@@ -38,8 +38,6 @@ r_return
 id|ntfs_fixup_record
 c_func
 (paren
-id|ino-&gt;vol
-comma
 id|record
 comma
 l_string|&quot;INDX&quot;
@@ -1437,18 +1435,42 @@ op_minus
 l_int|0x18
 )paren
 suffix:semicolon
+id|io.size
+op_assign
+id|walk-&gt;dir-&gt;u.index.recordsize
+suffix:semicolon
+id|error
+op_assign
 id|ntfs_insert_fixups
 c_func
 (paren
 id|buf
 comma
-id|vol-&gt;sector_size
+id|io.size
 )paren
 suffix:semicolon
-id|io.size
-op_assign
-id|walk-&gt;dir-&gt;u.index.recordsize
+r_if
+c_cond
+(paren
+id|error
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ALERT
+l_string|&quot;NTFS: ntfs_index_writeback() caught &quot;
+l_string|&quot;corrupt index record ntfs record &quot;
+l_string|&quot;header. Refusing to write corrupt &quot;
+l_string|&quot;data to disk. Unmount and run chkdsk &quot;
+l_string|&quot;immediately!&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 id|error
 op_assign
 id|ntfs_write_attr
@@ -2667,11 +2689,9 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 multiline_comment|/* Mark root as split. */
 id|NTFS_PUTU32
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.irq.c 1.30 07/19/01 16:51:32 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.irq.c 1.32 08/24/01 20:07:37 paulus&n; */
 multiline_comment|/*&n; *  arch/ppc/kernel/irq.c&n; *&n; *  Derived from arch/i386/kernel/irq.c&n; *    Copyright (C) 1992 Linus Torvalds&n; *  Adapted from arch/i386 by Gary Thomas&n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *  Updated and modified by Cort Dougan &lt;cort@fsmlabs.com&gt;&n; *    Copyright (C) 1996-2001 Cort Dougan&n; *  Adapted for Power Macintosh by Paul Mackerras&n; *    Copyright (C) 1996 Paul Mackerras (paulus@cs.anu.edu.au)&n; *  Amiga/APUS changes by Jesper Skov (jskov@cygnus.co.uk).&n; *  &n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; *&n; * The MPC8xx has an interrupt mask in the SIU.  If a bit is set, the&n; * interrupt is _enabled_.  As expected, IRQ0 is bit 0 in the 32-bit&n; * mask register (of which only 16 are defined), hence the weird shifting&n; * and compliment of the cached_irq_mask.  I want to be able to stuff&n; * this right into the SIU SMASK register.&n; * Many of the prep/chrp functions are conditional compiled on CONFIG_8xx&n; * to reduce code space and undefined function references.&n; */
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -159,6 +159,22 @@ r_extern
 r_int
 id|mem_init_done
 suffix:semicolon
+macro_line|#if defined(CONFIG_TAU_INT)
+r_extern
+r_int
+id|tau_interrupts
+c_func
+(paren
+r_int
+r_int
+id|cpu
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|tau_initialized
+suffix:semicolon
+macro_line|#endif
 DECL|function|irq_kmalloc
 r_void
 op_star
@@ -1424,7 +1440,13 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_TAU
+macro_line|#ifdef CONFIG_TAU_INT
+r_if
+c_cond
+(paren
+id|tau_initialized
+)paren
+(brace
 id|len
 op_add_assign
 id|sprintf
@@ -1478,9 +1500,10 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;  PowerPC             Thermal Assist (cpu temp)&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* should this be per processor send/receive? */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.fads.h 1.8 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.fads.h 1.11 08/17/01 15:23:17 paulus&n; */
 multiline_comment|/*&n; * A collection of structures, addresses, and values associated with&n; * the Motorola 860T FADS board.  Copied from the MBX stuff.&n; *&n; * Copyright (c) 1998 Dan Malek (dmalek@jlc.net)&n; */
 macro_line|#ifndef __MACH_FADS_DEFS
 DECL|macro|__MACH_FADS_DEFS
@@ -108,8 +108,5 @@ mdefine_line|#define PHY_INTERRUPT&t;SIU_IRQ2&t;/* PHY link change interrupt */
 multiline_comment|/* We don&squot;t use the 8259.&n; */
 DECL|macro|NR_8259_INTS
 mdefine_line|#define NR_8259_INTS&t;0
-multiline_comment|/* Machine type&n; */
-DECL|macro|_MACH_8xx
-mdefine_line|#define _MACH_8xx (_MACH_fads)
 macro_line|#endif
 eof

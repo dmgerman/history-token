@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sbus.c,v 1.14 2001/05/23 03:06:51 davem Exp $&n; * sbus.c: UltraSparc SBUS controller support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sbus.c,v 1.16 2001/08/24 19:36:58 kanoj Exp $&n; * sbus.c: UltraSparc SBUS controller support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -24,7 +24,7 @@ mdefine_line|#define CLUSTER_SIZE&t;(ONE_GIG / NCLUSTERS)
 DECL|macro|CLUSTER_MASK
 mdefine_line|#define CLUSTER_MASK&t;(CLUSTER_SIZE - 1)
 DECL|macro|CLUSTER_NPAGES
-mdefine_line|#define CLUSTER_NPAGES&t;(CLUSTER_SIZE &gt;&gt; PAGE_SHIFT)
+mdefine_line|#define CLUSTER_NPAGES&t;(CLUSTER_SIZE &gt;&gt; IO_PAGE_SHIFT)
 DECL|macro|MAP_BASE
 mdefine_line|#define MAP_BASE&t;((u32)0xc0000000)
 DECL|struct|sbus_iommu
@@ -236,7 +236,7 @@ op_plus
 (paren
 id|npages
 op_lshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 comma
 id|iommu-&gt;iommu_regs
@@ -307,7 +307,7 @@ op_plus
 (paren
 id|npages
 op_lshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 comma
 id|iommu-&gt;strbuf_regs
@@ -674,7 +674,7 @@ id|CLUSTER_MASK
 )paren
 op_rshift
 (paren
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 op_plus
 id|cnum
 )paren
@@ -690,7 +690,7 @@ op_minus
 id|MAP_BASE
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 id|iopte_val
@@ -900,7 +900,7 @@ op_minus
 id|MAP_BASE
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 r_if
@@ -1048,7 +1048,7 @@ l_int|NULL
 suffix:semicolon
 id|size
 op_assign
-id|PAGE_ALIGN
+id|IO_PAGE_ALIGN
 c_func
 (paren
 id|size
@@ -1130,7 +1130,7 @@ id|iommu
 comma
 id|size
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 r_if
@@ -1175,7 +1175,7 @@ op_minus
 id|iommu-&gt;page_table
 )paren
 op_lshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 id|ret
@@ -1190,7 +1190,7 @@ id|npages
 op_assign
 id|size
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 suffix:semicolon
 r_while
 c_loop
@@ -1225,7 +1225,7 @@ id|IOPTE_PAGE
 suffix:semicolon
 id|first_page
 op_add_assign
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 suffix:semicolon
 )brace
 id|iommu_flush
@@ -1238,7 +1238,7 @@ id|dvma_addr
 comma
 id|size
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -1305,13 +1305,13 @@ r_return
 suffix:semicolon
 id|npages
 op_assign
-id|PAGE_ALIGN
+id|IO_PAGE_ALIGN
 c_func
 (paren
 id|size
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 suffix:semicolon
 id|iommu
 op_assign
@@ -1457,13 +1457,13 @@ id|u32
 id|pbase
 op_amp
 op_complement
-id|PAGE_MASK
+id|IO_PAGE_MASK
 )paren
 suffix:semicolon
 id|size
 op_assign
 (paren
-id|PAGE_ALIGN
+id|IO_PAGE_ALIGN
 c_func
 (paren
 id|pbase
@@ -1474,7 +1474,7 @@ op_minus
 (paren
 id|pbase
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 )paren
 )paren
 suffix:semicolon
@@ -1489,7 +1489,7 @@ c_func
 (paren
 id|pbase
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -1505,7 +1505,7 @@ id|npages
 op_assign
 id|size
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 suffix:semicolon
 id|iopte
 op_assign
@@ -1538,14 +1538,14 @@ op_minus
 id|iommu-&gt;page_table
 )paren
 op_lshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 id|npages
 op_assign
 id|size
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 suffix:semicolon
 id|iopte_bits
 op_assign
@@ -1591,14 +1591,14 @@ id|IOPTE_PAGE
 suffix:semicolon
 id|pbase
 op_add_assign
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 suffix:semicolon
 )brace
 id|npages
 op_assign
 id|size
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -1668,7 +1668,7 @@ id|dma_base
 op_assign
 id|dma_addr
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 suffix:semicolon
 r_int
 r_int
@@ -1677,7 +1677,7 @@ suffix:semicolon
 id|size
 op_assign
 (paren
-id|PAGE_ALIGN
+id|IO_PAGE_ALIGN
 c_func
 (paren
 id|dma_addr
@@ -1706,7 +1706,7 @@ id|dma_base
 comma
 id|size
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 id|strbuf_flush
@@ -1718,7 +1718,7 @@ id|dma_base
 comma
 id|size
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -1797,7 +1797,7 @@ op_assign
 id|dma_sg-&gt;dvma_address
 op_amp
 (paren
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 op_minus
 l_int|1UL
 )paren
@@ -1810,14 +1810,14 @@ op_plus
 id|u32
 )paren
 (paren
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 op_minus
 l_int|1UL
 )paren
 )paren
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 suffix:semicolon
 r_do
 (brace
@@ -1867,7 +1867,7 @@ op_xor
 id|pteval
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 op_ne
 l_int|0UL
@@ -1877,14 +1877,14 @@ id|pteval
 op_assign
 id|tmp
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 suffix:semicolon
 id|offset
 op_assign
 id|tmp
 op_amp
 (paren
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 op_minus
 l_int|1UL
 )paren
@@ -1908,7 +1908,7 @@ l_int|1UL
 )paren
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 op_ne
 l_int|0UL
@@ -1919,10 +1919,10 @@ op_assign
 (paren
 id|tmp
 op_plus
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 )paren
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 suffix:semicolon
 id|offset
 op_assign
@@ -1931,13 +1931,13 @@ suffix:semicolon
 id|len
 op_sub_assign
 (paren
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 op_minus
 (paren
 id|tmp
 op_amp
 (paren
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 op_minus
 l_int|1UL
 )paren
@@ -1983,12 +1983,12 @@ id|pteval
 suffix:semicolon
 id|pteval
 op_add_assign
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 suffix:semicolon
 id|len
 op_sub_assign
 (paren
-id|PAGE_SIZE
+id|IO_PAGE_SIZE
 op_minus
 id|offset
 )paren
@@ -2024,7 +2024,7 @@ op_lshift
 (paren
 l_int|64
 op_minus
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 )paren
 op_ne
@@ -2055,7 +2055,7 @@ l_int|1UL
 )paren
 )paren
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 op_eq
 l_int|0UL
@@ -2078,7 +2078,7 @@ op_lshift
 (paren
 l_int|64
 op_minus
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 )paren
 op_eq
@@ -2250,7 +2250,7 @@ op_minus
 id|iommu-&gt;page_table
 )paren
 op_lshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 multiline_comment|/* Normalize DVMA addresses. */
@@ -2436,7 +2436,7 @@ l_int|0
 dot
 id|dvma_address
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 suffix:semicolon
 r_for
 c_loop
@@ -2473,7 +2473,7 @@ op_decrement
 suffix:semicolon
 id|size
 op_assign
-id|PAGE_ALIGN
+id|IO_PAGE_ALIGN
 c_func
 (paren
 id|sg
@@ -2515,7 +2515,7 @@ id|dvma_base
 comma
 id|size
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 id|strbuf_flush
@@ -2527,7 +2527,7 @@ id|dvma_base
 comma
 id|size
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -2574,7 +2574,7 @@ suffix:semicolon
 id|size
 op_assign
 (paren
-id|PAGE_ALIGN
+id|IO_PAGE_ALIGN
 c_func
 (paren
 id|base
@@ -2585,7 +2585,7 @@ op_minus
 (paren
 id|base
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 )paren
 )paren
 suffix:semicolon
@@ -2605,11 +2605,11 @@ id|iommu
 comma
 id|base
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 comma
 id|size
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -2672,7 +2672,7 @@ l_int|0
 dot
 id|dvma_address
 op_amp
-id|PAGE_MASK
+id|IO_PAGE_MASK
 suffix:semicolon
 r_for
 c_loop
@@ -2709,7 +2709,7 @@ op_decrement
 suffix:semicolon
 id|size
 op_assign
-id|PAGE_ALIGN
+id|IO_PAGE_ALIGN
 c_func
 (paren
 id|sg
@@ -2747,7 +2747,7 @@ id|base
 comma
 id|size
 op_rshift
-id|PAGE_SHIFT
+id|IO_PAGE_SHIFT
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -5071,7 +5071,11 @@ c_func
 (paren
 id|GFP_ATOMIC
 comma
-l_int|7
+id|get_order
+c_func
+(paren
+id|IO_TSB_SIZE
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -5109,11 +5113,7 @@ id|iommu-&gt;page_table
 comma
 l_int|0
 comma
-(paren
-id|PAGE_SIZE
-op_lshift
-l_int|7
-)paren
+id|IO_TSB_SIZE
 )paren
 suffix:semicolon
 id|upa_writeq

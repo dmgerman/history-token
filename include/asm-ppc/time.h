@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.time.h 1.13 06/27/01 14:49:58 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.time.h 1.15 08/16/01 07:49:31 paulus&n; */
 multiline_comment|/*&n; * Common time prototypes and such for all ppc machines.&n; *&n; * Written by Cort Dougan (cort@fsmlabs.com) to merge&n; * Paul Mackerras&squot; version and mine for PReP and Pmac.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
@@ -219,6 +219,47 @@ id|tbl
 suffix:semicolon
 r_return
 id|tbl
+suffix:semicolon
+)brace
+DECL|function|set_tb
+r_extern
+id|__inline__
+r_void
+id|set_tb
+c_func
+(paren
+r_int
+r_int
+id|upper
+comma
+r_int
+r_int
+id|lower
+)paren
+(brace
+id|mtspr
+c_func
+(paren
+id|SPRN_TBWL
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|mtspr
+c_func
+(paren
+id|SPRN_TBWU
+comma
+id|upper
+)paren
+suffix:semicolon
+id|mtspr
+c_func
+(paren
+id|SPRN_TBWL
+comma
+id|lower
+)paren
 suffix:semicolon
 )brace
 DECL|function|get_rtcl

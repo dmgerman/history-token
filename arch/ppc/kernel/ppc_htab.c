@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ppc_htab.c 1.11 06/28/01 15:50:16 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.ppc_htab.c 1.17 08/20/01 22:59:41 paulus&n; */
 multiline_comment|/*&n; * PowerPC hash table management proc entry.  Will show information&n; * about the current hash table and will allow changes to it.&n; *&n; * Written by Cort Dougan (cort@cs.nmt.edu)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
@@ -14,6 +15,8 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/residual.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 r_static
 id|ssize_t
 id|ppc_htab_read
@@ -199,6 +202,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|pmc1_lookup
+r_static
 r_char
 op_star
 id|pmc1_lookup
@@ -253,6 +257,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|pmc2_lookup
+r_static
 r_char
 op_star
 id|pmc2_lookup
@@ -393,29 +398,19 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-r_switch
+r_if
 c_cond
 (paren
-id|_get_PVR
-c_func
-(paren
-)paren
-op_rshift
-l_int|16
+id|cur_cpu_spec
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|CPU_FTR_604_PERF_MON
 )paren
 (brace
-r_case
-l_int|4
-suffix:colon
-multiline_comment|/* 604 */
-r_case
-l_int|9
-suffix:colon
-multiline_comment|/* 604e */
-r_case
-l_int|10
-suffix:colon
-multiline_comment|/* 604ev5 */
 id|asm
 r_volatile
 (paren
@@ -509,13 +504,8 @@ id|mmcr0
 )paren
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PPC_STD_MMU
 multiline_comment|/* if we don&squot;t have a htab */
 r_if
 c_cond
@@ -541,7 +531,6 @@ r_goto
 id|return_string
 suffix:semicolon
 )brace
-macro_line|#if !defined(CONFIG_8xx) &amp;&amp; !defined(CONFIG_4xx)
 r_for
 c_loop
 (paren
@@ -774,7 +763,7 @@ comma
 id|htab_evicts
 )paren
 suffix:semicolon
-macro_line|#endif /* !8xx &amp;&amp; !4xx */
+macro_line|#endif /* CONFIG_PPC_STD_MMU */
 id|return_string
 suffix:colon
 id|n
@@ -892,7 +881,7 @@ op_star
 id|ppos
 )paren
 (brace
-macro_line|#ifndef CONFIG_8xx
+macro_line|#ifdef CONFIG_PPC_STD_MMU
 r_int
 r_int
 id|tmp
@@ -943,29 +932,19 @@ l_int|3
 )paren
 )paren
 (brace
-r_switch
+r_if
 c_cond
 (paren
-id|_get_PVR
-c_func
-(paren
-)paren
-op_rshift
-l_int|16
+id|cur_cpu_spec
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|CPU_FTR_604_PERF_MON
 )paren
 (brace
-r_case
-l_int|4
-suffix:colon
-multiline_comment|/* 604 */
-r_case
-l_int|9
-suffix:colon
-multiline_comment|/* 604e */
-r_case
-l_int|10
-suffix:colon
-multiline_comment|/* 604ev5 */
 id|asm
 r_volatile
 (paren
@@ -994,12 +973,6 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
 )brace
 )brace
 r_if
@@ -1017,29 +990,19 @@ l_int|5
 )paren
 )paren
 (brace
-r_switch
+r_if
 c_cond
 (paren
-id|_get_PVR
-c_func
-(paren
-)paren
-op_rshift
-l_int|16
+id|cur_cpu_spec
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|CPU_FTR_604_PERF_MON
 )paren
 (brace
-r_case
-l_int|4
-suffix:colon
-multiline_comment|/* 604 */
-r_case
-l_int|9
-suffix:colon
-multiline_comment|/* 604e */
-r_case
-l_int|10
-suffix:colon
-multiline_comment|/* 604ev5 */
 multiline_comment|/* reset PMC1 and PMC2 */
 id|asm
 r_volatile
@@ -1052,12 +1015,6 @@ l_string|&quot;r&quot;
 l_int|0
 )paren
 )paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_break
 suffix:semicolon
 )brace
 id|htab_reloads
@@ -1092,29 +1049,19 @@ l_int|4
 )paren
 )paren
 (brace
-r_switch
+r_if
 c_cond
 (paren
-id|_get_PVR
-c_func
-(paren
-)paren
-op_rshift
-l_int|16
+id|cur_cpu_spec
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|CPU_FTR_604_PERF_MON
 )paren
 (brace
-r_case
-l_int|4
-suffix:colon
-multiline_comment|/* 604 */
-r_case
-l_int|9
-suffix:colon
-multiline_comment|/* 604e */
-r_case
-l_int|10
-suffix:colon
-multiline_comment|/* 604ev5 */
 multiline_comment|/* setup mmcr0 and clear the correct pmc */
 id|asm
 c_func
@@ -1184,12 +1131,6 @@ id|PMC2
 )paren
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
 )brace
 )brace
 r_if
@@ -1207,29 +1148,19 @@ l_int|6
 )paren
 )paren
 (brace
-r_switch
+r_if
 c_cond
 (paren
-id|_get_PVR
-c_func
-(paren
-)paren
-op_rshift
-l_int|16
+id|cur_cpu_spec
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|CPU_FTR_604_PERF_MON
 )paren
 (brace
-r_case
-l_int|4
-suffix:colon
-multiline_comment|/* 604 */
-r_case
-l_int|9
-suffix:colon
-multiline_comment|/* 604e */
-r_case
-l_int|10
-suffix:colon
-multiline_comment|/* 604ev5 */
 multiline_comment|/* setup mmcr0 and clear the correct pmc */
 id|asm
 c_func
@@ -1299,12 +1230,6 @@ id|PMC2
 )paren
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/* PMC1 values */
@@ -1323,29 +1248,19 @@ l_int|4
 )paren
 )paren
 (brace
-r_switch
+r_if
 c_cond
 (paren
-id|_get_PVR
-c_func
-(paren
-)paren
-op_rshift
-l_int|16
+id|cur_cpu_spec
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|CPU_FTR_604_PERF_MON
 )paren
 (brace
-r_case
-l_int|4
-suffix:colon
-multiline_comment|/* 604 */
-r_case
-l_int|9
-suffix:colon
-multiline_comment|/* 604e */
-r_case
-l_int|10
-suffix:colon
-multiline_comment|/* 604ev5 */
 multiline_comment|/* setup mmcr0 and clear the correct pmc */
 id|asm
 c_func
@@ -1427,29 +1342,19 @@ l_int|7
 )paren
 )paren
 (brace
-r_switch
+r_if
 c_cond
 (paren
-id|_get_PVR
-c_func
-(paren
-)paren
-op_rshift
-l_int|16
+id|cur_cpu_spec
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|CPU_FTR_604_PERF_MON
 )paren
 (brace
-r_case
-l_int|4
-suffix:colon
-multiline_comment|/* 604 */
-r_case
-l_int|9
-suffix:colon
-multiline_comment|/* 604e */
-r_case
-l_int|10
-suffix:colon
-multiline_comment|/* 604ev5 */
 multiline_comment|/* setup mmcr0 and clear the correct pmc */
 id|asm
 c_func
@@ -1532,29 +1437,19 @@ l_int|14
 )paren
 )paren
 (brace
-r_switch
+r_if
 c_cond
 (paren
-id|_get_PVR
-c_func
-(paren
-)paren
-op_rshift
-l_int|16
+id|cur_cpu_spec
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|CPU_FTR_604_PERF_MON
 )paren
 (brace
-r_case
-l_int|4
-suffix:colon
-multiline_comment|/* 604 */
-r_case
-l_int|9
-suffix:colon
-multiline_comment|/* 604e */
-r_case
-l_int|10
-suffix:colon
-multiline_comment|/* 604ev5 */
 multiline_comment|/* setup mmcr0 and clear the correct pmc */
 id|asm
 r_volatile
@@ -1613,29 +1508,19 @@ l_int|4
 )paren
 )paren
 (brace
-r_switch
+r_if
 c_cond
 (paren
-id|_get_PVR
-c_func
-(paren
-)paren
-op_rshift
-l_int|16
+id|cur_cpu_spec
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|CPU_FTR_604_PERF_MON
 )paren
 (brace
-r_case
-l_int|4
-suffix:colon
-multiline_comment|/* 604 */
-r_case
-l_int|9
-suffix:colon
-multiline_comment|/* 604e */
-r_case
-l_int|10
-suffix:colon
-multiline_comment|/* 604ev5 */
 multiline_comment|/* setup mmcr0 and clear the correct pmc */
 id|asm
 r_volatile
@@ -1694,29 +1579,19 @@ l_int|7
 )paren
 )paren
 (brace
-r_switch
+r_if
 c_cond
 (paren
-id|_get_PVR
-c_func
-(paren
-)paren
-op_rshift
-l_int|16
+id|cur_cpu_spec
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|CPU_FTR_604_PERF_MON
 )paren
 (brace
-r_case
-l_int|4
-suffix:colon
-multiline_comment|/* 604 */
-r_case
-l_int|9
-suffix:colon
-multiline_comment|/* 604e */
-r_case
-l_int|10
-suffix:colon
-multiline_comment|/* 604ev5 */
 multiline_comment|/* setup mmcr0 and clear the correct pmc */
 id|asm
 r_volatile
@@ -1901,11 +1776,11 @@ macro_line|#endif&t;
 r_return
 id|count
 suffix:semicolon
-macro_line|#else /* CONFIG_8xx */
+macro_line|#else /* CONFIG_PPC_STD_MMU */
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#endif /* CONFIG_8xx */
+macro_line|#endif /* CONFIG_PPC_STD_MMU */
 )brace
 r_static
 r_int
@@ -2104,30 +1979,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 (paren
-(paren
-id|_get_PVR
-c_func
-(paren
-)paren
-op_rshift
-l_int|16
-)paren
-op_ne
-l_int|8
-)paren
-op_logical_and
-(paren
-(paren
-id|_get_PVR
-c_func
-(paren
-)paren
-op_rshift
-l_int|16
-)paren
-op_ne
-l_int|12
+id|cur_cpu_spec
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|CPU_FTR_L2CR
 )paren
 )paren
 r_return

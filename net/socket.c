@@ -898,8 +898,6 @@ comma
 id|sockfs_read_super
 comma
 id|FS_NOMOUNT
-op_or
-id|FS_SINGLE
 )paren
 suffix:semicolon
 DECL|function|sockfs_delete_dentry
@@ -4377,7 +4375,7 @@ l_int|0
 suffix:semicolon
 id|msg.msg_namelen
 op_assign
-id|addr_len
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -4410,6 +4408,10 @@ suffix:semicolon
 id|msg.msg_name
 op_assign
 id|address
+suffix:semicolon
+id|msg.msg_namelen
+op_assign
+id|addr_len
 suffix:semicolon
 )brace
 r_if

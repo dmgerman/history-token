@@ -1660,18 +1660,7 @@ id|dev-&gt;usage
 )paren
 (brace
 multiline_comment|/* but flush it right now */
-id|fsync_dev
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-suffix:semicolon
-id|invalidate_buffers
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-suffix:semicolon
+multiline_comment|/* Everything is already flushed by caller -- AV */
 )brace
 id|MOD_DEC_USE_COUNT
 suffix:semicolon

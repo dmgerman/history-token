@@ -1195,8 +1195,10 @@ r_void
 id|invalidate_dquots
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|super_block
+op_star
+id|sb
 comma
 r_int
 id|type
@@ -1243,9 +1245,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dquot-&gt;dq_dev
+id|dquot-&gt;dq_sb
 op_ne
-id|dev
+id|sb
 )paren
 r_continue
 suffix:semicolon
@@ -1256,15 +1258,6 @@ id|dquot-&gt;dq_type
 op_ne
 id|type
 )paren
-r_continue
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dquot-&gt;dq_sb
-)paren
-multiline_comment|/* Already invalidated entry? */
 r_continue
 suffix:semicolon
 r_if
@@ -1290,9 +1283,9 @@ multiline_comment|/*&n;&t;&t;&t; * Make sure it&squot;s still the same dquot.&n;
 r_if
 c_cond
 (paren
-id|dquot-&gt;dq_dev
+id|dquot-&gt;dq_sb
 op_ne
-id|dev
+id|sb
 )paren
 r_continue
 suffix:semicolon
@@ -1302,14 +1295,6 @@ c_cond
 id|dquot-&gt;dq_type
 op_ne
 id|type
-)paren
-r_continue
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dquot-&gt;dq_sb
 )paren
 r_continue
 suffix:semicolon
@@ -6296,7 +6281,7 @@ suffix:semicolon
 id|invalidate_dquots
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 comma
 id|cnt
 )paren

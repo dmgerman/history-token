@@ -133,7 +133,7 @@ mdefine_line|#define FS_NO_DCACHE&t;2 /* Only dcache the necessary things. */
 DECL|macro|FS_NO_PRELIM
 mdefine_line|#define FS_NO_PRELIM&t;4 /* prevent preloading of dentries, even if&n;&t;&t;&t;   * FS_NO_DCACHE is not set.&n;&t;&t;&t;   */
 DECL|macro|FS_SINGLE
-mdefine_line|#define FS_SINGLE&t;8 /*&n;&t;&t;&t;   * Filesystem that can have only one superblock;&n;&t;&t;&t;   * kernel-wide vfsmnt is placed in -&gt;kern_mnt by&n;&t;&t;&t;   * kern_mount() which must be called _after_&n;&t;&t;&t;   * register_filesystem().&n;&t;&t;&t;   */
+mdefine_line|#define FS_SINGLE&t;8 /* Filesystem that can have only one superblock */
 DECL|macro|FS_NOMOUNT
 mdefine_line|#define FS_NOMOUNT&t;16 /* Never mount from userland */
 DECL|macro|FS_LITTER
@@ -1981,6 +1981,8 @@ id|sb_lock
 suffix:semicolon
 DECL|macro|sb_entry
 mdefine_line|#define sb_entry(list)&t;list_entry((list), struct super_block, s_list)
+DECL|macro|S_BIAS
+mdefine_line|#define S_BIAS (1&lt;&lt;30)
 DECL|struct|super_block
 r_struct
 id|super_block
@@ -2091,6 +2093,11 @@ r_struct
 id|block_device
 op_star
 id|s_bdev
+suffix:semicolon
+DECL|member|s_instances
+r_struct
+id|list_head
+id|s_instances
 suffix:semicolon
 DECL|member|s_dquot
 r_struct
@@ -3602,18 +3609,16 @@ id|module
 op_star
 id|owner
 suffix:semicolon
-DECL|member|kern_mnt
-r_struct
-id|vfsmount
-op_star
-id|kern_mnt
-suffix:semicolon
-multiline_comment|/* For kernel mount, if it&squot;s FS_SINGLE fs */
 DECL|member|next
 r_struct
 id|file_system_type
 op_star
 id|next
+suffix:semicolon
+DECL|member|fs_supers
+r_struct
+id|list_head
+id|fs_supers
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -4743,7 +4748,7 @@ r_void
 id|balance_dirty
 c_func
 (paren
-id|kdev_t
+r_void
 )paren
 suffix:semicolon
 r_extern

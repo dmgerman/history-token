@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.process.c 1.23 07/19/01 23:02:48 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.process.c 1.27 08/28/01 22:01:21 paulus&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/process.c&n; *&n; *  Derived from &quot;arch/i386/kernel/process.c&quot;&n; *    Copyright (C) 1995  Linus Torvalds&n; *&n; *  Updated and modified by Cort Dougan (cort@cs.nmt.edu) and&n; *  Paul Mackerras (paulus@cs.anu.edu.au)&n; *&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -142,20 +142,6 @@ op_amp
 id|init_task
 comma
 )brace
-suffix:semicolon
-DECL|variable|sysmap
-r_char
-op_star
-id|sysmap
-op_assign
-l_int|NULL
-suffix:semicolon
-DECL|variable|sysmap_size
-r_int
-r_int
-id|sysmap_size
-op_assign
-l_int|0
 suffix:semicolon
 DECL|macro|SHOW_TASK_SWITCHES
 macro_line|#undef SHOW_TASK_SWITCHES
@@ -1270,10 +1256,6 @@ op_star
 id|regs
 )paren
 (brace
-r_int
-r_int
-id|msr
-suffix:semicolon
 r_struct
 id|pt_regs
 op_star
@@ -1434,12 +1416,25 @@ id|regs-&gt;msr
 op_amp
 id|MSR_FP
 )paren
+(brace
 id|giveup_fpu
 c_func
 (paren
 id|current
 )paren
 suffix:semicolon
+id|childregs-&gt;msr
+op_and_assign
+op_complement
+(paren
+id|MSR_FP
+op_or
+id|MSR_FE0
+op_or
+id|MSR_FE1
+)paren
+suffix:semicolon
+)brace
 id|memcpy
 c_func
 (paren
@@ -1458,11 +1453,6 @@ suffix:semicolon
 id|p-&gt;thread.fpscr
 op_assign
 id|current-&gt;thread.fpscr
-suffix:semicolon
-id|childregs-&gt;msr
-op_and_assign
-op_complement
-id|MSR_FP
 suffix:semicolon
 macro_line|#ifdef CONFIG_ALTIVEC
 multiline_comment|/*&n;&t; * copy altiVec info - assume lazy altiVec switch&n;&t; * - kumar&n;&t; */

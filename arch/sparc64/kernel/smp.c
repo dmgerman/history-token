@@ -2985,8 +2985,12 @@ op_and_assign
 id|PAGE_MASK
 suffix:semicolon
 id|end
-op_and_assign
-id|PAGE_MASK
+op_assign
+id|PAGE_ALIGN
+c_func
+(paren
+id|end
+)paren
 suffix:semicolon
 r_if
 c_cond

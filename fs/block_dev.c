@@ -837,7 +837,6 @@ suffix:semicolon
 id|balance_dirty
 c_func
 (paren
-id|dev
 )paren
 suffix:semicolon
 r_if

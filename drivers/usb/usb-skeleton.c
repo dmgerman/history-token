@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB Skeleton driver&n; *&n; * Copyright (c) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation; either version 2 of&n; *&t;the License, or (at your option) any later version.&n; *&n; *&n; * This driver is to be used as a skeleton driver to be able to create a&n; * USB driver quickly.  The design of it is based on the usb-serial and&n; * dc2xx drivers.&n; *&n; * Thanks to Oliver Neukum and David Brownell for their help in debugging&n; * this driver.&n; *&n; * TODO:&n; *&t;- fix urb-&gt;status race condition in write sequence&n; *&t;- move minor_table to a dynamic list.&n; *&n; * History:&n; *&n; * 2001_05_29 - 0.3 - more bug fixes based on review from linux-usb-devel&n; * 2001_05_24 - 0.2 - bug fixes based on review from linux-usb-devel people&n; * 2001_05_01 - 0.1 - first version&n; * &n; */
+multiline_comment|/*&n; * USB Skeleton driver - 0.4&n; *&n; * Copyright (c) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation; either version 2 of&n; *&t;the License, or (at your option) any later version.&n; *&n; *&n; * This driver is to be used as a skeleton driver to be able to create a&n; * USB driver quickly.  The design of it is based on the usb-serial and&n; * dc2xx drivers.&n; *&n; * Thanks to Oliver Neukum and David Brownell for their help in debugging&n; * this driver.&n; *&n; * TODO:&n; *&t;- fix urb-&gt;status race condition in write sequence&n; *&t;- move minor_table to a dynamic list.&n; *&n; * History:&n; *&n; * 2001_08_21 - 0.4 - more small bug fixes.&n; * 2001_05_29 - 0.3 - more bug fixes based on review from linux-usb-devel&n; * 2001_05_24 - 0.2 - bug fixes based on review from linux-usb-devel people&n; * 2001_05_01 - 0.1 - first version&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -36,7 +36,7 @@ DECL|macro|dbg
 mdefine_line|#define dbg(format, arg...) do { if (debug) printk(KERN_DEBUG __FILE__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg); } while (0)
 multiline_comment|/* Version Information */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.3&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.4&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman, greg@kroah.com&quot;
 DECL|macro|DRIVER_DESC
@@ -522,6 +522,68 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;skel_delete&n; */
+DECL|function|skel_delete
+r_static
+r_inline
+r_void
+id|skel_delete
+(paren
+r_struct
+id|usb_skel
+op_star
+id|dev
+)paren
+(brace
+id|minor_table
+(braket
+id|dev-&gt;minor
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;bulk_in_buffer
+op_ne
+l_int|NULL
+)paren
+id|kfree
+(paren
+id|dev-&gt;bulk_in_buffer
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;bulk_out_buffer
+op_ne
+l_int|NULL
+)paren
+id|kfree
+(paren
+id|dev-&gt;bulk_out_buffer
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;write_urb
+op_ne
+l_int|NULL
+)paren
+id|usb_free_urb
+(paren
+id|dev-&gt;write_urb
+)paren
+suffix:semicolon
+id|kfree
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;skel_open&n; */
 DECL|function|skel_open
 r_static
@@ -772,56 +834,27 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/* the device was unplugged before the file was released */
-id|minor_table
-(braket
-id|dev-&gt;minor
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
+id|up
 (paren
-id|dev-&gt;bulk_in_buffer
-op_ne
-l_int|NULL
-)paren
-id|kfree
-(paren
-id|dev-&gt;bulk_in_buffer
+op_amp
+id|dev-&gt;sem
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;bulk_out_buffer
-op_ne
-l_int|NULL
-)paren
-id|kfree
-(paren
-id|dev-&gt;bulk_out_buffer
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;write_urb
-op_ne
-l_int|NULL
-)paren
-id|usb_free_urb
-(paren
-id|dev-&gt;write_urb
-)paren
-suffix:semicolon
-id|kfree
+id|skel_delete
 (paren
 id|dev
 )paren
 suffix:semicolon
-r_goto
-m_exit
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
+id|up
+(paren
+op_amp
+id|minor_table_mutex
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* decrement our usage count for the device */
@@ -837,10 +870,6 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* shutdown any bulk writes that might be going on */
-id|dev-&gt;write_urb-&gt;transfer_flags
-op_or_assign
-id|USB_ASYNC_UNLINK
-suffix:semicolon
 id|usb_unlink_urb
 (paren
 id|dev-&gt;write_urb
@@ -851,8 +880,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-m_exit
-suffix:colon
 multiline_comment|/* decrement our usage count for the module */
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
@@ -1422,6 +1449,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;skel_probe&n; *&n; *&t;Called by the usb core when a new device is connected that it thinks&n; *&t;this driver might be interested in.&n; */
 DECL|function|skel_probe
 r_static
 r_void
@@ -1521,8 +1549,8 @@ id|minor
 OL
 id|MAX_DEVICES
 suffix:semicolon
-id|i
 op_increment
+id|minor
 )paren
 (brace
 r_if
@@ -1884,50 +1912,7 @@ m_exit
 suffix:semicolon
 id|error
 suffix:colon
-id|minor_table
-(braket
-id|dev-&gt;minor
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;bulk_in_buffer
-op_ne
-l_int|NULL
-)paren
-id|kfree
-(paren
-id|dev-&gt;bulk_in_buffer
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;bulk_out_buffer
-op_ne
-l_int|NULL
-)paren
-id|kfree
-(paren
-id|dev-&gt;bulk_out_buffer
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;write_urb
-op_ne
-l_int|NULL
-)paren
-id|usb_free_urb
-(paren
-id|dev-&gt;write_urb
-)paren
-suffix:semicolon
-id|kfree
+id|skel_delete
 (paren
 id|dev
 )paren
@@ -1948,7 +1933,7 @@ r_return
 id|dev
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;skel_disconnect&n; */
+multiline_comment|/**&n; *&t;skel_disconnect&n; *&n; *&t;Called by the usb core when the device is removed from the system.&n; */
 DECL|function|skel_disconnect
 r_static
 r_void
@@ -2006,50 +1991,7 @@ op_logical_neg
 id|dev-&gt;open_count
 )paren
 (brace
-id|minor_table
-(braket
-id|dev-&gt;minor
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;bulk_in_buffer
-op_ne
-l_int|NULL
-)paren
-id|kfree
-(paren
-id|dev-&gt;bulk_in_buffer
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;bulk_out_buffer
-op_ne
-l_int|NULL
-)paren
-id|kfree
-(paren
-id|dev-&gt;bulk_out_buffer
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;write_urb
-op_ne
-l_int|NULL
-)paren
-id|usb_free_urb
-(paren
-id|dev-&gt;write_urb
-)paren
-suffix:semicolon
-id|kfree
+id|skel_delete
 (paren
 id|dev
 )paren
@@ -2140,15 +2082,9 @@ suffix:semicolon
 id|info
 c_func
 (paren
-id|DRIVER_VERSION
-l_string|&quot; &quot;
-id|DRIVER_AUTHOR
-)paren
-suffix:semicolon
-id|info
-c_func
-(paren
 id|DRIVER_DESC
+l_string|&quot; &quot;
+id|DRIVER_VERSION
 )paren
 suffix:semicolon
 r_return

@@ -1,14 +1,37 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ns16550.c 1.7 05/18/01 06:20:29 patch&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.ns16550.c 1.9 07/30/01 17:19:40 trini&n; */
 multiline_comment|/*&n; * COM1 NS16550 support&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
-multiline_comment|/* Some machines, such as ones with a PReP memory map, initally have&n; * their serial port at an offset of 0x80000000 from where they are&n; * in &lt;asm/serial.h&gt;.  This tries to take that into account. */
-macro_line|#ifndef IOOFFSET
-DECL|macro|IOOFFSET
-mdefine_line|#define IOOFFSET 0
-macro_line|#endif
+r_extern
+r_void
+id|outb
+c_func
+(paren
+r_int
+id|port
+comma
+r_int
+r_char
+id|val
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_char
+id|inb
+c_func
+(paren
+r_int
+id|port
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|ISA_io
+suffix:semicolon
 DECL|variable|rs_table
 r_static
 r_struct
@@ -29,7 +52,6 @@ r_int
 id|shift
 suffix:semicolon
 DECL|function|serial_init
-r_volatile
 r_int
 r_int
 id|serial_init
@@ -43,7 +65,21 @@ r_int
 r_int
 id|com_port
 suffix:semicolon
-multiline_comment|/* Get the base, and add any offset we need to deal with. */
+multiline_comment|/* We need to find out which type io we&squot;re expecting.  If it&squot;s&n;&t; * &squot;SERIAL_IO_PORT&squot;, we get an offset from the isa_io_base.&n;&t; * If it&squot;s &squot;SERIAL_IO_MEM&squot;, we can the exact location.  -- Tom */
+r_switch
+c_cond
+(paren
+id|rs_table
+(braket
+id|chan
+)braket
+dot
+id|io_type
+)paren
+(brace
+r_case
+id|SERIAL_IO_PORT
+suffix:colon
 id|com_port
 op_assign
 id|rs_table
@@ -52,9 +88,35 @@ id|chan
 )braket
 dot
 id|port
-op_plus
-id|IOOFFSET
 suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SERIAL_IO_MEM
+suffix:colon
+id|com_port
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|rs_table
+(braket
+id|chan
+)braket
+dot
+id|iomem_base
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* We can&squot;t deal with it. */
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* How far apart the registers are. */
 id|shift
 op_assign
@@ -66,13 +128,9 @@ dot
 id|iomem_reg_shift
 suffix:semicolon
 multiline_comment|/* See if port is present */
-op_star
+id|outb
+c_func
 (paren
-(paren
-r_int
-r_char
-op_star
-)paren
 id|com_port
 op_plus
 (paren
@@ -80,17 +138,13 @@ id|UART_LCR
 op_lshift
 id|shift
 )paren
-)paren
-op_assign
+comma
 l_int|0x00
-suffix:semicolon
-op_star
-(paren
-(paren
-r_int
-r_char
-op_star
 )paren
+suffix:semicolon
+id|outb
+c_func
+(paren
 id|com_port
 op_plus
 (paren
@@ -98,18 +152,14 @@ id|UART_IER
 op_lshift
 id|shift
 )paren
-)paren
-op_assign
+comma
 l_int|0x00
+)paren
 suffix:semicolon
 multiline_comment|/* Access baud rate */
-op_star
+id|outb
+c_func
 (paren
-(paren
-r_int
-r_char
-op_star
-)paren
 id|com_port
 op_plus
 (paren
@@ -117,19 +167,15 @@ id|UART_LCR
 op_lshift
 id|shift
 )paren
+comma
+l_int|0x80
 )paren
-op_assign
-l_int|0x00
 suffix:semicolon
 macro_line|#ifdef CONFIG_SERIAL_CONSOLE_NONSTD
 multiline_comment|/* Input clock. */
-op_star
+id|outb
+c_func
 (paren
-(paren
-r_int
-r_char
-op_star
-)paren
 id|com_port
 op_plus
 (paren
@@ -137,21 +183,17 @@ id|UART_DLL
 op_lshift
 id|shift
 )paren
-)paren
-op_assign
+comma
 (paren
 id|BASE_BAUD
 op_div
 id|CONFIG_SERIAL_CONSOLE_BAUD
 )paren
-suffix:semicolon
-op_star
-(paren
-(paren
-r_int
-r_char
-op_star
 )paren
+suffix:semicolon
+id|outb
+c_func
+(paren
 id|com_port
 op_plus
 (paren
@@ -159,8 +201,7 @@ id|UART_DLM
 op_lshift
 id|shift
 )paren
-)paren
-op_assign
+comma
 (paren
 id|BASE_BAUD
 op_div
@@ -168,16 +209,13 @@ id|CONFIG_SERIAL_CONSOLE_BAUD
 )paren
 op_rshift
 l_int|8
+)paren
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* 8 data, 1 stop, no parity */
-op_star
+id|outb
+c_func
 (paren
-(paren
-r_int
-r_char
-op_star
-)paren
 id|com_port
 op_plus
 (paren
@@ -185,18 +223,14 @@ id|UART_LCR
 op_lshift
 id|shift
 )paren
-)paren
-op_assign
+comma
 l_int|0x03
+)paren
 suffix:semicolon
 multiline_comment|/* RTS/DTR */
-op_star
+id|outb
+c_func
 (paren
-(paren
-r_int
-r_char
-op_star
-)paren
 id|com_port
 op_plus
 (paren
@@ -204,18 +238,14 @@ id|UART_MCR
 op_lshift
 id|shift
 )paren
-)paren
-op_assign
+comma
 l_int|0x03
+)paren
 suffix:semicolon
 multiline_comment|/* Clear &amp; enable FIFOs */
-op_star
+id|outb
+c_func
 (paren
-(paren
-r_int
-r_char
-op_star
-)paren
 id|com_port
 op_plus
 (paren
@@ -223,9 +253,9 @@ id|UART_FCR
 op_lshift
 id|shift
 )paren
-)paren
-op_assign
+comma
 l_int|0x07
+)paren
 suffix:semicolon
 r_return
 (paren
@@ -238,7 +268,6 @@ DECL|function|serial_putc
 id|serial_putc
 c_func
 (paren
-r_volatile
 r_int
 r_int
 id|com_port
@@ -252,14 +281,9 @@ r_while
 c_loop
 (paren
 (paren
-op_star
+id|inb
+c_func
 (paren
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
 id|com_port
 op_plus
 (paren
@@ -275,16 +299,13 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-op_star
+id|outb
+c_func
 (paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
 id|com_port
-op_assign
+comma
 id|c
+)paren
 suffix:semicolon
 )brace
 r_int
@@ -293,7 +314,6 @@ DECL|function|serial_getc
 id|serial_getc
 c_func
 (paren
-r_volatile
 r_int
 r_int
 id|com_port
@@ -303,14 +323,9 @@ r_while
 c_loop
 (paren
 (paren
-op_star
+id|inb
+c_func
 (paren
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
 id|com_port
 op_plus
 (paren
@@ -327,14 +342,9 @@ l_int|0
 )paren
 suffix:semicolon
 r_return
+id|inb
+c_func
 (paren
-op_star
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
 id|com_port
 )paren
 suffix:semicolon
@@ -344,7 +354,6 @@ DECL|function|serial_tstc
 id|serial_tstc
 c_func
 (paren
-r_volatile
 r_int
 r_int
 id|com_port
@@ -353,14 +362,9 @@ id|com_port
 r_return
 (paren
 (paren
-op_star
+id|inb
+c_func
 (paren
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
 id|com_port
 op_plus
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.page.h 1.5 05/17/01 18:14:25 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.page.h 1.8 08/19/01 20:06:47 paulus&n; */
 macro_line|#ifndef _PPC_PAGE_H
 DECL|macro|_PPC_PAGE_H
 mdefine_line|#define _PPC_PAGE_H
@@ -11,6 +11,7 @@ DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/* Be sure to change arch/ppc/Makefile to match */
 DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;0xc0000000
 DECL|macro|KERNELBASE

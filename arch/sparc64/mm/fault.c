@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: fault.c,v 1.55 2001/08/09 20:18:43 davem Exp $&n; * arch/sparc64/mm/fault.c: Page fault handlers for the 64-bit Sparc.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1997, 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: fault.c,v 1.56 2001/08/27 18:42:07 kanoj Exp $&n; * arch/sparc64/mm/fault.c: Page fault handlers for the 64-bit Sparc.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1997, 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
 macro_line|#include &lt;asm/head.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -24,6 +24,76 @@ id|sp_banks
 id|SPARC_PHYS_BANKS
 )braket
 suffix:semicolon
+DECL|function|syscall_trace_entry
+r_void
+id|syscall_trace_entry
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;scall entry: %s[%d]/cpu%d: %d&bslash;n&quot;
+comma
+id|current-&gt;comm
+comma
+id|current-&gt;pid
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+(paren
+r_int
+)paren
+id|regs-&gt;u_regs
+(braket
+id|UREG_G1
+)braket
+)paren
+suffix:semicolon
+)brace
+DECL|function|syscall_trace_exit
+r_void
+id|syscall_trace_exit
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;scall exit: %s[%d]/cpu%d: %d&bslash;n&quot;
+comma
+id|current-&gt;comm
+comma
+id|current-&gt;pid
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+(paren
+r_int
+)paren
+id|regs-&gt;u_regs
+(braket
+id|UREG_G1
+)braket
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Nice, simple, prom library does all the sweating for us. ;) */
 DECL|function|prom_probe_memory
 r_int

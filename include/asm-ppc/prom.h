@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.prom.h 1.16 07/25/01 14:11:37 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.prom.h 1.19 08/17/01 15:23:17 paulus&n; */
 multiline_comment|/*&n; * Definitions for talking to the Open Firmware PROM on&n; * Power Macintosh computers.&n; *&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_PROM_H
@@ -29,12 +29,6 @@ r_int
 r_int
 id|prom_num_displays
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
-r_extern
-r_int
-id|have_of
-suffix:semicolon
-macro_line|#endif
 DECL|struct|address_range
 r_struct
 id|address_range
@@ -464,66 +458,6 @@ comma
 dot
 dot
 dot
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|prom_drawstring
-c_func
-(paren
-r_const
-r_char
-op_star
-id|c
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|prom_drawhex
-c_func
-(paren
-r_int
-r_int
-id|v
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|prom_drawchar
-c_func
-(paren
-r_char
-id|c
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|map_bootx_text
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|bootx_update_display
-c_func
-(paren
-r_int
-r_int
-id|phys
-comma
-r_int
-id|width
-comma
-r_int
-id|height
-comma
-r_int
-id|depth
-comma
-r_int
-id|pitch
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * When we call back to the Open Firmware client interface, we usually&n; * have to do that before the kernel is relocated to its final location&n; * (this is because we can&squot;t use OF after we have overwritten the&n; * exception vectors with our exception handlers).  These macros assist&n; * in performing the address calculations that we need to do to access&n; * data when the kernel is running at an address that is different from&n; * the address that the kernel is linked at.  The reloc_offset() function&n; * returns the difference between these two addresses and the macros&n; * simplify the process of adding or subtracting this offset to/from&n; * pointer values.  See arch/ppc/kernel/prom.c for how these are used.&n; */

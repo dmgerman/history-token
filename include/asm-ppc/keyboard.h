@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.keyboard.h 1.5 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; *  linux/include/asm-ppc/keyboard.h&n; *&n; *  Created 3 Nov 1996 by Geert Uytterhoeven&n; *  Modified for Power Macintosh by Paul Mackerras&n; */
 multiline_comment|/*&n; * This file contains the ppc architecture specific keyboard definitions -&n; * like the intel pc for prep systems, different for power macs.&n; */
 macro_line|#ifndef __ASMPPC_KEYBOARD_H
@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|KEYBOARD_IRQ
 mdefine_line|#define KEYBOARD_IRQ&t;&t;&t;1
@@ -207,6 +208,8 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|macro|kbd_rate
+mdefine_line|#define kbd_rate&t;(ppc_md.kbd_rate_fn)
 DECL|macro|kbd_sysrq_xlate
 mdefine_line|#define kbd_sysrq_xlate&t;(ppc_md.ppc_kbd_sysrq_xlate)
 r_extern

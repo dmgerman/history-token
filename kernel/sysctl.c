@@ -148,12 +148,10 @@ r_int
 id|sysctl_userprocess_debug
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef __powerpc__
+macro_line|#ifdef CONFIG_PPC32
 r_extern
 r_int
 r_int
-id|htab_reclaim_on
-comma
 id|zero_paged_on
 comma
 id|powersave_nap
@@ -775,28 +773,7 @@ id|proc_dointvec
 )brace
 comma
 macro_line|#endif
-macro_line|#ifdef __powerpc__
-(brace
-id|KERN_PPC_HTABRECLAIM
-comma
-l_string|&quot;htab-reclaim&quot;
-comma
-op_amp
-id|htab_reclaim_on
-comma
-r_sizeof
-(paren
-r_int
-)paren
-comma
-l_int|0644
-comma
-l_int|NULL
-comma
-op_amp
-id|proc_dointvec
-)brace
-comma
+macro_line|#ifdef CONFIG_PPC32
 (brace
 id|KERN_PPC_ZEROPAGED
 comma

@@ -996,6 +996,15 @@ id|NET_IPV4_NONLOCAL_BIND
 op_assign
 l_int|88
 comma
+DECL|enumerator|NET_IPV4_ICMP_RATELIMIT
+id|NET_IPV4_ICMP_RATELIMIT
+op_assign
+l_int|89
+comma
+DECL|enumerator|NET_IPV4_ICMP_RATEMASK
+id|NET_IPV4_ICMP_RATEMASK
+op_assign
+l_int|90
 )brace
 suffix:semicolon
 r_enum

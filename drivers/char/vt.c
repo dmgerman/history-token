@@ -16,7 +16,6 @@ macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;linux/kbd_kern.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/kbd_diacr.h&gt;
@@ -306,6 +305,22 @@ id|ticks
 (brace
 )brace
 macro_line|#endif
+DECL|function|_kbd_rate
+r_int
+id|_kbd_rate
+c_func
+(paren
+r_struct
+id|kbd_repeat
+op_star
+id|rep
+)paren
+(brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 DECL|variable|kd_mksound
 r_void
 (paren
@@ -323,6 +338,21 @@ id|ticks
 )paren
 op_assign
 id|_kd_mksound
+suffix:semicolon
+DECL|variable|kbd_rate
+r_int
+(paren
+op_star
+id|kbd_rate
+)paren
+(paren
+r_struct
+id|kbd_repeat
+op_star
+id|rep
+)paren
+op_assign
+id|_kbd_rate
 suffix:semicolon
 DECL|macro|i
 mdefine_line|#define i (tmp.kb_index)
@@ -2183,16 +2213,6 @@ suffix:colon
 r_struct
 id|kbd_repeat
 id|kbrep
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|kbd_rate
-)paren
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 r_if
 c_cond

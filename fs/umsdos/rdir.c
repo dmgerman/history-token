@@ -61,7 +61,7 @@ comma
 r_int
 id|name_len
 comma
-id|off_t
+id|loff_t
 id|offset
 comma
 id|ino_t

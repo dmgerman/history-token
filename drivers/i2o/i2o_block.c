@@ -4092,13 +4092,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Sync the device so we don&squot;t get errors */
-id|fsync_dev
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

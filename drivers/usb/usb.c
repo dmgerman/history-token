@@ -2242,8 +2242,8 @@ l_int|0
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* &quot;old style&quot; driver */
 (brace
+multiline_comment|/* &quot;old style&quot; driver */
 id|down
 c_func
 (paren
@@ -2273,6 +2273,13 @@ id|driver-&gt;serialize
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* probe() may have changed the config on us */
+id|interface
+op_assign
+id|dev-&gt;actconfig-&gt;interface
+op_plus
+id|ifnum
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3790,7 +3797,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;usb_bulk_msg - Builds a bulk urb, sends it off and waits for completion&n; *&t;@usb_dev: pointer to the usb device to send the message to&n; *&t;@pipe: endpoint &quot;pipe&quot; to send the message to&n; *&t;@data: pointer to the data to send&n; *&t;@len: length in bytes of the data to send&n; *&t;@actual_length: pointer to a location to put the actual length transfered in bytes&n; *&t;@timeout: time to wait for the message to complete before timing out (if 0 the wait is forever)&n; *&n; *&t;This function sends a simple bulk message to a specified endpoint&n; *&t;and waits for the message to complete, or timeout.&n; *&t;&n; *&t;If successful, it returns 0, othwise a negative error number.&n; *&t;The number of actual bytes transferred will be plaed in the &n; *&t;actual_timeout paramater.&n; *&n; *&t;Don&squot;t use this function from within an interrupt context, like a&n; *&t;bottom half handler.  If you need a asyncronous message, or need to&n; *&t;send a message from within interrupt context, use usb_submit_urb()&n; */
+multiline_comment|/**&n; *&t;usb_bulk_msg - Builds a bulk urb, sends it off and waits for completion&n; *&t;@usb_dev: pointer to the usb device to send the message to&n; *&t;@pipe: endpoint &quot;pipe&quot; to send the message to&n; *&t;@data: pointer to the data to send&n; *&t;@len: length in bytes of the data to send&n; *&t;@actual_length: pointer to a location to put the actual length transferred in bytes&n; *&t;@timeout: time to wait for the message to complete before timing out (if 0 the wait is forever)&n; *&n; *&t;This function sends a simple bulk message to a specified endpoint&n; *&t;and waits for the message to complete, or timeout.&n; *&t;&n; *&t;If successful, it returns 0, othwise a negative error number.&n; *&t;The number of actual bytes transferred will be plaed in the &n; *&t;actual_timeout paramater.&n; *&n; *&t;Don&squot;t use this function from within an interrupt context, like a&n; *&t;bottom half handler.  If you need a asyncronous message, or need to&n; *&t;send a message from within interrupt context, use usb_submit_urb()&n; */
 DECL|function|usb_bulk_msg
 r_int
 id|usb_bulk_msg
@@ -3918,11 +3925,6 @@ r_int
 id|usb_parse_endpoint
 c_func
 (paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
 r_struct
 id|usb_endpoint_descriptor
 op_star
@@ -4107,8 +4109,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* If we find another descriptor which is at or below us */
-multiline_comment|/*  in the descriptor heirarchy then we&squot;re done  */
+multiline_comment|/* If we find another &quot;proper&quot; descriptor then we&squot;re done  */
 r_if
 c_cond
 (paren
@@ -4262,11 +4263,6 @@ r_int
 id|usb_parse_interface
 c_func
 (paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
 r_struct
 id|usb_interface
 op_star
@@ -4555,8 +4551,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* If we find another descriptor which is at or below */
-multiline_comment|/*  us in the descriptor heirarchy then return */
+multiline_comment|/* If we find another &quot;proper&quot; descriptor then we&squot;re done  */
 r_if
 c_cond
 (paren
@@ -4855,8 +4850,6 @@ op_assign
 id|usb_parse_endpoint
 c_func
 (paren
-id|dev
-comma
 id|ifp-&gt;endpoint
 op_plus
 id|i
@@ -4926,11 +4919,6 @@ r_int
 id|usb_parse_configuration
 c_func
 (paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
 r_struct
 id|usb_config_descriptor
 op_star
@@ -5066,6 +5054,14 @@ id|size
 op_sub_assign
 id|config-&gt;bLength
 suffix:semicolon
+id|config-&gt;extra
+op_assign
+l_int|NULL
+suffix:semicolon
+id|config-&gt;extralen
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5150,8 +5146,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* If we find another descriptor which is at or below */
-multiline_comment|/*  us in the descriptor heirarchy then we&squot;re done  */
+multiline_comment|/* If we find another &quot;proper&quot; descriptor then we&squot;re done  */
 r_if
 c_cond
 (paren
@@ -5230,17 +5225,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|len
 )paren
 (brace
-id|config-&gt;extra
-op_assign
-l_int|NULL
-suffix:semicolon
+r_if
+c_cond
+(paren
 id|config-&gt;extralen
-op_assign
-l_int|0
+)paren
+(brace
+id|warn
+c_func
+(paren
+l_string|&quot;extra config descriptor&quot;
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -5292,13 +5290,12 @@ op_assign
 id|len
 suffix:semicolon
 )brace
+)brace
 id|retval
 op_assign
 id|usb_parse_interface
 c_func
 (paren
-id|dev
-comma
 id|config-&gt;interface
 op_plus
 id|i
@@ -8088,8 +8085,6 @@ op_assign
 id|usb_parse_configuration
 c_func
 (paren
-id|dev
-comma
 op_amp
 id|dev-&gt;config
 (braket

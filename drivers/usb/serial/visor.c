@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB HandSpring Visor driver&n; *&n; *&t;Copyright (C) 1999 - 2001&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * (05/30/2001) gkh&n; *&t;switched from using spinlock to a semaphore, which fixes lots of problems.&n; *&n; * (05/28/2000) gkh&n; *&t;Added initial support for the Palm m500 and Palm m505 devices.&n; *&n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; *&n; * (01/21/2000) gkh&n; *&t;Added write_room and chars_in_buffer, as they were previously using the&n; *&t;generic driver versions which is all wrong now that we are using an urb&n; *&t;pool.  Thanks to Wolfgang Grandegger for pointing this out to me.&n; *&t;Removed count assignment in the write function, which was not needed anymore&n; *&t;either.  Thanks to Al Borchers for pointing this out.&n; *&n; * (12/12/2000) gkh&n; *&t;Moved MOD_DEC to end of visor_close to be nicer, as the final write &n; *&t;message can sleep.&n; * &n; * (11/12/2000) gkh&n; *&t;Fixed bug with data being dropped on the floor by forcing tty-&gt;low_latency&n; *&t;to be on.  Hopefully this fixes the OHCI issue!&n; *&n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (09/11/2000) gkh&n; *&t;Got rid of always calling kmalloc for every urb we wrote out to the&n; *&t;device.&n; *&t;Added visor_read_callback so we can keep track of bytes in and out for&n; *&t;those people who like to know the speed of their device.&n; *&t;Removed DEBUG #ifdefs with call to usb_serial_debug_data&n; *&n; * (09/06/2000) gkh&n; *&t;Fixed oops in visor_exit.  Need to uncomment usb_unlink_urb call _after_&n; *&t;the host controller drivers set urb-&gt;dev = NULL when the urb is finished.&n; *&n; * (08/28/2000) gkh&n; *&t;Added locks for SMP safeness.&n; *&n; * (08/08/2000) gkh&n; *&t;Fixed endian problem in visor_startup.&n; *&t;Fixed MOD_INC and MOD_DEC logic and the ability to open a port more &n; *&t;than once.&n; * &n; * (07/23/2000) gkh&n; *&t;Added pool of write urbs to speed up transfers to the visor.&n; * &n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; * (07/03/2000) gkh&n; *&t;Added visor_set_ioctl and visor_set_termios functions (they don&squot;t do much&n; *&t;of anything, but are good for debugging.)&n; * &n; * (06/25/2000) gkh&n; *&t;Fixed bug in visor_unthrottle that should help with the disconnect in PPP&n; *&t;bug that people have been reporting.&n; *&n; * (06/23/2000) gkh&n; *&t;Cleaned up debugging statements in a quest to find UHCI timeout bug.&n; *&n; * (04/27/2000) Ryan VanderBijl&n; * &t;Fixed memory leak in visor_close&n; *&n; * (03/26/2000) gkh&n; *&t;Split driver up into device specific pieces.&n; * &n; */
+multiline_comment|/*&n; * USB HandSpring Visor driver&n; *&n; *&t;Copyright (C) 1999 - 2001&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * (08/23/2001) gkh&n; *&t;fixed a few potential bugs pointed out by Oliver Neukum.&n; *&n; * (05/30/2001) gkh&n; *&t;switched from using spinlock to a semaphore, which fixes lots of problems.&n; *&n; * (05/28/2000) gkh&n; *&t;Added initial support for the Palm m500 and Palm m505 devices.&n; *&n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; *&n; * (01/21/2000) gkh&n; *&t;Added write_room and chars_in_buffer, as they were previously using the&n; *&t;generic driver versions which is all wrong now that we are using an urb&n; *&t;pool.  Thanks to Wolfgang Grandegger for pointing this out to me.&n; *&t;Removed count assignment in the write function, which was not needed anymore&n; *&t;either.  Thanks to Al Borchers for pointing this out.&n; *&n; * (12/12/2000) gkh&n; *&t;Moved MOD_DEC to end of visor_close to be nicer, as the final write &n; *&t;message can sleep.&n; * &n; * (11/12/2000) gkh&n; *&t;Fixed bug with data being dropped on the floor by forcing tty-&gt;low_latency&n; *&t;to be on.  Hopefully this fixes the OHCI issue!&n; *&n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (09/11/2000) gkh&n; *&t;Got rid of always calling kmalloc for every urb we wrote out to the&n; *&t;device.&n; *&t;Added visor_read_callback so we can keep track of bytes in and out for&n; *&t;those people who like to know the speed of their device.&n; *&t;Removed DEBUG #ifdefs with call to usb_serial_debug_data&n; *&n; * (09/06/2000) gkh&n; *&t;Fixed oops in visor_exit.  Need to uncomment usb_unlink_urb call _after_&n; *&t;the host controller drivers set urb-&gt;dev = NULL when the urb is finished.&n; *&n; * (08/28/2000) gkh&n; *&t;Added locks for SMP safeness.&n; *&n; * (08/08/2000) gkh&n; *&t;Fixed endian problem in visor_startup.&n; *&t;Fixed MOD_INC and MOD_DEC logic and the ability to open a port more &n; *&t;than once.&n; * &n; * (07/23/2000) gkh&n; *&t;Added pool of write urbs to speed up transfers to the visor.&n; * &n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; * (07/03/2000) gkh&n; *&t;Added visor_set_ioctl and visor_set_termios functions (they don&squot;t do much&n; *&t;of anything, but are good for debugging.)&n; * &n; * (06/25/2000) gkh&n; *&t;Fixed bug in visor_unthrottle that should help with the disconnect in PPP&n; *&t;bug that people have been reporting.&n; *&n; * (06/23/2000) gkh&n; *&t;Cleaned up debugging statements in a quest to find UHCI timeout bug.&n; *&n; * (04/27/2000) Ryan VanderBijl&n; * &t;Fixed memory leak in visor_close&n; *&n; * (03/26/2000) gkh&n; *&t;Split driver up into device specific pieces.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -33,13 +33,11 @@ macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;visor.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.2&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.3&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman &lt;greg@kroah.com&gt;&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB HandSpring Visor driver&quot;
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)                (((a)&lt;(b))?(a):(b))
 multiline_comment|/* function prototypes for a handspring visor */
 r_static
 r_int
@@ -286,6 +284,31 @@ comma
 multiline_comment|/* Terminating entry */
 )brace
 suffix:semicolon
+DECL|variable|clie_id_table
+r_static
+id|__devinitdata
+r_struct
+id|usb_device_id
+id|clie_id_table
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|SONY_VENDOR_ID
+comma
+id|SONY_CLIE_ID
+)paren
+)brace
+comma
+(brace
+)brace
+multiline_comment|/* Terminating entry */
+)brace
+suffix:semicolon
 DECL|variable|id_table
 r_static
 id|__devinitdata
@@ -323,6 +346,16 @@ c_func
 id|PALM_VENDOR_ID
 comma
 id|PALM_M505_ID
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|SONY_VENDOR_ID
+comma
+id|SONY_CLIE_ID
 )paren
 )brace
 comma
@@ -603,6 +636,103 @@ comma
 id|startup
 suffix:colon
 id|visor_startup
+comma
+id|shutdown
+suffix:colon
+id|visor_shutdown
+comma
+id|ioctl
+suffix:colon
+id|visor_ioctl
+comma
+id|set_termios
+suffix:colon
+id|visor_set_termios
+comma
+id|write
+suffix:colon
+id|visor_write
+comma
+id|write_room
+suffix:colon
+id|visor_write_room
+comma
+id|chars_in_buffer
+suffix:colon
+id|visor_chars_in_buffer
+comma
+id|write_bulk_callback
+suffix:colon
+id|visor_write_bulk_callback
+comma
+id|read_bulk_callback
+suffix:colon
+id|visor_read_bulk_callback
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* device info for the Sony Clie */
+DECL|variable|clie_device
+r_static
+r_struct
+id|usb_serial_device_type
+id|clie_device
+op_assign
+(brace
+id|name
+suffix:colon
+l_string|&quot;Sony Clie&quot;
+comma
+id|id_table
+suffix:colon
+id|clie_id_table
+comma
+id|needs_interrupt_in
+suffix:colon
+id|MUST_HAVE_NOT
+comma
+multiline_comment|/* this device must not have an interrupt in endpoint */
+id|needs_bulk_in
+suffix:colon
+id|MUST_HAVE
+comma
+multiline_comment|/* this device must have a bulk in endpoint */
+id|needs_bulk_out
+suffix:colon
+id|MUST_HAVE
+comma
+multiline_comment|/* this device must have a bulk out endpoint */
+id|num_interrupt_in
+suffix:colon
+l_int|0
+comma
+id|num_bulk_in
+suffix:colon
+l_int|1
+comma
+id|num_bulk_out
+suffix:colon
+l_int|1
+comma
+id|num_ports
+suffix:colon
+l_int|1
+comma
+id|open
+suffix:colon
+id|visor_open
+comma
+id|close
+suffix:colon
+id|visor_close
+comma
+id|throttle
+suffix:colon
+id|visor_throttle
+comma
+id|unthrottle
+suffix:colon
+id|visor_unthrottle
 comma
 id|shutdown
 suffix:colon
@@ -1051,17 +1181,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|usb_serial_debug_data
-(paren
-id|__FILE__
-comma
-id|__FUNCTION__
-comma
-id|count
-comma
-id|buf
-)paren
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -1188,8 +1307,10 @@ suffix:semicolon
 )brace
 id|transfer_size
 op_assign
-id|MIN
+id|min
 (paren
+r_int
+comma
 id|count
 comma
 id|URB_TRANSFER_BUFFER_SIZE
@@ -1200,6 +1321,10 @@ c_cond
 (paren
 id|from_user
 )paren
+(brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 (paren
 id|urb-&gt;transfer_buffer
@@ -1208,8 +1333,19 @@ id|current_position
 comma
 id|transfer_size
 )paren
+)paren
+(brace
+id|bytes_sent
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
 r_else
+(brace
 id|memcpy
 (paren
 id|urb-&gt;transfer_buffer
@@ -1217,6 +1353,18 @@ comma
 id|current_position
 comma
 id|transfer_size
+)paren
+suffix:semicolon
+)brace
+id|usb_serial_debug_data
+(paren
+id|__FILE__
+comma
+id|__FUNCTION__
+comma
+id|transfer_size
+comma
+id|urb-&gt;transfer_buffer
 )paren
 suffix:semicolon
 multiline_comment|/* build up our urb */
@@ -1261,7 +1409,8 @@ c_cond
 (paren
 id|status
 )paren
-id|dbg
+(brace
+id|err
 c_func
 (paren
 id|__FUNCTION__
@@ -1270,6 +1419,13 @@ comma
 id|status
 )paren
 suffix:semicolon
+id|bytes_sent
+op_assign
+id|status
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|current_position
 op_add_assign
 id|transfer_size
@@ -2482,8 +2638,6 @@ id|old_termios
 r_int
 r_int
 id|cflag
-op_assign
-id|port-&gt;tty-&gt;termios-&gt;c_cflag
 suffix:semicolon
 id|dbg
 c_func
@@ -2493,6 +2647,34 @@ l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+op_logical_neg
+id|port-&gt;tty
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|port-&gt;tty-&gt;termios
+)paren
+)paren
+(brace
+id|dbg
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; - no tty structures&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|cflag
+op_assign
+id|port-&gt;tty-&gt;termios-&gt;c_cflag
 suffix:semicolon
 multiline_comment|/* check that they really want us to change something */
 r_if
@@ -2535,30 +2717,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-)brace
-r_if
-c_cond
-(paren
-(paren
-op_logical_neg
-id|port-&gt;tty
-)paren
-op_logical_or
-(paren
-op_logical_neg
-id|port-&gt;tty-&gt;termios
-)paren
-)paren
-(brace
-id|dbg
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - no tty structures&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/* get the byte size */
 r_switch
@@ -2793,6 +2951,12 @@ op_amp
 id|palm_m505_device
 )paren
 suffix:semicolon
+id|usb_serial_register
+(paren
+op_amp
+id|clie_device
+)paren
+suffix:semicolon
 multiline_comment|/* create our write urb pool and transfer buffers */
 id|spin_lock_init
 (paren
@@ -2880,9 +3044,9 @@ suffix:semicolon
 id|info
 c_func
 (paren
-id|DRIVER_VERSION
-l_string|&quot;:&quot;
 id|DRIVER_DESC
+l_string|&quot; &quot;
+id|DRIVER_VERSION
 )paren
 suffix:semicolon
 r_return
@@ -2921,6 +3085,12 @@ id|usb_serial_deregister
 (paren
 op_amp
 id|palm_m505_device
+)paren
+suffix:semicolon
+id|usb_serial_deregister
+(paren
+op_amp
+id|clie_device
 )paren
 suffix:semicolon
 id|spin_lock_irqsave

@@ -2486,12 +2486,6 @@ c_func
 id|kaweth-&gt;tx_urb
 )paren
 suffix:semicolon
-id|netif_wake_queue
-c_func
-(paren
-id|net
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/****************************************************************&n; *     kaweth_probe&n; ****************************************************************/
 DECL|function|kaweth_probe
@@ -3181,6 +3175,23 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|kaweth-&gt;net
+)paren
+(brace
+id|kaweth_err
+c_func
+(paren
+l_string|&quot;Error calling init_etherdev.&quot;
+)paren
+suffix:semicolon
+r_return
+id|kaweth
+suffix:semicolon
+)brace
 id|memcpy
 c_func
 (paren

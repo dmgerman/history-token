@@ -1,9 +1,11 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.elf.h 1.10 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.elf.h 1.14 08/21/01 16:07:48 trini&n; */
 macro_line|#ifndef __PPC_ELF_H
 DECL|macro|__PPC_ELF_H
 mdefine_line|#define __PPC_ELF_H
 multiline_comment|/*&n; * ELF register definitions..&n; */
+macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
 DECL|macro|ELF_NGREG
 mdefine_line|#define ELF_NGREG&t;48&t;/* includes nip, msr, lr, etc. */
 DECL|macro|ELF_NFPREG
@@ -75,7 +77,7 @@ DECL|macro|ELF_CORE_COPY_REGS
 mdefine_line|#define ELF_CORE_COPY_REGS(gregs, regs) &bslash;&n;&t;memcpy(gregs, regs, &bslash;&n;&t;       sizeof(struct pt_regs) &lt; sizeof(elf_gregset_t)? &bslash;&n;&t;       sizeof(struct pt_regs): sizeof(elf_gregset_t));
 multiline_comment|/* This yields a mask that user programs can use to figure out what&n;   instruction set this cpu supports.  This could be done in userspace,&n;   but it&squot;s not easy, and we&squot;ve already done it here.  */
 DECL|macro|ELF_HWCAP
-mdefine_line|#define ELF_HWCAP&t;(0)
+mdefine_line|#define ELF_HWCAP&t;(cur_cpu_spec[0]-&gt;cpu_user_features)
 multiline_comment|/* This yields a string that ld.so will use to load implementation&n;   specific libraries for optimization.  This is more specific in&n;   intent than poking at uname or /proc/cpuinfo.&n;&n;   For the moment, we have only optimizations for the Intel generations,&n;   but that could change... */
 DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM&t;(NULL)

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ivms8.h 1.5 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.ivms8.h 1.6 08/17/01 15:23:17 paulus&n; */
 multiline_comment|/*&n; * A collection of structures, addresses, and values associated with&n; * Speech Design Integrated Voicemail Systems (IVMS8) boards.&n; *&n; * Copyright (c) 2000 Wolfgang Denk (wd@denx.de)&n; */
 macro_line|#ifndef __MACH_IVMS8_DEFS
 DECL|macro|__MACH_IVMS8_DEFS
@@ -273,8 +273,5 @@ mdefine_line|#define IDE0_IRQ_REG_OFFSET&t;&t;0x000A&t;/* not used&t;&t;&t;*/
 multiline_comment|/* We don&squot;t use the 8259.&n;*/
 DECL|macro|NR_8259_INTS
 mdefine_line|#define NR_8259_INTS&t;0
-multiline_comment|/* Generic 8xx type&n;*/
-DECL|macro|_MACH_8xx
-mdefine_line|#define _MACH_8xx (_MACH_ivms8)
 macro_line|#endif&t;/* __MACH_IVMS8_DEFS */
 eof

@@ -41,8 +41,6 @@ mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman, greg@kroah.com, htt
 singleline_comment|//www.kroah.com/linux-usb/&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB Serial Driver core&quot;
-DECL|macro|MAX
-mdefine_line|#define MAX(a,b)&t;(((a)&gt;(b))?(a):(b))
 multiline_comment|/* function prototypes for a &quot;generic&quot; type serial converter (no flow control, not all endpoints needed) */
 multiline_comment|/* need to always compile these in, as some of the other devices use these functions as their own. */
 multiline_comment|/* if a driver does not provide a function pointer, the generic function will be called. */
@@ -2425,6 +2423,9 @@ c_cond
 id|from_user
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -2434,6 +2435,10 @@ id|buf
 comma
 id|count
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 r_else
@@ -4215,9 +4220,11 @@ multiline_comment|/* initialize some parts of the port structures */
 multiline_comment|/* we don&squot;t use num_ports here cauz some devices have more endpoint pairs than ports */
 id|max_endpoints
 op_assign
-id|MAX
+id|max
 c_func
 (paren
+r_int
+comma
 id|num_bulk_in
 comma
 id|num_bulk_out
@@ -4225,9 +4232,11 @@ id|num_bulk_out
 suffix:semicolon
 id|max_endpoints
 op_assign
-id|MAX
+id|max
 c_func
 (paren
+r_int
+comma
 id|max_endpoints
 comma
 id|num_interrupt_in
@@ -4235,9 +4244,11 @@ id|num_interrupt_in
 suffix:semicolon
 id|max_endpoints
 op_assign
-id|MAX
+id|max
 c_func
 (paren
+r_int
+comma
 id|max_endpoints
 comma
 id|serial-&gt;num_ports

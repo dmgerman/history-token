@@ -1,6 +1,33 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.start.c 1.8 05/18/01 15:17:15 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.start.c 1.10 07/25/01 18:13:07 trini&n; */
 multiline_comment|/*&n; * Copyright (C) Paul Mackerras 1997.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;stdarg.h&gt;
+r_extern
+r_int
+id|strlen
+c_func
+(paren
+r_const
+r_char
+op_star
+id|s
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|boot
+c_func
+(paren
+r_int
+id|a1
+comma
+r_int
+id|a2
+comma
+r_void
+op_star
+id|prom
+)paren
+suffix:semicolon
 DECL|variable|prom
 r_int
 (paren
@@ -510,6 +537,7 @@ r_void
 DECL|function|exit
 m_exit
 (paren
+r_void
 )paren
 (brace
 r_struct
@@ -549,6 +577,7 @@ DECL|function|pause
 id|pause
 c_func
 (paren
+r_void
 )paren
 (brace
 r_struct
@@ -1015,6 +1044,7 @@ DECL|function|readchar
 id|readchar
 c_func
 (paren
+r_void
 )paren
 (brace
 r_char
@@ -1089,6 +1119,7 @@ DECL|function|getchar
 id|getchar
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
