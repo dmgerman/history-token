@@ -527,10 +527,6 @@ r_int
 id|addr
 comma
 r_int
-r_int
-id|flags
-comma
-r_int
 id|kind
 )paren
 (brace
@@ -737,7 +733,7 @@ suffix:semicolon
 id|strlcpy
 c_func
 (paren
-id|client-&gt;dev.name
+id|client-&gt;name
 comma
 id|dname
 comma
@@ -821,7 +817,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s_attach: init error %d&bslash;n&quot;
 comma
-id|client-&gt;dev.name
+id|client-&gt;name
 comma
 id|rv
 )paren
@@ -874,7 +870,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s_attach: %s rev. %d at 0x%02x&bslash;n&quot;
 comma
-id|client-&gt;dev.name
+id|client-&gt;name
 comma
 id|dname
 comma
@@ -1290,7 +1286,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: illegal norm: %d&bslash;n&quot;
 comma
-id|client-&gt;dev.name
+id|client-&gt;name
 comma
 id|iarg
 )paren
@@ -1548,7 +1544,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: illegal input: %d&bslash;n&quot;
 comma
-id|client-&gt;dev.name
+id|client-&gt;name
 comma
 id|iarg
 )paren
@@ -1781,15 +1777,9 @@ op_amp
 id|i2c_driver_adv7175
 comma
 dot
-id|dev
-op_assign
-(brace
-dot
 id|name
 op_assign
 l_string|&quot;adv7175_client&quot;
-comma
-)brace
 comma
 )brace
 suffix:semicolon

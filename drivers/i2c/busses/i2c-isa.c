@@ -57,15 +57,9 @@ op_amp
 id|isa_algorithm
 comma
 dot
-id|dev
-op_assign
-(brace
-dot
 id|name
 op_assign
 l_string|&quot;ISA main adapter&quot;
-comma
-)brace
 comma
 )brace
 suffix:semicolon

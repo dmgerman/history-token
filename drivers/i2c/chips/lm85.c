@@ -3403,7 +3403,7 @@ suffix:semicolon
 id|strlcpy
 c_func
 (paren
-id|new_client-&gt;dev.name
+id|new_client-&gt;name
 comma
 l_string|&quot;Generic LM85&quot;
 comma
@@ -3427,7 +3427,7 @@ suffix:semicolon
 id|strlcpy
 c_func
 (paren
-id|new_client-&gt;dev.name
+id|new_client-&gt;name
 comma
 l_string|&quot;National LM85-B&quot;
 comma
@@ -3451,7 +3451,7 @@ suffix:semicolon
 id|strlcpy
 c_func
 (paren
-id|new_client-&gt;dev.name
+id|new_client-&gt;name
 comma
 l_string|&quot;National LM85-C&quot;
 comma
@@ -3475,7 +3475,7 @@ suffix:semicolon
 id|strlcpy
 c_func
 (paren
-id|new_client-&gt;dev.name
+id|new_client-&gt;name
 comma
 l_string|&quot;Analog Devices ADM1027&quot;
 comma
@@ -3499,7 +3499,7 @@ suffix:semicolon
 id|strlcpy
 c_func
 (paren
-id|new_client-&gt;dev.name
+id|new_client-&gt;name
 comma
 l_string|&quot;Analog Devices ADT7463&quot;
 comma
@@ -3563,7 +3563,7 @@ l_string|&quot;lm85: Assigning ID %d to %s at %d,0x%02x&bslash;n&quot;
 comma
 id|new_client-&gt;id
 comma
-id|new_client-&gt;dev.name
+id|new_client-&gt;name
 comma
 id|i2c_adapter_id
 c_func
