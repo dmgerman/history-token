@@ -441,6 +441,8 @@ op_star
 id|src
 op_increment
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 r_if
