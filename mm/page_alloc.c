@@ -2045,7 +2045,7 @@ r_if
 c_cond
 (paren
 id|z-&gt;free_pages
-OG
+op_ge
 id|min
 op_logical_or
 (paren
@@ -2175,7 +2175,7 @@ r_if
 c_cond
 (paren
 id|z-&gt;free_pages
-OG
+op_ge
 id|min
 op_logical_or
 (paren
@@ -2365,7 +2365,7 @@ r_if
 c_cond
 (paren
 id|z-&gt;free_pages
-OG
+op_ge
 id|min
 op_logical_or
 (paren
