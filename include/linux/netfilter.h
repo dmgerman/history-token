@@ -622,22 +622,6 @@ id|sk_buff
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NETFILTER_DEBUG
-r_extern
-r_void
-id|nf_dump_skb
-c_func
-(paren
-r_int
-id|pf
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* FIXME: Before cache is ever used, this must be implemented for real. */
 r_extern
 r_void

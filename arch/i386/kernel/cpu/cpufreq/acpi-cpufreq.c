@@ -11,6 +11,7 @@ macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;acpi/processor.h&gt;
+macro_line|#include &quot;speedstep-est-common.h&quot;
 DECL|macro|dprintk
 mdefine_line|#define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_DRIVER, &quot;acpi-cpufreq&quot;, msg)
 id|MODULE_AUTHOR
@@ -46,6 +47,11 @@ id|cpufreq_frequency_table
 op_star
 id|freq_table
 suffix:semicolon
+DECL|member|resume
+r_int
+r_int
+id|resume
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|acpi_io_data
@@ -57,6 +63,12 @@ id|acpi_io_data
 (braket
 id|NR_CPUS
 )braket
+suffix:semicolon
+DECL|variable|acpi_cpufreq_driver
+r_static
+r_struct
+id|cpufreq_driver
+id|acpi_cpufreq_driver
 suffix:semicolon
 r_static
 r_int
@@ -329,6 +341,31 @@ op_eq
 id|data-&gt;acpi_data.state
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|data-&gt;resume
+)paren
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;Called after resume, resetting to P%d&bslash;n&quot;
+comma
+id|state
+)paren
+suffix:semicolon
+id|data-&gt;resume
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
 id|dprintk
 c_func
 (paren
@@ -344,6 +381,7 @@ suffix:semicolon
 r_goto
 id|migrate_end
 suffix:semicolon
+)brace
 )brace
 id|dprintk
 c_func
@@ -1301,6 +1339,21 @@ id|result
 r_goto
 id|err_free
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_const_loops_cpu
+c_func
+(paren
+id|cpu
+)paren
+)paren
+(brace
+id|acpi_cpufreq_driver.flags
+op_or_assign
+id|CPUFREQ_CONST_LOOPS
+suffix:semicolon
+)brace
 multiline_comment|/* capability check */
 r_if
 c_cond
@@ -1749,6 +1802,43 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_static
+r_int
+DECL|function|acpi_cpufreq_resume
+id|acpi_cpufreq_resume
+(paren
+r_struct
+id|cpufreq_policy
+op_star
+id|policy
+)paren
+(brace
+r_struct
+id|cpufreq_acpi_io
+op_star
+id|data
+op_assign
+id|acpi_io_data
+(braket
+id|policy-&gt;cpu
+)braket
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;acpi_cpufreq_resume&bslash;n&quot;
+)paren
+suffix:semicolon
+id|data-&gt;resume
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+(paren
+l_int|0
+)paren
+suffix:semicolon
+)brace
 DECL|variable|acpi_cpufreq_attr
 r_static
 r_struct
@@ -1792,6 +1882,11 @@ dot
 m_exit
 op_assign
 id|acpi_cpufreq_cpu_exit
+comma
+dot
+id|resume
+op_assign
+id|acpi_cpufreq_resume
 comma
 dot
 id|name

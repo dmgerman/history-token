@@ -67,69 +67,6 @@ DECL|macro|DEBUG
 mdefine_line|#define DEBUG(n, args...)
 macro_line|#endif
 multiline_comment|/* ================================================================== */
-multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
-multiline_comment|/* Bit map of interrupts to choose from */
-DECL|variable|irq_mask
-r_static
-r_int
-r_int
-id|irq_mask
-op_assign
-l_int|0xdeb8
-suffix:semicolon
-multiline_comment|/* 3-5, 7, 9-12, 14, 15 */
-DECL|variable|irq_list
-r_static
-r_int
-id|irq_list
-(braket
-l_int|4
-)braket
-op_assign
-(brace
-op_minus
-l_int|1
-)brace
-suffix:semicolon
-id|module_param
-c_func
-(paren
-id|irq_mask
-comma
-r_int
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|irq_mask
-comma
-l_string|&quot;IRQ mask bits (default: 0xdeb8)&quot;
-)paren
-suffix:semicolon
-id|module_param_array
-c_func
-(paren
-id|irq_list
-comma
-r_int
-comma
-l_int|NULL
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|irq_list
-comma
-l_string|&quot;Comma-separated list of up to 4 IRQs to try (default: auto select).&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* ================================================================== */
 DECL|macro|SYNC_MODE
 mdefine_line|#define SYNC_MODE 0 &t;&t;/* Synchronous transfer mode */
 multiline_comment|/* Default configuration */
@@ -3790,8 +3727,6 @@ op_star
 id|link
 suffix:semicolon
 r_int
-id|i
-comma
 id|ret
 suffix:semicolon
 id|DEBUG
@@ -3867,48 +3802,7 @@ id|IRQ_TYPE_EXCLUSIVE
 suffix:semicolon
 id|link-&gt;irq.IRQInfo1
 op_assign
-id|IRQ_INFO2_VALID
-op_or
 id|IRQ_LEVEL_ID
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|irq_list
-(braket
-l_int|0
-)braket
-op_eq
-op_minus
-l_int|1
-)paren
-id|link-&gt;irq.IRQInfo2
-op_assign
-id|irq_mask
-suffix:semicolon
-r_else
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|4
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|link-&gt;irq.IRQInfo2
-op_or_assign
-l_int|1
-op_lshift
-id|irq_list
-(braket
-id|i
-)braket
 suffix:semicolon
 id|link-&gt;conf.Attributes
 op_assign

@@ -19,7 +19,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/usbdevice_fs.h&gt;
-macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -10423,14 +10422,7 @@ id|hub_event_list
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|current-&gt;flags
-op_amp
-id|PF_FREEZE
-)paren
-id|refrigerator
+id|try_to_freeze
 c_func
 (paren
 id|PF_FREEZE

@@ -416,6 +416,29 @@ op_assign
 l_string|&quot;port-helper&quot;
 suffix:semicolon
 )brace
+multiline_comment|/* Check that DISPLAY is set, this doesn&squot;t guarantee the xterm&n;&t; * will work but w/o it we can be pretty sure it won&squot;t. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|getenv
+c_func
+(paren
+l_string|&quot;DISPLAY&quot;
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;xterm_open: $DISPLAY not set.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 id|fd
 op_assign
 id|mkstemp

@@ -302,12 +302,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* We protect r_list with this spinlock so two processors are not modifying&n; * the list at the same time. &n; */
-DECL|variable|recent_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|recent_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* Our /proc/net/ipt_recent entry */

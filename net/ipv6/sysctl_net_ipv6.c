@@ -21,6 +21,7 @@ id|ipv6_icmp_table
 suffix:semicolon
 macro_line|#ifdef CONFIG_SYSCTL
 DECL|variable|ipv6_table
+r_static
 id|ctl_table
 id|ipv6_table
 (braket

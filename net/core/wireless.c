@@ -1047,6 +1047,7 @@ id|iw_ioctl_description
 suffix:semicolon
 multiline_comment|/* Size (in bytes) of the various private data types */
 DECL|variable|iw_priv_type_size
+r_static
 r_const
 r_char
 id|iw_priv_type_size

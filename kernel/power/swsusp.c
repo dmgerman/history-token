@@ -1359,12 +1359,11 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|highmem_copy
+r_static
 r_struct
 id|highmem_page
 op_star
 id|highmem_copy
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|function|save_highmem_zone
 r_static
@@ -2642,9 +2641,10 @@ c_func
 )paren
 )paren
 (brace
-id|pr_debug
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;suspend: Allocating pagedir failed.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2665,9 +2665,10 @@ c_func
 )paren
 )paren
 (brace
-id|pr_debug
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;suspend: Allocating image pages failed.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2693,6 +2694,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|suspend_prepare_image
+r_static
 r_int
 id|suspend_prepare_image
 c_func
@@ -2936,7 +2938,7 @@ op_assign
 id|device_power_down
 c_func
 (paren
-id|PM_SUSPEND_DISK
+id|PMSG_FREEZE
 )paren
 )paren
 )paren
@@ -3039,7 +3041,7 @@ suffix:semicolon
 id|device_power_down
 c_func
 (paren
-id|PM_SUSPEND_DISK
+id|PMSG_FREEZE
 )paren
 suffix:semicolon
 multiline_comment|/* We&squot;ll ignore saved state, but this gets preempt count (etc) right */
@@ -3732,6 +3734,7 @@ id|error
 suffix:semicolon
 )brace
 DECL|function|bio_read_page
+r_static
 r_int
 id|bio_read_page
 c_func
@@ -3757,6 +3760,7 @@ id|page
 suffix:semicolon
 )brace
 DECL|function|bio_write_page
+r_static
 r_int
 id|bio_write_page
 c_func
@@ -4311,7 +4315,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;pmdisk: Reading pagedir (%d Pages)&bslash;n&quot;
+l_string|&quot;swsusp: Reading pagedir (%d Pages)&bslash;n&quot;
 comma
 id|n
 )paren

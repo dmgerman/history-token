@@ -102,12 +102,6 @@ DECL|member|suckyio_irq_enabled
 r_int
 id|suckyio_irq_enabled
 suffix:semicolon
-DECL|member|irq_region
-r_struct
-id|irq_region
-op_star
-id|irq_region
-suffix:semicolon
 DECL|member|lio_pdev
 r_struct
 id|pci_dev
@@ -133,27 +127,6 @@ DECL|macro|SUPERIO_USB_FN
 mdefine_line|#define SUPERIO_USB_FN 2 /* Function number of USB controller */
 DECL|macro|is_superio_device
 mdefine_line|#define is_superio_device(x) &bslash;&n;&t;(((x)-&gt;vendor == PCI_VENDOR_ID_NS) &amp;&amp; &bslash;&n;&t;(  ((x)-&gt;device == PCI_DEVICE_ID_NS_87415) &bslash;&n;&t;|| ((x)-&gt;device == PCI_DEVICE_ID_NS_87560_LIO) &bslash;&n;&t;|| ((x)-&gt;device == PCI_DEVICE_ID_NS_87560_USB) ) )
-r_struct
-id|hwif_s
-suffix:semicolon
-r_extern
-r_void
-id|superio_inform_irq
-c_func
-(paren
-r_int
-id|irq
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|superio_serial_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* called by rs_init() */
 r_extern
 r_int
 id|superio_fixup_irq
@@ -166,16 +139,5 @@ id|pcidev
 )paren
 suffix:semicolon
 multiline_comment|/* called by iosapic */
-r_extern
-r_void
-id|superio_fixup_pci
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-)paren
-suffix:semicolon
 macro_line|#endif /* _PARISC_SUPERIO_H */
 eof

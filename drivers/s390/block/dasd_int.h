@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.61 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.63 $&n; */
 macro_line|#ifndef DASD_INT_H
 DECL|macro|DASD_INT_H
 mdefine_line|#define DASD_INT_H
@@ -154,6 +154,11 @@ DECL|macro|DEV_MESSAGE
 mdefine_line|#define DEV_MESSAGE(d_loglevel,d_device,d_string,d_args...)&bslash;&n;do { &bslash;&n;&t;printk(d_loglevel PRINTK_HEADER &quot; %s: &quot; d_string &quot;&bslash;n&quot;, &bslash;&n;&t;       d_device-&gt;cdev-&gt;dev.bus_id, d_args); &bslash;&n;&t;DBF_DEV_EVENT(DBF_ALERT, d_device, d_string, d_args); &bslash;&n;} while(0)
 DECL|macro|MESSAGE
 mdefine_line|#define MESSAGE(d_loglevel,d_string,d_args...)&bslash;&n;do { &bslash;&n;&t;printk(d_loglevel PRINTK_HEADER &quot; &quot; d_string &quot;&bslash;n&quot;, d_args); &bslash;&n;&t;DBF_EVENT(DBF_ALERT, d_string, d_args); &bslash;&n;} while(0)
+multiline_comment|/* messages to be written via klogd only */
+DECL|macro|DEV_MESSAGE_LOG
+mdefine_line|#define DEV_MESSAGE_LOG(d_loglevel,d_device,d_string,d_args...)&bslash;&n;do { &bslash;&n;&t;printk(d_loglevel PRINTK_HEADER &quot; %s: &quot; d_string &quot;&bslash;n&quot;, &bslash;&n;&t;       d_device-&gt;cdev-&gt;dev.bus_id, d_args); &bslash;&n;} while(0)
+DECL|macro|MESSAGE_LOG
+mdefine_line|#define MESSAGE_LOG(d_loglevel,d_string,d_args...)&bslash;&n;do { &bslash;&n;&t;printk(d_loglevel PRINTK_HEADER &quot; &quot; d_string &quot;&bslash;n&quot;, d_args); &bslash;&n;} while(0)
 DECL|struct|dasd_ccw_req
 r_struct
 id|dasd_ccw_req

@@ -944,6 +944,9 @@ DECL|macro|TASK_SIZE_USER32
 mdefine_line|#define TASK_SIZE_USER32 (0x0000000100000000UL - (1*PAGE_SIZE))
 DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE (test_thread_flag(TIF_32BIT) ? &bslash;&n;&t;&t;TASK_SIZE_USER32 : TASK_SIZE_USER64)
+multiline_comment|/* We can&squot;t actually tell the TASK_SIZE given just the mm, but default&n; * to the 64-bit case to make sure that enough gets cleaned up. */
+DECL|macro|MM_VM_SIZE
+mdefine_line|#define MM_VM_SIZE(mm)&t;TASK_SIZE_USER64
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE_USER32
 mdefine_line|#define TASK_UNMAPPED_BASE_USER32 (PAGE_ALIGN(STACK_TOP_USER32 / 4))

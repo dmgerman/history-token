@@ -484,8 +484,10 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;i2o: I2O controller has no memory regions&quot;
+l_string|&quot;%s: I2O controller has no memory regions&quot;
 l_string|&quot; defined.&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 id|i2o_pci_free
@@ -510,7 +512,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;i2o: PCI I2O controller&bslash;n&quot;
+l_string|&quot;%s: PCI I2O controller&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 id|printk
@@ -557,7 +561,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;i2o: PCI I2O controller at %08lX size=%ld&bslash;n&quot;
+l_string|&quot;%s: PCI I2O controller at %08lX size=%ld&bslash;n&quot;
+comma
+id|c-&gt;name
 comma
 (paren
 r_int
@@ -593,7 +599,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;i2o: Unable to map controller.&bslash;n&quot;
+l_string|&quot;%s: Unable to map controller.&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -628,7 +636,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;i2o: Unable to map controller.&bslash;n&quot;
+l_string|&quot;%s: Unable to map controller.&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 id|i2o_pci_free
@@ -698,8 +708,10 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;i2o: could not enable write combining &quot;
+l_string|&quot;%s: could not enable write combining &quot;
 l_string|&quot;MTRR&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 r_else
@@ -707,7 +719,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;i2o: using write combining MTRR&bslash;n&quot;
+l_string|&quot;%s: using write combining MTRR&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If it is an INTEL i960 I/O processor then set the first 64K to&n;&t; * Uncacheable since the region contains the messaging unit which&n;&t; * shouldn&squot;t be cached.&n;&t; */
@@ -732,8 +746,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;i2o: MTRR workaround for Intel i960 processor&quot;
+l_string|&quot;%s: MTRR workaround for Intel i960 processor&quot;
 l_string|&quot;&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 id|c-&gt;mtrr_reg1
@@ -762,8 +778,10 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;i2o_pci: Error in setting &quot;
+l_string|&quot;%s: Error in setting &quot;
 l_string|&quot;MTRR_TYPE_UNCACHABLE&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 id|mtrr_del
@@ -1030,7 +1048,9 @@ r_else
 id|pr_debug
 c_func
 (paren
-l_string|&quot;960 bug detected&bslash;n&quot;
+l_string|&quot;%s: 960 bug detected&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -1059,9 +1079,11 @@ c_func
 (paren
 id|dev
 comma
-id|c-&gt;out_queue.phys
+id|mv
 comma
 id|MSG_FRAME_SIZE
+op_star
+l_int|4
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -1460,7 +1482,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;i2o: Symbios FC920 workarounds activated.&bslash;n&quot;
+l_string|&quot;%s: Symbios FC920 workarounds activated.&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -1480,7 +1504,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;i2o: Promise workarounds activated.&bslash;n&quot;
+l_string|&quot;%s: Promise workarounds activated.&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -1527,8 +1553,10 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;i2o: DMA / IO allocation for I2O controller &quot;
+l_string|&quot;%s: DMA / IO allocation for I2O controller &quot;
 l_string|&quot; failed&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 r_goto
@@ -1549,8 +1577,10 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;i2o: unable to enable interrupts for I2O &quot;
+l_string|&quot;%s: unable to enable interrupts for I2O &quot;
 l_string|&quot;controller&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 r_goto

@@ -569,6 +569,7 @@ id|IRQInfo1
 comma
 id|IRQInfo2
 suffix:semicolon
+multiline_comment|/* IRQInfo2 is ignored */
 DECL|member|Handler
 r_void
 op_star

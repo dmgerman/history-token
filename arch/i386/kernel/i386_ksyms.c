@@ -226,13 +226,6 @@ c_func
 id|iounmap
 )paren
 suffix:semicolon
-DECL|variable|probe_irq_mask
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|probe_irq_mask
-)paren
-suffix:semicolon
 DECL|variable|kernel_thread
 id|EXPORT_SYMBOL
 c_func

@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &quot;sir-dev.h&quot;
 multiline_comment|/**************************************************************************&n; *&n; * kIrDAd kernel thread and config state machine&n; *&n; */

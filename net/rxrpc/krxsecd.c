@@ -47,12 +47,12 @@ c_func
 id|rxrpc_krxsecd_initmsgq
 )paren
 suffix:semicolon
-DECL|variable|rxrpc_krxsecd_initmsgq_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rxrpc_krxsecd_initmsgq_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_void

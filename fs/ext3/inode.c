@@ -8371,10 +8371,11 @@ r_return
 id|block
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * ext3_get_inode_loc returns with an extra refcount against the inode&squot;s&n; * underlying buffer_head on success.  If `in_mem&squot; is false then we&squot;re purely&n; * trying to determine the inode&squot;s location on-disk and no read need be&n; * performed.&n; */
-DECL|function|ext3_get_inode_loc
+multiline_comment|/*&n; * ext3_get_inode_loc returns with an extra refcount against the inode&squot;s&n; * underlying buffer_head on success. If &squot;in_mem&squot; is true, we have all&n; * data in memory that is needed to recreate the on-disk version of this&n; * inode.&n; */
+DECL|function|__ext3_get_inode_loc
+r_static
 r_int
-id|ext3_get_inode_loc
+id|__ext3_get_inode_loc
 c_func
 (paren
 r_struct
@@ -8496,7 +8497,7 @@ r_goto
 id|has_buffer
 suffix:semicolon
 )brace
-multiline_comment|/* we can&squot;t skip I/O if inode is on a disk only */
+multiline_comment|/*&n;&t;&t; * If we have all information of the inode in memory and this&n;&t;&t; * is the only valid inode in the block, we need not read the&n;&t;&t; * block.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -8527,7 +8528,6 @@ suffix:semicolon
 r_int
 id|start
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * If this is the only valid inode in the block we&n;&t;&t;&t; * need not read the block.&n;&t;&t;&t; */
 id|block_group
 op_assign
 (paren
@@ -8732,7 +8732,7 @@ suffix:semicolon
 )brace
 id|make_io
 suffix:colon
-multiline_comment|/*&n;&t;&t; * There are another valid inodes in the buffer so we must&n;&t;&t; * read the block from disk&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * There are other valid inodes in the buffer, this inode&n;&t;&t; * has in-inode xattrs, or we don&squot;t have this inode in memory.&n;&t;&t; * Read the block from disk.&n;&t;&t; */
 id|get_bh
 c_func
 (paren
@@ -8803,6 +8803,46 @@ id|bh
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|ext3_get_inode_loc
+r_int
+id|ext3_get_inode_loc
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|ext3_iloc
+op_star
+id|iloc
+)paren
+(brace
+multiline_comment|/* We have all inode data except xattrs in memory here. */
+r_return
+id|__ext3_get_inode_loc
+c_func
+(paren
+id|inode
+comma
+id|iloc
+comma
+op_logical_neg
+(paren
+id|EXT3_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_state
+op_amp
+id|EXT3_STATE_XATTR
+)paren
+)paren
 suffix:semicolon
 )brace
 DECL|function|ext3_set_inode_flags
@@ -8955,7 +8995,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ext3_get_inode_loc
+id|__ext3_get_inode_loc
 c_func
 (paren
 id|inode
@@ -9318,8 +9358,8 @@ op_amp
 id|ei-&gt;i_orphan
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|ei-&gt;i_extra_isize
+op_assign
 (paren
 id|EXT3_INODE_SIZE
 c_func
@@ -9329,19 +9369,51 @@ id|inode-&gt;i_sb
 OG
 id|EXT3_GOOD_OLD_INODE_SIZE
 )paren
-id|ei-&gt;i_extra_isize
-op_assign
+ques
+c_cond
 id|le16_to_cpu
 c_func
 (paren
 id|raw_inode-&gt;i_extra_isize
 )paren
-suffix:semicolon
-r_else
-id|ei-&gt;i_extra_isize
-op_assign
+suffix:colon
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ei-&gt;i_extra_isize
+)paren
+(brace
+id|__le32
+op_star
+id|magic
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|raw_inode
+op_plus
+id|EXT3_GOOD_OLD_INODE_SIZE
+op_plus
+id|ei-&gt;i_extra_isize
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|le32_to_cpu
+c_func
+(paren
+op_star
+id|magic
+)paren
+)paren
+id|ei-&gt;i_state
+op_or_assign
+id|EXT3_STATE_XATTR
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -10754,8 +10826,6 @@ c_func
 id|inode
 comma
 id|iloc
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -11021,8 +11091,6 @@ id|inode
 comma
 op_amp
 id|iloc
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_if

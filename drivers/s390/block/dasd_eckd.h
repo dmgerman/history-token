@@ -1,8 +1,8 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.8 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.9 $&n; */
 macro_line|#ifndef DASD_ECKD_H
 DECL|macro|DASD_ECKD_H
 mdefine_line|#define DASD_ECKD_H
-multiline_comment|/*******************************************************************************&n; * SECTION: CCW Definitions&n; ******************************************************************************/
+multiline_comment|/*****************************************************************************&n; * SECTION: CCW Definitions&n; ****************************************************************************/
 DECL|macro|DASD_ECKD_CCW_WRITE
 mdefine_line|#define DASD_ECKD_CCW_WRITE&t;&t; 0x05
 DECL|macro|DASD_ECKD_CCW_READ
@@ -56,7 +56,7 @@ mdefine_line|#define DASD_ECKD_CCW_RESERVE&t;&t; 0xB4
 multiline_comment|/*&n; *Perform Subsystem Function / Sub-Orders&n; */
 DECL|macro|PSF_ORDER_PRSSD
 mdefine_line|#define PSF_ORDER_PRSSD&t;&t;&t; 0x18
-multiline_comment|/*******************************************************************************&n; * SECTION: Type Definitions&n; ******************************************************************************/
+multiline_comment|/*****************************************************************************&n; * SECTION: Type Definitions&n; ****************************************************************************/
 DECL|struct|eckd_count
 r_struct
 id|eckd_count
@@ -377,7 +377,7 @@ r_int
 r_int
 id|ep_sys_time
 suffix:semicolon
-multiline_comment|/* Extended Parameter - System Time Stamp */
+multiline_comment|/* Ext Parameter - System Time Stamp */
 DECL|member|ep_format
 id|__u8
 id|ep_format

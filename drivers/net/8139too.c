@@ -18,7 +18,6 @@ macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
-macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -6796,14 +6795,7 @@ id|timeout
 )paren
 suffix:semicolon
 multiline_comment|/* make swsusp happy with our thread */
-r_if
-c_cond
-(paren
-id|current-&gt;flags
-op_amp
-id|PF_FREEZE
-)paren
-id|refrigerator
+id|try_to_freeze
 c_func
 (paren
 id|PF_FREEZE
@@ -6849,9 +6841,14 @@ id|tp-&gt;time_to_die
 )paren
 r_break
 suffix:semicolon
-id|rtnl_lock
+r_if
+c_cond
+(paren
+id|rtnl_lock_interruptible
 (paren
 )paren
+)paren
+r_break
 suffix:semicolon
 id|rtl8139_thread_iter
 (paren

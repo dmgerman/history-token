@@ -1545,7 +1545,13 @@ id|not_connected
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|nonseekable_open
+c_func
+(paren
+id|inode
+comma
+id|filp
+)paren
 suffix:semicolon
 id|not_connected
 suffix:colon

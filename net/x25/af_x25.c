@@ -56,10 +56,11 @@ id|x25_list
 )paren
 suffix:semicolon
 DECL|variable|x25_list_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|x25_list_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|x25_proto_ops
 r_static

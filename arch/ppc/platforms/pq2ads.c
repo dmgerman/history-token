@@ -3,8 +3,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/mpc8260.h&gt;
 r_void
 id|__init
-DECL|function|m82xx_board_init
-id|m82xx_board_init
+DECL|function|m82xx_board_setup
+id|m82xx_board_setup
 c_func
 (paren
 r_void

@@ -221,12 +221,12 @@ id|fz
 )paren
 suffix:semicolon
 )brace
-DECL|variable|fib_hash_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|fib_hash_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|FZ_MAX_DIVISOR
 mdefine_line|#define FZ_MAX_DIVISOR ((PAGE_SIZE&lt;&lt;MAX_ORDER) / sizeof(struct hlist_head))

@@ -38,7 +38,6 @@ macro_line|#include &quot;xfs_ioctl32.h&quot;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
-macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 DECL|variable|linvfs_qops
 id|STATIC
@@ -1690,14 +1689,7 @@ id|timeleft
 )paren
 suffix:semicolon
 multiline_comment|/* swsusp */
-r_if
-c_cond
-(paren
-id|current-&gt;flags
-op_amp
-id|PF_FREEZE
-)paren
-id|refrigerator
+id|try_to_freeze
 c_func
 (paren
 id|PF_FREEZE

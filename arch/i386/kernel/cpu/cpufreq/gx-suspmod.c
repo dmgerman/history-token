@@ -357,7 +357,7 @@ r_return
 (paren
 id|stock_freq
 op_star
-id|gx_params-&gt;on_duration
+id|gx_params-&gt;off_duration
 )paren
 op_div
 (paren

@@ -9,8 +9,6 @@ multiline_comment|/* Maximum number of references to one attribute block */
 DECL|macro|EXT2_XATTR_REFCOUNT_MAX
 mdefine_line|#define EXT2_XATTR_REFCOUNT_MAX&t;&t;1024
 multiline_comment|/* Name indexes */
-DECL|macro|EXT2_XATTR_INDEX_MAX
-mdefine_line|#define EXT2_XATTR_INDEX_MAX&t;&t;&t;10
 DECL|macro|EXT2_XATTR_INDEX_USER
 mdefine_line|#define EXT2_XATTR_INDEX_USER&t;&t;&t;1
 DECL|macro|EXT2_XATTR_INDEX_POSIX_ACL_ACCESS

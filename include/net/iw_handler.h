@@ -286,14 +286,6 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/**************************** PROTOTYPES ****************************/
 multiline_comment|/*&n; * Functions part of the Wireless Extensions (defined in net/core/wireless.c).&n; * Those may be called only within the kernel.&n; */
-multiline_comment|/* Data needed by fs/compat_ioctl.c for 32-&gt;64 bit conversion */
-r_extern
-r_const
-r_char
-id|iw_priv_type_size
-(braket
-)braket
-suffix:semicolon
 multiline_comment|/* First : function strictly used inside the kernel */
 multiline_comment|/* Handle /proc/net/wireless, called in net/code/dev.c */
 r_extern

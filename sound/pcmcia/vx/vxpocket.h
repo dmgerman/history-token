@@ -33,17 +33,6 @@ r_int
 op_star
 id|enable_table
 suffix:semicolon
-DECL|member|irq_mask_p
-r_int
-r_int
-op_star
-id|irq_mask_p
-suffix:semicolon
-DECL|member|irq_list
-r_int
-op_star
-id|irq_list
-suffix:semicolon
 DECL|member|ibl
 r_int
 op_star

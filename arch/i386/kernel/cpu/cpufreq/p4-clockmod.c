@@ -649,7 +649,7 @@ op_logical_and
 (paren
 id|c-&gt;x86_model
 op_eq
-l_int|0x13
+l_int|0x0D
 )paren
 )paren
 (brace

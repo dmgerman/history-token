@@ -846,6 +846,18 @@ id|ac97
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PM
+DECL|member|suspend
+r_void
+(paren
+op_star
+id|suspend
+)paren
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+suffix:semicolon
 DECL|member|resume
 r_void
 (paren

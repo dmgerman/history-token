@@ -100,6 +100,9 @@ mdefine_line|#define PORT_S3C2440&t;61
 multiline_comment|/* Motorola i.MX SoC */
 DECL|macro|PORT_IMX
 mdefine_line|#define PORT_IMX&t;62
+multiline_comment|/* Marvell MPSC */
+DECL|macro|PORT_MPSC
+mdefine_line|#define PORT_MPSC&t;63
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

@@ -32,6 +32,13 @@ macro_line|#undef  BT_DMP
 DECL|macro|BT_DMP
 mdefine_line|#define BT_DMP( A... )
 macro_line|#endif
+DECL|variable|reset
+r_static
+r_int
+id|reset
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|hup
 r_static
 r_struct
@@ -1325,6 +1332,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|reset
+)paren
+id|set_bit
+c_func
+(paren
+id|HCI_QUIRK_RESET_ON_INIT
+comma
+op_amp
+id|hdev-&gt;quirks
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|hci_register_dev
 c_func
 (paren
@@ -1936,10 +1957,28 @@ c_func
 id|hci_uart_exit
 )paren
 suffix:semicolon
+id|module_param
+c_func
+(paren
+id|reset
+comma
+r_bool
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|reset
+comma
+l_string|&quot;Send HCI reset command on initialization&quot;
+)paren
+suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&quot;
+l_string|&quot;Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;, Marcel Holtmann &lt;marcel@holtmann.org&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

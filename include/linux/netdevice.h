@@ -1485,21 +1485,6 @@ suffix:semicolon
 multiline_comment|/* Device list lock */
 r_extern
 r_int
-id|netdev_boot_setup_add
-c_func
-(paren
-r_char
-op_star
-id|name
-comma
-r_struct
-id|ifmap
-op_star
-id|map
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|netdev_boot_setup_check
 c_func
 (paren

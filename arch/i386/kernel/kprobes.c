@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/preempt.h&gt;
 macro_line|#include &lt;asm/kdebug.h&gt;
+macro_line|#include &lt;asm/desc.h&gt;
 multiline_comment|/* kprobe_status settings */
 DECL|macro|KPROBE_HIT_ACTIVE
 mdefine_line|#define KPROBE_HIT_ACTIVE&t;0x00000001
@@ -301,43 +302,10 @@ id|kprobe_opcode_t
 op_star
 )paren
 (paren
-(paren
-(paren
-(paren
-op_star
-id|lp
-)paren
-op_rshift
-l_int|16
-op_amp
-l_int|0x0000ffff
-)paren
-op_or
-(paren
-op_star
+id|get_desc_base
+c_func
 (paren
 id|lp
-op_plus
-l_int|1
-)paren
-op_amp
-l_int|0xff000000
-)paren
-op_or
-(paren
-(paren
-op_star
-(paren
-id|lp
-op_plus
-l_int|1
-)paren
-op_lshift
-l_int|16
-)paren
-op_amp
-l_int|0x00ff0000
-)paren
 )paren
 op_plus
 id|regs-&gt;eip

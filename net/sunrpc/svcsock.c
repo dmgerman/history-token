@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
@@ -4940,14 +4939,7 @@ c_func
 id|timeout
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|current-&gt;flags
-op_amp
-id|PF_FREEZE
-)paren
-id|refrigerator
+id|try_to_freeze
 c_func
 (paren
 id|PF_FREEZE
