@@ -1396,6 +1396,65 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; * Device probing and disconnecting&n; ***********************************************************************/
+multiline_comment|/* Associate our private data with the USB device */
+DECL|function|associate_dev
+r_static
+r_void
+id|associate_dev
+c_func
+(paren
+r_struct
+id|us_data
+op_star
+id|us
+comma
+r_struct
+id|usb_interface
+op_star
+id|intf
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- %s&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+multiline_comment|/* Fill in the device-related fields */
+id|us-&gt;pusb_dev
+op_assign
+id|interface_to_usbdev
+c_func
+(paren
+id|intf
+)paren
+suffix:semicolon
+id|us-&gt;pusb_intf
+op_assign
+id|intf
+suffix:semicolon
+id|us-&gt;ifnum
+op_assign
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
+suffix:semicolon
+multiline_comment|/* Store our private data in the interface and increment the&n;&t; * device&squot;s reference count */
+id|usb_set_intfdata
+c_func
+(paren
+id|intf
+comma
+id|us
+)paren
+suffix:semicolon
+id|usb_get_dev
+c_func
+(paren
+id|us-&gt;pusb_dev
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Get the unusual_devs entries and the string descriptors */
 DECL|function|get_device_info
 r_static
@@ -1420,15 +1479,17 @@ op_assign
 id|us-&gt;pusb_dev
 suffix:semicolon
 r_struct
-id|usb_host_interface
+id|usb_interface_descriptor
 op_star
-id|altsetting
+id|idesc
 op_assign
 op_amp
 id|us-&gt;pusb_intf-&gt;altsetting
 (braket
 id|us-&gt;pusb_intf-&gt;act_altsetting
 )braket
+dot
+id|desc
 suffix:semicolon
 r_struct
 id|us_unusual_dev
@@ -1492,7 +1553,7 @@ id|US_SC_DEVICE
 )paren
 ques
 c_cond
-id|altsetting-&gt;desc.bInterfaceSubClass
+id|idesc-&gt;bInterfaceSubClass
 suffix:colon
 id|unusual_dev-&gt;useProtocol
 suffix:semicolon
@@ -1505,7 +1566,7 @@ id|US_PR_DEVICE
 )paren
 ques
 c_cond
-id|altsetting-&gt;desc.bInterfaceProtocol
+id|idesc-&gt;bInterfaceProtocol
 suffix:colon
 id|unusual_dev-&gt;useTransport
 suffix:semicolon
@@ -1538,6 +1599,14 @@ comma
 l_string|&quot;unneeded SubClass and Protocol entries&quot;
 )brace
 suffix:semicolon
+r_struct
+id|usb_device_descriptor
+op_star
+id|ddesc
+op_assign
+op_amp
+id|dev-&gt;descriptor
+suffix:semicolon
 r_int
 id|msg
 op_assign
@@ -1553,7 +1622,7 @@ id|US_SC_DEVICE
 op_logical_and
 id|us-&gt;subclass
 op_eq
-id|altsetting-&gt;desc.bInterfaceSubClass
+id|idesc-&gt;bInterfaceSubClass
 )paren
 id|msg
 op_add_assign
@@ -1568,7 +1637,7 @@ id|US_PR_DEVICE
 op_logical_and
 id|us-&gt;protocol
 op_eq
-id|altsetting-&gt;desc.bInterfaceProtocol
+id|idesc-&gt;bInterfaceProtocol
 )paren
 id|msg
 op_add_assign
@@ -1587,13 +1656,20 @@ c_func
 id|KERN_NOTICE
 id|USB_STORAGE
 l_string|&quot;This device &quot;
-l_string|&quot;(%04x,%04x) has %s in unusual_devs.h&bslash;n&quot;
+l_string|&quot;(%04x,%04x,%04x S %02x P %02x)&quot;
+l_string|&quot; has %s in unusual_devs.h&bslash;n&quot;
 l_string|&quot;   Please send a copy of this message to &quot;
 l_string|&quot;&lt;linux-usb-devel@lists.sourceforge.net&gt;&bslash;n&quot;
 comma
-id|id-&gt;idVendor
+id|ddesc-&gt;idVendor
 comma
-id|id-&gt;idProduct
+id|ddesc-&gt;idProduct
+comma
+id|ddesc-&gt;bcdDevice
+comma
+id|idesc-&gt;bInterfaceSubClass
+comma
+id|idesc-&gt;bInterfaceProtocol
 comma
 id|msgs
 (braket
@@ -3016,36 +3092,13 @@ id|us-&gt;notify
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Fill in the device-related fields */
-id|us-&gt;pusb_dev
-op_assign
-id|interface_to_usbdev
+multiline_comment|/* Associate the us_data structure with the USB device */
+id|associate_dev
 c_func
 (paren
-id|intf
-)paren
-suffix:semicolon
-id|us-&gt;pusb_intf
-op_assign
-id|intf
-suffix:semicolon
-id|us-&gt;ifnum
-op_assign
-id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
-suffix:semicolon
-multiline_comment|/* Store our private data in the interface and increment the&n;&t; * device&squot;s reference count */
-id|usb_set_intfdata
-c_func
-(paren
-id|intf
-comma
 id|us
-)paren
-suffix:semicolon
-id|usb_get_dev
-c_func
-(paren
-id|us-&gt;pusb_dev
+comma
+id|intf
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the unusual_devs entries and the descriptors&n;&t; *&n;&t; * id_index is calculated in the declaration to be the index number&n;&t; * of the match from the usb_device_id table, so we can find the&n;&t; * corresponding entry in the private table.&n;&t; */
