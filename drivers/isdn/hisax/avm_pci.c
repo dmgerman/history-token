@@ -4093,9 +4093,10 @@ id|cs-&gt;subtyp
 op_assign
 id|AVM_FRITZ_PNP
 suffix:semicolon
+r_goto
+id|ready
+suffix:semicolon
 )brace
-r_else
-(brace
 macro_line|#ifdef __ISAPNP__
 r_if
 c_cond
@@ -4409,7 +4410,6 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PCI */
-)brace
 id|ready
 suffix:colon
 id|cs-&gt;hw.avm.isac
