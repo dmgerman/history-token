@@ -2767,6 +2767,7 @@ l_int|0xbd
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ide: cmd640 init failed: wrong value in reg 0x5b&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3040,6 +3041,7 @@ macro_line|#endif /* CONFIG_BLK_DEV_CMD640_ENHANCED */
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: %sserialized, secondary interface %s&bslash;n&quot;
 comma
 id|cmd_hwif1-&gt;name

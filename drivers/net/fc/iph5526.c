@@ -21816,6 +21816,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|kfree
+c_func
+(paren
+id|fc
+(braket
+id|count
+)braket
+)paren
+suffix:semicolon
 r_return
 id|no_of_hosts
 suffix:semicolon

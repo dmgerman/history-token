@@ -1289,10 +1289,9 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;atm_connect (TX: cl %d,bw %d-%d,sdu %d; &quot;
 l_string|&quot;RX: cl %d,bw %d-%d,sdu %d,AAL %s%d)&bslash;n&quot;
 comma

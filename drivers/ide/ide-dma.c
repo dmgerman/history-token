@@ -16,6 +16,8 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+DECL|macro|CONFIG_IDEDMA_NEW_DRIVE_LISTINGS
+mdefine_line|#define CONFIG_IDEDMA_NEW_DRIVE_LISTINGS
 macro_line|#ifdef CONFIG_IDEDMA_NEW_DRIVE_LISTINGS
 DECL|struct|drive_list_entry
 r_struct
@@ -285,7 +287,9 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
+multiline_comment|/**&n; *&t;in_drive_list&t;-&t;look for drive in black/white list&n; *&t;@id: drive identifier&n; *&t;@drive_table: list to inspect&n; *&n; *&t;Look for a drive in the blacklist and the whitelist tables&n; *&t;Returns 1 if the drive is found in the table.&n; */
 DECL|function|in_drive_list
+r_static
 r_int
 id|in_drive_list
 c_func
@@ -326,7 +330,6 @@ id|id-&gt;model
 op_logical_and
 (paren
 (paren
-op_logical_neg
 id|strstr
 c_func
 (paren
@@ -404,7 +407,7 @@ l_int|NULL
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_IDEDMA_NEW_DRIVE_LISTINGS */
-multiline_comment|/*&n; * dma_intr() is the handler for disk read/write DMA interrupts&n; */
+multiline_comment|/**&n; *&t;ide_dma_intr&t;-&t;IDE DMA interrupt handler&n; *&t;@drive: the drive the interrupt is for&n; *&n; *&t;Handle an interrupt completing a read/write DMA transfer on an &n; *&t;IDE device&n; */
 DECL|function|ide_dma_intr
 id|ide_startstop_t
 id|ide_dma_intr
@@ -511,6 +514,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: dma_intr: bad DMA status (dma_stat=%x)&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -544,6 +548,7 @@ c_func
 id|ide_dma_intr
 )paren
 suffix:semicolon
+multiline_comment|/**&n; *&t;ide_build_sglist&t;-&t;map IDE scatter gather for DMA I/O&n; *&t;@drive: the drive to build the DMA table for&n; *&t;@rq: the request holding the sg list&n; *&n; *&t;Perform the PCI mapping magic neccessary to access the source or&n; *&t;target buffers of a request via PCI DMA. The lower layers of the&n; *&t;kernel provide the neccessary cache management so that we can&n; *&t;operate in a portable fashion&n; */
 DECL|function|ide_build_sglist
 r_static
 r_int
@@ -636,6 +641,7 @@ id|hwif-&gt;sg_dma_direction
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;ide_raw_build_sglist&t;-&t;map IDE scatter gather for DMA&n; *&t;@drive: the drive to build the DMA table for&n; *&t;@rq: the request holding the sg list&n; *&n; *&t;Perform the PCI mapping magic neccessary to access the source or&n; *&t;target buffers of a taskfile request via PCI DMA. The lower layers &n; *&t;of the  kernel provide the neccessary cache management so that we can&n; *&t;operate in a portable fashion&n; */
 DECL|function|ide_raw_build_sglist
 r_static
 r_int
@@ -707,6 +713,18 @@ op_assign
 id|PCI_DMA_FROMDEVICE
 suffix:semicolon
 macro_line|#if 1
+r_if
+c_cond
+(paren
+id|sector_count
+OG
+l_int|256
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1014,7 +1032,7 @@ id|hwif-&gt;sg_dma_direction
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ide_build_dmatable() prepares a dma request.&n; * Returns 0 if all went okay, returns 1 otherwise.&n; * May also be invoked from trm290.c&n; */
+multiline_comment|/**&n; *&t;ide_build_dmatable&t;-&t;build IDE DMA table&n; *&n; *&t;ide_build_dmatable() prepares a dma request. We map the command&n; *&t;to get the pci bus addresses of the buffers and then build up&n; *&t;the PRD table that the IDE layer wants to be fed. The code&n; *&t;knows about the 64K wrap bug in the CS5530.&n; *&n; *&t;Returns 0 if all went okay, returns 1 otherwise.&n; *&t;May also be invoked from trm290.c&n; */
 DECL|function|ide_build_dmatable
 r_int
 id|ide_build_dmatable
@@ -1173,6 +1191,7 @@ id|PRD_ENTRIES
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: DMA table too small&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -1264,6 +1283,7 @@ id|PRD_ENTRIES
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: DMA table too small&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -1356,6 +1376,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: empty DMA table?&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -1391,7 +1412,7 @@ c_func
 id|ide_build_dmatable
 )paren
 suffix:semicolon
-multiline_comment|/* Teardown mappings after DMA has completed.  */
+multiline_comment|/**&n; *&t;ide_destroy_dmatable&t;-&t;clean up DMA mapping&n; *&t;@drive: The drive to unmap&n; *&n; *&t;Teardown mappings after DMA has completed. This must be called&n; *&t;after the completion of each use of ide_build_dmatable and before&n; *&t;the next use of ide_build_dmatable. Failure to do so will cause&n; *&t;an oops as only one mapping can be live for each target at a given&n; *&t;time.&n; */
 DECL|function|ide_destroy_dmatable
 r_void
 id|ide_destroy_dmatable
@@ -1474,6 +1495,7 @@ c_func
 id|ide_destroy_dmatable
 )paren
 suffix:semicolon
+multiline_comment|/**&n; *&t;config_drive_for_dma&t;-&t;attempt to activate IDE DMA&n; *&t;@drive: the drive to place in DMA mode&n; *&n; *&t;If the drive supports at least mode 2 DMA or UDMA of any kind&n; *&t;then attempt to place it into DMA mode. Drives that are known to&n; *&t;support DMA but predate the DMA properties or that are known&n; *&t;to have DMA handling bugs are also set up appropriately based&n; *&t;on the good/bad drive lists.&n; */
 DECL|function|config_drive_for_dma
 r_static
 r_int
@@ -1635,7 +1657,7 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * 1 dmaing, 2 error, 4 intr&n; */
+multiline_comment|/**&n; *&t;dma_timer_expiry&t;-&t;handle a DMA timeout&n; *&t;@drive: Drive that timed out&n; *&n; *&t;An IDE DMA transfer timed out. In the event of an error we ask&n; *&t;the driver to resolve the problem, if a DMA transfer is still&n; *&t;in progress we continue to wait (arguably we need to add a &n; *&t;secondary &squot;I dont care what the drive thinks&squot; timeout here)&n; *&t;Finally if we have an interrupt but for some reason got the&n; *&t;timeout first we complete the I/O. This can occur if an &n; *&t;interrupt is lost or due to bugs.&n; */
 DECL|function|dma_timer_expiry
 r_static
 r_int
@@ -1670,6 +1692,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: dma_timer_expiry: dma status == 0x%02x&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -1703,6 +1726,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* one free ride for now */
+multiline_comment|/* 1 dmaing, 2 error, 4 intr */
 r_if
 c_cond
 (paren
@@ -1782,6 +1806,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;__ide_dma_host_off&t;-&t;Generic DMA kill&n; *&t;@drive: drive to control&n; *&n; *&t;Perform the generic IDE controller DMA off operation. This&n; *&t;works for most IDE bus mastering controllers&n; */
 DECL|function|__ide_dma_host_off
 r_int
 id|__ide_dma_host_off
@@ -1855,6 +1880,7 @@ c_func
 id|__ide_dma_host_off
 )paren
 suffix:semicolon
+multiline_comment|/**&n; *&t;__ide_dma_host_off_quietly&t;-&t;Generic DMA kill&n; *&t;@drive: drive to control&n; *&n; *&t;Turn off the current DMA on this IDE controller. &n; */
 DECL|function|__ide_dma_off_quietly
 r_int
 id|__ide_dma_off_quietly
@@ -1922,6 +1948,7 @@ c_func
 id|__ide_dma_off_quietly
 )paren
 suffix:semicolon
+multiline_comment|/**&n; *&t;__ide_dma_host_off&t;-&t;Generic DMA kill&n; *&t;@drive: drive to control&n; *&n; *&t;Turn off the current DMA on this IDE controller. Inform the&n; *&t;user that DMA has been disabled. &n; */
 DECL|function|__ide_dma_off
 r_int
 id|__ide_dma_off
@@ -1934,6 +1961,7 @@ id|drive
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: DMA disabled&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -1960,6 +1988,7 @@ c_func
 id|__ide_dma_off
 )paren
 suffix:semicolon
+multiline_comment|/**&n; *&t;__ide_dma_host_on&t;-&t;Enable DMA on a host&n; *&t;@drive: drive to enable for DMA&n; *&n; *&t;Enable DMA on an IDE controller following generic bus mastering&n; *&t;IDE controller behaviour&n; */
 DECL|function|__ide_dma_host_on
 r_int
 id|__ide_dma_host_on
@@ -2042,6 +2071,7 @@ c_func
 id|__ide_dma_host_on
 )paren
 suffix:semicolon
+multiline_comment|/**&n; *&t;__ide_dma_on&t;&t;-&t;Enable DMA on a device&n; *&t;@drive: drive to enable DMA on&n; *&n; *&t;Enable IDE DMA for a device on this IDE controller.&n; */
 DECL|function|__ide_dma_on
 r_int
 id|__ide_dma_on
@@ -2109,6 +2139,7 @@ c_func
 id|__ide_dma_on
 )paren
 suffix:semicolon
+multiline_comment|/**&n; *&t;__ide_dma_check&t;&t;-&t;check DMA setup&n; *&t;@drive: drive to check&n; *&n; *&t;Don&squot;t use - due for extermination&n; */
 DECL|function|__ide_dma_check
 r_int
 id|__ide_dma_check
@@ -2133,6 +2164,7 @@ c_func
 id|__ide_dma_check
 )paren
 suffix:semicolon
+multiline_comment|/**&n; *&t;ide_start_dma&t;-&t;begin a DMA phase&n; *&t;@hwif: interface&n; *&t;@drive: target device&n; *&t;@reading: set if reading, clear if writing&n; *&n; *&t;Build an IDE DMA PRD (IDE speak for scatter gather table)&n; *&t;and then set up the DMA transfer registers for a device&n; *&t;that follows generic IDE PCI DMA behaviour. Controllers can&n; *&t;override this function if they need to&n; *&n; *&t;Returns 0 on success. If a PIO fallback is required then 1&n; *&t;is returned. &n; */
 DECL|function|ide_start_dma
 r_int
 id|ide_start_dma
@@ -2378,6 +2410,22 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|drive-&gt;vdma
+)paren
+id|command
+op_assign
+(paren
+id|lba48
+)paren
+ques
+c_cond
+id|WIN_READ_EXT
+suffix:colon
+id|WIN_READ
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|rq-&gt;flags
 op_amp
 id|REQ_DRIVE_TASKFILE
@@ -2558,6 +2606,22 @@ c_cond
 id|WIN_WRITEDMA_EXT
 suffix:colon
 id|WIN_WRITEDMA
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|drive-&gt;vdma
+)paren
+id|command
+op_assign
+(paren
+id|lba48
+)paren
+ques
+c_cond
+id|WIN_WRITE_EXT
+suffix:colon
+id|WIN_WRITE
 suffix:semicolon
 r_if
 c_cond
@@ -3485,6 +3549,7 @@ c_func
 id|__ide_dma_verbose
 )paren
 suffix:semicolon
+multiline_comment|/**&n; *&t;__ide_dma_retune&t;-&t;default retune handler&n; *&t;@drive: drive to retune&n; *&n; *&t;Default behaviour when we decide to return the IDE DMA setup.&n; *&t;The default behaviour is &quot;we don&squot;t&quot;&n; */
 DECL|function|__ide_dma_retune
 r_int
 id|__ide_dma_retune
@@ -3497,6 +3562,7 @@ id|drive
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: chipset supported call only&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -3553,6 +3619,7 @@ id|drive
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: timeout waiting for DMA&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -3874,6 +3941,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: -- Error, unable to allocate%s%s table(s).&bslash;n&quot;
 comma
 (paren
@@ -3931,6 +3999,7 @@ id|ports
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;    %s: MMIO-DMA at 0x%08lx-0x%08lx&quot;
 comma
 id|hwif-&gt;name
@@ -4011,6 +4080,12 @@ op_assign
 id|hwif-&gt;cds-&gt;extra
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|hwif-&gt;mate
+)paren
+(brace
 id|hwif-&gt;dma_master
 op_assign
 (paren
@@ -4020,6 +4095,12 @@ ques
 c_cond
 id|hwif-&gt;mate-&gt;dma_base
 suffix:colon
+id|base
+suffix:semicolon
+)brace
+r_else
+id|hwif-&gt;dma_master
+op_assign
 id|base
 suffix:semicolon
 r_if
@@ -4075,6 +4156,7 @@ id|ports
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;    %s: BM-DMA at 0x%04lx-0x%04lx&quot;
 comma
 id|hwif-&gt;name
@@ -4148,6 +4230,12 @@ op_assign
 id|hwif-&gt;cds-&gt;extra
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|hwif-&gt;mate
+)paren
+(brace
 id|hwif-&gt;dma_master
 op_assign
 (paren
@@ -4157,6 +4245,12 @@ ques
 c_cond
 id|hwif-&gt;mate-&gt;dma_base
 suffix:colon
+id|base
+suffix:semicolon
+)brace
+r_else
+id|hwif-&gt;dma_master
+op_assign
 id|base
 suffix:semicolon
 r_if

@@ -236,17 +236,6 @@ id|bc
 suffix:semicolon
 r_extern
 r_void
-id|clear_pending_jade_ints
-c_func
-(paren
-r_struct
-id|IsdnCardState
-op_star
-id|cs
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|initjade
 c_func
 (paren

@@ -13449,21 +13449,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-"&quot;"
-id|status
-suffix:colon
-l_int|0
-id|x
-op_mod
-id|x
-comma
-l_int|0
-id|x
-op_mod
-id|x
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;     status: 0x%x, 0x%x&bslash;n&quot;
 comma
 id|cy_readb
 c_func

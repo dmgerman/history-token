@@ -184,7 +184,7 @@ r_int
 id|dvb_add_frontend_ioctls
 (paren
 r_struct
-id|dvb_adapter_s
+id|dvb_adapter
 op_star
 id|adapter
 comma
@@ -238,7 +238,7 @@ r_void
 id|dvb_remove_frontend_ioctls
 (paren
 r_struct
-id|dvb_adapter_s
+id|dvb_adapter
 op_star
 id|adapter
 comma
@@ -288,7 +288,7 @@ r_int
 id|dvb_add_frontend_notifier
 (paren
 r_struct
-id|dvb_adapter_s
+id|dvb_adapter
 op_star
 id|adapter
 comma
@@ -316,7 +316,7 @@ r_void
 id|dvb_remove_frontend_notifier
 (paren
 r_struct
-id|dvb_adapter_s
+id|dvb_adapter
 op_star
 id|adapter
 comma

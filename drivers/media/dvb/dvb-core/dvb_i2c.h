@@ -43,7 +43,7 @@ id|data
 suffix:semicolon
 DECL|member|adapter
 r_struct
-id|dvb_adapter_s
+id|dvb_adapter
 op_star
 id|adapter
 suffix:semicolon
@@ -90,7 +90,7 @@ op_star
 id|data
 comma
 r_struct
-id|dvb_adapter_s
+id|dvb_adapter
 op_star
 id|adapter
 comma
@@ -124,7 +124,7 @@ id|num
 )paren
 comma
 r_struct
-id|dvb_adapter_s
+id|dvb_adapter
 op_star
 id|adapter
 comma

@@ -150,11 +150,6 @@ op_star
 id|data
 )paren
 (brace
-id|mce_checkregs
-(paren
-l_int|NULL
-)paren
-suffix:semicolon
 id|smp_call_function
 (paren
 id|mce_checkregs
@@ -188,6 +183,11 @@ r_int
 id|data
 )paren
 (brace
+id|mce_checkregs
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
@@ -203,12 +203,6 @@ id|schedule_work
 (paren
 op_amp
 id|mce_work
-)paren
-suffix:semicolon
-macro_line|#else
-id|mce_checkregs
-(paren
-l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif

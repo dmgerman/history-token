@@ -2565,20 +2565,24 @@ op_star
 id|mgsl_device_list
 suffix:semicolon
 DECL|variable|mgsl_device_count
+r_static
 r_int
 id|mgsl_device_count
 suffix:semicolon
 multiline_comment|/*&n; * Set this param to non-zero to load eax with the&n; * .text section address and breakpoint on module load.&n; * This is useful for use with gdb and add-symbol-file command.&n; */
 DECL|variable|break_on_load
+r_static
 r_int
 id|break_on_load
 suffix:semicolon
 multiline_comment|/*&n; * Driver major number, defaults to zero to get auto&n; * assigned major number. May be forced as module parameter.&n; */
 DECL|variable|ttymajor
+r_static
 r_int
 id|ttymajor
 suffix:semicolon
 DECL|variable|cuamajor
+r_static
 r_int
 id|cuamajor
 suffix:semicolon

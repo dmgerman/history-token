@@ -905,7 +905,7 @@ DECL|macro|IS_IRQ_MST_ERR
 mdefine_line|#define&t;IS_IRQ_MST_ERR&t;(1L&lt;&lt;11)&t;/* Bit 11:&t;IRQ master error */
 multiline_comment|/*&t;PERR,RMABORT,RTABORT,DATAPERR */
 DECL|macro|IS_IRQ_STAT
-mdefine_line|#define&t;IS_IRQ_STAT&t;&t;(1L&lt;&lt;10)&t;/* Bit 10:&t;IRQ status execption */
+mdefine_line|#define&t;IS_IRQ_STAT&t;&t;(1L&lt;&lt;10)&t;/* Bit 10:&t;IRQ status exception */
 multiline_comment|/*&t;RMABORT, RTABORT, DATAPERR */
 DECL|macro|IS_NO_STAT_M1
 mdefine_line|#define IS_NO_STAT_M1&t;(1L&lt;&lt;9)&t;&t;/* Bit&t;9:&t;No Rx Status from MAC1*/

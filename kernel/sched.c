@@ -7810,7 +7810,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_DEBUG_KERNEL
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK_SLEEP
 DECL|function|__might_sleep
 r_void
 id|__might_sleep

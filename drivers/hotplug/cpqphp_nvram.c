@@ -566,34 +566,17 @@ id|flags
 suffix:semicolon
 id|__asm__
 (paren
-"&quot;"
-id|xorl
-op_mod
-op_mod
-id|ebx
-comma
-op_mod
-op_mod
-id|ebx
-id|xorl
-op_mod
-op_mod
-id|edx
-comma
-op_mod
-op_mod
-id|edx
-id|pushf
-id|push
-op_mod
-op_mod
-id|cs
-id|cli
-id|call
-op_star
-op_mod
-l_int|6
-"&quot;"
+l_string|&quot;xorl   %%ebx,%%ebx&bslash;n&quot;
+"&bslash;"
+l_string|&quot;xorl    %%edx,%%edx&bslash;n&quot;
+"&bslash;"
+l_string|&quot;pushf&bslash;n&quot;
+"&bslash;"
+l_string|&quot;push %%cs&bslash;n&quot;
+"&bslash;"
+l_string|&quot;cli&bslash;n&quot;
+"&bslash;"
+l_string|&quot;call *%6&bslash;n&quot;
 suffix:colon
 l_string|&quot;=c&quot;
 (paren

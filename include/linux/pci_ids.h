@@ -273,6 +273,8 @@ DECL|macro|PCI_DEVICE_ID_LSI_53C1010_66
 mdefine_line|#define PCI_DEVICE_ID_LSI_53C1010_66&t;0x0021
 DECL|macro|PCI_DEVICE_ID_LSI_53C1030
 mdefine_line|#define PCI_DEVICE_ID_LSI_53C1030&t;0x0030
+DECL|macro|PCI_DEVICE_ID_LSI_1030_53C1035
+mdefine_line|#define PCI_DEVICE_ID_LSI_1030_53C1035&t;0x0032
 DECL|macro|PCI_DEVICE_ID_LSI_53C1035
 mdefine_line|#define PCI_DEVICE_ID_LSI_53C1035&t;0x0040
 DECL|macro|PCI_DEVICE_ID_NCR_53C875J
@@ -287,6 +289,10 @@ DECL|macro|PCI_DEVICE_ID_LSI_FC919
 mdefine_line|#define PCI_DEVICE_ID_LSI_FC919&t;&t;0x0624
 DECL|macro|PCI_DEVICE_ID_LSI_FC919_LAN
 mdefine_line|#define PCI_DEVICE_ID_LSI_FC919_LAN&t;0x0625
+DECL|macro|PCI_DEVICE_ID_LSI_FC929X
+mdefine_line|#define PCI_DEVICE_ID_LSI_FC929X&t;0x0626
+DECL|macro|PCI_DEVICE_ID_LSI_FC919X
+mdefine_line|#define PCI_DEVICE_ID_LSI_FC919X&t;0x0628
 DECL|macro|PCI_DEVICE_ID_NCR_YELLOWFIN
 mdefine_line|#define PCI_DEVICE_ID_NCR_YELLOWFIN&t;0x0701
 DECL|macro|PCI_DEVICE_ID_LSI_61C102
@@ -459,6 +465,9 @@ DECL|macro|PCI_DEVICE_ID_ATI_RADEON_RC
 mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_RC&t;0x5146
 DECL|macro|PCI_DEVICE_ID_ATI_RADEON_RD
 mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_RD&t;0x5147
+multiline_comment|/* RadeonIGP */
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_IGP
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_IGP&t;0xCAB0
 DECL|macro|PCI_VENDOR_ID_VLSI
 mdefine_line|#define PCI_VENDOR_ID_VLSI&t;&t;0x1004
 DECL|macro|PCI_DEVICE_ID_VLSI_82C592
@@ -804,18 +813,52 @@ DECL|macro|PCI_DEVICE_ID_MIRO_36050
 mdefine_line|#define PCI_DEVICE_ID_MIRO_36050&t;0x5601
 DECL|macro|PCI_VENDOR_ID_NEC
 mdefine_line|#define PCI_VENDOR_ID_NEC&t;&t;0x1033
+DECL|macro|PCI_DEVICE_ID_NEC_CBUS_1
+mdefine_line|#define PCI_DEVICE_ID_NEC_CBUS_1&t;0x0001 /* PCI-Cbus Bridge */
+DECL|macro|PCI_DEVICE_ID_NEC_LOCAL
+mdefine_line|#define PCI_DEVICE_ID_NEC_LOCAL&t;&t;0x0002 /* Local Bridge */
+DECL|macro|PCI_DEVICE_ID_NEC_ATM
+mdefine_line|#define PCI_DEVICE_ID_NEC_ATM&t;&t;0x0003 /* ATM LAN Controller */
+DECL|macro|PCI_DEVICE_ID_NEC_R4000
+mdefine_line|#define PCI_DEVICE_ID_NEC_R4000&t;&t;0x0004 /* R4000 Bridge */
+DECL|macro|PCI_DEVICE_ID_NEC_486
+mdefine_line|#define PCI_DEVICE_ID_NEC_486&t;&t;0x0005 /* 486 Like Peripheral Bus Bridge */
+DECL|macro|PCI_DEVICE_ID_NEC_ACCEL_1
+mdefine_line|#define PCI_DEVICE_ID_NEC_ACCEL_1&t;0x0006 /* Graphic Accelerator */
+DECL|macro|PCI_DEVICE_ID_NEC_UXBUS
+mdefine_line|#define PCI_DEVICE_ID_NEC_UXBUS&t;&t;0x0007 /* UX-Bus Bridge */
+DECL|macro|PCI_DEVICE_ID_NEC_ACCEL_2
+mdefine_line|#define PCI_DEVICE_ID_NEC_ACCEL_2&t;0x0008 /* Graphic Accelerator */
+DECL|macro|PCI_DEVICE_ID_NEC_GRAPH
+mdefine_line|#define PCI_DEVICE_ID_NEC_GRAPH&t;&t;0x0009 /* PCI-CoreGraph Bridge */
+DECL|macro|PCI_DEVICE_ID_NEC_VL
+mdefine_line|#define PCI_DEVICE_ID_NEC_VL&t;&t;0x0016 /* PCI-VL Bridge */
+DECL|macro|PCI_DEVICE_ID_NEC_STARALPHA2
+mdefine_line|#define PCI_DEVICE_ID_NEC_STARALPHA2&t;0x002c /* STAR ALPHA2 */
+DECL|macro|PCI_DEVICE_ID_NEC_CBUS_2
+mdefine_line|#define PCI_DEVICE_ID_NEC_CBUS_2&t;0x002d /* PCI-Cbus Bridge */
+DECL|macro|PCI_DEVICE_ID_NEC_USB
+mdefine_line|#define PCI_DEVICE_ID_NEC_USB&t;&t;0x0035 /* PCI-USB Host */
+DECL|macro|PCI_DEVICE_ID_NEC_CBUS_3
+mdefine_line|#define PCI_DEVICE_ID_NEC_CBUS_3&t;0x003b
 DECL|macro|PCI_DEVICE_ID_NEC_PCX2
-mdefine_line|#define PCI_DEVICE_ID_NEC_PCX2&t;&t;0x0046
+mdefine_line|#define PCI_DEVICE_ID_NEC_PCX2&t;&t;0x0046 /* PowerVR */
 DECL|macro|PCI_DEVICE_ID_NEC_NILE4
 mdefine_line|#define PCI_DEVICE_ID_NEC_NILE4&t;&t;0x005a
 DECL|macro|PCI_DEVICE_ID_NEC_VRC5476
 mdefine_line|#define PCI_DEVICE_ID_NEC_VRC5476       0x009b
 DECL|macro|PCI_DEVICE_ID_NEC_VRC5477_AC97
 mdefine_line|#define PCI_DEVICE_ID_NEC_VRC5477_AC97  0x00a6
+DECL|macro|PCI_DEVICE_ID_NEC_PC9821CS01
+mdefine_line|#define PCI_DEVICE_ID_NEC_PC9821CS01    0x800c /* PC-9821-CS01 */
+DECL|macro|PCI_DEVICE_ID_NEC_PC9821NRB06
+mdefine_line|#define PCI_DEVICE_ID_NEC_PC9821NRB06   0x800d /* PC-9821NR-B06 */
 DECL|macro|PCI_VENDOR_ID_FD
 mdefine_line|#define PCI_VENDOR_ID_FD&t;&t;0x1036
 DECL|macro|PCI_DEVICE_ID_FD_36C70
 mdefine_line|#define PCI_DEVICE_ID_FD_36C70&t;&t;0x0000
+DECL|macro|PCI_VENDOR_ID_SIS
+mdefine_line|#define PCI_VENDOR_ID_SIS&t;&t;0x1039
 DECL|macro|PCI_VENDOR_ID_SI
 mdefine_line|#define PCI_VENDOR_ID_SI&t;&t;0x1039
 DECL|macro|PCI_DEVICE_ID_SI_5591_AGP
@@ -2163,6 +2206,8 @@ DECL|macro|PCI_DEVICE_ID_ATT_L56XMF
 mdefine_line|#define PCI_DEVICE_ID_ATT_L56XMF&t;0x0440
 DECL|macro|PCI_DEVICE_ID_ATT_VENUS_MODEM
 mdefine_line|#define PCI_DEVICE_ID_ATT_VENUS_MODEM&t;0x480
+DECL|macro|PCI_VENDOR_ID_NEC2
+mdefine_line|#define PCI_VENDOR_ID_NEC2&t;&t;0x11c3 /* NEC (2nd) */
 DECL|macro|PCI_VENDOR_ID_SPECIALIX
 mdefine_line|#define PCI_VENDOR_ID_SPECIALIX&t;&t;0x11cb
 DECL|macro|PCI_DEVICE_ID_SPECIALIX_IO8

@@ -617,23 +617,13 @@ id|icnt
 op_assign
 l_int|5
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cs
-)paren
-(brace
-id|printk
+id|spin_lock
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;HiSax: Scitel Quadro: Spurious interrupt!&bslash;n&quot;
+op_amp
+id|cs-&gt;lock
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|ista
 op_assign
 id|readreg
@@ -657,7 +647,8 @@ l_int|0x3f
 )paren
 )paren
 multiline_comment|/* not this IPAC */
-r_return
+r_goto
+id|unlock
 suffix:semicolon
 id|Start_IPAC
 suffix:colon
@@ -886,6 +877,15 @@ comma
 id|IPAC_MASK
 comma
 l_int|0xC0
+)paren
+suffix:semicolon
+id|unlock
+suffix:colon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|cs-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -1204,8 +1204,6 @@ id|inithscxisac
 c_func
 (paren
 id|cs
-comma
-l_int|3
 )paren
 suffix:semicolon
 multiline_comment|/* Enable ints */

@@ -379,7 +379,6 @@ c_cond
 id|speed
 )paren
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_case
 id|XFER_UDMA_4
 suffix:colon
@@ -426,7 +425,6 @@ id|XFER_SW_DMA_2
 suffix:colon
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 r_case
 id|XFER_PIO_4
 suffix:colon
@@ -539,7 +537,6 @@ id|speed
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 DECL|function|it8172_config_chipset_for_dma
 r_static
 r_int
@@ -855,7 +852,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 DECL|function|init_chipset_it8172
 r_static
 r_int
@@ -1038,7 +1034,6 @@ id|hwif-&gt;swdma_mask
 op_assign
 l_int|0x04
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 id|hwif-&gt;ide_dma_check
 op_assign
 op_amp
@@ -1072,7 +1067,6 @@ id|autodma
 op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
-macro_line|#endif /* !CONFIG_BLK_DEV_IDEDMA */
 )brace
 DECL|function|init_dma_it8172
 r_static

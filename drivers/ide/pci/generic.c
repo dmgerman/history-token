@@ -106,7 +106,6 @@ id|hwif-&gt;swdma_mask
 op_assign
 l_int|0x07
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -135,7 +134,6 @@ id|autodma
 op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace
 DECL|function|init_dma_generic
 r_static

@@ -11622,7 +11622,6 @@ id|cap.buffer_size
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -11643,7 +11642,6 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 id|printk
 c_func
 (paren

@@ -2187,6 +2187,12 @@ id|error
 suffix:semicolon
 id|err_put
 suffix:colon
+r_if
+c_cond
+(paren
+id|po-&gt;pppoe_dev
+)paren
+(brace
 id|dev_put
 c_func
 (paren
@@ -2197,6 +2203,7 @@ id|po-&gt;pppoe_dev
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
 r_goto
 id|end
 suffix:semicolon

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;includes.h&quot;
 macro_line|#include &quot;hardware.h&quot;
 macro_line|#include &quot;card.h&quot;
@@ -1293,6 +1294,12 @@ r_sizeof
 (paren
 id|isdn_if
 )paren
+)paren
+suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|interface
 )paren
 suffix:semicolon
 id|interface-&gt;hl_hdrlen

@@ -761,14 +761,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|release_region
-c_func
-(paren
-id|WDT_STOP
-comma
-l_int|1
-)paren
-suffix:semicolon
+singleline_comment|//&t;release_region(WDT_STOP,1);
 )brace
 DECL|function|sbc60xxwdt_init
 r_static
@@ -786,23 +779,9 @@ op_assign
 op_minus
 id|EBUSY
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|request_region
-c_func
-(paren
-id|WDT_STOP
-comma
-l_int|1
-comma
-l_string|&quot;SBC 60XX WDT&quot;
-)paren
-)paren
-r_goto
-id|err_out
-suffix:semicolon
+singleline_comment|//&t;We cannot reserve 0x45 - the kernel already has!
+singleline_comment|//&t;if (!request_region(WDT_STOP, 1, &quot;SBC 60XX WDT&quot;))
+singleline_comment|//&t;&t;goto err_out;
 r_if
 c_cond
 (paren

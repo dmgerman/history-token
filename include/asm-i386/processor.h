@@ -605,6 +605,10 @@ l_string|&quot;ax&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *      NSC/Cyrix CPU configuration register indexes&n; */
+DECL|macro|CX86_PCR0
+mdefine_line|#define CX86_PCR0 0x20
+DECL|macro|CX86_GCR
+mdefine_line|#define CX86_GCR  0xb8
 DECL|macro|CX86_CCR0
 mdefine_line|#define CX86_CCR0 0xc0
 DECL|macro|CX86_CCR1
@@ -621,6 +625,8 @@ DECL|macro|CX86_CCR6
 mdefine_line|#define CX86_CCR6 0xea
 DECL|macro|CX86_CCR7
 mdefine_line|#define CX86_CCR7 0xeb
+DECL|macro|CX86_PCR1
+mdefine_line|#define CX86_PCR1 0xf0
 DECL|macro|CX86_DIR0
 mdefine_line|#define CX86_DIR0 0xfe
 DECL|macro|CX86_DIR1

@@ -203,28 +203,10 @@ DECL|macro|ISDN_CMD_CLREAZ
 mdefine_line|#define ISDN_CMD_CLREAZ   5       /* Clear EAZ(s) of channel               */
 DECL|macro|ISDN_CMD_SETEAZ
 mdefine_line|#define ISDN_CMD_SETEAZ   6       /* Set EAZ(s) of channel                 */
-DECL|macro|ISDN_CMD_GETEAZ
-mdefine_line|#define ISDN_CMD_GETEAZ   7       /* Get EAZ(s) of channel                 */
-DECL|macro|ISDN_CMD_SETSIL
-mdefine_line|#define ISDN_CMD_SETSIL   8       /* Set Service-Indicator-List of channel */
-DECL|macro|ISDN_CMD_GETSIL
-mdefine_line|#define ISDN_CMD_GETSIL   9       /* Get Service-Indicator-List of channel */
 DECL|macro|ISDN_CMD_SETL2
 mdefine_line|#define ISDN_CMD_SETL2   10       /* Set B-Chan. Layer2-Parameter          */
-DECL|macro|ISDN_CMD_GETL2
-mdefine_line|#define ISDN_CMD_GETL2   11       /* Get B-Chan. Layer2-Parameter          */
 DECL|macro|ISDN_CMD_SETL3
 mdefine_line|#define ISDN_CMD_SETL3   12       /* Set B-Chan. Layer3-Parameter          */
-DECL|macro|ISDN_CMD_GETL3
-mdefine_line|#define ISDN_CMD_GETL3   13       /* Get B-Chan. Layer3-Parameter          */
-DECL|macro|ISDN_CMD_LOCK
-mdefine_line|#define ISDN_CMD_LOCK    14       /* Signal usage by upper levels          */
-DECL|macro|ISDN_CMD_UNLOCK
-mdefine_line|#define ISDN_CMD_UNLOCK  15       /* Release usage-lock                    */
-DECL|macro|ISDN_CMD_SUSPEND
-mdefine_line|#define ISDN_CMD_SUSPEND 16       /* Suspend connection                    */
-DECL|macro|ISDN_CMD_RESUME
-mdefine_line|#define ISDN_CMD_RESUME  17       /* Resume connection                     */
 DECL|macro|ISDN_CMD_PROCEED
 mdefine_line|#define ISDN_CMD_PROCEED 18       /* Proceed with call establishment       */
 DECL|macro|ISDN_CMD_ALERT
@@ -1024,6 +1006,12 @@ multiline_comment|/*&n; * The interface-struct itself (initialized at load-time 
 r_typedef
 r_struct
 (brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 multiline_comment|/* Number of channels supported by this driver&n;   */
 DECL|member|channels
 r_int

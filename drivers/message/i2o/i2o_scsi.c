@@ -18,7 +18,6 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/i2o.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
-macro_line|#include &quot;../../scsi/sd.h&quot;
 macro_line|#if BITS_PER_LONG == 64
 macro_line|#error FIXME: driver does not support 64-bit platforms
 macro_line|#endif
@@ -1226,19 +1225,21 @@ id|i2o_handler
 id|i2o_scsi_handler
 op_assign
 (brace
+dot
+id|reply
+op_assign
 id|i2o_scsi_reply
 comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
+dot
+id|name
+op_assign
 l_string|&quot;I2O SCSI OSM&quot;
 comma
-l_int|0
-comma
+dot
+r_class
+op_assign
 id|I2O_CLASS_SCSI_PERIPHERAL
+comma
 )brace
 suffix:semicolon
 multiline_comment|/**&n; *&t;i2o_find_lun&t;&t;-&t;report the lun of an i2o device&n; *&t;@c: i2o controller owning the device&n; *&t;@d: i2o disk device&n; *&t;@target: filled in with target id&n; *&t;@lun: filled in with target lun&n; *&n; *&t;Query an I2O device to find out its SCSI lun and target numbering. We&n; *&t;don&squot;t currently handle some of the fancy SCSI-3 stuff although our&n; *&t;querying is sufficient to do so.&n; */
@@ -3301,6 +3302,10 @@ suffix:semicolon
 r_int
 id|tid
 suffix:semicolon
+r_int
+r_int
+id|timeout
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3355,14 +3360,22 @@ id|c
 op_assign
 id|hostdata-&gt;controller
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Obtain an I2O message. Right now we _have_ to obtain one&n;&t; *&t;until the scsi layer stuff is cleaned up.&n;&t; *&n;&t; *&t;FIXME: we are in error context so we could sleep retry&n;&t; * &t;a bit and then bail in the improved scsi layer.&n;&t; */
-r_do
-(brace
-id|mb
+id|spin_unlock_irq
 c_func
 (paren
+id|host-&gt;host_lock
 )paren
 suffix:semicolon
+id|timeout
+op_assign
+id|jiffies
+op_plus
+l_int|2
+op_star
+id|HZ
+suffix:semicolon
+r_do
+(brace
 id|m
 op_assign
 id|le32_to_cpu
@@ -3375,13 +3388,45 @@ id|c
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|m
+op_ne
+l_int|0xFFFFFFFF
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_while
 c_loop
 (paren
-id|m
-op_eq
-l_int|0xFFFFFFFF
+id|time_before
+c_func
+(paren
+id|jiffies
+comma
+id|timeout
+)paren
 )paren
 (brace
 suffix:semicolon
@@ -3470,6 +3515,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|host-&gt;host_lock
+)paren
+suffix:semicolon
 r_return
 id|SUCCESS
 suffix:semicolon
@@ -3511,17 +3562,27 @@ r_int
 r_int
 id|msg
 suffix:semicolon
+r_int
+r_int
+id|timeout
+suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Find the TID for the bus&n;&t; */
+id|host
+op_assign
+id|SCpnt-&gt;host
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+id|host-&gt;host_lock
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;i2o_scsi: Attempting to reset the bus.&bslash;n&quot;
 )paren
-suffix:semicolon
-id|host
-op_assign
-id|SCpnt-&gt;host
 suffix:semicolon
 id|hostdata
 op_assign
@@ -3541,6 +3602,16 @@ op_assign
 id|hostdata-&gt;controller
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Now send a SCSI reset request. Any remaining commands&n;&t; *&t;will be aborted by the IOP. We need to catch the reply&n;&t; *&t;possibly ?&n;&t; */
+id|timeout
+op_assign
+id|jiffies
+op_plus
+l_int|2
+op_star
+id|HZ
+suffix:semicolon
+r_do
+(brace
 id|m
 op_assign
 id|le32_to_cpu
@@ -3553,17 +3624,47 @@ id|c
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;No free messages, try again next time - no big deal&n;&t; */
 r_if
 c_cond
 (paren
 id|m
-op_eq
+op_ne
 l_int|0xFFFFFFFF
 )paren
 (brace
-r_return
-id|SCSI_RESET_PUNT
+r_break
+suffix:semicolon
+)brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|time_before
+c_func
+(paren
+id|jiffies
+comma
+id|timeout
+)paren
+)paren
+(brace
 suffix:semicolon
 )brace
 id|msg
@@ -3633,6 +3734,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* We want the command to complete after we return */
+id|spin_lock_irq
+c_func
+(paren
+id|host-&gt;host_lock
+)paren
+suffix:semicolon
 id|i2o_post_message
 c_func
 (paren
@@ -3641,6 +3749,7 @@ comma
 id|m
 )paren
 suffix:semicolon
+multiline_comment|/* Should we wait for the reset to complete ? */
 r_return
 id|SUCCESS
 suffix:semicolon
@@ -3677,7 +3786,7 @@ r_return
 id|FAILED
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;i2o_scsi_bios_param&t;-&t;Invent disk geometry&n; *&t;@disk: device &n; *&t;@dev: block layer device&n; *&t;@ip: geometry array&n; *&n; *&t;This is anyones guess quite frankly. We use the same rules everyone &n; *&t;else appears to and hope. It seems to work.&n; */
+multiline_comment|/**&n; *&t;i2o_scsi_bios_param&t;-&t;Invent disk geometry&n; *&t;@sdev: scsi device &n; *&t;@dev: block layer device&n; *&t;@capacity: size in sectors&n; *&t;@ip: geometry array&n; *&n; *&t;This is anyones guess quite frankly. We use the same rules everyone &n; *&t;else appears to and hope. It seems to work.&n; */
 DECL|function|i2o_scsi_bios_param
 r_static
 r_int

@@ -922,16 +922,6 @@ id|PH_DATA
 op_or
 id|CONFIRM
 comma
-(paren
-r_void
-op_star
-)paren
-id|skb-&gt;truesize
-)paren
-suffix:semicolon
-id|dev_kfree_skb_irq
-c_func
-(paren
 id|skb
 )paren
 suffix:semicolon

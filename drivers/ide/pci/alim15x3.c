@@ -2157,7 +2157,6 @@ comma
 id|speed
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 )brace
 r_else
 (brace
@@ -2257,7 +2256,6 @@ id|tmpbyte
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace
 r_return
 (paren
@@ -2271,7 +2269,6 @@ id|speed
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 multiline_comment|/**&n; *&t;config_chipset_for_dma&t;-&t;set up DMA mode&n; *&t;@drive: drive to configure for&n; *&n; *&t;Place a drive into DMA mode and tune the chipset for&n; *&t;the selected speed.&n; *&n; *&t;Returns true if DMA mode can be used&n; */
 DECL|function|config_chipset_for_dma
 r_static
@@ -2646,7 +2643,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/**&n; *&t;init_chipset_ali15x3&t;-&t;Initialise an ALi IDE controller&n; *&t;@dev: PCI device&n; *&t;@name: Name of the controller&n; *&n; *&t;This function initializes the ALI IDE controller and where &n; *&t;appropriate also sets up the 1533 southbridge.&n; */
 DECL|function|init_chipset_ali15x3
 r_static
@@ -3209,7 +3205,6 @@ id|hwif-&gt;swdma_mask
 op_assign
 l_int|0x07
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -3274,7 +3269,6 @@ id|autodma
 op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace
 multiline_comment|/**&n; *&t;init_hwif_ali15x3&t;-&t;Initialize the ALI IDE x86 stuff&n; *&t;@hwif: interface to configure&n; *&n; *&t;Obtain the IRQ tables for an ALi based IDE solution on the PC&n; *&t;class platforms. This part of the code isn&squot;t applicable to the&n; *&t;Sparc systems&n; */
 DECL|function|init_hwif_ali15x3
@@ -3571,6 +3565,31 @@ id|ali15x3_chipsets
 id|id-&gt;driver_data
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pci_find_device
+c_func
+(paren
+id|PCI_VENDOR_ID_ATI
+comma
+id|PCI_DEVICE_ID_ATI_RADEON_IGP
+comma
+l_int|NULL
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Warning: ATI Radeon IGP Northbridge is not supported by Linux&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 macro_line|#if defined(CONFIG_SPARC64)
 id|d-&gt;init_hwif
 op_assign

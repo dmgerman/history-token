@@ -2672,9 +2672,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-(paren
-id|SCSI_RESET_ERROR
-)paren
+id|FAILED
 suffix:semicolon
 )brace
 r_else
@@ -2691,9 +2689,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-(paren
-id|SCSI_RESET_SUCCESS
-)paren
+id|SUCCESS
 suffix:semicolon
 )brace
 )brace
@@ -2714,10 +2710,6 @@ comma
 r_int
 r_int
 id|target
-comma
-r_int
-r_int
-id|ResetFlags
 )paren
 (brace
 multiline_comment|/* I need Host Control Block Information */
@@ -2846,9 +2838,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-(paren
-id|SCSI_RESET_NOT_RUNNING
-)paren
+id|FAILED
 suffix:semicolon
 )brace
 r_if
@@ -2879,9 +2869,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-(paren
-id|SCSI_RESET_NOT_RUNNING
-)paren
+id|FAILED
 suffix:semicolon
 )brace
 id|pScb-&gt;SCB_Opcode
@@ -2928,19 +2916,10 @@ id|pVirEscb-&gt;SCB_Srb
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ResetFlags
-op_amp
-id|SCSI_RESET_SYNCHRONOUS
-)paren
-(brace
 id|pVirEscb-&gt;SCB_Srb
 op_assign
 id|SCpnt
 suffix:semicolon
-)brace
 id|orc_exec_scb
 c_func
 (paren
@@ -2962,7 +2941,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|SCSI_RESET_PENDING
+id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************/
@@ -3941,9 +3920,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-(paren
-id|SCSI_ABORT_BUSY
-)paren
+id|FAILED
 suffix:semicolon
 )brace
 r_else
@@ -3976,9 +3953,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-(paren
-id|SCSI_ABORT_SUCCESS
-)paren
+id|SUCCESS
 suffix:semicolon
 )brace
 r_else
@@ -3995,9 +3970,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-(paren
-id|SCSI_ABORT_NOT_RUNNING
-)paren
+id|FAILED
 suffix:semicolon
 )brace
 )brace
@@ -4015,9 +3988,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-(paren
-id|SCSI_ABORT_NOT_RUNNING
-)paren
+id|FAILED
 suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; Routine Description:&n;&t;  This is the interrupt service routine for the Orchid SCSI adapter.&n;&t;  It reads the interrupt register to determine if the adapter is indeed&n;&t;  the source of the interrupt and clears the interrupt at the device.&n; Arguments:&n;&t;  HwDeviceExtension - HBA miniport driver&squot;s adapter data storage&n; Return Value:&n;***********************************************************************/

@@ -327,7 +327,7 @@ multiline_comment|/* no error - clear return value */
 l_string|&quot;8:&bslash;n&quot;
 l_string|&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
 l_string|&quot;.even&bslash;n&quot;
-multiline_comment|/* If any execption occurs zero out the rest.&n;&t;&t;   Similarities with the code above are intentional :-) */
+multiline_comment|/* If any exception occurs zero out the rest.&n;&t;&t;   Similarities with the code above are intentional :-) */
 l_string|&quot;90:&bslash;t&quot;
 l_string|&quot;clrw %3@+&bslash;n&bslash;t&quot;
 l_string|&quot;movel %1,%4&bslash;n&bslash;t&quot;

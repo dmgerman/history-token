@@ -489,7 +489,7 @@ id|out
 comma
 l_string|&quot;&bslash;n%s (vid/did: %04x/%04x)&bslash;n&quot;
 comma
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 comma
 (paren
 r_int
@@ -7487,7 +7487,7 @@ l_string|&quot;%s: failed to restart hw - %s(%s) unusable!&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|idev-&gt;pdev-&gt;name
+id|idev-&gt;pdev-&gt;dev.name
 comma
 id|ndev-&gt;name
 )paren
@@ -8489,7 +8489,7 @@ l_string|&quot;%s: IrDA PCI controller %s detected&bslash;n&quot;
 comma
 id|drivername
 comma
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 )paren
 suffix:semicolon
 r_if
@@ -8930,7 +8930,7 @@ l_string|&quot;%s: %s removed&bslash;n&quot;
 comma
 id|drivername
 comma
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 )paren
 suffix:semicolon
 )brace
@@ -8967,7 +8967,7 @@ l_string|&quot;%s - %s: invalid pm state request: %u&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 comma
 id|state
 )paren
@@ -9027,7 +9027,7 @@ l_string|&quot;%s - %s: invalid pm state request: %u&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 comma
 id|state
 )paren
@@ -9051,7 +9051,7 @@ l_string|&quot;%s - %s: no netdevice &bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 )paren
 suffix:semicolon
 r_return
@@ -9109,7 +9109,7 @@ l_string|&quot;%s - %s: invalid suspend request %u -&gt; %u&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 comma
 id|pdev-&gt;current_state
 comma
@@ -9238,7 +9238,7 @@ l_string|&quot;%s - %s: no netdevice &bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 )paren
 suffix:semicolon
 r_return
@@ -9279,7 +9279,7 @@ l_string|&quot;%s - %s: already resumed&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 )paren
 suffix:semicolon
 r_return

@@ -854,34 +854,6 @@ r_void
 op_star
 id|userdata
 suffix:semicolon
-DECL|member|l1writewakeup
-r_void
-(paren
-op_star
-id|l1writewakeup
-)paren
-(paren
-r_struct
-id|PStack
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-DECL|member|l2writewakeup
-r_void
-(paren
-op_star
-id|l2writewakeup
-)paren
-(paren
-r_struct
-id|PStack
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|Management
@@ -1137,11 +1109,6 @@ DECL|member|rcvidx
 r_int
 id|rcvidx
 suffix:semicolon
-DECL|member|count
-r_int
-id|count
-suffix:semicolon
-multiline_comment|/* Current skb sent count */
 DECL|member|rcvbuf
 id|u_char
 op_star
@@ -1170,11 +1137,6 @@ DECL|member|rcvidx
 r_int
 id|rcvidx
 suffix:semicolon
-DECL|member|count
-r_int
-id|count
-suffix:semicolon
-multiline_comment|/* Current skb sent count */
 DECL|member|rcvbuf
 id|u_char
 op_star
@@ -1233,10 +1195,6 @@ suffix:semicolon
 DECL|member|rcvidx
 r_int
 id|rcvidx
-suffix:semicolon
-DECL|member|txcnt
-r_int
-id|txcnt
 suffix:semicolon
 DECL|member|mml
 r_int
@@ -1412,11 +1370,6 @@ DECL|member|rcvidx
 r_int
 id|rcvidx
 suffix:semicolon
-DECL|member|count
-r_int
-id|count
-suffix:semicolon
-multiline_comment|/* Current skb sent count */
 DECL|member|rcvbuf
 id|u_char
 op_star
@@ -1670,13 +1623,19 @@ r_struct
 id|sk_buff_head
 id|rqueue
 suffix:semicolon
-multiline_comment|/* B-Channel receive Queue */
+multiline_comment|/* B-Channel receive queue */
 DECL|member|squeue
 r_struct
 id|sk_buff_head
 id|squeue
 suffix:semicolon
-multiline_comment|/* B-Channel send Queue */
+multiline_comment|/* B-Channel send queue */
+DECL|member|cmpl_queue
+r_struct
+id|sk_buff_head
+id|cmpl_queue
+suffix:semicolon
+multiline_comment|/* B-Channel send complete queue */
 DECL|member|st
 r_struct
 id|PStack
@@ -1754,6 +1713,10 @@ r_int
 id|err_inv
 suffix:semicolon
 macro_line|#endif
+DECL|member|count
+r_int
+id|count
+suffix:semicolon
 r_union
 (brace
 DECL|member|hscx
@@ -2532,16 +2495,6 @@ DECL|member|nt_timer
 r_int
 id|nt_timer
 suffix:semicolon
-DECL|member|pci_bus
-r_int
-r_char
-id|pci_bus
-suffix:semicolon
-DECL|member|pci_device_fn
-r_int
-r_char
-id|pci_device_fn
-suffix:semicolon
 DECL|member|pci_io
 r_int
 r_char
@@ -3291,8 +3244,6 @@ DECL|macro|FLG_L1_DBUSY
 mdefine_line|#define FLG_L1_DBUSY&t;&t;5
 DECL|macro|FLG_DBUSY_TIMER
 mdefine_line|#define FLG_DBUSY_TIMER &t;6
-DECL|macro|FLG_LOCK_ATOMIC
-mdefine_line|#define FLG_LOCK_ATOMIC &t;7
 DECL|macro|FLG_ARCOFI_TIMER
 mdefine_line|#define FLG_ARCOFI_TIMER&t;8
 DECL|macro|FLG_ARCOFI_ERROR
@@ -3314,6 +3265,10 @@ DECL|member|subtyp
 r_int
 r_char
 id|subtyp
+suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
 suffix:semicolon
 DECL|member|protocol
 r_int
@@ -3638,6 +3593,18 @@ r_struct
 id|PStack
 op_star
 comma
+r_struct
+id|IsdnCardState
+op_star
+)paren
+suffix:semicolon
+DECL|member|DC_Send_Data
+r_void
+(paren
+op_star
+id|DC_Send_Data
+)paren
+(paren
 r_struct
 id|IsdnCardState
 op_star

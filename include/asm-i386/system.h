@@ -193,7 +193,7 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|__xg
 mdefine_line|#define __xg(x) ((struct __xchg_dummy *)(x))
-multiline_comment|/*&n; * The semantics of XCHGCMP8B are a bit strange, this is why&n; * there is a loop and the loading of %%eax and %%edx has to&n; * be inside. This inlines well in most cases, the cached&n; * cost is around ~38 cycles. (in the future we might want&n; * to do an SIMD/3DNOW!/MMX/FPU 64-bit store here, but that&n; * might have an implicit FPU-save as a cost, so it&squot;s not&n; * clear which path to go.)&n; */
+multiline_comment|/*&n; * The semantics of XCHGCMP8B are a bit strange, this is why&n; * there is a loop and the loading of %%eax and %%edx has to&n; * be inside. This inlines well in most cases, the cached&n; * cost is around ~38 cycles. (in the future we might want&n; * to do an SIMD/3DNOW!/MMX/FPU 64-bit store here, but that&n; * might have an implicit FPU-save as a cost, so it&squot;s not&n; * clear which path to go.)&n; *&n; * cmpxchg8b must be used with the lock prefix here to allow&n; * the instruction to be executed atomically, see page 3-102&n; * of the instruction set reference 24319102.pdf. We need&n; * the reader side to see the coherent 64bit value.&n; */
 DECL|function|__set_64bit
 r_static
 r_inline
@@ -221,7 +221,7 @@ id|__volatile__
 l_string|&quot;&bslash;n1:&bslash;t&quot;
 l_string|&quot;movl (%0), %%eax&bslash;n&bslash;t&quot;
 l_string|&quot;movl 4(%0), %%edx&bslash;n&bslash;t&quot;
-l_string|&quot;cmpxchg8b (%0)&bslash;n&bslash;t&quot;
+l_string|&quot;lock cmpxchg8b (%0)&bslash;n&bslash;t&quot;
 l_string|&quot;jnz 1b&quot;
 suffix:colon
 multiline_comment|/* no outputs */

@@ -14037,7 +14037,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif defined(CONFIG_INPUT_ADBHID) &amp;&amp; defined(CONFIG_PMAC_BACKLIGHT)
+macro_line|#endif /* defined(CONFIG_INPUT_ADBHID) &amp;&amp; defined(CONFIG_PMAC_BACKLIGHT) */
 id|kfree
 c_func
 (paren

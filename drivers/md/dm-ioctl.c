@@ -2,13 +2,13 @@ multiline_comment|/*&n; * Copyright (C) 2001, 2002 Sistina Software (UK) Limited
 macro_line|#include &quot;dm.h&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/dm-ioctl.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|DM_DRIVER_EMAIL
 mdefine_line|#define DM_DRIVER_EMAIL &quot;dm@uk.sistina.com&quot;
 multiline_comment|/*-----------------------------------------------------------------&n; * The ioctl interface needs to be able to look up devices by&n; * name or uuid.&n; *---------------------------------------------------------------*/
@@ -1851,15 +1851,6 @@ r_return
 op_minus
 id|ENXIO
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|disk-&gt;policy
-)paren
-id|param-&gt;flags
-op_or_assign
-id|DM_READONLY_FLAG
-suffix:semicolon
 id|param-&gt;open_count
 op_assign
 id|bdev-&gt;bd_openers
@@ -1869,6 +1860,15 @@ c_func
 (paren
 id|bdev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|disk-&gt;policy
+)paren
+id|param-&gt;flags
+op_or_assign
+id|DM_READONLY_FLAG
 suffix:semicolon
 id|table
 op_assign

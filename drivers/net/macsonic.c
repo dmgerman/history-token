@@ -589,6 +589,12 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|lp
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM

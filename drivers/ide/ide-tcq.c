@@ -454,6 +454,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ide_tcq_intr_timeout: timeout waiting for %s interrupt&bslash;n&quot;
 comma
 id|hwgroup-&gt;rq
@@ -482,6 +483,7 @@ id|hwgroup-&gt;busy
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ide_tcq_intr_timeout: hwgroup not busy&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -495,6 +497,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ide_tcq_intr_timeout: missing isr!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -876,6 +879,7 @@ id|BUSY_STAT
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ide_service: BUSY clear took too long&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -968,6 +972,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: release in service&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -1064,6 +1069,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ide_service: missing request for tag %d&bslash;n&quot;
 comma
 id|tag
@@ -1236,6 +1242,7 @@ id|DRQ_STAT
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ide_dmaq_intr: %s: error status %x&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -1271,6 +1278,7 @@ id|dma_stat
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: bad DMA status (dma_stat=%x)&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -1703,6 +1711,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: failed to enable write cache&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -1765,6 +1774,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: disabling release interrupt fail&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -1828,6 +1838,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: enabling service interrupt fail&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -1900,6 +1911,7 @@ id|drive-&gt;using_tcq
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: TCQ disabled&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -1969,6 +1981,7 @@ id|drive-&gt;queue_depth
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: tagged command queueing enabled, command queue depth %d&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -2170,6 +2183,7 @@ id|drive
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;ide-tcq; can&squot;t toggle tcq feature on busy drive&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2610,6 +2624,7 @@ id|hwgroup-&gt;busy
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;queued_rw: hwgroup not busy&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2626,6 +2641,7 @@ id|drive
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;timeout waiting for data phase&bslash;n&quot;
 )paren
 suffix:semicolon

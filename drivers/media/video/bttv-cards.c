@@ -14164,7 +14164,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;bttv: Host bridge is %s&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|dev-&gt;dev.name
 )paren
 suffix:semicolon
 multiline_comment|/* print warnings about any quirks found */

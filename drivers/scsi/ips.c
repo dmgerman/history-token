@@ -82,7 +82,7 @@ multiline_comment|/*          - Use linux/spinlock.h instead of asm/spinlock.h f
 multiline_comment|/*            2.3.18 and later                                               */
 multiline_comment|/*          - Sync with other changes from the 2.3 kernels                   */
 multiline_comment|/* 4.00.06  - Fix timeout with initial FFDC command                          */
-multiline_comment|/* 4.00.06a - Port to 2.4 (trivial) -- Christoph Hellwig &lt;hch@caldera.de&gt;    */
+multiline_comment|/* 4.00.06a - Port to 2.4 (trivial) -- Christoph Hellwig &lt;hch@infradead.org&gt; */
 multiline_comment|/* 4.10.00  - Add support for ServeRAID 4M/4L                                */
 multiline_comment|/* 4.10.13  - Fix for dynamic unload and proc file system                    */
 multiline_comment|/* 4.20.03  - Rename version to coincide with new release schedules          */
@@ -174,6 +174,12 @@ c_func
 id|ips
 comma
 l_string|&quot;s&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -3991,12 +3997,15 @@ macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,0)
 r_if
 c_cond
 (paren
-id|check_mem_region
+op_logical_neg
+id|request_mem_region
 c_func
 (paren
 id|mem_addr
 comma
 id|mem_len
+comma
+l_string|&quot;ips&quot;
 )paren
 )paren
 (brace
@@ -4022,16 +4031,6 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|request_mem_region
-c_func
-(paren
-id|mem_addr
-comma
-id|mem_len
-comma
-l_string|&quot;ips&quot;
-)paren
-suffix:semicolon
 macro_line|#endif
 id|base
 op_assign
@@ -4099,12 +4098,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|io_addr
 comma
 id|io_len
+comma
+l_string|&quot;ips&quot;
 )paren
 )paren
 (brace
@@ -4130,16 +4132,6 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-id|io_addr
-comma
-id|io_len
-comma
-l_string|&quot;ips&quot;
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* get planer status */
 r_if
@@ -28706,12 +28698,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_mem_region
+op_logical_neg
+id|request_mem_region
 c_func
 (paren
 id|mem_addr
 comma
 id|mem_len
+comma
+l_string|&quot;ips&quot;
 )paren
 )paren
 (brace
@@ -28731,16 +28726,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|request_mem_region
-c_func
-(paren
-id|mem_addr
-comma
-id|mem_len
-comma
-l_string|&quot;ips&quot;
-)paren
-suffix:semicolon
 id|base
 op_assign
 id|mem_addr
@@ -28791,12 +28776,15 @@ id|io_addr
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|io_addr
 comma
 id|io_len
+comma
+l_string|&quot;ips&quot;
 )paren
 )paren
 (brace
@@ -28816,16 +28804,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-id|io_addr
-comma
-id|io_len
-comma
-l_string|&quot;ips&quot;
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* get the revision ID */
 r_if

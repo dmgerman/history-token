@@ -2604,9 +2604,13 @@ id|cam
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-OG
+comma
 id|timeout
+)paren
 )paren
 r_return
 op_minus

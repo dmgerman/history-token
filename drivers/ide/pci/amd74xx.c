@@ -674,7 +674,6 @@ c_cond
 id|speed
 )paren
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_case
 id|XFER_UDMA_7
 suffix:colon
@@ -817,7 +816,6 @@ l_int|0xA8
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 r_case
 id|XFER_PIO_4
 suffix:colon
@@ -874,7 +872,6 @@ op_lshift
 id|drive-&gt;dn
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 id|pci_write_config_byte
 c_func
 (paren
@@ -888,7 +885,6 @@ comma
 id|ultra_timing
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 id|pci_write_config_byte
 c_func
 (paren
@@ -967,7 +963,6 @@ id|pio
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 multiline_comment|/*&n; * This allows the configuration of ide_pci chipset registers&n; * for cards that learn about the drive&squot;s UDMA, DMA, PIO capabilities&n; * after the drive is reported by the OS.&n; */
 DECL|function|config_chipset_for_dma
 r_static
@@ -1259,7 +1254,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 DECL|function|init_chipset_amd74xx
 r_static
 r_int
@@ -1278,7 +1272,6 @@ op_star
 id|name
 )paren
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -1297,7 +1290,6 @@ comma
 id|name
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 macro_line|#if defined(DISPLAY_VIPER_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
 r_if
 c_cond
@@ -1461,11 +1453,6 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_AMD74XX_OVERRIDE
-r_return
-l_int|1
-suffix:semicolon
-macro_line|#else
 r_return
 (paren
 r_int
@@ -1473,7 +1460,6 @@ r_int
 )paren
 id|ata66
 suffix:semicolon
-macro_line|#endif /* CONFIG_AMD74XX_OVERRIDE */
 )brace
 DECL|function|init_hwif_amd74xx
 r_static
@@ -1553,7 +1539,6 @@ id|hwif-&gt;swdma_mask
 op_assign
 l_int|0x07
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -1603,7 +1588,6 @@ id|autodma
 op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace
 DECL|function|init_dma_amd74xx
 r_static

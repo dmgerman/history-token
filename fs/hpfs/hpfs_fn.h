@@ -94,7 +94,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* The b-tree down pointer from a dir entry */
 DECL|function|de_down_pointer
-r_extern
+r_static
 r_inline
 id|dnode_secno
 id|de_down_pointer
@@ -136,7 +136,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* The first dir entry in a dnode */
 DECL|function|dnode_first_de
-r_extern
+r_static
 r_inline
 r_struct
 id|hpfs_dirent
@@ -159,7 +159,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* The end+1 of the dir entries */
 DECL|function|dnode_end_de
-r_extern
+r_static
 r_inline
 r_struct
 id|hpfs_dirent
@@ -205,7 +205,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* The dir entry after dir entry de */
 DECL|function|de_next_de
-r_extern
+r_static
 r_inline
 r_struct
 id|hpfs_dirent
@@ -250,7 +250,7 @@ id|de-&gt;length
 suffix:semicolon
 )brace
 DECL|function|fnode_ea
-r_extern
+r_static
 r_inline
 r_struct
 id|extended_attribute
@@ -282,7 +282,7 @@ id|fnode-&gt;ea_offs
 suffix:semicolon
 )brace
 DECL|function|fnode_end_ea
-r_extern
+r_static
 r_inline
 r_struct
 id|extended_attribute
@@ -316,7 +316,7 @@ id|fnode-&gt;ea_size_s
 suffix:semicolon
 )brace
 DECL|function|next_ea
-r_extern
+r_static
 r_inline
 r_struct
 id|extended_attribute
@@ -352,7 +352,7 @@ id|ea-&gt;valuelen
 suffix:semicolon
 )brace
 DECL|function|ea_sec
-r_extern
+r_static
 r_inline
 id|secno
 id|ea_sec
@@ -384,7 +384,7 @@ id|ea-&gt;namelen
 suffix:semicolon
 )brace
 DECL|function|ea_len
-r_extern
+r_static
 r_inline
 id|secno
 id|ea_len
@@ -416,7 +416,7 @@ id|ea-&gt;namelen
 suffix:semicolon
 )brace
 DECL|function|ea_data
-r_extern
+r_static
 r_inline
 r_char
 op_star
@@ -448,7 +448,7 @@ id|ea-&gt;namelen
 suffix:semicolon
 )brace
 DECL|function|de_size
-r_extern
+r_static
 r_inline
 r_int
 id|de_size
@@ -486,7 +486,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|copy_de
-r_extern
+r_static
 r_inline
 r_void
 id|copy_de
@@ -505,13 +505,9 @@ id|src
 (brace
 r_int
 id|a
-op_assign
-id|dst-&gt;down
 suffix:semicolon
 r_int
 id|n
-op_assign
-id|dst-&gt;not_8x3
 suffix:semicolon
 r_if
 c_cond
@@ -523,6 +519,14 @@ op_logical_neg
 id|src
 )paren
 r_return
+suffix:semicolon
+id|a
+op_assign
+id|dst-&gt;down
+suffix:semicolon
+id|n
+op_assign
+id|dst-&gt;not_8x3
 suffix:semicolon
 id|memcpy
 c_func
@@ -556,7 +560,7 @@ id|n
 suffix:semicolon
 )brace
 DECL|function|tstbits
-r_extern
+r_static
 r_inline
 r_int
 id|tstbits
@@ -2238,7 +2242,7 @@ id|hpfs_aops
 suffix:semicolon
 multiline_comment|/*&n; * local time (HPFS) to GMT (Unix)&n; */
 DECL|function|local_to_gmt
-r_extern
+r_static
 r_inline
 id|time_t
 id|local_to_gmt
@@ -2275,7 +2279,7 @@ id|sb_timeshift
 suffix:semicolon
 )brace
 DECL|function|gmt_to_local
-r_extern
+r_static
 r_inline
 id|time_t
 id|gmt_to_local

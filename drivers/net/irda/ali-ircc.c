@@ -1268,22 +1268,19 @@ l_int|16
 suffix:semicolon
 multiline_comment|/* SIR: 16, FIR: 32 Benjamin 2000/11/1 */
 multiline_comment|/* Reserve the ioports that we need */
-id|ret
-op_assign
-id|check_region
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|self-&gt;io.fir_base
 comma
 id|self-&gt;io.fir_ext
+comma
+id|driver_name
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
 )paren
 (brace
 id|WARNING
@@ -1314,16 +1311,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-id|self-&gt;io.fir_base
-comma
-id|self-&gt;io.fir_ext
-comma
-id|driver_name
-)paren
-suffix:semicolon
 multiline_comment|/* Initialize QoS for this device */
 id|irda_init_max_qos_capabilies
 c_func

@@ -6399,7 +6399,6 @@ l_int|0
 suffix:semicolon
 DECL|variable|in2000__INITDATA
 r_static
-r_const
 r_int
 r_int
 id|base_tab
@@ -6420,7 +6419,6 @@ comma
 suffix:semicolon
 DECL|variable|in2000__INITDATA
 r_static
-r_const
 r_int
 id|int_tab
 (braket

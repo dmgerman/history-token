@@ -1569,7 +1569,6 @@ id|BP
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 )brace
 r_else
 (brace
@@ -1657,7 +1656,6 @@ id|CP
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace
 id|pci_read_config_byte
 c_func
@@ -1708,7 +1706,6 @@ c_cond
 id|speed
 )paren
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_case
 id|XFER_UDMA_6
 suffix:colon
@@ -1832,7 +1829,6 @@ l_int|0x0B
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 r_case
 id|XFER_PIO_4
 suffix:colon
@@ -1939,7 +1935,6 @@ op_or
 id|TB
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 )brace
 r_else
 (brace
@@ -1975,7 +1970,6 @@ op_or
 id|TC
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace
 macro_line|#if PDC202XX_DECODE_REGISTER_INFO
 id|pci_read_config_byte
@@ -2123,7 +2117,7 @@ suffix:semicolon
 multiline_comment|/*   0    1    2    3    4    5    6   7   8&n; * 960, 480, 390, 300, 240, 180, 120, 90, 60&n; *           180, 150, 120,  90,  60&n; * DMA_Speed&n; * 180, 120,  90,  90,  90,  60,  30&n; *  11,   5,   4,   3,   2,   1,   0&n; */
 DECL|function|config_chipset_for_pio
 r_static
-r_int
+r_void
 id|config_chipset_for_pio
 (paren
 id|ide_drive_t
@@ -2139,18 +2133,16 @@ id|speed
 op_assign
 l_int|0
 suffix:semicolon
-id|pio
-op_assign
+r_if
+c_cond
 (paren
 id|pio
 op_eq
 l_int|5
 )paren
-ques
-c_cond
-l_int|4
-suffix:colon
 id|pio
+op_assign
+l_int|4
 suffix:semicolon
 id|speed
 op_assign
@@ -2168,11 +2160,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_return
-(paren
-(paren
-r_int
-)paren
 id|pdc202xx_tune_chipset
 c_func
 (paren
@@ -2180,35 +2167,8 @@ id|drive
 comma
 id|speed
 )paren
-)paren
 suffix:semicolon
 )brace
-DECL|function|pdc202xx_tune_drive
-r_static
-r_void
-id|pdc202xx_tune_drive
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-id|u8
-id|pio
-)paren
-(brace
-(paren
-r_void
-)paren
-id|config_chipset_for_pio
-c_func
-(paren
-id|drive
-comma
-id|pio
-)paren
-suffix:semicolon
-)brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 DECL|function|pdc202xx_old_cable_detect
 r_static
 id|u8
@@ -3676,7 +3636,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 DECL|function|pdc202xx_reset_host
 r_static
 r_void
@@ -4016,7 +3975,6 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 singleline_comment|//&t;unsigned long high_16&t;= hwif-&gt;dma_base - (8*(hwif-&gt;channel));
 r_int
 r_int
@@ -4024,20 +3982,6 @@ id|high_16
 op_assign
 id|hwif-&gt;dma_master
 suffix:semicolon
-macro_line|#else /* !CONFIG_BLK_DEV_IDEDMA */
-r_int
-r_int
-id|high_16
-op_assign
-id|pci_resource_start
-c_func
-(paren
-id|hwif-&gt;pci_dev
-comma
-l_int|4
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 id|u8
 id|sc1f
 op_assign
@@ -4318,7 +4262,7 @@ suffix:semicolon
 id|hwif-&gt;tuneproc
 op_assign
 op_amp
-id|pdc202xx_tune_drive
+id|config_chipset_for_pio
 suffix:semicolon
 id|hwif-&gt;quirkproc
 op_assign
@@ -4405,7 +4349,6 @@ id|hwif-&gt;swdma_mask
 op_assign
 l_int|0x07
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 id|hwif-&gt;ide_dma_check
 op_assign
 op_amp
@@ -4494,7 +4437,6 @@ id|autodma
 op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 macro_line|#if PDC202_DEBUG_CABLE
 id|printk
 c_func

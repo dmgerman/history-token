@@ -2365,7 +2365,6 @@ id|u8
 id|xferspeed
 )paren
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 id|ide_hwif_t
 op_star
 id|hwif
@@ -2424,7 +2423,6 @@ id|BMIDESR1
 suffix:colon
 id|BMIDESR0
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 id|u8
 id|speed
 op_assign
@@ -2440,7 +2438,6 @@ comma
 id|xferspeed
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -2556,14 +2553,12 @@ id|regU
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 r_switch
 c_cond
 (paren
 id|speed
 )paren
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_case
 id|XFER_UDMA_5
 suffix:colon
@@ -2756,7 +2751,6 @@ l_int|0x30
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 r_case
 id|XFER_PIO_4
 suffix:colon
@@ -2828,7 +2822,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -2875,7 +2868,6 @@ id|regD
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 r_return
 (paren
 id|ide_config_drive_speed
@@ -2888,7 +2880,6 @@ id|speed
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 DECL|function|config_chipset_for_dma
 r_static
 r_int
@@ -2919,23 +2910,15 @@ c_func
 (paren
 id|drive
 comma
-(paren
 op_logical_neg
-(paren
 id|speed
-)paren
-)paren
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 op_logical_neg
-(paren
 id|speed
-)paren
-)paren
 )paren
 r_return
 l_int|0
@@ -2943,13 +2926,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|speedproc
+id|ide_set_xfer_rate
 c_func
 (paren
 id|drive
@@ -2957,9 +2934,11 @@ comma
 id|speed
 )paren
 )paren
+(brace
 r_return
 l_int|0
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3660,7 +3639,6 @@ op_ne
 l_int|4
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 DECL|function|init_chipset_cmd64x
 r_static
 r_int
@@ -4288,7 +4266,6 @@ id|hwif-&gt;ultra_mask
 op_assign
 l_int|0x1f
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 id|hwif-&gt;ide_dma_check
 op_assign
 op_amp
@@ -4391,7 +4368,6 @@ id|autodma
 op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace
 DECL|function|init_dma_cmd64x
 r_static

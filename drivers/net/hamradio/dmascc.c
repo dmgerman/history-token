@@ -459,6 +459,16 @@ DECL|member|rr0
 r_int
 id|rr0
 suffix:semicolon
+DECL|member|register_lock
+id|spinlock_t
+op_star
+id|register_lock
+suffix:semicolon
+multiline_comment|/* Per scc_info */
+DECL|member|ring_lock
+id|spinlock_t
+id|ring_lock
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|scc_info
@@ -495,6 +505,11 @@ id|scc_info
 op_star
 id|next
 suffix:semicolon
+DECL|member|register_lock
+id|spinlock_t
+id|register_lock
+suffix:semicolon
+multiline_comment|/* Per device register lock */
 )brace
 suffix:semicolon
 multiline_comment|/* Function declarations */
@@ -1286,6 +1301,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;dmascc: autoprobing (dangerous)&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1982,6 +1998,7 @@ multiline_comment|/* If no adapter found, return error */
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;dmascc: no adapters found&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2095,6 +2112,7 @@ id|info
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;dmascc: could not allocate memory for %s at %#3x&bslash;n&quot;
 comma
 id|hw
@@ -2127,6 +2145,13 @@ id|scc_info
 )paren
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|info-&gt;register_lock
+)paren
+suffix:semicolon
 id|priv
 op_assign
 op_amp
@@ -2154,6 +2179,11 @@ op_assign
 id|scc_base
 op_plus
 id|SCCA_DATA
+suffix:semicolon
+id|priv-&gt;register_lock
+op_assign
+op_amp
+id|info-&gt;register_lock
 suffix:semicolon
 multiline_comment|/* Reset SCC */
 id|write_scc
@@ -2253,11 +2283,6 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Start IRQ auto-detection */
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 id|irqs
 op_assign
 id|probe_irq_on
@@ -2458,6 +2483,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;dmascc: could not find irq of %s at %#3x (irq=%d)&bslash;n&quot;
 comma
 id|hw
@@ -2534,6 +2560,18 @@ suffix:semicolon
 id|priv-&gt;channel
 op_assign
 id|i
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|priv-&gt;ring_lock
+)paren
+suffix:semicolon
+id|priv-&gt;register_lock
+op_assign
+op_amp
+id|info-&gt;register_lock
 suffix:semicolon
 id|priv-&gt;card_base
 op_assign
@@ -2769,6 +2807,7 @@ id|dev
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;dmascc: could not register %s&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2807,6 +2846,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;dmascc: found %s (%s) at %#3x, irq %d&bslash;n&quot;
 comma
 id|hw
@@ -2913,15 +2953,12 @@ r_return
 suffix:semicolon
 r_default
 suffix:colon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+id|priv-&gt;register_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb_p
@@ -2965,9 +3002,11 @@ op_plus
 id|PI_DREQ_MASK
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+id|priv-&gt;register_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3048,15 +3087,12 @@ id|priv-&gt;scc_data
 suffix:semicolon
 r_else
 (brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+id|priv-&gt;register_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb_p
@@ -3087,9 +3123,11 @@ op_plus
 id|PI_DREQ_MASK
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+id|priv-&gt;register_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3174,15 +3212,13 @@ id|priv-&gt;scc_cmd
 suffix:semicolon
 r_default
 suffix:colon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|priv-&gt;register_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb_p
@@ -3226,9 +3262,11 @@ op_plus
 id|PI_DREQ_MASK
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+id|priv-&gt;register_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3284,15 +3322,12 @@ id|priv-&gt;scc_data
 suffix:semicolon
 r_default
 suffix:colon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+id|priv-&gt;register_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb_p
@@ -3323,9 +3358,11 @@ op_plus
 id|PI_DREQ_MASK
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+id|priv-&gt;register_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -4321,15 +4358,13 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* Clear interrupts while we touch our circular buffers */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|priv-&gt;ring_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Move the ring buffer&squot;s head */
@@ -4416,9 +4451,12 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Turn interrupts back on and free buffer */
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|priv-&gt;ring_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -4522,6 +4560,17 @@ op_star
 id|info
 op_assign
 id|dev_id
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+id|info-&gt;priv
+(braket
+l_int|0
+)braket
+dot
+id|register_lock
+)paren
 suffix:semicolon
 multiline_comment|/* At this point interrupts are enabled, and the interrupt under service&n;     is already acknowledged, but masked off.&n;&n;     Interrupt processing: We loop until we know that the IRQ line is&n;     low. If another positive edge occurs afterwards during the ISR,&n;     another interrupt will be triggered by the interrupt controller&n;     as soon as the IRQ level is enabled again (see asm/irq.h).&n;&n;     Bottom-half handlers will be processed after scc_isr(). This is&n;     important, since we only have small ringbuffers and want new data&n;     to be fetched/delivered immediately. */
 r_if
@@ -4639,6 +4688,17 @@ id|z8530_isr
 c_func
 (paren
 id|info
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+id|info-&gt;priv
+(braket
+l_int|0
+)braket
+dot
+id|register_lock
 )paren
 suffix:semicolon
 )brace
@@ -4826,6 +4886,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;dmascc: stuck in ISR with RR3=0x%02x.&bslash;n&quot;
 comma
 id|is
@@ -5272,15 +5333,13 @@ r_char
 op_star
 id|data
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|priv-&gt;ring_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_while
@@ -5289,9 +5348,12 @@ c_loop
 id|priv-&gt;rx_count
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|priv-&gt;ring_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -5399,15 +5461,13 @@ op_add_assign
 id|cb
 suffix:semicolon
 )brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|priv-&gt;ring_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Move tail */
@@ -5427,9 +5487,12 @@ id|priv-&gt;rx_count
 op_decrement
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|priv-&gt;ring_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -6411,15 +6474,12 @@ id|WT_RDY_ENAB
 )paren
 suffix:semicolon
 multiline_comment|/* Write first byte(s) */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+id|priv-&gt;register_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_for
@@ -6458,9 +6518,11 @@ c_func
 id|priv-&gt;param.dma
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+id|priv-&gt;register_lock
+comma
 id|flags
 )paren
 suffix:semicolon

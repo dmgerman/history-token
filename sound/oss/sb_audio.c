@@ -2731,12 +2731,10 @@ id|speed
 OL
 l_int|5000
 )paren
-multiline_comment|/* which of these */
 id|speed
 op_assign
-l_int|4000
+l_int|5000
 suffix:semicolon
-multiline_comment|/* is correct ??? */
 r_if
 c_cond
 (paren

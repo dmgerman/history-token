@@ -183,7 +183,7 @@ r_void
 id|sii_outb
 (paren
 id|u8
-id|addr
+id|value
 comma
 id|u32
 id|port
@@ -192,7 +192,7 @@ id|port
 id|writeb
 c_func
 (paren
-id|addr
+id|value
 comma
 id|port
 )paren
@@ -204,7 +204,7 @@ r_void
 id|sii_outw
 (paren
 id|u16
-id|addr
+id|value
 comma
 id|u32
 id|port
@@ -213,7 +213,7 @@ id|port
 id|writew
 c_func
 (paren
-id|addr
+id|value
 comma
 id|port
 )paren
@@ -267,7 +267,7 @@ r_void
 id|sii_outl
 (paren
 id|u32
-id|addr
+id|value
 comma
 id|u32
 id|port
@@ -276,7 +276,7 @@ id|port
 id|writel
 c_func
 (paren
-id|addr
+id|value
 comma
 id|port
 )paren

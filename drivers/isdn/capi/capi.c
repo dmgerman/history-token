@@ -5955,12 +5955,10 @@ id|drv-&gt;magic
 op_assign
 id|TTY_DRIVER_MAGIC
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &gt; 0x20100)
 id|drv-&gt;driver_name
 op_assign
 l_string|&quot;capi_nc&quot;
 suffix:semicolon
-macro_line|#endif
 id|drv-&gt;name
 op_assign
 l_string|&quot;capi/%d&quot;
@@ -6094,12 +6092,10 @@ id|drv-&gt;hangup
 op_assign
 id|capinc_tty_hangup
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &gt;= 131394) /* Linux 2.1.66 */
 id|drv-&gt;break_ctl
 op_assign
 id|capinc_tty_break_ctl
 suffix:semicolon
-macro_line|#endif
 id|drv-&gt;flush_buffer
 op_assign
 id|capinc_tty_flush_buffer
@@ -6108,7 +6104,6 @@ id|drv-&gt;set_ldisc
 op_assign
 id|capinc_tty_set_ldisc
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &gt;= 131343)
 id|drv-&gt;send_xchar
 op_assign
 id|capinc_tty_send_xchar
@@ -6117,7 +6112,6 @@ id|drv-&gt;read_proc
 op_assign
 id|capinc_tty_read_proc
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

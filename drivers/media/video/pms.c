@@ -134,8 +134,8 @@ op_minus
 l_int|1
 suffix:semicolon
 DECL|function|mvv_write
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|mvv_write
 c_func
@@ -163,8 +163,8 @@ id|io_port
 suffix:semicolon
 )brace
 DECL|function|mvv_read
-r_extern
-id|__inline__
+r_static
+r_inline
 id|u8
 id|mvv_read
 c_func

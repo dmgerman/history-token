@@ -3185,17 +3185,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|nm256_writePort8
-(paren
-id|card
-comma
-l_int|2
-comma
-l_int|0x6cc
-comma
-l_int|0x87
-)paren
-suffix:semicolon
+singleline_comment|//  nm256_writePort8 (card, 2, 0x6cc, 0x87);&t;/* This crashes Dell latitudes */
 id|nm256_writePort8
 (paren
 id|card

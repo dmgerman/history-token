@@ -1028,6 +1028,21 @@ DECL|macro|I810_DRAM_ROW_0
 mdefine_line|#define I810_DRAM_ROW_0&t;&t;0x00000001
 DECL|macro|I810_DRAM_ROW_0_SDRAM
 mdefine_line|#define I810_DRAM_ROW_0_SDRAM&t;0x00000001
+multiline_comment|/* Intel 7505 registers */
+DECL|macro|INTEL_I7505_NAPBASELO
+mdefine_line|#define INTEL_I7505_NAPBASELO&t;0x10
+DECL|macro|INTEL_I7505_APSIZE
+mdefine_line|#define INTEL_I7505_APSIZE&t;0x74
+DECL|macro|INTEL_I7505_NCAPID
+mdefine_line|#define INTEL_I7505_NCAPID&t;0x60
+DECL|macro|INTEL_I7505_NISTAT
+mdefine_line|#define INTEL_I7505_NISTAT&t;0x6c
+DECL|macro|INTEL_I7505_ATTBASE
+mdefine_line|#define INTEL_I7505_ATTBASE&t;0x78
+DECL|macro|INTEL_I7505_ERRSTS
+mdefine_line|#define INTEL_I7505_ERRSTS&t;0x42
+DECL|macro|INTEL_I7505_AGPCTRL
+mdefine_line|#define INTEL_I7505_AGPCTRL&t;0x70
 multiline_comment|/* VIA register */
 DECL|macro|VIA_APBASE
 mdefine_line|#define VIA_APBASE&t;0x10

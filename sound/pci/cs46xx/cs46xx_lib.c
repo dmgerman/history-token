@@ -3820,6 +3820,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
 DECL|function|_cs46xx_adjust_sample_rate
 r_static
 r_int
@@ -3926,12 +3927,6 @@ id|KERN_ERR
 l_string|&quot;cs46xx: failed to re-create virtual PCM channel&bslash;n&quot;
 )paren
 suffix:semicolon
-id|up
-(paren
-op_amp
-id|chip-&gt;spos_mutex
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENXIO
@@ -3959,6 +3954,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|snd_cs46xx_playback_hw_params
 r_static
 r_int
@@ -4073,6 +4069,12 @@ id|sample_rate
 )paren
 )paren
 (brace
+id|up
+(paren
+op_amp
+id|chip-&gt;spos_mutex
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENXIO

@@ -2677,7 +2677,9 @@ id|d-&gt;priv
 suffix:semicolon
 r_int
 id|err
-comma
+suffix:semicolon
+r_int
+r_int
 id|flags
 suffix:semicolon
 r_if
@@ -2986,6 +2988,7 @@ id|chan
 op_assign
 id|d-&gt;priv
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -3380,6 +3383,7 @@ comma
 id|current
 )paren
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -5727,6 +5731,7 @@ op_assign
 id|chan-&gt;cosa
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 macro_line|#ifdef DEBUG_DATA
@@ -5850,9 +5855,8 @@ id|cosa
 )paren
 (brace
 r_int
+r_int
 id|flags
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|status
@@ -6146,6 +6150,7 @@ op_star
 id|cosa
 )paren
 (brace
+r_int
 r_int
 id|flags
 comma

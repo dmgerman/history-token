@@ -25,6 +25,14 @@ id|ioapic_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+multiline_comment|/*&n; *&t;Is the SiS APIC rmw bug present ?&n; *&t;-1 = dont know, 0 = no, 1 = yes&n; */
+DECL|variable|sis_apic_bug
+r_int
+id|sis_apic_bug
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n; * # of IRQ routing registers&n; */
 DECL|variable|nr_ioapic_registers
 r_int
@@ -227,7 +235,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|__DO_ACTION
-mdefine_line|#define __DO_ACTION(R, ACTION, FINAL)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int pin;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct irq_pin_list *entry = irq_2_pin + irq;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (;;) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int reg;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;pin = entry-&gt;pin;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (pin == -1)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;reg = io_apic_read(entry-&gt;apic, 0x10 + R + pin*2);&t;&bslash;&n;&t;&t;reg ACTION;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;io_apic_modify(entry-&gt;apic, reg);&t;&t;&t;&bslash;&n;&t;&t;if (!entry-&gt;next)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;entry = irq_2_pin + entry-&gt;next;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;FINAL;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define __DO_ACTION(R, ACTION, FINAL)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int pin;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct irq_pin_list *entry = irq_2_pin + irq;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (;;) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int reg;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;pin = entry-&gt;pin;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (pin == -1)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;reg = io_apic_read(entry-&gt;apic, 0x10 + R + pin*2);&t;&bslash;&n;&t;&t;reg ACTION;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;io_apic_modify(entry-&gt;apic, 0x10 + R + pin*2, reg);&t;&bslash;&n;&t;&t;if (!entry-&gt;next)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;entry = irq_2_pin + entry-&gt;next;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;FINAL;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|DO_ACTION
 mdefine_line|#define DO_ACTION(name,R,ACTION, FINAL)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;static void name##_IO_APIC_irq (unsigned int irq)&t;&t;&bslash;&n;&t;__DO_ACTION(R, ACTION, FINAL)
 id|DO_ACTION
@@ -7091,6 +7099,39 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; *&t;Called after all the initialization is done. If we didnt find any&n; *&t;APIC bugs then we can allow the modify fast path&n; */
+DECL|function|io_apic_bug_finalize
+r_static
+r_void
+id|__init
+id|io_apic_bug_finalize
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|sis_apic_bug
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+id|sis_apic_bug
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+DECL|variable|io_apic_bug_finalize
+id|late_initcall
+c_func
+(paren
+id|io_apic_bug_finalize
+)paren
+suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                          ACPI-based IOAPIC Configuration&n;   -------------------------------------------------------------------------- */
 macro_line|#ifdef CONFIG_ACPI_BOOT
 DECL|macro|IO_APIC_MAX_ID

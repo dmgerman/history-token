@@ -10218,10 +10218,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* qic02_tape_init */
-macro_line|#ifdef MODULE
-DECL|function|cleanup_module
+DECL|function|qic02_module_exit
+r_static
 r_void
-id|cleanup_module
+id|qic02_module_exit
 c_func
 (paren
 r_void
@@ -10296,9 +10296,10 @@ l_string|&quot;tpqic150&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|init_module
+DECL|function|qic02_module_init
+r_static
 r_int
-id|init_module
+id|qic02_module_init
 c_func
 (paren
 r_void
@@ -10339,7 +10340,7 @@ c_cond
 id|retval
 )paren
 (brace
-id|cleanup_module
+id|qic02_module_exit
 c_func
 (paren
 )paren
@@ -10351,11 +10352,24 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-macro_line|#endif
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|qic02_module_init
+id|module_init
+c_func
+(paren
+id|qic02_module_init
+)paren
+suffix:semicolon
+DECL|variable|qic02_module_exit
+id|module_exit
+c_func
+(paren
+id|qic02_module_exit
 )paren
 suffix:semicolon
 eof

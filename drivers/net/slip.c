@@ -807,6 +807,7 @@ id|sl-&gt;mtu
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: unable to grow slip buffers, MTU change cancelled.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1144,6 +1145,7 @@ id|SL_MODE_CSLIP
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: compressed packet ignored&bslash;n&quot;
 comma
 id|sl-&gt;dev-&gt;name
@@ -1226,6 +1228,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: header compression turned on&bslash;n&quot;
 comma
 id|sl-&gt;dev-&gt;name
@@ -1284,6 +1287,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: memory squeeze, dropping packet.&bslash;n&quot;
 comma
 id|sl-&gt;dev-&gt;name
@@ -1382,7 +1386,9 @@ id|sl-&gt;mtu
 (brace
 multiline_comment|/* Sigh, shouldn&squot;t occur BUT ... */
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: truncating oversized transmit packet!&bslash;n&quot;
 comma
 id|sl-&gt;dev-&gt;name
@@ -1738,6 +1744,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: transmit timed out, %s?&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1851,6 +1858,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: xmit call when iface is down&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5090,6 +5098,7 @@ macro_line|#if defined(SL_INCLUDE_CSLIP) &amp;&amp; !defined(MODULE)
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;CSLIP: code copyright 1989 Regents of the University of California.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5135,6 +5144,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;SLIP: Can&squot;t allocate slip_ctrls[] array!  Uaargh! (-&gt; No SLIP available)&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5267,6 +5277,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;SLIP: can&squot;t register line discipline (err = %d)&bslash;n&quot;
 comma
 id|status
@@ -5482,6 +5493,7 @@ id|slc-&gt;ctrl.tty
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: tty discipline is still running&bslash;n&quot;
 comma
 id|slc-&gt;dev.name
@@ -5556,6 +5568,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;SLIP: can&squot;t unregister line discipline (err = %d)&bslash;n&quot;
 comma
 id|i
@@ -5795,6 +5808,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: no packets received during keepalive timeout, hangup.&bslash;n&quot;
 comma
 id|sl-&gt;dev-&gt;name

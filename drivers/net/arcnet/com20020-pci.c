@@ -280,7 +280,7 @@ id|node
 suffix:semicolon
 id|lp-&gt;card_name
 op_assign
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 suffix:semicolon
 id|lp-&gt;card_flags
 op_assign

@@ -1397,23 +1397,13 @@ id|icnt
 op_assign
 l_int|5
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cs
-)paren
-(brace
-id|printk
+id|spin_lock
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;Elsa: Spurious interrupt!&bslash;n&quot;
+op_amp
+id|cs-&gt;lock
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1439,7 +1429,8 @@ id|KERN_WARNING
 l_string|&quot;Elsa: card not available!&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|unlock
 suffix:semicolon
 )brace
 macro_line|#if ARCOFI_USE
@@ -1827,6 +1818,15 @@ comma
 id|ISAC_MASK
 comma
 l_int|0x0
+)paren
+suffix:semicolon
+id|unlock
+suffix:colon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|cs-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -3535,14 +3535,6 @@ id|cs-&gt;debug
 op_or_assign
 id|L1_DEB_IPAC
 suffix:semicolon
-id|inithscxisac
-c_func
-(paren
-id|cs
-comma
-l_int|1
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3585,8 +3577,6 @@ id|inithscxisac
 c_func
 (paren
 id|cs
-comma
-l_int|2
 )paren
 suffix:semicolon
 r_return

@@ -1,4 +1,4 @@
-multiline_comment|/* &n;    Alps BSRU6 DVB QPSK frontend driver&n;&n;    Copyright (C) 2001-2002 Convergence Integrated Media GmbH&n;&t;&lt;ralph@convergence.de&gt;, &lt;holger@convergence.de&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
+multiline_comment|/* &n;    Alps BSRU6 and LG TDQB-S00x DVB QPSK frontend driver&n;&n;    Copyright (C) 2001-2002 Convergence Integrated Media GmbH&n;&t;&lt;ralph@convergence.de&gt;, &lt;holger@convergence.de&gt;,&n;&t;&lt;js@convergence.de&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;compat.h&quot;
@@ -22,10 +22,17 @@ id|dvb_frontend_info
 id|bsru6_info
 op_assign
 (brace
+macro_line|#ifdef CONFIG_ALPS_BSRU6_IS_LG_TDQBS00X
+id|name
+suffix:colon
+l_string|&quot;LG TDQB-S00x&quot;
+comma
+macro_line|#else
 id|name
 suffix:colon
 l_string|&quot;Alps BSRU6&quot;
 comma
+macro_line|#endif
 id|type
 suffix:colon
 id|FE_QPSK
@@ -125,9 +132,10 @@ comma
 l_int|0x00
 comma
 singleline_comment|// DAC LSB
+singleline_comment|//&t;0x08, 0x43,   // DiSEqC
 l_int|0x08
 comma
-l_int|0x43
+l_int|0x03
 comma
 singleline_comment|// DiSEqC
 l_int|0x09
@@ -190,7 +198,7 @@ l_int|0x1d
 comma
 l_int|0x17
 comma
-l_int|0x0
+l_int|0x00
 comma
 l_int|0x18
 comma
@@ -210,15 +218,27 @@ l_int|0x9c
 comma
 l_int|0x1c
 comma
-l_int|0x0
+l_int|0x00
 comma
 l_int|0x1d
 comma
-l_int|0x0
+l_int|0x00
 comma
 l_int|0x1e
 comma
-l_int|0xb
+l_int|0x0b
+comma
+l_int|0x1f
+comma
+l_int|0x50
+comma
+l_int|0x20
+comma
+l_int|0x00
+comma
+l_int|0x21
+comma
+l_int|0x00
 comma
 l_int|0x22
 comma
@@ -1028,7 +1048,7 @@ id|dvb_i2c_bus
 op_star
 id|i2c
 comma
-r_int
+id|fe_spectral_inversion_t
 id|inversion
 )paren
 (brace
@@ -1042,6 +1062,77 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ALPS_BSRU6_IS_LG_TDQBS00X    /*  reversed I/Q pins  */
+r_switch
+c_cond
+(paren
+id|inversion
+)paren
+(brace
+r_case
+id|INVERSION_AUTO
+suffix:colon
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+r_case
+id|INVERSION_OFF
+suffix:colon
+id|val
+op_assign
+id|stv0299_readreg
+(paren
+id|i2c
+comma
+l_int|0x0c
+)paren
+suffix:semicolon
+r_return
+id|stv0299_writereg
+(paren
+id|i2c
+comma
+l_int|0x0c
+comma
+id|val
+op_amp
+l_int|0xfe
+)paren
+suffix:semicolon
+r_case
+id|INVERSION_ON
+suffix:colon
+id|val
+op_assign
+id|stv0299_readreg
+(paren
+id|i2c
+comma
+l_int|0x0c
+)paren
+suffix:semicolon
+r_return
+id|stv0299_writereg
+(paren
+id|i2c
+comma
+l_int|0x0c
+comma
+id|val
+op_or
+l_int|0x01
+)paren
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#else
 r_switch
 c_cond
 (paren
@@ -1110,6 +1201,8 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+suffix:semicolon
+macro_line|#endif
 )brace
 r_static
 DECL|function|stv0299_set_FEC
@@ -1225,9 +1318,9 @@ suffix:semicolon
 )brace
 )brace
 r_static
-DECL|function|stv0299_get_FEC
+DECL|function|stv0299_get_fec
 id|fe_code_rate_t
-id|stv0299_get_FEC
+id|stv0299_get_fec
 (paren
 r_struct
 id|dvb_i2c_bus
@@ -1482,6 +1575,22 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|stv0299_wait_diseqc_idle
+(paren
+id|i2c
+comma
+l_int|100
+)paren
+OL
+l_int|0
+)paren
+r_return
+op_minus
+id|ETIMEDOUT
+suffix:semicolon
 id|val
 op_assign
 id|stv0299_readreg
@@ -1566,11 +1675,10 @@ op_minus
 id|EREMOTEIO
 suffix:semicolon
 )brace
-multiline_comment|/* Shouldn&squot;t we wait for idle state (FE=1, FF=0) here to &n;&t;   make certain all bytes have been sent ? &n;&t;   Hmm, actually we should do that before all mode changes too ...&n;&t;   if (stv0299_wait_diseqc_idle (i2c, 100) &lt; 0) */
 r_if
 c_cond
 (paren
-id|stv0299_wait_diseqc_fifo
+id|stv0299_wait_diseqc_idle
 (paren
 id|i2c
 comma
@@ -1611,19 +1719,10 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|val
-op_assign
-id|stv0299_readreg
-(paren
-id|i2c
-comma
-l_int|0x08
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|stv0299_wait_diseqc_fifo
+id|stv0299_wait_diseqc_idle
 (paren
 id|i2c
 comma
@@ -1635,6 +1734,15 @@ l_int|0
 r_return
 op_minus
 id|ETIMEDOUT
+suffix:semicolon
+id|val
+op_assign
+id|stv0299_readreg
+(paren
+id|i2c
+comma
+l_int|0x08
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1686,7 +1794,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|stv0299_wait_diseqc_fifo
+id|stv0299_wait_diseqc_idle
 (paren
 id|i2c
 comma
@@ -1742,6 +1850,22 @@ l_string|&quot;%s&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stv0299_wait_diseqc_idle
+(paren
+id|i2c
+comma
+l_int|100
+)paren
+OL
+l_int|0
+)paren
+r_return
+op_minus
+id|ETIMEDOUT
 suffix:semicolon
 id|val
 op_assign
@@ -1914,13 +2038,6 @@ comma
 id|bclk
 op_assign
 l_int|0x51
-suffix:semicolon
-id|dprintk
-(paren
-l_string|&quot;%s&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2818,7 +2935,7 @@ id|INVERSION_ON
 suffix:semicolon
 id|p-&gt;u.qpsk.fec_inner
 op_assign
-id|stv0299_get_FEC
+id|stv0299_get_fec
 (paren
 id|i2c
 )paren
@@ -3128,7 +3245,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;BSRU6 DVB Frontend driver&quot;
+l_string|&quot;Alps BSRU6/LG TDQB-S00x DVB Frontend driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
