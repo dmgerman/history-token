@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/xics.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
+macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &quot;i8259.h&quot;
 r_void
 id|xics_enable_irq
