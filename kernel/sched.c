@@ -5211,6 +5211,7 @@ id|busiest
 r_goto
 id|out_balanced
 suffix:semicolon
+multiline_comment|/*&n;&t; * This should be &quot;impossible&quot;, but since load&n;&t; * balancing is inherently racy and statistical,&n;&t; * it could happen in theory.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5774,12 +5775,17 @@ c_func
 id|push_cpu
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * This condition is &quot;impossible&quot;, but since load&n;&t;&t; * balancing is inherently a bit racy and statistical,&n;&t;&t; * it can trigger.. Reported by Bjorn Helgaas on a&n;&t;&t; * 128-cpu setup.&n;&t;&t; */
 r_if
 c_cond
+(paren
+id|unlikely
+c_func
 (paren
 id|busiest
 op_eq
 id|rq
+)paren
 )paren
 r_goto
 id|next_group
