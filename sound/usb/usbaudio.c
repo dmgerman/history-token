@@ -5508,7 +5508,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_WARNING
 l_string|&quot;%d:%d:%d: cannot get freq at ep 0x%x&bslash;n&quot;
 comma
 id|dev-&gt;devnum
@@ -5521,8 +5521,9 @@ id|ep
 )paren
 suffix:semicolon
 r_return
-id|err
+l_int|0
 suffix:semicolon
+multiline_comment|/* some devices don&squot;t support reading */
 )brace
 id|crate
 op_assign
