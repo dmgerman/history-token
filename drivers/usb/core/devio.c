@@ -65,6 +65,33 @@ id|urb
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|variable|usbfs_snoop
+r_static
+r_int
+id|usbfs_snoop
+op_assign
+l_int|0
+suffix:semicolon
+id|module_param
+(paren
+id|usbfs_snoop
+comma
+r_bool
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|usbfs_snoop
+comma
+l_string|&quot;true to log all usbfs traffic&quot;
+)paren
+suffix:semicolon
+DECL|macro|snoop
+mdefine_line|#define snoop(dev, format, arg...)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (usbfs_snoop)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;dev_info( dev , format , ## arg);&t;&bslash;&n;&t;} while (0)
 DECL|function|connected
 r_static
 r_inline
@@ -1754,10 +1781,12 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* if not yet claimed, claim it for the driver */
-id|printk
+id|dev_warn
 c_func
 (paren
-id|KERN_WARNING
+op_amp
+id|ps-&gt;dev-&gt;dev
+comma
 l_string|&quot;usbfs: process %d (%s) did not claim interface %u before use&bslash;n&quot;
 comma
 id|current-&gt;pid
@@ -2395,6 +2424,8 @@ suffix:semicolon
 r_int
 id|i
 comma
+id|j
+comma
 id|ret
 suffix:semicolon
 r_if
@@ -2524,6 +2555,23 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|snoop
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;control read: bRequest=%02x bRrequestType=%02x wValue=%04x wIndex=%04x&bslash;n&quot;
+comma
+id|ctrl.bRequest
+comma
+id|ctrl.bRequestType
+comma
+id|ctrl.wValue
+comma
+id|ctrl.wIndex
+)paren
+suffix:semicolon
 id|i
 op_assign
 id|usb_control_msg
@@ -2566,6 +2614,62 @@ op_logical_and
 id|ctrl.wLength
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|usbfs_snoop
+)paren
+(brace
+id|dev_info
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;control read: data &quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|j
+op_assign
+l_int|0
+suffix:semicolon
+id|j
+OL
+id|ctrl.wLength
+suffix:semicolon
+op_increment
+id|j
+)paren
+id|printk
+(paren
+l_string|&quot;%02x &quot;
+comma
+(paren
+r_int
+r_char
+)paren
+(paren
+(paren
+r_char
+op_star
+)paren
+id|ctrl.data
+)paren
+(braket
+id|j
+)braket
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2635,6 +2739,79 @@ id|EFAULT
 suffix:semicolon
 )brace
 )brace
+id|snoop
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;control write: bRequest=%02x bRrequestType=%02x wValue=%04x wIndex=%04x&bslash;n&quot;
+comma
+id|ctrl.bRequest
+comma
+id|ctrl.bRequestType
+comma
+id|ctrl.wValue
+comma
+id|ctrl.wIndex
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|usbfs_snoop
+)paren
+(brace
+id|dev_info
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;control write: data: &quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|j
+op_assign
+l_int|0
+suffix:semicolon
+id|j
+OL
+id|ctrl.wLength
+suffix:semicolon
+op_increment
+id|j
+)paren
+id|printk
+(paren
+l_string|&quot;%02x &quot;
+comma
+(paren
+r_int
+r_char
+)paren
+(paren
+(paren
+r_char
+op_star
+)paren
+id|ctrl.data
+)paren
+(braket
+id|j
+)braket
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 id|i
 op_assign
 id|usb_control_msg
@@ -2684,16 +2861,18 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|dev_printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;usbfs: USBDEVFS_CONTROL failed &quot;
-l_string|&quot;cmd %s dev %d rqt %u rq %u len %u ret %d&bslash;n&quot;
+comma
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;usbfs: USBDEVFS_CONTROL &quot;
+l_string|&quot;failed cmd %s rqt %u rq %u len %u ret %d&bslash;n&quot;
 comma
 id|current-&gt;comm
-comma
-id|dev-&gt;devnum
 comma
 id|ctrl.bRequestType
 comma
@@ -3067,13 +3246,14 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|dev_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;usbfs: USBDEVFS_BULK failed dev %d ep 0x%x len %u ret %d&bslash;n&quot;
+op_amp
+id|dev-&gt;dev
 comma
-id|dev-&gt;devnum
+l_string|&quot;usbfs: USBDEVFS_BULK failed &quot;
+l_string|&quot;ep 0x%x len %u ret %d&bslash;n&quot;
 comma
 id|bulk.ep
 comma
@@ -4866,10 +5046,14 @@ id|GFP_KERNEL
 )paren
 )paren
 (brace
-id|printk
+id|dev_printk
 c_func
 (paren
 id|KERN_DEBUG
+comma
+op_amp
+id|ps-&gt;dev-&gt;dev
+comma
 l_string|&quot;usbfs: usb_submit_urb returned %d&bslash;n&quot;
 comma
 id|ret
@@ -6205,6 +6389,17 @@ id|cmd
 r_case
 id|USBDEVFS_CONTROL
 suffix:colon
+id|snoop
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;%s: CONTROL&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|proc_control
@@ -6236,6 +6431,17 @@ suffix:semicolon
 r_case
 id|USBDEVFS_BULK
 suffix:colon
+id|snoop
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;%s: BULK&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|proc_bulk
@@ -6267,6 +6473,17 @@ suffix:semicolon
 r_case
 id|USBDEVFS_RESETEP
 suffix:colon
+id|snoop
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;%s: RESETEP&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|proc_resetep
@@ -6298,6 +6515,17 @@ suffix:semicolon
 r_case
 id|USBDEVFS_RESET
 suffix:colon
+id|snoop
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;%s: RESET&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|proc_resetdevice
@@ -6311,6 +6539,17 @@ suffix:semicolon
 r_case
 id|USBDEVFS_CLEAR_HALT
 suffix:colon
+id|snoop
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;%s: CLEAR_HALT&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|proc_clearhalt
@@ -6342,6 +6581,17 @@ suffix:semicolon
 r_case
 id|USBDEVFS_GETDRIVER
 suffix:colon
+id|snoop
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;%s: GETDRIVER&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|proc_getdriver
@@ -6362,6 +6612,17 @@ suffix:semicolon
 r_case
 id|USBDEVFS_CONNECTINFO
 suffix:colon
+id|snoop
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;%s: CONNECTINFO&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|proc_connectinfo
@@ -6382,6 +6643,17 @@ suffix:semicolon
 r_case
 id|USBDEVFS_SETINTERFACE
 suffix:colon
+id|snoop
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;%s: SETINTERFACE&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|proc_setintf
@@ -6402,6 +6674,17 @@ suffix:semicolon
 r_case
 id|USBDEVFS_SETCONFIGURATION
 suffix:colon
+id|snoop
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;%s: SETCONFIGURATION&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|proc_setconfig
@@ -6422,6 +6705,17 @@ suffix:semicolon
 r_case
 id|USBDEVFS_SUBMITURB
 suffix:colon
+id|snoop
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;%s: SUBMITURB&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|proc_submiturb
@@ -6453,6 +6747,17 @@ suffix:semicolon
 r_case
 id|USBDEVFS_DISCARDURB
 suffix:colon
+id|snoop
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;%s: DISCARDURB&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|proc_unlinkurb
@@ -6473,6 +6778,17 @@ suffix:semicolon
 r_case
 id|USBDEVFS_REAPURB
 suffix:colon
+id|snoop
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;%s: REAPURB&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|proc_reapurb
@@ -6493,6 +6809,17 @@ suffix:semicolon
 r_case
 id|USBDEVFS_REAPURBNDELAY
 suffix:colon
+id|snoop
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;%s: REAPURBDELAY&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|proc_reapurbnonblock
@@ -6513,6 +6840,17 @@ suffix:semicolon
 r_case
 id|USBDEVFS_DISCSIGNAL
 suffix:colon
+id|snoop
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;%s: DISCSIGNAL&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|proc_disconnectsignal
@@ -6533,6 +6871,17 @@ suffix:semicolon
 r_case
 id|USBDEVFS_CLAIMINTERFACE
 suffix:colon
+id|snoop
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;%s: CLAIMINTERFACE&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|proc_claiminterface
@@ -6553,6 +6902,17 @@ suffix:semicolon
 r_case
 id|USBDEVFS_RELEASEINTERFACE
 suffix:colon
+id|snoop
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;%s: RELEASEINTERFACE&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|proc_releaseinterface
@@ -6573,6 +6933,17 @@ suffix:semicolon
 r_case
 id|USBDEVFS_IOCTL
 suffix:colon
+id|snoop
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;%s: IOCTL&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|proc_ioctl
