@@ -1912,7 +1912,7 @@ c_cond
 (paren
 id|cmd
 op_amp
-id|IOC_IN
+id|SIOC_IN
 )paren
 (brace
 r_if
@@ -1984,7 +1984,7 @@ c_cond
 (paren
 id|cmd
 op_amp
-id|IOC_OUT
+id|SIOC_OUT
 )paren
 (brace
 id|tmp
