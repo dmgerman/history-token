@@ -243,22 +243,6 @@ id|inode
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|init_ext2_acl
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|exit_ext2_acl
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#else
 macro_line|#include &lt;linux/sched.h&gt;
 DECL|macro|ext2_permission
