@@ -438,7 +438,7 @@ mdefine_line|#define IGMPV3_EXP(thresh, nbmant, nbexp, value) &bslash;&n;&t;((va
 DECL|macro|IGMPV3_QQIC
 mdefine_line|#define IGMPV3_QQIC(value) IGMPV3_EXP(0x80, 4, 3, value)
 DECL|macro|IGMPV3_MRC
-mdefine_line|#define IGMPV3_MRC(value) IGMPV3_EXP(0x8000, 12, 3, value)
+mdefine_line|#define IGMPV3_MRC(value) IGMPV3_EXP(0x80, 4, 3, value)
 r_extern
 r_int
 id|ip_check_mc
@@ -532,6 +532,9 @@ r_struct
 id|ip_mreq_source
 op_star
 id|mreqs
+comma
+r_int
+id|ifindex
 )paren
 suffix:semicolon
 r_extern
@@ -548,6 +551,9 @@ r_struct
 id|ip_msfilter
 op_star
 id|msf
+comma
+r_int
+id|ifindex
 )paren
 suffix:semicolon
 r_extern
@@ -567,6 +573,31 @@ id|msf
 comma
 r_struct
 id|ip_msfilter
+op_star
+id|optval
+comma
+r_int
+op_star
+id|optlen
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ip_mc_gsfget
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_struct
+id|group_filter
+op_star
+id|gsf
+comma
+r_struct
+id|group_filter
 op_star
 id|optval
 comma
