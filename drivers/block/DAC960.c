@@ -19983,7 +19983,7 @@ c_cond
 (paren
 id|Controller-&gt;GenericDiskInfo.sizes
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|Inode-&gt;i_rdev

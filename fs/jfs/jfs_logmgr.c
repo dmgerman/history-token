@@ -4425,7 +4425,7 @@ id|bpsuper-&gt;l_ldata
 suffix:semicolon
 id|bit
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|fsdev

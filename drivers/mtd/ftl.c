@@ -402,8 +402,8 @@ r_int
 id|ftl_reread_partitions
 c_func
 (paren
-r_int
-id|minor
+id|kdev_t
+id|dev
 )paren
 suffix:semicolon
 r_static
@@ -3401,7 +3401,7 @@ id|file
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -3558,7 +3558,7 @@ id|file
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -4752,7 +4752,7 @@ l_int|0
 comma
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -4955,7 +4955,7 @@ op_assign
 id|ftl_reread_partitions
 c_func
 (paren
-id|minor
+id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
 r_break
@@ -5010,7 +5010,7 @@ id|dev
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -5136,7 +5136,7 @@ id|INIT_REQUEST
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
