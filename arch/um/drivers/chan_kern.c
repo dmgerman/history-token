@@ -2040,7 +2040,6 @@ id|chan_table
 )braket
 op_assign
 (brace
-macro_line|#ifdef CONFIG_FD_CHAN
 (brace
 l_string|&quot;fd&quot;
 comma
@@ -2048,15 +2047,6 @@ op_amp
 id|fd_ops
 )brace
 comma
-macro_line|#else
-(brace
-l_string|&quot;fd&quot;
-comma
-op_amp
-id|not_configged_ops
-)brace
-comma
-macro_line|#endif
 macro_line|#ifdef CONFIG_NULL_CHAN
 (brace
 l_string|&quot;null&quot;
