@@ -2293,8 +2293,9 @@ r_int
 id|base
 suffix:semicolon
 DECL|member|remap_addr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|remap_addr
 suffix:semicolon
 DECL|member|size

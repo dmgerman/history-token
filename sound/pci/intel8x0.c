@@ -1147,8 +1147,9 @@ r_int
 id|addr
 suffix:semicolon
 DECL|member|remap_addr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|remap_addr
 suffix:semicolon
 DECL|member|bm_mmio
@@ -1162,8 +1163,9 @@ r_int
 id|bmaddr
 suffix:semicolon
 DECL|member|remap_bmaddr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|remap_bmaddr
 suffix:semicolon
 DECL|member|pci
@@ -10949,10 +10951,6 @@ id|chip-&gt;remap_addr
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|chip-&gt;remap_addr
 )paren
 suffix:semicolon
@@ -10964,10 +10962,6 @@ id|chip-&gt;remap_bmaddr
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|chip-&gt;remap_bmaddr
 )paren
 suffix:semicolon
@@ -12458,10 +12452,6 @@ l_int|2
 suffix:semicolon
 id|chip-&gt;remap_addr
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -12481,7 +12471,7 @@ c_cond
 (paren
 id|chip-&gt;remap_addr
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|snd_printk
@@ -12546,10 +12536,6 @@ l_int|3
 suffix:semicolon
 id|chip-&gt;remap_bmaddr
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -12569,7 +12555,7 @@ c_cond
 (paren
 id|chip-&gt;remap_bmaddr
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|snd_printk

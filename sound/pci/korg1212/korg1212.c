@@ -811,8 +811,9 @@ r_int
 id|inIRQ
 suffix:semicolon
 DECL|member|iobase
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|iobase
 suffix:semicolon
 DECL|member|dma_dsp
@@ -885,60 +886,70 @@ id|AdatTimeCodePhy
 suffix:semicolon
 DECL|member|statusRegPtr
 id|u32
+id|__iomem
 op_star
 id|statusRegPtr
 suffix:semicolon
 singleline_comment|// address of the interrupt status/control register
 DECL|member|outDoorbellPtr
 id|u32
+id|__iomem
 op_star
 id|outDoorbellPtr
 suffix:semicolon
 singleline_comment|// address of the host-&gt;card doorbell register
 DECL|member|inDoorbellPtr
 id|u32
+id|__iomem
 op_star
 id|inDoorbellPtr
 suffix:semicolon
 singleline_comment|// address of the card-&gt;host doorbell register
 DECL|member|mailbox0Ptr
 id|u32
+id|__iomem
 op_star
 id|mailbox0Ptr
 suffix:semicolon
 singleline_comment|// address of mailbox 0 on the card
 DECL|member|mailbox1Ptr
 id|u32
+id|__iomem
 op_star
 id|mailbox1Ptr
 suffix:semicolon
 singleline_comment|// address of mailbox 1 on the card
 DECL|member|mailbox2Ptr
 id|u32
+id|__iomem
 op_star
 id|mailbox2Ptr
 suffix:semicolon
 singleline_comment|// address of mailbox 2 on the card
 DECL|member|mailbox3Ptr
 id|u32
+id|__iomem
 op_star
 id|mailbox3Ptr
 suffix:semicolon
 singleline_comment|// address of mailbox 3 on the card
 DECL|member|controlRegPtr
 id|u32
+id|__iomem
 op_star
 id|controlRegPtr
 suffix:semicolon
 singleline_comment|// address of the EEPROM, PCI, I/O, Init ctrl reg
 DECL|member|sensRegPtr
 id|u16
+id|__iomem
 op_star
 id|sensRegPtr
 suffix:semicolon
 singleline_comment|// address of the sensitivity setting register
 DECL|member|idRegPtr
 id|u32
+id|__iomem
 op_star
 id|idRegPtr
 suffix:semicolon
@@ -2696,9 +2707,9 @@ op_star
 id|korg1212
 )paren
 (brace
-op_star
-id|korg1212-&gt;statusRegPtr
-op_assign
+id|writel
+c_func
+(paren
 id|PCI_INT_ENABLE_BIT
 op_or
 id|PCI_DOORBELL_INT_ENABLE_BIT
@@ -2708,6 +2719,9 @@ op_or
 id|LOCAL_DOORBELL_INT_ENABLE_BIT
 op_or
 id|LOCAL_DMA1_INT_ENABLE_BIT
+comma
+id|korg1212-&gt;statusRegPtr
+)paren
 suffix:semicolon
 )brace
 macro_line|#if 0 /* not used */
@@ -3123,10 +3137,13 @@ op_star
 id|korg1212
 )paren
 (brace
-op_star
-id|korg1212-&gt;statusRegPtr
-op_assign
+id|writel
+c_func
+(paren
 l_int|0
+comma
+id|korg1212-&gt;statusRegPtr
+)paren
 suffix:semicolon
 )brace
 DECL|function|snd_korg1212_WriteADCSensitivity
@@ -8359,22 +8376,18 @@ c_cond
 (paren
 id|korg1212-&gt;iobase
 op_ne
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|korg1212-&gt;iobase
 )paren
 suffix:semicolon
 id|korg1212-&gt;iobase
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|pci_release_regions
@@ -8870,10 +8883,6 @@ c_cond
 (paren
 id|korg1212-&gt;iobase
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -8883,7 +8892,7 @@ id|iomem_size
 )paren
 )paren
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|snd_printk
@@ -8892,9 +8901,9 @@ c_func
 id|KERN_ERR
 l_string|&quot;unable to remap memory region 0x%lx-0x%lx&bslash;n&quot;
 comma
-id|korg1212-&gt;iobase
+id|korg1212-&gt;iomem
 comma
-id|korg1212-&gt;iobase
+id|korg1212-&gt;iomem
 op_plus
 id|iomem_size
 op_minus
@@ -8962,6 +8971,7 @@ id|korg1212-&gt;statusRegPtr
 op_assign
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 (paren
@@ -8974,6 +8984,7 @@ id|korg1212-&gt;outDoorbellPtr
 op_assign
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 (paren
@@ -8986,6 +8997,7 @@ id|korg1212-&gt;inDoorbellPtr
 op_assign
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 (paren
@@ -8998,6 +9010,7 @@ id|korg1212-&gt;mailbox0Ptr
 op_assign
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 (paren
@@ -9010,6 +9023,7 @@ id|korg1212-&gt;mailbox1Ptr
 op_assign
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 (paren
@@ -9022,6 +9036,7 @@ id|korg1212-&gt;mailbox2Ptr
 op_assign
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 (paren
@@ -9034,6 +9049,7 @@ id|korg1212-&gt;mailbox3Ptr
 op_assign
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 (paren
@@ -9046,6 +9062,7 @@ id|korg1212-&gt;controlRegPtr
 op_assign
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 (paren
@@ -9058,6 +9075,7 @@ id|korg1212-&gt;sensRegPtr
 op_assign
 (paren
 id|u16
+id|__iomem
 op_star
 )paren
 (paren
@@ -9070,6 +9088,7 @@ id|korg1212-&gt;idRegPtr
 op_assign
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 (paren

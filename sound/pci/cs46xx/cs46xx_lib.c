@@ -819,8 +819,9 @@ r_int
 id|len
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|dst
 suffix:semicolon
 r_int
@@ -935,8 +936,9 @@ r_int
 id|len
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|dst
 suffix:semicolon
 r_int
@@ -12344,10 +12346,6 @@ id|region-&gt;remap_addr
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|region-&gt;remap_addr
 )paren
 suffix:semicolon
@@ -15814,10 +15812,6 @@ suffix:semicolon
 )brace
 id|region-&gt;remap_addr
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -15831,7 +15825,7 @@ c_cond
 (paren
 id|region-&gt;remap_addr
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|snd_printk
