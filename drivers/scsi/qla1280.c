@@ -110,7 +110,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef QLA_64BIT_PTR
 DECL|macro|pci_dma_hi32
-mdefine_line|#define pci_dma_hi32(a)&t;&t;&t;(a &gt;&gt; 32)
+mdefine_line|#define pci_dma_hi32(a)&t;&t;&t;((a &gt;&gt; 16) &gt;&gt; 16)
 macro_line|#else
 DECL|macro|pci_dma_hi32
 mdefine_line|#define pci_dma_hi32(a)&t;&t;&t;0
@@ -2645,27 +2645,6 @@ id|qla1280
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;scsi: PCI not present&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|bdp
 op_assign
 op_amp
