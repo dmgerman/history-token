@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/syslib/todc_time.c&n; *&n; * Time of Day Clock support for the M48T35, M48T37, M48T59, and MC146818&n; * Real Time Clocks/Timekeepers.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/syslib/todc_time.c&n; *&n; * Time of Day Clock support for the M48T35, M48T37, M48T59, and MC146818&n; * Real Time Clocks/Timekeepers.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * 2001-2004 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -9,7 +9,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
-multiline_comment|/*&n; * Depending on the hardware on your board and your board design, the&n; * RTC/NVRAM may be accessed either directly (like normal memory) or via&n; * address/data registers.  If your board uses the direct method, set&n; * &squot;nvram_data&squot; to the base address of your nvram and leave &squot;nvram_as0&squot; and&n; * &squot;nvram_as1&squot; NULL.  If your board uses address/data regs to access nvram,&n; * set &squot;nvram_as0&squot; to the address of the lower byte, set &squot;nvram_as1&squot; to the&n; * address of the upper byte (leave NULL if using mv146818), and set&n; * &squot;nvram_data&squot; to the address of the 8-bit data register.&n; *&n; * You also need to set &squot;ppc_md.nvram_read_val&squot; and &squot;ppc_md.nvram_write_val&squot; to&n; * the proper routines.  There are standard ones defined further down in&n; * this file that you can use.&n; *&n; * There is a built in assumption that the RTC and NVRAM are accessed by the&n; * same mechanism (i.e., ppc_md.nvram_read_val, etc works for both).&n; *&n; * Note: Even though the documentation for the various RTC chips say that it&n; * &t; take up to a second before it starts updating once the &squot;R&squot; bit is&n; * &t; cleared, they always seem to update even though we bang on it many&n; * &t; times a second.  This is true, except for the Dallas Semi 1746/1747&n; * &t; (possibly others).  Those chips seem to have a real problem whenever&n; * &t; we set the &squot;R&squot; bit before reading them, they basically stop counting.&n; * &t; &t;&t;&t;&t;&t;--MAG&n; */
+multiline_comment|/*&n; * Depending on the hardware on your board and your board design, the&n; * RTC/NVRAM may be accessed either directly (like normal memory) or via&n; * address/data registers.  If your board uses the direct method, set&n; * &squot;nvram_data&squot; to the base address of your nvram and leave &squot;nvram_as0&squot; and&n; * &squot;nvram_as1&squot; NULL.  If your board uses address/data regs to access nvram,&n; * set &squot;nvram_as0&squot; to the address of the lower byte, set &squot;nvram_as1&squot; to the&n; * address of the upper byte (leave NULL if using mc146818), and set&n; * &squot;nvram_data&squot; to the address of the 8-bit data register.&n; *&n; * In order to break the assumption that the RTC and NVRAM are accessed by&n; * the same mechanism, you need to explicitly set &squot;ppc_md.rtc_read_val&squot; and&n; * &squot;ppc_md.rtc_write_val&squot;, otherwise the values of &squot;ppc_md.rtc_read_val&squot;&n; * and &squot;ppc_md.rtc_write_val&squot; will be used.&n; *&n; * Note: Even though the documentation for the various RTC chips say that it&n; * &t; take up to a second before it starts updating once the &squot;R&squot; bit is&n; * &t; cleared, they always seem to update even though we bang on it many&n; * &t; times a second.  This is true, except for the Dallas Semi 1746/1747&n; * &t; (possibly others).  Those chips seem to have a real problem whenever&n; * &t; we set the &squot;R&squot; bit before reading them, they basically stop counting.&n; * &t; &t;&t;&t;&t;&t;--MAG&n; */
 r_extern
 id|spinlock_t
 id|rtc_lock
@@ -173,7 +173,7 @@ r_int
 id|addr
 )paren
 (brace
-id|outb
+id|outb_p
 c_func
 (paren
 id|addr
@@ -182,7 +182,7 @@ id|todc_info-&gt;nvram_as0
 )paren
 suffix:semicolon
 r_return
-id|inb
+id|inb_p
 c_func
 (paren
 id|todc_info-&gt;nvram_data
@@ -202,7 +202,7 @@ r_char
 id|val
 )paren
 (brace
-id|outb
+id|outb_p
 c_func
 (paren
 id|addr
@@ -210,15 +210,13 @@ comma
 id|todc_info-&gt;nvram_as0
 )paren
 suffix:semicolon
-id|outb
+id|outb_p
 c_func
 (paren
 id|val
 comma
 id|todc_info-&gt;nvram_data
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Routines to make RTC chips with NVRAM buried behind an addr/data pair&n; * have the NVRAM and clock regs appear at the same level.&n; * The NVRAM will appear to start at addr 0 and the clock regs will appear&n; * to start immediately after the NVRAM (actually, start at offset&n; * todc_info-&gt;nvram_size).&n; */
@@ -255,7 +253,7 @@ id|todc_info-&gt;nvram_size
 multiline_comment|/* NVRAM */
 id|ppc_md
 dot
-id|nvram_write_val
+id|rtc_write_val
 c_func
 (paren
 id|todc_info-&gt;nvram_addr_reg
@@ -267,7 +265,7 @@ id|val
 op_assign
 id|ppc_md
 dot
-id|nvram_read_val
+id|rtc_read_val
 c_func
 (paren
 id|todc_info-&gt;nvram_data_reg
@@ -285,7 +283,7 @@ id|val
 op_assign
 id|ppc_md
 dot
-id|nvram_read_val
+id|rtc_read_val
 c_func
 (paren
 id|addr
@@ -299,7 +297,7 @@ id|val
 op_assign
 id|ppc_md
 dot
-id|nvram_read_val
+id|rtc_read_val
 c_func
 (paren
 id|addr
@@ -343,7 +341,7 @@ id|todc_info-&gt;nvram_size
 multiline_comment|/* NVRAM */
 id|ppc_md
 dot
-id|nvram_write_val
+id|rtc_write_val
 c_func
 (paren
 id|todc_info-&gt;nvram_addr_reg
@@ -353,7 +351,7 @@ id|addr
 suffix:semicolon
 id|ppc_md
 dot
-id|nvram_write_val
+id|rtc_write_val
 c_func
 (paren
 id|todc_info-&gt;nvram_data_reg
@@ -371,7 +369,7 @@ id|todc_info-&gt;nvram_size
 suffix:semicolon
 id|ppc_md
 dot
-id|nvram_write_val
+id|rtc_write_val
 c_func
 (paren
 id|addr
@@ -385,7 +383,7 @@ r_else
 (brace
 id|ppc_md
 dot
-id|nvram_write_val
+id|rtc_write_val
 c_func
 (paren
 id|addr
@@ -405,21 +403,28 @@ c_func
 r_void
 )paren
 (brace
-r_static
 id|u_char
-id|not_initialized
-op_assign
-l_int|1
+id|cntl_b
 suffix:semicolon
-multiline_comment|/* Make sure clocks are running */
 r_if
 c_cond
 (paren
-id|not_initialized
+op_logical_neg
+id|ppc_md.rtc_read_val
 )paren
-(brace
-id|u_char
-id|cntl_b
+id|ppc_md.rtc_read_val
+op_assign
+id|ppc_md.nvram_read_val
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ppc_md.rtc_write_val
+)paren
+id|ppc_md.rtc_write_val
+op_assign
+id|ppc_md.nvram_write_val
 suffix:semicolon
 id|cntl_b
 op_assign
@@ -684,11 +689,6 @@ id|todc_info-&gt;control_a
 comma
 id|cntl_a
 )paren
-suffix:semicolon
-)brace
-id|not_initialized
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 r_return
