@@ -598,6 +598,33 @@ id|opt
 )paren
 suffix:semicolon
 multiline_comment|/* Mandatory initialization */
+multiline_comment|/* Reset */
+r_if
+c_cond
+(paren
+id|test_bit
+c_func
+(paren
+id|HCI_QUIRK_RESET_ON_INIT
+comma
+op_amp
+id|hdev-&gt;quirks
+)paren
+)paren
+id|hci_send_cmd
+c_func
+(paren
+id|hdev
+comma
+id|OGF_HOST_CTL
+comma
+id|OCF_RESET
+comma
+l_int|0
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 multiline_comment|/* Read Local Supported Features */
 id|hci_send_cmd
 c_func
