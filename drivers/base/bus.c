@@ -878,34 +878,30 @@ id|dev-&gt;kobj
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;bus_match - check compatibility between device &amp; driver.&n; *&t;@dev:&t;device.&n; *&t;@drv:&t;driver.&n; *&n; *&t;First, we call the bus&squot;s match function, which should compare&n; *&t;the device IDs the driver supports with the device IDs of the&n; *&t;device. Note we don&squot;t do this ourselves because we don&squot;t know&n; *&t;the format of the ID structures, nor what is to be considered&n; *&t;a match and what is not.&n; *&n; *&t;If we find a match, we call @drv-&gt;probe(@dev) if it exists, and&n; *&t;call attach() above.&n; */
-DECL|function|bus_match
-r_static
+multiline_comment|/**&n; *&t;driver_probe_device - attempt to bind device &amp; driver.&n; *&t;@drv:&t;driver.&n; *&t;@dev:&t;device.&n; *&n; *&t;First, we call the bus&squot;s match function, if one present, which&n; *&t;should compare the device IDs the driver supports with the&n; *&t;device IDs of the device. Note we don&squot;t do this ourselves&n; *&t;because we don&squot;t know the format of the ID structures, nor what&n; *&t;is to be considered a match and what is not.&n; *&n; *&t;If we find a match, we call @drv-&gt;probe(@dev) if it exists, and&n; *&t;call device_bind_driver() above.&n; */
+DECL|function|driver_probe_device
 r_int
-id|bus_match
+id|driver_probe_device
 c_func
 (paren
-r_struct
-id|device
-op_star
-id|dev
-comma
 r_struct
 id|device_driver
 op_star
 id|drv
+comma
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
-r_int
-id|error
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;bus
+id|drv-&gt;bus-&gt;match
+op_logical_and
+op_logical_neg
+id|drv-&gt;bus
 op_member_access_from_pointer
 id|match
 c_func
@@ -915,7 +911,10 @@ comma
 id|drv
 )paren
 )paren
-(brace
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 id|dev-&gt;driver
 op_assign
 id|drv
@@ -926,10 +925,7 @@ c_cond
 id|drv-&gt;probe
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
+r_int
 id|error
 op_assign
 id|drv
@@ -939,7 +935,11 @@ c_func
 (paren
 id|dev
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
 )paren
 (brace
 id|dev-&gt;driver
@@ -957,16 +957,11 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|error
-op_assign
+r_return
 l_int|0
 suffix:semicolon
 )brace
-r_return
-id|error
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;device_attach - try to attach device to a driver.&n; *&t;@dev:&t;device.&n; *&n; *&t;Walk the list of drivers that the bus has and call bus_match()&n; *&t;for each pair. If a compatible pair is found, break out and return.&n; */
+multiline_comment|/**&n; *&t;device_attach - try to attach device to a driver.&n; *&t;@dev:&t;device.&n; *&n; *&t;Walk the list of drivers that the bus has and call&n; *&t;driver_probe_device() for each pair. If a compatible&n; *&t;pair is found, break out and return.&n; */
 DECL|function|device_attach
 r_int
 id|device_attach
@@ -1037,12 +1032,12 @@ id|entry
 suffix:semicolon
 id|error
 op_assign
-id|bus_match
+id|driver_probe_device
 c_func
 (paren
-id|dev
-comma
 id|drv
+comma
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -1083,7 +1078,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;driver_attach - try to bind driver to devices.&n; *&t;@drv:&t;driver.&n; *&n; *&t;Walk the list of devices that the bus has on it and try to match&n; *&t;the driver with each one.&n; *&t;If bus_match() returns 0 and the @dev-&gt;driver is set, we&squot;ve found&n; *&t;a compatible pair.&n; *&n; *&t;Note that we ignore the -ENODEV error from bus_match(), since it&squot;s&n; *&t;perfectly valid for a driver not to bind to any devices.&n; */
+multiline_comment|/**&n; *&t;driver_attach - try to bind driver to devices.&n; *&t;@drv:&t;driver.&n; *&n; *&t;Walk the list of devices that the bus has on it and try to match&n; *&t;the driver with each one.&n; *&t;If bus_match() returns 0 and the @dev-&gt;driver is set, we&squot;ve found&n; *&t;a compatible pair.&n; *&n; *&t;Note that we ignore the -ENODEV error from driver_probe_device(),&n; *&t;since it&squot;s perfectly valid for a driver not to bind to any devices.&n; */
 DECL|function|driver_attach
 r_void
 id|driver_attach
@@ -1152,12 +1147,12 @@ id|dev-&gt;driver
 (brace
 id|error
 op_assign
-id|bus_match
+id|driver_probe_device
 c_func
 (paren
-id|dev
-comma
 id|drv
+comma
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -2623,6 +2618,13 @@ id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|bus_for_each_drv
+)paren
+suffix:semicolon
+DECL|variable|driver_probe_device
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|driver_probe_device
 )paren
 suffix:semicolon
 DECL|variable|device_bind_driver
