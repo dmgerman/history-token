@@ -3179,21 +3179,6 @@ DECL|typedef|sctp_cmsgs_t
 )brace
 id|sctp_cmsgs_t
 suffix:semicolon
-r_int
-id|sctp_msghdr_parse
-c_func
-(paren
-r_const
-r_struct
-id|msghdr
-op_star
-id|msg
-comma
-id|sctp_cmsgs_t
-op_star
-id|cmsgs
-)paren
-suffix:semicolon
 multiline_comment|/* Structure for tracking memory objects */
 r_typedef
 r_struct

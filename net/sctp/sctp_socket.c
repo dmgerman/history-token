@@ -380,6 +380,19 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+r_static
+r_int
+id|sctp_get_port_local
+c_func
+(paren
+r_struct
+id|sock
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/* Bind a local address either to an endpoint or to an association.  */
 DECL|function|sctp_do_bind
 r_static
@@ -679,14 +692,14 @@ op_amp
 id|saveaddr
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure we are allowed to bind here.&n;&t; * The function sctp_get_port() does duplicate address&n;&t; * detection.&n;&t; */
+multiline_comment|/* Make sure we are allowed to bind here.&n;&t; * The function sctp_get_port_local() does duplicate address&n;&t; * detection.&n;&t; */
 r_if
 c_cond
 (paren
 (paren
 id|ret
 op_assign
-id|sctp_get_port
+id|sctp_get_port_local
 c_func
 (paren
 id|sk
@@ -1822,6 +1835,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* API 3.1.4 close() - UDP Style Syntax&n; * Applications use close() to perform graceful shutdown (as described in&n; * Section 10.1 of [SCTP]) on ALL the associations currently represented&n; * by a UDP-style socket.&n; *&n; * The syntax is&n; *&n; *   ret = close(int sd);&n; *&n; *   sd      - the socket descriptor of the associations to be closed.&n; *&n; * To gracefully shutdown a specific association represented by the&n; * UDP-style socket, an application should use the sendmsg() call,&n; * passing no user data, but including the appropriate flag in the&n; * ancillary data (see Section xxxx).&n; *&n; * If sd in the close() call is a branched-off socket representing only&n; * one association, the shutdown is performed on that association only.&n; */
 DECL|function|sctp_close
+r_static
 r_void
 id|sctp_close
 c_func
@@ -1978,7 +1992,22 @@ suffix:semicolon
 multiline_comment|/* API 3.1.3 sendmsg() - UDP Style Syntax&n; *&n; * An application uses sendmsg() and recvmsg() calls to transmit data to&n; * and receive data from its peer.&n; *&n; *  ssize_t sendmsg(int socket, const struct msghdr *message,&n; *                  int flags);&n; *&n; *  socket  - the socket descriptor of the endpoint.&n; *  message - pointer to the msghdr structure which contains a single&n; *            user message and possibly some ancillary data.&n; *&n; *            See Section 5 for complete description of the data&n; *            structures.&n; *&n; *  flags   - flags sent or received with the user message, see Section&n; *            5 for complete description of the flags.&n; *&n; * NB: The argument &squot;msg&squot; is a user space address.&n; */
 multiline_comment|/* BUG:  We do not implement timeouts.  */
 multiline_comment|/* BUG:  We do not implement the equivalent of wait_for_tcp_memory(). */
+r_static
+r_int
+id|sctp_msghdr_parse
+c_func
+(paren
+r_const
+r_struct
+id|msghdr
+op_star
+comma
+id|sctp_cmsgs_t
+op_star
+)paren
+suffix:semicolon
 DECL|function|sctp_sendmsg
+r_static
 r_int
 id|sctp_sendmsg
 c_func
@@ -3202,6 +3231,7 @@ macro_line|#endif /* 0 */
 )brace
 multiline_comment|/* API 3.1.3  recvmsg() - UDP Style Syntax&n; *&n; *  ssize_t recvmsg(int socket, struct msghdr *message,&n; *                    int flags);&n; *&n; *  socket  - the socket descriptor of the endpoint.&n; *  message - pointer to the msghdr structure which contains a single&n; *            user message and possibly some ancillary data.&n; *&n; *            See Section 5 for complete description of the data&n; *            structures.&n; *&n; *  flags   - flags sent or received with the user message, see Section&n; *            5 for complete description of the flags.&n; */
 DECL|function|sctp_recvmsg
+r_static
 r_int
 id|sctp_recvmsg
 c_func
@@ -3736,6 +3766,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* API 6.2 setsockopt(), getsockopt()&n; *&n; * Applications use setsockopt() and getsockopt() to set or retrieve&n; * socket options.  Socket options are used to change the default&n; * behavior of sockets calls.  They are described in Section 7.&n; *&n; * The syntax is:&n; *&n; *   ret = getsockopt(int sd, int level, int optname, void *optval,&n; *                    int *optlen);&n; *   ret = setsockopt(int sd, int level, int optname, const void *optval,&n; *                    int optlen);&n; *&n; *   sd      - the socket descript.&n; *   level   - set to IPPROTO_SCTP for all SCTP options.&n; *   optname - the option name.&n; *   optval  - the buffer to store the value of the option.&n; *   optlen  - the size of the buffer.&n; */
 DECL|function|sctp_setsockopt
+r_static
 r_int
 id|sctp_setsockopt
 c_func
@@ -4070,6 +4101,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* FIXME: Write comments. */
 DECL|function|sctp_connect
+r_static
 r_int
 id|sctp_connect
 c_func
@@ -4096,6 +4128,7 @@ multiline_comment|/* STUB */
 )brace
 multiline_comment|/* FIXME: Write comments. */
 DECL|function|sctp_disconnect
+r_static
 r_int
 id|sctp_disconnect
 c_func
@@ -4117,6 +4150,7 @@ multiline_comment|/* STUB */
 )brace
 multiline_comment|/* FIXME: Write comments. */
 DECL|function|sctp_accept
+r_static
 r_struct
 id|sock
 op_star
@@ -4153,6 +4187,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* FIXME: Write Comments. */
 DECL|function|sctp_ioctl
+r_static
 r_int
 id|sctp_ioctl
 c_func
@@ -4178,6 +4213,7 @@ multiline_comment|/* STUB */
 )brace
 multiline_comment|/* This is the function which gets called during socket creation to&n; * initialized the SCTP-specific portion of the sock.&n; * The sock structure should already be zero-filled memory.&n; */
 DECL|function|sctp_init_sock
+r_static
 r_int
 id|sctp_init_sock
 c_func
@@ -4352,6 +4388,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Cleanup any SCTP per socket resources.  */
 DECL|function|sctp_destroy_sock
+r_static
 r_int
 id|sctp_destroy_sock
 c_func
@@ -4397,6 +4434,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* FIXME: Comments needed.  */
 DECL|function|sctp_shutdown
+r_static
 r_void
 id|sctp_shutdown
 c_func
@@ -5003,6 +5041,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Helper routine to branch off an association to a new socket.  */
 DECL|function|sctp_do_peeloff
+r_static
 r_int
 id|sctp_do_peeloff
 c_func
@@ -5359,6 +5398,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|sctp_getsockopt
+r_static
 r_int
 id|sctp_getsockopt
 c_func
@@ -5608,6 +5648,7 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|sctp_hash
+r_static
 r_void
 id|sctp_hash
 c_func
@@ -5621,6 +5662,7 @@ id|sk
 multiline_comment|/* STUB */
 )brace
 DECL|function|sctp_unhash
+r_static
 r_void
 id|sctp_unhash
 c_func
@@ -5634,9 +5676,10 @@ id|sk
 multiline_comment|/* STUB */
 )brace
 multiline_comment|/* Check if port is acceptable.  Possibly find first available port.&n; *&n; * The port hash table (contained in the &squot;global&squot; SCTP protocol storage&n; * returned by sctp_protocol_t * sctp_get_protocol()). The hash&n; * table is an array of 4096 lists (sctp_bind_hashbucket_t). Each&n; * list (the list number is the port number hashed out, so as you&n; * would expect from a hash function, all the ports in a given list have&n; * such a number that hashes out to the same list number; you were&n; * expecting that, right?); so each list has a set of ports, with a&n; * link to the socket (struct sock) that uses it, the port number and&n; * a fastreuse flag (FIXME: NPI ipg).&n; */
-DECL|function|sctp_get_port
+DECL|function|sctp_get_port_local
+r_static
 r_int
-id|sctp_get_port
+id|sctp_get_port_local
 c_func
 (paren
 r_struct
@@ -6262,8 +6305,47 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|sctp_get_port
+r_static
+r_int
+id|sctp_get_port
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_int
+r_int
+id|snum
+)paren
+(brace
+r_int
+id|ret
+op_assign
+id|sctp_get_port_local
+c_func
+(paren
+id|sk
+comma
+id|snum
+)paren
+suffix:semicolon
+r_return
+(paren
+id|ret
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * 3.1.3 listen() - UDP Style Syntax&n; *&n; *   By default, new associations are not accepted for UDP style sockets.&n; *   An application uses listen() to mark a socket as being able to&n; *   accept new associations.&n; */
 DECL|function|sctp_seqpacket_listen
+r_static
 r_int
 id|sctp_seqpacket_listen
 c_func
@@ -6725,6 +6807,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* FIXME: Commments! */
 DECL|function|__sctp_put_port
+r_static
 id|__inline__
 r_void
 id|__sctp_put_port
@@ -6881,6 +6964,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The system picks an ephemeral port and choose an address set equivalent&n; * to binding with a wildcard address.&n; * One of those addresses will be the primary address for the association.&n; * This automatically enables the multihoming capability of SCTP.&n; */
 DECL|function|sctp_autobind
+r_static
 r_int
 id|sctp_autobind
 c_func
@@ -7018,6 +7102,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Parse out IPPROTO_SCTP CMSG headers.  Perform only minimal validation.&n; *&n; * From RFC 2292&n; * 4.2 The cmsghdr Structure *&n; *&n; * When ancillary data is sent or received, any number of ancillary data&n; * objects can be specified by the msg_control and msg_controllen members of&n; * the msghdr structure, because each object is preceded by&n; * a cmsghdr structure defining the object&squot;s length (the cmsg_len member).&n; * Historically Berkeley-derived implementations have passed only one object&n; * at a time, but this API allows multiple objects to be&n; * passed in a single call to sendmsg() or recvmsg(). The following example&n; * shows two ancillary data objects in a control buffer.&n; *&n; *   |&lt;--------------------------- msg_controllen --------------------------&gt;|&n; *   |                                                                       |&n; *&n; *   |&lt;----- ancillary data object -----&gt;|&lt;----- ancillary data object -----&gt;|&n; *&n; *   |&lt;---------- CMSG_SPACE() ---------&gt;|&lt;---------- CMSG_SPACE() ---------&gt;|&n; *   |                                   |                                   |&n; *&n; *   |&lt;---------- cmsg_len ----------&gt;|  |&lt;--------- cmsg_len -----------&gt;|  |&n; *&n; *   |&lt;--------- CMSG_LEN() ---------&gt;|  |&lt;-------- CMSG_LEN() ----------&gt;|  |&n; *   |                                |  |                                |  |&n; *&n; *   +-----+-----+-----+--+-----------+--+-----+-----+-----+--+-----------+--+&n; *   |cmsg_|cmsg_|cmsg_|XX|           |XX|cmsg_|cmsg_|cmsg_|XX|           |XX|&n; *&n; *   |len  |level|type |XX|cmsg_data[]|XX|len  |level|type |XX|cmsg_data[]|XX|&n; *&n; *   +-----+-----+-----+--+-----------+--+-----+-----+-----+--+-----------+--+&n; *    ^&n; *    |&n; *&n; * msg_control&n; * points here&n; */
 DECL|function|sctp_msghdr_parse
+r_static
 r_int
 id|sctp_msghdr_parse
 c_func
@@ -7608,6 +7693,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Receive a datagram.&n; * Note: This is pretty much the same routine as in core/datagram.c&n; * with a few changes to make lksctp work.&n; */
 DECL|function|sctp_skb_recv_datagram
+r_static
 r_struct
 id|sk_buff
 op_star
