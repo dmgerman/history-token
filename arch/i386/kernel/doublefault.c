@@ -21,7 +21,7 @@ suffix:semicolon
 DECL|macro|STACK_START
 mdefine_line|#define STACK_START (unsigned long)(doublefault_stack+DOUBLEFAULT_STACKSIZE)
 DECL|macro|ptr_ok
-mdefine_line|#define ptr_ok(x) ((x) &gt; 0xc0000000 &amp;&amp; (x) &lt; 0xc1000000)
+mdefine_line|#define ptr_ok(x) ((x) &gt; PAGE_OFFSET &amp;&amp; (x) &lt; PAGE_OFFSET + 0x1000000)
 DECL|function|doublefault_fn
 r_static
 r_void
