@@ -12987,7 +12987,8 @@ l_string|&quot;aironet init failed &bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|NODEV
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 )def_block
