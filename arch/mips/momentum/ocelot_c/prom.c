@@ -631,7 +631,6 @@ id|p
 suffix:semicolon
 )brace
 macro_line|#endif  /* CONFIG_MIPS64 */
-multiline_comment|/* [jsun@junsun.net] PMON passes arguments in C main() style */
 DECL|function|prom_init
 r_void
 id|__init
@@ -669,6 +668,18 @@ op_star
 op_star
 )paren
 id|fw_arg2
+suffix:semicolon
+r_struct
+id|callvectors
+op_star
+id|cv
+op_assign
+(paren
+r_struct
+id|callvectors
+op_star
+)paren
+id|fw_arg3
 suffix:semicolon
 r_int
 id|i

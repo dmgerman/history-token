@@ -22,12 +22,20 @@ DECL|macro|PGDIR_SIZE
 mdefine_line|#define PGDIR_SIZE&t;(1UL &lt;&lt; PGDIR_SHIFT)
 DECL|macro|PGDIR_MASK
 mdefine_line|#define PGDIR_MASK&t;(~(PGDIR_SIZE-1))
-multiline_comment|/*&n; * For 4kB page size we use a 3 level page tree and a 8kB pmd and pgds which&n; * permits us mapping 40 bits of virtual address space.&n; *&n; * We used to implement 41 bits by having an order 1 pmd level but that seemed&n; * rather pointless.&n; *&n; * For 16kB page size we use a 2 level page tree which permit a total of&n; * 36 bits of virtual address space.  We could add a third leve. but it seems&n; * like at the moment there&squot;s no need for this.&n; *&n; * For 64kB page size we use a 2 level page table tree for a total of 42 bits&n; * of virtual address space.&n; */
+multiline_comment|/*&n; * For 4kB page size we use a 3 level page tree and a 8kB pmd and pgds which&n; * permits us mapping 40 bits of virtual address space.&n; *&n; * We used to implement 41 bits by having an order 1 pmd level but that seemed&n; * rather pointless.&n; *&n; * For 8kB page size we use a 3 level page tree which permits a total of&n; * 8TB of address space.  Alternatively a 33-bit / 8GB organization using&n; * two levels would be easy to implement.&n; *&n; * For 16kB page size we use a 2 level page tree which permits a total of&n; * 36 bits of virtual address space.  We could add a third leve. but it seems&n; * like at the moment there&squot;s no need for this.&n; *&n; * For 64kB page size we use a 2 level page table tree for a total of 42 bits&n; * of virtual address space.&n; */
 macro_line|#ifdef CONFIG_PAGE_SIZE_4KB
 DECL|macro|PGD_ORDER
 mdefine_line|#define PGD_ORDER&t;&t;1
 DECL|macro|PMD_ORDER
 mdefine_line|#define PMD_ORDER&t;&t;1
+DECL|macro|PTE_ORDER
+mdefine_line|#define PTE_ORDER&t;&t;0
+macro_line|#endif
+macro_line|#ifdef CONFIG_PAGE_SIZE_8KB
+DECL|macro|PGD_ORDER
+mdefine_line|#define PGD_ORDER&t;&t;0
+DECL|macro|PMD_ORDER
+mdefine_line|#define PMD_ORDER&t;&t;0
 DECL|macro|PTE_ORDER
 mdefine_line|#define PTE_ORDER&t;&t;0
 macro_line|#endif
@@ -294,11 +302,6 @@ mdefine_line|#define pte_pfn(x)&t;&t;((unsigned long)((x).pte &gt;&gt; PAGE_SHIF
 DECL|macro|pfn_pte
 mdefine_line|#define pfn_pte(pfn, prot)&t;__pte(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot))
 macro_line|#endif
-multiline_comment|/*&n; * Bits 0, 1, 2, 7 and 8 are taken, split up the 27 bits of offset&n; * into this range:&n; */
-DECL|macro|pte_to_pgoff
-mdefine_line|#define pte_to_pgoff(_pte) &bslash;&n;&t;((((_pte).pte &gt;&gt; 3) &amp; 0x1f ) + (((_pte).pte &gt;&gt; 9) &lt;&lt; 6 ))
-DECL|macro|pgoff_to_pte
-mdefine_line|#define pgoff_to_pte(off) &bslash;&n;&t;((pte_t) { (((off) &amp; 0x1f) &lt;&lt; 3) + (((off) &gt;&gt; 6) &lt;&lt; 9) + _PAGE_FILE })
 DECL|macro|__pgd_offset
 mdefine_line|#define __pgd_offset(address)&t;pgd_index(address)
 DECL|macro|page_pte
@@ -468,6 +471,13 @@ DECL|macro|__pte_to_swp_entry
 mdefine_line|#define __pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
 DECL|macro|__swp_entry_to_pte
 mdefine_line|#define __swp_entry_to_pte(x)&t;((pte_t) { (x).val })
+multiline_comment|/*&n; * Bits 0, 1, 2, 7 and 8 are taken, split up the 32 bits of offset&n; * into this range:&n; */
+DECL|macro|PTE_FILE_MAX_BITS
+mdefine_line|#define PTE_FILE_MAX_BITS&t;32
+DECL|macro|pte_to_pgoff
+mdefine_line|#define pte_to_pgoff(_pte) &bslash;&n;&t;((((_pte).pte &gt;&gt; 3) &amp; 0x1f ) + (((_pte).pte &gt;&gt; 9) &lt;&lt; 6 ))
+DECL|macro|pgoff_to_pte
+mdefine_line|#define pgoff_to_pte(off) &bslash;&n;&t;((pte_t) { (((off) &amp; 0x1f) &lt;&lt; 3) + (((off) &gt;&gt; 6) &lt;&lt; 9) + _PAGE_FILE })
 multiline_comment|/*&n; * Used for the b0rked handling of kernel pagetables on the 64-bit kernel.&n; */
 r_extern
 id|pte_t

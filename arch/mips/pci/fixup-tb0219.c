@@ -1,59 +1,30 @@
-multiline_comment|/*&n; * FILE NAME&n; *&t;arch/mips/vr41xx/tanbac-tb0229/pci_fixup.c&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;The TANBAC TB0229(VR4131DIMM) specific PCI fixups.&n; *&n; * Copyright 2003 Megasolution Inc.&n; *                matsu@megasolution.jp&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the&n; *  Free Software Foundation; either version 2 of the License, or (at your&n; *  option) any later version.&n; */
-macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/*&n; *  fixup-tb0219.c, The TANBAC TB0219 specific PCI fixups.&n; *&n; *  Copyright (C) 2003  Megasolution Inc. &lt;matsu@megasolution.jp&gt;&n; *  Copyright (C) 2004  Yoichi Yuasa &lt;yuasa@hh.iij4u.or.jp&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;asm/vr41xx/tb0229.h&gt;
-DECL|function|pcibios_fixup_irqs
-r_void
+macro_line|#include &lt;asm/vr41xx/tb0219.h&gt;
+DECL|function|pcibios_map_irq
+r_int
 id|__init
-id|pcibios_fixup_irqs
+id|pcibios_map_irq
 c_func
 (paren
-r_void
-)paren
-(brace
-macro_line|#ifdef CONFIG_TANBAC_TB0219
 r_struct
 id|pci_dev
 op_star
 id|dev
-op_assign
-l_int|NULL
-suffix:semicolon
+comma
 id|u8
 id|slot
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|dev
-op_assign
-id|pci_find_device
-c_func
-(paren
-id|PCI_ANY_ID
 comma
-id|PCI_ANY_ID
-comma
-id|dev
-)paren
-)paren
-op_ne
-l_int|NULL
+id|u8
+id|pin
 )paren
 (brace
-id|slot
+r_int
+id|irq
 op_assign
-id|PCI_SLOT
-c_func
-(paren
-id|dev-&gt;devfn
-)paren
-suffix:semicolon
-id|dev-&gt;irq
-op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 r_switch
 c_cond
@@ -82,7 +53,7 @@ comma
 id|LEVEL_LOW
 )paren
 suffix:semicolon
-id|dev-&gt;irq
+id|irq
 op_assign
 id|TB0219_PCI_SLOT1_IRQ
 suffix:semicolon
@@ -109,7 +80,7 @@ comma
 id|LEVEL_LOW
 )paren
 suffix:semicolon
-id|dev-&gt;irq
+id|irq
 op_assign
 id|TB0219_PCI_SLOT2_IRQ
 suffix:semicolon
@@ -136,7 +107,7 @@ comma
 id|LEVEL_LOW
 )paren
 suffix:semicolon
-id|dev-&gt;irq
+id|irq
 op_assign
 id|TB0219_PCI_SLOT3_IRQ
 suffix:semicolon
@@ -147,17 +118,27 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-id|pci_write_config_byte
-c_func
-(paren
-id|dev
-comma
-id|PCI_INTERRUPT_LINE
-comma
-id|dev-&gt;irq
-)paren
+r_return
+id|irq
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|variable|__initdata
+r_struct
+id|pci_fixup
+id|pcibios_fixups
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+(brace
+dot
+id|pass
+op_assign
+l_int|0
+comma
 )brace
+comma
+)brace
+suffix:semicolon
 eof

@@ -7,6 +7,7 @@ macro_line|#include &lt;asm/sgidefs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#include &lt;asm/hazards.h&gt;
 id|__asm__
 (paren
 l_string|&quot;.macro&bslash;tlocal_irq_enable&bslash;n&bslash;t&quot;
@@ -17,6 +18,7 @@ l_string|&quot;mfc0&bslash;t$1,$12&bslash;n&bslash;t&quot;
 l_string|&quot;ori&bslash;t$1,0x1f&bslash;n&bslash;t&quot;
 l_string|&quot;xori&bslash;t$1,0x1e&bslash;n&bslash;t&quot;
 l_string|&quot;mtc0&bslash;t$1,$12&bslash;n&bslash;t&quot;
+l_string|&quot;irq_enable_hazard&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;tpop&bslash;n&bslash;t&quot;
 l_string|&quot;.endm&quot;
 )paren
@@ -56,9 +58,7 @@ l_string|&quot;ori&bslash;t$1,1&bslash;n&bslash;t&quot;
 l_string|&quot;xori&bslash;t$1,1&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;
 l_string|&quot;mtc0&bslash;t$1,$12&bslash;n&bslash;t&quot;
-l_string|&quot;sll&bslash;t$0, $0, 1&bslash;t&bslash;t&bslash;t# nop&bslash;n&bslash;t&quot;
-l_string|&quot;sll&bslash;t$0, $0, 1&bslash;t&bslash;t&bslash;t# nop&bslash;n&bslash;t&quot;
-l_string|&quot;sll&bslash;t$0, $0, 1&bslash;t&bslash;t&bslash;t# nop&bslash;n&bslash;t&quot;
+l_string|&quot;irq_disable_hazard&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;tpop&bslash;n&bslash;t&quot;
 l_string|&quot;.endm&quot;
 )paren
@@ -98,7 +98,7 @@ l_string|&quot;.endm&quot;
 )paren
 suffix:semicolon
 DECL|macro|local_save_flags
-mdefine_line|#define local_save_flags(x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;local_save_flags %0&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (x))
+mdefine_line|#define local_save_flags(x)&t;&t;&t;&t;&t;&t;&bslash;&n;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;local_save_flags %0&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (x))
 id|__asm__
 (paren
 l_string|&quot;.macro&bslash;tlocal_irq_save result&bslash;n&bslash;t&quot;
@@ -110,9 +110,7 @@ l_string|&quot;ori&bslash;t$1, &bslash;&bslash;result, 1&bslash;n&bslash;t&quot;
 l_string|&quot;xori&bslash;t$1, 1&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;
 l_string|&quot;mtc0&bslash;t$1, $12&bslash;n&bslash;t&quot;
-l_string|&quot;sll&bslash;t$0, $0, 1&bslash;t&bslash;t&bslash;t# nop&bslash;n&bslash;t&quot;
-l_string|&quot;sll&bslash;t$0, $0, 1&bslash;t&bslash;t&bslash;t# nop&bslash;n&bslash;t&quot;
-l_string|&quot;sll&bslash;t$0, $0, 1&bslash;t&bslash;t&bslash;t# nop&bslash;n&bslash;t&quot;
+l_string|&quot;irq_disable_hazard&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;tpop&bslash;n&bslash;t&quot;
 l_string|&quot;.endm&quot;
 )paren
@@ -120,7 +118,6 @@ suffix:semicolon
 DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(x)&t;&t;&t;&t;&t;&t;&bslash;&n;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;local_irq_save&bslash;t%0&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: /* no inputs */&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;memory&quot;)
 id|__asm__
-c_func
 (paren
 l_string|&quot;.macro&bslash;tlocal_irq_restore flags&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;
@@ -131,16 +128,14 @@ l_string|&quot;ori&bslash;t$1, 1&bslash;n&bslash;t&quot;
 l_string|&quot;xori&bslash;t$1, 1&bslash;n&bslash;t&quot;
 l_string|&quot;or&bslash;t&bslash;&bslash;flags, $1&bslash;n&bslash;t&quot;
 l_string|&quot;mtc0&bslash;t&bslash;&bslash;flags, $12&bslash;n&bslash;t&quot;
-l_string|&quot;sll&bslash;t$0, $0, 1&bslash;t&bslash;t&bslash;t# nop&bslash;n&bslash;t&quot;
-l_string|&quot;sll&bslash;t$0, $0, 1&bslash;t&bslash;t&bslash;t# nop&bslash;n&bslash;t&quot;
-l_string|&quot;sll&bslash;t$0, $0, 1&bslash;t&bslash;t&bslash;t# nop&bslash;n&bslash;t&quot;
+l_string|&quot;irq_disable_hazard&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;tat&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;treorder&bslash;n&bslash;t&quot;
 l_string|&quot;.endm&quot;
 )paren
 suffix:semicolon
 DECL|macro|local_irq_restore
-mdefine_line|#define local_irq_restore(flags)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __tmp1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;local_irq_restore&bslash;t%0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (__tmp1)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;0&quot; (flags)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;memory&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
+mdefine_line|#define local_irq_restore(flags)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __tmp1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;local_irq_restore&bslash;t%0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (__tmp1)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;0&quot; (flags)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;memory&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
 DECL|macro|irqs_disabled
 mdefine_line|#define irqs_disabled()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;local_save_flags(flags);&t;&t;&t;&t;&t;&bslash;&n;&t;!(flags &amp; 1);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/*&n; * read_barrier_depends - Flush all pending reads that subsequents reads&n; * depend on.&n; *&n; * No data-dependent reads from memory-like regions are ever reordered&n; * over this barrier.  All reads preceding this primitive are guaranteed&n; * to access memory (but not necessarily other CPUs&squot; caches) before any&n; * reads following this primitive that depend on the data return by&n; * any of the preceding reads.  This primitive is much lighter weight than&n; * rmb() on most CPUs, and is never heavier weight than is&n; * rmb().&n; *&n; * These ordering constraints are respected by both the local CPU&n; * and the compiler.&n; *&n; * Ordering is not guaranteed by anything other than these primitives,&n; * not even by data dependencies.  See the documentation for&n; * memory_barrier() for examples and URLs to more information.&n; *&n; * For example, the following code would force ordering (the initial&n; * value of &quot;a&quot; is zero, &quot;b&quot; is one, and &quot;p&quot; is &quot;&amp;a&quot;):&n; *&n; * &lt;programlisting&gt;&n; *&t;CPU 0&t;&t;&t;&t;CPU 1&n; *&n; *&t;b = 2;&n; *&t;memory_barrier();&n; *&t;p = &amp;b;&t;&t;&t;&t;q = p;&n; *&t;&t;&t;&t;&t;read_barrier_depends();&n; *&t;&t;&t;&t;&t;d = *q;&n; * &lt;/programlisting&gt;&n; *&n; * because the read of &quot;*q&quot; depends on the read of &quot;p&quot; and these&n; * two reads are separated by a read_barrier_depends().  However,&n; * the following code, with the same initial values for &quot;a&quot; and &quot;b&quot;:&n; *&n; * &lt;programlisting&gt;&n; *&t;CPU 0&t;&t;&t;&t;CPU 1&n; *&n; *&t;a = 2;&n; *&t;memory_barrier();&n; *&t;b = 3;&t;&t;&t;&t;y = b;&n; *&t;&t;&t;&t;&t;read_barrier_depends();&n; *&t;&t;&t;&t;&t;x = a;&n; * &lt;/programlisting&gt;&n; *&n; * does not enforce ordering, since there is no data dependency between&n; * the read of &quot;a&quot; and the read of &quot;b&quot;.  Therefore, on some CPUs, such&n; * as Alpha, &quot;y&quot; could be set to 3 and &quot;x&quot; to 0.  Use rmb()&n; * in cases like thiswhere there are no data dependencies.&n; */

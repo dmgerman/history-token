@@ -240,8 +240,6 @@ id|swapper_pg_dir
 id|PTRS_PER_PGD
 )braket
 suffix:semicolon
-DECL|macro|PTE_FILE_MAX_BITS
-mdefine_line|#define PTE_FILE_MAX_BITS&t;27
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */
 DECL|function|pte_user
 r_static

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -88,6 +89,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ip22_do_break
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip22_do_break
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|ip22_be_init

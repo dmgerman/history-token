@@ -553,7 +553,8 @@ id|cmu_lock
 suffix:semicolon
 )brace
 DECL|function|vr41xx_cmu_init
-r_void
+r_static
+r_int
 id|__init
 id|vr41xx_cmu_init
 c_func
@@ -632,5 +633,15 @@ op_amp
 id|cmu_lock
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|vr41xx_cmu_init
+id|early_initcall
+c_func
+(paren
+id|vr41xx_cmu_init
+)paren
+suffix:semicolon
 eof

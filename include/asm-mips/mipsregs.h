@@ -766,7 +766,7 @@ DECL|macro|__read_ulong_c0_register
 mdefine_line|#define __read_ulong_c0_register(reg, sel)&t;&t;&t;&t;&bslash;&n;&t;((sizeof(unsigned long) == 4) ?&t;&t;&t;&t;&t;&bslash;&n;&t;__read_32bit_c0_register(reg, sel) :&t;&t;&t;&t;&bslash;&n;&t;__read_64bit_c0_register(reg, sel))
 DECL|macro|__write_ulong_c0_register
 mdefine_line|#define __write_ulong_c0_register(reg, sel, val)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sizeof(unsigned long) == 4)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__write_32bit_c0_register(reg, sel, val);&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__write_64bit_c0_register(reg, sel, val);&t;&t;&bslash;&n;} while (0)
-multiline_comment|/*&n; * On The RM7000 these are use to access cop0 set 1 registers&n; */
+multiline_comment|/*&n; * On RM7000/RM9000 these are uses to access cop0 set 1 registers&n; */
 DECL|macro|__read_32bit_c0_ctrl_register
 mdefine_line|#define __read_32bit_c0_ctrl_register(source)&t;&t;&t;&t;&bslash;&n;({ int __res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;cfc0&bslash;t%0, &quot; #source &quot;&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (__res));&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__write_32bit_c0_ctrl_register

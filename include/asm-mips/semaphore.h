@@ -1,74 +1,51 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996  Linus Torvalds&n; * Copyright (C) 1998, 99, 2000, 01  Ralf Baechle&n; * Copyright (C) 1999, 2000, 01  Silicon Graphics, Inc.&n; * Copyright (C) 2000, 01 MIPS Technologies, Inc.&n; */
-macro_line|#ifndef _ASM_SEMAPHORE_H
-DECL|macro|_ASM_SEMAPHORE_H
-mdefine_line|#define _ASM_SEMAPHORE_H
-macro_line|#include &lt;linux/compiler.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996  Linus Torvalds&n; * Copyright (C) 1998, 99, 2000, 01, 04  Ralf Baechle&n; * Copyright (C) 1999, 2000, 01  Silicon Graphics, Inc.&n; * Copyright (C) 2000, 01 MIPS Technologies, Inc.&n; *&n; * In all honesty, little of the old MIPS code left - the PPC64 variant was&n; * just looking nice and portable so I ripped it.  Credits to whoever wrote&n; * it.&n; */
+macro_line|#ifndef __ASM_SEMAPHORE_H
+DECL|macro|__ASM_SEMAPHORE_H
+mdefine_line|#define __ASM_SEMAPHORE_H
+multiline_comment|/*&n; * Remove spinlock-based RW semaphores; RW semaphore definitions are&n; * now in rwsem.h and we use the generic lib/rwsem.c implementation.&n; * Rework semaphores to use atomic_dec_if_positive.&n; * -- Paul Mackerras (paulus@samba.org)&n; */
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
-macro_line|#include &lt;asm/atomic.h&gt;
 DECL|struct|semaphore
 r_struct
 id|semaphore
 (brace
-macro_line|#ifdef __MIPSEB__
+multiline_comment|/*&n;&t; * Note that any negative value of count is equivalent to 0,&n;&t; * but additionally indicates that some process(es) might be&n;&t; * sleeping on `wait&squot;.&n;&t; */
 DECL|member|count
 id|atomic_t
 id|count
 suffix:semicolon
-DECL|member|waking
-id|atomic_t
-id|waking
-suffix:semicolon
-macro_line|#else
-id|atomic_t
-id|waking
-suffix:semicolon
-id|atomic_t
-id|count
-suffix:semicolon
-macro_line|#endif
 DECL|member|wait
 id|wait_queue_head_t
 id|wait
 suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
+macro_line|#ifdef WAITQUEUE_DEBUG
 DECL|member|__magic
 r_int
 id|__magic
 suffix:semicolon
 macro_line|#endif
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|8
-)paren
-)paren
-)paren
 suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
+macro_line|#ifdef WAITQUEUE_DEBUG
 DECL|macro|__SEM_DEBUG_INIT
-macro_line|# define __SEM_DEBUG_INIT(name) , .__magic = (long)&amp;(name).__magic
+macro_line|# define __SEM_DEBUG_INIT(name) &bslash;&n;&t;&t;, (long)&amp;(name).__magic
 macro_line|#else
 DECL|macro|__SEM_DEBUG_INIT
 macro_line|# define __SEM_DEBUG_INIT(name)
 macro_line|#endif
 DECL|macro|__SEMAPHORE_INITIALIZER
-mdefine_line|#define __SEMAPHORE_INITIALIZER(name,_count) {&t;&t;&t;&t;&bslash;&n;&t;.count&t;= ATOMIC_INIT(_count),&t;&t;&t;&t;&t;&bslash;&n;&t;.waking&t;= ATOMIC_INIT(0),&t;&t;&t;&t;&t;&bslash;&n;&t;.wait&t;= __WAIT_QUEUE_HEAD_INITIALIZER((name).wait)&t;&t;&bslash;&n;&t;__SEM_DEBUG_INIT(name)&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define __SEMAPHORE_INITIALIZER(name, count) &bslash;&n;&t;{ ATOMIC_INIT(count), &bslash;&n;&t;  __WAIT_QUEUE_HEAD_INITIALIZER((name).wait) &bslash;&n;&t;  __SEM_DEBUG_INIT(name) }
 DECL|macro|__MUTEX_INITIALIZER
-mdefine_line|#define __MUTEX_INITIALIZER(name) __SEMAPHORE_INITIALIZER(name, 1)
+mdefine_line|#define __MUTEX_INITIALIZER(name) &bslash;&n;&t;__SEMAPHORE_INITIALIZER(name, 1)
 DECL|macro|__DECLARE_SEMAPHORE_GENERIC
-mdefine_line|#define __DECLARE_SEMAPHORE_GENERIC(name,count) &bslash;&n;&t;struct semaphore name = __SEMAPHORE_INITIALIZER(name, count)
+mdefine_line|#define __DECLARE_SEMAPHORE_GENERIC(name, count) &bslash;&n;&t;struct semaphore name = __SEMAPHORE_INITIALIZER(name,count)
 DECL|macro|DECLARE_MUTEX
-mdefine_line|#define DECLARE_MUTEX(name) __DECLARE_SEMAPHORE_GENERIC(name, 1)
+mdefine_line|#define DECLARE_MUTEX(name)&t;&t;__DECLARE_SEMAPHORE_GENERIC(name, 1)
 DECL|macro|DECLARE_MUTEX_LOCKED
-mdefine_line|#define DECLARE_MUTEX_LOCKED(name) __DECLARE_SEMAPHORE_GENERIC(name,0)
+mdefine_line|#define DECLARE_MUTEX_LOCKED(name)&t;__DECLARE_SEMAPHORE_GENERIC(name, 0)
 DECL|function|sema_init
 r_static
 r_inline
@@ -93,15 +70,6 @@ comma
 id|val
 )paren
 suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|sem-&gt;waking
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|init_waitqueue_head
 c_func
 (paren
@@ -109,7 +77,7 @@ op_amp
 id|sem-&gt;wait
 )paren
 suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
+macro_line|#ifdef WAITQUEUE_DEBUG
 id|sem-&gt;__magic
 op_assign
 (paren
@@ -162,16 +130,9 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_CPU_HAS_LLDSCD
-multiline_comment|/*&n; * On machines without lld/scd we need a spinlock to make the manipulation of&n; * sem-&gt;count and sem-&gt;waking atomic.&n; */
-r_extern
-id|spinlock_t
-id|semaphore_lock
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_void
-id|__down_failed
+id|__down
 c_func
 (paren
 r_struct
@@ -182,7 +143,7 @@ id|sem
 suffix:semicolon
 r_extern
 r_int
-id|__down_failed_interruptible
+id|__down_interruptible
 c_func
 (paren
 r_struct
@@ -193,7 +154,7 @@ id|sem
 suffix:semicolon
 r_extern
 r_void
-id|__up_wakeup
+id|__up
 c_func
 (paren
 r_struct
@@ -215,10 +176,7 @@ op_star
 id|sem
 )paren
 (brace
-r_int
-id|count
-suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
+macro_line|#ifdef WAITQUEUE_DEBUG
 id|CHECK_MAGIC
 c_func
 (paren
@@ -231,34 +189,30 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|count
-op_assign
-id|atomic_dec_return
-c_func
-(paren
-op_amp
-id|sem-&gt;count
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * Try to get the semaphore, take the slow path if we fail.&n;&t; */
 r_if
 c_cond
 (paren
 id|unlikely
 c_func
 (paren
-id|count
+id|atomic_dec_return
+c_func
+(paren
+op_amp
+id|sem-&gt;count
+)paren
 OL
 l_int|0
 )paren
 )paren
-id|__down_failed
+id|__down
 c_func
 (paren
 id|sem
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Interruptible try to acquire a semaphore.  If we obtained&n; * it, return zero.  If we were interrupted, returns -EINTR&n; */
 DECL|function|down_interruptible
 r_static
 r_inline
@@ -273,9 +227,11 @@ id|sem
 )paren
 (brace
 r_int
-id|count
+id|ret
+op_assign
+l_int|0
 suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
+macro_line|#ifdef WAITQUEUE_DEBUG
 id|CHECK_MAGIC
 c_func
 (paren
@@ -288,39 +244,34 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|count
-op_assign
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
 id|atomic_dec_return
 c_func
 (paren
 op_amp
 id|sem-&gt;count
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|count
 OL
 l_int|0
 )paren
 )paren
-r_return
-id|__down_failed_interruptible
+id|ret
+op_assign
+id|__down_interruptible
 c_func
 (paren
 id|sem
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_CPU_HAS_LLDSCD
-multiline_comment|/*&n; * down_trylock returns 0 on success, 1 if we failed to get the lock.&n; *&n; * We must manipulate count and waking simultaneously and atomically.&n; * Here, we do this by using lld/scd on the pair of 32-bit words.&n; *&n; * Pseudocode:&n; *&n; *   Decrement(sem-&gt;count)&n; *   If(sem-&gt;count &gt;=0) {&n; *&t;Return(SUCCESS)&t;&t;&t;// resource is free&n; *   } else {&n; *&t;If(sem-&gt;waking &lt;= 0) {&t;&t;// if no wakeup pending&n; *&t;   Increment(sem-&gt;count)&t;// undo decrement&n; *&t;   Return(FAILURE)&n; *      } else {&n; *&t;   Decrement(sem-&gt;waking)&t;// otherwise &quot;steal&quot; wakeup&n; *&t;   Return(SUCCESS)&n; *&t;}&n; *   }&n; */
 DECL|function|down_trylock
 r_static
 r_inline
@@ -334,16 +285,7 @@ op_star
 id|sem
 )paren
 (brace
-r_int
-id|ret
-comma
-id|tmp
-comma
-id|tmp2
-comma
-id|sub
-suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
+macro_line|#ifdef WAITQUEUE_DEBUG
 id|CHECK_MAGIC
 c_func
 (paren
@@ -351,298 +293,17 @@ id|sem-&gt;__magic
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;&t;.set&t;mips3&t;&t;&t;# down_trylock&t;&t;&bslash;n&quot;
-l_string|&quot;0:&t;lld&t;%1, %4&t;&t;&t;&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;dli&t;%3, 0x0000000100000000&t;# count -= 1&t;&t;&bslash;n&quot;
-l_string|&quot;&t;dsubu&t;%1, %3&t;&t;&t;&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;li&t;%0, 0&t;&t;&t;# ret = 0&t;&t;&bslash;n&quot;
-l_string|&quot;&t;bgez&t;%1, 2f&t;&t;&t;# if count &gt;= 0&t;&t;&bslash;n&quot;
-l_string|&quot;&t;sll&t;%2, %1, 0&t;&t;# extract waking&t;&bslash;n&quot;
-l_string|&quot;&t;blez&t;%2, 1f&t;&t;&t;# if waking &lt; 0 -&gt; 1f&t;&bslash;n&quot;
-l_string|&quot;&t;daddiu&t;%1, %1, -1&t;&t;# waking -= 1&t;&t;&bslash;n&quot;
-l_string|&quot;&t;b&t;2f&t;&t;&t;&t;&t;&t;&bslash;n&quot;
-l_string|&quot;1:&t;daddu&t;%1, %1, %3&t;&t;# count += 1&t;&t;&bslash;n&quot;
-l_string|&quot;&t;li&t;%0, 1&t;&t;&t;# ret = 1&t;&t;&bslash;n&quot;
-l_string|&quot;2:&t;scd&t;%1, %4&t;&t;&t;&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;beqz&t;%1, 0b&t;&t;&t;&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;sync&t;&t;&t;&t;&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;.set&t;mips0&t;&t;&t;&t;&t;&t;&bslash;n&quot;
-suffix:colon
-l_string|&quot;=&amp;r&quot;
-(paren
-id|ret
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|tmp
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|tmp2
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|sub
-)paren
-suffix:colon
-l_string|&quot;m&quot;
-(paren
-op_star
-id|sem
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
 r_return
-id|ret
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Note! This is subtle. We jump to wake people up only if&n; * the semaphore was negative (== somebody was waiting on it).&n; */
-DECL|function|up
-r_static
-r_inline
-r_void
-id|up
-c_func
-(paren
-r_struct
-id|semaphore
-op_star
-id|sem
-)paren
-(brace
-r_int
-r_int
-id|tmp
-comma
-id|tmp2
-suffix:semicolon
-r_int
-id|count
-suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
-id|CHECK_MAGIC
-c_func
-(paren
-id|sem-&gt;__magic
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n;&t; * We must manipulate count and waking simultaneously and atomically.&n;&t; * Otherwise we have races between up and __down_failed_interruptible&n;&t; * waking up on a signal.&n;&t; */
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;&t;.set&t;mips3&t;&t;&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;sync&t;&t;&t;# up&t;&t;&t;&bslash;n&quot;
-l_string|&quot;1:&t;lld&t;%1, %3&t;&t;&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;dsra32&t;%0, %1, 0&t;# extract count to %0&t;&bslash;n&quot;
-l_string|&quot;&t;daddiu&t;%0, 1&t;&t;# count += 1&t;&t;&bslash;n&quot;
-l_string|&quot;&t;slti&t;%2, %0, 1&t;# %3 = (%0 &lt;= 0)&t;&bslash;n&quot;
-l_string|&quot;&t;daddu&t;%1, %2&t;&t;# waking += %3&t;&t;&bslash;n&quot;
-l_string|&quot;&t;dsll32 %1, %1, 0&t;# zero-extend %1&t;&bslash;n&quot;
-l_string|&quot;&t;dsrl32 %1, %1, 0&t;&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;dsll32&t;%2, %0, 0&t;# Reassemble union&t;&bslash;n&quot;
-l_string|&quot;&t;or&t;%1, %2&t;&t;# from count and waking&t;&bslash;n&quot;
-l_string|&quot;&t;scd&t;%1, %3&t;&t;&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;beqz&t;%1, 1b&t;&t;&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;.set&t;mips0&t;&t;&t;&t;&t;&bslash;n&quot;
-suffix:colon
-l_string|&quot;=&amp;r&quot;
-(paren
-id|count
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|tmp
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|tmp2
-)paren
-comma
-l_string|&quot;+m&quot;
-(paren
-op_star
-id|sem
-)paren
-suffix:colon
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|count
-op_le
-l_int|0
-)paren
-)paren
-id|__up_wakeup
-c_func
-(paren
-id|sem
-)paren
-suffix:semicolon
-)brace
-macro_line|#else
-multiline_comment|/*&n; * Non-blockingly attempt to down() a semaphore.&n; * Returns zero if we acquired it&n; */
-DECL|function|down_trylock
-r_static
-r_inline
-r_int
-id|down_trylock
-c_func
-(paren
-r_struct
-id|semaphore
-op_star
-id|sem
-)paren
-(brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
-id|count
-comma
-id|waking
-suffix:semicolon
-r_int
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
-id|CHECK_MAGIC
-c_func
-(paren
-id|sem-&gt;__magic
-)paren
-suffix:semicolon
-macro_line|#endif
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|semaphore_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|count
-op_assign
-id|atomic_read
+id|atomic_dec_if_positive
 c_func
 (paren
 op_amp
 id|sem-&gt;count
 )paren
-op_minus
-l_int|1
-suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|sem-&gt;count
-comma
-id|count
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|count
 OL
 l_int|0
-)paren
-)paren
-(brace
-id|waking
-op_assign
-id|atomic_read
-c_func
-(paren
-op_amp
-id|sem-&gt;waking
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|waking
-op_le
-l_int|0
-)paren
-(brace
-id|atomic_set
-c_func
-(paren
-op_amp
-id|sem-&gt;count
-comma
-id|count
-op_plus
-l_int|1
-)paren
-suffix:semicolon
-id|ret
-op_assign
-l_int|1
 suffix:semicolon
 )brace
-r_else
-(brace
-id|atomic_set
-c_func
-(paren
-op_amp
-id|sem-&gt;waking
-comma
-id|waking
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-)brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|semaphore_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Note! This is subtle. We jump to wake people up only if&n; * the semaphore was negative (== somebody was waiting on it).&n; */
 DECL|function|up
 r_static
 r_inline
@@ -656,16 +317,7 @@ op_star
 id|sem
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
-id|count
-comma
-id|waking
-suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
+macro_line|#ifdef WAITQUEUE_DEBUG
 id|CHECK_MAGIC
 c_func
 (paren
@@ -673,91 +325,29 @@ id|sem-&gt;__magic
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * We must manipulate count and waking simultaneously and atomically.&n;&t; * Otherwise we have races between up and __down_failed_interruptible&n;&t; * waking up on a signal.&n;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|semaphore_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|count
-op_assign
-id|atomic_read
-c_func
-(paren
-op_amp
-id|sem-&gt;count
-)paren
-op_plus
-l_int|1
-suffix:semicolon
-id|waking
-op_assign
-id|atomic_read
-c_func
-(paren
-op_amp
-id|sem-&gt;waking
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|count
-op_le
-l_int|0
-)paren
-id|waking
-op_increment
-suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|sem-&gt;count
-comma
-id|count
-)paren
-suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|sem-&gt;waking
-comma
-id|waking
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|semaphore_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|unlikely
 c_func
 (paren
-id|count
+id|atomic_inc_return
+c_func
+(paren
+op_amp
+id|sem-&gt;count
+)paren
 op_le
 l_int|0
 )paren
 )paren
-id|__up_wakeup
+id|__up
 c_func
 (paren
 id|sem
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_CPU_HAS_LLDSCD */
-macro_line|#endif /* _ASM_SEMAPHORE_H */
+macro_line|#endif /* __KERNEL__ */
+macro_line|#endif /* __ASM_SEMAPHORE_H */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Processor capabilities determination functions.&n; *&n; * Copyright (C) 1994 - 2003 Ralf Baechle&n; * Copyright (C) 2001 MIPS Inc.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * Processor capabilities determination functions.&n; *&n; * Copyright (C) xxxx  the Anonymous&n; * Copyright (C) 2003  Maciej W. Rozycki&n; * Copyright (C) 1994 - 2003 Ralf Baechle&n; * Copyright (C) 2001 MIPS Inc.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -94,6 +94,17 @@ l_string|&quot;.set&bslash;tmips0&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * The Au1xxx wait is available only if we run CONFIG_PM and&n; * the timer setup found we had a 32KHz counter available.&n; * There are still problems with functions that may call au1k_wait&n; * directly, but that will be discovered pretty quickly.&n; */
+r_extern
+r_void
+(paren
+op_star
+id|au1k_wait_ptr
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|au1k_wait
 r_void
 id|au1k_wait
@@ -214,7 +225,6 @@ suffix:colon
 r_case
 id|CPU_RM7000
 suffix:colon
-multiline_comment|/*&t;case CPU_RM9000: */
 r_case
 id|CPU_TX49XX
 suffix:colon
@@ -249,6 +259,7 @@ l_string|&quot; available.&bslash;n&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef CONFIG_PM
 r_case
 id|CPU_AU1000
 suffix:colon
@@ -258,9 +269,17 @@ suffix:colon
 r_case
 id|CPU_AU1500
 suffix:colon
+r_if
+c_cond
+(paren
+id|au1k_wait_ptr
+op_ne
+l_int|NULL
+)paren
+(brace
 id|cpu_wait
 op_assign
-id|au1k_wait
+id|au1k_wait_ptr
 suffix:semicolon
 id|printk
 c_func
@@ -268,8 +287,19 @@ c_func
 l_string|&quot; available.&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot; unavailable.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 id|printk
@@ -1352,14 +1382,6 @@ l_int|64
 suffix:semicolon
 r_break
 suffix:semicolon
-r_default
-suffix:colon
-id|c-&gt;cputype
-op_assign
-id|CPU_UNKNOWN
-suffix:semicolon
-r_break
-suffix:semicolon
 )brace
 )brace
 DECL|function|decode_config1
@@ -1635,14 +1657,6 @@ id|MIPS_CACHE_NOT_PRESENT
 suffix:semicolon
 r_break
 suffix:semicolon
-r_default
-suffix:colon
-id|c-&gt;cputype
-op_assign
-id|CPU_UNKNOWN
-suffix:semicolon
-r_break
-suffix:semicolon
 )brace
 )brace
 DECL|function|cpu_probe_alchemy
@@ -1743,14 +1757,6 @@ id|MIPS_CPU_ISA_M32
 suffix:semicolon
 r_break
 suffix:semicolon
-r_default
-suffix:colon
-id|c-&gt;cputype
-op_assign
-id|CPU_UNKNOWN
-suffix:semicolon
-r_break
-suffix:semicolon
 )brace
 )brace
 DECL|function|cpu_probe_sibyte
@@ -1820,14 +1826,6 @@ suffix:semicolon
 macro_line|#endif
 r_break
 suffix:semicolon
-r_default
-suffix:colon
-id|c-&gt;cputype
-op_assign
-id|CPU_UNKNOWN
-suffix:semicolon
-r_break
-suffix:semicolon
 )brace
 )brace
 DECL|function|cpu_probe_sandcraft
@@ -1889,14 +1887,6 @@ suffix:semicolon
 id|c-&gt;tlbsize
 op_assign
 l_int|64
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|c-&gt;cputype
-op_assign
-id|CPU_UNKNOWN
 suffix:semicolon
 r_break
 suffix:semicolon

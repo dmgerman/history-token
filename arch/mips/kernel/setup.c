@@ -1709,6 +1709,10 @@ op_star
 id|cmdline_p
 )paren
 (brace
+r_int
+r_int
+id|status
+suffix:semicolon
 id|cpu_probe
 c_func
 (paren
@@ -1726,8 +1730,16 @@ c_func
 suffix:semicolon
 macro_line|#ifdef CONFIG_MIPS32
 multiline_comment|/* Disable coprocessors and set FPU for 16/32 FPR register model */
-id|clear_c0_status
+id|status
+op_assign
+id|read_c0_status
 c_func
+(paren
+)paren
+suffix:semicolon
+id|status
+op_and_assign
+op_complement
 (paren
 id|ST0_CU1
 op_or
@@ -1742,17 +1754,29 @@ op_or
 id|ST0_FR
 )paren
 suffix:semicolon
-id|set_c0_status
+id|status
+op_or_assign
+id|ST0_CU0
+suffix:semicolon
+id|write_c0_status
 c_func
 (paren
-id|ST0_CU0
+id|status
 )paren
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_MIPS64
 multiline_comment|/*&n;&t; * On IP27, I am seeing the TS bit set when the kernel is loaded.&n;&t; * Maybe because the kernel is in ckseg0 and not xkphys? Clear it&n;&t; * anyway ...&n;&t; */
-id|clear_c0_status
+id|status
+op_assign
+id|read_c0_status
 c_func
+(paren
+)paren
+suffix:semicolon
+id|status
+op_and_assign
+op_complement
 (paren
 id|ST0_BEV
 op_or
@@ -1765,8 +1789,8 @@ op_or
 id|ST0_CU3
 )paren
 suffix:semicolon
-id|set_c0_status
-c_func
+id|status
+op_or_assign
 (paren
 id|ST0_CU0
 op_or
@@ -1775,6 +1799,12 @@ op_or
 id|ST0_SX
 op_or
 id|ST0_FR
+)paren
+suffix:semicolon
+id|write_c0_status
+c_func
+(paren
+id|status
 )paren
 suffix:semicolon
 macro_line|#endif
