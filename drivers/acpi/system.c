@@ -433,14 +433,12 @@ id|status
 op_assign
 id|AE_ERROR
 suffix:semicolon
-macro_line|#if 0
 r_int
 r_int
 id|flags
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* this is very broken, so don&squot;t do anything until it&squot;s fixed */
 id|save_flags
 c_func
 (paren
@@ -504,13 +502,6 @@ id|restore_flags
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
-id|printk
-c_func
-(paren
-l_string|&quot;ACPI: ACPI-based suspend currently broken, aborting&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
