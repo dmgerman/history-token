@@ -1685,7 +1685,7 @@ id|acpi_disabled
 comma
 id|acpi_force
 suffix:semicolon
-DECL|function|acpi_disable
+DECL|function|disable_acpi
 r_static
 id|__init
 id|__attribute__
@@ -1696,7 +1696,7 @@ id|unused
 )paren
 )paren
 r_int
-id|acpi_disable
+id|disable_acpi
 c_func
 (paren
 r_struct
