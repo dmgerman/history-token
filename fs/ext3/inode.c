@@ -3914,7 +3914,7 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * We need to pick up the new inode size which generic_commit_write gave us&n; * `file&squot; can be NULL - eg, when called from block_symlink().&n; *&n; * ext3 never places buffers on inode-&gt;i_mapping-&gt;private_list.  metadata&n; * buffers are managed internally.&n; */
+multiline_comment|/*&n; * We need to pick up the new inode size which generic_commit_write gave us&n; * `file&squot; can be NULL - eg, when called from page_symlink().&n; *&n; * ext3 never places buffers on inode-&gt;i_mapping-&gt;private_list.  metadata&n; * buffers are managed internally.&n; */
 DECL|function|ext3_commit_write
 r_static
 r_int

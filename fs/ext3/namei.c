@@ -4639,10 +4639,10 @@ op_assign
 op_amp
 id|ext3_aops
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * block_symlink() calls back into ext3_prepare/commit_write.&n;&t;&t; * We have a transaction open.  All is sweetness.  It also sets&n;&t;&t; * i_size in generic_commit_write().&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * page_symlink() calls into ext3_prepare/commit_write.&n;&t;&t; * We have a transaction open.  All is sweetness.  It also sets&n;&t;&t; * i_size in generic_commit_write().&n;&t;&t; */
 id|err
 op_assign
-id|block_symlink
+id|page_symlink
 c_func
 (paren
 id|inode

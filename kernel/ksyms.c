@@ -1487,11 +1487,11 @@ c_func
 id|page_symlink_inode_operations
 )paren
 suffix:semicolon
-DECL|variable|block_symlink
+DECL|variable|page_symlink
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|block_symlink
+id|page_symlink
 )paren
 suffix:semicolon
 DECL|variable|vfs_readdir

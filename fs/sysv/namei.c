@@ -527,7 +527,7 @@ l_int|0
 suffix:semicolon
 id|err
 op_assign
-id|block_symlink
+id|page_symlink
 c_func
 (paren
 id|inode

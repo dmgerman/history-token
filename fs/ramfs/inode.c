@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for block_symlink() */
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* some random number */
 DECL|macro|RAMFS_MAGIC
@@ -912,7 +911,7 @@ l_int|1
 suffix:semicolon
 id|error
 op_assign
-id|block_symlink
+id|page_symlink
 c_func
 (paren
 id|inode
