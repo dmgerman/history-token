@@ -327,9 +327,12 @@ r_struct
 id|file
 op_star
 comma
-r_char
+r_const
+r_struct
+id|iovec
 op_star
 comma
+r_int
 r_int
 comma
 id|loff_t
@@ -356,9 +359,11 @@ id|file
 op_star
 comma
 r_const
-r_char
+r_struct
+id|iovec
 op_star
 comma
+r_int
 r_int
 comma
 id|loff_t
@@ -1236,9 +1241,9 @@ multiline_comment|/*&n; * VOP&squot;s.&n; */
 DECL|macro|_VOP_
 mdefine_line|#define _VOP_(op, vp)&t;(*((vnodeops_t *)(vp)-&gt;v_fops)-&gt;op)
 DECL|macro|VOP_READ
-mdefine_line|#define VOP_READ(vp,file,buf,size,offset,cr,rv)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;VN_BHV_READ_LOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_read, vp)((vp)-&gt;v_fbhv,file,buf,size,offset,cr); &bslash;&n;&t;VN_BHV_READ_UNLOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_READ(vp,file,iov,segs,offset,cr,rv)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;VN_BHV_READ_LOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_read, vp)((vp)-&gt;v_fbhv,file,iov,segs,offset,cr); &bslash;&n;&t;VN_BHV_READ_UNLOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|VOP_WRITE
-mdefine_line|#define VOP_WRITE(vp,file,buf,size,offset,cr,rv)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;VN_BHV_READ_LOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_write, vp)((vp)-&gt;v_fbhv,file,buf,size,offset,cr);&bslash;&n;&t;VN_BHV_READ_UNLOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_WRITE(vp,file,iov,segs,offset,cr,rv)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;VN_BHV_READ_LOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_write, vp)((vp)-&gt;v_fbhv,file,iov,segs,offset,cr);&bslash;&n;&t;VN_BHV_READ_UNLOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|VOP_BMAP
 mdefine_line|#define VOP_BMAP(vp,of,sz,rw,cr,b,n,rv)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;VN_BHV_READ_LOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_bmap, vp)((vp)-&gt;v_fbhv,of,sz,rw,cr,b,n);&t;&t;&bslash;&n;&t;VN_BHV_READ_UNLOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|VOP_STRATEGY
