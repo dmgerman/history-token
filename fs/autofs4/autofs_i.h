@@ -192,6 +192,11 @@ id|super_block
 op_star
 id|sb
 suffix:semicolon
+DECL|member|wq_sem
+r_struct
+id|semaphore
+id|wq_sem
+suffix:semicolon
 DECL|member|queues
 r_struct
 id|autofs_wait_queue

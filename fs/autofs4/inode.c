@@ -866,6 +866,13 @@ id|sbi-&gt;sub_version
 op_assign
 l_int|0
 suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|sbi-&gt;wq_sem
+)paren
+suffix:semicolon
 id|sbi-&gt;queues
 op_assign
 l_int|NULL
