@@ -14557,6 +14557,9 @@ op_eq
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|mddev-&gt;pers
 op_member_access_from_pointer
 id|hot_remove_disk
@@ -14566,7 +14569,9 @@ id|mddev
 comma
 id|rdev-&gt;raid_disk
 )paren
-suffix:semicolon
+op_eq
+l_int|0
+)paren
 id|rdev-&gt;raid_disk
 op_assign
 op_minus
