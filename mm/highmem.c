@@ -931,7 +931,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|bio_for_each_segment
+id|__bio_for_each_segment
 c_func
 (paren
 id|tovec
@@ -939,6 +939,8 @@ comma
 id|to
 comma
 id|i
+comma
+l_int|0
 )paren
 (brace
 id|fromvec
@@ -1035,7 +1037,7 @@ op_minus
 id|EIO
 suffix:semicolon
 multiline_comment|/*&n;&t; * free up bounce indirect pages used&n;&t; */
-id|bio_for_each_segment
+id|__bio_for_each_segment
 c_func
 (paren
 id|bvec
@@ -1043,6 +1045,8 @@ comma
 id|bio
 comma
 id|i
+comma
+l_int|0
 )paren
 (brace
 id|org_vec
