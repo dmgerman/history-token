@@ -3501,9 +3501,9 @@ id|smp_flush_tlb_range
 c_func
 (paren
 r_struct
-id|vm_area_struct
+id|mm_struct
 op_star
-id|vma
+id|mm
 comma
 r_int
 r_int
@@ -3513,14 +3513,6 @@ r_int
 r_int
 id|end
 )paren
-(brace
-r_struct
-id|mm_struct
-op_star
-id|mm
-op_assign
-id|vma-&gt;vm_mm
-suffix:semicolon
 (brace
 id|u32
 id|ctx
@@ -3617,7 +3609,6 @@ id|start
 )paren
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|smp_flush_tlb_kernel_range
 r_void
