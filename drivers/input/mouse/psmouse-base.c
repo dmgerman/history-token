@@ -1941,6 +1941,18 @@ r_return
 id|type
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Reset to defaults in case the device got confused by extended&n; * protocol probes.&n; */
+id|ps2_command
+c_func
+(paren
+op_amp
+id|psmouse-&gt;ps2dev
+comma
+l_int|NULL
+comma
+id|PSMOUSE_CMD_RESET_DIS
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2354,12 +2366,17 @@ op_star
 id|psmouse
 )paren
 (brace
-r_int
-r_char
-id|param
-(braket
-l_int|2
-)braket
+multiline_comment|/*&n; * We set the mouse into streaming mode.&n; */
+id|ps2_command
+c_func
+(paren
+op_amp
+id|psmouse-&gt;ps2dev
+comma
+l_int|NULL
+comma
+id|PSMOUSE_CMD_SETSTREAM
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * We set the mouse report rate, resolution and scaling.&n; */
 r_if
@@ -2402,18 +2419,6 @@ id|PSMOUSE_CMD_SETSCALE11
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * We set the mouse into streaming mode.&n; */
-id|ps2_command
-c_func
-(paren
-op_amp
-id|psmouse-&gt;ps2dev
-comma
-id|param
-comma
-id|PSMOUSE_CMD_SETSTREAM
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * psmouse_set_state() sets new psmouse state and resets all flags and&n; * counters while holding serio lock so fighting with interrupt handler&n; * is not a concern.&n; */
 DECL|function|psmouse_set_state
