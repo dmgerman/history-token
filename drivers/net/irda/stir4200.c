@@ -3532,6 +3532,11 @@ id|err
 r_goto
 id|err_out1
 suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 multiline_comment|/* Note: Max SIR frame possible is 4273 */
 id|stir-&gt;tx_data
 op_assign
@@ -3719,11 +3724,6 @@ l_string|&quot;usb#%d&quot;
 comma
 id|stir-&gt;usbdev-&gt;devnum
 )paren
-suffix:semicolon
-id|err
-op_assign
-op_minus
-id|ENOMEM
 suffix:semicolon
 id|stir-&gt;irlap
 op_assign
