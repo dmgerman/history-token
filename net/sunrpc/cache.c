@@ -615,10 +615,7 @@ l_int|0
 suffix:semicolon
 id|cd-&gt;last_close
 op_assign
-id|get_seconds
-c_func
-(paren
-)paren
+l_int|0
 suffix:semicolon
 id|list_add
 c_func
