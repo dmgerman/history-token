@@ -2212,10 +2212,10 @@ suffix:colon
 multiline_comment|/*&n;     * Now we need to make sure head_blk is not pointing to a block in&n;     * the middle of a log record.&n;     */
 id|num_scan_bblks
 op_assign
-id|BTOBB
+id|XLOG_REC_SHIFT
 c_func
 (paren
-id|XLOG_MAX_RECORD_BSIZE
+id|log
 )paren
 suffix:semicolon
 r_if

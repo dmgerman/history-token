@@ -71,6 +71,8 @@ mdefine_line|#define XLOG_BTOLRBB(b)&t;&t;(((b)+XLOG_RECORD_BSIZE-1) &gt;&gt; XL
 macro_line|#endif
 DECL|macro|XLOG_HEADER_SIZE
 mdefine_line|#define XLOG_HEADER_SIZE&t;512
+DECL|macro|XLOG_REC_SHIFT
+mdefine_line|#define XLOG_REC_SHIFT(log) &bslash;&n;&t;BTOBB(1 &lt;&lt; (XFS_SB_VERSION_HASLOGV2(&amp;log-&gt;l_mp-&gt;m_sb) ? &bslash;&n;&t; XLOG_MAX_RECORD_BSHIFT : XLOG_BIG_RECORD_BSHIFT))
 DECL|macro|XLOG_TOTAL_REC_SHIFT
 mdefine_line|#define XLOG_TOTAL_REC_SHIFT(log) &bslash;&n;&t;BTOBB(XLOG_MAX_ICLOGS &lt;&lt; (XFS_SB_VERSION_HASLOGV2(&amp;log-&gt;l_mp-&gt;m_sb) ? &bslash;&n;&t; XLOG_MAX_RECORD_BSHIFT : XLOG_BIG_RECORD_BSHIFT))
 multiline_comment|/*&n; *  set lsns&n; */
