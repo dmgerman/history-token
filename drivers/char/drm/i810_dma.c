@@ -5,6 +5,8 @@ macro_line|#include &quot;i810.h&quot;
 macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &quot;i810_drv.h&quot;
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* For task queue support */
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 DECL|macro|I810_BUF_FREE
 mdefine_line|#define I810_BUF_FREE&t;&t;2
 DECL|macro|I810_BUF_CLIENT
