@@ -1695,14 +1695,6 @@ id|drive
 r_return
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ
-id|__ide_dma_queued_off
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

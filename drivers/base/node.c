@@ -56,7 +56,19 @@ suffix:semicolon
 r_int
 id|len
 suffix:semicolon
-multiline_comment|/* FIXME - someone should pass us a buffer size (count) or&n;&t; * use seq_file or something to avoid buffer overrun risk. */
+multiline_comment|/* 2004/06/03: buf currently PAGE_SIZE, need &gt; 1 char per 4 bits. */
+id|BUILD_BUG_ON
+c_func
+(paren
+id|NR_CPUS
+op_div
+l_int|4
+OG
+id|PAGE_SIZE
+op_div
+l_int|2
+)paren
+suffix:semicolon
 id|len
 op_assign
 id|cpumask_scnprintf
@@ -64,8 +76,9 @@ c_func
 (paren
 id|buf
 comma
-l_int|99
-multiline_comment|/* XXX FIXME */
+id|PAGE_SIZE
+op_minus
+l_int|1
 comma
 id|mask
 )paren

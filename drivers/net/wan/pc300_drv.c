@@ -16048,13 +16048,10 @@ op_assign
 id|chan-&gt;channel
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|arg
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|ifr-&gt;ifr_data
 suffix:semicolon
 r_struct

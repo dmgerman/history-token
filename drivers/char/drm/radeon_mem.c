@@ -476,8 +476,11 @@ op_logical_neg
 id|blocks
 )paren
 r_return
-op_minus
+id|DRM_ERR
+c_func
+(paren
 id|ENOMEM
+)paren
 suffix:semicolon
 op_star
 id|heap
@@ -514,8 +517,11 @@ id|blocks
 )paren
 suffix:semicolon
 r_return
-op_minus
+id|DRM_ERR
+c_func
+(paren
 id|ENOMEM
+)paren
 suffix:semicolon
 )brace
 id|blocks-&gt;start

@@ -200,8 +200,10 @@ DECL|macro|RADEON_EMIT_PP_TEX_SIZE_1
 mdefine_line|#define RADEON_EMIT_PP_TEX_SIZE_1                   74
 DECL|macro|RADEON_EMIT_PP_TEX_SIZE_2
 mdefine_line|#define RADEON_EMIT_PP_TEX_SIZE_2                   75
+DECL|macro|R200_EMIT_RB3D_BLENDCOLOR
+mdefine_line|#define R200_EMIT_RB3D_BLENDCOLOR                   76
 DECL|macro|RADEON_MAX_STATE_PACKETS
-mdefine_line|#define RADEON_MAX_STATE_PACKETS                    76
+mdefine_line|#define RADEON_MAX_STATE_PACKETS                    77
 multiline_comment|/* Commands understood by cmd_buffer ioctl.  More can be added but&n; * obviously these can&squot;t be removed or changed:&n; */
 DECL|macro|RADEON_CMD_PACKET
 mdefine_line|#define RADEON_CMD_PACKET      1 /* emit one of the register packets above */

@@ -1403,6 +1403,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ALERT
 l_string|&quot;Kernel BUG at %.50s:%d&bslash;n&quot;
 comma
 id|f.filename
@@ -1651,6 +1652,7 @@ multiline_comment|/* Executive summary in case the oops scrolled away */
 id|printk
 c_func
 (paren
+id|KERN_ALERT
 l_string|&quot;RIP &quot;
 )paren
 suffix:semicolon

@@ -859,6 +859,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -877,6 +878,7 @@ op_assign
 (brace
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|buf
@@ -1295,6 +1297,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1853,6 +1856,7 @@ id|ifr
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -1913,6 +1917,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
