@@ -9745,7 +9745,7 @@ c_func
 id|vmalloc_to_pfn
 )paren
 suffix:semicolon
-macro_line|#if !defined(CONFIG_ARCH_GATE_AREA)
+macro_line|#if !defined(__HAVE_ARCH_GATE_AREA)
 macro_line|#if defined(AT_SYSINFO_EHDR)
 DECL|variable|gate_vma
 r_struct
@@ -9818,16 +9818,11 @@ l_int|NULL
 suffix:semicolon
 macro_line|#endif
 )brace
-DECL|function|in_gate_area
+DECL|function|in_gate_area_no_task
 r_int
-id|in_gate_area
+id|in_gate_area_no_task
 c_func
 (paren
-r_struct
-id|task_struct
-op_star
-id|task
-comma
 r_int
 r_int
 id|addr
@@ -9857,5 +9852,5 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif&t;/* __HAVE_ARCH_GATE_AREA */
 eof
