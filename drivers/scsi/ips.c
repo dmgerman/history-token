@@ -3277,7 +3277,7 @@ c_func
 id|sh
 )paren
 suffix:semicolon
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|sh
@@ -26607,7 +26607,7 @@ id|index
 suffix:semicolon
 id|sh
 op_assign
-id|scsi_register
+id|scsi_host_alloc
 c_func
 (paren
 op_amp
@@ -26699,7 +26699,7 @@ comma
 l_string|&quot;Unable to install interrupt handler&bslash;n&quot;
 )paren
 suffix:semicolon
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|sh

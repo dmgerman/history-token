@@ -4885,7 +4885,7 @@ l_string|&quot;nsp_cs&quot;
 suffix:semicolon
 id|host
 op_assign
-id|scsi_register
+id|scsi_host_alloc
 c_func
 (paren
 id|sht

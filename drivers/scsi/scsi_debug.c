@@ -9554,7 +9554,7 @@ id|dev
 suffix:semicolon
 id|hpnt
 op_assign
-id|scsi_register
+id|scsi_host_alloc
 c_func
 (paren
 op_amp
@@ -9670,7 +9670,7 @@ op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|hpnt
@@ -9764,12 +9764,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|scsi_unregister
-c_func
-(paren
-id|sdbg_host-&gt;shost
-)paren
-suffix:semicolon
 id|list_for_each_safe
 c_func
 (paren
@@ -9808,6 +9802,12 @@ id|sdbg_devinfo
 )paren
 suffix:semicolon
 )brace
+id|scsi_host_put
+c_func
+(paren
+id|sdbg_host-&gt;shost
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -66,11 +66,6 @@ op_assign
 id|i91u_release
 comma
 dot
-id|command
-op_assign
-id|i91u_command
-comma
-dot
 id|queuecommand
 op_assign
 id|i91u_queue
@@ -2239,28 +2234,6 @@ r_return
 (paren
 l_int|0
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; *  We only support command in interrupt-driven fashion&n; */
-DECL|function|i91u_command
-r_int
-id|i91u_command
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;i91u: interrupt driven driver; use i91u_queue()&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Abort a queued command&n; *  (commands that are on the bus can&squot;t be aborted easily)&n; */
