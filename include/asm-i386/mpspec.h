@@ -6,13 +6,13 @@ multiline_comment|/*&n; * This tag identifies where the SMP configuration&n; * i
 DECL|macro|SMP_MAGIC_IDENT
 mdefine_line|#define SMP_MAGIC_IDENT&t;((&squot;_&squot;&lt;&lt;24)|(&squot;P&squot;&lt;&lt;16)|(&squot;M&squot;&lt;&lt;8)|&squot;_&squot;)
 multiline_comment|/*&n; * a maximum of 16 APICs with the current APIC ID architecture.&n; */
-macro_line|#ifdef CONFIG_MULTIQUAD
+macro_line|#ifdef CONFIG_X86_NUMAQ
 DECL|macro|MAX_APICS
 mdefine_line|#define MAX_APICS 256
-macro_line|#else /* !CONFIG_MULTIQUAD */
+macro_line|#else /* !CONFIG_X86_NUMAQ */
 DECL|macro|MAX_APICS
 mdefine_line|#define MAX_APICS 16
-macro_line|#endif /* CONFIG_MULTIQUAD */
+macro_line|#endif /* CONFIG_X86_NUMAQ */
 DECL|macro|MAX_MPC_ENTRY
 mdefine_line|#define MAX_MPC_ENTRY 1024
 DECL|struct|intel_mp_floating
@@ -519,13 +519,13 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Default configurations&n; *&n; *&t;1&t;2 CPU ISA 82489DX&n; *&t;2&t;2 CPU EISA 82489DX neither IRQ 0 timer nor IRQ 13 DMA chaining&n; *&t;3&t;2 CPU EISA 82489DX&n; *&t;4&t;2 CPU MCA 82489DX&n; *&t;5&t;2 CPU ISA+PCI&n; *&t;6&t;2 CPU EISA+PCI&n; *&t;7&t;2 CPU MCA+PCI&n; */
-macro_line|#ifdef CONFIG_MULTIQUAD
+macro_line|#ifdef CONFIG_X86_NUMAQ
 DECL|macro|MAX_IRQ_SOURCES
 mdefine_line|#define MAX_IRQ_SOURCES 512
-macro_line|#else /* !CONFIG_MULTIQUAD */
+macro_line|#else /* !CONFIG_X86_NUMAQ */
 DECL|macro|MAX_IRQ_SOURCES
 mdefine_line|#define MAX_IRQ_SOURCES 256
-macro_line|#endif /* CONFIG_MULTIQUAD */
+macro_line|#endif /* CONFIG_X86_NUMAQ */
 DECL|macro|MAX_MP_BUSSES
 mdefine_line|#define MAX_MP_BUSSES 32
 DECL|enum|mp_bustype

@@ -351,7 +351,7 @@ id|lines
 comma
 id|cols
 suffix:semicolon
-macro_line|#ifdef CONFIG_MULTIQUAD
+macro_line|#ifdef CONFIG_X86_NUMAQ
 DECL|variable|xquad_portio
 r_static
 r_void

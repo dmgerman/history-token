@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
-macro_line|# ifdef CONFIG_MULTIQUAD
+macro_line|# ifdef CONFIG_CLUSTERED_APIC
 DECL|macro|TARGET_CPUS
 macro_line|#  define TARGET_CPUS 0xf     /* all CPUs in *THIS* quad */
 DECL|macro|INT_DELIVERY_MODE
@@ -36,17 +36,17 @@ DECL|macro|TARGET_CPUS
 macro_line|# define TARGET_CPUS 0x01
 macro_line|#endif
 macro_line|#ifndef clustered_apic_mode
-macro_line|#ifdef CONFIG_MULTIQUAD
+macro_line|#ifdef CONFIG_CLUSTERED_APIC
 DECL|macro|clustered_apic_mode
 mdefine_line|#define clustered_apic_mode (1)
 DECL|macro|esr_disable
 mdefine_line|#define esr_disable (1)
-macro_line|#else /* !CONFIG_MULTIQUAD */
+macro_line|#else /* !CONFIG_CLUSTERED_APIC */
 DECL|macro|clustered_apic_mode
 mdefine_line|#define clustered_apic_mode (0)
 DECL|macro|esr_disable
 mdefine_line|#define esr_disable (0)
-macro_line|#endif /* CONFIG_MULTIQUAD */
+macro_line|#endif /* CONFIG_CLUSTERED_APIC */
 macro_line|#endif 
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef __ASSEMBLY__

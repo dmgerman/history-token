@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#if defined(CONFIG_MULTIQUAD) || defined(CONFIG_IA64)
+macro_line|#if defined(CONFIG_X86_NUMAQ) || defined(CONFIG_IA64)
 DECL|macro|LOG_BUF_LEN
 mdefine_line|#define LOG_BUF_LEN&t;(65536)
 macro_line|#elif defined(CONFIG_ARCH_S390)

@@ -472,7 +472,7 @@ suffix:colon
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_MULTIQUAD
+macro_line|#ifdef CONFIG_X86_NUMAQ
 r_extern
 r_void
 op_star
