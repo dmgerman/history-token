@@ -506,10 +506,6 @@ DECL|member|clients
 id|client_handle_t
 id|clients
 suffix:semicolon
-DECL|member|real_clients
-id|u_int
-id|real_clients
-suffix:semicolon
 DECL|member|cis_mem
 id|pccard_mem_map
 id|cis_mem
