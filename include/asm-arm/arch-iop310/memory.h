@@ -35,8 +35,6 @@ DECL|macro|__virt_to_bus
 mdefine_line|#define __virt_to_bus(x)&t;(((__virt_to_phys(x)) &amp; ~(*IOP310_SIATVR)) | ((*IOP310_SIABAR) &amp; 0xfffffff0))
 DECL|macro|__bus_to_virt
 mdefine_line|#define __bus_to_virt(x)    (__phys_to_virt(((x) &amp; ~(*IOP310_SIALR)) | ( *IOP310_SIATVR)))
-DECL|macro|PHYS_TO_NID
-mdefine_line|#define PHYS_TO_NID(x)&t;&t;0
 multiline_comment|/* boot mem allocate global pointer for MU circular queues QBAR */
 macro_line|#ifdef CONFIG_IOP310_MU
 r_extern

@@ -16,8 +16,6 @@ mdefine_line|#define PAGE_OFFSET&t;(0xc0000000UL)
 multiline_comment|/*&n; * Physical DRAM offset.&n; */
 DECL|macro|PHYS_OFFSET
 mdefine_line|#define PHYS_OFFSET&t;(0xa0000000UL)
-DECL|macro|PHYS_TO_NID
-mdefine_line|#define PHYS_TO_NID(addr)&t;(0)
 multiline_comment|/*&n; * physical vs virtual ram conversion&n; */
 DECL|macro|__virt_to_phys__is_a_macro
 mdefine_line|#define __virt_to_phys__is_a_macro

@@ -115,7 +115,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|freebird_init
-id|__initcall
+id|arch_initcall
 c_func
 (paren
 id|freebird_init

@@ -14,6 +14,7 @@ DECL|macro|MCA_bus__is_a_macro
 mdefine_line|#define MCA_bus__is_a_macro
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#include &lt;asm/procinfo.h&gt;
 macro_line|#include &lt;asm/arch/memory.h&gt;
 macro_line|#include &lt;asm/proc/processor.h&gt;
 DECL|struct|debug_info

@@ -168,7 +168,7 @@ id|__unused5
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* This matches struct stat64 in glibc2.1, hence the absolutely&n; * insane amounts of padding around dev_t&squot;s.&n; */
+multiline_comment|/* This matches struct stat64 in glibc2.1, hence the absolutely&n; * insane amounts of padding around dev_t&squot;s.&n; * Note: The kernel zero&squot;s the padded region because glibc might read them&n; * in the hope that the kernel has stretched to using larger sizes.&n; */
 DECL|struct|stat64
 r_struct
 id|stat64
