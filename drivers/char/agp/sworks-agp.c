@@ -1192,6 +1192,25 @@ comma
 l_int|4096
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|serverworks_private.registers
+)paren
+(brace
+id|printk
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;Unable to ioremap() memory.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|OUTREG8
 c_func
 (paren
