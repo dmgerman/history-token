@@ -3221,8 +3221,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: slot-&gt;device = %d, ctrl-&gt;slot_device_offset = %d &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: slot-&gt;device = %d, ctrl-&gt;slot_device_offset = %d &bslash;n&quot;
 comma
 id|slot-&gt;device
 comma
@@ -3410,8 +3411,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - start&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - start&bslash;n&quot;
 )paren
 suffix:semicolon
 id|add_wait_queue
@@ -3472,8 +3474,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - end&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - end&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

@@ -1075,8 +1075,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|tempdword
@@ -1835,8 +1836,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: %p, %d, %d, %p&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; %p, %d, %d, %p&bslash;n&quot;
 comma
 id|ops
 comma
@@ -2299,8 +2301,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - physical_slot = %s&bslash;n&quot;
 comma
 id|hotplug_slot-&gt;name
 )paren
@@ -2463,8 +2466,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - physical_slot = %s&bslash;n&quot;
 comma
 id|hotplug_slot-&gt;name
 )paren
@@ -2651,8 +2655,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - physical_slot = %s&bslash;n&quot;
 comma
 id|hotplug_slot-&gt;name
 )paren
@@ -2798,8 +2803,11 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
+comma
+id|hotplug_slot-&gt;name
 )paren
 suffix:semicolon
 r_if
@@ -2883,8 +2891,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - physical_slot = %s&bslash;n&quot;
 comma
 id|hotplug_slot-&gt;name
 )paren
@@ -2965,8 +2974,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - physical_slot = %s&bslash;n&quot;
 comma
 id|hotplug_slot-&gt;name
 )paren
@@ -3047,8 +3057,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - physical_slot = %s&bslash;n&quot;
 comma
 id|hotplug_slot-&gt;name
 )paren
@@ -3128,8 +3139,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - physical_slot = %s&bslash;n&quot;
 comma
 id|hotplug_slot-&gt;name
 )paren
@@ -3366,8 +3378,9 @@ id|rc
 id|err
 c_func
 (paren
+l_string|&quot;%s : pci_read_config_word failed&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; : pci_read_config_word failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3438,8 +3451,9 @@ id|ctrl
 id|err
 c_func
 (paren
+l_string|&quot;%s : out of memory&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; : out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3483,8 +3497,9 @@ id|rc
 id|err
 c_func
 (paren
+l_string|&quot;%s : pci_read_config_word failed&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; : pci_read_config_word failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4362,8 +4377,9 @@ id|rc
 id|err
 c_func
 (paren
+l_string|&quot;%s: unable to save PCI configuration data, error %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: unable to save PCI configuration data, error %d&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -4467,8 +4483,9 @@ suffix:semicolon
 id|err
 c_func
 (paren
+l_string|&quot;%s: unable to save PCI configuration data, error %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: unable to save PCI configuration data, error %d&bslash;n&quot;
 comma
 id|rc
 )paren

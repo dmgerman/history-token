@@ -501,8 +501,9 @@ suffix:semicolon
 )brace
 id|dbg
 (paren
+l_string|&quot;%s - returned %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - returned %d&bslash;n&quot;
 comma
 id|result
 )paren

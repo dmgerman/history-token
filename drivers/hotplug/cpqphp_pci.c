@@ -462,9 +462,9 @@ singleline_comment|//in parallel (hotplug and Linux at the same time).
 id|dbg
 c_func
 (paren
-l_string|&quot;@@@@@@@@@@@ cpqhp_slot_create in &quot;
+l_string|&quot;@@@@@@@@@@@ cpqhp_slot_create in %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|temp_func
@@ -1191,8 +1191,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: bus/dev/func = %x/%x/%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: bus/dev/func = %x/%x/%x&bslash;n&quot;
 comma
 id|func-&gt;bus
 comma
@@ -1436,8 +1437,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: dev %d, bus %d, pin %d, num %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: dev %d, bus %d, pin %d, num %d&bslash;n&quot;
 comma
 id|dev_num
 comma
@@ -1466,8 +1468,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: rc %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;:rc %d&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -7120,8 +7123,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if

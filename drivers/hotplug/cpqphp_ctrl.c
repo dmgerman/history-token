@@ -2705,8 +2705,9 @@ id|node-&gt;next
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: req_size =%x node=%p, base=%x, length=%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: req_size =%x node=%p, base=%x, length=%x&bslash;n&quot;
 comma
 id|size
 comma
@@ -2741,8 +2742,9 @@ l_int|1
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: not aligned&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: not aligned&bslash;n&quot;
 )paren
 suffix:semicolon
 singleline_comment|// this one isn&squot;t base aligned properly
@@ -2848,8 +2850,9 @@ id|size
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: too big&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: too big&bslash;n&quot;
 )paren
 suffix:semicolon
 singleline_comment|// this one is longer than we need
@@ -2912,8 +2915,9 @@ singleline_comment|// End of too big on top end
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: got one!!!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: got one!!!&bslash;n&quot;
 )paren
 suffix:semicolon
 singleline_comment|// If we got here, then it is the right size
@@ -2999,8 +3003,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: head = %p, *head = %p&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: head = %p, *head = %p&bslash;n&quot;
 comma
 id|head
 comma
@@ -3368,8 +3373,9 @@ id|MISC
 suffix:semicolon
 id|dbg
 (paren
+l_string|&quot;%s - waking up&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - waking up&bslash;n&quot;
 )paren
 suffix:semicolon
 id|wake_up_interruptible
@@ -4835,8 +4841,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: func-&gt;device, slot_offset, hp_slot = %d, %d ,%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: func-&gt;device, slot_offset, hp_slot = %d, %d ,%d&bslash;n&quot;
 comma
 id|func-&gt;device
 comma
@@ -5005,8 +5012,9 @@ singleline_comment|// Wait for exclusive access to hardware
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: before down&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: before down&bslash;n&quot;
 )paren
 suffix:semicolon
 id|down
@@ -5019,15 +5027,17 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: after down&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: after down&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: before slot_enable&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: before slot_enable&bslash;n&quot;
 )paren
 suffix:semicolon
 id|slot_enable
@@ -5040,8 +5050,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: before green_LED_blink&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: before green_LED_blink&bslash;n&quot;
 )paren
 suffix:semicolon
 id|green_LED_blink
@@ -5054,8 +5065,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: before amber_LED_blink&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: before amber_LED_blink&bslash;n&quot;
 )paren
 suffix:semicolon
 id|amber_LED_off
@@ -5068,8 +5080,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: before set_SOGO&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: before set_SOGO&bslash;n&quot;
 )paren
 suffix:semicolon
 id|set_SOGO
@@ -5082,8 +5095,9 @@ singleline_comment|// Wait for SOBS to be unset
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: before wait_for_ctrl_irq&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: before wait_for_ctrl_irq&bslash;n&quot;
 )paren
 suffix:semicolon
 id|wait_for_ctrl_irq
@@ -5094,16 +5108,18 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: after wait_for_ctrl_irq&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: after wait_for_ctrl_irq&bslash;n&quot;
 )paren
 suffix:semicolon
 singleline_comment|// Done with exclusive hardware access
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: before up&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: before up&bslash;n&quot;
 )paren
 suffix:semicolon
 id|up
@@ -5116,16 +5132,18 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: after up&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: after up&bslash;n&quot;
 )paren
 suffix:semicolon
 singleline_comment|// Wait for ~1 second because of hot plug spec
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: before long_delay&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: before long_delay&bslash;n&quot;
 )paren
 suffix:semicolon
 id|long_delay
@@ -5139,15 +5157,17 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: after long_delay&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: after long_delay&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: func status = %x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: func status = %x&bslash;n&quot;
 comma
 id|func-&gt;status
 )paren
@@ -5169,8 +5189,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: temp register set to %x by power fault&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: temp register set to %x by power fault&bslash;n&quot;
 comma
 id|temp_register
 )paren
@@ -5208,8 +5229,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: pci_read_config_dword returns %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: pci_read_config_dword returns %d&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -5217,8 +5239,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: temp_register is %x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: temp_register is %x&bslash;n&quot;
 comma
 id|temp_register
 )paren
@@ -5239,8 +5262,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: temp register set to %x by error&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: temp register set to %x by error&bslash;n&quot;
 comma
 id|temp_register
 )paren
@@ -5300,8 +5324,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: back from configure_new_device&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: back from configure_new_device&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ctrl-&gt;io_head
@@ -5442,8 +5467,9 @@ singleline_comment|//next, we will instantiate the linux pci_dev structures (wit
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: configure linux pci_dev structure&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: configure linux pci_dev structure&bslash;n&quot;
 )paren
 suffix:semicolon
 id|index
@@ -5670,9 +5696,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;In &quot;
+l_string|&quot;In %s, hp_slot = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;, hp_slot = %d&bslash;n&quot;
 comma
 id|hp_slot
 )paren
@@ -7052,9 +7078,9 @@ id|func
 id|dbg
 c_func
 (paren
-l_string|&quot;Error! func NULL in &quot;
+l_string|&quot;Error! func NULL in %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7158,9 +7184,9 @@ id|func
 id|dbg
 c_func
 (paren
-l_string|&quot;Error! func NULL in &quot;
+l_string|&quot;Error! func NULL in %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7607,8 +7633,9 @@ id|rc
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: rc = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: rc = %d&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -8724,8 +8751,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 singleline_comment|// Check for Multi-function device
@@ -8756,8 +8784,9 @@ id|rc
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: rc = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: rc = %d&bslash;n&quot;
 comma
 id|rc
 )paren
