@@ -566,6 +566,13 @@ id|buf
 )paren
 suffix:semicolon
 )brace
+DECL|variable|tty_name
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tty_name
+)paren
+suffix:semicolon
 DECL|function|tty_paranoia_check
 r_inline
 r_int
