@@ -23,16 +23,16 @@ macro_line|#include &lt;net/sch_generic.h&gt;
 macro_line|#include &lt;net/act_api.h&gt;
 macro_line|#if 1 /* control */
 DECL|macro|DPRINTK
-mdefine_line|#define DPRINTK(format,args...) printk(KERN_DEBUG format,##args)
+mdefine_line|#define DPRINTK(format, args...) printk(KERN_DEBUG format, ##args)
 macro_line|#else
 DECL|macro|DPRINTK
-mdefine_line|#define DPRINTK(format,args...)
+mdefine_line|#define DPRINTK(format, args...)
 macro_line|#endif
 macro_line|#if 0 /* data */
-mdefine_line|#define D2PRINTK(format,args...) printk(KERN_DEBUG format,##args)
+mdefine_line|#define D2PRINTK(format, args...) printk(KERN_DEBUG format, ##args)
 macro_line|#else
 DECL|macro|D2PRINTK
-mdefine_line|#define D2PRINTK(format,args...)
+mdefine_line|#define D2PRINTK(format, args...)
 macro_line|#endif
 DECL|variable|act_base
 r_static
@@ -215,10 +215,8 @@ id|a
 op_eq
 id|act
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -820,14 +818,12 @@ comma
 id|bind
 )paren
 )paren
-(brace
 id|module_put
 c_func
 (paren
 id|a-&gt;ops-&gt;owner
 )paren
 suffix:semicolon
-)brace
 id|a-&gt;ops
 op_assign
 l_int|NULL
@@ -845,7 +841,7 @@ multiline_comment|/*FIXME: Remove later - catch insertion bugs*/
 id|printk
 c_func
 (paren
-l_string|&quot;tcf_action_destroy: BUG? destroying NULL ops &bslash;n&quot;
+l_string|&quot;tcf_action_destroy: BUG? destroying NULL ops&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -870,7 +866,8 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;tcf_action_destroy: BUG? destroying NULL action! &bslash;n&quot;
+l_string|&quot;tcf_action_destroy: BUG? destroying &quot;
+l_string|&quot;NULL action!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -879,8 +876,8 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|function|tcf_action_dump_old
 r_int
+DECL|function|tcf_action_dump_old
 id|tcf_action_dump_old
 c_func
 (paren
@@ -947,8 +944,8 @@ id|ref
 )paren
 suffix:semicolon
 )brace
-DECL|function|tcf_action_dump_1
 r_int
+DECL|function|tcf_action_dump_1
 id|tcf_action_dump_1
 c_func
 (paren
@@ -1117,8 +1114,8 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|tcf_action_dump
 r_int
+DECL|function|tcf_action_dump
 id|tcf_action_dump
 c_func
 (paren
@@ -1415,7 +1412,7 @@ id|IFNAMSIZ
 id|printk
 c_func
 (paren
-l_string|&quot; Action %s bad&bslash;n&quot;
+l_string|&quot;Action %s bad&bslash;n&quot;
 comma
 (paren
 r_char
@@ -1469,7 +1466,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;tcf_action_init_1: finding  %s&bslash;n&quot;
+l_string|&quot;tcf_action_init_1: finding %s&bslash;n&quot;
 comma
 id|act_name
 )paren
@@ -1501,6 +1498,7 @@ id|act_name
 )paren
 suffix:semicolon
 id|request_module
+c_func
 (paren
 id|act_name
 )paren
@@ -1675,7 +1673,7 @@ id|err_free
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* module count goes up only when brand new policy is created&n;&t;   if it exists and is only bound to in a_o-&gt;init() then&n;           ACT_P_CREATED is not returned (a zero is).&n;        */
+multiline_comment|/* module count goes up only when brand new policy is created&n;&t;   if it exists and is only bound to in a_o-&gt;init() then&n;&t;   ACT_P_CREATED is not returned (a zero is).&n;&t;*/
 r_if
 c_cond
 (paren
@@ -1697,7 +1695,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;tcf_action_init_1: successfull %s &bslash;n&quot;
+l_string|&quot;tcf_action_init_1: successfull %s&bslash;n&quot;
 comma
 id|act_name
 )paren
@@ -1948,6 +1946,7 @@ suffix:semicolon
 DECL|function|tcf_action_copy_stats
 r_int
 id|tcf_action_copy_stats
+c_func
 (paren
 r_struct
 id|sk_buff
@@ -2268,11 +2267,9 @@ comma
 id|ref
 )paren
 )paren
-(brace
 r_goto
 id|rtattr_failure
 suffix:semicolon
-)brace
 id|x-&gt;rta_len
 op_assign
 id|skb-&gt;tail
@@ -2311,9 +2308,9 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|act_get_notify
 r_static
 r_int
+DECL|function|act_get_notify
 id|act_get_notify
 c_func
 (paren
@@ -2614,7 +2611,6 @@ op_minus
 l_int|1
 )braket
 )paren
-(brace
 id|index
 op_assign
 op_star
@@ -2633,7 +2629,6 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-)brace
 r_else
 (brace
 id|printk
@@ -2705,11 +2700,9 @@ l_int|NULL
 op_eq
 id|a
 )paren
-(brace
 r_goto
 id|err_mod
 suffix:semicolon
-)brace
 id|a-&gt;ops
 op_assign
 id|a_o
@@ -2774,6 +2767,7 @@ DECL|function|cleanup_a
 r_static
 r_void
 id|cleanup_a
+c_func
 (paren
 r_struct
 id|tc_action
@@ -2826,14 +2820,12 @@ id|a
 suffix:semicolon
 )brace
 r_else
-(brace
 id|printk
 c_func
 (paren
 l_string|&quot;cleanup_a: BUG? empty action&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 DECL|function|get_ao
@@ -2969,6 +2961,7 @@ id|act_name
 )paren
 suffix:semicolon
 id|request_module
+c_func
 (paren
 id|act_name
 )paren
@@ -3056,7 +3049,7 @@ multiline_comment|/* grrr .. */
 id|printk
 c_func
 (paren
-l_string|&quot;create_a: failed to alloc! &bslash;n&quot;
+l_string|&quot;create_a: failed to alloc!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3254,11 +3247,9 @@ id|rta
 OL
 l_int|0
 )paren
-(brace
 r_goto
 id|err_out
 suffix:semicolon
-)brace
 id|kind
 op_assign
 id|tb
@@ -3281,11 +3272,9 @@ comma
 id|a
 )paren
 )paren
-(brace
 r_goto
 id|err_out
 suffix:semicolon
-)brace
 id|nlh
 op_assign
 id|NLMSG_PUT
@@ -3363,11 +3352,9 @@ l_int|0
 OG
 id|err
 )paren
-(brace
 r_goto
 id|rtattr_failure
 suffix:semicolon
-)brace
 id|x-&gt;rta_len
 op_assign
 id|skb-&gt;tail
@@ -3457,9 +3444,9 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|tca_action_gd
 r_static
 r_int
+DECL|function|tca_action_gd
 id|tca_action_gd
 c_func
 (paren
@@ -3601,7 +3588,6 @@ id|tb
 l_int|1
 )braket
 )paren
-(brace
 r_return
 id|tca_action_flush
 c_func
@@ -3616,7 +3602,6 @@ comma
 id|pid
 )paren
 suffix:semicolon
-)brace
 )brace
 r_for
 c_loop
@@ -3677,12 +3662,10 @@ id|act
 suffix:semicolon
 )brace
 r_else
-(brace
 id|a
 op_assign
 id|act
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3727,7 +3710,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;tcf_action_get: failed to get! &bslash;n&quot;
+l_string|&quot;tcf_action_get: failed to get!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret
@@ -3747,7 +3730,6 @@ id|RTM_GETACTION
 op_eq
 id|event
 )paren
-(brace
 id|ret
 op_assign
 id|act_get_notify
@@ -3762,7 +3744,6 @@ comma
 id|event
 )paren
 suffix:semicolon
-)brace
 r_else
 (brace
 multiline_comment|/* delete */
@@ -4048,11 +4029,9 @@ comma
 l_int|0
 )paren
 )paren
-(brace
 r_goto
 id|rtattr_failure
 suffix:semicolon
-)brace
 id|x-&gt;rta_len
 op_assign
 id|skb-&gt;tail
@@ -4128,9 +4107,9 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|tcf_action_add
 r_static
 r_int
+DECL|function|tcf_action_add
 id|tcf_action_add
 c_func
 (paren
@@ -4261,14 +4240,12 @@ id|a
 suffix:semicolon
 )brace
 r_else
-(brace
 id|printk
 c_func
 (paren
 l_string|&quot;tcf_action_add: BUG? empty action&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 )brace
 id|done
 suffix:colon
@@ -4372,12 +4349,10 @@ id|n-&gt;nlmsg_flags
 op_amp
 id|NLM_F_REPLACE
 )paren
-(brace
 id|ovr
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 id|ret
 op_assign
 id|tcf_action_add
@@ -4452,7 +4427,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot; Unknown cmd was detected&bslash;n&quot;
+l_string|&quot;Unknown cmd was detected&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -4939,11 +4914,9 @@ l_int|0
 OG
 id|ret
 )paren
-(brace
 r_goto
 id|rtattr_failure
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4968,7 +4941,6 @@ id|skb-&gt;len
 suffix:semicolon
 )brace
 r_else
-(brace
 id|skb_trim
 c_func
 (paren
@@ -4983,7 +4955,6 @@ op_minus
 id|skb-&gt;data
 )paren
 suffix:semicolon
-)brace
 id|nlh-&gt;nlmsg_len
 op_assign
 id|skb-&gt;tail
@@ -5114,7 +5085,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;TC classifier action (bugs to netdev@oss.sgi.com cc hadi@cyberus.ca)&bslash;n&quot;
+l_string|&quot;TC classifier action (bugs to netdev@oss.sgi.com cc &quot;
+l_string|&quot;hadi@cyberus.ca)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
