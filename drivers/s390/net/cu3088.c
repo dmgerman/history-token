@@ -166,9 +166,6 @@ id|buf
 comma
 r_int
 id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_const
@@ -204,14 +201,6 @@ r_struct
 id|ccwgroup_driver
 op_star
 id|cdrv
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|off
-)paren
-r_return
-l_int|0
 suffix:semicolon
 id|cdrv
 op_assign
