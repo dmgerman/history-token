@@ -206,14 +206,10 @@ l_int|0
 suffix:semicolon
 id|j
 OL
-r_sizeof
+id|ARRAY_SIZE
+c_func
 (paren
 id|wide_opcodes
-)paren
-op_div
-r_sizeof
-(paren
-id|wide_opcode_t
 )paren
 suffix:semicolon
 op_increment
@@ -2008,15 +2004,7 @@ id|cs46xx_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|cs46xx_t
-comma
 id|entry-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|dsp_spos_instance_t
 op_star
@@ -2142,15 +2130,7 @@ id|cs46xx_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|cs46xx_t
-comma
 id|entry-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|dsp_spos_instance_t
 op_star
@@ -2315,15 +2295,7 @@ id|cs46xx_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|cs46xx_t
-comma
 id|entry-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|dsp_spos_instance_t
 op_star
@@ -2524,15 +2496,7 @@ id|cs46xx_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|cs46xx_t
-comma
 id|entry-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|dsp_spos_instance_t
 op_star
@@ -2737,15 +2701,7 @@ id|cs46xx_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|cs46xx_t
-comma
 id|entry-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 multiline_comment|/*dsp_spos_instance_t * ins = chip-&gt;dsp_spos_instance; */
 r_int
@@ -2918,15 +2874,7 @@ id|cs46xx_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|cs46xx_t
-comma
 id|entry-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 r_int
 id|i
@@ -5369,6 +5317,7 @@ id|fifo_span
 comma
 id|valid_slots
 suffix:semicolon
+r_static
 id|spos_control_block_t
 id|sposcb
 op_assign
@@ -5625,6 +5574,7 @@ suffix:semicolon
 )brace
 (brace
 multiline_comment|/* create the null SCB */
+r_static
 id|generic_scb_t
 id|null_scb
 op_assign
@@ -5655,7 +5605,7 @@ id|NULL_SCB_ADDR
 comma
 id|NULL_SCB_ADDR
 comma
-id|null_algorithm-&gt;address
+l_int|0
 comma
 l_int|0
 comma
@@ -5676,6 +5626,10 @@ l_int|0
 comma
 )brace
 )brace
+suffix:semicolon
+id|null_scb.entry_point
+op_assign
+id|null_algorithm-&gt;address
 suffix:semicolon
 id|ins-&gt;the_null_scb
 op_assign
@@ -5722,6 +5676,7 @@ suffix:semicolon
 )brace
 (brace
 multiline_comment|/* setup foreground task tree */
+r_static
 id|task_tree_control_block_t
 id|fg_task_tree_hdr
 op_assign
@@ -5763,7 +5718,7 @@ id|BG_TREE_SCB_ADDR
 comma
 id|TIMINGMASTER_SCB_ADDR
 comma
-id|fg_task_tree_header_code-&gt;address
+l_int|0
 comma
 id|FG_TASK_HEADER_ADDR
 op_plus
@@ -5800,7 +5755,7 @@ comma
 (brace
 id|DSP_SPOS_DC
 comma
-id|task_tree_thread-&gt;address
+l_int|0
 comma
 id|DSP_SPOS_DC
 comma
@@ -5892,6 +5847,14 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
+id|fg_task_tree_hdr.links.entry_point
+op_assign
+id|fg_task_tree_header_code-&gt;address
+suffix:semicolon
+id|fg_task_tree_hdr.context_blk.stack0
+op_assign
+id|task_tree_thread-&gt;address
+suffix:semicolon
 id|cs46xx_dsp_create_task_tree
 c_func
 (paren
@@ -5914,6 +5877,7 @@ suffix:semicolon
 )brace
 (brace
 multiline_comment|/* setup foreground task tree */
+r_static
 id|task_tree_control_block_t
 id|bg_task_tree_hdr
 op_assign
@@ -5950,7 +5914,7 @@ comma
 id|NULL_SCB_ADDR
 comma
 multiline_comment|/* Set up the background to do nothing */
-id|task_tree_header_code-&gt;address
+l_int|0
 comma
 id|BG_TREE_SCB_ADDR
 op_plus
@@ -5987,7 +5951,7 @@ comma
 (brace
 id|DSP_SPOS_DC
 comma
-id|task_tree_thread-&gt;address
+l_int|0
 comma
 id|DSP_SPOS_DC
 comma
@@ -6078,6 +6042,14 @@ comma
 l_int|0
 )brace
 )brace
+suffix:semicolon
+id|bg_task_tree_hdr.links.entry_point
+op_assign
+id|task_tree_header_code-&gt;address
+suffix:semicolon
+id|bg_task_tree_hdr.context_blk.stack0
+op_assign
+id|task_tree_thread-&gt;address
 suffix:semicolon
 id|cs46xx_dsp_create_task_tree
 c_func
@@ -6239,6 +6211,7 @@ r_goto
 id|_fail_end
 suffix:semicolon
 (brace
+r_static
 id|mix2_ostream_spb_t
 id|mix2_ostream_spb
 op_assign

@@ -89,14 +89,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -117,14 +109,6 @@ comma
 l_string|&quot;ID string for &quot;
 id|CARD_NAME
 l_string|&quot; soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -149,14 +133,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -179,25 +155,10 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|pcifix
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0,Disabled},{1,Latency},{2,Bridge},{3,Both},{255,Auto}},default:4,dialog:check&quot;
-)paren
-suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Aureal vortex&quot;
-)paren
-suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -206,7 +167,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Aureal Semiconductor Inc., Aureal Vortex Sound Processor}}&quot;
@@ -604,17 +565,7 @@ id|vortex_t
 op_star
 id|vortex
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|vortex_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 id|vortex_gameport_unregister
 c_func
@@ -655,7 +606,7 @@ c_func
 id|vortex-&gt;pci_dev
 )paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|vortex
@@ -767,12 +718,16 @@ id|VORTEX_DMA_MASK
 suffix:semicolon
 id|chip
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|vortex_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|chip
+)paren
 comma
 id|GFP_KERNEL
 )paren

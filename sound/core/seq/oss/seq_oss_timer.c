@@ -56,9 +56,11 @@ id|rec
 suffix:semicolon
 id|rec
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
 op_star
@@ -453,12 +455,10 @@ id|tmprec.tempo
 op_assign
 id|timer-&gt;tempo
 suffix:semicolon
-id|snd_seq_kernel_client_ctl
+id|snd_seq_set_queue_tempo
 c_func
 (paren
 id|dp-&gt;cseq
-comma
-id|SNDRV_SEQ_IOCTL_SET_QUEUE_TEMPO
 comma
 op_amp
 id|tmprec

@@ -7,8 +7,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;pmac.h&quot;
 macro_line|#include &quot;burgundy.h&quot;
-DECL|macro|chip_t
-mdefine_line|#define chip_t pmac_t
 multiline_comment|/* Waits for busy flag to clear */
 r_inline
 r_static
@@ -1702,8 +1700,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-DECL|macro|num_controls
-mdefine_line|#define num_controls(ary) (sizeof(ary) / sizeof(snd_kcontrol_new_t))
 macro_line|#ifdef PMAC_SUPPORT_AUTOMUTE
 multiline_comment|/*&n; * auto-mute stuffs&n; */
 DECL|function|snd_pmac_burgundy_detect_headphone
@@ -2103,7 +2099,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|snd_pmac_burgundy_mixers

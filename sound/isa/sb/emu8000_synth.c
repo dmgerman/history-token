@@ -20,12 +20,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*----------------------------------------------------------------*/
 multiline_comment|/*&n; * create a new hardware dependent device for Emu8000&n; */
 DECL|function|snd_emu8000_new_device

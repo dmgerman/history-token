@@ -32,13 +32,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{C-Media,CMI8330,isapnp:{CMI0001,@@@0001,@X@0001}}}&quot;
@@ -196,14 +190,6 @@ comma
 l_string|&quot;Index value for CMI8330 soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -224,14 +210,6 @@ comma
 l_string|&quot;ID string  for CMI8330 soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -250,14 +228,6 @@ c_func
 id|enable
 comma
 l_string|&quot;Enable CMI8330 soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PNP
@@ -281,14 +251,6 @@ comma
 l_string|&quot;PnP detection for specified soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|isapnp
-comma
-id|SNDRV_ISAPNP_DESC
-)paren
-suffix:semicolon
 macro_line|#endif
 id|module_param_array
 c_func
@@ -308,15 +270,6 @@ c_func
 id|sbport
 comma
 l_string|&quot;Port # for CMI8330 SB driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|sbport
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x220,0x280,0x20}},prefers:{0x220},base:16,dialog:list&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -339,15 +292,6 @@ comma
 l_string|&quot;IRQ # for CMI8330 SB driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|sbirq
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{5},{7},{9},{10},{11},{12}},prefers:{5},dialog:list&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -366,15 +310,6 @@ c_func
 id|sbdma8
 comma
 l_string|&quot;DMA8 for CMI8330 SB driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|sbdma8
-comma
-id|SNDRV_DMA8_DESC
-l_string|&quot;,prefers:{1}&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -397,15 +332,6 @@ comma
 l_string|&quot;DMA16 for CMI8330 SB driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|sbdma16
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{5},{7}},prefers:{5},dialog:list&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -424,15 +350,6 @@ c_func
 id|wssport
 comma
 l_string|&quot;Port # for CMI8330 WSS driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|wssport
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x530},{0xe80,0xf40,0xc0}},prefers:{0x530},base:16,dialog:list&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -455,15 +372,6 @@ comma
 l_string|&quot;IRQ # for CMI8330 WSS driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|wssirq
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{5},{7},{9},{10},{11},{12}},prefers:{11},dialog:list&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -482,15 +390,6 @@ c_func
 id|wssdma
 comma
 l_string|&quot;DMA for CMI8330 WSS driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|wssdma
-comma
-id|SNDRV_DMA8_DESC
-l_string|&quot;,prefers:{0}&quot;
 )paren
 suffix:semicolon
 DECL|macro|CMI8330_RMUX3D
@@ -2386,12 +2285,7 @@ id|snd_cmi8330
 op_star
 id|chip
 op_assign
-(paren
-r_struct
-id|snd_cmi8330
-op_star
-)paren
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -2436,12 +2330,7 @@ id|snd_cmi8330
 op_star
 id|chip
 op_assign
-(paren
-r_struct
-id|snd_cmi8330
-op_star
-)paren
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream

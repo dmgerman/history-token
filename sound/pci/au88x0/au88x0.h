@@ -395,8 +395,6 @@ id|rev
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|chip_t
-mdefine_line|#define chip_t vortex_t
 multiline_comment|/* Functions. */
 multiline_comment|/* SRC */
 r_static

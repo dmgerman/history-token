@@ -142,14 +142,10 @@ r_struct
 id|snd_sg_buf
 id|snd_pcm_sgbuf_t
 suffix:semicolon
-DECL|macro|_snd_pcm_substream_chip
-mdefine_line|#define _snd_pcm_substream_chip(substream) ((substream)-&gt;private_data)
 DECL|macro|snd_pcm_substream_chip
-mdefine_line|#define snd_pcm_substream_chip(substream) snd_magic_cast1(chip_t, _snd_pcm_substream_chip(substream), return -ENXIO)
-DECL|macro|_snd_pcm_chip
-mdefine_line|#define _snd_pcm_chip(pcm) ((pcm)-&gt;private_data)
+mdefine_line|#define snd_pcm_substream_chip(substream) ((substream)-&gt;private_data)
 DECL|macro|snd_pcm_chip
-mdefine_line|#define snd_pcm_chip(pcm) snd_magic_cast1(chip_t, _snd_pcm_chip(pcm), return -ENXIO)
+mdefine_line|#define snd_pcm_chip(pcm) ((pcm)-&gt;private_data)
 DECL|typedef|snd_pcm_file_t
 r_typedef
 r_struct
@@ -472,6 +468,8 @@ DECL|macro|SNDRV_PCM_TRIGGER_SUSPEND
 mdefine_line|#define SNDRV_PCM_TRIGGER_SUSPEND&t;5
 DECL|macro|SNDRV_PCM_TRIGGER_RESUME
 mdefine_line|#define SNDRV_PCM_TRIGGER_RESUME&t;6
+DECL|macro|SNDRV_PCM_POS_XRUN
+mdefine_line|#define SNDRV_PCM_POS_XRUN&t;&t;((snd_pcm_uframes_t)-1)
 multiline_comment|/* If you change this don&squot;t forget to change rates[] table in pcm_native.c */
 DECL|macro|SNDRV_PCM_RATE_5512
 mdefine_line|#define SNDRV_PCM_RATE_5512&t;&t;(1&lt;&lt;0)&t;&t;/* 5512Hz */
@@ -1189,12 +1187,13 @@ r_int
 id|dma_bytes
 suffix:semicolon
 multiline_comment|/* size of DMA area */
-DECL|member|dma_private
-r_void
+DECL|member|dma_buffer_p
+r_struct
+id|snd_dma_buffer
 op_star
-id|dma_private
+id|dma_buffer_p
 suffix:semicolon
-multiline_comment|/* private DMA data for the memory allocator */
+multiline_comment|/* allocated buffer */
 macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)
 multiline_comment|/* -- OSS things -- */
 DECL|member|oss
@@ -1265,15 +1264,15 @@ r_int
 id|buffer_bytes_max
 suffix:semicolon
 multiline_comment|/* limit ring buffer size */
-DECL|member|dma_device
-r_struct
-id|snd_dma_device
-id|dma_device
-suffix:semicolon
 DECL|member|dma_buffer
 r_struct
 id|snd_dma_buffer
 id|dma_buffer
+suffix:semicolon
+DECL|member|dma_buf_id
+r_int
+r_int
+id|dma_buf_id
 suffix:semicolon
 DECL|member|dma_max
 r_int
@@ -3696,7 +3695,10 @@ id|format
 )paren
 suffix:semicolon
 multiline_comment|/* in bits */
-id|u_int64_t
+r_const
+r_int
+r_char
+op_star
 id|snd_pcm_format_silence_64
 c_func
 (paren
@@ -4056,6 +4058,72 @@ op_star
 id|runtime
 )paren
 suffix:semicolon
+DECL|function|snd_pcm_set_runtime_buffer
+r_static
+r_inline
+r_void
+id|snd_pcm_set_runtime_buffer
+c_func
+(paren
+id|snd_pcm_substream_t
+op_star
+id|substream
+comma
+r_struct
+id|snd_dma_buffer
+op_star
+id|bufp
+)paren
+(brace
+id|snd_pcm_runtime_t
+op_star
+id|runtime
+op_assign
+id|substream-&gt;runtime
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bufp
+)paren
+(brace
+id|runtime-&gt;dma_buffer_p
+op_assign
+id|bufp
+suffix:semicolon
+id|runtime-&gt;dma_area
+op_assign
+id|bufp-&gt;area
+suffix:semicolon
+id|runtime-&gt;dma_addr
+op_assign
+id|bufp-&gt;addr
+suffix:semicolon
+id|runtime-&gt;dma_bytes
+op_assign
+id|bufp-&gt;bytes
+suffix:semicolon
+)brace
+r_else
+(brace
+id|runtime-&gt;dma_buffer_p
+op_assign
+l_int|NULL
+suffix:semicolon
+id|runtime-&gt;dma_area
+op_assign
+l_int|NULL
+suffix:semicolon
+id|runtime-&gt;dma_addr
+op_assign
+l_int|0
+suffix:semicolon
+id|runtime-&gt;dma_bytes
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/*&n; *  Timer interface&n; */
 r_void
 id|snd_pcm_timer_resolution_change
@@ -4170,7 +4238,7 @@ id|substream
 )paren
 suffix:semicolon
 DECL|macro|snd_pcm_substream_sgbuf
-mdefine_line|#define snd_pcm_substream_sgbuf(substream) ((substream)-&gt;runtime-&gt;dma_private)
+mdefine_line|#define snd_pcm_substream_sgbuf(substream) ((substream)-&gt;runtime-&gt;dma_buffer_p-&gt;private_data)
 DECL|macro|snd_pcm_sgbuf_pages
 mdefine_line|#define snd_pcm_sgbuf_pages(size) snd_sgbuf_aligned_pages(size)
 DECL|macro|snd_pcm_sgbuf_get_addr

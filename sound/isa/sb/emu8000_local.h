@@ -9,8 +9,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/emu8000.h&gt;
 macro_line|#include &lt;sound/emu8000_reg.h&gt;
-DECL|macro|NELEM
-mdefine_line|#define NELEM(arr) (sizeof(arr)/sizeof((arr)[0]))
 multiline_comment|/* emu8000_patch.c */
 r_int
 id|snd_emu8000_sample_new

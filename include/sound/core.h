@@ -819,6 +819,7 @@ id|private_data
 suffix:semicolon
 DECL|macro|snd_card_set_isa_pm_callback
 mdefine_line|#define snd_card_set_isa_pm_callback(card,suspend,resume,data) &bslash;&n;&t;snd_card_set_dev_pm_callback(card, PM_ISA_DEV, suspend, resume, data)
+macro_line|#ifdef CONFIG_PCI
 macro_line|#ifndef SND_PCI_PM_CALLBACKS
 r_int
 id|snd_card_pci_suspend
@@ -845,6 +846,7 @@ id|dev
 suffix:semicolon
 DECL|macro|SND_PCI_PM_CALLBACKS
 mdefine_line|#define SND_PCI_PM_CALLBACKS &bslash;&n;&t;.suspend = snd_card_pci_suspend,  .resume = snd_card_pci_resume
+macro_line|#endif
 macro_line|#endif
 macro_line|#else
 DECL|macro|snd_power_lock
@@ -881,13 +883,15 @@ mdefine_line|#define snd_power_get_state(card)&t;SNDRV_CTL_POWER_D0
 DECL|macro|snd_power_change_state
 mdefine_line|#define snd_power_change_state(card, state)&t;do { (void)(card); } while (0)
 DECL|macro|snd_card_set_pm_callback
-mdefine_line|#define snd_card_set_pm_callback(card,suspend,resume,data) -EINVAL
+mdefine_line|#define snd_card_set_pm_callback(card,suspend,resume,data)
 DECL|macro|snd_card_set_dev_pm_callback
-mdefine_line|#define snd_card_set_dev_pm_callback(card,suspend,resume,data) -EINVAL
+mdefine_line|#define snd_card_set_dev_pm_callback(card,suspend,resume,data)
 DECL|macro|snd_card_set_isa_pm_callback
-mdefine_line|#define snd_card_set_isa_pm_callback(card,suspend,resume,data) -EINVAL
+mdefine_line|#define snd_card_set_isa_pm_callback(card,suspend,resume,data)
+macro_line|#ifdef CONFIG_PCI
 DECL|macro|SND_PCI_PM_CALLBACKS
 mdefine_line|#define SND_PCI_PM_CALLBACKS
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/* device.c */
 DECL|struct|_snd_minor
@@ -1076,7 +1080,7 @@ mdefine_line|#define snd_minor_info_oss_init() /*NOP*/
 DECL|macro|snd_minor_info_oss_done
 mdefine_line|#define snd_minor_info_oss_done() /*NOP*/
 DECL|macro|snd_oss_init_module
-mdefine_line|#define snd_oss_init_module() /*NOP*/
+mdefine_line|#define snd_oss_init_module() 0
 macro_line|#endif
 multiline_comment|/* memory.c */
 macro_line|#ifdef CONFIG_SND_DEBUG_MEMORY
@@ -1121,6 +1125,21 @@ id|flags
 )paren
 suffix:semicolon
 r_void
+op_star
+id|snd_hidden_kcalloc
+c_func
+(paren
+r_int
+id|n
+comma
+r_int
+id|size
+comma
+r_int
+id|flags
+)paren
+suffix:semicolon
+r_void
 id|snd_hidden_kfree
 c_func
 (paren
@@ -1151,6 +1170,8 @@ id|obj
 suffix:semicolon
 DECL|macro|kmalloc
 mdefine_line|#define kmalloc(size, flags) snd_hidden_kmalloc(size, flags)
+DECL|macro|kcalloc
+mdefine_line|#define kcalloc(n, size, flags) snd_hidden_kcalloc(n, size, flags)
 DECL|macro|kfree
 mdefine_line|#define kfree(obj) snd_hidden_kfree(obj)
 DECL|macro|vmalloc
@@ -1183,18 +1204,6 @@ mdefine_line|#define kfree_nocheck(obj) kfree(obj)
 DECL|macro|vfree_nocheck
 mdefine_line|#define vfree_nocheck(obj) vfree(obj)
 macro_line|#endif
-r_void
-op_star
-id|snd_kcalloc
-c_func
-(paren
-r_int
-id|size
-comma
-r_int
-id|flags
-)paren
-suffix:semicolon
 r_char
 op_star
 id|snd_kmalloc_strdup
@@ -1658,10 +1667,10 @@ mdefine_line|#define snd_printd(fmt, args...) &bslash;&n;&t;printk(fmt ,##args)
 macro_line|#endif
 multiline_comment|/**&n; * snd_assert - run-time assersion macro&n; * @expr: expression&n; * @args...: the action&n; *&n; * This macro checks the expression in run-time and invokes the commands&n; * given in the rest arguments if the assertion is failed.&n; * When CONFIG_SND_DEBUG is not set, the expression is executed but&n; * not checked.&n; */
 DECL|macro|snd_assert
-mdefine_line|#define snd_assert(expr, args...) do {&bslash;&n;&t;if (!(expr)) {&bslash;&n;&t;&t;snd_printk(&quot;BUG? (%s) (called from %p)&bslash;n&quot;, __ASTRING__(expr), __builtin_return_address(0));&bslash;&n;&t;&t;args;&bslash;&n;&t;}&bslash;&n;} while (0)
+mdefine_line|#define snd_assert(expr, args...) do {&bslash;&n;&t;if (unlikely(!(expr))) {&t;&t;&t;&t;&bslash;&n;&t;&t;snd_printk(&quot;BUG? (%s) (called from %p)&bslash;n&quot;, __ASTRING__(expr), __builtin_return_address(0));&bslash;&n;&t;&t;args;&bslash;&n;&t;}&bslash;&n;} while (0)
 multiline_comment|/**&n; * snd_runtime_check - run-time assersion macro&n; * @expr: expression&n; * @args...: the action&n; *&n; * This macro checks the expression in run-time and invokes the commands&n; * given in the rest arguments if the assertion is failed.&n; * Unlike snd_assert(), the action commands are executed even if&n; * CONFIG_SND_DEBUG is not set but without any error messages.&n; */
 DECL|macro|snd_runtime_check
-mdefine_line|#define snd_runtime_check(expr, args...) do {&bslash;&n;&t;if (!(expr)) {&bslash;&n;&t;&t;snd_printk(&quot;ERROR (%s) (called from %p)&bslash;n&quot;, __ASTRING__(expr), __builtin_return_address(0));&bslash;&n;&t;&t;args;&bslash;&n;&t;}&bslash;&n;} while (0)
+mdefine_line|#define snd_runtime_check(expr, args...) do {&bslash;&n;&t;if (unlikely(!(expr))) {&t;&t;&t;&t;&bslash;&n;&t;&t;snd_printk(&quot;ERROR (%s) (called from %p)&bslash;n&quot;, __ASTRING__(expr), __builtin_return_address(0));&bslash;&n;&t;&t;args;&bslash;&n;&t;}&bslash;&n;} while (0)
 macro_line|#else /* !CONFIG_SND_DEBUG */
 DECL|macro|snd_printd
 mdefine_line|#define snd_printd(fmt, args...)&t;/* nothing */
