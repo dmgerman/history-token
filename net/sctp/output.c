@@ -160,6 +160,10 @@ op_amp
 id|packet-&gt;chunks
 )paren
 suffix:semicolon
+id|packet-&gt;size
+op_assign
+id|SCTP_IP_OVERHEAD
+suffix:semicolon
 id|packet-&gt;vtag
 op_assign
 l_int|0
@@ -610,9 +614,16 @@ r_if
 c_cond
 (paren
 id|packet_empty
+op_logical_or
+op_logical_neg
+id|sctp_chunk_is_data
+c_func
+(paren
+id|chunk
+)paren
 )paren
 (brace
-multiline_comment|/* We no longer do refragmentation at all.&n;&t;&t;&t; * Just fragment at the IP layer, if we&n;&t;&t;&t; * actually hit this condition&n;&t;&t;&t; */
+multiline_comment|/* We no longer do re-fragmentation.&n;&t;&t;&t; * Just fragment at the IP layer, if we&n;&t;&t;&t; * actually hit this condition&n;&t;&t;&t; */
 id|packet-&gt;ipfragok
 op_assign
 l_int|1
@@ -623,7 +634,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* !packet_empty */
 id|retval
 op_assign
 id|SCTP_XMIT_PMTU_FULL
@@ -797,21 +807,7 @@ id|dst_entry
 op_star
 id|dst
 suffix:semicolon
-multiline_comment|/* Do NOT generate a chunkless packet... */
-r_if
-c_cond
-(paren
-id|skb_queue_empty
-c_func
-(paren
-op_amp
-id|packet-&gt;chunks
-)paren
-)paren
-r_return
-id|err
-suffix:semicolon
-multiline_comment|/* Set up convenience variables... */
+multiline_comment|/* Do NOT generate a chunkless packet. */
 id|chunk
 op_assign
 (paren
@@ -819,10 +815,27 @@ r_struct
 id|sctp_chunk
 op_star
 )paren
+id|skb_peek
+c_func
 (paren
-id|packet-&gt;chunks.next
+op_amp
+id|packet-&gt;chunks
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+op_logical_neg
+id|chunk
+)paren
+)paren
+r_return
+id|err
+suffix:semicolon
+multiline_comment|/* Set up convenience variables... */
 id|sk
 op_assign
 id|chunk-&gt;skb-&gt;sk
@@ -842,16 +855,9 @@ c_cond
 op_logical_neg
 id|nskb
 )paren
-(brace
-id|err
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
 r_goto
-id|out
+id|nomem
 suffix:semicolon
-)brace
 multiline_comment|/* Make sure the outbound skb has enough header room reserved. */
 id|skb_reserve
 c_func
@@ -1330,7 +1336,7 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;***sctp_transmit_packet*** skb length %d&bslash;n&quot;
+l_string|&quot;***sctp_transmit_packet*** skb len %d&bslash;n&quot;
 comma
 id|nskb-&gt;len
 )paren
@@ -1372,8 +1378,66 @@ id|IpOutNoRoutes
 suffix:semicolon
 multiline_comment|/* FIXME: Returning the &squot;err&squot; will effect all the associations&n;&t; * associated with a socket, although only one of the paths of the&n;&t; * association is unreachable.&n;&t; * The real failure of a transport or association can be passed on&n;&t; * to the user via notifications. So setting this error may not be&n;&t; * required.&n;&t; */
 multiline_comment|/* err = -EHOSTUNREACH; */
+id|err
+suffix:colon
+multiline_comment|/* Control chunks are unreliable so just drop them.  DATA chunks&n;&t; * will get resent or dropped later.&n;&t; */
+r_while
+c_loop
+(paren
+(paren
+id|chunk
+op_assign
+(paren
+r_struct
+id|sctp_chunk
+op_star
+)paren
+id|__skb_dequeue
+c_func
+(paren
+op_amp
+id|packet-&gt;chunks
+)paren
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sctp_chunk_is_data
+c_func
+(paren
+id|chunk
+)paren
+)paren
+id|sctp_chunk_free
+c_func
+(paren
+id|chunk
+)paren
+suffix:semicolon
+)brace
 r_goto
 id|out
+suffix:semicolon
+id|nomem
+suffix:colon
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%s alloc_skb failed.&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_goto
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/********************************************************************&n; * 2nd Level Abstractions&n; ********************************************************************/
