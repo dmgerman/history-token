@@ -18,7 +18,7 @@ id|empeg_io_desc
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
+multiline_comment|/* virtual     physical    length      type */
 (brace
 id|EMPEG_FLASHBASE
 comma
@@ -26,19 +26,9 @@ l_int|0x00000000
 comma
 l_int|0x00200000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
 multiline_comment|/* Flash */
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|empeg_map_io
@@ -60,6 +50,12 @@ id|iotable_init
 c_func
 (paren
 id|empeg_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|empeg_io_desc
+)paren
 )paren
 suffix:semicolon
 id|sa1100_register_uart

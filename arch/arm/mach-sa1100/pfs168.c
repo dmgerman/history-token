@@ -135,26 +135,7 @@ id|pfs168_io_desc
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
-(brace
-l_int|0xe8000000
-comma
-l_int|0x00000000
-comma
-l_int|0x02000000
-comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Flash bank 0 */
+multiline_comment|/* virtual     physical    length      type */
 (brace
 l_int|0xf0000000
 comma
@@ -162,15 +143,7 @@ l_int|0x10000000
 comma
 l_int|0x00001000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* 16C752 DUART port A (COM5) */
@@ -181,15 +154,7 @@ l_int|0x10800000
 comma
 l_int|0x00001000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* 16C752 DUART port B (COM6) */
@@ -200,15 +165,7 @@ l_int|0x11000000
 comma
 l_int|0x00001000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* COM1 RTS control (SYSC1RTS) */
@@ -219,15 +176,7 @@ l_int|0x11400000
 comma
 l_int|0x00001000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* Status LED control (SYSLED) */
@@ -238,15 +187,7 @@ l_int|0x11800000
 comma
 l_int|0x00001000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* DTMF code read (SYSDTMF) */
@@ -257,15 +198,7 @@ l_int|0x11c00000
 comma
 l_int|0x00001000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* LCD configure, enable (SYSLCDDE) */
@@ -276,15 +209,7 @@ l_int|0x12000000
 comma
 l_int|0x00001000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* COM1 DSR and motion sense (SYSC1DSR) */
@@ -295,15 +220,7 @@ l_int|0x12800000
 comma
 l_int|0x00001000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* COM3 xmit enable (SYSC3TEN) */
@@ -314,15 +231,7 @@ l_int|0x13000000
 comma
 l_int|0x00001000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* Control register A (SYSCTLA) */
@@ -333,15 +242,7 @@ l_int|0x13800000
 comma
 l_int|0x00001000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* Control register B (SYSCTLB) */
@@ -352,15 +253,7 @@ l_int|0x18000000
 comma
 l_int|0x00001000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* SMC91C96 */
@@ -371,15 +264,7 @@ l_int|0x4b800000
 comma
 l_int|0x00800000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* MQ200 */
@@ -390,19 +275,9 @@ l_int|0x40000000
 comma
 l_int|0x00100000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
 multiline_comment|/* SA-1111 */
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|pfs168_map_io
@@ -424,6 +299,12 @@ id|iotable_init
 c_func
 (paren
 id|pfs168_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|pfs168_io_desc
+)paren
 )paren
 suffix:semicolon
 id|sa1100_register_uart

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-xscale/mm.c&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -23,18 +24,8 @@ l_int|0x00400000
 comma
 l_int|0x00300000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|adifcc_map_io
@@ -50,6 +41,12 @@ id|iotable_init
 c_func
 (paren
 id|adifcc_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|adifcc_io_desc
+)paren
 )paren
 suffix:semicolon
 )brace

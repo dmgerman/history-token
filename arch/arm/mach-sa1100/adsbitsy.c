@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/adsbitsy.c&n; *&n; * Author: Woojung Huh&n; *&n; * Pieces specific to the ADS Bitsy&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -145,7 +146,7 @@ id|adsbitsy_io_desc
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
+multiline_comment|/* virtual     physical    length      type */
 (brace
 l_int|0xf4000000
 comma
@@ -153,19 +154,9 @@ l_int|0x18000000
 comma
 l_int|0x00800000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
 multiline_comment|/* SA1111 */
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|adsbitsy_uart_open
@@ -279,6 +270,12 @@ id|iotable_init
 c_func
 (paren
 id|adsbitsy_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|adsbitsy_io_desc
+)paren
 )paren
 suffix:semicolon
 id|sa1100_register_uart_fns

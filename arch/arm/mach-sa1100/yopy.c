@@ -218,45 +218,7 @@ id|yopy_io_desc
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
-(brace
-l_int|0xe8000000
-comma
-l_int|0x00000000
-comma
-l_int|0x04000000
-comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Flash 0 */
-(brace
-l_int|0xec000000
-comma
-l_int|0x08000000
-comma
-l_int|0x04000000
-comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Flash 1 */
+multiline_comment|/* virtual     physical    length      type */
 (brace
 l_int|0xf0000000
 comma
@@ -264,15 +226,7 @@ l_int|0x48000000
 comma
 l_int|0x00300000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* LCD */
@@ -283,19 +237,9 @@ l_int|0x10000000
 comma
 l_int|0x00100000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
 multiline_comment|/* EGPIO */
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|yopy_map_io
@@ -317,6 +261,12 @@ id|iotable_init
 c_func
 (paren
 id|yopy_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|yopy_io_desc
+)paren
 )paren
 suffix:semicolon
 id|sa1100_register_uart
