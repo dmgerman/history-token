@@ -9903,7 +9903,7 @@ c_cond
 (paren
 id|lba
 template_param
-l_int|64
+id|CD_FRAMES
 )paren
 r_return
 op_minus
