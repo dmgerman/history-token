@@ -10331,9 +10331,6 @@ suffix:semicolon
 id|tid_t
 id|tid
 suffix:semicolon
-r_int
-id|rc
-suffix:semicolon
 multiline_comment|/* if AIT2 ipmap2 is bad, do not try to update it */
 r_if
 c_cond
@@ -10384,9 +10381,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|rc
-op_assign
 id|readSuper
 c_func
 (paren
@@ -10394,7 +10388,6 @@ id|sb
 comma
 op_amp
 id|bh
-)paren
 )paren
 )paren
 r_return
@@ -10448,9 +10441,6 @@ multiline_comment|/* update the inode map addressing structure to point to it */
 r_if
 c_cond
 (paren
-(paren
-id|rc
-op_assign
 id|xtInsert
 c_func
 (paren
@@ -10467,7 +10457,6 @@ comma
 id|xaddr
 comma
 l_int|0
-)paren
 )paren
 )paren
 (brace
@@ -10508,8 +10497,6 @@ comma
 id|xlen
 )paren
 suffix:semicolon
-id|rc
-op_assign
 id|txCommit
 c_func
 (paren
