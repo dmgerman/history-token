@@ -3,98 +3,28 @@ macro_line|#ifndef __ASM_ARCH_COLLIE_H
 DECL|macro|__ASM_ARCH_COLLIE_H
 mdefine_line|#define __ASM_ARCH_COLLIE_H
 macro_line|#include &lt;linux/config.h&gt;
-DECL|macro|CF_BUF_CTRL_BASE
-mdefine_line|#define CF_BUF_CTRL_BASE 0xF0800000
-DECL|macro|COLLIE_SCP_REG
-mdefine_line|#define&t;COLLIE_SCP_REG(adr) (*(volatile unsigned short*)(CF_BUF_CTRL_BASE+(adr)))
-DECL|macro|COLLIE_SCP_MCR
-mdefine_line|#define&t;COLLIE_SCP_MCR&t;0x00
-DECL|macro|COLLIE_SCP_CDR
-mdefine_line|#define&t;COLLIE_SCP_CDR&t;0x04
-DECL|macro|COLLIE_SCP_CSR
-mdefine_line|#define&t;COLLIE_SCP_CSR&t;0x08
-DECL|macro|COLLIE_SCP_CPR
-mdefine_line|#define&t;COLLIE_SCP_CPR&t;0x0C
-DECL|macro|COLLIE_SCP_CCR
-mdefine_line|#define&t;COLLIE_SCP_CCR&t;0x10
-DECL|macro|COLLIE_SCP_IRR
-mdefine_line|#define&t;COLLIE_SCP_IRR&t;0x14
-DECL|macro|COLLIE_SCP_IRM
-mdefine_line|#define&t;COLLIE_SCP_IRM&t;0x14
-DECL|macro|COLLIE_SCP_IMR
-mdefine_line|#define&t;COLLIE_SCP_IMR&t;0x18
-DECL|macro|COLLIE_SCP_ISR
-mdefine_line|#define&t;COLLIE_SCP_ISR&t;0x1C
-DECL|macro|COLLIE_SCP_GPCR
-mdefine_line|#define&t;COLLIE_SCP_GPCR&t;0x20
-DECL|macro|COLLIE_SCP_GPWR
-mdefine_line|#define&t;COLLIE_SCP_GPWR&t;0x24
-DECL|macro|COLLIE_SCP_GPRR
-mdefine_line|#define&t;COLLIE_SCP_GPRR&t;0x28
-DECL|macro|COLLIE_SCP_REG_MCR
-mdefine_line|#define&t;COLLIE_SCP_REG_MCR&t;COLLIE_SCP_REG(COLLIE_SCP_MCR)
-DECL|macro|COLLIE_SCP_REG_CDR
-mdefine_line|#define&t;COLLIE_SCP_REG_CDR&t;COLLIE_SCP_REG(COLLIE_SCP_CDR)
-DECL|macro|COLLIE_SCP_REG_CSR
-mdefine_line|#define&t;COLLIE_SCP_REG_CSR&t;COLLIE_SCP_REG(COLLIE_SCP_CSR)
-DECL|macro|COLLIE_SCP_REG_CPR
-mdefine_line|#define&t;COLLIE_SCP_REG_CPR&t;COLLIE_SCP_REG(COLLIE_SCP_CPR)
-DECL|macro|COLLIE_SCP_REG_CCR
-mdefine_line|#define&t;COLLIE_SCP_REG_CCR&t;COLLIE_SCP_REG(COLLIE_SCP_CCR)
-DECL|macro|COLLIE_SCP_REG_IRR
-mdefine_line|#define&t;COLLIE_SCP_REG_IRR&t;COLLIE_SCP_REG(COLLIE_SCP_IRR)
-DECL|macro|COLLIE_SCP_REG_IRM
-mdefine_line|#define&t;COLLIE_SCP_REG_IRM&t;COLLIE_SCP_REG(COLLIE_SCP_IRM)
-DECL|macro|COLLIE_SCP_REG_IMR
-mdefine_line|#define&t;COLLIE_SCP_REG_IMR&t;COLLIE_SCP_REG(COLLIE_SCP_IMR)
-DECL|macro|COLLIE_SCP_REG_ISR
-mdefine_line|#define&t;COLLIE_SCP_REG_ISR&t;COLLIE_SCP_REG(COLLIE_SCP_ISR)
-DECL|macro|COLLIE_SCP_REG_GPCR
-mdefine_line|#define&t;COLLIE_SCP_REG_GPCR&t;COLLIE_SCP_REG(COLLIE_SCP_GPCR)
-DECL|macro|COLLIE_SCP_REG_GPWR
-mdefine_line|#define&t;COLLIE_SCP_REG_GPWR&t;COLLIE_SCP_REG(COLLIE_SCP_GPWR)
-DECL|macro|COLLIE_SCP_REG_GPRR
-mdefine_line|#define&t;COLLIE_SCP_REG_GPRR&t;COLLIE_SCP_REG(COLLIE_SCP_GPRR)
-DECL|macro|COLLIE_SCP_GPCR_PA19
-mdefine_line|#define COLLIE_SCP_GPCR_PA19&t;( 1 &lt;&lt; 9 )
-DECL|macro|COLLIE_SCP_GPCR_PA18
-mdefine_line|#define COLLIE_SCP_GPCR_PA18&t;( 1 &lt;&lt; 8 )
-DECL|macro|COLLIE_SCP_GPCR_PA17
-mdefine_line|#define COLLIE_SCP_GPCR_PA17&t;( 1 &lt;&lt; 7 )
-DECL|macro|COLLIE_SCP_GPCR_PA16
-mdefine_line|#define COLLIE_SCP_GPCR_PA16&t;( 1 &lt;&lt; 6 )
-DECL|macro|COLLIE_SCP_GPCR_PA15
-mdefine_line|#define COLLIE_SCP_GPCR_PA15&t;( 1 &lt;&lt; 5 )
-DECL|macro|COLLIE_SCP_GPCR_PA14
-mdefine_line|#define COLLIE_SCP_GPCR_PA14&t;( 1 &lt;&lt; 4 )
-DECL|macro|COLLIE_SCP_GPCR_PA13
-mdefine_line|#define COLLIE_SCP_GPCR_PA13&t;( 1 &lt;&lt; 3 )
-DECL|macro|COLLIE_SCP_GPCR_PA12
-mdefine_line|#define COLLIE_SCP_GPCR_PA12&t;( 1 &lt;&lt; 2 )
-DECL|macro|COLLIE_SCP_GPCR_PA11
-mdefine_line|#define COLLIE_SCP_GPCR_PA11&t;( 1 &lt;&lt; 1 )
 DECL|macro|COLLIE_SCP_CHARGE_ON
-mdefine_line|#define COLLIE_SCP_CHARGE_ON&t;COLLIE_SCP_GPCR_PA11
+mdefine_line|#define COLLIE_SCP_CHARGE_ON&t;SCOOP_GPCR_PA11
 DECL|macro|COLLIE_SCP_DIAG_BOOT1
-mdefine_line|#define COLLIE_SCP_DIAG_BOOT1&t;COLLIE_SCP_GPCR_PA12
+mdefine_line|#define COLLIE_SCP_DIAG_BOOT1&t;SCOOP_GPCR_PA12
 DECL|macro|COLLIE_SCP_DIAG_BOOT2
-mdefine_line|#define COLLIE_SCP_DIAG_BOOT2&t;COLLIE_SCP_GPCR_PA13
+mdefine_line|#define COLLIE_SCP_DIAG_BOOT2&t;SCOOP_GPCR_PA13
 DECL|macro|COLLIE_SCP_MUTE_L
-mdefine_line|#define COLLIE_SCP_MUTE_L&t;COLLIE_SCP_GPCR_PA14
+mdefine_line|#define COLLIE_SCP_MUTE_L&t;SCOOP_GPCR_PA14
 DECL|macro|COLLIE_SCP_MUTE_R
-mdefine_line|#define COLLIE_SCP_MUTE_R&t;COLLIE_SCP_GPCR_PA15
+mdefine_line|#define COLLIE_SCP_MUTE_R&t;SCOOP_GPCR_PA15
 DECL|macro|COLLIE_SCP_5VON
-mdefine_line|#define COLLIE_SCP_5VON&t;COLLIE_SCP_GPCR_PA16
+mdefine_line|#define COLLIE_SCP_5VON&t;&t;SCOOP_GPCR_PA16
 DECL|macro|COLLIE_SCP_AMP_ON
-mdefine_line|#define COLLIE_SCP_AMP_ON&t;COLLIE_SCP_GPCR_PA17
+mdefine_line|#define COLLIE_SCP_AMP_ON&t;SCOOP_GPCR_PA17
 DECL|macro|COLLIE_SCP_VPEN
-mdefine_line|#define COLLIE_SCP_VPEN&t;COLLIE_SCP_GPCR_PA18
+mdefine_line|#define COLLIE_SCP_VPEN&t;&t;SCOOP_GPCR_PA18
 DECL|macro|COLLIE_SCP_LB_VOL_CHG
-mdefine_line|#define COLLIE_SCP_LB_VOL_CHG&t;COLLIE_SCP_GPCR_PA19
-DECL|macro|COLLIE_SCP_IO_DIR
-mdefine_line|#define COLLIE_SCP_IO_DIR&t;( COLLIE_SCP_CHARGE_ON | COLLIE_SCP_MUTE_L | COLLIE_SCP_MUTE_R | &bslash;&n;&t;&t;&t;&t;COLLIE_SCP_5VON | COLLIE_SCP_AMP_ON | COLLIE_SCP_VPEN | &bslash;&n;&t;&t;&t;&t;COLLIE_SCP_LB_VOL_CHG )
-DECL|macro|COLLIE_SCP_IO_OUT
-mdefine_line|#define COLLIE_SCP_IO_OUT&t;( COLLIE_SCP_MUTE_L | COLLIE_SCP_MUTE_R | COLLIE_SCP_VPEN | &bslash;&n;&t;&t;&t;&t;COLLIE_SCP_CHARGE_ON )
+mdefine_line|#define COLLIE_SCP_LB_VOL_CHG&t;SCOOP_GPCR_PA19
+DECL|macro|COLLIE_SCOOP_IO_DIR
+mdefine_line|#define COLLIE_SCOOP_IO_DIR&t;( COLLIE_SCP_CHARGE_ON | COLLIE_SCP_MUTE_L | COLLIE_SCP_MUTE_R | &bslash;&n;&t;&t;&t;&t;COLLIE_SCP_5VON | COLLIE_SCP_AMP_ON | COLLIE_SCP_VPEN | &bslash;&n;&t;&t;&t;&t;COLLIE_SCP_LB_VOL_CHG )
+DECL|macro|COLLIE_SCOOP_IO_OUT
+mdefine_line|#define COLLIE_SCOOP_IO_OUT&t;( COLLIE_SCP_MUTE_L | COLLIE_SCP_MUTE_R | COLLIE_SCP_VPEN | &bslash;&n;&t;&t;&t;&t;COLLIE_SCP_CHARGE_ON )
 multiline_comment|/* GPIOs for which the generic definition doesn&squot;t say much */
 DECL|macro|COLLIE_GPIO_ON_KEY
 mdefine_line|#define COLLIE_GPIO_ON_KEY&t;&t;GPIO_GPIO (0)

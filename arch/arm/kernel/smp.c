@@ -1040,10 +1040,6 @@ r_void
 id|do_IPI
 c_func
 (paren
-r_int
-r_int
-id|ipimask
-comma
 r_struct
 id|pt_regs
 op_star
@@ -1076,18 +1072,6 @@ suffix:semicolon
 id|ipi-&gt;ipi_count
 op_increment
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ipimask
-op_amp
-(paren
-l_int|1
-op_lshift
-l_int|0
-)paren
-)paren
-(brace
 r_for
 c_loop
 (paren
@@ -1175,7 +1159,7 @@ suffix:semicolon
 r_case
 id|IPI_RESCHEDULE
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * nothing more to do - eveything is&n;&t;&t;&t;&t;&t; * done on the interrupt return path&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * nothing more to do - eveything is&n;&t;&t;&t;&t; * done on the interrupt return path&n;&t;&t;&t;&t; */
 r_break
 suffix:semicolon
 r_case
@@ -1221,35 +1205,6 @@ r_while
 c_loop
 (paren
 id|msgs
-)paren
-suffix:semicolon
-)brace
-id|ipimask
-op_and_assign
-op_complement
-l_int|0x01
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|ipimask
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_CRIT
-l_string|&quot;CPU %d: Unknown IPI signal %x!&bslash;n&quot;
-comma
-id|cpu
-comma
-id|ipimask
-)paren
-suffix:semicolon
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace

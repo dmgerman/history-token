@@ -669,6 +669,9 @@ op_star
 id|prefix
 comma
 r_int
+id|cpu
+comma
+r_int
 r_int
 id|cache
 )paren
@@ -695,7 +698,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: %d bytes, associativity %d, %d byte lines, %d sets&bslash;n&quot;
+l_string|&quot;CPU%u: %s: %d bytes, associativity %d, %d byte lines, %d sets&bslash;n&quot;
+comma
+id|cpu
 comma
 id|prefix
 comma
@@ -764,7 +769,8 @@ id|__init
 id|dump_cpu_info
 c_func
 (paren
-r_void
+r_int
+id|cpu
 )paren
 (brace
 r_int
@@ -788,7 +794,9 @@ id|processor_id
 id|printk
 c_func
 (paren
-l_string|&quot;CPU: D %s %s cache&bslash;n&quot;
+l_string|&quot;CPU%u: D %s %s cache&bslash;n&quot;
+comma
+id|cpu
 comma
 id|cache_is_vivt
 c_func
@@ -823,7 +831,9 @@ id|info
 id|dump_cache
 c_func
 (paren
-l_string|&quot;CPU: I cache&quot;
+l_string|&quot;I cache&quot;
+comma
+id|cpu
 comma
 id|CACHE_ISIZE
 c_func
@@ -835,7 +845,9 @@ suffix:semicolon
 id|dump_cache
 c_func
 (paren
-l_string|&quot;CPU: D cache&quot;
+l_string|&quot;D cache&quot;
+comma
+id|cpu
 comma
 id|CACHE_DSIZE
 c_func
@@ -850,7 +862,9 @@ r_else
 id|dump_cache
 c_func
 (paren
-l_string|&quot;CPU: cache&quot;
+l_string|&quot;cache&quot;
+comma
+id|cpu
 comma
 id|CACHE_ISIZE
 c_func
@@ -947,6 +961,28 @@ r_return
 id|cpu_arch
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * These functions re-use the assembly code in head.S, which&n; * already provide the required functionality.&n; */
+r_extern
+r_struct
+id|proc_info_list
+op_star
+id|lookup_processor_type
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|machine_desc
+op_star
+id|lookup_machine_type
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
 DECL|function|setup_processor
 r_static
 r_void
@@ -957,56 +993,24 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_struct
-id|proc_info_list
-id|__proc_info_begin
-comma
-id|__proc_info_end
-suffix:semicolon
 r_struct
 id|proc_info_list
 op_star
 id|list
 suffix:semicolon
 multiline_comment|/*&n;&t; * locate processor in the list of supported processor&n;&t; * types.  The linker builds this table for us from the&n;&t; * entries in arch/arm/mm/proc-*.S&n;&t; */
-r_for
-c_loop
-(paren
 id|list
 op_assign
-op_amp
-id|__proc_info_begin
-suffix:semicolon
-id|list
-OL
-op_amp
-id|__proc_info_end
-suffix:semicolon
-id|list
-op_increment
+id|lookup_processor_type
+c_func
+(paren
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|processor_id
-op_amp
-id|list-&gt;cpu_mask
-)paren
-op_eq
-id|list-&gt;cpu_val
-)paren
-r_break
-suffix:semicolon
-multiline_comment|/*&n;&t; * If processor type is unrecognised, then we&n;&t; * can do nothing...&n;&t; */
-r_if
-c_cond
-(paren
+op_logical_neg
 id|list
-op_ge
-op_amp
-id|__proc_info_end
 )paren
 (brace
 id|printk
@@ -1085,6 +1089,10 @@ suffix:semicolon
 id|dump_cpu_info
 c_func
 (paren
+id|smp_processor_id
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|sprintf
@@ -1135,58 +1143,31 @@ r_int
 id|nr
 )paren
 (brace
-r_extern
-r_struct
-id|machine_desc
-id|__arch_info_begin
-comma
-id|__arch_info_end
-suffix:semicolon
 r_struct
 id|machine_desc
 op_star
 id|list
 suffix:semicolon
-multiline_comment|/*&n;&t; * locate architecture in the list of supported architectures.&n;&t; */
-r_for
-c_loop
-(paren
+multiline_comment|/*&n;&t; * locate machine in the list of supported machines.&n;&t; */
 id|list
 op_assign
-op_amp
-id|__arch_info_begin
-suffix:semicolon
-id|list
-OL
-op_amp
-id|__arch_info_end
-suffix:semicolon
-id|list
-op_increment
-)paren
-r_if
-c_cond
+id|lookup_machine_type
+c_func
 (paren
-id|list-&gt;nr
-op_eq
 id|nr
 )paren
-r_break
 suffix:semicolon
-multiline_comment|/*&n;&t; * If the architecture type is not recognised, then we&n;&t; * can co nothing...&n;&t; */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|list
-op_ge
-op_amp
-id|__arch_info_end
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;Architecture configuration botched (nr %d), unable &quot;
+l_string|&quot;Machine configuration botched (nr %d), unable &quot;
 l_string|&quot;to continue.&bslash;n&quot;
 comma
 id|nr

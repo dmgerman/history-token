@@ -627,6 +627,10 @@ DECL|macro|_raw_write_lock
 mdefine_line|#define _raw_write_lock(lock)&t;do { (void)(lock); } while(0)
 DECL|macro|_raw_write_unlock
 mdefine_line|#define _raw_write_unlock(lock)&t;do { (void)(lock); } while(0)
+DECL|macro|read_can_lock
+mdefine_line|#define read_can_lock(lock)&t;(((void)(lock), 1))
+DECL|macro|write_can_lock
+mdefine_line|#define write_can_lock(lock)&t;(((void)(lock), 1))
 DECL|macro|_raw_read_trylock
 mdefine_line|#define _raw_read_trylock(lock) ({ (void)(lock); (1); })
 DECL|macro|_raw_write_trylock
