@@ -544,6 +544,10 @@ c_func
 r_struct
 id|backing_dev_info
 op_star
+comma
+r_struct
+id|page
+op_star
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SWAP

@@ -296,6 +296,11 @@ r_struct
 id|backing_dev_info
 op_star
 id|unused_bdi
+comma
+r_struct
+id|page
+op_star
+id|page
 )paren
 (brace
 r_int
