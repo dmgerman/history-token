@@ -1508,9 +1508,6 @@ id|u8
 id|cap_ptr
 suffix:semicolon
 id|u8
-id|agp_v3
-suffix:semicolon
-id|u8
 id|v3_devs
 op_assign
 l_int|0
@@ -1729,20 +1726,6 @@ comma
 op_amp
 id|scratch
 )paren
-suffix:semicolon
-id|agp_v3
-op_assign
-(paren
-id|scratch
-op_amp
-(paren
-l_int|1
-op_lshift
-l_int|3
-)paren
-)paren
-op_rshift
-l_int|3
 suffix:semicolon
 multiline_comment|/* adjust RQ depth */
 id|command
