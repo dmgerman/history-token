@@ -2036,6 +2036,7 @@ l_int|63
 )brace
 suffix:semicolon
 DECL|variable|intel_830_driver
+r_static
 r_struct
 id|agp_bridge_driver
 id|intel_830_driver
@@ -2149,6 +2150,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|intel_845_driver
+r_static
 r_struct
 id|agp_bridge_driver
 id|intel_845_driver
@@ -2257,6 +2259,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|intel_860_driver
+r_static
 r_struct
 id|agp_bridge_driver
 id|intel_860_driver
