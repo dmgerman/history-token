@@ -1,6 +1,6 @@
 multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2004 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 macro_line|#include &quot;e1000.h&quot;
-multiline_comment|/* Change Log&n; *&n; * 5.2.30.1&t;1/29/03&n; *   o Set VLAN filtering to IEEE 802.1Q after reset so we don&squot;t break&n; *     SoL connections that use VLANs.&n; *   o Allow 1000/Full setting for AutoNeg param for Fiber connections&n; *     Jon D Mason [jonmason@us.ibm.com].&n; *   o Race between Tx queue and Tx clean fixed with a spin lock.&n; *   o Added netpoll support.&n; *   o Fixed endianess bug causing ethtool loopback diags to fail on ppc.&n; *   o Use pdev-&gt;irq rather than netdev-&gt;irq in preparation for MSI support.&n; *   o Report driver message on user override of InterruptThrottleRate&n; *     module parameter.&n; *   o Change I/O address storage from uint32_t to unsigned long.&n; *   o Added ethtool RINGPARAM support.&n; *&n; * 5.2.22&t;10/15/03&n; *   o Bug fix: SERDES devices might be connected to a back-plane&n; *     switch that doesn&squot;t support auto-neg, so add the capability&n; *     to force 1000/Full.  Also, since forcing 1000/Full, sample&n; *     RxSynchronize bit to detect link state.&n; *   o Bug fix: Flow control settings for hi/lo watermark didn&squot;t&n; *     consider changes in the Rx FIFO size, which could occur with&n; *     Jumbo Frames or with the reduced FIFO in 82547.&n; *   o Better propagation of error codes. [Janice Girouard &n; *     (janiceg@us.ibm.com)].&n; *   o Bug fix: hang under heavy Tx stress when running out of Tx&n; *     descriptors; wasn&squot;t clearing context descriptor when backing&n; *     out of send because of no-resource condition.&n; *   o Bug fix: check netif_running in dev-&gt;poll so we don&squot;t have to&n; *     hang in dev-&gt;close until all polls are finished.  [Robert&n; *     Ollson (robert.olsson@data.slu.se)].&n; *   o Revert TxDescriptor ring size back to 256 since change to 1024&n; *     wasn&squot;t accepted into the kernel.&n; *&n; * 5.2.16&t;8/8/03&n; */
+multiline_comment|/* Change Log&n; *&n; * 5.2.39&t;3/12/04&n; *   o Added support to read/write eeprom data in proper order.&n; *     By default device eeprom is always little-endian, word&n; *     addressable &n; *   o Disable TSO as the default for the driver until hangs&n; *     reported against non-IA acrhs can be root-caused.&n; *   o Back out the CSA fix for 82547 as it continues to cause&n; *     systems lock-ups with production systems.&n; *   o Fixed FC high/low water mark values to actually be in the&n; *     range of the Rx FIFO area.  It was a math error.&n; *     [Dainis Jonitis (dainis_jonitis@exigengroup.lv)]&n; *   o Handle failure to get new resources when doing ethtool&n; *     ring paramater changes.  Previously, driver would free old,&n; *     but fails to allocate new, causing problems.  Now, driver &n; *     allocates new, and if sucessful, frees old.&n; *   o Changed collision threshold from 16 to 15 to comply with IEEE&n; *     spec.&n; *   o Toggle chip-select when checking ready status on SPI eeproms.&n; *   o Put PHY into class A mode to pass IEEE tests on some designs.&n; *     Designs with EEPROM word 0x7, bit 15 set will have their PHYs&n; *     set to class A mode, rather than the default class AB.&n; *   o Handle failures of register_netdev.  Stephen Hemminger&n; *     [shemminger@osdl.org].&n; *   o updated README &amp; MAN pages, number of Transmit/Receive&n; *     descriptors may be denied depending on system resources.&n; *&n; * 5.2.30&t;1/14/03&n; *   o Set VLAN filtering to IEEE 802.1Q after reset so we don&squot;t break&n; *     SoL connections that use VLANs.&n; *   o Allow 1000/Full setting for AutoNeg param for Fiber connections&n; *     Jon D Mason [jonmason@us.ibm.com].&n; *   o Race between Tx queue and Tx clean fixed with a spin lock.&n; *   o Added netpoll support.&n; *   o Fixed endianess bug causing ethtool loopback diags to fail on ppc.&n; *   o Use pdev-&gt;irq rather than netdev-&gt;irq in preparation for MSI support.&n; *   o Report driver message on user override of InterruptThrottleRate&n; *     module parameter.&n; *   o Change I/O address storage from uint32_t to unsigned long.&n; *   o Added ethtool RINGPARAM support.&n; *&n; * 5.2.22&t;10/15/03&n; */
 DECL|variable|e1000_driver_name
 r_char
 id|e1000_driver_name
@@ -23,7 +23,7 @@ id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;5.2.30.1-k2&quot;
+l_string|&quot;5.2.39-k2&quot;
 suffix:semicolon
 DECL|variable|e1000_copyright
 r_char
@@ -6836,7 +6836,7 @@ l_int|2
 multiline_comment|/* There aren&squot;t enough descriptors available to queue up&n;&t;&t; * this send (need: count + 1 context desc + 1 desc gap&n;&t;&t; * to keep tail from touching head), so undo the mapping&n;&t;&t; * and abort the send.  We could have done the check before&n;&t;&t; * we mapped the skb, but because of all the workarounds&n;&t;&t; * (above), it&squot;s too difficult to predict how many we&squot;re&n;&t;&t; * going to need.*/
 id|i
 op_assign
-id|adapter-&gt;tx_ring.next_to_use
+id|tx_ring-&gt;next_to_use
 suffix:semicolon
 r_if
 c_cond
@@ -6924,7 +6924,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-id|adapter-&gt;tx_ring.next_to_use
+id|tx_ring-&gt;next_to_use
 op_assign
 id|first
 suffix:semicolon
