@@ -68,6 +68,7 @@ op_assign
 (paren
 r_struct
 id|ucontext
+id|__user
 op_star
 )paren
 id|regs-&gt;u_regs
@@ -76,6 +77,7 @@ id|UREG_I0
 )braket
 suffix:semicolon
 id|mc_gregset_t
+id|__user
 op_star
 id|grp
 suffix:semicolon
@@ -772,6 +774,7 @@ op_amp
 (paren
 r_struct
 id|reg_window
+id|__user
 op_star
 )paren
 (paren
@@ -806,6 +809,7 @@ op_amp
 (paren
 r_struct
 id|reg_window
+id|__user
 op_star
 )paren
 (paren
@@ -930,6 +934,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -1038,6 +1043,7 @@ op_assign
 (paren
 r_struct
 id|ucontext
+id|__user
 op_star
 )paren
 id|regs-&gt;u_regs
@@ -1046,10 +1052,12 @@ id|UREG_I0
 )braket
 suffix:semicolon
 id|mc_gregset_t
+id|__user
 op_star
 id|grp
 suffix:semicolon
 id|mcontext_t
+id|__user
 op_star
 id|mcp
 suffix:semicolon
@@ -1193,6 +1201,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -1637,6 +1646,7 @@ op_amp
 (paren
 r_struct
 id|reg_window
+id|__user
 op_star
 )paren
 (paren
@@ -1671,6 +1681,7 @@ op_amp
 (paren
 r_struct
 id|reg_window
+id|__user
 op_star
 )paren
 (paren
@@ -1810,6 +1821,7 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -1930,6 +1942,7 @@ id|regs
 suffix:semicolon
 DECL|member|fpu_save
 id|__siginfo_fpu_t
+id|__user
 op_star
 id|fpu_save
 suffix:semicolon
@@ -2189,6 +2202,7 @@ id|do_rt_sigsuspend
 c_func
 (paren
 id|sigset_t
+id|__user
 op_star
 id|uset
 comma
@@ -2414,6 +2428,7 @@ op_star
 id|regs
 comma
 id|__siginfo_fpu_t
+id|__user
 op_star
 id|fpu
 )paren
@@ -2590,6 +2605,7 @@ id|regs
 (brace
 r_struct
 id|rt_signal_frame
+id|__user
 op_star
 id|sf
 suffix:semicolon
@@ -2602,6 +2618,7 @@ comma
 id|tstate
 suffix:semicolon
 id|__siginfo_fpu_t
+id|__user
 op_star
 id|fpu_save
 suffix:semicolon
@@ -2626,6 +2643,7 @@ op_assign
 (paren
 r_struct
 id|rt_signal_frame
+id|__user
 op_star
 )paren
 (paren
@@ -2935,6 +2953,7 @@ id|invalid_frame_pointer
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|fp
 comma
@@ -2975,6 +2994,7 @@ op_star
 id|regs
 comma
 id|__siginfo_fpu_t
+id|__user
 op_star
 id|fpu
 )paren
@@ -3137,6 +3157,7 @@ DECL|function|get_sigframe
 r_static
 r_inline
 r_void
+id|__user
 op_star
 id|get_sigframe
 c_func
@@ -3209,6 +3230,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -3249,6 +3271,7 @@ id|info
 (brace
 r_struct
 id|rt_signal_frame
+id|__user
 op_star
 id|sf
 suffix:semicolon
@@ -3302,6 +3325,7 @@ op_assign
 (paren
 r_struct
 id|rt_signal_frame
+id|__user
 op_star
 )paren
 id|get_sigframe
@@ -3479,12 +3503,14 @@ c_func
 (paren
 (paren
 id|u64
+id|__user
 op_star
 )paren
 id|sf
 comma
 (paren
 id|u64
+id|__user
 op_star
 )paren
 (paren
