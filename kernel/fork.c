@@ -1791,6 +1791,13 @@ id|mm
 suffix:semicolon
 )brace
 )brace
+DECL|variable|mmput
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|mmput
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * get_task_mm - acquire a reference to the task&squot;s mm&n; *&n; * Returns %NULL if the task has no mm.  Checks if the use count&n; * of the mm is non-zero and if so returns a reference to it, after&n; * bumping up the use count.  User must release the mm via mmput()&n; * after use.  Typically used by /proc and ptrace.&n; *&n; * If the use count is zero, it means that this mm is going away,&n; * so return %NULL.  This only happens in the case of an AIO daemon&n; * which has temporarily adopted an mm (see use_mm), in the course&n; * of its final mmput, before exit_aio has completed.&n; */
 DECL|function|get_task_mm
 r_struct
@@ -1874,6 +1881,13 @@ r_return
 id|mm
 suffix:semicolon
 )brace
+DECL|variable|get_task_mm
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|get_task_mm
+)paren
+suffix:semicolon
 multiline_comment|/* Please note the differences between mmput and mm_release.&n; * mmput is called whenever we stop holding onto a mm_struct,&n; * error success whatever.&n; *&n; * mm_release is called after a mm_struct has been removed&n; * from the current process.&n; *&n; * This difference is important for error handling, when we&n; * only half set up a mm_struct for a new process and need to restore&n; * the old one.  Because we mmput the new mm_struct before&n; * restoring the old one. . .&n; * Eric Biederman 10 January 1998&n; */
 DECL|function|mm_release
 r_void

@@ -375,7 +375,7 @@ c_func
 r_void
 )paren
 (brace
-id|end_cpu_timers
+id|end_cpu_work
 c_func
 (paren
 )paren
@@ -403,7 +403,7 @@ r_void
 r_int
 id|err
 suffix:semicolon
-id|start_cpu_timers
+id|start_cpu_work
 c_func
 (paren
 )paren
@@ -1173,8 +1173,11 @@ id|mm
 r_if
 c_cond
 (paren
+op_logical_neg
 id|mm
 )paren
+r_return
+suffix:semicolon
 id|up_read
 c_func
 (paren
@@ -1182,8 +1185,13 @@ op_amp
 id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
+id|mmput
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
 )brace
-multiline_comment|/* Take the task&squot;s mmap_sem to protect ourselves from&n; * races when we do lookup_dcookie().&n; */
 DECL|function|take_tasks_mm
 r_static
 r_struct
@@ -1202,19 +1210,8 @@ r_struct
 id|mm_struct
 op_star
 id|mm
-suffix:semicolon
-multiline_comment|/* Subtle. We don&squot;t need to keep a reference to this task&squot;s mm,&n;&t; * because, for the mm to be freed on another CPU, that would have&n;&t; * to go through the task exit notifier, which ends up sleeping&n;&t; * on the buffer_sem we hold, so we end up with mutual exclusion&n;&t; * anyway.&n;&t; */
-id|task_lock
-c_func
-(paren
-id|task
-)paren
-suffix:semicolon
-id|mm
 op_assign
-id|task-&gt;mm
-suffix:semicolon
-id|task_unlock
+id|get_task_mm
 c_func
 (paren
 id|task
@@ -1225,8 +1222,6 @@ c_cond
 (paren
 id|mm
 )paren
-(brace
-multiline_comment|/* needed to walk the task&squot;s VMAs */
 id|down_read
 c_func
 (paren
@@ -1234,7 +1229,6 @@ op_amp
 id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
-)brace
 r_return
 id|mm
 suffix:semicolon

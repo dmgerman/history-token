@@ -25,9 +25,9 @@ op_star
 suffix:semicolon
 DECL|macro|DEFAULT_TIMER_EXPIRE
 mdefine_line|#define DEFAULT_TIMER_EXPIRE (HZ / 10)
-DECL|variable|timers_enabled
+DECL|variable|work_enabled
 r_int
-id|timers_enabled
+id|work_enabled
 suffix:semicolon
 DECL|function|__free_cpu_buffers
 r_static
@@ -204,9 +204,9 @@ id|NR_CPUS
 )paren
 suffix:semicolon
 )brace
-DECL|function|start_cpu_timers
+DECL|function|start_cpu_work
 r_void
-id|start_cpu_timers
+id|start_cpu_work
 c_func
 (paren
 r_void
@@ -215,7 +215,7 @@ r_void
 r_int
 id|i
 suffix:semicolon
-id|timers_enabled
+id|work_enabled
 op_assign
 l_int|1
 suffix:semicolon
@@ -252,9 +252,9 @@ id|i
 suffix:semicolon
 )brace
 )brace
-DECL|function|end_cpu_timers
+DECL|function|end_cpu_work
 r_void
-id|end_cpu_timers
+id|end_cpu_work
 c_func
 (paren
 r_void
@@ -263,7 +263,7 @@ r_void
 r_int
 id|i
 suffix:semicolon
-id|timers_enabled
+id|work_enabled
 op_assign
 l_int|0
 suffix:semicolon
@@ -656,7 +656,7 @@ multiline_comment|/* don&squot;t re-add the work if we&squot;re shutting down */
 r_if
 c_cond
 (paren
-id|timers_enabled
+id|work_enabled
 )paren
 id|schedule_delayed_work
 c_func

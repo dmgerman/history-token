@@ -24,14 +24,14 @@ r_void
 )paren
 suffix:semicolon
 r_void
-id|start_cpu_timers
+id|start_cpu_work
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
 r_void
-id|end_cpu_timers
+id|end_cpu_work
 c_func
 (paren
 r_void
