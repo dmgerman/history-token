@@ -4336,6 +4336,7 @@ id|from_length
 OL
 id|to_length
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -4370,6 +4371,7 @@ op_minus
 id|from_length
 )paren
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -5166,22 +5168,6 @@ id|scsi_devicelist_mutex
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-id|fail
-suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: Allocation failure during SCSI scanning, &quot;
-l_string|&quot;some SCSI devices might not be configured&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
 suffix:semicolon
 )brace
 DECL|function|scsi_detach_device
