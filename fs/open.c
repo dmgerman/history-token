@@ -3567,14 +3567,12 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|fcntl_dirnotify
+id|dnotify_flush
 c_func
 (paren
-l_int|0
-comma
 id|filp
 comma
-l_int|0
+id|id
 )paren
 suffix:semicolon
 id|locks_remove_posix
