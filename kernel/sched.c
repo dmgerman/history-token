@@ -5774,6 +5774,16 @@ c_func
 id|push_cpu
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|busiest
+op_eq
+id|rq
+)paren
+r_goto
+id|next_group
+suffix:semicolon
 id|double_lock_balance
 c_func
 (paren
