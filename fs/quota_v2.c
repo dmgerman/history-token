@@ -779,7 +779,7 @@ c_func
 (paren
 id|V2_DQBLKSIZE
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 suffix:semicolon
 r_if

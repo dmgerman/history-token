@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|__DQUOT_PARANOIA
 mdefine_line|#define __DQUOT_PARANOIA
@@ -2126,7 +2127,7 @@ c_func
 (paren
 id|dquot_cachep
 comma
-id|SLAB_KERNEL
+id|SLAB_NOFS
 )paren
 suffix:semicolon
 r_if
@@ -6366,7 +6367,7 @@ id|type
 r_goto
 id|out_file_init
 suffix:semicolon
-multiline_comment|/* We don&squot;t want quota and atime on quota files (deadlocks possible) */
+multiline_comment|/* We don&squot;t want quota and atime on quota files (deadlocks possible)&n;&t; * We also need to set GFP mask differently because we cannot recurse&n;&t; * into filesystem when allocating page for quota inode */
 id|down_write
 c_func
 (paren
@@ -6379,6 +6380,19 @@ op_or_assign
 id|S_NOQUOTA
 op_or
 id|S_NOATIME
+suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|ffs
+c_func
+(paren
+id|__GFP_FS
+)paren
+comma
+op_amp
+id|inode-&gt;i_mapping-&gt;flags
+)paren
 suffix:semicolon
 r_for
 c_loop
