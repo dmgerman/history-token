@@ -362,6 +362,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Each element set once, and only accessed by a single processor anyway */
 DECL|macro|NR_CPUS
+macro_line|#undef NR_CPUS
+DECL|macro|NR_CPUS
 mdefine_line|#define NR_CPUS 1
 DECL|variable|userspace_pid
 r_int
