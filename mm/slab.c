@@ -1080,6 +1080,7 @@ r_inline
 id|kmem_cache_t
 op_star
 id|kmem_find_general_cachep
+c_func
 (paren
 r_int
 id|size
@@ -1140,6 +1141,7 @@ DECL|function|cache_estimate
 r_static
 r_void
 id|cache_estimate
+c_func
 (paren
 r_int
 r_int
@@ -5575,6 +5577,7 @@ multiline_comment|/**&n; * kmem_cache_destroy - delete a cache&n; * @cachep: the
 DECL|function|kmem_cache_destroy
 r_int
 id|kmem_cache_destroy
+c_func
 (paren
 id|kmem_cache_t
 op_star
@@ -5763,6 +5766,7 @@ r_struct
 id|slab
 op_star
 id|alloc_slabmgmt
+c_func
 (paren
 id|kmem_cache_t
 op_star
@@ -5876,6 +5880,7 @@ DECL|function|cache_init_objs
 r_static
 r_void
 id|cache_init_objs
+c_func
 (paren
 id|kmem_cache_t
 op_star
@@ -6293,6 +6298,7 @@ DECL|function|cache_grow
 r_static
 r_int
 id|cache_grow
+c_func
 (paren
 id|kmem_cache_t
 op_star
@@ -6701,6 +6707,7 @@ r_static
 r_void
 op_star
 id|cache_free_debugcheck
+c_func
 (paren
 id|kmem_cache_t
 op_star
@@ -8081,6 +8088,7 @@ r_inline
 r_void
 op_star
 id|__cache_alloc
+c_func
 (paren
 id|kmem_cache_t
 op_star
@@ -8455,6 +8463,7 @@ DECL|function|cache_flusharray
 r_static
 r_void
 id|cache_flusharray
+c_func
 (paren
 id|kmem_cache_t
 op_star
@@ -8727,6 +8736,7 @@ r_static
 r_inline
 r_void
 id|__cache_free
+c_func
 (paren
 id|kmem_cache_t
 op_star
@@ -8837,6 +8847,7 @@ DECL|function|kmem_cache_alloc
 r_void
 op_star
 id|kmem_cache_alloc
+c_func
 (paren
 id|kmem_cache_t
 op_star
@@ -9424,6 +9435,7 @@ DECL|function|__kmalloc
 r_void
 op_star
 id|__kmalloc
+c_func
 (paren
 r_int
 id|size
@@ -9667,6 +9679,7 @@ multiline_comment|/**&n; * kmem_cache_free - Deallocate an object&n; * @cachep: 
 DECL|function|kmem_cache_free
 r_void
 id|kmem_cache_free
+c_func
 (paren
 id|kmem_cache_t
 op_star
@@ -9792,6 +9805,7 @@ multiline_comment|/**&n; * kfree - free previously allocated memory&n; * @objp: 
 DECL|function|kfree
 r_void
 id|kfree
+c_func
 (paren
 r_const
 r_void
@@ -9810,8 +9824,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_logical_neg
 id|objp
+)paren
 )paren
 r_return
 suffix:semicolon
@@ -10078,6 +10096,7 @@ DECL|function|do_tune_cpucache
 r_static
 r_int
 id|do_tune_cpucache
+c_func
 (paren
 id|kmem_cache_t
 op_star
@@ -10433,6 +10452,7 @@ DECL|function|enable_cpucache
 r_static
 r_void
 id|enable_cpucache
+c_func
 (paren
 id|kmem_cache_t
 op_star
