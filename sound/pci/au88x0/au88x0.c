@@ -889,10 +889,6 @@ id|SA_SHIRQ
 comma
 id|CARD_NAME_SHORT
 comma
-(paren
-r_void
-op_star
-)paren
 id|chip
 )paren
 )paren
@@ -984,7 +980,6 @@ id|chip
 suffix:semicolon
 id|core_out
 suffix:colon
-singleline_comment|//FIXME: the type of chip-&gt;mmio might need to be changed??
 id|iounmap
 c_func
 (paren
