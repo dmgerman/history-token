@@ -2508,7 +2508,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  The main table of quirks.&n; */
+multiline_comment|/*&n; *  The main table of quirks.&n; *&n; *  Note: any hooks for hotpluggable devices in this table must _NOT_&n; *        be declared __init.&n; */
 DECL|variable|__devinitdata
 r_static
 r_struct
