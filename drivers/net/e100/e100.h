@@ -2391,6 +2391,26 @@ DECL|macro|E100_SPEED_100_FULL
 mdefine_line|#define E100_SPEED_100_FULL 4
 multiline_comment|/********* function prototypes *************/
 r_extern
+r_int
+id|e100_open
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|e100_close
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|e100_isolate_driver
 c_func
@@ -2399,6 +2419,17 @@ r_struct
 id|e100_private
 op_star
 id|bdp
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_char
+id|e100_hw_init
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
 )paren
 suffix:semicolon
 r_extern
