@@ -2318,9 +2318,7 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-l_int|39
-op_star
-id|HZ
+l_int|1
 )paren
 suffix:semicolon
 id|spin_lock
