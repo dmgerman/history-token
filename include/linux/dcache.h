@@ -39,13 +39,6 @@ r_int
 r_int
 id|hash
 suffix:semicolon
-DECL|member|name_str
-r_char
-id|name_str
-(braket
-l_int|0
-)braket
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|dentry_stat_t
@@ -302,19 +295,6 @@ op_star
 id|d_cookie
 suffix:semicolon
 multiline_comment|/* cookie, if any */
-DECL|member|d_move_count
-r_int
-r_int
-id|d_move_count
-suffix:semicolon
-multiline_comment|/* to indicated moved dentry while lockless lookup */
-DECL|member|d_qstr
-r_struct
-id|qstr
-op_star
-id|d_qstr
-suffix:semicolon
-multiline_comment|/* quick str ptr used in lockless lookup and concurrent d_move */
 DECL|member|d_parent
 r_struct
 id|dentry
@@ -450,7 +430,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* the dentry parameter passed to d_hash and d_compare is the parent&n; * directory of the entries to be compared. It is used in case these&n; * functions need any directory specific information for determining&n; * equivalency classes.  Using the dentry itself might not work, as it&n; * might be a negative dentry which has no information associated with&n; * it */
-multiline_comment|/*&n;locking rules:&n;&t;&t;big lock&t;dcache_lock&t;may block&n;d_revalidate:&t;no&t;&t;no&t;&t;yes&n;d_hash&t;&t;no&t;&t;no&t;&t;yes&n;d_compare:&t;no&t;&t;yes&t;&t;no&n;d_delete:&t;no&t;&t;yes&t;&t;no&n;d_release:&t;no&t;&t;no&t;&t;yes&n;d_iput:&t;&t;no&t;&t;no&t;&t;yes&n; */
+multiline_comment|/*&n;locking rules:&n;&t;&t;big lock&t;dcache_lock&t;d_lock   may block&n;d_revalidate:&t;no&t;&t;no&t;&t;no       yes&n;d_hash&t;&t;no&t;&t;no&t;&t;no       yes&n;d_compare:&t;no&t;&t;yes&t;&t;yes      no&n;d_delete:&t;no&t;&t;yes&t;&t;no       no&n;d_release:&t;no&t;&t;no&t;&t;no       yes&n;d_iput:&t;&t;no&t;&t;no&t;&t;no       yes&n; */
 multiline_comment|/* d_flags entries */
 DECL|macro|DCACHE_AUTOFS_PENDING
 mdefine_line|#define DCACHE_AUTOFS_PENDING 0x0001    /* autofs: &quot;under construction&quot; */
@@ -549,13 +529,13 @@ c_func
 r_struct
 id|dentry
 op_star
-id|d
+id|dentry
 )paren
 (brace
 r_return
-id|d-&gt;d_name.name
+id|dentry-&gt;d_name.name
 op_ne
-id|d-&gt;d_iname
+id|dentry-&gt;d_iname
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * These are the low-level FS interfaces to the dcache..&n; */
