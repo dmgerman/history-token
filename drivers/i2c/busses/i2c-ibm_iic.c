@@ -1,4 +1,9 @@
 multiline_comment|/*&n; * drivers/i2c/i2c-ibm_iic.c&n; *&n; * Support for the IIC peripheral on IBM PPC 4xx&n; *&n; * Copyright (c) 2003 Zultys Technologies.&n; * Eugene Surovegin &lt;eugene.surovegin@zultys.com&gt; or &lt;ebs@ebshome.net&gt;&n; *&n; * Based on original work by &n; * &t;Ian DaSilva  &lt;idasilva@mvista.com&gt;&n; *      Armin Kuster &lt;akuster@mvista.com&gt;&n; * &t;Matt Porter  &lt;mporter@mvista.com&gt;&n; *&n; *      Copyright 2000-2003 MontaVista Software Inc.&n; *&n; * Original driver version was highly leveraged from i2c-elektor.c&n; *&n; *   &t;Copyright 1995-97 Simon G. Vogl&n; *                1998-99 Hans Berglund&n; *&n; *   &t;With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt; &n; *&t;and even Frodo Looijaard &lt;frodol@dds.nl&gt;&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG&t;1
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;

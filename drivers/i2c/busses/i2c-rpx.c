@@ -1,4 +1,9 @@
 multiline_comment|/*&n; * Embedded Planet RPX Lite MPC8xx CPM I2C interface.&n; * Copyright (c) 1999 Dan Malek (dmalek@jlc.net).&n; *&n; * moved into proper i2c interface;&n; * Brad Parker (brad@heeltoe.com)&n; *&n; * RPX lite specific parts of the i2c interface&n; * Update:  There actually isn&squot;t anything RPXLite-specific about this module.&n; * This should work for most any 8xx board.  The console messages have been &n; * changed to eliminate RPXLite references.&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG&t;1
+macro_line|#endif
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -279,6 +284,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-rpx: Unable to register with I2C&bslash;n&quot;
 )paren
 suffix:semicolon

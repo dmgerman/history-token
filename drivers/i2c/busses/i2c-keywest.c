@@ -1,4 +1,9 @@
 multiline_comment|/*&n;    i2c Support for Apple Keywest I2C Bus Controller&n;&n;    Copyright (c) 2001 Benjamin Herrenschmidt &lt;benh@kernel.crashing.org&gt;&n;&n;    Original work by&n;    &n;    Copyright (c) 2000 Philip Edelbrock &lt;phil@stimpy.netroedge.com&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;    Changes:&n;&n;    2001/12/13 BenH&t;New implementation&n;    2001/12/15 BenH&t;Add support for &quot;byte&quot; and &quot;quick&quot;&n;                        transfers. Add i2c_xfer routine.&n;&n;    My understanding of the various modes supported by keywest are:&n;&n;     - Dumb mode : not implemented, probably direct tweaking of lines&n;     - Standard mode : simple i2c transaction of type&n;         S Addr R/W A Data A Data ... T&n;     - Standard sub mode : combined 8 bit subaddr write with data read&n;         S Addr R/W A SubAddr A Data A Data ... T&n;     - Combined mode : Subaddress and Data sequences appended with no stop&n;         S Addr R/W A SubAddr S Addr R/W A Data A Data ... T&n;&n;    Currently, this driver uses only Standard mode for i2c xfer, and&n;    smbus byte &amp; quick transfers ; and uses StandardSub mode for&n;    other smbus transfers instead of combined as we need that for the&n;    sound driver to be happy&n;*/
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG&t;1
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -18,8 +23,6 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &quot;i2c-keywest.h&quot;
-DECL|macro|DBG
-mdefine_line|#define DBG(x...) do {&bslash;&n;&t;if (debug &gt; 0) &bslash;&n;&t;&t;printk(KERN_DEBUG &quot;KW:&quot; x); &bslash;&n;&t;} while(0)
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -46,23 +49,10 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|debug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
 DECL|variable|probe
+r_static
 r_int
 id|probe
-op_assign
-l_int|0
-suffix:semicolon
-DECL|variable|debug
-r_int
-id|debug
 op_assign
 l_int|0
 suffix:semicolon
@@ -128,7 +118,7 @@ id|rearm_timer
 op_assign
 l_int|1
 suffix:semicolon
-id|DBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;handle_interrupt(), got: %x, status: %x, state: %d&bslash;n&quot;
@@ -231,7 +221,7 @@ c_func
 id|reg_status
 )paren
 suffix:semicolon
-id|DBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;ack on set address: %x&bslash;n&quot;
@@ -320,7 +310,7 @@ id|iface-&gt;state
 op_assign
 id|state_write
 suffix:semicolon
-id|DBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;write byte: %x&bslash;n&quot;
@@ -387,7 +377,7 @@ c_func
 id|reg_data
 )paren
 suffix:semicolon
-id|DBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;read byte: %x&bslash;n&quot;
@@ -460,7 +450,7 @@ c_func
 id|reg_status
 )paren
 suffix:semicolon
-id|DBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;ack on data write: %x&bslash;n&quot;
@@ -498,7 +488,7 @@ c_cond
 id|iface-&gt;datalen
 )paren
 (brace
-id|DBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;write byte: %x&bslash;n&quot;
@@ -720,7 +710,7 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|DBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;timeout !&bslash;n&quot;
@@ -990,7 +980,7 @@ op_amp
 id|iface-&gt;sem
 )paren
 suffix:semicolon
-id|DBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;chan: %d, addr: 0x%x, transfer len: %d, read: %d&bslash;n&quot;
@@ -1166,7 +1156,7 @@ id|rc
 op_assign
 id|iface-&gt;result
 suffix:semicolon
-id|DBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;transfer done, result: %d&bslash;n&quot;
@@ -1341,7 +1331,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|DBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;xfer: chan: %d, doing %s %d bytes to 0x%02x - %d of %d messages&bslash;n&quot;
@@ -1531,7 +1521,7 @@ l_int|0
 id|completed
 op_increment
 suffix:semicolon
-id|DBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;transfer done, result: %d&bslash;n&quot;
