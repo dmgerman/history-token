@@ -2820,14 +2820,15 @@ id|cpu_initialized
 suffix:semicolon
 DECL|function|do_boot_cpu
 r_static
-r_void
+r_int
 id|__init
 id|do_boot_cpu
+c_func
 (paren
 r_int
 id|apicid
 )paren
-multiline_comment|/*&n; * NOTE - on most systems this is a PHYSICAL apic ID, but on multiquad&n; * (ie clustered apic addressing mode), this is a LOGICAL apic ID.&n; */
+multiline_comment|/*&n; * NOTE - on most systems this is a PHYSICAL apic ID, but on multiquad&n; * (ie clustered apic addressing mode), this is a LOGICAL apic ID.&n; * Returns zero if CPU booted OK, else error code from wakeup_secondary_cpu.&n; */
 (brace
 r_struct
 id|task_struct
@@ -2837,8 +2838,6 @@ suffix:semicolon
 r_int
 r_int
 id|boot_error
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|timeout
@@ -3104,12 +3103,9 @@ id|APIC_ESR
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Status is now clean&n;&t; */
+multiline_comment|/*&n;&t; * Starting actual IPI sequence...&n;&t; */
 id|boot_error
 op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/*&n;&t; * Starting actual IPI sequence...&n;&t; */
 id|wakeup_secondary_cpu
 c_func
 (paren
@@ -3387,6 +3383,9 @@ op_assign
 id|nmi_low
 suffix:semicolon
 )brace
+r_return
+id|boot_error
+suffix:semicolon
 )brace
 DECL|variable|cacheflush_time
 id|cycles_t
@@ -3963,35 +3962,13 @@ l_int|1
 )paren
 r_continue
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|do_boot_cpu
 c_func
 (paren
 id|apicid
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Make sure we unmap all failed CPUs&n;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|boot_apicid_to_cpu
-c_func
-(paren
-id|apicid
-)paren
-op_eq
-op_minus
-l_int|1
-)paren
-op_logical_and
-(paren
-id|phys_cpu_present_map
-op_amp
-(paren
-l_int|1
-op_lshift
-id|bit
-)paren
 )paren
 )paren
 id|printk
