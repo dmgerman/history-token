@@ -2462,24 +2462,6 @@ id|pages
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|function|nr_buffermem_pages
-r_int
-r_int
-id|nr_buffermem_pages
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|atomic_read
-c_func
-(paren
-op_amp
-id|buffermem_pages
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Accumulate the page_state information across all CPUs.&n; * The result is unavoidably approximate - it can change&n; * during and after execution of this function.&n; */
 DECL|variable|__cacheline_aligned
 r_struct
@@ -2621,11 +2603,9 @@ c_func
 suffix:semicolon
 id|val-&gt;bufferram
 op_assign
-id|atomic_read
+id|get_page_cache_size
 c_func
 (paren
-op_amp
-id|buffermem_pages
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HIGHMEM

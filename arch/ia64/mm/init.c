@@ -645,17 +645,6 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%ld buffermem pages&bslash;n&quot;
-comma
-id|nr_buffermem_pages
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
 l_string|&quot;%d free buffer pages&bslash;n&quot;
 comma
 id|nr_free_buffer_pages
