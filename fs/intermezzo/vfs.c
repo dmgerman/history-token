@@ -1094,7 +1094,7 @@ id|rec
 comma
 id|fset
 comma
-id|file
+id|fdata
 comma
 id|file-&gt;f_dentry
 comma
@@ -1638,10 +1638,6 @@ id|inode-&gt;i_size
 )paren
 )paren
 (brace
-r_struct
-id|file
-id|file
-suffix:semicolon
 multiline_comment|/* Journal a close whenever we see a potential truncate&n;                        * At the receiving end, lento should explicitly remove&n;                        * ATTR_SIZE from the list of valid attributes */
 id|presto_getversion
 c_func
@@ -1651,14 +1647,6 @@ id|new_ver
 comma
 id|inode
 )paren
-suffix:semicolon
-id|file.private_data
-op_assign
-l_int|NULL
-suffix:semicolon
-id|file.f_dentry
-op_assign
-id|dentry
 suffix:semicolon
 id|error
 op_assign
@@ -1670,8 +1658,7 @@ id|rec
 comma
 id|fset
 comma
-op_amp
-id|file
+l_int|NULL
 comma
 id|dentry
 comma
