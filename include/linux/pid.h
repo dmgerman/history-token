@@ -25,6 +25,12 @@ DECL|struct|pid
 r_struct
 id|pid
 (brace
+multiline_comment|/* Try to keep hash_chain in the same cacheline as nr for find_pid */
+DECL|member|hash_chain
+r_struct
+id|hlist_node
+id|hash_chain
+suffix:semicolon
 DECL|member|nr
 r_int
 id|nr
@@ -43,11 +49,6 @@ DECL|member|task_list
 r_struct
 id|list_head
 id|task_list
-suffix:semicolon
-DECL|member|hash_chain
-r_struct
-id|hlist_node
-id|hash_chain
 suffix:semicolon
 )brace
 suffix:semicolon
