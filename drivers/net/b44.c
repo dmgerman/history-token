@@ -8957,7 +8957,11 @@ id|b44
 op_star
 id|bp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -9049,7 +9053,11 @@ id|b44
 op_star
 id|bp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|pci_restore_state
 c_func
