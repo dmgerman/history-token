@@ -1722,16 +1722,6 @@ id|part_subsys
 op_assign
 (brace
 dot
-id|kobj
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;part&quot;
-)brace
-comma
-dot
 id|parent
 op_assign
 op_amp
