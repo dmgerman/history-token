@@ -783,6 +783,7 @@ op_add_assign
 l_int|0x100000
 )paren
 (brace
+macro_line|#ifdef DEBUG
 id|printf
 c_func
 (paren
@@ -791,6 +792,7 @@ comma
 id|claim_addr
 )paren
 suffix:semicolon
+macro_line|#endif
 id|vmlinux.addr
 op_assign
 (paren
@@ -1105,6 +1107,7 @@ l_int|0
 r_break
 suffix:semicolon
 )brace
+macro_line|#ifdef DEBUG
 id|printf
 c_func
 (paren
@@ -1117,6 +1120,7 @@ r_int
 id|elf64ph-&gt;p_offset
 )paren
 suffix:semicolon
+macro_line|#endif
 id|vmlinux.addr
 op_add_assign
 (paren
@@ -1162,6 +1166,7 @@ id|kernel_entry_t
 )paren
 id|vmlinux.addr
 suffix:semicolon
+macro_line|#ifdef DEBUG
 id|printf
 c_func
 (paren
@@ -1195,6 +1200,7 @@ r_int
 id|bi_recs
 )paren
 suffix:semicolon
+macro_line|#endif
 id|kernel_entry
 c_func
 (paren
