@@ -217,6 +217,8 @@ DECL|macro|BIO_BOUNCED
 mdefine_line|#define BIO_BOUNCED&t;5&t;/* bio is a bounce bio */
 DECL|macro|BIO_USER_MAPPED
 mdefine_line|#define BIO_USER_MAPPED 6&t;/* contains user pages */
+DECL|macro|BIO_EOPNOTSUPP
+mdefine_line|#define BIO_EOPNOTSUPP&t;7&t;/* not supported */
 DECL|macro|bio_flagged
 mdefine_line|#define bio_flagged(bio, flag)&t;((bio)-&gt;bi_flags &amp; (1 &lt;&lt; (flag)))
 multiline_comment|/*&n; * top 4 bits of bio flags indicate the pool this bio came from&n; */
@@ -260,6 +262,10 @@ DECL|macro|bio_barrier
 mdefine_line|#define bio_barrier(bio)&t;((bio)-&gt;bi_rw &amp; (1 &lt;&lt; BIO_RW_BARRIER))
 DECL|macro|bio_sync
 mdefine_line|#define bio_sync(bio)&t;&t;((bio)-&gt;bi_rw &amp; (1 &lt;&lt; BIO_RW_SYNC))
+DECL|macro|bio_failfast
+mdefine_line|#define bio_failfast(bio)&t;((bio)-&gt;bi_rw &amp; (1 &lt;&lt; BIO_RW_FAILFAST))
+DECL|macro|bio_rw_ahead
+mdefine_line|#define bio_rw_ahead(bio)&t;((bio)-&gt;bi_rw &amp; (1 &lt;&lt; BIO_RW_AHEAD))
 multiline_comment|/*&n; * will die&n; */
 DECL|macro|bio_to_phys
 mdefine_line|#define bio_to_phys(bio)&t;(page_to_phys(bio_page((bio))) + (unsigned long) bio_offset((bio)))

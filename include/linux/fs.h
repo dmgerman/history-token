@@ -150,6 +150,8 @@ DECL|macro|READ_SYNC
 mdefine_line|#define READ_SYNC&t;(READ | (1 &lt;&lt; BIO_RW_SYNC))
 DECL|macro|WRITE_SYNC
 mdefine_line|#define WRITE_SYNC&t;(WRITE | (1 &lt;&lt; BIO_RW_SYNC))
+DECL|macro|WRITE_BARRIER
+mdefine_line|#define WRITE_BARRIER&t;((1 &lt;&lt; BIO_RW) | (1 &lt;&lt; BIO_RW_BARRIER))
 DECL|macro|SEL_IN
 mdefine_line|#define SEL_IN&t;&t;1
 DECL|macro|SEL_OUT

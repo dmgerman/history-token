@@ -55,6 +55,10 @@ DECL|enumerator|BH_Write_EIO
 id|BH_Write_EIO
 comma
 multiline_comment|/* I/O error on write */
+DECL|enumerator|BH_Ordered
+id|BH_Ordered
+comma
+multiline_comment|/* ordered write */
 DECL|enumerator|BH_PrivateStart
 id|BH_PrivateStart
 comma
@@ -265,6 +269,13 @@ c_func
 id|Write_EIO
 comma
 id|write_io_error
+)paren
+id|BUFFER_FNS
+c_func
+(paren
+id|Ordered
+comma
+id|ordered
 )paren
 DECL|macro|bh_offset
 mdefine_line|#define bh_offset(bh)&t;&t;((unsigned long)(bh)-&gt;b_data &amp; ~PAGE_MASK)
@@ -762,7 +773,7 @@ op_star
 id|bh
 )paren
 suffix:semicolon
-r_void
+r_int
 id|submit_bh
 c_func
 (paren
