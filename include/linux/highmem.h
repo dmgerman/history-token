@@ -3,6 +3,7 @@ DECL|macro|_LINUX_HIGHMEM_H
 mdefine_line|#define _LINUX_HIGHMEM_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#ifdef CONFIG_HIGHMEM
 r_extern
