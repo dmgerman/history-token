@@ -1,0 +1,45 @@
+multiline_comment|/**********************************************************************&n;wait.h&n;&n;Copyright (C) 1999 Lars Brinkhoff.  See the file COPYING for licensing&n;terms and conditions.&n;**********************************************************************/
+macro_line|#ifndef __PTPROXY_WAIT_H
+DECL|macro|__PTPROXY_WAIT_H
+mdefine_line|#define __PTPROXY_WAIT_H
+r_extern
+r_int
+id|proxy_wait_return
+c_func
+(paren
+r_struct
+id|debugger
+op_star
+id|debugger
+comma
+id|pid_t
+id|unused
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|real_wait_return
+c_func
+(paren
+r_struct
+id|debugger
+op_star
+id|debugger
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|parent_wait_return
+c_func
+(paren
+r_struct
+id|debugger
+op_star
+id|debugger
+comma
+id|pid_t
+id|unused
+)paren
+suffix:semicolon
+macro_line|#endif
+eof

@@ -1084,7 +1084,7 @@ suffix:semicolon
 r_int
 id|i
 comma
-id|l
+id|j
 comma
 id|wake
 suffix:semicolon
@@ -1135,15 +1135,15 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|l
+id|j
 op_assign
 l_int|0
 suffix:semicolon
-id|l
+id|j
 OL
 id|urb-&gt;actual_length
 suffix:semicolon
-id|l
+id|j
 op_add_assign
 l_int|4
 )paren
@@ -1154,7 +1154,7 @@ op_assign
 (paren
 id|data
 (braket
-id|l
+id|j
 )braket
 op_rshift
 l_int|0
@@ -1168,7 +1168,7 @@ op_assign
 (paren
 id|data
 (braket
-id|l
+id|j
 )braket
 op_rshift
 l_int|4
@@ -1226,6 +1226,8 @@ id|data
 l_int|1
 op_plus
 id|i
+op_plus
+id|j
 )braket
 suffix:semicolon
 id|cable-&gt;min.bufWrPtr

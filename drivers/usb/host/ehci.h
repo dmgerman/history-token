@@ -31,6 +31,13 @@ suffix:semicolon
 DECL|member|reclaim_ready
 r_int
 id|reclaim_ready
+suffix:colon
+l_int|1
+comma
+DECL|member|async_idle
+id|async_idle
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* periodic schedule support */
 DECL|macro|DEFAULT_I_TDPS

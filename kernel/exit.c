@@ -2182,7 +2182,7 @@ comma
 r_struct
 id|task_struct
 comma
-id|sibling
+id|ptrace_list
 )paren
 comma
 id|current
