@@ -47,6 +47,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|AAC_DRIVER_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|AAC_DRIVER_VERSION
+)paren
+suffix:semicolon
 DECL|variable|nondasd
 r_int
 id|nondasd

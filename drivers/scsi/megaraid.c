@@ -16,6 +16,8 @@ macro_line|#include &lt;scsi/scsicam.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;megaraid.h&quot;
+DECL|macro|MEGARAID_MODULE_VERSION
+mdefine_line|#define MEGARAID_MODULE_VERSION &quot;2.00.3&quot;
 id|MODULE_AUTHOR
 (paren
 l_string|&quot;LSI Logic Corporation&quot;
@@ -29,6 +31,13 @@ suffix:semicolon
 id|MODULE_LICENSE
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|MEGARAID_MODULE_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|MEGARAID_MODULE_VERSION
 )paren
 suffix:semicolon
 DECL|variable|max_cmd_per_lun

@@ -19385,5 +19385,12 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|QLA1280_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|QLA1280_VERSION
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Overrides for Emacs so that we almost follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-basic-offset: 8&n; * tab-width: 8&n; * End:&n; */
 eof
