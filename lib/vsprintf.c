@@ -1150,6 +1150,43 @@ suffix:semicolon
 multiline_comment|/* &squot;h&squot;, &squot;l&squot;, or &squot;L&squot; for integer fields */
 multiline_comment|/* &squot;z&squot; support added 23/7/1999 S.H.    */
 multiline_comment|/* &squot;z&squot; changed to &squot;Z&squot; --davidm 1/25/99 */
+multiline_comment|/* Reject out-of-range values early */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+(paren
+r_int
+)paren
+id|size
+OL
+l_int|0
+)paren
+)paren
+(brace
+multiline_comment|/* There can be only one.. */
+r_static
+r_int
+id|warn
+op_assign
+l_int|1
+suffix:semicolon
+id|WARN_ON
+c_func
+(paren
+id|warn
+)paren
+suffix:semicolon
+id|warn
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|str
 op_assign
 id|buf
@@ -2324,7 +2361,12 @@ c_func
 (paren
 id|buf
 comma
-l_int|0xFFFFFFFFUL
+(paren
+op_complement
+l_int|0U
+)paren
+op_rshift
+l_int|1
 comma
 id|fmt
 comma
