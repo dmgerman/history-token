@@ -2656,6 +2656,7 @@ DECL|function|find_first_zero_bit
 id|find_first_zero_bit
 c_func
 (paren
+r_const
 r_int
 r_int
 op_star
@@ -2769,6 +2770,7 @@ DECL|function|find_first_bit
 id|find_first_bit
 c_func
 (paren
+r_const
 r_int
 r_int
 op_star
@@ -2881,6 +2883,7 @@ r_int
 DECL|function|find_next_zero_bit
 id|find_next_zero_bit
 (paren
+r_const
 r_int
 r_int
 op_star
@@ -3050,6 +3053,7 @@ r_int
 DECL|function|find_next_bit
 id|find_next_bit
 (paren
+r_const
 r_int
 r_int
 op_star
@@ -3223,6 +3227,7 @@ DECL|function|find_first_zero_bit
 id|find_first_zero_bit
 c_func
 (paren
+r_const
 r_int
 r_int
 op_star
@@ -3339,6 +3344,7 @@ DECL|function|find_first_bit
 id|find_first_bit
 c_func
 (paren
+r_const
 r_int
 r_int
 op_star
@@ -3454,6 +3460,7 @@ r_int
 DECL|function|find_next_zero_bit
 id|find_next_zero_bit
 (paren
+r_const
 r_int
 r_int
 op_star
@@ -3632,6 +3639,7 @@ r_int
 DECL|function|find_next_bit
 id|find_next_bit
 (paren
+r_const
 r_int
 r_int
 op_star

@@ -352,6 +352,8 @@ DECL|macro|PSW32_ASC_HOME
 mdefine_line|#define PSW32_ASC_HOME&t;&t;0x0000C000UL
 DECL|macro|PSW32_USER_BITS
 mdefine_line|#define PSW32_USER_BITS&t;(PSW32_BASE_BITS | PSW32_MASK_DAT | PSW32_ASC_HOME | &bslash;&n;&t;&t;&t; PSW32_MASK_IO | PSW32_MASK_EXT | PSW32_MASK_MCHECK | &bslash;&n;&t;&t;&t; PSW32_MASK_PSTATE)
+DECL|macro|PSW32_MASK_MERGE
+mdefine_line|#define PSW32_MASK_MERGE(CURRENT,NEW) &bslash;&n;        (((CURRENT) &amp; ~(PSW32_MASK_CC|PSW32_MASK_PM)) | &bslash;&n;         ((NEW) &amp; (PSW32_MASK_CC|PSW32_MASK_PM)))
 r_typedef
 r_struct
 (brace
