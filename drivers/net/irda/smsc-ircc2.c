@@ -6146,7 +6146,7 @@ op_amp
 id|IRCC_IIR_ACTIVE_FRAME
 )paren
 (brace
-multiline_comment|/*printk(KERN_WARNING __FUNCTION__ &quot;(): Active Frame&bslash;n&quot;);*/
+multiline_comment|/*printk(KERN_WARNING &quot;%s(): Active Frame&bslash;n&quot;, __FUNCTION__);*/
 )brace
 multiline_comment|/* Enable interrupts again */
 id|register_bank
@@ -8030,7 +8030,7 @@ id|cfg_base
 op_assign
 id|address-&gt;cfg_base
 suffix:semicolon
-multiline_comment|/*printk(KERN_WARNING __FUNCTION__ &quot;(): probing: 0x%02x for: 0x%02x&bslash;n&quot;, cfg_base, address-&gt;type);*/
+multiline_comment|/*printk(KERN_WARNING &quot;%s(): probing: 0x%02x for: 0x%02x&bslash;n&quot;, __FUNCTION__, cfg_base, address-&gt;type);*/
 r_if
 c_cond
 (paren
@@ -8274,7 +8274,7 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/*printk(KERN_WARNING __FUNCTION__ &quot;(): mode: 0x%02x&bslash;n&quot;, mode);*/
+multiline_comment|/*printk(KERN_WARNING &quot;%s(): mode: 0x%02x&bslash;n&quot;, __FUNCTION__, mode);*/
 r_if
 c_cond
 (paren
