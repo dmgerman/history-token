@@ -994,6 +994,14 @@ id|inode
 op_star
 id|inode
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * We can reschedule here without worrying about the list&squot;s&n;&t;&t; * consistency because the per-sb list of inodes must not&n;&t;&t; * change during umount anymore, and because iprune_sem keeps&n;&t;&t; * shrink_icache_memory() away.&n;&t;&t; */
+id|cond_resched_lock
+c_func
+(paren
+op_amp
+id|inode_lock
+)paren
+suffix:semicolon
 id|next
 op_assign
 id|next-&gt;next
