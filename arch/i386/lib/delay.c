@@ -86,6 +86,7 @@ suffix:semicolon
 id|__delay
 c_func
 (paren
+op_increment
 id|xloops
 )paren
 suffix:semicolon
