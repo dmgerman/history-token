@@ -236,6 +236,13 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_void
+id|throttle_vm_writeout
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* These are exported to sysctl. */
 r_extern
 r_int

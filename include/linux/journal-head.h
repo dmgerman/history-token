@@ -40,6 +40,11 @@ DECL|member|b_jlist
 r_int
 id|b_jlist
 suffix:semicolon
+multiline_comment|/*&n;&t; * This flag signals the buffer has been modified by&n;&t; * the currently running transaction&n;&t; * [jbd_lock_bh_state()]&n;&t; */
+DECL|member|b_modified
+r_int
+id|b_modified
+suffix:semicolon
 multiline_comment|/*&n;&t; * Copy of the buffer data frozen for writing to the log.&n;&t; * [jbd_lock_bh_state()]&n;&t; */
 DECL|member|b_frozen_data
 r_char

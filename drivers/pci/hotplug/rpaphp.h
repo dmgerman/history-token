@@ -26,13 +26,6 @@ DECL|macro|LED_ID
 mdefine_line|#define LED_ID&t;&t;2&t;/* slow blinking */
 DECL|macro|LED_ACTION
 mdefine_line|#define LED_ACTION&t;3&t;/* fast blinking */
-multiline_comment|/* Error status from rtas_get-sensor */
-DECL|macro|NEED_POWER
-mdefine_line|#define NEED_POWER    -9000&t;/* slot must be power up and unisolated to get state */
-DECL|macro|PWR_ONLY
-mdefine_line|#define PWR_ONLY      -9001&t;/* slot must be powerd up to get state, leave isolated */
-DECL|macro|ERR_SENSE_USE
-mdefine_line|#define ERR_SENSE_USE -9002&t;/* No DR operation will succeed, slot is unusable  */
 multiline_comment|/* Sensor values from rtas_get-sensor */
 DECL|macro|EMPTY
 mdefine_line|#define EMPTY           0&t;/* No card in slot */

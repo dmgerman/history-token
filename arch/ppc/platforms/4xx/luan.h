@@ -38,11 +38,11 @@ DECL|macro|RS_TABLE_SIZE
 mdefine_line|#define RS_TABLE_SIZE&t;3
 multiline_comment|/* PIBS defined UART mappings, used before early_serial_setup */
 DECL|macro|UART0_IO_BASE
-mdefine_line|#define UART0_IO_BASE&t;(u8 *) 0xa0000200
+mdefine_line|#define UART0_IO_BASE&t;0xa0000200
 DECL|macro|UART1_IO_BASE
-mdefine_line|#define UART1_IO_BASE&t;(u8 *) 0xa0000300
+mdefine_line|#define UART1_IO_BASE&t;0xa0000300
 DECL|macro|UART2_IO_BASE
-mdefine_line|#define UART2_IO_BASE&t;(u8 *) 0xa0000600
+mdefine_line|#define UART2_IO_BASE&t;0xa0000600
 DECL|macro|BASE_BAUD
 mdefine_line|#define BASE_BAUD&t;11059200
 DECL|macro|STD_UART_OP

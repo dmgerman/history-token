@@ -3,7 +3,6 @@ DECL|macro|__ASM_SH_DMA_MAPPING_H
 mdefine_line|#define __ASM_SH_DMA_MAPPING_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 r_extern

@@ -146,9 +146,34 @@ op_star
 id|send_info
 )paren
 suffix:semicolon
+multiline_comment|/* Tell the handler that we are using it/not using it.  The&n;&t;   message handler get the modules that this handler belongs&n;&t;   to; this function lets the SMI claim any modules that it&n;&t;   uses.  These may be NULL if this is not required. */
+DECL|member|inc_usecount
+r_int
+(paren
+op_star
+id|inc_usecount
+)paren
+(paren
+r_void
+op_star
+id|send_info
+)paren
+suffix:semicolon
+DECL|member|dec_usecount
+r_void
+(paren
+op_star
+id|dec_usecount
+)paren
+(paren
+r_void
+op_star
+id|send_info
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Add a low-level interface to the IPMI driver. */
+multiline_comment|/* Add a low-level interface to the IPMI driver.  Note that if the&n;   interface doesn&squot;t know its slave address, it should pass in zero. */
 r_int
 id|ipmi_register_smi
 c_func
@@ -169,6 +194,10 @@ comma
 r_int
 r_char
 id|version_minor
+comma
+r_int
+r_char
+id|slave_addr
 comma
 id|ipmi_smi_t
 op_star

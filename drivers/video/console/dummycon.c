@@ -78,7 +78,7 @@ r_else
 id|vc_resize
 c_func
 (paren
-id|vc-&gt;vc_num
+id|vc
 comma
 id|DUMMY_COLUMNS
 comma

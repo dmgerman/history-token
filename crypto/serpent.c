@@ -15,12 +15,8 @@ DECL|macro|SERPENT_BLOCK_SIZE
 mdefine_line|#define SERPENT_BLOCK_SIZE&t;&t; 16
 DECL|macro|PHI
 mdefine_line|#define PHI 0x9e3779b9UL
-DECL|macro|ROL
-mdefine_line|#define ROL(x,r) ((x) = ((x) &lt;&lt; (r)) | ((x) &gt;&gt; (32-(r))))
-DECL|macro|ROR
-mdefine_line|#define ROR(x,r) ((x) = ((x) &gt;&gt; (r)) | ((x) &lt;&lt; (32-(r))))
 DECL|macro|keyiter
-mdefine_line|#define keyiter(a,b,c,d,i,j) &bslash;&n;        b ^= d; b ^= c; b ^= a; b ^= PHI ^ i; ROL(b,11); k[j] = b;
+mdefine_line|#define keyiter(a,b,c,d,i,j) &bslash;&n;        b ^= d; b ^= c; b ^= a; b ^= PHI ^ i; b = rol32(b,11); k[j] = b;
 DECL|macro|loadkeys
 mdefine_line|#define loadkeys(x0,x1,x2,x3,i) &bslash;&n;&t;x0=k[i]; x1=k[i+1]; x2=k[i+2]; x3=k[i+3];
 DECL|macro|storekeys
@@ -28,9 +24,9 @@ mdefine_line|#define storekeys(x0,x1,x2,x3,i) &bslash;&n;&t;k[i]=x0; k[i+1]=x1; 
 DECL|macro|K
 mdefine_line|#define K(x0,x1,x2,x3,i)&t;&t;&t;&t;&bslash;&n;&t;x3 ^= k[4*(i)+3];        x2 ^= k[4*(i)+2];&t;&bslash;&n;&t;x1 ^= k[4*(i)+1];        x0 ^= k[4*(i)+0];
 DECL|macro|LK
-mdefine_line|#define LK(x0,x1,x2,x3,x4,i)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;ROL(x0,13);&t;&bslash;&n;&t;ROL(x2,3);&t;x1 ^= x0;&t;x4  = x0 &lt;&lt; 3;&t;&bslash;&n;&t;x3 ^= x2;&t;x1 ^= x2;&t;&t;&t;&bslash;&n;&t;ROL(x1,1);&t;x3 ^= x4;&t;&t;&t;&bslash;&n;&t;ROL(x3,7);&t;x4  = x1;&t;&t;&t;&bslash;&n;&t;x0 ^= x1;&t;x4 &lt;&lt;= 7;&t;x2 ^= x3;&t;&bslash;&n;&t;x0 ^= x3;&t;x2 ^= x4;&t;x3 ^= k[4*i+3];&t;&bslash;&n;&t;x1 ^= k[4*i+1];&t;ROL(x0,5);&t;ROL(x2,22);&t;&bslash;&n;&t;x0 ^= k[4*i+0];&t;x2 ^= k[4*i+2];
+mdefine_line|#define LK(x0,x1,x2,x3,x4,i)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;x0=rol32(x0,13);&bslash;&n;&t;x2=rol32(x2,3);&t;x1 ^= x0;&t;x4  = x0 &lt;&lt; 3;&t;&bslash;&n;&t;x3 ^= x2;&t;x1 ^= x2;&t;&t;&t;&bslash;&n;&t;x1=rol32(x1,1);&t;x3 ^= x4;&t;&t;&t;&bslash;&n;&t;x3=rol32(x3,7);&t;x4  = x1;&t;&t;&t;&bslash;&n;&t;x0 ^= x1;&t;x4 &lt;&lt;= 7;&t;x2 ^= x3;&t;&bslash;&n;&t;x0 ^= x3;&t;x2 ^= x4;&t;x3 ^= k[4*i+3];&t;&bslash;&n;&t;x1 ^= k[4*i+1];&t;x0=rol32(x0,5);&t;x2=rol32(x2,22);&bslash;&n;&t;x0 ^= k[4*i+0];&t;x2 ^= k[4*i+2];
 DECL|macro|KL
-mdefine_line|#define KL(x0,x1,x2,x3,x4,i)&t;&t;&t;&t;&bslash;&n;&t;x0 ^= k[4*i+0];&t;x1 ^= k[4*i+1];&t;x2 ^= k[4*i+2];&t;&bslash;&n;&t;x3 ^= k[4*i+3];&t;ROR(x0,5);&t;ROR(x2,22);&t;&bslash;&n;&t;x4 =  x1;&t;x2 ^= x3;&t;x0 ^= x3;&t;&bslash;&n;&t;x4 &lt;&lt;= 7;&t;x0 ^= x1;&t;ROR(x1,1);&t;&bslash;&n;&t;x2 ^= x4;&t;ROR(x3,7);&t;x4 = x0 &lt;&lt; 3;&t;&bslash;&n;&t;x1 ^= x0;&t;x3 ^= x4;&t;ROR(x0,13);&t;&bslash;&n;&t;x1 ^= x2;&t;x3 ^= x2;&t;ROR(x2,3);
+mdefine_line|#define KL(x0,x1,x2,x3,x4,i)&t;&t;&t;&t;&bslash;&n;&t;x0 ^= k[4*i+0];&t;x1 ^= k[4*i+1];&t;x2 ^= k[4*i+2];&t;&bslash;&n;&t;x3 ^= k[4*i+3];&t;x0=ror32(x0,5);&t;x2=ror32(x2,22);&bslash;&n;&t;x4 =  x1;&t;x2 ^= x3;&t;x0 ^= x3;&t;&bslash;&n;&t;x4 &lt;&lt;= 7;&t;x0 ^= x1;&t;x1=ror32(x1,1);&t;&bslash;&n;&t;x2 ^= x4;&t;x3=ror32(x3,7);&t;x4 = x0 &lt;&lt; 3;&t;&bslash;&n;&t;x1 ^= x0;&t;x3 ^= x4;&t;x0=ror32(x0,13);&bslash;&n;&t;x1 ^= x2;&t;x3 ^= x2;&t;x2=ror32(x2,3);
 DECL|macro|S0
 mdefine_line|#define S0(x0,x1,x2,x3,x4)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;x4  = x3;&t;&bslash;&n;&t;x3 |= x0;&t;x0 ^= x4;&t;x4 ^= x2;&t;&bslash;&n;&t;x4 =~ x4;&t;x3 ^= x1;&t;x1 &amp;= x0;&t;&bslash;&n;&t;x1 ^= x4;&t;x2 ^= x0;&t;x0 ^= x3;&t;&bslash;&n;&t;x4 |= x0;&t;x0 ^= x2;&t;x2 &amp;= x1;&t;&bslash;&n;&t;x3 ^= x2;&t;x1 =~ x1;&t;x2 ^= x4;&t;&bslash;&n;&t;x1 ^= x2;
 DECL|macro|S1

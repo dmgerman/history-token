@@ -17,6 +17,14 @@ DECL|macro|BREAKPOINT_INSTRUCTION
 mdefine_line|#define BREAKPOINT_INSTRUCTION&t;0x7fe00008&t;/* trap */
 DECL|macro|MAX_INSN_SIZE
 mdefine_line|#define MAX_INSN_SIZE 1
+DECL|macro|IS_TW
+mdefine_line|#define IS_TW(instr)&t;&t;(((instr) &amp; 0xfc0007fe) == 0x7c000008)
+DECL|macro|IS_TD
+mdefine_line|#define IS_TD(instr)&t;&t;(((instr) &amp; 0xfc0007fe) == 0x7c000088)
+DECL|macro|IS_TDI
+mdefine_line|#define IS_TDI(instr)&t;&t;(((instr) &amp; 0xfc000000) == 0x08000000)
+DECL|macro|IS_TWI
+mdefine_line|#define IS_TWI(instr)&t;&t;(((instr) &amp; 0xfc000000) == 0x0c000000)
 DECL|macro|JPROBE_ENTRY
 mdefine_line|#define JPROBE_ENTRY(pentry)&t;(kprobe_opcode_t *)((func_descr_t *)pentry)
 multiline_comment|/* Architecture specific copy of original instruction */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ctcmain.c,v 1.68 2004/12/27 09:25:27 heicarst Exp $&n; *&n; * CTC / ESCON network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; * Fixes by : Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *            Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * Driver Model stuff by : Cornelia Huck &lt;cohuck@de.ibm.com&gt;&n; *&n; * Documentation used:&n; *  - Principles of Operation (IBM doc#: SA22-7201-06)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SA22-7204-02)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SN22-5535)&n; *  - ESCON Channel-to-Channel Adapter (IBM doc#: SA22-7203-00)&n; *  - ESCON I/O Interface (IBM doc#: SA22-7202-029&n; *&n; * and the source of the original CTC driver by:&n; *  Dieter Wellerdiek (wel@de.ibm.com)&n; *  Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *  Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *  Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: CTC/ESCON network driver $Revision: 1.68 $&n; *&n; */
+multiline_comment|/*&n; * $Id: ctcmain.c,v 1.69 2005/02/27 19:46:44 ptiedem Exp $&n; *&n; * CTC / ESCON network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; * Fixes by : Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *            Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;&t;      Peter Tiedemann (ptiedem@de.ibm.com)&n; * Driver Model stuff by : Cornelia Huck &lt;cohuck@de.ibm.com&gt;&n; *&n; * Documentation used:&n; *  - Principles of Operation (IBM doc#: SA22-7201-06)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SA22-7204-02)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SN22-5535)&n; *  - ESCON Channel-to-Channel Adapter (IBM doc#: SA22-7203-00)&n; *  - ESCON I/O Interface (IBM doc#: SA22-7202-029&n; *&n; * and the source of the original CTC driver by:&n; *  Dieter Wellerdiek (wel@de.ibm.com)&n; *  Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *  Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *  Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: CTC/ESCON network driver $Revision: 1.69 $&n; *&n; */
 "&f;"
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -7717,13 +7717,13 @@ op_star
 id|kmalloc
 c_func
 (paren
+l_int|8
+op_star
 r_sizeof
 (paren
 r_struct
 id|ccw1
 )paren
-op_star
-l_int|8
 comma
 id|GFP_KERNEL
 op_or
@@ -7751,7 +7751,24 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n;&t; * &quot;static&quot; ccws are used in the following way:&n;&t; *&n;&t; * ccw[0..2] (Channel program for generic I/O):&n;&t; *           0: prepare&n;&t; *           1: read or write (depending on direction) with fixed&n;&t; *              buffer (idal allocated once when buffer is allocated)&n;&t; *           2: nop&n;&t; * ccw[3..5] (Channel program for direct write of packets)&n;&t; *           3: prepare&n;&t; *           4: write (idal allocated on every write).&n;&t; *           5: nop&n;&t; * ccw[6..7] (Channel program for initial channel setup):&n;&t; *           3: set extended mode&n;&t; *           4: nop&n;&t; *&n;&t; * ch-&gt;ccw[0..5] are initialized in ch_action_start because&n;&t; * the channel&squot;s direction is yet unknown here.&n;&t; */
+id|memset
+c_func
+(paren
+id|ch-&gt;ccw
+comma
+l_int|0
+comma
+l_int|8
+op_star
+r_sizeof
+(paren
+r_struct
+id|ccw1
+)paren
+)paren
+suffix:semicolon
+singleline_comment|// assure all flags and counters are reset
+multiline_comment|/**&n;&t; * &quot;static&quot; ccws are used in the following way:&n;&t; *&n;&t; * ccw[0..2] (Channel program for generic I/O):&n;&t; *           0: prepare&n;&t; *           1: read or write (depending on direction) with fixed&n;&t; *              buffer (idal allocated once when buffer is allocated)&n;&t; *           2: nop&n;&t; * ccw[3..5] (Channel program for direct write of packets)&n;&t; *           3: prepare&n;&t; *           4: write (idal allocated on every write).&n;&t; *           5: nop&n;&t; * ccw[6..7] (Channel program for initial channel setup):&n;&t; *           6: set extended mode&n;&t; *           7: nop&n;&t; *&n;&t; * ch-&gt;ccw[0..5] are initialized in ch_action_start because&n;&t; * the channel&squot;s direction is yet unknown here.&n;&t; */
 id|ch-&gt;ccw
 (braket
 l_int|6
@@ -7772,24 +7789,6 @@ id|CCW_FLAG_SLI
 suffix:semicolon
 id|ch-&gt;ccw
 (braket
-l_int|6
-)braket
-dot
-id|count
-op_assign
-l_int|0
-suffix:semicolon
-id|ch-&gt;ccw
-(braket
-l_int|6
-)braket
-dot
-id|cda
-op_assign
-l_int|0
-suffix:semicolon
-id|ch-&gt;ccw
-(braket
 l_int|7
 )braket
 dot
@@ -7805,24 +7804,6 @@ dot
 id|flags
 op_assign
 id|CCW_FLAG_SLI
-suffix:semicolon
-id|ch-&gt;ccw
-(braket
-l_int|7
-)braket
-dot
-id|count
-op_assign
-l_int|0
-suffix:semicolon
-id|ch-&gt;ccw
-(braket
-l_int|7
-)braket
-dot
-id|cda
-op_assign
-l_int|0
 suffix:semicolon
 id|ch-&gt;cdev
 op_assign
@@ -8011,6 +7992,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_star
+id|c
+op_logical_and
+(paren
 op_logical_neg
 id|strncmp
 c_func
@@ -8025,6 +8010,7 @@ comma
 id|ch-&gt;id
 comma
 id|CTC_ID_SIZE
+)paren
 )paren
 )paren
 (brace
@@ -8254,6 +8240,18 @@ id|kfree
 c_func
 (paren
 id|ch-&gt;ccw
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|ch-&gt;irb
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|ch
 )paren
 suffix:semicolon
 r_return

@@ -1,5 +1,11 @@
 multiline_comment|/* linux/include/linux/scx200.h&n;&n;   Copyright (c) 2001,2002 Christer Weinigel &lt;wingel@nano-system.com&gt;&n;&n;   Defines for the National Semiconductor SCx200 Processors&n;*/
 multiline_comment|/* Interesting stuff for the National Semiconductor SCx200 CPU */
+r_extern
+r_int
+id|scx200_cb_base
+suffix:semicolon
+DECL|macro|scx200_cb_present
+mdefine_line|#define scx200_cb_present() (scx200_cb_base!=0)
 multiline_comment|/* F0 PCI Header/Bridge Configuration Registers */
 DECL|macro|SCx200_DOCCS_BASE
 mdefine_line|#define SCx200_DOCCS_BASE 0x78&t;/* DOCCS Base Address Register */
@@ -9,8 +15,8 @@ multiline_comment|/* GPIO Register Block */
 DECL|macro|SCx200_GPIO_SIZE
 mdefine_line|#define SCx200_GPIO_SIZE 0x2c&t;/* Size of GPIO register block */
 multiline_comment|/* General Configuration Block */
-DECL|macro|SCx200_CB_BASE
-mdefine_line|#define SCx200_CB_BASE 0x9000&t;/* Base fixed at 0x9000 according to errata */
+DECL|macro|SCx200_CB_BASE_FIXED
+mdefine_line|#define SCx200_CB_BASE_FIXED 0x9000&t;/* Base fixed at 0x9000 according to errata? */
 multiline_comment|/* Watchdog Timer */
 DECL|macro|SCx200_WDT_OFFSET
 mdefine_line|#define SCx200_WDT_OFFSET 0x00&t;/* offset within configuration block */
@@ -51,8 +57,7 @@ DECL|macro|SCx200_REV
 mdefine_line|#define SCx200_REV 0x3d&t;&t;/* Revision Register */
 DECL|macro|SCx200_CBA
 mdefine_line|#define SCx200_CBA 0x3e&t;&t;/* Configuration Base Address Register */
-multiline_comment|/* Verify that the configuration block really is there */
-DECL|macro|scx200_cb_probe
-mdefine_line|#define scx200_cb_probe(base) (inw((base) + SCx200_CBA) == (base))
+DECL|macro|SCx200_CBA_SCRATCH
+mdefine_line|#define SCx200_CBA_SCRATCH 0x64&t;/* Configuration Base Address Scratchpad */
 multiline_comment|/*&n;    Local variables:&n;        compile-command: &quot;make -C ../.. bzImage modules&quot;&n;        c-basic-offset: 8&n;    End:&n;*/
 eof

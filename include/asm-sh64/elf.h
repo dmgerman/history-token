@@ -50,6 +50,18 @@ mdefine_line|#define ELF_EXEC_PAGESIZE&t;4096
 multiline_comment|/* This is the location that an ET_DYN program is loaded if exec&squot;ed.  Typical&n;   use of this is to invoke &quot;./ld.so someprog&quot; to test out a new version of&n;   the loader.  We need to make sure that it is out of the way of the program&n;   that it will &quot;exec&quot;, and that there is sufficient room for the brk.  */
 DECL|macro|ELF_ET_DYN_BASE
 mdefine_line|#define ELF_ET_DYN_BASE         (2 * TASK_SIZE / 3)
+DECL|macro|R_SH_DIR32
+mdefine_line|#define&t;R_SH_DIR32&t;&t;1
+DECL|macro|R_SH_REL32
+mdefine_line|#define&t;R_SH_REL32&t;&t;2
+DECL|macro|R_SH_IMM_LOW16
+mdefine_line|#define&t;R_SH_IMM_LOW16&t;&t;246
+DECL|macro|R_SH_IMM_LOW16_PCREL
+mdefine_line|#define&t;R_SH_IMM_LOW16_PCREL&t;247
+DECL|macro|R_SH_IMM_MEDLOW16
+mdefine_line|#define&t;R_SH_IMM_MEDLOW16&t;248
+DECL|macro|R_SH_IMM_MEDLOW16_PCREL
+mdefine_line|#define&t;R_SH_IMM_MEDLOW16_PCREL&t;249
 DECL|macro|ELF_CORE_COPY_REGS
 mdefine_line|#define ELF_CORE_COPY_REGS(_dest,_regs)&t;&t;&t;&t;&bslash;&n;&t;memcpy((char *) &amp;_dest, (char *) _regs,&t;&t;&t;&bslash;&n;&t;       sizeof(struct pt_regs));
 multiline_comment|/* This yields a mask that user programs can use to figure out what&n;   instruction set this CPU supports.  This could be done in user space,&n;   but it&squot;s not easy, and we&squot;ve already done it here.  */

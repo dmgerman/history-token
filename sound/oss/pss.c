@@ -5613,11 +5613,10 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|pss_no_sound
 r_static
 r_int
 id|pss_no_sound
-id|__initdata
 op_assign
 l_int|0
 suffix:semicolon

@@ -4,14 +4,6 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
-r_extern
-r_void
-id|cpu_relax
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|macro|SCIF_BASE_ADDR
 mdefine_line|#define SCIF_BASE_ADDR&t;0x01030000
 DECL|macro|SCIF_ADDR_SH5

@@ -6,6 +6,9 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/scx200.h&gt;
+multiline_comment|/* Verify that the configuration block really is there */
+DECL|macro|scx200_cb_probe
+mdefine_line|#define scx200_cb_probe(base) (inw((base) + SCx200_CBA) == (base))
 DECL|macro|NAME
 mdefine_line|#define NAME &quot;scx200&quot;
 id|MODULE_AUTHOR
@@ -39,6 +42,12 @@ id|scx200_gpio_shadow
 l_int|2
 )braket
 suffix:semicolon
+DECL|variable|scx200_cb_base
+r_int
+id|scx200_cb_base
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|scx200_tbl
 r_static
 r_struct
@@ -65,6 +74,26 @@ c_func
 id|PCI_VENDOR_ID_NS
 comma
 id|PCI_DEVICE_ID_NS_SC1100_BRIDGE
+)paren
+)brace
+comma
+(brace
+id|PCI_DEVICE
+c_func
+(paren
+id|PCI_VENDOR_ID_NS
+comma
+id|PCI_DEVICE_ID_NS_SCx200_XBUS
+)paren
+)brace
+comma
+(brace
+id|PCI_DEVICE
+c_func
+(paren
+id|PCI_VENDOR_ID_NS
+comma
+id|PCI_DEVICE_ID_NS_SC1100_XBUS
 )paren
 )brace
 comma
@@ -160,6 +189,18 @@ suffix:semicolon
 r_int
 id|base
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pdev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_NS_SCx200_BRIDGE
+op_logical_or
+id|pdev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_NS_SC1100_BRIDGE
+)paren
+(brace
 id|base
 op_assign
 id|pci_resource_start
@@ -243,6 +284,80 @@ op_star
 id|bank
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* find the base of the Configuration Block */
+r_if
+c_cond
+(paren
+id|scx200_cb_probe
+c_func
+(paren
+id|SCx200_CB_BASE_FIXED
+)paren
+)paren
+(brace
+id|scx200_cb_base
+op_assign
+id|SCx200_CB_BASE_FIXED
+suffix:semicolon
+)brace
+r_else
+(brace
+id|pci_read_config_dword
+c_func
+(paren
+id|pdev
+comma
+id|SCx200_CBA_SCRATCH
+comma
+op_amp
+id|base
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|scx200_cb_probe
+c_func
+(paren
+id|base
+)paren
+)paren
+(brace
+id|scx200_cb_base
+op_assign
+id|base
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|NAME
+l_string|&quot;: Configuration Block not found&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+)brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|NAME
+l_string|&quot;: Configuration Block base 0x%x&bslash;n&quot;
+comma
+id|scx200_cb_base
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -614,6 +729,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|scx200_gpio_dump
+)paren
+suffix:semicolon
+DECL|variable|scx200_cb_base
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scx200_cb_base
 )paren
 suffix:semicolon
 multiline_comment|/*&n;    Local variables:&n;        compile-command: &quot;make -k -C ../../.. SUBDIRS=arch/i386/kernel modules&quot;&n;        c-basic-offset: 8&n;    End:&n;*/

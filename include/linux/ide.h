@@ -1916,11 +1916,6 @@ id|u8
 id|bios_sect
 suffix:semicolon
 multiline_comment|/* BIOS/fdisk/LILO sectors per track */
-DECL|member|doing_barrier
-id|u8
-id|doing_barrier
-suffix:semicolon
-multiline_comment|/* state, 1=currently doing flush */
 DECL|member|bios_cyl
 r_int
 r_int
@@ -3806,6 +3801,26 @@ id|ide_end_request
 id|ide_drive_t
 op_star
 id|drive
+comma
+r_int
+id|uptodate
+comma
+r_int
+id|nrsecs
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__ide_end_request
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
 comma
 r_int
 id|uptodate

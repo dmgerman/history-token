@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/posix-timers.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
@@ -632,6 +633,9 @@ id|t
 comma
 r_int
 id|flags
+comma
+r_int
+id|override_rlimit
 )paren
 (brace
 r_struct
@@ -641,16 +645,25 @@ id|q
 op_assign
 l_int|NULL
 suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|t-&gt;user-&gt;sigpending
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
+id|override_rlimit
+op_logical_or
 id|atomic_read
 c_func
 (paren
 op_amp
 id|t-&gt;user-&gt;sigpending
 )paren
-OL
+op_le
 id|t-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_SIGPENDING
@@ -671,8 +684,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|q
+op_eq
+l_int|NULL
 )paren
+)paren
+(brace
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|t-&gt;user-&gt;sigpending
+)paren
+suffix:semicolon
+)brace
+r_else
 (brace
 id|INIT_LIST_HEAD
 c_func
@@ -695,13 +724,6 @@ id|get_uid
 c_func
 (paren
 id|t-&gt;user
-)paren
-suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|q-&gt;user-&gt;sigpending
 )paren
 suffix:semicolon
 )brace
@@ -1009,6 +1031,12 @@ op_amp
 id|sighand-&gt;siglock
 )paren
 suffix:semicolon
+id|posix_cpu_timers_exit
+c_func
+(paren
+id|tsk
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1020,6 +1048,12 @@ id|sig-&gt;count
 )paren
 )paren
 (brace
+id|posix_cpu_timers_exit_group
+c_func
+(paren
+id|tsk
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1138,6 +1172,10 @@ suffix:semicolon
 id|sig-&gt;nivcsw
 op_add_assign
 id|tsk-&gt;nivcsw
+suffix:semicolon
+id|sig-&gt;sched_time
+op_add_assign
+id|tsk-&gt;sched_time
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -1780,10 +1818,25 @@ op_logical_and
 id|info-&gt;si_sys_private
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * Release the siglock to ensure proper locking order&n;&t;&t; * of timer locks outside of siglocks.  Note, we leave&n;&t;&t; * irqs disabled here, since the posix-timers code is&n;&t;&t; * about to disable them again anyway.&n;&t;&t; */
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|tsk-&gt;sighand-&gt;siglock
+)paren
+suffix:semicolon
 id|do_schedule_next_timer
 c_func
 (paren
 id|info
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|tsk-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 )brace
@@ -2512,6 +2565,26 @@ c_func
 id|t
 comma
 id|GFP_ATOMIC
+comma
+(paren
+id|sig
+OL
+id|SIGRTMIN
+op_logical_and
+(paren
+(paren
+r_int
+r_int
+)paren
+id|info
+OL
+l_int|2
+op_logical_or
+id|info-&gt;si_code
+op_ge
+l_int|0
+)paren
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -3367,7 +3440,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-r_static
 r_int
 DECL|function|__group_send_sig_info
 id|__group_send_sig_info
@@ -4480,6 +4552,8 @@ c_func
 id|current
 comma
 id|GFP_KERNEL
+comma
+l_int|0
 )paren
 )paren
 )paren

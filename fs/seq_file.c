@@ -80,6 +80,11 @@ id|file-&gt;private_data
 op_assign
 id|p
 suffix:semicolon
+multiline_comment|/*&n;&t; * Wrappers around seq_open(e.g. swaps_open) need to be&n;&t; * aware of this. If they set f_version themselves, they&n;&t; * should call seq_open first and then set f_version.&n;&t; */
+id|file-&gt;f_version
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* SEQ files support lseek, but not pread/pwrite */
 id|file-&gt;f_mode
 op_and_assign
@@ -163,6 +168,11 @@ c_func
 op_amp
 id|m-&gt;sem
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * seq_file-&gt;op-&gt;..m_start/m_stop/m_next may do special actions&n;&t; * or optimisations based on the file-&gt;f_version, so we want to&n;&t; * pass the file-&gt;f_version to those methods.&n;&t; *&n;&t; * seq_file-&gt;version is just copy of f_version, and seq_file&n;&t; * methods can treat it simply as file version.&n;&t; * It is copied in first and copied out after all operations.&n;&t; * It is convenient to have it as  part of structure to avoid the&n;&t; * need of passing another argument to all the seq_file methods.&n;&t; */
+id|m-&gt;version
+op_assign
+id|file-&gt;f_version
 suffix:semicolon
 multiline_comment|/* grab buffer if we didn&squot;t have one */
 r_if
@@ -388,6 +398,10 @@ id|m-&gt;count
 op_assign
 l_int|0
 suffix:semicolon
+id|m-&gt;version
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 id|m-&gt;op
 op_member_access_from_pointer
@@ -583,6 +597,10 @@ id|ppos
 op_add_assign
 id|copied
 suffix:semicolon
+id|file-&gt;f_version
+op_assign
+id|m-&gt;version
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -649,6 +667,10 @@ suffix:semicolon
 r_void
 op_star
 id|p
+suffix:semicolon
+id|m-&gt;version
+op_assign
+l_int|0
 suffix:semicolon
 id|m-&gt;index
 op_assign
@@ -926,6 +948,10 @@ op_amp
 id|m-&gt;sem
 )paren
 suffix:semicolon
+id|m-&gt;version
+op_assign
+id|file-&gt;f_version
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -993,6 +1019,10 @@ id|file-&gt;f_pos
 op_assign
 l_int|0
 suffix:semicolon
+id|m-&gt;version
+op_assign
+l_int|0
+suffix:semicolon
 id|m-&gt;index
 op_assign
 l_int|0
@@ -1019,6 +1049,10 @@ c_func
 op_amp
 id|m-&gt;sem
 )paren
+suffix:semicolon
+id|file-&gt;f_version
+op_assign
+id|m-&gt;version
 suffix:semicolon
 r_return
 id|retval

@@ -102,7 +102,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* thread information allocation */
 DECL|macro|alloc_thread_info
-mdefine_line|#define alloc_thread_info(ti) ((struct thread_info *) __get_free_pages(GFP_KERNEL,2))
+mdefine_line|#define alloc_thread_info(ti) ((struct thread_info *) __get_free_pages(GFP_KERNEL,1))
 DECL|macro|free_thread_info
 mdefine_line|#define free_thread_info(ti) free_pages((unsigned long) (ti), 1)
 DECL|macro|get_thread_info
@@ -110,6 +110,8 @@ mdefine_line|#define get_thread_info(ti) get_task_struct((ti)-&gt;task)
 DECL|macro|put_thread_info
 mdefine_line|#define put_thread_info(ti) put_task_struct((ti)-&gt;task)
 macro_line|#endif /* __ASSEMBLY__ */
+DECL|macro|THREAD_SIZE
+mdefine_line|#define THREAD_SIZE  8192
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
 multiline_comment|/* thread information flags */
@@ -121,8 +123,6 @@ DECL|macro|TIF_NEED_RESCHED
 mdefine_line|#define TIF_NEED_RESCHED&t;3&t;/* rescheduling necessary */
 DECL|macro|TIF_MEMDIE
 mdefine_line|#define TIF_MEMDIE&t;&t;4
-DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE&t;16384
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_SH64_THREAD_INFO_H */
 eof

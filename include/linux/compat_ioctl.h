@@ -33,6 +33,11 @@ c_func
 (paren
 id|TCSBRK
 )paren
+id|ULONG_IOCTL
+c_func
+(paren
+id|TCSBRKP
+)paren
 id|COMPATIBLE_IOCTL
 c_func
 (paren

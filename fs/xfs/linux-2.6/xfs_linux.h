@@ -53,6 +53,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/sort.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
@@ -803,5 +804,7 @@ op_star
 id|y
 suffix:semicolon
 )brace
+DECL|macro|qsort
+mdefine_line|#define qsort(a, n, s, cmp) sort(a, n, s, cmp, NULL)
 macro_line|#endif /* __XFS_LINUX__ */
 eof

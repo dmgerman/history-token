@@ -312,7 +312,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -322,13 +321,49 @@ op_ne
 id|BREAKPOINT_INSTRUCTION
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t; * PowerPC has multiple variants of the &quot;trap&quot;&n;&t;&t;&t; * instruction. If the current instruction is a&n;&t;&t;&t; * trap variant, it could belong to someone else&n;&t;&t;&t; */
+id|kprobe_opcode_t
+id|cur_insn
+op_assign
+op_star
+id|addr
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_TW
+c_func
+(paren
+id|cur_insn
+)paren
+op_logical_or
+id|IS_TD
+c_func
+(paren
+id|cur_insn
+)paren
+op_logical_or
+id|IS_TWI
+c_func
+(paren
+id|cur_insn
+)paren
+op_logical_or
+id|IS_TDI
+c_func
+(paren
+id|cur_insn
+)paren
+)paren
+r_goto
+id|no_kprobe
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * The breakpoint instruction was removed right&n;&t;&t;&t; * after we hit it.  Another cpu has removed&n;&t;&t;&t; * either a probepoint or a debugger breakpoint&n;&t;&t;&t; * at this address.  In either case, no further&n;&t;&t;&t; * handling of this interrupt is appropriate.&n;&t;&t;&t; */
 id|ret
 op_assign
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* Not one of ours: let kernel handle it */
 r_goto
 id|no_kprobe

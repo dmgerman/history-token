@@ -2175,6 +2175,8 @@ id|regs
 id|scrollfront
 c_func
 (paren
+id|vc
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2199,6 +2201,8 @@ id|regs
 id|scrollback
 c_func
 (paren
+id|vc
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2375,7 +2379,7 @@ suffix:semicolon
 id|reset_vc
 c_func
 (paren
-id|fg_console
+id|vc
 )paren
 suffix:semicolon
 )brace

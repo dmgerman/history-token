@@ -1163,7 +1163,9 @@ r_int
 id|find_next_zero_bit
 c_func
 (paren
-r_void
+r_const
+r_int
+r_int
 op_star
 id|addr
 comma
@@ -1174,6 +1176,7 @@ r_int
 id|offset
 )paren
 (brace
+r_const
 r_int
 r_int
 op_star
@@ -1368,6 +1371,7 @@ r_int
 id|sched_find_first_bit
 c_func
 (paren
+r_const
 r_int
 r_int
 op_star

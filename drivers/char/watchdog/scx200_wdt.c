@@ -1,4 +1,4 @@
-multiline_comment|/* drivers/char/watchdog/scx200_wdt.c&n;&n;   National Semiconductor SCx200 Watchdog support&n;&n;   Copyright (c) 2001,2002 Christer Weinigel &lt;wingel@nano-system.com&gt;&n;&n;   Som code taken from:&n;   National Semiconductor PC87307/PC97307 (ala SC1200) WDT driver&n;   (c) Copyright 2002 Zwane Mwaikambo &lt;zwane@commfireservices.com&gt;&n;&n;   This program is free software; you can redistribute it and/or&n;   modify it under the terms of the GNU General Public License as&n;   published by the Free Software Foundation; either version 2 of the&n;   License, or (at your option) any later version.&n;&n;   The author(s) of this software shall not be held liable for damages&n;   of any nature resulting due to the use of this software. This&n;   software is provided AS-IS with no warranties. */
+multiline_comment|/* drivers/char/watchdog/scx200_wdt.c&n;&n;   National Semiconductor SCx200 Watchdog support&n;&n;   Copyright (c) 2001,2002 Christer Weinigel &lt;wingel@nano-system.com&gt;&n;&n;   Some code taken from:&n;   National Semiconductor PC87307/PC97307 (ala SC1200) WDT driver&n;   (c) Copyright 2002 Zwane Mwaikambo &lt;zwane@commfireservices.com&gt;&n;&n;   This program is free software; you can redistribute it and/or&n;   modify it under the terms of the GNU General Public License as&n;   published by the Free Software Foundation; either version 2 of the&n;   License, or (at your option) any later version.&n;&n;   The author(s) of this software shall not be held liable for damages&n;   of any nature resulting due to the use of this software. This&n;   software is provided AS-IS with no warranties. */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -132,7 +132,7 @@ c_func
 (paren
 id|wdto_restart
 comma
-id|SCx200_CB_BASE
+id|scx200_cb_base
 op_plus
 id|SCx200_WDT_WDTO
 )paren
@@ -188,7 +188,7 @@ c_func
 (paren
 l_int|0
 comma
-id|SCx200_CB_BASE
+id|scx200_cb_base
 op_plus
 id|SCx200_WDT_WDTO
 )paren
@@ -198,7 +198,7 @@ c_func
 (paren
 id|SCx200_WDT_WDSTS_WDOVF
 comma
-id|SCx200_CB_BASE
+id|scx200_cb_base
 op_plus
 id|SCx200_WDT_WDSTS
 )paren
@@ -208,7 +208,7 @@ c_func
 (paren
 id|W_ENABLE
 comma
-id|SCx200_CB_BASE
+id|scx200_cb_base
 op_plus
 id|SCx200_WDT_WDCNFG
 )paren
@@ -241,7 +241,7 @@ c_func
 (paren
 l_int|0
 comma
-id|SCx200_CB_BASE
+id|scx200_cb_base
 op_plus
 id|SCx200_WDT_WDTO
 )paren
@@ -251,7 +251,7 @@ c_func
 (paren
 id|SCx200_WDT_WDSTS_WDOVF
 comma
-id|SCx200_CB_BASE
+id|scx200_cb_base
 op_plus
 id|SCx200_WDT_WDSTS
 )paren
@@ -261,7 +261,7 @@ c_func
 (paren
 id|W_DISABLE
 comma
-id|SCx200_CB_BASE
+id|scx200_cb_base
 op_plus
 id|SCx200_WDT_WDCNFG
 )paren
@@ -829,39 +829,6 @@ r_void
 r_int
 id|r
 suffix:semicolon
-r_static
-r_struct
-id|pci_device_id
-id|ns_sc
-(braket
-)braket
-op_assign
-(brace
-(brace
-id|PCI_DEVICE
-c_func
-(paren
-id|PCI_VENDOR_ID_NS
-comma
-id|PCI_DEVICE_ID_NS_SCx200_BRIDGE
-)paren
-)brace
-comma
-(brace
-id|PCI_DEVICE
-c_func
-(paren
-id|PCI_VENDOR_ID_NS
-comma
-id|PCI_DEVICE_ID_NS_SC1100_BRIDGE
-)paren
-)brace
-comma
-(brace
-)brace
-comma
-)brace
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -870,46 +837,20 @@ id|NAME
 l_string|&quot;: NatSemi SCx200 Watchdog Driver&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * First check that this really is a NatSemi SCx200 CPU or a Geode&n;&t; * SC1100 processor&n;&t; */
+multiline_comment|/* check that we have found the configuration block */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|pci_dev_present
+id|scx200_cb_present
 c_func
 (paren
-id|ns_sc
 )paren
 )paren
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-multiline_comment|/* More sanity checks, verify that the configuration block is there */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|scx200_cb_probe
-c_func
-(paren
-id|SCx200_CB_BASE
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|NAME
-l_string|&quot;: no configuration block found&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -917,7 +858,7 @@ op_logical_neg
 id|request_region
 c_func
 (paren
-id|SCx200_CB_BASE
+id|scx200_cb_base
 op_plus
 id|SCx200_WDT_OFFSET
 comma
@@ -977,7 +918,7 @@ id|r
 id|release_region
 c_func
 (paren
-id|SCx200_CB_BASE
+id|scx200_cb_base
 op_plus
 id|SCx200_WDT_OFFSET
 comma
@@ -1021,7 +962,7 @@ suffix:semicolon
 id|release_region
 c_func
 (paren
-id|SCx200_CB_BASE
+id|scx200_cb_base
 op_plus
 id|SCx200_WDT_OFFSET
 comma
@@ -1063,7 +1004,7 @@ suffix:semicolon
 id|release_region
 c_func
 (paren
-id|SCx200_CB_BASE
+id|scx200_cb_base
 op_plus
 id|SCx200_WDT_OFFSET
 comma

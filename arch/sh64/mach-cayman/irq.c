@@ -184,7 +184,7 @@ op_mod
 l_int|8
 )paren
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -210,7 +210,7 @@ comma
 id|reg
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -271,7 +271,7 @@ op_mod
 l_int|8
 )paren
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -298,7 +298,7 @@ comma
 id|reg
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -2066,10 +2066,10 @@ id|PAGE_SHIFT
 suffix:semicolon
 )brace
 multiline_comment|/* Allocates a contiguous real buffer and creates mappings over it.&n; * Returns the virtual address of the buffer and sets dma_handle&n; * to the dma address (mapping) of the first page.&n; */
-DECL|function|iommu_alloc_consistent
+DECL|function|iommu_alloc_coherent
 r_void
 op_star
-id|iommu_alloc_consistent
+id|iommu_alloc_coherent
 c_func
 (paren
 r_struct
@@ -2083,6 +2083,9 @@ comma
 id|dma_addr_t
 op_star
 id|dma_handle
+comma
+r_int
+id|flag
 )paren
 (brace
 r_void
@@ -2162,7 +2165,7 @@ op_star
 id|__get_free_pages
 c_func
 (paren
-id|GFP_ATOMIC
+id|flag
 comma
 id|order
 )paren
@@ -2238,9 +2241,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|iommu_free_consistent
+DECL|function|iommu_free_coherent
 r_void
-id|iommu_free_consistent
+id|iommu_free_coherent
 c_func
 (paren
 r_struct

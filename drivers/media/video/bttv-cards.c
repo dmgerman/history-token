@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    $Id: bttv-cards.c,v 1.42 2005/01/13 17:22:33 kraxel Exp $&n;&n;    bttv-cards.c&n;&n;    this file has configuration informations - card-specific stuff&n;    like the big tvcards array for the most part&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler (rjkm@thp.uni-koeln.de)&n;                           &amp; Marcus Metzler (mocm@thp.uni-koeln.de)&n;    (c) 1999-2001 Gerd Knorr &lt;kraxel@goldbach.in-berlin.de&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
+multiline_comment|/*&n;    $Id: bttv-cards.c,v 1.44 2005/01/31 11:35:05 kraxel Exp $&n;&n;    bttv-cards.c&n;&n;    this file has configuration informations - card-specific stuff&n;    like the big tvcards array for the most part&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler (rjkm@thp.uni-koeln.de)&n;                           &amp; Marcus Metzler (mocm@thp.uni-koeln.de)&n;    (c) 1999-2001 Gerd Knorr &lt;kraxel@goldbach.in-berlin.de&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -1179,6 +1179,15 @@ comma
 id|BTTV_PINNACLE
 comma
 l_string|&quot;Pinnacle PCTV [bswap]&quot;
+)brace
+comma
+singleline_comment|// this seems to happen as well ...
+(brace
+l_int|0xff1211bd
+comma
+id|BTTV_PINNACLE
+comma
+l_string|&quot;Pinnacle PCTV&quot;
 )brace
 comma
 (brace

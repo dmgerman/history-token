@@ -108,6 +108,10 @@ DECL|macro|TUNER_PHILIPS_FM1256_IH3
 mdefine_line|#define TUNER_PHILIPS_FM1256_IH3   51
 DECL|macro|TUNER_THOMSON_DTT7610
 mdefine_line|#define TUNER_THOMSON_DTT7610    52
+DECL|macro|TUNER_PHILIPS_FQ1286
+mdefine_line|#define TUNER_PHILIPS_FQ1286     53
+DECL|macro|TUNER_PHILIPS_TDA8290
+mdefine_line|#define TUNER_PHILIPS_TDA8290    54
 DECL|macro|NOTUNER
 mdefine_line|#define NOTUNER 0
 DECL|macro|PAL
@@ -150,10 +154,6 @@ DECL|macro|TUNER_SET_TYPE
 mdefine_line|#define TUNER_SET_TYPE               _IOW(&squot;t&squot;,1,int)    /* set tuner type */
 DECL|macro|TUNER_SET_TVFREQ
 mdefine_line|#define TUNER_SET_TVFREQ             _IOW(&squot;t&squot;,2,int)    /* set tv freq */
-macro_line|#if 0 /* obsolete */
-macro_line|# define TUNER_SET_RADIOFREQ         _IOW(&squot;t&squot;,3,int)    /* set radio freq */
-macro_line|# define TUNER_SET_MODE              _IOW(&squot;t&squot;,4,int)    /* set tuner mode */
-macro_line|#endif
 DECL|macro|TDA9887_SET_CONFIG
 mdefine_line|#define  TDA9887_SET_CONFIG          _IOW(&squot;t&squot;,5,int)
 multiline_comment|/* tv card specific */
@@ -182,5 +182,199 @@ DECL|macro|TDA9887_DEEMPHASIS_75
 macro_line|# define TDA9887_DEEMPHASIS_75       (3&lt;&lt;16)
 DECL|macro|TDA9887_AUTOMUTE
 macro_line|# define TDA9887_AUTOMUTE            (1&lt;&lt;18)
+macro_line|#ifdef __KERNEL__
+DECL|macro|I2C_ADDR_TDA8290
+mdefine_line|#define I2C_ADDR_TDA8290        0x4b
+DECL|macro|I2C_ADDR_TDA8275
+mdefine_line|#define I2C_ADDR_TDA8275        0x61
+DECL|struct|tuner
+r_struct
+id|tuner
+(brace
+multiline_comment|/* device */
+DECL|member|i2c
+r_struct
+id|i2c_client
+id|i2c
+suffix:semicolon
+multiline_comment|/* state + config */
+DECL|member|initialized
+r_int
+r_int
+id|initialized
+suffix:semicolon
+DECL|member|type
+r_int
+r_int
+id|type
+suffix:semicolon
+multiline_comment|/* chip type */
+DECL|member|freq
+r_int
+r_int
+id|freq
+suffix:semicolon
+multiline_comment|/* keep track of the current settings */
+DECL|member|std
+id|v4l2_std_id
+id|std
+suffix:semicolon
+DECL|member|using_v4l2
+r_int
+id|using_v4l2
+suffix:semicolon
+DECL|member|mode
+r_enum
+id|v4l2_tuner_type
+id|mode
+suffix:semicolon
+DECL|member|input
+r_int
+r_int
+id|input
+suffix:semicolon
+multiline_comment|/* used by MT2032 */
+DECL|member|xogc
+r_int
+r_int
+id|xogc
+suffix:semicolon
+DECL|member|radio_if2
+r_int
+r_int
+id|radio_if2
+suffix:semicolon
+multiline_comment|/* used by tda8290 */
+DECL|member|i2c_easy_mode
+r_int
+r_char
+id|i2c_easy_mode
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|i2c_set_freq
+r_int
+r_char
+id|i2c_set_freq
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* function ptrs */
+DECL|member|tv_freq
+r_void
+(paren
+op_star
+id|tv_freq
+)paren
+(paren
+r_struct
+id|i2c_client
+op_star
+id|c
+comma
+r_int
+r_int
+id|freq
+)paren
+suffix:semicolon
+DECL|member|radio_freq
+r_void
+(paren
+op_star
+id|radio_freq
+)paren
+(paren
+r_struct
+id|i2c_client
+op_star
+id|c
+comma
+r_int
+r_int
+id|freq
+)paren
+suffix:semicolon
+DECL|member|has_signal
+r_int
+(paren
+op_star
+id|has_signal
+)paren
+(paren
+r_struct
+id|i2c_client
+op_star
+id|c
+)paren
+suffix:semicolon
+DECL|member|is_stereo
+r_int
+(paren
+op_star
+id|is_stereo
+)paren
+(paren
+r_struct
+id|i2c_client
+op_star
+id|c
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|tuner_debug
+suffix:semicolon
+r_extern
+r_int
+r_const
+r_int
+id|tuner_count
+suffix:semicolon
+r_extern
+r_int
+id|microtune_init
+c_func
+(paren
+r_struct
+id|i2c_client
+op_star
+id|c
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|tda8290_init
+c_func
+(paren
+r_struct
+id|i2c_client
+op_star
+id|c
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|default_tuner_init
+c_func
+(paren
+r_struct
+id|i2c_client
+op_star
+id|c
+)paren
+suffix:semicolon
+DECL|macro|tuner_warn
+mdefine_line|#define tuner_warn(fmt, arg...) &bslash;&n;&t;dev_printk(KERN_WARNING , &amp;t-&gt;i2c.dev , fmt , ## arg)
+DECL|macro|tuner_info
+mdefine_line|#define tuner_info(fmt, arg...) &bslash;&n;&t;dev_printk(KERN_INFO , &amp;t-&gt;i2c.dev , fmt , ## arg)
+DECL|macro|tuner_dbg
+mdefine_line|#define tuner_dbg(fmt, arg...) &bslash;&n;&t;if (tuner_debug) dev_printk(KERN_DEBUG , &amp;t-&gt;i2c.dev , fmt , ## arg)
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
+multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */
 eof

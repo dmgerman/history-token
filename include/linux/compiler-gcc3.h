@@ -11,7 +11,7 @@ macro_line|# define __inline&t;__inline&t;__attribute__((always_inline))
 macro_line|#endif
 macro_line|#if __GNUC_MINOR__ &gt; 0
 DECL|macro|__deprecated
-macro_line|# define __deprecated&t;__attribute__((deprecated))
+macro_line|# define __deprecated&t;&t;__attribute__((deprecated))
 macro_line|#endif
 macro_line|#if __GNUC_MINOR__ &gt;= 3
 DECL|macro|__attribute_used__
@@ -26,14 +26,10 @@ DECL|macro|__attribute_const__
 mdefine_line|#define __attribute_const__&t;__attribute__((__const__))
 macro_line|#if __GNUC_MINOR__ &gt;= 1
 DECL|macro|noinline
-mdefine_line|#define  noinline __attribute__((noinline))
+mdefine_line|#define  noinline&t;&t;__attribute__((noinline))
 macro_line|#endif
 macro_line|#if __GNUC_MINOR__ &gt;= 4
 DECL|macro|__must_check
-mdefine_line|#define __must_check __attribute__((warn_unused_result))
-macro_line|#endif
-macro_line|#if __GNUC_MINOR__ &gt;= 5
-DECL|macro|__compiler_offsetof
-mdefine_line|#define __compiler_offsetof(a,b) __builtin_offsetof(a,b)
+mdefine_line|#define __must_check&t;&t;__attribute__((warn_unused_result))
 macro_line|#endif
 eof

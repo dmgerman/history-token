@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/chsc.c&n; *   S/390 common I/O routines -- channel subsystem call&n; *   $Revision: 1.115 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/chsc.c&n; *   S/390 common I/O routines -- channel subsystem call&n; *   $Revision: 1.118 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -1626,13 +1626,6 @@ id|chp_mask
 op_amp
 id|sch-&gt;opm
 suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|sch-&gt;lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1662,6 +1655,13 @@ c_func
 (paren
 op_amp
 id|sch-&gt;dev
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|sch-&gt;lock
 )paren
 suffix:semicolon
 id|put_device
@@ -2736,6 +2736,20 @@ id|index
 r_int
 id|cc
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|device_is_online
+c_func
+(paren
+id|sch
+)paren
+)paren
+multiline_comment|/* cio could be doing I/O. */
+r_return
+l_int|0
+suffix:semicolon
 id|cc
 op_assign
 id|stsch
@@ -2807,6 +2821,10 @@ id|chp
 comma
 id|old_lpm
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2814,6 +2832,15 @@ op_logical_neg
 id|sch-&gt;ssd_info.valid
 )paren
 r_return
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|sch-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|old_lpm
 op_assign
@@ -2977,6 +3004,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|sch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 r_static
 r_int

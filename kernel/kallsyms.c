@@ -532,7 +532,14 @@ id|name
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Lookup an address.  modname is set to NULL if it&squot;s in the kernel. */
+DECL|variable|kallsyms_lookup_name
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|kallsyms_lookup_name
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Lookup an address&n; * - modname is set to NULL if it&squot;s in the kernel&n; * - we guarantee that the returned name is valid until we reschedule even if&n; *   it resides in a module&n; * - we also guarantee that modname will be valid until rescheduled&n; */
 DECL|function|kallsyms_lookup
 r_const
 r_char
@@ -573,6 +580,11 @@ comma
 id|high
 comma
 id|mid
+suffix:semicolon
+r_const
+r_char
+op_star
+id|msym
 suffix:semicolon
 multiline_comment|/* This kernel should never had been booted. */
 id|BUG_ON
@@ -834,7 +846,9 @@ r_return
 id|namebuf
 suffix:semicolon
 )brace
-r_return
+multiline_comment|/* see if it&squot;s in a module */
+id|msym
+op_assign
 id|module_address_lookup
 c_func
 (paren
@@ -846,6 +860,25 @@ id|offset
 comma
 id|modname
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|msym
+)paren
+r_return
+id|strncpy
+c_func
+(paren
+id|namebuf
+comma
+id|msym
+comma
+id|KSYM_NAME_LEN
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Replace &quot;%s&quot; in format with address, or returns -errno. */

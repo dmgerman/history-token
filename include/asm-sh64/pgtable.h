@@ -397,9 +397,6 @@ mdefine_line|#define _PAGE_ACCESSED&t;0x800  /* software: page referenced */
 multiline_comment|/* Mask which drops software flags */
 DECL|macro|_PAGE_FLAGS_HARDWARE_MASK
 mdefine_line|#define _PAGE_FLAGS_HARDWARE_MASK&t;0xfffffffffffff3dbLL
-multiline_comment|/* Flags default: 4KB, Read, Not write, Not execute, Not user */
-DECL|macro|_PAGE_FLAGS_HARDWARE_DEFAULT
-mdefine_line|#define _PAGE_FLAGS_HARDWARE_DEFAULT&t;0x0000000000000040LL
 multiline_comment|/*&n; * HugeTLB support&n; */
 macro_line|#if defined(CONFIG_HUGETLB_PAGE_SIZE_64K)
 DECL|macro|_PAGE_SZHUGE

@@ -12,92 +12,6 @@ DECL|macro|AES_MAX_KEY_SIZE
 mdefine_line|#define AES_MAX_KEY_SIZE&t;32
 DECL|macro|AES_BLOCK_SIZE
 mdefine_line|#define AES_BLOCK_SIZE&t;&t;16
-r_static
-r_inline
-DECL|function|generic_rotr32
-id|u32
-id|generic_rotr32
-(paren
-r_const
-id|u32
-id|x
-comma
-r_const
-r_int
-id|bits
-)paren
-(brace
-r_const
-r_int
-id|n
-op_assign
-id|bits
-op_mod
-l_int|32
-suffix:semicolon
-r_return
-(paren
-id|x
-op_rshift
-id|n
-)paren
-op_or
-(paren
-id|x
-op_lshift
-(paren
-l_int|32
-op_minus
-id|n
-)paren
-)paren
-suffix:semicolon
-)brace
-r_static
-r_inline
-DECL|function|generic_rotl32
-id|u32
-id|generic_rotl32
-(paren
-r_const
-id|u32
-id|x
-comma
-r_const
-r_int
-id|bits
-)paren
-(brace
-r_const
-r_int
-id|n
-op_assign
-id|bits
-op_mod
-l_int|32
-suffix:semicolon
-r_return
-(paren
-id|x
-op_lshift
-id|n
-)paren
-op_or
-(paren
-id|x
-op_rshift
-(paren
-l_int|32
-op_minus
-id|n
-)paren
-)paren
-suffix:semicolon
-)brace
-DECL|macro|rotl
-mdefine_line|#define rotl generic_rotl32
-DECL|macro|rotr
-mdefine_line|#define rotr generic_rotr32
 multiline_comment|/*&n; * #define byte(x, nr) ((unsigned char)((x) &gt;&gt; (nr*8))) &n; */
 r_inline
 r_static
@@ -584,7 +498,8 @@ l_int|1
 id|i
 )braket
 op_assign
-id|rotl
+id|rol32
+c_func
 (paren
 id|t
 comma
@@ -599,7 +514,8 @@ l_int|2
 id|i
 )braket
 op_assign
-id|rotl
+id|rol32
+c_func
 (paren
 id|t
 comma
@@ -614,7 +530,8 @@ l_int|3
 id|i
 )braket
 op_assign
-id|rotl
+id|rol32
+c_func
 (paren
 id|t
 comma
@@ -685,7 +602,8 @@ l_int|1
 id|i
 )braket
 op_assign
-id|rotl
+id|rol32
+c_func
 (paren
 id|t
 comma
@@ -700,7 +618,8 @@ l_int|2
 id|i
 )braket
 op_assign
-id|rotl
+id|rol32
+c_func
 (paren
 id|t
 comma
@@ -715,7 +634,8 @@ l_int|3
 id|i
 )braket
 op_assign
-id|rotl
+id|rol32
+c_func
 (paren
 id|t
 comma
@@ -751,7 +671,8 @@ l_int|1
 id|i
 )braket
 op_assign
-id|rotl
+id|rol32
+c_func
 (paren
 id|t
 comma
@@ -766,7 +687,8 @@ l_int|2
 id|i
 )braket
 op_assign
-id|rotl
+id|rol32
+c_func
 (paren
 id|t
 comma
@@ -781,7 +703,8 @@ l_int|3
 id|i
 )braket
 op_assign
-id|rotl
+id|rol32
+c_func
 (paren
 id|t
 comma
@@ -862,7 +785,8 @@ l_int|1
 id|i
 )braket
 op_assign
-id|rotl
+id|rol32
+c_func
 (paren
 id|t
 comma
@@ -877,7 +801,8 @@ l_int|2
 id|i
 )braket
 op_assign
-id|rotl
+id|rol32
+c_func
 (paren
 id|t
 comma
@@ -892,7 +817,8 @@ l_int|3
 id|i
 )braket
 op_assign
-id|rotl
+id|rol32
+c_func
 (paren
 id|t
 comma
@@ -904,14 +830,14 @@ suffix:semicolon
 DECL|macro|star_x
 mdefine_line|#define star_x(x) (((x) &amp; 0x7f7f7f7f) &lt;&lt; 1) ^ ((((x) &amp; 0x80808080) &gt;&gt; 7) * 0x1b)
 DECL|macro|imix_col
-mdefine_line|#define imix_col(y,x)       &bslash;&n;    u   = star_x(x);        &bslash;&n;    v   = star_x(u);        &bslash;&n;    w   = star_x(v);        &bslash;&n;    t   = w ^ (x);          &bslash;&n;   (y)  = u ^ v ^ w;        &bslash;&n;   (y) ^= rotr(u ^ t,  8) ^ &bslash;&n;          rotr(v ^ t, 16) ^ &bslash;&n;          rotr(t,24)
+mdefine_line|#define imix_col(y,x)       &bslash;&n;    u   = star_x(x);        &bslash;&n;    v   = star_x(u);        &bslash;&n;    w   = star_x(v);        &bslash;&n;    t   = w ^ (x);          &bslash;&n;   (y)  = u ^ v ^ w;        &bslash;&n;   (y) ^= ror32(u ^ t,  8) ^ &bslash;&n;          ror32(v ^ t, 16) ^ &bslash;&n;          ror32(t,24)
 multiline_comment|/* initialise the key schedule from the user supplied key */
 DECL|macro|loop4
-mdefine_line|#define loop4(i)                                    &bslash;&n;{   t = rotr(t,  8); t = ls_box(t) ^ rco_tab[i];    &bslash;&n;    t ^= E_KEY[4 * i];     E_KEY[4 * i + 4] = t;    &bslash;&n;    t ^= E_KEY[4 * i + 1]; E_KEY[4 * i + 5] = t;    &bslash;&n;    t ^= E_KEY[4 * i + 2]; E_KEY[4 * i + 6] = t;    &bslash;&n;    t ^= E_KEY[4 * i + 3]; E_KEY[4 * i + 7] = t;    &bslash;&n;}
+mdefine_line|#define loop4(i)                                    &bslash;&n;{   t = ror32(t,  8); t = ls_box(t) ^ rco_tab[i];    &bslash;&n;    t ^= E_KEY[4 * i];     E_KEY[4 * i + 4] = t;    &bslash;&n;    t ^= E_KEY[4 * i + 1]; E_KEY[4 * i + 5] = t;    &bslash;&n;    t ^= E_KEY[4 * i + 2]; E_KEY[4 * i + 6] = t;    &bslash;&n;    t ^= E_KEY[4 * i + 3]; E_KEY[4 * i + 7] = t;    &bslash;&n;}
 DECL|macro|loop6
-mdefine_line|#define loop6(i)                                    &bslash;&n;{   t = rotr(t,  8); t = ls_box(t) ^ rco_tab[i];    &bslash;&n;    t ^= E_KEY[6 * i];     E_KEY[6 * i + 6] = t;    &bslash;&n;    t ^= E_KEY[6 * i + 1]; E_KEY[6 * i + 7] = t;    &bslash;&n;    t ^= E_KEY[6 * i + 2]; E_KEY[6 * i + 8] = t;    &bslash;&n;    t ^= E_KEY[6 * i + 3]; E_KEY[6 * i + 9] = t;    &bslash;&n;    t ^= E_KEY[6 * i + 4]; E_KEY[6 * i + 10] = t;   &bslash;&n;    t ^= E_KEY[6 * i + 5]; E_KEY[6 * i + 11] = t;   &bslash;&n;}
+mdefine_line|#define loop6(i)                                    &bslash;&n;{   t = ror32(t,  8); t = ls_box(t) ^ rco_tab[i];    &bslash;&n;    t ^= E_KEY[6 * i];     E_KEY[6 * i + 6] = t;    &bslash;&n;    t ^= E_KEY[6 * i + 1]; E_KEY[6 * i + 7] = t;    &bslash;&n;    t ^= E_KEY[6 * i + 2]; E_KEY[6 * i + 8] = t;    &bslash;&n;    t ^= E_KEY[6 * i + 3]; E_KEY[6 * i + 9] = t;    &bslash;&n;    t ^= E_KEY[6 * i + 4]; E_KEY[6 * i + 10] = t;   &bslash;&n;    t ^= E_KEY[6 * i + 5]; E_KEY[6 * i + 11] = t;   &bslash;&n;}
 DECL|macro|loop8
-mdefine_line|#define loop8(i)                                    &bslash;&n;{   t = rotr(t,  8); ; t = ls_box(t) ^ rco_tab[i];  &bslash;&n;    t ^= E_KEY[8 * i];     E_KEY[8 * i + 8] = t;    &bslash;&n;    t ^= E_KEY[8 * i + 1]; E_KEY[8 * i + 9] = t;    &bslash;&n;    t ^= E_KEY[8 * i + 2]; E_KEY[8 * i + 10] = t;   &bslash;&n;    t ^= E_KEY[8 * i + 3]; E_KEY[8 * i + 11] = t;   &bslash;&n;    t  = E_KEY[8 * i + 4] ^ ls_box(t);    &bslash;&n;    E_KEY[8 * i + 12] = t;                &bslash;&n;    t ^= E_KEY[8 * i + 5]; E_KEY[8 * i + 13] = t;   &bslash;&n;    t ^= E_KEY[8 * i + 6]; E_KEY[8 * i + 14] = t;   &bslash;&n;    t ^= E_KEY[8 * i + 7]; E_KEY[8 * i + 15] = t;   &bslash;&n;}
+mdefine_line|#define loop8(i)                                    &bslash;&n;{   t = ror32(t,  8); ; t = ls_box(t) ^ rco_tab[i];  &bslash;&n;    t ^= E_KEY[8 * i];     E_KEY[8 * i + 8] = t;    &bslash;&n;    t ^= E_KEY[8 * i + 1]; E_KEY[8 * i + 9] = t;    &bslash;&n;    t ^= E_KEY[8 * i + 2]; E_KEY[8 * i + 10] = t;   &bslash;&n;    t ^= E_KEY[8 * i + 3]; E_KEY[8 * i + 11] = t;   &bslash;&n;    t  = E_KEY[8 * i + 4] ^ ls_box(t);    &bslash;&n;    E_KEY[8 * i + 12] = t;                &bslash;&n;    t ^= E_KEY[8 * i + 5]; E_KEY[8 * i + 13] = t;   &bslash;&n;    t ^= E_KEY[8 * i + 6]; E_KEY[8 * i + 14] = t;   &bslash;&n;    t ^= E_KEY[8 * i + 7]; E_KEY[8 * i + 15] = t;   &bslash;&n;}
 r_static
 r_int
 DECL|function|aes_set_key

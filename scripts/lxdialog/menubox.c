@@ -1787,9 +1787,11 @@ comma
 id|TRUE
 )paren
 suffix:semicolon
-id|scroll
+id|wscrl
 (paren
 id|menu
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|scrollok
@@ -2015,10 +2017,11 @@ comma
 id|TRUE
 )paren
 suffix:semicolon
-id|scroll
-c_func
+id|wscrl
 (paren
 id|menu
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|scrollok

@@ -6,6 +6,14 @@ macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/*&n; * Disk quota - quotactl(2) commands for the XFS Quota Manager (XQM).&n; */
 DECL|macro|XQM_CMD
 mdefine_line|#define XQM_CMD(x)&t;((&squot;X&squot;&lt;&lt;8)+(x))&t;/* note: forms first QCMD argument */
+DECL|macro|XQM_COMMAND
+mdefine_line|#define XQM_COMMAND(x)&t;(((x) &amp; (0xff&lt;&lt;8)) == (&squot;X&squot;&lt;&lt;8))&t;/* test if for XFS */
+DECL|macro|XQM_USRQUOTA
+mdefine_line|#define XQM_USRQUOTA&t;0&t;/* system call user quota type */
+DECL|macro|XQM_GRPQUOTA
+mdefine_line|#define XQM_GRPQUOTA&t;1&t;/* system call group quota type */
+DECL|macro|XQM_MAXQUOTAS
+mdefine_line|#define XQM_MAXQUOTAS&t;2
 DECL|macro|Q_XQUOTAON
 mdefine_line|#define Q_XQUOTAON&t;XQM_CMD(1)&t;/* enable accounting/enforcement */
 DECL|macro|Q_XQUOTAOFF

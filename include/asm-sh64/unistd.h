@@ -622,8 +622,18 @@ DECL|macro|__NR_mq_notify
 mdefine_line|#define __NR_mq_notify          (__NR_mq_open+4)
 DECL|macro|__NR_mq_getsetattr
 mdefine_line|#define __NR_mq_getsetattr      (__NR_mq_open+5)
+DECL|macro|__NR_sys_kexec_load
+mdefine_line|#define __NR_sys_kexec_load&t;311
+DECL|macro|__NR_waitid
+mdefine_line|#define __NR_waitid&t;&t;312
+DECL|macro|__NR_add_key
+mdefine_line|#define __NR_add_key&t;&t;313
+DECL|macro|__NR_request_key
+mdefine_line|#define __NR_request_key&t;314
+DECL|macro|__NR_keyctl
+mdefine_line|#define __NR_keyctl&t;&t;315
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls 311
+mdefine_line|#define NR_syscalls 316
 multiline_comment|/* user-visible error numbers are in the range -1 - -125: see &lt;asm-sh64/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;/* Note: when returning from kernel the return value is in r9&t;    &bslash;&n;&t;**       This prevents conflicts between return value and arg1      &bslash;&n;&t;**       when dispatching signal handler, in other words makes&t;    &bslash;&n;&t;**       life easier in the system call epilogue (see entry.S)      &bslash;&n;&t;*/&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;        register unsigned long __sr2 __asm__ (&quot;r2&quot;) = res;&t;&t;    &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;&t;&t;errno = -(res);&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;__sr2 = -1; &t;&t;&t;&t;&t;&t;    &bslash;&n;&t;} &bslash;&n;&t;return (type) (__sr2); &t;&t;&t;&t;&t;&t;    &bslash;&n;} while (0)

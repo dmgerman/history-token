@@ -1021,6 +1021,25 @@ comma
 id|loff_t
 )paren
 suffix:semicolon
+r_int
+id|nobh_writepage
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+id|get_block_t
+op_star
+id|get_block
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * inline definitions&n; */
 DECL|function|attach_page_buffers
 r_static

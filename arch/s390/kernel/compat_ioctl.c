@@ -196,12 +196,6 @@ c_func
 id|TAPE390_DISPLAY
 )paren
 macro_line|#endif
-multiline_comment|/* This one should be architecture independent */
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|TCSBRKP
-)paren
 multiline_comment|/* s390 doesn&squot;t need handlers here */
 id|COMPATIBLE_IOCTL
 c_func

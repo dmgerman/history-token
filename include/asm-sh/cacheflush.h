@@ -1,6 +1,7 @@
 macro_line|#ifndef __ASM_SH_CACHEFLUSH_H
 DECL|macro|__ASM_SH_CACHEFLUSH_H
 mdefine_line|#define __ASM_SH_CACHEFLUSH_H
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/cpu/cacheflush.h&gt;
 multiline_comment|/* Flush (write-back only) a region (smaller than a page) */
 r_extern
@@ -52,5 +53,6 @@ DECL|macro|copy_to_user_page
 mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flush_cache_page(vma, vaddr, page_to_pfn(page));&bslash;&n;&t;&t;memcpy(dst, src, len);&t;&t;&t;&t;&bslash;&n;&t;&t;flush_icache_user_range(vma, page, vaddr, len);&t;&bslash;&n;&t;} while (0)
 DECL|macro|copy_from_user_page
 mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flush_cache_page(vma, vaddr, page_to_pfn(page));&bslash;&n;&t;&t;memcpy(dst, src, len);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_SH_CACHEFLUSH_H */
 eof

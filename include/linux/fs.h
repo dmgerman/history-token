@@ -198,6 +198,8 @@ DECL|macro|S_NOCMTIME
 mdefine_line|#define S_NOCMTIME&t;128&t;/* Do not update file c/mtime */
 DECL|macro|S_SWAPFILE
 mdefine_line|#define S_SWAPFILE&t;256&t;/* Do not truncate: swapon got its bmaps */
+DECL|macro|S_PRIVATE
+mdefine_line|#define S_PRIVATE&t;512&t;/* Inode is fs-internal */
 multiline_comment|/*&n; * Note that nosuid etc flags are inode-specific: setting some file-system&n; * flags just means all the inodes inherit those flags by default. It might be&n; * possible to override it selectively if you really wanted to with some&n; * ioctl() that is not currently implemented.&n; *&n; * Exception: MS_RDONLY is always applied to the entire file system.&n; *&n; * Unfortunately, it is possible to change a filesystems flags with it mounted&n; * with files in use.  This means that all of the inodes will not have their&n; * i_flags updated.  Hence, i_flags no longer inherit the superblock mount&n; * flags, so these have to be checked separately. -- rmk@arm.uk.linux.org&n; */
 DECL|macro|__IS_FLG
 mdefine_line|#define __IS_FLG(inode,flg) ((inode)-&gt;i_sb-&gt;s_flags &amp; (flg))
@@ -227,6 +229,8 @@ DECL|macro|IS_NOCMTIME
 mdefine_line|#define IS_NOCMTIME(inode)&t;((inode)-&gt;i_flags &amp; S_NOCMTIME)
 DECL|macro|IS_SWAPFILE
 mdefine_line|#define IS_SWAPFILE(inode)&t;((inode)-&gt;i_flags &amp; S_SWAPFILE)
+DECL|macro|IS_PRIVATE
+mdefine_line|#define IS_PRIVATE(inode)&t;((inode)-&gt;i_flags &amp; S_PRIVATE)
 multiline_comment|/* the read-only stuff doesn&squot;t really belong here, but any other place is&n;   probably as bad and I don&squot;t want to create yet another include file. */
 DECL|macro|BLKROSET
 mdefine_line|#define BLKROSET   _IO(0x12,93)&t;/* set device read-only (0 = read-write) */

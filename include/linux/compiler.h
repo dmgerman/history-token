@@ -72,8 +72,10 @@ DECL|macro|__cond_lock
 macro_line|# define __cond_lock(x) (x)
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
-macro_line|#if __GNUC__ &gt; 3
-macro_line|# include &lt;linux/compiler-gcc+.h&gt;&t;/* catch-all for GCC 4, 5, etc. */
+macro_line|#if __GNUC__ &gt; 4
+macro_line|#error no compiler-gcc.h file for this gcc version
+macro_line|#elif __GNUC__ == 4
+macro_line|# include &lt;linux/compiler-gcc4.h&gt;
 macro_line|#elif __GNUC__ == 3
 macro_line|# include &lt;linux/compiler-gcc3.h&gt;
 macro_line|#elif __GNUC__ == 2

@@ -169,26 +169,122 @@ mdefine_line|#define EEH_POSSIBLE_ERROR(val, type)&t;((val) == (type)~0)
 multiline_comment|/*&n; * Reads from a device which has been isolated by EEH will return&n; * all 1s.  This macro gives an all-1s value of the given size (in&n; * bytes: 1, 2, or 4) for comparing with the result of a read.&n; */
 DECL|macro|EEH_IO_ERROR_VALUE
 mdefine_line|#define EEH_IO_ERROR_VALUE(size)&t;(~0U &gt;&gt; ((4 - (size)) * 8))
-macro_line|#else
-DECL|macro|eeh_init
-mdefine_line|#define eeh_init()
-DECL|macro|eeh_check_failure
-mdefine_line|#define eeh_check_failure(token, val) (val)
-DECL|macro|eeh_dn_check_failure
-mdefine_line|#define eeh_dn_check_failure(dn, dev) (0)
-DECL|macro|pci_addr_cache_build
-mdefine_line|#define pci_addr_cache_build()
-DECL|macro|eeh_add_device_early
-mdefine_line|#define eeh_add_device_early(dn)
-DECL|macro|eeh_add_device_late
-mdefine_line|#define eeh_add_device_late(dev)
-DECL|macro|eeh_remove_device
-mdefine_line|#define eeh_remove_device(dev)
+macro_line|#else /* !CONFIG_EEH */
+DECL|function|eeh_init
+r_static
+r_inline
+r_void
+id|eeh_init
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+DECL|function|eeh_check_failure
+r_static
+r_inline
+r_int
+r_int
+id|eeh_check_failure
+c_func
+(paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|token
+comma
+r_int
+r_int
+id|val
+)paren
+(brace
+r_return
+id|val
+suffix:semicolon
+)brace
+DECL|function|eeh_dn_check_failure
+r_static
+r_inline
+r_int
+id|eeh_dn_check_failure
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|dn
+comma
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|pci_addr_cache_build
+r_static
+r_inline
+r_void
+id|pci_addr_cache_build
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+DECL|function|eeh_add_device_early
+r_static
+r_inline
+r_void
+id|eeh_add_device_early
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|dn
+)paren
+(brace
+)brace
+DECL|function|eeh_add_device_late
+r_static
+r_inline
+r_void
+id|eeh_add_device_late
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+)brace
+DECL|function|eeh_remove_device
+r_static
+r_inline
+r_void
+id|eeh_remove_device
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+)brace
 DECL|macro|EEH_POSSIBLE_ERROR
 mdefine_line|#define EEH_POSSIBLE_ERROR(val, type) (0)
 DECL|macro|EEH_IO_ERROR_VALUE
 mdefine_line|#define EEH_IO_ERROR_VALUE(size) (-1UL)
-macro_line|#endif
+macro_line|#endif /* CONFIG_EEH */
 multiline_comment|/* &n; * MMIO read/write operations with EEH support.&n; */
 DECL|function|eeh_readb
 r_static
