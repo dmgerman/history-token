@@ -1,4 +1,4 @@
-multiline_comment|/*&n;  Keyspan USB to Serial Converter driver&n; &n;  (C) Copyright (C) 2000-2001&t;Hugh Blemings &lt;hugh@blemings.org&gt;&n;  (C) Copyright (C) 2002&t;Greg Kroah-Hartman &lt;greg@kroah.com&gt;&n;   &n;  This program is free software; you can redistribute it and/or modify&n;  it under the terms of the GNU General Public License as published by&n;  the Free Software Foundation; either version 2 of the License, or&n;  (at your option) any later version.&n;&n;  See http://misc.nu/hugh/keyspan.html for more information.&n;  &n;  Code in this driver inspired by and in a number of places taken&n;  from Brian Warner&squot;s original Keyspan-PDA driver.&n;&n;  This driver has been put together with the support of Innosys, Inc.&n;  and Keyspan, Inc the manufacturers of the Keyspan USB-serial products.&n;  Thanks Guys :)&n;  &n;  Thanks to Paulus for miscellaneous tidy ups, some largish chunks&n;  of much nicer and/or completely new code and (perhaps most uniquely)&n;  having the patience to sit down and explain why and where he&squot;d changed&n;  stuff. &n;  &n;  Tip &squot;o the hat to IBM (and previously Linuxcare :) for supporting &n;  staff in their work on open source projects.&n;&n;  Change History&n;&n;    Fri Oct 12 16:45:00 EST 2001&n;      Preliminary USA-19QI and USA-28 support (both test OK for me, YMMV)&n;&n;    Mon Oct  8 14:29:00 EST 2001 hugh&n;      Fixed bug that prevented mulitport devices operating correctly&n;      if they weren&squot;t the first unit attached.&n;&n;    Sat Oct  6 12:31:21 EST 2001 hugh&n;      Added support for USA-28XA and -28XB, misc cleanups, break support&n;      for usa26 based models thanks to David Gibson.&n;&n;    Thu May 31 11:56:42 PDT 2001 gkh&n;      switched from using spinlock to a semaphore&n;   &n;    (04/08/2001) gb&n;&t;Identify version on module load.&n;   &n;    (11/01/2000) Adam J. Richter&n;&t;usb_device_id table support.&n;   &n;    Tue Oct 10 23:15:33 EST 2000 Hugh&n;      Merged Paul&squot;s changes with my USA-49W mods.  Work in progress&n;      still...&n;  &n;    Wed Jul 19 14:00:42 EST 2000 gkh&n;      Added module_init and module_exit functions to handle the fact that&n;      this driver is a loadable module now.&n; &n;    Tue Jul 18 16:14:52 EST 2000 Hugh&n;      Basic character input/output for USA-19 now mostly works,&n;      fixed at 9600 baud for the moment.&n;&n;    Sat Jul  8 11:11:48 EST 2000 Hugh&n;      First public release - nothing works except the firmware upload.&n;      Tested on PPC and x86 architectures, seems to behave...&n;*/
+multiline_comment|/*&n;  Keyspan USB to Serial Converter driver&n; &n;  (C) Copyright (C) 2000-2001&t;Hugh Blemings &lt;hugh@blemings.org&gt;&n;  (C) Copyright (C) 2002&t;Greg Kroah-Hartman &lt;greg@kroah.com&gt;&n;   &n;  This program is free software; you can redistribute it and/or modify&n;  it under the terms of the GNU General Public License as published by&n;  the Free Software Foundation; either version 2 of the License, or&n;  (at your option) any later version.&n;&n;  See http://misc.nu/hugh/keyspan.html for more information.&n;  &n;  Code in this driver inspired by and in a number of places taken&n;  from Brian Warner&squot;s original Keyspan-PDA driver.&n;&n;  This driver has been put together with the support of Innosys, Inc.&n;  and Keyspan, Inc the manufacturers of the Keyspan USB-serial products.&n;  Thanks Guys :)&n;  &n;  Thanks to Paulus for miscellaneous tidy ups, some largish chunks&n;  of much nicer and/or completely new code and (perhaps most uniquely)&n;  having the patience to sit down and explain why and where he&squot;d changed&n;  stuff. &n;  &n;  Tip &squot;o the hat to IBM (and previously Linuxcare :) for supporting &n;  staff in their work on open source projects.&n;&n;  Change History&n;&n;    Wed Apr 25 12:00:00 PST 2002 (Keyspan)&n;      Started with Hugh Blemings&squot; code dated Jan 17, 2002.  All adapters&n;      now supported (including QI and QW).  Modified port open, port&n;      close, and send setup() logic to fix various data and endpoint&n;      synchronization bugs and device LED status bugs.  Changed keyspan_&n;      write_room() to accurately return transmit buffer availability.&n;      Changed forwardingLength from 1 to 16 for all adapters.&n;&n;    Fri Oct 12 16:45:00 EST 2001&n;      Preliminary USA-19QI and USA-28 support (both test OK for me, YMMV)&n;&n;    Mon Oct  8 14:29:00 EST 2001 hugh&n;      Fixed bug that prevented mulitport devices operating correctly&n;      if they weren&squot;t the first unit attached.&n;&n;    Sat Oct  6 12:31:21 EST 2001 hugh&n;      Added support for USA-28XA and -28XB, misc cleanups, break support&n;      for usa26 based models thanks to David Gibson.&n;&n;    Thu May 31 11:56:42 PDT 2001 gkh&n;      switched from using spinlock to a semaphore&n;   &n;    (04/08/2001) gb&n;&t;Identify version on module load.&n;   &n;    (11/01/2000) Adam J. Richter&n;&t;usb_device_id table support.&n;   &n;    Tue Oct 10 23:15:33 EST 2000 Hugh&n;      Merged Paul&squot;s changes with my USA-49W mods.  Work in progress&n;      still...&n;  &n;    Wed Jul 19 14:00:42 EST 2000 gkh&n;      Added module_init and module_exit functions to handle the fact that&n;      this driver is a loadable module now.&n; &n;    Tue Jul 18 16:14:52 EST 2000 Hugh&n;      Basic character input/output for USA-19 now mostly works,&n;      fixed at 9600 baud for the moment.&n;&n;    Sat Jul  8 11:11:48 EST 2000 Hugh&n;      First public release - nothing works except the firmware upload.&n;      Tested on PPC and x86 architectures, seems to behave...&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -38,7 +38,7 @@ macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;keyspan.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.1.2&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.1.3&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Hugh Blemings &lt;hugh@misc.nu&quot;
 DECL|macro|DRIVER_DESC
@@ -1476,6 +1476,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|port-&gt;open_count
+)paren
+r_if
+c_cond
+(paren
 (paren
 id|err
 op_assign
@@ -1672,7 +1677,9 @@ id|port-&gt;serial
 comma
 id|port
 comma
-l_int|0
+id|p_priv-&gt;resend_cont
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -1940,8 +1947,6 @@ suffix:semicolon
 multiline_comment|/*  else */
 multiline_comment|/*&t;wake_up_interruptible(&amp;p_priv-&gt;open_wait); */
 )brace
-m_exit
-suffix:colon
 multiline_comment|/* Resubmit urb so we continue receiving */
 id|urb-&gt;dev
 op_assign
@@ -1976,6 +1981,8 @@ id|err
 )paren
 suffix:semicolon
 )brace
+m_exit
+suffix:colon
 )brace
 DECL|function|usa26_glocont_callback
 r_static
@@ -2186,6 +2193,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|port-&gt;open_count
+)paren
+r_if
+c_cond
+(paren
 (paren
 id|err
 op_assign
@@ -2318,7 +2330,9 @@ id|port-&gt;serial
 comma
 id|port
 comma
-l_int|0
+id|p_priv-&gt;resend_cont
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -2564,8 +2578,6 @@ suffix:semicolon
 multiline_comment|/*  else */
 multiline_comment|/*&t;wake_up_interruptible(&amp;p_priv-&gt;open_wait); */
 )brace
-m_exit
-suffix:colon
 multiline_comment|/* Resubmit urb so we continue receiving */
 id|urb-&gt;dev
 op_assign
@@ -2600,6 +2612,8 @@ id|err
 )paren
 suffix:semicolon
 )brace
+m_exit
+suffix:colon
 )brace
 DECL|function|usa28_glocont_callback
 r_static
@@ -2723,7 +2737,9 @@ id|serial
 comma
 id|port
 comma
-l_int|0
+id|p_priv-&gt;resend_cont
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 r_break
@@ -2980,8 +2996,6 @@ suffix:semicolon
 multiline_comment|/*  else */
 multiline_comment|/*&t;wake_up_interruptible(&amp;p_priv-&gt;open_wait); */
 )brace
-m_exit
-suffix:colon
 multiline_comment|/* Resubmit urb so we continue receiving */
 id|urb-&gt;dev
 op_assign
@@ -3016,6 +3030,8 @@ id|err
 )paren
 suffix:semicolon
 )brace
+m_exit
+suffix:colon
 )brace
 DECL|function|usa49_inack_callback
 r_static
@@ -3275,6 +3291,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|port-&gt;open_count
+)paren
+r_if
+c_cond
+(paren
 (paren
 id|err
 op_assign
@@ -3334,6 +3355,25 @@ op_star
 id|port
 )paren
 (brace
+r_struct
+id|keyspan_port_private
+op_star
+id|p_priv
+suffix:semicolon
+r_const
+r_struct
+id|keyspan_device_details
+op_star
+id|d_details
+suffix:semicolon
+r_int
+id|flip
+suffix:semicolon
+r_struct
+id|urb
+op_star
+id|this_urb
+suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -3342,9 +3382,97 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+id|p_priv
+op_assign
+(paren
+r_struct
+id|keyspan_port_private
+op_star
+)paren
+(paren
+id|port
+op_member_access_from_pointer
+r_private
+)paren
+suffix:semicolon
+id|d_details
+op_assign
+id|p_priv-&gt;device_details
+suffix:semicolon
+id|flip
+op_assign
+id|p_priv-&gt;out_flip
+suffix:semicolon
+multiline_comment|/* Check both endpoints to see if any are available. */
+r_if
+c_cond
+(paren
+(paren
+id|this_urb
+op_assign
+id|p_priv-&gt;out_urbs
+(braket
+id|flip
+)braket
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|this_urb-&gt;status
+op_ne
+op_minus
+id|EINPROGRESS
+)paren
 r_return
 (paren
-l_int|32
+l_int|63
+)paren
+suffix:semicolon
+id|flip
+op_assign
+(paren
+id|flip
+op_plus
+l_int|1
+)paren
+op_amp
+id|d_details-&gt;outdat_endp_flip
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|this_urb
+op_assign
+id|p_priv-&gt;out_urbs
+(braket
+id|flip
+)braket
+)paren
+op_ne
+l_int|0
+)paren
+r_if
+c_cond
+(paren
+id|this_urb-&gt;status
+op_ne
+op_minus
+id|EINPROGRESS
+)paren
+r_return
+(paren
+l_int|63
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -3608,26 +3736,7 @@ id|urb-&gt;dev
 op_assign
 id|serial-&gt;dev
 suffix:semicolon
-id|usb_settoggle
-c_func
-(paren
-id|urb-&gt;dev
-comma
-id|usb_pipeendpoint
-c_func
-(paren
-id|urb-&gt;pipe
-)paren
-comma
-id|usb_pipeout
-c_func
-(paren
-id|urb-&gt;pipe
-)paren
-comma
-l_int|0
-)paren
-suffix:semicolon
+multiline_comment|/* usb_settoggle(urb-&gt;dev, usb_pipeendpoint(urb-&gt;pipe), usb_pipeout(urb-&gt;pipe), 0); */
 )brace
 id|keyspan_send_setup
 c_func
@@ -3788,14 +3897,31 @@ c_cond
 (paren
 id|serial-&gt;dev
 )paren
+(brace
 id|keyspan_send_setup
 c_func
 (paren
 id|port
 comma
-l_int|1
+l_int|2
 )paren
 suffix:semicolon
+multiline_comment|/* pilot-xfer seems to work best with this delay */
+id|mdelay
+c_func
+(paren
+l_int|100
+)paren
+suffix:semicolon
+id|keyspan_set_termios
+c_func
+(paren
+id|port
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*while (p_priv-&gt;outcont_urb-&gt;status == -EINPROGRESS) {&n;&t;&t;dbg(&quot;%s - urb in progress&quot;, __FUNCTION__);&n;&t;}*/
 id|p_priv-&gt;out_flip
 op_assign
@@ -3818,12 +3944,7 @@ c_func
 id|p_priv-&gt;inack_urb
 )paren
 suffix:semicolon
-id|stop_urb
-c_func
-(paren
-id|p_priv-&gt;outcont_urb
-)paren
-suffix:semicolon
+multiline_comment|/* stop_urb(p_priv-&gt;outcont_urb); */
 r_for
 c_loop
 (paren
@@ -5714,8 +5835,18 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* Save reset port val for resend.&n;&t;Don&squot;t overwrite resend for close condition. */
+r_if
+c_cond
+(paren
+id|p_priv-&gt;resend_cont
+op_ne
+l_int|3
+)paren
 id|p_priv-&gt;resend_cont
 op_assign
+id|reset_port
+op_plus
 l_int|1
 suffix:semicolon
 r_if
@@ -5921,7 +6052,7 @@ l_int|0xff
 suffix:semicolon
 id|msg.forwardingLength
 op_assign
-l_int|1
+l_int|16
 suffix:semicolon
 id|msg.xonChar
 op_assign
@@ -5931,10 +6062,64 @@ id|msg.xoffChar
 op_assign
 l_int|19
 suffix:semicolon
+multiline_comment|/* Opening port */
 r_if
 c_cond
 (paren
 id|reset_port
+op_eq
+l_int|1
+)paren
+(brace
+id|msg._txOn
+op_assign
+l_int|1
+suffix:semicolon
+id|msg._txOff
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.txFlush
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.txBreak
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.rxOn
+op_assign
+l_int|1
+suffix:semicolon
+id|msg.rxOff
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.rxFlush
+op_assign
+l_int|1
+suffix:semicolon
+id|msg.rxForward
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.returnStatus
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.resetDataToggle
+op_assign
+l_int|0xff
+suffix:semicolon
+)brace
+multiline_comment|/* Closing port */
+r_else
+r_if
+c_cond
+(paren
+id|reset_port
+op_eq
+l_int|2
 )paren
 (brace
 id|msg._txOn
@@ -5975,9 +6160,10 @@ l_int|0
 suffix:semicolon
 id|msg.resetDataToggle
 op_assign
-l_int|0xff
+l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Sending intermediate configs */
 r_else
 (brace
 id|msg._txOn
@@ -6003,7 +6189,7 @@ id|p_priv-&gt;break_on
 suffix:semicolon
 id|msg.rxOn
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|msg.rxOff
 op_assign
@@ -6248,8 +6434,18 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* Save reset port val for resend.&n;&t;   Don&squot;t overwrite resend for close condition. */
+r_if
+c_cond
+(paren
+id|p_priv-&gt;resend_cont
+op_ne
+l_int|3
+)paren
 id|p_priv-&gt;resend_cont
 op_assign
+id|reset_port
+op_plus
 l_int|1
 suffix:semicolon
 r_if
@@ -6367,7 +6563,7 @@ id|p_priv-&gt;dtr_state
 suffix:semicolon
 id|msg.forwardingLength
 op_assign
-l_int|1
+l_int|16
 suffix:semicolon
 id|msg.forwardMs
 op_assign
@@ -6386,10 +6582,68 @@ op_assign
 l_int|19
 suffix:semicolon
 multiline_comment|/*msg.returnStatus = 1;&n;&t;msg.resetDataToggle = 0xff;*/
+multiline_comment|/* Opening port */
 r_if
 c_cond
 (paren
 id|reset_port
+op_eq
+l_int|1
+)paren
+(brace
+id|msg._txOn
+op_assign
+l_int|1
+suffix:semicolon
+id|msg._txOff
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.txFlush
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.txForceXoff
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.txBreak
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.rxOn
+op_assign
+l_int|1
+suffix:semicolon
+id|msg.rxOff
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.rxFlush
+op_assign
+l_int|1
+suffix:semicolon
+id|msg.rxForward
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.returnStatus
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.resetDataToggle
+op_assign
+l_int|0xff
+suffix:semicolon
+)brace
+multiline_comment|/* Closing port */
+r_else
+r_if
+c_cond
+(paren
+id|reset_port
+op_eq
+l_int|2
 )paren
 (brace
 id|msg._txOn
@@ -6434,9 +6688,10 @@ l_int|0
 suffix:semicolon
 id|msg.resetDataToggle
 op_assign
-l_int|0xff
+l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Sending intermediate configs */
 r_else
 (brace
 id|msg._txOn
@@ -6466,7 +6721,7 @@ id|p_priv-&gt;break_on
 suffix:semicolon
 id|msg.rxOn
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|msg.rxOff
 op_assign
@@ -6713,8 +6968,18 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* Save reset port val for resend.&n;&t;   Don&squot;t overwrite resend for close condition. */
+r_if
+c_cond
+(paren
+id|p_priv-&gt;resend_cont
+op_ne
+l_int|3
+)paren
 id|p_priv-&gt;resend_cont
 op_assign
+id|reset_port
+op_plus
 l_int|1
 suffix:semicolon
 r_if
@@ -6922,7 +7187,7 @@ l_int|0xff
 suffix:semicolon
 id|msg.forwardingLength
 op_assign
-l_int|1
+l_int|16
 suffix:semicolon
 id|msg.xonChar
 op_assign
@@ -6932,10 +7197,72 @@ id|msg.xoffChar
 op_assign
 l_int|19
 suffix:semicolon
+multiline_comment|/* Opening port */
 r_if
 c_cond
 (paren
 id|reset_port
+op_eq
+l_int|1
+)paren
+(brace
+id|msg._txOn
+op_assign
+l_int|1
+suffix:semicolon
+id|msg._txOff
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.txFlush
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.txBreak
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.rxOn
+op_assign
+l_int|1
+suffix:semicolon
+id|msg.rxOff
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.rxFlush
+op_assign
+l_int|1
+suffix:semicolon
+id|msg.rxForward
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.returnStatus
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.resetDataToggle
+op_assign
+l_int|0xff
+suffix:semicolon
+id|msg.enablePort
+op_assign
+l_int|1
+suffix:semicolon
+id|msg.disablePort
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* Closing port */
+r_else
+r_if
+c_cond
+(paren
+id|reset_port
+op_eq
+l_int|2
 )paren
 (brace
 id|msg._txOn
@@ -6976,7 +7303,7 @@ l_int|0
 suffix:semicolon
 id|msg.resetDataToggle
 op_assign
-l_int|0xff
+l_int|0
 suffix:semicolon
 id|msg.enablePort
 op_assign
@@ -6984,9 +7311,10 @@ l_int|0
 suffix:semicolon
 id|msg.disablePort
 op_assign
-l_int|0xff
+l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* Sending intermediate configs */
 r_else
 (brace
 id|msg._txOn
@@ -7012,7 +7340,7 @@ id|p_priv-&gt;break_on
 suffix:semicolon
 id|msg.rxOn
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|msg.rxOff
 op_assign
@@ -7036,7 +7364,7 @@ l_int|0x0
 suffix:semicolon
 id|msg.enablePort
 op_assign
-l_int|0xff
+l_int|0
 suffix:semicolon
 id|msg.disablePort
 op_assign
