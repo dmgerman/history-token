@@ -395,11 +395,6 @@ id|length
 suffix:semicolon
 id|transferred
 op_add_assign
-id|sg
-(braket
-id|i
-)braket
-dot
 id|length
 suffix:semicolon
 op_star
