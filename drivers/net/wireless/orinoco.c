@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/wireless.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &quot;hermes.h&quot;
 macro_line|#include &quot;hermes_rid.h&quot;
 macro_line|#include &quot;orinoco.h&quot;
