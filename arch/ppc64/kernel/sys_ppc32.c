@@ -804,9 +804,9 @@ id|READ
 )paren
 ques
 c_cond
-id|DN_MODIFY
-suffix:colon
 id|DN_ACCESS
+suffix:colon
+id|DN_MODIFY
 )paren
 suffix:semicolon
 r_return
