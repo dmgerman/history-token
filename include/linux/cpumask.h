@@ -452,6 +452,7 @@ r_int
 id|__cpus_empty
 c_func
 (paren
+r_const
 id|cpumask_t
 op_star
 id|srcp
@@ -479,6 +480,7 @@ r_int
 id|__cpus_full
 c_func
 (paren
+r_const
 id|cpumask_t
 op_star
 id|srcp
@@ -506,6 +508,7 @@ r_int
 id|__cpus_weight
 c_func
 (paren
+r_const
 id|cpumask_t
 op_star
 id|srcp
@@ -537,6 +540,7 @@ id|cpumask_t
 op_star
 id|dstp
 comma
+r_const
 id|cpumask_t
 op_star
 id|srcp
@@ -574,6 +578,7 @@ id|cpumask_t
 op_star
 id|dstp
 comma
+r_const
 id|cpumask_t
 op_star
 id|srcp
@@ -607,6 +612,7 @@ r_int
 id|__first_cpu
 c_func
 (paren
+r_const
 id|cpumask_t
 op_star
 id|srcp
@@ -637,6 +643,7 @@ c_func
 r_int
 id|n
 comma
+r_const
 id|cpumask_t
 op_star
 id|srcp
