@@ -1326,7 +1326,7 @@ id|mp
 comma
 id|DM_EVENT_TRUNCATE
 comma
-id|bdp
+id|vp
 comma
 id|vap-&gt;va_size
 comma
@@ -15663,7 +15663,7 @@ id|mp
 comma
 id|DM_EVENT_WRITE
 comma
-id|XFS_ITOBHV
+id|XFS_ITOV
 c_func
 (paren
 id|ip
@@ -16758,7 +16758,7 @@ id|mp
 comma
 id|DM_EVENT_WRITE
 comma
-id|XFS_ITOBHV
+id|XFS_ITOV
 c_func
 (paren
 id|ip
