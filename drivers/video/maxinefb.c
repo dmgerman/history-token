@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &quot;maxinefb.h&quot;
 multiline_comment|/* bootinfo.h defines the machine type values, needed when checking */
 multiline_comment|/* whether are really running on a maxine, KM                       */
@@ -21,12 +20,6 @@ r_static
 r_struct
 id|fb_info
 id|fb_info
-suffix:semicolon
-DECL|variable|disp
-r_static
-r_struct
-id|display
-id|disp
 suffix:semicolon
 DECL|variable|maxinefb_defined
 r_static
@@ -57,6 +50,21 @@ l_int|768
 comma
 dot
 id|bits_per_pixel
+op_assign
+l_int|8
+comma
+dot
+id|red.length
+op_assign
+l_int|8
+comma
+dot
+id|green.length
+op_assign
+l_int|8
+comma
+dot
+id|blue.length
 op_assign
 l_int|8
 comma
@@ -121,6 +129,7 @@ op_assign
 l_int|1024
 comma
 )brace
+suffix:semicolon
 multiline_comment|/* Reference to machine type set in arch/mips/dec/prom/identify.c, KM */
 r_extern
 r_int
@@ -393,21 +402,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|fb_set_var
-op_assign
-id|gen_set_var
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
-comma
-dot
 id|fb_setcolreg
 op_assign
 id|maxinefb_setcolreg
@@ -426,6 +420,11 @@ dot
 id|fb_imageblit
 op_assign
 id|cfb_imageblit
+comma
+dot
+id|fb_cursor
+op_assign
+id|soft_cursor
 comma
 )brace
 suffix:semicolon
@@ -538,19 +537,6 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;   if (i&amp;0x8 == 0)&n;&t;&t;   maxinefb_ims332_write_register (IMS332_REG_CURSOR_RAM + i, 0x0f);&n;&t;&t;   else&n;&t;&t;   maxinefb_ims332_write_register (IMS332_REG_CURSOR_RAM + i, 0xf0);&n;&t;&t; */
 )brace
-multiline_comment|/* Let there be consoles... */
-id|strcpy
-c_func
-(paren
-id|fb_info.modename
-comma
-l_string|&quot;Maxine onboard graphics 1024x768x8&quot;
-)paren
-suffix:semicolon
-id|fb_info.changevar
-op_assign
-l_int|NULL
-suffix:semicolon
 id|fb_info.node
 op_assign
 id|NODEV
@@ -576,24 +562,6 @@ id|fb_info.fix
 op_assign
 id|maxinefb_fix
 suffix:semicolon
-id|fb_info.disp
-op_assign
-op_amp
-id|disp
-suffix:semicolon
-id|fb_info.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|fb_info.switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
-id|fb_info.updatevar
-op_assign
-id|gen_update_var
-suffix:semicolon
 id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
@@ -607,16 +575,6 @@ comma
 l_int|256
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|gen_set_disp
-c_func
-(paren
-op_minus
-l_int|1
-comma
-op_amp
-id|fb_info
 )paren
 suffix:semicolon
 r_if
