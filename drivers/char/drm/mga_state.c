@@ -4,7 +4,6 @@ macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;mga_drm.h&quot;
 macro_line|#include &quot;mga_drv.h&quot;
-macro_line|#include &quot;drm.h&quot;
 multiline_comment|/* ================================================================&n; * DMA hardware state programming functions&n; */
 DECL|function|mga_emit_clip_rect
 r_static
