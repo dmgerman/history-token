@@ -1977,7 +1977,7 @@ id|edd
 id|EDDNR
 )braket
 suffix:semicolon
-multiline_comment|/**&n; * copy_edd() - Copy the BIOS EDD information into a safe place.&n; *&n; */
+multiline_comment|/**&n; * copy_edd() - Copy the BIOS EDD information&n; *              from empty_zero_page into a safe place.&n; *&n; */
 DECL|function|copy_edd
 r_static
 r_inline
