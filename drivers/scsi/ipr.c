@@ -10203,7 +10203,8 @@ r_int
 id|heads
 comma
 id|sectors
-comma
+suffix:semicolon
+id|sector_t
 id|cylinders
 suffix:semicolon
 id|heads
