@@ -58,6 +58,7 @@ suffix:semicolon
 multiline_comment|/* size in bytes of logout area */
 DECL|member|sbz1
 r_int
+r_int
 id|sbz1
 suffix:colon
 l_int|30
@@ -65,12 +66,14 @@ suffix:semicolon
 multiline_comment|/* should be zero */
 DECL|member|err2
 r_int
+r_int
 id|err2
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* second error */
 DECL|member|retry
+r_int
 r_int
 id|retry
 suffix:colon
