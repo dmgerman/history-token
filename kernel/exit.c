@@ -2194,7 +2194,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Check to see if any process groups have become orphaned&n;&t; * as a result of our exiting, and if they have any stopped&n;&t; * jobs, send them a SIGHUP and then a SIGCONT.  (POSIX 3.2.2.2)&n;&t; *&n;&t; * Case i: Our father is in a different pgrp than we are&n;&t; * and we were the only connection outside, so our pgrp&n;&t; * is about to become orphaned.&n;&t; */
 id|t
 op_assign
-id|current-&gt;parent
+id|current-&gt;real_parent
 suffix:semicolon
 r_if
 c_cond
@@ -2289,6 +2289,7 @@ id|current-&gt;exit_signal
 op_assign
 id|SIGCHLD
 suffix:semicolon
+multiline_comment|/* If something other than our normal parent is ptracing us, then&n;&t; * send it a SIGCHLD instead of honoring exit_signal.  exit_signal&n;&t; * only has special meaning to our real parent.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2296,6 +2297,14 @@ id|current-&gt;exit_signal
 op_ne
 op_minus
 l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|current-&gt;parent
+op_eq
+id|current-&gt;real_parent
 )paren
 id|do_notify_parent
 c_func
@@ -2305,6 +2314,16 @@ comma
 id|current-&gt;exit_signal
 )paren
 suffix:semicolon
+r_else
+id|do_notify_parent
+c_func
+(paren
+id|current
+comma
+id|SIGCHLD
+)paren
+suffix:semicolon
+)brace
 id|current-&gt;state
 op_assign
 id|TASK_ZOMBIE
@@ -3402,7 +3421,7 @@ c_func
 (paren
 id|p
 comma
-id|SIGCHLD
+id|p-&gt;exit_signal
 )paren
 suffix:semicolon
 id|p-&gt;state
