@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1138,6 +1139,14 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Needed by any user of WARN_ON in view of the defn in include/asm-sh/bug.h */
+DECL|variable|dump_stack
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dump_stack
+)paren
+suffix:semicolon
 DECL|function|do_unhandled_exception
 r_static
 r_void

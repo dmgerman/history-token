@@ -1,4 +1,5 @@
 multiline_comment|/*--------------------------------------------------------------------------&n;--&n;-- Identity : Linux50 Debug Funcions&n;--&n;-- File     : arch/sh64/lib/dbg.C&n;--&n;-- Copyright 2000, 2001 STMicroelectronics Limited.&n;-- Copyright 2004 Richard Curnow (evt_debug etc)&n;--&n;--------------------------------------------------------------------------*/
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -468,6 +469,7 @@ l_string|&quot; =============================================================&bs
 suffix:semicolon
 )brace
 multiline_comment|/* ======================================================================= */
+macro_line|#ifdef CONFIG_POOR_MANS_STRACE
 macro_line|#include &quot;syscalltab.h&quot;
 DECL|struct|ring_node
 r_struct
@@ -518,6 +520,45 @@ DECL|variable|event_ptr
 r_static
 r_int
 id|event_ptr
+op_assign
+l_int|0
+suffix:semicolon
+DECL|struct|stored_syscall_data
+r_struct
+id|stored_syscall_data
+(brace
+DECL|member|pid
+r_int
+id|pid
+suffix:semicolon
+DECL|member|syscall_number
+r_int
+id|syscall_number
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|N_STORED_SYSCALLS
+mdefine_line|#define N_STORED_SYSCALLS 16
+DECL|variable|stored_syscalls
+r_static
+r_struct
+id|stored_syscall_data
+id|stored_syscalls
+(braket
+id|N_STORED_SYSCALLS
+)braket
+suffix:semicolon
+DECL|variable|syscall_next
+r_static
+r_int
+id|syscall_next
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|syscall_next_print
+r_static
+r_int
+id|syscall_next_print
 op_assign
 l_int|0
 suffix:semicolon
@@ -736,19 +777,91 @@ id|syscallno
 OL
 id|NUM_SYSCALL_INFO_ENTRIES
 )paren
+(brace
+multiline_comment|/* Store the syscall information to print later.  We&n;&t;&t;&t; * can&squot;t print this now - currently we&squot;re running with&n;&t;&t;&t; * SR.BL=1, so we can&squot;t take a tlbmiss (which could occur&n;&t;&t;&t; * in the console drivers under printk).&n;&t;&t;&t; *&n;&t;&t;&t; * Just overwrite old entries on ring overflow - this&n;&t;&t;&t; * is only for last-hope debugging. */
+id|stored_syscalls
+(braket
+id|syscall_next
+)braket
+dot
+id|pid
+op_assign
+id|current-&gt;pid
+suffix:semicolon
+id|stored_syscalls
+(braket
+id|syscall_next
+)braket
+dot
+id|syscall_number
+op_assign
+id|syscallno
+suffix:semicolon
+id|syscall_next
+op_increment
+suffix:semicolon
+id|syscall_next
+op_and_assign
+(paren
+id|N_STORED_SYSCALLS
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+)brace
+)brace
+DECL|function|drain_syscalls
+r_static
+r_void
+id|drain_syscalls
+c_func
+(paren
+r_void
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|syscall_next_print
+op_ne
+id|syscall_next
+)paren
+(brace
 id|printk
 c_func
 (paren
 l_string|&quot;Task %d: %s()&bslash;n&quot;
 comma
-id|current-&gt;pid
+id|stored_syscalls
+(braket
+id|syscall_next_print
+)braket
+dot
+id|pid
 comma
 id|syscall_info_table
 (braket
-id|syscallno
+id|stored_syscalls
+(braket
+id|syscall_next_print
+)braket
+dot
+id|syscall_number
 )braket
 dot
 id|name
+)paren
+suffix:semicolon
+id|syscall_next_print
+op_increment
+suffix:semicolon
+id|syscall_next_print
+op_and_assign
+(paren
+id|N_STORED_SYSCALLS
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -763,6 +876,11 @@ r_int
 id|ret
 )paren
 (brace
+id|drain_syscalls
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -902,6 +1020,7 @@ op_amp
 l_int|15
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_POOR_MANS_STRACE */
 multiline_comment|/* ======================================================================= */
 DECL|function|show_excp_regs
 r_void
