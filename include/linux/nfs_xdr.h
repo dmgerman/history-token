@@ -2668,9 +2668,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|member|create
-r_struct
-id|inode
-op_star
+r_int
 (paren
 op_star
 id|create
