@@ -6900,7 +6900,7 @@ suffix:semicolon
 )brace
 r_return
 op_minus
-id|EIO
+id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Our open/release functions&n; */

@@ -116,12 +116,6 @@ DECL|typedef|metapage_t
 )brace
 id|metapage_t
 suffix:semicolon
-multiline_comment|/*&n; * Direct-access address space operations&n; */
-r_extern
-r_struct
-id|address_space_operations
-id|direct_aops
-suffix:semicolon
 multiline_comment|/* metapage flag */
 DECL|macro|META_locked
 mdefine_line|#define META_locked&t;0

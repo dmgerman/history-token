@@ -2499,6 +2499,13 @@ id|log-&gt;syncpt
 )paren
 (brace
 r_struct
+id|super_block
+op_star
+id|sb
+op_assign
+id|log-&gt;sb
+suffix:semicolon
+r_struct
 id|jfs_sb_info
 op_star
 id|sbi
@@ -2506,7 +2513,7 @@ op_assign
 id|JFS_SBI
 c_func
 (paren
-id|log-&gt;sb
+id|sb
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * We need to make sure all of the &quot;written&quot; metapages&n;&t;&t; * actually make it to disk&n;&t;&t; */
@@ -2525,7 +2532,7 @@ suffix:semicolon
 id|filemap_fdatawrite
 c_func
 (paren
-id|sbi-&gt;direct_inode-&gt;i_mapping
+id|sb-&gt;s_bdev-&gt;bd_inode-&gt;i_mapping
 )paren
 suffix:semicolon
 id|filemap_fdatawait
@@ -2543,7 +2550,7 @@ suffix:semicolon
 id|filemap_fdatawait
 c_func
 (paren
-id|sbi-&gt;direct_inode-&gt;i_mapping
+id|sb-&gt;s_bdev-&gt;bd_inode-&gt;i_mapping
 )paren
 suffix:semicolon
 id|lrd.logtid
@@ -6076,8 +6083,6 @@ id|flags
 suffix:semicolon
 multiline_comment|/* unlock+enable */
 )brace
-r_return
-suffix:semicolon
 )brace
 DECL|function|jfsIOWait
 r_int

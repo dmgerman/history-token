@@ -189,7 +189,7 @@ id|super_block
 op_star
 comma
 r_struct
-id|metapage
+id|buffer_head
 op_star
 op_star
 )paren
