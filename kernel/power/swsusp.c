@@ -59,14 +59,6 @@ id|page
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Locks */
-DECL|variable|__nosavedata
-id|spinlock_t
-id|suspend_pagedir_lock
-id|__nosavedata
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 multiline_comment|/* Variables to be preserved over suspend */
 DECL|variable|pagedir_order_check
 r_int
@@ -3241,14 +3233,6 @@ c_func
 r_void
 )paren
 (brace
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|suspend_pagedir_lock
-)paren
-suffix:semicolon
-multiline_comment|/* Done to disable interrupts */
 id|free_pages
 c_func
 (paren
@@ -3259,13 +3243,6 @@ r_int
 id|pagedir_nosave
 comma
 id|pagedir_order
-)paren
-suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|suspend_pagedir_lock
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HIGHMEM
