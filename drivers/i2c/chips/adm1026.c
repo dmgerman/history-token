@@ -4494,6 +4494,7 @@ l_int|8
 suffix:semicolon
 multiline_comment|/* Adjust fan_min to account for new fan divisor */
 DECL|function|fixup_fan_min
+r_static
 r_void
 id|fixup_fan_min
 c_func
