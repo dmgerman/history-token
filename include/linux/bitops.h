@@ -561,7 +561,7 @@ r_int
 id|generic_hweight64
 c_func
 (paren
-id|u64
+id|__u64
 id|w
 )paren
 (brace

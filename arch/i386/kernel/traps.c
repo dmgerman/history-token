@@ -310,9 +310,6 @@ id|stack
 )paren
 (brace
 r_int
-id|i
-suffix:semicolon
-r_int
 r_int
 id|addr
 suffix:semicolon
@@ -346,10 +343,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|i
-op_assign
-l_int|1
-suffix:semicolon
 r_while
 c_loop
 (paren

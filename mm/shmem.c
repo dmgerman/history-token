@@ -4495,9 +4495,6 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|inode-&gt;i_sb
-op_logical_or
-op_logical_neg
 id|S_ISREG
 c_func
 (paren

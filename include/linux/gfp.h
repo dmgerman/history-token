@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 multiline_comment|/*&n; * GFP bitmasks..&n; */
-multiline_comment|/* Zone modifiers in GFP_ZONEMASK (see linux/mmzone.h - low four bits) */
+multiline_comment|/* Zone modifiers in GFP_ZONEMASK (see linux/mmzone.h - low two bits) */
 DECL|macro|__GFP_DMA
 mdefine_line|#define __GFP_DMA&t;0x01
 DECL|macro|__GFP_HIGHMEM
