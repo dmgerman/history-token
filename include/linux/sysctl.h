@@ -1219,6 +1219,11 @@ id|NET_TCP_WESTWOOD
 op_assign
 l_int|95
 comma
+DECL|enumerator|NET_IPV4_IGMP_MAX_MSF
+id|NET_IPV4_IGMP_MAX_MSF
+op_assign
+l_int|96
+comma
 )brace
 suffix:semicolon
 r_enum
