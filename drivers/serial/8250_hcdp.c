@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * linux/drivers/char/hcdp_serial.c&n; *&n; * Copyright (C) 2002 Hewlett-Packard Co.&n; *&t;Khalid Aziz &lt;khalid_aziz@hp.com&gt;&n; *&n; * Parse the EFI HCDP table to locate serial console and debug ports and&n; * initialize them.&n; *&n; * 2002/08/29 davidm&t;Adjust it to new 2.5 serial driver infrastructure.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -45,6 +46,13 @@ r_int
 id|gsi
 comma
 id|nr
+suffix:semicolon
+r_static
+r_char
+id|options
+(braket
+l_int|16
+)braket
 suffix:semicolon
 macro_line|#if 0
 r_static
@@ -618,6 +626,43 @@ id|port
 )paren
 suffix:semicolon
 r_continue
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|efi_uart_console_only
+c_func
+(paren
+)paren
+)paren
+(brace
+id|snprintf
+c_func
+(paren
+id|options
+comma
+r_sizeof
+(paren
+id|options
+)paren
+comma
+l_string|&quot;%lun%d&quot;
+comma
+id|hcdp_dev-&gt;baud
+comma
+id|hcdp_dev-&gt;bits
+)paren
+suffix:semicolon
+id|add_preferred_console
+c_func
+(paren
+l_string|&quot;ttyS&quot;
+comma
+id|port.line
+comma
+id|options
+)paren
 suffix:semicolon
 )brace
 r_break
