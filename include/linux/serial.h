@@ -436,6 +436,31 @@ op_star
 id|port
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|early_serial_console_init
+c_func
+(paren
+r_char
+op_star
+id|options
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|serial8250_start_console
+c_func
+(paren
+r_struct
+id|uart_port
+op_star
+id|port
+comma
+r_char
+op_star
+id|options
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_SERIAL_H */
 eof
