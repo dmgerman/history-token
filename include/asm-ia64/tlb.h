@@ -97,6 +97,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+(paren
 id|end
 op_minus
 id|start
@@ -108,13 +110,27 @@ op_star
 l_int|1024
 op_star
 l_int|1024UL
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * If we flush more than a tera-byte, we&squot;re probably better off just&n;&t;&t; * flushing the entire address space.&n;&t;&t; */
-id|flush_tlb_mm
+op_logical_or
+id|rgn_index
 c_func
 (paren
-id|tlb-&gt;mm
+id|start
+)paren
+op_ne
+id|rgn_index
+c_func
+(paren
+id|end
+op_minus
+l_int|1
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * If we flush more than a tera-byte or across regions, we&squot;re probably&n;&t;&t; * better off just flushing the entire TLB(s).  This should be very rare&n;&t;&t; * and is not worth optimizing for.&n;&t;&t; */
+id|flush_tlb_all
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

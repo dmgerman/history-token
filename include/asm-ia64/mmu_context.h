@@ -1,13 +1,15 @@
 macro_line|#ifndef _ASM_IA64_MMU_CONTEXT_H
 DECL|macro|_ASM_IA64_MMU_CONTEXT_H
 mdefine_line|#define _ASM_IA64_MMU_CONTEXT_H
-multiline_comment|/*&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
-multiline_comment|/*&n; * Routines to manage the allocation of task context numbers.  Task context numbers are&n; * used to reduce or eliminate the need to perform TLB flushes due to context switches.&n; * Context numbers are implemented using ia-64 region ids.  Since the IA-64 TLB does not&n; * consider the region number when performing a TLB lookup, we need to assign a unique&n; * region id to each region in a process.  We use the least significant three bits in a&n; * region id for this purpose.&n; *&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Routines to manage the allocation of task context numbers.  Task context numbers are&n; * used to reduce or eliminate the need to perform TLB flushes due to context switches.&n; * Context numbers are implemented using ia-64 region ids.  Since the IA-64 TLB does not&n; * consider the region number when performing a TLB lookup, we need to assign a unique&n; * region id to each region in a process.  We use the least significant three bits in a&n; * region id for this purpose.&n; */
 DECL|macro|IA64_REGION_ID_KERNEL
 mdefine_line|#define IA64_REGION_ID_KERNEL&t;0 /* the kernel&squot;s region id (tlb.c depends on this being 0) */
 DECL|macro|ia64_rid
 mdefine_line|#define ia64_rid(ctx,addr)&t;(((ctx) &lt;&lt; 3) | (addr &gt;&gt; 61))
 macro_line|# ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -45,6 +47,11 @@ id|ia64_ctx
 id|ia64_ctx
 suffix:semicolon
 r_extern
+id|u8
+id|ia64_need_tlb_flush
+id|__per_cpu_data
+suffix:semicolon
+r_extern
 r_void
 id|wrap_mmu_context
 (paren
@@ -75,6 +82,44 @@ id|cpu
 )paren
 (brace
 )brace
+multiline_comment|/*&n; * When the context counter wraps around all TLBs need to be flushed because an old&n; * context number might have been reused. This is signalled by the ia64_need_tlb_flush&n; * per-CPU variable, which is checked in the routine below. Called by activate_mm().&n; * &lt;efocht@ess.nec.de&gt;&n; */
+r_static
+r_inline
+r_void
+DECL|function|delayed_tlb_flush
+id|delayed_tlb_flush
+(paren
+r_void
+)paren
+(brace
+r_extern
+r_void
+id|__flush_tlb_all
+(paren
+r_void
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|ia64_need_tlb_flush
+)paren
+)paren
+(brace
+id|__flush_tlb_all
+c_func
+(paren
+)paren
+suffix:semicolon
+id|__ia64_need_tlb_flush
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
 r_static
 r_inline
 r_void
@@ -87,6 +132,11 @@ op_star
 id|mm
 )paren
 (brace
+id|delayed_tlb_flush
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
