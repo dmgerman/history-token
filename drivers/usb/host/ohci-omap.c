@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2004 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * (C) Copyright 2002 Hewlett-Packard Company&n; * &n; * OMAP Bus Glue&n; *&n; * Written by Christopher Hoover &lt;ch@hpl.hp.com&gt;&n; * Based on fragments of previous driver by Russell King et al.&n; *&n; * Modified for OMAP from ohci-sa1111.c by Tony Lindgren &lt;tony@atomide.com&gt;&n; * Based on the 2.4 OMAP OHCI driver originally done by MontaVista Software Inc.&n; *&n; * This file is licenced under the GPL.&n; */
+multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2005 David Brownell&n; * (C) Copyright 2002 Hewlett-Packard Company&n; * &n; * OMAP Bus Glue&n; *&n; * Modified for OMAP by Tony Lindgren &lt;tony@atomide.com&gt;&n; * Based on the 2.4 OMAP OHCI driver originally done by MontaVista Software Inc.&n; * and on ohci-sa1111.c by Christopher Hoover &lt;ch@hpl.hp.com&gt;&n; *&n; * This file is licenced under the GPL.&n; */
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
@@ -8,7 +8,26 @@ macro_line|#include &lt;asm/arch/irqs.h&gt;
 macro_line|#include &lt;asm/arch/gpio.h&gt;
 macro_line|#include &lt;asm/arch/fpga.h&gt;
 macro_line|#include &lt;asm/arch/usb.h&gt;
-macro_line|#include &quot;ohci-omap.h&quot;
+macro_line|#include &lt;asm/hardware/clock.h&gt;
+multiline_comment|/* OMAP-1510 OHCI has its own MMU for DMA */
+DECL|macro|OMAP1510_LB_MEMSIZE
+mdefine_line|#define OMAP1510_LB_MEMSIZE&t;32&t;/* Should be same as SDRAM size */
+DECL|macro|OMAP1510_LB_CLOCK_DIV
+mdefine_line|#define OMAP1510_LB_CLOCK_DIV&t;0xfffec10c
+DECL|macro|OMAP1510_LB_MMU_CTL
+mdefine_line|#define OMAP1510_LB_MMU_CTL&t;0xfffec208
+DECL|macro|OMAP1510_LB_MMU_LCK
+mdefine_line|#define OMAP1510_LB_MMU_LCK&t;0xfffec224
+DECL|macro|OMAP1510_LB_MMU_LD_TLB
+mdefine_line|#define OMAP1510_LB_MMU_LD_TLB&t;0xfffec228
+DECL|macro|OMAP1510_LB_MMU_CAM_H
+mdefine_line|#define OMAP1510_LB_MMU_CAM_H&t;0xfffec22c
+DECL|macro|OMAP1510_LB_MMU_CAM_L
+mdefine_line|#define OMAP1510_LB_MMU_CAM_L&t;0xfffec230
+DECL|macro|OMAP1510_LB_MMU_RAM_H
+mdefine_line|#define OMAP1510_LB_MMU_RAM_H&t;0xfffec234
+DECL|macro|OMAP1510_LB_MMU_RAM_L
+mdefine_line|#define OMAP1510_LB_MMU_RAM_L&t;0xfffec238
 macro_line|#ifndef CONFIG_ARCH_OMAP
 macro_line|#error &quot;This file is OMAP bus glue.  CONFIG_OMAP must be defined.&quot;
 macro_line|#endif
@@ -56,10 +75,16 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * OHCI clock initialization for OMAP-1510 and 16xx&n; */
+DECL|variable|usb_host_ck
+r_static
+r_struct
+id|clk
+op_star
+id|usb_host_ck
+suffix:semicolon
 DECL|function|omap_ohci_clock_power
 r_static
-r_int
+r_void
 id|omap_ohci_clock_power
 c_func
 (paren
@@ -73,138 +98,29 @@ c_cond
 id|on
 )paren
 (brace
-multiline_comment|/* for 1510, 48MHz DPLL is set up in usb init */
-r_if
-c_cond
-(paren
-id|cpu_is_omap16xx
+id|clk_enable
 c_func
 (paren
-)paren
-)paren
-(brace
-multiline_comment|/* Enable OHCI */
-id|omap_writel
-c_func
-(paren
-id|omap_readl
-c_func
-(paren
-id|ULPD_SOFT_REQ
-)paren
-op_or
-id|SOFT_USB_OTG_REQ
-comma
-id|ULPD_SOFT_REQ
+id|usb_host_ck
 )paren
 suffix:semicolon
-multiline_comment|/* USB host clock request if not using OTG */
-id|omap_writel
+multiline_comment|/* guesstimate for T5 == 1x 32K clock + APLL lock time */
+id|udelay
 c_func
 (paren
-id|omap_readl
-c_func
-(paren
-id|ULPD_SOFT_REQ
-)paren
-op_or
-id|SOFT_USB_REQ
-comma
-id|ULPD_SOFT_REQ
-)paren
-suffix:semicolon
-id|omap_writel
-c_func
-(paren
-id|omap_readl
-c_func
-(paren
-id|ULPD_STATUS_REQ
-)paren
-op_or
-id|USB_HOST_DPLL_REQ
-comma
-id|ULPD_STATUS_REQ
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Enable 48MHz clock to USB */
-id|omap_writel
-c_func
-(paren
-id|omap_readl
-c_func
-(paren
-id|ULPD_CLOCK_CTRL
-)paren
-op_or
-id|USB_MCLK_EN
-comma
-id|ULPD_CLOCK_CTRL
-)paren
-suffix:semicolon
-id|omap_writel
-c_func
-(paren
-id|omap_readl
-c_func
-(paren
-id|ARM_IDLECT2
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-id|EN_LBFREECK
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-id|EN_LBCK
-)paren
-comma
-id|ARM_IDLECT2
-)paren
-suffix:semicolon
-id|omap_writel
-c_func
-(paren
-id|omap_readl
-c_func
-(paren
-id|MOD_CONF_CTRL_0
-)paren
-op_or
-id|USB_HOST_HHC_UHOST_EN
-comma
-id|MOD_CONF_CTRL_0
+l_int|100
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Disable 48MHz clock to USB */
-id|omap_writel
+id|clk_disable
 c_func
 (paren
-id|omap_readl
-c_func
-(paren
-id|ULPD_CLOCK_CTRL
-)paren
-op_amp
-op_complement
-id|USB_MCLK_EN
-comma
-id|ULPD_CLOCK_CTRL
+id|usb_host_ck
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: The DPLL stays on for now */
 )brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Board specific gang-switched transceiver power on/off.&n; * NOTE:  OSK supplies power from DC, not battery.&n; */
 DECL|function|omap_ohci_transceiver_power
@@ -727,6 +643,11 @@ id|machine_is_omap_h2
 c_func
 (paren
 )paren
+op_logical_or
+id|machine_is_omap_h3
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -966,7 +887,10 @@ op_amp
 id|ohci-&gt;regs-&gt;roothub.a
 )paren
 suffix:semicolon
-singleline_comment|// distrust_firmware = 0;
+id|distrust_firmware
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* FIXME khubd hub requests should manage power switching */
 id|omap_ohci_transceiver_power
@@ -1001,11 +925,26 @@ comma
 l_string|&quot;stopping USB Controller&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * FIXME: Put the USB host controller into reset.&n;&t; */
-multiline_comment|/*&n;&t; * FIXME: Stop the USB clock.&n;&t; */
-singleline_comment|//omap_disable_device(dev);
+id|omap_ohci_clock_power
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
+r_void
+id|usb_hcd_omap_remove
+(paren
+r_struct
+id|usb_hcd
+op_star
+comma
+r_struct
+id|platform_device
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* configure so an HC device and id are always provided */
 multiline_comment|/* always called with process context; sleeping is OK */
 multiline_comment|/**&n; * usb_hcd_omap_probe - initialize OMAP-based HCDs&n; * Context: !in_interrupt()&n; *&n; * Allocates basic resources for this USB host controller, and&n; * then invokes the start() method for the HCD associated with it&n; * through the hotplug entry&squot;s driver_data.&n; */
@@ -1032,6 +971,8 @@ r_struct
 id|usb_hcd
 op_star
 id|hcd
+op_assign
+l_int|0
 suffix:semicolon
 r_struct
 id|ohci_hcd
@@ -1094,6 +1035,32 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+id|usb_host_ck
+op_assign
+id|clk_get
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;usb_hhc_ck&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|usb_host_ck
+)paren
+)paren
+r_return
+id|PTR_ERR
+c_func
+(paren
+id|usb_host_ck
+)paren
+suffix:semicolon
 id|hcd
 op_assign
 id|usb_create_hcd
@@ -1112,10 +1079,16 @@ c_cond
 op_logical_neg
 id|hcd
 )paren
-r_return
+(brace
+id|retval
+op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
+r_goto
+id|err0
+suffix:semicolon
+)brace
 id|hcd-&gt;rsrc_start
 op_assign
 id|pdev-&gt;resource
@@ -1176,7 +1149,6 @@ r_goto
 id|err1
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: Cast to pointer from integer of different size!&n;&t; * Needs ioremap */
 id|hcd-&gt;regs
 op_assign
 (paren
@@ -1185,9 +1157,13 @@ id|__iomem
 op_star
 )paren
 (paren
-id|u32
+r_int
 )paren
+id|IO_ADDRESS
+c_func
+(paren
 id|hcd-&gt;rsrc_start
+)paren
 suffix:semicolon
 id|ohci
 op_assign
@@ -1230,12 +1206,13 @@ c_func
 (paren
 id|hcd
 comma
-id|pdev-&gt;resource
-(braket
-l_int|1
-)braket
-dot
-id|start
+id|platform_get_irq
+c_func
+(paren
+id|pdev
+comma
+l_int|0
+)paren
 comma
 id|SA_INTERRUPT
 )paren
@@ -1274,11 +1251,18 @@ c_func
 id|hcd
 )paren
 suffix:semicolon
+id|err0
+suffix:colon
+id|clk_put
+c_func
+(paren
+id|usb_host_ck
+)paren
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* may be called without controller electrically present */
 multiline_comment|/* may be called with controller, bus, and devices active */
 multiline_comment|/**&n; * usb_hcd_omap_remove - shutdown processing for OMAP-based HCDs&n; * @dev: USB Host Controller being removed&n; * Context: !in_interrupt()&n; *&n; * Reverses the effect of usb_hcd_omap_probe(), first invoking&n; * the HCD&squot;s stop() method.  It is always called from a thread&n; * context, normally &quot;rmmod&quot;, &quot;apmd&quot;, or something similar.&n; *&n; */
 DECL|function|usb_hcd_omap_remove
@@ -1334,6 +1318,12 @@ id|usb_put_hcd
 c_func
 (paren
 id|hcd
+)paren
+suffix:semicolon
+id|clk_put
+c_func
+(paren
+id|usb_host_ck
 )paren
 suffix:semicolon
 )brace
@@ -1403,11 +1393,12 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
+c_func
 (paren
-l_string|&quot;can&squot;t start %s&quot;
+id|hcd-&gt;self.controller
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;can&squot;t start&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ohci_stop
@@ -1631,12 +1622,20 @@ id|ohci-&gt;transceiver-&gt;dev
 )paren
 suffix:semicolon
 )brace
+id|dev_set_drvdata
+c_func
+(paren
+id|dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#if&t;defined(CONFIG_USB_SUSPEND) || defined(CONFIG_PM)
+macro_line|#ifdef&t;CONFIG_PM
 multiline_comment|/* states match PCI usage, always suspending the root hub except that&n; * 4 ~= D3cold (ACPI D3) with clock off (resume sees reset).&n; */
 DECL|function|ohci_omap_suspend
 r_static
@@ -1748,11 +1747,11 @@ op_ge
 l_int|4
 )paren
 (brace
-multiline_comment|/* power off + reset */
-id|OTG_SYSCON_2_REG
-op_and_assign
-op_complement
-id|UHOST_EN
+id|omap_ohci_clock_power
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 id|ohci_to_hcd
 c_func
@@ -1881,9 +1880,11 @@ id|ohci-&gt;next_statechange
 op_assign
 id|jiffies
 suffix:semicolon
-id|OTG_SYSCON_2_REG
-op_or_assign
-id|UHOST_EN
+id|omap_ohci_clock_power
+c_func
+(paren
+l_int|1
+)paren
 suffix:semicolon
 multiline_comment|/* FALLTHROUGH */
 r_default
@@ -2003,7 +2004,7 @@ id|remove
 op_assign
 id|ohci_hcd_omap_drv_remove
 comma
-macro_line|#if&t;defined(CONFIG_USB_SUSPEND) || defined(CONFIG_PM)
+macro_line|#ifdef&t;CONFIG_PM
 dot
 id|suspend
 op_assign
