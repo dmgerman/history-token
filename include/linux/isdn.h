@@ -727,10 +727,12 @@ id|rcvsched
 suffix:semicolon
 multiline_comment|/* Receive needs schedule         */
 DECL|member|isdn_slot
-r_int
+r_struct
+id|isdn_slot
+op_star
 id|isdn_slot
 suffix:semicolon
-multiline_comment|/* Index to isdn-driver/channel   */
+multiline_comment|/* Ptr to isdn-driver/channel     */
 DECL|member|rpqueue
 r_struct
 id|sk_buff_head

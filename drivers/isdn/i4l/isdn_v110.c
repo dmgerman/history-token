@@ -2645,8 +2645,10 @@ DECL|function|isdn_v110_open
 id|isdn_v110_open
 c_func
 (paren
-r_int
-id|sl
+r_struct
+id|isdn_slot
+op_star
+id|slot
 comma
 r_struct
 id|isdn_v110
@@ -2664,7 +2666,7 @@ op_assign
 id|isdn_slot_hdrlen
 c_func
 (paren
-id|sl
+id|slot
 )paren
 suffix:semicolon
 r_int
@@ -2673,7 +2675,7 @@ op_assign
 id|isdn_slot_maxbufsize
 c_func
 (paren
-id|sl
+id|slot
 )paren
 suffix:semicolon
 id|atomic_inc
@@ -2774,7 +2776,7 @@ c_cond
 id|isdn_slot_write
 c_func
 (paren
-id|sl
+id|slot
 comma
 id|skb
 )paren
@@ -2821,8 +2823,10 @@ DECL|function|isdn_v110_close
 id|isdn_v110_close
 c_func
 (paren
-r_int
-id|sl
+r_struct
+id|isdn_slot
+op_star
+id|slot
 comma
 r_struct
 id|isdn_v110
@@ -2874,8 +2878,10 @@ DECL|function|isdn_v110_bsent
 id|isdn_v110_bsent
 c_func
 (paren
-r_int
-id|sl
+r_struct
+id|isdn_slot
+op_star
+id|slot
 comma
 r_struct
 id|isdn_v110
@@ -2993,7 +2999,7 @@ c_cond
 id|isdn_slot_write
 c_func
 (paren
-id|sl
+id|slot
 comma
 id|skb
 )paren

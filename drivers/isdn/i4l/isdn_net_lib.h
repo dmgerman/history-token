@@ -270,14 +270,14 @@ r_int
 id|isdn_net_find_icall
 c_func
 (paren
-r_int
-comma
-r_int
-comma
-r_int
+r_struct
+id|isdn_slot
+op_star
+id|slot
 comma
 id|setup_parm
 op_star
+id|setup
 )paren
 suffix:semicolon
 multiline_comment|/* provided for interface types to use */
@@ -595,10 +595,19 @@ r_struct
 id|isdn_net_dev_s
 (brace
 DECL|member|isdn_slot
-r_int
+r_struct
+id|isdn_slot
+op_star
 id|isdn_slot
 suffix:semicolon
 multiline_comment|/* Index to isdn device/channel     */
+DECL|member|exclusive
+r_struct
+id|isdn_slot
+op_star
+id|exclusive
+suffix:semicolon
+multiline_comment|/* NULL if non excl                 */
 DECL|member|pre_device
 r_int
 id|pre_device
@@ -609,11 +618,6 @@ r_int
 id|pre_channel
 suffix:semicolon
 multiline_comment|/* Preselected isdn-channel         */
-DECL|member|exclusive
-r_int
-id|exclusive
-suffix:semicolon
-multiline_comment|/* -1 if non excl./idx to excl chan */
 DECL|member|dial_timer
 r_struct
 id|timer_list
