@@ -131,7 +131,7 @@ id|pvc_device_struct
 (brace
 DECL|member|master
 r_struct
-id|hdlc_device_struct
+id|net_device
 op_star
 id|master
 suffix:semicolon
@@ -606,9 +606,10 @@ r_int
 id|hdlc_fr_ioctl
 c_func
 (paren
-id|hdlc_device
+r_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 comma
 r_struct
 id|ifreq

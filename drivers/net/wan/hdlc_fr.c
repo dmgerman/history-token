@@ -338,14 +338,25 @@ op_star
 id|add_pvc
 c_func
 (paren
-id|hdlc_device
+r_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 comma
 id|u16
 id|dlci
 )paren
 (brace
+id|hdlc_device
+op_star
+id|hdlc
+op_assign
+id|dev_to_hdlc
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|pvc_device
 op_star
 id|pvc
@@ -447,7 +458,7 @@ id|dlci
 suffix:semicolon
 id|pvc-&gt;master
 op_assign
-id|hdlc
+id|dev
 suffix:semicolon
 id|pvc-&gt;next
 op_assign
@@ -1212,13 +1223,7 @@ r_if
 c_cond
 (paren
 (paren
-id|hdlc_to_dev
-c_func
-(paren
-id|pvc-&gt;master
-)paren
-op_member_access_from_pointer
-id|flags
+id|pvc-&gt;master-&gt;flags
 op_amp
 id|IFF_UP
 )paren
@@ -1239,16 +1244,26 @@ op_eq
 l_int|0
 )paren
 (brace
+id|hdlc_device
+op_star
+id|hdlc
+op_assign
+id|dev_to_hdlc
+c_func
+(paren
+id|pvc-&gt;master
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|pvc-&gt;master-&gt;state.fr.settings.lmi
+id|hdlc-&gt;state.fr.settings.lmi
 op_eq
 id|LMI_NONE
 )paren
 id|pvc-&gt;state.active
 op_assign
-id|pvc-&gt;master-&gt;carrier
+id|hdlc-&gt;carrier
 suffix:semicolon
 id|pvc_carrier
 c_func
@@ -1258,7 +1273,7 @@ comma
 id|pvc
 )paren
 suffix:semicolon
-id|pvc-&gt;master-&gt;state.fr.dce_changed
+id|hdlc-&gt;state.fr.dce_changed
 op_assign
 l_int|1
 suffix:semicolon
@@ -1298,10 +1313,20 @@ op_eq
 l_int|0
 )paren
 (brace
+id|hdlc_device
+op_star
+id|hdlc
+op_assign
+id|dev_to_hdlc
+c_func
+(paren
+id|pvc-&gt;master
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|pvc-&gt;master-&gt;state.fr.settings.lmi
+id|hdlc-&gt;state.fr.settings.lmi
 op_eq
 id|LMI_NONE
 )paren
@@ -1312,10 +1337,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pvc-&gt;master-&gt;state.fr.settings.dce
+id|hdlc-&gt;state.fr.settings.dce
 )paren
 (brace
-id|pvc-&gt;master-&gt;state.fr.dce_changed
+id|hdlc-&gt;state.fr.dce_changed
 op_assign
 l_int|1
 suffix:semicolon
@@ -1418,11 +1443,7 @@ c_func
 (paren
 id|info.master
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|pvc-&gt;master
-)paren
+id|pvc-&gt;master-&gt;name
 comma
 id|IFNAMSIZ
 )paren
@@ -1668,11 +1689,7 @@ op_increment
 suffix:semicolon
 id|skb-&gt;dev
 op_assign
-id|hdlc_to_dev
-c_func
-(paren
 id|pvc-&gt;master
-)paren
 suffix:semicolon
 id|dev_queue_xmit
 c_func
@@ -1758,11 +1775,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: DLCI %d [%s%s%s]%s %s&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|pvc-&gt;master
-)paren
+id|pvc-&gt;master-&gt;name
 comma
 id|pvc-&gt;dlci
 comma
@@ -1842,14 +1855,25 @@ r_void
 id|fr_lmi_send
 c_func
 (paren
-id|hdlc_device
+r_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 comma
 r_int
 id|fullrep
 )paren
 (brace
+id|hdlc_device
+op_star
+id|hdlc
+op_assign
+id|dev_to_hdlc
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_struct
 id|sk_buff
 op_star
@@ -1922,11 +1946,7 @@ id|KERN_WARNING
 l_string|&quot;%s: Too many PVCs while sending &quot;
 l_string|&quot;LMI full report&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -1954,11 +1974,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: Memory squeeze on fr_lmi_send()&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -2264,11 +2280,7 @@ id|TC_PRIO_CONTROL
 suffix:semicolon
 id|skb-&gt;dev
 op_assign
-id|hdlc_to_dev
-c_func
-(paren
-id|hdlc
-)paren
+id|dev
 suffix:semicolon
 id|skb-&gt;nh.raw
 op_assign
@@ -2290,11 +2302,22 @@ c_func
 r_int
 id|reliable
 comma
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
 id|hdlc_device
 op_star
 id|hdlc
+op_assign
+id|dev_to_hdlc
+c_func
+(paren
+id|dev
 )paren
-(brace
+suffix:semicolon
 id|pvc_device
 op_star
 id|pvc
@@ -2318,15 +2341,13 @@ op_logical_neg
 id|netif_carrier_ok
 c_func
 (paren
-op_amp
-id|hdlc-&gt;netdev
+id|dev
 )paren
 )paren
 id|netif_carrier_on
 c_func
 (paren
-op_amp
-id|hdlc-&gt;netdev
+id|dev
 )paren
 suffix:semicolon
 id|hdlc-&gt;state.fr.n391cnt
@@ -2388,15 +2409,13 @@ c_cond
 id|netif_carrier_ok
 c_func
 (paren
-op_amp
-id|hdlc-&gt;netdev
+id|dev
 )paren
 )paren
 id|netif_carrier_off
 c_func
 (paren
-op_amp
-id|hdlc-&gt;netdev
+id|dev
 )paren
 suffix:semicolon
 r_while
@@ -2444,15 +2463,27 @@ r_int
 id|arg
 )paren
 (brace
+r_struct
+id|net_device
+op_star
+id|dev
+op_assign
+(paren
+r_struct
+id|net_device
+op_star
+)paren
+id|arg
+suffix:semicolon
 id|hdlc_device
 op_star
 id|hdlc
 op_assign
+id|dev_to_hdlc
+c_func
 (paren
-id|hdlc_device
-op_star
+id|dev
 )paren
-id|arg
 suffix:semicolon
 r_int
 id|i
@@ -2508,11 +2539,7 @@ id|KERN_INFO
 l_string|&quot;%s: No LMI status reply &quot;
 l_string|&quot;received&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 )paren
 suffix:semicolon
 id|hdlc-&gt;state.fr.last_errors
@@ -2574,11 +2601,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Link %sreliable&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 comma
 id|reliable
 ques
@@ -2593,7 +2616,7 @@ c_func
 (paren
 id|reliable
 comma
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -2623,7 +2646,7 @@ suffix:semicolon
 id|fr_lmi_send
 c_func
 (paren
-id|hdlc
+id|dev
 comma
 id|hdlc-&gt;state.fr.n391cnt
 op_eq
@@ -2665,9 +2688,10 @@ r_int
 id|fr_lmi_recv
 c_func
 (paren
-id|hdlc_device
+r_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 comma
 r_struct
 id|sk_buff
@@ -2675,6 +2699,16 @@ op_star
 id|skb
 )paren
 (brace
+id|hdlc_device
+op_star
+id|hdlc
+op_assign
+id|dev_to_hdlc
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_int
 id|stat_len
 suffix:semicolon
@@ -2725,11 +2759,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Short LMI frame&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -2761,11 +2791,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: LMI msgtype=%x, Not LMI status %s&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 comma
 id|skb-&gt;data
 (braket
@@ -2825,11 +2851,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Not a report type=%x&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 comma
 id|skb-&gt;data
 (braket
@@ -2884,11 +2906,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Unsupported status element=%x&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 comma
 id|skb-&gt;data
 (braket
@@ -2953,11 +2971,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Unsupported report type=%x&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 comma
 id|reptype
 )paren
@@ -3081,7 +3095,7 @@ suffix:semicolon
 id|fr_lmi_send
 c_func
 (paren
-id|hdlc
+id|dev
 comma
 id|reptype
 op_eq
@@ -3186,11 +3200,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: Invalid PVCSTAT ID: %x&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 comma
 id|skb-&gt;data
 (braket
@@ -3222,11 +3232,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: Invalid PVCSTAT length: %x&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 comma
 id|skb-&gt;data
 (braket
@@ -3262,7 +3268,7 @@ op_assign
 id|add_pvc
 c_func
 (paren
-id|hdlc
+id|dev
 comma
 id|dlci
 )paren
@@ -3283,11 +3289,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: Memory squeeze on fr_lmi_recv()&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 )paren
 suffix:semicolon
 id|no_ram
@@ -3428,6 +3430,13 @@ op_star
 id|skb
 )paren
 (brace
+r_struct
+id|net_device
+op_star
+id|ndev
+op_assign
+id|skb-&gt;dev
+suffix:semicolon
 id|hdlc_device
 op_star
 id|hdlc
@@ -3435,7 +3444,7 @@ op_assign
 id|dev_to_hdlc
 c_func
 (paren
-id|skb-&gt;dev
+id|ndev
 )paren
 suffix:semicolon
 id|fr_hdr
@@ -3531,7 +3540,7 @@ c_cond
 id|fr_lmi_recv
 c_func
 (paren
-id|hdlc
+id|ndev
 comma
 id|skb
 )paren
@@ -3567,11 +3576,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Received non-LMI frame with LMI DLCI&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|ndev-&gt;name
 )paren
 suffix:semicolon
 r_goto
@@ -3602,11 +3607,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: No PVC for received frame&squot;s DLCI %d&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|ndev-&gt;name
 comma
 id|dlci
 )paren
@@ -3637,11 +3638,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;%s: DLCI %d FECN O%s&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|pvc
-)paren
+id|ndev-&gt;name
 comma
 id|dlci
 comma
@@ -3674,11 +3671,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;%s: DLCI %d BECN O%s&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|pvc
-)paren
+id|ndev-&gt;name
 comma
 id|dlci
 comma
@@ -3943,11 +3936,7 @@ id|KERN_INFO
 l_string|&quot;%s: Unsupported protocol, OUI=%x &quot;
 l_string|&quot;PID=%x&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|ndev-&gt;name
 comma
 id|oui
 comma
@@ -3974,11 +3963,7 @@ id|KERN_INFO
 l_string|&quot;%s: Unsupported protocol, NLPID=%x &quot;
 l_string|&quot;length = %i&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|ndev-&gt;name
 comma
 id|data
 (braket
@@ -4185,7 +4170,7 @@ op_assign
 r_int
 r_int
 )paren
-id|hdlc
+id|dev
 suffix:semicolon
 id|add_timer
 c_func
@@ -4201,7 +4186,7 @@ c_func
 (paren
 l_int|1
 comma
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -4255,7 +4240,7 @@ c_func
 (paren
 l_int|0
 comma
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -4328,9 +4313,10 @@ r_int
 id|fr_add_pvc
 c_func
 (paren
-id|hdlc_device
+r_struct
+id|net_device
 op_star
-id|hdlc
+id|master
 comma
 r_int
 r_int
@@ -4340,6 +4326,16 @@ r_int
 id|type
 )paren
 (brace
+id|hdlc_device
+op_star
+id|hdlc
+op_assign
+id|dev_to_hdlc
+c_func
+(paren
+id|master
+)paren
+suffix:semicolon
 id|pvc_device
 op_star
 id|pvc
@@ -4382,7 +4378,7 @@ op_assign
 id|add_pvc
 c_func
 (paren
-id|hdlc
+id|master
 comma
 id|dlci
 )paren
@@ -4397,11 +4393,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: Memory squeeze on fr_add_pvc()&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|master-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -4466,11 +4458,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: Memory squeeze on fr_pvc()&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|master-&gt;name
 )paren
 suffix:semicolon
 id|delete_unused_pvcs
@@ -4927,9 +4915,10 @@ r_int
 id|hdlc_fr_ioctl
 c_func
 (paren
-id|hdlc_device
+r_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 comma
 r_struct
 id|ifreq
@@ -4955,15 +4944,14 @@ suffix:semicolon
 id|fr_proto
 id|new_settings
 suffix:semicolon
-r_struct
-id|net_device
+id|hdlc_device
 op_star
-id|dev
+id|hdlc
 op_assign
-id|hdlc_to_dev
+id|dev_to_hdlc
 c_func
 (paren
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 id|fr_proto_pvc
@@ -5357,7 +5345,7 @@ r_return
 id|fr_add_pvc
 c_func
 (paren
-id|hdlc
+id|dev
 comma
 id|pvc.dlci
 comma
