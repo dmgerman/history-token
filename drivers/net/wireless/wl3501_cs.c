@@ -4391,7 +4391,7 @@ l_int|5
 )paren
 suffix:semicolon
 id|data
-op_sub_assign
+op_add_assign
 (paren
 id|WL3501_BLKSZ
 op_minus
