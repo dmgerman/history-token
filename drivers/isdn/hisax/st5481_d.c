@@ -2829,7 +2829,7 @@ id|dev-&gt;config-&gt;interface
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|altsetting
 (braket
 l_int|3

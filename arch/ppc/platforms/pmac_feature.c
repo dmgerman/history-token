@@ -19,7 +19,6 @@ macro_line|#include &lt;asm/uninorth.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;asm/macio_asic.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/dbdma.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
@@ -10834,6 +10833,24 @@ op_assign
 id|temp
 suffix:semicolon
 )brace
+id|macio_chips
+(braket
+l_int|0
+)braket
+dot
+id|lbus.index
+op_assign
+l_int|0
+suffix:semicolon
+id|macio_chips
+(braket
+l_int|1
+)braket
+dot
+id|lbus.index
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 (paren
 id|macio_chips
