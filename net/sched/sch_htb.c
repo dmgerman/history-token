@@ -1,4 +1,4 @@
-multiline_comment|/* vim: ts=8 sw=8&n; * net/sched/sch_htb.c&t;Hierarchical token bucket, feed tree version&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Martin Devera, &lt;devik@cdi.cz&gt;&n; *&n; * Credits (in time order) for older HTB versions:&n; *&t;&t;Ondrej Kraus, &lt;krauso@barr.cz&gt; &n; *&t;&t;&t;found missing INIT_QDISC(htb)&n; *&t;&t;Vladimir Smelhaus, Aamer Akhter, Bert Hubert&n; *&t;&t;&t;helped a lot to locate nasty class stall bug&n; *&t;&t;Andi Kleen, Jamal Hadi, Bert Hubert&n; *&t;&t;&t;code review and helpful comments on shaping&n; *&t;&t;Tomasz Wrona, &lt;tw@eter.tym.pl&gt;&n; *&t;&t;&t;created test case so that I was able to fix nasty bug&n; *&t;&t;and many others. thanks.&n; *&n; * $Id: sch_htb.c,v 1.14 2002/09/28 12:55:22 devik Exp devik $&n; */
+multiline_comment|/* vim: ts=8 sw=8&n; * net/sched/sch_htb.c&t;Hierarchical token bucket, feed tree version&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Martin Devera, &lt;devik@cdi.cz&gt;&n; *&n; * Credits (in time order) for older HTB versions:&n; *&t;&t;Ondrej Kraus, &lt;krauso@barr.cz&gt; &n; *&t;&t;&t;found missing INIT_QDISC(htb)&n; *&t;&t;Vladimir Smelhaus, Aamer Akhter, Bert Hubert&n; *&t;&t;&t;helped a lot to locate nasty class stall bug&n; *&t;&t;Andi Kleen, Jamal Hadi, Bert Hubert&n; *&t;&t;&t;code review and helpful comments on shaping&n; *&t;&t;Tomasz Wrona, &lt;tw@eter.tym.pl&gt;&n; *&t;&t;&t;created test case so that I was able to fix nasty bug&n; *&t;&t;and many others. thanks.&n; *&n; * $Id: sch_htb.c,v 1.17 2003/01/29 09:22:18 devik Exp devik $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -44,15 +44,10 @@ mdefine_line|#define HTB_QLOCK(S) spin_lock_bh(&amp;(S)-&gt;dev-&gt;queue_lock)
 DECL|macro|HTB_QUNLOCK
 mdefine_line|#define HTB_QUNLOCK(S) spin_unlock_bh(&amp;(S)-&gt;dev-&gt;queue_lock)
 DECL|macro|HTB_VER
-mdefine_line|#define HTB_VER 0x30007&t;/* major must be matched with number suplied by TC as version */
+mdefine_line|#define HTB_VER 0x3000a&t;/* major must be matched with number suplied by TC as version */
 macro_line|#if HTB_VER &gt;&gt; 16 != TC_HTB_PROTOVER
 macro_line|#error &quot;Mismatched sch_htb.c and pkt_sch.h&quot;
 macro_line|#endif
-multiline_comment|/* temporary debug defines to be removed after beta stage */
-DECL|macro|DEVIK_MEND
-mdefine_line|#define DEVIK_MEND(N)
-DECL|macro|DEVIK_MSTART
-mdefine_line|#define DEVIK_MSTART(N)
 multiline_comment|/* debugging support; S is subsystem, these are defined:&n;  0 - netlink messages&n;  1 - enqueue&n;  2 - drop &amp; requeue&n;  3 - dequeue main&n;  4 - dequeue one prio DRR part&n;  5 - dequeue class accounting&n;  6 - class overlimit status computation&n;  7 - hint tree&n;  8 - event queue&n; 10 - rate estimator&n; 11 - classifier &n; 12 - fast dequeue cache&n;&n; L is level; 0 = none, 1 = basic info, 2 = detailed, 3 = full&n; q-&gt;debug uint32 contains 16 2-bit fields one for subsystem starting&n; from LSB&n; */
 macro_line|#ifdef HTB_DEBUG
 DECL|macro|HTB_DBG
@@ -1543,12 +1538,6 @@ id|debug_hint
 )paren
 suffix:semicolon
 macro_line|#endif
-id|DEVIK_MSTART
-c_func
-(paren
-l_int|9
-)paren
-suffix:semicolon
 id|cl-&gt;pq_key
 op_assign
 id|jiffies
@@ -1662,12 +1651,6 @@ id|q-&gt;wait_pq
 (braket
 id|cl-&gt;level
 )braket
-)paren
-suffix:semicolon
-id|DEVIK_MEND
-c_func
-(paren
-l_int|9
 )paren
 suffix:semicolon
 )brace
@@ -2724,12 +2707,6 @@ comma
 id|sch
 )paren
 suffix:semicolon
-id|DEVIK_MSTART
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2775,12 +2752,6 @@ suffix:semicolon
 id|sch-&gt;stats.drops
 op_increment
 suffix:semicolon
-id|DEVIK_MEND
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
 r_return
 id|NET_XMIT_DROP
 suffix:semicolon
@@ -2809,12 +2780,6 @@ suffix:semicolon
 id|cl-&gt;stats.drops
 op_increment
 suffix:semicolon
-id|DEVIK_MEND
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
 r_return
 id|NET_XMIT_DROP
 suffix:semicolon
@@ -2828,23 +2793,11 @@ id|cl-&gt;stats.bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-id|DEVIK_MSTART
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
 id|htb_activate
 (paren
 id|q
 comma
 id|cl
-)paren
-suffix:semicolon
-id|DEVIK_MEND
-c_func
-(paren
-l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -2875,12 +2828,6 @@ suffix:colon
 l_int|0
 comma
 id|skb
-)paren
-suffix:semicolon
-id|DEVIK_MEND
-c_func
-(paren
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -4077,12 +4024,6 @@ op_star
 id|start
 suffix:semicolon
 multiline_comment|/* look initial class up in the row */
-id|DEVIK_MSTART
-c_func
-(paren
-l_int|6
-)paren
-suffix:semicolon
 id|start
 op_assign
 id|cl
@@ -4241,18 +4182,6 @@ op_ne
 id|start
 )paren
 suffix:semicolon
-id|DEVIK_MEND
-c_func
-(paren
-l_int|6
-)paren
-suffix:semicolon
-id|DEVIK_MSTART
-c_func
-(paren
-l_int|7
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4348,12 +4277,6 @@ comma
 id|cl
 )paren
 suffix:semicolon
-id|DEVIK_MSTART
-c_func
-(paren
-l_int|8
-)paren
-suffix:semicolon
 id|htb_charge_class
 (paren
 id|q
@@ -4365,19 +4288,7 @@ comma
 id|skb-&gt;len
 )paren
 suffix:semicolon
-id|DEVIK_MEND
-c_func
-(paren
-l_int|8
-)paren
-suffix:semicolon
 )brace
-id|DEVIK_MEND
-c_func
-(paren
-l_int|7
-)paren
-suffix:semicolon
 r_return
 id|skb
 suffix:semicolon
@@ -4548,6 +4459,13 @@ suffix:semicolon
 r_int
 id|min_delay
 suffix:semicolon
+macro_line|#ifdef HTB_DEBUG
+r_int
+id|evs_used
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 id|HTB_DBG
 c_func
 (paren
@@ -4597,12 +4515,6 @@ r_return
 id|skb
 suffix:semicolon
 )brace
-id|DEVIK_MSTART
-c_func
-(paren
-l_int|2
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4620,9 +4532,7 @@ id|q-&gt;now
 suffix:semicolon
 id|min_delay
 op_assign
-id|HZ
-op_star
-l_int|5
+id|LONG_MAX
 suffix:semicolon
 id|q-&gt;nwc_hit
 op_assign
@@ -4649,12 +4559,6 @@ id|m
 suffix:semicolon
 r_int
 id|delay
-suffix:semicolon
-id|DEVIK_MSTART
-c_func
-(paren
-l_int|3
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4693,6 +4597,11 @@ id|delay
 suffix:colon
 id|HZ
 suffix:semicolon
+macro_line|#ifdef HTB_DEBUG
+id|evs_used
+op_increment
+suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 id|delay
@@ -4716,18 +4625,6 @@ id|delay
 id|min_delay
 op_assign
 id|delay
-suffix:semicolon
-id|DEVIK_MEND
-c_func
-(paren
-l_int|3
-)paren
-suffix:semicolon
-id|DEVIK_MSTART
-c_func
-(paren
-l_int|5
-)paren
 suffix:semicolon
 id|m
 op_assign
@@ -4797,30 +4694,12 @@ op_and_assign
 op_complement
 id|TCQ_F_THROTTLED
 suffix:semicolon
-id|DEVIK_MEND
-c_func
-(paren
-l_int|5
-)paren
-suffix:semicolon
 r_goto
 id|fin
 suffix:semicolon
 )brace
 )brace
-id|DEVIK_MEND
-c_func
-(paren
-l_int|5
-)paren
-suffix:semicolon
 )brace
-id|DEVIK_MSTART
-c_func
-(paren
-l_int|4
-)paren
-suffix:semicolon
 macro_line|#ifdef HTB_DEBUG
 r_if
 c_cond
@@ -4830,7 +4709,7 @@ id|q-&gt;nwc_hit
 op_logical_and
 id|min_delay
 op_ge
-l_int|5
+l_int|10
 op_star
 id|HZ
 op_logical_and
@@ -4840,13 +4719,21 @@ c_func
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|min_delay
+op_eq
+id|LONG_MAX
+)paren
+(brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;HTB: mindelay=%ld, report it please !&bslash;n&quot;
+l_string|&quot;HTB: dequeue bug (%d), report it please !&bslash;n&quot;
 comma
-id|min_delay
+id|evs_used
 )paren
 suffix:semicolon
 id|htb_debug_dump
@@ -4856,18 +4743,35 @@ id|q
 )paren
 suffix:semicolon
 )brace
+r_else
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;HTB: mindelay=%ld, some class has &quot;
+l_string|&quot;too small rate&bslash;n&quot;
+comma
+id|min_delay
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 id|htb_delay_by
 (paren
 id|sch
 comma
 id|min_delay
-)paren
-suffix:semicolon
-id|DEVIK_MEND
-c_func
-(paren
-l_int|4
+OG
+l_int|5
+op_star
+id|HZ
+ques
+c_cond
+l_int|5
+op_star
+id|HZ
+suffix:colon
+id|min_delay
 )paren
 suffix:semicolon
 id|fin
@@ -4886,12 +4790,6 @@ comma
 id|jiffies
 comma
 id|skb
-)paren
-suffix:semicolon
-id|DEVIK_MEND
-c_func
-(paren
-l_int|2
 )paren
 suffix:semicolon
 r_return
@@ -7186,6 +7084,11 @@ id|cl
 )paren
 (brace
 multiline_comment|/* new class */
+r_struct
+id|Qdisc
+op_star
+id|new_q
+suffix:semicolon
 multiline_comment|/* check for valid classid */
 r_if
 c_cond
@@ -7317,6 +7220,18 @@ op_assign
 id|HTB_CMAGIC
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* create leaf qdisc early because it uses kmalloc(GPF_KERNEL)&n;&t;&t;   so that can&squot;t be used inside of sch_tree_lock&n;&t;&t;   -- thanks to Karlis Peisenieks */
+id|new_q
+op_assign
+id|qdisc_create_dflt
+c_func
+(paren
+id|sch-&gt;dev
+comma
+op_amp
+id|pfifo_qdisc_ops
+)paren
+suffix:semicolon
 id|sch_tree_lock
 c_func
 (paren
@@ -7406,25 +7321,13 @@ id|parent-&gt;un.inner
 suffix:semicolon
 )brace
 multiline_comment|/* leaf (we) needs elementary qdisc */
-r_if
+id|cl-&gt;un.leaf.q
+op_assign
+id|new_q
+ques
 c_cond
-(paren
-op_logical_neg
-(paren
-id|cl-&gt;un.leaf.q
-op_assign
-id|qdisc_create_dflt
-c_func
-(paren
-id|sch-&gt;dev
-comma
-op_amp
-id|pfifo_qdisc_ops
-)paren
-)paren
-)paren
-id|cl-&gt;un.leaf.q
-op_assign
+id|new_q
+suffix:colon
 op_amp
 id|noop_qdisc
 suffix:semicolon
@@ -7565,7 +7468,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;HTB: quantum of class %X is small. Consider r2q change.&quot;
+l_string|&quot;HTB: quantum of class %X is small. Consider r2q change.&bslash;n&quot;
 comma
 id|cl-&gt;classid
 )paren
@@ -7590,7 +7493,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;HTB: quantum of class %X is big. Consider r2q change.&quot;
+l_string|&quot;HTB: quantum of class %X is big. Consider r2q change.&bslash;n&quot;
 comma
 id|cl-&gt;classid
 )paren
