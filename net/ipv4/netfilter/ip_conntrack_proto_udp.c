@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_protocol.h&gt;
 DECL|variable|ip_ct_udp_timeout
 r_int
