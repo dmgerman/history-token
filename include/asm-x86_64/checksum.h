@@ -326,6 +326,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -357,6 +358,7 @@ op_star
 id|src
 comma
 r_char
+id|__user
 op_star
 id|dst
 comma
