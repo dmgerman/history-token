@@ -2037,6 +2037,8 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+id|err
+op_assign
 id|ip6_push_pending_frames
 c_func
 (paren
