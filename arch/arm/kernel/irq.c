@@ -695,9 +695,6 @@ suffix:semicolon
 id|irq_enter
 c_func
 (paren
-id|cpu
-comma
-id|irq
 )paren
 suffix:semicolon
 id|kstat.irqs
@@ -731,9 +728,6 @@ suffix:semicolon
 id|irq_exit
 c_func
 (paren
-id|cpu
-comma
-id|irq
 )paren
 suffix:semicolon
 )brace
@@ -804,9 +798,6 @@ suffix:semicolon
 id|irq_enter
 c_func
 (paren
-id|cpu
-comma
-id|irq
 )paren
 suffix:semicolon
 id|kstat.irqs
@@ -878,9 +869,6 @@ suffix:semicolon
 id|irq_exit
 c_func
 (paren
-id|cpu
-comma
-id|irq
 )paren
 suffix:semicolon
 id|desc-&gt;running
@@ -995,9 +983,6 @@ id|desc-&gt;enabled
 id|irq_enter
 c_func
 (paren
-id|cpu
-comma
-id|irq
 )paren
 suffix:semicolon
 id|kstat.irqs
@@ -1062,9 +1047,6 @@ suffix:semicolon
 id|irq_exit
 c_func
 (paren
-id|cpu
-comma
-id|irq
 )paren
 suffix:semicolon
 )brace
