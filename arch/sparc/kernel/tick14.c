@@ -39,6 +39,7 @@ id|obp_lvl14
 l_int|4
 )braket
 suffix:semicolon
+multiline_comment|/*&n; * Call with timer IRQ closed.&n; * First time we do it with disable_irq, later prom code uses spin_lock_irq().&n; */
 DECL|function|install_linux_ticker
 r_void
 id|install_linux_ticker
@@ -47,10 +48,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -59,12 +56,6 @@ id|linux_lvl14
 )paren
 r_return
 suffix:semicolon
-id|save_and_cli
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|linux_lvl14
 (braket
 l_int|0
@@ -104,12 +95,6 @@ id|lvl14_save
 (braket
 l_int|3
 )braket
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
 suffix:semicolon
 )brace
 DECL|function|install_obp_ticker
@@ -120,10 +105,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -132,12 +113,6 @@ id|linux_lvl14
 )paren
 r_return
 suffix:semicolon
-id|save_and_cli
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|linux_lvl14
 (braket
 l_int|0
@@ -177,12 +152,6 @@ id|obp_lvl14
 (braket
 l_int|3
 )braket
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
 suffix:semicolon
 )brace
 DECL|function|claim_ticker14

@@ -459,7 +459,7 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-id|for_each_task
+id|for_each_process
 c_func
 (paren
 id|p
@@ -533,7 +533,7 @@ id|task_struct
 op_star
 id|p
 suffix:semicolon
-id|for_each_task
+id|for_each_process
 c_func
 (paren
 id|p
@@ -680,7 +680,7 @@ id|task_struct
 op_star
 id|p
 suffix:semicolon
-id|for_each_task
+id|for_each_process
 c_func
 (paren
 id|p
@@ -1750,6 +1750,13 @@ comma
 id|sibling
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|father
+op_eq
+id|p-&gt;real_parent
+)paren
 id|reparent_thread
 c_func
 (paren
@@ -1864,12 +1871,31 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Otherwise, if we were tracing this thread, untrace it.  */
+multiline_comment|/*&n;&t;&t; * Otherwise, if we were tracing this thread, untrace it.&n;&t;&t; * If we were only tracing the thread (i.e. not its real&n;&t;&t; * parent), stop here.&n;&t;&t; */
 id|ptrace_unlink
 (paren
 id|p
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|p-&gt;parent
+op_ne
+id|father
+)paren
+(brace
+id|BUG_ON
+c_func
+(paren
+id|p-&gt;parent
+op_ne
+id|p-&gt;real_parent
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|list_del_init
 c_func
 (paren
@@ -2110,10 +2136,6 @@ op_assign
 id|SIGCHLD
 suffix:semicolon
 multiline_comment|/*&n;&t; * This loop does two things:&n;&t; *&n;  &t; * A.  Make init inherit all the child processes&n;&t; * B.  Check to see if any process groups have become orphaned&n;&t; *&t;as a result of our exiting, and if they have any stopped&n;&t; *&t;jobs, send them a SIGHUP and then a SIGCONT.  (POSIX 3.2.2.2)&n;&t; */
-id|current-&gt;state
-op_assign
-id|TASK_ZOMBIE
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2201,6 +2223,10 @@ op_amp
 id|current-&gt;children
 )paren
 )paren
+suffix:semicolon
+id|current-&gt;state
+op_assign
+id|TASK_ZOMBIE
 suffix:semicolon
 multiline_comment|/*&n;&t; * No need to unlock IRQs, we&squot;ll schedule() immediately&n;&t; * anyway. In the preemption case this also makes it&n;&t; * impossible for the task to get runnable again (thus&n;&t; * the &quot;_raw_&quot; unlock - to make sure we don&squot;t try to&n;&t; * preempt here).&n;&t; */
 id|_raw_write_unlock
@@ -2561,7 +2587,6 @@ suffix:semicolon
 )brace
 DECL|function|eligible_child
 r_static
-r_inline
 r_int
 id|eligible_child
 c_func
@@ -2679,6 +2704,23 @@ op_logical_neg
 id|options
 op_amp
 id|__WALL
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t; * Do not consider thread group leaders that are&n;&t; * in a non-empty thread group:&n;&t; */
+r_if
+c_cond
+(paren
+id|current-&gt;tgid
+op_ne
+id|p-&gt;tgid
+op_logical_and
+id|delay_group_leader
+c_func
+(paren
+id|p
 )paren
 )paren
 r_return
@@ -3029,6 +3071,23 @@ id|retval
 op_logical_and
 id|stat_addr
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|p-&gt;sig-&gt;group_exit
+)paren
+id|retval
+op_assign
+id|put_user
+c_func
+(paren
+id|p-&gt;sig-&gt;group_exit_code
+comma
+id|stat_addr
+)paren
+suffix:semicolon
+r_else
 id|retval
 op_assign
 id|put_user
@@ -3039,6 +3098,7 @@ comma
 id|stat_addr
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

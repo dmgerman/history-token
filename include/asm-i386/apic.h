@@ -363,6 +363,15 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|enable_NMI_through_LVT0
+(paren
+r_void
+op_star
+id|dummy
+)paren
+suffix:semicolon
+r_extern
 r_int
 r_int
 id|nmi_watchdog

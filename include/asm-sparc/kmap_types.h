@@ -32,6 +32,12 @@ comma
 DECL|enumerator|KM_PTE1
 id|KM_PTE1
 comma
+DECL|enumerator|KM_IRQ0
+id|KM_IRQ0
+comma
+DECL|enumerator|KM_IRQ1
+id|KM_IRQ1
+comma
 DECL|enumerator|KM_TYPE_NR
 id|KM_TYPE_NR
 )brace

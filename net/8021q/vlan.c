@@ -2111,7 +2111,7 @@ op_member_access_from_pointer
 id|vlan_id
 )paren
 suffix:semicolon
-id|unregister_netdev
+id|unregister_netdevice
 c_func
 (paren
 id|vlandev

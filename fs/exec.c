@@ -2235,13 +2235,6 @@ id|newsig-&gt;group_exit_code
 op_assign
 l_int|0
 suffix:semicolon
-id|init_completion
-c_func
-(paren
-op_amp
-id|newsig-&gt;group_exit_done
-)paren
-suffix:semicolon
 id|memcpy
 c_func
 (paren

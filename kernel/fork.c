@@ -544,6 +544,9 @@ id|flags
 r_struct
 id|task_struct
 op_star
+id|g
+comma
+op_star
 id|p
 suffix:semicolon
 r_int
@@ -607,9 +610,11 @@ id|tasklist_lock
 suffix:semicolon
 id|repeat
 suffix:colon
-id|for_each_task
+id|do_each_thread
 c_func
 (paren
+id|g
+comma
 id|p
 )paren
 (brace
@@ -704,6 +709,14 @@ op_assign
 id|p-&gt;session
 suffix:semicolon
 )brace
+id|while_each_thread
+c_func
+(paren
+id|g
+comma
+id|p
+)paren
+suffix:semicolon
 id|read_unlock
 c_func
 (paren
@@ -1110,6 +1123,7 @@ DECL|macro|allocate_mm
 mdefine_line|#define allocate_mm()&t;(kmem_cache_alloc(mm_cachep, SLAB_KERNEL))
 DECL|macro|free_mm
 mdefine_line|#define free_mm(mm)&t;(kmem_cache_free(mm_cachep, (mm)))
+macro_line|#include &lt;linux/init_task.h&gt;
 DECL|function|mm_init
 r_static
 r_struct
@@ -1152,6 +1166,25 @@ suffix:semicolon
 id|mm-&gt;page_table_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+id|mm-&gt;ioctx_list_lock
+op_assign
+id|RW_LOCK_UNLOCKED
+suffix:semicolon
+id|mm-&gt;default_kioctx
+op_assign
+(paren
+r_struct
+id|kioctx
+)paren
+id|INIT_KIOCTX
+c_func
+(paren
+id|mm-&gt;default_kioctx
+comma
+op_star
+id|mm
+)paren
 suffix:semicolon
 id|mm-&gt;pgd
 op_assign
@@ -2503,13 +2536,6 @@ id|sig-&gt;group_exit_code
 op_assign
 l_int|0
 suffix:semicolon
-id|init_completion
-c_func
-(paren
-op_amp
-id|sig-&gt;group_exit_done
-)paren
-suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -2668,6 +2694,18 @@ id|CLONE_THREAD
 id|clone_flags
 op_or_assign
 id|CLONE_SIGHAND
+suffix:semicolon
+multiline_comment|/*&n;&t; * Detached threads can only be started up within the thread&n;&t; * group.&n;&t; */
+r_if
+c_cond
+(paren
+id|clone_flags
+op_amp
+id|CLONE_DETACHED
+)paren
+id|clone_flags
+op_or_assign
+id|CLONE_THREAD
 suffix:semicolon
 id|retval
 op_assign
@@ -3186,6 +3224,15 @@ id|p-&gt;user_tid
 op_assign
 id|user_tid
 suffix:semicolon
+multiline_comment|/*&n;&t; * Syscall tracing should be turned off in the child regardless&n;&t; * of CLONE_PTRACE.&n;&t; */
+id|clear_tsk_thread_flag
+c_func
+(paren
+id|p
+comma
+id|TIF_SYSCALL_TRACE
+)paren
+suffix:semicolon
 multiline_comment|/* Our parent execution domain becomes current domain&n;&t;   These must match for thread signalling to apply */
 id|p-&gt;parent_exec_id
 op_assign
@@ -3295,6 +3342,10 @@ id|p-&gt;tgid
 op_assign
 id|p-&gt;pid
 suffix:semicolon
+id|p-&gt;group_leader
+op_assign
+id|p
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -3388,6 +3439,10 @@ suffix:semicolon
 id|p-&gt;tgid
 op_assign
 id|current-&gt;tgid
+suffix:semicolon
+id|p-&gt;group_leader
+op_assign
+id|current-&gt;group_leader
 suffix:semicolon
 id|list_add
 c_func

@@ -333,9 +333,7 @@ suffix:semicolon
 multiline_comment|/* Maximum number of active map areas.. This is a random (large) number */
 DECL|macro|MAX_MAP_COUNT
 mdefine_line|#define MAX_MAP_COUNT&t;(65536)
-r_struct
-id|kioctx
-suffix:semicolon
+macro_line|#include &lt;linux/aio.h&gt;
 DECL|struct|mm_struct
 r_struct
 id|mm_struct
@@ -481,6 +479,11 @@ id|kioctx
 op_star
 id|ioctx_list
 suffix:semicolon
+DECL|member|default_kioctx
+r_struct
+id|kioctx
+id|default_kioctx
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
@@ -526,11 +529,6 @@ suffix:semicolon
 DECL|member|group_exit_code
 r_int
 id|group_exit_code
-suffix:semicolon
-DECL|member|group_exit_done
-r_struct
-id|completion
-id|group_exit_done
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -790,6 +788,12 @@ id|list_head
 id|sibling
 suffix:semicolon
 multiline_comment|/* linkage in my parent&squot;s children list */
+DECL|member|group_leader
+r_struct
+id|task_struct
+op_star
+id|group_leader
+suffix:semicolon
 DECL|member|thread_group
 r_struct
 id|list_head
@@ -2898,9 +2902,9 @@ mdefine_line|#define remove_parent(p)&t;list_del_init(&amp;(p)-&gt;sibling)
 DECL|macro|add_parent
 mdefine_line|#define add_parent(p, parent)&t;list_add_tail(&amp;(p)-&gt;sibling,&amp;(parent)-&gt;children)
 DECL|macro|REMOVE_LINKS
-mdefine_line|#define REMOVE_LINKS(p) do {&t;&t;&t;&t;&bslash;&n;&t;list_del_init(&amp;(p)-&gt;tasks);&t;&t;&t;&bslash;&n;&t;remove_parent(p);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define REMOVE_LINKS(p) do {&t;&t;&t;&t;&t;&bslash;&n;&t;if (thread_group_leader(p))&t;&t;&t;&t;&bslash;&n;&t;&t;list_del_init(&amp;(p)-&gt;tasks);&t;&t;&t;&bslash;&n;&t;remove_parent(p);&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|SET_LINKS
-mdefine_line|#define SET_LINKS(p) do {&t;&t;&t;&t;&bslash;&n;&t;list_add_tail(&amp;(p)-&gt;tasks,&amp;init_task.tasks);&t;&bslash;&n;&t;add_parent(p, (p)-&gt;parent);&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define SET_LINKS(p) do {&t;&t;&t;&t;&t;&bslash;&n;&t;if (thread_group_leader(p))&t;&t;&t;&t;&bslash;&n;&t;&t;list_add_tail(&amp;(p)-&gt;tasks,&amp;init_task.tasks);&t;&bslash;&n;&t;add_parent(p, (p)-&gt;parent);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|function|eldest_child
 r_static
 r_inline
@@ -3065,10 +3069,13 @@ DECL|macro|next_task
 mdefine_line|#define next_task(p)&t;list_entry((p)-&gt;tasks.next, struct task_struct, tasks)
 DECL|macro|prev_task
 mdefine_line|#define prev_task(p)&t;list_entry((p)-&gt;tasks.prev, struct task_struct, tasks)
-DECL|macro|for_each_task
-mdefine_line|#define for_each_task(p) &bslash;&n;&t;for (p = &amp;init_task ; (p = next_task(p)) != &amp;init_task ; )
-DECL|macro|for_each_thread
-mdefine_line|#define for_each_thread(task) &bslash;&n;&t;for (task = next_thread(current) ; task != current ; task = next_thread(task))
+DECL|macro|for_each_process
+mdefine_line|#define for_each_process(p) &bslash;&n;&t;for (p = &amp;init_task ; (p = next_task(p)) != &amp;init_task ; )
+multiline_comment|/*&n; * Careful: do_each_thread/while_each_thread is a double loop so&n; *          &squot;break&squot; will not work as expected - use goto instead.&n; */
+DECL|macro|do_each_thread
+mdefine_line|#define do_each_thread(g, t) &bslash;&n;&t;for (g = t = &amp;init_task ; (g = t = next_task(g)) != &amp;init_task ; ) do
+DECL|macro|while_each_thread
+mdefine_line|#define while_each_thread(g, t) &bslash;&n;&t;while ((t = next_thread(t)) != g)
 DECL|function|next_thread
 r_static
 r_inline
@@ -3203,6 +3210,8 @@ suffix:semicolon
 )brace
 DECL|macro|thread_group_leader
 mdefine_line|#define thread_group_leader(p)&t;(p-&gt;pid == p-&gt;tgid)
+DECL|macro|delay_group_leader
+mdefine_line|#define delay_group_leader(p) &bslash;&n;&t;(p-&gt;tgid == p-&gt;pid &amp;&amp; !list_empty(&amp;p-&gt;thread_group))
 r_extern
 r_void
 id|unhash_process

@@ -207,48 +207,6 @@ DECL|macro|LLC_SAP_DYN_STOP
 mdefine_line|#define LLC_SAP_DYN_STOP&t;0xDE
 DECL|macro|LLC_SAP_DYN_TRIES
 mdefine_line|#define LLC_SAP_DYN_TRIES&t;4
-r_struct
-id|sock
-suffix:semicolon
-DECL|struct|llc_ui_opt
-r_struct
-id|llc_ui_opt
-(brace
-DECL|member|link
-id|u16
-id|link
-suffix:semicolon
-multiline_comment|/* network layer link number */
-DECL|member|sap
-r_struct
-id|llc_sap
-op_star
-id|sap
-suffix:semicolon
-multiline_comment|/* pointer to parent SAP */
-DECL|member|core_sk
-r_struct
-id|sock
-op_star
-id|core_sk
-suffix:semicolon
-DECL|member|dev
-r_struct
-id|net_device
-op_star
-id|dev
-suffix:semicolon
-multiline_comment|/* device to send to remote */
-DECL|member|addr
-r_struct
-id|sockaddr_llc
-id|addr
-suffix:semicolon
-multiline_comment|/* address sock is bound to */
-)brace
-suffix:semicolon
-DECL|macro|llc_ui_sk
-mdefine_line|#define llc_ui_sk(__sk) ((struct llc_ui_opt *)(__sk)-&gt;protinfo)
 DECL|macro|llc_ui_skb_cb
 mdefine_line|#define llc_ui_skb_cb(__skb) ((struct sockaddr_llc *)&amp;((__skb)-&gt;cb[0]))
 macro_line|#ifdef CONFIG_LLC_UI
