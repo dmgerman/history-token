@@ -1561,11 +1561,7 @@ id|S_IFBLK
 suffix:semicolon
 id|inode-&gt;i_rdev
 op_assign
-id|to_kdev_t
-c_func
-(paren
 id|dev
-)paren
 suffix:semicolon
 id|inode-&gt;i_bdev
 op_assign
@@ -1769,11 +1765,7 @@ op_assign
 id|bdget
 c_func
 (paren
-id|kdev_t_to_nr
-c_func
-(paren
 id|inode-&gt;i_rdev
-)paren
 )paren
 suffix:semicolon
 r_if

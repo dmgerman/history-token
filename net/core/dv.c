@@ -45,15 +45,6 @@ c_func
 r_void
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;NET4: Frame Diverter %s&bslash;n&quot;
-comma
-id|sysctl_divert_version
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

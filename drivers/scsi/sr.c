@@ -28,7 +28,7 @@ l_string|&quot;i&quot;
 suffix:semicolon
 multiline_comment|/* see sr_ioctl.c */
 DECL|macro|SR_DISKS
-mdefine_line|#define SR_DISKS&t;(1 &lt;&lt; KDEV_MINOR_BITS)
+mdefine_line|#define SR_DISKS&t;256
 DECL|macro|MAX_RETRIES
 mdefine_line|#define MAX_RETRIES&t;3
 DECL|macro|SR_TIMEOUT

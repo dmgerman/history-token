@@ -61,6 +61,7 @@ multiline_comment|/* Does not contribute to dirty memory */
 )brace
 suffix:semicolon
 DECL|function|hwgfs_get_inode
+r_static
 r_struct
 id|inode
 op_star
@@ -115,10 +116,6 @@ suffix:semicolon
 id|inode-&gt;i_blocks
 op_assign
 l_int|0
-suffix:semicolon
-id|inode-&gt;i_rdev
-op_assign
-id|NODEV
 suffix:semicolon
 id|inode-&gt;i_mapping-&gt;a_ops
 op_assign

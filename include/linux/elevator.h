@@ -12,7 +12,7 @@ id|request_queue_t
 op_star
 comma
 r_struct
-id|list_head
+id|request
 op_star
 op_star
 comma
@@ -82,9 +82,7 @@ r_struct
 id|request
 op_star
 comma
-r_struct
-id|list_head
-op_star
+r_int
 )paren
 suffix:semicolon
 DECL|typedef|elevator_queue_empty_fn
@@ -402,7 +400,7 @@ id|request_queue_t
 op_star
 comma
 r_struct
-id|list_head
+id|request
 op_star
 op_star
 comma
@@ -591,8 +589,6 @@ id|request
 op_star
 )paren
 suffix:semicolon
-DECL|macro|__elv_add_request_pos
-mdefine_line|#define __elv_add_request_pos(q, rq, pos)&t;&bslash;&n;&t;(q)-&gt;elevator.elevator_add_req_fn((q), (rq), (pos))
 multiline_comment|/*&n; * noop I/O scheduler. always merges, always inserts new request at tail&n; */
 r_extern
 id|elevator_t
@@ -680,5 +676,12 @@ DECL|macro|ELEVATOR_FRONT_MERGE
 mdefine_line|#define ELEVATOR_FRONT_MERGE&t;1
 DECL|macro|ELEVATOR_BACK_MERGE
 mdefine_line|#define ELEVATOR_BACK_MERGE&t;2
+multiline_comment|/*&n; * Insertion selection&n; */
+DECL|macro|ELEVATOR_INSERT_FRONT
+mdefine_line|#define ELEVATOR_INSERT_FRONT&t;1
+DECL|macro|ELEVATOR_INSERT_BACK
+mdefine_line|#define ELEVATOR_INSERT_BACK&t;2
+DECL|macro|ELEVATOR_INSERT_SORT
+mdefine_line|#define ELEVATOR_INSERT_SORT&t;3
 macro_line|#endif
 eof

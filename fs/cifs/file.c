@@ -4790,11 +4790,7 @@ id|tmp_inode
 comma
 id|tmp_inode-&gt;i_mode
 comma
-id|kdev_t_to_nr
-c_func
-(paren
 id|tmp_inode-&gt;i_rdev
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -5196,11 +5192,7 @@ id|tmp_inode
 comma
 id|tmp_inode-&gt;i_mode
 comma
-id|kdev_t_to_nr
-c_func
-(paren
 id|tmp_inode-&gt;i_rdev
-)paren
 )paren
 suffix:semicolon
 )brace

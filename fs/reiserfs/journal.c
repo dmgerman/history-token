@@ -9597,10 +9597,14 @@ id|super
 )paren
 ques
 c_cond
+id|old_decode_dev
+c_func
+(paren
 id|SB_ONDISK_JOURNAL_DEVICE
 c_func
 (paren
 id|super
+)paren
 )paren
 suffix:colon
 id|super-&gt;s_dev
@@ -9813,14 +9817,6 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* ok */
-id|jdev
-op_assign
-id|jdev_inode
-op_member_access_from_pointer
-id|i_bdev
-op_member_access_from_pointer
-id|bd_dev
-suffix:semicolon
 id|set_blocksize
 c_func
 (paren

@@ -288,6 +288,9 @@ op_star
 id|fattr
 )paren
 (brace
+id|u32
+id|rdev
+suffix:semicolon
 id|fattr-&gt;type
 op_assign
 (paren
@@ -362,7 +365,7 @@ id|p
 op_increment
 )paren
 suffix:semicolon
-id|fattr-&gt;rdev
+id|rdev
 op_assign
 id|ntohl
 c_func
@@ -439,6 +442,14 @@ id|fattr-&gt;valid
 op_or_assign
 id|NFS_ATTR_FATTR
 suffix:semicolon
+id|fattr-&gt;rdev
+op_assign
+id|old_decode_dev
+c_func
+(paren
+id|rdev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -446,7 +457,7 @@ id|fattr-&gt;type
 op_eq
 id|NFCHR
 op_logical_and
-id|fattr-&gt;rdev
+id|rdev
 op_eq
 id|NFS2_FIFO_DEV
 )paren

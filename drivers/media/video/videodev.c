@@ -125,10 +125,11 @@ id|buf
 comma
 l_string|&quot;%04x&bslash;n&quot;
 comma
+id|old_encode_dev
+c_func
 (paren
-r_int
-)paren
 id|dev
+)paren
 )paren
 suffix:semicolon
 )brace

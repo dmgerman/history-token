@@ -1754,6 +1754,11 @@ l_string|&quot;=b&quot;
 (paren
 id|map
 )paren
+comma
+l_string|&quot;+m&quot;
+(paren
+id|opt
+)paren
 suffix:colon
 l_string|&quot;0&quot;
 (paren

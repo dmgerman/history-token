@@ -7596,11 +7596,7 @@ id|ip-&gt;i_mode
 comma
 id|ip-&gt;i_nlink
 comma
-id|kdev_t_to_nr
-c_func
-(paren
 id|ip-&gt;i_rdev
-)paren
 comma
 id|ip-&gt;i_state
 )paren

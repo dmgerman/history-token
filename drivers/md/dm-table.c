@@ -1180,11 +1180,7 @@ suffix:semicolon
 op_star
 id|dev
 op_assign
-id|kdev_t_to_nr
-c_func
-(paren
 id|inode-&gt;i_rdev
-)paren
 suffix:semicolon
 id|out
 suffix:colon

@@ -960,7 +960,8 @@ id|saved_ctxt
 suffix:semicolon
 r_int
 id|error
-comma
+suffix:semicolon
+id|dev_t
 id|dev
 suffix:semicolon
 id|ENTRY
@@ -998,6 +999,11 @@ op_assign
 id|rec-&gt;rdev
 ques
 c_cond
+id|old_decode_dev
+c_func
+(paren
+id|rec-&gt;rdev
+)paren
 suffix:colon
 id|MKDEV
 c_func

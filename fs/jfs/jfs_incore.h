@@ -232,6 +232,11 @@ DECL|member|u
 )brace
 id|u
 suffix:semicolon
+DECL|member|dev
+id|u32
+id|dev
+suffix:semicolon
+multiline_comment|/* will die when we get wide dev_t */
 DECL|member|vfs_inode
 r_struct
 id|inode
@@ -380,7 +385,7 @@ id|l2niperblk
 suffix:semicolon
 multiline_comment|/* log2 inodes per page&t;*/
 DECL|member|logdev
-id|u32
+id|dev_t
 id|logdev
 suffix:semicolon
 multiline_comment|/* external log device&t;*/

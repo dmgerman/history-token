@@ -1288,9 +1288,9 @@ id|policy-&gt;cur
 op_assign
 id|curfreq
 suffix:semicolon
-id|policy-&gt;policy
+id|policy-&gt;governor
 op_assign
-id|CPUFREQ_POLICY_PERFORMANCE
+id|CPUFREQ_DEFAULT_GOVERNOR
 suffix:semicolon
 id|policy-&gt;cpuinfo.min_freq
 op_assign

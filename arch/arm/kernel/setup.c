@@ -19,6 +19,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/procinfo.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;

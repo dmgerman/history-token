@@ -70,7 +70,7 @@ mdefine_line|#define SG_ALLOW_DIO_DEF 0
 DECL|macro|SG_ALLOW_DIO_CODE
 mdefine_line|#define SG_ALLOW_DIO_CODE /* compile out by commenting this define */
 DECL|macro|SG_MAX_DEVS_MASK
-mdefine_line|#define SG_MAX_DEVS_MASK ((1U &lt;&lt; KDEV_MINOR_BITS) - 1)
+mdefine_line|#define SG_MAX_DEVS_MASK (256 - 1)
 multiline_comment|/*&n; * Suppose you want to calculate the formula muldiv(x,m,d)=int(x * m / d)&n; * Then when using 32 bit integers x * m may overflow during the calculation.&n; * Replacing muldiv(x) by muldiv(x)=((x % d) * m) / d + int(x / d) * m&n; * calculates the same, but prevents the overflow when both m and d&n; * are &quot;small&quot; numbers (like HZ and USER_HZ).&n; * Of course an overflow is inavoidable if the result of muldiv doesn&squot;t fit&n; * in 32 bits.&n; */
 DECL|macro|MULDIV
 mdefine_line|#define MULDIV(X,MUL,DIV) ((((X % DIV) * MUL) / DIV) + ((X / DIV) * MUL))

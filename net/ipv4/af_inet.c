@@ -3956,13 +3956,6 @@ id|list_head
 op_star
 id|r
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;NET4: Linux TCP/IP 1.0 for NET4.0&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

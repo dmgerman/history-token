@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/ufs_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &quot;swab.h&quot;&t;/* will go away - see comment in mknod() */
 DECL|macro|UFS_NAMEI_DEBUG
 macro_line|#undef UFS_NAMEI_DEBUG
 macro_line|#ifdef UFS_NAMEI_DEBUG
@@ -372,6 +373,22 @@ r_struct
 id|inode
 op_star
 id|inode
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|old_valid_dev
+c_func
+(paren
+id|rdev
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|inode
 op_assign
 id|ufs_new_inode
 c_func
@@ -409,6 +426,30 @@ comma
 id|mode
 comma
 id|rdev
+)paren
+suffix:semicolon
+multiline_comment|/* NOTE: that&squot;ll go when we get wide dev_t */
+id|UFS_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_u1.i_data
+(braket
+l_int|0
+)braket
+op_assign
+id|cpu_to_fs32
+c_func
+(paren
+id|inode-&gt;i_sb
+comma
+id|old_encode_dev
+c_func
+(paren
+id|rdev
+)paren
 )paren
 suffix:semicolon
 id|mark_inode_dirty

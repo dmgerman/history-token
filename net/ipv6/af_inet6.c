@@ -2918,13 +2918,6 @@ id|ipv6_unload
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;IPv6 v0.8 for NET4.0&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

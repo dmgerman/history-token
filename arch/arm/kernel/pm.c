@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/arch/arm/kernel/suspend.c&n; *&n; * This progra
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
@@ -68,11 +69,21 @@ l_int|0
 r_goto
 id|out
 suffix:semicolon
+id|ret
+op_assign
 id|device_suspend
 c_func
 (paren
 l_int|3
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_goto
+id|resume_legacy
 suffix:semicolon
 id|local_irq_disable
 c_func
@@ -85,9 +96,20 @@ c_func
 id|led_stop
 )paren
 suffix:semicolon
+id|sysdev_suspend
+c_func
+(paren
+l_int|3
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|pm_do_suspend
+c_func
+(paren
+)paren
+suffix:semicolon
+id|sysdev_resume
 c_func
 (paren
 )paren
@@ -108,6 +130,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|resume_legacy
+suffix:colon
 id|pm_send_all
 c_func
 (paren
