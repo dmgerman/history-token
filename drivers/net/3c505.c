@@ -398,6 +398,7 @@ id|base_addr
 )paren
 (brace
 r_int
+r_int
 id|timeout
 op_assign
 id|jiffies
@@ -554,6 +555,7 @@ op_star
 id|dev
 )paren
 (brace
+r_int
 r_int
 id|timeout
 suffix:semicolon
@@ -1171,6 +1173,7 @@ r_int
 id|i
 suffix:semicolon
 r_int
+r_int
 id|timeout
 suffix:semicolon
 id|elp_device
@@ -1483,6 +1486,7 @@ suffix:semicolon
 r_int
 id|stat
 suffix:semicolon
+r_int
 r_int
 id|timeout
 suffix:semicolon
@@ -2314,7 +2318,7 @@ suffix:semicolon
 multiline_comment|/******************************************************&n; *&n; * interrupt handler&n; *&n; ******************************************************/
 DECL|function|elp_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|elp_interrupt
 c_func
 (paren
@@ -2351,6 +2355,7 @@ id|elp_device
 op_star
 id|adapter
 suffix:semicolon
+r_int
 r_int
 id|timeout
 suffix:semicolon
@@ -3132,6 +3137,9 @@ op_amp
 id|adapter-&gt;lock
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/******************************************************&n; *&n; * open the board&n; *&n; ******************************************************/
 DECL|function|elp_open
@@ -3467,6 +3475,7 @@ suffix:semicolon
 r_else
 (brace
 r_int
+r_int
 id|timeout
 op_assign
 id|jiffies
@@ -3570,6 +3579,7 @@ id|dev-&gt;name
 suffix:semicolon
 r_else
 (brace
+r_int
 r_int
 id|timeout
 op_assign
@@ -4325,6 +4335,7 @@ suffix:semicolon
 r_else
 (brace
 r_int
+r_int
 id|timeout
 op_assign
 id|jiffies
@@ -4887,6 +4898,7 @@ suffix:semicolon
 r_else
 (brace
 r_int
+r_int
 id|timeout
 op_assign
 id|jiffies
@@ -5026,6 +5038,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_int
 r_int
 id|timeout
 op_assign
@@ -5190,9 +5203,6 @@ id|dev
 )paren
 (brace
 r_int
-id|timeout
-suffix:semicolon
-r_int
 id|addr
 op_assign
 id|dev-&gt;base_addr
@@ -5203,10 +5213,6 @@ op_star
 id|name
 op_assign
 id|dev-&gt;name
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 id|byte
 id|orig_HSR
@@ -5578,9 +5584,11 @@ id|tries
 comma
 id|tries1
 comma
-id|timeout
-comma
 id|okay
+suffix:semicolon
+r_int
+r_int
+id|timeout
 suffix:semicolon
 r_int
 r_int

@@ -111,7 +111,7 @@ id|ioaddr
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|ni52_interrupt
 c_func
 (paren
@@ -3592,7 +3592,7 @@ suffix:semicolon
 multiline_comment|/**************************************************&n; * Interrupt Handler ...&n; */
 DECL|function|ni52_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|ni52_interrupt
 c_func
 (paren
@@ -3645,6 +3645,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|p
@@ -3906,6 +3907,9 @@ l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*******************************************************&n; * receive-interrupt&n; */
 DECL|function|ni52_rcv_int
