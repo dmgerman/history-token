@@ -740,9 +740,9 @@ id|leasetime
 suffix:semicolon
 macro_line|#else
 DECL|function|nfs4_state_init
-r_int
 r_static
 r_inline
+r_int
 (def_block
 id|nfs4_state_init
 c_func
@@ -756,13 +756,13 @@ suffix:semicolon
 )brace
 )def_block
 DECL|function|nfs4_state_shutdown
+r_static
+r_inline
 r_void
-r_static
-r_inline
 DECL|function|nfs4_lease_time
-id|time_t
 r_static
 r_inline
+id|time_t
 (def_block
 id|nfs4_lease_time
 c_func
@@ -776,9 +776,9 @@ suffix:semicolon
 )brace
 )def_block
 DECL|function|nfs4_reset_lease
-r_void
 r_static
 r_inline
+r_void
 macro_line|#endif
 multiline_comment|/*&n; * lockd binding&n; */
 r_void
