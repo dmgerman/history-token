@@ -303,11 +303,9 @@ id|task_struct
 suffix:semicolon
 DECL|macro|prepare_to_switch
 mdefine_line|#define prepare_to_switch()&t;do { } while(0)
-DECL|macro|switch_to
-mdefine_line|#define switch_to(prev,next,last) _switch_to((prev),(next),&amp;(last))
 r_extern
 r_void
-id|_switch_to
+id|switch_to
 c_func
 (paren
 r_struct
@@ -316,11 +314,6 @@ op_star
 comma
 r_struct
 id|task_struct
-op_star
-comma
-r_struct
-id|task_struct
-op_star
 op_star
 )paren
 suffix:semicolon

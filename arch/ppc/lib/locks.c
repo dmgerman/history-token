@@ -69,9 +69,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|_spin_lock
+DECL|function|_raw_spin_lock
 r_void
-id|_spin_lock
+id|_raw_spin_lock
 c_func
 (paren
 id|spinlock_t
@@ -172,9 +172,9 @@ op_assign
 id|cpu
 suffix:semicolon
 )brace
-DECL|function|spin_trylock
+DECL|function|_raw_spin_trylock
 r_int
-id|spin_trylock
+id|_raw_spin_trylock
 c_func
 (paren
 id|spinlock_t
@@ -218,9 +218,9 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|_spin_unlock
+DECL|function|_raw_spin_unlock
 r_void
-id|_spin_unlock
+id|_raw_spin_unlock
 c_func
 (paren
 id|spinlock_t
@@ -306,9 +306,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Just like x86, implement read-write locks as a 32-bit counter&n; * with the high bit (sign) being the &quot;write&quot; bit.&n; * -- Cort&n; */
-DECL|function|_read_lock
+DECL|function|_raw_read_lock
 r_void
-id|_read_lock
+id|_raw_read_lock
 c_func
 (paren
 id|rwlock_t
@@ -437,9 +437,9 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|_read_unlock
+DECL|function|_raw_read_unlock
 r_void
-id|_read_unlock
+id|_raw_read_unlock
 c_func
 (paren
 id|rwlock_t
@@ -489,9 +489,9 @@ id|lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|_write_lock
+DECL|function|_raw_write_lock
 r_void
-id|_write_lock
+id|_raw_write_lock
 c_func
 (paren
 id|rwlock_t
@@ -675,9 +675,9 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|_write_unlock
+DECL|function|_raw_write_unlock
 r_void
-id|_write_unlock
+id|_raw_write_unlock
 c_func
 (paren
 id|rwlock_t

@@ -3,9 +3,9 @@ macro_line|#ifndef _ASM_THREAD_INFO_H
 DECL|macro|_ASM_THREAD_INFO_H
 mdefine_line|#define _ASM_THREAD_INFO_H
 macro_line|#ifdef __KERNEL__
-macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/processor.h&gt;
-multiline_comment|/*&n; * low level task data.&n; */
+macro_line|#ifndef __ASSEMBLY__
+multiline_comment|/*&n; * low level task data.&n; * If you change this, change the TI_* offsets below to match.&n; */
 DECL|struct|thread_info
 r_struct
 id|thread_info
@@ -86,9 +86,19 @@ DECL|macro|get_thread_info
 mdefine_line|#define get_thread_info(ti)&t;get_task_struct((ti)-&gt;task)
 DECL|macro|put_thread_info
 mdefine_line|#define put_thread_info(ti)&t;put_task_struct((ti)-&gt;task)
-DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE&t;&t;(2*PAGE_SIZE)
 macro_line|#endif /* __ASSEMBLY__ */
+multiline_comment|/*&n; * Size of kernel stack for each process.&n; */
+DECL|macro|THREAD_SIZE
+mdefine_line|#define THREAD_SIZE&t;&t;8192&t;/* 2 pages */
+multiline_comment|/*&n; * Offsets in thread_info structure, used in assembly code&n; */
+DECL|macro|TI_TASK
+mdefine_line|#define TI_TASK&t;&t;0
+DECL|macro|TI_EXECDOMAIN
+mdefine_line|#define TI_EXECDOMAIN&t;4
+DECL|macro|TI_FLAGS
+mdefine_line|#define TI_FLAGS&t;8
+DECL|macro|TI_CPU
+mdefine_line|#define TI_CPU&t;&t;12
 multiline_comment|/*&n; * thread information flag bit numbers&n; */
 DECL|macro|TIF_SYSCALL_TRACE
 mdefine_line|#define TIF_SYSCALL_TRACE&t;0&t;/* syscall trace active */
