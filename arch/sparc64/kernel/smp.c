@@ -44,18 +44,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-id|DEFINE_PER_CPU
-c_func
-(paren
-id|cpuinfo_sparc
-comma
-id|__cpu_data
-)paren
-op_assign
-(brace
-l_int|0
-)brace
-suffix:semicolon
 multiline_comment|/* Please don&squot;t make this stuff initdata!!!  --DaveM */
 DECL|variable|boot_cpu_id
 r_static

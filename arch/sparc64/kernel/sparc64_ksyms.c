@@ -702,6 +702,14 @@ r_int
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* Per-CPU information table */
+DECL|variable|__cpu_data
+id|EXPORT_PER_CPU_SYMBOL
+c_func
+(paren
+id|__cpu_data
+)paren
+suffix:semicolon
 multiline_comment|/* used by various drivers */
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef CONFIG_DEBUG_SPINLOCK
@@ -760,14 +768,6 @@ id|mcount
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Per-CPU information table */
-DECL|variable|__cpu_data
-id|EXPORT_PER_CPU_SYMBOL
-c_func
-(paren
-id|__cpu_data
-)paren
-suffix:semicolon
 multiline_comment|/* CPU online map and active count.  */
 DECL|variable|cpu_online_map
 id|EXPORT_SYMBOL

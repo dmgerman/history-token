@@ -7,6 +7,19 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/fpumacro.h&gt;
+macro_line|#include &lt;asm/cpudata.h&gt;
+id|DEFINE_PER_CPU
+c_func
+(paren
+id|cpuinfo_sparc
+comma
+id|__cpu_data
+)paren
+op_assign
+(brace
+l_int|0
+)brace
+suffix:semicolon
 DECL|struct|cpu_iu_info
 r_struct
 id|cpu_iu_info
