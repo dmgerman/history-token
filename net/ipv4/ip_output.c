@@ -3049,6 +3049,14 @@ id|inet-&gt;cork.length
 op_assign
 l_int|0
 suffix:semicolon
+id|sk-&gt;sk_sndmsg_page
+op_assign
+l_int|NULL
+suffix:semicolon
+id|sk-&gt;sk_sndmsg_off
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5094,14 +5102,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|sk-&gt;sk_sndmsg_page
-op_assign
-l_int|NULL
-suffix:semicolon
-id|sk-&gt;sk_sndmsg_off
-op_assign
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Fetch data from kernel space and fill in checksum if needed.&n; */
 DECL|function|ip_reply_glue_bits
