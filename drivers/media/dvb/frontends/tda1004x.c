@@ -1415,7 +1415,9 @@ multiline_comment|/* request the firmware, this will block until someone uploads
 id|printk
 c_func
 (paren
-l_string|&quot;tda1004x: waiting for firmware upload...&bslash;n&quot;
+l_string|&quot;tda1004x: waiting for firmware upload (%s)...&bslash;n&quot;
+comma
+id|TDA10045_DEFAULT_FIRMWARE
 )paren
 suffix:semicolon
 id|ret
@@ -1525,6 +1527,12 @@ id|ret
 r_return
 id|ret
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;tda1004x: firmware upload complete&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* wait for DSP to initialise */
 multiline_comment|/* DSPREADY doesn&squot;t seem to work on the TDA10045H */
 id|msleep
@@ -1627,7 +1635,9 @@ multiline_comment|/* request the firmware, this will block until someone uploads
 id|printk
 c_func
 (paren
-l_string|&quot;tda1004x: waiting for firmware upload...&bslash;n&quot;
+l_string|&quot;tda1004x: waiting for firmware upload (%s)...&bslash;n&quot;
+comma
+id|TDA10046_DEFAULT_FIRMWARE
 )paren
 suffix:semicolon
 id|ret
@@ -1748,6 +1758,12 @@ id|ret
 )paren
 r_return
 id|ret
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;tda1004x: firmware upload complete&bslash;n&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* wait for DSP to initialise */
 id|timeout
