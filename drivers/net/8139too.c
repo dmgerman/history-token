@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 DECL|macro|RTL8139_DRIVER_NAME
 mdefine_line|#define RTL8139_DRIVER_NAME   DRV_NAME &quot; Fast Ethernet driver &quot; DRV_VERSION
 DECL|macro|PFX
