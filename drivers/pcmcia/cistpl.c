@@ -1314,6 +1314,14 @@ comma
 id|ptr
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+l_int|0
+)paren
+(brace
 multiline_comment|/* Copy data into the cache */
 id|cis
 op_assign
@@ -1369,6 +1377,7 @@ op_amp
 id|s-&gt;cis_cache
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 r_static
