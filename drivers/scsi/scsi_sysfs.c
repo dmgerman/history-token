@@ -3306,7 +3306,7 @@ op_assign
 (brace
 (brace
 (brace
-l_int|0
+l_int|NULL
 comma
 )brace
 comma
