@@ -527,6 +527,16 @@ id|device
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|usb_serial_port_softint
+c_func
+(paren
+r_void
+op_star
+r_private
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|usb_serial_probe
 c_func
