@@ -9181,7 +9181,7 @@ op_logical_neg
 id|event
 )paren
 r_return
-id|IRQ_HANDLED
+id|IRQ_NONE
 suffix:semicolon
 id|DBGMSG
 c_func
