@@ -102,7 +102,6 @@ id|u_int32_t
 id|arg3
 )paren
 suffix:semicolon
-r_inline
 r_void
 id|lmc_trace
 c_func
