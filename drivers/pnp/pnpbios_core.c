@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/*&n; *&n; * PnP BIOS INTERFACE&n; *&n; */
 multiline_comment|/* PnP BIOS signature: &quot;$PnP&quot; */
 DECL|macro|PNP_SIGNATURE

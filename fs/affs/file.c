@@ -2,7 +2,7 @@ multiline_comment|/*&n; *  linux/fs/affs/file.c&n; *&n; *  (c) 1996  Hans-Joachi
 macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/affs_fs.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

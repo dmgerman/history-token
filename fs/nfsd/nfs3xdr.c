@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/fs/nfsd/nfs3xdr.c&n; *&n; * XDR support for nfsd/protocol version 3.&n; *&n; * Copyright (C) 1995, 1996, 1997 Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/nfs3.h&gt;
 macro_line|#include &lt;linux/sunrpc/xdr.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;

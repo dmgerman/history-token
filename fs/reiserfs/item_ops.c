@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README&n; */
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 singleline_comment|// this contains item handlers for old item types: sd, direct,
 singleline_comment|// indirect, directory

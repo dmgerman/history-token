@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * Cache operations for Coda.&n; * For Linux 2.1: (C) 1997 Carnegie Mellon University&n; * For Linux 2.3: (C) 2000 Carnegie Mellon University&n; *&n; * Carnegie Mellon encourages users of this code to contribute improvements&n; * to the Coda project http://www.coda.cs.cmu.edu/ &lt;coda@cs.cmu.edu&gt;.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

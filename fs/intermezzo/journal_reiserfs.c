@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * Intermezzo. (C) 1998 Peter J. Braam&n; * Intermezzo. (C) 2000 Red Hat, Inc.&n; * Intermezzo. (C) 2000 Los Alamos National Laboratory&n; * Intermezzo. (C) 2000 TurboLinux, Inc.&n; * Intermezzo. (C) 2001 Mountain View Data, Inc.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;

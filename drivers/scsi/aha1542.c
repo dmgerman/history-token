@@ -47,7 +47,7 @@ l_string|&quot;buf vaddress %p paddress 0x%lx length %d&bslash;n&quot;
 comma
 id|address
 comma
-id|SCSI_BUS_PA
+id|SCSI_BUF_PA
 c_func
 (paren
 id|address
@@ -89,7 +89,7 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;sgpnt[%d:%d] page %p/0x%lx length %d&bslash;n&quot;
+l_string|&quot;sgpnt[%d:%d] page %p/0x%x length %d&bslash;n&quot;
 comma
 id|badseg
 comma
@@ -3166,8 +3166,6 @@ id|sgpnt
 (braket
 id|i
 )braket
-dot
-id|page
 )paren
 op_plus
 id|sgpnt

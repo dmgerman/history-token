@@ -8,7 +8,8 @@ r_int
 id|event
 suffix:semicolon
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/binfmts.h&gt;
+macro_line|#include &lt;linux/capability.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -1477,11 +1478,6 @@ r_int
 id|itimer_next
 suffix:semicolon
 r_extern
-r_struct
-id|timeval
-id|xtime
-suffix:semicolon
-r_extern
 r_void
 id|do_timer
 c_func
@@ -1507,8 +1503,6 @@ r_int
 r_int
 id|prof_shift
 suffix:semicolon
-DECL|macro|CURRENT_TIME
-mdefine_line|#define CURRENT_TIME (xtime.tv_sec)
 r_extern
 r_void
 id|FASTCALL

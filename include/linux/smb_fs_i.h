@@ -4,6 +4,7 @@ DECL|macro|_LINUX_SMB_FS_I
 mdefine_line|#define _LINUX_SMB_FS_I
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 multiline_comment|/*&n; * smb fs inode data (in memory only)&n; */
 DECL|struct|smb_inode_info
 r_struct

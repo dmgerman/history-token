@@ -5,6 +5,7 @@ mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -34,6 +35,7 @@ macro_line|#ifdef CONFIG_MATH_EMULATION
 macro_line|#include &lt;asm/math_emu.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
 id|asmlinkage
 r_void
 id|ret_from_fork

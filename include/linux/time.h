@@ -240,6 +240,13 @@ id|sec
 suffix:semicolon
 multiline_comment|/* finally seconds */
 )brace
+r_extern
+r_struct
+id|timeval
+id|xtime
+suffix:semicolon
+DECL|macro|CURRENT_TIME
+mdefine_line|#define CURRENT_TIME (xtime.tv_sec)
 macro_line|#endif /* __KERNEL__ */
 DECL|struct|timeval
 r_struct

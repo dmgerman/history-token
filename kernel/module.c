@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 multiline_comment|/*&n; * Originally by Anonymous (as far as I know...)&n; * Linux version by Bas Laarhoven &lt;bas@vimec.nl&gt;&n; * 0.99.14 version by Jon Tombs &lt;jon@gtex02.us.es&gt;,&n; * Heavily modified by Bjorn Ekwall &lt;bj0rn@blox.se&gt; May 1994 (C)&n; * Rewritten by Richard Henderson &lt;rth@tamu.edu&gt; Dec 1996&n; * Add MOD_INITIALIZING Keith Owens &lt;kaos@ocs.com.au&gt; Nov 1999&n; * Add kallsyms support, Keith Owens &lt;kaos@ocs.com.au&gt; Apr 2000&n; * Add asm/module support, IA64 has special requirements.  Keith Owens &lt;kaos@ocs.com.au&gt; Sep 2000&n; * Fix assorted bugs in module verification.  Keith Owens &lt;kaos@ocs.com.au&gt; Sep 2000&n; * Fix sys_init_module race, Andrew Morton &lt;andrewm@uow.edu.au&gt; Oct 2000&n; *     http://www.uwsg.iu.edu/hypermail/linux/kernel/0008.3/0379.html&n; * Replace xxx_module_symbol with inter_module_xxx.  Keith Owens &lt;kaos@ocs.com.au&gt; Oct 2000&n; * Add a module list lock for kernel fault race fixing. Alan Cox &lt;alan@redhat.com&gt;&n; *&n; * This source is covered by the GNU GPL, the same as all kernel sources.&n; */
 macro_line|#if defined(CONFIG_MODULES) || defined(CONFIG_KALLSYMS)
 r_extern

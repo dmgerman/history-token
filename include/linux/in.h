@@ -3,6 +3,7 @@ macro_line|#ifndef _LINUX_IN_H
 DECL|macro|_LINUX_IN_H
 mdefine_line|#define _LINUX_IN_H
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/socket.h&gt;
 multiline_comment|/* Standard well-defined IP protocols.  */
 r_enum
 (brace

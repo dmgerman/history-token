@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/fat/file.c&n; *&n; *  Written 1992,1993 by Werner Almesberger&n; *&n; *  regular file handling primitives for fat-based filesystems&n; */
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/fat_cvf.h&gt;

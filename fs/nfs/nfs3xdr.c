@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/fs/nfs/nfs3xdr.c&n; *&n; * XDR functions to encode/decode NFSv3 RPC arguments and results.&n; *&n; * Copyright (C) 1996, 1997 Olaf Kirch&n; */
 macro_line|#include &lt;linux/param.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;

@@ -4,6 +4,7 @@ DECL|macro|_SUNRPC_XDR_H_
 mdefine_line|#define _SUNRPC_XDR_H_
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/uio.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/*&n; * Buffer adjustment&n; */
 DECL|macro|XDR_QUADLEN
 mdefine_line|#define XDR_QUADLEN(l)&t;&t;(((l) + 3) &gt;&gt; 2)

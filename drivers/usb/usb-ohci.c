@@ -20,6 +20,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|OHCI_USE_NPS
 mdefine_line|#define OHCI_USE_NPS&t;&t;
 singleline_comment|// force NoPowerSwitching mode

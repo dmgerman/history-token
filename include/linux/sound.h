@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * Minor numbers for the sound driver.&n; */
+macro_line|#include &lt;linux/fs.h&gt;
 DECL|macro|SND_DEV_CTL
 mdefine_line|#define SND_DEV_CTL&t;&t;0&t;/* Control port /dev/mixer */
 DECL|macro|SND_DEV_SEQ

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/sunrpc/types.h&gt;
 macro_line|#include &lt;linux/sunrpc/xdr.h&gt;
 macro_line|#include &lt;linux/sunrpc/svcauth.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 multiline_comment|/*&n; * RPC service.&n; *&n; * An RPC service is a ``daemon,&squot;&squot; possibly multithreaded, which&n; * receives and processes incoming RPC messages.&n; * It has one or more transport sockets associated with it, and maintains&n; * a list of idle threads waiting for input.&n; *&n; * We currently do not support more than one RPC program per daemon.&n; */
 DECL|struct|svc_serv
 r_struct

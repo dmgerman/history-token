@@ -2,7 +2,7 @@ multiline_comment|/*&n; * linux/fs/revoke.c&n; * &n; * Written by Stephen C. Twe
 macro_line|#ifndef __KERNEL__
 macro_line|#include &quot;jfs_user.h&quot;
 macro_line|#else
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/jbd.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README&n; */
 multiline_comment|/**&n; ** old_item_num&n; ** old_entry_num&n; ** set_entry_sizes&n; ** create_virtual_node&n; ** check_left&n; ** check_right&n; ** directory_part_size&n; ** get_num_ver&n; ** set_parameters&n; ** is_leaf_removable&n; ** are_leaves_removable&n; ** get_empty_nodes&n; ** get_lfree&n; ** get_rfree&n; ** is_left_neighbor_in_cache&n; ** decrement_key&n; ** get_far_parent&n; ** get_parents&n; ** can_node_be_removed&n; ** ip_check_balance&n; ** dc_check_balance_internal&n; ** dc_check_balance_leaf&n; ** dc_check_balance&n; ** check_balance&n; ** get_direct_parent&n; ** get_neighbors&n; ** fix_nodes&n; ** &n; ** &n; **/
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;

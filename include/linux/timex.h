@@ -3,6 +3,7 @@ multiline_comment|/*&n; * Modification history timex.h&n; *&n; * 29 Dec 97&t;Rus
 macro_line|#ifndef _LINUX_TIMEX_H
 DECL|macro|_LINUX_TIMEX_H
 mdefine_line|#define _LINUX_TIMEX_H
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 multiline_comment|/*&n; * The following defines establish the engineering parameters of the PLL&n; * model. The HZ variable establishes the timer interrupt frequency, 100 Hz&n; * for the SunOS kernel, 256 Hz for the Ultrix kernel and 1024 Hz for the&n; * OSF/1 kernel. The SHIFT_HZ define expresses the same value as the&n; * nearest power of two in order to avoid hardware multiply operations.&n; */
 macro_line|#if HZ &gt;= 12 &amp;&amp; HZ &lt; 24

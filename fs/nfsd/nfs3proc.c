@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/fs/nfsd/nfs3proc.c&n; *&n; * Process version 3 NFS requests.&n; *&n; * Copyright (C) 1996, 1997, 1998 Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
 macro_line|#include &lt;linux/linkage.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;

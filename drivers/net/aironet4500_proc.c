@@ -20,11 +20,8 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#ifdef CONFIG_PROC_FS
-macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &lt;linux/sysctl.h&gt;
-macro_line|#else
-macro_line|#error awc driver needs CONFIG_PROC_FS
-macro_line|#endif
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;aironet4500.h&quot;
 macro_line|#include &quot;aironet4500_rid.c&quot;
 DECL|macro|AWC_STR_SIZE
@@ -4316,6 +4313,8 @@ c_func
 id|aironet_proc_exit
 )paren
 suffix:semicolon
+macro_line|#else
+macro_line|#error awc driver needs CONFIG_PROC_FS
 macro_line|#endif 
 singleline_comment|// whole proc system styff
 id|MODULE_LICENSE

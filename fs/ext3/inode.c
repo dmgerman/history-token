@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *  linux/fs/ext3/inode.c&n; *&n; * Copyright (C) 1992, 1993, 1994, 1995&n; * Remy Card (card@masi.ibp.fr)&n; * Laboratoire MASI - Institut Blaise Pascal&n; * Universite Pierre et Marie Curie (Paris VI)&n; *&n; *  from&n; *&n; *  linux/fs/minix/inode.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  Goal-directed block allocation by Stephen Tweedie&n; * &t;(sct@redhat.com), 1993, 1998&n; *  Big-endian to little-endian byte-swapping/bitmaps by&n; *        David S. Miller (davem@caip.rutgers.edu), 1995&n; *  64-bit file support on 64-bit platforms by Jakub Jelinek&n; * &t;(jj@sunsite.ms.mff.cuni.cz)&n; *&n; *  Assorted race fixes, rewrite of ext3_get_block() by Al Viro, 2000&n; */
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/ext3_jbd.h&gt;
 macro_line|#include &lt;linux/jbd.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;

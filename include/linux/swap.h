@@ -2,6 +2,9 @@ macro_line|#ifndef _LINUX_SWAP_H
 DECL|macro|_LINUX_SWAP_H
 mdefine_line|#define _LINUX_SWAP_H
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/kdev_t.h&gt;
+macro_line|#include &lt;linux/linkage.h&gt;
+macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 DECL|macro|SWAP_FLAG_PREFER
 mdefine_line|#define SWAP_FLAG_PREFER&t;0x8000&t;/* set if swap priority specified */
@@ -85,6 +88,19 @@ DECL|member|info
 id|info
 suffix:semicolon
 )brace
+suffix:semicolon
+multiline_comment|/* A swap entry has to fit into a &quot;unsigned long&quot;, as&n;  * the entry is hidden in the &quot;index&quot; field of the&n;  * swapper address space.&n;  */
+r_typedef
+r_struct
+(brace
+DECL|member|val
+r_int
+r_int
+id|val
+suffix:semicolon
+DECL|typedef|swp_entry_t
+)brace
+id|swp_entry_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Max bad pages in the new format..&n; */

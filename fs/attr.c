@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/attr.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *  changes by Thomas Schoebel-Theuer&n; */
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;

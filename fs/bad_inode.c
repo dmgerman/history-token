@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/bad_inode.c&n; *&n; *  Copyright (C) 1997, Stephen Tweedie&n; *&n; *  Provide stub functions for unreadable inodes&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 multiline_comment|/*&n; * The follow_link operation is special: it must behave as a no-op&n; * so that a bad root inode can at least be unmounted. To do this&n; * we must dput() the base and return the dentry with a dget().&n; */
 DECL|function|bad_follow_link
 r_static

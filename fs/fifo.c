@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/fs/fifo.c&n; *&n; *  written by Paul H. Hargrov
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 DECL|function|wait_for_partner
 r_static
 r_void

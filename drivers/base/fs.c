@@ -3,6 +3,8 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
+macro_line|#include &lt;linux/stat.h&gt;
 r_extern
 r_struct
 id|driver_file_entry

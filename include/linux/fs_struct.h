@@ -2,6 +2,8 @@ macro_line|#ifndef _LINUX_FS_STRUCT_H
 DECL|macro|_LINUX_FS_STRUCT_H
 mdefine_line|#define _LINUX_FS_STRUCT_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/dcache.h&gt;
 DECL|struct|fs_struct
 r_struct
 id|fs_struct

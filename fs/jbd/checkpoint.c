@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * linux/fs/checkpoint.c&n; * &n; * Written by Stephen C. Tweedie &lt;sct@redhat.com&gt;, 1999&n; *&n; * Copyright 1999 Red Hat Software --- All Rights Reserved&n; *&n; * This file is part of the Linux kernel and is made available under&n; * the terms of the GNU General Public License, version 2, or at your&n; * option, any later version, incorporated herein by reference.&n; *&n; * Checkpoint routines for the generic filesystem journaling code.  &n; * Part of the ext2fs journaling system.  &n; *&n; * Checkpointing is the process of ensuring that a section of the log is&n; * committed fully to disk, so that that portion of the log can be&n; * reused.&n; */
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/jbd.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

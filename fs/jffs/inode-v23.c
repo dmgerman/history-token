@@ -4,7 +4,7 @@ multiline_comment|/* TODO-ALEX:&n; * uid and gid are just 16 bit.&n; * jffs_file
 multiline_comment|/* Argh. Some architectures have kernel_thread in asm/processor.h&n;   Some have it in unistd.h and you need to define __KERNEL_SYSCALLS__&n;   Pass me a baseball bat and the person responsible.&n;   dwmw2&n;*/
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * nfsproc2.c&t;Process version 2 NFS requests.&n; * linux/fs/nfsd/nfs2proc.c&n; * &n; * Process version 2 NFS requests.&n; *&n; * Copyright (C) 1995-1997 Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
 macro_line|#include &lt;linux/linkage.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
