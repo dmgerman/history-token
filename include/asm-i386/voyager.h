@@ -1863,14 +1863,6 @@ id|cmos_address
 suffix:semicolon
 r_extern
 r_void
-id|voyager_dump
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|voyager_smp_dump
 c_func
 (paren
