@@ -876,18 +876,10 @@ id|SAA7196_STDC
 )paren
 suffix:semicolon
 multiline_comment|/* Let&squot;s wait 30msec for this one */
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
 l_int|30
-op_star
-id|HZ
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 r_return

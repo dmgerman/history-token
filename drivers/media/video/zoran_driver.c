@@ -7064,16 +7064,10 @@ id|norm
 )paren
 suffix:semicolon
 multiline_comment|/* let changes come into effect */
-id|current-&gt;state
-op_assign
-id|TASK_UNINTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|ssleep
 c_func
 (paren
 l_int|2
-op_star
-id|HZ
 )paren
 suffix:semicolon
 id|decoder_command
@@ -9747,16 +9741,10 @@ id|norm
 )paren
 suffix:semicolon
 multiline_comment|/* sleep 1 second */
-id|current-&gt;state
-op_assign
-id|TASK_UNINTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|ssleep
 c_func
 (paren
 l_int|1
-op_star
-id|HZ
 )paren
 suffix:semicolon
 multiline_comment|/* Get status of video decoder */
