@@ -1429,6 +1429,14 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|DEB_D
+c_func
+(paren
+(paren
+l_string|&quot;using video queue.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|q
 op_assign
 op_amp
@@ -1466,6 +1474,14 @@ op_logical_neg
 id|buf
 )paren
 (brace
+id|DEB_D
+c_func
+(paren
+(paren
+l_string|&quot;buf == NULL!&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 r_return
 id|POLLERR
 suffix:semicolon
@@ -1493,12 +1509,30 @@ op_eq
 id|STATE_ERROR
 )paren
 (brace
+id|DEB_D
+c_func
+(paren
+(paren
+l_string|&quot;poll succeeded!&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 r_return
 id|POLLIN
 op_or
 id|POLLRDNORM
 suffix:semicolon
 )brace
+id|DEB_D
+c_func
+(paren
+(paren
+l_string|&quot;nothing to poll for, buf-&gt;state:%d&bslash;n&quot;
+comma
+id|buf-&gt;state
+)paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

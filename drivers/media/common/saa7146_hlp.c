@@ -4691,6 +4691,11 @@ id|height
 op_assign
 id|buf-&gt;fmt-&gt;height
 suffix:semicolon
+r_int
+id|bytesperline
+op_assign
+id|buf-&gt;fmt-&gt;bytesperline
+suffix:semicolon
 r_enum
 id|v4l2_field
 id|field
@@ -4719,6 +4724,23 @@ id|field
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bytesperline
+op_ne
+l_int|0
+)paren
+(brace
+id|vdma1.pitch
+op_assign
+id|bytesperline
+op_star
+l_int|2
+suffix:semicolon
+)brace
+r_else
+(brace
 id|vdma1.pitch
 op_assign
 (paren
@@ -4731,6 +4753,7 @@ l_int|2
 op_div
 l_int|8
 suffix:semicolon
+)brace
 id|vdma1.num_line_byte
 op_assign
 (paren
@@ -5013,6 +5036,7 @@ id|vdma3-&gt;pitch
 op_assign
 id|width
 suffix:semicolon
+multiline_comment|/* fixme: look at bytesperline! */
 r_if
 c_cond
 (paren
@@ -5507,6 +5531,7 @@ id|field
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* fixme: look at bytesperline! */
 multiline_comment|/* fixme: what happens for user space buffers here?. The offsets are&n;&t;   most likely wrong, this version here only works for page-aligned&n;&t;   buffers, modifications to the pagetable-functions are necessary...*/
 id|vdma1.pitch
 op_assign
@@ -6209,6 +6234,23 @@ c_func
 (paren
 id|CMD_PAUSE
 op_or
+(paren
+id|vv-&gt;current_hps_sync
+op_eq
+id|SAA7146_HPS_SYNC_PORT_A
+ques
+c_cond
+id|MASK_10
+suffix:colon
+id|MASK_09
+)paren
+)paren
+suffix:semicolon
+id|WRITE_RPS0
+c_func
+(paren
+id|CMD_PAUSE
+op_or
 id|o_wait
 )paren
 suffix:semicolon
@@ -6222,6 +6264,23 @@ op_eq
 id|V4L2_FIELD_BOTTOM
 )paren
 (brace
+id|WRITE_RPS0
+c_func
+(paren
+id|CMD_PAUSE
+op_or
+(paren
+id|vv-&gt;current_hps_sync
+op_eq
+id|SAA7146_HPS_SYNC_PORT_A
+ques
+c_cond
+id|MASK_10
+suffix:colon
+id|MASK_09
+)paren
+)paren
+suffix:semicolon
 id|WRITE_RPS0
 c_func
 (paren
@@ -6398,7 +6457,6 @@ id|next
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;printk(&quot;vdma%d.base_even:     0x%08x&bslash;n&quot;, 1,saa7146_read(dev,BASE_EVEN1));&n;&t;printk(&quot;vdma%d.base_odd:      0x%08x&bslash;n&quot;, 1,saa7146_read(dev,BASE_ODD1));&n;&t;printk(&quot;vdma%d.prot_addr:     0x%08x&bslash;n&quot;, 1,saa7146_read(dev,PROT_ADDR1));&n;&t;printk(&quot;vdma%d.base_page:     0x%08x&bslash;n&quot;, 1,saa7146_read(dev,BASE_PAGE1));&n;&t;printk(&quot;vdma%d.pitch:         0x%08x&bslash;n&quot;, 1,saa7146_read(dev,PITCH1));&n;&t;printk(&quot;vdma%d.num_line_byte: 0x%08x&bslash;n&quot;, 1,saa7146_read(dev,NUM_LINE_BYTE1));&n;&t;printk(&quot;vdma%d =&gt; vptr      : 0x%08x&bslash;n&quot;, 1,saa7146_read(dev,PCI_VDP1));&n;*/
 id|vdma1_prot_addr
 op_assign
 id|saa7146_read
@@ -6548,6 +6606,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;printk(&quot;vdma%d.base_even:     0x%08x&bslash;n&quot;, 1,saa7146_read(dev,BASE_EVEN1));&n;&t;printk(&quot;vdma%d.base_odd:      0x%08x&bslash;n&quot;, 1,saa7146_read(dev,BASE_ODD1));&n;&t;printk(&quot;vdma%d.prot_addr:     0x%08x&bslash;n&quot;, 1,saa7146_read(dev,PROT_ADDR1));&n;&t;printk(&quot;vdma%d.base_page:     0x%08x&bslash;n&quot;, 1,saa7146_read(dev,BASE_PAGE1));&n;&t;printk(&quot;vdma%d.pitch:         0x%08x&bslash;n&quot;, 1,saa7146_read(dev,PITCH1));&n;&t;printk(&quot;vdma%d.num_line_byte: 0x%08x&bslash;n&quot;, 1,saa7146_read(dev,NUM_LINE_BYTE1));&n;&t;printk(&quot;vdma%d =&gt; vptr      : 0x%08x&bslash;n&quot;, 1,saa7146_read(dev,PCI_VDP1));&n;*/
 multiline_comment|/* write the address of the rps-program */
 id|saa7146_write
 c_func

@@ -16,7 +16,7 @@ multiline_comment|/* We use a weird value for RAM, not just 0, for testing purpo
 DECL|macro|RAM_ADDR
 mdefine_line|#define RAM_ADDR&t;&t;0x8F000000
 DECL|macro|RAM_SIZE
-mdefine_line|#define RAM_SIZE&t;&t;0x01000000
+mdefine_line|#define RAM_SIZE&t;&t;0x03000000
 multiline_comment|/* For &lt;asm/page.h&gt; */
 DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET &t;&t;RAM_ADDR
