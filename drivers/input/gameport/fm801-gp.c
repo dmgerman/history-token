@@ -490,7 +490,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;gameport: %s at pci%s speed %d kHz&bslash;n&quot;
 comma
-id|pci-&gt;name
+id|pci-&gt;dev.name
 comma
 id|pci-&gt;slot_name
 comma
