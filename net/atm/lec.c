@@ -3384,9 +3384,13 @@ id|skb-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
+id|skb_pull
+c_func
+(paren
 id|skb-&gt;data
-op_add_assign
+comma
 l_int|2
+)paren
 suffix:semicolon
 multiline_comment|/* skip lec_id */
 macro_line|#ifdef CONFIG_TR
