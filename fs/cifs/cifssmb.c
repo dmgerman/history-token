@@ -1575,6 +1575,11 @@ op_amp
 id|GlobalMid_Lock
 )paren
 suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|ESHUTDOWN
+suffix:semicolon
 )brace
 )brace
 r_if

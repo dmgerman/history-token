@@ -2039,7 +2039,7 @@ c_func
 id|TASK_INTERRUPTIBLE
 )paren
 suffix:semicolon
-multiline_comment|/* 1/8th of sec should be more than enough time for them to exit */
+multiline_comment|/* 1/8th of sec is more than enough time for them to exit */
 id|schedule_timeout
 c_func
 (paren
@@ -2093,14 +2093,18 @@ c_func
 id|server
 )paren
 suffix:semicolon
-id|cFYI
+id|set_current_state
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;About to exit from demultiplex thread&quot;
+id|TASK_INTERRUPTIBLE
 )paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+op_div
+l_int|4
 )paren
 suffix:semicolon
 r_return
@@ -14347,6 +14351,11 @@ id|ses
 op_assign
 l_int|NULL
 suffix:semicolon
+r_struct
+id|task_struct
+op_star
+id|cifsd_task
+suffix:semicolon
 id|xid
 op_assign
 id|GetXid
@@ -14412,6 +14421,11 @@ id|ses-&gt;server
 )paren
 )paren
 (brace
+multiline_comment|/* save off task so we do not refer to ses later */
+id|cifsd_task
+op_assign
+id|ses-&gt;server-&gt;tsk
+suffix:semicolon
 id|cFYI
 c_func
 (paren
@@ -14451,12 +14465,24 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+op_minus
+id|ESHUTDOWN
+)paren
+(brace
+multiline_comment|/* should we add wake_up_all(&amp;server-&gt;request_q); &n;&t;&t;&t;   and add a check in  the check inFlight loop&n;&t;&t;&t;   for the session ending */
 id|set_current_state
 c_func
 (paren
 id|TASK_INTERRUPTIBLE
 )paren
 suffix:semicolon
+multiline_comment|/* give captive thread time to exit */
 id|schedule_timeout
 c_func
 (paren
@@ -14465,26 +14491,13 @@ op_div
 l_int|4
 )paren
 suffix:semicolon
-multiline_comment|/* give captive thread time to exit */
-r_if
-c_cond
-(paren
-(paren
-id|ses-&gt;server
-)paren
-op_logical_and
-(paren
-id|ses-&gt;server-&gt;ssocket
-)paren
-)paren
-(brace
 id|cFYI
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot;Waking up socket by sending it signal &quot;
+l_string|&quot;Waking up socket by sending it signal&quot;
 )paren
 )paren
 suffix:semicolon
@@ -14493,12 +14506,17 @@ c_func
 (paren
 id|SIGKILL
 comma
-id|ses-&gt;server-&gt;tsk
+id|cifsd_task
 comma
 l_int|1
 )paren
 suffix:semicolon
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
 )brace
+multiline_comment|/* else - we have an smb session&n;&t;&t;&t;&t;left on this socket do not kill cifsd */
 )brace
 r_else
 id|cFYI
