@@ -3,7 +3,6 @@ DECL|macro|_LINUX_SWAP_H
 mdefine_line|#define _LINUX_SWAP_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
