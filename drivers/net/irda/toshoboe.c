@@ -1493,11 +1493,17 @@ c_cond
 (paren
 id|skb
 )paren
+(brace
 id|netif_rx
 (paren
 id|skb
 )paren
 suffix:semicolon
+id|self-&gt;netdev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
+)brace
 )brace
 )brace
 r_if

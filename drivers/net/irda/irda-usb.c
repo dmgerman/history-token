@@ -2478,6 +2478,10 @@ c_func
 r_new
 )paren
 suffix:semicolon
+id|self-&gt;netdev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|done
 suffix:colon
 multiline_comment|/* Note : at this point, the URB we&squot;ve just received (urb)&n;&t; * is still referenced by the USB layer. For example, if we&n;&t; * have received a -ECONNRESET, uhci_cleanup_unlink() will&n;&t; * continue to process it (in fact, cleaning it up).&n;&t; * If we were to submit this URB, disaster would ensue.&n;&t; * Therefore, we submit our idle URB, and put this URB in our&n;&t; * idle slot....&n;&t; * Jean II */
