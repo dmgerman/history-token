@@ -49,13 +49,15 @@ l_string|&quot;clrl&t;%%d0&bslash;n&bslash;t&quot;
 l_string|&quot;1:&bslash;n&bslash;t&quot;
 l_string|&quot;movel&t;%%d0,%%a0&bslash;n&bslash;t&quot;
 l_string|&quot;2:&bslash;n&bslash;t&quot;
-l_string|&quot;.word&t;0xf4e8&bslash;n&bslash;t&quot;
+l_string|&quot;.word&t;0xf468&bslash;n&bslash;t&quot;
 l_string|&quot;addl&t;#0x10,%%a0&bslash;n&bslash;t&quot;
 l_string|&quot;cmpl&t;#0x00000800,%%a0&bslash;n&bslash;t&quot;
 l_string|&quot;blt&t;2b&bslash;n&bslash;t&quot;
 l_string|&quot;addql&t;#1,%%d0&bslash;n&bslash;t&quot;
 l_string|&quot;cmpil&t;#4,%%d0&bslash;n&bslash;t&quot;
 l_string|&quot;bne&t;1b&bslash;n&bslash;t&quot;
+l_string|&quot;movel&t;#0xb6088500,%%d0&bslash;n&bslash;t&quot;
+l_string|&quot;movec&t;%%d0,%%CACR&bslash;n&bslash;t&quot;
 suffix:colon
 suffix:colon
 suffix:colon

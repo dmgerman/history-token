@@ -6643,16 +6643,10 @@ suffix:semicolon
 multiline_comment|/* XXX share VGA_FB_PHYS and I/O region with vgacon and others */
 id|vga16fb.screen_base
 op_assign
-id|ioremap
-c_func
-(paren
 id|VGA_MAP_MEM
 c_func
 (paren
 id|VGA_FB_PHYS
-)paren
-comma
-id|VGA_FB_PHYS_LEN
 )paren
 suffix:semicolon
 r_if

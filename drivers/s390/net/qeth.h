@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &lt;asm/ccwgroup.h&gt;
 macro_line|#include &quot;qeth_mpc.h&quot;
 DECL|macro|VERSION_QETH_H
-mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.107 $&quot;
+mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.108 $&quot;
 macro_line|#ifdef CONFIG_QETH_IPV6
 DECL|macro|QETH_VERSION_IPV6
 mdefine_line|#define QETH_VERSION_IPV6 &t;&quot;:IPv6&quot;
@@ -269,6 +269,7 @@ r_int
 r_int
 id|sc_p_dp
 suffix:semicolon
+multiline_comment|/* qdio_input_handler: number of times called, time spent in */
 DECL|member|inbound_start_time
 id|__u64
 id|inbound_start_time
@@ -283,6 +284,7 @@ r_int
 r_int
 id|inbound_time
 suffix:semicolon
+multiline_comment|/* qeth_send_packet: number of times called, time spent in */
 DECL|member|outbound_start_time
 id|__u64
 id|outbound_start_time
@@ -297,15 +299,50 @@ r_int
 r_int
 id|outbound_time
 suffix:semicolon
-DECL|member|inbound_do_qdio
-r_int
-r_int
-id|inbound_do_qdio
+multiline_comment|/* qdio_output_handler: number of times called, time spent in */
+DECL|member|outbound_handler_start_time
+id|__u64
+id|outbound_handler_start_time
 suffix:semicolon
-DECL|member|outbound_do_qdio
+DECL|member|outbound_handler_cnt
 r_int
 r_int
-id|outbound_do_qdio
+id|outbound_handler_cnt
+suffix:semicolon
+DECL|member|outbound_handler_time
+r_int
+r_int
+id|outbound_handler_time
+suffix:semicolon
+multiline_comment|/* number of calls to and time spent in do_QDIO for inbound queue */
+DECL|member|inbound_do_qdio_start_time
+id|__u64
+id|inbound_do_qdio_start_time
+suffix:semicolon
+DECL|member|inbound_do_qdio_cnt
+r_int
+r_int
+id|inbound_do_qdio_cnt
+suffix:semicolon
+DECL|member|inbound_do_qdio_time
+r_int
+r_int
+id|inbound_do_qdio_time
+suffix:semicolon
+multiline_comment|/* number of calls to and time spent in do_QDIO for outbound queues */
+DECL|member|outbound_do_qdio_start_time
+id|__u64
+id|outbound_do_qdio_start_time
+suffix:semicolon
+DECL|member|outbound_do_qdio_cnt
+r_int
+r_int
+id|outbound_do_qdio_cnt
+suffix:semicolon
+DECL|member|outbound_do_qdio_time
+r_int
+r_int
+id|outbound_do_qdio_time
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1792,6 +1829,37 @@ r_struct
 id|qeth_card_list_struct
 id|qeth_card_list
 suffix:semicolon
+multiline_comment|/*notifier list */
+DECL|struct|qeth_notify_list_struct
+r_struct
+id|qeth_notify_list_struct
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|task
+r_struct
+id|task_struct
+op_star
+id|task
+suffix:semicolon
+DECL|member|signum
+r_int
+id|signum
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+id|spinlock_t
+id|qeth_notify_lock
+suffix:semicolon
+r_extern
+r_struct
+id|list_head
+id|qeth_notify_list
+suffix:semicolon
 multiline_comment|/*some helper functions*/
 r_inline
 r_static
@@ -3039,6 +3107,28 @@ id|qeth_prot_versions
 comma
 r_const
 id|u8
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|qeth_notifier_register
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|qeth_notifier_unregister
+c_func
+(paren
+r_struct
+id|task_struct
 op_star
 )paren
 suffix:semicolon

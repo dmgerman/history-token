@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 DECL|variable|capability_ops
 r_static
 r_struct
@@ -110,6 +111,31 @@ r_static
 r_int
 id|secondary
 suffix:semicolon
+DECL|variable|capability_disable
+r_static
+r_int
+id|capability_disable
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|disable
+comma
+id|capability_disable
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|disable
+comma
+l_string|&quot;To disable capabilities module set disable = 1&quot;
+)paren
+suffix:semicolon
 DECL|function|capability_init
 r_static
 r_int
@@ -119,6 +145,23 @@ id|capability_init
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|capability_disable
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Capabilities disabled at initialization&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* register ourselves with the security framework */
 r_if
 c_cond
@@ -186,6 +229,13 @@ id|capability_exit
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|capability_disable
+)paren
+r_return
+suffix:semicolon
 multiline_comment|/* remove ourselves from the security framework */
 r_if
 c_cond

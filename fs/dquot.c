@@ -5536,6 +5536,16 @@ id|NODQUOT
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/* Due to IO error we might not have transfer_from[] structure */
+r_if
+c_cond
+(paren
+id|transfer_from
+(braket
+id|cnt
+)braket
+)paren
+(brace
 id|dquot_decr_inodes
 c_func
 (paren
@@ -5558,6 +5568,7 @@ comma
 id|space
 )paren
 suffix:semicolon
+)brace
 id|dquot_incr_inodes
 c_func
 (paren

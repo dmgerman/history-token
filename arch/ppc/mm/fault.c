@@ -232,7 +232,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * For 600- and 800-family processors, the error_code parameter is DSISR&n; * for a data fault, SRR1 for an instruction fault. For 400-family processors&n; * the error_code parameter is ESR for a data fault, 0 for an instruction&n; * fault.&n; */
 DECL|function|do_page_fault
-r_void
+r_int
 id|do_page_fault
 c_func
 (paren
@@ -330,6 +330,7 @@ id|regs
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#if !defined(CONFIG_4xx)
@@ -352,6 +353,7 @@ id|regs
 )paren
 )paren
 r_return
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* !CONFIG_4xx */
@@ -368,20 +370,9 @@ id|mm
 op_eq
 l_int|NULL
 )paren
-(brace
-id|bad_page_fault
-c_func
-(paren
-id|regs
-comma
-id|address
-comma
-id|SIGSEGV
-)paren
-suffix:semicolon
 r_return
+id|SIGSEGV
 suffix:semicolon
-)brace
 id|down_read
 c_func
 (paren
@@ -704,6 +695,7 @@ id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -820,6 +812,7 @@ id|pte_misses
 op_increment
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 id|bad_area
 suffix:colon
@@ -876,19 +869,11 @@ id|current
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
-id|bad_page_fault
-c_func
-(paren
-id|regs
-comma
-id|address
-comma
-id|SIGSEGV
-)paren
-suffix:semicolon
 r_return
+id|SIGSEGV
 suffix:semicolon
 multiline_comment|/*&n; * We ran out of memory, or some other thing happened to us that made&n; * us unable to handle the page fault gracefully.&n; */
 id|out_of_memory
@@ -947,17 +932,8 @@ c_func
 id|SIGKILL
 )paren
 suffix:semicolon
-id|bad_page_fault
-c_func
-(paren
-id|regs
-comma
-id|address
-comma
-id|SIGKILL
-)paren
-suffix:semicolon
 r_return
+id|SIGKILL
 suffix:semicolon
 id|do_sigbus
 suffix:colon
@@ -1008,18 +984,14 @@ c_func
 id|regs
 )paren
 )paren
-id|bad_page_fault
-c_func
-(paren
-id|regs
-comma
-id|address
-comma
+r_return
 id|SIGBUS
-)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * bad_page_fault is called when we have a bad access from the kernel.&n; * It is called from do_page_fault above and from some of the procedures&n; * in traps.c.&n; */
+multiline_comment|/*&n; * bad_page_fault is called when we have a bad access from the kernel.&n; * It is called from the DSI and ISI handlers in head.S and from some&n; * of the procedures in traps.c.&n; */
 r_void
 DECL|function|bad_page_fault
 id|bad_page_fault

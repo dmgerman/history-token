@@ -693,25 +693,6 @@ multiline_comment|/* Make sure the MCA bus is present */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|MCA_bus
-)paren
-(brace
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Micro Channel bus detected.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|mca_system_init
 c_func
 (paren
@@ -730,6 +711,23 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|MCA_bus
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Micro Channel bus detected.&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* All MCA systems have at least a primary bus */
 id|bus
 op_assign

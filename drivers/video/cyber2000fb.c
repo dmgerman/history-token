@@ -6767,7 +6767,11 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|MOD_INC_USE_COUNT
+id|__module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif

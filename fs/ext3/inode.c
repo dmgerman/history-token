@@ -2718,6 +2718,10 @@ id|EAGAIN
 r_goto
 id|changed
 suffix:semicolon
+id|goal
+op_assign
+l_int|0
+suffix:semicolon
 id|down
 c_func
 (paren

@@ -6647,11 +6647,7 @@ c_func
 id|vcc
 )paren
 suffix:semicolon
-id|FORE200E_VCC
-c_func
-(paren
-id|vcc
-)paren
+id|vcc-&gt;dev_data
 op_assign
 l_int|NULL
 suffix:semicolon

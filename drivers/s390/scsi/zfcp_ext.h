@@ -4,7 +4,7 @@ DECL|macro|ZFCP_EXT_H
 mdefine_line|#define ZFCP_EXT_H
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_EXT_REVISION
-mdefine_line|#define ZFCP_EXT_REVISION &quot;$Revision: 1.49 $&quot;
+mdefine_line|#define ZFCP_EXT_REVISION &quot;$Revision: 1.50 $&quot;
 macro_line|#include &quot;zfcp_def.h&quot;
 r_extern
 r_struct
@@ -860,14 +860,6 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|zfcp_erp_adapter_shutdown_all
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|zfcp_erp_adapter_failed
 c_func
@@ -1104,19 +1096,5 @@ comma
 r_int
 )paren
 suffix:semicolon
-macro_line|#ifdef ZFCP_STAT_REQSIZES
-r_extern
-r_int
-id|zfcp_statistics_inc
-c_func
-(paren
-r_struct
-id|list_head
-op_star
-comma
-id|u32
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif&t;/* ZFCP_EXT_H */
 eof

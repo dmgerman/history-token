@@ -4276,11 +4276,7 @@ id|fh
 comma
 id|exp
 comma
-id|dget
-c_func
-(paren
 id|nd.dentry
-)paren
 comma
 l_int|NULL
 )paren
@@ -4429,12 +4425,6 @@ id|fsid_key
 )paren
 r_return
 id|nfserr_perm
-suffix:semicolon
-id|dget
-c_func
-(paren
-id|fsid_key-&gt;ek_export-&gt;ex_dentry
-)paren
 suffix:semicolon
 id|rv
 op_assign

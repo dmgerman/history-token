@@ -13,13 +13,10 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/edd.h&gt;
-multiline_comment|/* FIXME - this really belongs in include/scsi/scsi.h */
-macro_line|#include &lt;../drivers/scsi/scsi.h&gt;
-macro_line|#include &lt;../drivers/scsi/hosts.h&gt;
 DECL|macro|EDD_VERSION
-mdefine_line|#define EDD_VERSION &quot;0.14&quot;
+mdefine_line|#define EDD_VERSION &quot;0.15&quot;
 DECL|macro|EDD_DATE
-mdefine_line|#define EDD_DATE    &quot;2004-Apr-28&quot;
+mdefine_line|#define EDD_DATE    &quot;2004-May-17&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
