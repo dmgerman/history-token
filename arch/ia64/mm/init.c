@@ -337,7 +337,9 @@ id|totalram_pages
 suffix:semicolon
 )brace
 id|printk
+c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Freeing unused kernel memory: %ldkB freed&bslash;n&quot;
 comma
 (paren
@@ -355,7 +357,6 @@ suffix:semicolon
 r_void
 DECL|function|free_initrd_mem
 id|free_initrd_mem
-c_func
 (paren
 r_int
 r_int
@@ -389,7 +390,9 @@ OL
 id|end
 )paren
 id|printk
+c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Freeing initrd memory: %ldkB freed&bslash;n&quot;
 comma
 (paren
