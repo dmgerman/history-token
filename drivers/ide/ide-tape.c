@@ -3042,7 +3042,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif /* IDETAPE_DEBUG_BUGS */
+macro_line|#endif
 id|count
 op_assign
 id|min
@@ -3055,7 +3055,8 @@ comma
 id|bcount
 )paren
 suffix:semicolon
-id|atapi_input_bytes
+id|atapi_read
+c_func
 (paren
 id|drive
 comma
@@ -3169,7 +3170,8 @@ comma
 id|bcount
 )paren
 suffix:semicolon
-id|atapi_output_bytes
+id|atapi_write
+c_func
 (paren
 id|drive
 comma
@@ -5761,7 +5763,8 @@ id|bcount.all
 )paren
 suffix:semicolon
 r_else
-id|atapi_output_bytes
+id|atapi_write
+c_func
 (paren
 id|drive
 comma
@@ -5791,7 +5794,8 @@ id|bcount.all
 )paren
 suffix:semicolon
 r_else
-id|atapi_input_bytes
+id|atapi_read
+c_func
 (paren
 id|drive
 comma
@@ -6043,7 +6047,8 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Set the interrupt routine */
-id|atapi_output_bytes
+id|atapi_write
+c_func
 (paren
 id|drive
 comma

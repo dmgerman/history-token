@@ -2134,7 +2134,8 @@ comma
 id|bcount
 )paren
 suffix:semicolon
-id|atapi_input_bytes
+id|atapi_read
+c_func
 (paren
 id|drive
 comma
@@ -2286,7 +2287,8 @@ comma
 id|bcount
 )paren
 suffix:semicolon
-id|atapi_output_bytes
+id|atapi_write
+c_func
 (paren
 id|drive
 comma
@@ -3308,7 +3310,8 @@ id|pc-&gt;buffer
 op_ne
 l_int|NULL
 )paren
-id|atapi_output_bytes
+id|atapi_write
+c_func
 (paren
 id|drive
 comma
@@ -3338,7 +3341,8 @@ id|pc-&gt;buffer
 op_ne
 l_int|NULL
 )paren
-id|atapi_input_bytes
+id|atapi_read
+c_func
 (paren
 id|drive
 comma
@@ -3500,7 +3504,8 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Set the interrupt routine */
-id|atapi_output_bytes
+id|atapi_write
+c_func
 (paren
 id|drive
 comma
@@ -3531,7 +3536,8 @@ id|floppy
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-id|atapi_output_bytes
+id|atapi_write
+c_func
 (paren
 id|drive
 comma

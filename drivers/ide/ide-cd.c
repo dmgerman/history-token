@@ -2016,7 +2016,7 @@ id|cdrom_timer_expiry
 )paren
 suffix:semicolon
 multiline_comment|/* Send the command to the device. */
-id|atapi_output_bytes
+id|atapi_write
 c_func
 (paren
 id|drive
@@ -2118,7 +2118,8 @@ OG
 l_int|0
 )paren
 (brace
-id|atapi_input_bytes
+id|atapi_read
+c_func
 (paren
 id|drive
 comma
@@ -2156,7 +2157,8 @@ id|dum
 id|SECTOR_SIZE
 )braket
 suffix:semicolon
-id|atapi_input_bytes
+id|atapi_read
+c_func
 (paren
 id|drive
 comma
@@ -2236,7 +2238,8 @@ id|dum
 op_assign
 l_int|0
 suffix:semicolon
-id|atapi_output_bytes
+id|atapi_write
+c_func
 (paren
 id|drive
 comma
@@ -2652,16 +2655,14 @@ id|dum
 id|SECTOR_SIZE
 )braket
 suffix:semicolon
-id|atapi_input_bytes
+id|atapi_read
+c_func
 (paren
 id|drive
 comma
 id|dum
 comma
-r_sizeof
-(paren
-id|dum
-)paren
+id|SECTOR_SIZE
 )paren
 suffix:semicolon
 op_decrement
@@ -2749,7 +2750,7 @@ OG
 l_int|0
 )paren
 (brace
-id|atapi_input_bytes
+id|atapi_read
 c_func
 (paren
 id|drive
@@ -3870,7 +3871,8 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* Transfer the data. */
-id|atapi_output_bytes
+id|atapi_write
+c_func
 (paren
 id|drive
 comma
@@ -3893,7 +3895,8 @@ id|dum
 op_assign
 l_int|0
 suffix:semicolon
-id|atapi_output_bytes
+id|atapi_write
+c_func
 (paren
 id|drive
 comma
@@ -3939,7 +3942,8 @@ l_int|2
 )paren
 (brace
 multiline_comment|/* Transfer the data. */
-id|atapi_input_bytes
+id|atapi_read
+c_func
 (paren
 id|drive
 comma
@@ -3962,7 +3966,8 @@ id|dum
 op_assign
 l_int|0
 suffix:semicolon
-id|atapi_input_bytes
+id|atapi_read
+c_func
 (paren
 id|drive
 comma
@@ -4484,7 +4489,7 @@ id|dum
 op_assign
 l_int|0
 suffix:semicolon
-id|atapi_output_bytes
+id|atapi_write
 c_func
 (paren
 id|drive
@@ -4864,7 +4869,7 @@ OG
 l_int|0
 )paren
 (brace
-id|atapi_output_bytes
+id|atapi_write
 c_func
 (paren
 id|drive

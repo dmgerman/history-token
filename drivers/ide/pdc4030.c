@@ -398,7 +398,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|ata_input_data
+id|ata_read
 c_func
 (paren
 id|drive
@@ -1213,7 +1213,7 @@ c_func
 id|rq
 )paren
 suffix:semicolon
-id|ata_input_data
+id|ata_read
 c_func
 (paren
 id|drive
@@ -1677,7 +1677,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t;&t; * Ok, we&squot;re all setup for the interrupt&n;&t;&t; * re-entering us on the last transfer.&n;&t;&t; */
-id|taskfile_output_data
+id|ata_write
 c_func
 (paren
 id|drive

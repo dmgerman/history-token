@@ -7939,7 +7939,7 @@ id|unmask
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif /* CONFIG_PDC202XX_32_UNMASK */
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
@@ -7992,7 +7992,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else /* !CONFIG_BLK_DEV_IDEDMA */
+macro_line|#else
 id|hwif-&gt;drives
 (braket
 l_int|0
@@ -8015,6 +8015,6 @@ id|hwif-&gt;autodma
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
 )brace
 eof

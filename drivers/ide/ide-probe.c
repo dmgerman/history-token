@@ -75,9 +75,9 @@ r_goto
 id|err_kmalloc
 suffix:semicolon
 )brace
-multiline_comment|/* read 512 bytes of id info */
+multiline_comment|/* Read 512 bytes of id info.&n;&t; *&n;&t; * Please note that it is well known that some *very* old drives are&n;&t; * able to provide only 256 of them, since this was the amount read by&n;&t; * DOS.&n;&t; *&n;&t; * However let&squot;s try to get away with this...&n;&t; */
 macro_line|#if 1
-id|ata_input_data
+id|ata_read
 c_func
 (paren
 id|drive
@@ -87,7 +87,6 @@ comma
 id|SECTOR_WORDS
 )paren
 suffix:semicolon
-multiline_comment|/* read 512 bytes of id info */
 macro_line|#else
 (brace
 r_int
@@ -2686,25 +2685,23 @@ r_if
 c_cond
 (paren
 id|drive-&gt;present
-)paren
-(brace
-id|ide_tuneproc_t
-op_star
-id|tuneproc
-op_assign
-id|drive-&gt;channel-&gt;tuneproc
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tuneproc
-op_ne
-l_int|NULL
 op_logical_and
+(paren
 id|drive-&gt;autotune
 op_eq
 l_int|1
 )paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|drive-&gt;channel-&gt;tuneproc
+op_ne
+l_int|NULL
+)paren
+id|drive-&gt;channel
+op_member_access_from_pointer
 id|tuneproc
 c_func
 (paren

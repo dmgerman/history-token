@@ -760,10 +760,21 @@ op_assign
 op_amp
 id|e100_dmaproc
 suffix:semicolon
-id|hwif-&gt;ideproc
+id|hwif-&gt;ata_read
 op_assign
-op_amp
-id|e100_ideproc
+id|e100_ide_input_data
+suffix:semicolon
+id|hwif-&gt;ata_write
+op_assign
+id|e100_ide_input_data
+suffix:semicolon
+id|hwif-&gt;atapi_read
+op_assign
+id|e100_atapi_read
+suffix:semicolon
+id|hwif-&gt;atapi_write
+op_assign
+id|e100_atapi_write
 suffix:semicolon
 )brace
 multiline_comment|/* actually reset and configure the etrax100 ide/ata interface */
@@ -1200,8 +1211,9 @@ suffix:semicolon
 multiline_comment|/*&n; * The following routines are mainly used by the ATAPI drivers.&n; *&n; * These routines will round up any request for an odd number of bytes,&n; * so if an odd bytecount is specified, be sure that there&squot;s at least one&n; * extra byte allocated for the buffer.&n; */
 r_static
 r_void
-DECL|function|e100_atapi_input_bytes
-id|e100_atapi_input_bytes
+DECL|function|e100_atapi_read
+id|e100_atapi_read
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -1227,7 +1239,7 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;atapi_input_bytes, dreg 0x%x, buffer 0x%x, count %d&bslash;n&quot;
+l_string|&quot;atapi_read, dreg 0x%x, buffer 0x%x, count %d&bslash;n&quot;
 comma
 id|data_reg
 comma
@@ -1580,8 +1592,9 @@ macro_line|#endif
 )brace
 r_static
 r_void
-DECL|function|e100_atapi_output_bytes
-id|e100_atapi_output_bytes
+DECL|function|e100_atapi_write
+id|e100_atapi_write
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -1607,7 +1620,7 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;atapi_output_bytes, dreg 0x%x, buffer 0x%x, count %d&bslash;n&quot;
+l_string|&quot;atapi_write, dreg 0x%x, buffer 0x%x, count %d&bslash;n&quot;
 comma
 id|data_reg
 comma
@@ -1959,7 +1972,7 @@ r_int
 id|wcount
 )paren
 (brace
-id|e100_atapi_input_bytes
+id|e100_atapi_read
 c_func
 (paren
 id|drive
@@ -1991,7 +2004,7 @@ r_int
 id|wcount
 )paren
 (brace
-id|e100_atapi_output_bytes
+id|e100_atapi_write
 c_func
 (paren
 id|drive
@@ -2063,9 +2076,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ideproc_atapi_input_bytes
+id|ideproc_atapi_read
 suffix:colon
-id|e100_atapi_input_bytes
+id|e100_atapi_read
 c_func
 (paren
 id|drive
@@ -2078,9 +2091,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ideproc_atapi_output_bytes
+id|ideproc_atapi_write
 suffix:colon
-id|e100_atapi_output_bytes
+id|e100_atapi_write
 c_func
 (paren
 id|drive
