@@ -3,8 +3,6 @@ macro_line|#ifndef __PPC_SBC82xx_H__
 DECL|macro|__PPC_SBC82xx_H__
 mdefine_line|#define __PPC_SBC82xx_H__
 macro_line|#include &lt;asm/ppcboot.h&gt;
-DECL|macro|IMAP_ADDR
-mdefine_line|#define IMAP_ADDR&t;&t;&t;0xf0000000
 DECL|macro|CPM_MAP_ADDR
 mdefine_line|#define CPM_MAP_ADDR&t;&t;&t;0xf0000000
 DECL|macro|SBC82xx_TODC_NVRAM_ADDR

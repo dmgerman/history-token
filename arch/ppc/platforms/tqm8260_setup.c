@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * arch/ppc/platforms/tqm8260_setup.c&n; *&n; * TQM8260 platform support&n; *&n; * Author: Allen Curtis &lt;acurtis@onz.com&gt;&n; * Derived from: m8260_setup.c by Dan Malek, MVista&n; *&n; * Copyright 2002 Ones and Zeros, Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
-macro_line|#include &lt;asm/immap_8260.h&gt;
+macro_line|#include &lt;asm/immap_cpm2.h&gt;
 macro_line|#include &lt;asm/mpc8260.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 DECL|variable|callback_setup_arch
@@ -104,10 +104,10 @@ id|time
 (brace
 (paren
 (paren
-id|immap_t
+id|cpm2_map_t
 op_star
 )paren
-id|IMAP_ADDR
+id|CPM_MAP_ADDR
 )paren
 op_member_access_from_pointer
 id|im_sit.sit_tmcnt
@@ -116,10 +116,10 @@ id|time
 suffix:semicolon
 (paren
 (paren
-id|immap_t
+id|cpm2_map_t
 op_star
 )paren
-id|IMAP_ADDR
+id|CPM_MAP_ADDR
 )paren
 op_member_access_from_pointer
 id|im_sit.sit_tmcntsc
@@ -143,10 +143,10 @@ r_void
 r_return
 (paren
 (paren
-id|immap_t
+id|cpm2_map_t
 op_star
 )paren
-id|IMAP_ADDR
+id|CPM_MAP_ADDR
 )paren
 op_member_access_from_pointer
 id|im_sit.sit_tmcnt

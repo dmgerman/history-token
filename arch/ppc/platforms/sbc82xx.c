@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/mpc8260.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
-macro_line|#include &lt;asm/immap_8260.h&gt;
+macro_line|#include &lt;asm/immap_cpm2.h&gt;
 DECL|variable|callback_setup_arch
 r_static
 r_void
@@ -147,12 +147,12 @@ r_void
 )paren
 (brace
 r_volatile
-id|memctl8260_t
+id|memctl_cpm2_t
 op_star
 id|mc
 op_assign
 op_amp
-id|immr-&gt;im_memctl
+id|cpm2_immr-&gt;im_memctl
 suffix:semicolon
 id|TODC_INIT
 c_func

@@ -3,10 +3,10 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/immap_8260.h&gt;
+macro_line|#include &lt;asm/immap_cpm2.h&gt;
 macro_line|#include &lt;asm/mpc8260.h&gt;
-macro_line|#include &quot;ppc8260_pic.h&quot;
-multiline_comment|/* The 8260 internal interrupt controller.  It is usually&n; * the only interrupt controller.&n; * There are two 32-bit registers (high/low) for up to 64&n; * possible interrupts.&n; *&n; * Now, the fun starts.....Interrupt Numbers DO NOT MAP&n; * in a simple arithmetic fashion to mask or pending registers.&n; * That is, interrupt 4 does not map to bit position 4.&n; * We create two tables, indexed by vector number, to indicate&n; * which register to use and which bit in the register to use.&n; */
+macro_line|#include &quot;cpm2_pic.h&quot;
+multiline_comment|/* The CPM2 internal interrupt controller.  It is usually&n; * the only interrupt controller.&n; * There are two 32-bit registers (high/low) for up to 64&n; * possible interrupts.&n; *&n; * Now, the fun starts.....Interrupt Numbers DO NOT MAP&n; * in a simple arithmetic fashion to mask or pending registers.&n; * That is, interrupt 4 does not map to bit position 4.&n; * We create two tables, indexed by vector number, to indicate&n; * which register to use and which bit in the register to use.&n; */
 DECL|variable|irq_to_siureg
 r_static
 id|u_char
@@ -281,10 +281,10 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-DECL|function|m8260_mask_irq
+DECL|function|cpm2_mask_irq
 r_static
 r_void
-id|m8260_mask_irq
+id|cpm2_mask_irq
 c_func
 (paren
 r_int
@@ -320,7 +320,7 @@ id|simr
 op_assign
 op_amp
 (paren
-id|immr-&gt;im_intctl.ic_simrh
+id|cpm2_immr-&gt;im_intctl.ic_simrh
 )paren
 suffix:semicolon
 id|ppc_cached_irq_mask
@@ -350,10 +350,10 @@ id|word
 )braket
 suffix:semicolon
 )brace
-DECL|function|m8260_unmask_irq
+DECL|function|cpm2_unmask_irq
 r_static
 r_void
-id|m8260_unmask_irq
+id|cpm2_unmask_irq
 c_func
 (paren
 r_int
@@ -389,7 +389,7 @@ id|simr
 op_assign
 op_amp
 (paren
-id|immr-&gt;im_intctl.ic_simrh
+id|cpm2_immr-&gt;im_intctl.ic_simrh
 )paren
 suffix:semicolon
 id|ppc_cached_irq_mask
@@ -418,10 +418,10 @@ id|word
 )braket
 suffix:semicolon
 )brace
-DECL|function|m8260_mask_and_ack
+DECL|function|cpm2_mask_and_ack
 r_static
 r_void
-id|m8260_mask_and_ack
+id|cpm2_mask_and_ack
 c_func
 (paren
 r_int
@@ -460,14 +460,14 @@ id|simr
 op_assign
 op_amp
 (paren
-id|immr-&gt;im_intctl.ic_simrh
+id|cpm2_immr-&gt;im_intctl.ic_simrh
 )paren
 suffix:semicolon
 id|sipnr
 op_assign
 op_amp
 (paren
-id|immr-&gt;im_intctl.ic_sipnrh
+id|cpm2_immr-&gt;im_intctl.ic_sipnrh
 )paren
 suffix:semicolon
 id|ppc_cached_irq_mask
@@ -510,10 +510,10 @@ id|bit
 )paren
 suffix:semicolon
 )brace
-DECL|function|m8260_end_irq
+DECL|function|cpm2_end_irq
 r_static
 r_void
-id|m8260_end_irq
+id|cpm2_end_irq
 c_func
 (paren
 r_int
@@ -576,7 +576,7 @@ id|simr
 op_assign
 op_amp
 (paren
-id|immr-&gt;im_intctl.ic_simrh
+id|cpm2_immr-&gt;im_intctl.ic_simrh
 )paren
 suffix:semicolon
 id|ppc_cached_irq_mask
@@ -606,32 +606,32 @@ id|word
 suffix:semicolon
 )brace
 )brace
-DECL|variable|ppc8260_pic
+DECL|variable|cpm2_pic
 r_struct
 id|hw_interrupt_type
-id|ppc8260_pic
+id|cpm2_pic
 op_assign
 (brace
-l_string|&quot; 8260 SIU  &quot;
+l_string|&quot; CPM2 SIU  &quot;
 comma
 l_int|NULL
 comma
 l_int|NULL
 comma
-id|m8260_unmask_irq
+id|cpm2_unmask_irq
 comma
-id|m8260_mask_irq
+id|cpm2_mask_irq
 comma
-id|m8260_mask_and_ack
+id|cpm2_mask_and_ack
 comma
-id|m8260_end_irq
+id|cpm2_end_irq
 comma
 l_int|0
 )brace
 suffix:semicolon
 r_int
-DECL|function|m8260_get_irq
-id|m8260_get_irq
+DECL|function|cpm2_get_irq
+id|cpm2_get_irq
 c_func
 (paren
 r_struct
@@ -647,10 +647,10 @@ r_int
 r_int
 id|bits
 suffix:semicolon
-multiline_comment|/* For MPC8260, read the SIVEC register and shift the bits down&n;         * to get the irq number.         */
+multiline_comment|/* For CPM2, read the SIVEC register and shift the bits down&n;         * to get the irq number.         */
 id|bits
 op_assign
-id|immr-&gt;im_intctl.ic_sivec
+id|cpm2_immr-&gt;im_intctl.ic_sivec
 suffix:semicolon
 id|irq
 op_assign

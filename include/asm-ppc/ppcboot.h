@@ -182,7 +182,7 @@ r_int
 id|bi_sramsize
 suffix:semicolon
 multiline_comment|/* size&t; of SRAM memory */
-macro_line|#if defined(CONFIG_8xx) || defined(CONFIG_8260)
+macro_line|#if defined(CONFIG_8xx) || defined(CONFIG_CPM2)
 DECL|member|bi_immr_base
 r_int
 r_int
@@ -229,7 +229,7 @@ r_int
 id|bi_busfreq
 suffix:semicolon
 multiline_comment|/* Bus Freq, in MHz */
-macro_line|#if defined(CONFIG_8260)
+macro_line|#if defined(CONFIG_CPM2)
 DECL|member|bi_cpmfreq
 r_int
 r_int

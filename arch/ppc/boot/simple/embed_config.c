@@ -8,7 +8,7 @@ macro_line|#include &lt;asm/mpc8xx.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_8260
 macro_line|#include &lt;asm/mpc8260.h&gt;
-macro_line|#include &lt;asm/immap_8260.h&gt;
+macro_line|#include &lt;asm/immap_cpm2.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_40x
 macro_line|#include &lt;asm/io.h&gt;
@@ -1381,17 +1381,17 @@ comma
 id|corecnf
 suffix:semicolon
 r_volatile
-id|immap_t
+id|cpm2_map_t
 op_star
 id|ip
 suffix:semicolon
 id|ip
 op_assign
 (paren
-id|immap_t
+id|cpm2_map_t
 op_star
 )paren
-id|IMAP_ADDR
+id|CPM_MAP_ADDR
 suffix:semicolon
 id|scmr
 op_assign
@@ -1586,17 +1586,17 @@ comma
 id|corecnf
 suffix:semicolon
 r_volatile
-id|immap_t
+id|cpm2_map_t
 op_star
 id|ip
 suffix:semicolon
 id|ip
 op_assign
 (paren
-id|immap_t
+id|cpm2_map_t
 op_star
 )paren
-id|IMAP_ADDR
+id|CPM_MAP_ADDR
 suffix:semicolon
 id|scmr
 op_assign

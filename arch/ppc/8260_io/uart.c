@@ -20,9 +20,9 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/immap_8260.h&gt;
+macro_line|#include &lt;asm/immap_cpm2.h&gt;
 macro_line|#include &lt;asm/mpc8260.h&gt;
-macro_line|#include &lt;asm/cpm_8260.h&gt;
+macro_line|#include &lt;asm/cpm2.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 macro_line|#include &lt;linux/sysrq.h&gt;
@@ -228,7 +228,7 @@ id|SCC_NUM_BASE
 comma
 multiline_comment|/* SCC1 ttyS2 */
 macro_line|#endif
-macro_line|#ifndef CONFIG_SCC2_ENET
+macro_line|#if !defined(CONFIG_SBC82xx) &amp;&amp; !defined(CONFIG_SCC2_ENET)
 (brace
 l_int|0
 comma
@@ -713,7 +713,7 @@ id|SCC_NUM_BASE
 id|smcp
 op_assign
 op_amp
-id|immr-&gt;im_smc
+id|cpm2_immr-&gt;im_smc
 (braket
 id|idx
 )braket
@@ -729,7 +729,7 @@ r_else
 id|sccp
 op_assign
 op_amp
-id|immr-&gt;im_scc
+id|cpm2_immr-&gt;im_scc
 (braket
 id|idx
 op_minus
@@ -829,7 +829,7 @@ id|SCC_NUM_BASE
 id|smcp
 op_assign
 op_amp
-id|immr-&gt;im_smc
+id|cpm2_immr-&gt;im_smc
 (braket
 id|idx
 )braket
@@ -844,7 +844,7 @@ r_else
 id|sccp
 op_assign
 op_amp
-id|immr-&gt;im_scc
+id|cpm2_immr-&gt;im_scc
 (braket
 id|idx
 op_minus
@@ -1862,7 +1862,7 @@ id|SCC_NUM_BASE
 id|smcp
 op_assign
 op_amp
-id|immr-&gt;im_smc
+id|cpm2_immr-&gt;im_smc
 (braket
 id|idx
 )braket
@@ -1926,7 +1926,7 @@ r_else
 id|sccp
 op_assign
 op_amp
-id|immr-&gt;im_scc
+id|cpm2_immr-&gt;im_scc
 (braket
 id|idx
 op_minus
@@ -2323,7 +2323,7 @@ id|SCC_NUM_BASE
 id|smcp
 op_assign
 op_amp
-id|immr-&gt;im_smc
+id|cpm2_immr-&gt;im_smc
 (braket
 id|idx
 )braket
@@ -2353,7 +2353,7 @@ id|smc_uart_t
 op_star
 )paren
 op_amp
-id|immr-&gt;im_dprambase
+id|cpm2_immr-&gt;im_dprambase
 (braket
 id|state-&gt;port
 )braket
@@ -2390,7 +2390,7 @@ r_else
 id|sccp
 op_assign
 op_amp
-id|immr-&gt;im_scc
+id|cpm2_immr-&gt;im_scc
 (braket
 id|idx
 op_minus
@@ -2404,7 +2404,7 @@ id|scc_uart_t
 op_star
 )paren
 op_amp
-id|immr-&gt;im_dprambase
+id|cpm2_immr-&gt;im_dprambase
 (braket
 id|state-&gt;port
 )braket
@@ -2561,7 +2561,7 @@ id|SCC_NUM_BASE
 id|smcp
 op_assign
 op_amp
-id|immr-&gt;im_smc
+id|cpm2_immr-&gt;im_smc
 (braket
 id|idx
 )braket
@@ -2601,7 +2601,7 @@ r_else
 id|sccp
 op_assign
 op_amp
-id|immr-&gt;im_scc
+id|cpm2_immr-&gt;im_scc
 (braket
 id|idx
 op_minus
@@ -2809,7 +2809,7 @@ suffix:semicolon
 multiline_comment|/* Two stops */
 id|scval
 op_or_assign
-id|SCU_PMSR_SL
+id|SCU_PSMR_SL
 suffix:semicolon
 id|bits
 op_increment
@@ -2829,7 +2829,7 @@ id|SMCMR_PEN
 suffix:semicolon
 id|scval
 op_or_assign
-id|SCU_PMSR_PEN
+id|SCU_PSMR_PEN
 suffix:semicolon
 id|bits
 op_increment
@@ -2853,9 +2853,9 @@ suffix:semicolon
 id|scval
 op_or_assign
 (paren
-id|SCU_PMSR_REVP
+id|SCU_PSMR_REVP
 op_or
-id|SCU_PMSR_TEVP
+id|SCU_PSMR_TEVP
 )paren
 suffix:semicolon
 )brace
@@ -3128,7 +3128,7 @@ id|SCC_NUM_BASE
 id|smcp
 op_assign
 op_amp
-id|immr-&gt;im_smc
+id|cpm2_immr-&gt;im_smc
 (braket
 id|idx
 )braket
@@ -3168,14 +3168,14 @@ r_else
 id|sccp
 op_assign
 op_amp
-id|immr-&gt;im_scc
+id|cpm2_immr-&gt;im_scc
 (braket
 id|idx
 op_minus
 id|SCC_IDX_BASE
 )braket
 suffix:semicolon
-id|sccp-&gt;scc_pmsr
+id|sccp-&gt;scc_psmr
 op_assign
 (paren
 id|sbits
@@ -3186,7 +3186,7 @@ op_or
 id|scval
 suffix:semicolon
 )brace
-id|m8260_cpm_setbrg
+id|cpm2_setbrg
 c_func
 (paren
 id|info-&gt;state-&gt;smc_scc_num
@@ -4622,7 +4622,7 @@ id|info
 )paren
 (brace
 r_volatile
-id|cpm8260_t
+id|cpm_cpm2_t
 op_star
 id|cp
 suffix:semicolon
@@ -4786,7 +4786,7 @@ id|info
 )paren
 (brace
 r_volatile
-id|cpm8260_t
+id|cpm_cpm2_t
 op_star
 id|cp
 suffix:semicolon
@@ -6213,7 +6213,7 @@ id|SCC_NUM_BASE
 id|smcp
 op_assign
 op_amp
-id|immr-&gt;im_smc
+id|cpm2_immr-&gt;im_smc
 (braket
 id|idx
 )braket
@@ -6234,7 +6234,7 @@ r_else
 id|sccp
 op_assign
 op_amp
-id|immr-&gt;im_scc
+id|cpm2_immr-&gt;im_scc
 (braket
 id|idx
 op_minus
@@ -7997,7 +7997,7 @@ id|smc_uart_t
 op_star
 )paren
 op_amp
-id|immr-&gt;im_dprambase
+id|cpm2_immr-&gt;im_dprambase
 (braket
 id|ser-&gt;port
 )braket
@@ -8012,7 +8012,7 @@ id|cbd_t
 op_star
 )paren
 op_amp
-id|immr-&gt;im_dprambase
+id|cpm2_immr-&gt;im_dprambase
 (braket
 id|up-&gt;smc_tbase
 )braket
@@ -8061,7 +8061,7 @@ OG
 (paren
 id|uint
 )paren
-id|IMAP_ADDR
+id|CPM_MAP_ADDR
 )paren
 id|cp
 op_assign
@@ -8355,7 +8355,7 @@ id|smc_uart_t
 op_star
 )paren
 op_amp
-id|immr-&gt;im_dprambase
+id|cpm2_immr-&gt;im_dprambase
 (braket
 id|ser-&gt;port
 )braket
@@ -8386,7 +8386,7 @@ id|cbd_t
 op_star
 )paren
 op_amp
-id|immr-&gt;im_dprambase
+id|cpm2_immr-&gt;im_dprambase
 (braket
 id|up-&gt;smc_rbase
 )braket
@@ -8436,7 +8436,7 @@ OG
 (paren
 id|uint
 )paren
-id|IMAP_ADDR
+id|CPM_MAP_ADDR
 )paren
 id|cp
 op_assign
@@ -8659,7 +8659,7 @@ suffix:semicolon
 id|smcp
 op_assign
 op_amp
-id|immr-&gt;im_smc
+id|cpm2_immr-&gt;im_smc
 (braket
 id|KGDB_SER_IDX
 )braket
@@ -8707,13 +8707,13 @@ op_star
 id|up
 suffix:semicolon
 multiline_comment|/* The serial port has already been initialized before&n;&t; * we get here.  We have to assign some pointers needed by&n;&t; * the kernel, and grab a memory location in the CPM that will&n;&t; * work until the driver is really initialized.&n;&t; */
-id|immr
+id|cpm2_immr
 op_assign
 (paren
-id|immap_t
+id|cpm2_map_t
 op_star
 )paren
-id|IMAP_ADDR
+id|CPM_MAP_ADDR
 suffix:semicolon
 multiline_comment|/* Right now, assume we are using SMCs.&n;&t;*/
 macro_line|#ifdef USE_KGDB_SMC2
@@ -8724,7 +8724,7 @@ op_star
 )paren
 (paren
 op_amp
-id|immr-&gt;im_dprambase
+id|cpm2_immr-&gt;im_dprambase
 (braket
 id|PROFF_SMC2_BASE
 )braket
@@ -8742,7 +8742,7 @@ op_star
 )paren
 (paren
 op_amp
-id|immr-&gt;im_dprambase
+id|cpm2_immr-&gt;im_dprambase
 (braket
 id|PROFF_SMC1_BASE
 )braket
@@ -8760,7 +8760,7 @@ id|smc_uart_t
 op_star
 )paren
 op_amp
-id|immr-&gt;im_dprambase
+id|cpm2_immr-&gt;im_dprambase
 (braket
 id|serbase
 )braket
@@ -8773,7 +8773,7 @@ id|uint
 )paren
 (paren
 op_amp
-id|immr-&gt;im_dprambase
+id|cpm2_immr-&gt;im_dprambase
 (braket
 l_int|0x1000
 )braket
@@ -8787,7 +8787,7 @@ id|cbd_t
 op_star
 )paren
 op_amp
-id|immr-&gt;im_dprambase
+id|cpm2_immr-&gt;im_dprambase
 (braket
 id|up-&gt;smc_rbase
 )braket
@@ -8803,7 +8803,7 @@ id|cbd_t
 op_star
 )paren
 op_amp
-id|immr-&gt;im_dprambase
+id|cpm2_immr-&gt;im_dprambase
 (braket
 id|up-&gt;smc_tbase
 )braket
@@ -9025,7 +9025,7 @@ op_star
 id|bdp
 suffix:semicolon
 r_volatile
-id|cpm8260_t
+id|cpm_cpm2_t
 op_star
 id|cp
 suffix:semicolon
@@ -9050,12 +9050,12 @@ op_star
 id|sup
 suffix:semicolon
 r_volatile
-id|immap_t
+id|cpm2_map_t
 op_star
 id|immap
 suffix:semicolon
 r_volatile
-id|iop8260_t
+id|iop_cpm2_t
 op_star
 id|io
 suffix:semicolon
@@ -9161,7 +9161,7 @@ l_string|&quot;Couldn&squot;t register serial driver&bslash;n&quot;
 suffix:semicolon
 id|immap
 op_assign
-id|immr
+id|cpm2_immr
 suffix:semicolon
 id|cp
 op_assign
@@ -9573,7 +9573,7 @@ suffix:semicolon
 multiline_comment|/* We need to allocate a transmit and receive buffer&n;&t;&t;&t; * descriptors from dual port ram, and a character&n;&t;&t;&t; * buffer area from host mem.&n;&t;&t;&t; */
 id|dp_addr
 op_assign
-id|m8260_cpm_dpalloc
+id|cpm2_dpalloc
 c_func
 (paren
 r_sizeof
@@ -9589,7 +9589,7 @@ suffix:semicolon
 multiline_comment|/* Allocate space for FIFOs in the host memory.&n;&t;&t;&t;*/
 id|mem_addr
 op_assign
-id|m8260_cpm_hostalloc
+id|cpm2_hostalloc
 c_func
 (paren
 id|RX_NUM_FIFO
@@ -9756,7 +9756,7 @@ suffix:semicolon
 )brace
 id|dp_addr
 op_assign
-id|m8260_cpm_dpalloc
+id|cpm2_dpalloc
 c_func
 (paren
 r_sizeof
@@ -9772,7 +9772,7 @@ suffix:semicolon
 multiline_comment|/* Allocate space for FIFOs in the host memory.&n;&t;&t;&t;*/
 id|mem_addr
 op_assign
-id|m8260_cpm_hostalloc
+id|cpm2_hostalloc
 c_func
 (paren
 id|TX_NUM_FIFO
@@ -10198,7 +10198,7 @@ id|scp-&gt;scc_dsr
 op_assign
 l_int|0x7e7e
 suffix:semicolon
-id|scp-&gt;scc_pmsr
+id|scp-&gt;scc_psmr
 op_assign
 l_int|0x3000
 suffix:semicolon
@@ -10219,7 +10219,7 @@ id|info
 )paren
 suffix:semicolon
 multiline_comment|/* Set up the baud rate generator.&n;&t;&t;&t;*/
-id|m8260_cpm_setbrg
+id|cpm2_setbrg
 c_func
 (paren
 id|state-&gt;smc_scc_num
@@ -10313,12 +10313,12 @@ op_star
 id|bdp
 suffix:semicolon
 r_volatile
-id|cpm8260_t
+id|cpm_cpm2_t
 op_star
 id|cp
 suffix:semicolon
 r_volatile
-id|immap_t
+id|cpm2_map_t
 op_star
 id|immap
 suffix:semicolon
@@ -10347,7 +10347,7 @@ id|sup
 suffix:semicolon
 macro_line|#endif
 r_volatile
-id|iop8260_t
+id|iop_cpm2_t
 op_star
 id|io
 suffix:semicolon
@@ -10421,7 +10421,7 @@ id|co-&gt;index
 suffix:semicolon
 id|immap
 op_assign
-id|immr
+id|cpm2_immr
 suffix:semicolon
 id|cp
 op_assign
@@ -10604,7 +10604,7 @@ macro_line|#endif
 multiline_comment|/* Allocate space for two buffer descriptors in the DP ram.&n;&t;*/
 id|dp_addr
 op_assign
-id|m8260_cpm_dpalloc
+id|cpm2_dpalloc
 c_func
 (paren
 r_sizeof
@@ -10620,7 +10620,7 @@ suffix:semicolon
 multiline_comment|/* Allocate space for two 2 byte FIFOs in the host memory.&n;&t;*/
 id|mem_addr
 op_assign
-id|m8260_cpm_hostalloc
+id|cpm2_hostalloc
 c_func
 (paren
 l_int|4
@@ -10839,7 +10839,7 @@ id|scp-&gt;scc_dsr
 op_assign
 l_int|0x7e7e
 suffix:semicolon
-id|scp-&gt;scc_pmsr
+id|scp-&gt;scc_psmr
 op_assign
 l_int|0x3000
 suffix:semicolon
@@ -10849,7 +10849,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Set up the baud rate generator.&n;&t;*/
-id|m8260_cpm_setbrg
+id|cpm2_setbrg
 c_func
 (paren
 id|ser-&gt;smc_scc_num
@@ -10941,7 +10941,7 @@ op_or
 id|SMCMR_SM_UART
 suffix:semicolon
 multiline_comment|/* Set up the baud rate generator.&n;&t;*/
-id|m8260_cpm_setbrg
+id|cpm2_setbrg
 c_func
 (paren
 id|ser-&gt;smc_scc_num

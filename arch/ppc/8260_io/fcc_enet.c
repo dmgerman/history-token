@@ -15,13 +15,13 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;asm/immap_8260.h&gt;
+macro_line|#include &lt;asm/immap_cpm2.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mpc8260.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/cpm_8260.h&gt;
+macro_line|#include &lt;asm/cpm2.h&gt;
 multiline_comment|/* The transmitter timeout&n; */
 DECL|macro|TX_TIMEOUT
 mdefine_line|#define TX_TIMEOUT&t;(2*HZ)
@@ -737,7 +737,7 @@ op_star
 id|cep
 comma
 r_volatile
-id|immap_t
+id|cpm2_map_t
 op_star
 id|immap
 )paren
@@ -767,12 +767,12 @@ op_star
 id|fip
 comma
 r_volatile
-id|iop8260_t
+id|iop_cpm2_t
 op_star
 id|io
 comma
 r_volatile
-id|immap_t
+id|cpm2_map_t
 op_star
 id|immap
 )paren
@@ -792,7 +792,7 @@ op_star
 id|dev
 comma
 r_volatile
-id|immap_t
+id|cpm2_map_t
 op_star
 id|immap
 )paren
@@ -1629,7 +1629,7 @@ id|must_restart
 )paren
 (brace
 r_volatile
-id|cpm8260_t
+id|cpm_cpm2_t
 op_star
 id|cp
 suffix:semicolon
@@ -4519,22 +4519,22 @@ comma
 id|err
 suffix:semicolon
 r_volatile
-id|immap_t
+id|cpm2_map_t
 op_star
 id|immap
 suffix:semicolon
 r_volatile
-id|iop8260_t
+id|iop_cpm2_t
 op_star
 id|io
 suffix:semicolon
 id|immap
 op_assign
 (paren
-id|immap_t
+id|cpm2_map_t
 op_star
 )paren
-id|IMAP_ADDR
+id|CPM_MAP_ADDR
 suffix:semicolon
 multiline_comment|/* and to internal registers */
 id|io
@@ -4808,7 +4808,7 @@ op_star
 id|cep
 comma
 r_volatile
-id|immap_t
+id|cpm2_map_t
 op_star
 id|immap
 )paren
@@ -4887,12 +4887,12 @@ op_star
 id|fip
 comma
 r_volatile
-id|iop8260_t
+id|iop_cpm2_t
 op_star
 id|io
 comma
 r_volatile
-id|immap_t
+id|cpm2_map_t
 op_star
 id|immap
 )paren
@@ -5092,7 +5092,7 @@ op_star
 id|dev
 comma
 r_volatile
-id|immap_t
+id|cpm2_map_t
 op_star
 id|immap
 )paren
@@ -5131,7 +5131,7 @@ op_star
 id|bdp
 suffix:semicolon
 r_volatile
-id|cpm8260_t
+id|cpm_cpm2_t
 op_star
 id|cp
 suffix:semicolon
@@ -5185,7 +5185,7 @@ macro_line|#if 0
 multiline_comment|/* I really want to do this, but for some reason it doesn&squot;t&n;&t; * work with the data cache enabled, so I allocate from the&n;&t; * main memory instead.&n;&t; */
 id|i
 op_assign
-id|m8260_cpm_dpalloc
+id|cpm2_dpalloc
 c_func
 (paren
 r_sizeof
@@ -5223,7 +5223,7 @@ id|i
 suffix:semicolon
 id|i
 op_assign
-id|m8260_cpm_dpalloc
+id|cpm2_dpalloc
 c_func
 (paren
 r_sizeof
@@ -5266,7 +5266,7 @@ op_assign
 id|cbd_t
 op_star
 )paren
-id|m8260_cpm_hostalloc
+id|cpm2_hostalloc
 c_func
 (paren
 r_sizeof
@@ -5293,7 +5293,7 @@ op_assign
 id|cbd_t
 op_star
 )paren
-id|m8260_cpm_hostalloc
+id|cpm2_hostalloc
 c_func
 (paren
 r_sizeof
@@ -6102,22 +6102,22 @@ comma
 id|off
 suffix:semicolon
 r_volatile
-id|immap_t
+id|cpm2_map_t
 op_star
 id|immap
 suffix:semicolon
 r_volatile
-id|iop8260_t
+id|iop_cpm2_t
 op_star
 id|io
 suffix:semicolon
 id|immap
 op_assign
 (paren
-id|immap_t
+id|cpm2_map_t
 op_star
 )paren
-id|IMAP_ADDR
+id|CPM_MAP_ADDR
 suffix:semicolon
 id|io
 op_assign

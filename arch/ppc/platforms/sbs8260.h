@@ -1,7 +1,7 @@
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Board information for various SBS 8260 cards, which should be generic for&n; * all 8260 boards.  The IMMR is now given to us so the hard define&n; * will soon be removed.  All of the clock values are computed from&n; * the configuration SCMR and the Power-On-Reset word.&n; */
-DECL|macro|IMAP_ADDR
-mdefine_line|#define IMAP_ADDR&t;((uint)0xfe000000)
+DECL|macro|CPM_MAP_ADDR
+mdefine_line|#define CPM_MAP_ADDR&t;((uint)0xfe000000)
 multiline_comment|/* A Board Information structure that is given to a program when&n; * prom starts it up.&n; */
 DECL|struct|bd_info
 r_typedef

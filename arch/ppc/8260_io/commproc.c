@@ -11,8 +11,8 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mpc8260.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/immap_8260.h&gt;
-macro_line|#include &lt;asm/cpm_8260.h&gt;
+macro_line|#include &lt;asm/immap_cpm2.h&gt;
+macro_line|#include &lt;asm/cpm2.h&gt;
 DECL|variable|dp_alloc_base
 r_static
 id|uint
@@ -38,53 +38,35 @@ id|host_end
 suffix:semicolon
 multiline_comment|/* end + 1 */
 DECL|variable|cpmp
-id|cpm8260_t
+id|cpm_cpm2_t
 op_star
 id|cpmp
 suffix:semicolon
 multiline_comment|/* Pointer to comm processor space */
 multiline_comment|/* We allocate this here because it is used almost exclusively for&n; * the communication processor devices.&n; */
-DECL|variable|immr
-id|immap_t
+DECL|variable|cpm2_immr
+id|cpm2_map_t
 op_star
-id|immr
+id|cpm2_immr
 suffix:semicolon
 r_void
-DECL|function|m8260_cpm_reset
-id|m8260_cpm_reset
+DECL|function|cpm2_reset
+id|cpm2_reset
 c_func
 (paren
 r_void
 )paren
 (brace
-r_volatile
-id|immap_t
-op_star
-id|imp
-suffix:semicolon
-r_volatile
-id|cpm8260_t
-op_star
-id|commproc
-suffix:semicolon
 id|uint
 id|vpgaddr
 suffix:semicolon
-id|immr
-op_assign
-id|imp
+id|cpm2_immr
 op_assign
 (paren
-r_volatile
-id|immap_t
+id|cpm2_map_t
 op_star
 )paren
-id|IMAP_ADDR
-suffix:semicolon
-id|commproc
-op_assign
-op_amp
-id|imp-&gt;im_cpm
+id|CPM_MAP_ADDR
 suffix:semicolon
 multiline_comment|/* Reclaim the DP memory for our use.&n;&t;*/
 id|dp_alloc_base
@@ -128,17 +110,14 @@ suffix:semicolon
 multiline_comment|/* Tell everyone where the comm processor resides.&n;&t;*/
 id|cpmp
 op_assign
-(paren
-id|cpm8260_t
-op_star
-)paren
-id|commproc
+op_amp
+id|cpm2_immr-&gt;im_cpm
 suffix:semicolon
 )brace
 multiline_comment|/* Allocate some memory from the dual ported ram.&n; * To help protocols with object alignment restrictions, we do that&n; * if they ask.&n; */
 id|uint
-DECL|function|m8260_cpm_dpalloc
-id|m8260_cpm_dpalloc
+DECL|function|cpm2_dpalloc
+id|cpm2_dpalloc
 c_func
 (paren
 id|uint
@@ -226,8 +205,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* We also own one page of host buffer space for the allocation of&n; * UART &quot;fifos&quot; and the like.&n; */
 id|uint
-DECL|function|m8260_cpm_hostalloc
-id|m8260_cpm_hostalloc
+DECL|function|cpm2_hostalloc
+id|cpm2_hostalloc
 c_func
 (paren
 id|uint
@@ -320,8 +299,8 @@ DECL|macro|BRG_UART_CLK
 mdefine_line|#define BRG_UART_CLK&t;(BRG_INT_CLK/16)
 multiline_comment|/* This function is used by UARTS, or anything else that uses a 16x&n; * oversampled clock.&n; */
 r_void
-DECL|function|m8260_cpm_setbrg
-id|m8260_cpm_setbrg
+DECL|function|cpm2_setbrg
+id|cpm2_setbrg
 c_func
 (paren
 id|uint
@@ -352,7 +331,7 @@ id|uint
 op_star
 )paren
 op_amp
-id|immr-&gt;im_brgc1
+id|cpm2_immr-&gt;im_brgc1
 suffix:semicolon
 )brace
 r_else
@@ -364,7 +343,7 @@ id|uint
 op_star
 )paren
 op_amp
-id|immr-&gt;im_brgc5
+id|cpm2_immr-&gt;im_brgc5
 suffix:semicolon
 id|brg
 op_sub_assign
@@ -393,8 +372,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* This function is used to set high speed synchronous baud rate&n; * clocks.&n; */
 r_void
-DECL|function|m8260_cpm_fastbrg
-id|m8260_cpm_fastbrg
+DECL|function|cpm2_fastbrg
+id|cpm2_fastbrg
 c_func
 (paren
 id|uint
@@ -427,7 +406,7 @@ id|uint
 op_star
 )paren
 op_amp
-id|immr-&gt;im_brgc1
+id|cpm2_immr-&gt;im_brgc1
 suffix:semicolon
 )brace
 r_else
@@ -439,7 +418,7 @@ id|uint
 op_star
 )paren
 op_amp
-id|immr-&gt;im_brgc5
+id|cpm2_immr-&gt;im_brgc5
 suffix:semicolon
 id|brg
 op_sub_assign
