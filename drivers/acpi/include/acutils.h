@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acutils.h -- prototypes for the common (subsystem-wide) procedures&n; *       $Revision: 140 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acutils.h -- prototypes for the common (subsystem-wide) procedures&n; *       $Revision: 142 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACUTILS_H
 DECL|macro|_ACUTILS_H
@@ -404,6 +404,12 @@ DECL|macro|ACPI_IS_UPPER
 mdefine_line|#define ACPI_IS_UPPER(c)  (_acpi_ctype[(unsigned char)(c)] &amp; (_ACPI_UP))
 DECL|macro|ACPI_IS_LOWER
 mdefine_line|#define ACPI_IS_LOWER(c)  (_acpi_ctype[(unsigned char)(c)] &amp; (_ACPI_LO))
+DECL|macro|ACPI_IS_PRINT
+mdefine_line|#define ACPI_IS_PRINT(c)  (_acpi_ctype[(unsigned char)(c)] &amp; (_ACPI_LO | _ACPI_UP | _ACPI_DI | _ACPI_SP | _ACPI_PU))
+DECL|macro|ACPI_IS_ALPHA
+mdefine_line|#define ACPI_IS_ALPHA(c)  (_acpi_ctype[(unsigned char)(c)] &amp; (_ACPI_LO | _ACPI_UP))
+DECL|macro|ACPI_IS_ASCII
+mdefine_line|#define ACPI_IS_ASCII(c)  ((c) &lt; 0x80)
 macro_line|#endif /* ACPI_USE_SYSTEM_CLIBRARY */
 multiline_comment|/*&n; * Ut_copy - Object construction and conversion interfaces&n; */
 id|acpi_status

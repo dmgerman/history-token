@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: amlcode.h - Definitions for AML, as included in &quot;definition blocks&quot;&n; *                   Declarations and definitions contained herein are derived&n; *                   directly from the ACPI specification.&n; *       $Revision: 68 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: amlcode.h - Definitions for AML, as included in &quot;definition blocks&quot;&n; *                   Declarations and definitions contained herein are derived&n; *                   directly from the ACPI specification.&n; *       $Revision: 69 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __AMLCODE_H__
 DECL|macro|__AMLCODE_H__
@@ -722,16 +722,5 @@ DECL|macro|METHOD_FLAGS_SERIALIZED
 mdefine_line|#define METHOD_FLAGS_SERIALIZED     0x08
 DECL|macro|METHOD_FLAGS_SYNCH_LEVEL
 mdefine_line|#define METHOD_FLAGS_SYNCH_LEVEL    0xF0
-multiline_comment|/* Array sizes.  Used for range checking also */
-DECL|macro|NUM_ACCESS_TYPES
-mdefine_line|#define NUM_ACCESS_TYPES            6
-DECL|macro|NUM_UPDATE_RULES
-mdefine_line|#define NUM_UPDATE_RULES            3
-DECL|macro|NUM_MATCH_OPS
-mdefine_line|#define NUM_MATCH_OPS               7
-DECL|macro|NUM_OPCODES
-mdefine_line|#define NUM_OPCODES                 256
-DECL|macro|NUM_FIELD_NAMES
-mdefine_line|#define NUM_FIELD_NAMES             2
 macro_line|#endif /* __AMLCODE_H__ */
 eof

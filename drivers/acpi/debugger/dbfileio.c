@@ -1,10 +1,10 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbfileio - Debugger file I/O commands.  These can&squot;t usually&n; *              be used when running the debugger in Ring 0 (Kernel mode)&n; *              $Revision: 64 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbfileio - Debugger file I/O commands.  These can&squot;t usually&n; *              be used when running the debugger in Ring 0 (Kernel mode)&n; *              $Revision: 67 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;actables.h&quot;
-macro_line|#ifdef ENABLE_DEBUGGER
+macro_line|#if (defined ENABLE_DEBUGGER || defined ACPI_DISASSEMBLER)
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DEBUGGER
 id|ACPI_MODULE_NAME
@@ -121,6 +121,7 @@ id|ACPI_TYPE_NOT_FOUND
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef ENABLE_DEBUGGER
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_close_debug_file&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: If open, close the current debug output file&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_db_close_debug_file
@@ -220,6 +221,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+macro_line|#endif
 macro_line|#ifdef ACPI_APPLICATION
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_load_table&n; *&n; * PARAMETERS:  fp              - File that contains table&n; *              Table_ptr       - Return value, buffer with table&n; *              Table_lenght    - Return value, length of table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load the DSDT from the file pointer&n; *&n; ******************************************************************************/
 r_static
@@ -316,10 +318,10 @@ op_logical_or
 (paren
 id|table_header.length
 OG
-l_int|524288
+l_int|0x800000
 )paren
 )paren
-multiline_comment|/* 1/2 Mbyte should be enough */
+multiline_comment|/* 8 Mbyte should be enough */
 (brace
 id|acpi_os_printf
 (paren
@@ -654,7 +656,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef PARSER_ONLY
+macro_line|#if (!defined (ACPI_NO_METHOD_EXECUTION) &amp;&amp; !defined (ACPI_CONSTANT_EVAL_ONLY))
 id|status
 op_assign
 id|acpi_ns_load_table
@@ -743,8 +745,10 @@ id|AE_ERROR
 suffix:semicolon
 )brace
 multiline_comment|/* Get the entire file */
-id|acpi_os_printf
+id|fprintf
 (paren
+id|stderr
+comma
 l_string|&quot;Loading Acpi table from file %s&bslash;n&quot;
 comma
 id|filename
@@ -884,13 +888,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
-id|acpi_os_printf
+id|fprintf
 (paren
-l_string|&quot;%4.4s at %p successfully installed and loaded&bslash;n&quot;
+id|stderr
+comma
+l_string|&quot;Acpi table [%4.4s] successfully installed and loaded&bslash;n&quot;
 comma
 id|acpi_gbl_db_table_ptr-&gt;signature
-comma
-id|acpi_gbl_db_table_ptr
 )paren
 suffix:semicolon
 id|acpi_gbl_acpi_hardware_present

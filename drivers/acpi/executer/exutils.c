@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exutils - interpreter/scanner utilities&n; *              $Revision: 100 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exutils - interpreter/scanner utilities&n; *              $Revision: 102 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n; * DEFINE_AML_GLOBALS is tested in amlcode.h&n; * to determine whether certain global names should be &quot;defined&quot; or only&n; * &quot;declared&quot; in the current compilation.  This enhances maintainability&n; * by enabling a single header file to embody all knowledge of the names&n; * in question.&n; *&n; * Exactly one module of any executable should #define DEFINE_GLOBALS&n; * before #including the header files which use this convention.  The&n; * names in question will be defined and initialized in that module,&n; * and declared as extern in all other modules which #include those&n; * header files.&n; */
 DECL|macro|DEFINE_AML_GLOBALS
@@ -13,6 +13,52 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exutils&quot;
 )paren
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_validate_object_type&n; *&n; * PARAMETERS:  Type            Object type to validate&n; *&n; * DESCRIPTION: Determine if a type is a valid ACPI object type&n; *&n; ******************************************************************************/
+id|u8
+DECL|function|acpi_ex_validate_object_type
+id|acpi_ex_validate_object_type
+(paren
+id|acpi_object_type
+id|type
+)paren
+(brace
+id|ACPI_FUNCTION_ENTRY
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|type
+OG
+id|ACPI_TYPE_MAX
+op_logical_and
+id|type
+OL
+id|INTERNAL_TYPE_BEGIN
+)paren
+op_logical_or
+(paren
+id|type
+OG
+id|INTERNAL_TYPE_MAX
+)paren
+)paren
+(brace
+r_return
+(paren
+id|FALSE
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+id|TRUE
+)paren
+suffix:semicolon
+)brace
+macro_line|#ifndef ACPI_NO_METHOD_EXECUTION
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_enter_interpreter&n; *&n; * PARAMETERS:  None&n; *&n; * DESCRIPTION: Enter the interpreter execution region.  Failure to enter&n; *              the interpreter region is a fatal system error&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_enter_interpreter
@@ -100,51 +146,6 @@ l_string|&quot;Could not release interpreter mutex&bslash;n&quot;
 suffix:semicolon
 )brace
 id|return_VOID
-suffix:semicolon
-)brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_validate_object_type&n; *&n; * PARAMETERS:  Type            Object type to validate&n; *&n; * DESCRIPTION: Determine if a type is a valid ACPI object type&n; *&n; ******************************************************************************/
-id|u8
-DECL|function|acpi_ex_validate_object_type
-id|acpi_ex_validate_object_type
-(paren
-id|acpi_object_type
-id|type
-)paren
-(brace
-id|ACPI_FUNCTION_ENTRY
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|type
-OG
-id|ACPI_TYPE_MAX
-op_logical_and
-id|type
-OL
-id|INTERNAL_TYPE_BEGIN
-)paren
-op_logical_or
-(paren
-id|type
-OG
-id|INTERNAL_TYPE_MAX
-)paren
-)paren
-(brace
-r_return
-(paren
-id|FALSE
-)paren
-suffix:semicolon
-)brace
-r_return
-(paren
-id|TRUE
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_truncate_for32bit_table&n; *&n; * PARAMETERS:  Obj_desc        - Object to be truncated&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Truncate a number to 32-bits if the currently executing method&n; *              belongs to a 32-bit ACPI table.&n; *&n; ******************************************************************************/
@@ -328,6 +329,8 @@ l_string|&quot;Could not release ACPI Global Lock&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
+id|return_VOID
+suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_digits_needed&n; *&n; * PARAMETERS:  Value           - Value to be represented&n; *              Base            - Base of representation&n; *&n; * RETURN:      the number of digits needed to represent Value in Base&n; *&n; ******************************************************************************/
 id|u32
@@ -662,4 +665,5 @@ id|quotient
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 eof
