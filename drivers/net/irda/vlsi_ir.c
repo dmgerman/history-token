@@ -1,15 +1,26 @@
 multiline_comment|/*********************************************************************&n; *&n; *&t;vlsi_ir.c:&t;VLSI82C147 PCI IrDA controller driver for Linux&n; *&n; *&t;Copyright (c) 2001-2003 Martin Diehl&n; *&n; *&t;This program is free software; you can redistribute it and/or &n; *&t;modify it under the terms of the GNU General Public License as &n; *&t;published by the Free Software Foundation; either version 2 of &n; *&t;the License, or (at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License &n; *&t;along with this program; if not, write to the Free Software &n; *&t;Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *&t;MA 02111-1307 USA&n; *&n; ********************************************************************/
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+DECL|macro|DRIVER_NAME
+mdefine_line|#define DRIVER_NAME &t;&t;&quot;vlsi_ir&quot;
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION&t;&t;&quot;v0.5&quot;
+DECL|macro|DRIVER_DESCRIPTION
+mdefine_line|#define DRIVER_DESCRIPTION&t;&quot;IrDA SIR/MIR/FIR driver for VLSI 82C147&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR&t;&t;&quot;Martin Diehl &lt;info@mdiehl.de&gt;&quot;
+DECL|variable|DRIVER_DESCRIPTION
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;IrDA SIR/MIR/FIR driver for VLSI 82C147&quot;
+id|DRIVER_DESCRIPTION
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Martin Diehl &lt;info@mdiehl.de&gt;&quot;
+id|DRIVER_AUTHOR
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -18,12 +29,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|macro|DRIVER_NAME
-mdefine_line|#define DRIVER_NAME &quot;vlsi_ir&quot;
-DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.4a&quot;
 multiline_comment|/********************************************************/
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -215,9 +221,9 @@ r_static
 r_int
 id|qos_mtt_bits
 op_assign
-l_int|0x04
+l_int|0x07
 suffix:semicolon
-multiline_comment|/* default is 1 ms */
+multiline_comment|/* default is 1 ms or more */
 multiline_comment|/********************************************************/
 DECL|function|vlsi_reg_debug
 r_static
@@ -1400,11 +1406,11 @@ comma
 (paren
 id|word
 op_amp
-id|IRENABLE_IREN
+id|IRENABLE_PHYANDCLOCK
 )paren
 ques
 c_cond
-l_string|&quot; IRENABLE&quot;
+l_string|&quot; PHYANDCLOCK&quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
@@ -5073,7 +5079,7 @@ suffix:semicolon
 id|outw
 c_func
 (paren
-id|IRENABLE_IREN
+id|IRENABLE_PHYANDCLOCK
 comma
 id|iobase
 op_plus
@@ -5143,7 +5149,7 @@ c_cond
 id|config
 op_ne
 (paren
-id|IRENABLE_IREN
+id|IRENABLE_PHYANDCLOCK
 op_or
 id|IRENABLE_ENRXST
 )paren
