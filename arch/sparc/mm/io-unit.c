@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/mxcc.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/dma.h&gt;
 multiline_comment|/* #define IOUNIT_DEBUG */
 macro_line|#ifdef IOUNIT_DEBUG
 DECL|macro|IOD

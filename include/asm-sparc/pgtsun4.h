@@ -6,12 +6,6 @@ macro_line|#include &lt;asm/contregs.h&gt;
 multiline_comment|/* PMD_SHIFT determines the size of the area a second-level page table can map */
 DECL|macro|SUN4C_PMD_SHIFT
 mdefine_line|#define SUN4C_PMD_SHIFT       23
-DECL|macro|SUN4C_PMD_SIZE
-mdefine_line|#define SUN4C_PMD_SIZE        (1UL &lt;&lt; SUN4C_PMD_SHIFT)
-DECL|macro|SUN4C_PMD_MASK
-mdefine_line|#define SUN4C_PMD_MASK        (~(SUN4C_PMD_SIZE-1))
-DECL|macro|SUN4C_PMD_ALIGN
-mdefine_line|#define SUN4C_PMD_ALIGN(addr) (((addr)+SUN4C_PMD_SIZE-1)&amp;SUN4C_PMD_MASK)
 multiline_comment|/* PGDIR_SHIFT determines what a third-level page table entry can map */
 DECL|macro|SUN4C_PGDIR_SHIFT
 mdefine_line|#define SUN4C_PGDIR_SHIFT       23
@@ -62,6 +56,8 @@ DECL|macro|_SUN4C_PAGE_PRESENT
 mdefine_line|#define _SUN4C_PAGE_PRESENT      0x08000000   /* implemented in software */
 DECL|macro|_SUN4C_PAGE_IO
 mdefine_line|#define _SUN4C_PAGE_IO           0x04000000   /* I/O page */
+DECL|macro|_SUN4C_PAGE_FILE
+mdefine_line|#define _SUN4C_PAGE_FILE         0x02000000   /* implemented in software */
 DECL|macro|_SUN4C_PAGE_READ
 mdefine_line|#define _SUN4C_PAGE_READ         0x00800000   /* implemented in software */
 DECL|macro|_SUN4C_PAGE_WRITE
@@ -86,6 +82,13 @@ DECL|macro|SUN4C_PAGE_READONLY
 mdefine_line|#define SUN4C_PAGE_READONLY&t;__pgprot(_SUN4C_PAGE_PRESENT|_SUN4C_READABLE)
 DECL|macro|SUN4C_PAGE_KERNEL
 mdefine_line|#define SUN4C_PAGE_KERNEL&t;__pgprot(_SUN4C_READABLE|_SUN4C_WRITEABLE|&bslash;&n;&t;&t;&t;&t;&t; _SUN4C_PAGE_DIRTY|_SUN4C_PAGE_PRIV)
+multiline_comment|/* SUN4C swap entry encoding&n; *&n; * We use 5 bits for the type and 19 for the offset.  This gives us&n; * 32 swapfiles of 4GB each.  Encoding looks like:&n; *&n; * RRRRRRRRooooooooooooooooooottttt&n; * fedcba9876543210fedcba9876543210&n; *&n; * The top 8 bits are reserved for protection and status bits, especially&n; * FILE and PRESENT.&n; */
+DECL|macro|SUN4C_SWP_TYPE_MASK
+mdefine_line|#define SUN4C_SWP_TYPE_MASK&t;0x1f
+DECL|macro|SUN4C_SWP_OFF_MASK
+mdefine_line|#define SUN4C_SWP_OFF_MASK&t;0x7ffff
+DECL|macro|SUN4C_SWP_OFF_SHIFT
+mdefine_line|#define SUN4C_SWP_OFF_SHIFT&t;5
 macro_line|#ifndef __ASSEMBLY__
 DECL|function|sun4c_get_synchronous_error
 r_static

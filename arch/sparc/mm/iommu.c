@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/bitext.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
+macro_line|#include &lt;asm/dma.h&gt;
 multiline_comment|/*&n; * This can be sized dynamically, but we will do this&n; * only when we have a guidance about actual I/O pressures.&n; */
 DECL|macro|IOMMU_RNGE
 mdefine_line|#define IOMMU_RNGE&t;IOMMU_RNGE_256MB
