@@ -4462,6 +4462,8 @@ id|S_IXUGO
 id|attributes
 op_or_assign
 id|aSYSTEM
+op_or
+id|aSHARED
 suffix:semicolon
 id|result
 op_assign
