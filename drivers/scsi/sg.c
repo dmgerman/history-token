@@ -16072,6 +16072,14 @@ l_int|0
 op_eq
 id|m
 )paren
+id|seq_printf
+c_func
+(paren
+id|s
+comma
+l_string|&quot;     No requests active&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 )brace
 DECL|function|sg_proc_open_debug
