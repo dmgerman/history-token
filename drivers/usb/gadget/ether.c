@@ -5530,6 +5530,8 @@ op_assign
 id|alloc_skb
 (paren
 id|size
+op_plus
+id|NET_IP_ALIGN
 comma
 id|gfp_flags
 )paren
@@ -5549,6 +5551,15 @@ r_goto
 id|enomem
 suffix:semicolon
 )brace
+multiline_comment|/* Some platforms perform better when IP packets are aligned,&n;&t; * but on at least one, checksumming fails otherwise.  Note:&n;&t; * this doesn&squot;t account for variable-sized RNDIS headers.&n;&t; */
+id|skb_reserve
+c_func
+(paren
+id|skb
+comma
+id|NET_IP_ALIGN
+)paren
+suffix:semicolon
 id|req-&gt;buf
 op_assign
 id|skb-&gt;data
