@@ -1908,6 +1908,7 @@ id|port
 )paren
 (brace
 id|u32
+id|__iomem
 op_star
 id|portstat
 op_assign

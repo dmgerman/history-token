@@ -80,6 +80,7 @@ comma
 id|len
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|base
 suffix:semicolon
@@ -395,6 +396,7 @@ id|base
 op_assign
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|resource

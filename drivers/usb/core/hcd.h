@@ -117,6 +117,7 @@ suffix:semicolon
 multiline_comment|/* irq allocated */
 DECL|member|regs
 r_void
+id|__iomem
 op_star
 id|regs
 suffix:semicolon

@@ -1800,6 +1800,7 @@ id|hcd
 suffix:semicolon
 r_struct
 id|ohci_regs
+id|__iomem
 op_star
 id|regs
 op_assign

@@ -725,6 +725,7 @@ multiline_comment|/*&n;&t; * I/O memory used to communicate with the HC (dma-con
 DECL|member|regs
 r_struct
 id|ohci_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -993,6 +994,7 @@ r_int
 id|ohci_readl
 (paren
 r_void
+id|__iomem
 op_star
 id|regs
 )paren

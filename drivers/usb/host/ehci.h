@@ -130,12 +130,14 @@ suffix:semicolon
 DECL|member|caps
 r_struct
 id|ehci_caps
+id|__iomem
 op_star
 id|caps
 suffix:semicolon
 DECL|member|regs
 r_struct
 id|ehci_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
