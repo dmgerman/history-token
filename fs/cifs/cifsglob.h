@@ -161,6 +161,11 @@ DECL|member|response_q
 id|wait_queue_head_t
 id|response_q
 suffix:semicolon
+DECL|member|request_q
+id|wait_queue_head_t
+id|request_q
+suffix:semicolon
+multiline_comment|/* if more than maxmpx to srvr must block*/
 DECL|member|pending_mid_q
 r_struct
 id|list_head
@@ -208,7 +213,12 @@ DECL|member|socketUseCount
 id|atomic_t
 id|socketUseCount
 suffix:semicolon
-multiline_comment|/* indicates if the server has any open cifs sessions */
+multiline_comment|/* number of open cifs sessions on socket */
+DECL|member|inFlight
+id|atomic_t
+id|inFlight
+suffix:semicolon
+multiline_comment|/* number of requests on the wire to server */
 DECL|member|tcpStatus
 r_enum
 id|statusEnum
@@ -366,7 +376,7 @@ DECL|member|inUse
 id|atomic_t
 id|inUse
 suffix:semicolon
-multiline_comment|/* # of CURRENT users of this ses */
+multiline_comment|/* # of mounts (tree connections) on this ses */
 DECL|member|status
 r_enum
 id|statusEnum

@@ -597,6 +597,15 @@ id|server-&gt;tcpStatus
 op_assign
 id|CifsGood
 suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|server-&gt;inFlight
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|wake_up
 c_func
 (paren
@@ -1719,6 +1728,23 @@ suffix:semicolon
 id|server-&gt;tcpStatus
 op_assign
 id|CifsExiting
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|server-&gt;inFlight
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* Although there should not be any requests blocked on &n;&t;this queue it can not hurt to be paranoid and try to wake up requests&n;&t;that may haven been blocked when more than 50 at time were on the wire &n;&t;to the same server - they now will see the session is in exit state&n;&t;and get out of SendReceive.  */
+id|wake_up_all
+c_func
+(paren
+op_amp
+id|server-&gt;request_q
+)paren
 suffix:semicolon
 id|server-&gt;tsk
 op_assign
@@ -6355,6 +6381,15 @@ r_sizeof
 r_struct
 id|sockaddr_in
 )paren
+)paren
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|srvTcp-&gt;inFlight
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* BB Add code for ipv6 case too */
