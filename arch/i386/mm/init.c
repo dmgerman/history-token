@@ -2199,13 +2199,6 @@ id|num_physpages
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#ifndef CONFIG_DISCONTIGMEM
-DECL|macro|__free_all_bootmem
-mdefine_line|#define __free_all_bootmem() free_all_bootmem()
-macro_line|#else
-DECL|macro|__free_all_bootmem
-mdefine_line|#define __free_all_bootmem() free_all_bootmem_node(NODE_DATA(0))
-macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 DECL|variable|kcore_mem
 DECL|variable|kcore_vmalloc
 r_static
@@ -2351,7 +2344,7 @@ macro_line|#endif
 multiline_comment|/* this will put all low memory onto the freelists */
 id|totalram_pages
 op_add_assign
-id|__free_all_bootmem
+id|free_all_bootmem
 c_func
 (paren
 )paren
