@@ -3648,7 +3648,7 @@ id|dev-&gt;irq
 op_assign
 id|pdev-&gt;irq
 suffix:semicolon
-multiline_comment|/* dev-&gt;priv/tp zeroed and aligned in init_etherdev */
+multiline_comment|/* dev-&gt;priv/tp zeroed and aligned in alloc_etherdev */
 id|tp
 op_assign
 id|dev-&gt;priv

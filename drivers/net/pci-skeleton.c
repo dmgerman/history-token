@@ -1899,7 +1899,7 @@ id|dev_out
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* dev zeroed in init_etherdev */
+multiline_comment|/* dev zeroed in alloc_etherdev */
 id|dev
 op_assign
 id|alloc_etherdev
@@ -2761,7 +2761,7 @@ r_int
 )paren
 id|ioaddr
 suffix:semicolon
-multiline_comment|/* dev-&gt;priv/tp zeroed and aligned in init_etherdev */
+multiline_comment|/* dev-&gt;priv/tp zeroed and aligned in alloc_etherdev */
 id|tp
 op_assign
 id|dev-&gt;priv
