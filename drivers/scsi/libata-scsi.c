@@ -2837,11 +2837,6 @@ multiline_comment|/* DMA data xfer - interrupt-driven */
 )brace
 r_else
 (brace
-id|qc-&gt;flags
-op_or_assign
-id|ATA_QCFLAG_SG
-suffix:semicolon
-multiline_comment|/* data is present; dma-map it */
 id|qc-&gt;tf.protocol
 op_assign
 id|ATA_PROT_ATAPI_DMA
