@@ -1,19 +1,16 @@
 multiline_comment|/*&n; *&t;linux/arch/alpha/kernel/core_mcpcia.c&n; *&n; * Based on code written by David A Rusling (david.rusling@reo.mts.dec.com).&n; *&n; * Code common to all MCbus-PCI Adaptor core logic chipsets&n; */
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/hwrpb.h&gt;
 DECL|macro|__EXTERN_INLINE
 mdefine_line|#define __EXTERN_INLINE inline
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/core_mcpcia.h&gt;
 DECL|macro|__EXTERN_INLINE
 macro_line|#undef __EXTERN_INLINE
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &quot;proto.h&quot;
 macro_line|#include &quot;pci_impl.h&quot;
 multiline_comment|/*&n; * NOTE: Herein lie back-to-back mb instructions.  They are magic. &n; * One plausible explanation is that the i/o controller does not properly&n; * handle the system transaction.  Another involves timing.  Ho hum.&n; */
