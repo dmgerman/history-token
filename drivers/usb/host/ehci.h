@@ -694,8 +694,11 @@ l_int|32
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* mask NakCnt+T in qh-&gt;hw_alt_next */
 DECL|macro|QTD_MASK
-mdefine_line|#define QTD_MASK cpu_to_le32 (~0x1f)&t;/* mask NakCnt+T in qh-&gt;hw_alt_next */
+mdefine_line|#define QTD_MASK __constant_cpu_to_le32 (~0x1f)
+DECL|macro|IS_SHORT_READ
+mdefine_line|#define IS_SHORT_READ(token) (QTD_LENGTH (token) != 0 &amp;&amp; QTD_PID (token) == 1)
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* type tag from {qh,itd,sitd,fstn}-&gt;hw_next */
 DECL|macro|Q_NEXT_TYPE

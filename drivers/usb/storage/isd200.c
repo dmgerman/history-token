@@ -1497,12 +1497,7 @@ multiline_comment|/* if the command gets aborted by the higher layers, we need t
 r_if
 c_cond
 (paren
-id|atomic_read
-c_func
-(paren
-op_amp
 id|us-&gt;sm_state
-)paren
 op_eq
 id|US_STATE_ABORTING
 )paren
@@ -1510,16 +1505,11 @@ id|US_STATE_ABORTING
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;-- transport indicates command was aborted&bslash;n&quot;
+l_string|&quot;-- command was aborted&bslash;n&quot;
 )paren
 suffix:semicolon
-id|srb-&gt;result
-op_assign
-id|DID_ABORT
-op_lshift
-l_int|16
-suffix:semicolon
-r_return
+r_goto
+id|Handle_Abort
 suffix:semicolon
 )brace
 r_switch
@@ -1537,6 +1527,21 @@ op_assign
 id|SAM_STAT_GOOD
 suffix:semicolon
 r_break
+suffix:semicolon
+r_case
+id|USB_STOR_TRANSPORT_NO_SENSE
+suffix:colon
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- transport indicates protocol failure&bslash;n&quot;
+)paren
+suffix:semicolon
+id|srb-&gt;result
+op_assign
+id|SAM_STAT_CHECK_CONDITION
+suffix:semicolon
+r_return
 suffix:semicolon
 r_case
 id|USB_STOR_TRANSPORT_FAILED
@@ -1675,12 +1680,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|atomic_read
-c_func
-(paren
-op_amp
 id|us-&gt;sm_state
-)paren
 op_eq
 id|US_STATE_ABORTING
 )paren
@@ -1691,13 +1691,8 @@ c_func
 l_string|&quot;-- auto-sense aborted&bslash;n&quot;
 )paren
 suffix:semicolon
-id|srb-&gt;result
-op_assign
-id|DID_ABORT
-op_lshift
-l_int|16
-suffix:semicolon
-r_return
+r_goto
+id|Handle_Abort
 suffix:semicolon
 )brace
 r_if
@@ -1741,12 +1736,15 @@ id|SAM_STAT_GOOD
 suffix:semicolon
 )brace
 r_else
+(brace
 id|srb-&gt;result
 op_assign
 id|DID_ERROR
 op_lshift
 l_int|16
 suffix:semicolon
+multiline_comment|/* Need reset here */
+)brace
 )brace
 multiline_comment|/* Regardless of auto-sense, if we _know_ we have an error&n;&t; * condition, show that in the result code&n;&t; */
 r_if
@@ -1760,6 +1758,28 @@ id|srb-&gt;result
 op_assign
 id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
+r_return
+suffix:semicolon
+multiline_comment|/* abort processing: the bulk-only transport requires a reset&n;&t; * following an abort */
+id|Handle_Abort
+suffix:colon
+id|srb-&gt;result
+op_assign
+id|DID_ABORT
+op_lshift
+l_int|16
+suffix:semicolon
+multiline_comment|/* permit the reset transfer to take place */
+id|clear_bit
+c_func
+(paren
+id|US_FLIDX_ABORTING
+comma
+op_amp
+id|us-&gt;flags
+)paren
+suffix:semicolon
+multiline_comment|/* Need reset here */
 )brace
 macro_line|#ifdef CONFIG_USB_STORAGE_DEBUG
 DECL|function|isd200_log_config
