@@ -1,11 +1,11 @@
 multiline_comment|/* sundance.c: A Linux device driver for the Sundance ST201 &quot;Alta&quot;. */
-multiline_comment|/*&n;&t;Written 1999-2000 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/sundance.html&n;&n;&n;&t;Version 1.01a (jgarzik):&n;&t;- Replace some MII-related magic numbers with constants&n;&n;&t;Version 1.02 (D-Link):&n;&t;- Add new board to PCI ID list&n;&t;- Fix multicast bug&n;&t;&n;&t;Version 1.03 (D-Link):&n;&t;- New Rx scheme, reduce Rx congestion&n;&t;- Option to disable flow control&n;&t;&n;&t;Version 1.04 (D-Link):&n;&t;- Tx timeout recovery&n;&t;- More support for ethtool.&n;&n;*/
+multiline_comment|/*&n;&t;Written 1999-2000 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/sundance.html&n;&n;&n;&t;Version LK1.01a (jgarzik):&n;&t;- Replace some MII-related magic numbers with constants&n;&n;&t;Version LK1.02 (D-Link):&n;&t;- Add new board to PCI ID list&n;&t;- Fix multicast bug&n;&t;&n;&t;Version LK1.03 (D-Link):&n;&t;- New Rx scheme, reduce Rx congestion&n;&t;- Option to disable flow control&n;&t;&n;&t;Version LK1.04 (D-Link):&n;&t;- Tx timeout recovery&n;&t;- More support for ethtool.&n;&n;&t;Version LK1.04a (jgarzik):&n;&t;- Remove unused/constant members from struct pci_id_info&n;&t;(which then allows removal of &squot;drv_flags&squot; from private struct)&n;&t;- If no phy is found, fail to load that board&n;&t;- Always start phy id scan at id 1 to avoid problems (Donald Becker)&n;&t;- Autodetect where mii_preable_required is needed,&n;&t;default to not needed.  (Donald Becker)&n;&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;sundance&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.04&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.01+LK1.04a&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;19-Aug-2002&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;19-Sep-2002&quot;
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 DECL|variable|debug
 r_static
@@ -67,6 +67,14 @@ id|media
 (braket
 id|MAX_UNITS
 )braket
+suffix:semicolon
+multiline_comment|/* Set iff a MII transceiver on any interface requires mdio preamble.&n;   This only set with older tranceivers, so the extra&n;   code size of a per-interface flag is not worthwhile. */
+DECL|variable|mii_preamble_required
+r_static
+r_int
+id|mii_preamble_required
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* Operational parameters that are set at compile time. */
 multiline_comment|/* Keep the ring sizes a power of two for compile efficiency.&n;   The compiler will convert &lt;unsigned&gt;&squot;%&squot;&lt;2^N&gt; into a bit mask.&n;   Making the Tx ring too large decreases the effectiveness of channel&n;   bonding and packet priority, and more than 128 requires modifying the&n;   Tx error recovery.&n;   Large receive rings merely waste memory. */
@@ -215,6 +223,14 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|mii_preamble_required
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
@@ -255,91 +271,15 @@ comma
 l_string|&quot;Sundance Alta flow control [0|1]&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|mii_preamble_required
+comma
+l_string|&quot;Set to send a preamble before MII management transactions&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This driver is designed for the Sundance Technologies &quot;Alta&quot; ST201 chip.&n;&n;II. Board-specific settings&n;&n;III. Driver operation&n;&n;IIIa. Ring buffers&n;&n;This driver uses two statically allocated fixed-size descriptor lists&n;formed into rings by a branch from the final descriptor to the beginning of&n;the list.  The ring sizes are set at compile time by RX/TX_RING_SIZE.&n;Some chips explicitly use only 2^N sized rings, while others use a&n;&squot;next descriptor&squot; pointer that the driver forms into rings.&n;&n;IIIb/c. Transmit/Receive Structure&n;&n;This driver uses a zero-copy receive and transmit scheme.&n;The driver allocates full frame size skbuffs for the Rx ring buffers at&n;open() time and passes the skb-&gt;data field to the chip as receive data&n;buffers.  When an incoming frame is less than RX_COPYBREAK bytes long,&n;a fresh skbuff is allocated and the frame is copied to the new skbuff.&n;When the incoming frame is larger, the skbuff is passed directly up the&n;protocol stack.  Buffers consumed this way are replaced by newly allocated&n;skbuffs in a later phase of receives.&n;&n;The RX_COPYBREAK value is chosen to trade-off the memory wasted by&n;using a full-sized skbuff for small frames vs. the copying costs of larger&n;frames.  New boards are typically used in generously configured machines&n;and the underfilled buffers have negligible impact compared to the benefit of&n;a single allocation size, so the default value of zero results in never&n;copying packets.  When copying is done, the cost is usually mitigated by using&n;a combined copy/checksum routine.  Copying also preloads the cache, which is&n;most useful with small frames.&n;&n;A subtle aspect of the operation is that the IP header at offset 14 in an&n;ethernet frame isn&squot;t longword aligned for further processing.&n;Unaligned buffers are permitted by the Sundance hardware, so&n;frames are received into the skbuff at an offset of &quot;+2&quot;, 16-byte aligning&n;the IP header.&n;&n;IIId. Synchronization&n;&n;The driver runs as two independent, single-threaded flows of control.  One&n;is the send-packet routine, which enforces single-threaded use by the&n;dev-&gt;tbusy flag.  The other thread is the interrupt handler, which is single&n;threaded by the hardware and interrupt handling software.&n;&n;The send packet thread has partial control over the Tx ring and &squot;dev-&gt;tbusy&squot;&n;flag.  It sets the tbusy flag whenever it&squot;s queuing a Tx packet. If the next&n;queue slot is empty, it clears the tbusy flag when finished otherwise it sets&n;the &squot;lp-&gt;tx_full&squot; flag.&n;&n;The interrupt handler has exclusive control over the Rx ring and records stats&n;from the Tx ring.  After reaping the stats, it marks the Tx queue entry as&n;empty by incrementing the dirty_tx mark. Iff the &squot;lp-&gt;tx_full&squot; flag is set, it&n;clears both the tx_full and tbusy flags.&n;&n;IV. Notes&n;&n;IVb. References&n;&n;The Sundance ST201 datasheet, preliminary version.&n;http://cesdis.gsfc.nasa.gov/linux/misc/100mbps.html&n;http://cesdis.gsfc.nasa.gov/linux/misc/NWay.html&n;&n;IVc. Errata&n;&n;*/
-DECL|enum|pci_id_flags_bits
-r_enum
-id|pci_id_flags_bits
-(brace
-multiline_comment|/* Set PCI command register bits before calling probe1(). */
-DECL|enumerator|PCI_USES_IO
-DECL|enumerator|PCI_USES_MEM
-DECL|enumerator|PCI_USES_MASTER
-id|PCI_USES_IO
-op_assign
-l_int|1
-comma
-id|PCI_USES_MEM
-op_assign
-l_int|2
-comma
-id|PCI_USES_MASTER
-op_assign
-l_int|4
-comma
-multiline_comment|/* Read and map the single following PCI BAR. */
-DECL|enumerator|PCI_ADDR0
-DECL|enumerator|PCI_ADDR1
-DECL|enumerator|PCI_ADDR2
-DECL|enumerator|PCI_ADDR3
-id|PCI_ADDR0
-op_assign
-l_int|0
-op_lshift
-l_int|4
-comma
-id|PCI_ADDR1
-op_assign
-l_int|1
-op_lshift
-l_int|4
-comma
-id|PCI_ADDR2
-op_assign
-l_int|2
-op_lshift
-l_int|4
-comma
-id|PCI_ADDR3
-op_assign
-l_int|3
-op_lshift
-l_int|4
-comma
-DECL|enumerator|PCI_ADDR_64BITS
-DECL|enumerator|PCI_NO_ACPI_WAKE
-DECL|enumerator|PCI_NO_MIN_LATENCY
-id|PCI_ADDR_64BITS
-op_assign
-l_int|0x100
-comma
-id|PCI_NO_ACPI_WAKE
-op_assign
-l_int|0x200
-comma
-id|PCI_NO_MIN_LATENCY
-op_assign
-l_int|0x400
-comma
-)brace
-suffix:semicolon
-DECL|enum|chip_capability_flags
-DECL|enumerator|CanHaveMII
-r_enum
-id|chip_capability_flags
-(brace
-id|CanHaveMII
-op_assign
-l_int|1
-comma
-)brace
-suffix:semicolon
-macro_line|#ifdef USE_IO_OPS
-DECL|macro|PCI_IOTYPE
-mdefine_line|#define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_IO  | PCI_ADDR0)
-macro_line|#else
-DECL|macro|PCI_IOTYPE
-mdefine_line|#define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_MEM | PCI_ADDR1)
-macro_line|#endif
 DECL|variable|__devinitdata
 r_static
 r_struct
@@ -460,6 +400,14 @@ comma
 id|sundance_pci_tbl
 )paren
 suffix:semicolon
+r_enum
+(brace
+DECL|enumerator|netdev_io_size
+id|netdev_io_size
+op_assign
+l_int|128
+)brace
+suffix:semicolon
 DECL|struct|pci_id_info
 r_struct
 id|pci_id_info
@@ -470,50 +418,6 @@ r_char
 op_star
 id|name
 suffix:semicolon
-DECL|struct|match_info
-r_struct
-id|match_info
-(brace
-DECL|member|pci
-DECL|member|pci_mask
-DECL|member|subsystem
-DECL|member|subsystem_mask
-r_int
-id|pci
-comma
-id|pci_mask
-comma
-id|subsystem
-comma
-id|subsystem_mask
-suffix:semicolon
-DECL|member|revision
-DECL|member|revision_mask
-r_int
-id|revision
-comma
-id|revision_mask
-suffix:semicolon
-multiline_comment|/* Only 8 bits. */
-DECL|member|id
-)brace
-id|id
-suffix:semicolon
-DECL|member|pci_flags
-r_enum
-id|pci_id_flags_bits
-id|pci_flags
-suffix:semicolon
-DECL|member|io_size
-r_int
-id|io_size
-suffix:semicolon
-multiline_comment|/* Needed for I/O region check or ioremap(). */
-DECL|member|drv_flags
-r_int
-id|drv_flags
-suffix:semicolon
-multiline_comment|/* Driver use, intended as capability flags. */
 )brace
 suffix:semicolon
 DECL|variable|pci_id_tbl
@@ -527,104 +431,26 @@ op_assign
 (brace
 (brace
 l_string|&quot;D-Link DFE-550TX FAST Ethernet Adapter&quot;
-comma
-(brace
-l_int|0x10021186
-comma
-l_int|0xffffffff
-comma
-)brace
-comma
-id|PCI_IOTYPE
-comma
-l_int|128
-comma
-id|CanHaveMII
 )brace
 comma
 (brace
 l_string|&quot;D-Link DFE-550FX 100Mbps Fiber-optics Adapter&quot;
-comma
-(brace
-l_int|0x10031186
-comma
-l_int|0xffffffff
-comma
-)brace
-comma
-id|PCI_IOTYPE
-comma
-l_int|128
-comma
-id|CanHaveMII
 )brace
 comma
 (brace
 l_string|&quot;D-Link DFE-580TX 4 port Server Adapter&quot;
-comma
-(brace
-l_int|0x10121186
-comma
-l_int|0xffffffff
-comma
-)brace
-comma
-id|PCI_IOTYPE
-comma
-l_int|128
-comma
-id|CanHaveMII
 )brace
 comma
 (brace
 l_string|&quot;D-Link DFE-530TXS FAST Ethernet Adapter&quot;
-comma
-(brace
-l_int|0x10021186
-comma
-l_int|0xffffffff
-comma
-)brace
-comma
-id|PCI_IOTYPE
-comma
-l_int|128
-comma
-id|CanHaveMII
 )brace
 comma
 (brace
 l_string|&quot;D-Link DL10050-based FAST Ethernet Adapter&quot;
-comma
-(brace
-l_int|0x10021186
-comma
-l_int|0xffffffff
-comma
-)brace
-comma
-id|PCI_IOTYPE
-comma
-l_int|128
-comma
-id|CanHaveMII
 )brace
 comma
 (brace
 l_string|&quot;Sundance Technology Alta&quot;
-comma
-(brace
-l_int|0x020113F0
-comma
-l_int|0xffffffff
-comma
-)brace
-comma
-id|PCI_IOTYPE
-comma
-l_int|128
-comma
-id|CanHaveMII
 )brace
 comma
 (brace
@@ -1294,11 +1120,8 @@ id|rx_lock
 suffix:semicolon
 multiline_comment|/* Group with Tx control cache line. */
 DECL|member|chip_id
-DECL|member|drv_flags
 r_int
 id|chip_id
-comma
-id|drv_flags
 suffix:semicolon
 DECL|member|cur_rx
 DECL|member|dirty_rx
@@ -1389,11 +1212,6 @@ l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* MII transceiver section. */
-DECL|member|mii_cnt
-r_int
-id|mii_cnt
-suffix:semicolon
-multiline_comment|/* MII device addresses. */
 DECL|member|advertising
 id|u16
 id|advertising
@@ -1846,12 +1664,7 @@ id|ioremap
 (paren
 id|ioaddr
 comma
-id|pci_id_tbl
-(braket
-id|chip_idx
-)braket
-dot
-id|io_size
+id|netdev_io_size
 )paren
 suffix:semicolon
 r_if
@@ -1918,15 +1731,6 @@ suffix:semicolon
 id|np-&gt;chip_id
 op_assign
 id|chip_idx
-suffix:semicolon
-id|np-&gt;drv_flags
-op_assign
-id|pci_id_tbl
-(braket
-id|chip_idx
-)braket
-dot
-id|drv_flags
 suffix:semicolon
 id|np-&gt;pci_dev
 op_assign
@@ -2174,12 +1978,15 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Default setting */
+id|mii_preamble_required
+op_increment
+suffix:semicolon
 r_for
 c_loop
 (paren
 id|phy
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 id|phy
 OL
@@ -2203,7 +2010,7 @@ id|dev
 comma
 id|phy
 comma
-l_int|1
+id|MII_BMSR
 )paren
 suffix:semicolon
 r_if
@@ -2235,8 +2042,22 @@ id|dev
 comma
 id|phy
 comma
-l_int|4
+id|MII_ADVERTISE
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|mii_status
+op_amp
+l_int|0x0040
+)paren
+op_eq
+l_int|0
+)paren
+id|mii_preamble_required
+op_increment
 suffix:semicolon
 id|printk
 c_func
@@ -2256,9 +2077,8 @@ id|np-&gt;advertising
 suffix:semicolon
 )brace
 )brace
-id|np-&gt;mii_cnt
-op_assign
-id|phy_idx
+id|mii_preamble_required
+op_decrement
 suffix:semicolon
 r_if
 c_cond
@@ -2267,11 +2087,12 @@ id|phy_idx
 op_eq
 l_int|0
 )paren
+(brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: No MII transceiver found!, ASIC status %x&bslash;n&quot;
+l_string|&quot;%s: No MII transceiver found, aborting.  ASIC status %x&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -2284,6 +2105,10 @@ id|ASICCtrl
 )paren
 )paren
 suffix:semicolon
+r_goto
+id|err_out_unmap_rx
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Parse override configuration */
 id|np-&gt;an_enable
@@ -2864,15 +2689,6 @@ suffix:semicolon
 multiline_comment|/*  MII transceiver control section.&n;&t;Read and write the MII registers using software-generated serial&n;&t;MDIO protocol.  See the MII specifications or DP83840A data sheet&n;&t;for details.&n;&n;&t;The maximum data clock rate is 2.5 Mhz.  The minimum timing is usually&n;&t;met by back-to-back 33Mhz PCI cycles. */
 DECL|macro|mdio_delay
 mdefine_line|#define mdio_delay() readb(mdio_addr)
-multiline_comment|/* Set iff a MII transceiver on any interface requires mdio preamble.&n;   This only set with older tranceivers, so the extra&n;   code size of a per-interface flag is not worthwhile. */
-DECL|variable|mii_preamble_required
-r_static
-r_const
-r_char
-id|mii_preamble_required
-op_assign
-l_int|1
-suffix:semicolon
 DECL|enum|mii_reg_bits
 r_enum
 id|mii_reg_bits
