@@ -3017,16 +3017,15 @@ suffix:semicolon
 )brace
 id|no_data_attr_special_case
 suffix:colon
-multiline_comment|/* Everyone gets read permissions. */
+multiline_comment|/* Everyone gets all permissions. */
 id|vi-&gt;i_mode
 op_or_assign
-id|S_IRUGO
+id|S_IRWXUGO
 suffix:semicolon
-multiline_comment|/* If not read-only, set write permissions. */
+multiline_comment|/* If read-only, noone gets write permissions. */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|IS_RDONLY
 c_func
 (paren
@@ -3034,7 +3033,8 @@ id|vi
 )paren
 )paren
 id|vi-&gt;i_mode
-op_or_assign
+op_and_assign
+op_complement
 id|S_IWUGO
 suffix:semicolon
 multiline_comment|/* Apply the file permissions mask set in the mount options. */
@@ -3043,8 +3043,6 @@ op_and_assign
 op_complement
 id|vol-&gt;fmask
 suffix:semicolon
-singleline_comment|// FIXME: Encrypted files should probably get their rw bits
-singleline_comment|// taken away here.
 multiline_comment|/* Setup the operations for this inode. */
 id|vi-&gt;i_op
 op_assign
