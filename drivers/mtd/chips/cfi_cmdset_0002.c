@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common Flash Interface support:&n; *   AMD &amp; Fujitsu Standard Vendor Command Set (ID 0x0002)&n; *&n; * Copyright (C) 2000 Crossnet Co. &lt;info@crossnet.co.jp&gt;&n; * Copyright (C) 2004 Arcom Control Systems Ltd &lt;linux@arcom.com&gt;&n; *&n; * 2_by_8 routines added by Simon Munton&n; *&n; * 4_by_16 work by Carolyn J. Smith&n; *&n; * Occasionally maintained by Thayne Harbaugh tharbaugh at lnxi dot com&n; *&n; * This code is GPL&n; *&n; * $Id: cfi_cmdset_0002.c,v 1.112 2004/11/20 12:49:04 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * Common Flash Interface support:&n; *   AMD &amp; Fujitsu Standard Vendor Command Set (ID 0x0002)&n; *&n; * Copyright (C) 2000 Crossnet Co. &lt;info@crossnet.co.jp&gt;&n; * Copyright (C) 2004 Arcom Control Systems Ltd &lt;linux@arcom.com&gt;&n; *&n; * 2_by_8 routines added by Simon Munton&n; *&n; * 4_by_16 work by Carolyn J. Smith&n; *&n; * Occasionally maintained by Thayne Harbaugh tharbaugh at lnxi dot com&n; *&n; * This code is GPL&n; *&n; * $Id: cfi_cmdset_0002.c,v 1.114 2004/12/11 15:43:53 dedekind Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -3231,8 +3231,6 @@ l_int|0
 suffix:semicolon
 id|map_word
 id|oldd
-comma
-id|curd
 suffix:semicolon
 r_int
 id|retry_cnt
@@ -3517,64 +3515,20 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/* Test to see if toggling has stopped. */
-id|oldd
-op_assign
-id|map_read
+r_if
+c_cond
+(paren
+id|chip_ready
 c_func
 (paren
 id|map
 comma
 id|adr
 )paren
-suffix:semicolon
-id|curd
-op_assign
-id|map_read
-c_func
-(paren
-id|map
-comma
-id|adr
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|map_word_equal
-c_func
-(paren
-id|map
-comma
-id|curd
-comma
-id|oldd
-)paren
-)paren
-(brace
-multiline_comment|/* Do we have the correct value? */
-r_if
-c_cond
-(paren
-id|map_word_equal
-c_func
-(paren
-id|map
-comma
-id|curd
-comma
-id|datum
-)paren
-)paren
-(brace
 r_goto
 id|op_done
 suffix:semicolon
-)brace
-multiline_comment|/* Nope something has gone wrong. */
-r_break
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3586,19 +3540,8 @@ comma
 id|timeo
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;MTD %s(): software timeout&bslash;n&quot;
-comma
-id|__func__
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 multiline_comment|/* Latency issues. Drop the lock, wait a while and retry */
 id|cfi_spin_unlock
 c_func
@@ -3619,6 +3562,15 @@ id|chip-&gt;mutex
 )paren
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;MTD %s(): software timeout&bslash;n&quot;
+comma
+id|__func__
+)paren
+suffix:semicolon
 multiline_comment|/* reset on all failures. */
 id|map_write
 c_func
