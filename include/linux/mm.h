@@ -295,7 +295,7 @@ r_struct
 id|list_head
 id|lru
 suffix:semicolon
-multiline_comment|/* Pageout list, eg. active_list;&n;&t;&t;&t;&t;&t;   protected by pagemap_lru_lock !! */
+multiline_comment|/* Pageout list, eg. active_list;&n;&t;&t;&t;&t;&t;   protected by zone-&gt;lru_lock !! */
 r_union
 (brace
 DECL|member|chain

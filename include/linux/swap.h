@@ -783,10 +783,6 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-id|spinlock_t
-id|_pagemap_lru_lock
-suffix:semicolon
-r_extern
 r_void
 id|FASTCALL
 c_func

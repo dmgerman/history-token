@@ -802,7 +802,7 @@ r_return
 id|nr_pages
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * pagemap_lru_lock is heavily contented.  We relieve it by quickly privatising&n; * a batch of pages and working on them outside the lock.  Any pages which were&n; * not freed will be added back to the LRU.&n; *&n; * shrink_cache() is passed the number of pages to try to free, and returns&n; * the number which are yet-to-free.&n; *&n; * For pagecache intensive workloads, the first loop here is the hottest spot&n; * in the kernel (apart from the copy_*_user functions).&n; */
+multiline_comment|/*&n; * zone-&gt;lru_lock is heavily contented.  We relieve it by quickly privatising&n; * a batch of pages and working on them outside the lock.  Any pages which were&n; * not freed will be added back to the LRU.&n; *&n; * shrink_cache() is passed the number of pages to try to free, and returns&n; * the number which are yet-to-free.&n; *&n; * For pagecache intensive workloads, the first loop here is the hottest spot&n; * in the kernel (apart from the copy_*_user functions).&n; */
 r_static
 multiline_comment|/* inline */
 r_int
@@ -874,7 +874,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 r_while
@@ -1021,7 +1021,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 r_if
@@ -1088,7 +1088,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Put back any unfreeable pages.&n;&t;&t; */
@@ -1182,7 +1182,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 id|__pagevec_release
@@ -1196,7 +1196,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 )brace
@@ -1206,7 +1206,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 id|done
@@ -1222,7 +1222,7 @@ r_return
 id|nr_pages
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This moves pages from the active list to the inactive list.&n; *&n; * We move them the other way if the page is referenced by one or more&n; * processes, from rmap.&n; *&n; * If the pages are mostly unmapped, the processing is fast and it is&n; * appropriate to hold pagemap_lru_lock across the whole operation.  But if&n; * the pages are mapped, the processing is slow (page_referenced()) so we&n; * should drop pagemap_lru_lock around each page.  It&squot;s impossible to balance&n; * this, so instead we remove the pages from the LRU while processing them.&n; * It is safe to rely on PG_active against the non-LRU pages in here because&n; * nobody will play with that bit on a non-LRU page.&n; *&n; * The downside is that we have to touch page-&gt;count against each page.&n; * But we had to alter page-&gt;flags anyway.&n; */
+multiline_comment|/*&n; * This moves pages from the active list to the inactive list.&n; *&n; * We move them the other way if the page is referenced by one or more&n; * processes, from rmap.&n; *&n; * If the pages are mostly unmapped, the processing is fast and it is&n; * appropriate to hold zone-&gt;lru_lock across the whole operation.  But if&n; * the pages are mapped, the processing is slow (page_referenced()) so we&n; * should drop zone-&gt;lru_lock around each page.  It&squot;s impossible to balance&n; * this, so instead we remove the pages from the LRU while processing them.&n; * It is safe to rely on PG_active against the non-LRU pages in here because&n; * nobody will play with that bit on a non-LRU page.&n; *&n; * The downside is that we have to touch page-&gt;count against each page.&n; * But we had to alter page-&gt;flags anyway.&n; */
 r_static
 multiline_comment|/* inline */
 r_void
@@ -1289,7 +1289,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 r_while
@@ -1408,7 +1408,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 r_while
@@ -1518,7 +1518,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 r_while
@@ -1614,7 +1614,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 id|__pagevec_release
@@ -1628,7 +1628,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 )brace
@@ -1722,7 +1722,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 id|__pagevec_release
@@ -1736,7 +1736,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 )brace
@@ -1753,7 +1753,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 id|pagevec_release

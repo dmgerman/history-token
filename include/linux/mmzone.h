@@ -69,6 +69,10 @@ DECL|member|need_balance
 r_int
 id|need_balance
 suffix:semicolon
+DECL|member|lru_lock
+id|spinlock_t
+id|lru_lock
+suffix:semicolon
 DECL|member|active_list
 r_struct
 id|list_head
