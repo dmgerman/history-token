@@ -4959,7 +4959,7 @@ id|out_end
 op_minus
 id|out_ptr
 comma
-l_string|&quot;%d&quot;
+l_string|&quot;%lu&quot;
 comma
 id|tv.tv_sec
 )paren
