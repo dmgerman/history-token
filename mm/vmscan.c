@@ -2275,10 +2275,11 @@ comma
 id|gfp_mask
 )paren
 suffix:semicolon
+multiline_comment|/* After shrinking the dcache, get rid of unused inodes too .. */
 id|shrink_icache_memory
 c_func
 (paren
-id|priority
+l_int|1
 comma
 id|gfp_mask
 )paren

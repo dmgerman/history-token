@@ -555,12 +555,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 op_increment
 id|port-&gt;open_count
 suffix:semicolon
@@ -632,12 +626,6 @@ suffix:semicolon
 )brace
 m_exit
 suffix:colon
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -702,12 +690,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 op_decrement
 id|port-&gt;open_count
 suffix:semicolon
@@ -747,12 +729,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* belkin_sa_close */
 DECL|function|belkin_sa_read_int_callback

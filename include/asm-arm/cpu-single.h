@@ -40,12 +40,6 @@ DECL|macro|cpu_icache_invalidate_range
 mdefine_line|#define cpu_icache_invalidate_range&t;__cpu_fn(CPU_NAME,_icache_invalidate_range)
 DECL|macro|cpu_icache_invalidate_page
 mdefine_line|#define cpu_icache_invalidate_page&t;__cpu_fn(CPU_NAME,_icache_invalidate_page)
-DECL|macro|cpu_tlb_invalidate_all
-mdefine_line|#define cpu_tlb_invalidate_all&t;&t;__cpu_fn(CPU_NAME,_tlb_invalidate_all)
-DECL|macro|cpu_tlb_invalidate_range
-mdefine_line|#define cpu_tlb_invalidate_range&t;__cpu_fn(CPU_NAME,_tlb_invalidate_range)
-DECL|macro|cpu_tlb_invalidate_page
-mdefine_line|#define cpu_tlb_invalidate_page&t;&t;__cpu_fn(CPU_NAME,_tlb_invalidate_page)
 DECL|macro|cpu_set_pgd
 mdefine_line|#define cpu_set_pgd&t;&t;&t;__cpu_fn(CPU_NAME,_set_pgd)
 DECL|macro|cpu_set_pmd
@@ -212,41 +206,6 @@ c_func
 r_void
 op_star
 id|virt_page
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|cpu_tlb_invalidate_all
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|cpu_tlb_invalidate_range
-c_func
-(paren
-r_int
-r_int
-id|address
-comma
-r_int
-r_int
-id|end
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|cpu_tlb_invalidate_page
-c_func
-(paren
-r_int
-r_int
-id|address
-comma
-r_int
-id|flags
 )paren
 suffix:semicolon
 r_extern

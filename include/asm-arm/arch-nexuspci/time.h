@@ -233,7 +233,7 @@ id|timer_irq.flags
 op_assign
 id|SA_SHIRQ
 suffix:semicolon
-id|setup_arm_irq
+id|setup_irq
 c_func
 (paren
 id|IRQ_TIMER

@@ -311,9 +311,9 @@ multiline_comment|/* start DMA */
 r_if
 c_cond
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 op_ne
-id|ide_disk
+id|ATA_DISK
 )paren
 r_return
 l_int|0

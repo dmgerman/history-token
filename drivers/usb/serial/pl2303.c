@@ -1677,12 +1677,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 op_increment
 id|port-&gt;open_count
 suffix:semicolon
@@ -1882,12 +1876,6 @@ comma
 id|result
 )paren
 suffix:semicolon
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 id|pl2303_close
 (paren
 id|port
@@ -1934,12 +1922,6 @@ comma
 id|result
 )paren
 suffix:semicolon
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 id|pl2303_close
 (paren
 id|port
@@ -1953,12 +1935,6 @@ id|EPROTO
 suffix:semicolon
 )brace
 )brace
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2031,12 +2007,6 @@ id|__FUNCTION__
 l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
-)paren
-suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
 )paren
 suffix:semicolon
 op_decrement
@@ -2163,12 +2133,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 )brace
 DECL|function|set_modem_info
 r_static

@@ -151,16 +151,6 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* ide-proc.c */
-r_extern
-r_char
-op_star
-id|ide_media_verbose
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
 DECL|variable|bmide_dev
 r_static
 r_struct
@@ -2048,15 +2038,6 @@ id|active_count
 comma
 id|recovery_count
 suffix:semicolon
-r_int
-id|bus_speed
-op_assign
-id|system_bus_clock
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*byte b;*/
 id|ide_pio_data_t
 id|d
 suffix:semicolon
@@ -2163,7 +2144,7 @@ id|clock_time
 op_assign
 l_int|1000
 op_div
-id|bus_speed
+id|system_bus_speed
 suffix:semicolon
 id|cycle_count
 op_assign
@@ -2913,9 +2894,9 @@ r_if
 c_cond
 (paren
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 op_ne
-id|ide_disk
+id|ATA_DISK
 )paren
 op_logical_and
 (paren
@@ -4216,15 +4197,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 op_ne
-id|ide_disk
+id|ATA_DISK
 )paren
 (brace
 id|cmdprintk
 c_func
 (paren
-l_string|&quot;CMD64X: drive-&gt;media != ide_disk at double check, inital check failed!!&bslash;n&quot;
+l_string|&quot;CMD64X: drive is not a disk at double check, inital check failed!!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5126,9 +5107,9 @@ op_logical_and
 id|hwif-&gt;autodma
 op_logical_and
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 op_eq
-id|ide_disk
+id|ATA_DISK
 )paren
 )paren
 (brace
@@ -6059,6 +6040,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cmd680_reset
+r_static
 r_void
 id|cmd680_reset
 (paren
@@ -6121,19 +6103,16 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|cmd680_pci_init
+r_static
 r_int
 r_int
 id|cmd680_pci_init
+c_func
 (paren
 r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_const
-r_char
-op_star
-id|name
 )paren
 (brace
 id|u8
@@ -6292,19 +6271,16 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cmd64x_pci_init
+r_static
 r_int
 r_int
 id|cmd64x_pci_init
+c_func
 (paren
 r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_const
-r_char
-op_star
-id|name
 )paren
 (brace
 r_int
@@ -6364,7 +6340,7 @@ c_func
 (paren
 l_string|&quot;%s: ROM enabled at 0x%08lx&bslash;n&quot;
 comma
-id|name
+id|dev-&gt;name
 comma
 id|dev-&gt;resource
 (braket
@@ -6395,7 +6371,7 @@ c_func
 (paren
 l_string|&quot;%s: chipset revision 0x%02X, &quot;
 comma
-id|name
+id|dev-&gt;name
 comma
 id|class_rev
 )paren
@@ -6701,16 +6677,12 @@ r_int
 r_int
 id|__init
 id|pci_init_cmd64x
+c_func
 (paren
 r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_const
-r_char
-op_star
-id|name
 )paren
 (brace
 r_if
@@ -6724,16 +6696,12 @@ r_return
 id|cmd680_pci_init
 (paren
 id|dev
-comma
-id|name
 )paren
 suffix:semicolon
 r_return
 id|cmd64x_pci_init
 (paren
 id|dev
-comma
-id|name
 )paren
 suffix:semicolon
 )brace

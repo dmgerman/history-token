@@ -2090,6 +2090,13 @@ r_void
 )brace
 macro_line|#endif&t;/* CONFIG_PM */
 multiline_comment|/*&n; * Detect and enable local APICs on non-SMP boards.&n; * Original code written by Keir Fraser.&n; */
+DECL|variable|__initdata
+r_int
+id|dont_enable_local_apic
+id|__initdata
+op_assign
+l_int|0
+suffix:semicolon
 DECL|function|detect_init_APIC
 r_static
 r_int
@@ -2115,6 +2122,16 @@ r_struct
 id|cpuinfo_x86
 op_star
 )paren
+suffix:semicolon
+multiline_comment|/* Disabled by DMI scan or kernel option? */
+r_if
+c_cond
+(paren
+id|dont_enable_local_apic
+)paren
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 multiline_comment|/* Workaround for us being called before identify_cpu(). */
 id|get_cpu_vendor
@@ -3156,6 +3173,13 @@ r_int
 r_int
 id|calibration_result
 suffix:semicolon
+DECL|variable|__initdata
+r_int
+id|dont_use_local_apic_timer
+id|__initdata
+op_assign
+l_int|0
+suffix:semicolon
 DECL|function|setup_APIC_clocks
 r_void
 id|__init
@@ -3164,6 +3188,14 @@ id|setup_APIC_clocks
 r_void
 )paren
 (brace
+multiline_comment|/* Disabled by DMI scan or kernel option? */
+r_if
+c_cond
+(paren
+id|dont_use_local_apic_timer
+)paren
+r_return
+suffix:semicolon
 id|printk
 c_func
 (paren

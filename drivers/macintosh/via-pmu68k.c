@@ -5676,10 +5676,9 @@ id|EBUSY
 suffix:semicolon
 multiline_comment|/* Sync the disks. */
 multiline_comment|/* XXX It would be nice to have some way to ensure that&n;&t; * nobody is dirtying any new buffers while we wait. */
-id|fsync_dev
+id|sys_sync
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Turn off the display backlight */

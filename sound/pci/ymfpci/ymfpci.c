@@ -1287,7 +1287,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_WARNING
 l_string|&quot;ymfpci: cannot initialize MPU401 at 0x%lx, skipping...&bslash;n&quot;
 comma
 id|snd_mpu_port
@@ -1366,7 +1366,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_WARNING
 l_string|&quot;ymfpci: cannot initialize FM OPL3 at 0x%lx, skipping...&bslash;n&quot;
 comma
 id|snd_fm_port
@@ -1435,7 +1435,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_WARNING
 l_string|&quot;ymfpci: cannot initialize joystick, skipping...&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1800,9 +1800,10 @@ l_int|0
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Yamaha DS-XG PCI soundcard not found or device busy&bslash;n&quot;
 )paren
 suffix:semicolon

@@ -1,12 +1,30 @@
-multiline_comment|/*&n; * $Id: grip.c,v 1.14 2000/06/06 21:13:36 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: grip.c,v 1.21 2002/01/22 20:27:57 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2001 Vojtech Pavlik&n; */
 multiline_comment|/*&n; * Gravis/Kensington GrIP protocol joystick and gamepad driver for Linux&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Gravis GrIP protocol joystick driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|GRIP_MODE_GPP
 mdefine_line|#define GRIP_MODE_GPP&t;&t;1
 DECL|macro|GRIP_MODE_BD
@@ -71,6 +89,16 @@ suffix:semicolon
 DECL|member|bads
 r_int
 id|bads
+suffix:semicolon
+DECL|member|phys
+r_char
+id|phys
+(braket
+l_int|2
+)braket
+(braket
+l_int|32
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -2273,6 +2301,21 @@ id|i
 )braket
 )paren
 (brace
+id|sprintf
+c_func
+(paren
+id|grip-&gt;phys
+(braket
+id|i
+)braket
+comma
+l_string|&quot;%s/input%d&quot;
+comma
+id|gameport-&gt;phys
+comma
+id|i
+)paren
+suffix:semicolon
 id|grip-&gt;dev
 (braket
 id|i
@@ -2313,6 +2356,18 @@ id|grip-&gt;mode
 (braket
 id|i
 )braket
+)braket
+suffix:semicolon
+id|grip-&gt;dev
+(braket
+id|i
+)braket
+dot
+id|phys
+op_assign
+id|grip-&gt;phys
+(braket
+id|i
 )braket
 suffix:semicolon
 id|grip-&gt;dev
@@ -2620,14 +2675,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;input%d: %s on gameport%d.%d&bslash;n&quot;
-comma
-id|grip-&gt;dev
-(braket
-id|i
-)braket
-dot
-id|number
+l_string|&quot;input: %s on %s&bslash;n&quot;
 comma
 id|grip_name
 (braket
@@ -2637,9 +2685,7 @@ id|i
 )braket
 )braket
 comma
-id|gameport-&gt;number
-comma
-id|i
+id|gameport-&gt;phys
 )paren
 suffix:semicolon
 )brace
@@ -2795,12 +2841,6 @@ id|module_exit
 c_func
 (paren
 id|grip_exit
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

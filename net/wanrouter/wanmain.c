@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n;* wanmain.c&t;WAN Multiprotocol Router Module. Main code.&n;*&n;*&t;&t;This module is completely hardware-independent and provides&n;*&t;&t;the following common services for the WAN Link Drivers:&n;*&t;&t; o WAN device managenment (registering, unregistering)&n;*&t;&t; o Network interface management&n;*&t;&t; o Physical connection management (dial-up, incoming calls)&n;*&t;&t; o Logical connection management (switched virtual circuits)&n;*&t;&t; o Protocol encapsulation/decapsulation&n;*&n;* Author:&t;Gideon Hack&t;&n;*&n;* Copyright:&t;(c) 1995-1999 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Nov 24, 2000  Nenad Corbic&t;Updated for 2.4.X kernels &n;* Nov 07, 2000  Nenad Corbic&t;Fixed the Mulit-Port PPP for kernels 2.2.16 and&n;*  &t;&t;&t;&t;greater.&n;* Aug 2,  2000  Nenad Corbic&t;Block the Multi-Port PPP from running on&n;*  &t;&t;&t;        kernels 2.2.16 or greater.  The SyncPPP &n;*  &t;&t;&t;        has changed.&n;* Jul 13, 2000  Nenad Corbic&t;Added SyncPPP support&n;* &t;&t;&t;&t;Added extra debugging in device_setup().&n;* Oct 01, 1999  Gideon Hack     Update for s514 PCI card&n;* Dec 27, 1996&t;Gene Kozin&t;Initial version (based on Sangoma&squot;s WANPIPE)&n;* Jan 16, 1997&t;Gene Kozin&t;router_devlist made public&n;* Jan 31, 1997  Alan Cox&t;Hacked it about a bit for 2.1&n;* Jun 27, 1997  Alan Cox&t;realigned with vendor code&n;* Oct 15, 1997  Farhan Thawar   changed wan_encapsulate to add a pad byte of 0&n;* Apr 20, 1998&t;Alan Cox&t;Fixed 2.1 symbols&n;* May 17, 1998  K. Baranowski&t;Fixed SNAP encapsulation in wan_encapsulate&n;* Dec 15, 1998  Arnaldo Melo    support for firmwares of up to 128000 bytes&n;*                               check wandev-&gt;setup return value&n;* Dec 22, 1998  Arnaldo Melo    vmalloc/vfree used in device_setup to allocate&n;*                               kernel memory and copy configuration data to&n;*                               kernel space (for big firmwares)&n;* Jun 02, 1999  Gideon Hack&t;Updates for Linux 2.0.X and 2.2.X kernels.&t;&n;*****************************************************************************/
+multiline_comment|/*****************************************************************************&n;* wanmain.c&t;WAN Multiprotocol Router Module. Main code.&n;*&n;*&t;&t;This module is completely hardware-independent and provides&n;*&t;&t;the following common services for the WAN Link Drivers:&n;*&t;&t; o WAN device managenment (registering, unregistering)&n;*&t;&t; o Network interface management&n;*&t;&t; o Physical connection management (dial-up, incoming calls)&n;*&t;&t; o Logical connection management (switched virtual circuits)&n;*&t;&t; o Protocol encapsulation/decapsulation&n;*&n;* Author:&t;Gideon Hack&n;*&n;* Copyright:&t;(c) 1995-1999 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Nov 24, 2000  Nenad Corbic&t;Updated for 2.4.X kernels&n;* Nov 07, 2000  Nenad Corbic&t;Fixed the Mulit-Port PPP for kernels 2.2.16 and&n;*  &t;&t;&t;&t;greater.&n;* Aug 2,  2000  Nenad Corbic&t;Block the Multi-Port PPP from running on&n;*  &t;&t;&t;        kernels 2.2.16 or greater.  The SyncPPP&n;*  &t;&t;&t;        has changed.&n;* Jul 13, 2000  Nenad Corbic&t;Added SyncPPP support&n;* &t;&t;&t;&t;Added extra debugging in device_setup().&n;* Oct 01, 1999  Gideon Hack     Update for s514 PCI card&n;* Dec 27, 1996&t;Gene Kozin&t;Initial version (based on Sangoma&squot;s WANPIPE)&n;* Jan 16, 1997&t;Gene Kozin&t;router_devlist made public&n;* Jan 31, 1997  Alan Cox&t;Hacked it about a bit for 2.1&n;* Jun 27, 1997  Alan Cox&t;realigned with vendor code&n;* Oct 15, 1997  Farhan Thawar   changed wan_encapsulate to add a pad byte of 0&n;* Apr 20, 1998&t;Alan Cox&t;Fixed 2.1 symbols&n;* May 17, 1998  K. Baranowski&t;Fixed SNAP encapsulation in wan_encapsulate&n;* Dec 15, 1998  Arnaldo Melo    support for firmwares of up to 128000 bytes&n;*                               check wandev-&gt;setup return value&n;* Dec 22, 1998  Arnaldo Melo    vmalloc/vfree used in device_setup to allocate&n;*                               kernel memory and copy configuration data to&n;*                               kernel space (for big firmwares)&n;* Jun 02, 1999  Gideon Hack&t;Updates for Linux 2.0.X and 2.2.X kernels.&n;*****************************************************************************/
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;&t;/* offsetof(), etc. */
@@ -10,30 +10,15 @@ macro_line|#include &lt;linux/mm.h&gt;&t;&t;/* verify_area(), etc. */
 macro_line|#include &lt;linux/string.h&gt;&t;/* inline mem*, str* functions */
 macro_line|#include &lt;asm/byteorder.h&gt;&t;/* htons(), etc. */
 macro_line|#include &lt;linux/wanrouter.h&gt;&t;/* WAN router API definitions */
-macro_line|#if defined(LINUX_2_4)
 macro_line|#include &lt;linux/vmalloc.h&gt;&t;/* vmalloc, vfree */
 macro_line|#include &lt;asm/uaccess.h&gt;        /* copy_to/from_user */
 macro_line|#include &lt;linux/init.h&gt;         /* __initfunc et al. */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,3)
 macro_line|#include &lt;net/syncppp.h&gt;
-macro_line|#else
-macro_line|#include &lt;../drivers/net/wan/syncppp.h&gt;
-macro_line|#endif
-macro_line|#elif defined(LINUX_2_1) 
-DECL|macro|LINUX_2_1
-mdefine_line|#define LINUX_2_1
-macro_line|#include &lt;linux/vmalloc.h&gt;&t;/* vmalloc, vfree */
-macro_line|#include &lt;asm/uaccess.h&gt;        /* copy_to/from_user */
-macro_line|#include &lt;linux/init.h&gt;         /* __initfunc et al. */
-macro_line|#include &lt;../drivers/net/syncppp.h&gt;
-macro_line|#else
-macro_line|#include &lt;asm/segment.h&gt;&t;/* kernel &lt;-&gt; user copy */
-macro_line|#endif
 DECL|macro|KMEM_SAFETYZONE
 mdefine_line|#define KMEM_SAFETYZONE 8
-multiline_comment|/***********FOR DEBUGGING PURPOSES*********************************************&n;static void * dbg_kmalloc(unsigned int size, int prio, int line) {&n;&t;int i = 0;&n;&t;void * v = kmalloc(size+sizeof(unsigned int)+2*KMEM_SAFETYZONE*8,prio);&n;&t;char * c1 = v;&t;&n;&t;c1 += sizeof(unsigned int);&n;&t;*((unsigned int *)v) = size;&n;&n;&t;for (i = 0; i &lt; KMEM_SAFETYZONE; i++) {&n;&t;&t;c1[0] = &squot;D&squot;; c1[1] = &squot;E&squot;; c1[2] = &squot;A&squot;; c1[3] = &squot;D&squot;;&n;&t;&t;c1[4] = &squot;B&squot;; c1[5] = &squot;E&squot;; c1[6] = &squot;E&squot;; c1[7] = &squot;F&squot;;&n;&t;&t;c1 += 8;&n;&t;}&n;&t;c1 += size;&n;&t;for (i = 0; i &lt; KMEM_SAFETYZONE; i++) {&n;&t;&t;c1[0] = &squot;M&squot;; c1[1] = &squot;U&squot;; c1[2] = &squot;N&squot;; c1[3] = &squot;G&squot;;&n;&t;&t;c1[4] = &squot;W&squot;; c1[5] = &squot;A&squot;; c1[6] = &squot;L&squot;; c1[7] = &squot;L&squot;;&n;&t;&t;c1 += 8;&n;&t;}&n;&t;v = ((char *)v) + sizeof(unsigned int) + KMEM_SAFETYZONE*8;&n;&t;printk(KERN_INFO &quot;line %d  kmalloc(%d,%d) = %p&bslash;n&quot;,line,size,prio,v);&n;&t;return v;&n;}&n;static void dbg_kfree(void * v, int line) {&n;&t;unsigned int * sp = (unsigned int *)(((char *)v) - (sizeof(unsigned int) + KMEM_SAFETYZONE*8));&n;&t;unsigned int size = *sp;&n;&t;char * c1 = ((char *)v) - KMEM_SAFETYZONE*8;&n;&t;int i = 0;&n;&t;for (i = 0; i &lt; KMEM_SAFETYZONE; i++) {&n;&t;&t;if (   c1[0] != &squot;D&squot; || c1[1] != &squot;E&squot; || c1[2] != &squot;A&squot; || c1[3] != &squot;D&squot;&n;&t;&t;    || c1[4] != &squot;B&squot; || c1[5] != &squot;E&squot; || c1[6] != &squot;E&squot; || c1[7] != &squot;F&squot;) {&n;&t;&t;&t;printk(KERN_INFO &quot;kmalloced block at %p has been corrupted (underrun)!&bslash;n&quot;,v);&n;&t;&t;&t;printk(KERN_INFO &quot; %4x: %2x %2x %2x %2x %2x %2x %2x %2x&bslash;n&quot;, i*8,&n;&t;&t;&t;                c1[0],c1[1],c1[2],c1[3],c1[4],c1[5],c1[6],c1[7] );&n;&t;&t;}&n;&t;&t;c1 += 8;&n;&t;}&n;&t;c1 += size;&n;&t;for (i = 0; i &lt; KMEM_SAFETYZONE; i++) {&n;&t;&t;if (   c1[0] != &squot;M&squot; || c1[1] != &squot;U&squot; || c1[2] != &squot;N&squot; || c1[3] != &squot;G&squot;&n;&t;&t;    || c1[4] != &squot;W&squot; || c1[5] != &squot;A&squot; || c1[6] != &squot;L&squot; || c1[7] != &squot;L&squot;&n;&t;&t;   ) {&n;&t;&t;&t;printk(KERN_INFO &quot;kmalloced block at %p has been corrupted (overrun):&bslash;n&quot;,v);&n;&t;&t;&t;printk(KERN_INFO &quot; %4x: %2x %2x %2x %2x %2x %2x %2x %2x&bslash;n&quot;, i*8,&n;&t;&t;&t;                c1[0],c1[1],c1[2],c1[3],c1[4],c1[5],c1[6],c1[7] );&n;&t;&t;}&n;&t;&t;c1 += 8;&n;&t;}&n;&t;printk(KERN_INFO &quot;line %d  kfree(%p)&bslash;n&quot;,line,v);&n;&t;v = ((char *)v) - (sizeof(unsigned int) + KMEM_SAFETYZONE*8);&n;&t;kfree(v);&n;}&n;&n;#define kmalloc(x,y) dbg_kmalloc(x,y,__LINE__)&n;#define kfree(x) dbg_kfree(x,__LINE__)&n;*****************************************************************************/
-multiline_comment|/*&n; * &t;Function Prototypes &n; */
-multiline_comment|/* &n; * &t;Kernel loadable module interface.&n; */
+multiline_comment|/***********FOR DEBUGGING PURPOSES*********************************************&n;static void * dbg_kmalloc(unsigned int size, int prio, int line) {&n;&t;int i = 0;&n;&t;void * v = kmalloc(size+sizeof(unsigned int)+2*KMEM_SAFETYZONE*8,prio);&n;&t;char * c1 = v;&n;&t;c1 += sizeof(unsigned int);&n;&t;*((unsigned int *)v) = size;&n;&n;&t;for (i = 0; i &lt; KMEM_SAFETYZONE; i++) {&n;&t;&t;c1[0] = &squot;D&squot;; c1[1] = &squot;E&squot;; c1[2] = &squot;A&squot;; c1[3] = &squot;D&squot;;&n;&t;&t;c1[4] = &squot;B&squot;; c1[5] = &squot;E&squot;; c1[6] = &squot;E&squot;; c1[7] = &squot;F&squot;;&n;&t;&t;c1 += 8;&n;&t;}&n;&t;c1 += size;&n;&t;for (i = 0; i &lt; KMEM_SAFETYZONE; i++) {&n;&t;&t;c1[0] = &squot;M&squot;; c1[1] = &squot;U&squot;; c1[2] = &squot;N&squot;; c1[3] = &squot;G&squot;;&n;&t;&t;c1[4] = &squot;W&squot;; c1[5] = &squot;A&squot;; c1[6] = &squot;L&squot;; c1[7] = &squot;L&squot;;&n;&t;&t;c1 += 8;&n;&t;}&n;&t;v = ((char *)v) + sizeof(unsigned int) + KMEM_SAFETYZONE*8;&n;&t;printk(KERN_INFO &quot;line %d  kmalloc(%d,%d) = %p&bslash;n&quot;,line,size,prio,v);&n;&t;return v;&n;}&n;static void dbg_kfree(void * v, int line) {&n;&t;unsigned int * sp = (unsigned int *)(((char *)v) - (sizeof(unsigned int) + KMEM_SAFETYZONE*8));&n;&t;unsigned int size = *sp;&n;&t;char * c1 = ((char *)v) - KMEM_SAFETYZONE*8;&n;&t;int i = 0;&n;&t;for (i = 0; i &lt; KMEM_SAFETYZONE; i++) {&n;&t;&t;if (   c1[0] != &squot;D&squot; || c1[1] != &squot;E&squot; || c1[2] != &squot;A&squot; || c1[3] != &squot;D&squot;&n;&t;&t;    || c1[4] != &squot;B&squot; || c1[5] != &squot;E&squot; || c1[6] != &squot;E&squot; || c1[7] != &squot;F&squot;) {&n;&t;&t;&t;printk(KERN_INFO &quot;kmalloced block at %p has been corrupted (underrun)!&bslash;n&quot;,v);&n;&t;&t;&t;printk(KERN_INFO &quot; %4x: %2x %2x %2x %2x %2x %2x %2x %2x&bslash;n&quot;, i*8,&n;&t;&t;&t;                c1[0],c1[1],c1[2],c1[3],c1[4],c1[5],c1[6],c1[7] );&n;&t;&t;}&n;&t;&t;c1 += 8;&n;&t;}&n;&t;c1 += size;&n;&t;for (i = 0; i &lt; KMEM_SAFETYZONE; i++) {&n;&t;&t;if (   c1[0] != &squot;M&squot; || c1[1] != &squot;U&squot; || c1[2] != &squot;N&squot; || c1[3] != &squot;G&squot;&n;&t;&t;    || c1[4] != &squot;W&squot; || c1[5] != &squot;A&squot; || c1[6] != &squot;L&squot; || c1[7] != &squot;L&squot;&n;&t;&t;   ) {&n;&t;&t;&t;printk(KERN_INFO &quot;kmalloced block at %p has been corrupted (overrun):&bslash;n&quot;,v);&n;&t;&t;&t;printk(KERN_INFO &quot; %4x: %2x %2x %2x %2x %2x %2x %2x %2x&bslash;n&quot;, i*8,&n;&t;&t;&t;                c1[0],c1[1],c1[2],c1[3],c1[4],c1[5],c1[6],c1[7] );&n;&t;&t;}&n;&t;&t;c1 += 8;&n;&t;}&n;&t;printk(KERN_INFO &quot;line %d  kfree(%p)&bslash;n&quot;,line,v);&n;&t;v = ((char *)v) - (sizeof(unsigned int) + KMEM_SAFETYZONE*8);&n;&t;kfree(v);&n;}&n;&n;#define kmalloc(x,y) dbg_kmalloc(x,y,__LINE__)&n;#define kfree(x) dbg_kfree(x,__LINE__)&n;*****************************************************************************/
+multiline_comment|/*&n; * &t;Function Prototypes&n; */
+multiline_comment|/*&n; * &t;Kernel loadable module interface.&n; */
 macro_line|#ifdef MODULE
 r_int
 id|init_module
@@ -48,7 +33,7 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* &n; *&t;WAN device IOCTL handlers &n; */
+multiline_comment|/*&n; *&t;WAN device IOCTL handlers&n; */
 r_static
 r_int
 id|device_setup
@@ -115,7 +100,7 @@ op_star
 id|u_name
 )paren
 suffix:semicolon
-multiline_comment|/* &n; *&t;Miscellaneous &n; */
+multiline_comment|/*&n; *&t;Miscellaneous&n; */
 r_static
 id|wan_device_t
 op_star
@@ -211,7 +196,7 @@ id|devcnt
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* &n; *&t;Organize Unique Identifiers for encapsulation/decapsulation &n; */
+multiline_comment|/*&n; *&t;Organize Unique Identifiers for encapsulation/decapsulation&n; */
 DECL|variable|oui_ether
 r_static
 r_int
@@ -323,12 +308,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif&t;
+macro_line|#endif
 r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#ifdef LINUX_2_4
 DECL|function|wanrouter_cleanup
 r_static
 r_void
@@ -344,7 +328,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#else
 multiline_comment|/*&n; *&t;Kernel Loadable Module Entry Points&n; */
 multiline_comment|/*&n; * &t;Module &squot;insert&squot; entry point.&n; * &t;o print announcement&n; * &t;o initialize static data&n; * &t;o create /proc/net/router directory and static entries&n; *&n; * &t;Return:&t;0&t;Ok&n; *&t;&t;&lt; 0&t;error.&n; * &t;Context:&t;process&n; */
@@ -496,7 +479,7 @@ r_return
 op_minus
 id|EEXIST
 suffix:semicolon
-macro_line|#ifdef WANDEBUG&t;&t;
+macro_line|#ifdef WANDEBUG
 id|printk
 c_func
 (paren
@@ -509,7 +492,7 @@ id|wandev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; *&t;Register /proc directory entry &n;&t; */
+multiline_comment|/*&n;&t; *&t;Register /proc directory entry&n;&t; */
 id|err
 op_assign
 id|wanrouter_proc_add
@@ -636,7 +619,7 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-macro_line|#ifdef WANDEBUG&t;&t;
+macro_line|#ifdef WANDEBUG
 id|printk
 c_func
 (paren
@@ -656,32 +639,26 @@ id|wandev-&gt;state
 op_ne
 id|WAN_UNCONFIGURED
 )paren
-(brace
 id|device_shutdown
 c_func
 (paren
 id|wandev
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|prev
 )paren
-(brace
 id|prev-&gt;next
 op_assign
 id|wandev-&gt;next
 suffix:semicolon
-)brace
 r_else
-(brace
 id|router_devlist
 op_assign
 id|wandev-&gt;next
 suffix:semicolon
-)brace
 op_decrement
 id|devcnt
 suffix:semicolon
@@ -1086,7 +1063,6 @@ id|wan_device_t
 op_star
 id|wandev
 suffix:semicolon
-macro_line|#if defined (LINUX_2_1) || defined (LINUX_2_4)
 r_if
 c_cond
 (paren
@@ -1097,13 +1073,10 @@ c_func
 id|CAP_NET_ADMIN
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EPERM
 suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1361,32 +1334,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef LINUX_2_0 
-id|err
-op_assign
-id|verify_area
-(paren
-id|VERIFY_READ
-comma
-id|u_conf
-comma
-r_sizeof
-(paren
-id|wandev_conf_t
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-(brace
-r_return
-id|err
-suffix:semicolon
-)brace
-macro_line|#endif&t;
 id|conf
 op_assign
 id|kmalloc
@@ -1422,7 +1369,6 @@ op_minus
 id|ENOBUFS
 suffix:semicolon
 )brace
-macro_line|#if defined (LINUX_2_1) || defined (LINUX_2_4)&t;&t;
 r_if
 c_cond
 (paren
@@ -1460,28 +1406,6 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-macro_line|#else
-id|memcpy_fromfs
-(paren
-(paren
-r_void
-op_star
-)paren
-id|conf
-comma
-(paren
-r_void
-op_star
-)paren
-id|u_conf
-comma
-r_sizeof
-(paren
-id|wandev_conf_t
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1551,9 +1475,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-suffix:semicolon
 )brace
-macro_line|#if defined (LINUX_2_1) || defined (LINUX_2_4)
 id|data
 op_assign
 id|vmalloc
@@ -1565,9 +1487,30 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|data
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: ERROR, Faild allocate kernel memory !&bslash;n&quot;
+comma
+id|wandev-&gt;name
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|conf
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOBUFS
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1617,156 +1560,12 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: ERROR, Faild allocate kernel memory !&bslash;n&quot;
-comma
-id|wandev-&gt;name
-)paren
-suffix:semicolon
-id|err
-op_assign
-op_minus
-id|ENOBUFS
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|data
-)paren
-(brace
 id|vfree
 c_func
 (paren
 id|data
 )paren
 suffix:semicolon
-)brace
-macro_line|#else
-id|err
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-id|conf-&gt;data
-comma
-id|conf-&gt;data_size
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|err
-)paren
-(brace
-id|data
-op_assign
-id|kmalloc
-c_func
-(paren
-id|conf-&gt;data_size
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|data
-)paren
-(brace
-id|memcpy_fromfs
-c_func
-(paren
-id|data
-comma
-(paren
-r_void
-op_star
-)paren
-id|conf-&gt;data
-comma
-id|conf-&gt;data_size
-)paren
-suffix:semicolon
-id|conf-&gt;data
-op_assign
-id|data
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: ERROR, Faild allocate kernel memory !&bslash;n&quot;
-comma
-id|wandev-&gt;name
-)paren
-suffix:semicolon
-id|err
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: ERROR, Faild to copy from user data !&bslash;n&quot;
-comma
-id|wandev-&gt;name
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|err
-)paren
-(brace
-id|err
-op_assign
-id|wandev
-op_member_access_from_pointer
-id|setup
-c_func
-(paren
-id|wandev
-comma
-id|conf
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|data
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|data
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 r_else
 (brace
@@ -1819,11 +1618,9 @@ id|wandev-&gt;state
 op_eq
 id|WAN_UNCONFIGURED
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
@@ -1861,11 +1658,9 @@ id|dev-&gt;name
 op_ne
 l_int|0
 )paren
-(brace
 r_return
 id|err
 suffix:semicolon
-)brace
 multiline_comment|/* The above function deallocates the current dev&n;&t;&t; * structure. Therefore, we cannot use dev-&gt;priv&n;&t;&t; * as the next element: wandev-&gt;dev points to the&n;&t;&t; * next element */
 id|dev
 op_assign
@@ -1877,13 +1672,11 @@ c_cond
 (paren
 id|wandev-&gt;ndev
 )paren
-(brace
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
 multiline_comment|/* there are opened interfaces  */
-)brace
 r_if
 c_cond
 (paren
@@ -1921,34 +1714,6 @@ id|u_stat
 id|wandev_stat_t
 id|stat
 suffix:semicolon
-macro_line|#ifdef LINUX_2_0
-r_int
-id|err
-suffix:semicolon
-id|err
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-id|u_stat
-comma
-r_sizeof
-(paren
-id|wandev_stat_t
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-r_return
-id|err
-suffix:semicolon
-macro_line|#endif
 id|memset
 c_func
 (paren
@@ -1992,7 +1757,6 @@ id|stat.state
 op_assign
 id|wandev-&gt;state
 suffix:semicolon
-macro_line|#if defined (LINUX_2_1) || defined (LINUX_2_4)
 r_if
 c_cond
 (paren
@@ -2010,36 +1774,10 @@ id|stat
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
-macro_line|#else
-id|memcpy_tofs
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|u_stat
-comma
-(paren
-r_void
-op_star
-)paren
-op_amp
-id|stat
-comma
-r_sizeof
-(paren
-id|stat
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -2099,7 +1837,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-macro_line|#if defined (LINUX_2_1) || defined (LINUX_2_4)&t;
 r_if
 c_cond
 (paren
@@ -2117,59 +1854,10 @@ id|wanif_conf_t
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
-macro_line|#else
-id|err
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-id|u_conf
-comma
-r_sizeof
-(paren
-id|wanif_conf_t
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-r_return
-id|err
-suffix:semicolon
-id|memcpy_fromfs
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-op_amp
-id|conf
-comma
-(paren
-r_void
-op_star
-)paren
-id|u_conf
-comma
-r_sizeof
-(paren
-id|wanif_conf_t
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2181,12 +1869,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|err
-op_assign
-op_minus
-id|EPROTONOSUPPORT
-suffix:semicolon
-macro_line|#ifdef CONFIG_WANPIPE_MULTPPP
 r_if
 c_cond
 (paren
@@ -2195,6 +1877,7 @@ op_eq
 id|WANCONFIG_MPPP
 )paren
 (brace
+macro_line|#ifdef CONFIG_WANPIPE_MULTPPP
 id|pppdev
 op_assign
 id|kmalloc
@@ -2216,12 +1899,10 @@ id|pppdev
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|ENOBUFS
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -2236,7 +1917,6 @@ id|ppp_device
 )paren
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,16)
 id|pppdev-&gt;dev
 op_assign
 id|kmalloc
@@ -2282,7 +1962,6 @@ id|netdevice_t
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|err
 op_assign
 id|wandev
@@ -2302,143 +1981,11 @@ op_amp
 id|conf
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,16)
 id|dev
 op_assign
 id|pppdev-&gt;dev
 suffix:semicolon
 macro_line|#else
-id|dev
-op_assign
-op_amp
-id|pppdev-&gt;dev
-suffix:semicolon
-macro_line|#endif
-)brace
-r_else
-(brace
-id|dev
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-id|netdevice_t
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev
-op_eq
-l_int|NULL
-)paren
-(brace
-r_return
-op_minus
-id|ENOBUFS
-suffix:semicolon
-)brace
-id|memset
-c_func
-(paren
-id|dev
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|netdevice_t
-)paren
-)paren
-suffix:semicolon
-id|err
-op_assign
-id|wandev
-op_member_access_from_pointer
-id|new_if
-c_func
-(paren
-id|wandev
-comma
-id|dev
-comma
-op_amp
-id|conf
-)paren
-suffix:semicolon
-)brace
-macro_line|#else
-multiline_comment|/* Sync PPP is disabled */
-r_if
-c_cond
-(paren
-id|conf.config_id
-op_ne
-id|WANCONFIG_MPPP
-)paren
-(brace
-id|dev
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-id|netdevice_t
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev
-op_eq
-l_int|NULL
-)paren
-(brace
-r_return
-op_minus
-id|ENOBUFS
-suffix:semicolon
-)brace
-id|memset
-c_func
-(paren
-id|dev
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|netdevice_t
-)paren
-)paren
-suffix:semicolon
-id|err
-op_assign
-id|wandev
-op_member_access_from_pointer
-id|new_if
-c_func
-(paren
-id|wandev
-comma
-id|dev
-comma
-op_amp
-id|conf
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
 id|printk
 c_func
 (paren
@@ -2449,10 +1996,66 @@ id|wandev-&gt;name
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|EPROTONOSUPPORT
+suffix:semicolon
+macro_line|#endif
+)brace
+r_else
+(brace
+id|dev
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+id|netdevice_t
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|ENOBUFS
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|dev
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|netdevice_t
+)paren
+)paren
+suffix:semicolon
 id|err
+op_assign
+id|wandev
+op_member_access_from_pointer
+id|new_if
+c_func
+(paren
+id|wandev
+comma
+id|dev
+comma
+op_amp
+id|conf
+)paren
 suffix:semicolon
 )brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2495,7 +2098,7 @@ multiline_comment|/* name already exists */
 )brace
 r_else
 (brace
-macro_line|#ifdef WANDEBUG&t;&t;
+macro_line|#ifdef WANDEBUG
 id|printk
 c_func
 (paren
@@ -2507,7 +2110,7 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;
+macro_line|#endif
 id|err
 op_assign
 id|register_netdev
@@ -2664,23 +2267,19 @@ id|conf.config_id
 op_eq
 id|WANCONFIG_MPPP
 )paren
-(brace
 id|kfree
 c_func
 (paren
 id|pppdev
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|kfree
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-)brace
 macro_line|#else
 multiline_comment|/* Sync PPP is disabled */
 r_if
@@ -2690,14 +2289,12 @@ id|conf.config_id
 op_ne
 id|WANCONFIG_MPPP
 )paren
-(brace
 id|kfree
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 r_return
 id|err
@@ -2742,28 +2339,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-macro_line|#ifdef LINUX_2_0
-id|err
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-id|u_name
-comma
-id|WAN_IFNAME_SZ
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-r_return
-id|err
-suffix:semicolon
-macro_line|#endif&t;
 id|memset
 c_func
 (paren
@@ -2777,7 +2352,6 @@ id|name
 )paren
 )paren
 suffix:semicolon
-macro_line|#if defined (LINUX_2_1) || defined (LINUX_2_4)
 r_if
 c_cond
 (paren
@@ -2791,32 +2365,10 @@ comma
 id|WAN_IFNAME_SZ
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
-macro_line|#else
-id|memcpy_fromfs
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|name
-comma
-(paren
-r_void
-op_star
-)paren
-id|u_name
-comma
-id|WAN_IFNAME_SZ
-)paren
-suffix:semicolon
-macro_line|#endif
 id|err
 op_assign
 id|delete_interface
@@ -2835,7 +2387,7 @@ id|err
 r_return
 id|err
 suffix:semicolon
-multiline_comment|/* If last interface being deleted, shutdown card&n;&t; * This helps with administration at leaf nodes&n;&t; * (You can tell if the person at the other end of the phone &n;&t; * has an interface configured) and avoids DoS vulnerabilities&n;&t; * in binary driver files - this fixes a problem with the current&n;&t; * Sangoma driver going into strange states when all the network&n;&t; * interfaces are deleted and the link irrecoverably disconnected.&n;&t; */
+multiline_comment|/* If last interface being deleted, shutdown card&n;&t; * This helps with administration at leaf nodes&n;&t; * (You can tell if the person at the other end of the phone&n;&t; * has an interface configured) and avoids DoS vulnerabilities&n;&t; * in binary driver files - this fixes a problem with the current&n;&t; * Sangoma driver going into strange states when all the network&n;&t; * interfaces are deleted and the link irrecoverably disconnected.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2844,7 +2396,6 @@ id|wandev-&gt;ndev
 op_logical_and
 id|wandev-&gt;shutdown
 )paren
-(brace
 id|err
 op_assign
 id|wandev
@@ -2855,7 +2406,6 @@ c_func
 id|wandev
 )paren
 suffix:semicolon
-)brace
 r_return
 id|err
 suffix:semicolon
@@ -3002,14 +2552,11 @@ id|dev
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
 multiline_comment|/* interface not found */
-)brace
-macro_line|#ifdef LINUX_2_4
 r_if
 c_cond
 (paren
@@ -3019,21 +2566,11 @@ c_func
 id|dev
 )paren
 )paren
-(brace
-macro_line|#else
-r_if
-c_cond
-(paren
-id|dev-&gt;start
-)paren
-(brace
-macro_line|#endif
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
 multiline_comment|/* interface in use */
-)brace
 r_if
 c_cond
 (paren
@@ -3149,34 +2686,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_4
 id|kfree
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#else
-r_if
-c_cond
-(paren
-id|dev-&gt;name
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|dev-&gt;name
-)paren
-suffix:semicolon
-)brace
-id|kfree
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -3196,20 +2711,6 @@ op_star
 id|smp_flags
 )paren
 (brace
-macro_line|#ifdef LINUX_2_0
-id|save_flags
-c_func
-(paren
-op_star
-id|smp_flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#else
 id|spin_lock_irqsave
 c_func
 (paren
@@ -3219,7 +2720,6 @@ op_star
 id|smp_flags
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|unlock_adapter_irq
 r_void
@@ -3236,15 +2736,6 @@ op_star
 id|smp_flags
 )paren
 (brace
-macro_line|#ifdef LINUX_2_0
-id|restore_flags
-c_func
-(paren
-op_star
-id|smp_flags
-)paren
-suffix:semicolon
-macro_line|#else
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3254,9 +2745,7 @@ op_star
 id|smp_flags
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
-macro_line|#if defined (LINUX_2_1) || defined (LINUX_2_4)
 DECL|variable|register_wan_device
 id|EXPORT_SYMBOL
 c_func
@@ -3299,6 +2788,5 @@ c_func
 id|unlock_adapter_irq
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; *&t;End&n; */
 eof

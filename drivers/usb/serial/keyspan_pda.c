@@ -2379,12 +2379,6 @@ id|keyspan_pda_private
 op_star
 id|priv
 suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 op_increment
 id|port-&gt;open_count
 suffix:semicolon
@@ -2574,12 +2568,6 @@ id|error
 suffix:semicolon
 )brace
 )brace
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -2587,12 +2575,6 @@ id|error
 suffix:colon
 op_decrement
 id|port-&gt;open_count
-suffix:semicolon
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
 suffix:semicolon
 r_return
 id|rc
@@ -2621,12 +2603,6 @@ op_star
 id|serial
 op_assign
 id|port-&gt;serial
-suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
-)paren
 suffix:semicolon
 op_decrement
 id|port-&gt;open_count
@@ -2678,12 +2654,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* download the firmware to a &quot;fake&quot; device (pre-renumeration) */
 DECL|function|keyspan_pda_fake_startup

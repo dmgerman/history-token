@@ -548,7 +548,7 @@ id|ret
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_DEBUG
 l_string|&quot;kmod: failed to exec %s -s -k %s, errno = %d&bslash;n&quot;
 comma
 id|modprobe_path

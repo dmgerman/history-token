@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#include &lt;linux/nfsd/cache.h&gt;
@@ -59,11 +60,6 @@ id|svc_cacherep
 op_star
 id|nfscache
 suffix:semicolon
-DECL|variable|cache_initialized
-r_static
-r_int
-id|cache_initialized
-suffix:semicolon
 DECL|variable|cache_disabled
 r_static
 r_int
@@ -86,6 +82,14 @@ id|svc_buf
 op_star
 id|data
 )paren
+suffix:semicolon
+multiline_comment|/* &n; * locking for the reply cache:&n; * A cache entry is &quot;single use&quot; if c_state == RC_INPROG&n; * Otherwise, it when accessing _prev or _next, the lock must be held.&n; */
+DECL|variable|cache_lock
+r_static
+id|spinlock_t
+id|cache_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 r_void
 DECL|function|nfsd_cache_init
@@ -111,13 +115,6 @@ suffix:semicolon
 r_int
 r_int
 id|order
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cache_initialized
-)paren
-r_return
 suffix:semicolon
 id|i
 op_assign
@@ -344,10 +341,6 @@ id|lru_tail-&gt;c_lru_next
 op_assign
 l_int|NULL
 suffix:semicolon
-id|cache_initialized
-op_assign
-l_int|1
-suffix:semicolon
 id|cache_disabled
 op_assign
 l_int|0
@@ -372,14 +365,6 @@ suffix:semicolon
 r_int
 r_int
 id|order
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cache_initialized
-)paren
-r_return
 suffix:semicolon
 r_for
 c_loop
@@ -413,10 +398,6 @@ id|rp-&gt;c_replbuf.buf
 )paren
 suffix:semicolon
 )brace
-id|cache_initialized
-op_assign
-l_int|0
-suffix:semicolon
 id|cache_disabled
 op_assign
 l_int|1
@@ -662,6 +643,9 @@ r_int
 r_int
 id|age
 suffix:semicolon
+r_int
+id|rtn
+suffix:semicolon
 id|rqstp-&gt;rq_cacherep
 op_assign
 l_int|NULL
@@ -683,6 +667,17 @@ r_return
 id|RC_DOIT
 suffix:semicolon
 )brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|cache_lock
+)paren
+suffix:semicolon
+id|rtn
+op_assign
+id|RC_DOIT
+suffix:semicolon
 id|rp
 op_assign
 id|rh
@@ -835,8 +830,8 @@ id|cache_disabled
 op_assign
 l_int|1
 suffix:semicolon
-r_return
-id|RC_DOIT
+r_goto
+id|out
 suffix:semicolon
 )brace
 )brace
@@ -882,8 +877,8 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-r_return
-id|RC_DOIT
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|rqstp-&gt;rq_cacherep
@@ -948,8 +943,17 @@ id|rp-&gt;c_type
 op_assign
 id|RC_NOCACHE
 suffix:semicolon
+id|out
+suffix:colon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|cache_lock
+)paren
+suffix:semicolon
 r_return
-id|RC_DOIT
+id|rtn
 suffix:semicolon
 id|found_entry
 suffix:colon
@@ -970,6 +974,10 @@ c_func
 id|rp
 )paren
 suffix:semicolon
+id|rtn
+op_assign
+id|RC_DROPIT
+suffix:semicolon
 multiline_comment|/* Request being processed or excessive rexmits */
 r_if
 c_cond
@@ -982,10 +990,14 @@ id|age
 OL
 id|RC_DELAY
 )paren
-r_return
-id|RC_DROPIT
+r_goto
+id|out
 suffix:semicolon
 multiline_comment|/* From the hall of fame of impractical attacks:&n;&t; * Is this a user who tries to snoop on the cache? */
+id|rtn
+op_assign
+id|RC_DOIT
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -994,8 +1006,8 @@ id|rqstp-&gt;rq_secure
 op_logical_and
 id|rp-&gt;c_secure
 )paren
-r_return
-id|RC_DOIT
+r_goto
+id|out
 suffix:semicolon
 multiline_comment|/* Compose RPC reply header */
 r_switch
@@ -1007,8 +1019,7 @@ id|rp-&gt;c_type
 r_case
 id|RC_NOCACHE
 suffix:colon
-r_return
-id|RC_DOIT
+r_break
 suffix:semicolon
 r_case
 id|RC_REPLSTAT
@@ -1021,6 +1032,10 @@ id|rqstp-&gt;rq_resbuf
 comma
 id|rp-&gt;c_replstat
 )paren
+suffix:semicolon
+id|rtn
+op_assign
+id|RC_REPLY
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1040,10 +1055,14 @@ op_amp
 id|rp-&gt;c_replbuf
 )paren
 )paren
-r_return
-id|RC_DOIT
+r_goto
+id|out
 suffix:semicolon
 multiline_comment|/* should not happen */
+id|rtn
+op_assign
+id|RC_REPLY
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -1061,12 +1080,9 @@ id|rp-&gt;c_state
 op_assign
 id|RC_UNUSED
 suffix:semicolon
-r_return
-id|RC_DOIT
-suffix:semicolon
 )brace
-r_return
-id|RC_REPLY
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Update a cache entry. This is called from nfsd_dispatch when&n; * the procedure has been executed and the complete reply is in&n; * rqstp-&gt;rq_res.&n; *&n; * We&squot;re copying around data here rather than swapping buffers because&n; * the toplevel loop requires max-sized buffers, which would be a waste&n; * of memory for a cache with a max reply size of 100 bytes (diropokres).&n; *&n; * If we should start to use different types of cache entries tailored&n; * specifically for attrstat and fh&squot;s, we may save even more space.&n; *&n; * Also note that a cachetype of RC_NOCACHE can legally be passed when&n; * nfsd failed to encode a reply that otherwise would have been cached.&n; * In this case, nfsd_cache_update is called with statp == NULL.&n; */
@@ -1216,9 +1232,23 @@ op_logical_neg
 id|cachp-&gt;buf
 )paren
 (brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|cache_lock
+)paren
+suffix:semicolon
 id|rp-&gt;c_state
 op_assign
 id|RC_UNUSED
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|cache_lock
+)paren
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -1242,6 +1272,13 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|cache_lock
+)paren
+suffix:semicolon
 id|lru_put_front
 c_func
 (paren
@@ -1263,6 +1300,13 @@ suffix:semicolon
 id|rp-&gt;c_timestamp
 op_assign
 id|jiffies
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|cache_lock
+)paren
 suffix:semicolon
 r_return
 suffix:semicolon

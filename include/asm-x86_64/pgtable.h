@@ -56,7 +56,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* Caches aren&squot;t brain-dead on the intel. */
+multiline_comment|/* Caches aren&squot;t brain-dead. */
 DECL|macro|flush_cache_all
 mdefine_line|#define flush_cache_all()&t;&t;&t;do { } while (0)
 DECL|macro|flush_cache_mm
@@ -73,6 +73,8 @@ DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(start, end)&t;&t;do { } while (0)
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma,pg)&t;&t;do { } while (0)
+DECL|macro|flush_icache_user_range
+mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)       do { } while (0)
 DECL|macro|__flush_tlb
 mdefine_line|#define __flush_tlb()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long tmpreg;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;movq %%cr3, %0;  # flush TLB &bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movq %0, %%cr3;              &bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (tmpreg)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;:: &quot;memory&quot;);&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 multiline_comment|/*&n; * Global pages have to be flushed a bit differently. Not a real&n; * performance problem because this does not happen often.&n; */
@@ -1080,8 +1082,10 @@ suffix:semicolon
 )brace
 DECL|macro|page_pte
 mdefine_line|#define page_pte(page) page_pte_prot(page, __pgprot(0))
+DECL|macro|pmd_page_kernel
+mdefine_line|#define pmd_page_kernel(pmd) &bslash;&n;((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
 DECL|macro|pmd_page
-mdefine_line|#define pmd_page(pmd) &bslash;&n;((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
+mdefine_line|#define pmd_page(pmd) &bslash;&n;       (mem_map + (pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
 multiline_comment|/* to find an entry in a page-table-directory. */
 DECL|macro|pgd_index
 mdefine_line|#define pgd_index(address) ((address &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
@@ -1097,8 +1101,16 @@ mdefine_line|#define __pmd_offset(address) &bslash;&n;&t;&t;(((address) &gt;&gt;
 multiline_comment|/* Find an entry in the third-level page table.. */
 DECL|macro|__pte_offset
 mdefine_line|#define __pte_offset(address) &bslash;&n;&t;&t;((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
-DECL|macro|pte_offset
-mdefine_line|#define pte_offset(dir, address) ((pte_t *) pmd_page(*(dir)) + &bslash;&n;&t;&t;&t;__pte_offset(address))
+DECL|macro|pte_offset_kernel
+mdefine_line|#define pte_offset_kernel(dir, address) ((pte_t *) pmd_page_kernel(*(dir)) + &bslash;&n;&t;&t;&t;__pte_offset(address))
+DECL|macro|pte_offset_map
+mdefine_line|#define pte_offset_map(dir,address) pte_offset_kernel(dir,address)
+DECL|macro|pte_offset_map_nested
+mdefine_line|#define pte_offset_map_nested(dir,address) pte_offset_kernel(dir,address)
+DECL|macro|pte_unmap
+mdefine_line|#define pte_unmap(pte) /* NOP */
+DECL|macro|pte_unmap_nested
+mdefine_line|#define pte_unmap_nested(pte) /* NOP */ 
 multiline_comment|/* never use these in the common code */
 DECL|macro|level4_page
 mdefine_line|#define level4_page(level4) ((unsigned long) __va(level4_val(level4) &amp; PAGE_MASK))

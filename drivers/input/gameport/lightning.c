@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * $Id: lightning.c,v 1.13 2001/04/26 10:24:46 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2001 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: lightning.c,v 1.20 2002/01/22 20:41:31 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2001 Vojtech Pavlik&n; */
 multiline_comment|/*&n; * PDPI Lightning 4 gamecard driver for Linux.&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -33,7 +33,13 @@ mdefine_line|#define L4_TIMEOUT&t;&t;80&t;/* 80 us */
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Vojtech Pavlik &lt;vojtech@suse.cz&gt;&quot;
+l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;PDPI Lightning 4 gamecard driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -56,6 +62,13 @@ r_int
 r_char
 id|port
 suffix:semicolon
+DECL|member|phys
+r_char
+id|phys
+(braket
+l_int|32
+)braket
+suffix:semicolon
 DECL|variable|l4_port
 )brace
 op_star
@@ -63,6 +76,14 @@ id|l4_port
 (braket
 l_int|8
 )braket
+suffix:semicolon
+DECL|variable|l4_name
+r_char
+id|l4_name
+(braket
+)braket
+op_assign
+l_string|&quot;PDPI Lightning 4&quot;
 suffix:semicolon
 multiline_comment|/*&n; * l4_wait_ready() waits for the L4 to become ready.&n; */
 DECL|function|l4_wait_ready
@@ -137,9 +158,7 @@ id|l4
 op_star
 id|l4
 op_assign
-id|gameport
-op_member_access_from_pointer
-r_private
+id|gameport-&gt;driver
 suffix:semicolon
 r_int
 r_char
@@ -354,9 +373,7 @@ id|l4
 op_star
 id|l4
 op_assign
-id|gameport
-op_member_access_from_pointer
-r_private
+id|gameport-&gt;driver
 suffix:semicolon
 r_if
 c_cond
@@ -772,9 +789,7 @@ id|l4
 op_star
 id|l4
 op_assign
-id|gameport
-op_member_access_from_pointer
-r_private
+id|gameport-&gt;driver
 suffix:semicolon
 r_if
 c_cond
@@ -1221,14 +1236,28 @@ l_int|4
 op_plus
 id|j
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|l4-&gt;phys
+comma
+l_string|&quot;isa%04x/gameport%d&quot;
+comma
+id|L4_PORT
+comma
+l_int|4
+op_star
+id|i
+op_plus
+id|j
+)paren
+suffix:semicolon
 id|gameport
 op_assign
 op_amp
 id|l4-&gt;gameport
 suffix:semicolon
-id|gameport
-op_member_access_from_pointer
-r_private
+id|gameport-&gt;driver
 op_assign
 id|l4
 suffix:semicolon
@@ -1243,6 +1272,18 @@ suffix:semicolon
 id|gameport-&gt;calibrate
 op_assign
 id|l4_calibrate
+suffix:semicolon
+id|gameport-&gt;name
+op_assign
+id|l4_name
+suffix:semicolon
+id|gameport-&gt;phys
+op_assign
+id|l4-&gt;phys
+suffix:semicolon
+id|gameport-&gt;idbus
+op_assign
+id|BUS_ISA
 suffix:semicolon
 r_if
 c_cond
@@ -1284,51 +1325,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;gameport%d,%d,%d,%d: PDPI Lightning 4 %s card v%d.%d at %#x&bslash;n&quot;
-comma
-id|l4_port
-(braket
-id|i
-op_star
-l_int|4
-op_plus
-l_int|0
-)braket
-op_member_access_from_pointer
-id|gameport.number
-comma
-id|l4_port
-(braket
-id|i
-op_star
-l_int|4
-op_plus
-l_int|1
-)braket
-op_member_access_from_pointer
-id|gameport.number
-comma
-id|l4_port
-(braket
-id|i
-op_star
-l_int|4
-op_plus
-l_int|2
-)braket
-op_member_access_from_pointer
-id|gameport.number
-comma
-id|l4_port
-(braket
-id|i
-op_star
-l_int|4
-op_plus
-l_int|3
-)braket
-op_member_access_from_pointer
-id|gameport.number
+l_string|&quot;gameport: PDPI Lightning 4 %s card v%d.%d at %#x&bslash;n&quot;
 comma
 id|i
 ques

@@ -979,12 +979,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 op_increment
 id|port-&gt;open_count
 suffix:semicolon
@@ -1199,12 +1193,6 @@ id|__FUNCTION__
 l_string|&quot; - exit&quot;
 )paren
 suffix:semicolon
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -1218,12 +1206,6 @@ c_func
 (paren
 id|__FUNCTION__
 l_string|&quot; - error_exit&quot;
-)paren
-suffix:semicolon
-id|up
-(paren
-op_amp
-id|port-&gt;sem
 )paren
 suffix:semicolon
 r_return
@@ -1258,12 +1240,6 @@ id|__FUNCTION__
 l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
-)paren
-suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
 )paren
 suffix:semicolon
 op_decrement
@@ -1324,12 +1300,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 )brace
 DECL|function|whiteheat_ioctl
 r_static
@@ -1402,12 +1372,6 @@ id|__FUNCTION__
 l_string|&quot; -port %d&quot;
 comma
 id|port-&gt;number
-)paren
-suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
 )paren
 suffix:semicolon
 r_if
@@ -1783,12 +1747,6 @@ id|port_settings
 suffix:semicolon
 m_exit
 suffix:colon
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace

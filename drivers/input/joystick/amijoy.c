@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * $Id: amijoy.c,v 1.5 2000/07/21 22:52:24 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: amijoy.c,v 1.13 2002/01/22 20:26:32 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2001 Vojtech Pavlik&n; */
 multiline_comment|/*&n; * Driver for Amiga joysticks for Linux/m68k&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -12,7 +12,13 @@ macro_line|#include &lt;asm/amigahw.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Vojtech Pavlik &lt;vojtech@suse.cz&gt;&quot;
+l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Driver for Amiga joysticks&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -65,6 +71,21 @@ id|amijoy_dev
 (braket
 l_int|2
 )braket
+suffix:semicolon
+DECL|variable|amijoy_phys
+r_static
+r_char
+op_star
+id|amijoy_phys
+(braket
+l_int|2
+)braket
+op_assign
+(brace
+l_string|&quot;amijoy/input0&quot;
+comma
+l_string|&quot;amijoy/input1&quot;
+)brace
 suffix:semicolon
 DECL|variable|amijoy_name
 r_static
@@ -189,6 +210,7 @@ id|button
 )paren
 suffix:semicolon
 id|input_report_abs
+c_func
 (paren
 id|amijoy_dev
 op_plus
@@ -215,6 +237,7 @@ l_int|9
 op_amp
 l_int|1
 )paren
+)paren
 suffix:semicolon
 id|data
 op_assign
@@ -230,6 +253,7 @@ l_int|1
 )paren
 suffix:semicolon
 id|input_report_abs
+c_func
 (paren
 id|amijoy_dev
 op_plus
@@ -255,6 +279,7 @@ l_int|9
 )paren
 op_amp
 l_int|1
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -710,6 +735,18 @@ id|amijoy-&gt;dev
 id|i
 )braket
 dot
+id|phys
+op_assign
+id|amijoy_phys
+(braket
+id|i
+)braket
+suffix:semicolon
+id|amijoy-&gt;dev
+(braket
+id|i
+)braket
+dot
 id|idbus
 op_assign
 id|BUS_AMIGA
@@ -764,14 +801,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;input%d: %s at joy%ddat&bslash;n&quot;
-comma
-id|amijoy_dev
-(braket
-id|i
-)braket
-dot
-id|number
+l_string|&quot;input: %s at joy%ddat&bslash;n&quot;
 comma
 id|amijoy_name
 comma

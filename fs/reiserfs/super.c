@@ -3076,13 +3076,12 @@ id|s
 id|i
 )braket
 op_assign
-id|getblk
+id|sb_getblk
+c_func
 (paren
-id|s-&gt;s_dev
+id|s
 comma
 id|bmp
-comma
-id|s-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if
@@ -3722,10 +3721,7 @@ l_string|&quot;dev %s: Unfinished reiserfsck --rebuild-tree run detected. Please
 l_string|&quot;reiserfsck --rebuild-tree and wait for a completion. If that fais&bslash;n&quot;
 l_string|&quot;get newer reiserfsprogs package&bslash;n&quot;
 comma
-id|kdevname
-(paren
-id|s-&gt;s_dev
-)paren
+id|s-&gt;s_id
 )paren
 suffix:semicolon
 r_return
@@ -4310,10 +4306,7 @@ l_string|&quot;reiserfs: Unable to automatically detect hash&quot;
 l_string|&quot;function for device %s&bslash;n&quot;
 l_string|&quot;please mount with -o hash={tea,rupasov,r5}&bslash;n&quot;
 comma
-id|kdevname
-(paren
-id|s-&gt;s_dev
-)paren
+id|s-&gt;s_id
 )paren
 suffix:semicolon
 id|hash
@@ -4408,10 +4401,7 @@ c_func
 l_string|&quot;reiserfs: Unrecognised hash function for &quot;
 l_string|&quot;device %s&bslash;n&quot;
 comma
-id|kdevname
-(paren
-id|s-&gt;s_dev
-)paren
+id|s-&gt;s_id
 )paren
 suffix:semicolon
 id|hash

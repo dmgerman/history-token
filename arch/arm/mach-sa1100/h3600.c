@@ -26,6 +26,7 @@ multiline_comment|/************************* H3100 *************************/
 DECL|macro|H3100_DIRECT_EGPIO
 mdefine_line|#define H3100_DIRECT_EGPIO (GPIO_H3100_BT_ON&t;  &bslash;&n;&t;&t;&t;  | GPIO_H3100_GPIO3&t;  &bslash;&n;&t;&t;&t;  | GPIO_H3100_QMUTE&t;  &bslash;&n;&t;&t;&t;  | GPIO_H3100_LCD_3V_ON  &bslash;&n;&t;&t;&t;  | GPIO_H3100_AUD_ON&t;  &bslash;&n;&t;&t;&t;  | GPIO_H3100_AUD_PWR_ON &bslash;&n;&t;&t;&t;  | GPIO_H3100_IR_ON&t;  &bslash;&n;&t;&t;&t;  | GPIO_H3100_IR_FSEL)
 DECL|function|h3100_init_egpio
+r_static
 r_void
 id|h3100_init_egpio
 c_func
@@ -58,6 +59,7 @@ id|h3600_egpio
 suffix:semicolon
 )brace
 DECL|function|h3100_control_egpio
+r_static
 r_void
 id|h3100_control_egpio
 c_func
@@ -252,6 +254,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;if ( x != IPAQ_EGPIO_VPP_ON ) {&n;&t;&t;printk(__FUNCTION__ &quot; : type=%d (%s) gpio=0x%x (0x%x) egpio=0x%x (0x%x) setp=%d&bslash;n&quot;,&n;&t;&t;       x, egpio_names[x], GPLR, gpio, h3600_egpio, egpio, setp );&n;&t;}&n;&t;*/
 )brace
 DECL|function|h3100_read_egpio
+r_static
 r_int
 r_int
 id|h3100_read_egpio
@@ -295,6 +298,7 @@ id|h3100_read_egpio
 suffix:semicolon
 multiline_comment|/************************* H3600 *************************/
 DECL|function|h3600_init_egpio
+r_static
 r_void
 id|h3600_init_egpio
 c_func
@@ -312,6 +316,7 @@ id|h3600_egpio
 suffix:semicolon
 )brace
 DECL|function|h3600_control_egpio
+r_static
 r_void
 id|h3600_control_egpio
 c_func
@@ -490,6 +495,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|h3600_read_egpio
+r_static
 r_int
 r_int
 id|h3600_read_egpio
@@ -547,6 +553,7 @@ r_int
 id|h3800_asic2_gpio
 suffix:semicolon
 DECL|function|h3800_init_egpio
+r_static
 r_void
 id|h3800_init_egpio
 c_func
@@ -633,6 +640,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|h3800_control_egpio
+r_static
 r_void
 id|h3800_control_egpio
 c_func
@@ -799,6 +807,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|h3800_read_egpio
+r_static
 r_int
 r_int
 id|h3800_read_egpio

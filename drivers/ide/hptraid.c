@@ -231,8 +231,11 @@ c_cond
 op_logical_neg
 id|inode
 op_logical_or
-op_logical_neg
+id|kdev_none
+c_func
+(paren
 id|inode-&gt;i_rdev
+)paren
 )paren
 r_return
 op_minus
@@ -240,7 +243,7 @@ id|EINVAL
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -272,7 +275,7 @@ id|sectors
 op_assign
 id|ataraid_gendisk.part
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -284,7 +287,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -450,7 +453,7 @@ r_int
 )paren
 id|ataraid_gendisk.part
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -599,7 +602,7 @@ r_int
 )paren
 id|ataraid_gendisk.part
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -751,7 +754,7 @@ id|rsect
 op_add_assign
 id|ataraid_gendisk.part
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|bh-&gt;b_rdev
@@ -1111,7 +1114,7 @@ id|ideinfo
 suffix:semicolon
 id|dev
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|major
@@ -1202,7 +1205,7 @@ op_assign
 id|bdget
 c_func
 (paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|major
@@ -1349,7 +1352,7 @@ op_assign
 id|get_gendisk
 c_func
 (paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|major
@@ -1419,7 +1422,7 @@ id|i
 dot
 id|device
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|major

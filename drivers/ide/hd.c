@@ -2570,7 +2570,7 @@ suffix:semicolon
 )brace
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
@@ -2662,7 +2662,7 @@ c_func
 l_string|&quot;hd%c: bad access: block=%d, count=%d&bslash;n&quot;
 comma
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
@@ -3004,7 +3004,8 @@ op_logical_neg
 id|inode
 )paren
 op_logical_or
-op_logical_neg
+id|kdev_none
+c_func
 (paren
 id|inode-&gt;i_rdev
 )paren
@@ -3866,7 +3867,7 @@ c_func
 op_amp
 id|hd_gendisk
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR

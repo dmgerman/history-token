@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * The original JFFS, from which the design for JFFS2 was derived,&n; * was designed and implemented by Axis Communications AB.&n; *&n; * The contents of this file are subject to the Red Hat eCos Public&n; * License Version 1.1 (the &quot;Licence&quot;); you may not use this file&n; * except in compliance with the Licence.  You may obtain a copy of&n; * the Licence at http://www.redhat.com/&n; *&n; * Software distributed under the Licence is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.&n; * See the Licence for the specific language governing rights and&n; * limitations under the Licence.&n; *&n; * The Original Code is JFFS2 - Journalling Flash File System, version 2&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the RHEPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the RHEPL or the GPL.&n; *&n; * $Id: nodelist.c,v 1.30 2001/11/14 10:35:21 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * The original JFFS, from which the design for JFFS2 was derived,&n; * was designed and implemented by Axis Communications AB.&n; *&n; * The contents of this file are subject to the Red Hat eCos Public&n; * License Version 1.1 (the &quot;Licence&quot;); you may not use this file&n; * except in compliance with the Licence.  You may obtain a copy of&n; * the Licence at http://www.redhat.com/&n; *&n; * Software distributed under the Licence is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.&n; * See the Licence for the specific language governing rights and&n; * limitations under the Licence.&n; *&n; * The Original Code is JFFS2 - Journalling Flash File System, version 2&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the RHEPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the RHEPL or the GPL.&n; *&n; * $Id: nodelist.c,v 1.30.2.3 2002/02/23 14:04:44 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -425,6 +425,14 @@ comma
 id|__u32
 op_star
 id|highest_version
+comma
+id|__u32
+op_star
+id|latest_mctime
+comma
+id|__u32
+op_star
+id|mctime_ver
 )paren
 (brace
 r_struct
@@ -463,6 +471,11 @@ id|retlen
 suffix:semicolon
 r_int
 id|err
+suffix:semicolon
+op_star
+id|mctime_ver
+op_assign
+l_int|0
 suffix:semicolon
 id|D1
 c_func
@@ -555,9 +568,15 @@ op_complement
 l_int|3
 )paren
 comma
+id|min
+c_func
+(paren
+id|ref-&gt;totlen
+comma
 r_sizeof
 (paren
 id|node
+)paren
 )paren
 comma
 op_amp
@@ -603,9 +622,15 @@ c_cond
 (paren
 id|retlen
 OL
+id|min
+c_func
+(paren
+id|ref-&gt;totlen
+comma
 r_sizeof
 (paren
 id|node.u
+)paren
 )paren
 )paren
 (brace
@@ -762,7 +787,28 @@ id|fd-&gt;type
 op_assign
 id|node.d.type
 suffix:semicolon
-multiline_comment|/* memcpy as much of the name as possible from the raw&n;&t;&t;&t;&t;   dirent we&squot;ve already read from the flash&n;&t;&t;&t;&t;*/
+multiline_comment|/* Pick out the mctime of the latest dirent */
+r_if
+c_cond
+(paren
+id|fd-&gt;version
+OG
+op_star
+id|mctime_ver
+)paren
+(brace
+op_star
+id|mctime_ver
+op_assign
+id|fd-&gt;version
+suffix:semicolon
+op_star
+id|latest_mctime
+op_assign
+id|node.d.mctime
+suffix:semicolon
+)brace
+multiline_comment|/* memcpy as much of the name as possible from the raw&n;&t;&t;&t;   dirent we&squot;ve already read from the flash&n;&t;&t;&t;*/
 r_if
 c_cond
 (paren
@@ -809,7 +855,7 @@ id|jffs2_raw_dirent
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Do we need to copy any more of the name directly&n;&t;&t;&t;&t;   from the flash?&n;&t;&t;&t;&t;*/
+multiline_comment|/* Do we need to copy any more of the name directly&n;&t;&t;&t;   from the flash?&n;&t;&t;&t;*/
 r_if
 c_cond
 (paren
@@ -1133,6 +1179,25 @@ id|tn-&gt;fn-&gt;ofs
 op_assign
 id|node.i.offset
 suffix:semicolon
+multiline_comment|/* There was a bug where we wrote hole nodes out with&n;&t;&t;&t;   csize/dsize swapped. Deal with it */
+r_if
+c_cond
+(paren
+id|node.i.compr
+op_eq
+id|JFFS2_COMPR_ZERO
+op_logical_and
+op_logical_neg
+id|node.i.dsize
+op_logical_and
+id|node.i.csize
+)paren
+id|tn-&gt;fn-&gt;size
+op_assign
+id|node.i.csize
+suffix:semicolon
+r_else
+singleline_comment|// normal case...
 id|tn-&gt;fn-&gt;size
 op_assign
 id|node.i.dsize

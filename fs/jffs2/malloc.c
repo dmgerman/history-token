@@ -506,7 +506,7 @@ op_assign
 id|kmem_cache_create
 c_func
 (paren
-l_string|&quot;jffs2_inode_cache&quot;
+l_string|&quot;jffs2_inode&quot;
 comma
 r_sizeof
 (paren

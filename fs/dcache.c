@@ -20,6 +20,13 @@ id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+DECL|variable|__cacheline_aligned_in_smp
+id|rwlock_t
+id|dparent_lock
+id|__cacheline_aligned_in_smp
+op_assign
+id|RW_LOCK_UNLOCKED
+suffix:semicolon
 multiline_comment|/* Right now the dcache depends on the kernel lock */
 DECL|macro|check_lock
 mdefine_line|#define check_lock()&t;if (!kernel_locked()) BUG()
@@ -2826,12 +2833,26 @@ comma
 id|target
 )paren
 suffix:semicolon
+id|write_lock
+c_func
+(paren
+op_amp
+id|dparent_lock
+)paren
+suffix:semicolon
 id|do_switch
 c_func
 (paren
 id|dentry-&gt;d_parent
 comma
 id|target-&gt;d_parent
+)paren
+suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|dparent_lock
 )paren
 suffix:semicolon
 id|do_switch

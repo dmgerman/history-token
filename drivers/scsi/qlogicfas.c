@@ -1311,6 +1311,10 @@ r_int
 id|sgcount
 suffix:semicolon
 multiline_comment|/* sg counter */
+r_char
+op_star
+id|buf
+suffix:semicolon
 id|rtrc
 c_func
 (paren
@@ -1616,6 +1620,16 @@ l_int|16
 )paren
 suffix:semicolon
 )brace
+id|buf
+op_assign
+id|page_address
+c_func
+(paren
+id|sglist-&gt;page
+)paren
+op_plus
+id|sglist-&gt;offset
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1624,7 +1638,7 @@ c_func
 (paren
 id|phase
 comma
-id|sglist-&gt;address
+id|buf
 comma
 id|sglist-&gt;length
 )paren

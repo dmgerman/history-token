@@ -147,6 +147,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Not freed snd_alloc_pages = %li&bslash;n&quot;
 comma
 id|snd_alloc_pages
@@ -162,6 +163,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Not freed snd_alloc_kmalloc = %li&bslash;n&quot;
 comma
 id|snd_alloc_kmalloc
@@ -177,6 +179,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Not freed snd_alloc_vmalloc = %li&bslash;n&quot;
 comma
 id|snd_alloc_vmalloc
@@ -223,6 +226,7 @@ id|KMALLOC_MAGIC
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Corrupted kmalloc&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -232,6 +236,7 @@ suffix:semicolon
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;kmalloc(%ld) from %p not freed&bslash;n&quot;
 comma
 (paren
@@ -284,6 +289,7 @@ id|VMALLOC_MAGIC
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Corrupted vmalloc&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -293,6 +299,7 @@ suffix:semicolon
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;vmalloc(%ld) from %p not freed&bslash;n&quot;
 comma
 (paren
@@ -477,6 +484,7 @@ l_int|NULL
 id|snd_printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;null kfree (called from %p)&bslash;n&quot;
 comma
 id|__builtin_return_address
@@ -508,6 +516,7 @@ id|KMALLOC_MAGIC
 id|snd_printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;bad kfree (called from %p)&bslash;n&quot;
 comma
 id|__builtin_return_address
@@ -710,6 +719,7 @@ l_int|NULL
 id|snd_printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;null snd_magic_kfree (called from %p)&bslash;n&quot;
 comma
 id|__builtin_return_address
@@ -753,6 +763,7 @@ id|KMALLOC_MAGIC
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;bad snd_magic_kfree (called from %p)&bslash;n&quot;
 comma
 id|__builtin_return_address
@@ -901,6 +912,7 @@ l_int|NULL
 id|snd_printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;null vfree (called from %p)&bslash;n&quot;
 comma
 id|__builtin_return_address
@@ -932,6 +944,7 @@ id|VMALLOC_MAGIC
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;bad vfree (called from %p)&bslash;n&quot;
 comma
 id|__builtin_return_address
@@ -2477,7 +2490,14 @@ suffix:semicolon
 macro_line|#endif
 )brace
 macro_line|#ifdef HACK_PCI_ALLOC_CONSISTENT
-multiline_comment|/*&n; * A dirty hack... when the kernel code is fixed this should be removed.&n; *&n; * since pci_alloc_consistent always tries GFP_ATOMIC when the requested&n; * pci memory region is below 32bit, it happens quite often that even&n; * 2 order or pages cannot be allocated.&n; *&n; * so in the following, GFP_ATOMIC is used only when the first allocation&n; * doesn&squot;t match the requested region.&n; */
+multiline_comment|/*&n; * A dirty hack... when the kernel code is fixed this should be removed.&n; *&n; * since pci_alloc_consistent always tries GFP_DMA when the requested&n; * pci memory region is below 32bit, it happens quite often that even&n; * 2 order or pages cannot be allocated.&n; *&n; * so in the following, GFP_DMA is used only when the first allocation&n; * doesn&squot;t match the requested region.&n; */
+macro_line|#ifdef __i386__
+DECL|macro|get_phys_addr
+mdefine_line|#define get_phys_addr(x) virt_to_phys(x)
+macro_line|#else /* ppc */
+DECL|macro|get_phys_addr
+mdefine_line|#define get_phys_addr(x) virt_to_bus(x)
+macro_line|#endif
 DECL|function|snd_pci_hack_alloc_consistent
 r_void
 op_star
@@ -2505,6 +2525,17 @@ r_int
 id|gfp
 op_assign
 id|GFP_ATOMIC
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hwdev
+op_eq
+l_int|NULL
+)paren
+id|gfp
+op_or_assign
+id|GFP_DMA
 suffix:semicolon
 id|ret
 op_assign
@@ -2537,7 +2568,7 @@ id|hwdev
 op_logical_and
 (paren
 (paren
-id|virt_to_phys
+id|get_phys_addr
 c_func
 (paren
 id|ret
@@ -2610,7 +2641,7 @@ suffix:semicolon
 op_star
 id|dma_handle
 op_assign
-id|virt_to_phys
+id|get_phys_addr
 c_func
 (paren
 id|ret

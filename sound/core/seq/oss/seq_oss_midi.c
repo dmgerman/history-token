@@ -594,6 +594,7 @@ l_int|NULL
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;can&squot;t malloc midi info&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -671,6 +672,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;can&squot;t malloc midi coder&bslash;n&quot;
 )paren
 suffix:semicolon

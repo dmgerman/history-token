@@ -512,6 +512,22 @@ op_lshift
 l_int|2
 suffix:semicolon
 )brace
+id|svc_reserve
+c_func
+(paren
+id|rqstp
+comma
+(paren
+l_int|19
+op_lshift
+l_int|2
+)paren
+op_plus
+id|argp-&gt;count
+op_plus
+l_int|4
+)paren
+suffix:semicolon
 id|resp-&gt;count
 op_assign
 id|argp-&gt;count
@@ -2037,7 +2053,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|PROC
-mdefine_line|#define PROC(name, argt, rest, relt, cache)&t;&bslash;&n; { (svc_procfunc) nfsd_proc_##name,&t;&t;&bslash;&n;   (kxdrproc_t) nfssvc_decode_##argt,&t;&t;&bslash;&n;   (kxdrproc_t) nfssvc_encode_##rest,&t;&t;&bslash;&n;   (kxdrproc_t) nfssvc_release_##relt,&t;&t;&bslash;&n;   sizeof(struct nfsd_##argt),&t;&t;&t;&bslash;&n;   sizeof(struct nfsd_##rest),&t;&t;&t;&bslash;&n;   0,&t;&t;&t;&t;&t;&t;&bslash;&n;   cache&t;&t;&t;&t;&t;&bslash;&n; }
+mdefine_line|#define PROC(name, argt, rest, relt, cache, respsize)&t;&bslash;&n; { (svc_procfunc) nfsd_proc_##name,&t;&t;&bslash;&n;   (kxdrproc_t) nfssvc_decode_##argt,&t;&t;&bslash;&n;   (kxdrproc_t) nfssvc_encode_##rest,&t;&t;&bslash;&n;   (kxdrproc_t) nfssvc_release_##relt,&t;&t;&bslash;&n;   sizeof(struct nfsd_##argt),&t;&t;&t;&bslash;&n;   sizeof(struct nfsd_##rest),&t;&t;&t;&bslash;&n;   0,&t;&t;&t;&t;&t;&t;&bslash;&n;   cache,&t;&t;&t;&t;&t;&bslash;&n;   respsize,&t;&t;&t;&t;       &t;&bslash;&n; }
 DECL|variable|nfsd_procedures2
 r_struct
 id|svc_procedure
@@ -2059,6 +2075,8 @@ comma
 id|none
 comma
 id|RC_NOCACHE
+comma
+l_int|1
 )paren
 comma
 id|PROC
@@ -2073,6 +2091,10 @@ comma
 id|fhandle
 comma
 id|RC_NOCACHE
+comma
+l_int|1
+op_plus
+l_int|18
 )paren
 comma
 id|PROC
@@ -2087,6 +2109,10 @@ comma
 id|fhandle
 comma
 id|RC_REPLBUFF
+comma
+l_int|1
+op_plus
+l_int|18
 )paren
 comma
 id|PROC
@@ -2101,6 +2127,8 @@ comma
 id|none
 comma
 id|RC_NOCACHE
+comma
+l_int|1
 )paren
 comma
 id|PROC
@@ -2115,6 +2143,12 @@ comma
 id|fhandle
 comma
 id|RC_NOCACHE
+comma
+l_int|1
+op_plus
+l_int|8
+op_plus
+l_int|18
 )paren
 comma
 id|PROC
@@ -2129,6 +2163,12 @@ comma
 id|none
 comma
 id|RC_NOCACHE
+comma
+l_int|1
+op_plus
+l_int|1
+op_plus
+l_int|256
 )paren
 comma
 id|PROC
@@ -2143,6 +2183,14 @@ comma
 id|fhandle
 comma
 id|RC_NOCACHE
+comma
+l_int|1
+op_plus
+l_int|18
+op_plus
+l_int|1
+op_plus
+id|NFSSVC_MAXBLKSIZE
 )paren
 comma
 id|PROC
@@ -2157,6 +2205,8 @@ comma
 id|none
 comma
 id|RC_NOCACHE
+comma
+l_int|1
 )paren
 comma
 id|PROC
@@ -2171,6 +2221,10 @@ comma
 id|fhandle
 comma
 id|RC_REPLBUFF
+comma
+l_int|1
+op_plus
+l_int|18
 )paren
 comma
 id|PROC
@@ -2185,6 +2239,12 @@ comma
 id|fhandle
 comma
 id|RC_REPLBUFF
+comma
+l_int|1
+op_plus
+l_int|8
+op_plus
+l_int|18
 )paren
 comma
 id|PROC
@@ -2199,6 +2259,8 @@ comma
 id|none
 comma
 id|RC_REPLSTAT
+comma
+l_int|1
 )paren
 comma
 id|PROC
@@ -2213,6 +2275,8 @@ comma
 id|none
 comma
 id|RC_REPLSTAT
+comma
+l_int|1
 )paren
 comma
 id|PROC
@@ -2227,6 +2291,8 @@ comma
 id|none
 comma
 id|RC_REPLSTAT
+comma
+l_int|1
 )paren
 comma
 id|PROC
@@ -2241,6 +2307,8 @@ comma
 id|none
 comma
 id|RC_REPLSTAT
+comma
+l_int|1
 )paren
 comma
 id|PROC
@@ -2255,6 +2323,12 @@ comma
 id|fhandle
 comma
 id|RC_REPLBUFF
+comma
+l_int|1
+op_plus
+l_int|8
+op_plus
+l_int|18
 )paren
 comma
 id|PROC
@@ -2269,6 +2343,8 @@ comma
 id|none
 comma
 id|RC_REPLSTAT
+comma
+l_int|1
 )paren
 comma
 id|PROC
@@ -2283,6 +2359,8 @@ comma
 id|none
 comma
 id|RC_REPLBUFF
+comma
+l_int|0
 )paren
 comma
 id|PROC
@@ -2297,6 +2375,10 @@ comma
 id|none
 comma
 id|RC_NOCACHE
+comma
+l_int|1
+op_plus
+l_int|5
 )paren
 comma
 )brace

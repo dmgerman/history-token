@@ -7,20 +7,14 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/compatmac.h&gt;
+DECL|macro|LOCAL_END_REQUEST
+mdefine_line|#define LOCAL_END_REQUEST
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR MTD_BLOCK_MAJOR
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;mtdblock&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST mtdblock_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (device)
-DECL|macro|DEVICE_ON
-mdefine_line|#define DEVICE_ON(device)
-DECL|macro|DEVICE_OFF
-mdefine_line|#define DEVICE_OFF(device)
-DECL|macro|DEVICE_NO_RANDOM
-mdefine_line|#define DEVICE_NO_RANDOM
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#if LINUX_VERSION_CODE &lt; 0x20300
 DECL|macro|RQFUNC_ARG
@@ -104,7 +98,7 @@ id|EINVAL
 suffix:semicolon
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -227,7 +221,7 @@ l_int|1
 suffix:semicolon
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -299,6 +293,50 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|function|mtdblock_end_request
+r_static
+r_inline
+r_void
+id|mtdblock_end_request
+c_func
+(paren
+r_struct
+id|request
+op_star
+id|req
+comma
+r_int
+id|uptodate
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|end_that_request_first
+c_func
+(paren
+id|req
+comma
+id|uptodate
+comma
+id|req-&gt;hard_cur_sectors
+)paren
+)paren
+r_return
+suffix:semicolon
+id|blkdev_dequeue_request
+c_func
+(paren
+id|req
+)paren
+suffix:semicolon
+id|end_that_request_last
+c_func
+(paren
+id|req
+)paren
+suffix:semicolon
+)brace
 DECL|function|mtdblock_request
 r_static
 r_void
@@ -340,7 +378,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|current_request-&gt;rq_dev
@@ -355,9 +393,11 @@ c_func
 l_string|&quot;mtd: Unsupported device!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|end_request
+id|mtdblock_end_request
 c_func
 (paren
+id|current_request
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -372,7 +412,7 @@ c_func
 (paren
 l_int|NULL
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|current_request-&gt;rq_dev
@@ -394,9 +434,11 @@ comma
 id|CURRENT_DEV
 )paren
 suffix:semicolon
-id|end_request
+id|mtdblock_end_request
 c_func
 (paren
+id|current_request
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -439,9 +481,11 @@ comma
 id|current_request-&gt;nr_sectors
 )paren
 suffix:semicolon
-id|end_request
+id|mtdblock_end_request
 c_func
 (paren
+id|current_request
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -589,9 +633,11 @@ id|io_request_lock
 )paren
 suffix:semicolon
 macro_line|#endif
-id|end_request
+id|mtdblock_end_request
 c_func
 (paren
+id|current_request
+comma
 id|res
 )paren
 suffix:semicolon
@@ -634,7 +680,7 @@ c_func
 (paren
 l_int|NULL
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -719,10 +765,10 @@ id|EACCES
 suffix:semicolon
 )brace
 macro_line|#endif
-id|fsync_dev
+id|fsync_bdev
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev
 )paren
 suffix:semicolon
 id|invalidate_buffers

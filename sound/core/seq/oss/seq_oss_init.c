@@ -626,6 +626,7 @@ l_int|NULL
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;can&squot;t malloc device info&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -673,6 +674,7 @@ id|SNDRV_SEQ_OSS_MAX_CLIENTS
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;too many applications&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -735,6 +737,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;no device found&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -769,6 +772,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;can&squot;t create port&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -947,6 +951,7 @@ l_int|NULL
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;can&squot;t alloc timer&bslash;n&quot;
 )paren
 suffix:semicolon

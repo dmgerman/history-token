@@ -3624,9 +3624,10 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;no UART detected at 0x%lx&bslash;n&quot;
 comma
 (paren
@@ -3859,9 +3860,10 @@ l_int|0
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;serial midi soundcard not found or device busy&bslash;n&quot;
 )paren
 suffix:semicolon

@@ -28,6 +28,13 @@ mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
 DECL|macro|chip_t
 mdefine_line|#define chip_t sb_t
+macro_line|#ifdef SNDRV_SBAWE
+DECL|macro|PFX
+mdefine_line|#define PFX &quot;sbawe: &quot;
+macro_line|#else
+DECL|macro|PFX
+mdefine_line|#define PFX &quot;sb16: &quot;
+macro_line|#endif
 macro_line|#ifndef SNDRV_SBAWE
 id|EXPORT_NO_SYMBOLS
 suffix:semicolon
@@ -1814,9 +1821,11 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;isapnp configure failure (out of resources?)&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2053,9 +2062,11 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;WaveTable isapnp configure failure (out of resources?)&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2468,9 +2479,11 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;unable to find a free IRQ&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2510,9 +2523,11 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;unable to find a free 8-bit DMA&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2552,9 +2567,11 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;unable to find a free 16-bit DMA&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2869,9 +2886,11 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;no OPL device at 0x%lx-0x%lx&bslash;n&quot;
 comma
 id|snd_fm_port
@@ -3028,9 +3047,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_INFO
+id|PFX
 l_string|&quot;warning - CSP chip not detected on soundcard #%i&bslash;n&quot;
 comma
 id|dev
@@ -3079,9 +3100,11 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;fatal error - EMU-8000 synthesizer not detected at 0x%lx&bslash;n&quot;
 comma
 id|snd_awe_port
@@ -3593,9 +3616,10 @@ r_continue
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Sound Blaster 16+ soundcard #%i not found at 0x%lx or device busy&bslash;n&quot;
 comma
 id|dev
@@ -3640,23 +3664,26 @@ id|cards
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Sound Blaster 16 soundcard not found or device busy&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef SNDRV_SBAWE_EMU8000
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;In case, if you have non-AWE card, try snd-card-sb16 module&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#else
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;In case, if you have AWE card, try snd-card-sbawe module&bslash;n&quot;
 )paren
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * The original JFFS, from which the design for JFFS2 was derived,&n; * was designed and implemented by Axis Communications AB.&n; *&n; * The contents of this file are subject to the Red Hat eCos Public&n; * License Version 1.1 (the &quot;Licence&quot;); you may not use this file&n; * except in compliance with the Licence.  You may obtain a copy of&n; * the Licence at http://www.redhat.com/&n; *&n; * Software distributed under the Licence is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.&n; * See the Licence for the specific language governing rights and&n; * limitations under the Licence.&n; *&n; * The Original Code is JFFS2 - Journalling Flash File System, version 2&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the RHEPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the RHEPL or the GPL.&n; *&n; * $Id: gc.c,v 1.52 2001/09/19 21:53:47 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * The original JFFS, from which the design for JFFS2 was derived,&n; * was designed and implemented by Axis Communications AB.&n; *&n; * The contents of this file are subject to the Red Hat eCos Public&n; * License Version 1.1 (the &quot;Licence&quot;); you may not use this file&n; * except in compliance with the Licence.  You may obtain a copy of&n; * the Licence at http://www.redhat.com/&n; *&n; * Software distributed under the Licence is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.&n; * See the Licence for the specific language governing rights and&n; * limitations under the Licence.&n; *&n; * The Original Code is JFFS2 - Journalling Flash File System, version 2&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the RHEPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the RHEPL or the GPL.&n; *&n; * $Id: gc.c,v 1.52.2.2 2002/02/23 14:25:36 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -1244,21 +1244,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|S_ISBLK
+c_func
 (paren
 id|inode-&gt;i_mode
-op_amp
-id|S_IFMT
 )paren
-op_eq
-id|S_IFBLK
 op_logical_or
+id|S_ISCHR
+c_func
 (paren
 id|inode-&gt;i_mode
-op_amp
-id|S_IFMT
 )paren
-op_eq
-id|S_IFCHR
 )paren
 (brace
 multiline_comment|/* For these, we don&squot;t actually need to read the old node */
@@ -1314,13 +1310,11 @@ r_else
 r_if
 c_cond
 (paren
+id|S_ISLNK
+c_func
 (paren
 id|inode-&gt;i_mode
-op_amp
-id|S_IFMT
 )paren
-op_eq
-id|S_IFLNK
 )paren
 (brace
 id|mdatalen
@@ -1668,13 +1662,11 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|S_ISLNK
+c_func
 (paren
 id|inode-&gt;i_mode
-op_amp
-id|S_IFMT
 )paren
-op_eq
-id|S_IFLNK
 )paren
 id|kfree
 c_func
@@ -2468,13 +2460,13 @@ id|ri.offset
 op_assign
 id|start
 suffix:semicolon
-id|ri.csize
+id|ri.dsize
 op_assign
 id|end
 op_minus
 id|start
 suffix:semicolon
-id|ri.dsize
+id|ri.csize
 op_assign
 l_int|0
 suffix:semicolon

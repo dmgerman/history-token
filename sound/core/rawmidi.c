@@ -3831,6 +3831,7 @@ suffix:colon
 id|snd_printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;rawmidi: unknown command = 0x%x&bslash;n&quot;
 comma
 id|cmd
@@ -7272,6 +7273,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unable to register rawmidi device %i:%i&bslash;n&quot;
 comma
 id|rmidi-&gt;card-&gt;number
@@ -7387,6 +7389,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unable to register OSS rawmidi device %i:%i&bslash;n&quot;
 comma
 id|rmidi-&gt;card-&gt;number
@@ -7447,6 +7450,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unable to register OSS rawmidi device %i:%i&bslash;n&quot;
 comma
 id|rmidi-&gt;card-&gt;number
@@ -7956,6 +7960,7 @@ id|SNDRV_RAWMIDI_DEVICES
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;invalid midi_map[%d] = %d&bslash;n&quot;
 comma
 id|i
@@ -7995,6 +8000,7 @@ id|SNDRV_RAWMIDI_DEVICES
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;invalid amidi_map[%d] = %d&bslash;n&quot;
 comma
 id|i

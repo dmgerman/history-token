@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;linux/bootmem.h&gt;
 DECL|variable|dmi_broken
 r_int
 r_int
@@ -160,7 +161,7 @@ l_int|1
 suffix:semicolon
 id|buf
 op_assign
-id|ioremap
+id|bt_ioremap
 c_func
 (paren
 id|base
@@ -274,10 +275,12 @@ id|i
 op_increment
 suffix:semicolon
 )brace
-id|iounmap
+id|bt_iounmap
 c_func
 (paren
 id|buf
+comma
+id|len
 )paren
 suffix:semicolon
 r_return
@@ -661,7 +664,7 @@ id|dmi_ident
 id|slot
 )braket
 op_assign
-id|kmalloc
+id|alloc_bootmem
 c_func
 (paren
 id|strlen
@@ -671,8 +674,6 @@ id|p
 )paren
 op_plus
 l_int|1
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -1332,6 +1333,100 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Some machines, usually laptops, can&squot;t handle an enabled local APIC.&n; * The symptoms include hangs or reboots when suspending or resuming,&n; * attaching or detaching the power cord, or entering BIOS setup screens&n; * through magic key sequences.&n; */
+DECL|function|local_apic_kills_bios
+r_static
+r_int
+id|__init
+id|local_apic_kills_bios
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+r_extern
+r_int
+id|dont_enable_local_apic
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dont_enable_local_apic
+)paren
+(brace
+id|dont_enable_local_apic
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s with broken BIOS detected. &quot;
+l_string|&quot;Refusing to enable the local APIC.&bslash;n&quot;
+comma
+id|d-&gt;ident
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * The Intel AL440LX mainboard will hang randomly if the local APIC&n; * timer is running and the APM BIOS hasn&squot;t been disabled.&n; */
+DECL|function|apm_kills_local_apic_timer
+r_static
+r_int
+id|__init
+id|apm_kills_local_apic_timer
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+r_extern
+r_int
+id|dont_use_local_apic_timer
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|apm_info.bios.version
+op_logical_and
+op_logical_neg
+id|dont_use_local_apic_timer
+)paren
+(brace
+id|dont_use_local_apic_timer
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s with broken BIOS detected. &quot;
+l_string|&quot;The local APIC timer will not be used.&bslash;n&quot;
+comma
+id|d-&gt;ident
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *&t;Simple &quot;print if true&quot; callback&n; */
 DECL|function|print_if_true
 r_static
@@ -1904,8 +1999,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|dmi_scan_machine
-r_static
-r_int
+r_void
 id|__init
 id|dmi_scan_machine
 c_func
@@ -1936,15 +2030,5 @@ c_func
 )paren
 suffix:semicolon
 )brace
-r_return
-id|err
-suffix:semicolon
 )brace
-DECL|variable|dmi_scan_machine
-id|module_init
-c_func
-(paren
-id|dmi_scan_machine
-)paren
-suffix:semicolon
 eof

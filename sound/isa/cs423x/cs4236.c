@@ -1883,9 +1883,10 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 id|IDENT
 l_string|&quot; isapnp configure failed for WSS (out of resources?)&bslash;n&quot;
 )paren
@@ -2095,9 +2096,10 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 id|IDENT
 l_string|&quot; isapnp configure failed for control (out of resources?)&bslash;n&quot;
 )paren
@@ -2266,9 +2268,10 @@ id|dev
 op_assign
 id|SNDRV_AUTO_IRQ
 suffix:semicolon
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 id|IDENT
 l_string|&quot; isapnp configure failed for MPU (out of resources?)&bslash;n&quot;
 )paren
@@ -2645,9 +2648,10 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;isapnp detection failed and probing for &quot;
 id|IDENT
 l_string|&quot; is not supported&bslash;n&quot;
@@ -2750,10 +2754,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
-l_string|&quot;unable to register SB port at 0x%lx&bslash;n&quot;
+id|KERN_ERR
+id|IDENT
+l_string|&quot;: unable to register SB port at 0x%lx&bslash;n&quot;
 comma
 id|snd_sb_port
 (braket
@@ -3077,9 +3083,10 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 id|IDENT
 l_string|&quot;: OPL3 not detected&bslash;n&quot;
 )paren
@@ -3180,9 +3187,10 @@ l_int|NULL
 OL
 l_int|0
 )paren
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 id|IDENT
 l_string|&quot;: MPU401 not detected&bslash;n&quot;
 )paren
@@ -3479,9 +3487,10 @@ id|cards
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 id|IDENT
 l_string|&quot; soundcard not found or device busy&bslash;n&quot;
 )paren

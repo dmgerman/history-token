@@ -266,11 +266,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|check_pgt_cache
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 )brace
 DECL|function|idle_setup

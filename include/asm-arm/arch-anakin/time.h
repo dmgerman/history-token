@@ -45,7 +45,7 @@ id|timer_irq.flags
 op_assign
 id|SA_INTERRUPT
 suffix:semicolon
-id|setup_arm_irq
+id|setup_irq
 c_func
 (paren
 id|IRQ_TICK

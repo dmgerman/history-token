@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * $Id: sidewinder.c,v 1.20 2001/05/19 08:14:54 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2001 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: sidewinder.c,v 1.29 2002/01/22 20:28:51 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2001 Vojtech Pavlik&n; */
 multiline_comment|/*&n; * Microsoft SideWinder joystick family driver for Linux&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -8,9 +8,27 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Microsoft SideWinder joystick family driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * These are really magic values. Changing them can make a problem go away,&n; * as well as break everything.&n; */
 DECL|macro|SW_DEBUG
-macro_line|#undef SW_DEBUG
+mdefine_line|#define SW_DEBUG
 DECL|macro|SW_START
 mdefine_line|#define SW_START&t;400&t;/* The time we wait for the first bit [400 us] */
 DECL|macro|SW_STROBE
@@ -481,6 +499,16 @@ r_char
 id|name
 (braket
 l_int|64
+)braket
+suffix:semicolon
+DECL|member|phys
+r_char
+id|phys
+(braket
+l_int|4
+)braket
+(braket
+l_int|32
 )braket
 suffix:semicolon
 DECL|member|length
@@ -2345,10 +2373,10 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;sidewinder.c: Joystick in wrong mode on gameport%d&quot;
+l_string|&quot;sidewinder.c: Joystick in wrong mode on %s&quot;
 l_string|&quot; - going to reinitialize.&bslash;n&quot;
 comma
-id|sw-&gt;gameport-&gt;number
+id|sw-&gt;gameport-&gt;phys
 )paren
 suffix:semicolon
 id|sw-&gt;fail
@@ -2525,10 +2553,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;sidewinder.c: No more trouble on gameport%d&quot;
+l_string|&quot;sidewinder.c: No more trouble on %s&quot;
 l_string|&quot; - enabling optimization again.&bslash;n&quot;
 comma
-id|sw-&gt;gameport-&gt;number
+id|sw-&gt;gameport-&gt;phys
 )paren
 suffix:semicolon
 id|sw-&gt;length
@@ -2568,10 +2596,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;sidewinder.c: Many bit errors on gameport%d&quot;
+l_string|&quot;sidewinder.c: Many bit errors on %s&quot;
 l_string|&quot; - disabling optimization.&bslash;n&quot;
 comma
-id|sw-&gt;gameport-&gt;number
+id|sw-&gt;gameport-&gt;phys
 )paren
 suffix:semicolon
 id|sw-&gt;length
@@ -2595,10 +2623,10 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;sidewinder.c: Too many bit errors on gameport%d&quot;
+l_string|&quot;sidewinder.c: Too many bit errors on %s&quot;
 l_string|&quot; - reinitializing joystick.&bslash;n&quot;
 comma
-id|sw-&gt;gameport-&gt;number
+id|sw-&gt;gameport-&gt;phys
 )paren
 suffix:semicolon
 r_if
@@ -3312,9 +3340,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;Init 0: Opened gameport %d, io %#x, speed %d&quot;
+l_string|&quot;Init 0: Opened %s, io %#x, speed %d&quot;
 comma
-id|gameport-&gt;number
+id|gameport-&gt;phys
 comma
 id|gameport-&gt;io
 comma
@@ -3811,9 +3839,9 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;sidewinder.c: unknown joystick device detected &quot;
-l_string|&quot;on gameport%d, contact &lt;vojtech@suse.cz&gt;&bslash;n&quot;
+l_string|&quot;on %s, contact &lt;vojtech@ucw.cz&gt;&bslash;n&quot;
 comma
-id|gameport-&gt;number
+id|gameport-&gt;phys
 )paren
 suffix:semicolon
 id|sw_print_packet
@@ -3919,6 +3947,21 @@ id|sw-&gt;type
 )braket
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|sw-&gt;phys
+(braket
+id|i
+)braket
+comma
+l_string|&quot;%s/input%d&quot;
+comma
+id|gameport-&gt;phys
+comma
+id|i
+)paren
+suffix:semicolon
 id|sw-&gt;dev
 (braket
 id|i
@@ -3954,6 +3997,18 @@ dot
 id|name
 op_assign
 id|sw-&gt;name
+suffix:semicolon
+id|sw-&gt;dev
+(braket
+id|i
+)braket
+dot
+id|phys
+op_assign
+id|sw-&gt;phys
+(braket
+id|i
+)braket
 suffix:semicolon
 id|sw-&gt;dev
 (braket
@@ -4220,22 +4275,13 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;input%d: %s%s on gameport%d.%d [%d-bit id %d data %d]&bslash;n&quot;
-comma
-id|sw-&gt;dev
-(braket
-id|i
-)braket
-dot
-id|number
+l_string|&quot;input: %s%s on %s [%d-bit id %d data %d]&bslash;n&quot;
 comma
 id|sw-&gt;name
 comma
 id|comment
 comma
-id|gameport-&gt;number
-comma
-id|i
+id|gameport-&gt;phys
 comma
 id|m
 comma
@@ -4389,12 +4435,6 @@ id|module_exit
 c_func
 (paren
 id|sw_exit
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

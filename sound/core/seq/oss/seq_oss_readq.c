@@ -54,6 +54,7 @@ l_int|NULL
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;can&squot;t malloc read queue&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -87,6 +88,7 @@ l_int|NULL
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;can&squot;t malloc read queue buffer&bslash;n&quot;
 )paren
 suffix:semicolon

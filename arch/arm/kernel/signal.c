@@ -1825,7 +1825,8 @@ id|rc
 r_return
 l_int|1
 suffix:semicolon
-id|flush_icache_range
+multiline_comment|/*&n;&t;&t; * Ensure that the instruction cache sees&n;&t;&t; * the return code written onto the stack.&n;&t;&t; */
+id|cpu_icache_invalidate_range
 c_func
 (paren
 (paren

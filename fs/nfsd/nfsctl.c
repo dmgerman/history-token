@@ -456,7 +456,7 @@ comma
 id|data-&gt;gd_maxlen
 )paren
 suffix:semicolon
-id|exp_unlock
+id|exp_readunlock
 c_func
 (paren
 )paren
@@ -573,7 +573,7 @@ comma
 id|NFS_FHSIZE
 )paren
 suffix:semicolon
-id|exp_unlock
+id|exp_readunlock
 c_func
 (paren
 )paren
@@ -808,10 +808,6 @@ r_int
 id|argsize
 comma
 id|respsize
-suffix:semicolon
-id|lock_kernel
-(paren
-)paren
 suffix:semicolon
 id|err
 op_assign
@@ -1200,10 +1196,6 @@ id|kfree
 c_func
 (paren
 id|res
-)paren
-suffix:semicolon
-id|unlock_kernel
-(paren
 )paren
 suffix:semicolon
 r_return

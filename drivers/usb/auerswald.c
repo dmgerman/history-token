@@ -35,7 +35,7 @@ DECL|macro|ID_AUERSWALD
 mdefine_line|#define ID_AUERSWALD  &t;0x09BF
 macro_line|#ifndef AUER_MINOR_BASE&t;&t;/* allow external override */
 DECL|macro|AUER_MINOR_BASE
-mdefine_line|#define AUER_MINOR_BASE&t;80&t;/* auerswald driver minor number */
+mdefine_line|#define AUER_MINOR_BASE&t;112&t;/* auerswald driver minor number */
 macro_line|#endif
 multiline_comment|/* we can have up to this number of device plugged in at once */
 DECL|macro|AUER_MAX_DEVICES

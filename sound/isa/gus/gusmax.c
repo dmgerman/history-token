@@ -1740,9 +1740,10 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;GUS MAX soundcard was not detected at 0x%lx&bslash;n&quot;
 comma
 id|gus-&gt;gf1.port
@@ -1781,10 +1782,11 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|snd_printk
+id|printk
 c_func
 (paren
-l_string|&quot;unable to grab IRQ %d&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;gusmax: unable to grab IRQ %d&bslash;n&quot;
 comma
 id|irq
 )paren
@@ -2317,9 +2319,10 @@ id|cards
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;GUS MAX soundcard not found or device busy&bslash;n&quot;
 )paren
 suffix:semicolon

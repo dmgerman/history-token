@@ -415,12 +415,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 op_increment
 id|port-&gt;open_count
 suffix:semicolon
@@ -502,12 +496,6 @@ id|result
 )paren
 suffix:semicolon
 )brace
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 r_return
 id|result
 suffix:semicolon
@@ -571,12 +559,6 @@ id|serial
 )paren
 r_return
 suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 op_decrement
 id|port-&gt;open_count
 suffix:semicolon
@@ -606,12 +588,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 multiline_comment|/* Uncomment the following line if you want to see some statistics in your syslog */
 multiline_comment|/* info (&quot;Bytes In = %d  Bytes Out = %d&quot;, bytes_in, bytes_out); */
 )brace
@@ -1494,24 +1470,10 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 id|usb_unlink_urb
 (paren
 id|port-&gt;read_urb
 )paren
-suffix:semicolon
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|function|empeg_unthrottle
@@ -1535,12 +1497,6 @@ id|__FUNCTION__
 l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
-)paren
-suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
 )paren
 suffix:semicolon
 id|port-&gt;read_urb-&gt;dev
@@ -1569,12 +1525,6 @@ id|__FUNCTION__
 l_string|&quot; - failed submitting read urb, error %d&quot;
 comma
 id|result
-)paren
-suffix:semicolon
-id|up
-(paren
-op_amp
-id|port-&gt;sem
 )paren
 suffix:semicolon
 r_return

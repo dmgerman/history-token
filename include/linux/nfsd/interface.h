@@ -3,7 +3,8 @@ macro_line|#ifndef LINUX_NFSD_INTERFACE_H
 DECL|macro|LINUX_NFSD_INTERFACE_H
 mdefine_line|#define LINUX_NFSD_INTERFACE_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_NFSD_MODULE
+macro_line|#ifndef CONFIG_NFSD
+macro_line|#ifdef CONFIG_MODULES
 DECL|struct|nfsd_linkage
 r_extern
 r_struct
@@ -38,6 +39,7 @@ suffix:semicolon
 op_star
 id|nfsd_linkage
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 macro_line|#endif /* LINUX_NFSD_INTERFACE_H */
 eof

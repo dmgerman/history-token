@@ -1039,7 +1039,7 @@ op_assign
 id|IRQ_ISA_TIMER
 suffix:semicolon
 )brace
-id|setup_arm_irq
+id|setup_irq
 c_func
 (paren
 id|irq

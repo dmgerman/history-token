@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Handling of different ABIs (personalities).&n; *&n; * We group personalities into execution domains which have their&n; * own handlers for kernel entry points, signal mapping, etc...&n; *&n; * 2001-05-06&t;Complete rewrite,  Christoph Hellwig (hch@caldera.de)&n; */
+multiline_comment|/*&n; * Handling of different ABIs (personalities).&n; *&n; * We group personalities into execution domains which have their&n; * own handlers for kernel entry points, signal mapping, etc...&n; *&n; * 2001-05-06&t;Complete rewrite,  Christoph Hellwig (hch@infradead.org)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

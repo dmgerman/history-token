@@ -124,7 +124,6 @@ c_func
 (paren
 id|IRQ_GPIO1
 )paren
-)paren
 suffix:semicolon
 multiline_comment|/* chained on GPIO 1 */
 r_return

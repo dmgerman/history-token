@@ -249,13 +249,6 @@ comma
 id|xprt
 )paren
 suffix:semicolon
-macro_line|#ifdef RPC_DEBUG
-id|rpc_register_sysctl
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -376,11 +369,12 @@ id|clnt-&gt;cl_stats
 op_assign
 id|program-&gt;stats
 suffix:semicolon
-id|clnt-&gt;cl_bindwait
-op_assign
-id|RPC_INIT_WAITQ
+id|INIT_RPC_WAITQ
 c_func
 (paren
+op_amp
+id|clnt-&gt;cl_bindwait
+comma
 l_string|&quot;bindwait&quot;
 )paren
 suffix:semicolon

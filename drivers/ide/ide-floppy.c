@@ -6955,24 +6955,6 @@ id|floppy-&gt;flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Revalidate the new media. Should set blk_size[]&n; */
-DECL|function|idefloppy_revalidate
-r_static
-r_void
-id|idefloppy_revalidate
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-id|ide_revalidate_drive
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *&t;Return the current floppy capacity to ide.c.&n; */
 DECL|function|idefloppy_capacity
 r_static
@@ -8266,13 +8248,7 @@ macro_line|#else
 DECL|macro|idefloppy_proc
 mdefine_line|#define&t;idefloppy_proc&t;NULL
 macro_line|#endif&t;/* CONFIG_PROC_FS */
-r_int
-id|idefloppy_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+r_static
 r_int
 id|idefloppy_reinit
 c_func
@@ -8285,29 +8261,14 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;IDE subdriver functions, registered with ide.c&n; */
 DECL|variable|idefloppy_driver
 r_static
-id|ide_driver_t
+r_struct
+id|ata_operations
 id|idefloppy_driver
 op_assign
 (brace
-id|name
+id|owner
 suffix:colon
-l_string|&quot;ide-floppy&quot;
-comma
-id|media
-suffix:colon
-id|ide_floppy
-comma
-id|busy
-suffix:colon
-l_int|0
-comma
-id|supports_dma
-suffix:colon
-l_int|1
-comma
-id|supports_dsc_overlap
-suffix:colon
-l_int|0
+id|THIS_MODULE
 comma
 id|cleanup
 suffix:colon
@@ -8347,7 +8308,7 @@ id|idefloppy_media_change
 comma
 id|revalidate
 suffix:colon
-id|idefloppy_revalidate
+id|ide_revalidate_drive
 comma
 id|pre_reset
 suffix:colon
@@ -8365,10 +8326,6 @@ id|proc
 suffix:colon
 id|idefloppy_proc
 comma
-id|driver_init
-suffix:colon
-id|idefloppy_init
-comma
 id|driver_reinit
 suffix:colon
 id|idefloppy_reinit
@@ -8376,6 +8333,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|idefloppy_reinit
+r_static
 r_int
 id|idefloppy_reinit
 (paren
@@ -8402,10 +8360,11 @@ c_loop
 id|drive
 op_assign
 id|ide_scan_devices
+c_func
 (paren
-id|ide_floppy
+id|ATA_FLOPPY
 comma
-id|idefloppy_driver.name
+l_string|&quot;ide-floppy&quot;
 comma
 l_int|NULL
 comma
@@ -8520,7 +8479,8 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|DRIVER
+multiline_comment|/* ATA-PATTERN */
+id|ata_ops
 c_func
 (paren
 id|drive
@@ -8536,7 +8496,7 @@ comma
 id|floppy
 )paren
 suffix:semicolon
-id|DRIVER
+id|ata_ops
 c_func
 (paren
 id|drive
@@ -8549,11 +8509,9 @@ id|failed
 op_decrement
 suffix:semicolon
 )brace
-id|ide_register_module
+id|revalidate_drives
 c_func
 (paren
-op_amp
-id|idefloppy_driver
 )paren
 suffix:semicolon
 id|MOD_DEC_USE_COUNT
@@ -8593,10 +8551,11 @@ c_loop
 id|drive
 op_assign
 id|ide_scan_devices
+c_func
 (paren
-id|ide_floppy
+id|ATA_FLOPPY
 comma
-id|idefloppy_driver.name
+l_string|&quot;ide-floppy&quot;
 comma
 op_amp
 id|idefloppy_driver
@@ -8645,13 +8604,6 @@ id|idefloppy_proc
 suffix:semicolon
 macro_line|#endif
 )brace
-id|ide_unregister_module
-c_func
-(paren
-op_amp
-id|idefloppy_driver
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;idefloppy_init will register the driver for each floppy.&n; */
 DECL|function|idefloppy_init
@@ -8692,9 +8644,9 @@ id|drive
 op_assign
 id|ide_scan_devices
 (paren
-id|ide_floppy
+id|ATA_FLOPPY
 comma
-id|idefloppy_driver.name
+l_string|&quot;ide-floppy&quot;
 comma
 l_int|NULL
 comma
@@ -8809,7 +8761,8 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|DRIVER
+multiline_comment|/* ATA-PATTERN */
+id|ata_ops
 c_func
 (paren
 id|drive
@@ -8825,7 +8778,7 @@ comma
 id|floppy
 )paren
 suffix:semicolon
-id|DRIVER
+id|ata_ops
 c_func
 (paren
 id|drive
@@ -8838,11 +8791,9 @@ id|failed
 op_decrement
 suffix:semicolon
 )brace
-id|ide_register_module
+id|revalidate_drives
 c_func
 (paren
-op_amp
-id|idefloppy_driver
 )paren
 suffix:semicolon
 id|MOD_DEC_USE_COUNT

@@ -204,15 +204,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_int
-id|exp_writelock
-c_func
-(paren
 r_void
-)paren
-suffix:semicolon
-r_void
-id|exp_unlock
+id|exp_readunlock
 c_func
 (paren
 r_void

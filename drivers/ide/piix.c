@@ -54,16 +54,6 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* ide-proc.c */
-r_extern
-r_char
-op_star
-id|ide_media_verbose
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
 DECL|variable|bmide_dev
 r_static
 r_struct
@@ -1202,6 +1192,7 @@ id|slave_data
 op_or
 (paren
 (paren
+(paren
 id|timings
 (braket
 id|pio
@@ -1213,7 +1204,6 @@ op_lshift
 l_int|2
 )paren
 op_or
-(paren
 id|timings
 (braket
 id|pio
@@ -1221,6 +1211,7 @@ id|pio
 (braket
 l_int|1
 )braket
+)paren
 op_lshift
 (paren
 id|HWIF
@@ -1235,7 +1226,6 @@ c_cond
 l_int|4
 suffix:colon
 l_int|0
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -2674,16 +2664,12 @@ r_int
 r_int
 id|__init
 id|pci_init_piix
+c_func
 (paren
 r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_const
-r_char
-op_star
-id|name
 )paren
 (brace
 macro_line|#if defined(DISPLAY_PIIX_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)

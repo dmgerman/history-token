@@ -57,16 +57,6 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* ide-proc.c */
-r_extern
-r_char
-op_star
-id|ide_media_verbose
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
 DECL|variable|bmide_dev
 r_static
 r_struct
@@ -1986,16 +1976,12 @@ r_int
 r_int
 id|__init
 id|pci_init_amd74xx
+c_func
 (paren
 r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_const
-r_char
-op_star
-id|name
 )paren
 (brace
 r_int
@@ -2026,7 +2012,7 @@ c_func
 (paren
 l_string|&quot;%s: disabling single-word DMA support (revision &lt; C4)&bslash;n&quot;
 comma
-id|name
+id|dev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
@@ -2078,7 +2064,7 @@ c_func
 (paren
 l_string|&quot;%s: simplex device: DMA will fail!!&bslash;n&quot;
 comma
-id|name
+id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace

@@ -10581,16 +10581,18 @@ c_func
 (brace
 macro_line|#ifdef MODULE
 macro_line|#ifdef OPTi93X
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;no OPTi 82C93x soundcard found&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#else
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;no OPTi 82C92x soundcard found&bslash;n&quot;
 )paren
 suffix:semicolon

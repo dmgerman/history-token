@@ -386,11 +386,11 @@ c_loop
 id|i
 op_assign
 op_minus
-l_int|2
+l_int|4
 suffix:semicolon
 id|i
 OL
-l_int|3
+l_int|1
 suffix:semicolon
 id|i
 op_increment

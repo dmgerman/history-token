@@ -1131,6 +1131,7 @@ l_int|NULL
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;fatal error: cannot create timer&bslash;n&quot;
 )paren
 suffix:semicolon

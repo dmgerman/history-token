@@ -68,16 +68,6 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* ide-proc.c */
-r_extern
-r_char
-op_star
-id|ide_media_verbose
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
 DECL|function|svwks_get_info
 r_static
 r_int
@@ -3111,16 +3101,12 @@ r_int
 r_int
 id|__init
 id|pci_init_svwks
+c_func
 (paren
 r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_const
-r_char
-op_star
-id|name
 )paren
 (brace
 r_int

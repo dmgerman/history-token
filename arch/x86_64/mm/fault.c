@@ -388,6 +388,13 @@ c_cond
 id|address
 op_ge
 id|TASK_SIZE
+op_logical_and
+op_logical_neg
+(paren
+id|error_code
+op_amp
+l_int|5
+)paren
 )paren
 r_goto
 id|vmalloc_fault

@@ -1617,7 +1617,7 @@ op_assign
 id|usb_alloc_urb
 c_func
 (paren
-id|num_packet
+id|num_packets
 comma
 id|GFP_KERNEL
 )paren

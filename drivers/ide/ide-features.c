@@ -166,66 +166,6 @@ l_string|&quot;XFER ERROR&quot;
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *&n; */
-DECL|function|ide_media_verbose
-r_char
-op_star
-id|ide_media_verbose
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|drive-&gt;media
-)paren
-(brace
-r_case
-id|ide_scsi
-suffix:colon
-r_return
-l_string|&quot;scsi   &quot;
-suffix:semicolon
-r_case
-id|ide_disk
-suffix:colon
-r_return
-l_string|&quot;disk   &quot;
-suffix:semicolon
-r_case
-id|ide_optical
-suffix:colon
-r_return
-l_string|&quot;optical&quot;
-suffix:semicolon
-r_case
-id|ide_cdrom
-suffix:colon
-r_return
-l_string|&quot;cdrom  &quot;
-suffix:semicolon
-r_case
-id|ide_tape
-suffix:colon
-r_return
-l_string|&quot;tape   &quot;
-suffix:semicolon
-r_case
-id|ide_floppy
-suffix:colon
-r_return
-l_string|&quot;floppy &quot;
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-l_string|&quot;???????&quot;
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/*&n; * A Verbose noise maker for debugging on the attempted dmaing calls.&n; */
 DECL|function|ide_dmafunc_verbose
 r_char

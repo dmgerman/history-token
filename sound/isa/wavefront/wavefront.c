@@ -3642,9 +3642,10 @@ id|cards
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 (paren
-l_string|&quot;No cards found or devices busy&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;No WaveFront cards found or devices busy&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -158,6 +158,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|cmpt_clk
+r_static
 r_int
 id|cmpt_clk
 c_func
@@ -360,14 +361,6 @@ id|adr_setup
 comma
 id|data_pls
 suffix:semicolon
-r_int
-id|bus_speed
-op_assign
-id|system_bus_clock
-c_func
-(paren
-)paren
-suffix:semicolon
 id|adr_setup
 op_assign
 id|ide_pio_timings
@@ -393,7 +386,7 @@ c_func
 (paren
 id|adr_setup
 comma
-id|bus_speed
+id|system_bus_speed
 )paren
 suffix:semicolon
 id|clks-&gt;data_time
@@ -403,7 +396,7 @@ c_func
 (paren
 id|data_pls
 comma
-id|bus_speed
+id|system_bus_speed
 )paren
 suffix:semicolon
 id|clks-&gt;recovery_time
@@ -422,7 +415,7 @@ id|adr_setup
 op_minus
 id|data_pls
 comma
-id|bus_speed
+id|system_bus_speed
 )paren
 suffix:semicolon
 r_if
