@@ -7904,7 +7904,7 @@ id|buf
 id|len
 )braket
 comma
-l_string|&quot;&bslash;&n;Target&t;Depth  Active  Next Tag&bslash;n&bslash;&n;======&t;=====  ======  ========&bslash;n&quot;
+l_string|&quot;&bslash;&n;Target&t;Active  Next Tag&bslash;n&bslash;&n;======&t;======  ========&bslash;n&quot;
 )paren
 suffix:semicolon
 id|list_for_each_entry
@@ -7929,13 +7929,11 @@ id|buf
 id|len
 )braket
 comma
-l_string|&quot; %2d:%2d   %4d    %4d      %4d&bslash;n&quot;
+l_string|&quot; %2d:%2d   %4d      %4d&bslash;n&quot;
 comma
 id|SDp-&gt;id
 comma
 id|SDp-&gt;lun
-comma
-id|SDp-&gt;current_queue_depth
 comma
 id|NCR_700_get_depth
 c_func
