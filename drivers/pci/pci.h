@@ -242,17 +242,6 @@ id|bus
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|pci_remove_bus_device
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|pci_remove_device_safe
 c_func

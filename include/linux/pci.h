@@ -1416,6 +1416,17 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|pci_remove_bus_device
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* Generic PCI functions exported to card drivers */
 r_struct
 id|pci_dev
