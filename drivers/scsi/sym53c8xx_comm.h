@@ -8673,7 +8673,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*===================================================================&n;**&n;**    Detect all 53c8xx hosts and then attach them.&n;**&n;**    If we are using NVRAM, once all hosts are detected, we need to &n;**    check any NVRAM for boot order in case detect and boot order &n;**    differ and attach them using the order in the NVRAM.&n;**&n;**    If no NVRAM is found or data appears invalid attach boards in &n;**    the the order they are detected.&n;**&n;**===================================================================&n;*/
+multiline_comment|/*===================================================================&n;**&n;**    Detect all 53c8xx hosts and then attach them.&n;**&n;**    If we are using NVRAM, once all hosts are detected, we need to &n;**    check any NVRAM for boot order in case detect and boot order &n;**    differ and attach them using the order in the NVRAM.&n;**&n;**    If no NVRAM is found or data appears invalid attach boards in &n;**    the order they are detected.&n;**&n;**===================================================================&n;*/
 r_static
 r_int
 id|__init
