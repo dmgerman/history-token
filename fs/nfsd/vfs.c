@@ -5546,12 +5546,6 @@ id|fdentry
 )paren
 suffix:semicolon
 )brace
-id|dput
-c_func
-(paren
-id|ndentry
-)paren
-suffix:semicolon
 id|out_dput_new
 suffix:colon
 id|dput
