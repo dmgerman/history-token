@@ -92,16 +92,12 @@ c_func
 (paren
 id|dev
 comma
-id|le32_to_cpu
-c_func
-(paren
 id|sa_readl
 c_func
 (paren
 id|dev
 comma
 id|Mailbox5
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -367,7 +363,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;sa_sync_cmd&t;-&t;send a command and wait&n; *&t;@dev: Adapter&n; *&t;@command: Command to execute&n; *&t;@p1: first parameter&n; *&t;@ret: adapter status&n; *&n; *&t;This routine will send a synchronous comamnd to the adapter and wait &n; *&t;for its&t;completion.&n; */
+multiline_comment|/**&n; *&t;sa_sync_cmd&t;-&t;send a command and wait&n; *&t;@dev: Adapter&n; *&t;@command: Command to execute&n; *&t;@p1: first parameter&n; *&t;@ret: adapter status&n; *&n; *&t;This routine will send a synchronous command to the adapter and wait &n; *&t;for its&t;completion.&n; */
 DECL|function|sa_sync_cmd
 r_static
 r_int
@@ -405,11 +401,7 @@ id|dev
 comma
 id|Mailbox0
 comma
-id|cpu_to_le32
-c_func
-(paren
 id|command
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Write the parameters into Mailboxes 1 - 4&n;&t; */
@@ -420,11 +412,7 @@ id|dev
 comma
 id|Mailbox1
 comma
-id|cpu_to_le32
-c_func
-(paren
 id|p1
-)paren
 )paren
 suffix:semicolon
 id|sa_writel
@@ -568,19 +556,20 @@ id|DOORBELL_0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Pull the synch status from Mailbox 0.&n;&t; */
+r_if
+c_cond
+(paren
+id|ret
+)paren
 op_star
 id|ret
 op_assign
-id|le32_to_cpu
-c_func
-(paren
 id|sa_readl
 c_func
 (paren
 id|dev
 comma
 id|Mailbox0
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -647,16 +636,9 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|jiffies
-op_div
-id|HZ
-)paren
-suffix:semicolon
-id|dprintk
+id|get_seconds
 c_func
 (paren
-(paren
-l_string|&quot;INIT&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -676,14 +658,6 @@ id|DOORBELL_4
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;First clear out all interrupts.  Then enable the one&squot;s that &n;&t; *&t;we can handle.&n;&t; */
-id|dprintk
-c_func
-(paren
-(paren
-l_string|&quot;MASK&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 id|sa_writew
 c_func
 (paren
@@ -715,14 +689,6 @@ op_or
 id|DOORBELL_3
 op_or
 id|DOORBELL_4
-)paren
-)paren
-suffix:semicolon
-id|dprintk
-c_func
-(paren
-(paren
-l_string|&quot;SYNCCMD&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -843,14 +809,6 @@ r_char
 op_star
 id|name
 suffix:semicolon
-id|dprintk
-c_func
-(paren
-(paren
-l_string|&quot;PREINST&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 id|instance
 op_assign
 id|dev-&gt;id
@@ -860,14 +818,6 @@ op_assign
 id|dev-&gt;name
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Map in the registers from the adapter.&n;&t; */
-id|dprintk
-c_func
-(paren
-(paren
-l_string|&quot;PREMAP&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1008,24 +958,18 @@ id|dev
 comma
 id|Mailbox7
 )paren
-op_rshift
-l_int|16
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s%d: adapter kernel failed to start, init status = %d.&bslash;n&quot;
+l_string|&quot;%s%d: adapter kernel failed to start, init status = %lx.&bslash;n&quot;
 comma
 id|name
 comma
 id|instance
 comma
-id|le32_to_cpu
-c_func
-(paren
 id|status
-)paren
 )paren
 suffix:semicolon
 r_goto
@@ -1045,14 +989,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-id|dprintk
-c_func
-(paren
-(paren
-l_string|&quot;ATIRQ&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1111,14 +1047,6 @@ id|dev-&gt;a_ops.adapter_check_health
 op_assign
 id|aac_sa_check_health
 suffix:semicolon
-id|dprintk
-c_func
-(paren
-(paren
-l_string|&quot;FUNCDONE&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1135,14 +1063,6 @@ r_goto
 id|error_irq
 suffix:semicolon
 )brace
-id|dprintk
-c_func
-(paren
-(paren
-l_string|&quot;NEWADAPTDONE&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Start any kernel threads needed&n;&t; */
 id|dev-&gt;thread_pid
 op_assign
@@ -1186,26 +1106,10 @@ id|error_kfree
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *&t;Tell the adapter that all is configure, and it can start &n;&t; *&t;accepting requests&n;&t; */
-id|dprintk
-c_func
-(paren
-(paren
-l_string|&quot;STARTING&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 id|aac_sa_start_adapter
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-id|dprintk
-c_func
-(paren
-(paren
-l_string|&quot;STARTED&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 r_return

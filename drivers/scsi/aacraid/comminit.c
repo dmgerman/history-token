@@ -195,11 +195,7 @@ id|base
 suffix:semicolon
 id|init-&gt;AdapterFibsVirtualAddress
 op_assign
-id|cpu_to_le32
-c_func
-(paren
 l_int|0
-)paren
 suffix:semicolon
 id|init-&gt;AdapterFibsPhysicalAddress
 op_assign

@@ -253,7 +253,7 @@ r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;rx_sync_cmd&t;-&t;send a command and wait&n; *&t;@dev: Adapter&n; *&t;@command: Command to execute&n; *&t;@p1: first parameter&n; *&t;@ret: adapter status&n; *&n; *&t;This routine will send a synchronous comamnd to the adapter and wait &n; *&t;for its&t;completion.&n; */
+multiline_comment|/**&n; *&t;rx_sync_cmd&t;-&t;send a command and wait&n; *&t;@dev: Adapter&n; *&t;@command: Command to execute&n; *&t;@p1: first parameter&n; *&t;@ret: adapter status&n; *&n; *&t;This routine will send a synchronous command to the adapter and wait &n; *&t;for its&t;completion.&n; */
 DECL|function|rx_sync_cmd
 r_static
 r_int
@@ -291,11 +291,7 @@ id|dev
 comma
 id|InboundMailbox0
 comma
-id|cpu_to_le32
-c_func
-(paren
 id|command
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Write the parameters into Mailboxes 1 - 4&n;&t; */
@@ -306,11 +302,7 @@ id|dev
 comma
 id|InboundMailbox1
 comma
-id|cpu_to_le32
-c_func
-(paren
 id|p1
-)paren
 )paren
 suffix:semicolon
 id|rx_writel
@@ -492,12 +484,14 @@ id|ETIMEDOUT
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *&t;Pull the synch status from Mailbox 0.&n;&t; */
+r_if
+c_cond
+(paren
+id|status
+)paren
 op_star
 id|status
 op_assign
-id|le32_to_cpu
-c_func
-(paren
 id|rx_readl
 c_func
 (paren
@@ -507,7 +501,6 @@ id|IndexRegs.Mailbox
 (braket
 l_int|0
 )braket
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Clear the synch command doorbell.&n;&t; */
@@ -819,9 +812,6 @@ id|dev
 id|u32
 id|status
 op_assign
-id|le32_to_cpu
-c_func
-(paren
 id|rx_readl
 c_func
 (paren
@@ -831,7 +821,6 @@ id|MUnit.OMRx
 (braket
 l_int|0
 )braket
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Check to see if the board failed any self tests.&n;&t; */
@@ -1005,11 +994,7 @@ id|MUnit.IMRx
 l_int|0
 )braket
 comma
-id|cpu_to_le32
-c_func
-(paren
 id|paddr
-)paren
 )paren
 suffix:semicolon
 id|rx_sync_cmd
@@ -1411,14 +1396,12 @@ id|IndexRegs.Mailbox
 l_int|7
 )braket
 )paren
-op_rshift
-l_int|16
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s%d: adapter kernel failed to start, init status = %ld.&bslash;n&quot;
+l_string|&quot;%s%d: adapter kernel failed to start, init status = %lx.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
