@@ -440,6 +440,13 @@ DECL|macro|EMAC_TMR0_DEFAULT
 mdefine_line|#define EMAC_TMR0_DEFAULT&t;&t;EMAC_TMR0_TFAE_2_32
 DECL|macro|EMAC_TMR1_DEFAULT
 mdefine_line|#define EMAC_TMR1_DEFAULT&t;&t;0xa00f0000
+macro_line|#elif defined(CONFIG_440SP)
+DECL|macro|EMAC_RWMR_DEFAULT
+mdefine_line|#define EMAC_RWMR_DEFAULT&t;&t;0x08002000
+DECL|macro|EMAC_TMR0_DEFAULT
+mdefine_line|#define EMAC_TMR0_DEFAULT&t;&t;EMAC_TMR0_TFAE_128_2048
+DECL|macro|EMAC_TMR1_DEFAULT
+mdefine_line|#define EMAC_TMR1_DEFAULT&t;&t;0xf8200000
 macro_line|#else
 DECL|macro|EMAC_RWMR_DEFAULT
 mdefine_line|#define EMAC_RWMR_DEFAULT&t;&t;0x0f002000
