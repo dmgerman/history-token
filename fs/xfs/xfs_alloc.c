@@ -7587,19 +7587,6 @@ comma
 id|isfl
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Since blocks move to the free list without the coordination&n;&t; * used in xfs_bmap_finish, we can&squot;t allow block to be available&n;&t; * for reallocation and non-transaction writing (user data)&n;&t; * until we know that the transaction that moved it to the free&n;&t; * list is permanently on disk.&t; We track the blocks by declaring&n;&t; * these blocks as &quot;busy&quot;; the busy list is maintained on a per-ag&n;&t; * basis and each transaction records which entries should be removed&n;&t; * when the iclog commits to disk.  If a busy block is allocated,&n;&t; * the iclog is pushed up to the LSN that freed the block.&n;&t; */
-id|xfs_alloc_mark_busy
-c_func
-(paren
-id|tp
-comma
-id|agno
-comma
-id|bno
-comma
-id|len
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
