@@ -94,9 +94,17 @@ r_struct
 id|hpsb_highlevel
 id|raw1394_highlevel
 suffix:semicolon
+DECL|variable|raw1394_class
+r_static
+r_struct
+id|class_simple
+op_star
+id|raw1394_class
+suffix:semicolon
 r_static
 r_int
 id|arm_read
+c_func
 (paren
 r_struct
 id|hpsb_host
@@ -123,6 +131,7 @@ suffix:semicolon
 r_static
 r_int
 id|arm_write
+c_func
 (paren
 r_struct
 id|hpsb_host
@@ -152,6 +161,7 @@ suffix:semicolon
 r_static
 r_int
 id|arm_lock
+c_func
 (paren
 r_struct
 id|hpsb_host
@@ -184,6 +194,7 @@ suffix:semicolon
 r_static
 r_int
 id|arm_lock64
+c_func
 (paren
 r_struct
 id|hpsb_host
@@ -1050,7 +1061,6 @@ id|req-&gt;req.misc
 op_or_assign
 (paren
 id|NODEID_TO_NODE
-c_func
 (paren
 id|host-&gt;irm_id
 )paren
@@ -2496,7 +2506,6 @@ r_if
 c_cond
 (paren
 id|hpsb_listen_channel
-c_func
 (paren
 op_amp
 id|raw1394_highlevel
@@ -2823,7 +2832,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 op_amp
 id|packet-&gt;header
@@ -2851,7 +2859,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 id|packet-&gt;data
 comma
@@ -2898,7 +2905,7 @@ comma
 id|node
 op_amp
 l_int|0x3f
-multiline_comment|/*channel*/
+multiline_comment|/*channel */
 comma
 (paren
 id|req-&gt;req.misc
@@ -3655,7 +3662,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 id|packet-&gt;data
 comma
@@ -3838,6 +3844,7 @@ DECL|function|arm_read
 r_static
 r_int
 id|arm_read
+c_func
 (paren
 r_struct
 id|hpsb_host
@@ -4173,7 +4180,9 @@ op_plus
 id|addr
 op_minus
 (paren
-id|arm_addr-&gt;start
+id|arm_addr
+op_member_access_from_pointer
+id|start
 )paren
 )paren
 comma
@@ -4250,7 +4259,9 @@ id|host_info_lock
 )paren
 suffix:semicolon
 r_return
+(paren
 id|RCODE_CONFLICT_ERROR
+)paren
 suffix:semicolon
 multiline_comment|/* A resource conflict was detected.&n;                                                        The request may be retried */
 )brace
@@ -4352,7 +4363,9 @@ id|host_info_lock
 )paren
 suffix:semicolon
 r_return
+(paren
 id|RCODE_CONFLICT_ERROR
+)paren
 suffix:semicolon
 multiline_comment|/* A resource conflict was detected.&n;                                                        The request may be retried */
 )brace
@@ -4504,6 +4517,7 @@ id|arm_response
 )paren
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|buf
 comma
@@ -4515,7 +4529,9 @@ op_plus
 id|addr
 op_minus
 (paren
-id|arm_addr-&gt;start
+id|arm_addr
+op_member_access_from_pointer
+id|start
 )paren
 )paren
 comma
@@ -4665,13 +4681,16 @@ id|host_info_lock
 )paren
 suffix:semicolon
 r_return
+(paren
 id|rcode
+)paren
 suffix:semicolon
 )brace
 DECL|function|arm_write
 r_static
 r_int
 id|arm_write
+c_func
 (paren
 r_struct
 id|hpsb_host
@@ -5095,7 +5114,9 @@ id|host_info_lock
 )paren
 suffix:semicolon
 r_return
+(paren
 id|RCODE_CONFLICT_ERROR
+)paren
 suffix:semicolon
 multiline_comment|/* A resource conflict was detected.&n;                                                        The request my be retried */
 )brace
@@ -5167,7 +5188,9 @@ id|host_info_lock
 )paren
 suffix:semicolon
 r_return
+(paren
 id|RCODE_CONFLICT_ERROR
+)paren
 suffix:semicolon
 multiline_comment|/* A resource conflict was detected.&n;                                                        The request may be retried */
 )brace
@@ -5291,6 +5314,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 (paren
 id|byte_t
@@ -5442,13 +5466,16 @@ id|host_info_lock
 )paren
 suffix:semicolon
 r_return
+(paren
 id|rcode
+)paren
 suffix:semicolon
 )brace
 DECL|function|arm_lock
 r_static
 r_int
 id|arm_lock
+c_func
 (paren
 r_struct
 id|hpsb_host
@@ -5863,7 +5890,9 @@ op_plus
 id|addr
 op_minus
 (paren
-id|arm_addr-&gt;start
+id|arm_addr
+op_member_access_from_pointer
+id|start
 )paren
 )paren
 comma
@@ -5993,13 +6022,11 @@ id|cpu_to_be32
 c_func
 (paren
 id|be32_to_cpu
-c_func
 (paren
 id|data
 )paren
 op_plus
 id|be32_to_cpu
-c_func
 (paren
 id|old
 )paren
@@ -6034,13 +6061,11 @@ id|cpu_to_be32
 c_func
 (paren
 id|be32_to_cpu
-c_func
 (paren
 id|data
 )paren
 op_plus
 id|be32_to_cpu
-c_func
 (paren
 id|old
 )paren
@@ -6074,7 +6099,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*switch*/
+multiline_comment|/*switch */
 r_if
 c_cond
 (paren
@@ -6095,6 +6120,7 @@ op_assign
 id|RCODE_COMPLETE
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|store
 comma
@@ -6109,6 +6135,7 @@ id|store
 )paren
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 (paren
 id|arm_addr-&gt;addr_space_buffer
@@ -6200,7 +6227,9 @@ id|host_info_lock
 )paren
 suffix:semicolon
 r_return
+(paren
 id|RCODE_CONFLICT_ERROR
+)paren
 suffix:semicolon
 multiline_comment|/* A resource conflict was detected.&n;                                                        The request may be retried */
 )brace
@@ -6272,7 +6301,9 @@ id|host_info_lock
 )paren
 suffix:semicolon
 r_return
+(paren
 id|RCODE_CONFLICT_ERROR
+)paren
 suffix:semicolon
 multiline_comment|/* A resource conflict was detected.&n;                                                        The request may be retried */
 )brace
@@ -6392,6 +6423,7 @@ id|store
 )paren
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|buf1
 comma
@@ -6419,6 +6451,7 @@ id|store
 )paren
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|buf1
 comma
@@ -6433,6 +6466,7 @@ id|store
 )paren
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|buf1
 op_plus
@@ -6470,6 +6504,7 @@ id|store
 )paren
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|buf2
 comma
@@ -6708,13 +6743,16 @@ id|host_info_lock
 )paren
 suffix:semicolon
 r_return
+(paren
 id|rcode
+)paren
 suffix:semicolon
 )brace
 DECL|function|arm_lock64
 r_static
 r_int
 id|arm_lock64
+c_func
 (paren
 r_struct
 id|hpsb_host
@@ -7202,7 +7240,9 @@ op_plus
 id|addr
 op_minus
 (paren
-id|arm_addr-&gt;start
+id|arm_addr
+op_member_access_from_pointer
+id|start
 )paren
 )paren
 comma
@@ -7332,13 +7372,11 @@ id|cpu_to_be64
 c_func
 (paren
 id|be64_to_cpu
-c_func
 (paren
 id|data
 )paren
 op_plus
 id|be64_to_cpu
-c_func
 (paren
 id|old
 )paren
@@ -7373,13 +7411,11 @@ id|cpu_to_be64
 c_func
 (paren
 id|be64_to_cpu
-c_func
 (paren
 id|data
 )paren
 op_plus
 id|be64_to_cpu
-c_func
 (paren
 id|old
 )paren
@@ -7413,7 +7449,7 @@ multiline_comment|/* function not allowed */
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*switch*/
+multiline_comment|/*switch */
 r_if
 c_cond
 (paren
@@ -7424,7 +7460,6 @@ l_int|1
 )paren
 (brace
 id|DBGMSG
-c_func
 (paren
 l_string|&quot;arm_lock64 -&gt; (rcode_complete)&quot;
 )paren
@@ -7434,6 +7469,7 @@ op_assign
 id|RCODE_COMPLETE
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|store
 comma
@@ -7448,6 +7484,7 @@ id|store
 )paren
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 (paren
 id|arm_addr-&gt;addr_space_buffer
@@ -7482,7 +7519,6 @@ id|RCODE_TYPE_ERROR
 suffix:semicolon
 multiline_comment|/* function not allowed */
 id|DBGMSG
-c_func
 (paren
 l_string|&quot;arm_lock64 -&gt; rcode_type_error (access denied)&quot;
 )paren
@@ -7539,7 +7575,9 @@ l_string|&quot;arm_lock64 -&gt; rcode_conflict_error&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 id|RCODE_CONFLICT_ERROR
+)paren
 suffix:semicolon
 multiline_comment|/* A resource conflict was detected.&n;                                                        The request may be retried */
 )brace
@@ -7611,7 +7649,9 @@ l_string|&quot;arm_lock64 -&gt; rcode_conflict_error&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 id|RCODE_CONFLICT_ERROR
+)paren
 suffix:semicolon
 multiline_comment|/* A resource conflict was detected.&n;                                                        The request may be retried */
 )brace
@@ -7731,6 +7771,7 @@ id|store
 )paren
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|buf1
 comma
@@ -7758,6 +7799,7 @@ id|store
 )paren
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|buf1
 comma
@@ -7772,6 +7814,7 @@ id|store
 )paren
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|buf1
 op_plus
@@ -7809,6 +7852,7 @@ id|store
 )paren
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|buf2
 comma
@@ -8047,7 +8091,9 @@ id|host_info_lock
 )paren
 suffix:semicolon
 r_return
+(paren
 id|rcode
+)paren
 suffix:semicolon
 )brace
 DECL|function|arm_register
@@ -8326,7 +8372,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 id|addr-&gt;addr_space_buffer
 comma
@@ -8670,7 +8715,6 @@ id|addr-&gt;end
 )paren
 (brace
 id|DBGMSG
-c_func
 (paren
 l_string|&quot;another host ownes same &quot;
 l_string|&quot;addressrange&quot;
@@ -9483,7 +9527,6 @@ op_minus
 id|arm_addr-&gt;start
 suffix:semicolon
 id|DBGMSG
-c_func
 (paren
 l_string|&quot;arm_get_buf copy_to_user( %08X, %p, %u )&quot;
 comma
@@ -9506,7 +9549,6 @@ r_if
 c_cond
 (paren
 id|copy_to_user
-c_func
 (paren
 id|int2ptr
 c_func
@@ -9750,7 +9792,6 @@ op_minus
 id|arm_addr-&gt;start
 suffix:semicolon
 id|DBGMSG
-c_func
 (paren
 l_string|&quot;arm_set_buf copy_from_user( %p, %08X, %u )&quot;
 comma
@@ -9773,7 +9814,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 id|arm_addr-&gt;addr_space_buffer
 op_plus
@@ -10009,6 +10049,7 @@ suffix:semicolon
 id|packet
 op_assign
 id|hpsb_make_phypacket
+c_func
 (paren
 id|fi-&gt;host
 comma
@@ -10219,7 +10260,6 @@ r_if
 c_cond
 (paren
 id|copy_to_user
-c_func
 (paren
 id|int2ptr
 c_func
@@ -10409,14 +10449,15 @@ comma
 r_int
 r_char
 )paren
-id|req-&gt;req.misc
+id|req-&gt;req
+dot
+id|misc
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|copy_to_user
-c_func
 (paren
 id|int2ptr
 c_func
@@ -10628,7 +10669,9 @@ id|dentry-&gt;next
 id|csr1212_detach_keyval_from_directory
 c_func
 (paren
-id|fi-&gt;host-&gt;csr.rom-&gt;root_kv
+id|fi-&gt;host-&gt;csr.rom
+op_member_access_from_pointer
+id|root_kv
 comma
 id|dentry-&gt;kv
 )paren
@@ -10903,7 +10946,9 @@ op_assign
 id|csr1212_attach_keyval_to_directory
 c_func
 (paren
-id|fi-&gt;host-&gt;csr.rom-&gt;root_kv
+id|fi-&gt;host-&gt;csr
+dot
+id|rom-&gt;root_kv
 comma
 id|dentry-&gt;kv
 )paren
@@ -11018,7 +11063,9 @@ id|dentry-&gt;next
 id|csr1212_detach_keyval_from_directory
 c_func
 (paren
-id|fi-&gt;host-&gt;csr.rom-&gt;root_kv
+id|fi-&gt;host-&gt;csr.rom
+op_member_access_from_pointer
+id|root_kv
 comma
 id|dentry-&gt;kv
 )paren
@@ -12752,7 +12799,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 op_amp
 id|args
@@ -12864,7 +12910,9 @@ r_return
 id|hpsb_iso_recv_set_channel_mask
 c_func
 (paren
-id|fi-&gt;iso_handle
+id|fi
+op_member_access_from_pointer
+id|iso_handle
 comma
 id|mask
 )paren
@@ -12967,7 +13015,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 op_amp
 id|args
@@ -13573,7 +13620,6 @@ id|addr-&gt;start
 )paren
 (brace
 id|DBGMSG
-c_func
 (paren
 l_string|&quot;raw1394_release: &quot;
 l_string|&quot;another host ownes &quot;
@@ -13845,7 +13891,9 @@ id|dentry-&gt;next
 id|csr1212_detach_keyval_from_directory
 c_func
 (paren
-id|fi-&gt;host-&gt;csr.rom-&gt;root_kv
+id|fi-&gt;host-&gt;csr.rom
+op_member_access_from_pointer
+id|root_kv
 comma
 id|dentry-&gt;kv
 )paren
@@ -13890,7 +13938,6 @@ OL
 l_int|0
 )paren
 id|HPSB_ERR
-c_func
 (paren
 l_string|&quot;Failed to generate Configuration ROM image for host %d&quot;
 comma
@@ -14210,6 +14257,8 @@ r_void
 (brace
 r_int
 id|ret
+op_assign
+l_int|0
 suffix:semicolon
 id|hpsb_register_highlevel
 c_func
@@ -14218,11 +14267,64 @@ op_amp
 id|raw1394_highlevel
 )paren
 suffix:semicolon
+id|raw1394_class
+op_assign
+id|class_simple_create
+c_func
+(paren
+id|THIS_MODULE
+comma
+l_string|&quot;raw1394&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|raw1394_class
+)paren
+)paren
+(brace
+id|ret
+op_assign
+id|PTR_ERR
+c_func
+(paren
+id|raw1394_class
+)paren
+suffix:semicolon
+r_goto
+id|out_unreg
+suffix:semicolon
+)brace
+id|class_simple_device_add
+c_func
+(paren
+id|raw1394_class
+comma
+id|MKDEV
+c_func
+(paren
+id|IEEE1394_MAJOR
+comma
+id|IEEE1394_MINOR_BLOCK_RAW1394
+op_star
+l_int|16
+)paren
+comma
+l_int|NULL
+comma
+id|RAW1394_DEVICE_NAME
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|devfs_mk_cdev
 c_func
 (paren
 id|MKDEV
-c_func
 (paren
 id|IEEE1394_MAJOR
 comma
@@ -14239,6 +14341,14 @@ id|S_IWUSR
 comma
 id|RAW1394_DEVICE_NAME
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_goto
+id|out_class
 suffix:semicolon
 id|cdev_init
 c_func
@@ -14288,21 +14398,8 @@ c_func
 l_string|&quot;raw1394 failed to register minor device block&quot;
 )paren
 suffix:semicolon
-id|devfs_remove
-c_func
-(paren
-id|RAW1394_DEVICE_NAME
-)paren
-suffix:semicolon
-id|hpsb_unregister_highlevel
-c_func
-(paren
-op_amp
-id|raw1394_highlevel
-)paren
-suffix:semicolon
-r_return
-id|ret
+r_goto
+id|out_dev
 suffix:semicolon
 )brace
 id|HPSB_INFO
@@ -14341,12 +14438,44 @@ op_amp
 id|raw1394_cdev
 )paren
 suffix:semicolon
+r_goto
+id|out_dev
+suffix:semicolon
+)brace
+r_goto
+id|out
+suffix:semicolon
+id|out_dev
+suffix:colon
 id|devfs_remove
 c_func
 (paren
 id|RAW1394_DEVICE_NAME
 )paren
 suffix:semicolon
+id|out_class
+suffix:colon
+id|class_simple_device_remove
+c_func
+(paren
+id|MKDEV
+(paren
+id|IEEE1394_MAJOR
+comma
+id|IEEE1394_MINOR_BLOCK_RAW1394
+op_star
+l_int|16
+)paren
+)paren
+suffix:semicolon
+id|class_simple_destroy
+c_func
+(paren
+id|raw1394_class
+)paren
+suffix:semicolon
+id|out_unreg
+suffix:colon
 id|hpsb_unregister_highlevel
 c_func
 (paren
@@ -14354,12 +14483,10 @@ op_amp
 id|raw1394_highlevel
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|ret
-suffix:semicolon
-)brace
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|cleanup_raw1394
@@ -14372,6 +14499,25 @@ c_func
 r_void
 )paren
 (brace
+id|class_simple_device_remove
+c_func
+(paren
+id|MKDEV
+(paren
+id|IEEE1394_MAJOR
+comma
+id|IEEE1394_MINOR_BLOCK_RAW1394
+op_star
+l_int|16
+)paren
+)paren
+suffix:semicolon
+id|class_simple_destroy
+c_func
+(paren
+id|raw1394_class
+)paren
+suffix:semicolon
 id|hpsb_unregister_protocol
 c_func
 (paren
