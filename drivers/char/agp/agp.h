@@ -792,6 +792,61 @@ DECL|macro|ALI_CACHE_FLUSH_ADDR_MASK
 mdefine_line|#define ALI_CACHE_FLUSH_ADDR_MASK&t;0xFFFFF000
 DECL|macro|ALI_CACHE_FLUSH_EN
 mdefine_line|#define ALI_CACHE_FLUSH_EN&t;&t;0x100
+macro_line|#ifndef PCI_VENDOR_ID_ATI
+DECL|macro|PCI_VENDOR_ID_ATI
+mdefine_line|#define PCI_VENDOR_ID_ATI&t;&t;0x1002
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_ATI_RS100
+DECL|macro|PCI_DEVICE_ID_ATI_RS100
+mdefine_line|#define PCI_DEVICE_ID_ATI_RS100&t;&t;0xcab0
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_ATI_RS200
+DECL|macro|PCI_DEVICE_ID_ATI_RS200
+mdefine_line|#define PCI_DEVICE_ID_ATI_RS200&t;&t;0xcab2
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_ATI_RS250
+DECL|macro|PCI_DEVICE_ID_ATI_RS250
+mdefine_line|#define PCI_DEVICE_ID_ATI_RS250&t;&t;0xcab3
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_ATI_RS300_100
+DECL|macro|PCI_DEVICE_ID_ATI_RS300_100
+mdefine_line|#define PCI_DEVICE_ID_ATI_RS300_100&t;0x5830
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_ATI_RS300_133
+DECL|macro|PCI_DEVICE_ID_ATI_RS300_133
+mdefine_line|#define PCI_DEVICE_ID_ATI_RS300_133&t;0x5831
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_ATI_RS300_166
+DECL|macro|PCI_DEVICE_ID_ATI_RS300_166
+mdefine_line|#define PCI_DEVICE_ID_ATI_RS300_166&t;0x5832
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_ATI_RS300_200
+DECL|macro|PCI_DEVICE_ID_ATI_RS300_200
+mdefine_line|#define PCI_DEVICE_ID_ATI_RS300_200&t;0x5833
+macro_line|#endif
+multiline_comment|/* ATI register */
+DECL|macro|ATI_APBASE
+mdefine_line|#define ATI_APBASE                  0x10
+DECL|macro|ATI_GART_MMBASE_ADDR
+mdefine_line|#define ATI_GART_MMBASE_ADDR        0x14
+DECL|macro|ATI_RS100_APSIZE
+mdefine_line|#define ATI_RS100_APSIZE            0xac
+DECL|macro|ATI_RS300_APSIZE
+mdefine_line|#define ATI_RS300_APSIZE            0xf8
+DECL|macro|ATI_RS100_IG_AGPMODE
+mdefine_line|#define ATI_RS100_IG_AGPMODE        0xb0
+DECL|macro|ATI_RS300_IG_AGPMODE
+mdefine_line|#define ATI_RS300_IG_AGPMODE        0xfc
+DECL|macro|ATI_GART_FEATURE_ID
+mdefine_line|#define ATI_GART_FEATURE_ID         0x00
+DECL|macro|ATI_GART_BASE
+mdefine_line|#define ATI_GART_BASE               0x04
+DECL|macro|ATI_GART_CACHE_SZBASE
+mdefine_line|#define ATI_GART_CACHE_SZBASE       0x08
+DECL|macro|ATI_GART_CACHE_CNTRL
+mdefine_line|#define ATI_GART_CACHE_CNTRL        0x0c
+DECL|macro|ATI_GART_CACHE_ENTRY_CNTRL
+mdefine_line|#define ATI_GART_CACHE_ENTRY_CNTRL  0x10
 multiline_comment|/* Serverworks Registers */
 DECL|macro|SVWRKS_APSIZE
 mdefine_line|#define SVWRKS_APSIZE&t;&t;0x10
