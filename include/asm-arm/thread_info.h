@@ -133,6 +133,11 @@ l_int|16
 )braket
 suffix:semicolon
 multiline_comment|/* thread used copro */
+DECL|member|tp_value
+r_int
+r_int
+id|tp_value
+suffix:semicolon
 DECL|member|fpstate
 r_union
 id|fp_state
