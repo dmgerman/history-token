@@ -10242,14 +10242,12 @@ id|chip-&gt;irq
 op_ge
 l_int|0
 )paren
-(brace
 id|synchronize_irq
 c_func
 (paren
 id|chip-&gt;irq
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

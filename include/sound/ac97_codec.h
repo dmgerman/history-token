@@ -213,6 +213,18 @@ DECL|struct|_snd_ac97
 r_struct
 id|_snd_ac97
 (brace
+DECL|member|reset
+r_void
+(paren
+op_star
+id|reset
+)paren
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+suffix:semicolon
 DECL|member|write
 r_void
 (paren
@@ -398,6 +410,12 @@ l_int|0x80
 )braket
 suffix:semicolon
 multiline_comment|/* register cache */
+DECL|member|limited_regs
+r_int
+r_int
+id|limited_regs
+suffix:semicolon
+multiline_comment|/* allow limited registers only */
 id|bitmap_member
 c_func
 (paren

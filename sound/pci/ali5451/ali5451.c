@@ -9859,12 +9859,6 @@ c_func
 id|codec
 )paren
 suffix:semicolon
-id|synchronize_irq
-c_func
-(paren
-id|codec-&gt;irq
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9872,6 +9866,13 @@ id|codec-&gt;irq
 op_ge
 l_int|0
 )paren
+(brace
+id|synchronize_irq
+c_func
+(paren
+id|codec-&gt;irq
+)paren
+suffix:semicolon
 id|free_irq
 c_func
 (paren
@@ -9884,6 +9885,7 @@ op_star
 id|codec
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

@@ -972,7 +972,7 @@ id|snd_irq
 id|dev
 )braket
 comma
-id|smd_dma8
+id|snd_dma8
 (braket
 id|dev
 )braket

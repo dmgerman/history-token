@@ -21691,6 +21691,8 @@ r_if
 c_cond
 (paren
 id|ice-&gt;irq
+op_ge
+l_int|0
 )paren
 (brace
 id|synchronize_irq
@@ -22082,7 +22084,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
-id|ice-&gt;irq
+id|pci-&gt;irq
 )paren
 suffix:semicolon
 r_if

@@ -1470,6 +1470,13 @@ c_cond
 op_logical_neg
 id|tmr-&gt;initialized
 )paren
+(brace
+id|snd_seq_timer_reset
+c_func
+(paren
+id|tmr
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1483,6 +1490,7 @@ l_int|0
 )paren
 r_return
 suffix:semicolon
+)brace
 id|snd_timer_start
 c_func
 (paren
