@@ -2328,7 +2328,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pplus_init
+id|hawk_init
 c_func
 (paren
 id|hose
@@ -3449,7 +3449,7 @@ suffix:semicolon
 macro_line|#endif
 id|total
 op_assign
-id|pplus_get_mem_size
+id|hawk_get_mem_size
 c_func
 (paren
 id|PPLUS_HAWK_SMC_BASE
