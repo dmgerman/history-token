@@ -943,6 +943,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Receive one interrupt buffer, without timeouts, but allowing early&n; * termination.  Return codes are USB_STOR_XFER_xxx.&n; *&n; * This routine always uses us-&gt;recv_intr_pipe as the pipe and&n; * us-&gt;ep_bInterval as the interrupt interval.&n; */
 DECL|function|usb_stor_intr_transfer
+r_static
 r_int
 id|usb_stor_intr_transfer
 c_func
@@ -1159,6 +1160,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Transfer a scatter-gather list via bulk transfer&n; *&n; * This function does basically the same thing as usb_stor_bulk_transfer_buf()&n; * above, but it uses the usbcore scatter-gather library.&n; */
 DECL|function|usb_stor_bulk_transfer_sglist
+r_static
 r_int
 id|usb_stor_bulk_transfer_sglist
 c_func

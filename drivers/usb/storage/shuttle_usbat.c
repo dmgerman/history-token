@@ -17,10 +17,43 @@ mdefine_line|#define LSB_of(s) ((s)&amp;0xFF)
 DECL|macro|MSB_of
 mdefine_line|#define MSB_of(s) ((s)&gt;&gt;8)
 DECL|variable|transferred
+r_static
 r_int
 id|transferred
 op_assign
 l_int|0
+suffix:semicolon
+r_static
+r_int
+id|usbat_flash_transport
+c_func
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+id|srb
+comma
+r_struct
+id|us_data
+op_star
+id|us
+)paren
+suffix:semicolon
+r_static
+r_int
+id|usbat_hp8200e_transport
+c_func
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+id|srb
+comma
+r_struct
+id|us_data
+op_star
+id|us
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Convenience function to produce an ATAPI read/write sectors command&n; * Use cmd=0x20 for read, cmd=0x30 for write&n; */
 DECL|function|usbat_pack_atapi_sector_cmd
@@ -2967,6 +3000,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set the transport function based on the device type&n; */
 DECL|function|usbat_set_transport
+r_static
 r_int
 id|usbat_set_transport
 c_func
@@ -5291,6 +5325,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Transport for the HP 8200e&n; */
 DECL|function|usbat_hp8200e_transport
+r_static
 r_int
 id|usbat_hp8200e_transport
 c_func
@@ -5962,6 +5997,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Transport for USBAT02-based CompactFlash and similar storage devices&n; */
 DECL|function|usbat_flash_transport
+r_static
 r_int
 id|usbat_flash_transport
 c_func

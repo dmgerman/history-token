@@ -378,12 +378,6 @@ suffix:semicolon
 multiline_comment|/* extra data destructor   */
 )brace
 suffix:semicolon
-multiline_comment|/* The structure which defines our driver */
-r_extern
-r_struct
-id|usb_driver
-id|usb_storage_driver
-suffix:semicolon
 multiline_comment|/* Function to fill an inquiry response. See usb.c for details */
 r_extern
 r_void

@@ -1422,52 +1422,6 @@ op_assign
 id|THIS_MODULE
 )brace
 suffix:semicolon
-multiline_comment|/* For a device that is &quot;Not Ready&quot; */
-DECL|variable|usb_stor_sense_notready
-r_int
-r_char
-id|usb_stor_sense_notready
-(braket
-l_int|18
-)braket
-op_assign
-(brace
-(braket
-l_int|0
-)braket
-op_assign
-l_int|0x70
-comma
-multiline_comment|/* current error */
-(braket
-l_int|2
-)braket
-op_assign
-l_int|0x02
-comma
-multiline_comment|/* not ready */
-(braket
-l_int|7
-)braket
-op_assign
-l_int|0x0a
-comma
-multiline_comment|/* additional length */
-(braket
-l_int|12
-)braket
-op_assign
-l_int|0x04
-comma
-multiline_comment|/* not ready */
-(braket
-l_int|13
-)braket
-op_assign
-l_int|0x03
-multiline_comment|/* manual intervention */
-)brace
-suffix:semicolon
 multiline_comment|/* To Report &quot;Illegal Request: Invalid Field in CDB */
 DECL|variable|usb_stor_sense_invalidCDB
 r_int

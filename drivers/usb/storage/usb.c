@@ -604,6 +604,7 @@ l_int|NULL
 )brace
 suffix:semicolon
 DECL|variable|usb_storage_driver
+r_static
 r_struct
 id|usb_driver
 id|usb_storage_driver
@@ -2546,6 +2547,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Release all our dynamic resources */
 DECL|function|usb_stor_release_resources
+r_static
 r_void
 id|usb_stor_release_resources
 c_func

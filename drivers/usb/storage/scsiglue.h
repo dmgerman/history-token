@@ -23,14 +23,6 @@ suffix:semicolon
 r_extern
 r_int
 r_char
-id|usb_stor_sense_notready
-(braket
-l_int|18
-)braket
-suffix:semicolon
-r_extern
-r_int
-r_char
 id|usb_stor_sense_invalidCDB
 (braket
 l_int|18

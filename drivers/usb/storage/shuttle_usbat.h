@@ -148,37 +148,6 @@ DECL|macro|USBAT_FEAT_ET1
 mdefine_line|#define USBAT_FEAT_ET1&t;0x02
 DECL|macro|USBAT_FEAT_ET2
 mdefine_line|#define USBAT_FEAT_ET2&t;0x01
-multiline_comment|/* Transport functions */
-r_int
-id|usbat_hp8200e_transport
-c_func
-(paren
-r_struct
-id|scsi_cmnd
-op_star
-id|srb
-comma
-r_struct
-id|us_data
-op_star
-id|us
-)paren
-suffix:semicolon
-r_int
-id|usbat_flash_transport
-c_func
-(paren
-r_struct
-id|scsi_cmnd
-op_star
-id|srb
-comma
-r_struct
-id|us_data
-op_star
-id|us
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|usbat_transport
