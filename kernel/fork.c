@@ -2836,6 +2836,13 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|init_waitqueue_head
+c_func
+(paren
+op_amp
+id|sig-&gt;wait_chldexit
+)paren
+suffix:semicolon
 id|sig-&gt;flags
 op_assign
 l_int|0
@@ -3353,13 +3360,6 @@ c_func
 (paren
 op_amp
 id|p-&gt;sibling
-)paren
-suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|p-&gt;wait_chldexit
 )paren
 suffix:semicolon
 id|p-&gt;vfork_done

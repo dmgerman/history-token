@@ -763,6 +763,11 @@ DECL|member|live
 id|atomic_t
 id|live
 suffix:semicolon
+DECL|member|wait_chldexit
+id|wait_queue_head_t
+id|wait_chldexit
+suffix:semicolon
+multiline_comment|/* for wait4() */
 multiline_comment|/* current thread group signal load-balancing target: */
 DECL|member|curr_target
 id|task_t
@@ -1607,11 +1612,6 @@ id|pids
 id|PIDTYPE_MAX
 )braket
 suffix:semicolon
-DECL|member|wait_chldexit
-id|wait_queue_head_t
-id|wait_chldexit
-suffix:semicolon
-multiline_comment|/* for wait4() */
 DECL|member|vfork_done
 r_struct
 id|completion

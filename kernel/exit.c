@@ -5353,7 +5353,7 @@ id|add_wait_queue
 c_func
 (paren
 op_amp
-id|current-&gt;wait_chldexit
+id|current-&gt;signal-&gt;wait_chldexit
 comma
 op_amp
 id|wait
@@ -5832,7 +5832,7 @@ id|remove_wait_queue
 c_func
 (paren
 op_amp
-id|current-&gt;wait_chldexit
+id|current-&gt;signal-&gt;wait_chldexit
 comma
 op_amp
 id|wait

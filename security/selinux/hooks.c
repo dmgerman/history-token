@@ -7512,7 +7512,7 @@ id|wake_up_interruptible
 c_func
 (paren
 op_amp
-id|current-&gt;parent-&gt;wait_chldexit
+id|current-&gt;parent-&gt;signal-&gt;wait_chldexit
 )paren
 suffix:semicolon
 id|lock_out
