@@ -13,6 +13,8 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
+DECL|macro|__apicdebuginit
+mdefine_line|#define __apicdebuginit  __init
 DECL|variable|sis_apic_bug
 r_int
 id|sis_apic_bug
@@ -958,10 +960,11 @@ id|pirqs_enabled
 op_assign
 l_int|1
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
-id|KERN_INFO
+id|APIC_VERBOSE
+comma
 l_string|&quot;PIRQ redirection, working around broken MP-BIOS.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1001,10 +1004,11 @@ id|i
 op_increment
 )paren
 (brace
-id|printk
+id|apic_printk
 c_func
 (paren
-id|KERN_DEBUG
+id|APIC_VERBOSE
+comma
 l_string|&quot;... PIRQ%d -&gt; IRQ %d&bslash;n&quot;
 comma
 id|i
@@ -1282,9 +1286,11 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
+id|APIC_DEBUG
+comma
 l_string|&quot;querying PCI -&gt; IRQ mapping bus:%d, slot:%d, pin:%d.&bslash;n&quot;
 comma
 id|bus
@@ -1306,10 +1312,11 @@ op_minus
 l_int|1
 )paren
 (brace
-id|printk
+id|apic_printk
 c_func
 (paren
-id|KERN_WARNING
+id|APIC_VERBOSE
+comma
 l_string|&quot;PCI BIOS passed nonexistent PCI bus %d!&bslash;n&quot;
 comma
 id|bus
@@ -1555,10 +1562,11 @@ op_amp
 l_int|1
 suffix:semicolon
 )brace
-id|printk
+id|apic_printk
 c_func
 (paren
-id|KERN_INFO
+id|APIC_VERBOSE
+comma
 l_string|&quot;Broken MPtable reports ISA irq %d&bslash;n&quot;
 comma
 id|irq
@@ -2226,10 +2234,11 @@ l_int|16
 )braket
 )paren
 (brace
-id|printk
+id|apic_printk
 c_func
 (paren
-id|KERN_DEBUG
+id|APIC_VERBOSE
+comma
 l_string|&quot;disabling PIRQ%d&bslash;n&quot;
 comma
 id|pin
@@ -2249,10 +2258,11 @@ op_minus
 l_int|16
 )braket
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
-id|KERN_DEBUG
+id|APIC_VERBOSE
+comma
 l_string|&quot;using PIRQ%d -&gt; IRQ %d&bslash;n&quot;
 comma
 id|pin
@@ -2718,9 +2728,11 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 id|KERN_DEBUG
 l_string|&quot;init IO_APIC IRQs&bslash;n&quot;
 )paren
@@ -2817,9 +2829,11 @@ c_cond
 id|first_notcon
 )paren
 (brace
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 id|KERN_DEBUG
 l_string|&quot; IO-APIC (apicid-pin) %d-%d&quot;
 comma
@@ -2839,9 +2853,11 @@ l_int|0
 suffix:semicolon
 )brace
 r_else
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 l_string|&quot;, %d-%d&quot;
 comma
 id|mp_ioapics
@@ -3062,9 +3078,11 @@ c_cond
 op_logical_neg
 id|first_notcon
 )paren
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 l_string|&quot; not connected.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3251,26 +3269,10 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if 0
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot; WARNING: unexpected IO-APIC, please mail&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;          to linux-smp@vger.kernel.org&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|print_IO_APIC
 r_void
-id|__init
+id|__apicdebuginit
 id|print_IO_APIC
 c_func
 (paren
@@ -3297,6 +3299,15 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|apic_verbosity
+op_eq
+id|APIC_QUIET
+)paren
+r_return
 suffix:semicolon
 id|printk
 c_func
@@ -3957,6 +3968,7 @@ suffix:semicolon
 )brace
 DECL|function|print_APIC_bitfield
 r_static
+id|__apicdebuginit
 r_void
 id|print_APIC_bitfield
 (paren
@@ -3972,6 +3984,15 @@ r_int
 id|i
 comma
 id|j
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|apic_verbosity
+op_eq
+id|APIC_QUIET
+)paren
+r_return
 suffix:semicolon
 id|printk
 c_func
@@ -4058,7 +4079,7 @@ suffix:semicolon
 )brace
 DECL|function|print_local_APIC
 r_void
-multiline_comment|/*__init*/
+id|__apicdebuginit
 id|print_local_APIC
 c_func
 (paren
@@ -4074,6 +4095,15 @@ comma
 id|ver
 comma
 id|maxlvt
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|apic_verbosity
+op_eq
+id|APIC_QUIET
+)paren
+r_return
 suffix:semicolon
 id|printk
 c_func
@@ -4607,7 +4637,7 @@ suffix:semicolon
 )brace
 DECL|function|print_PIC
 r_void
-multiline_comment|/*__init*/
+id|__apicdebuginit
 id|print_PIC
 c_func
 (paren
@@ -4625,6 +4655,15 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|apic_verbosity
+op_eq
+id|APIC_QUIET
+)paren
+r_return
 suffix:semicolon
 id|printk
 c_func
@@ -5050,9 +5089,11 @@ op_ge
 l_int|0xf
 )paren
 (brace
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_QUIET
+comma
 id|KERN_ERR
 l_string|&quot;BIOS bug, IO-APIC#%d ID is %d in the MPC table!...&bslash;n&quot;
 comma
@@ -5066,9 +5107,11 @@ dot
 id|mpc_apicid
 )paren
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_QUIET
+comma
 id|KERN_ERR
 l_string|&quot;... fixing up to %d. (tell your hw vendor)&bslash;n&quot;
 comma
@@ -5271,9 +5314,11 @@ dot
 id|mpc_apicid
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Read the right value from the MPC table and&n;&t;&t; * write it into the ID register.&n;&t; &t; */
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 id|KERN_INFO
 l_string|&quot;...changing IO-APIC physical APIC ID to %d ...&quot;
 comma
@@ -5370,9 +5415,11 @@ l_string|&quot;could not set ID!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 l_string|&quot; ok.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6923,9 +6970,11 @@ comma
 id|mp_ExtINT
 )paren
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 id|KERN_INFO
 l_string|&quot;..TIMER: vector=0x%02X pin1=%d pin2=%d&bslash;n&quot;
 comma
@@ -7008,17 +7057,21 @@ comma
 id|pin1
 )paren
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_QUIET
+comma
 id|KERN_ERR
 l_string|&quot;..MP-BIOS bug: 8254 timer not connected to IO-APIC&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 id|KERN_INFO
 l_string|&quot;...trying to set up timer (IRQ0) through the 8259A ... &quot;
 )paren
@@ -7032,9 +7085,11 @@ op_minus
 l_int|1
 )paren
 (brace
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 l_string|&quot;&bslash;n..... (found pin %d) ...&quot;
 comma
 id|pin2
@@ -7125,9 +7180,11 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 id|KERN_INFO
 l_string|&quot;...trying to set up timer as Virtual Wire IRQ...&quot;
 )paren
@@ -7174,9 +7231,11 @@ c_func
 )paren
 )paren
 (brace
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_QUIET
+comma
 l_string|&quot; works.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7195,15 +7254,19 @@ op_or
 id|vector
 )paren
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 l_string|&quot; failed.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 id|KERN_INFO
 l_string|&quot;...trying to set up timer as ExtINT IRQ...&quot;
 )paren
@@ -7242,18 +7305,22 @@ c_func
 )paren
 )paren
 (brace
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 l_string|&quot; works.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 l_string|&quot; failed :(.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7298,9 +7365,11 @@ op_assign
 op_complement
 id|PIC_IRQS
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 l_string|&quot;ENABLING IO-APIC IRQs&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7431,9 +7500,11 @@ op_ge
 id|IO_APIC_MAX_ID
 )paren
 (brace
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_QUIET
+comma
 id|KERN_WARNING
 l_string|&quot;IOAPIC[%d]: Invalid apic_id %d, trying &quot;
 l_string|&quot;%d&bslash;n&quot;
@@ -7506,9 +7577,11 @@ c_func
 l_string|&quot;Max apic_id exceeded!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 id|KERN_WARNING
 l_string|&quot;IOAPIC[%d]: apic_id %d already used, &quot;
 l_string|&quot;trying %d&bslash;n&quot;
@@ -7600,9 +7673,11 @@ id|ioapic
 )paren
 suffix:semicolon
 )brace
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 id|KERN_INFO
 l_string|&quot;IOAPIC[%d]: Assigned apic_id %d&bslash;n&quot;
 comma
@@ -7752,9 +7827,11 @@ id|irq
 )paren
 )paren
 (brace
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_QUIET
+comma
 id|KERN_ERR
 l_string|&quot;IOAPIC[%d]: Invalid reference to IRQ 0&bslash;n&quot;
 comma
@@ -7832,9 +7909,11 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 id|KERN_DEBUG
 l_string|&quot;IOAPIC[%d]: Set PCI routing entry (%d-%d -&gt; 0x%x -&gt; &quot;
 l_string|&quot;IRQ %d Mode:%i Active:%i)&bslash;n&quot;
