@@ -208,6 +208,19 @@ op_star
 id|hd_driverfs_dev
 suffix:semicolon
 multiline_comment|/* support driverfs hiearchy     */
+DECL|member|reads
+DECL|member|read_sectors
+DECL|member|writes
+DECL|member|write_sectors
+r_int
+id|reads
+comma
+id|read_sectors
+comma
+id|writes
+comma
+id|write_sectors
+suffix:semicolon
 DECL|member|policy
 r_int
 id|policy
