@@ -58,6 +58,14 @@ op_star
 id|product_desc
 suffix:semicolon
 multiline_comment|/* product/vendor string */
+DECL|member|irq_descr
+r_char
+id|irq_descr
+(braket
+l_int|24
+)braket
+suffix:semicolon
+multiline_comment|/* driver + bus # */
 DECL|member|rh_timer
 r_struct
 id|timer_list
@@ -105,13 +113,16 @@ op_star
 id|regs
 suffix:semicolon
 multiline_comment|/* device memory/io */
-macro_line|#ifdef&t;CONFIG_PCI
-DECL|member|region
-r_int
-id|region
+DECL|member|rsrc_start
+id|u64
+id|rsrc_start
 suffix:semicolon
-multiline_comment|/* pci region for regs */
-macro_line|#endif
+multiline_comment|/* memory/io resource start */
+DECL|member|rsrc_len
+id|u64
+id|rsrc_len
+suffix:semicolon
+multiline_comment|/* memory/io resource length */
 DECL|macro|HCD_BUFFER_POOLS
 mdefine_line|#define HCD_BUFFER_POOLS&t;4
 DECL|member|pool
@@ -690,11 +701,50 @@ r_struct
 id|hc_driver
 op_star
 id|driver
+comma
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_char
+op_star
+id|bus_name
 )paren
 suffix:semicolon
 r_extern
 r_void
 id|usb_put_hcd
+(paren
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|usb_add_hcd
+c_func
+(paren
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+comma
+r_int
+r_int
+id|irqnum
+comma
+r_int
+r_int
+id|irqflags
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_remove_hcd
+c_func
 (paren
 r_struct
 id|usb_hcd
