@@ -5865,16 +5865,12 @@ c_cond
 (paren
 id|err
 )paren
-(brace
 id|warn
 c_func
 (paren
 l_string|&quot;timeout initializing reports&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|report_enum
 op_assign
 id|hid-&gt;report_enum
