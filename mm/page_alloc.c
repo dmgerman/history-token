@@ -1074,7 +1074,7 @@ id|page
 r_if
 c_cond
 (paren
-id|page_mapped
+id|page_mapcount
 c_func
 (paren
 id|page
@@ -1607,7 +1607,7 @@ c_cond
 (paren
 id|page-&gt;mapping
 op_logical_or
-id|page_mapped
+id|page_mapcount
 c_func
 (paren
 id|page
