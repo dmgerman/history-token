@@ -11900,16 +11900,7 @@ id|MAX_RETRY
 )paren
 )paren
 (brace
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-(paren
-r_void
-)paren
-id|schedule_timeout
+id|msleep
 c_func
 (paren
 id|sleep
@@ -11920,7 +11911,7 @@ c_cond
 (paren
 id|sleep
 OL
-id|HZ
+l_int|250
 )paren
 id|sleep
 op_assign

@@ -12277,6 +12277,7 @@ r_int
 id|addr
 suffix:semicolon
 r_int
+r_int
 id|timeout
 suffix:semicolon
 id|down
@@ -12524,7 +12525,7 @@ id|timeout
 op_assign
 l_int|5
 op_star
-id|HZ
+l_int|1000
 suffix:semicolon
 r_while
 c_loop
@@ -12541,7 +12542,7 @@ l_int|0
 (brace
 id|timeout
 op_assign
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
 id|timeout

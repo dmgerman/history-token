@@ -2829,12 +2829,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|25
+l_int|4
 )paren
 suffix:semicolon
 )brace
