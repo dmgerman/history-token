@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/mptbase.h&n; *      High performance SCSI + LAN / Fibre Channel device drivers.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *     (see mptbase.c)&n; *&n; *  Copyright (c) 1999-2003 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:mpt_linux_developer@lsil.com)&n; *&n; *  $Id: mptbase.h,v 1.144 2003/01/28 21:31:56 pdelaney Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/mptbase.h&n; *      High performance SCSI + LAN / Fibre Channel device drivers.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *     (see mptbase.c)&n; *&n; *  Copyright (c) 1999-2004 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:mpt_linux_developer@lsil.com)&n; *&n; *  $Id: mptbase.h,v 1.144 2003/01/28 21:31:56 pdelaney Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 macro_line|#ifndef MPTBASE_H_INCLUDED
@@ -16,6 +16,7 @@ macro_line|#include &quot;lsi/mpi_lan.h&quot;&t;/* LAN over FC protocol support 
 macro_line|#include &quot;lsi/mpi_raid.h&quot;&t;/* Integrated Mirroring support */
 macro_line|#include &quot;lsi/mpi_fc.h&quot;&t;&t;/* Fibre Channel (lowlevel) support */
 macro_line|#include &quot;lsi/mpi_targ.h&quot;&t;/* SCSI/FCP Target protcol support */
+macro_line|#include &quot;lsi/mpi_tool.h&quot;&t;/* Tools support */
 macro_line|#include &quot;lsi/fc_log.h&quot;
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 macro_line|#ifndef MODULEAUTHOR
@@ -24,12 +25,12 @@ mdefine_line|#define MODULEAUTHOR&t;&quot;LSI Logic Corporation&quot;
 macro_line|#endif
 macro_line|#ifndef COPYRIGHT
 DECL|macro|COPYRIGHT
-mdefine_line|#define COPYRIGHT&t;&quot;Copyright (c) 1999-2003 &quot; MODULEAUTHOR
+mdefine_line|#define COPYRIGHT&t;&quot;Copyright (c) 1999-2004 &quot; MODULEAUTHOR
 macro_line|#endif
 DECL|macro|MPT_LINUX_VERSION_COMMON
-mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.00.04&quot;
+mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.01.00&quot;
 DECL|macro|MPT_LINUX_PACKAGE_NAME
-mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.00.04&quot;
+mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.01.00&quot;
 DECL|macro|WHAT_MAGIC_STRING
 mdefine_line|#define WHAT_MAGIC_STRING&t;&t;&quot;@&quot; &quot;(&quot; &quot;#&quot; &quot;)&quot;
 DECL|macro|show_mptmod_ver
@@ -41,13 +42,13 @@ mdefine_line|#define MPT_MAX_ADAPTERS&t;&t;18
 DECL|macro|MPT_MAX_PROTOCOL_DRIVERS
 mdefine_line|#define MPT_MAX_PROTOCOL_DRIVERS&t;16
 DECL|macro|MPT_MAX_BUS
-mdefine_line|#define MPT_MAX_BUS&t;&t;&t;1
+mdefine_line|#define MPT_MAX_BUS&t;&t;&t;1&t;/* Do not change */
 DECL|macro|MPT_MAX_FC_DEVICES
 mdefine_line|#define MPT_MAX_FC_DEVICES&t;&t;255
 DECL|macro|MPT_MAX_SCSI_DEVICES
 mdefine_line|#define MPT_MAX_SCSI_DEVICES&t;&t;16
 DECL|macro|MPT_LAST_LUN
-mdefine_line|#define MPT_LAST_LUN&t;&t;&t;31
+mdefine_line|#define MPT_LAST_LUN&t;&t;&t;255
 DECL|macro|MPT_SENSE_BUFFER_ALLOC
 mdefine_line|#define MPT_SENSE_BUFFER_ALLOC&t;&t;64
 multiline_comment|/* allow for 256 max sense alloc, but only 255 max request */
@@ -91,6 +92,8 @@ DECL|macro|MPT_MAX_FRAME_SIZE
 mdefine_line|#define  MPT_MAX_FRAME_SIZE&t;&t;128
 DECL|macro|MPT_DEFAULT_FRAME_SIZE
 mdefine_line|#define  MPT_DEFAULT_FRAME_SIZE&t;&t;128
+DECL|macro|MPT_REPLY_FRAME_SIZE
+mdefine_line|#define  MPT_REPLY_FRAME_SIZE&t;&t;0x40  /* Must be a multiple of 8 */
 DECL|macro|MPT_SG_REQ_128_SCALE
 mdefine_line|#define  MPT_SG_REQ_128_SCALE&t;&t;1
 DECL|macro|MPT_SG_REQ_96_SCALE
@@ -122,6 +125,10 @@ DECL|macro|MPT_NARROW
 mdefine_line|#define MPT_NARROW&t;&t;&t;0
 DECL|macro|MPT_WIDE
 mdefine_line|#define MPT_WIDE&t;&t;&t;1
+DECL|macro|C0_1030
+mdefine_line|#define C0_1030&t;&t;&t;&t;0x08
+DECL|macro|XL_929
+mdefine_line|#define XL_929&t;&t;&t;&t;0x01
 macro_line|#ifdef __KERNEL__&t;/* { */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -220,6 +227,19 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PM
+DECL|member|resume
+r_int
+(paren
+op_star
+id|resume
+)paren
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
 DECL|member|suspend
 r_int
 (paren
@@ -234,19 +254,6 @@ id|dev
 comma
 id|u32
 id|state
-)paren
-suffix:semicolon
-DECL|member|resume
-r_int
-(paren
-op_star
-id|resume
-)paren
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -285,13 +292,6 @@ r_void
 op_star
 id|argp1
 suffix:semicolon
-macro_line|#ifndef MPT_SCSI_USE_NEW_EH
-DECL|member|argp2
-r_void
-op_star
-id|argp2
-suffix:semicolon
-macro_line|#endif
 DECL|member|linkage
 )brace
 id|linkage
@@ -365,6 +365,10 @@ suffix:semicolon
 DECL|member|sreply
 id|SCSIIOReply_t
 id|sreply
+suffix:semicolon
+DECL|member|configreply
+id|ConfigReply_t
+id|configreply
 suffix:semicolon
 DECL|member|reply
 id|MPIDefaultReply_t
@@ -881,39 +885,26 @@ DECL|member|num_luns
 id|u32
 id|num_luns
 suffix:semicolon
-singleline_comment|//--- LUN split here?
 DECL|member|luns
 id|u32
 id|luns
+(braket
+l_int|8
+)braket
 suffix:semicolon
-multiline_comment|/* Max LUNs is 32 */
+multiline_comment|/* Max LUNs is 256 */
+DECL|member|pad
+id|u8
+id|pad
+(braket
+l_int|4
+)braket
+suffix:semicolon
 DECL|member|inq_data
 id|u8
 id|inq_data
 (braket
-id|SCSI_STD_INQUIRY_BYTES
-)braket
-suffix:semicolon
-multiline_comment|/* 36 */
-DECL|member|pad0
-id|u8
-id|pad0
-(braket
-l_int|4
-)braket
-suffix:semicolon
-DECL|member|inq00_data
-id|u8
-id|inq00_data
-(braket
-l_int|20
-)braket
-suffix:semicolon
-DECL|member|pad1
-id|u8
-id|pad1
-(braket
-l_int|4
+l_int|8
 )braket
 suffix:semicolon
 multiline_comment|/* IEEE Registered Extended Identifier&n;&t;&t;   obtained via INQUIRY VPD page 0x83 */
@@ -939,54 +930,13 @@ id|pad2
 l_int|4
 )braket
 suffix:semicolon
-DECL|member|inqC3_data
-id|u8
-id|inqC3_data
-(braket
-l_int|12
-)braket
-suffix:semicolon
-DECL|member|pad3
-id|u8
-id|pad3
-(braket
-l_int|4
-)braket
-suffix:semicolon
-DECL|member|inqC9_data
-id|u8
-id|inqC9_data
-(braket
-l_int|12
-)braket
-suffix:semicolon
-DECL|member|pad4
-id|u8
-id|pad4
-(braket
-l_int|4
-)braket
-suffix:semicolon
-DECL|member|dev_vol_name
-id|u8
-id|dev_vol_name
-(braket
-l_int|64
-)braket
-suffix:semicolon
 DECL|typedef|VirtDevice
 )brace
 id|VirtDevice
 suffix:semicolon
 multiline_comment|/*&n; *  Fibre Channel (SCSI) target device and associated defines...&n; */
 DECL|macro|MPT_TARGET_DEFAULT_DV_STATUS
-mdefine_line|#define MPT_TARGET_DEFAULT_DV_STATUS&t;0
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,55)
-DECL|macro|MPT_TARGET_FLAGS_CONFIGURED
-mdefine_line|#define MPT_TARGET_FLAGS_CONFIGURED&t;0x02
-DECL|macro|MPT_TARGET_FLAGS_Q_YES
-mdefine_line|#define MPT_TARGET_FLAGS_Q_YES&t;&t;0x08
-macro_line|#else
+mdefine_line|#define MPT_TARGET_DEFAULT_DV_STATUS&t;0x00
 DECL|macro|MPT_TARGET_FLAGS_VALID_NEGO
 mdefine_line|#define MPT_TARGET_FLAGS_VALID_NEGO&t;0x01
 DECL|macro|MPT_TARGET_FLAGS_VALID_INQUIRY
@@ -995,7 +945,8 @@ DECL|macro|MPT_TARGET_FLAGS_Q_YES
 mdefine_line|#define MPT_TARGET_FLAGS_Q_YES&t;&t;0x08
 DECL|macro|MPT_TARGET_FLAGS_VALID_56
 mdefine_line|#define MPT_TARGET_FLAGS_VALID_56&t;0x10
-macro_line|#endif
+DECL|macro|MPT_TARGET_FLAGS_SAF_TE_ISSUED
+mdefine_line|#define MPT_TARGET_FLAGS_SAF_TE_ISSUED&t;0x20
 DECL|macro|MPT_TARGET_NO_NEGO_WIDE
 mdefine_line|#define MPT_TARGET_NO_NEGO_WIDE&t;&t;0x01
 DECL|macro|MPT_TARGET_NO_NEGO_SYNC
@@ -1213,18 +1164,44 @@ r_typedef
 r_struct
 id|_ScsiCfgData
 (brace
+DECL|member|PortFlags
+id|u32
+id|PortFlags
+suffix:semicolon
 DECL|member|nvram
 r_int
 op_star
 id|nvram
 suffix:semicolon
 multiline_comment|/* table of device NVRAM values */
+DECL|member|pIocPg2
+id|IOCPage2_t
+op_star
+id|pIocPg2
+suffix:semicolon
+multiline_comment|/* table of Raid Volumes */
 DECL|member|pIocPg3
 id|IOCPage3_t
 op_star
 id|pIocPg3
 suffix:semicolon
 multiline_comment|/* table of physical disks */
+DECL|member|pIocPg4
+id|IOCPage4_t
+op_star
+id|pIocPg4
+suffix:semicolon
+multiline_comment|/* SEP devices addressing */
+DECL|member|IocPg4_dma
+id|dma_addr_t
+id|IocPg4_dma
+suffix:semicolon
+multiline_comment|/* Phys Addr of IOCPage4 data */
+DECL|member|IocPg4Sz
+r_int
+id|IocPg4Sz
+suffix:semicolon
+multiline_comment|/* IOCPage4 size */
 DECL|member|dvStatus
 id|u8
 id|dvStatus
@@ -1292,11 +1269,16 @@ id|u8
 id|noQas
 suffix:semicolon
 multiline_comment|/* Disable QAS for this adapter */
+DECL|member|Saf_Te
+id|u8
+id|Saf_Te
+suffix:semicolon
+multiline_comment|/* 1 to force all Processors as SAF-TE if Inquiry data length is too short to check for SAF-TE */
 DECL|member|rsvd
 id|u8
 id|rsvd
 (braket
-l_int|2
+l_int|1
 )braket
 suffix:semicolon
 DECL|typedef|ScsiCfgData
@@ -1518,6 +1500,14 @@ op_star
 id|pcidev
 suffix:semicolon
 multiline_comment|/* struct pci_dev pointer */
+macro_line|#if defined(MPTBASE_MEM_ALLOC_FIFO_FIX)
+DECL|member|pcidev32
+r_struct
+id|pci_dev
+id|pcidev32
+suffix:semicolon
+multiline_comment|/* struct pci_dev pointer */
+macro_line|#endif&t;
 DECL|member|memmap
 id|u8
 op_star
@@ -1584,6 +1574,24 @@ r_int
 id|eventLogSize
 suffix:semicolon
 multiline_comment|/* Max number of cached events */
+macro_line|#ifdef MPTSCSIH_DBG_TIMEOUT
+DECL|member|timeout_hard
+r_int
+id|timeout_hard
+suffix:semicolon
+DECL|member|timeout_delta
+r_int
+id|timeout_delta
+suffix:semicolon
+DECL|member|timeout_cnt
+r_int
+id|timeout_cnt
+suffix:semicolon
+DECL|member|timeout_maxcnt
+r_int
+id|timeout_maxcnt
+suffix:semicolon
+macro_line|#endif
 DECL|member|events
 r_struct
 id|_mpt_ioctl_events
@@ -1787,6 +1795,8 @@ DECL|macro|MPT_IOC_PRE_RESET
 mdefine_line|#define MPT_IOC_PRE_RESET&t;&t;0
 DECL|macro|MPT_IOC_POST_RESET
 mdefine_line|#define MPT_IOC_POST_RESET&t;&t;1
+DECL|macro|MPT_IOC_SETUP_RESET
+mdefine_line|#define MPT_IOC_SETUP_RESET&t;&t;2
 multiline_comment|/*&n; * Invent MPT host event (super-set of MPI Events)&n; * Fitted to 1030&squot;s 64-byte [max] request frame size&n; */
 DECL|struct|_MPT_HOST_EVENT
 r_typedef
@@ -2028,7 +2038,6 @@ DECL|macro|MPT_NVRAM_WIDE_DISABLE
 mdefine_line|#define MPT_NVRAM_WIDE_DISABLE&t;&t;(0x00100000)
 DECL|macro|MPT_NVRAM_BOOT_CHOICE
 mdefine_line|#define MPT_NVRAM_BOOT_CHOICE&t;&t;(0x00200000)
-macro_line|#ifdef MPT_SCSI_USE_NEW_EH
 multiline_comment|/* The TM_STATE variable is used to provide strict single threading of TM&n; * requests as well as communicate TM error conditions.&n; */
 DECL|macro|TM_STATE_NONE
 mdefine_line|#define TM_STATE_NONE          (0)
@@ -2036,7 +2045,6 @@ DECL|macro|TM_STATE_IN_PROGRESS
 mdefine_line|#define&t;TM_STATE_IN_PROGRESS   (1)
 DECL|macro|TM_STATE_ERROR
 mdefine_line|#define&t;TM_STATE_ERROR&t;       (2)
-macro_line|#endif
 DECL|struct|_MPT_SCSI_HOST
 r_typedef
 r_struct
@@ -2187,7 +2195,6 @@ id|u8
 id|is_multipath
 suffix:semicolon
 multiline_comment|/* Multi-path compatible */
-macro_line|#ifdef MPT_SCSI_USE_NEW_EH
 DECL|member|tmState
 id|u8
 id|tmState
@@ -2199,15 +2206,6 @@ id|rsvd
 l_int|1
 )braket
 suffix:semicolon
-macro_line|#else
-DECL|member|rsvd
-id|u8
-id|rsvd
-(braket
-l_int|2
-)braket
-suffix:semicolon
-macro_line|#endif
 DECL|member|tmPtr
 id|MPT_FRAME_HDR
 op_star
@@ -2826,6 +2824,20 @@ id|cfg
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|mpt_toolbox
+c_func
+(paren
+id|MPT_ADAPTER
+op_star
+id|ioc
+comma
+id|CONFIGPARMS
+op_star
+id|cfg
+)paren
+suffix:semicolon
+r_extern
 r_void
 op_star
 id|mpt_alloc_fw_memory
@@ -2860,6 +2872,16 @@ id|fw_image_t
 op_star
 op_star
 id|alt_img
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|mpt_findImVolumes
+c_func
+(paren
+id|MPT_ADAPTER
+op_star
+id|ioc
 )paren
 suffix:semicolon
 r_extern
