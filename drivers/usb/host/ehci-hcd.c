@@ -332,7 +332,13 @@ op_amp
 id|ehci-&gt;regs-&gt;command
 )paren
 suffix:semicolon
-id|ehci-&gt;hcd.state
+id|ehci_to_hcd
+c_func
+(paren
+id|ehci
+)paren
+op_member_access_from_pointer
+id|state
 op_assign
 id|USB_STATE_HALT
 suffix:semicolon
@@ -378,7 +384,13 @@ c_cond
 op_logical_neg
 id|HCD_IS_RUNNING
 (paren
-id|ehci-&gt;hcd.state
+id|ehci_to_hcd
+c_func
+(paren
+id|ehci
+)paren
+op_member_access_from_pointer
+id|state
 )paren
 )paren
 id|BUG
@@ -425,7 +437,13 @@ op_ne
 l_int|0
 )paren
 (brace
-id|ehci-&gt;hcd.state
+id|ehci_to_hcd
+c_func
+(paren
+id|ehci
+)paren
+op_member_access_from_pointer
+id|state
 op_assign
 id|USB_STATE_HALT
 suffix:semicolon
@@ -483,7 +501,13 @@ op_ne
 l_int|0
 )paren
 (brace
-id|ehci-&gt;hcd.state
+id|ehci_to_hcd
+c_func
+(paren
+id|ehci
+)paren
+op_member_access_from_pointer
+id|state
 op_assign
 id|USB_STATE_HALT
 suffix:semicolon
@@ -677,7 +701,13 @@ op_assign
 id|to_pci_dev
 c_func
 (paren
-id|ehci-&gt;hcd.self.controller
+id|ehci_to_hcd
+c_func
+(paren
+id|ehci
+)paren
+op_member_access_from_pointer
+id|self.controller
 )paren
 suffix:semicolon
 multiline_comment|/* request handoff to OS */
@@ -924,7 +954,7 @@ op_assign
 id|to_pci_dev
 c_func
 (paren
-id|ehci-&gt;hcd.self.controller
+id|hcd-&gt;self.controller
 )paren
 suffix:semicolon
 multiline_comment|/* AMD8111 EHCI doesn&squot;t work, according to AMD errata */
@@ -990,7 +1020,7 @@ id|pci_read_config_dword
 id|to_pci_dev
 c_func
 (paren
-id|ehci-&gt;hcd.self.controller
+id|hcd-&gt;self.controller
 )paren
 comma
 id|temp
@@ -1527,7 +1557,7 @@ id|pci_set_dma_mask
 id|to_pci_dev
 c_func
 (paren
-id|ehci-&gt;hcd.self.controller
+id|hcd-&gt;self.controller
 )paren
 comma
 l_int|0xffffffffffffffffULL
@@ -1780,7 +1810,7 @@ id|ehci-&gt;reboot_notifier
 )paren
 suffix:semicolon
 )brace
-id|ehci-&gt;hcd.state
+id|hcd-&gt;state
 op_assign
 id|USB_STATE_RUNNING
 suffix:semicolon
@@ -2015,7 +2045,7 @@ c_cond
 (paren
 id|HCD_IS_RUNNING
 (paren
-id|ehci-&gt;hcd.state
+id|hcd-&gt;state
 )paren
 )paren
 id|ehci_quiesce
@@ -2635,7 +2665,13 @@ c_cond
 (paren
 id|HCD_IS_RUNNING
 (paren
-id|ehci-&gt;hcd.state
+id|ehci_to_hcd
+c_func
+(paren
+id|ehci
+)paren
+op_member_access_from_pointer
+id|state
 )paren
 op_logical_and
 (paren
@@ -2866,7 +2902,7 @@ op_amp
 id|STS_PCD
 )paren
 op_logical_and
-id|ehci-&gt;hcd.remote_wakeup
+id|hcd-&gt;remote_wakeup
 )paren
 (brace
 r_int
@@ -2968,7 +3004,7 @@ suffix:semicolon
 id|mod_timer
 (paren
 op_amp
-id|ehci-&gt;hcd.rh_timer
+id|hcd-&gt;rh_timer
 comma
 id|ehci-&gt;reset_done
 (braket
@@ -3244,7 +3280,13 @@ id|ehci-&gt;reclaim
 op_logical_and
 id|HCD_IS_RUNNING
 (paren
-id|ehci-&gt;hcd.state
+id|ehci_to_hcd
+c_func
+(paren
+id|ehci
+)paren
+op_member_access_from_pointer
+id|state
 )paren
 )paren
 (brace
@@ -3285,7 +3327,13 @@ c_cond
 op_logical_neg
 id|HCD_IS_RUNNING
 (paren
-id|ehci-&gt;hcd.state
+id|ehci_to_hcd
+c_func
+(paren
+id|ehci
+)paren
+op_member_access_from_pointer
+id|state
 )paren
 op_logical_and
 id|ehci-&gt;reclaim
@@ -3477,7 +3525,7 @@ id|qh-&gt;qtd_list
 op_logical_and
 id|HCD_IS_RUNNING
 (paren
-id|ehci-&gt;hcd.state
+id|hcd-&gt;state
 )paren
 )paren
 (brace
@@ -3641,7 +3689,7 @@ c_cond
 op_logical_neg
 id|HCD_IS_RUNNING
 (paren
-id|ehci-&gt;hcd.state
+id|hcd-&gt;state
 )paren
 )paren
 id|qh-&gt;qh_state
@@ -3807,6 +3855,20 @@ id|description
 op_assign
 id|hcd_name
 comma
+dot
+id|product_desc
+op_assign
+l_string|&quot;EHCI Host Controller&quot;
+comma
+dot
+id|hcd_priv_size
+op_assign
+r_sizeof
+(paren
+r_struct
+id|ehci_hcd
+)paren
+comma
 multiline_comment|/*&n;&t; * generic hardware linkage&n;&t; */
 dot
 id|irq
@@ -3847,12 +3909,6 @@ dot
 id|stop
 op_assign
 id|ehci_stop
-comma
-multiline_comment|/*&n;&t; * memory lifecycle (except per-request)&n;&t; */
-dot
-id|hcd_alloc
-op_assign
-id|ehci_hcd_alloc
 comma
 multiline_comment|/*&n;&t; * managing i/o requests and associated device resources&n;&t; */
 dot
