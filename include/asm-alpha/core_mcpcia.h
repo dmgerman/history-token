@@ -131,7 +131,7 @@ mdefine_line|#define MCPCIA_W3_MASK(m)&t;(MCPCIA_CSR(m) + 0x1740)
 DECL|macro|MCPCIA_T3_BASE
 mdefine_line|#define MCPCIA_T3_BASE(m)&t;(MCPCIA_CSR(m) + 0x1780)
 multiline_comment|/* Hack!  Only words for bus 0.  */
-macro_line|#if !MCPCIA_ONE_HAE_WINDOW
+macro_line|#ifndef MCPCIA_ONE_HAE_WINDOW
 DECL|macro|MCPCIA_HAE_ADDRESS
 mdefine_line|#define MCPCIA_HAE_ADDRESS&t;MCPCIA_HAE_MEM(4)
 macro_line|#endif
@@ -675,7 +675,7 @@ id|result
 comma
 id|work
 suffix:semicolon
-macro_line|#if !MCPCIA_ONE_HAE_WINDOW
+macro_line|#ifndef MCPCIA_ONE_HAE_WINDOW
 r_int
 r_int
 id|msb
@@ -784,7 +784,7 @@ id|result
 comma
 id|work
 suffix:semicolon
-macro_line|#if !MCPCIA_ONE_HAE_WINDOW
+macro_line|#ifndef MCPCIA_ONE_HAE_WINDOW
 r_int
 r_int
 id|msb
@@ -894,7 +894,7 @@ r_int
 r_int
 id|w
 suffix:semicolon
-macro_line|#if !MCPCIA_ONE_HAE_WINDOW
+macro_line|#ifndef MCPCIA_ONE_HAE_WINDOW
 r_int
 r_int
 id|msb
@@ -1001,7 +1001,7 @@ r_int
 r_int
 id|w
 suffix:semicolon
-macro_line|#if !MCPCIA_ONE_HAE_WINDOW
+macro_line|#ifndef MCPCIA_ONE_HAE_WINDOW
 r_int
 r_int
 id|msb

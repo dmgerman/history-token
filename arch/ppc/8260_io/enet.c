@@ -1614,6 +1614,8 @@ r_int
 id|i
 comma
 id|j
+comma
+id|err
 suffix:semicolon
 r_int
 r_char

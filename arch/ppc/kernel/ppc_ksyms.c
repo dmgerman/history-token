@@ -773,27 +773,6 @@ id|pci_bus_to_phys
 suffix:semicolon
 macro_line|#endif /* CONFIG_PCI */
 macro_line|#ifdef CONFIG_NOT_COHERENT_CACHE
-DECL|variable|consistent_alloc
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|consistent_alloc
-)paren
-suffix:semicolon
-DECL|variable|consistent_free
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|consistent_free
-)paren
-suffix:semicolon
-DECL|variable|consistent_sync
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|consistent_sync
-)paren
-suffix:semicolon
 DECL|variable|flush_dcache_all
 id|EXPORT_SYMBOL
 c_func

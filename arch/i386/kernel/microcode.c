@@ -78,6 +78,7 @@ suffix:semicolon
 DECL|variable|user_buffer
 r_static
 r_void
+id|__user
 op_star
 id|user_buffer
 suffix:semicolon
@@ -1893,6 +1894,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1964,6 +1966,7 @@ id|user_buffer
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|buf

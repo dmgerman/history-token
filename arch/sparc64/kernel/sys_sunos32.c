@@ -684,12 +684,10 @@ c_cond
 op_logical_neg
 id|error
 )paren
-(brace
 id|error
 op_assign
 id|oldbrk
 suffix:semicolon
-)brace
 r_return
 id|error
 suffix:semicolon
@@ -963,12 +961,14 @@ id|sunos_dirent_callback
 DECL|member|curr
 r_struct
 id|sunos_dirent
+id|__user
 op_star
 id|curr
 suffix:semicolon
 DECL|member|previous
 r_struct
 id|sunos_dirent
+id|__user
 op_star
 id|previous
 suffix:semicolon
@@ -983,7 +983,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|NAME_OFFSET
-mdefine_line|#define NAME_OFFSET(de) ((int) ((de)-&gt;d_name - (char *) (de)))
+mdefine_line|#define NAME_OFFSET(de) ((int) ((de)-&gt;d_name - (char __user *) (de)))
 DECL|macro|ROUND_UP
 mdefine_line|#define ROUND_UP(x) (((x)+sizeof(s32)-1) &amp; ~(sizeof(s32)-1))
 DECL|function|sunos_filldir
@@ -1017,6 +1017,7 @@ id|d_type
 (brace
 r_struct
 id|sunos_dirent
+id|__user
 op_star
 id|dirent
 suffix:semicolon
@@ -1143,6 +1144,7 @@ id|dirent
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|dirent
@@ -1185,6 +1187,7 @@ id|file
 suffix:semicolon
 r_struct
 id|sunos_dirent
+id|__user
 op_star
 id|lastdirent
 suffix:semicolon
@@ -1199,11 +1202,13 @@ op_minus
 id|EBADF
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|dirent
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|A
@@ -1219,11 +1224,9 @@ id|fd
 op_ge
 id|SUNOS_NR_OPEN
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|file
 op_assign
 id|fget
@@ -1238,11 +1241,9 @@ c_cond
 op_logical_neg
 id|file
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|error
 op_assign
 op_minus
@@ -1263,16 +1264,15 @@ op_plus
 l_int|255
 )paren
 )paren
-(brace
 r_goto
 id|out_putf
 suffix:semicolon
-)brace
 id|buf.curr
 op_assign
 (paren
 r_struct
 id|sunos_dirent
+id|__user
 op_star
 )paren
 id|dirent
@@ -1389,12 +1389,14 @@ id|sunos_direntry_callback
 DECL|member|curr
 r_struct
 id|sunos_direntry
+id|__user
 op_star
 id|curr
 suffix:semicolon
 DECL|member|previous
 r_struct
 id|sunos_direntry
+id|__user
 op_star
 id|previous
 suffix:semicolon
@@ -1439,6 +1441,7 @@ id|d_type
 (brace
 r_struct
 id|sunos_direntry
+id|__user
 op_star
 id|dirent
 suffix:semicolon
@@ -1551,6 +1554,7 @@ id|dirent
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|dirent
@@ -1590,11 +1594,13 @@ id|u_basep
 )paren
 (brace
 r_void
+id|__user
 op_star
 id|dirent
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|A
@@ -1605,12 +1611,14 @@ id|u_dirent
 suffix:semicolon
 r_int
 r_int
+id|__user
 op_star
 id|basep
 op_assign
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|A
@@ -1626,6 +1634,7 @@ id|file
 suffix:semicolon
 r_struct
 id|sunos_direntry
+id|__user
 op_star
 id|lastdirent
 suffix:semicolon
@@ -1646,11 +1655,9 @@ id|fd
 op_ge
 id|SUNOS_NR_OPEN
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|file
 op_assign
 id|fget
@@ -1665,11 +1672,9 @@ c_cond
 op_logical_neg
 id|file
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|error
 op_assign
 op_minus
@@ -1690,16 +1695,15 @@ op_plus
 l_int|255
 )paren
 )paren
-(brace
 r_goto
 id|out_putf
 suffix:semicolon
-)brace
 id|buf.curr
 op_assign
 (paren
 r_struct
 id|sunos_direntry
+id|__user
 op_star
 )paren
 id|dirent
@@ -1838,6 +1842,7 @@ c_func
 (paren
 r_struct
 id|sunos_utsname
+id|__user
 op_star
 id|name
 )paren
@@ -2350,6 +2355,7 @@ id|tvp_x
 (brace
 r_struct
 id|compat_timeval
+id|__user
 op_star
 id|tvp
 op_assign
@@ -2414,28 +2420,19 @@ r_void
 r_return
 suffix:semicolon
 )brace
+macro_line|#if 0 /* This code doesn&squot;t translate user pointers correctly,&n;       * disable for now. -DaveM&n;       */
 multiline_comment|/* XXXXXXXXXX SunOS mount/umount. XXXXXXXXXXX */
-DECL|macro|SMNT_RDONLY
 mdefine_line|#define SMNT_RDONLY       1
-DECL|macro|SMNT_NOSUID
 mdefine_line|#define SMNT_NOSUID       2
-DECL|macro|SMNT_NEWTYPE
 mdefine_line|#define SMNT_NEWTYPE      4
-DECL|macro|SMNT_GRPID
 mdefine_line|#define SMNT_GRPID        8
-DECL|macro|SMNT_REMOUNT
 mdefine_line|#define SMNT_REMOUNT      16
-DECL|macro|SMNT_NOSUB
 mdefine_line|#define SMNT_NOSUB        32
-DECL|macro|SMNT_MULTI
 mdefine_line|#define SMNT_MULTI        64
-DECL|macro|SMNT_SYS5
 mdefine_line|#define SMNT_SYS5         128
-DECL|struct|sunos_fh_t
 r_struct
 id|sunos_fh_t
 (brace
-DECL|member|fh_data
 r_char
 id|fh_data
 (braket
@@ -2444,76 +2441,62 @@ id|NFS_FHSIZE
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|sunos_nfs_mount_args
 r_struct
 id|sunos_nfs_mount_args
 (brace
-DECL|member|addr
 r_struct
 id|sockaddr_in
 op_star
 id|addr
 suffix:semicolon
 multiline_comment|/* file server address */
-DECL|member|fh
 r_struct
 id|nfs_fh
 op_star
 id|fh
 suffix:semicolon
 multiline_comment|/* File handle to be mounted */
-DECL|member|flags
 r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* flags */
-DECL|member|wsize
 r_int
 id|wsize
 suffix:semicolon
 multiline_comment|/* write size in bytes */
-DECL|member|rsize
 r_int
 id|rsize
 suffix:semicolon
 multiline_comment|/* read size in bytes */
-DECL|member|timeo
 r_int
 id|timeo
 suffix:semicolon
 multiline_comment|/* initial timeout in .1 secs */
-DECL|member|retrans
 r_int
 id|retrans
 suffix:semicolon
 multiline_comment|/* times to retry send */
-DECL|member|hostname
 r_char
 op_star
 id|hostname
 suffix:semicolon
 multiline_comment|/* server&squot;s hostname */
-DECL|member|acregmin
 r_int
 id|acregmin
 suffix:semicolon
 multiline_comment|/* attr cache file min secs */
-DECL|member|acregmax
 r_int
 id|acregmax
 suffix:semicolon
 multiline_comment|/* attr cache file max secs */
-DECL|member|acdirmin
 r_int
 id|acdirmin
 suffix:semicolon
 multiline_comment|/* attr cache dir min secs */
-DECL|member|acdirmax
 r_int
 id|acdirmax
 suffix:semicolon
 multiline_comment|/* attr cache dir max secs */
-DECL|member|netname
 r_char
 op_star
 id|netname
@@ -2525,7 +2508,6 @@ multiline_comment|/* Bind the socket on a local reserved port and connect it to 
 multiline_comment|/* XXXXXXXXXXXXXXXXXXXX */
 r_static
 r_int
-DECL|function|sunos_nfs_get_server_fd
 id|sunos_nfs_get_server_fd
 (paren
 r_int
@@ -2580,11 +2562,9 @@ c_cond
 op_logical_neg
 id|file
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 id|inode
 op_assign
 id|file-&gt;f_dentry-&gt;d_inode
@@ -2730,7 +2710,6 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* XXXXXXXXXXXXXXXXXXXX */
-DECL|function|get_default
 r_static
 r_int
 id|get_default
@@ -2756,7 +2735,6 @@ id|def_value
 suffix:semicolon
 )brace
 multiline_comment|/* XXXXXXXXXXXXXXXXXXXX */
-DECL|function|sunos_nfs_mount
 r_static
 r_int
 id|sunos_nfs_mount
@@ -2770,6 +2748,7 @@ r_int
 id|linux_flags
 comma
 r_void
+id|__user
 op_star
 id|data
 )paren
@@ -2982,7 +2961,6 @@ c_func
 id|the_name
 )paren
 )paren
-(brace
 r_return
 id|PTR_ERR
 c_func
@@ -2990,7 +2968,6 @@ c_func
 id|the_name
 )paren
 suffix:semicolon
-)brace
 id|strlcpy
 c_func
 (paren
@@ -3078,7 +3055,6 @@ suffix:semicolon
 multiline_comment|/* XXXXXXXXXXXXXXXXXXXX */
 id|asmlinkage
 r_int
-DECL|function|sunos_mount
 id|sunos_mount
 c_func
 (paren
@@ -3176,12 +3152,10 @@ id|flags
 op_amp
 id|SMNT_REMOUNT
 )paren
-(brace
 id|linux_flags
 op_or_assign
 id|MS_REMOUNT
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3189,12 +3163,10 @@ id|flags
 op_amp
 id|SMNT_RDONLY
 )paren
-(brace
 id|linux_flags
 op_or_assign
 id|MS_RDONLY
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3202,12 +3174,10 @@ id|flags
 op_amp
 id|SMNT_NOSUID
 )paren
-(brace
 id|linux_flags
 op_or_assign
 id|MS_NOSUID
 suffix:semicolon
-)brace
 id|dir_page
 op_assign
 id|getname
@@ -3496,6 +3466,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|sunos_setpgrp
 id|asmlinkage
 r_int
@@ -3701,7 +3672,6 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|sunos_gethostid
-r_extern
 id|asmlinkage
 id|u32
 id|sunos_gethostid
@@ -3755,7 +3725,6 @@ mdefine_line|#define   _SC_SAVED_IDS           7
 DECL|macro|_SC_VERSION
 mdefine_line|#define   _SC_VERSION             8
 DECL|function|sunos_sysconf
-r_extern
 id|asmlinkage
 id|s32
 id|sunos_sysconf
@@ -3973,10 +3942,12 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* sys_semctl(): */
+multiline_comment|/* value to modify semaphore to */
 id|arg4.__pad
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|A
@@ -3985,7 +3956,6 @@ c_func
 id|ptr
 )paren
 suffix:semicolon
-multiline_comment|/* value to modify semaphore to */
 id|ret
 op_assign
 id|sys_semctl
@@ -4055,6 +4025,7 @@ comma
 (paren
 r_struct
 id|sembuf
+id|__user
 op_star
 )paren
 id|A
@@ -4064,6 +4035,7 @@ id|arg2
 )paren
 comma
 (paren
+r_int
 r_int
 )paren
 id|arg3
@@ -4209,6 +4181,7 @@ c_func
 (paren
 r_struct
 id|msqid_ds32
+id|__user
 op_star
 id|user
 comma
@@ -4338,12 +4311,10 @@ op_amp
 id|user-&gt;msg_lrpid
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -4357,6 +4328,7 @@ c_func
 (paren
 r_struct
 id|msqid_ds32
+id|__user
 op_star
 id|user
 comma
@@ -4486,12 +4458,10 @@ op_amp
 id|user-&gt;msg_lrpid
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -4505,6 +4475,7 @@ c_func
 (paren
 r_struct
 id|msgbuf32
+id|__user
 op_star
 id|user
 comma
@@ -4540,12 +4511,10 @@ comma
 id|len
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -4559,6 +4528,7 @@ c_func
 (paren
 r_struct
 id|msgbuf32
+id|__user
 op_star
 id|user
 comma
@@ -4593,12 +4563,10 @@ comma
 id|len
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -4627,6 +4595,7 @@ id|arg4
 (brace
 r_struct
 id|sparc_stackf32
+id|__user
 op_star
 id|sp
 suffix:semicolon
@@ -4693,6 +4662,7 @@ c_func
 (paren
 r_struct
 id|msqid_ds32
+id|__user
 op_star
 )paren
 id|A
@@ -4730,6 +4700,7 @@ comma
 (paren
 r_struct
 id|msqid_ds
+id|__user
 op_star
 )paren
 id|A
@@ -4751,7 +4722,6 @@ c_cond
 op_logical_neg
 id|rval
 )paren
-(brace
 id|rval
 op_assign
 id|sunos_msqid_put
@@ -4760,6 +4730,7 @@ c_func
 (paren
 r_struct
 id|msqid_ds32
+id|__user
 op_star
 )paren
 id|A
@@ -4772,7 +4743,6 @@ op_amp
 id|kds
 )paren
 suffix:semicolon
-)brace
 )brace
 r_else
 id|rval
@@ -4817,15 +4787,14 @@ c_cond
 op_logical_neg
 id|kmbuf
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|sp
 op_assign
 (paren
 r_struct
 id|sparc_stackf32
+id|__user
 op_star
 )paren
 (paren
@@ -4888,6 +4857,12 @@ r_int
 )paren
 id|arg1
 comma
+(paren
+r_struct
+id|msgbuf
+id|__user
+op_star
+)paren
 id|kmbuf
 comma
 (paren
@@ -4918,7 +4893,6 @@ c_cond
 op_logical_neg
 id|rval
 )paren
-(brace
 id|rval
 op_assign
 id|sunos_msgbuf_put
@@ -4927,6 +4901,7 @@ c_func
 (paren
 r_struct
 id|msgbuf32
+id|__user
 op_star
 )paren
 id|A
@@ -4940,7 +4915,6 @@ comma
 id|arg3
 )paren
 suffix:semicolon
-)brace
 id|kfree
 c_func
 (paren
@@ -4990,6 +4964,7 @@ c_func
 (paren
 r_struct
 id|msgbuf32
+id|__user
 op_star
 )paren
 id|A
@@ -5003,10 +4978,8 @@ comma
 id|arg3
 )paren
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|set_fs
 c_func
 (paren
@@ -5023,6 +4996,12 @@ r_int
 )paren
 id|arg1
 comma
+(paren
+r_struct
+id|msgbuf
+id|__user
+op_star
+)paren
 id|kmbuf
 comma
 (paren
@@ -5113,6 +5092,7 @@ c_func
 (paren
 r_struct
 id|shmid_ds32
+id|__user
 op_star
 id|user
 comma
@@ -5233,12 +5213,10 @@ op_amp
 id|user-&gt;shm_nattch
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -5252,6 +5230,7 @@ c_func
 (paren
 r_struct
 id|shmid_ds32
+id|__user
 op_star
 id|user
 comma
@@ -5372,12 +5351,10 @@ op_amp
 id|user-&gt;shm_nattch
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -5442,6 +5419,7 @@ id|arg1
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|A
@@ -5465,7 +5443,6 @@ c_cond
 op_logical_neg
 id|rval
 )paren
-(brace
 id|rval
 op_assign
 (paren
@@ -5473,7 +5450,6 @@ r_int
 )paren
 id|raddr
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -5490,6 +5466,7 @@ c_func
 (paren
 r_struct
 id|shmid_ds32
+id|__user
 op_star
 )paren
 id|A
@@ -5524,6 +5501,12 @@ r_int
 )paren
 id|arg2
 comma
+(paren
+r_struct
+id|shmid_ds
+id|__user
+op_star
+)paren
 op_amp
 id|ksds
 )paren
@@ -5540,7 +5523,6 @@ c_cond
 op_logical_neg
 id|rval
 )paren
-(brace
 id|rval
 op_assign
 id|sunos_shmid_put
@@ -5549,6 +5531,7 @@ c_func
 (paren
 r_struct
 id|shmid_ds32
+id|__user
 op_star
 )paren
 id|A
@@ -5561,7 +5544,6 @@ op_amp
 id|ksds
 )paren
 suffix:semicolon
-)brace
 )brace
 r_else
 id|rval
@@ -5582,6 +5564,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|A
@@ -5795,6 +5778,7 @@ id|fd
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|A
@@ -5844,6 +5828,7 @@ id|fd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|A
@@ -5894,6 +5879,7 @@ id|fd
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|A
@@ -5943,6 +5929,7 @@ id|fd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|A
@@ -5995,6 +5982,7 @@ id|fd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|A
@@ -6049,6 +6037,7 @@ id|fd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|A
@@ -6107,6 +6096,7 @@ comma
 (paren
 r_struct
 id|sockaddr
+id|__user
 op_star
 )paren
 id|A
@@ -6117,6 +6107,7 @@ id|sa
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|A
@@ -6200,6 +6191,7 @@ op_amp
 (paren
 r_struct
 id|old_sigaction32
+id|__user
 op_star
 )paren
 id|A
@@ -6222,6 +6214,7 @@ op_amp
 (paren
 r_struct
 id|old_sigaction32
+id|__user
 op_star
 )paren
 id|A
@@ -6259,6 +6252,7 @@ op_amp
 (paren
 r_struct
 id|old_sigaction32
+id|__user
 op_star
 )paren
 id|A
@@ -6346,6 +6340,7 @@ op_amp
 (paren
 r_struct
 id|old_sigaction32
+id|__user
 op_star
 )paren
 id|A
@@ -6368,6 +6363,7 @@ op_amp
 (paren
 r_struct
 id|old_sigaction32
+id|__user
 op_star
 )paren
 id|A
@@ -6397,6 +6393,7 @@ op_amp
 (paren
 r_struct
 id|old_sigaction32
+id|__user
 op_star
 )paren
 id|A
@@ -6482,6 +6479,7 @@ id|tr_opt
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|A
@@ -6565,6 +6563,7 @@ id|tr_opt
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -6575,6 +6574,7 @@ id|optval
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren

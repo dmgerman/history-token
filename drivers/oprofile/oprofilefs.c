@@ -111,6 +111,7 @@ op_star
 id|str
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -209,6 +210,7 @@ r_int
 id|val
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -346,6 +348,7 @@ id|val
 comma
 r_char
 r_const
+id|__user
 op_star
 id|buf
 comma
@@ -451,6 +454,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -497,6 +501,7 @@ id|file
 comma
 r_char
 r_const
+id|__user
 op_star
 id|buf
 comma
@@ -891,6 +896,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma

@@ -2080,7 +2080,8 @@ op_assign
 r_int
 r_int
 )paren
-id|frame-&gt;pinfo
+op_amp
+id|frame-&gt;info
 suffix:semicolon
 id|regs-&gt;ARM_r2
 op_assign
@@ -2088,7 +2089,8 @@ op_assign
 r_int
 r_int
 )paren
-id|frame-&gt;puc
+op_amp
+id|frame-&gt;uc
 suffix:semicolon
 )brace
 r_return
@@ -2588,6 +2590,7 @@ suffix:semicolon
 r_else
 (brace
 id|u32
+id|__user
 op_star
 id|usp
 suffix:semicolon
@@ -2599,6 +2602,7 @@ id|usp
 op_assign
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|regs-&gt;ARM_sp

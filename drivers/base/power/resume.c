@@ -85,6 +85,12 @@ c_func
 id|entry
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;power.prev_state
+)paren
 id|resume_device
 c_func
 (paren

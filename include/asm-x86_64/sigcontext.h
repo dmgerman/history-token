@@ -2,6 +2,7 @@ macro_line|#ifndef _ASM_X86_64_SIGCONTEXT_H
 DECL|macro|_ASM_X86_64_SIGCONTEXT_H
 mdefine_line|#define _ASM_X86_64_SIGCONTEXT_H
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/* FXSAVE frame */
 multiline_comment|/* Note: reserved1/2 may someday contain valuable data. Always save/restore&n;   them when you change signal frames. */
 DECL|struct|_fpstate
@@ -204,6 +205,7 @@ suffix:semicolon
 DECL|member|fpstate
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|fpstate
 suffix:semicolon

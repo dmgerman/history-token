@@ -215,7 +215,7 @@ id|KERN_CRIT
 l_string|&quot;ACPI: Wakeup code way too big, will crash on attempt to suspend&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|Dprintk
 c_func
 (paren
 id|KERN_DEBUG

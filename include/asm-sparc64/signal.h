@@ -358,6 +358,7 @@ id|sa
 suffix:semicolon
 DECL|member|ka_restorer
 r_void
+id|__user
 op_star
 id|ka_restorer
 suffix:semicolon

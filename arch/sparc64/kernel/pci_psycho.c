@@ -20,51 +20,51 @@ multiline_comment|/* Misc. PSYCHO PCI controller register offsets and definition
 DECL|macro|PSYCHO_CONTROL
 mdefine_line|#define PSYCHO_CONTROL&t;&t;0x0010UL
 DECL|macro|PSYCHO_CONTROL_IMPL
-mdefine_line|#define  PSYCHO_CONTROL_IMPL&t; 0xf000000000000000 /* Implementation of this PSYCHO*/
+mdefine_line|#define  PSYCHO_CONTROL_IMPL&t; 0xf000000000000000UL /* Implementation of this PSYCHO*/
 DECL|macro|PSYCHO_CONTROL_VER
-mdefine_line|#define  PSYCHO_CONTROL_VER&t; 0x0f00000000000000 /* Version of this PSYCHO       */
+mdefine_line|#define  PSYCHO_CONTROL_VER&t; 0x0f00000000000000UL /* Version of this PSYCHO       */
 DECL|macro|PSYCHO_CONTROL_MID
-mdefine_line|#define  PSYCHO_CONTROL_MID&t; 0x00f8000000000000 /* UPA Module ID of PSYCHO      */
+mdefine_line|#define  PSYCHO_CONTROL_MID&t; 0x00f8000000000000UL /* UPA Module ID of PSYCHO      */
 DECL|macro|PSYCHO_CONTROL_IGN
-mdefine_line|#define  PSYCHO_CONTROL_IGN&t; 0x0007c00000000000 /* Interrupt Group Number       */
+mdefine_line|#define  PSYCHO_CONTROL_IGN&t; 0x0007c00000000000UL /* Interrupt Group Number       */
 DECL|macro|PSYCHO_CONTROL_RESV
-mdefine_line|#define  PSYCHO_CONTROL_RESV     0x00003ffffffffff0 /* Reserved                     */
+mdefine_line|#define  PSYCHO_CONTROL_RESV     0x00003ffffffffff0UL /* Reserved                     */
 DECL|macro|PSYCHO_CONTROL_APCKEN
-mdefine_line|#define  PSYCHO_CONTROL_APCKEN&t; 0x0000000000000008 /* Address Parity Check Enable  */
+mdefine_line|#define  PSYCHO_CONTROL_APCKEN&t; 0x0000000000000008UL /* Address Parity Check Enable  */
 DECL|macro|PSYCHO_CONTROL_APERR
-mdefine_line|#define  PSYCHO_CONTROL_APERR&t; 0x0000000000000004 /* Incoming System Addr Parerr  */
+mdefine_line|#define  PSYCHO_CONTROL_APERR&t; 0x0000000000000004UL /* Incoming System Addr Parerr  */
 DECL|macro|PSYCHO_CONTROL_IAP
-mdefine_line|#define  PSYCHO_CONTROL_IAP&t; 0x0000000000000002 /* Invert UPA Parity            */
+mdefine_line|#define  PSYCHO_CONTROL_IAP&t; 0x0000000000000002UL /* Invert UPA Parity            */
 DECL|macro|PSYCHO_CONTROL_MODE
-mdefine_line|#define  PSYCHO_CONTROL_MODE&t; 0x0000000000000001 /* PSYCHO clock mode            */
+mdefine_line|#define  PSYCHO_CONTROL_MODE&t; 0x0000000000000001UL /* PSYCHO clock mode            */
 DECL|macro|PSYCHO_PCIA_CTRL
 mdefine_line|#define PSYCHO_PCIA_CTRL&t;0x2000UL
 DECL|macro|PSYCHO_PCIB_CTRL
 mdefine_line|#define PSYCHO_PCIB_CTRL&t;0x4000UL
 DECL|macro|PSYCHO_PCICTRL_RESV1
-mdefine_line|#define  PSYCHO_PCICTRL_RESV1&t; 0xfffffff000000000 /* Reserved                     */
+mdefine_line|#define  PSYCHO_PCICTRL_RESV1&t; 0xfffffff000000000UL /* Reserved                     */
 DECL|macro|PSYCHO_PCICTRL_SBH_ERR
-mdefine_line|#define  PSYCHO_PCICTRL_SBH_ERR&t; 0x0000000800000000 /* Streaming byte hole error    */
+mdefine_line|#define  PSYCHO_PCICTRL_SBH_ERR&t; 0x0000000800000000UL /* Streaming byte hole error    */
 DECL|macro|PSYCHO_PCICTRL_SERR
-mdefine_line|#define  PSYCHO_PCICTRL_SERR&t; 0x0000000400000000 /* SERR signal asserted         */
+mdefine_line|#define  PSYCHO_PCICTRL_SERR&t; 0x0000000400000000UL /* SERR signal asserted         */
 DECL|macro|PSYCHO_PCICTRL_SPEED
-mdefine_line|#define  PSYCHO_PCICTRL_SPEED&t; 0x0000000200000000 /* PCI speed (1 is U2P clock)   */
+mdefine_line|#define  PSYCHO_PCICTRL_SPEED&t; 0x0000000200000000UL /* PCI speed (1 is U2P clock)   */
 DECL|macro|PSYCHO_PCICTRL_RESV2
-mdefine_line|#define  PSYCHO_PCICTRL_RESV2&t; 0x00000001ffc00000 /* Reserved                     */
+mdefine_line|#define  PSYCHO_PCICTRL_RESV2&t; 0x00000001ffc00000UL /* Reserved                     */
 DECL|macro|PSYCHO_PCICTRL_ARB_PARK
-mdefine_line|#define  PSYCHO_PCICTRL_ARB_PARK 0x0000000000200000 /* PCI arbitration parking      */
+mdefine_line|#define  PSYCHO_PCICTRL_ARB_PARK 0x0000000000200000UL /* PCI arbitration parking      */
 DECL|macro|PSYCHO_PCICTRL_RESV3
-mdefine_line|#define  PSYCHO_PCICTRL_RESV3&t; 0x00000000001ff800 /* Reserved                     */
+mdefine_line|#define  PSYCHO_PCICTRL_RESV3&t; 0x00000000001ff800UL /* Reserved                     */
 DECL|macro|PSYCHO_PCICTRL_SBH_INT
-mdefine_line|#define  PSYCHO_PCICTRL_SBH_INT&t; 0x0000000000000400 /* Streaming byte hole int enab */
+mdefine_line|#define  PSYCHO_PCICTRL_SBH_INT&t; 0x0000000000000400UL /* Streaming byte hole int enab */
 DECL|macro|PSYCHO_PCICTRL_WEN
-mdefine_line|#define  PSYCHO_PCICTRL_WEN&t; 0x0000000000000200 /* Power Mgmt Wake Enable       */
+mdefine_line|#define  PSYCHO_PCICTRL_WEN&t; 0x0000000000000200UL /* Power Mgmt Wake Enable       */
 DECL|macro|PSYCHO_PCICTRL_EEN
-mdefine_line|#define  PSYCHO_PCICTRL_EEN&t; 0x0000000000000100 /* PCI Error Interrupt Enable   */
+mdefine_line|#define  PSYCHO_PCICTRL_EEN&t; 0x0000000000000100UL /* PCI Error Interrupt Enable   */
 DECL|macro|PSYCHO_PCICTRL_RESV4
-mdefine_line|#define  PSYCHO_PCICTRL_RESV4&t; 0x00000000000000c0 /* Reserved                     */
+mdefine_line|#define  PSYCHO_PCICTRL_RESV4&t; 0x00000000000000c0UL /* Reserved                     */
 DECL|macro|PSYCHO_PCICTRL_AEN
-mdefine_line|#define  PSYCHO_PCICTRL_AEN&t; 0x000000000000003f /* PCI DVMA Arbitration Enable  */
+mdefine_line|#define  PSYCHO_PCICTRL_AEN&t; 0x000000000000003fUL /* PCI DVMA Arbitration Enable  */
 multiline_comment|/* U2P Programmer&squot;s Manual, page 13-55, configuration space&n; * address format:&n; * &n; *  32             24 23 16 15    11 10       8 7   2  1 0&n; * ---------------------------------------------------------&n; * |0 0 0 0 0 0 0 0 1| bus | device | function | reg | 0 0 |&n; * ---------------------------------------------------------&n; */
 DECL|macro|PSYCHO_CONFIG_BASE
 mdefine_line|#define PSYCHO_CONFIG_BASE(PBM)&t;&bslash;&n;&t;((PBM)-&gt;config_space | (1UL &lt;&lt; 24))
@@ -1349,15 +1349,15 @@ mdefine_line|#define PSYCHO_STRBUF_CONTROL_A 0x2800UL
 DECL|macro|PSYCHO_STRBUF_CONTROL_B
 mdefine_line|#define PSYCHO_STRBUF_CONTROL_B 0x4800UL
 DECL|macro|PSYCHO_STRBUF_CTRL_LPTR
-mdefine_line|#define  PSYCHO_STRBUF_CTRL_LPTR    0x00000000000000f0 /* LRU Lock Pointer */
+mdefine_line|#define  PSYCHO_STRBUF_CTRL_LPTR    0x00000000000000f0UL /* LRU Lock Pointer */
 DECL|macro|PSYCHO_STRBUF_CTRL_LENAB
-mdefine_line|#define  PSYCHO_STRBUF_CTRL_LENAB   0x0000000000000008 /* LRU Lock Enable */
+mdefine_line|#define  PSYCHO_STRBUF_CTRL_LENAB   0x0000000000000008UL /* LRU Lock Enable */
 DECL|macro|PSYCHO_STRBUF_CTRL_RRDIS
-mdefine_line|#define  PSYCHO_STRBUF_CTRL_RRDIS   0x0000000000000004 /* Rerun Disable */
+mdefine_line|#define  PSYCHO_STRBUF_CTRL_RRDIS   0x0000000000000004UL /* Rerun Disable */
 DECL|macro|PSYCHO_STRBUF_CTRL_DENAB
-mdefine_line|#define  PSYCHO_STRBUF_CTRL_DENAB   0x0000000000000002 /* Diagnostic Mode Enable */
+mdefine_line|#define  PSYCHO_STRBUF_CTRL_DENAB   0x0000000000000002UL /* Diagnostic Mode Enable */
 DECL|macro|PSYCHO_STRBUF_CTRL_ENAB
-mdefine_line|#define  PSYCHO_STRBUF_CTRL_ENAB    0x0000000000000001 /* Streaming Buffer Enable */
+mdefine_line|#define  PSYCHO_STRBUF_CTRL_ENAB    0x0000000000000001UL /* Streaming Buffer Enable */
 DECL|macro|PSYCHO_STRBUF_FLUSH_A
 mdefine_line|#define PSYCHO_STRBUF_FLUSH_A   0x2808UL
 DECL|macro|PSYCHO_STRBUF_FLUSH_B
@@ -1375,37 +1375,37 @@ mdefine_line|#define PSYCHO_STC_ERR_A&t;0xb400UL
 DECL|macro|PSYCHO_STC_ERR_B
 mdefine_line|#define PSYCHO_STC_ERR_B&t;0xc400UL
 DECL|macro|PSYCHO_STCERR_WRITE
-mdefine_line|#define  PSYCHO_STCERR_WRITE&t; 0x0000000000000002&t;/* Write Error */
+mdefine_line|#define  PSYCHO_STCERR_WRITE&t; 0x0000000000000002UL&t;/* Write Error */
 DECL|macro|PSYCHO_STCERR_READ
-mdefine_line|#define  PSYCHO_STCERR_READ&t; 0x0000000000000001&t;/* Read Error */
+mdefine_line|#define  PSYCHO_STCERR_READ&t; 0x0000000000000001UL&t;/* Read Error */
 DECL|macro|PSYCHO_STC_TAG_A
 mdefine_line|#define PSYCHO_STC_TAG_A&t;0xb800UL
 DECL|macro|PSYCHO_STC_TAG_B
 mdefine_line|#define PSYCHO_STC_TAG_B&t;0xc800UL
 DECL|macro|PSYCHO_STCTAG_PPN
-mdefine_line|#define  PSYCHO_STCTAG_PPN&t; 0x0fffffff00000000&t;/* Physical Page Number */
+mdefine_line|#define  PSYCHO_STCTAG_PPN&t; 0x0fffffff00000000UL&t;/* Physical Page Number */
 DECL|macro|PSYCHO_STCTAG_VPN
-mdefine_line|#define  PSYCHO_STCTAG_VPN&t; 0x00000000ffffe000&t;/* Virtual Page Number */
+mdefine_line|#define  PSYCHO_STCTAG_VPN&t; 0x00000000ffffe000UL&t;/* Virtual Page Number */
 DECL|macro|PSYCHO_STCTAG_VALID
-mdefine_line|#define  PSYCHO_STCTAG_VALID&t; 0x0000000000000002&t;/* Valid */
+mdefine_line|#define  PSYCHO_STCTAG_VALID&t; 0x0000000000000002UL&t;/* Valid */
 DECL|macro|PSYCHO_STCTAG_WRITE
-mdefine_line|#define  PSYCHO_STCTAG_WRITE&t; 0x0000000000000001&t;/* Writable */
+mdefine_line|#define  PSYCHO_STCTAG_WRITE&t; 0x0000000000000001UL&t;/* Writable */
 DECL|macro|PSYCHO_STC_LINE_A
 mdefine_line|#define PSYCHO_STC_LINE_A&t;0xb900UL
 DECL|macro|PSYCHO_STC_LINE_B
 mdefine_line|#define PSYCHO_STC_LINE_B&t;0xc900UL
 DECL|macro|PSYCHO_STCLINE_LINDX
-mdefine_line|#define  PSYCHO_STCLINE_LINDX&t; 0x0000000001e00000&t;/* LRU Index */
+mdefine_line|#define  PSYCHO_STCLINE_LINDX&t; 0x0000000001e00000UL&t;/* LRU Index */
 DECL|macro|PSYCHO_STCLINE_SPTR
-mdefine_line|#define  PSYCHO_STCLINE_SPTR&t; 0x00000000001f8000&t;/* Dirty Data Start Pointer */
+mdefine_line|#define  PSYCHO_STCLINE_SPTR&t; 0x00000000001f8000UL&t;/* Dirty Data Start Pointer */
 DECL|macro|PSYCHO_STCLINE_LADDR
-mdefine_line|#define  PSYCHO_STCLINE_LADDR&t; 0x0000000000007f00&t;/* Line Address */
+mdefine_line|#define  PSYCHO_STCLINE_LADDR&t; 0x0000000000007f00UL&t;/* Line Address */
 DECL|macro|PSYCHO_STCLINE_EPTR
-mdefine_line|#define  PSYCHO_STCLINE_EPTR&t; 0x00000000000000fc&t;/* Dirty Data End Pointer */
+mdefine_line|#define  PSYCHO_STCLINE_EPTR&t; 0x00000000000000fcUL&t;/* Dirty Data End Pointer */
 DECL|macro|PSYCHO_STCLINE_VALID
-mdefine_line|#define  PSYCHO_STCLINE_VALID&t; 0x0000000000000002&t;/* Valid */
+mdefine_line|#define  PSYCHO_STCLINE_VALID&t; 0x0000000000000002UL&t;/* Valid */
 DECL|macro|PSYCHO_STCLINE_FOFN
-mdefine_line|#define  PSYCHO_STCLINE_FOFN&t; 0x0000000000000001&t;/* Fetch Outstanding / Flush Necessary */
+mdefine_line|#define  PSYCHO_STCLINE_FOFN&t; 0x0000000000000001UL&t;/* Fetch Outstanding / Flush Necessary */
 DECL|variable|stc_buf_lock
 r_static
 id|spinlock_t
@@ -2079,41 +2079,41 @@ multiline_comment|/* When an Uncorrectable Error or a PCI Error happens, we&n; *
 DECL|macro|PSYCHO_IOMMU_CONTROL
 mdefine_line|#define PSYCHO_IOMMU_CONTROL&t;0x0200UL
 DECL|macro|PSYCHO_IOMMU_CTRL_RESV
-mdefine_line|#define  PSYCHO_IOMMU_CTRL_RESV     0xfffffffff9000000 /* Reserved                      */
+mdefine_line|#define  PSYCHO_IOMMU_CTRL_RESV     0xfffffffff9000000UL /* Reserved                      */
 DECL|macro|PSYCHO_IOMMU_CTRL_XLTESTAT
-mdefine_line|#define  PSYCHO_IOMMU_CTRL_XLTESTAT 0x0000000006000000 /* Translation Error Status      */
+mdefine_line|#define  PSYCHO_IOMMU_CTRL_XLTESTAT 0x0000000006000000UL /* Translation Error Status      */
 DECL|macro|PSYCHO_IOMMU_CTRL_XLTEERR
-mdefine_line|#define  PSYCHO_IOMMU_CTRL_XLTEERR  0x0000000001000000 /* Translation Error encountered */
+mdefine_line|#define  PSYCHO_IOMMU_CTRL_XLTEERR  0x0000000001000000UL /* Translation Error encountered */
 DECL|macro|PSYCHO_IOMMU_CTRL_LCKEN
-mdefine_line|#define  PSYCHO_IOMMU_CTRL_LCKEN    0x0000000000800000 /* Enable translation locking    */
+mdefine_line|#define  PSYCHO_IOMMU_CTRL_LCKEN    0x0000000000800000UL /* Enable translation locking    */
 DECL|macro|PSYCHO_IOMMU_CTRL_LCKPTR
-mdefine_line|#define  PSYCHO_IOMMU_CTRL_LCKPTR   0x0000000000780000 /* Translation lock pointer      */
+mdefine_line|#define  PSYCHO_IOMMU_CTRL_LCKPTR   0x0000000000780000UL /* Translation lock pointer      */
 DECL|macro|PSYCHO_IOMMU_CTRL_TSBSZ
-mdefine_line|#define  PSYCHO_IOMMU_CTRL_TSBSZ    0x0000000000070000 /* TSB Size                      */
+mdefine_line|#define  PSYCHO_IOMMU_CTRL_TSBSZ    0x0000000000070000UL /* TSB Size                      */
 DECL|macro|PSYCHO_IOMMU_TSBSZ_1K
-mdefine_line|#define  PSYCHO_IOMMU_TSBSZ_1K      0x0000000000000000 /* TSB Table 1024 8-byte entries */
+mdefine_line|#define  PSYCHO_IOMMU_TSBSZ_1K      0x0000000000000000UL /* TSB Table 1024 8-byte entries */
 DECL|macro|PSYCHO_IOMMU_TSBSZ_2K
-mdefine_line|#define  PSYCHO_IOMMU_TSBSZ_2K      0x0000000000010000 /* TSB Table 2048 8-byte entries */
+mdefine_line|#define  PSYCHO_IOMMU_TSBSZ_2K      0x0000000000010000UL /* TSB Table 2048 8-byte entries */
 DECL|macro|PSYCHO_IOMMU_TSBSZ_4K
-mdefine_line|#define  PSYCHO_IOMMU_TSBSZ_4K      0x0000000000020000 /* TSB Table 4096 8-byte entries */
+mdefine_line|#define  PSYCHO_IOMMU_TSBSZ_4K      0x0000000000020000UL /* TSB Table 4096 8-byte entries */
 DECL|macro|PSYCHO_IOMMU_TSBSZ_8K
-mdefine_line|#define  PSYCHO_IOMMU_TSBSZ_8K      0x0000000000030000 /* TSB Table 8192 8-byte entries */
+mdefine_line|#define  PSYCHO_IOMMU_TSBSZ_8K      0x0000000000030000UL /* TSB Table 8192 8-byte entries */
 DECL|macro|PSYCHO_IOMMU_TSBSZ_16K
-mdefine_line|#define  PSYCHO_IOMMU_TSBSZ_16K     0x0000000000040000 /* TSB Table 16k 8-byte entries  */
+mdefine_line|#define  PSYCHO_IOMMU_TSBSZ_16K     0x0000000000040000UL /* TSB Table 16k 8-byte entries  */
 DECL|macro|PSYCHO_IOMMU_TSBSZ_32K
-mdefine_line|#define  PSYCHO_IOMMU_TSBSZ_32K     0x0000000000050000 /* TSB Table 32k 8-byte entries  */
+mdefine_line|#define  PSYCHO_IOMMU_TSBSZ_32K     0x0000000000050000UL /* TSB Table 32k 8-byte entries  */
 DECL|macro|PSYCHO_IOMMU_TSBSZ_64K
-mdefine_line|#define  PSYCHO_IOMMU_TSBSZ_64K     0x0000000000060000 /* TSB Table 64k 8-byte entries  */
+mdefine_line|#define  PSYCHO_IOMMU_TSBSZ_64K     0x0000000000060000UL /* TSB Table 64k 8-byte entries  */
 DECL|macro|PSYCHO_IOMMU_TSBSZ_128K
-mdefine_line|#define  PSYCHO_IOMMU_TSBSZ_128K    0x0000000000070000 /* TSB Table 128k 8-byte entries */
+mdefine_line|#define  PSYCHO_IOMMU_TSBSZ_128K    0x0000000000070000UL /* TSB Table 128k 8-byte entries */
 DECL|macro|PSYCHO_IOMMU_CTRL_RESV2
-mdefine_line|#define  PSYCHO_IOMMU_CTRL_RESV2    0x000000000000fff8 /* Reserved                      */
+mdefine_line|#define  PSYCHO_IOMMU_CTRL_RESV2    0x000000000000fff8UL /* Reserved                      */
 DECL|macro|PSYCHO_IOMMU_CTRL_TBWSZ
-mdefine_line|#define  PSYCHO_IOMMU_CTRL_TBWSZ    0x0000000000000004 /* Assumed page size, 0=8k 1=64k */
+mdefine_line|#define  PSYCHO_IOMMU_CTRL_TBWSZ    0x0000000000000004UL /* Assumed page size, 0=8k 1=64k */
 DECL|macro|PSYCHO_IOMMU_CTRL_DENAB
-mdefine_line|#define  PSYCHO_IOMMU_CTRL_DENAB    0x0000000000000002 /* Diagnostic mode enable        */
+mdefine_line|#define  PSYCHO_IOMMU_CTRL_DENAB    0x0000000000000002UL /* Diagnostic mode enable        */
 DECL|macro|PSYCHO_IOMMU_CTRL_ENAB
-mdefine_line|#define  PSYCHO_IOMMU_CTRL_ENAB     0x0000000000000001 /* IOMMU Enable                  */
+mdefine_line|#define  PSYCHO_IOMMU_CTRL_ENAB     0x0000000000000001UL /* IOMMU Enable                  */
 DECL|macro|PSYCHO_IOMMU_TSBBASE
 mdefine_line|#define PSYCHO_IOMMU_TSBBASE&t;0x0208UL
 DECL|macro|PSYCHO_IOMMU_FLUSH
@@ -2643,29 +2643,29 @@ multiline_comment|/* Uncorrectable Errors.  Cause of the error and the address a
 DECL|macro|PSYCHO_UE_AFSR
 mdefine_line|#define PSYCHO_UE_AFSR&t;0x0030UL
 DECL|macro|PSYCHO_UEAFSR_PPIO
-mdefine_line|#define  PSYCHO_UEAFSR_PPIO&t;0x8000000000000000 /* Primary PIO is cause         */
+mdefine_line|#define  PSYCHO_UEAFSR_PPIO&t;0x8000000000000000UL /* Primary PIO is cause         */
 DECL|macro|PSYCHO_UEAFSR_PDRD
-mdefine_line|#define  PSYCHO_UEAFSR_PDRD&t;0x4000000000000000 /* Primary DVMA read is cause   */
+mdefine_line|#define  PSYCHO_UEAFSR_PDRD&t;0x4000000000000000UL /* Primary DVMA read is cause   */
 DECL|macro|PSYCHO_UEAFSR_PDWR
-mdefine_line|#define  PSYCHO_UEAFSR_PDWR&t;0x2000000000000000 /* Primary DVMA write is cause  */
+mdefine_line|#define  PSYCHO_UEAFSR_PDWR&t;0x2000000000000000UL /* Primary DVMA write is cause  */
 DECL|macro|PSYCHO_UEAFSR_SPIO
-mdefine_line|#define  PSYCHO_UEAFSR_SPIO&t;0x1000000000000000 /* Secondary PIO is cause       */
+mdefine_line|#define  PSYCHO_UEAFSR_SPIO&t;0x1000000000000000UL /* Secondary PIO is cause       */
 DECL|macro|PSYCHO_UEAFSR_SDRD
-mdefine_line|#define  PSYCHO_UEAFSR_SDRD&t;0x0800000000000000 /* Secondary DVMA read is cause */
+mdefine_line|#define  PSYCHO_UEAFSR_SDRD&t;0x0800000000000000UL /* Secondary DVMA read is cause */
 DECL|macro|PSYCHO_UEAFSR_SDWR
-mdefine_line|#define  PSYCHO_UEAFSR_SDWR&t;0x0400000000000000 /* Secondary DVMA write is cause*/
+mdefine_line|#define  PSYCHO_UEAFSR_SDWR&t;0x0400000000000000UL /* Secondary DVMA write is cause*/
 DECL|macro|PSYCHO_UEAFSR_RESV1
-mdefine_line|#define  PSYCHO_UEAFSR_RESV1&t;0x03ff000000000000 /* Reserved                     */
+mdefine_line|#define  PSYCHO_UEAFSR_RESV1&t;0x03ff000000000000UL /* Reserved                     */
 DECL|macro|PSYCHO_UEAFSR_BMSK
-mdefine_line|#define  PSYCHO_UEAFSR_BMSK&t;0x0000ffff00000000 /* Bytemask of failed transfer  */
+mdefine_line|#define  PSYCHO_UEAFSR_BMSK&t;0x0000ffff00000000UL /* Bytemask of failed transfer  */
 DECL|macro|PSYCHO_UEAFSR_DOFF
-mdefine_line|#define  PSYCHO_UEAFSR_DOFF&t;0x00000000e0000000 /* Doubleword Offset            */
+mdefine_line|#define  PSYCHO_UEAFSR_DOFF&t;0x00000000e0000000UL /* Doubleword Offset            */
 DECL|macro|PSYCHO_UEAFSR_MID
-mdefine_line|#define  PSYCHO_UEAFSR_MID&t;0x000000001f000000 /* UPA MID causing the fault    */
+mdefine_line|#define  PSYCHO_UEAFSR_MID&t;0x000000001f000000UL /* UPA MID causing the fault    */
 DECL|macro|PSYCHO_UEAFSR_BLK
-mdefine_line|#define  PSYCHO_UEAFSR_BLK&t;0x0000000000800000 /* Trans was block operation    */
+mdefine_line|#define  PSYCHO_UEAFSR_BLK&t;0x0000000000800000UL /* Trans was block operation    */
 DECL|macro|PSYCHO_UEAFSR_RESV2
-mdefine_line|#define  PSYCHO_UEAFSR_RESV2&t;0x00000000007fffff /* Reserved                     */
+mdefine_line|#define  PSYCHO_UEAFSR_RESV2&t;0x00000000007fffffUL /* Reserved                     */
 DECL|macro|PSYCHO_UE_AFAR
 mdefine_line|#define PSYCHO_UE_AFAR&t;0x0038UL
 DECL|function|psycho_ue_intr
@@ -2980,31 +2980,31 @@ multiline_comment|/* Correctable Errors. */
 DECL|macro|PSYCHO_CE_AFSR
 mdefine_line|#define PSYCHO_CE_AFSR&t;0x0040UL
 DECL|macro|PSYCHO_CEAFSR_PPIO
-mdefine_line|#define  PSYCHO_CEAFSR_PPIO&t;0x8000000000000000 /* Primary PIO is cause         */
+mdefine_line|#define  PSYCHO_CEAFSR_PPIO&t;0x8000000000000000UL /* Primary PIO is cause         */
 DECL|macro|PSYCHO_CEAFSR_PDRD
-mdefine_line|#define  PSYCHO_CEAFSR_PDRD&t;0x4000000000000000 /* Primary DVMA read is cause   */
+mdefine_line|#define  PSYCHO_CEAFSR_PDRD&t;0x4000000000000000UL /* Primary DVMA read is cause   */
 DECL|macro|PSYCHO_CEAFSR_PDWR
-mdefine_line|#define  PSYCHO_CEAFSR_PDWR&t;0x2000000000000000 /* Primary DVMA write is cause  */
+mdefine_line|#define  PSYCHO_CEAFSR_PDWR&t;0x2000000000000000UL /* Primary DVMA write is cause  */
 DECL|macro|PSYCHO_CEAFSR_SPIO
-mdefine_line|#define  PSYCHO_CEAFSR_SPIO&t;0x1000000000000000 /* Secondary PIO is cause       */
+mdefine_line|#define  PSYCHO_CEAFSR_SPIO&t;0x1000000000000000UL /* Secondary PIO is cause       */
 DECL|macro|PSYCHO_CEAFSR_SDRD
-mdefine_line|#define  PSYCHO_CEAFSR_SDRD&t;0x0800000000000000 /* Secondary DVMA read is cause */
+mdefine_line|#define  PSYCHO_CEAFSR_SDRD&t;0x0800000000000000UL /* Secondary DVMA read is cause */
 DECL|macro|PSYCHO_CEAFSR_SDWR
-mdefine_line|#define  PSYCHO_CEAFSR_SDWR&t;0x0400000000000000 /* Secondary DVMA write is cause*/
+mdefine_line|#define  PSYCHO_CEAFSR_SDWR&t;0x0400000000000000UL /* Secondary DVMA write is cause*/
 DECL|macro|PSYCHO_CEAFSR_RESV1
-mdefine_line|#define  PSYCHO_CEAFSR_RESV1&t;0x0300000000000000 /* Reserved                     */
+mdefine_line|#define  PSYCHO_CEAFSR_RESV1&t;0x0300000000000000UL /* Reserved                     */
 DECL|macro|PSYCHO_CEAFSR_ESYND
-mdefine_line|#define  PSYCHO_CEAFSR_ESYND&t;0x00ff000000000000 /* Syndrome Bits                */
+mdefine_line|#define  PSYCHO_CEAFSR_ESYND&t;0x00ff000000000000UL /* Syndrome Bits                */
 DECL|macro|PSYCHO_CEAFSR_BMSK
-mdefine_line|#define  PSYCHO_CEAFSR_BMSK&t;0x0000ffff00000000 /* Bytemask of failed transfer  */
+mdefine_line|#define  PSYCHO_CEAFSR_BMSK&t;0x0000ffff00000000UL /* Bytemask of failed transfer  */
 DECL|macro|PSYCHO_CEAFSR_DOFF
-mdefine_line|#define  PSYCHO_CEAFSR_DOFF&t;0x00000000e0000000 /* Double Offset                */
+mdefine_line|#define  PSYCHO_CEAFSR_DOFF&t;0x00000000e0000000UL /* Double Offset                */
 DECL|macro|PSYCHO_CEAFSR_MID
-mdefine_line|#define  PSYCHO_CEAFSR_MID&t;0x000000001f000000 /* UPA MID causing the fault    */
+mdefine_line|#define  PSYCHO_CEAFSR_MID&t;0x000000001f000000UL /* UPA MID causing the fault    */
 DECL|macro|PSYCHO_CEAFSR_BLK
-mdefine_line|#define  PSYCHO_CEAFSR_BLK&t;0x0000000000800000 /* Trans was block operation    */
+mdefine_line|#define  PSYCHO_CEAFSR_BLK&t;0x0000000000800000UL /* Trans was block operation    */
 DECL|macro|PSYCHO_CEAFSR_RESV2
-mdefine_line|#define  PSYCHO_CEAFSR_RESV2&t;0x00000000007fffff /* Reserved                     */
+mdefine_line|#define  PSYCHO_CEAFSR_RESV2&t;0x00000000007fffffUL /* Reserved                     */
 DECL|macro|PSYCHO_CE_AFAR
 mdefine_line|#define PSYCHO_CE_AFAR&t;0x0040UL
 DECL|function|psycho_ce_intr
@@ -3318,33 +3318,33 @@ mdefine_line|#define PSYCHO_PCI_AFSR_A&t;0x2010UL
 DECL|macro|PSYCHO_PCI_AFSR_B
 mdefine_line|#define PSYCHO_PCI_AFSR_B&t;0x4010UL
 DECL|macro|PSYCHO_PCIAFSR_PMA
-mdefine_line|#define  PSYCHO_PCIAFSR_PMA&t;0x8000000000000000 /* Primary Master Abort Error   */
+mdefine_line|#define  PSYCHO_PCIAFSR_PMA&t;0x8000000000000000UL /* Primary Master Abort Error   */
 DECL|macro|PSYCHO_PCIAFSR_PTA
-mdefine_line|#define  PSYCHO_PCIAFSR_PTA&t;0x4000000000000000 /* Primary Target Abort Error   */
+mdefine_line|#define  PSYCHO_PCIAFSR_PTA&t;0x4000000000000000UL /* Primary Target Abort Error   */
 DECL|macro|PSYCHO_PCIAFSR_PRTRY
-mdefine_line|#define  PSYCHO_PCIAFSR_PRTRY&t;0x2000000000000000 /* Primary Excessive Retries    */
+mdefine_line|#define  PSYCHO_PCIAFSR_PRTRY&t;0x2000000000000000UL /* Primary Excessive Retries    */
 DECL|macro|PSYCHO_PCIAFSR_PPERR
-mdefine_line|#define  PSYCHO_PCIAFSR_PPERR&t;0x1000000000000000 /* Primary Parity Error         */
+mdefine_line|#define  PSYCHO_PCIAFSR_PPERR&t;0x1000000000000000UL /* Primary Parity Error         */
 DECL|macro|PSYCHO_PCIAFSR_SMA
-mdefine_line|#define  PSYCHO_PCIAFSR_SMA&t;0x0800000000000000 /* Secondary Master Abort Error */
+mdefine_line|#define  PSYCHO_PCIAFSR_SMA&t;0x0800000000000000UL /* Secondary Master Abort Error */
 DECL|macro|PSYCHO_PCIAFSR_STA
-mdefine_line|#define  PSYCHO_PCIAFSR_STA&t;0x0400000000000000 /* Secondary Target Abort Error */
+mdefine_line|#define  PSYCHO_PCIAFSR_STA&t;0x0400000000000000UL /* Secondary Target Abort Error */
 DECL|macro|PSYCHO_PCIAFSR_SRTRY
-mdefine_line|#define  PSYCHO_PCIAFSR_SRTRY&t;0x0200000000000000 /* Secondary Excessive Retries  */
+mdefine_line|#define  PSYCHO_PCIAFSR_SRTRY&t;0x0200000000000000UL /* Secondary Excessive Retries  */
 DECL|macro|PSYCHO_PCIAFSR_SPERR
-mdefine_line|#define  PSYCHO_PCIAFSR_SPERR&t;0x0100000000000000 /* Secondary Parity Error       */
+mdefine_line|#define  PSYCHO_PCIAFSR_SPERR&t;0x0100000000000000UL /* Secondary Parity Error       */
 DECL|macro|PSYCHO_PCIAFSR_RESV1
-mdefine_line|#define  PSYCHO_PCIAFSR_RESV1&t;0x00ff000000000000 /* Reserved                     */
+mdefine_line|#define  PSYCHO_PCIAFSR_RESV1&t;0x00ff000000000000UL /* Reserved                     */
 DECL|macro|PSYCHO_PCIAFSR_BMSK
-mdefine_line|#define  PSYCHO_PCIAFSR_BMSK&t;0x0000ffff00000000 /* Bytemask of failed transfer  */
+mdefine_line|#define  PSYCHO_PCIAFSR_BMSK&t;0x0000ffff00000000UL /* Bytemask of failed transfer  */
 DECL|macro|PSYCHO_PCIAFSR_BLK
-mdefine_line|#define  PSYCHO_PCIAFSR_BLK&t;0x0000000080000000 /* Trans was block operation    */
+mdefine_line|#define  PSYCHO_PCIAFSR_BLK&t;0x0000000080000000UL /* Trans was block operation    */
 DECL|macro|PSYCHO_PCIAFSR_RESV2
-mdefine_line|#define  PSYCHO_PCIAFSR_RESV2&t;0x0000000040000000 /* Reserved                     */
+mdefine_line|#define  PSYCHO_PCIAFSR_RESV2&t;0x0000000040000000UL /* Reserved                     */
 DECL|macro|PSYCHO_PCIAFSR_MID
-mdefine_line|#define  PSYCHO_PCIAFSR_MID&t;0x000000003e000000 /* MID causing the error        */
+mdefine_line|#define  PSYCHO_PCIAFSR_MID&t;0x000000003e000000UL /* MID causing the error        */
 DECL|macro|PSYCHO_PCIAFSR_RESV3
-mdefine_line|#define  PSYCHO_PCIAFSR_RESV3&t;0x0000000001ffffff /* Reserved                     */
+mdefine_line|#define  PSYCHO_PCIAFSR_RESV3&t;0x0000000001ffffffUL /* Reserved                     */
 DECL|macro|PSYCHO_PCI_AFAR_A
 mdefine_line|#define PSYCHO_PCI_AFAR_A&t;0x2018UL
 DECL|macro|PSYCHO_PCI_AFAR_B
@@ -4015,11 +4015,11 @@ multiline_comment|/* XXX What about PowerFail/PowerManagement??? -DaveM */
 DECL|macro|PSYCHO_ECC_CTRL
 mdefine_line|#define PSYCHO_ECC_CTRL&t;&t;0x0020
 DECL|macro|PSYCHO_ECCCTRL_EE
-mdefine_line|#define  PSYCHO_ECCCTRL_EE&t; 0x8000000000000000 /* Enable ECC Checking */
+mdefine_line|#define  PSYCHO_ECCCTRL_EE&t; 0x8000000000000000UL /* Enable ECC Checking */
 DECL|macro|PSYCHO_ECCCTRL_UE
-mdefine_line|#define  PSYCHO_ECCCTRL_UE&t; 0x4000000000000000 /* Enable UE Interrupts */
+mdefine_line|#define  PSYCHO_ECCCTRL_UE&t; 0x4000000000000000UL /* Enable UE Interrupts */
 DECL|macro|PSYCHO_ECCCTRL_CE
-mdefine_line|#define  PSYCHO_ECCCTRL_CE&t; 0x2000000000000000 /* Enable CE INterrupts */
+mdefine_line|#define  PSYCHO_ECCCTRL_CE&t; 0x2000000000000000UL /* Enable CE INterrupts */
 DECL|macro|PSYCHO_UE_INO
 mdefine_line|#define PSYCHO_UE_INO&t;&t;0x2e
 DECL|macro|PSYCHO_CE_INO
@@ -5242,21 +5242,21 @@ mdefine_line|#define PSYCHO_PCIA_DIAG&t;0x2020UL
 DECL|macro|PSYCHO_PCIB_DIAG
 mdefine_line|#define PSYCHO_PCIB_DIAG&t;0x4020UL
 DECL|macro|PSYCHO_PCIDIAG_RESV
-mdefine_line|#define  PSYCHO_PCIDIAG_RESV&t; 0xffffffffffffff80 /* Reserved                     */
+mdefine_line|#define  PSYCHO_PCIDIAG_RESV&t; 0xffffffffffffff80UL /* Reserved                     */
 DECL|macro|PSYCHO_PCIDIAG_DRETRY
-mdefine_line|#define  PSYCHO_PCIDIAG_DRETRY&t; 0x0000000000000040 /* Disable retry limit          */
+mdefine_line|#define  PSYCHO_PCIDIAG_DRETRY&t; 0x0000000000000040UL /* Disable retry limit          */
 DECL|macro|PSYCHO_PCIDIAG_DISYNC
-mdefine_line|#define  PSYCHO_PCIDIAG_DISYNC&t; 0x0000000000000020 /* Disable DMA wr / irq sync    */
+mdefine_line|#define  PSYCHO_PCIDIAG_DISYNC&t; 0x0000000000000020UL /* Disable DMA wr / irq sync    */
 DECL|macro|PSYCHO_PCIDIAG_DDWSYNC
-mdefine_line|#define  PSYCHO_PCIDIAG_DDWSYNC&t; 0x0000000000000010 /* Disable DMA wr / PIO rd sync */
+mdefine_line|#define  PSYCHO_PCIDIAG_DDWSYNC&t; 0x0000000000000010UL /* Disable DMA wr / PIO rd sync */
 DECL|macro|PSYCHO_PCIDIAG_IDDPAR
-mdefine_line|#define  PSYCHO_PCIDIAG_IDDPAR&t; 0x0000000000000008 /* Invert DMA data parity       */
+mdefine_line|#define  PSYCHO_PCIDIAG_IDDPAR&t; 0x0000000000000008UL /* Invert DMA data parity       */
 DECL|macro|PSYCHO_PCIDIAG_IPDPAR
-mdefine_line|#define  PSYCHO_PCIDIAG_IPDPAR&t; 0x0000000000000004 /* Invert PIO data parity       */
+mdefine_line|#define  PSYCHO_PCIDIAG_IPDPAR&t; 0x0000000000000004UL /* Invert PIO data parity       */
 DECL|macro|PSYCHO_PCIDIAG_IPAPAR
-mdefine_line|#define  PSYCHO_PCIDIAG_IPAPAR&t; 0x0000000000000002 /* Invert PIO address parity    */
+mdefine_line|#define  PSYCHO_PCIDIAG_IPAPAR&t; 0x0000000000000002UL /* Invert PIO address parity    */
 DECL|macro|PSYCHO_PCIDIAG_LPBACK
-mdefine_line|#define  PSYCHO_PCIDIAG_LPBACK&t; 0x0000000000000001 /* Enable loopback mode         */
+mdefine_line|#define  PSYCHO_PCIDIAG_LPBACK&t; 0x0000000000000001UL /* Enable loopback mode         */
 DECL|function|psycho_controller_hwinit
 r_static
 r_void

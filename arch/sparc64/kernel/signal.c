@@ -62,6 +62,7 @@ id|regs
 (brace
 r_struct
 id|ucontext
+id|__user
 op_star
 id|ucp
 op_assign
@@ -1037,6 +1038,7 @@ id|regs
 (brace
 r_struct
 id|ucontext
+id|__user
 op_star
 id|ucp
 op_assign
@@ -2889,6 +2891,12 @@ suffix:semicolon
 id|do_sigaltstack
 c_func
 (paren
+(paren
+r_const
+id|stack_t
+id|__user
+op_star
+)paren
 op_amp
 id|st
 comma

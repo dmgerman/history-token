@@ -107,6 +107,7 @@ r_int
 comma
 r_struct
 id|compat_msghdr
+id|__user
 op_star
 comma
 r_int
@@ -122,6 +123,7 @@ r_int
 comma
 r_struct
 id|compat_msghdr
+id|__user
 op_star
 comma
 r_int
@@ -140,9 +142,11 @@ comma
 r_int
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
+id|__user
 op_star
 )paren
 suffix:semicolon

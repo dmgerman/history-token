@@ -203,10 +203,14 @@ r_return
 id|order
 suffix:semicolon
 )brace
-macro_line|#endif /* !__ASSEMBLY__ */
-multiline_comment|/* to align the pointer to the (next) page boundary */
-DECL|macro|PAGE_ALIGN
-mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
+macro_line|#ifdef USE_48_BIT_KSEG
+DECL|macro|PAGE_OFFSET
+mdefine_line|#define PAGE_OFFSET&t;&t;0xffff800000000000UL
+macro_line|#else
+DECL|macro|PAGE_OFFSET
+mdefine_line|#define PAGE_OFFSET&t;&t;0xfffffc0000000000UL
+macro_line|#endif
+macro_line|#else
 macro_line|#ifdef USE_48_BIT_KSEG
 DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;&t;0xffff800000000000
@@ -214,6 +218,10 @@ macro_line|#else
 DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;&t;0xfffffc0000000000
 macro_line|#endif
+macro_line|#endif /* !__ASSEMBLY__ */
+multiline_comment|/* to align the pointer to the (next) page boundary */
+DECL|macro|PAGE_ALIGN
+mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
 DECL|macro|__pa
 mdefine_line|#define __pa(x)&t;&t;&t;((unsigned long) (x) - PAGE_OFFSET)
 DECL|macro|__va

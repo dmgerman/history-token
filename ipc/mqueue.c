@@ -3359,10 +3359,6 @@ op_assign
 id|load_msg
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|u_msg_ptr
 comma
 id|msg_len

@@ -121,6 +121,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -148,10 +149,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 comma
@@ -5471,6 +5474,7 @@ id|cmd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -5721,6 +5725,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -5790,6 +5795,8 @@ r_int
 id|optname
 comma
 r_char
+id|__user
+id|__user
 op_star
 id|optval
 comma
@@ -6549,10 +6556,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -6619,10 +6628,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 comma

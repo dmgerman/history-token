@@ -138,7 +138,7 @@ id|vfs_readdir
 suffix:semicolon
 multiline_comment|/*&n; * Traditional linux readdir() handling..&n; *&n; * &quot;count=1&quot; is a special case, meaning that the buffer is one&n; * dirent-structure in size and that the code can&squot;t handle more&n; * anyway. Thus the special &quot;fillonedir()&quot; function for that&n; * case (the low-level handlers don&squot;t need to care about this).&n; */
 DECL|macro|NAME_OFFSET
-mdefine_line|#define NAME_OFFSET(de) ((int) ((de)-&gt;d_name - (char *) (de)))
+mdefine_line|#define NAME_OFFSET(de) ((int) ((de)-&gt;d_name - (char __user *) (de)))
 DECL|macro|ROUND_UP
 mdefine_line|#define ROUND_UP(x) (((x)+sizeof(long)-1) &amp; ~(sizeof(long)-1))
 macro_line|#ifdef __ARCH_WANT_OLD_READDIR
@@ -259,10 +259,6 @@ c_func
 (paren
 id|VERIFY_WRITE
 comma
-(paren
-r_int
-r_int
-)paren
 id|dirent
 comma
 (paren
@@ -695,6 +691,7 @@ id|d_type
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|dirent

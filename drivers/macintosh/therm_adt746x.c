@@ -1243,20 +1243,10 @@ c_loop
 id|monitor_running
 )paren
 (brace
-id|set_task_state
+id|msleep
 c_func
 (paren
-id|current
-comma
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-l_int|2
-op_star
-id|HZ
+l_int|2000
 )paren
 suffix:semicolon
 multiline_comment|/* Check status */

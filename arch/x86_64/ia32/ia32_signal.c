@@ -54,6 +54,7 @@ op_star
 id|regs
 comma
 r_void
+id|__user
 op_star
 id|frame
 comma
@@ -600,10 +601,12 @@ c_func
 (paren
 r_const
 id|stack_ia32_t
+id|__user
 op_star
 id|uss_ptr
 comma
 id|stack_ia32_t
+id|__user
 op_star
 id|uoss_ptr
 comma
@@ -913,6 +916,7 @@ id|regs
 comma
 r_struct
 id|sigcontext_ia32
+id|__user
 op_star
 id|sc
 comma
@@ -1154,6 +1158,7 @@ id|tmp
 suffix:semicolon
 r_struct
 id|_fpstate_ia32
+id|__user
 op_star
 id|buf
 suffix:semicolon
@@ -1170,15 +1175,11 @@ id|sc-&gt;fpstate
 suffix:semicolon
 id|buf
 op_assign
+id|compat_ptr
+c_func
 (paren
-r_struct
-id|_fpstate_ia32
-op_star
-)paren
-(paren
-id|u64
-)paren
 id|tmp
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1263,12 +1264,14 @@ id|regs
 (brace
 r_struct
 id|sigframe
+id|__user
 op_star
 id|frame
 op_assign
 (paren
 r_struct
 id|sigframe
+id|__user
 op_star
 )paren
 (paren
@@ -1438,12 +1441,14 @@ id|regs
 (brace
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 id|frame
 op_assign
 (paren
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 )paren
 (paren
@@ -1454,9 +1459,6 @@ l_int|4
 suffix:semicolon
 id|sigset_t
 id|set
-suffix:semicolon
-id|stack_t
-id|st
 suffix:semicolon
 r_int
 r_int
@@ -1604,11 +1606,13 @@ c_func
 (paren
 r_struct
 id|sigcontext_ia32
+id|__user
 op_star
 id|sc
 comma
 r_struct
 id|_fpstate_ia32
+id|__user
 op_star
 id|fpstate
 comma
@@ -1659,6 +1663,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -1691,6 +1696,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -1723,6 +1729,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -1755,6 +1762,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -2057,6 +2065,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Determine which stack to use..&n; */
 r_static
 r_void
+id|__user
 op_star
 DECL|function|get_sigframe
 id|get_sigframe
@@ -2147,6 +2156,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -2186,6 +2196,7 @@ id|regs
 (brace
 r_struct
 id|sigframe
+id|__user
 op_star
 id|frame
 suffix:semicolon
@@ -2573,6 +2584,7 @@ id|regs
 (brace
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 id|frame
 suffix:semicolon

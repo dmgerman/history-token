@@ -24,6 +24,7 @@ c_func
 r_const
 r_struct
 id|tiocl_selection
+id|__user
 op_star
 id|sel
 comma
@@ -31,9 +32,6 @@ r_struct
 id|tty_struct
 op_star
 id|tty
-comma
-r_int
-id|user
 )paren
 suffix:semicolon
 r_extern
@@ -52,10 +50,10 @@ r_int
 id|sel_loadlut
 c_func
 (paren
-r_const
-r_int
-r_int
-id|arg
+r_char
+id|__user
+op_star
+id|p
 )paren
 suffix:semicolon
 r_extern

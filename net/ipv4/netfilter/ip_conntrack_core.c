@@ -4041,6 +4041,7 @@ DECL|function|ip_conntrack_expect_alloc
 id|ip_conntrack_expect_alloc
 c_func
 (paren
+r_void
 )paren
 (brace
 r_struct
@@ -5714,6 +5715,7 @@ r_int
 id|optval
 comma
 r_void
+id|__user
 op_star
 id|user
 comma

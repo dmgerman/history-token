@@ -20,11 +20,18 @@ DECL|macro|set_fs
 mdefine_line|#define set_fs(x) (current_thread_info()-&gt;addr_limit = (x))
 DECL|macro|segment_eq
 mdefine_line|#define segment_eq(a,b)&t;((a).seg == (b).seg)
+macro_line|#ifdef __CHECKER__
+DECL|macro|CHECK_UPTR
+mdefine_line|#define CHECK_UPTR(ptr) do {                            &bslash;&n;        __typeof__(*(ptr)) *__dummy_check_uptr =        &bslash;&n;&t;&t;(void __user *)&amp;__dummy_check_uptr;     &bslash;&n;} while(0)
+macro_line|#else
+DECL|macro|CHECK_UPTR
+mdefine_line|#define CHECK_UPTR(ptr)
+macro_line|#endif
 multiline_comment|/*&n; * Is a address valid? This does a straightforward calculation rather&n; * than tests.&n; *&n; * Address valid if:&n; *  - &quot;addr&quot; doesn&squot;t have any high-bits set&n; *  - AND &quot;size&quot; doesn&squot;t have any high-bits set&n; *  - AND &quot;addr+size&quot; doesn&squot;t have any high-bits set&n; *  - OR we are in kernel mode.&n; */
 DECL|macro|__access_ok
 mdefine_line|#define __access_ok(addr,size,segment) &bslash;&n;&t;(((segment).seg &amp; (addr | size | (addr+size))) == 0)
 DECL|macro|access_ok
-mdefine_line|#define access_ok(type,addr,size) &bslash;&n;&t;__access_ok(((unsigned long)(addr)),(size),get_fs())
+mdefine_line|#define access_ok(type,addr,size)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;CHECK_UPTR(addr);&t;&t;&t;&t;&t;&bslash;&n;&t;__access_ok(((unsigned long)(addr)),(size),get_fs());&t;&bslash;&n;})
 DECL|function|verify_area
 r_extern
 r_inline
@@ -37,6 +44,7 @@ id|type
 comma
 r_const
 r_void
+id|__user
 op_star
 id|addr
 comma
@@ -83,9 +91,9 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|__get_user_nocheck
-mdefine_line|#define __get_user_nocheck(x,ptr,size)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __gu_err = 0, __gu_val;&t;&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  case 1: __get_user_8(ptr); break;&t;&t;&t;&bslash;&n;&t;  case 2: __get_user_16(ptr); break;&t;&t;&t;&bslash;&n;&t;  case 4: __get_user_32(ptr); break;&t;&t;&t;&bslash;&n;&t;  case 8: __get_user_64(ptr); break;&t;&t;&t;&bslash;&n;&t;  default: __get_user_unknown(); break;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = (__typeof__(*(ptr))) __gu_val;&t;&t;&t;&bslash;&n;&t;__gu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __get_user_nocheck(x,ptr,size)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __gu_err = 0, __gu_val;&t;&t;&t;&t;&bslash;&n;&t;CHECK_UPTR(ptr);&t;&t;&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  case 1: __get_user_8(ptr); break;&t;&t;&t;&bslash;&n;&t;  case 2: __get_user_16(ptr); break;&t;&t;&t;&bslash;&n;&t;  case 4: __get_user_32(ptr); break;&t;&t;&t;&bslash;&n;&t;  case 8: __get_user_64(ptr); break;&t;&t;&t;&bslash;&n;&t;  default: __get_user_unknown(); break;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = (__typeof__(*(ptr))) __gu_val;&t;&t;&t;&bslash;&n;&t;__gu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__get_user_check
-mdefine_line|#define __get_user_check(x,ptr,size,segment)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __gu_err = -EFAULT, __gu_val = 0;&t;&t;&t;&bslash;&n;&t;const __typeof__(*(ptr)) *__gu_addr = (ptr);&t;&t;&bslash;&n;&t;if (__access_ok((long)__gu_addr,size,segment)) {&t;&bslash;&n;&t;&t;__gu_err = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;switch (size) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;  case 1: __get_user_8(__gu_addr); break;&t;&bslash;&n;&t;&t;  case 2: __get_user_16(__gu_addr); break;&t;&bslash;&n;&t;&t;  case 4: __get_user_32(__gu_addr); break;&t;&bslash;&n;&t;&t;  case 8: __get_user_64(__gu_addr); break;&t;&bslash;&n;&t;&t;  default: __get_user_unknown(); break;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = (__typeof__(*(ptr))) __gu_val;&t;&t;&t;&bslash;&n;&t;__gu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __get_user_check(x,ptr,size,segment)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __gu_err = -EFAULT, __gu_val = 0;&t;&t;&t;&bslash;&n;&t;const __typeof__(*(ptr)) *__gu_addr = (ptr);&t;&t;&bslash;&n;&t;CHECK_UPTR(ptr);&t;&t;&t;&t;&t;&bslash;&n;&t;if (__access_ok((long)__gu_addr,size,segment)) {&t;&bslash;&n;&t;&t;__gu_err = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;switch (size) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;  case 1: __get_user_8(__gu_addr); break;&t;&bslash;&n;&t;&t;  case 2: __get_user_16(__gu_addr); break;&t;&bslash;&n;&t;&t;  case 4: __get_user_32(__gu_addr); break;&t;&bslash;&n;&t;&t;  case 8: __get_user_64(__gu_addr); break;&t;&bslash;&n;&t;&t;  default: __get_user_unknown(); break;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = (__typeof__(*(ptr))) __gu_val;&t;&t;&t;&bslash;&n;&t;__gu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|struct|__large_struct
 DECL|member|buf
 r_struct
@@ -128,9 +136,9 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|__put_user_nocheck
-mdefine_line|#define __put_user_nocheck(x,ptr,size)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __pu_err = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  case 1: __put_user_8(x,ptr); break;&t;&t;&t;&bslash;&n;&t;  case 2: __put_user_16(x,ptr); break;&t;&t;&t;&bslash;&n;&t;  case 4: __put_user_32(x,ptr); break;&t;&t;&t;&bslash;&n;&t;  case 8: __put_user_64(x,ptr); break;&t;&t;&t;&bslash;&n;&t;  default: __put_user_unknown(); break;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __put_user_nocheck(x,ptr,size)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __pu_err = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;CHECK_UPTR(ptr);&t;&t;&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  case 1: __put_user_8(x,ptr); break;&t;&t;&t;&bslash;&n;&t;  case 2: __put_user_16(x,ptr); break;&t;&t;&t;&bslash;&n;&t;  case 4: __put_user_32(x,ptr); break;&t;&t;&t;&bslash;&n;&t;  case 8: __put_user_64(x,ptr); break;&t;&t;&t;&bslash;&n;&t;  default: __put_user_unknown(); break;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__put_user_check
-mdefine_line|#define __put_user_check(x,ptr,size,segment)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __pu_err = -EFAULT;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) *__pu_addr = (ptr);&t;&t;&t;&bslash;&n;&t;if (__access_ok((long)__pu_addr,size,segment)) {&t;&bslash;&n;&t;&t;__pu_err = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;switch (size) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;  case 1: __put_user_8(x,__pu_addr); break;&t;&bslash;&n;&t;&t;  case 2: __put_user_16(x,__pu_addr); break;&t;&bslash;&n;&t;&t;  case 4: __put_user_32(x,__pu_addr); break;&t;&bslash;&n;&t;&t;  case 8: __put_user_64(x,__pu_addr); break;&t;&bslash;&n;&t;&t;  default: __put_user_unknown(); break;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __put_user_check(x,ptr,size,segment)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __pu_err = -EFAULT;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) *__pu_addr = (ptr);&t;&t;&t;&bslash;&n;&t;CHECK_UPTR(ptr);&t;&t;&t;&t;&t;&bslash;&n;&t;if (__access_ok((long)__pu_addr,size,segment)) {&t;&bslash;&n;&t;&t;__pu_err = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;switch (size) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;  case 1: __put_user_8(x,__pu_addr); break;&t;&bslash;&n;&t;&t;  case 2: __put_user_16(x,__pu_addr); break;&t;&bslash;&n;&t;&t;  case 4: __put_user_32(x,__pu_addr); break;&t;&bslash;&n;&t;&t;  case 8: __put_user_64(x,__pu_addr); break;&t;&bslash;&n;&t;&t;  default: __put_user_unknown(); break;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/*&n; * The &quot;__put_user_xx()&quot; macros tell gcc they read from memory&n; * instead of writing: this is because they do not write to&n; * any memory gcc knows about, so there are no aliasing issues&n; */
 DECL|macro|__put_user_64
 mdefine_line|#define __put_user_64(x,addr)&t;&t;&t;&t;&t;&bslash;&n;__asm__ __volatile__(&quot;1: stq %r2,%1&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;2:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;&t;.long 1b - .&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;&t;lda $31,2b-1b(%0)&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot;(__pu_err)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;m&quot; (__m(addr)), &quot;rJ&quot; (x), &quot;0&quot;(__pu_err))
@@ -315,6 +323,7 @@ id|len
 comma
 r_const
 r_void
+id|__user
 op_star
 id|validate
 )paren
@@ -355,9 +364,9 @@ id|len
 suffix:semicolon
 )brace
 DECL|macro|__copy_to_user
-mdefine_line|#define __copy_to_user(to,from,n)   __copy_tofrom_user_nocheck((to),(from),(n))
+mdefine_line|#define __copy_to_user(to,from,n)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;CHECK_UPTR(to);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__copy_tofrom_user_nocheck((void *)(to),(from),(n));&t;&bslash;&n;})
 DECL|macro|__copy_from_user
-mdefine_line|#define __copy_from_user(to,from,n) __copy_tofrom_user_nocheck((to),(from),(n))
+mdefine_line|#define __copy_from_user(to,from,n)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;CHECK_UPTR(from);&t;&t;&t;&t;&t;&bslash;&n;&t;__copy_tofrom_user_nocheck((to),(void *)(from),(n));&t;&bslash;&n;})
 r_extern
 r_inline
 r_int
@@ -366,6 +375,7 @@ id|copy_to_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -382,6 +392,10 @@ r_return
 id|__copy_tofrom_user
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|to
 comma
 id|from
@@ -405,6 +419,7 @@ id|to
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
@@ -418,6 +433,10 @@ c_func
 (paren
 id|to
 comma
+(paren
+r_void
+op_star
+)paren
 id|from
 comma
 id|n
@@ -442,6 +461,7 @@ id|__clear_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -451,6 +471,7 @@ id|len
 (brace
 r_register
 r_void
+id|__user
 op_star
 id|__cl_to
 id|__asm__
@@ -538,6 +559,7 @@ id|clear_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -594,6 +616,7 @@ id|__to
 comma
 r_const
 r_char
+id|__user
 op_star
 id|__from
 comma
@@ -614,6 +637,7 @@ id|to
 comma
 r_const
 r_char
+id|__user
 op_star
 id|from
 comma
@@ -670,6 +694,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -682,6 +707,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|str
 )paren
@@ -715,6 +741,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -729,6 +756,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|str
 comma

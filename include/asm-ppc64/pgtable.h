@@ -45,7 +45,7 @@ DECL|macro|EADDR_SIZE
 mdefine_line|#define EADDR_SIZE (PTE_INDEX_SIZE + PMD_INDEX_SIZE + &bslash;&n;                    PGD_INDEX_SIZE + PAGE_SHIFT) 
 multiline_comment|/*&n; * Define the address range of the vmalloc VM area.&n; */
 DECL|macro|VMALLOC_START
-mdefine_line|#define VMALLOC_START (0xD000000000000000)
+mdefine_line|#define VMALLOC_START (0xD000000000000000ul)
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END   (VMALLOC_START + VALID_EA_BITS)
 multiline_comment|/*&n; * Define the address range of the imalloc VM area.&n; * (used for ioremap)&n; */
@@ -54,9 +54,9 @@ mdefine_line|#define IMALLOC_START     (ioremap_bot)
 DECL|macro|IMALLOC_VMADDR
 mdefine_line|#define IMALLOC_VMADDR(x) ((unsigned long)(x))
 DECL|macro|PHBS_IO_BASE
-mdefine_line|#define PHBS_IO_BASE  &t;  (0xE000000000000000)&t;/* Reserve 2 gigs for PHBs */
+mdefine_line|#define PHBS_IO_BASE  &t;  (0xE000000000000000ul)&t;/* Reserve 2 gigs for PHBs */
 DECL|macro|IMALLOC_BASE
-mdefine_line|#define IMALLOC_BASE      (0xE000000080000000)  
+mdefine_line|#define IMALLOC_BASE      (0xE000000080000000ul)  
 DECL|macro|IMALLOC_END
 mdefine_line|#define IMALLOC_END       (IMALLOC_BASE + VALID_EA_BITS)
 multiline_comment|/*&n; * Define the address range mapped virt &lt;-&gt; physical&n; */

@@ -2594,25 +2594,6 @@ c_func
 id|phys
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|phys
-OL
-id|HIGH_MEMORY
-op_logical_and
-id|nid
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;reserve of %lx at node %d&quot;
-comma
-id|phys
-comma
-id|nid
-)paren
-suffix:semicolon
 id|reserve_bootmem_node
 c_func
 (paren

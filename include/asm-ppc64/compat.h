@@ -365,6 +365,7 @@ DECL|function|compat_ptr
 r_static
 r_inline
 r_void
+id|__user
 op_star
 id|compat_ptr
 c_func
@@ -376,6 +377,7 @@ id|uptr
 r_return
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -389,6 +391,7 @@ DECL|function|compat_alloc_user_space
 r_static
 r_inline
 r_void
+id|__user
 op_star
 id|compat_alloc_user_space
 c_func
@@ -433,6 +436,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren

@@ -80,9 +80,11 @@ id|TIOCSETD
 )paren
 (brace
 r_int
+id|__user
 op_star
 id|p
-comma
+suffix:semicolon
+r_int
 id|ntty
 op_assign
 id|N_TTY
@@ -96,6 +98,7 @@ id|p
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -116,11 +119,9 @@ comma
 id|p
 )paren
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -152,6 +153,7 @@ comma
 id|cmd
 comma
 (paren
+r_int
 r_int
 )paren
 op_amp
@@ -1129,6 +1131,7 @@ id|oldval
 comma
 id|newval
 comma
+id|__user
 op_star
 id|ptr
 suffix:semicolon
@@ -1140,6 +1143,7 @@ id|ptr
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -1160,11 +1164,9 @@ comma
 id|ptr
 )paren
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|ret
 op_assign
 id|sys_ioctl
@@ -1216,13 +1218,11 @@ op_eq
 op_minus
 id|ENOTTY
 )paren
-(brace
 id|ret
 op_assign
 op_minus
 id|EIO
 suffix:semicolon
-)brace
 r_goto
 id|out
 suffix:semicolon
@@ -1244,6 +1244,7 @@ id|oldval
 comma
 id|newval
 comma
+id|__user
 op_star
 id|ptr
 suffix:semicolon
@@ -1255,6 +1256,7 @@ id|ptr
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -1275,11 +1277,9 @@ comma
 id|ptr
 )paren
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|ret
 op_assign
 id|sys_ioctl
@@ -1331,13 +1331,11 @@ op_eq
 op_minus
 id|ENOTTY
 )paren
-(brace
 id|ret
 op_assign
 op_minus
 id|EIO
 suffix:semicolon
-)brace
 r_goto
 id|out
 suffix:semicolon

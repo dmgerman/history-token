@@ -4332,6 +4332,7 @@ id|sk
 comma
 r_struct
 id|timeval
+id|__user
 op_star
 id|userstamp
 )paren

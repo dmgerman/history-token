@@ -14458,6 +14458,7 @@ id|apriv-&gt;flags
 (brace
 r_if
 c_cond
+(paren
 id|test_bit
 c_func
 (paren
@@ -14465,6 +14466,7 @@ id|FLAG_802_11
 comma
 op_amp
 id|apriv-&gt;flags
+)paren
 )paren
 id|mpi_receive_802_11
 c_func

@@ -45,6 +45,7 @@ id|format
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -3443,6 +3444,7 @@ op_star
 id|header
 comma
 id|UINT16
+id|__user
 op_star
 id|dataptr
 comma
@@ -5291,6 +5293,7 @@ id|format
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -5921,6 +5924,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -6004,6 +6008,7 @@ id|wavefront_load_patch
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|addr
 )paren
@@ -6088,6 +6093,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|header.hdrptr
@@ -7093,6 +7099,7 @@ id|wc
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -7132,6 +7139,7 @@ id|copy_to_user
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -7162,6 +7170,7 @@ id|wavefront_load_patch
 (paren
 r_const
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -7307,7 +7316,9 @@ r_int
 r_int
 id|cmd
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -7332,17 +7343,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-op_amp
-(paren
-(paren
-r_char
-op_star
-)paren
 id|arg
-)paren
-(braket
-l_int|0
-)braket
 comma
 op_amp
 id|wavefront_info
@@ -7508,6 +7509,7 @@ id|format
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma

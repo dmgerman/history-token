@@ -2400,6 +2400,7 @@ id|sk
 comma
 r_struct
 id|sockaddr
+id|__user
 op_star
 id|addrs
 comma
@@ -5063,6 +5064,7 @@ op_star
 id|sk
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -5097,6 +5099,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|optval
@@ -5141,6 +5144,7 @@ op_star
 id|sk
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -5204,6 +5208,7 @@ op_star
 id|sk
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -5296,6 +5301,7 @@ op_star
 id|sk
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -5448,6 +5454,7 @@ op_star
 id|sk
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -5556,6 +5563,7 @@ op_star
 id|sk
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -5713,6 +5721,7 @@ op_star
 id|sk
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -5814,6 +5823,7 @@ op_star
 id|sk
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -5848,6 +5858,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|optval
@@ -5893,6 +5904,7 @@ op_star
 id|sk
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -6090,6 +6102,7 @@ op_star
 id|sk
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -6267,6 +6280,7 @@ op_star
 id|sk
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -6312,6 +6326,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|optval
@@ -6352,6 +6367,7 @@ op_star
 id|sk
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -6407,6 +6423,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|optval
@@ -6499,6 +6516,7 @@ op_star
 id|sk
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -6716,7 +6734,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/* API 6.2 setsockopt(), getsockopt()&n; *&n; * Applications use setsockopt() and getsockopt() to set or retrieve&n; * socket options.  Socket options are used to change the default&n; * behavior of sockets calls.  They are described in Section 7.&n; *&n; * The syntax is:&n; *&n; *   ret = getsockopt(int sd, int level, int optname, void *optval,&n; *                    int *optlen);&n; *   ret = setsockopt(int sd, int level, int optname, const void *optval,&n; *                    int optlen);&n; *&n; *   sd      - the socket descript.&n; *   level   - set to IPPROTO_SCTP for all SCTP options.&n; *   optname - the option name.&n; *   optval  - the buffer to store the value of the option.&n; *   optlen  - the size of the buffer.&n; */
+multiline_comment|/* API 6.2 setsockopt(), getsockopt()&n; *&n; * Applications use setsockopt() and getsockopt() to set or retrieve&n; * socket options.  Socket options are used to change the default&n; * behavior of sockets calls.  They are described in Section 7.&n; *&n; * The syntax is:&n; *&n; *   ret = getsockopt(int sd, int level, int optname, void __user *optval,&n; *                    int __user *optlen);&n; *   ret = setsockopt(int sd, int level, int optname, const void __user *optval,&n; *                    int optlen);&n; *&n; *   sd      - the socket descript.&n; *   level   - set to IPPROTO_SCTP for all SCTP options.&n; *   optname - the option name.&n; *   optval  - the buffer to store the value of the option.&n; *   optlen  - the size of the buffer.&n; */
 DECL|function|sctp_setsockopt
 id|SCTP_STATIC
 r_int
@@ -6735,6 +6753,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -6827,6 +6846,7 @@ comma
 (paren
 r_struct
 id|sockaddr
+id|__user
 op_star
 )paren
 id|optval
@@ -6852,6 +6872,7 @@ comma
 (paren
 r_struct
 id|sockaddr
+id|__user
 op_star
 )paren
 id|optval
@@ -8285,10 +8306,12 @@ r_int
 id|len
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -8597,10 +8620,12 @@ r_int
 id|len
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -8790,10 +8815,12 @@ r_int
 id|len
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -8889,10 +8916,12 @@ r_int
 id|len
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -8956,10 +8985,12 @@ r_int
 id|len
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -9138,10 +9169,12 @@ r_int
 id|len
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -9344,10 +9377,12 @@ r_int
 id|len
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -9391,6 +9426,7 @@ op_star
 id|optlen
 )paren
 )paren
+multiline_comment|/* XXXXXX */
 r_return
 op_minus
 id|EFAULT
@@ -9496,10 +9532,12 @@ r_int
 id|len
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -9562,10 +9600,12 @@ r_int
 id|len
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -9676,10 +9716,12 @@ r_int
 id|len
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -9709,6 +9751,7 @@ op_star
 id|from
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|to
 suffix:semicolon
@@ -9803,6 +9846,7 @@ id|to
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|getaddrs.addrs
@@ -9957,10 +10001,12 @@ r_int
 id|len
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -10104,10 +10150,12 @@ r_int
 id|len
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -10419,10 +10467,12 @@ r_int
 id|len
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -10608,10 +10658,12 @@ r_int
 id|len
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -10795,10 +10847,12 @@ r_int
 id|len
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -10894,10 +10948,12 @@ r_int
 id|len
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -11090,10 +11146,12 @@ r_int
 id|len
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -11327,10 +11385,12 @@ r_int
 id|len
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -11427,10 +11487,12 @@ r_int
 id|len
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -11524,10 +11586,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren

@@ -101,6 +101,7 @@ id|_uuid_buckets
 id|NUM_BUCKETS
 )braket
 suffix:semicolon
+r_static
 r_void
 id|dm_hash_remove_all
 c_func
@@ -156,6 +157,7 @@ id|i
 suffix:semicolon
 )brace
 DECL|function|dm_hash_init
+r_static
 r_int
 id|dm_hash_init
 c_func
@@ -186,6 +188,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|dm_hash_exit
+r_static
 r_void
 id|dm_hash_exit
 c_func
@@ -692,6 +695,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The kdev_t and uuid of a device can never change once it is&n; * initially inserted.&n; */
 DECL|function|dm_hash_insert
+r_static
 r_int
 id|dm_hash_insert
 c_func
@@ -861,6 +865,7 @@ id|EBUSY
 suffix:semicolon
 )brace
 DECL|function|__hash_remove
+r_static
 r_void
 id|__hash_remove
 c_func
@@ -917,6 +922,7 @@ id|hc
 suffix:semicolon
 )brace
 DECL|function|dm_hash_remove_all
+r_static
 r_void
 id|dm_hash_remove_all
 c_func
@@ -1003,6 +1009,7 @@ id|_hash_lock
 suffix:semicolon
 )brace
 DECL|function|dm_hash_rename
+r_static
 r_int
 id|dm_hash_rename
 c_func
@@ -1453,6 +1460,8 @@ c_func
 (paren
 id|hc-&gt;name
 )paren
+op_plus
+l_int|1
 suffix:semicolon
 id|needed
 op_add_assign
@@ -3442,14 +3451,6 @@ id|dm_table
 op_star
 id|table
 suffix:semicolon
-id|DECLARE_WAITQUEUE
-c_func
-(paren
-id|wq
-comma
-id|current
-)paren
-suffix:semicolon
 id|md
 op_assign
 id|find_device
@@ -3469,49 +3470,27 @@ op_minus
 id|ENXIO
 suffix:semicolon
 multiline_comment|/*&n;&t; * Wait for a notification event&n;&t; */
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|dm_add_wait_queue
+id|dm_wait_event
 c_func
 (paren
 id|md
-comma
-op_amp
-id|wq
 comma
 id|param-&gt;event_nr
 )paren
 )paren
 (brace
-id|schedule
-c_func
-(paren
-)paren
+id|r
+op_assign
+op_minus
+id|ERESTARTSYS
 suffix:semicolon
-id|dm_remove_wait_queue
-c_func
-(paren
-id|md
-comma
-op_amp
-id|wq
-)paren
+r_goto
+id|out
 suffix:semicolon
 )brace
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * The userland program is going to want to know what&n;&t; * changed to trigger the event, so we may as well tell&n;&t; * him and save an ioctl.&n;&t; */
 id|r
 op_assign
