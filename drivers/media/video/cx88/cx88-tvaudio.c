@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    cx88x-audio.c - Conexant CX23880/23881 audio downstream driver driver&n;&n;     (c) 2001 Michael Eskin, Tom Zakrajsek [Windows version]&n;     (c) 2002 Yurij Sysoev &lt;yurij@naturesoft.net&gt;&n;     (c) 2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    -----------------------------------------------------------------------&n;&n;    Lot of voodoo here.  Even the data sheet doesn&squot;t help to&n;    understand what is going on here, the documentation for the audio&n;    part of the cx2388x chip is *very* bad.&n;&n;    Some of this comes from party done linux driver sources I got from&n;    [undocumented].&n;&n;    Some comes from the dscaler sources, one of the dscaler driver guy works&n;    for Conexant ...&n;    &n;    -----------------------------------------------------------------------&n;    &n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    $Id: cx88-tvaudio.c,v 1.22 2004/10/11 13:45:51 kraxel Exp $&n;&n;    cx88x-audio.c - Conexant CX23880/23881 audio downstream driver driver&n;&n;     (c) 2001 Michael Eskin, Tom Zakrajsek [Windows version]&n;     (c) 2002 Yurij Sysoev &lt;yurij@naturesoft.net&gt;&n;     (c) 2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    -----------------------------------------------------------------------&n;&n;    Lot of voodoo here.  Even the data sheet doesn&squot;t help to&n;    understand what is going on here, the documentation for the audio&n;    part of the cx2388x chip is *very* bad.&n;&n;    Some of this comes from party done linux driver sources I got from&n;    [undocumented].&n;&n;    Some comes from the dscaler sources, one of the dscaler driver guy works&n;    for Conexant ...&n;    &n;    -----------------------------------------------------------------------&n;    &n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -14,6 +14,8 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/kthread.h&gt;
 macro_line|#include &quot;cx88.h&quot;
 DECL|variable|audio_debug
 r_static
@@ -23,12 +25,14 @@ id|audio_debug
 op_assign
 l_int|1
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|audio_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -40,7 +44,7 @@ l_string|&quot;enable debug messages [audio]&quot;
 )paren
 suffix:semicolon
 DECL|macro|dprintk
-mdefine_line|#define dprintk(fmt, arg...)&t;if (audio_debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s: &quot; fmt, dev-&gt;name , ## arg)
+mdefine_line|#define dprintk(fmt, arg...)&t;if (audio_debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s/0: &quot; fmt, core-&gt;name , ## arg)
 multiline_comment|/* ----------------------------------------------------------- */
 DECL|variable|aud_ctl_names
 r_static
@@ -213,9 +217,9 @@ id|set_audio_registers
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 comma
 r_const
 r_struct
@@ -326,9 +330,9 @@ id|set_audio_start
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 comma
 id|u32
 id|mode
@@ -408,9 +412,9 @@ id|set_audio_finish
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 )paren
 (brace
 id|u32
@@ -462,9 +466,9 @@ id|set_audio_standard_BTSC
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 comma
 r_int
 r_int
@@ -1019,7 +1023,7 @@ suffix:semicolon
 id|set_audio_start
 c_func
 (paren
-id|dev
+id|core
 comma
 l_int|0x0001
 comma
@@ -1031,7 +1035,7 @@ suffix:semicolon
 id|set_audio_registers
 c_func
 (paren
-id|dev
+id|core
 comma
 id|btsc_sap
 )paren
@@ -1050,7 +1054,7 @@ suffix:semicolon
 id|set_audio_start
 c_func
 (paren
-id|dev
+id|core
 comma
 l_int|0x0001
 comma
@@ -1062,7 +1066,7 @@ suffix:semicolon
 id|set_audio_registers
 c_func
 (paren
-id|dev
+id|core
 comma
 id|btsc
 )paren
@@ -1071,7 +1075,7 @@ suffix:semicolon
 id|set_audio_finish
 c_func
 (paren
-id|dev
+id|core
 )paren
 suffix:semicolon
 )brace
@@ -1082,9 +1086,9 @@ id|set_audio_standard_NICAM
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 )paren
 (brace
 r_static
@@ -1328,7 +1332,7 @@ suffix:semicolon
 id|set_audio_start
 c_func
 (paren
-id|dev
+id|core
 comma
 l_int|0x0010
 comma
@@ -1342,7 +1346,7 @@ suffix:semicolon
 id|set_audio_registers
 c_func
 (paren
-id|dev
+id|core
 comma
 id|nicam_common
 )paren
@@ -1350,7 +1354,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|dev-&gt;tvaudio
+id|core-&gt;tvaudio
 )paren
 (brace
 r_case
@@ -1367,10 +1371,12 @@ suffix:semicolon
 id|set_audio_registers
 c_func
 (paren
-id|dev
+id|core
 comma
 id|nicam_pal_i
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 id|WW_NICAM_BGDKL
@@ -1378,7 +1384,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;%s PAL NICAM (status: unknown)&bslash;n&quot;
+l_string|&quot;%s PAL-BGDK NICAM (status: unknown)&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1386,7 +1392,7 @@ suffix:semicolon
 id|set_audio_registers
 c_func
 (paren
-id|dev
+id|core
 comma
 id|nicam_default
 )paren
@@ -1398,7 +1404,7 @@ suffix:semicolon
 id|set_audio_finish
 c_func
 (paren
-id|dev
+id|core
 )paren
 suffix:semicolon
 )brace
@@ -1409,9 +1415,9 @@ id|set_audio_standard_NICAM_L
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 )paren
 (brace
 multiline_comment|/* This is officially wierd.. register dumps indicate windows&n;&t; * uses audio mode 4.. A2. Let&squot;s operate and find out. */
@@ -2072,7 +2078,7 @@ suffix:semicolon
 id|set_audio_start
 c_func
 (paren
-id|dev
+id|core
 comma
 l_int|0x0004
 comma
@@ -2083,7 +2089,7 @@ suffix:semicolon
 id|set_audio_registers
 c_func
 (paren
-id|dev
+id|core
 comma
 id|nicam_l
 )paren
@@ -2091,7 +2097,7 @@ suffix:semicolon
 id|set_audio_finish
 c_func
 (paren
-id|dev
+id|core
 )paren
 suffix:semicolon
 )brace
@@ -2102,9 +2108,9 @@ id|set_audio_standard_A2
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 )paren
 (brace
 multiline_comment|/* from dscaler cvs */
@@ -2582,7 +2588,7 @@ suffix:semicolon
 id|set_audio_start
 c_func
 (paren
-id|dev
+id|core
 comma
 l_int|0x0004
 comma
@@ -2594,7 +2600,7 @@ suffix:semicolon
 id|set_audio_registers
 c_func
 (paren
-id|dev
+id|core
 comma
 id|a2_common
 )paren
@@ -2602,7 +2608,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|dev-&gt;tvaudio
+id|core-&gt;tvaudio
 )paren
 (brace
 r_case
@@ -2619,7 +2625,7 @@ suffix:semicolon
 id|set_audio_registers
 c_func
 (paren
-id|dev
+id|core
 comma
 id|a2_table1
 )paren
@@ -2640,7 +2646,7 @@ suffix:semicolon
 id|set_audio_registers
 c_func
 (paren
-id|dev
+id|core
 comma
 id|a2_table2
 )paren
@@ -2661,7 +2667,7 @@ suffix:semicolon
 id|set_audio_registers
 c_func
 (paren
-id|dev
+id|core
 comma
 id|a2_table3
 )paren
@@ -2673,7 +2679,7 @@ suffix:semicolon
 id|set_audio_finish
 c_func
 (paren
-id|dev
+id|core
 )paren
 suffix:semicolon
 )brace
@@ -2684,9 +2690,9 @@ id|set_audio_standard_EIAJ
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 )paren
 (brace
 r_static
@@ -2716,7 +2722,7 @@ suffix:semicolon
 id|set_audio_start
 c_func
 (paren
-id|dev
+id|core
 comma
 l_int|0x0002
 comma
@@ -2726,7 +2732,7 @@ suffix:semicolon
 id|set_audio_registers
 c_func
 (paren
-id|dev
+id|core
 comma
 id|eiaj
 )paren
@@ -2734,7 +2740,7 @@ suffix:semicolon
 id|set_audio_finish
 c_func
 (paren
-id|dev
+id|core
 )paren
 suffix:semicolon
 )brace
@@ -2745,9 +2751,9 @@ id|set_audio_standard_FM
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 )paren
 (brace
 macro_line|#if 0 /* FIXME */
@@ -2942,7 +2948,7 @@ suffix:semicolon
 id|set_audio_start
 c_func
 (paren
-id|dev
+id|core
 comma
 l_int|0x0020
 comma
@@ -2961,7 +2967,7 @@ suffix:semicolon
 id|set_audio_finish
 c_func
 (paren
-id|dev
+id|core
 )paren
 suffix:semicolon
 )brace
@@ -2972,15 +2978,15 @@ id|cx88_set_tvaudio
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 )paren
 (brace
 r_switch
 c_cond
 (paren
-id|dev-&gt;tvaudio
+id|core-&gt;tvaudio
 )paren
 (brace
 r_case
@@ -2989,7 +2995,7 @@ suffix:colon
 id|set_audio_standard_BTSC
 c_func
 (paren
-id|dev
+id|core
 comma
 l_int|0
 )paren
@@ -3005,7 +3011,7 @@ suffix:colon
 id|set_audio_standard_NICAM
 c_func
 (paren
-id|dev
+id|core
 )paren
 suffix:semicolon
 r_break
@@ -3022,7 +3028,7 @@ suffix:colon
 id|set_audio_standard_A2
 c_func
 (paren
-id|dev
+id|core
 )paren
 suffix:semicolon
 r_break
@@ -3033,7 +3039,7 @@ suffix:colon
 id|set_audio_standard_EIAJ
 c_func
 (paren
-id|dev
+id|core
 )paren
 suffix:semicolon
 r_break
@@ -3044,7 +3050,7 @@ suffix:colon
 id|set_audio_standard_FM
 c_func
 (paren
-id|dev
+id|core
 )paren
 suffix:semicolon
 r_break
@@ -3055,7 +3061,7 @@ suffix:colon
 id|set_audio_standard_NICAM_L
 c_func
 (paren
-id|dev
+id|core
 )paren
 suffix:semicolon
 r_break
@@ -3068,11 +3074,11 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: unknown tv audio mode [%d]&bslash;n&quot;
+l_string|&quot;%s/0: unknown tv audio mode [%d]&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|core-&gt;name
 comma
-id|dev-&gt;tvaudio
+id|core-&gt;tvaudio
 )paren
 suffix:semicolon
 r_break
@@ -3087,9 +3093,9 @@ id|cx88_get_stereo
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 comma
 r_struct
 id|v4l2_tuner
@@ -3162,6 +3168,13 @@ l_int|2
 op_amp
 l_int|0x03
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|core-&gt;astat
+op_ne
+id|reg
+)paren
 id|dprintk
 c_func
 (paren
@@ -3191,6 +3204,10 @@ l_int|63
 )braket
 )paren
 suffix:semicolon
+id|core-&gt;astat
+op_assign
+id|reg
+suffix:semicolon
 id|t-&gt;capability
 op_assign
 id|V4L2_TUNER_CAP_STEREO
@@ -3212,9 +3229,38 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|dev-&gt;tvaudio
+id|core-&gt;tvaudio
 )paren
 (brace
+r_case
+id|WW_BTSC
+suffix:colon
+id|t-&gt;capability
+op_assign
+id|V4L2_TUNER_CAP_STEREO
+op_or
+id|V4L2_TUNER_CAP_SAP
+suffix:semicolon
+id|t-&gt;rxsubchans
+op_assign
+id|V4L2_TUNER_SUB_STEREO
+suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|1
+op_eq
+id|pilot
+)paren
+(brace
+multiline_comment|/* SAP */
+id|t-&gt;rxsubchans
+op_or_assign
+id|V4L2_TUNER_SUB_SAP
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
 r_case
 id|WW_A2_BG
 suffix:colon
@@ -3311,9 +3357,9 @@ id|cx88_set_stereo
 c_func
 (paren
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 comma
 id|u32
 id|mode
@@ -3332,9 +3378,60 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|dev-&gt;tvaudio
+id|core-&gt;tvaudio
 )paren
 (brace
+r_case
+id|WW_BTSC
+suffix:colon
+r_switch
+c_cond
+(paren
+id|mode
+)paren
+(brace
+r_case
+id|V4L2_TUNER_MODE_MONO
+suffix:colon
+id|ctl
+op_assign
+id|EN_BTSC_FORCE_MONO
+suffix:semicolon
+id|mask
+op_assign
+l_int|0x3f
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|V4L2_TUNER_MODE_SAP
+suffix:colon
+id|ctl
+op_assign
+id|EN_BTSC_FORCE_SAP
+suffix:semicolon
+id|mask
+op_assign
+l_int|0x3f
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|V4L2_TUNER_MODE_STEREO
+suffix:colon
+id|ctl
+op_assign
+id|EN_BTSC_AUTO_STEREO
+suffix:semicolon
+id|mask
+op_assign
+l_int|0x3f
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
 r_case
 id|WW_A2_BG
 suffix:colon
@@ -3556,7 +3653,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* just monitor the audio status for now ... */
 DECL|function|cx88_audio_thread
 r_int
 id|cx88_audio_thread
@@ -3568,27 +3664,15 @@ id|data
 )paren
 (brace
 r_struct
-id|cx8800_dev
+id|cx88_core
 op_star
-id|dev
+id|core
 op_assign
 id|data
 suffix:semicolon
 r_struct
 id|v4l2_tuner
 id|t
-suffix:semicolon
-id|daemonize
-c_func
-(paren
-l_string|&quot;msp3400&quot;
-)paren
-suffix:semicolon
-id|allow_signal
-c_func
-(paren
-id|SIGTERM
-)paren
 suffix:semicolon
 id|dprintk
 c_func
@@ -3603,38 +3687,17 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_star
-l_int|3
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|signal_pending
+id|kthread_should_stop
 c_func
 (paren
-id|current
 )paren
 )paren
 r_break
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;shutdown
-)paren
-r_break
-suffix:semicolon
+multiline_comment|/* just monitor the audio status for now ... */
 id|memset
 c_func
 (paren
@@ -3652,10 +3715,16 @@ suffix:semicolon
 id|cx88_get_stereo
 c_func
 (paren
-id|dev
+id|core
 comma
 op_amp
 id|t
+)paren
+suffix:semicolon
+id|msleep_interruptible
+c_func
+(paren
+l_int|1000
 )paren
 suffix:semicolon
 )brace
@@ -3665,15 +3734,38 @@ c_func
 l_string|&quot;cx88: tvaudio thread exiting&bslash;n&quot;
 )paren
 suffix:semicolon
-id|complete_and_exit
-c_func
-(paren
-op_amp
-id|dev-&gt;texit
-comma
+r_return
 l_int|0
-)paren
 suffix:semicolon
 )brace
+multiline_comment|/* ----------------------------------------------------------- */
+DECL|variable|cx88_set_tvaudio
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cx88_set_tvaudio
+)paren
+suffix:semicolon
+DECL|variable|cx88_set_stereo
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cx88_set_stereo
+)paren
+suffix:semicolon
+DECL|variable|cx88_get_stereo
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cx88_get_stereo
+)paren
+suffix:semicolon
+DECL|variable|cx88_audio_thread
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cx88_audio_thread
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */
 eof
