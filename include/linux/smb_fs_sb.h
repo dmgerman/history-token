@@ -127,17 +127,6 @@ r_struct
 id|semaphore
 id|sem
 suffix:semicolon
-DECL|member|rcls
-r_int
-r_int
-id|rcls
-suffix:semicolon
-multiline_comment|/* The error codes we received */
-DECL|member|err
-r_int
-r_int
-id|err
-suffix:semicolon
 DECL|member|header
 r_int
 r_char
