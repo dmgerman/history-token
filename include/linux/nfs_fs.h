@@ -502,14 +502,21 @@ id|rpc_cred
 op_star
 id|cred
 op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|file
+)paren
+id|cred
+op_assign
 (paren
 r_struct
 id|rpc_cred
 op_star
 )paren
-(paren
 id|file-&gt;private_data
-)paren
 suffix:semicolon
 macro_line|#ifdef RPC_DEBUG
 r_if

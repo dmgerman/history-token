@@ -106,7 +106,7 @@ id|nfs_create_request
 c_func
 (paren
 r_struct
-id|file
+id|rpc_cred
 op_star
 comma
 r_struct
@@ -122,6 +122,17 @@ r_int
 comma
 r_int
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nfs_clear_request
+c_func
+(paren
+r_struct
+id|nfs_page
+op_star
+id|req
 )paren
 suffix:semicolon
 r_extern
