@@ -2238,13 +2238,13 @@ id|mtu
 op_assign
 id|ip6_rt_min_advmss
 suffix:semicolon
-multiline_comment|/*&n;&t; * Maximal non-jumbo IPv6 payload is 65535 and &n;&t; * corresponding MSS is 65535 - tcp_header_size. &n;&t; * 65535 is also valid and means: &quot;any MSS, &n;&t; * rely only on pmtu discovery&quot;&n;&t; */
+multiline_comment|/*&n;&t; * Maximal non-jumbo IPv6 payload is IPV6_MAXPLEN and &n;&t; * corresponding MSS is IPV6_MAXPLEN - tcp_header_size. &n;&t; * IPV6_MAXPLEN is also valid and means: &quot;any MSS, &n;&t; * rely only on pmtu discovery&quot;&n;&t; */
 r_if
 c_cond
 (paren
 id|mtu
 OG
-l_int|65535
+id|IPV6_MAXPLEN
 op_minus
 r_sizeof
 (paren
@@ -2254,7 +2254,7 @@ id|tcphdr
 )paren
 id|mtu
 op_assign
-l_int|65535
+id|IPV6_MAXPLEN
 suffix:semicolon
 r_return
 id|mtu
