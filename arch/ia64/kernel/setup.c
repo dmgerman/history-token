@@ -80,6 +80,19 @@ r_int
 id|ia64_iobase
 suffix:semicolon
 multiline_comment|/* virtual address for I/O accesses */
+DECL|variable|io_space
+r_struct
+id|io_space
+id|io_space
+(braket
+id|MAX_IO_SPACES
+)braket
+suffix:semicolon
+DECL|variable|num_io_spaces
+r_int
+r_int
+id|num_io_spaces
+suffix:semicolon
 DECL|variable|aux_device_present
 r_int
 r_char
@@ -1511,6 +1524,29 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* setup legacy IO port space */
+id|io_space
+(braket
+l_int|0
+)braket
+dot
+id|mmio_base
+op_assign
+id|ia64_iobase
+suffix:semicolon
+id|io_space
+(braket
+l_int|0
+)braket
+dot
+id|sparse
+op_assign
+l_int|1
+suffix:semicolon
+id|num_io_spaces
+op_assign
+l_int|1
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 id|cpu_physical_id
 c_func
@@ -1537,7 +1573,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SERIAL_HCDP
+macro_line|#ifdef CONFIG_SERIAL_8250_HCDP
 r_if
 c_cond
 (paren

@@ -655,7 +655,7 @@ suffix:semicolon
 )brace
 r_do
 (brace
-multiline_comment|/*&n;&t;     * If we&squot;re too close to the next clock tick for comfort, we increase the&n;&t;     * saftey margin by intentionally dropping the next tick(s).  We do NOT update&n;&t;     * itm.next because that would force us to call do_timer() which in turn would&n;&t;     * let our clock run too fast (with the potentially devastating effect of&n;&t;     * losing monotony of time).&n;&t;     */
+multiline_comment|/*&n;&t;     * If we&squot;re too close to the next clock tick for comfort, we increase the&n;&t;     * safety margin by intentionally dropping the next tick(s).  We do NOT update&n;&t;     * itm.next because that would force us to call do_timer() which in turn would&n;&t;     * let our clock run too fast (with the potentially devastating effect of&n;&t;     * losing monotony of time).&n;&t;     */
 r_while
 c_loop
 (paren

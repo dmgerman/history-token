@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_UNWIND_H
 DECL|macro|_ASM_IA64_UNWIND_H
 mdefine_line|#define _ASM_IA64_UNWIND_H
-multiline_comment|/*&n; * Copyright (C) 1999-2000 Hewlett-Packard Co&n; * Copyright (C) 1999-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * A simple API for unwinding kernel stacks.  This is used for&n; * debugging and error reporting purposes.  The kernel doesn&squot;t need&n; * full-blown stack unwinding with all the bells and whitles, so there&n; * is not much point in implementing the full IA-64 unwind API (though&n; * it would of course be possible to implement the kernel API on top&n; * of it).&n; */
+multiline_comment|/*&n; * Copyright (C) 1999-2000, 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * A simple API for unwinding kernel stacks.  This is used for&n; * debugging and error reporting purposes.  The kernel doesn&squot;t need&n; * full-blown stack unwinding with all the bells and whitles, so there&n; * is not much point in implementing the full IA-64 unwind API (though&n; * it would of course be possible to implement the kernel API on top&n; * of it).&n; */
 r_struct
 id|task_struct
 suffix:semicolon
@@ -373,6 +373,32 @@ r_struct
 id|task_struct
 op_star
 id|t
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Prepare to unwind from interruption.  The pt-regs and switch-stack structures must have&n; * be &quot;adjacent&quot; (no state modifications between pt-regs and switch-stack).&n; */
+r_extern
+r_void
+id|unw_init_from_interruption
+(paren
+r_struct
+id|unw_frame_info
+op_star
+id|info
+comma
+r_struct
+id|task_struct
+op_star
+id|t
+comma
+r_struct
+id|pt_regs
+op_star
+id|pt
+comma
+r_struct
+id|switch_stack
+op_star
+id|sw
 )paren
 suffix:semicolon
 r_extern

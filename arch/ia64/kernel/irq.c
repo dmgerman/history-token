@@ -25,7 +25,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-multiline_comment|/*&n; * Linux has a controller-independent x86 interrupt architecture.&n; * every controller has a &squot;controller-template&squot;, that is used&n; * by the main code to do the right thing. Each driver-visible&n; * interrupt source is transparently wired to the apropriate&n; * controller. Thus drivers need not be aware of the&n; * interrupt-controller.&n; *&n; * Various interrupt controllers we handle: 8259 PIC, SMP IO-APIC,&n; * PIIX4&squot;s internal 8259 PIC and SGI&squot;s Visual Workstation Cobalt (IO-)APIC.&n; * (IO-APICs assumed to be messaging to Pentium local-APICs)&n; *&n; * the code is designed to be easily extended with new/different&n; * interrupt controllers, without having to do assembly magic.&n; */
+multiline_comment|/*&n; * Linux has a controller-independent x86 interrupt architecture.&n; * every controller has a &squot;controller-template&squot;, that is used&n; * by the main code to do the right thing. Each driver-visible&n; * interrupt source is transparently wired to the appropriate&n; * controller. Thus drivers need not be aware of the&n; * interrupt-controller.&n; *&n; * Various interrupt controllers we handle: 8259 PIC, SMP IO-APIC,&n; * PIIX4&squot;s internal 8259 PIC and SGI&squot;s Visual Workstation Cobalt (IO-)APIC.&n; * (IO-APICs assumed to be messaging to Pentium local-APICs)&n; *&n; * the code is designed to be easily extended with new/different&n; * interrupt controllers, without having to do assembly magic.&n; */
 multiline_comment|/*&n; * Controller mappings for all interrupt sources:&n; */
 DECL|variable|__cacheline_aligned
 id|irq_desc_t
@@ -2111,7 +2111,7 @@ op_amp
 id|val
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;probe_irq_off&t;- end an interrupt autodetect&n; *&t;@val: mask of potential interrupts (unused)&n; *&n; *&t;Scans the unused interrupt lines and returns the line which&n; *&t;appears to have triggered the interrupt. If no interrupt was&n; *&t;found then zero is returned. If more than one interrupt is&n; *&t;found then minus the first candidate is returned to indicate&n; *&t;their is doubt.&n; *&n; *&t;The interrupt probe logic state is returned to its previous&n; *&t;value.&n; *&n; *&t;BUGS: When used in a module (which arguably shouldnt happen)&n; *&t;nothing prevents two IRQ probe callers from overlapping. The&n; *&t;results of this are non-optimal.&n; */
+multiline_comment|/**&n; *&t;probe_irq_off&t;- end an interrupt autodetect&n; *&t;@val: mask of potential interrupts (unused)&n; *&n; *&t;Scans the unused interrupt lines and returns the line which&n; *&t;appears to have triggered the interrupt. If no interrupt was&n; *&t;found then zero is returned. If more than one interrupt is&n; *&t;found then minus the first candidate is returned to indicate&n; *&t;their is doubt.&n; *&n; *&t;The interrupt probe logic state is returned to its previous&n; *&t;value.&n; *&n; *&t;BUGS: When used in a module (which arguably shouldn&squot;t happen)&n; *&t;nothing prevents two IRQ probe callers from overlapping. The&n; *&t;results of this are non-optimal.&n; */
 DECL|function|probe_irq_off
 r_int
 id|probe_irq_off

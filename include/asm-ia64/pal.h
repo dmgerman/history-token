@@ -1380,11 +1380,16 @@ id|u64
 id|pmsa_xfs
 suffix:semicolon
 multiline_comment|/* previous ifs&t;&t;   */
+DECL|member|pmsa_br1
+id|u64
+id|pmsa_br1
+suffix:semicolon
+multiline_comment|/* branch register 1&t;   */
 DECL|member|pmsa_reserved
 id|u64
 id|pmsa_reserved
 (braket
-l_int|71
+l_int|70
 )braket
 suffix:semicolon
 multiline_comment|/* pal_min_state_area should total to 1KB */

@@ -598,12 +598,28 @@ r_struct
 id|task_struct
 suffix:semicolon
 multiline_comment|/* forward decl */
+r_struct
+id|unw_frame_info
+suffix:semicolon
+multiline_comment|/* forward decl */
 r_extern
 r_void
 id|show_regs
 (paren
 r_struct
 id|pt_regs
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ia64_do_show_stack
+(paren
+r_struct
+id|unw_frame_info
+op_star
+comma
+r_void
 op_star
 )paren
 suffix:semicolon

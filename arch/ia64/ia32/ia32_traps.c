@@ -302,7 +302,7 @@ id|siginfo.si_signo
 op_assign
 id|SIGFPE
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * (~cwd &amp; swd) will mask out exceptions that are not set to unmasked&n;&t;&t;&t; * status.  0x3f is the exception bits in these regs, 0x200 is the&n;&t;&t;&t; * C1 reg you need in case of a stack fault, 0x040 is the stack&n;&t;&t;&t; * fault bit.  We should only be taking one exception at a time,&n;&t;&t;&t; * so if this combination doesn&squot;t produce any single exception,&n;&t;&t;&t; * then we have a bad program that isn&squot;t syncronizing its FPU usage&n;&t;&t;&t; * and it will suffer the consequences since we won&squot;t be able to&n;&t;&t;&t; * fully reproduce the context of the exception&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * (~cwd &amp; swd) will mask out exceptions that are not set to unmasked&n;&t;&t;&t; * status.  0x3f is the exception bits in these regs, 0x200 is the&n;&t;&t;&t; * C1 reg you need in case of a stack fault, 0x040 is the stack&n;&t;&t;&t; * fault bit.  We should only be taking one exception at a time,&n;&t;&t;&t; * so if this combination doesn&squot;t produce any single exception,&n;&t;&t;&t; * then we have a bad program that isn&squot;t synchronizing its FPU usage&n;&t;&t;&t; * and it will suffer the consequences since we won&squot;t be able to&n;&t;&t;&t; * fully reproduce the context of the exception&n;&t;&t;&t; */
 id|siginfo.si_isr
 op_assign
 id|isr

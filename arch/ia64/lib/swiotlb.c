@@ -744,7 +744,7 @@ op_assign
 op_increment
 id|count
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Step 2: merge the returned slots with the preceeding slots, if&n;&t;&t; * available (non zero)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Step 2: merge the returned slots with the preceding slots, if&n;&t;&t; * available (non zero)&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -1371,7 +1371,7 @@ id|size
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Map a set of buffers described by scatterlist in streaming mode for DMA.  This is the&n; * scather-gather version of the above swiotlb_map_single interface.  Here the scatter&n; * gather list elements are each tagged with the appropriate dma address and length.  They&n; * are obtained via sg_dma_{address,length}(SG).&n; *&n; * NOTE: An implementation may be able to use a smaller number of&n; *       DMA address/length pairs than there are SG table elements.&n; *       (for example via virtual mapping capabilities)&n; *       The routine returns the number of addr/length pairs actually&n; *       used, at most nents.&n; *&n; * Device ownership issues as mentioned above for swiotlb_map_single are the same here.&n; */
+multiline_comment|/*&n; * Map a set of buffers described by scatterlist in streaming mode for DMA.  This is the&n; * scatter-gather version of the above swiotlb_map_single interface.  Here the scatter&n; * gather list elements are each tagged with the appropriate dma address and length.  They&n; * are obtained via sg_dma_{address,length}(SG).&n; *&n; * NOTE: An implementation may be able to use a smaller number of&n; *       DMA address/length pairs than there are SG table elements.&n; *       (for example via virtual mapping capabilities)&n; *       The routine returns the number of addr/length pairs actually&n; *       used, at most nents.&n; *&n; * Device ownership issues as mentioned above for swiotlb_map_single are the same here.&n; */
 r_int
 DECL|function|swiotlb_map_sg
 id|swiotlb_map_sg

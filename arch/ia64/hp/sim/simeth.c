@@ -1705,7 +1705,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * very simple loop because we get interrupts only when receving&n;&t; */
+multiline_comment|/*&n;&t; * very simple loop because we get interrupts only when receiving&n;&t; */
 r_while
 c_loop
 (paren
