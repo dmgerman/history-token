@@ -63,6 +63,8 @@ DECL|macro|encode_getattr_maxsz
 mdefine_line|#define encode_getattr_maxsz    (op_encode_hdr_maxsz + 3)
 DECL|macro|nfs4_name_maxsz
 mdefine_line|#define nfs4_name_maxsz&t;&t;(1 + ((3 + NFS4_MAXNAMLEN) &gt;&gt; 2))
+DECL|macro|nfs4_path_maxsz
+mdefine_line|#define nfs4_path_maxsz&t;&t;(1 + ((3 + NFS4_MAXPATHLEN) &gt;&gt; 2))
 DECL|macro|nfs4_fattr_bitmap_maxsz
 mdefine_line|#define nfs4_fattr_bitmap_maxsz (36 + 2 * nfs4_name_maxsz)
 DECL|macro|decode_getattr_maxsz
@@ -99,8 +101,12 @@ DECL|macro|encode_link_maxsz
 mdefine_line|#define encode_link_maxsz&t;(op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;nfs4_name_maxsz)
 DECL|macro|decode_link_maxsz
 mdefine_line|#define decode_link_maxsz&t;(op_decode_hdr_maxsz + 5)
+DECL|macro|encode_symlink_maxsz
+mdefine_line|#define encode_symlink_maxsz&t;(op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;1 + nfs4_name_maxsz + &bslash;&n;&t;&t;&t;&t;nfs4_path_maxsz + &bslash;&n;&t;&t;&t;&t;nfs4_fattr_bitmap_maxsz)
+DECL|macro|decode_symlink_maxsz
+mdefine_line|#define decode_symlink_maxsz&t;(op_decode_hdr_maxsz + 8)
 DECL|macro|encode_create_maxsz
-mdefine_line|#define encode_create_maxsz&t;(op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;2 + 2 * nfs4_name_maxsz + &bslash;&n;&t;&t;&t;&t;nfs4_fattr_bitmap_maxsz)
+mdefine_line|#define encode_create_maxsz&t;(op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;2 + nfs4_name_maxsz + &bslash;&n;&t;&t;&t;&t;nfs4_fattr_bitmap_maxsz)
 DECL|macro|decode_create_maxsz
 mdefine_line|#define decode_create_maxsz&t;(op_decode_hdr_maxsz + 8)
 DECL|macro|NFS4_enc_compound_sz
@@ -207,6 +213,10 @@ DECL|macro|NFS4_enc_link_sz
 mdefine_line|#define NFS4_enc_link_sz&t;(compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_savefh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_link_maxsz)
 DECL|macro|NFS4_dec_link_sz
 mdefine_line|#define NFS4_dec_link_sz&t;(compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_savefh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_link_maxsz)
+DECL|macro|NFS4_enc_symlink_sz
+mdefine_line|#define NFS4_enc_symlink_sz&t;(compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_symlink_maxsz + &bslash;&n;&t;&t;&t;&t;encode_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_getfh_maxsz)
+DECL|macro|NFS4_dec_symlink_sz
+mdefine_line|#define NFS4_dec_symlink_sz&t;(compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_symlink_maxsz + &bslash;&n;&t;&t;&t;&t;decode_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_getfh_maxsz)
 DECL|macro|NFS4_enc_create_sz
 mdefine_line|#define NFS4_enc_create_sz&t;(compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_create_maxsz + &bslash;&n;&t;&t;&t;&t;encode_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_getfh_maxsz)
 DECL|macro|NFS4_dec_create_sz
@@ -2867,10 +2877,10 @@ c_func
 (paren
 id|readdir-&gt;count
 op_rshift
-l_int|5
+l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* meaningless &quot;dircount&quot; field */
+multiline_comment|/* We&squot;re not doing readdirplus */
 id|WRITE32
 c_func
 (paren
@@ -4507,6 +4517,41 @@ id|out
 suffix:colon
 r_return
 id|status
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Encode SYMLINK request&n; */
+DECL|function|nfs4_xdr_enc_symlink
+r_static
+r_int
+id|nfs4_xdr_enc_symlink
+c_func
+(paren
+r_struct
+id|rpc_rqst
+op_star
+id|req
+comma
+r_uint32
+op_star
+id|p
+comma
+r_const
+r_struct
+id|nfs4_create_arg
+op_star
+id|args
+)paren
+(brace
+r_return
+id|nfs4_xdr_enc_create
+c_func
+(paren
+id|req
+comma
+id|p
+comma
+id|args
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Encode GETATTR request&n; */
@@ -13637,12 +13682,8 @@ r_uint32
 id|len
 comma
 id|attrlen
-comma
-id|word
 suffix:semicolon
 r_int
-id|i
-comma
 id|hdrlen
 comma
 id|recvd
@@ -13863,33 +13904,14 @@ op_increment
 )paren
 suffix:semicolon
 multiline_comment|/* bitmap length */
-r_if
-c_cond
-(paren
+id|p
+op_add_assign
 id|len
-OG
-l_int|10
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;NFS: giant bitmap in readdir (len 0x%x)&bslash;n&quot;
-comma
-id|len
-)paren
 suffix:semicolon
-r_goto
-id|err_unmap
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|p
-op_plus
-id|len
 op_plus
 l_int|1
 OG
@@ -13900,118 +13922,38 @@ id|short_pkt
 suffix:semicolon
 id|attrlen
 op_assign
-l_int|0
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|len
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|word
-op_assign
-id|ntohl
-c_func
-(paren
-op_star
-id|p
-op_increment
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|word
-)paren
-r_continue
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|i
-op_eq
-l_int|0
-op_logical_and
-id|word
-op_eq
-id|FATTR4_WORD0_FILEID
-)paren
-(brace
-id|attrlen
-op_assign
-l_int|8
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;NFS: unexpected bitmap word in readdir (0x%x)&bslash;n&quot;
-comma
-id|word
-)paren
-suffix:semicolon
-r_goto
-id|err_unmap
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|ntohl
-c_func
-(paren
-op_star
-id|p
-op_increment
-)paren
-op_ne
-id|attrlen
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;NFS: unexpected attrlen in readdir&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|err_unmap
-suffix:semicolon
-)brace
-id|p
-op_add_assign
 id|XDR_QUADLEN
 c_func
 (paren
-id|attrlen
+id|ntohl
+c_func
+(paren
+op_star
+id|p
+op_increment
+)paren
 )paren
 suffix:semicolon
+id|p
+op_add_assign
+id|attrlen
+suffix:semicolon
+multiline_comment|/* attributes */
 r_if
 c_cond
 (paren
 id|p
 op_plus
-l_int|1
+l_int|2
 OG
 id|end
 )paren
 r_goto
 id|short_pkt
+suffix:semicolon
+id|entry
+op_assign
+id|p
 suffix:semicolon
 )brace
 r_if
@@ -15815,6 +15757,40 @@ id|out
 suffix:colon
 r_return
 id|status
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Decode SYMLINK response&n; */
+DECL|function|nfs4_xdr_dec_symlink
+r_static
+r_int
+id|nfs4_xdr_dec_symlink
+c_func
+(paren
+r_struct
+id|rpc_rqst
+op_star
+id|rqstp
+comma
+r_uint32
+op_star
+id|p
+comma
+r_struct
+id|nfs4_create_res
+op_star
+id|res
+)paren
+(brace
+r_return
+id|nfs4_xdr_dec_create
+c_func
+(paren
+id|rqstp
+comma
+id|p
+comma
+id|res
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Decode GETATTR response&n; */
@@ -18019,6 +17995,16 @@ id|plus
 )paren
 (brace
 r_uint32
+id|bitmap
+(braket
+l_int|1
+)braket
+op_assign
+(brace
+l_int|0
+)brace
+suffix:semicolon
+r_uint32
 id|len
 suffix:semicolon
 r_if
@@ -18116,12 +18102,36 @@ op_increment
 )paren
 suffix:semicolon
 multiline_comment|/* bitmap length */
+r_if
+c_cond
+(paren
+id|len
+OG
+l_int|0
+)paren
+(brace
+id|bitmap
+(braket
+l_int|0
+)braket
+op_assign
+id|ntohl
+c_func
+(paren
+op_star
+id|p
+)paren
+suffix:semicolon
 id|p
 op_add_assign
 id|len
 suffix:semicolon
+)brace
 id|len
 op_assign
+id|XDR_QUADLEN
+c_func
+(paren
 id|ntohl
 c_func
 (paren
@@ -18129,15 +18139,27 @@ op_star
 id|p
 op_increment
 )paren
+)paren
 suffix:semicolon
 multiline_comment|/* attribute buffer length */
 r_if
 c_cond
 (paren
 id|len
+OG
+l_int|0
 )paren
-id|p
-op_assign
+(brace
+r_if
+c_cond
+(paren
+id|bitmap
+(braket
+l_int|0
+)braket
+op_eq
+id|FATTR4_WORD0_FILEID
+)paren
 id|xdr_decode_hyper
 c_func
 (paren
@@ -18147,6 +18169,11 @@ op_amp
 id|entry-&gt;ino
 )paren
 suffix:semicolon
+id|p
+op_add_assign
+id|len
+suffix:semicolon
+)brace
 id|entry-&gt;eof
 op_assign
 op_logical_neg
@@ -18438,8 +18465,12 @@ r_if
 c_cond
 (paren
 id|stat
-OL
-l_int|0
+op_le
+l_int|10000
+op_logical_or
+id|stat
+OG
+l_int|10100
 )paren
 (brace
 multiline_comment|/* The server is looney tunes. */
@@ -18694,6 +18725,16 @@ comma
 id|enc_link
 comma
 id|dec_link
+)paren
+comma
+id|PROC
+c_func
+(paren
+id|SYMLINK
+comma
+id|enc_symlink
+comma
+id|dec_symlink
 )paren
 comma
 id|PROC
