@@ -3406,6 +3406,13 @@ id|writable_len
 )paren
 suffix:semicolon
 )brace
+DECL|variable|skb_ip_make_writable
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|skb_ip_make_writable
+)paren
+suffix:semicolon
 macro_line|#endif /*CONFIG_INET*/
 multiline_comment|/* This does not belong here, but ipt_REJECT needs it if connection&n;   tracking in use: without this, connection may not be in hash table,&n;   and hence manufactured ICMP or RST packets will not be associated&n;   with it. */
 DECL|variable|ip_ct_attach
