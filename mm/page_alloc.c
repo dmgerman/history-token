@@ -2523,6 +2523,10 @@ id|ret-&gt;nr_reverse_maps
 op_add_assign
 id|ps-&gt;nr_reverse_maps
 suffix:semicolon
+id|ret-&gt;nr_mapped
+op_add_assign
+id|ps-&gt;nr_mapped
+suffix:semicolon
 )brace
 )brace
 DECL|function|get_zone_counts

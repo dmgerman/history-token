@@ -69,6 +69,11 @@ r_int
 r_int
 id|nr_reverse_maps
 suffix:semicolon
+DECL|member|nr_mapped
+r_int
+r_int
+id|nr_mapped
+suffix:semicolon
 )brace
 id|____cacheline_aligned_in_smp
 id|page_states

@@ -673,6 +673,7 @@ l_string|&quot;SwapTotal:    %8lu kB&bslash;n&quot;
 l_string|&quot;SwapFree:     %8lu kB&bslash;n&quot;
 l_string|&quot;Dirty:        %8lu kB&bslash;n&quot;
 l_string|&quot;Writeback:    %8lu kB&bslash;n&quot;
+l_string|&quot;Mapped:       %8lu kB&bslash;n&quot;
 l_string|&quot;Committed_AS: %8u kB&bslash;n&quot;
 l_string|&quot;PageTables:   %8lu kB&bslash;n&quot;
 l_string|&quot;ReverseMaps:  %8lu&bslash;n&quot;
@@ -781,6 +782,12 @@ id|K
 c_func
 (paren
 id|ps.nr_writeback
+)paren
+comma
+id|K
+c_func
+(paren
+id|ps.nr_mapped
 )paren
 comma
 id|K
