@@ -41,7 +41,7 @@ DECL|macro|VERSATILE_SYS_OSC3_OFFSET
 mdefine_line|#define VERSATILE_SYS_OSC3_OFFSET             0x18
 DECL|macro|VERSATILE_SYS_OSC4_OFFSET
 mdefine_line|#define VERSATILE_SYS_OSC4_OFFSET             0x1C
-macro_line|#elif defined(CONFIG_ARCH_VERSATILE_AB)
+macro_line|#elif defined(CONFIG_MACH_VERSATILE_AB)
 DECL|macro|VERSATILE_SYS_OSC1_OFFSET
 mdefine_line|#define VERSATILE_SYS_OSC1_OFFSET             0x1C
 macro_line|#endif
@@ -657,7 +657,7 @@ DECL|macro|VERSATILE_CSR_BASE
 mdefine_line|#define VERSATILE_CSR_BASE             0x10000000
 DECL|macro|VERSATILE_CSR_SIZE
 mdefine_line|#define VERSATILE_CSR_SIZE             0x10000000
-macro_line|#ifdef CONFIG_ARCH_VERSATILE_AB
+macro_line|#ifdef CONFIG_MACH_VERSATILE_AB
 multiline_comment|/*&n; * IB2 Versatile/AB expansion board definitions&n; */
 DECL|macro|VERSATILE_IB2_CAMERA_BANK
 mdefine_line|#define VERSATILE_IB2_CAMERA_BANK&t;0x24000000
