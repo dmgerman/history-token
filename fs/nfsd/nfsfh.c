@@ -1927,6 +1927,7 @@ id|dentry
 )paren
 (brace
 multiline_comment|/* Something wrong.  We need to drop the whole dentry-&gt;result path&n;&t;&t;&t; * whatever it was&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *  FIXME: the loop below will do Bad Things(tm) if&n;&t;&t;&t; *  dentry (or one of its ancestors) become attached&n;&t;&t;&t; *  to the tree (e.g. due to VFAT-style alias handling)&n;&t;&t;&t; */
 r_struct
 id|dentry
 op_star
@@ -2477,7 +2478,7 @@ op_assign
 id|find_fh_dentry
 c_func
 (paren
-id|exp-&gt;ex_dentry-&gt;d_inode-&gt;i_sb
+id|exp-&gt;ex_dentry-&gt;d_sb
 comma
 id|datap
 comma
@@ -2529,7 +2530,7 @@ op_assign
 id|find_fh_dentry
 c_func
 (paren
-id|exp-&gt;ex_dentry-&gt;d_inode-&gt;i_sb
+id|exp-&gt;ex_dentry-&gt;d_sb
 comma
 id|tfh
 comma
@@ -2753,6 +2754,13 @@ id|tdentry
 op_assign
 id|dentry
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|dcache_lock
+)paren
+suffix:semicolon
 r_do
 (brace
 id|tdentry
@@ -2769,6 +2777,7 @@ id|tdentry
 r_break
 suffix:semicolon
 multiline_comment|/* executable only by root and we can&squot;t be root */
+multiline_comment|/*&n;&t;&t;&t;&t; * FIXME: permissions check is not that simple&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2860,10 +2869,24 @@ comma
 id|dentry-&gt;d_name.name
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dcache_lock
+)paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dcache_lock
+)paren
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Finally, check access permissions. */
@@ -2951,7 +2974,7 @@ id|super_block
 op_star
 id|sb
 op_assign
-id|dentry-&gt;d_inode-&gt;i_sb
+id|dentry-&gt;d_sb
 suffix:semicolon
 r_if
 c_cond
@@ -3288,7 +3311,7 @@ id|ref_fh-&gt;fh_handle.fh_version
 op_eq
 l_int|0xca
 op_logical_and
-id|parent-&gt;d_inode-&gt;i_sb-&gt;s_op-&gt;dentry_to_fh
+id|dentry-&gt;d_sb-&gt;s_op-&gt;dentry_to_fh
 op_eq
 l_int|NULL
 )paren
