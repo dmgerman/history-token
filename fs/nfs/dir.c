@@ -4366,13 +4366,14 @@ id|dentry-&gt;d_parent-&gt;d_inode
 )paren
 )paren
 suffix:semicolon
-id|error
-op_assign
+r_return
 l_int|0
 suffix:semicolon
 )brace
-r_return
 id|error
+op_assign
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|out_err
 suffix:colon
