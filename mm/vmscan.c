@@ -3062,7 +3062,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is the main entry point to direct page reclaim.&n; *&n; * If a full scan of the inactive list fails to free enough memory then we&n; * are &quot;out of memory&quot; and something needs to be killed.&n; *&n; * If the caller is !__GFP_FS then the probability of a failure is reasonably&n; * high - the zone may be full of dirty or under-writeback pages, which this&n; * caller can&squot;t do much about.  So for !__GFP_FS callers, we just perform a&n; * small LRU walk and if that didn&squot;t work out, fail the allocation back to the&n; * caller.  GFP_NOFS allocators need to know how to deal with it.  Kicking&n; * bdflush, waiting and retrying will work.&n; *&n; * This is a fairly lame algorithm - it can result in excessive CPU burning and&n; * excessive rotation of the inactive list, which is _supposed_ to be an LRU,&n; * yes?&n; */
+multiline_comment|/*&n; * This is the main entry point to direct page reclaim.&n; *&n; * If a full scan of the inactive list fails to free enough memory then we&n; * are &quot;out of memory&quot; and something needs to be killed.&n; *&n; * If the caller is !__GFP_FS then the probability of a failure is reasonably&n; * high - the zone may be full of dirty or under-writeback pages, which this&n; * caller can&squot;t do much about.  We kick pdflush and take explicit naps in the&n; * hope that some of these pages can be written.  But if the allocating task&n; * holds filesystem locks which prevent writeout this might not work, and the&n; * allocation attempt will fail.&n; */
 DECL|function|try_to_free_pages
 r_int
 id|try_to_free_pages
@@ -3239,19 +3239,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|gfp_mask
-op_amp
-id|__GFP_FS
-)paren
-)paren
-r_break
-suffix:semicolon
-multiline_comment|/* Let the caller handle it */
 multiline_comment|/*&n;&t;&t; * Try to write back as many pages as we just scanned.  This&n;&t;&t; * tends to cause slow streaming writers to write data to the&n;&t;&t; * disk smoothly, at the dirtying rate, which is nice.   But&n;&t;&t; * that&squot;s undesirable in laptop mode, where we *want* lumpy&n;&t;&t; * writeout.  So in laptop mode, write out the whole world.&n;&t;&t; */
 id|total_scanned
 op_add_assign
