@@ -4,6 +4,8 @@ DECL|macro|_PPC64PHP_H
 mdefine_line|#define _PPC64PHP_H
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;pci_hotplug.h&quot;
+DECL|macro|PHB
+mdefine_line|#define&t;PHB     2
 DECL|macro|HOTPLUG
 mdefine_line|#define&t;HOTPLUG&t;1
 DECL|macro|EMBEDDED
