@@ -399,8 +399,6 @@ comma
 id|ses-&gt;capabilities
 comma
 id|ses-&gt;status
-comma
-id|ses-&gt;server-&gt;tcpStatus
 )paren
 suffix:semicolon
 id|buf
