@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * scsi_scan.c&n; *&n; * Copyright (C) 2000 Eric Youngdale,&n; * Copyright (C) 2002 Patrick Mansfield&n; *&n; * The general scanning/probing algorithm is as follows, exceptions are&n; * made to it depending on device specific flags, compilation options, and&n; * global variable (boot or module load time) settings.&n; *&n; * A specific LUN is scanned via an INQUIRY command; if the LUN has a&n; * device attached, a Scsi_Device is allocated and setup for it.&n; *&n; * For every id of every channel on the given host:&n; *&n; * &t;Scan LUN 0; if the target responds to LUN 0 (even if there is no&n; * &t;device or storage attached to LUN 0):&n; *&n; * &t;&t;If LUN 0 has a device attached, allocate and setup a&n; * &t;&t;Scsi_Device for it.&n; *&n; * &t;&t;If target is SCSI-3 or up, issue a REPORT LUN, and scan&n; * &t;&t;all of the LUNs returned by the REPORT LUN; else,&n; * &t;&t;sequentially scan LUNs up until some maximum is reached,&n; * &t;&t;or a LUN is seen that cannot have a device attached to it.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
@@ -51,13 +52,16 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef MODULE
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|max_scsi_luns
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -68,71 +72,6 @@ comma
 l_string|&quot;last scsi LUN (should be between 1 and 2^32-1)&quot;
 )paren
 suffix:semicolon
-macro_line|#else
-DECL|function|scsi_luns_setup
-r_static
-r_int
-id|__init
-id|scsi_luns_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_int
-r_int
-id|tmp
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|tmp
-)paren
-op_eq
-l_int|1
-)paren
-(brace
-id|max_scsi_luns
-op_assign
-id|tmp
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;scsi_luns_setup: usage max_scsi_luns=n &quot;
-l_string|&quot;(n should be between 1 and 2^32-1)&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;max_scsi_luns=&quot;
-comma
-id|scsi_luns_setup
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SCSI_REPORT_LUNS
 multiline_comment|/*&n; * max_scsi_report_luns: the maximum number of LUNS that will be&n; * returned from the REPORT LUNS command. 8 times this value must&n; * be allocated. In theory this could be up to an 8 byte value, but&n; * in practice, the maximum number of LUNs suppored by any device&n; * is about 16k.&n; */
 DECL|variable|max_scsi_report_luns
@@ -143,13 +82,16 @@ id|max_scsi_report_luns
 op_assign
 l_int|128
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|max_scsi_report_luns
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -161,72 +103,6 @@ l_string|&quot;REPORT LUNS maximum number of LUNS received (should be&quot;
 l_string|&quot; between 1 and 16384)&quot;
 )paren
 suffix:semicolon
-macro_line|#else
-DECL|function|scsi_report_luns_setup
-r_static
-r_int
-id|__init
-id|scsi_report_luns_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_int
-r_int
-id|tmp
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|tmp
-)paren
-op_eq
-l_int|1
-)paren
-(brace
-id|max_scsi_report_luns
-op_assign
-id|tmp
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;scsi_report_luns_setup: usage&quot;
-l_string|&quot; max_scsi_report_luns=n (n should be between 1&quot;
-l_string|&quot; and 16384)&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;max_scsi_report_luns=&quot;
-comma
-id|scsi_report_luns_setup
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/**&n; * scsi_unlock_floptical - unlock device via a special MODE SENSE command&n; * @sreq:&t;used to send the command&n; * @result:&t;area to store the result of the MODE SENSE&n; *&n; * Description:&n; *     Send a vendor specific MODE SENSE (not a MODE SELECT) command using&n; *     @sreq to unlock a device, storing the (unused) results into result.&n; *     Called for BLIST_KEY devices.&n; **/
 DECL|function|scsi_unlock_floptical

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  scsi.c Copyright (C) 1992 Drew Eckhardt&n; *         Copyright (C) 1993, 1994, 1995, 1999 Eric Youngdale&n; *&n; *  generic mid-level SCSI driver&n; *      Initial versions: Drew Eckhardt&n; *      Subsequent revisions: Eric Youngdale&n; *&n; *  &lt;drew@colorado.edu&gt;&n; *&n; *  Bug correction thanks go to :&n; *      Rik Faith &lt;faith@cs.unc.edu&gt;&n; *      Tommy Thorn &lt;tthorn&gt;&n; *      Thomas Wuensche &lt;tw@fgb1.fgb.mw.tu-muenchen.de&gt;&n; *&n; *  Modified by Eric Youngdale eric@andante.org or ericy@gnu.ai.mit.edu to&n; *  add scatter-gather, multiple outstanding request, and other&n; *  enhancements.&n; *&n; *  Native multichannel, wide scsi, /proc/scsi and hot plugging&n; *  support added by Michael Neuffer &lt;mike@i-connect.net&gt;&n; *&n; *  Added request_module(&quot;scsi_hostadapter&quot;) for kerneld:&n; *  (Put an &quot;alias scsi_hostadapter your_hostadapter&quot; in /etc/modules.conf)&n; *  Bjorn Ekwall  &lt;bj0rn@blox.se&gt;&n; *  (changed to kmod)&n; *&n; *  Major improvements to the timeout, abort, and reset processing,&n; *  as well as performance modifications for large queue depths by&n; *  Leonard N. Zubkoff &lt;lnz@dandelion.com&gt;&n; *&n; *  Converted cli() code to spinlocks, Ingo Molnar&n; *&n; *  Jiffies wrap fixes (host-&gt;resetting), 3 Dec 1998 Andrea Arcangeli&n; *&n; *  out_of_space hacks, D. Gilbert (dpg) 990608&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
@@ -93,94 +94,6 @@ l_string|&quot;Enclosure        &quot;
 comma
 )brace
 suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|scsi_logging_level
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|scsi_logging_level
-comma
-l_string|&quot;SCSI logging level; should be zero or nonzero&quot;
-)paren
-suffix:semicolon
-macro_line|#ifndef MODULE
-DECL|function|scsi_logging_setup
-r_static
-r_int
-id|__init
-id|scsi_logging_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_int
-id|tmp
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|tmp
-)paren
-op_eq
-l_int|1
-)paren
-(brace
-id|scsi_logging_level
-op_assign
-(paren
-id|tmp
-ques
-c_cond
-op_complement
-l_int|0
-suffix:colon
-l_int|0
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;scsi_logging_setup : usage scsi_logging_level=n &quot;
-l_string|&quot;(n should be 0 or non-zero)&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;scsi_logging=&quot;
-comma
-id|scsi_logging_setup
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * Function:    scsi_allocate_request&n; *&n; * Purpose:     Allocate a request descriptor.&n; *&n; * Arguments:   device    - device for which we want a request&n; *&n; * Lock status: No locks assumed to be held.  This function is SMP-safe.&n; *&n; * Returns:     Pointer to request block.&n; *&n; * Notes:       With the new queueing code, it becomes important&n; *              to track the difference between a command and a&n; *              request.  A request is a pending item in the queue that&n; *              has not yet reached the top of the queue.&n; *&n; * XXX(hch):&t;Need to add a gfp_mask argument.&n; */
 DECL|function|scsi_allocate_request
 r_struct
@@ -2710,6 +2623,26 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|scsi_logging_level
+comma
+r_int
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|scsi_logging_level
+comma
+l_string|&quot;a bit mask of logging levels&quot;
 )paren
 suffix:semicolon
 DECL|function|init_scsi
