@@ -108,6 +108,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|mcp2120_init
+r_static
 r_int
 id|__init
 id|mcp2120_init
@@ -126,6 +127,7 @@ id|mcp2120
 suffix:semicolon
 )brace
 DECL|function|mcp2120_cleanup
+r_static
 r_void
 id|__exit
 id|mcp2120_cleanup

@@ -615,6 +615,7 @@ id|data
 suffix:semicolon
 multiline_comment|/*&n; * Function nsc_ircc_init ()&n; *&n; *    Initialize chip. Just try to find out how many chips we are dealing with&n; *    and where they are&n; */
 DECL|function|nsc_ircc_init
+r_static
 r_int
 id|__init
 id|nsc_ircc_init

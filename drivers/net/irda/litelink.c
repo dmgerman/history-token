@@ -116,6 +116,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|litelink_init
+r_static
 r_int
 id|__init
 id|litelink_init
@@ -134,6 +135,7 @@ id|dongle
 suffix:semicolon
 )brace
 DECL|function|litelink_cleanup
+r_static
 r_void
 id|__exit
 id|litelink_cleanup
