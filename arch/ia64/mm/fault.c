@@ -714,6 +714,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_CRIT
 l_string|&quot;VM: killing process %s&bslash;n&quot;
 comma
 id|current-&gt;comm

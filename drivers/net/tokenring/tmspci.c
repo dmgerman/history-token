@@ -741,7 +741,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Reads MAC address from adapter RAM, which should&squot;ve read it from&n; * the onboard ROM.  &n; *&n; * Calling this on a board that does not support it can be a very&n; * dangerous thing.  The Madge board, for instance, will lock your&n; * machine hard when this is called.  Luckily, its supported in a&n; * seperate driver.  --ASF&n; */
+multiline_comment|/*&n; * Reads MAC address from adapter RAM, which should&squot;ve read it from&n; * the onboard ROM.  &n; *&n; * Calling this on a board that does not support it can be a very&n; * dangerous thing.  The Madge board, for instance, will lock your&n; * machine hard when this is called.  Luckily, its supported in a&n; * separate driver.  --ASF&n; */
 DECL|function|tms_pci_read_eeprom
 r_static
 r_void

@@ -5170,7 +5170,7 @@ id|RELEASE
 suffix:semicolon
 id|SCpnt
 op_assign
-id|scsi_getset_command
+id|scsi_get_command
 c_func
 (paren
 id|ScsiDev

@@ -313,7 +313,7 @@ comma
 id|u32
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * agp_allocate_memory :&n; * &n; * This function allocates a group of pages of&n; * a certain type.&n; * &n; * It takes a size_t argument of the number of pages, and&n; * an u32 argument of the type of memory to be allocated.  &n; * Every agp bridge device will allow you to allocate &n; * AGP_NORMAL_MEMORY which maps to physical ram.  Any other&n; * type is device dependant.&n; * &n; * It returns NULL whenever memory is unavailable.&n; * &n; */
+multiline_comment|/*&n; * agp_allocate_memory :&n; * &n; * This function allocates a group of pages of&n; * a certain type.&n; * &n; * It takes a size_t argument of the number of pages, and&n; * an u32 argument of the type of memory to be allocated.  &n; * Every agp bridge device will allow you to allocate &n; * AGP_NORMAL_MEMORY which maps to physical ram.  Any other&n; * type is device dependent.&n; * &n; * It returns NULL whenever memory is unavailable.&n; * &n; */
 r_extern
 r_int
 id|agp_copy_info

@@ -3892,7 +3892,7 @@ comma
 id|scb
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Make sure our data is consistant from the&n;&t; * perspective of the adapter.&n;&t; */
+multiline_comment|/*&n;&t; * Make sure our data is consistent from the&n;&t; * perspective of the adapter.&n;&t; */
 id|ahd_sync_scb
 c_func
 (paren

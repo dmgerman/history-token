@@ -69,8 +69,6 @@ id|elf32_set_personality
 r_void
 )paren
 suffix:semicolon
-DECL|macro|ELF_PLAT_INIT
-mdefine_line|#define ELF_PLAT_INIT(_r)&t;&t;ia64_elf32_init(_r)
 DECL|macro|setup_arg_pages
 mdefine_line|#define setup_arg_pages(bprm)&t;&t;ia32_setup_arg_pages(bprm)
 DECL|macro|elf_map

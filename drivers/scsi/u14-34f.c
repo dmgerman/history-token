@@ -1014,7 +1014,7 @@ id|dev-&gt;type
 op_logical_and
 id|linked_comm
 op_logical_and
-id|dev-&gt;new_queue_depth
+id|dev-&gt;queue_depth
 OG
 l_int|2
 )paren
@@ -1060,7 +1060,7 @@ id|dev-&gt;id
 comma
 id|dev-&gt;lun
 comma
-id|dev-&gt;new_queue_depth
+id|dev-&gt;queue_depth
 comma
 id|link_suffix
 comma
@@ -5002,7 +5002,7 @@ c_cond
 (paren
 id|linked_comm
 op_logical_and
-id|SCpnt-&gt;device-&gt;new_queue_depth
+id|SCpnt-&gt;device-&gt;queue_depth
 OG
 l_int|2
 op_logical_and
@@ -8896,7 +8896,7 @@ c_cond
 (paren
 id|linked_comm
 op_logical_and
-id|SCpnt-&gt;device-&gt;new_queue_depth
+id|SCpnt-&gt;device-&gt;queue_depth
 OG
 l_int|2
 op_logical_and

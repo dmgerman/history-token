@@ -2406,8 +2406,10 @@ op_assign
 id|dummy-&gt;card
 suffix:semicolon
 r_int
+r_int
 id|idx
-comma
+suffix:semicolon
+r_int
 id|err
 suffix:semicolon
 id|snd_assert

@@ -1783,7 +1783,7 @@ id|dev_priv-&gt;cpp
 op_assign
 id|init-&gt;cpp
 suffix:semicolon
-multiline_comment|/* We are using seperate values as placeholders for mechanisms for&n;&t; * private backbuffer/depthbuffer usage.&n;&t; */
+multiline_comment|/* We are using separate values as placeholders for mechanisms for&n;&t; * private backbuffer/depthbuffer usage.&n;&t; */
 id|dev_priv-&gt;back_pitch
 op_assign
 id|init-&gt;back_pitch

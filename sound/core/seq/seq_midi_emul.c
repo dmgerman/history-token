@@ -1992,6 +1992,9 @@ c_cond
 (paren
 id|len
 op_ge
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|gm_on_macro
@@ -2369,6 +2372,9 @@ c_cond
 (paren
 id|len
 op_ge
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|xg_on_macro

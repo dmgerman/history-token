@@ -2431,7 +2431,7 @@ multiline_comment|/* ignore the remaining bits here.              */
 multiline_comment|/*                                              */
 multiline_comment|/* Note that we&squot;re ignoring scc_mask for now.   */
 multiline_comment|/* If we actually mask the ints then we tend to */
-multiline_comment|/* get hammered by very persistant SCC irqs,    */
+multiline_comment|/* get hammered by very persistent SCC irqs,    */
 multiline_comment|/* and since they&squot;re autovector interrupts they */
 multiline_comment|/* pretty much kill the system.                 */
 r_if

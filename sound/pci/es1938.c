@@ -6564,6 +6564,7 @@ op_star
 id|chip
 )paren
 (brace
+multiline_comment|/*if (chip-&gt;rmidi)&n;&t;  snd_es1938_mixer_bits(chip, ESSSB_IREG_MPU401CONTROL, 0x40, 0);*/
 macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 r_if
 c_cond
@@ -7709,25 +7710,7 @@ op_amp
 l_int|0x80
 )paren
 (brace
-multiline_comment|/* ack */
-id|snd_es1938_mixer_bits
-c_func
-(paren
-id|chip
-comma
-id|ESSSB_IREG_MPU401CONTROL
-comma
-l_int|0x40
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;midi interrupt..&bslash;n&quot;
-)paren
-suffix:semicolon
+singleline_comment|// snd_es1938_mixer_bits(chip, ESSSB_IREG_MPU401CONTROL, 0x40, 0); /* ack? */
 r_if
 c_cond
 (paren
@@ -7768,9 +7751,11 @@ op_star
 id|chip
 suffix:semicolon
 r_int
-id|err
-comma
+r_int
 id|idx
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 id|snd_assert
 c_func
@@ -7817,17 +7802,10 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-r_sizeof
+id|ARRAY_SIZE
+c_func
 (paren
 id|snd_es1938_controls
-)paren
-op_div
-r_sizeof
-(paren
-id|snd_es1938_controls
-(braket
-l_int|0
-)braket
 )paren
 suffix:semicolon
 id|idx
@@ -8333,6 +8311,7 @@ l_string|&quot;es1938: unable to initialize MPU-401&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*else&n;&t;    snd_es1938_mixer_bits(chip, ESSSB_IREG_MPU401CONTROL, 0x40, 0x40);*/
 macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 id|chip-&gt;gameport.io
 op_assign

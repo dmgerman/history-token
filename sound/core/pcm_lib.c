@@ -544,6 +544,9 @@ l_int|0
 r_if
 c_cond
 (paren
+(paren
+id|snd_pcm_uframes_t
+)paren
 id|delta
 OL
 id|runtime-&gt;buffer_size
@@ -868,6 +871,9 @@ l_int|0
 r_if
 c_cond
 (paren
+(paren
+id|snd_pcm_uframes_t
+)paren
 id|delta
 OL
 id|runtime-&gt;buffer_size
@@ -4823,7 +4829,6 @@ op_member_access_from_pointer
 r_private
 suffix:semicolon
 r_int
-r_int
 id|width
 op_assign
 id|l
@@ -8746,7 +8751,7 @@ op_ge
 id|runtime-&gt;control-&gt;avail_min
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * snd_pcm_playback_data - check whether any data exists on the playback buffer&n; * @substream: the pcm substream instance&n; *&n; * Checks whether any data exists on the playback buffer.&n; *&n; * Returns non-zero if exists, or zero if not.&n; */
+multiline_comment|/**&n; * snd_pcm_playback_data - check whether any data exists on the playback buffer&n; * @substream: the pcm substream instance&n; *&n; * Checks whether any data exists on the playback buffer. If stop_threshold&n; * is bigger or equal to boundary, then this function returns always non-zero.&n; *&n; * Returns non-zero if exists, or zero if not.&n; */
 DECL|function|snd_pcm_playback_data
 r_int
 id|snd_pcm_playback_data
@@ -8762,6 +8767,16 @@ op_star
 id|runtime
 op_assign
 id|substream-&gt;runtime
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|runtime-&gt;stop_threshold
+op_ge
+id|runtime-&gt;boundary
+)paren
+r_return
+l_int|1
 suffix:semicolon
 r_return
 id|snd_pcm_playback_avail
@@ -8997,6 +9012,9 @@ c_func
 (paren
 id|noise_dist
 op_le
+(paren
+id|snd_pcm_sframes_t
+)paren
 id|runtime-&gt;silence_threshold
 comma
 )paren
@@ -9052,6 +9070,9 @@ l_int|0
 op_logical_and
 id|frames
 OG
+(paren
+id|snd_pcm_uframes_t
+)paren
 id|n
 )paren
 id|frames
@@ -9083,6 +9104,9 @@ l_int|0
 op_logical_and
 id|frames
 OG
+(paren
+id|snd_pcm_uframes_t
+)paren
 id|n
 )paren
 id|frames
@@ -10270,6 +10294,9 @@ c_func
 id|runtime
 )paren
 op_ge
+(paren
+id|snd_pcm_sframes_t
+)paren
 id|runtime-&gt;start_threshold
 )paren
 (brace
@@ -10325,6 +10352,9 @@ OG
 l_int|0
 ques
 c_cond
+(paren
+id|snd_pcm_sframes_t
+)paren
 id|xfer
 suffix:colon
 id|err
@@ -11861,6 +11891,9 @@ OG
 l_int|0
 ques
 c_cond
+(paren
+id|snd_pcm_sframes_t
+)paren
 id|xfer
 suffix:colon
 id|err

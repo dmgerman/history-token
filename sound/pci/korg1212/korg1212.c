@@ -6463,6 +6463,10 @@ id|u-&gt;value.enumerated.item
 l_int|0
 )braket
 op_ne
+(paren
+r_int
+r_int
+)paren
 id|korg1212-&gt;sharedBufferPtr-&gt;volumeData
 (braket
 id|i
@@ -6500,6 +6504,10 @@ id|u-&gt;value.enumerated.item
 l_int|1
 )braket
 op_ne
+(paren
+r_int
+r_int
+)paren
 id|korg1212-&gt;sharedBufferPtr-&gt;volumeData
 (braket
 id|i
@@ -7385,6 +7393,7 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+r_int
 r_int
 id|i
 suffix:semicolon

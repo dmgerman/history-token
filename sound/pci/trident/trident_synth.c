@@ -3007,6 +3007,10 @@ op_increment
 r_if
 c_cond
 (paren
+(paren
+r_int
+r_int
+)paren
 id|volume-&gt;lr
 op_ge
 id|pan_table
@@ -5060,6 +5064,7 @@ op_star
 id|voice
 suffix:semicolon
 r_int
+r_int
 id|idx
 suffix:semicolon
 r_int
@@ -5871,6 +5876,8 @@ op_or
 id|SNDRV_SEQ_PORT_TYPE_DIRECT_SAMPLE
 op_or
 id|SNDRV_SEQ_PORT_TYPE_SYNTH
+comma
+l_int|16
 comma
 id|name
 )paren

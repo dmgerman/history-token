@@ -3797,7 +3797,7 @@ comma
 id|sig
 )paren
 op_logical_or
-id|current-&gt;sig-&gt;action
+id|current-&gt;sighand-&gt;action
 (braket
 id|sig
 op_minus

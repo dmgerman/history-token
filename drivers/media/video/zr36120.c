@@ -178,7 +178,7 @@ id|ZORAN_MAX
 suffix:semicolon
 multiline_comment|/*&n; * the meaning of each element can be found in zr36120.h&n; * Determining the value of gpdir/gpval can be tricky. The&n; * best way is to run the card under the original software&n; * and read the values from the general purpose registers&n; * 0x28 and 0x2C. How you do that is left as an exercise&n; * to the impatient reader :)&n; */
 DECL|macro|T
-mdefine_line|#define T 1&t;/* to seperate the bools from the ints */
+mdefine_line|#define T 1&t;/* to separate the bools from the ints */
 DECL|macro|F
 mdefine_line|#define F 0
 DECL|variable|tvcards

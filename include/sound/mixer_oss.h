@@ -117,6 +117,7 @@ op_star
 id|fmixer
 comma
 r_int
+r_int
 op_star
 id|active_index
 )paren
@@ -133,6 +134,7 @@ id|snd_mixer_oss_file_t
 op_star
 id|fmixer
 comma
+r_int
 r_int
 id|active_index
 )paren

@@ -130,6 +130,7 @@ op_star
 id|voice
 suffix:semicolon
 r_int
+r_int
 id|idx
 suffix:semicolon
 r_if
@@ -530,6 +531,7 @@ id|what
 )paren
 (brace
 r_int
+r_int
 id|idx
 suffix:semicolon
 id|snd_gus_card_t
@@ -838,6 +840,8 @@ op_or
 id|SNDRV_SEQ_PORT_TYPE_DIRECT_SAMPLE
 op_or
 id|SNDRV_SEQ_PORT_TYPE_SYNTH
+comma
+l_int|16
 comma
 id|name
 )paren

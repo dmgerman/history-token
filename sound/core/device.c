@@ -732,7 +732,9 @@ id|list
 suffix:semicolon
 r_int
 id|err
-comma
+suffix:semicolon
+r_int
+r_int
 id|range_low
 comma
 id|range_high

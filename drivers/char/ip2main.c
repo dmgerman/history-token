@@ -10,7 +10,7 @@ singleline_comment|// Done:
 singleline_comment|//
 singleline_comment|// 1.2.14&t;/&bslash;/&bslash;|=mhw=|&bslash;/&bslash;/
 singleline_comment|// Added bounds checking to ip2_ipl_ioctl to avoid potential terroristic acts.
-singleline_comment|// Changed the definition of ip2trace to be more consistant with kernel style
+singleline_comment|// Changed the definition of ip2trace to be more consistent with kernel style
 singleline_comment|//&t;Thanks to Andreas Dilger &lt;adilger@turbolabs.com&gt; for these updates
 singleline_comment|//
 singleline_comment|// 1.2.13&t;/&bslash;/&bslash;|=mhw=|&bslash;/&bslash;/
@@ -5653,7 +5653,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef NEVER_HAPPENS_AS_SETUP_XXX
 singleline_comment|// and can&squot;t work because we don&squot;t know the_char
-singleline_comment|// as the_char is reported on a seperate path
+singleline_comment|// as the_char is reported on a separate path
 singleline_comment|// The intelligent board does this stuff as setup
 (brace
 r_char

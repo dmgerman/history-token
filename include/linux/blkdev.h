@@ -4,6 +4,8 @@ mdefine_line|#define _LINUX_BLKDEV_H
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
@@ -571,6 +573,28 @@ DECL|member|merge_bvec_fn
 id|merge_bvec_fn
 op_star
 id|merge_bvec_fn
+suffix:semicolon
+multiline_comment|/*&n;&t; * Auto-unplugging state&n;&t; */
+DECL|member|unplug_timer
+r_struct
+id|timer_list
+id|unplug_timer
+suffix:semicolon
+DECL|member|unplug_thresh
+r_int
+id|unplug_thresh
+suffix:semicolon
+multiline_comment|/* After this many requests */
+DECL|member|unplug_delay
+r_int
+r_int
+id|unplug_delay
+suffix:semicolon
+multiline_comment|/* After this many jiffies */
+DECL|member|unplug_work
+r_struct
+id|work_struct
+id|unplug_work
 suffix:semicolon
 DECL|member|backing_dev_info
 r_struct

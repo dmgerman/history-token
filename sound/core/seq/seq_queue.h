@@ -119,11 +119,6 @@ DECL|member|use_lock
 id|snd_use_lock_t
 id|use_lock
 suffix:semicolon
-DECL|member|taskq
-r_struct
-id|tasklet_struct
-id|taskq
-suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* get the number of current queues */

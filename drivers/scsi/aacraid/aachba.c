@@ -1195,7 +1195,7 @@ comma
 l_string|&quot;Unknown&quot;
 )brace
 suffix:semicolon
-multiline_comment|/* Function: setinqstr&n; *&n; * Arguments: [1] pointer to void [1] int&n; *&n; * Purpose: Sets SCSI inquiry data strings for vendor, product&n; * and revision level. Allows strings to be set in platform dependant&n; * files instead of in OS dependant driver source.&n; */
+multiline_comment|/* Function: setinqstr&n; *&n; * Arguments: [1] pointer to void [1] int&n; *&n; * Purpose: Sets SCSI inquiry data strings for vendor, product&n; * and revision level. Allows strings to be set in platform dependent&n; * files instead of in OS dependent driver source.&n; */
 DECL|function|setinqstr
 r_static
 r_void

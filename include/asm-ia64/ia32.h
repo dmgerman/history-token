@@ -6,57 +6,6 @@ macro_line|#ifdef CONFIG_IA32_SUPPORT
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 multiline_comment|/*&n; * 32 bit structures for IA32 support.&n; */
-multiline_comment|/* 32bit compatibility types */
-DECL|typedef|__kernel_ipc_pid_t32
-r_typedef
-r_int
-r_int
-id|__kernel_ipc_pid_t32
-suffix:semicolon
-DECL|typedef|__kernel_uid32_t32
-r_typedef
-r_int
-r_int
-id|__kernel_uid32_t32
-suffix:semicolon
-DECL|typedef|__kernel_gid32_t32
-r_typedef
-r_int
-r_int
-id|__kernel_gid32_t32
-suffix:semicolon
-DECL|typedef|__kernel_umode_t32
-r_typedef
-r_int
-r_int
-id|__kernel_umode_t32
-suffix:semicolon
-DECL|typedef|__kernel_nlink_t32
-r_typedef
-r_int
-id|__kernel_nlink_t32
-suffix:semicolon
-DECL|typedef|__kernel_daddr_t32
-r_typedef
-r_int
-id|__kernel_daddr_t32
-suffix:semicolon
-DECL|typedef|__kernel_caddr_t32
-r_typedef
-r_int
-r_int
-id|__kernel_caddr_t32
-suffix:semicolon
-DECL|typedef|__kernel_loff_t32
-r_typedef
-r_int
-id|__kernel_loff_t32
-suffix:semicolon
-DECL|typedef|__kernel_fsid_t32
-r_typedef
-id|__kernel_fsid_t
-id|__kernel_fsid_t32
-suffix:semicolon
 DECL|macro|IA32_PAGE_SHIFT
 mdefine_line|#define IA32_PAGE_SHIFT&t;&t;12&t;/* 4KB pages */
 DECL|macro|IA32_PAGE_SIZE
@@ -481,33 +430,12 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* signal.h */
-DECL|macro|_IA32_NSIG
-mdefine_line|#define _IA32_NSIG&t;       64
-DECL|macro|_IA32_NSIG_BPW
-mdefine_line|#define _IA32_NSIG_BPW&t;       32
-DECL|macro|_IA32_NSIG_WORDS
-mdefine_line|#define _IA32_NSIG_WORDS&t;       (_IA32_NSIG / _IA32_NSIG_BPW)
 DECL|macro|IA32_SET_SA_HANDLER
 mdefine_line|#define IA32_SET_SA_HANDLER(ka,handler,restorer)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;((ka)-&gt;sa.sa_handler = (__sighandler_t)&t;&t;&bslash;&n;&t;&t;&t;&t;&t;(((unsigned long)(restorer) &lt;&lt; 32)&t;&bslash;&n;&t;&t;&t;&t;&t; | ((handler) &amp; 0xffffffff)))
 DECL|macro|IA32_SA_HANDLER
 mdefine_line|#define IA32_SA_HANDLER(ka)&t;((unsigned long) (ka)-&gt;sa.sa_handler &amp; 0xffffffff)
 DECL|macro|IA32_SA_RESTORER
 mdefine_line|#define IA32_SA_RESTORER(ka)&t;((unsigned long) (ka)-&gt;sa.sa_handler &gt;&gt; 32)
-r_typedef
-r_struct
-(brace
-DECL|member|sig
-r_int
-r_int
-id|sig
-(braket
-id|_IA32_NSIG_WORDS
-)braket
-suffix:semicolon
-DECL|typedef|sigset32_t
-)brace
-id|sigset32_t
-suffix:semicolon
 DECL|struct|sigaction32
 r_struct
 id|sigaction32
@@ -530,19 +458,12 @@ id|sa_restorer
 suffix:semicolon
 multiline_comment|/* Another 32 bit pointer */
 DECL|member|sa_mask
-id|sigset32_t
+id|compat_sigset_t
 id|sa_mask
 suffix:semicolon
 multiline_comment|/* A 32 bit mask */
 )brace
 suffix:semicolon
-DECL|typedef|old_sigset32_t
-r_typedef
-r_int
-r_int
-id|old_sigset32_t
-suffix:semicolon
-multiline_comment|/* at least 32 bits */
 DECL|struct|old_sigaction32
 r_struct
 id|old_sigaction32
@@ -554,7 +475,7 @@ id|sa_handler
 suffix:semicolon
 multiline_comment|/* Really a pointer, but need to deal&n;&t;&t;&t;&t;&t;     with 32 bits */
 DECL|member|sa_mask
-id|old_sigset32_t
+id|compat_old_sigset_t
 id|sa_mask
 suffix:semicolon
 multiline_comment|/* A 32 bit mask */
@@ -745,56 +666,6 @@ DECL|member|st_ino_hi
 r_int
 r_int
 id|st_ino_hi
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|statfs32
-r_struct
-id|statfs32
-(brace
-DECL|member|f_type
-r_int
-id|f_type
-suffix:semicolon
-DECL|member|f_bsize
-r_int
-id|f_bsize
-suffix:semicolon
-DECL|member|f_blocks
-r_int
-id|f_blocks
-suffix:semicolon
-DECL|member|f_bfree
-r_int
-id|f_bfree
-suffix:semicolon
-DECL|member|f_bavail
-r_int
-id|f_bavail
-suffix:semicolon
-DECL|member|f_files
-r_int
-id|f_files
-suffix:semicolon
-DECL|member|f_ffree
-r_int
-id|f_ffree
-suffix:semicolon
-DECL|member|f_fsid
-id|__kernel_fsid_t32
-id|f_fsid
-suffix:semicolon
-DECL|member|f_namelen
-r_int
-id|f_namelen
-suffix:semicolon
-multiline_comment|/* SunOS ignores this field. */
-DECL|member|f_spare
-r_int
-id|f_spare
-(braket
-l_int|6
-)braket
 suffix:semicolon
 )brace
 suffix:semicolon

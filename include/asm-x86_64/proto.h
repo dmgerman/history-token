@@ -1,6 +1,7 @@
 macro_line|#ifndef _ASM_X8664_PROTO_H
 DECL|macro|_ASM_X8664_PROTO_H
 mdefine_line|#define _ASM_X8664_PROTO_H 1
+macro_line|#include &lt;asm/ldt.h&gt;
 multiline_comment|/* misc architecture specific prototypes */
 r_struct
 id|cpuinfo_x86

@@ -146,7 +146,7 @@ multiline_comment|/* IOMMU controls.  */
 multiline_comment|/* The PCI address space does not equal the physical memory address space.&n;   The networking and block device layers use this boolean for bounce buffer&n;   decisions.  */
 DECL|macro|PCI_DMA_BUS_IS_PHYS
 mdefine_line|#define PCI_DMA_BUS_IS_PHYS  0
-multiline_comment|/* Allocate and map kernel buffer using consistant mode DMA for PCI&n;   device.  Returns non-NULL cpu-view pointer to the buffer if&n;   successful and sets *DMA_ADDRP to the pci side dma address as well,&n;   else DMA_ADDRP is undefined.  */
+multiline_comment|/* Allocate and map kernel buffer using consistent mode DMA for PCI&n;   device.  Returns non-NULL cpu-view pointer to the buffer if&n;   successful and sets *DMA_ADDRP to the pci side dma address as well,&n;   else DMA_ADDRP is undefined.  */
 r_extern
 r_void
 op_star
@@ -163,7 +163,7 @@ id|dma_addr_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Free and unmap a consistant DMA buffer.  CPU_ADDR and DMA_ADDR must&n;   be values that were returned from pci_alloc_consistant.  SIZE must&n;   be the same as what as passed into pci_alloc_consistant.&n;   References to the memory and mappings assosciated with CPU_ADDR or&n;   DMA_ADDR past this call are illegal.  */
+multiline_comment|/* Free and unmap a consistent DMA buffer.  CPU_ADDR and DMA_ADDR must&n;   be values that were returned from pci_alloc_consistent.  SIZE must&n;   be the same as what as passed into pci_alloc_consistent.&n;   References to the memory and mappings assosciated with CPU_ADDR or&n;   DMA_ADDR past this call are illegal.  */
 r_extern
 r_void
 id|pci_free_consistent
@@ -305,7 +305,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/* Make physical memory consistant for a single streaming mode DMA&n;   translation after a transfer.&n;&n;   If you perform a pci_map_single() but wish to interrogate the&n;   buffer using the cpu, yet do not wish to teardown the PCI dma&n;   mapping, you must call this function before doing so.  At the next&n;   point you give the PCI dma address back to the card, the device&n;   again owns the buffer.  */
+multiline_comment|/* Make physical memory consistent for a single streaming mode DMA&n;   translation after a transfer.&n;&n;   If you perform a pci_map_single() but wish to interrogate the&n;   buffer using the cpu, yet do not wish to teardown the PCI dma&n;   mapping, you must call this function before doing so.  At the next&n;   point you give the PCI dma address back to the card, the device&n;   again owns the buffer.  */
 r_static
 r_inline
 r_void
@@ -330,7 +330,7 @@ id|direction
 (brace
 multiline_comment|/* Nothing to do.  */
 )brace
-multiline_comment|/* Make physical memory consistant for a set of streaming mode DMA&n;   translations after a transfer.  The same as pci_dma_sync_single but&n;   for a scatter-gather list, same rules and usage.  */
+multiline_comment|/* Make physical memory consistent for a set of streaming mode DMA&n;   translations after a transfer.  The same as pci_dma_sync_single but&n;   for a scatter-gather list, same rules and usage.  */
 r_static
 r_inline
 r_void

@@ -2045,11 +2045,11 @@ c_func
 id|snd_dma_disable
 )paren
 suffix:semicolon
-DECL|variable|snd_dma_residue
+DECL|variable|snd_dma_pointer
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|snd_dma_residue
+id|snd_dma_pointer
 )paren
 suffix:semicolon
 macro_line|#endif

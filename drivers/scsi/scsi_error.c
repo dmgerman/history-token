@@ -200,6 +200,13 @@ op_star
 id|scmd
 )paren
 (brace
+r_struct
+id|Scsi_Host
+op_star
+id|shost
+op_assign
+id|scmd-&gt;device-&gt;host
+suffix:semicolon
 multiline_comment|/* Set the serial_number_at_timeout to the current serial_number */
 id|scmd-&gt;serial_number_at_timeout
 op_assign
@@ -218,9 +225,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|scmd-&gt;device-&gt;host-&gt;eh_wait
+id|unlikely
+c_func
+(paren
+id|shost-&gt;eh_wait
 op_eq
 l_int|NULL
+)paren
 )paren
 (brace
 id|panic
@@ -230,7 +241,7 @@ l_string|&quot;Error handler thread not present at %p %p %s %d&quot;
 comma
 id|scmd
 comma
-id|scmd-&gt;device-&gt;host
+id|shost
 comma
 id|__FILE__
 comma
@@ -241,7 +252,7 @@ suffix:semicolon
 id|scsi_host_failed_inc_and_test
 c_func
 (paren
-id|scmd-&gt;device-&gt;host
+id|shost
 )paren
 suffix:semicolon
 id|SCSI_LOG_TIMEOUT
@@ -252,19 +263,11 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;Command timed out active=%d busy=%d &quot;
-l_string|&quot; failed=%d&bslash;n&quot;
+l_string|&quot;Command timed out busy=%d failed=%d&bslash;n&quot;
 comma
-id|atomic_read
-c_func
-(paren
-op_amp
-id|scmd-&gt;device-&gt;host-&gt;host_active
-)paren
+id|shost-&gt;host_busy
 comma
-id|scmd-&gt;device-&gt;host-&gt;host_busy
-comma
-id|scmd-&gt;device-&gt;host-&gt;host_failed
+id|shost-&gt;host_failed
 )paren
 )paren
 suffix:semicolon
@@ -4149,7 +4152,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|sigfillset
@@ -4168,7 +4171,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|lock_kernel

@@ -29,17 +29,6 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 r_extern
-r_void
-id|signal_wake_up
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|t
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|sys_sync
 c_func
@@ -457,7 +446,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|p-&gt;sig-&gt;siglock
+id|p-&gt;sighand-&gt;siglock
 comma
 id|flags
 )paren
@@ -466,13 +455,15 @@ id|signal_wake_up
 c_func
 (paren
 id|p
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|p-&gt;sig-&gt;siglock
+id|p-&gt;sighand-&gt;siglock
 comma
 id|flags
 )paren

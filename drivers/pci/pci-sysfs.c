@@ -2,6 +2,7 @@ multiline_comment|/*&n; * drivers/pci/pci-sysfs.c&n; *&n; * (C) Copyright 2002 G
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &quot;pci.h&quot;
 macro_line|#if BITS_PER_LONG == 32
 DECL|macro|LONG_FORMAT

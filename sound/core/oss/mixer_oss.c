@@ -2498,6 +2498,7 @@ id|present
 suffix:semicolon
 DECL|member|channels
 r_int
+r_int
 id|channels
 suffix:semicolon
 DECL|member|kcontrol
@@ -4516,6 +4517,7 @@ op_star
 id|fmixer
 comma
 r_int
+r_int
 op_star
 id|active_index
 )paren
@@ -4825,6 +4827,7 @@ op_star
 id|fmixer
 comma
 r_int
+r_int
 id|active_index
 )paren
 (brace
@@ -4865,7 +4868,9 @@ id|uctl
 suffix:semicolon
 r_int
 id|err
-comma
+suffix:semicolon
+r_int
+r_int
 id|idx
 suffix:semicolon
 id|uinfo
@@ -7165,6 +7170,7 @@ comma
 l_int|0
 )brace
 suffix:semicolon
+r_int
 r_int
 id|idx
 suffix:semicolon

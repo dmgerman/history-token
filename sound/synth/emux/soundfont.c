@@ -620,6 +620,9 @@ c_cond
 (paren
 id|count
 OL
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|patch
@@ -1781,6 +1784,9 @@ c_cond
 (paren
 id|count
 OL
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|map
@@ -2207,6 +2213,9 @@ c_cond
 (paren
 id|count
 OL
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|hdr
@@ -2293,6 +2302,9 @@ c_cond
 (paren
 id|count
 OL
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|soundfont_voice_info_t
@@ -4617,6 +4629,9 @@ c_cond
 (paren
 id|count
 OL
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|patch

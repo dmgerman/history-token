@@ -639,9 +639,9 @@ id|snd_pmac_probe
 c_func
 (paren
 )paren
+)paren
 OL
 l_int|0
-)paren
 )paren
 (brace
 macro_line|#ifdef MODULE

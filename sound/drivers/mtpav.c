@@ -1716,6 +1716,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|mcrd-&gt;inmidiport
 OG
 id|mcrd-&gt;num_ports
