@@ -2829,6 +2829,20 @@ c_func
 id|seq_lseek
 )paren
 suffix:semicolon
+DECL|variable|single_open
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|single_open
+)paren
+suffix:semicolon
+DECL|variable|single_release
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|single_release
+)paren
+suffix:semicolon
 multiline_comment|/* Program loader interfaces */
 DECL|variable|setup_arg_pages
 id|EXPORT_SYMBOL
