@@ -24,6 +24,7 @@ macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/scm.h&gt;
 DECL|macro|Nprintk
@@ -2898,16 +2899,30 @@ id|ucred
 )paren
 suffix:semicolon
 multiline_comment|/* What can I do? Netlink is asynchronous, so that&n;&t;   we will have to save current capabilities to&n;&t;   check them, when this message will be delivered&n;&t;   to corresponding kernel module.   --ANK (980802)&n;&t; */
-id|NETLINK_CB
+id|err
+op_assign
+id|security_netlink_send
 c_func
 (paren
 id|skb
 )paren
-dot
-id|eff_cap
-op_assign
-id|current-&gt;cap_effective
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+(brace
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|err
 op_assign
 op_minus

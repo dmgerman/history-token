@@ -918,6 +918,16 @@ op_assign
 id|cap_capable
 comma
 dot
+id|netlink_send
+op_assign
+id|cap_netlink_send
+comma
+dot
+id|netlink_recv
+op_assign
+id|cap_netlink_recv
+comma
+dot
 id|bprm_compute_creds
 op_assign
 id|cap_bprm_compute_creds
