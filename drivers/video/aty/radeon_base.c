@@ -7849,13 +7849,7 @@ id|FP_TMDS_EN
 )paren
 suffix:semicolon
 id|newmode-&gt;tmds_transmitter_cntl
-op_assign
-(paren
-id|TMDS_RAN_PAT_RST
-op_or
-id|TMDS_ICHCSEL
-)paren
-op_amp
+op_and_assign
 op_complement
 (paren
 id|TMDS_PLLRST
