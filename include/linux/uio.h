@@ -10,6 +10,7 @@ id|iovec
 (brace
 DECL|member|iov_base
 r_void
+id|__user
 op_star
 id|iov_base
 suffix:semicolon

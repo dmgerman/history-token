@@ -1606,6 +1606,7 @@ id|file
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -1990,6 +1991,7 @@ l_int|0
 )paren
 (brace
 r_void
+id|__user
 op_star
 id|base
 suffix:semicolon
