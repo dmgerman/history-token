@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * kernel/power/main.c - PM subsystem core functionality.&n; *&n; * Copyright (c) 2003 Patrick Mochel&n; * Copyright (c) 2003 Open Source Development Lab&n; * &n; * This file is release under the GPLv2&n; *&n; */
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -468,6 +466,23 @@ id|pm_sem
 suffix:semicolon
 r_return
 id|error
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * This is main interface to the outside world. It needs to be&n; * called from process context.&n; */
+DECL|function|software_suspend
+r_int
+id|software_suspend
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|enter_state
+c_func
+(paren
+id|PM_SUSPEND_DISK
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;pm_suspend - Externally visible function for suspending system.&n; *&t;@state:&t;&t;Enumarted value of state to enter.&n; *&n; *&t;Determine whether or not value is within range, get state &n; *&t;structure, and enter (above).&n; */
