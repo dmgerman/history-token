@@ -818,7 +818,9 @@ comma
 op_amp
 id|chip-&gt;work
 comma
-l_int|1
+id|HZ
+op_div
+l_int|10
 )paren
 suffix:semicolon
 )brace
@@ -3047,7 +3049,9 @@ comma
 op_amp
 id|chip-&gt;work
 comma
-l_int|1
+id|HZ
+op_div
+l_int|10
 )paren
 suffix:semicolon
 )brace
