@@ -1029,6 +1029,11 @@ id|buffer_head
 op_star
 id|bh
 suffix:semicolon
+r_struct
+id|inode
+op_star
+id|root
+suffix:semicolon
 id|sb
 op_assign
 id|kmalloc
@@ -1269,11 +1274,8 @@ op_assign
 op_amp
 id|efs_superblock_operations
 suffix:semicolon
-id|s-&gt;s_root
+id|root
 op_assign
-id|d_alloc_root
-c_func
-(paren
 id|iget
 c_func
 (paren
@@ -1281,6 +1283,13 @@ id|s
 comma
 id|EFS_ROOTINODE
 )paren
+suffix:semicolon
+id|s-&gt;s_root
+op_assign
+id|d_alloc_root
+c_func
+(paren
+id|root
 )paren
 suffix:semicolon
 r_if
@@ -1297,6 +1306,12 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;EFS: get root inode failed&bslash;n&quot;
+)paren
+suffix:semicolon
+id|iput
+c_func
+(paren
+id|root
 )paren
 suffix:semicolon
 r_goto
