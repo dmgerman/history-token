@@ -3243,7 +3243,7 @@ ques
 c_cond
 id|opt.iocharset
 suffix:colon
-l_string|&quot;iso8859-1&quot;
+id|CONFIG_NLS_DEFAULT
 suffix:semicolon
 id|sbi-&gt;s_nls_iocharset
 op_assign
