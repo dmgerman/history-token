@@ -414,11 +414,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Now we need to make sure that target_dir is properly connected.&n;&t; * It may already be, as the flag isn&squot;t always updated when connection&n;&t; * happens.&n;&t; * So, we walk up parent links until we find a connected directory,&n;&t; * or we run out of directories.  Then we find the parent, find&n;&t; * the name of the child in that parent, and do a lookup.&n;&t; * This should connect the child into the parent&n;&t; * We then repeat.&n;&t; */
 multiline_comment|/* it is possible that a confused file system might not let us complete &n;&t; * the path to the root.  For example, if get_parent returns a directory&n;&t; * in which we cannot find a name for the child.  While this implies a&n;&t; * very sick filesystem we don&squot;t want it to cause knfsd to spin.  Hence&n;&t; * the noprogress counter.  If we go through the loop 10 times (2 is&n;&t; * probably enough) without getting anywhere, we just give up&n;&t; */
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|noprogress
 op_assign
 l_int|0
@@ -868,11 +863,6 @@ op_assign
 op_minus
 id|ESTALE
 suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_goto
 id|err_target
 suffix:semicolon
@@ -995,11 +985,6 @@ id|dput
 c_func
 (paren
 id|target_dir
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* now result is properly connected, it is our best bet */

@@ -118,6 +118,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|skb
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 multiline_comment|/* increment the free data low queue pointer */
 id|priv-&gt;free_data_tx
@@ -145,7 +149,11 @@ id|islpci_private
 op_star
 id|priv
 op_assign
-id|ndev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|ndev
+)paren
 suffix:semicolon
 id|isl38xx_control_block
 op_star
@@ -829,6 +837,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|skb
+op_assign
+l_int|NULL
+suffix:semicolon
 id|priv-&gt;statistics.tx_dropped
 op_increment
 suffix:semicolon
@@ -1267,12 +1279,18 @@ c_cond
 (paren
 id|discard
 )paren
+(brace
 id|dev_kfree_skb
 c_func
 (paren
 id|skb
 )paren
 suffix:semicolon
+id|skb
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 r_else
 id|netif_rx
 c_func
@@ -1432,6 +1450,10 @@ op_star
 id|skb
 )paren
 suffix:semicolon
+id|skb
+op_assign
+l_int|NULL
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -1508,7 +1530,11 @@ id|islpci_private
 op_star
 id|priv
 op_assign
-id|ndev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|ndev
+)paren
 suffix:semicolon
 r_struct
 id|net_device_stats
