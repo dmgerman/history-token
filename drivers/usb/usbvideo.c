@@ -3894,6 +3894,28 @@ id|cams-&gt;cb.disconnect
 op_assign
 id|usbvideo_Disconnect
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cams-&gt;cb.startDataPump
+op_eq
+l_int|NULL
+)paren
+id|cams-&gt;cb.startDataPump
+op_assign
+id|usbvideo_StartDataPump
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cams-&gt;cb.stopDataPump
+op_eq
+l_int|NULL
+)paren
+id|cams-&gt;cb.stopDataPump
+op_assign
+id|usbvideo_StopDataPump
+suffix:semicolon
 macro_line|#if USES_PROC_FS
 multiline_comment|/*&n;&t; * If both /proc fs callbacks are NULL then we assume that the driver&n;&t; * does not need procfs services at all. Leave them NULL.&n;&t; */
 id|cams-&gt;uses_procfs
@@ -4539,8 +4561,13 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Now all ISO data will be ignored */
 multiline_comment|/* At this time we ask to cancel outstanding URBs */
-id|usbvideo_StopDataPump
+id|GET_CALLBACK
 c_func
+(paren
+id|uvd
+comma
+id|stopDataPump
+)paren
 (paren
 id|uvd
 )paren
@@ -6097,8 +6124,13 @@ l_int|0
 )paren
 id|errCode
 op_assign
-id|usbvideo_StartDataPump
+id|GET_CALLBACK
 c_func
+(paren
+id|uvd
+comma
+id|startDataPump
+)paren
 (paren
 id|uvd
 )paren
@@ -6321,8 +6353,13 @@ op_amp
 id|uvd-&gt;lock
 )paren
 suffix:semicolon
-id|usbvideo_StopDataPump
+id|GET_CALLBACK
 c_func
+(paren
+id|uvd
+comma
+id|stopDataPump
+)paren
 (paren
 id|uvd
 )paren
