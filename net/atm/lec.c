@@ -2633,12 +2633,14 @@ id|atmdev_ops
 id|lecdev_ops
 op_assign
 (brace
+dot
 id|close
-suffix:colon
+op_assign
 id|lec_atm_close
 comma
+dot
 id|send
-suffix:colon
+op_assign
 id|lec_atm_send
 )brace
 suffix:semicolon
