@@ -72,6 +72,16 @@ id|dev
 )paren
 suffix:semicolon
 r_void
+id|fixup_resources
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_void
 id|iSeries_pcibios_init
 c_func
 (paren

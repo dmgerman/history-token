@@ -1367,7 +1367,7 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_ALERT
+id|KERN_INFO
 l_string|&quot;mf.c: init has been successfully notified to proceed with shutdown&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1454,7 +1454,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_ALERT
+id|KERN_INFO
 l_string|&quot;mf.c: Commencing partition shutdown&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1637,7 +1637,7 @@ multiline_comment|/* IT sys shutdown */
 id|printk
 c_func
 (paren
-id|KERN_ALERT
+id|KERN_INFO
 l_string|&quot;mf.c: Commencing system shutdown&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2380,7 +2380,7 @@ r_void
 id|printk
 c_func
 (paren
-id|KERN_ALERT
+id|KERN_INFO
 l_string|&quot;mf.c: Down it goes...&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2412,7 +2412,7 @@ r_void
 id|printk
 c_func
 (paren
-id|KERN_ALERT
+id|KERN_INFO
 l_string|&quot;mf.c: Preparing to bounce...&bslash;n&quot;
 )paren
 suffix:semicolon

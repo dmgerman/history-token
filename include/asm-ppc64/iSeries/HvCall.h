@@ -108,6 +108,8 @@ DECL|macro|HvCallBaseRouter29
 mdefine_line|#define HvCallBaseRouter29&t;&t;&t;&t;HvCallBase + 29
 DECL|macro|HvCallBaseRouter30
 mdefine_line|#define HvCallBaseRouter30&t;&t;&t;&t;HvCallBase + 30
+DECL|macro|HvCallBaseSetDebugBus
+mdefine_line|#define HvCallBaseSetDebugBus &t;&t;&t;&t;HvCallBase + 31
 DECL|macro|HvCallCcSetDABR
 mdefine_line|#define HvCallCcSetDABR  &t;&t;&t;&t;HvCallCc + 7
 singleline_comment|//=====================================================================================
@@ -390,6 +392,27 @@ id|HvCall1
 c_func
 (paren
 id|HvCallCcSetDABR
+comma
+id|val
+)paren
+suffix:semicolon
+)brace
+DECL|function|HvCall_setDebugBus
+r_static
+r_inline
+r_void
+id|HvCall_setDebugBus
+c_func
+(paren
+r_int
+r_int
+id|val
+)paren
+(brace
+id|HvCall1
+c_func
+(paren
+id|HvCallBaseSetDebugBus
 comma
 id|val
 )paren
