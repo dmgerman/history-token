@@ -2595,7 +2595,6 @@ c_cond
 (paren
 id|addr
 )paren
-r_return
 id|vfree
 c_func
 (paren

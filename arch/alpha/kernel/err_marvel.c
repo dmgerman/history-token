@@ -3788,7 +3788,6 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* Don&squot;t know it - pass it up.  */
-r_return
 id|ev7_machine_check
 c_func
 (paren
@@ -3798,6 +3797,8 @@ id|la_ptr
 comma
 id|regs
 )paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * A system event or error has occured, handle it here.&n;&t; *&n;&t; * Any errors in the logout frame have already been cleared by the&n;&t; * PALcode, so just parse it.&n;&t; */

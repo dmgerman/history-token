@@ -1442,7 +1442,7 @@ op_ne
 id|SCB_Q_SYSERR
 )paren
 )paren
-r_return
+(brace
 id|ev6_machine_check
 c_func
 (paren
@@ -1453,6 +1453,9 @@ comma
 id|regs
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* &n;&t; * It&squot;s a system error, handle it here&n;&t; *&n;&t; * The PALcode has already cleared the error, so just parse it&n;&t; */
 multiline_comment|/* &n;&t; * Parse the logout frame without printing first. If the only error(s)&n;&t; * found are classified as &quot;dismissable&quot;, then just dismiss them and&n;&t; * don&squot;t print any message&n;&t; */
 r_if
