@@ -39,6 +39,8 @@ DECL|macro|MPU401_HW_INTEL8X0
 mdefine_line|#define MPU401_HW_INTEL8X0&t;&t;17&t;/* Intel8x0 driver */
 DECL|macro|MPU401_HW_PC98II
 mdefine_line|#define MPU401_HW_PC98II&t;&t;18&t;/* Roland PC98II */
+DECL|macro|MPU401_HW_AUREAL
+mdefine_line|#define MPU401_HW_AUREAL&t;&t;19&t;/* Aureal Vortex */
 DECL|macro|MPU401_MODE_BIT_INPUT
 mdefine_line|#define MPU401_MODE_BIT_INPUT&t;&t;0
 DECL|macro|MPU401_MODE_BIT_OUTPUT
@@ -201,6 +203,43 @@ DECL|member|timer
 r_struct
 id|timer_list
 id|timer
+suffix:semicolon
+DECL|member|write
+r_void
+(paren
+op_star
+id|write
+)paren
+(paren
+id|mpu401_t
+op_star
+id|mpu
+comma
+r_int
+r_char
+id|data
+comma
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
+DECL|member|read
+r_int
+r_char
+(paren
+op_star
+id|read
+)paren
+(paren
+id|mpu401_t
+op_star
+id|mpu
+comma
+r_int
+r_int
+id|addr
+)paren
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -588,6 +588,8 @@ id|type
 comma
 id|max_channels
 comma
+id|emu-&gt;max_voices
+comma
 id|name
 )paren
 suffix:semicolon

@@ -3440,11 +3440,6 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
-id|err
-op_assign
-op_minus
-id|ENOPROTOOPT
-suffix:semicolon
 macro_line|#ifdef CONFIG_PM
 r_if
 c_cond
@@ -3477,7 +3472,13 @@ id|card
 )paren
 suffix:semicolon
 )brace
+r_else
 macro_line|#endif
+id|err
+op_assign
+op_minus
+id|ENOPROTOOPT
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon

@@ -31,6 +31,10 @@ DECL|member|length
 id|u32
 id|length
 suffix:semicolon
+DECL|member|driver_data
+id|u32
+id|driver_data
+suffix:semicolon
 )brace
 multiline_comment|/* don&squot;t set packed attribute here */
 suffix:semicolon
@@ -143,6 +147,10 @@ suffix:semicolon
 id|data.length
 op_assign
 id|data32.length
+suffix:semicolon
+id|data.driver_data
+op_assign
+id|data32.driver_data
 suffix:semicolon
 id|oldseg
 op_assign

@@ -234,8 +234,8 @@ DECL|macro|AC97_MEI_LINE1
 mdefine_line|#define AC97_MEI_LINE1&t;&t;0x0001&t;/* Line1 present */
 DECL|macro|AC97_MEI_LINE2
 mdefine_line|#define AC97_MEI_LINE2&t;&t;0x0002&t;/* Line2 present */
-DECL|macro|AC97_MEI_HEADSET
-mdefine_line|#define AC97_MEI_HEADSET&t;0x0004&t;/* Headset present */
+DECL|macro|AC97_MEI_HANDSET
+mdefine_line|#define AC97_MEI_HANDSET&t;0x0004&t;/* Handset present */
 DECL|macro|AC97_MEI_CID1
 mdefine_line|#define AC97_MEI_CID1&t;&t;0x0008&t;/* caller ID decode for Line1 is supported */
 DECL|macro|AC97_MEI_CID2
@@ -244,6 +244,39 @@ DECL|macro|AC97_MEI_ADDR_MASK
 mdefine_line|#define AC97_MEI_ADDR_MASK&t;0xc000&t;/* physical codec ID (address) */
 DECL|macro|AC97_MEI_ADDR_SHIFT
 mdefine_line|#define AC97_MEI_ADDR_SHIFT&t;14
+multiline_comment|/* extended modem status and control bit defines */
+DECL|macro|AC97_MEA_GPIO
+mdefine_line|#define AC97_MEA_GPIO&t;&t;0x0001&t;/* GPIO is ready (ro) */
+DECL|macro|AC97_MEA_MREF
+mdefine_line|#define AC97_MEA_MREF&t;&t;0x0002&t;/* Vref is up to nominal level (ro) */
+DECL|macro|AC97_MEA_ADC1
+mdefine_line|#define AC97_MEA_ADC1&t;&t;0x0004&t;/* ADC1 operational (ro) */
+DECL|macro|AC97_MEA_DAC1
+mdefine_line|#define AC97_MEA_DAC1&t;&t;0x0008&t;/* DAC1 operational (ro) */
+DECL|macro|AC97_MEA_ADC2
+mdefine_line|#define AC97_MEA_ADC2&t;&t;0x0010&t;/* ADC2 operational (ro) */
+DECL|macro|AC97_MEA_DAC2
+mdefine_line|#define AC97_MEA_DAC2&t;&t;0x0020&t;/* DAC2 operational (ro) */
+DECL|macro|AC97_MEA_HADC
+mdefine_line|#define AC97_MEA_HADC&t;&t;0x0040&t;/* HADC operational (ro) */
+DECL|macro|AC97_MEA_HDAC
+mdefine_line|#define AC97_MEA_HDAC&t;&t;0x0080&t;/* HDAC operational (ro) */
+DECL|macro|AC97_MEA_PRA
+mdefine_line|#define AC97_MEA_PRA&t;&t;0x0100&t;/* GPIO power down (high) */
+DECL|macro|AC97_MEA_PRB
+mdefine_line|#define AC97_MEA_PRB&t;&t;0x0200&t;/* reserved */
+DECL|macro|AC97_MEA_PRC
+mdefine_line|#define AC97_MEA_PRC&t;&t;0x0400&t;/* ADC1 power down (high) */
+DECL|macro|AC97_MEA_PRD
+mdefine_line|#define AC97_MEA_PRD&t;&t;0x0800&t;/* DAC1 power down (high) */
+DECL|macro|AC97_MEA_PRE
+mdefine_line|#define AC97_MEA_PRE&t;&t;0x1000&t;/* ADC2 power down (high) */
+DECL|macro|AC97_MEA_PRF
+mdefine_line|#define AC97_MEA_PRF&t;&t;0x2000&t;/* DAC2 power down (high) */
+DECL|macro|AC97_MEA_PRG
+mdefine_line|#define AC97_MEA_PRG&t;&t;0x4000&t;/* HADC power down (high) */
+DECL|macro|AC97_MEA_PRH
+mdefine_line|#define AC97_MEA_PRH&t;&t;0x8000&t;/* HDAC power down (high) */
 multiline_comment|/* specific - SigmaTel */
 DECL|macro|AC97_SIGMATEL_ANALOG
 mdefine_line|#define AC97_SIGMATEL_ANALOG&t;0x6c&t;/* Analog Special */

@@ -591,6 +591,8 @@ op_star
 )paren
 op_amp
 id|runtime-&gt;status-&gt;tstamp
+comma
+id|runtime-&gt;tstamp_timespec
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SND_DEBUG
@@ -892,6 +894,8 @@ op_star
 )paren
 op_amp
 id|runtime-&gt;status-&gt;tstamp
+comma
+id|runtime-&gt;tstamp_timespec
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SND_DEBUG
@@ -13014,6 +13018,27 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_pcm_lib_preallocate_pci_pages_for_all
+)paren
+suffix:semicolon
+DECL|variable|snd_pcm_lib_preallocate_sg_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_pcm_lib_preallocate_sg_pages
+)paren
+suffix:semicolon
+DECL|variable|snd_pcm_lib_preallocate_sg_pages_for_all
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_pcm_lib_preallocate_sg_pages_for_all
+)paren
+suffix:semicolon
+DECL|variable|snd_pcm_sgbuf_ops_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_pcm_sgbuf_ops_page
 )paren
 suffix:semicolon
 macro_line|#endif

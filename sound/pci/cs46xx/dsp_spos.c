@@ -6440,7 +6440,7 @@ id|chip
 comma
 l_string|&quot;SrcTaskSCB_SPDIFI&quot;
 comma
-l_int|48000
+id|ins-&gt;spdif_in_sample_rate
 comma
 id|SRC_OUTPUT_BUF1
 comma
@@ -6451,6 +6451,8 @@ comma
 id|master_mix_scb
 comma
 id|SCB_ON_PARENT_SUBLIST_SCB
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -7089,6 +7091,61 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|cs46xx_dsp_disable_spdif_hw
+r_static
+r_void
+id|cs46xx_dsp_disable_spdif_hw
+(paren
+id|cs46xx_t
+op_star
+id|chip
+)paren
+(brace
+id|dsp_spos_instance_t
+op_star
+id|ins
+op_assign
+id|chip-&gt;dsp_spos_instance
+suffix:semicolon
+multiline_comment|/* set SPDIF output FIFO slot */
+id|snd_cs46xx_pokeBA0
+c_func
+(paren
+id|chip
+comma
+id|BA0_ASER_FADDR
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* SPDIF output MASTER ENABLE */
+id|cs46xx_poke_via_dsp
+(paren
+id|chip
+comma
+id|SP_SPDOUT_CONTROL
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* right and left validate bit */
+multiline_comment|/*cs46xx_poke_via_dsp (chip,SP_SPDOUT_CSUV, ins-&gt;spdif_csuv_default);*/
+id|cs46xx_poke_via_dsp
+(paren
+id|chip
+comma
+id|SP_SPDOUT_CSUV
+comma
+l_int|0x0
+)paren
+suffix:semicolon
+multiline_comment|/* monitor state */
+id|ins-&gt;spdif_status_out
+op_and_assign
+op_complement
+id|DSP_SPDIF_STATUS_HW_ENABLED
+suffix:semicolon
+)brace
 DECL|function|cs46xx_dsp_enable_spdif_hw
 r_int
 id|cs46xx_dsp_enable_spdif_hw
@@ -7103,6 +7160,18 @@ op_star
 id|ins
 op_assign
 id|chip-&gt;dsp_spos_instance
+suffix:semicolon
+multiline_comment|/* if hw-ctrl already enabled, turn off to reset logic ... */
+id|cs46xx_dsp_disable_spdif_hw
+(paren
+id|chip
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|50
+)paren
 suffix:semicolon
 multiline_comment|/* set SPDIF output FIFO slot */
 id|snd_cs46xx_pokeBA0

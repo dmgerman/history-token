@@ -988,6 +988,7 @@ macro_line|#include &quot;imgs/cwc4630.h&quot;
 macro_line|#include &quot;imgs/cwcasync.h&quot;
 macro_line|#include &quot;imgs/cwcsnoop.h&quot;
 macro_line|#include &quot;imgs/cwcbinhack.h&quot;
+macro_line|#include &quot;imgs/cwcdma.h&quot;
 DECL|function|snd_cs46xx_clear_BA1
 r_int
 id|snd_cs46xx_clear_BA1
@@ -3661,7 +3662,6 @@ op_star
 id|hw_params
 )paren
 (brace
-multiline_comment|/*cs46xx_t *chip = snd_pcm_substream_chip(substream);*/
 id|snd_pcm_runtime_t
 op_star
 id|runtime
@@ -3675,6 +3675,7 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
 id|cs46xx_t
 op_star
 id|chip
@@ -3703,6 +3704,7 @@ c_func
 id|hw_params
 )paren
 suffix:semicolon
+macro_line|#endif
 id|cpcm
 op_assign
 id|snd_magic_cast
@@ -4517,21 +4519,16 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-r_int
-id|period_size
-op_assign
-id|params_period_bytes
-c_func
-(paren
-id|hw_params
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
 id|cs46xx_dsp_pcm_ostream_set_period
 (paren
 id|chip
 comma
-id|period_size
+id|params_period_bytes
+c_func
+(paren
+id|hw_params
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -5466,6 +5463,7 @@ l_int|0
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
 DECL|variable|period_sizes
 r_static
 r_int
@@ -5514,6 +5512,7 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|function|snd_cs46xx_pcm_free_substream
 r_static
 r_void
@@ -7867,14 +7866,20 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|res
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 id|snd_assert
 c_func
 (paren
 l_int|0
 comma
-r_return
-op_minus
-id|EINVAL
+(paren
+r_void
+)paren
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -9950,7 +9955,7 @@ suffix:semicolon
 id|snd_printk
 c_func
 (paren
-l_string|&quot;CS46xx secondary codec don&squot;t respond!&bslash;n&quot;
+l_string|&quot;CS46xx secondary codec dont respond!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -12488,19 +12493,6 @@ id|chip-&gt;gameport
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_PM
-r_if
-c_cond
-(paren
-id|chip-&gt;pm_dev
-)paren
-id|pm_unregister
-c_func
-(paren
-id|chip-&gt;pm_dev
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -13497,6 +13489,33 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|cs46xx_dsp_load_module
+c_func
+(paren
+id|chip
+comma
+op_amp
+id|cwcdma_module
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;image download error [cwcdma]&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|cs46xx_dsp_scb_and_task_init
 c_func
 (paren
@@ -14137,9 +14156,6 @@ r_if
 c_cond
 (paren
 id|chip-&gt;amplifier
-op_logical_and
-op_logical_neg
-id|old
 )paren
 (brace
 multiline_comment|/* Turn the EAPD amp on */
@@ -14149,14 +14165,6 @@ l_int|0x8000
 suffix:semicolon
 )brace
 r_else
-r_if
-c_cond
-(paren
-id|old
-op_logical_and
-op_logical_neg
-id|chip-&gt;amplifier
-)paren
 (brace
 multiline_comment|/* Turn the EAPD amp off */
 id|val
@@ -14662,9 +14670,8 @@ id|change
 (brace
 id|u16
 id|control
-suffix:semicolon
-r_int
-id|old
+comma
+id|nval
 suffix:semicolon
 r_if
 c_cond
@@ -14675,15 +14682,13 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-id|old
-op_assign
-id|chip-&gt;amplifier
-suffix:semicolon
 id|chip-&gt;amplifier
 op_add_assign
 id|change
 suffix:semicolon
 multiline_comment|/* Read ACPI port */
+id|nval
+op_assign
 id|control
 op_assign
 id|inw
@@ -14700,37 +14705,28 @@ c_cond
 (paren
 op_logical_neg
 id|chip-&gt;amplifier
-op_logical_and
-id|old
 )paren
-id|outw
-c_func
-(paren
-id|control
-op_or
+id|nval
+op_or_assign
 l_int|0x2000
-comma
-id|chip-&gt;acpi_port
-op_plus
-l_int|0x10
-)paren
 suffix:semicolon
 r_else
+id|nval
+op_and_assign
+op_complement
+l_int|0x2000
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|chip-&gt;amplifier
-op_logical_and
-op_logical_neg
-id|old
+id|nval
+op_ne
+id|control
 )paren
 id|outw
 c_func
 (paren
-id|control
-op_amp
-op_complement
-l_int|0x2000
+id|nval
 comma
 id|chip-&gt;acpi_port
 op_plus

@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
-macro_line|#include &lt;sound/pcm_sgbuf.h&gt;
 macro_line|#include &lt;sound/pcm_params.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/ac97_codec.h&gt;
@@ -2173,21 +2172,6 @@ id|status
 )paren
 r_continue
 suffix:semicolon
-id|outb
-c_func
-(paren
-id|status
-comma
-id|VIADEV_REG
-c_func
-(paren
-id|viadev
-comma
-id|OFFSET_STATUS
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* ack */
 r_if
 c_cond
 (paren
@@ -2217,6 +2201,21 @@ id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
 )brace
+id|outb
+c_func
+(paren
+id|status
+comma
+id|VIADEV_REG
+c_func
+(paren
+id|viadev
+comma
+id|OFFSET_STATUS
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* ack */
 )brace
 id|spin_unlock
 c_func
@@ -3789,62 +3788,6 @@ comma
 id|viadev
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: a more generic solutions would be better */
-r_if
-c_cond
-(paren
-id|chip-&gt;chip_type
-op_eq
-id|TYPE_VIA8233A
-)paren
-(brace
-multiline_comment|/* VIA8233A cannot change the slot mapping, so we need&n;&t;&t; * to swap the RL/RR with C/L.&n;&t;&t; */
-DECL|macro|AC97_ID_ALC650
-mdefine_line|#define AC97_ID_ALC650&t;&t;0x414c4720
-r_if
-c_cond
-(paren
-id|chip-&gt;ac97-&gt;id
-op_eq
-id|AC97_ID_ALC650
-)paren
-(brace
-r_int
-r_int
-id|val
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|runtime-&gt;channels
-OG
-l_int|4
-)paren
-multiline_comment|/* slot mapping: 3,4,7,8 */
-id|val
-op_assign
-l_int|0
-suffix:semicolon
-r_else
-multiline_comment|/* slot mapping: 3,4,6,9,7,8 */
-id|val
-op_assign
-l_int|0x4000
-suffix:semicolon
-id|snd_ac97_update_bits
-c_func
-(paren
-id|chip-&gt;ac97
-comma
-id|AC97_ALC650_MULTICH
-comma
-l_int|0xc000
-comma
-id|val
-)paren
-suffix:semicolon
-)brace
-)brace
 id|fmt
 op_assign
 (paren

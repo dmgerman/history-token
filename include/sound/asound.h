@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Advanced Linux Sound Architecture - ALSA - Driver&n; *  Copyright (c) 1994-2000 by Jaroslav Kysela &lt;perex@suse.cz&gt;,&n; *                             Abramo Bagnara &lt;abramo@alsa-project.org&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
+multiline_comment|/*&n; *  Advanced Linux Sound Architecture - ALSA - Driver&n; *  Copyright (c) 1994-2003 by Jaroslav Kysela &lt;perex@suse.cz&gt;,&n; *                             Abramo Bagnara &lt;abramo@alsa-project.org&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#ifndef __SOUND_ASOUND_H
 DECL|macro|__SOUND_ASOUND_H
 mdefine_line|#define __SOUND_ASOUND_H
@@ -331,7 +331,7 @@ id|sndrv_hwdep_dsp_image
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *                                                                           *&n; *             Digital Audio (PCM) interface - /dev/snd/pcm??                *&n; *                                                                           *&n; *****************************************************************************/
 DECL|macro|SNDRV_PCM_VERSION
-mdefine_line|#define SNDRV_PCM_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 4)
+mdefine_line|#define SNDRV_PCM_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 5)
 DECL|typedef|sndrv_pcm_uframes_t
 r_typedef
 r_int
@@ -1302,13 +1302,13 @@ suffix:semicolon
 multiline_comment|/* stream state */
 DECL|member|trigger_tstamp
 r_struct
-id|timeval
+id|timespec
 id|trigger_tstamp
 suffix:semicolon
 multiline_comment|/* time when stream was started/stopped/paused */
 DECL|member|tstamp
 r_struct
-id|timeval
+id|timespec
 id|tstamp
 suffix:semicolon
 multiline_comment|/* reference timestamp */
@@ -1381,7 +1381,7 @@ suffix:semicolon
 multiline_comment|/* RO: hw ptr (0...boundary-1) */
 DECL|member|tstamp
 r_struct
-id|timeval
+id|timespec
 id|tstamp
 suffix:semicolon
 multiline_comment|/* Timestamp */
@@ -1475,6 +1475,19 @@ l_int|0x01
 comma
 r_struct
 id|sndrv_pcm_info
+)paren
+comma
+DECL|enumerator|SNDRV_PCM_IOCTL_TSTAMP
+id|SNDRV_PCM_IOCTL_TSTAMP
+op_assign
+id|_IOW
+c_func
+(paren
+l_char|&squot;A&squot;
+comma
+l_int|0x02
+comma
+r_int
 )paren
 comma
 DECL|enumerator|SNDRV_PCM_IOCTL_HW_REFINE
@@ -1942,7 +1955,7 @@ id|stream
 suffix:semicolon
 DECL|member|tstamp
 r_struct
-id|timeval
+id|timespec
 id|tstamp
 suffix:semicolon
 multiline_comment|/* Timestamp */
@@ -2054,7 +2067,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; *  Timer section - /dev/snd/timer&n; */
 DECL|macro|SNDRV_TIMER_VERSION
-mdefine_line|#define SNDRV_TIMER_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 0)
+mdefine_line|#define SNDRV_TIMER_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 1)
 DECL|enum|sndrv_timer_class
 r_enum
 id|sndrv_timer_class
@@ -2119,6 +2132,9 @@ DECL|macro|SNDRV_TIMER_GLOBAL_SYSTEM
 mdefine_line|#define SNDRV_TIMER_GLOBAL_SYSTEM&t;0
 DECL|macro|SNDRV_TIMER_GLOBAL_RTC
 mdefine_line|#define SNDRV_TIMER_GLOBAL_RTC&t;&t;1
+multiline_comment|/* info flags */
+DECL|macro|SNDRV_TIMER_FLG_SLAVE
+mdefine_line|#define SNDRV_TIMER_FLG_SLAVE&t;&t;(1&lt;&lt;0)&t;/* cannot be controlled */
 DECL|struct|sndrv_timer_id
 r_struct
 id|sndrv_timer_id
@@ -2147,6 +2163,155 @@ id|subdevice
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|sndrv_timer_ginfo
+r_struct
+id|sndrv_timer_ginfo
+(brace
+DECL|member|tid
+r_struct
+id|sndrv_timer_id
+id|tid
+suffix:semicolon
+multiline_comment|/* requested timer ID */
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* timer flags - SNDRV_TIMER_FLG_* */
+DECL|member|card
+r_int
+id|card
+suffix:semicolon
+multiline_comment|/* card number */
+DECL|member|id
+r_int
+r_char
+id|id
+(braket
+l_int|64
+)braket
+suffix:semicolon
+multiline_comment|/* timer identification */
+DECL|member|name
+r_int
+r_char
+id|name
+(braket
+l_int|80
+)braket
+suffix:semicolon
+multiline_comment|/* timer name */
+DECL|member|reserved0
+r_int
+r_int
+id|reserved0
+suffix:semicolon
+multiline_comment|/* reserved for future use */
+DECL|member|resolution
+r_int
+r_int
+id|resolution
+suffix:semicolon
+multiline_comment|/* average period resolution in ns */
+DECL|member|resolution_min
+r_int
+r_int
+id|resolution_min
+suffix:semicolon
+multiline_comment|/* minimal period resolution in ns */
+DECL|member|resolution_max
+r_int
+r_int
+id|resolution_max
+suffix:semicolon
+multiline_comment|/* maximal period resolution in ns */
+DECL|member|clients
+r_int
+r_int
+id|clients
+suffix:semicolon
+multiline_comment|/* active timer clients */
+DECL|member|reserved
+r_int
+r_char
+id|reserved
+(braket
+l_int|32
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|sndrv_timer_gparams
+r_struct
+id|sndrv_timer_gparams
+(brace
+DECL|member|tid
+r_struct
+id|sndrv_timer_id
+id|tid
+suffix:semicolon
+multiline_comment|/* requested timer ID */
+DECL|member|period_num
+r_int
+r_int
+id|period_num
+suffix:semicolon
+multiline_comment|/* requested precise period duration (in seconds) - numerator */
+DECL|member|period_den
+r_int
+r_int
+id|period_den
+suffix:semicolon
+multiline_comment|/* requested precise period duration (in seconds) - denominator */
+DECL|member|reserved
+r_int
+r_char
+id|reserved
+(braket
+l_int|32
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|sndrv_timer_gstatus
+r_struct
+id|sndrv_timer_gstatus
+(brace
+DECL|member|tid
+r_struct
+id|sndrv_timer_id
+id|tid
+suffix:semicolon
+multiline_comment|/* requested timer ID */
+DECL|member|resolution
+r_int
+r_int
+id|resolution
+suffix:semicolon
+multiline_comment|/* current period resolution in ns */
+DECL|member|resolution_num
+r_int
+r_int
+id|resolution_num
+suffix:semicolon
+multiline_comment|/* precise current period resolution (in seconds) - numerator */
+DECL|member|resolution_den
+r_int
+r_int
+id|resolution_den
+suffix:semicolon
+multiline_comment|/* precise current period resolution (in seconds) - denominator */
+DECL|member|reserved
+r_int
+r_char
+id|reserved
+(braket
+l_int|32
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|sndrv_timer_select
 r_struct
 id|sndrv_timer_select
@@ -2168,8 +2333,6 @@ suffix:semicolon
 multiline_comment|/* reserved */
 )brace
 suffix:semicolon
-DECL|macro|SNDRV_TIMER_FLG_SLAVE
-mdefine_line|#define SNDRV_TIMER_FLG_SLAVE&t;&t;(1&lt;&lt;0)&t;/* cannot be controlled */
 DECL|struct|sndrv_timer_info
 r_struct
 id|sndrv_timer_info
@@ -2184,7 +2347,7 @@ DECL|member|card
 r_int
 id|card
 suffix:semicolon
-multiline_comment|/* R: card number */
+multiline_comment|/* card number */
 DECL|member|id
 r_int
 r_char
@@ -2203,18 +2366,18 @@ l_int|80
 )braket
 suffix:semicolon
 multiline_comment|/* timer name */
-DECL|member|ticks
+DECL|member|reserved0
 r_int
 r_int
-id|ticks
+id|reserved0
 suffix:semicolon
-multiline_comment|/* maximum ticks */
+multiline_comment|/* reserved for future use */
 DECL|member|resolution
 r_int
 r_int
 id|resolution
 suffix:semicolon
-multiline_comment|/* average resolution */
+multiline_comment|/* average period resolution in ns */
 DECL|member|reserved
 r_int
 r_char
@@ -2227,7 +2390,9 @@ multiline_comment|/* reserved */
 )brace
 suffix:semicolon
 DECL|macro|SNDRV_TIMER_PSFLG_AUTO
-mdefine_line|#define SNDRV_TIMER_PSFLG_AUTO&t;&t;(1&lt;&lt;0)&t;/* supports auto start */
+mdefine_line|#define SNDRV_TIMER_PSFLG_AUTO&t;&t;(1&lt;&lt;0)&t;/* auto start, otherwise one-shot */
+DECL|macro|SNDRV_TIMER_PSFLG_EXCLUSIVE
+mdefine_line|#define SNDRV_TIMER_PSFLG_EXCLUSIVE&t;(1&lt;&lt;1)&t;/* exclusive use, precise start/stop/pause/continue */
 DECL|struct|sndrv_timer_params
 r_struct
 id|sndrv_timer_params
@@ -2256,12 +2421,18 @@ r_int
 id|reserved0
 suffix:semicolon
 multiline_comment|/* reserved, was: failure locations */
+DECL|member|filter
+r_int
+r_int
+id|filter
+suffix:semicolon
+multiline_comment|/* event filter (bitmask of SNDRV_TIMER_EVENT_*) */
 DECL|member|reserved
 r_int
 r_char
 id|reserved
 (braket
-l_int|64
+l_int|60
 )braket
 suffix:semicolon
 multiline_comment|/* reserved */
@@ -2273,16 +2444,16 @@ id|sndrv_timer_status
 (brace
 DECL|member|tstamp
 r_struct
-id|timeval
+id|timespec
 id|tstamp
 suffix:semicolon
-multiline_comment|/* Timestamp */
+multiline_comment|/* Timestamp - last update */
 DECL|member|resolution
 r_int
 r_int
 id|resolution
 suffix:semicolon
-multiline_comment|/* current resolution */
+multiline_comment|/* current period resolution in ns */
 DECL|member|lost
 r_int
 r_int
@@ -2341,6 +2512,61 @@ r_struct
 id|sndrv_timer_id
 )paren
 comma
+DECL|enumerator|SNDRV_TIMER_IOCTL_TREAD
+id|SNDRV_TIMER_IOCTL_TREAD
+op_assign
+id|_IOW
+c_func
+(paren
+l_char|&squot;T&squot;
+comma
+l_int|0x02
+comma
+r_int
+)paren
+comma
+DECL|enumerator|SNDRV_TIMER_IOCTL_GINFO
+id|SNDRV_TIMER_IOCTL_GINFO
+op_assign
+id|_IOWR
+c_func
+(paren
+l_char|&squot;T&squot;
+comma
+l_int|0x03
+comma
+r_struct
+id|sndrv_timer_ginfo
+)paren
+comma
+DECL|enumerator|SNDRV_TIMER_IOCTL_GPARAMS
+id|SNDRV_TIMER_IOCTL_GPARAMS
+op_assign
+id|_IOW
+c_func
+(paren
+l_char|&squot;T&squot;
+comma
+l_int|0x04
+comma
+r_struct
+id|sndrv_timer_gparams
+)paren
+comma
+DECL|enumerator|SNDRV_TIMER_IOCTL_GSTATUS
+id|SNDRV_TIMER_IOCTL_GSTATUS
+op_assign
+id|_IOWR
+c_func
+(paren
+l_char|&squot;T&squot;
+comma
+l_int|0x05
+comma
+r_struct
+id|sndrv_timer_gstatus
+)paren
+comma
 DECL|enumerator|SNDRV_TIMER_IOCTL_SELECT
 id|SNDRV_TIMER_IOCTL_SELECT
 op_assign
@@ -2386,7 +2612,7 @@ comma
 DECL|enumerator|SNDRV_TIMER_IOCTL_STATUS
 id|SNDRV_TIMER_IOCTL_STATUS
 op_assign
-id|_IOW
+id|_IOR
 c_func
 (paren
 l_char|&squot;T&squot;
@@ -2430,6 +2656,17 @@ comma
 l_int|0x22
 )paren
 comma
+DECL|enumerator|SNDRV_TIMER_IOCTL_PAUSE
+id|SNDRV_TIMER_IOCTL_PAUSE
+op_assign
+id|_IO
+c_func
+(paren
+l_char|&squot;T&squot;
+comma
+l_int|0x23
+)paren
+comma
 )brace
 suffix:semicolon
 DECL|struct|sndrv_timer_read
@@ -2448,9 +2685,91 @@ id|ticks
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|enum|sndrv_timer_event
+r_enum
+id|sndrv_timer_event
+(brace
+DECL|enumerator|SNDRV_TIMER_EVENT_RESOLUTION
+id|SNDRV_TIMER_EVENT_RESOLUTION
+op_assign
+l_int|0
+comma
+multiline_comment|/* val = resolution in ns */
+DECL|enumerator|SNDRV_TIMER_EVENT_TICK
+id|SNDRV_TIMER_EVENT_TICK
+comma
+multiline_comment|/* val = ticks */
+DECL|enumerator|SNDRV_TIMER_EVENT_START
+id|SNDRV_TIMER_EVENT_START
+comma
+multiline_comment|/* val = resolution in ns */
+DECL|enumerator|SNDRV_TIMER_EVENT_STOP
+id|SNDRV_TIMER_EVENT_STOP
+comma
+multiline_comment|/* val = 0 */
+DECL|enumerator|SNDRV_TIMER_EVENT_CONTINUE
+id|SNDRV_TIMER_EVENT_CONTINUE
+comma
+multiline_comment|/* val = resolution in ns */
+DECL|enumerator|SNDRV_TIMER_EVENT_PAUSE
+id|SNDRV_TIMER_EVENT_PAUSE
+comma
+multiline_comment|/* val = 0 */
+multiline_comment|/* master timer events for slave timer instances */
+DECL|enumerator|SNDRV_TIMER_EVENT_MSTART
+id|SNDRV_TIMER_EVENT_MSTART
+op_assign
+id|SNDRV_TIMER_EVENT_START
+op_plus
+l_int|10
+comma
+DECL|enumerator|SNDRV_TIMER_EVENT_MSTOP
+id|SNDRV_TIMER_EVENT_MSTOP
+op_assign
+id|SNDRV_TIMER_EVENT_STOP
+op_plus
+l_int|10
+comma
+DECL|enumerator|SNDRV_TIMER_EVENT_MCONTINUE
+id|SNDRV_TIMER_EVENT_MCONTINUE
+op_assign
+id|SNDRV_TIMER_EVENT_CONTINUE
+op_plus
+l_int|10
+comma
+DECL|enumerator|SNDRV_TIMER_EVENT_MPAUSE
+id|SNDRV_TIMER_EVENT_MPAUSE
+op_assign
+id|SNDRV_TIMER_EVENT_PAUSE
+op_plus
+l_int|10
+comma
+)brace
+suffix:semicolon
+DECL|struct|sndrv_timer_tread
+r_struct
+id|sndrv_timer_tread
+(brace
+DECL|member|event
+r_enum
+id|sndrv_timer_event
+id|event
+suffix:semicolon
+DECL|member|tstamp
+r_struct
+id|timespec
+id|tstamp
+suffix:semicolon
+DECL|member|val
+r_int
+r_int
+id|val
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/****************************************************************************&n; *                                                                          *&n; *        Section for driver control interface - /dev/snd/control?          *&n; *                                                                          *&n; ****************************************************************************/
 DECL|macro|SNDRV_CTL_VERSION
-mdefine_line|#define SNDRV_CTL_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 0)
+mdefine_line|#define SNDRV_CTL_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 1)
 DECL|struct|sndrv_ctl_card_info
 r_struct
 id|sndrv_ctl_card_info
@@ -2629,6 +2948,8 @@ DECL|macro|SNDRV_CTL_ELEM_ACCESS_READWRITE
 mdefine_line|#define SNDRV_CTL_ELEM_ACCESS_READWRITE&t;&t;(SNDRV_CTL_ELEM_ACCESS_READ|SNDRV_CTL_ELEM_ACCESS_WRITE)
 DECL|macro|SNDRV_CTL_ELEM_ACCESS_VOLATILE
 mdefine_line|#define SNDRV_CTL_ELEM_ACCESS_VOLATILE&t;&t;(1&lt;&lt;2)&t;/* control value may be changed without a notification */
+DECL|macro|SNDRV_CTL_ELEM_ACCESS_TIMESTAMP
+mdefine_line|#define SNDRV_CTL_ELEM_ACCESS_TIMESTAMP&t;&t;(1&lt;&lt;2)&t;/* when was control changed */
 DECL|macro|SNDRV_CTL_ELEM_ACCESS_INACTIVE
 mdefine_line|#define SNDRV_CTL_ELEM_ACCESS_INACTIVE&t;&t;(1&lt;&lt;8)&t;/* control does actually nothing, but may be updated */
 DECL|macro|SNDRV_CTL_ELEM_ACCESS_LOCK
@@ -2976,12 +3297,23 @@ DECL|member|value
 id|value
 suffix:semicolon
 multiline_comment|/* RO */
+DECL|member|tstamp
+r_struct
+id|timespec
+id|tstamp
+suffix:semicolon
 DECL|member|reserved
 r_int
 r_char
 id|reserved
 (braket
 l_int|128
+op_minus
+r_sizeof
+(paren
+r_struct
+id|timespec
+)paren
 )braket
 suffix:semicolon
 )brace

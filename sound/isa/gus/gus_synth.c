@@ -843,6 +843,8 @@ id|SNDRV_SEQ_PORT_TYPE_SYNTH
 comma
 l_int|16
 comma
+l_int|0
+comma
 id|name
 )paren
 suffix:semicolon

@@ -46,6 +46,7 @@ l_string|&quot;{Intel,82901AB-ICH0},&quot;
 l_string|&quot;{Intel,82801BA-ICH2},&quot;
 l_string|&quot;{Intel,82801CA-ICH3},&quot;
 l_string|&quot;{Intel,82801DB-ICH4},&quot;
+l_string|&quot;{Intel,ICH5},&quot;
 l_string|&quot;{Intel,MX440},&quot;
 l_string|&quot;{SiS,SI7012},&quot;
 l_string|&quot;{NVidia,NForce Audio},&quot;
@@ -363,6 +364,10 @@ macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH4
 DECL|macro|PCI_DEVICE_ID_INTEL_ICH4
 mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH4&t;0x24c5
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH5
+DECL|macro|PCI_DEVICE_ID_INTEL_ICH5
+mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH5&t;0x24d5
+macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_SI_7012
 DECL|macro|PCI_DEVICE_ID_SI_7012
 mdefine_line|#define PCI_DEVICE_ID_SI_7012&t;&t;0x7012
@@ -505,6 +510,14 @@ DECL|macro|ICH_PCM_4
 mdefine_line|#define   ICH_PCM_4&t;&t;0x00100000&t;/* 4 channels (not all chips) */
 DECL|macro|ICH_PCM_2
 mdefine_line|#define   ICH_PCM_2&t;&t;0x00000000&t;/* 2 channels (stereo) */
+DECL|macro|ICH_SIS_PCM_246_MASK
+mdefine_line|#define   ICH_SIS_PCM_246_MASK&t;0x000000c0&t;/* 6 channels (SIS7012) */
+DECL|macro|ICH_SIS_PCM_6
+mdefine_line|#define   ICH_SIS_PCM_6&t;&t;0x00000080&t;/* 6 channels (SIS7012) */
+DECL|macro|ICH_SIS_PCM_4
+mdefine_line|#define   ICH_SIS_PCM_4&t;&t;0x00000040&t;/* 4 channels (SIS7012) */
+DECL|macro|ICH_SIS_PCM_2
+mdefine_line|#define   ICH_SIS_PCM_2&t;&t;0x00000000&t;/* 2 channels (SIS7012) */
 DECL|macro|ICH_SRIE
 mdefine_line|#define   ICH_SRIE&t;&t;0x00000020&t;/* secondary resume interrupt enable */
 DECL|macro|ICH_PRIE
@@ -1280,6 +1293,23 @@ id|DEVICE_INTEL_ICH4
 )brace
 comma
 multiline_comment|/* ICH4 */
+(brace
+l_int|0x8086
+comma
+l_int|0x24d5
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|DEVICE_INTEL_ICH4
+)brace
+comma
+multiline_comment|/* ICH5 */
 (brace
 l_int|0x8086
 comma
@@ -3806,7 +3836,52 @@ c_func
 id|GLOB_CNT
 )paren
 )paren
-op_amp
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip-&gt;device_type
+op_eq
+id|DEVICE_SIS
+)paren
+(brace
+id|cnt
+op_and_assign
+op_complement
+id|ICH_SIS_PCM_246_MASK
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip-&gt;multi4
+op_logical_and
+id|channels
+op_eq
+l_int|4
+)paren
+id|cnt
+op_or_assign
+id|ICH_SIS_PCM_4
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|chip-&gt;multi6
+op_logical_and
+id|channels
+op_eq
+l_int|6
+)paren
+id|cnt
+op_or_assign
+id|ICH_SIS_PCM_6
+suffix:semicolon
+)brace
+r_else
+(brace
+id|cnt
+op_and_assign
 op_complement
 id|ICH_PCM_246_MASK
 suffix:semicolon
@@ -3837,6 +3912,7 @@ id|cnt
 op_or_assign
 id|ICH_PCM_6
 suffix:semicolon
+)brace
 id|iputdword
 c_func
 (paren
@@ -7119,6 +7195,16 @@ comma
 l_int|0x0126
 comma
 l_string|&quot;Dell Optiplex GX260&quot;
+comma
+id|AC97_TUNE_HP_ONLY
+)brace
+comma
+(brace
+l_int|0x1734
+comma
+l_int|0x0088
+comma
+l_string|&quot;Fujisu-Siemens D1522&quot;
 comma
 id|AC97_TUNE_HP_ONLY
 )brace
@@ -12049,6 +12135,12 @@ l_string|&quot;Intel 82801DB-ICH4&quot;
 )brace
 comma
 (brace
+id|PCI_DEVICE_ID_INTEL_ICH5
+comma
+l_string|&quot;Intel ICH5&quot;
+)brace
+comma
+(brace
 id|PCI_DEVICE_ID_SI_7012
 comma
 l_string|&quot;SiS SI7012&quot;
@@ -12827,16 +12919,19 @@ id|name
 op_assign
 l_string|&quot;Intel ICH&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|snd_intel8x0_ids
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|snd_intel8x0_probe
 comma
+dot
 id|remove
-suffix:colon
+op_assign
 id|__devexit_p
 c_func
 (paren
@@ -12844,12 +12939,14 @@ id|snd_intel8x0_remove
 )paren
 comma
 macro_line|#ifdef CONFIG_PM
+dot
 id|suspend
-suffix:colon
+op_assign
 id|snd_intel8x0_suspend
 comma
+dot
 id|resume
-suffix:colon
+op_assign
 id|snd_intel8x0_resume
 comma
 macro_line|#endif

@@ -298,12 +298,14 @@ id|snd_interval_t
 id|t
 op_assign
 (brace
+dot
 id|min
-suffix:colon
+op_assign
 l_int|1
 comma
+dot
 id|max
-suffix:colon
+op_assign
 l_int|1
 )brace
 suffix:semicolon

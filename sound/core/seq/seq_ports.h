@@ -177,6 +177,10 @@ DECL|member|midi_channels
 r_int
 id|midi_channels
 suffix:semicolon
+DECL|member|midi_voices
+r_int
+id|midi_voices
+suffix:semicolon
 DECL|member|synth_voices
 r_int
 id|synth_voices

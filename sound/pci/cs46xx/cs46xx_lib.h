@@ -737,6 +737,9 @@ id|parent_scb
 comma
 r_int
 id|scb_child_type
+comma
+r_int
+id|pass_through
 )paren
 suffix:semicolon
 id|dsp_scb_descriptor_t

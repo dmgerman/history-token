@@ -3,6 +3,7 @@ DECL|macro|__SOUND_PCM_H
 mdefine_line|#define __SOUND_PCM_H
 multiline_comment|/*&n; *  Digital Audio (PCM) abstract layer&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *                   Abramo Bagnara &lt;abramo@alsa-project.org&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/asound.h&gt;
+macro_line|#include &lt;sound/memalloc.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 DECL|typedef|snd_pcm_uframes_t
@@ -134,6 +135,12 @@ r_typedef
 r_struct
 id|sndrv_mask
 id|snd_mask_t
+suffix:semicolon
+DECL|typedef|snd_pcm_sgbuf_t
+r_typedef
+r_struct
+id|snd_sg_buf
+id|snd_pcm_sgbuf_t
 suffix:semicolon
 DECL|macro|_snd_pcm_substream_chip
 mdefine_line|#define _snd_pcm_substream_chip(substream) ((substream)-&gt;private_data)
@@ -464,18 +471,6 @@ DECL|macro|SNDRV_PCM_TRIGGER_SUSPEND
 mdefine_line|#define SNDRV_PCM_TRIGGER_SUSPEND&t;5
 DECL|macro|SNDRV_PCM_TRIGGER_RESUME
 mdefine_line|#define SNDRV_PCM_TRIGGER_RESUME&t;6
-DECL|macro|SNDRV_PCM_DMA_TYPE_UNKNOWN
-mdefine_line|#define SNDRV_PCM_DMA_TYPE_UNKNOWN&t;0&t;/* not defined */
-DECL|macro|SNDRV_PCM_DMA_TYPE_CONTINUOUS
-mdefine_line|#define SNDRV_PCM_DMA_TYPE_CONTINUOUS&t;1&t;/* continuous no-DMA memory */
-DECL|macro|SNDRV_PCM_DMA_TYPE_ISA
-mdefine_line|#define SNDRV_PCM_DMA_TYPE_ISA&t;&t;2&t;/* ISA continuous */
-DECL|macro|SNDRV_PCM_DMA_TYPE_PCI
-mdefine_line|#define SNDRV_PCM_DMA_TYPE_PCI&t;&t;3&t;/* PCI continuous */
-DECL|macro|SNDRV_PCM_DMA_TYPE_SBUS
-mdefine_line|#define SNDRV_PCM_DMA_TYPE_SBUS&t;&t;4&t;/* SBUS continuous */
-DECL|macro|SNDRV_PCM_DMA_TYPE_PCI_SG
-mdefine_line|#define SNDRV_PCM_DMA_TYPE_PCI_SG&t;5&t;/* PCI SG-buffer */
 multiline_comment|/* If you change this don&squot;t forget to change rates[] table in pcm_native.c */
 DECL|macro|SNDRV_PCM_RATE_5512
 mdefine_line|#define SNDRV_PCM_RATE_5512&t;&t;(1&lt;&lt;0)&t;&t;/* 5512Hz */
@@ -901,33 +896,6 @@ DECL|typedef|snd_pcm_hw_constraint_list_t
 )brace
 id|snd_pcm_hw_constraint_list_t
 suffix:semicolon
-DECL|struct|snd_pcm_dma_buffer
-r_struct
-id|snd_pcm_dma_buffer
-(brace
-DECL|member|area
-r_int
-r_char
-op_star
-id|area
-suffix:semicolon
-DECL|member|addr
-id|dma_addr_t
-id|addr
-suffix:semicolon
-DECL|member|bytes
-r_int
-r_int
-id|bytes
-suffix:semicolon
-DECL|member|private_data
-r_void
-op_star
-id|private_data
-suffix:semicolon
-multiline_comment|/* for allocator */
-)brace
-suffix:semicolon
 DECL|struct|_snd_pcm_runtime
 r_struct
 id|_snd_pcm_runtime
@@ -1046,6 +1014,11 @@ r_int
 id|rate_den
 suffix:semicolon
 multiline_comment|/* -- SW params -- */
+DECL|member|tstamp_timespec
+r_int
+id|tstamp_timespec
+suffix:semicolon
+multiline_comment|/* use timeval (0) or timespec (1) */
 DECL|member|tstamp_mode
 id|snd_pcm_tstamp_t
 id|tstamp_mode
@@ -1214,7 +1187,6 @@ suffix:semicolon
 multiline_comment|/* physical bus address (not accessible from main CPU) */
 DECL|member|dma_bytes
 r_int
-r_int
 id|dma_bytes
 suffix:semicolon
 multiline_comment|/* size of DMA area */
@@ -1275,25 +1247,29 @@ r_int
 id|buffer_bytes_max
 suffix:semicolon
 multiline_comment|/* limit ring buffer size */
-DECL|member|dma_type
-r_int
-id|dma_type
+DECL|member|dma_device
+r_struct
+id|snd_dma_device
+id|dma_device
 suffix:semicolon
 DECL|member|dma_buffer
 r_struct
-id|snd_pcm_dma_buffer
+id|snd_dma_buffer
 id|dma_buffer
 suffix:semicolon
 DECL|member|dma_max
 r_int
 id|dma_max
 suffix:semicolon
-DECL|member|dma_private
-r_void
-op_star
-id|dma_private
-suffix:semicolon
 multiline_comment|/* -- hardware operations -- */
+DECL|member|open_flag
+r_int
+r_int
+id|open_flag
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* lowlevel device has been opened */
 DECL|member|ops
 id|snd_pcm_ops_t
 op_star
@@ -1315,6 +1291,8 @@ multiline_comment|/* timer */
 DECL|member|timer_running
 r_int
 id|timer_running
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* time is running */
 DECL|member|timer_lock
@@ -4071,6 +4049,67 @@ id|size
 comma
 r_int
 id|max
+)paren
+suffix:semicolon
+r_int
+id|snd_pcm_lib_preallocate_sg_pages
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pci
+comma
+id|snd_pcm_substream_t
+op_star
+id|substream
+comma
+r_int
+id|size
+comma
+r_int
+id|max
+)paren
+suffix:semicolon
+r_int
+id|snd_pcm_lib_preallocate_sg_pages_for_all
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pci
+comma
+id|snd_pcm_t
+op_star
+id|pcm
+comma
+r_int
+id|size
+comma
+r_int
+id|max
+)paren
+suffix:semicolon
+DECL|macro|snd_pcm_substream_sgbuf
+mdefine_line|#define snd_pcm_substream_sgbuf(substream) ((substream)-&gt;runtime-&gt;dma_private)
+DECL|macro|snd_pcm_sgbuf_pages
+mdefine_line|#define snd_pcm_sgbuf_pages(size) snd_sgbuf_aligned_pages(size)
+DECL|macro|snd_pcm_sgbuf_get_addr
+mdefine_line|#define snd_pcm_sgbuf_get_addr(sgbuf,ofs) snd_sgbuf_get_addr(sgbuf,ofs)
+r_struct
+id|page
+op_star
+id|snd_pcm_sgbuf_ops_page
+c_func
+(paren
+id|snd_pcm_substream_t
+op_star
+id|substream
+comma
+r_int
+r_int
+id|offset
 )paren
 suffix:semicolon
 macro_line|#endif
