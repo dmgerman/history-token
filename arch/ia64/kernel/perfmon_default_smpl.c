@@ -378,6 +378,10 @@ r_struct
 id|pt_regs
 op_star
 id|regs
+comma
+r_int
+r_int
+id|stamp
 )paren
 (brace
 id|pfm_default_smpl_hdr_t
@@ -402,29 +406,17 @@ id|e
 suffix:semicolon
 r_int
 r_int
-id|ovfl_mask
-suffix:semicolon
-r_int
-r_int
-id|ovfl_notify
-suffix:semicolon
-r_int
-r_int
-id|stamp
-suffix:semicolon
-r_int
-r_int
 id|npmds
 comma
 id|i
 suffix:semicolon
-multiline_comment|/*&n;&t; * some time stamp&n;&t; */
-id|stamp
-op_assign
-id|ia64_get_itc
-c_func
-(paren
-)paren
+r_int
+r_char
+id|ovfl_pmd
+suffix:semicolon
+r_int
+r_char
+id|ovfl_notify
 suffix:semicolon
 r_if
 c_cond
@@ -485,19 +477,13 @@ id|last
 op_assign
 id|hdr-&gt;hdr_last_pos
 suffix:semicolon
-id|ovfl_mask
+id|ovfl_pmd
 op_assign
-id|arg-&gt;ovfl_pmds
-(braket
-l_int|0
-)braket
+id|arg-&gt;ovfl_pmd
 suffix:semicolon
 id|ovfl_notify
 op_assign
 id|arg-&gt;ovfl_notify
-(braket
-l_int|0
-)braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * check for space against largest possibly entry.&n;&t; * We may waste space at the end of the buffer.&n;&t; */
 r_if
@@ -560,7 +546,7 @@ id|DPRINT_ovfl
 c_func
 (paren
 (paren
-l_string|&quot;[%d] count=%lu cur=%p last=%p free_bytes=%lu ovfl_pmds=0x%lx ovfl_notify=0x%lx npmds=%u&bslash;n&quot;
+l_string|&quot;[%d] count=%lu cur=%p last=%p free_bytes=%lu ovfl_pmd=%d ovfl_notify=%d npmds=%u&bslash;n&quot;
 comma
 id|task-&gt;pid
 comma
@@ -574,7 +560,7 @@ id|last
 op_minus
 id|cur
 comma
-id|ovfl_mask
+id|ovfl_pmd
 comma
 id|ovfl_notify
 comma
@@ -587,12 +573,9 @@ id|ent-&gt;pid
 op_assign
 id|current-&gt;pid
 suffix:semicolon
-id|ent-&gt;cpu
+id|ent-&gt;ovfl_pmd
 op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
+id|ovfl_pmd
 suffix:semicolon
 id|ent-&gt;last_reset_val
 op_assign
@@ -614,22 +597,20 @@ op_amp
 l_int|0x3
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * which registers overflowed&n;&t; */
-id|ent-&gt;ovfl_pmds
-op_assign
-id|ovfl_mask
-suffix:semicolon
 id|ent-&gt;tstamp
 op_assign
 id|stamp
 suffix:semicolon
+id|ent-&gt;cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ent-&gt;set
 op_assign
 id|arg-&gt;active_set
-suffix:semicolon
-id|ent-&gt;reserved1
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * selectively store PMDs in increasing index number&n;&t; */
 r_if
@@ -688,22 +669,23 @@ l_int|3
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * keep same ovfl_pmds, ovfl_notify&n;&t; */
-id|arg-&gt;ovfl_ctrl.notify_user
+id|arg-&gt;ovfl_ctrl.bits.notify_user
 op_assign
 l_int|0
 suffix:semicolon
-id|arg-&gt;ovfl_ctrl.block
+id|arg-&gt;ovfl_ctrl.bits.block_task
 op_assign
 l_int|0
 suffix:semicolon
-id|arg-&gt;ovfl_ctrl.stop_monitoring
+id|arg-&gt;ovfl_ctrl.bits.mask_monitoring
 op_assign
 l_int|0
 suffix:semicolon
-id|arg-&gt;ovfl_ctrl.reset_pmds
+id|arg-&gt;ovfl_ctrl.bits.reset_ovfl_pmds
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* reset before returning from interrupt handler */
 r_return
 l_int|0
 suffix:semicolon
@@ -713,7 +695,7 @@ id|DPRINT_ovfl
 c_func
 (paren
 (paren
-l_string|&quot;sampling buffer full free=%lu, count=%lu, ovfl_notify=0x%lx&bslash;n&quot;
+l_string|&quot;sampling buffer full free=%lu, count=%lu, ovfl_notify=%d&bslash;n&quot;
 comma
 id|last
 op_minus
@@ -729,59 +711,62 @@ multiline_comment|/*&n;&t; * increment number of buffer overflow.&n;&t; * import
 id|hdr-&gt;hdr_overflows
 op_increment
 suffix:semicolon
-multiline_comment|/*&n;&t; * if no notification is needed, then we just reset the buffer index.&n;&t; */
+multiline_comment|/*&n;&t; * if no notification is needed, then we saturate the buffer&n;&t; */
 r_if
 c_cond
 (paren
 id|ovfl_notify
 op_eq
-l_int|0UL
+l_int|0
 )paren
 (brace
 id|hdr-&gt;hdr_count
 op_assign
 l_int|0UL
 suffix:semicolon
-id|arg-&gt;ovfl_ctrl.notify_user
+id|arg-&gt;ovfl_ctrl.bits.notify_user
 op_assign
 l_int|0
 suffix:semicolon
-id|arg-&gt;ovfl_ctrl.block
+id|arg-&gt;ovfl_ctrl.bits.block_task
 op_assign
 l_int|0
 suffix:semicolon
-id|arg-&gt;ovfl_ctrl.stop_monitoring
-op_assign
-l_int|0
-suffix:semicolon
-id|arg-&gt;ovfl_ctrl.reset_pmds
+id|arg-&gt;ovfl_ctrl.bits.mask_monitoring
 op_assign
 l_int|1
+suffix:semicolon
+id|arg-&gt;ovfl_ctrl.bits.reset_ovfl_pmds
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* keep same ovfl_pmds, ovfl_notify */
-id|arg-&gt;ovfl_ctrl.notify_user
+id|arg-&gt;ovfl_ctrl.bits.notify_user
 op_assign
 l_int|1
 suffix:semicolon
-id|arg-&gt;ovfl_ctrl.block
+id|arg-&gt;ovfl_ctrl.bits.block_task
 op_assign
 l_int|1
 suffix:semicolon
-id|arg-&gt;ovfl_ctrl.stop_monitoring
+multiline_comment|/* ignored for non-blocking context */
+id|arg-&gt;ovfl_ctrl.bits.mask_monitoring
 op_assign
 l_int|1
 suffix:semicolon
-id|arg-&gt;ovfl_ctrl.reset_pmds
+id|arg-&gt;ovfl_ctrl.bits.reset_ovfl_pmds
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* no reset now */
 )brace
 r_return
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
+multiline_comment|/* we are full, sorry */
 )brace
 r_static
 r_int
@@ -844,14 +829,15 @@ op_star
 id|hdr
 )paren
 suffix:semicolon
-id|ctrl-&gt;stop_monitoring
+id|ctrl-&gt;bits.mask_monitoring
 op_assign
 l_int|0
 suffix:semicolon
-id|ctrl-&gt;reset_pmds
+id|ctrl-&gt;bits.reset_ovfl_pmds
 op_assign
-id|PFM_PMD_LONG_RESET
+l_int|1
 suffix:semicolon
+multiline_comment|/* uses long-reset values */
 r_return
 l_int|0
 suffix:semicolon
