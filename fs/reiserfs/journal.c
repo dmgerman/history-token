@@ -11759,6 +11759,14 @@ id|p_s_sb
 op_assign
 id|commit_max_age
 suffix:semicolon
+id|SB_JOURNAL_MAX_TRANS_AGE
+c_func
+(paren
+id|p_s_sb
+)paren
+op_assign
+id|commit_max_age
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -11773,7 +11781,6 @@ id|le32_to_cpu
 id|jh-&gt;jh_journal.jp_journal_max_commit_age
 )paren
 suffix:semicolon
-)brace
 id|SB_JOURNAL_MAX_TRANS_AGE
 c_func
 (paren
@@ -11782,6 +11789,7 @@ id|p_s_sb
 op_assign
 id|JOURNAL_MAX_TRANS_AGE
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

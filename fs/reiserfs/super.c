@@ -3804,6 +3804,14 @@ id|s
 op_assign
 id|commit_max_age
 suffix:semicolon
+id|SB_JOURNAL_MAX_TRANS_AGE
+c_func
+(paren
+id|s
+)paren
+op_assign
+id|commit_max_age
+suffix:semicolon
 )brace
 r_if
 c_cond
