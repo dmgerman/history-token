@@ -1682,7 +1682,6 @@ c_loop
 (paren
 id|prealloc_goal
 op_logical_and
-op_logical_neg
 id|DQUOT_PREALLOC_BLOCK
 c_func
 (paren
