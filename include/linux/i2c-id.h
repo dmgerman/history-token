@@ -5,10 +5,10 @@ multiline_comment|/* &t;&t;&t;&t;&t;&t;&t;&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/*   Copyright (C) 1995-1999 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
-multiline_comment|/* $Id: i2c-id.h,v 1.56 2002/10/13 15:50:02 mds Exp $ */
-macro_line|#ifndef I2C_ID_H
-DECL|macro|I2C_ID_H
-mdefine_line|#define I2C_ID_H
+multiline_comment|/* $Id: i2c-id.h,v 1.63 2003/01/21 08:08:16 kmalkki Exp $ */
+macro_line|#ifndef LINUX_I2C_ID_H
+DECL|macro|LINUX_I2C_ID_H
+mdefine_line|#define LINUX_I2C_ID_H
 multiline_comment|/*&n; * This file is part of the i2c-bus package and contains the identifier&n; * values for drivers, adapters and other folk populating these serial&n; * worlds. &n; *&n; * These will change often (i.e. additions) , therefore this has been &n; * separated from the functional interface definitions of the i2c api.&n; *&n; */
 multiline_comment|/*&n; * ---- Driver types -----------------------------------------------------&n; *       device id name + number        function description, i2c address(es)&n; *&n; *  Range 1000-1999 range is defined in sensors/sensors.h &n; *  Range 0x100 - 0x1ff is for V4L2 Common Components &n; *  Range 0xf000 - 0xffff is reserved for local experimentation, and should&n; *        never be used in official drivers &n; */
 DECL|macro|I2C_DRIVERID_MSP3400
@@ -112,7 +112,9 @@ mdefine_line|#define I2C_DRIVERID_ZR36067&t;49     /* Zoran 36067 video encoder&
 DECL|macro|I2C_DRIVERID_ZR36120
 mdefine_line|#define I2C_DRIVERID_ZR36120&t;50     /* Zoran 36120 video encoder&t;*/
 DECL|macro|I2C_DRIVERID_24LC32A
-mdefine_line|#define I2C_DRIVERID_24LC32A&t;51&t;&t;/* Microchip 24LC32A 32k EEPROM&t;*/
+mdefine_line|#define I2C_DRIVERID_24LC32A&t;51&t;/* Microchip 24LC32A 32k EEPROM&t;*/
+DECL|macro|I2C_DRIVERID_STM41T00
+mdefine_line|#define I2C_DRIVERID_STM41T00&t;52&t;/* real time clock&t;&t;*/
 DECL|macro|I2C_DRIVERID_EXP0
 mdefine_line|#define I2C_DRIVERID_EXP0&t;0xF0&t;/* experimental use id&squot;s&t;*/
 DECL|macro|I2C_DRIVERID_EXP1
@@ -202,6 +204,8 @@ DECL|macro|I2C_DRIVERID_BMCSENSORS
 mdefine_line|#define I2C_DRIVERID_BMCSENSORS 1036
 DECL|macro|I2C_DRIVERID_FS451
 mdefine_line|#define I2C_DRIVERID_FS451 1037
+DECL|macro|I2C_DRIVERID_W83627HF
+mdefine_line|#define I2C_DRIVERID_W83627HF 1038
 multiline_comment|/*&n; * ---- Adapter types ----------------------------------------------------&n; *&n; * First, we distinguish between several algorithms to access the hardware&n; * interface types, as a PCF 8584 needs other care than a bit adapter.&n; */
 DECL|macro|I2C_ALGO_NONE
 mdefine_line|#define I2C_ALGO_NONE&t;0x000000
@@ -235,6 +239,8 @@ DECL|macro|I2C_ALGO_MPC8XX
 mdefine_line|#define I2C_ALGO_MPC8XX 0x110000&t;/* MPC8xx PowerPC I2C algorithm */
 DECL|macro|I2C_ALGO_OCP
 mdefine_line|#define I2C_ALGO_OCP    0x120000&t;/* IBM or otherwise On-chip I2C algorithm */
+DECL|macro|I2C_ALGO_BITHS
+mdefine_line|#define I2C_ALGO_BITHS&t;0x130000&t;/* enhanced bit style adapters&t;*/
 DECL|macro|I2C_ALGO_EXP
 mdefine_line|#define I2C_ALGO_EXP&t;0x800000&t;/* experimental&t;&t;&t;*/
 DECL|macro|I2C_ALGO_MASK
@@ -341,5 +347,5 @@ mdefine_line|#define I2C_HW_IPMI 0x00
 multiline_comment|/* --- IPMB adapter&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_IPMB
 mdefine_line|#define I2C_HW_IPMB 0x00
-macro_line|#endif /* I2C_ID_H */
+macro_line|#endif /* LINUX_I2C_ID_H */
 eof

@@ -3,16 +3,15 @@ multiline_comment|/* i2c-velleman.c i2c-hw access for Velleman K9000 adapters&t;
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/*   Copyright (C) 1995-96, 2000 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
-multiline_comment|/* $Id: i2c-velleman.c,v 1.23 2001/11/19 18:45:02 mds Exp $ */
+multiline_comment|/* $Id: i2c-velleman.c,v 1.29 2003/01/21 08:08:16 kmalkki Exp $ */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/string.h&gt;  /* for 2.0 kernels to get NULL   */
-macro_line|#include &lt;asm/errno.h&gt;     /* for 2.0 kernels to get ENODEV */
-macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* ----- global defines -----------------------------------------------&t;*/
 DECL|macro|DEB
 mdefine_line|#define DEB(x)&t;&t;/* should be reasonable open, close &amp;c. &t;*/
@@ -288,23 +287,40 @@ id|i2c_algo_bit_data
 id|bit_velle_data
 op_assign
 (brace
-l_int|NULL
-comma
+dot
+id|setsda
+op_assign
 id|bit_velle_setsda
 comma
+dot
+id|setscl
+op_assign
 id|bit_velle_setscl
 comma
+dot
+id|getsda
+op_assign
 id|bit_velle_getsda
 comma
+dot
+id|getscl
+op_assign
 id|bit_velle_getscl
 comma
+dot
+id|udelay
+op_assign
 l_int|10
 comma
+dot
+id|mdelay
+op_assign
 l_int|10
 comma
-l_int|100
-comma
-multiline_comment|/*&t;waits, timeout */
+dot
+id|timeout
+op_assign
+id|HZ
 )brace
 suffix:semicolon
 DECL|variable|bit_velle_ops

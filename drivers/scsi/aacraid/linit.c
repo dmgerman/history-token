@@ -2477,6 +2477,4 @@ id|host_no
 )paren
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 eof

@@ -52,7 +52,6 @@ comma
 r_int
 id|wct
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -80,12 +79,35 @@ r_if
 c_cond
 (paren
 id|tcon
+op_logical_and
+(paren
+id|tcon-&gt;tidStatus
+op_eq
+id|CifsNeedReconnect
 )paren
+)paren
+(brace
+id|rc
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|tcon-&gt;ses
 )paren
+(brace
+r_struct
+id|nls_table
+op_star
+id|nls_codepage
+op_assign
+id|load_nls_default
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -94,6 +116,8 @@ op_eq
 id|CifsNeedReconnect
 )paren
 (brace
+id|rc
+op_assign
 id|setup_session
 c_func
 (paren
@@ -101,11 +125,56 @@ l_int|0
 comma
 id|tcon-&gt;ses
 comma
-id|load_nls_default
+id|nls_codepage
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rc
+)paren
+(brace
+id|rc
+op_assign
+id|CIFSTCon
 c_func
 (paren
+l_int|0
+comma
+id|tcon-&gt;ses
+comma
+id|tcon-&gt;treeName
+comma
+id|tcon
+comma
+id|nls_codepage
+)paren
+suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;reconnect tcon rc = %d&quot;
+comma
+id|rc
 )paren
 )paren
+suffix:semicolon
+)brace
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+r_return
+id|rc
 suffix:semicolon
 )brace
 op_star
@@ -557,7 +626,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;UID of server does not match that of previous connection to same ip address&quot;
+l_string|&quot;UID of server does not match previous connection to same ip address&quot;
 )paren
 )paren
 suffix:semicolon
@@ -644,7 +713,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Server required CIFS packet signing - enable /proc/fs/cifs/PacketSigningEnabled&quot;
+l_string|&quot;Server requires /proc/fs/cifs/PacketSigningEnabled&quot;
 )paren
 )paren
 suffix:semicolon
@@ -718,7 +787,7 @@ l_string|&quot;In tree disconnect&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  If last user of the connection and&n;&t; *  connection alive - disconnect it&n;&t; *  If this is the last connection on the server session disconnect it&n;&t; *  (and inside session disconnect we should check if tcp socket needs to &n;&t; *  be freed and kernel thread woken up).&n;&t; */
+multiline_comment|/*&n;&t; *  If last user of the connection and&n;&t; *  connection alive - disconnect it&n;&t; *  If this is the last connection on the server session disconnect it&n;&t; *  (and inside session disconnect we should check if tcp socket needs &n;&t; *  to be freed and kernel thread woken up).&n;&t; */
 r_if
 c_cond
 (paren
@@ -955,7 +1024,7 @@ op_amp
 id|ses-&gt;sesSem
 )paren
 suffix:semicolon
-multiline_comment|/* need to add more places where this sem is checked */
+multiline_comment|/* check this sem more places */
 r_else
 r_return
 op_minus
@@ -1149,7 +1218,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -1396,7 +1464,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -1641,7 +1708,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -1887,7 +1953,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -2137,7 +2202,7 @@ id|ATTR_NORMAL
 suffix:semicolon
 multiline_comment|/* XP does not handle ATTR_POSIX_SEMANTICS */
 multiline_comment|/*if ((omode &amp; S_IWUGO) == 0)&n;&t;&t;pSMB-&gt;FileAttributes |= ATTR_READONLY;*/
-multiline_comment|/*  Above line causes problems due to problem with vfs splitting create into&n;        two pieces - need to set mode after file created not while it is being created */
+multiline_comment|/*  Above line causes problems due to vfs splitting create into two&n;&t;&t;pieces - need to set mode after file created not while it is&n;&t;&t;being created */
 id|pSMB-&gt;FileAttributes
 op_assign
 id|cpu_to_le32
@@ -2178,7 +2243,7 @@ c_func
 id|SECURITY_IMPERSONATION
 )paren
 suffix:semicolon
-multiline_comment|/* BB ?? BB */
+multiline_comment|/* BB ??*/
 id|pSMB-&gt;SecurityFlags
 op_assign
 id|cpu_to_le32
@@ -2268,7 +2333,7 @@ id|pSMBr-&gt;Fid
 suffix:semicolon
 multiline_comment|/* cifs fid stays in le */
 multiline_comment|/* Do we care about the CreateAction in any cases? */
-multiline_comment|/* BB add code to update inode with file sizes from create response */
+multiline_comment|/* BB add code to update inode file sizes from create response */
 )brace
 r_if
 c_cond
@@ -2295,7 +2360,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -2431,9 +2495,13 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|min
+id|min_t
 c_func
 (paren
+r_const
+r_int
+r_int
+comma
 id|count
 comma
 (paren
@@ -2646,7 +2714,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -2944,7 +3011,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -3205,7 +3271,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -3368,7 +3433,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -3523,6 +3587,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* pad */
+multiline_comment|/* protocol requires ASCII signature byte on Unicode string */
 id|pSMB-&gt;OldFileName
 (braket
 id|name_len
@@ -3532,7 +3597,6 @@ l_int|1
 op_assign
 l_int|0x04
 suffix:semicolon
-multiline_comment|/* strange that protocol requires an ASCII signature byte on Unicode string */
 id|name_len2
 op_assign
 id|cifs_strtoUCS
@@ -3741,7 +3805,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -4039,6 +4102,7 @@ c_func
 l_int|2
 )paren
 suffix:semicolon
+multiline_comment|/* BB find exact max on data count below from sess */
 id|pSMB-&gt;MaxDataCount
 op_assign
 id|cpu_to_le16
@@ -4047,7 +4111,6 @@ c_func
 l_int|1000
 )paren
 suffix:semicolon
-multiline_comment|/*BB find exact max SMB from sess */
 id|pSMB-&gt;SetupCount
 op_assign
 l_int|1
@@ -4209,7 +4272,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -4507,6 +4569,7 @@ c_func
 l_int|2
 )paren
 suffix:semicolon
+multiline_comment|/* BB find exact max on data count below from sess*/
 id|pSMB-&gt;MaxDataCount
 op_assign
 id|cpu_to_le16
@@ -4515,7 +4578,6 @@ c_func
 l_int|1000
 )paren
 suffix:semicolon
-multiline_comment|/* BB find exact max SMB from sess*/
 id|pSMB-&gt;SetupCount
 op_assign
 l_int|1
@@ -4677,7 +4739,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -4853,7 +4914,6 @@ l_int|1
 op_assign
 l_int|0x04
 suffix:semicolon
-multiline_comment|/* strange that protocol requires an ASCII signature byte on Unicode string */
 id|name_len2
 op_assign
 id|cifs_strtoUCS
@@ -5061,7 +5121,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -5247,6 +5306,7 @@ c_func
 l_int|2
 )paren
 suffix:semicolon
+multiline_comment|/* BB find exact max data count below from sess structure BB */
 id|pSMB-&gt;MaxDataCount
 op_assign
 id|cpu_to_le16
@@ -5255,7 +5315,6 @@ c_func
 l_int|4000
 )paren
 suffix:semicolon
-multiline_comment|/* BB find exact max SMB PDU from sess structure BB */
 id|pSMB-&gt;MaxSetupCount
 op_assign
 l_int|0
@@ -5473,26 +5532,20 @@ r_char
 op_star
 )paren
 op_amp
-id|pSMBr-&gt;hdr
-dot
-id|Protocol
+id|pSMBr-&gt;hdr.Protocol
 op_plus
-id|pSMBr
-op_member_access_from_pointer
-id|DataOffset
+id|pSMBr-&gt;DataOffset
 )paren
 comma
-id|min
+id|min_t
 c_func
 (paren
+r_const
+r_int
+comma
 id|buflen
 comma
-(paren
-r_int
-)paren
-id|pSMBr
-op_member_access_from_pointer
-id|DataCount
+id|pSMBr-&gt;DataCount
 )paren
 op_div
 l_int|2
@@ -5513,15 +5566,9 @@ r_char
 op_star
 )paren
 op_amp
-id|pSMBr
-op_member_access_from_pointer
-id|hdr
-dot
-id|Protocol
+id|pSMBr-&gt;hdr.Protocol
 op_plus
-id|pSMBr
-op_member_access_from_pointer
-id|DataOffset
+id|pSMBr-&gt;DataOffset
 )paren
 comma
 id|name_len
@@ -5546,17 +5593,15 @@ id|pSMBr-&gt;hdr.Protocol
 op_plus
 id|pSMBr-&gt;DataOffset
 comma
-id|min
+id|min_t
 c_func
 (paren
+r_const
+r_int
+comma
 id|buflen
 comma
-(paren
-r_int
-)paren
-id|pSMBr
-op_member_access_from_pointer
-id|DataCount
+id|pSMBr-&gt;DataCount
 )paren
 )paren
 suffix:semicolon
@@ -5595,7 +5640,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -5652,7 +5696,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;In Windows reparse style QueryLink info for path %s&quot;
+l_string|&quot;In Windows reparse style QueryLink for path %s&quot;
 comma
 id|searchName
 )paren
@@ -5710,6 +5754,7 @@ c_func
 l_int|2
 )paren
 suffix:semicolon
+multiline_comment|/* BB find exact data count max from sess structure BB */
 id|pSMB-&gt;MaxDataCount
 op_assign
 id|cpu_to_le16
@@ -5718,7 +5763,6 @@ c_func
 l_int|4000
 )paren
 suffix:semicolon
-multiline_comment|/* BB find exact max SMB PDU from sess structure BB */
 id|pSMB-&gt;MaxSetupCount
 op_assign
 l_int|4
@@ -5884,7 +5928,7 @@ l_int|2048
 )paren
 )paren
 (brace
-multiline_comment|/* could also validata reparse tag &amp;&amp; better check name length */
+multiline_comment|/* could also validate reparse tag &amp;&amp; better check name length */
 r_struct
 id|reparse_data
 op_star
@@ -5975,14 +6019,14 @@ id|reparse_buf-&gt;LinkNamesBuf
 op_plus
 id|reparse_buf-&gt;TargetNameOffset
 comma
-id|min
+id|min_t
 c_func
 (paren
+r_const
+r_int
+comma
 id|buflen
 comma
-(paren
-r_int
-)paren
 id|reparse_buf-&gt;TargetNameLen
 )paren
 )paren
@@ -6053,7 +6097,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -6406,6 +6449,7 @@ c_func
 id|pSMBr-&gt;DataOffset
 )paren
 suffix:semicolon
+multiline_comment|/* BB also check enough total bytes returned */
 r_if
 c_cond
 (paren
@@ -6421,7 +6465,6 @@ OG
 l_int|512
 )paren
 )paren
-multiline_comment|/* BB also check enough total bytes returned */
 id|rc
 op_assign
 op_minus
@@ -6480,7 +6523,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -6662,6 +6704,7 @@ c_func
 l_int|2
 )paren
 suffix:semicolon
+multiline_comment|/* BB find exact max SMB PDU from sess structure BB */
 id|pSMB-&gt;MaxDataCount
 op_assign
 id|cpu_to_le16
@@ -6670,7 +6713,6 @@ c_func
 l_int|4000
 )paren
 suffix:semicolon
-multiline_comment|/* BB find exact max SMB PDU from sess structure BB */
 id|pSMB-&gt;MaxSetupCount
 op_assign
 l_int|0
@@ -6833,6 +6875,7 @@ c_func
 id|pSMBr-&gt;DataOffset
 )paren
 suffix:semicolon
+multiline_comment|/* BB also check if enough total bytes returned */
 r_if
 c_cond
 (paren
@@ -6848,7 +6891,6 @@ OG
 l_int|512
 )paren
 )paren
-multiline_comment|/* BB also check enough total bytes returned */
 id|rc
 op_assign
 op_minus
@@ -6907,7 +6949,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -7305,7 +7346,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -7857,7 +7897,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -8785,7 +8824,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star

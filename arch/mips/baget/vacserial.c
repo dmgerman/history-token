@@ -26,7 +26,7 @@ DECL|macro|SERIAL_INLINE
 mdefine_line|#define SERIAL_INLINE
 macro_line|#if defined(MODULE) &amp;&amp; defined(SERIAL_DEBUG_MCOUNT)
 DECL|macro|DBG_CNT
-mdefine_line|#define DBG_CNT(s) baget_printk(&quot;(%s):[%x] refc=%d, serc=%d, ttyc=%d-&gt; %s&bslash;n&quot;, &bslash;&n;  kdevname(tty-&gt;device),(info-&gt;flags),serial_refcount,info-&gt;count,tty-&gt;count,s)
+mdefine_line|#define DBG_CNT(s) baget_printk(&quot;(%s):[%x] refc=%d, serc=%d, ttyc=%d-&gt; %s&bslash;n&quot;, &bslash;&n;  cdevname(tty-&gt;device),(info-&gt;flags),serial_refcount,info-&gt;count,tty-&gt;count,s)
 macro_line|#else
 DECL|macro|DBG_CNT
 mdefine_line|#define DBG_CNT(s)
@@ -362,7 +362,7 @@ c_func
 (paren
 id|badinfo
 comma
-id|kdevname
+id|cdevname
 c_func
 (paren
 id|device
@@ -388,7 +388,7 @@ c_func
 (paren
 id|badmagic
 comma
-id|kdevname
+id|cdevname
 c_func
 (paren
 id|device

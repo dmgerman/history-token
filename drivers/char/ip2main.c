@@ -952,7 +952,7 @@ multiline_comment|/* Macros */
 multiline_comment|/**********/
 macro_line|#if defined(MODULE) &amp;&amp; defined(IP2DEBUG_OPEN)
 DECL|macro|DBG_CNT
-mdefine_line|#define DBG_CNT(s) printk(KERN_DEBUG &quot;(%s): [%x] refc=%d, ttyc=%d, modc=%x -&gt; %s&bslash;n&quot;, &bslash;&n;&t;&t;    kdevname(tty-&gt;device),(pCh-&gt;flags),ref_count, &bslash;&n;&t;&t;    tty-&gt;count,/*GET_USE_COUNT(module)*/0,s)
+mdefine_line|#define DBG_CNT(s) printk(KERN_DEBUG &quot;(%s): [%x] refc=%d, ttyc=%d, modc=%x -&gt; %s&bslash;n&quot;, &bslash;&n;&t;&t;    cdevname(tty-&gt;device),(pCh-&gt;flags),ref_count, &bslash;&n;&t;&t;    tty-&gt;count,/*GET_USE_COUNT(module)*/0,s)
 macro_line|#else
 DECL|macro|DBG_CNT
 mdefine_line|#define DBG_CNT(s)

@@ -21,8 +21,6 @@ macro_line|#include &quot;io.h&quot;
 macro_line|#include &quot;xdi_msg.h&quot;
 macro_line|#include &quot;xdi_adapter.h&quot;
 macro_line|#include &quot;diva.h&quot;
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 r_extern
 id|PISDN_ADAPTER
 id|IoAdapters

@@ -1266,7 +1266,7 @@ r_return
 id|XFS_ERROR
 c_func
 (paren
-id|EWRONGFS
+id|ENOSYS
 )paren
 suffix:semicolon
 )brace
@@ -2036,12 +2036,53 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Re-read the superblock so that our buffer is correctly sized.&n;&t; * We only need to do this if sector size on-disk is different.&n;&t; */
+multiline_comment|/*&n;&t; * We must be able to do sector-sized and sector-aligned IO.&n;&t; */
 r_if
 c_cond
 (paren
 id|sector_size
-op_ne
+OG
+id|mp-&gt;m_sb.sb_sectsize
+)paren
+(brace
+id|cmn_err
+c_func
+(paren
+id|CE_WARN
+comma
+l_string|&quot;XFS: device supports only %u byte sectors (not %u)&quot;
+comma
+id|sector_size
+comma
+id|mp-&gt;m_sb.sb_sectsize
+)paren
+suffix:semicolon
+id|XFS_BUF_UNMANAGE
+c_func
+(paren
+id|bp
+)paren
+suffix:semicolon
+id|xfs_buf_relse
+c_func
+(paren
+id|bp
+)paren
+suffix:semicolon
+r_return
+id|XFS_ERROR
+c_func
+(paren
+id|ENOSYS
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * If device sector size is smaller than the superblock size,&n;&t; * re-read the superblock so the buffer is correctly sized.&n;&t; */
+r_if
+c_cond
+(paren
+id|sector_size
+OL
 id|mp-&gt;m_sb.sb_sectsize
 )paren
 (brace

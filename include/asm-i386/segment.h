@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_SEGMENT_H
 DECL|macro|_ASM_SEGMENT_H
 mdefine_line|#define _ASM_SEGMENT_H
-multiline_comment|/*&n; * The layout of the per-CPU GDT under Linux:&n; *&n; *   0 - null&n; *   1 - reserved&n; *   2 - reserved&n; *   3 - reserved&n; *&n; *   4 - unused&t;&t;&t;&lt;==== new cacheline&n; *   5 - unused&n; *&n; *  ------- start of TLS (Thread-Local Storage) segments:&n; *&n; *   6 - TLS segment #1&t;&t;&t;[ glibc&squot;s TLS segment ]&n; *   7 - TLS segment #2&t;&t;&t;[ Wine&squot;s %fs Win32 segment ]&n; *   8 - TLS segment #3&n; *   9 - reserved&n; *  10 - reserved&n; *  11 - reserved&n; *&n; *  ------- start of kernel segments:&n; *&n; *  12 - kernel code segment&t;&t;&lt;==== new cacheline&n; *  13 - kernel data segment&n; *  14 - default user CS&n; *  15 - default user DS&n; *  16 - TSS&n; *  17 - LDT&n; *  18 - PNPBIOS support (16-&gt;32 gate)&n; *  19 - PNPBIOS support&n; *  20 - PNPBIOS support&n; *  21 - PNPBIOS support&n; *  22 - PNPBIOS support&n; *  23 - APM BIOS support&n; *  24 - APM BIOS support&n; *  25 - APM BIOS support &n; */
+multiline_comment|/*&n; * The layout of the per-CPU GDT under Linux:&n; *&n; *   0 - null&n; *   1 - reserved&n; *   2 - reserved&n; *   3 - reserved&n; *&n; *   4 - unused&t;&t;&t;&lt;==== new cacheline&n; *   5 - unused&n; *&n; *  ------- start of TLS (Thread-Local Storage) segments:&n; *&n; *   6 - TLS segment #1&t;&t;&t;[ glibc&squot;s TLS segment ]&n; *   7 - TLS segment #2&t;&t;&t;[ Wine&squot;s %fs Win32 segment ]&n; *   8 - TLS segment #3&n; *   9 - reserved&n; *  10 - reserved&n; *  11 - reserved&n; *&n; *  ------- start of kernel segments:&n; *&n; *  12 - kernel code segment&t;&t;&lt;==== new cacheline&n; *  13 - kernel data segment&n; *  14 - default user CS&n; *  15 - default user DS&n; *  16 - TSS&n; *  17 - LDT&n; *  18 - PNPBIOS support (16-&gt;32 gate)&n; *  19 - PNPBIOS support&n; *  20 - PNPBIOS support&n; *  21 - PNPBIOS support&n; *  22 - PNPBIOS support&n; *  23 - APM BIOS support&n; *  24 - APM BIOS support&n; *  25 - APM BIOS support &n; *&n; *  26 - unused&n; *  27 - unused&n; *  28 - unused&n; *  29 - unused&n; *  30 - unused&n; *  31 - TSS for double fault handler&n; */
 DECL|macro|GDT_ENTRY_TLS_ENTRIES
 mdefine_line|#define GDT_ENTRY_TLS_ENTRIES&t;3
 DECL|macro|GDT_ENTRY_TLS_MIN
@@ -36,9 +36,11 @@ DECL|macro|GDT_ENTRY_PNPBIOS_BASE
 mdefine_line|#define GDT_ENTRY_PNPBIOS_BASE&t;&t;(GDT_ENTRY_KERNEL_BASE + 6)
 DECL|macro|GDT_ENTRY_APMBIOS_BASE
 mdefine_line|#define GDT_ENTRY_APMBIOS_BASE&t;&t;(GDT_ENTRY_KERNEL_BASE + 11)
-multiline_comment|/*&n; * The GDT has 25 entries but we pad it to cacheline boundary:&n; */
+DECL|macro|GDT_ENTRY_DOUBLEFAULT_TSS
+mdefine_line|#define GDT_ENTRY_DOUBLEFAULT_TSS&t;31
+multiline_comment|/*&n; * The GDT has 32 entries&n; */
 DECL|macro|GDT_ENTRIES
-mdefine_line|#define GDT_ENTRIES 28
+mdefine_line|#define GDT_ENTRIES 32
 DECL|macro|GDT_SIZE
 mdefine_line|#define GDT_SIZE (GDT_ENTRIES * 8)
 multiline_comment|/* Simple and small GDT entries for booting only */

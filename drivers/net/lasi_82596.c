@@ -177,8 +177,6 @@ comma
 l_string|&quot;lasi_82596 debug mask&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 multiline_comment|/* Copy frames shorter than rx_copybreak, otherwise pass on up in&n; * a full sized sk_buff.  Value of 100 stolen from tulip.c (!alpha).&n; */
 DECL|variable|rx_copybreak
 r_static

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -1378,6 +1379,13 @@ op_star
 id|child
 suffix:semicolon
 r_int
+r_int
+id|tmp
+suffix:semicolon
+r_int
+id|copied
+suffix:semicolon
+r_int
 id|ret
 suffix:semicolon
 id|lock_kernel
@@ -1423,6 +1431,24 @@ c_cond
 id|current-&gt;ptrace
 op_amp
 id|PT_PTRACED
+)paren
+r_goto
+id|out_notsk
+suffix:semicolon
+id|ret
+op_assign
+id|security_ptrace
+c_func
+(paren
+id|current-&gt;parent
+comma
+id|current
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 )paren
 r_goto
 id|out_notsk
@@ -1520,85 +1546,26 @@ suffix:semicolon
 )brace
 id|ret
 op_assign
-op_minus
-id|ESRCH
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|child-&gt;ptrace
-op_amp
-id|PT_PTRACED
-)paren
-)paren
-(brace
-id|DBG
+id|ptrace_check_attach
 c_func
 (paren
-id|DBG_MEM
+id|child
 comma
-(paren
-l_string|&quot;child not traced&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|child-&gt;state
-op_ne
-id|TASK_STOPPED
-)paren
-(brace
-id|DBG
-c_func
-(paren
-id|DBG_MEM
-comma
-(paren
-l_string|&quot;child process not stopped&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|request
-op_ne
+op_eq
 id|PTRACE_KILL
 )paren
-r_goto
-id|out
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
-id|child-&gt;parent
-op_ne
-id|current
+id|ret
+OL
+l_int|0
 )paren
-(brace
-id|DBG
-c_func
-(paren
-id|DBG_MEM
-comma
-(paren
-l_string|&quot;child not parent of this process&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -1613,12 +1580,6 @@ multiline_comment|/* read word at location addr. */
 r_case
 id|PTRACE_PEEKDATA
 suffix:colon
-(brace
-r_int
-r_int
-id|tmp
-suffix:semicolon
-r_int
 id|copied
 op_assign
 id|access_process_vm
@@ -1654,8 +1615,7 @@ r_sizeof
 id|tmp
 )paren
 )paren
-r_goto
-id|out
+r_break
 suffix:semicolon
 id|regs-&gt;r0
 op_assign
@@ -1666,10 +1626,8 @@ id|ret
 op_assign
 id|tmp
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
-)brace
 multiline_comment|/* Read register number ADDR. */
 r_case
 id|PTRACE_PEEKUSR
@@ -1703,8 +1661,7 @@ id|ret
 )paren
 )paren
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
 multiline_comment|/* When I and D space are separate, this will have to be fixed.  */
 r_case
@@ -1714,14 +1671,10 @@ multiline_comment|/* write the word at location addr. */
 r_case
 id|PTRACE_POKEDATA
 suffix:colon
-(brace
-r_int
-r_int
 id|tmp
 op_assign
 id|data
 suffix:semicolon
-r_int
 id|copied
 op_assign
 id|access_process_vm
@@ -1759,10 +1712,8 @@ suffix:colon
 op_minus
 id|EIO
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
-)brace
 r_case
 id|PTRACE_POKEUSR
 suffix:colon
@@ -1793,13 +1744,12 @@ comma
 id|data
 )paren
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
 r_case
 id|PTRACE_SYSCALL
 suffix:colon
-multiline_comment|/* continue and stop at next&n;&t;&t;&t;&t;(return from) syscall */
+multiline_comment|/* continue and stop at next (return from) syscall */
 r_case
 id|PTRACE_CONT
 suffix:colon
@@ -1820,8 +1770,7 @@ id|data
 OG
 id|_NSIG
 )paren
-r_goto
-id|out
+r_break
 suffix:semicolon
 r_if
 c_cond
@@ -1851,12 +1800,6 @@ id|child-&gt;exit_code
 op_assign
 id|data
 suffix:semicolon
-id|wake_up_process
-c_func
-(paren
-id|child
-)paren
-suffix:semicolon
 multiline_comment|/* make sure single-step breakpoint is gone. */
 id|ptrace_cancel_bpt
 c_func
@@ -1864,38 +1807,7 @@ c_func
 id|child
 )paren
 suffix:semicolon
-id|ret
-op_assign
-id|data
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-multiline_comment|/*&n;&t; * Make the child exit.  Best I can do is send it a sigkill.&n;&t; * perhaps it should be put in the status that it wants to&n;&t; * exit.&n;&t; */
-r_case
-id|PTRACE_KILL
-suffix:colon
-r_if
-c_cond
-(paren
-id|child-&gt;state
-op_ne
-id|TASK_ZOMBIE
-)paren
-(brace
 id|wake_up_process
-c_func
-(paren
-id|child
-)paren
-suffix:semicolon
-id|child-&gt;exit_code
-op_assign
-id|SIGKILL
-suffix:semicolon
-)brace
-multiline_comment|/* make sure single-step breakpoint is gone. */
-id|ptrace_cancel_bpt
 c_func
 (paren
 id|child
@@ -1904,6 +1816,42 @@ suffix:semicolon
 id|ret
 op_assign
 l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/*&n;&t; * Make the child exit.  Best I can do is send it a sigkill.&n;&t; * perhaps it should be put in the status that it wants to&n;&t; * exit.&n;&t; */
+r_case
+id|PTRACE_KILL
+suffix:colon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|child-&gt;state
+op_eq
+id|TASK_ZOMBIE
+)paren
+r_break
+suffix:semicolon
+id|child-&gt;exit_code
+op_assign
+id|SIGKILL
+suffix:semicolon
+multiline_comment|/* make sure single-step breakpoint is gone. */
+id|ptrace_cancel_bpt
+c_func
+(paren
+id|child
+)paren
+suffix:semicolon
+id|wake_up_process
+c_func
+(paren
+id|child
+)paren
 suffix:semicolon
 r_goto
 id|out
@@ -1928,8 +1876,7 @@ id|data
 OG
 id|_NSIG
 )paren
-r_goto
-id|out
+r_break
 suffix:semicolon
 multiline_comment|/* Mark single stepping.  */
 id|child-&gt;thread_info-&gt;bpt_nsaved

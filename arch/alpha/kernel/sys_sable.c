@@ -1059,7 +1059,6 @@ comma
 multiline_comment|/* IdSel 8,  slot 2 */
 )brace
 suffix:semicolon
-r_const
 r_int
 id|min_idsel
 op_assign

@@ -163,6 +163,10 @@ op_amp
 id|sesInfoAllocCount
 )paren
 suffix:semicolon
+id|ret_buf-&gt;status
+op_assign
+id|CifsNew
+suffix:semicolon
 id|list_add
 c_func
 (paren
@@ -369,6 +373,10 @@ comma
 op_amp
 id|GlobalTreeConnectionList
 )paren
+suffix:semicolon
+id|ret_buf-&gt;tidStatus
+op_assign
+id|CifsNew
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func

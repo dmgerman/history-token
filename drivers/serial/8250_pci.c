@@ -5101,8 +5101,6 @@ c_func
 id|serial8250_pci_exit
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

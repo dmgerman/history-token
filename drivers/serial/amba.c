@@ -2912,8 +2912,6 @@ c_func
 id|ambauart_exit
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

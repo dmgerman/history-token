@@ -1322,7 +1322,6 @@ comma
 multiline_comment|/* IdSel 7 PCI 1 slot 7 */
 )brace
 suffix:semicolon
-r_const
 r_int
 id|min_idsel
 op_assign

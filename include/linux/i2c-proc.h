@@ -1,11 +1,7 @@
 multiline_comment|/*&n;    i2c-proc.h - Part of the i2c package&n;    was originally sensors.h - Part of lm_sensors, Linux kernel modules&n;                               for hardware monitoring&n;    Copyright (c) 1998, 1999  Frodo Looijaard &lt;frodol@dds.nl&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
-macro_line|#ifndef SENSORS_SENSORS_H
-DECL|macro|SENSORS_SENSORS_H
-mdefine_line|#define SENSORS_SENSORS_H
-macro_line|#ifdef __KERNEL__
-multiline_comment|/* Next two must be included before sysctl.h can be included, in 2.0 kernels */
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#ifndef _LINUX_I2C_PROC_H
+DECL|macro|_LINUX_I2C_PROC_H
+mdefine_line|#define _LINUX_I2C_PROC_H
 macro_line|#include &lt;linux/sysctl.h&gt;
 multiline_comment|/* The type of callback functions used in sensors_{proc,sysctl}_real */
 DECL|typedef|i2c_real_callback
@@ -317,7 +313,7 @@ id|found_proc
 suffix:semicolon
 multiline_comment|/* This macro is used to scale user-input to sensible values in almost all&n;   chip drivers. */
 DECL|function|SENSORS_LIMIT
-r_extern
+r_static
 r_inline
 r_int
 id|SENSORS_LIMIT
@@ -359,7 +355,6 @@ r_return
 id|value
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;&t;/* def __KERNEL__ */
 multiline_comment|/* The maximum length of the prefix */
 DECL|macro|SENSORS_PREFIX_MAX
 mdefine_line|#define SENSORS_PREFIX_MAX 20
@@ -392,5 +387,5 @@ l_int|13
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* def SENSORS_SENSORS_H */
+macro_line|#endif&t;&t;&t;&t;/* def _LINUX_I2C_PROC_H */
 eof

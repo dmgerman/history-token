@@ -48,6 +48,10 @@ macro_line|#include &lt;asm/ebus.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/a.out.h&gt;
 macro_line|#include &lt;asm/io-unit.h&gt;
+r_extern
+id|spinlock_t
+id|rtc_lock
+suffix:semicolon
 DECL|struct|poll
 r_struct
 id|poll
@@ -520,6 +524,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ndelay
+)paren
+suffix:semicolon
+DECL|variable|rtc_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtc_lock
 )paren
 suffix:semicolon
 DECL|variable|mostek_lock

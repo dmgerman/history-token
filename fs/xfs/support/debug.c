@@ -208,6 +208,7 @@ r_int
 id|len
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|va_list

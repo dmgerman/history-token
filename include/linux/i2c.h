@@ -6,17 +6,17 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/*   Copyright (C) 1995-2000 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt; and&n;   Frodo Looijaard &lt;frodol@dds.nl&gt; */
-multiline_comment|/* $Id: i2c.h,v 1.59 2002/07/19 20:53:45 phil Exp $ */
+multiline_comment|/* $Id: i2c.h,v 1.68 2003/01/21 08:08:16 kmalkki Exp $ */
 macro_line|#ifndef _LINUX_I2C_H
 DECL|macro|_LINUX_I2C_H
 mdefine_line|#define _LINUX_I2C_H
 DECL|macro|I2C_DATE
-mdefine_line|#define I2C_DATE &quot;20020719&quot;
+mdefine_line|#define I2C_DATE &quot;20021208&quot;
 DECL|macro|I2C_VERSION
-mdefine_line|#define I2C_VERSION &quot;2.6.4&quot;
-macro_line|#include &lt;linux/i2c-id.h&gt;&t;/* id values of adapters et. al. &t;*/
+mdefine_line|#define I2C_VERSION &quot;2.7.0&quot;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/i2c-id.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/* --- General options ------------------------------------------------&t;*/
 DECL|macro|I2C_ALGO_MAX

@@ -644,7 +644,7 @@ c_func
 (paren
 id|badtty
 comma
-id|kdevname
+id|cdevname
 c_func
 (paren
 id|device
@@ -670,7 +670,7 @@ c_func
 (paren
 id|badmagic
 comma
-id|kdevname
+id|cdevname
 c_func
 (paren
 id|device
@@ -800,7 +800,7 @@ id|KERN_WARNING
 l_string|&quot;Warning: dev (%s) tty-&gt;count(%d) &quot;
 l_string|&quot;!= #fd&squot;s(%d) in %s&bslash;n&quot;
 comma
-id|kdevname
+id|cdevname
 c_func
 (paren
 id|tty-&gt;device
@@ -4537,7 +4537,7 @@ id|KERN_DEBUG
 l_string|&quot;release_dev: bad idx when trying to &quot;
 l_string|&quot;free (%s)&bslash;n&quot;
 comma
-id|kdevname
+id|cdevname
 c_func
 (paren
 id|tty-&gt;device
@@ -4567,7 +4567,7 @@ l_string|&quot;for (%s)&bslash;n&quot;
 comma
 id|idx
 comma
-id|kdevname
+id|cdevname
 c_func
 (paren
 id|tty-&gt;device
@@ -4597,7 +4597,7 @@ l_string|&quot;for (%s)&bslash;n&quot;
 comma
 id|idx
 comma
-id|kdevname
+id|cdevname
 c_func
 (paren
 id|tty-&gt;device
@@ -4627,7 +4627,7 @@ l_string|&quot;termios_locked for (%s)&bslash;n&quot;
 comma
 id|idx
 comma
-id|kdevname
+id|cdevname
 c_func
 (paren
 id|tty-&gt;device
@@ -4684,7 +4684,7 @@ l_string|&quot;not o_tty for (%s)&bslash;n&quot;
 comma
 id|idx
 comma
-id|kdevname
+id|cdevname
 c_func
 (paren
 id|tty-&gt;device
@@ -4714,7 +4714,7 @@ l_string|&quot;not o_termios for (%s)&bslash;n&quot;
 comma
 id|idx
 comma
-id|kdevname
+id|cdevname
 c_func
 (paren
 id|tty-&gt;device
@@ -4744,7 +4744,7 @@ l_string|&quot;%d] not o_termios_locked for (%s)&bslash;n&quot;
 comma
 id|idx
 comma
-id|kdevname
+id|cdevname
 c_func
 (paren
 id|tty-&gt;device

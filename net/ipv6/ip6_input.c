@@ -46,9 +46,7 @@ id|skb
 )paren
 suffix:semicolon
 r_return
-id|skb-&gt;dst
-op_member_access_from_pointer
-id|input
+id|dst_input
 c_func
 (paren
 id|skb
@@ -873,9 +871,7 @@ op_assign
 id|skb
 suffix:semicolon
 )brace
-id|dst
-op_member_access_from_pointer
-id|output
+id|dst_output
 c_func
 (paren
 id|skb2

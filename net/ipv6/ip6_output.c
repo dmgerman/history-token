@@ -575,9 +575,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_NETFILTER */
 r_return
-id|skb-&gt;dst
-op_member_access_from_pointer
-id|output
+id|dst_output
 c_func
 (paren
 id|skb
@@ -3055,9 +3053,7 @@ id|skb
 )paren
 (brace
 r_return
-id|skb-&gt;dst
-op_member_access_from_pointer
-id|output
+id|dst_output
 c_func
 (paren
 id|skb

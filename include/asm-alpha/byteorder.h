@@ -2,6 +2,7 @@ macro_line|#ifndef _ALPHA_BYTEORDER_H
 DECL|macro|_ALPHA_BYTEORDER_H
 mdefine_line|#define _ALPHA_BYTEORDER_H
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/compiler.h&gt;
 macro_line|#ifdef __GNUC__
 DECL|function|__arch__swab32
 r_static
@@ -31,40 +32,28 @@ id|t2
 comma
 id|t3
 suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;inslh %1, 7, %0&quot;
-multiline_comment|/* t0 : 0000000000AABBCC */
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|t0
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|x
-)paren
-)paren
-suffix:semicolon
-id|__asm__
+op_assign
+id|__kernel_inslh
 c_func
 (paren
-l_string|&quot;inswl %1, 3, %0&quot;
-multiline_comment|/* t1 : 000000CCDD000000 */
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|t1
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
 id|x
-)paren
+comma
+l_int|7
 )paren
 suffix:semicolon
+multiline_comment|/* t0 : 0000000000AABBCC */
+id|t1
+op_assign
+id|__kernel_inswl
+c_func
+(paren
+id|x
+comma
+l_int|3
+)paren
+suffix:semicolon
+multiline_comment|/* t1 : 000000CCDD000000 */
 id|t1
 op_or_assign
 id|t0

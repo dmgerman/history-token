@@ -1005,10 +1005,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|kbd_pt_regs
-op_assign
-id|regs
-suffix:semicolon
 macro_line|#ifdef CONFIG_SERIO
 id|serio_interrupt
 c_func
@@ -7720,8 +7716,6 @@ c_func
 (paren
 id|sunzilog_exit
 )paren
-suffix:semicolon
-id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
