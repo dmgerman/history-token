@@ -497,16 +497,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-id|u64
-id|ia64_log_get
-c_func
-(paren
-r_int
-comma
-id|prfunc_t
-)paren
-suffix:semicolon
 DECL|macro|PLATFORM_CALL
 mdefine_line|#define PLATFORM_CALL(fn, args)&t;printk(&quot;Platform call TBD&bslash;n&quot;)
 DECL|macro|platform_mem_dev_err_print

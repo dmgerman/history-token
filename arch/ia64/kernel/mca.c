@@ -176,6 +176,20 @@ id|ia64_slave_init_handler
 r_void
 )paren
 suffix:semicolon
+r_static
+id|u64
+id|ia64_log_get
+c_func
+(paren
+r_int
+id|sal_info_type
+comma
+id|u8
+op_star
+op_star
+id|buffer
+)paren
+suffix:semicolon
 r_extern
 r_struct
 id|hw_interrupt_type
@@ -357,7 +371,23 @@ id|cpe_poll_enabled
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n; *  ia64_mca_log_sal_error_record&n; *&n; *  This function retrieves a specified error record type from SAL, sends it to&n; *  the system log, and notifies SALs to clear the record from its non-volatile&n; *  memory.&n; *&n; *  Inputs  :   sal_info_type   (Type of error record MCA/CMC/CPE/INIT)&n; *  Outputs :   platform error status&n; */
+r_extern
+r_void
+id|salinfo_log_wakeup
+c_func
+(paren
+r_int
+id|type
+comma
+id|u8
+op_star
+id|buffer
+comma
+id|u64
+id|size
+)paren
+suffix:semicolon
+multiline_comment|/*&n; *  ia64_mca_log_sal_error_record&n; *&n; *  This function retrieves a specified error record type from SAL,&n; *  wakes up any processes waiting for error records, and sends it to&n; *  the system log.&n; *&n; *  Inputs  :   sal_info_type   (Type of error record MCA/CMC/CPE/INIT)&n; *  Outputs :   platform error status&n; */
 r_int
 DECL|function|ia64_mca_log_sal_error_record
 id|ia64_mca_log_sal_error_record
@@ -370,32 +400,47 @@ r_int
 id|called_from_init
 )paren
 (brace
+id|u8
+op_star
+id|buffer
+suffix:semicolon
+id|u64
+id|size
+suffix:semicolon
 r_int
 id|platform_err
-op_assign
-l_int|0
 suffix:semicolon
-multiline_comment|/* Get the MCA error record */
-r_if
-c_cond
-(paren
-op_logical_neg
+id|size
+op_assign
 id|ia64_log_get
 c_func
 (paren
 id|sal_info_type
 comma
+op_amp
+id|buffer
+)paren
+suffix:semicolon
+r_if
+c_cond
 (paren
-id|prfunc_t
-)paren
-id|printk
-)paren
+op_logical_neg
+id|size
 )paren
 r_return
-id|platform_err
+l_int|0
 suffix:semicolon
-multiline_comment|/* no record retrieved */
 multiline_comment|/* TODO:&n;&t; * 1. analyze error logs to determine recoverability&n;&t; * 2. perform error recovery procedures, if applicable&n;&t; * 3. set ia64_os_mca_recovery_successful flag, if applicable&n;&t; */
+id|salinfo_log_wakeup
+c_func
+(paren
+id|sal_info_type
+comma
+id|buffer
+comma
+id|size
+)paren
+suffix:semicolon
 id|platform_err
 op_assign
 id|ia64_log_print
@@ -409,19 +454,17 @@ id|prfunc_t
 id|printk
 )paren
 suffix:semicolon
-multiline_comment|/* temporary: only clear SAL logs on hardware-corrected errors&n;&t;&t;or if we&squot;re logging an error after an MCA-initiated reboot */
+multiline_comment|/* Clear logs from corrected errors in case there&squot;s no user-level logger */
 r_if
 c_cond
 (paren
-(paren
 id|sal_info_type
-OG
-l_int|1
-)paren
+op_eq
+id|SAL_INFO_TYPE_CPE
 op_logical_or
-(paren
-id|called_from_init
-)paren
+id|sal_info_type
+op_eq
+id|SAL_INFO_TYPE_CMC
 )paren
 id|ia64_sal_clear_state_info
 c_func
@@ -1784,9 +1827,12 @@ id|cpev
 )paren
 (brace
 multiline_comment|/* Register the CPE interrupt vector with SAL */
-r_if
-c_cond
-(paren
+r_struct
+id|ia64_sal_retval
+id|isrv
+suffix:semicolon
+id|isrv
+op_assign
 id|ia64_sal_mc_set_params
 c_func
 (paren
@@ -1800,6 +1846,11 @@ l_int|0
 comma
 l_int|0
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|isrv.status
 )paren
 (brace
 id|printk
@@ -2161,6 +2212,16 @@ suffix:semicolon
 id|s64
 id|rc
 suffix:semicolon
+r_struct
+id|ia64_sal_retval
+id|isrv
+suffix:semicolon
+id|u64
+id|timeout
+op_assign
+id|IA64_MCA_RENDEZ_TIMEOUT
+suffix:semicolon
+multiline_comment|/* platform specific */
 id|IA64_MCA_DEBUG
 c_func
 (paren
@@ -2198,11 +2259,13 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Register the rendezvous spinloop and wakeup mechanism with SAL&n;&t; */
 multiline_comment|/* Register the rendezvous interrupt vector with SAL */
-r_if
-c_cond
+r_while
+c_loop
 (paren
-(paren
-id|rc
+l_int|1
+)paren
+(brace
+id|isrv
 op_assign
 id|ia64_sal_mc_set_params
 c_func
@@ -2213,13 +2276,52 @@ id|SAL_MC_PARAM_MECHANISM_INT
 comma
 id|IA64_MCA_RENDEZ_VECTOR
 comma
-id|IA64_MCA_RENDEZ_TIMEOUT
+id|timeout
 comma
 id|SAL_MC_PARAM_RZ_ALWAYS
 )paren
+suffix:semicolon
+id|rc
+op_assign
+id|isrv.status
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+l_int|0
 )paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+op_minus
+l_int|2
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ia64_mca_init: increasing MCA rendezvous timeout from &quot;
+l_string|&quot;%ld to %ld&bslash;n&quot;
+comma
+id|timeout
+comma
+id|isrv.v0
+)paren
+suffix:semicolon
+id|timeout
+op_assign
+id|isrv.v0
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -2234,11 +2336,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Register the wakeup interrupt vector with SAL */
-r_if
-c_cond
-(paren
-(paren
-id|rc
+id|isrv
 op_assign
 id|ia64_sal_mc_set_params
 c_func
@@ -2253,7 +2351,15 @@ l_int|0
 comma
 l_int|0
 )paren
-)paren
+suffix:semicolon
+id|rc
+op_assign
+id|isrv.status
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
 )paren
 (brace
 id|printk
@@ -4237,7 +4343,8 @@ id|max_size
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ia64_log_get&n; *&n; *&t;Get the current MCA log from SAL and copy it into the OS log buffer.&n; *&n; *  Inputs  :   info_type   (SAL_INFO_TYPE_{MCA,INIT,CMC,CPE})&n; *              prfunc      (fn ptr of log output function)&n; *  Outputs :   size        (total record length)&n; *&n; */
+multiline_comment|/*&n; * ia64_log_get&n; *&n; *&t;Get the current MCA log from SAL and copy it into the OS log buffer.&n; *&n; *  Inputs  :   info_type   (SAL_INFO_TYPE_{MCA,INIT,CMC,CPE})&n; *  Outputs :   size        (total record length)&n; *              *buffer     (ptr to error record)&n; *&n; */
+r_static
 id|u64
 DECL|function|ia64_log_get
 id|ia64_log_get
@@ -4246,8 +4353,10 @@ c_func
 r_int
 id|sal_info_type
 comma
-id|prfunc_t
-id|prfunc
+id|u8
+op_star
+op_star
+id|buffer
 )paren
 (brace
 id|sal_log_record_header_t
@@ -4319,6 +4428,15 @@ id|sal_info_type
 comma
 id|total_len
 )paren
+suffix:semicolon
+op_star
+id|buffer
+op_assign
+(paren
+id|u8
+op_star
+)paren
+id|log_buffer
 suffix:semicolon
 r_return
 id|total_len
@@ -4431,7 +4549,7 @@ id|prfunc
 id|prfunc
 c_func
 (paren
-l_string|&quot;+Err Record ID: %d    SAL Rev: %2x.%02x&bslash;n&quot;
+l_string|&quot;+Err Record ID: %ld    SAL Rev: %2x.%02x&bslash;n&quot;
 comma
 id|lh-&gt;id
 comma
@@ -4815,7 +4933,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|info-&gt;wv
+id|info-&gt;wiv
 )paren
 id|prfunc
 c_func
@@ -4847,7 +4965,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|info-&gt;mc
+id|info-&gt;mcc
 )paren
 id|prfunc
 c_func
@@ -4955,7 +5073,7 @@ suffix:semicolon
 id|prfunc
 c_func
 (paren
-l_string|&quot; ,Slot: %d&quot;
+l_string|&quot; ,Slot: %ld&quot;
 comma
 id|info-&gt;tr_slot
 )paren
@@ -4976,7 +5094,7 @@ suffix:semicolon
 id|prfunc
 c_func
 (paren
-l_string|&quot; ,Slot: %d&quot;
+l_string|&quot; ,Slot: %ld&quot;
 comma
 id|info-&gt;tr_slot
 )paren
@@ -4985,7 +5103,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|info-&gt;mc
+id|info-&gt;mcc
 )paren
 id|prfunc
 c_func
@@ -5149,7 +5267,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|info-&gt;mc
+id|info-&gt;mcc
 )paren
 id|prfunc
 c_func
@@ -6380,22 +6498,22 @@ r_int
 id|psei-&gt;header.len
 comma
 (paren
-r_int
+r_char
+op_star
 )paren
-r_sizeof
-(paren
-id|sal_log_plat_specific_err_info_t
-)paren
+id|psei-&gt;oem_data
 op_minus
-l_int|1
+(paren
+r_char
+op_star
+)paren
+id|psei
 comma
 op_amp
-(paren
 id|psei-&gt;oem_data
 (braket
 l_int|0
 )braket
-)paren
 comma
 id|prfunc
 )paren
@@ -7933,12 +8051,15 @@ suffix:colon
 id|prfunc
 c_func
 (paren
-l_string|&quot;+BEGIN HARDWARE ERROR STATE AT MCA&bslash;n&quot;
+l_string|&quot;+CPU %d: SAL log contains MCA error record&bslash;n&quot;
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
-id|platform_err
-op_assign
-id|ia64_log_platform_info_print
+id|ia64_log_rec_header_print
 c_func
 (paren
 id|IA64_LOG_CURR_BUFFER
@@ -7950,12 +8071,6 @@ comma
 id|prfunc
 )paren
 suffix:semicolon
-id|prfunc
-c_func
-(paren
-l_string|&quot;+END HARDWARE ERROR STATE AT MCA&bslash;n&quot;
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -7964,7 +8079,24 @@ suffix:colon
 id|prfunc
 c_func
 (paren
-l_string|&quot;+MCA INIT ERROR LOG (UNIMPLEMENTED)&bslash;n&quot;
+l_string|&quot;+CPU %d: SAL log contains INIT error record&bslash;n&quot;
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+id|ia64_log_rec_header_print
+c_func
+(paren
+id|IA64_LOG_CURR_BUFFER
+c_func
+(paren
+id|sal_info_type
+)paren
+comma
+id|prfunc
 )paren
 suffix:semicolon
 r_break

@@ -2325,10 +2325,11 @@ r_return
 id|isrv.status
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Allow the OS to specify the interrupt number to be used by SAL to interrupt OS during&n; * the machine check rendezvous sequence as well as the mechanism to wake up the&n; * non-monarch processor at the end of machine check processing.&n; */
+multiline_comment|/*&n; * Allow the OS to specify the interrupt number to be used by SAL to interrupt OS during&n; * the machine check rendezvous sequence as well as the mechanism to wake up the&n; * non-monarch processor at the end of machine check processing.&n; * Returns the complete ia64_sal_retval because some calls return more than just a status&n; * value.&n; */
 r_static
 r_inline
-id|s64
+r_struct
+id|ia64_sal_retval
 DECL|function|ia64_sal_mc_set_params
 id|ia64_sal_mc_set_params
 (paren
@@ -2375,7 +2376,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_return
-id|isrv.status
+id|isrv
 suffix:semicolon
 )brace
 multiline_comment|/* Read from PCI configuration space */
@@ -2666,6 +2667,25 @@ r_int
 r_int
 id|sal_platform_features
 suffix:semicolon
+r_extern
+r_int
+(paren
+op_star
+id|salinfo_platform_oemdata
+)paren
+(paren
+r_const
+id|u8
+op_star
+comma
+id|u8
+op_star
+op_star
+comma
+id|u64
+op_star
+)paren
+suffix:semicolon
 DECL|struct|sal_ret_values
 r_struct
 id|sal_ret_values
@@ -2689,5 +2709,5 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
-macro_line|#endif /* _ASM_IA64_PAL_H */
+macro_line|#endif /* _ASM_IA64_SAL_H */
 eof
