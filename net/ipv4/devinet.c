@@ -3428,7 +3428,7 @@ op_logical_neg
 id|in_dev
 )paren
 r_goto
-id|out_unlock_inetdev
+id|no_in_dev
 suffix:semicolon
 id|for_primary_ifa
 c_func
@@ -3484,6 +3484,8 @@ c_func
 id|in_dev
 )paren
 suffix:semicolon
+id|no_in_dev
+suffix:colon
 id|rcu_read_unlock
 c_func
 (paren
@@ -3584,8 +3586,6 @@ op_amp
 id|dev_base_lock
 )paren
 suffix:semicolon
-id|out_unlock_inetdev
-suffix:colon
 id|rcu_read_unlock
 c_func
 (paren
