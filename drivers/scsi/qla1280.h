@@ -3,14 +3,6 @@ macro_line|#ifndef&t;_IO_HBA_QLA1280_H&t;/* wrapper symbol for kernel use */
 DECL|macro|_IO_HBA_QLA1280_H
 mdefine_line|#define&t;_IO_HBA_QLA1280_H&t;/* subject to change without notice */
 macro_line|#ifndef HOSTS_C&t;&t;&t;/* included in hosts.c */
-macro_line|#ifndef TRUE
-DECL|macro|TRUE
-mdefine_line|#define TRUE 1
-macro_line|#endif
-macro_line|#ifndef FALSE
-DECL|macro|FALSE
-mdefine_line|#define FALSE 0
-macro_line|#endif
 multiline_comment|/*&n; * Data bit definitions.&n; */
 DECL|macro|BIT_0
 mdefine_line|#define BIT_0&t;0x1
