@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *&t;ICP Wafer 5823 Single Board Computer WDT driver for Linux 2.4.x&n; *      http://www.icpamerica.com/wafer_5823.php&n; *      May also work on other similar models&n; *&n; *&t;(c) Copyright 2002 Justin Cormack &lt;justin@street-vision.com&gt;&n; *&n; *      Release 0.02&n; *&n; *&t;Based on advantechwdt.c which is based on wdt.c.&n; *&t;Original copyright messages:&n; *&n; *&t;(c) Copyright 1996-1997 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide &n; *&t;warranty for any of this software. This material is provided &n; *&t;&quot;AS-IS&quot; and at no charge.&t;&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/watchdog.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -59,12 +60,14 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|nowayout
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

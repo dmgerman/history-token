@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;Industrial Computer Source WDT500/501 driver for Lin
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/watchdog.h&gt;
@@ -84,12 +85,14 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|nowayout
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
