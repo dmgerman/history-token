@@ -2393,6 +2393,8 @@ DECL|macro|GRC_MODE_HOST_SENDBDS
 mdefine_line|#define  GRC_MODE_HOST_SENDBDS&t;&t;0x00020000
 DECL|macro|GRC_MODE_NO_TX_PHDR_CSUM
 mdefine_line|#define  GRC_MODE_NO_TX_PHDR_CSUM&t;0x00100000
+DECL|macro|GRC_MODE_NVRAM_WR_ENABLE
+mdefine_line|#define  GRC_MODE_NVRAM_WR_ENABLE&t;0x00200000
 DECL|macro|GRC_MODE_NO_RX_PHDR_CSUM
 mdefine_line|#define  GRC_MODE_NO_RX_PHDR_CSUM&t;0x00800000
 DECL|macro|GRC_MODE_IRQ_ON_TX_CPU_ATTN
@@ -2570,6 +2572,10 @@ DECL|macro|NVRAM_CMD_FIRST
 mdefine_line|#define  NVRAM_CMD_FIRST&t;&t; 0x00000080
 DECL|macro|NVRAM_CMD_LAST
 mdefine_line|#define  NVRAM_CMD_LAST&t;&t;&t; 0x00000100
+DECL|macro|NVRAM_CMD_WREN
+mdefine_line|#define  NVRAM_CMD_WREN&t;&t;&t; 0x00010000
+DECL|macro|NVRAM_CMD_WRDI
+mdefine_line|#define  NVRAM_CMD_WRDI&t;&t;&t; 0x00020000
 DECL|macro|NVRAM_STAT
 mdefine_line|#define NVRAM_STAT&t;&t;&t;0x00007004
 DECL|macro|NVRAM_WRDATA
@@ -2588,10 +2594,30 @@ DECL|macro|NVRAM_CFG1_BUFFERED_MODE
 mdefine_line|#define  NVRAM_CFG1_BUFFERED_MODE&t; 0x00000002
 DECL|macro|NVRAM_CFG1_PASS_THRU
 mdefine_line|#define  NVRAM_CFG1_PASS_THRU&t;&t; 0x00000004
+DECL|macro|NVRAM_CFG1_STATUS_BITS
+mdefine_line|#define  NVRAM_CFG1_STATUS_BITS&t;&t; 0x00000070
 DECL|macro|NVRAM_CFG1_BIT_BANG
 mdefine_line|#define  NVRAM_CFG1_BIT_BANG&t;&t; 0x00000008
+DECL|macro|NVRAM_CFG1_FLASH_SIZE
+mdefine_line|#define  NVRAM_CFG1_FLASH_SIZE&t;&t; 0x02000000
 DECL|macro|NVRAM_CFG1_COMPAT_BYPASS
 mdefine_line|#define  NVRAM_CFG1_COMPAT_BYPASS&t; 0x80000000
+DECL|macro|NVRAM_CFG1_VENDOR_MASK
+mdefine_line|#define  NVRAM_CFG1_VENDOR_MASK&t;&t; 0x03000003
+DECL|macro|FLASH_VENDOR_ATMEL_EEPROM
+mdefine_line|#define  FLASH_VENDOR_ATMEL_EEPROM&t; 0x02000000
+DECL|macro|FLASH_VENDOR_ATMEL_FLASH_BUFFERED
+mdefine_line|#define  FLASH_VENDOR_ATMEL_FLASH_BUFFERED&t; 0x02000003
+DECL|macro|FLASH_VENDOR_ATMEL_FLASH_UNBUFFERED
+mdefine_line|#define  FLASH_VENDOR_ATMEL_FLASH_UNBUFFERED&t; 0x00000003
+DECL|macro|FLASH_VENDOR_ST
+mdefine_line|#define  FLASH_VENDOR_ST&t;&t;&t; 0x03000001
+DECL|macro|FLASH_VENDOR_SAIFUN
+mdefine_line|#define  FLASH_VENDOR_SAIFUN&t;&t; 0x01000003
+DECL|macro|FLASH_VENDOR_SST_SMALL
+mdefine_line|#define  FLASH_VENDOR_SST_SMALL&t;&t; 0x00000001
+DECL|macro|FLASH_VENDOR_SST_LARGE
+mdefine_line|#define  FLASH_VENDOR_SST_LARGE&t;&t; 0x02000001
 DECL|macro|NVRAM_CFG2
 mdefine_line|#define NVRAM_CFG2&t;&t;&t;0x00007018
 DECL|macro|NVRAM_CFG3
@@ -2630,18 +2656,18 @@ DECL|macro|SWARB_REQ2
 mdefine_line|#define  SWARB_REQ2&t;&t;&t; 0x00004000
 DECL|macro|SWARB_REQ3
 mdefine_line|#define  SWARB_REQ3&t;&t;&t; 0x00008000
-DECL|macro|NVRAM_BUFFERED_PAGE_SIZE
-mdefine_line|#define    NVRAM_BUFFERED_PAGE_SIZE&t;   264
-DECL|macro|NVRAM_BUFFERED_PAGE_POS
-mdefine_line|#define    NVRAM_BUFFERED_PAGE_POS&t;   9
 DECL|macro|NVRAM_ACCESS
 mdefine_line|#define NVRAM_ACCESS&t;&t;&t;0x00007024
 DECL|macro|ACCESS_ENABLE
 mdefine_line|#define  ACCESS_ENABLE&t;&t;&t; 0x00000001
 DECL|macro|ACCESS_WR_ENABLE
 mdefine_line|#define  ACCESS_WR_ENABLE&t;&t; 0x00000002
-multiline_comment|/* 0x7024 --&gt; 0x7400 unused */
+DECL|macro|NVRAM_WRITE1
+mdefine_line|#define NVRAM_WRITE1&t;&t;&t;0x00007028
+multiline_comment|/* 0x702c --&gt; 0x7400 unused */
 multiline_comment|/* 0x7400 --&gt; 0x8000 unused */
+DECL|macro|TG3_EEPROM_MAGIC
+mdefine_line|#define TG3_EEPROM_MAGIC&t;&t;0x669955aa
 multiline_comment|/* 32K Window into NIC internal memory */
 DECL|macro|NIC_SRAM_WIN_BASE
 mdefine_line|#define NIC_SRAM_WIN_BASE&t;&t;0x00008000
@@ -4299,6 +4325,8 @@ DECL|macro|TG3_FLG2_PHY_SERDES
 mdefine_line|#define TG3_FLG2_PHY_SERDES&t;&t;0x00002000
 DECL|macro|TG3_FLG2_CAPACITIVE_COUPLING
 mdefine_line|#define TG3_FLG2_CAPACITIVE_COUPLING&t;0x00004000
+DECL|macro|TG3_FLG2_FLASH
+mdefine_line|#define TG3_FLG2_FLASH&t;&t;&t;0x00008000
 DECL|member|split_mode_max_reqs
 id|u32
 id|split_mode_max_reqs
@@ -4482,6 +4510,46 @@ r_struct
 id|work_struct
 id|reset_task
 suffix:semicolon
+DECL|member|nvram_size
+id|u32
+id|nvram_size
+suffix:semicolon
+DECL|member|nvram_pagesize
+id|u32
+id|nvram_pagesize
+suffix:semicolon
+DECL|member|nvram_jedecnum
+id|u32
+id|nvram_jedecnum
+suffix:semicolon
+DECL|macro|JEDEC_ATMEL
+mdefine_line|#define JEDEC_ATMEL&t;&t;&t;0x1f
+DECL|macro|JEDEC_ST
+mdefine_line|#define JEDEC_ST&t;&t;&t;0x20
+DECL|macro|JEDEC_SAIFUN
+mdefine_line|#define JEDEC_SAIFUN&t;&t;&t;0x4f
+DECL|macro|JEDEC_SST
+mdefine_line|#define JEDEC_SST&t;&t;&t;0xbf
+DECL|macro|ATMEL_AT24C64_CHIP_SIZE
+mdefine_line|#define ATMEL_AT24C64_CHIP_SIZE&t;&t;(64 * 1024)
+DECL|macro|ATMEL_AT24C64_PAGE_SIZE
+mdefine_line|#define ATMEL_AT24C64_PAGE_SIZE&t;&t;(32)
+DECL|macro|ATMEL_AT24C512_CHIP_SIZE
+mdefine_line|#define ATMEL_AT24C512_CHIP_SIZE&t;(512 * 1024)
+DECL|macro|ATMEL_AT24C512_PAGE_SIZE
+mdefine_line|#define ATMEL_AT24C512_PAGE_SIZE&t;(128)
+DECL|macro|ATMEL_AT45DB0X1B_PAGE_POS
+mdefine_line|#define ATMEL_AT45DB0X1B_PAGE_POS&t;9
+DECL|macro|ATMEL_AT45DB0X1B_PAGE_SIZE
+mdefine_line|#define ATMEL_AT45DB0X1B_PAGE_SIZE&t;264
+DECL|macro|ATMEL_AT25F512_PAGE_SIZE
+mdefine_line|#define ATMEL_AT25F512_PAGE_SIZE&t;256
+DECL|macro|ST_M45PEX0_PAGE_SIZE
+mdefine_line|#define ST_M45PEX0_PAGE_SIZE&t;&t;256
+DECL|macro|SAIFUN_SA25F0XX_PAGE_SIZE
+mdefine_line|#define SAIFUN_SA25F0XX_PAGE_SIZE&t;256
+DECL|macro|SST_25VF0X0_PAGE_SIZE
+mdefine_line|#define SST_25VF0X0_PAGE_SIZE&t;&t;4098
 )brace
 suffix:semicolon
 macro_line|#endif /* !(_T3_H) */
