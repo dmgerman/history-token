@@ -150,8 +150,17 @@ id|pagefactor
 op_assign
 l_int|1
 suffix:semicolon
+r_int
+r_int
+id|bitshift
+op_assign
+id|BITS_PER_LONG
+op_minus
+l_int|1
+suffix:semicolon
 multiline_comment|/* Figure out maximum filesize, on Linux this can depend on&n;&t; * the filesystem blocksize (on 32 bit platforms).&n;&t; * __block_prepare_write does this in an [unsigned] long...&n;&t; *      page-&gt;index &lt;&lt; (PAGE_CACHE_SHIFT - bbits)&n;&t; * So, for page sized blocks (4K on 32 bit platforms),&n;&t; * this wraps at around 8Tb (hence MAX_LFS_FILESIZE which is&n;&t; *      (((u64)PAGE_CACHE_SIZE &lt;&lt; (BITS_PER_LONG-1))-1)&n;&t; * but for smaller blocksizes it is less (bbits = log2 bsize).&n;&t; * Note1: get_block_t takes a long (implicit cast from above)&n;&t; * Note2: The Large Block Device (LBD and HAVE_SECTOR_T) patch&n;&t; * can optionally convert the [unsigned] long from above into&n;&t; * an [unsigned] long long.&n;&t; */
-macro_line|#if defined(HAVE_SECTOR_T)
+macro_line|#if BITS_PER_LONG == 32
+macro_line|# if defined(HAVE_SECTOR_T)
 id|ASSERT
 c_func
 (paren
@@ -167,7 +176,11 @@ id|pagefactor
 op_assign
 id|PAGE_CACHE_SIZE
 suffix:semicolon
-macro_line|#elif BITS_PER_LONG == 32
+id|bitshift
+op_assign
+id|BITS_PER_LONG
+suffix:semicolon
+macro_line|# else
 id|pagefactor
 op_assign
 id|PAGE_CACHE_SIZE
@@ -178,6 +191,7 @@ op_minus
 id|blockshift
 )paren
 suffix:semicolon
+macro_line|# endif
 macro_line|#endif
 r_return
 (paren
@@ -188,11 +202,7 @@ id|__uint64_t
 id|pagefactor
 )paren
 op_lshift
-(paren
-id|BITS_PER_LONG
-op_minus
-l_int|1
-)paren
+id|bitshift
 )paren
 op_minus
 l_int|1
