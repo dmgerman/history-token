@@ -62,7 +62,7 @@ op_member_access_from_pointer
 id|iommu_table
 suffix:semicolon
 macro_line|#endif /* CONFIG_PPC_ISERIES */
-macro_line|#ifdef CONFIG_PPC_PSERIES
+macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 r_return
 id|PCI_GET_DN
 c_func
@@ -72,7 +72,7 @@ id|dev
 op_member_access_from_pointer
 id|iommu_table
 suffix:semicolon
-macro_line|#endif /* CONFIG_PPC_PSERIES */
+macro_line|#endif /* CONFIG_PPC_MULTIPLATFORM */
 )brace
 multiline_comment|/* Allocates a contiguous real buffer and creates mappings over it.&n; * Returns the virtual address of the buffer and sets dma_handle&n; * to the dma address (mapping) of the first page.&n; */
 DECL|function|pci_iommu_alloc_consistent

@@ -2132,10 +2132,6 @@ comma
 id|hwif-&gt;sg_dma_direction
 )paren
 suffix:semicolon
-id|hwif-&gt;sg_dma_active
-op_assign
-l_int|0
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

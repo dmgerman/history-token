@@ -350,7 +350,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;  %d: 0x%lx %d&bslash;n&quot;
+l_string|&quot;  %d: %p %d&bslash;n&quot;
 comma
 id|i
 comma
@@ -448,7 +448,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;  TX %d @ 0x%lx: %ld&bslash;n&quot;
+l_string|&quot;  TX %d @ %p: %ld&bslash;n&quot;
 comma
 id|i
 comma
@@ -513,7 +513,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;  RX %d @ 0x%lx: %ld&bslash;n&quot;
+l_string|&quot;  RX %d @ %p: %ld&bslash;n&quot;
 comma
 id|i
 comma
@@ -561,8 +561,9 @@ id|eni_dev
 op_star
 id|eni_dev
 comma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|start
 comma
 r_int
@@ -622,7 +623,7 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;eni_put_free overflow (0x%lx,%ld)&bslash;n&quot;
+l_string|&quot;eni_put_free overflow (%p,%ld)&bslash;n&quot;
 comma
 id|start
 comma
@@ -642,6 +643,10 @@ suffix:semicolon
 op_logical_neg
 (paren
 (paren
+(paren
+r_int
+r_int
+)paren
 id|start
 op_or
 id|size
@@ -689,6 +694,11 @@ id|len
 dot
 id|start
 op_assign
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|start
 suffix:semicolon
 id|list
@@ -724,8 +734,9 @@ multiline_comment|/*dump_mem(eni_dev);*/
 )brace
 DECL|function|eni_alloc_mem
 r_static
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|eni_alloc_mem
 c_func
 (paren
@@ -745,8 +756,9 @@ id|eni_free
 op_star
 id|list
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|start
 suffix:semicolon
 r_int
@@ -1012,8 +1024,9 @@ id|eni_dev
 op_star
 id|eni_dev
 comma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|start
 comma
 r_int
@@ -1065,7 +1078,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;eni_free_mem: 0x%lx+0x%lx (order %d)&bslash;n&quot;
+l_string|&quot;eni_free_mem: %p+0x%lx (order %d)&bslash;n&quot;
 comma
 id|start
 comma
@@ -1091,14 +1104,24 @@ op_increment
 r_if
 c_cond
 (paren
+(paren
+(paren
+r_int
+r_int
+)paren
 id|list
 (braket
 id|i
 )braket
 dot
 id|start
+)paren
 op_eq
 (paren
+(paren
+r_int
+r_int
+)paren
 id|start
 op_xor
 (paren
@@ -1160,7 +1183,19 @@ id|len
 )braket
 suffix:semicolon
 id|start
-op_and_assign
+op_assign
+(paren
+r_void
+id|__iomem
+op_star
+)paren
+(paren
+(paren
+r_int
+r_int
+)paren
+id|start
+op_amp
 op_complement
 (paren
 r_int
@@ -1170,6 +1205,7 @@ r_int
 l_int|1
 op_lshift
 id|order
+)paren
 )paren
 suffix:semicolon
 id|order
@@ -1195,7 +1231,7 @@ id|printk
 c_func
 (paren
 id|KERN_ALERT
-l_string|&quot;eni_free_mem overflow (0x%lx,%d)&bslash;n&quot;
+l_string|&quot;eni_free_mem overflow (%p,%d)&bslash;n&quot;
 comma
 id|start
 comma
@@ -1357,7 +1393,7 @@ id|printk
 c_func
 (paren
 id|KERN_ALERT
-l_string|&quot;  last 0x%p, servicing %d&bslash;n&quot;
+l_string|&quot;  last %p, servicing %d&bslash;n&quot;
 comma
 id|eni_vcc-&gt;last
 comma
@@ -3089,10 +3125,13 @@ op_star
 id|vcc
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|vci_dsc
-comma
+suffix:semicolon
+r_int
+r_int
 id|tmp
 suffix:semicolon
 r_struct
@@ -3790,8 +3829,9 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|vci_dsc
 suffix:semicolon
 r_int
@@ -4262,8 +4302,9 @@ op_star
 id|vcc
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|here
 suffix:semicolon
 r_struct
@@ -4485,8 +4526,9 @@ comma
 id|current
 )paren
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|here
 suffix:semicolon
 r_struct
@@ -7547,7 +7589,10 @@ suffix:semicolon
 r_int
 r_int
 id|size
-comma
+suffix:semicolon
+r_void
+id|__iomem
+op_star
 id|mem
 suffix:semicolon
 r_int
@@ -9564,13 +9609,15 @@ id|atm_dev
 op_star
 id|dev
 comma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|base
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|mac_base
 suffix:semicolon
 r_int
@@ -9654,7 +9701,10 @@ suffix:semicolon
 r_int
 r_int
 id|real_base
-comma
+suffix:semicolon
+r_void
+id|__iomem
+op_star
 id|base
 suffix:semicolon
 r_int
@@ -9818,10 +9868,6 @@ op_logical_neg
 (paren
 id|base
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -9857,6 +9903,10 @@ id|eni_dev-&gt;base_diff
 op_assign
 id|real_base
 op_minus
+(paren
+r_int
+r_int
+)paren
 id|base
 suffix:semicolon
 multiline_comment|/* id may not be present in ASIC Tonga boards - check this @@@ */
@@ -10275,10 +10325,13 @@ id|eni_dev
 op_star
 id|eni_dev
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|buf
-comma
+suffix:semicolon
+r_int
+r_int
 id|buffer_mem
 suffix:semicolon
 r_int
@@ -11330,8 +11383,9 @@ comma
 id|skb
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|dsc
 suffix:semicolon
 r_if
@@ -12291,14 +12345,20 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;tx[%d]:    0x%06lx-0x%06lx &quot;
+l_string|&quot;tx[%d]:    0x%ld-0x%ld &quot;
 l_string|&quot;(%6ld bytes), rsv %d cps, shp %d cps%s&bslash;n&quot;
 comma
 id|i
 comma
+(paren
+r_int
+r_int
+)paren
+(paren
 id|tx-&gt;send
 op_minus
 id|eni_dev-&gt;ram
+)paren
 comma
 id|tx-&gt;send
 op_minus
@@ -12467,12 +12527,18 @@ id|page
 op_plus
 id|length
 comma
-l_string|&quot;0x%06lx-0x%06lx &quot;
+l_string|&quot;0x%ld-0x%ld &quot;
 l_string|&quot;(%6ld bytes)&quot;
 comma
+(paren
+r_int
+r_int
+)paren
+(paren
 id|eni_vcc-&gt;recv
 op_minus
 id|eni_dev-&gt;ram
+)paren
 comma
 id|eni_vcc-&gt;recv
 op_minus
@@ -12594,6 +12660,10 @@ r_continue
 suffix:semicolon
 id|offset
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|eni_dev-&gt;ram
 op_plus
 id|eni_dev-&gt;base_diff
@@ -12604,7 +12674,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;free      0x%06lx-0x%06lx (%6d bytes)&bslash;n&quot;
+l_string|&quot;free      %p-%p (%6d bytes)&bslash;n&quot;
 comma
 id|fe-&gt;start
 op_minus

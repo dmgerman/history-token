@@ -368,7 +368,8 @@ r_void
 (brace
 multiline_comment|/* XXX Implement for iseries */
 )brace
-macro_line|#else
+macro_line|#endif
+macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 multiline_comment|/*&n; * Enabling PMCs will slow partition context switch times so we only do&n; * it the first time we write to the PMCs.&n; */
 r_static
 id|DEFINE_PER_CPU
@@ -391,6 +392,7 @@ r_int
 r_int
 id|hid0
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_PSERIES
 r_int
 r_int
 id|set
@@ -404,6 +406,7 @@ r_int
 r_int
 id|ctrl
 suffix:semicolon
+macro_line|#endif /* CONFIG_PPC_PSERIES */
 multiline_comment|/* Only need to enable them once */
 r_if
 c_cond
@@ -432,6 +435,9 @@ id|systemcfg-&gt;platform
 (brace
 r_case
 id|PLATFORM_PSERIES
+suffix:colon
+r_case
+id|PLATFORM_POWERMAC
 suffix:colon
 id|hid0
 op_assign
@@ -485,6 +491,7 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_PSERIES
 r_case
 id|PLATFORM_PSERIES_LPAR
 suffix:colon
@@ -532,11 +539,13 @@ id|ret
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif /* CONFIG_PPC_PSERIES */
 r_default
 suffix:colon
 r_break
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 multiline_comment|/* instruct hypervisor to maintain PMCs */
 r_if
 c_cond
@@ -603,8 +612,9 @@ id|ctrl
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_PPC_PSERIES */
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_PPC_MULTIPLATFORM */
 DECL|variable|ppc64_enable_pmcs
 id|EXPORT_SYMBOL
 c_func

@@ -1,4 +1,6 @@
 multiline_comment|/*&n; * PowerPC64 port by Mike Corrigan and Dave Engebretsen&n; *   {mikejc|engebret}@us.ibm.com&n; *&n; *    Copyright (c) 2000 Mike Corrigan &lt;mikejc@us.ibm.com&gt;&n; *&n; * SMP scalability work:&n; *    Copyright (C) 2001 Anton Blanchard &lt;anton@au.ibm.com&gt;, IBM&n; * &n; *    Module name: htab.c&n; *&n; *    Description:&n; *      PowerPC Hashed Page Table functions&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -30,6 +32,13 @@ macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
+macro_line|#ifdef DEBUG
+DECL|macro|DBG
+mdefine_line|#define DBG(fmt...) udbg_printf(fmt)
+macro_line|#else
+DECL|macro|DBG
+mdefine_line|#define DBG(fmt...)
+macro_line|#endif
 multiline_comment|/*&n; * Note:  pte   --&gt; Linux PTE&n; *        HPTE  --&gt; PowerPC Hashed Page Table Entry&n; *&n; * Execution context:&n; *   htab_initialize is called with the MMU off (of course), but&n; *   the kernel has been copied down to zero so it can directly&n; *   reference global data.  At this point it is very difficult&n; *   to print debug info.&n; *&n; */
 macro_line|#ifdef CONFIG_PMAC_DART
 r_extern
@@ -94,7 +103,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_PPC_PSERIES
+macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 DECL|function|create_pte_mapping
 r_static
 r_inline
@@ -237,12 +246,13 @@ op_star
 id|HPTES_PER_GROUP
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_PSERIES
 r_if
 c_cond
 (paren
 id|systemcfg-&gt;platform
-op_eq
-id|PLATFORM_PSERIES_LPAR
+op_amp
+id|PLATFORM_LPAR
 )paren
 id|ret
 op_assign
@@ -271,9 +281,10 @@ id|large
 )paren
 suffix:semicolon
 r_else
+macro_line|#endif /* CONFIG_PPC_PSERIES */
 id|ret
 op_assign
-id|pSeries_hpte_insert
+id|native_hpte_insert
 c_func
 (paren
 id|hpteg
@@ -352,6 +363,12 @@ id|use_largepages
 op_assign
 l_int|0
 suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot; -&gt; htab_initialize()&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Calculate the required size of the htab.  We want the number of&n;&t; * PTEGs to equal one half the number of real pages.&n;&t; */
 id|htab_size_bytes
 op_assign
@@ -397,13 +414,21 @@ r_if
 c_cond
 (paren
 id|systemcfg-&gt;platform
-op_eq
-id|PLATFORM_PSERIES
-op_logical_or
-id|systemcfg-&gt;platform
-op_eq
-id|PLATFORM_POWERMAC
+op_amp
+id|PLATFORM_LPAR
 )paren
+(brace
+multiline_comment|/* Using a hypervisor which owns the htab */
+id|htab_data.htab
+op_assign
+l_int|NULL
+suffix:semicolon
+id|_SDR1
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
 (brace
 multiline_comment|/* Find storage for the HPT.  Must be contiguous in&n;&t;&t; * the absolute address space.&n;&t;&t; */
 id|table
@@ -412,6 +437,16 @@ id|lmb_alloc
 c_func
 (paren
 id|htab_size_bytes
+comma
+id|htab_size_bytes
+)paren
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;Hash table allocated at %lx, size: %lx&bslash;n&quot;
+comma
+id|table
 comma
 id|htab_size_bytes
 )paren
@@ -474,18 +509,6 @@ id|htab_size_bytes
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
-multiline_comment|/* Using a hypervisor which owns the htab */
-id|htab_data.htab
-op_assign
-l_int|NULL
-suffix:semicolon
-id|_SDR1
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 id|mode_rw
 op_assign
 id|_PAGE_ACCESSED
@@ -506,7 +529,7 @@ id|use_largepages
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* add all physical memory to the bootmem map */
+multiline_comment|/* create bolted the linear mapping in the hash table */
 r_for
 c_loop
 (paren
@@ -548,8 +571,26 @@ id|i
 dot
 id|size
 suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;creating mapping for region: %lx : %lx&bslash;n&quot;
+comma
+id|base
+comma
+id|size
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PMAC_DART
 multiline_comment|/* Do not map the DART space. Fortunately, it will be aligned&n;&t;&t; * in such a way that it will not cross two lmb regions and will&n;&t;&t; * fit within a single 16Mb page.&n;&t;&t; * The DART space is assumed to be a full 16Mb region even if we&n;&t;&t; * only use 2Mb of that space. We will use more of it later for&n;&t;&t; * AGP GART. We have to use a full 16Mb large page.&n;&t;&t; */
+id|DBG
+c_func
+(paren
+l_string|&quot;DART base: %lx&bslash;n&quot;
+comma
+id|dart_tablebase
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -643,12 +684,18 @@ id|use_largepages
 )paren
 suffix:semicolon
 )brace
+id|DBG
+c_func
+(paren
+l_string|&quot; &lt;- htab_initialize()&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 DECL|macro|KB
 macro_line|#undef KB
 DECL|macro|MB
 macro_line|#undef MB
-macro_line|#endif
+macro_line|#endif /* CONFIG_PPC_MULTIPLATFORM */
 multiline_comment|/*&n; * Called by asm hashtable.S for doing lazy icache flush&n; */
 DECL|function|hash_page_do_lazy_icache
 r_int

@@ -3,7 +3,6 @@ macro_line|#ifndef __PPC_BTEXT_H
 DECL|macro|__PPC_BTEXT_H
 mdefine_line|#define __PPC_BTEXT_H
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;asm/bootx.h&gt;
 r_extern
 r_void
 id|btext_clearscreen
@@ -21,34 +20,21 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-id|boot_infos_t
-id|disp_bi
-suffix:semicolon
-r_extern
 r_int
 id|boot_text_mapped
 suffix:semicolon
-r_void
-id|btext_setup_display
+r_extern
+r_int
+id|btext_initialize
 c_func
 (paren
-r_int
-id|width
-comma
-r_int
-id|height
-comma
-r_int
-id|depth
-comma
-r_int
-id|pitch
-comma
-r_int
-r_int
-id|address
+r_struct
+id|device_node
+op_star
+id|np
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|map_boot_text
 c_func
@@ -56,6 +42,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|btext_update_display
 c_func
@@ -77,6 +64,7 @@ r_int
 id|pitch
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|btext_drawchar
 c_func
@@ -85,6 +73,7 @@ r_char
 id|c
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|btext_drawstring
 c_func
@@ -95,6 +84,7 @@ op_star
 id|str
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|btext_drawhex
 c_func

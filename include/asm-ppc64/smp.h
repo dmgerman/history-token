@@ -45,6 +45,10 @@ id|cpu_sibling_map
 id|NR_CPUS
 )braket
 suffix:semicolon
+r_extern
+r_int
+id|boot_cpuid
+suffix:semicolon
 multiline_comment|/* Since OpenPIC has only 4 IPIs, we use slightly different message numbers.&n; *&n; * Make sure this matches openpic_request_IPIs in open_pic.c, or what shows up&n; * in /proc/interrupts will be wrong!!! --Troy */
 DECL|macro|PPC_MSG_CALL_FUNCTION
 mdefine_line|#define PPC_MSG_CALL_FUNCTION   0

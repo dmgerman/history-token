@@ -139,7 +139,7 @@ op_amp
 id|ip_nat_seqofs_lock
 )paren
 suffix:semicolon
-multiline_comment|/* SYN adjust. If it&squot;s uninitialized, of this is after last&n;&t; * correction, record it: we don&squot;t handle more than one&n;&t; * adjustment in the window, but do deal with common case of a&n;&t; * retransmit */
+multiline_comment|/* SYN adjust. If it&squot;s uninitialized, or this is after last&n;&t; * correction, record it: we don&squot;t handle more than one&n;&t; * adjustment in the window, but do deal with common case of a&n;&t; * retransmit */
 r_if
 c_cond
 (paren

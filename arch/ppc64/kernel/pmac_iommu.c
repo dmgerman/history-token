@@ -11,13 +11,13 @@ macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
-macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/lmb.h&gt;
 macro_line|#include &quot;pci.h&quot;
 multiline_comment|/* physical base of DART registers */
 DECL|macro|DART_BASE
@@ -57,7 +57,9 @@ r_int
 r_int
 id|dart_tablebase
 suffix:semicolon
+multiline_comment|/* exported to htab_initialize */
 DECL|variable|dart_tablesize
+r_static
 r_int
 r_int
 id|dart_tablesize
@@ -882,5 +884,81 @@ op_amp
 id|iommu_table_pmac
 suffix:semicolon
 )brace
+)brace
+DECL|function|pmac_iommu_alloc
+r_void
+id|__init
+id|pmac_iommu_alloc
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* Only reserve DART space if machine has more than 2GB of RAM&n;&t; * or if requested with iommu=on on cmdline.&n;&t; */
+r_if
+c_cond
+(paren
+id|lmb_end_of_DRAM
+c_func
+(paren
+)paren
+op_le
+l_int|0x80000000ull
+op_logical_and
+id|get_property
+c_func
+(paren
+id|of_chosen
+comma
+l_string|&quot;linux,iommu-force-on&quot;
+comma
+l_int|NULL
+)paren
+op_eq
+l_int|NULL
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* 512 pages (2MB) is max DART tablesize. */
+id|dart_tablesize
+op_assign
+l_int|1UL
+op_lshift
+l_int|21
+suffix:semicolon
+multiline_comment|/* 16MB (1 &lt;&lt; 24) alignment. We allocate a full 16Mb chuck since we&n;&t; * will blow up an entire large page anyway in the kernel mapping&n;&t; */
+id|dart_tablebase
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|abs_to_virt
+c_func
+(paren
+id|lmb_alloc_base
+c_func
+(paren
+l_int|1UL
+op_lshift
+l_int|24
+comma
+l_int|1UL
+op_lshift
+l_int|24
+comma
+l_int|0x80000000L
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;U3-DART allocated at: %lx&bslash;n&quot;
+comma
+id|dart_tablebase
+)paren
+suffix:semicolon
 )brace
 eof

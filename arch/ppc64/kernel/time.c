@@ -97,7 +97,10 @@ DECL|variable|tb_ticks_per_usec
 r_int
 r_int
 id|tb_ticks_per_usec
+op_assign
+l_int|100
 suffix:semicolon
+multiline_comment|/* sane default */
 DECL|variable|tb_ticks_per_sec
 r_int
 r_int

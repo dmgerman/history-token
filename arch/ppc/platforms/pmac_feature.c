@@ -13224,7 +13224,7 @@ op_assign
 id|of_find_node_by_type
 c_func
 (paren
-id|np
+id|ui2c
 comma
 l_string|&quot;i2c&quot;
 )paren

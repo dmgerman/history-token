@@ -25,10 +25,10 @@ DECL|macro|DEBUG_FEATURE
 macro_line|#undef DEBUG_FEATURE
 macro_line|#ifdef DEBUG_FEATURE
 DECL|macro|DBG
-mdefine_line|#define DBG(fmt,...) printk(KERN_DEBUG fmt)
+mdefine_line|#define DBG(fmt...) printk(KERN_DEBUG fmt)
 macro_line|#else
 DECL|macro|DBG
-mdefine_line|#define DBG(fmt,...)
+mdefine_line|#define DBG(fmt...)
 macro_line|#endif
 multiline_comment|/*&n; * We use a single global lock to protect accesses. Each driver has&n; * to take care of its own locking&n; */
 DECL|variable|__pmacdata

@@ -1507,6 +1507,20 @@ id|IDE_ERROR_OFFSET
 op_assign
 id|err
 suffix:semicolon
+multiline_comment|/* be sure we&squot;re looking at the low order bits */
+id|hwif
+op_member_access_from_pointer
+id|OUTB
+c_func
+(paren
+id|drive-&gt;ctl
+op_amp
+op_complement
+l_int|0x80
+comma
+id|IDE_CONTROL_REG
+)paren
+suffix:semicolon
 id|args-&gt;tfRegister
 (braket
 id|IDE_NSECTOR_OFFSET

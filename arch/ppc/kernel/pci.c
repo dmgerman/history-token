@@ -47,6 +47,12 @@ id|pci_dram_offset
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|pcibios_assign_bus_offset
+r_int
+id|pcibios_assign_bus_offset
+op_assign
+l_int|1
+suffix:semicolon
 r_void
 id|pcibios_make_OF_bus_map
 c_func
@@ -1813,7 +1819,7 @@ c_cond
 id|pci_find_parent_resource
 c_func
 (paren
-id|bus-&gt;self
+id|dev
 comma
 id|r
 )paren
@@ -6102,7 +6108,7 @@ id|next_busno
 op_assign
 id|hose-&gt;last_busno
 op_plus
-l_int|1
+id|pcibios_assign_bus_offset
 suffix:semicolon
 )brace
 id|pci_bus_count

@@ -565,9 +565,10 @@ id|pvr
 suffix:semicolon
 id|pvr
 op_assign
-id|_get_PVR
+id|mfspr
 c_func
 (paren
+id|SPRN_PVR
 )paren
 suffix:semicolon
 r_switch

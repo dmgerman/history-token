@@ -2832,7 +2832,7 @@ suffix:semicolon
 id|msleep
 c_func
 (paren
-l_int|4
+l_int|40
 )paren
 suffix:semicolon
 )brace
