@@ -104,15 +104,15 @@ r_struct
 id|journal_header_s
 (brace
 DECL|member|h_magic
-id|__u32
+id|__be32
 id|h_magic
 suffix:semicolon
 DECL|member|h_blocktype
-id|__u32
+id|__be32
 id|h_blocktype
 suffix:semicolon
 DECL|member|h_sequence
-id|__u32
+id|__be32
 id|h_sequence
 suffix:semicolon
 DECL|typedef|journal_header_t
@@ -126,12 +126,12 @@ r_struct
 id|journal_block_tag_s
 (brace
 DECL|member|t_blocknr
-id|__u32
+id|__be32
 id|t_blocknr
 suffix:semicolon
 multiline_comment|/* The on-disk block number */
 DECL|member|t_flags
-id|__u32
+id|__be32
 id|t_flags
 suffix:semicolon
 multiline_comment|/* See below */
@@ -150,7 +150,7 @@ id|journal_header_t
 id|r_header
 suffix:semicolon
 DECL|member|r_count
-r_int
+id|__be32
 id|r_count
 suffix:semicolon
 multiline_comment|/* Count of bytes used in the block */
@@ -181,52 +181,52 @@ suffix:semicolon
 multiline_comment|/* 0x000C */
 multiline_comment|/* Static information describing the journal */
 DECL|member|s_blocksize
-id|__u32
+id|__be32
 id|s_blocksize
 suffix:semicolon
 multiline_comment|/* journal device blocksize */
 DECL|member|s_maxlen
-id|__u32
+id|__be32
 id|s_maxlen
 suffix:semicolon
 multiline_comment|/* total blocks in journal file */
 DECL|member|s_first
-id|__u32
+id|__be32
 id|s_first
 suffix:semicolon
 multiline_comment|/* first block of log information */
 multiline_comment|/* 0x0018 */
 multiline_comment|/* Dynamic information describing the current state of the log */
 DECL|member|s_sequence
-id|__u32
+id|__be32
 id|s_sequence
 suffix:semicolon
 multiline_comment|/* first commit ID expected in log */
 DECL|member|s_start
-id|__u32
+id|__be32
 id|s_start
 suffix:semicolon
 multiline_comment|/* blocknr of start of log */
 multiline_comment|/* 0x0020 */
 multiline_comment|/* Error value, as set by journal_abort(). */
 DECL|member|s_errno
-id|__s32
+id|__be32
 id|s_errno
 suffix:semicolon
 multiline_comment|/* 0x0024 */
 multiline_comment|/* Remaining fields are only valid in a version-2 superblock */
 DECL|member|s_feature_compat
-id|__u32
+id|__be32
 id|s_feature_compat
 suffix:semicolon
 multiline_comment|/* compatible feature set */
 DECL|member|s_feature_incompat
-id|__u32
+id|__be32
 id|s_feature_incompat
 suffix:semicolon
 multiline_comment|/* incompatible feature set */
 DECL|member|s_feature_ro_compat
-id|__u32
+id|__be32
 id|s_feature_ro_compat
 suffix:semicolon
 multiline_comment|/* readonly-compatible feature set */
@@ -241,23 +241,23 @@ suffix:semicolon
 multiline_comment|/* 128-bit uuid for journal */
 multiline_comment|/* 0x0040 */
 DECL|member|s_nr_users
-id|__u32
+id|__be32
 id|s_nr_users
 suffix:semicolon
 multiline_comment|/* Nr of filesystems sharing log */
 DECL|member|s_dynsuper
-id|__u32
+id|__be32
 id|s_dynsuper
 suffix:semicolon
 multiline_comment|/* Blocknr of dynamic superblock copy*/
 multiline_comment|/* 0x0048 */
 DECL|member|s_max_transaction
-id|__u32
+id|__be32
 id|s_max_transaction
 suffix:semicolon
 multiline_comment|/* Limit of journal blocks per trans.*/
 DECL|member|s_max_trans_data
-id|__u32
+id|__be32
 id|s_max_trans_data
 suffix:semicolon
 multiline_comment|/* Limit of data blocks per trans. */
