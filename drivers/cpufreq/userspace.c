@@ -1714,7 +1714,7 @@ id|cpu_cur_freq
 id|cpu
 )braket
 )paren
-id|cpufreq_driver_target
+id|__cpufreq_driver_target
 c_func
 (paren
 op_amp
@@ -1739,7 +1739,7 @@ id|cpu_cur_freq
 id|cpu
 )braket
 )paren
-id|cpufreq_driver_target
+id|__cpufreq_driver_target
 c_func
 (paren
 op_amp
