@@ -196,7 +196,6 @@ suffix:semicolon
 DECL|macro|MULTI_COUNT
 mdefine_line|#define MULTI_COUNT (sizeof(multi_id)/sizeof(struct multi_id))
 DECL|struct|serial_info
-r_typedef
 r_struct
 id|serial_info
 (brace
@@ -239,9 +238,7 @@ r_struct
 id|work_struct
 id|remove
 suffix:semicolon
-DECL|typedef|serial_info_t
 )brace
-id|serial_info_t
 suffix:semicolon
 r_static
 r_void
@@ -468,7 +465,8 @@ c_func
 r_void
 )paren
 (brace
-id|serial_info_t
+r_struct
+id|serial_info
 op_star
 id|info
 suffix:semicolon
@@ -739,7 +737,8 @@ op_star
 id|link
 )paren
 (brace
-id|serial_info_t
+r_struct
+id|serial_info
 op_star
 id|info
 op_assign
@@ -872,7 +871,8 @@ r_int
 id|setup_serial
 c_func
 (paren
-id|serial_info_t
+r_struct
+id|serial_info
 op_star
 id|info
 comma
@@ -1149,7 +1149,8 @@ id|handle
 op_assign
 id|link-&gt;handle
 suffix:semicolon
-id|serial_info_t
+r_struct
+id|serial_info
 op_star
 id|info
 op_assign
@@ -1767,7 +1768,8 @@ id|handle
 op_assign
 id|link-&gt;handle
 suffix:semicolon
-id|serial_info_t
+r_struct
+id|serial_info
 op_star
 id|info
 op_assign
@@ -2270,7 +2272,8 @@ id|handle
 op_assign
 id|link-&gt;handle
 suffix:semicolon
-id|serial_info_t
+r_struct
+id|serial_info
 op_star
 id|info
 op_assign
@@ -2792,7 +2795,8 @@ id|link
 op_assign
 id|args-&gt;client_data
 suffix:semicolon
-id|serial_info_t
+r_struct
+id|serial_info
 op_star
 id|info
 op_assign
