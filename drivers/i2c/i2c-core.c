@@ -657,7 +657,7 @@ c_func
 op_amp
 id|adap-&gt;dev
 comma
-l_string|&quot;can&squot;t detach adapter&quot;
+l_string|&quot;can&squot;t detach adapter &quot;
 l_string|&quot;while detaching driver %s: driver not &quot;
 l_string|&quot;detached!&quot;
 comma
@@ -2513,7 +2513,7 @@ id|dev_dbg
 c_func
 (paren
 op_amp
-id|client-&gt;dev
+id|client-&gt;adapter-&gt;dev
 comma
 l_string|&quot;i2c ioctl, cmd: 0x%x, arg: %#lx&bslash;n&quot;
 comma

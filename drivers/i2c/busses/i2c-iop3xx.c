@@ -257,7 +257,7 @@ suffix:semicolon
 multiline_comment|/* &n; * NB: the handler has to clear the source of the interrupt! &n; * Then it passes the SR flags of interest to BH via adap data&n; */
 DECL|function|iop3xx_i2c_handler
 r_static
-r_void
+id|irqreturn_t
 id|iop3xx_i2c_handler
 c_func
 (paren
@@ -314,6 +314,9 @@ id|iop3xx_adap-&gt;waitq
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* check all error conditions, clear them , report most important */
 DECL|function|iop3xx_adap_error
@@ -481,6 +484,8 @@ id|done
 suffix:semicolon
 r_int
 id|rc
+op_assign
+l_int|0
 suffix:semicolon
 r_do
 (brace
@@ -550,8 +555,6 @@ op_assign
 id|sr
 suffix:semicolon
 r_return
-id|rc
-op_assign
 op_minus
 id|ETIMEDOUT
 suffix:semicolon
@@ -572,8 +575,6 @@ op_assign
 id|sr
 suffix:semicolon
 r_return
-id|rc
-op_assign
 l_int|0
 suffix:semicolon
 )brace
@@ -886,6 +887,8 @@ id|status
 suffix:semicolon
 r_int
 id|rc
+op_assign
+l_int|0
 suffix:semicolon
 op_star
 id|iop3xx_adap-&gt;biu-&gt;DBR
@@ -968,6 +971,8 @@ id|status
 suffix:semicolon
 r_int
 id|rc
+op_assign
+l_int|0
 suffix:semicolon
 id|cr
 op_and_assign
@@ -1348,8 +1353,8 @@ id|im
 op_ne
 id|num
 suffix:semicolon
-op_increment
 id|im
+op_increment
 )paren
 (brace
 id|ret
@@ -1373,8 +1378,18 @@ c_func
 id|iop3xx_adap
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
 r_return
 id|ret
+suffix:semicolon
+)brace
+r_return
+id|im
 suffix:semicolon
 )brace
 DECL|function|algo_control
