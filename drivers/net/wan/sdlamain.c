@@ -85,19 +85,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/* Module entry points */
-r_int
-id|init_module
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|cleanup_module
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* WAN link driver entry points */
 r_static
 r_int
@@ -330,21 +317,13 @@ l_int|0
 suffix:semicolon
 multiline_comment|/******* Kernel Loadable Module Entry Points ********************************/
 multiline_comment|/*============================================================================&n; * Module &squot;insert&squot; entry point.&n; * o print announcement&n; * o allocate adapter data space&n; * o initialize static data&n; * o register all cards with WAN router&n; * o calibrate SDLA shared memory access delay.&n; *&n; * Return:&t;0&t;Ok&n; *&t;&t;&lt; 0&t;error.&n; * Context:&t;process&n; */
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-(paren
-r_void
-)paren
-macro_line|#else
+DECL|function|wanpipe_init
 r_int
 id|wanpipe_init
 c_func
 (paren
 r_void
 )paren
-macro_line|#endif
 (brace
 r_int
 id|cnt
@@ -614,9 +593,11 @@ suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
 multiline_comment|/*============================================================================&n; * Module &squot;remove&squot; entry point.&n; * o unregister all adapters from the WAN router&n; * o release all remaining system resources&n; */
-DECL|function|cleanup_module
+DECL|function|wanpipe_cleanup
+r_static
 r_void
-id|cleanup_module
+id|wanpipe_cleanup
+c_func
 (paren
 r_void
 )paren
@@ -678,6 +659,20 @@ l_string|&quot;&bslash;nwanpipe: WANPIPE Modules Unloaded.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|variable|wanpipe_init
+id|module_init
+c_func
+(paren
+id|wanpipe_init
+)paren
+suffix:semicolon
+DECL|variable|wanpipe_cleanup
+id|module_exit
+c_func
+(paren
+id|wanpipe_cleanup
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/******* WAN Device Driver Entry Points *************************************/
 multiline_comment|/*============================================================================&n; * Setup/configure WAN link driver.&n; * o check adapter state&n; * o make sure firmware is present in configuration&n; * o make sure I/O port and IRQ are specified&n; * o make sure I/O region is available&n; * o allocate interrupt vector&n; * o setup SDLA hardware&n; * o call appropriate routine to perform protocol-specific initialization&n; * o mark I/O region as used&n; * o if this is the first active card, then schedule background task&n; *&n; * This function is called when router handles ROUTER_SETUP IOCTL. The&n; * configuration structure is in kernel memory (including extended data, if&n; * any).&n; */
