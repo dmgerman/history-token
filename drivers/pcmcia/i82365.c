@@ -4148,12 +4148,6 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;PNP &quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4184,6 +4178,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|pnp_port_valid
 c_func
 (paren
