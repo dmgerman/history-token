@@ -2265,7 +2265,7 @@ id|isopen
 )paren
 )paren
 r_goto
-id|out_bad
+id|out_zap_parent
 suffix:semicolon
 r_goto
 id|out_valid
@@ -2333,7 +2333,7 @@ id|isopen
 )paren
 )paren
 r_goto
-id|out_bad
+id|out_zap_parent
 suffix:semicolon
 r_goto
 id|out_valid_renew
@@ -2453,6 +2453,14 @@ id|parent
 suffix:semicolon
 r_return
 l_int|1
+suffix:semicolon
+id|out_zap_parent
+suffix:colon
+id|nfs_zap_caches
+c_func
+(paren
+id|dir
+)paren
 suffix:semicolon
 id|out_bad
 suffix:colon
