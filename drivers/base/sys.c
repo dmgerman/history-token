@@ -1293,10 +1293,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|sys_bus_init
+DECL|function|system_bus_init
 r_int
 id|__init
-id|sys_bus_init
+id|system_bus_init
 c_func
 (paren
 r_void
