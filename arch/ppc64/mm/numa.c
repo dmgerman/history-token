@@ -1506,6 +1506,10 @@ c_func
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
+id|max_pfn
+op_assign
+id|max_low_pfn
+suffix:semicolon
 r_if
 c_cond
 (paren
