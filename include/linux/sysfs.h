@@ -188,6 +188,7 @@ r_struct
 id|kobject
 op_star
 comma
+r_const
 r_char
 op_star
 id|new_name
@@ -202,6 +203,7 @@ r_struct
 id|kobject
 op_star
 comma
+r_const
 r_struct
 id|attribute
 op_star
@@ -216,6 +218,7 @@ r_struct
 id|kobject
 op_star
 comma
+r_const
 r_struct
 id|attribute
 op_star
@@ -230,6 +233,7 @@ r_struct
 id|kobject
 op_star
 comma
+r_const
 r_struct
 id|attribute
 op_star
@@ -282,6 +286,7 @@ DECL|member|attrs
 r_struct
 id|attribute
 op_star
+op_star
 id|attrs
 suffix:semicolon
 )brace
@@ -294,6 +299,7 @@ r_struct
 id|kobject
 op_star
 comma
+r_const
 r_struct
 id|attribute_group
 op_star
@@ -307,6 +313,7 @@ r_struct
 id|kobject
 op_star
 comma
+r_const
 r_struct
 id|attribute_group
 op_star

@@ -790,6 +790,7 @@ r_struct
 r_class
 op_star
 comma
+r_const
 r_struct
 id|class_attribute
 op_star
@@ -804,6 +805,7 @@ r_struct
 r_class
 op_star
 comma
+r_const
 r_struct
 id|class_attribute
 op_star
@@ -1034,6 +1036,7 @@ r_struct
 id|class_device
 op_star
 comma
+r_const
 r_struct
 id|class_device_attribute
 op_star
@@ -1048,6 +1051,7 @@ r_struct
 id|class_device
 op_star
 comma
+r_const
 r_struct
 id|class_device_attribute
 op_star

@@ -54,6 +54,7 @@ id|dentry
 op_star
 id|p
 comma
+r_const
 r_char
 op_star
 id|n
@@ -167,6 +168,7 @@ id|kobject
 op_star
 id|k
 comma
+r_const
 r_char
 op_star
 id|n
@@ -586,6 +588,7 @@ id|kobject
 op_star
 id|kobj
 comma
+r_const
 r_char
 op_star
 id|new_name
