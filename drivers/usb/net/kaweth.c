@@ -469,6 +469,17 @@ multiline_comment|/* Shark Pocket Adapter */
 id|USB_DEVICE
 c_func
 (paren
+l_int|0x1485
+comma
+l_int|0x0001
+)paren
+)brace
+comma
+multiline_comment|/* Silicom U2E */
+(brace
+id|USB_DEVICE
+c_func
+(paren
 l_int|0x1645
 comma
 l_int|0x0005
