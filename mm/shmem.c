@@ -3868,12 +3868,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|kunmap
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 r_goto
 id|unlock
 suffix:semicolon
