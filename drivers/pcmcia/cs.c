@@ -1223,12 +1223,6 @@ op_amp
 id|socket-&gt;lock
 )paren
 suffix:semicolon
-id|init_socket
-c_func
-(paren
-id|socket
-)paren
-suffix:semicolon
 id|init_completion
 c_func
 (paren
@@ -1255,6 +1249,12 @@ c_func
 (paren
 op_amp
 id|socket-&gt;thread_lock
+)paren
+suffix:semicolon
+id|init_socket
+c_func
+(paren
+id|socket
 )paren
 suffix:semicolon
 id|ret
