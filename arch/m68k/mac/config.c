@@ -85,29 +85,6 @@ id|mac_orig_videoaddr
 suffix:semicolon
 multiline_comment|/* Mac specific timer functions */
 r_extern
-r_void
-id|mac_gettod
-(paren
-r_int
-op_star
-comma
-r_int
-op_star
-comma
-r_int
-op_star
-comma
-r_int
-op_star
-comma
-r_int
-op_star
-comma
-r_int
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_int
 r_int
 id|mac_gettimeoffset
@@ -122,7 +99,7 @@ id|mac_hwclk
 r_int
 comma
 r_struct
-id|hwclk_time
+id|rtc_time
 op_star
 )paren
 suffix:semicolon
@@ -854,14 +831,13 @@ id|mach_gettimeoffset
 op_assign
 id|mac_gettimeoffset
 suffix:semicolon
-id|mach_gettod
-op_assign
-id|mac_gettod
-suffix:semicolon
+macro_line|#warning move to adb/via init
+macro_line|#if 0
 id|mach_hwclk
 op_assign
 id|mac_hwclk
 suffix:semicolon
+macro_line|#endif
 id|mach_set_clock_mmss
 op_assign
 id|mac_set_clock_mmss

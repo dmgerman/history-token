@@ -2,6 +2,7 @@ macro_line|#ifndef __M68K_UACCESS_H
 DECL|macro|__M68K_UACCESS_H
 mdefine_line|#define __M68K_UACCESS_H
 multiline_comment|/*&n; * User space memory access functions&n; */
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 DECL|macro|VERIFY_READ

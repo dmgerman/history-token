@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
-macro_line|#include &quot;pci-i386.h&quot;
+macro_line|#include &quot;pci.h&quot;
 DECL|macro|PIRQ_SIGNATURE
 mdefine_line|#define PIRQ_SIGNATURE&t;((&squot;$&squot; &lt;&lt; 0) + (&squot;P&squot; &lt;&lt; 8) + (&squot;I&squot; &lt;&lt; 16) + (&squot;R&squot; &lt;&lt; 24))
 DECL|macro|PIRQ_VERSION
@@ -145,6 +145,24 @@ r_new
 )paren
 suffix:semicolon
 )brace
+suffix:semicolon
+DECL|variable|pci_lookup_irq
+r_int
+(paren
+op_star
+id|pci_lookup_irq
+)paren
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+id|assign
+)paren
+op_assign
+l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n; *  Search 0xf0000 -- 0xfffff for the PCI IRQ Routing Table.&n; */
 DECL|function|pirq_find_routing_table
@@ -496,7 +514,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Code for querying and setting of IRQ routes on various interrupt routers.&n; */
 DECL|function|eisa_set_level_irq
-r_static
 r_void
 id|eisa_set_level_irq
 c_func
@@ -1259,7 +1276,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Cyrix: nibble offset 0x5C&n; */
+multiline_comment|/*&n; * Cyrix: nibble offset 0x5C&n; * 0x5C bits 7:4 is INTB bits 3:0 is INTA &n; * 0x5D bits 7:4 is INTD bits 3:0 is INTC&n; */
 DECL|function|pirq_cyrix_get
 r_static
 r_int
@@ -2636,186 +2653,6 @@ id|regs
 )paren
 (brace
 )brace
-macro_line|#ifdef CONFIG_ACPI_PCI
-DECL|function|acpi_lookup_irq
-r_static
-r_int
-id|acpi_lookup_irq
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-comma
-id|u8
-id|pin
-comma
-r_int
-id|assign
-)paren
-(brace
-r_int
-id|result
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-id|irq
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* TBD: Select IRQ from possible to improve routing performance. */
-id|result
-op_assign
-id|acpi_prt_get_irq
-c_func
-(paren
-id|dev
-comma
-id|pin
-comma
-op_amp
-id|irq
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|irq
-)paren
-id|result
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|0
-op_ne
-id|result
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;PCI: No IRQ known for interrupt pin %c of device %s&bslash;n&quot;
-comma
-l_char|&squot;A&squot;
-op_plus
-id|pin
-comma
-id|dev-&gt;slot_name
-)paren
-suffix:semicolon
-r_return
-id|result
-suffix:semicolon
-)brace
-id|dev-&gt;irq
-op_assign
-id|irq
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|assign
-)paren
-(brace
-multiline_comment|/* only check for the IRQ */
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;PCI: Found IRQ %d for device %s&bslash;n&quot;
-comma
-id|irq
-comma
-id|dev-&gt;slot_name
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/* also assign an IRQ */
-r_if
-c_cond
-(paren
-id|irq
-op_logical_and
-(paren
-id|dev
-op_member_access_from_pointer
-r_class
-op_rshift
-l_int|8
-)paren
-op_ne
-id|PCI_CLASS_DISPLAY_VGA
-)paren
-(brace
-id|result
-op_assign
-id|acpi_prt_set_irq
-c_func
-(paren
-id|dev
-comma
-id|pin
-comma
-id|irq
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|0
-op_ne
-id|result
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;PCI: Could not assign IRQ %d to device %s&bslash;n&quot;
-comma
-id|irq
-comma
-id|dev-&gt;slot_name
-)paren
-suffix:semicolon
-r_return
-id|result
-suffix:semicolon
-)brace
-id|eisa_set_level_irq
-c_func
-(paren
-id|irq
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;PCI: Assigned IRQ %d for device %s&bslash;n&quot;
-comma
-id|irq
-comma
-id|dev-&gt;slot_name
-)paren
-suffix:semicolon
-)brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_ACPI_PCI */
 DECL|function|pcibios_lookup_irq
 r_static
 r_int
@@ -2907,25 +2744,6 @@ id|pin
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI_PCI
-multiline_comment|/* Use ACPI to lookup IRQ */
-r_if
-c_cond
-(paren
-id|pci_use_acpi_routing
-)paren
-r_return
-id|acpi_lookup_irq
-c_func
-(paren
-id|dev
-comma
-id|pin
-comma
-id|assign
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Find IRQ routing entry */
 r_if
 c_cond
@@ -3554,7 +3372,8 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|pcibios_irq_init
-r_void
+r_static
+r_int
 id|__init
 id|pcibios_irq_init
 c_func
@@ -3568,48 +3387,14 @@ c_func
 l_string|&quot;PCI: IRQ init&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI_PCI
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
-id|pci_probe
-op_amp
-id|PCI_NO_ACPI_ROUTING
+id|pci_lookup_irq
 )paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|acpi_prts.count
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;PCI: Using ACPI for IRQ routing&bslash;n&quot;
-)paren
-suffix:semicolon
-id|pci_use_acpi_routing
-op_assign
-l_int|1
-suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
-)brace
-r_else
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;PCI: Invalid ACPI-PCI IRQ routing table&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 id|pirq_table
 op_assign
 id|pirq_find_routing_table
@@ -3710,7 +3495,26 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|pci_lookup_irq
+op_assign
+id|pcibios_lookup_irq
+suffix:semicolon
+id|pcibios_fixup_irqs
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|pcibios_irq_init
+id|subsys_initcall
+c_func
+(paren
+id|pcibios_irq_init
+)paren
+suffix:semicolon
 DECL|function|pcibios_fixup_irqs
 r_void
 id|__init
@@ -3970,7 +3774,7 @@ op_logical_and
 op_logical_neg
 id|dev-&gt;irq
 )paren
-id|pcibios_lookup_irq
+id|pci_lookup_irq
 c_func
 (paren
 id|dev
@@ -4029,7 +3833,7 @@ c_cond
 id|pin
 op_logical_and
 op_logical_neg
-id|pcibios_lookup_irq
+id|pci_lookup_irq
 c_func
 (paren
 id|dev

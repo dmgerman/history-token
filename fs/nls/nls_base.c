@@ -10,12 +10,21 @@ macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/spinlock.h&gt;
+DECL|variable|default_table
+r_static
+r_struct
+id|nls_table
+id|default_table
+suffix:semicolon
 DECL|variable|tables
 r_static
 r_struct
 id|nls_table
 op_star
 id|tables
+op_assign
+op_amp
+id|default_table
 suffix:semicolon
 DECL|variable|nls_lock
 r_static

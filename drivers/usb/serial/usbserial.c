@@ -5962,7 +5962,7 @@ id|co
 )paren
 (brace
 r_return
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|SERIAL_TTY_MAJOR

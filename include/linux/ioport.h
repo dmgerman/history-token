@@ -266,6 +266,9 @@ op_star
 comma
 r_int
 r_int
+comma
+r_int
+r_int
 )paren
 comma
 r_void

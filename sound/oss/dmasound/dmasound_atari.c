@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/sound/dmasound/dmasound_atari.c&n; *&n; *  Atari TT and Falcon DMA Sound Driver&n; *&n; *  See linux/drivers/sound/dmasound/dmasound_core.c for copyright and credits&n; */
+multiline_comment|/*&n; *  linux/drivers/sound/dmasound/dmasound_atari.c&n; *&n; *  Atari TT and Falcon DMA Sound Driver&n; *&n; *  See linux/drivers/sound/dmasound/dmasound_core.c for copyright and credits&n; *  prior to 28/01/2001&n; *&n; *  28/01/2001 [0.1] Iain Sandoe&n; *&t;&t;     - added versioning&n; *&t;&t;     - put in and populated the hardware_afmts field.&n; *             [0.2] - put in SNDCTL_DSP_GETCAPS value.&n; *  01/02/2001 [0.3] - put in default hard/soft settings.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -9,6 +9,10 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/atariints.h&gt;
 macro_line|#include &lt;asm/atari_stram.h&gt;
 macro_line|#include &quot;dmasound.h&quot;
+DECL|macro|DMASOUND_ATARI_REVISION
+mdefine_line|#define DMASOUND_ATARI_REVISION 0
+DECL|macro|DMASOUND_ATARI_EDITION
+mdefine_line|#define DMASOUND_ATARI_EDITION 3
 r_extern
 r_void
 id|atari_microwire_cmd
@@ -655,7 +659,7 @@ id|arg
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|AtaWriteSqSetup
 c_func
 (paren
@@ -663,11 +667,12 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|AtaSqOpen
 c_func
 (paren
-r_void
+id|mode_t
+id|mode
 )paren
 suffix:semicolon
 r_static
@@ -678,6 +683,9 @@ c_func
 r_char
 op_star
 id|buffer
+comma
+r_int
+id|space
 )paren
 suffix:semicolon
 r_static
@@ -688,6 +696,9 @@ c_func
 r_char
 op_star
 id|buffer
+comma
+r_int
+id|space
 )paren
 suffix:semicolon
 multiline_comment|/*** Translations ************************************************************/
@@ -6549,7 +6560,7 @@ suffix:semicolon
 )brace
 DECL|function|AtaWriteSqSetup
 r_static
-r_void
+r_int
 id|AtaWriteSqSetup
 c_func
 (paren
@@ -6560,19 +6571,26 @@ id|write_sq_ignore_int
 op_assign
 l_int|0
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|AtaSqOpen
 r_static
-r_void
+r_int
 id|AtaSqOpen
 c_func
 (paren
-r_void
+id|mode_t
+id|mode
 )paren
 (brace
 id|write_sq_ignore_int
 op_assign
 l_int|1
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|TTStateInfo
@@ -6584,6 +6602,9 @@ c_func
 r_char
 op_star
 id|buffer
+comma
+r_int
+id|space
 )paren
 (brace
 r_int
@@ -6600,7 +6621,7 @@ id|buffer
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;tsound.volume_left = %ddB [-40...0]&bslash;n&quot;
+l_string|&quot;&bslash;tvol left  %ddB [-40...  0]&bslash;n&quot;
 comma
 id|dmasound.volume_left
 )paren
@@ -6614,7 +6635,7 @@ id|buffer
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;tsound.volume_right = %ddB [-40...0]&bslash;n&quot;
+l_string|&quot;&bslash;tvol right %ddB [-40...  0]&bslash;n&quot;
 comma
 id|dmasound.volume_right
 )paren
@@ -6628,7 +6649,7 @@ id|buffer
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;tsound.bass = %ddB [-12...+12]&bslash;n&quot;
+l_string|&quot;&bslash;tbass      %ddB [-12...+12]&bslash;n&quot;
 comma
 id|dmasound.bass
 )paren
@@ -6642,11 +6663,31 @@ id|buffer
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;tsound.treble = %ddB [-12...+12]&bslash;n&quot;
+l_string|&quot;&bslash;ttreble    %ddB [-12...+12]&bslash;n&quot;
 comma
 id|dmasound.treble
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+op_ge
+id|space
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;dmasound_atari: overflowed state buffer alloc.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|len
+op_assign
+id|space
+suffix:semicolon
+)brace
 r_return
 id|len
 suffix:semicolon
@@ -6660,6 +6701,9 @@ c_func
 r_char
 op_star
 id|buffer
+comma
+r_int
+id|space
 )paren
 (brace
 r_int
@@ -6676,7 +6720,7 @@ id|buffer
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;tsound.volume_left = %ddB [-22.5...0]&bslash;n&quot;
+l_string|&quot;&bslash;tvol left  %ddB [-22.5 ... 0]&bslash;n&quot;
 comma
 id|dmasound.volume_left
 )paren
@@ -6690,16 +6734,105 @@ id|buffer
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;tsound.volume_right = %ddB [-22.5...0]&bslash;n&quot;
+l_string|&quot;&bslash;tvol right %ddB [-22.5 ... 0]&bslash;n&quot;
 comma
 id|dmasound.volume_right
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+op_ge
+id|space
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;dmasound_atari: overflowed state buffer alloc.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|len
+op_assign
+id|space
+suffix:semicolon
+)brace
 r_return
 id|len
 suffix:semicolon
 )brace
 multiline_comment|/*** Machine definitions *****************************************************/
+DECL|variable|def_hard_falcon
+r_static
+id|SETTINGS
+id|def_hard_falcon
+op_assign
+(brace
+id|format
+suffix:colon
+id|AFMT_S8
+comma
+id|stereo
+suffix:colon
+l_int|0
+comma
+id|size
+suffix:colon
+l_int|8
+comma
+id|speed
+suffix:colon
+l_int|8195
+)brace
+suffix:semicolon
+DECL|variable|def_hard_tt
+r_static
+id|SETTINGS
+id|def_hard_tt
+op_assign
+(brace
+id|format
+suffix:colon
+id|AFMT_S8
+comma
+id|stereo
+suffix:colon
+l_int|0
+comma
+id|size
+suffix:colon
+l_int|8
+comma
+id|speed
+suffix:colon
+l_int|12517
+)brace
+suffix:semicolon
+DECL|variable|def_soft
+r_static
+id|SETTINGS
+id|def_soft
+op_assign
+(brace
+id|format
+suffix:colon
+id|AFMT_U8
+comma
+id|stereo
+suffix:colon
+l_int|0
+comma
+id|size
+suffix:colon
+l_int|8
+comma
+id|speed
+suffix:colon
+l_int|8000
+)brace
+suffix:semicolon
 DECL|variable|machTT
 r_static
 id|MACHINE
@@ -6796,6 +6929,27 @@ id|min_dsp_speed
 suffix:colon
 l_int|6258
 comma
+id|version
+suffix:colon
+(paren
+(paren
+id|DMASOUND_ATARI_REVISION
+op_lshift
+l_int|8
+)paren
+op_or
+id|DMASOUND_ATARI_EDITION
+)paren
+comma
+id|hardware_afmts
+suffix:colon
+id|AFMT_S8
+comma
+multiline_comment|/* h&squot;ware-supported formats *only* here */
+id|capabilities
+suffix:colon
+id|DSP_CAP_BATCH
+multiline_comment|/* As per SNDCTL_DSP_GETCAPS */
 )brace
 suffix:semicolon
 DECL|variable|machFalcon
@@ -6882,6 +7036,31 @@ id|min_dsp_speed
 suffix:colon
 l_int|8195
 comma
+id|version
+suffix:colon
+(paren
+(paren
+id|DMASOUND_ATARI_REVISION
+op_lshift
+l_int|8
+)paren
+op_or
+id|DMASOUND_ATARI_EDITION
+)paren
+comma
+id|hardware_afmts
+suffix:colon
+(paren
+id|AFMT_S8
+op_or
+id|AFMT_S16_BE
+)paren
+comma
+multiline_comment|/* h&squot;ware-supported formats *only* here */
+id|capabilities
+suffix:colon
+id|DSP_CAP_BATCH
+multiline_comment|/* As per SNDCTL_DSP_GETCAPS */
 )brace
 suffix:semicolon
 multiline_comment|/*** Config &amp; Setup **********************************************************/
@@ -6921,6 +7100,14 @@ id|dmasound.mach
 op_assign
 id|machFalcon
 suffix:semicolon
+id|dmasound.mach.default_soft
+op_assign
+id|def_soft
+suffix:semicolon
+id|dmasound.mach.default_hard
+op_assign
+id|def_hard_falcon
+suffix:semicolon
 id|is_falcon
 op_assign
 l_int|1
@@ -6940,6 +7127,14 @@ id|MICROWIRE
 id|dmasound.mach
 op_assign
 id|machTT
+suffix:semicolon
+id|dmasound.mach.default_soft
+op_assign
+id|def_soft
+suffix:semicolon
+id|dmasound.mach.default_hard
+op_assign
+id|def_hard_tt
 suffix:semicolon
 id|is_falcon
 op_assign

@@ -348,7 +348,6 @@ op_star
 id|filp
 )paren
 suffix:semicolon
-macro_line|#endif
 r_static
 r_void
 id|reserve_region
@@ -363,6 +362,7 @@ op_star
 id|end
 )paren
 suffix:semicolon
+macro_line|#endif
 r_static
 id|BLOCK
 op_star
@@ -552,6 +552,10 @@ op_star
 id|MAX_STRAM_FRACTION_DENOM
 op_le
 (paren
+(paren
+r_int
+r_int
+)paren
 id|high_memory
 op_rshift
 id|PAGE_SHIFT
@@ -1921,7 +1925,7 @@ suffix:semicolon
 )brace
 id|pte
 op_assign
-id|pte_offset
+id|pte_offset_kernel
 c_func
 (paren
 id|dir
@@ -2461,7 +2465,7 @@ suffix:semicolon
 multiline_comment|/* Get a page for the entry, using the existing&n;&t;&t;&t;   swap cache page if there is one.  Otherwise,&n;&t;&t;&t;   get a clean page and read the swap into it. */
 id|page
 op_assign
-id|read_swap_cache
+id|read_swap_cache_async
 c_func
 (paren
 id|entry
@@ -2514,7 +2518,7 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-id|shm_unuse
+id|shmem_unuse
 c_func
 (paren
 id|entry
@@ -3795,7 +3799,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_STRAM_SWAP */
 "&f;"
 multiline_comment|/* ------------------------------------------------------------------------ */
 multiline_comment|/*&t;&t;&t;&t;&t;&t;&t;Misc Utility Functions&t;&t;&t;&t;&t;&t;&t;*/
@@ -3830,6 +3833,7 @@ id|start
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_STRAM_SWAP */
 "&f;"
 multiline_comment|/* ------------------------------------------------------------------------ */
 multiline_comment|/*&t;&t;&t;&t;&t;&t;&t;  Region Management&t;&t;&t;&t;&t;&t;&t;&t;*/

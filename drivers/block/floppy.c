@@ -20,6 +20,7 @@ multiline_comment|/*&n; * 1998/09/20 -- David Weinehall -- Added slow-down code 
 multiline_comment|/*&n; * 1999/08/13 -- Paul Slootman -- floppy stopped working on Alpha after 24&n; * days, 6 hours, 32 minutes and 32 seconds (i.e. MAXINT jiffies; ints were&n; * being used to store jiffies, which are unsigned longs).&n; */
 multiline_comment|/*&n; * 2000/08/28 -- Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * - get rid of check_region&n; * - s/suser/capable/&n; */
 multiline_comment|/*&n; * 2001/08/26 -- Paul Gortmaker - fix insmod oops on machines with no&n; * floppy controller (lingering task on list after module is gone... boom.)&n; */
+multiline_comment|/*&n; * 2002/02/07 -- Anton Altaparmakov - Fix io ports reservation to correct range&n; * (0x3f2-0x3f5, 0x3f7). This fix is a bit of a hack but the proper fix&n; * requires many non-obvious changes in arch dependent code.&n; */
 DECL|macro|FLOPPY_SANITY_CHECK
 mdefine_line|#define FLOPPY_SANITY_CHECK
 DECL|macro|FLOPPY_SILENT_DCL_CLEAR
@@ -18690,8 +18691,10 @@ id|release_region
 c_func
 (paren
 id|FDCS-&gt;address
+op_plus
+l_int|2
 comma
-l_int|6
+l_int|4
 )paren
 suffix:semicolon
 id|release_region
@@ -18737,8 +18740,10 @@ id|release_region
 c_func
 (paren
 id|FDCS-&gt;address
+op_plus
+l_int|2
 comma
-l_int|6
+l_int|4
 )paren
 suffix:semicolon
 id|release_region
@@ -19169,8 +19174,10 @@ id|request_region
 c_func
 (paren
 id|FDCS-&gt;address
+op_plus
+l_int|2
 comma
-l_int|6
+l_int|4
 comma
 l_string|&quot;floppy&quot;
 )paren
@@ -19182,6 +19189,8 @@ c_func
 l_string|&quot;Floppy io-port 0x%04lx in use&bslash;n&quot;
 comma
 id|FDCS-&gt;address
+op_plus
+l_int|2
 )paren
 suffix:semicolon
 r_goto
@@ -19326,8 +19335,10 @@ id|release_region
 c_func
 (paren
 id|FDCS-&gt;address
+op_plus
+l_int|2
 comma
-l_int|6
+l_int|4
 )paren
 suffix:semicolon
 id|cleanup1
@@ -19355,8 +19366,10 @@ id|release_region
 c_func
 (paren
 id|FDCS-&gt;address
+op_plus
+l_int|2
 comma
-l_int|6
+l_int|4
 )paren
 suffix:semicolon
 id|release_region
@@ -19681,8 +19694,10 @@ id|release_region
 c_func
 (paren
 id|FDCS-&gt;address
+op_plus
+l_int|2
 comma
-l_int|6
+l_int|4
 )paren
 suffix:semicolon
 id|release_region

@@ -716,6 +716,9 @@ op_star
 comma
 r_int
 r_int
+comma
+r_int
+r_int
 )paren
 comma
 r_void
@@ -825,6 +828,8 @@ comma
 r_new
 comma
 id|size
+comma
+id|align
 )paren
 suffix:semicolon
 r_if
@@ -937,6 +942,9 @@ comma
 r_struct
 id|resource
 op_star
+comma
+r_int
+r_int
 comma
 r_int
 r_int

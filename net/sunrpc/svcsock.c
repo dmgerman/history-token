@@ -2684,7 +2684,11 @@ c_cond
 (paren
 id|serv-&gt;sv_tmpcnt
 OG
+(paren
 id|serv-&gt;sv_nrthreads
+op_plus
+l_int|3
+)paren
 op_star
 l_int|5
 )paren
@@ -3518,7 +3522,11 @@ c_func
 (paren
 id|svsk-&gt;sk_sock
 comma
+(paren
 id|svsk-&gt;sk_server-&gt;sv_nrthreads
+op_plus
+l_int|3
+)paren
 op_star
 id|svsk-&gt;sk_server-&gt;sv_bufsz
 comma
@@ -3680,7 +3688,11 @@ c_func
 (paren
 id|sock
 comma
+(paren
 id|serv-&gt;sv_nrthreads
+op_plus
+l_int|3
+)paren
 op_star
 id|serv-&gt;sv_bufsz
 comma

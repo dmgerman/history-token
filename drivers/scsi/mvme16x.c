@@ -26,7 +26,8 @@ comma
 r_int
 id|chip
 comma
-id|u32
+r_int
+r_int
 id|base
 comma
 r_int
@@ -137,7 +138,8 @@ comma
 l_int|710
 comma
 (paren
-id|u32
+r_int
+r_int
 )paren
 l_int|0xfff47000
 comma

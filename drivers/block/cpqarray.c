@@ -4119,9 +4119,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_RAWIO
 )paren
 op_logical_and
 id|ida_sizes
@@ -4149,9 +4150,10 @@ multiline_comment|/*&n;&t; * Root is allowed to open raw volume zero even if its
 r_if
 c_cond
 (paren
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_ADMIN
 )paren
 op_logical_and
 id|ida_sizes
@@ -5817,9 +5819,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_RAWIO
 )paren
 )paren
 r_return

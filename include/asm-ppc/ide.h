@@ -17,17 +17,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-r_extern
-r_void
-id|ppc_generic_ide_fix_driveid
-c_func
-(paren
-r_struct
-id|hd_driveid
-op_star
-id|id
-)paren
-suffix:semicolon
 DECL|struct|ide_machdep_calls
 r_struct
 id|ide_machdep_calls
@@ -83,18 +72,6 @@ r_struct
 id|ide_machdep_calls
 id|ppc_ide_md
 suffix:semicolon
-r_void
-id|ppc_generic_ide_fix_driveid
-c_func
-(paren
-r_struct
-id|hd_driveid
-op_star
-id|id
-)paren
-suffix:semicolon
-DECL|macro|ide_fix_driveid
-mdefine_line|#define ide_fix_driveid(id)&t;ppc_generic_ide_fix_driveid((id))
 DECL|macro|SUPPORT_SLOW_DATA_PORTS
 macro_line|#undef&t;SUPPORT_SLOW_DATA_PORTS
 DECL|macro|SUPPORT_SLOW_DATA_PORTS
@@ -296,7 +273,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifndef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifndef CONFIG_PCI
 id|hw_regs_t
 id|hw
 suffix:semicolon
@@ -369,122 +346,8 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
+macro_line|#endif
 )brace
-r_typedef
-r_union
-(brace
-r_int
-id|all
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* all of the bits together */
-r_struct
-(brace
-DECL|member|bit7
-r_int
-id|bit7
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* always 1 */
-DECL|member|lba
-r_int
-id|lba
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* using LBA instead of CHS */
-DECL|member|bit5
-r_int
-id|bit5
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* always 1 */
-DECL|member|unit
-r_int
-id|unit
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* drive select number, 0/1 */
-DECL|member|head
-r_int
-id|head
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* always zeros here */
-DECL|member|b
-)brace
-id|b
-suffix:semicolon
-DECL|typedef|select_t
-)brace
-id|select_t
-suffix:semicolon
-r_typedef
-r_union
-(brace
-r_int
-id|all
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* all of the bits together */
-r_struct
-(brace
-DECL|member|HOB
-r_int
-id|HOB
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 48-bit address ordering */
-DECL|member|reserved456
-r_int
-id|reserved456
-suffix:colon
-l_int|3
-suffix:semicolon
-DECL|member|bit3
-r_int
-id|bit3
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* ATA-2 thingy */
-DECL|member|SRST
-r_int
-id|SRST
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* host soft reset bit */
-DECL|member|nIEN
-r_int
-id|nIEN
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* device INTRQ to host */
-DECL|member|bit0
-r_int
-id|bit0
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|b
-)brace
-id|b
-suffix:semicolon
-DECL|typedef|control_t
-)brace
-id|control_t
-suffix:semicolon
-multiline_comment|/*&n; * The following are not needed for the non-m68k ports&n; * unless direct IDE on 8xx&n; */
 macro_line|#if (defined CONFIG_APUS || defined CONFIG_BLK_DEV_MPC8xx_IDE )
 DECL|macro|ide_ack_intr
 mdefine_line|#define ide_ack_intr(hwif) (hwif-&gt;hw.ack_intr ? hwif-&gt;hw.ack_intr(hwif) : 1)

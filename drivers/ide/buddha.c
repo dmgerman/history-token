@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/ide/buddha.c -- Amiga Buddha, Catweasel and X-Surf IDE Driver&n; *&n; *&t;Copyright (C) 1997 by Geert Uytterhoeven&n; *&n; *  This driver was written by based on the specifications in README.buddha and&n; *  the X-Surf info from Inside_XSurf.txt available at &n; *  http://www.jschoenfeld.com&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; *&n; *  TODO:&n; *    - test it :-)&n; *    - tune the timings using the speed-register&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/buddha.c -- Amiga Buddha, Catweasel and X-Surf IDE Driver&n; *&n; *&t;Copyright (C) 1997, 2001 by Geert Uytterhoeven and others&n; *&n; *  This driver was written based on the specifications in README.buddha and&n; *  the X-Surf info from Inside_XSurf.txt available at&n; *  http://www.jschoenfeld.com&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; *&n; *  TODO:&n; *    - test it :-)&n; *    - tune the timings using the speed-register&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -46,7 +46,6 @@ id|BUDDHA_BASE3
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 id|u_int
 id|xsurf_bases
 (braket
@@ -175,7 +174,6 @@ id|BUDDHA_IRQ3
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_int
 id|xsurf_irqports
 (braket
@@ -193,23 +191,20 @@ DECL|macro|BUDDHA_IRQ_MR
 mdefine_line|#define BUDDHA_IRQ_MR&t;0xfc0&t;&t;/* master interrupt enable */
 multiline_comment|/*&n;     *  Board information&n;     */
 DECL|enum|BuddhaType_Enum
-DECL|enumerator|BOARD_BUDDHA
-DECL|enumerator|BOARD_CATWEASEL
-DECL|enumerator|BOARD_XSURF
+r_typedef
 r_enum
 id|BuddhaType_Enum
 (brace
+DECL|enumerator|BOARD_BUDDHA
+DECL|enumerator|BOARD_CATWEASEL
+DECL|enumerator|BOARD_XSURF
 id|BOARD_BUDDHA
 comma
 id|BOARD_CATWEASEL
 comma
 id|BOARD_XSURF
-)brace
-suffix:semicolon
 DECL|typedef|BuddhaType
-r_typedef
-r_enum
-id|BuddhaType_Enum
+)brace
 id|BuddhaType
 suffix:semicolon
 multiline_comment|/*&n;     *  Check and acknowledge the interrupt status&n;     */
@@ -492,7 +487,8 @@ comma
 l_string|&quot;IDE&quot;
 )paren
 )paren
-r_continue
+r_goto
+id|fail_base2
 suffix:semicolon
 r_if
 c_cond
@@ -510,8 +506,32 @@ comma
 l_string|&quot;IDE&quot;
 )paren
 )paren
+(brace
+id|release_mem_region
+c_func
+(paren
+id|board
+op_plus
+id|XSURF_BASE2
+comma
+l_int|0x1000
+)paren
+suffix:semicolon
+id|fail_base2
+suffix:colon
+id|release_mem_region
+c_func
+(paren
+id|board
+op_plus
+id|XSURF_BASE1
+comma
+l_int|0x1000
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 )brace
 id|buddha_board
 op_assign
@@ -530,21 +550,16 @@ id|type
 op_ne
 id|BOARD_XSURF
 )paren
-(brace
-op_star
+id|z_writeb
+c_func
 (paren
-r_char
-op_star
-)paren
-(paren
+l_int|0
+comma
 id|buddha_board
 op_plus
 id|BUDDHA_IRQ_MR
 )paren
-op_assign
-l_int|0
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren

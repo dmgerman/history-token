@@ -5,7 +5,7 @@ mdefine_line|#define _MEYE_PRIV_H_
 DECL|macro|MEYE_DRIVER_MAJORVERSION
 mdefine_line|#define MEYE_DRIVER_MAJORVERSION&t;1
 DECL|macro|MEYE_DRIVER_MINORVERSION
-mdefine_line|#define MEYE_DRIVER_MINORVERSION&t;3
+mdefine_line|#define MEYE_DRIVER_MINORVERSION&t;4
 multiline_comment|/****************************************************************************/
 multiline_comment|/* Motion JPEG chip registers                                               */
 multiline_comment|/****************************************************************************/

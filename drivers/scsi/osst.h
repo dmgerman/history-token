@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;$Header: /home/cvsroot/Driver/osst.h,v 1.11 2001/01/26 01:54:49 riede Exp $&n; */
+multiline_comment|/*&n; *&t;$Header: /home/cvsroot/Driver/osst.h,v 1.12 2001/10/11 00:30:15 riede Exp $&n; */
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
@@ -2427,4 +2427,7 @@ DECL|macro|OS_WRITE_HEADER
 mdefine_line|#define OS_WRITE_HEADER    4
 DECL|macro|OS_WRITE_FILLER
 mdefine_line|#define OS_WRITE_FILLER    5
+multiline_comment|/* Additional rw state */
+DECL|macro|OS_WRITING_COMPLETE
+mdefine_line|#define OS_WRITING_COMPLETE 3
 eof

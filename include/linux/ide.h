@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/hdreg.h&gt;
 multiline_comment|/*&n; * This is the multiple IDE interface driver, as evolved from hd.c.&n; * It supports up to four IDE interfaces, on one or more IRQs (usually 14, 15).&n; * There can be up to two drives per interface, as per the ATA-2 spec.&n; *&n; * Primary i/f:    ide0: major=3;  (hda) minor=0; (hdb) minor=64&n; * Secondary i/f:  ide1: major=22; (hdc) minor=0; (hdd) minor=64&n; * Tertiary i/f:   ide2: major=33; (hde) minor=0; (hdf) minor=64&n; * Quaternary i/f: ide3: major=34; (hdg) minor=0; (hdh) minor=64&n; */
 multiline_comment|/******************************************************************************&n; * IDE driver configuration options (play with these as desired):&n; */
@@ -33,7 +34,7 @@ macro_line|# define DISK_RECOVERY_TIME&t;0&t;/*  for hardware that needs it */
 macro_line|#endif
 macro_line|#ifndef OK_TO_RESET_CONTROLLER&t;&t;/* 1 needed for good error recovery */
 DECL|macro|OK_TO_RESET_CONTROLLER
-macro_line|# define OK_TO_RESET_CONTROLLER&t;1&t;/* 0 for use with AH2372A/B interface */
+macro_line|# define OK_TO_RESET_CONTROLLER&t;0&t;/* 0 for use with AH2372A/B interface */
 macro_line|#endif
 macro_line|#ifndef FANCY_STATUS_DUMPS&t;&t;/* 1 for human-readable drive errors */
 DECL|macro|FANCY_STATUS_DUMPS
@@ -356,6 +357,184 @@ mdefine_line|#define ATA_NO_LUN      0x7f
 r_struct
 id|ide_settings_s
 suffix:semicolon
+r_typedef
+r_union
+(brace
+r_int
+id|all
+suffix:colon
+l_int|8
+suffix:semicolon
+multiline_comment|/* all of the bits together */
+r_struct
+(brace
+macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
+DECL|member|head
+r_int
+id|head
+suffix:colon
+l_int|4
+suffix:semicolon
+multiline_comment|/* always zeros here */
+DECL|member|unit
+r_int
+id|unit
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* drive select number: 0/1 */
+DECL|member|bit5
+r_int
+id|bit5
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* always 1 */
+DECL|member|lba
+r_int
+id|lba
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* using LBA instead of CHS */
+DECL|member|bit7
+r_int
+id|bit7
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* always 1 */
+macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
+r_int
+id|bit7
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|lba
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|bit5
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|unit
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|head
+suffix:colon
+l_int|4
+suffix:semicolon
+macro_line|#else
+macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
+macro_line|#endif
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+DECL|typedef|select_t
+)brace
+id|select_t
+suffix:semicolon
+r_typedef
+r_union
+(brace
+r_int
+id|all
+suffix:colon
+l_int|8
+suffix:semicolon
+multiline_comment|/* all of the bits together */
+r_struct
+(brace
+macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
+DECL|member|bit0
+r_int
+id|bit0
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|nIEN
+r_int
+id|nIEN
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* device INTRQ to host */
+DECL|member|SRST
+r_int
+id|SRST
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* host soft reset bit */
+DECL|member|bit3
+r_int
+id|bit3
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* ATA-2 thingy */
+DECL|member|reserved456
+r_int
+id|reserved456
+suffix:colon
+l_int|3
+suffix:semicolon
+DECL|member|HOB
+r_int
+id|HOB
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 48-bit address ordering */
+macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
+r_int
+id|HOB
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|reserved456
+suffix:colon
+l_int|3
+suffix:semicolon
+r_int
+id|bit3
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|SRST
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|nIEN
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|bit0
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#else
+macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
+macro_line|#endif
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+DECL|typedef|control_t
+)brace
+id|control_t
+suffix:semicolon
 multiline_comment|/*&n; * ATA/ATAPI device structure :&n; */
 r_typedef
 DECL|struct|ata_device
@@ -399,28 +578,9 @@ r_int
 id|sleep
 suffix:semicolon
 multiline_comment|/* sleep until this time */
-multiline_comment|/* Flags requesting/indicating one of the following special commands&n;&t; * executed on the request queue.&n;&t; */
-DECL|macro|ATA_SPECIAL_GEOMETRY
-mdefine_line|#define ATA_SPECIAL_GEOMETRY&t;&t;0x01
-DECL|macro|ATA_SPECIAL_RECALIBRATE
-mdefine_line|#define ATA_SPECIAL_RECALIBRATE&t;&t;0x02
-DECL|macro|ATA_SPECIAL_MMODE
-mdefine_line|#define ATA_SPECIAL_MMODE&t;&t;0x04
-DECL|macro|ATA_SPECIAL_TUNE
-mdefine_line|#define ATA_SPECIAL_TUNE&t;&t;0x08
-DECL|member|special_cmd
-r_int
-r_char
-id|special_cmd
-suffix:semicolon
-DECL|member|mult_req
+DECL|member|XXX_tune_req
 id|u8
-id|mult_req
-suffix:semicolon
-multiline_comment|/* requested multiple sector setting */
-DECL|member|tune_req
-id|u8
-id|tune_req
+id|XXX_tune_req
 suffix:semicolon
 multiline_comment|/* requested drive tuning setting */
 DECL|member|using_dma
@@ -670,20 +830,13 @@ id|devfs_handle_t
 id|de
 suffix:semicolon
 multiline_comment|/* directory for device */
-DECL|member|proc
-r_struct
-id|proc_dir_entry
-op_star
-id|proc
-suffix:semicolon
-multiline_comment|/* /proc/ide/ directory entry */
 DECL|member|settings
 r_struct
 id|ide_settings_s
 op_star
 id|settings
 suffix:semicolon
-multiline_comment|/* /proc/ide/ drive settings */
+multiline_comment|/* ioctl entires */
 DECL|member|driver_req
 r_char
 id|driver_req
@@ -841,7 +994,7 @@ id|hw_regs_t
 id|hw
 suffix:semicolon
 multiline_comment|/* Hardware info */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifdef CONFIG_PCI
 DECL|member|pci_dev
 r_struct
 id|pci_dev
@@ -1047,6 +1200,22 @@ id|XXX_udma
 r_struct
 id|ata_device
 op_star
+)paren
+suffix:semicolon
+DECL|member|udma_enable
+r_void
+(paren
+op_star
+id|udma_enable
+)paren
+(paren
+r_struct
+id|ata_device
+op_star
+comma
+r_int
+comma
+r_int
 )paren
 suffix:semicolon
 DECL|member|udma_start
@@ -1362,6 +1531,12 @@ id|byte
 id|bus_state
 suffix:semicolon
 multiline_comment|/* power state of the IDE bus */
+DECL|member|poll_timeout
+r_int
+r_int
+id|poll_timeout
+suffix:semicolon
+multiline_comment|/* timeout value during polled operations */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Register new hardware with ide&n; */
@@ -1518,15 +1693,16 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|macro|ata_pending_commands
-mdefine_line|#define ata_pending_commands(drive)&t;(0)
+macro_line|# define ata_pending_commands(drive)&t;(0)
 DECL|macro|ata_can_queue
-mdefine_line|#define ata_can_queue(drive)&t;&t;(1)
+macro_line|# define ata_can_queue(drive)&t;&t;(1)
 macro_line|#endif
 DECL|struct|hwgroup_s
 r_typedef
 r_struct
 id|hwgroup_s
 (brace
+multiline_comment|/* FIXME: We should look for busy request queues instead of looking at&n;&t; * the !NULL state of this field.&n;&t; */
 DECL|member|handler
 id|ide_startstop_t
 (paren
@@ -1570,12 +1746,6 @@ id|timer_list
 id|timer
 suffix:semicolon
 multiline_comment|/* failsafe timer */
-DECL|member|poll_timeout
-r_int
-r_int
-id|poll_timeout
-suffix:semicolon
-multiline_comment|/* timeout value during long polls */
 DECL|member|expiry
 r_int
 (paren
@@ -1780,112 +1950,8 @@ id|ata_device
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * /proc/ide interface&n; */
-r_typedef
-r_struct
-(brace
-DECL|member|name
-r_const
-r_char
-op_star
-id|name
-suffix:semicolon
-DECL|member|mode
-id|mode_t
-id|mode
-suffix:semicolon
-DECL|member|read_proc
-id|read_proc_t
-op_star
-id|read_proc
-suffix:semicolon
-DECL|member|write_proc
-id|write_proc_t
-op_star
-id|write_proc
-suffix:semicolon
-DECL|typedef|ide_proc_entry_t
-)brace
-id|ide_proc_entry_t
-suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-r_void
-id|proc_ide_create
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|proc_ide_destroy
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|destroy_proc_ide_drives
-c_func
-(paren
-r_struct
-id|ata_channel
-op_star
-)paren
-suffix:semicolon
-r_void
-id|create_proc_ide_interfaces
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|ide_add_proc_entries
-c_func
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-id|dir
-comma
-id|ide_proc_entry_t
-op_star
-id|p
-comma
-r_void
-op_star
-id|data
-)paren
-suffix:semicolon
-r_void
-id|ide_remove_proc_entries
-c_func
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-id|dir
-comma
-id|ide_proc_entry_t
-op_star
-id|p
-)paren
-suffix:semicolon
-DECL|variable|proc_ide_read_capacity
-id|read_proc_t
-id|proc_ide_read_capacity
-suffix:semicolon
-DECL|variable|proc_ide_read_geometry
-id|read_proc_t
-id|proc_ide_read_geometry
-suffix:semicolon
-multiline_comment|/*&n; * Standard exit stuff:&n; */
 DECL|macro|PROC_IDE_READ_RETURN
-mdefine_line|#define PROC_IDE_READ_RETURN(page,start,off,count,eof,len) &bslash;&n;{&t;&t;&t;&t;&t;&bslash;&n;&t;len -= off;&t;&t;&t;&bslash;&n;&t;if (len &lt; count) {&t;&t;&bslash;&n;&t;&t;*eof = 1;&t;&t;&bslash;&n;&t;&t;if (len &lt;= 0)&t;&t;&bslash;&n;&t;&t;&t;return 0;&t;&bslash;&n;&t;} else&t;&t;&t;&t;&bslash;&n;&t;&t;len = count;&t;&t;&bslash;&n;&t;*start = page + off;&t;&t;&bslash;&n;&t;return len;&t;&t;&t;&bslash;&n;}
-macro_line|#else
-DECL|macro|PROC_IDE_READ_RETURN
-macro_line|# define PROC_IDE_READ_RETURN(page,start,off,count,eof,len) return 0;
-macro_line|#endif
+mdefine_line|#define PROC_IDE_READ_RETURN(page,start,off,count,eof,len) return 0;
 multiline_comment|/*&n; * This structure describes the operations possible on a particular device type&n; * (CD-ROM, tape, DISK and so on).&n; *&n; * This is the main hook for device type support submodules.&n; */
 DECL|struct|ata_operations
 r_struct
@@ -2047,18 +2113,6 @@ id|ata_device
 op_star
 )paren
 suffix:semicolon
-DECL|member|pre_reset
-r_void
-(paren
-op_star
-id|pre_reset
-)paren
-(paren
-r_struct
-id|ata_device
-op_star
-)paren
-suffix:semicolon
 DECL|member|capacity
 id|sector_t
 (paren
@@ -2070,23 +2124,6 @@ r_struct
 id|ata_device
 op_star
 )paren
-suffix:semicolon
-DECL|member|special
-id|ide_startstop_t
-(paren
-op_star
-id|special
-)paren
-(paren
-r_struct
-id|ata_device
-op_star
-)paren
-suffix:semicolon
-DECL|member|proc
-id|ide_proc_entry_t
-op_star
-id|proc
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -2577,34 +2614,6 @@ op_star
 suffix:semicolon
 r_extern
 id|ide_startstop_t
-id|set_geometry_intr
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_struct
-id|request
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|ide_startstop_t
-id|set_multmode_intr
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_struct
-id|request
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|ide_startstop_t
 id|task_no_data_intr
 c_func
 (paren
@@ -2637,16 +2646,10 @@ c_func
 r_struct
 id|ata_device
 op_star
-id|drive
 comma
 r_struct
 id|ata_taskfile
 op_star
-id|cmd
-comma
-id|byte
-op_star
-id|buf
 )paren
 suffix:semicolon
 r_extern
@@ -2679,6 +2682,17 @@ c_func
 r_struct
 id|ata_device
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ide_fix_driveid
+c_func
+(paren
+r_struct
+id|hd_driveid
+op_star
+id|id
 )paren
 suffix:semicolon
 r_extern
@@ -2825,12 +2839,6 @@ id|ide_fops
 (braket
 )braket
 suffix:semicolon
-r_extern
-id|ide_proc_entry_t
-id|generic_subdriver_entries
-(braket
-)braket
-suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDE
 multiline_comment|/* Probe for devices attached to the systems host controllers.&n; */
 r_extern
@@ -2931,7 +2939,7 @@ op_star
 id|drive
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifdef CONFIG_PCI
 DECL|macro|ON_BOARD
 macro_line|# define ON_BOARD&t;&t;1
 DECL|macro|NEVER_BOARD

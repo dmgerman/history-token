@@ -5160,7 +5160,6 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-macro_line|#ifdef CAP_SYS_ADMIN
 r_if
 c_cond
 (paren
@@ -5171,17 +5170,6 @@ c_func
 id|CAP_SYS_ADMIN
 )paren
 )paren
-macro_line|#else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|suser
-c_func
-(paren
-)paren
-)paren
-macro_line|#endif
 (brace
 r_if
 c_cond

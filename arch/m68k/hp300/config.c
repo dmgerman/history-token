@@ -208,12 +208,6 @@ op_assign
 op_amp
 id|hp300_default_handler
 suffix:semicolon
-macro_line|#if 0
-id|mach_gettod
-op_assign
-id|hp300_gettod
-suffix:semicolon
-macro_line|#endif
 id|mach_reset
 op_assign
 id|hp300_reset

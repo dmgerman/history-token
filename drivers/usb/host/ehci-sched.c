@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * Copyright (c) 2001-2002 by David Brownell&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* this file is part of ehci-hcd.c */
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * EHCI scheduled transaction support:  interrupt, iso, split iso&n; * These are called &quot;periodic&quot; transactions in the EHCI spec.&n; */
+multiline_comment|/*&n; * EHCI scheduled transaction support:  interrupt, iso, split iso&n; * These are called &quot;periodic&quot; transactions in the EHCI spec.&n; *&n; * Note that for interrupt transfers, the QH/QTD manipulation is shared&n; * with the &quot;asynchronous&quot; transaction support (control/bulk transfers).&n; * The only real difference is in how interrupt transfers are scheduled.&n; * We get some funky API restrictions from the current URB model, which&n; * works notably better for reading transfers than for writing.  (And&n; * which accordingly needs to change before it&squot;ll work inside devices,&n; * or with &quot;USB On The Go&quot; additions to USB 2.0 ...)&n; */
 multiline_comment|/*&n; * Ceiling microseconds (typical) for that many bytes at high speed&n; * ISO is a bit less, no ACK ... from USB 2.0 spec, 5.11.3 (and needed&n; * to preallocate bandwidth)&n; */
 DECL|macro|EHCI_HOST_DELAY
 mdefine_line|#define EHCI_HOST_DELAY&t;5&t;/* nsec, guess */
@@ -1424,6 +1424,10 @@ id|qh-&gt;qh_dma
 )paren
 suffix:semicolon
 )brace
+id|wmb
+(paren
+)paren
+suffix:semicolon
 id|frame
 op_add_assign
 id|period
@@ -1634,8 +1638,7 @@ id|qh_completions
 (paren
 id|ehci
 comma
-op_amp
-id|qh-&gt;qtd_list
+id|qh
 comma
 l_int|0
 )paren
@@ -3118,6 +3121,10 @@ comma
 id|itd
 )paren
 suffix:semicolon
+id|wmb
+(paren
+)paren
+suffix:semicolon
 id|usecs
 op_add_assign
 id|itd-&gt;usecs
@@ -3135,8 +3142,30 @@ id|itd_list
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* update bandwidth utilization records (for usbfs) */
-multiline_comment|/* FIXME usbcore expects per-frame average, which isn&squot;t&n;&t;&t; * most accurate model... this provides the total claim,&n;&t;&t; * and expects the average to be computed only display.&n;&t;&t; */
+multiline_comment|/* update bandwidth utilization records (for usbfs)&n;&t;&t; *&n;&t;&t; * FIXME This claims each URB queued to an endpoint, as if&n;&t;&t; * transfers were concurrent, not sequential.  So bandwidth&n;&t;&t; * typically gets double-billed ... comes from tying it to&n;&t;&t; * URBs rather than endpoints in the schedule.  Luckily we&n;&t;&t; * don&squot;t use this usbfs data for serious decision making.&n;&t;&t; */
+id|usecs
+op_div_assign
+id|urb-&gt;number_of_packets
+suffix:semicolon
+id|usecs
+op_div_assign
+id|urb-&gt;interval
+suffix:semicolon
+id|usecs
+op_rshift_assign
+l_int|3
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|usecs
+OL
+l_int|1
+)paren
+id|usecs
+op_assign
+l_int|1
+suffix:semicolon
 id|usb_claim_bandwidth
 (paren
 id|urb-&gt;dev

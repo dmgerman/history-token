@@ -647,7 +647,7 @@ id|iic_ite_unreg
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Called when the module is loaded.  This function starts the&n; * cascade of calls up through the heirarchy of i2c modules (i.e. up to the&n; *  algorithm layer and into to the core layer)&n; */
+multiline_comment|/* Called when the module is loaded.  This function starts the&n; * cascade of calls up through the hierarchy of i2c modules (i.e. up to the&n; *  algorithm layer and into to the core layer)&n; */
 DECL|function|iic_ite_init
 r_static
 r_int

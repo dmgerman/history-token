@@ -22,7 +22,7 @@ singleline_comment|// #define DEBUG
 multiline_comment|/* When BROKEN_LEVEL is defined it limits the DMA mode&n;   at boot time to its value */
 singleline_comment|// #define BROKEN_LEVEL XFER_SW_DMA_0
 DECL|macro|DISPLAY_SIS_TIMINGS
-mdefine_line|#define DISPLAY_SIS_TIMINGS
+macro_line|#undef DISPLAY_SIS_TIMINGS
 multiline_comment|/* Miscellaneaous flags */
 DECL|macro|SIS5513_LATENCY
 mdefine_line|#define SIS5513_LATENCY&t;&t;0x01

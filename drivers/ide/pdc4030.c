@@ -1,5 +1,5 @@
 multiline_comment|/*  -*- linux-c -*-&n; *  linux/drivers/ide/pdc4030.c&t;&t;Version 0.92  Jan 15, 2002&n; *&n; *  Copyright (C) 1995-2002  Linus Torvalds &amp; authors (see below)&n; */
-multiline_comment|/*&n; *  Principal Author/Maintainer:  peterd@pnd-pc.demon.co.uk&n; *&n; *  This file provides support for the second port and cache of Promise&n; *  IDE interfaces, e.g. DC4030VL, DC4030VL-1 and DC4030VL-2.&n; *&n; *  Thanks are due to Mark Lord for advice and patiently answering stupid&n; *  questions, and all those mugs^H^H^H^Hbrave souls who&squot;ve tested this,&n; *  especially Andre Hedrick.&n; *&n; *  Version 0.01&t;Initial version, #include&squot;d in ide.c rather than&n; *                      compiled separately.&n; *                      Reads use Promise commands, writes as before. Drives&n; *                      on second channel are read-only.&n; *  Version 0.02        Writes working on second channel, reads on both&n; *                      channels. Writes fail under high load. Suspect&n; *&t;&t;&t;transfers of &gt;127 sectors don&squot;t work.&n; *  Version 0.03        Brought into line with ide.c version 5.27.&n; *                      Other minor changes.&n; *  Version 0.04        Updated for ide.c version 5.30&n; *                      Changed initialization strategy&n; *  Version 0.05&t;Kernel integration.  -ml&n; *  Version 0.06&t;Ooops. Add hwgroup to direct call of ide_intr() -ml&n; *  Version 0.07&t;Added support for DC4030 variants&n; *&t;&t;&t;Secondary interface autodetection&n; *  Version 0.08&t;Renamed to pdc4030.c&n; *  Version 0.09&t;Obsolete - never released - did manual write request&n; *&t;&t;&t;splitting before max_sectors[major][minor] available.&n; *  Version 0.10&t;Updated for 2.1 series of kernels&n; *  Version 0.11&t;Updated for 2.3 series of kernels&n; *&t;&t;&t;Autodetection code added.&n; *&n; *  Version 0.90&t;Transition to BETA code. No lost/unexpected interrupts&n; *  Version 0.91&t;Bring in line with new bio code in 2.5.1&n; *  Version 0.92&t;Update for IDE driver taskfile changes&n; */
+multiline_comment|/*&n; *  Principal Author/Maintainer:  peterd@pnd-pc.demon.co.uk&n; *&n; *  This file provides support for the second port and cache of Promise&n; *  IDE interfaces, e.g. DC4030VL, DC4030VL-1 and DC4030VL-2.&n; *&n; *  Thanks are due to Mark Lord for advice and patiently answering stupid&n; *  questions, and all those mugs^H^H^H^Hbrave souls who&squot;ve tested this,&n; *  especially Andre Hedrick.&n; *&n; *  Version 0.01&t;Initial version, #include&squot;d in ide.c rather than&n; *                      compiled separately.&n; *                      Reads use Promise commands, writes as before. Drives&n; *                      on second channel are read-only.&n; *  Version 0.02        Writes working on second channel, reads on both&n; *                      channels. Writes fail under high load. Suspect&n; *&t;&t;&t;transfers of &gt;127 sectors don&squot;t work.&n; *  Version 0.03        Brought into line with ide.c version 5.27.&n; *                      Other minor changes.&n; *  Version 0.04        Updated for ide.c version 5.30&n; *                      Changed initialization strategy&n; *  Version 0.05&t;Kernel integration.  -ml&n; *  Version 0.06&t;Ooops. Add hwgroup to direct call of ide_intr() -ml&n; *  Version 0.07&t;Added support for DC4030 variants&n; *&t;&t;&t;Secondary interface autodetection&n; *  Version 0.08&t;Renamed to pdc4030.c&n; *  Version 0.09&t;Obsolete - never released - did manual write request&n; *&t;&t;&t;splitting before max_sectors[major][minor] available.&n; *  Version 0.10&t;Updated for 2.1 series of kernels&n; *  Version 0.11&t;Updated for 2.3 series of kernels&n; *&t;&t;&t;Autodetection code added.&n; *&n; *  Version 0.90&t;Transition to BETA code. No lost/unexpected interrupts&n; *  Version 0.91&t;Bring in line with new bio code in 2.5.1&n; *  Version 0.92&t;Update for IDE driver taskfile changes&n; *  Version 0.93&t;Sync with 2.5.10, minor taskfile changes&n; */
 multiline_comment|/*&n; * Once you&squot;ve compiled it in, you&squot;ll have to also enable the interface&n; * setup routine from the kernel command line, as in &n; *&n; *&t;&squot;linux ide0=dc4030&squot; or &squot;linux ide1=dc4030&squot;&n; *&n; * It should now work as a second controller also (&squot;ide1=dc4030&squot;) but only&n; * if you DON&squot;T have BIOS V4.44, which has a bug. If you have this version&n; * and EPROM programming facilities, you need to fix 4 bytes:&n; * &t;2496:&t;81&t;81&n; *&t;2497:&t;3E&t;3E&n; *&t;2498:&t;22&t;98&t;*&n; *&t;2499:&t;06&t;05&t;*&n; *&t;249A:&t;F0&t;F0&n; *&t;249B:&t;01&t;01&n; *&t;...&n; *&t;24A7:&t;81&t;81&n; *&t;24A8:&t;3E&t;3E&n; *&t;24A9:&t;22&t;98&t;*&n; *&t;24AA:&t;06&t;05&t;*&n; *&t;24AB:&t;70&t;70&n; *&t;24AC:&t;01&t;01&n; *&n; * As of January 1999, Promise Technology Inc. have finally supplied me with&n; * some technical information which has shed a glimmer of light on some of the&n; * problems I was having, especially with writes. &n; *&n; * There are still potential problems with the robustness and efficiency of&n; * this driver because I still don&squot;t understand what the card is doing with&n; * interrupts, however, it has been stable for a while with no reports of ill&n; * effects.&n; */
 DECL|macro|DEBUG_READ
 macro_line|#undef DEBUG_READ
@@ -1356,7 +1356,7 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is the polling function for waiting (nicely!) until drive stops&n; * being busy. It is invoked at the end of a write, after the previous poll&n; * has finished.&n; *&n; * Once not busy, the end request is called.&n; */
+multiline_comment|/*&n; * promise_complete_pollfunc()&n; * This is the polling function for waiting (nicely!) until drive stops&n; * being busy. It is invoked at the end of a write, after the previous poll&n; * has finished.&n; *&n; * Once not busy, the end request is called.&n; */
 DECL|function|promise_complete_pollfunc
 r_static
 id|ide_startstop_t
@@ -1374,15 +1374,12 @@ op_star
 id|rq
 )paren
 (brace
-id|ide_hwgroup_t
+r_struct
+id|ata_channel
 op_star
-id|hwgroup
+id|ch
 op_assign
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 suffix:semicolon
 r_if
 c_cond
@@ -1403,7 +1400,7 @@ c_func
 (paren
 id|jiffies
 comma
-id|hwgroup-&gt;poll_timeout
+id|ch-&gt;poll_timeout
 )paren
 )paren
 (brace
@@ -1426,7 +1423,7 @@ id|ide_started
 suffix:semicolon
 multiline_comment|/* continue polling... */
 )brace
-id|hwgroup-&gt;poll_timeout
+id|ch-&gt;poll_timeout
 op_assign
 l_int|0
 suffix:semicolon
@@ -1454,7 +1451,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|hwgroup-&gt;poll_timeout
+id|ch-&gt;poll_timeout
 op_assign
 l_int|0
 suffix:semicolon
@@ -1543,6 +1540,7 @@ c_func
 (paren
 id|rq-&gt;bio
 comma
+op_amp
 id|flags
 )paren
 op_plus
@@ -1663,15 +1661,12 @@ op_star
 id|rq
 )paren
 (brace
-id|ide_hwgroup_t
+r_struct
+id|ata_channel
 op_star
-id|hwgroup
+id|ch
 op_assign
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 suffix:semicolon
 r_if
 c_cond
@@ -1693,7 +1688,7 @@ c_func
 (paren
 id|jiffies
 comma
-id|hwgroup-&gt;poll_timeout
+id|ch-&gt;poll_timeout
 )paren
 )paren
 (brace
@@ -1716,7 +1711,7 @@ id|ide_started
 suffix:semicolon
 multiline_comment|/* continue polling... */
 )brace
-id|hwgroup-&gt;poll_timeout
+id|ch-&gt;poll_timeout
 op_assign
 l_int|0
 suffix:semicolon
@@ -1731,6 +1726,7 @@ id|drive-&gt;name
 suffix:semicolon
 r_return
 id|ide_error
+c_func
 (paren
 id|drive
 comma
@@ -1754,7 +1750,7 @@ comma
 l_int|4
 )paren
 suffix:semicolon
-id|hwgroup-&gt;poll_timeout
+id|ch-&gt;poll_timeout
 op_assign
 id|jiffies
 op_plus
@@ -1812,15 +1808,12 @@ op_star
 id|rq
 )paren
 (brace
-id|ide_hwgroup_t
+r_struct
+id|ata_channel
 op_star
-id|hwgroup
+id|ch
 op_assign
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 suffix:semicolon
 macro_line|#ifdef DEBUG_WRITE
 id|printk
@@ -1871,7 +1864,7 @@ l_int|4
 r_return
 id|ide_stopped
 suffix:semicolon
-id|hwgroup-&gt;poll_timeout
+id|ch-&gt;poll_timeout
 op_assign
 id|jiffies
 op_plus
@@ -1914,7 +1907,7 @@ id|rq-&gt;nr_sectors
 r_return
 id|ide_stopped
 suffix:semicolon
-id|hwgroup-&gt;poll_timeout
+id|ch-&gt;poll_timeout
 op_assign
 id|jiffies
 op_plus
@@ -1956,7 +1949,7 @@ id|ide_started
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * do_pdc4030_io() is called from do_rw_disk, having had the block number&n; * already set up. It issues a READ or WRITE command to the Promise&n; * controller, assuming LBA has been used to set up the block number.&n; */
+multiline_comment|/*&n; * do_pdc4030_io() is called from promise_do_request, having had the block&n; * number already set up. It issues a READ or WRITE command to the Promise&n; * controller, assuming LBA has been used to set up the block number.&n; */
 DECL|function|do_pdc4030_io
 id|ide_startstop_t
 id|do_pdc4030_io
@@ -1970,7 +1963,7 @@ comma
 r_struct
 id|ata_taskfile
 op_star
-id|task
+id|args
 comma
 r_struct
 id|request
@@ -1984,7 +1977,9 @@ op_star
 id|taskfile
 op_assign
 op_amp
-id|task-&gt;taskfile
+(paren
+id|args-&gt;taskfile
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -2323,9 +2318,9 @@ id|ide_stopped
 suffix:semicolon
 )brace
 )brace
-DECL|function|promise_rw_disk
+DECL|function|promise_do_request
 id|ide_startstop_t
-id|promise_rw_disk
+id|promise_do_request
 c_func
 (paren
 r_struct
@@ -2426,18 +2421,7 @@ id|PROMISE_READ
 suffix:colon
 id|PROMISE_WRITE
 suffix:semicolon
-id|ide_cmd_type_parser
-c_func
-(paren
-op_amp
-id|args
-)paren
-suffix:semicolon
-multiline_comment|/* We don&squot;t use the generic inerrupt handlers here? */
-id|args.prehandler
-op_assign
-l_int|NULL
-suffix:semicolon
+multiline_comment|/* We can&squot;t call ide_cmd_type_parser here, since it won&squot;t understand&n;&t;   our command, but that doesn&squot;t matter, since we don&squot;t use the&n;&t;   generic interrupt handlers either. Setup the bits of args that we&n;&t;   will need. */
 id|args.handler
 op_assign
 l_int|NULL

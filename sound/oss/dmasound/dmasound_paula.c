@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/sound/dmasound/dmasound_paula.c&n; *&n; *  Amiga `Paula&squot; DMA Sound Driver&n; *&n; *  See linux/drivers/sound/dmasound/dmasound_core.c for copyright and credits&n; */
+multiline_comment|/*&n; *  linux/drivers/sound/dmasound/dmasound_paula.c&n; *&n; *  Amiga `Paula&squot; DMA Sound Driver&n; *&n; *  See linux/drivers/sound/dmasound/dmasound_core.c for copyright and credits&n; *  prior to 28/01/2001&n; *&n; *  28/01/2001 [0.1] Iain Sandoe&n; *&t;&t;     - added versioning&n; *&t;&t;     - put in and populated the hardware_afmts field.&n; *             [0.2] - put in SNDCTL_DSP_GETCAPS value.&n; *&t;       [0.3] - put in constraint on state buffer usage.&n; *&t;       [0.4] - put in default hard/soft settings&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -11,6 +11,10 @@ macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &quot;dmasound.h&quot;
+DECL|macro|DMASOUND_PAULA_REVISION
+mdefine_line|#define DMASOUND_PAULA_REVISION 0
+DECL|macro|DMASOUND_PAULA_EDITION
+mdefine_line|#define DMASOUND_PAULA_EDITION 4
 multiline_comment|/*&n;    *&t;The minimum period for audio depends on htotal (for OCS/ECS/AGA)&n;    *&t;(Imported from arch/m68k/amiga/amisound.c)&n;    */
 r_extern
 r_volatile
@@ -278,7 +282,7 @@ id|arg
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|AmiWriteSqSetup
 c_func
 (paren
@@ -293,6 +297,9 @@ c_func
 r_char
 op_star
 id|buffer
+comma
+r_int
+id|space
 )paren
 suffix:semicolon
 multiline_comment|/*** Translations ************************************************************/
@@ -2023,7 +2030,7 @@ suffix:semicolon
 )brace
 DECL|function|AmiWriteSqSetup
 r_static
-r_void
+r_int
 id|AmiWriteSqSetup
 c_func
 (paren
@@ -2042,6 +2049,9 @@ id|write_sq_block_size_half
 op_rshift
 l_int|1
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|AmiStateInfo
 r_static
@@ -2052,6 +2062,9 @@ c_func
 r_char
 op_star
 id|buffer
+comma
+r_int
+id|space
 )paren
 (brace
 r_int
@@ -2087,11 +2100,77 @@ comma
 id|dmasound.volume_right
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+op_ge
+id|space
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;dmasound_paula: overlowed state buffer alloc.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|len
+op_assign
+id|space
+suffix:semicolon
+)brace
 r_return
 id|len
 suffix:semicolon
 )brace
 multiline_comment|/*** Machine definitions *****************************************************/
+DECL|variable|def_hard
+r_static
+id|SETTINGS
+id|def_hard
+op_assign
+(brace
+id|format
+suffix:colon
+id|AFMT_S8
+comma
+id|stereo
+suffix:colon
+l_int|0
+comma
+id|size
+suffix:colon
+l_int|8
+comma
+id|speed
+suffix:colon
+l_int|8000
+)brace
+suffix:semicolon
+DECL|variable|def_soft
+r_static
+id|SETTINGS
+id|def_soft
+op_assign
+(brace
+id|format
+suffix:colon
+id|AFMT_U8
+comma
+id|stereo
+suffix:colon
+l_int|0
+comma
+id|size
+suffix:colon
+l_int|8
+comma
+id|speed
+suffix:colon
+l_int|8000
+)brace
+suffix:semicolon
 DECL|variable|machAmiga
 r_static
 id|MACHINE
@@ -2175,6 +2254,32 @@ comma
 id|min_dsp_speed
 suffix:colon
 l_int|8000
+comma
+id|version
+suffix:colon
+(paren
+(paren
+id|DMASOUND_PAULA_REVISION
+op_lshift
+l_int|8
+)paren
+op_or
+id|DMASOUND_PAULA_EDITION
+)paren
+comma
+id|hardware_afmts
+suffix:colon
+(paren
+id|AFMT_S8
+op_or
+id|AFMT_S16_BE
+)paren
+comma
+multiline_comment|/* h&squot;ware-supported formats *only* here */
+id|capabilities
+suffix:colon
+id|DSP_CAP_BATCH
+multiline_comment|/* As per SNDCTL_DSP_GETCAPS */
 )brace
 suffix:semicolon
 multiline_comment|/*** Config &amp; Setup **********************************************************/
@@ -2225,6 +2330,14 @@ suffix:semicolon
 id|dmasound.mach
 op_assign
 id|machAmiga
+suffix:semicolon
+id|dmasound.mach.default_hard
+op_assign
+id|def_hard
+suffix:semicolon
+id|dmasound.mach.default_soft
+op_assign
+id|def_soft
 suffix:semicolon
 id|err
 op_assign

@@ -165,6 +165,10 @@ id|resno
 )paren
 (brace
 r_int
+r_int
+id|align
+suffix:semicolon
+r_int
 id|i
 suffix:semicolon
 id|type_mask
@@ -220,7 +224,7 @@ id|type_mask
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* We cannot allocate a non-prefetching resource from a pre-fetching area */
+multiline_comment|/* We cannot allocate a non-prefetching resource&n;&t;&t;   from a pre-fetching area */
 r_if
 c_cond
 (paren
@@ -238,6 +242,20 @@ id|IORESOURCE_PREFETCH
 )paren
 )paren
 r_continue
+suffix:semicolon
+multiline_comment|/* The bridge resources are special, as their&n;&t;&t;   size != alignment. Sizing routines return&n;&t;&t;   required alignment in the &quot;start&quot; field. */
+id|align
+op_assign
+(paren
+id|resno
+OL
+id|PCI_BRIDGE_RESOURCES
+)paren
+ques
+c_cond
+id|size
+suffix:colon
+id|res-&gt;start
 suffix:semicolon
 multiline_comment|/* Ok, try it out.. */
 r_if
@@ -257,7 +275,7 @@ comma
 op_minus
 l_int|1
 comma
-id|size
+id|align
 comma
 id|pcibios_align_resource
 comma
@@ -447,7 +465,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Sort resources of a given type by alignment */
+multiline_comment|/* Sort resources by alignment */
 r_void
 id|__init
 DECL|function|pdev_sort_resources
@@ -463,9 +481,6 @@ r_struct
 id|resource_list
 op_star
 id|head
-comma
-id|u32
-id|type_mask
 )paren
 (brace
 r_int
@@ -501,25 +516,7 @@ id|tmp
 suffix:semicolon
 r_int
 r_int
-id|r_size
-suffix:semicolon
-multiline_comment|/* PCI-PCI bridges may have I/O ports or&n;&t;&t;   memory on the primary bus */
-r_if
-c_cond
-(paren
-id|dev
-op_member_access_from_pointer
-r_class
-op_rshift
-l_int|8
-op_eq
-id|PCI_CLASS_BRIDGE_PCI
-op_logical_and
-id|i
-op_ge
-id|PCI_BRIDGE_RESOURCES
-)paren
-r_continue
+id|r_align
 suffix:semicolon
 id|r
 op_assign
@@ -529,7 +526,7 @@ id|dev-&gt;resource
 id|i
 )braket
 suffix:semicolon
-id|r_size
+id|r_align
 op_assign
 id|r-&gt;end
 op_minus
@@ -541,8 +538,6 @@ c_cond
 op_logical_neg
 (paren
 id|r-&gt;flags
-op_amp
-id|type_mask
 )paren
 op_logical_or
 id|r-&gt;parent
@@ -553,7 +548,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|r_size
+id|r_align
 )paren
 (brace
 id|printk
@@ -575,6 +570,21 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+id|r_align
+op_assign
+(paren
+id|i
+OL
+id|PCI_BRIDGE_RESOURCES
+)paren
+ques
+c_cond
+id|r_align
+op_plus
+l_int|1
+suffix:colon
+id|r-&gt;start
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -590,7 +600,7 @@ id|list-&gt;next
 (brace
 r_int
 r_int
-id|size
+id|align
 op_assign
 l_int|0
 suffix:semicolon
@@ -601,23 +611,49 @@ id|ln
 op_assign
 id|list-&gt;next
 suffix:semicolon
+r_int
+id|idx
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|ln
 )paren
-id|size
+(brace
+id|idx
 op_assign
+id|ln-&gt;res
+op_minus
+op_amp
+id|ln-&gt;dev-&gt;resource
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|align
+op_assign
+(paren
+id|idx
+OL
+id|PCI_BRIDGE_RESOURCES
+)paren
+ques
+c_cond
 id|ln-&gt;res-&gt;end
 op_minus
 id|ln-&gt;res-&gt;start
+op_plus
+l_int|1
+suffix:colon
+id|ln-&gt;res-&gt;start
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
-id|r_size
+id|r_align
 OG
-id|size
+id|align
 )paren
 (brace
 id|tmp
@@ -640,17 +676,13 @@ c_cond
 op_logical_neg
 id|tmp
 )paren
-(brace
-id|printk
+id|panic
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;pdev_sort_resources(): kmalloc() failed!&bslash;n&quot;
+l_string|&quot;pdev_sort_resources(): &quot;
+l_string|&quot;kmalloc() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
 id|tmp-&gt;next
 op_assign
 id|ln

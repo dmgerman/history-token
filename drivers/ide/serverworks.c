@@ -11,9 +11,16 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;ata-timing.h&quot;
 DECL|macro|DISPLAY_SVWKS_TIMINGS
-mdefine_line|#define DISPLAY_SVWKS_TIMINGS&t;1
+macro_line|#undef DISPLAY_SVWKS_TIMINGS
 DECL|macro|SVWKS_DEBUG_DRIVE_INFO
 macro_line|#undef SVWKS_DEBUG_DRIVE_INFO
+DECL|variable|svwks_revision
+r_static
+id|u8
+id|svwks_revision
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#if defined(DISPLAY_SVWKS_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -23,13 +30,6 @@ r_struct
 id|pci_dev
 op_star
 id|bmide_dev
-suffix:semicolon
-DECL|variable|svwks_revision
-r_static
-id|byte
-id|svwks_revision
-op_assign
-l_int|0
 suffix:semicolon
 r_static
 r_int

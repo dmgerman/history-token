@@ -1558,12 +1558,8 @@ id|tq_struct
 id|NCR5380_tqueue
 op_assign
 (brace
-l_int|NULL
-comma
-multiline_comment|/* next */
-l_int|0
-comma
-multiline_comment|/* sync */
+id|routine
+suffix:colon
 (paren
 r_void
 (paren
@@ -1575,10 +1571,7 @@ op_star
 )paren
 )paren
 id|NCR5380_main
-comma
-multiline_comment|/* routine, must have (void *) arg... */
-l_int|NULL
-multiline_comment|/* data */
+multiline_comment|/* must have (void *) arg... */
 )brace
 suffix:semicolon
 DECL|function|queue_main

@@ -1,12 +1,10 @@
 macro_line|#ifndef _LINUX_PAGEMAP_H
 DECL|macro|_LINUX_PAGEMAP_H
 mdefine_line|#define _LINUX_PAGEMAP_H
-multiline_comment|/*&n; * Page-mapping primitive inline functions&n; *&n; * Copyright 1995 Linus Torvalds&n; */
+multiline_comment|/*&n; * Copyright 1995 Linus Torvalds&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 multiline_comment|/*&n; * The page cache can done in larger chunks than&n; * one page, because it allows for more efficient&n; * throughput (it can then be mapped into user&n; * space in smaller chunks for same flexibility).&n; *&n; * Or rather, it _will_ be done in larger chunks.&n; */
 DECL|macro|PAGE_CACHE_SHIFT
@@ -58,9 +56,20 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * From a kernel address, get the &quot;struct page *&quot;&n; */
-DECL|macro|page_cache_entry
-mdefine_line|#define page_cache_entry(x)&t;virt_to_page(x)
+DECL|typedef|filler_t
+r_typedef
+r_int
+id|filler_t
+c_func
+(paren
+r_void
+op_star
+comma
+r_struct
+id|page
+op_star
+)paren
+suffix:semicolon
 r_extern
 r_struct
 id|page
@@ -165,6 +174,31 @@ comma
 r_int
 r_int
 id|index
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|page
+op_star
+id|read_cache_page
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_int
+r_int
+id|index
+comma
+id|filler_t
+op_star
+id|filler
+comma
+r_void
+op_star
+id|data
 )paren
 suffix:semicolon
 r_extern
@@ -287,27 +321,26 @@ id|page
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * This is exported only for wait_on_page_locked/wait_on_page_writeback.&n; * Never use this directly!&n; */
 r_extern
 r_void
-id|end_page_writeback
+id|FASTCALL
+c_func
+(paren
+id|wait_on_page_bit
 c_func
 (paren
 r_struct
 id|page
 op_star
 id|page
+comma
+r_int
+id|bit_nr
+)paren
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|___wait_on_page_locked
-c_func
-(paren
-r_struct
-id|page
-op_star
-)paren
-suffix:semicolon
+multiline_comment|/* &n; * Wait for a page to be unlocked.&n; *&n; * This must be called with the caller &quot;holding&quot; the page,&n; * ie with increased &quot;page-&gt;count&quot; so that the page won&squot;t&n; * go away during the wait..&n; */
 DECL|function|wait_on_page_locked
 r_static
 r_inline
@@ -330,24 +363,19 @@ c_func
 id|page
 )paren
 )paren
-id|___wait_on_page_locked
+id|wait_on_page_bit
 c_func
 (paren
 id|page
+comma
+id|PG_locked
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|wake_up_page
-c_func
-(paren
-r_struct
-id|page
-op_star
-)paren
-suffix:semicolon
-r_extern
+multiline_comment|/* &n; * Wait for a page to complete writeback&n; */
+DECL|function|wait_on_page_writeback
+r_static
+r_inline
 r_void
 id|wait_on_page_writeback
 c_func
@@ -357,41 +385,35 @@ id|page
 op_star
 id|page
 )paren
-suffix:semicolon
-DECL|typedef|filler_t
-r_typedef
-r_int
-id|filler_t
+(brace
+r_if
+c_cond
+(paren
+id|PageWriteback
 c_func
 (paren
-r_void
-op_star
-comma
-r_struct
 id|page
-op_star
+)paren
+)paren
+id|wait_on_page_bit
+c_func
+(paren
+id|page
+comma
+id|PG_writeback
 )paren
 suffix:semicolon
+)brace
 r_extern
-r_struct
-id|page
-op_star
-id|read_cache_page
+r_void
+id|end_page_writeback
 c_func
 (paren
 r_struct
-id|address_space
+id|page
 op_star
-comma
-r_int
-r_int
-comma
-id|filler_t
-op_star
-comma
-r_void
-op_star
+id|page
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* _LINUX_PAGEMAP_H */
 eof
