@@ -167,6 +167,7 @@ DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(format, args...)
 macro_line|#endif
 DECL|function|parse_dcc
+r_static
 r_int
 id|parse_dcc
 c_func
