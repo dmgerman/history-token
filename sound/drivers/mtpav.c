@@ -3135,16 +3135,12 @@ id|id
 op_eq
 l_int|2
 op_logical_and
-id|get_option
+id|get_option_long
 c_func
 (paren
 op_amp
 id|str
 comma
-(paren
-r_int
-op_star
-)paren
 op_amp
 id|port
 )paren

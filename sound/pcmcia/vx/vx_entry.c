@@ -4,6 +4,24 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;vxpocket.h&quot;
 macro_line|#include &lt;pcmcia/ciscode.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Takashi Iwai &lt;tiwai@suse.de&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Common routines for Digigram PCMCIA VX drivers&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * prototypes&n; */
 r_static
 r_void

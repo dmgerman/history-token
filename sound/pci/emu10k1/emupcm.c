@@ -4956,6 +4956,11 @@ id|MICBS
 suffix:semicolon
 id|epcm-&gt;capture_idx_reg
 op_assign
+id|emu-&gt;audigy
+ques
+c_cond
+id|A_MICIDX
+suffix:colon
 id|MICIDX
 suffix:semicolon
 id|substream-&gt;runtime-&gt;private_data
