@@ -730,7 +730,7 @@ macro_line|#endif /* COLDFIRE_NE2000_FUNCS */
 macro_line|#endif /* NE2000_OFFOFFSET */
 multiline_comment|/****************************************************************************/
 macro_line|#ifdef COLDFIRE_NE2000_FUNCS
-multiline_comment|/*&n; *&t;Lastly the interrupt set up code...&n; *&t;Minor diferences between the different board types.&n; */
+multiline_comment|/*&n; *&t;Lastly the interrupt set up code...&n; *&t;Minor differences between the different board types.&n; */
 macro_line|#if defined(CONFIG_M5206) &amp;&amp; defined(CONFIG_ARNEWSH)
 DECL|function|ne2000_irqsetup
 r_void
