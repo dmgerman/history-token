@@ -353,7 +353,7 @@ l_int|80
 )braket
 suffix:semicolon
 DECL|member|references
-r_int
+id|atomic_t
 id|references
 suffix:semicolon
 DECL|member|ids
@@ -830,6 +830,11 @@ DECL|member|node
 r_struct
 id|list_head
 id|node
+suffix:semicolon
+DECL|member|g_list
+r_struct
+id|list_head
+id|g_list
 suffix:semicolon
 DECL|member|status
 r_struct
