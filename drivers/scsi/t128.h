@@ -139,23 +139,23 @@ mdefine_line|#define CAN_QUEUE 32
 macro_line|#endif
 macro_line|#ifndef HOSTS_C
 DECL|macro|NCR5380_implementation_fields
-mdefine_line|#define NCR5380_implementation_fields &bslash;&n;    unsigned long base
+mdefine_line|#define NCR5380_implementation_fields &bslash;&n;    void __iomem *base
 DECL|macro|NCR5380_local_declare
-mdefine_line|#define NCR5380_local_declare() &bslash;&n;    unsigned long base
+mdefine_line|#define NCR5380_local_declare() &bslash;&n;    void __iomem *base
 DECL|macro|NCR5380_setup
-mdefine_line|#define NCR5380_setup(instance) &bslash;&n;    base = (instance)-&gt;base
+mdefine_line|#define NCR5380_setup(instance) &bslash;&n;    base = ((struct NCR5380_hostdata *)(instance-&gt;hostdata))-&gt;base
 DECL|macro|T128_address
 mdefine_line|#define T128_address(reg) (base + T_5380_OFFSET + ((reg) * 0x20))
 macro_line|#if !(TDEBUG &amp; TDEBUG_TRANSFER) 
 DECL|macro|NCR5380_read
-mdefine_line|#define NCR5380_read(reg) isa_readb(T128_address(reg))
+mdefine_line|#define NCR5380_read(reg) readb(T128_address(reg))
 DECL|macro|NCR5380_write
-mdefine_line|#define NCR5380_write(reg, value) isa_writeb((value),(T128_address(reg)))
+mdefine_line|#define NCR5380_write(reg, value) writeb((value),(T128_address(reg)))
 macro_line|#else
 DECL|macro|NCR5380_read
-mdefine_line|#define NCR5380_read(reg)&t;&t;&t;&t;&t;&t;&bslash;&n;    (((unsigned char) printk(&quot;scsi%d : read register %d at address %08x&bslash;n&quot;&bslash;&n;    , instance-&gt;hostno, (reg), T128_address(reg))), isa_readb(T128_address(reg)))
+mdefine_line|#define NCR5380_read(reg)&t;&t;&t;&t;&t;&t;&bslash;&n;    (((unsigned char) printk(&quot;scsi%d : read register %d at address %08x&bslash;n&quot;&bslash;&n;    , instance-&gt;hostno, (reg), T128_address(reg))), readb(T128_address(reg)))
 DECL|macro|NCR5380_write
-mdefine_line|#define NCR5380_write(reg, value) {&t;&t;&t;&t;&t;&bslash;&n;    printk(&quot;scsi%d : write %02x to register %d at address %08x&bslash;n&quot;, &t;&bslash;&n;&t;    instance-&gt;hostno, (value), (reg), T128_address(reg));&t;&bslash;&n;    isa_writeb((value), (T128_address(reg)));&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define NCR5380_write(reg, value) {&t;&t;&t;&t;&t;&bslash;&n;    printk(&quot;scsi%d : write %02x to register %d at address %08x&bslash;n&quot;, &t;&bslash;&n;&t;    instance-&gt;hostno, (value), (reg), T128_address(reg));&t;&bslash;&n;    writeb((value), (T128_address(reg)));&t;&t;&t;&t;&bslash;&n;}
 macro_line|#endif
 DECL|macro|NCR5380_intr
 mdefine_line|#define NCR5380_intr t128_intr

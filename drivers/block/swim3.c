@@ -4262,14 +4262,11 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|param
 comma
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|floppy_type
 comma

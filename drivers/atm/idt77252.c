@@ -15611,10 +15611,6 @@ id|card-&gt;membase
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|card-&gt;membase
 )paren
 suffix:semicolon
@@ -18979,10 +18975,6 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|card-&gt;membase
 )paren
 suffix:semicolon
