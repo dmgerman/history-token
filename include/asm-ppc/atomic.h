@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.atomic.h 1.15 10/28/01 10:37:22 trini&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * PowerPC atomic operations&n; */
 macro_line|#ifndef _ASM_PPC_ATOMIC_H_ 
 DECL|macro|_ASM_PPC_ATOMIC_H_
@@ -37,27 +37,20 @@ op_star
 id|addr
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|atomic_set_mask
-c_func
-(paren
-r_int
-r_int
-id|mask
-comma
-r_int
-r_int
-op_star
-id|addr
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|SMP_ISYNC
 mdefine_line|#define SMP_ISYNC&t;&quot;&bslash;n&bslash;tisync&quot;
 macro_line|#else
 DECL|macro|SMP_ISYNC
 mdefine_line|#define SMP_ISYNC
+macro_line|#endif
+multiline_comment|/* Erratum #77 on the 405 means we need a sync or dcbt before every stwcx.&n; * The old ATOMIC_SYNC_FIX covered some but not all of this.&n; */
+macro_line|#ifdef CONFIG_IBM405_ERR77
+DECL|macro|PPC405_ERR77
+mdefine_line|#define PPC405_ERR77(ra,rb)&t;&quot;dcbt &quot; #ra &quot;,&quot; #rb &quot;;&quot;
+macro_line|#else
+DECL|macro|PPC405_ERR77
+mdefine_line|#define PPC405_ERR77(ra,rb)
 macro_line|#endif
 DECL|function|atomic_add
 r_static
@@ -81,7 +74,16 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;1:&t;lwarx&t;%0,0,%3&t;&t;# atomic_add&bslash;n&bslash;&n;&t;add&t;%0,%2,%0&bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%3&bslash;n&bslash;&n;&t;bne-&t;1b&quot;
+l_string|&quot;1:&t;lwarx&t;%0,0,%3&t;&t;# atomic_add&bslash;n&bslash;&n;&t;add&t;%0,%2,%0&bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|3
+)paren
+l_string|&quot;&t;stwcx.&t;%0,0,%3 &bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -135,7 +137,16 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;1:&t;lwarx&t;%0,0,%2&t;&t;# atomic_add_return&bslash;n&bslash;&n;&t;add&t;%0,%1,%0&bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%2&bslash;n&bslash;&n;&t;bne-&t;1b&quot;
+l_string|&quot;1:&t;lwarx&t;%0,0,%2&t;&t;# atomic_add_return&bslash;n&bslash;&n;&t;add&t;%0,%1,%0&bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|2
+)paren
+l_string|&quot;&t;stwcx.&t;%0,0,%2 &bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 id|SMP_ISYNC
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -185,7 +196,16 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;1:&t;lwarx&t;%0,0,%3&t;&t;# atomic_sub&bslash;n&bslash;&n;&t;subf&t;%0,%2,%0&bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%3&bslash;n&bslash;&n;&t;bne-&t;1b&quot;
+l_string|&quot;1:&t;lwarx&t;%0,0,%3&t;&t;# atomic_sub&bslash;n&bslash;&n;&t;subf&t;%0,%2,%0&bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|3
+)paren
+l_string|&quot;&t;stwcx.&t;%0,0,%3 &bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -239,7 +259,16 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;1:&t;lwarx&t;%0,0,%2&t;&t;# atomic_sub_return&bslash;n&bslash;&n;&t;subf&t;%0,%1,%0&bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%2&bslash;n&bslash;&n;&t;bne-&t;1b&quot;
+l_string|&quot;1:&t;lwarx&t;%0,0,%2&t;&t;# atomic_sub_return&bslash;n&bslash;&n;&t;subf&t;%0,%1,%0&bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|2
+)paren
+l_string|&quot;&t;stwcx.&t;%0,0,%2 &bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 id|SMP_ISYNC
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -286,7 +315,16 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;1:&t;lwarx&t;%0,0,%2&t;&t;# atomic_inc&bslash;n&bslash;&n;&t;addic&t;%0,%0,1&bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%2&bslash;n&bslash;&n;&t;bne-&t;1b&quot;
+l_string|&quot;1:&t;lwarx&t;%0,0,%2&t;&t;# atomic_inc&bslash;n&bslash;&n;&t;addic&t;%0,%0,1&bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|2
+)paren
+l_string|&quot;&t;stwcx.&t;%0,0,%2 &bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -332,7 +370,16 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;1:&t;lwarx&t;%0,0,%1&t;&t;# atomic_inc_return&bslash;n&bslash;&n;&t;addic&t;%0,%0,1&bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%1&bslash;n&bslash;&n;&t;bne-&t;1b&quot;
+l_string|&quot;1:&t;lwarx&t;%0,0,%1&t;&t;# atomic_inc_return&bslash;n&bslash;&n;&t;addic&t;%0,%0,1&bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|1
+)paren
+l_string|&quot;&t;stwcx.&t;%0,0,%1 &bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 id|SMP_ISYNC
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -374,7 +421,17 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;1:&t;lwarx&t;%0,0,%2&t;&t;# atomic_dec&bslash;n&bslash;&n;&t;addic&t;%0,%0,-1&bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%2&bslash;n&bslash;&n;&t;bne-&t;1b&quot;
+l_string|&quot;1:&t;lwarx&t;%0,0,%2&t;&t;# atomic_dec&bslash;n&bslash;&n;&t;addic&t;%0,%0,-1&bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|2
+)paren
+"&bslash;"
+l_string|&quot;&t;stwcx.&t;%0,0,%2&bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -420,7 +477,16 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;1:&t;lwarx&t;%0,0,%1&t;&t;# atomic_dec_return&bslash;n&bslash;&n;&t;addic&t;%0,%0,-1&bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%1&bslash;n&bslash;&n;&t;bne-&t;1b&quot;
+l_string|&quot;1:&t;lwarx&t;%0,0,%1&t;&t;# atomic_dec_return&bslash;n&bslash;&n;&t;addic&t;%0,%0,-1&bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|1
+)paren
+l_string|&quot;&t;stwcx.&t;%0,0,%1&bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 id|SMP_ISYNC
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -467,7 +533,16 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;1:&t;lwarx&t;%0,0,%1&t;&t;# atomic_dec_if_positive&bslash;n&bslash;&n;&t;addic.&t;%0,%0,-1&bslash;n&bslash;&n;&t;blt-&t;2f&bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%1&bslash;n&bslash;&n;&t;bne-&t;1b&quot;
+l_string|&quot;1:&t;lwarx&t;%0,0,%1&t;&t;# atomic_dec_if_positive&bslash;n&bslash;&n;&t;addic.&t;%0,%0,-1&bslash;n&bslash;&n;&t;blt-&t;2f&bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|1
+)paren
+l_string|&quot;&t;stwcx.&t;%0,0,%1&bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 id|SMP_ISYNC
 l_string|&quot;&bslash;n&bslash;&n;2:&quot;
 suffix:colon

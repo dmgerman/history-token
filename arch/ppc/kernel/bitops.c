@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.bitops.c 1.7 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -59,7 +59,16 @@ id|__volatile__
 c_func
 (paren
 id|SMP_WMB
-l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%3 &bslash;n&bslash;&n;&t;or&t;%0,%0,%2 &bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%3 &bslash;n&bslash;&n;&t;bne&t;1b&quot;
+l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%3 &bslash;n&bslash;&n;&t;or&t;%0,%0,%2 &bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|3
+)paren
+l_string|&quot;&t;stwcx.&t;%0,0,%3 &bslash;n&bslash;&n;&t;bne&t;1b&quot;
 id|SMP_MB
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -148,7 +157,16 @@ id|__volatile__
 c_func
 (paren
 id|SMP_WMB
-l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%3 &bslash;n&bslash;&n;&t;andc&t;%0,%0,%2 &bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%3 &bslash;n&bslash;&n;&t;bne&t;1b&quot;
+l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%3 &bslash;n&bslash;&n;&t;andc&t;%0,%0,%2 &bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|3
+)paren
+l_string|&quot;&t;stwcx.&t;%0,0,%3 &bslash;n&bslash;&n;&t;bne&t;1b&quot;
 id|SMP_MB
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -237,7 +255,16 @@ id|__volatile__
 c_func
 (paren
 id|SMP_WMB
-l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%3 &bslash;n&bslash;&n;&t;xor&t;%0,%0,%2 &bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%3 &bslash;n&bslash;&n;&t;bne&t;1b&quot;
+l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%3 &bslash;n&bslash;&n;&t;xor&t;%0,%0,%2 &bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|3
+)paren
+l_string|&quot;&t;stwcx.&t;%0,0,%3 &bslash;n&bslash;&n;&t;bne&t;1b&quot;
 id|SMP_MB
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -330,7 +357,16 @@ id|__volatile__
 c_func
 (paren
 id|SMP_WMB
-l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%4 &bslash;n&bslash;&n;&t;or&t;%1,%0,%3 &bslash;n&bslash;&n;&t;stwcx.&t;%1,0,%4 &bslash;n&bslash;&n;&t;bne&t;1b&quot;
+l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%4 &bslash;n&bslash;&n;&t;or&t;%1,%0,%3 &bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|4
+)paren
+l_string|&quot;&t;stwcx.&t;%1,0,%4 &bslash;n&bslash;&n;&t;bne&t;1b&quot;
 id|SMP_MB
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -437,7 +473,16 @@ id|__volatile__
 c_func
 (paren
 id|SMP_WMB
-l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%4 &bslash;n&bslash;&n;&t;andc&t;%1,%0,%3 &bslash;n&bslash;&n;&t;stwcx.&t;%1,0,%4 &bslash;n&bslash;&n;&t;bne&t;1b&quot;
+l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%4 &bslash;n&bslash;&n;&t;andc&t;%1,%0,%3 &bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|4
+)paren
+l_string|&quot;&t;stwcx.&t;%1,0,%4 &bslash;n&bslash;&n;&t;bne&t;1b&quot;
 id|SMP_MB
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -544,7 +589,16 @@ id|__volatile__
 c_func
 (paren
 id|SMP_WMB
-l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%4 &bslash;n&bslash;&n;&t;xor&t;%1,%0,%3 &bslash;n&bslash;&n;&t;stwcx.&t;%1,0,%4 &bslash;n&bslash;&n;&t;bne&t;1b&quot;
+l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%4 &bslash;n&bslash;&n;&t;xor&t;%1,%0,%3 &bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|4
+)paren
+l_string|&quot;&t;stwcx.&t;%1,0,%4 &bslash;n&bslash;&n;&t;bne&t;1b&quot;
 id|SMP_MB
 suffix:colon
 l_string|&quot;=&amp;r&quot;

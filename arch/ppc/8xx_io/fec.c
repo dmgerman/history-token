@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.fec.c 1.20 10/11/01 11:55:47 trini&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Fast Ethernet Controller (FEC) driver for Motorola MPC8xx.&n; * Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * This version of the driver is specific to the FADS implementation,&n; * since the board contains control registers external to the processor&n; * for the control of the LevelOne LXT970 transceiver.  The MPC860T manual&n; * describes connections using the internal parallel port I/O, which&n; * is basically all of Port D.&n; *&n; * Includes support for the following PHYs: QS6612, LXT970, LXT971/2.&n; *&n; * Right now, I am very wasteful with the buffers.  I allocate memory&n; * pages and then divide them into 2K frame buffers.  This way I know I&n; * have buffers large enough to hold one frame within one buffer descriptor.&n; * Once I get this working, I will use 64 or 128 byte CPM buffers, which&n; * will be much more memory efficient and will easily handle lots of&n; * small packets.&n; *&n; * Much better multiple PHY support by Magnus Damm.&n; * Copyright (c) 2000 Ericsson Radio Systems AB.&n; *&n; * Make use of MII for PHY control configurable.&n; * Some fixes.&n; * Copyright (c) 2000 Wolfgang Denk, DENX Software Engineering.&n; */
 multiline_comment|/* List of PHYs we wish to support.&n;*/
 DECL|macro|CONFIG_FEC_LXT970
@@ -236,10 +236,15 @@ op_star
 id|dirty_tx
 suffix:semicolon
 multiline_comment|/* The ring entries to be free()ed. */
-DECL|member|sccp
-id|scc_t
+multiline_comment|/* Virtual addresses for the receive buffers because we can&squot;t&n;&t; * do a __va() on them anymore.&n;&t; */
+DECL|member|rx_vaddr
+r_int
+r_char
 op_star
-id|sccp
+id|rx_vaddr
+(braket
+id|RX_RING_SIZE
+)braket
 suffix:semicolon
 DECL|member|stats
 r_struct
@@ -2049,15 +2054,12 @@ id|pkt_len
 suffix:semicolon
 id|data
 op_assign
-(paren
-id|__u8
-op_star
-)paren
-id|__va
-c_func
-(paren
-id|bdp-&gt;cbd_bufaddr
-)paren
+id|fep-&gt;rx_vaddr
+(braket
+id|bdp
+op_minus
+id|fep-&gt;rx_bd_base
+)braket
 suffix:semicolon
 macro_line|#ifdef CONFIG_FEC_PACKETHOOK
 multiline_comment|/* Packet hook ... */
@@ -2181,16 +2183,7 @@ c_func
 (paren
 id|skb
 comma
-(paren
-r_int
-r_char
-op_star
-)paren
-id|__va
-c_func
-(paren
-id|bdp-&gt;cbd_bufaddr
-)paren
+id|data
 comma
 id|pkt_len
 op_minus
@@ -5164,6 +5157,8 @@ r_int
 id|i
 comma
 id|j
+comma
+id|k
 suffix:semicolon
 r_int
 r_char
@@ -5172,14 +5167,13 @@ id|eap
 comma
 op_star
 id|iap
+comma
+op_star
+id|ba
 suffix:semicolon
 r_int
 r_int
 id|mem_addr
-suffix:semicolon
-id|pte_t
-op_star
-id|pte
 suffix:semicolon
 r_volatile
 id|cbd_t
@@ -5458,45 +5452,20 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|mem_addr
-op_assign
-id|__get_free_page
-c_func
-(paren
-id|GFP_KERNEL
-)paren
-suffix:semicolon
 id|cbd_base
 op_assign
 (paren
 id|cbd_t
 op_star
 )paren
-id|mem_addr
-suffix:semicolon
-multiline_comment|/* Make it uncached.&n;&t;*/
-id|pte
-op_assign
-id|va_to_pte
+id|consistent_alloc
 c_func
 (paren
-id|mem_addr
-)paren
-suffix:semicolon
-id|pte_val
-c_func
-(paren
-op_star
-id|pte
-)paren
-op_or_assign
-id|_PAGE_NO_CACHE
-suffix:semicolon
-id|flush_tlb_page
-c_func
-(paren
-id|init_mm.mmap
+id|GFP_KERNEL
 comma
+id|PAGE_SIZE
+comma
+op_amp
 id|mem_addr
 )paren
 suffix:semicolon
@@ -5522,6 +5491,10 @@ id|bdp
 op_assign
 id|fep-&gt;rx_bd_base
 suffix:semicolon
+id|k
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5538,37 +5511,21 @@ op_increment
 )paren
 (brace
 multiline_comment|/* Allocate a page.&n;&t;&t;*/
-id|mem_addr
+id|ba
 op_assign
-id|__get_free_page
+(paren
+r_int
+r_char
+op_star
+)paren
+id|consistent_alloc
 c_func
 (paren
 id|GFP_KERNEL
-)paren
-suffix:semicolon
-multiline_comment|/* Make it uncached.&n;&t;&t;*/
-id|pte
-op_assign
-id|va_to_pte
-c_func
-(paren
-id|mem_addr
-)paren
-suffix:semicolon
-id|pte_val
-c_func
-(paren
-op_star
-id|pte
-)paren
-op_or_assign
-id|_PAGE_NO_CACHE
-suffix:semicolon
-id|flush_tlb_page
-c_func
-(paren
-id|init_mm.mmap
 comma
+id|PAGE_SIZE
+comma
+op_amp
 id|mem_addr
 )paren
 suffix:semicolon
@@ -5594,13 +5551,21 @@ id|BD_ENET_RX_EMPTY
 suffix:semicolon
 id|bdp-&gt;cbd_bufaddr
 op_assign
-id|__pa
-c_func
-(paren
 id|mem_addr
-)paren
+suffix:semicolon
+id|fep-&gt;rx_vaddr
+(braket
+id|k
+op_increment
+)braket
+op_assign
+id|ba
 suffix:semicolon
 id|mem_addr
+op_add_assign
+id|FEC_ENET_RX_FRSIZE
+suffix:semicolon
+id|ba
 op_add_assign
 id|FEC_ENET_RX_FRSIZE
 suffix:semicolon
@@ -6150,7 +6115,7 @@ suffix:semicolon
 multiline_comment|/* Set receive and transmit descriptor base.&n;&t;*/
 id|fecp-&gt;fec_r_des_start
 op_assign
-id|__pa
+id|iopa
 c_func
 (paren
 (paren
@@ -6163,7 +6128,7 @@ id|fep-&gt;rx_bd_base
 suffix:semicolon
 id|fecp-&gt;fec_x_des_start
 op_assign
-id|__pa
+id|iopa
 c_func
 (paren
 (paren

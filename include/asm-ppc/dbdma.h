@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.dbdma.h 1.5 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Definitions for using the Apple Descriptor-Based DMA controller&n; * in Power Macintosh computers.&n; *&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _ASM_DBDMA_H_
@@ -213,6 +213,9 @@ mdefine_line|#define WAIT_ALWAYS&t;3&t;/* always wait */
 multiline_comment|/* Align an address for a DBDMA command structure */
 DECL|macro|DBDMA_ALIGN
 mdefine_line|#define DBDMA_ALIGN(x)&t;(((unsigned)(x) + sizeof(struct dbdma_cmd) - 1) &bslash;&n;&t;&t;&t; &amp; -sizeof(struct dbdma_cmd))
+multiline_comment|/* Useful macros */
+DECL|macro|DBDMA_DO_STOP
+mdefine_line|#define DBDMA_DO_STOP(regs) do {&t;&t;&t;&t;&bslash;&n;&t;out_le32(&amp;((regs)-&gt;control), (RUN|FLUSH)&lt;&lt;16);&t;&t;&bslash;&n;&t;while(in_le32(&amp;((regs)-&gt;status)) &amp; (ACTIVE|FLUSH))&t;&bslash;&n;&t;&t;;&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
 macro_line|#endif /* _ASM_DBDMA_H_ */
 macro_line|#endif /* __KERNEL__ */
 eof

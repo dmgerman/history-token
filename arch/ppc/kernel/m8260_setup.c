@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.m8260_setup.c 1.30 11/13/01 21:26:07 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  Modified for MBX using prep/chrp/pmac functions by Dan (dmalek@jlc.net)&n; *  Further modified for generic 8xx and 8260 by Dan.&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -30,6 +30,7 @@ macro_line|#include &lt;asm/ide.h&gt;
 macro_line|#include &lt;asm/mpc8260.h&gt;
 macro_line|#include &lt;asm/immap_8260.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
+macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &quot;ppc8260_pic.h&quot;
 r_static
@@ -200,10 +201,37 @@ r_int
 id|time
 )paren
 (brace
+macro_line|#ifdef CONFIG_TQM8260
+(paren
+(paren
+id|immap_t
+op_star
+)paren
+id|IMAP_ADDR
+)paren
+op_member_access_from_pointer
+id|im_sit.sit_tmcnt
+op_assign
+id|time
+suffix:semicolon
+(paren
+(paren
+id|immap_t
+op_star
+)paren
+id|IMAP_ADDR
+)paren
+op_member_access_from_pointer
+id|im_sit.sit_tmcntsc
+op_assign
+l_int|0x3
+suffix:semicolon
+macro_line|#else
 id|rtc_time
 op_assign
 id|time
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -218,6 +246,19 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_TQM8260
+r_return
+(paren
+(paren
+id|immap_t
+op_star
+)paren
+id|IMAP_ADDR
+)paren
+op_member_access_from_pointer
+id|im_sit.sit_tmcnt
+suffix:semicolon
+macro_line|#else
 multiline_comment|/* Get time from the RTC.&n;&t;*/
 r_return
 (paren
@@ -226,6 +267,7 @@ r_int
 )paren
 id|rtc_time
 suffix:semicolon
+macro_line|#endif
 )brace
 r_static
 r_void
@@ -255,10 +297,17 @@ id|uint
 id|startaddr
 suffix:semicolon
 multiline_comment|/* Most boot roms have a warmstart as the second instruction&n;&t; * of the reset vector.  If that doesn&squot;t work for you, change this&n;&t; * or the reboot program to send a proper address.&n;&t; */
+macro_line|#ifdef CONFIG_TQM8260
+id|startaddr
+op_assign
+l_int|0x40000104
+suffix:semicolon
+macro_line|#else
 id|startaddr
 op_assign
 l_int|0xff000104
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -567,6 +616,15 @@ r_int
 id|r7
 )paren
 (brace
+id|parse_bootinfo
+c_func
+(paren
+id|find_bootinfo
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.mem_pieces.c 1.5 05/17/01 18:14:23 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; *    Copyright (c) 1996 Paul Mackerras &lt;paulus@cs.anu.edu.au&gt;&n; *      Changes to accomodate Power Macintoshes.&n; *    Cort Dougan &lt;cort@cs.nmt.edu&gt;&n; *      Rewrites.&n; *    Grant Erickson &lt;grant@lcse.umn.edu&gt;&n; *      General rework and split from mm/init.c.&n; *&n; *    Module name: mem_pieces.c&n; *&n; *    Description:&n; *      Routines and data structures for manipulating and representing&n; *      phyiscal memory extents (i.e. address/length pairs).&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -125,6 +125,10 @@ l_int|1
 )paren
 suffix:semicolon
 r_return
+(paren
+r_void
+op_star
+)paren
 id|__va
 c_func
 (paren

@@ -1,8 +1,15 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ofcommon.c 1.1 07/27/01 20:24:18 trini&n; *&n; * Copyright (C) Paul Mackerras 1997.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; *&n; * Copyright (C) Paul Mackerras 1997.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &quot;zlib.h&quot;
 macro_line|#include &quot;nonstdio.h&quot;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+multiline_comment|/* Information from the linker */
+r_extern
+r_char
+id|__sysmap_begin
+comma
+id|__sysmap_end
+suffix:semicolon
 r_extern
 r_int
 id|strcmp
@@ -621,7 +628,7 @@ id|s
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Make a bi_rec in OF.  We need to be passed a name for BI_BOOTLOADER_ID, &n; * a machine type for BI_MACHTYPE, and the location where the end of the&n; * bootloader is (PROG_START + PROG_SIZE)&n; */
+multiline_comment|/* Make a bi_rec in OF.  We need to be passed a name for BI_BOOTLOADER_ID,&n; * a machine type for BI_MACHTYPE, and the location where the end of the&n; * bootloader is (PROG_START + PROG_SIZE)&n; */
 DECL|function|make_bi_recs
 r_void
 id|make_bi_recs
@@ -644,10 +651,35 @@ r_int
 id|progend
 )paren
 (brace
+r_int
+r_int
+id|sysmap_size
+suffix:semicolon
 r_struct
 id|bi_record
 op_star
 id|rec
+suffix:semicolon
+multiline_comment|/* FIgure out the size of a possible System.map we&squot;re going to&n;&t; * pass along.&n;&t; * */
+id|sysmap_size
+op_assign
+(paren
+r_int
+r_int
+)paren
+(paren
+op_amp
+id|__sysmap_end
+)paren
+op_minus
+(paren
+r_int
+r_int
+)paren
+(paren
+op_amp
+id|__sysmap_begin
+)paren
 suffix:semicolon
 multiline_comment|/* leave a 1MB gap then align to the next 1MB boundary */
 id|addr
@@ -828,7 +860,12 @@ op_plus
 id|rec-&gt;size
 )paren
 suffix:semicolon
-macro_line|#ifdef SYSMAP_OFFSET
+r_if
+c_cond
+(paren
+id|sysmap_size
+)paren
+(brace
 id|rec-&gt;tag
 op_assign
 id|BI_SYSMAP
@@ -838,14 +875,21 @@ id|rec-&gt;data
 l_int|0
 )braket
 op_assign
-id|SYSMAP_OFFSET
+(paren
+r_int
+r_int
+)paren
+(paren
+op_amp
+id|__sysmap_begin
+)paren
 suffix:semicolon
 id|rec-&gt;data
 (braket
 l_int|1
 )braket
 op_assign
-id|SYSMAP_SIZE
+id|sysmap_size
 suffix:semicolon
 id|rec-&gt;size
 op_assign
@@ -880,7 +924,7 @@ op_plus
 id|rec-&gt;size
 )paren
 suffix:semicolon
-macro_line|#endif /* SYSMAP_OFFSET */
+)brace
 id|rec-&gt;tag
 op_assign
 id|BI_LAST

@@ -1,8 +1,10 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ohare.h 1.5 05/17/01 18:14:25 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * ohare.h: definitions for using the &quot;O&squot;Hare&quot; I/O controller chip.&n; *&n; * Copyright (C) 1997 Paul Mackerras.&n; * &n; * BenH: Changed to match those of heathrow (but not all of them). Please&n; *       check if I didn&squot;t break anything (especially the media bay).&n; */
 multiline_comment|/* offset from ohare base for feature control register */
-DECL|macro|OHARE_FEATURE_REG
-mdefine_line|#define OHARE_FEATURE_REG&t;0x38
+DECL|macro|OHARE_MBCR
+mdefine_line|#define OHARE_MBCR&t;0x34
+DECL|macro|OHARE_FCR
+mdefine_line|#define OHARE_FCR&t;0x38
 multiline_comment|/*&n; * Bits in feature control register.&n; * These were mostly derived by experiment on a powerbook 3400&n; * and may differ for other machines.&n; */
 DECL|macro|OH_SCC_RESET
 mdefine_line|#define OH_SCC_RESET&t;&t;1
@@ -18,6 +20,8 @@ DECL|macro|OH_IDE0_ENABLE
 mdefine_line|#define OH_IDE0_ENABLE&t;&t;0x20
 DECL|macro|OH_IDE0_RESET_N
 mdefine_line|#define OH_IDE0_RESET_N&t;&t;0x40&t;/* a guess */
+DECL|macro|OH_BAY_DEV_MASK
+mdefine_line|#define OH_BAY_DEV_MASK&t;&t;0x1c
 DECL|macro|OH_BAY_RESET_N
 mdefine_line|#define OH_BAY_RESET_N&t;&t;0x80
 DECL|macro|OH_IOBUS_ENABLE

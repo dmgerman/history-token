@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.softemu8xx.c 1.8 05/17/01 18:14:22 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Software emulation of some PPC instructions for the 8xx core.&n; *&n; * Copyright (C) 1998 Dan Malek (dmalek@jlc.net)&n; *&n; * Software floating emuation for the MPC8xx processor.  I did this mostly&n; * because it was easier than trying to get the libraries compiled for&n; * software floating point.  The goal is still to get the libraries done,&n; * but I lost patience and needed some hacks to at least get init and&n; * shells running.  The first problem is the setjmp/longjmp that save&n; * and restore the floating point registers.&n; *&n; * For this emulation, our working registers are found on the register&n; * save area.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -16,6 +16,36 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+r_extern
+r_void
+id|print_8xx_pte
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|get_8xx_pte
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
 multiline_comment|/* Eventually we may need a look-up table, but this works for now.&n;*/
 DECL|macro|LFS
 mdefine_line|#define LFS&t;48
@@ -409,7 +439,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;Bad emulation %s/%d&bslash;n&quot;
-l_string|&quot; NIP: %08x instruction: %08x opcode: %x &quot;
+l_string|&quot; NIP: %08lx instruction: %08x opcode: %x &quot;
 l_string|&quot;A: %x B: %x C: %x code: %x rc: %x&bslash;n&quot;
 comma
 id|current-&gt;comm

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.indirect_pci.c 1.10 09/08/01 15:47:42 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Support for indirect PCI bridges.&n; *&n; * Copyright (C) 1998 Gabriel Paubert.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -10,13 +10,12 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &quot;pci.h&quot;
 DECL|macro|cfg_read
 mdefine_line|#define cfg_read(val, addr, type, op)&t;*val = op((type)(addr))
 DECL|macro|cfg_write
 mdefine_line|#define cfg_write(val, addr, type, op)&t;op((type *)(addr), (val))
 DECL|macro|INDIRECT_PCI_OP
-mdefine_line|#define INDIRECT_PCI_OP(rw, size, type, op, mask)&t;&t;&t; &bslash;&n;static int&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;indirect_##rw##_config_##size(struct pci_dev *dev, int offset, type val) &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;struct pci_controller *hose = dev-&gt;sysdata;&t;&t;&t; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;out_be32(hose-&gt;cfg_addr, &t;&t;&t;&t;&t; &bslash;&n;&t;&t; ((offset &amp; 0xfc) &lt;&lt; 24) | (dev-&gt;devfn &lt;&lt; 16)&t;&t; &bslash;&n;&t;&t; | (dev-&gt;bus-&gt;number &lt;&lt; 8) | 0x80);&t;&t;&t; &bslash;&n;&t;cfg_##rw(val, hose-&gt;cfg_data + (offset &amp; mask), type, op);&t; &bslash;&n;&t;return PCIBIOS_SUCCESSFUL;    &t;&t;&t;&t;&t; &bslash;&n;}
+mdefine_line|#define INDIRECT_PCI_OP(rw, size, type, op, mask)&t;&t;&t; &bslash;&n;static int&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;indirect_##rw##_config_##size(struct pci_dev *dev, int offset, type val) &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;struct pci_controller *hose = dev-&gt;sysdata;&t;&t;&t; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;if (ppc_md.pci_exclude_device)&t;&t;&t;&t;&t; &bslash;&n;&t;&t;if (ppc_md.pci_exclude_device(dev-&gt;bus-&gt;number, dev-&gt;devfn)) &bslash;&n;&t;&t;&t;return PCIBIOS_DEVICE_NOT_FOUND;&t;&t; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;out_be32(hose-&gt;cfg_addr, &t;&t;&t;&t;&t; &bslash;&n;&t;&t; ((offset &amp; 0xfc) &lt;&lt; 24) | (dev-&gt;devfn &lt;&lt; 16)&t;&t; &bslash;&n;&t;&t; | ((dev-&gt;bus-&gt;number - hose-&gt;bus_offset) &lt;&lt; 8) | 0x80); &bslash;&n;&t;cfg_##rw(val, hose-&gt;cfg_data + (offset &amp; mask), type, op);&t; &bslash;&n;&t;return PCIBIOS_SUCCESSFUL;    &t;&t;&t;&t;&t; &bslash;&n;}
 id|INDIRECT_PCI_OP
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.kgdb.h 1.5 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * kgdb.h: Defines and declarations for serial line source level&n; *         remote debugging of the Linux kernel using gdb.&n; *&n; * PPC Mods (C) 1998 Michael Tesch (tesch@cs.wisc.edu)&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_KGDB_H
@@ -156,27 +156,6 @@ suffix:semicolon
 r_int
 id|kgdb_dabr_match
 c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_static
-r_void
-id|kgdb_fault_handler
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_static
-r_void
-id|handle_exception
 (paren
 r_struct
 id|pt_regs

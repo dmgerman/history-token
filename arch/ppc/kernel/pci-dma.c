@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pci-dma.c 1.5 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Copyright (C) 2000   Ani Joshi &lt;ajoshi@unixbox.com&gt;&n; *&n; *&n; * Dynamic DMA mapping support.&n; *&n; * swiped from i386&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -48,6 +48,20 @@ id|gfp
 op_or_assign
 id|GFP_DMA
 suffix:semicolon
+macro_line|#ifdef CONFIG_NOT_COHERENT_CACHE
+id|ret
+op_assign
+id|consistent_alloc
+c_func
+(paren
+id|gfp
+comma
+id|size
+comma
+id|dma_handle
+)paren
+suffix:semicolon
+macro_line|#else
 id|ret
 op_assign
 (paren
@@ -66,6 +80,7 @@ id|size
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -119,6 +134,14 @@ id|dma_addr_t
 id|dma_handle
 )paren
 (brace
+macro_line|#ifdef CONFIG_NOT_COHERENT_CACHE
+id|consistent_free
+c_func
+(paren
+id|vaddr
+)paren
+suffix:semicolon
+macro_line|#else
 id|free_pages
 c_func
 (paren
@@ -135,5 +158,6 @@ id|size
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 eof

@@ -1,8 +1,8 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ppc8260_pic.h 1.7 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifndef _PPC_KERNEL_PPC8260_H
 DECL|macro|_PPC_KERNEL_PPC8260_H
 mdefine_line|#define _PPC_KERNEL_PPC8260_H
-macro_line|#include &quot;local_irq.h&quot;
+macro_line|#include &lt;linux/irq.h&gt;
 r_extern
 r_struct
 id|hw_interrupt_type

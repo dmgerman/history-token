@@ -1,8 +1,10 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pci-bridge.h 1.11 05/21/01 01:31:30 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _ASM_PCI_BRIDGE_H
 DECL|macro|_ASM_PCI_BRIDGE_H
 mdefine_line|#define _ASM_PCI_BRIDGE_H
+macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 r_struct
 id|device_node
 suffix:semicolon
@@ -43,6 +45,44 @@ r_int
 id|bus
 )paren
 suffix:semicolon
+multiline_comment|/* Allocate a new PCI host bridge structure */
+r_extern
+r_struct
+id|pci_controller
+op_star
+id|pcibios_alloc_controller
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Helper function for setting up resources */
+r_extern
+r_void
+id|pci_init_resource
+c_func
+(paren
+r_struct
+id|resource
+op_star
+id|res
+comma
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+comma
+r_int
+id|flags
+comma
+r_char
+op_star
+id|name
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * PCI &lt;-&gt; OF matching functions &n; */
 r_extern
 r_int
@@ -73,6 +113,14 @@ c_func
 r_struct
 id|pci_dev
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pci_create_OF_bus_map
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Get the PCI host controller for a bus */
@@ -156,6 +204,10 @@ DECL|member|last_busno
 r_int
 id|last_busno
 suffix:semicolon
+DECL|member|bus_offset
+r_int
+id|bus_offset
+suffix:semicolon
 DECL|member|io_base_virt
 r_void
 op_star
@@ -209,6 +261,17 @@ suffix:semicolon
 DECL|member|mem_resource_count
 r_int
 id|mem_resource_count
+suffix:semicolon
+multiline_comment|/* Host bridge I/O and Memory space&n;&t; * Used for BAR placement algorithms&n;&t; */
+DECL|member|io_space
+r_struct
+id|resource
+id|io_space
+suffix:semicolon
+DECL|member|mem_space
+r_struct
+id|resource
+id|mem_space
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -346,6 +409,102 @@ id|where
 comma
 id|u32
 id|val
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|setup_indirect_pci
+c_func
+(paren
+r_struct
+id|pci_controller
+op_star
+id|hose
+comma
+id|u32
+id|cfg_addr
+comma
+id|u32
+id|cfg_data
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|setup_grackle
+c_func
+(paren
+r_struct
+id|pci_controller
+op_star
+id|hose
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_char
+id|common_swizzle
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+comma
+r_int
+r_char
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/*&n; *   The following code swizzles for exactly one bridge.  The routine&n; *   common_swizzle below handles multiple bridges.  But there are a&n; *   some boards that don&squot;t follow the PCI spec&squot;s suggestion so we&n; *   break this piece out separately.&n; */
+DECL|function|bridge_swizzle
+r_static
+r_inline
+r_int
+r_char
+id|bridge_swizzle
+c_func
+(paren
+r_int
+r_char
+id|pin
+comma
+r_int
+r_char
+id|idsel
+)paren
+(brace
+r_return
+(paren
+(paren
+(paren
+id|pin
+op_minus
+l_int|1
+)paren
+op_plus
+id|idsel
+)paren
+op_mod
+l_int|4
+)paren
+op_plus
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * The following macro is used to lookup irqs in a standard table&n; * format for those PPC systems that do not already have PCI&n; * interrupts properly routed.&n; */
+multiline_comment|/* FIXME - double check this */
+DECL|macro|PCI_IRQ_TABLE_LOOKUP
+mdefine_line|#define PCI_IRQ_TABLE_LOOKUP&t;&t;&t;&t;&t;&t;    &bslash;&n;({ long _ctl_ = -1; &t;&t;&t;&t;&t;&t;&t;    &bslash;&n;   if (idsel &gt;= min_idsel &amp;&amp; idsel &lt;= max_idsel &amp;&amp; pin &lt;= irqs_per_slot)    &bslash;&n;     _ctl_ = pci_irq_table[idsel - min_idsel][pin-1];&t;&t;&t;    &bslash;&n;   _ctl_; })
+multiline_comment|/*&n; * Scan the buses below a given PCI host bridge and assign suitable&n; * resources to all devices found.&n; */
+r_extern
+r_int
+id|pciauto_bus_scan
+c_func
+(paren
+r_struct
+id|pci_controller
+op_star
+comma
+r_int
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ppc8xx_pic.c 1.10 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -128,6 +128,86 @@ id|word
 )braket
 suffix:semicolon
 )brace
+DECL|function|m8xx_end_irq
+r_static
+r_void
+id|m8xx_end_irq
+c_func
+(paren
+r_int
+r_int
+id|irq_nr
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|irq_desc
+(braket
+id|irq_nr
+)braket
+dot
+id|status
+op_amp
+(paren
+id|IRQ_DISABLED
+op_or
+id|IRQ_INPROGRESS
+)paren
+)paren
+)paren
+(brace
+r_int
+id|bit
+comma
+id|word
+suffix:semicolon
+id|bit
+op_assign
+id|irq_nr
+op_amp
+l_int|0x1f
+suffix:semicolon
+id|word
+op_assign
+id|irq_nr
+op_rshift
+l_int|5
+suffix:semicolon
+id|ppc_cached_irq_mask
+(braket
+id|word
+)braket
+op_or_assign
+(paren
+l_int|1
+op_lshift
+(paren
+l_int|31
+op_minus
+id|bit
+)paren
+)paren
+suffix:semicolon
+(paren
+(paren
+id|immap_t
+op_star
+)paren
+id|IMAP_ADDR
+)paren
+op_member_access_from_pointer
+id|im_siu_conf.sc_simask
+op_assign
+id|ppc_cached_irq_mask
+(braket
+id|word
+)braket
+suffix:semicolon
+)brace
+)brace
 DECL|function|m8xx_mask_and_ack
 r_static
 r_void
@@ -224,6 +304,8 @@ id|m8xx_mask_irq
 comma
 id|m8xx_mask_and_ack
 comma
+id|m8xx_end_irq
+comma
 l_int|0
 )brace
 suffix:semicolon
@@ -317,6 +399,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+multiline_comment|/*&n; * We either return a valid interrupt or -1 if there is nothing pending&n; */
 r_int
 DECL|function|m8xx_get_irq
 id|m8xx_get_irq
@@ -331,14 +414,8 @@ id|regs
 r_int
 id|irq
 suffix:semicolon
-r_int
-r_int
-id|bits
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* For MPC8xx, read the SIVEC register and shift the bits down&n;         * to get the irq number.         */
-id|bits
+multiline_comment|/* For MPC8xx, read the SIVEC register and shift the bits down&n;&t; * to get the irq number.&n;&t; */
+id|irq
 op_assign
 (paren
 (paren
@@ -349,19 +426,21 @@ id|IMAP_ADDR
 )paren
 op_member_access_from_pointer
 id|im_siu_conf.sc_sivec
-suffix:semicolon
-id|irq
-op_assign
-id|bits
 op_rshift
 l_int|26
 suffix:semicolon
-macro_line|#if 0
+multiline_comment|/*&n;&t; * When we read the sivec without an interrupt to process, we will &n;&t; * get back SIU_LEVEL7.  In this case, return -1&n;&t; */
+r_if
+c_cond
+(paren
 id|irq
-op_add_assign
-id|ppc8xx_pic.irq_offset
+op_eq
+id|SIU_LEVEL7
+)paren
+r_return
+op_minus
+l_int|1
 suffix:semicolon
-macro_line|#endif
 r_return
 id|irq
 suffix:semicolon

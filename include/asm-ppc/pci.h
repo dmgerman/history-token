@@ -1,8 +1,17 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pci.h 1.16 10/15/01 22:51:33 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifndef __PPC_PCI_H
 DECL|macro|__PPC_PCI_H
 mdefine_line|#define __PPC_PCI_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;asm/scatterlist.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+r_struct
+id|pci_dev
+suffix:semicolon
 multiline_comment|/* Values for the `which&squot; argument to sys_pciconfig_iobase syscall.  */
 DECL|macro|IOBASE_BRIDGE_NUMBER
 mdefine_line|#define IOBASE_BRIDGE_NUMBER&t;0
@@ -14,14 +23,13 @@ DECL|macro|IOBASE_ISA_IO
 mdefine_line|#define IOBASE_ISA_IO&t;&t;3
 DECL|macro|IOBASE_ISA_MEM
 mdefine_line|#define IOBASE_ISA_MEM&t;&t;4
+multiline_comment|/*&n; * Set this to 1 if you want the kernel to re-assign all PCI&n; * bus numbers&n; */
 r_extern
 r_int
-id|pcibios_assign_all_busses
-c_func
-(paren
-r_void
-)paren
+id|pci_assign_all_busses
 suffix:semicolon
+DECL|macro|pcibios_assign_all_busses
+mdefine_line|#define pcibios_assign_all_busses()&t;(pci_assign_all_busses)
 DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x1000
 DECL|macro|PCIBIOS_MIN_MEM
@@ -710,11 +718,6 @@ id|direction
 (brace
 multiline_comment|/* Nothing to do. */
 )brace
-multiline_comment|/* These macros should be used after a pci_map_sg call has been done&n; * to get bus addresses of each of the SG entries and their lengths.&n; * You should only work with the number of sg entries pci_map_sg&n; * returns.&n; */
-DECL|macro|sg_dma_address
-mdefine_line|#define sg_dma_address(sg)&t;((sg)-&gt;dma_address)
-DECL|macro|sg_dma_len
-mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;length)
 multiline_comment|/* Return the index of the PCI controller for device PDEV. */
 r_extern
 r_int

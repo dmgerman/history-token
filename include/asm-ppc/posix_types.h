@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.posix_types.h 1.5 05/17/01 18:14:25 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifndef _PPC_POSIX_TYPES_H
 DECL|macro|_PPC_POSIX_TYPES_H
 mdefine_line|#define _PPC_POSIX_TYPES_H

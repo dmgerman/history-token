@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.heathrow.h 1.7 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * heathrow.h: definitions for using the &quot;Heathrow&quot; I/O controller chip.&n; *&n; * Grabbed from Open Firmware definitions on a PowerBook G3 Series&n; *&n; * Copyright (C) 1997 Paul Mackerras.&n; */
 multiline_comment|/* Front light color on Yikes/B&amp;W G3. 32 bits */
 DECL|macro|HEATHROW_FRONT_LIGHT
@@ -9,8 +9,12 @@ mdefine_line|#define HEATHROW_BRIGHTNESS_CNTL&t;0x32
 DECL|macro|HEATHROW_CONTRAST_CNTL
 mdefine_line|#define HEATHROW_CONTRAST_CNTL&t;&t;0x33
 multiline_comment|/* offset from ohare base for feature control register */
-DECL|macro|HEATHROW_FEATURE_REG
-mdefine_line|#define HEATHROW_FEATURE_REG&t;&t;0x38
+DECL|macro|HEATHROW_MBCR
+mdefine_line|#define HEATHROW_MBCR&t;&t;&t;0x34&t;/* Media bay control */
+DECL|macro|HEATHROW_FCR
+mdefine_line|#define HEATHROW_FCR&t;&t;&t;0x38&t;/* Feature control */
+DECL|macro|HEATHROW_AUX_CNTL_REG
+mdefine_line|#define HEATHROW_AUX_CNTL_REG&t;&t;0x3c&t;/* Aux control */
 multiline_comment|/*&n; * Bits in feature control register.&n; * Bits postfixed with a _N are in inverse logic&n; */
 DECL|macro|HRW_RESET_SCC
 mdefine_line|#define HRW_RESET_SCC&t;&t;0x00000001&t;/* actually controls transceiver... */
@@ -26,6 +30,8 @@ DECL|macro|HRW_IDE0_ENABLE
 mdefine_line|#define HRW_IDE0_ENABLE&t;&t;0x00000020
 DECL|macro|HRW_IDE0_RESET_N
 mdefine_line|#define HRW_IDE0_RESET_N&t;0x00000040
+DECL|macro|HRW_BAY_DEV_MASK
+mdefine_line|#define HRW_BAY_DEV_MASK&t;0x0000001c
 DECL|macro|HRW_BAY_RESET_N
 mdefine_line|#define HRW_BAY_RESET_N&t;&t;0x00000080
 DECL|macro|HRW_IOBUS_ENABLE
@@ -57,7 +63,7 @@ mdefine_line|#define HRW_AUD_RUN22&t;&t;0x00100000&t;/* ??? (1) */
 DECL|macro|HRW_SCSI_LINK_MODE
 mdefine_line|#define HRW_SCSI_LINK_MODE&t;0x00200000&t;/* Read ??? (1) */
 DECL|macro|HRW_ARB_BYPASS
-mdefine_line|#define HRW_ARB_BYPASS&t;&t;0x00400000&t;/* ??? (0 on main, 1 on gatwick) */
+mdefine_line|#define HRW_ARB_BYPASS&t;&t;0x00400000&t;/* Disable internal PCI arbitrer */
 DECL|macro|HRW_IDE1_RESET_N
 mdefine_line|#define HRW_IDE1_RESET_N&t;0x00800000&t;/* Media bay */
 DECL|macro|HRW_SLOW_SCC_PCLK
@@ -80,4 +86,7 @@ DECL|macro|PADD_MODEM_POWER_N
 mdefine_line|#define PADD_MODEM_POWER_N&t;0x00000001&t;/* modem power on paddington */
 DECL|macro|PADD_RESET_SCC
 mdefine_line|#define PADD_RESET_SCC&t;&t;0x02000000&t;/* check this please */
+multiline_comment|/* Looks like Heathrow has some sort of GPIOs as well... */
+DECL|macro|HRW_GPIO_MODEM_RESET
+mdefine_line|#define HRW_GPIO_MODEM_RESET&t;0x6d
 eof

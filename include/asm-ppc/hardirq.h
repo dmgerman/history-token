@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.hardirq.h 1.12 07/10/01 11:26:58 trini&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_HARDIRQ_H
 DECL|macro|__ASM_HARDIRQ_H
@@ -66,6 +66,8 @@ DECL|macro|hardirq_exit
 mdefine_line|#define hardirq_exit(cpu)&t;(local_irq_count(cpu)--)
 DECL|macro|synchronize_irq
 mdefine_line|#define synchronize_irq()&t;do { } while (0)
+DECL|macro|release_irqlock
+mdefine_line|#define release_irqlock(cpu)    do { } while (0)
 macro_line|#else /* CONFIG_SMP */
 macro_line|#include &lt;asm/atomic.h&gt;
 r_extern
@@ -79,10 +81,48 @@ r_volatile
 r_int
 id|global_irq_lock
 suffix:semicolon
-r_extern
-id|atomic_t
-id|global_irq_count
+DECL|function|irqs_running
+r_static
+r_inline
+r_int
+id|irqs_running
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|smp_num_cpus
+suffix:semicolon
+id|i
+op_increment
+)paren
+r_if
+c_cond
+(paren
+id|local_irq_count
+c_func
+(paren
+id|i
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|release_irqlock
 r_static
 r_inline
@@ -144,13 +184,6 @@ id|local_irq_count
 c_func
 (paren
 id|cpu
-)paren
-suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|global_irq_count
 )paren
 suffix:semicolon
 r_while
@@ -232,13 +265,6 @@ r_int
 id|cpu
 )paren
 (brace
-id|atomic_dec
-c_func
-(paren
-op_amp
-id|global_irq_count
-)paren
-suffix:semicolon
 op_decrement
 id|local_irq_count
 c_func
@@ -259,14 +285,6 @@ id|cpu
 )paren
 (brace
 r_return
-op_logical_neg
-id|atomic_read
-c_func
-(paren
-op_amp
-id|global_irq_count
-)paren
-op_logical_and
 op_logical_neg
 id|test_bit
 c_func

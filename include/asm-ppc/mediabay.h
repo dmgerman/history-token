@@ -1,17 +1,23 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.mediabay.h 1.5 05/17/01 18:14:25 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * mediabay.h: definitions for using the media bay&n; * on PowerBook 3400 and similar computers.&n; *&n; * Copyright (C) 1997 Paul Mackerras.&n; */
 macro_line|#ifndef _PPC_MEDIABAY_H
 DECL|macro|_PPC_MEDIABAY_H
 mdefine_line|#define _PPC_MEDIABAY_H
 macro_line|#ifdef __KERNEL__
 DECL|macro|MB_FD
-mdefine_line|#define MB_FD&t;0&t;&t;/* media bay contains floppy drive */
+mdefine_line|#define MB_FD&t;&t;0&t;/* media bay contains floppy drive (automatic eject ?) */
 DECL|macro|MB_FD1
-mdefine_line|#define MB_FD1&t;1&t;&t;/* media bay contains floppy drive */
+mdefine_line|#define MB_FD1&t;&t;1&t;/* media bay contains floppy drive (manual eject ?) */
+DECL|macro|MB_SOUND
+mdefine_line|#define MB_SOUND&t;2&t;/* sound device ? */
 DECL|macro|MB_CD
-mdefine_line|#define MB_CD&t;3&t;&t;/* media bay contains ATA drive such as CD */
+mdefine_line|#define MB_CD&t;&t;3&t;/* media bay contains ATA drive such as CD or ZIP */
+DECL|macro|MB_PCI
+mdefine_line|#define MB_PCI&t;&t;5&t;/* media bay contains a PCI device */
+DECL|macro|MB_POWER
+mdefine_line|#define MB_POWER&t;6&t;/* media bay contains a Power device (???) */
 DECL|macro|MB_NO
-mdefine_line|#define MB_NO&t;7&t;&t;/* media bay contains nothing */
+mdefine_line|#define MB_NO&t;&t;7&t;/* media bay contains nothing */
 r_void
 id|media_bay_init
 c_func

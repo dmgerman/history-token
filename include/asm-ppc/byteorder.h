@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.byteorder.h 1.8 10/11/01 13:02:49 trini&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifndef _PPC_BYTEORDER_H
 DECL|macro|_PPC_BYTEORDER_H
 mdefine_line|#define _PPC_BYTEORDER_H
@@ -173,8 +173,7 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* alas, egcs sounds like it has a bug in this code that doesn&squot;t use the&n;   inline asm correctly, and can cause file corruption. Until I hear that&n;   it&squot;s fixed, I can live without the extra speed. I hope. */
-macro_line|#if 0
+DECL|function|___arch__swab16
 r_static
 id|__inline__
 id|__const__
@@ -192,23 +191,23 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;rlwimi %0,%1,8,16,23&quot;
+l_string|&quot;rlwimi %0,%2,8,16,23&quot;
 suffix:colon
-l_string|&quot;=r&quot;
+l_string|&quot;=&amp;r&quot;
 (paren
 id|result
 )paren
 suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|value
-)paren
-comma
 l_string|&quot;0&quot;
 (paren
 id|value
 op_rshift
 l_int|8
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|value
 )paren
 )paren
 suffix:semicolon
@@ -216,6 +215,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
+DECL|function|___arch__swab32
 r_static
 id|__inline__
 id|__const__
@@ -233,25 +233,65 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;rlwimi %0,%1,24,16,23&bslash;n&bslash;t&quot;
-l_string|&quot;rlwimi %0,%1,8,8,15&bslash;n&bslash;t&quot;
-l_string|&quot;rlwimi %0,%1,24,0,7&quot;
+l_string|&quot;rlwimi %0,%2,24,16,23&quot;
 suffix:colon
-l_string|&quot;=r&quot;
+l_string|&quot;=&amp;r&quot;
 (paren
 id|result
 )paren
 suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|value
-)paren
-comma
 l_string|&quot;0&quot;
 (paren
 id|value
 op_rshift
 l_int|24
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|value
+)paren
+)paren
+suffix:semicolon
+id|__asm__
+c_func
+(paren
+l_string|&quot;rlwimi %0,%2,8,8,15&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|result
+)paren
+suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|result
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|value
+)paren
+)paren
+suffix:semicolon
+id|__asm__
+c_func
+(paren
+l_string|&quot;rlwimi %0,%2,24,0,7&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|result
+)paren
+suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|result
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|value
 )paren
 )paren
 suffix:semicolon
@@ -259,9 +299,10 @@ r_return
 id|result
 suffix:semicolon
 )brace
+DECL|macro|__arch__swab32
 mdefine_line|#define __arch__swab32(x) ___arch__swab32(x)
+DECL|macro|__arch__swab16
 mdefine_line|#define __arch__swab16(x) ___arch__swab16(x)
-macro_line|#endif /* 0 */
 multiline_comment|/* The same, but returns converted value from the location pointer by addr. */
 DECL|macro|__arch__swab16p
 mdefine_line|#define __arch__swab16p(addr) ld_le16(addr)

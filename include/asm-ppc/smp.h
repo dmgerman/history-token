@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.smp.h 1.12 08/16/01 07:49:31 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/* smp.h: PPC specific SMP stuff.&n; *&n; * Original was a copy of sparc smp.h.  Now heavily modified&n; * for PPC.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996-2001 Cort Dougan &lt;cort@fsmlabs.com&gt;&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_SMP_H
@@ -136,7 +136,7 @@ mdefine_line|#define cpu_logical_map(cpu) (cpu)
 DECL|macro|cpu_number_map
 mdefine_line|#define cpu_number_map(x) (x)
 DECL|macro|smp_processor_id
-mdefine_line|#define smp_processor_id() (current-&gt;processor)
+mdefine_line|#define smp_processor_id() (current_thread_info()-&gt;cpu)
 r_extern
 r_int
 id|smp_hw_index
