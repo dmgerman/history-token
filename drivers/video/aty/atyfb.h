@@ -521,6 +521,8 @@ id|par-&gt;ati_regbase
 op_plus
 id|regindex
 )paren
+comma
+id|val
 )paren
 suffix:semicolon
 macro_line|#else

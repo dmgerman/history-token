@@ -10949,7 +10949,7 @@ c_func
 (paren
 id|CRTC_H_SYNC_STRT_WID
 comma
-id|defualt_par
+id|default_par
 )paren
 suffix:semicolon
 id|crtc.v_tot_disp
