@@ -5,14 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; * driver configuration&n; */
-DECL|macro|DRIVER_ID
-mdefine_line|#define&t;DRIVER_ID&t;&quot;i2c-prosavage&quot;
-DECL|macro|DRIVER_VERSION
-mdefine_line|#define&t;DRIVER_VERSION&t;&quot;20030621&quot;
-DECL|macro|ADAPTER_NAME
-mdefine_line|#define ADAPTER_NAME(x) (x).name
 DECL|macro|MAX_BUSSES
 mdefine_line|#define MAX_BUSSES&t;2
 DECL|struct|s_i2c_bus
@@ -20,7 +13,7 @@ r_struct
 id|s_i2c_bus
 (brace
 DECL|member|mmvga
-id|u8
+r_void
 op_star
 id|mmvga
 suffix:semicolon
@@ -49,7 +42,7 @@ r_struct
 id|s_i2c_chip
 (brace
 DECL|member|mmio
-id|u8
+r_void
 op_star
 id|mmio
 suffix:semicolon
@@ -74,10 +67,6 @@ mdefine_line|#define CYCLE_DELAY&t;10
 DECL|macro|TIMEOUT
 mdefine_line|#define TIMEOUT&t;&t;(HZ / 2)
 multiline_comment|/* &n; * S3/VIA 8365/8375 registers&n; */
-macro_line|#ifndef PCI_VENDOR_ID_S3
-DECL|macro|PCI_VENDOR_ID_S3
-mdefine_line|#define PCI_VENDOR_ID_S3&t;&t;0x5333
-macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_S3_SAVAGE4
 DECL|macro|PCI_DEVICE_ID_S3_SAVAGE4
 mdefine_line|#define PCI_DEVICE_ID_S3_SAVAGE4&t;0x8a25
@@ -108,11 +97,11 @@ mdefine_line|#define I2C_SCL_IN&t;0x04
 DECL|macro|I2C_SDA_IN
 mdefine_line|#define I2C_SDA_IN&t;0x08
 DECL|macro|SET_CR_IX
-mdefine_line|#define SET_CR_IX(p, val)&t;*((p)-&gt;mmvga + VGA_CR_IX) = (u8)(val)
+mdefine_line|#define SET_CR_IX(p, val)&t;writeb((val), (p)-&gt;mmvga + VGA_CR_IX)
 DECL|macro|SET_CR_DATA
-mdefine_line|#define SET_CR_DATA(p, val)&t;*((p)-&gt;mmvga + VGA_CR_DATA) = (u8)(val)
+mdefine_line|#define SET_CR_DATA(p, val)&t;writeb((val), (p)-&gt;mmvga + VGA_CR_DATA)
 DECL|macro|GET_CR_DATA
-mdefine_line|#define GET_CR_DATA(p)&t;&t;*((p)-&gt;mmvga + VGA_CR_DATA)
+mdefine_line|#define GET_CR_DATA(p)&t;&t;readb((p)-&gt;mmvga + VGA_CR_DATA)
 multiline_comment|/*&n; * Serial bus line handling&n; *&n; * serial communications register as parameter in private data&n; *&n; * TODO: locks with other code sections accessing video registers?&n; */
 DECL|function|bit_s3via_setscl
 r_static
@@ -372,6 +361,11 @@ id|i2c_register_bus
 c_func
 (paren
 r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_struct
 id|s_i2c_bus
 op_star
 id|p
@@ -399,6 +393,11 @@ id|p-&gt;adap.algo_data
 op_assign
 op_amp
 id|p-&gt;algo
+suffix:semicolon
+id|p-&gt;adap.dev.parent
+op_assign
+op_amp
+id|dev-&gt;dev
 suffix:semicolon
 id|p-&gt;algo.setsda
 op_assign
@@ -565,22 +564,20 @@ c_cond
 id|ret
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|DRIVER_ID
+op_amp
+id|dev-&gt;dev
+comma
 l_string|&quot;: %s not removed&bslash;n&quot;
 comma
-id|ADAPTER_NAME
-c_func
-(paren
 id|chip-&gt;i2c_bus
 (braket
 id|i
 )braket
 dot
-id|adap
-)paren
+id|adap.name
 )paren
 suffix:semicolon
 )brace
@@ -744,10 +741,13 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|dev_err
+c_func
 (paren
-id|DRIVER_ID
-l_string|&quot;: ioremap failed&bslash;n&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;ioremap failed&bslash;n&quot;
 )paren
 suffix:semicolon
 id|prosavage_remove
@@ -775,19 +775,11 @@ suffix:semicolon
 id|snprintf
 c_func
 (paren
-id|ADAPTER_NAME
-c_func
-(paren
-id|bus-&gt;adap
-)paren
+id|bus-&gt;adap.name
 comma
 r_sizeof
 (paren
-id|ADAPTER_NAME
-c_func
-(paren
-id|bus-&gt;adap
-)paren
+id|bus-&gt;adap.name
 )paren
 comma
 l_string|&quot;ProSavage I2C bus at %02x:%02x.%x&quot;
@@ -812,6 +804,8 @@ op_assign
 id|i2c_register_bus
 c_func
 (paren
+id|dev
+comma
 id|bus
 comma
 id|chip-&gt;mmio
@@ -843,19 +837,11 @@ suffix:semicolon
 id|snprintf
 c_func
 (paren
-id|ADAPTER_NAME
-c_func
-(paren
-id|bus-&gt;adap
-)paren
+id|bus-&gt;adap.name
 comma
 r_sizeof
 (paren
-id|ADAPTER_NAME
-c_func
-(paren
-id|bus-&gt;adap
-)paren
+id|bus-&gt;adap.name
 )paren
 comma
 l_string|&quot;ProSavage DDC bus at %02x:%02x.%x&quot;
@@ -880,6 +866,8 @@ op_assign
 id|i2c_register_bus
 c_func
 (paren
+id|dev
+comma
 id|bus
 comma
 id|chip-&gt;mmio
@@ -904,16 +892,15 @@ l_int|0
 suffix:semicolon
 id|err_adap
 suffix:colon
-id|printk
-(paren
-id|DRIVER_ID
-l_string|&quot;: %s failed&bslash;n&quot;
-comma
-id|ADAPTER_NAME
+id|dev_err
 c_func
 (paren
-id|bus-&gt;adap
-)paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;: %s failed&bslash;n&quot;
+comma
+id|bus-&gt;adap.name
 )paren
 suffix:semicolon
 id|prosavage_remove
@@ -937,55 +924,30 @@ id|prosavage_pci_tbl
 op_assign
 (brace
 (brace
-dot
-id|vendor
-op_assign
+id|PCI_DEVICE
+c_func
+(paren
 id|PCI_VENDOR_ID_S3
 comma
-dot
-id|device
-op_assign
 id|PCI_DEVICE_ID_S3_SAVAGE4
-comma
-dot
-id|subvendor
-op_assign
-id|PCI_ANY_ID
-comma
-dot
-id|subdevice
-op_assign
-id|PCI_ANY_ID
-comma
+)paren
 )brace
 comma
 (brace
-dot
-id|vendor
-op_assign
+id|PCI_DEVICE
+c_func
+(paren
 id|PCI_VENDOR_ID_S3
 comma
-dot
-id|device
-op_assign
 id|PCI_DEVICE_ID_S3_PROSAVAGE8
-comma
-dot
-id|subvendor
-op_assign
-id|PCI_ANY_ID
-comma
-dot
-id|subdevice
-op_assign
-id|PCI_ANY_ID
-comma
+)paren
 )brace
 comma
 (brace
 l_int|0
 comma
 )brace
+comma
 )brace
 suffix:semicolon
 DECL|variable|prosavage_driver
@@ -1031,17 +993,6 @@ c_func
 r_void
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|DRIVER_ID
-l_string|&quot; version %s (%s)&bslash;n&quot;
-comma
-id|I2C_VERSION
-comma
-id|DRIVER_VERSION
-)paren
-suffix:semicolon
 r_return
 id|pci_module_init
 c_func
