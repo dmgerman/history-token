@@ -3037,15 +3037,13 @@ id|epq.dpi
 op_assign
 id|dpi
 suffix:semicolon
-id|poll_initwait_ex
+id|init_poll_funcptr
 c_func
 (paren
 op_amp
 id|epq.pt
 comma
 id|ep_ptable_queue_proc
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Attach the item to the poll hooks and get current event bits.&n;&t; * We can safely use the file* here because its usage count has&n;&t; * been increased by the caller of this function.&n;&t; */
@@ -3058,13 +3056,6 @@ c_func
 (paren
 id|tfile
 comma
-op_amp
-id|epq.pt
-)paren
-suffix:semicolon
-id|poll_freewait
-c_func
-(paren
 op_amp
 id|epq.pt
 )paren
