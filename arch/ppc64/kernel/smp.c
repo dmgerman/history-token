@@ -107,15 +107,6 @@ r_int
 id|wait
 )paren
 suffix:semicolon
-DECL|variable|iSeries_smp_message
-r_static
-r_int
-r_int
-id|iSeries_smp_message
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 r_void
 id|xics_setup_cpu
 c_func
@@ -193,6 +184,15 @@ id|lower
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PPC_ISERIES
+DECL|variable|iSeries_smp_message
+r_static
+r_int
+r_int
+id|iSeries_smp_message
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
 DECL|function|iSeries_smp_message_recv
 r_void
 id|iSeries_smp_message_recv
