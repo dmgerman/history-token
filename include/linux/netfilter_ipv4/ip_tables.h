@@ -325,11 +325,15 @@ mdefine_line|#define IPT_SO_SET_ADD_COUNTERS&t;(IPT_BASE_CTL + 1)
 DECL|macro|IPT_SO_SET_MAX
 mdefine_line|#define IPT_SO_SET_MAX&t;&t;IPT_SO_SET_ADD_COUNTERS
 DECL|macro|IPT_SO_GET_INFO
-mdefine_line|#define IPT_SO_GET_INFO&t;&t;(IPT_BASE_CTL)
+mdefine_line|#define IPT_SO_GET_INFO&t;&t;&t;(IPT_BASE_CTL)
 DECL|macro|IPT_SO_GET_ENTRIES
-mdefine_line|#define IPT_SO_GET_ENTRIES&t;(IPT_BASE_CTL + 1)
+mdefine_line|#define IPT_SO_GET_ENTRIES&t;&t;(IPT_BASE_CTL + 1)
+DECL|macro|IPT_SO_GET_REVISION_MATCH
+mdefine_line|#define IPT_SO_GET_REVISION_MATCH&t;(IPT_BASE_CTL + 2)
+DECL|macro|IPT_SO_GET_REVISION_TARGET
+mdefine_line|#define IPT_SO_GET_REVISION_TARGET&t;(IPT_BASE_CTL + 3)
 DECL|macro|IPT_SO_GET_MAX
-mdefine_line|#define IPT_SO_GET_MAX&t;&t;IPT_SO_GET_ENTRIES
+mdefine_line|#define IPT_SO_GET_MAX&t;&t;&t;IPT_SO_GET_REVISION_TARGET
 multiline_comment|/* CONTINUE verdict for targets */
 DECL|macro|IPT_CONTINUE
 mdefine_line|#define IPT_CONTINUE 0xFFFFFFFF
@@ -636,6 +640,26 @@ id|entrytable
 (braket
 l_int|0
 )braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* The argument to IPT_SO_GET_REVISION_*.  Returns highest revision&n; * kernel supports, if &gt;= revision. */
+DECL|struct|ipt_get_revision
+r_struct
+id|ipt_get_revision
+(brace
+DECL|member|name
+r_char
+id|name
+(braket
+id|IPT_FUNCTION_MAXNAMELEN
+op_minus
+l_int|1
+)braket
+suffix:semicolon
+DECL|member|revision
+id|u_int8_t
+id|revision
 suffix:semicolon
 )brace
 suffix:semicolon
