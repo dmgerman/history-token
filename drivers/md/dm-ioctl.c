@@ -2197,13 +2197,12 @@ id|name
 r_if
 c_cond
 (paren
-id|strchr
-c_func
-(paren
 id|name
-comma
+(braket
+l_int|0
+)braket
+op_eq
 l_char|&squot;/&squot;
-)paren
 )paren
 (brace
 id|DMWARN
