@@ -63,8 +63,6 @@ macro_line|#endif
 macro_line|#ifndef LINUX_VERSION_CODE
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#endif /* LINUX_VERSION_CODE */
-DECL|macro|SG_STILL_HAVE_ADDRESS_IN_SCATTERLIST
-mdefine_line|#define SG_STILL_HAVE_ADDRESS_IN_SCATTERLIST
 DECL|macro|SG_ALLOW_DIO_DEF
 mdefine_line|#define SG_ALLOW_DIO_DEF 0
 DECL|macro|SG_ALLOW_DIO_CODE
@@ -9577,21 +9575,6 @@ id|sclp-&gt;offset
 op_assign
 id|offset
 suffix:semicolon
-macro_line|#ifdef SG_STILL_HAVE_ADDRESS_IN_SCATTERLIST
-id|sclp-&gt;address
-op_assign
-id|page_address
-c_func
-(paren
-id|kp-&gt;maplist
-(braket
-id|k
-)braket
-)paren
-op_plus
-id|offset
-suffix:semicolon
-macro_line|#endif
 id|sclp-&gt;length
 op_assign
 id|num
@@ -10082,12 +10065,6 @@ op_amp
 op_complement
 id|PAGE_MASK
 suffix:semicolon
-macro_line|#ifdef SG_STILL_HAVE_ADDRESS_IN_SCATTERLIST
-id|sclp-&gt;address
-op_assign
-id|p
-suffix:semicolon
-macro_line|#endif
 id|sclp-&gt;length
 op_assign
 id|ret_sz
@@ -11118,12 +11095,6 @@ id|sclp-&gt;offset
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef SG_STILL_HAVE_ADDRESS_IN_SCATTERLIST
-id|sclp-&gt;address
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 id|sclp-&gt;length
 op_assign
 l_int|0
