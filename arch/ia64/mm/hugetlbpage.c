@@ -1471,7 +1471,7 @@ c_func
 id|mapping
 )paren
 suffix:semicolon
-id|free_huge_page
+id|page_cache_release
 c_func
 (paren
 id|page
