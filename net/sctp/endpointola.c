@@ -666,7 +666,8 @@ id|sctp_association_t
 op_star
 id|asoc
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|pos
 suffix:semicolon

@@ -69,7 +69,8 @@ id|sockaddr_storage_list
 op_star
 id|addr
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|pos
 suffix:semicolon
@@ -256,7 +257,8 @@ id|sockaddr_storage_list
 op_star
 id|addr
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|pos
 comma
@@ -449,7 +451,8 @@ op_star
 id|del_addr
 )paren
 (brace
-id|list_t
+r_struct
+id|list_head
 op_star
 id|pos
 comma
@@ -569,7 +572,8 @@ id|sockaddr_storage_list
 op_star
 id|addr
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|pos
 suffix:semicolon
@@ -856,7 +860,8 @@ id|sockaddr_storage_list
 op_star
 id|laddr
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|pos
 suffix:semicolon

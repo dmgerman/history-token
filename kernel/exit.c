@@ -1531,7 +1531,8 @@ comma
 op_star
 id|reaper
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|_p
 suffix:semicolon
@@ -1821,7 +1822,8 @@ id|task_struct
 op_star
 id|t
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|_p
 comma

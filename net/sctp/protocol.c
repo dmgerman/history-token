@@ -560,7 +560,8 @@ id|sockaddr_storage_list
 op_star
 id|addr
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|pos
 comma
@@ -685,7 +686,8 @@ id|error
 op_assign
 l_int|0
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|pos
 suffix:semicolon
@@ -1092,7 +1094,8 @@ op_star
 id|address
 )paren
 (brace
-id|list_t
+r_struct
+id|list_head
 op_star
 id|pos
 suffix:semicolon
