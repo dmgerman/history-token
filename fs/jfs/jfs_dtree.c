@@ -2605,8 +2605,7 @@ id|ip
 op_member_access_from_pointer
 id|next_index
 op_eq
-op_minus
-l_int|1
+id|DIREND
 )paren
 (brace
 id|DT_PUTPAGE
@@ -10325,8 +10324,7 @@ c_cond
 (paren
 id|filp-&gt;f_pos
 op_eq
-op_minus
-l_int|1
+id|DIREND
 )paren
 r_return
 l_int|0
@@ -10380,8 +10378,7 @@ id|ip
 (brace
 id|filp-&gt;f_pos
 op_assign
-op_minus
-l_int|1
+id|DIREND
 suffix:semicolon
 r_return
 l_int|0
@@ -10410,8 +10407,7 @@ id|rc
 (brace
 id|filp-&gt;f_pos
 op_assign
-op_minus
-l_int|1
+id|DIREND
 suffix:semicolon
 r_return
 id|rc
@@ -10453,8 +10449,7 @@ l_string|&quot;infinite loop!&bslash;n&quot;
 suffix:semicolon
 id|filp-&gt;f_pos
 op_assign
-op_minus
-l_int|1
+id|DIREND
 suffix:semicolon
 r_return
 l_int|0
@@ -10479,8 +10474,7 @@ l_int|1
 (brace
 id|filp-&gt;f_pos
 op_assign
-op_minus
-l_int|1
+id|DIREND
 suffix:semicolon
 r_return
 l_int|0
@@ -10527,8 +10521,7 @@ id|rc
 (brace
 id|filp-&gt;f_pos
 op_assign
-op_minus
-l_int|1
+id|DIREND
 suffix:semicolon
 r_return
 l_int|0
@@ -10682,8 +10675,7 @@ id|ip
 (brace
 id|filp-&gt;f_pos
 op_assign
-op_minus
-l_int|1
+id|DIREND
 suffix:semicolon
 r_return
 l_int|0
@@ -10848,8 +10840,7 @@ id|ip
 (brace
 id|filp-&gt;f_pos
 op_assign
-op_minus
-l_int|1
+id|DIREND
 suffix:semicolon
 r_return
 l_int|0
@@ -10889,8 +10880,7 @@ id|rc
 suffix:semicolon
 id|filp-&gt;f_pos
 op_assign
-op_minus
-l_int|1
+id|DIREND
 suffix:semicolon
 r_return
 l_int|0
@@ -10924,8 +10914,7 @@ l_int|0
 (brace
 id|filp-&gt;f_pos
 op_assign
-op_minus
-l_int|1
+id|DIREND
 suffix:semicolon
 r_return
 l_int|0
@@ -10977,8 +10966,7 @@ l_string|&quot;jfs_readdir: kmalloc failed!&bslash;n&quot;
 suffix:semicolon
 id|filp-&gt;f_pos
 op_assign
-op_minus
-l_int|1
+id|DIREND
 suffix:semicolon
 r_return
 l_int|0
@@ -11204,8 +11192,7 @@ id|BT_ROOT
 (brace
 id|filp-&gt;f_pos
 op_assign
-op_minus
-l_int|1
+id|DIREND
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -11228,8 +11215,7 @@ l_int|0
 (brace
 id|filp-&gt;f_pos
 op_assign
-op_minus
-l_int|1
+id|DIREND
 suffix:semicolon
 r_break
 suffix:semicolon
