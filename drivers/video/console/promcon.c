@@ -975,7 +975,7 @@ l_int|1
 id|vc_resize
 c_func
 (paren
-id|conp-&gt;unit
+id|conp-&gt;vc_num
 comma
 id|pw
 op_plus
