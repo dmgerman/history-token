@@ -53,7 +53,7 @@ mdefine_line|#define _IOC_TYPE(nr)       (((nr) &gt;&gt; _IOC_TYPESHIFT) &amp; _
 DECL|macro|_IOC_NR
 mdefine_line|#define _IOC_NR(nr)         (((nr) &gt;&gt; _IOC_NRSHIFT) &amp; _IOC_NRMASK)
 DECL|macro|_IOC_SIZE
-mdefine_line|#define _IOC_SIZE(nr)       (((nr) &gt;&gt; _IOC_SIZESHIFT) &amp; _IOC_XSIZEMASK)
+mdefine_line|#define _IOC_SIZE(nr)   &bslash;&n; ((((((nr) &gt;&gt; _IOC_DIRSHIFT) &amp; _IOC_DIRMASK) &amp; (_IOC_WRITE|_IOC_READ)) == 0)?    &bslash;&n;                         0: (((nr) &gt;&gt; _IOC_SIZESHIFT) &amp; _IOC_XSIZEMASK))
 multiline_comment|/* ...and for the PCMCIA and sound. */
 DECL|macro|IOC_IN
 mdefine_line|#define IOC_IN          (_IOC_WRITE &lt;&lt; _IOC_DIRSHIFT)
