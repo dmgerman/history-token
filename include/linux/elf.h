@@ -279,6 +279,10 @@ DECL|macro|ELF32_ST_BIND
 mdefine_line|#define ELF32_ST_BIND(x) ((x) &gt;&gt; 4)
 DECL|macro|ELF32_ST_TYPE
 mdefine_line|#define ELF32_ST_TYPE(x) (((unsigned int) x) &amp; 0xf)
+DECL|macro|ELF64_ST_BIND
+mdefine_line|#define ELF64_ST_BIND(x) ((x) &gt;&gt; 4)
+DECL|macro|ELF64_ST_TYPE
+mdefine_line|#define ELF64_ST_TYPE(x) (((unsigned int) x) &amp; 0xf)
 multiline_comment|/* Symbolic values for the entries in the auxiliary table&n;   put on the initial stack */
 DECL|macro|AT_NULL
 mdefine_line|#define AT_NULL   0&t;/* end of vector */
@@ -644,30 +648,12 @@ DECL|macro|R_ALPHA_SREL32
 mdefine_line|#define R_ALPHA_SREL32          10      /* PC relative 32 bit */
 DECL|macro|R_ALPHA_SREL64
 mdefine_line|#define R_ALPHA_SREL64          11      /* PC relative 64 bit */
-DECL|macro|R_ALPHA_OP_PUSH
-mdefine_line|#define R_ALPHA_OP_PUSH         12      /* OP stack push */
-DECL|macro|R_ALPHA_OP_STORE
-mdefine_line|#define R_ALPHA_OP_STORE        13      /* OP stack pop and store */
-DECL|macro|R_ALPHA_OP_PSUB
-mdefine_line|#define R_ALPHA_OP_PSUB         14      /* OP stack subtract */
-DECL|macro|R_ALPHA_OP_PRSHIFT
-mdefine_line|#define R_ALPHA_OP_PRSHIFT      15      /* OP stack right shift */
-DECL|macro|R_ALPHA_GPVALUE
-mdefine_line|#define R_ALPHA_GPVALUE         16
 DECL|macro|R_ALPHA_GPRELHIGH
-mdefine_line|#define R_ALPHA_GPRELHIGH       17
+mdefine_line|#define R_ALPHA_GPRELHIGH       17      /* GP relative 32 bit, high 16 bits */
 DECL|macro|R_ALPHA_GPRELLOW
-mdefine_line|#define R_ALPHA_GPRELLOW        18
-DECL|macro|R_ALPHA_IMMED_GP_16
-mdefine_line|#define R_ALPHA_IMMED_GP_16     19
-DECL|macro|R_ALPHA_IMMED_GP_HI32
-mdefine_line|#define R_ALPHA_IMMED_GP_HI32   20
-DECL|macro|R_ALPHA_IMMED_SCN_HI32
-mdefine_line|#define R_ALPHA_IMMED_SCN_HI32  21
-DECL|macro|R_ALPHA_IMMED_BR_HI32
-mdefine_line|#define R_ALPHA_IMMED_BR_HI32   22
-DECL|macro|R_ALPHA_IMMED_LO32
-mdefine_line|#define R_ALPHA_IMMED_LO32      23
+mdefine_line|#define R_ALPHA_GPRELLOW        18      /* GP relative 32 bit, low 16 bits */
+DECL|macro|R_ALPHA_GPREL16
+mdefine_line|#define R_ALPHA_GPREL16         19      /* GP relative 16 bit */
 DECL|macro|R_ALPHA_COPY
 mdefine_line|#define R_ALPHA_COPY            24      /* Copy symbol at runtime */
 DECL|macro|R_ALPHA_GLOB_DAT
@@ -676,6 +662,36 @@ DECL|macro|R_ALPHA_JMP_SLOT
 mdefine_line|#define R_ALPHA_JMP_SLOT        26      /* Create PLT entry */
 DECL|macro|R_ALPHA_RELATIVE
 mdefine_line|#define R_ALPHA_RELATIVE        27      /* Adjust by program base */
+DECL|macro|R_ALPHA_BRSGP
+mdefine_line|#define R_ALPHA_BRSGP&t;&t;28
+DECL|macro|R_ALPHA_TLSGD
+mdefine_line|#define R_ALPHA_TLSGD           29
+DECL|macro|R_ALPHA_TLS_LDM
+mdefine_line|#define R_ALPHA_TLS_LDM         30
+DECL|macro|R_ALPHA_DTPMOD64
+mdefine_line|#define R_ALPHA_DTPMOD64        31
+DECL|macro|R_ALPHA_GOTDTPREL
+mdefine_line|#define R_ALPHA_GOTDTPREL       32
+DECL|macro|R_ALPHA_DTPREL64
+mdefine_line|#define R_ALPHA_DTPREL64        33
+DECL|macro|R_ALPHA_DTPRELHI
+mdefine_line|#define R_ALPHA_DTPRELHI        34
+DECL|macro|R_ALPHA_DTPRELLO
+mdefine_line|#define R_ALPHA_DTPRELLO        35
+DECL|macro|R_ALPHA_DTPREL16
+mdefine_line|#define R_ALPHA_DTPREL16        36
+DECL|macro|R_ALPHA_GOTTPREL
+mdefine_line|#define R_ALPHA_GOTTPREL        37
+DECL|macro|R_ALPHA_TPREL64
+mdefine_line|#define R_ALPHA_TPREL64         38
+DECL|macro|R_ALPHA_TPRELHI
+mdefine_line|#define R_ALPHA_TPRELHI         39
+DECL|macro|R_ALPHA_TPRELLO
+mdefine_line|#define R_ALPHA_TPRELLO         40
+DECL|macro|R_ALPHA_TPREL16
+mdefine_line|#define R_ALPHA_TPREL16         41
+DECL|macro|SHF_ALPHA_GPREL
+mdefine_line|#define SHF_ALPHA_GPREL&t;&t;0x10000000
 multiline_comment|/* PowerPC relocations defined by the ABIs */
 DECL|macro|R_PPC_NONE
 mdefine_line|#define R_PPC_NONE&t;&t;0
