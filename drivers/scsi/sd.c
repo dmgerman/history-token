@@ -5138,7 +5138,6 @@ r_else
 id|majors
 op_increment
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5166,26 +5165,6 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
-id|sd_template.scsi_driverfs_driver.name
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|sd_template.tag
-suffix:semicolon
-id|sd_template.scsi_driverfs_driver.bus
-op_assign
-op_amp
-id|scsi_driverfs_bus_type
-suffix:semicolon
-id|driver_register
-c_func
-(paren
-op_amp
-id|sd_template.scsi_driverfs_driver
-)paren
-suffix:semicolon
 id|register_reboot_notifier
 c_func
 (paren
@@ -5198,7 +5177,6 @@ id|rc
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;exit_sd - exit point for this driver (when it is&t;a module).&n; *&n; *&t;Note: this function unregisters this driver from the scsi mid-level.&n; **/
-DECL|function|exit_sd
 r_static
 r_void
 id|__exit
@@ -5272,7 +5250,6 @@ id|sd_template.scsi_driverfs_driver
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * XXX: this function does not take sd_devlist_lock to synchronize&n; *&t;access to sd_devlist.  This should be safe as no other reboot&n; *&t;notifier can access it.&n; */
-DECL|function|sd_notifier
 r_static
 r_int
 id|sd_notifier
@@ -5369,7 +5346,6 @@ id|NOTIFY_OK
 suffix:semicolon
 )brace
 multiline_comment|/* send a SYNCHRONIZE CACHE instruction down to the device through the&n; * normal SCSI command structure.  Wait for the command to complete (must&n; * have user context) */
-DECL|function|sd_synchronize_cache
 r_static
 r_int
 id|sd_synchronize_cache
@@ -5622,14 +5598,12 @@ c_func
 l_string|&quot;SCSI disk (sd) driver&quot;
 )paren
 suffix:semicolon
-DECL|variable|init_sd
 id|module_init
 c_func
 (paren
 id|init_sd
 )paren
 suffix:semicolon
-DECL|variable|exit_sd
 id|module_exit
 c_func
 (paren
