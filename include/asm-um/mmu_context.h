@@ -1,0 +1,82 @@
+macro_line|#ifndef __UM_MMU_CONTEXT_H
+DECL|macro|__UM_MMU_CONTEXT_H
+mdefine_line|#define __UM_MMU_CONTEXT_H
+macro_line|#include &quot;linux/sched.h&quot;
+DECL|macro|init_new_context
+mdefine_line|#define init_new_context(task, mm) (0)
+DECL|macro|get_mmu_context
+mdefine_line|#define get_mmu_context(task) do ; while(0)
+DECL|macro|activate_context
+mdefine_line|#define activate_context(tsk) do ; while(0)
+DECL|macro|destroy_context
+mdefine_line|#define destroy_context(mm) do ; while(0)
+DECL|function|activate_mm
+r_static
+r_inline
+r_void
+id|activate_mm
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|old
+comma
+r_struct
+id|mm_struct
+op_star
+r_new
+)paren
+(brace
+)brace
+DECL|function|switch_mm
+r_static
+r_inline
+r_void
+id|switch_mm
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|prev
+comma
+r_struct
+id|mm_struct
+op_star
+id|next
+comma
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_int
+id|cpu
+)paren
+(brace
+)brace
+DECL|function|enter_lazy_tlb
+r_static
+r_inline
+r_void
+id|enter_lazy_tlb
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_int
+id|cpu
+)paren
+(brace
+)brace
+macro_line|#endif
+eof
