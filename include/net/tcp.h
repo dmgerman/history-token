@@ -707,11 +707,6 @@ DECL|macro|MAX_TCP_KEEPCNT
 mdefine_line|#define MAX_TCP_KEEPCNT&t;&t;127
 DECL|macro|MAX_TCP_SYNCNT
 mdefine_line|#define MAX_TCP_SYNCNT&t;&t;127
-multiline_comment|/* TIME_WAIT reaping mechanism. */
-DECL|macro|TCP_TWKILL_SLOTS
-mdefine_line|#define TCP_TWKILL_SLOTS&t;8&t;/* Please keep this a power of 2. */
-DECL|macro|TCP_TWKILL_PERIOD
-mdefine_line|#define TCP_TWKILL_PERIOD&t;(TCP_TIMEWAIT_LEN/TCP_TWKILL_SLOTS)
 DECL|macro|TCP_SYNQ_INTERVAL
 mdefine_line|#define TCP_SYNQ_INTERVAL&t;(HZ/5)&t;/* Period of SYNACK timer */
 DECL|macro|TCP_SYNQ_HSIZE

@@ -2426,6 +2426,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|ftp
+id|PROVIDES_CONNTRACK
+c_func
+(paren
+id|ftp
+)paren
+suffix:semicolon
 DECL|variable|ip_ftp_lock
 id|EXPORT_SYMBOL
 c_func
