@@ -10888,6 +10888,11 @@ id|sadb_x_policy
 op_star
 id|pol
 suffix:semicolon
+r_struct
+id|sockaddr_in
+op_star
+id|sin
+suffix:semicolon
 r_int
 id|size
 suffix:semicolon
