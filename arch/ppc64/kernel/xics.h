@@ -2,7 +2,6 @@ multiline_comment|/* &n; * arch/ppc/kernel/xics.h&n; *&n; * Copyright 2000 IBM C
 macro_line|#ifndef _PPC_KERNEL_XICS_H
 DECL|macro|_PPC_KERNEL_XICS_H
 mdefine_line|#define _PPC_KERNEL_XICS_H
-macro_line|#include &quot;local_irq.h&quot;
 r_extern
 r_struct
 id|hw_interrupt_type

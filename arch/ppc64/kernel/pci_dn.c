@@ -1119,7 +1119,7 @@ id|eads-&gt;tce_table
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* NOTE: share properties.  We could copy but for now this should suffice.&n;&t; * The full_name is also incorrect...but seems harmless.&n;&t; */
+multiline_comment|/*&n;&t; * NOTE: share properties.  We could copy but for now this should&n;&t; * suffice.  The full_name is also incorrect...but seems harmless.&n;&t; */
 id|eads-&gt;child
 op_assign
 l_int|NULL
@@ -1244,7 +1244,7 @@ multiline_comment|/* ToDo: call some device init hook here */
 )brace
 r_else
 (brace
-multiline_comment|/* Now it is very possible that we can&squot;t find the device because it is&n;&t;&t; * not the zero&squot;th device of a mutifunction device and we don&squot;t have&n;&t;&t; * permission to read the zero&squot;th device.  If this is the case, Linux&n;&t;&t; * would ordinarily skip all the other functions.&n;&t;&t; */
+multiline_comment|/* Now it is very possible that we can&squot;t find the device&n;&t;&t; * because it is not the zero&squot;th device of a mutifunction&n;&t;&t; * device and we don&squot;t have permission to read the zero&squot;th&n;&t;&t; * device.  If this is the case, Linux would ordinarily skip&n;&t;&t; * all the other functions.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1292,7 +1292,7 @@ c_cond
 id|thisdevdn
 )paren
 (brace
-multiline_comment|/* Ah ha!  There does exist a sub function.  Now this isn&squot;t an exact&n;&t;&t;&t;&t; * match for searchval, but in order to get Linux to believe the sub&n;&t;&t;&t;&t; * functions exist we will need to manufacture a fake device_node&n;&t;&t;&t;&t; * for this zero&squot;th function.  To keept this simple for now we only&n;&t;&t;&t;&t; * handle pci bridges and we just hand back the found node which&n;&t;&t;&t;&t; * isn&squot;t correct, but Linux won&squot;t care.&n;&t;&t;&t;&t; */
+multiline_comment|/* Ah ha!  There does exist a sub function.&n;&t;&t;&t;&t; * Now this isn&squot;t an exact match for&n;&t;&t;&t;&t; * searchval, but in order to get Linux to&n;&t;&t;&t;&t; * believe the sub functions exist we will&n;&t;&t;&t;&t; * need to manufacture a fake device_node for&n;&t;&t;&t;&t; * this zero&squot;th function.  To keept this&n;&t;&t;&t;&t; * simple for now we only handle pci bridges&n;&t;&t;&t;&t; * and we just hand back the found node which&n;&t;&t;&t;&t; * isn&squot;t correct, but Linux won&squot;t care.&n;&t;&t;&t;&t; */
 r_char
 op_star
 id|device_type

@@ -1313,10 +1313,6 @@ id|ppc_md.get_cpuinfo
 op_assign
 id|iSeries_get_cpuinfo
 suffix:semicolon
-id|ppc_md.irq_cannonicalize
-op_assign
-l_int|NULL
-suffix:semicolon
 id|ppc_md.init_IRQ
 op_assign
 id|iSeries_init_IRQ
@@ -1352,10 +1348,6 @@ suffix:semicolon
 id|ppc_md.halt
 op_assign
 id|iSeries_halt
-suffix:semicolon
-id|ppc_md.time_init
-op_assign
-l_int|NULL
 suffix:semicolon
 id|ppc_md.get_boot_time
 op_assign
@@ -2979,18 +2971,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * Nothing to do here.&n; */
-r_void
-id|__init
-DECL|function|iSeries_time_init
-id|iSeries_time_init
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/* Nothing to do */
 )brace
 multiline_comment|/* JDH Hack */
 DECL|variable|jdh_time
