@@ -3933,10 +3933,6 @@ id|flags
 suffix:semicolon
 multiline_comment|/*&n;&t; * tell I/O scheduler that this isn&squot;t a regular read/write (ie it&n;&t; * must not attempt merges on this) and that it acts as a soft&n;&t; * barrier&n;&t; */
 id|rq-&gt;flags
-op_and_assign
-id|REQ_QUEUED
-suffix:semicolon
-id|rq-&gt;flags
 op_or_assign
 id|REQ_SPECIAL
 op_or
@@ -3954,7 +3950,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* If command is tagged, release the tag */
+multiline_comment|/*&n;&t; * If command is tagged, release the tag&n;&t; */
 r_if
 c_cond
 (paren
@@ -3964,7 +3960,6 @@ c_func
 id|rq
 )paren
 )paren
-(brace
 id|blk_queue_end_tag
 c_func
 (paren
@@ -3973,7 +3968,6 @@ comma
 id|rq
 )paren
 suffix:semicolon
-)brace
 id|_elv_add_request
 c_func
 (paren
