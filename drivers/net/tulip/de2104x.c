@@ -7974,17 +7974,6 @@ id|de
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|regs-&gt;len
-OG
-id|DE_REGS_SIZE
-)paren
-id|regs-&gt;len
-op_assign
-id|DE_REGS_SIZE
-suffix:semicolon
 id|regs-&gt;version
 op_assign
 (paren
