@@ -1764,12 +1764,6 @@ id|thread_keyring
 suffix:semicolon
 multiline_comment|/* keyring private to this thread */
 macro_line|#endif
-multiline_comment|/*&n; * All archs should support atomic ops with&n; * 1 byte granularity.&n; */
-DECL|member|memdie
-r_int
-r_char
-id|memdie
-suffix:semicolon
 multiline_comment|/*&n; * Must be changed atomically so it shouldn&squot;t be&n; * be a shareable bitflag.&n; */
 DECL|member|used_math
 r_int

@@ -3276,7 +3276,15 @@ op_amp
 id|PF_MEMALLOC
 )paren
 op_logical_or
-id|p-&gt;memdie
+id|unlikely
+c_func
+(paren
+id|test_thread_flag
+c_func
+(paren
+id|TIF_MEMDIE
+)paren
+)paren
 )paren
 op_logical_and
 op_logical_neg

@@ -141,6 +141,8 @@ DECL|macro|TIF_UAC_NOFIX
 mdefine_line|#define TIF_UAC_NOFIX&t;&t;7
 DECL|macro|TIF_UAC_SIGBUS
 mdefine_line|#define TIF_UAC_SIGBUS&t;&t;8
+DECL|macro|TIF_MEMDIE
+mdefine_line|#define TIF_MEMDIE&t;&t;9
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1&lt;&lt;TIF_SYSCALL_TRACE)
 DECL|macro|_TIF_NOTIFY_RESUME
