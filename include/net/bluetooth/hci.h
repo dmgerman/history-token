@@ -971,7 +971,7 @@ id|packed
 suffix:semicolon
 multiline_comment|/* Status params */
 DECL|macro|OGF_STATUS_PARAM
-mdefine_line|#define OGF_STATUS_PARAM &t;0x05
+mdefine_line|#define OGF_STATUS_PARAM&t;0x05
 multiline_comment|/* Testing commands */
 DECL|macro|OGF_TESTING_CMD
 mdefine_line|#define OGF_TESTING_CMD&t;&t;0x3E
