@@ -2837,18 +2837,30 @@ id|us-&gt;bitflags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* if the command was aborted, indicate that */
+multiline_comment|/* did we abort this command? */
 r_if
 c_cond
 (paren
-id|result
-op_eq
-op_minus
-id|ENOENT
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
 )paren
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
+op_eq
+id|US_STATE_ABORTING
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;usb_stor_control_msg(): transfer aborted&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+id|US_BULK_TRANSFER_ABORTED
+suffix:semicolon
+)brace
 multiline_comment|/* STALL must be cleared when it is detected */
 r_if
 c_cond
@@ -2881,18 +2893,30 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* if the command was aborted, indicate that */
+multiline_comment|/* did we abort this command? */
 r_if
 c_cond
 (paren
-id|result
-op_eq
-op_minus
-id|ENOENT
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
 )paren
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
+op_eq
+id|US_STATE_ABORTING
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;usb_stor_control_msg(): transfer aborted&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+id|US_BULK_TRANSFER_ABORTED
+suffix:semicolon
+)brace
 r_return
 id|USB_STOR_TRANSPORT_FAILED
 suffix:semicolon
@@ -3212,18 +3236,30 @@ OL
 l_int|0
 )paren
 (brace
-multiline_comment|/* if the command was aborted, indicate that */
+multiline_comment|/* did we abort this command? */
 r_if
 c_cond
 (paren
-id|result
-op_eq
-op_minus
-id|ENOENT
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
 )paren
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
+op_eq
+id|US_STATE_ABORTING
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;usb_stor_CB_transport(): transfer aborted&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+id|US_BULK_TRANSFER_ABORTED
+suffix:semicolon
+)brace
 multiline_comment|/* a stall is a fatal condition from the device */
 r_if
 c_cond
@@ -3256,18 +3292,30 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* if the command was aborted, indicate that */
+multiline_comment|/* did we abort this command? */
 r_if
 c_cond
 (paren
-id|result
-op_eq
-op_minus
-id|ENOENT
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
 )paren
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
+op_eq
+id|US_STATE_ABORTING
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;usb_stor_CB_transport(): transfer aborted&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+id|US_BULK_TRANSFER_ABORTED
+suffix:semicolon
+)brace
 r_return
 id|USB_STOR_TRANSPORT_FAILED
 suffix:semicolon
@@ -3651,18 +3699,30 @@ comma
 id|result
 )paren
 suffix:semicolon
-multiline_comment|/* if the command was aborted, indicate that */
+multiline_comment|/* did we abort this command? */
 r_if
 c_cond
 (paren
-id|result
-op_eq
-op_minus
-id|ENOENT
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
 )paren
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
+op_eq
+id|US_STATE_ABORTING
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;usb_stor_Bulk_transport(): transfer aborted&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+id|US_BULK_TRANSFER_ABORTED
+suffix:semicolon
+)brace
 multiline_comment|/* if we stall, we need to clear it before we go on */
 r_if
 c_cond
@@ -3691,18 +3751,30 @@ comma
 id|pipe
 )paren
 suffix:semicolon
-multiline_comment|/* if the command was aborted, indicate that */
+multiline_comment|/* did we abort this command? */
 r_if
 c_cond
 (paren
-id|result
-op_eq
-op_minus
-id|ENOENT
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
 )paren
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
+op_eq
+id|US_STATE_ABORTING
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;usb_stor_Bulk_transport(): transfer aborted&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+id|US_BULK_TRANSFER_ABORTED
+suffix:semicolon
+)brace
 id|result
 op_assign
 op_minus
@@ -3807,18 +3879,30 @@ op_amp
 id|partial
 )paren
 suffix:semicolon
-multiline_comment|/* if the command was aborted, indicate that */
+multiline_comment|/* did we abort this command? */
 r_if
 c_cond
 (paren
-id|result
-op_eq
-op_minus
-id|ENOENT
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
 )paren
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
+op_eq
+id|US_STATE_ABORTING
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;usb_stor_Bulk_transport(): transfer aborted&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+id|US_BULK_TRANSFER_ABORTED
+suffix:semicolon
+)brace
 multiline_comment|/* did the attempt to read the CSW fail? */
 r_if
 c_cond
@@ -3847,18 +3931,30 @@ comma
 id|pipe
 )paren
 suffix:semicolon
-multiline_comment|/* if the command was aborted, indicate that */
+multiline_comment|/* did we abort this command? */
 r_if
 c_cond
 (paren
-id|result
-op_eq
-op_minus
-id|ENOENT
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
 )paren
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
+op_eq
+id|US_STATE_ABORTING
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;usb_stor_Bulk_transport(): transfer aborted&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+id|US_BULK_TRANSFER_ABORTED
+suffix:semicolon
+)brace
 multiline_comment|/* get the status again */
 id|US_DEBUGP
 c_func
@@ -3884,18 +3980,30 @@ op_amp
 id|partial
 )paren
 suffix:semicolon
-multiline_comment|/* if the command was aborted, indicate that */
+multiline_comment|/* did we abort this command? */
 r_if
 c_cond
 (paren
-id|result
-op_eq
-op_minus
-id|ENOENT
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
 )paren
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
+op_eq
+id|US_STATE_ABORTING
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;usb_stor_Bulk_transport(): transfer aborted&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+id|US_BULK_TRANSFER_ABORTED
+suffix:semicolon
+)brace
 multiline_comment|/* if it fails again, we need a reset and return an error*/
 r_if
 c_cond
@@ -3924,18 +4032,30 @@ comma
 id|pipe
 )paren
 suffix:semicolon
-multiline_comment|/* if the command was aborted, indicate that */
+multiline_comment|/* did we abort this command? */
 r_if
 c_cond
 (paren
-id|result
-op_eq
-op_minus
-id|ENOENT
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
 )paren
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
+op_eq
+id|US_STATE_ABORTING
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;usb_stor_Bulk_transport(): transfer aborted&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+id|US_BULK_TRANSFER_ABORTED
+suffix:semicolon
+)brace
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
