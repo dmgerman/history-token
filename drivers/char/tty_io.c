@@ -4191,7 +4191,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|list_del
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -4258,7 +4258,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|list_del
+id|list_del_init
 c_func
 (paren
 op_amp
