@@ -2255,19 +2255,21 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Avoid using user_mode() here: with &quot;epc&quot;, we cannot use the privilege level to&n;&t; * infer whether the interrupt task was running on the kernel backing store.&n;&t; */
 r_if
 c_cond
 (paren
-id|regs-&gt;r12
-op_ge
-id|TASK_SIZE
+op_logical_neg
+id|user_stack
+c_func
+(paren
+id|regs
+)paren
 )paren
 (brace
 id|DPRINT
 c_func
 (paren
-l_string|&quot;ignoring kernel write to r%lu; register isn&squot;t on the RBS!&quot;
+l_string|&quot;ignoring kernel write to r%lu; register isn&squot;t on the kernel RBS!&quot;
 comma
 id|r1
 )paren
@@ -2772,13 +2774,15 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Avoid using user_mode() here: with &quot;epc&quot;, we cannot use the privilege level to&n;&t; * infer whether the interrupt task was running on the kernel backing store.&n;&t; */
 r_if
 c_cond
 (paren
-id|regs-&gt;r12
-op_ge
-id|TASK_SIZE
+op_logical_neg
+id|user_stack
+c_func
+(paren
+id|regs
+)paren
 )paren
 (brace
 id|DPRINT

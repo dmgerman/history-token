@@ -590,6 +590,10 @@ DECL|macro|ia64_psr
 macro_line|# define ia64_psr(regs)&t;&t;&t;((struct ia64_psr *) &amp;(regs)-&gt;cr_ipsr)
 DECL|macro|user_mode
 macro_line|# define user_mode(regs)&t;&t;(((struct ia64_psr *) &amp;(regs)-&gt;cr_ipsr)-&gt;cpl != 0)
+DECL|macro|user_stack
+macro_line|# define user_stack(regs)&t;&t;(current-&gt;thread.on_ustack != 0)
+DECL|macro|fsys_mode
+macro_line|# define fsys_mode(regs)&t;&t;(!user_mode(regs) &amp;&amp; user_stack(regs))
 r_struct
 id|task_struct
 suffix:semicolon
