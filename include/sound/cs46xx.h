@@ -2508,6 +2508,11 @@ DECL|member|nr_ac97_codecs
 r_int
 id|nr_ac97_codecs
 suffix:semicolon
+DECL|member|ac97_bus
+id|ac97_bus_t
+op_star
+id|ac97_bus
+suffix:semicolon
 DECL|member|ac97
 id|ac97_t
 op_star

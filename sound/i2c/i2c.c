@@ -332,11 +332,11 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|spin_lock_init
+id|init_MUTEX
 c_func
 (paren
 op_amp
-id|bus-&gt;lock
+id|bus-&gt;lock_mutex
 )paren
 suffix:semicolon
 id|INIT_LIST_HEAD
