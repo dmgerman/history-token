@@ -698,6 +698,11 @@ id|sector_t
 id|resync_mark_cnt
 suffix:semicolon
 multiline_comment|/* blocks written at resync_mark */
+DECL|member|resync_max_sectors
+id|sector_t
+id|resync_max_sectors
+suffix:semicolon
+multiline_comment|/* may be set by personality */
 multiline_comment|/* recovery/resync flags &n;&t; * NEEDED:   we might need to start a resync/recover&n;&t; * RUNNING:  a thread is running, or about to be started&n;&t; * SYNC:     actually doing a resync, not a recovery&n;&t; * ERR:      and IO error was detected - abort the resync/recovery&n;&t; * INTR:     someone requested a (clean) early abort.&n;&t; * DONE:     thread is done and is waiting to be reaped&n;&t; */
 DECL|macro|MD_RECOVERY_RUNNING
 mdefine_line|#define&t;MD_RECOVERY_RUNNING&t;0
@@ -826,6 +831,33 @@ id|MD_RECOVERY_NEEDED
 comma
 op_amp
 id|mddev-&gt;recovery
+)paren
+suffix:semicolon
+)brace
+DECL|function|md_sync_acct
+r_static
+r_inline
+r_void
+id|md_sync_acct
+c_func
+(paren
+r_struct
+id|block_device
+op_star
+id|bdev
+comma
+r_int
+r_int
+id|nr_sectors
+)paren
+(brace
+id|atomic_add
+c_func
+(paren
+id|nr_sectors
+comma
+op_amp
+id|bdev-&gt;bd_contains-&gt;bd_disk-&gt;sync_io
 )paren
 suffix:semicolon
 )brace

@@ -364,7 +364,7 @@ r_int
 id|policy
 suffix:semicolon
 DECL|member|sync_io
-r_int
+id|atomic_t
 id|sync_io
 suffix:semicolon
 multiline_comment|/* RAID */

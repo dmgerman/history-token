@@ -3833,7 +3833,7 @@ id|conf-&gt;mirrors
 id|i
 )braket
 dot
-id|rdev
+id|rdev-&gt;bdev
 comma
 id|wbio-&gt;bi_size
 op_rshift
@@ -4940,7 +4940,7 @@ suffix:semicolon
 id|md_sync_acct
 c_func
 (paren
-id|mirror-&gt;rdev
+id|mirror-&gt;rdev-&gt;bdev
 comma
 id|nr_sectors
 )paren
