@@ -1453,7 +1453,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|bluez_init
 id|module_init
 c_func
@@ -1487,5 +1486,4 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 eof

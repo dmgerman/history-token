@@ -2216,13 +2216,6 @@ id|tty-&gt;poll_wait
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 5, 0)
-DECL|macro|__minor
-mdefine_line|#define __minor MINOR
-macro_line|#else
-DECL|macro|__minor
-mdefine_line|#define __minor minor
-macro_line|#endif
 DECL|function|rfcomm_tty_open
 r_static
 r_int
@@ -2265,7 +2258,7 @@ id|id
 suffix:semicolon
 id|id
 op_assign
-id|__minor
+id|minor
 c_func
 (paren
 id|tty-&gt;device
