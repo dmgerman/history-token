@@ -3935,6 +3935,7 @@ l_int|0
 )brace
 suffix:semicolon
 r_int
+r_int
 id|saved_flags
 suffix:semicolon
 id|pcd_bufblk
@@ -4089,6 +4090,7 @@ id|pcd_count
 )paren
 (brace
 r_int
+r_int
 id|saved_flags
 suffix:semicolon
 id|spin_lock_irqsave
@@ -4148,6 +4150,7 @@ c_func
 r_void
 )paren
 (brace
+r_int
 r_int
 id|saved_flags
 suffix:semicolon

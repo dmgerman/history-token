@@ -27127,6 +27127,7 @@ r_int
 id|err
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 r_if
@@ -27322,6 +27323,7 @@ id|info
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon

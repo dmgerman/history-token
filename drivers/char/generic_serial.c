@@ -1705,6 +1705,7 @@ id|port
 )paren
 (brace
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|func_enter

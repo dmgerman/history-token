@@ -147,6 +147,7 @@ id|nice
 )paren
 (brace
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|spin_lock_irqsave
@@ -279,6 +280,7 @@ id|con
 r_void
 )paren
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -414,6 +416,7 @@ id|con
 r_void
 )paren
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon

@@ -213,6 +213,7 @@ op_star
 id|p
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 r_void
@@ -311,6 +312,7 @@ r_void
 )paren
 macro_line|#ifdef CONFIG_PARPORT
 (brace
+r_int
 r_int
 id|flags
 suffix:semicolon
