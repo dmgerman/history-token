@@ -1140,6 +1140,20 @@ r_struct
 id|class_device
 id|class_dev
 suffix:semicolon
+DECL|member|legacy_io
+r_struct
+id|bin_attribute
+op_star
+id|legacy_io
+suffix:semicolon
+multiline_comment|/* legacy I/O for this bus */
+DECL|member|legacy_mem
+r_struct
+id|bin_attribute
+op_star
+id|legacy_mem
+suffix:semicolon
+multiline_comment|/* legacy mem */
 )brace
 suffix:semicolon
 DECL|macro|pci_bus_b
