@@ -4392,9 +4392,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* bind_mtd */
 multiline_comment|/*====================================================================*/
-DECL|function|pcmcia_deregister_clientR
+DECL|function|pcmcia_deregister_client
 r_int
-id|pcmcia_deregister_clientR
+id|pcmcia_deregister_client
 c_func
 (paren
 id|client_handle_t
