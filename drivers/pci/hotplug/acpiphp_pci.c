@@ -1879,11 +1879,6 @@ id|acpiphp_bridge
 op_star
 id|bridge
 suffix:semicolon
-r_int
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* if pci_dev is NULL, ignore it */
 r_if
 c_cond
