@@ -724,17 +724,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;width %d speed %d&bslash;n&quot;
-comma
-id|attr.active_width
-comma
-id|attr.active_speed
-)paren
-suffix:semicolon
 id|rate
 op_assign
 l_int|25
