@@ -6906,6 +6906,11 @@ suffix:semicolon
 r_int
 id|name_len
 suffix:semicolon
+id|__u16
+id|params
+comma
+id|byte_count
+suffix:semicolon
 id|cFYI
 c_func
 (paren
@@ -7020,7 +7025,7 @@ id|name_len
 )paren
 suffix:semicolon
 )brace
-id|pSMB-&gt;TotalParameterCount
+id|params
 op_assign
 l_int|2
 multiline_comment|/* level */
@@ -7112,9 +7117,9 @@ c_func
 id|TRANS2_QUERY_PATH_INFORMATION
 )paren
 suffix:semicolon
-id|pSMB-&gt;ByteCount
+id|byte_count
 op_assign
-id|pSMB-&gt;TotalParameterCount
+id|params
 op_plus
 l_int|1
 multiline_comment|/* pad */
@@ -7124,7 +7129,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;TotalParameterCount
+id|params
 )paren
 suffix:semicolon
 id|pSMB-&gt;ParameterCount
@@ -7145,14 +7150,14 @@ l_int|0
 suffix:semicolon
 id|pSMB-&gt;hdr.smb_buf_length
 op_add_assign
-id|pSMB-&gt;ByteCount
+id|byte_count
 suffix:semicolon
 id|pSMB-&gt;ByteCount
 op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;ByteCount
+id|byte_count
 )paren
 suffix:semicolon
 id|rc
@@ -7206,7 +7211,8 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* decode response */
-id|pSMBr-&gt;DataOffset
+id|__u16
+id|data_offset
 op_assign
 id|le16_to_cpu
 c_func
@@ -7214,7 +7220,8 @@ c_func
 id|pSMBr-&gt;DataOffset
 )paren
 suffix:semicolon
-id|pSMBr-&gt;DataCount
+id|__u16
+id|count
 op_assign
 id|le16_to_cpu
 c_func
@@ -7232,7 +7239,7 @@ l_int|2
 )paren
 op_logical_or
 (paren
-id|pSMBr-&gt;DataOffset
+id|data_offset
 OG
 l_int|512
 )paren
@@ -7271,7 +7278,7 @@ op_star
 op_amp
 id|pSMBr-&gt;hdr.Protocol
 op_plus
-id|pSMBr-&gt;DataOffset
+id|data_offset
 )paren
 comma
 id|min_t
@@ -7282,7 +7289,7 @@ r_int
 comma
 id|buflen
 comma
-id|pSMBr-&gt;DataCount
+id|count
 )paren
 op_div
 l_int|2
@@ -7305,7 +7312,7 @@ op_star
 op_amp
 id|pSMBr-&gt;hdr.Protocol
 op_plus
-id|pSMBr-&gt;DataOffset
+id|data_offset
 )paren
 comma
 id|name_len
@@ -7328,7 +7335,7 @@ op_star
 op_amp
 id|pSMBr-&gt;hdr.Protocol
 op_plus
-id|pSMBr-&gt;DataOffset
+id|data_offset
 comma
 id|min_t
 c_func
@@ -7338,7 +7345,7 @@ r_int
 comma
 id|buflen
 comma
-id|pSMBr-&gt;DataCount
+id|count
 )paren
 )paren
 suffix:semicolon
@@ -7894,6 +7901,11 @@ suffix:semicolon
 r_int
 id|name_len
 suffix:semicolon
+id|__u16
+id|params
+comma
+id|byte_count
+suffix:semicolon
 id|cFYI
 c_func
 (paren
@@ -8008,7 +8020,7 @@ id|name_len
 )paren
 suffix:semicolon
 )brace
-id|pSMB-&gt;TotalParameterCount
+id|params
 op_assign
 l_int|2
 multiline_comment|/* level */
@@ -8017,7 +8029,7 @@ l_int|4
 multiline_comment|/* reserved */
 op_plus
 id|name_len
-multiline_comment|/* includes null */
+multiline_comment|/* includes NUL */
 suffix:semicolon
 id|pSMB-&gt;TotalDataCount
 op_assign
@@ -8100,9 +8112,9 @@ c_func
 id|TRANS2_QUERY_PATH_INFORMATION
 )paren
 suffix:semicolon
-id|pSMB-&gt;ByteCount
+id|byte_count
 op_assign
-id|pSMB-&gt;TotalParameterCount
+id|params
 op_plus
 l_int|1
 multiline_comment|/* pad */
@@ -8112,7 +8124,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;TotalParameterCount
+id|params
 )paren
 suffix:semicolon
 id|pSMB-&gt;ParameterCount
@@ -8133,14 +8145,14 @@ l_int|0
 suffix:semicolon
 id|pSMB-&gt;hdr.smb_buf_length
 op_add_assign
-id|pSMB-&gt;ByteCount
+id|byte_count
 suffix:semicolon
 id|pSMB-&gt;ByteCount
 op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;ByteCount
+id|byte_count
 )paren
 suffix:semicolon
 id|rc
@@ -8194,7 +8206,8 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* decode response */
-id|pSMBr-&gt;DataOffset
+id|__u16
+id|data_offset
 op_assign
 id|le16_to_cpu
 c_func
@@ -8214,7 +8227,7 @@ l_int|40
 )paren
 op_logical_or
 (paren
-id|pSMBr-&gt;DataOffset
+id|data_offset
 OG
 l_int|512
 )paren
@@ -8248,7 +8261,7 @@ op_star
 op_amp
 id|pSMBr-&gt;hdr.Protocol
 op_plus
-id|pSMBr-&gt;DataOffset
+id|data_offset
 comma
 r_sizeof
 (paren
@@ -8346,6 +8359,11 @@ l_int|0
 suffix:semicolon
 r_int
 id|name_len
+suffix:semicolon
+id|__u16
+id|params
+comma
+id|byte_count
 suffix:semicolon
 id|cFYI
 c_func
@@ -8461,7 +8479,7 @@ id|name_len
 )paren
 suffix:semicolon
 )brace
-id|pSMB-&gt;TotalParameterCount
+id|params
 op_assign
 l_int|2
 multiline_comment|/* level */
@@ -8470,7 +8488,7 @@ l_int|4
 multiline_comment|/* reserved */
 op_plus
 id|name_len
-multiline_comment|/* includes null */
+multiline_comment|/* includes NUL */
 suffix:semicolon
 id|pSMB-&gt;TotalDataCount
 op_assign
@@ -8553,9 +8571,9 @@ c_func
 id|TRANS2_QUERY_PATH_INFORMATION
 )paren
 suffix:semicolon
-id|pSMB-&gt;ByteCount
+id|byte_count
 op_assign
-id|pSMB-&gt;TotalParameterCount
+id|params
 op_plus
 l_int|1
 multiline_comment|/* pad */
@@ -8565,7 +8583,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;TotalParameterCount
+id|params
 )paren
 suffix:semicolon
 id|pSMB-&gt;ParameterCount
@@ -8586,14 +8604,14 @@ l_int|0
 suffix:semicolon
 id|pSMB-&gt;hdr.smb_buf_length
 op_add_assign
-id|pSMB-&gt;ByteCount
+id|byte_count
 suffix:semicolon
 id|pSMB-&gt;ByteCount
 op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;ByteCount
+id|byte_count
 )paren
 suffix:semicolon
 id|rc
@@ -8647,7 +8665,8 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* decode response */
-id|pSMBr-&gt;DataOffset
+id|__u16
+id|data_offset
 op_assign
 id|le16_to_cpu
 c_func
@@ -8669,13 +8688,13 @@ id|FILE_UNIX_BASIC_INFO
 )paren
 op_logical_or
 (paren
-id|pSMBr-&gt;DataOffset
+id|data_offset
 OG
 l_int|512
 )paren
 op_logical_or
 (paren
-id|pSMBr-&gt;DataOffset
+id|data_offset
 OL
 r_sizeof
 (paren
@@ -8696,7 +8715,7 @@ comma
 (paren
 r_int
 )paren
-id|pSMBr-&gt;DataOffset
+id|data_offset
 comma
 id|bytes_returned
 )paren
@@ -8727,7 +8746,7 @@ op_star
 op_amp
 id|pSMBr-&gt;hdr.Protocol
 op_plus
-id|pSMBr-&gt;DataOffset
+id|data_offset
 comma
 r_sizeof
 (paren
@@ -15694,6 +15713,11 @@ r_char
 op_star
 id|temp_ptr
 suffix:semicolon
+id|__u16
+id|params
+comma
+id|byte_count
+suffix:semicolon
 id|cFYI
 c_func
 (paren
@@ -15808,7 +15832,7 @@ id|name_len
 )paren
 suffix:semicolon
 )brace
-id|pSMB-&gt;TotalParameterCount
+id|params
 op_assign
 l_int|2
 multiline_comment|/* level */
@@ -15817,7 +15841,7 @@ l_int|4
 multiline_comment|/* reserved */
 op_plus
 id|name_len
-multiline_comment|/* includes null */
+multiline_comment|/* includes NUL */
 suffix:semicolon
 id|pSMB-&gt;TotalDataCount
 op_assign
@@ -15900,9 +15924,9 @@ c_func
 id|TRANS2_QUERY_PATH_INFORMATION
 )paren
 suffix:semicolon
-id|pSMB-&gt;ByteCount
+id|byte_count
 op_assign
-id|pSMB-&gt;TotalParameterCount
+id|params
 op_plus
 l_int|1
 multiline_comment|/* pad */
@@ -15912,7 +15936,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;TotalParameterCount
+id|params
 )paren
 suffix:semicolon
 id|pSMB-&gt;ParameterCount
@@ -15933,14 +15957,14 @@ l_int|0
 suffix:semicolon
 id|pSMB-&gt;hdr.smb_buf_length
 op_add_assign
-id|pSMB-&gt;ByteCount
+id|byte_count
 suffix:semicolon
 id|pSMB-&gt;ByteCount
 op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;ByteCount
+id|byte_count
 )paren
 suffix:semicolon
 id|rc
@@ -15994,7 +16018,8 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* decode response */
-id|pSMBr-&gt;DataOffset
+id|__u16
+id|data_offset
 op_assign
 id|le16_to_cpu
 c_func
@@ -16014,7 +16039,7 @@ l_int|4
 )paren
 op_logical_or
 (paren
-id|pSMBr-&gt;DataOffset
+id|data_offset
 OG
 l_int|512
 )paren
@@ -16025,7 +16050,7 @@ op_minus
 id|EIO
 suffix:semicolon
 multiline_comment|/* bad smb */
-multiline_comment|/* else if (pFindData){&n;&t;&t;&t;memcpy((char *) pFindData,&n;&t;&t;&t;       (char *) &amp;pSMBr-&gt;hdr.Protocol +&n;&t;&t;&t;       pSMBr-&gt;DataOffset, kl);&n;&t;&t;}*/
+multiline_comment|/* else if (pFindData){&n;&t;&t;&t;memcpy((char *) pFindData,&n;&t;&t;&t;       (char *) &amp;pSMBr-&gt;hdr.Protocol +&n;&t;&t;&t;       data_offset, kl);&n;&t;&t;}*/
 r_else
 (brace
 multiline_comment|/* check that length of list is not more than bcc */
@@ -16041,7 +16066,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* validate_trans2_offsets() */
-multiline_comment|/* BB to check if(start of smb + pSMBr-&gt;DataOffset &gt; &amp;bcc+ bcc)*/
+multiline_comment|/* BB to check if(start of smb + data_offset &gt; &amp;bcc+ bcc)*/
 id|ea_response_data
 op_assign
 (paren
@@ -16059,7 +16084,7 @@ op_amp
 id|pSMBr-&gt;hdr.Protocol
 )paren
 op_plus
-id|pSMBr-&gt;DataOffset
+id|data_offset
 )paren
 suffix:semicolon
 id|ea_response_data-&gt;list_len
@@ -16377,6 +16402,11 @@ r_char
 op_star
 id|temp_ptr
 suffix:semicolon
+id|__u16
+id|params
+comma
+id|byte_count
+suffix:semicolon
 id|cFYI
 c_func
 (paren
@@ -16491,7 +16521,7 @@ id|name_len
 )paren
 suffix:semicolon
 )brace
-id|pSMB-&gt;TotalParameterCount
+id|params
 op_assign
 l_int|2
 multiline_comment|/* level */
@@ -16500,7 +16530,7 @@ l_int|4
 multiline_comment|/* reserved */
 op_plus
 id|name_len
-multiline_comment|/* includes null */
+multiline_comment|/* includes NUL */
 suffix:semicolon
 id|pSMB-&gt;TotalDataCount
 op_assign
@@ -16583,9 +16613,9 @@ c_func
 id|TRANS2_QUERY_PATH_INFORMATION
 )paren
 suffix:semicolon
-id|pSMB-&gt;ByteCount
+id|byte_count
 op_assign
-id|pSMB-&gt;TotalParameterCount
+id|params
 op_plus
 l_int|1
 multiline_comment|/* pad */
@@ -16595,7 +16625,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;TotalParameterCount
+id|params
 )paren
 suffix:semicolon
 id|pSMB-&gt;ParameterCount
@@ -16616,14 +16646,14 @@ l_int|0
 suffix:semicolon
 id|pSMB-&gt;hdr.smb_buf_length
 op_add_assign
-id|pSMB-&gt;ByteCount
+id|byte_count
 suffix:semicolon
 id|pSMB-&gt;ByteCount
 op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;ByteCount
+id|byte_count
 )paren
 suffix:semicolon
 id|rc
@@ -16677,7 +16707,8 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* decode response */
-id|pSMBr-&gt;DataOffset
+id|__u16
+id|data_offset
 op_assign
 id|le16_to_cpu
 c_func
@@ -16697,7 +16728,7 @@ l_int|4
 )paren
 op_logical_or
 (paren
-id|pSMBr-&gt;DataOffset
+id|data_offset
 OG
 l_int|512
 )paren
@@ -16708,7 +16739,7 @@ op_minus
 id|EIO
 suffix:semicolon
 multiline_comment|/* bad smb */
-multiline_comment|/* else if (pFindData){&n;&t;&t;&t;memcpy((char *) pFindData,&n;&t;&t;&t;       (char *) &amp;pSMBr-&gt;hdr.Protocol +&n;&t;&t;&t;       pSMBr-&gt;DataOffset, kl);&n;&t;&t;}*/
+multiline_comment|/* else if (pFindData){&n;&t;&t;&t;memcpy((char *) pFindData,&n;&t;&t;&t;       (char *) &amp;pSMBr-&gt;hdr.Protocol +&n;&t;&t;&t;       data_offset, kl);&n;&t;&t;}*/
 r_else
 (brace
 multiline_comment|/* check that length of list is not more than bcc */
@@ -16725,7 +16756,7 @@ op_minus
 id|ENOENT
 suffix:semicolon
 multiline_comment|/* validate_trans2_offsets() */
-multiline_comment|/* BB to check if(start of smb + pSMBr-&gt;DataOffset &gt; &amp;bcc+ bcc)*/
+multiline_comment|/* BB to check if(start of smb + data_offset &gt; &amp;bcc+ bcc)*/
 id|ea_response_data
 op_assign
 (paren
@@ -16743,7 +16774,7 @@ op_amp
 id|pSMBr-&gt;hdr.Protocol
 )paren
 op_plus
-id|pSMBr-&gt;DataOffset
+id|data_offset
 )paren
 suffix:semicolon
 id|ea_response_data-&gt;list_len
