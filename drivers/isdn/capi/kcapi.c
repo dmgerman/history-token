@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: kcapi.c,v 1.1.2.6 2004/03/16 08:00:08 armin Exp $&n; * &n; * Kernel CAPI 2.0 Module&n; * &n; * Copyright 1999 by Carsten Paeth &lt;calle@calle.de&gt;&n; * Copyright 2002 by Kai Germaschewski &lt;kai@germaschewski.name&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: kcapi.c,v 1.1.2.7 2004/03/16 08:01:47 armin Exp $&n; * &n; * Kernel CAPI 2.0 Module&n; * &n; * Copyright 1999 by Carsten Paeth &lt;calle@calle.de&gt;&n; * Copyright 2002 by Kai Germaschewski &lt;kai@germaschewski.name&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 DECL|macro|CONFIG_AVMB1_COMPAT
 mdefine_line|#define CONFIG_AVMB1_COMPAT
 macro_line|#include &quot;kcapi.h&quot;
@@ -25,7 +25,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.1.2.6 $&quot;
+l_string|&quot;$Revision: 1.1.2.7 $&quot;
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
 DECL|variable|showcapimsgs
@@ -868,7 +868,11 @@ c_func
 id|KERN_ERR
 l_string|&quot;kcapi: recv_handler: applid %d ? (%s)&bslash;n&quot;
 comma
-id|ap-&gt;applid
+id|CAPIMSG_APPID
+c_func
+(paren
+id|skb-&gt;data
+)paren
 comma
 id|capi_message2str
 c_func
