@@ -547,14 +547,14 @@ id|dev
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|mc32_probe
-c_func
-(paren
 r_struct
 id|net_device
 op_star
-id|dev
+id|mc32_probe
+c_func
+(paren
+r_int
+id|unit
 )paren
 suffix:semicolon
 r_extern
@@ -922,14 +922,6 @@ l_int|0
 )brace
 comma
 macro_line|#endif
-macro_line|#ifdef CONFIG_ELMC_II&t;&t;/* 3c527 */
-(brace
-id|mc32_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 (brace
 l_int|NULL
 comma
@@ -948,6 +940,14 @@ id|mca_probes2
 id|__initdata
 op_assign
 (brace
+macro_line|#ifdef CONFIG_ELMC_II&t;&t;/* 3c527 */
+(brace
+id|mc32_probe
+comma
+l_int|0
+)brace
+comma
+macro_line|#endif
 macro_line|#ifdef CONFIG_SKMC              /* SKnet Microchannel */
 (brace
 id|skmca_probe
