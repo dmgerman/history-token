@@ -6503,6 +6503,19 @@ c_func
 id|pgfault
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_vm_hugetlb_page
+c_func
+(paren
+id|vma
+)paren
+)paren
+r_return
+id|VM_FAULT_SIGBUS
+suffix:semicolon
+multiline_comment|/* mapping truncation does this. */
 multiline_comment|/*&n;&t; * We need the page table lock to synchronize with kswapd&n;&t; * and the SMP-safe atomic PTE updates.&n;&t; */
 id|spin_lock
 c_func
