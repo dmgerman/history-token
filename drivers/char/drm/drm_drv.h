@@ -2290,23 +2290,6 @@ id|i
 op_increment
 )paren
 (brace
-macro_line|#if __HAVE_DMA_WAITLIST
-id|DRM
-c_func
-(paren
-id|waitlist_destroy
-)paren
-(paren
-op_amp
-id|dev-&gt;queuelist
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|waitlist
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

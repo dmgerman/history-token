@@ -62,10 +62,6 @@ macro_line|#ifndef __HAVE_IRQ
 DECL|macro|__HAVE_IRQ
 mdefine_line|#define __HAVE_IRQ&t;&t;0
 macro_line|#endif
-macro_line|#ifndef __HAVE_DMA_WAITLIST
-DECL|macro|__HAVE_DMA_WAITLIST
-mdefine_line|#define __HAVE_DMA_WAITLIST&t;0
-macro_line|#endif
 DECL|macro|__REALLY_HAVE_AGP
 mdefine_line|#define __REALLY_HAVE_AGP&t;(__HAVE_AGP &amp;&amp; (defined(CONFIG_AGP) || &bslash;&n;&t;&t;&t;&t;&t;&t;defined(CONFIG_AGP_MODULE)))
 DECL|macro|__REALLY_HAVE_MTRR
