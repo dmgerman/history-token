@@ -1551,6 +1551,9 @@ id|i
 suffix:semicolon
 r_int
 id|retval
+op_assign
+op_minus
+id|ENOMEM
 suffix:semicolon
 multiline_comment|/* See if the device offered us matches what we can accept */
 r_if
@@ -1572,32 +1575,6 @@ id|USB_SKEL_PRODUCT_ID
 r_return
 op_minus
 id|ENODEV
-suffix:semicolon
-)brace
-id|retval
-op_assign
-id|usb_register_dev
-(paren
-id|interface
-comma
-op_amp
-id|skel_class
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-)paren
-(brace
-multiline_comment|/* something prevented us from registering this driver */
-id|err
-(paren
-l_string|&quot;Not able to get a minor for this device.&quot;
-)paren
-suffix:semicolon
-r_goto
-m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* allocate memory for our device state and initialize it */
@@ -1628,7 +1605,7 @@ l_string|&quot;Out of memory&quot;
 )paren
 suffix:semicolon
 r_goto
-id|exit_minor
+id|error
 suffix:semicolon
 )brace
 id|memset
@@ -1918,6 +1895,47 @@ id|dev-&gt;present
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* we can register the device now, as it is ready */
+id|usb_set_intfdata
+(paren
+id|interface
+comma
+id|dev
+)paren
+suffix:semicolon
+id|retval
+op_assign
+id|usb_register_dev
+(paren
+id|interface
+comma
+op_amp
+id|skel_class
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+(brace
+multiline_comment|/* something prevented us from registering this driver */
+id|err
+(paren
+l_string|&quot;Not able to get a minor for this device.&quot;
+)paren
+suffix:semicolon
+id|usb_set_intfdata
+(paren
+id|interface
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_goto
+id|error
+suffix:semicolon
+)brace
 multiline_comment|/* let the user know what node this device is now attached to */
 id|info
 (paren
@@ -1926,8 +1944,8 @@ comma
 id|dev-&gt;minor
 )paren
 suffix:semicolon
-r_goto
-m_exit
+r_return
+l_int|0
 suffix:semicolon
 id|error
 suffix:colon
@@ -1936,42 +1954,8 @@ id|skel_delete
 id|dev
 )paren
 suffix:semicolon
-id|dev
-op_assign
-l_int|NULL
-suffix:semicolon
-id|exit_minor
-suffix:colon
-id|usb_deregister_dev
-(paren
-id|interface
-comma
-op_amp
-id|skel_class
-)paren
-suffix:semicolon
-m_exit
-suffix:colon
-r_if
-c_cond
-(paren
-id|dev
-)paren
-(brace
-id|usb_set_intfdata
-(paren
-id|interface
-comma
-id|dev
-)paren
-suffix:semicolon
 r_return
-l_int|0
-suffix:semicolon
-)brace
-r_return
-op_minus
-id|ENODEV
+id|retval
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;skel_disconnect&n; *&n; *&t;Called by the usb core when the device is removed from the system.&n; *&n; *&t;This routine guarantees that the driver will not submit any more urbs&n; *&t;by clearing dev-&gt;udev.  It is also supposed to terminate any currently&n; *&t;active urbs.  Unfortunately, usb_bulk_msg(), used in skel_read(), does&n; *&t;not provide any way to do this.  But at least we can cancel an active&n; *&t;write.&n; */
