@@ -37,7 +37,7 @@ multiline_comment|/*&n; * Ethernet gadget driver -- with CDC and non-CDC options
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC&t;&t;&quot;Ethernet Gadget&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&t;&quot;St Patrick&squot;s Day 2004&quot;
+mdefine_line|#define DRIVER_VERSION&t;&t;&quot;Equinox 2004&quot;
 DECL|variable|shortname
 r_static
 r_const
@@ -689,7 +689,7 @@ comma
 dot
 id|bMaxPower
 op_assign
-l_int|1
+l_int|50
 comma
 )brace
 suffix:semicolon
@@ -738,7 +738,7 @@ comma
 dot
 id|bMaxPower
 op_assign
-l_int|1
+l_int|50
 comma
 )brace
 suffix:semicolon
@@ -3625,8 +3625,7 @@ multiline_comment|/* FALL THROUGH */
 r_case
 l_int|0
 suffix:colon
-r_return
-id|result
+r_break
 suffix:semicolon
 )brace
 r_if
@@ -3634,16 +3633,53 @@ c_cond
 (paren
 id|result
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|number
+)paren
 id|eth_reset_config
 (paren
 id|dev
 )paren
 suffix:semicolon
+id|usb_gadget_vbus_draw
+c_func
+(paren
+id|dev-&gt;gadget
+comma
+id|dev-&gt;gadget-&gt;is_otg
+ques
+c_cond
+l_int|8
+suffix:colon
+l_int|100
+)paren
+suffix:semicolon
+)brace
 r_else
 (brace
 r_char
 op_star
 id|speed
+suffix:semicolon
+r_int
+id|power
+suffix:semicolon
+id|power
+op_assign
+l_int|2
+op_star
+id|eth_config.bMaxPower
+suffix:semicolon
+id|usb_gadget_vbus_draw
+c_func
+(paren
+id|dev-&gt;gadget
+comma
+id|power
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -3688,11 +3724,13 @@ id|INFO
 (paren
 id|dev
 comma
-l_string|&quot;%s speed config #%d: %s, using %s&bslash;n&quot;
+l_string|&quot;%s speed config #%d: %d mA, %s, using %s&bslash;n&quot;
 comma
 id|speed
 comma
 id|number
+comma
+id|power
 comma
 id|driver_desc
 comma
@@ -4243,7 +4281,12 @@ id|req-&gt;length
 )paren
 id|DEBUG
 (paren
-id|dev
+(paren
+r_struct
+id|eth_dev
+op_star
+)paren
+id|ep-&gt;driver_data
 comma
 l_string|&quot;rndis response complete --&gt; %d, %d/%d&bslash;n&quot;
 comma
@@ -7130,9 +7173,9 @@ r_return
 suffix:semicolon
 )brace
 )brace
-DECL|function|rndis_control_ack_complete
 r_static
 r_void
+DECL|function|rndis_control_ack_complete
 id|rndis_control_ack_complete
 (paren
 r_struct
@@ -7157,7 +7200,12 @@ id|req-&gt;length
 )paren
 id|DEBUG
 (paren
-id|dev
+(paren
+r_struct
+id|eth_dev
+op_star
+)paren
+id|ep-&gt;driver_data
 comma
 l_string|&quot;rndis control ack complete --&gt; %d, %d/%d&bslash;n&quot;
 comma
@@ -8637,10 +8685,18 @@ id|eth_config.bmAttributes
 op_or_assign
 id|USB_CONFIG_ATT_WAKEUP
 suffix:semicolon
+id|eth_config.bMaxPower
+op_assign
+l_int|4
+suffix:semicolon
 macro_line|#ifdef&t;CONFIG_USB_ETH_RNDIS
 id|rndis_config.bmAttributes
 op_or_assign
 id|USB_CONFIG_ATT_WAKEUP
+suffix:semicolon
+id|rndis_config.bMaxPower
+op_assign
+l_int|4
 suffix:semicolon
 macro_line|#endif
 )brace
