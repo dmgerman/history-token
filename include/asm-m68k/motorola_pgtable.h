@@ -15,12 +15,8 @@ DECL|macro|_PAGE_DIRTY
 mdefine_line|#define _PAGE_DIRTY&t;0x010
 DECL|macro|_PAGE_SUPER
 mdefine_line|#define _PAGE_SUPER&t;0x080&t;/* 68040 supervisor only */
-DECL|macro|_PAGE_FAKE_SUPER
-mdefine_line|#define _PAGE_FAKE_SUPER 0x200&t;/* fake supervisor only on 680[23]0 */
 DECL|macro|_PAGE_GLOBAL040
 mdefine_line|#define _PAGE_GLOBAL040&t;0x400&t;/* 68040 global bit, used for kva descs */
-DECL|macro|_PAGE_FILE
-mdefine_line|#define _PAGE_FILE&t;0x800&t;/* pagecache or swap? */
 DECL|macro|_PAGE_NOCACHE030
 mdefine_line|#define _PAGE_NOCACHE030 0x040&t;/* 68030 no-cache mode */
 DECL|macro|_PAGE_NOCACHE
@@ -41,6 +37,10 @@ DECL|macro|_PAGE_TABLE
 mdefine_line|#define _PAGE_TABLE&t;(_PAGE_SHORT)
 DECL|macro|_PAGE_CHG_MASK
 mdefine_line|#define _PAGE_CHG_MASK  (PAGE_MASK | _PAGE_ACCESSED | _PAGE_DIRTY | _PAGE_NOCACHE)
+DECL|macro|_PAGE_PROTNONE
+mdefine_line|#define _PAGE_PROTNONE&t;0x004
+DECL|macro|_PAGE_FILE
+mdefine_line|#define _PAGE_FILE&t;0x008&t;/* pagecache or swap? */
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* This is the cache mode to be used for pages containing page descriptors for&n; * processors &gt;= &squot;040. It is in pte_mknocache(), and the variable is defined&n; * and initialized in head.S */
 r_extern
@@ -71,7 +71,7 @@ id|mm_cachebits
 suffix:semicolon
 macro_line|#endif
 DECL|macro|PAGE_NONE
-mdefine_line|#define PAGE_NONE&t;__pgprot(_PAGE_PRESENT | _PAGE_RONLY | _PAGE_ACCESSED | mm_cachebits)
+mdefine_line|#define PAGE_NONE&t;__pgprot(_PAGE_PROTNONE | _PAGE_ACCESSED | mm_cachebits)
 DECL|macro|PAGE_SHARED
 mdefine_line|#define PAGE_SHARED&t;__pgprot(_PAGE_PRESENT | _PAGE_ACCESSED | mm_cachebits)
 DECL|macro|PAGE_COPY
@@ -82,7 +82,7 @@ DECL|macro|PAGE_KERNEL
 mdefine_line|#define PAGE_KERNEL&t;__pgprot(_PAGE_PRESENT | _PAGE_DIRTY | _PAGE_ACCESSED | mm_cachebits)
 multiline_comment|/* Alternate definitions that are compile time constants, for&n;   initializing protection_map.  The cachebits are fixed later.  */
 DECL|macro|PAGE_NONE_C
-mdefine_line|#define PAGE_NONE_C&t;__pgprot(_PAGE_PRESENT | _PAGE_RONLY | _PAGE_ACCESSED)
+mdefine_line|#define PAGE_NONE_C&t;__pgprot(_PAGE_PROTNONE | _PAGE_ACCESSED)
 DECL|macro|PAGE_SHARED_C
 mdefine_line|#define PAGE_SHARED_C&t;__pgprot(_PAGE_PRESENT | _PAGE_ACCESSED)
 DECL|macro|PAGE_COPY_C
@@ -280,7 +280,7 @@ mdefine_line|#define __pgd_page(pgd) ((unsigned long)__va(pgd_val(pgd) &amp; _TA
 DECL|macro|pte_none
 mdefine_line|#define pte_none(pte)&t;&t;(!pte_val(pte))
 DECL|macro|pte_present
-mdefine_line|#define pte_present(pte)&t;(pte_val(pte) &amp; (_PAGE_PRESENT | _PAGE_FAKE_SUPER))
+mdefine_line|#define pte_present(pte)&t;(pte_val(pte) &amp; (_PAGE_PRESENT | _PAGE_PROTNONE))
 DECL|macro|pte_clear
 mdefine_line|#define pte_clear(ptep)&t;&t;({ pte_val(*(ptep)) = 0; })
 DECL|macro|pte_page
@@ -1024,7 +1024,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|PTE_FILE_MAX_BITS
-mdefine_line|#define PTE_FILE_MAX_BITS&t;29
+mdefine_line|#define PTE_FILE_MAX_BITS&t;28
 DECL|function|pte_to_pgoff
 r_static
 r_inline
@@ -1038,25 +1038,9 @@ id|pte
 )paren
 (brace
 r_return
-(paren
-(paren
 id|pte.pte
 op_rshift
-l_int|12
-)paren
-op_lshift
-l_int|7
-)paren
-op_plus
-(paren
-(paren
-id|pte.pte
-op_rshift
-l_int|2
-)paren
-op_amp
-l_int|0x1ff
-)paren
+l_int|4
 suffix:semicolon
 )brace
 DECL|function|pgoff_to_pte
@@ -1075,23 +1059,9 @@ id|pte
 op_assign
 (brace
 (paren
-(paren
 id|off
-op_rshift
-l_int|7
-)paren
 op_lshift
-l_int|12
-)paren
-op_plus
-(paren
-(paren
-id|off
-op_amp
-l_int|0x1ff
-)paren
-op_lshift
-l_int|2
+l_int|4
 )paren
 op_plus
 id|_PAGE_FILE
@@ -1103,11 +1073,11 @@ suffix:semicolon
 )brace
 multiline_comment|/* Encode and de-code a swap entry (must be !pte_none(e) &amp;&amp; !pte_present(e)) */
 DECL|macro|__swp_type
-mdefine_line|#define __swp_type(x)&t;&t;(((x).val &gt;&gt; 2) &amp; 0x1ff)
+mdefine_line|#define __swp_type(x)&t;&t;(((x).val &gt;&gt; 4) &amp; 0xff)
 DECL|macro|__swp_offset
 mdefine_line|#define __swp_offset(x)&t;&t;((x).val &gt;&gt; 12)
 DECL|macro|__swp_entry
-mdefine_line|#define __swp_entry(type, offset) ((swp_entry_t) { ((type) &lt;&lt; 2) | ((offset) &lt;&lt; 12) })
+mdefine_line|#define __swp_entry(type, offset) ((swp_entry_t) { ((type) &lt;&lt; 4) | ((offset) &lt;&lt; 12) })
 DECL|macro|__pte_to_swp_entry
 mdefine_line|#define __pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
 DECL|macro|__swp_entry_to_pte
