@@ -1539,7 +1539,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SERIAL_HCDP
+macro_line|#ifdef CONFIG_SERIAL_8250_HCDP
 r_if
 c_cond
 (paren
