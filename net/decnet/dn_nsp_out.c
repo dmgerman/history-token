@@ -367,6 +367,9 @@ r_int
 id|noblock
 comma
 r_int
+id|timeo
+comma
+r_int
 op_star
 id|err
 )paren
@@ -410,7 +413,11 @@ id|current
 op_star
 id|err
 op_assign
-id|ERESTARTSYS
+id|sock_intr_errno
+c_func
+(paren
+id|timeo
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
