@@ -321,9 +321,9 @@ macro_line|#ifndef PCI_DEVICE_ID_INTEL_ESB_5
 DECL|macro|PCI_DEVICE_ID_INTEL_ESB_5
 mdefine_line|#define PCI_DEVICE_ID_INTEL_ESB_5&t;0x25a6
 macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH6_3
-DECL|macro|PCI_DEVICE_ID_INTEL_ICH6_3
-mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH6_3&t;0x266e
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH6_18
+DECL|macro|PCI_DEVICE_ID_INTEL_ICH6_18
+mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH6_18&t;0x266e
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH7_20
 DECL|macro|PCI_DEVICE_ID_INTEL_ICH7_20
@@ -13386,7 +13386,7 @@ l_string|&quot;Intel 6300ESB&quot;
 )brace
 comma
 (brace
-id|PCI_DEVICE_ID_INTEL_ICH6_3
+id|PCI_DEVICE_ID_INTEL_ICH6_18
 comma
 l_string|&quot;Intel ICH6&quot;
 )brace
