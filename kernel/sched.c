@@ -788,12 +788,13 @@ id|rq
 )paren
 (brace
 r_int
-r_int
 id|sleep_time
 op_assign
 id|jiffies
 op_minus
 id|p-&gt;last_run
+op_minus
+l_int|1
 suffix:semicolon
 r_int
 id|requeue_waker
@@ -804,6 +805,8 @@ r_if
 c_cond
 (paren
 id|sleep_time
+OG
+l_int|0
 )paren
 (brace
 r_int
