@@ -2980,6 +2980,29 @@ comma
 id|udest
 )paren
 suffix:semicolon
+id|write_lock_bh
+c_func
+(paren
+op_amp
+id|__ip_vs_svc_lock
+)paren
+suffix:semicolon
+multiline_comment|/* Wait until all other svc users go away */
+r_while
+c_loop
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|svc-&gt;usecnt
+)paren
+OG
+l_int|1
+)paren
+(brace
+)brace
+suffix:semicolon
 multiline_comment|/* call the update_service, because server weight may be changed */
 id|svc-&gt;scheduler
 op_member_access_from_pointer
@@ -2987,6 +3010,13 @@ id|update_service
 c_func
 (paren
 id|svc
+)paren
+suffix:semicolon
+id|write_unlock_bh
+c_func
+(paren
+op_amp
+id|__ip_vs_svc_lock
 )paren
 suffix:semicolon
 id|LeaveFunction
