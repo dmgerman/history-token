@@ -1,4 +1,7 @@
 multiline_comment|/* $Id: hisax.h,v 1.1.4.1.2.1 2001/12/09 20:18:40 kai Exp $&n; *&n; * Basic declarations, defines and prototypes&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+macro_line|#ifndef __HISAX_H__
+DECL|macro|__HISAX_H__
+mdefine_line|#define __HISAX_H__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -3241,7 +3244,6 @@ op_star
 comma
 r_void
 op_star
-id|arg
 )paren
 suffix:semicolon
 DECL|member|irq_func
@@ -3497,6 +3499,29 @@ r_void
 (paren
 op_star
 id|close
+)paren
+(paren
+r_struct
+id|IsdnCardState
+op_star
+)paren
+suffix:semicolon
+DECL|member|bh_func
+r_void
+(paren
+op_star
+id|bh_func
+)paren
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
+DECL|member|dbusy_func
+r_void
+(paren
+op_star
+id|dbusy_func
 )paren
 (paren
 r_struct
@@ -5287,4 +5312,5 @@ id|arg
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 eof

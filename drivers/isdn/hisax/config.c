@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &quot;isdnl1.h&quot;
 DECL|macro|HISAX_STATUS_BUFSIZE
 mdefine_line|#define HISAX_STATUS_BUFSIZE 4096
 DECL|macro|INCLUDE_INLINE_FUNCS
@@ -7545,6 +7546,20 @@ op_star
 id|d_if
 )paren
 suffix:semicolon
+DECL|variable|hisax_l1_ops
+r_static
+r_struct
+id|dc_l1_ops
+id|hisax_l1_ops
+op_assign
+(brace
+dot
+id|bh_func
+op_assign
+id|hisax_bh
+comma
+)brace
+suffix:semicolon
 DECL|function|hisax_register
 r_int
 id|hisax_register
@@ -7722,15 +7737,13 @@ op_assign
 id|hisax_d_if-&gt;owner
 suffix:semicolon
 singleline_comment|// FIXME should be done before registering
-id|INIT_WORK
+id|dc_l1_init
 c_func
 (paren
-op_amp
-id|cs-&gt;work
-comma
-id|hisax_bh
-comma
 id|cs
+comma
+op_amp
+id|hisax_l1_ops
 )paren
 suffix:semicolon
 id|cs-&gt;channel

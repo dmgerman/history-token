@@ -1,4 +1,7 @@
 multiline_comment|/* $Id: isdnl1.h,v 2.9.6.3 2001/09/23 22:24:49 kai Exp $&n; *&n; * Layer 1 defines&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+macro_line|#ifndef __ISDNL1_H__
+DECL|macro|__ISDNL1_H__
+mdefine_line|#define __ISDNL1_H__
 DECL|macro|D_RCVBUFREADY
 mdefine_line|#define D_RCVBUFREADY&t;0
 DECL|macro|D_XMTBUFREADY
@@ -104,6 +107,21 @@ comma
 r_void
 op_star
 id|arg
+)paren
+suffix:semicolon
+r_void
+id|dc_l1_init
+c_func
+(paren
+r_struct
+id|IsdnCardState
+op_star
+id|cs
+comma
+r_struct
+id|dc_l1_ops
+op_star
+id|ops
 )paren
 suffix:semicolon
 r_static
@@ -2713,4 +2731,5 @@ id|bcs-&gt;Flag
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 eof
