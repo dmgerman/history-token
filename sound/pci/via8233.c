@@ -1425,6 +1425,8 @@ op_lshift
 l_int|12
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 l_int|6
 suffix:colon
@@ -1473,6 +1475,8 @@ suffix:colon
 id|slots
 op_assign
 l_int|0
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 multiline_comment|/* STOP index is never reached */
