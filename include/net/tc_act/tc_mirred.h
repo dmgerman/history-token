@@ -1,7 +1,7 @@
 macro_line|#ifndef __NET_TC_MIR_H
 DECL|macro|__NET_TC_MIR_H
 mdefine_line|#define __NET_TC_MIR_H
-macro_line|#include &lt;net/pkt_sched.h&gt;
+macro_line|#include &lt;net/act_api.h&gt;
 DECL|struct|tcf_mirred
 r_struct
 id|tcf_mirred

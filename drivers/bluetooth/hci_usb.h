@@ -6,10 +6,6 @@ DECL|macro|HCI_DEV_SUBCLASS
 mdefine_line|#define HCI_DEV_SUBCLASS&t;0x01&t;/* RF subclass */
 DECL|macro|HCI_DEV_PROTOCOL
 mdefine_line|#define HCI_DEV_PROTOCOL&t;0x01&t;/* Bluetooth programming protocol */
-DECL|macro|HCI_CTRL_REQ
-mdefine_line|#define HCI_CTRL_REQ&t;&t;0x20
-DECL|macro|HCI_DIGI_REQ
-mdefine_line|#define HCI_DIGI_REQ&t;&t;0x40
 DECL|macro|HCI_IGNORE
 mdefine_line|#define HCI_IGNORE&t;&t;0x01
 DECL|macro|HCI_RESET

@@ -20,7 +20,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
-macro_line|#include &lt;net/pkt_sched.h&gt;
+macro_line|#include &lt;net/act_api.h&gt;
 DECL|macro|L2T
 mdefine_line|#define L2T(p,L)   ((p)-&gt;R_tab-&gt;data[(L)&gt;&gt;(p)-&gt;R_tab-&gt;rate.cell_log])
 DECL|macro|L2T_P
