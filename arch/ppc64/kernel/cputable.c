@@ -72,6 +72,10 @@ op_or
 id|CPU_FTR_USE_TB
 op_or
 id|CPU_FTR_HPTE_TABLE
+op_or
+id|CPU_FTR_DABR
+op_or
+id|CPU_FTR_IABR
 comma
 id|COMMON_USER_PPC64
 comma
@@ -97,6 +101,10 @@ op_or
 id|CPU_FTR_USE_TB
 op_or
 id|CPU_FTR_HPTE_TABLE
+op_or
+id|CPU_FTR_DABR
+op_or
+id|CPU_FTR_IABR
 comma
 id|COMMON_USER_PPC64
 comma
@@ -122,6 +130,10 @@ op_or
 id|CPU_FTR_USE_TB
 op_or
 id|CPU_FTR_HPTE_TABLE
+op_or
+id|CPU_FTR_DABR
+op_or
+id|CPU_FTR_IABR
 comma
 id|COMMON_USER_PPC64
 comma
@@ -147,6 +159,10 @@ op_or
 id|CPU_FTR_USE_TB
 op_or
 id|CPU_FTR_HPTE_TABLE
+op_or
+id|CPU_FTR_DABR
+op_or
+id|CPU_FTR_IABR
 comma
 id|COMMON_USER_PPC64
 comma
@@ -172,6 +188,10 @@ op_or
 id|CPU_FTR_USE_TB
 op_or
 id|CPU_FTR_HPTE_TABLE
+op_or
+id|CPU_FTR_DABR
+op_or
+id|CPU_FTR_IABR
 comma
 id|COMMON_USER_PPC64
 comma
@@ -197,6 +217,10 @@ op_or
 id|CPU_FTR_USE_TB
 op_or
 id|CPU_FTR_HPTE_TABLE
+op_or
+id|CPU_FTR_DABR
+op_or
+id|CPU_FTR_IABR
 comma
 id|COMMON_USER_PPC64
 comma
@@ -224,6 +248,8 @@ op_or
 id|CPU_FTR_HPTE_TABLE
 op_or
 id|CPU_FTR_PPCAS_ARCH_V2
+op_or
+id|CPU_FTR_DABR
 comma
 id|COMMON_USER_PPC64
 comma
@@ -251,6 +277,8 @@ op_or
 id|CPU_FTR_HPTE_TABLE
 op_or
 id|CPU_FTR_PPCAS_ARCH_V2
+op_or
+id|CPU_FTR_DABR
 comma
 id|COMMON_USER_PPC64
 comma
@@ -278,6 +306,8 @@ op_or
 id|CPU_FTR_HPTE_TABLE
 op_or
 id|CPU_FTR_PPCAS_ARCH_V2
+op_or
+id|CPU_FTR_DABR
 comma
 id|COMMON_USER_PPC64
 comma

@@ -204,6 +204,10 @@ DECL|macro|CPU_FTR_NOEXECUTE
 mdefine_line|#define CPU_FTR_NOEXECUTE     &t;&t;0x0000000800000000
 DECL|macro|CPU_FTR_NODSISRALIGN
 mdefine_line|#define CPU_FTR_NODSISRALIGN  &t;&t;0x0000001000000000
+DECL|macro|CPU_FTR_DABR
+mdefine_line|#define CPU_FTR_DABR  &t;&t;&t;0x0000002000000000
+DECL|macro|CPU_FTR_IABR
+mdefine_line|#define CPU_FTR_IABR  &t;&t;&t;0x0000004000000000
 multiline_comment|/* Platform firmware features */
 DECL|macro|FW_FTR_
 mdefine_line|#define FW_FTR_                         0x0000000000000001
