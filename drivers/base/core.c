@@ -535,14 +535,12 @@ op_amp
 id|device_sem
 )paren
 suffix:semicolon
-id|BUG_ON
+id|WARN_ON
 c_func
-(paren
 (paren
 id|dev-&gt;state
 op_ne
 id|DEVICE_GONE
-)paren
 )paren
 suffix:semicolon
 id|device_del
