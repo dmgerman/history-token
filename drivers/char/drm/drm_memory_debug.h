@@ -247,6 +247,14 @@ l_string|&quot;ctxbitmap&quot;
 )brace
 comma
 (braket
+id|DRM_MEM_CTXLIST
+)braket
+op_assign
+(brace
+l_string|&quot;ctxlist&quot;
+)brace
+comma
+(braket
 id|DRM_MEM_STUB
 )braket
 op_assign

@@ -408,6 +408,13 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|map-&gt;type
+op_eq
+id|_DRM_REGISTERS
+)paren
 id|map-&gt;handle
 op_assign
 id|DRM
@@ -500,6 +507,43 @@ op_amp
 id|_DRM_CONTAINS_LOCK
 )paren
 (brace
+multiline_comment|/* Prevent a 2nd X Server from creating a 2nd lock */
+r_if
+c_cond
+(paren
+id|dev-&gt;lock.hw_lock
+op_ne
+l_int|NULL
+)paren
+(brace
+id|vfree
+c_func
+(paren
+id|map-&gt;handle
+)paren
+suffix:semicolon
+id|DRM
+c_func
+(paren
+id|free
+)paren
+(paren
+id|map
+comma
+r_sizeof
+(paren
+op_star
+id|map
+)paren
+comma
+id|DRM_MEM_MAPS
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
 id|dev-&gt;sigdata.lock
 op_assign
 id|dev-&gt;lock.hw_lock
@@ -3429,7 +3473,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* __HAVE_PCI_DMA */
-macro_line|#ifdef __HAVE_SG
+macro_line|#if __HAVE_SG
 DECL|function|addbufs_sg
 r_int
 id|DRM

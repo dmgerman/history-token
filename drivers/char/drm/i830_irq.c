@@ -6,12 +6,12 @@ macro_line|#include &quot;i830_drm.h&quot;
 macro_line|#include &quot;i830_drv.h&quot;
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* For task queue support */
 macro_line|#include &lt;linux/delay.h&gt;
-DECL|function|dma_service
+DECL|function|irq_handler
 id|irqreturn_t
 id|DRM
 c_func
 (paren
-id|dma_service
+id|irq_handler
 )paren
 (paren
 id|DRM_IRQ_ARGS
