@@ -127,12 +127,19 @@ l_int|1
 suffix:colon
 id|base
 suffix:semicolon
+multiline_comment|/* enable irq if any specified for serial operation */
 r_if
 c_cond
 (paren
 id|ctl
 op_logical_and
 id|irq
+op_logical_and
+(paren
+id|val
+op_amp
+id|I2C_PCF_ESO
+)paren
 )paren
 (brace
 id|val
@@ -146,6 +153,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-elektor.o: Write 0x%X 0x%02X&bslash;n&quot;
 comma
 id|address
@@ -257,6 +265,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-elektor.o: Read 0x%X 0x%02X&bslash;n&quot;
 comma
 id|address
@@ -437,6 +446,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-elektor.o: requested I/O region (0x%X:2) is in use.&bslash;n&quot;
 comma
 id|base
@@ -492,6 +502,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-elektor.o: Request irq%d failed&bslash;n&quot;
 comma
 id|irq
@@ -758,6 +769,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-elektor.o: found cy82c693, config register 0x47 = 0x%02x.&bslash;n&quot;
 comma
 id|config
@@ -798,6 +810,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;i2c-elektor.o: found API UP2000 like board, will probe PCF8584 later.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -820,6 +833,7 @@ l_int|0xc8000
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-elektor.o: incorrect base address (0x%0X) specified for mmapped I/O.&bslash;n&quot;
 comma
 id|base
@@ -833,7 +847,12 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;i2c-elektor.o: i2c pcf8584-isa adapter module&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;i2c-elektor.o: i2c pcf8584-isa adapter module version %s (%s)&bslash;n&quot;
+comma
+id|I2C_VERSION
+comma
+id|I2C_DATE
 )paren
 suffix:semicolon
 r_if
@@ -881,10 +900,17 @@ id|pcf_isa_ops
 OL
 l_int|0
 )paren
+(brace
+id|pcf_isa_exit
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -896,6 +922,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-elektor.o: found device at %#x.&bslash;n&quot;
 comma
 id|base

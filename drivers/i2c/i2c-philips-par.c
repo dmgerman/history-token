@@ -4,7 +4,7 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/*   Copyright (C) 1995-2000 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt; and even&n;   Frodo Looijaard &lt;frodol@dds.nl&gt; */
-multiline_comment|/* $Id: i2c-philips-par.c,v 1.18 2000/07/06 19:21:49 frodo Exp $ */
+multiline_comment|/* $Id: i2c-philips-par.c,v 1.23 2002/02/06 08:50:58 simon Exp $ */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -616,6 +616,7 @@ id|adapter
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-philips-par: Unable to malloc.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -625,6 +626,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-philips-par.o: attaching to %s&bslash;n&quot;
 comma
 id|port-&gt;name
@@ -660,6 +662,7 @@ id|adapter-&gt;pdev
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-philips-par: Unable to register with parport.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -688,13 +691,29 @@ id|adapter-&gt;bit_lp_data.data
 op_assign
 id|port
 suffix:semicolon
-multiline_comment|/* reset hardware to sane state */
+r_if
+c_cond
+(paren
 id|parport_claim_or_block
 c_func
 (paren
 id|adapter-&gt;pdev
 )paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;i2c-philips-par: Could not claim parallel port.&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* reset hardware to sane state */
 id|bit_lp_setsda
 c_func
 (paren
@@ -733,6 +752,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-philips-par: Unable to register with I2C.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -883,7 +903,12 @@ macro_line|#endif
 id|printk
 c_func
 (paren
-l_string|&quot;i2c-philips-par.o: i2c Philips parallel port adapter module&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;i2c-philips-par.o: i2c Philips parallel port adapter module version %s (%s)&bslash;n&quot;
+comma
+id|I2C_VERSION
+comma
+id|I2C_DATE
 )paren
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,4)
