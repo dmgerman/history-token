@@ -23,6 +23,12 @@ DECL|variable|using_sysemu
 r_static
 id|atomic_t
 id|using_sysemu
+op_assign
+id|ATOMIC_INIT
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 DECL|variable|sysemu_supported
 r_int
