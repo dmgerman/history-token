@@ -75,12 +75,14 @@ suffix:semicolon
 DECL|member|hd_hpet
 r_struct
 id|hpet
+id|__iomem
 op_star
 id|hd_hpet
 suffix:semicolon
 DECL|member|hd_timer
 r_struct
 id|hpet_timer
+id|__iomem
 op_star
 id|hd_timer
 suffix:semicolon
@@ -147,6 +149,7 @@ suffix:semicolon
 DECL|member|hp_hpet
 r_struct
 id|hpet
+id|__iomem
 op_star
 id|hp_hpet
 suffix:semicolon
@@ -215,6 +218,7 @@ id|readq
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -261,6 +265,7 @@ r_int
 id|v
 comma
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -1131,6 +1136,7 @@ id|devp
 suffix:semicolon
 r_struct
 id|hpet_timer
+id|__iomem
 op_star
 id|timer
 suffix:semicolon
@@ -1365,11 +1371,13 @@ id|devp
 (brace
 r_struct
 id|hpet_timer
+id|__iomem
 op_star
 id|timer
 suffix:semicolon
 r_struct
 id|hpet
+id|__iomem
 op_star
 id|hpet
 suffix:semicolon
@@ -1789,11 +1797,13 @@ id|kernel
 (brace
 r_struct
 id|hpet_timer
+id|__iomem
 op_star
 id|timer
 suffix:semicolon
 r_struct
 id|hpet
+id|__iomem
 op_star
 id|hpet
 suffix:semicolon
@@ -2292,6 +2302,7 @@ id|mask
 suffix:semicolon
 r_struct
 id|hpet_timer
+id|__iomem
 op_star
 id|timer
 suffix:semicolon
@@ -2569,6 +2580,7 @@ id|devp
 suffix:semicolon
 r_struct
 id|hpet_timer
+id|__iomem
 op_star
 id|timer
 suffix:semicolon
@@ -2973,6 +2985,7 @@ id|hpetp
 (brace
 r_struct
 id|hpet_timer
+id|__iomem
 op_star
 id|timer
 op_assign
@@ -3002,6 +3015,7 @@ id|j
 suffix:semicolon
 r_struct
 id|hpet
+id|__iomem
 op_star
 id|hpet
 suffix:semicolon
@@ -3189,6 +3203,7 @@ id|siz
 suffix:semicolon
 r_struct
 id|hpet
+id|__iomem
 op_star
 id|hpet
 suffix:semicolon
@@ -3229,14 +3244,7 @@ c_cond
 (paren
 id|hpetp-&gt;hp_hpet
 op_eq
-(paren
-r_struct
-id|hpet
-op_star
-)paren
-(paren
 id|hdp-&gt;hd_address
-)paren
 )paren
 r_return
 l_int|0
@@ -3300,11 +3308,6 @@ op_increment
 suffix:semicolon
 id|hpetp-&gt;hp_hpet
 op_assign
-(paren
-r_struct
-id|hpet
-op_star
-)paren
 id|hdp-&gt;hd_address
 suffix:semicolon
 id|hpetp-&gt;hp_ntimer
@@ -3590,6 +3593,7 @@ id|v
 suffix:semicolon
 r_struct
 id|hpet_timer
+id|__iomem
 op_star
 id|timer
 suffix:semicolon
@@ -3737,10 +3741,6 @@ l_int|1
 suffix:semicolon
 id|hdp-&gt;hd_address
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -3767,14 +3767,7 @@ c_cond
 (paren
 id|hpetp-&gt;hp_hpet
 op_eq
-(paren
-r_struct
-id|hpet
-op_star
-)paren
-(paren
 id|hdp-&gt;hd_address
-)paren
 )paren
 r_return
 op_minus

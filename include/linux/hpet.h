@@ -1,6 +1,7 @@
 macro_line|#ifndef&t;__HPET__
 DECL|macro|__HPET__
 mdefine_line|#define&t;__HPET__ 1
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/*&n; * Offsets into HPET Registers&n; */
 DECL|struct|hpet
 r_struct
@@ -251,8 +252,9 @@ r_struct
 id|hpet_data
 (brace
 DECL|member|hd_address
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|hd_address
 suffix:semicolon
 DECL|member|hd_nirqs

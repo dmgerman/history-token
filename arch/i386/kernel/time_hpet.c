@@ -44,8 +44,9 @@ suffix:semicolon
 multiline_comment|/* boottime override for HPET timer */
 DECL|variable|hpet_virt_address
 r_static
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|hpet_virt_address
 suffix:semicolon
 multiline_comment|/* hpet kernel virtual address */
@@ -192,10 +193,6 @@ suffix:semicolon
 )brace
 id|hpet_virt_address
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -508,11 +505,13 @@ l_int|2
 (brace
 r_struct
 id|hpet
+id|__iomem
 op_star
 id|hpet
 suffix:semicolon
 r_struct
 id|hpet_timer
+id|__iomem
 op_star
 id|timer
 suffix:semicolon
@@ -521,11 +520,6 @@ id|i
 suffix:semicolon
 id|hpet
 op_assign
-(paren
-r_struct
-id|hpet
-op_star
-)paren
 id|hpet_virt_address
 suffix:semicolon
 r_for
