@@ -75,7 +75,7 @@ op_star
 id|next
 suffix:semicolon
 DECL|member|contrnr
-id|__u32
+id|u32
 id|contrnr
 suffix:semicolon
 DECL|member|name
@@ -100,11 +100,11 @@ r_int
 id|state
 suffix:semicolon
 DECL|member|cipmask
-id|__u32
+id|u32
 id|cipmask
 suffix:semicolon
 DECL|member|cipmask2
-id|__u32
+id|u32
 id|cipmask2
 suffix:semicolon
 DECL|member|listentimer
@@ -114,7 +114,7 @@ id|listentimer
 suffix:semicolon
 multiline_comment|/*&n;&t; * ID of capi message sent&n;&t; */
 DECL|member|msgid
-id|__u16
+id|u16
 id|msgid
 suffix:semicolon
 multiline_comment|/*&n;&t; * B-Channels&n;&t; */
@@ -133,7 +133,7 @@ op_star
 id|contr
 suffix:semicolon
 DECL|member|msn
-id|__u8
+id|u8
 id|msn
 (braket
 id|ISDN_MSNLEN
@@ -148,14 +148,14 @@ r_int
 id|l3
 suffix:semicolon
 DECL|member|num
-id|__u8
+id|u8
 id|num
 (braket
 id|ISDN_MSNLEN
 )braket
 suffix:semicolon
 DECL|member|mynum
-id|__u8
+id|u8
 id|mynum
 (braket
 id|ISDN_MSNLEN
@@ -188,16 +188,16 @@ op_star
 id|next
 suffix:semicolon
 DECL|member|plci
-id|__u32
+id|u32
 id|plci
 suffix:semicolon
 DECL|member|ncci
-id|__u32
+id|u32
 id|ncci
 suffix:semicolon
 multiline_comment|/* ncci for CONNECT_ACTIVE_IND */
 DECL|member|msgid
-id|__u16
+id|u16
 id|msgid
 suffix:semicolon
 multiline_comment|/* to identfy CONNECT_CONF */
@@ -230,11 +230,11 @@ op_star
 id|plcip
 suffix:semicolon
 DECL|member|ncci
-id|__u32
+id|u32
 id|ncci
 suffix:semicolon
 DECL|member|msgid
-id|__u16
+id|u16
 id|msgid
 suffix:semicolon
 multiline_comment|/* to identfy CONNECT_B3_CONF */
@@ -252,7 +252,7 @@ id|oldstate
 suffix:semicolon
 multiline_comment|/* */
 DECL|member|datahandle
-id|__u16
+id|u16
 id|datahandle
 suffix:semicolon
 DECL|struct|ncci_datahandle_queue
@@ -266,7 +266,7 @@ op_star
 id|next
 suffix:semicolon
 DECL|member|datahandle
-id|__u16
+id|u16
 id|datahandle
 suffix:semicolon
 DECL|member|len
@@ -307,24 +307,24 @@ id|plci_list
 suffix:semicolon
 multiline_comment|/* for q931 data */
 DECL|member|q931_buf
-id|__u8
+id|u8
 id|q931_buf
 (braket
 l_int|4096
 )braket
 suffix:semicolon
 DECL|member|q931_read
-id|__u8
+id|u8
 op_star
 id|q931_read
 suffix:semicolon
 DECL|member|q931_write
-id|__u8
+id|u8
 op_star
 id|q931_write
 suffix:semicolon
 DECL|member|q931_end
-id|__u8
+id|u8
 op_star
 id|q931_end
 suffix:semicolon
@@ -335,7 +335,7 @@ r_struct
 id|capidrv_data
 (brace
 DECL|member|appid
-id|__u16
+id|u16
 id|appid
 suffix:semicolon
 DECL|member|ncontr
@@ -436,11 +436,11 @@ comma
 r_int
 id|level2
 comma
-id|__u8
+id|u8
 op_star
 id|data
 comma
-id|__u16
+id|u16
 id|len
 )paren
 suffix:semicolon
@@ -448,7 +448,7 @@ multiline_comment|/* -------- convert functions --------------------------------
 DECL|function|b1prot
 r_static
 r_inline
-id|__u32
+id|u32
 id|b1prot
 c_func
 (paren
@@ -520,7 +520,7 @@ suffix:semicolon
 DECL|function|b2prot
 r_static
 r_inline
-id|__u32
+id|u32
 id|b2prot
 c_func
 (paren
@@ -583,7 +583,7 @@ suffix:semicolon
 DECL|function|b3prot
 r_static
 r_inline
-id|__u32
+id|u32
 id|b3prot
 c_func
 (paren
@@ -646,7 +646,7 @@ id|_cstruct
 id|b1config_async_v110
 c_func
 (paren
-id|__u16
+id|u16
 id|rate
 )paren
 (brace
@@ -813,20 +813,20 @@ suffix:semicolon
 DECL|function|si2cip
 r_static
 r_inline
-id|__u16
+id|u16
 id|si2cip
 c_func
 (paren
-id|__u8
+id|u8
 id|si1
 comma
-id|__u8
+id|u8
 id|si2
 )paren
 (brace
 r_static
 r_const
-id|__u8
+id|u8
 id|cip
 (braket
 l_int|17
@@ -1083,7 +1083,7 @@ l_int|0
 suffix:semicolon
 r_return
 (paren
-id|__u16
+id|u16
 )paren
 id|cip
 (braket
@@ -1097,17 +1097,17 @@ suffix:semicolon
 DECL|function|cip2si1
 r_static
 r_inline
-id|__u8
+id|u8
 id|cip2si1
 c_func
 (paren
-id|__u16
+id|u16
 id|cipval
 )paren
 (brace
 r_static
 r_const
-id|__u8
+id|u8
 id|si
 (braket
 l_int|32
@@ -1205,17 +1205,17 @@ suffix:semicolon
 DECL|function|cip2si2
 r_static
 r_inline
-id|__u8
+id|u8
 id|cip2si2
 c_func
 (paren
-id|__u16
+id|u16
 id|cipval
 )paren
 (brace
 r_static
 r_const
-id|__u8
+id|u8
 id|si
 (braket
 l_int|32
@@ -1382,7 +1382,7 @@ op_star
 id|findcontrbynumber
 c_func
 (paren
-id|__u32
+id|u32
 id|contr
 )paren
 (brace
@@ -1548,7 +1548,7 @@ id|capidrv_contr
 op_star
 id|card
 comma
-id|__u32
+id|u32
 id|plci
 )paren
 (brace
@@ -1594,7 +1594,7 @@ id|capidrv_contr
 op_star
 id|card
 comma
-id|__u16
+id|u16
 id|msgid
 )paren
 (brace
@@ -1640,7 +1640,7 @@ id|capidrv_contr
 op_star
 id|card
 comma
-id|__u32
+id|u32
 id|ncci
 )paren
 (brace
@@ -1808,7 +1808,7 @@ id|capidrv_plci
 op_star
 id|plcip
 comma
-id|__u32
+id|u32
 id|ncci
 )paren
 (brace
@@ -1909,7 +1909,7 @@ id|capidrv_contr
 op_star
 id|card
 comma
-id|__u32
+id|u32
 id|ncci
 )paren
 (brace
@@ -1980,10 +1980,10 @@ id|capidrv_contr
 op_star
 id|card
 comma
-id|__u32
+id|u32
 id|ncci
 comma
-id|__u16
+id|u16
 id|msgid
 )paren
 (brace
@@ -2138,7 +2138,7 @@ id|capidrv_ncci
 op_star
 id|nccip
 comma
-id|__u16
+id|u16
 id|datahandle
 comma
 r_int
@@ -2246,7 +2246,7 @@ id|capidrv_ncci
 op_star
 id|nccip
 comma
-id|__u16
+id|u16
 id|datahandle
 )paren
 (brace
@@ -3903,7 +3903,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|__u8
+id|u8
 op_star
 id|data
 op_assign
@@ -3911,7 +3911,7 @@ id|cmsg-&gt;ManuData
 op_plus
 l_int|3
 suffix:semicolon
-id|__u16
+id|u16
 id|len
 op_assign
 id|cmsg-&gt;ManuData
@@ -3919,7 +3919,7 @@ id|cmsg-&gt;ManuData
 l_int|0
 )braket
 suffix:semicolon
-id|__u16
+id|u16
 id|layer
 suffix:semicolon
 r_int
@@ -5410,7 +5410,7 @@ r_int
 )paren
 (paren
 (paren
-id|__u32
+id|u32
 )paren
 id|cmsg-&gt;InfoElement
 (braket
@@ -5419,7 +5419,7 @@ l_int|1
 op_or
 (paren
 (paren
-id|__u32
+id|u32
 )paren
 (paren
 id|cmsg-&gt;InfoElement
@@ -5433,7 +5433,7 @@ l_int|8
 op_or
 (paren
 (paren
-id|__u32
+id|u32
 )paren
 (paren
 id|cmsg-&gt;InfoElement
@@ -5447,7 +5447,7 @@ l_int|16
 op_or
 (paren
 (paren
-id|__u32
+id|u32
 )paren
 (paren
 id|cmsg-&gt;InfoElement
@@ -6545,7 +6545,7 @@ r_void
 id|capidrv_signal
 c_func
 (paren
-id|__u16
+id|u16
 id|applid
 comma
 r_void
@@ -6712,15 +6712,15 @@ comma
 r_int
 id|level2
 comma
-id|__u8
+id|u8
 op_star
 id|data
 comma
-id|__u16
+id|u16
 id|len
 )paren
 (brace
-id|__u8
+id|u8
 op_star
 id|p
 comma
@@ -6856,7 +6856,7 @@ id|p
 op_increment
 )paren
 (brace
-id|__u8
+id|u8
 id|w
 suffix:semicolon
 id|PUTBYTE_TO_STATUS
@@ -7527,7 +7527,7 @@ r_char
 op_star
 id|teln
 comma
-id|__u8
+id|u8
 id|AdditionalInfo
 (braket
 l_int|1
@@ -7717,7 +7717,7 @@ id|capidrv_plci
 op_star
 id|plcip
 suffix:semicolon
-id|__u8
+id|u8
 id|AdditionalInfo
 (braket
 l_int|1
@@ -7762,7 +7762,7 @@ r_case
 id|ISDN_CMD_DIAL
 suffix:colon
 (brace
-id|__u8
+id|u8
 id|calling
 (braket
 id|ISDN_MSNLEN
@@ -7770,7 +7770,7 @@ op_plus
 l_int|3
 )braket
 suffix:semicolon
-id|__u8
+id|u8
 id|called
 (braket
 id|ISDN_MSNLEN
@@ -9073,10 +9073,10 @@ suffix:semicolon
 r_int
 id|msglen
 suffix:semicolon
-id|__u16
+id|u16
 id|errcode
 suffix:semicolon
-id|__u16
+id|u16
 id|datahandle
 suffix:semicolon
 r_if
@@ -9182,7 +9182,7 @@ id|nccip-&gt;ncci
 comma
 multiline_comment|/* adr */
 (paren
-id|__u32
+id|u32
 )paren
 id|skb-&gt;data
 comma
@@ -9478,7 +9478,7 @@ r_int
 id|if_readstat
 c_func
 (paren
-id|__u8
+id|u8
 op_star
 id|buf
 comma
@@ -9508,7 +9508,7 @@ suffix:semicolon
 r_int
 id|count
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|p
 suffix:semicolon
@@ -9605,7 +9605,7 @@ op_star
 id|card
 )paren
 (brace
-id|__u8
+id|u8
 id|manufacturer
 (braket
 id|CAPI_MANUFACTURER_LEN
@@ -9614,15 +9614,15 @@ suffix:semicolon
 id|capi_version
 id|version
 suffix:semicolon
-id|__u16
+id|u16
 id|contr
 op_assign
 id|card-&gt;contrnr
 suffix:semicolon
-id|__u16
+id|u16
 id|errcode
 suffix:semicolon
-id|__u16
+id|u16
 id|avmversion
 (braket
 l_int|3
@@ -10012,7 +10012,7 @@ r_int
 id|capidrv_addcontr
 c_func
 (paren
-id|__u16
+id|u16
 id|contr
 comma
 r_struct
@@ -10486,7 +10486,7 @@ r_int
 id|capidrv_delcontr
 c_func
 (paren
-id|__u16
+id|u16
 id|contr
 )paren
 (brace
@@ -10901,7 +10901,7 @@ r_int
 r_int
 id|cmd
 comma
-id|__u32
+id|u32
 id|contr
 comma
 r_void
@@ -11339,12 +11339,12 @@ r_char
 op_star
 id|p
 suffix:semicolon
-id|__u32
+id|u32
 id|ncontr
 comma
 id|contr
 suffix:semicolon
-id|__u16
+id|u16
 id|errcode
 suffix:semicolon
 id|MOD_INC_USE_COUNT
