@@ -2,6 +2,10 @@ multiline_comment|/*&n; * Device driver for the SYMBIOS/LSILOGIC 53C8XX and 53C1
 macro_line|#ifndef SYM_DEFS_H
 DECL|macro|SYM_DEFS_H
 mdefine_line|#define SYM_DEFS_H
+DECL|macro|SYM_VERSION
+mdefine_line|#define SYM_VERSION &quot;2.1.18j&quot;
+DECL|macro|SYM_DRIVER_NAME
+mdefine_line|#define SYM_DRIVER_NAME&t;&quot;sym-&quot; SYM_VERSION
 multiline_comment|/*&n; *  Vendor.&n; */
 DECL|macro|PCI_VENDOR_NCR
 mdefine_line|#define PCI_VENDOR_NCR&t;&t;0x1000

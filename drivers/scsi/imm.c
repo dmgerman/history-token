@@ -3070,7 +3070,7 @@ c_func
 (paren
 l_string|&quot;imm: no device at SCSI ID %i&bslash;n&quot;
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )paren
 suffix:semicolon
 r_break

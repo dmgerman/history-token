@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_dbg.h&gt;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
@@ -23,9 +24,9 @@ DECL|macro|START_UNIT_TIMEOUT
 mdefine_line|#define START_UNIT_TIMEOUT&t;(30*HZ)
 multiline_comment|/*&n; * These should *probably* be handled by the host itself.&n; * Since it is allowed to sleep, it probably should.&n; */
 DECL|macro|BUS_RESET_SETTLE_TIME
-mdefine_line|#define BUS_RESET_SETTLE_TIME   (10*HZ)
+mdefine_line|#define BUS_RESET_SETTLE_TIME   (10)
 DECL|macro|HOST_RESET_SETTLE_TIME
-mdefine_line|#define HOST_RESET_SETTLE_TIME  (10*HZ)
+mdefine_line|#define HOST_RESET_SETTLE_TIME  (10)
 multiline_comment|/* called with shost-&gt;host_lock held */
 DECL|function|scsi_eh_wakeup
 r_void
@@ -3013,7 +3014,7 @@ c_cond
 op_logical_neg
 id|scmd-&gt;device-&gt;host-&gt;hostt-&gt;skip_settle_delay
 )paren
-id|scsi_sleep
+id|ssleep
 c_func
 (paren
 id|BUS_RESET_SETTLE_TIME
@@ -3139,7 +3140,7 @@ c_cond
 op_logical_neg
 id|scmd-&gt;device-&gt;host-&gt;hostt-&gt;skip_settle_delay
 )paren
-id|scsi_sleep
+id|ssleep
 c_func
 (paren
 id|HOST_RESET_SETTLE_TIME
@@ -3680,134 +3681,6 @@ id|done_q
 suffix:semicolon
 )brace
 r_return
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * scsi_sleep_done - timer function for scsi_sleep&n; * @sem:&t;semphore to signal&n; *&n; **/
-DECL|function|scsi_sleep_done
-r_static
-r_void
-id|scsi_sleep_done
-c_func
-(paren
-r_int
-r_int
-id|data
-)paren
-(brace
-r_struct
-id|semaphore
-op_star
-id|sem
-op_assign
-(paren
-r_struct
-id|semaphore
-op_star
-)paren
-id|data
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sem
-)paren
-id|up
-c_func
-(paren
-id|sem
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * scsi_sleep - sleep for specified timeout&n; * @timeout:&t;timeout value&n; *&n; **/
-DECL|function|scsi_sleep
-r_void
-id|scsi_sleep
-c_func
-(paren
-r_int
-id|timeout
-)paren
-(brace
-id|DECLARE_MUTEX_LOCKED
-c_func
-(paren
-id|sem
-)paren
-suffix:semicolon
-r_struct
-id|timer_list
-id|timer
-suffix:semicolon
-id|init_timer
-c_func
-(paren
-op_amp
-id|timer
-)paren
-suffix:semicolon
-id|timer.data
-op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|sem
-suffix:semicolon
-id|timer.expires
-op_assign
-id|jiffies
-op_plus
-id|timeout
-suffix:semicolon
-id|timer.function
-op_assign
-(paren
-r_void
-(paren
-op_star
-)paren
-(paren
-r_int
-r_int
-)paren
-)paren
-id|scsi_sleep_done
-suffix:semicolon
-id|SCSI_LOG_ERROR_RECOVERY
-c_func
-(paren
-l_int|5
-comma
-id|printk
-c_func
-(paren
-l_string|&quot;sleeping for timer tics %d&bslash;n&quot;
-comma
-id|timeout
-)paren
-)paren
-suffix:semicolon
-id|add_timer
-c_func
-(paren
-op_amp
-id|timer
-)paren
-suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|sem
-)paren
-suffix:semicolon
-id|del_timer
-c_func
-(paren
-op_amp
-id|timer
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * scsi_decide_disposition - Disposition a cmd on return from LLD.&n; * @scmd:&t;SCSI cmd to examine.&n; *&n; * Notes:&n; *    This is *only* called when we are examining the status after sending&n; *    out the actual data command.  any commands that are queued for error&n; *    recovery (e.g. test_unit_ready) do *not* come through here.&n; *&n; *    When this routine returns failed, it means the error handler thread&n; *    is woken.  In cases where the error code indicates an error that&n; *    doesn&squot;t require the error handler read (i.e. we don&squot;t need to&n; *    abort/reset), this function should return SUCCESS.&n; **/

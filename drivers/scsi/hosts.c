@@ -164,6 +164,12 @@ op_star
 id|shost
 )paren
 (brace
+id|scsi_forget_host
+c_func
+(paren
+id|shost
+)paren
+suffix:semicolon
 id|scsi_host_cancel
 c_func
 (paren
@@ -173,12 +179,6 @@ l_int|0
 )paren
 suffix:semicolon
 id|scsi_proc_host_rm
-c_func
-(paren
-id|shost
-)paren
-suffix:semicolon
-id|scsi_forget_host
 c_func
 (paren
 id|shost

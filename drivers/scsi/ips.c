@@ -2041,7 +2041,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|ips_putq_scb_head
 c_func
@@ -2054,33 +2053,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_inline
-r_void
-id|ips_putq_scb_tail
-c_func
-(paren
-id|ips_scb_queue_t
-op_star
-comma
-id|ips_scb_t
-op_star
-)paren
-suffix:semicolon
-r_static
-r_inline
-r_void
-id|ips_putq_wait_head
-c_func
-(paren
-id|ips_wait_queue_t
-op_star
-comma
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_static
-r_inline
 r_void
 id|ips_putq_wait_tail
 c_func
@@ -2093,20 +2065,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_inline
-r_void
-id|ips_putq_copp_head
-c_func
-(paren
-id|ips_copp_queue_t
-op_star
-comma
-id|ips_copp_wait_item_t
-op_star
-)paren
-suffix:semicolon
-r_static
-r_inline
 r_void
 id|ips_putq_copp_tail
 c_func
@@ -2119,7 +2077,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_inline
 id|ips_scb_t
 op_star
 id|ips_removeq_scb_head
@@ -2130,7 +2087,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_inline
 id|ips_scb_t
 op_star
 id|ips_removeq_scb
@@ -2144,7 +2100,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_inline
 id|Scsi_Cmnd
 op_star
 id|ips_removeq_wait_head
@@ -2155,7 +2110,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_inline
 id|Scsi_Cmnd
 op_star
 id|ips_removeq_wait
@@ -2169,7 +2123,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_inline
 id|ips_copp_wait_item_t
 op_star
 id|ips_removeq_copp
@@ -2183,7 +2136,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_inline
 id|ips_copp_wait_item_t
 op_star
 id|ips_removeq_copp_head
@@ -7517,7 +7469,6 @@ multiline_comment|/*   Fill in a single scb sg_list element from an address     
 multiline_comment|/*   return a -1 if a breakup occurred                                      */
 multiline_comment|/****************************************************************************/
 r_static
-r_inline
 r_int
 DECL|function|ips_fill_scb_sg_single
 id|ips_fill_scb_sg_single
@@ -11866,7 +11817,6 @@ multiline_comment|/* ASSUMED to be called from within the HA lock               
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
-r_inline
 r_void
 DECL|function|ips_putq_scb_head
 id|ips_putq_scb_head
@@ -11921,80 +11871,6 @@ suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
-multiline_comment|/* Routine Name: ips_putq_scb_tail                                          */
-multiline_comment|/*                                                                          */
-multiline_comment|/* Routine Description:                                                     */
-multiline_comment|/*                                                                          */
-multiline_comment|/*   Add an item to the tail of the queue                                   */
-multiline_comment|/*                                                                          */
-multiline_comment|/* ASSUMED to be called from within the HA lock                             */
-multiline_comment|/*                                                                          */
-multiline_comment|/****************************************************************************/
-r_static
-r_inline
-r_void
-DECL|function|ips_putq_scb_tail
-id|ips_putq_scb_tail
-c_func
-(paren
-id|ips_scb_queue_t
-op_star
-id|queue
-comma
-id|ips_scb_t
-op_star
-id|item
-)paren
-(brace
-id|METHOD_TRACE
-c_func
-(paren
-l_string|&quot;ips_putq_scb_tail&quot;
-comma
-l_int|1
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|item
-)paren
-r_return
-suffix:semicolon
-id|item-&gt;q_next
-op_assign
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|queue-&gt;tail
-)paren
-id|queue-&gt;tail-&gt;q_next
-op_assign
-id|item
-suffix:semicolon
-id|queue-&gt;tail
-op_assign
-id|item
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|queue-&gt;head
-)paren
-id|queue-&gt;head
-op_assign
-id|item
-suffix:semicolon
-id|queue-&gt;count
-op_increment
-suffix:semicolon
-)brace
-multiline_comment|/****************************************************************************/
-multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Name: ips_removeq_scb_head                                       */
 multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Description:                                                     */
@@ -12005,7 +11881,6 @@ multiline_comment|/* ASSUMED to be called from within the HA lock               
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
-r_inline
 id|ips_scb_t
 op_star
 DECL|function|ips_removeq_scb_head
@@ -12086,7 +11961,6 @@ multiline_comment|/* ASSUMED to be called from within the HA lock               
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
-r_inline
 id|ips_scb_t
 op_star
 DECL|function|ips_removeq_scb
@@ -12206,75 +12080,6 @@ suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
-multiline_comment|/* Routine Name: ips_putq_wait_head                                         */
-multiline_comment|/*                                                                          */
-multiline_comment|/* Routine Description:                                                     */
-multiline_comment|/*                                                                          */
-multiline_comment|/*   Add an item to the head of the queue                                   */
-multiline_comment|/*                                                                          */
-multiline_comment|/* ASSUMED to be called from within the HA lock                             */
-multiline_comment|/*                                                                          */
-multiline_comment|/****************************************************************************/
-r_static
-r_inline
-r_void
-DECL|function|ips_putq_wait_head
-id|ips_putq_wait_head
-c_func
-(paren
-id|ips_wait_queue_t
-op_star
-id|queue
-comma
-id|Scsi_Cmnd
-op_star
-id|item
-)paren
-(brace
-id|METHOD_TRACE
-c_func
-(paren
-l_string|&quot;ips_putq_wait_head&quot;
-comma
-l_int|1
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|item
-)paren
-r_return
-suffix:semicolon
-id|item-&gt;host_scribble
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|queue-&gt;head
-suffix:semicolon
-id|queue-&gt;head
-op_assign
-id|item
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|queue-&gt;tail
-)paren
-id|queue-&gt;tail
-op_assign
-id|item
-suffix:semicolon
-id|queue-&gt;count
-op_increment
-suffix:semicolon
-)brace
-multiline_comment|/****************************************************************************/
-multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Name: ips_putq_wait_tail                                         */
 multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Description:                                                     */
@@ -12285,7 +12090,6 @@ multiline_comment|/* ASSUMED to be called from within the HA lock               
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
-r_inline
 r_void
 DECL|function|ips_putq_wait_tail
 id|ips_putq_wait_tail
@@ -12363,7 +12167,6 @@ multiline_comment|/* ASSUMED to be called from within the HA lock               
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
-r_inline
 id|Scsi_Cmnd
 op_star
 DECL|function|ips_removeq_wait_head
@@ -12448,7 +12251,6 @@ multiline_comment|/* ASSUMED to be called from within the HA lock               
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
-r_inline
 id|Scsi_Cmnd
 op_star
 DECL|function|ips_removeq_wait
@@ -12576,71 +12378,6 @@ suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
-multiline_comment|/* Routine Name: ips_putq_copp_head                                         */
-multiline_comment|/*                                                                          */
-multiline_comment|/* Routine Description:                                                     */
-multiline_comment|/*                                                                          */
-multiline_comment|/*   Add an item to the head of the queue                                   */
-multiline_comment|/*                                                                          */
-multiline_comment|/* ASSUMED to be called from within the HA lock                             */
-multiline_comment|/*                                                                          */
-multiline_comment|/****************************************************************************/
-r_static
-r_inline
-r_void
-DECL|function|ips_putq_copp_head
-id|ips_putq_copp_head
-c_func
-(paren
-id|ips_copp_queue_t
-op_star
-id|queue
-comma
-id|ips_copp_wait_item_t
-op_star
-id|item
-)paren
-(brace
-id|METHOD_TRACE
-c_func
-(paren
-l_string|&quot;ips_putq_copp_head&quot;
-comma
-l_int|1
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|item
-)paren
-r_return
-suffix:semicolon
-id|item-&gt;next
-op_assign
-id|queue-&gt;head
-suffix:semicolon
-id|queue-&gt;head
-op_assign
-id|item
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|queue-&gt;tail
-)paren
-id|queue-&gt;tail
-op_assign
-id|item
-suffix:semicolon
-id|queue-&gt;count
-op_increment
-suffix:semicolon
-)brace
-multiline_comment|/****************************************************************************/
-multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Name: ips_putq_copp_tail                                         */
 multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Description:                                                     */
@@ -12651,7 +12388,6 @@ multiline_comment|/* ASSUMED to be called from within the HA lock               
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
-r_inline
 r_void
 DECL|function|ips_putq_copp_tail
 id|ips_putq_copp_tail
@@ -12725,7 +12461,6 @@ multiline_comment|/* ASSUMED to be called from within the HA lock               
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
-r_inline
 id|ips_copp_wait_item_t
 op_star
 DECL|function|ips_removeq_copp_head
@@ -12806,7 +12541,6 @@ multiline_comment|/* ASSUMED to be called from within the HA lock               
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
-r_inline
 id|ips_copp_wait_item_t
 op_star
 DECL|function|ips_removeq_copp
