@@ -14200,6 +14200,15 @@ id|radeonfb_pci_unregister
 comma
 )brace
 suffix:semicolon
+r_int
+id|__init
+id|radeonfb_old_setup
+(paren
+r_char
+op_star
+id|options
+)paren
+suffix:semicolon
 DECL|function|radeonfb_old_init
 r_int
 id|__init
@@ -14208,6 +14217,18 @@ id|radeonfb_old_init
 r_void
 )paren
 (brace
+macro_line|#ifndef MODULE
+id|radeonfb_old_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;radeonfb_old&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|pci_module_init
 (paren
@@ -14411,7 +14432,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|radeonfb_old_init
 id|module_init
 c_func
@@ -14419,6 +14439,7 @@ c_func
 id|radeonfb_old_init
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE
 DECL|variable|radeonfb_old_exit
 id|module_exit
 c_func

@@ -3234,6 +3234,18 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef MODULE
+id|platinumfb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;platinumfb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|of_register_driver
 c_func
 (paren
@@ -3274,7 +3286,6 @@ c_func
 l_string|&quot;framebuffer driver for Apple Platinum video&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 DECL|variable|platinumfb_init
 id|module_init
 c_func
@@ -3282,6 +3293,7 @@ c_func
 id|platinumfb_init
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE
 DECL|variable|platinumfb_exit
 id|module_exit
 c_func

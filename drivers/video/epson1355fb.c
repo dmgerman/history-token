@@ -3025,6 +3025,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|epson1355fb_init
+id|module_init
+c_func
+(paren
+id|epson1355fb_init
+)paren
+suffix:semicolon
 macro_line|#ifdef MODULE
 DECL|function|epson1355fb_exit
 r_static
@@ -3052,13 +3059,6 @@ id|epson1355fb_driver
 suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------------------- */
-DECL|variable|epson1355fb_init
-id|module_init
-c_func
-(paren
-id|epson1355fb_init
-)paren
-suffix:semicolon
 DECL|variable|epson1355fb_exit
 id|module_exit
 c_func

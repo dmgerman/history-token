@@ -5006,6 +5006,16 @@ id|__initdata
 suffix:semicolon
 r_int
 id|__init
+id|stifb_setup
+c_func
+(paren
+r_char
+op_star
+id|options
+)paren
+suffix:semicolon
+r_int
+id|__init
 DECL|function|stifb_init
 id|stifb_init
 c_func
@@ -5021,6 +5031,18 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+macro_line|#ifndef MODULE
+id|stifb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;stifb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5341,7 +5363,6 @@ comma
 id|stifb_setup
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 DECL|variable|stifb_init
 id|module_init
 c_func
@@ -5349,7 +5370,6 @@ c_func
 id|stifb_init
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|stifb_cleanup
 id|module_exit
 c_func

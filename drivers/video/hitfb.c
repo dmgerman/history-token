@@ -1610,7 +1610,6 @@ id|fb_info
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|hitfb_init
 id|module_init
 c_func
@@ -1618,6 +1617,7 @@ c_func
 id|hitfb_init
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE
 DECL|variable|hitfb_exit
 id|module_exit
 c_func

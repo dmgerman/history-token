@@ -535,6 +535,13 @@ id|ENODEV
 suffix:semicolon
 )brace
 )brace
+DECL|variable|pmagbafb_init
+id|module_init
+c_func
+(paren
+id|pmagbafb_init
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

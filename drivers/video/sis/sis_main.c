@@ -32742,6 +32742,20 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,6,8)
+macro_line|#ifndef MODULE
+id|sisfb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;sisfb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif
 r_return
 id|pci_module_init
 c_func
@@ -32751,6 +32765,17 @@ id|sisfb_driver
 )paren
 suffix:semicolon
 )brace
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,6,8)
+macro_line|#ifndef MODULE
+DECL|variable|sisfb_init
+id|module_init
+c_func
+(paren
+id|sisfb_init
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif
 multiline_comment|/*****************************************************/
 multiline_comment|/*                      MODULE                       */
 multiline_comment|/*****************************************************/

@@ -1764,6 +1764,18 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifndef MODULE
+id|vfb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;vfb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1816,6 +1828,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|vfb_init
+id|module_init
+c_func
+(paren
+id|vfb_init
+)paren
+suffix:semicolon
 macro_line|#ifdef MODULE
 DECL|function|vfb_exit
 r_static
@@ -1842,13 +1861,6 @@ id|vfb_driver
 )paren
 suffix:semicolon
 )brace
-DECL|variable|vfb_init
-id|module_init
-c_func
-(paren
-id|vfb_init
-)paren
-suffix:semicolon
 DECL|variable|vfb_exit
 id|module_exit
 c_func

@@ -1961,7 +1961,6 @@ id|clcd_driver
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|amba_clcdfb_init
 id|module_init
 c_func
@@ -1969,7 +1968,6 @@ c_func
 id|amba_clcdfb_init
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|amba_clcdfb_exit
 r_static
 r_void

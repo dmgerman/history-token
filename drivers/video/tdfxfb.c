@@ -357,10 +357,6 @@ c_func
 r_char
 op_star
 id|options
-comma
-r_int
-op_star
-id|ints
 )paren
 suffix:semicolon
 r_static
@@ -7556,6 +7552,18 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef MODULE
+id|tdfxfb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;tdfxfb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|pci_module_init
 c_func
@@ -7601,7 +7609,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 DECL|variable|tdfxfb_init
 id|module_init
 c_func
@@ -7609,7 +7616,6 @@ c_func
 id|tdfxfb_init
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|tdfxfb_exit
 id|module_exit
 c_func
@@ -7626,10 +7632,6 @@ c_func
 r_char
 op_star
 id|options
-comma
-r_int
-op_star
-id|ints
 )paren
 (brace
 r_char

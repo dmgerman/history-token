@@ -10357,6 +10357,18 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef MODULE
+id|rivafb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;rivafb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -10384,6 +10396,13 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|variable|rivafb_init
+id|module_init
+c_func
+(paren
+id|rivafb_init
+)paren
+suffix:semicolon
 macro_line|#ifdef MODULE
 DECL|function|rivafb_exit
 r_static
@@ -10403,13 +10422,6 @@ id|rivafb_driver
 )paren
 suffix:semicolon
 )brace
-DECL|variable|rivafb_init
-id|module_init
-c_func
-(paren
-id|rivafb_init
-)paren
-suffix:semicolon
 DECL|variable|rivafb_exit
 id|module_exit
 c_func

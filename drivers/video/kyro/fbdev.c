@@ -3542,6 +3542,18 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef MODULE
+id|kyrofb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;kyrofb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|pci_module_init
 c_func
@@ -3569,7 +3581,6 @@ id|kyrofb_pci_driver
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|kyrofb_init
 id|module_init
 c_func
@@ -3577,6 +3588,7 @@ c_func
 id|kyrofb_init
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE
 DECL|variable|kyrofb_exit
 id|module_exit
 c_func
