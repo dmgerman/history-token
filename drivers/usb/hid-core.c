@@ -18,9 +18,7 @@ DECL|macro|DEBUG_DATA
 macro_line|#undef DEBUG_DATA
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;hid.h&quot;
-macro_line|#ifdef CONFIG_USB_HIDDEV
 macro_line|#include &lt;linux/hiddev.h&gt;
-macro_line|#endif
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;v1.31&quot;
@@ -6799,7 +6797,6 @@ id|hid-&gt;claimed
 op_or_assign
 id|HID_CLAIMED_INPUT
 suffix:semicolon
-macro_line|#ifdef CONFIG_USB_HIDDEV
 r_if
 c_cond
 (paren
@@ -6814,7 +6811,6 @@ id|hid-&gt;claimed
 op_or_assign
 id|HID_CLAIMED_HIDDEV
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7023,7 +7019,6 @@ c_func
 id|hid
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_USB_HIDDEV
 r_if
 c_cond
 (paren
@@ -7037,7 +7032,6 @@ c_func
 id|hid
 )paren
 suffix:semicolon
-macro_line|#endif
 id|usb_free_urb
 c_func
 (paren
@@ -7134,13 +7128,11 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_USB_HIDDEV
 id|hiddev_init
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|usb_register
 c_func
 (paren
@@ -7170,13 +7162,11 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_USB_HIDDEV
 id|hiddev_exit
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|usb_deregister
 c_func
 (paren

@@ -359,7 +359,7 @@ multiline_comment|/*&n;         * it is important not to set the divider while t
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
 macro_line|#if 0
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -377,7 +377,7 @@ id|unused
 )paren
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -395,7 +395,7 @@ id|unused
 )paren
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -481,7 +481,7 @@ l_int|0x00FF
 )paren
 suffix:semicolon
 )brace
-r_extern
+r_static
 r_inline
 r_int
 r_int

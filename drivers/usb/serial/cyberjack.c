@@ -386,7 +386,6 @@ id|dbg
 id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/* stop reads and writes on all ports */
 r_for
 c_loop
 (paren
@@ -402,31 +401,6 @@ op_increment
 id|i
 )paren
 (brace
-r_while
-c_loop
-(paren
-id|serial-&gt;port
-(braket
-id|i
-)braket
-dot
-id|open_count
-OG
-l_int|0
-)paren
-(brace
-id|cyberjack_close
-(paren
-op_amp
-id|serial-&gt;port
-(braket
-id|i
-)braket
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* My special items, the standard routines free my urbs */
 r_if
 c_cond
@@ -500,18 +474,7 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-op_increment
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_eq
-l_int|1
-)paren
-(brace
-multiline_comment|/* force low_latency on so that our tty_push actually forces&n;&t;&t; * the data through, otherwise it is scheduled, and with high&n;&t;&t; * data rates (like with OHCI) data can get lost.&n;&t;&t; */
+multiline_comment|/* force low_latency on so that our tty_push actually forces&n;&t; * the data through, otherwise it is scheduled, and with high&n;&t; * data rates (like with OHCI) data can get lost.&n;&t; */
 id|port-&gt;tty-&gt;low_latency
 op_assign
 l_int|1
@@ -587,7 +550,6 @@ id|__FUNCTION__
 l_string|&quot; - usb_submit_urb(int urb)&quot;
 )paren
 suffix:semicolon
-)brace
 r_return
 id|result
 suffix:semicolon
@@ -617,17 +579,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-op_decrement
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_le
-l_int|0
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -649,11 +600,6 @@ id|usb_unlink_urb
 (paren
 id|port-&gt;interrupt_in_urb
 )paren
-suffix:semicolon
-)brace
-id|port-&gt;open_count
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 )brace

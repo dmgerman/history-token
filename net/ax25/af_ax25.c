@@ -7598,6 +7598,12 @@ c_func
 l_string|&quot;The amateur radio AX.25 link layer protocol&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|ax25_exit
 r_static
 r_void

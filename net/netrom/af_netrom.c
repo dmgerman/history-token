@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;NET/ROM release 007&n; *&n; *&t;This code REQUIRES 2.1.15 or higher/ NET3.038&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;NET/ROM 001&t;Jonathan(G4KLX)&t;Cloned from the AX25 code.&n; *&t;NET/ROM 002&t;Darryl(G7LED)&t;Fixes and address enhancement.&n; *&t;&t;&t;Jonathan(G4KLX)&t;Complete bind re-think.&n; *&t;&t;&t;Alan(GW4PTS)&t;Trivial tweaks into new format.&n; *&t;NET/ROM&t;003&t;Jonathan(G4KLX)&t;Added G8BPQ extensions.&n; *&t;&t;&t;&t;&t;Added NET/ROM routing ioctl.&n; *&t;&t;&t;Darryl(G7LED)&t;Fix autobinding (on connect).&n; *&t;&t;&t;&t;&t;Fixed nr_release(), set TCP_CLOSE, wakeup app&n; *&t;&t;&t;&t;&t;context, THEN make the sock dead.&n; *&t;&t;&t;&t;&t;Circuit ID check before allocating it on&n; *&t;&t;&t;&t;&t;a connection.&n; *&t;&t;&t;Alan(GW4PTS)&t;sendmsg/recvmsg only. Fixed connect clear bug&n; *&t;&t;&t;&t;&t;inherited from AX.25&n; *&t;NET/ROM 004&t;Jonathan(G4KLX)&t;Converted to module.&n; *&t;NET/ROM 005&t;Jonathan(G4KLX) Linux 2.1&n; *&t;&t;&t;Alan(GW4PTS)&t;Started POSIXisms&n; *&t;NET/ROM 006&t;Alan(GW4PTS)&t;Brought in line with the ANK changes&n; *&t;&t;&t;Jonathan(G4KLX)&t;Removed hdrincl.&n; *&t;NET/ROM 007&t;Jonathan(G4KLX)&t;New timer architecture.&n; *&t;&t;&t;&t;&t;Impmented Idle timer.&n; *&t;&t;&t;Arnaldo C. Melo s/suser/capable/, micro cleanups&n; */
+multiline_comment|/*&n; *&t;NET/ROM release 007&n; *&n; *&t;This code REQUIRES 2.1.15 or higher/ NET3.038&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;NET/ROM 001&t;Jonathan(G4KLX)&t;Cloned from the AX25 code.&n; *&t;NET/ROM 002&t;Darryl(G7LED)&t;Fixes and address enhancement.&n; *&t;&t;&t;Jonathan(G4KLX)&t;Complete bind re-think.&n; *&t;&t;&t;Alan(GW4PTS)&t;Trivial tweaks into new format.&n; *&t;NET/ROM&t;003&t;Jonathan(G4KLX)&t;Added G8BPQ extensions.&n; *&t;&t;&t;&t;&t;Added NET/ROM routing ioctl.&n; *&t;&t;&t;Darryl(G7LED)&t;Fix autobinding (on connect).&n; *&t;&t;&t;&t;&t;Fixed nr_release(), set TCP_CLOSE, wakeup app&n; *&t;&t;&t;&t;&t;context, THEN make the sock dead.&n; *&t;&t;&t;&t;&t;Circuit ID check before allocating it on&n; *&t;&t;&t;&t;&t;a connection.&n; *&t;&t;&t;Alan(GW4PTS)&t;sendmsg/recvmsg only. Fixed connect clear bug&n; *&t;&t;&t;&t;&t;inherited from AX.25&n; *&t;NET/ROM 004&t;Jonathan(G4KLX)&t;Converted to module.&n; *&t;NET/ROM 005&t;Jonathan(G4KLX) Linux 2.1&n; *&t;&t;&t;Alan(GW4PTS)&t;Started POSIXisms&n; *&t;NET/ROM 006&t;Alan(GW4PTS)&t;Brought in line with the ANK changes&n; *&t;&t;&t;Jonathan(G4KLX)&t;Removed hdrincl.&n; *&t;NET/ROM 007&t;Jonathan(G4KLX)&t;New timer architecture.&n; *&t;&t;&t;&t;&t;Implemented Idle timer.&n; *&t;&t;&t;Arnaldo C. Melo s/suser/capable/, micro cleanups&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -5400,6 +5400,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;The amateur radio NET/ROM network and transport layer protocol&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|function|nr_exit

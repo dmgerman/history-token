@@ -198,10 +198,10 @@ id|list_head
 id|queue_head
 suffix:semicolon
 multiline_comment|/* Requests are added here...&t;&t;&t;*/
-DECL|member|queue_lock
+DECL|member|tx_lock
 r_struct
 id|semaphore
-id|queue_lock
+id|tx_lock
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -1073,7 +1073,7 @@ suffix:semicolon
 )brace
 id|dev-&gt;mem_end
 op_assign
-id|dev-&gt;rmem_end
+id|ei_status.rmem_end
 op_assign
 id|dev-&gt;mem_start
 op_plus
@@ -1085,7 +1085,7 @@ id|LNE390_START_PG
 op_star
 l_int|256
 suffix:semicolon
-id|dev-&gt;rmem_start
+id|ei_status.rmem_start
 op_assign
 id|dev-&gt;mem_start
 op_plus
@@ -1388,14 +1388,14 @@ id|xfer_start
 op_plus
 id|count
 OG
-id|dev-&gt;rmem_end
+id|ei_status.rmem_end
 )paren
 (brace
 multiline_comment|/* Packet wraps over end of ring buffer. */
 r_int
 id|semi_count
 op_assign
-id|dev-&gt;rmem_end
+id|ei_status.rmem_end
 op_minus
 id|xfer_start
 suffix:semicolon
@@ -1420,7 +1420,7 @@ id|skb-&gt;data
 op_plus
 id|semi_count
 comma
-id|dev-&gt;rmem_start
+id|ei_status.rmem_start
 comma
 id|count
 )paren

@@ -2797,7 +2797,6 @@ l_string|&quot;$Revision: 3.12 $&quot;
 suffix:semicolon
 r_static
 r_int
-id|__init
 id|synclink_init_one
 (paren
 r_struct
@@ -2814,7 +2813,6 @@ id|ent
 suffix:semicolon
 r_static
 r_void
-id|__exit
 id|synclink_remove_one
 (paren
 r_struct

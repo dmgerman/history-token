@@ -8767,12 +8767,17 @@ id|dc390_scanf
 r_char
 op_star
 op_star
-id|p1
+id|buffer
 comma
 r_char
 op_star
 op_star
-id|p2
+id|pos
+comma
+r_char
+op_star
+op_star
+id|p0
 comma
 r_int
 op_star
@@ -8780,10 +8785,10 @@ id|var
 )paren
 (brace
 op_star
-id|p2
+id|p0
 op_assign
 op_star
-id|p1
+id|pos
 suffix:semicolon
 op_star
 id|var
@@ -8791,9 +8796,9 @@ op_assign
 id|simple_strtoul
 (paren
 op_star
-id|p2
+id|p0
 comma
-id|p1
+id|pos
 comma
 l_int|10
 )paren
@@ -8802,21 +8807,21 @@ r_if
 c_cond
 (paren
 op_star
-id|p2
+id|p0
 op_eq
 op_star
-id|p1
+id|pos
 )paren
 r_return
 op_minus
 l_int|1
 suffix:semicolon
 op_star
-id|p1
+id|pos
 op_assign
-id|strtok
+id|strsep
 (paren
-l_int|0
+id|buffer
 comma
 l_string|&quot; &bslash;t&bslash;n:=,;.&quot;
 )paren
@@ -8827,7 +8832,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|SCANF
-mdefine_line|#define SCANF(p1, p2, var, min, max)&t;&t;&bslash;&n;if (dc390_scanf (&amp;p1, &amp;p2, &amp;var)) goto einv;&t;&bslash;&n;else if (var&lt;min || var&gt;max) goto einv2
+mdefine_line|#define SCANF(buffer, pos, p0, var, min, max)&t;&t;&bslash;&n;if (dc390_scanf (&amp;buffer, &amp;pos, &amp;p0, &amp;var)) goto einv;&t;&bslash;&n;else if (var&lt;min || var&gt;max) goto einv2
 DECL|function|dc390_yesno
 r_static
 r_int
@@ -8836,7 +8841,12 @@ id|dc390_yesno
 r_char
 op_star
 op_star
-id|p
+id|buffer
+comma
+r_char
+op_star
+op_star
+id|pos
 comma
 r_char
 op_star
@@ -8851,7 +8861,7 @@ c_cond
 (paren
 op_star
 op_star
-id|p
+id|pos
 )paren
 (brace
 r_case
@@ -8888,11 +8898,11 @@ l_int|1
 suffix:semicolon
 )brace
 op_star
-id|p
+id|pos
 op_assign
-id|strtok
+id|strsep
 (paren
-l_int|0
+id|buffer
 comma
 l_string|&quot; &bslash;t&bslash;n:=,;&quot;
 )paren
@@ -8903,7 +8913,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|YESNO
-mdefine_line|#define YESNO(p, var, bmask)&t;&t;&t;&bslash;&n;if (dc390_yesno (&amp;p, &amp;var, bmask)) goto einv;&t;&bslash;&n;else dc390_updateDCB (pACB, pDCB);&t;&t;&bslash;&n;if (!p) goto ok
+mdefine_line|#define YESNO(buffer, pos, var, bmask)&t;&t;&t;&bslash;&n;if (dc390_yesno (&amp;buffer, &amp;pos, &amp;var, bmask)) goto einv;&t;&bslash;&n;else dc390_updateDCB (pACB, pDCB);&t;&t;&bslash;&n;if (!p) goto ok
 DECL|function|dc390_search
 r_static
 r_int
@@ -8912,12 +8922,17 @@ id|dc390_search
 r_char
 op_star
 op_star
-id|p1
+id|buffer
 comma
 r_char
 op_star
 op_star
-id|p2
+id|pos
+comma
+r_char
+op_star
+op_star
+id|p0
 comma
 r_char
 op_star
@@ -8948,7 +8963,7 @@ op_logical_neg
 id|memcmp
 (paren
 op_star
-id|p1
+id|pos
 comma
 id|txt
 comma
@@ -8961,11 +8976,11 @@ id|txt
 )paren
 (brace
 op_star
-id|p2
+id|p0
 op_assign
-id|strtok
+id|strsep
 (paren
-l_int|0
+id|buffer
 comma
 l_string|&quot; &bslash;t&bslash;n:=,;&quot;
 )paren
@@ -8975,7 +8990,7 @@ c_cond
 (paren
 op_logical_neg
 op_star
-id|p2
+id|p0
 )paren
 r_return
 op_minus
@@ -8986,9 +9001,9 @@ op_assign
 id|simple_strtoul
 (paren
 op_star
-id|p2
+id|p0
 comma
-id|p1
+id|pos
 comma
 l_int|10
 )paren
@@ -8997,10 +9012,10 @@ r_if
 c_cond
 (paren
 op_star
-id|p2
+id|p0
 op_eq
 op_star
-id|p1
+id|pos
 )paren
 r_return
 op_minus
@@ -9036,11 +9051,11 @@ op_minus
 l_int|2
 suffix:semicolon
 op_star
-id|p1
+id|pos
 op_assign
-id|strtok
+id|strsep
 (paren
-l_int|0
+id|buffer
 comma
 l_string|&quot; &bslash;t&bslash;n:=,;&quot;
 )paren
@@ -9052,13 +9067,13 @@ op_star
 id|ign
 op_logical_and
 op_star
-id|p1
+id|pos
 op_logical_and
 id|strlen
 c_func
 (paren
 op_star
-id|p1
+id|pos
 )paren
 op_ge
 id|strlen
@@ -9072,7 +9087,7 @@ op_logical_neg
 id|memcmp
 (paren
 op_star
-id|p1
+id|pos
 comma
 id|ign
 comma
@@ -9085,11 +9100,11 @@ id|ign
 )paren
 )paren
 op_star
-id|p1
+id|pos
 op_assign
-id|strtok
+id|strsep
 (paren
-l_int|0
+id|buffer
 comma
 l_string|&quot; &bslash;t&bslash;n:=,;&quot;
 )paren
@@ -9101,11 +9116,11 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|SEARCH
-mdefine_line|#define SEARCH(p1, p2, var, txt, max)&t;&t;&t;&t;&t;&t;&bslash;&n;if (dc390_search (&amp;p1, &amp;p2, (PUCHAR)(&amp;var), txt, max, 100, &quot;&quot;)) goto einv2;&t;&bslash;&n;else if (!p1) goto ok2
+mdefine_line|#define SEARCH(buffer, pos, p0, var, txt, max)&t;&t;&t;&t;&t;&t;&bslash;&n;if (dc390_search (&amp;buffer, &amp;pos, &amp;p0, (PUCHAR)(&amp;var), txt, max, 100, &quot;&quot;)) goto einv2;&t;&bslash;&n;else if (!p1) goto ok2
 DECL|macro|SEARCH2
-mdefine_line|#define SEARCH2(p1, p2, var, txt, max, scale)&t;&t;&t;&t;&t;&bslash;&n;if (dc390_search (&amp;p1, &amp;p2, &amp;var, txt, max, scale, &quot;&quot;)) goto einv2; &t;&t;&bslash;&n;else if (!p1) goto ok2
+mdefine_line|#define SEARCH2(buffer, pos, p0, var, txt, max, scale)&t;&t;&t;&t;&t;&bslash;&n;if (dc390_search (&amp;buffer, &amp;pos, &amp;p0, &amp;var, txt, max, scale, &quot;&quot;)) goto einv2; &t;&t;&bslash;&n;else if (!p1) goto ok2
 DECL|macro|SEARCH3
-mdefine_line|#define SEARCH3(p1, p2, var, txt, max, scale, ign)&t;&t;&t;&t;&bslash;&n;if (dc390_search (&amp;p1, &amp;p2, &amp;var, txt, max, scale, ign)) goto einv2;&t;&t;&bslash;&n;else if (!p1) goto ok2
+mdefine_line|#define SEARCH3(buffer, pos, &amp;p0, var, txt, max, scale, ign)&t;&t;&t;&t;&bslash;&n;if (dc390_search (&amp;buffer, &amp;pos, p0, &amp;var, txt, max, scale, ign)) goto einv2;&t;&t;&bslash;&n;else if (!p1) goto ok2
 macro_line|#ifdef DC390_PARSEDEBUG
 DECL|variable|_prstr
 r_static
@@ -9305,13 +9320,12 @@ op_increment
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* We should protect __strtok ! */
-multiline_comment|/* spin_lock (strtok_lock); */
 multiline_comment|/* Remove WS */
 id|pos
 op_assign
-id|strtok
+id|strsep
 (paren
+op_amp
 id|buffer
 comma
 l_string|&quot; &bslash;t:&bslash;n=,;&quot;
@@ -9321,6 +9335,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
+op_star
 id|pos
 )paren
 r_goto
@@ -9456,6 +9471,8 @@ id|olddevmode
 suffix:semicolon
 id|SCANF
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|p0
@@ -9472,11 +9489,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_star
 id|pos
 )paren
 (brace
 id|SCANF
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|p0
@@ -9496,11 +9516,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_star
 id|pos
 )paren
 (brace
 id|SCANF
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|p0
@@ -9521,6 +9544,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
+op_star
 id|pos
 )paren
 r_goto
@@ -9633,6 +9657,8 @@ id|pDCB-&gt;DevMode
 suffix:semicolon
 id|YESNO
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|pDCB-&gt;DevMode
@@ -9645,6 +9671,8 @@ op_increment
 suffix:semicolon
 id|YESNO
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|pDCB-&gt;DevMode
@@ -9675,6 +9703,8 @@ op_increment
 suffix:semicolon
 id|YESNO
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|pDCB-&gt;DevMode
@@ -9702,6 +9732,8 @@ op_decrement
 suffix:semicolon
 id|YESNO
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|pDCB-&gt;DevMode
@@ -9714,6 +9746,8 @@ op_increment
 suffix:semicolon
 id|YESNO
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|pDCB-&gt;DevMode
@@ -9750,6 +9784,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
+op_star
 id|pos
 )paren
 r_goto
@@ -9798,6 +9833,8 @@ l_char|&squot;-&squot;
 (brace
 id|SCANF
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|p0
@@ -9850,9 +9887,10 @@ l_int|0
 )paren
 id|pos
 op_assign
-id|strtok
+id|strsep
 (paren
-l_int|0
+op_star
+id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n:=,;.&quot;
 )paren
@@ -9861,9 +9899,10 @@ suffix:semicolon
 r_else
 id|pos
 op_assign
-id|strtok
+id|strsep
 (paren
-l_int|0
+op_star
+id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n:=,;.&quot;
 )paren
@@ -9872,6 +9911,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
+op_star
 id|pos
 )paren
 r_goto
@@ -9889,6 +9929,8 @@ l_char|&squot;-&squot;
 (brace
 id|SCANF
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|p0
@@ -9927,6 +9969,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
+op_star
 id|pos
 )paren
 r_goto
@@ -10008,9 +10051,10 @@ l_int|19
 suffix:semicolon
 id|pos
 op_assign
-id|strtok
+id|strsep
 (paren
-l_int|0
+op_star
+id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n:=,;&quot;
 )paren
@@ -10019,6 +10063,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
+op_star
 id|pos
 )paren
 r_goto
@@ -10036,9 +10081,10 @@ l_char|&squot;M&squot;
 )paren
 id|pos
 op_assign
-id|strtok
+id|strsep
 (paren
-l_int|0
+op_star
+id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n:=,;&quot;
 )paren
@@ -10057,9 +10103,10 @@ suffix:semicolon
 r_else
 id|pos
 op_assign
-id|strtok
+id|strsep
 (paren
-l_int|0
+op_star
+id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n:=,;&quot;
 )paren
@@ -10069,6 +10116,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
+op_star
 id|pos
 )paren
 r_goto
@@ -10090,6 +10138,8 @@ l_char|&squot;-&squot;
 (brace
 id|SCANF
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|p0
@@ -10119,9 +10169,10 @@ suffix:semicolon
 r_else
 id|pos
 op_assign
-id|strtok
+id|strsep
 (paren
-l_int|0
+op_star
+id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n:=,;&quot;
 )paren
@@ -10130,6 +10181,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
+op_star
 id|pos
 )paren
 r_goto
@@ -10155,6 +10207,8 @@ l_char|&squot;-&squot;
 (brace
 id|SCANF
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|p0
@@ -10189,9 +10243,10 @@ suffix:semicolon
 r_else
 id|pos
 op_assign
-id|strtok
+id|strsep
 (paren
-l_int|0
+op_star
+id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n:=,;&quot;
 )paren
@@ -10241,6 +10296,8 @@ suffix:semicolon
 multiline_comment|/* Adapter setting */
 id|SEARCH
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|p0
@@ -10254,6 +10311,8 @@ l_int|8
 suffix:semicolon
 id|SEARCH
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|p0
@@ -10267,6 +10326,8 @@ l_int|8
 suffix:semicolon
 id|SEARCH
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|p0
@@ -10280,6 +10341,8 @@ l_int|7
 suffix:semicolon
 id|SEARCH
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|p0
@@ -10293,6 +10356,8 @@ l_int|32
 suffix:semicolon
 id|SEARCH
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|p0
@@ -10306,6 +10371,8 @@ l_int|255
 suffix:semicolon
 id|SEARCH3
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|p0
@@ -10323,6 +10390,8 @@ l_string|&quot;NS&quot;
 suffix:semicolon
 id|SEARCH3
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|p0
@@ -10340,6 +10409,8 @@ l_string|&quot;MS&quot;
 suffix:semicolon
 id|SEARCH3
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|p0
@@ -10428,6 +10499,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_star
 id|pos
 )paren
 r_goto
@@ -10435,7 +10507,6 @@ id|next
 suffix:semicolon
 id|ok
 suffix:colon
-multiline_comment|/* spin_unlock (strtok_lock); */
 id|DC390_UNLOCK_ACB
 suffix:semicolon
 r_if
@@ -10479,7 +10550,6 @@ id|p0
 suffix:semicolon
 id|einv
 suffix:colon
-multiline_comment|/* spin_unlock (strtok_lock); */
 id|DC390_UNLOCK_ACB
 suffix:semicolon
 id|DC390_UNLOCK_IO
@@ -10579,9 +10649,10 @@ suffix:colon
 (brace
 id|pos
 op_assign
-id|strtok
+id|strsep
 (paren
-l_int|0
+op_star
+id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n.:;=&quot;
 )paren
@@ -10590,6 +10661,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
+op_star
 id|pos
 )paren
 r_goto
@@ -10674,9 +10746,10 @@ suffix:colon
 (brace
 id|pos
 op_assign
-id|strtok
+id|strsep
 (paren
-l_int|0
+op_star
+id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n.:;=&quot;
 )paren
@@ -10685,6 +10758,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
+op_star
 id|pos
 )paren
 r_goto
@@ -10775,9 +10849,10 @@ id|lun
 suffix:semicolon
 id|pos
 op_assign
-id|strtok
+id|strsep
 (paren
-l_int|0
+op_star
+id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n.:;=&quot;
 )paren
@@ -10785,11 +10860,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_star
 id|pos
 )paren
 (brace
 id|SCANF
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|p0
@@ -10809,11 +10887,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_star
 id|pos
 )paren
 (brace
 id|SCANF
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|p0
@@ -10901,9 +10982,10 @@ id|lun
 suffix:semicolon
 id|pos
 op_assign
-id|strtok
+id|strsep
 (paren
-l_int|0
+op_star
+id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n.:;=&quot;
 )paren
@@ -10911,11 +10993,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_star
 id|pos
 )paren
 (brace
 id|SCANF
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|p0
@@ -10935,11 +11020,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_star
 id|pos
 )paren
 (brace
 id|SCANF
 (paren
+id|buffer
+comma
 id|pos
 comma
 id|p0

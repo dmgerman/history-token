@@ -1222,6 +1222,10 @@ id|qh-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
+id|qh-&gt;urbp
+op_assign
+l_int|NULL
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -1568,34 +1572,17 @@ op_star
 id|uhci
 comma
 r_struct
-id|urb
+id|uhci_qh
 op_star
-id|urb
+id|qh
 )paren
 (brace
-r_struct
-id|urb_priv
-op_star
-id|urbp
-op_assign
-(paren
-r_struct
-id|urb_priv
-op_star
-)paren
-id|urb-&gt;hcpriv
-suffix:semicolon
 r_int
 r_int
 id|flags
 suffix:semicolon
 r_struct
 id|uhci_qh
-op_star
-id|qh
-op_assign
-id|urbp-&gt;qh
-comma
 op_star
 id|pqh
 suffix:semicolon
@@ -1606,6 +1593,10 @@ op_logical_neg
 id|qh
 )paren
 r_return
+suffix:semicolon
+id|qh-&gt;urbp
+op_assign
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Only go through the hoops if it&squot;s actually linked in */
 id|spin_lock_irqsave
@@ -1629,10 +1620,6 @@ id|qh-&gt;list
 )paren
 )paren
 (brace
-id|qh-&gt;urbp
-op_assign
-l_int|NULL
-suffix:semicolon
 id|pqh
 op_assign
 id|list_entry
@@ -2492,15 +2479,7 @@ c_func
 (paren
 id|uhci_up_cachep
 comma
-id|in_interrupt
-c_func
-(paren
-)paren
-ques
-c_cond
 id|SLAB_ATOMIC
-suffix:colon
-id|SLAB_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -4285,7 +4264,7 @@ c_func
 (paren
 id|uhci
 comma
-id|urb
+id|urbp-&gt;qh
 )paren
 suffix:semicolon
 multiline_comment|/* Delete all of the TD&squot;s except for the status TD at the end */
@@ -5380,7 +5359,7 @@ id|pktsze
 suffix:semicolon
 id|len
 op_sub_assign
-id|pktsze
+id|maxsze
 suffix:semicolon
 id|usb_dotoggle
 c_func
@@ -5409,6 +5388,7 @@ OG
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * USB_ZERO_PACKET means adding a 0-length packet, if&n;&t; * direction is OUT and the transfer_length was an&n;&t; * exact multiple of maxsze, hence&n;&t; * (len = transfer_length - N * maxsze) == 0&n;&t; * however, if transfer_length == 0, the zero packet&n;&t; * was already prepared above.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5423,6 +5403,9 @@ id|urb-&gt;transfer_flags
 op_amp
 id|USB_ZERO_PACKET
 )paren
+op_logical_and
+op_logical_neg
+id|len
 op_logical_and
 id|urb-&gt;transfer_buffer_length
 )paren
@@ -5464,7 +5447,11 @@ id|status
 comma
 id|destination
 op_or
+(paren
 id|UHCI_NULL_DATA_SIZE
+op_lshift
+l_int|21
+)paren
 op_or
 (paren
 id|usb_gettoggle
@@ -6904,6 +6891,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* Only call completion if it was successful */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ret
+)paren
 id|uhci_call_completion
 c_func
 (paren
@@ -7152,6 +7146,15 @@ id|uhci_add_complete
 c_func
 (paren
 id|urb
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|urb-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -7432,8 +7435,12 @@ c_func
 (paren
 id|uhci
 comma
-id|urb
+id|urbp-&gt;qh
 )paren
+suffix:semicolon
+id|urbp-&gt;qh
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|uhci_unlink_urb
@@ -10306,7 +10313,6 @@ c_cond
 (paren
 id|urb-&gt;complete
 )paren
-(brace
 id|urb
 op_member_access_from_pointer
 id|complete
@@ -10315,6 +10321,11 @@ c_func
 id|urb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|resubmit_interrupt
+)paren
 multiline_comment|/* Recheck the status. The completion handler may have */
 multiline_comment|/*  unlinked the resubmitting interrupt URB */
 id|killed
@@ -10336,7 +10347,6 @@ op_minus
 id|ECONNRESET
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -10377,7 +10387,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 )brace

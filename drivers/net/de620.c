@@ -1227,10 +1227,16 @@ c_func
 id|dev
 )paren
 )paren
-r_return
+(brace
+id|ret
+op_assign
 op_minus
 id|EIO
 suffix:semicolon
+r_goto
+id|out_free_irq
+suffix:semicolon
+)brace
 id|netif_start_queue
 c_func
 (paren
@@ -1239,6 +1245,19 @@ id|dev
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|out_free_irq
+suffix:colon
+id|free_irq
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/************************************************&n; *&n; * The inverse routine to de620_open().&n; *&n; */
@@ -2858,6 +2877,10 @@ id|EBUSY
 suffix:semicolon
 )brace
 macro_line|#endif
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -2867,7 +2890,22 @@ l_int|3
 comma
 l_string|&quot;de620&quot;
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;io 0x%3lX, which is busy.&bslash;n&quot;
+comma
+id|dev-&gt;base_addr
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
 multiline_comment|/* else, got it! */
 id|printk
 c_func

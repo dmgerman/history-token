@@ -165,6 +165,11 @@ r_int
 r_int
 id|len
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|expect-&gt;expectant-&gt;helper-&gt;timeout
+)paren
 id|len
 op_assign
 id|sprintf
@@ -172,7 +177,48 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;EXPECTING: proto=%u &quot;
+l_string|&quot;EXPECTING: %lu &quot;
+comma
+id|timer_pending
+c_func
+(paren
+op_amp
+id|expect-&gt;timeout
+)paren
+ques
+c_cond
+(paren
+id|expect-&gt;timeout.expires
+op_minus
+id|jiffies
+)paren
+op_div
+id|HZ
+suffix:colon
+l_int|0
+)paren
+suffix:semicolon
+r_else
+id|len
+op_assign
+id|sprintf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;EXPECTING: - &quot;
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buffer
+op_plus
+id|len
+comma
+l_string|&quot;proto=%u &quot;
 comma
 id|expect-&gt;tuple.dst.protonum
 )paren
@@ -1458,7 +1504,7 @@ op_amp
 id|ip_conntrack_lock
 )paren
 suffix:semicolon
-multiline_comment|/* find_proto() returns proto_generic in case there is no protocol &n;&t; * helper. So this should be enough - HW */
+multiline_comment|/* ip_ct_find_proto() returns proto_generic in case there is no protocol &n;&t; * helper. So this should be enough - HW */
 id|LIST_DELETE
 c_func
 (paren
@@ -1627,11 +1673,32 @@ c_func
 id|ip_ct_refresh
 )paren
 suffix:semicolon
+DECL|variable|ip_ct_find_proto
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_ct_find_proto
+)paren
+suffix:semicolon
+DECL|variable|ip_ct_find_helper
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_ct_find_helper
+)paren
+suffix:semicolon
 DECL|variable|ip_conntrack_expect_related
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|ip_conntrack_expect_related
+)paren
+suffix:semicolon
+DECL|variable|ip_conntrack_change_expect
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_conntrack_change_expect
 )paren
 suffix:semicolon
 DECL|variable|ip_conntrack_unexpect_related
@@ -1660,6 +1727,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ip_conntrack_htable_size
+)paren
+suffix:semicolon
+DECL|variable|ip_conntrack_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_conntrack_lock
 )paren
 suffix:semicolon
 eof

@@ -2,6 +2,7 @@ multiline_comment|/* $Id: bootstr.c,v 1.6 1999/08/31 06:55:01 davem Exp $&n; * b
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
+multiline_comment|/* WARNING: The boot loader knows that these next three variables come one right&n; *          after another in the .data section.  Do not move this stuff into&n; *          the .bss section or it will break things.&n; */
 DECL|macro|BARG_LEN
 mdefine_line|#define BARG_LEN  256
 DECL|variable|bootstr_len

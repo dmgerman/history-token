@@ -760,7 +760,7 @@ id|spinlock
 suffix:semicolon
 )brace
 suffix:semicolon
-r_extern
+r_static
 id|__inline__
 r_void
 DECL|function|awc_fid_queue_init
@@ -832,7 +832,7 @@ suffix:semicolon
 )brace
 )def_block
 suffix:semicolon
-r_extern
+r_static
 r_inline
 r_void
 DECL|function|awc_fid_queue_push_tail
@@ -912,7 +912,7 @@ suffix:semicolon
 )brace
 )def_block
 suffix:semicolon
-r_extern
+r_static
 r_inline
 r_void
 DECL|function|awc_fid_queue_push_head
@@ -992,7 +992,7 @@ suffix:semicolon
 )brace
 )def_block
 suffix:semicolon
-r_extern
+r_static
 r_inline
 r_void
 DECL|function|awc_fid_queue_rm
@@ -1094,7 +1094,7 @@ suffix:semicolon
 )brace
 )def_block
 suffix:semicolon
-r_extern
+r_static
 r_inline
 r_void
 DECL|function|awc_fid_queue_remove
@@ -1146,7 +1146,7 @@ suffix:semicolon
 )brace
 )def_block
 suffix:semicolon
-r_extern
+r_static
 r_inline
 r_struct
 id|awc_fid
@@ -1212,7 +1212,7 @@ suffix:semicolon
 )brace
 )def_block
 suffix:semicolon
-r_extern
+r_static
 r_inline
 r_struct
 id|awc_fid

@@ -5184,11 +5184,7 @@ id|pc-&gt;flags
 r_if
 c_cond
 (paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 op_member_access_from_pointer
 id|dmaproc
 c_func
@@ -5542,11 +5538,7 @@ id|KERN_ERR
 l_string|&quot;ide-tape: DMA disabled, reverting to PIO&bslash;n&quot;
 )paren
 suffix:semicolon
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 op_member_access_from_pointer
 id|dmaproc
 c_func
@@ -5694,7 +5686,20 @@ comma
 id|bcount.all
 )paren
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|HWGROUP
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|handler
+)paren
+suffix:semicolon
 id|ide_set_handler
+c_func
 (paren
 id|drive
 comma
@@ -5829,7 +5834,20 @@ id|bcount.all
 )paren
 suffix:semicolon
 macro_line|#endif
+id|BUG_ON
+c_func
+(paren
+id|HWGROUP
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|handler
+)paren
+suffix:semicolon
 id|ide_set_handler
+c_func
 (paren
 id|drive
 comma
@@ -5998,6 +6016,18 @@ suffix:semicolon
 id|tape-&gt;cmd_start_time
 op_assign
 id|jiffies
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|HWGROUP
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|handler
+)paren
 suffix:semicolon
 id|ide_set_handler
 c_func
@@ -6293,11 +6323,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 op_member_access_from_pointer
 id|dmaproc
 c_func
@@ -6324,11 +6350,7 @@ id|drive-&gt;using_dma
 id|dma_ok
 op_assign
 op_logical_neg
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 op_member_access_from_pointer
 id|dmaproc
 c_func
@@ -6415,12 +6437,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-(paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 op_member_access_from_pointer
 id|dmaproc
 c_func
@@ -6428,7 +6445,6 @@ c_func
 id|ide_dma_begin
 comma
 id|drive
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -6446,6 +6462,18 @@ id|tape-&gt;flags
 )paren
 )paren
 (brace
+id|BUG_ON
+c_func
+(paren
+id|HWGROUP
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|handler
+)paren
+suffix:semicolon
 id|ide_set_handler
 c_func
 (paren
@@ -10314,15 +10342,21 @@ id|idetape_read_position_result_t
 op_star
 id|result
 suffix:semicolon
-singleline_comment|//#if IDETAPE_DEBUG_LOG
-singleline_comment|//&t;if (tape-&gt;debug_level &gt;= 4)
+macro_line|#if IDETAPE_DEBUG_LOG
+r_if
+c_cond
+(paren
+id|tape-&gt;debug_level
+op_ge
+l_int|4
+)paren
 id|printk
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_read_position_callback&bslash;n&quot;
 )paren
 suffix:semicolon
-singleline_comment|//#endif /* IDETAPE_DEBUG_LOG */
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 r_if
 c_cond
 (paren
@@ -11076,15 +11110,21 @@ suffix:semicolon
 r_int
 id|position
 suffix:semicolon
-singleline_comment|//#if IDETAPE_DEBUG_LOG
-singleline_comment|//        if (tape-&gt;debug_level &gt;= 4)
+macro_line|#if IDETAPE_DEBUG_LOG
+r_if
+c_cond
+(paren
+id|tape-&gt;debug_level
+op_ge
+l_int|4
+)paren
 id|printk
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_read_position&bslash;n&quot;
 )paren
 suffix:semicolon
-singleline_comment|//#endif /* IDETAPE_DEBUG_LOG */
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 macro_line|#ifdef NO_LONGER_REQUIRED
 id|idetape_flush_tape_buffers
 c_func
@@ -25294,13 +25334,7 @@ c_cond
 op_logical_neg
 id|tape-&gt;onstream
 op_logical_and
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|pci_dev
+id|drive-&gt;channel-&gt;pci_dev
 op_ne
 l_int|NULL
 )paren
@@ -25310,25 +25344,13 @@ r_if
 c_cond
 (paren
 (paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|pci_dev-&gt;device
+id|drive-&gt;channel-&gt;pci_dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_ARTOP_ATP850UF
 )paren
 op_logical_or
 (paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|pci_dev-&gt;device
+id|drive-&gt;channel-&gt;pci_dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_TTI_HPT343
 )paren
@@ -25823,16 +25845,7 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* all CPUs (overkill?) */
-multiline_comment|/* FIXME: this appears to be totally wrong! */
-id|ata_ops
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|busy
-op_assign
-l_int|0
+id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|ide_unregister_subdriver
 (paren
@@ -26536,13 +26549,7 @@ l_string|&quot;mt&quot;
 comma
 id|DEVFS_FL_DEFAULT
 comma
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|major
+id|drive-&gt;channel-&gt;major
 comma
 id|minor
 comma
@@ -26568,13 +26575,7 @@ l_string|&quot;mtn&quot;
 comma
 id|DEVFS_FL_DEFAULT
 comma
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|major
+id|drive-&gt;channel-&gt;major
 comma
 id|minor
 op_plus

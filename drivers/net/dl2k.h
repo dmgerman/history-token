@@ -1,5 +1,5 @@
 multiline_comment|/*  D-Link DL2000-based Gigabit Ethernet Adapter Linux driver */
-multiline_comment|/*  &n;    Copyright (c) 2001 by D-Link Corporation&n;    Written by Edward Peng.&lt;edward_peng@dlink.com.tw&gt;&n;    Created 03-May-2001, base on Linux&squot; sundance.c.&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;*/
+multiline_comment|/*  &n;    Copyright (c) 2001, 2002 by D-Link Corporation&n;    Written by Edward Peng.&lt;edward_peng@dlink.com.tw&gt;&n;    Created 03-May-2001, base on Linux&squot; sundance.c.&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;*/
 macro_line|#ifndef __DL2K_H__
 DECL|macro|__DL2K_H__
 mdefine_line|#define __DL2K_H__
@@ -2808,6 +2808,10 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
+DECL|member|rx_lock
+id|spinlock_t
+id|rx_lock
+suffix:semicolon
 DECL|member|stats
 r_struct
 id|net_device_stats
@@ -2913,6 +2917,12 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1: fiber, 0: copper */
+DECL|member|pci_rev_id
+r_int
+r_char
+id|pci_rev_id
+suffix:semicolon
+multiline_comment|/* PCI revision ID */
 DECL|member|last_tx
 r_struct
 id|netdev_desc
@@ -2936,6 +2946,11 @@ r_int
 id|cur_tx
 comma
 id|old_tx
+suffix:semicolon
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
 suffix:semicolon
 DECL|member|wake_polarity
 r_int

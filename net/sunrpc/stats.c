@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/sunrpc/svcsock.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 DECL|macro|RPCDBG_FACILITY
 mdefine_line|#define RPCDBG_FACILITY&t;RPCDBG_MISC
 DECL|variable|proc_net_rpc

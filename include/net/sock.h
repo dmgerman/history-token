@@ -45,7 +45,7 @@ DECL|typedef|socket_lock_t
 id|socket_lock_t
 suffix:semicolon
 DECL|macro|sock_lock_init
-mdefine_line|#define sock_lock_init(__sk) &bslash;&n;do {&t;spin_lock_init(&amp;((__sk)-&gt;lock.slock)); &bslash;&n;&t;(__sk)-&gt;lock.users = 0; &bslash;&n;&t;init_waitqueue_head(&amp;((__sk)-&gt;lock.wq)); &bslash;&n;} while(0);
+mdefine_line|#define sock_lock_init(__sk) &bslash;&n;do {&t;spin_lock_init(&amp;((__sk)-&gt;lock.slock)); &bslash;&n;&t;(__sk)-&gt;lock.users = 0; &bslash;&n;&t;init_waitqueue_head(&amp;((__sk)-&gt;lock.wq)); &bslash;&n;} while(0)
 DECL|struct|sock
 r_struct
 id|sock

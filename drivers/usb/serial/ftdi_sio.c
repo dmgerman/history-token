@@ -792,32 +792,6 @@ id|dbg
 id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/* stop reads and writes on all ports */
-r_while
-c_loop
-(paren
-id|serial-&gt;port
-(braket
-l_int|0
-)braket
-dot
-id|open_count
-OG
-l_int|0
-)paren
-(brace
-id|ftdi_sio_close
-(paren
-op_amp
-id|serial-&gt;port
-(braket
-l_int|0
-)braket
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -897,18 +871,7 @@ c_func
 id|__FUNCTION__
 )paren
 suffix:semicolon
-op_increment
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_eq
-l_int|1
-)paren
-(brace
-multiline_comment|/* This will push the characters through immediately rather &n;&t;&t;   than queue a task to deliver them */
+multiline_comment|/* This will push the characters through immediately rather &n;&t;   than queue a task to deliver them */
 id|port-&gt;tty-&gt;low_latency
 op_assign
 l_int|1
@@ -943,7 +906,7 @@ comma
 id|WDR_TIMEOUT
 )paren
 suffix:semicolon
-multiline_comment|/* Setup termios defaults. According to tty_io.c the &n;&t;&t;   settings are driver specific */
+multiline_comment|/* Setup termios defaults. According to tty_io.c the &n;&t;   settings are driver specific */
 id|port-&gt;tty-&gt;termios-&gt;c_cflag
 op_assign
 id|B9600
@@ -1076,7 +1039,6 @@ comma
 id|result
 )paren
 suffix:semicolon
-)brace
 r_return
 id|result
 suffix:semicolon
@@ -1125,17 +1087,6 @@ c_func
 id|__FUNCTION__
 )paren
 suffix:semicolon
-op_decrement
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_le
-l_int|0
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -1266,33 +1217,6 @@ id|usb_unlink_urb
 id|port-&gt;read_urb
 )paren
 suffix:semicolon
-)brace
-id|port-&gt;open_count
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* Send a HUP if necessary */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|port-&gt;tty-&gt;termios-&gt;c_cflag
-op_amp
-id|CLOCAL
-)paren
-)paren
-(brace
-id|tty_hangup
-c_func
-(paren
-id|port-&gt;tty
-)paren
-suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/* ftdi_sio_close */

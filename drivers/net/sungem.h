@@ -96,6 +96,10 @@ DECL|macro|GREG_SWRST_RXRST
 mdefine_line|#define GREG_SWRST_RXRST&t;0x00000002&t;/* RX Software Reset&t;&t;*/
 DECL|macro|GREG_SWRST_RSTOUT
 mdefine_line|#define GREG_SWRST_RSTOUT&t;0x00000004&t;/* Force RST# pin active&t;*/
+DECL|macro|GREG_SWRST_CACHESIZE
+mdefine_line|#define GREG_SWRST_CACHESIZE&t;0x00ff0000&t;/* RIO only: cache line size&t;*/
+DECL|macro|GREG_SWRST_CACHE_SHIFT
+mdefine_line|#define GREG_SWRST_CACHE_SHIFT&t;16
 multiline_comment|/* TX DMA Registers */
 DECL|macro|TXDMA_KICK
 mdefine_line|#define TXDMA_KICK&t;0x2000UL&t;/* TX Kick Register&t;&t;*/
@@ -1128,6 +1132,14 @@ suffix:semicolon
 DECL|member|gigabit_capable
 r_int
 id|gigabit_capable
+suffix:semicolon
+DECL|member|mac_rx_cfg
+id|u32
+id|mac_rx_cfg
+suffix:semicolon
+DECL|member|swrst_base
+id|u32
+id|swrst_base
 suffix:semicolon
 multiline_comment|/* Autoneg &amp; PHY control */
 DECL|member|link_cntl

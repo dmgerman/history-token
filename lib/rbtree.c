@@ -1,5 +1,6 @@
 multiline_comment|/*&n;  Red Black Trees&n;  (C) 1999  Andrea Arcangeli &lt;andrea@suse.de&gt;&n;  &n;  This program is free software; you can redistribute it and/or modify&n;  it under the terms of the GNU General Public License as published by&n;  the Free Software Foundation; either version 2 of the License, or&n;  (at your option) any later version.&n;&n;  This program is distributed in the hope that it will be useful,&n;  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;  GNU General Public License for more details.&n;&n;  You should have received a copy of the GNU General Public License&n;  along with this program; if not, write to the Free Software&n;  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;&n;  linux/lib/rbtree.c&n;*/
 macro_line|#include &lt;linux/rbtree.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 DECL|function|__rb_rotate_left
 r_static
 r_void
@@ -383,6 +384,13 @@ op_assign
 id|RB_BLACK
 suffix:semicolon
 )brace
+DECL|variable|rb_insert_color
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rb_insert_color
+)paren
+suffix:semicolon
 DECL|function|__rb_erase_color
 r_static
 r_void
@@ -1001,4 +1009,11 @@ id|root
 )paren
 suffix:semicolon
 )brace
+DECL|variable|rb_erase
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rb_erase
+)paren
+suffix:semicolon
 eof

@@ -1603,4 +1603,10 @@ c_func
 l_string|&quot;RFC2364 PPP over ATM/AAL5&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

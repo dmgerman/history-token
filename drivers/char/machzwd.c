@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  MachZ ZF-Logic Watchdog Timer driver for Linux&n; *  &n; * &n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; *  The author does NOT admit liability nor provide warranty for&n; *  any of this software. This material is provided &quot;AS-IS&quot; in&n; *  the hope that it may be useful for others.&n; *&n; *  Author: Fernando Fuganti &lt;fuganti@conectiva.com.br&gt;&n; *&n; *  Based on sbc60xxwdt.c by Jakob Oestergaard&n; * &n; *&n; *  We have two timers (wd#1, wd#2) driven by a 32 KHz clock with the &n; *  following periods:&n; *      wd#1 - 2 seconds;&n; *      wd#2 - 7.2 ms;&n; *  After the expiration of wd#1, it can generate a NMI, SCI, SMI, or &n; *  a system RESET and it starts wd#2 that unconditionaly will RESET &n; *  the system when the counter reaches zero.&n; *&n; */
+multiline_comment|/*&n; *  MachZ ZF-Logic Watchdog Timer driver for Linux&n; *  &n; * &n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; *  The author does NOT admit liability nor provide warranty for&n; *  any of this software. This material is provided &quot;AS-IS&quot; in&n; *  the hope that it may be useful for others.&n; *&n; *  Author: Fernando Fuganti &lt;fuganti@conectiva.com.br&gt;&n; *&n; *  Based on sbc60xxwdt.c by Jakob Oestergaard&n; * &n; *&n; *  We have two timers (wd#1, wd#2) driven by a 32 KHz clock with the &n; *  following periods:&n; *      wd#1 - 2 seconds;&n; *      wd#2 - 7.2 ms;&n; *  After the expiration of wd#1, it can generate a NMI, SCI, SMI, or &n; *  a system RESET and it starts wd#2 that unconditionaly will RESET &n; *  the system when the counter reaches zero.&n; *&n; *  14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *      Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -160,6 +160,39 @@ c_func
 id|action
 comma
 l_string|&quot;after watchdog resets, generate: 0 = RESET(*)  1 = SMI  2 = NMI  3 = SCI&quot;
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+id|MODULE_PARM
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_NOWAYOUT)&quot;
 )paren
 suffix:semicolon
 DECL|macro|PFX
@@ -806,11 +839,17 @@ id|count
 )paren
 (brace
 multiline_comment|/*&n; * no need to check for close confirmation&n; * no way to disable watchdog ;)&n; */
-macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nowayout
+)paren
+(brace
 r_int
 id|ofs
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * note: just in case someone wrote the magic character&n;&t;&t; * five months ago...&n;&t;&t; */
+multiline_comment|/* &n;&t;&t;&t; * note: just in case someone wrote the magic character&n;&t;&t;&t; * five months ago...&n;&t;&t;&t; */
 id|zf_expect_close
 op_assign
 l_int|0
@@ -854,7 +893,7 @@ l_string|&quot;zf_expect_close 1&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+)brace
 multiline_comment|/*&n;&t;&t; * Well, anyhow someone wrote to us,&n;&t;&t; * we should return that favour&n;&t;&t; */
 id|next_heartbeat
 op_assign
@@ -1090,10 +1129,15 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
+r_if
+c_cond
+(paren
+id|nowayout
+)paren
+(brace
 id|MOD_INC_USE_COUNT
 suffix:semicolon
-macro_line|#endif
+)brace
 id|zf_is_open
 op_assign
 l_int|1

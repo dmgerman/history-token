@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_SMB_FS_H
 macro_line|#include &lt;linux/smb.h&gt;
 macro_line|#include &lt;linux/smb_fs_i.h&gt;
 macro_line|#include &lt;linux/smb_fs_sb.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 multiline_comment|/*&n; * ioctl commands&n; */
 DECL|macro|SMB_IOC_GETMOUNTUID
 mdefine_line|#define&t;SMB_IOC_GETMOUNTUID&t;&t;_IOR(&squot;u&squot;, 1, __kernel_old_uid_t)

@@ -3222,10 +3222,11 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-DECL|member|mapping
-id|dma_addr_t
+id|DECLARE_PCI_UNMAP_ADDR
+c_func
+(paren
 id|mapping
-suffix:semicolon
+)paren
 )brace
 suffix:semicolon
 DECL|struct|tg3_config_info

@@ -31,10 +31,25 @@ mdefine_line|#define wp_works_ok__is_a_macro /* for versions in ksyms.c */
 multiline_comment|/*&n; * User lives in his very own context, and cannot reference us. Note&n; * that TASK_SIZE is a misnomer, it really gives maximum user virtual &n; * address that the kernel will allocate out.&n; */
 DECL|macro|VA_BITS
 mdefine_line|#define VA_BITS&t;&t;44
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|VPTE_SIZE
 mdefine_line|#define VPTE_SIZE&t;(1UL &lt;&lt; (VA_BITS - PAGE_SHIFT + 3))
+macro_line|#else
+DECL|macro|VPTE_SIZE
+mdefine_line|#define VPTE_SIZE&t;(1 &lt;&lt; (VA_BITS - PAGE_SHIFT + 3))
+macro_line|#endif
 DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE&t;((unsigned long)-VPTE_SIZE)
+multiline_comment|/*&n; * The vpte base must be able to hold the entire vpte, half&n; * of which lives above, and half below, the base. And it&n; * is placed as close to the highest address range as possible.&n; */
+DECL|macro|VPTE_BASE_SPITFIRE
+mdefine_line|#define VPTE_BASE_SPITFIRE&t;(-(VPTE_SIZE/2))
+macro_line|#if 1
+DECL|macro|VPTE_BASE_CHEETAH
+mdefine_line|#define VPTE_BASE_CHEETAH&t;VPTE_BASE_SPITFIRE
+macro_line|#else
+DECL|macro|VPTE_BASE_CHEETAH
+mdefine_line|#define VPTE_BASE_CHEETAH&t;0xffe0000000000000
+macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
 r_typedef
 r_struct

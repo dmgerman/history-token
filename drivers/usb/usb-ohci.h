@@ -1201,7 +1201,6 @@ multiline_comment|/* to support non-PCI OHCIs, you need custom bus/mem/... glue 
 macro_line|#endif
 multiline_comment|/* Recover a TD/ED using its collision chain */
 r_static
-r_inline
 r_void
 op_star
 DECL|function|dma_to_ed_td
@@ -1252,7 +1251,6 @@ id|scan-&gt;virt
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_struct
 id|ed
 op_star
@@ -1294,7 +1292,6 @@ id|ed_dma
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_struct
 id|td
 op_star
@@ -1337,7 +1334,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Add a hash entry for a TD/ED; return true on success */
 r_static
-r_inline
 r_int
 DECL|function|hash_add_ed_td
 id|hash_add_ed_td
@@ -1431,7 +1427,6 @@ l_int|1
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_int
 DECL|function|hash_add_ed
 id|hash_add_ed
@@ -1469,7 +1464,6 @@ id|ed-&gt;dma
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_int
 DECL|function|hash_add_td
 id|hash_add_td
@@ -1507,7 +1501,6 @@ id|td-&gt;td_dma
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_void
 DECL|function|hash_free_ed_td
 id|hash_free_ed_td
@@ -1621,7 +1614,6 @@ suffix:semicolon
 )brace
 )brace
 r_static
-r_inline
 r_void
 DECL|function|hash_free_ed
 id|hash_free_ed
@@ -1656,7 +1648,6 @@ id|ed
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_void
 DECL|function|hash_free_td
 id|hash_free_td
@@ -1821,7 +1812,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* TDs ... */
 r_static
-r_inline
 r_struct
 id|td
 op_star
@@ -1934,7 +1924,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* DEV + EDs ... only the EDs need to be consistent */
 r_static
-r_inline
 r_struct
 id|ohci_device
 op_star

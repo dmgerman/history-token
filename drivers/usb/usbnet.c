@@ -2714,8 +2714,14 @@ l_string|&quot;rx framesize %d range %d..%d mtu %d&quot;
 comma
 id|skb-&gt;len
 comma
+(paren
+r_int
+)paren
 id|MIN_FRAMED
 comma
+(paren
+r_int
+)paren
 id|FRAMED_SIZE
 (paren
 id|dev-&gt;net.mtu

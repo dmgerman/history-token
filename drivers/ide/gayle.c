@@ -109,7 +109,8 @@ r_int
 id|gayle_ack_intr_a4000
 c_func
 (paren
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 )paren
@@ -152,7 +153,8 @@ r_int
 id|gayle_ack_intr_a1200
 c_func
 (paren
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 )paren

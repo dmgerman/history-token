@@ -382,15 +382,15 @@ suffix:semicolon
 DECL|macro|DASD_DEVICE_FORMAT_STRING
 mdefine_line|#define DASD_DEVICE_FORMAT_STRING &quot;Device: %p&quot;
 DECL|macro|DASD_DEVICE_DEBUG_EVENT
-mdefine_line|#define DASD_DEVICE_DEBUG_EVENT(d_level, d_device, d_str, d_data...)&bslash;&n;do {&bslash;&n;        if ( d_device-&gt;debug_area != NULL )&bslash;&n;        debug_sprintf_event(d_device-&gt;debug_area,d_level,&bslash;&n;                    DASD_DEVICE_FORMAT_STRING d_str &quot;&bslash;n&quot;,&bslash;&n;                    d_device, d_data);&bslash;&n;} while(0);
+mdefine_line|#define DASD_DEVICE_DEBUG_EVENT(d_level, d_device, d_str, d_data...)&bslash;&n;do {&bslash;&n;        if ( d_device-&gt;debug_area != NULL )&bslash;&n;        debug_sprintf_event(d_device-&gt;debug_area,d_level,&bslash;&n;                    DASD_DEVICE_FORMAT_STRING d_str &quot;&bslash;n&quot;,&bslash;&n;                    d_device, d_data);&bslash;&n;} while(0)
 DECL|macro|DASD_DEVICE_DEBUG_EXCEPTION
-mdefine_line|#define DASD_DEVICE_DEBUG_EXCEPTION(d_level, d_device, d_str, d_data...)&bslash;&n;do {&bslash;&n;        if ( d_device-&gt;debug_area != NULL )&bslash;&n;        debug_sprintf_exception(d_device-&gt;debug_area,d_level,&bslash;&n;                        DASD_DEVICE_FORMAT_STRING d_str &quot;&bslash;n&quot;,&bslash;&n;                        d_device, d_data);&bslash;&n;} while(0);
+mdefine_line|#define DASD_DEVICE_DEBUG_EXCEPTION(d_level, d_device, d_str, d_data...)&bslash;&n;do {&bslash;&n;        if ( d_device-&gt;debug_area != NULL )&bslash;&n;        debug_sprintf_exception(d_device-&gt;debug_area,d_level,&bslash;&n;                        DASD_DEVICE_FORMAT_STRING d_str &quot;&bslash;n&quot;,&bslash;&n;                        d_device, d_data);&bslash;&n;} while(0)
 DECL|macro|DASD_DRIVER_FORMAT_STRING
 mdefine_line|#define DASD_DRIVER_FORMAT_STRING &quot;Driver: &lt;[%p]&gt;&quot;
 DECL|macro|DASD_DRIVER_DEBUG_EVENT
-mdefine_line|#define DASD_DRIVER_DEBUG_EVENT(d_level, d_fn, d_str, d_data...)&bslash;&n;do {&bslash;&n;        if ( dasd_debug_area != NULL )&bslash;&n;        debug_sprintf_event(dasd_debug_area, d_level,&bslash;&n;                    DASD_DRIVER_FORMAT_STRING #d_fn &quot;:&quot; d_str &quot;&bslash;n&quot;,&bslash;&n;                    d_fn, d_data);&bslash;&n;} while(0);
+mdefine_line|#define DASD_DRIVER_DEBUG_EVENT(d_level, d_fn, d_str, d_data...)&bslash;&n;do {&bslash;&n;        if ( dasd_debug_area != NULL )&bslash;&n;        debug_sprintf_event(dasd_debug_area, d_level,&bslash;&n;                    DASD_DRIVER_FORMAT_STRING #d_fn &quot;:&quot; d_str &quot;&bslash;n&quot;,&bslash;&n;                    d_fn, d_data);&bslash;&n;} while(0)
 DECL|macro|DASD_DRIVER_DEBUG_EXCEPTION
-mdefine_line|#define DASD_DRIVER_DEBUG_EXCEPTION(d_level, d_fn, d_str, d_data...)&bslash;&n;do {&bslash;&n;        if ( dasd_debug_area != NULL )&bslash;&n;        debug_sprintf_exception(dasd_debug_area, d_level,&bslash;&n;                        DASD_DRIVER_FORMAT_STRING #d_fn &quot;:&quot; d_str &quot;&bslash;n&quot;,&bslash;&n;                        d_fn, d_data);&bslash;&n;} while(0);
+mdefine_line|#define DASD_DRIVER_DEBUG_EXCEPTION(d_level, d_fn, d_str, d_data...)&bslash;&n;do {&bslash;&n;        if ( dasd_debug_area != NULL )&bslash;&n;        debug_sprintf_exception(dasd_debug_area, d_level,&bslash;&n;                        DASD_DRIVER_FORMAT_STRING #d_fn &quot;:&quot; d_str &quot;&bslash;n&quot;,&bslash;&n;                        d_fn, d_data);&bslash;&n;} while(0)
 r_struct
 id|dasd_device_t
 suffix:semicolon

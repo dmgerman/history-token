@@ -770,8 +770,6 @@ id|strategy
 r_static
 r_int
 id|count
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* I wanna see who uses this... */
 r_if

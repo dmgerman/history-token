@@ -511,8 +511,6 @@ DECL|variable|pcic0_up
 r_static
 r_int
 id|pcic0_up
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|pcic0
 r_static

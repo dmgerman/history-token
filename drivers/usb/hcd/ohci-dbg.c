@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under the GPL.&n; * $Id: ohci-dbg.c,v 1.2 2002/01/19 00:15:45 dbrownell Exp $&n; */
+multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under the GPL.&n; * $Id: ohci-dbg.c,v 1.4 2002/03/27 20:40:40 dbrownell Exp $&n; */
 multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#ifdef DEBUG
 DECL|macro|pipestring
@@ -130,7 +130,7 @@ id|printk
 (paren
 id|KERN_DEBUG
 id|__FILE__
-l_string|&quot;: cmd(8):&quot;
+l_string|&quot;: setup(8):&quot;
 )paren
 suffix:semicolon
 r_for
