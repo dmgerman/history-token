@@ -117,7 +117,7 @@ r_sizeof
 id|buf
 )paren
 comma
-l_string|&quot; [&lt;%016lx&gt;] %%s sp=0x%016lx bsp=0x%016lx&bslash;n&quot;
+l_string|&quot; [&lt;%016lx&gt;] %%s&bslash;n&bslash;t&bslash;tsp=%016lx bsp=%016lx&bslash;n&quot;
 comma
 id|ip
 comma
