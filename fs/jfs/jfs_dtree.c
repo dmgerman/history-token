@@ -50,7 +50,7 @@ DECL|macro|DT_PAGE
 mdefine_line|#define DT_PAGE(IP, MP) BT_PAGE(IP, MP, dtpage_t, i_dtroot)
 multiline_comment|/* get page buffer for specified block address */
 DECL|macro|DT_GETPAGE
-mdefine_line|#define DT_GETPAGE(IP, BN, MP, SIZE, P, RC)&bslash;&n;{&bslash;&n;&t;BT_GETPAGE(IP, BN, MP, dtpage_t, SIZE, P, RC, i_dtroot)&bslash;&n;&t;if (!(RC))&bslash;&n;&t;{&bslash;&n;&t;&t;if (((P)-&gt;header.nextindex &gt; (((BN)==0)?DTROOTMAXSLOT:(P)-&gt;header.maxslot)) ||&bslash;&n;&t;&t;    ((BN) &amp;&amp; ((P)-&gt;header.maxslot &gt; DTPAGEMAXSLOT)))&bslash;&n;&t;&t;{&bslash;&n;&t;&t;&t;jERROR(1,(&quot;DT_GETPAGE: dtree page corrupt&bslash;n&quot;));&bslash;&n;&t;&t;&t;BT_PUTPAGE(MP);&bslash;&n;&t;&t;&t;updateSuper((IP)-&gt;i_sb, FM_DIRTY);&bslash;&n;&t;&t;&t;MP = NULL;&bslash;&n;&t;&t;&t;RC = EIO;&bslash;&n;&t;&t;}&bslash;&n;&t;}&bslash;&n;}
+mdefine_line|#define DT_GETPAGE(IP, BN, MP, SIZE, P, RC)&bslash;&n;{&bslash;&n;&t;BT_GETPAGE(IP, BN, MP, dtpage_t, SIZE, P, RC, i_dtroot)&bslash;&n;&t;if (!(RC))&bslash;&n;&t;{&bslash;&n;&t;&t;if (((P)-&gt;header.nextindex &gt; (((BN)==0)?DTROOTMAXSLOT:(P)-&gt;header.maxslot)) ||&bslash;&n;&t;&t;    ((BN) &amp;&amp; ((P)-&gt;header.maxslot &gt; DTPAGEMAXSLOT)))&bslash;&n;&t;&t;{&bslash;&n;&t;&t;&t;jfs_err(&quot;DT_GETPAGE: dtree page corrupt&quot;);&bslash;&n;&t;&t;&t;BT_PUTPAGE(MP);&bslash;&n;&t;&t;&t;updateSuper((IP)-&gt;i_sb, FM_DIRTY);&bslash;&n;&t;&t;&t;MP = NULL;&bslash;&n;&t;&t;&t;RC = EIO;&bslash;&n;&t;&t;}&bslash;&n;&t;}&bslash;&n;}
 multiline_comment|/* for consistency */
 DECL|macro|DT_PUTPAGE
 mdefine_line|#define DT_PUTPAGE(MP) BT_PUTPAGE(MP)
@@ -556,6 +556,87 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; *&t;get_index_page()&n; *&n; *&t;Same as get_index_page(), but get&squot;s a new page without reading&n; */
+DECL|function|get_index_page
+r_static
+r_struct
+id|metapage
+op_star
+id|get_index_page
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+id|s64
+id|blkno
+)paren
+(brace
+r_int
+id|rc
+suffix:semicolon
+id|s64
+id|xaddr
+suffix:semicolon
+r_int
+id|xflag
+suffix:semicolon
+id|s32
+id|xlen
+suffix:semicolon
+id|rc
+op_assign
+id|xtLookup
+c_func
+(paren
+id|inode
+comma
+id|blkno
+comma
+l_int|1
+comma
+op_amp
+id|xflag
+comma
+op_amp
+id|xaddr
+comma
+op_amp
+id|xlen
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_logical_or
+(paren
+id|xlen
+op_eq
+l_int|0
+)paren
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+r_return
+id|get_metapage
+c_func
+(paren
+id|inode
+comma
+id|xaddr
+comma
+id|PSIZE
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *&t;find_index()&n; *&n; *&t;Returns dtree page containing directory table entry for specified&n; *&t;index and pointer to its entry.&n; *&n; *&t;mp must be released by caller.&n; */
 DECL|function|find_index
 r_static
@@ -629,16 +710,12 @@ c_cond
 id|maxWarnings
 )paren
 (brace
-id|jERROR
+id|jfs_warn
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;find_entry called with index = %d&bslash;n&quot;
+l_string|&quot;find_entry called with index = %d&quot;
 comma
 id|index
-)paren
 )paren
 suffix:semicolon
 id|maxWarnings
@@ -657,14 +734,10 @@ op_ge
 id|jfs_ip-&gt;next_index
 )paren
 (brace
-id|jFYI
+id|jfs_warn
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;find_entry called with index &gt;= next_index&bslash;n&quot;
-)paren
+l_string|&quot;find_entry called with index &gt;= next_index&quot;
 )paren
 suffix:semicolon
 r_return
@@ -808,14 +881,10 @@ op_eq
 l_int|0
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;free_index: error reading directory table&bslash;n&quot;
-)paren
+l_string|&quot;free_index: error reading directory table&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1069,16 +1138,12 @@ OL
 l_int|2
 )paren
 (brace
-id|jERROR
+id|jfs_warn
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;next_index = %d.  Please fix this!&bslash;n&quot;
+l_string|&quot;add_index: next_index = %d.  Resetting!&quot;
 comma
 id|jfs_ip-&gt;next_index
-)paren
 )paren
 suffix:semicolon
 id|jfs_ip-&gt;next_index
@@ -1228,14 +1293,10 @@ l_int|0
 )paren
 )paren
 (brace
-id|jFYI
+id|jfs_warn
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;add_index: xtInsert failed!&bslash;n&quot;
-)paren
+l_string|&quot;add_index: xtInsert failed!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1263,7 +1324,7 @@ c_cond
 (paren
 id|mp
 op_assign
-id|read_index_page
+id|get_index_page
 c_func
 (paren
 id|ip
@@ -1275,14 +1336,10 @@ op_eq
 l_int|0
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;add_index: get_metapage failed!&bslash;n&quot;
-)paren
+l_string|&quot;add_index: get_metapage failed!&quot;
 )paren
 suffix:semicolon
 id|xtTruncate
@@ -1467,14 +1524,10 @@ l_int|0
 )paren
 )paren
 (brace
-id|jFYI
+id|jfs_warn
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;add_index: xtInsert failed!&bslash;n&quot;
-)paren
+l_string|&quot;add_index: xtInsert failed!&quot;
 )paren
 suffix:semicolon
 id|jfs_ip-&gt;next_index
@@ -1505,7 +1558,7 @@ c_cond
 (paren
 id|mp
 op_assign
-id|read_index_page
+id|get_index_page
 c_func
 (paren
 id|ip
@@ -1558,14 +1611,10 @@ op_eq
 l_int|0
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;add_index: get/read_metapage failed!&bslash;n&quot;
-)paren
+l_string|&quot;add_index: get/read_metapage failed!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2532,14 +2581,10 @@ l_int|8
 )paren
 (brace
 multiline_comment|/* Something&squot;s corrupted, mark filesytem dirty so&n;&t;&t;&t; * chkdsk will fix it.&n;&t;&t;&t; */
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;stack overrun in dtSearch!&bslash;n&quot;
-)paren
+l_string|&quot;stack overrun in dtSearch!&quot;
 )paren
 suffix:semicolon
 id|updateSuper
@@ -3970,14 +4015,10 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|2
-comma
-(paren
-l_string|&quot;dtSplitUp(): UFO!&bslash;n&quot;
-)paren
+l_string|&quot;dtSplitUp(): UFO!&quot;
 )paren
 suffix:semicolon
 r_break
@@ -4529,20 +4570,16 @@ l_int|NULL
 r_return
 id|EIO
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;dtSplitPage: ip:0x%p smp:0x%p rmp:0x%p&bslash;n&quot;
+l_string|&quot;dtSplitPage: ip:0x%p smp:0x%p rmp:0x%p&quot;
 comma
 id|ip
 comma
 id|smp
 comma
 id|rmp
-)paren
 )paren
 suffix:semicolon
 id|BT_MARK_DIRTY
@@ -4897,20 +4934,16 @@ op_or
 id|tlckRELINK
 )paren
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;dtSplitPage: tlck = 0x%p, ip = 0x%p, mp=0x%p&bslash;n&quot;
+l_string|&quot;dtSplitPage: tlck = 0x%p, ip = 0x%p, mp=0x%p&quot;
 comma
 id|tlck
 comma
 id|ip
 comma
 id|mp
-)paren
 )paren
 suffix:semicolon
 id|dtlck
@@ -5461,22 +5494,6 @@ id|pxd
 )paren
 )paren
 suffix:semicolon
-id|jEVENT
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;dtSplitPage: ip:0x%p sp:0x%p rp:0x%p&bslash;n&quot;
-comma
-id|ip
-comma
-id|sp
-comma
-id|rp
-)paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -5863,20 +5880,16 @@ op_assign
 op_star
 id|pxd
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;dtExtendPage: ip:0x%p smp:0x%p sp:0x%p&bslash;n&quot;
+l_string|&quot;dtExtendPage: ip:0x%p smp:0x%p sp:0x%p&quot;
 comma
 id|ip
 comma
 id|smp
 comma
 id|sp
-)paren
 )paren
 suffix:semicolon
 id|BT_MARK_DIRTY
@@ -6413,22 +6426,6 @@ id|acl
 )paren
 suffix:colon
 l_int|0
-)paren
-)paren
-suffix:semicolon
-id|jEVENT
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;dtExtendPage: ip:0x%p smp:0x%p sp:0x%p&bslash;n&quot;
-comma
-id|ip
-comma
-id|smp
-comma
-id|sp
 )paren
 )paren
 suffix:semicolon
@@ -8597,13 +8594,10 @@ c_func
 id|opxd
 )paren
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;dtRelocate: lmxaddr:%Ld xaddr:%Ld:%Ld xlen:%d&bslash;n&quot;
+l_string|&quot;dtRelocate: lmxaddr:%Ld xaddr:%Ld:%Ld xlen:%d&quot;
 comma
 (paren
 r_int
@@ -8624,7 +8618,6 @@ r_int
 id|nxaddr
 comma
 id|xlen
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *      1. get the internal parent dtpage covering&n;&t; *      router entry for the tartget page to be relocated;&n;&t; */
@@ -8668,14 +8661,10 @@ comma
 id|index
 )paren
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;dtRelocate: parent router entry validated.&bslash;n&quot;
-)paren
+l_string|&quot;dtRelocate: parent router entry validated.&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *      2. relocate the target dtpage&n;&t; */
@@ -9097,14 +9086,10 @@ c_func
 id|mp
 )paren
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;dtRelocate: target dtpage relocated.&bslash;n&quot;
-)paren
+l_string|&quot;dtRelocate: target dtpage relocated.&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* the moved extent is dtpage, then a LOG_NOREDOPAGE log rec&n;&t; * needs to be written (in logredo(), the LOG_NOREDOPAGE log rec&n;&t; * will also force a bmap update ).&n;&t; */
@@ -9161,14 +9146,10 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; *      4. update the parent router entry for relocation;&n;&t; *&n;&t; * acquire tlck for the parent entry covering the target dtpage;&n;&t; * write LOG_REDOPAGE to apply after image only;&n;&t; */
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;dtRelocate: update parent router entry.&bslash;n&quot;
-)paren
+l_string|&quot;dtRelocate: update parent router entry.&quot;
 )paren
 suffix:semicolon
 id|tlck
@@ -9746,20 +9727,16 @@ op_or
 id|tlckRELINK
 )paren
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;dtRelink nextbn: tlck = 0x%p, ip = 0x%p, mp=0x%p&bslash;n&quot;
+l_string|&quot;dtRelink nextbn: tlck = 0x%p, ip = 0x%p, mp=0x%p&quot;
 comma
 id|tlck
 comma
 id|ip
 comma
 id|mp
-)paren
 )paren
 suffix:semicolon
 id|dtlck
@@ -9885,20 +9862,16 @@ op_or
 id|tlckRELINK
 )paren
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;dtRelink prevbn: tlck = 0x%p, ip = 0x%p, mp=0x%p&bslash;n&quot;
+l_string|&quot;dtRelink prevbn: tlck = 0x%p, ip = 0x%p, mp=0x%p&quot;
 comma
 id|tlck
 comma
 id|ip
 comma
 id|mp
-)paren
 )paren
 suffix:semicolon
 id|dtlck
@@ -10985,15 +10958,11 @@ op_member_access_from_pointer
 id|next_index
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
 l_string|&quot;jfs_readdir detected &quot;
-l_string|&quot;infinite loop!&bslash;n&quot;
-)paren
+l_string|&quot;infinite loop!&quot;
 )paren
 suffix:semicolon
 id|filp-&gt;f_pos
@@ -11084,14 +11053,10 @@ op_amp
 id|BT_INTERNAL
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_readdir: bad index table&bslash;n&quot;
-)paren
+l_string|&quot;jfs_readdir: bad index table&quot;
 )paren
 suffix:semicolon
 id|DT_PUTPAGE
@@ -11333,14 +11298,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_readdir called with invalid offset!&bslash;n&quot;
-)paren
+l_string|&quot;jfs_readdir called with &quot;
+l_string|&quot;invalid offset!&quot;
 )paren
 suffix:semicolon
 )brace
@@ -11395,16 +11357,13 @@ id|btstack
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_readdir: unexpected rc = %d from dtReadNext&bslash;n&quot;
+l_string|&quot;jfs_readdir: unexpected rc = %d &quot;
+l_string|&quot;from dtReadNext&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 id|filp-&gt;f_pos
@@ -11472,14 +11431,10 @@ c_func
 id|mp
 )paren
 suffix:semicolon
-id|jERROR
+id|jfs_warn
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_readdir: __get_free_page failed!&bslash;n&quot;
-)paren
+l_string|&quot;jfs_readdir: __get_free_page failed!&quot;
 )paren
 suffix:semicolon
 id|filp-&gt;f_pos
@@ -11767,14 +11722,11 @@ op_eq
 l_int|0
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;JFS:Dtree error: &quot;
-l_string|&quot;ino = %ld, bn=%Ld, index = %d&bslash;n&quot;
+l_string|&quot;JFS:Dtree error: ino = &quot;
+l_string|&quot;%ld, bn=%Ld, index = %d&quot;
 comma
 (paren
 r_int
@@ -11788,7 +11740,6 @@ r_int
 id|bn
 comma
 id|i
-)paren
 )paren
 suffix:semicolon
 id|updateSuper

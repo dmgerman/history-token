@@ -1964,11 +1964,11 @@ DECL|member|sc_magic
 r_int
 id|sc_magic
 suffix:semicolon
-DECL|member|host
+DECL|member|device
 r_struct
-id|Scsi_Host
+id|scsi_device
 op_star
-id|host
+id|device
 suffix:semicolon
 DECL|member|state
 r_int
@@ -1979,11 +1979,6 @@ DECL|member|owner
 r_int
 r_int
 id|owner
-suffix:semicolon
-DECL|member|device
-id|Scsi_Device
-op_star
-id|device
 suffix:semicolon
 DECL|member|sc_request
 id|Scsi_Request
@@ -2002,12 +1997,12 @@ id|scsi_cmnd
 op_star
 id|reset_chain
 suffix:semicolon
-DECL|member|list_entry
+DECL|member|list
 r_struct
 id|list_head
-id|list_entry
+id|list
 suffix:semicolon
-multiline_comment|/* Used to place us on the cmd lists */
+multiline_comment|/* scsi_cmnd participates in queue lists */
 DECL|member|eh_state
 r_int
 id|eh_state
@@ -2076,21 +2071,13 @@ op_star
 id|bh_next
 suffix:semicolon
 multiline_comment|/* To enumerate the commands waiting &n;&t;&t;&t;&t;&t;   to be processed. */
-DECL|member|target
-r_int
-r_int
-id|target
-suffix:semicolon
-DECL|member|lun
-r_int
-r_int
-id|lun
-suffix:semicolon
-DECL|member|channel
-r_int
-r_int
-id|channel
-suffix:semicolon
+multiline_comment|/* OBSOLETE, please do not use -- obosolete stuff. */
+multiline_comment|/* Use cmd-&gt;device-&gt;{id, channel, lun} instead */
+multiline_comment|/* &t;unsigned int target; */
+multiline_comment|/* &t;unsigned int lun; */
+multiline_comment|/* &t;unsigned int channel; */
+multiline_comment|/* OBSOLETE, use cmd-&gt;device-&gt;host instead */
+multiline_comment|/* &t;struct Scsi_Host   *host; */
 DECL|member|cmd_len
 r_int
 r_char
@@ -2606,5 +2593,158 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* -------------------------------------------------- */
+multiline_comment|/* data decl: */
+multiline_comment|/* All the SCSI Core specific global data, etc,&n;   should go in here.&n;*/
+DECL|struct|scsi_core_data
+r_struct
+id|scsi_core_data
+(brace
+DECL|member|scsi_cmd_cache
+id|kmem_cache_t
+op_star
+id|scsi_cmd_cache
+suffix:semicolon
+DECL|member|scsi_cmd_dma_cache
+id|kmem_cache_t
+op_star
+id|scsi_cmd_dma_cache
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|scsi_core_data
+op_star
+id|scsi_core
+suffix:semicolon
+multiline_comment|/* -------------------------------------------------- */
+multiline_comment|/* fn decl: */
+r_int
+id|scsi_create_cmdcache
+c_func
+(paren
+r_struct
+id|scsi_core_data
+op_star
+id|scsi_core
+)paren
+suffix:semicolon
+r_int
+id|scsi_destroy_cmdcache
+c_func
+(paren
+r_struct
+id|scsi_core_data
+op_star
+id|scsi_core
+)paren
+suffix:semicolon
+r_struct
+id|scsi_cmnd
+op_star
+id|scsi_get_command
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|host
+comma
+r_int
+id|alloc_flags
+)paren
+suffix:semicolon
+r_void
+id|scsi_put_command
+c_func
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+id|cmd
+)paren
+suffix:semicolon
+r_void
+id|scsi_setup_command
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+id|dev
+comma
+r_struct
+id|scsi_cmnd
+op_star
+id|cmd
+)paren
+suffix:semicolon
+multiline_comment|/* -------------------------------------------------- */
+multiline_comment|/* inline funcs: */
+multiline_comment|/* scsi_getset_command: allocate, set and return a command struct,&n;   when the device is known.&n;*/
+DECL|function|scsi_getset_command
+r_static
+r_inline
+r_struct
+id|scsi_cmnd
+op_star
+id|scsi_getset_command
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+id|dev
+comma
+r_int
+id|flags
+)paren
+(brace
+r_struct
+id|scsi_cmnd
+op_star
+id|cmd
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;host
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+id|scsi_setup_command
+c_func
+(paren
+id|dev
+comma
+(paren
+id|cmd
+op_assign
+id|scsi_get_command
+c_func
+(paren
+id|dev-&gt;host
+comma
+id|flags
+)paren
+)paren
+)paren
+suffix:semicolon
+r_return
+id|cmd
+suffix:semicolon
+)brace
 macro_line|#endif
 eof

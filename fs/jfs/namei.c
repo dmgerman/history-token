@@ -169,18 +169,14 @@ id|tblock
 op_star
 id|tblk
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_create: dip:0x%p name:%s&bslash;n&quot;
+l_string|&quot;jfs_create: dip:0x%p name:%s&quot;
 comma
 id|dip
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * search parent directory for entry/freespace&n;&t; * (dtSearch() returns parent directory page pinned)&n;&t; */
@@ -299,16 +295,12 @@ id|JFS_CREATE
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_create: dtSearch returned %d&bslash;n&quot;
+l_string|&quot;jfs_create: dtSearch returned %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_goto
@@ -384,16 +376,12 @@ id|btstack
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_create: dtInsert returned %d&bslash;n&quot;
+l_string|&quot;jfs_create: dtInsert returned %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -570,17 +558,13 @@ suffix:semicolon
 macro_line|#endif
 id|out1
 suffix:colon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_create: rc:%d&bslash;n&quot;
+l_string|&quot;jfs_create: rc:%d&quot;
 comma
 op_minus
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -650,18 +634,14 @@ id|tblock
 op_star
 id|tblk
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mkdir: dip:0x%p name:%s&bslash;n&quot;
+l_string|&quot;jfs_mkdir: dip:0x%p name:%s&quot;
 comma
 id|dip
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* link count overflow on parent directory ? */
@@ -799,16 +779,12 @@ id|JFS_CREATE
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mkdir: dtSearch returned %d&bslash;n&quot;
+l_string|&quot;jfs_mkdir: dtSearch returned %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_goto
@@ -886,16 +862,12 @@ id|btstack
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mkdir: dtInsert returned %d&bslash;n&quot;
+l_string|&quot;jfs_mkdir: dtInsert returned %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1086,17 +1058,13 @@ suffix:semicolon
 macro_line|#endif
 id|out1
 suffix:colon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mkdir: rc:%d&bslash;n&quot;
+l_string|&quot;jfs_mkdir: rc:%d&quot;
 comma
 op_minus
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -1155,18 +1123,14 @@ id|tblock
 op_star
 id|tblk
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_rmdir: dip:0x%p name:%s&bslash;n&quot;
+l_string|&quot;jfs_rmdir: dip:0x%p name:%s&quot;
 comma
 id|dip
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* directory must be empty to be removed */
@@ -1313,16 +1277,12 @@ id|JFS_REMOVE
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_rmdir: dtDelete returned %d&bslash;n&quot;
+l_string|&quot;jfs_rmdir: dtDelete returned %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1594,16 +1554,12 @@ id|dname
 suffix:semicolon
 id|out
 suffix:colon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_rmdir: rc:%d&bslash;n&quot;
+l_string|&quot;jfs_rmdir: rc:%d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -1671,18 +1627,14 @@ suffix:semicolon
 r_int
 id|commit_flag
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_unlink: dip:0x%p name:%s&bslash;n&quot;
+l_string|&quot;jfs_unlink: dip:0x%p name:%s&quot;
 comma
 id|dip
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1797,16 +1749,12 @@ id|JFS_REMOVE
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_unlink: dtDelete returned %d&bslash;n&quot;
+l_string|&quot;jfs_unlink: dtDelete returned %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -2256,17 +2204,13 @@ id|dname
 suffix:semicolon
 id|out
 suffix:colon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_unlink: rc:%d&bslash;n&quot;
+l_string|&quot;jfs_unlink: rc:%d&quot;
 comma
 op_minus
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -2297,18 +2241,14 @@ id|tblock
 op_star
 id|tblk
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;commitZeroLink: tid = %d, ip = 0x%p&bslash;n&quot;
+l_string|&quot;commitZeroLink: tid = %d, ip = 0x%p&quot;
 comma
 id|tid
 comma
 id|ip
-)paren
 )paren
 suffix:semicolon
 id|filetype
@@ -2493,16 +2433,12 @@ suffix:semicolon
 r_int
 id|type
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;freeZeroLink: ip = 0x%p&bslash;n&quot;
+l_string|&quot;freeZeroLink: ip = 0x%p&quot;
 comma
 id|ip
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* return if not reg or symbolic link or if size is&n;&t; * already ok.&n;&t; */
@@ -2868,18 +2804,14 @@ id|iplist
 l_int|2
 )braket
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_link: %s %s&bslash;n&quot;
+l_string|&quot;jfs_link: %s %s&quot;
 comma
 id|old_dentry-&gt;d_name.name
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 id|tid
@@ -3117,16 +3049,12 @@ op_member_access_from_pointer
 id|commit_sem
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_link: rc:%d&bslash;n&quot;
+l_string|&quot;jfs_link: rc:%d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -3228,18 +3156,14 @@ id|iplist
 l_int|2
 )braket
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_symlink: dip:0x%p name:%s&bslash;n&quot;
+l_string|&quot;jfs_symlink: dip:0x%p name:%s&quot;
 comma
 id|dip
 comma
 id|name
-)paren
 )paren
 suffix:semicolon
 id|ssize
@@ -3418,16 +3342,12 @@ id|btstack
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_symlink: dtInsert returned %d&bslash;n&quot;
+l_string|&quot;jfs_symlink: dtInsert returned %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* discard ne inode */
@@ -3517,34 +3437,26 @@ op_and_assign
 op_complement
 id|INLINEEA
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_symlink: fast symlink added  ssize:%d name:%s &bslash;n&quot;
+l_string|&quot;jfs_symlink: fast symlink added  ssize:%d name:%s &quot;
 comma
 id|ssize
 comma
 id|name
-)paren
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * write source path name in a single extent&n;&t; */
 r_else
 (brace
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_symlink: allocate extent ip:0x%p&bslash;n&quot;
+l_string|&quot;jfs_symlink: allocate extent ip:0x%p&quot;
 comma
 id|ip
-)paren
 )paren
 suffix:semicolon
 id|ip-&gt;i_op
@@ -3978,17 +3890,13 @@ suffix:semicolon
 macro_line|#endif
 id|out1
 suffix:colon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_symlink: rc:%d&bslash;n&quot;
+l_string|&quot;jfs_symlink: rc:%d&quot;
 comma
 op_minus
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -4093,18 +4001,14 @@ suffix:semicolon
 r_int
 id|commit_flag
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_rename: %s %s&bslash;n&quot;
+l_string|&quot;jfs_rename: %s %s&quot;
 comma
 id|old_dentry-&gt;d_name.name
 comma
 id|new_dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 id|old_ip
@@ -4630,16 +4534,13 @@ c_cond
 id|rc
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_rename didn&squot;t expect dtSearch to fail w/rc = %d&bslash;n&quot;
+l_string|&quot;jfs_rename didn&squot;t expect dtSearch to fail &quot;
+l_string|&quot;w/rc = %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_goto
@@ -4675,16 +4576,12 @@ c_cond
 id|rc
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_rename: dtInsert failed w/rc = %d&bslash;n&quot;
+l_string|&quot;jfs_rename: dtInsert failed w/rc = %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_goto
@@ -4733,16 +4630,12 @@ c_cond
 id|rc
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_rename did not expect dtDelete to return rc = %d&bslash;n&quot;
+l_string|&quot;jfs_rename did not expect dtDelete to return rc = %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 id|txAbort
@@ -5245,16 +5138,12 @@ id|old_dir
 )paren
 suffix:semicolon
 )brace
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_rename: returning %d&bslash;n&quot;
+l_string|&quot;jfs_rename: returning %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -5320,16 +5209,12 @@ id|tblock
 op_star
 id|tblk
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mknod: %s&bslash;n&quot;
+l_string|&quot;jfs_mknod: %s&quot;
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -5649,16 +5534,12 @@ suffix:semicolon
 macro_line|#endif
 id|out
 suffix:colon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mknod: returning %d&bslash;n&quot;
+l_string|&quot;jfs_mknod: returning %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -5716,16 +5597,12 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_lookup: name = %s&bslash;n&quot;
+l_string|&quot;jfs_lookup: name = %s&quot;
 comma
 id|name
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -5863,16 +5740,12 @@ c_cond
 id|rc
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_lookup: dtSearch returned %d&bslash;n&quot;
+l_string|&quot;jfs_lookup: dtSearch returned %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -5903,19 +5776,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_lookup: iget failed on inum %d&bslash;n&quot;
+l_string|&quot;jfs_lookup: iget failed on inum %d&quot;
 comma
 (paren
 id|uint
 )paren
 id|inum
-)paren
 )paren
 suffix:semicolon
 r_return

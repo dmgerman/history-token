@@ -1460,6 +1460,10 @@ id|GFP_ATOMIC
 r_goto
 id|out
 suffix:semicolon
+id|skb-&gt;ip_summed
+op_assign
+id|CHECKSUM_NONE
+suffix:semicolon
 id|ah
 op_assign
 (paren

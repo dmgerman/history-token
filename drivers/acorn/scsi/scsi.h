@@ -185,19 +185,6 @@ id|SCp-&gt;this_residual
 op_sub_assign
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|SCp-&gt;this_residual
-op_eq
-l_int|0
-)paren
-id|next_SCp
-c_func
-(paren
-id|SCp
-)paren
-suffix:semicolon
 r_return
 id|c
 suffix:semicolon
@@ -230,19 +217,6 @@ suffix:semicolon
 id|SCp-&gt;this_residual
 op_sub_assign
 l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|SCp-&gt;this_residual
-op_eq
-l_int|0
-)paren
-id|next_SCp
-c_func
-(paren
-id|SCp
-)paren
 suffix:semicolon
 )brace
 DECL|function|init_SCp
@@ -406,7 +380,8 @@ op_logical_and
 id|SCpnt-&gt;SCp.ptr
 )paren
 (brace
-macro_line|#ifdef BELT_AND_BRACES
+macro_line|#if 0 
+singleline_comment|//def BELT_AND_BRACES
 id|printk
 c_func
 (paren

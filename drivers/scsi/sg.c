@@ -7,7 +7,7 @@ r_char
 op_star
 id|sg_version_str
 op_assign
-l_string|&quot;Version: 3.5.27 (20020812)&quot;
+l_string|&quot;Version: 3.5.27 (20030130)&quot;
 suffix:semicolon
 macro_line|#endif
 DECL|variable|sg_version_num
@@ -7905,20 +7905,24 @@ id|device
 )paren
 )paren
 suffix:semicolon
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|sdp-&gt;sg_driverfs_dev.bus_id
+comma
+id|BUS_ID_SIZE
 comma
 l_string|&quot;%s:gen&quot;
 comma
 id|scsidp-&gt;sdev_driverfs_dev.bus_id
 )paren
 suffix:semicolon
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|sdp-&gt;sg_driverfs_dev.name
+comma
+id|DEVICE_NAME_SIZE
 comma
 l_string|&quot;%sgeneric&quot;
 comma

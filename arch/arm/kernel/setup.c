@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -2735,6 +2736,44 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 )brace
+DECL|variable|cpu
+r_static
+r_struct
+id|cpu
+id|cpu
+(braket
+l_int|1
+)braket
+suffix:semicolon
+DECL|function|topology_init
+r_static
+r_int
+id|__init
+id|topology_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|register_cpu
+c_func
+(paren
+id|cpu
+comma
+l_int|0
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+DECL|variable|topology_init
+id|subsys_initcall
+c_func
+(paren
+id|topology_init
+)paren
+suffix:semicolon
 DECL|variable|hwcap_str
 r_static
 r_const

@@ -8188,7 +8188,7 @@ suffix:semicolon
 DECL|function|dscc4_remove_one
 r_static
 r_void
-id|__exit
+id|__devexit
 id|dscc4_remove_one
 c_func
 (paren
@@ -8614,7 +8614,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|dscc4_remove_one
+)paren
 comma
 )brace
 suffix:semicolon

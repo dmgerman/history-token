@@ -376,11 +376,6 @@ id|snd_gf1_mem_block_t
 op_star
 id|last
 suffix:semicolon
-DECL|member|info_entry
-id|snd_info_entry_t
-op_star
-id|info_entry
-suffix:semicolon
 DECL|member|memory_mutex
 r_struct
 id|semaphore
@@ -999,22 +994,6 @@ DECL|member|mem_alloc
 id|snd_gf1_mem_t
 id|mem_alloc
 suffix:semicolon
-DECL|member|ram_entries
-id|snd_info_entry_t
-op_star
-id|ram_entries
-(braket
-l_int|4
-)braket
-suffix:semicolon
-DECL|member|rom_entries
-id|snd_info_entry_t
-op_star
-id|rom_entries
-(braket
-l_int|4
-)braket
-suffix:semicolon
 multiline_comment|/* registers */
 DECL|member|reg_page
 r_int
@@ -1520,13 +1499,6 @@ id|_snd_gf1
 id|gf1
 suffix:semicolon
 multiline_comment|/* gf1 specific variables */
-macro_line|#ifdef CONFIG_SND_DEBUG
-DECL|member|irq_entry
-id|snd_info_entry_t
-op_star
-id|irq_entry
-suffix:semicolon
-macro_line|#endif
 DECL|member|pcm
 id|snd_pcm_t
 op_star
@@ -2673,15 +2645,6 @@ op_star
 id|gus
 )paren
 suffix:semicolon
-r_int
-id|snd_gf1_mem_proc_done
-c_func
-(paren
-id|snd_gus_card_t
-op_star
-id|gus
-)paren
-suffix:semicolon
 multiline_comment|/* gus_dma.c */
 r_void
 id|snd_gf1_dma_program
@@ -3138,15 +3101,6 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_SND_DEBUG
 r_void
 id|snd_gus_irq_profile_init
-c_func
-(paren
-id|snd_gus_card_t
-op_star
-id|gus
-)paren
-suffix:semicolon
-r_void
-id|snd_gus_irq_profile_done
 c_func
 (paren
 id|snd_gus_card_t

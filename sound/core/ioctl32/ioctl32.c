@@ -985,10 +985,12 @@ c_cond
 op_logical_neg
 id|kctl
 )paren
+(brace
 r_return
 op_minus
 id|ENXIO
 suffix:semicolon
+)brace
 id|info.id
 op_assign
 op_star

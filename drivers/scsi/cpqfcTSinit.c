@@ -2337,18 +2337,13 @@ r_case
 id|CPQFC_IOCTL_FC_TARGET_ADDRESS
 suffix:colon
 singleline_comment|// can we find an FC device mapping to this SCSI target?
-id|DumCmnd.channel
-op_assign
-id|ScsiDev-&gt;channel
-suffix:semicolon
+multiline_comment|/* &t;DumCmnd.channel = ScsiDev-&gt;channel; */
 singleline_comment|// For searching
-id|DumCmnd.target
+multiline_comment|/* &t;DumCmnd.target  = ScsiDev-&gt;id; */
+multiline_comment|/* &t;DumCmnd.lun     = ScsiDev-&gt;lun; */
+id|DumCmnd.device
 op_assign
-id|ScsiDev-&gt;id
-suffix:semicolon
-id|DumCmnd.lun
-op_assign
-id|ScsiDev-&gt;lun
+id|ScsiDev
 suffix:semicolon
 id|pLoggedInPort
 op_assign
@@ -4297,7 +4292,7 @@ id|Scsi_Host
 op_star
 id|HostAdapter
 op_assign
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 suffix:semicolon
 id|CPQFCHBA
 op_star
@@ -4441,7 +4436,7 @@ r_else
 r_if
 c_cond
 (paren
-id|Cmnd-&gt;lun
+id|Cmnd-&gt;device-&gt;lun
 op_ge
 id|CPQFCTS_MAX_LUN
 )paren
@@ -4452,7 +4447,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;cpqfc: Invalid LUN: %d&bslash;n&quot;
 comma
-id|Cmnd-&gt;lun
+id|Cmnd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|QueBadTargetCmnd
@@ -4770,7 +4765,7 @@ id|Scsi_Host
 op_star
 id|HostAdapter
 op_assign
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 suffix:semicolon
 singleline_comment|// get the pointer to our Scsi layer HBA buffer  
 id|CPQFCHBA
@@ -5173,15 +5168,14 @@ l_int|0
 op_assign
 id|RELEASE
 suffix:semicolon
-singleline_comment|// allocate with wait = true, interruptible = false 
 id|SCpnt
 op_assign
-id|scsi_allocate_device
+id|scsi_getset_command
 c_func
 (paren
 id|ScsiDev
 comma
-l_int|1
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 (brace
@@ -5240,7 +5234,7 @@ id|SDpnt
 op_assign
 id|SCpnt-&gt;device
 suffix:semicolon
-id|scsi_release_command
+id|scsi_put_command
 c_func
 (paren
 id|SCpnt
@@ -5287,7 +5281,7 @@ singleline_comment|// printk(&quot;   ENTERING cpqfcTS_eh_device_reset() &bslash
 id|spin_unlock_irq
 c_func
 (paren
-id|Cmnd-&gt;host-&gt;host_lock
+id|Cmnd-&gt;device-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 id|retval
@@ -5303,7 +5297,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-id|Cmnd-&gt;host-&gt;host_lock
+id|Cmnd-&gt;device-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 r_return

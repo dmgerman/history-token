@@ -10508,12 +10508,6 @@ id|i
 comma
 id|index
 suffix:semicolon
-id|snd_power_lock
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10521,8 +10515,7 @@ id|card-&gt;power_state
 op_eq
 id|SNDRV_CTL_POWER_D3hot
 )paren
-r_goto
-id|__skip
+r_return
 suffix:semicolon
 id|snd_pcm_suspend_all
 c_func
@@ -10637,14 +10630,6 @@ comma
 id|SNDRV_CTL_POWER_D3hot
 )paren
 suffix:semicolon
-id|__skip
-suffix:colon
-id|snd_power_unlock
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
 )brace
 DECL|function|m3_resume
 r_static
@@ -10668,12 +10653,6 @@ id|i
 comma
 id|index
 suffix:semicolon
-id|snd_power_lock
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10681,8 +10660,7 @@ id|card-&gt;power_state
 op_eq
 id|SNDRV_CTL_POWER_D0
 )paren
-r_goto
-id|__skip
+r_return
 suffix:semicolon
 multiline_comment|/* first lets just bring everything back. .*/
 id|snd_m3_outw
@@ -10836,14 +10814,6 @@ c_func
 id|card
 comma
 id|SNDRV_CTL_POWER_D0
-)paren
-suffix:semicolon
-id|__skip
-suffix:colon
-id|snd_power_unlock
-c_func
-(paren
-id|card
 )paren
 suffix:semicolon
 )brace

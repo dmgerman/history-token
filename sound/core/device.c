@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
+multiline_comment|/**&n; * snd_device_new - create an ALSA device component&n; * @card: the card instance&n; * @type: the device type, SNDRV_DEV_TYPE_XXX&n; * @device_data: the data pointer of this device&n; * @ops: the operator table&n; *&n; * Creates a new device component for the given data pointer.&n; * The device will be assigned to the card and managed together&n; * by the card.&n; *&n; * The data pointer plays a role as the identifier, too, so the&n; * pointer address must be unique and unchanged.&n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
 DECL|function|snd_device_new
 r_int
 id|snd_device_new
@@ -111,6 +112,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_device_free - release the device from the card&n; * @card: the card instance&n; * @device_data: the data pointer to release&n; *&n; * Removes the device from the list on the card and invokes the&n; * callback, dev_unregister or dev_free, corresponding to the state.&n; * Then release the device.&n; *&n; * Returns zero if successful, or a negative error code on failure or if the&n; * device not found.&n; */
 DECL|function|snd_device_free
 r_int
 id|snd_device_free
@@ -284,6 +286,7 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_device_free - disconnect the device&n; * @card: the card instance&n; * @device_data: the data pointer to disconnect&n; *&n; * Turns the device into the disconnection state, invoking&n; * dev_disconnect callback, if the device was already registered.&n; *&n; * Usually called from snd_card_disconnect().&n; *&n; * Returns zero if successful, or a negative error code on failure or if the&n; * device not found.&n; */
 DECL|function|snd_device_disconnect
 r_int
 id|snd_device_disconnect
@@ -413,6 +416,7 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_device_register - register the device&n; * @card: the card instance&n; * @device_data: the data pointer to register&n; *&n; * Registers the device which was already created via&n; * snd_device_new().  Usually this is called from snd_card_register(),&n; * but it can be called later if any new devices are created after&n; * invokation of snd_card_register().&n; *&n; * Returns zero if successful, or a negative error code on failure or if the&n; * device not found.&n; */
 DECL|function|snd_device_register
 r_int
 id|snd_device_register
@@ -534,6 +538,7 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * register all the devices on the card.&n; * called from init.c&n; */
 DECL|function|snd_device_register_all
 r_int
 id|snd_device_register_all
@@ -625,6 +630,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * disconnect all the devices on the card.&n; * called from init.c&n; */
 DECL|function|snd_device_disconnect_all
 r_int
 id|snd_device_disconnect_all
@@ -701,6 +707,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * release all the devices on the card.&n; * called from init.c&n; */
 DECL|function|snd_device_free_all
 r_int
 id|snd_device_free_all

@@ -6347,7 +6347,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|c-&gt;host
+id|c-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|NCR53c7x0_hostdata
@@ -6449,7 +6449,7 @@ id|u32
 comma
 id|dsa_temp_lun
 comma
-id|c-&gt;lun
+id|c-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|patch_abs_32
@@ -6521,7 +6521,7 @@ op_star
 )paren
 id|hostdata-&gt;sync
 (braket
-id|c-&gt;target
+id|c-&gt;device-&gt;id
 )braket
 dot
 id|script
@@ -6541,7 +6541,7 @@ id|u32
 comma
 id|dsa_temp_target
 comma
-id|c-&gt;target
+id|c-&gt;device-&gt;id
 )paren
 suffix:semicolon
 multiline_comment|/* XXX - new pointer stuff */
@@ -6758,7 +6758,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|c-&gt;host
+id|c-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|NCR53c7x0_hostdata
@@ -7131,10 +7131,10 @@ suffix:semicolon
 op_decrement
 id|hostdata-&gt;busy
 (braket
-id|c-&gt;target
+id|c-&gt;device-&gt;id
 )braket
 (braket
-id|c-&gt;lun
+id|c-&gt;device-&gt;lun
 )braket
 suffix:semicolon
 )brace
@@ -8622,7 +8622,7 @@ l_string|&quot;scsi%d : target %d rejected SDTR&bslash;n&quot;
 comma
 id|host-&gt;host_no
 comma
-id|c-&gt;target
+id|c-&gt;device-&gt;id
 )paren
 suffix:semicolon
 id|cmd-&gt;flags
@@ -8634,7 +8634,7 @@ id|asynchronous
 (paren
 id|host
 comma
-id|c-&gt;target
+id|c-&gt;device-&gt;id
 )paren
 suffix:semicolon
 id|print
@@ -8719,9 +8719,9 @@ id|printk
 (paren
 l_string|&quot; from target %d lun %d &quot;
 comma
-id|c-&gt;target
+id|c-&gt;device-&gt;id
 comma
-id|c-&gt;lun
+id|c-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|print_msg
@@ -8768,7 +8768,7 @@ l_string|&quot;scsi%d : target %d %s &quot;
 comma
 id|host-&gt;host_no
 comma
-id|c-&gt;target
+id|c-&gt;device-&gt;id
 comma
 (paren
 id|cmd-&gt;flags
@@ -8820,7 +8820,7 @@ id|synchronous
 (paren
 id|host
 comma
-id|c-&gt;target
+id|c-&gt;device-&gt;id
 comma
 (paren
 r_int
@@ -8835,7 +8835,7 @@ id|asynchronous
 (paren
 id|host
 comma
-id|c-&gt;target
+id|c-&gt;device-&gt;id
 )paren
 suffix:semicolon
 id|hostdata-&gt;dsp
@@ -8875,7 +8875,7 @@ id|synchronous
 (paren
 id|host
 comma
-id|c-&gt;target
+id|c-&gt;device-&gt;id
 comma
 (paren
 r_int
@@ -8900,7 +8900,7 @@ id|asynchronous
 (paren
 id|host
 comma
-id|c-&gt;target
+id|c-&gt;device-&gt;id
 )paren
 suffix:semicolon
 )brace
@@ -9573,7 +9573,7 @@ op_star
 )paren
 id|hostdata-&gt;sync
 (braket
-id|c-&gt;target
+id|c-&gt;device-&gt;id
 )braket
 dot
 id|script
@@ -9593,7 +9593,7 @@ op_star
 )paren
 id|hostdata-&gt;sync
 (braket
-id|c-&gt;target
+id|c-&gt;device-&gt;id
 )braket
 dot
 id|script
@@ -10095,9 +10095,9 @@ l_string|&quot;scsi%d : target %d lun %d disconnecting&bslash;n&quot;
 comma
 id|host-&gt;host_no
 comma
-id|c-&gt;target
+id|c-&gt;device-&gt;id
 comma
-id|c-&gt;lun
+id|c-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 r_else
@@ -10182,7 +10182,7 @@ op_star
 )paren
 id|hostdata-&gt;sync
 (braket
-id|c-&gt;target
+id|c-&gt;device-&gt;id
 )braket
 dot
 id|script
@@ -10202,7 +10202,7 @@ op_star
 )paren
 id|hostdata-&gt;sync
 (braket
-id|c-&gt;target
+id|c-&gt;device-&gt;id
 )braket
 dot
 id|script
@@ -10458,7 +10458,7 @@ id|sxfer
 op_ne
 id|hostdata-&gt;sync
 (braket
-id|c-&gt;target
+id|c-&gt;device-&gt;id
 )braket
 dot
 id|sxfer_sanity
@@ -10467,7 +10467,7 @@ id|scntl3
 op_ne
 id|hostdata-&gt;sync
 (braket
-id|c-&gt;target
+id|c-&gt;device-&gt;id
 )braket
 dot
 id|scntl3_sanity
@@ -10719,7 +10719,7 @@ id|c
 op_logical_and
 id|sdid
 op_ne
-id|c-&gt;target
+id|c-&gt;device-&gt;id
 )paren
 (brace
 id|printk
@@ -10730,7 +10730,7 @@ id|host-&gt;host_no
 comma
 id|sdid
 comma
-id|c-&gt;target
+id|c-&gt;device-&gt;id
 comma
 id|where
 )paren
@@ -10900,7 +10900,7 @@ id|c
 )paren
 id|event-&gt;lun
 op_assign
-id|c-&gt;lun
+id|c-&gt;device-&gt;lun
 suffix:semicolon
 r_else
 id|event-&gt;lun
@@ -12581,7 +12581,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|NCR53c7x0_hostdata
@@ -12631,20 +12631,20 @@ id|hostdata-&gt;num_cmds
 comma
 id|host-&gt;can_queue
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 (paren
 id|hostdata-&gt;cmd_allocated
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_amp
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 )paren
 ques
@@ -12662,13 +12662,13 @@ op_logical_neg
 (paren
 id|hostdata-&gt;cmd_allocated
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_amp
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 )paren
 op_logical_and
@@ -12694,13 +12694,13 @@ id|host-&gt;cmd_per_lun
 suffix:semicolon
 id|hostdata-&gt;cmd_allocated
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_or_assign
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 )brace
@@ -12876,9 +12876,9 @@ l_string|&quot;scsi%d : can&squot;t allocate command for target %d lun %d&bslash
 comma
 id|host-&gt;host_no
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 r_return
@@ -12908,7 +12908,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|NCR53c7x0_hostdata
@@ -12969,7 +12969,7 @@ suffix:semicolon
 id|NCR53c7x0_local_setup
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 suffix:semicolon
 r_if
@@ -13333,7 +13333,7 @@ c_cond
 (paren
 id|hostdata-&gt;sync
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 dot
 id|select_indirect
@@ -13342,7 +13342,7 @@ op_ne
 (paren
 id|hostdata-&gt;sync
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 dot
 id|scntl3_sanity
@@ -13351,7 +13351,7 @@ l_int|24
 )paren
 op_or
 (paren
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 op_lshift
 l_int|16
 )paren
@@ -13359,7 +13359,7 @@ op_or
 (paren
 id|hostdata-&gt;sync
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 dot
 id|sxfer_sanity
@@ -13377,7 +13377,7 @@ id|host-&gt;host_no
 comma
 id|hostdata-&gt;sync
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 dot
 id|select_indirect
@@ -13404,7 +13404,7 @@ c_func
 (paren
 id|hostdata-&gt;sync
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 dot
 id|select_indirect
@@ -13420,7 +13420,7 @@ op_amp
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )paren
 )paren
 (brace
@@ -13486,7 +13486,7 @@ op_complement
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )paren
 suffix:semicolon
 id|restore_flags
@@ -13505,7 +13505,7 @@ op_amp
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )paren
 )paren
 (brace
@@ -13575,7 +13575,7 @@ op_complement
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )paren
 suffix:semicolon
 id|restore_flags
@@ -13597,7 +13597,7 @@ op_amp
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )paren
 )paren
 op_logical_and
@@ -13682,7 +13682,7 @@ op_or_assign
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )paren
 suffix:semicolon
 id|tmp-&gt;select
@@ -13701,14 +13701,14 @@ id|IDENTIFY
 (paren
 l_int|1
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:colon
 id|IDENTIFY
 (paren
 l_int|0
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|patch_dsa_32
@@ -14454,7 +14454,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|NCR53c7x0_hostdata
@@ -14527,22 +14527,22 @@ op_logical_neg
 (paren
 id|hostdata-&gt;debug_lun_limit
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_amp
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 )paren
 )paren
 op_logical_or
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 OG
 id|host-&gt;max_id
 op_logical_or
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 op_eq
 id|host-&gt;this_id
 op_logical_or
@@ -14558,9 +14558,9 @@ l_string|&quot;scsi%d : disabled or bad target %d lun %d&bslash;n&quot;
 comma
 id|host-&gt;host_no
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|cmd-&gt;result
@@ -14952,10 +14952,10 @@ l_int|0
 op_increment
 id|hostdata-&gt;busy
 (braket
-id|tmp-&gt;target
+id|tmp-&gt;device-&gt;id
 )braket
 (braket
-id|tmp-&gt;lun
+id|tmp-&gt;device-&gt;lun
 )braket
 suffix:semicolon
 id|cmd-&gt;next
@@ -15167,10 +15167,10 @@ multiline_comment|/* FIXME : in the future, this needs to accommodate SCSI-II ta
 r_return
 id|hostdata-&gt;busy
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 (braket
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )braket
 suffix:semicolon
 )brace
@@ -15417,9 +15417,9 @@ l_string|&quot;scsi%d : moving command for target %d lun %d to start list&bslash
 comma
 id|host-&gt;host_no
 comma
-id|tmp-&gt;target
+id|tmp-&gt;device-&gt;id
 comma
-id|tmp-&gt;lun
+id|tmp-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|to_schedule_list
@@ -15725,9 +15725,9 @@ l_string|&quot;scsi%d : target %d, lun %d, command &quot;
 comma
 id|host-&gt;host_no
 comma
-id|cmd-&gt;cmd-&gt;target
+id|cmd-&gt;cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;cmd-&gt;lun
+id|cmd-&gt;cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|print_command
@@ -15854,9 +15854,9 @@ l_string|&quot;scsi%d : target %d lun %d unexpected disconnect&bslash;n&quot;
 comma
 id|host-&gt;host_no
 comma
-id|cmd-&gt;cmd-&gt;target
+id|cmd-&gt;cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;cmd-&gt;lun
+id|cmd-&gt;cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|print_lots
@@ -15925,9 +15925,9 @@ l_string|&quot;scsi%d : target %d lun %d parity error.&bslash;n&quot;
 comma
 id|host-&gt;host_no
 comma
-id|cmd-&gt;cmd-&gt;target
+id|cmd-&gt;cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;cmd-&gt;lun
+id|cmd-&gt;cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|abnormal_finished
@@ -16691,10 +16691,10 @@ suffix:semicolon
 op_decrement
 id|hostdata-&gt;busy
 (braket
-id|tmp-&gt;target
+id|tmp-&gt;device-&gt;id
 )braket
 (braket
-id|tmp-&gt;lun
+id|tmp-&gt;device-&gt;lun
 )braket
 suffix:semicolon
 id|cmd-&gt;next
@@ -16725,9 +16725,9 @@ id|host-&gt;host_no
 comma
 id|tmp-&gt;pid
 comma
-id|tmp-&gt;target
+id|tmp-&gt;device-&gt;id
 comma
-id|tmp-&gt;lun
+id|tmp-&gt;device-&gt;lun
 comma
 id|tmp-&gt;result
 )paren
@@ -16954,12 +16954,12 @@ comma
 (paren
 r_int
 )paren
-id|cmd-&gt;cmd-&gt;target
+id|cmd-&gt;cmd-&gt;device-&gt;id
 comma
 (paren
 r_int
 )paren
-id|cmd-&gt;cmd-&gt;lun
+id|cmd-&gt;cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|print_command
@@ -18226,7 +18226,7 @@ l_string|&quot;scsi%d : target %d ignored SDTR and went into COMMAND OUT&bslash;
 comma
 id|host-&gt;host_no
 comma
-id|cmd-&gt;cmd-&gt;target
+id|cmd-&gt;cmd-&gt;device-&gt;id
 )paren
 suffix:semicolon
 id|cmd-&gt;flags
@@ -19943,7 +19943,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|NCR53c7x0_hostdata
@@ -20416,7 +20416,7 @@ id|printk
 (paren
 l_string|&quot;scsi%d : DANGER : command running, can not abort.&bslash;n&quot;
 comma
-id|cmd-&gt;host-&gt;host_no
+id|cmd-&gt;device-&gt;host-&gt;host_no
 )paren
 suffix:semicolon
 id|restore_flags
@@ -20518,10 +20518,10 @@ multiline_comment|/* &n; * FIXME : We need to add an additional flag which indic
 op_decrement
 id|hostdata-&gt;busy
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 (braket
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )braket
 suffix:semicolon
 )brace
@@ -20593,7 +20593,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|NCR53c7x0_hostdata
@@ -20857,7 +20857,7 @@ r_struct
 id|NCR53c7x0_hostdata
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_struct
 id|NCR53c7x0_cmd
@@ -21156,7 +21156,7 @@ id|ptr
 suffix:semicolon
 id|NCR53c7x0_local_setup
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 suffix:semicolon
 r_for
@@ -21272,7 +21272,7 @@ id|printk
 (paren
 l_string|&quot;scsi%d : %s data pointer at offset %d&bslash;n&quot;
 comma
-id|cmd-&gt;host-&gt;host_no
+id|cmd-&gt;device-&gt;host-&gt;host_no
 comma
 id|where
 comma
@@ -21288,7 +21288,7 @@ id|printk
 (paren
 l_string|&quot;scsi%d : can&squot;t determine %s data pointer offset&bslash;n&quot;
 comma
-id|cmd-&gt;host-&gt;host_no
+id|cmd-&gt;device-&gt;host-&gt;host_no
 comma
 id|where
 )paren
@@ -21303,7 +21303,7 @@ id|size
 op_assign
 id|print_insn
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 comma
 id|bus_to_virt
 c_func
@@ -21322,7 +21322,7 @@ l_int|1
 suffix:semicolon
 id|print_insn
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 comma
 id|bus_to_virt
 c_func
@@ -21694,9 +21694,9 @@ l_string|&quot;               result = 0x%x, target = %d, lun = %d, cmd = &quot;
 comma
 id|cmd-&gt;result
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|print_command
@@ -21749,18 +21749,18 @@ l_string|&quot;                   script : &quot;
 comma
 id|host-&gt;host_no
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
 id|hostdata-&gt;sync
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 dot
 id|sxfer_sanity
 comma
 id|hostdata-&gt;sync
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 dot
 id|scntl3_sanity
@@ -21780,7 +21780,7 @@ r_sizeof
 (paren
 id|hostdata-&gt;sync
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 dot
 id|script
@@ -21798,7 +21798,7 @@ l_string|&quot;0x%x &quot;
 comma
 id|hostdata-&gt;sync
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 dot
 id|script
@@ -21996,9 +21996,9 @@ id|host-&gt;host_no
 comma
 id|cmd-&gt;pid
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|restore_flags

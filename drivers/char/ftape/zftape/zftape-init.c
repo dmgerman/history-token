@@ -1279,11 +1279,7 @@ l_string|&quot;Support for QIC-113 compatible volume table, dynamic memory alloc
 id|KERN_INFO
 l_string|&quot;and builtin compression (lzrw3 algorithm).&bslash;n&quot;
 id|KERN_INFO
-l_string|&quot;Compiled for Linux version %s&quot;
-macro_line|#ifdef MODVERSIONS
-l_string|&quot; with versioned symbols&quot;
-macro_line|#endif
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;Compiled for Linux version %s&bslash;n&quot;
 comma
 id|UTS_RELEASE
 )paren

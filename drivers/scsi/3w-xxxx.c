@@ -10037,7 +10037,7 @@ op_assign
 id|TW_Device_Extension
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond
@@ -10131,7 +10131,7 @@ id|tw_dev-&gt;srb
 id|i
 )braket
 op_member_access_from_pointer
-id|target
+id|device-&gt;id
 comma
 id|SCpnt
 )paren
@@ -10198,7 +10198,7 @@ id|tw_dev-&gt;srb
 id|i
 )braket
 op_member_access_from_pointer
-id|target
+id|device-&gt;id
 comma
 id|SCpnt
 )paren
@@ -10293,7 +10293,7 @@ id|tw_dev-&gt;srb
 id|i
 )braket
 op_member_access_from_pointer
-id|target
+id|device-&gt;id
 comma
 id|SCpnt
 )paren
@@ -10430,7 +10430,7 @@ op_assign
 id|TW_Device_Extension
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond
@@ -11049,7 +11049,7 @@ op_assign
 id|TW_Device_Extension
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond
@@ -11107,14 +11107,14 @@ c_cond
 (paren
 id|tw_dev-&gt;is_unit_present
 (braket
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 op_eq
 id|FALSE
 )paren
 op_logical_or
 (paren
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 op_ne
 l_int|0
 )paren
@@ -12326,7 +12326,7 @@ id|tw_dev-&gt;srb
 id|request_id
 )braket
 op_member_access_from_pointer
-id|target
+id|device-&gt;id
 suffix:semicolon
 id|param-&gt;parameter_id
 op_assign
@@ -12716,7 +12716,7 @@ id|tw_dev-&gt;srb
 id|request_id
 )braket
 op_member_access_from_pointer
-id|target
+id|device-&gt;id
 suffix:semicolon
 id|command_packet-&gt;byte3.host_id
 op_assign
@@ -12790,7 +12790,7 @@ id|tw_dev-&gt;srb
 id|request_id
 )braket
 op_member_access_from_pointer
-id|target
+id|device-&gt;id
 suffix:semicolon
 id|param-&gt;parameter_id
 op_assign
@@ -13340,7 +13340,7 @@ id|request_id
 suffix:semicolon
 id|command_packet-&gt;byte3.unit
 op_assign
-id|srb-&gt;target
+id|srb-&gt;device-&gt;id
 suffix:semicolon
 id|command_packet-&gt;byte3.host_id
 op_assign
@@ -13972,7 +13972,7 @@ id|tw_dev-&gt;srb
 id|request_id
 )braket
 op_member_access_from_pointer
-id|target
+id|device-&gt;id
 suffix:semicolon
 id|command_packet-&gt;byte3.host_id
 op_assign

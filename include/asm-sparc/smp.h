@@ -82,10 +82,6 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;Private routines/data&n; */
 r_extern
 r_int
-id|smp_found_cpus
-suffix:semicolon
-r_extern
-r_int
 r_char
 id|boot_cpu_id
 suffix:semicolon

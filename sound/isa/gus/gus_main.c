@@ -52,8 +52,6 @@ op_star
 id|gus
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -64,13 +62,9 @@ c_func
 id|gus-&gt;card-&gt;module
 )paren
 )paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_return
 l_int|1
 suffix:semicolon
@@ -90,8 +84,6 @@ c_func
 (paren
 id|gus-&gt;card-&gt;module
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|snd_gus_joystick_info

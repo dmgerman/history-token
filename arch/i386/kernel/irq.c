@@ -1020,7 +1020,7 @@ OL
 r_sizeof
 (paren
 r_struct
-id|task_struct
+id|thread_info
 )paren
 op_plus
 l_int|1024
@@ -1038,7 +1038,7 @@ op_minus
 r_sizeof
 (paren
 r_struct
-id|task_struct
+id|thread_info
 )paren
 )paren
 suffix:semicolon

@@ -11,20 +11,20 @@ macro_line|#include &quot;msgqueue.h&quot;
 multiline_comment|/* FAS register definitions */
 multiline_comment|/* transfer count low */
 DECL|macro|REG_CTCL
-mdefine_line|#define REG_CTCL(x)&t;&t;((x)-&gt;scsi.io_port)
+mdefine_line|#define REG_CTCL&t;&t;(0)
 DECL|macro|REG_STCL
-mdefine_line|#define REG_STCL(x)&t;&t;((x)-&gt;scsi.io_port)
+mdefine_line|#define REG_STCL&t;&t;(0)
 multiline_comment|/* transfer count medium */
 DECL|macro|REG_CTCM
-mdefine_line|#define REG_CTCM(x)&t;&t;((x)-&gt;scsi.io_port + (1 &lt;&lt; (x)-&gt;scsi.io_shift))
+mdefine_line|#define REG_CTCM&t;&t;(1)
 DECL|macro|REG_STCM
-mdefine_line|#define REG_STCM(x)&t;&t;((x)-&gt;scsi.io_port + (1 &lt;&lt; (x)-&gt;scsi.io_shift))
+mdefine_line|#define REG_STCM&t;&t;(1)
 multiline_comment|/* fifo data */
 DECL|macro|REG_FF
-mdefine_line|#define REG_FF(x)&t;&t;((x)-&gt;scsi.io_port + (2 &lt;&lt; (x)-&gt;scsi.io_shift))
+mdefine_line|#define REG_FF&t;&t;&t;(2)
 multiline_comment|/* command */
 DECL|macro|REG_CMD
-mdefine_line|#define REG_CMD(x)&t;&t;((x)-&gt;scsi.io_port + (3 &lt;&lt; (x)-&gt;scsi.io_shift))
+mdefine_line|#define REG_CMD&t;&t;&t;(3)
 DECL|macro|CMD_NOP
 mdefine_line|#define CMD_NOP&t;&t;&t;0x00
 DECL|macro|CMD_FLUSHFIFO
@@ -63,7 +63,7 @@ DECL|macro|CMD_WITHDMA
 mdefine_line|#define CMD_WITHDMA&t;&t;0x80
 multiline_comment|/* status register (read) */
 DECL|macro|REG_STAT
-mdefine_line|#define REG_STAT(x)&t;&t;((x)-&gt;scsi.io_port + (4 &lt;&lt; (x)-&gt;scsi.io_shift))
+mdefine_line|#define REG_STAT&t;&t;(4)
 DECL|macro|STAT_IO
 mdefine_line|#define STAT_IO&t;&t;&t;(1 &lt;&lt; 0)&t;&t;&t;/* IO phase&t;&t;*/
 DECL|macro|STAT_CD
@@ -96,12 +96,12 @@ DECL|macro|STAT_MESGIN
 mdefine_line|#define STAT_MESGIN&t;&t;(STAT_MSG|STAT_CD|STAT_IO)&t;/* Message In&t;&t;*/
 multiline_comment|/* bus ID for select / reselect */
 DECL|macro|REG_SDID
-mdefine_line|#define REG_SDID(x)&t;&t;((x)-&gt;scsi.io_port + (4 &lt;&lt; (x)-&gt;scsi.io_shift))
+mdefine_line|#define REG_SDID&t;&t;(4)
 DECL|macro|BUSID
 mdefine_line|#define BUSID(target)&t;&t;((target) &amp; 7)
 multiline_comment|/* Interrupt status register (read) */
 DECL|macro|REG_INST
-mdefine_line|#define REG_INST(x)&t;&t;((x)-&gt;scsi.io_port + (5 &lt;&lt; (x)-&gt;scsi.io_shift))
+mdefine_line|#define REG_INST&t;&t;(5)
 DECL|macro|INST_SELWOATN
 mdefine_line|#define INST_SELWOATN&t;&t;(1 &lt;&lt; 0)&t;&t;&t;/* Select w/o ATN&t;*/
 DECL|macro|INST_SELATN
@@ -120,10 +120,10 @@ DECL|macro|INST_BUSRESET
 mdefine_line|#define INST_BUSRESET&t;&t;(1 &lt;&lt; 7)&t;&t;&t;/* SCSI Bus reset&t;*/
 multiline_comment|/* Timeout register (write) */
 DECL|macro|REG_STIM
-mdefine_line|#define REG_STIM(x)&t;&t;((x)-&gt;scsi.io_port + (5 &lt;&lt; (x)-&gt;scsi.io_shift))
+mdefine_line|#define REG_STIM&t;&t;(5)
 multiline_comment|/* Sequence step register (read) */
 DECL|macro|REG_IS
-mdefine_line|#define REG_IS(x)&t;&t;((x)-&gt;scsi.io_port + (6 &lt;&lt; (x)-&gt;scsi.io_shift))
+mdefine_line|#define REG_IS&t;&t;&t;(6)
 DECL|macro|IS_BITS
 mdefine_line|#define IS_BITS&t;&t;&t;0x07
 DECL|macro|IS_SELARB
@@ -140,20 +140,20 @@ DECL|macro|IS_SOF
 mdefine_line|#define IS_SOF&t;&t;&t;0x08&t;&t;&t;&t;/* Sync off flag&t;*/
 multiline_comment|/* Transfer period step (write) */
 DECL|macro|REG_STP
-mdefine_line|#define REG_STP(x)&t;&t;((x)-&gt;scsi.io_port + (6 &lt;&lt; (x)-&gt;scsi.io_shift))
+mdefine_line|#define REG_STP&t;&t;&t;(6)
 multiline_comment|/* Synchronous Offset (write) */
 DECL|macro|REG_SOF
-mdefine_line|#define REG_SOF(x)&t;&t;((x)-&gt;scsi.io_port + (7 &lt;&lt; (x)-&gt;scsi.io_shift))
+mdefine_line|#define REG_SOF&t;&t;&t;(7)
 multiline_comment|/* Fifo state register (read) */
 DECL|macro|REG_CFIS
-mdefine_line|#define REG_CFIS(x)&t;&t;((x)-&gt;scsi.io_port + (7 &lt;&lt; (x)-&gt;scsi.io_shift))
+mdefine_line|#define REG_CFIS&t;&t;(7)
 DECL|macro|CFIS_CF
 mdefine_line|#define CFIS_CF&t;&t;&t;0x1f&t;&t;&t;&t;/* Num bytes in FIFO&t;*/
 DECL|macro|CFIS_IS
 mdefine_line|#define CFIS_IS&t;&t;&t;0xe0&t;&t;&t;&t;/* Step&t;&t;&t;*/
 multiline_comment|/* config register 1 */
 DECL|macro|REG_CNTL1
-mdefine_line|#define REG_CNTL1(x)&t;&t;((x)-&gt;scsi.io_port + (8 &lt;&lt; (x)-&gt;scsi.io_shift))
+mdefine_line|#define REG_CNTL1&t;&t;(8)
 DECL|macro|CNTL1_CID
 mdefine_line|#define CNTL1_CID&t;&t;(7 &lt;&lt; 0)&t;&t;&t;/* Chip ID&t;&t;&t;*/
 DECL|macro|CNTL1_STE
@@ -168,7 +168,7 @@ DECL|macro|CNTL1_ETM
 mdefine_line|#define CNTL1_ETM&t;&t;(1 &lt;&lt; 7)&t;&t;&t;/* Extended Timing Mode&t;&t;*/
 multiline_comment|/* Clock conversion factor (read) */
 DECL|macro|REG_CLKF
-mdefine_line|#define REG_CLKF(x)&t;&t;((x)-&gt;scsi.io_port + (9 &lt;&lt; (x)-&gt;scsi.io_shift))
+mdefine_line|#define REG_CLKF&t;&t;(9)
 DECL|macro|CLKF_F37MHZ
 mdefine_line|#define CLKF_F37MHZ&t;&t;0x00&t;&t;&t;&t;/* 35.01 - 40 MHz&t;&t;*/
 DECL|macro|CLKF_F10MHZ
@@ -184,8 +184,8 @@ mdefine_line|#define CLKF_F27MHZ&t;&t;0x06&t;&t;&t;&t;/* 25.01 - 30 MHz&t;&t;*/
 DECL|macro|CLKF_F32MHZ
 mdefine_line|#define CLKF_F32MHZ&t;&t;0x07&t;&t;&t;&t;/* 30.01 - 35 MHz&t;&t;*/
 multiline_comment|/* Chip test register (write) */
-DECL|macro|REG0_FTM
-mdefine_line|#define REG0_FTM(x)&t;&t;((x)-&gt;scsi.io_port + (10 &lt;&lt; (x)-&gt;scsi.io_shift))
+DECL|macro|REG_FTM
+mdefine_line|#define REG_FTM&t;&t;&t;(10)
 DECL|macro|TEST_FTM
 mdefine_line|#define TEST_FTM&t;&t;0x01&t;&t;&t;&t;/* Force target mode&t;&t;*/
 DECL|macro|TEST_FIM
@@ -194,7 +194,7 @@ DECL|macro|TEST_FHI
 mdefine_line|#define TEST_FHI&t;&t;0x04&t;&t;&t;&t;/* Force high impedance mode&t;*/
 multiline_comment|/* Configuration register 2 (read/write) */
 DECL|macro|REG_CNTL2
-mdefine_line|#define REG_CNTL2(x)&t;&t;((x)-&gt;scsi.io_port + (11 &lt;&lt; (x)-&gt;scsi.io_shift))
+mdefine_line|#define REG_CNTL2&t;&t;(11)
 DECL|macro|CNTL2_PGDP
 mdefine_line|#define CNTL2_PGDP&t;&t;(1 &lt;&lt; 0)&t;&t;&t;/* Pass Th/Generate Data Parity&t;*/
 DECL|macro|CNTL2_PGRP
@@ -213,7 +213,7 @@ DECL|macro|CNTL2_DAE
 mdefine_line|#define CNTL2_DAE&t;&t;(1 &lt;&lt; 7)&t;&t;&t;/* Data Alignment Enable&t;*/
 multiline_comment|/* Configuration register 3 (read/write) */
 DECL|macro|REG_CNTL3
-mdefine_line|#define REG_CNTL3(x)&t;&t;((x)-&gt;scsi.io_port + (12 &lt;&lt; (x)-&gt;scsi.io_shift))
+mdefine_line|#define REG_CNTL3&t;&t;(12)
 DECL|macro|CNTL3_BS8
 mdefine_line|#define CNTL3_BS8&t;&t;(1 &lt;&lt; 0)&t;&t;&t;/* Burst size 8&t;&t;&t;*/
 DECL|macro|CNTL3_MDM
@@ -232,15 +232,15 @@ DECL|macro|CNTL3_ADIDCHK
 mdefine_line|#define CNTL3_ADIDCHK&t;&t;(1 &lt;&lt; 7)&t;&t;&t;/* Additional ID check&t;&t;*/
 multiline_comment|/* High transfer count (read/write) */
 DECL|macro|REG_CTCH
-mdefine_line|#define REG_CTCH(x)&t;&t;((x)-&gt;scsi.io_port + (14 &lt;&lt; (x)-&gt;scsi.io_shift))
+mdefine_line|#define REG_CTCH&t;&t;(14)
 DECL|macro|REG_STCH
-mdefine_line|#define REG_STCH(x)&t;&t;((x)-&gt;scsi.io_port + (14 &lt;&lt; (x)-&gt;scsi.io_shift))
-multiline_comment|/* ID reigster (read only) */
-DECL|macro|REG1_ID
-mdefine_line|#define REG1_ID(x)&t;&t;((x)-&gt;scsi.io_port + (14 &lt;&lt; (x)-&gt;scsi.io_shift))
+mdefine_line|#define REG_STCH&t;&t;(14)
+multiline_comment|/* ID register (read only) */
+DECL|macro|REG_ID
+mdefine_line|#define REG_ID&t;&t;&t;(14)
 multiline_comment|/* Data alignment */
-DECL|macro|REG0_DAL
-mdefine_line|#define REG0_DAL(x)&t;&t;((x)-&gt;scsi.io_port + (15 &lt;&lt; (x)-&gt;scsi.io_shift))
+DECL|macro|REG_DAL
+mdefine_line|#define REG_DAL&t;&t;&t;(15)
 r_typedef
 r_enum
 (brace
@@ -373,6 +373,10 @@ DECL|macro|MAGIC
 mdefine_line|#define MAGIC&t;0x441296bdUL
 DECL|macro|NR_MSGS
 mdefine_line|#define NR_MSGS&t;8
+DECL|macro|FASCAP_DMA
+mdefine_line|#define FASCAP_DMA&t;&t;(1 &lt;&lt; 0)
+DECL|macro|FASCAP_PSEUDODMA
+mdefine_line|#define FASCAP_PSEUDODMA&t;(1 &lt;&lt; 1)
 r_typedef
 r_struct
 (brace
@@ -453,6 +457,17 @@ suffix:semicolon
 multiline_comment|/* driver information */
 r_struct
 (brace
+DECL|member|phase
+id|phase_t
+id|phase
+suffix:semicolon
+multiline_comment|/* current phase&t;&t;&t;*/
+DECL|member|io_base
+r_void
+op_star
+id|io_base
+suffix:semicolon
+multiline_comment|/* iomem base of FAS216&t;&t;&t;*/
 DECL|member|io_port
 r_int
 r_int
@@ -465,12 +480,6 @@ r_int
 id|io_shift
 suffix:semicolon
 multiline_comment|/* shift to adjust reg offsets by&t;*/
-DECL|member|irq
-r_int
-r_int
-id|irq
-suffix:semicolon
-multiline_comment|/* interrupt&t;&t;&t;&t;*/
 DECL|member|cfg
 r_int
 r_char
@@ -487,11 +496,12 @@ op_star
 id|type
 suffix:semicolon
 multiline_comment|/* chip type&t;&t;&t;&t;*/
-DECL|member|phase
-id|phase_t
-id|phase
+DECL|member|irq
+r_int
+r_int
+id|irq
 suffix:semicolon
-multiline_comment|/* current phase&t;&t;&t;*/
+multiline_comment|/* interrupt&t;&t;&t;&t;*/
 r_struct
 (brace
 DECL|member|target
@@ -547,12 +557,6 @@ l_int|256
 )braket
 suffix:semicolon
 multiline_comment|/* last message received from device&t;*/
-DECL|member|msglen
-r_int
-r_int
-id|msglen
-suffix:semicolon
-multiline_comment|/* length of last message received&t;*/
 DECL|member|disconnectable
 r_int
 r_char
@@ -669,6 +673,12 @@ r_int
 id|asyncperiod
 suffix:semicolon
 multiline_comment|/* Async transfer period (ns)&t;&t;*/
+DECL|member|capabilities
+r_int
+r_int
+id|capabilities
+suffix:semicolon
+multiline_comment|/* driver capabilities&t;&t;&t;*/
 DECL|member|disconnect_ok
 r_int
 r_int
@@ -873,7 +883,7 @@ DECL|typedef|FAS216_Info
 )brace
 id|FAS216_Info
 suffix:semicolon
-multiline_comment|/* Function: int fas216_init (struct Scsi_Host *instance)&n; * Purpose : initialise FAS/NCR/AMD SCSI ic.&n; * Params  : instance - a driver-specific filled-out structure&n; * Returns : 0 on success&n; */
+multiline_comment|/* Function: int fas216_init (struct Scsi_Host *instance)&n; * Purpose : initialise FAS/NCR/AMD SCSI structures.&n; * Params  : instance - a driver-specific filled-out structure&n; * Returns : 0 on success&n; */
 r_extern
 r_int
 id|fas216_init
@@ -884,25 +894,20 @@ op_star
 id|instance
 )paren
 suffix:semicolon
-multiline_comment|/* Function: int fas216_abort (Scsi_Cmnd *SCpnt)&n; * Purpose : abort a command if something horrible happens.&n; * Params  : SCpnt - Command that is believed to be causing a problem.&n; * Returns : one of SCSI_ABORT_ macros.&n; */
+multiline_comment|/* Function: int fas216_add (struct Scsi_Host *instance, struct device *dev)&n; * Purpose : initialise FAS/NCR/AMD SCSI ic.&n; * Params  : instance - a driver-specific filled-out structure&n; * Returns : 0 on success&n; */
 r_extern
 r_int
-id|fas216_abort
+id|fas216_add
 (paren
-id|Scsi_Cmnd
+r_struct
+id|Scsi_Host
 op_star
-)paren
-suffix:semicolon
-multiline_comment|/* Function: int fas216_reset (Scsi_Cmnd *SCpnt, unsigned int reset_flags)&n; * Purpose : resets the adapter if something horrible happens.&n; * Params  : SCpnt - Command that is believed to be causing a problem.&n; *&t;     reset_flags - flags indicating reset type that is believed to be required.&n; * Returns : one of SCSI_RESET_ macros, or&squot;d with the SCSI_RESET_*_RESET macros.&n; */
-r_extern
-r_int
-id|fas216_reset
-(paren
-id|Scsi_Cmnd
-op_star
+id|instance
 comma
-r_int
-r_int
+r_struct
+id|device
+op_star
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Function: int fas216_queue_command (Scsi_Cmnd *SCpnt, void (*done)(Scsi_Cmnd *))&n; * Purpose : queue a command for adapter to process.&n; * Params  : SCpnt - Command to queue&n; *&t;     done  - done function to call once command is complete&n; * Returns : 0 - success, else error&n; */
@@ -933,10 +938,19 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Function: void fas216_intr (struct Scsi_Host *instance)&n; * Purpose : handle interrupts from the interface to progress a command&n; * Params  : instance - interface to service&n; */
+multiline_comment|/* Function: void fas216_intr (FAS216_Info *info)&n; * Purpose : handle interrupts from the interface to progress a command&n; * Params  : info - interface to service&n; */
 r_extern
 r_void
 id|fas216_intr
+(paren
+id|FAS216_Info
+op_star
+id|info
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|fas216_remove
 (paren
 r_struct
 id|Scsi_Host
@@ -944,29 +958,15 @@ op_star
 id|instance
 )paren
 suffix:semicolon
-multiline_comment|/* Function: int fas216_release (struct Scsi_Host *instance)&n; * Purpose : release all resources and put everything to bed for FAS/NCR/AMD SCSI ic.&n; * Params  : instance - a driver-specific filled-out structure&n; * Returns : 0 on success&n; */
+multiline_comment|/* Function: void fas216_release (struct Scsi_Host *instance)&n; * Purpose : release all resources and put everything to bed for FAS/NCR/AMD SCSI ic.&n; * Params  : instance - a driver-specific filled-out structure&n; * Returns : 0 on success&n; */
 r_extern
-r_int
+r_void
 id|fas216_release
 (paren
 r_struct
 id|Scsi_Host
 op_star
 id|instance
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|fas216_info
-c_func
-(paren
-id|FAS216_Info
-op_star
-id|info
-comma
-r_char
-op_star
-id|buffer
 )paren
 suffix:semicolon
 r_extern

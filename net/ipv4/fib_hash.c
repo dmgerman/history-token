@@ -4378,7 +4378,6 @@ c_cond
 (paren
 id|iter-&gt;zone-&gt;fz_next
 )paren
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace

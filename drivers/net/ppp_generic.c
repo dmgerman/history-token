@@ -3996,7 +3996,6 @@ id|ppp-&gt;debug
 op_amp
 l_int|1
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -4012,7 +4011,6 @@ id|skb
 suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* if this packet passes the active filter, record the time */
 r_if

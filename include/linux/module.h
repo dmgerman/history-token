@@ -49,6 +49,24 @@ id|name
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|modversion_info
+r_struct
+id|modversion_info
+(brace
+DECL|member|crc
+r_int
+r_int
+id|crc
+suffix:semicolon
+DECL|member|name
+r_char
+id|name
+(braket
+id|MODULE_NAME_LEN
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* These are either module local, or the kernel&squot;s dummy ones. */
 r_extern
 r_int
@@ -103,7 +121,7 @@ DECL|macro|MOD_DEC_USE_COUNT
 mdefine_line|#define MOD_DEC_USE_COUNT __MOD_DEC_USE_COUNT(THIS_MODULE)
 multiline_comment|/*&n; * The following license idents are currently accepted as indicating free&n; * software modules&n; *&n; *&t;&quot;GPL&quot;&t;&t;&t;&t;[GNU Public License v2 or later]&n; *&t;&quot;GPL v2&quot;&t;&t;&t;[GNU Public License v2]&n; *&t;&quot;GPL and additional rights&quot;&t;[GNU Public License v2 rights and more]&n; *&t;&quot;Dual BSD/GPL&quot;&t;&t;&t;[GNU Public License v2&n; *&t;&t;&t;&t;&t; or BSD license choice]&n; *&t;&quot;Dual MPL/GPL&quot;&t;&t;&t;[GNU Public License v2&n; *&t;&t;&t;&t;&t; or Mozilla license choice]&n; *&n; * The following other idents are available&n; *&n; *&t;&quot;Proprietary&quot;&t;&t;&t;[Non free products]&n; *&n; * There are dual licensed components, but when running with Linux it is the&n; * GPL that is relevant so this is a non issue. Similarly LGPL linked with GPL&n; * is a GPL combined work.&n; *&n; * This exists for several reasons&n; * 1.&t;So modinfo can show license info for users wanting to vet their setup &n; *&t;is free&n; * 2.&t;So the community can ignore bug reports including proprietary modules&n; * 3.&t;So vendors can do likewise based on their own policies&n; */
 DECL|macro|MODULE_LICENSE
-mdefine_line|#define MODULE_LICENSE(license)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __module_license[]&t;&t;&t;&bslash;&n;&t;&t;__attribute__((section(&quot;.init.license&quot;))) = license
+mdefine_line|#define MODULE_LICENSE(license)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __module_license[]&t;&t;&t;&bslash;&n;&t;&t;__attribute__((section(&quot;.init.license&quot;), unused)) = license
 macro_line|#else  /* !MODULE */
 DECL|macro|MODULE_GENERIC_TABLE
 mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)
@@ -151,6 +169,13 @@ r_struct
 id|kernel_symbol
 op_star
 id|syms
+suffix:semicolon
+DECL|member|crcs
+r_const
+r_int
+r_int
+op_star
+id|crcs
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -216,13 +241,30 @@ id|symbol
 suffix:semicolon
 DECL|macro|symbol_get
 mdefine_line|#define symbol_get(x) ((typeof(&amp;x))(__symbol_get(MODULE_SYMBOL_PREFIX #x)))
+macro_line|#ifdef __GENKSYMS__
+multiline_comment|/* genksyms doesn&squot;t handle GPL-only symbols yet */
+DECL|macro|EXPORT_SYMBOL_GPL
+mdefine_line|#define EXPORT_SYMBOL_GPL EXPORT_SYMBOL
+macro_line|#else
+macro_line|#ifdef CONFIG_MODVERSIONS
+multiline_comment|/* Mark the CRC weak since genksyms apparently decides not to&n; * generate a checksums for some symbols */
+DECL|macro|__CRC_SYMBOL
+mdefine_line|#define __CRC_SYMBOL(sym, sec)&t;&t;&t;&t;&t;&bslash;&n;&t;extern void *__crc_##sym __attribute__((weak));&t;&t;&bslash;&n;&t;static const unsigned long __kcrctab_##sym&t;&t;&bslash;&n;&t;__attribute__((section(&quot;__kcrctab&quot; sec), unused))&t;&bslash;&n;&t;= (unsigned long) &amp;__crc_##sym;
+macro_line|#else
+DECL|macro|__CRC_SYMBOL
+mdefine_line|#define __CRC_SYMBOL(sym, sec)
+macro_line|#endif
 multiline_comment|/* For every exported symbol, place a struct in the __ksymtab section */
+DECL|macro|__EXPORT_SYMBOL
+mdefine_line|#define __EXPORT_SYMBOL(sym, sec)&t;&t;&t;&t;&bslash;&n;&t;__CRC_SYMBOL(sym, sec)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __kstrtab_##sym[]&t;&t;&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab_strings&quot;)))&t;&t;&bslash;&n;&t;= MODULE_SYMBOL_PREFIX #sym;                    &t;&bslash;&n;&t;static const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab&quot; sec), unused))&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, __kstrtab_##sym }
 DECL|macro|EXPORT_SYMBOL
-mdefine_line|#define EXPORT_SYMBOL(sym)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __kstrtab_##sym[]&t;&t;&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab_strings&quot;)))&t;&t;&bslash;&n;&t;= MODULE_SYMBOL_PREFIX #sym;                    &t;&bslash;&n;&t;static const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab&quot;)))&t;&t;&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, __kstrtab_##sym }
+mdefine_line|#define EXPORT_SYMBOL(sym)&t;&t;&t;&t;&t;&bslash;&n;&t;__EXPORT_SYMBOL(sym, &quot;&quot;)
+DECL|macro|EXPORT_SYMBOL_GPL
+mdefine_line|#define EXPORT_SYMBOL_GPL(sym)&t;&t;&t;&t;&t;&bslash;&n;&t;__EXPORT_SYMBOL(sym, &quot;_gpl&quot;)
+macro_line|#endif
+multiline_comment|/* We don&squot;t mangle the actual symbol anymore, so no need for&n; * special casing EXPORT_SYMBOL_NOVERS */
 DECL|macro|EXPORT_SYMBOL_NOVERS
 mdefine_line|#define EXPORT_SYMBOL_NOVERS(sym) EXPORT_SYMBOL(sym)
-DECL|macro|EXPORT_SYMBOL_GPL
-mdefine_line|#define EXPORT_SYMBOL_GPL(sym)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __kstrtab_##sym[]&t;&t;&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab_strings&quot;)))&t;&t;&bslash;&n;&t;= MODULE_SYMBOL_PREFIX #sym;                    &t;&bslash;&n;&t;static const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__gpl_ksymtab&quot;)))&t;&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, __kstrtab_##sym }
 DECL|struct|module_ref
 r_struct
 id|module_ref
@@ -735,7 +777,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Get/put a kernel symbol (calls should be symmetric) */
 DECL|macro|symbol_get
-mdefine_line|#define symbol_get(x) (&amp;(x))
+mdefine_line|#define symbol_get(x) ({ extern typeof(x) x __attribute__((weak)); &amp;(x); })
 DECL|macro|symbol_put
 mdefine_line|#define symbol_put(x) do { } while(0)
 DECL|macro|symbol_put_addr

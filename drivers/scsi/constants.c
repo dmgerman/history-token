@@ -5490,11 +5490,11 @@ c_func
 (paren
 l_string|&quot;scsi%d : destination target %d, lun %d&bslash;n&quot;
 comma
-id|cmd-&gt;host-&gt;host_no
+id|cmd-&gt;device-&gt;host-&gt;host_no
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|printk

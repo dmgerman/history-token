@@ -4563,11 +4563,7 @@ l_string|&quot;(c) 1997 Claus-Justus Heine (claus@momo.math.rwth-aachen.de)&bsla
 id|KERN_INFO
 l_string|&quot;Compressor for zftape (lzrw3 algorithm)&bslash;n&quot;
 id|KERN_INFO
-l_string|&quot;Compiled for kernel version %s&quot;
-macro_line|#ifdef MODVERSIONS
-l_string|&quot; with versioned symbols&quot;
-macro_line|#endif
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;Compiled for kernel version %s&bslash;n&quot;
 comma
 id|UTS_RELEASE
 )paren

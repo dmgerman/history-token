@@ -1269,7 +1269,7 @@ op_assign
 (paren
 id|uint
 )paren
-id|cmd-&gt;host-&gt;base
+id|cmd-&gt;device-&gt;host-&gt;base
 suffix:semicolon
 id|hba_stat
 op_assign
@@ -1433,9 +1433,9 @@ id|base
 comma
 id|cmd-&gt;pid
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 id|eata_stat
 comma
@@ -1656,7 +1656,7 @@ id|cmd
 op_member_access_from_pointer
 id|resetlevel
 (braket
-id|cmd-&gt;channel
+id|cmd-&gt;device-&gt;channel
 )braket
 op_assign
 l_int|0
@@ -2472,7 +2472,7 @@ id|cmd
 suffix:semicolon
 id|sh
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 r_if
 c_cond
@@ -2682,9 +2682,9 @@ l_string|&quot;eata_queue pid %ld, target: %x, lun: %x, y %d&bslash;n&quot;
 comma
 id|cmd-&gt;pid
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 id|y
 )paren
@@ -2851,7 +2851,7 @@ multiline_comment|/* FIXME: This will will have to be changed once the midlevel 
 r_if
 c_cond
 (paren
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 op_eq
 id|sh-&gt;this_id
 )paren
@@ -3074,15 +3074,15 @@ id|cmd-&gt;sense_buffer
 suffix:semicolon
 id|ccb-&gt;cp_id
 op_assign
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 suffix:semicolon
 id|ccb-&gt;cp_channel
 op_assign
-id|cmd-&gt;channel
+id|cmd-&gt;device-&gt;channel
 suffix:semicolon
 id|ccb-&gt;cp_lun
 op_assign
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 suffix:semicolon
 id|ccb-&gt;cp_dispri
 op_assign
@@ -3179,7 +3179,7 @@ c_func
 l_string|&quot;eata_queue target %d, pid %ld, HBA busy, &quot;
 l_string|&quot;returning DID_BUS_BUSY&bslash;n&quot;
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
 id|cmd-&gt;pid
 )paren
@@ -3217,9 +3217,9 @@ id|sh-&gt;base
 comma
 id|cmd-&gt;pid
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 id|y
 comma
@@ -3297,9 +3297,9 @@ l_string|&quot; reason %x&bslash;n&quot;
 comma
 id|cmd-&gt;pid
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 id|cmd-&gt;abort_reason
 )paren
@@ -3397,7 +3397,7 @@ c_func
 id|u32
 )paren
 (paren
-id|cmd-&gt;host-&gt;base
+id|cmd-&gt;device-&gt;host-&gt;base
 )paren
 op_plus
 id|HA_RAUXSTAT
@@ -3704,9 +3704,9 @@ l_string|&quot; reason %x&bslash;n&quot;
 comma
 id|cmd-&gt;pid
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 id|cmd-&gt;abort_reason
 )paren
@@ -3835,7 +3835,7 @@ c_func
 id|u32
 )paren
 (paren
-id|cmd-&gt;host-&gt;base
+id|cmd-&gt;device-&gt;host-&gt;base
 )paren
 op_plus
 id|HA_RAUXSTAT
@@ -3893,7 +3893,7 @@ l_int|0
 suffix:semicolon
 id|x
 OL
-id|cmd-&gt;host-&gt;can_queue
+id|cmd-&gt;device-&gt;host-&gt;can_queue
 suffix:semicolon
 id|x
 op_increment
@@ -4067,7 +4067,7 @@ c_func
 id|u32
 )paren
 (paren
-id|cmd-&gt;host-&gt;base
+id|cmd-&gt;device-&gt;host-&gt;base
 )paren
 op_plus
 id|HA_RSTATUS
@@ -4082,7 +4082,7 @@ comma
 (paren
 id|u32
 )paren
-id|cmd-&gt;host-&gt;base
+id|cmd-&gt;device-&gt;host-&gt;base
 comma
 id|EATA_CMD_RESET
 )paren
@@ -4152,7 +4152,7 @@ l_int|0
 suffix:semicolon
 id|x
 OL
-id|cmd-&gt;host-&gt;can_queue
+id|cmd-&gt;device-&gt;host-&gt;can_queue
 suffix:semicolon
 id|x
 op_increment
