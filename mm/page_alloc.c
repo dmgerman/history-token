@@ -2621,11 +2621,9 @@ c_func
 suffix:semicolon
 id|val-&gt;bufferram
 op_assign
-id|atomic_read
+id|get_page_cache_size
 c_func
 (paren
-op_amp
-id|buffermem_pages
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HIGHMEM
