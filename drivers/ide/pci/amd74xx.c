@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Version 2.9&n; *&n; * AMD 755/756/766/8111 and nVidia nForce IDE driver for Linux.&n; *&n; * Copyright (c) 2000-2002 Vojtech Pavlik&n; *&n; * Based on the work of:&n; *      Andre Hedrick&n; */
+multiline_comment|/*&n; * Version 2.11&n; *&n; * AMD 755/756/766/8111 and nVidia nForce IDE driver for Linux.&n; *&n; * Copyright (c) 2000-2002 Vojtech Pavlik&n; *&n; * Based on the work of:&n; *      Andre Hedrick&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -166,12 +166,6 @@ r_struct
 id|amd_ide_chip
 op_star
 id|amd_config
-suffix:semicolon
-DECL|variable|amd_enabled
-r_static
-r_int
-r_char
-id|amd_enabled
 suffix:semicolon
 DECL|variable|amd_80w
 r_static
@@ -418,7 +412,7 @@ suffix:semicolon
 id|amd_print
 c_func
 (paren
-l_string|&quot;Driver Version:                     2.9&quot;
+l_string|&quot;Driver Version:                     2.11&quot;
 )paren
 suffix:semicolon
 id|amd_print
@@ -1833,28 +1827,6 @@ id|pio
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
-(paren
-id|amd_enabled
-op_rshift
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|channel
-)paren
-op_amp
-l_int|1
-)paren
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|pio
 op_eq
 l_int|255
@@ -2291,45 +2263,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|pci_read_config_dword
-c_func
-(paren
-id|dev
-comma
-id|AMD_IDE_ENABLE
-comma
-op_amp
-id|u
-)paren
-suffix:semicolon
-id|amd_enabled
-op_assign
-(paren
-(paren
-id|u
-op_amp
-l_int|1
-)paren
-ques
-c_cond
-l_int|2
-suffix:colon
-l_int|0
-)paren
-op_or
-(paren
-(paren
-id|u
-op_amp
-l_int|2
-)paren
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Take care of prefetch &amp; postwrite.&n; */
 id|pci_read_config_byte
 c_func
@@ -2638,18 +2571,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-(paren
 id|hwif-&gt;udma_four
-)paren
 )paren
 id|hwif-&gt;udma_four
 op_assign
 (paren
-(paren
-id|amd_enabled
-op_amp
 id|amd_80w
-)paren
 op_rshift
 id|hwif-&gt;channel
 )paren
@@ -2688,45 +2615,6 @@ dot
 id|autodma
 op_assign
 id|hwif-&gt;autodma
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * We allow the BM-DMA driver only work on enabled interfaces.&n; */
-DECL|function|init_dma_amd74xx
-r_static
-r_void
-id|__init
-id|init_dma_amd74xx
-c_func
-(paren
-id|ide_hwif_t
-op_star
-id|hwif
-comma
-r_int
-r_int
-id|dmabase
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|amd_enabled
-op_rshift
-id|hwif-&gt;channel
-)paren
-op_amp
-l_int|1
-)paren
-id|ide_setup_dma
-c_func
-(paren
-id|hwif
-comma
-id|dmabase
-comma
-l_int|8
-)paren
 suffix:semicolon
 )brace
 r_extern
