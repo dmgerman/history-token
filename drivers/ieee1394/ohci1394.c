@@ -15,7 +15,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -85,7 +84,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Revision: 1.91 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Revision: 1.101 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Module Parameters */
 id|MODULE_PARM
@@ -1604,9 +1603,6 @@ op_star
 id|ohci
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 id|quadlet_t
 id|buf
 suffix:semicolon
@@ -1803,65 +1799,6 @@ comma
 l_int|0x00000400
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize IR dma */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|ohci-&gt;nb_iso_rcv_ctx
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|reg_write
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_IsoRcvContextControlClear
-op_plus
-l_int|32
-op_star
-id|i
-comma
-l_int|0xffffffff
-)paren
-suffix:semicolon
-id|reg_write
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_IsoRcvContextMatch
-op_plus
-l_int|32
-op_star
-id|i
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|reg_write
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_IsoRcvCommandPtr
-op_plus
-l_int|32
-op_star
-id|i
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Set bufferFill, isochHeader, multichannel for IR context */
 id|reg_write
 c_func
@@ -1905,51 +1842,6 @@ comma
 l_int|0xffffffff
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize IT dma */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|ohci-&gt;nb_iso_xmit_ctx
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|reg_write
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_IsoXmitContextControlClear
-op_plus
-l_int|32
-op_star
-id|i
-comma
-l_int|0xffffffff
-)paren
-suffix:semicolon
-id|reg_write
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_IsoXmitCommandPtr
-op_plus
-l_int|32
-op_star
-id|i
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Clear the interrupt mask */
 id|reg_write
 c_func
@@ -2130,6 +2022,8 @@ op_or
 id|OHCI1394_isochRx
 op_or
 id|OHCI1394_isochTx
+op_or
+id|OHCI1394_cycleInconsistent
 )paren
 suffix:semicolon
 multiline_comment|/* Enable link */
@@ -3786,6 +3680,10 @@ r_else
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
+id|retval
+op_assign
+l_int|1
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -4433,6 +4331,29 @@ l_string|&quot;Unrecoverable error, shutting down card!&quot;
 )paren
 suffix:semicolon
 r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|event
+op_amp
+id|OHCI1394_cycleInconsistent
+)paren
+(brace
+multiline_comment|/* We subscribe to the cycleInconsistent event only to&n;&t;&t; * clear the corresponding event bit... otherwise,&n;&t;&t; * isochronous cycleMatch DMA wont work. */
+id|DBGMSG
+c_func
+(paren
+id|ohci-&gt;id
+comma
+l_string|&quot;OHCI1394_cycleInconsistent&quot;
+)paren
+suffix:semicolon
+id|event
+op_and_assign
+op_complement
+id|OHCI1394_cycleInconsistent
 suffix:semicolon
 )brace
 r_if
@@ -5287,7 +5208,7 @@ c_func
 (paren
 id|ohci
 comma
-id|OHCI1394_IntMaskSet
+id|OHCI1394_IntEventClear
 comma
 id|OHCI1394_busReset
 )paren
@@ -5297,7 +5218,7 @@ c_func
 (paren
 id|ohci
 comma
-id|OHCI1394_IntEventClear
+id|OHCI1394_IntMaskSet
 comma
 id|OHCI1394_busReset
 )paren
@@ -6658,6 +6579,43 @@ l_int|0
 multiline_comment|/* this packet hasn&squot;t been sent yet*/
 r_break
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|ack
+op_amp
+l_int|0x10
+)paren
+)paren
+(brace
+multiline_comment|/* XXX: This is an OHCI evt_* code. We need to handle&n;&t;&t;&t; * this specially! For right now, we just fake an&n;&t;&t;&t; * ackx_send_error. */
+id|PRINT
+c_func
+(paren
+id|KERN_DEBUG
+comma
+id|ohci-&gt;id
+comma
+l_string|&quot;Received OHCI evt_* error 0x%x&quot;
+comma
+id|ack
+op_amp
+l_int|0xf
+)paren
+suffix:semicolon
+id|ack
+op_assign
+(paren
+id|ack
+op_amp
+l_int|0xffe0
+)paren
+op_or
+id|ACK_BUSY_A
+suffix:semicolon
+)brace
 macro_line|#ifdef OHCI1394_DEBUG
 r_if
 c_cond
@@ -9302,6 +9260,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* Vendor ID */
 id|cf_put_keyval
 c_func
 (paren
@@ -9310,10 +9269,17 @@ id|cr
 comma
 l_int|0x03
 comma
-l_int|0x00005e
+id|reg_read
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_VendorID
+)paren
+op_amp
+l_int|0xFFFFFF
 )paren
 suffix:semicolon
-multiline_comment|/* Vendor ID */
 id|cf_put_refer
 c_func
 (paren
@@ -10690,10 +10656,10 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|kfree
+id|hpsb_unref_host
 c_func
 (paren
-id|ohci
+id|ohci-&gt;host
 )paren
 suffix:semicolon
 )brace

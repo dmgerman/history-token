@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -2709,7 +2708,10 @@ id|file_operations
 id|aux_ops
 op_assign
 (brace
-id|OWNER_THIS_MODULE
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|read
 suffix:colon
 id|mem_read
@@ -2819,8 +2821,6 @@ id|memdata
 op_star
 id|md
 suffix:semicolon
-id|V22_COMPAT_MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2830,8 +2830,6 @@ id|PCILYNX_MINOR_AUX_START
 )paren
 (brace
 multiline_comment|/* just for completeness */
-id|V22_COMPAT_MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENXIO
@@ -2865,14 +2863,10 @@ id|cid
 dot
 id|aux_port
 )paren
-(brace
-id|V22_COMPAT_MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENXIO
 suffix:semicolon
-)brace
 id|type
 op_assign
 id|t_aux
@@ -2906,14 +2900,10 @@ id|cid
 dot
 id|local_rom
 )paren
-(brace
-id|V22_COMPAT_MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENXIO
 suffix:semicolon
-)brace
 id|type
 op_assign
 id|t_rom
@@ -2941,14 +2931,10 @@ id|cid
 dot
 id|local_ram
 )paren
-(brace
-id|V22_COMPAT_MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENXIO
 suffix:semicolon
-)brace
 id|type
 op_assign
 id|t_ram
@@ -2980,14 +2966,10 @@ id|md
 op_eq
 l_int|NULL
 )paren
-(brace
-id|V22_COMPAT_MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|md-&gt;lynx
 op_assign
 op_amp
@@ -3078,25 +3060,11 @@ op_star
 id|file
 )paren
 (brace
-r_struct
-id|memdata
-op_star
-id|md
-op_assign
-(paren
-r_struct
-id|memdata
-op_star
-)paren
-id|file-&gt;private_data
-suffix:semicolon
 id|kfree
 c_func
 (paren
-id|md
+id|file-&gt;private_data
 )paren
-suffix:semicolon
-id|V22_COMPAT_MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -3234,14 +3202,6 @@ id|orig
 (brace
 id|loff_t
 id|newoffs
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -3280,6 +3240,14 @@ l_int|1
 op_plus
 id|offs
 suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -3290,21 +3258,9 @@ id|PCILYNX_MAX_MEMORY
 op_plus
 l_int|1
 )paren
-(brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-)brace
-id|unlock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 id|file-&gt;f_pos
 op_assign
@@ -5642,10 +5598,10 @@ op_amp
 id|lynx-&gt;iso_rcv.tq
 )paren
 suffix:semicolon
-id|kfree
+id|hpsb_unref_host
 c_func
 (paren
-id|lynx
+id|lynx-&gt;host
 )paren
 suffix:semicolon
 )brace

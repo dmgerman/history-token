@@ -45,6 +45,29 @@ id|disable_nodemgr
 op_assign
 l_int|0
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|disable_hotplug
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|disable_hotplug
+comma
+l_string|&quot;Disable hotplug for detected nodes.&quot;
+)paren
+suffix:semicolon
+DECL|variable|disable_hotplug
+r_static
+r_int
+id|disable_hotplug
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* We are GPL, so treat us special */
 id|MODULE_LICENSE
 c_func
@@ -280,9 +303,10 @@ op_assign
 id|data_size
 suffix:semicolon
 )brace
-id|INIT_TQ_HEAD
+id|INIT_LIST_HEAD
 c_func
 (paren
+op_amp
 id|packet-&gt;complete_tq
 )paren
 suffix:semicolon
@@ -505,6 +529,10 @@ id|esid_seq
 op_assign
 l_int|23
 suffix:semicolon
+id|host-&gt;nodes_active
+op_assign
+l_int|0
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -550,11 +578,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sid-&gt;contender
-op_logical_and
 id|sid-&gt;link_active
 )paren
 (brace
+id|host-&gt;nodes_active
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sid-&gt;contender
+)paren
 id|host-&gt;irm_id
 op_assign
 id|LOCAL_BUS
@@ -740,9 +774,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_return
+id|host-&gt;node_count
+op_assign
 id|nodeid
 op_plus
+l_int|1
+suffix:semicolon
+r_return
 l_int|1
 suffix:semicolon
 )brace
@@ -1439,19 +1477,15 @@ id|host-&gt;is_root
 op_assign
 id|isroot
 suffix:semicolon
-id|host-&gt;node_count
-op_assign
+r_if
+c_cond
+(paren
+op_logical_neg
 id|check_selfids
 c_func
 (paren
 id|host
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|host-&gt;node_count
 )paren
 (brace
 r_if
@@ -3734,7 +3768,10 @@ id|file_operations
 id|ieee1394_chardev_ops
 op_assign
 (brace
-id|OWNER_THIS_MODULE
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|ieee1394_dispatch_open
@@ -3832,8 +3869,6 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-id|V22_COMPAT_MOD_INC_USE_COUNT
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -3920,8 +3955,6 @@ id|module
 op_assign
 l_int|NULL
 suffix:semicolon
-id|V22_COMPAT_MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 id|write_unlock
 c_func
@@ -3968,18 +4001,11 @@ op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
-multiline_comment|/*&n;&t;  Maintaining correct module reference counts is tricky here!&n;&n;&t;  For Linux v2.2:&n;&n;&t;  The task-specific driver is expected to maintain its own&n;&t;  reference count via V22_COMPAT_MOD_[INC,DEC]_USE_COUNT.&n;&t;  We don&squot;t need to do anything special.&n;&t;  &n;&t;  For Linux v2.4 and later:&n;&t;  &n;&t;  The key thing to remember is that the VFS increments the&n;&t;  reference count of ieee1394 before it calls&n;&t;  ieee1394_dispatch_open().&n;&n;&t;  If the open() succeeds, then we need to transfer this extra&n;&t;  reference to the task-specific driver module (e.g. raw1394).&n;&t;  The VFS will deref the driver module automatically when the&n;&t;  file is later released.&n;&n;&t;  If the open() fails, then the VFS will drop the&n;&t;  reference count of whatever module file-&gt;f_op-&gt;owner points&n;&t;  to, immediately after this function returns.&n;&n;&t;  The comments below refer to the 2.4 case, since the 2.2&n;&t;  case is trivial.&n;&t;  &n;&t;*/
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
-multiline_comment|/* 2.2 */
+multiline_comment|/*&n;&t;  Maintaining correct module reference counts is tricky here!&n;&n;&t;  For Linux v2.4 and later:&n;&t;  &n;&t;  The key thing to remember is that the VFS increments the&n;&t;  reference count of ieee1394 before it calls&n;&t;  ieee1394_dispatch_open().&n;&n;&t;  If the open() succeeds, then we need to transfer this extra&n;&t;  reference to the task-specific driver module (e.g. raw1394).&n;&t;  The VFS will deref the driver module automatically when the&n;&t;  file is later released.&n;&n;&t;  If the open() fails, then the VFS will drop the&n;&t;  reference count of whatever module file-&gt;f_op-&gt;owner points&n;&t;  to, immediately after this function returns.&n;&n;&t;  The comments below refer to the 2.4 case, since the 2.2&n;&t;  case is trivial.&n;&t;  &n;&t;*/
 DECL|macro|INCREF
-mdefine_line|#define INCREF(mod) do {} while (0)
-DECL|macro|DECREF
-mdefine_line|#define DECREF(mod) do {} while (0)
-macro_line|#else
-multiline_comment|/* 2.4 */
 mdefine_line|#define INCREF(mod_) do { struct module *mod = (struct module*) mod_; &bslash;&n;                          if(mod != NULL) __MOD_INC_USE_COUNT(mod); } while(0)
+DECL|macro|DECREF
 mdefine_line|#define DECREF(mod_) do { struct module *mod = (struct module*) mod_; &bslash;&n;                          if(mod != NULL) __MOD_DEC_USE_COUNT(mod); } while(0)
-macro_line|#endif
 multiline_comment|/* shift away lower four bits of the minor&n;&t;   to get the index of the ieee1394_driver&n;&t;   we want */
 id|blocknum
 op_assign
@@ -4282,6 +4308,7 @@ id|disable_nodemgr
 id|init_ieee1394_nodemgr
 c_func
 (paren
+id|disable_hotplug
 )paren
 suffix:semicolon
 r_else
@@ -4751,18 +4778,32 @@ c_func
 id|hpsb_nodeid_get_entry
 )paren
 suffix:semicolon
-DECL|variable|hpsb_get_host_by_ne
+DECL|variable|hpsb_node_fill_packet
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|hpsb_get_host_by_ne
+id|hpsb_node_fill_packet
 )paren
 suffix:semicolon
-DECL|variable|hpsb_guid_fill_packet
+DECL|variable|hpsb_node_read
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|hpsb_guid_fill_packet
+id|hpsb_node_read
+)paren
+suffix:semicolon
+DECL|variable|hpsb_node_write
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hpsb_node_write
+)paren
+suffix:semicolon
+DECL|variable|hpsb_node_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hpsb_node_lock
 )paren
 suffix:semicolon
 DECL|variable|hpsb_register_protocol
