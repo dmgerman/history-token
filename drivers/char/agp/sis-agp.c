@@ -934,6 +934,10 @@ c_cond
 id|bridge-&gt;dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_SI_648
+op_logical_or
+id|bridge-&gt;dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_SI_746
 )paren
 (brace
 r_if
