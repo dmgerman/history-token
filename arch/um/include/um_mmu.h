@@ -2,25 +2,27 @@ multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * 
 macro_line|#ifndef __ARCH_UM_MMU_H
 DECL|macro|__ARCH_UM_MMU_H
 mdefine_line|#define __ARCH_UM_MMU_H
-macro_line|#include &quot;linux/config.h&quot;
+macro_line|#include &quot;uml-config.h&quot;
 macro_line|#include &quot;choose-mode.h&quot;
-macro_line|#ifdef CONFIG_MODE_TT
+macro_line|#ifdef UML_CONFIG_MODE_TT
 macro_line|#include &quot;mmu-tt.h&quot;
 macro_line|#endif
-macro_line|#ifdef CONFIG_MODE_SKAS
+macro_line|#ifdef UML_CONFIG_MODE_SKAS
 macro_line|#include &quot;mmu-skas.h&quot;
 macro_line|#endif
+DECL|union|mm_context
 r_typedef
 r_union
+id|mm_context
 (brace
-macro_line|#ifdef CONFIG_MODE_TT
+macro_line|#ifdef UML_CONFIG_MODE_TT
 DECL|member|tt
 r_struct
 id|mmu_context_tt
 id|tt
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_MODE_SKAS
+macro_line|#ifdef UML_CONFIG_MODE_SKAS
 DECL|member|skas
 r_struct
 id|mmu_context_skas

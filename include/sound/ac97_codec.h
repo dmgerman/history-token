@@ -599,6 +599,20 @@ DECL|macro|AC97_HAS_NO_MASTER_VOL
 mdefine_line|#define AC97_HAS_NO_MASTER_VOL&t;(1&lt;&lt;6)&t;/* no Master volume */
 DECL|macro|AC97_HAS_NO_PCM_VOL
 mdefine_line|#define AC97_HAS_NO_PCM_VOL&t;(1&lt;&lt;7)&t;/* no PCM volume */
+DECL|macro|AC97_DEFAULT_POWER_OFF
+mdefine_line|#define AC97_DEFAULT_POWER_OFF&t;(1&lt;&lt;8)&t;/* no RESET write */
+DECL|macro|AC97_MODEM_PATCH
+mdefine_line|#define AC97_MODEM_PATCH&t;(1&lt;&lt;9)&t;/* modem patch */
+DECL|macro|AC97_HAS_NO_REC_GAIN
+mdefine_line|#define AC97_HAS_NO_REC_GAIN&t;(1&lt;&lt;10) /* no Record gain */
+DECL|macro|AC97_HAS_NO_PHONE
+mdefine_line|#define AC97_HAS_NO_PHONE&t;(1&lt;&lt;11) /* no PHONE volume */
+DECL|macro|AC97_HAS_NO_PC_BEEP
+mdefine_line|#define AC97_HAS_NO_PC_BEEP&t;(1&lt;&lt;12) /* no PC Beep volume */
+DECL|macro|AC97_HAS_NO_VIDEO
+mdefine_line|#define AC97_HAS_NO_VIDEO&t;(1&lt;&lt;13) /* no Video volume */
+DECL|macro|AC97_HAS_NO_CD
+mdefine_line|#define AC97_HAS_NO_CD&t;&t;(1&lt;&lt;14) /* no CD volume */
 multiline_comment|/* rates indexes */
 DECL|macro|AC97_RATES_FRONT_DAC
 mdefine_line|#define AC97_RATES_FRONT_DAC&t;0
@@ -1806,6 +1820,39 @@ id|snd_pcm_runtime_t
 op_star
 id|runtime
 )paren
+suffix:semicolon
+DECL|struct|ac97_enum
+r_struct
+id|ac97_enum
+(brace
+DECL|member|reg
+r_int
+r_char
+id|reg
+suffix:semicolon
+DECL|member|shift_l
+r_int
+r_char
+id|shift_l
+suffix:semicolon
+DECL|member|shift_r
+r_int
+r_char
+id|shift_r
+suffix:semicolon
+DECL|member|mask
+r_int
+r_int
+id|mask
+suffix:semicolon
+DECL|member|texts
+r_const
+r_char
+op_star
+op_star
+id|texts
+suffix:semicolon
+)brace
 suffix:semicolon
 macro_line|#endif /* __SOUND_AC97_CODEC_H */
 eof

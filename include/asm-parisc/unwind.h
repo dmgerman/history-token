@@ -1,6 +1,7 @@
 macro_line|#ifndef _UNWIND_H_
 DECL|macro|_UNWIND_H_
 mdefine_line|#define _UNWIND_H_
+macro_line|#include &lt;linux/list.h&gt;
 multiline_comment|/* From ABI specifications */
 DECL|struct|unwind_table_entry
 r_struct
@@ -264,11 +265,10 @@ DECL|struct|unwind_table
 r_struct
 id|unwind_table
 (brace
-DECL|member|next
+DECL|member|list
 r_struct
-id|unwind_table
-op_star
-id|next
+id|list_head
+id|list
 suffix:semicolon
 DECL|member|name
 r_const
@@ -325,6 +325,7 @@ multiline_comment|/* struct pt_regs regs; */
 DECL|member|sp
 DECL|member|ip
 DECL|member|rp
+DECL|member|r31
 r_int
 r_int
 id|sp
@@ -332,6 +333,8 @@ comma
 id|ip
 comma
 id|rp
+comma
+id|r31
 suffix:semicolon
 DECL|member|prev_sp
 DECL|member|prev_ip
@@ -343,7 +346,8 @@ id|prev_ip
 suffix:semicolon
 )brace
 suffix:semicolon
-r_void
+r_struct
+id|unwind_table
 op_star
 id|unwind_table_add
 c_func
@@ -371,6 +375,16 @@ id|end
 )paren
 suffix:semicolon
 r_void
+id|unwind_table_remove
+c_func
+(paren
+r_struct
+id|unwind_table
+op_star
+id|table
+)paren
+suffix:semicolon
+r_void
 id|unwind_frame_init
 c_func
 (paren
@@ -384,17 +398,10 @@ id|task_struct
 op_star
 id|t
 comma
-r_int
-r_int
-id|sp
-comma
-r_int
-r_int
-id|ip
-comma
-r_int
-r_int
-id|rp
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 r_void

@@ -505,6 +505,8 @@ comma
 l_string|&quot;ipv4&quot;
 comma
 l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -4438,6 +4440,8 @@ comma
 l_string|&quot;ipv4&quot;
 comma
 l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|devinet_sysctl_register
@@ -5687,7 +5691,7 @@ DECL|member|devinet_vars
 id|ctl_table
 id|devinet_vars
 (braket
-l_int|20
+id|__NET_IPV4_CONF_MAX
 )braket
 suffix:semicolon
 DECL|member|devinet_dev

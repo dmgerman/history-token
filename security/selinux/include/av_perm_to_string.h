@@ -758,6 +758,15 @@ l_string|&quot;setsecparam&quot;
 id|S_
 c_func
 (paren
+id|SECCLASS_SECURITY
+comma
+id|SECURITY__SETCHECKREQPROT
+comma
+l_string|&quot;setcheckreqprot&quot;
+)paren
+id|S_
+c_func
+(paren
 id|SECCLASS_SYSTEM
 comma
 id|SYSTEM__IPC_INFO

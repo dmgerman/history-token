@@ -264,6 +264,9 @@ r_int
 id|mode
 comma
 r_int
+id|softback_lines
+comma
+r_int
 id|fg
 comma
 r_int

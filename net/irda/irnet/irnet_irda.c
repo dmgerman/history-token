@@ -1816,7 +1816,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* Cleanup eventual discoveries from connection attempt */
+multiline_comment|/* Cleanup eventual discoveries from connection attempt or control channel */
 r_if
 c_cond
 (paren

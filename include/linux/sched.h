@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/rbtree.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -930,6 +931,23 @@ id|cpu_timers
 l_int|3
 )braket
 suffix:semicolon
+multiline_comment|/* keep the process-shared keyrings here so that they do the right&n;&t; * thing in threads created with CLONE_THREAD */
+macro_line|#ifdef CONFIG_KEYS
+DECL|member|session_keyring
+r_struct
+id|key
+op_star
+id|session_keyring
+suffix:semicolon
+multiline_comment|/* keyring inherited over fork */
+DECL|member|process_keyring
+r_struct
+id|key
+op_star
+id|process_keyring
+suffix:semicolon
+multiline_comment|/* keyring private to this process */
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Bits in flags field of signal_struct.&n; */
@@ -1357,6 +1375,9 @@ c_func
 (paren
 r_void
 )paren
+suffix:semicolon
+r_struct
+id|cpuset
 suffix:semicolon
 DECL|macro|NGROUPS_SMALL
 mdefine_line|#define NGROUPS_SMALL&t;&t;32
@@ -1788,20 +1809,6 @@ op_star
 id|user
 suffix:semicolon
 macro_line|#ifdef CONFIG_KEYS
-DECL|member|session_keyring
-r_struct
-id|key
-op_star
-id|session_keyring
-suffix:semicolon
-multiline_comment|/* keyring inherited over fork */
-DECL|member|process_keyring
-r_struct
-id|key
-op_star
-id|process_keyring
-suffix:semicolon
-multiline_comment|/* keyring private to this process (CLONE_THREAD) */
 DECL|member|thread_keyring
 r_struct
 id|key
@@ -2047,6 +2054,22 @@ suffix:semicolon
 DECL|member|il_next
 r_int
 id|il_next
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_CPUSETS
+DECL|member|cpuset
+r_struct
+id|cpuset
+op_star
+id|cpuset
+suffix:semicolon
+DECL|member|mems_allowed
+id|nodemask_t
+id|mems_allowed
+suffix:semicolon
+DECL|member|cpuset_mems_generation
+r_int
+id|cpuset_mems_generation
 suffix:semicolon
 macro_line|#endif
 )brace

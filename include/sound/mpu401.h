@@ -196,14 +196,6 @@ DECL|member|timer_lock
 id|spinlock_t
 id|timer_lock
 suffix:semicolon
-DECL|member|rx_loop
-id|atomic_t
-id|rx_loop
-suffix:semicolon
-DECL|member|tx_loop
-id|atomic_t
-id|tx_loop
-suffix:semicolon
 DECL|member|timer
 r_struct
 id|timer_list

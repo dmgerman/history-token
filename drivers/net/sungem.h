@@ -178,6 +178,36 @@ DECL|macro|TXDMA_CFG_PMODE
 mdefine_line|#define TXDMA_CFG_PMODE&t;&t;0x00200000&t;/* TXALL irq means TX FIFO empty*/
 multiline_comment|/* TX Descriptor Base Low/High.&n; *&n; * These two registers store the 53 most significant bits of the base address&n; * of the TX descriptor table.  The 11 least significant bits are always&n; * zero.  As a result, the TX descriptor table must be 2K aligned.&n; */
 multiline_comment|/* The rest of the TXDMA_* registers are for diagnostics and debug, I will document&n; * them later. -DaveM&n; */
+multiline_comment|/* WakeOnLan Registers&t;*/
+DECL|macro|WOL_MATCH0
+mdefine_line|#define WOL_MATCH0&t;0x3000UL
+DECL|macro|WOL_MATCH1
+mdefine_line|#define WOL_MATCH1&t;0x3004UL
+DECL|macro|WOL_MATCH2
+mdefine_line|#define WOL_MATCH2&t;0x3008UL
+DECL|macro|WOL_MCOUNT
+mdefine_line|#define WOL_MCOUNT&t;0x300CUL
+DECL|macro|WOL_WAKECSR
+mdefine_line|#define WOL_WAKECSR&t;0x3010UL
+multiline_comment|/* WOL Match count register&n; */
+DECL|macro|WOL_MCOUNT_N
+mdefine_line|#define WOL_MCOUNT_N&t;&t;0x00000010
+DECL|macro|WOL_MCOUNT_M
+mdefine_line|#define WOL_MCOUNT_M&t;&t;0x00000000 /* 0 &lt;&lt; 8 */
+DECL|macro|WOL_WAKECSR_ENABLE
+mdefine_line|#define WOL_WAKECSR_ENABLE&t;0x00000001
+DECL|macro|WOL_WAKECSR_MII
+mdefine_line|#define WOL_WAKECSR_MII&t;&t;0x00000002
+DECL|macro|WOL_WAKECSR_SEEN
+mdefine_line|#define WOL_WAKECSR_SEEN&t;0x00000004
+DECL|macro|WOL_WAKECSR_FILT_UCAST
+mdefine_line|#define WOL_WAKECSR_FILT_UCAST&t;0x00000008
+DECL|macro|WOL_WAKECSR_FILT_MCAST
+mdefine_line|#define WOL_WAKECSR_FILT_MCAST&t;0x00000010
+DECL|macro|WOL_WAKECSR_FILT_BCAST
+mdefine_line|#define WOL_WAKECSR_FILT_BCAST&t;0x00000020
+DECL|macro|WOL_WAKECSR_FILT_SEEN
+mdefine_line|#define WOL_WAKECSR_FILT_SEEN&t;0x00000040
 multiline_comment|/* Receive DMA Registers */
 DECL|macro|RXDMA_CFG
 mdefine_line|#define RXDMA_CFG&t;0x4000UL&t;/* RX Configuration Register&t;*/
@@ -1026,53 +1056,55 @@ id|tx_new
 comma
 id|tx_old
 suffix:semicolon
-multiline_comment|/* Set when chip is actually in operational state&n;&t; * (ie. not power managed)&n;&t; */
-DECL|member|hw_running
+DECL|member|has_wol
 r_int
-id|hw_running
+r_int
+id|has_wol
+suffix:colon
+l_int|1
 suffix:semicolon
+multiline_comment|/* chip supports wake-on-lan */
+DECL|member|asleep
+r_int
+r_int
+id|asleep
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* chip asleep, protected by pm_sem */
+DECL|member|asleep_wol
+r_int
+r_int
+id|asleep_wol
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* was asleep with WOL enabled */
 DECL|member|opened
 r_int
+r_int
 id|opened
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* driver opened, protected by pm_sem */
+DECL|member|running
+r_int
+r_int
+id|running
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* chip running, protected by lock */
+multiline_comment|/* cell enable count, protected by lock */
+DECL|member|cell_enabled
+r_int
+id|cell_enabled
 suffix:semicolon
 DECL|member|pm_sem
 r_struct
 id|semaphore
 id|pm_sem
-suffix:semicolon
-DECL|member|pm_task
-r_struct
-id|work_struct
-id|pm_task
-suffix:semicolon
-DECL|member|pm_timer
-r_struct
-id|timer_list
-id|pm_timer
-suffix:semicolon
-DECL|member|init_block
-r_struct
-id|gem_init_block
-op_star
-id|init_block
-suffix:semicolon
-DECL|member|rx_skbs
-r_struct
-id|sk_buff
-op_star
-id|rx_skbs
-(braket
-id|RX_RING_SIZE
-)braket
-suffix:semicolon
-DECL|member|tx_skbs
-r_struct
-id|sk_buff
-op_star
-id|tx_skbs
-(braket
-id|RX_RING_SIZE
-)braket
 suffix:semicolon
 DECL|member|msg_enable
 id|u32
@@ -1086,16 +1118,6 @@ DECL|member|net_stats
 r_struct
 id|net_device_stats
 id|net_stats
-suffix:semicolon
-DECL|member|phy_type
-r_enum
-id|gem_phy_type
-id|phy_type
-suffix:semicolon
-DECL|member|phy_mii
-r_struct
-id|mii_phy
-id|phy_mii
 suffix:semicolon
 DECL|member|tx_fifo_sz
 r_int
@@ -1117,9 +1139,13 @@ DECL|member|rx_buf_sz
 r_int
 id|rx_buf_sz
 suffix:semicolon
-DECL|member|mii_phy_addr
-r_int
-id|mii_phy_addr
+DECL|member|pause_entered
+id|u64
+id|pause_entered
+suffix:semicolon
+DECL|member|pause_last_time_recvd
+id|u16
+id|pause_last_time_recvd
 suffix:semicolon
 DECL|member|mac_rx_cfg
 id|u32
@@ -1129,7 +1155,6 @@ DECL|member|swrst_base
 id|u32
 id|swrst_base
 suffix:semicolon
-multiline_comment|/* Autoneg &amp; PHY control */
 DECL|member|want_autoneg
 r_int
 id|want_autoneg
@@ -1166,14 +1191,43 @@ r_volatile
 r_int
 id|reset_task_pending
 suffix:semicolon
-multiline_comment|/* Diagnostic counters and state. */
-DECL|member|pause_entered
-id|u64
-id|pause_entered
+DECL|member|phy_type
+r_enum
+id|gem_phy_type
+id|phy_type
 suffix:semicolon
-DECL|member|pause_last_time_recvd
-id|u16
-id|pause_last_time_recvd
+DECL|member|phy_mii
+r_struct
+id|mii_phy
+id|phy_mii
+suffix:semicolon
+DECL|member|mii_phy_addr
+r_int
+id|mii_phy_addr
+suffix:semicolon
+DECL|member|init_block
+r_struct
+id|gem_init_block
+op_star
+id|init_block
+suffix:semicolon
+DECL|member|rx_skbs
+r_struct
+id|sk_buff
+op_star
+id|rx_skbs
+(braket
+id|RX_RING_SIZE
+)braket
+suffix:semicolon
+DECL|member|tx_skbs
+r_struct
+id|sk_buff
+op_star
+id|tx_skbs
+(braket
+id|RX_RING_SIZE
+)braket
 suffix:semicolon
 DECL|member|gblock_dvma
 id|dma_addr_t

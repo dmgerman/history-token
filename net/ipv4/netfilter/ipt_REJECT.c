@@ -941,20 +941,6 @@ id|IP_OFFSET
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* Ensure we have at least 8 bytes of proto header. */
-r_if
-c_cond
-(paren
-id|skb_in-&gt;len
-OL
-id|skb_in-&gt;nh.iph-&gt;ihl
-op_star
-l_int|4
-op_plus
-l_int|8
-)paren
-r_return
-suffix:semicolon
 multiline_comment|/* If we send an ICMP error to an ICMP error a mess would result.. */
 r_if
 c_cond

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/numa.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/* Free memory management - zoned buddy allocator.  */
 macro_line|#ifndef CONFIG_FORCE_MAX_ZONEORDER
@@ -550,6 +551,62 @@ r_int
 id|gfp_high
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_HAVE_MEMORY_PRESENT
+r_void
+id|memory_present
+c_func
+(paren
+r_int
+id|nid
+comma
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|memory_present
+r_static
+r_inline
+r_void
+id|memory_present
+c_func
+(paren
+r_int
+id|nid
+comma
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+(brace
+)brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_NEED_NODE_MEMMAP_SIZE
+r_int
+r_int
+id|__init
+id|node_memmap_size_bytes
+c_func
+(paren
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * zone_idx() returns 0 for the ZONE_DMA zone, 1 for the ZONE_NORMAL zone, etc.&n; */
 DECL|macro|zone_idx
 mdefine_line|#define zone_idx(zone)&t;&t;((zone) - (zone)-&gt;zone_pgdat-&gt;node_zones)

@@ -305,7 +305,6 @@ c_cond
 (paren
 id|play
 )paren
-(brace
 id|set_bit
 c_func
 (paren
@@ -315,9 +314,7 @@ op_amp
 id|effect-&gt;flags
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|clear_bit
 c_func
 (paren
@@ -327,7 +324,6 @@ op_amp
 id|effect-&gt;flags
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|hid_pid_erase
 r_static
@@ -354,34 +350,21 @@ op_member_access_from_pointer
 r_private
 suffix:semicolon
 r_struct
-id|hid_field
-op_star
-id|field
-suffix:semicolon
-r_struct
-id|hid_report
-op_star
-id|report
-suffix:semicolon
-r_struct
 id|hid_ff_pid
 op_star
 id|pid
 op_assign
 id|hid-&gt;ff_private
 suffix:semicolon
+r_struct
+id|hid_field
+op_star
+id|field
+suffix:semicolon
 r_int
 r_int
 id|flags
 suffix:semicolon
-r_int
-id|wanted_report
-op_assign
-id|HID_UP_PID
-op_or
-id|FF_PID_USAGE_BLOCK_FREE
-suffix:semicolon
-multiline_comment|/*  PID Block Free Report */
 r_int
 id|ret
 suffix:semicolon
@@ -402,17 +385,16 @@ op_minus
 id|EACCES
 suffix:semicolon
 multiline_comment|/* Find report */
-id|ret
+id|field
 op_assign
-id|hid_find_report_by_usage
+id|hid_find_field_by_usage
 c_func
 (paren
 id|hid
 comma
-id|wanted_report
-comma
-op_amp
-id|report
+id|HID_UP_PID
+op_or
+id|FF_PID_USAGE_BLOCK_FREE
 comma
 id|HID_OUTPUT_REPORT
 )paren
@@ -421,7 +403,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ret
+id|field
 )paren
 (brace
 id|dev_err
@@ -434,48 +416,8 @@ l_string|&quot;couldn&squot;t find report&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|ret
-suffix:semicolon
-)brace
-multiline_comment|/* Find field */
-id|field
-op_assign
-(paren
-r_struct
-id|hid_field
-op_star
-)paren
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|hid_field
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|field
-)paren
-(brace
-id|dev_err
-c_func
-(paren
-op_amp
-id|hid-&gt;dev-&gt;dev
-comma
-l_string|&quot;couldn&squot;t allocate field&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
 op_minus
-id|ENOMEM
+id|EIO
 suffix:semicolon
 )brace
 id|ret
@@ -485,7 +427,7 @@ c_func
 (paren
 id|field
 comma
-id|ret
+l_int|0
 comma
 id|pid-&gt;effects
 (braket
@@ -498,7 +440,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|ret
 )paren
 (brace
@@ -520,7 +461,7 @@ c_func
 (paren
 id|hid
 comma
-id|report
+id|field-&gt;report
 comma
 id|USB_DIR_OUT
 )paren
@@ -565,7 +506,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|ret
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Erase all effects this process owns */
@@ -605,7 +546,8 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*NOTE: no need to lock here. The only times EFFECT_USED is&n;&t;  modified is when effects are uploaded or when an effect is&n;&t;  erased. But a process cannot close its dev/input/eventX fd&n;&t;  and perform ioctls on the same fd all at the same time */
+multiline_comment|/*NOTE: no need to lock here. The only times EFFECT_USED is&n;&t;   modified is when effects are uploaded or when an effect is&n;&t;   erased. But a process cannot close its dev/input/eventX fd&n;&t;   and perform ioctls on the same fd all at the same time */
+multiline_comment|/*FIXME: multiple threads, anyone? */
 r_for
 c_loop
 (paren
@@ -714,8 +656,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-op_assign
-l_int|0
 suffix:semicolon
 id|dev_dbg
 c_func
@@ -946,12 +886,10 @@ dot
 id|flags
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
-)brace
 id|is_update
 op_assign
 id|FF_PID_TRUE
@@ -1132,9 +1070,11 @@ r_private
 op_assign
 id|hid-&gt;ff_private
 op_assign
-id|kmalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
 r_struct
@@ -1152,27 +1092,8 @@ r_private
 )paren
 r_return
 op_minus
-l_int|1
+id|ENOMEM
 suffix:semicolon
-id|memset
-c_func
-(paren
-r_private
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|hid_ff_pid
-)paren
-)paren
-suffix:semicolon
-id|hid-&gt;ff_private
-op_assign
-r_private
-suffix:semicolon
-multiline_comment|/* &squot;cause memset can move the block away */
 r_private
 op_member_access_from_pointer
 id|hid

@@ -1329,8 +1329,6 @@ comma
 id|p
 comma
 id|dev-&gt;dev_addr
-comma
-l_int|1
 )paren
 )paren
 )paren

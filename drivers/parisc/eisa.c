@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/parisc-device.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/eisa_bus.h&gt;
+macro_line|#include &lt;asm/eisa_eeprom.h&gt;
 macro_line|#if 0
 mdefine_line|#define EISA_DBG(msg, arg... ) printk(KERN_DEBUG &quot;eisa: &quot; msg , ## arg )
 macro_line|#else
@@ -31,6 +32,12 @@ c_func
 (paren
 id|eisa_irq_lock
 )paren
+suffix:semicolon
+DECL|variable|eisa_eeprom_addr
+r_void
+id|__iomem
+op_star
+id|eisa_eeprom_addr
 suffix:semicolon
 multiline_comment|/* We can only have one EISA adapter in the system because neither&n; * implementation can be flexed.&n; */
 DECL|struct|eisa_ba
@@ -1596,10 +1603,14 @@ id|MIRAGE_EEPROM_BASE_ADDR
 suffix:semicolon
 )brace
 )brace
-id|eisa_eeprom_init
+id|eisa_eeprom_addr
+op_assign
+id|ioremap
 c_func
 (paren
 id|eisa_dev.eeprom_addr
+comma
+id|HPEE_MAX_LENGTH
 )paren
 suffix:semicolon
 id|result

@@ -1,10 +1,11 @@
-multiline_comment|/*    Kernel dynamically loadable module help for PARISC.&n; *&n; *    The best reference for this stuff is probably the Processor-&n; *    Specific ELF Supplement for PA-RISC:&n; *        http://ftp.parisc-linux.org/docs/elf-pa-hp.pdf&n; *&n; *    Linux/PA-RISC Project (http://www.parisc-linux.org/)&n; *    Copyright (C) 2003 Randolph Chung &lt;tausq at debian . org&gt;&n; *&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*    Kernel dynamically loadable module help for PARISC.&n; *&n; *    The best reference for this stuff is probably the Processor-&n; *    Specific ELF Supplement for PA-RISC:&n; *        http://ftp.parisc-linux.org/docs/arch/elf-pa-hp.pdf&n; *&n; *    Linux/PA-RISC Project (http://www.parisc-linux.org/)&n; *    Copyright (C) 2003 Randolph Chung &lt;tausq at debian . org&gt;&n; *&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *&n; *    Notes:&n; *    - SEGREL32 handling&n; *      We are not doing SEGREL32 handling correctly. According to the ABI, we&n; *      should do a value offset, like this:&n; *&t;&t;&t;if (is_init(me, (void *)val))&n; *&t;&t;&t;&t;val -= (uint32_t)me-&gt;module_init;&n; *&t;&t;&t;else&n; *&t;&t;&t;&t;val -= (uint32_t)me-&gt;module_core;&n; *&t;However, SEGREL32 is used only for PARISC unwind entries, and we want&n; *&t;those entries to have an absolute address, and not just an offset.&n; *&n; *&t;The unwind table mechanism has the ability to specify an offset for &n; *&t;the unwind table; however, because we split off the init functions into&n; *&t;a different piece of memory, it is not possible to do this using a &n; *&t;single offset. Instead, we use the above hack for now.&n; */
 macro_line|#include &lt;linux/moduleloader.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;asm/unwind.h&gt;
 macro_line|#if 0
 mdefine_line|#define DEBUGP printk
 macro_line|#else
@@ -866,6 +867,32 @@ r_sizeof
 op_star
 id|rels
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|secstrings
+op_plus
+id|sechdrs
+(braket
+id|i
+)braket
+dot
+id|sh_name
+comma
+l_string|&quot;.PARISC.unwind&quot;
+comma
+l_int|14
+)paren
+op_eq
+l_int|0
+)paren
+id|me-&gt;arch.unwind_section
+op_assign
+id|i
 suffix:semicolon
 r_if
 c_cond
@@ -2035,13 +2062,7 @@ r_case
 id|R_PARISC_SEGREL32
 suffix:colon
 multiline_comment|/* 32-bit segment relative address */
-id|val
-op_sub_assign
-(paren
-r_uint32
-)paren
-id|me-&gt;module_core
-suffix:semicolon
+multiline_comment|/* See note about special handling of SEGREL32 at&n;&t;&t;&t; * the beginning of this file.&n;&t;&t;&t; */
 op_star
 id|loc
 op_assign
@@ -2929,13 +2950,7 @@ r_case
 id|R_PARISC_SEGREL32
 suffix:colon
 multiline_comment|/* 32-bit segment relative address */
-id|val
-op_sub_assign
-(paren
-r_uint64
-)paren
-id|me-&gt;module_core
-suffix:semicolon
+multiline_comment|/* See note about special handling of SEGREL32 at&n;&t;&t;&t; * the beginning of this file.&n;&t;&t;&t; */
 op_star
 id|loc
 op_assign
@@ -3071,6 +3086,132 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+r_static
+r_void
+DECL|function|register_unwind_table
+id|register_unwind_table
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|me
+comma
+r_const
+id|Elf_Shdr
+op_star
+id|sechdrs
+)paren
+(brace
+r_int
+r_char
+op_star
+id|table
+comma
+op_star
+id|end
+suffix:semicolon
+r_int
+r_int
+id|gp
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|me-&gt;arch.unwind_section
+)paren
+r_return
+suffix:semicolon
+id|table
+op_assign
+(paren
+r_int
+r_char
+op_star
+)paren
+id|sechdrs
+(braket
+id|me-&gt;arch.unwind_section
+)braket
+dot
+id|sh_addr
+suffix:semicolon
+id|end
+op_assign
+id|table
+op_plus
+id|sechdrs
+(braket
+id|me-&gt;arch.unwind_section
+)braket
+dot
+id|sh_size
+suffix:semicolon
+id|gp
+op_assign
+(paren
+id|Elf_Addr
+)paren
+id|me-&gt;module_core
+op_plus
+id|me-&gt;arch.got_offset
+suffix:semicolon
+id|DEBUGP
+c_func
+(paren
+l_string|&quot;register_unwind_table(), sect = %d at 0x%p - 0x%p (gp=0x%lx)&bslash;n&quot;
+comma
+id|me-&gt;arch.unwind_section
+comma
+id|table
+comma
+id|end
+comma
+id|gp
+)paren
+suffix:semicolon
+id|me-&gt;arch.unwind
+op_assign
+id|unwind_table_add
+c_func
+(paren
+id|me-&gt;name
+comma
+l_int|0
+comma
+id|gp
+comma
+id|table
+comma
+id|end
+)paren
+suffix:semicolon
+)brace
+r_static
+r_void
+DECL|function|deregister_unwind_table
+id|deregister_unwind_table
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|me
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|me-&gt;arch.unwind
+)paren
+id|unwind_table_remove
+c_func
+(paren
+id|me-&gt;arch.unwind
+)paren
+suffix:semicolon
+)brace
 DECL|function|module_finalize
 r_int
 id|module_finalize
@@ -3208,6 +3349,14 @@ id|me-&gt;arch.fdesc_max
 )paren
 suffix:semicolon
 macro_line|#endif
+id|register_unwind_table
+c_func
+(paren
+id|me
+comma
+id|sechdrs
+)paren
+suffix:semicolon
 multiline_comment|/* haven&squot;t filled in me-&gt;symtab yet, so have to find it&n;&t; * ourselves */
 r_for
 c_loop
@@ -3474,5 +3623,11 @@ op_star
 id|mod
 )paren
 (brace
+id|deregister_unwind_table
+c_func
+(paren
+id|mod
+)paren
+suffix:semicolon
 )brace
 eof

@@ -378,6 +378,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|is_valid_ether_addr
+c_func
+(paren
 id|eth_hdr
 c_func
 (paren
@@ -385,11 +389,7 @@ id|skb
 )paren
 op_member_access_from_pointer
 id|h_source
-(braket
-l_int|0
-)braket
-op_amp
-l_int|1
+)paren
 )paren
 r_goto
 id|err
@@ -405,7 +405,7 @@ id|p-&gt;state
 op_eq
 id|BR_STATE_FORWARDING
 )paren
-id|br_fdb_insert
+id|br_fdb_update
 c_func
 (paren
 id|p-&gt;br
@@ -419,8 +419,6 @@ id|skb
 )paren
 op_member_access_from_pointer
 id|h_source
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if

@@ -194,6 +194,12 @@ id|t-&gt;dst_cache
 op_assign
 l_int|NULL
 suffix:semicolon
+id|dst_release
+c_func
+(paren
+id|dst
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon

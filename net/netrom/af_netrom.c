@@ -134,16 +134,6 @@ r_struct
 id|proto_ops
 id|nr_proto_ops
 suffix:semicolon
-r_void
-id|nr_init_timers
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-)paren
-suffix:semicolon
 DECL|function|nr_alloc_sock
 r_static
 r_struct

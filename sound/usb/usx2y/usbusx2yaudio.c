@@ -1981,11 +1981,6 @@ id|dev
 op_assign
 id|subs-&gt;usX2Y-&gt;chip.dev
 suffix:semicolon
-r_struct
-id|usb_host_endpoint
-op_star
-id|ep
-suffix:semicolon
 id|pipe
 op_assign
 id|is_playback

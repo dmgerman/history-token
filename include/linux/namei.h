@@ -104,7 +104,7 @@ comma
 id|LAST_BIND
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * The bitmask for a lookup event:&n; *  - follow links at the end&n; *  - require a directory&n; *  - ending slashes ok even for nonexistent files&n; *  - internal &quot;there are more path compnents&quot; flag&n; *  - locked when lookup done with dcache_lock held&n; */
+multiline_comment|/*&n; * The bitmask for a lookup event:&n; *  - follow links at the end&n; *  - require a directory&n; *  - ending slashes ok even for nonexistent files&n; *  - internal &quot;there are more path compnents&quot; flag&n; *  - locked when lookup done with dcache_lock held&n; *  - dentry cache is untrusted; force a real lookup&n; */
 DECL|macro|LOOKUP_FOLLOW
 mdefine_line|#define LOOKUP_FOLLOW&t;&t; 1
 DECL|macro|LOOKUP_DIRECTORY
@@ -115,6 +115,8 @@ DECL|macro|LOOKUP_PARENT
 mdefine_line|#define LOOKUP_PARENT&t;&t;16
 DECL|macro|LOOKUP_NOALT
 mdefine_line|#define LOOKUP_NOALT&t;&t;32
+DECL|macro|LOOKUP_REVAL
+mdefine_line|#define LOOKUP_REVAL&t;&t;64
 multiline_comment|/*&n; * Intent data&n; */
 DECL|macro|LOOKUP_OPEN
 mdefine_line|#define LOOKUP_OPEN&t;&t;(0x0100)

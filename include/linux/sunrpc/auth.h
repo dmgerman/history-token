@@ -42,16 +42,10 @@ id|rpc_cred
 (brace
 DECL|member|cr_hash
 r_struct
-id|list_head
+id|hlist_node
 id|cr_hash
 suffix:semicolon
 multiline_comment|/* hash chain */
-DECL|member|cr_auth
-r_struct
-id|rpc_auth
-op_star
-id|cr_auth
-suffix:semicolon
 DECL|member|cr_ops
 r_struct
 id|rpc_credops
@@ -101,30 +95,36 @@ DECL|macro|RPC_CREDCACHE_NR
 mdefine_line|#define RPC_CREDCACHE_NR&t;8
 DECL|macro|RPC_CREDCACHE_MASK
 mdefine_line|#define RPC_CREDCACHE_MASK&t;(RPC_CREDCACHE_NR - 1)
-DECL|struct|rpc_auth
+DECL|struct|rpc_cred_cache
 r_struct
-id|rpc_auth
+id|rpc_cred_cache
 (brace
-DECL|member|au_credcache
+DECL|member|hashtable
 r_struct
-id|list_head
-id|au_credcache
+id|hlist_head
+id|hashtable
 (braket
 id|RPC_CREDCACHE_NR
 )braket
 suffix:semicolon
-DECL|member|au_expire
+DECL|member|nextgc
 r_int
 r_int
-id|au_expire
-suffix:semicolon
-multiline_comment|/* cache expiry interval */
-DECL|member|au_nextgc
-r_int
-r_int
-id|au_nextgc
+id|nextgc
 suffix:semicolon
 multiline_comment|/* next garbage collection */
+DECL|member|expire
+r_int
+r_int
+id|expire
+suffix:semicolon
+multiline_comment|/* cache expiry interval */
+)brace
+suffix:semicolon
+DECL|struct|rpc_auth
+r_struct
+id|rpc_auth
+(brace
 DECL|member|au_cslack
 r_int
 r_int
@@ -160,6 +160,12 @@ id|atomic_t
 id|au_count
 suffix:semicolon
 multiline_comment|/* Reference counter */
+DECL|member|au_credcache
+r_struct
+id|rpc_cred_cache
+op_star
+id|au_credcache
+suffix:semicolon
 multiline_comment|/* per-flavor data */
 )brace
 suffix:semicolon
@@ -216,6 +222,26 @@ id|rpc_auth
 op_star
 )paren
 suffix:semicolon
+DECL|member|lookup_cred
+r_struct
+id|rpc_cred
+op_star
+(paren
+op_star
+id|lookup_cred
+)paren
+(paren
+r_struct
+id|rpc_auth
+op_star
+comma
+r_struct
+id|auth_cred
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 DECL|member|crcreate
 r_struct
 id|rpc_cred
@@ -242,6 +268,13 @@ DECL|struct|rpc_credops
 r_struct
 id|rpc_credops
 (brace
+DECL|member|cr_name
+r_const
+r_char
+op_star
+id|cr_name
+suffix:semicolon
+multiline_comment|/* Name of the auth flavour */
 DECL|member|crdestroy
 r_void
 (paren
@@ -286,8 +319,6 @@ op_star
 comma
 id|u32
 op_star
-comma
-r_int
 )paren
 suffix:semicolon
 DECL|member|crrefresh
@@ -594,13 +625,16 @@ id|rpc_task
 op_star
 )paren
 suffix:semicolon
-r_void
+r_int
 id|rpcauth_init_credcache
 c_func
 (paren
 r_struct
 id|rpc_auth
 op_star
+comma
+r_int
+r_int
 )paren
 suffix:semicolon
 r_void

@@ -7,6 +7,10 @@ macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/topology.h&gt;
+macro_line|#ifndef node_has_online_mem
+DECL|macro|node_has_online_mem
+mdefine_line|#define node_has_online_mem(nid) (1)
+macro_line|#endif
 macro_line|#ifndef nr_cpus_node
 DECL|macro|nr_cpus_node
 mdefine_line|#define nr_cpus_node(node)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;cpumask_t __tmp__;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__tmp__ = node_to_cpumask(node);&t;&t;&t;&t;&bslash;&n;&t;&t;cpus_weight(__tmp__);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})

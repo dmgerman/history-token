@@ -1,4 +1,4 @@
-multiline_comment|/***********************************************************************&n; *&n; * linux/arch/arm/mach-s3c2410/mach-smdk2410.c&n; *&n; * Copyright (C) 2004 by FS Forth-Systeme GmbH&n; * All rights reserved.&n; *&n; * $Id: mach-smdk2410.c,v 1.1 2004/05/11 14:15:38 mpietrek Exp $&n; * @Author: Jonas Dietsche&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of&n; * the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston,&n; * MA 02111-1307 USA&n; *&n; * @History:&n; * derived from linux/arch/arm/mach-s3c2410/mach-bast.c, written by&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; ***********************************************************************/
+multiline_comment|/***********************************************************************&n; *&n; * linux/arch/arm/mach-s3c2410/mach-smdk2410.c&n; *&n; * Copyright (C) 2004 by FS Forth-Systeme GmbH&n; * All rights reserved.&n; *&n; * $Id: mach-smdk2410.c,v 1.1 2004/05/11 14:15:38 mpietrek Exp $&n; * @Author: Jonas Dietsche&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of&n; * the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston,&n; * MA 02111-1307 USA&n; *&n; * @History:&n; * derived from linux/arch/arm/mach-s3c2410/mach-bast.c, written by&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * 10-Mar-2005 LCVR  Changed S3C2410_VA to S3C24XX_VA&n; *&n; ***********************************************************************/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -273,7 +273,7 @@ id|S3C2410_SDRAM_PA
 comma
 id|S3C2410_PA_UART
 comma
-id|S3C2410_VA_UART
+id|S3C24XX_VA_UART
 )paren
 id|BOOT_PARAMS
 c_func

@@ -51,7 +51,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD_INFO
-mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.task&t;&t;= &amp;tsk,&t;&t;&t;&bslash;&n;&t;.exec_domain&t;= &amp;default_exec_domain,&t;&bslash;&n;&t;.flags&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.cpu&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.addr_limit&t;= KERNEL_DS,&t;&t;&bslash;&n;&t;.preempt_count&t;= 0,&t;&t;&t;&bslash;&n;  &t;.restart_block&t;= {&t;&t;&t;&bslash;&n;&t;&t;.fn = do_no_restart_syscall&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.task&t;&t;= &amp;tsk,&t;&t;&t;&bslash;&n;&t;.exec_domain&t;= &amp;default_exec_domain,&t;&bslash;&n;&t;.flags&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.cpu&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.addr_limit&t;= KERNEL_DS,&t;&t;&bslash;&n;&t;.preempt_count&t;= 1,&t;&t;&t;&bslash;&n;  &t;.restart_block&t;= {&t;&t;&t;&bslash;&n;&t;&t;.fn = do_no_restart_syscall&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|init_thread_info
 mdefine_line|#define init_thread_info        (init_thread_union.thread_info)
 DECL|macro|init_stack
@@ -77,7 +77,7 @@ DECL|macro|current_thread_info
 mdefine_line|#define current_thread_info()&t;((struct thread_info *)mfctl(30))
 macro_line|#endif /* !__ASSEMBLY */
 DECL|macro|PREEMPT_ACTIVE
-mdefine_line|#define PREEMPT_ACTIVE          0x4000000
+mdefine_line|#define PREEMPT_ACTIVE          0x10000000
 multiline_comment|/*&n; * thread information flags&n; */
 DECL|macro|TIF_SYSCALL_TRACE
 mdefine_line|#define TIF_SYSCALL_TRACE&t;0&t;/* syscall trace active */

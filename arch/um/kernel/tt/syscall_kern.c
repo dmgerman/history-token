@@ -39,12 +39,14 @@ suffix:semicolon
 r_int
 id|syscall
 suffix:semicolon
+macro_line|#ifdef CONFIG_SYSCALL_DEBUG
 id|current-&gt;thread.nsyscalls
 op_increment
 suffix:semicolon
 id|nsyscalls
 op_increment
 suffix:semicolon
+macro_line|#endif
 id|syscall
 op_assign
 id|UPT_SYSCALL_NR

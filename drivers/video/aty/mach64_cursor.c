@@ -100,6 +100,7 @@ l_int|0x00
 )brace
 suffix:semicolon
 DECL|function|atyfb_cursor
+r_static
 r_int
 id|atyfb_cursor
 c_func

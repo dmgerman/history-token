@@ -1,10 +1,10 @@
-multiline_comment|/* linux/include/asm-arm/arch-s3c2410/regs-mem.h&n; *&n; * Copyright (c) 2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 Memory Control register definitions&n; *&n; *  Changelog:&n; *&t;29-Sep-2004  BJD  Initial include for Linux&n; *&n;*/
+multiline_comment|/* linux/include/asm-arm/arch-s3c2410/regs-mem.h&n; *&n; * Copyright (c) 2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 Memory Control register definitions&n; *&n; *  Changelog:&n; *&t;29-Sep-2004  BJD  Initial include for Linux&n; *      10-Mar-2005  LCVR Changed S3C2410_VA to S3C24XX_VA&n; *&n;*/
 macro_line|#ifndef __ASM_ARM_MEMREGS_H
 DECL|macro|__ASM_ARM_MEMREGS_H
 mdefine_line|#define __ASM_ARM_MEMREGS_H &quot;$Id: regs.h,v 1.8 2003/05/01 15:55:41 ben Exp $&quot;
 macro_line|#ifndef S3C2410_MEMREG
 DECL|macro|S3C2410_MEMREG
-mdefine_line|#define S3C2410_MEMREG(x) (S3C2410_VA_MEMCTRL + (x))
+mdefine_line|#define S3C2410_MEMREG(x) (S3C24XX_VA_MEMCTRL + (x))
 macro_line|#endif
 multiline_comment|/* bus width, and wait state control */
 DECL|macro|S3C2410_BWSCON

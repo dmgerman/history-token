@@ -2964,7 +2964,7 @@ op_star
 id|urb-&gt;context
 suffix:semicolon
 multiline_comment|/* Cancel the receive command */
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|urb
@@ -4236,6 +4236,21 @@ id|net
 r_goto
 id|err_out
 suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|net
+)paren
+suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|net
+comma
+op_amp
+id|intf-&gt;dev
+)paren
+suffix:semicolon
 id|self
 op_assign
 id|net-&gt;priv
@@ -4249,12 +4264,6 @@ c_func
 (paren
 op_amp
 id|self-&gt;lock
-)paren
-suffix:semicolon
-id|SET_MODULE_OWNER
-c_func
-(paren
-id|net
 )paren
 suffix:semicolon
 multiline_comment|/* Create all of the needed urbs */
@@ -4795,7 +4804,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|self-&gt;rx_urb

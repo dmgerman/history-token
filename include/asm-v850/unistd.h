@@ -834,7 +834,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; */
 DECL|macro|cond_syscall
-mdefine_line|#define cond_syscall(name)&t;&t;&t;&t;&t;&t;      &bslash;&n;  asm (&quot;.weak&bslash;t&quot; C_SYMBOL_STRING(name) &quot;;&quot;&t;&t;&t;&t;      &bslash;&n;       &quot;.set&bslash;t&quot; C_SYMBOL_STRING(name) &quot;,&quot; C_SYMBOL_STRING(sys_ni_syscall));
+mdefine_line|#define cond_syscall(name)&t;&t;&t;&t;&t;&t;      &bslash;&n;  asm (&quot;.weak&bslash;t&quot; C_SYMBOL_STRING(name) &quot;;&quot;&t;&t;&t;&t;      &bslash;&n;       &quot;.set&bslash;t&quot; C_SYMBOL_STRING(name) &quot;,&quot; C_SYMBOL_STRING(sys_ni_syscall))
 macro_line|#if 0
 multiline_comment|/* This doesn&squot;t work if there&squot;s a function prototype for NAME visible,&n;   because the argument types probably won&squot;t match.  */
 mdefine_line|#define cond_syscall(name)  &bslash;&n;  void name (void) __attribute__ ((weak, alias (&quot;sys_ni_syscall&quot;)));

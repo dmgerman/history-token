@@ -595,5 +595,16 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_ALIAS
+c_func
+(paren
+l_string|&quot;snd-timer-&quot;
+id|__stringify
+c_func
+(paren
+id|SNDRV_TIMER_GLOBAL_RTC
+)paren
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_RTC || CONFIG_RTC_MODULE */
 eof

@@ -19,11 +19,13 @@ multiline_comment|/*&n;** We don&squot;t have DMA channels... well V-class does 
 DECL|macro|MAX_DMA_CHANNELS
 mdefine_line|#define MAX_DMA_CHANNELS 8
 DECL|macro|DMA_MODE_READ
-mdefine_line|#define DMA_MODE_READ    1
+mdefine_line|#define DMA_MODE_READ&t;0x44&t;/* I/O to memory, no autoinit, increment, single mode */
 DECL|macro|DMA_MODE_WRITE
-mdefine_line|#define DMA_MODE_WRITE   2
+mdefine_line|#define DMA_MODE_WRITE&t;0x48&t;/* memory to I/O, no autoinit, increment, single mode */
+DECL|macro|DMA_MODE_CASCADE
+mdefine_line|#define DMA_MODE_CASCADE 0xC0&t;/* pass thru DREQ-&gt;HRQ, DACK&lt;-HLDA only */
 DECL|macro|DMA_AUTOINIT
-mdefine_line|#define DMA_AUTOINIT     0x10
+mdefine_line|#define DMA_AUTOINIT&t;0x10
 multiline_comment|/* 8237 DMA controllers */
 DECL|macro|IO_DMA1_BASE
 mdefine_line|#define IO_DMA1_BASE&t;0x00&t;/* 8 bit slave DMA, channels 0..3 */

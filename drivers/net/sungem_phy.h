@@ -33,9 +33,6 @@ r_struct
 id|mii_phy
 op_star
 id|phy
-comma
-r_int
-id|wol_options
 )paren
 suffix:semicolon
 DECL|member|setup_aneg
@@ -276,6 +273,8 @@ DECL|macro|MII_BCM5221_SHDOW_AUX_STAT2_APD
 mdefine_line|#define MII_BCM5221_SHDOW_AUX_STAT2_APD&t;&t;0x0020
 DECL|macro|MII_BCM5221_SHDOW_AUX_MODE4
 mdefine_line|#define MII_BCM5221_SHDOW_AUX_MODE4&t;&t;0x1a
+DECL|macro|MII_BCM5221_SHDOW_AUX_MODE4_IDDQMODE
+mdefine_line|#define MII_BCM5221_SHDOW_AUX_MODE4_IDDQMODE&t;0x0001
 DECL|macro|MII_BCM5221_SHDOW_AUX_MODE4_CLKLOPWR
 mdefine_line|#define MII_BCM5221_SHDOW_AUX_MODE4_CLKLOPWR&t;0x0004
 multiline_comment|/* MII BCM5400 1000-BASET Control register */

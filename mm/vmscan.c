@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;linux/topology.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/cpuset.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
@@ -2998,6 +2999,18 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpuset_zone_allowed
+c_func
+(paren
+id|zone
+)paren
+)paren
+r_continue
+suffix:semicolon
 id|zone-&gt;temp_priority
 op_assign
 id|sc-&gt;priority
@@ -3134,6 +3147,18 @@ id|zones
 (braket
 id|i
 )braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpuset_zone_allowed
+c_func
+(paren
+id|zone
+)paren
+)paren
+r_continue
 suffix:semicolon
 id|zone-&gt;temp_priority
 op_assign
@@ -3314,20 +3339,34 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|zones
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|prev_priority
+(brace
+r_struct
+id|zone
+op_star
+id|zone
 op_assign
 id|zones
 (braket
 id|i
 )braket
-op_member_access_from_pointer
-id|temp_priority
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpuset_zone_allowed
+c_func
+(paren
+id|zone
+)paren
+)paren
+r_continue
+suffix:semicolon
+id|zone-&gt;prev_priority
+op_assign
+id|zone-&gt;temp_priority
+suffix:semicolon
+)brace
 r_return
 id|ret
 suffix:semicolon
@@ -4173,6 +4212,18 @@ id|order
 id|pgdat-&gt;kswapd_max_order
 op_assign
 id|order
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpuset_zone_allowed
+c_func
+(paren
+id|zone
+)paren
+)paren
+r_return
 suffix:semicolon
 r_if
 c_cond

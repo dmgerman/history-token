@@ -6,16 +6,19 @@ macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&quot;Gameport data dumper module&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
 l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Gameport data dumper module&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -44,8 +47,7 @@ suffix:semicolon
 suffix:semicolon
 DECL|function|joydump_connect
 r_static
-r_void
-id|__devinit
+r_int
 id|joydump_connect
 c_func
 (paren
@@ -55,18 +57,26 @@ op_star
 id|gameport
 comma
 r_struct
-id|gameport_dev
+id|gameport_driver
 op_star
-id|dev
+id|drv
 )paren
 (brace
 r_struct
 id|joydump
+op_star
 id|buf
-(braket
-id|BUF_SIZE
-)braket
 suffix:semicolon
+multiline_comment|/* all entries */
+r_struct
+id|joydump
+op_star
+id|dump
+comma
+op_star
+id|prev
+suffix:semicolon
+multiline_comment|/* one entry each */
 r_int
 id|axes
 (braket
@@ -96,14 +106,14 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: ,------------------- START ------------------.&bslash;n&quot;
+l_string|&quot;joydump: ,------------------ START ----------------.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: | Dumping gameport%s.&bslash;n&quot;
+l_string|&quot;joydump: | Dumping: %30s |&bslash;n&quot;
 comma
 id|gameport-&gt;phys
 )paren
@@ -112,7 +122,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: | Speed: %4d kHz.                            |&bslash;n&quot;
+l_string|&quot;joydump: | Speed: %28d kHz |&bslash;n&quot;
 comma
 id|gameport-&gt;speed
 )paren
@@ -125,7 +135,7 @@ c_func
 (paren
 id|gameport
 comma
-id|dev
+id|drv
 comma
 id|GAMEPORT_MODE_RAW
 )paren
@@ -146,7 +156,7 @@ c_func
 (paren
 id|gameport
 comma
-id|dev
+id|drv
 comma
 id|GAMEPORT_MODE_COOKED
 )paren
@@ -156,17 +166,19 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: | Cooked not available either. Failing.      |&bslash;n&quot;
+l_string|&quot;joydump: | Cooked not available either. Failing.   |&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: `-------------------- END -------------------&squot;&bslash;n&quot;
+l_string|&quot;joydump: `------------------- END -----------------&squot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|gameport_cooked_read
@@ -198,7 +210,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: | Axis %d: %4d.                              |&bslash;n&quot;
+l_string|&quot;joydump: | Axis %d: %4d.                           |&bslash;n&quot;
 comma
 id|i
 comma
@@ -212,7 +224,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: | Buttons %02x.                                |&bslash;n&quot;
+l_string|&quot;joydump: | Buttons %02x.                             |&bslash;n&quot;
 comma
 id|buttons
 )paren
@@ -221,7 +233,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: `-------------------- END -------------------&squot;&bslash;n&quot;
+l_string|&quot;joydump: `------------------- END -----------------&squot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -236,6 +248,44 @@ l_int|10000
 )paren
 suffix:semicolon
 multiline_comment|/* 10 ms */
+id|buf
+op_assign
+id|kmalloc
+c_func
+(paren
+id|BUF_SIZE
+op_star
+r_sizeof
+(paren
+r_struct
+id|joydump
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buf
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;joydump: no memory for testing&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|jd_end
+suffix:semicolon
+)brace
+id|dump
+op_assign
+id|buf
+suffix:semicolon
 id|t
 op_assign
 l_int|0
@@ -258,23 +308,16 @@ c_func
 id|gameport
 )paren
 suffix:semicolon
-id|buf
-(braket
-l_int|0
-)braket
-dot
-id|data
+id|dump-&gt;data
 op_assign
 id|u
 suffix:semicolon
-id|buf
-(braket
-l_int|0
-)braket
-dot
-id|time
+id|dump-&gt;time
 op_assign
 id|t
+suffix:semicolon
+id|dump
+op_increment
 suffix:semicolon
 id|gameport_trigger
 c_func
@@ -294,12 +337,7 @@ OL
 id|timeout
 )paren
 (brace
-id|buf
-(braket
-id|i
-)braket
-dot
-id|data
+id|dump-&gt;data
 op_assign
 id|gameport_read
 c_func
@@ -310,35 +348,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|buf
-(braket
-id|i
-)braket
-dot
-id|data
+id|dump-&gt;data
 op_xor
 id|u
 )paren
 (brace
 id|u
 op_assign
-id|buf
-(braket
-id|i
-)braket
-dot
-id|data
+id|dump-&gt;data
 suffix:semicolon
-id|buf
-(braket
-id|i
-)braket
-dot
-id|time
+id|dump-&gt;time
 op_assign
 id|t
 suffix:semicolon
 id|i
+op_increment
+suffix:semicolon
+id|dump
 op_increment
 suffix:semicolon
 )brace
@@ -357,20 +383,26 @@ id|t
 op_assign
 id|i
 suffix:semicolon
+id|dump
+op_assign
+id|buf
+suffix:semicolon
+id|prev
+op_assign
+id|dump
+suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: &gt;------------------- DATA -------------------&lt;&bslash;n&quot;
+l_string|&quot;joydump: &gt;------------------ DATA -----------------&lt;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: | index: %3d delta: %3d.%02d us data: &quot;
-comma
-l_int|0
+l_string|&quot;joydump: | index: %3d delta: %3d us data: &quot;
 comma
 l_int|0
 comma
@@ -397,12 +429,7 @@ c_func
 l_string|&quot;%d&quot;
 comma
 (paren
-id|buf
-(braket
-l_int|0
-)braket
-dot
-id|data
+id|dump-&gt;data
 op_rshift
 id|j
 )paren
@@ -415,6 +442,9 @@ c_func
 (paren
 l_string|&quot; |&bslash;n&quot;
 )paren
+suffix:semicolon
+id|dump
+op_increment
 suffix:semicolon
 r_for
 c_loop
@@ -429,6 +459,12 @@ id|t
 suffix:semicolon
 id|i
 op_increment
+comma
+id|dump
+op_increment
+comma
+id|prev
+op_increment
 )paren
 (brace
 id|printk
@@ -439,21 +475,9 @@ l_string|&quot;joydump: | index: %3d delta: %3d us data: &quot;
 comma
 id|i
 comma
-id|buf
-(braket
-id|i
-)braket
-dot
-id|time
+id|dump-&gt;time
 op_minus
-id|buf
-(braket
-id|i
-op_minus
-l_int|1
-)braket
-dot
-id|time
+id|prev-&gt;time
 )paren
 suffix:semicolon
 r_for
@@ -476,12 +500,7 @@ c_func
 l_string|&quot;%d&quot;
 comma
 (paren
-id|buf
-(braket
-id|i
-)braket
-dot
-id|data
+id|dump-&gt;data
 op_rshift
 id|j
 )paren
@@ -492,22 +511,32 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;    |&bslash;n&quot;
+l_string|&quot; |&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|kfree
+c_func
+(paren
+id|buf
+)paren
+suffix:semicolon
+id|jd_end
+suffix:colon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;joydump: `-------------------- END -------------------&squot;&bslash;n&quot;
+l_string|&quot;joydump: `------------------- END -----------------&squot;&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|joydump_disconnect
 r_static
 r_void
-id|__devexit
 id|joydump_disconnect
 c_func
 (paren
@@ -524,13 +553,29 @@ id|gameport
 )paren
 suffix:semicolon
 )brace
-DECL|variable|joydump_dev
+DECL|variable|joydump_drv
 r_static
 r_struct
-id|gameport_dev
-id|joydump_dev
+id|gameport_driver
+id|joydump_drv
 op_assign
 (brace
+dot
+id|driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;joydump&quot;
+comma
+)brace
+comma
+dot
+id|description
+op_assign
+id|DRIVER_DESC
+comma
 dot
 id|connect
 op_assign
@@ -553,11 +598,11 @@ c_func
 r_void
 )paren
 (brace
-id|gameport_register_device
+id|gameport_register_driver
 c_func
 (paren
 op_amp
-id|joydump_dev
+id|joydump_drv
 )paren
 suffix:semicolon
 r_return
@@ -574,11 +619,11 @@ c_func
 r_void
 )paren
 (brace
-id|gameport_unregister_device
+id|gameport_unregister_driver
 c_func
 (paren
 op_amp
-id|joydump_dev
+id|joydump_drv
 )paren
 suffix:semicolon
 )brace

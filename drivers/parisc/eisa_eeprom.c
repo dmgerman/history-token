@@ -10,12 +10,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/eisa_eeprom.h&gt;
 DECL|macro|EISA_EEPROM_MINOR
 mdefine_line|#define &t;EISA_EEPROM_MINOR 241
-DECL|variable|eeprom_addr
-r_static
-r_int
-r_int
-id|eeprom_addr
-suffix:semicolon
 DECL|function|eisa_eeprom_llseek
 r_static
 id|loff_t
@@ -184,10 +178,10 @@ id|tmp
 id|i
 )braket
 op_assign
-id|gsc_readb
+id|readb
 c_func
 (paren
-id|eeprom_addr
+id|eisa_eeprom_addr
 op_plus
 (paren
 op_star
@@ -287,10 +281,6 @@ c_cond
 id|file-&gt;f_mode
 op_amp
 l_int|2
-op_logical_or
-id|eeprom_addr
-op_eq
-l_int|0
 )paren
 r_return
 op_minus
@@ -370,39 +360,34 @@ op_assign
 (brace
 id|EISA_EEPROM_MINOR
 comma
-l_string|&quot;eisa eeprom&quot;
+l_string|&quot;eisa_eeprom&quot;
 comma
 op_amp
 id|eisa_eeprom_fops
 )brace
 suffix:semicolon
 DECL|function|eisa_eeprom_init
+r_static
 r_int
 id|__init
 id|eisa_eeprom_init
 c_func
 (paren
-r_int
-r_int
-id|addr
+r_void
 )paren
 (brace
 r_int
 id|retval
 suffix:semicolon
-multiline_comment|/* XXX why return success when we haven&squot;t done anything? */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|addr
+id|eisa_eeprom_addr
 )paren
 r_return
-l_int|0
-suffix:semicolon
-id|eeprom_addr
-op_assign
-id|addr
+op_minus
+id|ENODEV
 suffix:semicolon
 id|retval
 op_assign
@@ -436,9 +421,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;EISA EEPROM at 0x%lx&bslash;n&quot;
+l_string|&quot;EISA EEPROM at 0x%p&bslash;n&quot;
 comma
-id|eeprom_addr
+id|eisa_eeprom_addr
 )paren
 suffix:semicolon
 r_return
@@ -449,6 +434,13 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|eisa_eeprom_init
+id|module_init
+c_func
+(paren
+id|eisa_eeprom_init
 )paren
 suffix:semicolon
 eof

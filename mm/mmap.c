@@ -3288,6 +3288,10 @@ r_int
 id|charged
 op_assign
 l_int|0
+comma
+id|reqprot
+op_assign
+id|prot
 suffix:semicolon
 r_if
 c_cond
@@ -3749,6 +3753,8 @@ id|security_file_mmap
 c_func
 (paren
 id|file
+comma
+id|reqprot
 comma
 id|prot
 comma

@@ -226,12 +226,6 @@ r_int
 id|frametype
 )paren
 (brace
-id|bh_lock_sock
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -356,12 +350,6 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-id|bh_unlock_sock
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -387,12 +375,6 @@ r_int
 id|frametype
 )paren
 (brace
-id|bh_lock_sock
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -443,12 +425,6 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-id|bh_unlock_sock
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -521,12 +497,6 @@ id|skb-&gt;data
 (braket
 l_int|17
 )braket
-suffix:semicolon
-id|bh_lock_sock
-c_func
-(paren
-id|sk
-)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -1097,17 +1067,11 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-id|bh_unlock_sock
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
 r_return
 id|queued
 suffix:semicolon
 )brace
-multiline_comment|/* Higher level upcall for a LAPB frame */
+multiline_comment|/* Higher level upcall for a LAPB frame - called with sk locked */
 DECL|function|nr_process_rx_frame
 r_int
 id|nr_process_rx_frame

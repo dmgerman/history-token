@@ -100,7 +100,6 @@ id|id
 suffix:semicolon
 r_static
 r_int
-id|__exit
 id|via_ircc_close
 c_func
 (paren
@@ -371,7 +370,7 @@ id|id
 suffix:semicolon
 r_static
 r_void
-id|__exit
+id|__devexit
 id|via_remove_one
 (paren
 r_struct
@@ -550,7 +549,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|via_remove_one
+)paren
 comma
 )brace
 suffix:semicolon
@@ -1349,7 +1352,6 @@ multiline_comment|/*&n; * Function via_ircc_clean ()&n; *&n; *    Close all conf
 DECL|function|via_ircc_clean
 r_static
 r_void
-id|__exit
 id|via_ircc_clean
 c_func
 (paren
@@ -1406,7 +1408,7 @@ suffix:semicolon
 DECL|function|via_remove_one
 r_static
 r_void
-id|__exit
+id|__devexit
 id|via_remove_one
 (paren
 r_struct
@@ -1992,7 +1994,6 @@ multiline_comment|/*&n; * Function via_ircc_close (self)&n; *&n; *    Close driv
 DECL|function|via_ircc_close
 r_static
 r_int
-id|__exit
 id|via_ircc_close
 c_func
 (paren

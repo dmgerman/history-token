@@ -392,9 +392,6 @@ op_star
 id|ev
 comma
 r_int
-id|from_timer_port
-comma
-r_int
 id|atomic
 comma
 r_int

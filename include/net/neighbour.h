@@ -1336,6 +1336,10 @@ comma
 id|proc_handler
 op_star
 id|proc_handler
+comma
+id|ctl_handler
+op_star
+id|strategy
 )paren
 suffix:semicolon
 r_extern

@@ -305,6 +305,10 @@ mdefine_line|#define YMFPCI_LEGACY2_SBVER&t;(3 &lt;&lt; 13)&t;/* SB version sele
 DECL|macro|YMFPCI_LEGACY2_IMOD
 mdefine_line|#define YMFPCI_LEGACY2_IMOD&t;(1 &lt;&lt; 15)&t;/* legacy IRQ mode */
 multiline_comment|/* SIEN:IMOD 0:0 = legacy irq, 0:1 = INTA, 1:0 = serialized IRQ */
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
+DECL|macro|SUPPORT_JOYSTICK
+mdefine_line|#define SUPPORT_JOYSTICK
+macro_line|#endif
 multiline_comment|/*&n; *&n; */
 DECL|struct|_snd_ymfpci_playback_bank
 r_typedef
@@ -545,6 +549,7 @@ id|number
 suffix:semicolon
 DECL|member|use
 r_int
+r_int
 id|use
 suffix:colon
 l_int|1
@@ -655,17 +660,20 @@ suffix:semicolon
 multiline_comment|/* playback only */
 DECL|member|running
 r_int
+r_int
 id|running
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|output_front
 r_int
+r_int
 id|output_front
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|output_rear
+r_int
 r_int
 id|output_rear
 suffix:colon
@@ -753,16 +761,11 @@ r_int
 r_int
 id|old_legacy_ctrl
 suffix:semicolon
-macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
-DECL|member|joystick_res
-r_struct
-id|resource
-op_star
-id|joystick_res
-suffix:semicolon
+macro_line|#ifdef SUPPORT_JOYSTICK
 DECL|member|gameport
 r_struct
 id|gameport
+op_star
 id|gameport
 suffix:semicolon
 macro_line|#endif
@@ -1049,6 +1052,15 @@ op_star
 id|rcodec
 )paren
 suffix:semicolon
+r_void
+id|snd_ymfpci_free_gameport
+c_func
+(paren
+id|ymfpci_t
+op_star
+id|chip
+)paren
+suffix:semicolon
 r_int
 id|snd_ymfpci_pcm
 c_func
@@ -1141,9 +1153,5 @@ r_int
 id|device
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
-DECL|macro|SUPPORT_JOYSTICK
-mdefine_line|#define SUPPORT_JOYSTICK
-macro_line|#endif
 macro_line|#endif /* __SOUND_YMFPCI_H */
 eof

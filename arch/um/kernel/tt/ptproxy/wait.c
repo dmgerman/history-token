@@ -2,13 +2,12 @@ multiline_comment|/*************************************************************
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
-macro_line|#include &lt;sys/ptrace.h&gt;
 macro_line|#include &quot;ptproxy.h&quot;
 macro_line|#include &quot;sysdep.h&quot;
 macro_line|#include &quot;wait.h&quot;
 macro_line|#include &quot;user_util.h&quot;
+macro_line|#include &quot;ptrace_user.h&quot;
 macro_line|#include &quot;sysdep/ptrace.h&quot;
-macro_line|#include &quot;sysdep/ptrace_user.h&quot;
 macro_line|#include &quot;sysdep/sigcontext.h&quot;
 DECL|function|proxy_wait_return
 r_int
@@ -167,7 +166,7 @@ op_assign
 id|ptrace
 c_func
 (paren
-id|PTRACE_PEEKUSER
+id|PTRACE_PEEKUSR
 comma
 id|pid
 comma
@@ -188,7 +187,7 @@ c_cond
 id|ptrace
 c_func
 (paren
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 comma
 id|pid
 comma

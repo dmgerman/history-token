@@ -3284,7 +3284,10 @@ l_int|1
 suffix:semicolon
 id|i
 OL
-id|NR_CPUS
+id|num_possible_cpus
+c_func
+(paren
+)paren
 suffix:semicolon
 id|i
 op_increment
@@ -3514,7 +3517,10 @@ l_int|0
 suffix:semicolon
 id|cpu
 OL
-id|NR_CPUS
+id|num_possible_cpus
+c_func
+(paren
+)paren
 suffix:semicolon
 id|cpu
 op_increment
@@ -4097,7 +4103,10 @@ c_func
 id|tmp.size
 )paren
 op_star
-id|NR_CPUS
+id|num_possible_cpus
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -5451,7 +5460,10 @@ c_func
 id|repl-&gt;size
 )paren
 op_star
-id|NR_CPUS
+id|num_possible_cpus
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 r_if

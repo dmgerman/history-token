@@ -2,7 +2,6 @@ multiline_comment|/* &n; * Copyright (C) 2000, 2001, 2002 Jeff Dike (jdike@karay
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;errno.h&gt;
-macro_line|#include &lt;sys/ptrace.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &quot;sysdep/ptrace.h&quot;
 macro_line|#include &quot;sigcontext.h&quot;
@@ -34,10 +33,13 @@ r_int
 id|result
 suffix:semicolon
 r_int
-id|index
-comma
 id|syscall
 suffix:semicolon
+macro_line|#ifdef UML_CONFIG_DEBUG_SYSCALL
+r_int
+id|index
+suffix:semicolon
+macro_line|#endif
 id|syscall
 op_assign
 id|UPT_SYSCALL_NR
@@ -60,6 +62,7 @@ c_func
 id|sc
 )paren
 suffix:semicolon
+macro_line|#ifdef UML_CONFIG_DEBUG_SYSCALL
 id|index
 op_assign
 id|record_syscall_start
@@ -68,6 +71,7 @@ c_func
 id|syscall
 )paren
 suffix:semicolon
+macro_line|#endif
 id|syscall_trace
 c_func
 (paren
@@ -78,7 +82,7 @@ l_int|0
 suffix:semicolon
 id|result
 op_assign
-id|execute_syscall
+id|execute_syscall_tt
 c_func
 (paren
 id|regs
@@ -109,6 +113,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#ifdef UML_CONFIG_DEBUG_SYSCALL
 id|record_syscall_end
 c_func
 (paren
@@ -117,6 +122,7 @@ comma
 id|result
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|do_sigtrap
 r_void
@@ -262,7 +268,7 @@ c_cond
 id|ptrace
 c_func
 (paren
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 comma
 id|pid
 comma

@@ -54,6 +54,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|pty_chan_init
+r_static
 r_void
 op_star
 id|pty_chan_init
@@ -132,6 +133,7 @@ id|data
 suffix:semicolon
 )brace
 DECL|function|pts_open
+r_static
 r_int
 id|pts_open
 c_func
@@ -290,6 +292,7 @@ id|fd
 suffix:semicolon
 )brace
 DECL|function|getmaster
+r_static
 r_int
 id|getmaster
 c_func
@@ -484,6 +487,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|pty_open
+r_static
 r_int
 id|pty_open
 c_func
@@ -613,6 +617,7 @@ id|fd
 suffix:semicolon
 )brace
 DECL|function|pty_console_write
+r_static
 r_int
 id|pty_console_write
 c_func

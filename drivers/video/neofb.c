@@ -62,12 +62,12 @@ r_static
 r_int
 id|nopciburst
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 op_star
 id|mode_option
-id|__initdata
+id|__devinitdata
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1747,6 +1747,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|function|VGAenablePalette
+r_static
 r_inline
 r_void
 id|VGAenablePalette
@@ -1779,6 +1780,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|VGAdisablePalette
+r_static
 r_inline
 r_void
 id|VGAdisablePalette
@@ -1811,6 +1813,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|VGAwATTR
+r_static
 r_inline
 r_void
 id|VGAwATTR
@@ -1858,6 +1861,7 @@ id|value
 suffix:semicolon
 )brace
 DECL|function|vgaHWProtect
+r_static
 r_void
 id|vgaHWProtect
 c_func
@@ -5427,6 +5431,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *    (Un)Blank the display.&n; */
 DECL|function|neofb_blank
+r_static
 r_int
 id|neofb_blank
 c_func
@@ -9094,7 +9099,9 @@ id|neofb_remove
 )brace
 suffix:semicolon
 multiline_comment|/* ************************* init in-kernel code ************************** */
+macro_line|#ifndef MODULE
 DECL|function|neofb_setup
+r_static
 r_int
 id|__init
 id|neofb_setup
@@ -9260,7 +9267,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif  /*  MODULE  */
 DECL|function|neofb_init
+r_static
 r_int
 id|__init
 id|neofb_init

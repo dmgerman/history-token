@@ -103,7 +103,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_map_t
 op_star
@@ -788,7 +788,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 r_struct
 id|list_head
@@ -1297,7 +1297,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_device_dma_t
 op_star
@@ -2102,7 +2102,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_device_dma_t
 op_star
@@ -3289,7 +3289,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_device_dma_t
 op_star
@@ -4113,7 +4113,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 r_if
 c_cond
@@ -4250,7 +4250,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_device_dma_t
 op_star
@@ -4656,7 +4656,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_device_dma_t
 op_star
@@ -4834,7 +4834,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_device_dma_t
 op_star
@@ -5060,7 +5060,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_device_dma_t
 op_star

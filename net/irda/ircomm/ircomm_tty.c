@@ -2445,7 +2445,7 @@ r_const
 r_int
 r_char
 op_star
-id|ubuf
+id|buf
 comma
 r_int
 id|count
@@ -2463,12 +2463,6 @@ op_star
 )paren
 id|tty-&gt;driver_data
 suffix:semicolon
-r_int
-r_char
-op_star
-id|kbuf
-suffix:semicolon
-multiline_comment|/* Buffer in kernel space */
 r_int
 r_int
 id|flags
@@ -2566,16 +2560,6 @@ l_int|1
 )paren
 r_return
 l_int|0
-suffix:semicolon
-multiline_comment|/* The buffer is already in kernel space */
-id|kbuf
-op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-id|ubuf
 suffix:semicolon
 multiline_comment|/* Protect our manipulation of self-&gt;tx_skb and related */
 id|spin_lock_irqsave
@@ -2723,7 +2707,7 @@ comma
 id|size
 )paren
 comma
-id|kbuf
+id|buf
 op_plus
 id|len
 comma

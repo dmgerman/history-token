@@ -100,7 +100,7 @@ macro_line|#include &lt;net/if_inet6.h&gt;
 DECL|macro|IN6_ADDR_HSIZE
 mdefine_line|#define IN6_ADDR_HSIZE&t;&t;16
 r_extern
-r_void
+r_int
 id|addrconf_init
 c_func
 (paren
@@ -520,6 +520,17 @@ id|opt
 comma
 r_int
 id|len
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ipv6_get_hoplimit
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;anycast prototypes (anycast.c)&n; */

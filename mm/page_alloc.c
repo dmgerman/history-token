@@ -16,11 +16,12 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/topology.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/cpuset.h&gt;
 macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &quot;internal.h&quot;
-multiline_comment|/* MCD - HACK: Find somewhere to initialize this EARLY, or make this initializer cleaner */
+multiline_comment|/*&n; * MCD - HACK: Find somewhere to initialize this EARLY, or make this&n; * initializer cleaner&n; */
 DECL|variable|node_online_map
 id|nodemask_t
 id|node_online_map
@@ -3225,6 +3226,18 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpuset_zone_allowed
+c_func
+(paren
+id|z
+)paren
+)paren
+r_continue
+suffix:semicolon
 id|page
 op_assign
 id|buffered_rmqueue
@@ -3322,6 +3335,18 @@ id|__GFP_HIGH
 )paren
 r_continue
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpuset_zone_allowed
+c_func
+(paren
+id|z
+)paren
+)paren
+r_continue
+suffix:semicolon
 id|page
 op_assign
 id|buffered_rmqueue
@@ -3395,6 +3420,18 @@ id|i
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpuset_zone_allowed
+c_func
+(paren
+id|z
+)paren
+)paren
+r_continue
+suffix:semicolon
 id|page
 op_assign
 id|buffered_rmqueue
@@ -3534,6 +3571,18 @@ id|__GFP_HIGH
 )paren
 r_continue
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpuset_zone_allowed
+c_func
+(paren
+id|z
+)paren
+)paren
+r_continue
+suffix:semicolon
 id|page
 op_assign
 id|buffered_rmqueue
@@ -3615,6 +3664,18 @@ comma
 l_int|0
 comma
 l_int|0
+)paren
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpuset_zone_allowed
+c_func
+(paren
+id|z
 )paren
 )paren
 r_continue
@@ -5929,20 +5990,6 @@ id|pgdat-&gt;node_zonelists
 op_plus
 id|i
 suffix:semicolon
-id|memset
-c_func
-(paren
-id|zonelist
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|zonelist
-)paren
-)paren
-suffix:semicolon
 id|zonelist-&gt;zones
 (braket
 l_int|0
@@ -6173,20 +6220,6 @@ id|pgdat-&gt;node_zonelists
 op_plus
 id|i
 suffix:semicolon
-id|memset
-c_func
-(paren
-id|zonelist
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|zonelist
-)paren
-)paren
-suffix:semicolon
 id|j
 op_assign
 l_int|0
@@ -6372,6 +6405,11 @@ id|num_online_nodes
 c_func
 (paren
 )paren
+)paren
+suffix:semicolon
+id|cpuset_init_current_mems_allowed
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -8385,6 +8423,25 @@ op_decrement
 r_struct
 id|zone
 op_star
+id|lower_zone
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sysctl_lowmem_reserve_ratio
+(braket
+id|idx
+)braket
+OL
+l_int|1
+)paren
+id|sysctl_lowmem_reserve_ratio
+(braket
+id|idx
+)braket
+op_assign
+l_int|1
+suffix:semicolon
 id|lower_zone
 op_assign
 id|pgdat-&gt;node_zones

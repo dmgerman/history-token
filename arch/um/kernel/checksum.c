@@ -68,6 +68,7 @@ r_char
 op_star
 id|src
 comma
+r_int
 r_char
 id|__user
 op_star
@@ -134,6 +135,7 @@ id|__user
 op_star
 id|src
 comma
+r_int
 r_char
 op_star
 id|dst
@@ -186,5 +188,4 @@ id|sum
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

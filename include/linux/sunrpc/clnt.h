@@ -136,12 +136,6 @@ suffix:colon
 l_int|1
 comma
 multiline_comment|/* use getport() */
-DECL|member|cl_droppriv
-id|cl_droppriv
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* enable NFS suid hack */
 DECL|member|cl_oneshot
 id|cl_oneshot
 suffix:colon
@@ -550,6 +544,15 @@ r_int
 comma
 r_int
 r_int
+)paren
+suffix:semicolon
+r_int
+id|rpc_max_payload
+c_func
+(paren
+r_struct
+id|rpc_clnt
+op_star
 )paren
 suffix:semicolon
 r_static

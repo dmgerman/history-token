@@ -650,12 +650,12 @@ r_int
 id|priv_flags
 suffix:semicolon
 multiline_comment|/* Like &squot;flags&squot; but invisible to userspace. */
-DECL|member|unused_alignment_fixer
+DECL|member|padded
 r_int
 r_int
-id|unused_alignment_fixer
+id|padded
 suffix:semicolon
-multiline_comment|/* Because we need priv_flags,&n;                                                         * and we want to be 32-bit aligned.&n;                                                         */
+multiline_comment|/* How much padding added by alloc_netdev() */
 DECL|member|mtu
 r_int
 id|mtu
@@ -1308,22 +1308,6 @@ id|neigh_parms
 op_star
 )paren
 suffix:semicolon
-DECL|member|accept_fastpath
-r_int
-(paren
-op_star
-id|accept_fastpath
-)paren
-(paren
-r_struct
-id|net_device
-op_star
-comma
-r_struct
-id|dst_entry
-op_star
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_NETPOLL
 DECL|member|netpoll_rx
 r_int
@@ -1366,11 +1350,6 @@ DECL|member|class_dev
 r_struct
 id|class_device
 id|class_dev
-suffix:semicolon
-multiline_comment|/* how much padding had been added by alloc_netdev() */
-DECL|member|padded
-r_int
-id|padded
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -3486,15 +3465,6 @@ suffix:semicolon
 r_extern
 r_int
 id|weight_p
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|netdev_fc_xoff
-suffix:semicolon
-r_extern
-id|atomic_t
-id|netdev_dropping
 suffix:semicolon
 r_extern
 r_int

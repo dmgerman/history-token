@@ -26,7 +26,7 @@ mdefine_line|#define ptep_clear_flush_young(__vma, __address, __ptep)&t;&t;&bsla
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
 DECL|macro|ptep_test_and_clear_dirty
-mdefine_line|#define ptep_test_and_clear_dirty(__vma, __address, __ptep)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t __pte = *ptep;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int r = 1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!pte_dirty(__pte))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;r = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_pte_at((__vma)-&gt;vm_mm, (__address), (__ptep),&t;&bslash;&n;&t;&t;&t;   pte_mkclean(__pte));&t;&t;&t;&t;&bslash;&n;&t;r;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define ptep_test_and_clear_dirty(__vma, __address, __ptep)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t __pte = *__ptep;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int r = 1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!pte_dirty(__pte))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;r = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_pte_at((__vma)-&gt;vm_mm, (__address), (__ptep),&t;&bslash;&n;&t;&t;&t;   pte_mkclean(__pte));&t;&t;&t;&t;&bslash;&n;&t;r;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_PTEP_CLEAR_DIRTY_FLUSH
 DECL|macro|ptep_clear_flush_dirty

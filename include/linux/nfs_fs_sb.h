@@ -181,5 +181,7 @@ DECL|macro|NFS_CAP_SYMLINKS
 mdefine_line|#define NFS_CAP_SYMLINKS&t;(1U &lt;&lt; 2)
 DECL|macro|NFS_CAP_ACLS
 mdefine_line|#define NFS_CAP_ACLS&t;&t;(1U &lt;&lt; 3)
+DECL|macro|NFS_CAP_ATOMIC_OPEN
+mdefine_line|#define NFS_CAP_ATOMIC_OPEN&t;(1U &lt;&lt; 4)
 macro_line|#endif
 eof

@@ -7,6 +7,7 @@ macro_line|#include &lt;sound/ac97_codec.h&gt;
 macro_line|#include &lt;sound/rawmidi.h&gt;
 macro_line|#include &lt;sound/i2c.h&gt;
 macro_line|#include &lt;sound/ak4xxx-adda.h&gt;
+macro_line|#include &lt;sound/ak4114.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 multiline_comment|/*&n; *  Direct registers&n; */
 DECL|macro|ICEREG
@@ -901,6 +902,12 @@ id|pcm_reserved
 l_int|4
 )braket
 suffix:semicolon
+DECL|member|hw_rates
+id|snd_pcm_hw_constraint_list_t
+op_star
+id|hw_rates
+suffix:semicolon
+multiline_comment|/* card-specific rate constraints */
 DECL|member|akm_codecs
 r_int
 r_int
@@ -916,6 +923,12 @@ r_struct
 id|snd_ice1712_spdif
 id|spdif
 suffix:semicolon
+DECL|member|i2c_mutex
+r_struct
+id|semaphore
+id|i2c_mutex
+suffix:semicolon
+multiline_comment|/* I2C mutex for ICE1724 registers */
 DECL|member|i2c
 id|snd_i2c_bus_t
 op_star
@@ -1038,6 +1051,18 @@ r_int
 id|rate
 )paren
 suffix:semicolon
+DECL|member|i2s_mclk_changed
+r_void
+(paren
+op_star
+id|i2s_mclk_changed
+)paren
+(paren
+id|ice1712_t
+op_star
+id|ice
+)paren
+suffix:semicolon
 DECL|member|gpio
 )brace
 id|gpio
@@ -1050,7 +1075,7 @@ suffix:semicolon
 multiline_comment|/* other board-specific data */
 r_union
 (brace
-multiline_comment|/* additional i2c devices for EWS boards*/
+multiline_comment|/* additional i2c devices for EWS boards */
 DECL|member|i2cdevs
 id|snd_i2c_device_t
 op_star
@@ -1126,6 +1151,24 @@ suffix:semicolon
 DECL|member|hoontech
 )brace
 id|hoontech
+suffix:semicolon
+r_struct
+(brace
+DECL|member|ak4114
+id|ak4114_t
+op_star
+id|ak4114
+suffix:semicolon
+DECL|member|analog
+r_int
+r_int
+id|analog
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|juli
+)brace
+id|juli
 suffix:semicolon
 DECL|member|spec
 )brace
@@ -1629,6 +1672,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|member|no_mpu401
+r_int
 r_int
 id|no_mpu401
 suffix:colon

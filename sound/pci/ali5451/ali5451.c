@@ -463,6 +463,7 @@ id|number
 suffix:semicolon
 DECL|member|use
 r_int
+r_int
 id|use
 suffix:colon
 l_int|1
@@ -504,6 +505,7 @@ op_star
 id|extra
 suffix:semicolon
 DECL|member|running
+r_int
 r_int
 id|running
 suffix:colon
@@ -9289,8 +9291,7 @@ id|snd_card_t
 op_star
 id|card
 comma
-r_int
-r_int
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -9560,10 +9561,6 @@ c_func
 id|snd_card_t
 op_star
 id|card
-comma
-r_int
-r_int
-id|state
 )paren
 (brace
 id|ali_t

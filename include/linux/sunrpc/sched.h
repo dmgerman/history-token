@@ -135,12 +135,10 @@ suffix:semicolon
 DECL|member|tk_garb_retry
 id|__u8
 id|tk_garb_retry
-comma
+suffix:semicolon
 DECL|member|tk_cred_retry
+id|__u8
 id|tk_cred_retry
-comma
-DECL|member|tk_suid_retry
-id|tk_suid_retry
 suffix:semicolon
 DECL|member|tk_cookie
 r_int
@@ -320,12 +318,8 @@ DECL|macro|RPC_TASK_ASYNC
 mdefine_line|#define RPC_TASK_ASYNC&t;&t;0x0001&t;&t;/* is an async task */
 DECL|macro|RPC_TASK_SWAPPER
 mdefine_line|#define RPC_TASK_SWAPPER&t;0x0002&t;&t;/* is swapping in/out */
-DECL|macro|RPC_TASK_SETUID
-mdefine_line|#define RPC_TASK_SETUID&t;&t;0x0004&t;&t;/* is setuid process */
 DECL|macro|RPC_TASK_CHILD
 mdefine_line|#define RPC_TASK_CHILD&t;&t;0x0008&t;&t;/* is child of other task */
-DECL|macro|RPC_CALL_REALUID
-mdefine_line|#define RPC_CALL_REALUID&t;0x0010&t;&t;/* try using real uid */
 DECL|macro|RPC_CALL_MAJORSEEN
 mdefine_line|#define RPC_CALL_MAJORSEEN&t;0x0020&t;&t;/* major timeout seen */
 DECL|macro|RPC_TASK_ROOTCREDS
@@ -340,8 +334,6 @@ DECL|macro|RPC_TASK_NOINTR
 mdefine_line|#define RPC_TASK_NOINTR&t;&t;0x0400&t;&t;/* uninterruptible task */
 DECL|macro|RPC_IS_ASYNC
 mdefine_line|#define RPC_IS_ASYNC(t)&t;&t;((t)-&gt;tk_flags &amp; RPC_TASK_ASYNC)
-DECL|macro|RPC_IS_SETUID
-mdefine_line|#define RPC_IS_SETUID(t)&t;((t)-&gt;tk_flags &amp; RPC_TASK_SETUID)
 DECL|macro|RPC_IS_CHILD
 mdefine_line|#define RPC_IS_CHILD(t)&t;&t;((t)-&gt;tk_flags &amp; RPC_TASK_CHILD)
 DECL|macro|RPC_IS_SWAPPER

@@ -832,6 +832,7 @@ suffix:semicolon
 multiline_comment|/* sequencer port number */
 DECL|member|midi_has_voices
 r_int
+r_int
 id|midi_has_voices
 suffix:colon
 l_int|1
@@ -908,6 +909,7 @@ r_int
 id|number
 suffix:semicolon
 DECL|member|use
+r_int
 r_int
 id|use
 suffix:colon
@@ -1084,6 +1086,7 @@ id|extra
 suffix:semicolon
 multiline_comment|/* extra PCM voice (acts as interrupt generator) */
 DECL|member|running
+r_int
 r_int
 id|running
 suffix:colon
@@ -1485,7 +1488,7 @@ id|reg_lock
 suffix:semicolon
 DECL|member|gameport
 r_struct
-id|snd_trident_gameport
+id|gameport
 op_star
 id|gameport
 suffix:semicolon
@@ -1519,8 +1522,8 @@ op_star
 id|rtrident
 )paren
 suffix:semicolon
-r_void
-id|snd_trident_gameport
+r_int
+id|snd_trident_create_gameport
 c_func
 (paren
 id|trident_t

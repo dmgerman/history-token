@@ -898,6 +898,7 @@ id|data
 suffix:semicolon
 multiline_comment|/* Transceivers for SMSC-ircc */
 DECL|variable|smsc_transceivers
+r_static
 id|smsc_transceiver_t
 id|smsc_transceivers
 (braket

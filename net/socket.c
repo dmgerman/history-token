@@ -757,7 +757,7 @@ id|ei-&gt;socket.file
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ei-&gt;socket.passcred
+id|ei-&gt;socket.flags
 op_assign
 l_int|0
 suffix:semicolon

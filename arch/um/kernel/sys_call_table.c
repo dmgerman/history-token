@@ -38,10 +38,6 @@ id|um_time
 suffix:semicolon
 r_extern
 id|syscall_handler_t
-id|um_mount
-suffix:semicolon
-r_extern
-id|syscall_handler_t
 id|um_stime
 suffix:semicolon
 r_extern
@@ -314,7 +310,11 @@ comma
 id|__NR_mount
 )braket
 op_assign
-id|um_mount
+(paren
+id|syscall_handler_t
+op_star
+)paren
+id|sys_mount
 comma
 (braket
 id|__NR_setuid

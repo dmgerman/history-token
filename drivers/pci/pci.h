@@ -474,6 +474,10 @@ r_int
 id|pcie_mch_quirk
 suffix:semicolon
 r_extern
+r_int
+id|pci_msi_quirk
+suffix:semicolon
+r_extern
 r_struct
 id|device_attribute
 id|pci_dev_attrs

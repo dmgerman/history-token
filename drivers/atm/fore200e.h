@@ -2776,11 +2776,10 @@ r_typedef
 r_struct
 id|fore200e
 (brace
-DECL|member|next
+DECL|member|entry
 r_struct
-id|fore200e
-op_star
-id|next
+id|list_head
+id|entry
 suffix:semicolon
 multiline_comment|/* next device                        */
 DECL|member|bus

@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/net/sunrpc/rpcclnt.c&n; *&n; *  This file contains the high-level RPC interface.&n; *  It is modeled as a finite state machine to support both synchronous&n; *  and asynchronous requests.&n; *&n; *  -&t;RPC header generation and argument serialization.&n; *  -&t;Credential refresh.&n; *  -&t;TCP connect handling.&n; *  -&t;Retry of operation when it is suspected the operation failed because&n; *&t;of uid squashing on the server, or when the credentials were stale&n; *&t;and need to be refreshed, or when a packet was damaged in transit.&n; *&t;This may be have to be moved to the VFS layer.&n; *&n; *  NB: BSD uses a more intelligent approach to guessing when a request&n; *  or reply has been lost by keeping the RTO estimate for each procedure.&n; *  We currently make do with a constant timeout value.&n; *&n; *  Copyright (C) 1992,1993 Rick Sladkey &lt;jrs@world.std.com&gt;&n; *  Copyright (C) 1995,1996 Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -1701,15 +1702,17 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Set up the call info struct and execute the task */
+id|status
+op_assign
+id|task-&gt;tk_status
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|task-&gt;tk_status
+id|status
 op_eq
 l_int|0
 )paren
-id|status
-op_assign
 id|rpc_execute
 c_func
 (paren
@@ -1717,18 +1720,12 @@ id|task
 )paren
 suffix:semicolon
 r_else
-(brace
-id|status
-op_assign
-id|task-&gt;tk_status
-suffix:semicolon
 id|rpc_release_task
 c_func
 (paren
 id|task
 )paren
 suffix:semicolon
-)brace
 id|out
 suffix:colon
 id|rpc_clnt_sigunmask
@@ -1780,14 +1777,12 @@ id|task-&gt;tk_msg.rpc_cred
 op_ne
 l_int|NULL
 )paren
-(brace
 id|rpcauth_holdcred
 c_func
 (paren
 id|task
 )paren
 suffix:semicolon
-)brace
 r_else
 id|rpcauth_bindcred
 c_func
@@ -1884,6 +1879,29 @@ id|xprt
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Return size of largest payload RPC client can support, in bytes&n; *&n; * For stream transports, this is one RPC record fragment (see RFC&n; * 1831), as we don&squot;t support multi-record requests yet.  For datagram&n; * transports, this is the size of an IP packet minus the IP, UDP, and&n; * RPC header sizes.&n; */
+DECL|function|rpc_max_payload
+r_int
+id|rpc_max_payload
+c_func
+(paren
+r_struct
+id|rpc_clnt
+op_star
+id|clnt
+)paren
+(brace
+r_return
+id|clnt-&gt;cl_xprt-&gt;max_payload
+suffix:semicolon
+)brace
+DECL|variable|rpc_max_payload
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rpc_max_payload
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Restart an (async) RPC call. Usually called from within the&n; * exit handler.&n; */
 r_void
 DECL|function|rpc_restart_call
@@ -3425,69 +3443,6 @@ suffix:semicolon
 r_goto
 id|out_retry
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * The following is an NFS-specific hack to cater for setuid&n;&t; * processes whose uid is mapped to nobody on the server.&n;&t; */
-r_if
-c_cond
-(paren
-id|task-&gt;tk_client-&gt;cl_droppriv
-op_logical_and
-(paren
-id|ntohl
-c_func
-(paren
-op_star
-id|p
-)paren
-op_eq
-id|NFSERR_ACCES
-op_logical_or
-id|ntohl
-c_func
-(paren
-op_star
-id|p
-)paren
-op_eq
-id|NFSERR_PERM
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|RPC_IS_SETUID
-c_func
-(paren
-id|task
-)paren
-op_logical_and
-id|task-&gt;tk_suid_retry
-)paren
-(brace
-id|dprintk
-c_func
-(paren
-l_string|&quot;RPC: %4d retry squashed uid&bslash;n&quot;
-comma
-id|task-&gt;tk_pid
-)paren
-suffix:semicolon
-id|task-&gt;tk_flags
-op_xor_assign
-id|RPC_CALL_REALUID
-suffix:semicolon
-id|task-&gt;tk_action
-op_assign
-id|call_bind
-suffix:semicolon
-id|task-&gt;tk_suid_retry
-op_decrement
-suffix:semicolon
-r_goto
-id|out_retry
-suffix:semicolon
-)brace
 )brace
 id|task-&gt;tk_action
 op_assign

@@ -1,9 +1,9 @@
-multiline_comment|/* linux/include/asm/arch-s3c2410/regs-rtc.h&n; *&n; * Copyright (c) 2003 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;      http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 Internal RTC register definition&n; *&n; *  Changelog:&n; *    19-06-2003     BJD     Created file&n; *    12-03-2004     BJD     Updated include protection&n;*/
+multiline_comment|/* linux/include/asm/arch-s3c2410/regs-rtc.h&n; *&n; * Copyright (c) 2003 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;      http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 Internal RTC register definition&n; *&n; *  Changelog:&n; *    19-06-2003     BJD     Created file&n; *    12-03-2004     BJD     Updated include protection&n; *    15-01-2005     LCVR    Changed S3C2410_VA to S3C24XX_VA (s3c2400 support)&n;*/
 macro_line|#ifndef __ASM_ARCH_REGS_RTC_H
 DECL|macro|__ASM_ARCH_REGS_RTC_H
 mdefine_line|#define __ASM_ARCH_REGS_RTC_H __FILE__
 DECL|macro|S3C2410_RTCREG
-mdefine_line|#define S3C2410_RTCREG(x) ((x) + S3C2410_VA_RTC)
+mdefine_line|#define S3C2410_RTCREG(x) ((x) + S3C24XX_VA_RTC)
 DECL|macro|S3C2410_RTCCON
 mdefine_line|#define S3C2410_RTCCON&t;      S3C2410_RTCREG(0x40)
 DECL|macro|S3C2410_RTCCON_RTCEN

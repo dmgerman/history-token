@@ -541,6 +541,7 @@ id|ld
 suffix:semicolon
 )brace
 DECL|variable|lcd_class
+r_static
 r_struct
 r_class
 id|lcd_class

@@ -11,11 +11,11 @@ DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC&t;&t;&quot;ATI Radeon&quot;
 DECL|macro|DRIVER_DATE
 mdefine_line|#define DRIVER_DATE&t;&t;&quot;20050125&quot;
-multiline_comment|/* Interface history:&n; *&n; * 1.1 - ??&n; * 1.2 - Add vertex2 ioctl (keith)&n; *     - Add stencil capability to clear ioctl (gareth, keith)&n; *     - Increase MAX_TEXTURE_LEVELS (brian)&n; * 1.3 - Add cmdbuf ioctl (keith)&n; *     - Add support for new radeon packets (keith)&n; *     - Add getparam ioctl (keith)&n; *     - Add flip-buffers ioctl, deprecate fullscreen foo (keith).&n; * 1.4 - Add scratch registers to get_param ioctl.&n; * 1.5 - Add r200 packets to cmdbuf ioctl&n; *     - Add r200 function to init ioctl&n; *     - Add &squot;scalar2&squot; instruction to cmdbuf&n; * 1.6 - Add static GART memory manager&n; *       Add irq handler (won&squot;t be turned on unless X server knows to)&n; *       Add irq ioctls and irq_active getparam.&n; *       Add wait command for cmdbuf ioctl&n; *       Add GART offset query for getparam&n; * 1.7 - Add support for cube map registers: R200_PP_CUBIC_FACES_[0..5]&n; *       and R200_PP_CUBIC_OFFSET_F1_[0..5].&n; *       Added packets R200_EMIT_PP_CUBIC_FACES_[0..5] and&n; *       R200_EMIT_PP_CUBIC_OFFSETS_[0..5].  (brian)&n; * 1.8 - Remove need to call cleanup ioctls on last client exit (keith)&n; *       Add &squot;GET&squot; queries for starting additional clients on different VT&squot;s.&n; * 1.9 - Add DRM_IOCTL_RADEON_CP_RESUME ioctl.&n; *       Add texture rectangle support for r100.&n; * 1.10- Add SETPARAM ioctl; first parameter to set is FB_LOCATION, which&n; *       clients use to tell the DRM where they think the framebuffer is &n; *       located in the card&squot;s address space&n; * 1.11- Add packet R200_EMIT_RB3D_BLENDCOLOR to support GL_EXT_blend_color&n; *       and GL_EXT_blend_[func|equation]_separate on r200&n; * 1.12- Add R300 CP microcode support - this just loads the CP on r300&n; *       (No 3D support yet - just microcode loading)&n; * 1.13- Add packet R200_EMIT_TCL_POINT_SPRITE_CNTL for ARB_point_parameters&n; *     - Add hyperz support, add hyperz flags to clear ioctl.&n; * 1.14- Add support for color tiling&n; *     - Add R100/R200 surface allocation/free support&n; */
+multiline_comment|/* Interface history:&n; *&n; * 1.1 - ??&n; * 1.2 - Add vertex2 ioctl (keith)&n; *     - Add stencil capability to clear ioctl (gareth, keith)&n; *     - Increase MAX_TEXTURE_LEVELS (brian)&n; * 1.3 - Add cmdbuf ioctl (keith)&n; *     - Add support for new radeon packets (keith)&n; *     - Add getparam ioctl (keith)&n; *     - Add flip-buffers ioctl, deprecate fullscreen foo (keith).&n; * 1.4 - Add scratch registers to get_param ioctl.&n; * 1.5 - Add r200 packets to cmdbuf ioctl&n; *     - Add r200 function to init ioctl&n; *     - Add &squot;scalar2&squot; instruction to cmdbuf&n; * 1.6 - Add static GART memory manager&n; *       Add irq handler (won&squot;t be turned on unless X server knows to)&n; *       Add irq ioctls and irq_active getparam.&n; *       Add wait command for cmdbuf ioctl&n; *       Add GART offset query for getparam&n; * 1.7 - Add support for cube map registers: R200_PP_CUBIC_FACES_[0..5]&n; *       and R200_PP_CUBIC_OFFSET_F1_[0..5].&n; *       Added packets R200_EMIT_PP_CUBIC_FACES_[0..5] and&n; *       R200_EMIT_PP_CUBIC_OFFSETS_[0..5].  (brian)&n; * 1.8 - Remove need to call cleanup ioctls on last client exit (keith)&n; *       Add &squot;GET&squot; queries for starting additional clients on different VT&squot;s.&n; * 1.9 - Add DRM_IOCTL_RADEON_CP_RESUME ioctl.&n; *       Add texture rectangle support for r100.&n; * 1.10- Add SETPARAM ioctl; first parameter to set is FB_LOCATION, which&n; *       clients use to tell the DRM where they think the framebuffer is &n; *       located in the card&squot;s address space&n; * 1.11- Add packet R200_EMIT_RB3D_BLENDCOLOR to support GL_EXT_blend_color&n; *       and GL_EXT_blend_[func|equation]_separate on r200&n; * 1.12- Add R300 CP microcode support - this just loads the CP on r300&n; *       (No 3D support yet - just microcode loading)&n; * 1.13- Add packet R200_EMIT_TCL_POINT_SPRITE_CNTL for ARB_point_parameters&n; *     - Add hyperz support, add hyperz flags to clear ioctl.&n; * 1.14- Add support for color tiling&n; *     - Add R100/R200 surface allocation/free support&n; * 1.15- Add support for texture micro tiling&n; *     - Add support for r100 cube maps&n; */
 DECL|macro|DRIVER_MAJOR
 mdefine_line|#define DRIVER_MAJOR&t;&t;1
 DECL|macro|DRIVER_MINOR
-mdefine_line|#define DRIVER_MINOR&t;&t;14
+mdefine_line|#define DRIVER_MINOR&t;&t;15
 DECL|macro|DRIVER_PATCHLEVEL
 mdefine_line|#define DRIVER_PATCHLEVEL&t;0
 DECL|macro|GET_RING_HEAD
@@ -736,26 +736,6 @@ id|dev_priv
 suffix:semicolon
 r_extern
 r_int
-id|radeon_do_cleanup_cp
-c_func
-(paren
-id|drm_device_t
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|radeon_do_cleanup_pageflip
-c_func
-(paren
-id|drm_device_t
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|radeon_driver_preinit
 c_func
 (paren
@@ -778,103 +758,6 @@ r_struct
 id|drm_device
 op_star
 id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* radeon_state.c */
-r_extern
-r_int
-id|radeon_cp_clear
-c_func
-(paren
-id|DRM_IOCTL_ARGS
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|radeon_cp_swap
-c_func
-(paren
-id|DRM_IOCTL_ARGS
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|radeon_cp_vertex
-c_func
-(paren
-id|DRM_IOCTL_ARGS
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|radeon_cp_indices
-c_func
-(paren
-id|DRM_IOCTL_ARGS
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|radeon_cp_texture
-c_func
-(paren
-id|DRM_IOCTL_ARGS
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|radeon_cp_stipple
-c_func
-(paren
-id|DRM_IOCTL_ARGS
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|radeon_cp_indirect
-c_func
-(paren
-id|DRM_IOCTL_ARGS
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|radeon_cp_vertex2
-c_func
-(paren
-id|DRM_IOCTL_ARGS
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|radeon_cp_cmdbuf
-c_func
-(paren
-id|DRM_IOCTL_ARGS
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|radeon_cp_getparam
-c_func
-(paren
-id|DRM_IOCTL_ARGS
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|radeon_cp_setparam
-c_func
-(paren
-id|DRM_IOCTL_ARGS
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|radeon_cp_flip
-c_func
-(paren
-id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -927,22 +810,6 @@ op_star
 id|heap
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|radeon_surface_alloc
-c_func
-(paren
-id|DRM_IOCTL_ARGS
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|radeon_surface_free
-c_func
-(paren
-id|DRM_IOCTL_ARGS
-)paren
-suffix:semicolon
 multiline_comment|/* radeon_irq.c */
 r_extern
 r_int
@@ -958,39 +825,6 @@ id|radeon_irq_wait
 c_func
 (paren
 id|DRM_IOCTL_ARGS
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|radeon_emit_and_wait_irq
-c_func
-(paren
-id|drm_device_t
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|radeon_wait_irq
-c_func
-(paren
-id|drm_device_t
-op_star
-id|dev
-comma
-r_int
-id|swi_nr
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|radeon_emit_irq
-c_func
-(paren
-id|drm_device_t
-op_star
-id|dev
 )paren
 suffix:semicolon
 r_extern
@@ -2016,6 +1850,18 @@ DECL|macro|RADEON_PP_TEX_SIZE_1
 mdefine_line|#define RADEON_PP_TEX_SIZE_1                0x1d0c
 DECL|macro|RADEON_PP_TEX_SIZE_2
 mdefine_line|#define RADEON_PP_TEX_SIZE_2                0x1d14
+DECL|macro|RADEON_PP_CUBIC_FACES_0
+mdefine_line|#define RADEON_PP_CUBIC_FACES_0             0x1d24
+DECL|macro|RADEON_PP_CUBIC_FACES_1
+mdefine_line|#define RADEON_PP_CUBIC_FACES_1             0x1d28
+DECL|macro|RADEON_PP_CUBIC_FACES_2
+mdefine_line|#define RADEON_PP_CUBIC_FACES_2             0x1d2c
+DECL|macro|RADEON_PP_CUBIC_OFFSET_T0_0
+mdefine_line|#define RADEON_PP_CUBIC_OFFSET_T0_0         0x1dd0&t;/* bits [31:5] */
+DECL|macro|RADEON_PP_CUBIC_OFFSET_T1_0
+mdefine_line|#define RADEON_PP_CUBIC_OFFSET_T1_0         0x1e00
+DECL|macro|RADEON_PP_CUBIC_OFFSET_T2_0
+mdefine_line|#define RADEON_PP_CUBIC_OFFSET_T2_0         0x1e14
 DECL|macro|SE_VAP_CNTL__TCL_ENA_MASK
 mdefine_line|#define SE_VAP_CNTL__TCL_ENA_MASK                          0x00000001
 DECL|macro|SE_VAP_CNTL__FORCE_W_TO_ONE_MASK
@@ -2071,19 +1917,6 @@ DECL|macro|RADEON_WRITE8
 mdefine_line|#define RADEON_WRITE8(reg,val)&t;DRM_WRITE8( dev_priv-&gt;mmio, (reg), (val) )
 DECL|macro|RADEON_WRITE_PLL
 mdefine_line|#define RADEON_WRITE_PLL( addr, val )&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;RADEON_WRITE8( RADEON_CLOCK_CNTL_INDEX,&t;&t;&t;&t;&bslash;&n;&t;&t;       ((addr) &amp; 0x1f) | RADEON_PLL_WR_EN );&t;&t;&bslash;&n;&t;RADEON_WRITE( RADEON_CLOCK_CNTL_DATA, (val) );&t;&t;&t;&bslash;&n;} while (0)
-r_extern
-r_int
-id|RADEON_READ_PLL
-c_func
-(paren
-id|drm_device_t
-op_star
-id|dev
-comma
-r_int
-id|addr
-)paren
-suffix:semicolon
 DECL|macro|CP_PACKET0
 mdefine_line|#define CP_PACKET0( reg, n )&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(RADEON_CP_PACKET0 | ((n) &lt;&lt; 16) | ((reg) &gt;&gt; 2))
 DECL|macro|CP_PACKET0_TABLE

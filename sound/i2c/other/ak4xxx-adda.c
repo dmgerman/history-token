@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   ALSA driver for AK4524 / AK4528 / AK4529 / AK4355 / AK4381&n; *   AD and DA converters&n; *&n; *&t;Copyright (c) 2000-2003 Jaroslav Kysela &lt;perex@suse.cz&gt;,&n; *&t;&t;&t;&t;Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
+multiline_comment|/*&n; *   ALSA driver for AK4524 / AK4528 / AK4529 / AK4355 / AK4358 / AK4381&n; *   AD and DA converters&n; *&n; *&t;Copyright (c) 2000-2004 Jaroslav Kysela &lt;perex@suse.cz&gt;,&n; *&t;&t;&t;&t;Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -331,6 +331,9 @@ r_break
 suffix:semicolon
 r_case
 id|SND_AK4355
+suffix:colon
+r_case
+id|SND_AK4358
 suffix:colon
 r_if
 c_cond
@@ -775,6 +778,90 @@ suffix:semicolon
 r_static
 r_int
 r_char
+id|inits_ak4358
+(braket
+)braket
+op_assign
+(brace
+l_int|0x01
+comma
+l_int|0x02
+comma
+multiline_comment|/* 1: reset and soft-mute */
+l_int|0x00
+comma
+l_int|0x06
+comma
+multiline_comment|/* 0: mode3(i2s), disable auto-clock detect, disable DZF, sharp roll-off, RSTN#=0 */
+l_int|0x02
+comma
+l_int|0x0e
+comma
+multiline_comment|/* 2: DA&squot;s power up, normal speed, RSTN#=0 */
+singleline_comment|// 0x02, 0x2e, /* quad speed */
+l_int|0x03
+comma
+l_int|0x01
+comma
+multiline_comment|/* 3: de-emphasis off */
+l_int|0x04
+comma
+l_int|0x00
+comma
+multiline_comment|/* 4: LOUT1 volume muted */
+l_int|0x05
+comma
+l_int|0x00
+comma
+multiline_comment|/* 5: ROUT1 volume muted */
+l_int|0x06
+comma
+l_int|0x00
+comma
+multiline_comment|/* 6: LOUT2 volume muted */
+l_int|0x07
+comma
+l_int|0x00
+comma
+multiline_comment|/* 7: ROUT2 volume muted */
+l_int|0x08
+comma
+l_int|0x00
+comma
+multiline_comment|/* 8: LOUT3 volume muted */
+l_int|0x09
+comma
+l_int|0x00
+comma
+multiline_comment|/* 9: ROUT3 volume muted */
+l_int|0x0b
+comma
+l_int|0x00
+comma
+multiline_comment|/* b: LOUT4 volume muted */
+l_int|0x0c
+comma
+l_int|0x00
+comma
+multiline_comment|/* c: ROUT4 volume muted */
+l_int|0x0a
+comma
+l_int|0x00
+comma
+multiline_comment|/* a: DATT speed=0, ignore DZF */
+l_int|0x01
+comma
+l_int|0x01
+comma
+multiline_comment|/* 1: un-reset, unmute */
+l_int|0xff
+comma
+l_int|0xff
+)brace
+suffix:semicolon
+r_static
+r_int
+r_char
 id|inits_ak4381
 (braket
 )braket
@@ -888,6 +975,19 @@ suffix:colon
 id|inits
 op_assign
 id|inits_ak4355
+suffix:semicolon
+id|num_chips
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SND_AK4358
+suffix:colon
+id|inits
+op_assign
+id|inits_ak4358
 suffix:semicolon
 id|num_chips
 op_assign
@@ -1941,6 +2041,53 @@ multiline_comment|/* register 4-9, chip #0 only */
 r_break
 suffix:semicolon
 r_case
+id|SND_AK4358
+suffix:colon
+r_if
+c_cond
+(paren
+id|idx
+op_ge
+l_int|6
+)paren
+id|ctl.private_value
+op_assign
+id|AK_COMPOSE
+c_func
+(paren
+l_int|0
+comma
+id|idx
+op_plus
+l_int|5
+comma
+l_int|0
+comma
+l_int|255
+)paren
+suffix:semicolon
+multiline_comment|/* register 4-9, chip #0 only */
+r_else
+id|ctl.private_value
+op_assign
+id|AK_COMPOSE
+c_func
+(paren
+l_int|0
+comma
+id|idx
+op_plus
+l_int|4
+comma
+l_int|0
+comma
+l_int|255
+)paren
+suffix:semicolon
+multiline_comment|/* register 4-9, chip #0 only */
+r_break
+suffix:semicolon
+r_case
 id|SND_AK4381
 suffix:colon
 id|ctl.private_value
@@ -2250,6 +2397,10 @@ c_cond
 id|ak-&gt;type
 op_eq
 id|SND_AK4355
+op_logical_or
+id|ak-&gt;type
+op_eq
+id|SND_AK4358
 )paren
 id|num_emphs
 op_assign
@@ -2399,6 +2550,9 @@ suffix:semicolon
 )brace
 r_case
 id|SND_AK4355
+suffix:colon
+r_case
+id|SND_AK4358
 suffix:colon
 id|ctl.private_value
 op_assign

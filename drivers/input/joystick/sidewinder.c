@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: sidewinder.c,v 1.29 2002/01/22 20:28:51 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2001 Vojtech Pavlik&n; */
+multiline_comment|/*&n; *  Copyright (c) 1998-2005 Vojtech Pavlik&n; */
 multiline_comment|/*&n; * Microsoft SideWinder joystick family driver for Linux&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/delay.h&gt;
@@ -8,16 +8,19 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&quot;Microsoft SideWinder joystick family driver&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
 l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Microsoft SideWinder joystick family driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -27,13 +30,16 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * These are really magic values. Changing them can make a problem go away,&n; * as well as break everything.&n; */
-multiline_comment|/* #define SW_DEBUG */
+DECL|macro|SW_DEBUG
+macro_line|#undef SW_DEBUG
+DECL|macro|SW_DEBUG_DATA
+macro_line|#undef SW_DEBUG_DATA
 DECL|macro|SW_START
-mdefine_line|#define SW_START&t;400&t;/* The time we wait for the first bit [400 us] */
+mdefine_line|#define SW_START&t;600&t;/* The time we wait for the first bit [600 us] */
 DECL|macro|SW_STROBE
-mdefine_line|#define SW_STROBE&t;45&t;/* Max time per bit [45 us] */
+mdefine_line|#define SW_STROBE&t;60&t;/* Max time per bit [60 us] */
 DECL|macro|SW_TIMEOUT
-mdefine_line|#define SW_TIMEOUT&t;4000&t;/* Wait for everything to settle [4 ms] */
+mdefine_line|#define SW_TIMEOUT&t;6&t;/* Wait for everything to settle [6 ms] */
 DECL|macro|SW_KICK
 mdefine_line|#define SW_KICK&t;&t;45&t;/* Wait after A0 fall till kick [45 us] */
 DECL|macro|SW_END
@@ -46,8 +52,6 @@ DECL|macro|SW_OK
 mdefine_line|#define SW_OK&t;&t;64&t;/* Number of packet read successes to switch optimization back on */
 DECL|macro|SW_LENGTH
 mdefine_line|#define SW_LENGTH&t;512&t;/* Max number of bits in a packet */
-DECL|macro|SW_REFRESH
-mdefine_line|#define SW_REFRESH&t;HZ/50&t;/* Time to wait between updates of joystick data [20 ms] */
 macro_line|#ifdef SW_DEBUG
 DECL|macro|dbg
 mdefine_line|#define dbg(format, arg...) printk(KERN_DEBUG __FILE__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg)
@@ -480,11 +484,6 @@ id|gameport
 op_star
 id|gameport
 suffix:semicolon
-DECL|member|timer
-r_struct
-id|timer_list
-id|timer
-suffix:semicolon
 DECL|member|dev
 r_struct
 id|input_dev
@@ -541,10 +540,6 @@ suffix:semicolon
 DECL|member|bads
 r_int
 id|bads
-suffix:semicolon
-DECL|member|used
-r_int
-id|used
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -616,6 +611,8 @@ c_func
 id|gameport
 comma
 id|SW_TIMEOUT
+op_star
+l_int|1000
 )paren
 suffix:colon
 l_int|0
@@ -913,7 +910,7 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Done - relax */
-macro_line|#ifdef SW_DEBUG
+macro_line|#ifdef SW_DEBUG_DATA
 (brace
 r_int
 id|j
@@ -1133,6 +1130,8 @@ c_func
 id|gameport
 comma
 id|SW_TIMEOUT
+op_star
+l_int|1000
 )paren
 suffix:semicolon
 r_while
@@ -2666,7 +2665,7 @@ id|SW_ID_3DP
 )paren
 (brace
 multiline_comment|/* 3D Pro can be in analog mode */
-id|udelay
+id|mdelay
 c_func
 (paren
 l_int|3
@@ -2681,7 +2680,7 @@ id|sw-&gt;gameport
 )paren
 suffix:semicolon
 )brace
-id|udelay
+id|mdelay
 c_func
 (paren
 id|SW_TIMEOUT
@@ -2702,7 +2701,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Read normal data packet */
-id|udelay
+id|mdelay
 c_func
 (paren
 id|SW_TIMEOUT
@@ -2730,15 +2729,16 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|sw_timer
+DECL|function|sw_poll
 r_static
 r_void
-id|sw_timer
+id|sw_poll
 c_func
 (paren
-r_int
-r_int
-r_private
+r_struct
+id|gameport
+op_star
+id|gameport
 )paren
 (brace
 r_struct
@@ -2746,11 +2746,11 @@ id|sw
 op_star
 id|sw
 op_assign
+id|gameport_get_drvdata
+c_func
 (paren
-r_void
-op_star
+id|gameport
 )paren
-r_private
 suffix:semicolon
 id|sw-&gt;reads
 op_increment
@@ -2766,17 +2766,6 @@ id|sw
 )paren
 id|sw-&gt;bads
 op_increment
-suffix:semicolon
-id|mod_timer
-c_func
-(paren
-op_amp
-id|sw-&gt;timer
-comma
-id|jiffies
-op_plus
-id|SW_REFRESH
-)paren
 suffix:semicolon
 )brace
 DECL|function|sw_open
@@ -2800,22 +2789,10 @@ id|dev
 op_member_access_from_pointer
 r_private
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sw-&gt;used
-op_increment
-)paren
-id|mod_timer
+id|gameport_start_polling
 c_func
 (paren
-op_amp
-id|sw-&gt;timer
-comma
-id|jiffies
-op_plus
-id|SW_REFRESH
+id|sw-&gt;gameport
 )paren
 suffix:semicolon
 r_return
@@ -2843,18 +2820,10 @@ id|dev
 op_member_access_from_pointer
 r_private
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-op_decrement
-id|sw-&gt;used
-)paren
-id|del_timer
+id|gameport_stop_polling
 c_func
 (paren
-op_amp
-id|sw-&gt;timer
+id|sw-&gt;gameport
 )paren
 suffix:semicolon
 )brace
@@ -3220,7 +3189,7 @@ suffix:semicolon
 multiline_comment|/*&n; * sw_connect() probes for SideWinder type joysticks.&n; */
 DECL|function|sw_connect
 r_static
-r_void
+r_int
 id|sw_connect
 c_func
 (paren
@@ -3230,9 +3199,9 @@ op_star
 id|gameport
 comma
 r_struct
-id|gameport_dev
+id|gameport_driver
 op_star
-id|dev
+id|drv
 )paren
 (brace
 r_struct
@@ -3248,6 +3217,9 @@ comma
 id|k
 comma
 id|l
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 r_int
 r_char
@@ -3284,16 +3256,13 @@ l_int|0
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
 id|sw
 op_assign
-id|kmalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
 r_struct
@@ -3301,23 +3270,6 @@ id|sw
 )paren
 comma
 id|GFP_KERNEL
-)paren
-)paren
-)paren
-r_return
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|sw
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|sw
-)paren
 )paren
 suffix:semicolon
 id|buf
@@ -3343,55 +3295,53 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|sw
+op_logical_or
 op_logical_neg
 id|buf
 op_logical_or
 op_logical_neg
 id|idbuf
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_goto
 id|fail1
 suffix:semicolon
-id|gameport
-op_member_access_from_pointer
-r_private
-op_assign
-id|sw
-suffix:semicolon
+)brace
 id|sw-&gt;gameport
 op_assign
 id|gameport
 suffix:semicolon
-id|init_timer
+id|gameport_set_drvdata
 c_func
 (paren
-op_amp
-id|sw-&gt;timer
-)paren
-suffix:semicolon
-id|sw-&gt;timer.data
-op_assign
-(paren
-r_int
-)paren
+id|gameport
+comma
 id|sw
+)paren
 suffix:semicolon
-id|sw-&gt;timer.function
+id|err
 op_assign
-id|sw_timer
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|gameport_open
 c_func
 (paren
 id|gameport
 comma
-id|dev
+id|drv
 comma
 id|GAMEPORT_MODE_RAW
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 r_goto
 id|fail1
@@ -3423,7 +3373,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Read normal packet */
-id|udelay
+id|msleep
 c_func
 (paren
 id|SW_TIMEOUT
@@ -3454,7 +3404,7 @@ id|gameport
 )paren
 suffix:semicolon
 multiline_comment|/* Switch to digital */
-id|udelay
+id|msleep
 c_func
 (paren
 id|SW_TIMEOUT
@@ -3475,7 +3425,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Retry reading packet */
-id|udelay
+id|msleep
 c_func
 (paren
 id|SW_TIMEOUT
@@ -3495,10 +3445,17 @@ c_cond
 op_logical_neg
 id|i
 )paren
+(brace
+multiline_comment|/* No data -&gt; FAIL */
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|fail2
 suffix:semicolon
-multiline_comment|/* No data -&gt; FAIL */
+)brace
 )brace
 id|j
 op_assign
@@ -3539,12 +3496,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|j
+op_le
+l_int|0
 )paren
 (brace
 multiline_comment|/* Read ID failed. Happens in 1-bit mode on PP */
-id|udelay
+id|msleep
 c_func
 (paren
 id|SW_TIMEOUT
@@ -3565,6 +3523,16 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Retry reading packet */
+id|m
+op_or_assign
+id|sw_guess_mode
+c_func
+(paren
+id|buf
+comma
+id|i
+)paren
+suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -3581,10 +3549,17 @@ c_cond
 op_logical_neg
 id|i
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|fail2
 suffix:semicolon
-id|udelay
+)brace
+id|msleep
 c_func
 (paren
 id|SW_TIMEOUT
@@ -3633,7 +3608,7 @@ r_do
 id|k
 op_decrement
 suffix:semicolon
-id|udelay
+id|msleep
 c_func
 (paren
 id|SW_TIMEOUT
@@ -3872,12 +3847,10 @@ c_loop
 (paren
 id|k
 op_logical_and
-(paren
 id|sw-&gt;type
 op_eq
 op_minus
 l_int|1
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -3927,6 +3900,11 @@ comma
 id|m
 )paren
 suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|fail2
 suffix:semicolon
@@ -3961,6 +3939,22 @@ id|m
 )paren
 suffix:semicolon
 macro_line|#endif
+id|gameport_set_poll_handler
+c_func
+(paren
+id|gameport
+comma
+id|sw_poll
+)paren
+suffix:semicolon
+id|gameport_set_poll_interval
+c_func
+(paren
+id|gameport
+comma
+l_int|20
+)paren
+suffix:semicolon
 id|k
 op_assign
 id|i
@@ -4347,6 +4341,7 @@ id|k
 suffix:semicolon
 )brace
 r_return
+l_int|0
 suffix:semicolon
 id|fail2
 suffix:colon
@@ -4358,6 +4353,14 @@ id|gameport
 suffix:semicolon
 id|fail1
 suffix:colon
+id|gameport_set_drvdata
+c_func
+(paren
+id|gameport
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -4376,6 +4379,9 @@ c_func
 id|idbuf
 )paren
 suffix:semicolon
+r_return
+id|err
+suffix:semicolon
 )brace
 DECL|function|sw_disconnect
 r_static
@@ -4389,17 +4395,19 @@ op_star
 id|gameport
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 r_struct
 id|sw
 op_star
 id|sw
 op_assign
+id|gameport_get_drvdata
+c_func
+(paren
 id|gameport
-op_member_access_from_pointer
-r_private
+)paren
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 r_for
 c_loop
@@ -4429,6 +4437,14 @@ c_func
 id|gameport
 )paren
 suffix:semicolon
+id|gameport_set_drvdata
+c_func
+(paren
+id|gameport
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -4436,13 +4452,29 @@ id|sw
 )paren
 suffix:semicolon
 )brace
-DECL|variable|sw_dev
+DECL|variable|sw_drv
 r_static
 r_struct
-id|gameport_dev
-id|sw_dev
+id|gameport_driver
+id|sw_drv
 op_assign
 (brace
+dot
+id|driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;sidewinder&quot;
+comma
+)brace
+comma
+dot
+id|description
+op_assign
+id|DRIVER_DESC
+comma
 dot
 id|connect
 op_assign
@@ -4456,6 +4488,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|sw_init
+r_static
 r_int
 id|__init
 id|sw_init
@@ -4464,11 +4497,11 @@ c_func
 r_void
 )paren
 (brace
-id|gameport_register_device
+id|gameport_register_driver
 c_func
 (paren
 op_amp
-id|sw_dev
+id|sw_drv
 )paren
 suffix:semicolon
 r_return
@@ -4476,6 +4509,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|sw_exit
+r_static
 r_void
 id|__exit
 id|sw_exit
@@ -4484,11 +4518,11 @@ c_func
 r_void
 )paren
 (brace
-id|gameport_unregister_device
+id|gameport_unregister_driver
 c_func
 (paren
 op_amp
-id|sw_dev
+id|sw_drv
 )paren
 suffix:semicolon
 )brace

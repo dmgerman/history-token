@@ -1570,6 +1570,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|nfs_pagein_list
 id|nfs_pagein_list

@@ -246,7 +246,7 @@ DECL|macro|PAT_MEMUSE_GNI
 mdefine_line|#define PAT_MEMUSE_GNI&t;&t;&t;129
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#ifdef CONFIG_PARISC64
+macro_line|#ifdef CONFIG_64BIT
 DECL|macro|is_pdc_pat
 mdefine_line|#define is_pdc_pat()&t;(PDC_TYPE_PAT == pdc_type)
 r_extern
@@ -278,7 +278,7 @@ r_int
 id|cell_num
 )paren
 suffix:semicolon
-macro_line|#else&t;/* ! CONFIG_PARISC64 */
+macro_line|#else&t;/* ! CONFIG_64BIT */
 multiline_comment|/* No PAT support for 32-bit kernels...sorry */
 DECL|macro|is_pdc_pat
 mdefine_line|#define is_pdc_pat()&t;(0)
@@ -286,7 +286,7 @@ DECL|macro|pdc_pat_get_irt_size
 mdefine_line|#define pdc_pat_get_irt_size(num_entries, cell_numn)&t;PDC_BAD_PROC
 DECL|macro|pdc_pat_get_irt
 mdefine_line|#define pdc_pat_get_irt(r_addr, cell_num)&t;&t;PDC_BAD_PROC
-macro_line|#endif&t;/* ! CONFIG_PARISC64 */
+macro_line|#endif&t;/* ! CONFIG_64BIT */
 DECL|struct|pdc_pat_cell_num
 r_struct
 id|pdc_pat_cell_num

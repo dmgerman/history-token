@@ -1,4 +1,3 @@
-macro_line|#include &lt;sys/ptrace.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &quot;sysdep/ptrace.h&quot;
@@ -55,7 +54,7 @@ op_assign
 id|ptrace
 c_func
 (paren
-id|PTRACE_PEEKUSER
+id|PTRACE_PEEKUSR
 comma
 id|pid
 comma
@@ -142,7 +141,7 @@ c_cond
 id|ptrace
 c_func
 (paren
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 comma
 id|pid
 comma
