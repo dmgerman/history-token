@@ -261,6 +261,7 @@ id|copy_siginfo_to_user32
 c_func
 (paren
 id|siginfo_t32
+id|__user
 op_star
 id|to
 comma

@@ -65,6 +65,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|filename
 comma
@@ -103,6 +104,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|filename
 comma
@@ -321,14 +323,17 @@ id|sys32_getresuid16
 c_func
 (paren
 id|u16
+id|__user
 op_star
 id|ruid
 comma
 id|u16
+id|__user
 op_star
 id|euid
 comma
 id|u16
+id|__user
 op_star
 id|suid
 )paren
@@ -438,14 +443,17 @@ id|sys32_getresgid16
 c_func
 (paren
 id|u16
+id|__user
 op_star
 id|rgid
 comma
 id|u16
+id|__user
 op_star
 id|egid
 comma
 id|u16
+id|__user
 op_star
 id|sgid
 )paren
@@ -557,6 +565,7 @@ id|groups16_to_user
 c_func
 (paren
 id|u16
+id|__user
 op_star
 id|grouplist
 comma
@@ -634,6 +643,7 @@ op_star
 id|group_info
 comma
 id|u16
+id|__user
 op_star
 id|grouplist
 )paren
@@ -704,6 +714,7 @@ r_int
 id|gidsetsize
 comma
 id|u16
+id|__user
 op_star
 id|grouplist
 )paren
@@ -799,6 +810,7 @@ r_int
 id|gidsetsize
 comma
 id|u16
+id|__user
 op_star
 id|grouplist
 )paren
@@ -983,6 +995,7 @@ id|o
 comma
 r_struct
 id|compat_timeval
+id|__user
 op_star
 id|i
 )paren
@@ -1035,6 +1048,7 @@ c_func
 (paren
 r_struct
 id|compat_timeval
+id|__user
 op_star
 id|o
 comma
@@ -1522,6 +1536,7 @@ id|pad
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|uptr
@@ -1554,6 +1569,7 @@ id|fourth.__pad
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|A
@@ -1647,12 +1663,14 @@ id|s
 suffix:semicolon
 r_struct
 id|semid64_ds32
+id|__user
 op_star
 id|usp
 op_assign
 (paren
 r_struct
 id|semid64_ds32
+id|__user
 op_star
 )paren
 id|A
@@ -1719,6 +1737,11 @@ id|out
 suffix:semicolon
 id|fourth.__pad
 op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
 op_amp
 id|s
 suffix:semicolon
@@ -1753,6 +1776,11 @@ id|need_back_translation
 )paren
 id|fourth.__pad
 op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
 op_amp
 id|s
 suffix:semicolon
@@ -1846,12 +1874,14 @@ id|s
 suffix:semicolon
 r_struct
 id|semid_ds32
+id|__user
 op_star
 id|usp
 op_assign
 (paren
 r_struct
 id|semid_ds32
+id|__user
 op_star
 )paren
 id|A
@@ -1914,6 +1944,11 @@ id|out
 suffix:semicolon
 id|fourth.__pad
 op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
 op_amp
 id|s
 suffix:semicolon
@@ -1948,6 +1983,11 @@ id|need_back_translation
 )paren
 id|fourth.__pad
 op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
 op_amp
 id|s
 suffix:semicolon
@@ -2160,12 +2200,14 @@ id|GFP_USER
 suffix:semicolon
 r_struct
 id|msgbuf32
+id|__user
 op_star
 id|up
 op_assign
 (paren
 r_struct
 id|msgbuf32
+id|__user
 op_star
 )paren
 id|uptr
@@ -2232,6 +2274,12 @@ id|sys_msgsnd
 (paren
 id|first
 comma
+(paren
+r_struct
+id|msgbuf
+id|__user
+op_star
+)paren
 id|p
 comma
 id|second
@@ -2282,6 +2330,7 @@ id|uptr
 (brace
 r_struct
 id|msgbuf32
+id|__user
 op_star
 id|up
 suffix:semicolon
@@ -2305,12 +2354,14 @@ id|version
 (brace
 r_struct
 id|ipc_kludge
+id|__user
 op_star
 id|uipck
 op_assign
 (paren
 r_struct
 id|ipc_kludge
+id|__user
 op_star
 )paren
 id|uptr
@@ -2421,6 +2472,12 @@ id|sys_msgrcv
 (paren
 id|first
 comma
+(paren
+r_struct
+id|msgbuf
+id|__user
+op_star
+)paren
 id|p
 comma
 id|second
@@ -2450,6 +2507,7 @@ op_assign
 (paren
 r_struct
 id|msgbuf32
+id|__user
 op_star
 )paren
 id|uptr
@@ -2549,6 +2607,7 @@ comma
 (paren
 r_struct
 id|msqid_ds
+id|__user
 op_star
 )paren
 id|uptr
@@ -2570,12 +2629,14 @@ id|m
 suffix:semicolon
 r_struct
 id|msqid64_ds32
+id|__user
 op_star
 id|up
 op_assign
 (paren
 r_struct
 id|msqid64_ds32
+id|__user
 op_star
 )paren
 id|uptr
@@ -2666,6 +2727,7 @@ comma
 (paren
 r_struct
 id|msqid_ds
+id|__user
 op_star
 )paren
 op_amp
@@ -2794,12 +2856,14 @@ id|m
 suffix:semicolon
 r_struct
 id|msqid_ds32
+id|__user
 op_star
 id|up
 op_assign
 (paren
 r_struct
 id|msqid_ds32
+id|__user
 op_star
 )paren
 id|uptr
@@ -2883,6 +2947,12 @@ id|first
 comma
 id|second
 comma
+(paren
+r_struct
+id|msqid_ds
+id|__user
+op_star
+)paren
 op_amp
 id|m
 )paren
@@ -3116,6 +3186,7 @@ r_int
 id|version
 comma
 r_void
+id|__user
 op_star
 id|uptr
 )paren
@@ -3125,11 +3196,13 @@ r_int
 id|raddr
 suffix:semicolon
 id|u32
+id|__user
 op_star
 id|uaddr
 op_assign
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|A
@@ -3271,6 +3344,7 @@ comma
 (paren
 r_struct
 id|shmid_ds
+id|__user
 op_star
 )paren
 id|uptr
@@ -3302,12 +3376,14 @@ id|s
 suffix:semicolon
 r_struct
 id|shmid64_ds32
+id|__user
 op_star
 id|up
 op_assign
 (paren
 r_struct
 id|shmid64_ds32
+id|__user
 op_star
 )paren
 id|uptr
@@ -3388,6 +3464,7 @@ comma
 (paren
 r_struct
 id|shmid_ds
+id|__user
 op_star
 )paren
 op_amp
@@ -3516,12 +3593,14 @@ id|s
 suffix:semicolon
 r_struct
 id|shmid_ds32
+id|__user
 op_star
 id|up
 op_assign
 (paren
 r_struct
 id|shmid_ds32
+id|__user
 op_star
 )paren
 id|uptr
@@ -3600,6 +3679,12 @@ id|first
 comma
 id|second
 comma
+(paren
+r_struct
+id|shmid_ds
+id|__user
+op_star
+)paren
 op_amp
 id|s
 )paren
@@ -3647,12 +3732,17 @@ comma
 id|swap_successes
 suffix:semicolon
 )brace
+suffix:semicolon
+r_struct
+id|shm_info32
+id|__user
 op_star
 id|uip
 op_assign
 (paren
 r_struct
 id|shm_info32
+id|__user
 op_star
 )paren
 id|uptr
@@ -3950,6 +4040,7 @@ id|semid
 comma
 r_struct
 id|sembuf
+id|__user
 op_star
 id|tsems
 comma
@@ -3959,6 +4050,7 @@ comma
 r_const
 r_struct
 id|compat_timespec
+id|__user
 op_star
 id|timeout32
 )paren
@@ -3969,6 +4061,7 @@ id|t32
 suffix:semicolon
 r_struct
 id|timespec
+id|__user
 op_star
 id|t64
 op_assign
@@ -4108,6 +4201,7 @@ comma
 (paren
 r_struct
 id|sembuf
+id|__user
 op_star
 )paren
 id|AA
@@ -4136,6 +4230,7 @@ comma
 (paren
 r_struct
 id|sembuf
+id|__user
 op_star
 )paren
 id|AA
@@ -4150,6 +4245,7 @@ comma
 r_const
 r_struct
 id|compat_timespec
+id|__user
 op_star
 )paren
 id|AA
@@ -4370,6 +4466,7 @@ id|version
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|AA
@@ -4391,6 +4488,7 @@ id|sys_shmdt
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|AA
@@ -4475,6 +4573,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|path
 comma
@@ -4570,7 +4669,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* readdir &amp; getdents */
 DECL|macro|NAME_OFFSET
-mdefine_line|#define NAME_OFFSET(de) ((int) ((de)-&gt;d_name - (char *) (de)))
+mdefine_line|#define NAME_OFFSET(de) ((int) ((de)-&gt;d_name - (char __user *) (de)))
 DECL|macro|ROUND_UP
 mdefine_line|#define ROUND_UP(x) (((x)+sizeof(u32)-1) &amp; ~(sizeof(u32)-1))
 DECL|struct|old_linux_dirent32
@@ -4606,6 +4705,7 @@ id|readdir_callback32
 DECL|member|dirent
 r_struct
 id|old_linux_dirent32
+id|__user
 op_star
 id|dirent
 suffix:semicolon
@@ -4658,6 +4758,7 @@ id|__buf
 suffix:semicolon
 r_struct
 id|old_linux_dirent32
+id|__user
 op_star
 id|dirent
 suffix:semicolon
@@ -4740,6 +4841,7 @@ id|fd
 comma
 r_struct
 id|old_linux_dirent32
+id|__user
 op_star
 id|dirent
 comma
@@ -4862,12 +4964,14 @@ id|getdents_callback32
 DECL|member|current_dir
 r_struct
 id|linux_dirent32
+id|__user
 op_star
 id|current_dir
 suffix:semicolon
 DECL|member|previous
 r_struct
 id|linux_dirent32
+id|__user
 op_star
 id|previous
 suffix:semicolon
@@ -4912,6 +5016,7 @@ id|d_type
 (brace
 r_struct
 id|linux_dirent32
+id|__user
 op_star
 id|dirent
 suffix:semicolon
@@ -5032,6 +5137,7 @@ id|d_type
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|dirent
@@ -5045,6 +5151,7 @@ id|dirent
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|dirent
@@ -5075,6 +5182,7 @@ id|fd
 comma
 r_struct
 id|linux_dirent32
+id|__user
 op_star
 id|dirent
 comma
@@ -5090,6 +5198,7 @@ id|file
 suffix:semicolon
 r_struct
 id|linux_dirent32
+id|__user
 op_star
 id|lastdirent
 suffix:semicolon
@@ -5216,6 +5325,7 @@ id|stat
 comma
 r_struct
 id|compat_stat
+id|__user
 op_star
 id|statbuf
 )paren
@@ -5590,6 +5700,7 @@ c_func
 (paren
 r_struct
 id|sysinfo32
+id|__user
 op_star
 id|info
 )paren
@@ -5626,6 +5737,12 @@ op_assign
 id|sys_sysinfo
 c_func
 (paren
+(paren
+r_struct
+id|sysinfo
+id|__user
+op_star
+)paren
 op_amp
 id|s
 )paren
@@ -5884,6 +6001,7 @@ id|pid
 comma
 r_struct
 id|compat_timespec
+id|__user
 op_star
 id|interval
 )paren
@@ -5914,6 +6032,12 @@ c_func
 (paren
 id|pid
 comma
+(paren
+r_struct
+id|timespec
+id|__user
+op_star
+)paren
 op_amp
 id|t
 )paren
@@ -5953,10 +6077,12 @@ r_int
 id|how
 comma
 id|compat_sigset_t
+id|__user
 op_star
 id|set
 comma
 id|compat_sigset_t
+id|__user
 op_star
 id|oset
 comma
@@ -6138,6 +6264,11 @@ comma
 id|set
 ques
 c_cond
+(paren
+id|sigset_t
+id|__user
+op_star
+)paren
 op_amp
 id|s
 suffix:colon
@@ -6146,6 +6277,11 @@ comma
 id|oset
 ques
 c_cond
+(paren
+id|sigset_t
+id|__user
+op_star
+)paren
 op_amp
 id|s
 suffix:colon
@@ -6320,6 +6456,7 @@ id|sys32_rt_sigpending
 c_func
 (paren
 id|compat_sigset_t
+id|__user
 op_star
 id|set
 comma
@@ -6354,6 +6491,11 @@ op_assign
 id|sys_rt_sigpending
 c_func
 (paren
+(paren
+id|sigset_t
+id|__user
+op_star
+)paren
 op_amp
 id|s
 comma
@@ -6519,15 +6661,18 @@ id|sys32_rt_sigtimedwait
 c_func
 (paren
 id|compat_sigset_t
+id|__user
 op_star
 id|uthese
 comma
 id|siginfo_t32
+id|__user
 op_star
 id|uinfo
 comma
 r_struct
 id|compat_timespec
+id|__user
 op_star
 id|uts
 comma
@@ -6997,6 +7142,7 @@ r_int
 id|sig
 comma
 id|siginfo_t32
+id|__user
 op_star
 id|uinfo
 )paren
@@ -7060,6 +7206,11 @@ id|pid
 comma
 id|sig
 comma
+(paren
+id|siginfo_t
+id|__user
+op_star
+)paren
 op_amp
 id|info
 )paren
@@ -7083,11 +7234,13 @@ id|sig
 comma
 r_struct
 id|old_sigaction32
+id|__user
 op_star
 id|act
 comma
 r_struct
 id|old_sigaction32
+id|__user
 op_star
 id|oact
 )paren
@@ -7325,15 +7478,18 @@ id|sig
 comma
 r_struct
 id|sigaction32
+id|__user
 op_star
 id|act
 comma
 r_struct
 id|sigaction32
+id|__user
 op_star
 id|oact
 comma
 r_void
+id|__user
 op_star
 id|restorer
 comma
@@ -7858,6 +8014,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|AA
@@ -8000,6 +8157,7 @@ id|sys32_init_module
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|umod
 comma
@@ -8008,6 +8166,7 @@ id|len
 comma
 r_const
 r_char
+id|__user
 op_star
 id|uargs
 )paren
@@ -8032,6 +8191,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|name_user
 comma
@@ -8105,11 +8265,13 @@ c_func
 (paren
 r_struct
 id|compat_timeval
+id|__user
 op_star
 id|tv
 comma
 r_struct
 id|timezone
+id|__user
 op_star
 id|tz
 )paren
@@ -8194,6 +8356,7 @@ id|o
 comma
 r_struct
 id|compat_timeval
+id|__user
 op_star
 id|i
 )paren
@@ -8273,11 +8436,13 @@ c_func
 (paren
 r_struct
 id|compat_timeval
+id|__user
 op_star
 id|tv
 comma
 r_struct
 id|timezone
+id|__user
 op_star
 id|tz
 )paren
@@ -8370,11 +8535,13 @@ id|sys32_utimes
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|filename
 comma
 r_struct
 id|compat_timeval
+id|__user
 op_star
 id|tvs
 )paren
@@ -8525,6 +8692,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|AA
@@ -8588,6 +8756,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|AA
@@ -8663,6 +8832,7 @@ r_int
 id|fd
 comma
 r_char
+id|__user
 op_star
 id|ubuf
 comma
@@ -8718,6 +8888,7 @@ r_int
 id|fd
 comma
 r_char
+id|__user
 op_star
 id|ubuf
 comma
@@ -8947,6 +9118,7 @@ r_int
 id|in_fd
 comma
 id|compat_off_t
+id|__user
 op_star
 id|offset
 comma
@@ -9003,6 +9175,11 @@ comma
 id|offset
 ques
 c_cond
+(paren
+id|off_t
+id|__user
+op_star
+)paren
 op_amp
 id|of
 suffix:colon
@@ -9051,6 +9228,7 @@ r_int
 id|in_fd
 comma
 id|compat_loff_t
+id|__user
 op_star
 id|offset
 comma
@@ -9107,6 +9285,11 @@ comma
 id|offset
 ques
 c_cond
+(paren
+id|loff_t
+id|__user
+op_star
+)paren
 op_amp
 id|lof
 suffix:colon
@@ -9292,6 +9475,7 @@ c_func
 (paren
 r_struct
 id|timex32
+id|__user
 op_star
 id|utp
 )paren
@@ -9719,6 +9903,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|filename
 comma
@@ -10211,6 +10396,7 @@ c_func
 (paren
 r_struct
 id|__sysctl_args32
+id|__user
 op_star
 id|args
 )paren
@@ -10231,6 +10417,7 @@ suffix:semicolon
 r_int
 id|oldlen
 comma
+id|__user
 op_star
 id|oldlenp
 op_assign
@@ -10244,6 +10431,7 @@ op_assign
 (paren
 (paren
 r_int
+r_int
 )paren
 op_amp
 id|args-&gt;__unused
@@ -10252,11 +10440,11 @@ l_int|0
 )braket
 )paren
 op_plus
-l_int|7
+l_int|7UL
 )paren
 op_amp
 op_complement
-l_int|7
+l_int|7UL
 suffix:semicolon
 r_if
 c_cond
@@ -10298,6 +10486,7 @@ id|oldlen
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|A
@@ -10314,6 +10503,7 @@ id|oldlen
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|addr
@@ -10327,6 +10517,7 @@ id|oldlenp
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|addr
@@ -10344,6 +10535,7 @@ c_func
 (paren
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|A
@@ -10356,6 +10548,7 @@ id|tmp.nlen
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|A
@@ -10368,6 +10561,7 @@ id|oldlenp
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|A
@@ -10407,6 +10601,7 @@ id|oldlen
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|addr
@@ -10419,6 +10614,7 @@ id|oldlen
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|A
@@ -10465,6 +10661,7 @@ id|u32
 id|cookie_low
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -10502,10 +10699,12 @@ id|which_clock
 comma
 r_struct
 id|sigevent
+id|__user
 op_star
 id|timer_event_spec
 comma
 id|timer_t
+id|__user
 op_star
 id|created_timer_id
 )paren
@@ -10520,10 +10719,12 @@ id|clock
 comma
 r_struct
 id|sigevent32
+id|__user
 op_star
 id|se32
 comma
 id|timer_t
+id|__user
 op_star
 id|timer_id
 )paren
@@ -10664,9 +10865,20 @@ c_func
 (paren
 id|clock
 comma
+(paren
+r_struct
+id|sigevent
+id|__user
+op_star
+)paren
 op_amp
 id|se
 comma
+(paren
+id|timer_t
+id|__user
+op_star
+)paren
 op_amp
 id|t
 )paren
