@@ -147,7 +147,7 @@ l_int|0x08b1
 )paren
 )brace
 comma
-multiline_comment|/* Logitech QuickCam for Notebooks */
+multiline_comment|/* Logitech QuickCam Notebook Pro */
 (brace
 id|USB_DEVICE
 c_func
@@ -4511,8 +4511,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|up
 c_func
 (paren
@@ -6920,12 +6918,12 @@ suffix:colon
 id|Info
 c_func
 (paren
-l_string|&quot;Logitech QuickCam for Noteboos USB webcam detected.&bslash;n&quot;
+l_string|&quot;Logitech QuickCam Notebook Pro USB webcam detected.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|name
 op_assign
-l_string|&quot;Logitech QuickCam Notebook&quot;
+l_string|&quot;Logitech QuickCam Notebook Pro&quot;
 suffix:semicolon
 id|type_id
 op_assign

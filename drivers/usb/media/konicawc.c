@@ -83,7 +83,8 @@ DECL|macro|MAX_FRAME_SIZE
 mdefine_line|#define MAX_FRAME_SIZE&t;SIZE_320X240
 DECL|variable|cams
 r_static
-id|usbvideo_t
+r_struct
+id|usbvideo
 op_star
 id|cams
 suffix:semicolon

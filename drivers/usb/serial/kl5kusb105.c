@@ -307,6 +307,11 @@ op_assign
 l_string|&quot;KL5KUSB105D / PalmConnect&quot;
 comma
 dot
+id|short_name
+op_assign
+l_string|&quot;kl5kusb105d&quot;
+comma
+dot
 id|id_table
 op_assign
 id|id_table
