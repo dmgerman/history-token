@@ -4625,6 +4625,12 @@ id|PFX
 l_string|&quot;invalid powernow_table&bslash;n&quot;
 )paren
 suffix:semicolon
+id|powernow_k8_cpu_exit_acpi
+c_func
+(paren
+id|data
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -4683,6 +4689,12 @@ suffix:semicolon
 id|schedule
 c_func
 (paren
+)paren
+suffix:semicolon
+id|powernow_k8_cpu_exit_acpi
+c_func
+(paren
+id|data
 )paren
 suffix:semicolon
 id|kfree
