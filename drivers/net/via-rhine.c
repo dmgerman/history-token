@@ -1727,7 +1727,6 @@ macro_line|#ifdef USE_MMIO
 DECL|function|enable_mmio
 r_static
 r_void
-id|__devinit
 id|enable_mmio
 c_func
 (paren
