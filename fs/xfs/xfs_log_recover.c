@@ -13376,8 +13376,6 @@ id|xlog_assign_tail_lsn
 c_func
 (paren
 id|log-&gt;l_mp
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Now that we&squot;ve finished replaying all buffer and inode&n;&t; * updates, re-read in the superblock.&n;&t; */
