@@ -1,9 +1,4 @@
-macro_line|#ifndef __ASM_I386_SUSPEND_H
-DECL|macro|__ASM_I386_SUSPEND_H
-mdefine_line|#define __ASM_I386_SUSPEND_H
-macro_line|#endif
 multiline_comment|/*&n; * Copyright 2001-2002 Pavel Machek &lt;pavel@suse.cz&gt;&n; * Based on code&n; * Copyright 2001 Patrick Mochel &lt;mochel@osdl.org&gt;&n; */
-macro_line|#if defined(SUSPEND_C) || defined(ACPI_C)
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
 r_static
@@ -819,7 +814,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#ifdef SUSPEND_C
 multiline_comment|/* Local variables for do_magic */
 DECL|variable|__nosavedata

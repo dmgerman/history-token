@@ -2948,8 +2948,6 @@ multiline_comment|/*&n;&t; * Tell the memory management that we&squot;re a &quot
 id|tsk-&gt;flags
 op_or_assign
 id|PF_MEMALLOC
-op_or
-id|PF_KERNTHREAD
 suffix:semicolon
 multiline_comment|/*&n;&t; * Kswapd main loop.&n;&t; */
 r_for

@@ -315,13 +315,6 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-DECL|variable|tq_bdflush
-id|DECLARE_TASK_QUEUE
-c_func
-(paren
-id|tq_bdflush
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Block until a buffer comes unlocked.  This doesn&squot;t stop it&n; * from becoming locked again - you have to lock it yourself&n; * if you want to preserve its state.&n; */
 DECL|function|__wait_on_buffer
 r_void

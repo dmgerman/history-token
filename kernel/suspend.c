@@ -1,5 +1,4 @@
-multiline_comment|/*&n; * linux/kernel/swsusp.c&n; *&n; * This file is to realize architecture-independent&n; * machine suspend feature using pretty near only high-level routines&n; *&n; * Copyright (C) 1998-2001 Gabor Kuti &lt;seasons@fornax.hu&gt;&n; * Copyright (C) 1998,2001,2002 Pavel Machek &lt;pavel@suse.cz&gt;&n; *&n; * I&squot;d like to thank the following people for their work:&n; * &n; * Pavel Machek &lt;pavel@ucw.cz&gt;:&n; * Modifications, defectiveness pointing, being with me at the very beginning,&n; * suspend to swap space, stop all tasks. Port to 2.4.18-ac and 2.5.17.&n; *&n; * Steve Doddi &lt;dirk@loth.demon.co.uk&gt;: &n; * Support the possibility of hardware state restoring.&n; *&n; * Raph &lt;grey.havens@earthling.net&gt;:&n; * Support for preserving states of network devices and virtual console&n; * (including X and svgatextmode)&n; *&n; * Kurt Garloff &lt;garloff@suse.de&gt;:&n; * Straightened the critical function in order to prevent compilers from&n; * playing tricks with local variables.&n; *&n; * Andreas Mohr &lt;a.mohr@mailto.de&gt;&n; *&n; * Alex Badea &lt;vampire@go.ro&gt;:&n; * Fixed runaway init&n; *&n; * More state savers are welcome. Especially for the scsi layer...&n; *&n; * For TODOs,FIXMEs also look in Documentation/swsusp.txt&n; */
-multiline_comment|/*&n; * TODO:&n; *&n; * - we should launch a kernel_thread to process suspend request, cleaning up&n; * bdflush from this task. (check apm.c for something similar).&n; */
+multiline_comment|/*&n; * linux/kernel/suspend.c&n; *&n; * This file is to realize architecture-independent&n; * machine suspend feature using pretty near only high-level routines&n; *&n; * Copyright (C) 1998-2001 Gabor Kuti &lt;seasons@fornax.hu&gt;&n; * Copyright (C) 1998,2001,2002 Pavel Machek &lt;pavel@suse.cz&gt;&n; *&n; * I&squot;d like to thank the following people for their work:&n; * &n; * Pavel Machek &lt;pavel@ucw.cz&gt;:&n; * Modifications, defectiveness pointing, being with me at the very beginning,&n; * suspend to swap space, stop all tasks. Port to 2.4.18-ac and 2.5.17.&n; *&n; * Steve Doddi &lt;dirk@loth.demon.co.uk&gt;: &n; * Support the possibility of hardware state restoring.&n; *&n; * Raph &lt;grey.havens@earthling.net&gt;:&n; * Support for preserving states of network devices and virtual console&n; * (including X and svgatextmode)&n; *&n; * Kurt Garloff &lt;garloff@suse.de&gt;:&n; * Straightened the critical function in order to prevent compilers from&n; * playing tricks with local variables.&n; *&n; * Andreas Mohr &lt;a.mohr@mailto.de&gt;&n; *&n; * Alex Badea &lt;vampire@go.ro&gt;:&n; * Fixed runaway init&n; *&n; * More state savers are welcome. Especially for the scsi layer...&n; *&n; * For TODOs,FIXMEs also look in Documentation/swsusp.txt&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swapctl.h&gt;
@@ -24,6 +23,7 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -37,7 +37,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* #define SUSPEND_CONSOLE&t;(MAX_NR_CONSOLES-1) */
 multiline_comment|/* With SUSPEND_CONSOLE defined, it suspend looks *really* cool, but&n;   we probably do not take enough locks for switching consoles, etc,&n;   so bad things might happen.&n;*/
-macro_line|#ifndef CONFIG_VT
+macro_line|#if !defined(CONFIG_VT) || !defined(CONFIG_VT_CONSOLE)
 DECL|macro|SUSPEND_CONSOLE
 macro_line|#undef SUSPEND_CONSOLE
 macro_line|#endif
@@ -264,7 +264,7 @@ macro_line|#undef&t;DEBUG_PROCESS
 DECL|macro|DEBUG_SLOW
 macro_line|#undef&t;DEBUG_SLOW
 DECL|macro|TEST_SWSUSP
-mdefine_line|#define TEST_SWSUSP 0&t;&t;/* Set to 1 to reboot instead of halt machine after suspension */
+mdefine_line|#define TEST_SWSUSP 1&t;&t;/* Set to 1 to reboot instead of halt machine after suspension */
 macro_line|#ifdef DEBUG_DEFAULT
 DECL|macro|PRINTD
 mdefine_line|#define PRINTD(func, f, a...)&t;&bslash;&n;&t;do { &bslash;&n;&t;&t;printk(&quot;%s&quot;, func); &bslash;&n;&t;&t;printk(f, ## a); &bslash;&n;&t;} while(0)
@@ -3166,11 +3166,18 @@ l_int|NULL
 suffix:semicolon
 r_else
 macro_line|#endif
+(brace
+id|device_shutdown
+c_func
+(paren
+)paren
+suffix:semicolon
 id|machine_power_off
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -3193,14 +3200,6 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* NOTREACHED */
 )brace
-multiline_comment|/* forward decl */
-r_void
-id|do_software_suspend
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Magic happens here&n; */
 DECL|function|do_magic_resume_1
 r_static
@@ -3345,14 +3344,6 @@ id|fg_console
 suffix:semicolon
 multiline_comment|/* Hmm, is this the problem? */
 macro_line|#endif
-id|suspend_tq.routine
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|do_software_suspend
-suffix:semicolon
 )brace
 DECL|function|do_magic_suspend_1
 r_static
@@ -3496,14 +3487,6 @@ comma
 id|MARK_SWAP_RESUME
 )paren
 suffix:semicolon
-id|suspend_tq.routine
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|do_software_suspend
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3517,7 +3500,7 @@ suffix:semicolon
 DECL|macro|SUSPEND_C
 mdefine_line|#define SUSPEND_C
 macro_line|#include &lt;asm/suspend.h&gt;
-multiline_comment|/*&n; * This function is triggered using process bdflush. We try to swap out as&n; * much as we can then make a copy of the occupied pages in memory so we can&n; * make a copy of kernel state atomically, the I/O needed by saving won&squot;t&n; * bother us anymore.&n; */
+multiline_comment|/*&n; * We try to swap out as much as we can then make a copy of the&n; * occupied pages in memory so we can make a copy of kernel state&n; * atomically, the I/O needed by saving won&squot;t bother us anymore. &n; */
 DECL|function|do_software_suspend
 r_void
 id|do_software_suspend
@@ -3534,13 +3517,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|prepare_suspend_console
 c_func
 (paren
 )paren
 )paren
-(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Can&squot;t allocate a console... proceeding&bslash;n&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3556,7 +3543,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* No need to invalidate any vfsmnt list -- they will be valid after resume, anyway.&n;&t;&t;&t; *&n;&t;&t;&t; * We sync here -- so you have consistent filesystem state when things go wrong.&n;&t;&t;&t; * -- so that noone writes to disk after we do atomic copy of data.&n;&t;&t;&t; */
+multiline_comment|/* No need to invalidate any vfsmnt list -- they will be valid after resume, anyway.&n;&t;&t; *&n;&t;&t; * We sync here -- so you have consistent filesystem state when things go wrong.&n;&t;&t; * -- so that noone writes to disk after we do atomic copy of data.&n;&t;&t; */
 id|PRINTS
 c_func
 (paren
@@ -3599,7 +3586,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-)brace
 id|software_suspend_enabled
 op_assign
 l_int|1
@@ -3615,30 +3601,7 @@ id|restore_console
 )paren
 suffix:semicolon
 )brace
-DECL|variable|suspend_tq
-r_struct
-id|tq_struct
-id|suspend_tq
-op_assign
-(brace
-id|routine
-suffix:colon
-(paren
-r_void
-op_star
-)paren
-(paren
-r_void
-op_star
-)paren
-id|do_software_suspend
-comma
-id|data
-suffix:colon
-l_int|0
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * This is the trigger function, we must queue ourself since we&n; * can be called from interrupt &amp;&amp; bdflush context is needed&n; */
+multiline_comment|/*&n; * This is main interface to the outside world. It needs to be&n; * called from process context.&n; */
 DECL|function|software_suspend
 r_void
 id|software_suspend
@@ -3661,17 +3624,16 @@ id|software_suspend_enabled
 op_assign
 l_int|0
 suffix:semicolon
-id|queue_task
+id|BUG_ON
 c_func
 (paren
-op_amp
-id|suspend_tq
-comma
-op_amp
-id|tq_bdflush
+id|in_interrupt
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
-id|wakeup_bdflush
+id|do_software_suspend
 c_func
 (paren
 )paren
@@ -4748,6 +4710,16 @@ id|error
 op_assign
 op_minus
 id|ENOMEM
+suffix:semicolon
+id|free_page
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|cur
+)paren
 suffix:semicolon
 id|pagedir_nosave
 op_assign

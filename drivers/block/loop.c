@@ -2422,6 +2422,7 @@ id|current-&gt;flags
 op_or_assign
 id|PF_IOTHREAD
 suffix:semicolon
+multiline_comment|/* loop can be used in an encrypted device&n;&t;&t;&t;&t;&t;   hence, it mustn&squot;t be stopped at all because it could&n;&t;&t;&t;&t;&t;   be indirectly used during suspension */
 id|spin_lock_irq
 c_func
 (paren

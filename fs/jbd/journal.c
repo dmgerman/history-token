@@ -535,10 +535,6 @@ op_amp
 id|all_journals
 )paren
 suffix:semicolon
-id|current-&gt;flags
-op_or_assign
-id|PF_KERNTHREAD
-suffix:semicolon
 multiline_comment|/* And now, wait forever for commit wakeup events. */
 r_while
 c_loop

@@ -2314,8 +2314,7 @@ op_eq
 l_int|4
 )paren
 (brace
-multiline_comment|/* We are working from process context, that&squot;s why we may call it directly. */
-id|do_software_suspend
+id|software_suspend
 c_func
 (paren
 )paren
