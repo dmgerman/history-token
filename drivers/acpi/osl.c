@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#ifdef CONFIG_ACPI_EFI
-macro_line|#include &lt;asm/efi.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
 id|u64
 id|efi_mem_attributes
 (paren
@@ -19,10 +19,6 @@ id|u64
 id|phys_addr
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_IA64
-macro_line|#include &lt;asm/hw_irq.h&gt;
-macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#endif
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT&t;&t;ACPI_OS_SERVICES
@@ -421,8 +417,6 @@ macro_line|#ifdef CONFIG_ACPI_EFI
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
 id|EFI_MEMORY_WB
 op_amp
 id|efi_mem_attributes
@@ -431,7 +425,18 @@ c_func
 id|phys
 )paren
 )paren
+(brace
+op_star
+id|virt
+op_assign
+id|phys_to_virt
+c_func
+(paren
+id|phys
 )paren
+suffix:semicolon
+)brace
+r_else
 (brace
 op_star
 id|virt
@@ -442,18 +447,6 @@ c_func
 id|phys
 comma
 id|size
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-op_star
-id|virt
-op_assign
-id|phys_to_virt
-c_func
-(paren
-id|phys
 )paren
 suffix:semicolon
 )brace

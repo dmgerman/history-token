@@ -8,7 +8,9 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
+macro_line|#ifdef CONFIG_X86_IO_APIC
 macro_line|#include &lt;asm/mpspec.h&gt;
+macro_line|#endif
 macro_line|#include &quot;acpi_bus.h&quot;
 macro_line|#include &quot;acpi_drivers.h&quot;
 DECL|macro|_COMPONENT
@@ -1292,6 +1294,20 @@ op_eq
 id|ACPI_IRQ_MODEL_IOAPIC
 )paren
 id|mp_parse_prt
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_IOSAPIC
+r_if
+c_cond
+(paren
+id|acpi_irq_model
+op_eq
+id|ACPI_IRQ_MODEL_IOSAPIC
+)paren
+id|iosapic_parse_prt
 c_func
 (paren
 )paren
