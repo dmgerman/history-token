@@ -7995,6 +7995,7 @@ id|MACCtrl
 suffix:semicolon
 id|synchronize_irq
 (paren
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 id|free_irq

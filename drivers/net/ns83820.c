@@ -2232,6 +2232,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|dev-&gt;pci_dev-&gt;irq
 )paren
 suffix:semicolon
 multiline_comment|/* touch the pci bus... */
@@ -5004,6 +5005,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|dev-&gt;pci_dev-&gt;irq
 )paren
 suffix:semicolon
 id|ns83820_do_reset
@@ -5017,6 +5019,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|dev-&gt;pci_dev-&gt;irq
 )paren
 suffix:semicolon
 id|dev-&gt;IMR_cache
