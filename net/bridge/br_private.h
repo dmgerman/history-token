@@ -141,8 +141,12 @@ id|list_head
 id|list
 suffix:semicolon
 DECL|member|port_no
-r_int
+id|__u8
 id|port_no
+suffix:semicolon
+DECL|member|priority
+id|__u8
+id|priority
 suffix:semicolon
 multiline_comment|/* STP */
 DECL|member|port_id
@@ -184,10 +188,6 @@ r_int
 id|config_pending
 suffix:colon
 l_int|1
-suffix:semicolon
-DECL|member|priority
-r_int
-id|priority
 suffix:semicolon
 DECL|member|forward_delay_timer
 r_struct
