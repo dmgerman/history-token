@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: super.c,v 1.96 2004/07/13 08:57:30 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: super.c,v 1.97 2004/07/16 15:17:57 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -1381,32 +1381,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_JFFS2_PROC
-id|ret
-op_assign
-id|jffs2_proc_init
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;JFFS2 error: Failed to initialise proc interface&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-macro_line|#endif
 id|ret
 op_assign
 id|jffs2_compressors_init
@@ -1498,13 +1472,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_JFFS2_PROC
-id|jffs2_proc_exit
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|out
 suffix:colon
 r_return
@@ -1538,13 +1505,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_JFFS2_PROC
-id|jffs2_proc_exit
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|kmem_cache_destroy
 c_func
 (paren
