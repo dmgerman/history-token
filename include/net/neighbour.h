@@ -634,6 +634,11 @@ DECL|member|hash_rnd
 id|__u32
 id|hash_rnd
 suffix:semicolon
+DECL|member|hash_chain_gc
+r_int
+r_int
+id|hash_chain_gc
+suffix:semicolon
 DECL|member|phash_buckets
 r_struct
 id|pneigh_entry
