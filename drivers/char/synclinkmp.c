@@ -888,6 +888,9 @@ DECL|macro|TMCS
 mdefine_line|#define TMCS&t;0x64
 DECL|macro|TEPR
 mdefine_line|#define TEPR&t;0x65
+multiline_comment|/*&n; *  FIXME: DAR here clashed with asm-ppc/reg.h and asm-sh/.../dma.h&n; */
+DECL|macro|DAR
+macro_line|#undef DAR
 multiline_comment|/* DMA Controller Register macros */
 DECL|macro|DAR
 mdefine_line|#define DAR&t;0x80
