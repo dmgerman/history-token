@@ -3818,6 +3818,7 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
+l_string|&quot;fixipm&quot;
 )paren
 suffix:semicolon
 id|LCS_DBF_TEXT
@@ -5910,6 +5911,7 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
+l_string|&quot;lgwstpln&quot;
 )paren
 suffix:semicolon
 id|LCS_DBF_TEXT
@@ -6009,6 +6011,7 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
+l_string|&quot;lgwstpln&quot;
 )paren
 suffix:semicolon
 id|LCS_DBF_TEXT
@@ -6166,6 +6169,7 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
+l_string|&quot;lgwstop&quot;
 )paren
 suffix:semicolon
 id|LCS_DBF_TEXT

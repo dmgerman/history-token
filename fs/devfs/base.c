@@ -1964,6 +1964,8 @@ id|de
 comma
 op_star
 id|old
+op_assign
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond

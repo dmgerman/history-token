@@ -299,6 +299,9 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
+l_string|&quot;jffs2_gcd_mtd%d&quot;
+comma
+id|c-&gt;mtd-&gt;index
 )paren
 suffix:semicolon
 id|c-&gt;gc_task
@@ -310,16 +313,6 @@ c_func
 (paren
 op_amp
 id|c-&gt;gc_thread_start
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|current-&gt;comm
-comma
-l_string|&quot;jffs2_gcd_mtd%d&quot;
-comma
-id|c-&gt;mtd-&gt;index
 )paren
 suffix:semicolon
 id|set_user_nice
