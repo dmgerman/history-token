@@ -132,7 +132,8 @@ r_static
 r_int
 id|nTxBlock
 op_assign
-l_int|512
+op_minus
+l_int|1
 suffix:semicolon
 multiline_comment|/* number of transaction blocks */
 id|module_param
@@ -150,7 +151,7 @@ c_func
 (paren
 id|nTxBlock
 comma
-l_string|&quot;Number of transaction blocks (default:512, max:65536)&quot;
+l_string|&quot;Number of transaction blocks (max:65536)&quot;
 )paren
 suffix:semicolon
 DECL|variable|nTxLock
@@ -158,7 +159,8 @@ r_static
 r_int
 id|nTxLock
 op_assign
-l_int|4096
+op_minus
+l_int|1
 suffix:semicolon
 multiline_comment|/* number of transaction locks */
 id|module_param
@@ -176,7 +178,7 @@ c_func
 (paren
 id|nTxLock
 comma
-l_string|&quot;Number of transaction locks (default:4096, max:65536)&quot;
+l_string|&quot;Number of transaction locks (max:65536)&quot;
 )paren
 suffix:semicolon
 DECL|variable|TxBlock
@@ -783,6 +785,103 @@ id|k
 comma
 id|size
 suffix:semicolon
+r_struct
+id|sysinfo
+id|si
+suffix:semicolon
+multiline_comment|/* Set defaults for nTxLock and nTxBlock if unset */
+r_if
+c_cond
+(paren
+id|nTxLock
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|nTxBlock
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+multiline_comment|/* Base default on memory size */
+id|si_meminfo
+c_func
+(paren
+op_amp
+id|si
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|si.totalram
+OG
+(paren
+l_int|256
+op_star
+l_int|1024
+)paren
+)paren
+multiline_comment|/* 1 GB */
+id|nTxLock
+op_assign
+l_int|64
+op_star
+l_int|1024
+suffix:semicolon
+r_else
+id|nTxLock
+op_assign
+id|si.totalram
+op_rshift
+l_int|2
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|nTxBlock
+OG
+(paren
+l_int|8
+op_star
+l_int|1024
+)paren
+)paren
+id|nTxLock
+op_assign
+l_int|64
+op_star
+l_int|1024
+suffix:semicolon
+r_else
+id|nTxLock
+op_assign
+id|nTxBlock
+op_lshift
+l_int|3
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|nTxBlock
+op_eq
+op_minus
+l_int|1
+)paren
+id|nTxBlock
+op_assign
+id|nTxLock
+op_rshift
+l_int|3
+suffix:semicolon
 multiline_comment|/* Verify tunable parameters */
 r_if
 c_cond
@@ -830,6 +929,17 @@ id|nTxLock
 op_assign
 l_int|65536
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;JFS: nTxBlock = %d, nTxLock = %d&bslash;n&quot;
+comma
+id|nTxBlock
+comma
+id|nTxLock
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * initialize transaction block (tblock) table&n;&t; *&n;&t; * transaction id (tid) = tblock index&n;&t; * tid = 0 is reserved.&n;&t; */
 id|TxLockLWM
 op_assign
@@ -846,7 +956,7 @@ op_assign
 (paren
 id|nTxLock
 op_star
-l_int|8
+l_int|7
 )paren
 op_div
 l_int|10
@@ -856,7 +966,7 @@ op_assign
 (paren
 id|nTxLock
 op_star
-l_int|9
+l_int|8
 )paren
 op_div
 l_int|10
