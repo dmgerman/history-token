@@ -2597,6 +2597,15 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|flush_dcache_page
+c_func
+(paren
+id|pages
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
