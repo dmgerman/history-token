@@ -20,19 +20,21 @@ mdefine_line|#define RLIMIT_NOFILE&t;6&t;&t;/* max number of open files */
 DECL|macro|RLIMIT_NPROC
 mdefine_line|#define RLIMIT_NPROC&t;7&t;&t;/* max number of processes */
 DECL|macro|RLIMIT_MEMLOCK
-mdefine_line|#define RLIMIT_MEMLOCK  8               /* max locked-in-memory address space */
+mdefine_line|#define RLIMIT_MEMLOCK&t;8&t;&t;/* max locked-in-memory address space */
 DECL|macro|RLIMIT_AS
-mdefine_line|#define RLIMIT_AS       9               /* address space limit */
+mdefine_line|#define RLIMIT_AS&t;9&t;&t;/* address space limit */
 DECL|macro|RLIMIT_LOCKS
 mdefine_line|#define RLIMIT_LOCKS&t;10&t;&t;/* maximum file locks held */
+DECL|macro|RLIMIT_SIGPENDING
+mdefine_line|#define RLIMIT_SIGPENDING 11&t;&t;/* max number of pending signals */
 DECL|macro|RLIM_NLIMITS
-mdefine_line|#define RLIM_NLIMITS&t;11
+mdefine_line|#define RLIM_NLIMITS&t;12
 multiline_comment|/*&n; * SuS says limits have to be unsigned.&n; * We make this unsigned, but keep the&n; * old value.&n; */
 DECL|macro|RLIM_INFINITY
 mdefine_line|#define RLIM_INFINITY&t;0x7fffffff
 macro_line|#ifdef __KERNEL__
 DECL|macro|INIT_RLIMITS
-mdefine_line|#define INIT_RLIMITS&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {_STK_LIM, RLIM_INFINITY},&t;&t;&bslash;&n;    {       0, RLIM_INFINITY},&t;&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {INR_OPEN, INR_OPEN}, {0, 0},&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY}&t;&bslash;&n;}
+mdefine_line|#define INIT_RLIMITS&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {_STK_LIM, RLIM_INFINITY},&t;&t;&bslash;&n;    {       0, RLIM_INFINITY},&t;&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {INR_OPEN, INR_OPEN}, {0, 0},&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {MAX_SIGPENDING, MAX_SIGPENDING},&t;&bslash;&n;}
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* !(_SPARC_RESOURCE_H) */
 eof
