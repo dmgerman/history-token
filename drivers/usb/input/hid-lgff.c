@@ -13,9 +13,6 @@ DECL|macro|PERIOD
 mdefine_line|#define PERIOD (HZ/10)
 DECL|macro|RUN_AT
 mdefine_line|#define RUN_AT(t) (jiffies + (t))
-multiline_comment|/* Transmition state */
-DECL|macro|XMIT_RUNNING
-mdefine_line|#define XMIT_RUNNING 0
 multiline_comment|/* Effect status */
 DECL|macro|EFFECT_STARTED
 mdefine_line|#define EFFECT_STARTED 0     /* Effect is going to play after some time&n;&t;&t;&t;&t;(ff_replay.delay) */
