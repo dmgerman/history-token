@@ -1637,17 +1637,15 @@ op_amp
 id|mwave_fops
 )brace
 suffix:semicolon
+macro_line|#if 0 /* totally b0rked */
 multiline_comment|/*&n; * sysfs support &lt;paulsch@us.ibm.com&gt;&n; */
-DECL|variable|mwave_device
 r_struct
 id|device
 id|mwave_device
 suffix:semicolon
 multiline_comment|/* Prevent code redundancy, create a macro for mwave_show_* functions. */
-DECL|macro|mwave_show_function
 mdefine_line|#define mwave_show_function(attr_name, format_string, field)&t;&t;&bslash;&n;static ssize_t mwave_show_##attr_name(struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;DSP_3780I_CONFIG_SETTINGS *pSettings =&t;&t;&t;&t;&bslash;&n;&t;&t;&amp;mwave_s_mdd.rBDData.rDspSettings;&t;&t;&t;&bslash;&n;        return sprintf(buf, format_string, pSettings-&gt;field);&t;&t;&bslash;&n;}
 multiline_comment|/* All of our attributes are read attributes. */
-DECL|macro|mwave_dev_rd_attr
 mdefine_line|#define mwave_dev_rd_attr(attr_name, format_string, field)&t;&t;&bslash;&n;&t;mwave_show_function(attr_name, format_string, field)&t;&t;&bslash;&n;static DEVICE_ATTR(attr_name, S_IRUGO, mwave_show_##attr_name, NULL)
 id|mwave_dev_rd_attr
 (paren
@@ -1697,7 +1695,6 @@ comma
 id|usUartBaseIO
 )paren
 suffix:semicolon
-DECL|variable|mwave_dev_attrs
 r_static
 r_struct
 id|device_attribute
@@ -1725,6 +1722,7 @@ id|dev_attr_uart_io
 comma
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;* mwave_init is called on module load&n;*&n;* mwave_exit is called on module unload&n;* mwave_exit is also used to clean up after an aborted mwave_init&n;*/
 DECL|function|mwave_exit
 r_static
@@ -1735,9 +1733,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 id|pMWAVE_DEVICE_DATA
 id|pDrvData
 op_assign
@@ -1752,6 +1747,7 @@ comma
 l_string|&quot;mwavedd::mwave_exit entry&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#if 0
 r_for
 c_loop
 (paren
@@ -1800,6 +1796,7 @@ op_assign
 id|FALSE
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2242,6 +2239,7 @@ id|cleanup_error
 suffix:semicolon
 )brace
 multiline_comment|/* uart is registered */
+macro_line|#if 0
 multiline_comment|/* sysfs */
 id|memset
 c_func
@@ -2343,6 +2341,7 @@ id|pDrvData-&gt;nr_registered_attrs
 op_increment
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* SUCCESS! */
 r_return
 l_int|0
