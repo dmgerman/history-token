@@ -330,8 +330,6 @@ id|uptr
 )paren
 (brace
 r_int
-id|i
-comma
 id|err
 suffix:semicolon
 r_struct
