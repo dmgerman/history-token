@@ -462,8 +462,13 @@ DECL|macro|ClearPageReclaim
 mdefine_line|#define ClearPageReclaim(page)&t;clear_bit(PG_reclaim, &amp;(page)-&gt;flags)
 DECL|macro|TestClearPageReclaim
 mdefine_line|#define TestClearPageReclaim(page) test_and_clear_bit(PG_reclaim, &amp;(page)-&gt;flags)
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
 DECL|macro|PageCompound
 mdefine_line|#define PageCompound(page)&t;test_bit(PG_compound, &amp;(page)-&gt;flags)
+macro_line|#else
+DECL|macro|PageCompound
+mdefine_line|#define PageCompound(page)&t;0
+macro_line|#endif
 DECL|macro|SetPageCompound
 mdefine_line|#define SetPageCompound(page)&t;set_bit(PG_compound, &amp;(page)-&gt;flags)
 DECL|macro|ClearPageCompound
