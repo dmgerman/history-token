@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *    Disk Array driver for Compaq SMART2 Controllers&n; *    Copyright 1998 Compaq Computer Corporation&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; *    NON INFRINGEMENT.  See the GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *    Questions/Comments/Bugfixes to arrays@compaq.com&n; *&n; */
+multiline_comment|/*&n; *    Disk Array driver for Compaq SMART2 Controllers&n; *    Copyright 1998 Compaq Computer Corporation&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; *    NON INFRINGEMENT.  See the GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *    Questions/Comments/Bugfixes to Cpqarray-discuss@lists.sourceforge.net&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;&t;/* CONFIG_PROC_FS */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -25,9 +25,9 @@ macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|SMART2_DRIVER_VERSION
 mdefine_line|#define SMART2_DRIVER_VERSION(maj,min,submin) ((maj&lt;&lt;16)|(min&lt;&lt;8)|(submin))
 DECL|macro|DRIVER_NAME
-mdefine_line|#define DRIVER_NAME &quot;Compaq SMART2 Driver (v 2.4.5)&quot;
+mdefine_line|#define DRIVER_NAME &quot;Compaq SMART2 Driver (v 2.6.0)&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION SMART2_DRIVER_VERSION(2,4,5)
+mdefine_line|#define DRIVER_VERSION SMART2_DRIVER_VERSION(2,6,0)
 multiline_comment|/* Embedded module documentation macros - see modules.h */
 multiline_comment|/* Original author Chris Frantz - Compaq Computer Corporation */
 id|MODULE_AUTHOR
@@ -39,7 +39,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Driver for Compaq Smart2 Array Controllers&quot;
+l_string|&quot;Driver for Compaq Smart2 Array Controllers version 2.6.0&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
