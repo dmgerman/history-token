@@ -263,7 +263,7 @@ op_star
 id|SDpnt
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Function:    scsi_initialize_queue()&n; *&n; * Purpose:     Selects queue handler function for a device.&n; *&n; * Arguments:   SDpnt   - device for which we need a handler function.&n; *&n; * Returns:     Nothing&n; *&n; * Lock status: No locking assumed or required.&n; *&n; * Notes:       Most devices will end up using scsi_request_fn for the&n; *              handler function (at least as things are done now).&n; *              The &quot;block&quot; feature basically ensures that only one of&n; *              the blocked hosts is active at one time, mainly to work around&n; *              buggy DMA chipsets where the memory gets starved.&n; *              For this case, we have a special handler function, which&n; *              does some checks and ultimately calls scsi_request_fn.&n; *&n; *              The single_lun feature is a similar special case.&n; *&n; *              We handle these things by stacking the handlers.  The&n; *              special case handlers simply check a few conditions,&n; *              and return if they are not supposed to do anything.&n; *              In the event that things are OK, then they call the next&n; *              handler in the list - ultimately they call scsi_request_fn&n; *              to do the dirty deed.&n; */
+multiline_comment|/*&n; * Function:    scsi_initialize_queue()&n; *&n; * Purpose:     Sets up the block queue for a device.&n; *&n; * Arguments:   SDpnt   - device for which we need a handler function.&n; *&n; * Returns:     Nothing&n; *&n; * Lock status: No locking assumed or required.&n; */
 DECL|function|scsi_initialize_queue
 r_void
 id|scsi_initialize_queue
