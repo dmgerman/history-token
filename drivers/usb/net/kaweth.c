@@ -2000,6 +2000,15 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|skb_reserve
+c_func
+(paren
+id|skb
+comma
+l_int|2
+)paren
+suffix:semicolon
+multiline_comment|/* Align IP on 16 byte boundaries */
 id|skb-&gt;dev
 op_assign
 id|net
