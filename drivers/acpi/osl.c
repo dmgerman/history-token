@@ -1550,7 +1550,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* TODO: Rewrite this code!!! */
+multiline_comment|/* TODO: Change code to take advantage of driver model more */
 r_void
 DECL|function|acpi_os_derive_pci_id
 id|acpi_os_derive_pci_id
