@@ -4193,19 +4193,15 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|rc
-op_ge
+OL
 l_int|0
 )paren
 (brace
-r_return
-id|rc
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/* do not retry on the same port we just failed on */
 r_if
 c_cond
@@ -4258,6 +4254,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -4355,6 +4352,27 @@ l_int|7
 op_star
 id|HZ
 suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;timeout addr: %p &quot;
+comma
+op_amp
+(paren
+(paren
+op_star
+id|csocket
+)paren
+op_member_access_from_pointer
+id|sk-&gt;sk_rcvtimeo
+)paren
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* BB removeme BB */
 r_return
 id|rc
 suffix:semicolon
