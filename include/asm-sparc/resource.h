@@ -27,14 +27,16 @@ DECL|macro|RLIMIT_LOCKS
 mdefine_line|#define RLIMIT_LOCKS&t;10&t;&t;/* maximum file locks held */
 DECL|macro|RLIMIT_SIGPENDING
 mdefine_line|#define RLIMIT_SIGPENDING 11&t;&t;/* max number of pending signals */
+DECL|macro|RLIMIT_MSGQUEUE
+mdefine_line|#define RLIMIT_MSGQUEUE 12&t;&t;/* maximum bytes in POSIX mqueues */
 DECL|macro|RLIM_NLIMITS
-mdefine_line|#define RLIM_NLIMITS&t;12
+mdefine_line|#define RLIM_NLIMITS&t;13
 multiline_comment|/*&n; * SuS says limits have to be unsigned.&n; * We make this unsigned, but keep the&n; * old value.&n; */
 DECL|macro|RLIM_INFINITY
 mdefine_line|#define RLIM_INFINITY&t;0x7fffffff
 macro_line|#ifdef __KERNEL__
 DECL|macro|INIT_RLIMITS
-mdefine_line|#define INIT_RLIMITS&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {_STK_LIM, RLIM_INFINITY},&t;&t;&bslash;&n;    {       0, RLIM_INFINITY},&t;&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {INR_OPEN, INR_OPEN}, {0, 0},&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {MAX_SIGPENDING, MAX_SIGPENDING},&t;&bslash;&n;}
+mdefine_line|#define INIT_RLIMITS&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {_STK_LIM, RLIM_INFINITY},&t;&t;&bslash;&n;    {       0, RLIM_INFINITY},&t;&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {INR_OPEN, INR_OPEN}, {0, 0},&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {RLIM_INFINITY, RLIM_INFINITY},&t;&bslash;&n;    {MAX_SIGPENDING, MAX_SIGPENDING},&t;&bslash;&n;    {MQ_BYTES_MAX, MQ_BYTES_MAX},&t;&bslash;&n;}
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* !(_SPARC_RESOURCE_H) */
 eof

@@ -5,6 +5,9 @@ mdefine_line|#define _LINUX_MQUEUE_H
 macro_line|#include &lt;linux/types.h&gt;
 DECL|macro|MQ_PRIO_MAX
 mdefine_line|#define MQ_PRIO_MAX &t;32768
+multiline_comment|/* per-uid limit of kernel memory used by mqueue, in bytes */
+DECL|macro|MQ_BYTES_MAX
+mdefine_line|#define MQ_BYTES_MAX&t;819200
 DECL|struct|mq_attr
 r_struct
 id|mq_attr

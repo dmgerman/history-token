@@ -26,14 +26,16 @@ DECL|macro|RLIMIT_LOCKS
 mdefine_line|#define RLIMIT_LOCKS&t;10&t;&t;/* maximum file locks held */
 DECL|macro|RLIMIT_SIGPENDING
 mdefine_line|#define RLIMIT_SIGPENDING 11&t;&t;/* max number of pending signals */
+DECL|macro|RLIMIT_MSGQUEUE
+mdefine_line|#define RLIMIT_MSGQUEUE 12&t;&t;/* maximum bytes in POSIX mqueues */
 DECL|macro|RLIM_NLIMITS
-mdefine_line|#define RLIM_NLIMITS&t;12
+mdefine_line|#define RLIM_NLIMITS&t;13
 multiline_comment|/*&n; * SuS says limits have to be unsigned.  Fine, it&squot;s unsigned, but&n; * we retain the old value for compatibility, especially with DU. &n; * When you run into the 2^63 barrier, you call me.&n; */
 DECL|macro|RLIM_INFINITY
 mdefine_line|#define RLIM_INFINITY&t;0x7ffffffffffffffful
 macro_line|#ifdef __KERNEL__
 DECL|macro|INIT_RLIMITS
-mdefine_line|#define INIT_RLIMITS&t;&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    {LONG_MAX, LONG_MAX},&t;&t;&t;/* RLIMIT_CPU */&t;&bslash;&n;    {LONG_MAX, LONG_MAX},&t;&t;&t;/* RLIMIT_FSIZE */&t;&bslash;&n;    {LONG_MAX, LONG_MAX},&t;&t;&t;/* RLIMIT_DATA */&t;&bslash;&n;    {_STK_LIM, LONG_MAX},&t;&t;&t;/* RLIMIT_STACK */&t;&bslash;&n;    {       0, LONG_MAX},&t;&t;&t;/* RLIMIT_CORE */&t;&bslash;&n;    {LONG_MAX, LONG_MAX},&t;&t;&t;/* RLIMIT_RSS */&t;&bslash;&n;    {INR_OPEN, INR_OPEN},&t;&t;&t;/* RLIMIT_NOFILE */&t;&bslash;&n;    {LONG_MAX, LONG_MAX},&t;&t;&t;/* RLIMIT_AS */&t;&t;&bslash;&n;    {LONG_MAX, LONG_MAX},&t;&t;&t;/* RLIMIT_NPROC */&t;&bslash;&n;    {LONG_MAX, LONG_MAX},&t;&t;&t;/* RLIMIT_MEMLOCK */&t;&bslash;&n;    {LONG_MAX, LONG_MAX},&t;&t;&t;/* RLIMIT_LOCKS */&t;&bslash;&n;    {MAX_SIGPENDING, MAX_SIGPENDING},&t;&t;/* RLIMIT_SIGPENDING */ &bslash;&n;}
+mdefine_line|#define INIT_RLIMITS&t;&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    {LONG_MAX, LONG_MAX},&t;&t;&t;/* RLIMIT_CPU */&t;&bslash;&n;    {LONG_MAX, LONG_MAX},&t;&t;&t;/* RLIMIT_FSIZE */&t;&bslash;&n;    {LONG_MAX, LONG_MAX},&t;&t;&t;/* RLIMIT_DATA */&t;&bslash;&n;    {_STK_LIM, LONG_MAX},&t;&t;&t;/* RLIMIT_STACK */&t;&bslash;&n;    {       0, LONG_MAX},&t;&t;&t;/* RLIMIT_CORE */&t;&bslash;&n;    {LONG_MAX, LONG_MAX},&t;&t;&t;/* RLIMIT_RSS */&t;&bslash;&n;    {INR_OPEN, INR_OPEN},&t;&t;&t;/* RLIMIT_NOFILE */&t;&bslash;&n;    {LONG_MAX, LONG_MAX},&t;&t;&t;/* RLIMIT_AS */&t;&t;&bslash;&n;    {LONG_MAX, LONG_MAX},&t;&t;&t;/* RLIMIT_NPROC */&t;&bslash;&n;    {LONG_MAX, LONG_MAX},&t;&t;&t;/* RLIMIT_MEMLOCK */&t;&bslash;&n;    {LONG_MAX, LONG_MAX},&t;&t;&t;/* RLIMIT_LOCKS */&t;&bslash;&n;    {MAX_SIGPENDING, MAX_SIGPENDING},&t;&t;/* RLIMIT_SIGPENDING */ &bslash;&n;    {MQ_BYTES_MAX, MQ_BYTES_MAX},&t;&t;/* RLIMIT_MSGQUEUE */&t;&bslash;&n;}
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ALPHA_RESOURCE_H */
 eof
