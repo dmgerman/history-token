@@ -1098,6 +1098,12 @@ id|cpus
 suffix:semicolon
 id|pernodesize
 op_add_assign
+id|node
+op_star
+id|L1_CACHE_BYTES
+suffix:semicolon
+id|pernodesize
+op_add_assign
 id|L1_CACHE_ALIGN
 c_func
 (paren
@@ -1212,6 +1218,12 @@ op_add_assign
 id|PERCPU_PAGE_SIZE
 op_star
 id|cpus
+suffix:semicolon
+id|pernode
+op_add_assign
+id|node
+op_star
+id|L1_CACHE_BYTES
 suffix:semicolon
 id|mem_data
 (braket
