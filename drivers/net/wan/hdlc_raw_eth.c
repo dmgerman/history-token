@@ -152,6 +152,7 @@ id|ifr
 )paren
 (brace
 id|raw_hdlc_proto
+id|__user
 op_star
 id|raw_s
 op_assign

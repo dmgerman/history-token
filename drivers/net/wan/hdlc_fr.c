@@ -4916,6 +4916,7 @@ id|ifr
 )paren
 (brace
 id|fr_proto
+id|__user
 op_star
 id|fr_s
 op_assign

@@ -1141,6 +1141,7 @@ id|ifr
 )paren
 (brace
 id|cisco_proto
+id|__user
 op_star
 id|cisco_s
 op_assign

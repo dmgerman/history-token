@@ -763,16 +763,25 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_IPPP_FILTER
 DECL|member|pass_filter
 r_struct
-id|sock_fprog
+id|sock_filter
+op_star
 id|pass_filter
 suffix:semicolon
 multiline_comment|/* filter for packets to pass */
 DECL|member|active_filter
 r_struct
-id|sock_fprog
+id|sock_filter
+op_star
 id|active_filter
 suffix:semicolon
 multiline_comment|/* filter for pkts to reset idle */
+DECL|member|pass_len
+DECL|member|active_len
+r_int
+id|pass_len
+comma
+id|active_len
+suffix:semicolon
 macro_line|#endif
 DECL|member|debug
 r_int
