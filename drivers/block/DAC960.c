@@ -9667,7 +9667,7 @@ c_func
 (paren
 id|disk-&gt;devfs_name
 comma
-l_string|&quot;rd/c%dd%d&quot;
+l_string|&quot;rd/host%d/target%d&quot;
 comma
 id|Controller-&gt;ControllerNumber
 comma
