@@ -9,6 +9,10 @@ macro_line|# define __inline__&t;__inline__ __attribute__((always_inline))
 DECL|macro|__inline
 macro_line|# define __inline&t;__inline__ __attribute__((always_inline))
 macro_line|#endif
+macro_line|#if __GNUC_MINOR__ &gt;= 1
+DECL|macro|__always_inline
+macro_line|# define __always_inline inline __attribute__((always_inline))
+macro_line|#endif
 macro_line|#if __GNUC_MINOR__ &gt; 0
 DECL|macro|__deprecated
 macro_line|# define __deprecated&t;__attribute__((deprecated))
