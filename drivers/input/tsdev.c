@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: tsdev.c,v 1.15 2002/04/10 16:50:19 jsimmons Exp $&n; *&n; *  Copyright (c) 2001 &quot;Crazy&quot; james Simmons &n; *&n; *  Compaq touchscreen protocol driver. The protocol emulated by this driver&n; *  is obsolete; for new programs use the tslib library which can read directly&n; *  from evdev and perform dejittering, variance filtering and calibration -&n; *  all in user space, not at kernel level. The meaning of this driver is&n; *  to allow usage of newer input drivers with old applications that use the&n; *  old /dev/h3600_ts and /dev/h3600_tsraw devices.&n; *&n; *  09-Apr-2004: Andrew Zabolotny &lt;zap@homelink.ru&gt;&n; *      Fixed to actually work, not just output random numbers.&n; *      Added support for both h3600_ts and h3600_tsraw protocol&n; *      emulation.&n; */
+multiline_comment|/*&n; * $Id: tsdev.c,v 1.15 2002/04/10 16:50:19 jsimmons Exp $&n; *&n; *  Copyright (c) 2001 &quot;Crazy&quot; james Simmons&n; *&n; *  Compaq touchscreen protocol driver. The protocol emulated by this driver&n; *  is obsolete; for new programs use the tslib library which can read directly&n; *  from evdev and perform dejittering, variance filtering and calibration -&n; *  all in user space, not at kernel level. The meaning of this driver is&n; *  to allow usage of newer input drivers with old applications that use the&n; *  old /dev/h3600_ts and /dev/h3600_tsraw devices.&n; *&n; *  09-Apr-2004: Andrew Zabolotny &lt;zap@homelink.ru&gt;&n; *      Fixed to actually work, not just output random numbers.&n; *      Added support for both h3600_ts and h3600_tsraw protocol&n; *      emulation.&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;jsimmons@infradead.org&gt;.&n; */
 DECL|macro|TSDEV_MINOR_BASE
 mdefine_line|#define TSDEV_MINOR_BASE &t;128
@@ -494,28 +494,6 @@ op_star
 id|tsdev
 )paren
 (brace
-id|devfs_remove
-c_func
-(paren
-l_string|&quot;input/ts%d&quot;
-comma
-id|tsdev-&gt;minor
-)paren
-suffix:semicolon
-id|class_simple_device_remove
-c_func
-(paren
-id|MKDEV
-c_func
-(paren
-id|INPUT_MAJOR
-comma
-id|TSDEV_MINOR_BASE
-op_plus
-id|tsdev-&gt;minor
-)paren
-)paren
-suffix:semicolon
 id|tsdev_table
 (braket
 id|tsdev-&gt;minor
@@ -1785,6 +1763,36 @@ id|handle
 op_member_access_from_pointer
 r_private
 suffix:semicolon
+id|class_simple_device_remove
+c_func
+(paren
+id|MKDEV
+c_func
+(paren
+id|INPUT_MAJOR
+comma
+id|TSDEV_MINOR_BASE
+op_plus
+id|tsdev-&gt;minor
+)paren
+)paren
+suffix:semicolon
+id|devfs_remove
+c_func
+(paren
+l_string|&quot;input/ts%d&quot;
+comma
+id|tsdev-&gt;minor
+)paren
+suffix:semicolon
+id|devfs_remove
+c_func
+(paren
+l_string|&quot;input/tsraw%d&quot;
+comma
+id|tsdev-&gt;minor
+)paren
+suffix:semicolon
 id|tsdev-&gt;exist
 op_assign
 l_int|0
@@ -1814,14 +1822,6 @@ id|tsdev_free
 c_func
 (paren
 id|tsdev
-)paren
-suffix:semicolon
-id|devfs_remove
-c_func
-(paren
-l_string|&quot;input/tsraw%d&quot;
-comma
-id|tsdev-&gt;minor
 )paren
 suffix:semicolon
 )brace
