@@ -1034,6 +1034,14 @@ id|ac.ac_gid
 op_assign
 id|current-&gt;gid
 suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+multiline_comment|/* pin current-&gt;signal */
 id|ac.ac_tty
 op_assign
 id|current-&gt;signal-&gt;tty
@@ -1050,6 +1058,13 @@ id|current-&gt;signal-&gt;tty
 )paren
 suffix:colon
 l_int|0
+suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
 suffix:semicolon
 id|ac.ac_flag
 op_assign
