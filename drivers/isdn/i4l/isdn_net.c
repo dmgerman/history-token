@@ -4008,7 +4008,6 @@ id|ndev
 )paren
 suffix:semicolon
 multiline_comment|/* auto-dialing xmit function */
-(brace
 id|isdn_net_adjust_hdr
 c_func
 (paren
@@ -4432,7 +4431,6 @@ c_func
 id|ndev
 )paren
 suffix:semicolon
-)brace
 )brace
 r_return
 l_int|1
@@ -6761,7 +6759,21 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Grab a free ISDN-Channel */
+r_if
+c_cond
+(paren
+id|lp-&gt;exclusive
+op_ge
+l_int|0
+)paren
+(brace
+id|chi
+op_assign
+id|lp-&gt;exclusive
+suffix:semicolon
+)brace
+r_else
+(brace
 id|chi
 op_assign
 id|isdn_get_free_slot
@@ -6780,6 +6792,7 @@ comma
 id|lp-&gt;msn
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6797,15 +6810,8 @@ comma
 id|lp-&gt;name
 )paren
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EAGAIN
+r_goto
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/* Connect interface with channel */
@@ -6842,15 +6848,8 @@ c_func
 id|lp
 )paren
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EAGAIN
+r_goto
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/* Initiate dialing */
@@ -6868,6 +6867,18 @@ id|lp
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|err
+suffix:colon
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EAGAIN
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is called from certain upper protocol layers (multilink ppp&n; * and x25iface encapsulation module) that want to initiate dialing&n; * themselves.&n; */
