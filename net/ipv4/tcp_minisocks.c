@@ -2733,6 +2733,14 @@ id|newtp-&gt;snd_cwnd_cnt
 op_assign
 l_int|0
 suffix:semicolon
+id|newtp-&gt;frto_counter
+op_assign
+l_int|0
+suffix:semicolon
+id|newtp-&gt;frto_highmark
+op_assign
+l_int|0
+suffix:semicolon
 id|newtp-&gt;ca_state
 op_assign
 id|TCP_CA_Open
