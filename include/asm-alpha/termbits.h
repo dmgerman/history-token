@@ -130,15 +130,14 @@ DECL|macro|IXON
 mdefine_line|#define IXON&t;0001000
 DECL|macro|IXOFF
 mdefine_line|#define IXOFF&t;0002000
-macro_line|#if !defined(KERNEL) || defined(__USE_BSD)
-multiline_comment|/* POSIX.1 doesn&squot;t want these... */
 DECL|macro|IXANY
-macro_line|# define IXANY&t;&t;0004000
+mdefine_line|#define IXANY&t;0004000
 DECL|macro|IUCLC
-macro_line|# define IUCLC&t;&t;0010000
+mdefine_line|#define IUCLC&t;0010000
 DECL|macro|IMAXBEL
-macro_line|# define IMAXBEL&t;0020000
-macro_line|#endif
+mdefine_line|#define IMAXBEL&t;0020000
+DECL|macro|IUTF8
+mdefine_line|#define IUTF8&t;0040000
 multiline_comment|/* c_oflag bits */
 DECL|macro|OPOST
 mdefine_line|#define OPOST&t;0000001

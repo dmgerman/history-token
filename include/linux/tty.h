@@ -397,6 +397,8 @@ DECL|macro|I_IXOFF
 mdefine_line|#define I_IXOFF(tty)&t;_I_FLAG((tty),IXOFF)
 DECL|macro|I_IMAXBEL
 mdefine_line|#define I_IMAXBEL(tty)&t;_I_FLAG((tty),IMAXBEL)
+DECL|macro|I_IUTF8
+mdefine_line|#define I_IUTF8(tty)&t;_I_FLAG((tty),IUTF8)
 DECL|macro|O_OPOST
 mdefine_line|#define O_OPOST(tty)&t;_O_FLAG((tty),OPOST)
 DECL|macro|O_OLCUC
