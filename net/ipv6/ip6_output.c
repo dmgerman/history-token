@@ -692,6 +692,9 @@ r_struct
 id|ipv6_txoptions
 op_star
 id|opt
+comma
+r_int
+id|ipfragok
 )paren
 (brace
 r_struct
@@ -1027,9 +1030,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|skb-&gt;len
 op_le
 id|mtu
+)paren
+op_logical_or
+id|ipfragok
 )paren
 (brace
 id|IP6_INC_STATS
@@ -1070,6 +1077,10 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;IPv6: sending pkt_too_big to self&bslash;n&quot;
 )paren
+suffix:semicolon
+id|skb-&gt;dev
+op_assign
+id|dst-&gt;dev
 suffix:semicolon
 id|icmpv6_send
 c_func
