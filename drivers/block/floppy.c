@@ -181,8 +181,6 @@ r_static
 r_int
 id|irqdma_allocated
 suffix:semicolon
-DECL|macro|CURRENT
-mdefine_line|#define CURRENT current_req
 DECL|macro|LOCAL_END_REQUEST
 mdefine_line|#define LOCAL_END_REQUEST
 DECL|macro|MAJOR_NR
@@ -2456,8 +2454,8 @@ r_int
 id|output_log_pos
 suffix:semicolon
 macro_line|#endif
-DECL|macro|CURRENTD
-mdefine_line|#define CURRENTD -1
+DECL|macro|current_reqD
+mdefine_line|#define current_reqD -1
 DECL|macro|MAXTIMEOUT
 mdefine_line|#define MAXTIMEOUT -2
 DECL|function|reschedule_timeout
@@ -2483,7 +2481,7 @@ c_cond
 (paren
 id|drive
 op_eq
-id|CURRENTD
+id|current_reqD
 )paren
 id|drive
 op_assign
@@ -7761,9 +7759,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;CURRENT=%p&bslash;n&quot;
+l_string|&quot;current_req=%p&bslash;n&quot;
 comma
-id|CURRENT
+id|current_req
 )paren
 suffix:semicolon
 id|printk
@@ -8238,7 +8236,7 @@ r_void
 id|reschedule_timeout
 c_func
 (paren
-id|CURRENTD
+id|current_reqD
 comma
 l_string|&quot;floppy start&quot;
 comma
@@ -9418,7 +9416,7 @@ id|req
 )paren
 suffix:semicolon
 multiline_comment|/* We&squot;re done with the request */
-id|CURRENT
+id|current_req
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -9446,7 +9444,7 @@ id|request
 op_star
 id|req
 op_assign
-id|CURRENT
+id|current_req
 suffix:semicolon
 r_int
 r_int
@@ -9997,7 +9995,7 @@ id|FD_READ
 op_logical_or
 id|raw_cmd-&gt;kernel_data
 op_eq
-id|CURRENT-&gt;buffer
+id|current_req-&gt;buffer
 )paren
 (brace
 multiline_comment|/* transfer directly from buffer */
@@ -10084,7 +10082,7 @@ op_assign
 id|bio_data
 c_func
 (paren
-id|CURRENT-&gt;bio
+id|current_req-&gt;bio
 )paren
 suffix:semicolon
 id|size
@@ -10096,7 +10094,7 @@ c_func
 (paren
 id|bio
 comma
-id|CURRENT
+id|current_req
 )paren
 (brace
 id|bio_for_each_segment
@@ -10245,7 +10243,7 @@ comma
 id|max_sector_2
 )paren
 comma
-id|CURRENT-&gt;nr_sectors
+id|current_req-&gt;nr_sectors
 )paren
 suffix:semicolon
 r_if
@@ -10267,7 +10265,7 @@ id|buffer_max
 OG
 id|fsector_t
 op_plus
-id|CURRENT-&gt;nr_sectors
+id|current_req-&gt;nr_sectors
 )paren
 id|current_count_sectors
 op_assign
@@ -10278,7 +10276,7 @@ id|buffer_max
 op_minus
 id|fsector_t
 comma
-id|CURRENT-&gt;nr_sectors
+id|current_req-&gt;nr_sectors
 )paren
 suffix:semicolon
 id|remaining
@@ -10297,7 +10295,7 @@ op_rshift
 l_int|9
 )paren
 OG
-id|CURRENT-&gt;nr_sectors
+id|current_req-&gt;nr_sectors
 op_logical_and
 id|CT
 c_func
@@ -10335,17 +10333,17 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;CURRENT-&gt;nr_sectors=%ld&bslash;n&quot;
+l_string|&quot;current_req-&gt;nr_sectors=%ld&bslash;n&quot;
 comma
-id|CURRENT-&gt;nr_sectors
+id|current_req-&gt;nr_sectors
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;CURRENT-&gt;current_nr_sectors=%u&bslash;n&quot;
+l_string|&quot;current_req-&gt;current_nr_sectors=%u&bslash;n&quot;
 comma
-id|CURRENT-&gt;current_nr_sectors
+id|current_req-&gt;current_nr_sectors
 )paren
 suffix:semicolon
 id|printk
@@ -10392,7 +10390,7 @@ l_int|9
 suffix:semicolon
 id|size
 op_assign
-id|CURRENT-&gt;current_nr_sectors
+id|current_req-&gt;current_nr_sectors
 op_lshift
 l_int|9
 suffix:semicolon
@@ -10401,7 +10399,7 @@ c_func
 (paren
 id|bio
 comma
-id|CURRENT
+id|current_req
 )paren
 (brace
 id|bio_for_each_segment
@@ -10819,7 +10817,7 @@ c_func
 id|DRIVE
 c_func
 (paren
-id|CURRENT-&gt;rq_dev
+id|current_req-&gt;rq_dev
 )paren
 )paren
 suffix:semicolon
@@ -10848,7 +10846,7 @@ c_cond
 id|rq_data_dir
 c_func
 (paren
-id|CURRENT
+id|current_req
 )paren
 op_eq
 id|READ
@@ -10876,7 +10874,7 @@ c_cond
 id|rq_data_dir
 c_func
 (paren
-id|CURRENT
+id|current_req
 )paren
 op_eq
 id|WRITE
@@ -10917,13 +10915,13 @@ id|_floppy-&gt;head
 suffix:semicolon
 id|TRACK
 op_assign
-id|CURRENT-&gt;sector
+id|current_req-&gt;sector
 op_div
 id|max_sector
 suffix:semicolon
 id|fsector_t
 op_assign
-id|CURRENT-&gt;sector
+id|current_req-&gt;sector
 op_mod
 id|max_sector
 suffix:semicolon
@@ -10940,7 +10938,7 @@ id|_floppy-&gt;track
 r_if
 c_cond
 (paren
-id|CURRENT-&gt;current_nr_sectors
+id|current_req-&gt;current_nr_sectors
 op_amp
 l_int|1
 )paren
@@ -11035,7 +11033,7 @@ id|_floppy-&gt;sect
 op_minus
 id|fsector_t
 comma
-id|CURRENT-&gt;nr_sectors
+id|current_req-&gt;nr_sectors
 )paren
 suffix:semicolon
 r_return
@@ -11301,7 +11299,7 @@ id|in_sector_offset
 suffix:semicolon
 id|max_size
 op_assign
-id|CURRENT-&gt;nr_sectors
+id|current_req-&gt;nr_sectors
 suffix:semicolon
 r_if
 c_cond
@@ -11365,7 +11363,7 @@ c_cond
 (paren
 id|in_sector_offset
 op_logical_or
-id|CURRENT-&gt;nr_sectors
+id|current_req-&gt;nr_sectors
 OL
 id|ssize
 )paren
@@ -11387,13 +11385,13 @@ c_cond
 (paren
 id|fsector_t
 op_plus
-id|CURRENT-&gt;nr_sectors
+id|current_req-&gt;nr_sectors
 OG
 id|ssize
 op_logical_and
 id|fsector_t
 op_plus
-id|CURRENT-&gt;nr_sectors
+id|current_req-&gt;nr_sectors
 OL
 id|ssize
 op_plus
@@ -11439,7 +11437,7 @@ c_cond
 r_int
 r_int
 )paren
-id|CURRENT-&gt;buffer
+id|current_req-&gt;buffer
 OL
 id|MAX_DMA_ADDRESS
 )paren
@@ -11487,7 +11485,7 @@ op_minus
 r_int
 r_int
 )paren
-id|CURRENT-&gt;buffer
+id|current_req-&gt;buffer
 )paren
 )paren
 op_rshift
@@ -11517,7 +11515,7 @@ c_cond
 id|CROSS_64KB
 c_func
 (paren
-id|CURRENT-&gt;buffer
+id|current_req-&gt;buffer
 comma
 id|max_size
 op_lshift
@@ -11534,7 +11532,7 @@ op_minus
 r_int
 r_int
 )paren
-id|CURRENT-&gt;buffer
+id|current_req-&gt;buffer
 )paren
 op_mod
 id|K_64
@@ -11599,14 +11597,14 @@ id|DRS-&gt;probed_format
 (brace
 id|max_size
 op_assign
-id|CURRENT-&gt;nr_sectors
+id|current_req-&gt;nr_sectors
 suffix:semicolon
 )brace
 r_else
 (brace
 id|raw_cmd-&gt;kernel_data
 op_assign
-id|CURRENT-&gt;buffer
+id|current_req-&gt;buffer
 suffix:semicolon
 id|raw_cmd-&gt;length
 op_assign
@@ -11707,7 +11705,7 @@ op_logical_or
 op_logical_neg
 id|in_sector_offset
 op_logical_and
-id|CURRENT-&gt;nr_sectors
+id|current_req-&gt;nr_sectors
 op_ge
 id|ssize
 )paren
@@ -11880,7 +11878,7 @@ op_logical_or
 (paren
 id|raw_cmd-&gt;kernel_data
 op_ne
-id|CURRENT-&gt;buffer
+id|current_req-&gt;buffer
 op_logical_and
 id|CT
 c_func
@@ -11939,7 +11937,7 @@ c_cond
 (paren
 id|raw_cmd-&gt;kernel_data
 op_ne
-id|CURRENT-&gt;buffer
+id|current_req-&gt;buffer
 )paren
 id|printk
 c_func
@@ -12041,7 +12039,7 @@ c_cond
 (paren
 id|raw_cmd-&gt;kernel_data
 op_ne
-id|CURRENT-&gt;buffer
+id|current_req-&gt;buffer
 )paren
 (brace
 r_if
@@ -12139,13 +12137,13 @@ c_cond
 (paren
 id|raw_cmd-&gt;length
 OG
-id|CURRENT-&gt;nr_sectors
+id|current_req-&gt;nr_sectors
 op_lshift
 l_int|9
 op_logical_or
 id|current_count_sectors
 OG
-id|CURRENT-&gt;nr_sectors
+id|current_req-&gt;nr_sectors
 )paren
 (brace
 id|DPRINT
@@ -12267,7 +12265,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|CURRENT
+id|current_req
 )paren
 (brace
 r_struct
@@ -12300,7 +12298,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|CURRENT
+id|current_req
 op_assign
 id|req
 suffix:semicolon
@@ -12311,7 +12309,7 @@ c_cond
 id|major
 c_func
 (paren
-id|CURRENT-&gt;rq_dev
+id|current_req-&gt;rq_dev
 )paren
 op_ne
 id|MAJOR_NR
@@ -12325,7 +12323,7 @@ l_string|&quot;: request list destroyed&quot;
 suffix:semicolon
 id|device
 op_assign
-id|CURRENT-&gt;rq_dev
+id|current_req-&gt;rq_dev
 suffix:semicolon
 id|set_fdc
 c_func
@@ -12340,7 +12338,7 @@ suffix:semicolon
 id|reschedule_timeout
 c_func
 (paren
-id|CURRENTD
+id|current_reqD
 comma
 l_string|&quot;redo fd request&quot;
 comma
@@ -12472,7 +12470,7 @@ id|errors
 op_assign
 op_amp
 (paren
-id|CURRENT-&gt;errors
+id|current_req-&gt;errors
 )paren
 suffix:semicolon
 id|tmp
@@ -12617,9 +12615,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;warning: usage count=0, CURRENT=%p exiting&bslash;n&quot;
+l_string|&quot;warning: usage count=0, current_req=%p exiting&bslash;n&quot;
 comma
-id|CURRENT
+id|current_req
 )paren
 suffix:semicolon
 id|printk
@@ -12627,9 +12625,9 @@ c_func
 (paren
 l_string|&quot;sect=%ld flags=%lx&bslash;n&quot;
 comma
-id|CURRENT-&gt;sector
+id|current_req-&gt;sector
 comma
-id|CURRENT-&gt;flags
+id|current_req-&gt;flags
 )paren
 suffix:semicolon
 r_return
