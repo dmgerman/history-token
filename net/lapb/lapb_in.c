@@ -26,6 +26,7 @@ r_void
 id|lapb_state0_machine
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -377,6 +378,7 @@ r_void
 id|lapb_state1_machine
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -745,10 +747,6 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
 )brace
 id|kfree_skb
 c_func
@@ -764,6 +762,7 @@ r_void
 id|lapb_state2_machine
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -1007,7 +1006,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;lapb: (%p) S2 RX {I,REJ,RNR,RR}(%d)&bslash;n&quot;
+l_string|&quot;lapb: (%p) S2 RX {I,REJ,RNR,RR}&quot;
+l_string|&quot;(%d)&bslash;n&quot;
 comma
 id|lapb-&gt;token
 comma
@@ -1045,10 +1045,6 @@ id|LAPB_RESPONSE
 suffix:semicolon
 r_break
 suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
 )brace
 id|kfree_skb
 c_func
@@ -1064,6 +1060,7 @@ r_void
 id|lapb_state3_machine
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -1085,8 +1082,6 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-id|modulus
-suffix:semicolon
 id|modulus
 op_assign
 (paren
@@ -1891,7 +1886,6 @@ id|lapb-&gt;condition
 op_amp
 id|LAPB_PEER_RX_BUSY_CONDITION
 )paren
-(brace
 id|lapb_frames_acked
 c_func
 (paren
@@ -1900,9 +1894,7 @@ comma
 id|frame-&gt;nr
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|lapb_check_iframes_acked
 c_func
 (paren
@@ -1911,7 +1903,6 @@ comma
 id|frame-&gt;nr
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1976,14 +1967,12 @@ c_cond
 (paren
 id|frame-&gt;pf
 )paren
-(brace
 id|lapb_enquiry_response
 c_func
 (paren
 id|lapb
 )paren
 suffix:semicolon
-)brace
 r_else
 (brace
 r_if
@@ -2082,7 +2071,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;lapb: (%p) S3 RX FRMR(%d) %02X %02X %02X %02X %02X&bslash;n&quot;
+l_string|&quot;lapb: (%p) S3 RX FRMR(%d) %02X &quot;
+l_string|&quot;%02X %02X %02X %02X&bslash;n&quot;
 comma
 id|lapb-&gt;token
 comma
@@ -2208,10 +2198,6 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -2233,6 +2219,7 @@ r_void
 id|lapb_state4_machine
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -2524,10 +2511,6 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
 )brace
 id|kfree_skb
 c_func
@@ -2542,6 +2525,7 @@ r_void
 id|lapb_data_input
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;X.25 Packet Layer release 002&n; *&n; *&t;This is ALPHA test software. This code may break your machine, randomly fail to work with new &n; *&t;releases, misbehave and/or generally screw up. It might even work. &n; *&n; *&t;This code REQUIRES 2.1.15 or higher&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;X.25 001&t;Split from x25_subr.c&n; *&t;mar/20/00&t;Daniela Squassoni Disabling/enabling of facilities &n; *&t;&t;&t;&t;&t;  negotiation.&n; */
+multiline_comment|/*&n; *&t;X.25 Packet Layer release 002&n; *&n; *&t;This is ALPHA test software. This code may break your machine,&n; *&t;randomly fail to work with new releases, misbehave and/or generally&n; *&t;screw up. It might even work. &n; *&n; *&t;This code REQUIRES 2.1.15 or higher&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;X.25 001&t;Split from x25_subr.c&n; *&t;mar/20/00&t;Daniela Squassoni Disabling/enabling of facilities &n; *&t;&t;&t;&t;&t;  negotiation.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -41,16 +41,14 @@ id|vc_fac_mask
 )paren
 (brace
 r_int
-r_int
-id|len
-suffix:semicolon
-r_int
 r_char
 op_star
 id|p
 op_assign
 id|skb-&gt;data
 suffix:semicolon
+r_int
+r_int
 id|len
 op_assign
 op_star
@@ -94,14 +92,12 @@ id|X25_FAC_REVERSE
 suffix:colon
 id|facilities-&gt;reverse
 op_assign
-(paren
 id|p
 (braket
 l_int|1
 )braket
 op_amp
 l_int|0x01
-)paren
 suffix:semicolon
 op_star
 id|vc_fac_mask
@@ -133,7 +129,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;X.25: unknown facility %02X, value %02X&bslash;n&quot;
+l_string|&quot;X.25: unknown facility &quot;
+l_string|&quot;%02X, value %02X&bslash;n&quot;
 comma
 id|p
 (braket
@@ -223,7 +220,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;X.25: unknown facility %02X, values %02X, %02X&bslash;n&quot;
+l_string|&quot;X.25: unknown facility &quot;
+l_string|&quot;%02X, values %02X, %02X&bslash;n&quot;
 comma
 id|p
 (braket
@@ -261,7 +259,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;X.25: unknown facility %02X, values %02X, %02X, %02X&bslash;n&quot;
+l_string|&quot;X.25: unknown facility %02X, &quot;
+l_string|&quot;values %02X, %02X, %02X&bslash;n&quot;
 comma
 id|p
 (braket
@@ -301,7 +300,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;X.25: unknown facility %02X, length %d, values %02X, %02X, %02X, %02X&bslash;n&quot;
+l_string|&quot;X.25: unknown facility %02X, &quot;
+l_string|&quot;length %d, values %02X, %02X, %02X, %02X&bslash;n&quot;
 comma
 id|p
 (braket
@@ -398,11 +398,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|facil_mask
-op_eq
-l_int|0
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * Length of the facilities field in call_req or&n;&t;&t; * call_accept packets&n;&t;&t; */
 id|buffer
 (braket
 l_int|0
@@ -410,7 +410,6 @@ l_int|0
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* length of the facilities field in call_req or call_accept packets */
 id|len
 op_assign
 l_int|1
@@ -423,11 +422,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|facilities-&gt;reverse
-op_ne
-l_int|0
-)paren
 op_logical_and
 (paren
 id|facil_mask
@@ -446,24 +441,15 @@ op_star
 id|p
 op_increment
 op_assign
-(paren
+op_logical_neg
+op_logical_neg
 id|facilities-&gt;reverse
-)paren
-ques
-c_cond
-l_int|0x01
-suffix:colon
-l_int|0x00
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-(paren
 id|facilities-&gt;throughput
-op_ne
-l_int|0
-)paren
 op_logical_and
 (paren
 id|facil_mask
@@ -490,12 +476,8 @@ c_cond
 (paren
 (paren
 id|facilities-&gt;pacsize_in
-op_ne
-l_int|0
 op_logical_or
 id|facilities-&gt;pacsize_out
-op_ne
-l_int|0
 )paren
 op_logical_and
 (paren
@@ -515,31 +497,21 @@ op_star
 id|p
 op_increment
 op_assign
-(paren
 id|facilities-&gt;pacsize_in
-op_eq
-l_int|0
-)paren
 ques
 c_cond
-id|facilities-&gt;pacsize_out
 suffix:colon
-id|facilities-&gt;pacsize_in
+id|facilities-&gt;pacsize_out
 suffix:semicolon
 op_star
 id|p
 op_increment
 op_assign
-(paren
 id|facilities-&gt;pacsize_out
-op_eq
-l_int|0
-)paren
 ques
 c_cond
-id|facilities-&gt;pacsize_in
 suffix:colon
-id|facilities-&gt;pacsize_out
+id|facilities-&gt;pacsize_in
 suffix:semicolon
 )brace
 r_if
@@ -547,12 +519,8 @@ c_cond
 (paren
 (paren
 id|facilities-&gt;winsize_in
-op_ne
-l_int|0
 op_logical_or
 id|facilities-&gt;winsize_out
-op_ne
-l_int|0
 )paren
 op_logical_and
 (paren
@@ -572,31 +540,21 @@ op_star
 id|p
 op_increment
 op_assign
-(paren
 id|facilities-&gt;winsize_in
-op_eq
-l_int|0
-)paren
 ques
 c_cond
-id|facilities-&gt;winsize_out
 suffix:colon
-id|facilities-&gt;winsize_in
+id|facilities-&gt;winsize_out
 suffix:semicolon
 op_star
 id|p
 op_increment
 op_assign
-(paren
 id|facilities-&gt;winsize_out
-op_eq
-l_int|0
-)paren
 ques
 c_cond
-id|facilities-&gt;winsize_in
 suffix:colon
-id|facilities-&gt;winsize_out
+id|facilities-&gt;winsize_in
 suffix:semicolon
 )brace
 id|len
@@ -640,7 +598,8 @@ op_star
 r_new
 )paren
 (brace
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign
@@ -654,6 +613,9 @@ r_struct
 id|x25_facilities
 op_star
 id|ours
+op_assign
+op_amp
+id|x25-&gt;facilities
 suffix:semicolon
 r_struct
 id|x25_facilities
@@ -668,25 +630,27 @@ c_func
 op_amp
 id|theirs
 comma
-l_int|0x00
+l_int|0
 comma
 r_sizeof
 (paren
-r_struct
-id|x25_facilities
+id|theirs
 )paren
 )paren
 suffix:semicolon
+id|memcpy
+c_func
+(paren
+r_new
+comma
 id|ours
-op_assign
-op_amp
-id|x25-&gt;facilities
-suffix:semicolon
+comma
+r_sizeof
+(paren
 op_star
 r_new
-op_assign
-op_star
-id|ours
+)paren
+)paren
 suffix:semicolon
 id|len
 op_assign
@@ -707,12 +671,8 @@ r_if
 c_cond
 (paren
 id|theirs.reverse
-op_ne
-l_int|0
 op_logical_and
 id|ours-&gt;reverse
-op_eq
-l_int|0
 )paren
 (brace
 id|SOCK_DEBUG
@@ -738,8 +698,6 @@ r_if
 c_cond
 (paren
 id|theirs.throughput
-op_ne
-l_int|0
 )paren
 (brace
 r_if
@@ -770,12 +728,8 @@ r_if
 c_cond
 (paren
 id|theirs.pacsize_in
-op_ne
-l_int|0
 op_logical_and
 id|theirs.pacsize_out
-op_ne
-l_int|0
 )paren
 (brace
 r_if
@@ -829,12 +783,8 @@ r_if
 c_cond
 (paren
 id|theirs.winsize_in
-op_ne
-l_int|0
 op_logical_and
 id|theirs.winsize_out
-op_ne
-l_int|0
 )paren
 (brace
 r_if
@@ -902,14 +852,14 @@ comma
 r_struct
 id|x25_neigh
 op_star
-id|neighbour
+id|nb
 )paren
 (brace
 r_if
 c_cond
 (paren
 op_logical_neg
-id|neighbour-&gt;extended
+id|nb-&gt;extended
 )paren
 (brace
 r_if
