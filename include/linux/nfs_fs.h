@@ -1111,6 +1111,11 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Hack for future NFS swap support */
+macro_line|#ifndef IS_SWAPFILE
+DECL|macro|IS_SWAPFILE
+macro_line|# define IS_SWAPFILE(inode)&t;(0)
+macro_line|#endif
 multiline_comment|/*&n; * linux/fs/nfs/read.c&n; */
 r_extern
 r_int
@@ -1179,6 +1184,33 @@ op_star
 comma
 r_struct
 id|list_head
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nfs_readpage_result
+c_func
+(paren
+r_struct
+id|rpc_task
+op_star
+comma
+r_int
+r_int
+id|count
+comma
+r_int
+id|eof
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nfs_readdata_release
+c_func
+(paren
+r_struct
+id|rpc_task
 op_star
 )paren
 suffix:semicolon
