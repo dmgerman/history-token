@@ -3637,8 +3637,7 @@ id|cpumask_t
 op_div
 r_sizeof
 (paren
-r_int
-r_int
+id|u16
 )paren
 suffix:semicolon
 op_increment
