@@ -200,7 +200,11 @@ id|target
 op_assign
 (brace
 dot
-id|u.target_size
+id|u
+op_assign
+(brace
+dot
+id|target_size
 op_assign
 id|IPT_ALIGN
 c_func
@@ -211,6 +215,8 @@ r_struct
 id|ipt_standard_target
 )paren
 )paren
+comma
+)brace
 comma
 )brace
 comma
@@ -261,7 +267,11 @@ id|target
 op_assign
 (brace
 dot
-id|u.target_size
+id|u
+op_assign
+(brace
+dot
+id|target_size
 op_assign
 id|IPT_ALIGN
 c_func
@@ -272,6 +282,8 @@ r_struct
 id|ipt_standard_target
 )paren
 )paren
+comma
+)brace
 comma
 )brace
 comma
@@ -327,7 +339,11 @@ id|target
 op_assign
 (brace
 dot
-id|u.user
+id|u
+op_assign
+(brace
+dot
+id|user
 op_assign
 (brace
 dot
@@ -347,6 +363,8 @@ dot
 id|name
 op_assign
 id|IPT_ERROR_TARGET
+comma
+)brace
 comma
 )brace
 comma
