@@ -234,8 +234,9 @@ comma
 id|pbstats
 )paren
 suffix:semicolon
+multiline_comment|/* We don&squot;t disable preempt, not too worried about poking the&n; * wrong cpu&squot;s stat for now */
 DECL|macro|PB_STATS_INC
-mdefine_line|#define PB_STATS_INC(count)   ( get_cpu_var(pbstats).count++ )
+mdefine_line|#define PB_STATS_INC(count)&t;(__get_cpu_var(pbstats).count++)
 macro_line|#ifndef STATIC
 DECL|macro|STATIC
 macro_line|# define STATIC&t;static
