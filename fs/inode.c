@@ -430,15 +430,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|sema_init
-c_func
-(paren
-op_amp
-id|inode-&gt;i_attr_lock
-comma
-l_int|1
-)paren
-suffix:semicolon
 id|spin_lock_init
 c_func
 (paren
