@@ -82,8 +82,14 @@ id|ati_generic_masks
 op_assign
 (brace
 (brace
-l_int|0x00000001
+dot
+id|mask
+op_assign
+l_int|1
 comma
+dot
+id|type
+op_assign
 l_int|0
 )brace
 )brace
@@ -1078,33 +1084,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|ati_mask_memory
-r_static
-r_int
-r_int
-id|ati_mask_memory
-c_func
-(paren
-r_int
-r_int
-id|addr
-comma
-r_int
-id|type
-)paren
-(brace
-multiline_comment|/* Memory type is ignored */
-r_return
-id|addr
-op_or
-id|agp_bridge-&gt;driver-&gt;masks
-(braket
-l_int|0
-)braket
-dot
-id|mask
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *Since we don&squot;t need contigious memory we just try&n; * to get the gatt table once&n; */
 DECL|macro|GET_PAGE_DIR_OFF
 mdefine_line|#define GET_PAGE_DIR_OFF(addr) (addr &gt;&gt; 22)
@@ -1886,7 +1865,7 @@ comma
 dot
 id|mask_memory
 op_assign
-id|ati_mask_memory
+id|agp_generic_mask_memory
 comma
 dot
 id|masks
