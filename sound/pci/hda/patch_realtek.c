@@ -5284,7 +5284,7 @@ op_assign
 id|HDA_CODEC_VOLUME
 c_func
 (paren
-l_string|&quot;PCM Playback Volume&quot;
+l_string|&quot;Front Playback Volume&quot;
 comma
 l_int|0x08
 comma
@@ -5293,12 +5293,14 @@ comma
 id|HDA_OUTPUT
 )paren
 comma
+multiline_comment|/* use LINE2 for the output */
+multiline_comment|/* HDA_CODEC_MUTE(&quot;Front Playback Switch&quot;, 0x0f, 0x0, HDA_OUTPUT), */
 id|HDA_CODEC_MUTE
 c_func
 (paren
-l_string|&quot;PCM Playback Switch&quot;
+l_string|&quot;Front Playback Switch&quot;
 comma
-l_int|0x0f
+l_int|0x15
 comma
 l_int|0x0
 comma
@@ -5527,6 +5529,42 @@ comma
 l_int|0x24
 )brace
 comma
+multiline_comment|/* LINE-2 is used for line-out in rear */
+(brace
+l_int|0x15
+comma
+id|AC_VERB_SET_PIN_WIDGET_CONTROL
+comma
+l_int|0x40
+)brace
+comma
+multiline_comment|/* select line-out */
+(brace
+l_int|0x15
+comma
+id|AC_VERB_SET_CONNECT_SEL
+comma
+l_int|0x00
+)brace
+comma
+multiline_comment|/* LINE-OUT pin */
+(brace
+l_int|0x0f
+comma
+id|AC_VERB_SET_PIN_WIDGET_CONTROL
+comma
+l_int|0x40
+)brace
+comma
+multiline_comment|/* enable HP */
+(brace
+l_int|0x10
+comma
+id|AC_VERB_SET_PIN_WIDGET_CONTROL
+comma
+l_int|0x40
+)brace
+comma
 multiline_comment|/* unmute amp left and right */
 (brace
 l_int|0x04
@@ -5560,7 +5598,7 @@ l_int|0x0f
 comma
 id|AC_VERB_SET_AMP_GAIN_MUTE
 comma
-l_int|0x0000
+l_int|0xb000
 )brace
 comma
 multiline_comment|/* unmute HP mixer amp left and right (volume = 0) */
@@ -5578,7 +5616,16 @@ l_int|0x10
 comma
 id|AC_VERB_SET_AMP_GAIN_MUTE
 comma
-l_int|0x0000
+l_int|0xb080
+)brace
+comma
+multiline_comment|/* mute LINE-2 out */
+(brace
+l_int|0x15
+comma
+id|AC_VERB_SET_AMP_GAIN_MUTE
+comma
+l_int|0xb080
 )brace
 comma
 multiline_comment|/* Amp Indexes: CD = 0x04, Line In 1 = 0x02, Mic 1 = 0x00 &amp; Line In 2 = 0x03 */
