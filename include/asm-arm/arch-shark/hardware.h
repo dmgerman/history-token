@@ -44,5 +44,7 @@ DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO          0x6000
 DECL|macro|PCIBIOS_MIN_MEM
 mdefine_line|#define PCIBIOS_MIN_MEM         0x50000000
+DECL|macro|PCIMEM_BASE
+mdefine_line|#define PCIMEM_BASE&t;&t;0xe8000000
 macro_line|#endif
 eof
