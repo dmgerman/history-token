@@ -216,7 +216,7 @@ c_cond
 (paren
 id|de-&gt;owner
 )paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|de-&gt;owner
@@ -847,13 +847,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|de-&gt;owner
-)paren
-id|__MOD_INC_USE_COUNT
+op_logical_neg
+id|try_module_get
 c_func
 (paren
 id|de-&gt;owner
 )paren
+)paren
+r_goto
+id|out_fail
 suffix:semicolon
 r_if
 c_cond

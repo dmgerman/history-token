@@ -12982,8 +12982,8 @@ suffix:semicolon
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; *&t;OS entry point to adjust the queue_depths on a per-device basis.&n; *&t;Called once per device the bus scan. Use it to force the queue_depth&n; *&t;member to 1 if a device does not support Q tags.&n; */
 r_int
-DECL|function|mptscsih_slave_attach
-id|mptscsih_slave_attach
+DECL|function|mptscsih_slave_configure
+id|mptscsih_slave_configure
 c_func
 (paren
 id|Scsi_Device

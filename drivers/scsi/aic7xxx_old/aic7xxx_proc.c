@@ -1379,7 +1379,7 @@ c_func
 (paren
 id|BLS
 comma
-l_string|&quot;  Tagged Command Queueing Enabled, Ordered Tags %s&bslash;n&quot;
+l_string|&quot;  Tagged Command Queueing Enabled, Ordered Tags %s, Depth %d/%d&bslash;n&quot;
 comma
 id|sdptr-&gt;ordered_tags
 ques
@@ -1387,6 +1387,10 @@ c_cond
 l_string|&quot;Enabled&quot;
 suffix:colon
 l_string|&quot;Disabled&quot;
+comma
+id|sdptr-&gt;new_queue_depth
+comma
+id|aic_dev-&gt;max_q_depth
 )paren
 suffix:semicolon
 )brace

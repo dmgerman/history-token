@@ -1279,10 +1279,10 @@ op_assign
 id|FALSE
 suffix:semicolon
 macro_line|#endif
-DECL|function|eata2x_slave_attach
+DECL|function|eata2x_slave_configure
 r_static
 r_int
-id|eata2x_slave_attach
+id|eata2x_slave_configure
 c_func
 (paren
 id|Scsi_Device

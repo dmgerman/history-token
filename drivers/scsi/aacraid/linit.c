@@ -699,7 +699,7 @@ id|cmd
 suffix:semicolon
 r_static
 r_int
-id|aac_slave_attach
+id|aac_slave_configure
 c_func
 (paren
 id|Scsi_Device
@@ -1998,11 +1998,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;aac_slave_attach&t;-&t;do device specific setup&n; *&t;@dev:&t;SCSI device we are attaching&n; *&n; * &t;Currently, all we do is set the queue depth on the device.&n; */
-DECL|function|aac_slave_attach
+multiline_comment|/**&n; *&t;aac_slave_configure&t;-&t;do device specific setup&n; *&t;@dev:&t;SCSI device we are attaching&n; *&n; * &t;Currently, all we do is set the queue depth on the device.&n; */
+DECL|function|aac_slave_configure
 r_static
 r_int
-id|aac_slave_attach
+id|aac_slave_configure
 c_func
 (paren
 id|Scsi_Device
@@ -2359,9 +2359,9 @@ id|bios_param
 suffix:colon
 id|aac_biosparm
 comma
-id|slave_attach
+id|slave_configure
 suffix:colon
-id|aac_slave_attach
+id|aac_slave_configure
 comma
 id|can_queue
 suffix:colon
