@@ -123,6 +123,8 @@ DECL|macro|TIF_NEED_RESCHED
 mdefine_line|#define TIF_NEED_RESCHED&t;3&t;/* rescheduling necessary */
 DECL|macro|TIF_POLLING_NRFLAG
 mdefine_line|#define TIF_POLLING_NRFLAG&t;4&t;/* true if poll_idle() is polling&n;&t;&t;&t;&t;&t;   TIF_NEED_RESCHED */
+DECL|macro|TIF_FORCE_NOERROR
+mdefine_line|#define TIF_FORCE_NOERROR&t;5&t;/* don&squot;t return error from current&n;&t;&t;&t;&t;&t;   syscall even if result &lt; 0 */
 multiline_comment|/* as above, but as bit values */
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1&lt;&lt;TIF_SYSCALL_TRACE)
@@ -134,6 +136,8 @@ DECL|macro|_TIF_NEED_RESCHED
 mdefine_line|#define _TIF_NEED_RESCHED&t;(1&lt;&lt;TIF_NEED_RESCHED)
 DECL|macro|_TIF_POLLING_NRFLAG
 mdefine_line|#define _TIF_POLLING_NRFLAG&t;(1&lt;&lt;TIF_POLLING_NRFLAG)
+DECL|macro|_TIF_FORCE_NOERROR
+mdefine_line|#define _TIF_FORCE_NOERROR&t;(1&lt;&lt;TIF_FORCE_NOERROR)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_THREAD_INFO_H */
 eof
