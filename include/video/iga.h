@@ -2,17 +2,6 @@ multiline_comment|/* $Id: iga.h,v 1.2 1999/09/11 22:56:31 zaitcev Exp $&n; * iga
 macro_line|#ifndef _IGA1682_H
 DECL|macro|_IGA1682_H
 mdefine_line|#define _IGA1682_H 1
-DECL|struct|iga1682_info
-r_struct
-id|iga1682_info
-(brace
-DECL|member|total_vram
-r_int
-r_int
-id|total_vram
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|macro|IGA_ATTR_CTL
 mdefine_line|#define IGA_ATTR_CTL&t;&t;&t;0x3C0
 DECL|macro|IGA_IDX_VGA_OVERSCAN
