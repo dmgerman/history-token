@@ -4188,8 +4188,6 @@ c_func
 id|idev
 comma
 id|skb
-comma
-id|proto
 )paren
 suffix:semicolon
 r_return

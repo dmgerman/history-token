@@ -280,9 +280,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-comma
-id|u16
-id|proto
 )paren
 (brace
 r_struct
@@ -304,8 +301,11 @@ r_char
 op_star
 id|p
 suffix:semicolon
-r_int
+id|u32
 id|txseq
+suffix:semicolon
+id|u16
+id|proto
 suffix:semicolon
 r_if
 c_cond
