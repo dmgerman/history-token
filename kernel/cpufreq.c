@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#ifdef CONFIG_CPU_FREQ_PROC_INTF
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
