@@ -762,6 +762,10 @@ id|EINVAL
 )paren
 suffix:semicolon
 )brace
+id|mp-&gt;m_ihsize
+op_assign
+id|ap-&gt;ihashsize
+suffix:semicolon
 id|mp-&gt;m_logbsize
 op_assign
 id|ap-&gt;logbufsize
@@ -5302,6 +5306,8 @@ DECL|macro|MNTOPT_NOUUID
 mdefine_line|#define MNTOPT_NOUUID&t;&quot;nouuid&quot;&t;/* ignore filesystem UUID */
 DECL|macro|MNTOPT_MTPT
 mdefine_line|#define MNTOPT_MTPT&t;&quot;mtpt&quot;&t;&t;/* filesystem mount point */
+DECL|macro|MNTOPT_IHASHSIZE
+mdefine_line|#define MNTOPT_IHASHSIZE    &quot;ihashsize&quot;    /* size of inode hash table */
 DECL|macro|MNTOPT_NORECOVERY
 mdefine_line|#define MNTOPT_NORECOVERY   &quot;norecovery&quot;   /* don&squot;t run XFS recovery */
 DECL|macro|MNTOPT_NOLOGFLUSH
@@ -5810,6 +5816,57 @@ op_assign
 r_uint8
 )paren
 id|iosize
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|this_char
+comma
+id|MNTOPT_IHASHSIZE
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|value
+op_logical_or
+op_logical_neg
+op_star
+id|value
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;XFS: %s option requires an argument&bslash;n&quot;
+comma
+id|this_char
+)paren
+suffix:semicolon
+r_return
+id|EINVAL
+suffix:semicolon
+)brace
+id|args-&gt;ihashsize
+op_assign
+id|simple_strtoul
+c_func
+(paren
+id|value
+comma
+op_amp
+id|eov
+comma
+l_int|10
+)paren
 suffix:semicolon
 )brace
 r_else
