@@ -2978,6 +2978,12 @@ r_if
 c_cond
 (paren
 id|chip-&gt;mpu_port
+OG
+l_int|0
+op_logical_and
+id|chip-&gt;mpu_port
+op_ne
+id|SNDRV_AUTO_PORT
 )paren
 (brace
 r_if
@@ -3027,6 +3033,26 @@ op_assign
 id|snd_mpu401_uart_interrupt
 suffix:semicolon
 )brace
+macro_line|#ifdef SNDRV_SBAWE_EMU8000
+r_if
+c_cond
+(paren
+id|awe_port
+(braket
+id|dev
+)braket
+op_eq
+id|SNDRV_AUTO_PORT
+)paren
+id|awe_port
+(braket
+id|dev
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* disable */
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3036,6 +3062,13 @@ id|dev
 )braket
 OG
 l_int|0
+op_logical_and
+id|fm_port
+(braket
+id|dev
+)braket
+op_ne
+id|SNDRV_AUTO_PORT
 )paren
 (brace
 r_if

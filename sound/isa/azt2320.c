@@ -1743,6 +1743,13 @@ id|dev
 )braket
 OG
 l_int|0
+op_logical_and
+id|mpu_port
+(braket
+id|dev
+)braket
+op_ne
+id|SNDRV_AUTO_PORT
 )paren
 (brace
 r_if
@@ -1799,6 +1806,13 @@ id|dev
 )braket
 OG
 l_int|0
+op_logical_and
+id|fm_port
+(braket
+id|dev
+)braket
+op_ne
+id|SNDRV_AUTO_PORT
 )paren
 (brace
 r_if

@@ -2219,6 +2219,9 @@ id|chip-&gt;mpu_port
 )paren
 (brace
 r_case
+l_int|0
+suffix:colon
+r_case
 op_minus
 l_int|1
 suffix:colon
@@ -2343,9 +2346,8 @@ l_int|6
 comma
 (paren
 id|chip-&gt;mpu_port
-op_eq
-op_minus
-l_int|1
+op_le
+l_int|0
 )paren
 ques
 c_cond
@@ -10388,6 +10390,10 @@ c_cond
 id|chip-&gt;mpu_port
 op_le
 l_int|0
+op_logical_or
+id|chip-&gt;mpu_port
+op_eq
+id|SNDRV_AUTO_PORT
 )paren
 id|rmidi
 op_assign
@@ -10436,6 +10442,10 @@ c_cond
 id|chip-&gt;fm_port
 OG
 l_int|0
+op_logical_and
+id|chip-&gt;fm_port
+op_ne
+id|SNDRV_AUTO_PORT
 )paren
 (brace
 id|opl3_t
