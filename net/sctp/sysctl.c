@@ -811,11 +811,11 @@ op_star
 (paren
 id|table-&gt;data
 )paren
-op_div
-id|HZ
-)paren
 op_star
 l_int|1000
+)paren
+op_div
+id|HZ
 comma
 (paren
 r_int
@@ -902,7 +902,7 @@ r_new
 op_star
 id|HZ
 )paren
-op_star
+op_div
 l_int|1000
 suffix:semicolon
 )brace
