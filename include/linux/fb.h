@@ -1717,7 +1717,7 @@ DECL|macro|fb_writeq
 mdefine_line|#define fb_writeq sbus_writeq
 DECL|macro|fb_memset
 mdefine_line|#define fb_memset sbus_memset_io
-macro_line|#elif defined(__i386__) || defined(__alpha__) || defined(__x86_64__) || defined(__hppa__) || defined(__sh__) || defined(__powerpc__)
+macro_line|#elif defined(__i386__) || defined(__alpha__) || defined(__x86_64__) || defined(__hppa__) || (defined(__sh__) &amp;&amp; !defined(__SH5__)) || defined(__powerpc__)
 DECL|macro|fb_readb
 mdefine_line|#define fb_readb __raw_readb
 DECL|macro|fb_readw
