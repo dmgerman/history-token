@@ -360,6 +360,7 @@ op_star
 id|befs_inode_cachep
 suffix:semicolon
 DECL|variable|befs_dir_operations
+r_static
 r_struct
 id|file_operations
 id|befs_dir_operations
@@ -378,6 +379,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|befs_dir_inode_operations
+r_static
 r_struct
 id|inode_operations
 id|befs_dir_inode_operations
@@ -391,6 +393,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|befs_file_operations
+r_static
 r_struct
 id|file_operations
 id|befs_file_operations
@@ -414,6 +417,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|befs_aops
+r_static
 r_struct
 id|address_space_operations
 id|befs_aops
