@@ -3152,6 +3152,7 @@ suffix:semicolon
 DECL|function|setup_APIC_timer
 r_static
 r_void
+id|__init
 id|setup_APIC_timer
 c_func
 (paren
