@@ -1371,7 +1371,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;sock_alloc&t;-&t;allocate a socket&n; *&t;&n; *&t;Allocate a new inode and socket object. The two are bound together&n; *&t;and initialised. The socket is then returned. If we are out of inodes&n; *&t;NULL is returned.&n; */
 DECL|function|sock_alloc
-r_static
 r_struct
 id|socket
 op_star
