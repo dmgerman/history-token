@@ -188,6 +188,28 @@ op_star
 id|skb
 )paren
 suffix:semicolon
+DECL|member|error
+r_int
+(paren
+op_star
+id|error
+)paren
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_enum
+id|ip_conntrack_info
+op_star
+id|ctinfo
+comma
+r_int
+r_int
+id|hooknum
+)paren
+suffix:semicolon
 multiline_comment|/* Module (if any) which this is connected to. */
 DECL|member|me
 r_struct
@@ -244,5 +266,18 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* Log invalid packets */
+r_extern
+r_int
+r_int
+id|ip_ct_log_invalid
+suffix:semicolon
+macro_line|#ifdef DEBUG_INVALID_PACKETS
+DECL|macro|LOG_INVALID
+mdefine_line|#define LOG_INVALID(proto) &bslash;&n;&t;(ip_ct_log_invalid == (proto) || ip_ct_log_invalid == IPPROTO_RAW)
+macro_line|#else
+DECL|macro|LOG_INVALID
+mdefine_line|#define LOG_INVALID(proto) &bslash;&n;&t;((ip_ct_log_invalid == (proto) || ip_ct_log_invalid == IPPROTO_RAW) &bslash;&n;&t; &amp;&amp; net_ratelimit())
+macro_line|#endif
 macro_line|#endif /*_IP_CONNTRACK_PROTOCOL_H*/
 eof
