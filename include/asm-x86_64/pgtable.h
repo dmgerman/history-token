@@ -1230,7 +1230,7 @@ mdefine_line|#define level3_offset_k(dir, address) ((pgd_t *) pml4_page(*(dir)) 
 multiline_comment|/* PGD - Level3 access */
 multiline_comment|/* to find an entry in a page-table-directory. */
 DECL|macro|pgd_index
-mdefine_line|#define pgd_index(address) ((address &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
+mdefine_line|#define pgd_index(address) (((address) &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
 DECL|function|__pgd_offset_k
 r_static
 r_inline
