@@ -439,6 +439,7 @@ id|FALSE
 suffix:semicolon
 multiline_comment|/* BB pass O_SYNC flag through on file attributes .. BB */
 multiline_comment|/* Also refresh inode by passing in file_info buf returned by SMBOpen &n;&t;   and calling get_inode_info with returned buf (at least &n;&t;   helps non-Unix server case */
+multiline_comment|/* BB we can not do this if this is the second open of a file &n;&t;and the first handle has writebehind data, we might be &n;&t;able to simply do a filemap_fdatawrite/filemap_fdatawait first */
 id|buf
 op_assign
 id|kmalloc
@@ -1105,12 +1106,6 @@ suffix:semicolon
 id|__u16
 id|netfid
 suffix:semicolon
-id|FILE_ALL_INFO
-op_star
-id|buf
-op_assign
-l_int|NULL
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1351,58 +1346,8 @@ id|oplock
 op_assign
 id|FALSE
 suffix:semicolon
-multiline_comment|/* BB pass O_SYNC flag through on file attributes .. BB */
-multiline_comment|/* Also refresh inode by passing in file_info buf returned by SMBOpen&n;&t;&t;   and calling get_inode_info with returned buf (at least&n;&t;&t;   helps non-Unix server case */
-id|buf
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-id|FILE_ALL_INFO
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|buf
-op_eq
-l_int|0
-)paren
-(brace
-id|up
-c_func
-(paren
-op_amp
-id|pCifsFile-&gt;fh_sem
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|full_path
-)paren
-id|kfree
-c_func
-(paren
-id|full_path
-)paren
-suffix:semicolon
-id|FreeXid
-c_func
-(paren
-id|xid
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
+multiline_comment|/* Can not refresh inode by passing in file_info buf to be returned&n;&t; by SMBOpen and then calling get_inode_info with returned buf &n;&t; since file might have write behind data that needs to be flushed &n;&t; and server version of file size can be stale. If we &n;&t; knew for sure that inode was not dirty locally we could do this */
+multiline_comment|/*&t;buf = kmalloc(sizeof(FILE_ALL_INFO),GFP_KERNEL);&n;&t;if(buf==0) {&n;&t;&t;up(&amp;pCifsFile-&gt;fh_sem);&n;&t;&t;if (full_path)&n;&t;&t;&t;kfree(full_path);&n;&t;&t;FreeXid(xid);&n;&t;&t;return -ENOMEM;&n;&t;}*/
 id|rc
 op_assign
 id|CIFSSMBOpen
@@ -1426,7 +1371,7 @@ comma
 op_amp
 id|oplock
 comma
-id|buf
+l_int|NULL
 comma
 id|cifs_sb-&gt;local_nls
 )paren
@@ -1500,6 +1445,27 @@ c_cond
 id|pCifsInode
 )paren
 (brace
+id|filemap_fdatawrite
+c_func
+(paren
+id|inode-&gt;i_mapping
+)paren
+suffix:semicolon
+id|filemap_fdatawait
+c_func
+(paren
+id|inode-&gt;i_mapping
+)paren
+suffix:semicolon
+multiline_comment|/* temporarily disable caching while we&n;&t;&t;&t;go to server to get inode info */
+id|pCifsInode-&gt;clientCanCacheAll
+op_assign
+id|FALSE
+suffix:semicolon
+id|pCifsInode-&gt;clientCanCacheRead
+op_assign
+id|FALSE
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1531,7 +1497,7 @@ id|inode
 comma
 id|full_path
 comma
-id|buf
+l_int|NULL
 comma
 id|inode-&gt;i_sb
 )paren
@@ -1610,17 +1576,6 @@ id|pCifsFile
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|buf
-)paren
-id|kfree
-c_func
-(paren
-id|buf
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
