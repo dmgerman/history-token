@@ -348,7 +348,7 @@ mdefine_line|#define spi_transport_show_function(field, format_string)&t;&t;&bsl
 DECL|macro|spi_transport_store_function
 mdefine_line|#define spi_transport_store_function(field, format_string)&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;store_spi_transport_##field(struct class_device *cdev, const char *buf, &bslash;&n;&t;&t;&t;    size_t count)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int val;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev = transport_class_to_sdev(cdev);&t;&bslash;&n;&t;struct spi_internal *i = to_spi_internal(sdev-&gt;host-&gt;transportt); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;val = simple_strtoul(buf, NULL, 0);&t;&t;&t;&t;&bslash;&n;&t;i-&gt;f-&gt;set_##field(sdev, val);&t;&t;&t;&t;&t;&bslash;&n;&t;return count;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|spi_transport_rd_attr
-mdefine_line|#define spi_transport_rd_attr(field, format_string)&t;&t;&t;&bslash;&n;&t;spi_transport_show_function(field, format_string)&t;&t;&bslash;&n;&t;spi_transport_store_function(field, format_string)&t;&t;&bslash;&n;static CLASS_DEVICE_ATTR(field, S_IRUGO | S_IWUSR,&t;&t;&t;&bslash;&n;&t;&t;&t; show_spi_transport_##field,&t;&t;&t;&bslash;&n;&t;&t;&t; store_spi_transport_##field)
+mdefine_line|#define spi_transport_rd_attr(field, format_string)&t;&t;&t;&bslash;&n;&t;spi_transport_show_function(field, format_string)&t;&t;&bslash;&n;&t;spi_transport_store_function(field, format_string)&t;&t;&bslash;&n;static CLASS_DEVICE_ATTR(field, S_IRUGO | S_IWUSR,&t;&t;&t;&bslash;&n;&t;&t;&t; show_spi_transport_##field,&t;&t;&t;&bslash;&n;&t;&t;&t; store_spi_transport_##field);
 multiline_comment|/* The Parallel SCSI Tranport Attributes: */
 id|spi_transport_rd_attr
 c_func
@@ -475,6 +475,7 @@ l_int|NULL
 comma
 id|store_spi_revalidate
 )paren
+suffix:semicolon
 multiline_comment|/* Translate the period into ns according to the current spec&n; * for SDTR/PPR messages */
 DECL|function|show_spi_transport_period
 r_static
