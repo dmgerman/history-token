@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/input/serio/gscps2.c&n; *&n; * Copyright (c) 2004 Helge Deller &lt;deller@gmx.de&gt;&n; * Copyright (c) 2002 Laurent Canet &lt;canetl@esiee.fr&gt;&n; * Copyright (c) 2002 Thibaut Varene &lt;varenet@esiee.fr&gt;&n; *&n; * Pieces of code based on linux-2.4&squot;s hp_mouse.c &amp; hp_keyb.c&n; * &t;Copyright (c) 1999 Alex deVries &lt;alex@onefishtwo.ca&gt;&n; *&t;Copyright (c) 1999-2000 Philipp Rumpf &lt;prumpf@tux.org&gt;&n; *&t;Copyright (c) 2000 Xavier Debacker &lt;debackex@esiee.fr&gt;&n; *&t;Copyright (c) 2000-2001 Thomas Marteau &lt;marteaut@esiee.fr&gt;&n; *&n; * HP GSC PS/2 port driver, found in PA/RISC Workstations&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * TODO:&n; * - Dino testing (did HP ever shipped a machine on which this port&n; *                 was usable/enabled ?)&n; */
+multiline_comment|/*&n; * drivers/input/serio/gscps2.c&n; *&n; * Copyright (c) 2004 Helge Deller &lt;deller@gmx.de&gt;&n; * Copyright (c) 2002 Laurent Canet &lt;canetl@esiee.fr&gt;&n; * Copyright (c) 2002 Thibaut Varene &lt;varenet@parisc-linux.org&gt;&n; *&n; * Pieces of code based on linux-2.4&squot;s hp_mouse.c &amp; hp_keyb.c&n; * &t;Copyright (c) 1999 Alex deVries &lt;alex@onefishtwo.ca&gt;&n; *&t;Copyright (c) 1999-2000 Philipp Rumpf &lt;prumpf@tux.org&gt;&n; *&t;Copyright (c) 2000 Xavier Debacker &lt;debackex@esiee.fr&gt;&n; *&t;Copyright (c) 2000-2001 Thomas Marteau &lt;marteaut@esiee.fr&gt;&n; *&n; * HP GSC PS/2 port driver, found in PA/RISC Workstations&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * TODO:&n; * - Dino testing (did HP ever shipped a machine on which this port&n; *                 was usable/enabled ?)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/parisc-device.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Laurent Canet &lt;canetl@esiee.fr&gt;, Thibaut Varene &lt;varenet@esiee.fr&gt;, Helge Deller &lt;deller@gmx.de&gt;&quot;
+l_string|&quot;Laurent Canet &lt;canetl@esiee.fr&gt;, Thibaut Varene &lt;varenet@parisc-linux.org&gt;, Helge Deller &lt;deller@gmx.de&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
