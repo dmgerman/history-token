@@ -109,10 +109,16 @@ id|skb
 op_eq
 l_int|NULL
 )paren
-r_return
+(brace
+id|err
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+r_goto
+id|error_nolock
+suffix:semicolon
+)brace
 id|spin_lock_bh
 c_func
 (paren
