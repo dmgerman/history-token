@@ -6944,6 +6944,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 id|de_clean_rings

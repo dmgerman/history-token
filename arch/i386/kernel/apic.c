@@ -3661,6 +3661,11 @@ r_int
 r_int
 id|v
 suffix:semicolon
+id|irq_enter
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Check if this really is a spurious interrupt and ACK it&n;&t; * if it is a vectored one.  Just in case...&n;&t; * Spurious interrupts should not be ACKed.&n;&t; */
 id|v
 op_assign
@@ -3714,6 +3719,11 @@ c_func
 )paren
 )paren
 suffix:semicolon
+id|irq_exit
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * This interrupt should never happen with our APIC/SMP architecture&n; */
 DECL|function|smp_error_interrupt
@@ -3730,6 +3740,11 @@ r_int
 id|v
 comma
 id|v1
+suffix:semicolon
+id|irq_enter
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* First tickle the hardware, only then report what went on. -- REW */
 id|v
@@ -3782,6 +3797,11 @@ comma
 id|v
 comma
 id|v1
+)paren
+suffix:semicolon
+id|irq_exit
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

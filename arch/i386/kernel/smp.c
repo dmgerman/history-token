@@ -756,7 +756,7 @@ id|flush_cpumask
 suffix:semicolon
 id|out
 suffix:colon
-id|put_cpu
+id|put_cpu_no_resched
 c_func
 (paren
 )paren
