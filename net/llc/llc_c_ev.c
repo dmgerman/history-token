@@ -1167,9 +1167,9 @@ id|rc
 id|dprintk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;rx_i_cmd_p_bit_set_x_inval_ns matched,&quot;
-l_string|&quot;state = %d, ns = %d, vr = %d&bslash;n&quot;
+l_string|&quot;%s: matched, state=%d, ns=%d, vr=%d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|llc_sk
 c_func
@@ -1767,9 +1767,9 @@ id|rc
 id|dprintk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;conn_ev_rx_i_rsp_fbit_set_x_inval_ns &quot;
-l_string|&quot;matched : state = %d, ns = %d, vr = %d&bslash;n&quot;
+l_string|&quot;%s: matched, state=%d, ns=%d, vr=%d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|llc_sk
 c_func
@@ -3471,9 +3471,9 @@ id|nr
 id|dprintk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;conn_ev_rx_zzz_cmd_inv_nr matched, state = &quot;
-l_string|&quot;%d, vs = %d, nr = %d&bslash;n&quot;
+l_string|&quot;%s: matched, state=%d, vs=%d, nr=%d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|llc_sk
 c_func
@@ -3595,9 +3595,9 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;conn_ev_rx_zzz_fbit_set_x_inval_nr matched, &quot;
-l_string|&quot;state = %d, vs = %d, nr = %d&bslash;n&quot;
+l_string|&quot;%s: matched, state=%d, vs=%d, nr=%d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|llc_sk
 c_func
