@@ -26,6 +26,9 @@ comma
 r_char
 op_star
 id|name
+comma
+id|__u16
+id|hints
 )paren
 (brace
 r_int
@@ -132,6 +135,16 @@ l_int|0
 )braket
 op_assign
 l_char|&squot;&bslash;0&squot;
+suffix:semicolon
+multiline_comment|/* Copy hints */
+id|irnet_events.log
+(braket
+id|index
+)braket
+dot
+id|hints.word
+op_assign
+id|hints
 suffix:semicolon
 multiline_comment|/* Try to get ppp unit number */
 r_if
@@ -1803,6 +1816,8 @@ comma
 id|self-&gt;daddr
 comma
 id|self-&gt;rname
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -2759,6 +2774,8 @@ op_member_access_from_pointer
 id|daddr
 comma
 id|server-&gt;rname
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|DEXIT
@@ -2840,6 +2857,8 @@ comma
 id|self-&gt;daddr
 comma
 id|self-&gt;rname
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Clean up the server to keep it in listen state */
@@ -3458,6 +3477,8 @@ comma
 id|self-&gt;daddr
 comma
 id|self-&gt;rname
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -3490,6 +3511,8 @@ comma
 id|self-&gt;daddr
 comma
 id|self-&gt;rname
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -3808,6 +3831,8 @@ comma
 id|self-&gt;daddr
 comma
 id|self-&gt;rname
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|DEXIT
@@ -4034,6 +4059,8 @@ comma
 id|self-&gt;daddr
 comma
 id|self-&gt;rname
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -4995,6 +5022,12 @@ comma
 id|discovery-&gt;daddr
 comma
 id|discovery-&gt;info
+comma
+id|u16ho
+c_func
+(paren
+id|discovery-&gt;hints
+)paren
 )paren
 suffix:semicolon
 id|DEXIT
@@ -5090,6 +5123,12 @@ comma
 id|expiry-&gt;daddr
 comma
 id|expiry-&gt;info
+comma
+id|u16ho
+c_func
+(paren
+id|expiry-&gt;hints
+)paren
 )paren
 suffix:semicolon
 id|DEXIT

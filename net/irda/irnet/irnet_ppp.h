@@ -239,6 +239,11 @@ id|irnet_device_fops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|read
 op_assign
 id|dev_irnet_read

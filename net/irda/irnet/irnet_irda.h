@@ -90,6 +90,8 @@ id|__u32
 comma
 r_char
 op_star
+comma
+id|__u16
 )paren
 suffix:semicolon
 multiline_comment|/* ----------------------- IRDA SUBROUTINES ----------------------- */
