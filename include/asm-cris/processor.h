@@ -103,12 +103,6 @@ DECL|macro|KSTK_EIP
 mdefine_line|#define KSTK_EIP(tsk)   &bslash;&n;    ({                  &bslash;&n;        unsigned long eip = 0;   &bslash;&n;        unsigned long regs = (unsigned long)user_regs(tsk); &bslash;&n;        if (regs &gt; PAGE_SIZE &amp;&amp; &bslash;&n;            virt_addr_valid(regs)) &bslash;&n;              eip = ((struct pt_regs *)regs)-&gt;irp; &bslash;&n;        eip; })
 DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk)   ((tsk) == current ? rdusp() : (tsk)-&gt;thread.usp)
-DECL|macro|copy_segments
-mdefine_line|#define copy_segments(tsk, mm)          do { } while (0)
-DECL|macro|release_segments
-mdefine_line|#define release_segments(mm)            do { } while (0)
-DECL|macro|forget_segments
-mdefine_line|#define forget_segments()               do { } while (0)
 multiline_comment|/*&n; * Free current thread data structures etc..&n; */
 DECL|function|exit_thread
 r_static
