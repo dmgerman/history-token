@@ -624,7 +624,7 @@ macro_line|#ifdef CONFIG_PNP
 DECL|variable|pnp_devids
 r_static
 r_struct
-id|pnp_id
+id|pnp_device_id
 id|pnp_devids
 (braket
 )braket
@@ -947,13 +947,7 @@ id|dev
 comma
 r_const
 r_struct
-id|pnp_id
-op_star
-id|cid
-comma
-r_const
-r_struct
-id|pnp_id
+id|pnp_device_id
 op_star
 id|did
 )paren
