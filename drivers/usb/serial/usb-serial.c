@@ -578,6 +578,13 @@ c_func
 id|serial-&gt;type-&gt;owner
 )paren
 suffix:semicolon
+id|kobject_put
+c_func
+(paren
+op_amp
+id|serial-&gt;kobj
+)paren
+suffix:semicolon
 )brace
 )brace
 id|bailout
