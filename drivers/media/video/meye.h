@@ -11,6 +11,7 @@ mdefine_line|#define MEYE_DRIVER_VERSION __stringify(MEYE_DRIVER_MAJORVERSION) &
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/kfifo.h&gt;
 multiline_comment|/****************************************************************************/
 multiline_comment|/* Motion JPEG chip registers                                               */
 multiline_comment|/****************************************************************************/
@@ -392,51 +393,9 @@ suffix:semicolon
 multiline_comment|/* size of jpg frame */
 )brace
 suffix:semicolon
-multiline_comment|/* queues containing the buffer indices */
+multiline_comment|/* size of kfifos containings buffer indices */
 DECL|macro|MEYE_QUEUE_SIZE
 mdefine_line|#define MEYE_QUEUE_SIZE&t;MEYE_MAX_BUFNBRS
-DECL|struct|meye_queue
-r_struct
-id|meye_queue
-(brace
-DECL|member|head
-r_int
-r_int
-id|head
-suffix:semicolon
-multiline_comment|/* queue head */
-DECL|member|tail
-r_int
-r_int
-id|tail
-suffix:semicolon
-multiline_comment|/* queue tail */
-DECL|member|len
-r_int
-r_int
-id|len
-suffix:semicolon
-multiline_comment|/* queue length */
-DECL|member|s_lock
-id|spinlock_t
-id|s_lock
-suffix:semicolon
-multiline_comment|/* spinlock protecting the queue */
-DECL|member|proc_list
-id|wait_queue_head_t
-id|proc_list
-suffix:semicolon
-multiline_comment|/* wait queue */
-DECL|member|buf
-r_int
-id|buf
-(braket
-id|MEYE_QUEUE_SIZE
-)braket
-suffix:semicolon
-multiline_comment|/* queue contents */
-)brace
-suffix:semicolon
 multiline_comment|/* Motion Eye device structure */
 DECL|struct|meye
 r_struct
@@ -499,6 +458,13 @@ op_star
 id|grab_fbuffer
 suffix:semicolon
 multiline_comment|/* capture framebuffer */
+DECL|member|grab_temp
+r_int
+r_char
+op_star
+id|grab_temp
+suffix:semicolon
+multiline_comment|/* temporary buffer */
 multiline_comment|/* list of buffers */
 DECL|member|grab_buffer
 r_struct
@@ -517,10 +483,33 @@ suffix:semicolon
 multiline_comment|/* semaphore for open/mmap... */
 DECL|member|grabq
 r_struct
-id|meye_queue
+id|kfifo
+op_star
 id|grabq
 suffix:semicolon
 multiline_comment|/* queue for buffers to be grabbed */
+DECL|member|grabq_lock
+id|spinlock_t
+id|grabq_lock
+suffix:semicolon
+multiline_comment|/* lock protecting the queue */
+DECL|member|doneq
+r_struct
+id|kfifo
+op_star
+id|doneq
+suffix:semicolon
+multiline_comment|/* queue for grabbed buffers */
+DECL|member|doneq_lock
+id|spinlock_t
+id|doneq_lock
+suffix:semicolon
+multiline_comment|/* lock protecting the queue */
+DECL|member|proc_list
+id|wait_queue_head_t
+id|proc_list
+suffix:semicolon
+multiline_comment|/* wait queue */
 DECL|member|video_dev
 r_struct
 id|video_device
