@@ -985,7 +985,12 @@ id|reserve_sem
 suffix:semicolon
 id|actifsettings
 op_assign
-id|dev-&gt;actconfig-&gt;interface-&gt;altsetting
+id|dev-&gt;actconfig-&gt;interface
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|altsetting
 suffix:semicolon
 r_if
 c_cond

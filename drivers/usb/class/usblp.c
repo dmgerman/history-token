@@ -3814,7 +3814,6 @@ id|e
 suffix:semicolon
 id|if_alt
 op_assign
-op_amp
 id|usblp-&gt;dev-&gt;actconfig-&gt;interface
 (braket
 id|usblp-&gt;ifnum

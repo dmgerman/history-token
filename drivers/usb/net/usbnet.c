@@ -1221,6 +1221,9 @@ suffix:semicolon
 id|info-&gt;data
 op_assign
 id|dev-&gt;udev-&gt;actconfig-&gt;interface
+(braket
+l_int|0
+)braket
 suffix:semicolon
 r_if
 c_cond

@@ -3298,7 +3298,6 @@ c_cond
 (paren
 id|interface
 op_ne
-op_amp
 id|dev-&gt;actconfig-&gt;interface
 (braket
 l_int|0
@@ -3313,7 +3312,7 @@ id|dev-&gt;actconfig-&gt;interface
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|altsetting
 (braket
 l_int|0

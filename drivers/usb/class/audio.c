@@ -7866,7 +7866,6 @@ l_int|0
 suffix:semicolon
 id|iface
 op_assign
-op_amp
 id|config-&gt;interface
 (braket
 id|u-&gt;interface
@@ -8567,7 +8566,6 @@ l_int|0
 suffix:semicolon
 id|iface
 op_assign
-op_amp
 id|config-&gt;interface
 (braket
 id|u-&gt;interface
@@ -15817,7 +15815,6 @@ l_int|0
 (brace
 id|iface
 op_assign
-op_amp
 id|dev-&gt;actconfig-&gt;interface
 (braket
 id|as-&gt;usbout.interface
@@ -15874,7 +15871,6 @@ l_int|0
 (brace
 id|iface
 op_assign
-op_amp
 id|dev-&gt;actconfig-&gt;interface
 (braket
 id|as-&gt;usbin.interface
@@ -16972,7 +16968,6 @@ id|FLG_CONNECTED
 suffix:semicolon
 id|iface
 op_assign
-op_amp
 id|config-&gt;interface
 (braket
 id|asifin
@@ -17646,7 +17641,6 @@ id|FLG_CONNECTED
 suffix:semicolon
 id|iface
 op_assign
-op_amp
 id|config-&gt;interface
 (braket
 id|asifout
@@ -23184,7 +23178,6 @@ suffix:semicolon
 )brace
 id|iface
 op_assign
-op_amp
 id|config-&gt;interface
 (braket
 id|j

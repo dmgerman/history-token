@@ -123,8 +123,9 @@ op_increment
 id|ifp
 op_assign
 id|config-&gt;interface
-op_plus
+(braket
 id|i
+)braket
 suffix:semicolon
 r_if
 c_cond
