@@ -85,9 +85,8 @@ DECL|macro|_PAGE_DIRTY
 mdefine_line|#define _PAGE_DIRTY&t;0x080UL&t;/* C: page changed */
 DECL|macro|_PAGE_ACCESSED
 mdefine_line|#define _PAGE_ACCESSED&t;0x100UL&t;/* R: page referenced */
-macro_line|#if 0
-mdefine_line|#define _PAGE_HPTENOIX&t;0x200UL /* software: pte HPTE slot unknown */
-macro_line|#endif
+DECL|macro|_PAGE_FILE
+mdefine_line|#define _PAGE_FILE&t;0x200UL /* software: pte holds file offset */
 DECL|macro|_PAGE_HASHPTE
 mdefine_line|#define _PAGE_HASHPTE&t;0x400UL&t;/* software: pte has an associated HPTE */
 DECL|macro|_PAGE_EXEC
@@ -358,6 +357,27 @@ id|pte
 )paren
 op_amp
 id|_PAGE_ACCESSED
+suffix:semicolon
+)brace
+DECL|function|pte_file
+r_static
+r_inline
+r_int
+id|pte_file
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_FILE
 suffix:semicolon
 )brace
 DECL|function|pte_uncache
@@ -976,15 +996,21 @@ id|pte_t
 suffix:semicolon
 multiline_comment|/* Encode and de-code a swap entry */
 DECL|macro|__swp_type
-mdefine_line|#define __swp_type(entry)&t;&t;(((entry).val &gt;&gt; 1) &amp; 0x3f)
+mdefine_line|#define __swp_type(entry)&t;(((entry).val &gt;&gt; 1) &amp; 0x3f)
 DECL|macro|__swp_offset
-mdefine_line|#define __swp_offset(entry)&t;&t;((entry).val &gt;&gt; 8)
+mdefine_line|#define __swp_offset(entry)&t;((entry).val &gt;&gt; 8)
 DECL|macro|__swp_entry
-mdefine_line|#define __swp_entry(type, offset)&t;((swp_entry_t) { ((type) &lt;&lt; 1) | ((offset) &lt;&lt; 8) })
+mdefine_line|#define __swp_entry(type, offset) ((swp_entry_t) { ((type) &lt;&lt; 1) | ((offset) &lt;&lt; 8) })
 DECL|macro|__pte_to_swp_entry
-mdefine_line|#define __pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) &gt;&gt; PTE_SHIFT })
+mdefine_line|#define __pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) &gt;&gt; PTE_SHIFT })
 DECL|macro|__swp_entry_to_pte
-mdefine_line|#define __swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val &lt;&lt; PTE_SHIFT })
+mdefine_line|#define __swp_entry_to_pte(x)&t;((pte_t) { (x).val &lt;&lt; PTE_SHIFT })
+DECL|macro|pte_to_pgoff
+mdefine_line|#define pte_to_pgoff(pte)&t;(pte_val(pte) &gt;&gt; PTE_SHIFT)
+DECL|macro|pgoff_to_pte
+mdefine_line|#define pgoff_to_pte(off)&t;((pte_t) {((off) &lt;&lt; PTE_SHIFT)|_PAGE_FILE})
+DECL|macro|PTE_FILE_MAX_BITS
+mdefine_line|#define PTE_FILE_MAX_BITS&t;(BITS_PER_LONG - PTE_SHIFT)
 multiline_comment|/*&n; * kern_addr_valid is intended to indicate whether an address is a valid&n; * kernel address.  Most 32-bit archs define it as always true (like this)&n; * but most 64-bit archs actually perform a test.  What should we do here?&n; * The only use is in fs/ncpfs/dir.c&n; */
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
