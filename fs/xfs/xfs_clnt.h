@@ -172,10 +172,8 @@ DECL|macro|XFSMNT_NOUUID
 mdefine_line|#define XFSMNT_NOUUID&t;&t;0x01000000&t;/* Ignore fs uuid */
 DECL|macro|XFSMNT_32BITINODES
 mdefine_line|#define XFSMNT_32BITINODES&t;0x02000000&t;/* restrict inodes to 32&n;&t;&t;&t;&t;&t;&t; * bits of address space */
-DECL|macro|XFSMNT_IRIXSGID
-mdefine_line|#define XFSMNT_IRIXSGID&t;&t;0x04000000&t;/* Irix-style sgid inheritance */
 DECL|macro|XFSMNT_NOLOGFLUSH
-mdefine_line|#define XFSMNT_NOLOGFLUSH&t;0x08000000&t;/* Don&squot;t flush for log blocks */
+mdefine_line|#define XFSMNT_NOLOGFLUSH&t;0x04000000&t;/* Don&squot;t flush for log blocks */
 multiline_comment|/* Did we get any args for CXFS to consume? */
 DECL|macro|XFSARGS_FOR_CXFSARR
 mdefine_line|#define XFSARGS_FOR_CXFSARR(ap)&t;&t;&bslash;&n;&t;((ap)-&gt;servlist || (ap)-&gt;slcount &gt;= 0 || &bslash;&n;&t; (ap)-&gt;stimeout &gt;= 0 || (ap)-&gt;ctimeout &gt;= 0 || &bslash;&n;&t; (ap)-&gt;flags &amp; (XFSMNT_CLNTONLY | XFSMNT_UNSHARED))

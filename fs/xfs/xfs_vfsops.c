@@ -994,17 +994,6 @@ c_cond
 (paren
 id|ap-&gt;flags
 op_amp
-id|XFSMNT_IRIXSGID
-)paren
-id|mp-&gt;m_flags
-op_or_assign
-id|XFS_MOUNT_IRIXSGID
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ap-&gt;flags
-op_amp
 id|XFSMNT_IOSIZE
 )paren
 (brace

@@ -33,9 +33,6 @@ r_struct
 id|xfs_trans
 suffix:semicolon
 r_struct
-id|xfs_dio
-suffix:semicolon
-r_struct
 id|pm
 suffix:semicolon
 multiline_comment|/*&n; * Maximum count of bmaps used by read and write paths.&n; */

@@ -22009,12 +22009,9 @@ multiline_comment|/* 0x4000 */
 l_string|&quot;32BIT&quot;
 comma
 multiline_comment|/* 0x8000 */
-l_string|&quot;IRIXSGID&quot;
-comma
-multiline_comment|/* 0x10000 */
 l_string|&quot;NOLOGFLUSH&quot;
 comma
-multiline_comment|/* 0x20000 */
+multiline_comment|/* 0x10000 */
 l_int|0
 )brace
 suffix:semicolon

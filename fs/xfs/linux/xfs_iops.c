@@ -1009,10 +1009,15 @@ id|VLNK
 suffix:semicolon
 id|va.va_mode
 op_assign
+id|irix_symlink_mode
+ques
+c_cond
 l_int|0777
 op_amp
 op_complement
 id|current-&gt;fs-&gt;umask
+suffix:colon
+id|S_IRWXUGO
 suffix:semicolon
 id|va.va_mask
 op_assign
@@ -1020,7 +1025,6 @@ id|AT_TYPE
 op_or
 id|AT_MODE
 suffix:semicolon
-multiline_comment|/* AT_PROJID? */
 id|error
 op_assign
 l_int|0
@@ -1446,7 +1450,7 @@ id|uio.uio_resid
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * careful here - this function can get called recusively, so&n; * we need to be very careful about how much stack we use.&n; * uio is kmalloced for this reason...&n; */
+multiline_comment|/*&n; * careful here - this function can get called recursively, so&n; * we need to be very careful about how much stack we use.&n; * uio is kmalloced for this reason...&n; */
 id|STATIC
 r_int
 DECL|function|linvfs_follow_link

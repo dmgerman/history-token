@@ -11,13 +11,6 @@ r_int
 r_int
 id|xfs_physmem
 suffix:semicolon
-multiline_comment|/*&n; * restricted_chown = 1&t; bsd style chown(2), only super-user can give away files&n; * restricted_chown = 0&t; sysV style chown(2), non super-user can give away files&n; */
-DECL|variable|restricted_chown
-r_int
-id|restricted_chown
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/*&n; * Used to serialize atomicIncWithWrap.&n; */
 DECL|variable|Atomic_spin
 id|spinlock_t

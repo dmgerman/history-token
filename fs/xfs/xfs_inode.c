@@ -3989,17 +3989,20 @@ id|ISGID
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * If the group ID of the new file does not match the effective group&n;&t; * ID or one of the supplementary group IDs, the ISGID bit is&n;&t; * cleared if the &quot;irixsgid&quot; mount option is set.&n;&t; */
+multiline_comment|/*&n;&t; * If the group ID of the new file does not match the effective group&n;&t; * ID or one of the supplementary group IDs, the ISGID bit is cleared&n;&t; * (and only if the irix_sgid_inherit compatibility variable is set).&n;&t; */
 r_if
 c_cond
+(paren
+(paren
+id|irix_sgid_inherit
+)paren
+op_logical_and
 (paren
 id|ip-&gt;i_d.di_mode
 op_amp
 id|ISGID
 )paren
-(brace
-r_if
-c_cond
+op_logical_and
 (paren
 op_logical_neg
 id|in_group_p
@@ -4010,11 +4013,6 @@ id|gid_t
 )paren
 id|ip-&gt;i_d.di_gid
 )paren
-op_logical_and
-(paren
-id|ip-&gt;i_mount-&gt;m_flags
-op_amp
-id|XFS_MOUNT_IRIXSGID
 )paren
 )paren
 (brace
@@ -4023,7 +4021,6 @@ op_and_assign
 op_complement
 id|ISGID
 suffix:semicolon
-)brace
 )brace
 id|ip-&gt;i_d.di_size
 op_assign
