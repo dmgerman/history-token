@@ -6976,60 +6976,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_pio_start -&n; *&t;@qc:&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
-DECL|function|ata_pio_start
-r_static
-r_void
-id|ata_pio_start
-(paren
-r_struct
-id|ata_queued_cmd
-op_star
-id|qc
-)paren
-(brace
-r_struct
-id|ata_port
-op_star
-id|ap
-op_assign
-id|qc-&gt;ap
-suffix:semicolon
-m_assert
-(paren
-id|qc-&gt;tf.protocol
-op_eq
-id|ATA_PROT_PIO
-)paren
-suffix:semicolon
-id|qc-&gt;flags
-op_or_assign
-id|ATA_QCFLAG_POLL
-suffix:semicolon
-id|qc-&gt;tf.ctl
-op_or_assign
-id|ATA_NIEN
-suffix:semicolon
-multiline_comment|/* disable interrupts */
-id|ata_tf_to_host_nolock
-c_func
-(paren
-id|ap
-comma
-op_amp
-id|qc-&gt;tf
-)paren
-suffix:semicolon
-id|queue_work
-c_func
-(paren
-id|ata_wq
-comma
-op_amp
-id|ap-&gt;pio_task
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/**&n; *&t;ata_pio_complete -&n; *&t;@ap:&n; *&n; *&t;LOCKING:&n; */
 DECL|function|ata_pio_complete
 r_static
@@ -8349,7 +8295,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_qc_issue_prot - issue taskfile to device in proto-dependent manner&n; *&t;@qc: command to issue to device&n; *&n; *&t;Using various libata functions and hooks, this function&n; *&t;starts an ATA command.  ATA commands are grouped into&n; *&t;classes called &quot;protocols&quot;, and issuing each type of protocol&n; *&t;is slightly different.&n; *&n; *&t;LOCKING:&n; *&n; *&t;RETURNS:&n; *&t;Zero on success, negative on error.&n; */
+multiline_comment|/**&n; *&t;ata_qc_issue_prot - issue taskfile to device in proto-dependent manner&n; *&t;@qc: command to issue to device&n; *&n; *&t;Using various libata functions and hooks, this function&n; *&t;starts an ATA command.  ATA commands are grouped into&n; *&t;classes called &quot;protocols&quot;, and issuing each type of protocol&n; *&t;is slightly different.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; *&n; *&t;RETURNS:&n; *&t;Zero on success, negative on error.&n; */
 DECL|function|ata_qc_issue_prot
 r_static
 r_int
@@ -8431,10 +8377,31 @@ r_case
 id|ATA_PROT_PIO
 suffix:colon
 multiline_comment|/* load tf registers, initiate polling pio */
-id|ata_pio_start
+id|qc-&gt;flags
+op_or_assign
+id|ATA_QCFLAG_POLL
+suffix:semicolon
+id|qc-&gt;tf.ctl
+op_or_assign
+id|ATA_NIEN
+suffix:semicolon
+multiline_comment|/* disable interrupts */
+id|ata_tf_to_host_nolock
 c_func
 (paren
-id|qc
+id|ap
+comma
+op_amp
+id|qc-&gt;tf
+)paren
+suffix:semicolon
+id|queue_work
+c_func
+(paren
+id|ata_wq
+comma
+op_amp
+id|ap-&gt;pio_task
 )paren
 suffix:semicolon
 r_break
