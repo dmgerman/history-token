@@ -6,6 +6,7 @@ macro_line|#include &lt;acpi/amlcode.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
 macro_line|#include &lt;acpi/acevents.h&gt;
 macro_line|#include &lt;acpi/actables.h&gt;
+macro_line|#include &lt;acpi/acdispat.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
 id|ACPI_MODULE_NAME
@@ -657,9 +658,8 @@ id|table_ptr
 op_assign
 l_int|NULL
 suffix:semicolon
-id|u8
-op_star
-id|table_data_ptr
+id|acpi_physical_address
+id|address
 suffix:semicolon
 r_struct
 id|acpi_table_header
@@ -702,7 +702,47 @@ id|obj_desc
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Get the table header */
+multiline_comment|/*&n;&t;&t; * If the Region Address and Length have not been previously evaluated,&n;&t;&t; * evaluate them now and save the results.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|obj_desc-&gt;common.flags
+op_amp
+id|AOPOBJ_DATA_VALID
+)paren
+)paren
+(brace
+id|status
+op_assign
+id|acpi_ds_get_region_arguments
+(paren
+id|obj_desc
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* Get the base physical address of the region */
+id|address
+op_assign
+id|obj_desc-&gt;region.address
+suffix:semicolon
+multiline_comment|/* Get the table length from the table header */
 id|table_header.length
 op_assign
 l_int|0
@@ -716,11 +756,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-r_sizeof
-(paren
-r_struct
-id|acpi_table_header
-)paren
+l_int|8
 suffix:semicolon
 id|i
 op_increment
@@ -737,7 +773,11 @@ comma
 (paren
 id|acpi_physical_address
 )paren
+(paren
 id|i
+op_plus
+id|address
+)paren
 comma
 l_int|8
 comma
@@ -769,6 +809,25 @@ id|status
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Sanity check the table length */
+r_if
+c_cond
+(paren
+id|table_header.length
+OL
+r_sizeof
+(paren
+r_struct
+id|acpi_table_header
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_BAD_HEADER
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Allocate a buffer for the entire table */
 id|table_ptr
 op_assign
@@ -790,37 +849,7 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Copy the header to the buffer */
-id|ACPI_MEMCPY
-(paren
-id|table_ptr
-comma
-op_amp
-id|table_header
-comma
-r_sizeof
-(paren
-r_struct
-id|acpi_table_header
-)paren
-)paren
-suffix:semicolon
-id|table_data_ptr
-op_assign
-id|ACPI_PTR_ADD
-(paren
-id|u8
-comma
-id|table_ptr
-comma
-r_sizeof
-(paren
-r_struct
-id|acpi_table_header
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Get the table from the op region */
+multiline_comment|/* Get the entire table from the op region */
 r_for
 c_loop
 (paren
@@ -847,7 +876,11 @@ comma
 (paren
 id|acpi_physical_address
 )paren
+(paren
 id|i
+op_plus
+id|address
+)paren
 comma
 l_int|8
 comma
@@ -856,7 +889,7 @@ comma
 id|u8
 op_star
 )paren
-id|table_data_ptr
+id|table_ptr
 op_plus
 id|i
 )paren
@@ -939,6 +972,25 @@ comma
 id|buffer_desc-&gt;buffer.pointer
 )paren
 suffix:semicolon
+multiline_comment|/* Sanity check the table length */
+r_if
+c_cond
+(paren
+id|table_ptr-&gt;length
+OL
+r_sizeof
+(paren
+r_struct
+id|acpi_table_header
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_BAD_HEADER
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_default

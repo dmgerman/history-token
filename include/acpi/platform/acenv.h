@@ -74,10 +74,7 @@ DECL|macro|COMPILER_DEPENDENT_INT64
 mdefine_line|#define COMPILER_DEPENDENT_INT64   long long
 DECL|macro|COMPILER_DEPENDENT_UINT64
 mdefine_line|#define COMPILER_DEPENDENT_UINT64  unsigned long long
-multiline_comment|/* Name of host operating system (returned by the _OS_ namespace object) */
-DECL|macro|ACPI_OS_NAME
-mdefine_line|#define ACPI_OS_NAME         &quot;Intel ACPI/CA Core Subsystem&quot;
-multiline_comment|/* This macro is used to tag functions as &quot;printf-like&quot; because&n; * some compilers can catch printf format string problems. MSVC&n; * doesn&squot;t, so this is proprocessed away.&n; */
+multiline_comment|/*&n; * This macro is used to tag functions as &quot;printf-like&quot; because&n; * some compilers can catch printf format string problems. MSVC&n; * doesn&squot;t, so this is proprocessed away.&n; */
 DECL|macro|ACPI_PRINTF_LIKE_FUNC
 mdefine_line|#define ACPI_PRINTF_LIKE_FUNC
 macro_line|#endif

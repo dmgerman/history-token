@@ -353,11 +353,11 @@ id|buffer.pointer
 suffix:semicolon
 id|buffer_end
 op_assign
+id|ACPI_CAST_PTR
 (paren
 r_struct
 id|acpi_resource
-op_star
-)paren
+comma
 (paren
 (paren
 id|u8
@@ -366,6 +366,7 @@ op_star
 id|buffer.pointer
 op_plus
 id|buffer.length
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Walk the resource list */
