@@ -170,6 +170,12 @@ DECL|macro|RD_REG_WORD
 mdefine_line|#define RD_REG_WORD(addr)&t;&t;readw(addr)
 DECL|macro|RD_REG_DWORD
 mdefine_line|#define RD_REG_DWORD(addr)&t;&t;readl(addr)
+DECL|macro|RD_REG_BYTE_RELAXED
+mdefine_line|#define RD_REG_BYTE_RELAXED(addr)&t;readb_relaxed(addr)
+DECL|macro|RD_REG_WORD_RELAXED
+mdefine_line|#define RD_REG_WORD_RELAXED(addr)&t;readw_relaxed(addr)
+DECL|macro|RD_REG_DWORD_RELAXED
+mdefine_line|#define RD_REG_DWORD_RELAXED(addr)&t;readl_relaxed(addr)
 DECL|macro|WRT_REG_BYTE
 mdefine_line|#define WRT_REG_BYTE(addr, data)&t;writeb(data,addr)
 DECL|macro|WRT_REG_WORD

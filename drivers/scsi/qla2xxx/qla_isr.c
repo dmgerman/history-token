@@ -667,7 +667,7 @@ comma
 id|HCCR_CLR_RISC_INT
 )paren
 suffix:semicolon
-id|RD_REG_WORD
+id|RD_REG_WORD_RELAXED
 c_func
 (paren
 op_amp

@@ -1274,7 +1274,7 @@ l_int|2
 multiline_comment|/* Calculate number of free request entries */
 id|cnt
 op_assign
-id|RD_REG_WORD
+id|RD_REG_WORD_RELAXED
 c_func
 (paren
 id|ISP_REQ_Q_OUT
@@ -1735,7 +1735,7 @@ comma
 id|ha-&gt;req_ring_index
 )paren
 suffix:semicolon
-id|RD_REG_WORD
+id|RD_REG_WORD_RELAXED
 c_func
 (paren
 id|ISP_REQ_Q_IN
@@ -2633,7 +2633,7 @@ comma
 id|ha-&gt;req_ring_index
 )paren
 suffix:semicolon
-id|RD_REG_WORD
+id|RD_REG_WORD_RELAXED
 c_func
 (paren
 id|ISP_REQ_Q_IN
