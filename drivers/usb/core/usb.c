@@ -3154,7 +3154,7 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
-id|usb_create_driverfs_dev_files
+id|usb_create_sysfs_dev_files
 (paren
 id|dev
 )paren
