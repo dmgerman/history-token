@@ -2317,6 +2317,21 @@ comma
 id|vpn
 )paren
 suffix:semicolon
+multiline_comment|/* Make non-kernel text non-executable */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|in_kernel_text
+c_func
+(paren
+id|ea
+)paren
+)paren
+id|mode_rw
+op_or_assign
+id|HW_NO_EXEC
+suffix:semicolon
 r_if
 c_cond
 (paren
