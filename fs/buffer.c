@@ -3133,7 +3133,11 @@ c_func
 op_amp
 id|mapping-&gt;page_tree
 comma
-id|page-&gt;index
+id|page_index
+c_func
+(paren
+id|page
+)paren
 comma
 id|PAGECACHE_TAG_DIRTY
 )paren

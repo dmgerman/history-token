@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 multiline_comment|/*&n; * swapper_space is a fiction, retained to simplify the path through&n; * vmscan&squot;s shrink_list.  Only those fields initialized below are used.&n; */
@@ -18,6 +19,11 @@ dot
 id|writepage
 op_assign
 id|swap_writepage
+comma
+dot
+id|set_page_dirty
+op_assign
+id|__set_page_dirty_nobuffers
 comma
 )brace
 suffix:semicolon
